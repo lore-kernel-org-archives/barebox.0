@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mickerik.phytec.de ([195.145.39.210])
- by bombadil.infradead.org with esmtp (Exim 4.92 #3 (Red Hat Linux))
- id 1ho1ig-0001TR-Ke
- for barebox@lists.infradead.org; Thu, 18 Jul 2019 08:24:56 +0000
-From: =?UTF-8?Q?Stefan_Riedm=c3=bcller?= <s.riedmueller@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
+ id 1ho5NY-000428-U4
+ for barebox@lists.infradead.org; Thu, 18 Jul 2019 12:19:22 +0000
+Date: Thu, 18 Jul 2019 14:19:16 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190718121916.3pfn6qp2uql3uc42@pengutronix.de>
 References: <1562758050-447264-1-git-send-email-s.riedmueller@phytec.de>
  <20190711070147.weq5bwqh4adw6sfe@pengutronix.de>
  <cdbaf9d5-940e-db3a-3df9-db3bba5a3ed4@phytec.de>
-Message-ID: <a845e767-c324-127d-efdd-de5f26bd92c4@phytec.de>
-Date: Thu, 18 Jul 2019 10:24:52 +0200
+ <a845e767-c324-127d-efdd-de5f26bd92c4@phytec.de>
 MIME-Version: 1.0
-In-Reply-To: <cdbaf9d5-940e-db3a-3df9-db3bba5a3ed4@phytec.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <a845e767-c324-127d-efdd-de5f26bd92c4@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,48 +21,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] mtd: ubi: Max out default wear-leveling threshold
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Stefan =?iso-8859-15?Q?Riedm=FCller?= <s.riedmueller@phytec.de>
 Cc: barebox@lists.infradead.org
 
-SGkgU2FzY2hhLAoKZG8geW91IGd1eXMgaGF2ZSBhbiBpZGVhIG9yIHByb3Bvc2FsIGhvdyB0byBk
-aXNhYmxlIHRoZSB3ZWFyLWxldmVsaW5nIApwcm9wZXJseT8gSSB3aWxsIGdsYWRseSB0YWtlIGFu
-b3RoZXIgbG9vayBhdCBpdCBhbmQgaXQgd291bGQgYmUgbmljZSB0byBnZXQgCnlvdXIgaW5wdXQg
-YXMgSSBvbmx5IHN0YXJ0ZWQgdG8gZGl2ZSBpbnRvIHViaS4KClJlZ2FyZHMsClN0ZWZhbgoKT24g
-MTEuMDcuMTkgMTM6MDQsIFN0ZWZhbiBSaWVkbcO8bGxlciB3cm90ZToKPiBIaSBTYXNjaGEsCj4g
-Cj4gT24gMTEuMDcuMTkgMDk6MDEsIFNhc2NoYSBIYXVlciB3cm90ZToKPj4gT24gV2VkLCBKdWwg
-MTAsIDIwMTkgYXQgMDE6Mjc6MzBQTSArMDIwMCwgU3RlZmFuIFJpZWRtdWVsbGVyIHdyb3RlOgo+
-Pj4gRHVlIHRvIHRoZSByZWN1cnNpdmUgdWJpX3RocmVhZCBpbXBsZW1lbnRhdGlvbiBpbiB0aGUg
-YmFyZWJveCwgYSBsYXJnZQo+Pj4gYW1vdW50IG9mIHdlYXItbGV2ZWxpbmcgY2FuIGxlYWQgdG8g
-YSBzdGFjayBvdmVyZmxvdy4KPj4+Cj4+PiBUaGlzIHdhcyBvYnNlcnZlZCBkdXJpbmcgZXh0ZW5z
-aXZlIHViaSBzdHJlc3MgdGVzdHMgd2l0aCB0aGUgbGludXgKPj4+IGtlcm5lbCBhbmQgcGVyaW9k
-aWMgcG93ZXIgY3ljbGVzLiBXZSBmb3VuZCB0aGF0IGlmIHRoZSB3ZWFyLWxldmVsaW5nCj4+PiB0
-aHJlc2hvbGQgaXMgZXhjZWVkZWQgYW5kIGEgbGFyZ2UgYW1vdW50IG9mIGVyYXNlIGJsb2NrcyBu
-ZWVkCj4+PiB3ZWFyLWxldmVsaW5nIHRoZSBzdGFjayBjYW4gb3ZlcmZsb3cuCj4+Pgo+Pj4gVGhl
-IGhhcmR3YXJlIHVzZWQgdG8gb2JzZXJ2ZSB0aGlzIHdhcyBhIHBoeUNPUkUtaS5NWCA2IHdpdGgg
-MUdCIE5BTkQgZmxhc2guCj4+Pgo+Pj4gQXMgdGhlIGtlcm5lbCBpcyBwZXJmZWN0bHkgY2FwYWJs
-ZSBvZiBoYW5kbGluZyB3ZWFyLWxldmVsaW5nIHdlIGNhbgo+Pj4gaW5jcmVhc2UgdGhlIHdlYXIt
-bGV2ZWxpbmcgdGhyZXNob2xkIGluIHRoZSBiYXJlYm94IHRvIGxlYXZlIGl0IHRvIHRoZQo+Pj4g
-a2VybmVsLiBUbyBtaW5pbWl6ZSB0aGUgY2hhbmNlIG9mIHdlYXItbGV2ZWxpbmcgaW4gdGhlIGJh
-cmVib3ggbWF4IG91dAo+Pj4gdGhlIHRocmVzaG9sZC4KPj4KPj4gSSBjYW4gZm9sbG93IHRoZSBy
-ZWFzb25pbmcgYW5kIGl0IHNlZW1zIGluZGVlZCBiZXR0ZXIgYW5kIG1vcmUgc2FmZSB0bwo+PiBs
-ZWF2ZSB0aGUgd2VhcmxldmVsaW5nIHRvIHRoZSBLZXJuZWwuIEdpdmVuIHRoYXQsIGNhbid0IHdl
-IGp1c3QgZGlzYWJsZQo+PiB3ZWFyIGxldmVsaW5nIGNvbXBsZXRlbHkgaW4gYmFyZWJveD8KPiAK
-PiBJIHRoaW5rIGl0IHdvdWxkIGJlIGJlc3QgdG8gZGlzYWJsZSBpdCBvciBhdCBsZWFzdCBpbXBy
-b3ZlIGl0LiBCdXQgc2luY2UgCj4gd2Vhci1sZXZlbGluZyBpcyBub3QgYW4gaXNvbGF0ZWQgdGFz
-ayBidXQgaW52b2x2ZWQgaW4gbW9yZSBmdW5jdGlvbmFsaXRpZXMgSSAKPiBjb3VsZG4ndCBmaW5k
-IGFuIGVhc3kgd2F5IHRvIGRpc2FibGUgaXQgaW4gYSBxdWljayB3YXkuIFRoYXQgaXMgd2h5IEkg
-d2VudCAKPiB3aXRoIHRoZSB0aHJlc2hvbGQgZW5sYXJnZW1lbnQgdG8gaGF2ZSBhdCBsZWFzdCBh
-IHF1aWNrIGZpeC4KPiAKPiBCdXQgSSBhZ3JlZSB0aGF0IGF0IHNvbWUgcG9pbnQgaW4gdGhlIGZ1
-dHVyZSB0aGUgcm9vdCBjYXVzZSBzaG91bGQgYmUgCj4gaGFuZGxlZCBhbmQgbm90IGp1c3QgdGhl
-IHN5bXB0b20uCj4gCj4gU3RlZmFuCj4gCj4+Cj4+IFNhc2NoYQo+Pgo+IAo+IF9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4gYmFyZWJveCBtYWlsaW5nIGxp
-c3QKPiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKPiBodHRwOi8vbGlzdHMuaW5mcmFkZWFk
-Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
-aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2JhcmVib3gK
+On Thu, Jul 18, 2019 at 10:24:52AM +0200, Stefan Riedm=FCller wrote:
+> Hi Sascha,
+> =
+
+> do you guys have an idea or proposal how to disable the wear-leveling
+> properly? I will gladly take another look at it and it would be nice to g=
+et
+> your input as I only started to dive into ubi.
+
+What I meant was simply something like this:
+
+#define UBI_WL_THRESHOLD INT_MAX
+
+Put a comment above it why it is done and remove the Kconfig entry for
+it and be done.
+
+We found out that UBI wear leveling doesn't work reliably in barebox, so
+we should make sure that it's disabled completely and not just change
+the defaults (which could be changed back by an unwary user)
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
