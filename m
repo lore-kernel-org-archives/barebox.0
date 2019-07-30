@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hslkC-0000gQ-It
- for barebox@lists.infradead.org; Wed, 31 Jul 2019 10:22:06 +0000
+ id 1hsUMS-0000mr-Qj
+ for barebox@lists.infradead.org; Tue, 30 Jul 2019 15:48:26 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 31 Jul 2019 12:21:43 +0200
-Message-Id: <20190731102143.20503-3-a.fatoum@pengutronix.de>
-In-Reply-To: <20190731102143.20503-1-a.fatoum@pengutronix.de>
-References: <20190731102143.20503-1-a.fatoum@pengutronix.de>
+Date: Tue, 30 Jul 2019 17:48:09 +0200
+Message-Id: <20190730154809.27903-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,7 +19,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/3] console: fix out-of-bounds read in dputc(/dev/*, ...)
+Subject: [PATCH] console: fix out-of-bounds read in dputc(/dev/*, ...)
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, Bastian Krause <bst@pengutronix.de>
 
@@ -34,17 +32,12 @@ fops_write discards the buffer length and passes the buffer to
 Fix this by amending (struct cdev)::puts with a new nbytes parameter,
 which is correctly propagated.
 
-Fixes: b4f55fcf35 ("console: expose consoles in devfs")
+Fixes: 1233570798 ("console: expose consoles in devfs")
 Cc: Bastian Krause <bst@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
-Changes in v2:
-	- fixed commit hash in Fixes:, by Bastian
-	- fixed possible incomplete writes in __console_puts
-	- rebased on top of two potential bug fixes
----
- common/console.c            | 14 +++++++-------
- common/ratp/ratp.c          | 10 ++++------
+ common/console.c            | 12 ++++++------
+ common/ratp/ratp.c          | 12 +++++-------
  drivers/serial/efi-stdio.c  |  5 +++--
  drivers/serial/serial_efi.c |  5 +++--
  fs/pstore/platform.c        |  7 ++++---
@@ -52,10 +45,10 @@ Changes in v2:
  6 files changed, 22 insertions(+), 21 deletions(-)
 
 diff --git a/common/console.c b/common/console.c
-index 52162df23b04..ce4122fa76f1 100644
+index 47ccf2e54de0..59218ea4e22f 100644
 --- a/common/console.c
 +++ b/common/console.c
-@@ -253,19 +253,19 @@ static void console_set_stdoutpath(struct console_device *cdev)
+@@ -253,17 +253,17 @@ static void console_set_stdoutpath(struct console_device *cdev)
  	free(str);
  }
  
@@ -64,23 +57,20 @@ index 52162df23b04..ce4122fa76f1 100644
 +			  size_t nbytes)
  {
 -	int n = 0;
-+	size_t i;
++	int n;
  
 -	while (*s) {
-+	for (i = 0; i < nbytes; i++) {
- 		if (*s == '\n')
++	for (n = 0; n < nbytes; n++) {
+ 		if (*s == '\n') {
  			cdev->putc(cdev, '\r');
- 
+ 			n++;
+ 		}
  		cdev->putc(cdev, *s);
 -		n++;
  		s++;
  	}
--	return n;
-+	return i;
- }
- 
- static int fops_open(struct cdev *cdev, unsigned long flags)
-@@ -297,7 +297,7 @@ static ssize_t fops_write(struct cdev* dev, const void* buf, size_t count,
+ 	return n;
+@@ -298,7 +298,7 @@ static ssize_t fops_write(struct cdev* dev, const void* buf, size_t count,
  {
  	struct console_device *priv = dev->priv;
  
@@ -89,7 +79,7 @@ index 52162df23b04..ce4122fa76f1 100644
  
  	return 0;
  }
-@@ -544,7 +544,7 @@ int console_puts(unsigned int ch, const char *str)
+@@ -545,7 +545,7 @@ int console_puts(unsigned int ch, const char *str)
  	if (initialized == CONSOLE_INIT_FULL) {
  		for_each_console(cdev) {
  			if (cdev->f_active & ch) {
@@ -99,7 +89,7 @@ index 52162df23b04..ce4122fa76f1 100644
  		}
  		return n;
 diff --git a/common/ratp/ratp.c b/common/ratp/ratp.c
-index 8ac7dc98b6f8..8f989515e485 100644
+index 9aea1786d684..e84ad221672a 100644
 --- a/common/ratp/ratp.c
 +++ b/common/ratp/ratp.c
 @@ -259,19 +259,17 @@ static int ratp_console_tstc(struct console_device *cdev)
@@ -116,7 +106,8 @@ index 8ac7dc98b6f8..8f989515e485 100644
 -	len = strlen(s);
  
  	if (ratp_busy(&ctx->ratp))
- 		return 0;
+-		return len;
++		return nbytes;
  
 -	kfifo_put(ctx->console_transmit_fifo, s, len);
 +	kfifo_put(ctx->console_transmit_fifo, s, nbytes);
