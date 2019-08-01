@@ -1,19 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-io1-xd41.google.com ([2607:f8b0:4864:20::d41])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i2TT1-0002ZT-DZ
- for barebox@lists.infradead.org; Tue, 27 Aug 2019 04:52:28 +0000
-Received: by mail-io1-xd41.google.com with SMTP id p12so43274469iog.5
- for <barebox@lists.infradead.org>; Mon, 26 Aug 2019 21:52:27 -0700 (PDT)
+ id 1ht7Fd-0005Y1-BG
+ for barebox@lists.infradead.org; Thu, 01 Aug 2019 09:19:58 +0000
+From: Bastian Krause <bst@pengutronix.de>
+Date: Thu,  1 Aug 2019 11:19:50 +0200
+Message-Id: <20190801091950.14606-1-bst@pengutronix.de>
 MIME-Version: 1.0
-References: <20190825145517.5546-1-u.kleine-koenig@pengutronix.de>
- <20190825145517.5546-2-u.kleine-koenig@pengutronix.de>
- <CAHQ1cqF-UUKs3ysuMQvBxbENpGeRxn=8u-bZcmU6=PmFv3n=-w@mail.gmail.com>
- <20190826201242.dmpkwahnmcbiumbf@pengutronix.de>
-In-Reply-To: <20190826201242.dmpkwahnmcbiumbf@pengutronix.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 26 Aug 2019 21:52:14 -0700
-Message-ID: <CAHQ1cqHkMhV_mh9dLfRmuinkEBAe5UdoW9Ws3L1rbAOp0-t4YQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,52 +15,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] reset_source: drop reset_source_set_instance()
-To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] mtd: spi-nor: fix page offset/remains calculation in
+ spi_nor_write
+To: barebox@lists.infradead.org
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>, Bastian Krause <bst@pengutronix.de>
 
-T24gTW9uLCBBdWcgMjYsIDIwMTkgYXQgMzoxNyBQTSBVd2UgS2xlaW5lLUvDtm5pZwo8dS5rbGVp
-bmUta29lbmlnQHBlbmd1dHJvbml4LmRlPiB3cm90ZToKPgo+IE9uIE1vbiwgQXVnIDI2LCAyMDE5
-IGF0IDEyOjI0OjEyUE0gLTA3MDAsIEFuZHJleSBTbWlybm92IHdyb3RlOgo+ID4gT24gU3VuLCBB
-dWcgMjUsIDIwMTkgYXQgNzo1NSBBTSBVd2UgS2xlaW5lLUvDtm5pZwo+ID4gPHUua2xlaW5lLWtv
-ZW5pZ0BwZW5ndXRyb25peC5kZT4gd3JvdGU6Cj4gPiA+Cj4gPiA+IFRoZSBzZW1hbnRpYyBvZiBy
-ZXNldF9zb3VyY2Vfc2V0X2luc3RhbmNlKCkgcmVxdWlyZWQgYSBzZXBhcmF0ZSBjYWxsIHRvCj4g
-PiA+IHJlc2V0X3NvdXJjZV9zZXQoKSAob3IgcmVzZXRfc291cmNlX3NldF9wcmlvcml0eSgpKSBh
-bmQgY2hlY2tlZCByaWdodAo+ID4gPiB1c2FnZSBvbmx5IHVzaW5nIHRoZSB0eXBlLiBNYWtlIHRo
-ZSBzZXQgb2YgZnVuY3Rpb25zIGEgYml0IGVhc2llciB0byB1c2UKPiA+ID4gYnkgZHJvcHBpbmcg
-cmVzZXRfc291cmNlX3NldF9pbnN0YW5jZSgpIGFuZCBpbnN0ZWFkIGludHJvZHVjZSBhIGZ1bmN0
-aW9uCj4gPiA+IHRoYXQgY2FuIHNldCBhbGwgcmVsZXZhbnQgcGFyYW1ldGVycyAoc291cmNlLCBw
-cmlvcml0eSBhbmQgaW5zdGFuY2UpIGluCj4gPiA+IG9uZSBnby4KPiA+ID4KPiA+ID4gU2lnbmVk
-LW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5k
-ZT4KPiA+ID4gLS0tCj4gPiA+ICBhcmNoL2FybS9tYWNoLWlteC9pbXguYyAgICAgICB8ICA0ICst
-LS0KPiA+ID4gIGNvbW1vbi9yZXNldF9zb3VyY2UuYyAgICAgICAgIHwgMTUgKysrKy0tLS0tLS0t
-LS0tCj4gPiA+ICBkcml2ZXJzL3dhdGNoZG9nL3N0bTMyX2l3ZGcuYyB8ICAzICstLQo+ID4gPiAg
-aW5jbHVkZS9yZXNldF9zb3VyY2UuaCAgICAgICAgfCAyMCArKysrKysrKysrKy0tLS0tLS0tLQo+
-ID4gPiAgNCBmaWxlcyBjaGFuZ2VkLCAxNyBpbnNlcnRpb25zKCspLCAyNSBkZWxldGlvbnMoLSkK
-PiA+ID4KPiA+ID4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtaW14L2lteC5jIGIvYXJjaC9h
-cm0vbWFjaC1pbXgvaW14LmMKPiA+ID4gaW5kZXggNjM5MTRkMzA2ZTZmLi40M2I1NDBiMzk3NzEg
-MTAwNjQ0Cj4gPiA+IC0tLSBhL2FyY2gvYXJtL21hY2gtaW14L2lteC5jCj4gPiA+ICsrKyBiL2Fy
-Y2gvYXJtL21hY2gtaW14L2lteC5jCj4gPiA+IEBAIC0xOTksOSArMTk5LDcgQEAgdm9pZCBpbXhf
-c2V0X3Jlc2V0X3JlYXNvbih2b2lkIF9faW9tZW0gKnNyc3IsCj4gPiA+ICAgICAgICAgICAgICAg
-ICB9Cj4gPiA+ICAgICAgICAgfQo+ID4gPgo+ID4gPiAtICAgICAgIHJlc2V0X3NvdXJjZV9zZXRf
-cHJpb3JpdHkodHlwZSwKPiA+ID4gLSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFJF
-U0VUX1NPVVJDRV9ERUZBVUxUX1BSSU9SSVRZKTsKPiA+ID4gLSAgICAgICByZXNldF9zb3VyY2Vf
-c2V0X2luc3RhbmNlKHR5cGUsIGluc3RhbmNlKTsKPiA+ID4gKyAgICAgICByZXNldF9zb3VyY2Vf
-c2V0X3ByaW5zdCh0eXBlLCBSRVNFVF9TT1VSQ0VfREVGQVVMVF9QUklPUklUWSwgaW5zdGFuY2Up
-Owo+ID4KPiA+IEFueSBjaGFuZ2Ugd2UgY2FuIGNhbGwgdGhpcyBmdW5jdGlvbgo+ID4gcmVzZXRf
-c291cmNlX3NldF9wcmlvcml0eV9pbnN0YW5jZSgpIG9yIHJlc2V0X3NvdXJjZV9zZXRfYWxsKCkg
-aW5zdGVhZAo+ID4gb2YgInByaW5zdCI/Cj4KPiBEaWQgeW91IHNlZSBteSB2MiBzZXJpZXM/IEl0
-J3Mgc3RpbGwgcHJpbnN0IHRoZXJlLCBidXQgbWF5YmUgc29tZQo+IGluc3RhbmNlcyBjYW4gYmUg
-bW92ZWQgdG8gdGhlIGRldmljZSB2YXJpYW50IHRoZXJlLgo+Cj4gSGF2aW5nIHNhaWQgdGhhdCwg
-SSBkb24ndCBjYXJlIG11Y2guIEkgY29uc2lkZXJlZCB0byBtYWtlCj4gcmVzZXRfc291cmNlX3Nl
-dCgpIHRoZSB2YXJpYW50IHdpdGggYWxsIHBhcmFtZXRlcnMgYW5kIHJlbmFtZSB0aGUKPiBjdXJy
-ZW50IHJlc2V0X3NvdXJjZV9zZXQoKSB0byByZXNldF9zb3VyY2Vfc2V0X3R5cGUoKS4gV291bGQg
-dGhhdCBtYWtlCj4gc2Vuc2UgdG8geW91PwoKWWVhaCwgdG90YWxseSwgdGhhdCdkIHByb2JhYmx5
-IGJlIGV2ZW4gYmV0dGVyLgoKVGhhbmtzLApBbmRyZXkgU21pcm5vdgoKX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFy
-ZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxt
-YW4vbGlzdGluZm8vYmFyZWJveAo=
+nor->write() simply adds the number of written bytes to the pointer
+given. Thus retval is incremented in each loop cycle for each
+spi_nor_write() call without ever resetting it. This leads to wrong page
+offset/remains calculations and an incorrect number of bytes written to
+retlen.
+
+This becomes apparant only if the calling function actually compares len
+and retlen (e.g. mtd_peb_write() ). Otherwise wrong data is written:
+
+  $ memcpy -s /dev/prng -d prng_data 0 0 10k
+  $ erase /dev/mtd0.mypart
+  $ cp prng_data /dev/mtd0.mypart
+  $ memcmp -s prng_data -d /dev/mtd0.mypart 0 0
+
+memcmp returned "files differ" before, with this patch it returns "OK".
+
+Fixes: c8516869c4 ("spi: Extend the core to ease integration of SPI memory controllers")
+Signed-off-by: Bastian Krause <bst@pengutronix.de>
+---
+ drivers/mtd/spi-nor/spi-nor.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
+index b2052ce0af..9dbc8302ed 100644
+--- a/drivers/mtd/spi-nor/spi-nor.c
++++ b/drivers/mtd/spi-nor/spi-nor.c
+@@ -972,6 +972,7 @@ static int spi_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
+ 
+ 	for (i = 0; i < len; ) {
+ 		ssize_t written;
++		retval = 0;
+ 
+ 		page_offset = (to + i) & (nor->page_size - 1);
+ 		page_remain = min_t(size_t, nor->page_size - page_offset,
+-- 
+2.20.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
