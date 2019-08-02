@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from office2.cesnet.cz ([2001:718:1:101::144:244])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1htAwg-0002Px-HC
- for barebox@lists.infradead.org; Thu, 01 Aug 2019 13:16:40 +0000
-References: <20190801091950.14606-1-bst@pengutronix.de>
-From: Bastian Krause <bst@pengutronix.de>
-Message-ID: <f92a884e-29e5-f957-fe85-1f3f826f5b8f@pengutronix.de>
-Date: Thu, 1 Aug 2019 15:16:36 +0200
+ id 1hta5r-0006FI-VY
+ for barebox@lists.infradead.org; Fri, 02 Aug 2019 16:07:49 +0000
+Resent-Message-ID: <4a85919c-8451-404e-9aba-a7dcacb635f7@cesnet.cz>
+Resent-To: <barebox@lists.infradead.org>
+Message-Id: <164e2a4e2f68170800cf463853dc815848f9a9e5.1564761760.git.jan.kundrat@cesnet.cz>
+From: =?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat@cesnet.cz>
+Date: Fri, 2 Aug 2019 16:12:59 +0200
 MIME-Version: 1.0
-In-Reply-To: <20190801091950.14606-1-bst@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,66 +17,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mtd: spi-nor: fix page offset/remains calculation in
- spi_nor_write
+Subject: [PATCH] docs: Use a proper name for AM335x defconfig
 To: barebox@lists.infradead.org
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-On 8/1/19 11:19 AM, Bastian Krause wrote:
-> nor->write() simply adds the number of written bytes to the pointer
-> given. Thus retval is incremented in each loop cycle for each
-> spi_nor_write() call without ever resetting it. This leads to wrong page
-> offset/remains calculations and an incorrect number of bytes written to
-> retlen.
-
-Note: this happens only with the cadence-quadspi driver.
-
-Bastian
-
-> 
-> This becomes apparant only if the calling function actually compares len
-> and retlen (e.g. mtd_peb_write() ). Otherwise wrong data is written:
-> 
->   $ memcpy -s /dev/prng -d prng_data 0 0 10k
->   $ erase /dev/mtd0.mypart
->   $ cp prng_data /dev/mtd0.mypart
->   $ memcmp -s prng_data -d /dev/mtd0.mypart 0 0
-> 
-> memcmp returned "files differ" before, with this patch it returns "OK".
-> 
-> Fixes: c8516869c4 ("spi: Extend the core to ease integration of SPI memory controllers")
-> Signed-off-by: Bastian Krause <bst@pengutronix.de>
-> ---
->  drivers/mtd/spi-nor/spi-nor.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-> index b2052ce0af..9dbc8302ed 100644
-> --- a/drivers/mtd/spi-nor/spi-nor.c
-> +++ b/drivers/mtd/spi-nor/spi-nor.c
-> @@ -972,6 +972,7 @@ static int spi_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
->  
->  	for (i = 0; i < len; ) {
->  		ssize_t written;
-> +		retval = 0;
->  
->  		page_offset = (to + i) & (nor->page_size - 1);
->  		page_remain = min_t(size_t, nor->page_size - page_offset,
-> 
-
-
--- 
-Pengutronix e.K.
-Industrial Linux Solutions
-http://www.pengutronix.de/
-Peiner Str. 6-8, 31137 Hildesheim, Germany
-Amtsgericht Hildesheim, HRA 2686
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Rml4ZXM6IDMwNjdjZDg1ZCAoIkFSTTogb21hcDogYW0zM3h4X2RlZmNvbmZpZzogRW5hYmxlIG1v
+cmUgYm9hcmRzIGFuZCByZW5hbWUiKQpTaWduZWQtb2ZmLWJ5OiBKYW4gS3VuZHLDoXQgPGphbi5r
+dW5kcmF0QGNlc25ldC5jej4KLS0tCiBEb2N1bWVudGF0aW9uL2JvYXJkcy9hbTMzNXgucnN0ICAg
+ICAgICAgICAgfCAyICstCiBEb2N1bWVudGF0aW9uL2JvYXJkcy9hbTMzNXgvcGh5dGVjLXNvbS5y
+c3QgfCAyICstCiAyIGZpbGVzIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMo
+LSkKCmRpZmYgLS1naXQgYS9Eb2N1bWVudGF0aW9uL2JvYXJkcy9hbTMzNXgucnN0IGIvRG9jdW1l
+bnRhdGlvbi9ib2FyZHMvYW0zMzV4LnJzdAppbmRleCA4ZDcyNmU0YTEuLmY1NDYxMTQyOCAxMDA2
+NDQKLS0tIGEvRG9jdW1lbnRhdGlvbi9ib2FyZHMvYW0zMzV4LnJzdAorKysgYi9Eb2N1bWVudGF0
+aW9uL2JvYXJkcy9hbTMzNXgucnN0CkBAIC05LDcgKzksNyBAQCBCdWlsZGluZyBiYXJlYm94CiAt
+LS0tLS0tLS0tLS0tLS0tCiAKIFRoZSBUSSBBTTMzNXggYm9hcmRzIGluIGJhcmVib3ggYXJlIGNv
+dmVyZWQgYnkgdGhlIGBgYW0zMzV4X21sb19kZWZjb25maWdgYAotZm9yIHRoZSBNTE8gYW5kIGBg
+YW0zMzV4X2RlZmNvbmZpZ2BgIGZvciB0aGUgcmVndWxhciBiYXJlYm94IGltYWdlLiBUaGUKK2Zv
+ciB0aGUgTUxPIGFuZCBgYG9tYXBfZGVmY29uZmlnYGAgZm9yIHRoZSByZWd1bGFyIGJhcmVib3gg
+aW1hZ2UuIFRoZQogcmVzdWx0aW5nIGltYWdlcyB3aWxsIGJlIHBsYWNlZCB1bmRlciBgYGltYWdl
+cy9gYDoKIAogOjoKZGlmZiAtLWdpdCBhL0RvY3VtZW50YXRpb24vYm9hcmRzL2FtMzM1eC9waHl0
+ZWMtc29tLnJzdCBiL0RvY3VtZW50YXRpb24vYm9hcmRzL2FtMzM1eC9waHl0ZWMtc29tLnJzdApp
+bmRleCA1MTk0NDhjZGQuLjRjNzYzNjUwZSAxMDA2NDQKLS0tIGEvRG9jdW1lbnRhdGlvbi9ib2Fy
+ZHMvYW0zMzV4L3BoeXRlYy1zb20ucnN0CisrKyBiL0RvY3VtZW50YXRpb24vYm9hcmRzL2FtMzM1
+eC9waHl0ZWMtc29tLnJzdApAQCAtMzIsNCArMzIsNCBAQCBCdWlsZGluZyBwaHljb3JlLXNvbS1h
+bTMzNXgKIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQogCiBUaGUgcGh5Y29yZS1zb20tYW0z
+MzV4IGJvYXJkcyBhcmUgY292ZXJlZCBieSB0aGUgYGBhbTMzNXhfbWxvX2RlZmNvbmZpZ2BgCi1m
+b3IgdGhlIE1MTyBhbmQgYGBhbTMzNXhfZGVmY29uZmlnYGAgZm9yIHRoZSByZWd1bGFyIGJhcmVi
+b3ggaW1hZ2UuCitmb3IgdGhlIE1MTyBhbmQgYGBvbWFwX2RlZmNvbmZpZ2BgIGZvciB0aGUgcmVn
+dWxhciBiYXJlYm94IGltYWdlLgotLSAKMi4yMS4wCgoKCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
+dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
+bmZvL2JhcmVib3gK
