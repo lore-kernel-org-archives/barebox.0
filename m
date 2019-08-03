@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from office2.cesnet.cz ([2001:718:1:101::144:244])
- by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hta5r-0006FI-VY
- for barebox@lists.infradead.org; Fri, 02 Aug 2019 16:07:49 +0000
-Resent-Message-ID: <4a85919c-8451-404e-9aba-a7dcacb635f7@cesnet.cz>
-Resent-To: <barebox@lists.infradead.org>
-Message-Id: <164e2a4e2f68170800cf463853dc815848f9a9e5.1564761760.git.jan.kundrat@cesnet.cz>
-From: =?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat@cesnet.cz>
-Date: Fri, 2 Aug 2019 16:12:59 +0200
+Received: from relay5-d.mail.gandi.net ([217.70.183.197])
+ by casper.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
+ id 1htxvm-0003L1-TG
+ for barebox@lists.infradead.org; Sat, 03 Aug 2019 17:35:00 +0000
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Sat,  3 Aug 2019 19:33:58 +0200
+Message-Id: <20190803173358.9209-1-ahmad@a3f.at>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -17,37 +15,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] docs: Use a proper name for AM335x defconfig
+Subject: [PATCH] fixup! Documentation: boards: add initial STM32MP
+ documentation
 To: barebox@lists.infradead.org
+Cc: afa@pengutronix.de, rhi@pengutronix.de
 
-Rml4ZXM6IDMwNjdjZDg1ZCAoIkFSTTogb21hcDogYW0zM3h4X2RlZmNvbmZpZzogRW5hYmxlIG1v
-cmUgYm9hcmRzIGFuZCByZW5hbWUiKQpTaWduZWQtb2ZmLWJ5OiBKYW4gS3VuZHLDoXQgPGphbi5r
-dW5kcmF0QGNlc25ldC5jej4KLS0tCiBEb2N1bWVudGF0aW9uL2JvYXJkcy9hbTMzNXgucnN0ICAg
-ICAgICAgICAgfCAyICstCiBEb2N1bWVudGF0aW9uL2JvYXJkcy9hbTMzNXgvcGh5dGVjLXNvbS5y
-c3QgfCAyICstCiAyIGZpbGVzIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMo
-LSkKCmRpZmYgLS1naXQgYS9Eb2N1bWVudGF0aW9uL2JvYXJkcy9hbTMzNXgucnN0IGIvRG9jdW1l
-bnRhdGlvbi9ib2FyZHMvYW0zMzV4LnJzdAppbmRleCA4ZDcyNmU0YTEuLmY1NDYxMTQyOCAxMDA2
-NDQKLS0tIGEvRG9jdW1lbnRhdGlvbi9ib2FyZHMvYW0zMzV4LnJzdAorKysgYi9Eb2N1bWVudGF0
-aW9uL2JvYXJkcy9hbTMzNXgucnN0CkBAIC05LDcgKzksNyBAQCBCdWlsZGluZyBiYXJlYm94CiAt
-LS0tLS0tLS0tLS0tLS0tCiAKIFRoZSBUSSBBTTMzNXggYm9hcmRzIGluIGJhcmVib3ggYXJlIGNv
-dmVyZWQgYnkgdGhlIGBgYW0zMzV4X21sb19kZWZjb25maWdgYAotZm9yIHRoZSBNTE8gYW5kIGBg
-YW0zMzV4X2RlZmNvbmZpZ2BgIGZvciB0aGUgcmVndWxhciBiYXJlYm94IGltYWdlLiBUaGUKK2Zv
-ciB0aGUgTUxPIGFuZCBgYG9tYXBfZGVmY29uZmlnYGAgZm9yIHRoZSByZWd1bGFyIGJhcmVib3gg
-aW1hZ2UuIFRoZQogcmVzdWx0aW5nIGltYWdlcyB3aWxsIGJlIHBsYWNlZCB1bmRlciBgYGltYWdl
-cy9gYDoKIAogOjoKZGlmZiAtLWdpdCBhL0RvY3VtZW50YXRpb24vYm9hcmRzL2FtMzM1eC9waHl0
-ZWMtc29tLnJzdCBiL0RvY3VtZW50YXRpb24vYm9hcmRzL2FtMzM1eC9waHl0ZWMtc29tLnJzdApp
-bmRleCA1MTk0NDhjZGQuLjRjNzYzNjUwZSAxMDA2NDQKLS0tIGEvRG9jdW1lbnRhdGlvbi9ib2Fy
-ZHMvYW0zMzV4L3BoeXRlYy1zb20ucnN0CisrKyBiL0RvY3VtZW50YXRpb24vYm9hcmRzL2FtMzM1
-eC9waHl0ZWMtc29tLnJzdApAQCAtMzIsNCArMzIsNCBAQCBCdWlsZGluZyBwaHljb3JlLXNvbS1h
-bTMzNXgKIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQogCiBUaGUgcGh5Y29yZS1zb20tYW0z
-MzV4IGJvYXJkcyBhcmUgY292ZXJlZCBieSB0aGUgYGBhbTMzNXhfbWxvX2RlZmNvbmZpZ2BgCi1m
-b3IgdGhlIE1MTyBhbmQgYGBhbTMzNXhfZGVmY29uZmlnYGAgZm9yIHRoZSByZWd1bGFyIGJhcmVi
-b3ggaW1hZ2UuCitmb3IgdGhlIE1MTyBhbmQgYGBvbWFwX2RlZmNvbmZpZ2BgIGZvciB0aGUgcmVn
-dWxhciBiYXJlYm94IGltYWdlLgotLSAKMi4yMS4wCgoKCl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
-dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
-bmZvL2JhcmVib3gK
+Left-over line spotted by Roland. The boards are listed in the section
+following this.
+---
+ Documentation/boards/stm32mp.rst | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/Documentation/boards/stm32mp.rst b/Documentation/boards/stm32mp.rst
+index 8cbf36c3961e..24cf8859db8d 100644
+--- a/Documentation/boards/stm32mp.rst
++++ b/Documentation/boards/stm32mp.rst
+@@ -22,8 +22,6 @@ header-less image ending in ``*.pblb`` as well.
+ 
+ Use of barebox as FSBL is not supported.
+ 
+-Following boards are currently supported in barebox:
+-
+ Building barebox
+ ----------------
+ 
+-- 
+2.20.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
