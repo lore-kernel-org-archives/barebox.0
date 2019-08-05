@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from magratgarlick.emantor.de ([78.46.208.201])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1huaOn-0006Fh-2K
- for barebox@lists.infradead.org; Mon, 05 Aug 2019 10:39:30 +0000
-Message-ID: <1565001567.2323.3.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 05 Aug 2019 12:39:27 +0200
-In-Reply-To: <ef9f1fabf2634bf7eec13d5648cfee09706fa198.1564997015.git-series.r.czerwinski@pengutronix.de>
+ id 1huZE3-0004At-GH
+ for barebox@lists.infradead.org; Mon, 05 Aug 2019 09:24:21 +0000
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Mon,  5 Aug 2019 11:23:52 +0200
+Message-Id: <779cf1615ca931b2687c6fa8a4b5f4e481f8af82.1564997015.git-series.r.czerwinski@pengutronix.de>
+In-Reply-To: <cover.b9d503ab98014278972f6bd84931035a5ef27967.1564997015.git-series.r.czerwinski@pengutronix.de>
 References: <cover.b9d503ab98014278972f6bd84931035a5ef27967.1564997015.git-series.r.czerwinski@pengutronix.de>
- <ef9f1fabf2634bf7eec13d5648cfee09706fa198.1564997015.git-series.r.czerwinski@pengutronix.de>
-Mime-Version: 1.0
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,29 +17,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 15/16] mach-imx: hab: select piggy verification for
- i.MX8
-To: Rouven Czerwinski <r.czerwinski@pengutronix.de>, barebox@lists.infradead.org
+Subject: [PATCH v2 13/16] arm: uncompress: verify sha256 if enabled
+To: barebox@lists.infradead.org
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-QW0gTW9udGFnLCBkZW4gMDUuMDguMjAxOSwgMTE6MjMgKzAyMDAgc2NocmllYiBSb3V2ZW4gQ3pl
-cndpbnNraToKPiBBbHdheXMgc2VsZWN0IHRoZSBwaWdneSB2ZXJpZmljYXRpb24gaWYgSEFCIGlz
-IGVuYWJsZWQgb24gaS5NWDgsCj4gb3RoZXJ3aXNlIHRoZSBzaWduZWQgUEJMIG1pZ2h0IGxvYWQg
-dW50cnVzdGVkIHBpZ2d5ZGF0YS4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBSb3V2ZW4gQ3plcndpbnNr
-aSA8ci5jemVyd2luc2tpQHBlbmd1dHJvbml4LmRlPgo+IC0tLQo+IMKgYXJjaC9hcm0vbWFjaC1p
-bXgvS2NvbmZpZyB8IDEgKwo+IMKgMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspCj4gCj4g
-ZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtaW14L0tjb25maWcgYi9hcmNoL2FybS9tYWNoLWlt
-eC9LY29uZmlnCj4gaW5kZXggOGZjZWYzZi4uYWMxNjI5MCAxMDA2NDQKPiAtLS0gYS9hcmNoL2Fy
-bS9tYWNoLWlteC9LY29uZmlnCj4gKysrIGIvYXJjaC9hcm0vbWFjaC1pbXgvS2NvbmZpZwo+IEBA
-IC03OTIsNiArNzkyLDcgQEAgY29uZmlnIEhBQlY0Cj4gwqAJc2VsZWN0IElNWF9PQ09UUAo+IMKg
-CWRlcGVuZHMgb24gQVJDSF9JTVg2IHx8IEFSQ0hfSU1YOE1RCj4gwqAJZGVwZW5kcyBvbiBPRkRF
-VklDRQo+ICsJc2VsZWN0IFBCTF9WRVJJRllfUElHR1kgaWYgQVJDSF9JTVg4TVEKClNob3VsZG4n
-dCB0aGlzIGJlIHRoZSBvdGhlciB3YXkgYXJvdW5kIGFuZCBkbyBhCiJzZWxlY3QgUEJMX1ZFUklG
-WV9QSUdHWSBpZiBIQUJWNCIgZnJvbSB0aGUgQVJDSF9JTVg4TVEgc3ltYm9sPyBBdApsZWFzdCB0
-byBtZSB0aGlzIHdvdWxkIG1ha2UgaXQgbW9yZSBjbGVhciB3aGF0J3MgZ29pbmcgb24gaGVyZS4K
-ClJlZ2FyZHMsCkx1Y2FzCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcK
-aHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Add piggydata verification before the ARM uncompress function.
+This calculates the sha256sum of the compressed barebox binary and only
+continues if the builtin sha256sum matches the calculated sha256sum.
+
+Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+---
+ arch/arm/cpu/uncompress.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
+index c7851c5..4c69b4c 100644
+--- a/arch/arm/cpu/uncompress.c
++++ b/arch/arm/cpu/uncompress.c
+@@ -42,14 +42,18 @@ unsigned long free_mem_end_ptr;
+ extern unsigned char input_data[];
+ extern unsigned char input_data_end[];
+ 
++extern unsigned char sha_sum[];
++extern unsigned char sha_sum_end[];
++
+ void __noreturn barebox_multi_pbl_start(unsigned long membase,
+ 		unsigned long memsize, void *boarddata)
+ {
+-	uint32_t pg_len, uncompressed_len;
++	uint32_t pg_len, uncompressed_len, pbl_hash_len;
+ 	void __noreturn (*barebox)(unsigned long, unsigned long, void *);
+ 	unsigned long endmem = membase + memsize;
+ 	unsigned long barebox_base;
+ 	void *pg_start, *pg_end;
++	void *pbl_hash_start, *pbl_hash_end;
+ 	unsigned long pc = get_pc();
+ 
+ 	pg_start = input_data + global_variable_offset();
+@@ -92,6 +96,17 @@ void __noreturn barebox_multi_pbl_start(unsigned long membase,
+ 	pr_debug("uncompressing barebox binary at 0x%p (size 0x%08x) to 0x%08lx (uncompressed size: 0x%08x)\n",
+ 			pg_start, pg_len, barebox_base, uncompressed_len);
+ 
++	if (IS_ENABLED(CONFIG_PBL_VERIFY_PIGGY)) {
++		pbl_hash_start = sha_sum + global_variable_offset();
++		pbl_hash_end = sha_sum_end + global_variable_offset();
++		pbl_hash_len = pbl_hash_end - pbl_hash_start;
++		if (pbl_barebox_verify(pg_start, pg_len, pbl_hash_start,
++				       pbl_hash_len) != 0) {
++			putc_ll('!');
++			panic("hash mismatch, refusing to decompress");
++		}
++	}
++
+ 	pbl_barebox_uncompress((void*)barebox_base, pg_start, pg_len);
+ 
+ 	sync_caches_for_execution();
+-- 
+git-series 0.9.1
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
