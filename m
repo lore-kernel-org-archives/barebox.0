@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hubz1-000659-4c
- for barebox@lists.infradead.org; Mon, 05 Aug 2019 12:21:00 +0000
-Message-ID: <1565007657.2323.11.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 05 Aug 2019 14:20:57 +0200
-In-Reply-To: <f75dea541dc77d5f2416f85fd8619ee0cb67a084.1564997015.git-series.r.czerwinski@pengutronix.de>
+ id 1hucTe-0001ti-Qj
+ for barebox@lists.infradead.org; Mon, 05 Aug 2019 12:52:40 +0000
+Message-ID: <e46f774792ed7650f23de9513111cf6db2a13e50.camel@pengutronix.de>
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Mon, 05 Aug 2019 14:52:35 +0200
+In-Reply-To: <1565007657.2323.11.camel@pengutronix.de>
 References: <cover.b9d503ab98014278972f6bd84931035a5ef27967.1564997015.git-series.r.czerwinski@pengutronix.de>
  <f75dea541dc77d5f2416f85fd8619ee0cb67a084.1564997015.git-series.r.czerwinski@pengutronix.de>
-Mime-Version: 1.0
+ <1565007657.2323.11.camel@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,78 +19,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v2 09/16] images: always build sha256sum into pbl
-To: Rouven Czerwinski <r.czerwinski@pengutronix.de>, barebox@lists.infradead.org
+To: Lucas Stach <l.stach@pengutronix.de>, barebox@lists.infradead.org
 
-QW0gTW9udGFnLCBkZW4gMDUuMDguMjAxOSwgMTE6MjMgKzAyMDAgc2NocmllYiBSb3V2ZW4gQ3pl
-cndpbnNraToKPiBDcmVhdGUgYSBzaGEyNTZzdW0gb2YgdGhlIGNvbXByZXNzZWQgYmFyZWJveCBp
-bWFnZSBhbmQgYWx3YXlzIGFkZCBpdCB0bwo+IHRoZSBQQkwuIFdlIGFsc28gYWRkIGEgY3VzdG9t
-IGxpbmtlciBzZWN0aW9uIGZvciBBUk0sIHRvIHJldHJpZXZlIHRoZQo+IHNoYTI1NnN1bSBmb3Ig
-cGlnZ3lkYXRhIHZlcmlmaWNhdGlvbi4KCkhtLCB0aGlzIGFkZCBhbiB1bmNvbmRpdGlvbmFsIGJ1
-aWxkIGRlcGVuZGVuY3kgdG8gdGhlIHNoYTI1NnN1bSBob3N0LQp0b29sLCB3aGljaCBtaWdodCBi
-ZSBhIGJpdCB1bmV4cGVjdGVkLiBJJ20gbm90IHNvdCBzdXJlIGlmIHdlIGNhcmUKYWJvdXQgdGhp
-cywgc28gSSdsbCBkZWZlciB0aGUgZGVjaXNpb24gdG8gU2FzY2hhLiA7KQoKUmVnYXJkcywKTHVj
-YXMKCj4gU2lnbmVkLW9mZi1ieTogUm91dmVuIEN6ZXJ3aW5za2kgPHIuY3plcndpbnNraUBwZW5n
-dXRyb25peC5kZT4KPiAtLS0KPiDCoGFyY2gvYXJtL2xpYi9wYmwubGRzLlMgfMKgwqA3ICsrKysr
-KysKPiDCoGltYWdlcy9NYWtlZmlsZcKgwqDCoMKgwqDCoMKgwqB8IDIyICsrKysrKysrKysrKysr
-KysrKystLS0KPiDCoGltYWdlcy9zaGFfc3VtLlPCoMKgwqDCoMKgwqDCoHzCoMKgNyArKysrKysr
-Cj4gwqAzIGZpbGVzIGNoYW5nZWQsIDMzIGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pCj4g
-wqBjcmVhdGUgbW9kZSAxMDA2NDQgaW1hZ2VzL3NoYV9zdW0uUwo+IAo+IGRpZmYgLS1naXQgYS9h
-cmNoL2FybS9saWIvcGJsLmxkcy5TIGIvYXJjaC9hcm0vbGliL3BibC5sZHMuUwo+IGluZGV4IGQy
-ZjVhYjIuLjAxZWQzODQgMTAwNjQ0Cj4gLS0tIGEvYXJjaC9hcm0vbGliL3BibC5sZHMuUwo+ICsr
-KyBiL2FyY2gvYXJtL2xpYi9wYmwubGRzLlMKPiBAQCAtNjgsNiArNjgsMTMgQEAgU0VDVElPTlMK
-PiA+IMKgCS4gPSBBTElHTig0KTsKPiA+IMKgCS5kYXRhIDogeyAqKC5kYXRhKikgfQo+IMKgCj4g
-PiArCS4gPSBBTElHTig0KTsKPiA+ICsJX19zaGFzdW1fc3RhcnQgPSAuOwo+ID4gKwkuc2hhc3Vt
-IDogewo+ID4gKwkJS0VFUCgqKC5zaGFzdW0pKQo+ID4gKwl9Cj4gPiArCV9fc2hhc3VtX2VuZCA9
-IC47Cj4gKwo+ID4gwqAJLnJlbF9keW5fc3RhcnQgOiB7ICooLl9fcmVsX2R5bl9zdGFydCkgfQo+
-IMKgI2lmZGVmIENPTkZJR19DUFVfMzIKPiA+IMKgCS5yZWwuZHluIDogeyAqKC5yZWwqKSB9Cj4g
-ZGlmZiAtLWdpdCBhL2ltYWdlcy9NYWtlZmlsZSBiL2ltYWdlcy9NYWtlZmlsZQo+IGluZGV4IDI5
-M2U2NDQuLjkwNzk4NmUgMTAwNjQ0Cj4gLS0tIGEvaW1hZ2VzL01ha2VmaWxlCj4gKysrIGIvaW1h
-Z2VzL01ha2VmaWxlCj4gQEAgLTU3LDExICs1NywxMiBAQCBxdWlldF9jbWRfZWxmX18gPz0gTETC
-oMKgwqDCoMKgwqAkQAo+ID4gwqDCoMKgwqDCoMKgwqBjbWRfZWxmX18gPz0gJChMRCkgJChMREZM
-QUdTX2JhcmVib3gpIC0tZ2Mtc2VjdGlvbnMJCVwKPiA+ID4gwqAJCS1lICQoMikgLU1hcCAkQC5t
-YXAgJChMREZMQUdTXyQoQEYpKSAtbyAkQAkJXAo+ID4gPiDCoAkJLVQgJChwYmwtbGRzKQkJCQkJ
-CVwKPiA+IC0JCS0tc3RhcnQtZ3JvdXAgJChiYXJlYm94LXBibC1jb21tb24pICQob2JqKS9waWdn
-eS5vIC0tZW5kLWdyb3VwCj4gPiA+ICsJCS0tc3RhcnQtZ3JvdXAgJChiYXJlYm94LXBibC1jb21t
-b24pICQob2JqKS9waWdneS5vCVwKPiA+ICsJCSQob2JqKS9zaGFfc3VtLm8gLS1lbmQtZ3JvdXAK
-PiDCoAo+ID4gwqBQQkxfQ1BQRkxBR1MJKz0gLWZkYXRhLXNlY3Rpb25zIC1mZnVuY3Rpb24tc2Vj
-dGlvbnMKPiDCoAo+IC0kKG9iaikvJS5wYmw6ICQocGJsLWxkcykgJChiYXJlYm94LXBibC1jb21t
-b24pICQob2JqKS9waWdneS5vIEZPUkNFCj4gKyQob2JqKS8lLnBibDogJChwYmwtbGRzKSAkKGJh
-cmVib3gtcGJsLWNvbW1vbikgJChvYmopL3BpZ2d5Lm8gJChvYmopL3NoYV9zdW0ubyBGT1JDRQo+
-ID4gwqAJJChjYWxsIGlmX2NoYW5nZWQsZWxmX18sJCgqRikpCj4gwqAKPiDCoCQob2JqKS8lLnBi
-bGI6ICQob2JqKS8lLnBibCBGT1JDRQo+IEBAIC0xMTEsNiArMTEyLDIxIEBAIHN1ZmZpeF8kKENP
-TkZJR19JTUFHRV9DT01QUkVTU0lPTl9OT05FKSA9IGNvbXBfY29weQo+IMKgCj4gwqAkKG9iaikv
-cGlnZ3kubzogJChvYmopL2JhcmVib3gueiBGT1JDRQo+IMKgCj4gKyQob2JqKS9zaGFfc3VtLm86
-ICQob2JqKS9iYXJlYm94LnNoYS5iaW4gRk9SQ0UKPiArCj4gK3F1aWV0X2NtZF9zaGEyNTZiaW4g
-Pz0gU0hBLUJJTiAkQAo+ICvCoMKgwqDCoMKgwqBjbWRfc2hhMjU2YmluID89IHByaW50ZiAiJChz
-aGVsbCBhd2sgJ3twcmludGYgJCQxfScgPCAkKG9iaikvYmFyZWJveC5zdW0gfCBzZWQgLWUgJ3Mv
-Li4vXFx4Ji9nJyApIiA+ICRACj4gKwo+ICtxdWlldF9jbWRfc2hhMjU2c3VtID89IFNIQcKgwqDC
-oMKgwqAkQAo+ICvCoMKgwqDCoMKgwqBjbWRfc2hhMjU2c3VtID89IHNoYTI1NnN1bSAkKG9iaikv
-YmFyZWJveC56ID4gJEAKPiArCj4gKyQob2JqKS9iYXJlYm94LnNoYS5iaW46ICQob2JqKS9iYXJl
-Ym94LnN1bSBGT1JDRQo+ID4gKwkkKGNhbGwgaWZfY2hhbmdlZCxzaGEyNTZiaW4pCj4gKwo+ICsk
-KG9iaikvYmFyZWJveC5zdW06ICQob2JqKS9iYXJlYm94LnogRk9SQ0UKPiA+ICsJJChjYWxsIGlm
-X2NoYW5nZWQsc2hhMjU2c3VtKQo+ICsKPiArCj4gwqAjIGJhcmVib3gueiAtIGNvbXByZXNzZWQg
-YmFyZWJveCBiaW5hcnkKPiDCoCMgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQo+IMKgJChvYmopL2JhcmVib3guejogJChvYmop
-Ly4uL2JhcmVib3guYmluIEZPUkNFCj4gQEAgLTE1Miw3ICsxNjgsNyBAQCBpZm5lcSAoJChwYmx4
-LXkpJChwYmx4LSksKQo+IMKgwqDCoCQoZXJyb3IgcGJseC0gaGFzIGJlZW4gcmVtb3ZlZC4gUGxl
-YXNlIHVzZSBwYmxiLSBpbnN0ZWFkLikKPiDCoGVuZGlmCj4gwqAKPiAtdGFyZ2V0cyArPSAkKGlt
-YWdlLXkpIHBibC5sZHMgYmFyZWJveC54IGJhcmVib3gueiBwaWdneS5vCj4gK3RhcmdldHMgKz0g
-JChpbWFnZS15KSBwYmwubGRzIGJhcmVib3gueCBiYXJlYm94LnogcGlnZ3kubyBzaGFfc3VtLm8g
-YmFyZWJveC5zaGEuYmluIGJhcmVib3guc3VtCj4gwqB0YXJnZXRzICs9ICQocGF0c3Vic3QgJSwl
-LnBibGIsJChwYmxiLXkpKQo+IMKgdGFyZ2V0cyArPSAkKHBhdHN1YnN0ICUsJS5wYmwsJChwYmxi
-LXkpKQo+IMKgdGFyZ2V0cyArPSAkKHBhdHN1YnN0ICUsJS5zLCQocGJsYi15KSkKPiBkaWZmIC0t
-Z2l0IGEvaW1hZ2VzL3NoYV9zdW0uUyBiL2ltYWdlcy9zaGFfc3VtLlMKPiBuZXcgZmlsZSBtb2Rl
-IDEwMDY0NAo+IGluZGV4IDAwMDAwMDAuLjU5MjhjMjAKPiAtLS0gL2Rldi9udWxsCj4gKysrIGIv
-aW1hZ2VzL3NoYV9zdW0uUwo+IEBAIC0wLDAgKzEsNyBAQAo+ICsvKiBTUERYLUxpY2Vuc2UtSWRl
-bnRpZmllcjogR1BMLTIuMCAqLwo+ICvCoMKgwqDCoMKgwqDCoMKgLnNlY3Rpb24gLnNoYXN1bSwi
-YSIKPiArwqDCoMKgwqDCoMKgwqDCoC5nbG9ibMKgwqBzaGFfc3VtCj4gK3NoYV9zdW06Cj4gK8Kg
-wqDCoMKgwqDCoMKgwqAuaW5jYmluICJpbWFnZXMvYmFyZWJveC5zaGEuYmluIgo+ICvCoMKgwqDC
-oMKgwqDCoMKgLmdsb2JswqDCoHNoYV9zdW1fZW5kCj4gK3NoYV9zdW1fZW5kOgoKX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxp
-c3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
-L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Mon, 2019-08-05 at 14:20 +0200, Lucas Stach wrote:
+> 
+> Hm, this add an unconditional build dependency to the sha256sum host-
+> tool, which might be a bit unexpected. I'm not sot sure if we care
+> about this, so I'll defer the decision to Sascha. ;)
+
+sha256sum is contained in coreutils, I think we can expect it to be
+available on build machines :-)
+
+Regards,
+Rouven Czerwinski
+-- 
+Pengutronix e.K.                           |            		 |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
