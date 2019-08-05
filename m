@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hucaJ-0004lA-7V
- for barebox@lists.infradead.org; Mon, 05 Aug 2019 12:59:32 +0000
-Message-ID: <bb8c983ea545d2693d7d68af0df0d70640f31081.camel@pengutronix.de>
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Mon, 05 Aug 2019 14:59:30 +0200
-In-Reply-To: <1565001478.2323.1.camel@pengutronix.de>
-References: <cover.b9d503ab98014278972f6bd84931035a5ef27967.1564997015.git-series.r.czerwinski@pengutronix.de>
- <209a8ba450cb170543983cbb0a57be65838e639a.1564997015.git-series.r.czerwinski@pengutronix.de>
- <1565001478.2323.1.camel@pengutronix.de>
+ id 1hucDO-0002uo-3i
+ for barebox@lists.infradead.org; Mon, 05 Aug 2019 12:35:54 +0000
+Date: Mon, 5 Aug 2019 14:35:40 +0200
+From: Roland Hieber <rhi@pengutronix.de>
+Message-ID: <20190805123540.44he42heamdwr7en@pengutronix.de>
+References: <1563436921-362991-1-git-send-email-m.otto@phytec.de>
+ <1563436921-362991-4-git-send-email-m.otto@phytec.de>
+ <20190805110213.pfqdnyeecyc3rhmq@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190805110213.pfqdnyeecyc3rhmq@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,52 +24,88 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 16/16] boards: nxp-mx8-evk: rework to different boot
- flow
-To: Lucas Stach <l.stach@pengutronix.de>, barebox@lists.infradead.org
+Subject: Re: [PATCH v3 4/4] Makefile: add creation of signed/encrypted images
+ for imx6, imx7, imx8
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Maik Otto <m.otto@phytec.de>, barebox@lists.infradead.org
 
-On Mon, 2019-08-05 at 12:37 +0200, Lucas Stach wrote:
-> Am Montag, den 05.08.2019, 11:23 +0200 schrieb Rouven Czerwinski:
-> >  /*
-> >   * Power-on execution flow of start_nxp_imx8mq_evk() might not be
-> >   * obvious for a very first read, so here's, hopefully helpful,
-> > @@ -75,53 +84,53 @@ static void nxp_imx8mq_evk_sram_setup(void)
-> >   * 1. MaskROM uploads PBL into OCRAM and that's where this
-> > function is
-> >   *    executed for the first time
-> >   *
-> > - * 2. DDR is initialized and full i.MX image is loaded to the
-> > - *    beginning of RAM
-> > - *
-> > - * 3. start_nxp_imx8mq_evk, now in RAM, is executed again
-> > + * 2. DDR is initialized and the TF-A trampoline is installed in
-> > the
-> > + *    DRAM.
-> >   *
-> > - * 4. BL31 blob is uploaded to OCRAM and the control is transfer
-> > to it
-> > + * 3. TF-A is executed and exits into the trampoline in RAM, which
-> > enters the
-> > + *    PBL for the second time. DRAM setup done is indicated by a
-> > one in register
-> > + *    x0 by the trampoline
+On Mon, Aug 05, 2019 at 01:02:13PM +0200, Sascha Hauer wrote:
+> Hi Maik,
 > 
-> Why change this and add additional register state here? Checking for
-> EL2 should work fine for this.
+> On Thu, Jul 18, 2019 at 10:02:01AM +0200, Maik Otto wrote:
+> > add in the images/Makefile.imx the support of building for signed, usb
+> > signed and encrypted/signed images for NXP i.MX HABV4
+> > support for NXP i.mx6, i.mx7 and i.mx8
+> > 
+> > Signed-off-by: Maik Otto <m.otto@phytec.de>
+> > ---
+> > Changes in v3:
+> >     - nothing
+> > Changes in v2:
+> >     - was Patch 2/4 in v1
+> >     - no dynamic variable, parallel building of different image types now
+> > ---
+> >  images/Makefile.imx | 322 +++++++++++++++++++++++++++++++++++++++++++++++++++-
+> >  1 file changed, 321 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/images/Makefile.imx b/images/Makefile.imx
+> > index 9a7187a..9c70703 100644
+> > --- a/images/Makefile.imx
+> > +++ b/images/Makefile.imx
+> > @@ -147,216 +147,388 @@ pblb-$(CONFIG_MACH_REALQ7) += start_imx6_realq7
+> >  CFG_start_imx6_realq7.pblb.imximg = $(board)/datamodul-edm-qmx6/flash-header.imxcfg
+> >  FILE_barebox-datamodul-edm-qmx6.img = start_imx6_realq7.pblb.imximg
+> >  image-$(CONFIG_MACH_REALQ7) += barebox-datamodul-edm-qmx6.img
+> > +FILE_barebox-datamodul-edm-qmx6-s.img = start_imx6_realq7.pblb.simximg
+> > +FILE_barebox-datamodul-edm-qmx6-us.img = start_imx6_realq7.pblb.usimximg
+> > +FILE_barebox-datamodul-edm-qmx6-es.img = start_imx6_realq7.pblb.esimximg
+> > +habv4image-$(CONFIG_MACH_REALQ7) += barebox-datamodul-edm-qmx6
+> 
+> This file contains way to much boilerplate already for my taste. Adding four
+> more lines for every board is not something I like to do.
+> 
+> Can we add even more magic to get rid of these additional lines?
 
-Correct, I'll gladly remove the register state and use current_el().
-This was a leftover from a previous version where the entry function
-was called after DRAM setup, but this is clearly no longer needed.
+You mean like... (untested)
 
+----------------- 8< -----------------
+# params: CONFIG symbol, entry point, board identifier string
+define build_imx_img =
+pblb-$($(1)) += $(2)
+CFG_$(2).pblb.imximg = $(board)/$(3)/flash-header.imxcfg
+FILE_barebox-$(3).img = $(2).pblb.imximg
+FILE_barebox-$(3)-s.img = $(2).pblb.simximg
+FILE_barebox-$(3)-us.img = $(2).pblb.usimximg
+FILE_barebox-$(3)-es.img = $(2).pblb.esimximg
+image-$($(1)) += barebox-$(3).img
+habv4image-$($(1)) += barebox-$(3)
+endef
 
-Regards,
-Rouven Czerwinski
+# [...]
+
+$(call build_imx_img, CONFIG_MACH_REALQ7, start_imx6_realq, datamodul-edm-qmx6)
+$(call build_imx_img, CONFIG_MACH_GUF_SANTARO, start_imx6q_guf_santaro, guf-santaro)
+$(call build_imx_img, CONFIG_MACH_GK802, start_imx6_gk802, gk802)
+$(call build_imx_img, CONFIG_MACH_TQMA6X, start_imx6dl_mba6x, tqma6x)
+# [...]
+----------------- >8 -----------------
+
+We could also go further and only use the "board identifier" to
+determine the CONFIG_MACH_* symbol and the name of the entry point, but
+this would probably mean refactoring a lot of board code to conform to
+the new scheme. Also I'm not sure whether we can just build *-us.img and
+habv4image-$(CONFIG_*) unconditionally for every board. This looks like
+another documentation patch opportunity...  :-)
+
+But the result seems much more readable to me.
+
+ - Roland
+
 -- 
-Pengutronix e.K.                           |            		 |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
+Roland Hieber                     | r.hieber@pengutronix.de     |
+Pengutronix e.K.                  | https://www.pengutronix.de/ |
+Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
