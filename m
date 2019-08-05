@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hubiD-00081r-B3
- for barebox@lists.infradead.org; Mon, 05 Aug 2019 12:03:38 +0000
-Date: Mon, 5 Aug 2019 14:03:31 +0200
+ id 1hubj0-00082K-1p
+ for barebox@lists.infradead.org; Mon, 05 Aug 2019 12:04:26 +0000
+Date: Mon, 5 Aug 2019 14:04:24 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190805120331.dja5ianbjbimz3ae@pengutronix.de>
-References: <164e2a4e2f68170800cf463853dc815848f9a9e5.1564761760.git.jan.kundrat@cesnet.cz>
+Message-ID: <20190805120424.mtzien2r5ye4wzq2@pengutronix.de>
+References: <20190803173358.9209-1-ahmad@a3f.at>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <164e2a4e2f68170800cf463853dc815848f9a9e5.1564761760.git.jan.kundrat@cesnet.cz>
+In-Reply-To: <20190803173358.9209-1-ahmad@a3f.at>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,29 +18,28 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] docs: Use a proper name for AM335x defconfig
-To: Jan =?iso-8859-15?Q?Kundr=E1t?= <jan.kundrat@cesnet.cz>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] fixup! Documentation: boards: add initial STM32MP
+ documentation
+To: Ahmad Fatoum <ahmad@a3f.at>
+Cc: barebox@lists.infradead.org, afa@pengutronix.de, rhi@pengutronix.de
 
-On Fri, Aug 02, 2019 at 04:12:59PM +0200, Jan Kundr=E1t wrote:
-> Fixes: 3067cd85d ("ARM: omap: am33xx_defconfig: Enable more boards and re=
-name")
-> Signed-off-by: Jan Kundr=E1t <jan.kundrat@cesnet.cz>
+On Sat, Aug 03, 2019 at 07:33:58PM +0200, Ahmad Fatoum wrote:
+> Left-over line spotted by Roland. The boards are listed in the section
+> following this.
 > ---
->  Documentation/boards/am335x.rst            | 2 +-
->  Documentation/boards/am335x/phytec-som.rst | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
+>  Documentation/boards/stm32mp.rst | 2 --
+>  1 file changed, 2 deletions(-)
 
 Applied, thanks
 
 Sascha
 
--- =
 
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
