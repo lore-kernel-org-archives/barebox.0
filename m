@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([78.46.208.201])
- by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1huZDv-00043W-L7
- for barebox@lists.infradead.org; Mon, 05 Aug 2019 09:24:13 +0000
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Mon,  5 Aug 2019 11:23:41 +0200
-Message-Id: <03ea3dc20571d075cee01127c189e4db4e2a36f9.1564997015.git-series.r.czerwinski@pengutronix.de>
-In-Reply-To: <cover.b9d503ab98014278972f6bd84931035a5ef27967.1564997015.git-series.r.czerwinski@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
+ id 1hubqr-0002UL-6k
+ for barebox@lists.infradead.org; Mon, 05 Aug 2019 12:12:35 +0000
+Message-ID: <1565007134.2323.9.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Mon, 05 Aug 2019 14:12:14 +0200
+In-Reply-To: <03ea3dc20571d075cee01127c189e4db4e2a36f9.1564997015.git-series.r.czerwinski@pengutronix.de>
 References: <cover.b9d503ab98014278972f6bd84931035a5ef27967.1564997015.git-series.r.czerwinski@pengutronix.de>
-MIME-Version: 1.0
+ <03ea3dc20571d075cee01127c189e4db4e2a36f9.1564997015.git-series.r.czerwinski@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,184 +18,112 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 02/16] i.MX: HABv4: implement interface for i.MX8MQ
-To: barebox@lists.infradead.org
-Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Subject: Re: [PATCH v2 02/16] i.MX: HABv4: implement interface for i.MX8MQ
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>, barebox@lists.infradead.org
 
-The HAB interface for i.MX8MQ only implements the retrieval of status
-and events. The SoC status is retrieved using the TF-A SIP API found in
-the downstream imx TF-A. After calling into the TF-A the passed data
-structures need to be invalidated, since otherwise the cached zero value
-is used.
-Currently the TF-A report event call only supports FAILURE events.
-Testing the TF-A with other event types resulted in a freeze in the
-bootrom code, which was not investigated further.
-We instead walk the memory containing the events and retrieve the events
-ourselves. They are exposed using the same API.
-
-Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
----
- drivers/hab/hab.c   |   2 +-
- drivers/hab/habv4.c | 109 +++++++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 110 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/hab/hab.c b/drivers/hab/hab.c
-index 03bb65e..a346e01 100644
---- a/drivers/hab/hab.c
-+++ b/drivers/hab/hab.c
-@@ -217,7 +217,7 @@ static struct imx_hab_ops *imx_get_hab_ops(void)
- 
- 	if (IS_ENABLED(CONFIG_HABV3) && (cpu_is_mx25() || cpu_is_mx35()))
- 		tmp = &imx_hab_ops_iim;
--	else if (IS_ENABLED(CONFIG_HABV4) && cpu_is_mx6())
-+	else if (IS_ENABLED(CONFIG_HABV4) && (cpu_is_mx6() || cpu_is_mx8mq()))
- 		tmp = &imx_hab_ops_ocotp;
- 	else
- 		return NULL;
-diff --git a/drivers/hab/habv4.c b/drivers/hab/habv4.c
-index b11cf7b..0bfd652 100644
---- a/drivers/hab/habv4.c
-+++ b/drivers/hab/habv4.c
-@@ -22,8 +22,11 @@
- #include <hab.h>
- #include <init.h>
- #include <types.h>
-+#include <linux/arm-smccc.h>
-+#include <asm/cache.h>
- 
- #include <mach/generic.h>
-+#include <mach/imx8mq.h>
- 
- #define HABV4_RVT_IMX28 0xffff8af8
- #define HABV4_RVT_IMX6_OLD 0x00000094
-@@ -177,6 +180,85 @@ struct habv4_rvt {
- 	void (*failsafe)(void);
- } __packed;
- 
-+#define FSL_SIP_HAB             0xC2000007
-+#define FSL_SIP_HAB_AUTHENTICATE        0x00
-+#define FSL_SIP_HAB_ENTRY               0x01
-+#define FSL_SIP_HAB_EXIT                0x02
-+#define FSL_SIP_HAB_REPORT_EVENT        0x03
-+#define FSL_SIP_HAB_REPORT_STATUS       0x04
-+#define FSL_SIP_HAB_FAILSAFE            0x05
-+#define FSL_SIP_HAB_CHECK_TARGET        0x06
-+
-+static enum hab_status hab_sip_report_status(enum hab_config *config,
-+					     enum hab_state *state)
-+{
-+	struct arm_smccc_res res;
-+
-+	arm_smccc_smc(FSL_SIP_HAB, FSL_SIP_HAB_REPORT_STATUS,
-+		      (unsigned long) config,
-+		      (unsigned long) state, 0, 0, 0, 0, &res);
-+	if (state)
-+		v8_inv_dcache_range((unsigned long) state,
-+				    (unsigned long)state + sizeof(*config));
-+	if (config)
-+		v8_inv_dcache_range((unsigned long) config,
-+				    (unsigned long)config + sizeof(*state));
-+	return (enum hab_status)res.a0;
-+}
-+
-+static enum hab_status imx8_read_sram_events(enum hab_status status,
-+					     uint32_t index, void *event,
-+					     uint32_t *bytes)
-+{
-+	struct hab_event_record *events[10];
-+	int num_events = 0;
-+	char *sram = (char *)0x9061c0;
-+	int i = 0;
-+	int internal_index = 0;
-+	char *end = 0;
-+	struct hab_event_record *search;
-+
-+	/*
-+	 * AN12263 HABv4 Guidelines and Recommendations
-+	 * recommends the address and size, however errors are usually contained
-+	 * within the first bytes. Scan only the first few bytes to rule out
-+	 * lots of false positives.
-+	 */
-+	end = sram +  0x1a0;
-+
-+	while (sram < end) {
-+		if (*sram == 0xdb) {
-+			search = (void *)sram;
-+			sram = sram + be16_to_cpu(search->hdr.len);
-+			events[num_events] = search;
-+			num_events++;
-+		} else {
-+			sram++;
-+		}
-+	}
-+	while (i < num_events) {
-+		if (events[i]->status == status) {
-+			if (internal_index == index) {
-+				*bytes = sizeof(struct hab_event_record) +
-+					be16_to_cpu(events[i]->hdr.len);
-+				if (event)
-+					memcpy(event, events[i], *bytes);
-+				return HAB_STATUS_SUCCESS;
-+			} else {
-+				internal_index++;
-+			}
-+		}
-+		i++;
-+	}
-+	return HAB_STATUS_FAILURE;
-+}
-+
-+struct habv4_rvt hab_smc_ops = {
-+	.header = { .tag = 0xdd },
-+	.report_event = imx8_read_sram_events,
-+	.report_status = hab_sip_report_status,
-+};
-+
- static const char *habv4_get_status_str(enum hab_status status)
- {
- 	switch (status) {
-@@ -509,6 +591,33 @@ int imx6_hab_get_status(void)
- 	return -EINVAL;
- }
- 
-+static int imx8_hab_get_status(void)
-+{
-+	return habv4_get_status(&hab_smc_ops);
-+}
-+
-+static int init_imx8_hab_get_status(void)
-+{
-+	if (!cpu_is_mx8mq())
-+		/* can happen in multi-image builds and is not an error */
-+		return 0;
-+
-+	/*
-+	 * Nobody will check the return value if there were HAB errors, but the
-+	 * initcall will fail spectaculously with a strange error message.
-+	 */
-+	imx8_hab_get_status();
-+
-+	return 0;
-+}
-+
-+/*
-+ *
-+ *
-+ *
-+ */
-+postmmu_initcall(init_imx8_hab_get_status);
-+
- static int init_imx6_hab_get_status(void)
- {
- 	if (!cpu_is_mx6())
--- 
-git-series 0.9.1
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QW0gTW9udGFnLCBkZW4gMDUuMDguMjAxOSwgMTE6MjMgKzAyMDAgc2NocmllYiBSb3V2ZW4gQ3pl
+cndpbnNraToKPiBUaGUgSEFCIGludGVyZmFjZSBmb3IgaS5NWDhNUSBvbmx5IGltcGxlbWVudHMg
+dGhlIHJldHJpZXZhbCBvZiBzdGF0dXMKPiBhbmQgZXZlbnRzLiBUaGUgU29DIHN0YXR1cyBpcyBy
+ZXRyaWV2ZWQgdXNpbmcgdGhlIFRGLUEgU0lQIEFQSSBmb3VuZCBpbgo+IHRoZSBkb3duc3RyZWFt
+IGlteCBURi1BLiBBZnRlciBjYWxsaW5nIGludG8gdGhlIFRGLUEgdGhlIHBhc3NlZCBkYXRhCj4g
+c3RydWN0dXJlcyBuZWVkIHRvIGJlIGludmFsaWRhdGVkLCBzaW5jZSBvdGhlcndpc2UgdGhlIGNh
+Y2hlZCB6ZXJvIHZhbHVlCj4gaXMgdXNlZC4KPiBDdXJyZW50bHkgdGhlIFRGLUEgcmVwb3J0IGV2
+ZW50IGNhbGwgb25seSBzdXBwb3J0cyBGQUlMVVJFIGV2ZW50cy4KPiBUZXN0aW5nIHRoZSBURi1B
+IHdpdGggb3RoZXIgZXZlbnQgdHlwZXMgcmVzdWx0ZWQgaW4gYSBmcmVlemUgaW4gdGhlCj4gYm9v
+dHJvbSBjb2RlLCB3aGljaCB3YXMgbm90IGludmVzdGlnYXRlZCBmdXJ0aGVyLgo+IFdlIGluc3Rl
+YWQgd2FsayB0aGUgbWVtb3J5IGNvbnRhaW5pbmcgdGhlIGV2ZW50cyBhbmQgcmV0cmlldmUgdGhl
+IGV2ZW50cwo+IG91cnNlbHZlcy4gVGhleSBhcmUgZXhwb3NlZCB1c2luZyB0aGUgc2FtZSBBUEku
+Cj4gCj4gPiBTaWduZWQtb2ZmLWJ5OiBSb3V2ZW4gQ3plcndpbnNraSA8ci5jemVyd2luc2tpQHBl
+bmd1dHJvbml4LmRlPgo+IC0tLQo+IMKgZHJpdmVycy9oYWIvaGFiLmPCoMKgwqB8wqDCoMKgMiAr
+LQo+IMKgZHJpdmVycy9oYWIvaGFidjQuYyB8IDEwOSArKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKystCj4gwqAyIGZpbGVzIGNoYW5nZWQsIDExMCBpbnNlcnRpb25z
+KCspLCAxIGRlbGV0aW9uKC0pCj4gCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvaGFiL2hhYi5jIGIv
+ZHJpdmVycy9oYWIvaGFiLmMKPiBpbmRleCAwM2JiNjVlLi5hMzQ2ZTAxIDEwMDY0NAo+IC0tLSBh
+L2RyaXZlcnMvaGFiL2hhYi5jCj4gKysrIGIvZHJpdmVycy9oYWIvaGFiLmMKPiBAQCAtMjE3LDcg
+KzIxNyw3IEBAIHN0YXRpYyBzdHJ1Y3QgaW14X2hhYl9vcHMgKmlteF9nZXRfaGFiX29wcyh2b2lk
+KQo+IMKgCj4gPiDCoAlpZiAoSVNfRU5BQkxFRChDT05GSUdfSEFCVjMpICYmIChjcHVfaXNfbXgy
+NSgpIHx8IGNwdV9pc19teDM1KCkpKQo+ID4gwqAJCXRtcCA9ICZpbXhfaGFiX29wc19paW07Cj4g
+PiAtCWVsc2UgaWYgKElTX0VOQUJMRUQoQ09ORklHX0hBQlY0KSAmJiBjcHVfaXNfbXg2KCkpCj4g
+PiArCWVsc2UgaWYgKElTX0VOQUJMRUQoQ09ORklHX0hBQlY0KSAmJiAoY3B1X2lzX214NigpIHx8
+IGNwdV9pc19teDhtcSgpKSkKPiA+IMKgCQl0bXAgPSAmaW14X2hhYl9vcHNfb2NvdHA7Cj4gPiDC
+oAllbHNlCj4gPiDCoAkJcmV0dXJuIE5VTEw7Cj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvaGFiL2hh
+YnY0LmMgYi9kcml2ZXJzL2hhYi9oYWJ2NC5jCj4gaW5kZXggYjExY2Y3Yi4uMGJmZDY1MiAxMDA2
+NDQKPiAtLS0gYS9kcml2ZXJzL2hhYi9oYWJ2NC5jCj4gKysrIGIvZHJpdmVycy9oYWIvaGFidjQu
+Ywo+IEBAIC0yMiw4ICsyMiwxMSBAQAo+IMKgI2luY2x1ZGUgPGhhYi5oPgo+IMKgI2luY2x1ZGUg
+PGluaXQuaD4KPiDCoCNpbmNsdWRlIDx0eXBlcy5oPgo+ICsjaW5jbHVkZSA8bGludXgvYXJtLXNt
+Y2NjLmg+Cj4gKyNpbmNsdWRlIDxhc20vY2FjaGUuaD4KPiDCoAo+IMKgI2luY2x1ZGUgPG1hY2gv
+Z2VuZXJpYy5oPgo+ICsjaW5jbHVkZSA8bWFjaC9pbXg4bXEuaD4KPiDCoAo+IMKgI2RlZmluZSBI
+QUJWNF9SVlRfSU1YMjggMHhmZmZmOGFmOAo+IMKgI2RlZmluZSBIQUJWNF9SVlRfSU1YNl9PTEQg
+MHgwMDAwMDA5NAo+IEBAIC0xNzcsNiArMTgwLDg1IEBAIHN0cnVjdCBoYWJ2NF9ydnQgewo+ID4g
+wqAJdm9pZCAoKmZhaWxzYWZlKSh2b2lkKTsKPiDCoH0gX19wYWNrZWQ7Cj4gwqAKPiArI2RlZmlu
+ZSBGU0xfU0lQX0hBQsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgMHhDMjAwMDAwNwo+ICsjZGVm
+aW5lIEZTTF9TSVBfSEFCX0FVVEhFTlRJQ0FURcKgwqDCoMKgwqDCoMKgwqAweDAwCj4gKyNkZWZp
+bmUgRlNMX1NJUF9IQUJfRU5UUlnCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAweDAxCj4g
+KyNkZWZpbmUgRlNMX1NJUF9IQUJfRVhJVMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+MHgwMgo+ICsjZGVmaW5lIEZTTF9TSVBfSEFCX1JFUE9SVF9FVkVOVMKgwqDCoMKgwqDCoMKgwqAw
+eDAzCj4gKyNkZWZpbmUgRlNMX1NJUF9IQUJfUkVQT1JUX1NUQVRVU8KgwqDCoMKgwqDCoMKgMHgw
+NAo+ICsjZGVmaW5lIEZTTF9TSVBfSEFCX0ZBSUxTQUZFwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+MHgwNQo+ICsjZGVmaW5lIEZTTF9TSVBfSEFCX0NIRUNLX1RBUkdFVMKgwqDCoMKgwqDCoMKgwqAw
+eDA2Cj4gKwo+ICtzdGF0aWMgZW51bSBoYWJfc3RhdHVzIGhhYl9zaXBfcmVwb3J0X3N0YXR1cyhl
+bnVtIGhhYl9jb25maWcgKmNvbmZpZywKPiA+ICsJCQkJCcKgwqDCoMKgwqBlbnVtIGhhYl9zdGF0
+ZSAqc3RhdGUpCj4gK3sKPiA+ICsJc3RydWN0IGFybV9zbWNjY19yZXMgcmVzOwo+ICsKPiA+ICsJ
+YXJtX3NtY2NjX3NtYyhGU0xfU0lQX0hBQiwgRlNMX1NJUF9IQUJfUkVQT1JUX1NUQVRVUywKPiA+
+ICsJCcKgwqDCoMKgwqDCoCh1bnNpZ25lZCBsb25nKSBjb25maWcsCj4gPiArCQnCoMKgwqDCoMKg
+wqAodW5zaWduZWQgbG9uZykgc3RhdGUsIDAsIDAsIDAsIDAsICZyZXMpOwo+ID4gKwlpZiAoc3Rh
+dGUpCj4gPiArCQl2OF9pbnZfZGNhY2hlX3JhbmdlKCh1bnNpZ25lZCBsb25nKSBzdGF0ZSwKPiA+
+ICsJCQkJwqDCoMKgwqAodW5zaWduZWQgbG9uZylzdGF0ZSArIHNpemVvZigqY29uZmlnKSk7Cj4g
+PiArCWlmIChjb25maWcpCj4gPiArCQl2OF9pbnZfZGNhY2hlX3JhbmdlKCh1bnNpZ25lZCBsb25n
+KSBjb25maWcsCj4gKwkJCQnCoMKgwqDCoCh1bnNpZ25lZCBsb25nKWNvbmZpZyArIHNpemVvZigq
+c3RhdGUpKTsKClRoYXQncyBkYW5nZXJvdXMuIENhbiB5b3UgYmUgc3VyZSB0aGF0IGJvdGggY29u
+ZmlnIGFuZCBzdGF0ZSBwb2ludGVycywKYXMgd2VsbCBhcyBzdHJ1Y3Qgc2l6ZSBpcyBhbGlnbmVk
+IHRvIGEgY2FjaGVsaW5lIGJvdW5kYXJ5PyBPdGhlcndpc2UKeW91IGNvdWxkIGRlc3Ryb3kgdmFs
+aWQgZGlydHkgZGF0YSBoZXJlLgoKUmVnYXJkcywKTHVjYXMKCj4gKwlyZXR1cm4gKGVudW0gaGFi
+X3N0YXR1cylyZXMuYTA7Cj4gK30KPiArCj4gK3N0YXRpYyBlbnVtIGhhYl9zdGF0dXMgaW14OF9y
+ZWFkX3NyYW1fZXZlbnRzKGVudW0gaGFiX3N0YXR1cyBzdGF0dXMsCj4gPiArCQkJCQnCoMKgwqDC
+oMKgdWludDMyX3QgaW5kZXgsIHZvaWQgKmV2ZW50LAo+ID4gKwkJCQkJwqDCoMKgwqDCoHVpbnQz
+Ml90ICpieXRlcykKPiArewo+ID4gKwlzdHJ1Y3QgaGFiX2V2ZW50X3JlY29yZCAqZXZlbnRzWzEw
+XTsKPiA+ICsJaW50IG51bV9ldmVudHMgPSAwOwo+ID4gKwljaGFyICpzcmFtID0gKGNoYXIgKikw
+eDkwNjFjMDsKPiA+ICsJaW50IGkgPSAwOwo+ID4gKwlpbnQgaW50ZXJuYWxfaW5kZXggPSAwOwo+
+ID4gKwljaGFyICplbmQgPSAwOwo+ID4gKwlzdHJ1Y3QgaGFiX2V2ZW50X3JlY29yZCAqc2VhcmNo
+Owo+ICsKPiA+ICsJLyoKPiA+ICsJwqAqIEFOMTIyNjMgSEFCdjQgR3VpZGVsaW5lcyBhbmQgUmVj
+b21tZW5kYXRpb25zCj4gPiArCcKgKiByZWNvbW1lbmRzIHRoZSBhZGRyZXNzIGFuZCBzaXplLCBo
+b3dldmVyIGVycm9ycyBhcmUgdXN1YWxseSBjb250YWluZWQKPiA+ICsJwqAqIHdpdGhpbiB0aGUg
+Zmlyc3QgYnl0ZXMuIFNjYW4gb25seSB0aGUgZmlyc3QgZmV3IGJ5dGVzIHRvIHJ1bGUgb3V0Cj4g
+PiArCcKgKiBsb3RzIG9mIGZhbHNlIHBvc2l0aXZlcy4KPiA+ICsJwqAqLwo+ID4gKwllbmQgPSBz
+cmFtICvCoMKgMHgxYTA7Cj4gKwo+ID4gKwl3aGlsZSAoc3JhbSA8IGVuZCkgewo+ID4gKwkJaWYg
+KCpzcmFtID09IDB4ZGIpIHsKPiA+ICsJCQlzZWFyY2ggPSAodm9pZCAqKXNyYW07Cj4gPiArCQkJ
+c3JhbSA9IHNyYW0gKyBiZTE2X3RvX2NwdShzZWFyY2gtPmhkci5sZW4pOwo+ID4gKwkJCWV2ZW50
+c1tudW1fZXZlbnRzXSA9IHNlYXJjaDsKPiA+ICsJCQludW1fZXZlbnRzKys7Cj4gPiArCQl9IGVs
+c2Ugewo+ID4gKwkJCXNyYW0rKzsKPiA+ICsJCX0KPiA+ICsJfQo+ID4gKwl3aGlsZSAoaSA8IG51
+bV9ldmVudHMpIHsKPiA+ICsJCWlmIChldmVudHNbaV0tPnN0YXR1cyA9PSBzdGF0dXMpIHsKPiA+
+ICsJCQlpZiAoaW50ZXJuYWxfaW5kZXggPT0gaW5kZXgpIHsKPiA+ICsJCQkJKmJ5dGVzID0gc2l6
+ZW9mKHN0cnVjdCBoYWJfZXZlbnRfcmVjb3JkKSArCj4gPiArCQkJCQliZTE2X3RvX2NwdShldmVu
+dHNbaV0tPmhkci5sZW4pOwo+ID4gKwkJCQlpZiAoZXZlbnQpCj4gPiArCQkJCQltZW1jcHkoZXZl
+bnQsIGV2ZW50c1tpXSwgKmJ5dGVzKTsKPiA+ICsJCQkJcmV0dXJuIEhBQl9TVEFUVVNfU1VDQ0VT
+UzsKPiA+ICsJCQl9IGVsc2Ugewo+ID4gKwkJCQlpbnRlcm5hbF9pbmRleCsrOwo+ID4gKwkJCX0K
+PiA+ICsJCX0KPiA+ICsJCWkrKzsKPiA+ICsJfQo+ID4gKwlyZXR1cm4gSEFCX1NUQVRVU19GQUlM
+VVJFOwo+ICt9Cj4gKwo+ICtzdHJ1Y3QgaGFidjRfcnZ0IGhhYl9zbWNfb3BzID0gewo+ID4gKwku
+aGVhZGVyID0geyAudGFnID0gMHhkZCB9LAo+ID4gKwkucmVwb3J0X2V2ZW50ID0gaW14OF9yZWFk
+X3NyYW1fZXZlbnRzLAo+ID4gKwkucmVwb3J0X3N0YXR1cyA9IGhhYl9zaXBfcmVwb3J0X3N0YXR1
+cywKPiArfTsKPiArCj4gwqBzdGF0aWMgY29uc3QgY2hhciAqaGFidjRfZ2V0X3N0YXR1c19zdHIo
+ZW51bSBoYWJfc3RhdHVzIHN0YXR1cykKPiDCoHsKPiA+IMKgCXN3aXRjaCAoc3RhdHVzKSB7Cj4g
+QEAgLTUwOSw2ICs1OTEsMzMgQEAgaW50IGlteDZfaGFiX2dldF9zdGF0dXModm9pZCkKPiA+IMKg
+CXJldHVybiAtRUlOVkFMOwo+IMKgfQo+IMKgCj4gK3N0YXRpYyBpbnQgaW14OF9oYWJfZ2V0X3N0
+YXR1cyh2b2lkKQo+ICt7Cj4gPiArCXJldHVybiBoYWJ2NF9nZXRfc3RhdHVzKCZoYWJfc21jX29w
+cyk7Cj4gK30KPiArCj4gK3N0YXRpYyBpbnQgaW5pdF9pbXg4X2hhYl9nZXRfc3RhdHVzKHZvaWQp
+Cj4gK3sKPiA+ICsJaWYgKCFjcHVfaXNfbXg4bXEoKSkKPiA+ICsJCS8qIGNhbiBoYXBwZW4gaW4g
+bXVsdGktaW1hZ2UgYnVpbGRzIGFuZCBpcyBub3QgYW4gZXJyb3IgKi8KPiA+ICsJCXJldHVybiAw
+Owo+ICsKPiA+ICsJLyoKPiA+ICsJwqAqIE5vYm9keSB3aWxsIGNoZWNrIHRoZSByZXR1cm4gdmFs
+dWUgaWYgdGhlcmUgd2VyZSBIQUIgZXJyb3JzLCBidXQgdGhlCj4gPiArCcKgKiBpbml0Y2FsbCB3
+aWxsIGZhaWwgc3BlY3RhY3Vsb3VzbHkgd2l0aCBhIHN0cmFuZ2UgZXJyb3IgbWVzc2FnZS4KPiA+
+ICsJwqAqLwo+ID4gKwlpbXg4X2hhYl9nZXRfc3RhdHVzKCk7Cj4gKwo+ID4gKwlyZXR1cm4gMDsK
+PiArfQo+ICsKPiArLyoKPiArICoKPiArICoKPiArICoKPiArICovCj4gK3Bvc3RtbXVfaW5pdGNh
+bGwoaW5pdF9pbXg4X2hhYl9nZXRfc3RhdHVzKTsKPiArCj4gwqBzdGF0aWMgaW50IGluaXRfaW14
+Nl9oYWJfZ2V0X3N0YXR1cyh2b2lkKQo+IMKgewo+ID4gwqAJaWYgKCFjcHVfaXNfbXg2KCkpCgpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
+aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
+ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
