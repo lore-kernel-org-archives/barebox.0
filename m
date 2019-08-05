@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([78.46.208.201])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1huZE3-0004Bi-QT
- for barebox@lists.infradead.org; Mon, 05 Aug 2019 09:24:22 +0000
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Mon,  5 Aug 2019 11:23:49 +0200
-Message-Id: <7c96c0b967c09a1ba065d464586cecd9a82b2032.1564997015.git-series.r.czerwinski@pengutronix.de>
-In-Reply-To: <cover.b9d503ab98014278972f6bd84931035a5ef27967.1564997015.git-series.r.czerwinski@pengutronix.de>
+ id 1huajU-0000bs-Kt
+ for barebox@lists.infradead.org; Mon, 05 Aug 2019 11:00:54 +0000
+Message-ID: <1565002851.2323.7.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Mon, 05 Aug 2019 13:00:51 +0200
+In-Reply-To: <7c96c0b967c09a1ba065d464586cecd9a82b2032.1564997015.git-series.r.czerwinski@pengutronix.de>
 References: <cover.b9d503ab98014278972f6bd84931035a5ef27967.1564997015.git-series.r.czerwinski@pengutronix.de>
-MIME-Version: 1.0
+ <7c96c0b967c09a1ba065d464586cecd9a82b2032.1564997015.git-series.r.czerwinski@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,213 +18,133 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 10/16] pbl: add sha256 and piggy verification to PBL
-To: barebox@lists.infradead.org
-Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Subject: Re: [PATCH v2 10/16] pbl: add sha256 and piggy verification to PBL
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>, barebox@lists.infradead.org
 
-Extract the necessary functions from sha256 into a PBL headder and add a
-verification function to the PBL. The function will be called before the
-individual architectures decompress functions is run.
-
-Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
----
- crypto/Makefile          |  2 ++
- crypto/sha2.c            | 11 +++++++----
- include/crypto/pbl-sha.h | 13 +++++++++++++
- include/pbl.h            |  2 ++
- pbl/Kconfig              |  9 +++++++++
- pbl/decomp.c             | 39 +++++++++++++++++++++++++++++++++++++++
- 6 files changed, 72 insertions(+), 4 deletions(-)
- create mode 100644 include/crypto/pbl-sha.h
-
-diff --git a/crypto/Makefile b/crypto/Makefile
-index 3402f57..d6fb74a 100644
---- a/crypto/Makefile
-+++ b/crypto/Makefile
-@@ -8,6 +8,8 @@ obj-$(CONFIG_DIGEST_MD5_GENERIC)	+= md5.o
- obj-$(CONFIG_DIGEST_SHA1_GENERIC)	+= sha1.o
- obj-$(CONFIG_DIGEST_SHA224_GENERIC)	+= sha2.o
- obj-$(CONFIG_DIGEST_SHA256_GENERIC)	+= sha2.o
-+pbl-$(CONFIG_PBL_VERIFY_PIGGY)		+= sha2.o
-+pbl-$(CONFIG_PBL_VERIFY_PIGGY)		+= digest.o
- obj-$(CONFIG_DIGEST_SHA384_GENERIC)	+= sha4.o
- obj-$(CONFIG_DIGEST_SHA512_GENERIC)	+= sha4.o
- 
-diff --git a/crypto/sha2.c b/crypto/sha2.c
-index c62ddb8..3947a09 100644
---- a/crypto/sha2.c
-+++ b/crypto/sha2.c
-@@ -27,6 +27,7 @@
- 
- #include <crypto/sha.h>
- #include <crypto/internal.h>
-+#include <crypto/pbl-sha.h>
- 
- static inline u32 Ch(u32 x, u32 y, u32 z)
- {
-@@ -232,7 +233,7 @@ static int sha224_init(struct digest *desc)
- 	return 0;
- }
- 
--static int sha256_init(struct digest *desc)
-+int sha256_init(struct digest *desc)
- {
- 	struct sha256_state *sctx = digest_ctx(desc);
- 	sctx->state[0] = SHA256_H0;
-@@ -248,7 +249,7 @@ static int sha256_init(struct digest *desc)
- 	return 0;
- }
- 
--static int sha256_update(struct digest *desc, const void *data,
-+int sha256_update(struct digest *desc, const void *data,
- 				unsigned long len)
- {
- 	struct sha256_state *sctx = digest_ctx(desc);
-@@ -280,7 +281,7 @@ static int sha256_update(struct digest *desc, const void *data,
- 	return 0;
- }
- 
--static int sha256_final(struct digest *desc, u8 *out)
-+int sha256_final(struct digest *desc, u8 *out)
- {
- 	struct sha256_state *sctx = digest_ctx(desc);
- 	__be32 *dst = (__be32 *)out;
-@@ -348,7 +349,7 @@ static int sha224_digest_register(void)
- }
- device_initcall(sha224_digest_register);
- 
--static struct digest_algo m256 = {
-+struct digest_algo m256 = {
- 	.base = {
- 		.name		=	"sha256",
- 		.driver_name	=	"sha256-generic",
-@@ -365,6 +366,7 @@ static struct digest_algo m256 = {
- 	.ctx_length	= sizeof(struct sha256_state),
- };
- 
-+#ifndef __PBL__
- static int sha256_digest_register(void)
- {
- 	if (!IS_ENABLED(CONFIG_SHA256))
-@@ -373,3 +375,4 @@ static int sha256_digest_register(void)
- 	return digest_algo_register(&m256);
- }
- coredevice_initcall(sha256_digest_register);
-+#endif /* __PBL__ */
-diff --git a/include/crypto/pbl-sha.h b/include/crypto/pbl-sha.h
-new file mode 100644
-index 0000000..7d323ab
---- /dev/null
-+++ b/include/crypto/pbl-sha.h
-@@ -0,0 +1,13 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __PBL_SHA_H_
-+
-+#define __PBL_SHA_H_
-+
-+#include <digest.h>
-+#include <types.h>
-+
-+int sha256_init(struct digest *desc);
-+int sha256_update(struct digest *desc, const void *data, unsigned long len);
-+int sha256_final(struct digest *desc, u8 *out);
-+
-+#endif /* __PBL-SHA_H_ */
-diff --git a/include/pbl.h b/include/pbl.h
-index 787bd82..1917a76 100644
---- a/include/pbl.h
-+++ b/include/pbl.h
-@@ -11,6 +11,8 @@ extern unsigned long free_mem_ptr;
- extern unsigned long free_mem_end_ptr;
- 
- void pbl_barebox_uncompress(void *dest, void *compressed_start, unsigned int len);
-+int pbl_barebox_verify(void *compressed_start, unsigned int len, void *hash,
-+		       unsigned int hash_len);
- 
- #ifdef __PBL__
- #define IN_PBL	1
-diff --git a/pbl/Kconfig b/pbl/Kconfig
-index f2250dd..38f1003 100644
---- a/pbl/Kconfig
-+++ b/pbl/Kconfig
-@@ -44,6 +44,15 @@ config PBL_RELOCATABLE
- 	  This option only inflluences the PBL image. See RELOCATABLE to also make
- 	  the real image relocatable.
- 
-+config PBL_VERIFY_PIGGY
-+	depends on ARM
-+	bool "Verify piggydata"
-+	help
-+	  Use a PBL builtin sha256sum to verify the piggydata before decompression.
-+	  WARNING: your board will not boot if a mismatch is detected, enable DEBUG_LL
-+	  to see the builtin and calculated hash.
-+	  This effectively locks a given PBL to the matching main barebox.
-+
- config IMAGE_COMPRESSION
- 	bool
- 	depends on HAVE_IMAGE_COMPRESSION
-diff --git a/pbl/decomp.c b/pbl/decomp.c
-index 72a1623..ef713a6 100644
---- a/pbl/decomp.c
-+++ b/pbl/decomp.c
-@@ -6,6 +6,10 @@
-  */
- 
- #include <common.h>
-+#include <crypto/sha.h>
-+#include <crypto/pbl-sha.h>
-+#include <digest.h>
-+#include <asm/sections.h>
- #include <pbl.h>
- #include <debug_ll.h>
- 
-@@ -54,3 +58,38 @@ void pbl_barebox_uncompress(void *dest, void *compressed_start, unsigned int len
- 			NULL, NULL,
- 			dest, NULL, errorfn);
- }
-+
-+int pbl_barebox_verify(void *compressed_start, unsigned int len, void *hash,
-+		       unsigned int hash_len)
-+{
-+	struct sha256_state sha_state = { 0 };
-+	struct digest d = { .ctx = &sha_state };
-+	char computed_hash[SHA256_DIGEST_SIZE];
-+	int i;
-+	char *char_hash = hash;
-+
-+	if (hash_len != SHA256_DIGEST_SIZE)
-+		return -1;
-+
-+	sha256_init(&d);
-+	sha256_update(&d, compressed_start, len);
-+	sha256_final(&d, computed_hash);
-+	if (IS_ENABLED(CONFIG_DEBUG_LL)) {
-+		putc_ll('C');
-+		putc_ll('H');
-+		putc_ll('\n');
-+		for (i = 0; i < SHA256_DIGEST_SIZE; i++) {
-+			puthex_ll(computed_hash[i]);
-+			putc_ll('\n');
-+		}
-+		putc_ll('I');
-+		putc_ll('H');
-+		putc_ll('\n');
-+		for (i = 0; i < SHA256_DIGEST_SIZE; i++) {
-+			puthex_ll(char_hash[i]);
-+			putc_ll('\n');
-+		}
-+	}
-+
-+	return memcmp(hash, computed_hash, SHA256_DIGEST_SIZE);
-+}
--- 
-git-series 0.9.1
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QW0gTW9udGFnLCBkZW4gMDUuMDguMjAxOSwgMTE6MjMgKzAyMDAgc2NocmllYiBSb3V2ZW4gQ3pl
+cndpbnNraToKPiBFeHRyYWN0IHRoZSBuZWNlc3NhcnkgZnVuY3Rpb25zIGZyb20gc2hhMjU2IGlu
+dG8gYSBQQkwgaGVhZGRlciBhbmQgYWRkIGEKPiB2ZXJpZmljYXRpb24gZnVuY3Rpb24gdG8gdGhl
+IFBCTC4gVGhlIGZ1bmN0aW9uIHdpbGwgYmUgY2FsbGVkIGJlZm9yZSB0aGUKPiBpbmRpdmlkdWFs
+IGFyY2hpdGVjdHVyZXMgZGVjb21wcmVzcyBmdW5jdGlvbnMgaXMgcnVuLgo+IAo+ID4gU2lnbmVk
+LW9mZi1ieTogUm91dmVuIEN6ZXJ3aW5za2kgPHIuY3plcndpbnNraUBwZW5ndXRyb25peC5kZT4K
+PiAtLS0KPiDCoGNyeXB0by9NYWtlZmlsZcKgwqDCoMKgwqDCoMKgwqDCoMKgfMKgwqAyICsrCj4g
+wqBjcnlwdG8vc2hhMi5jwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfCAxMSArKysrKysrLS0tLQo+
+IMKgaW5jbHVkZS9jcnlwdG8vcGJsLXNoYS5oIHwgMTMgKysrKysrKysrKysrKwo+IMKgaW5jbHVk
+ZS9wYmwuaMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHzCoMKgMiArKwo+IMKgcGJsL0tjb25maWfC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfMKgwqA5ICsrKysrKysrKwo+IMKgcGJsL2RlY29t
+cC5jwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB8IDM5ICsrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKwo+IMKgNiBmaWxlcyBjaGFuZ2VkLCA3MiBpbnNlcnRpb25zKCspLCA0
+IGRlbGV0aW9ucygtKQo+IMKgY3JlYXRlIG1vZGUgMTAwNjQ0IGluY2x1ZGUvY3J5cHRvL3BibC1z
+aGEuaAo+IAo+IGRpZmYgLS1naXQgYS9jcnlwdG8vTWFrZWZpbGUgYi9jcnlwdG8vTWFrZWZpbGUK
+PiBpbmRleCAzNDAyZjU3Li5kNmZiNzRhIDEwMDY0NAo+IC0tLSBhL2NyeXB0by9NYWtlZmlsZQo+
+ICsrKyBiL2NyeXB0by9NYWtlZmlsZQo+ID4gQEAgLTgsNiArOCw4IEBAIG9iai0kKENPTkZJR19E
+SUdFU1RfTUQ1X0dFTkVSSUMpCSs9IG1kNS5vCj4gPiDCoG9iai0kKENPTkZJR19ESUdFU1RfU0hB
+MV9HRU5FUklDKQkrPSBzaGExLm8KPiA+IMKgb2JqLSQoQ09ORklHX0RJR0VTVF9TSEEyMjRfR0VO
+RVJJQykJKz0gc2hhMi5vCj4gPiDCoG9iai0kKENPTkZJR19ESUdFU1RfU0hBMjU2X0dFTkVSSUMp
+CSs9IHNoYTIubwo+ID4gK3BibC0kKENPTkZJR19QQkxfVkVSSUZZX1BJR0dZKQkJKz0gc2hhMi5v
+Cj4gPiArcGJsLSQoQ09ORklHX1BCTF9WRVJJRllfUElHR1kpCQkrPSBkaWdlc3Qubwo+ID4gwqBv
+YmotJChDT05GSUdfRElHRVNUX1NIQTM4NF9HRU5FUklDKQkrPSBzaGE0Lm8KPiA+IMKgb2JqLSQo
+Q09ORklHX0RJR0VTVF9TSEE1MTJfR0VORVJJQykJKz0gc2hhNC5vCj4gwqAKPiBkaWZmIC0tZ2l0
+IGEvY3J5cHRvL3NoYTIuYyBiL2NyeXB0by9zaGEyLmMKPiBpbmRleCBjNjJkZGI4Li4zOTQ3YTA5
+IDEwMDY0NAo+IC0tLSBhL2NyeXB0by9zaGEyLmMKPiArKysgYi9jcnlwdG8vc2hhMi5jCj4gQEAg
+LTI3LDYgKzI3LDcgQEAKPiDCoAo+IMKgI2luY2x1ZGUgPGNyeXB0by9zaGEuaD4KPiDCoCNpbmNs
+dWRlIDxjcnlwdG8vaW50ZXJuYWwuaD4KPiArI2luY2x1ZGUgPGNyeXB0by9wYmwtc2hhLmg+Cj4g
+wqAKPiDCoHN0YXRpYyBpbmxpbmUgdTMyIENoKHUzMiB4LCB1MzIgeSwgdTMyIHopCj4gwqB7Cj4g
+QEAgLTIzMiw3ICsyMzMsNyBAQCBzdGF0aWMgaW50IHNoYTIyNF9pbml0KHN0cnVjdCBkaWdlc3Qg
+KmRlc2MpCj4gPiDCoAlyZXR1cm4gMDsKPiDCoH0KPiDCoAo+IC1zdGF0aWMgaW50IHNoYTI1Nl9p
+bml0KHN0cnVjdCBkaWdlc3QgKmRlc2MpCj4gK2ludCBzaGEyNTZfaW5pdChzdHJ1Y3QgZGlnZXN0
+ICpkZXNjKQo+IMKgewo+ID4gwqAJc3RydWN0IHNoYTI1Nl9zdGF0ZSAqc2N0eCA9IGRpZ2VzdF9j
+dHgoZGVzYyk7Cj4gPiDCoAlzY3R4LT5zdGF0ZVswXSA9IFNIQTI1Nl9IMDsKPiBAQCAtMjQ4LDcg
+KzI0OSw3IEBAIHN0YXRpYyBpbnQgc2hhMjU2X2luaXQoc3RydWN0IGRpZ2VzdCAqZGVzYykKPiA+
+IMKgCXJldHVybiAwOwo+IMKgfQo+IMKgCj4gLXN0YXRpYyBpbnQgc2hhMjU2X3VwZGF0ZShzdHJ1
+Y3QgZGlnZXN0ICpkZXNjLCBjb25zdCB2b2lkICpkYXRhLAo+ICtpbnQgc2hhMjU2X3VwZGF0ZShz
+dHJ1Y3QgZGlnZXN0ICpkZXNjLCBjb25zdCB2b2lkICpkYXRhLAo+ID4gwqAJCQkJdW5zaWduZWQg
+bG9uZyBsZW4pCj4gwqB7Cj4gPiDCoAlzdHJ1Y3Qgc2hhMjU2X3N0YXRlICpzY3R4ID0gZGlnZXN0
+X2N0eChkZXNjKTsKPiBAQCAtMjgwLDcgKzI4MSw3IEBAIHN0YXRpYyBpbnQgc2hhMjU2X3VwZGF0
+ZShzdHJ1Y3QgZGlnZXN0ICpkZXNjLCBjb25zdCB2b2lkICpkYXRhLAo+ID4gwqAJcmV0dXJuIDA7
+Cj4gwqB9Cj4gwqAKPiAtc3RhdGljIGludCBzaGEyNTZfZmluYWwoc3RydWN0IGRpZ2VzdCAqZGVz
+YywgdTggKm91dCkKPiAraW50IHNoYTI1Nl9maW5hbChzdHJ1Y3QgZGlnZXN0ICpkZXNjLCB1OCAq
+b3V0KQo+IMKgewo+ID4gwqAJc3RydWN0IHNoYTI1Nl9zdGF0ZSAqc2N0eCA9IGRpZ2VzdF9jdHgo
+ZGVzYyk7Cj4gPiDCoAlfX2JlMzIgKmRzdCA9IChfX2JlMzIgKilvdXQ7Cj4gQEAgLTM0OCw3ICsz
+NDksNyBAQCBzdGF0aWMgaW50IHNoYTIyNF9kaWdlc3RfcmVnaXN0ZXIodm9pZCkKPiDCoH0KPiDC
+oGRldmljZV9pbml0Y2FsbChzaGEyMjRfZGlnZXN0X3JlZ2lzdGVyKTsKPiDCoAo+IC1zdGF0aWMg
+c3RydWN0IGRpZ2VzdF9hbGdvIG0yNTYgPSB7Cj4gK3N0cnVjdCBkaWdlc3RfYWxnbyBtMjU2ID0g
+ewo+ID4gwqAJLmJhc2UgPSB7Cj4gPiA+ID4gwqAJCS5uYW1lCQk9CSJzaGEyNTYiLAo+ID4gPiA+
+IMKgCQkuZHJpdmVyX25hbWUJPQkic2hhMjU2LWdlbmVyaWMiLAo+IEBAIC0zNjUsNiArMzY2LDcg
+QEAgc3RhdGljIHN0cnVjdCBkaWdlc3RfYWxnbyBtMjU2ID0gewo+ID4gPiDCoAkuY3R4X2xlbmd0
+aAk9IHNpemVvZihzdHJ1Y3Qgc2hhMjU2X3N0YXRlKSwKPiDCoH07Cj4gwqAKPiArI2lmbmRlZiBf
+X1BCTF9fCj4gwqBzdGF0aWMgaW50IHNoYTI1Nl9kaWdlc3RfcmVnaXN0ZXIodm9pZCkKPiDCoHsK
+PiA+IMKgCWlmICghSVNfRU5BQkxFRChDT05GSUdfU0hBMjU2KSkKPiBAQCAtMzczLDMgKzM3NSw0
+IEBAIHN0YXRpYyBpbnQgc2hhMjU2X2RpZ2VzdF9yZWdpc3Rlcih2b2lkKQo+ID4gwqAJcmV0dXJu
+IGRpZ2VzdF9hbGdvX3JlZ2lzdGVyKCZtMjU2KTsKPiDCoH0KPiDCoGNvcmVkZXZpY2VfaW5pdGNh
+bGwoc2hhMjU2X2RpZ2VzdF9yZWdpc3Rlcik7Cj4gKyNlbmRpZiAvKiBfX1BCTF9fICovCj4gZGlm
+ZiAtLWdpdCBhL2luY2x1ZGUvY3J5cHRvL3BibC1zaGEuaCBiL2luY2x1ZGUvY3J5cHRvL3BibC1z
+aGEuaAo+IG5ldyBmaWxlIG1vZGUgMTAwNjQ0Cj4gaW5kZXggMDAwMDAwMC4uN2QzMjNhYgo+IC0t
+LSAvZGV2L251bGwKPiArKysgYi9pbmNsdWRlL2NyeXB0by9wYmwtc2hhLmgKPiBAQCAtMCwwICsx
+LDEzIEBACj4gKy8qIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wICovCj4gKyNpZm5k
+ZWYgX19QQkxfU0hBX0hfCj4gKwo+ICsjZGVmaW5lIF9fUEJMX1NIQV9IXwo+ICsKPiArI2luY2x1
+ZGUgPGRpZ2VzdC5oPgo+ICsjaW5jbHVkZSA8dHlwZXMuaD4KPiArCj4gK2ludCBzaGEyNTZfaW5p
+dChzdHJ1Y3QgZGlnZXN0ICpkZXNjKTsKPiAraW50IHNoYTI1Nl91cGRhdGUoc3RydWN0IGRpZ2Vz
+dCAqZGVzYywgY29uc3Qgdm9pZCAqZGF0YSwgdW5zaWduZWQgbG9uZyBsZW4pOwo+ICtpbnQgc2hh
+MjU2X2ZpbmFsKHN0cnVjdCBkaWdlc3QgKmRlc2MsIHU4ICpvdXQpOwo+ICsKPiArI2VuZGlmIC8q
+IF9fUEJMLVNIQV9IXyAqLwo+IGRpZmYgLS1naXQgYS9pbmNsdWRlL3BibC5oIGIvaW5jbHVkZS9w
+YmwuaAo+IGluZGV4IDc4N2JkODIuLjE5MTdhNzYgMTAwNjQ0Cj4gLS0tIGEvaW5jbHVkZS9wYmwu
+aAo+ICsrKyBiL2luY2x1ZGUvcGJsLmgKPiBAQCAtMTEsNiArMTEsOCBAQCBleHRlcm4gdW5zaWdu
+ZWQgbG9uZyBmcmVlX21lbV9wdHI7Cj4gwqBleHRlcm4gdW5zaWduZWQgbG9uZyBmcmVlX21lbV9l
+bmRfcHRyOwo+IMKgCj4gwqB2b2lkIHBibF9iYXJlYm94X3VuY29tcHJlc3Modm9pZCAqZGVzdCwg
+dm9pZCAqY29tcHJlc3NlZF9zdGFydCwgdW5zaWduZWQgaW50IGxlbik7Cj4gK2ludCBwYmxfYmFy
+ZWJveF92ZXJpZnkodm9pZCAqY29tcHJlc3NlZF9zdGFydCwgdW5zaWduZWQgaW50IGxlbiwgdm9p
+ZCAqaGFzaCwKPiA+ICsJCcKgwqDCoMKgwqDCoMKgdW5zaWduZWQgaW50IGhhc2hfbGVuKTsKPiDC
+oAo+IMKgI2lmZGVmIF9fUEJMX18KPiA+IMKgI2RlZmluZSBJTl9QQkwJMQo+IGRpZmYgLS1naXQg
+YS9wYmwvS2NvbmZpZyBiL3BibC9LY29uZmlnCj4gaW5kZXggZjIyNTBkZC4uMzhmMTAwMyAxMDA2
+NDQKPiAtLS0gYS9wYmwvS2NvbmZpZwo+ICsrKyBiL3BibC9LY29uZmlnCj4gQEAgLTQ0LDYgKzQ0
+LDE1IEBAIGNvbmZpZyBQQkxfUkVMT0NBVEFCTEUKPiA+IMKgCcKgwqBUaGlzIG9wdGlvbiBvbmx5
+IGluZmxsdWVuY2VzIHRoZSBQQkwgaW1hZ2UuIFNlZSBSRUxPQ0FUQUJMRSB0byBhbHNvIG1ha2UK
+PiA+IMKgCcKgwqB0aGUgcmVhbCBpbWFnZSByZWxvY2F0YWJsZS4KPiDCoAo+ICtjb25maWcgUEJM
+X1ZFUklGWV9QSUdHWQo+ICsJZGVwZW5kcyBvbiBBUk0KCldoeT8gV2hhdCBleGFjdGx5IGlzIEFS
+TSBzcGVjaWZpYyBhYm91dCB0aGlzIG1lY2hhbmlzbT8KCj4gKwlib29sICJWZXJpZnkgcGlnZ3lk
+YXRhIgo+ID4gKwloZWxwCj4gPiArCcKgwqBVc2UgYSBQQkwgYnVpbHRpbiBzaGEyNTZzdW0gdG8g
+dmVyaWZ5IHRoZSBwaWdneWRhdGEgYmVmb3JlIGRlY29tcHJlc3Npb24uCj4gPiArCcKgwqBXQVJO
+SU5HOiB5b3VyIGJvYXJkIHdpbGwgbm90IGJvb3QgaWYgYSBtaXNtYXRjaCBpcyBkZXRlY3RlZCwg
+ZW5hYmxlIERFQlVHX0xMCj4gPiArCcKgwqB0byBzZWUgdGhlIGJ1aWx0aW4gYW5kIGNhbGN1bGF0
+ZWQgaGFzaC4KPiArCcKgwqBUaGlzIGVmZmVjdGl2ZWx5IGxvY2tzIGEgZ2l2ZW4gUEJMIHRvIHRo
+ZSBtYXRjaGluZyBtYWluIGJhcmVib3guCgpEb2VzIGl0IG1ha2Ugc2Vuc2UgdG8gaGF2ZSB0aGlz
+IGFzIGEgdXNlci12aXNpYmxlIG9wdGlvbj8gV2Ugd2FudCB0aGlzCmluIGEgdmVyeSBzcGVjaWZp
+YyB1c2UtY2FzZSwgaW4gd2hpY2ggY2FzZSBpdCdzIHNlbGVjdGVkIGFueXdheXMsIHNvCnRoZSB1
+c2VyIGNhbid0IGJyZWFrIHRoZSBzZWN1cml0eSBtb2RlbCB2aWEgYSB3cm9uZyBjb25maWd1cmF0
+aW9uLiBJCmRvbid0IHNlZSBhbnkgdXNlIGZvciBwaWdneWRhdGEgdmVyaWZpY2F0aW9uIG91dHNp
+ZGUgb2YgdGhpcyB1c2UtY2FzZS4KClJlZ2FyZHMsCkx1Y2FzCgo+ICsKPiDCoGNvbmZpZyBJTUFH
+RV9DT01QUkVTU0lPTgo+ID4gwqAJYm9vbAo+ID4gwqAJZGVwZW5kcyBvbiBIQVZFX0lNQUdFX0NP
+TVBSRVNTSU9OCj4gZGlmZiAtLWdpdCBhL3BibC9kZWNvbXAuYyBiL3BibC9kZWNvbXAuYwo+IGlu
+ZGV4IDcyYTE2MjMuLmVmNzEzYTYgMTAwNjQ0Cj4gLS0tIGEvcGJsL2RlY29tcC5jCj4gKysrIGIv
+cGJsL2RlY29tcC5jCj4gQEAgLTYsNiArNiwxMCBAQAo+IMKgICovCj4gwqAKPiDCoCNpbmNsdWRl
+IDxjb21tb24uaD4KPiArI2luY2x1ZGUgPGNyeXB0by9zaGEuaD4KPiArI2luY2x1ZGUgPGNyeXB0
+by9wYmwtc2hhLmg+Cj4gKyNpbmNsdWRlIDxkaWdlc3QuaD4KPiArI2luY2x1ZGUgPGFzbS9zZWN0
+aW9ucy5oPgo+IMKgI2luY2x1ZGUgPHBibC5oPgo+IMKgI2luY2x1ZGUgPGRlYnVnX2xsLmg+Cj4g
+wqAKPiBAQCAtNTQsMyArNTgsMzggQEAgdm9pZCBwYmxfYmFyZWJveF91bmNvbXByZXNzKHZvaWQg
+KmRlc3QsIHZvaWQgKmNvbXByZXNzZWRfc3RhcnQsIHVuc2lnbmVkIGludCBsZW4KPiA+IMKgCQkJ
+TlVMTCwgTlVMTCwKPiA+IMKgCQkJZGVzdCwgTlVMTCwgZXJyb3Jmbik7Cj4gwqB9Cj4gKwo+ICtp
+bnQgcGJsX2JhcmVib3hfdmVyaWZ5KHZvaWQgKmNvbXByZXNzZWRfc3RhcnQsIHVuc2lnbmVkIGlu
+dCBsZW4sIHZvaWQgKmhhc2gsCj4gPiArCQnCoMKgwqDCoMKgwqDCoHVuc2lnbmVkIGludCBoYXNo
+X2xlbikKPiArewo+ID4gKwlzdHJ1Y3Qgc2hhMjU2X3N0YXRlIHNoYV9zdGF0ZSA9IHsgMCB9Owo+
+ID4gKwlzdHJ1Y3QgZGlnZXN0IGQgPSB7IC5jdHggPSAmc2hhX3N0YXRlIH07Cj4gPiArCWNoYXIg
+Y29tcHV0ZWRfaGFzaFtTSEEyNTZfRElHRVNUX1NJWkVdOwo+ID4gKwlpbnQgaTsKPiA+ICsJY2hh
+ciAqY2hhcl9oYXNoID0gaGFzaDsKPiArCj4gPiArCWlmIChoYXNoX2xlbiAhPSBTSEEyNTZfRElH
+RVNUX1NJWkUpCj4gPiArCQlyZXR1cm4gLTE7Cj4gKwo+ID4gKwlzaGEyNTZfaW5pdCgmZCk7Cj4g
+PiArCXNoYTI1Nl91cGRhdGUoJmQsIGNvbXByZXNzZWRfc3RhcnQsIGxlbik7Cj4gPiArCXNoYTI1
+Nl9maW5hbCgmZCwgY29tcHV0ZWRfaGFzaCk7Cj4gPiArCWlmIChJU19FTkFCTEVEKENPTkZJR19E
+RUJVR19MTCkpIHsKPiA+ICsJCXB1dGNfbGwoJ0MnKTsKPiA+ICsJCXB1dGNfbGwoJ0gnKTsKPiA+
+ICsJCXB1dGNfbGwoJ1xuJyk7Cj4gPiArCQlmb3IgKGkgPSAwOyBpIDwgU0hBMjU2X0RJR0VTVF9T
+SVpFOyBpKyspIHsKPiA+ICsJCQlwdXRoZXhfbGwoY29tcHV0ZWRfaGFzaFtpXSk7Cj4gPiArCQkJ
+cHV0Y19sbCgnXG4nKTsKPiA+ICsJCX0KPiA+ICsJCXB1dGNfbGwoJ0knKTsKPiA+ICsJCXB1dGNf
+bGwoJ0gnKTsKPiA+ICsJCXB1dGNfbGwoJ1xuJyk7Cj4gPiArCQlmb3IgKGkgPSAwOyBpIDwgU0hB
+MjU2X0RJR0VTVF9TSVpFOyBpKyspIHsKPiA+ICsJCQlwdXRoZXhfbGwoY2hhcl9oYXNoW2ldKTsK
+PiA+ICsJCQlwdXRjX2xsKCdcbicpOwo+ID4gKwkJfQo+ID4gKwl9Cj4gKwo+ID4gKwlyZXR1cm4g
+bWVtY21wKGhhc2gsIGNvbXB1dGVkX2hhc2gsIFNIQTI1Nl9ESUdFU1RfU0laRSk7Cj4gK30KCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFp
+bGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFk
+ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
