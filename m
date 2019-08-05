@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1huZ5Q-0000Y2-7A
- for barebox@lists.infradead.org; Mon, 05 Aug 2019 09:15:25 +0000
+ id 1huZO6-00010e-25
+ for barebox@lists.infradead.org; Mon, 05 Aug 2019 09:34:43 +0000
+Date: Mon, 5 Aug 2019 11:34:40 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  5 Aug 2019 11:15:22 +0200
-Message-Id: <20190805091522.7021-1-s.hauer@pengutronix.de>
+Message-ID: <20190805093440.kckx6nbmzogjdi6x@pengutronix.de>
+References: <20190801091950.14606-1-bst@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190801091950.14606-1-bst@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,34 +22,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] console: return number of characters written in fops_write
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] mtd: spi-nor: fix page offset/remains calculation in
+ spi_nor_write
+To: Bastian Krause <bst@pengutronix.de>
+Cc: barebox@lists.infradead.org, Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-struct cdev_operations write() callback is supposed to return the number
-of characters written. Do this instead of returning 0 for the console
-device files.
+On Thu, Aug 01, 2019 at 11:19:50AM +0200, Bastian Krause wrote:
+> nor->write() simply adds the number of written bytes to the pointer
+> given. Thus retval is incremented in each loop cycle for each
+> spi_nor_write() call without ever resetting it. This leads to wrong page
+> offset/remains calculations and an incorrect number of bytes written to
+> retlen.
+> 
+> This becomes apparant only if the calling function actually compares len
+> and retlen (e.g. mtd_peb_write() ). Otherwise wrong data is written:
+> 
+>   $ memcpy -s /dev/prng -d prng_data 0 0 10k
+>   $ erase /dev/mtd0.mypart
+>   $ cp prng_data /dev/mtd0.mypart
+>   $ memcmp -s prng_data -d /dev/mtd0.mypart 0 0
+> 
+> memcmp returned "files differ" before, with this patch it returns "OK".
+> 
+> Fixes: c8516869c4 ("spi: Extend the core to ease integration of SPI memory controllers")
+> Signed-off-by: Bastian Krause <bst@pengutronix.de>
+> ---
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/console.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Applied, thanks
 
-diff --git a/common/console.c b/common/console.c
-index 406722a1da..ee17a508ba 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -300,7 +300,7 @@ static ssize_t fops_write(struct cdev* dev, const void* buf, size_t count,
- 
- 	priv->puts(priv, buf);
- 
--	return 0;
-+	return count;
- }
- 
- int console_register(struct console_device *newcdev)
+Sascha
+
+
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
