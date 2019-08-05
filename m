@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hubqr-0002UL-6k
- for barebox@lists.infradead.org; Mon, 05 Aug 2019 12:12:35 +0000
-Message-ID: <1565007134.2323.9.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 05 Aug 2019 14:12:14 +0200
-In-Reply-To: <03ea3dc20571d075cee01127c189e4db4e2a36f9.1564997015.git-series.r.czerwinski@pengutronix.de>
+Received: from magratgarlick.emantor.de ([78.46.208.201])
+ by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
+ id 1huZE8-0004I4-KS
+ for barebox@lists.infradead.org; Mon, 05 Aug 2019 09:24:26 +0000
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Mon,  5 Aug 2019 11:23:48 +0200
+Message-Id: <f75dea541dc77d5f2416f85fd8619ee0cb67a084.1564997015.git-series.r.czerwinski@pengutronix.de>
+In-Reply-To: <cover.b9d503ab98014278972f6bd84931035a5ef27967.1564997015.git-series.r.czerwinski@pengutronix.de>
 References: <cover.b9d503ab98014278972f6bd84931035a5ef27967.1564997015.git-series.r.czerwinski@pengutronix.de>
- <03ea3dc20571d075cee01127c189e4db4e2a36f9.1564997015.git-series.r.czerwinski@pengutronix.de>
-Mime-Version: 1.0
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,112 +17,111 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 02/16] i.MX: HABv4: implement interface for i.MX8MQ
-To: Rouven Czerwinski <r.czerwinski@pengutronix.de>, barebox@lists.infradead.org
+Subject: [PATCH v2 09/16] images: always build sha256sum into pbl
+To: barebox@lists.infradead.org
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-QW0gTW9udGFnLCBkZW4gMDUuMDguMjAxOSwgMTE6MjMgKzAyMDAgc2NocmllYiBSb3V2ZW4gQ3pl
-cndpbnNraToKPiBUaGUgSEFCIGludGVyZmFjZSBmb3IgaS5NWDhNUSBvbmx5IGltcGxlbWVudHMg
-dGhlIHJldHJpZXZhbCBvZiBzdGF0dXMKPiBhbmQgZXZlbnRzLiBUaGUgU29DIHN0YXR1cyBpcyBy
-ZXRyaWV2ZWQgdXNpbmcgdGhlIFRGLUEgU0lQIEFQSSBmb3VuZCBpbgo+IHRoZSBkb3duc3RyZWFt
-IGlteCBURi1BLiBBZnRlciBjYWxsaW5nIGludG8gdGhlIFRGLUEgdGhlIHBhc3NlZCBkYXRhCj4g
-c3RydWN0dXJlcyBuZWVkIHRvIGJlIGludmFsaWRhdGVkLCBzaW5jZSBvdGhlcndpc2UgdGhlIGNh
-Y2hlZCB6ZXJvIHZhbHVlCj4gaXMgdXNlZC4KPiBDdXJyZW50bHkgdGhlIFRGLUEgcmVwb3J0IGV2
-ZW50IGNhbGwgb25seSBzdXBwb3J0cyBGQUlMVVJFIGV2ZW50cy4KPiBUZXN0aW5nIHRoZSBURi1B
-IHdpdGggb3RoZXIgZXZlbnQgdHlwZXMgcmVzdWx0ZWQgaW4gYSBmcmVlemUgaW4gdGhlCj4gYm9v
-dHJvbSBjb2RlLCB3aGljaCB3YXMgbm90IGludmVzdGlnYXRlZCBmdXJ0aGVyLgo+IFdlIGluc3Rl
-YWQgd2FsayB0aGUgbWVtb3J5IGNvbnRhaW5pbmcgdGhlIGV2ZW50cyBhbmQgcmV0cmlldmUgdGhl
-IGV2ZW50cwo+IG91cnNlbHZlcy4gVGhleSBhcmUgZXhwb3NlZCB1c2luZyB0aGUgc2FtZSBBUEku
-Cj4gCj4gPiBTaWduZWQtb2ZmLWJ5OiBSb3V2ZW4gQ3plcndpbnNraSA8ci5jemVyd2luc2tpQHBl
-bmd1dHJvbml4LmRlPgo+IC0tLQo+IMKgZHJpdmVycy9oYWIvaGFiLmPCoMKgwqB8wqDCoMKgMiAr
-LQo+IMKgZHJpdmVycy9oYWIvaGFidjQuYyB8IDEwOSArKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKystCj4gwqAyIGZpbGVzIGNoYW5nZWQsIDExMCBpbnNlcnRpb25z
-KCspLCAxIGRlbGV0aW9uKC0pCj4gCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvaGFiL2hhYi5jIGIv
-ZHJpdmVycy9oYWIvaGFiLmMKPiBpbmRleCAwM2JiNjVlLi5hMzQ2ZTAxIDEwMDY0NAo+IC0tLSBh
-L2RyaXZlcnMvaGFiL2hhYi5jCj4gKysrIGIvZHJpdmVycy9oYWIvaGFiLmMKPiBAQCAtMjE3LDcg
-KzIxNyw3IEBAIHN0YXRpYyBzdHJ1Y3QgaW14X2hhYl9vcHMgKmlteF9nZXRfaGFiX29wcyh2b2lk
-KQo+IMKgCj4gPiDCoAlpZiAoSVNfRU5BQkxFRChDT05GSUdfSEFCVjMpICYmIChjcHVfaXNfbXgy
-NSgpIHx8IGNwdV9pc19teDM1KCkpKQo+ID4gwqAJCXRtcCA9ICZpbXhfaGFiX29wc19paW07Cj4g
-PiAtCWVsc2UgaWYgKElTX0VOQUJMRUQoQ09ORklHX0hBQlY0KSAmJiBjcHVfaXNfbXg2KCkpCj4g
-PiArCWVsc2UgaWYgKElTX0VOQUJMRUQoQ09ORklHX0hBQlY0KSAmJiAoY3B1X2lzX214NigpIHx8
-IGNwdV9pc19teDhtcSgpKSkKPiA+IMKgCQl0bXAgPSAmaW14X2hhYl9vcHNfb2NvdHA7Cj4gPiDC
-oAllbHNlCj4gPiDCoAkJcmV0dXJuIE5VTEw7Cj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvaGFiL2hh
-YnY0LmMgYi9kcml2ZXJzL2hhYi9oYWJ2NC5jCj4gaW5kZXggYjExY2Y3Yi4uMGJmZDY1MiAxMDA2
-NDQKPiAtLS0gYS9kcml2ZXJzL2hhYi9oYWJ2NC5jCj4gKysrIGIvZHJpdmVycy9oYWIvaGFidjQu
-Ywo+IEBAIC0yMiw4ICsyMiwxMSBAQAo+IMKgI2luY2x1ZGUgPGhhYi5oPgo+IMKgI2luY2x1ZGUg
-PGluaXQuaD4KPiDCoCNpbmNsdWRlIDx0eXBlcy5oPgo+ICsjaW5jbHVkZSA8bGludXgvYXJtLXNt
-Y2NjLmg+Cj4gKyNpbmNsdWRlIDxhc20vY2FjaGUuaD4KPiDCoAo+IMKgI2luY2x1ZGUgPG1hY2gv
-Z2VuZXJpYy5oPgo+ICsjaW5jbHVkZSA8bWFjaC9pbXg4bXEuaD4KPiDCoAo+IMKgI2RlZmluZSBI
-QUJWNF9SVlRfSU1YMjggMHhmZmZmOGFmOAo+IMKgI2RlZmluZSBIQUJWNF9SVlRfSU1YNl9PTEQg
-MHgwMDAwMDA5NAo+IEBAIC0xNzcsNiArMTgwLDg1IEBAIHN0cnVjdCBoYWJ2NF9ydnQgewo+ID4g
-wqAJdm9pZCAoKmZhaWxzYWZlKSh2b2lkKTsKPiDCoH0gX19wYWNrZWQ7Cj4gwqAKPiArI2RlZmlu
-ZSBGU0xfU0lQX0hBQsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgMHhDMjAwMDAwNwo+ICsjZGVm
-aW5lIEZTTF9TSVBfSEFCX0FVVEhFTlRJQ0FURcKgwqDCoMKgwqDCoMKgwqAweDAwCj4gKyNkZWZp
-bmUgRlNMX1NJUF9IQUJfRU5UUlnCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAweDAxCj4g
-KyNkZWZpbmUgRlNMX1NJUF9IQUJfRVhJVMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-MHgwMgo+ICsjZGVmaW5lIEZTTF9TSVBfSEFCX1JFUE9SVF9FVkVOVMKgwqDCoMKgwqDCoMKgwqAw
-eDAzCj4gKyNkZWZpbmUgRlNMX1NJUF9IQUJfUkVQT1JUX1NUQVRVU8KgwqDCoMKgwqDCoMKgMHgw
-NAo+ICsjZGVmaW5lIEZTTF9TSVBfSEFCX0ZBSUxTQUZFwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-MHgwNQo+ICsjZGVmaW5lIEZTTF9TSVBfSEFCX0NIRUNLX1RBUkdFVMKgwqDCoMKgwqDCoMKgwqAw
-eDA2Cj4gKwo+ICtzdGF0aWMgZW51bSBoYWJfc3RhdHVzIGhhYl9zaXBfcmVwb3J0X3N0YXR1cyhl
-bnVtIGhhYl9jb25maWcgKmNvbmZpZywKPiA+ICsJCQkJCcKgwqDCoMKgwqBlbnVtIGhhYl9zdGF0
-ZSAqc3RhdGUpCj4gK3sKPiA+ICsJc3RydWN0IGFybV9zbWNjY19yZXMgcmVzOwo+ICsKPiA+ICsJ
-YXJtX3NtY2NjX3NtYyhGU0xfU0lQX0hBQiwgRlNMX1NJUF9IQUJfUkVQT1JUX1NUQVRVUywKPiA+
-ICsJCcKgwqDCoMKgwqDCoCh1bnNpZ25lZCBsb25nKSBjb25maWcsCj4gPiArCQnCoMKgwqDCoMKg
-wqAodW5zaWduZWQgbG9uZykgc3RhdGUsIDAsIDAsIDAsIDAsICZyZXMpOwo+ID4gKwlpZiAoc3Rh
-dGUpCj4gPiArCQl2OF9pbnZfZGNhY2hlX3JhbmdlKCh1bnNpZ25lZCBsb25nKSBzdGF0ZSwKPiA+
-ICsJCQkJwqDCoMKgwqAodW5zaWduZWQgbG9uZylzdGF0ZSArIHNpemVvZigqY29uZmlnKSk7Cj4g
-PiArCWlmIChjb25maWcpCj4gPiArCQl2OF9pbnZfZGNhY2hlX3JhbmdlKCh1bnNpZ25lZCBsb25n
-KSBjb25maWcsCj4gKwkJCQnCoMKgwqDCoCh1bnNpZ25lZCBsb25nKWNvbmZpZyArIHNpemVvZigq
-c3RhdGUpKTsKClRoYXQncyBkYW5nZXJvdXMuIENhbiB5b3UgYmUgc3VyZSB0aGF0IGJvdGggY29u
-ZmlnIGFuZCBzdGF0ZSBwb2ludGVycywKYXMgd2VsbCBhcyBzdHJ1Y3Qgc2l6ZSBpcyBhbGlnbmVk
-IHRvIGEgY2FjaGVsaW5lIGJvdW5kYXJ5PyBPdGhlcndpc2UKeW91IGNvdWxkIGRlc3Ryb3kgdmFs
-aWQgZGlydHkgZGF0YSBoZXJlLgoKUmVnYXJkcywKTHVjYXMKCj4gKwlyZXR1cm4gKGVudW0gaGFi
-X3N0YXR1cylyZXMuYTA7Cj4gK30KPiArCj4gK3N0YXRpYyBlbnVtIGhhYl9zdGF0dXMgaW14OF9y
-ZWFkX3NyYW1fZXZlbnRzKGVudW0gaGFiX3N0YXR1cyBzdGF0dXMsCj4gPiArCQkJCQnCoMKgwqDC
-oMKgdWludDMyX3QgaW5kZXgsIHZvaWQgKmV2ZW50LAo+ID4gKwkJCQkJwqDCoMKgwqDCoHVpbnQz
-Ml90ICpieXRlcykKPiArewo+ID4gKwlzdHJ1Y3QgaGFiX2V2ZW50X3JlY29yZCAqZXZlbnRzWzEw
-XTsKPiA+ICsJaW50IG51bV9ldmVudHMgPSAwOwo+ID4gKwljaGFyICpzcmFtID0gKGNoYXIgKikw
-eDkwNjFjMDsKPiA+ICsJaW50IGkgPSAwOwo+ID4gKwlpbnQgaW50ZXJuYWxfaW5kZXggPSAwOwo+
-ID4gKwljaGFyICplbmQgPSAwOwo+ID4gKwlzdHJ1Y3QgaGFiX2V2ZW50X3JlY29yZCAqc2VhcmNo
-Owo+ICsKPiA+ICsJLyoKPiA+ICsJwqAqIEFOMTIyNjMgSEFCdjQgR3VpZGVsaW5lcyBhbmQgUmVj
-b21tZW5kYXRpb25zCj4gPiArCcKgKiByZWNvbW1lbmRzIHRoZSBhZGRyZXNzIGFuZCBzaXplLCBo
-b3dldmVyIGVycm9ycyBhcmUgdXN1YWxseSBjb250YWluZWQKPiA+ICsJwqAqIHdpdGhpbiB0aGUg
-Zmlyc3QgYnl0ZXMuIFNjYW4gb25seSB0aGUgZmlyc3QgZmV3IGJ5dGVzIHRvIHJ1bGUgb3V0Cj4g
-PiArCcKgKiBsb3RzIG9mIGZhbHNlIHBvc2l0aXZlcy4KPiA+ICsJwqAqLwo+ID4gKwllbmQgPSBz
-cmFtICvCoMKgMHgxYTA7Cj4gKwo+ID4gKwl3aGlsZSAoc3JhbSA8IGVuZCkgewo+ID4gKwkJaWYg
-KCpzcmFtID09IDB4ZGIpIHsKPiA+ICsJCQlzZWFyY2ggPSAodm9pZCAqKXNyYW07Cj4gPiArCQkJ
-c3JhbSA9IHNyYW0gKyBiZTE2X3RvX2NwdShzZWFyY2gtPmhkci5sZW4pOwo+ID4gKwkJCWV2ZW50
-c1tudW1fZXZlbnRzXSA9IHNlYXJjaDsKPiA+ICsJCQludW1fZXZlbnRzKys7Cj4gPiArCQl9IGVs
-c2Ugewo+ID4gKwkJCXNyYW0rKzsKPiA+ICsJCX0KPiA+ICsJfQo+ID4gKwl3aGlsZSAoaSA8IG51
-bV9ldmVudHMpIHsKPiA+ICsJCWlmIChldmVudHNbaV0tPnN0YXR1cyA9PSBzdGF0dXMpIHsKPiA+
-ICsJCQlpZiAoaW50ZXJuYWxfaW5kZXggPT0gaW5kZXgpIHsKPiA+ICsJCQkJKmJ5dGVzID0gc2l6
-ZW9mKHN0cnVjdCBoYWJfZXZlbnRfcmVjb3JkKSArCj4gPiArCQkJCQliZTE2X3RvX2NwdShldmVu
-dHNbaV0tPmhkci5sZW4pOwo+ID4gKwkJCQlpZiAoZXZlbnQpCj4gPiArCQkJCQltZW1jcHkoZXZl
-bnQsIGV2ZW50c1tpXSwgKmJ5dGVzKTsKPiA+ICsJCQkJcmV0dXJuIEhBQl9TVEFUVVNfU1VDQ0VT
-UzsKPiA+ICsJCQl9IGVsc2Ugewo+ID4gKwkJCQlpbnRlcm5hbF9pbmRleCsrOwo+ID4gKwkJCX0K
-PiA+ICsJCX0KPiA+ICsJCWkrKzsKPiA+ICsJfQo+ID4gKwlyZXR1cm4gSEFCX1NUQVRVU19GQUlM
-VVJFOwo+ICt9Cj4gKwo+ICtzdHJ1Y3QgaGFidjRfcnZ0IGhhYl9zbWNfb3BzID0gewo+ID4gKwku
-aGVhZGVyID0geyAudGFnID0gMHhkZCB9LAo+ID4gKwkucmVwb3J0X2V2ZW50ID0gaW14OF9yZWFk
-X3NyYW1fZXZlbnRzLAo+ID4gKwkucmVwb3J0X3N0YXR1cyA9IGhhYl9zaXBfcmVwb3J0X3N0YXR1
-cywKPiArfTsKPiArCj4gwqBzdGF0aWMgY29uc3QgY2hhciAqaGFidjRfZ2V0X3N0YXR1c19zdHIo
-ZW51bSBoYWJfc3RhdHVzIHN0YXR1cykKPiDCoHsKPiA+IMKgCXN3aXRjaCAoc3RhdHVzKSB7Cj4g
-QEAgLTUwOSw2ICs1OTEsMzMgQEAgaW50IGlteDZfaGFiX2dldF9zdGF0dXModm9pZCkKPiA+IMKg
-CXJldHVybiAtRUlOVkFMOwo+IMKgfQo+IMKgCj4gK3N0YXRpYyBpbnQgaW14OF9oYWJfZ2V0X3N0
-YXR1cyh2b2lkKQo+ICt7Cj4gPiArCXJldHVybiBoYWJ2NF9nZXRfc3RhdHVzKCZoYWJfc21jX29w
-cyk7Cj4gK30KPiArCj4gK3N0YXRpYyBpbnQgaW5pdF9pbXg4X2hhYl9nZXRfc3RhdHVzKHZvaWQp
-Cj4gK3sKPiA+ICsJaWYgKCFjcHVfaXNfbXg4bXEoKSkKPiA+ICsJCS8qIGNhbiBoYXBwZW4gaW4g
-bXVsdGktaW1hZ2UgYnVpbGRzIGFuZCBpcyBub3QgYW4gZXJyb3IgKi8KPiA+ICsJCXJldHVybiAw
-Owo+ICsKPiA+ICsJLyoKPiA+ICsJwqAqIE5vYm9keSB3aWxsIGNoZWNrIHRoZSByZXR1cm4gdmFs
-dWUgaWYgdGhlcmUgd2VyZSBIQUIgZXJyb3JzLCBidXQgdGhlCj4gPiArCcKgKiBpbml0Y2FsbCB3
-aWxsIGZhaWwgc3BlY3RhY3Vsb3VzbHkgd2l0aCBhIHN0cmFuZ2UgZXJyb3IgbWVzc2FnZS4KPiA+
-ICsJwqAqLwo+ID4gKwlpbXg4X2hhYl9nZXRfc3RhdHVzKCk7Cj4gKwo+ID4gKwlyZXR1cm4gMDsK
-PiArfQo+ICsKPiArLyoKPiArICoKPiArICoKPiArICoKPiArICovCj4gK3Bvc3RtbXVfaW5pdGNh
-bGwoaW5pdF9pbXg4X2hhYl9nZXRfc3RhdHVzKTsKPiArCj4gwqBzdGF0aWMgaW50IGluaXRfaW14
-Nl9oYWJfZ2V0X3N0YXR1cyh2b2lkKQo+IMKgewo+ID4gwqAJaWYgKCFjcHVfaXNfbXg2KCkpCgpf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
-aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
-ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Create a sha256sum of the compressed barebox image and always add it to
+the PBL. We also add a custom linker section for ARM, to retrieve the
+sha256sum for piggydata verification.
+
+Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+---
+ arch/arm/lib/pbl.lds.S |  7 +++++++
+ images/Makefile        | 22 +++++++++++++++++++---
+ images/sha_sum.S       |  7 +++++++
+ 3 files changed, 33 insertions(+), 3 deletions(-)
+ create mode 100644 images/sha_sum.S
+
+diff --git a/arch/arm/lib/pbl.lds.S b/arch/arm/lib/pbl.lds.S
+index d2f5ab2..01ed384 100644
+--- a/arch/arm/lib/pbl.lds.S
++++ b/arch/arm/lib/pbl.lds.S
+@@ -68,6 +68,13 @@ SECTIONS
+ 	. = ALIGN(4);
+ 	.data : { *(.data*) }
+ 
++	. = ALIGN(4);
++	__shasum_start = .;
++	.shasum : {
++		KEEP(*(.shasum))
++	}
++	__shasum_end = .;
++
+ 	.rel_dyn_start : { *(.__rel_dyn_start) }
+ #ifdef CONFIG_CPU_32
+ 	.rel.dyn : { *(.rel*) }
+diff --git a/images/Makefile b/images/Makefile
+index 293e644..907986e 100644
+--- a/images/Makefile
++++ b/images/Makefile
+@@ -57,11 +57,12 @@ quiet_cmd_elf__ ?= LD      $@
+       cmd_elf__ ?= $(LD) $(LDFLAGS_barebox) --gc-sections		\
+ 		-e $(2) -Map $@.map $(LDFLAGS_$(@F)) -o $@		\
+ 		-T $(pbl-lds)						\
+-		--start-group $(barebox-pbl-common) $(obj)/piggy.o --end-group
++		--start-group $(barebox-pbl-common) $(obj)/piggy.o	\
++		$(obj)/sha_sum.o --end-group
+ 
+ PBL_CPPFLAGS	+= -fdata-sections -ffunction-sections
+ 
+-$(obj)/%.pbl: $(pbl-lds) $(barebox-pbl-common) $(obj)/piggy.o FORCE
++$(obj)/%.pbl: $(pbl-lds) $(barebox-pbl-common) $(obj)/piggy.o $(obj)/sha_sum.o FORCE
+ 	$(call if_changed,elf__,$(*F))
+ 
+ $(obj)/%.pblb: $(obj)/%.pbl FORCE
+@@ -111,6 +112,21 @@ suffix_$(CONFIG_IMAGE_COMPRESSION_NONE) = comp_copy
+ 
+ $(obj)/piggy.o: $(obj)/barebox.z FORCE
+ 
++$(obj)/sha_sum.o: $(obj)/barebox.sha.bin FORCE
++
++quiet_cmd_sha256bin ?= SHA-BIN $@
++      cmd_sha256bin ?= printf "$(shell awk '{printf $$1}' < $(obj)/barebox.sum | sed -e 's/../\\x&/g' )" > $@
++
++quiet_cmd_sha256sum ?= SHA     $@
++      cmd_sha256sum ?= sha256sum $(obj)/barebox.z > $@
++
++$(obj)/barebox.sha.bin: $(obj)/barebox.sum FORCE
++	$(call if_changed,sha256bin)
++
++$(obj)/barebox.sum: $(obj)/barebox.z FORCE
++	$(call if_changed,sha256sum)
++
++
+ # barebox.z - compressed barebox binary
+ # ----------------------------------------------------------------
+ $(obj)/barebox.z: $(obj)/../barebox.bin FORCE
+@@ -152,7 +168,7 @@ ifneq ($(pblx-y)$(pblx-),)
+   $(error pblx- has been removed. Please use pblb- instead.)
+ endif
+ 
+-targets += $(image-y) pbl.lds barebox.x barebox.z piggy.o
++targets += $(image-y) pbl.lds barebox.x barebox.z piggy.o sha_sum.o barebox.sha.bin barebox.sum
+ targets += $(patsubst %,%.pblb,$(pblb-y))
+ targets += $(patsubst %,%.pbl,$(pblb-y))
+ targets += $(patsubst %,%.s,$(pblb-y))
+diff --git a/images/sha_sum.S b/images/sha_sum.S
+new file mode 100644
+index 0000000..5928c20
+--- /dev/null
++++ b/images/sha_sum.S
+@@ -0,0 +1,7 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++        .section .shasum,"a"
++        .globl  sha_sum
++sha_sum:
++        .incbin "images/barebox.sha.bin"
++        .globl  sha_sum_end
++sha_sum_end:
+-- 
+git-series 0.9.1
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
