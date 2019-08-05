@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from magratgarlick.emantor.de ([78.46.208.201])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1huZE0-00047w-CM
- for barebox@lists.infradead.org; Mon, 05 Aug 2019 09:24:17 +0000
+ id 1huZE1-00049Z-Sn
+ for barebox@lists.infradead.org; Mon, 05 Aug 2019 09:24:19 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Mon,  5 Aug 2019 11:23:44 +0200
-Message-Id: <b577986cd7183d7e23659e8b20dc9572dadfb651.1564997015.git-series.r.czerwinski@pengutronix.de>
+Date: Mon,  5 Aug 2019 11:23:45 +0200
+Message-Id: <e485ad0cd4de4a3521f756b6167a43a94210203c.1564997015.git-series.r.czerwinski@pengutronix.de>
 In-Reply-To: <cover.b9d503ab98014278972f6bd84931035a5ef27967.1564997015.git-series.r.czerwinski@pengutronix.de>
 References: <cover.b9d503ab98014278972f6bd84931035a5ef27967.1564997015.git-series.r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
@@ -21,92 +21,109 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 05/16] esdhc-pbl: extract header parsing from image start
+Subject: [PATCH v2 06/16] esdhc-pbl: add piggy load function
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Extract the header parsing code from esdc_start_image. The header
-parsing function will be used by the piggy loading code added in the
-next commit.
+Add a function to load and copy the piggy data to the correct offset
+expected by barebox in the RAM. This way the PBL can later verify the
+piggydata before uncompressing and loading the main barebox.
 
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- drivers/mci/imx-esdhc-pbl.c | 44 +++++++++++++++++++++++++-------------
- 1 file changed, 30 insertions(+), 14 deletions(-)
+ arch/arm/mach-imx/include/mach/xload.h |  5 +++-
+ arch/arm/mach-imx/xload-common.c       |  6 ++++-
+ drivers/mci/imx-esdhc-pbl.c            | 46 +++++++++++++++++++++++++++-
+ 3 files changed, 57 insertions(+)
 
-diff --git a/drivers/mci/imx-esdhc-pbl.c b/drivers/mci/imx-esdhc-pbl.c
-index 367daa8..49514fc 100644
---- a/drivers/mci/imx-esdhc-pbl.c
-+++ b/drivers/mci/imx-esdhc-pbl.c
-@@ -243,27 +243,22 @@ static int esdhc_read_blocks(struct esdhc *esdhc, void *dst, size_t len)
+diff --git a/arch/arm/mach-imx/include/mach/xload.h b/arch/arm/mach-imx/include/mach/xload.h
+index 8f141bc..a605e76 100644
+--- a/arch/arm/mach-imx/include/mach/xload.h
++++ b/arch/arm/mach-imx/include/mach/xload.h
+@@ -6,7 +6,12 @@ int imx6_spi_load_image(int instance, unsigned int flash_offset, void *buf, int 
+ int imx6_spi_start_image(int instance);
+ int imx6_esdhc_start_image(int instance);
+ int imx8_esdhc_start_image(int instance);
++int imx8_esdhc_load_piggy(int instance);
+ 
+ int imx_image_size(void);
++int piggydata_size(void);
++
++extern unsigned char input_data[];
++extern unsigned char input_data_end[];
+ 
+ #endif /* __MACH_XLOAD_H */
+diff --git a/arch/arm/mach-imx/xload-common.c b/arch/arm/mach-imx/xload-common.c
+index c5727eb..bd64052 100644
+--- a/arch/arm/mach-imx/xload-common.c
++++ b/arch/arm/mach-imx/xload-common.c
+@@ -8,3 +8,9 @@ int imx_image_size(void)
+ 	/* i.MX header is 4k */
+ 	return barebox_image_size + SZ_4K;
  }
- 
- #ifdef CONFIG_ARCH_IMX
--static int
--esdhc_start_image(struct esdhc *esdhc, ptrdiff_t address, ptrdiff_t entry, u32 offset)
-+static int esdhc_search_header(struct esdhc *esdhc,
-+			       struct imx_flash_header_v2 **header_pointer,
-+			       void *buffer, u32 *offset)
- {
--
--	void *buf = (void *)address;
--	struct imx_flash_header_v2 *hdr;
--	int ret, len;
--	void __noreturn (*bb)(void);
--	unsigned int ofs;
-+	int ret;
- 	int i, header_count = 1;
--
--	len = imx_image_size();
--	len = ALIGN(len, SECTOR_SIZE);
-+	void *buf = buffer;
-+	struct imx_flash_header_v2 *hdr;
- 
- 	for (i = 0; i < header_count; i++) {
- 		ret = esdhc_read_blocks(esdhc, buf,
--					offset + SZ_1K + SECTOR_SIZE);
-+					*offset + SZ_1K + SECTOR_SIZE);
- 		if (ret)
- 			return ret;
- 
--		hdr = buf + offset + SZ_1K;
-+		hdr = buf + *offset + SZ_1K;
- 
- 		if (!is_imx_flash_header_v2(hdr)) {
- 			pr_debug("IVT header not found on SD card. "
-@@ -286,10 +281,31 @@ esdhc_start_image(struct esdhc *esdhc, ptrdiff_t address, ptrdiff_t entry, u32 o
- 			 * this time skipping anything HDMI firmware
- 			 * related.
- 			 */
--			offset += hdr->boot_data.size + hdr->header.length;
-+			*offset += hdr->boot_data.size + hdr->header.length;
- 			header_count++;
- 		}
- 	}
-+	*header_pointer = hdr;
-+	return 0;
++
++int piggydata_size(void)
++{
++	return input_data_end - input_data;
 +}
 +
-+static int
-+esdhc_start_image(struct esdhc *esdhc, ptrdiff_t address, ptrdiff_t entry,
-+		  u32 offset)
+diff --git a/drivers/mci/imx-esdhc-pbl.c b/drivers/mci/imx-esdhc-pbl.c
+index 49514fc..fb27c84 100644
+--- a/drivers/mci/imx-esdhc-pbl.c
++++ b/drivers/mci/imx-esdhc-pbl.c
+@@ -425,6 +425,52 @@ int imx8_esdhc_start_image(int instance)
+ 	return esdhc_start_image(&esdhc, MX8MQ_DDR_CSD1_BASE_ADDR,
+ 				 MX8MQ_ATF_BL33_BASE_ADDR, SZ_32K);
+ }
++
++int imx8_esdhc_load_piggy(int instance)
 +{
-+
-+	void *buf = (void *)address;
++	void *buf = (void *)MX8MQ_ATF_BL33_BASE_ADDR;
 +	struct imx_flash_header_v2 *hdr = NULL;
++	void *bb = 0;
++	struct esdhc esdhc;
 +	int ret, len;
-+	void __noreturn (*bb)(void);
-+	unsigned int ofs;
++	int offset = SZ_32K;
 +
-+	len = imx_image_size();
-+	len = ALIGN(len, SECTOR_SIZE);
 +
-+	ret = esdhc_search_header(esdhc, &hdr, buf, &offset);
++	switch (instance) {
++	case 0:
++		esdhc.regs = IOMEM(MX8MQ_USDHC1_BASE_ADDR);
++		break;
++	case 1:
++		esdhc.regs = IOMEM(MX8MQ_USDHC2_BASE_ADDR);
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	esdhc.is_be = 0;
++	esdhc.is_mx6 = 1;
++
++	ret = esdhc_search_header(&esdhc, &hdr, buf, &offset);
 +	if (ret)
 +		return ret;
++
++	len = offset + hdr->boot_data.size + piggydata_size();
++	len = ALIGN(len, SECTOR_SIZE);
++
++	ret = esdhc_read_blocks(&esdhc, buf, len);
++
++	/*
++	 * Calculate location of the piggydata at the offset loaded into RAM
++	 */
++	buf = buf + offset + hdr->boot_data.size;
++	/*
++	 * Barebox expects the piggydata right behind the PBL in the beginning
++	 * of RAM.
++	 */
++	bb = (void *) MX8MQ_DDR_CSD1_BASE_ADDR + barebox_pbl_size;
++	memcpy(bb, buf, piggydata_size());
++	return ret;
++}
+ #endif
  
- 	pr_debug("Check ok, loading image\n");
- 
+ #ifdef CONFIG_ARCH_LS1046
 -- 
 git-series 0.9.1
 
