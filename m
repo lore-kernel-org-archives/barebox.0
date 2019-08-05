@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([78.46.208.201])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1huZE9-0004J8-Mt
- for barebox@lists.infradead.org; Mon, 05 Aug 2019 09:24:27 +0000
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Mon,  5 Aug 2019 11:23:55 +0200
-Message-Id: <209a8ba450cb170543983cbb0a57be65838e639a.1564997015.git-series.r.czerwinski@pengutronix.de>
-In-Reply-To: <cover.b9d503ab98014278972f6bd84931035a5ef27967.1564997015.git-series.r.czerwinski@pengutronix.de>
+ id 1huaNN-0005ZP-9e
+ for barebox@lists.infradead.org; Mon, 05 Aug 2019 10:38:03 +0000
+Message-ID: <1565001478.2323.1.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Mon, 05 Aug 2019 12:37:58 +0200
+In-Reply-To: <209a8ba450cb170543983cbb0a57be65838e639a.1564997015.git-series.r.czerwinski@pengutronix.de>
 References: <cover.b9d503ab98014278972f6bd84931035a5ef27967.1564997015.git-series.r.czerwinski@pengutronix.de>
-MIME-Version: 1.0
+ <209a8ba450cb170543983cbb0a57be65838e639a.1564997015.git-series.r.czerwinski@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,211 +18,155 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 16/16] boards: nxp-mx8-evk: rework to different boot flow
-To: barebox@lists.infradead.org
-Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Subject: Re: [PATCH v2 16/16] boards: nxp-mx8-evk: rework to different boot
+ flow
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>, barebox@lists.infradead.org
 
-Rework the evk boot flow to use the new piggydata load function and
-install a trampoline for the TF-A setup. This allows the PBL boot
-process to stay in SRAM up until the verification of the piggydata is
-done and main barebox can be loaded.
-
-The trampoline loads 4 bytes right after the trampoline, we copy the
-runtime offset there so the trampoline jumps back into the SRAM PBL.
-
-Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
----
- arch/arm/boards/nxp-imx8mq-evk/Makefile                       |  4 +-
- arch/arm/boards/nxp-imx8mq-evk/flash-header-imx8mq-evk.imxcfg |  1 +-
- arch/arm/boards/nxp-imx8mq-evk/lowlevel.c                     | 83 +++----
- arch/arm/boards/nxp-imx8mq-evk/trampoline.S                   | 11 +-
- images/Makefile.imx                                           |  3 +-
- 5 files changed, 60 insertions(+), 42 deletions(-)
- create mode 100644 arch/arm/boards/nxp-imx8mq-evk/trampoline.S
-
-diff --git a/arch/arm/boards/nxp-imx8mq-evk/Makefile b/arch/arm/boards/nxp-imx8mq-evk/Makefile
-index 0546b0b..7907de4 100644
---- a/arch/arm/boards/nxp-imx8mq-evk/Makefile
-+++ b/arch/arm/boards/nxp-imx8mq-evk/Makefile
-@@ -1,4 +1,2 @@
- obj-y += board.o
--lwl-y += lowlevel.o ddr_init.o ddrphy_train.o
--
--
-+lwl-y += lowlevel.o ddr_init.o ddrphy_train.o trampoline.o
-diff --git a/arch/arm/boards/nxp-imx8mq-evk/flash-header-imx8mq-evk.imxcfg b/arch/arm/boards/nxp-imx8mq-evk/flash-header-imx8mq-evk.imxcfg
-index aff8321..11463fe 100644
---- a/arch/arm/boards/nxp-imx8mq-evk/flash-header-imx8mq-evk.imxcfg
-+++ b/arch/arm/boards/nxp-imx8mq-evk/flash-header-imx8mq-evk.imxcfg
-@@ -3,3 +3,4 @@ soc imx8mq
- loadaddr 0x007E1000
- max_load_size 0x3F000
- dcdofs 0x400
-+#include <mach/habv4-imx8-gencsf.h>
-diff --git a/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
-index 6451e5d..2e23a4c 100644
---- a/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
-+++ b/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
-@@ -53,20 +53,29 @@ static void setup_uart(void)
- 
- static void nxp_imx8mq_evk_sram_setup(void)
- {
--	enum bootsource src = BOOTSOURCE_UNKNOWN;
--	int instance = BOOTSOURCE_INSTANCE_UNKNOWN;
--	int ret = -ENOTSUPP;
--
- 	ddr_init();
-+}
- 
--	imx8_get_boot_source(&src, &instance);
-+extern unsigned char trampoline_start[];
-+extern unsigned char trampoline_end[];
- 
--	if (src == BOOTSOURCE_MMC)
--		ret = imx8_esdhc_start_image(instance);
-+static void nxp_imx8mq_evk_install_tfa_trampoline(void)
-+{
-+	unsigned int tramp_len;
-+	unsigned int offset;
-+	/*
-+	 * Create a trampoline which is places in DRAM and calls back into the
-+	 * PBL entry function found in the TCRAM. Register x0 is set to 1 to
-+	 * indicate that DRAM setup was already run.
-+	 */
-+	tramp_len = (void *)trampoline_end - (void *)trampoline_start;
-+	memcpy((void *)MX8MQ_ATF_BL33_BASE_ADDR, (void *)trampoline_start,
-+	       tramp_len);
- 
--	BUG_ON(ret);
-+	offset = get_runtime_offset();
-+	memcpy((void *)MX8MQ_ATF_BL33_BASE_ADDR + tramp_len, &offset,
-+	       sizeof(offset));
- }
--
- /*
-  * Power-on execution flow of start_nxp_imx8mq_evk() might not be
-  * obvious for a very first read, so here's, hopefully helpful,
-@@ -75,53 +84,53 @@ static void nxp_imx8mq_evk_sram_setup(void)
-  * 1. MaskROM uploads PBL into OCRAM and that's where this function is
-  *    executed for the first time
-  *
-- * 2. DDR is initialized and full i.MX image is loaded to the
-- *    beginning of RAM
-- *
-- * 3. start_nxp_imx8mq_evk, now in RAM, is executed again
-+ * 2. DDR is initialized and the TF-A trampoline is installed in the
-+ *    DRAM.
-  *
-- * 4. BL31 blob is uploaded to OCRAM and the control is transfer to it
-+ * 3. TF-A is executed and exits into the trampoline in RAM, which enters the
-+ *    PBL for the second time. DRAM setup done is indicated by a one in register
-+ *    x0 by the trampoline
-  *
-- * 5. BL31 exits EL3 into EL2 at address MX8MQ_ATF_BL33_BASE_ADDR,
-- *    executing start_nxp_imx8mq_evk() the third time
-+ * 4. The piggydata is loaded from the SD card and copied to the expected
-+ *    location in the DRAM.
-  *
-- * 6. Standard barebox boot flow continues
-+ * 5. Standard barebox boot flow continues
-  */
- ENTRY_FUNCTION(start_nxp_imx8mq_evk, r0, r1, r2)
- {
-+	enum bootsource src = BOOTSOURCE_UNKNOWN;
-+	int instance = BOOTSOURCE_INSTANCE_UNKNOWN;
-+	int ret = -ENOTSUPP;
-+	const u8 *bl31;
-+	size_t bl31_size;
-+
- 	imx8mq_cpu_lowlevel_init();
- 
- 	if (IS_ENABLED(CONFIG_DEBUG_LL))
- 		setup_uart();
- 
--	if (get_pc() < MX8MQ_DDR_CSD1_BASE_ADDR) {
--		/*
--		 * We assume that we were just loaded by MaskROM into
--		 * SRAM if we are not running from DDR. We also assume
--		 * that means DDR needs to be initialized for the
--		 * first time.
--		 */
--		nxp_imx8mq_evk_sram_setup();
--	}
- 	/*
--	 * Straight from the power-on we are at EL3, so the following
--	 * code _will_ load and jump to ATF.
--	 *
--	 * However when we are re-executed upon exit from ATF's
--	 * initialization routine, it is EL2 which means we'll skip
--	 * loadting ATF blob again
-+	 * if register r0 does not contain 1, we are running for the first time
-+	 * and need to initialize the DRAM, install the trampoline and run TF-A
-+	 * (BL31).
-+	 * Otherwise the 1 indicates that the DRAM setup and trampoline are
-+	 * already installed and TF-A has been run. In this case we can skip
- 	 */
--	if (current_el() == 3) {
--		const u8 *bl31;
--		size_t bl31_size;
--
-+	if (r0 != 1) {
-+		nxp_imx8mq_evk_sram_setup();
-+		nxp_imx8mq_evk_install_tfa_trampoline();
- 		get_builtin_firmware(imx8mq_bl31_bin, &bl31, &bl31_size);
- 		imx8mq_atf_load_bl31(bl31, bl31_size);
- 	}
- 
-+	imx8_get_boot_source(&src, &instance);
-+
-+	if (src == BOOTSOURCE_MMC)
-+		ret = imx8_esdhc_load_piggy(instance);
-+	else
-+		BUG_ON(ret);
- 	/*
- 	 * Standard entry we hit once we initialized both DDR and ATF
- 	 */
- 	imx8mq_barebox_entry(__dtb_imx8mq_evk_start);
- }
--
-diff --git a/arch/arm/boards/nxp-imx8mq-evk/trampoline.S b/arch/arm/boards/nxp-imx8mq-evk/trampoline.S
-new file mode 100644
-index 0000000..49bd750
---- /dev/null
-+++ b/arch/arm/boards/nxp-imx8mq-evk/trampoline.S
-@@ -0,0 +1,11 @@
-+/* SPDX-License-Identifier: (GPL-2.0) */
-+#include <linux/linkage.h>
-+#include <asm/sections.h>
-+	.section .trampoline,"a"
-+	.globl  trampoline_start
-+trampoline_start:
-+	ldr	w19, trampoline_end
-+	mov     x0, #0x1
-+	br      x19
-+	.globl  trampoline_end
-+trampoline_end:
-diff --git a/images/Makefile.imx b/images/Makefile.imx
-index 76beccb..0fd1fe1 100644
---- a/images/Makefile.imx
-+++ b/images/Makefile.imx
-@@ -582,8 +582,7 @@ image-$(CONFIG_MACH_ZII_IMX7D_DEV) += barebox-zii-imx7d-dev.img
- # ----------------------- i.MX8mq based boards --------------------------
- pblb-$(CONFIG_MACH_NXP_IMX8MQ_EVK) += start_nxp_imx8mq_evk
- CFG_start_nxp_imx8mq_evk.pblb.imximg = $(board)/nxp-imx8mq-evk/flash-header-imx8mq-evk.imxcfg
--MAX_PBL_MEMORY_SIZE_start_nxp_imx8mq_evk = 0x3f000
--FILE_barebox-nxp-imx8mq-evk.img = start_nxp_imx8mq_evk.pblb.imximg
-+FILE_barebox-nxp-imx8mq-evk.img = start_nxp_imx8mq_evk.pblb.pimximg
- image-$(CONFIG_MACH_NXP_IMX8MQ_EVK) += barebox-nxp-imx8mq-evk.img
- 
- pblb-$(CONFIG_MACH_ZII_IMX8MQ_DEV) += start_zii_imx8mq_dev
--- 
-git-series 0.9.1
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QW0gTW9udGFnLCBkZW4gMDUuMDguMjAxOSwgMTE6MjMgKzAyMDAgc2NocmllYiBSb3V2ZW4gQ3pl
+cndpbnNraToKPiBSZXdvcmsgdGhlIGV2ayBib290IGZsb3cgdG8gdXNlIHRoZSBuZXcgcGlnZ3lk
+YXRhIGxvYWQgZnVuY3Rpb24gYW5kCj4gaW5zdGFsbCBhIHRyYW1wb2xpbmUgZm9yIHRoZSBURi1B
+IHNldHVwLiBUaGlzIGFsbG93cyB0aGUgUEJMIGJvb3QKPiBwcm9jZXNzIHRvIHN0YXkgaW4gU1JB
+TSB1cCB1bnRpbCB0aGUgdmVyaWZpY2F0aW9uIG9mIHRoZSBwaWdneWRhdGEgaXMKPiBkb25lIGFu
+ZCBtYWluIGJhcmVib3ggY2FuIGJlIGxvYWRlZC4KPiAKPiBUaGUgdHJhbXBvbGluZSBsb2FkcyA0
+IGJ5dGVzIHJpZ2h0IGFmdGVyIHRoZSB0cmFtcG9saW5lLCB3ZSBjb3B5IHRoZQo+IHJ1bnRpbWUg
+b2Zmc2V0IHRoZXJlIHNvIHRoZSB0cmFtcG9saW5lIGp1bXBzIGJhY2sgaW50byB0aGUgU1JBTSBQ
+QkwuCj4gCj4gPiBTaWduZWQtb2ZmLWJ5OiBSb3V2ZW4gQ3plcndpbnNraSA8ci5jemVyd2luc2tp
+QHBlbmd1dHJvbml4LmRlPgo+IC0tLQo+IMKgYXJjaC9hcm0vYm9hcmRzL254cC1pbXg4bXEtZXZr
+L01ha2VmaWxlwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHzC
+oMKgNCArLQo+IMKgYXJjaC9hcm0vYm9hcmRzL254cC1pbXg4bXEtZXZrL2ZsYXNoLWhlYWRlci1p
+bXg4bXEtZXZrLmlteGNmZyB8wqDCoDEgKy0KPiDCoGFyY2gvYXJtL2JvYXJkcy9ueHAtaW14OG1x
+LWV2ay9sb3dsZXZlbC5jwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+fCA4MyArKystLS0tCj4gwqBhcmNoL2FybS9ib2FyZHMvbnhwLWlteDhtcS1ldmsvdHJhbXBvbGlu
+ZS5TwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB8IDExICstCj4gwqBpbWFn
+ZXMvTWFrZWZpbGUuaW14wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB8wqDCoDMgKy0KPiDC
+oDUgZmlsZXMgY2hhbmdlZCwgNjAgaW5zZXJ0aW9ucygrKSwgNDIgZGVsZXRpb25zKC0pCj4gwqBj
+cmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL254cC1pbXg4bXEtZXZrL3RyYW1wb2xp
+bmUuUwo+IAo+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvbnhwLWlteDhtcS1ldmsvTWFr
+ZWZpbGUgYi9hcmNoL2FybS9ib2FyZHMvbnhwLWlteDhtcS1ldmsvTWFrZWZpbGUKPiBpbmRleCAw
+NTQ2YjBiLi43OTA3ZGU0IDEwMDY0NAo+IC0tLSBhL2FyY2gvYXJtL2JvYXJkcy9ueHAtaW14OG1x
+LWV2ay9NYWtlZmlsZQo+ICsrKyBiL2FyY2gvYXJtL2JvYXJkcy9ueHAtaW14OG1xLWV2ay9NYWtl
+ZmlsZQo+IEBAIC0xLDQgKzEsMiBAQAo+IMKgb2JqLXkgKz0gYm9hcmQubwo+IC1sd2wteSArPSBs
+b3dsZXZlbC5vIGRkcl9pbml0Lm8gZGRycGh5X3RyYWluLm8KPiAtCj4gLQo+ICtsd2wteSArPSBs
+b3dsZXZlbC5vIGRkcl9pbml0Lm8gZGRycGh5X3RyYWluLm8gdHJhbXBvbGluZS5vCj4gZGlmZiAt
+LWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9ueHAtaW14OG1xLWV2ay9mbGFzaC1oZWFkZXItaW14OG1x
+LWV2ay5pbXhjZmcgYi9hcmNoL2FybS9ib2FyZHMvbnhwLWlteDhtcS1ldmsvZmxhc2gtaGVhZGVy
+LWlteDhtcS1ldmsuaW14Y2ZnCj4gaW5kZXggYWZmODMyMS4uMTE0NjNmZSAxMDA2NDQKPiAtLS0g
+YS9hcmNoL2FybS9ib2FyZHMvbnhwLWlteDhtcS1ldmsvZmxhc2gtaGVhZGVyLWlteDhtcS1ldmsu
+aW14Y2ZnCj4gKysrIGIvYXJjaC9hcm0vYm9hcmRzL254cC1pbXg4bXEtZXZrL2ZsYXNoLWhlYWRl
+ci1pbXg4bXEtZXZrLmlteGNmZwo+IEBAIC0zLDMgKzMsNCBAQCBzb2MgaW14OG1xCj4gwqBsb2Fk
+YWRkciAweDAwN0UxMDAwCj4gwqBtYXhfbG9hZF9zaXplIDB4M0YwMDAKPiDCoGRjZG9mcyAweDQw
+MAo+ICsjaW5jbHVkZSA8bWFjaC9oYWJ2NC1pbXg4LWdlbmNzZi5oPgo+IGRpZmYgLS1naXQgYS9h
+cmNoL2FybS9ib2FyZHMvbnhwLWlteDhtcS1ldmsvbG93bGV2ZWwuYyBiL2FyY2gvYXJtL2JvYXJk
+cy9ueHAtaW14OG1xLWV2ay9sb3dsZXZlbC5jCj4gaW5kZXggNjQ1MWU1ZC4uMmUyM2E0YyAxMDA2
+NDQKPiAtLS0gYS9hcmNoL2FybS9ib2FyZHMvbnhwLWlteDhtcS1ldmsvbG93bGV2ZWwuYwo+ICsr
+KyBiL2FyY2gvYXJtL2JvYXJkcy9ueHAtaW14OG1xLWV2ay9sb3dsZXZlbC5jCj4gQEAgLTUzLDIw
+ICs1MywyOSBAQCBzdGF0aWMgdm9pZCBzZXR1cF91YXJ0KHZvaWQpCj4gwqAKPiDCoHN0YXRpYyB2
+b2lkIG54cF9pbXg4bXFfZXZrX3NyYW1fc2V0dXAodm9pZCkKPiDCoHsKPiA+IC0JZW51bSBib290
+c291cmNlIHNyYyA9IEJPT1RTT1VSQ0VfVU5LTk9XTjsKPiA+IC0JaW50IGluc3RhbmNlID0gQk9P
+VFNPVVJDRV9JTlNUQU5DRV9VTktOT1dOOwo+ID4gLQlpbnQgcmV0ID0gLUVOT1RTVVBQOwo+IC0K
+PiA+IMKgCWRkcl9pbml0KCk7Cj4gK30KPiDCoAo+ID4gLQlpbXg4X2dldF9ib290X3NvdXJjZSgm
+c3JjLCAmaW5zdGFuY2UpOwo+ICtleHRlcm4gdW5zaWduZWQgY2hhciB0cmFtcG9saW5lX3N0YXJ0
+W107Cj4gK2V4dGVybiB1bnNpZ25lZCBjaGFyIHRyYW1wb2xpbmVfZW5kW107Cj4gwqAKPiA+IC0J
+aWYgKHNyYyA9PSBCT09UU09VUkNFX01NQykKPiA+IC0JCXJldCA9IGlteDhfZXNkaGNfc3RhcnRf
+aW1hZ2UoaW5zdGFuY2UpOwo+ICtzdGF0aWMgdm9pZCBueHBfaW14OG1xX2V2a19pbnN0YWxsX3Rm
+YV90cmFtcG9saW5lKHZvaWQpCj4gK3sKPiA+ICsJdW5zaWduZWQgaW50IHRyYW1wX2xlbjsKPiA+
+ICsJdW5zaWduZWQgaW50IG9mZnNldDsKPiA+ICsJLyoKPiA+ICsJwqAqIENyZWF0ZSBhIHRyYW1w
+b2xpbmUgd2hpY2ggaXMgcGxhY2VzIGluIERSQU0gYW5kIGNhbGxzIGJhY2sgaW50byB0aGUKPiA+
+ICsJwqAqIFBCTCBlbnRyeSBmdW5jdGlvbiBmb3VuZCBpbiB0aGUgVENSQU0uIFJlZ2lzdGVyIHgw
+IGlzIHNldCB0byAxIHRvCj4gPiArCcKgKiBpbmRpY2F0ZSB0aGF0IERSQU0gc2V0dXAgd2FzIGFs
+cmVhZHkgcnVuLgo+ID4gKwnCoCovCj4gPiArCXRyYW1wX2xlbiA9ICh2b2lkICopdHJhbXBvbGlu
+ZV9lbmQgLSAodm9pZCAqKXRyYW1wb2xpbmVfc3RhcnQ7Cj4gPiArCW1lbWNweSgodm9pZCAqKU1Y
+OE1RX0FURl9CTDMzX0JBU0VfQUREUiwgKHZvaWQgKil0cmFtcG9saW5lX3N0YXJ0LAo+ID4gKwnC
+oMKgwqDCoMKgwqDCoHRyYW1wX2xlbik7Cj4gwqAKPiA+IC0JQlVHX09OKHJldCk7Cj4gPiArCW9m
+ZnNldCA9IGdldF9ydW50aW1lX29mZnNldCgpOwo+ID4gKwltZW1jcHkoKHZvaWQgKilNWDhNUV9B
+VEZfQkwzM19CQVNFX0FERFIgKyB0cmFtcF9sZW4sICZvZmZzZXQsCj4gPiArCcKgwqDCoMKgwqDC
+oMKgc2l6ZW9mKG9mZnNldCkpOwo+IMKgfQo+IC0KPiDCoC8qCj4gwqAgKiBQb3dlci1vbiBleGVj
+dXRpb24gZmxvdyBvZiBzdGFydF9ueHBfaW14OG1xX2V2aygpIG1pZ2h0IG5vdCBiZQo+IMKgICog
+b2J2aW91cyBmb3IgYSB2ZXJ5IGZpcnN0IHJlYWQsIHNvIGhlcmUncywgaG9wZWZ1bGx5IGhlbHBm
+dWwsCj4gQEAgLTc1LDUzICs4NCw1MyBAQCBzdGF0aWMgdm9pZCBueHBfaW14OG1xX2V2a19zcmFt
+X3NldHVwKHZvaWQpCj4gwqAgKiAxLiBNYXNrUk9NIHVwbG9hZHMgUEJMIGludG8gT0NSQU0gYW5k
+IHRoYXQncyB3aGVyZSB0aGlzIGZ1bmN0aW9uIGlzCj4gwqAgKsKgwqDCoMKgZXhlY3V0ZWQgZm9y
+IHRoZSBmaXJzdCB0aW1lCj4gwqAgKgo+IC0gKiAyLiBERFIgaXMgaW5pdGlhbGl6ZWQgYW5kIGZ1
+bGwgaS5NWCBpbWFnZSBpcyBsb2FkZWQgdG8gdGhlCj4gLSAqwqDCoMKgwqBiZWdpbm5pbmcgb2Yg
+UkFNCj4gLSAqCj4gLSAqIDMuIHN0YXJ0X254cF9pbXg4bXFfZXZrLCBub3cgaW4gUkFNLCBpcyBl
+eGVjdXRlZCBhZ2Fpbgo+ICsgKiAyLiBERFIgaXMgaW5pdGlhbGl6ZWQgYW5kIHRoZSBURi1BIHRy
+YW1wb2xpbmUgaXMgaW5zdGFsbGVkIGluIHRoZQo+ICsgKsKgwqDCoMKgRFJBTS4KPiDCoCAqCj4g
+LSAqIDQuIEJMMzEgYmxvYiBpcyB1cGxvYWRlZCB0byBPQ1JBTSBhbmQgdGhlIGNvbnRyb2wgaXMg
+dHJhbnNmZXIgdG8gaXQKPiArICogMy4gVEYtQSBpcyBleGVjdXRlZCBhbmQgZXhpdHMgaW50byB0
+aGUgdHJhbXBvbGluZSBpbiBSQU0sIHdoaWNoIGVudGVycyB0aGUKPiArICrCoMKgwqDCoFBCTCBm
+b3IgdGhlIHNlY29uZCB0aW1lLiBEUkFNIHNldHVwIGRvbmUgaXMgaW5kaWNhdGVkIGJ5IGEgb25l
+IGluIHJlZ2lzdGVyCj4gKyAqwqDCoMKgwqB4MCBieSB0aGUgdHJhbXBvbGluZQoKV2h5IGNoYW5n
+ZSB0aGlzIGFuZCBhZGQgYWRkaXRpb25hbCByZWdpc3RlciBzdGF0ZSBoZXJlPyBDaGVja2luZyBm
+b3IKRUwyIHNob3VsZCB3b3JrIGZpbmUgZm9yIHRoaXMuCgpSZWdhcmRzLApMdWNhcwoKPiDCoCAq
+Cj4gLSAqIDUuIEJMMzEgZXhpdHMgRUwzIGludG8gRUwyIGF0IGFkZHJlc3MgTVg4TVFfQVRGX0JM
+MzNfQkFTRV9BRERSLAo+IC0gKsKgwqDCoMKgZXhlY3V0aW5nIHN0YXJ0X254cF9pbXg4bXFfZXZr
+KCkgdGhlIHRoaXJkIHRpbWUKPiArICogNC4gVGhlIHBpZ2d5ZGF0YSBpcyBsb2FkZWQgZnJvbSB0
+aGUgU0QgY2FyZCBhbmQgY29waWVkIHRvIHRoZSBleHBlY3RlZAo+ICsgKsKgwqDCoMKgbG9jYXRp
+b24gaW4gdGhlIERSQU0uCj4gwqAgKgo+IC0gKiA2LiBTdGFuZGFyZCBiYXJlYm94IGJvb3QgZmxv
+dyBjb250aW51ZXMKPiArICogNS4gU3RhbmRhcmQgYmFyZWJveCBib290IGZsb3cgY29udGludWVz
+Cj4gwqAgKi8KPiDCoEVOVFJZX0ZVTkNUSU9OKHN0YXJ0X254cF9pbXg4bXFfZXZrLCByMCwgcjEs
+IHIyKQo+IMKgewo+ID4gKwllbnVtIGJvb3Rzb3VyY2Ugc3JjID0gQk9PVFNPVVJDRV9VTktOT1dO
+Owo+ID4gKwlpbnQgaW5zdGFuY2UgPSBCT09UU09VUkNFX0lOU1RBTkNFX1VOS05PV047Cj4gPiAr
+CWludCByZXQgPSAtRU5PVFNVUFA7Cj4gPiArCWNvbnN0IHU4ICpibDMxOwo+ID4gKwlzaXplX3Qg
+YmwzMV9zaXplOwo+ICsKPiA+IMKgCWlteDhtcV9jcHVfbG93bGV2ZWxfaW5pdCgpOwo+IMKgCj4g
+PiDCoAlpZiAoSVNfRU5BQkxFRChDT05GSUdfREVCVUdfTEwpKQo+ID4gwqAJCXNldHVwX3VhcnQo
+KTsKPiDCoAo+ID4gLQlpZiAoZ2V0X3BjKCkgPCBNWDhNUV9ERFJfQ1NEMV9CQVNFX0FERFIpIHsK
+PiA+IC0JCS8qCj4gPiAtCQnCoCogV2UgYXNzdW1lIHRoYXQgd2Ugd2VyZSBqdXN0IGxvYWRlZCBi
+eSBNYXNrUk9NIGludG8KPiA+IC0JCcKgKiBTUkFNIGlmIHdlIGFyZSBub3QgcnVubmluZyBmcm9t
+IEREUi4gV2UgYWxzbyBhc3N1bWUKPiA+IC0JCcKgKiB0aGF0IG1lYW5zIEREUiBuZWVkcyB0byBi
+ZSBpbml0aWFsaXplZCBmb3IgdGhlCj4gPiAtCQnCoCogZmlyc3QgdGltZS4KPiA+IC0JCcKgKi8K
+PiA+IC0JCW54cF9pbXg4bXFfZXZrX3NyYW1fc2V0dXAoKTsKPiA+IC0JfQo+ID4gwqAJLyoKPiA+
+IC0JwqAqIFN0cmFpZ2h0IGZyb20gdGhlIHBvd2VyLW9uIHdlIGFyZSBhdCBFTDMsIHNvIHRoZSBm
+b2xsb3dpbmcKPiA+IC0JwqAqIGNvZGUgX3dpbGxfIGxvYWQgYW5kIGp1bXAgdG8gQVRGLgo+ID4g
+LQnCoCoKPiA+IC0JwqAqIEhvd2V2ZXIgd2hlbiB3ZSBhcmUgcmUtZXhlY3V0ZWQgdXBvbiBleGl0
+IGZyb20gQVRGJ3MKPiA+IC0JwqAqIGluaXRpYWxpemF0aW9uIHJvdXRpbmUsIGl0IGlzIEVMMiB3
+aGljaCBtZWFucyB3ZSdsbCBza2lwCj4gPiAtCcKgKiBsb2FkdGluZyBBVEYgYmxvYiBhZ2Fpbgo+
+ID4gKwnCoCogaWYgcmVnaXN0ZXIgcjAgZG9lcyBub3QgY29udGFpbiAxLCB3ZSBhcmUgcnVubmlu
+ZyBmb3IgdGhlIGZpcnN0IHRpbWUKPiA+ICsJwqAqIGFuZCBuZWVkIHRvIGluaXRpYWxpemUgdGhl
+IERSQU0sIGluc3RhbGwgdGhlIHRyYW1wb2xpbmUgYW5kIHJ1biBURi1BCj4gPiArCcKgKiAoQkwz
+MSkuCj4gPiArCcKgKiBPdGhlcndpc2UgdGhlIDEgaW5kaWNhdGVzIHRoYXQgdGhlIERSQU0gc2V0
+dXAgYW5kIHRyYW1wb2xpbmUgYXJlCj4gPiArCcKgKiBhbHJlYWR5IGluc3RhbGxlZCBhbmQgVEYt
+QSBoYXMgYmVlbiBydW4uIEluIHRoaXMgY2FzZSB3ZSBjYW4gc2tpcAo+ID4gwqAJwqAqLwo+ID4g
+LQlpZiAoY3VycmVudF9lbCgpID09IDMpIHsKPiA+IC0JCWNvbnN0IHU4ICpibDMxOwo+ID4gLQkJ
+c2l6ZV90IGJsMzFfc2l6ZTsKPiAtCj4gPiArCWlmIChyMCAhPSAxKSB7Cj4gPiArCQlueHBfaW14
+OG1xX2V2a19zcmFtX3NldHVwKCk7Cj4gPiArCQlueHBfaW14OG1xX2V2a19pbnN0YWxsX3RmYV90
+cmFtcG9saW5lKCk7Cj4gPiDCoAkJZ2V0X2J1aWx0aW5fZmlybXdhcmUoaW14OG1xX2JsMzFfYmlu
+LCAmYmwzMSwgJmJsMzFfc2l6ZSk7Cj4gPiDCoAkJaW14OG1xX2F0Zl9sb2FkX2JsMzEoYmwzMSwg
+YmwzMV9zaXplKTsKPiA+IMKgCX0KPiDCoAo+ID4gKwlpbXg4X2dldF9ib290X3NvdXJjZSgmc3Jj
+LCAmaW5zdGFuY2UpOwo+ICsKPiA+ICsJaWYgKHNyYyA9PSBCT09UU09VUkNFX01NQykKPiA+ICsJ
+CXJldCA9IGlteDhfZXNkaGNfbG9hZF9waWdneShpbnN0YW5jZSk7Cj4gPiArCWVsc2UKPiA+ICsJ
+CUJVR19PTihyZXQpOwo+ID4gwqAJLyoKPiA+IMKgCcKgKiBTdGFuZGFyZCBlbnRyeSB3ZSBoaXQg
+b25jZSB3ZSBpbml0aWFsaXplZCBib3RoIEREUiBhbmQgQVRGCj4gPiDCoAnCoCovCj4gPiDCoAlp
+bXg4bXFfYmFyZWJveF9lbnRyeShfX2R0Yl9pbXg4bXFfZXZrX3N0YXJ0KTsKPiDCoH0KPiAtCj4g
+ZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9ueHAtaW14OG1xLWV2ay90cmFtcG9saW5lLlMg
+Yi9hcmNoL2FybS9ib2FyZHMvbnhwLWlteDhtcS1ldmsvdHJhbXBvbGluZS5TCj4gbmV3IGZpbGUg
+bW9kZSAxMDA2NDQKPiBpbmRleCAwMDAwMDAwLi40OWJkNzUwCj4gLS0tIC9kZXYvbnVsbAo+ICsr
+KyBiL2FyY2gvYXJtL2JvYXJkcy9ueHAtaW14OG1xLWV2ay90cmFtcG9saW5lLlMKPiBAQCAtMCww
+ICsxLDExIEBACj4gKy8qIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiAoR1BMLTIuMCkgKi8KPiAr
+I2luY2x1ZGUgPGxpbnV4L2xpbmthZ2UuaD4KPiArI2luY2x1ZGUgPGFzbS9zZWN0aW9ucy5oPgo+
+ID4gKwkuc2VjdGlvbiAudHJhbXBvbGluZSwiYSIKPiA+ICsJLmdsb2JswqDCoHRyYW1wb2xpbmVf
+c3RhcnQKPiArdHJhbXBvbGluZV9zdGFydDoKPiA+ID4gKwlsZHIJdzE5LCB0cmFtcG9saW5lX2Vu
+ZAo+ID4gKwltb3bCoMKgwqDCoMKgeDAsICMweDEKPiA+ICsJYnLCoMKgwqDCoMKgwqB4MTkKPiA+
+ICsJLmdsb2JswqDCoHRyYW1wb2xpbmVfZW5kCj4gK3RyYW1wb2xpbmVfZW5kOgo+IGRpZmYgLS1n
+aXQgYS9pbWFnZXMvTWFrZWZpbGUuaW14IGIvaW1hZ2VzL01ha2VmaWxlLmlteAo+IGluZGV4IDc2
+YmVjY2IuLjBmZDFmZTEgMTAwNjQ0Cj4gLS0tIGEvaW1hZ2VzL01ha2VmaWxlLmlteAo+ICsrKyBi
+L2ltYWdlcy9NYWtlZmlsZS5pbXgKPiBAQCAtNTgyLDggKzU4Miw3IEBAIGltYWdlLSQoQ09ORklH
+X01BQ0hfWklJX0lNWDdEX0RFVikgKz0gYmFyZWJveC16aWktaW14N2QtZGV2LmltZwo+IMKgIyAt
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBpLk1YOG1xIGJhc2VkIGJvYXJkcyAtLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLQo+IMKgcGJsYi0kKENPTkZJR19NQUNIX05YUF9JTVg4TVFfRVZLKSArPSBz
+dGFydF9ueHBfaW14OG1xX2V2awo+IMKgQ0ZHX3N0YXJ0X254cF9pbXg4bXFfZXZrLnBibGIuaW14
+aW1nID0gJChib2FyZCkvbnhwLWlteDhtcS1ldmsvZmxhc2gtaGVhZGVyLWlteDhtcS1ldmsuaW14
+Y2ZnCj4gLU1BWF9QQkxfTUVNT1JZX1NJWkVfc3RhcnRfbnhwX2lteDhtcV9ldmsgPSAweDNmMDAw
+Cj4gLUZJTEVfYmFyZWJveC1ueHAtaW14OG1xLWV2ay5pbWcgPSBzdGFydF9ueHBfaW14OG1xX2V2
+ay5wYmxiLmlteGltZwo+ICtGSUxFX2JhcmVib3gtbnhwLWlteDhtcS1ldmsuaW1nID0gc3RhcnRf
+bnhwX2lteDhtcV9ldmsucGJsYi5waW14aW1nCj4gwqBpbWFnZS0kKENPTkZJR19NQUNIX05YUF9J
+TVg4TVFfRVZLKSArPSBiYXJlYm94LW54cC1pbXg4bXEtZXZrLmltZwo+IMKgCj4gwqBwYmxiLSQo
+Q09ORklHX01BQ0hfWklJX0lNWDhNUV9ERVYpICs9IHN0YXJ0X3ppaV9pbXg4bXFfZGV2CgpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxp
+bmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVh
+ZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
