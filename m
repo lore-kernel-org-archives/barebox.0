@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([78.46.208.201])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1huZE3-0004At-GH
- for barebox@lists.infradead.org; Mon, 05 Aug 2019 09:24:21 +0000
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Mon,  5 Aug 2019 11:23:52 +0200
-Message-Id: <779cf1615ca931b2687c6fa8a4b5f4e481f8af82.1564997015.git-series.r.czerwinski@pengutronix.de>
-In-Reply-To: <cover.b9d503ab98014278972f6bd84931035a5ef27967.1564997015.git-series.r.czerwinski@pengutronix.de>
+ id 1huaRe-0007cp-RM
+ for barebox@lists.infradead.org; Mon, 05 Aug 2019 10:42:29 +0000
+Message-ID: <1565001745.2323.5.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Mon, 05 Aug 2019 12:42:25 +0200
+In-Reply-To: <779cf1615ca931b2687c6fa8a4b5f4e481f8af82.1564997015.git-series.r.czerwinski@pengutronix.de>
 References: <cover.b9d503ab98014278972f6bd84931035a5ef27967.1564997015.git-series.r.czerwinski@pengutronix.de>
-MIME-Version: 1.0
+ <779cf1615ca931b2687c6fa8a4b5f4e481f8af82.1564997015.git-series.r.czerwinski@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,69 +18,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 13/16] arm: uncompress: verify sha256 if enabled
-To: barebox@lists.infradead.org
-Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Subject: Re: [PATCH v2 13/16] arm: uncompress: verify sha256 if enabled
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>, barebox@lists.infradead.org
 
-Add piggydata verification before the ARM uncompress function.
-This calculates the sha256sum of the compressed barebox binary and only
-continues if the builtin sha256sum matches the calculated sha256sum.
-
-Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
----
- arch/arm/cpu/uncompress.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
-
-diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
-index c7851c5..4c69b4c 100644
---- a/arch/arm/cpu/uncompress.c
-+++ b/arch/arm/cpu/uncompress.c
-@@ -42,14 +42,18 @@ unsigned long free_mem_end_ptr;
- extern unsigned char input_data[];
- extern unsigned char input_data_end[];
- 
-+extern unsigned char sha_sum[];
-+extern unsigned char sha_sum_end[];
-+
- void __noreturn barebox_multi_pbl_start(unsigned long membase,
- 		unsigned long memsize, void *boarddata)
- {
--	uint32_t pg_len, uncompressed_len;
-+	uint32_t pg_len, uncompressed_len, pbl_hash_len;
- 	void __noreturn (*barebox)(unsigned long, unsigned long, void *);
- 	unsigned long endmem = membase + memsize;
- 	unsigned long barebox_base;
- 	void *pg_start, *pg_end;
-+	void *pbl_hash_start, *pbl_hash_end;
- 	unsigned long pc = get_pc();
- 
- 	pg_start = input_data + global_variable_offset();
-@@ -92,6 +96,17 @@ void __noreturn barebox_multi_pbl_start(unsigned long membase,
- 	pr_debug("uncompressing barebox binary at 0x%p (size 0x%08x) to 0x%08lx (uncompressed size: 0x%08x)\n",
- 			pg_start, pg_len, barebox_base, uncompressed_len);
- 
-+	if (IS_ENABLED(CONFIG_PBL_VERIFY_PIGGY)) {
-+		pbl_hash_start = sha_sum + global_variable_offset();
-+		pbl_hash_end = sha_sum_end + global_variable_offset();
-+		pbl_hash_len = pbl_hash_end - pbl_hash_start;
-+		if (pbl_barebox_verify(pg_start, pg_len, pbl_hash_start,
-+				       pbl_hash_len) != 0) {
-+			putc_ll('!');
-+			panic("hash mismatch, refusing to decompress");
-+		}
-+	}
-+
- 	pbl_barebox_uncompress((void*)barebox_base, pg_start, pg_len);
- 
- 	sync_caches_for_execution();
--- 
-git-series 0.9.1
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QW0gTW9udGFnLCBkZW4gMDUuMDguMjAxOSwgMTE6MjMgKzAyMDAgc2NocmllYiBSb3V2ZW4gQ3pl
+cndpbnNraToKPiBBZGQgcGlnZ3lkYXRhIHZlcmlmaWNhdGlvbiBiZWZvcmUgdGhlIEFSTSB1bmNv
+bXByZXNzIGZ1bmN0aW9uLgo+IFRoaXMgY2FsY3VsYXRlcyB0aGUgc2hhMjU2c3VtIG9mIHRoZSBj
+b21wcmVzc2VkIGJhcmVib3ggYmluYXJ5IGFuZCBvbmx5Cj4gY29udGludWVzIGlmIHRoZSBidWls
+dGluIHNoYTI1NnN1bSBtYXRjaGVzIHRoZSBjYWxjdWxhdGVkIHNoYTI1NnN1bS4KPiAKPiA+IFNp
+Z25lZC1vZmYtYnk6IFJvdXZlbiBDemVyd2luc2tpIDxyLmN6ZXJ3aW5za2lAcGVuZ3V0cm9uaXgu
+ZGU+Cj4gLS0tCj4gwqBhcmNoL2FybS9jcHUvdW5jb21wcmVzcy5jIHwgMTcgKysrKysrKysrKysr
+KysrKy0KPiDCoDEgZmlsZSBjaGFuZ2VkLCAxNiBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0p
+Cj4gCj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2NwdS91bmNvbXByZXNzLmMgYi9hcmNoL2FybS9j
+cHUvdW5jb21wcmVzcy5jCj4gaW5kZXggYzc4NTFjNS4uNGM2OWI0YyAxMDA2NDQKPiAtLS0gYS9h
+cmNoL2FybS9jcHUvdW5jb21wcmVzcy5jCj4gKysrIGIvYXJjaC9hcm0vY3B1L3VuY29tcHJlc3Mu
+Ywo+IEBAIC00MiwxNCArNDIsMTggQEAgdW5zaWduZWQgbG9uZyBmcmVlX21lbV9lbmRfcHRyOwo+
+IMKgZXh0ZXJuIHVuc2lnbmVkIGNoYXIgaW5wdXRfZGF0YVtdOwo+IMKgZXh0ZXJuIHVuc2lnbmVk
+IGNoYXIgaW5wdXRfZGF0YV9lbmRbXTsKPiDCoAo+ICtleHRlcm4gdW5zaWduZWQgY2hhciBzaGFf
+c3VtW107Cj4gK2V4dGVybiB1bnNpZ25lZCBjaGFyIHNoYV9zdW1fZW5kW107Cj4gKwo+IMKgdm9p
+ZCBfX25vcmV0dXJuIGJhcmVib3hfbXVsdGlfcGJsX3N0YXJ0KHVuc2lnbmVkIGxvbmcgbWVtYmFz
+ZSwKPiA+IMKgCQl1bnNpZ25lZCBsb25nIG1lbXNpemUsIHZvaWQgKmJvYXJkZGF0YSkKPiDCoHsK
+PiA+IC0JdWludDMyX3QgcGdfbGVuLCB1bmNvbXByZXNzZWRfbGVuOwo+ID4gKwl1aW50MzJfdCBw
+Z19sZW4sIHVuY29tcHJlc3NlZF9sZW4sIHBibF9oYXNoX2xlbjsKPiA+IMKgCXZvaWQgX19ub3Jl
+dHVybiAoKmJhcmVib3gpKHVuc2lnbmVkIGxvbmcsIHVuc2lnbmVkIGxvbmcsIHZvaWQgKik7Cj4g
+PiDCoAl1bnNpZ25lZCBsb25nIGVuZG1lbSA9IG1lbWJhc2UgKyBtZW1zaXplOwo+ID4gwqAJdW5z
+aWduZWQgbG9uZyBiYXJlYm94X2Jhc2U7Cj4gPiDCoAl2b2lkICpwZ19zdGFydCwgKnBnX2VuZDsK
+PiA+ICsJdm9pZCAqcGJsX2hhc2hfc3RhcnQsICpwYmxfaGFzaF9lbmQ7Cj4gPiDCoAl1bnNpZ25l
+ZCBsb25nIHBjID0gZ2V0X3BjKCk7Cj4gwqAKPiA+IMKgCXBnX3N0YXJ0ID0gaW5wdXRfZGF0YSAr
+IGdsb2JhbF92YXJpYWJsZV9vZmZzZXQoKTsKPiBAQCAtOTIsNiArOTYsMTcgQEAgdm9pZCBfX25v
+cmV0dXJuIGJhcmVib3hfbXVsdGlfcGJsX3N0YXJ0KHVuc2lnbmVkIGxvbmcgbWVtYmFzZSwKPiA+
+IMKgCXByX2RlYnVnKCJ1bmNvbXByZXNzaW5nIGJhcmVib3ggYmluYXJ5IGF0IDB4JXAgKHNpemUg
+MHglMDh4KSB0byAweCUwOGx4ICh1bmNvbXByZXNzZWQgc2l6ZTogMHglMDh4KVxuIiwKPiA+IMKg
+CQkJcGdfc3RhcnQsIHBnX2xlbiwgYmFyZWJveF9iYXNlLCB1bmNvbXByZXNzZWRfbGVuKTsKPiDC
+oAo+ID4gKwlpZiAoSVNfRU5BQkxFRChDT05GSUdfUEJMX1ZFUklGWV9QSUdHWSkpIHsKPiA+ICsJ
+CXBibF9oYXNoX3N0YXJ0ID0gc2hhX3N1bSArIGdsb2JhbF92YXJpYWJsZV9vZmZzZXQoKTsKPiAr
+CQlwYmxfaGFzaF9lbmQgPSBzaGFfc3VtX2VuZCArIGdsb2JhbF92YXJpYWJsZV9vZmZzZXQoKTsK
+ClRoaXMgY29kZSBpcyBleGVjdXRlZCBhZnRlciByZWxvY2F0aW9uLCBzbyB0aGVyZSBpcyBubyBw
+b2ludCBpbiBhZGRpbmcKdGhlIGdsb2JhbCB2YXJpYWJsZSBvZmZzZXQuIEl0IGRvZXNuJ3QgaGFy
+bSwgYXMgdGhlIG9mZnNldCBpcyBhbHdheXMgMAphdCB0aGF0IHBvaW50LCBidXQgYmV0dGVyIGRv
+bid0IHN0YXJ0IGNhcmdvLWN1bHRpbmcgaGVyZS4KClJlZ2FyZHMsCkx1Y2FzCgo+ICsJCXBibF9o
+YXNoX2xlbiA9IHBibF9oYXNoX2VuZCAtIHBibF9oYXNoX3N0YXJ0Owo+ID4gKwkJaWYgKHBibF9i
+YXJlYm94X3ZlcmlmeShwZ19zdGFydCwgcGdfbGVuLCBwYmxfaGFzaF9zdGFydCwKPiA+ICsJCQkJ
+wqDCoMKgwqDCoMKgwqBwYmxfaGFzaF9sZW4pICE9IDApIHsKPiA+ICsJCQlwdXRjX2xsKCchJyk7
+Cj4gPiArCQkJcGFuaWMoImhhc2ggbWlzbWF0Y2gsIHJlZnVzaW5nIHRvIGRlY29tcHJlc3MiKTsK
+PiA+ICsJCX0KPiA+ICsJfQo+ICsKPiA+IMKgCXBibF9iYXJlYm94X3VuY29tcHJlc3MoKHZvaWQq
+KWJhcmVib3hfYmFzZSwgcGdfc3RhcnQsIHBnX2xlbik7Cj4gwqAKPiA+IMKgCXN5bmNfY2FjaGVz
+X2Zvcl9leGVjdXRpb24oKTsKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9y
+ZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
