@@ -1,18 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mickerik.phytec.de ([195.145.39.210])
- by bombadil.infradead.org with esmtp (Exim 4.92 #3 (Red Hat Linux))
- id 1hyGW7-00070H-Hx
- for barebox@lists.infradead.org; Thu, 15 Aug 2019 14:14:22 +0000
-References: <1563436921-362991-1-git-send-email-m.otto@phytec.de>
- <1563436921-362991-4-git-send-email-m.otto@phytec.de>
- <20190805110213.pfqdnyeecyc3rhmq@pengutronix.de>
- <20190805123540.44he42heamdwr7en@pengutronix.de>
- <20190805150753.wwg4ddliy6w43udw@pengutronix.de>
-From: Maik Otto <m.otto@phytec.de>
-Message-ID: <85285ed4-d784-d86a-ce1f-28130dbc5674@phytec.de>
-Date: Thu, 15 Aug 2019 16:14:10 +0200
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
+ id 1hudg2-0006Gf-Ax
+ for barebox@lists.infradead.org; Mon, 05 Aug 2019 14:09:31 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon,  5 Aug 2019 16:09:27 +0200
+Message-Id: <20190805140927.14941-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20190805150753.wwg4ddliy6w43udw@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,190 +15,176 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 4/4] Makefile: add creation of signed/encrypted images
- for imx6, imx7, imx8
-To: Roland Hieber <rhi@pengutronix.de>, Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] crypto: caam - Always do rng selftest
+To: Barebox List <barebox@lists.infradead.org>
 
-SGkgU2FzY2hhIGFuZCBSb2xhbmQsDQoNCnRoYW5rIHlvdSBmb3IgeW91ciByZXNwb25zZS4NCkkg
-aGF2ZSBjcmVhdGUgYW4gZXhhbXBsZSBmb3IgdGhlIHBhdGNoIG9uIGJhc2ljIG9mIFJvbGFuZHMg
-cHJvdG90eXBlDQpJZiB0aGUgY29kZcKgIGlzIG9rIGZvciB5b3UsIHRoZW4gaSB3aWxsIHJld29y
-ayB0aGUgcGF0Y2ggYW5kIHNlbmQgdGhlDQpwYXRjaCB0byB0aGUgbWFpbGluZ2xpc3QuDQoNCmRp
-ZmYgLS1naXQgYS9pbWFnZXMvTWFrZWZpbGUuaW14DQpiL2ltYWdlcy9NYWtlZmlsZS5pbXjCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgDQppbmRleCA0
-MmMxOTRiLi42Y2E0ZGI5DQoxMDA2NDTCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqANCi0tLQ0KYS9pbWFnZXMvTWFrZWZpbGUuaW14wqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqANCg0KKysrDQpiL2ltYWdlcy9NYWtl
-ZmlsZS5pbXjCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoA0KDQpAQCAtMiw2ICsyLDI0DQpAQMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgDQrCoCMgYmFyZWJveCBpbWFn
-ZSBnZW5lcmF0aW9uIE1ha2VmaWxlIGZvciBpLk1YDQppbWFnZXPCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoA0KwqAjDQorIyBwYXJhbXM6IENP
-TkZJRyBzeW1ib2wsIGVudHJ5IHBvaW50LCBmbGFzaCBoZWFkZXIgcGF0aCBzdHJpbmcsIGJvYXJk
-DQppZGVudGlmaWVyIHN0cmluZw0KK2RlZmluZSBidWlsZF9pbXhfaGFidjRpbWcNCj3CoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoA0KKyQoZXZhbMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgDQoNCitpZmVxICgkKCQoc3RyaXAgJCgxKSkpLA0KeSnC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgDQorwqDCoMKg
-wqDCoMKgIHBibGIteSArPSAkKHN0cmlwDQokKDIpKcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgDQorwqDCoMKgwqDCoMKgIENGR18kKHN0cmlwICQoMikpLnBibGIuaW14
-aW1nID0gJChib2FyZCkvJChzdHJpcA0KJCgzKSkuaW14Y2ZnwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oA0KK8KgwqDCoMKgwqDCoCBGSUxFX2JhcmVib3gtJChzdHJpcCAkKDQpKS5pbWfCoMKgwqAgPSAk
-KHN0cmlwDQokKDIpKS5wYmxiLmlteGltZ8KgwqDCoMKgwqDCoMKgwqDCoMKgwqANCivCoMKgwqDC
-oMKgwqAgRklMRV9iYXJlYm94LSQoc3RyaXAgJCg0KSktcy5pbWfCoCA9ICQoc3RyaXANCiQoMikp
-LnBibGIuc2lteGltZ8KgwqDCoMKgwqDCoMKgwqDCoMKgDQorwqDCoMKgwqDCoMKgIEZJTEVfYmFy
-ZWJveC0kKHN0cmlwICQoNCkpLXVzLmltZyA9ICQoc3RyaXANCiQoMikpLnBibGIudXNpbXhpbWfC
-oMKgwqDCoMKgwqDCoMKgwqANCivCoMKgwqDCoMKgwqAgRklMRV9iYXJlYm94LSQoc3RyaXAgJCg0
-KSktZXMuaW1nID0gJChzdHJpcA0KJCgyKSkucGJsYi5lc2lteGltZ8KgwqDCoMKgwqDCoMKgwqDC
-oA0KK8KgwqDCoMKgwqDCoCBpbWFnZS15ICs9IGJhcmVib3gtJChzdHJpcA0KJCg0KSkuaW1nwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgDQorwqDCoMKgwqDCoMKgIGltYWdlLSQoQ09ORklHX0hBQlY0X0lNQUdFX1NJ
-R05FRCkgKz0gYmFyZWJveC0kKHN0cmlwDQokKDQpKS1zLmltZ8KgwqDCoMKgwqDCoMKgDQorwqDC
-oMKgwqDCoMKgIGltYWdlLSQoQ09ORklHX0hBQlY0X0lNQUdFX1NJR05FRF9VU0IpICs9IGJhcmVi
-b3gtJChzdHJpcA0KJCg0KSktdXMuaW1nwqDCoA0KK8KgwqDCoMKgwqDCoCBpbWFnZS0kKENPTkZJ
-R19IQUJWNF9JTUFHRV9TSUdORURfRU5DUllQVEVEKSArPSBiYXJlYm94LSQoc3RyaXANCiQoNCkp
-LWVzLmltZw0KK2VuZGlmwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoA0KDQorKcKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoA0KDQorZW5kZWbCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgDQoNCivCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoA0KDQrCoCMgJS5pbXhpbWcgLSBjb252ZXJ0IGludG8gaS5NWA0K
-aW1hZ2XCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoA0KwqAjDQotLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0twqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqANCg0KDQpAQCAtMTQzLDEwICsxNjEsNyBAQCBGSUxFX2JhcmVib3gt
-dHg1My0xMDExLmltZyA9DQpzdGFydF9pbXg1M190eDUzXzEwMTEucGJsYi5pbXhpbWcNCsKgaW1h
-Z2UtJChDT05GSUdfTUFDSF9UWDUzKSArPQ0KYmFyZWJveC10eDUzLTEwMTEuaW1nwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoA0KDQrCoCMg
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gaS5NWDYgYmFzZWQgYm9hcmRzDQotLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS3CoMKgwqDCoMKgwqDCoA0KLXBibGItJChDT05GSUdfTUFDSF9SRUFMUTcp
-ICs9DQpzdGFydF9pbXg2X3JlYWxxN8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqANCi1DRkdfc3RhcnRfaW14Nl9yZWFscTcucGJs
-Yi5pbXhpbWcgPQ0KJChib2FyZCkvZGF0YW1vZHVsLWVkbS1xbXg2L2ZsYXNoLWhlYWRlci5pbXhj
-ZmcNCi1GSUxFX2JhcmVib3gtZGF0YW1vZHVsLWVkbS1xbXg2LmltZyA9DQpzdGFydF9pbXg2X3Jl
-YWxxNy5wYmxiLmlteGltZ8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoA0KLWltYWdlLSQoQ09ORklH
-X01BQ0hfUkVBTFE3KSArPQ0KYmFyZWJveC1kYXRhbW9kdWwtZWRtLXFteDYuaW1nwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgDQorJChjYWxsIGJ1aWxkX2lteF9oYWJ2NGltZywg
-Q09ORklHX01BQ0hfUkVBTFE3LCBzdGFydF9pbXg2X3JlYWxxLA0KZGF0YW1vZHVsLWVkbS1xbXg2
-L2ZsYXNoLWhlYWRlci5pbXhjZmcsIGRhdGFtb2R1bC1lZG0tcW14NikNCg0KcGJsYi0kKENPTkZJ
-R19NQUNIX0dVRl9TQU5UQVJPKSArPQ0Kc3RhcnRfaW14NnFfZ3VmX3NhbnRhcm/CoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqANCkNGR19zdGFydF9pbXg2cV9ndWZfc2Fu
-dGFyby5wYmxiLmlteGltZyA9DQokKGJvYXJkKS9ndWYtc2FudGFyby9mbGFzaC1oZWFkZXIuaW14
-Y2ZnDQpAQCAtNDIzLDEwICs0MzgsNyBAQA0KQ0ZHX3N0YXJ0X3BoeXRlY19waHljb3JlX2lteDZx
-cF9zb21fbmFuZF8xZ2liLnBibGIuaW14aW1nID0NCiQoYm9hcmQpL3BoeXRlYy3CoMKgwqAgc29t
-LQ0KRklMRV9iYXJlYm94LXBoeXRlYy1waHljb3JlLWlteDZxcC1zb20tbmFuZC0xZ2liLmltZyA9
-DQpzdGFydF9waHl0ZWNfcGh5Y29yZV9pbXg2cXBfc29tX25hbmRfMWdpYi5wYmxiLmlteGltZw0K
-wqBpbWFnZS0kKENPTkZJR19NQUNIX1BIWVRFQ19TT01fSU1YNikgKz0NCmJhcmVib3gtcGh5dGVj
-LXBoeWNvcmUtaW14NnFwLXNvbS1uYW5kLTFnaWIuaW1nDQrCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgDQoNCi1wYmxiLSQoQ09ORklHX01BQ0hfUEhZVEVDX1NP
-TV9JTVg2KSArPQ0Kc3RhcnRfcGh5dGVjX3BoeWNvcmVfaW14NnFfc29tX2VtbWNfMWdpYg0KLUNG
-R19zdGFydF9waHl0ZWNfcGh5Y29yZV9pbXg2cV9zb21fZW1tY18xZ2liLnBibGIuaW14aW1nID0N
-CiQoYm9hcmQpL3BoeXRlYy1zb20taW14Ni9mbGFzaC1oZWFkZXItcGh5dGVjLXBjbTA1OC0xZ2li
-LmlteGNmZw0KLUZJTEVfYmFyZWJveC1waHl0ZWMtcGh5Y29yZS1pbXg2cS1zb20tZW1tYy0xZ2li
-LmltZyA9DQpzdGFydF9waHl0ZWNfcGh5Y29yZV9pbXg2cV9zb21fZW1tY18xZ2liLnBibGIuaW14
-aW1nDQotaW1hZ2UtJChDT05GSUdfTUFDSF9QSFlURUNfU09NX0lNWDYpICs9DQpiYXJlYm94LXBo
-eXRlYy1waHljb3JlLWlteDZxLXNvbS1lbW1jLTFnaWIuaW1nDQorJChjYWxsIGJ1aWxkX2lteF9o
-YWJ2NGltZywgQ09ORklHX01BQ0hfUEhZVEVDX1NPTV9JTVg2LA0Kc3RhcnRfcGh5dGVjX3BoeWNv
-cmVfaW14NnFfc29tX2VtbWNfMWdpYiwNCnBoeXRlYy1zb20taW14Ni9mbGFzaC1oZWFkZXItcGh5
-dGVjLXBjbTA1OC0xZ2liLA0KcGh5dGVjLXBoeWNvcmUtaW14NnEtc29tLWVtbWMtMWdpYikNCg0K
-cGJsYi0kKENPTkZJR19NQUNIX1BIWVRFQ19TT01fSU1YNikgKz0NCnN0YXJ0X3BoeXRlY19waHlj
-b3JlX2lteDZxX3NvbV9lbW1jXzJnaWINCkNGR19zdGFydF9waHl0ZWNfcGh5Y29yZV9pbXg2cV9z
-b21fZW1tY18yZ2liLnBibGIuaW14aW1nID0NCiQoYm9hcmQpL3BoeXRlYy1zb20taW14Ni9mbGFz
-aC1oZWFkZXItcGh5dGVjLXBjbTA1OC0yZ2liLmlteGNmZw0KDQpCZXN0IHJlZ2FyZHMNCg0KTWFp
-aw0KDQpBbSAwNS4wOC4yMDE5IHVtIDE3OjA3IHNjaHJpZWIgUm9sYW5kIEhpZWJlcjoNCj4gT24g
-TW9uLCBBdWcgMDUsIDIwMTkgYXQgMDI6MzU6NDBQTSArMDIwMCwgUm9sYW5kIEhpZWJlciB3cm90
-ZToNCj4+IE9uIE1vbiwgQXVnIDA1LCAyMDE5IGF0IDAxOjAyOjEzUE0gKzAyMDAsIFNhc2NoYSBI
-YXVlciB3cm90ZToNCj4+PiBIaSBNYWlrLA0KPj4+DQo+Pj4gT24gVGh1LCBKdWwgMTgsIDIwMTkg
-YXQgMTA6MDI6MDFBTSArMDIwMCwgTWFpayBPdHRvIHdyb3RlOg0KPj4+PiBhZGQgaW4gdGhlIGlt
-YWdlcy9NYWtlZmlsZS5pbXggdGhlIHN1cHBvcnQgb2YgYnVpbGRpbmcgZm9yIHNpZ25lZCwgdXNi
-DQo+Pj4+IHNpZ25lZCBhbmQgZW5jcnlwdGVkL3NpZ25lZCBpbWFnZXMgZm9yIE5YUCBpLk1YIEhB
-QlY0DQo+Pj4+IHN1cHBvcnQgZm9yIE5YUCBpLm14NiwgaS5teDcgYW5kIGkubXg4DQo+Pj4+DQo+
-Pj4+IFNpZ25lZC1vZmYtYnk6IE1haWsgT3R0byA8bS5vdHRvQHBoeXRlYy5kZT4NCj4+Pj4gLS0t
-DQo+Pj4+IENoYW5nZXMgaW4gdjM6DQo+Pj4+ICAgICAtIG5vdGhpbmcNCj4+Pj4gQ2hhbmdlcyBp
-biB2MjoNCj4+Pj4gICAgIC0gd2FzIFBhdGNoIDIvNCBpbiB2MQ0KPj4+PiAgICAgLSBubyBkeW5h
-bWljIHZhcmlhYmxlLCBwYXJhbGxlbCBidWlsZGluZyBvZiBkaWZmZXJlbnQgaW1hZ2UgdHlwZXMg
-bm93DQo+Pj4+IC0tLQ0KPj4+PiAgaW1hZ2VzL01ha2VmaWxlLmlteCB8IDMyMiArKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKystDQo+Pj4+ICAxIGZpbGUg
-Y2hhbmdlZCwgMzIxIGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkNCj4+Pj4NCj4+Pj4gZGlm
-ZiAtLWdpdCBhL2ltYWdlcy9NYWtlZmlsZS5pbXggYi9pbWFnZXMvTWFrZWZpbGUuaW14DQo+Pj4+
-IGluZGV4IDlhNzE4N2EuLjljNzA3MDMgMTAwNjQ0DQo+Pj4+IC0tLSBhL2ltYWdlcy9NYWtlZmls
-ZS5pbXgNCj4+Pj4gKysrIGIvaW1hZ2VzL01ha2VmaWxlLmlteA0KPj4+PiBAQCAtMTQ3LDIxNiAr
-MTQ3LDM4OCBAQCBwYmxiLSQoQ09ORklHX01BQ0hfUkVBTFE3KSArPSBzdGFydF9pbXg2X3JlYWxx
-Nw0KPj4+PiAgQ0ZHX3N0YXJ0X2lteDZfcmVhbHE3LnBibGIuaW14aW1nID0gJChib2FyZCkvZGF0
-YW1vZHVsLWVkbS1xbXg2L2ZsYXNoLWhlYWRlci5pbXhjZmcNCj4+Pj4gIEZJTEVfYmFyZWJveC1k
-YXRhbW9kdWwtZWRtLXFteDYuaW1nID0gc3RhcnRfaW14Nl9yZWFscTcucGJsYi5pbXhpbWcNCj4+
-Pj4gIGltYWdlLSQoQ09ORklHX01BQ0hfUkVBTFE3KSArPSBiYXJlYm94LWRhdGFtb2R1bC1lZG0t
-cW14Ni5pbWcNCj4+Pj4gK0ZJTEVfYmFyZWJveC1kYXRhbW9kdWwtZWRtLXFteDYtcy5pbWcgPSBz
-dGFydF9pbXg2X3JlYWxxNy5wYmxiLnNpbXhpbWcNCj4+Pj4gK0ZJTEVfYmFyZWJveC1kYXRhbW9k
-dWwtZWRtLXFteDYtdXMuaW1nID0gc3RhcnRfaW14Nl9yZWFscTcucGJsYi51c2lteGltZw0KPj4+
-PiArRklMRV9iYXJlYm94LWRhdGFtb2R1bC1lZG0tcW14Ni1lcy5pbWcgPSBzdGFydF9pbXg2X3Jl
-YWxxNy5wYmxiLmVzaW14aW1nDQo+Pj4+ICtoYWJ2NGltYWdlLSQoQ09ORklHX01BQ0hfUkVBTFE3
-KSArPSBiYXJlYm94LWRhdGFtb2R1bC1lZG0tcW14Ng0KPj4+IFRoaXMgZmlsZSBjb250YWlucyB3
-YXkgdG8gbXVjaCBib2lsZXJwbGF0ZSBhbHJlYWR5IGZvciBteSB0YXN0ZS4gQWRkaW5nIGZvdXIN
-Cj4+PiBtb3JlIGxpbmVzIGZvciBldmVyeSBib2FyZCBpcyBub3Qgc29tZXRoaW5nIEkgbGlrZSB0
-byBkby4NCj4+Pg0KPj4+IENhbiB3ZSBhZGQgZXZlbiBtb3JlIG1hZ2ljIHRvIGdldCByaWQgb2Yg
-dGhlc2UgYWRkaXRpb25hbCBsaW5lcz8NCj4+IFlvdSBtZWFuIGxpa2UuLi4gKHVudGVzdGVkKQ0K
-PiBbLi4uXQ0KPg0KPiBIZXJlJ3MgYSB0ZXN0ZWQgcHJvdG90eXBlIChuZWVkZWQgc29tZSBtb3Jl
-IGV2YWwgYW5kIHN0cmlwKToNCj4NCj4gLS0tLS0tLS0tLS0tLS0tLS0gODwgLS0tLS0tLS0tLS0t
-LS0tLS0NCj4gZGlmZiAtLWdpdCBhL2ltYWdlcy9NYWtlZmlsZS5pbXggYi9pbWFnZXMvTWFrZWZp
-bGUuaW14DQo+IGluZGV4IDlhNzE4N2FjNzgwNy4uZjU4YzA0MTE4NzFkIDEwMDY0NA0KPiAtLS0g
-YS9pbWFnZXMvTWFrZWZpbGUuaW14DQo+ICsrKyBiL2ltYWdlcy9NYWtlZmlsZS5pbXgNCj4gQEAg
-LTIsNiArMiwxOSBAQA0KPiAgIyBiYXJlYm94IGltYWdlIGdlbmVyYXRpb24gTWFrZWZpbGUgZm9y
-IGkuTVggaW1hZ2VzDQo+ICAjDQo+ICANCj4gKyMgcGFyYW1zOiBDT05GSUcgc3ltYm9sLCBlbnRy
-eSBwb2ludCwgYm9hcmQgaWRlbnRpZmllciBzdHJpbmcNCj4gK2RlZmluZSBidWlsZF9pbXhfaW1n
-ID0NCj4gKyQoZXZhbA0KPiArcGJsYi0kKCQoc3RyaXAgJCgxKSkpICs9ICQoc3RyaXAgJCgyKSkN
-Cj4gK0NGR18kKHN0cmlwICQoMikpLnBibGIuaW14aW1nID0gJChib2FyZCkvJChzdHJpcCAkKDMp
-KS9mbGFzaC1oZWFkZXIuaW14Y2ZnDQo+ICtGSUxFX2JhcmVib3gtJChzdHJpcCAkKDMpKS5pbWcg
-ICAgPSAkKHN0cmlwICQoMikpLnBibGIuaW14aW1nDQo+ICtGSUxFX2JhcmVib3gtJChzdHJpcCAk
-KDMpKS1zLmltZyAgPSAkKHN0cmlwICQoMikpLnBibGIuc2lteGltZw0KPiArRklMRV9iYXJlYm94
-LSQoc3RyaXAgJCgzKSktdXMuaW1nID0gJChzdHJpcCAkKDIpKS5wYmxiLnVzaW14aW1nDQo+ICtG
-SUxFX2JhcmVib3gtJChzdHJpcCAkKDMpKS1lcy5pbWcgPSAkKHN0cmlwICQoMikpLnBibGIuZXNp
-bXhpbWcNCj4gK2ltYWdlLSQoJChzdHJpcCAkKDEpKSkgKz0gYmFyZWJveC0kKHN0cmlwICQoMykp
-LmltZw0KPiArKQ0KPiArZW5kZWYNCj4gKw0KPiAgIyAlLmlteGltZyAtIGNvbnZlcnQgaW50byBp
-Lk1YIGltYWdlDQo+ICAjIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCj4gIA0KPiBAQCAtMTQzLDE1ICsxNTYsOCBAQCBGSUxF
-X2JhcmVib3gtdHg1My0xMDExLmltZyA9IHN0YXJ0X2lteDUzX3R4NTNfMTAxMS5wYmxiLmlteGlt
-Zw0KPiAgaW1hZ2UtJChDT05GSUdfTUFDSF9UWDUzKSArPSBiYXJlYm94LXR4NTMtMTAxMS5pbWcN
-Cj4gIA0KPiAgIyAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBpLk1YNiBiYXNlZCBib2FyZHMgLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQo+IC1wYmxiLSQoQ09ORklHX01BQ0hfUkVBTFE3KSAr
-PSBzdGFydF9pbXg2X3JlYWxxNw0KPiAtQ0ZHX3N0YXJ0X2lteDZfcmVhbHE3LnBibGIuaW14aW1n
-ID0gJChib2FyZCkvZGF0YW1vZHVsLWVkbS1xbXg2L2ZsYXNoLWhlYWRlci5pbXhjZmcNCj4gLUZJ
-TEVfYmFyZWJveC1kYXRhbW9kdWwtZWRtLXFteDYuaW1nID0gc3RhcnRfaW14Nl9yZWFscTcucGJs
-Yi5pbXhpbWcNCj4gLWltYWdlLSQoQ09ORklHX01BQ0hfUkVBTFE3KSArPSBiYXJlYm94LWRhdGFt
-b2R1bC1lZG0tcW14Ni5pbWcNCj4gLQ0KPiAtcGJsYi0kKENPTkZJR19NQUNIX0dVRl9TQU5UQVJP
-KSArPSBzdGFydF9pbXg2cV9ndWZfc2FudGFybw0KPiAtQ0ZHX3N0YXJ0X2lteDZxX2d1Zl9zYW50
-YXJvLnBibGIuaW14aW1nID0gJChib2FyZCkvZ3VmLXNhbnRhcm8vZmxhc2gtaGVhZGVyLmlteGNm
-Zw0KPiAtRklMRV9iYXJlYm94LWd1Zi1zYW50YXJvLmltZyA9IHN0YXJ0X2lteDZxX2d1Zl9zYW50
-YXJvLnBibGIuaW14aW1nDQo+IC1pbWFnZS0kKENPTkZJR19NQUNIX0dVRl9TQU5UQVJPKSArPSBi
-YXJlYm94LWd1Zi1zYW50YXJvLmltZw0KPiArJChjYWxsIGJ1aWxkX2lteF9pbWcsIENPTkZJR19N
-QUNIX1JFQUxRNywgc3RhcnRfaW14Nl9yZWFscSwgZGF0YW1vZHVsLWVkbS1xbXg2KQ0KPiArJChj
-YWxsIGJ1aWxkX2lteF9pbWcsIENPTkZJR19NQUNIX0dVRl9TQU5UQVJPLCBzdGFydF9pbXg2cV9n
-dWZfc2FudGFybywgZ3VmLXNhbnRhcm8pDQo+ICANCj4gIHBibGItJChDT05GSUdfTUFDSF9HSzgw
-MikgKz0gc3RhcnRfaW14Nl9nazgwMg0KPiAgQ0ZHX3N0YXJ0X2lteDZfZ2s4MDIucGJsYi5pbXhp
-bWcgPSAkKGJvYXJkKS9nazgwMi9mbGFzaC1oZWFkZXIuaW14Y2ZnDQo+IC0tLS0tLS0tLS0tLS0t
-LS0tIDg8IC0tLS0tLS0tLS0tLS0tLS0tDQo+DQo+IERlcGVuZGluZyBvbiB5b3VyIHRob3VnaHRz
-IHJlZ2FyZGluZyB0aGUgb3RoZXIgcXVlc3Rpb25zIGluIG15IHByZXZpb3VzDQo+IG1haWwsIEkg
-Y2FuIG1ha2UgdGhpcyBpbnRvIGEgcHJvcGVyIHBhdGNoLg0KPg0KPiAgLSBSb2xhbmQNCj4NCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFp
-bGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFk
-ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+The caam rng selftest is known to be broken in several i.MX
+incarnations. To be on the safe side just unconditionally execute
+it rather than trying to guess from HAB failure events if this is
+necessary.
+We can only do the selftest once per boot though, doing it a second time
+yields an error:
+
+rng_self_test: Job Error:
+2101000.jr0@1000.of: 20001953: CCB: desc idx 25: RNG: Instantiate
+
+so only do the test when rng is not yet initialized as tested with the
+RDSTA_IFx status bits.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/crypto/caam/Kconfig         | 23 -----------------------
+ drivers/crypto/caam/Makefile        |  2 +-
+ drivers/crypto/caam/ctrl.c          |  2 +-
+ drivers/crypto/caam/rng_self_test.c | 15 +++++++++++++++
+ drivers/hab/habv4.c                 | 13 -------------
+ include/hab.h                       |  5 -----
+ 6 files changed, 17 insertions(+), 43 deletions(-)
+
+diff --git a/drivers/crypto/caam/Kconfig b/drivers/crypto/caam/Kconfig
+index 56b90700b8..6bb8278d69 100644
+--- a/drivers/crypto/caam/Kconfig
++++ b/drivers/crypto/caam/Kconfig
+@@ -34,26 +34,3 @@ config CRYPTO_DEV_FSL_CAAM_RNG
+ 	help
+ 	  Selecting this will register the SEC4 hardware rng.
+ 
+-if CRYPTO_DEV_FSL_CAAM_RNG
+-
+-config CRYPTO_DEV_FSL_CAAM_RNG_SELF_TEST
+-	bool "Run RNG software self-test on impacted chips"
+-	depends on ARCH_IMX6
+-	depends on HABV4
+-	default y
+-	help
+-	  Some chips with HAB >= 4.2.3 have an incorrect implementation of the
+-	  RNG self-test in ROM code. In this case, a software self-test should
+-	  be run to ensure correctness of the RNG. By enabling this config
+-	  option, the software self-test is run automatically when this case
+-	  is detected.
+-
+-	  Currently known impacted chips:
+-	  * i.MX6DQ+ silicon revision 1.1
+-	  * i.MX6DQ silicon revision 1.6
+-	  * i.MX6DLS silicon revision 1.4
+-	  * i.MX6SX silicon revision 1.4
+-	  * i.MX6UL silicon revision 1.2
+-	  * i.MX67SD silicon revision 1.3
+-
+-endif
+diff --git a/drivers/crypto/caam/Makefile b/drivers/crypto/caam/Makefile
+index 933b9c0592..718e25c41a 100644
+--- a/drivers/crypto/caam/Makefile
++++ b/drivers/crypto/caam/Makefile
+@@ -3,5 +3,5 @@
+ #
+ obj-$(CONFIG_CRYPTO_DEV_FSL_CAAM) += ctrl.o error.o jr.o
+ obj-$(CONFIG_CRYPTO_DEV_FSL_CAAM_RNG) += caamrng.o
+-obj-$(CONFIG_CRYPTO_DEV_FSL_CAAM_RNG_SELF_TEST) += rng_self_test.o
++obj-$(CONFIG_CRYPTO_DEV_FSL_CAAM) += rng_self_test.o
+ obj-$(CONFIG_BLOBGEN) += caam-blobgen.o
+diff --git a/drivers/crypto/caam/ctrl.c b/drivers/crypto/caam/ctrl.c
+index 06b075e74a..53526f53cf 100644
+--- a/drivers/crypto/caam/ctrl.c
++++ b/drivers/crypto/caam/ctrl.c
+@@ -573,7 +573,7 @@ static int caam_probe(struct device_d *dev)
+ 	cha_vid_ls = rd_reg32(&ctrl->perfmon.cha_id_ls);
+ 
+ 	/* habv4_need_rng_software_self_test is determined by habv4_get_status() */
+-	if (caam_need_rng_software_selftest()) {
++	if (!(rd_reg32(&ctrl->r4tst[0].rdsta) & RDSTA_IFMASK)) {
+ 		u8 caam_era;
+ 		u8 rngvid;
+ 		u8 rngrev;
+diff --git a/drivers/crypto/caam/rng_self_test.c b/drivers/crypto/caam/rng_self_test.c
+index 7816cd152c..ed3017d828 100644
+--- a/drivers/crypto/caam/rng_self_test.c
++++ b/drivers/crypto/caam/rng_self_test.c
+@@ -129,6 +129,21 @@ static void rng_self_test_done(struct device_d *dev, u32 *desc, u32 err, void *a
+ /*
+  * caam_rng_self_test() - Perform RNG self test
+  * Returns zero on success, and negative on error.
++ *
++ * Some chips with HAB >= 4.2.3 have an incorrect implementation of the
++ * RNG self-test in ROM code. In this case, a software self-test should
++ * be run to ensure correctness of the RNG. By enabling this config
++ * option, the software self-test is run automatically when this case
++ * is detected.
++ *
++ * Currently known impacted chips:
++ * * i.MX6DQ+ silicon revision 1.1
++ * * i.MX6DQ silicon revision 1.6
++ * * i.MX6DLS silicon revision 1.4
++ * * i.MX6SX silicon revision 1.4
++ * * i.MX6UL silicon revision 1.2
++ * * i.MX67SD silicon revision 1.3
++ *
+  */
+ int caam_rng_self_test(struct device_d *dev, const u8 caam_era, const u8 rngvid, const u8 rngrev)
+ {
+diff --git a/drivers/hab/habv4.c b/drivers/hab/habv4.c
+index 6a60be6853..a53e40ad23 100644
+--- a/drivers/hab/habv4.c
++++ b/drivers/hab/habv4.c
+@@ -388,18 +388,6 @@ static void habv4_display_event(uint8_t *data, uint32_t len)
+ 	habv4_display_event_record((struct hab_event_record *)data);
+ }
+ 
+-/* Some chips with HAB >= 4.2.3 have an incorrect implementation of the RNG
+- * self-test in ROM code. In this case, an HAB event is generated, and a
+- * software self-test should be run. This variable is set to @c true by
+- * habv4_get_status() when this occurs. */
+-static bool habv4_need_rng_software_self_test;
+-
+-bool caam_need_rng_software_selftest(void)
+-{
+-	return IS_ENABLED(CONFIG_CRYPTO_DEV_FSL_CAAM_RNG_SELF_TEST) &&
+-		habv4_need_rng_software_self_test;
+-}
+-
+ #define RNG_FAIL_EVENT_SIZE 36
+ static uint8_t habv4_known_rng_fail_events[][RNG_FAIL_EVENT_SIZE] = {
+ 	{ 0xdb, 0x00, 0x24, 0x42,  0x69, 0x30, 0xe1, 0x1d,
+@@ -457,7 +445,6 @@ static int habv4_get_status(const struct habv4_rvt *rvt)
+ 		if (IS_ENABLED(CONFIG_CRYPTO_DEV_FSL_CAAM_RNG_SELF_TEST) &&
+ 		    is_known_rng_fail_event(data, len)) {
+ 			pr_debug("RNG self-test failure detected, will run software self-test\n");
+-			habv4_need_rng_software_self_test = true;
+ 		} else {
+ 			pr_err("-------- HAB warning Event %d --------\n", index);
+ 			pr_err("event data:\n");
+diff --git a/include/hab.h b/include/hab.h
+index a74b7dafce..78c2b865ba 100644
+--- a/include/hab.h
++++ b/include/hab.h
+@@ -23,7 +23,6 @@
+ #ifdef CONFIG_HABV4
+ int imx28_hab_get_status(void);
+ int imx6_hab_get_status(void);
+-bool caam_need_rng_software_selftest(void);
+ #else
+ static inline int imx28_hab_get_status(void)
+ {
+@@ -33,10 +32,6 @@ static inline int imx6_hab_get_status(void)
+ {
+ 	return -EPERM;
+ }
+-static inline bool caam_need_rng_software_selftest(void)
+-{
+-	return false;
+-}
+ #endif
+ 
+ #ifdef CONFIG_HABV3
+-- 
+2.20.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
