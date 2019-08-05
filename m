@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from magratgarlick.emantor.de ([78.46.208.201])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1huZDt-00042N-UA
- for barebox@lists.infradead.org; Mon, 05 Aug 2019 09:24:11 +0000
+ id 1huZDw-000442-PC
+ for barebox@lists.infradead.org; Mon, 05 Aug 2019 09:24:14 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Mon,  5 Aug 2019 11:23:42 +0200
-Message-Id: <98684c1990e9b06b7d74c2780e03ded50291fc1c.1564997015.git-series.r.czerwinski@pengutronix.de>
+Date: Mon,  5 Aug 2019 11:23:40 +0200
+Message-Id: <87c364fcd198e97267c8baa0655e605b110e99a8.1564997015.git-series.r.czerwinski@pengutronix.de>
 In-Reply-To: <cover.b9d503ab98014278972f6bd84931035a5ef27967.1564997015.git-series.r.czerwinski@pengutronix.de>
 References: <cover.b9d503ab98014278972f6bd84931035a5ef27967.1564997015.git-series.r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
@@ -21,35 +21,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 03/16] mach-imx: enable HAB on i.MX8MQ
+Subject: [PATCH v2 01/16] i.MX: HABv4: ignore return for i.MX28/6 initcalls
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Enable HAB for i.MX8MQ. Since the status and report functions are now
-implemented, we can safely enable HABV4 for i.MX8MQ.
+Move the status call below the explanations and return Null.
+No functional changes intended.
 
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- arch/arm/mach-imx/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hab/habv4.c | 18 +++++-------------
+ 1 file changed, 5 insertions(+), 13 deletions(-)
 
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index b9374fe..8fcef3f 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -790,10 +790,10 @@ config HABV4
- 	select HAB
- 	select NVMEM
- 	select IMX_OCOTP
--	depends on ARCH_IMX6
-+	depends on ARCH_IMX6 || ARCH_IMX8MQ
- 	depends on OFDEVICE
- 	help
--	  High Assurance Boot, as found on i.MX28/i.MX6.
-+	  High Assurance Boot, as found on i.MX28/i.MX6/i.MX8MQ.
+diff --git a/drivers/hab/habv4.c b/drivers/hab/habv4.c
+index 6a60be6..b11cf7b 100644
+--- a/drivers/hab/habv4.c
++++ b/drivers/hab/habv4.c
+@@ -511,21 +511,17 @@ int imx6_hab_get_status(void)
  
- config HAB_CERTS_ENV
- 	depends on HAB
+ static int init_imx6_hab_get_status(void)
+ {
+-	int ret = 0;
+-
+ 	if (!cpu_is_mx6())
+ 		/* can happen in multi-image builds and is not an error */
+ 		return 0;
+ 
+-	ret = imx6_hab_get_status();
+-
+ 	/*
+ 	 * Nobody will check the return value if there were HAB errors, but the
+ 	 * initcall will fail spectaculously with a strange error message.
+ 	 */
+-	if (ret == -EPERM)
+-		return 0;
+-	return ret;
++	imx6_hab_get_status();
++
++	return 0;
+ }
+ 
+ /*
+@@ -544,19 +540,15 @@ int imx28_hab_get_status(void)
+ 
+ static int init_imx28_hab_get_status(void)
+ {
+-	int ret = 0;
+-
+ 	if (!cpu_is_mx28())
+ 		/* can happen in multi-image builds and is not an error */
+ 		return 0;
+ 
+-	ret = imx28_hab_get_status();
+ 
+ 	/* nobody will check the return value if there were HAB errors, but the
+ 	 * initcall will fail spectaculously with a strange error message. */
+-	if (ret == -EPERM)
+-		return 0;
+-	return ret;
++	imx28_hab_get_status();
++	return 0;
+ }
+ /* i.MX28 ROM code can be run after MMU setup to make use of caching */
+ postmmu_initcall(init_imx28_hab_get_status);
 -- 
 git-series 0.9.1
 
