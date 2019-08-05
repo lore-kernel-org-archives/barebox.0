@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from magratgarlick.emantor.de ([78.46.208.201])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1huZE2-0004AL-KX
- for barebox@lists.infradead.org; Mon, 05 Aug 2019 09:24:21 +0000
+ id 1huZE7-0004Gs-Gj
+ for barebox@lists.infradead.org; Mon, 05 Aug 2019 09:24:25 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Mon,  5 Aug 2019 11:23:50 +0200
-Message-Id: <b63b6c52b301f7dee2f1b19c3092c9154e50c284.1564997015.git-series.r.czerwinski@pengutronix.de>
+Date: Mon,  5 Aug 2019 11:23:51 +0200
+Message-Id: <f05034e8947c9573a4c6f2148b3d90a31c1db383.1564997015.git-series.r.czerwinski@pengutronix.de>
 In-Reply-To: <cover.b9d503ab98014278972f6bd84931035a5ef27967.1564997015.git-series.r.czerwinski@pengutronix.de>
 References: <cover.b9d503ab98014278972f6bd84931035a5ef27967.1564997015.git-series.r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
@@ -21,59 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 11/16] stdio: puts and putchar static inline wrappers
+Subject: [PATCH v2 12/16] pbl: support panic with log output
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Add static inline wrappers for puts and putchar. This allows the usage
-of puts and putchar within the PBL even if the PBL_CONSOLE is disabled.
+If panic is called with a string in the PBL, print the panic string
+before falling into the busy loop.
 
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- include/stdio.h | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ pbl/misc.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/include/stdio.h b/include/stdio.h
-index 7b2a42b..46e2778 100644
---- a/include/stdio.h
-+++ b/include/stdio.h
-@@ -71,23 +71,32 @@ static inline int ctrlc (void)
- #if (!defined(__PBL__) && !defined(CONFIG_CONSOLE_NONE)) || \
- 	(defined(__PBL__) && defined(CONFIG_PBL_CONSOLE))
- int printf(const char *fmt, ...) __attribute__ ((format(__printf__, 1, 2)));
-+
-+static inline int puts(const char *s)
-+{
-+	return console_puts(CONSOLE_STDOUT, s);
-+}
-+
-+static inline void putchar(char c)
-+{
-+	console_putc(CONSOLE_STDOUT, c);
-+}
- #else
- static int printf(const char *fmt, ...) __attribute__ ((format(__printf__, 1, 2)));
- static inline int printf(const char *fmt, ...)
- {
- 	return 0;
- }
--#endif
--
- static inline int puts(const char *s)
- {
--	return console_puts(CONSOLE_STDOUT, s);
-+	return 0;
- }
+diff --git a/pbl/misc.c b/pbl/misc.c
+index 7e76120..201ae38 100644
+--- a/pbl/misc.c
++++ b/pbl/misc.c
+@@ -11,5 +11,10 @@ void __noreturn hang(void)
  
- static inline void putchar(char c)
+ void __noreturn panic(const char *fmt, ...)
  {
--	console_putc(CONSOLE_STDOUT, c);
-+	return;
++	va_list args;
++
++	va_start(args, fmt);
++	printf(fmt, args);
++	va_end(args);
+ 	while(1);
  }
-+#endif
- 
- /*
-  * FILE based functions
 -- 
 git-series 0.9.1
 
