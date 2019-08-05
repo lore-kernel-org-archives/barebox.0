@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from magratgarlick.emantor.de ([78.46.208.201])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1huZE1-00049Z-Sn
- for barebox@lists.infradead.org; Mon, 05 Aug 2019 09:24:19 +0000
+ id 1huZE2-00049i-1t
+ for barebox@lists.infradead.org; Mon, 05 Aug 2019 09:24:20 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Mon,  5 Aug 2019 11:23:45 +0200
-Message-Id: <e485ad0cd4de4a3521f756b6167a43a94210203c.1564997015.git-series.r.czerwinski@pengutronix.de>
+Date: Mon,  5 Aug 2019 11:23:47 +0200
+Message-Id: <25006ae222b40009eb696df24ced0850e41f32e9.1564997015.git-series.r.czerwinski@pengutronix.de>
 In-Reply-To: <cover.b9d503ab98014278972f6bd84931035a5ef27967.1564997015.git-series.r.czerwinski@pengutronix.de>
 References: <cover.b9d503ab98014278972f6bd84931035a5ef27967.1564997015.git-series.r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
@@ -21,109 +21,250 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 06/16] esdhc-pbl: add piggy load function
+Subject: [PATCH v2 08/16] scripts: imx: support signing for i.MX8MQ
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Add a function to load and copy the piggy data to the correct offset
-expected by barebox in the RAM. This way the PBL can later verify the
-piggydata before uncompressing and loading the main barebox.
+Implement signing of the PBL for i.MX8MQ.
+The imagesize is also modified to i.MX8MQ to only contain the PBL.
+This obsoletes the max_load_size, which is kept for other boards
+currently using it.
 
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- arch/arm/mach-imx/include/mach/xload.h |  5 +++-
- arch/arm/mach-imx/xload-common.c       |  6 ++++-
- drivers/mci/imx-esdhc-pbl.c            | 46 +++++++++++++++++++++++++++-
- 3 files changed, 57 insertions(+)
+ arch/arm/mach-imx/include/mach/imx-header.h |  2 +-
+ images/Makefile.imx                         |  8 +++-
+ scripts/imx/imx-image.c                     | 64 ++++++++++++++++++----
+ scripts/imx/imx.c                           | 15 ++++-
+ 4 files changed, 76 insertions(+), 13 deletions(-)
 
-diff --git a/arch/arm/mach-imx/include/mach/xload.h b/arch/arm/mach-imx/include/mach/xload.h
-index 8f141bc..a605e76 100644
---- a/arch/arm/mach-imx/include/mach/xload.h
-+++ b/arch/arm/mach-imx/include/mach/xload.h
-@@ -6,7 +6,12 @@ int imx6_spi_load_image(int instance, unsigned int flash_offset, void *buf, int 
- int imx6_spi_start_image(int instance);
- int imx6_esdhc_start_image(int instance);
- int imx8_esdhc_start_image(int instance);
-+int imx8_esdhc_load_piggy(int instance);
+diff --git a/arch/arm/mach-imx/include/mach/imx-header.h b/arch/arm/mach-imx/include/mach/imx-header.h
+index 50584bb..dc8e2ee 100644
+--- a/arch/arm/mach-imx/include/mach/imx-header.h
++++ b/arch/arm/mach-imx/include/mach/imx-header.h
+@@ -98,6 +98,7 @@ struct config_data {
+ 	uint32_t image_size;
+ 	uint32_t max_load_size;
+ 	uint32_t load_size;
++	uint32_t pbl_code_size;
+ 	char *outfile;
+ 	char *srkfile;
+ 	int header_version;
+@@ -111,6 +112,7 @@ struct config_data {
+ 	int (*nop)(const struct config_data *data);
+ 	int csf_space;
+ 	char *csf;
++	int sign_image;
+ 	char *signed_hdmi_firmware_file;
+ 	int encrypt_image;
+ 	size_t dek_size;
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index 42c194b..76beccb 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -8,6 +8,14 @@
+ $(obj)/%.imximg: $(obj)/% FORCE
+ 	$(call if_changed,imx_image,$(CFG_$(@F)),)
  
- int imx_image_size(void);
-+int piggydata_size(void);
++$(obj)/%.pimximg: $(obj)/% FORCE
++	$(call if_changed,imx_image,$(CFG_$(patsubst %.pimximg,%.imximg,$(@F))),\
++	-p $($(patsubst $(obj)/%.pblb,PBL_MEMORY_SIZE_%,$<)))
 +
-+extern unsigned char input_data[];
-+extern unsigned char input_data_end[];
++$(obj)/%.psimximg: $(obj)/% FORCE
++	$(call if_changed,imx_image,$(CFG_$(patsubst %.psimximg,%.imximg,$(@F))),-s \
++	-p $($(patsubst $(obj)/%.pblb,PBL_MEMORY_SIZE_%,$<)))
++
+ $(obj)/%.simximg: $(obj)/% FORCE
+ 	$(call if_changed,imx_image,$(CFG_$(patsubst %.simximg,%.imximg,$(@F))),-s)
  
- #endif /* __MACH_XLOAD_H */
-diff --git a/arch/arm/mach-imx/xload-common.c b/arch/arm/mach-imx/xload-common.c
-index c5727eb..bd64052 100644
---- a/arch/arm/mach-imx/xload-common.c
-+++ b/arch/arm/mach-imx/xload-common.c
-@@ -8,3 +8,9 @@ int imx_image_size(void)
- 	/* i.MX header is 4k */
- 	return barebox_image_size + SZ_4K;
- }
-+
-+int piggydata_size(void)
-+{
-+	return input_data_end - input_data;
-+}
-+
-diff --git a/drivers/mci/imx-esdhc-pbl.c b/drivers/mci/imx-esdhc-pbl.c
-index 49514fc..fb27c84 100644
---- a/drivers/mci/imx-esdhc-pbl.c
-+++ b/drivers/mci/imx-esdhc-pbl.c
-@@ -425,6 +425,52 @@ int imx8_esdhc_start_image(int instance)
- 	return esdhc_start_image(&esdhc, MX8MQ_DDR_CSD1_BASE_ADDR,
- 				 MX8MQ_ATF_BL33_BASE_ADDR, SZ_32K);
- }
-+
-+int imx8_esdhc_load_piggy(int instance)
-+{
-+	void *buf = (void *)MX8MQ_ATF_BL33_BASE_ADDR;
-+	struct imx_flash_header_v2 *hdr = NULL;
-+	void *bb = 0;
-+	struct esdhc esdhc;
-+	int ret, len;
-+	int offset = SZ_32K;
-+
-+
-+	switch (instance) {
-+	case 0:
-+		esdhc.regs = IOMEM(MX8MQ_USDHC1_BASE_ADDR);
-+		break;
-+	case 1:
-+		esdhc.regs = IOMEM(MX8MQ_USDHC2_BASE_ADDR);
-+		break;
-+	default:
-+		return -EINVAL;
+diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
+index 6a258bd..a9323f8 100644
+--- a/scripts/imx/imx-image.c
++++ b/scripts/imx/imx-image.c
+@@ -315,6 +315,16 @@ static size_t add_header_v2(const struct config_data *data, void *buf)
+ 	uint32_t loadaddr = data->image_load_addr;
+ 	uint32_t imagesize = data->load_size;
+ 
++	if (data->pbl_code_size) {
++		/*
++		 * Restrict the imagesize to the PBL if given.
++		 * Also take the alignment for CSF into account.
++		 */
++		imagesize = roundup(data->pbl_code_size + HEADER_LEN, 0x4);
++		if (data->csf)
++			imagesize = roundup(imagesize, 0x1000);
 +	}
 +
-+	esdhc.is_be = 0;
-+	esdhc.is_mx6 = 1;
-+
-+	ret = esdhc_search_header(&esdhc, &hdr, buf, &offset);
-+	if (ret)
-+		return ret;
-+
-+	len = offset + hdr->boot_data.size + piggydata_size();
-+	len = ALIGN(len, SECTOR_SIZE);
-+
-+	ret = esdhc_read_blocks(&esdhc, buf, len);
-+
-+	/*
-+	 * Calculate location of the piggydata at the offset loaded into RAM
-+	 */
-+	buf = buf + offset + hdr->boot_data.size;
-+	/*
-+	 * Barebox expects the piggydata right behind the PBL in the beginning
-+	 * of RAM.
-+	 */
-+	bb = (void *) MX8MQ_DDR_CSD1_BASE_ADDR + barebox_pbl_size;
-+	memcpy(bb, buf, piggydata_size());
-+	return ret;
-+}
- #endif
+ 	buf += offset;
+ 	hdr = buf;
  
- #ifdef CONFIG_ARCH_LS1046
+@@ -333,14 +343,22 @@ static size_t add_header_v2(const struct config_data *data, void *buf)
+ 	hdr->self		= loadaddr + offset;
+ 
+ 	hdr->boot_data.start	= loadaddr;
+-	if (data->max_load_size && imagesize > data->max_load_size)
++	if (!data->csf && data->max_load_size
++	    && imagesize > data->max_load_size)
+ 		hdr->boot_data.size	= data->max_load_size;
+ 	else
+ 		hdr->boot_data.size	= imagesize;
+ 
+-	if (data->csf) {
++	if (data->sign_image) {
+ 		hdr->csf = loadaddr + imagesize;
+ 		hdr->boot_data.size += CSF_LEN;
++	} else if (data->pbl_code_size && data->csf) {
++		/*
++		 * For i.MX8 the CSF space is added via the linker script, so
++		 * the CSF length needs to be added if HABV4 is enabled but
++		 * signing is not.
++		 */
++		hdr->boot_data.size += CSF_LEN;
+ 	}
+ 
+ 	hdr->dcd_header.tag	= TAG_DCD_HEADER;
+@@ -555,6 +573,7 @@ static int hab_sign(struct config_data *data)
+ 	char *cst;
+ 	void *buf;
+ 	size_t csf_space = CSF_LEN;
++	unsigned int offset = 0;
+ 
+ 	cst = getenv("CST");
+ 	if (!cst)
+@@ -681,13 +700,36 @@ static int hab_sign(struct config_data *data)
+ 		return -errno;
+ 	}
+ 
+-	outfd = open(data->outfile, O_WRONLY | O_APPEND);
++	/*
++	 * For i.MX8, write into the reserved CSF section
++	 */
++	if (data->cpu_type == IMX_CPU_IMX8MQ)
++		outfd = open(data->outfile, O_WRONLY);
++	else
++		outfd = open(data->outfile, O_WRONLY | O_APPEND);
++
+ 	if (outfd < 0) {
+ 		fprintf(stderr, "Cannot open %s for writing: %s\n", data->outfile,
+ 			strerror(errno));
+ 		exit(1);
+ 	}
+ 
++	if (data->cpu_type == IMX_CPU_IMX8MQ) {
++		/*
++		 * For i.MX8 insert the CSF data into the reserved CSF area
++		 * right behind the PBL
++		 */
++		offset = roundup(data->header_gap + data->pbl_code_size +
++				 HEADER_LEN, 0x1000);
++		if (data->signed_hdmi_firmware_file)
++			offset += PLUGIN_HDMI_SIZE;
++
++		if (lseek(outfd, offset, SEEK_SET) < 0) {
++			perror("lseek");
++			exit(1);
++		}
++	}
++
+ 	ret = xwrite(outfd, buf, csf_space);
+ 	if (ret < 0) {
+ 		fprintf(stderr, "write failed: %s\n", strerror(errno));
+@@ -752,7 +794,6 @@ int main(int argc, char *argv[])
+ 	int outfd;
+ 	int dcd_only = 0;
+ 	int now = 0;
+-	int sign_image = 0;
+ 	int i, header_copies;
+ 	int add_barebox_header;
+ 	uint32_t barebox_image_size = 0;
+@@ -769,7 +810,7 @@ int main(int argc, char *argv[])
+ 
+ 	prgname = argv[0];
+ 
+-	while ((opt = getopt(argc, argv, "c:hf:o:bduse")) != -1) {
++	while ((opt = getopt(argc, argv, "c:hf:o:p:bduse")) != -1) {
+ 		switch (opt) {
+ 		case 'c':
+ 			configfile = optarg;
+@@ -780,6 +821,9 @@ int main(int argc, char *argv[])
+ 		case 'o':
+ 			data.outfile = optarg;
+ 			break;
++		case 'p':
++			data.pbl_code_size = strtoul(optarg, NULL, 0);
++			break;
+ 		case 'b':
+ 			add_barebox_header = 1;
+ 			break;
+@@ -787,7 +831,7 @@ int main(int argc, char *argv[])
+ 			dcd_only = 1;
+ 			break;
+ 		case 's':
+-			sign_image = 1;
++			data.sign_image = 1;
+ 			break;
+ 		case 'u':
+ 			create_usb_image = 1;
+@@ -841,14 +885,12 @@ int main(int argc, char *argv[])
+ 	if (ret)
+ 		exit(1);
+ 
+-	if (data.max_load_size && (sign_image || data.encrypt_image)) {
++	if (data.max_load_size && (data.encrypt_image || data.csf)
++	    && data.cpu_type != IMX_CPU_IMX8MQ) {
+ 		fprintf(stderr, "Specifying max_load_size is incompatible with HAB signing/encrypting\n");
+ 		exit(1);
+ 	}
+ 
+-	if (!sign_image)
+-		data.csf = NULL;
+-
+ 	if (create_usb_image && !data.csf) {
+ 		fprintf(stderr, "Warning: the -u option only has effect with signed images\n");
+ 		create_usb_image = 0;
+@@ -996,7 +1038,7 @@ int main(int argc, char *argv[])
+ 		exit(1);
+ 	}
+ 
+-	if (data.csf) {
++	if (data.csf && data.sign_image) {
+ 		ret = hab_sign(&data);
+ 		if (ret)
+ 			exit(1);
+diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
+index f37f151..e245194 100644
+--- a/scripts/imx/imx.c
++++ b/scripts/imx/imx.c
+@@ -338,6 +338,7 @@ static int do_hab_blocks(struct config_data *data, int argc, char *argv[])
+ 	char *str;
+ 	int ret;
+ 	uint32_t signed_size = data->load_size;
++	uint32_t offset = 0;
+ 
+ 	if (!data->csf)
+ 		return -EINVAL;
+@@ -354,9 +355,19 @@ static int do_hab_blocks(struct config_data *data, int argc, char *argv[])
+ 	if (data->encrypt_image)
+ 		signed_size = ENCRYPT_OFFSET;
+ 
++	/*
++	 * Ensure we only sign the PBL for i.MX8MQ
++	 */
++	if (data->pbl_code_size && data->cpu_type == IMX_CPU_IMX8MQ) {
++		offset = data->header_gap;
++		signed_size = roundup(data->pbl_code_size + HEADER_LEN, 0x1000);
++		if (data->signed_hdmi_firmware_file)
++			offset += PLUGIN_HDMI_SIZE;
++	}
++
+ 	if (!strcmp(type, "full")) {
+-		ret = asprintf(&str, "Blocks = 0x%08x 0 %d \"%s\"\n",
+-			       data->image_load_addr, signed_size,
++		ret = asprintf(&str, "Blocks = 0x%08x 0x%08x 0x%08x \"%s\"\n",
++			       data->image_load_addr, offset, signed_size,
+ 			       data->outfile);
+ 	} else if (!strcmp(type, "from-dcdofs")) {
+ 		ret = asprintf(&str, "Blocks = 0x%08x 0x%x %d \"%s\"\n",
 -- 
 git-series 0.9.1
 
