@@ -1,12 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay5-d.mail.gandi.net ([217.70.183.197])
- by casper.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1htxvm-0003L1-TG
- for barebox@lists.infradead.org; Sat, 03 Aug 2019 17:35:00 +0000
-From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Sat,  3 Aug 2019 19:33:58 +0200
-Message-Id: <20190803173358.9209-1-ahmad@a3f.at>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
+ id 1huYpt-0005w6-E1
+ for barebox@lists.infradead.org; Mon, 05 Aug 2019 08:59:23 +0000
+Date: Mon, 5 Aug 2019 10:59:17 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190805085917.xvokyzpvpyc37tk6@pengutronix.de>
+References: <20190731102143.20503-1-a.fatoum@pengutronix.de>
+ <20190731102143.20503-2-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190731102143.20503-2-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,33 +23,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! Documentation: boards: add initial STM32MP
- documentation
-To: barebox@lists.infradead.org
-Cc: afa@pengutronix.de, rhi@pengutronix.de
+Subject: Re: [PATCH v2 2/3] ratp: return 0 bytes written from puts if busy
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Left-over line spotted by Roland. The boards are listed in the section
-following this.
----
- Documentation/boards/stm32mp.rst | 2 --
- 1 file changed, 2 deletions(-)
+On Wed, Jul 31, 2019 at 12:21:42PM +0200, Ahmad Fatoum wrote:
+> Prior behavior was to wrongly report all bytes written if enqueueing wasn't
+> possible at the time. Instead we should either return 0 or an error code if
+> users need to retry. write(2) returns 0 in such cases. Follow suit.
+> 
+> As no current users run puts in a loop, this has no effect for now.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+> Changes in v2:
+> 	New commit.
+> ---
+>  common/ratp/ratp.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/common/ratp/ratp.c b/common/ratp/ratp.c
+> index 9aea1786d684..8ac7dc98b6f8 100644
+> --- a/common/ratp/ratp.c
+> +++ b/common/ratp/ratp.c
+> @@ -267,7 +267,7 @@ static int ratp_console_puts(struct console_device *cdev, const char *s)
+>  	len = strlen(s);
+>  
+>  	if (ratp_busy(&ctx->ratp))
+> -		return len;
+> +		return 0;
 
-diff --git a/Documentation/boards/stm32mp.rst b/Documentation/boards/stm32mp.rst
-index 8cbf36c3961e..24cf8859db8d 100644
---- a/Documentation/boards/stm32mp.rst
-+++ b/Documentation/boards/stm32mp.rst
-@@ -22,8 +22,6 @@ header-less image ending in ``*.pblb`` as well.
- 
- Use of barebox as FSBL is not supported.
- 
--Following boards are currently supported in barebox:
--
- Building barebox
- ----------------
- 
+I'm not sure if this return value is ever used for something useful,
+not sure how relevant this is. ratp_busy() however returns true when
+it's called from inside the ratp code. This is necessary so that we
+don't get stuck in an endless loop. If we start returning 0 for
+"no characters sent" how should code evaluating this return value
+react? Retrying it until all characters are sent obviously is not an
+option.
+
+I think the current behaviour of just returning 'len' is correct.
+
+Sascha
+
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
