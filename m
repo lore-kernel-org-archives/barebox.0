@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hubyN-0005VB-Ja
+ id 1hubyN-0005VC-JY
  for barebox@lists.infradead.org; Mon, 05 Aug 2019 12:20:20 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  5 Aug 2019 14:20:12 +0200
-Message-Id: <20190805122015.19220-6-s.hauer@pengutronix.de>
+Date: Mon,  5 Aug 2019 14:20:15 +0200
+Message-Id: <20190805122015.19220-9-s.hauer@pengutronix.de>
 In-Reply-To: <20190805122015.19220-1-s.hauer@pengutronix.de>
 References: <20190805122015.19220-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,59 +21,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/8] mtd: nand-mxs: pass mtd_info to mxs_nand_get_mark_offset()
+Subject: [PATCH 8/8] mtd: nand-mxs: Make ecc strength configurable via device
+ tree
 To: Barebox List <barebox@lists.infradead.org>
 
-struct mtd_info * contains everything mxs_nand_get_mark_offset() needs,
-so pass this pointer rather than several integer arguments.
+According to the binding doc the mxs NAND driver supports the
+"nand-ecc-strength" and "nand-ecc-step-size" options. This adds support
+for these options to the driver. The "nand-ecc-step-size" is not
+really configurable, the only accepted value is 512 so this is merely
+to sanity check that there's nothing specified that we can't yet
+support.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/nand/nand_mxs.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/mtd/nand/nand_mxs.c | 25 +++++++++++++++++++++----
+ 1 file changed, 21 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
-index 92d78db6c9..2b2e80d4c5 100644
+index 7555b1013d..b016c5bff0 100644
 --- a/drivers/mtd/nand/nand_mxs.c
 +++ b/drivers/mtd/nand/nand_mxs.c
-@@ -287,9 +287,9 @@ static uint32_t mxs_nand_aux_status_offset(void)
- 	return (MXS_NAND_METADATA_SIZE + 0x3) & ~0x3;
- }
+@@ -336,14 +336,31 @@ static int mxs_nand_calc_geo(struct mtd_info *mtd)
+ 	struct nand_chip *chip = mtd->priv;
+ 	struct mxs_nand_info *nand_info = chip->priv;
+ 	int ecc_chunk_count = mxs_nand_ecc_chunk_cnt(mtd->writesize);
+-	int ecc_strength;
+ 	int gf_len = 13;  /* length of Galois Field for non-DDR nand */
++	int max_ecc_strength;
  
--static inline uint32_t mxs_nand_get_mark_offset(uint32_t page_data_size,
--						uint32_t ecc_strength)
-+static uint32_t mxs_nand_get_mark_offset(struct mtd_info *mtd)
- {
-+	struct nand_chip *chip = mtd->priv;
- 	uint32_t chunk_data_size_in_bits;
- 	uint32_t chunk_ecc_size_in_bits;
- 	uint32_t chunk_total_size_in_bits;
-@@ -298,13 +298,13 @@ static inline uint32_t mxs_nand_get_mark_offset(uint32_t page_data_size,
- 	uint32_t block_mark_bit_offset;
+-	ecc_strength = ((mtd->oobsize - MXS_NAND_METADATA_SIZE) * 8)
+-		/ (gf_len * ecc_chunk_count);
++	nand_of_parse_node(mtd, mtd->parent->device_node);
  
- 	chunk_data_size_in_bits = MXS_NAND_CHUNK_DATA_CHUNK_SIZE * 8;
--	chunk_ecc_size_in_bits  = mxs_nand_ecc_size_in_bits(ecc_strength);
-+	chunk_ecc_size_in_bits  = mxs_nand_ecc_size_in_bits(chip->ecc.strength);
++	max_ecc_strength = ((mtd->oobsize - MXS_NAND_METADATA_SIZE) * 8)
++			   / (gf_len * ecc_chunk_count);
+ 	/* We need the minor even number. */
+-	chip->ecc.strength = rounddown(ecc_strength, 2);
++	max_ecc_strength = rounddown(max_ecc_strength, 2);
++
++	if (chip->ecc.strength) {
++		if (chip->ecc.strength > max_ecc_strength) {
++			dev_err(nand_info->dev, "invalid ecc strength %d (maximum %d)\n",
++				chip->ecc.strength, max_ecc_strength);
++			return -EINVAL;
++		}
++	} else {
++		chip->ecc.strength = max_ecc_strength;
++	}
++
++	if (chip->ecc.size && chip->ecc.size != MXS_NAND_CHUNK_DATA_CHUNK_SIZE) {
++		dev_err(nand_info->dev, "invalid ecc size %d, this driver only supports %d\n",
++			chip->ecc.size, MXS_NAND_CHUNK_DATA_CHUNK_SIZE);
++		return -EINVAL;
++	}
  
- 	chunk_total_size_in_bits =
- 			chunk_data_size_in_bits + chunk_ecc_size_in_bits;
- 
- 	/* Compute the bit offset of the block mark within the physical page. */
--	block_mark_bit_offset = page_data_size * 8;
-+	block_mark_bit_offset = mtd->writesize * 8;
- 
- 	/* Subtract the metadata bits. */
- 	block_mark_bit_offset -= MXS_NAND_METADATA_SIZE * 8;
-@@ -353,8 +353,7 @@ static int mxs_nand_calc_geo(struct mtd_info *mtd)
  	chip->ecc.bytes = DIV_ROUND_UP(13 * chip->ecc.strength, 8);
  	chip->ecc.size = MXS_NAND_CHUNK_DATA_CHUNK_SIZE;
- 
--	nand_info->bb_mark_bit_offset = mxs_nand_get_mark_offset(mtd->writesize,
--								 chip->ecc.strength);
-+	nand_info->bb_mark_bit_offset = mxs_nand_get_mark_offset(mtd);
- 
- 	return 0;
- }
 -- 
 2.20.1
 
