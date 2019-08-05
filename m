@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from magratgarlick.emantor.de ([78.46.208.201])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1huZDx-00044I-13
- for barebox@lists.infradead.org; Mon, 05 Aug 2019 09:24:14 +0000
+ id 1huZE0-00047w-CM
+ for barebox@lists.infradead.org; Mon, 05 Aug 2019 09:24:17 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Mon,  5 Aug 2019 11:23:46 +0200
-Message-Id: <83074fc52521ec678ad089bd7a2dd206f8f75887.1564997015.git-series.r.czerwinski@pengutronix.de>
+Date: Mon,  5 Aug 2019 11:23:44 +0200
+Message-Id: <b577986cd7183d7e23659e8b20dc9572dadfb651.1564997015.git-series.r.czerwinski@pengutronix.de>
 In-Reply-To: <cover.b9d503ab98014278972f6bd84931035a5ef27967.1564997015.git-series.r.czerwinski@pengutronix.de>
 References: <cover.b9d503ab98014278972f6bd84931035a5ef27967.1564997015.git-series.r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
@@ -21,38 +21,92 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 07/16] sections: fix macro for barebox_pbl_size
+Subject: [PATCH v2 05/16] esdhc-pbl: extract header parsing from image start
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-On ARM64 this did not contain the expected barebox_pbl size. Rework this
-to be a substraction between __piggydata_start and __image_start, which
-should cover the whole PBL.
+Extract the header parsing code from esdc_start_image. The header
+parsing function will be used by the piggy loading code added in the
+next commit.
 
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- include/asm-generic/sections.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mci/imx-esdhc-pbl.c | 44 +++++++++++++++++++++++++-------------
+ 1 file changed, 30 insertions(+), 14 deletions(-)
 
-diff --git a/include/asm-generic/sections.h b/include/asm-generic/sections.h
-index 0eb18f6..f584cad 100644
---- a/include/asm-generic/sections.h
-+++ b/include/asm-generic/sections.h
-@@ -8,12 +8,12 @@ extern char __bare_init_start[], __bare_init_end[];
- extern char _end[];
- extern char __image_start[];
- extern char __image_end[];
-+extern char __piggydata_start[];
- extern void *_barebox_image_size;
- extern void *_barebox_bare_init_size;
- extern void *_barebox_pbl_size;
+diff --git a/drivers/mci/imx-esdhc-pbl.c b/drivers/mci/imx-esdhc-pbl.c
+index 367daa8..49514fc 100644
+--- a/drivers/mci/imx-esdhc-pbl.c
++++ b/drivers/mci/imx-esdhc-pbl.c
+@@ -243,27 +243,22 @@ static int esdhc_read_blocks(struct esdhc *esdhc, void *dst, size_t len)
+ }
  
- #define barebox_image_size	(__image_end - __image_start)
- #define barebox_bare_init_size	(unsigned int)&_barebox_bare_init_size
--#define barebox_pbl_size	(unsigned int)&_barebox_pbl_size
+ #ifdef CONFIG_ARCH_IMX
+-static int
+-esdhc_start_image(struct esdhc *esdhc, ptrdiff_t address, ptrdiff_t entry, u32 offset)
++static int esdhc_search_header(struct esdhc *esdhc,
++			       struct imx_flash_header_v2 **header_pointer,
++			       void *buffer, u32 *offset)
+ {
 -
-+#define barebox_pbl_size	(__piggydata_start - __image_start)
- #endif /* _ASM_GENERIC_SECTIONS_H_ */
+-	void *buf = (void *)address;
+-	struct imx_flash_header_v2 *hdr;
+-	int ret, len;
+-	void __noreturn (*bb)(void);
+-	unsigned int ofs;
++	int ret;
+ 	int i, header_count = 1;
+-
+-	len = imx_image_size();
+-	len = ALIGN(len, SECTOR_SIZE);
++	void *buf = buffer;
++	struct imx_flash_header_v2 *hdr;
+ 
+ 	for (i = 0; i < header_count; i++) {
+ 		ret = esdhc_read_blocks(esdhc, buf,
+-					offset + SZ_1K + SECTOR_SIZE);
++					*offset + SZ_1K + SECTOR_SIZE);
+ 		if (ret)
+ 			return ret;
+ 
+-		hdr = buf + offset + SZ_1K;
++		hdr = buf + *offset + SZ_1K;
+ 
+ 		if (!is_imx_flash_header_v2(hdr)) {
+ 			pr_debug("IVT header not found on SD card. "
+@@ -286,10 +281,31 @@ esdhc_start_image(struct esdhc *esdhc, ptrdiff_t address, ptrdiff_t entry, u32 o
+ 			 * this time skipping anything HDMI firmware
+ 			 * related.
+ 			 */
+-			offset += hdr->boot_data.size + hdr->header.length;
++			*offset += hdr->boot_data.size + hdr->header.length;
+ 			header_count++;
+ 		}
+ 	}
++	*header_pointer = hdr;
++	return 0;
++}
++
++static int
++esdhc_start_image(struct esdhc *esdhc, ptrdiff_t address, ptrdiff_t entry,
++		  u32 offset)
++{
++
++	void *buf = (void *)address;
++	struct imx_flash_header_v2 *hdr = NULL;
++	int ret, len;
++	void __noreturn (*bb)(void);
++	unsigned int ofs;
++
++	len = imx_image_size();
++	len = ALIGN(len, SECTOR_SIZE);
++
++	ret = esdhc_search_header(esdhc, &hdr, buf, &offset);
++	if (ret)
++		return ret;
+ 
+ 	pr_debug("Check ok, loading image\n");
+ 
 -- 
 git-series 0.9.1
 
