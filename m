@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from magratgarlick.emantor.de ([78.46.208.201])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1huaRe-0007cp-RM
- for barebox@lists.infradead.org; Mon, 05 Aug 2019 10:42:29 +0000
-Message-ID: <1565001745.2323.5.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 05 Aug 2019 12:42:25 +0200
-In-Reply-To: <779cf1615ca931b2687c6fa8a4b5f4e481f8af82.1564997015.git-series.r.czerwinski@pengutronix.de>
+ id 1huZDv-00043W-L7
+ for barebox@lists.infradead.org; Mon, 05 Aug 2019 09:24:13 +0000
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Mon,  5 Aug 2019 11:23:41 +0200
+Message-Id: <03ea3dc20571d075cee01127c189e4db4e2a36f9.1564997015.git-series.r.czerwinski@pengutronix.de>
+In-Reply-To: <cover.b9d503ab98014278972f6bd84931035a5ef27967.1564997015.git-series.r.czerwinski@pengutronix.de>
 References: <cover.b9d503ab98014278972f6bd84931035a5ef27967.1564997015.git-series.r.czerwinski@pengutronix.de>
- <779cf1615ca931b2687c6fa8a4b5f4e481f8af82.1564997015.git-series.r.czerwinski@pengutronix.de>
-Mime-Version: 1.0
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,55 +17,184 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 13/16] arm: uncompress: verify sha256 if enabled
-To: Rouven Czerwinski <r.czerwinski@pengutronix.de>, barebox@lists.infradead.org
+Subject: [PATCH v2 02/16] i.MX: HABv4: implement interface for i.MX8MQ
+To: barebox@lists.infradead.org
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-QW0gTW9udGFnLCBkZW4gMDUuMDguMjAxOSwgMTE6MjMgKzAyMDAgc2NocmllYiBSb3V2ZW4gQ3pl
-cndpbnNraToKPiBBZGQgcGlnZ3lkYXRhIHZlcmlmaWNhdGlvbiBiZWZvcmUgdGhlIEFSTSB1bmNv
-bXByZXNzIGZ1bmN0aW9uLgo+IFRoaXMgY2FsY3VsYXRlcyB0aGUgc2hhMjU2c3VtIG9mIHRoZSBj
-b21wcmVzc2VkIGJhcmVib3ggYmluYXJ5IGFuZCBvbmx5Cj4gY29udGludWVzIGlmIHRoZSBidWls
-dGluIHNoYTI1NnN1bSBtYXRjaGVzIHRoZSBjYWxjdWxhdGVkIHNoYTI1NnN1bS4KPiAKPiA+IFNp
-Z25lZC1vZmYtYnk6IFJvdXZlbiBDemVyd2luc2tpIDxyLmN6ZXJ3aW5za2lAcGVuZ3V0cm9uaXgu
-ZGU+Cj4gLS0tCj4gwqBhcmNoL2FybS9jcHUvdW5jb21wcmVzcy5jIHwgMTcgKysrKysrKysrKysr
-KysrKy0KPiDCoDEgZmlsZSBjaGFuZ2VkLCAxNiBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0p
-Cj4gCj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2NwdS91bmNvbXByZXNzLmMgYi9hcmNoL2FybS9j
-cHUvdW5jb21wcmVzcy5jCj4gaW5kZXggYzc4NTFjNS4uNGM2OWI0YyAxMDA2NDQKPiAtLS0gYS9h
-cmNoL2FybS9jcHUvdW5jb21wcmVzcy5jCj4gKysrIGIvYXJjaC9hcm0vY3B1L3VuY29tcHJlc3Mu
-Ywo+IEBAIC00MiwxNCArNDIsMTggQEAgdW5zaWduZWQgbG9uZyBmcmVlX21lbV9lbmRfcHRyOwo+
-IMKgZXh0ZXJuIHVuc2lnbmVkIGNoYXIgaW5wdXRfZGF0YVtdOwo+IMKgZXh0ZXJuIHVuc2lnbmVk
-IGNoYXIgaW5wdXRfZGF0YV9lbmRbXTsKPiDCoAo+ICtleHRlcm4gdW5zaWduZWQgY2hhciBzaGFf
-c3VtW107Cj4gK2V4dGVybiB1bnNpZ25lZCBjaGFyIHNoYV9zdW1fZW5kW107Cj4gKwo+IMKgdm9p
-ZCBfX25vcmV0dXJuIGJhcmVib3hfbXVsdGlfcGJsX3N0YXJ0KHVuc2lnbmVkIGxvbmcgbWVtYmFz
-ZSwKPiA+IMKgCQl1bnNpZ25lZCBsb25nIG1lbXNpemUsIHZvaWQgKmJvYXJkZGF0YSkKPiDCoHsK
-PiA+IC0JdWludDMyX3QgcGdfbGVuLCB1bmNvbXByZXNzZWRfbGVuOwo+ID4gKwl1aW50MzJfdCBw
-Z19sZW4sIHVuY29tcHJlc3NlZF9sZW4sIHBibF9oYXNoX2xlbjsKPiA+IMKgCXZvaWQgX19ub3Jl
-dHVybiAoKmJhcmVib3gpKHVuc2lnbmVkIGxvbmcsIHVuc2lnbmVkIGxvbmcsIHZvaWQgKik7Cj4g
-PiDCoAl1bnNpZ25lZCBsb25nIGVuZG1lbSA9IG1lbWJhc2UgKyBtZW1zaXplOwo+ID4gwqAJdW5z
-aWduZWQgbG9uZyBiYXJlYm94X2Jhc2U7Cj4gPiDCoAl2b2lkICpwZ19zdGFydCwgKnBnX2VuZDsK
-PiA+ICsJdm9pZCAqcGJsX2hhc2hfc3RhcnQsICpwYmxfaGFzaF9lbmQ7Cj4gPiDCoAl1bnNpZ25l
-ZCBsb25nIHBjID0gZ2V0X3BjKCk7Cj4gwqAKPiA+IMKgCXBnX3N0YXJ0ID0gaW5wdXRfZGF0YSAr
-IGdsb2JhbF92YXJpYWJsZV9vZmZzZXQoKTsKPiBAQCAtOTIsNiArOTYsMTcgQEAgdm9pZCBfX25v
-cmV0dXJuIGJhcmVib3hfbXVsdGlfcGJsX3N0YXJ0KHVuc2lnbmVkIGxvbmcgbWVtYmFzZSwKPiA+
-IMKgCXByX2RlYnVnKCJ1bmNvbXByZXNzaW5nIGJhcmVib3ggYmluYXJ5IGF0IDB4JXAgKHNpemUg
-MHglMDh4KSB0byAweCUwOGx4ICh1bmNvbXByZXNzZWQgc2l6ZTogMHglMDh4KVxuIiwKPiA+IMKg
-CQkJcGdfc3RhcnQsIHBnX2xlbiwgYmFyZWJveF9iYXNlLCB1bmNvbXByZXNzZWRfbGVuKTsKPiDC
-oAo+ID4gKwlpZiAoSVNfRU5BQkxFRChDT05GSUdfUEJMX1ZFUklGWV9QSUdHWSkpIHsKPiA+ICsJ
-CXBibF9oYXNoX3N0YXJ0ID0gc2hhX3N1bSArIGdsb2JhbF92YXJpYWJsZV9vZmZzZXQoKTsKPiAr
-CQlwYmxfaGFzaF9lbmQgPSBzaGFfc3VtX2VuZCArIGdsb2JhbF92YXJpYWJsZV9vZmZzZXQoKTsK
-ClRoaXMgY29kZSBpcyBleGVjdXRlZCBhZnRlciByZWxvY2F0aW9uLCBzbyB0aGVyZSBpcyBubyBw
-b2ludCBpbiBhZGRpbmcKdGhlIGdsb2JhbCB2YXJpYWJsZSBvZmZzZXQuIEl0IGRvZXNuJ3QgaGFy
-bSwgYXMgdGhlIG9mZnNldCBpcyBhbHdheXMgMAphdCB0aGF0IHBvaW50LCBidXQgYmV0dGVyIGRv
-bid0IHN0YXJ0IGNhcmdvLWN1bHRpbmcgaGVyZS4KClJlZ2FyZHMsCkx1Y2FzCgo+ICsJCXBibF9o
-YXNoX2xlbiA9IHBibF9oYXNoX2VuZCAtIHBibF9oYXNoX3N0YXJ0Owo+ID4gKwkJaWYgKHBibF9i
-YXJlYm94X3ZlcmlmeShwZ19zdGFydCwgcGdfbGVuLCBwYmxfaGFzaF9zdGFydCwKPiA+ICsJCQkJ
-wqDCoMKgwqDCoMKgwqBwYmxfaGFzaF9sZW4pICE9IDApIHsKPiA+ICsJCQlwdXRjX2xsKCchJyk7
-Cj4gPiArCQkJcGFuaWMoImhhc2ggbWlzbWF0Y2gsIHJlZnVzaW5nIHRvIGRlY29tcHJlc3MiKTsK
-PiA+ICsJCX0KPiA+ICsJfQo+ICsKPiA+IMKgCXBibF9iYXJlYm94X3VuY29tcHJlc3MoKHZvaWQq
-KWJhcmVib3hfYmFzZSwgcGdfc3RhcnQsIHBnX2xlbik7Cj4gwqAKPiA+IMKgCXN5bmNfY2FjaGVz
-X2Zvcl9leGVjdXRpb24oKTsKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9y
-ZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+The HAB interface for i.MX8MQ only implements the retrieval of status
+and events. The SoC status is retrieved using the TF-A SIP API found in
+the downstream imx TF-A. After calling into the TF-A the passed data
+structures need to be invalidated, since otherwise the cached zero value
+is used.
+Currently the TF-A report event call only supports FAILURE events.
+Testing the TF-A with other event types resulted in a freeze in the
+bootrom code, which was not investigated further.
+We instead walk the memory containing the events and retrieve the events
+ourselves. They are exposed using the same API.
+
+Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+---
+ drivers/hab/hab.c   |   2 +-
+ drivers/hab/habv4.c | 109 +++++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 110 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/hab/hab.c b/drivers/hab/hab.c
+index 03bb65e..a346e01 100644
+--- a/drivers/hab/hab.c
++++ b/drivers/hab/hab.c
+@@ -217,7 +217,7 @@ static struct imx_hab_ops *imx_get_hab_ops(void)
+ 
+ 	if (IS_ENABLED(CONFIG_HABV3) && (cpu_is_mx25() || cpu_is_mx35()))
+ 		tmp = &imx_hab_ops_iim;
+-	else if (IS_ENABLED(CONFIG_HABV4) && cpu_is_mx6())
++	else if (IS_ENABLED(CONFIG_HABV4) && (cpu_is_mx6() || cpu_is_mx8mq()))
+ 		tmp = &imx_hab_ops_ocotp;
+ 	else
+ 		return NULL;
+diff --git a/drivers/hab/habv4.c b/drivers/hab/habv4.c
+index b11cf7b..0bfd652 100644
+--- a/drivers/hab/habv4.c
++++ b/drivers/hab/habv4.c
+@@ -22,8 +22,11 @@
+ #include <hab.h>
+ #include <init.h>
+ #include <types.h>
++#include <linux/arm-smccc.h>
++#include <asm/cache.h>
+ 
+ #include <mach/generic.h>
++#include <mach/imx8mq.h>
+ 
+ #define HABV4_RVT_IMX28 0xffff8af8
+ #define HABV4_RVT_IMX6_OLD 0x00000094
+@@ -177,6 +180,85 @@ struct habv4_rvt {
+ 	void (*failsafe)(void);
+ } __packed;
+ 
++#define FSL_SIP_HAB             0xC2000007
++#define FSL_SIP_HAB_AUTHENTICATE        0x00
++#define FSL_SIP_HAB_ENTRY               0x01
++#define FSL_SIP_HAB_EXIT                0x02
++#define FSL_SIP_HAB_REPORT_EVENT        0x03
++#define FSL_SIP_HAB_REPORT_STATUS       0x04
++#define FSL_SIP_HAB_FAILSAFE            0x05
++#define FSL_SIP_HAB_CHECK_TARGET        0x06
++
++static enum hab_status hab_sip_report_status(enum hab_config *config,
++					     enum hab_state *state)
++{
++	struct arm_smccc_res res;
++
++	arm_smccc_smc(FSL_SIP_HAB, FSL_SIP_HAB_REPORT_STATUS,
++		      (unsigned long) config,
++		      (unsigned long) state, 0, 0, 0, 0, &res);
++	if (state)
++		v8_inv_dcache_range((unsigned long) state,
++				    (unsigned long)state + sizeof(*config));
++	if (config)
++		v8_inv_dcache_range((unsigned long) config,
++				    (unsigned long)config + sizeof(*state));
++	return (enum hab_status)res.a0;
++}
++
++static enum hab_status imx8_read_sram_events(enum hab_status status,
++					     uint32_t index, void *event,
++					     uint32_t *bytes)
++{
++	struct hab_event_record *events[10];
++	int num_events = 0;
++	char *sram = (char *)0x9061c0;
++	int i = 0;
++	int internal_index = 0;
++	char *end = 0;
++	struct hab_event_record *search;
++
++	/*
++	 * AN12263 HABv4 Guidelines and Recommendations
++	 * recommends the address and size, however errors are usually contained
++	 * within the first bytes. Scan only the first few bytes to rule out
++	 * lots of false positives.
++	 */
++	end = sram +  0x1a0;
++
++	while (sram < end) {
++		if (*sram == 0xdb) {
++			search = (void *)sram;
++			sram = sram + be16_to_cpu(search->hdr.len);
++			events[num_events] = search;
++			num_events++;
++		} else {
++			sram++;
++		}
++	}
++	while (i < num_events) {
++		if (events[i]->status == status) {
++			if (internal_index == index) {
++				*bytes = sizeof(struct hab_event_record) +
++					be16_to_cpu(events[i]->hdr.len);
++				if (event)
++					memcpy(event, events[i], *bytes);
++				return HAB_STATUS_SUCCESS;
++			} else {
++				internal_index++;
++			}
++		}
++		i++;
++	}
++	return HAB_STATUS_FAILURE;
++}
++
++struct habv4_rvt hab_smc_ops = {
++	.header = { .tag = 0xdd },
++	.report_event = imx8_read_sram_events,
++	.report_status = hab_sip_report_status,
++};
++
+ static const char *habv4_get_status_str(enum hab_status status)
+ {
+ 	switch (status) {
+@@ -509,6 +591,33 @@ int imx6_hab_get_status(void)
+ 	return -EINVAL;
+ }
+ 
++static int imx8_hab_get_status(void)
++{
++	return habv4_get_status(&hab_smc_ops);
++}
++
++static int init_imx8_hab_get_status(void)
++{
++	if (!cpu_is_mx8mq())
++		/* can happen in multi-image builds and is not an error */
++		return 0;
++
++	/*
++	 * Nobody will check the return value if there were HAB errors, but the
++	 * initcall will fail spectaculously with a strange error message.
++	 */
++	imx8_hab_get_status();
++
++	return 0;
++}
++
++/*
++ *
++ *
++ *
++ */
++postmmu_initcall(init_imx8_hab_get_status);
++
+ static int init_imx6_hab_get_status(void)
+ {
+ 	if (!cpu_is_mx6())
+-- 
+git-series 0.9.1
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
