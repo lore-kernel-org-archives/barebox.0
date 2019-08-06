@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from magratgarlick.emantor.de ([78.46.208.201])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hurkk-0007QD-0B
- for barebox@lists.infradead.org; Tue, 06 Aug 2019 05:11:19 +0000
+ id 1hurkl-0007Ra-Ee
+ for barebox@lists.infradead.org; Tue, 06 Aug 2019 05:11:21 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Tue,  6 Aug 2019 07:10:54 +0200
-Message-Id: <bcced2b01abca18b392d5c31b98db08830fa9923.1565068235.git-series.r.czerwinski@pengutronix.de>
+Date: Tue,  6 Aug 2019 07:10:57 +0200
+Message-Id: <d433c17f03145b04c41cfaf1d21efd3a476d80dc.1565068235.git-series.r.czerwinski@pengutronix.de>
 In-Reply-To: <cover.20f706d0d5a7ead5c114378becb025aefb9c7b8a.1565068235.git-series.r.czerwinski@pengutronix.de>
 References: <cover.20f706d0d5a7ead5c114378becb025aefb9c7b8a.1565068235.git-series.r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
@@ -21,41 +21,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 04/16] arm: lib: add CSF section between PBL and piggy
+Subject: [PATCH v3 07/16] sections: fix macro for barebox_pbl_size
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Signing on i.MX8MQ is done by signing only the PBL, since the DRAM is
-not available on early start and the SRAM is not big enough to contain
-the whole image. Reserve a CSF area between PBL and the piggydata, to
-ensure that the CSF area can be loaded into SRAM.
+On ARM64 this did not contain the expected barebox_pbl size. Rework this
+to be a substraction between __piggydata_start and __image_start, which
+should cover the whole PBL.
 
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- arch/arm/lib/pbl.lds.S | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ include/asm-generic/sections.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/lib/pbl.lds.S b/arch/arm/lib/pbl.lds.S
-index 300671b..d2f5ab2 100644
---- a/arch/arm/lib/pbl.lds.S
-+++ b/arch/arm/lib/pbl.lds.S
-@@ -90,6 +90,16 @@ SECTIONS
+diff --git a/include/asm-generic/sections.h b/include/asm-generic/sections.h
+index 0eb18f6..f584cad 100644
+--- a/include/asm-generic/sections.h
++++ b/include/asm-generic/sections.h
+@@ -8,12 +8,12 @@ extern char __bare_init_start[], __bare_init_end[];
+ extern char _end[];
+ extern char __image_start[];
+ extern char __image_end[];
++extern char __piggydata_start[];
+ extern void *_barebox_image_size;
+ extern void *_barebox_bare_init_size;
+ extern void *_barebox_pbl_size;
  
- 	pbl_memory_size =  . - BASE;
- 
-+#if defined(CONFIG_CPU_64) && defined(CONFIG_HABV4)
-+	. = ALIGN(0x1000);
-+	__csf_start = .;
-+	.hab_csf : {
-+		BYTE(0x5a);
-+		. += + 0x1fff;
-+	} = 0x5a
-+	__csf_end = .;
-+#endif /* CONFIG_CPU_64 && CONFIG_HABV4 */
-+
- 	. = ALIGN(4);
- 	__piggydata_start = .;
- 	.piggydata : {
+ #define barebox_image_size	(__image_end - __image_start)
+ #define barebox_bare_init_size	(unsigned int)&_barebox_bare_init_size
+-#define barebox_pbl_size	(unsigned int)&_barebox_pbl_size
+-
++#define barebox_pbl_size	(__piggydata_start - __image_start)
+ #endif /* _ASM_GENERIC_SECTIONS_H_ */
 -- 
 git-series 0.9.1
 
