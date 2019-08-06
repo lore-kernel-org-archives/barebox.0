@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from magratgarlick.emantor.de ([78.46.208.201])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hurkp-0007Vg-Dh
+ id 1hurkp-0007VG-24
  for barebox@lists.infradead.org; Tue, 06 Aug 2019 05:11:24 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Tue,  6 Aug 2019 07:11:04 +0200
-Message-Id: <6482a7c0b87a65257ad168d96f0cf690fecb28bf.1565068235.git-series.r.czerwinski@pengutronix.de>
+Date: Tue,  6 Aug 2019 07:10:56 +0200
+Message-Id: <cfddf4e6c171f647295784cd7908d969e1191ef8.1565068235.git-series.r.czerwinski@pengutronix.de>
 In-Reply-To: <cover.20f706d0d5a7ead5c114378becb025aefb9c7b8a.1565068235.git-series.r.czerwinski@pengutronix.de>
 References: <cover.20f706d0d5a7ead5c114378becb025aefb9c7b8a.1565068235.git-series.r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
@@ -21,83 +21,109 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 14/16] mach-imx: add gencsf header for i.MX8MQ
+Subject: [PATCH v3 06/16] esdhc-pbl: add piggy load function
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Add the required gencsf header for i.MX8MQ.
+Add a function to load and copy the piggy data to the correct offset
+expected by barebox in the RAM. This way the PBL can later verify the
+piggydata before uncompressing and loading the main barebox.
 
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- arch/arm/mach-imx/include/mach/habv4-imx8-gencsf.h | 59 +++++++++++++++-
- 1 file changed, 59 insertions(+)
- create mode 100644 arch/arm/mach-imx/include/mach/habv4-imx8-gencsf.h
+ arch/arm/mach-imx/include/mach/xload.h |  5 +++-
+ arch/arm/mach-imx/xload-common.c       |  6 ++++-
+ drivers/mci/imx-esdhc-pbl.c            | 46 +++++++++++++++++++++++++++-
+ 3 files changed, 57 insertions(+)
 
-diff --git a/arch/arm/mach-imx/include/mach/habv4-imx8-gencsf.h b/arch/arm/mach-imx/include/mach/habv4-imx8-gencsf.h
-new file mode 100644
-index 0000000..34039ee
---- /dev/null
-+++ b/arch/arm/mach-imx/include/mach/habv4-imx8-gencsf.h
-@@ -0,0 +1,59 @@
-+/*
-+ * This snippet can be included from a i.MX flash header configuration
-+ * file for generating signed images. The necessary keys/certificates
-+ * are expected in these config variables:
-+ *
-+ * CONFIG_HABV4_TABLE_BIN
-+ * CONFIG_HABV4_CSF_CRT_PEM
-+ * CONFIG_HABV4_IMG_CRT_PEM
-+ */
-+#if defined(CONFIG_HABV4) && defined(CONFIG_CPU_64)
-+hab [Header]
-+hab Version = 4.3
-+hab Hash Algorithm = sha256
-+hab Engine Configuration = 0
-+hab Certificate Format = X509
-+hab Signature Format = CMS
-+hab Engine = CAAM
+diff --git a/arch/arm/mach-imx/include/mach/xload.h b/arch/arm/mach-imx/include/mach/xload.h
+index 8f141bc..a605e76 100644
+--- a/arch/arm/mach-imx/include/mach/xload.h
++++ b/arch/arm/mach-imx/include/mach/xload.h
+@@ -6,7 +6,12 @@ int imx6_spi_load_image(int instance, unsigned int flash_offset, void *buf, int 
+ int imx6_spi_start_image(int instance);
+ int imx6_esdhc_start_image(int instance);
+ int imx8_esdhc_start_image(int instance);
++int imx8_esdhc_load_piggy(int instance);
+ 
+ int imx_image_size(void);
++int piggydata_size(void);
 +
-+hab [Install SRK]
-+hab File = CONFIG_HABV4_TABLE_BIN
-+hab # SRK index within SRK-Table 0..3
-+hab Source index = 0
++extern unsigned char input_data[];
++extern unsigned char input_data_end[];
+ 
+ #endif /* __MACH_XLOAD_H */
+diff --git a/arch/arm/mach-imx/xload-common.c b/arch/arm/mach-imx/xload-common.c
+index c5727eb..bd64052 100644
+--- a/arch/arm/mach-imx/xload-common.c
++++ b/arch/arm/mach-imx/xload-common.c
+@@ -8,3 +8,9 @@ int imx_image_size(void)
+ 	/* i.MX header is 4k */
+ 	return barebox_image_size + SZ_4K;
+ }
 +
-+hab [Install CSFK]
-+/* target key index in keystore 1 */
-+hab File = CONFIG_HABV4_CSF_CRT_PEM
++int piggydata_size(void)
++{
++	return input_data_end - input_data;
++}
 +
-+hab [Authenticate CSF]
+diff --git a/drivers/mci/imx-esdhc-pbl.c b/drivers/mci/imx-esdhc-pbl.c
+index 49514fc..fb27c84 100644
+--- a/drivers/mci/imx-esdhc-pbl.c
++++ b/drivers/mci/imx-esdhc-pbl.c
+@@ -425,6 +425,52 @@ int imx8_esdhc_start_image(int instance)
+ 	return esdhc_start_image(&esdhc, MX8MQ_DDR_CSD1_BASE_ADDR,
+ 				 MX8MQ_ATF_BL33_BASE_ADDR, SZ_32K);
+ }
 +
-+hab [Unlock]
-+hab Engine = CAAM
-+hab Features = RNG
++int imx8_esdhc_load_piggy(int instance)
++{
++	void *buf = (void *)MX8MQ_ATF_BL33_BASE_ADDR;
++	struct imx_flash_header_v2 *hdr = NULL;
++	void *bb = 0;
++	struct esdhc esdhc;
++	int ret, len;
++	int offset = SZ_32K;
 +
-+hab [Install Key]
-+/* verification key index in key store (0, 2...4) */
-+hab Verification index = 0
-+/* target key index in key store (2...4) */
-+hab Target index = 2
-+hab File = CONFIG_HABV4_IMG_CRT_PEM
 +
-+hab [Authenticate Data]
-+/* verification key index in key store (2...4) */
-+hab Verification index = 2
++	switch (instance) {
++	case 0:
++		esdhc.regs = IOMEM(MX8MQ_USDHC1_BASE_ADDR);
++		break;
++	case 1:
++		esdhc.regs = IOMEM(MX8MQ_USDHC2_BASE_ADDR);
++		break;
++	default:
++		return -EINVAL;
++	}
 +
-+hab_blocks
++	esdhc.is_be = 0;
++	esdhc.is_mx6 = 1;
 +
-+hab_encrypt [Install Secret Key]
-+hab_encrypt Verification index = 0
-+hab_encrypt Target index = 0
-+hab_encrypt_key
-+hab_encrypt_key_length 256
-+hab_encrypt_blob_address
++	ret = esdhc_search_header(&esdhc, &hdr, buf, &offset);
++	if (ret)
++		return ret;
 +
-+hab_encrypt [Decrypt Data]
-+hab_encrypt Verification index = 0
-+hab_encrypt Mac Bytes = 16
++	len = offset + hdr->boot_data.size + piggydata_size();
++	len = ALIGN(len, SECTOR_SIZE);
 +
-+hab_encrypt_blocks
-+#endif
++	ret = esdhc_read_blocks(&esdhc, buf, len);
++
++	/*
++	 * Calculate location of the piggydata at the offset loaded into RAM
++	 */
++	buf = buf + offset + hdr->boot_data.size;
++	/*
++	 * Barebox expects the piggydata right behind the PBL in the beginning
++	 * of RAM.
++	 */
++	bb = (void *) MX8MQ_DDR_CSD1_BASE_ADDR + barebox_pbl_size;
++	memcpy(bb, buf, piggydata_size());
++	return ret;
++}
+ #endif
+ 
+ #ifdef CONFIG_ARCH_LS1046
 -- 
 git-series 0.9.1
 
