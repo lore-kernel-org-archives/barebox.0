@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from magratgarlick.emantor.de ([78.46.208.201])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hurki-0007P5-Gx
- for barebox@lists.infradead.org; Tue, 06 Aug 2019 05:11:19 +0000
+ id 1hurke-0007LN-Kh
+ for barebox@lists.infradead.org; Tue, 06 Aug 2019 05:11:15 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Tue,  6 Aug 2019 07:10:50 +0200
-Message-Id: <cover.20f706d0d5a7ead5c114378becb025aefb9c7b8a.1565068235.git-series.r.czerwinski@pengutronix.de>
+Date: Tue,  6 Aug 2019 07:10:51 +0200
+Message-Id: <87c364fcd198e97267c8baa0655e605b110e99a8.1565068235.git-series.r.czerwinski@pengutronix.de>
+In-Reply-To: <cover.20f706d0d5a7ead5c114378becb025aefb9c7b8a.1565068235.git-series.r.czerwinski@pengutronix.de>
+References: <cover.20f706d0d5a7ead5c114378becb025aefb9c7b8a.1565068235.git-series.r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,100 +21,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 00/16] HAB for i.MX8MQ
+Subject: [PATCH v3 01/16] i.MX: HABv4: ignore return for i.MX28/6 initcalls
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-This patch series adds HAB support for i.MX8MQ.
-This was tested on the NXP i.MX8MQ EVK. Other i.MX8MQ boards should
-still be supported but will require a lowlevel.c rework similar to this
-done for the i.MX8MQ.
+Move the status call below the explanations and return Null.
+No functional changes intended.
 
-The first part adds the necessary HAB interfaces for i.MX8MQ. Than the
-ability to read and copy the piggydata to the correct location in DRAM
-is added. Next imx-image is adjusted to support signing of the i.MX8MQ
-images. The fourth part is the addition of sha256 to the PBL. This is
-necessary since only the PBL is authenticated using HAB, the main
-barebox binary is than authenticated to a sha256sum built into the PBL.
-Finally the EVK board files are adjusted to the changes.
+Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+---
+ drivers/hab/habv4.c | 18 +++++-------------
+ 1 file changed, 5 insertions(+), 13 deletions(-)
 
-To test, add the following lines to Makefile.imx:
-
-FILE_barebox-nxp-imx8mq-evk-signed.img = start_nxp_imx8mq_evk.pblb.psimximg
-image-$(CONFIG_MACH_NXP_IMX8MQ_EVK) = barebox-nxp-imx8mq-evk-signed.img
-
-v3:
-- flush before invalidate for status retrival
-- drop global_variable_offset from piggy verification stage
-- switch to current_el() from DRAM and TF-A init required detection
-- make PBL_VERIFY_PIGGY not user configurable and select it from ARCH_IMX8MQ
-By Lucas Stach
-
-v2:
-- Add the -p option to imx-image and use this options to distinguish the
-  different HAB insertion methods.
-- Add wrappers and rework panic for PBL, allowing the same use in PBL as
-  in barebox.
-- Rework hab initcalls by moving the status calls under explanation and
-  removing the return variable.
-By Sascha Hauer
-
-Kind Regards,
-Rouven Czerwinski
-
-Rouven Czerwinski (16):
-  i.MX: HABv4: ignore return for i.MX28/6 initcalls
-  i.MX: HABv4: implement interface for i.MX8MQ
-  mach-imx: enable HAB on i.MX8MQ
-  arm: lib: add CSF section between PBL and piggy
-  esdhc-pbl: extract header parsing from image start
-  esdhc-pbl: add piggy load function
-  sections: fix macro for barebox_pbl_size
-  scripts: imx: support signing for i.MX8MQ
-  images: always build sha256sum into pbl
-  pbl: add sha256 and piggy verification to PBL
-  stdio: puts and putchar static inline wrappers
-  pbl: support panic with log output
-  arm: uncompress: verify sha256 if enabled
-  mach-imx: add gencsf header for i.MX8MQ
-  mach-imx: hab: select piggy verification for i.MX8
-  boards: nxp-mx8-evk: rework to different boot flow
-
- arch/arm/boards/nxp-imx8mq-evk/Makefile                       |   4 +-
- arch/arm/boards/nxp-imx8mq-evk/flash-header-imx8mq-evk.imxcfg |   1 +-
- arch/arm/boards/nxp-imx8mq-evk/lowlevel.c                     |  81 ++--
- arch/arm/boards/nxp-imx8mq-evk/trampoline.S                   |  10 +-
- arch/arm/cpu/uncompress.c                                     |  17 +-
- arch/arm/lib/pbl.lds.S                                        |  17 +-
- arch/arm/mach-imx/Kconfig                                     |   5 +-
- arch/arm/mach-imx/include/mach/habv4-imx8-gencsf.h            |  59 +++-
- arch/arm/mach-imx/include/mach/imx-header.h                   |   2 +-
- arch/arm/mach-imx/include/mach/xload.h                        |   5 +-
- arch/arm/mach-imx/xload-common.c                              |   6 +-
- crypto/Makefile                                               |   2 +-
- crypto/sha2.c                                                 |  11 +-
- drivers/hab/hab.c                                             |   2 +-
- drivers/hab/habv4.c                                           | 134 ++++++-
- drivers/mci/imx-esdhc-pbl.c                                   |  90 ++++-
- images/Makefile                                               |  22 +-
- images/Makefile.imx                                           |  11 +-
- images/sha_sum.S                                              |   7 +-
- include/asm-generic/sections.h                                |   4 +-
- include/crypto/pbl-sha.h                                      |  13 +-
- include/pbl.h                                                 |   2 +-
- include/stdio.h                                               |  17 +-
- pbl/Kconfig                                                   |   9 +-
- pbl/decomp.c                                                  |  39 ++-
- pbl/misc.c                                                    |   5 +-
- scripts/imx/imx-image.c                                       |  64 ++-
- scripts/imx/imx.c                                             |  15 +-
- 28 files changed, 556 insertions(+), 98 deletions(-)
- create mode 100644 arch/arm/boards/nxp-imx8mq-evk/trampoline.S
- create mode 100644 arch/arm/mach-imx/include/mach/habv4-imx8-gencsf.h
- create mode 100644 images/sha_sum.S
- create mode 100644 include/crypto/pbl-sha.h
-
-base-commit: af66ec677c40dfaed68a124d21dd59d5f8c63381
+diff --git a/drivers/hab/habv4.c b/drivers/hab/habv4.c
+index 6a60be6..b11cf7b 100644
+--- a/drivers/hab/habv4.c
++++ b/drivers/hab/habv4.c
+@@ -511,21 +511,17 @@ int imx6_hab_get_status(void)
+ 
+ static int init_imx6_hab_get_status(void)
+ {
+-	int ret = 0;
+-
+ 	if (!cpu_is_mx6())
+ 		/* can happen in multi-image builds and is not an error */
+ 		return 0;
+ 
+-	ret = imx6_hab_get_status();
+-
+ 	/*
+ 	 * Nobody will check the return value if there were HAB errors, but the
+ 	 * initcall will fail spectaculously with a strange error message.
+ 	 */
+-	if (ret == -EPERM)
+-		return 0;
+-	return ret;
++	imx6_hab_get_status();
++
++	return 0;
+ }
+ 
+ /*
+@@ -544,19 +540,15 @@ int imx28_hab_get_status(void)
+ 
+ static int init_imx28_hab_get_status(void)
+ {
+-	int ret = 0;
+-
+ 	if (!cpu_is_mx28())
+ 		/* can happen in multi-image builds and is not an error */
+ 		return 0;
+ 
+-	ret = imx28_hab_get_status();
+ 
+ 	/* nobody will check the return value if there were HAB errors, but the
+ 	 * initcall will fail spectaculously with a strange error message. */
+-	if (ret == -EPERM)
+-		return 0;
+-	return ret;
++	imx28_hab_get_status();
++	return 0;
+ }
+ /* i.MX28 ROM code can be run after MMU setup to make use of caching */
+ postmmu_initcall(init_imx28_hab_get_status);
 -- 
 git-series 0.9.1
 
