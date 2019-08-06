@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from magratgarlick.emantor.de ([78.46.208.201])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hurkj-0007QC-Vt
+ id 1hurkk-0007QD-0B
  for barebox@lists.infradead.org; Tue, 06 Aug 2019 05:11:19 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Tue,  6 Aug 2019 07:10:53 +0200
-Message-Id: <089d9e5ca7171bc49cb753b1bb9295ac288cbce7.1565068235.git-series.r.czerwinski@pengutronix.de>
+Date: Tue,  6 Aug 2019 07:10:54 +0200
+Message-Id: <bcced2b01abca18b392d5c31b98db08830fa9923.1565068235.git-series.r.czerwinski@pengutronix.de>
 In-Reply-To: <cover.20f706d0d5a7ead5c114378becb025aefb9c7b8a.1565068235.git-series.r.czerwinski@pengutronix.de>
 References: <cover.20f706d0d5a7ead5c114378becb025aefb9c7b8a.1565068235.git-series.r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
@@ -21,35 +21,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 03/16] mach-imx: enable HAB on i.MX8MQ
+Subject: [PATCH v3 04/16] arm: lib: add CSF section between PBL and piggy
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Enable HAB for i.MX8MQ. Since the status and report functions are now
-implemented, we can safely enable HABV4 for i.MX8MQ.
+Signing on i.MX8MQ is done by signing only the PBL, since the DRAM is
+not available on early start and the SRAM is not big enough to contain
+the whole image. Reserve a CSF area between PBL and the piggydata, to
+ensure that the CSF area can be loaded into SRAM.
 
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- arch/arm/mach-imx/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/lib/pbl.lds.S | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index b9374fe..8fcef3f 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -790,10 +790,10 @@ config HABV4
- 	select HAB
- 	select NVMEM
- 	select IMX_OCOTP
--	depends on ARCH_IMX6
-+	depends on ARCH_IMX6 || ARCH_IMX8MQ
- 	depends on OFDEVICE
- 	help
--	  High Assurance Boot, as found on i.MX28/i.MX6.
-+	  High Assurance Boot, as found on i.MX28/i.MX6/i.MX8MQ.
+diff --git a/arch/arm/lib/pbl.lds.S b/arch/arm/lib/pbl.lds.S
+index 300671b..d2f5ab2 100644
+--- a/arch/arm/lib/pbl.lds.S
++++ b/arch/arm/lib/pbl.lds.S
+@@ -90,6 +90,16 @@ SECTIONS
  
- config HAB_CERTS_ENV
- 	depends on HAB
+ 	pbl_memory_size =  . - BASE;
+ 
++#if defined(CONFIG_CPU_64) && defined(CONFIG_HABV4)
++	. = ALIGN(0x1000);
++	__csf_start = .;
++	.hab_csf : {
++		BYTE(0x5a);
++		. += + 0x1fff;
++	} = 0x5a
++	__csf_end = .;
++#endif /* CONFIG_CPU_64 && CONFIG_HABV4 */
++
+ 	. = ALIGN(4);
+ 	__piggydata_start = .;
+ 	.piggydata : {
 -- 
 git-series 0.9.1
 
