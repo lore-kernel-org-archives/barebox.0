@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from magratgarlick.emantor.de ([78.46.208.201])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hurke-0007LN-Kh
- for barebox@lists.infradead.org; Tue, 06 Aug 2019 05:11:15 +0000
+ id 1hurki-0007P3-GB
+ for barebox@lists.infradead.org; Tue, 06 Aug 2019 05:11:18 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Tue,  6 Aug 2019 07:10:51 +0200
-Message-Id: <87c364fcd198e97267c8baa0655e605b110e99a8.1565068235.git-series.r.czerwinski@pengutronix.de>
+Date: Tue,  6 Aug 2019 07:10:55 +0200
+Message-Id: <cbc4bb1562ac44ec2fd00f9694e9357ab0342831.1565068235.git-series.r.czerwinski@pengutronix.de>
 In-Reply-To: <cover.20f706d0d5a7ead5c114378becb025aefb9c7b8a.1565068235.git-series.r.czerwinski@pengutronix.de>
 References: <cover.20f706d0d5a7ead5c114378becb025aefb9c7b8a.1565068235.git-series.r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
@@ -21,69 +21,92 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 01/16] i.MX: HABv4: ignore return for i.MX28/6 initcalls
+Subject: [PATCH v3 05/16] esdhc-pbl: extract header parsing from image start
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Move the status call below the explanations and return Null.
-No functional changes intended.
+Extract the header parsing code from esdc_start_image. The header
+parsing function will be used by the piggy loading code added in the
+next commit.
 
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- drivers/hab/habv4.c | 18 +++++-------------
- 1 file changed, 5 insertions(+), 13 deletions(-)
+ drivers/mci/imx-esdhc-pbl.c | 44 +++++++++++++++++++++++++-------------
+ 1 file changed, 30 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/hab/habv4.c b/drivers/hab/habv4.c
-index 6a60be6..b11cf7b 100644
---- a/drivers/hab/habv4.c
-+++ b/drivers/hab/habv4.c
-@@ -511,21 +511,17 @@ int imx6_hab_get_status(void)
+diff --git a/drivers/mci/imx-esdhc-pbl.c b/drivers/mci/imx-esdhc-pbl.c
+index 367daa8..49514fc 100644
+--- a/drivers/mci/imx-esdhc-pbl.c
++++ b/drivers/mci/imx-esdhc-pbl.c
+@@ -243,27 +243,22 @@ static int esdhc_read_blocks(struct esdhc *esdhc, void *dst, size_t len)
+ }
  
- static int init_imx6_hab_get_status(void)
+ #ifdef CONFIG_ARCH_IMX
+-static int
+-esdhc_start_image(struct esdhc *esdhc, ptrdiff_t address, ptrdiff_t entry, u32 offset)
++static int esdhc_search_header(struct esdhc *esdhc,
++			       struct imx_flash_header_v2 **header_pointer,
++			       void *buffer, u32 *offset)
  {
--	int ret = 0;
 -
- 	if (!cpu_is_mx6())
- 		/* can happen in multi-image builds and is not an error */
- 		return 0;
+-	void *buf = (void *)address;
+-	struct imx_flash_header_v2 *hdr;
+-	int ret, len;
+-	void __noreturn (*bb)(void);
+-	unsigned int ofs;
++	int ret;
+ 	int i, header_count = 1;
+-
+-	len = imx_image_size();
+-	len = ALIGN(len, SECTOR_SIZE);
++	void *buf = buffer;
++	struct imx_flash_header_v2 *hdr;
  
--	ret = imx6_hab_get_status();
--
- 	/*
- 	 * Nobody will check the return value if there were HAB errors, but the
- 	 * initcall will fail spectaculously with a strange error message.
- 	 */
--	if (ret == -EPERM)
--		return 0;
--	return ret;
-+	imx6_hab_get_status();
+ 	for (i = 0; i < header_count; i++) {
+ 		ret = esdhc_read_blocks(esdhc, buf,
+-					offset + SZ_1K + SECTOR_SIZE);
++					*offset + SZ_1K + SECTOR_SIZE);
+ 		if (ret)
+ 			return ret;
+ 
+-		hdr = buf + offset + SZ_1K;
++		hdr = buf + *offset + SZ_1K;
+ 
+ 		if (!is_imx_flash_header_v2(hdr)) {
+ 			pr_debug("IVT header not found on SD card. "
+@@ -286,10 +281,31 @@ esdhc_start_image(struct esdhc *esdhc, ptrdiff_t address, ptrdiff_t entry, u32 o
+ 			 * this time skipping anything HDMI firmware
+ 			 * related.
+ 			 */
+-			offset += hdr->boot_data.size + hdr->header.length;
++			*offset += hdr->boot_data.size + hdr->header.length;
+ 			header_count++;
+ 		}
+ 	}
++	*header_pointer = hdr;
++	return 0;
++}
 +
-+	return 0;
- }
++static int
++esdhc_start_image(struct esdhc *esdhc, ptrdiff_t address, ptrdiff_t entry,
++		  u32 offset)
++{
++
++	void *buf = (void *)address;
++	struct imx_flash_header_v2 *hdr = NULL;
++	int ret, len;
++	void __noreturn (*bb)(void);
++	unsigned int ofs;
++
++	len = imx_image_size();
++	len = ALIGN(len, SECTOR_SIZE);
++
++	ret = esdhc_search_header(esdhc, &hdr, buf, &offset);
++	if (ret)
++		return ret;
  
- /*
-@@ -544,19 +540,15 @@ int imx28_hab_get_status(void)
+ 	pr_debug("Check ok, loading image\n");
  
- static int init_imx28_hab_get_status(void)
- {
--	int ret = 0;
--
- 	if (!cpu_is_mx28())
- 		/* can happen in multi-image builds and is not an error */
- 		return 0;
- 
--	ret = imx28_hab_get_status();
- 
- 	/* nobody will check the return value if there were HAB errors, but the
- 	 * initcall will fail spectaculously with a strange error message. */
--	if (ret == -EPERM)
--		return 0;
--	return ret;
-+	imx28_hab_get_status();
-+	return 0;
- }
- /* i.MX28 ROM code can be run after MMU setup to make use of caching */
- postmmu_initcall(init_imx28_hab_get_status);
 -- 
 git-series 0.9.1
 
