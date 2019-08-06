@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from magratgarlick.emantor.de ([78.46.208.201])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hurkl-0007Ra-Ee
- for barebox@lists.infradead.org; Tue, 06 Aug 2019 05:11:21 +0000
+ id 1hurkn-0007TK-5o
+ for barebox@lists.infradead.org; Tue, 06 Aug 2019 05:11:23 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Tue,  6 Aug 2019 07:10:57 +0200
-Message-Id: <d433c17f03145b04c41cfaf1d21efd3a476d80dc.1565068235.git-series.r.czerwinski@pengutronix.de>
+Date: Tue,  6 Aug 2019 07:11:02 +0200
+Message-Id: <84381aa8f6c606b76c1ff03ec0833545582ceac8.1565068235.git-series.r.czerwinski@pengutronix.de>
 In-Reply-To: <cover.20f706d0d5a7ead5c114378becb025aefb9c7b8a.1565068235.git-series.r.czerwinski@pengutronix.de>
 References: <cover.20f706d0d5a7ead5c114378becb025aefb9c7b8a.1565068235.git-series.r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
@@ -21,38 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 07/16] sections: fix macro for barebox_pbl_size
+Subject: [PATCH v3 12/16] pbl: support panic with log output
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-On ARM64 this did not contain the expected barebox_pbl size. Rework this
-to be a substraction between __piggydata_start and __image_start, which
-should cover the whole PBL.
+If panic is called with a string in the PBL, print the panic string
+before falling into the busy loop.
 
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- include/asm-generic/sections.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ pbl/misc.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/include/asm-generic/sections.h b/include/asm-generic/sections.h
-index 0eb18f6..f584cad 100644
---- a/include/asm-generic/sections.h
-+++ b/include/asm-generic/sections.h
-@@ -8,12 +8,12 @@ extern char __bare_init_start[], __bare_init_end[];
- extern char _end[];
- extern char __image_start[];
- extern char __image_end[];
-+extern char __piggydata_start[];
- extern void *_barebox_image_size;
- extern void *_barebox_bare_init_size;
- extern void *_barebox_pbl_size;
+diff --git a/pbl/misc.c b/pbl/misc.c
+index 7e76120..201ae38 100644
+--- a/pbl/misc.c
++++ b/pbl/misc.c
+@@ -11,5 +11,10 @@ void __noreturn hang(void)
  
- #define barebox_image_size	(__image_end - __image_start)
- #define barebox_bare_init_size	(unsigned int)&_barebox_bare_init_size
--#define barebox_pbl_size	(unsigned int)&_barebox_pbl_size
--
-+#define barebox_pbl_size	(__piggydata_start - __image_start)
- #endif /* _ASM_GENERIC_SECTIONS_H_ */
+ void __noreturn panic(const char *fmt, ...)
+ {
++	va_list args;
++
++	va_start(args, fmt);
++	printf(fmt, args);
++	va_end(args);
+ 	while(1);
+ }
 -- 
 git-series 0.9.1
 
