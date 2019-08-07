@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from conuserg-08.nifty.com ([210.131.2.75])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hx4Lh-0002Cy-3K
- for barebox@lists.infradead.org; Mon, 12 Aug 2019 07:02:34 +0000
-Date: Mon, 12 Aug 2019 09:02:31 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190812070231.rqwbytsywcumzyok@pengutronix.de>
-References: <20190807163046.6160-1-yamada.masahiro@socionext.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190807163046.6160-1-yamada.masahiro@socionext.com>
+ id 1hvP77-0000gz-3b
+ for barebox@lists.infradead.org; Wed, 07 Aug 2019 16:48:38 +0000
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Date: Thu,  8 Aug 2019 01:48:08 +0900
+Message-Id: <20190807164808.15228-1-yamada.masahiro@socionext.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,41 +14,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] riscv: use generic bitsperlong.h
-To: Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] kbuild: use -fmacro-prefix-map to make __FILE__ a relative
+ path
+To: barebox@lists.infradead.org
 
-On Thu, Aug 08, 2019 at 01:30:45AM +0900, Masahiro Yamada wrote:
-> Linux highly depends on the fact that the 'long' and the pointer
-> have the same width, and so does barebox.
-> 
-> So, we can always use include/asm-generic/bitsperlong.h, which
-> determines BITS_PER_LONG depending on CONFIG_64BIT.
-> 
-> This is what Linux does (at least in the kernel-space), and barebox
-> can follow it.
-> 
-> Currently, barebox only supports 32-bit riscv, but this should work
-> when it supports 64-bit by adding CONFIG_64BIT to arch/riscv/Kconfig.
-> 
-> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
-> ---
->  arch/riscv/include/asm/bitsperlong.h | 11 +----------
->  1 file changed, 1 insertion(+), 10 deletions(-)
+Linux commit a73619a845d5625079cc1b3b820f44c899618388
 
-Applied, thanks
+The __FILE__ macro is used everywhere in the kernel to locate the file
+printing the log message, such as WARN_ON(), etc.  If the kernel is
+built out of tree, this can be a long absolute path, like this:
 
-Sascha
+  WARNING: CPU: 1 PID: 1 at /path/to/build/directory/arch/arm64/kernel/foo.c:...
 
+This is because Kbuild runs in the objtree instead of the srctree,
+then __FILE__ is expanded to a file path prefixed with $(srctree)/.
+
+Commit 9da0763bdd82 ("kbuild: Use relative path when building in a
+subdir of the source tree") improved this to some extent; $(srctree)
+becomes ".." if the objtree is a child of the srctree.
+
+For other cases of out-of-tree build, __FILE__ is still the absolute
+path.  It also means the kernel image depends on where it was built.
+
+A brand-new option from GCC, -fmacro-prefix-map, solves this problem.
+If your compiler supports it, __FILE__ is the relative path from the
+srctree regardless of O= option.  This provides more readable log and
+more reproducible builds.
+
+Please note __FILE__ is always an absolute path for external modules.
+
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
+ Makefile | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/Makefile b/Makefile
+index 08ca8e2dac..e817771b25 100644
+--- a/Makefile
++++ b/Makefile
+@@ -486,6 +486,9 @@ CFLAGS += $(call cc-option,-Wdeclaration-after-statement,)
+ # disable pointer signed / unsigned warnings in gcc 4.0
+ CFLAGS += $(call cc-option,-Wno-pointer-sign,)
+ 
++# change __FILE__ to the relative path from the srctree
++CFLAGS += $(call cc-option,-fmacro-prefix-map=$(srctree)/=)
++
+ # KBUILD_IMAGE: Default barebox image to build
+ # Depending on the architecture, this can be either compressed or not.
+ # It will also include any necessary headers to be bootable.
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.17.1
+
 
 _______________________________________________
 barebox mailing list
