@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([78.46.208.201])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1huzP1-0001fw-MY
- for barebox@lists.infradead.org; Tue, 06 Aug 2019 13:21:25 +0000
-From: r.czerwinski@pengutronix.de
-Date: Tue,  6 Aug 2019 15:21:08 +0200
-Message-Id: <20190806132108.27339-1-r.czerwinski@pengutronix.de>
-In-Reply-To: <95c1fb0aa5ab2d3d81fb7405537f7d8b34dd939d.1565068235.git-series.r.czerwinski@pengutronix.de>
-References: <95c1fb0aa5ab2d3d81fb7405537f7d8b34dd939d.1565068235.git-series.r.czerwinski@pengutronix.de>
+ id 1hvbne-0005Wx-4W
+ for barebox@lists.infradead.org; Thu, 08 Aug 2019 06:21:23 +0000
+Date: Thu, 8 Aug 2019 08:21:18 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190808062118.iik3gmbrcfc3eyi6@pengutronix.de>
+References: <cover.20f706d0d5a7ead5c114378becb025aefb9c7b8a.1565068235.git-series.r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <cover.20f706d0d5a7ead5c114378becb025aefb9c7b8a.1565068235.git-series.r.czerwinski@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,35 +22,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! pbl: add sha256 and piggy verification to PBL
-To: barebox@lists.infradead.org
-Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Subject: Re: [PATCH v3 00/16] HAB for i.MX8MQ
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+On Tue, Aug 06, 2019 at 07:10:50AM +0200, Rouven Czerwinski wrote:
+> This patch series adds HAB support for i.MX8MQ.
+> This was tested on the NXP i.MX8MQ EVK. Other i.MX8MQ boards should
+> still be supported but will require a lowlevel.c rework similar to this
+> done for the i.MX8MQ.
+> 
+> The first part adds the necessary HAB interfaces for i.MX8MQ. Than the
+> ability to read and copy the piggydata to the correct location in DRAM
+> is added. Next imx-image is adjusted to support signing of the i.MX8MQ
+> images. The fourth part is the addition of sha256 to the PBL. This is
+> necessary since only the PBL is authenticated using HAB, the main
+> barebox binary is than authenticated to a sha256sum built into the PBL.
+> Finally the EVK board files are adjusted to the changes.
 
----
- pbl/Kconfig | 5 -----
- 1 file changed, 5 deletions(-)
+Applied, thanks
 
-diff --git a/pbl/Kconfig b/pbl/Kconfig
-index 5e7ee069d6..7e6077f96d 100644
---- a/pbl/Kconfig
-+++ b/pbl/Kconfig
-@@ -47,11 +47,6 @@ config PBL_RELOCATABLE
- config PBL_VERIFY_PIGGY
- 	depends on ARM
- 	bool
--	help
--	  Use a PBL builtin sha256sum to verify the piggydata before decompression.
--	  WARNING: your board will not boot if a mismatch is detected, enable DEBUG_LL
--	  to see the builtin and calculated hash.
--	  This effectively locks a given PBL to the matching main barebox.
- 
- config IMAGE_COMPRESSION
- 	bool
+There was a merge conflict in arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
+with ea8981915e ("ARM: nxp-imx8mq-evk: Do setup_c() before accessing global variables").
+Please check if I got it right.
+
+Sascha
+
 -- 
-2.22.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
