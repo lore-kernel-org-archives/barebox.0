@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hvbne-0005Wx-4W
- for barebox@lists.infradead.org; Thu, 08 Aug 2019 06:21:23 +0000
-Date: Thu, 8 Aug 2019 08:21:18 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190808062118.iik3gmbrcfc3eyi6@pengutronix.de>
+ id 1hvcGc-0003OQ-27
+ for barebox@lists.infradead.org; Thu, 08 Aug 2019 06:51:19 +0000
+Message-ID: <ef5d09ed3bf7acc36fe60e66cb09a8fab2a45d68.camel@pengutronix.de>
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Thu, 08 Aug 2019 08:51:09 +0200
+In-Reply-To: <20190808062118.iik3gmbrcfc3eyi6@pengutronix.de>
 References: <cover.20f706d0d5a7ead5c114378becb025aefb9c7b8a.1565068235.git-series.r.czerwinski@pengutronix.de>
+ <20190808062118.iik3gmbrcfc3eyi6@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <cover.20f706d0d5a7ead5c114378becb025aefb9c7b8a.1565068235.git-series.r.czerwinski@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,36 +23,50 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v3 00/16] HAB for i.MX8MQ
-To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Aug 06, 2019 at 07:10:50AM +0200, Rouven Czerwinski wrote:
-> This patch series adds HAB support for i.MX8MQ.
-> This was tested on the NXP i.MX8MQ EVK. Other i.MX8MQ boards should
-> still be supported but will require a lowlevel.c rework similar to this
-> done for the i.MX8MQ.
+On Thu, 2019-08-08 at 08:21 +0200, Sascha Hauer wrote:
+> On Tue, Aug 06, 2019 at 07:10:50AM +0200, Rouven Czerwinski wrote:
+> > This patch series adds HAB support for i.MX8MQ.
+> > This was tested on the NXP i.MX8MQ EVK. Other i.MX8MQ boards should
+> > still be supported but will require a lowlevel.c rework similar to
+> > this
+> > done for the i.MX8MQ.
+> > 
+> > The first part adds the necessary HAB interfaces for i.MX8MQ. Than
+> > the
+> > ability to read and copy the piggydata to the correct location in
+> > DRAM
+> > is added. Next imx-image is adjusted to support signing of the
+> > i.MX8MQ
+> > images. The fourth part is the addition of sha256 to the PBL. This
+> > is
+> > necessary since only the PBL is authenticated using HAB, the main
+> > barebox binary is than authenticated to a sha256sum built into the
+> > PBL.
+> > Finally the EVK board files are adjusted to the changes.
 > 
-> The first part adds the necessary HAB interfaces for i.MX8MQ. Than the
-> ability to read and copy the piggydata to the correct location in DRAM
-> is added. Next imx-image is adjusted to support signing of the i.MX8MQ
-> images. The fourth part is the addition of sha256 to the PBL. This is
-> necessary since only the PBL is authenticated using HAB, the main
-> barebox binary is than authenticated to a sha256sum built into the PBL.
-> Finally the EVK board files are adjusted to the changes.
+> Applied, thanks
+> 
+> There was a merge conflict in arch/arm/boards/nxp-imx8mq-
+> evk/lowlevel.c
+> with ea8981915e ("ARM: nxp-imx8mq-evk: Do setup_c() before accessing
+> global variables").
+> Please check if I got it right.
 
-Applied, thanks
+Hi, your merge lost the revised power on execution flow.
+this should also probably moved from the entry function to
+nxp_imx8mq_evk_start.
 
-There was a merge conflict in arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
-with ea8981915e ("ARM: nxp-imx8mq-evk: Do setup_c() before accessing global variables").
-Please check if I got it right.
-
-Sascha
-
+Regards,
+Rouven Czerwinski
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Pengutronix e.K.                           |            		 |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 
 _______________________________________________
 barebox mailing list
