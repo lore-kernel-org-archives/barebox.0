@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
+Received: from mail-pg1-x544.google.com ([2607:f8b0:4864:20::544])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hxGnB-0003hF-Az
- for barebox@lists.infradead.org; Mon, 12 Aug 2019 20:19:46 +0000
-Received: by mail-pg1-x542.google.com with SMTP id d1so17227519pgp.4
- for <barebox@lists.infradead.org>; Mon, 12 Aug 2019 13:19:44 -0700 (PDT)
+ id 1hxGnC-0003he-BW
+ for barebox@lists.infradead.org; Mon, 12 Aug 2019 20:19:47 +0000
+Received: by mail-pg1-x544.google.com with SMTP id t132so50042129pgb.9
+ for <barebox@lists.infradead.org>; Mon, 12 Aug 2019 13:19:45 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 12 Aug 2019 13:19:12 -0700
-Message-Id: <20190812201915.12414-2-andrew.smirnov@gmail.com>
+Date: Mon, 12 Aug 2019 13:19:13 -0700
+Message-Id: <20190812201915.12414-3-andrew.smirnov@gmail.com>
 In-Reply-To: <20190812201915.12414-1-andrew.smirnov@gmail.com>
 References: <20190812201915.12414-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,31 +23,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] nvmem: Use already existing dev pointer in
- nvmem_register_cdev()
+Subject: [PATCH 3/5] nvmem: Parse partitions information
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-There's already a struct device_d * pointer variable. Use it.
+Add code to parse partition information that might be specified as a
+part of the DT config.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/nvmem/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvmem/core.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
-index 092e3b4f4a..122aac5990 100644
+index 122aac5990..25924872ef 100644
 --- a/drivers/nvmem/core.c
 +++ b/drivers/nvmem/core.c
-@@ -97,7 +97,7 @@ static int nvmem_register_cdev(struct nvmem_device *nvmem, const char *name)
+@@ -92,6 +92,7 @@ static int nvmem_register_cdev(struct nvmem_device *nvmem, const char *name)
+ 	struct device_d *dev = &nvmem->dev;
+ 	struct cdev *cdev = &nvmem->cdev;
+ 	const char *alias;
++	int ret;
  
- 	cdev->name = xstrdup(alias ?: name);
- 	cdev->ops = &nvmem_chrdev_ops;
--	cdev->dev = &nvmem->dev;
-+	cdev->dev = dev;
+ 	alias = of_alias_get(dev->device_node);
+ 
+@@ -100,7 +101,14 @@ static int nvmem_register_cdev(struct nvmem_device *nvmem, const char *name)
+ 	cdev->dev = dev;
  	cdev->size = nvmem->size;
  
- 	return devfs_create(cdev);
+-	return devfs_create(cdev);
++	ret = devfs_create(cdev);
++	if (ret)
++		return ret;
++
++	of_parse_partitions(cdev, dev->device_node);
++	of_partitions_register_fixup(cdev);
++
++	return 0;
+ }
+ 
+ static struct nvmem_device *of_nvmem_find(struct device_node *nvmem_np)
 -- 
 2.21.0
 
