@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hw452-0001U5-LM
- for barebox@lists.infradead.org; Fri, 09 Aug 2019 12:33:13 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri,  9 Aug 2019 14:33:09 +0200
-Message-Id: <20190809123309.6977-1-a.fatoum@pengutronix.de>
-In-Reply-To: <20190809122943.2185-2-a.fatoum@pengutronix.de>
-References: <20190809122943.2185-2-a.fatoum@pengutronix.de>
+ id 1hx4RB-0003hO-0u
+ for barebox@lists.infradead.org; Mon, 12 Aug 2019 07:08:14 +0000
+Date: Mon, 12 Aug 2019 09:08:11 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190812070811.eu2y3gvoifkglb5d@pengutronix.de>
+References: <20190809122943.2185-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190809122943.2185-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,32 +22,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! Documentation: add imx6ull-evk boot mode documentation
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH 1/2] Documentation: imx8mq-evk: fix typo (s/NXM/NXP/)
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-To be pedantic, the RAM/Flash is on the compute module not the base
-board. Correct this..
----
- Documentation/boards/imx/nxp-imx6ull-evk.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Fri, Aug 09, 2019 at 02:29:42PM +0200, Ahmad Fatoum wrote:
+> The SoC's vendor is NXP. Correct the typo.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  Documentation/boards/imx/nxp-imx8mq-evk.rst | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/boards/imx/nxp-imx6ull-evk.rst b/Documentation/boards/imx/nxp-imx6ull-evk.rst
-index 04d35ba73f6d..702f55dff825 100644
---- a/Documentation/boards/imx/nxp-imx6ull-evk.rst
-+++ b/Documentation/boards/imx/nxp-imx6ull-evk.rst
-@@ -1,7 +1,7 @@
- NXP i.MX6ULL EVK Evaluation Board
- =================================
- 
--Board comes with:
-+Compute module comes with:
- 
- * 512MiB of DDR3L SDRAM
- * 256 MB Quad SPI Flash
+Applied, thanks
+
+Sascha
+
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
