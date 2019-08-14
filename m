@@ -1,14 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hxoTA-0007uw-7g
- for barebox@lists.infradead.org; Wed, 14 Aug 2019 08:17:22 +0000
+ id 1hxow2-0003xV-UK
+ for barebox@lists.infradead.org; Wed, 14 Aug 2019 08:47:12 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>) id 1hxow1-0004ir-A5
+ for barebox@lists.infradead.org; Wed, 14 Aug 2019 10:47:09 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.89)
+ (envelope-from <sha@pengutronix.de>) id 1hxow1-0002EG-14
+ for barebox@lists.infradead.org; Wed, 14 Aug 2019 10:47:09 +0200
+Date: Wed, 14 Aug 2019 10:47:09 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 14 Aug 2019 10:16:56 +0200
-Message-Id: <20190814081659.22670-2-s.hauer@pengutronix.de>
-In-Reply-To: <20190814081659.22670-1-s.hauer@pengutronix.de>
-References: <20190814081659.22670-1-s.hauer@pengutronix.de>
+Message-ID: <20190814084708.em7vxkvo5ijkprdy@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,345 +24,132 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] pinctrl: i.MX iomux-v1: Make base address initialization
- unnecessary
+Subject: v2019.08.0
 To: Barebox List <barebox@lists.infradead.org>
 
-So far we have imx_gpio_mode() to configure a pinmux entry for the older
-i.MX pinmuxes. For this to work imx_iomuxv1_init() must be called
-beforehand to configure the base address. Simplify this by introducing
-SoC specific variants of imx_gpio_mode() which also pass the base
-address. This makes initialization of the base address unnecessary and
-the functions usable for PBL. Consequently also compile the code for
-PBL.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- .../boards/eukrea_cpuimx27/eukrea_cpuimx27.c  |  2 +-
- arch/arm/boards/freescale-mx21-ads/imx21ads.c |  2 +-
- arch/arm/boards/freescale-mx27-ads/imx27ads.c |  2 +-
- arch/arm/boards/guf-neso/board.c              |  2 +-
- arch/arm/boards/phytec-phycard-imx27/pca100.c |  6 ++--
- arch/arm/boards/phytec-phycore-imx27/pcm038.c |  4 +--
- arch/arm/boards/phytec-phycore-imx27/pcm970.c |  2 +-
- arch/arm/boards/scb9328/scb9328.c             | 14 +++++-----
- arch/arm/mach-imx/imx1.c                      |  2 --
- arch/arm/mach-imx/imx21.c                     |  2 --
- arch/arm/mach-imx/imx27.c                     |  2 --
- arch/arm/mach-imx/include/mach/iomux-v1.h     | 21 +++++++++++++-
- drivers/pinctrl/Makefile                      |  2 +-
- drivers/pinctrl/imx-iomux-v1.c                | 28 +++++++------------
- 14 files changed, 48 insertions(+), 43 deletions(-)
-
-diff --git a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
-index f27dcd6f44..63034e2755 100644
---- a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
-+++ b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
-@@ -171,7 +171,7 @@ static int eukrea_cpuimx27_devices_init(void)
- 
- 	/* initialize gpios */
- 	for (i = 0; i < ARRAY_SIZE(mode); i++)
--		imx_gpio_mode(mode[i]);
-+		imx27_gpio_mode(mode[i]);
- 
- 	add_cfi_flash_device(DEVICE_ID_DYNAMIC, 0xC0000000, 32 * 1024 * 1024, 0);
- #ifdef CONFIG_EUKREA_CPUIMX27_NOR_64MB
-diff --git a/arch/arm/boards/freescale-mx21-ads/imx21ads.c b/arch/arm/boards/freescale-mx21-ads/imx21ads.c
-index 8afe9ace51..aa654da494 100644
---- a/arch/arm/boards/freescale-mx21-ads/imx21ads.c
-+++ b/arch/arm/boards/freescale-mx21-ads/imx21ads.c
-@@ -152,7 +152,7 @@ static int mx21ads_devices_init(void)
- 
- 	/* initizalize gpios */
- 	for (i = 0; i < ARRAY_SIZE(mode); i++)
--		imx_gpio_mode(mode[i]);
-+		imx21_gpio_mode(mode[i]);
- 
- 	add_cfi_flash_device(DEVICE_ID_DYNAMIC, MX21_CS0_BASE_ADDR,
- 			32 * 1024 * 1024, 0);
-diff --git a/arch/arm/boards/freescale-mx27-ads/imx27ads.c b/arch/arm/boards/freescale-mx27-ads/imx27ads.c
-index 9818a55137..c0f4e464c1 100644
---- a/arch/arm/boards/freescale-mx27-ads/imx27ads.c
-+++ b/arch/arm/boards/freescale-mx27-ads/imx27ads.c
-@@ -95,7 +95,7 @@ static int mx27ads_devices_init(void)
- 
- 	/* initizalize gpios */
- 	for (i = 0; i < ARRAY_SIZE(mode); i++)
--		imx_gpio_mode(mode[i]);
-+		imx27_gpio_mode(mode[i]);
- 
- 	add_cfi_flash_device(DEVICE_ID_DYNAMIC, 0xC0000000, 32 * 1024 * 1024, 0);
- 
-diff --git a/arch/arm/boards/guf-neso/board.c b/arch/arm/boards/guf-neso/board.c
-index e1cd9098e0..2a64bc14fc 100644
---- a/arch/arm/boards/guf-neso/board.c
-+++ b/arch/arm/boards/guf-neso/board.c
-@@ -266,7 +266,7 @@ static int neso_devices_init(void)
- 
- 	/* initialize gpios */
- 	for (i = 0; i < ARRAY_SIZE(mode); i++)
--		imx_gpio_mode(mode[i]);
-+		imx27_gpio_mode(mode[i]);
- 
- 	imx27_add_nand(&nand_info);
- 	imx27_add_fb(&neso_fb_data);
-diff --git a/arch/arm/boards/phytec-phycard-imx27/pca100.c b/arch/arm/boards/phytec-phycard-imx27/pca100.c
-index 60f1505ccb..7184a59c71 100644
---- a/arch/arm/boards/phytec-phycard-imx27/pca100.c
-+++ b/arch/arm/boards/phytec-phycard-imx27/pca100.c
-@@ -84,9 +84,9 @@ static void pca100_usb_init(void)
- 	writel(reg, MX27_USB_OTG_BASE_ADDR + 0x184);
- 
- 	/* disable the usb phys */
--	imx_gpio_mode((GPIO_PORTB | 23) | GPIO_GPIO | GPIO_IN);
-+	imx27_gpio_mode((GPIO_PORTB | 23) | GPIO_GPIO | GPIO_IN);
- 	gpio_direction_output(GPIO_PORTB + 23, 1);
--	imx_gpio_mode((GPIO_PORTB | 24) | GPIO_GPIO | GPIO_IN);
-+	imx27_gpio_mode((GPIO_PORTB | 24) | GPIO_GPIO | GPIO_IN);
- 	gpio_direction_output(GPIO_PORTB + 24, 1);
- }
- 
-@@ -131,7 +131,7 @@ static int pca100_devices_init(void)
- 
- 	/* initizalize gpios */
- 	for (i = 0; i < ARRAY_SIZE(mode); i++)
--		imx_gpio_mode(mode[i]);
-+		imx27_gpio_mode(mode[i]);
- 
- 	pca100_usb_register();
- 
-diff --git a/arch/arm/boards/phytec-phycore-imx27/pcm038.c b/arch/arm/boards/phytec-phycore-imx27/pcm038.c
-index f1f808116c..5ebef516a7 100644
---- a/arch/arm/boards/phytec-phycore-imx27/pcm038.c
-+++ b/arch/arm/boards/phytec-phycore-imx27/pcm038.c
-@@ -112,12 +112,12 @@ static int pcm038_init(void)
- 		return 0;
- 
- 	/* Apply delay for STP line to stop ULPI */
--	imx_gpio_mode(PCM038_GPIO_OTG_STP | GPIO_GPIO);
-+	imx27_gpio_mode(PCM038_GPIO_OTG_STP | GPIO_GPIO);
- 	gpio_direction_output(PCM038_GPIO_OTG_STP, 1);
- 	mdelay(1);
- 
- 	for (i = 0; i < ARRAY_SIZE(pcm038_pins); i++)
--		imx_gpio_mode(pcm038_pins[i]);
-+		imx27_gpio_mode(pcm038_pins[i]);
- 
- 	imx27_add_fb(&pcm038_fb_data);
- 
-diff --git a/arch/arm/boards/phytec-phycore-imx27/pcm970.c b/arch/arm/boards/phytec-phycore-imx27/pcm970.c
-index 13bb7c1cf5..b8faec0384 100644
---- a/arch/arm/boards/phytec-phycore-imx27/pcm970.c
-+++ b/arch/arm/boards/phytec-phycore-imx27/pcm970.c
-@@ -73,7 +73,7 @@ static int pcm970_init(void)
- 		uint32_t i;
- 
- 		for (i = 0; i < ARRAY_SIZE(pcmcia_pins); i++)
--			imx_gpio_mode(pcmcia_pins[i] | GPIO_PUEN);
-+			imx27_gpio_mode(pcmcia_pins[i] | GPIO_PUEN);
- 
- 		/* Always set PCOE signal to low */
- 		gpio_set_value(GPIO_IDE_PCOE, 0);
-diff --git a/arch/arm/boards/scb9328/scb9328.c b/arch/arm/boards/scb9328/scb9328.c
-index 697ed4b401..fcdb3de49d 100644
---- a/arch/arm/boards/scb9328/scb9328.c
-+++ b/arch/arm/boards/scb9328/scb9328.c
-@@ -52,11 +52,11 @@ static int scb9328_devices_init(void)
- {
- 	int i;
- 
--	imx_gpio_mode(PA23_PF_CS5);
--	imx_gpio_mode(GPIO_PORTB | GPIO_GPIO | GPIO_OUT | 21);
--	imx_gpio_mode(GPIO_PORTB | GPIO_GPIO | GPIO_OUT | 22);
--	imx_gpio_mode(GPIO_PORTB | GPIO_GPIO | GPIO_OUT | 23);
--	imx_gpio_mode(GPIO_PORTB | GPIO_GPIO | GPIO_OUT | 24);
-+	imx1_gpio_mode(PA23_PF_CS5);
-+	imx1_gpio_mode(GPIO_PORTB | GPIO_GPIO | GPIO_OUT | 21);
-+	imx1_gpio_mode(GPIO_PORTB | GPIO_GPIO | GPIO_OUT | 22);
-+	imx1_gpio_mode(GPIO_PORTB | GPIO_GPIO | GPIO_OUT | 23);
-+	imx1_gpio_mode(GPIO_PORTB | GPIO_GPIO | GPIO_OUT | 24);
- 
- 	for (i = 0; i < ARRAY_SIZE(leds); i++)
- 		led_gpio_register(&leds[i]);
-@@ -91,8 +91,8 @@ device_initcall(scb9328_devices_init);
- static int scb9328_console_init(void)
- {
- 	/* init gpios for serial port */
--	imx_gpio_mode(PC11_PF_UART1_TXD);
--	imx_gpio_mode(PC12_PF_UART1_RXD);
-+	imx1_gpio_mode(PC11_PF_UART1_TXD);
-+	imx1_gpio_mode(PC12_PF_UART1_RXD);
- 
- 	barebox_set_model("Synertronixx scb9328");
- 	barebox_set_hostname("scb9328");
-diff --git a/arch/arm/mach-imx/imx1.c b/arch/arm/mach-imx/imx1.c
-index 51bdcbf38e..6a09b276c8 100644
---- a/arch/arm/mach-imx/imx1.c
-+++ b/arch/arm/mach-imx/imx1.c
-@@ -62,8 +62,6 @@ int imx1_init(void)
- 
- int imx1_devices_init(void)
- {
--	imx_iomuxv1_init((void *)MX1_GPIO1_BASE_ADDR);
--
- 	add_generic_device("imx1-ccm", 0, NULL, MX1_CCM_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx1-gpt", 0, NULL, MX1_TIM1_BASE_ADDR, 0x100, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx1-gpio", 0, NULL, MX1_GPIO1_BASE_ADDR, 0x100, IORESOURCE_MEM, NULL);
-diff --git a/arch/arm/mach-imx/imx21.c b/arch/arm/mach-imx/imx21.c
-index ca074dd4c4..7a19ed3986 100644
---- a/arch/arm/mach-imx/imx21.c
-+++ b/arch/arm/mach-imx/imx21.c
-@@ -32,8 +32,6 @@ int imx21_init(void)
- 
- int imx21_devices_init(void)
- {
--	imx_iomuxv1_init((void *)MX21_GPIO1_BASE_ADDR);
--
- 	add_generic_device("imx21-ccm", 0, NULL, MX21_CCM_BASE_ADDR, 0x100, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx1-gpt", 0, NULL, MX21_GPT1_BASE_ADDR, 0x100, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx1-gpio", 0, NULL, MX21_GPIO1_BASE_ADDR, 0x100, IORESOURCE_MEM, NULL);
-diff --git a/arch/arm/mach-imx/imx27.c b/arch/arm/mach-imx/imx27.c
-index 1c6244990d..d4949babeb 100644
---- a/arch/arm/mach-imx/imx27.c
-+++ b/arch/arm/mach-imx/imx27.c
-@@ -108,8 +108,6 @@ int imx27_init(void)
- 
- int imx27_devices_init(void)
- {
--	imx_iomuxv1_init((void *)MX27_GPIO1_BASE_ADDR);
--
- 	add_generic_device("imx_iim", DEVICE_ID_SINGLE, NULL,
- 			   MX27_IIM_BASE_ADDR, SZ_4K, IORESOURCE_MEM, NULL);
- 
-diff --git a/arch/arm/mach-imx/include/mach/iomux-v1.h b/arch/arm/mach-imx/include/mach/iomux-v1.h
-index e822905b77..8f75933e39 100644
---- a/arch/arm/mach-imx/include/mach/iomux-v1.h
-+++ b/arch/arm/mach-imx/include/mach/iomux-v1.h
-@@ -46,6 +46,25 @@
- #define GPIO_GIUS      (1 << 16)
- 
- void imx_iomuxv1_init(void __iomem *base);
--void imx_gpio_mode(int gpio_mode);
-+void imx_gpio_mode(void __iomem *base, int gpio_mode);
-+
-+#include <mach/imx1-regs.h>
-+#include <mach/imx21-regs.h>
-+#include <mach/imx27-regs.h>
-+
-+static inline void imx1_gpio_mode(int gpio_mode)
-+{
-+	imx_gpio_mode(IOMEM(MX1_GPIO1_BASE_ADDR), gpio_mode);
-+}
-+
-+static inline void imx21_gpio_mode(int gpio_mode)
-+{
-+	imx_gpio_mode(IOMEM(MX21_GPIO1_BASE_ADDR), gpio_mode);
-+}
-+
-+static inline void imx27_gpio_mode(int gpio_mode)
-+{
-+	imx_gpio_mode(IOMEM(MX27_GPIO1_BASE_ADDR), gpio_mode);
-+}
- 
- #endif /* __MACH_IOMUX_V1_H__ */
-diff --git a/drivers/pinctrl/Makefile b/drivers/pinctrl/Makefile
-index 9cb5e99477..e311df7103 100644
---- a/drivers/pinctrl/Makefile
-+++ b/drivers/pinctrl/Makefile
-@@ -1,7 +1,7 @@
- obj-$(CONFIG_PINCTRL)	+= pinctrl.o
- obj-$(CONFIG_PINCTRL_AT91) += pinctrl-at91.o
- obj-$(CONFIG_PINCTRL_BCM283X)	+= pinctrl-bcm2835.o
--obj-$(CONFIG_PINCTRL_IMX_IOMUX_V1) += imx-iomux-v1.o
-+obj-pbl-$(CONFIG_PINCTRL_IMX_IOMUX_V1) += imx-iomux-v1.o
- obj-$(CONFIG_PINCTRL_IMX_IOMUX_V2) += imx-iomux-v2.o
- obj-$(CONFIG_PINCTRL_IMX_IOMUX_V3) += imx-iomux-v3.o
- obj-$(CONFIG_PINCTRL_MXS) += pinctrl-mxs.o
-diff --git a/drivers/pinctrl/imx-iomux-v1.c b/drivers/pinctrl/imx-iomux-v1.c
-index 61e8f9680f..d0136f931e 100644
---- a/drivers/pinctrl/imx-iomux-v1.c
-+++ b/drivers/pinctrl/imx-iomux-v1.c
-@@ -31,26 +31,21 @@
- #define SWR     0x3c
- #define PUEN    0x40
- 
--static void __iomem *iomuxv1_base;
--
- struct imx_iomux_v1 {
- 	void __iomem *base;
- 	struct pinctrl_device pinctrl;
- };
- 
--void imx_gpio_mode(int gpio_mode)
-+void imx_gpio_mode(void __iomem *base, int gpio_mode)
- {
- 	unsigned int pin = gpio_mode & GPIO_PIN_MASK;
- 	unsigned int port = (gpio_mode & GPIO_PORT_MASK) >> GPIO_PORT_SHIFT;
- 	unsigned int ocr = (gpio_mode & GPIO_OCR_MASK) >> GPIO_OCR_SHIFT;
- 	unsigned int aout = (gpio_mode & GPIO_AOUT_MASK) >> GPIO_AOUT_SHIFT;
- 	unsigned int bout = (gpio_mode & GPIO_BOUT_MASK) >> GPIO_BOUT_SHIFT;
--	void __iomem *portbase = iomuxv1_base + port * 0x100;
-+	void __iomem *portbase = base + port * 0x100;
- 	uint32_t val;
- 
--	if (!iomuxv1_base)
--		return;
--
- 	/* Pullup enable */
- 	val = readl(portbase + PUEN);
- 	if (gpio_mode & GPIO_PUEN)
-@@ -119,10 +114,7 @@ void imx_gpio_mode(int gpio_mode)
- 	}
- }
- 
--void imx_iomuxv1_init(void __iomem *base)
--{
--	iomuxv1_base = base;
--}
-+#ifndef __PBL__
- 
- /*
-  * MUX_ID format defines
-@@ -280,18 +272,16 @@ static int imx_pinctrl_dt(struct device_d *dev, void __iomem *base)
- static int imx_iomux_v1_probe(struct device_d *dev)
- {
- 	int ret = 0;
-+	void __iomem *base;
- 
--	if (iomuxv1_base)
--		return -EBUSY;
--
--	iomuxv1_base = dev_get_mem_region(dev, 0);
--	if (IS_ERR(iomuxv1_base))
--		return PTR_ERR(iomuxv1_base);
-+	base = dev_get_mem_region(dev, 0);
-+	if (IS_ERR(base))
-+		return PTR_ERR(base);
- 
- 	ret = of_platform_populate(dev->device_node, NULL, NULL);
- 
- 	if (IS_ENABLED(CONFIG_PINCTRL) && dev->device_node)
--		ret = imx_pinctrl_dt(dev, iomuxv1_base);
-+		ret = imx_pinctrl_dt(dev, base);
- 
- 	return ret;
- }
-@@ -315,3 +305,5 @@ static int imx_iomux_v1_init(void)
- 	return platform_driver_register(&imx_iomux_v1_driver);
- }
- core_initcall(imx_iomux_v1_init);
-+
-+#endif
-\ No newline at end of file
--- 
-2.20.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgQWxsLAoKVGhlIHJlbGVhc2UgZm9yIEF1Z3VzdCBpcyBvdXQuCgpUaGUgY2hhbmdlcyBtb3N0
+IHdvcnRoIG5vdGluZyB0aGlzIHRpbWUgY29tZSBmcm9tIEFobWFkLiBUaGUgU1RNMzJNUDEKc3Vw
+cG9ydCBjb250aW51ZXMgdG8gbWF0ZXJpYWxpemUgaW4gZm9ybSBvZiBhIHdhdGNoZG9nIGRyaXZl
+ciwgYSBwaW5tdXgKZHJpdmVyIGFuZCBzZXZlcmFsIG90aGVyIGltcHJvdmVtZW50cy4gT2YgY291
+cnNlIHRoZXJlJ3MgYWxzbyBhIGJ1bmNoCm9mIGltcHJvdmVtZW50cywgc2VlIGJlbG93LgoKVGhh
+bmtzIGFsbCBmb3Igd29ya2luZyBvbiB0aGlzIHByb2plY3QgYW5kIGtlZXBpbmcgaXQgYWxpdmUg
+OikKCkhhdmUgRnVuIQogIFNhc2NoYQoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpBaG1hZCBGYXRvdW0gKDIxKToKICAgICAg
+Y29tbWFuZHM6IGRvbid0IHVzZSBzdGFsZSBlcnJubyB3aGVuIGNhbGxpbmcgZmJfb3BlbgogICAg
+ICB0cmVld2lkZTogcmVtb3ZlIHN0YWxlIG1lbnRpb25zIG9mIENPTkZJR19PRiBpbiBjb21tZW50
+cwogICAgICBBUk06IHN0bTMybXAxOiByZW5hbWUgdG8gc3RtMzJtcAogICAgICByZXNldF9zb3Vy
+Y2U6IGFkZCBuZXcgQnJvd25vdXQgcmVzZXQgKEJPUikgc291cmNlCiAgICAgIEFSTTogc3RtMzJt
+cDogc3RtMzJtcDE1N2MtZGsyOiBjb21wcmVzcyB0aGUgRFRCCiAgICAgIEFSTTogc3RtMzJtcDog
+YWRkIGVudHJ5IHBvaW50LCBub3QgcG9pbnQucGJsYiB0byBwYmxiLXkKICAgICAgRG9jdW1lbnRh
+dGlvbjogcmVzZXQtcmVhc29uOiBkb2N1bWVudCBuZXcgQlJPV05PVVQgcmVhc29uCiAgICAgIHdh
+dGNoZG9nOiBhZGQgc3RtMzIgd2F0Y2hkb2cgYW5kIHJlc2V0IGRyaXZlcgogICAgICBBUk06IHN0
+bTMybXA6IGVuYWJsZSB3YXRjaGRvZyBpbiBkZWZjb25maWcKICAgICAgQVJNOiBkdHM6IHN0bTMy
+bXAxNTdhLWRrMS5kdHM6IGluY2x1ZGUgdXBzdHJlYW0gZHRzIGJlZm9yZSBiYXJlYm94JwogICAg
+ICBBUk06IGR0czogc3RtMzJtcDogZmFjdG9yIG91dCBjb21tb24gREsgbm9kZXMgaW50byBkdHNp
+CiAgICAgIGdwaW9saWI6IGFkZCBncGlvX2dldF9jaGlwIGhlbHBlcgogICAgICBkcml2ZXI6IGFk
+ZCBzdHVicyBmb3IgaGFyZHdhcmUgc3BpbmxvY2tzCiAgICAgIHBpbmN0cmw6IGFkZCBkcml2ZXIg
+Zm9yIFNUTTMyIEdQSU8gYW5kIHBpbiBtdWx0aXBsZXhlcgogICAgICBBUk06IGR0czogc3RtMzJt
+cDE1N2EtZGsxOiBlbmFibGUgaGVhcnRiZWF0IGFuZCBlcnJvciBMRURzCiAgICAgIEFSTTogc3Rt
+MzJtcDogdHVybiBvbiBHUElPIHJlbGF0ZWQgb3B0aW9ucwogICAgICBBUk06IHBzY2k6IGZpeCBl
+cnJvbmVvdXMgY2FsbCBvZiAtPnN5c3RlbV9yZXNldCBvbiBzeXN0ZW1fb2ZmCiAgICAgIEFSTTog
+c206IG1vdmUgZ2V0X2dpY2RfYmFzZV9hZGRyZXNzIHRvIGhlYWRlciBmb3IgcmV1c2UKICAgICAg
+cGluY3RybDogc3RtMzI6IGFkZCBkZWJ1ZyBvdXRwdXQgaW4gc2V0X3N0YXRlIGNhbGxiYWNrCiAg
+ICAgIHBpbmN0cmw6IHN0bTMyOiBmaXggZXJyb3IgcGF0aCB3aGVuIGdwaW8gY2hpcCBpcyBub3Qg
+Zm91bmQKICAgICAgd2F0Y2hkb2c6IHN0bTMyX2l3ZGc6IHJlbW92ZSBsZWZ0LW92ZXIgY29tbWVu
+dAoKQW5kcmV5IFNtaXJub3YgKDEwKToKICAgICAgQVJNOiBpLk1YOiB6aWktdmY2MTAtZGV2LXJl
+di1iOiBVc2UgU1BEWCB0YWcgaW4gRFRTCiAgICAgIEFSTTogaS5NWDogemlpLXZmNjEwLWRldi1y
+ZXYtYzogVXNlIFNQRFggdGFnIGluIERUUwogICAgICBBUk06IGkuTVg6IHppaS12ZjYxMC1kZXYt
+cmV2LWI6IEZpeCBEVFMgd2FybmluZwogICAgICBBUk06IGkuTVg6IHppaS12ZjYxMC1kZXYtcmV2
+LWM6IEZpeCBEVFMgd2FybmluZwogICAgICBEb2N1bWVudGF0aW9uOiB6aWktdmY2MTAtZGV2OiBB
+ZGQgbmVjZXNzYXJ5IHBvc3QgcmVzZXQgZGVsYXkKICAgICAgRG9jdW1lbnRhdGlvbjogemlpLXZm
+NjEwLWRldjogUmVjb25jaWxlIEREUiBzZXR1cCB3aXRoIERDRAogICAgICBEb2N1bWVudGF0aW9u
+OiB6aWk6IEZpeCBidWdneSBjaGVja19iaXRzX3NldF8zMgogICAgICBBUk06IFJlbmFtZSB6aWkt
+aW14N2QtcnB1MiB0byB6aWktaW14N2QtZGV2CiAgICAgIEFSTTogaW14N2QtemlpLXJwdTI6IFN3
+aXRjaCB0byB1c2luZyBrZXJuZWwgRFRTCiAgICAgIEFSTTogemlpLWlteDdkLWRldjogQWRkIHN1
+cHBvcnQgZm9yIFJNVTIgYm9hcmQKCkFudG9ueSBQYXZsb3YgKDExKToKICAgICAgTUlQUzogZml4
+ICdhc3NpZ25tZW50IG1ha2VzIGludGVnZXIgZnJvbSBwb2ludGVyIHdpdGhvdXQgYSBjYXN0JyB3
+YXJuaW5nCiAgICAgIE1JUFM6IGxpYi9NYWtlZmlsZTogZml4IHdoaXRlc3BhY2VzCiAgICAgIE1J
+UFM6IHJlbG9jYXRlX2NvZGU6IGZpeCBiYXJlYm94IGltYWdlIG1lbWNweSgpIHNpemUKICAgICAg
+TUlQUzogS2NvbmZpZzogbW92ZSBBUkNIX1RFWFRfQkFTRSB0byB0b3AgbWlwcyBLY29uZmlnIGZp
+bGUKICAgICAgRG9jdW1lbnRhdGlvbjogdXNlciBtYW51YWw6IHVwZGF0ZSBNSVBTLXNwZWNpZmlj
+IHRhcmdldHMKICAgICAgc2VyaWFsOiBhcjkzM3g6IHNldCBsaW51eF9jb25zb2xlX25hbWUKICAg
+ICAgTUlQUzogZHRzOiB0cGxpbmstbXIzMDIwOiBhZGQgbWlzc2luZyBzdGRvdXQtcGF0aCBwcm9w
+ZXJ0eQogICAgICBzY3JpcHRzOiBhZGQgbWlwcy1yZWxvY3MgdG8gLmdpdGlnbm9yZQogICAgICBz
+YW5kYm94OiBwcmV2ZW50IHNlZ2ZhdWx0IGluIHRhcF9hbGxvYygpCiAgICAgIHNhbmRib3g6IGVs
+aW1pbmFsZSBubyBwcmV2aW91cyBwcm90b3R5cGUgZm9yIOKAmHNhbmRib3hfYWRkX2RldmljZeKA
+mSB3YXJuaW5nCiAgICAgIHNhbmRib3g6IGRyb3AgYmxhbmsgbGluZXMgYXQgRU9GCgpDb3J5IFR1
+c2FyICgxKToKICAgICAgQVJNOiB6aWktdmY2MTAtZGV2OiBUcml2aWFsIHNwZWxsaW5nIGZpeAoK
+RGFuaWVsIFNjaHVsdHogKDIpOgogICAgICBBUk06IGR0czogaW14NnFkbDogcGh5Y29yZTogQWRk
+IHN0YXRlIGZyYW1ld29yawogICAgICBBUk06IGR0czogaW14NnVsOiBwaHljb3JlOiBBZGQgc3Rh
+dGUgZnJhbWV3b3JrCgpHd2VuaGFlbCBHb2F2ZWMtTWVyb3UgKDMpOgogICAgICBBUk06IHNvY2Zw
+Z2E6IHRlcmFzaWMtZGUwLW5hbm8tc29jOiB1cGRhdGUgaGFuZG9mZiBmaWxlcyB0byAxOC4xCiAg
+ICAgIEFSTTogc29jZnBnYTogdGVyYXNpYy1kZTAtbmFuby1zb2M6IGFkZCBtaXNzaW5nIFNFQ1Qo
+KSBtYWNybyBmb3IgaW9jc3Jfc2Nhbl9jaGFpbjNfdGFibGUKICAgICAgQVJNOiBzb2NmcGdhOiB0
+ZXJhc2ljLWRlMC1uYW5vLXNvYzogc3RhdGlmeSBzeXNfbWdyX2luaXRfdGFibGUKCk1hcmNpbiBO
+aWVzdHJvaiAoNik6CiAgICAgIGNsazogZGl2aWRlcjogUmVtb3ZlIHVudXNlZCB2YXJpYWJsZSBp
+biBjbGtfZGl2aWRlcl9yZWNhbGNfcmF0ZQogICAgICBtZmQ6IHN5c2NvbjogYWRkIHN5c2Nvbl9y
+ZWdtYXBfbG9va3VwX2J5X3BoYW5kbGUoKQogICAgICBzZXJpYWw6IG5zMTY1NTA6IHN1cHBvcnQg
+cmVnLW9mZnNldCBkZXZpY2UtdHJlZSBwcm9wZXJ0eQogICAgICBjbGs6IGRpdmlkZXI6IEZpeCBi
+ZXN0IGRpdiBjYWxjdWxhdGlvbiBmb3IgcG93ZXItb2YtdHdvIGFuZCB0YWJsZSBkaXZpZGVycwog
+ICAgICBjbGs6IGRpdmlkZXI6IE1ha2UgZ2VuZXJpYyBmb3IgdXNhZ2UgZWxzZXdoZXJlCiAgICAg
+IGNsazogZGl2aWRlcjogZXhwb3J0IGNsa19kaXZfbWFzaygpIGhlbHBlcgoKTWFyY28gRmVsc2No
+ICg1KToKICAgICAgdXNiOiB1c2IyNTF4YjogZml4IG9wdGlvbmFsIHJlc2V0IGdwaW8gcmVxdWVz
+dAogICAgICBBUk06IHBoeXRlYy1zb20taW14NjogdXBkYXRlIGF1dG9tb3VudCBuZXQgZW50cmll
+cwogICAgICBkZWZhdWx0ZW52LTI6IG5ldDogZml4IGNvbW1lbnQKICAgICAgY29tbWFuZHM6IG1t
+Y19leHRjc2Q6IGZpeCBleHRjc2QgdmFsdWUgbWVhbmluZ3MKICAgICAgaTJjOiBncGlvOiBhZGQg
+c2RhL3NjbC1ncGlvcyBwcm9wZXJ0eSBzdXBwb3J0CgpNYXNhaGlybyBZYW1hZGEgKDIpOgogICAg
+ICBrYnVpbGQ6IGRvIG5vdCBkcm9wIC1JIHdpdGhvdXQgcGFyYW1ldGVyCiAgICAgIGtjb25maWc6
+IHVwZGF0ZSB0byBMaW51eCA1LjItcmM0CgpPbGVrc2lqIFJlbXBlbCAoMik6CiAgICAgIGFkZCBD
+T05GSUdfUEJMX0JSRUFLIG9wdGlvbgogICAgICBtaXBzOiByZWxvYzogcmVtb3ZlIG91dGRhdGVk
+IGNvbW1lbnQKClBldGVyIE1hbW9ub3YgKDEpOgogICAgICBwYmw6IHJlcG9ydCBkZWNvbXByZXNz
+aW9uIGZhaWx1cmUKClJvYiBTdGFjZXkgKDEpOgogICAgICBJTVg6IGRvX2hhYiBjYWxscyBzdHJj
+YXQgb24gdW5pbml0aWFsaXNlZCBtZW1vcnkKClJvdXZlbiBDemVyd2luc2tpICg0KToKICAgICAg
+aS5NWDogSEFCdjQ6IHVzZSBtaW5fdCBpbnN0ZWFkIG9mIG1pbgogICAgICBhZGQgZ2RiIGhlbHBl
+ciBzY3JpcHRzIHRvIGxvYWQgYmFyZWJveCBzeW1ib2xzCiAgICAgIGJsc3BlYzogaW52YWxpZGF0
+ZSBvbmx5IG5lY2Vzc2FyeSBib290bSB2YXJpYWJsZXMKICAgICAgZl9mYXN0Ym9vdDogcmVtb3Zl
+IG9ubHkgaW1hZ2UgZnJvbSBib290bSB2YXJpYWJsZXMKClNhc2NoYSBIYXVlciAoMjIpOgogICAg
+ICBkdHM6IHVwZGF0ZSB0byB2NS4yLXJjNAogICAgICBSZWdlbmVyYXRlIGRlZmNvbmZpZyBmaWxl
+cwogICAgICBzdGFydHVwOiByZW1vdmUgdW51c2VkIGVkaXRjbWQgdmFyaWFibGUKICAgICAgc3Rh
+cnR1cDogQ3JlYXRlIGdsb2JhbC5saW51eC5ib290YXJncy5keW4uKiB2YXJpYWJsZXMgd2hlcmUg
+dGhleSBhcmUgbmVlZGVkCiAgICAgIHN0YXJ0dXA6IENyZWF0ZSBib290IHJlbGF0ZWQgdmFyaWFi
+bGVzIHdoZXJlIHRoZXkgYXJlIHVzZWQKICAgICAgc3RhcnR1cDogRmFjdG9yIG91dCB0aGUgYXV0
+b2Jvb3QgY291bnRlciB0byBzZXBhcmF0ZSBmdW5jdGlvbgogICAgICBwc3RvcmU6IE9ubHkgY2Fw
+dHVyZSBsb2cgbWVzc2FnZXMKICAgICAgcHN0b3JlOiByZW1vdmUgdW51c2VkIGNvZGUKICAgICAg
+ZHRzOiB1cGRhdGUgdG8gdjUuMi1yYzYKICAgICAgTWVyZ2UgYnJhbmNoICdmb3ItbmV4dC9LY29u
+ZmlnJwogICAgICBNZXJnZSBicmFuY2ggJ2Zvci1uZXh0L2NsaycKICAgICAgTWVyZ2UgYnJhbmNo
+ICdmb3ItbmV4dC9kdHMnCiAgICAgIE1lcmdlIGJyYW5jaCAnZm9yLW5leHQvaW14JwogICAgICBN
+ZXJnZSBicmFuY2ggJ2Zvci1uZXh0L21pcHMnCiAgICAgIE1lcmdlIGJyYW5jaCAnZm9yLW5leHQv
+bWlzYycKICAgICAgTWVyZ2UgYnJhbmNoICdmb3ItbmV4dC9tdmVidScKICAgICAgTWVyZ2UgYnJh
+bmNoICdmb3ItbmV4dC9wc3RvcmUnCiAgICAgIE1lcmdlIGJyYW5jaCAnZm9yLW5leHQvc2FuZGJv
+eCcKICAgICAgTWVyZ2UgYnJhbmNoICdmb3ItbmV4dC9zb2NmcGdhJwogICAgICBNZXJnZSBicmFu
+Y2ggJ2Zvci1uZXh0L3N0bTMyJwogICAgICBNZXJnZSBicmFuY2ggJ2Zvci1uZXh0L3ppaScKICAg
+ICAgTWVyZ2UgaHR0cHM6Ly9naXRodWIuY29tL3JvYm9zdGFjL2JhcmVib3gKClN0ZWZhbiBSaWVk
+bXVlbGxlciAoMTApOgogICAgICBBUk06IGR0czogaW14NnFkbDogcGh5Y29yZTogU2V0IHBoeS1y
+ZXNldC1kdXJhdGlvbiBmb3IgZmVjCiAgICAgIEFSTTogZHRzOiBpbXg2dWw6IHBoeWNvcmU6IFJl
+ZHVjZSBldGggZHJpdmUgc3RyZW5ndGgKICAgICAgQVJNOiBtYWNoLWlteDogaW14NjogUmVhZCBh
+bmQgcHJpbnQgdGhlIFVJRCBvZiBpLk1YNiBTT0NzCiAgICAgIEFSTTogcGh5dGVjLXNvbS1pbXg2
+OiBBZGQgbG93IGNvc3QgdmFyaWFudCBmb3IgaW14NmRsIHBoeWNvcmUKICAgICAgQVJNOiBkdHM6
+IGlteDZ1bDogcGh5Y29yZTogQWRkIGVlcHJvbSBsYWJlbAogICAgICBBUk06IGlteDZ1bDogcGh5
+Y29yZTogUHJlcGFyZSBmb3IgZU1NQyBtb2R1bGUKICAgICAgQVJNOiBwaHl0ZWMtc29tLWlteDog
+aW14NnVsOiBBZGQgZU1NQyBzdXBwb3J0CiAgICAgIEFSTTogZHRzOiBpbXg2dWw6IHBoeWNvcmU6
+IEFkZCBzdXBwb3J0IGZvciBlTU1DCiAgICAgIEFSTTogZHRzOiBpbXg2dWw6IHBoeWNvcmU6IEFk
+ZCBwaHlDT1JFLWkuTVggNlVMTCB3aXRoIGVNTUMKICAgICAgQVJNOiBkdHM6IGFtMzM1eC1waHl0
+ZWMtc3RhdGU6IEFkZCBiYWNrZW5kLXN0b3JhZ2UtdHlwZQoKU3RlZmZlbiBUcnVtdHJhciAoMSk6
+CiAgICAgIHNjcmlwdHM6IHNvY2ZncGFfaW1wb3J0X3ByZWxvYWRlcjogc2ltcGxpZnkgcHJvY2Vk
+dXJlCgpVd2UgS2xlaW5lLUvDtm5pZyAoNCk6CiAgICAgIG12ZWJ1aW1nOiBuZXcgdG9vbCB0byBj
+cmVhdGUga3diIHZlcnNpb24xIGJvb3QgaW1hZ2VzCiAgICAgIGltYWdlcy9tdmVidTogQ29udmVy
+dCBBcm1hZGEgbWFjaGluZXMgdG8gbXZlYnVpbWcKICAgICAgaW1hZ2VzL212ZWJ1OiB1c2Ugc3Bh
+Y2UgYmVmb3JlID0gaW5zdGVhZCBvZiB0YWIKICAgICAgbXRkOiBzcGktbm9yOiBBZGQgc3VwcG9y
+dCBmb3IgSVNTSSBmbGFzaGVzIGZyb20gTGludXgKCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKSW5k
+dXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5n
+dXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55
+IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwg
+SFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGlu
+ZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFk
+Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
