@@ -1,21 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hxow2-0003xV-UK
- for barebox@lists.infradead.org; Wed, 14 Aug 2019 08:47:12 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <sha@pengutronix.de>) id 1hxow1-0004ir-A5
- for barebox@lists.infradead.org; Wed, 14 Aug 2019 10:47:09 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.89)
- (envelope-from <sha@pengutronix.de>) id 1hxow1-0002EG-14
- for barebox@lists.infradead.org; Wed, 14 Aug 2019 10:47:09 +0200
-Date: Wed, 14 Aug 2019 10:47:09 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190814084708.em7vxkvo5ijkprdy@pengutronix.de>
+ id 1hxqVD-0003qV-96
+ for barebox@lists.infradead.org; Wed, 14 Aug 2019 10:27:36 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Wed, 14 Aug 2019 12:27:28 +0200
+Message-Id: <20190814102729.23857-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,132 +15,112 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: v2019.08.0
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v1 1/2] net: macb: init multiple dummy TX queues
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-SGkgQWxsLAoKVGhlIHJlbGVhc2UgZm9yIEF1Z3VzdCBpcyBvdXQuCgpUaGUgY2hhbmdlcyBtb3N0
-IHdvcnRoIG5vdGluZyB0aGlzIHRpbWUgY29tZSBmcm9tIEFobWFkLiBUaGUgU1RNMzJNUDEKc3Vw
-cG9ydCBjb250aW51ZXMgdG8gbWF0ZXJpYWxpemUgaW4gZm9ybSBvZiBhIHdhdGNoZG9nIGRyaXZl
-ciwgYSBwaW5tdXgKZHJpdmVyIGFuZCBzZXZlcmFsIG90aGVyIGltcHJvdmVtZW50cy4gT2YgY291
-cnNlIHRoZXJlJ3MgYWxzbyBhIGJ1bmNoCm9mIGltcHJvdmVtZW50cywgc2VlIGJlbG93LgoKVGhh
-bmtzIGFsbCBmb3Igd29ya2luZyBvbiB0aGlzIHByb2plY3QgYW5kIGtlZXBpbmcgaXQgYWxpdmUg
-OikKCkhhdmUgRnVuIQogIFNhc2NoYQoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpBaG1hZCBGYXRvdW0gKDIxKToKICAgICAg
-Y29tbWFuZHM6IGRvbid0IHVzZSBzdGFsZSBlcnJubyB3aGVuIGNhbGxpbmcgZmJfb3BlbgogICAg
-ICB0cmVld2lkZTogcmVtb3ZlIHN0YWxlIG1lbnRpb25zIG9mIENPTkZJR19PRiBpbiBjb21tZW50
-cwogICAgICBBUk06IHN0bTMybXAxOiByZW5hbWUgdG8gc3RtMzJtcAogICAgICByZXNldF9zb3Vy
-Y2U6IGFkZCBuZXcgQnJvd25vdXQgcmVzZXQgKEJPUikgc291cmNlCiAgICAgIEFSTTogc3RtMzJt
-cDogc3RtMzJtcDE1N2MtZGsyOiBjb21wcmVzcyB0aGUgRFRCCiAgICAgIEFSTTogc3RtMzJtcDog
-YWRkIGVudHJ5IHBvaW50LCBub3QgcG9pbnQucGJsYiB0byBwYmxiLXkKICAgICAgRG9jdW1lbnRh
-dGlvbjogcmVzZXQtcmVhc29uOiBkb2N1bWVudCBuZXcgQlJPV05PVVQgcmVhc29uCiAgICAgIHdh
-dGNoZG9nOiBhZGQgc3RtMzIgd2F0Y2hkb2cgYW5kIHJlc2V0IGRyaXZlcgogICAgICBBUk06IHN0
-bTMybXA6IGVuYWJsZSB3YXRjaGRvZyBpbiBkZWZjb25maWcKICAgICAgQVJNOiBkdHM6IHN0bTMy
-bXAxNTdhLWRrMS5kdHM6IGluY2x1ZGUgdXBzdHJlYW0gZHRzIGJlZm9yZSBiYXJlYm94JwogICAg
-ICBBUk06IGR0czogc3RtMzJtcDogZmFjdG9yIG91dCBjb21tb24gREsgbm9kZXMgaW50byBkdHNp
-CiAgICAgIGdwaW9saWI6IGFkZCBncGlvX2dldF9jaGlwIGhlbHBlcgogICAgICBkcml2ZXI6IGFk
-ZCBzdHVicyBmb3IgaGFyZHdhcmUgc3BpbmxvY2tzCiAgICAgIHBpbmN0cmw6IGFkZCBkcml2ZXIg
-Zm9yIFNUTTMyIEdQSU8gYW5kIHBpbiBtdWx0aXBsZXhlcgogICAgICBBUk06IGR0czogc3RtMzJt
-cDE1N2EtZGsxOiBlbmFibGUgaGVhcnRiZWF0IGFuZCBlcnJvciBMRURzCiAgICAgIEFSTTogc3Rt
-MzJtcDogdHVybiBvbiBHUElPIHJlbGF0ZWQgb3B0aW9ucwogICAgICBBUk06IHBzY2k6IGZpeCBl
-cnJvbmVvdXMgY2FsbCBvZiAtPnN5c3RlbV9yZXNldCBvbiBzeXN0ZW1fb2ZmCiAgICAgIEFSTTog
-c206IG1vdmUgZ2V0X2dpY2RfYmFzZV9hZGRyZXNzIHRvIGhlYWRlciBmb3IgcmV1c2UKICAgICAg
-cGluY3RybDogc3RtMzI6IGFkZCBkZWJ1ZyBvdXRwdXQgaW4gc2V0X3N0YXRlIGNhbGxiYWNrCiAg
-ICAgIHBpbmN0cmw6IHN0bTMyOiBmaXggZXJyb3IgcGF0aCB3aGVuIGdwaW8gY2hpcCBpcyBub3Qg
-Zm91bmQKICAgICAgd2F0Y2hkb2c6IHN0bTMyX2l3ZGc6IHJlbW92ZSBsZWZ0LW92ZXIgY29tbWVu
-dAoKQW5kcmV5IFNtaXJub3YgKDEwKToKICAgICAgQVJNOiBpLk1YOiB6aWktdmY2MTAtZGV2LXJl
-di1iOiBVc2UgU1BEWCB0YWcgaW4gRFRTCiAgICAgIEFSTTogaS5NWDogemlpLXZmNjEwLWRldi1y
-ZXYtYzogVXNlIFNQRFggdGFnIGluIERUUwogICAgICBBUk06IGkuTVg6IHppaS12ZjYxMC1kZXYt
-cmV2LWI6IEZpeCBEVFMgd2FybmluZwogICAgICBBUk06IGkuTVg6IHppaS12ZjYxMC1kZXYtcmV2
-LWM6IEZpeCBEVFMgd2FybmluZwogICAgICBEb2N1bWVudGF0aW9uOiB6aWktdmY2MTAtZGV2OiBB
-ZGQgbmVjZXNzYXJ5IHBvc3QgcmVzZXQgZGVsYXkKICAgICAgRG9jdW1lbnRhdGlvbjogemlpLXZm
-NjEwLWRldjogUmVjb25jaWxlIEREUiBzZXR1cCB3aXRoIERDRAogICAgICBEb2N1bWVudGF0aW9u
-OiB6aWk6IEZpeCBidWdneSBjaGVja19iaXRzX3NldF8zMgogICAgICBBUk06IFJlbmFtZSB6aWkt
-aW14N2QtcnB1MiB0byB6aWktaW14N2QtZGV2CiAgICAgIEFSTTogaW14N2QtemlpLXJwdTI6IFN3
-aXRjaCB0byB1c2luZyBrZXJuZWwgRFRTCiAgICAgIEFSTTogemlpLWlteDdkLWRldjogQWRkIHN1
-cHBvcnQgZm9yIFJNVTIgYm9hcmQKCkFudG9ueSBQYXZsb3YgKDExKToKICAgICAgTUlQUzogZml4
-ICdhc3NpZ25tZW50IG1ha2VzIGludGVnZXIgZnJvbSBwb2ludGVyIHdpdGhvdXQgYSBjYXN0JyB3
-YXJuaW5nCiAgICAgIE1JUFM6IGxpYi9NYWtlZmlsZTogZml4IHdoaXRlc3BhY2VzCiAgICAgIE1J
-UFM6IHJlbG9jYXRlX2NvZGU6IGZpeCBiYXJlYm94IGltYWdlIG1lbWNweSgpIHNpemUKICAgICAg
-TUlQUzogS2NvbmZpZzogbW92ZSBBUkNIX1RFWFRfQkFTRSB0byB0b3AgbWlwcyBLY29uZmlnIGZp
-bGUKICAgICAgRG9jdW1lbnRhdGlvbjogdXNlciBtYW51YWw6IHVwZGF0ZSBNSVBTLXNwZWNpZmlj
-IHRhcmdldHMKICAgICAgc2VyaWFsOiBhcjkzM3g6IHNldCBsaW51eF9jb25zb2xlX25hbWUKICAg
-ICAgTUlQUzogZHRzOiB0cGxpbmstbXIzMDIwOiBhZGQgbWlzc2luZyBzdGRvdXQtcGF0aCBwcm9w
-ZXJ0eQogICAgICBzY3JpcHRzOiBhZGQgbWlwcy1yZWxvY3MgdG8gLmdpdGlnbm9yZQogICAgICBz
-YW5kYm94OiBwcmV2ZW50IHNlZ2ZhdWx0IGluIHRhcF9hbGxvYygpCiAgICAgIHNhbmRib3g6IGVs
-aW1pbmFsZSBubyBwcmV2aW91cyBwcm90b3R5cGUgZm9yIOKAmHNhbmRib3hfYWRkX2RldmljZeKA
-mSB3YXJuaW5nCiAgICAgIHNhbmRib3g6IGRyb3AgYmxhbmsgbGluZXMgYXQgRU9GCgpDb3J5IFR1
-c2FyICgxKToKICAgICAgQVJNOiB6aWktdmY2MTAtZGV2OiBUcml2aWFsIHNwZWxsaW5nIGZpeAoK
-RGFuaWVsIFNjaHVsdHogKDIpOgogICAgICBBUk06IGR0czogaW14NnFkbDogcGh5Y29yZTogQWRk
-IHN0YXRlIGZyYW1ld29yawogICAgICBBUk06IGR0czogaW14NnVsOiBwaHljb3JlOiBBZGQgc3Rh
-dGUgZnJhbWV3b3JrCgpHd2VuaGFlbCBHb2F2ZWMtTWVyb3UgKDMpOgogICAgICBBUk06IHNvY2Zw
-Z2E6IHRlcmFzaWMtZGUwLW5hbm8tc29jOiB1cGRhdGUgaGFuZG9mZiBmaWxlcyB0byAxOC4xCiAg
-ICAgIEFSTTogc29jZnBnYTogdGVyYXNpYy1kZTAtbmFuby1zb2M6IGFkZCBtaXNzaW5nIFNFQ1Qo
-KSBtYWNybyBmb3IgaW9jc3Jfc2Nhbl9jaGFpbjNfdGFibGUKICAgICAgQVJNOiBzb2NmcGdhOiB0
-ZXJhc2ljLWRlMC1uYW5vLXNvYzogc3RhdGlmeSBzeXNfbWdyX2luaXRfdGFibGUKCk1hcmNpbiBO
-aWVzdHJvaiAoNik6CiAgICAgIGNsazogZGl2aWRlcjogUmVtb3ZlIHVudXNlZCB2YXJpYWJsZSBp
-biBjbGtfZGl2aWRlcl9yZWNhbGNfcmF0ZQogICAgICBtZmQ6IHN5c2NvbjogYWRkIHN5c2Nvbl9y
-ZWdtYXBfbG9va3VwX2J5X3BoYW5kbGUoKQogICAgICBzZXJpYWw6IG5zMTY1NTA6IHN1cHBvcnQg
-cmVnLW9mZnNldCBkZXZpY2UtdHJlZSBwcm9wZXJ0eQogICAgICBjbGs6IGRpdmlkZXI6IEZpeCBi
-ZXN0IGRpdiBjYWxjdWxhdGlvbiBmb3IgcG93ZXItb2YtdHdvIGFuZCB0YWJsZSBkaXZpZGVycwog
-ICAgICBjbGs6IGRpdmlkZXI6IE1ha2UgZ2VuZXJpYyBmb3IgdXNhZ2UgZWxzZXdoZXJlCiAgICAg
-IGNsazogZGl2aWRlcjogZXhwb3J0IGNsa19kaXZfbWFzaygpIGhlbHBlcgoKTWFyY28gRmVsc2No
-ICg1KToKICAgICAgdXNiOiB1c2IyNTF4YjogZml4IG9wdGlvbmFsIHJlc2V0IGdwaW8gcmVxdWVz
-dAogICAgICBBUk06IHBoeXRlYy1zb20taW14NjogdXBkYXRlIGF1dG9tb3VudCBuZXQgZW50cmll
-cwogICAgICBkZWZhdWx0ZW52LTI6IG5ldDogZml4IGNvbW1lbnQKICAgICAgY29tbWFuZHM6IG1t
-Y19leHRjc2Q6IGZpeCBleHRjc2QgdmFsdWUgbWVhbmluZ3MKICAgICAgaTJjOiBncGlvOiBhZGQg
-c2RhL3NjbC1ncGlvcyBwcm9wZXJ0eSBzdXBwb3J0CgpNYXNhaGlybyBZYW1hZGEgKDIpOgogICAg
-ICBrYnVpbGQ6IGRvIG5vdCBkcm9wIC1JIHdpdGhvdXQgcGFyYW1ldGVyCiAgICAgIGtjb25maWc6
-IHVwZGF0ZSB0byBMaW51eCA1LjItcmM0CgpPbGVrc2lqIFJlbXBlbCAoMik6CiAgICAgIGFkZCBD
-T05GSUdfUEJMX0JSRUFLIG9wdGlvbgogICAgICBtaXBzOiByZWxvYzogcmVtb3ZlIG91dGRhdGVk
-IGNvbW1lbnQKClBldGVyIE1hbW9ub3YgKDEpOgogICAgICBwYmw6IHJlcG9ydCBkZWNvbXByZXNz
-aW9uIGZhaWx1cmUKClJvYiBTdGFjZXkgKDEpOgogICAgICBJTVg6IGRvX2hhYiBjYWxscyBzdHJj
-YXQgb24gdW5pbml0aWFsaXNlZCBtZW1vcnkKClJvdXZlbiBDemVyd2luc2tpICg0KToKICAgICAg
-aS5NWDogSEFCdjQ6IHVzZSBtaW5fdCBpbnN0ZWFkIG9mIG1pbgogICAgICBhZGQgZ2RiIGhlbHBl
-ciBzY3JpcHRzIHRvIGxvYWQgYmFyZWJveCBzeW1ib2xzCiAgICAgIGJsc3BlYzogaW52YWxpZGF0
-ZSBvbmx5IG5lY2Vzc2FyeSBib290bSB2YXJpYWJsZXMKICAgICAgZl9mYXN0Ym9vdDogcmVtb3Zl
-IG9ubHkgaW1hZ2UgZnJvbSBib290bSB2YXJpYWJsZXMKClNhc2NoYSBIYXVlciAoMjIpOgogICAg
-ICBkdHM6IHVwZGF0ZSB0byB2NS4yLXJjNAogICAgICBSZWdlbmVyYXRlIGRlZmNvbmZpZyBmaWxl
-cwogICAgICBzdGFydHVwOiByZW1vdmUgdW51c2VkIGVkaXRjbWQgdmFyaWFibGUKICAgICAgc3Rh
-cnR1cDogQ3JlYXRlIGdsb2JhbC5saW51eC5ib290YXJncy5keW4uKiB2YXJpYWJsZXMgd2hlcmUg
-dGhleSBhcmUgbmVlZGVkCiAgICAgIHN0YXJ0dXA6IENyZWF0ZSBib290IHJlbGF0ZWQgdmFyaWFi
-bGVzIHdoZXJlIHRoZXkgYXJlIHVzZWQKICAgICAgc3RhcnR1cDogRmFjdG9yIG91dCB0aGUgYXV0
-b2Jvb3QgY291bnRlciB0byBzZXBhcmF0ZSBmdW5jdGlvbgogICAgICBwc3RvcmU6IE9ubHkgY2Fw
-dHVyZSBsb2cgbWVzc2FnZXMKICAgICAgcHN0b3JlOiByZW1vdmUgdW51c2VkIGNvZGUKICAgICAg
-ZHRzOiB1cGRhdGUgdG8gdjUuMi1yYzYKICAgICAgTWVyZ2UgYnJhbmNoICdmb3ItbmV4dC9LY29u
-ZmlnJwogICAgICBNZXJnZSBicmFuY2ggJ2Zvci1uZXh0L2NsaycKICAgICAgTWVyZ2UgYnJhbmNo
-ICdmb3ItbmV4dC9kdHMnCiAgICAgIE1lcmdlIGJyYW5jaCAnZm9yLW5leHQvaW14JwogICAgICBN
-ZXJnZSBicmFuY2ggJ2Zvci1uZXh0L21pcHMnCiAgICAgIE1lcmdlIGJyYW5jaCAnZm9yLW5leHQv
-bWlzYycKICAgICAgTWVyZ2UgYnJhbmNoICdmb3ItbmV4dC9tdmVidScKICAgICAgTWVyZ2UgYnJh
-bmNoICdmb3ItbmV4dC9wc3RvcmUnCiAgICAgIE1lcmdlIGJyYW5jaCAnZm9yLW5leHQvc2FuZGJv
-eCcKICAgICAgTWVyZ2UgYnJhbmNoICdmb3ItbmV4dC9zb2NmcGdhJwogICAgICBNZXJnZSBicmFu
-Y2ggJ2Zvci1uZXh0L3N0bTMyJwogICAgICBNZXJnZSBicmFuY2ggJ2Zvci1uZXh0L3ppaScKICAg
-ICAgTWVyZ2UgaHR0cHM6Ly9naXRodWIuY29tL3JvYm9zdGFjL2JhcmVib3gKClN0ZWZhbiBSaWVk
-bXVlbGxlciAoMTApOgogICAgICBBUk06IGR0czogaW14NnFkbDogcGh5Y29yZTogU2V0IHBoeS1y
-ZXNldC1kdXJhdGlvbiBmb3IgZmVjCiAgICAgIEFSTTogZHRzOiBpbXg2dWw6IHBoeWNvcmU6IFJl
-ZHVjZSBldGggZHJpdmUgc3RyZW5ndGgKICAgICAgQVJNOiBtYWNoLWlteDogaW14NjogUmVhZCBh
-bmQgcHJpbnQgdGhlIFVJRCBvZiBpLk1YNiBTT0NzCiAgICAgIEFSTTogcGh5dGVjLXNvbS1pbXg2
-OiBBZGQgbG93IGNvc3QgdmFyaWFudCBmb3IgaW14NmRsIHBoeWNvcmUKICAgICAgQVJNOiBkdHM6
-IGlteDZ1bDogcGh5Y29yZTogQWRkIGVlcHJvbSBsYWJlbAogICAgICBBUk06IGlteDZ1bDogcGh5
-Y29yZTogUHJlcGFyZSBmb3IgZU1NQyBtb2R1bGUKICAgICAgQVJNOiBwaHl0ZWMtc29tLWlteDog
-aW14NnVsOiBBZGQgZU1NQyBzdXBwb3J0CiAgICAgIEFSTTogZHRzOiBpbXg2dWw6IHBoeWNvcmU6
-IEFkZCBzdXBwb3J0IGZvciBlTU1DCiAgICAgIEFSTTogZHRzOiBpbXg2dWw6IHBoeWNvcmU6IEFk
-ZCBwaHlDT1JFLWkuTVggNlVMTCB3aXRoIGVNTUMKICAgICAgQVJNOiBkdHM6IGFtMzM1eC1waHl0
-ZWMtc3RhdGU6IEFkZCBiYWNrZW5kLXN0b3JhZ2UtdHlwZQoKU3RlZmZlbiBUcnVtdHJhciAoMSk6
-CiAgICAgIHNjcmlwdHM6IHNvY2ZncGFfaW1wb3J0X3ByZWxvYWRlcjogc2ltcGxpZnkgcHJvY2Vk
-dXJlCgpVd2UgS2xlaW5lLUvDtm5pZyAoNCk6CiAgICAgIG12ZWJ1aW1nOiBuZXcgdG9vbCB0byBj
-cmVhdGUga3diIHZlcnNpb24xIGJvb3QgaW1hZ2VzCiAgICAgIGltYWdlcy9tdmVidTogQ29udmVy
-dCBBcm1hZGEgbWFjaGluZXMgdG8gbXZlYnVpbWcKICAgICAgaW1hZ2VzL212ZWJ1OiB1c2Ugc3Bh
-Y2UgYmVmb3JlID0gaW5zdGVhZCBvZiB0YWIKICAgICAgbXRkOiBzcGktbm9yOiBBZGQgc3VwcG9y
-dCBmb3IgSVNTSSBmbGFzaGVzIGZyb20gTGludXgKCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAg
-ICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKSW5k
-dXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5n
-dXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55
-IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwg
-SFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGlu
-ZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFk
-Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Microchip SAMA5D27 has more then one TX queue. So it will
+go in to TX timeout if only one was initialized.
+
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ drivers/net/macb.c | 32 ++++++++++++++++++++++++++------
+ drivers/net/macb.h |  7 +++++++
+ 2 files changed, 33 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/macb.c b/drivers/net/macb.c
+index a0411d6e4b..0b3c909433 100644
+--- a/drivers/net/macb.c
++++ b/drivers/net/macb.c
+@@ -322,6 +322,29 @@ static void macb_configure_dma(struct macb_device *bp)
+ 	}
+ }
+ 
++static int gmac_init_dummy_tx_queues(struct macb_device *macb)
++{
++	int i, num_queues = 1;
++	u32 queue_mask;
++
++	/* bit 0 is never set but queue 0 always exists */
++	queue_mask = gem_readl(macb, DCFG6) & 0xff;
++	queue_mask |= 0x1;
++
++	for (i = 1; i < MACB_MAX_QUEUES; i++)
++		if (queue_mask & (1 << i))
++			num_queues++;
++
++	macb->gem_q1_descs[0].addr = 0;
++	macb->gem_q1_descs[0].ctrl = MACB_BIT(TX_WRAP) |
++		MACB_BIT(TX_LAST) | MACB_BIT(TX_USED);
++
++	for (i = 1; i < num_queues; i++)
++		gem_writel_queue_TBQP(macb, &macb->gem_q1_descs[0], i - 1);
++
++	return 0;
++}
++
+ static void macb_init(struct macb_device *macb)
+ {
+ 	unsigned long paddr, val = 0;
+@@ -357,16 +380,13 @@ static void macb_init(struct macb_device *macb)
+ 	macb_writel(macb, TBQP, (ulong)macb->tx_ring);
+ 
+ 	if (macb->is_gem && macb->gem_q1_descs) {
+-		/* Disable the second priority queue */
+-		macb->gem_q1_descs[0].addr = 0;
+-		macb->gem_q1_descs[0].ctrl = MACB_BIT(TX_WRAP) |
+-				MACB_BIT(TX_LAST) |
+-				MACB_BIT(TX_USED);
++		gmac_init_dummy_tx_queues(macb);
++
++		/* Disable the second priority rx queue */
+ 		macb->gem_q1_descs[1].addr = MACB_BIT(RX_USED) |
+ 				MACB_BIT(RX_WRAP);
+ 		macb->gem_q1_descs[1].ctrl = 0;
+ 
+-		gem_writel(macb, TQ1, (ulong)&macb->gem_q1_descs[0]);
+ 		gem_writel(macb, RQ1, (ulong)&macb->gem_q1_descs[1]);
+ 	}
+ 
+diff --git a/drivers/net/macb.h b/drivers/net/macb.h
+index fda4d08663..2e5b64e5e9 100644
+--- a/drivers/net/macb.h
++++ b/drivers/net/macb.h
+@@ -5,6 +5,8 @@
+ #ifndef __DRIVERS_MACB_H__
+ #define __DRIVERS_MACB_H__
+ 
++#define MACB_MAX_QUEUES 8
++
+ /* MACB register offsets */
+ #define MACB_NCR				0x0000
+ #define MACB_NCFGR				0x0004
+@@ -75,6 +77,8 @@
+ #define GEM_TQ1					0x0440
+ #define GEM_RQ1					0x0480
+ 
++#define GEM_TBQP(hw_q)				(0x0440 + ((hw_q) << 2))
++
+ /* Bitfields in NCR */
+ #define MACB_LB_OFFSET				0
+ #define MACB_LB_SIZE				1
+@@ -436,4 +440,7 @@ struct macb_dma_desc {
+ #define MACB_TX_USED_OFFSET			31
+ #define MACB_TX_USED_SIZE			1
+ 
++#define gem_writel_queue_TBQP(port, value, queue_num)	\
++	writel((value), (port)->regs + GEM_TBQP(queue_num))
++
+ #endif /* __DRIVERS_MACB_H__ */
+-- 
+2.20.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
