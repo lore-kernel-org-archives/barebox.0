@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hxGnC-0003hi-MX
- for barebox@lists.infradead.org; Mon, 12 Aug 2019 20:19:47 +0000
-Received: by mail-pf1-x442.google.com with SMTP id q139so1969474pfc.13
- for <barebox@lists.infradead.org>; Mon, 12 Aug 2019 13:19:46 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 12 Aug 2019 13:19:14 -0700
-Message-Id: <20190812201915.12414-4-andrew.smirnov@gmail.com>
-In-Reply-To: <20190812201915.12414-1-andrew.smirnov@gmail.com>
-References: <20190812201915.12414-1-andrew.smirnov@gmail.com>
+ id 1hxoT2-0007pQ-6k
+ for barebox@lists.infradead.org; Wed, 14 Aug 2019 08:17:13 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 14 Aug 2019 10:16:55 +0200
+Message-Id: <20190814081659.22670-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,98 +19,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] eeprom: at24: Drop at24_cdev_protect()
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: [PATCH 0/4] i.MX1/scb9328 patches
+To: Barebox List <barebox@lists.infradead.org>
 
-Instead of exposing a dedictaed .protect() callback, mimic the
-behaviour of corresponding driver in Linux and adjust the value of WP
-pin in .write() callback as necessary. This is done in order to
-convert this driver to NVMEM subsytem.
+We are currently celebrating 15 years of i.MX support in mainline Linux:
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- drivers/eeprom/at24.c | 37 +++++++++++++++++--------------------
- 1 file changed, 17 insertions(+), 20 deletions(-)
+https://git.kernel.org/pub/scm/linux/kernel/git/tglx/history.git/commit/?id=9c496bde802b19db40325bbde356be62e66dc125
 
-diff --git a/drivers/eeprom/at24.c b/drivers/eeprom/at24.c
-index 1fd4aeaba6..db452c1076 100644
---- a/drivers/eeprom/at24.c
-+++ b/drivers/eeprom/at24.c
-@@ -317,6 +317,19 @@ static ssize_t at24_eeprom_write(struct at24_data *at24, const char *buf,
- 	return -ETIMEDOUT;
- }
- 
-+static void at24_protect(struct at24_data *at24, bool prot)
-+{
-+	if (gpio_is_valid(at24->wp_gpio)) {
-+
-+		if (at24->wp_active_low)
-+			prot = !prot;
-+
-+		gpio_set_value(at24->wp_gpio, prot);
-+
-+		udelay(50);
-+	}
-+}
-+
- static ssize_t at24_write(struct at24_data *at24, const char *buf, loff_t off,
- 			  size_t count)
- {
-@@ -325,6 +338,8 @@ static ssize_t at24_write(struct at24_data *at24, const char *buf, loff_t off,
- 	if (unlikely(!count))
- 		return count;
- 
-+	at24_protect(at24, false);
-+
- 	while (count) {
- 		ssize_t	status;
- 
-@@ -340,6 +355,8 @@ static ssize_t at24_write(struct at24_data *at24, const char *buf, loff_t off,
- 		retval += status;
- 	}
- 
-+	at24_protect(at24, true);
-+
- 	return retval;
- }
- 
-@@ -351,25 +368,6 @@ static ssize_t at24_cdev_write(struct cdev *cdev, const void *buf, size_t count,
- 	return at24_write(at24, buf, off, count);
- }
- 
--static int at24_cdev_protect(struct cdev *cdev, size_t count, loff_t offset,
--		int prot)
--{
--	struct at24_data *at24 = cdev->priv;
--
--	if (!gpio_is_valid(at24->wp_gpio))
--		return -EOPNOTSUPP;
--
--	prot = !!prot;
--	if (at24->wp_active_low)
--		prot = !prot;
--
--	gpio_set_value(at24->wp_gpio, prot);
--
--	udelay(50);
--
--	return 0;
--}
--
- static int at24_probe(struct device_d *dev)
- {
- 	struct i2c_client *client = to_i2c_client(dev);
-@@ -448,7 +446,6 @@ static int at24_probe(struct device_d *dev)
- 	at24->cdev.dev = dev;
- 	at24->cdev.ops = &at24->fops;
- 	at24->fops.read	= at24_cdev_read,
--	at24->fops.protect = at24_cdev_protect,
- 	at24->cdev.size = chip.byte_len;
- 
- 	writable = !(chip.flags & AT24_FLAG_READONLY);
+For this I took some time to update the i.MX1 based Synertronix scb9328
+board support. With the switch to device tree support the board is able
+to boot up a recent barebox and a current mainline Linux, see here:
+
+https://asciinema.org/a/VPg3yPZBZfhhqMVN61fAX38Cm
+
+The board only has 16MiB of SDRAM which is very tight nowadays.
+For successful boot I have some additional hack in my tree which
+arranges the Kernel and device tree in memory in a way that the
+device tree won't get overwritten during decompression of the Kernel.
+Also I wasn't able to start my systemd based rootfs, probably due
+to memory constraints. With init=/bin/sh it works though, but hey,
+it's a more than 15 years old hardware ;)
+
+Have Fun!
+  Sascha
+
+Sascha Hauer (4):
+  pinctrl: i.MX iomux-v1: Make base address initialization unnecessary
+  pinctrl: i.MX iomux-v1: Add i.MX1 support
+  serial: i.MX: Add i.MX1 lowlevel init function
+  ARM: i.MX: scb9328: refurbish board suport
+
+ .../boards/eukrea_cpuimx27/eukrea_cpuimx27.c  |   2 +-
+ arch/arm/boards/freescale-mx21-ads/imx21ads.c |   2 +-
+ arch/arm/boards/freescale-mx27-ads/imx27ads.c |   2 +-
+ arch/arm/boards/guf-neso/board.c              |   2 +-
+ arch/arm/boards/phytec-phycard-imx27/pca100.c |   6 +-
+ arch/arm/boards/phytec-phycore-imx27/pcm038.c |   4 +-
+ arch/arm/boards/phytec-phycore-imx27/pcm970.c |   2 +-
+ arch/arm/boards/scb9328/Makefile              |   4 +-
+ .../boards/scb9328/defaultenv-scb9328/config  |  50 --------
+ arch/arm/boards/scb9328/lowlevel.c            |  23 ++++
+ arch/arm/boards/scb9328/lowlevel_init.S       |   8 +-
+ arch/arm/boards/scb9328/scb9328.c             |  64 +---------
+ arch/arm/configs/imx_defconfig                |   1 +
+ arch/arm/configs/scb9328_defconfig            |  60 ---------
+ arch/arm/dts/Makefile                         |   1 +
+ arch/arm/dts/imx1-scb9328.dts                 | 117 ++++++++++++++++++
+ arch/arm/mach-imx/Kconfig                     |  17 ++-
+ arch/arm/mach-imx/imx1.c                      |   2 -
+ arch/arm/mach-imx/imx21.c                     |   2 -
+ arch/arm/mach-imx/imx27.c                     |   2 -
+ arch/arm/mach-imx/include/mach/iomux-v1.h     |  21 +++-
+ drivers/i2c/busses/Kconfig                    |   2 +-
+ drivers/pinctrl/Makefile                      |   2 +-
+ drivers/pinctrl/imx-iomux-v1.c                |  30 ++---
+ images/Makefile.imx                           |   5 +
+ include/serial/imx-uart.h                     |  21 ++++
+ 26 files changed, 227 insertions(+), 225 deletions(-)
+ delete mode 100644 arch/arm/boards/scb9328/defaultenv-scb9328/config
+ create mode 100644 arch/arm/boards/scb9328/lowlevel.c
+ delete mode 100644 arch/arm/configs/scb9328_defconfig
+ create mode 100644 arch/arm/dts/imx1-scb9328.dts
+
 -- 
-2.21.0
+2.20.1
 
 
 _______________________________________________
