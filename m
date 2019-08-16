@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hyadK-0004pj-Hd
- for barebox@lists.infradead.org; Fri, 16 Aug 2019 11:43:04 +0000
-Date: Fri, 16 Aug 2019 13:42:54 +0200
+ id 1hyadr-00050H-Fs
+ for barebox@lists.infradead.org; Fri, 16 Aug 2019 11:43:36 +0000
+Date: Fri, 16 Aug 2019 13:43:33 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190816114254.rmmvsq5re5mjztyz@pengutronix.de>
-References: <20190814102729.23857-1-o.rempel@pengutronix.de>
+Message-ID: <20190816114333.ius3ixq7wunp52hy@pengutronix.de>
+References: <20190812201915.12414-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190814102729.23857-1-o.rempel@pengutronix.de>
+In-Reply-To: <20190812201915.12414-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,24 +22,22 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1 1/2] net: macb: init multiple dummy TX queues
-To: Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: Re: [PATCH 1/5] nvmem: Use helper variable in nvmem_register_cdev()
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Aug 14, 2019 at 12:27:28PM +0200, Oleksij Rempel wrote:
-> Microchip SAMA5D27 has more then one TX queue. So it will
-> go in to TX timeout if only one was initialized.
+On Mon, Aug 12, 2019 at 01:19:11PM -0700, Andrey Smirnov wrote:
+> Add struct cdev * helper variable to nvmem_register_cdev() in order to
+> avoid repeating &nvmem->cdev a bunch of times
 > 
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 > ---
->  drivers/net/macb.c | 32 ++++++++++++++++++++++++++------
->  drivers/net/macb.h |  7 +++++++
->  2 files changed, 33 insertions(+), 6 deletions(-)
+>  drivers/nvmem/core.c | 11 ++++++-----
+>  1 file changed, 6 insertions(+), 5 deletions(-)
 
 Applied, thanks
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
