@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hzhs4-0002DE-2H
- for barebox@lists.infradead.org; Mon, 19 Aug 2019 13:38:54 +0000
+ id 1hzhsA-0002Og-DG
+ for barebox@lists.infradead.org; Mon, 19 Aug 2019 13:38:59 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 19 Aug 2019 15:38:42 +0200
-Message-Id: <20190819133847.17015-4-s.hauer@pengutronix.de>
+Date: Mon, 19 Aug 2019 15:38:47 +0200
+Message-Id: <20190819133847.17015-9-s.hauer@pengutronix.de>
 In-Reply-To: <20190819133847.17015-1-s.hauer@pengutronix.de>
 References: <20190819133847.17015-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,40 +21,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/8] pbl: Implement strrchr
+Subject: [PATCH 8/8] ARM: i.MX: When generic DT image is enabled do not
+ hardcode SoC
 To: Barebox List <barebox@lists.infradead.org>
 
-strrchr is needed for libfdt. Add support for it to the pbl.
+When only a single i.MX SoC is selected the cpu_is_mx?() macros expand
+to static 0 or 1. With the generic DT image enabled it could be though
+that the SoC is not a i.MX at all, so make sure that with the generic
+DT image enabled the cpu_is_mx?() macros always compare against
+__imx_cpu_type
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- pbl/string.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ arch/arm/mach-imx/include/mach/generic.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/pbl/string.c b/pbl/string.c
-index 927c92dc05..46bf0b32b3 100644
---- a/pbl/string.c
-+++ b/pbl/string.c
-@@ -133,3 +133,19 @@ size_t strnlen(const char * s, size_t count)
- 		/* nothing */;
- 	return sc - s;
- }
+diff --git a/arch/arm/mach-imx/include/mach/generic.h b/arch/arm/mach-imx/include/mach/generic.h
+index ac066e3f17..5102c34e4c 100644
+--- a/arch/arm/mach-imx/include/mach/generic.h
++++ b/arch/arm/mach-imx/include/mach/generic.h
+@@ -223,6 +223,15 @@ extern unsigned int __imx_cpu_type;
+ # define cpu_is_vf610()		(0)
+ #endif
+ 
++#ifdef CONFIG_BOARD_ARM_GENERIC_DT
++# ifdef imx_cpu_type
++#  undef imx_cpu_type
++#  define imx_cpu_type __imx_cpu_type
++# else
++#  define imx_cpu_type 0
++# endif
++#endif
 +
-+/**
-+ * strrchr - Find the last occurrence of a character in a string
-+ * @s: The string to be searched
-+ * @c: The character to search for
-+ */
-+char * _strrchr(const char * s, int c)
-+{
-+	const char *p = s + strlen(s);
-+
-+	do {
-+		if (*p == (char)c)
-+			return (char *)p;
-+	} while (--p >= s);
-+	return NULL;
-+}
+ #define cpu_is_mx23()	(0)
+ #define cpu_is_mx28()	(0)
+ 
 -- 
 2.20.1
 
