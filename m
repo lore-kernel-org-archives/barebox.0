@@ -1,11 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtpbgsg2.qq.com ([54.254.200.128])
+Received: from smtpbg504.qq.com ([203.205.250.60] helo=smtpbg.qq.com)
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i39ls-0006zw-FJ
- for barebox@lists.infradead.org; Thu, 29 Aug 2019 02:02:46 +0000
-From: iu87m888m@qq.com
-Date: Thu, 29 Aug 2019 10:02:09 +0800
-Message-Id: <1567044129-3897-1-git-send-email-iu87m888m@qq.com>
+ id 1hzhuF-0005L2-Cp
+ for barebox@lists.infradead.org; Mon, 19 Aug 2019 13:41:13 +0000
+Received: from FREEZE (unknown [59.35.37.114])
+ by esmtp4.qq.com (ESMTP) with SMTP id 0
+ for <barebox@lists.infradead.org>; Mon, 19 Aug 2019 21:40:47 +0800 (CST)
+From: "duhuanpeng" <iu87m888m@qq.com>
+Date: Mon, 19 Aug 2019 21:40:49 +0800
+Message-ID: <001201d55693$b674d930$235e8b90$@qq.com>+4B46A5A4ED5E38A5
+MIME-Version: 1.0
+Content-Language: en-us
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,43 +19,33 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd: spi-nor: Add support for s25fl128s0 s25fl128s1 flashes
- from Linux
+Subject: mips : How to run barebox by bootm in ram(u-boot command)?
 To: barebox@lists.infradead.org
-Cc: DU HUANPENG <u74147@gmail.com>
 
-From: DU HUANPENG <u74147@gmail.com>
+Hello! How to run Barebox from ram now?
 
-These definitions are taken from Linux's spi-nor driver as of v5.2-rc4
+I have a board with 64MiB ram and 16MiB flash, flash it to the first sector
+by
+original u-boot, maybe brick the board. Debrick is difficult due to limited
+tools.
 
-Signed-off-by: DU HUANPENG <u74147@gmail.com>
----
- drivers/mtd/spi-nor/spi-nor.c | 4 ++++
- 1 file changed, 4 insertions(+)
+So, I want to run this in ram. And my u-boot *don't* have the "go" command.
+I have to use bootm command to run Barebox.
 
-diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index 9dbc830..f38db7c 100644
---- a/drivers/mtd/spi-nor/spi-nor.c
-+++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -736,6 +736,10 @@ static const struct spi_device_id spi_nor_ids[] = {
- 	 */
- 	{ "s25sl032p",  INFO(0x010215, 0x4d00,  64 * 1024,  64, SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ) },
- 	{ "s25sl064p",  INFO(0x010216, 0x4d00,  64 * 1024, 128, SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ) },
-+	{ "s25fl128s0", INFO6(0x012018, 0x4d0080, 256 * 1024, 64,
-+			SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ | USE_CLSR) },
-+	{ "s25fl128s1", INFO6(0x012018, 0x4d0180, 64 * 1024, 256,
-+			SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ | USE_CLSR) },
- 	{ "s25fl256s0", INFO(0x010219, 0x4d00, 256 * 1024, 128, 0) },
- 	{ "s25fl256s1", INFO(0x010219, 0x4d01,  64 * 1024, 512, SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ) },
- 	{ "s25fl512s",  INFO(0x010220, 0x4d00, 256 * 1024, 256, SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ) },
--- 
-2.7.4
+- - - - - -
+mkimage -A mips -O linux -T kernel -C none -a 80060000 -e 80060000 -n
+'barebox-tp-link' -d barebox.bin uImage
+tftpboot 0x81000000 uImage
+bootm 0x81000000
+- - - -
+I have try these above, but no luck.
 
+Regards,
+duhuanpeng
 
 
 
