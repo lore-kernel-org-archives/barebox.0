@@ -1,20 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hzd1q-0005Vr-EV
- for barebox@lists.infradead.org; Mon, 19 Aug 2019 08:28:41 +0000
-Date: Mon, 19 Aug 2019 10:28:28 +0200
-From: Roland Hieber <rhi@pengutronix.de>
-Message-ID: <20190819082828.kzf2ri3uie2fkcfw@pengutronix.de>
-References: <1563436921-362991-1-git-send-email-m.otto@phytec.de>
- <1563436921-362991-4-git-send-email-m.otto@phytec.de>
- <20190805110213.pfqdnyeecyc3rhmq@pengutronix.de>
- <20190805123540.44he42heamdwr7en@pengutronix.de>
- <20190805150753.wwg4ddliy6w43udw@pengutronix.de>
- <85285ed4-d784-d86a-ce1f-28130dbc5674@phytec.de>
+ id 1hzeTF-0007ru-S8
+ for barebox@lists.infradead.org; Mon, 19 Aug 2019 10:01:09 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <str@pengutronix.de>) id 1hzeT9-0003mt-Ms
+ for barebox@lists.infradead.org; Mon, 19 Aug 2019 12:00:55 +0200
+Received: from str by dude.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <str@pengutronix.de>) id 1hzeT9-0007qS-A0
+ for barebox@lists.infradead.org; Mon, 19 Aug 2019 12:00:55 +0200
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Mon, 19 Aug 2019 12:00:46 +0200
+Message-Id: <20190819100049.6053-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <85285ed4-d784-d86a-ce1f-28130dbc5674@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,211 +23,133 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 4/4] Makefile: add creation of signed/encrypted images
- for imx6, imx7, imx8
-To: Maik Otto <m.otto@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/4] ARM: socfpga: fix xload on arria10
+To: Barebox List <barebox@lists.infradead.org>
 
-SGkgTWFpaywKClVuZm9ydHVuYXRlbHkgeW91ciBtYWlsZXIgY29ycnVwdGVkIHRoZSBwYXRjaCB5
-b3Ugc2VudCwgc2VlIHRoZSBzZWN0aW9uCiJNVUEtU1BFQ0lGSUMgSElOVFMiIGluIHRoZSBnaXQt
-Zm9ybWF0LXBhdGNoKDEpIG1hbnBhZ2UgZm9yIHRpcHMgaG93IHRvCnByZXZlbnQgdGhhdCAob3Ig
-c2VuZCB0aGUgcGF0Y2ggd2l0aCBnaXQtc2VuZC1lbWFpbCwgb3IgYXMgYXR0YWNobWVudCkuCgpB
-cyBmYXIgYXMgSSBjYW4gaW50ZXJwcmV0IHlvdXIgcGF0Y2gsIHRoZSBhcHByb2FjaCBsb29rcyBv
-a2F5IHRvIG1lLiBJCndvdWxkIGZpcnN0IGludHJvZHVjZSB0aGUgbmV3IG1ha2UgbWFjcm8gaW4g
-YSBzaW5nbGUgcGF0Y2gsIGFuZCB0aGVuIGFkZAp0aGUgYm9hcmQgc3VwcG9ydCBpbiBhIHNlcGFy
-YXRlIHBhdGNoLCBzbyBiYWNrcG9ydGluZyBhbmQgdGVzdGluZyBnZXRzCmVhc2llciAoaW4gY2Fz
-ZSB0aGF0IHdhcyBub3QgYWxyZWFkeSB3aGF0IHlvdSBwbGFubmVkIHRvIGRvIGFueXdheSA6KSkK
-CkkndmUgbm90IHlldCBmb3VuZCB0aGUgdGltZSB0byBjbGVhbi11cCBteSBwcm90b3R5cGUgY29u
-dmVydGluZyB0aGUgcmVzdApvZiB0aGUgTWFrZWZpbGUuaW14IHRvIG1hY3JvIGNhbGxzLCBzbyBp
-ZiB5b3Ugd2FudCwgeW91IGNhbiBwaWNrIHVwIHRoYXQKcGF0Y2ggdG9vLgoKIC0gUm9sYW5kCgoK
-T24gVGh1LCBBdWcgMTUsIDIwMTkgYXQgMDQ6MTQ6MTBQTSArMDIwMCwgTWFpayBPdHRvIHdyb3Rl
-Ogo+IHRoYW5rIHlvdSBmb3IgeW91ciByZXNwb25zZS4KPiBJIGhhdmUgY3JlYXRlIGFuIGV4YW1w
-bGUgZm9yIHRoZSBwYXRjaCBvbiBiYXNpYyBvZiBSb2xhbmRzIHByb3RvdHlwZQo+IElmIHRoZSBj
-b2RlwqAgaXMgb2sgZm9yIHlvdSwgdGhlbiBpIHdpbGwgcmV3b3JrIHRoZSBwYXRjaCBhbmQgc2Vu
-ZCB0aGUKPiBwYXRjaCB0byB0aGUgbWFpbGluZ2xpc3QuCj4gCj4gZGlmZiAtLWdpdCBhL2ltYWdl
-cy9NYWtlZmlsZS5pbXgKPiBiL2ltYWdlcy9NYWtlZmlsZS5pbXjCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgCj4gaW5kZXggNDJjMTk0Yi4uNmNhNGRi
-OQo+IDEwMDY0NMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoAo+
-IC0tLQo+IGEvaW1hZ2VzL01ha2VmaWxlLmlteMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgCj4gCj4gKysrCj4gYi9pbWFnZXMvTWFrZWZpbGUuaW14
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAKPiAK
-PiBAQCAtMiw2ICsyLDI0Cj4gQEDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoAo+IMKgIyBiYXJlYm94IGltYWdlIGdl
-bmVyYXRpb24gTWFrZWZpbGUgZm9yIGkuTVgKPiBpbWFnZXPCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoAo+IMKgIwo+ICsjIHBhcmFtczogQ09O
-RklHIHN5bWJvbCwgZW50cnkgcG9pbnQsIGZsYXNoIGhlYWRlciBwYXRoIHN0cmluZywgYm9hcmQK
-PiBpZGVudGlmaWVyIHN0cmluZwo+ICtkZWZpbmUgYnVpbGRfaW14X2hhYnY0aW1nCj4gPcKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgCj4gKyQoZXZhbMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgCj4gCj4gK2lmZXEgKCQoJChzdHJpcCAkKDEpKSks
-Cj4geSnCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgCj4g
-K8KgwqDCoMKgwqDCoCBwYmxiLXkgKz0gJChzdHJpcAo+ICQoMikpwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAKPiArwqDCoMKgwqDCoMKgIENGR18kKHN0cmlwICQoMikp
-LnBibGIuaW14aW1nID0gJChib2FyZCkvJChzdHJpcAo+ICQoMykpLmlteGNmZ8KgwqDCoMKgwqDC
-oMKgwqDCoMKgwqAKPiArwqDCoMKgwqDCoMKgIEZJTEVfYmFyZWJveC0kKHN0cmlwICQoNCkpLmlt
-Z8KgwqDCoCA9ICQoc3RyaXAKPiAkKDIpKS5wYmxiLmlteGltZ8KgwqDCoMKgwqDCoMKgwqDCoMKg
-wqAKPiArwqDCoMKgwqDCoMKgIEZJTEVfYmFyZWJveC0kKHN0cmlwICQoNCkpLXMuaW1nwqAgPSAk
-KHN0cmlwCj4gJCgyKSkucGJsYi5zaW14aW1nwqDCoMKgwqDCoMKgwqDCoMKgwqAKPiArwqDCoMKg
-wqDCoMKgIEZJTEVfYmFyZWJveC0kKHN0cmlwICQoNCkpLXVzLmltZyA9ICQoc3RyaXAKPiAkKDIp
-KS5wYmxiLnVzaW14aW1nwqDCoMKgwqDCoMKgwqDCoMKgCj4gK8KgwqDCoMKgwqDCoCBGSUxFX2Jh
-cmVib3gtJChzdHJpcCAkKDQpKS1lcy5pbWcgPSAkKHN0cmlwCj4gJCgyKSkucGJsYi5lc2lteGlt
-Z8KgwqDCoMKgwqDCoMKgwqDCoAo+ICvCoMKgwqDCoMKgwqAgaW1hZ2UteSArPSBiYXJlYm94LSQo
-c3RyaXAKPiAkKDQpKS5pbWfCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAKPiArwqDCoMKgwqDCoMKgIGltYWdlLSQo
-Q09ORklHX0hBQlY0X0lNQUdFX1NJR05FRCkgKz0gYmFyZWJveC0kKHN0cmlwCj4gJCg0KSktcy5p
-bWfCoMKgwqDCoMKgwqDCoAo+ICvCoMKgwqDCoMKgwqAgaW1hZ2UtJChDT05GSUdfSEFCVjRfSU1B
-R0VfU0lHTkVEX1VTQikgKz0gYmFyZWJveC0kKHN0cmlwCj4gJCg0KSktdXMuaW1nwqDCoAo+ICvC
-oMKgwqDCoMKgwqAgaW1hZ2UtJChDT05GSUdfSEFCVjRfSU1BR0VfU0lHTkVEX0VOQ1JZUFRFRCkg
-Kz0gYmFyZWJveC0kKHN0cmlwCj4gJCg0KSktZXMuaW1nCj4gK2VuZGlmwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoAo+IAo+ICspwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgCj4gCj4gK2VuZGVmwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oAo+IAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoAo+IAo+
-IMKgIyAlLmlteGltZyAtIGNvbnZlcnQgaW50byBpLk1YCj4gaW1hZ2XCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoAo+IMKgIwo+IC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoAo+
-IAo+IAo+IEBAIC0xNDMsMTAgKzE2MSw3IEBAIEZJTEVfYmFyZWJveC10eDUzLTEwMTEuaW1nID0K
-PiBzdGFydF9pbXg1M190eDUzXzEwMTEucGJsYi5pbXhpbWcKPiDCoGltYWdlLSQoQ09ORklHX01B
-Q0hfVFg1MykgKz0KPiBiYXJlYm94LXR4NTMtMTAxMS5pbWfCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgCj4gCj4gwqAjIC0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tIGkuTVg2IGJhc2VkIGJvYXJkcwo+IC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLcKgwqDCoMKgwqDCoMKgCj4gLXBibGItJChDT05GSUdfTUFDSF9SRUFMUTcpICs9Cj4gc3Rh
-cnRfaW14Nl9yZWFscTfCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgCj4gLUNGR19zdGFydF9pbXg2X3JlYWxxNy5wYmxiLmlteGlt
-ZyA9Cj4gJChib2FyZCkvZGF0YW1vZHVsLWVkbS1xbXg2L2ZsYXNoLWhlYWRlci5pbXhjZmcKPiAt
-RklMRV9iYXJlYm94LWRhdGFtb2R1bC1lZG0tcW14Ni5pbWcgPQo+IHN0YXJ0X2lteDZfcmVhbHE3
-LnBibGIuaW14aW1nwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgCj4gLWltYWdlLSQoQ09ORklHX01B
-Q0hfUkVBTFE3KSArPQo+IGJhcmVib3gtZGF0YW1vZHVsLWVkbS1xbXg2LmltZ8KgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoAo+ICskKGNhbGwgYnVpbGRfaW14X2hhYnY0aW1nLCBD
-T05GSUdfTUFDSF9SRUFMUTcsIHN0YXJ0X2lteDZfcmVhbHEsCj4gZGF0YW1vZHVsLWVkbS1xbXg2
-L2ZsYXNoLWhlYWRlci5pbXhjZmcsIGRhdGFtb2R1bC1lZG0tcW14NikKPiAKPiBwYmxiLSQoQ09O
-RklHX01BQ0hfR1VGX1NBTlRBUk8pICs9Cj4gc3RhcnRfaW14NnFfZ3VmX3NhbnRhcm/CoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAKPiBDRkdfc3RhcnRfaW14NnFfZ3Vm
-X3NhbnRhcm8ucGJsYi5pbXhpbWcgPQo+ICQoYm9hcmQpL2d1Zi1zYW50YXJvL2ZsYXNoLWhlYWRl
-ci5pbXhjZmcKPiBAQCAtNDIzLDEwICs0MzgsNyBAQAo+IENGR19zdGFydF9waHl0ZWNfcGh5Y29y
-ZV9pbXg2cXBfc29tX25hbmRfMWdpYi5wYmxiLmlteGltZyA9Cj4gJChib2FyZCkvcGh5dGVjLcKg
-wqDCoCBzb20tCj4gRklMRV9iYXJlYm94LXBoeXRlYy1waHljb3JlLWlteDZxcC1zb20tbmFuZC0x
-Z2liLmltZyA9Cj4gc3RhcnRfcGh5dGVjX3BoeWNvcmVfaW14NnFwX3NvbV9uYW5kXzFnaWIucGJs
-Yi5pbXhpbWcKPiDCoGltYWdlLSQoQ09ORklHX01BQ0hfUEhZVEVDX1NPTV9JTVg2KSArPQo+IGJh
-cmVib3gtcGh5dGVjLXBoeWNvcmUtaW14NnFwLXNvbS1uYW5kLTFnaWIuaW1nCj4gwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoAo+IAo+IC1wYmxiLSQoQ09ORklH
-X01BQ0hfUEhZVEVDX1NPTV9JTVg2KSArPQo+IHN0YXJ0X3BoeXRlY19waHljb3JlX2lteDZxX3Nv
-bV9lbW1jXzFnaWIKPiAtQ0ZHX3N0YXJ0X3BoeXRlY19waHljb3JlX2lteDZxX3NvbV9lbW1jXzFn
-aWIucGJsYi5pbXhpbWcgPQo+ICQoYm9hcmQpL3BoeXRlYy1zb20taW14Ni9mbGFzaC1oZWFkZXIt
-cGh5dGVjLXBjbTA1OC0xZ2liLmlteGNmZwo+IC1GSUxFX2JhcmVib3gtcGh5dGVjLXBoeWNvcmUt
-aW14NnEtc29tLWVtbWMtMWdpYi5pbWcgPQo+IHN0YXJ0X3BoeXRlY19waHljb3JlX2lteDZxX3Nv
-bV9lbW1jXzFnaWIucGJsYi5pbXhpbWcKPiAtaW1hZ2UtJChDT05GSUdfTUFDSF9QSFlURUNfU09N
-X0lNWDYpICs9Cj4gYmFyZWJveC1waHl0ZWMtcGh5Y29yZS1pbXg2cS1zb20tZW1tYy0xZ2liLmlt
-Zwo+ICskKGNhbGwgYnVpbGRfaW14X2hhYnY0aW1nLCBDT05GSUdfTUFDSF9QSFlURUNfU09NX0lN
-WDYsCj4gc3RhcnRfcGh5dGVjX3BoeWNvcmVfaW14NnFfc29tX2VtbWNfMWdpYiwKPiBwaHl0ZWMt
-c29tLWlteDYvZmxhc2gtaGVhZGVyLXBoeXRlYy1wY20wNTgtMWdpYiwKPiBwaHl0ZWMtcGh5Y29y
-ZS1pbXg2cS1zb20tZW1tYy0xZ2liKQo+IAo+IHBibGItJChDT05GSUdfTUFDSF9QSFlURUNfU09N
-X0lNWDYpICs9Cj4gc3RhcnRfcGh5dGVjX3BoeWNvcmVfaW14NnFfc29tX2VtbWNfMmdpYgo+IENG
-R19zdGFydF9waHl0ZWNfcGh5Y29yZV9pbXg2cV9zb21fZW1tY18yZ2liLnBibGIuaW14aW1nID0K
-PiAkKGJvYXJkKS9waHl0ZWMtc29tLWlteDYvZmxhc2gtaGVhZGVyLXBoeXRlYy1wY20wNTgtMmdp
-Yi5pbXhjZmcKPiAKPiBCZXN0IHJlZ2FyZHMKPiAKPiBNYWlrCj4gCj4gQW0gMDUuMDguMjAxOSB1
-bSAxNzowNyBzY2hyaWViIFJvbGFuZCBIaWViZXI6Cj4gPiBPbiBNb24sIEF1ZyAwNSwgMjAxOSBh
-dCAwMjozNTo0MFBNICswMjAwLCBSb2xhbmQgSGllYmVyIHdyb3RlOgo+ID4+IE9uIE1vbiwgQXVn
-IDA1LCAyMDE5IGF0IDAxOjAyOjEzUE0gKzAyMDAsIFNhc2NoYSBIYXVlciB3cm90ZToKPiA+Pj4g
-SGkgTWFpaywKPiA+Pj4KPiA+Pj4gT24gVGh1LCBKdWwgMTgsIDIwMTkgYXQgMTA6MDI6MDFBTSAr
-MDIwMCwgTWFpayBPdHRvIHdyb3RlOgo+ID4+Pj4gYWRkIGluIHRoZSBpbWFnZXMvTWFrZWZpbGUu
-aW14IHRoZSBzdXBwb3J0IG9mIGJ1aWxkaW5nIGZvciBzaWduZWQsIHVzYgo+ID4+Pj4gc2lnbmVk
-IGFuZCBlbmNyeXB0ZWQvc2lnbmVkIGltYWdlcyBmb3IgTlhQIGkuTVggSEFCVjQKPiA+Pj4+IHN1
-cHBvcnQgZm9yIE5YUCBpLm14NiwgaS5teDcgYW5kIGkubXg4Cj4gPj4+Pgo+ID4+Pj4gU2lnbmVk
-LW9mZi1ieTogTWFpayBPdHRvIDxtLm90dG9AcGh5dGVjLmRlPgo+ID4+Pj4gLS0tCj4gPj4+PiBD
-aGFuZ2VzIGluIHYzOgo+ID4+Pj4gICAgIC0gbm90aGluZwo+ID4+Pj4gQ2hhbmdlcyBpbiB2MjoK
-PiA+Pj4+ICAgICAtIHdhcyBQYXRjaCAyLzQgaW4gdjEKPiA+Pj4+ICAgICAtIG5vIGR5bmFtaWMg
-dmFyaWFibGUsIHBhcmFsbGVsIGJ1aWxkaW5nIG9mIGRpZmZlcmVudCBpbWFnZSB0eXBlcyBub3cK
-PiA+Pj4+IC0tLQo+ID4+Pj4gIGltYWdlcy9NYWtlZmlsZS5pbXggfCAzMjIgKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrLQo+ID4+Pj4gIDEgZmlsZSBj
-aGFuZ2VkLCAzMjEgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQo+ID4+Pj4KPiA+Pj4+IGRp
-ZmYgLS1naXQgYS9pbWFnZXMvTWFrZWZpbGUuaW14IGIvaW1hZ2VzL01ha2VmaWxlLmlteAo+ID4+
-Pj4gaW5kZXggOWE3MTg3YS4uOWM3MDcwMyAxMDA2NDQKPiA+Pj4+IC0tLSBhL2ltYWdlcy9NYWtl
-ZmlsZS5pbXgKPiA+Pj4+ICsrKyBiL2ltYWdlcy9NYWtlZmlsZS5pbXgKPiA+Pj4+IEBAIC0xNDcs
-MjE2ICsxNDcsMzg4IEBAIHBibGItJChDT05GSUdfTUFDSF9SRUFMUTcpICs9IHN0YXJ0X2lteDZf
-cmVhbHE3Cj4gPj4+PiAgQ0ZHX3N0YXJ0X2lteDZfcmVhbHE3LnBibGIuaW14aW1nID0gJChib2Fy
-ZCkvZGF0YW1vZHVsLWVkbS1xbXg2L2ZsYXNoLWhlYWRlci5pbXhjZmcKPiA+Pj4+ICBGSUxFX2Jh
-cmVib3gtZGF0YW1vZHVsLWVkbS1xbXg2LmltZyA9IHN0YXJ0X2lteDZfcmVhbHE3LnBibGIuaW14
-aW1nCj4gPj4+PiAgaW1hZ2UtJChDT05GSUdfTUFDSF9SRUFMUTcpICs9IGJhcmVib3gtZGF0YW1v
-ZHVsLWVkbS1xbXg2LmltZwo+ID4+Pj4gK0ZJTEVfYmFyZWJveC1kYXRhbW9kdWwtZWRtLXFteDYt
-cy5pbWcgPSBzdGFydF9pbXg2X3JlYWxxNy5wYmxiLnNpbXhpbWcKPiA+Pj4+ICtGSUxFX2JhcmVi
-b3gtZGF0YW1vZHVsLWVkbS1xbXg2LXVzLmltZyA9IHN0YXJ0X2lteDZfcmVhbHE3LnBibGIudXNp
-bXhpbWcKPiA+Pj4+ICtGSUxFX2JhcmVib3gtZGF0YW1vZHVsLWVkbS1xbXg2LWVzLmltZyA9IHN0
-YXJ0X2lteDZfcmVhbHE3LnBibGIuZXNpbXhpbWcKPiA+Pj4+ICtoYWJ2NGltYWdlLSQoQ09ORklH
-X01BQ0hfUkVBTFE3KSArPSBiYXJlYm94LWRhdGFtb2R1bC1lZG0tcW14Ngo+ID4+PiBUaGlzIGZp
-bGUgY29udGFpbnMgd2F5IHRvIG11Y2ggYm9pbGVycGxhdGUgYWxyZWFkeSBmb3IgbXkgdGFzdGUu
-IEFkZGluZyBmb3VyCj4gPj4+IG1vcmUgbGluZXMgZm9yIGV2ZXJ5IGJvYXJkIGlzIG5vdCBzb21l
-dGhpbmcgSSBsaWtlIHRvIGRvLgo+ID4+Pgo+ID4+PiBDYW4gd2UgYWRkIGV2ZW4gbW9yZSBtYWdp
-YyB0byBnZXQgcmlkIG9mIHRoZXNlIGFkZGl0aW9uYWwgbGluZXM/Cj4gPj4gWW91IG1lYW4gbGlr
-ZS4uLiAodW50ZXN0ZWQpCj4gPiBbLi4uXQo+ID4KPiA+IEhlcmUncyBhIHRlc3RlZCBwcm90b3R5
-cGUgKG5lZWRlZCBzb21lIG1vcmUgZXZhbCBhbmQgc3RyaXApOgo+ID4KPiA+IC0tLS0tLS0tLS0t
-LS0tLS0tIDg8IC0tLS0tLS0tLS0tLS0tLS0tCj4gPiBkaWZmIC0tZ2l0IGEvaW1hZ2VzL01ha2Vm
-aWxlLmlteCBiL2ltYWdlcy9NYWtlZmlsZS5pbXgKPiA+IGluZGV4IDlhNzE4N2FjNzgwNy4uZjU4
-YzA0MTE4NzFkIDEwMDY0NAo+ID4gLS0tIGEvaW1hZ2VzL01ha2VmaWxlLmlteAo+ID4gKysrIGIv
-aW1hZ2VzL01ha2VmaWxlLmlteAo+ID4gQEAgLTIsNiArMiwxOSBAQAo+ID4gICMgYmFyZWJveCBp
-bWFnZSBnZW5lcmF0aW9uIE1ha2VmaWxlIGZvciBpLk1YIGltYWdlcwo+ID4gICMKPiA+ICAKPiA+
-ICsjIHBhcmFtczogQ09ORklHIHN5bWJvbCwgZW50cnkgcG9pbnQsIGJvYXJkIGlkZW50aWZpZXIg
-c3RyaW5nCj4gPiArZGVmaW5lIGJ1aWxkX2lteF9pbWcgPQo+ID4gKyQoZXZhbAo+ID4gK3BibGIt
-JCgkKHN0cmlwICQoMSkpKSArPSAkKHN0cmlwICQoMikpCj4gPiArQ0ZHXyQoc3RyaXAgJCgyKSku
-cGJsYi5pbXhpbWcgPSAkKGJvYXJkKS8kKHN0cmlwICQoMykpL2ZsYXNoLWhlYWRlci5pbXhjZmcK
-PiA+ICtGSUxFX2JhcmVib3gtJChzdHJpcCAkKDMpKS5pbWcgICAgPSAkKHN0cmlwICQoMikpLnBi
-bGIuaW14aW1nCj4gPiArRklMRV9iYXJlYm94LSQoc3RyaXAgJCgzKSktcy5pbWcgID0gJChzdHJp
-cCAkKDIpKS5wYmxiLnNpbXhpbWcKPiA+ICtGSUxFX2JhcmVib3gtJChzdHJpcCAkKDMpKS11cy5p
-bWcgPSAkKHN0cmlwICQoMikpLnBibGIudXNpbXhpbWcKPiA+ICtGSUxFX2JhcmVib3gtJChzdHJp
-cCAkKDMpKS1lcy5pbWcgPSAkKHN0cmlwICQoMikpLnBibGIuZXNpbXhpbWcKPiA+ICtpbWFnZS0k
-KCQoc3RyaXAgJCgxKSkpICs9IGJhcmVib3gtJChzdHJpcCAkKDMpKS5pbWcKPiA+ICspCj4gPiAr
-ZW5kZWYKPiA+ICsKPiA+ICAjICUuaW14aW1nIC0gY29udmVydCBpbnRvIGkuTVggaW1hZ2UKPiA+
-ICAjIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0KPiA+ICAKPiA+IEBAIC0xNDMsMTUgKzE1Niw4IEBAIEZJTEVfYmFyZWJveC10
-eDUzLTEwMTEuaW1nID0gc3RhcnRfaW14NTNfdHg1M18xMDExLnBibGIuaW14aW1nCj4gPiAgaW1h
-Z2UtJChDT05GSUdfTUFDSF9UWDUzKSArPSBiYXJlYm94LXR4NTMtMTAxMS5pbWcKPiA+ICAKPiA+
-ICAjIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIGkuTVg2IGJhc2VkIGJvYXJkcyAtLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0KPiA+IC1wYmxiLSQoQ09ORklHX01BQ0hfUkVBTFE3KSArPSBzdGFy
-dF9pbXg2X3JlYWxxNwo+ID4gLUNGR19zdGFydF9pbXg2X3JlYWxxNy5wYmxiLmlteGltZyA9ICQo
-Ym9hcmQpL2RhdGFtb2R1bC1lZG0tcW14Ni9mbGFzaC1oZWFkZXIuaW14Y2ZnCj4gPiAtRklMRV9i
-YXJlYm94LWRhdGFtb2R1bC1lZG0tcW14Ni5pbWcgPSBzdGFydF9pbXg2X3JlYWxxNy5wYmxiLmlt
-eGltZwo+ID4gLWltYWdlLSQoQ09ORklHX01BQ0hfUkVBTFE3KSArPSBiYXJlYm94LWRhdGFtb2R1
-bC1lZG0tcW14Ni5pbWcKPiA+IC0KPiA+IC1wYmxiLSQoQ09ORklHX01BQ0hfR1VGX1NBTlRBUk8p
-ICs9IHN0YXJ0X2lteDZxX2d1Zl9zYW50YXJvCj4gPiAtQ0ZHX3N0YXJ0X2lteDZxX2d1Zl9zYW50
-YXJvLnBibGIuaW14aW1nID0gJChib2FyZCkvZ3VmLXNhbnRhcm8vZmxhc2gtaGVhZGVyLmlteGNm
-Zwo+ID4gLUZJTEVfYmFyZWJveC1ndWYtc2FudGFyby5pbWcgPSBzdGFydF9pbXg2cV9ndWZfc2Fu
-dGFyby5wYmxiLmlteGltZwo+ID4gLWltYWdlLSQoQ09ORklHX01BQ0hfR1VGX1NBTlRBUk8pICs9
-IGJhcmVib3gtZ3VmLXNhbnRhcm8uaW1nCj4gPiArJChjYWxsIGJ1aWxkX2lteF9pbWcsIENPTkZJ
-R19NQUNIX1JFQUxRNywgc3RhcnRfaW14Nl9yZWFscSwgZGF0YW1vZHVsLWVkbS1xbXg2KQo+ID4g
-KyQoY2FsbCBidWlsZF9pbXhfaW1nLCBDT05GSUdfTUFDSF9HVUZfU0FOVEFSTywgc3RhcnRfaW14
-NnFfZ3VmX3NhbnRhcm8sIGd1Zi1zYW50YXJvKQo+ID4gIAo+ID4gIHBibGItJChDT05GSUdfTUFD
-SF9HSzgwMikgKz0gc3RhcnRfaW14Nl9nazgwMgo+ID4gIENGR19zdGFydF9pbXg2X2drODAyLnBi
-bGIuaW14aW1nID0gJChib2FyZCkvZ2s4MDIvZmxhc2gtaGVhZGVyLmlteGNmZwo+ID4gLS0tLS0t
-LS0tLS0tLS0tLS0gODwgLS0tLS0tLS0tLS0tLS0tLS0KPiA+Cj4gPiBEZXBlbmRpbmcgb24geW91
-ciB0aG91Z2h0cyByZWdhcmRpbmcgdGhlIG90aGVyIHF1ZXN0aW9ucyBpbiBteSBwcmV2aW91cwo+
-ID4gbWFpbCwgSSBjYW4gbWFrZSB0aGlzIGludG8gYSBwcm9wZXIgcGF0Y2guCj4gPgo+ID4gIC0g
-Um9sYW5kCj4gPgoKLS0gClJvbGFuZCBIaWViZXIgICAgICAgICAgICAgICAgICAgICB8IHIuaGll
-YmVyQHBlbmd1dHJvbml4LmRlICAgICB8ClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAg
-ICB8IGh0dHBzOi8vd3d3LnBlbmd1dHJvbml4LmRlLyB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcg
-SGlsZGVzaGVpbSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctNTA4NiB8CkFtdHNnZXJpY2h0IEhp
-bGRlc2hlaW0sIEhSQSAyNjg2ICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxp
-bmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVh
-ZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Since the commit
+	5a1a5ed2537d7d12f851f3778707681d6c08d6e8
+	ARM: images: use piggydata
+
+the loading mechanism in the arria10 xload is neither functional nor needed.
+Now, barebox has/can be loaded like a normal image, so the filesize, that is
+written to the barebox header, can be evaluated.
+
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+---
+ arch/arm/mach-socfpga/arria10-xload.c | 65 ++++++---------------------
+ images/Makefile.socfpga               |  2 +-
+ 2 files changed, 14 insertions(+), 53 deletions(-)
+
+diff --git a/arch/arm/mach-socfpga/arria10-xload.c b/arch/arm/mach-socfpga/arria10-xload.c
+index 3622a3cd9cf4..047f61246cbf 100644
+--- a/arch/arm/mach-socfpga/arria10-xload.c
++++ b/arch/arm/mach-socfpga/arria10-xload.c
+@@ -386,70 +386,31 @@ int arria10_load_fpga(int offset, int bitstream_size)
+ 	return 0;
+ }
+ 
+-static int image_size(void)
+-{
+-	uint32_t *image_end = (void *)__image_end;
+-	uint32_t payload_len;
+-	uint32_t pbl_len;
+-	uint32_t arria10_header_len;
+-	uint32_t sizep;
+-	uint32_t arria10_crc;
+-
+-	/* arria10 header is 512 byte */
+-	arria10_header_len = 512;
+-	/* pbl is appended with 4 byte CRC for boot rom */
+-	arria10_crc = 4;
+-
+-	/* The length of the PBL image */
+-	pbl_len = __image_end - _text;
+-
+-	sizep = 4;
+-
+-	/* The length of the payload is appended directly behind the PBL */
+-	payload_len = *(image_end);
+-
+-	return pbl_len + arria10_header_len + sizep + arria10_crc + payload_len;
+-}
+-
+ void arria10_start_image(int offset)
+ {
+ 	void *buf = (void *)0x0;
+-	void *in_buf = (void *)SZ_1M;
+ 	uint32_t start;
+-	int size = 0;
+-	int ret;
++        unsigned int size;
++        int ret;
+ 	void __noreturn (*bb)(void);
+-	uint32_t pbl_len = __image_end - _text;
+-	uint32_t *image_end = (void *)__image_end;
+-	uint32_t arria10_header_len;
+-	uint32_t sizep;
+-	uint32_t arria10_crc;
+-
+-	size = image_size();
+ 
+ 	start = bootloader.first_sec + offset / SECTOR_SIZE;
+ 
+-	ret = arria10_read_blocks(buf, start, ALIGN(size, SECTOR_SIZE));
+-	if (ret) {
+-		puts_ll("Loading image failed\n");
++        ret = arria10_read_blocks(buf, start, ALIGN(ARM_HEAD_SIZE, SECTOR_SIZE));
++        if (ret)
+ 		hang();
+-	}
+-
+-	/* arria10 header is 512 byte */
+-	arria10_header_len = 512;
+-	sizep = 4;
+ 
+-	/* copy PBL */
+-	memcpy(in_buf, buf, pbl_len + sizep + arria10_header_len);
+-
+-	/* pbl is appended with 4 byte CRC for boot rom */
+-	arria10_crc = 4;
++	if (is_barebox_arm_head(buf))
++		size = *((unsigned int *)buf + ARM_HEAD_SIZE_OFFSET /
++			 sizeof(unsigned int));
++	else
++		hang();
+ 
+-	/* copy payload, skip the Arria10 CRC */
+-	memcpy(in_buf + pbl_len + sizep + arria10_header_len,
+-	       buf + pbl_len + sizep + arria10_header_len + arria10_crc, *(image_end));
++        ret = arria10_read_blocks(buf, start, ALIGN(size, SECTOR_SIZE));
++        if (ret)
++		hang();
+ 
+-	bb = in_buf;
++	bb = buf;
+ 
+ 	bb();
+ 
+diff --git a/images/Makefile.socfpga b/images/Makefile.socfpga
+index 6b346a5f8414..b36e2a5033d3 100644
+--- a/images/Makefile.socfpga
++++ b/images/Makefile.socfpga
+@@ -4,7 +4,7 @@
+ 
+ # %.socfpgaimg - convert into socfpga image
+ # ----------------------------------------------------------------
+-SOCFPGA_IMAGE_ARGS-$(CONFIG_ARCH_SOCFPGA_ARRIA10) += -v1
++SOCFPGA_IMAGE_ARGS-$(CONFIG_ARCH_SOCFPGA_ARRIA10) += -v1 -b
+ SOCFPGA_IMAGE_ARGS-$(CONFIG_ARCH_SOCFPGA_CYCLONE5) += -v0
+ 
+ quiet_cmd_socfpga_image = SOCFPGA-IMG $@
+-- 
+2.20.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
