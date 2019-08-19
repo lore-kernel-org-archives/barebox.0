@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hzhs4-0002DD-2r
+ id 1hzhs4-0002DE-2H
  for barebox@lists.infradead.org; Mon, 19 Aug 2019 13:38:54 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 19 Aug 2019 15:38:46 +0200
-Message-Id: <20190819133847.17015-8-s.hauer@pengutronix.de>
+Date: Mon, 19 Aug 2019 15:38:42 +0200
+Message-Id: <20190819133847.17015-4-s.hauer@pengutronix.de>
 In-Reply-To: <20190819133847.17015-1-s.hauer@pengutronix.de>
 References: <20190819133847.17015-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,33 +21,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/8] ARM: i.MX: Do not hang() on unknown SoCs
+Subject: [PATCH 3/8] pbl: Implement strrchr
 To: Barebox List <barebox@lists.infradead.org>
 
-The generic DT image built with CONFIG_ARCH_IMX has nothing really
-i.MX specific except that it has support for i.MX features. The DT
-image could be started with a non i.MX device tree which works as
-expected. imx_init() panics though when started with a non i.MX device
-tree. Remove the hang() so that we can just continue.
+strrchr is needed for libfdt. Add support for it to the pbl.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/imx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ pbl/string.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/arch/arm/mach-imx/imx.c b/arch/arm/mach-imx/imx.c
-index 63914d306e..ad9b3c4d3e 100644
---- a/arch/arm/mach-imx/imx.c
-+++ b/arch/arm/mach-imx/imx.c
-@@ -95,7 +95,7 @@ static int imx_init(void)
- 	if (root) {
- 		__imx_cpu_type = imx_soc_from_dt();
- 		if (!__imx_cpu_type)
--			hang();
-+			return 0;
- 	}
- 
- 	if (cpu_is_mx1())
+diff --git a/pbl/string.c b/pbl/string.c
+index 927c92dc05..46bf0b32b3 100644
+--- a/pbl/string.c
++++ b/pbl/string.c
+@@ -133,3 +133,19 @@ size_t strnlen(const char * s, size_t count)
+ 		/* nothing */;
+ 	return sc - s;
+ }
++
++/**
++ * strrchr - Find the last occurrence of a character in a string
++ * @s: The string to be searched
++ * @c: The character to search for
++ */
++char * _strrchr(const char * s, int c)
++{
++	const char *p = s + strlen(s);
++
++	do {
++		if (*p == (char)c)
++			return (char *)p;
++	} while (--p >= s);
++	return NULL;
++}
 -- 
 2.20.1
 
