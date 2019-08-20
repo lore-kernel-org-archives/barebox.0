@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hzyEB-0006cG-Mp
- for barebox@lists.infradead.org; Tue, 20 Aug 2019 07:06:49 +0000
+ id 1hzyEB-0006cH-Oj
+ for barebox@lists.infradead.org; Tue, 20 Aug 2019 07:06:52 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Tue, 20 Aug 2019 09:06:39 +0200
-Message-Id: <20190820070640.3526-4-o.rempel@pengutronix.de>
+Date: Tue, 20 Aug 2019 09:06:38 +0200
+Message-Id: <20190820070640.3526-3-o.rempel@pengutronix.de>
 In-Reply-To: <20190820070640.3526-1-o.rempel@pengutronix.de>
 References: <20190820070640.3526-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
@@ -21,7 +21,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 3/4] mtd: spi-nor: add support for sst26vf series
+Subject: [PATCH v1 2/4] mtd: spi-nor: add UNLOCK_GLOBAL_BLOCK support
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
@@ -30,45 +30,79 @@ SAMA5D27 SOM1 EK.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/mtd/spi-nor/spi-nor.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ drivers/mtd/spi-nor/spi-nor.c | 25 ++++++++++++++++++++++++-
+ include/linux/mtd/spi-nor.h   |  1 +
+ 2 files changed, 25 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index c506e62a62..1a3faecd52 100644
+index 43bd402f9f..c506e62a62 100644
 --- a/drivers/mtd/spi-nor/spi-nor.c
 +++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -753,6 +753,31 @@ static const struct spi_device_id spi_nor_ids[] = {
- 	{ "sst25wf040b", INFO(0x621613, 0, 64 * 1024,  8, SECT_4K) },
- 	{ "sst25wf040",  INFO(0xbf2504, 0, 64 * 1024,  8, SECT_4K | SST_WRITE) },
- 	{ "sst25wf080",  INFO(0xbf2505, 0, 64 * 1024, 16, SECT_4K | SST_WRITE) },
-+	{
-+		"sst26vf016b", INFO(0xbf2641, 0, 64 * 1024, 32,
-+			SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ |
-+			UNLOCK_GLOBAL_BLOCK)
-+	},
-+	{
-+		"sst26vf032b", INFO(0xbf2642, 0, 64 * 1024, 64,
-+			SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ |
-+			UNLOCK_GLOBAL_BLOCK)
-+	},
-+	{
-+		"sst26vf064b", INFO(0xbf2643, 0, 64 * 1024, 128,
-+			SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ |
-+			UNLOCK_GLOBAL_BLOCK)
-+	},
-+	{
-+		"sst26vf040b", INFO(0xbf2654, 0, 64 * 1024, 8,
-+			SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ |
-+			UNLOCK_GLOBAL_BLOCK)
-+	},
-+	{
-+		"sst26vf080b", INFO(0xbf2658, 0, 64 * 1024, 16,
-+			SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ |
-+			UNLOCK_GLOBAL_BLOCK)
-+	},
+@@ -57,7 +57,7 @@ struct flash_info {
+ 	u16		page_size;
+ 	u16		addr_width;
  
- 	/* ST Microelectronics -- newer production may have feature updates */
- 	{ "m25p05",  INFO(0x202010,  0,  32 * 1024,   2, 0) },
+-	u16		flags;
++	u32		flags;
+ #define SECT_4K			BIT(0)	/* SPINOR_OP_BE_4K works uniformly */
+ #define SPI_NOR_NO_ERASE	BIT(1)	/* No erase command needed */
+ #define SST_WRITE		BIT(2)	/* use SST byte programming */
+@@ -86,6 +86,7 @@ struct flash_info {
+ #define SPI_NOR_SKIP_SFDP	BIT(13)	/* Skip parsing of SFDP tables */
+ #define USE_CLSR		BIT(14)	/* use CLSR command */
+ #define SPI_NOR_OCTAL_READ	BIT(15)	/* Flash supports Octal Read */
++#define UNLOCK_GLOBAL_BLOCK	BIT(16)	/* Unlock global block protection */
+ };
+ 
+ enum spi_nor_read_command_index {
+@@ -1045,6 +1046,17 @@ spi_nor_set_pp_settings(struct spi_nor_pp_command *pp,
+ 	pp->proto = proto;
+ }
+ 
++static int spi_nor_unlock_global_block_protection(struct spi_nor *nor)
++{
++	int ret;
++
++	write_enable(nor);
++	ret = nor->write_reg(nor, SPINOR_OP_GBULK, NULL, 0);
++	if (ret < 0)
++		return ret;
++	return spi_nor_wait_till_ready(nor);
++}
++
+ static int spi_nor_init_params(struct spi_nor *nor,
+ 			       const struct flash_info *info,
+ 			       struct spi_nor_flash_parameter *params)
+@@ -1088,6 +1100,17 @@ static int spi_nor_init_params(struct spi_nor *nor,
+ 	spi_nor_set_pp_settings(&params->page_programs[SNOR_CMD_PP],
+ 				SPINOR_OP_PP, SNOR_PROTO_1_1_1);
+ 
++	if (info->flags & UNLOCK_GLOBAL_BLOCK) {
++		int err;
++
++		err = spi_nor_unlock_global_block_protection(nor);
++		if (err) {
++			dev_err(nor->dev,
++				"Cannot unlock the global block protection\n");
++			return err;
++		}
++	}
++
+ 	/* Select the procedure to set the Quad Enable bit. */
+ 	if (params->hwcaps.mask & (SNOR_HWCAPS_READ_QUAD |
+ 				   SNOR_HWCAPS_PP_QUAD))
+diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
+index 33413ff955..105f381ada 100644
+--- a/include/linux/mtd/spi-nor.h
++++ b/include/linux/mtd/spi-nor.h
+@@ -64,6 +64,7 @@
+ #define SPINOR_OP_CLFSR		0x50	/* Clear flag status register */
+ #define SPINOR_OP_RDEAR		0xc8	/* Read Extended Address Register */
+ #define SPINOR_OP_WREAR		0xc5	/* Write Extended Address Register */
++#define SPINOR_OP_GBULK		0x98	/* Global Block Unlock Protection */
+ 
+ /* 4-byte address opcodes - used on Spansion and some Macronix flashes. */
+ #define SPINOR_OP_READ_4B	0x13	/* Read data bytes (low frequency) */
 -- 
 2.20.1
 
