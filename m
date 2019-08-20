@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-co1nam03on0601.outbound.protection.outlook.com
+ ([2a01:111:f400:fe48::601]
+ helo=NAM03-CO1-obe.outbound.protection.outlook.com)
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i15OH-00075g-Qs
- for barebox@lists.infradead.org; Fri, 23 Aug 2019 08:57:51 +0000
-Date: Fri, 23 Aug 2019 10:57:48 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190823085748.ihjajm3hirrgriic@pengutronix.de>
-References: <1566397308-450229-1-git-send-email-m.otto@phytec.de>
+ id 1i0CRg-0000ma-MZ
+ for barebox@lists.infradead.org; Tue, 20 Aug 2019 22:17:42 +0000
+From: Cory Tusar <Cory.Tusar@zii.aero>
+Date: Tue, 20 Aug 2019 22:17:36 +0000
+Message-ID: <20190820221638.19492-1-cory.tusar@zii.aero>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1566397308-450229-1-git-send-email-m.otto@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,32 +22,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v4 1/5] i.mx6: signed boot: add habv4-imx6-gencsf.h to
- the flash header of the PHYTEC boards
-To: Maik Otto <m.otto@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] Documentation: zii-vf610-dev: Fix 'halt' in openocd
+ configuration script
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Cc: Chris Healy <Chris.Healy@zii.aero>
 
-Hi Maik,
+When attempting to use the existing configuration file to bootstrap
+an SCU4 AIB board, openocd would consistently fail on the 'halt' command
+with a "Target not examined yet" error.  Dumping target information
+showed that vf610.cpu1 was the active target, rather that vf610.cpu0.
 
-On Wed, Aug 21, 2019 at 04:21:44PM +0200, Maik Otto wrote:
-> the habv4-imx6-gencsf.h is necessary in the board flash header to build
-> a signed barebox
-> 
-> Signed-off-by: Maik Otto <m.otto@phytec.de>
-> ---
+Adding a command prior to the halt to explicitly set the target core
+resulted in proper operation.
 
-I applied this to -next. So far it seems to work as expected and I could
-even generate signed images for the Phytec boards. I want to have a
-closer look to this patchset later, but I like it. It's really an
-improvement.
+Tested with openocd-0.10.0+dev-00924-g16496488 on a Zodiac SCU4 AIB.
 
-Sascha
+Signed-off-by: Cory Tusar <cory.tusar@zii.aero>
+---
+ Documentation/boards/imx/zii-vf610-dev/openocd.cfg | 1 +
+ 1 file changed, 1 insertion(+)
 
+diff --git a/Documentation/boards/imx/zii-vf610-dev/openocd.cfg b/Documentation/boards/imx/zii-vf610-dev/openocd.cfg
+index 222f48711..5127c7623 100644
+--- a/Documentation/boards/imx/zii-vf610-dev/openocd.cfg
++++ b/Documentation/boards/imx/zii-vf610-dev/openocd.cfg
+@@ -258,6 +258,7 @@ proc safe_reset {} {
+ proc start_barebox { } {
+ 	set VF610_DDR_BASE_ADDR 0x80000000
+ 	echo "Bootstrap: Loading Barebox"
++	targets vf610.cpu0
+ 	halt
+ 	load_image images/barebox-zii-vf610-dev.img $VF610_DDR_BASE_ADDR bin
+ 	arm core_state arm
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.23.0
+
 
 _______________________________________________
 barebox mailing list
