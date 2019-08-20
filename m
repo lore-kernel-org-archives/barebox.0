@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-io1-xd43.google.com ([2607:f8b0:4864:20::d43])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i0CZo-0003wM-Pj
- for barebox@lists.infradead.org; Tue, 20 Aug 2019 22:26:06 +0000
-Received: by mail-io1-xd43.google.com with SMTP id z3so699257iog.0
- for <barebox@lists.infradead.org>; Tue, 20 Aug 2019 15:26:04 -0700 (PDT)
+ id 1hzzT8-00052K-Rj
+ for barebox@lists.infradead.org; Tue, 20 Aug 2019 08:26:20 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue, 20 Aug 2019 10:26:11 +0200
+Message-Id: <20190820082611.21855-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-References: <20190820221638.19492-1-cory.tusar@zii.aero>
-In-Reply-To: <20190820221638.19492-1-cory.tusar@zii.aero>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 20 Aug 2019 15:25:52 -0700
-Message-ID: <CAHQ1cqH-6-c8WvJfm7zqsRy6hM0HTfUbs27RBqL_=8ZfwXvr0g@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,45 +19,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Documentation: zii-vf610-dev: Fix 'halt' in openocd
- configuration script
-To: Cory Tusar <Cory.Tusar@zii.aero>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Chris Healy <Chris.Healy@zii.aero>
+Subject: [PATCH] serial: stm32: set linux_console_name
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Tue, Aug 20, 2019 at 3:17 PM Cory Tusar <Cory.Tusar@zii.aero> wrote:
->
-> When attempting to use the existing configuration file to bootstrap
-> an SCU4 AIB board, openocd would consistently fail on the 'halt' command
-> with a "Target not examined yet" error.  Dumping target information
-> showed that vf610.cpu1 was the active target, rather that vf610.cpu0.
->
-> Adding a command prior to the halt to explicitly set the target core
-> resulted in proper operation.
->
-> Tested with openocd-0.10.0+dev-00924-g16496488 on a Zodiac SCU4 AIB.
->
-> Signed-off-by: Cory Tusar <cory.tusar@zii.aero>
-> ---
->  Documentation/boards/imx/zii-vf610-dev/openocd.cfg | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/Documentation/boards/imx/zii-vf610-dev/openocd.cfg b/Documentation/boards/imx/zii-vf610-dev/openocd.cfg
-> index 222f48711..5127c7623 100644
-> --- a/Documentation/boards/imx/zii-vf610-dev/openocd.cfg
-> +++ b/Documentation/boards/imx/zii-vf610-dev/openocd.cfg
-> @@ -258,6 +258,7 @@ proc safe_reset {} {
->  proc start_barebox { } {
->         set VF610_DDR_BASE_ADDR 0x80000000
->         echo "Bootstrap: Loading Barebox"
-> +       targets vf610.cpu0
+Linux names these UARTs ttySTM. Tell barebox about this, so it can be
+used to correctly compose the console= kernel command line argument.
 
-There's nothing wrong with this fix as is, however I think this is
-something that should be fixed in OpenOCD itself. Both
-tcl/target/imx6.cfg and tcl/target/vybrid_vf6xx.cfg are missing proper
-"targets" directive, compared to e.g. tcl/target/imx7.cfg.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/serial/serial_stm32.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Thanks,
-Andrey Smirnov
+diff --git a/drivers/serial/serial_stm32.c b/drivers/serial/serial_stm32.c
+index a84e64e974e7..4bbfb1eef72c 100644
+--- a/drivers/serial/serial_stm32.c
++++ b/drivers/serial/serial_stm32.c
+@@ -182,6 +182,7 @@ static int stm32_serial_probe(struct device_d *dev)
+ 	cdev->getc   = stm32_serial_getc;
+ 	cdev->flush  = stm32_serial_flush;
+ 	cdev->setbrg = stm32_serial_setbaudrate;
++	cdev->linux_console_name = "ttySTM";
+ 
+ 	if (dev->device_node) {
+ 		devname = of_alias_get(dev->device_node);
+-- 
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
