@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mickerik.phytec.de ([195.145.39.210])
  by bombadil.infradead.org with esmtp (Exim 4.92 #3 (Red Hat Linux))
- id 1i0RUn-0007dI-IK
+ id 1i0RUn-0007dJ-J8
  for barebox@lists.infradead.org; Wed, 21 Aug 2019 14:21:58 +0000
 From: Maik Otto <m.otto@phytec.de>
-Date: Wed, 21 Aug 2019 16:21:44 +0200
-Message-Id: <1566397308-450229-1-git-send-email-m.otto@phytec.de>
+Date: Wed, 21 Aug 2019 16:21:45 +0200
+Message-Id: <1566397308-450229-2-git-send-email-m.otto@phytec.de>
+In-Reply-To: <1566397308-450229-1-git-send-email-m.otto@phytec.de>
+References: <1566397308-450229-1-git-send-email-m.otto@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,235 +21,308 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 1/5] i.mx6: signed boot: add habv4-imx6-gencsf.h to the
- flash header of the PHYTEC boards
+Subject: [PATCH v4 2/5] imx6: added fit image signature to the devicetree for
+ PHYTEC boards
 To: barebox@lists.infradead.org
 
-the habv4-imx6-gencsf.h is necessary in the board flash header to build
-a signed barebox
+the barebox checks the signed FIT-Image with a Public Key, which is stored
+for the PHYTEC i.MX6 boards in the device tree
 
 Signed-off-by: Maik Otto <m.otto@phytec.de>
 ---
 Changes in v4:
-    - nothing
+    - remove and add files, because dts files changes from version
+    older barebox version
 Changes in v3:
-    - nothing
-Changes in v2:
-    - no changes, was Patch 3/4 in v1
+    - move #if after the existing /dtc-v1/ and drop else after review
+    by Ahmad Fatoum           
+Changes in v2:                                                          
+    - no changes, was Patch 4/4 in v1
 ---
- .../phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib-1bank.imxcfg       | 1 +
- arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib.imxcfg | 1 +
- arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-2gib.imxcfg | 1 +
- arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063-256mb.imxcfg | 1 +
- arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063-512mb.imxcfg | 1 +
- arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058-1gib.imxcfg  | 1 +
- arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058-2gib.imxcfg  | 1 +
- .../phytec-som-imx6/flash-header-phytec-pcm058dl-1gib-32bit.imxcfg      | 1 +
- .../arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib.imxcfg | 1 +
- .../boards/phytec-som-imx6/flash-header-phytec-pcm058dl-256mb.imxcfg    | 2 ++
- .../arm/boards/phytec-som-imx6/flash-header-phytec-pcm058qp-1gib.imxcfg | 1 +
- .../boards/phytec-som-imx6/flash-header-phytec-pfla02-1gib-1bank.imxcfg | 1 +
- arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-1gib.imxcfg  | 1 +
- arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-2gib.imxcfg  | 1 +
- arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-4gib.imxcfg  | 1 +
- .../phytec-som-imx6/flash-header-phytec-pfla02-512mb-1bank.imxcfg       | 1 +
- .../phytec-som-imx6/flash-header-phytec-pfla02dl-1gib-1bank.imxcfg      | 1 +
- .../arm/boards/phytec-som-imx6/flash-header-phytec-pfla02dl-1gib.imxcfg | 1 +
- .../phytec-som-imx6/flash-header-phytec-pfla02s-128mb-1bank.imxcfg      | 1 +
- .../phytec-som-imx6/flash-header-phytec-pfla02s-256mb-1bank.imxcfg      | 1 +
- .../phytec-som-imx6/flash-header-phytec-pfla02s-512mb-1bank.imxcfg      | 1 +
- 21 files changed, 22 insertions(+)
+ arch/arm/dts/imx6dl-phytec-pbab01.dts               | 4 +++-
+ arch/arm/dts/imx6dl-phytec-phyboard-subra.dts       | 3 +++
+ arch/arm/dts/imx6dl-phytec-phycore-som-emmc.dts     | 4 +++-
+ arch/arm/dts/imx6dl-phytec-phycore-som-lc-emmc.dts  | 4 +++-
+ arch/arm/dts/imx6dl-phytec-phycore-som-lc-nand.dts  | 4 +++-
+ arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts     | 4 +++-
+ arch/arm/dts/imx6q-phytec-pbaa03.dts                | 3 +++
+ arch/arm/dts/imx6q-phytec-pbab01.dts                | 3 +++
+ arch/arm/dts/imx6q-phytec-phyboard-alcor.dts        | 3 +++
+ arch/arm/dts/imx6q-phytec-phyboard-subra.dts        | 3 +++
+ arch/arm/dts/imx6q-phytec-phycore-som-emmc.dts      | 4 +++-
+ arch/arm/dts/imx6q-phytec-phycore-som-nand.dts      | 4 +++-
+ arch/arm/dts/imx6qp-phytec-phycore-som-nand.dts     | 3 +++
+ arch/arm/dts/imx6s-phytec-pbab01.dts                | 4 +++-
+ arch/arm/dts/imx6ul-phytec-phycore-som-nand.dts     | 4 +++-
+ arch/arm/dts/imx6ull-phytec-phycore-som-emmc.dts    | 4 +++-
+ arch/arm/dts/imx6ull-phytec-phycore-som-lc-nand.dts | 4 +++-
+ arch/arm/dts/imx6ull-phytec-phycore-som-nand.dts    | 4 +++-
+ 18 files changed, 54 insertions(+), 12 deletions(-)
 
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib-1bank.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib-1bank.imxcfg
-index 62a24ed..bb4fbeb 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib-1bank.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib-1bank.imxcfg
-@@ -7,3 +7,4 @@
- 	wm 32 0x021b0000 0x831a0000
+diff --git a/arch/arm/dts/imx6dl-phytec-pbab01.dts b/arch/arm/dts/imx6dl-phytec-pbab01.dts
+index d10fbf6..4fe3c30 100644
+--- a/arch/arm/dts/imx6dl-phytec-pbab01.dts
++++ b/arch/arm/dts/imx6dl-phytec-pbab01.dts
+@@ -10,7 +10,9 @@
+  */
  
- #include "flash-header-phytec-pcaaxl3.h"
-+#include <mach/habv4-imx6-gencsf.h>
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib.imxcfg
-index bab726d..990c34b 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib.imxcfg
-@@ -7,3 +7,4 @@
- 	wm 32 0x021b0000 0xc21a0000
+ /dts-v1/;
+-
++#ifdef CONFIG_BOOTM_FITIMAGE_PUBKEY
++#include CONFIG_BOOTM_FITIMAGE_PUBKEY
++#endif
+ #include "imx6dl-phytec-pfla02.dtsi"
+ #include "imx6qdl-phytec-pbab01.dtsi"
  
- #include "flash-header-phytec-pcaaxl3.h"
-+#include <mach/habv4-imx6-gencsf.h>
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-2gib.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-2gib.imxcfg
-index 512f6cb..7c56c24 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-2gib.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-2gib.imxcfg
-@@ -7,3 +7,4 @@
- 	wm 32 0x021b0000 0xc31a0000
+diff --git a/arch/arm/dts/imx6dl-phytec-phyboard-subra.dts b/arch/arm/dts/imx6dl-phytec-phyboard-subra.dts
+index 3d1069a..430745f 100644
+--- a/arch/arm/dts/imx6dl-phytec-phyboard-subra.dts
++++ b/arch/arm/dts/imx6dl-phytec-phyboard-subra.dts
+@@ -10,6 +10,9 @@
+  */
  
- #include "flash-header-phytec-pcaaxl3.h"
-+#include <mach/habv4-imx6-gencsf.h>
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063-256mb.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063-256mb.imxcfg
-index 4a827e4..b93e81f 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063-256mb.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063-256mb.imxcfg
-@@ -7,3 +7,4 @@
- 	wm 32 0x021B0000 0x83180000
+ /dts-v1/;
++#ifdef CONFIG_BOOTM_FITIMAGE_PUBKEY
++#include CONFIG_BOOTM_FITIMAGE_PUBKEY
++#endif
+ #include "imx6s-phytec-pfla02.dtsi"
+ #include "imx6qdl-phytec-phyboard-subra.dtsi"
  
- #include "flash-header-phytec-pcl063.h"
-+#include <mach/habv4-imx6-gencsf.h>
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063-512mb.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063-512mb.imxcfg
-index c4122d2..26998c3 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063-512mb.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063-512mb.imxcfg
-@@ -7,3 +7,4 @@
- 	wm 32 0x021B0000 0x84180000
+diff --git a/arch/arm/dts/imx6dl-phytec-phycore-som-emmc.dts b/arch/arm/dts/imx6dl-phytec-phycore-som-emmc.dts
+index 21cbb5f..25d73ce 100644
+--- a/arch/arm/dts/imx6dl-phytec-phycore-som-emmc.dts
++++ b/arch/arm/dts/imx6dl-phytec-phycore-som-emmc.dts
+@@ -11,7 +11,9 @@
+  */
  
- #include "flash-header-phytec-pcl063.h"
-+#include <mach/habv4-imx6-gencsf.h>
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058-1gib.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058-1gib.imxcfg
-index 5df46b9..0042909 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058-1gib.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058-1gib.imxcfg
-@@ -6,3 +6,4 @@
- 	wm 32 0x021b0000 0x831A0000
+ /dts-v1/;
+-
++#ifdef CONFIG_BOOTM_FITIMAGE_PUBKEY
++#include CONFIG_BOOTM_FITIMAGE_PUBKEY
++#endif
+ #include <arm/imx6dl.dtsi>
+ #include "imx6dl.dtsi"
+ #include "imx6qdl-phytec-phycore-som.dtsi"
+diff --git a/arch/arm/dts/imx6dl-phytec-phycore-som-lc-emmc.dts b/arch/arm/dts/imx6dl-phytec-phycore-som-lc-emmc.dts
+index b8efb95..a6b0e94 100644
+--- a/arch/arm/dts/imx6dl-phytec-phycore-som-lc-emmc.dts
++++ b/arch/arm/dts/imx6dl-phytec-phycore-som-lc-emmc.dts
+@@ -5,7 +5,9 @@
+  */
  
- #include "flash-header-phytec-pcm058.h"
-+#include <mach/habv4-imx6-gencsf.h>
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058-2gib.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058-2gib.imxcfg
-index 54c9e41..8a09036 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058-2gib.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058-2gib.imxcfg
-@@ -6,3 +6,4 @@
- 	wm 32 0x021b0000 0x841A0000
+ /dts-v1/;
+-
++#ifdef CONFIG_BOOTM_FITIMAGE_PUBKEY
++#include CONFIG_BOOTM_FITIMAGE_PUBKEY
++#endif
+ #include <arm/imx6dl.dtsi>
+ #include "imx6dl.dtsi"
+ #include "imx6qdl-phytec-phycore-som.dtsi"
+diff --git a/arch/arm/dts/imx6dl-phytec-phycore-som-lc-nand.dts b/arch/arm/dts/imx6dl-phytec-phycore-som-lc-nand.dts
+index 4d38d16..195c3ed 100644
+--- a/arch/arm/dts/imx6dl-phytec-phycore-som-lc-nand.dts
++++ b/arch/arm/dts/imx6dl-phytec-phycore-som-lc-nand.dts
+@@ -5,7 +5,9 @@
+  */
  
- #include "flash-header-phytec-pcm058.h"
-+#include <mach/habv4-imx6-gencsf.h>
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib-32bit.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib-32bit.imxcfg
-index bf95d0f..c949f98 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib-32bit.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib-32bit.imxcfg
-@@ -6,3 +6,4 @@
- 	wm 32 0x021b0000 0x84190000
+ /dts-v1/;
+-
++#ifdef CONFIG_BOOTM_FITIMAGE_PUBKEY
++#include CONFIG_BOOTM_FITIMAGE_PUBKEY
++#endif
+ #include <arm/imx6dl.dtsi>
+ #include "imx6dl.dtsi"
+ #include "imx6qdl-phytec-phycore-som.dtsi"
+diff --git a/arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts b/arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts
+index 3ad3723..dfc33e4 100644
+--- a/arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts
++++ b/arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts
+@@ -10,7 +10,9 @@
+  */
  
- #include "flash-header-phytec-pcm058dl.h"
-+#include <mach/habv4-imx6-gencsf.h>
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib.imxcfg
-index f047253..3ac7e4e 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib.imxcfg
-@@ -6,3 +6,4 @@
- 	wm 32 0x021b0000 0x831A0000
+ /dts-v1/;
+-
++#ifdef CONFIG_BOOTM_FITIMAGE_PUBKEY
++#include CONFIG_BOOTM_FITIMAGE_PUBKEY
++#endif
+ #include <arm/imx6dl.dtsi>
+ #include "imx6dl.dtsi"
+ #include "imx6qdl-phytec-phycore-som.dtsi"
+diff --git a/arch/arm/dts/imx6q-phytec-pbaa03.dts b/arch/arm/dts/imx6q-phytec-pbaa03.dts
+index 4724a02..5216a2d 100644
+--- a/arch/arm/dts/imx6q-phytec-pbaa03.dts
++++ b/arch/arm/dts/imx6q-phytec-pbaa03.dts
+@@ -10,6 +10,9 @@
+  */
  
- #include "flash-header-phytec-pcm058dl.h"
-+#include <mach/habv4-imx6-gencsf.h>
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-256mb.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-256mb.imxcfg
-index bf50190..bb8cdc9 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-256mb.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-256mb.imxcfg
-@@ -6,3 +6,5 @@
- 	wm 32 0x021b0000 0x82190000
+ /dts-v1/;
++#ifdef CONFIG_BOOTM_FITIMAGE_PUBKEY
++#include CONFIG_BOOTM_FITIMAGE_PUBKEY
++#endif
+ #include "imx6q-phytec-pcaaxl3.dtsi"
  
- #include "flash-header-phytec-pcm058dl.h"
-+#include <mach/habv4-imx6-gencsf.h>
-+
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058qp-1gib.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058qp-1gib.imxcfg
-index bf85f0a..3ed5b34 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058qp-1gib.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058qp-1gib.imxcfg
-@@ -6,3 +6,4 @@
- 	wm 32 0x021b0000 0x831A0000
+ / {
+diff --git a/arch/arm/dts/imx6q-phytec-pbab01.dts b/arch/arm/dts/imx6q-phytec-pbab01.dts
+index 2f816dd..91562a2 100644
+--- a/arch/arm/dts/imx6q-phytec-pbab01.dts
++++ b/arch/arm/dts/imx6q-phytec-pbab01.dts
+@@ -10,6 +10,9 @@
+  */
  
- #include "flash-header-phytec-pcm058qp.h"
-+#include <mach/habv4-imx6-gencsf.h>
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-1gib-1bank.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-1gib-1bank.imxcfg
-index 75dc982..02f3fa7 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-1gib-1bank.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-1gib-1bank.imxcfg
-@@ -6,3 +6,4 @@
- 	wm 32 0x021b0000 0x831a0000
+ /dts-v1/;
++#ifdef CONFIG_BOOTM_FITIMAGE_PUBKEY
++#include CONFIG_BOOTM_FITIMAGE_PUBKEY
++#endif
+ #include "imx6q-phytec-pfla02.dtsi"
+ #include "imx6qdl-phytec-pbab01.dtsi"
  
- #include "flash-header-phytec-pfla02.h"
-+#include <mach/habv4-imx6-gencsf.h>
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-1gib.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-1gib.imxcfg
-index 1f1fbe5..dd142a2 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-1gib.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-1gib.imxcfg
-@@ -6,3 +6,4 @@
- 	wm 32 0x021b0000 0xc21a0000
+diff --git a/arch/arm/dts/imx6q-phytec-phyboard-alcor.dts b/arch/arm/dts/imx6q-phytec-phyboard-alcor.dts
+index 1c4a785..d97c7f1 100644
+--- a/arch/arm/dts/imx6q-phytec-phyboard-alcor.dts
++++ b/arch/arm/dts/imx6q-phytec-phyboard-alcor.dts
+@@ -10,6 +10,9 @@
+  */
  
- #include "flash-header-phytec-pfla02.h"
-+#include <mach/habv4-imx6-gencsf.h>
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-2gib.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-2gib.imxcfg
-index aa01c05..3f9d11d 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-2gib.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-2gib.imxcfg
-@@ -6,3 +6,4 @@
- 	wm 32 0x021b0000 0xC31A0000
+ /dts-v1/;
++#ifdef CONFIG_BOOTM_FITIMAGE_PUBKEY
++#include CONFIG_BOOTM_FITIMAGE_PUBKEY
++#endif
+ #include "imx6q-phytec-pfla02.dtsi"
  
- #include "flash-header-phytec-pfla02.h"
-+#include <mach/habv4-imx6-gencsf.h>
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-4gib.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-4gib.imxcfg
-index c8d33cf..fdb1d15 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-4gib.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-4gib.imxcfg
-@@ -6,3 +6,4 @@
- 	wm 32 0x021b0000 0xC41A0000
+ / {
+diff --git a/arch/arm/dts/imx6q-phytec-phyboard-subra.dts b/arch/arm/dts/imx6q-phytec-phyboard-subra.dts
+index 561e985..4986111 100644
+--- a/arch/arm/dts/imx6q-phytec-phyboard-subra.dts
++++ b/arch/arm/dts/imx6q-phytec-phyboard-subra.dts
+@@ -11,6 +11,9 @@
+  */
  
- #include "flash-header-phytec-pfla02.h"
-+#include <mach/habv4-imx6-gencsf.h>
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-512mb-1bank.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-512mb-1bank.imxcfg
-index d6bbe1f..f4f150e 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-512mb-1bank.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-512mb-1bank.imxcfg
-@@ -6,3 +6,4 @@
- 	wm 32 0x021b0000 0x821a0000
+ /dts-v1/;
++#ifdef CONFIG_BOOTM_FITIMAGE_PUBKEY
++#include CONFIG_BOOTM_FITIMAGE_PUBKEY
++#endif
+ #include "imx6q-phytec-pfla02.dtsi"
+ #include "imx6qdl-phytec-phyboard-subra.dtsi"
  
- #include "flash-header-phytec-pfla02.h"
-+#include <mach/habv4-imx6-gencsf.h>
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02dl-1gib-1bank.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02dl-1gib-1bank.imxcfg
-index 7b64e5d..b2a0521 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02dl-1gib-1bank.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02dl-1gib-1bank.imxcfg
-@@ -6,3 +6,4 @@
- 	wm 32 0x021b0000 0x831a0000
+diff --git a/arch/arm/dts/imx6q-phytec-phycore-som-emmc.dts b/arch/arm/dts/imx6q-phytec-phycore-som-emmc.dts
+index 7a86d5b..268b1cd 100644
+--- a/arch/arm/dts/imx6q-phytec-phycore-som-emmc.dts
++++ b/arch/arm/dts/imx6q-phytec-phycore-som-emmc.dts
+@@ -10,7 +10,9 @@
+  */
  
- #include "flash-header-phytec-pfla02dl.h"
-+#include <mach/habv4-imx6-gencsf.h>
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02dl-1gib.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02dl-1gib.imxcfg
-index 04c489d..e03e25e 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02dl-1gib.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02dl-1gib.imxcfg
-@@ -6,3 +6,4 @@
- 	wm 32 0x021b0000 0xc21a0000
+ /dts-v1/;
+-
++#ifdef CONFIG_BOOTM_FITIMAGE_PUBKEY
++#include CONFIG_BOOTM_FITIMAGE_PUBKEY
++#endif
+ #include <arm/imx6q.dtsi>
+ #include "imx6q.dtsi"
+ #include "imx6qdl-phytec-phycore-som.dtsi"
+diff --git a/arch/arm/dts/imx6q-phytec-phycore-som-nand.dts b/arch/arm/dts/imx6q-phytec-phycore-som-nand.dts
+index 96d1de2..d138c41 100644
+--- a/arch/arm/dts/imx6q-phytec-phycore-som-nand.dts
++++ b/arch/arm/dts/imx6q-phytec-phycore-som-nand.dts
+@@ -10,7 +10,9 @@
+  */
  
- #include "flash-header-phytec-pfla02dl.h"
-+#include <mach/habv4-imx6-gencsf.h>
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-128mb-1bank.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-128mb-1bank.imxcfg
-index ebe5a96..58c1576 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-128mb-1bank.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-128mb-1bank.imxcfg
-@@ -6,3 +6,4 @@
-         wm 32 0x021b0000 0x82180000
+ /dts-v1/;
+-
++#ifdef CONFIG_BOOTM_FITIMAGE_PUBKEY
++#include CONFIG_BOOTM_FITIMAGE_PUBKEY
++#endif
+ #include <arm/imx6q.dtsi>
+ #include "imx6q.dtsi"
+ #include "imx6qdl-phytec-phycore-som.dtsi"
+diff --git a/arch/arm/dts/imx6qp-phytec-phycore-som-nand.dts b/arch/arm/dts/imx6qp-phytec-phycore-som-nand.dts
+index 437457c..1f39fb3 100644
+--- a/arch/arm/dts/imx6qp-phytec-phycore-som-nand.dts
++++ b/arch/arm/dts/imx6qp-phytec-phycore-som-nand.dts
+@@ -11,6 +11,9 @@
+  */
  
- #include "flash-header-phytec-pfla02dl.h"
-+#include <mach/habv4-imx6-gencsf.h>
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-256mb-1bank.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-256mb-1bank.imxcfg
-index 5f1585a..9975e21 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-256mb-1bank.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-256mb-1bank.imxcfg
-@@ -6,3 +6,4 @@
-         wm 32 0x021b0000 0x82190000
+ /dts-v1/;
++#ifdef CONFIG_BOOTM_FITIMAGE_PUBKEY
++#include CONFIG_BOOTM_FITIMAGE_PUBKEY
++#endif
+ #include <arm/imx6qp.dtsi>
+ #include "imx6qdl-phytec-phycore-som.dtsi"
  
- #include "flash-header-phytec-pfla02dl.h"
-+#include <mach/habv4-imx6-gencsf.h>
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-512mb-1bank.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-512mb-1bank.imxcfg
-index 5ff3ec6..edc396b 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-512mb-1bank.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-512mb-1bank.imxcfg
-@@ -6,3 +6,4 @@
- 	wm 32 0x021b0000 0x83190000
+diff --git a/arch/arm/dts/imx6s-phytec-pbab01.dts b/arch/arm/dts/imx6s-phytec-pbab01.dts
+index 1cb5a23..516d20f 100644
+--- a/arch/arm/dts/imx6s-phytec-pbab01.dts
++++ b/arch/arm/dts/imx6s-phytec-pbab01.dts
+@@ -10,7 +10,9 @@
+  */
  
- #include "flash-header-phytec-pfla02dl.h"
-+#include <mach/habv4-imx6-gencsf.h>
+ /dts-v1/;
+-
++#ifdef CONFIG_BOOTM_FITIMAGE_PUBKEY
++#include CONFIG_BOOTM_FITIMAGE_PUBKEY
++#endif
+ #include "imx6s-phytec-pfla02.dtsi"
+ #include "imx6qdl-phytec-pbab01.dtsi"
+ 
+diff --git a/arch/arm/dts/imx6ul-phytec-phycore-som-nand.dts b/arch/arm/dts/imx6ul-phytec-phycore-som-nand.dts
+index 67478e2..c8d43c5 100644
+--- a/arch/arm/dts/imx6ul-phytec-phycore-som-nand.dts
++++ b/arch/arm/dts/imx6ul-phytec-phycore-som-nand.dts
+@@ -5,7 +5,9 @@
+  */
+ 
+ /dts-v1/;
+-
++#ifdef CONFIG_BOOTM_FITIMAGE_PUBKEY
++#include CONFIG_BOOTM_FITIMAGE_PUBKEY
++#endif
+ #include <arm/imx6ul.dtsi>
+ #include "imx6ul-phytec-phycore-som.dtsi"
+ #include "imx6ul-phytec-state.dtsi"
+diff --git a/arch/arm/dts/imx6ull-phytec-phycore-som-emmc.dts b/arch/arm/dts/imx6ull-phytec-phycore-som-emmc.dts
+index aa162cc..2201b4c 100644
+--- a/arch/arm/dts/imx6ull-phytec-phycore-som-emmc.dts
++++ b/arch/arm/dts/imx6ull-phytec-phycore-som-emmc.dts
+@@ -5,7 +5,9 @@
+  */
+ 
+ /dts-v1/;
+-
++#ifdef CONFIG_BOOTM_FITIMAGE_PUBKEY
++#include CONFIG_BOOTM_FITIMAGE_PUBKEY
++#endif
+ #include <arm/imx6ull.dtsi>
+ #include "imx6ul-phytec-phycore-som.dtsi"
+ 
+diff --git a/arch/arm/dts/imx6ull-phytec-phycore-som-lc-nand.dts b/arch/arm/dts/imx6ull-phytec-phycore-som-lc-nand.dts
+index e6c588b..9c912df 100644
+--- a/arch/arm/dts/imx6ull-phytec-phycore-som-lc-nand.dts
++++ b/arch/arm/dts/imx6ull-phytec-phycore-som-lc-nand.dts
+@@ -5,7 +5,9 @@
+  */
+ 
+ /dts-v1/;
+-
++#ifdef CONFIG_BOOTM_FITIMAGE_PUBKEY
++#include CONFIG_BOOTM_FITIMAGE_PUBKEY
++#endif
+ #include <arm/imx6ull.dtsi>
+ #include "imx6ul-phytec-phycore-som.dtsi"
+ 
+diff --git a/arch/arm/dts/imx6ull-phytec-phycore-som-nand.dts b/arch/arm/dts/imx6ull-phytec-phycore-som-nand.dts
+index a5fa3e0..224e853 100644
+--- a/arch/arm/dts/imx6ull-phytec-phycore-som-nand.dts
++++ b/arch/arm/dts/imx6ull-phytec-phycore-som-nand.dts
+@@ -5,7 +5,9 @@
+  */
+ 
+ /dts-v1/;
+-
++#ifdef CONFIG_BOOTM_FITIMAGE_PUBKEY
++#include CONFIG_BOOTM_FITIMAGE_PUBKEY
++#endif
+ #include <arm/imx6ull.dtsi>
+ #include "imx6ul-phytec-phycore-som.dtsi"
+ #include "imx6ul-phytec-state.dtsi"
 -- 
 2.7.4
 
