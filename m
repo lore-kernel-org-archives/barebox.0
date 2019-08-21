@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i14f6-0007MX-Tl
- for barebox@lists.infradead.org; Fri, 23 Aug 2019 08:11:10 +0000
-Date: Fri, 23 Aug 2019 10:11:05 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190823081105.znj2f4r7jjx3npfn@pengutronix.de>
-References: <20190822125158.10296-1-s.hauer@pengutronix.de>
- <20190822125158.10296-3-s.hauer@pengutronix.de>
- <CAHQ1cqHb2EtQ_CCFW7PYOyR-yZ86Fx0605gSwsx_fxUojYffKw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAHQ1cqHb2EtQ_CCFW7PYOyR-yZ86Fx0605gSwsx_fxUojYffKw@mail.gmail.com>
+Received: from mickerik.phytec.de ([195.145.39.210])
+ by bombadil.infradead.org with esmtp (Exim 4.92 #3 (Red Hat Linux))
+ id 1i0RUn-0007dI-IK
+ for barebox@lists.infradead.org; Wed, 21 Aug 2019 14:21:58 +0000
+From: Maik Otto <m.otto@phytec.de>
+Date: Wed, 21 Aug 2019 16:21:44 +0200
+Message-Id: <1566397308-450229-1-git-send-email-m.otto@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,53 +14,243 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/8] ARM: aarch64: Fix get_runtime_offset after relocation
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v4 1/5] i.mx6: signed boot: add habv4-imx6-gencsf.h to the
+ flash header of the PHYTEC boards
+To: barebox@lists.infradead.org
 
-On Thu, Aug 22, 2019 at 01:14:23PM -0700, Andrey Smirnov wrote:
-> On Thu, Aug 22, 2019 at 5:52 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> >
-> > get_runtime_offset shall return the offset between the address we are
-> > running at and the address we are linked at. This value obviously
-> > changes when we relocate the binary. cf3b09737b tried to avoid using
-> > R_AARCH64_RELATIVE relocations, but in fact this is exactly what the
-> > function needs to work. Consider barebox starting at 0x10000000
-> > when we are linked at 0x0 then get_runtime_offset() should return
-> > 0x10000000 before relocate_to_current_adr(), but afterwards it should
-> > return 0x0.
-> >
-> > This patch brings back the previously removed "a" flag. Since gcc5
-> > doesn't put the values of R_AARCH64_RELATIVE fixup'd relocations
-> > into the binary but zeroes instead, we help ourselves by basing
-> > get_runtime_offset on an address which actually is zero. With
-> > CONFIG_RELOCATABLE=y the binary is always linked to 0x0, so _text
-> > is initially zero.
-> >
-> 
-> This paragraph might be worth putting in the comment as well to
-> document some cleverness that is still required to deal with GCC5.
+the habv4-imx6-gencsf.h is necessary in the board flash header to build
+a signed barebox
 
-Makes sence. Added this:
+Signed-off-by: Maik Otto <m.otto@phytec.de>
+---
+Changes in v4:
+    - nothing
+Changes in v3:
+    - nothing
+Changes in v2:
+    - no changes, was Patch 3/4 in v1
+---
+ .../phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib-1bank.imxcfg       | 1 +
+ arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib.imxcfg | 1 +
+ arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-2gib.imxcfg | 1 +
+ arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063-256mb.imxcfg | 1 +
+ arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063-512mb.imxcfg | 1 +
+ arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058-1gib.imxcfg  | 1 +
+ arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058-2gib.imxcfg  | 1 +
+ .../phytec-som-imx6/flash-header-phytec-pcm058dl-1gib-32bit.imxcfg      | 1 +
+ .../arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib.imxcfg | 1 +
+ .../boards/phytec-som-imx6/flash-header-phytec-pcm058dl-256mb.imxcfg    | 2 ++
+ .../arm/boards/phytec-som-imx6/flash-header-phytec-pcm058qp-1gib.imxcfg | 1 +
+ .../boards/phytec-som-imx6/flash-header-phytec-pfla02-1gib-1bank.imxcfg | 1 +
+ arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-1gib.imxcfg  | 1 +
+ arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-2gib.imxcfg  | 1 +
+ arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-4gib.imxcfg  | 1 +
+ .../phytec-som-imx6/flash-header-phytec-pfla02-512mb-1bank.imxcfg       | 1 +
+ .../phytec-som-imx6/flash-header-phytec-pfla02dl-1gib-1bank.imxcfg      | 1 +
+ .../arm/boards/phytec-som-imx6/flash-header-phytec-pfla02dl-1gib.imxcfg | 1 +
+ .../phytec-som-imx6/flash-header-phytec-pfla02s-128mb-1bank.imxcfg      | 1 +
+ .../phytec-som-imx6/flash-header-phytec-pfla02s-256mb-1bank.imxcfg      | 1 +
+ .../phytec-som-imx6/flash-header-phytec-pfla02s-512mb-1bank.imxcfg      | 1 +
+ 21 files changed, 22 insertions(+)
 
-/*
- * With older gcc versions (gcc5) function pointers will not be filled
- * into the binary during compile time and instead rely on relocation
- * during runtime. In the binary we'll always have 0x0 here. We deliberately
- * use _text here since that is 0x0 and is correct without relocation.
- */
-
-Sascha
-
+diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib-1bank.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib-1bank.imxcfg
+index 62a24ed..bb4fbeb 100644
+--- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib-1bank.imxcfg
++++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib-1bank.imxcfg
+@@ -7,3 +7,4 @@
+ 	wm 32 0x021b0000 0x831a0000
+ 
+ #include "flash-header-phytec-pcaaxl3.h"
++#include <mach/habv4-imx6-gencsf.h>
+diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib.imxcfg
+index bab726d..990c34b 100644
+--- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib.imxcfg
++++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib.imxcfg
+@@ -7,3 +7,4 @@
+ 	wm 32 0x021b0000 0xc21a0000
+ 
+ #include "flash-header-phytec-pcaaxl3.h"
++#include <mach/habv4-imx6-gencsf.h>
+diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-2gib.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-2gib.imxcfg
+index 512f6cb..7c56c24 100644
+--- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-2gib.imxcfg
++++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcaaxl3-2gib.imxcfg
+@@ -7,3 +7,4 @@
+ 	wm 32 0x021b0000 0xc31a0000
+ 
+ #include "flash-header-phytec-pcaaxl3.h"
++#include <mach/habv4-imx6-gencsf.h>
+diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063-256mb.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063-256mb.imxcfg
+index 4a827e4..b93e81f 100644
+--- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063-256mb.imxcfg
++++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063-256mb.imxcfg
+@@ -7,3 +7,4 @@
+ 	wm 32 0x021B0000 0x83180000
+ 
+ #include "flash-header-phytec-pcl063.h"
++#include <mach/habv4-imx6-gencsf.h>
+diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063-512mb.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063-512mb.imxcfg
+index c4122d2..26998c3 100644
+--- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063-512mb.imxcfg
++++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063-512mb.imxcfg
+@@ -7,3 +7,4 @@
+ 	wm 32 0x021B0000 0x84180000
+ 
+ #include "flash-header-phytec-pcl063.h"
++#include <mach/habv4-imx6-gencsf.h>
+diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058-1gib.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058-1gib.imxcfg
+index 5df46b9..0042909 100644
+--- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058-1gib.imxcfg
++++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058-1gib.imxcfg
+@@ -6,3 +6,4 @@
+ 	wm 32 0x021b0000 0x831A0000
+ 
+ #include "flash-header-phytec-pcm058.h"
++#include <mach/habv4-imx6-gencsf.h>
+diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058-2gib.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058-2gib.imxcfg
+index 54c9e41..8a09036 100644
+--- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058-2gib.imxcfg
++++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058-2gib.imxcfg
+@@ -6,3 +6,4 @@
+ 	wm 32 0x021b0000 0x841A0000
+ 
+ #include "flash-header-phytec-pcm058.h"
++#include <mach/habv4-imx6-gencsf.h>
+diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib-32bit.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib-32bit.imxcfg
+index bf95d0f..c949f98 100644
+--- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib-32bit.imxcfg
++++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib-32bit.imxcfg
+@@ -6,3 +6,4 @@
+ 	wm 32 0x021b0000 0x84190000
+ 
+ #include "flash-header-phytec-pcm058dl.h"
++#include <mach/habv4-imx6-gencsf.h>
+diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib.imxcfg
+index f047253..3ac7e4e 100644
+--- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib.imxcfg
++++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-1gib.imxcfg
+@@ -6,3 +6,4 @@
+ 	wm 32 0x021b0000 0x831A0000
+ 
+ #include "flash-header-phytec-pcm058dl.h"
++#include <mach/habv4-imx6-gencsf.h>
+diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-256mb.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-256mb.imxcfg
+index bf50190..bb8cdc9 100644
+--- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-256mb.imxcfg
++++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-256mb.imxcfg
+@@ -6,3 +6,5 @@
+ 	wm 32 0x021b0000 0x82190000
+ 
+ #include "flash-header-phytec-pcm058dl.h"
++#include <mach/habv4-imx6-gencsf.h>
++
+diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058qp-1gib.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058qp-1gib.imxcfg
+index bf85f0a..3ed5b34 100644
+--- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058qp-1gib.imxcfg
++++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058qp-1gib.imxcfg
+@@ -6,3 +6,4 @@
+ 	wm 32 0x021b0000 0x831A0000
+ 
+ #include "flash-header-phytec-pcm058qp.h"
++#include <mach/habv4-imx6-gencsf.h>
+diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-1gib-1bank.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-1gib-1bank.imxcfg
+index 75dc982..02f3fa7 100644
+--- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-1gib-1bank.imxcfg
++++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-1gib-1bank.imxcfg
+@@ -6,3 +6,4 @@
+ 	wm 32 0x021b0000 0x831a0000
+ 
+ #include "flash-header-phytec-pfla02.h"
++#include <mach/habv4-imx6-gencsf.h>
+diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-1gib.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-1gib.imxcfg
+index 1f1fbe5..dd142a2 100644
+--- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-1gib.imxcfg
++++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-1gib.imxcfg
+@@ -6,3 +6,4 @@
+ 	wm 32 0x021b0000 0xc21a0000
+ 
+ #include "flash-header-phytec-pfla02.h"
++#include <mach/habv4-imx6-gencsf.h>
+diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-2gib.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-2gib.imxcfg
+index aa01c05..3f9d11d 100644
+--- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-2gib.imxcfg
++++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-2gib.imxcfg
+@@ -6,3 +6,4 @@
+ 	wm 32 0x021b0000 0xC31A0000
+ 
+ #include "flash-header-phytec-pfla02.h"
++#include <mach/habv4-imx6-gencsf.h>
+diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-4gib.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-4gib.imxcfg
+index c8d33cf..fdb1d15 100644
+--- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-4gib.imxcfg
++++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-4gib.imxcfg
+@@ -6,3 +6,4 @@
+ 	wm 32 0x021b0000 0xC41A0000
+ 
+ #include "flash-header-phytec-pfla02.h"
++#include <mach/habv4-imx6-gencsf.h>
+diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-512mb-1bank.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-512mb-1bank.imxcfg
+index d6bbe1f..f4f150e 100644
+--- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-512mb-1bank.imxcfg
++++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02-512mb-1bank.imxcfg
+@@ -6,3 +6,4 @@
+ 	wm 32 0x021b0000 0x821a0000
+ 
+ #include "flash-header-phytec-pfla02.h"
++#include <mach/habv4-imx6-gencsf.h>
+diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02dl-1gib-1bank.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02dl-1gib-1bank.imxcfg
+index 7b64e5d..b2a0521 100644
+--- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02dl-1gib-1bank.imxcfg
++++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02dl-1gib-1bank.imxcfg
+@@ -6,3 +6,4 @@
+ 	wm 32 0x021b0000 0x831a0000
+ 
+ #include "flash-header-phytec-pfla02dl.h"
++#include <mach/habv4-imx6-gencsf.h>
+diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02dl-1gib.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02dl-1gib.imxcfg
+index 04c489d..e03e25e 100644
+--- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02dl-1gib.imxcfg
++++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02dl-1gib.imxcfg
+@@ -6,3 +6,4 @@
+ 	wm 32 0x021b0000 0xc21a0000
+ 
+ #include "flash-header-phytec-pfla02dl.h"
++#include <mach/habv4-imx6-gencsf.h>
+diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-128mb-1bank.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-128mb-1bank.imxcfg
+index ebe5a96..58c1576 100644
+--- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-128mb-1bank.imxcfg
++++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-128mb-1bank.imxcfg
+@@ -6,3 +6,4 @@
+         wm 32 0x021b0000 0x82180000
+ 
+ #include "flash-header-phytec-pfla02dl.h"
++#include <mach/habv4-imx6-gencsf.h>
+diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-256mb-1bank.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-256mb-1bank.imxcfg
+index 5f1585a..9975e21 100644
+--- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-256mb-1bank.imxcfg
++++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-256mb-1bank.imxcfg
+@@ -6,3 +6,4 @@
+         wm 32 0x021b0000 0x82190000
+ 
+ #include "flash-header-phytec-pfla02dl.h"
++#include <mach/habv4-imx6-gencsf.h>
+diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-512mb-1bank.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-512mb-1bank.imxcfg
+index 5ff3ec6..edc396b 100644
+--- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-512mb-1bank.imxcfg
++++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pfla02s-512mb-1bank.imxcfg
+@@ -6,3 +6,4 @@
+ 	wm 32 0x021b0000 0x83190000
+ 
+ #include "flash-header-phytec-pfla02dl.h"
++#include <mach/habv4-imx6-gencsf.h>
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.7.4
+
 
 _______________________________________________
 barebox mailing list
