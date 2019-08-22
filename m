@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from relay12.mail.gandi.net ([217.70.178.232])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i0g0T-0002yN-Ft
- for barebox@lists.infradead.org; Thu, 22 Aug 2019 05:51:35 +0000
+ id 1i0g0T-0002yH-Fp
+ for barebox@lists.infradead.org; Thu, 22 Aug 2019 05:51:36 +0000
 From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Thu, 22 Aug 2019 07:51:05 +0200
-Message-Id: <20190822055114.931-3-ahmad@a3f.at>
+Date: Thu, 22 Aug 2019 07:51:04 +0200
+Message-Id: <20190822055114.931-2-ahmad@a3f.at>
 In-Reply-To: <20190822055114.931-1-ahmad@a3f.at>
 References: <20190822055114.931-1-ahmad@a3f.at>
 MIME-Version: 1.0
@@ -21,32 +21,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/11] ratp: fix use of %hu for printing int
+Subject: [PATCH 01/11] linux/kbuild.h: sync with upstream
 To: barebox@lists.infradead.org
 Cc: afa@pengutronix.de
 
-While each of path_size and data_size is 16 bit in size, their sum may
-exceed this. Also the type of the resulting expression is an int, thus
-change the format specifier accordingly.
+Clang doesn't like literal ASCII in the listing.
+Copy over the Linux v5.2 state of the file to fix this.
 
 Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- common/ratp/mw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/kbuild.h | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/common/ratp/mw.c b/common/ratp/mw.c
-index 55e79bbaf08b..772910b39d1b 100644
---- a/common/ratp/mw.c
-+++ b/common/ratp/mw.c
-@@ -125,7 +125,7 @@ static int ratp_cmd_mw(const struct ratp_bb *req, int req_len,
+diff --git a/include/linux/kbuild.h b/include/linux/kbuild.h
+index 359d4a8682a1..e7be517aaaf6 100644
+--- a/include/linux/kbuild.h
++++ b/include/linux/kbuild.h
+@@ -1,15 +1,16 @@
++/* SPDX-License-Identifier: GPL-2.0 */
+ #ifndef __LINUX_KBUILD_H
+ #define __LINUX_KBUILD_H
  
- 	/* Validate buffer size */
- 	if (buffer_size < (path_size + data_size)) {
--		pr_err("ignored: size mismatch (%d < %hu): path or data not be fully given\n",
-+		pr_err("ignored: size mismatch (%d < %u): path or data not be fully given\n",
- 		       req_len, path_size + data_size);
- 		ret = -EINVAL;
- 		goto out;
+ #define DEFINE(sym, val) \
+-	asm volatile("\n->" #sym " %0 " #val : : "i" (val))
++	asm volatile("\n.ascii \"->" #sym " %0 " #val "\"" : : "i" (val))
+ 
+-#define BLANK() asm volatile("\n->" : : )
++#define BLANK() asm volatile("\n.ascii \"->\"" : : )
+ 
+ #define OFFSET(sym, str, mem) \
+ 	DEFINE(sym, offsetof(struct str, mem))
+ 
+ #define COMMENT(x) \
+-	asm volatile("\n->#" x)
++	asm volatile("\n.ascii \"->#" x "\"")
+ 
+ #endif
 -- 
 2.20.1
 
