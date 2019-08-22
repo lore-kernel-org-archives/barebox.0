@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from relay12.mail.gandi.net ([217.70.178.232])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i0g0V-0002yG-5L
+ id 1i0g0X-00030c-A7
  for barebox@lists.infradead.org; Thu, 22 Aug 2019 05:51:38 +0000
 From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Thu, 22 Aug 2019 07:51:10 +0200
-Message-Id: <20190822055114.931-8-ahmad@a3f.at>
+Date: Thu, 22 Aug 2019 07:51:13 +0200
+Message-Id: <20190822055114.931-11-ahmad@a3f.at>
 In-Reply-To: <20190822055114.931-1-ahmad@a3f.at>
 References: <20190822055114.931-1-ahmad@a3f.at>
 MIME-Version: 1.0
@@ -21,41 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/11] nvme: use 64 bit types for timeouts even on 32 bit
- systems
+Subject: [PATCH 10/11] gui: png_lode: fix freeing of uninitialized pointer
 To: barebox@lists.infradead.org
 Cc: afa@pengutronix.de
 
-The SHUTDOWN_TIMEOUT value of 5e9 would already exceed the range of
-unsigned long on a 32-bit system. Fix this by using uint64_t for
-all time-holding variables.
+If either calloc or png_uncompress_init fails, free(png) will free the
+uninitialized png pointer. Avoid this and while at it postpone the
+img allocation till after the early exit.
 
 Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- drivers/nvme/host/core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ lib/gui/png_lode.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index e0984708b4d2..d2c2b6f30630 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -94,7 +94,7 @@ EXPORT_SYMBOL_GPL(nvme_set_queue_count);
- static int nvme_wait_ready(struct nvme_ctrl *ctrl, u64 cap, bool enabled)
- {
- 	uint64_t start = get_time_ns();
--	unsigned long timeout =
-+	uint64_t timeout =
- 		((NVME_CAP_TIMEOUT(cap) + 1) * HZ / 2);
- 	u32 csts, bit = enabled ? NVME_CSTS_RDY : 0;
+diff --git a/lib/gui/png_lode.c b/lib/gui/png_lode.c
+index 477704d9768c..e30db0f853b3 100644
+--- a/lib/gui/png_lode.c
++++ b/lib/gui/png_lode.c
+@@ -46,15 +46,16 @@ struct image *png_open(char *inbuf, int insize)
+ 	LodePNGState state;
  	int ret;
-@@ -496,7 +496,7 @@ EXPORT_SYMBOL_GPL(nvme_enable_ctrl);
- int nvme_shutdown_ctrl(struct nvme_ctrl *ctrl)
- {
- 	uint64_t start = get_time_ns();
--	unsigned long timeout = SHUTDOWN_TIMEOUT;
-+	uint64_t timeout = SHUTDOWN_TIMEOUT;
- 	u32 csts;
- 	int ret;
+ 	unsigned error;
+-	struct image *img = calloc(1, sizeof(struct image));
+-	unsigned char *png;
+-
+-	if (!img)
+-		return ERR_PTR(-ENOMEM);
++	struct image *img;
++	unsigned char *png = NULL;
+ 
+ 	ret = png_uncompress_init();
+ 	if (ret)
+-		goto err;
++		return ERR_PTR(ret);
++
++	img = calloc(1, sizeof(struct image));
++	if (!img)
++		return ERR_PTR(-ENOMEM);
+ 
+ 	lodepng_state_init(&state);
  
 -- 
 2.20.1
