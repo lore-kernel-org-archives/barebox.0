@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from relay12.mail.gandi.net ([217.70.178.232])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i0g0V-0002yO-5M
+ id 1i0g0V-0002yL-54
  for barebox@lists.infradead.org; Thu, 22 Aug 2019 05:51:38 +0000
 From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Thu, 22 Aug 2019 07:51:11 +0200
-Message-Id: <20190822055114.931-9-ahmad@a3f.at>
+Date: Thu, 22 Aug 2019 07:51:07 +0200
+Message-Id: <20190822055114.931-5-ahmad@a3f.at>
 In-Reply-To: <20190822055114.931-1-ahmad@a3f.at>
 References: <20190822055114.931-1-ahmad@a3f.at>
 MIME-Version: 1.0
@@ -21,46 +21,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/11] usb: gadget: fsl_udc: remove always-true null pointer
- checks
+Subject: [PATCH 04/11] i2c-mux-pca954x: remove use of uninitialized variable
 To: barebox@lists.infradead.org
 Cc: afa@pengutronix.de
 
-struct fsl_ep's name member can never be NULL because it is a character
-array. Remove these superfluous null pointer checks.
+force isn't used except to print its uninitialized value in an error
+path. Drop it.
 
 Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- drivers/usb/gadget/fsl_udc.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ drivers/i2c/muxes/i2c-mux-pca954x.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/gadget/fsl_udc.c b/drivers/usb/gadget/fsl_udc.c
-index a47ba20f469f..a44c7abc018b 100644
---- a/drivers/usb/gadget/fsl_udc.c
-+++ b/drivers/usb/gadget/fsl_udc.c
-@@ -1422,8 +1422,7 @@ static void udc_reset_ep_queue(struct fsl_udc *udc, u8 pipe)
+diff --git a/drivers/i2c/muxes/i2c-mux-pca954x.c b/drivers/i2c/muxes/i2c-mux-pca954x.c
+index d397e803b1e7..bbc4870c3eca 100644
+--- a/drivers/i2c/muxes/i2c-mux-pca954x.c
++++ b/drivers/i2c/muxes/i2c-mux-pca954x.c
+@@ -177,7 +177,7 @@ static int pca954x_probe(struct device_d *dev)
  {
- 	struct fsl_ep *ep = get_ep_by_pipe(udc, pipe);
- 
--	if (ep->name)
--		nuke(ep, -ESHUTDOWN);
-+	nuke(ep, -ESHUTDOWN);
- }
- 
- /* Clear up all ep queues */
-@@ -1914,12 +1913,6 @@ static void dtd_complete_irq(struct fsl_udc *udc)
- 
- 		curr_ep = get_ep_by_pipe(udc, i);
- 
--		/* If the ep is configured */
--		if (curr_ep->name == NULL) {
--			WARNING("Invalid EP?");
--			continue;
--		}
--
- 		/* process the req queue until an uncomplete request */
- 		list_for_each_entry_safe(curr_req, temp_req, &curr_ep->queue,
- 				queue) {
+ 	struct i2c_client *client = to_i2c_client(dev);
+ 	struct i2c_adapter *adap = to_i2c_adapter(client->dev.parent);
+-	int num, force;
++	int num;
+ 	struct pca954x *data;
+ 	uintptr_t tmp;
+ 	int ret = -ENODEV;
+@@ -220,8 +220,8 @@ static int pca954x_probe(struct device_d *dev)
+ 		if (data->virt_adaps[num] == NULL) {
+ 			ret = -ENODEV;
+ 			dev_err(&client->dev,
+-				"failed to register multiplexed adapter"
+-				" %d as bus %d\n", num, force);
++				"failed to register multiplexed adapter%d\n",
++				num);
+ 			goto virt_reg_failed;
+ 		}
+ 	}
 -- 
 2.20.1
 
