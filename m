@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i14Q3-0006CN-8K
- for barebox@lists.infradead.org; Fri, 23 Aug 2019 07:55:36 +0000
-Date: Fri, 23 Aug 2019 09:55:33 +0200
+ id 1i0mZP-00034K-MM
+ for barebox@lists.infradead.org; Thu, 22 Aug 2019 12:52:05 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190823075533.hn2j46btgs2dgwv3@pengutronix.de>
-References: <20190822065408.29279-1-a.fatoum@pengutronix.de>
+Date: Thu, 22 Aug 2019 14:51:50 +0200
+Message-Id: <20190822125158.10296-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190822065408.29279-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,31 +19,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] startup: allow ctrl+c abort during boot sequence
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/8] i.MX8 EVK patches
+To: Barebox List <barebox@lists.infradead.org>
 
-On Thu, Aug 22, 2019 at 08:54:05AM +0200, Ahmad Fatoum wrote:
-> At the moment e.g. a wait for an ARP response during net boot can only
-> aborted if the auto boot countdown was aborted. Otherwise ctrl+c is
-> without effect. For better user experience allow code querying for ctrl+c
-> to see it even if barebox had not dropped into a shell.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  common/startup.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-
-Applied, thanks
+Here are several patches for ARM aarch64 in general and more
+specifically for the i.MX8 EVK which currently is not bootable.
+Currently relocation on ARM aarch64 doesn't work correctly and
+the i.MX8 EVK code exploits some of the oddities for its boot
+process. This series aims to fix that up.
 
 Sascha
 
+Sascha Hauer (8):
+  ARM: aarch64: Fixup relocation table for the second relocation
+  ARM: aarch64: Fix get_runtime_offset after relocation
+  pbl: Move piggy verification into pbl_barebox_uncompress()
+  ARM: i.MX: imx8-ddrc: Remove debug code
+  ARM: nxp-imx8mq-evk: Remove duplicate call to
+    imx8mq_cpu_lowlevel_init()
+  ARM: nxp-imx8mq-evk: Replace trampoline
+  ARM: i.MX8: Fix piggydata loading
+  ARM: nxp-imx8mq-evk: Update comments
+
+ arch/arm/boards/nxp-imx8mq-evk/Makefile     |  2 +-
+ arch/arm/boards/nxp-imx8mq-evk/lowlevel.c   | 38 +++++----------------
+ arch/arm/boards/nxp-imx8mq-evk/trampoline.S | 10 ------
+ arch/arm/cpu/common.c                       |  2 ++
+ arch/arm/cpu/uncompress.c                   | 17 +--------
+ arch/arm/lib64/runtime-offset.S             | 18 ++--------
+ arch/arm/mach-imx/imx8-ddrc.c               | 20 ++---------
+ drivers/mci/imx-esdhc-pbl.c                 | 21 +++++++-----
+ pbl/decomp.c                                | 17 +++++++++
+ 9 files changed, 48 insertions(+), 97 deletions(-)
+ delete mode 100644 arch/arm/boards/nxp-imx8mq-evk/trampoline.S
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
