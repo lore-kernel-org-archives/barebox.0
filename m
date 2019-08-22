@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from relay5-d.mail.gandi.net ([217.70.183.197])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i13sJ-0004ZL-Mc
- for barebox@lists.infradead.org; Fri, 23 Aug 2019 07:20:45 +0000
-Date: Fri, 23 Aug 2019 09:20:40 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190823072040.eoaoz24weqdskqs4@pengutronix.de>
-References: <20190822055114.931-1-ahmad@a3f.at>
+ id 1i0gwD-0004JJ-1X
+ for barebox@lists.infradead.org; Thu, 22 Aug 2019 06:51:17 +0000
+Received: from geraet.fritz.box (39-236-142-46.pool.kielnet.net
+ [46.142.236.39]) (Authenticated sender: ahmad@a3f.at)
+ by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id C57F51C000A
+ for <barebox@lists.infradead.org>; Thu, 22 Aug 2019 06:51:10 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Thu, 22 Aug 2019 08:50:59 +0200
+Message-Id: <20190822065102.22024-1-ahmad@a3f.at>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190822055114.931-1-ahmad@a3f.at>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,39 +23,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/11] treewide: fix some ARCH=arm clang warnings
-To: Ahmad Fatoum <ahmad@a3f.at>
-Cc: barebox@lists.infradead.org, afa@pengutronix.de
+Subject: [PATCH RFC 0/3] fs: tftp: don't use cached dentries
+To: barebox@lists.infradead.org
 
-On Thu, Aug 22, 2019 at 07:51:03AM +0200, Ahmad Fatoum wrote:
-> I had tried to build imx_v7_defconfig with clang and ran into some
-> warnings. This series fixes them. Building for arm32 is still not
-> possible though, because clang explicitly doesn't support mixing C and
-> inline assembly in naked functions. (In GCC it is undefined behavior,
-> but happens to usually work for us).
-> 
-> Ahmad Fatoum (11):
->   linux/kbuild.h: sync with upstream
->   ratp: fix use of %hu for printing int
->   complete: remove unused variable
->   i2c-mux-pca954x: remove use of uninitialized variable
->   net: phy: mv88e6xxx: remove duplicate member in struct initializer
->   smc911x: fix inverted poll-for-ready
->   nvme: use 64 bit types for timeouts even on 32 bit systems
->   usb: gadget: fsl_udc: remove always-true null pointer checks
->   commands: mmc_extcsd: describe missing bit
->   gui: png_lode: fix freeing of uninitialized pointer
->   fs: fat: fix use of wrong enumeration type
+I often mistype the name of files I place into the TFTP server's root
+directory. When barebox does a TFTP lookup for the correct file name and
+doesn't find it, it refuses to look it up again. I'd argue the better
+user experience for TFTP in particular would be to not use the dcache
+altogether. Not sure if other networked file systems should follow suit,
+as staleness means faster acceses, but lets do this for TFTP now.
 
-Applied, thanks
+The file is still placed and invalidated from the cache though, but
+compared to the network access before, it's negligible overhead.
 
-Sascha
+Ahmad Fatoum (3):
+  fs: tftp: remove duplicate header
+  fs: provide no_revalidate_d_ops for network file systems
+  fs: tftp: don't maintain tftp dentries in dcache
+
+ fs/fs.c                | 9 +++++++++
+ fs/tftp.c              | 2 +-
+ include/linux/dcache.h | 2 ++
+ 3 files changed, 12 insertions(+), 1 deletion(-)
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
