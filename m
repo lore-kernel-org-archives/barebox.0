@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from relay11.mail.gandi.net ([217.70.178.231])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i0gRu-0005Zq-4N
- for barebox@lists.infradead.org; Thu, 22 Aug 2019 06:19:55 +0000
+ id 1i0gRu-0005Zp-4N
+ for barebox@lists.infradead.org; Thu, 22 Aug 2019 06:19:56 +0000
 From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Thu, 22 Aug 2019 08:19:40 +0200
-Message-Id: <20190822061941.6093-5-ahmad@a3f.at>
+Date: Thu, 22 Aug 2019 08:19:37 +0200
+Message-Id: <20190822061941.6093-2-ahmad@a3f.at>
 In-Reply-To: <20190822061941.6093-1-ahmad@a3f.at>
 References: <20190822061941.6093-1-ahmad@a3f.at>
 MIME-Version: 1.0
@@ -21,58 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] sandbox: support Address and UndefinedBehavior sanitizers
+Subject: [PATCH 1/5] sandbox: include header to provide missing prototype
 To: barebox@lists.infradead.org
 Cc: afa@pengutronix.de
 
-For the hosted implementation, we just need to pass the appropriate
-options at compile and link time. No further arch-specific
-code needed.
+sandbox_add_device lacks a prototype. Include the appropriate header to
+fix this.
 
 Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- arch/sandbox/Kconfig  |  2 ++
- arch/sandbox/Makefile | 13 ++++++++++++-
- 2 files changed, 14 insertions(+), 1 deletion(-)
+ arch/sandbox/board/devices.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/sandbox/Kconfig b/arch/sandbox/Kconfig
-index 5227cb624f2b..254ae9a5d30c 100644
---- a/arch/sandbox/Kconfig
-+++ b/arch/sandbox/Kconfig
-@@ -2,6 +2,8 @@ config SANDBOX
- 	bool
- 	select OFTREE
- 	select GPIOLIB
-+	select ARCH_HAS_UBSAN_SANITIZE_ALL
-+	select HAVE_ARCH_KASAN
- 	default y
+diff --git a/arch/sandbox/board/devices.c b/arch/sandbox/board/devices.c
+index 242a0d718e91..72e62552a3b8 100644
+--- a/arch/sandbox/board/devices.c
++++ b/arch/sandbox/board/devices.c
+@@ -8,6 +8,7 @@
+ #include <driver.h>
+ #include <mach/linux.h>
+ #include <init.h>
++#include <mach/linux.h>
  
- config ARCH_TEXT_BASE
-diff --git a/arch/sandbox/Makefile b/arch/sandbox/Makefile
-index 85c70b5e8059..1504b2390ddd 100644
---- a/arch/sandbox/Makefile
-+++ b/arch/sandbox/Makefile
-@@ -45,9 +45,20 @@ ifeq ($(CONFIG_GPIO_LIBFTDI1),y)
- FTDI1_LIBS := $(shell pkg-config libftdi1 --libs)
- endif
- 
-+ifeq ($(CONFIG_KASAN),y)
-+SANITIZERS += -fsanitize=address
-+endif
-+
-+ifeq ($(CONFIG_UBSAN),y)
-+SANITIZERS += $(CFLAGS_UBSAN)
-+endif
-+
-+CPPFLAGS += $(SANITIZERS)
-+
- cmd_barebox__ = $(CC) -o $@ -Wl,-T,$(barebox-lds) \
- 	-Wl,--start-group $(barebox-common) -Wl,--end-group \
--	-lrt -lpthread $(SDL_LIBS) $(FTDI1_LIBS)
-+	-lrt -lpthread $(SDL_LIBS) $(FTDI1_LIBS) \
-+	$(SANITIZERS)
- 
- common-y += $(BOARD) arch/sandbox/os/
+ static LIST_HEAD(sandbox_device_list);
  
 -- 
 2.20.1
