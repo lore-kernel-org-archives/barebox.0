@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i0gz8-0005Jd-ES
+ id 1i0gz9-0005Jy-07
  for barebox@lists.infradead.org; Thu, 22 Aug 2019 06:54:16 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 22 Aug 2019 08:54:06 +0200
-Message-Id: <20190822065408.29279-2-a.fatoum@pengutronix.de>
+Date: Thu, 22 Aug 2019 08:54:08 +0200
+Message-Id: <20190822065408.29279-4-a.fatoum@pengutronix.de>
 In-Reply-To: <20190822065408.29279-1-a.fatoum@pengutronix.de>
 References: <20190822065408.29279-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,54 +21,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] libfile: have write_full return a descriptive error code
+Subject: [PATCH 4/4] fs: omap4_usbbootfs: remove commented out code
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-So far (p|)write_full has been returning -1 on error.
-Some callers of write_full like imx_bbu_write_device print out the
-function's return value on error, effectively rendering every printed
-error message to be due to EPERM.
-
-On the other hand, some callers like do_memcpy, use it correctly and
-use errno. Sidestep the issue by having the function return -errno on
-errors as well.
+The code has been sitting commented out in version control for close
+to 7 years now, drop it.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- lib/libfile.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/omap4_usbbootfs.c | 41 -----------------------------------------
+ 1 file changed, 41 deletions(-)
 
-diff --git a/lib/libfile.c b/lib/libfile.c
-index b42753c2b5ea..f6c588d7373f 100644
---- a/lib/libfile.c
-+++ b/lib/libfile.c
-@@ -38,7 +38,7 @@ int pwrite_full(int fd, const void *buf, size_t size, loff_t offset)
- 		now = pwrite(fd, buf, size, offset);
- 		if (now == 0) {
- 			errno = ENOSPC;
--			return -1;
-+			return -errno;
- 		}
- 		if (now < 0)
- 			return now;
-@@ -66,7 +66,7 @@ int write_full(int fd, const void *buf, size_t size)
- 		now = write(fd, buf, size);
- 		if (now == 0) {
- 			errno = ENOSPC;
--			return -1;
-+			return -errno;
- 		}
- 		if (now < 0)
- 			return now;
-@@ -194,6 +194,7 @@ again:
- 	buf = calloc(read_size + 1, 1);
- 	if (!buf) {
- 		ret = -ENOMEM;
-+		errno = ENOMEM;
- 		goto err_out;
- 	}
+diff --git a/fs/omap4_usbbootfs.c b/fs/omap4_usbbootfs.c
+index 169cde7ddb0f..4f159210d1e5 100644
+--- a/fs/omap4_usbbootfs.c
++++ b/fs/omap4_usbbootfs.c
+@@ -29,39 +29,6 @@ struct file_priv {
+ 	s32 id;
+ 	u32 size;
+ };
+-/*
+-static int omap4_usbbootfs_create(
+-	struct device_d *dev, const char *pathname, mode_t mode)
+-{
+-	return -ENOSYS;
+-}
+-
+-static int omap4_usbbootfs_unlink(struct device_d *dev, const char *pathname)
+-{
+-	return -ENOSYS;
+-}
+-
+-static int omap4_usbbootfs_mkdir(struct device_d *dev, const char *pathname)
+-{
+-	return -ENOSYS;
+-}
+-
+-static int omap4_usbbootfs_rmdir(struct device_d *dev, const char *pathname)
+-{
+-	return -ENOSYS;
+-}
+-
+-static int omap4_usbbootfs_write(
+-	struct device_d *_dev, FILE *f, const void *inbuf, size_t size)
+-{
+-	return -ENOSYS;
+-}
+-
+-static int omap4_usbbootfs_truncate(struct device_d *dev, FILE *f, loff_t size)
+-{
+-	return -ENOSYS;
+-}
+-*/
  
+ static struct file_priv *omap4_usbbootfs_do_open(
+ 	struct device_d *dev, int accmode, const char *filename)
+@@ -187,14 +154,6 @@ static struct fs_driver_d omap4_usbbootfs_driver = {
+ 	.read    = omap4_usbbootfs_read,
+ 	.opendir = omap4_usbbootfs_opendir,
+ 	.stat    = omap4_usbbootfs_stat,
+-/*
+-	.create	= omap4_usbbootfs_create,
+-	.unlink	= omap4_usbbootfs_unlink,
+-	.mkdir	= omap4_usbbootfs_mkdir,
+-	.rmdir	= omap4_usbbootfs_rmdir,
+-	.write	= omap4_usbbootfs_write,
+-	.truncate= omap4_usbbootfs_truncate,
+-*/
+ 	.flags	 = 0,
+ 	.drv = {
+ 		.probe	= omap4_usbbootfs_probe,
 -- 
 2.20.1
 
