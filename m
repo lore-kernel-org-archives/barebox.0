@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i0gz9-0005Jy-07
- for barebox@lists.infradead.org; Thu, 22 Aug 2019 06:54:16 +0000
+ id 1i0gzF-0005RN-5e
+ for barebox@lists.infradead.org; Thu, 22 Aug 2019 06:54:22 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 22 Aug 2019 08:54:08 +0200
-Message-Id: <20190822065408.29279-4-a.fatoum@pengutronix.de>
+Date: Thu, 22 Aug 2019 08:54:07 +0200
+Message-Id: <20190822065408.29279-3-a.fatoum@pengutronix.de>
 In-Reply-To: <20190822065408.29279-1-a.fatoum@pengutronix.de>
 References: <20190822065408.29279-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,77 +21,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] fs: omap4_usbbootfs: remove commented out code
+Subject: [PATCH 3/4] ARM: i.MX: bbu: early exit when partition too small
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The code has been sitting commented out in version control for close
-to 7 years now, drop it.
+So far, writing a barebox image exceeding the partition size aborts with
+EPERM as truncate isn't implemented:
+
+  ERROR: writing to /dev/flash-boot.barebox failed with Operation
+  not permitted
+  update failed
+  ERROR: fastboot: update barebox: Operation not permitted
+
+This is unfortunate because by the time the truncation fails, erasing
+the partition had already occurred. Avoid this by checking prior to the
+pwrite_all whether the file to be written is big enough. This is valid
+here because barebox update wouldn't be called on a regular file.
+
+While at it, present callers with a more helpful ENOSPC error.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- fs/omap4_usbbootfs.c | 41 -----------------------------------------
- 1 file changed, 41 deletions(-)
+ arch/arm/mach-imx/imx-bbu-internal.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/fs/omap4_usbbootfs.c b/fs/omap4_usbbootfs.c
-index 169cde7ddb0f..4f159210d1e5 100644
---- a/fs/omap4_usbbootfs.c
-+++ b/fs/omap4_usbbootfs.c
-@@ -29,39 +29,6 @@ struct file_priv {
- 	s32 id;
- 	u32 size;
- };
--/*
--static int omap4_usbbootfs_create(
--	struct device_d *dev, const char *pathname, mode_t mode)
--{
--	return -ENOSYS;
--}
--
--static int omap4_usbbootfs_unlink(struct device_d *dev, const char *pathname)
--{
--	return -ENOSYS;
--}
--
--static int omap4_usbbootfs_mkdir(struct device_d *dev, const char *pathname)
--{
--	return -ENOSYS;
--}
--
--static int omap4_usbbootfs_rmdir(struct device_d *dev, const char *pathname)
--{
--	return -ENOSYS;
--}
--
--static int omap4_usbbootfs_write(
--	struct device_d *_dev, FILE *f, const void *inbuf, size_t size)
--{
--	return -ENOSYS;
--}
--
--static int omap4_usbbootfs_truncate(struct device_d *dev, FILE *f, loff_t size)
--{
--	return -ENOSYS;
--}
--*/
+diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
+index a563b3bc2906..946a3e9a779b 100644
+--- a/arch/arm/mach-imx/imx-bbu-internal.c
++++ b/arch/arm/mach-imx/imx-bbu-internal.c
+@@ -87,6 +87,7 @@ static int imx_bbu_write_device(struct imx_internal_bbu_handler *imx_handler,
+ 		const void *buf, int image_len)
+ {
+ 	int fd, ret, offset = 0;
++	struct stat st;
  
- static struct file_priv *omap4_usbbootfs_do_open(
- 	struct device_d *dev, int accmode, const char *filename)
-@@ -187,14 +154,6 @@ static struct fs_driver_d omap4_usbbootfs_driver = {
- 	.read    = omap4_usbbootfs_read,
- 	.opendir = omap4_usbbootfs_opendir,
- 	.stat    = omap4_usbbootfs_stat,
--/*
--	.create	= omap4_usbbootfs_create,
--	.unlink	= omap4_usbbootfs_unlink,
--	.mkdir	= omap4_usbbootfs_mkdir,
--	.rmdir	= omap4_usbbootfs_rmdir,
--	.write	= omap4_usbbootfs_write,
--	.truncate= omap4_usbbootfs_truncate,
--*/
- 	.flags	 = 0,
- 	.drv = {
- 		.probe	= omap4_usbbootfs_probe,
+ 	fd = open(devicefile, O_RDWR | O_CREAT);
+ 	if (fd < 0)
+@@ -101,6 +102,15 @@ static int imx_bbu_write_device(struct imx_internal_bbu_handler *imx_handler,
+ 	if (imx_handler->handler.flags & IMX_BBU_FLAG_KEEP_HEAD)
+ 		offset += imx_handler->flash_header_offset;
+ 
++	ret = fstat(fd, &st);
++	if (ret)
++		goto err_close;
++
++	if (image_len > st.st_size) {
++		ret = -ENOSPC;
++		goto err_close;
++	}
++
+ 	ret = imx_bbu_protect(fd, imx_handler, devicefile, offset,
+ 			      image_len, 0);
+ 	if (ret)
 -- 
 2.20.1
 
