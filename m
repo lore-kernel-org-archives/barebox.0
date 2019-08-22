@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i0gz7-0005JC-LB
- for barebox@lists.infradead.org; Thu, 22 Aug 2019 06:54:15 +0000
+ id 1i0gz8-0005Jd-ES
+ for barebox@lists.infradead.org; Thu, 22 Aug 2019 06:54:16 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 22 Aug 2019 08:54:05 +0200
-Message-Id: <20190822065408.29279-1-a.fatoum@pengutronix.de>
+Date: Thu, 22 Aug 2019 08:54:06 +0200
+Message-Id: <20190822065408.29279-2-a.fatoum@pengutronix.de>
+In-Reply-To: <20190822065408.29279-1-a.fatoum@pengutronix.de>
+References: <20190822065408.29279-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,37 +21,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] startup: allow ctrl+c abort during boot sequence
+Subject: [PATCH 2/4] libfile: have write_full return a descriptive error code
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-At the moment e.g. a wait for an ARP response during net boot can only
-aborted if the auto boot countdown was aborted. Otherwise ctrl+c is
-without effect. For better user experience allow code querying for ctrl+c
-to see it even if barebox had not dropped into a shell.
+So far (p|)write_full has been returning -1 on error.
+Some callers of write_full like imx_bbu_write_device print out the
+function's return value on error, effectively rendering every printed
+error message to be due to EPERM.
+
+On the other hand, some callers like do_memcpy, use it correctly and
+use errno. Sidestep the issue by having the function return -errno on
+errors as well.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/startup.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ lib/libfile.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/common/startup.c b/common/startup.c
-index 92bf94f849f1..d2f1b4846752 100644
---- a/common/startup.c
-+++ b/common/startup.c
-@@ -310,11 +310,11 @@ static int run_init(void)
- 
- 	autoboot = do_autoboot_countdown();
- 
-+	console_ctrlc_allow();
-+
- 	if (autoboot == AUTOBOOT_BOOT)
- 		run_command("boot");
- 
--	console_ctrlc_allow();
--
- 	if (autoboot == AUTOBOOT_MENU)
- 		run_command(MENUFILE);
+diff --git a/lib/libfile.c b/lib/libfile.c
+index b42753c2b5ea..f6c588d7373f 100644
+--- a/lib/libfile.c
++++ b/lib/libfile.c
+@@ -38,7 +38,7 @@ int pwrite_full(int fd, const void *buf, size_t size, loff_t offset)
+ 		now = pwrite(fd, buf, size, offset);
+ 		if (now == 0) {
+ 			errno = ENOSPC;
+-			return -1;
++			return -errno;
+ 		}
+ 		if (now < 0)
+ 			return now;
+@@ -66,7 +66,7 @@ int write_full(int fd, const void *buf, size_t size)
+ 		now = write(fd, buf, size);
+ 		if (now == 0) {
+ 			errno = ENOSPC;
+-			return -1;
++			return -errno;
+ 		}
+ 		if (now < 0)
+ 			return now;
+@@ -194,6 +194,7 @@ again:
+ 	buf = calloc(read_size + 1, 1);
+ 	if (!buf) {
+ 		ret = -ENOMEM;
++		errno = ENOMEM;
+ 		goto err_out;
+ 	}
  
 -- 
 2.20.1
