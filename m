@@ -1,18 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from relay11.mail.gandi.net ([217.70.178.231])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i15sC-00044W-QR
- for barebox@lists.infradead.org; Fri, 23 Aug 2019 09:28:46 +0000
-References: <20190731102143.20503-1-a.fatoum@pengutronix.de>
- <20190731102143.20503-3-a.fatoum@pengutronix.de>
- <c306a487-96b7-dee0-8ade-6e896967057d@pengutronix.de>
- <20190823070736.mx3z4hkbhaoezvtg@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <c09f3f6c-feb9-eab5-ae76-24025aadb4a0@pengutronix.de>
-Date: Fri, 23 Aug 2019 11:28:43 +0200
+ id 1i0gRu-0005Zm-4P
+ for barebox@lists.infradead.org; Thu, 22 Aug 2019 06:19:56 +0000
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Thu, 22 Aug 2019 08:19:36 +0200
+Message-Id: <20190822061941.6093-1-ahmad@a3f.at>
 MIME-Version: 1.0
-In-Reply-To: <20190823070736.mx3z4hkbhaoezvtg@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,42 +19,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 3/3] console: fix out-of-bounds read in dputc(/dev/*,
- ...)
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Bastian Krause <bst@pengutronix.de>
+Subject: [PATCH 0/5] sandbox: support -fsanitize={address,ubsan}
+To: barebox@lists.infradead.org
+Cc: afa@pengutronix.de
 
-Hello Sascha,
+I get a double free inside of SDL's X11 backend when trying to use the
+sandbox SDL video driver on wayland. I am not sure what to do about this
+yet, but I made these few patches to get nicer looking backtraces for a
+start.
 
-On 8/23/19 9:07 AM, Sascha Hauer wrote:
-> On Thu, Aug 22, 2019 at 09:06:09AM +0200, Ahmad Fatoum wrote:
->> Hello Sascha,
->>
->> On 7/31/19 12:21 PM, Ahmad Fatoum wrote:
->>> Trying to output a single character via
->>> 	echo -a /dev/serial0-1
->>> currently results in garbage output after the newline, because console.c's
->>> fops_write discards the buffer length and passes the buffer to
->>> (struct cdev)::puts which only handles NUL-terminated strings.
->>>
->>> Fix this by amending (struct cdev)::puts with a new nbytes parameter,
->>> which is correctly propagated.
->>
->> Can this one be merged? It doesn;t depend on the other two patches.
-> 
-> Ok. Can you rebase it? Without the others it doesn't seem to apply.
+Ahmad Fatoum (5):
+  sandbox: include header to provide missing prototype
+  common: add generic CONFIG_UBSAN_SANITIZE_ALL plumbing
+  common: add generic CONFIG_KASAN option
+  sandbox: support Address and UndefinedBehavior sanitizers
+  commands: fix unaligned accesses of aliased commands on amd64
 
-done. I dropped the RATP one, but squashed the other.
-
-> 
-> Sascha
-> 
+ Makefile                     |  5 +++++
+ arch/sandbox/Kconfig         |  2 ++
+ arch/sandbox/Makefile        | 13 ++++++++++++-
+ arch/sandbox/board/devices.c |  1 +
+ common/Kconfig               | 34 ++++++++++++++++++++++++++++++++++
+ common/command.c             |  2 +-
+ scripts/Makefile.lib         |  5 +++++
+ scripts/Makefile.ubsan       | 19 +++++++++++++++++++
+ 8 files changed, 79 insertions(+), 2 deletions(-)
+ create mode 100644 scripts/Makefile.ubsan
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
