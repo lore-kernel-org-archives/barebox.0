@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i13ff-0003yZ-V4
- for barebox@lists.infradead.org; Fri, 23 Aug 2019 07:07:42 +0000
-Date: Fri, 23 Aug 2019 09:07:36 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190823070736.mx3z4hkbhaoezvtg@pengutronix.de>
+ id 1i15sC-00044W-QR
+ for barebox@lists.infradead.org; Fri, 23 Aug 2019 09:28:46 +0000
 References: <20190731102143.20503-1-a.fatoum@pengutronix.de>
  <20190731102143.20503-3-a.fatoum@pengutronix.de>
  <c306a487-96b7-dee0-8ade-6e896967057d@pengutronix.de>
+ <20190823070736.mx3z4hkbhaoezvtg@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <c09f3f6c-feb9-eab5-ae76-24025aadb4a0@pengutronix.de>
+Date: Fri, 23 Aug 2019 11:28:43 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <c306a487-96b7-dee0-8ade-6e896967057d@pengutronix.de>
+In-Reply-To: <20190823070736.mx3z4hkbhaoezvtg@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,27 +27,34 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v2 3/3] console: fix out-of-bounds read in dputc(/dev/*,
  ...)
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org, Bastian Krause <bst@pengutronix.de>
 
-On Thu, Aug 22, 2019 at 09:06:09AM +0200, Ahmad Fatoum wrote:
-> Hello Sascha,
-> 
-> On 7/31/19 12:21 PM, Ahmad Fatoum wrote:
-> > Trying to output a single character via
-> > 	echo -a /dev/serial0-1
-> > currently results in garbage output after the newline, because console.c's
-> > fops_write discards the buffer length and passes the buffer to
-> > (struct cdev)::puts which only handles NUL-terminated strings.
-> > 
-> > Fix this by amending (struct cdev)::puts with a new nbytes parameter,
-> > which is correctly propagated.
-> 
-> Can this one be merged? It doesn;t depend on the other two patches.
+Hello Sascha,
 
-Ok. Can you rebase it? Without the others it doesn't seem to apply.
+On 8/23/19 9:07 AM, Sascha Hauer wrote:
+> On Thu, Aug 22, 2019 at 09:06:09AM +0200, Ahmad Fatoum wrote:
+>> Hello Sascha,
+>>
+>> On 7/31/19 12:21 PM, Ahmad Fatoum wrote:
+>>> Trying to output a single character via
+>>> 	echo -a /dev/serial0-1
+>>> currently results in garbage output after the newline, because console.c's
+>>> fops_write discards the buffer length and passes the buffer to
+>>> (struct cdev)::puts which only handles NUL-terminated strings.
+>>>
+>>> Fix this by amending (struct cdev)::puts with a new nbytes parameter,
+>>> which is correctly propagated.
+>>
+>> Can this one be merged? It doesn;t depend on the other two patches.
+> 
+> Ok. Can you rebase it? Without the others it doesn't seem to apply.
 
-Sascha
+done. I dropped the RATP one, but squashed the other.
+
+> 
+> Sascha
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
