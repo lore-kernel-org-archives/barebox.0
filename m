@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i15dQ-0006o5-K2
- for barebox@lists.infradead.org; Fri, 23 Aug 2019 09:13:29 +0000
+ id 1i18iu-00052X-Bk
+ for barebox@lists.infradead.org; Fri, 23 Aug 2019 12:31:21 +0000
 References: <20190822061941.6093-1-ahmad@a3f.at>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <9ed1093b-d4e8-64ce-2013-69a7031dda72@pengutronix.de>
-Date: Fri, 23 Aug 2019 11:13:26 +0200
+Message-ID: <ce945bb0-1543-4126-8271-48ca07a50260@pengutronix.de>
+Date: Fri, 23 Aug 2019 14:31:17 +0200
 MIME-Version: 1.0
 In-Reply-To: <20190822061941.6093-1-ahmad@a3f.at>
 Content-Language: en-US
@@ -26,19 +26,11 @@ Subject: Re: [PATCH 0/5] sandbox: support -fsanitize={address,ubsan}
 To: Ahmad Fatoum <ahmad@a3f.at>, barebox@lists.infradead.org
 Cc: afa@pengutronix.de
 
-
-
 On 8/22/19 8:19 AM, Ahmad Fatoum wrote:
 > I get a double free inside of SDL's X11 backend when trying to use the
 > sandbox SDL video driver on wayland. I am not sure what to do about this
 > yet, but I made these few patches to get nicer looking backtraces for a
 > start.
-
-FTR: SDL video driver is broken since b3fbfad7ae ("fs: dentry cache implementation")
-Adding -fvisibility=hidden to the sandbox barebox link line fixes it, so I assume the
-commit causes some symbol collision with another library that barebox is linked against
-on my system. Haven't found out which symbol it is yet though.
-
 > 
 > Ahmad Fatoum (5):
 >   sandbox: include header to provide missing prototype
@@ -46,6 +38,11 @@ on my system. Haven't found out which symbol it is yet though.
 >   common: add generic CONFIG_KASAN option
 >   sandbox: support Address and UndefinedBehavior sanitizers
 >   commands: fix unaligned accesses of aliased commands on amd64
+
+
+Please dismiss. I pushed out a broken revision of the series. I will
+send out a fixed v2 later and drop the last commit as well.
+
 > 
 >  Makefile                     |  5 +++++
 >  arch/sandbox/Kconfig         |  2 ++
