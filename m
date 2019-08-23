@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i0gzF-0005RN-5e
- for barebox@lists.infradead.org; Thu, 22 Aug 2019 06:54:22 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 22 Aug 2019 08:54:07 +0200
-Message-Id: <20190822065408.29279-3-a.fatoum@pengutronix.de>
-In-Reply-To: <20190822065408.29279-1-a.fatoum@pengutronix.de>
+ id 1i14Q3-0006CN-8K
+ for barebox@lists.infradead.org; Fri, 23 Aug 2019 07:55:36 +0000
+Date: Fri, 23 Aug 2019 09:55:33 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190823075533.hn2j46btgs2dgwv3@pengutronix.de>
 References: <20190822065408.29279-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190822065408.29279-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,61 +22,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] ARM: i.MX: bbu: early exit when partition too small
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH 1/4] startup: allow ctrl+c abort during boot sequence
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-So far, writing a barebox image exceeding the partition size aborts with
-EPERM as truncate isn't implemented:
+On Thu, Aug 22, 2019 at 08:54:05AM +0200, Ahmad Fatoum wrote:
+> At the moment e.g. a wait for an ARP response during net boot can only
+> aborted if the auto boot countdown was aborted. Otherwise ctrl+c is
+> without effect. For better user experience allow code querying for ctrl+c
+> to see it even if barebox had not dropped into a shell.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  common/startup.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-  ERROR: writing to /dev/flash-boot.barebox failed with Operation
-  not permitted
-  update failed
-  ERROR: fastboot: update barebox: Operation not permitted
+Applied, thanks
 
-This is unfortunate because by the time the truncation fails, erasing
-the partition had already occurred. Avoid this by checking prior to the
-pwrite_all whether the file to be written is big enough. This is valid
-here because barebox update wouldn't be called on a regular file.
+Sascha
 
-While at it, present callers with a more helpful ENOSPC error.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- arch/arm/mach-imx/imx-bbu-internal.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
-index a563b3bc2906..946a3e9a779b 100644
---- a/arch/arm/mach-imx/imx-bbu-internal.c
-+++ b/arch/arm/mach-imx/imx-bbu-internal.c
-@@ -87,6 +87,7 @@ static int imx_bbu_write_device(struct imx_internal_bbu_handler *imx_handler,
- 		const void *buf, int image_len)
- {
- 	int fd, ret, offset = 0;
-+	struct stat st;
- 
- 	fd = open(devicefile, O_RDWR | O_CREAT);
- 	if (fd < 0)
-@@ -101,6 +102,15 @@ static int imx_bbu_write_device(struct imx_internal_bbu_handler *imx_handler,
- 	if (imx_handler->handler.flags & IMX_BBU_FLAG_KEEP_HEAD)
- 		offset += imx_handler->flash_header_offset;
- 
-+	ret = fstat(fd, &st);
-+	if (ret)
-+		goto err_close;
-+
-+	if (image_len > st.st_size) {
-+		ret = -ENOSPC;
-+		goto err_close;
-+	}
-+
- 	ret = imx_bbu_protect(fd, imx_handler, devicefile, offset,
- 			      image_len, 0);
- 	if (ret)
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
