@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay3-d.mail.gandi.net ([217.70.183.195])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i0gjb-0005lY-MM
- for barebox@lists.infradead.org; Thu, 22 Aug 2019 06:38:13 +0000
-Received: from geraet.fritz.box (39-236-142-46.pool.kielnet.net
- [46.142.236.39]) (Authenticated sender: ahmad@a3f.at)
- by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id 930E56000D
- for <barebox@lists.infradead.org>; Thu, 22 Aug 2019 06:38:08 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Thu, 22 Aug 2019 08:38:02 +0200
-Message-Id: <20190822063802.17510-1-ahmad@a3f.at>
-In-Reply-To: <20190822055114.931-1-ahmad@a3f.at>
+ id 1i13sJ-0004ZL-Mc
+ for barebox@lists.infradead.org; Fri, 23 Aug 2019 07:20:45 +0000
+Date: Fri, 23 Aug 2019 09:20:40 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190823072040.eoaoz24weqdskqs4@pengutronix.de>
 References: <20190822055114.931-1-ahmad@a3f.at>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190822055114.931-1-ahmad@a3f.at>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,46 +22,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: don't use -no-thumb-interwork if unavailable
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 00/11] treewide: fix some ARCH=arm clang warnings
+To: Ahmad Fatoum <ahmad@a3f.at>
+Cc: barebox@lists.infradead.org, afa@pengutronix.de
 
-Clang doesn't support the option and even on GCC it's ignored whenver
--mabi=aapcs-linux is specified[1]:
+On Thu, Aug 22, 2019 at 07:51:03AM +0200, Ahmad Fatoum wrote:
+> I had tried to build imx_v7_defconfig with clang and ran into some
+> warnings. This series fixes them. Building for arm32 is still not
+> possible though, because clang explicitly doesn't support mixing C and
+> inline assembly in naked functions. (In GCC it is undefined behavior,
+> but happens to usually work for us).
+> 
+> Ahmad Fatoum (11):
+>   linux/kbuild.h: sync with upstream
+>   ratp: fix use of %hu for printing int
+>   complete: remove unused variable
+>   i2c-mux-pca954x: remove use of uninitialized variable
+>   net: phy: mv88e6xxx: remove duplicate member in struct initializer
+>   smc911x: fix inverted poll-for-ready
+>   nvme: use 64 bit types for timeouts even on 32 bit systems
+>   usb: gadget: fsl_udc: remove always-true null pointer checks
+>   commands: mmc_extcsd: describe missing bit
+>   gui: png_lode: fix freeing of uninitialized pointer
+>   fs: fat: fix use of wrong enumeration type
 
-  -mthumb-interwork
+Applied, thanks
 
-	[..]. In AAPCS configurations this option is meaningless.
+Sascha
 
-We can't get rid of the option
-altogether because that breaks old GCC builds[2], but for now we can
-make -mno-thumb-interwork optional, which is what this patch does.
-
-[1]: https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html
-[2]: https://patchwork.kernel.org/patch/10306823/
-
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
----
-missed this one the first time, but here it is
----
- arch/arm/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 5cb46f661335..ef85f9d72823 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -52,7 +52,7 @@ ifeq ($(CONFIG_CPU_V8), y)
- CFLAGS_ABI	:=-mabi=lp64
- else
- ifeq ($(CONFIG_AEABI),y)
--CFLAGS_ABI	:=-mabi=aapcs-linux -mno-thumb-interwork
-+CFLAGS_ABI	:=-mabi=aapcs-linux $(call cc-option,-mno-thumb-interwork)
- else
- CFLAGS_ABI	:=$(call cc-option,-mapcs-32,-mabi=apcs-gnu) $(call cc-option,-mno-thumb-interwork,)
- endif
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
