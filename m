@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i18iu-00052X-Bk
- for barebox@lists.infradead.org; Fri, 23 Aug 2019 12:31:21 +0000
-References: <20190822061941.6093-1-ahmad@a3f.at>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <ce945bb0-1543-4126-8271-48ca07a50260@pengutronix.de>
-Date: Fri, 23 Aug 2019 14:31:17 +0200
+ id 1i1tvQ-0005z7-Eh
+ for barebox@lists.infradead.org; Sun, 25 Aug 2019 14:55:26 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Sun, 25 Aug 2019 16:55:16 +0200
+Message-Id: <20190825145517.5546-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20190822061941.6093-1-ahmad@a3f.at>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,51 +15,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/5] sandbox: support -fsanitize={address,ubsan}
-To: Ahmad Fatoum <ahmad@a3f.at>, barebox@lists.infradead.org
-Cc: afa@pengutronix.de
+Subject: [PATCH 1/2] reset_source: use instance = -1 as default
+To: barebox@lists.infradead.org
 
-On 8/22/19 8:19 AM, Ahmad Fatoum wrote:
-> I get a double free inside of SDL's X11 backend when trying to use the
-> sandbox SDL video driver on wayland. I am not sure what to do about this
-> yet, but I made these few patches to get nicer looking backtraces for a
-> start.
-> 
-> Ahmad Fatoum (5):
->   sandbox: include header to provide missing prototype
->   common: add generic CONFIG_UBSAN_SANITIZE_ALL plumbing
->   common: add generic CONFIG_KASAN option
->   sandbox: support Address and UndefinedBehavior sanitizers
->   commands: fix unaligned accesses of aliased commands on amd64
-
-
-Please dismiss. I pushed out a broken revision of the series. I will
-send out a fixed v2 later and drop the last commit as well.
-
-> 
->  Makefile                     |  5 +++++
->  arch/sandbox/Kconfig         |  2 ++
->  arch/sandbox/Makefile        | 13 ++++++++++++-
->  arch/sandbox/board/devices.c |  1 +
->  common/Kconfig               | 34 ++++++++++++++++++++++++++++++++++
->  common/command.c             |  2 +-
->  scripts/Makefile.lib         |  5 +++++
->  scripts/Makefile.ubsan       | 19 +++++++++++++++++++
->  8 files changed, 79 insertions(+), 2 deletions(-)
->  create mode 100644 scripts/Makefile.ubsan
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QXMgd2l0aCBwbGF0Zm9ybSBkZXZpY2UgaWQgKGRvZXMgc29tZW9uZSBzdGlsbCByZW1lbWJlcj8p
+IDAgbWlnaHQgYmUgYSB2YWxpZAppZC4gU28gdXNlIC0xIGZvciAidW5rbm93biIgb3IgImRvZXNu
+J3QgYXBwbHkiIGluc3RlYWQgb2YgMC4KCkFsc28gZG9uJ3QgcGFzcyB0aGUgaW5zdGFuY2UgdG8g
+dGhlIGRldmljZSB0cmVlIGlmIG5lZ2F0aXZlLiAoVGhpcyBlbmRzCnVwIGFzIDB4ZmZmZmZmZmYg
+b3RoZXJ3aXNlLikKClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1r
+b2VuaWdAcGVuZ3V0cm9uaXguZGU+Ci0tLQogY29tbW9uL29mdHJlZS5jICAgICAgICB8IDUgKysr
+LS0KIGNvbW1vbi9yZXNldF9zb3VyY2UuYyAgfCAyICstCiBpbmNsdWRlL3Jlc2V0X3NvdXJjZS5o
+IHwgMiArLQogMyBmaWxlcyBjaGFuZ2VkLCA1IGluc2VydGlvbnMoKyksIDQgZGVsZXRpb25zKC0p
+CgpkaWZmIC0tZ2l0IGEvY29tbW9uL29mdHJlZS5jIGIvY29tbW9uL29mdHJlZS5jCmluZGV4IDVi
+YjU0MjBhNzg1Yi4uMjhhM2I5NjVmZmVlIDEwMDY0NAotLS0gYS9jb21tb24vb2Z0cmVlLmMKKysr
+IGIvY29tbW9uL29mdHJlZS5jCkBAIC0xNDQsNiArMTQ0LDcgQEAgc3RhdGljIGludCBvZl9maXh1
+cF9ib290YXJncyhzdHJ1Y3QgZGV2aWNlX25vZGUgKnJvb3QsIHZvaWQgKnVudXNlZCkKIAlzdHJ1
+Y3QgZGV2aWNlX25vZGUgKm5vZGU7CiAJY29uc3QgY2hhciAqc3RyOwogCWludCBlcnI7CisJaW50
+IGluc3RhbmNlID0gcmVzZXRfc291cmNlX2dldF9pbnN0YW5jZSgpOwogCiAJc3RyID0gbGludXhf
+Ym9vdGFyZ3NfZ2V0KCk7CiAJaWYgKCFzdHIpCkBAIC0xNjAsOCArMTYxLDggQEAgc3RhdGljIGlu
+dCBvZl9maXh1cF9ib290YXJncyhzdHJ1Y3QgZGV2aWNlX25vZGUgKnJvb3QsIHZvaWQgKnVudXNl
+ZCkKIAkJcmV0dXJuIGVycjsKIAogCW9mX3Byb3BlcnR5X3dyaXRlX3N0cmluZyhub2RlLCAicmVz
+ZXQtc291cmNlIiwgcmVzZXRfc291cmNlX25hbWUoKSk7Ci0Jb2ZfcHJvcGVydHlfd3JpdGVfdTMy
+KG5vZGUsICJyZXNldC1zb3VyY2UtaW5zdGFuY2UiLAotCQkJICAgICAgcmVzZXRfc291cmNlX2dl
+dF9pbnN0YW5jZSgpKTsKKwlpZiAoaW5zdGFuY2UgPj0gMCkKKwkJb2ZfcHJvcGVydHlfd3JpdGVf
+dTMyKG5vZGUsICJyZXNldC1zb3VyY2UtaW5zdGFuY2UiLCBpbnN0YW5jZSk7CiAKIAlyZXR1cm4g
+b2ZfZml4dXBfYm9vdGFyZ3NfYm9vdHNvdXJjZShyb290LCBub2RlKTsKIH0KZGlmZiAtLWdpdCBh
+L2NvbW1vbi9yZXNldF9zb3VyY2UuYyBiL2NvbW1vbi9yZXNldF9zb3VyY2UuYwppbmRleCAxOTU1
+ZDNmODdlMzMuLmUyNGFhMzM3YTdjNCAxMDA2NDQKLS0tIGEvY29tbW9uL3Jlc2V0X3NvdXJjZS5j
+CisrKyBiL2NvbW1vbi9yZXNldF9zb3VyY2UuYwpAQCAtNTQsNyArNTQsNyBAQCB2b2lkIHJlc2V0
+X3NvdXJjZV9zZXRfcHJpb3JpdHkoZW51bSByZXNldF9zcmNfdHlwZSBzdCwgdW5zaWduZWQgaW50
+IHByaW9yaXR5KQogCiAJcmVzZXRfc291cmNlID0gc3Q7CiAJcmVzZXRfc291cmNlX3ByaW9yaXR5
+ID0gcHJpb3JpdHk7Ci0JcmVzZXRfc291cmNlX2luc3RhbmNlID0gMDsKKwlyZXNldF9zb3VyY2Vf
+aW5zdGFuY2UgPSAtMTsKIAogCXByX2RlYnVnKCJTZXR0aW5nIHJlc2V0IHNvdXJjZSB0byAlcyB3
+aXRoIHByaW9yaXR5ICVkXG4iLAogCQkJcmVzZXRfc3JjX25hbWVzW3Jlc2V0X3NvdXJjZV0sIHBy
+aW9yaXR5KTsKZGlmZiAtLWdpdCBhL2luY2x1ZGUvcmVzZXRfc291cmNlLmggYi9pbmNsdWRlL3Jl
+c2V0X3NvdXJjZS5oCmluZGV4IDEzYmMzYmNmZGU3Yy4uMjg0OGE5MTExNWI4IDEwMDY0NAotLS0g
+YS9pbmNsdWRlL3Jlc2V0X3NvdXJjZS5oCisrKyBiL2luY2x1ZGUvcmVzZXRfc291cmNlLmgKQEAg
+LTQ5LDcgKzQ5LDcgQEAgc3RhdGljIGlubGluZSBlbnVtIHJlc2V0X3NyY190eXBlIHJlc2V0X3Nv
+dXJjZV9nZXQodm9pZCkKIAogc3RhdGljIGlubGluZSBpbnQgcmVzZXRfc291cmNlX2dldF9pbnN0
+YW5jZSh2b2lkKQogewotCXJldHVybiAwOworCXJldHVybiAtMTsKIH0KIAogc3RhdGljIGlubGlu
+ZSB1bnNpZ25lZCBpbnQgb2ZfZ2V0X3Jlc2V0X3NvdXJjZV9wcmlvcml0eShzdHJ1Y3QgZGV2aWNl
+X25vZGUgKm5vZGUpCi0tIAoyLjIwLjEKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJh
+ZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJl
+Ym94Cg==
