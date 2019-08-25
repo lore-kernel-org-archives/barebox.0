@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1hnnNg-0005pq-Dp
- for barebox@lists.infradead.org; Wed, 17 Jul 2019 17:06:18 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 17 Jul 2019 19:05:58 +0200
-Message-Id: <20190717170604.23732-1-a.fatoum@pengutronix.de>
+ id 1i1uum-0008Td-3I
+ for barebox@lists.infradead.org; Sun, 25 Aug 2019 15:58:50 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Sun, 25 Aug 2019 17:58:39 +0200
+Message-Id: <20190825155844.18455-3-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20190825155844.18455-1-u.kleine-koenig@pengutronix.de>
+References: <20190825155844.18455-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -15,73 +17,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 0/6] clk: imx6: work around LDB hang caused by ERR009219
+Subject: [PATCH v2 2/7] reset_source: fix ordering of exported functions
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Short version:
-
-barebox always reparents the ldb_di[01] clocks to pll5_video_div.
-Due to a hardware erratum, this can trigger a glitch that causes
-LDB lock up.
-
-Thus:
-
-1) remove the automatic reparenting, like the kernel now does and
-   mark the affected clocks read only, so assigned-clock-parents
-   can't affect them
-2) parse assigned-clock-parents in the clk-imx6 code as well, but
-   there use a convoluted non-glitchy work around to apply them
-
-Long version available alongside v1 here:
-https://www.spinics.net/lists/u-boot-v2/msg37658.html
-and in the commit messages of the patches.
-v2 is available here:
-https://www.spinics.net/lists/u-boot-v2/msg37970.html
-
-Changes since v2:
- - reordered commits to avoid intermittent breakage, final
-   diff unaffected
- - prepended a commit fixing premature use of cpu_is_mx6
- - fixed brace placement of cpu_(mx6_)?has_err009219
- - changed commits to use cpu_mx6_is_mx6*, all suggested by Andrey
- - updated commit messages, collected Andrey's Tested-By and
-   Philipp's Reviewed-By
-
-Changes since v1:
- - reordered/squashed commits after discussion with Sascha and Phillip
- - removed superfluous comment
- - add MUX_READ_ONLY at the correct place in the MUX_READ_ONLY arguments
-
-Except for the last two, the total diff, is exactly the same
-as v1's.
-
-Ahmad Fatoum (3):
-  clk: imx6: fix use of cpu_is_mx6* before they are initialized
-  clk: imx6: remove quirky clk_set_parent(LDB_diN_sel, pll5_video_div)
-  clk: imx6: define an enum for ldb mux inputs
-
-Fabio Estevam (1):
-  clk: imx6: Fix procedure to switch the parent of LDB_DI_CLK
-
-Philipp Zabel (2):
-  clk: imx6: Mask mmdc_ch1 handshake for periph2_sel and
-    mmdc_ch1_axi_podf
-  clk: imx6: Make the LDB_DI0 and LDB_DI1 clocks read-only
-
- drivers/clk/imx/clk-imx6.c | 329 ++++++++++++++++++++++++++++++++++---
- drivers/clk/imx/clk.h      |   8 +
- 2 files changed, 317 insertions(+), 20 deletions(-)
-
--- 
-2.20.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RGVjbGFyZSBhbmQgaW1wbGVtZW50IGdldHRlcnMgZmlyc3QsIHRoZW4gc2V0dGVycy4gVGhpcyBz
+eW5jcyB0aGUgb3JkZXIKb2YgZnVuY3Rpb25zIGluIHJlc2V0X3NvdXJjZS5jIGFuZCByZXNldF9z
+b3VyY2UuaC4KClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2Vu
+aWdAcGVuZ3V0cm9uaXguZGU+Ci0tLQogY29tbW9uL3Jlc2V0X3NvdXJjZS5jICB8IDEyICsrKysr
+Ky0tLS0tLQogaW5jbHVkZS9yZXNldF9zb3VyY2UuaCB8IDMzICsrKysrKysrKysrKysrKysrKyst
+LS0tLS0tLS0tLS0tLQogMiBmaWxlcyBjaGFuZ2VkLCAyNSBpbnNlcnRpb25zKCspLCAyMCBkZWxl
+dGlvbnMoLSkKCmRpZmYgLS1naXQgYS9jb21tb24vcmVzZXRfc291cmNlLmMgYi9jb21tb24vcmVz
+ZXRfc291cmNlLmMKaW5kZXggZTI0YWEzMzdhN2M0Li5mNDAwMTEyNDgzYTUgMTAwNjQ0Ci0tLSBh
+L2NvbW1vbi9yZXNldF9zb3VyY2UuYworKysgYi9jb21tb24vcmVzZXRfc291cmNlLmMKQEAgLTQx
+LDYgKzQxLDEyIEBAIGVudW0gcmVzZXRfc3JjX3R5cGUgcmVzZXRfc291cmNlX2dldCh2b2lkKQog
+fQogRVhQT1JUX1NZTUJPTChyZXNldF9zb3VyY2VfZ2V0KTsKIAorY29uc3QgY2hhciAqcmVzZXRf
+c291cmNlX25hbWUodm9pZCkKK3sKKwlyZXR1cm4gcmVzZXRfc3JjX25hbWVzW3Jlc2V0X3NvdXJj
+ZV07Cit9CitFWFBPUlRfU1lNQk9MKHJlc2V0X3NvdXJjZV9uYW1lKTsKKwogaW50IHJlc2V0X3Nv
+dXJjZV9nZXRfaW5zdGFuY2Uodm9pZCkKIHsKIAlyZXR1cm4gcmVzZXRfc291cmNlX2luc3RhbmNl
+OwpAQCAtNjEsMTIgKzY3LDYgQEAgdm9pZCByZXNldF9zb3VyY2Vfc2V0X3ByaW9yaXR5KGVudW0g
+cmVzZXRfc3JjX3R5cGUgc3QsIHVuc2lnbmVkIGludCBwcmlvcml0eSkKIH0KIEVYUE9SVF9TWU1C
+T0wocmVzZXRfc291cmNlX3NldF9wcmlvcml0eSk7CiAKLWNvbnN0IGNoYXIgKnJlc2V0X3NvdXJj
+ZV9uYW1lKHZvaWQpCi17Ci0JcmV0dXJuIHJlc2V0X3NyY19uYW1lc1tyZXNldF9zb3VyY2VdOwot
+fQotRVhQT1JUX1NZTUJPTChyZXNldF9zb3VyY2VfbmFtZSk7Ci0KIHZvaWQgcmVzZXRfc291cmNl
+X3NldF9pbnN0YW5jZShlbnVtIHJlc2V0X3NyY190eXBlIHR5cGUsIGludCBpbnN0YW5jZSkKIHsK
+IAlpZiAocmVzZXRfc291cmNlID09IHR5cGUpCmRpZmYgLS1naXQgYS9pbmNsdWRlL3Jlc2V0X3Nv
+dXJjZS5oIGIvaW5jbHVkZS9yZXNldF9zb3VyY2UuaAppbmRleCAyODQ4YTkxMTE1YjguLjg1MzI5
+YzhjZWE3YSAxMDA2NDQKLS0tIGEvaW5jbHVkZS9yZXNldF9zb3VyY2UuaAorKysgYi9pbmNsdWRl
+L3Jlc2V0X3NvdXJjZS5oCkBAIC0yNiwyNSArMjYsMjYgQEAgZW51bSByZXNldF9zcmNfdHlwZSB7
+CiB9OwogCiAjaWZkZWYgQ09ORklHX1JFU0VUX1NPVVJDRQotdm9pZCByZXNldF9zb3VyY2Vfc2V0
+X3ByaW9yaXR5KGVudW0gcmVzZXRfc3JjX3R5cGUsIHVuc2lnbmVkIGludCBwcmlvcml0eSk7CisK
+IGVudW0gcmVzZXRfc3JjX3R5cGUgcmVzZXRfc291cmNlX2dldCh2b2lkKTsKLXZvaWQgcmVzZXRf
+c291cmNlX3NldF9pbnN0YW5jZShlbnVtIHJlc2V0X3NyY190eXBlIHR5cGUsIGludCBpbnN0YW5j
+ZSk7Citjb25zdCBjaGFyICpyZXNldF9zb3VyY2VfbmFtZSh2b2lkKTsKIGludCByZXNldF9zb3Vy
+Y2VfZ2V0X2luc3RhbmNlKHZvaWQpOworCit2b2lkIHJlc2V0X3NvdXJjZV9zZXRfcHJpb3JpdHko
+ZW51bSByZXNldF9zcmNfdHlwZSwgdW5zaWduZWQgaW50IHByaW9yaXR5KTsKK3ZvaWQgcmVzZXRf
+c291cmNlX3NldF9pbnN0YW5jZShlbnVtIHJlc2V0X3NyY190eXBlIHR5cGUsIGludCBpbnN0YW5j
+ZSk7CisKIHVuc2lnbmVkIGludCBvZl9nZXRfcmVzZXRfc291cmNlX3ByaW9yaXR5KHN0cnVjdCBk
+ZXZpY2Vfbm9kZSAqbm9kZSk7Ci1jb25zdCBjaGFyICpyZXNldF9zb3VyY2VfbmFtZSh2b2lkKTsK
+KwogI2Vsc2UKLXN0YXRpYyBpbmxpbmUgdm9pZCByZXNldF9zb3VyY2Vfc2V0X3ByaW9yaXR5KGVu
+dW0gcmVzZXRfc3JjX3R5cGUgdHlwZSwKLQkJdW5zaWduZWQgaW50IHByaW9yaXR5KQotewotfQog
+Ci1zdGF0aWMgaW5saW5lIHZvaWQgcmVzZXRfc291cmNlX3NldF9pbnN0YW5jZShlbnVtIHJlc2V0
+X3NyY190eXBlIHR5cGUsIGludCBpbnN0YW5jZSkKK3N0YXRpYyBpbmxpbmUgZW51bSByZXNldF9z
+cmNfdHlwZSByZXNldF9zb3VyY2VfZ2V0KHZvaWQpCiB7CisJcmV0dXJuIFJFU0VUX1VLV047CiB9
+CiAKLXN0YXRpYyBpbmxpbmUgZW51bSByZXNldF9zcmNfdHlwZSByZXNldF9zb3VyY2VfZ2V0KHZv
+aWQpCitzdGF0aWMgaW5saW5lIGNvbnN0IGNoYXIgKnJlc2V0X3NvdXJjZV9uYW1lKHZvaWQpCiB7
+Ci0JcmV0dXJuIFJFU0VUX1VLV047CisJcmV0dXJuICJ1bmtub3duIjsKIH0KIAogc3RhdGljIGlu
+bGluZSBpbnQgcmVzZXRfc291cmNlX2dldF9pbnN0YW5jZSh2b2lkKQpAQCAtNTIsMTQgKzUzLDE4
+IEBAIHN0YXRpYyBpbmxpbmUgaW50IHJlc2V0X3NvdXJjZV9nZXRfaW5zdGFuY2Uodm9pZCkKIAly
+ZXR1cm4gLTE7CiB9CiAKLXN0YXRpYyBpbmxpbmUgdW5zaWduZWQgaW50IG9mX2dldF9yZXNldF9z
+b3VyY2VfcHJpb3JpdHkoc3RydWN0IGRldmljZV9ub2RlICpub2RlKQorc3RhdGljIGlubGluZSB2
+b2lkIHJlc2V0X3NvdXJjZV9zZXRfcHJpb3JpdHkoZW51bSByZXNldF9zcmNfdHlwZSB0eXBlLAor
+CQl1bnNpZ25lZCBpbnQgcHJpb3JpdHkpCiB7Ci0JcmV0dXJuIDA7CiB9CiAKLXN0YXRpYyBpbmxp
+bmUgY29uc3QgY2hhciAqcmVzZXRfc291cmNlX25hbWUodm9pZCkKK3N0YXRpYyBpbmxpbmUgdm9p
+ZCByZXNldF9zb3VyY2Vfc2V0X2luc3RhbmNlKGVudW0gcmVzZXRfc3JjX3R5cGUgdHlwZSwgaW50
+IGluc3RhbmNlKQogewotCXJldHVybiAidW5rbm93biI7Cit9CisKK3N0YXRpYyBpbmxpbmUgdW5z
+aWduZWQgaW50IG9mX2dldF9yZXNldF9zb3VyY2VfcHJpb3JpdHkoc3RydWN0IGRldmljZV9ub2Rl
+ICpub2RlKQoreworCXJldHVybiAwOwogfQogI2VuZGlmCiAKLS0gCjIuMjAuMQoKCl9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBs
+aXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9y
+Zy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
