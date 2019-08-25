@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay12.mail.gandi.net ([217.70.178.232])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i2d6A-0008Cg-6c
- for barebox@lists.infradead.org; Tue, 27 Aug 2019 15:09:34 +0000
-Received: from geraet.pengutronix.de (hazel.nat.pengutronix.de [85.220.165.66])
- (Authenticated sender: ahmad@a3f.at)
- by relay12.mail.gandi.net (Postfix) with ESMTPSA id E0F0720001A
- for <barebox@lists.infradead.org>; Tue, 27 Aug 2019 15:09:27 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Tue, 27 Aug 2019 17:09:18 +0200
-Message-Id: <20190827150918.16247-11-ahmad@a3f.at>
-In-Reply-To: <20190827150918.16247-1-ahmad@a3f.at>
-References: <20190827150918.16247-1-ahmad@a3f.at>
+ id 1i1uum-0008Tg-3H
+ for barebox@lists.infradead.org; Sun, 25 Aug 2019 15:58:50 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Sun, 25 Aug 2019 17:58:44 +0200
+Message-Id: <20190825155844.18455-8-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20190825155844.18455-1-u.kleine-koenig@pengutronix.de>
+References: <20190825155844.18455-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,71 +17,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 10/10] sandbox: support Address and UndefinedBehavior
- sanitizers
+Subject: [PATCH v2 7/7] oftree: expose reset_source device in device tree
 To: barebox@lists.infradead.org
 
-For the hosted implementation, we just need to pass the appropriate
-options at compile and link time. No further arch-specific
-code needed.
-
-Because we define our own handlers in lib/ubsan.c, linking against
-libubsan isn't strictly required. We do it anyway on sandbox, so we can
-use the backtrace functionality within.
-
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
----
- arch/sandbox/Kconfig  |  2 ++
- arch/sandbox/Makefile | 12 +++++++++++-
- 2 files changed, 13 insertions(+), 1 deletion(-)
-
-diff --git a/arch/sandbox/Kconfig b/arch/sandbox/Kconfig
-index 1171e4b8f8e3..6ec71a99e53f 100644
---- a/arch/sandbox/Kconfig
-+++ b/arch/sandbox/Kconfig
-@@ -2,6 +2,8 @@ config SANDBOX
- 	bool
- 	select OFTREE
- 	select GPIOLIB
-+	select ARCH_HAS_UBSAN_SANITIZE_ALL
-+	select HAVE_ARCH_KASAN
- 	default y
- 
- config ARCH_TEXT_BASE
-diff --git a/arch/sandbox/Makefile b/arch/sandbox/Makefile
-index 62f6be745a76..b127560a2b8c 100644
---- a/arch/sandbox/Makefile
-+++ b/arch/sandbox/Makefile
-@@ -47,9 +47,19 @@ ifeq ($(CONFIG_GPIO_LIBFTDI1),y)
- FTDI1_LIBS := $(shell pkg-config libftdi1 --libs)
- endif
- 
-+ifeq ($(CONFIG_KASAN),y)
-+CPPFLAGS += -fsanitize=address
-+SANITIZER_LIBS += -fsanitize=address
-+endif
-+
-+ifeq ($(CONFIG_UBSAN),y)
-+SANITIZER_LIBS += -fsanitize=undefined
-+endif
-+
- cmd_barebox__ = $(CC) -o $@ -Wl,-T,$(barebox-lds) \
- 	-Wl,--start-group $(barebox-common) -Wl,--end-group \
--	-lrt -lpthread $(SDL_LIBS) $(FTDI1_LIBS)
-+	-lrt -lpthread $(SDL_LIBS) $(FTDI1_LIBS) \
-+	$(SANITIZER_LIBS)
- 
- common-y += $(BOARD) arch/sandbox/os/ arch/sandbox/lib/
- 
--- 
-2.20.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
+b25peC5kZT4KLS0tCiBjb21tb24vb2Z0cmVlLmMgfCAxNCArKysrKysrKysrKysrKwogMSBmaWxl
+IGNoYW5nZWQsIDE0IGluc2VydGlvbnMoKykKCmRpZmYgLS1naXQgYS9jb21tb24vb2Z0cmVlLmMg
+Yi9jb21tb24vb2Z0cmVlLmMKaW5kZXggMjhhM2I5NjVmZmVlLi4wOWNiNjYwMjEyMTcgMTAwNjQ0
+Ci0tLSBhL2NvbW1vbi9vZnRyZWUuYworKysgYi9jb21tb24vb2Z0cmVlLmMKQEAgLTE0NSw2ICsx
+NDUsNyBAQCBzdGF0aWMgaW50IG9mX2ZpeHVwX2Jvb3RhcmdzKHN0cnVjdCBkZXZpY2Vfbm9kZSAq
+cm9vdCwgdm9pZCAqdW51c2VkKQogCWNvbnN0IGNoYXIgKnN0cjsKIAlpbnQgZXJyOwogCWludCBp
+bnN0YW5jZSA9IHJlc2V0X3NvdXJjZV9nZXRfaW5zdGFuY2UoKTsKKwlzdHJ1Y3QgZGV2aWNlX2Qg
+KmRldjsKIAogCXN0ciA9IGxpbnV4X2Jvb3RhcmdzX2dldCgpOwogCWlmICghc3RyKQpAQCAtMTY0
+LDYgKzE2NSwxOSBAQCBzdGF0aWMgaW50IG9mX2ZpeHVwX2Jvb3RhcmdzKHN0cnVjdCBkZXZpY2Vf
+bm9kZSAqcm9vdCwgdm9pZCAqdW51c2VkKQogCWlmIChpbnN0YW5jZSA+PSAwKQogCQlvZl9wcm9w
+ZXJ0eV93cml0ZV91MzIobm9kZSwgInJlc2V0LXNvdXJjZS1pbnN0YW5jZSIsIGluc3RhbmNlKTsK
+IAorCisJZGV2ID0gcmVzZXRfc291cmNlX2dldF9kZXZpY2UoKTsKKwlpZiAoZGV2ICYmIGRldi0+
+ZGV2aWNlX25vZGUpIHsKKwkJcGhhbmRsZSBwaGFuZGxlOworCisJCXBoYW5kbGUgPSBvZl9ub2Rl
+X2NyZWF0ZV9waGFuZGxlKGRldi0+ZGV2aWNlX25vZGUpOworCisJCWVyciA9IG9mX3Byb3BlcnR5
+X3dyaXRlX3UzMihub2RlLAorCQkJCQkgICAgInJlc2V0LXNvdXJjZS1kZXZpY2UiLCBwaGFuZGxl
+KTsKKwkJaWYgKGVycikKKwkJCXJldHVybiBlcnI7CisJfQorCiAJcmV0dXJuIG9mX2ZpeHVwX2Jv
+b3RhcmdzX2Jvb3Rzb3VyY2Uocm9vdCwgbm9kZSk7CiB9CiAKLS0gCjIuMjAuMQoKCl9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBs
+aXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9y
+Zy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
