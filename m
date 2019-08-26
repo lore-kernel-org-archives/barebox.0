@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i1uv1-0000Eb-Ji
- for barebox@lists.infradead.org; Sun, 25 Aug 2019 15:59:06 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Sun, 25 Aug 2019 17:58:41 +0200
-Message-Id: <20190825155844.18455-5-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20190825155844.18455-1-u.kleine-koenig@pengutronix.de>
-References: <20190825155844.18455-1-u.kleine-koenig@pengutronix.de>
+ id 1i2CL5-0006ha-3D
+ for barebox@lists.infradead.org; Mon, 26 Aug 2019 10:35:08 +0000
+Date: Mon, 26 Aug 2019 12:35:02 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190826103502.cfmgqeoyamdkqmxt@pengutronix.de>
+References: <20190822055114.931-1-ahmad@a3f.at>
+ <20190822055114.931-2-ahmad@a3f.at>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190822055114.931-2-ahmad@a3f.at>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,61 +19,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 4/7] reset_source: implement helper to set a device as
- reset source
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 01/11] linux/kbuild.h: sync with upstream
+To: Ahmad Fatoum <ahmad@a3f.at>
+Cc: barebox@lists.infradead.org, afa@pengutronix.de
 
-VGhpcyBhbGxvd3MgdG8gcmVtb3ZlIHNvbWUgYm9pbGVycGxhdGUgZnJvbSBkcml2ZXJzLgoKU2ln
-bmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25p
-eC5kZT4KLS0tCiBjb21tb24vcmVzZXRfc291cmNlLmMgIHwgMjcgKysrKysrKysrKysrKysrKysr
-KysrKysrKy0tCiBpbmNsdWRlL3Jlc2V0X3NvdXJjZS5oIHwgIDIgKysKIDIgZmlsZXMgY2hhbmdl
-ZCwgMjcgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9jb21tb24v
-cmVzZXRfc291cmNlLmMgYi9jb21tb24vcmVzZXRfc291cmNlLmMKaW5kZXggZjMyYjRlYWMyODE4
-Li44ZmRmMDUyMTU3NTMgMTAwNjQ0Ci0tLSBhL2NvbW1vbi9yZXNldF9zb3VyY2UuYworKysgYi9j
-b21tb24vcmVzZXRfc291cmNlLmMKQEAgLTM0LDYgKzM0LDcgQEAgc3RhdGljIGNvbnN0IGNoYXIg
-KiBjb25zdCByZXNldF9zcmNfbmFtZXNbXSA9IHsKIHN0YXRpYyBlbnVtIHJlc2V0X3NyY190eXBl
-IHJlc2V0X3NvdXJjZTsKIHN0YXRpYyB1bnNpZ25lZCBpbnQgcmVzZXRfc291cmNlX3ByaW9yaXR5
-Owogc3RhdGljIGludCByZXNldF9zb3VyY2VfaW5zdGFuY2U7CitzdGF0aWMgc3RydWN0IGRldmlj
-ZV9kICpyZXNldF9zb3VyY2VfZGV2aWNlOwogCiBlbnVtIHJlc2V0X3NyY190eXBlIHJlc2V0X3Nv
-dXJjZV9nZXQodm9pZCkKIHsKQEAgLTUzLDggKzU0LDE1IEBAIGludCByZXNldF9zb3VyY2VfZ2V0
-X2luc3RhbmNlKHZvaWQpCiB9CiBFWFBPUlRfU1lNQk9MKHJlc2V0X3NvdXJjZV9nZXRfaW5zdGFu
-Y2UpOwogCi12b2lkIHJlc2V0X3NvdXJjZV9zZXRfcHJpbnN0KGVudW0gcmVzZXRfc3JjX3R5cGUg
-c3QsCi0JCQkgICAgIHVuc2lnbmVkIGludCBwcmlvcml0eSwgaW50IGluc3RhbmNlKQorc3RydWN0
-IGRldmljZV9kICpyZXNldF9zb3VyY2VfZ2V0X2RldmljZSh2b2lkKQoreworCXJldHVybiByZXNl
-dF9zb3VyY2VfZGV2aWNlOworfQorRVhQT1JUX1NZTUJPTChyZXNldF9zb3VyY2VfZ2V0X2Rldmlj
-ZSk7CisKK3N0YXRpYyB2b2lkIF9fcmVzZXRfc291cmNlX3NldChzdHJ1Y3QgZGV2aWNlX2QgKmRl
-diwKKwkJCSAgICAgICBlbnVtIHJlc2V0X3NyY190eXBlIHN0LAorCQkJICAgICAgIHVuc2lnbmVk
-IGludCBwcmlvcml0eSwgaW50IGluc3RhbmNlKQogewogCWlmIChwcmlvcml0eSA8PSByZXNldF9z
-b3VyY2VfcHJpb3JpdHkpCiAJCXJldHVybjsKQEAgLTYyLDEyICs3MCwyNyBAQCB2b2lkIHJlc2V0
-X3NvdXJjZV9zZXRfcHJpbnN0KGVudW0gcmVzZXRfc3JjX3R5cGUgc3QsCiAJcmVzZXRfc291cmNl
-ID0gc3Q7CiAJcmVzZXRfc291cmNlX3ByaW9yaXR5ID0gcHJpb3JpdHk7CiAJcmVzZXRfc291cmNl
-X2luc3RhbmNlID0gaW5zdGFuY2U7CisJcmVzZXRfc291cmNlX2RldmljZSA9IE5VTEw7CiAKIAlw
-cl9kZWJ1ZygiU2V0dGluZyByZXNldCBzb3VyY2UgdG8gJXMgd2l0aCBwcmlvcml0eSAlZFxuIiwK
-IAkJCXJlc2V0X3NyY19uYW1lc1tyZXNldF9zb3VyY2VdLCBwcmlvcml0eSk7CiB9CisKK3ZvaWQg
-cmVzZXRfc291cmNlX3NldF9wcmluc3QoZW51bSByZXNldF9zcmNfdHlwZSBzdCwKKwkJCSAgICAg
-dW5zaWduZWQgaW50IHByaW9yaXR5LCBpbnQgaW5zdGFuY2UpCit7CisJX19yZXNldF9zb3VyY2Vf
-c2V0KE5VTEwsIHN0LCBwcmlvcml0eSwgaW5zdGFuY2UpOworfQogRVhQT1JUX1NZTUJPTChyZXNl
-dF9zb3VyY2Vfc2V0X3ByaW5zdCk7CiAKK3ZvaWQgcmVzZXRfc291cmNlX3NldF9kZXZpY2Uoc3Ry
-dWN0IGRldmljZV9kICpkZXYsIGVudW0gcmVzZXRfc3JjX3R5cGUgc3QpCit7CisJaW50IHByaW9y
-aXR5ID0gb2ZfZ2V0X3Jlc2V0X3NvdXJjZV9wcmlvcml0eShkZXYtPmRldmljZV9ub2RlKTsKKwor
-CV9fcmVzZXRfc291cmNlX3NldChkZXYsIHN0LCBwcmlvcml0eSwgLTEpOworfQorRVhQT1JUX1NZ
-TUJPTChyZXNldF9zb3VyY2Vfc2V0X2RldmljZSk7CisKIHN0YXRpYyBpbnQgcmVzZXRfc291cmNl
-X2luaXQodm9pZCkKIHsKIAlnbG9iYWx2YXJfYWRkX3NpbXBsZV9lbnVtKCJzeXN0ZW0ucmVzZXQi
-LCAodW5zaWduZWQgaW50ICopJnJlc2V0X3NvdXJjZSwKZGlmZiAtLWdpdCBhL2luY2x1ZGUvcmVz
-ZXRfc291cmNlLmggYi9pbmNsdWRlL3Jlc2V0X3NvdXJjZS5oCmluZGV4IDIyYzUxYTBlYTY3NC4u
-MjdlZTA3N2NjNjcyIDEwMDY0NAotLS0gYS9pbmNsdWRlL3Jlc2V0X3NvdXJjZS5oCisrKyBiL2lu
-Y2x1ZGUvcmVzZXRfc291cmNlLmgKQEAgLTMwLDcgKzMwLDkgQEAgZW51bSByZXNldF9zcmNfdHlw
-ZSB7CiBlbnVtIHJlc2V0X3NyY190eXBlIHJlc2V0X3NvdXJjZV9nZXQodm9pZCk7CiBjb25zdCBj
-aGFyICpyZXNldF9zb3VyY2VfbmFtZSh2b2lkKTsKIGludCByZXNldF9zb3VyY2VfZ2V0X2luc3Rh
-bmNlKHZvaWQpOworc3RydWN0IGRldmljZV9kICpyZXNldF9zb3VyY2VfZ2V0X2RldmljZSh2b2lk
-KTsKIAordm9pZCByZXNldF9zb3VyY2Vfc2V0X2RldmljZShzdHJ1Y3QgZGV2aWNlX2QgKmRldiwg
-ZW51bSByZXNldF9zcmNfdHlwZSBzdCk7CiB2b2lkIHJlc2V0X3NvdXJjZV9zZXRfcHJpbnN0KGVu
-dW0gcmVzZXRfc3JjX3R5cGUsCiAJCQkgICAgIHVuc2lnbmVkIGludCBwcmlvcml0eSwgaW50IGlu
-c3RhbmNlKTsKIAotLSAKMi4yMC4xCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRl
-YWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJv
-eAo=
+On Thu, Aug 22, 2019 at 07:51:04AM +0200, Ahmad Fatoum wrote:
+> Clang doesn't like literal ASCII in the listing.
+> Copy over the Linux v5.2 state of the file to fix this.
+> 
+> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+> ---
+>  include/linux/kbuild.h | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
+
+This patch breaks building arm64 and mips defconfigs. For example
+bcm47xx_defconfig with:
+
+arch/mips/lib/genex.S: Assembler messages:
+arch/mips/lib/genex.S:14: Error: operand 2 must be constant `subu $27,PT_SIZE'
+arch/mips/lib/genex.S:14: Error: macro used $at after ".set noat"
+arch/mips/lib/genex.S:14: Error: macro used $at after ".set noat"
+arch/mips/lib/genex.S:14: Error: macro used $at after ".set noat"
+arch/mips/lib/genex.S:14: Error: macro used $at after ".set noat"
+arch/mips/lib/genex.S:14: Error: macro used $at after ".set noat"
+...
+
+zynqmp_defconfig with:
+
+arch/arm/cpu/smccc-call_64.S: Assembler messages:
+arch/arm/cpu/smccc-call_64.S:41: Error: undefined symbol ARM_SMCCC_RES_X0_OFFS used as an immediate value
+arch/arm/cpu/smccc-call_64.S:41: Error: undefined symbol ARM_SMCCC_RES_X2_OFFS used as an immediate value
+arch/arm/cpu/smccc-call_64.S:41: Error: undefined symbol ARM_SMCCC_QUIRK_ID_OFFS used as an immediate value
+arch/arm/cpu/smccc-call_64.S:41: Error: undefined symbol ARM_SMCCC_QUIRK_STATE_OFFS used as an immediate value
+arch/arm/cpu/smccc-call_64.S:51: Error: undefined symbol ARM_SMCCC_RES_X0_OFFS used as an immediate value
+arch/arm/cpu/smccc-call_64.S:51: Error: undefined symbol ARM_SMCCC_RES_X2_OFFS used as an immediate value
+arch/arm/cpu/smccc-call_64.S:51: Error: undefined symbol ARM_SMCCC_QUIRK_ID_OFFS used as an immediate value
+arch/arm/cpu/smccc-call_64.S:51: Error: undefined symbol ARM_SMCCC_QUIRK_STATE_OFFS used as an immediate value
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
