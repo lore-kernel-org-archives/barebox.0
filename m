@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i2wDp-0004Ks-8H
- for barebox@lists.infradead.org; Wed, 28 Aug 2019 11:34:42 +0000
-Date: Wed, 28 Aug 2019 13:34:39 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190828113439.5duqvag4v7ispv5o@pengutronix.de>
-References: <20190826044051.12627-1-r.czerwinski@pengutronix.de>
+ id 1i2DKt-0002eK-3q
+ for barebox@lists.infradead.org; Mon, 26 Aug 2019 11:39:00 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Mon, 26 Aug 2019 13:38:52 +0200
+Message-Id: <20190826113854.27895-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190826044051.12627-1-r.czerwinski@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,28 +19,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] images/.gitignore: ignore i.MX8MQ HAB files
-To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v1 1/3] MIPS: ath79: enable watchdog support
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-On Mon, Aug 26, 2019 at 06:40:52AM +0200, Rouven Czerwinski wrote:
-> Ignore the new image files with .pimximg and .psimximg extensions and
-> the sha256 sum files.
-> 
-> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-> ---
->  images/.gitignore | 4 ++++
->  1 file changed, 4 insertions(+)
+all ath79 based SoCs have watchdog. Make sure, it can be used.
 
-Applied, thanks
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ arch/mips/configs/ath79_defconfig | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Sascha
-
+diff --git a/arch/mips/configs/ath79_defconfig b/arch/mips/configs/ath79_defconfig
+index 83d22e4e1c..c41d0bf545 100644
+--- a/arch/mips/configs/ath79_defconfig
++++ b/arch/mips/configs/ath79_defconfig
+@@ -52,6 +52,7 @@ CONFIG_CMD_LED=y
+ CONFIG_CMD_POWEROFF=y
+ CONFIG_CMD_SPI=y
+ CONFIG_CMD_LED_TRIGGER=y
++CONFIG_CMD_WD=y
+ CONFIG_CMD_BAREBOX_UPDATE=y
+ CONFIG_CMD_OF_NODE=y
+ CONFIG_CMD_OF_PROPERTY=y
+@@ -77,6 +78,9 @@ CONFIG_LED=y
+ CONFIG_LED_GPIO=y
+ CONFIG_LED_GPIO_OF=y
+ CONFIG_LED_TRIGGERS=y
++CONFIG_WATCHDOG=y
++CONFIG_WATCHDOG_POLLER=y
++CONFIG_WATCHDOG_AR9344=y
+ CONFIG_FS_TFTP=y
+ CONFIG_FS_NFS=y
+ CONFIG_DIGEST_SHA224_GENERIC=y
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
