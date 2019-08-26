@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-eopbgr680077.outbound.protection.outlook.com
+ ([40.107.68.77] helo=NAM04-BN3-obe.outbound.protection.outlook.com)
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i2wEp-0005zE-Kl
- for barebox@lists.infradead.org; Wed, 28 Aug 2019 11:35:44 +0000
-Date: Wed, 28 Aug 2019 13:35:42 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190828113542.h4xiyjr4a2s7lzq6@pengutronix.de>
-References: <20190826113854.27895-1-o.rempel@pengutronix.de>
+ id 1i2Kxt-0000qX-CB
+ for barebox@lists.infradead.org; Mon, 26 Aug 2019 19:47:46 +0000
+From: Cory Tusar <Cory.Tusar@zii.aero>
+Date: Mon, 26 Aug 2019 19:47:41 +0000
+Message-ID: <20190826194654.32574-1-cory.tusar@zii.aero>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190826113854.27895-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,27 +21,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1 1/3] MIPS: ath79: enable watchdog support
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: dts: vf610-zii-cfu1: Fix indentation
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Cc: Chris Healy <Chris.Healy@zii.aero>
 
-On Mon, Aug 26, 2019 at 01:38:52PM +0200, Oleksij Rempel wrote:
-> all ath79 based SoCs have watchdog. Make sure, it can be used.
-> 
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> ---
->  arch/mips/configs/ath79_defconfig | 4 ++++
->  1 file changed, 4 insertions(+)
+Whitespace only - no functional changes.
 
-Applied, thanks
+Signed-off-by: Cory Tusar <cory.tusar@zii.aero>
+---
+ arch/arm/dts/vf610-zii-cfu1.dts | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Sascha
-
+diff --git a/arch/arm/dts/vf610-zii-cfu1.dts b/arch/arm/dts/vf610-zii-cfu1.dts
+index 1de9ee9ad..a9793adc3 100644
+--- a/arch/arm/dts/vf610-zii-cfu1.dts
++++ b/arch/arm/dts/vf610-zii-cfu1.dts
+@@ -11,10 +11,10 @@
+ / {
+ 	aliases {
+ 		/*
+-		* NVMEM device corresponding to EEPROM attached to
+-		* the switch shared DT node with it, so we use that
+-		* fact to create a desirable naming
+-		*/
++		 * NVMEM device corresponding to EEPROM attached to
++		 * the switch shared DT node with it, so we use that
++		 * fact to create a desirable naming
++		 */
+ 		switch-eeprom = &switch0;
+ 	};
+ };
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.23.0
+
 
 _______________________________________________
 barebox mailing list
