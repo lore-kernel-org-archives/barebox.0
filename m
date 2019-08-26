@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-io1-xd43.google.com ([2607:f8b0:4864:20::d43])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i2KbJ-0007ia-WA
- for barebox@lists.infradead.org; Mon, 26 Aug 2019 19:24:27 +0000
-Received: by mail-io1-xd43.google.com with SMTP id s21so40162735ioa.1
- for <barebox@lists.infradead.org>; Mon, 26 Aug 2019 12:24:25 -0700 (PDT)
-MIME-Version: 1.0
+ id 1i2NJ9-0003bA-Iw
+ for barebox@lists.infradead.org; Mon, 26 Aug 2019 22:17:53 +0000
+Date: Mon, 26 Aug 2019 22:12:42 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20190826201242.dmpkwahnmcbiumbf@pengutronix.de>
 References: <20190825145517.5546-1-u.kleine-koenig@pengutronix.de>
  <20190825145517.5546-2-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20190825145517.5546-2-u.kleine-koenig@pengutronix.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 26 Aug 2019 12:24:12 -0700
-Message-ID: <CAHQ1cqF-UUKs3ysuMQvBxbENpGeRxn=8u-bZcmU6=PmFv3n=-w@mail.gmail.com>
+ <CAHQ1cqF-UUKs3ysuMQvBxbENpGeRxn=8u-bZcmU6=PmFv3n=-w@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAHQ1cqF-UUKs3ysuMQvBxbENpGeRxn=8u-bZcmU6=PmFv3n=-w@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,40 +20,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 2/2] reset_source: drop reset_source_set_instance()
-To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-T24gU3VuLCBBdWcgMjUsIDIwMTkgYXQgNzo1NSBBTSBVd2UgS2xlaW5lLUvDtm5pZwo8dS5rbGVp
-bmUta29lbmlnQHBlbmd1dHJvbml4LmRlPiB3cm90ZToKPgo+IFRoZSBzZW1hbnRpYyBvZiByZXNl
-dF9zb3VyY2Vfc2V0X2luc3RhbmNlKCkgcmVxdWlyZWQgYSBzZXBhcmF0ZSBjYWxsIHRvCj4gcmVz
-ZXRfc291cmNlX3NldCgpIChvciByZXNldF9zb3VyY2Vfc2V0X3ByaW9yaXR5KCkpIGFuZCBjaGVj
-a2VkIHJpZ2h0Cj4gdXNhZ2Ugb25seSB1c2luZyB0aGUgdHlwZS4gTWFrZSB0aGUgc2V0IG9mIGZ1
-bmN0aW9ucyBhIGJpdCBlYXNpZXIgdG8gdXNlCj4gYnkgZHJvcHBpbmcgcmVzZXRfc291cmNlX3Nl
-dF9pbnN0YW5jZSgpIGFuZCBpbnN0ZWFkIGludHJvZHVjZSBhIGZ1bmN0aW9uCj4gdGhhdCBjYW4g
-c2V0IGFsbCByZWxldmFudCBwYXJhbWV0ZXJzIChzb3VyY2UsIHByaW9yaXR5IGFuZCBpbnN0YW5j
-ZSkgaW4KPiBvbmUgZ28uCj4KPiBTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5r
-bGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgo+IC0tLQo+ICBhcmNoL2FybS9tYWNoLWlteC9p
-bXguYyAgICAgICB8ICA0ICstLS0KPiAgY29tbW9uL3Jlc2V0X3NvdXJjZS5jICAgICAgICAgfCAx
-NSArKysrLS0tLS0tLS0tLS0KPiAgZHJpdmVycy93YXRjaGRvZy9zdG0zMl9pd2RnLmMgfCAgMyAr
-LS0KPiAgaW5jbHVkZS9yZXNldF9zb3VyY2UuaCAgICAgICAgfCAyMCArKysrKysrKysrKy0tLS0t
-LS0tLQo+ICA0IGZpbGVzIGNoYW5nZWQsIDE3IGluc2VydGlvbnMoKyksIDI1IGRlbGV0aW9ucygt
-KQo+Cj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtaW14L2lteC5jIGIvYXJjaC9hcm0vbWFj
-aC1pbXgvaW14LmMKPiBpbmRleCA2MzkxNGQzMDZlNmYuLjQzYjU0MGIzOTc3MSAxMDA2NDQKPiAt
-LS0gYS9hcmNoL2FybS9tYWNoLWlteC9pbXguYwo+ICsrKyBiL2FyY2gvYXJtL21hY2gtaW14L2lt
-eC5jCj4gQEAgLTE5OSw5ICsxOTksNyBAQCB2b2lkIGlteF9zZXRfcmVzZXRfcmVhc29uKHZvaWQg
-X19pb21lbSAqc3JzciwKPiAgICAgICAgICAgICAgICAgfQo+ICAgICAgICAgfQo+Cj4gLSAgICAg
-ICByZXNldF9zb3VyY2Vfc2V0X3ByaW9yaXR5KHR5cGUsCj4gLSAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgIFJFU0VUX1NPVVJDRV9ERUZBVUxUX1BSSU9SSVRZKTsKPiAtICAgICAgIHJl
-c2V0X3NvdXJjZV9zZXRfaW5zdGFuY2UodHlwZSwgaW5zdGFuY2UpOwo+ICsgICAgICAgcmVzZXRf
-c291cmNlX3NldF9wcmluc3QodHlwZSwgUkVTRVRfU09VUkNFX0RFRkFVTFRfUFJJT1JJVFksIGlu
-c3RhbmNlKTsKCkFueSBjaGFuZ2Ugd2UgY2FuIGNhbGwgdGhpcyBmdW5jdGlvbgpyZXNldF9zb3Vy
-Y2Vfc2V0X3ByaW9yaXR5X2luc3RhbmNlKCkgb3IgcmVzZXRfc291cmNlX3NldF9hbGwoKSBpbnN0
-ZWFkCm9mICJwcmluc3QiPwoKVGhhbmtzLApBbmRyZXkgU21pcm5vdgoKX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFy
-ZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxt
-YW4vbGlzdGluZm8vYmFyZWJveAo=
+On Mon, Aug 26, 2019 at 12:24:12PM -0700, Andrey Smirnov wrote:
+> On Sun, Aug 25, 2019 at 7:55 AM Uwe Kleine-K=F6nig
+> <u.kleine-koenig@pengutronix.de> wrote:
+> >
+> > The semantic of reset_source_set_instance() required a separate call to
+> > reset_source_set() (or reset_source_set_priority()) and checked right
+> > usage only using the type. Make the set of functions a bit easier to use
+> > by dropping reset_source_set_instance() and instead introduce a function
+> > that can set all relevant parameters (source, priority and instance) in
+> > one go.
+> >
+> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> > ---
+> >  arch/arm/mach-imx/imx.c       |  4 +---
+> >  common/reset_source.c         | 15 ++++-----------
+> >  drivers/watchdog/stm32_iwdg.c |  3 +--
+> >  include/reset_source.h        | 20 +++++++++++---------
+> >  4 files changed, 17 insertions(+), 25 deletions(-)
+> >
+> > diff --git a/arch/arm/mach-imx/imx.c b/arch/arm/mach-imx/imx.c
+> > index 63914d306e6f..43b540b39771 100644
+> > --- a/arch/arm/mach-imx/imx.c
+> > +++ b/arch/arm/mach-imx/imx.c
+> > @@ -199,9 +199,7 @@ void imx_set_reset_reason(void __iomem *srsr,
+> >                 }
+> >         }
+> >
+> > -       reset_source_set_priority(type,
+> > -                                 RESET_SOURCE_DEFAULT_PRIORITY);
+> > -       reset_source_set_instance(type, instance);
+> > +       reset_source_set_prinst(type, RESET_SOURCE_DEFAULT_PRIORITY, in=
+stance);
+> =
+
+> Any change we can call this function
+> reset_source_set_priority_instance() or reset_source_set_all() instead
+> of "prinst"?
+
+Did you see my v2 series? It's still prinst there, but maybe some
+instances can be moved to the device variant there.
+
+Having said that, I don't care much. I considered to make
+reset_source_set() the variant with all parameters and rename the
+current reset_source_set() to reset_source_set_type(). Would that make
+sense to you?
+
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
