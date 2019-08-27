@@ -1,15 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from submit-2.e-mind.com ([188.94.192.46])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i2vbJ-0006dz-QY
- for barebox@lists.infradead.org; Wed, 28 Aug 2019 10:54:57 +0000
-Date: Wed, 28 Aug 2019 12:54:52 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190828105452.jjedxfuez5sig6hu@pengutronix.de>
-References: <20190823092531.6673-1-a.fatoum@pengutronix.de>
+ id 1i2bgV-0007jz-SB
+ for barebox@lists.infradead.org; Tue, 27 Aug 2019 13:39:04 +0000
+Received: from localhost (unknown [127.0.0.1])
+ by submit-2.e-mind.com (Postfix) with ESMTP id DBF208479EB
+ for <barebox@lists.infradead.org>; Tue, 27 Aug 2019 13:38:45 +0000 (UTC)
+Received: from submit-2.e-mind.com ([127.0.0.1])
+ by localhost (submit-2.e-mind.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id Dkb0oaJBcj-t for <barebox@lists.infradead.org>;
+ Tue, 27 Aug 2019 15:38:45 +0200 (CEST)
+Received: from qmail.e-mind.com (qmail34.e-mind.com [188.94.192.34])
+ by submit-2.e-mind.com (Postfix) with SMTP id A34B38357B2
+ for <barebox@lists.infradead.org>; Tue, 27 Aug 2019 15:38:45 +0200 (CEST)
+From: gianluca <gianlucarenzi@eurek.it>
+Message-ID: <4c123056-bf80-deb6-f0d7-6c1a928946dd@eurek.it>
+Date: Tue, 27 Aug 2019 15:38:46 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190823092531.6673-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,41 +25,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3] console: fix out-of-bounds read in dputc(/dev/*, ...)
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, Bastian Krause <bst@pengutronix.de>
+Subject: MMC hardware partitioning
+To: barebox@lists.infradead.org
 
-On Fri, Aug 23, 2019 at 11:25:31AM +0200, Ahmad Fatoum wrote:
-> Trying to output a single character via
-> 	echo -a /dev/serial0-1
-> currently results in garbage output after the newline, because console.c's
-> fops_write discards the buffer length and passes the buffer to
-> (struct cdev)::puts which only handles NUL-terminated strings.
-> 
-> Fix this by amending (struct cdev)::puts with a new nbytes parameter,
-> which is correctly propagated. All this functions now return at most the
-> nbytes parameter they were passed in. This fixes __console_puts, which
-> used to count new lines twice in its return value. 
-> 
-> Fixes: b4f55fcf35 ("console: expose consoles in devfs")
-> Cc: Bastian Krause <bst@pengutronix.de>
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
+Hello everyone!
+I am wondering if there is some way to enable the partition protection 
+for eMMC partition (usually to avoid data corruption due to a powerloss) 
+in Barebox, as seen is mmc command in the bootloader counterpart U-Boot 
+(as reference see u-boot/cmd/mmc.c ).
 
-Applied, thanks
+Any help will be very thankful.
 
-Sascha
+P.S. I am using two barebox versions 2013.03.0 and 2017.06, but I am 
+able to write a custom command/driver to make it working on Barebox.
 
-
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Eurek s.r.l.                          |
+Electronic Engineering                | http://www.eurek.it
+via Celletta 8/B, 40026 Imola, Italy  | Phone: +39-(0)542-609120
+p.iva 00690621206 - c.f. 04020030377  | Fax:   +39-(0)542-609212
 
 _______________________________________________
 barebox mailing list
