@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-io1-xd41.google.com ([2607:f8b0:4864:20::d41])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i2NJ9-0003bA-Iw
- for barebox@lists.infradead.org; Mon, 26 Aug 2019 22:17:53 +0000
-Date: Mon, 26 Aug 2019 22:12:42 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20190826201242.dmpkwahnmcbiumbf@pengutronix.de>
+ id 1i2TT1-0002ZT-DZ
+ for barebox@lists.infradead.org; Tue, 27 Aug 2019 04:52:28 +0000
+Received: by mail-io1-xd41.google.com with SMTP id p12so43274469iog.5
+ for <barebox@lists.infradead.org>; Mon, 26 Aug 2019 21:52:27 -0700 (PDT)
+MIME-Version: 1.0
 References: <20190825145517.5546-1-u.kleine-koenig@pengutronix.de>
  <20190825145517.5546-2-u.kleine-koenig@pengutronix.de>
  <CAHQ1cqF-UUKs3ysuMQvBxbENpGeRxn=8u-bZcmU6=PmFv3n=-w@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAHQ1cqF-UUKs3ysuMQvBxbENpGeRxn=8u-bZcmU6=PmFv3n=-w@mail.gmail.com>
+ <20190826201242.dmpkwahnmcbiumbf@pengutronix.de>
+In-Reply-To: <20190826201242.dmpkwahnmcbiumbf@pengutronix.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Mon, 26 Aug 2019 21:52:14 -0700
+Message-ID: <CAHQ1cqHkMhV_mh9dLfRmuinkEBAe5UdoW9Ws3L1rbAOp0-t4YQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,69 +22,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 2/2] reset_source: drop reset_source_set_instance()
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
+To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Aug 26, 2019 at 12:24:12PM -0700, Andrey Smirnov wrote:
-> On Sun, Aug 25, 2019 at 7:55 AM Uwe Kleine-K=F6nig
-> <u.kleine-koenig@pengutronix.de> wrote:
-> >
-> > The semantic of reset_source_set_instance() required a separate call to
-> > reset_source_set() (or reset_source_set_priority()) and checked right
-> > usage only using the type. Make the set of functions a bit easier to use
-> > by dropping reset_source_set_instance() and instead introduce a function
-> > that can set all relevant parameters (source, priority and instance) in
-> > one go.
-> >
-> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> > ---
-> >  arch/arm/mach-imx/imx.c       |  4 +---
-> >  common/reset_source.c         | 15 ++++-----------
-> >  drivers/watchdog/stm32_iwdg.c |  3 +--
-> >  include/reset_source.h        | 20 +++++++++++---------
-> >  4 files changed, 17 insertions(+), 25 deletions(-)
-> >
-> > diff --git a/arch/arm/mach-imx/imx.c b/arch/arm/mach-imx/imx.c
-> > index 63914d306e6f..43b540b39771 100644
-> > --- a/arch/arm/mach-imx/imx.c
-> > +++ b/arch/arm/mach-imx/imx.c
-> > @@ -199,9 +199,7 @@ void imx_set_reset_reason(void __iomem *srsr,
-> >                 }
-> >         }
-> >
-> > -       reset_source_set_priority(type,
-> > -                                 RESET_SOURCE_DEFAULT_PRIORITY);
-> > -       reset_source_set_instance(type, instance);
-> > +       reset_source_set_prinst(type, RESET_SOURCE_DEFAULT_PRIORITY, in=
-stance);
-> =
-
-> Any change we can call this function
-> reset_source_set_priority_instance() or reset_source_set_all() instead
-> of "prinst"?
-
-Did you see my v2 series? It's still prinst there, but maybe some
-instances can be moved to the device variant there.
-
-Having said that, I don't care much. I considered to make
-reset_source_set() the variant with all parameters and rename the
-current reset_source_set() to reset_source_set_type(). Would that make
-sense to you?
-
-Best regards
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gTW9uLCBBdWcgMjYsIDIwMTkgYXQgMzoxNyBQTSBVd2UgS2xlaW5lLUvDtm5pZwo8dS5rbGVp
+bmUta29lbmlnQHBlbmd1dHJvbml4LmRlPiB3cm90ZToKPgo+IE9uIE1vbiwgQXVnIDI2LCAyMDE5
+IGF0IDEyOjI0OjEyUE0gLTA3MDAsIEFuZHJleSBTbWlybm92IHdyb3RlOgo+ID4gT24gU3VuLCBB
+dWcgMjUsIDIwMTkgYXQgNzo1NSBBTSBVd2UgS2xlaW5lLUvDtm5pZwo+ID4gPHUua2xlaW5lLWtv
+ZW5pZ0BwZW5ndXRyb25peC5kZT4gd3JvdGU6Cj4gPiA+Cj4gPiA+IFRoZSBzZW1hbnRpYyBvZiBy
+ZXNldF9zb3VyY2Vfc2V0X2luc3RhbmNlKCkgcmVxdWlyZWQgYSBzZXBhcmF0ZSBjYWxsIHRvCj4g
+PiA+IHJlc2V0X3NvdXJjZV9zZXQoKSAob3IgcmVzZXRfc291cmNlX3NldF9wcmlvcml0eSgpKSBh
+bmQgY2hlY2tlZCByaWdodAo+ID4gPiB1c2FnZSBvbmx5IHVzaW5nIHRoZSB0eXBlLiBNYWtlIHRo
+ZSBzZXQgb2YgZnVuY3Rpb25zIGEgYml0IGVhc2llciB0byB1c2UKPiA+ID4gYnkgZHJvcHBpbmcg
+cmVzZXRfc291cmNlX3NldF9pbnN0YW5jZSgpIGFuZCBpbnN0ZWFkIGludHJvZHVjZSBhIGZ1bmN0
+aW9uCj4gPiA+IHRoYXQgY2FuIHNldCBhbGwgcmVsZXZhbnQgcGFyYW1ldGVycyAoc291cmNlLCBw
+cmlvcml0eSBhbmQgaW5zdGFuY2UpIGluCj4gPiA+IG9uZSBnby4KPiA+ID4KPiA+ID4gU2lnbmVk
+LW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5k
+ZT4KPiA+ID4gLS0tCj4gPiA+ICBhcmNoL2FybS9tYWNoLWlteC9pbXguYyAgICAgICB8ICA0ICst
+LS0KPiA+ID4gIGNvbW1vbi9yZXNldF9zb3VyY2UuYyAgICAgICAgIHwgMTUgKysrKy0tLS0tLS0t
+LS0tCj4gPiA+ICBkcml2ZXJzL3dhdGNoZG9nL3N0bTMyX2l3ZGcuYyB8ICAzICstLQo+ID4gPiAg
+aW5jbHVkZS9yZXNldF9zb3VyY2UuaCAgICAgICAgfCAyMCArKysrKysrKysrKy0tLS0tLS0tLQo+
+ID4gPiAgNCBmaWxlcyBjaGFuZ2VkLCAxNyBpbnNlcnRpb25zKCspLCAyNSBkZWxldGlvbnMoLSkK
+PiA+ID4KPiA+ID4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtaW14L2lteC5jIGIvYXJjaC9h
+cm0vbWFjaC1pbXgvaW14LmMKPiA+ID4gaW5kZXggNjM5MTRkMzA2ZTZmLi40M2I1NDBiMzk3NzEg
+MTAwNjQ0Cj4gPiA+IC0tLSBhL2FyY2gvYXJtL21hY2gtaW14L2lteC5jCj4gPiA+ICsrKyBiL2Fy
+Y2gvYXJtL21hY2gtaW14L2lteC5jCj4gPiA+IEBAIC0xOTksOSArMTk5LDcgQEAgdm9pZCBpbXhf
+c2V0X3Jlc2V0X3JlYXNvbih2b2lkIF9faW9tZW0gKnNyc3IsCj4gPiA+ICAgICAgICAgICAgICAg
+ICB9Cj4gPiA+ICAgICAgICAgfQo+ID4gPgo+ID4gPiAtICAgICAgIHJlc2V0X3NvdXJjZV9zZXRf
+cHJpb3JpdHkodHlwZSwKPiA+ID4gLSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFJF
+U0VUX1NPVVJDRV9ERUZBVUxUX1BSSU9SSVRZKTsKPiA+ID4gLSAgICAgICByZXNldF9zb3VyY2Vf
+c2V0X2luc3RhbmNlKHR5cGUsIGluc3RhbmNlKTsKPiA+ID4gKyAgICAgICByZXNldF9zb3VyY2Vf
+c2V0X3ByaW5zdCh0eXBlLCBSRVNFVF9TT1VSQ0VfREVGQVVMVF9QUklPUklUWSwgaW5zdGFuY2Up
+Owo+ID4KPiA+IEFueSBjaGFuZ2Ugd2UgY2FuIGNhbGwgdGhpcyBmdW5jdGlvbgo+ID4gcmVzZXRf
+c291cmNlX3NldF9wcmlvcml0eV9pbnN0YW5jZSgpIG9yIHJlc2V0X3NvdXJjZV9zZXRfYWxsKCkg
+aW5zdGVhZAo+ID4gb2YgInByaW5zdCI/Cj4KPiBEaWQgeW91IHNlZSBteSB2MiBzZXJpZXM/IEl0
+J3Mgc3RpbGwgcHJpbnN0IHRoZXJlLCBidXQgbWF5YmUgc29tZQo+IGluc3RhbmNlcyBjYW4gYmUg
+bW92ZWQgdG8gdGhlIGRldmljZSB2YXJpYW50IHRoZXJlLgo+Cj4gSGF2aW5nIHNhaWQgdGhhdCwg
+SSBkb24ndCBjYXJlIG11Y2guIEkgY29uc2lkZXJlZCB0byBtYWtlCj4gcmVzZXRfc291cmNlX3Nl
+dCgpIHRoZSB2YXJpYW50IHdpdGggYWxsIHBhcmFtZXRlcnMgYW5kIHJlbmFtZSB0aGUKPiBjdXJy
+ZW50IHJlc2V0X3NvdXJjZV9zZXQoKSB0byByZXNldF9zb3VyY2Vfc2V0X3R5cGUoKS4gV291bGQg
+dGhhdCBtYWtlCj4gc2Vuc2UgdG8geW91PwoKWWVhaCwgdG90YWxseSwgdGhhdCdkIHByb2JhYmx5
+IGJlIGV2ZW4gYmV0dGVyLgoKVGhhbmtzLApBbmRyZXkgU21pcm5vdgoKX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFy
+ZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxt
+YW4vbGlzdGluZm8vYmFyZWJveAo=
