@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from relay4-d.mail.gandi.net ([217.70.183.196])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i2wGC-0006C9-Uf
- for barebox@lists.infradead.org; Wed, 28 Aug 2019 11:37:10 +0000
-Date: Wed, 28 Aug 2019 13:37:07 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190828113707.xh6t33zl5nzsyzwe@pengutronix.de>
-References: <20190826200207.1009-1-cory.tusar@zii.aero>
+ id 1i2cWq-0000LT-Mg
+ for barebox@lists.infradead.org; Tue, 27 Aug 2019 14:33:04 +0000
+Received: from geraet.pengutronix.de (hazel.nat.pengutronix.de [85.220.165.66])
+ (Authenticated sender: ahmad@a3f.at)
+ by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 0EE8AE0005
+ for <barebox@lists.infradead.org>; Tue, 27 Aug 2019 14:32:45 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Tue, 27 Aug 2019 16:32:33 +0200
+Message-Id: <20190827143239.15682-1-ahmad@a3f.at>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190826200207.1009-1-cory.tusar@zii.aero>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,30 +23,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: zii-vf610-dev: Use CTRL-C as autoboot abort
-To: Cory Tusar <Cory.Tusar@zii.aero>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Chris Healy <Chris.Healy@zii.aero>
+Subject: [PATCH 0/6] sandbox: add HWRNG driver for host /dev/random
+To: barebox@lists.infradead.org
 
-On Mon, Aug 26, 2019 at 08:02:25PM +0000, Cory Tusar wrote:
-> This brings the various VF610-based units in line with other ZII
-> platforms.
-> 
-> Signed-off-by: Cory Tusar <cory.tusar@zii.aero>
-> ---
->  .../zii-vf610-dev/defaultenv-zii-vf610-dev/nv/autoboot_abort_key | 1 +
->  1 file changed, 1 insertion(+)
->  create mode 100644 arch/arm/boards/zii-vf610-dev/defaultenv-zii-vf610-dev/nv/autoboot_abort_key
+What's in the topic is what the last patch does. The others are cleanup
+or fixes or add a symbol needed by the last patch.
 
-Applied, thanks
+In summary, with this patchset, you can probe barebox,hostfile nodes in
+your device tree, create partitions and have e.g. barebox state refer to
+it. Some problems with symbol collisions are fixed, which e.g. cause X11
+to use barebox strdup on my system, but the glibc free(3), which
+resulted in a crash whenever it attempted to open the SDL window.
 
-Sascha
+Ahmad Fatoum (6):
+  sandbox: include header to provide missing prototype
+  sandbox: remove unused ARCH_LINUX Kconfig symbol
+  sandbox: redefine optarg and optind to avoid collisions
+  sandbox: compile with symbol -fvisibility=hidden
+  sandbox: hostfile: allow probing from device tree
+  hwrng: add sandbox driver interface to host /dev/random
 
+ arch/sandbox/Kconfig                          |  3 -
+ arch/sandbox/Makefile                         |  6 +-
+ arch/sandbox/board/Makefile                   |  1 +
+ arch/sandbox/board/board.c                    |  7 +++
+ arch/sandbox/board/dev-random.c               | 24 +++++++
+ arch/sandbox/board/devices.c                  |  1 +
+ arch/sandbox/board/hostfile.c                 | 16 +++--
+ arch/sandbox/dts/sandbox-state.dtsi           | 50 +++++++++++++++
+ .../sandbox/mach-sandbox/include/mach/linux.h |  8 +++
+ arch/sandbox/os/common.c                      |  5 ++
+ drivers/hw_random/Kconfig                     |  8 +++
+ drivers/hw_random/Makefile                    |  1 +
+ drivers/hw_random/dev-random.c                | 63 +++++++++++++++++++
+ 13 files changed, 184 insertions(+), 9 deletions(-)
+ create mode 100644 arch/sandbox/board/dev-random.c
+ create mode 100644 arch/sandbox/dts/sandbox-state.dtsi
+ create mode 100644 drivers/hw_random/dev-random.c
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
