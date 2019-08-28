@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i2DKt-0002eN-Mw
- for barebox@lists.infradead.org; Mon, 26 Aug 2019 11:39:00 +0000
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Mon, 26 Aug 2019 13:38:53 +0200
-Message-Id: <20190826113854.27895-2-o.rempel@pengutronix.de>
-In-Reply-To: <20190826113854.27895-1-o.rempel@pengutronix.de>
+ id 1i2wEp-0005zE-Kl
+ for barebox@lists.infradead.org; Wed, 28 Aug 2019 11:35:44 +0000
+Date: Wed, 28 Aug 2019 13:35:42 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190828113542.h4xiyjr4a2s7lzq6@pengutronix.de>
 References: <20190826113854.27895-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190826113854.27895-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,39 +22,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 2/3] MIPS: dts: dpt-module: fix gpio button
-To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: Re: [PATCH v1 1/3] MIPS: ath79: enable watchdog support
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-GPIO11 is set to 0 by default and there is no internal pull ups
-to set a different configuration. To fix the system with gpio-key
-activated we need to fix devicetree first.
+On Mon, Aug 26, 2019 at 01:38:52PM +0200, Oleksij Rempel wrote:
+> all ath79 based SoCs have watchdog. Make sure, it can be used.
+> 
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> ---
+>  arch/mips/configs/ath79_defconfig | 4 ++++
+>  1 file changed, 4 insertions(+)
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- arch/mips/dts/ar9331-dptechnics-dpt-module.dts | 6 ++++++
- 1 file changed, 6 insertions(+)
+Applied, thanks
 
-diff --git a/arch/mips/dts/ar9331-dptechnics-dpt-module.dts b/arch/mips/dts/ar9331-dptechnics-dpt-module.dts
-index f0de46315c..315589aab9 100644
---- a/arch/mips/dts/ar9331-dptechnics-dpt-module.dts
-+++ b/arch/mips/dts/ar9331-dptechnics-dpt-module.dts
-@@ -24,6 +24,12 @@
- 			barebox,default-trigger = "heartbeat";
- 		};
- 	};
-+
-+	gpio-keys {
-+		button@0 {
-+			gpios = <&gpio 11 GPIO_ACTIVE_HIGH>;
-+		};
-+	};
- };
- 
- &spiflash {
+Sascha
+
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
