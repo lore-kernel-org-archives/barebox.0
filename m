@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i2v7d-0002qg-PZ
- for barebox@lists.infradead.org; Wed, 28 Aug 2019 10:24:15 +0000
+ id 1i2v7d-0002qf-P7
+ for barebox@lists.infradead.org; Wed, 28 Aug 2019 10:24:17 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 28 Aug 2019 12:24:02 +0200
-Message-Id: <20190828102402.18332-7-s.hauer@pengutronix.de>
+Date: Wed, 28 Aug 2019 12:23:58 +0200
+Message-Id: <20190828102402.18332-3-s.hauer@pengutronix.de>
 In-Reply-To: <20190828102402.18332-1-s.hauer@pengutronix.de>
 References: <20190828102402.18332-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,206 +21,534 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/6] ARM: OMAP: bbu: Add an all-in-one NAND update handler
+Subject: [PATCH 2/6] mtd: nand: gpmc: Add support for ELM
 To: Barebox List <barebox@lists.infradead.org>
 
-This adds a NAND update handler which automatically detects on the
-filetype which stage shall be updated. It takes a single partition
-for both the xload images and the barebox images. It uses a fixed
-layout on this partition, so there's no need to configure anything
-on the board side.
+This adds support for the ELM (Error Location Module) found on
+not-too-old OMAP SoCs. The driver has been taken from Linux-5.3-rc6
+with interrupt support removed.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-omap/am33xx_bbu_nand.c  | 146 ++++++++++++++++++++++++++
- arch/arm/mach-omap/include/mach/bbu.h |   6 ++
- 2 files changed, 152 insertions(+)
+ drivers/mtd/nand/Kconfig    |  10 +
+ drivers/mtd/nand/Makefile   |   1 +
+ drivers/mtd/nand/omap_elm.c | 413 ++++++++++++++++++++++++++++++++++++
+ include/platform_data/elm.h |  53 +++++
+ 4 files changed, 477 insertions(+)
+ create mode 100644 drivers/mtd/nand/omap_elm.c
+ create mode 100644 include/platform_data/elm.h
 
-diff --git a/arch/arm/mach-omap/am33xx_bbu_nand.c b/arch/arm/mach-omap/am33xx_bbu_nand.c
-index 4c1a28d37e..8c487c8ebb 100644
---- a/arch/arm/mach-omap/am33xx_bbu_nand.c
-+++ b/arch/arm/mach-omap/am33xx_bbu_nand.c
-@@ -22,6 +22,8 @@
- #include <fcntl.h>
- #include <libfile.h>
- #include <filetype.h>
-+#include <linux/mtd/mtd.h>
-+#include <mtd/mtd-peb.h>
- #include <mach/bbu.h>
+diff --git a/drivers/mtd/nand/Kconfig b/drivers/mtd/nand/Kconfig
+index 2b4a478a03..fadfe1f99b 100644
+--- a/drivers/mtd/nand/Kconfig
++++ b/drivers/mtd/nand/Kconfig
+@@ -90,6 +90,16 @@ config NAND_OMAP_GPMC
+ 	  Support for NAND flash using GPMC. GPMC is a common memory
+ 	  interface found on Texas Instrument's OMAP platforms
  
- struct nand_bbu_handler {
-@@ -134,3 +136,147 @@ int am33xx_bbu_nand_slots_register_handler(const char *name, char **devicefile,
- 
- 	return ret;
- }
++config MTD_NAND_OMAP_ELM
++	bool "Support for ELM (Error Location Module) on OMAP platforms"
++	depends on NAND_OMAP_GPMC
++	help
++	  This config enables the ELM hardware engine, which can be used to
++	  locate and correct errors when using BCH ECC scheme. This offloads
++	  the cpu from doing ECC error searching and correction. However some
++	  legacy OMAP families like OMAP2xxx, OMAP3xxx do not have ELM engine
++	  so this is optional for them.
 +
-+#define XLOAD_BLOCKS 4
+ config NAND_ORION
+ 	bool
+ 	prompt "Marvell Orion NAND driver"
+diff --git a/drivers/mtd/nand/Makefile b/drivers/mtd/nand/Makefile
+index 6088512745..a4066ba778 100644
+--- a/drivers/mtd/nand/Makefile
++++ b/drivers/mtd/nand/Makefile
+@@ -10,6 +10,7 @@ obj-$(CONFIG_MTD_NAND_NOMADIK)		+= nomadik_nand.o
+ obj-$(CONFIG_NAND_IMX)			+= nand_imx.o
+ obj-$(CONFIG_NAND_IMX_BBM)		+= nand_imx_bbm.o
+ obj-$(CONFIG_NAND_OMAP_GPMC)		+= nand_omap_gpmc.o nand_omap_bch_decoder.o
++obj-$(CONFIG_MTD_NAND_OMAP_ELM)		+= omap_elm.o
+ obj-$(CONFIG_NAND_ORION)		+= nand_orion.o
+ obj-$(CONFIG_NAND_MRVL_NFC)		+= nand_mrvl_nfc.o
+ obj-$(CONFIG_NAND_ATMEL)		+= atmel_nand.o
+diff --git a/drivers/mtd/nand/omap_elm.c b/drivers/mtd/nand/omap_elm.c
+new file mode 100644
+index 0000000000..583235fc78
+--- /dev/null
++++ b/drivers/mtd/nand/omap_elm.c
+@@ -0,0 +1,413 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Error Location Module
++ *
++ * Copyright (C) 2012 Texas Instruments Incorporated - http://www.ti.com/
++ */
 +
-+static int nand_update_handler_complete(struct bbu_handler *handler,
-+					struct bbu_data *data)
++#define DRIVER_NAME	"omap-elm"
++
++#include <common.h>
++#include <driver.h>
++#include <init.h>
++#include <platform_data/elm.h>
++
++#define ELM_SYSCONFIG			0x010
++#define ELM_IRQSTATUS			0x018
++#define ELM_IRQENABLE			0x01c
++#define ELM_LOCATION_CONFIG		0x020
++#define ELM_PAGE_CTRL			0x080
++#define ELM_SYNDROME_FRAGMENT_0		0x400
++#define ELM_SYNDROME_FRAGMENT_1		0x404
++#define ELM_SYNDROME_FRAGMENT_2		0x408
++#define ELM_SYNDROME_FRAGMENT_3		0x40c
++#define ELM_SYNDROME_FRAGMENT_4		0x410
++#define ELM_SYNDROME_FRAGMENT_5		0x414
++#define ELM_SYNDROME_FRAGMENT_6		0x418
++#define ELM_LOCATION_STATUS		0x800
++#define ELM_ERROR_LOCATION_0		0x880
++
++/* ELM Interrupt Status Register */
++#define INTR_STATUS_PAGE_VALID		BIT(8)
++
++/* ELM Interrupt Enable Register */
++#define INTR_EN_PAGE_MASK		BIT(8)
++
++/* ELM Location Configuration Register */
++#define ECC_BCH_LEVEL_MASK		0x3
++
++/* ELM syndrome */
++#define ELM_SYNDROME_VALID		BIT(16)
++
++/* ELM_LOCATION_STATUS Register */
++#define ECC_CORRECTABLE_MASK		BIT(8)
++#define ECC_NB_ERRORS_MASK		0x1f
++
++/* ELM_ERROR_LOCATION_0-15 Registers */
++#define ECC_ERROR_LOCATION_MASK		0x1fff
++
++#define ELM_ECC_SIZE			0x7ff
++
++#define SYNDROME_FRAGMENT_REG_SIZE	0x40
++#define ERROR_LOCATION_SIZE		0x100
++
++struct elm_registers {
++	u32 elm_irqenable;
++	u32 elm_sysconfig;
++	u32 elm_location_config;
++	u32 elm_page_ctrl;
++	u32 elm_syndrome_fragment_6[ERROR_VECTOR_MAX];
++	u32 elm_syndrome_fragment_5[ERROR_VECTOR_MAX];
++	u32 elm_syndrome_fragment_4[ERROR_VECTOR_MAX];
++	u32 elm_syndrome_fragment_3[ERROR_VECTOR_MAX];
++	u32 elm_syndrome_fragment_2[ERROR_VECTOR_MAX];
++	u32 elm_syndrome_fragment_1[ERROR_VECTOR_MAX];
++	u32 elm_syndrome_fragment_0[ERROR_VECTOR_MAX];
++};
++
++struct elm_info {
++	struct device_d *dev;
++	void __iomem *elm_base;
++	struct list_head list;
++	enum bch_ecc bch_type;
++	struct elm_registers elm_regs;
++	int ecc_steps;
++	int ecc_syndrome_size;
++};
++
++static struct elm_info *ginfo;
++
++static void elm_write_reg(struct elm_info *info, int offset, u32 val)
 +{
-+	const void *image = data->image;
-+	size_t size = data->len;
-+	enum filetype filetype;
-+	struct cdev *cdev;
-+	struct mtd_info *mtd;
-+	int ret, i;
-+	int npebs;
++	writel(val, info->elm_base + offset);
++}
 +
-+	filetype = file_detect_type(image, size);
-+
-+	cdev = cdev_by_name(handler->devicefile);
-+	if (!cdev) {
-+		pr_err("%s: No NAND device found\n", __func__);
-+		return -ENODEV;
-+	}
-+
-+        mtd = cdev->mtd;
-+	if (!mtd) {
-+		pr_err("%s: %s is not a mtd device\n", __func__,
-+		       handler->devicefile);
-+		return -EINVAL;
-+	}
-+
-+	npebs = mtd_div_by_eb(mtd->size, mtd);
-+
-+	/*
-+	 * Sanity check: We need at minimum 6 eraseblocks: 4 for the four xload
-+	 * binaries and 2 for the barebox images.
-+	 */
-+	if (npebs < XLOAD_BLOCKS + 2)
-+		return -EINVAL;
-+
-+	if (filetype == filetype_arm_barebox) {
-+		int npebs_bb = (npebs - XLOAD_BLOCKS) / 2;
-+
-+		pr_info("Barebox image detected, updating 2nd stage\n");
-+
-+		/* last chance before erasing the flash */
-+		ret = bbu_confirm(data);
-+		if (ret)
-+			goto out;
-+
-+		ret = mtd_peb_write_file(mtd, XLOAD_BLOCKS, npebs_bb, data->image,
-+					 data->len);
-+		if (ret)
-+			goto out;
-+
-+		ret = mtd_peb_write_file(mtd, XLOAD_BLOCKS + npebs_bb, npebs_bb,
-+					 data->image, data->len);
-+		if (ret)
-+			goto out;
-+
-+	} else if (filetype == filetype_ch_image) {
-+		int written = 0;
-+		void *buf;
-+
-+		pr_info("xload image detected, updating 1st stage\n");
-+
-+		if (data->len > mtd->erasesize) {
-+			pr_err("Image is bigger than eraseblock, this is not supported\n");
-+			ret = -EINVAL;
-+			goto out;
-+		}
-+
-+		/* last chance before erasing the flash */
-+		ret = bbu_confirm(data);
-+		if (ret)
-+			goto out;
-+
-+		buf = xzalloc(mtd->erasesize);
-+		memcpy(buf, data->image, data->len);
-+	
-+		for (i = 0; i < 4; i++) {
-+			if (mtd_peb_is_bad(mtd, i)) {
-+				pr_info("PEB%d is bad, skipping\n", i);
-+				continue;
-+			}
-+
-+			ret = mtd_peb_erase(mtd, i);
-+			if (ret)
-+				continue;
-+
-+			ret = mtd_peb_write(mtd, buf, i, 0, mtd->erasesize);
-+			if (ret) {
-+				pr_err("Failed to write MLO to PEB%d: %s\n", i,
-+				       strerror(-ret));
-+				continue;
-+			}
-+			written++;
-+		}
-+
-+		free(buf);
-+
-+		if (written)
-+			ret = 0;
-+		else
-+			ret = -EIO;
-+	} else {
-+		pr_err("%s of type %s is not a valid update file image\n",
-+		       data->imagefile, file_type_to_string(filetype));
-+		return -EINVAL;
-+	}
-+out:
-+	return ret;
++static u32 elm_read_reg(struct elm_info *info, int offset)
++{
++	return readl(info->elm_base + offset);
 +}
 +
 +/**
-+ * am33xx_bbu_nand_register_handler - register a NAND update handler
-+ * @device: The nand cdev name (usually "nand0.barebox")
-+ *
-+ * This registers an update handler suitable for updating barebox to NAND. This
-+ * update handler takes a single NAND partition for both the xload images and the
-+ * barebox images. The first four blocks are used for the 4 xload copies, the
-+ * remaining space is divided into two equally sized parts for two barebox images.
-+ * The update handler automatically detects based on the filetype if the xload
-+ * or the 2nd stage barebox shall be updated.
-+ *
-+ * FIXME: Currently for actually loading a barebox image from an xload image
-+ * flashed with this layout a suitable layout has to be registered by the xload
-+ * image using omap_set_barebox_part(). In the next step this should be the
-+ * default.
++ * elm_config - Configure ELM module
++ * @dev:	ELM device
++ * @bch_type:	Type of BCH ecc
 + */
-+int am33xx_bbu_nand_register_handler(const char *device)
++int elm_config(enum bch_ecc bch_type, int ecc_steps, int ecc_step_size,
++		int ecc_syndrome_size)
 +{
-+	struct bbu_handler *handler;
-+	int ret;
++	struct elm_info *info = ginfo;
++	u32 reg_val;
 +
-+	handler = xzalloc(sizeof(*handler));
-+	handler->devicefile = device;
-+	handler->handler = nand_update_handler_complete;
-+	handler->name = "nand";
++	if (!info)
++		return -ENODEV;
++	/* ELM cannot detect ECC errors for chunks > 1KB */
++	if (ecc_step_size > ((ELM_ECC_SIZE + 1) / 2)) {
++		dev_err(info->dev, "unsupported config ecc-size=%d\n", ecc_step_size);
++		return -EINVAL;
++	}
++	/* ELM support 8 error syndrome process */
++	if (ecc_steps > ERROR_VECTOR_MAX) {
++		dev_err(info->dev, "unsupported config ecc-step=%d\n", ecc_steps);
++		return -EINVAL;
++	}
 +
-+	ret = bbu_register_handler(handler);
-+	if (ret)
-+		free(handler);
++	reg_val = (bch_type & ECC_BCH_LEVEL_MASK) | (ELM_ECC_SIZE << 16);
++	elm_write_reg(info, ELM_LOCATION_CONFIG, reg_val);
++	info->bch_type		= bch_type;
++	info->ecc_steps		= ecc_steps;
++	info->ecc_syndrome_size	= ecc_syndrome_size;
 +
-+	return ret;
-+}
-diff --git a/arch/arm/mach-omap/include/mach/bbu.h b/arch/arm/mach-omap/include/mach/bbu.h
-index c8b0a55acb..94d3f96bb4 100644
---- a/arch/arm/mach-omap/include/mach/bbu.h
-+++ b/arch/arm/mach-omap/include/mach/bbu.h
-@@ -23,6 +23,7 @@ int am33xx_bbu_nand_xloadslots_register_handler(const char *name,
- 						int num_devicefiles);
- int am33xx_bbu_nand_slots_register_handler(const char *name, char **devicefile,
- 						int num_devicefiles);
-+int am33xx_bbu_nand_register_handler(const char *device);
- #else
- static inline int am33xx_bbu_nand_xloadslots_register_handler(const char *name,
- 							char **devicefile,
-@@ -37,6 +38,11 @@ static inline int am33xx_bbu_nand_slots_register_handler(const char *name,
- {
- 	return 0;
- }
-+
-+static inline int am33xx_bbu_nand_register_handler(const char *device)
-+{
 +	return 0;
 +}
- #endif
- 
- #ifdef CONFIG_BAREBOX_UPDATE_AM33XX_EMMC
++
++/**
++ * elm_configure_page_mode - Enable/Disable page mode
++ * @info:	elm info
++ * @index:	index number of syndrome fragment vector
++ * @enable:	enable/disable flag for page mode
++ *
++ * Enable page mode for syndrome fragment index
++ */
++static void elm_configure_page_mode(struct elm_info *info, int index,
++		bool enable)
++{
++	u32 reg_val;
++
++	reg_val = elm_read_reg(info, ELM_PAGE_CTRL);
++	if (enable)
++		reg_val |= BIT(index);	/* enable page mode */
++	else
++		reg_val &= ~BIT(index);	/* disable page mode */
++
++	elm_write_reg(info, ELM_PAGE_CTRL, reg_val);
++}
++
++/**
++ * elm_load_syndrome - Load ELM syndrome reg
++ * @info:	elm info
++ * @err_vec:	elm error vectors
++ * @ecc:	buffer with calculated ecc
++ *
++ * Load syndrome fragment registers with calculated ecc in reverse order.
++ */
++static void elm_load_syndrome(struct elm_info *info,
++		struct elm_errorvec *err_vec, u8 *ecc)
++{
++	int i, offset;
++	u32 val;
++
++	for (i = 0; i < info->ecc_steps; i++) {
++
++		/* Check error reported */
++		if (err_vec[i].error_reported) {
++			elm_configure_page_mode(info, i, true);
++			offset = ELM_SYNDROME_FRAGMENT_0 +
++				SYNDROME_FRAGMENT_REG_SIZE * i;
++			switch (info->bch_type) {
++			case BCH8_ECC:
++				/* syndrome fragment 0 = ecc[9-12B] */
++				val = cpu_to_be32(*(u32 *) &ecc[9]);
++				elm_write_reg(info, offset, val);
++
++				/* syndrome fragment 1 = ecc[5-8B] */
++				offset += 4;
++				val = cpu_to_be32(*(u32 *) &ecc[5]);
++				elm_write_reg(info, offset, val);
++
++				/* syndrome fragment 2 = ecc[1-4B] */
++				offset += 4;
++				val = cpu_to_be32(*(u32 *) &ecc[1]);
++				elm_write_reg(info, offset, val);
++
++				/* syndrome fragment 3 = ecc[0B] */
++				offset += 4;
++				val = ecc[0];
++				elm_write_reg(info, offset, val);
++				break;
++			case BCH4_ECC:
++				/* syndrome fragment 0 = ecc[20-52b] bits */
++				val = (cpu_to_be32(*(u32 *) &ecc[3]) >> 4) |
++					((ecc[2] & 0xf) << 28);
++				elm_write_reg(info, offset, val);
++
++				/* syndrome fragment 1 = ecc[0-20b] bits */
++				offset += 4;
++				val = cpu_to_be32(*(u32 *) &ecc[0]) >> 12;
++				elm_write_reg(info, offset, val);
++				break;
++			case BCH16_ECC:
++				val = cpu_to_be32(*(u32 *) &ecc[22]);
++				elm_write_reg(info, offset, val);
++				offset += 4;
++				val = cpu_to_be32(*(u32 *) &ecc[18]);
++				elm_write_reg(info, offset, val);
++				offset += 4;
++				val = cpu_to_be32(*(u32 *) &ecc[14]);
++				elm_write_reg(info, offset, val);
++				offset += 4;
++				val = cpu_to_be32(*(u32 *) &ecc[10]);
++				elm_write_reg(info, offset, val);
++				offset += 4;
++				val = cpu_to_be32(*(u32 *) &ecc[6]);
++				elm_write_reg(info, offset, val);
++				offset += 4;
++				val = cpu_to_be32(*(u32 *) &ecc[2]);
++				elm_write_reg(info, offset, val);
++				offset += 4;
++				val = cpu_to_be32(*(u32 *) &ecc[0]) >> 16;
++				elm_write_reg(info, offset, val);
++				break;
++			default:
++				pr_err("invalid config bch_type\n");
++			}
++		}
++
++		/* Update ecc pointer with ecc byte size */
++		ecc += info->ecc_syndrome_size;
++	}
++}
++
++/**
++ * elm_start_processing - start elm syndrome processing
++ * @info:	elm info
++ * @err_vec:	elm error vectors
++ *
++ * Set syndrome valid bit for syndrome fragment registers for which
++ * elm syndrome fragment registers are loaded. This enables elm module
++ * to start processing syndrome vectors.
++ */
++static void elm_start_processing(struct elm_info *info,
++		struct elm_errorvec *err_vec)
++{
++	int i, offset;
++	u32 reg_val;
++
++	/*
++	 * Set syndrome vector valid, so that ELM module
++	 * will process it for vectors error is reported
++	 */
++	for (i = 0; i < info->ecc_steps; i++) {
++		if (err_vec[i].error_reported) {
++			offset = ELM_SYNDROME_FRAGMENT_6 +
++				SYNDROME_FRAGMENT_REG_SIZE * i;
++			reg_val = elm_read_reg(info, offset);
++			reg_val |= ELM_SYNDROME_VALID;
++			elm_write_reg(info, offset, reg_val);
++		}
++	}
++}
++
++/**
++ * elm_error_correction - locate correctable error position
++ * @info:	elm info
++ * @err_vec:	elm error vectors
++ *
++ * On completion of processing by elm module, error location status
++ * register updated with correctable/uncorrectable error information.
++ * In case of correctable errors, number of errors located from
++ * elm location status register & read the positions from
++ * elm error location register.
++ */
++static void elm_error_correction(struct elm_info *info,
++		struct elm_errorvec *err_vec)
++{
++	int i, j, errors = 0;
++	int offset;
++	u32 reg_val;
++
++	for (i = 0; i < info->ecc_steps; i++) {
++
++		/* Check error reported */
++		if (err_vec[i].error_reported) {
++			offset = ELM_LOCATION_STATUS + ERROR_LOCATION_SIZE * i;
++			reg_val = elm_read_reg(info, offset);
++
++			/* Check correctable error or not */
++			if (reg_val & ECC_CORRECTABLE_MASK) {
++				offset = ELM_ERROR_LOCATION_0 +
++					ERROR_LOCATION_SIZE * i;
++
++				/* Read count of correctable errors */
++				err_vec[i].error_count = reg_val &
++					ECC_NB_ERRORS_MASK;
++
++				/* Update the error locations in error vector */
++				for (j = 0; j < err_vec[i].error_count; j++) {
++
++					reg_val = elm_read_reg(info, offset);
++					err_vec[i].error_loc[j] = reg_val &
++						ECC_ERROR_LOCATION_MASK;
++
++					/* Update error location register */
++					offset += 4;
++				}
++
++				errors += err_vec[i].error_count;
++			} else {
++				err_vec[i].error_uncorrectable = true;
++			}
++
++			/* Clearing interrupts for processed error vectors */
++			elm_write_reg(info, ELM_IRQSTATUS, BIT(i));
++
++			/* Disable page mode */
++			elm_configure_page_mode(info, i, false);
++		}
++	}
++}
++
++static int elm_poll(struct elm_info *info)
++{
++	u32 reg_val;
++
++	reg_val = elm_read_reg(info, ELM_IRQSTATUS);
++
++	/* All error vectors processed */
++	if (reg_val & INTR_STATUS_PAGE_VALID) {
++		elm_write_reg(info, ELM_IRQSTATUS,
++				reg_val & INTR_STATUS_PAGE_VALID);
++		return 0;
++	}
++
++	return -EINPROGRESS;
++}
++
++/**
++ * elm_decode_bch_error_page - Locate error position
++ * @dev:	device pointer
++ * @ecc_calc:	calculated ECC bytes from GPMC
++ * @err_vec:	elm error vectors
++ *
++ * Called with one or more error reported vectors & vectors with
++ * error reported is updated in err_vec[].error_reported
++ */
++int elm_decode_bch_error_page(u8 *ecc_calc, struct elm_errorvec *err_vec)
++{
++	struct elm_info *info = ginfo;
++	u32 reg_val;
++	uint64_t start;
++
++	if (!info)
++		return -ENODEV;
++
++	/* Enable page mode interrupt */
++	reg_val = elm_read_reg(info, ELM_IRQSTATUS);
++	elm_write_reg(info, ELM_IRQSTATUS, reg_val & INTR_STATUS_PAGE_VALID);
++	elm_write_reg(info, ELM_IRQENABLE, INTR_EN_PAGE_MASK);
++
++	/* Load valid ecc byte to syndrome fragment register */
++	elm_load_syndrome(info, err_vec, ecc_calc);
++
++	/* Enable syndrome processing for which syndrome fragment is updated */
++	elm_start_processing(info, err_vec);
++
++	/* Wait for ELM module to finish locating error correction */
++	start = get_time_ns();
++	while (elm_poll(info) < 0) {
++		if (is_timeout(start, SECOND))
++			return -ETIMEDOUT;
++	}
++
++	/* Disable page mode interrupt */
++	reg_val = elm_read_reg(info, ELM_IRQENABLE);
++	elm_write_reg(info, ELM_IRQENABLE, reg_val & ~INTR_EN_PAGE_MASK);
++	elm_error_correction(info, err_vec);
++
++	return 0;
++}
++
++static int elm_probe(struct device_d *dev)
++{
++	struct resource *res;
++	struct elm_info *info;
++
++	info = xzalloc(sizeof(*info));
++
++	info->dev = dev;
++
++	res = dev_request_mem_resource(dev, 0);
++	if (IS_ERR(res))
++		return PTR_ERR(res);
++	info->elm_base = IOMEM(res->start);
++
++	dev->priv = info;
++
++	ginfo = info;
++
++	return 0;
++}
++
++static struct of_device_id elm_compatible[] = {
++	{
++		.compatible = "ti,am3352-elm",
++	}, {
++		/* sentinel */
++	}
++};
++
++static struct driver_d omap_elm_driver = {
++	.name = "omap-elm",
++	.probe = elm_probe,
++	.of_compatible = DRV_OF_COMPAT(elm_compatible)
++};
++coredevice_platform_driver(omap_elm_driver);
+diff --git a/include/platform_data/elm.h b/include/platform_data/elm.h
+new file mode 100644
+index 0000000000..bc5d2edb1d
+--- /dev/null
++++ b/include/platform_data/elm.h
+@@ -0,0 +1,53 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * BCH Error Location Module
++ *
++ * Copyright (C) 2012 Texas Instruments Incorporated - http://www.ti.com/
++ */
++
++#ifndef __ELM_H
++#define __ELM_H
++
++enum bch_ecc {
++	BCH4_ECC = 0,
++	BCH8_ECC,
++	BCH16_ECC,
++};
++
++/* ELM support 8 error syndrome process */
++#define ERROR_VECTOR_MAX		8
++
++/**
++ * struct elm_errorvec - error vector for elm
++ * @error_reported:		set true for vectors error is reported
++ * @error_uncorrectable:	number of uncorrectable errors
++ * @error_count:		number of correctable errors in the sector
++ * @error_loc:			buffer for error location
++ *
++ */
++struct elm_errorvec {
++	bool error_reported;
++	bool error_uncorrectable;
++	int error_count;
++	int error_loc[16];
++};
++
++#if IS_ENABLED(CONFIG_MTD_NAND_OMAP_ELM)
++int elm_decode_bch_error_page(u8 *ecc_calc, struct elm_errorvec *err_vec);
++int elm_config(enum bch_ecc bch_type, int ecc_steps, int ecc_step_size,
++	       int ecc_syndrome_size);
++#else
++static inline int
++elm_decode_bch_error_page(u8 *ecc_calc, struct elm_errorvec *err_vec)
++{
++	return -ENODEV;
++}
++
++static inline int elm_config(enum bch_ecc bch_type, int ecc_steps,
++			     int ecc_step_size, int ecc_syndrome_size)
++{
++	return -ENOSYS;
++}
++#endif /* CONFIG_MTD_NAND_OMAP_ELM */
++
++#endif /* __ELM_H */
 -- 
 2.23.0
 
