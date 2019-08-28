@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([78.46.208.201])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i26oT-00079E-7V
- for barebox@lists.infradead.org; Mon, 26 Aug 2019 04:41:06 +0000
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Mon, 26 Aug 2019 06:40:52 +0200
-Message-Id: <20190826044051.12627-1-r.czerwinski@pengutronix.de>
+ id 1i2wDp-0004Ks-8H
+ for barebox@lists.infradead.org; Wed, 28 Aug 2019 11:34:42 +0000
+Date: Wed, 28 Aug 2019 13:34:39 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190828113439.5duqvag4v7ispv5o@pengutronix.de>
+References: <20190826044051.12627-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190826044051.12627-1-r.czerwinski@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,33 +22,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] images/.gitignore: ignore i.MX8MQ HAB files
-To: barebox@lists.infradead.org
-Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Subject: Re: [PATCH] images/.gitignore: ignore i.MX8MQ HAB files
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Ignore the new image files with .pimximg and .psimximg extensions and
-the sha256 sum files.
+On Mon, Aug 26, 2019 at 06:40:52AM +0200, Rouven Czerwinski wrote:
+> Ignore the new image files with .pimximg and .psimximg extensions and
+> the sha256 sum files.
+> 
+> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+> ---
+>  images/.gitignore | 4 ++++
+>  1 file changed, 4 insertions(+)
 
-Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
----
- images/.gitignore | 4 ++++
- 1 file changed, 4 insertions(+)
+Applied, thanks
 
-diff --git a/images/.gitignore b/images/.gitignore
-index 2de98228a3..949f534d9a 100644
---- a/images/.gitignore
-+++ b/images/.gitignore
-@@ -23,3 +23,7 @@
- pbl.lds
- barebox.x
- barebox.z
-+barebox.sha.bin
-+barebox.sum
-+*.pimximg
-+*.psimximg
+Sascha
+
 -- 
-2.23.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
