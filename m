@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtpbgau1.qq.com ([54.206.16.166])
+Received: from smtpbgsg2.qq.com ([54.254.200.128])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i32UP-0007tU-Sk
- for barebox@lists.infradead.org; Wed, 28 Aug 2019 18:16:15 +0000
+ id 1i39ls-0006zw-FJ
+ for barebox@lists.infradead.org; Thu, 29 Aug 2019 02:02:46 +0000
 From: iu87m888m@qq.com
-Date: Thu, 29 Aug 2019 02:15:57 +0800
-Message-Id: <1567016157-27584-1-git-send-email-iu87m888m@qq.com>
+Date: Thu, 29 Aug 2019 10:02:09 +0800
+Message-Id: <1567044129-3897-1-git-send-email-iu87m888m@qq.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
