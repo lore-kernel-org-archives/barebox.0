@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i3gCF-0008Pd-9Y
- for barebox@lists.infradead.org; Fri, 30 Aug 2019 12:40:09 +0000
+ id 1i3Cyj-0001ap-KA
+ for barebox@lists.infradead.org; Thu, 29 Aug 2019 05:28:15 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 30 Aug 2019 14:40:01 +0200
-Message-Id: <20190830124001.32053-1-a.fatoum@pengutronix.de>
+Date: Thu, 29 Aug 2019 07:28:08 +0200
+Message-Id: <20190829052808.25624-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,46 +19,89 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Documentation: efi: fix typos
+Subject: [PATCH] input: add handler for reset and power key input events
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
+Kernel device trees may indicate linux,code = KEY_POWER or KEY_RESTART,
+mostly for gpio-keys. Make barebox able to act on them by registering an
+appropriate input notifier.
+
+Suggested-by: Oleksij Rempel <o.rempel@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Documentation/boards/efi.rst | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/input/Kconfig       |  6 ++++++
+ drivers/input/Makefile      |  1 +
+ drivers/input/specialkeys.c | 36 ++++++++++++++++++++++++++++++++++++
+ 3 files changed, 43 insertions(+)
+ create mode 100644 drivers/input/specialkeys.c
 
-diff --git a/Documentation/boards/efi.rst b/Documentation/boards/efi.rst
-index 3da2daac99ef..2178c9ab4293 100644
---- a/Documentation/boards/efi.rst
-+++ b/Documentation/boards/efi.rst
-@@ -43,7 +43,7 @@ name it ``BOOTx64.EFI`` on 64bit architectures and ``BOOTIA32.EFI`` on 32bit
- architectures. Switching to USB boot in the BIOS should then be enough to
- start barebox via USB. Some BIOSes allow to specify a path to a binary to
- be executed, others have a "start UEFI shell" entry which executes
--EFI/Shellx64.efi on the :term:`ESP`. This can be a barebox binary aswell.
-+EFI/Shellx64.efi on the :term:`ESP`. This can be a barebox binary as well.
- To use the :ref:`state_framework`, the describing devicetree file ``state.dtb``
- has to be put into the ``EFI/barebox/`` directory.
- Supported backends for EFI are raw partitions that can be discovered via a
-@@ -200,7 +200,7 @@ EFI device paths
+diff --git a/drivers/input/Kconfig b/drivers/input/Kconfig
+index 1f89ae3892dc..be061683fb0a 100644
+--- a/drivers/input/Kconfig
++++ b/drivers/input/Kconfig
+@@ -64,4 +64,10 @@ config KEYBOARD_USB
+ 	help
+ 	  This driver implements support for usb keyboard.
  
- In EFI each device can be pointed to using a device path. Device paths have multiple
- components. The toplevel component on X86 systems will be the PCI root complex, on
--other systems this can be the physical memory space. Each component will now descrive
-+other systems this can be the physical memory space. Each component will now describe
- how to find the child component on the parent bus. Additional device path nodes can
- describe network addresses or filenames on partitions. Device paths have a binary
- representation and a clearly defined string representation. These characteristics make
-@@ -274,7 +274,7 @@ Network Protocol GUID:
-     EFI_GUID( 0xA19832B9, 0xAC25, 0x11D3, 0x9A, 0x2D, 0x00, 0x90, 0x27, 0x3F, 0xC1, 0x4D )
- 
- Matching between EFI devices and drivers is done based on the Protocol GUIDs, so
--whenever a driver GUID matches one of the GUIDs a device imeplements the drivers
-+whenever a driver GUID matches one of the GUIDs a device implements the drivers
- probe function is called.
- 
- .. _efi_building_edk2:
++config INPUT_SPECIALKEYS
++	bool "Special keys handler"
++	select INPUT
++	help
++	  Say Y here to handle key events like KEY_RESTART and KEY_POWER.
++
+ endmenu
+diff --git a/drivers/input/Makefile b/drivers/input/Makefile
+index e694a98d1087..36a4204d5308 100644
+--- a/drivers/input/Makefile
++++ b/drivers/input/Makefile
+@@ -5,3 +5,4 @@ obj-$(CONFIG_KEYBOARD_GPIO) += gpio_keys.o
+ obj-$(CONFIG_KEYBOARD_TWL6030) += twl6030_pwrbtn.o
+ obj-$(CONFIG_KEYBOARD_IMX_KEYPAD) += imx_keypad.o
+ obj-$(CONFIG_KEYBOARD_QT1070) += qt1070.o
++obj-$(CONFIG_INPUT_SPECIALKEYS)	+= specialkeys.o
+diff --git a/drivers/input/specialkeys.c b/drivers/input/specialkeys.c
+new file mode 100644
+index 000000000000..51ee43218192
+--- /dev/null
++++ b/drivers/input/specialkeys.c
+@@ -0,0 +1,36 @@
++// SPDX-License-Identifier: GPL-2.0
++// Copyright (c) 2019 Ahmad Fatoum, Pengutronix
++
++#include <common.h>
++#include <restart.h>
++#include <poweroff.h>
++#include <init.h>
++#include <input/input.h>
++#include <dt-bindings/input/linux-event-codes.h>
++
++static void input_specialkeys_notify(struct input_notifier *in,
++				     struct input_event *ev)
++{
++	switch (ev->code) {
++	case KEY_RESTART:
++		pr_debug("code: %d. Triggering reset.\n", ev->code);
++		restart_machine();
++		break;
++
++	case KEY_POWER:
++		pr_debug("code: %d. Triggering poweroff.\n", ev->code);
++		poweroff_machine();
++		break;
++	}
++
++	pr_debug("ignoring code: %d\n", ev->code);
++}
++
++static struct input_notifier notifier;
++
++static int input_specialkeys_init(void)
++{
++	notifier.notify = input_specialkeys_notify;
++	return input_register_notfier(&notifier);
++}
++late_initcall(input_specialkeys_init);
 -- 
 2.23.0
 
