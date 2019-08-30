@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i3E7k-0000Fc-LQ
- for barebox@lists.infradead.org; Thu, 29 Aug 2019 06:41:38 +0000
+ id 1i3dPk-0003fF-4k
+ for barebox@lists.infradead.org; Fri, 30 Aug 2019 09:41:53 +0000
 References: <20190829052808.25624-1-a.fatoum@pengutronix.de>
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Message-ID: <443ebcdb-f66c-a608-9ccf-5fcb28721d88@pengutronix.de>
-Date: Thu, 29 Aug 2019 08:41:32 +0200
+ <443ebcdb-f66c-a608-9ccf-5fcb28721d88@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <3de5bd77-f226-1302-a390-56c558292259@pengutronix.de>
+Date: Fri, 30 Aug 2019 11:41:50 +0200
 MIME-Version: 1.0
-In-Reply-To: <20190829052808.25624-1-a.fatoum@pengutronix.de>
+In-Reply-To: <443ebcdb-f66c-a608-9ccf-5fcb28721d88@pengutronix.de>
 Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -18,114 +19,75 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] input: add handler for reset and power key input events
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
+To: Oleksij Rempel <o.rempel@pengutronix.de>, barebox@lists.infradead.org
 
-Hi
-
-On 29.08.19 07:28, Ahmad Fatoum wrote:
-> Kernel device trees may indicate linux,code = KEY_POWER or KEY_RESTART,
-> mostly for gpio-keys. Make barebox able to act on them by registering an
-> appropriate input notifier.
-> 
-> Suggested-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->   drivers/input/Kconfig       |  6 ++++++
->   drivers/input/Makefile      |  1 +
->   drivers/input/specialkeys.c | 36 ++++++++++++++++++++++++++++++++++++
->   3 files changed, 43 insertions(+)
->   create mode 100644 drivers/input/specialkeys.c
-> 
-> diff --git a/drivers/input/Kconfig b/drivers/input/Kconfig
-> index 1f89ae3892dc..be061683fb0a 100644
-> --- a/drivers/input/Kconfig
-> +++ b/drivers/input/Kconfig
-> @@ -64,4 +64,10 @@ config KEYBOARD_USB
->   	help
->   	  This driver implements support for usb keyboard.
->   
-> +config INPUT_SPECIALKEYS
-> +	bool "Special keys handler"
-> +	select INPUT
-> +	help
-> +	  Say Y here to handle key events like KEY_RESTART and KEY_POWER.
-> +
->   endmenu
-> diff --git a/drivers/input/Makefile b/drivers/input/Makefile
-> index e694a98d1087..36a4204d5308 100644
-> --- a/drivers/input/Makefile
-> +++ b/drivers/input/Makefile
-> @@ -5,3 +5,4 @@ obj-$(CONFIG_KEYBOARD_GPIO) += gpio_keys.o
->   obj-$(CONFIG_KEYBOARD_TWL6030) += twl6030_pwrbtn.o
->   obj-$(CONFIG_KEYBOARD_IMX_KEYPAD) += imx_keypad.o
->   obj-$(CONFIG_KEYBOARD_QT1070) += qt1070.o
-> +obj-$(CONFIG_INPUT_SPECIALKEYS)	+= specialkeys.o
-> diff --git a/drivers/input/specialkeys.c b/drivers/input/specialkeys.c
-> new file mode 100644
-> index 000000000000..51ee43218192
-> --- /dev/null
-> +++ b/drivers/input/specialkeys.c
-> @@ -0,0 +1,36 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +// Copyright (c) 2019 Ahmad Fatoum, Pengutronix
-> +
-> +#include <common.h>
-> +#include <restart.h>
-> +#include <poweroff.h>
-> +#include <init.h>
-> +#include <input/input.h>
-> +#include <dt-bindings/input/linux-event-codes.h>
-> +
-> +static void input_specialkeys_notify(struct input_notifier *in,
-> +				     struct input_event *ev)
-> +{
-> +	switch (ev->code) {
-> +	case KEY_RESTART:
-> +		pr_debug("code: %d. Triggering reset.\n", ev->code);
-
-May be it is better to increase the pr_ level, for example to pr_info? In case we have 
-some buggy KEY (wrong active level, or floating input gpio) we can easily detect it.
-
-> +		restart_machine();
-> +		break;
-> +
-> +	case KEY_POWER:
-> +		pr_debug("code: %d. Triggering poweroff.\n", ev->code);
-
-same here.
-
-> +		poweroff_machine();
-> +		break;
-> +	}
-> +
-> +	pr_debug("ignoring code: %d\n", ev->code);
-> +}
-> +
-> +static struct input_notifier notifier;
-> +
-> +static int input_specialkeys_init(void)
-> +{
-> +	notifier.notify = input_specialkeys_notify;
-> +	return input_register_notfier(&notifier);
-> +}
-> +late_initcall(input_specialkeys_init);
-> 
-
-Kind regards,
-Oleksij Rempel
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+CgpPbiA4LzI5LzE5IDg6NDEgQU0sIE9sZWtzaWogUmVtcGVsIHdyb3RlOgo+IEhpCj4gCj4gT24g
+MjkuMDguMTkgMDc6MjgsIEFobWFkIEZhdG91bSB3cm90ZToKPj4gS2VybmVsIGRldmljZSB0cmVl
+cyBtYXkgaW5kaWNhdGUgbGludXgsY29kZSA9IEtFWV9QT1dFUiBvciBLRVlfUkVTVEFSVCwKPj4g
+bW9zdGx5IGZvciBncGlvLWtleXMuIE1ha2UgYmFyZWJveCBhYmxlIHRvIGFjdCBvbiB0aGVtIGJ5
+IHJlZ2lzdGVyaW5nIGFuCj4+IGFwcHJvcHJpYXRlIGlucHV0IG5vdGlmaWVyLgo+Pgo+PiBTdWdn
+ZXN0ZWQtYnk6IE9sZWtzaWogUmVtcGVsIDxvLnJlbXBlbEBwZW5ndXRyb25peC5kZT4KPj4gU2ln
+bmVkLW9mZi1ieTogQWhtYWQgRmF0b3VtIDxhLmZhdG91bUBwZW5ndXRyb25peC5kZT4KPj4gLS0t
+Cj4+IMKgIGRyaXZlcnMvaW5wdXQvS2NvbmZpZ8KgwqDCoMKgwqDCoCB8wqAgNiArKysrKysKPj4g
+wqAgZHJpdmVycy9pbnB1dC9NYWtlZmlsZcKgwqDCoMKgwqAgfMKgIDEgKwo+PiDCoCBkcml2ZXJz
+L2lucHV0L3NwZWNpYWxrZXlzLmMgfCAzNiArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysKPj4gwqAgMyBmaWxlcyBjaGFuZ2VkLCA0MyBpbnNlcnRpb25zKCspCj4+IMKgIGNyZWF0
+ZSBtb2RlIDEwMDY0NCBkcml2ZXJzL2lucHV0L3NwZWNpYWxrZXlzLmMKPj4KPj4gZGlmZiAtLWdp
+dCBhL2RyaXZlcnMvaW5wdXQvS2NvbmZpZyBiL2RyaXZlcnMvaW5wdXQvS2NvbmZpZwo+PiBpbmRl
+eCAxZjg5YWUzODkyZGMuLmJlMDYxNjgzZmIwYSAxMDA2NDQKPj4gLS0tIGEvZHJpdmVycy9pbnB1
+dC9LY29uZmlnCj4+ICsrKyBiL2RyaXZlcnMvaW5wdXQvS2NvbmZpZwo+PiBAQCAtNjQsNCArNjQs
+MTAgQEAgY29uZmlnIEtFWUJPQVJEX1VTQgo+PiDCoMKgwqDCoMKgIGhlbHAKPj4gwqDCoMKgwqDC
+oMKgwqAgVGhpcyBkcml2ZXIgaW1wbGVtZW50cyBzdXBwb3J0IGZvciB1c2Iga2V5Ym9hcmQuCj4+
+IMKgICtjb25maWcgSU5QVVRfU1BFQ0lBTEtFWVMKPj4gK8KgwqDCoCBib29sICJTcGVjaWFsIGtl
+eXMgaGFuZGxlciIKPj4gK8KgwqDCoCBzZWxlY3QgSU5QVVQKPj4gK8KgwqDCoCBoZWxwCj4+ICvC
+oMKgwqDCoMKgIFNheSBZIGhlcmUgdG8gaGFuZGxlIGtleSBldmVudHMgbGlrZSBLRVlfUkVTVEFS
+VCBhbmQgS0VZX1BPV0VSLgo+PiArCj4+IMKgIGVuZG1lbnUKPj4gZGlmZiAtLWdpdCBhL2RyaXZl
+cnMvaW5wdXQvTWFrZWZpbGUgYi9kcml2ZXJzL2lucHV0L01ha2VmaWxlCj4+IGluZGV4IGU2OTRh
+OThkMTA4Ny4uMzZhNDIwNGQ1MzA4IDEwMDY0NAo+PiAtLS0gYS9kcml2ZXJzL2lucHV0L01ha2Vm
+aWxlCj4+ICsrKyBiL2RyaXZlcnMvaW5wdXQvTWFrZWZpbGUKPj4gQEAgLTUsMyArNSw0IEBAIG9i
+ai0kKENPTkZJR19LRVlCT0FSRF9HUElPKSArPSBncGlvX2tleXMubwo+PiDCoCBvYmotJChDT05G
+SUdfS0VZQk9BUkRfVFdMNjAzMCkgKz0gdHdsNjAzMF9wd3JidG4ubwo+PiDCoCBvYmotJChDT05G
+SUdfS0VZQk9BUkRfSU1YX0tFWVBBRCkgKz0gaW14X2tleXBhZC5vCj4+IMKgIG9iai0kKENPTkZJ
+R19LRVlCT0FSRF9RVDEwNzApICs9IHF0MTA3MC5vCj4+ICtvYmotJChDT05GSUdfSU5QVVRfU1BF
+Q0lBTEtFWVMpwqDCoMKgICs9IHNwZWNpYWxrZXlzLm8KPj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMv
+aW5wdXQvc3BlY2lhbGtleXMuYyBiL2RyaXZlcnMvaW5wdXQvc3BlY2lhbGtleXMuYwo+PiBuZXcg
+ZmlsZSBtb2RlIDEwMDY0NAo+PiBpbmRleCAwMDAwMDAwMDAwMDAuLjUxZWU0MzIxODE5Mgo+PiAt
+LS0gL2Rldi9udWxsCj4+ICsrKyBiL2RyaXZlcnMvaW5wdXQvc3BlY2lhbGtleXMuYwo+PiBAQCAt
+MCwwICsxLDM2IEBACj4+ICsvLyBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMAo+PiAr
+Ly8gQ29weXJpZ2h0IChjKSAyMDE5IEFobWFkIEZhdG91bSwgUGVuZ3V0cm9uaXgKPj4gKwo+PiAr
+I2luY2x1ZGUgPGNvbW1vbi5oPgo+PiArI2luY2x1ZGUgPHJlc3RhcnQuaD4KPj4gKyNpbmNsdWRl
+IDxwb3dlcm9mZi5oPgo+PiArI2luY2x1ZGUgPGluaXQuaD4KPj4gKyNpbmNsdWRlIDxpbnB1dC9p
+bnB1dC5oPgo+PiArI2luY2x1ZGUgPGR0LWJpbmRpbmdzL2lucHV0L2xpbnV4LWV2ZW50LWNvZGVz
+Lmg+Cj4+ICsKPj4gK3N0YXRpYyB2b2lkIGlucHV0X3NwZWNpYWxrZXlzX25vdGlmeShzdHJ1Y3Qg
+aW5wdXRfbm90aWZpZXIgKmluLAo+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoCBzdHJ1Y3QgaW5wdXRfZXZlbnQgKmV2KQo+PiArewo+PiArwqDCoMKgIHN3aXRjaCAo
+ZXYtPmNvZGUpIHsKPj4gK8KgwqDCoCBjYXNlIEtFWV9SRVNUQVJUOgo+PiArwqDCoMKgwqDCoMKg
+wqAgcHJfZGVidWcoImNvZGU6ICVkLiBUcmlnZ2VyaW5nIHJlc2V0LlxuIiwgZXYtPmNvZGUpOwo+
+IAo+IE1heSBiZSBpdCBpcyBiZXR0ZXIgdG8gaW5jcmVhc2UgdGhlIHByXyBsZXZlbCwgZm9yIGV4
+YW1wbGUgdG8gcHJfaW5mbz8gSW4gY2FzZSB3ZSBoYXZlIHNvbWUgYnVnZ3kgS0VZICh3cm9uZyBh
+Y3RpdmUgbGV2ZWwsIG9yIGZsb2F0aW5nIGlucHV0IGdwaW8pIHdlIGNhbiBlYXNpbHkgZGV0ZWN0
+IGl0LgoKV2lsbCBkby4KCj4gCj4+ICvCoMKgwqDCoMKgwqDCoCByZXN0YXJ0X21hY2hpbmUoKTsK
+Pj4gK8KgwqDCoMKgwqDCoMKgIGJyZWFrOwo+PiArCj4+ICvCoMKgwqAgY2FzZSBLRVlfUE9XRVI6
+Cj4+ICvCoMKgwqDCoMKgwqDCoCBwcl9kZWJ1ZygiY29kZTogJWQuIFRyaWdnZXJpbmcgcG93ZXJv
+ZmYuXG4iLCBldi0+Y29kZSk7Cj4gCj4gc2FtZSBoZXJlLgo+IAo+PiArwqDCoMKgwqDCoMKgwqAg
+cG93ZXJvZmZfbWFjaGluZSgpOwo+PiArwqDCoMKgwqDCoMKgwqAgYnJlYWs7Cj4+ICvCoMKgwqAg
+fQo+PiArCj4+ICvCoMKgwqAgcHJfZGVidWcoImlnbm9yaW5nIGNvZGU6ICVkXG4iLCBldi0+Y29k
+ZSk7Cj4+ICt9Cj4+ICsKPj4gK3N0YXRpYyBzdHJ1Y3QgaW5wdXRfbm90aWZpZXIgbm90aWZpZXI7
+Cj4+ICsKPj4gK3N0YXRpYyBpbnQgaW5wdXRfc3BlY2lhbGtleXNfaW5pdCh2b2lkKQo+PiArewo+
+PiArwqDCoMKgIG5vdGlmaWVyLm5vdGlmeSA9IGlucHV0X3NwZWNpYWxrZXlzX25vdGlmeTsKPj4g
+K8KgwqDCoCByZXR1cm4gaW5wdXRfcmVnaXN0ZXJfbm90Zmllcigmbm90aWZpZXIpOwo+PiArfQo+
+PiArbGF0ZV9pbml0Y2FsbChpbnB1dF9zcGVjaWFsa2V5c19pbml0KTsKPj4KPiAKPiBLaW5kIHJl
+Z2FyZHMsCj4gT2xla3NpaiBSZW1wZWwKPiAKCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfApJbmR1c3Ry
+aWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJv
+bml4LmRlLyAgfApQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQ
+aG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEg
+MjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxp
+c3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
+L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
