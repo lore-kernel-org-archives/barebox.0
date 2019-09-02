@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i4gZp-0000bW-7z
- for barebox@lists.infradead.org; Mon, 02 Sep 2019 07:16:38 +0000
-Date: Mon, 2 Sep 2019 09:16:35 +0200
+ id 1i4gaW-0000iH-Iz
+ for barebox@lists.infradead.org; Mon, 02 Sep 2019 07:17:22 +0000
+Date: Mon, 2 Sep 2019 09:17:17 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190902071635.xjnnj6rjwhrd7vrl@pengutronix.de>
-References: <20190829124318.30339-1-a.fatoum@pengutronix.de>
+Message-ID: <20190902071717.4m4xa6vkr7xv6iag@pengutronix.de>
+References: <20190829191007.13644-1-cory.tusar@zii.aero>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190829124318.30339-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20190829191007.13644-1-cory.tusar@zii.aero>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,44 +22,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] gpio: iopoll: implement gpio_poll_timeout_us
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] Documentation: zii-imx7d-dev: Fix errors with openocd
+ configuration script
+To: Cory Tusar <Cory.Tusar@zii.aero>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Chris Healy <Chris.Healy@zii.aero>
 
-On Thu, Aug 29, 2019 at 02:43:18PM +0200, Ahmad Fatoum wrote:
-> Sometimes we need to wait for state change on a GPIO,
-> provide a helper to do this.
+On Thu, Aug 29, 2019 at 07:10:25PM +0000, Cory Tusar wrote:
+> When attempting to use the existing configuration file to bootstrap an
+> RMU2 board, openocd would consistently fail in the 'safe_reset' function
+> with a number of errors.
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Disabling the internal reset handling (similar to what's done on the
+> i.MX7 Sabre boards) allowed barebox to download and run successfully.
+> 
+> Tested with openocd-0.10.0+dev-00924-g16496488 on a Zodiac RMU2.
+> 
+> Signed-off-by: Cory Tusar <cory.tusar@zii.aero>
+> Tested-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 > ---
->  include/gpio.h | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/include/gpio.h b/include/gpio.h
-> index 1926edeca757..89cb306a195c 100644
-> --- a/include/gpio.h
-> +++ b/include/gpio.h
-> @@ -3,6 +3,7 @@
->  
->  #include <linux/types.h>
->  #include <linux/list.h>
-> +#include <linux/iopoll.h>
->  
->  #ifdef CONFIG_GENERIC_GPIO
->  void gpio_set_value(unsigned gpio, int value);
-> @@ -31,6 +32,13 @@ static inline int gpio_direction_input(unsigned gpio)
->  void gpio_set_active(unsigned gpio, bool state);
->  int gpio_is_active(unsigned gpio);
->  int gpio_direction_active(unsigned gpio, bool state);
-> +
-> +#define gpio_poll_timeout_us(gpio, active, timeout_us)			\
+>  Documentation/boards/imx/zii-imx7d-dev/openocd.cfg | 6 ++++++
+>  1 file changed, 6 insertions(+)
 
-Please add a comment what this macro does. Specificall it's interesting
-to know if this function polls as long as the gpio is active or if it
-polls until it's active.
+Applied, thanks
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
