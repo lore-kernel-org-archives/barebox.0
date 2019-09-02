@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i4kld-0004nx-4w
- for barebox@lists.infradead.org; Mon, 02 Sep 2019 11:45:06 +0000
+ id 1i4kls-0005iH-E8
+ for barebox@lists.infradead.org; Mon, 02 Sep 2019 11:45:21 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  2 Sep 2019 13:44:58 +0200
-Message-Id: <20190902114459.12171-2-s.hauer@pengutronix.de>
+Date: Mon,  2 Sep 2019 13:44:59 +0200
+Message-Id: <20190902114459.12171-3-s.hauer@pengutronix.de>
 In-Reply-To: <20190902114459.12171-1-s.hauer@pengutronix.de>
 References: <20190902114459.12171-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,41 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] net: nfs: Fix possible buffer overflow
+Subject: [PATCH 2/2] fs: nfs: Fix possible buffer overflow
 To: Barebox List <barebox@lists.infradead.org>
 
-nfs_readlink_reply() interprets a 32bit value directly received from the
+nfs_readlink_req() interprets a 32bit value directly received from the
 network as length argument to memcpy() without any boundary checking.
 Clamp the copy size at the end of the incoming packet.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- net/nfs.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/nfs.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/nfs.c b/net/nfs.c
-index 0a3021994a..63573098d7 100644
---- a/net/nfs.c
-+++ b/net/nfs.c
-@@ -502,7 +502,7 @@ static int nfs_readlink_reply(unsigned char *pkt, unsigned len)
- {
- 	uint32_t *data;
- 	char *path;
--	int rlen;
-+	unsigned int rlen;
- 	int ret;
+diff --git a/fs/nfs.c b/fs/nfs.c
+index d606ccd1e9..0ad07aa3f2 100644
+--- a/fs/nfs.c
++++ b/fs/nfs.c
+@@ -1023,6 +1023,10 @@ static int nfs_readlink_req(struct nfs_priv *npriv, struct nfs_fh *fh,
+ 	p = nfs_read_post_op_attr(p, NULL);
  
- 	ret = rpc_check_reply(pkt, 1);
-@@ -515,6 +515,9 @@ static int nfs_readlink_reply(unsigned char *pkt, unsigned len)
- 
- 	rlen = ntohl(net_read_uint32(data)); /* new path length */
- 
-+	rlen = max_t(unsigned int, rlen,
-+		     len - sizeof(struct rpc_reply) - sizeof(uint32_t));
+ 	len = ntoh32(net_read_uint32(p)); /* new path length */
 +
- 	data++;
- 	path = (char *)data;
++	len = max_t(unsigned int, len,
++		    nfs_packet->len - sizeof(struct rpc_reply) - sizeof(uint32_t));
++
+ 	p++;
  
+ 	*target = xzalloc(len + 1);
 -- 
 2.23.0
 
