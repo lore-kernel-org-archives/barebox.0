@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-io1-xd41.google.com ([2607:f8b0:4864:20::d41])
- by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iF14h-0001rL-W6
- for barebox@lists.infradead.org; Mon, 30 Sep 2019 19:11:13 +0000
-Received: by mail-io1-xd41.google.com with SMTP id u8so41238613iom.5
- for <barebox@lists.infradead.org>; Mon, 30 Sep 2019 12:11:11 -0700 (PDT)
+Received: from smtp.eckelmann.de ([217.19.183.80])
+ by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
+ id 1i4laa-0007Ou-2y
+ for barebox@lists.infradead.org; Mon, 02 Sep 2019 12:37:45 +0000
+From: "Mainz, Roland" <R.Mainz@eckelmann.de>
+Date: Mon, 2 Sep 2019 12:37:37 +0000
+Message-ID: <c291d2d377014efab82db262f95a0180@eckelmann.de>
+References: <7954aa66b7cd4e0583b8f96e6ee3292b@eckelmann.de>
+ <20190902120810.kbzeqpxqacn7f57k@pengutronix.de>
+In-Reply-To: <20190902120810.kbzeqpxqacn7f57k@pengutronix.de>
+Content-Language: de-DE
 MIME-Version: 1.0
-References: <20190930080748.29977-1-andrew.smirnov@gmail.com>
- <20190930190842.zuxu6lt6tqnbe3pn@pengutronix.de>
-In-Reply-To: <20190930190842.zuxu6lt6tqnbe3pn@pengutronix.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 30 Sep 2019 12:10:59 -0700
-Message-ID: <CAHQ1cqFtSZ=ADT-iyPaqVF+e12jshvTi3HFtTAEwcgaWQm9bdQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,70 +19,92 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mci: imx-esdhc-pbl: Fix watermark level value for i.MX
+Subject: RE: barebox bug, sh [ -c /dev/nand0.var.ubi.blablablub ] returns
+ |true| even if there is no "blablablub" partition on "var" volume
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>, Chris Healy <cphealy@gmail.com>, Ruslan Sushko <ruslan.sushko@zii.aero>
+Cc: "Mainz, Roland" <R.Mainz@eckelmann.de>, "customers.eckelmann@pengutronix.de" <customers.eckelmann@pengutronix.de>, "Arne Wichmann
+ (arne.wichmann@thinventions.de)" <arne.wichmann@thinventions.de>, =?iso-8859-1?Q?Uwe_Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Mon, Sep 30, 2019 at 12:08 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
->
-> On Mon, Sep 30, 2019 at 01:07:48AM -0700, Andrey Smirnov wrote:
-> > Layerscape and i.MX have different semantics of Watermark Level
-> > Register. Whereas the former uses "0" to signify maximum allowed
-> > value, the latter does not.
-> >
-> > According to the RM (i.MX8MQ, i.MX6):
-> >
-> > "...The read burst length must be less than or equal to the read
-> > watermark level.."
-> >
-> > Setting Watermark Level Register to zero violates that limitation. It
-> > appears that, on i.MX8MQ, not following that rule causes certain
-> > configs + toolchains to result in non-bootable image. Specifically,
-> > polling for CICHB, CIDHB and DLA to clear in esdhc_send_cmd() times
-> > out. There doesn't appear to be any clear relationship as to what kind
-> > of image will have the problem, but the following combinations failed
-> > to boot on ZII i.MX8MQ Zest board:
-> >
-> >   - gcc version 9.2.1 20190827 (Red Hat Cross 9.2.1-1) (GCC) +
-> >     imx_v8_defconfig + CONFIG_DEBUG_LL and CONFIG_PBL_CONSOLE
-> >
-> >   - gcc version 5.5.0 (Timesys 20190405) (custom toolchain) +
-> >     imx_v8_defconfig
-> >
-> > Setting WML's *_BRST_LE to 16 and *_WML to 128 on i.MX resolves the
-> > issue (same setting that's selected by writing 0 on Layerscape).
-> >
-> > Fixes: 48562aeaa8 ("esdhc-xload: check for PRSSTAT_BREN only after each block")
-> > Cc: Chris Healy <cphealy@gmail.com>
-> > Cc: Ruslan Sushko <ruslan.sushko@zii.aero>
-> > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> > ---
-> >
-> > Sascha:
-> >
-> > I don't have a very good explanation as to why those particuar
-> > toolchain + config settings cause problems and it's not clear how the
-> > IP block interprets those illegal values since RM is silent on that. I
-> > spent a solid chunk of time trying to figure that out without much
-> > luck, so I figured that maybe, given that mismatch is pretty clear
-> > from comparing two datasheets, this fix can go in without having one.
-> >
-> > If this patch is a acceptable, I think it should also go to master
-> > since it fixes boot break
->
-> I checked both reference manuals and it's clear that we do the wrong
-> thing on i.MX currently, so I am fine with the patch. It seems that you
-> have forgotten to set wrap_wml to 1 for layerscape though.
->
 
-Ugh! Will fix in v2.
 
-Thanks,
-Andrey Smirnov
+
+
+> -----Original Message-----
+> From: Sascha Hauer [mailto:s.hauer@pengutronix.de]
+> Sent: Monday, September 2, 2019 2:08 PM
+> To: Mainz, Roland <R.Mainz@eckelmann.de>
+> Cc: customers.eckelmann@pengutronix.de; barebox@lists.infradead.org;
+> Arne Wichmann (arne.wichmann@thinventions.de)
+> <arne.wichmann@thinventions.de>; Uwe Kleine-K=F6nig <u.kleine-
+> koenig@pengutronix.de>
+> Subject: Re: barebox bug, sh [ -c /dev/nand0.var.ubi.blablablub ] returns
+> |true| even if there is no "blablablub" partition on "var" volume
+> =
+
+> Hi Roland,
+> =
+
+> On Mon, Sep 02, 2019 at 09:40:26AM +0000, Mainz, Roland wrote:
+> >
+> > Hi!
+> >
+> > ----
+> >
+> > Quick&dirty bug report:
+> >
+> > - Version: barebox 2018.05.0-20190221-1-EAG_3.00-gf70df96 #1 Mon Sep
+> 2
+> > 09:03:05 CEST 2019
+> > - Hardware: Eckelmann/EAG Quantron
+> >
+> > barebox:/ ls -l /dev/nand0.var.ubi.blablablub
+> > ls: /dev/nand0.var.ubi.blablablub: No such file or directory
+> > barebox:/ ls -l /dev/nand0.var.ubi.blablablub
+> > ls: /dev/nand0.var.ubi.blablablub: No such file or directory barebox:/
+> > if [ -c /dev/nand0.var.ubi.blablablub ] ; then echo wrong ; else echo
+> > "right" ; fi wrong barebox:/ if [ -f /dev/nand0.var.ubi.blablablub ] ;
+> > then echo wrong ; else echo "right" ; fi right
+> =
+
+> barebox doesn't implement -c for test. You'll have to use -e or -f to tes=
+t for
+> existence.
+> Arguably we should throw an error for this unsupported option rather than
+> doing something undefined.
+
+Could you *please* implement test(1) -b/-c ? Since barebox ls(1) is able to=
+ distinguish files from devices it shouldn't be hard, and there are cases (=
+like our update script) where telling the difference between file and devic=
+e is important (the alternative is to write hideous workarounds...).
+
+----
+
+Mfg,
+Roland Mainz =
+
+-- =
+
+Roland Mainz, MAA/CAS
+Eckelmann AG, Berliner Str. 161, 65205 Wiesbaden
+Telefon +49/611/7103-661, Fax +49/611/7103-133
+r.mainz@eckelmann.de
+
+Eckelmann Group - Source of inspiration
+
+> =
+
+> Sascha
+> =
+
+> --
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
