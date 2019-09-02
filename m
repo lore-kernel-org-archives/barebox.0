@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i4gaW-0000iH-Iz
- for barebox@lists.infradead.org; Mon, 02 Sep 2019 07:17:22 +0000
-Date: Mon, 2 Sep 2019 09:17:17 +0200
+ id 1i4gc0-0001Ac-Ft
+ for barebox@lists.infradead.org; Mon, 02 Sep 2019 07:18:53 +0000
+Date: Mon, 2 Sep 2019 09:18:50 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190902071717.4m4xa6vkr7xv6iag@pengutronix.de>
-References: <20190829191007.13644-1-cory.tusar@zii.aero>
+Message-ID: <20190902071850.35ubrdcme3iwyc2n@pengutronix.de>
+References: <20190830124001.32053-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190829191007.13644-1-cory.tusar@zii.aero>
+In-Reply-To: <20190830124001.32053-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,26 +22,15 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Documentation: zii-imx7d-dev: Fix errors with openocd
- configuration script
-To: Cory Tusar <Cory.Tusar@zii.aero>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Chris Healy <Chris.Healy@zii.aero>
+Subject: Re: [PATCH] Documentation: efi: fix typos
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Thu, Aug 29, 2019 at 07:10:25PM +0000, Cory Tusar wrote:
-> When attempting to use the existing configuration file to bootstrap an
-> RMU2 board, openocd would consistently fail in the 'safe_reset' function
-> with a number of errors.
-> 
-> Disabling the internal reset handling (similar to what's done on the
-> i.MX7 Sabre boards) allowed barebox to download and run successfully.
-> 
-> Tested with openocd-0.10.0+dev-00924-g16496488 on a Zodiac RMU2.
-> 
-> Signed-off-by: Cory Tusar <cory.tusar@zii.aero>
-> Tested-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+On Fri, Aug 30, 2019 at 02:40:01PM +0200, Ahmad Fatoum wrote:
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  Documentation/boards/imx/zii-imx7d-dev/openocd.cfg | 6 ++++++
->  1 file changed, 6 insertions(+)
+>  Documentation/boards/efi.rst | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 
 Applied, thanks
 
