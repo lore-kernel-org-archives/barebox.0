@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1i8ISw-0001Vz-TA
- for barebox@lists.infradead.org; Thu, 12 Sep 2019 06:20:28 +0000
-Date: Thu, 12 Sep 2019 08:20:25 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190912062025.b3jkv25eea7mlalv@pengutronix.de>
-References: <20190910100611.22024-1-u.kleine-koenig@pengutronix.de>
+ by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
+ id 1i5UKX-00064Z-Pu
+ for barebox@lists.infradead.org; Wed, 04 Sep 2019 12:24:10 +0000
+From: Michael Tretter <m.tretter@pengutronix.de>
+Date: Wed,  4 Sep 2019 14:24:04 +0200
+Message-Id: <20190904122404.2755-1-m.tretter@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190910100611.22024-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,43 +15,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM: dts: drop skeleton.dtsi
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] libfile: fix typos
+To: barebox@lists.infradead.org
+Cc: Michael Tretter <m.tretter@pengutronix.de>
 
-On Tue, Sep 10, 2019 at 12:06:10PM +0200, Uwe Kleine-K=F6nig wrote:
-> In the Linux dts files skeleton.dtsi was dropped (in commit abe60a3a7afb
-> ("ARM: dts: Kill off skeleton{64}.dtsi") for v5.1-rc1). At least one
-> reason for this also applies for barebox: memory nodes are supposed to ha=
-ve
-> a unit address and so adding a memory node without address isn't sensible.
-> =
+Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+---
+ lib/libfile.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> There are only four dtsi files that use skeleton.dtsi. Add some of the
-> nodes and properties defined in skeleton.dtsi to its includers. I dropped
-> adding empty alias nodes as neither barebox nor Linux depend on its
-> presence. All consumers override reg in the memory node, so add the
-> device_type property there. The remaining properties are added unchanged.
-> =
+diff --git a/lib/libfile.c b/lib/libfile.c
+index f6c588d737..3f3ec21fdb 100644
+--- a/lib/libfile.c
++++ b/lib/libfile.c
+@@ -242,9 +242,9 @@ EXPORT_SYMBOL(read_file_2);
+  *
+  * This function reads a file to an allocated buffer.
+  * Some TFTP servers do not transfer the size of a file. In this case
+- * a the file is first read to a temporary file.
++ * the file is first read to a temporary file.
+  *
+- * Return: The buffer conataining the file or NULL on failure
++ * Return: The buffer containing the file or NULL on failure
+  */
+ void *read_file(const char *filename, size_t *size)
+ {
+-- 
+2.20.1
 
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> ---
-
-Applied, thanks
-
-Sascha
-
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
