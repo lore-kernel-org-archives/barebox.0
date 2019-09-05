@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i5pMg-00074g-K4
+ id 1i5pMg-00074h-K5
  for barebox@lists.infradead.org; Thu, 05 Sep 2019 10:51:49 +0000
 From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Thu,  5 Sep 2019 12:51:41 +0200
-Message-Id: <20190905105142.13681-7-m.tretter@pengutronix.de>
+Date: Thu,  5 Sep 2019 12:51:40 +0200
+Message-Id: <20190905105142.13681-6-m.tretter@pengutronix.de>
 In-Reply-To: <20190905105142.13681-1-m.tretter@pengutronix.de>
 References: <20190905105142.13681-1-m.tretter@pengutronix.de>
 MIME-Version: 1.0
@@ -21,60 +21,142 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/7] blspec: load firmware if specified in dt overlay
+Subject: [PATCH 5/7] firmware: add support to load firmware from dt overlay
 To: barebox@lists.infradead.org
 Cc: Michael Tretter <m.tretter@pengutronix.de>
 
-If a device tree overlay referenced by the blspec depends on firmware,
-try to load the firmware from the default Linux firmware search path
-/lib/firmware in the about to be started rootfs.
+fpga-region device tree nodes have the firmware-name property that
+contains the file name of firmware in the firmware search path (but not
+the path) that shall be loaded before the overlay is applied.
+
+Add the firmware_load_overlay() function that accepts an overlay and a
+firmware search path, finds the responsible firmware_mgr and loads the
+firmware.
 
 Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 ---
- common/blspec.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ common/firmware.c  | 77 ++++++++++++++++++++++++++++++++++++++++++++++
+ include/firmware.h |  3 ++
+ 2 files changed, 80 insertions(+)
 
-diff --git a/common/blspec.c b/common/blspec.c
-index 6b15d36d67..d6f9337d9c 100644
---- a/common/blspec.c
-+++ b/common/blspec.c
-@@ -14,6 +14,7 @@
+diff --git a/common/firmware.c b/common/firmware.c
+index 9d55d73e7a..d15026cf07 100644
+--- a/common/firmware.c
++++ b/common/firmware.c
+@@ -62,6 +62,39 @@ struct firmware_mgr *firmwaremgr_find(const char *id)
+ 	return NULL;
+ }
  
- #include <environment.h>
- #include <globalvar.h>
-+#include <firmware.h>
- #include <readkey.h>
- #include <common.h>
- #include <driver.h>
-@@ -49,6 +50,7 @@ static int blspec_apply_oftree_overlay(char *file, const char *abspath,
- 	struct fdt_header *fdt;
- 	struct device_node *overlay;
- 	char *path;
-+	char *firmware_path;
- 
- 	path = basprintf("%s/%s", abspath, file);
- 
-@@ -72,6 +74,20 @@ static int blspec_apply_oftree_overlay(char *file, const char *abspath,
- 		goto out;
- 	}
- 
-+	/*
-+	 * Unfortunately the device tree overlay contains only the filename of
-+	 * the firmware and relies on the firmware search paths to find the
-+	 * actual file. Use /lib/firmware in the Linux root directory and hope
-+	 * for the best.
-+	 */
-+	firmware_path = basprintf("%s/%s", abspath, "/lib/firmware");
-+	ret = firmware_load_overlay(overlay, firmware_path);
-+	free(firmware_path);
-+	if (ret) {
-+		of_delete_node(overlay);
-+		goto out;
-+	}
++/*
++ * firmwaremgr_find_by_node - find a firmware device handler
++ *
++ * Find a firmware device handler using the device node of the firmware
++ * handler. This allows to retrieve the firmware handler with a phandle from
++ * the device tree.
++ */
++struct firmware_mgr *firmwaremgr_find_by_node(const struct device_node *np)
++{
++	struct firmware_mgr *mgr;
 +
- 	ret = of_register_overlay(overlay);
- 	if (ret)
- 		pr_warn("cannot register devicetree overlay \"%s\"\n", path);
++	list_for_each_entry(mgr, &firmwaremgr_list, list)
++		if (mgr->handler->dev->parent->device_node == np)
++			return mgr;
++
++	return NULL;
++}
++
++static struct firmware_mgr *of_node_get_mgr(const struct device_node *np)
++{
++	struct device_node *mgr_node;
++
++	do {
++		if (of_device_is_compatible(np, "fpga-region")) {
++			mgr_node = of_parse_phandle(np, "fpga-mgr", 0);
++			if (mgr_node)
++				return firmwaremgr_find_by_node(mgr_node);
++		}
++	} while ((np = of_get_parent(np)) != NULL);
++
++	return NULL;
++}
++
+ /*
+  * firmwaremgr_list_handlers - list registered firmware device handlers
+  *                             in pretty format
+@@ -153,6 +186,40 @@ static int firmware_close(struct cdev *cdev)
+ 	return 0;
+ }
+ 
++struct overlay_info {
++	const char *firmware_path;
++};
++
++static int load_firmware(struct device_node *target,
++			 struct device_node *fragment, void *data)
++{
++	struct overlay_info *info = data;
++	const char *firmware_name;
++	const char *firmware_path = info->firmware_path;
++	char *firmware;
++	int err;
++	struct firmware_mgr *mgr;
++
++	err = of_property_read_string(fragment,
++				      "firmware-name", &firmware_name);
++	if (err)
++		return 0;
++
++	mgr = of_node_get_mgr(target);
++	if (!mgr)
++		return -EINVAL;
++
++	firmware = basprintf("%s/%s", firmware_path, firmware_name);
++	if (!firmware)
++		return -ENOMEM;
++
++	err = firmwaremgr_load_file(mgr, firmware);
++
++	free(firmware);
++
++	return err;
++}
++
+ static struct cdev_operations firmware_ops = {
+ 	.open = firmware_open,
+ 	.write = firmware_write,
+@@ -210,3 +277,13 @@ int firmwaremgr_load_file(struct firmware_mgr *mgr, const char *firmware)
+ 
+ 	return ret;
+ }
++
++int firmware_load_overlay(struct device_node *overlay, const char *path)
++{
++	struct overlay_info info = {
++		.firmware_path = path,
++	};
++
++	return of_process_overlay(of_get_root_node(), overlay,
++				  load_firmware, &info);
++}
+diff --git a/include/firmware.h b/include/firmware.h
+index 284e0f9705..a3c2f9fe4a 100644
+--- a/include/firmware.h
++++ b/include/firmware.h
+@@ -34,11 +34,14 @@ struct firmware_mgr;
+ int firmwaremgr_register(struct firmware_handler *);
+ 
+ struct firmware_mgr *firmwaremgr_find(const char *);
++struct firmware_mgr *firmwaremgr_find_by_node(const struct device_node *np);
+ 
+ void firmwaremgr_list_handlers(void);
+ 
+ int firmwaremgr_load_file(struct firmware_mgr *, const char *path);
+ 
++int firmware_load_overlay(struct device_node *overlay, const char *path);
++
+ #define get_builtin_firmware(name, start, size) \
+ 	{							\
+ 		extern char _fw_##name##_start[];		\
 -- 
 2.20.1
 
