@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i5pMg-00074i-KD
- for barebox@lists.infradead.org; Thu, 05 Sep 2019 10:51:49 +0000
+ id 1i5pMg-00074d-K9
+ for barebox@lists.infradead.org; Thu, 05 Sep 2019 10:51:51 +0000
 From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Thu,  5 Sep 2019 12:51:42 +0200
-Message-Id: <20190905105142.13681-8-m.tretter@pengutronix.de>
+Date: Thu,  5 Sep 2019 12:51:37 +0200
+Message-Id: <20190905105142.13681-3-m.tretter@pengutronix.de>
 In-Reply-To: <20190905105142.13681-1-m.tretter@pengutronix.de>
 References: <20190905105142.13681-1-m.tretter@pengutronix.de>
 MIME-Version: 1.0
@@ -21,152 +21,583 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/7] commands: add of_overlay command for device tree overlays
+Subject: [PATCH 2/7] of: add support for devicetree overlays
 To: barebox@lists.infradead.org
 Cc: Michael Tretter <m.tretter@pengutronix.de>
 
-Add a new command "of_overlay" for applying device tree overlays,
-because it does not really fit into any other device tree related
-command and would create a mess with the command options.
+The devicetree overlay support is based on the Linux driver for device
+tree overlays, but many features that are not required in Barebox are
+left out.
+
+Unlike Linux, which applies the overlay to the live devicetree, Barebox
+registers a fixup for the overlay which is applied with other fixups to
+whatever tree is fixed. This is necessary to apply the overlay to
+devicetrees that are passed to Linux, which might differ from the
+devicetree that is currently live in Barebox.
 
 Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 ---
- commands/Kconfig      | 12 ++++++
- commands/Makefile     |  1 +
- commands/of_overlay.c | 89 +++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 102 insertions(+)
- create mode 100644 commands/of_overlay.c
+ drivers/of/Kconfig    |   9 ++
+ drivers/of/Makefile   |   1 +
+ drivers/of/overlay.c  | 200 ++++++++++++++++++++++++++++++
+ drivers/of/resolver.c | 278 ++++++++++++++++++++++++++++++++++++++++++
+ include/of.h          |  20 +++
+ 5 files changed, 508 insertions(+)
+ create mode 100644 drivers/of/overlay.c
+ create mode 100644 drivers/of/resolver.c
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 039fd7d1ac..01d82031ad 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -2088,6 +2088,18 @@ config CMD_OF_FIXUP_STATUS
- 	  Register a fixup to enable or disable a device tree node.
- 	  Nodes are enabled on default. Disabled with -d.
- 
-+config CMD_OF_OVERLAY
-+	tristate
+diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
+index 24cf4465a8..1bb6639c5a 100644
+--- a/drivers/of/Kconfig
++++ b/drivers/of/Kconfig
+@@ -50,3 +50,12 @@ config OF_BAREBOX_ENV_IN_FS
+ 	help
+ 	  Allow the devie tree configuration of the barebox environment path
+ 	  to specify a file in filesystem, which will be mounted.
++
++config OF_OVERLAY
 +	select OFTREE
-+	prompt "of_overlay"
++	bool "Devicetree overlays"
 +	help
-+	  of_overlay - register device tree overlay as fixup
-+
-+	  Usage: of_overlay [-S path] FILE
-+
-+	  Options:
-+		  -S path	load firmware using this search path
-+
- config CMD_OFTREE
- 	tristate
- 	select OFTREE
-diff --git a/commands/Makefile b/commands/Makefile
-index e69fb5046f..62ad9ce2b2 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -78,6 +78,7 @@ obj-$(CONFIG_CMD_OF_NODE)	+= of_node.o
- obj-$(CONFIG_CMD_OF_DUMP)	+= of_dump.o
- obj-$(CONFIG_CMD_OF_DISPLAY_TIMINGS)	+= of_display_timings.o
- obj-$(CONFIG_CMD_OF_FIXUP_STATUS)	+= of_fixup_status.o
-+obj-$(CONFIG_CMD_OF_OVERLAY)	+= of_overlay.o
- obj-$(CONFIG_CMD_MAGICVAR)	+= magicvar.o
- obj-$(CONFIG_CMD_IOMEM)		+= iomemport.o
- obj-$(CONFIG_CMD_LINUX_EXEC)	+= linux_exec.o
-diff --git a/commands/of_overlay.c b/commands/of_overlay.c
++	  Overlays allow to patch the devicetree. Unlike Linux, Barebox does
++	  not patch the live devicetree, but applies the overlays as fixup to
++	  the devicetree. Furthermore, overlays cannot be removed after they
++	  have been applied.
+diff --git a/drivers/of/Makefile b/drivers/of/Makefile
+index ec43870061..9c6f8de814 100644
+--- a/drivers/of/Makefile
++++ b/drivers/of/Makefile
+@@ -6,3 +6,4 @@ obj-y += partition.o
+ obj-y += of_net.o
+ obj-$(CONFIG_MTD) += of_mtd.o
+ obj-$(CONFIG_OF_BAREBOX_DRIVERS) += barebox.o
++obj-$(CONFIG_OF_OVERLAY) += overlay.o resolver.o
+diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
 new file mode 100644
-index 0000000000..f929443bfe
+index 0000000000..b9283e6a90
 --- /dev/null
-+++ b/commands/of_overlay.c
-@@ -0,0 +1,89 @@
++++ b/drivers/of/overlay.c
+@@ -0,0 +1,200 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * Copyright (c) 2019 Michael Tretter <m.tretter@pengutronix.de>, Pengutronix
++ * Functions for working with device tree overlays
 + *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
++ * Copyright (C) 2012 Pantelis Antoniou <panto@antoniou-consulting.com>
++ * Copyright (C) 2012 Texas Instruments Inc.
++ * Copyright (C) 2019 Pengutronix, Michael Tretter <m.tretter@pengutronix.de>
 + */
 +
-+#include <command.h>
 +#include <common.h>
-+#include <environment.h>
-+#include <fdt.h>
-+#include <firmware.h>
-+#include <fs.h>
-+#include <getopt.h>
-+#include <libfile.h>
++#include <notifier.h>
 +#include <of.h>
++#include <errno.h>
 +
-+static int do_of_overlay(int argc, char *argv[])
++static struct device_node *find_target(struct device_node *root,
++				       struct device_node *fragment)
 +{
-+	int opt, ret;
-+	struct fdt_header *fdt;
-+	struct device_node *overlay;
-+	const char *search_path = NULL;
++	struct device_node *node;
++	const char *path;
++	u32 phandle;
++	int ret;
 +
-+	while ((opt = getopt(argc, argv, "S:")) > 0) {
-+		switch (opt) {
-+		case 'S':
-+			search_path = optarg;
-+			break;
-+		default:
-+			return COMMAND_ERROR_USAGE;
-+		}
++	ret = of_property_read_u32(fragment, "target", &phandle);
++	if (!ret) {
++		node = of_find_node_by_phandle_from(phandle, root);
++		if (!node)
++			pr_err("fragment %pOF: phandle 0x%x not found\n",
++			       fragment, phandle);
++		return node;
 +	}
 +
-+	if (argc != optind + 1)
-+		return COMMAND_ERROR_USAGE;
-+
-+	fdt = read_file(argv[optind], NULL);
-+	if (!fdt) {
-+		printf("cannot read %s\n", argv[optind]);
-+		return 1;
++	ret = of_property_read_string(fragment, "target-path", &path);
++	if (!ret) {
++		node = of_find_node_by_path_from(root, path);
++		if (!node)
++			pr_err("fragment %pOF: path '%s' not found\n",
++			       fragment, path);
++		return node;
 +	}
 +
-+	overlay = of_unflatten_dtb(fdt);
-+	free(fdt);
-+	if (IS_ERR(overlay))
-+		return PTR_ERR(overlay);
++	pr_err("fragment %pOF: no target property\n", fragment);
 +
-+	if (search_path) {
-+		ret = firmware_load_overlay(overlay, search_path);
-+		if (ret)
-+			goto err;
++	return NULL;
++}
++
++static int of_overlay_apply(struct device_node *target,
++			    const struct device_node *overlay)
++{
++	struct device_node *child;
++	struct device_node *target_child;
++	struct property *prop;
++	int err;
++
++	if (target == NULL || overlay == NULL)
++		return -EINVAL;
++
++	list_for_each_entry(prop, &overlay->properties, list) {
++		if (of_prop_cmp(prop->name, "name") == 0)
++			continue;
++
++		err = of_set_property(target, prop->name, prop->value,
++				      prop->length, true);
++		if (err)
++			return err;
 +	}
 +
-+	ret = of_register_overlay(overlay);
-+	if (ret) {
-+		printf("cannot apply oftree overlay: %s\n", strerror(-ret));
-+		goto err;
++	for_each_child_of_node(overlay, child) {
++		target_child = of_get_child_by_name(target, child->name);
++		if (!target_child)
++			target_child = of_new_node(target, child->name);
++		if (!target_child)
++			return -ENOMEM;
++
++		err = of_overlay_apply(target_child, child);
++		if (err)
++			return err;
 +	}
 +
 +	return 0;
-+
-+err:
-+	of_delete_node(overlay);
-+	return ret;
 +}
 +
-+BAREBOX_CMD_HELP_START(of_overlay)
-+BAREBOX_CMD_HELP_TEXT("Options:")
-+BAREBOX_CMD_HELP_OPT("-S path", "load firmware using this search path")
-+BAREBOX_CMD_HELP_END
++static char *of_overlay_fix_path(struct device_node *root,
++				 struct device_node *overlay, const char *path)
++{
++	struct device_node *fragment;
++	struct device_node *target;
++	const char *path_tail;
++	const char *prefix;
 +
-+BAREBOX_CMD_START(of_overlay)
-+	.cmd = do_of_overlay,
-+	BAREBOX_CMD_DESC("register device tree overlay as fixup")
-+	BAREBOX_CMD_OPTS("[-S path] FILE")
-+	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
-+	BAREBOX_CMD_HELP(cmd_of_overlay_help)
-+BAREBOX_CMD_END
++	fragment = of_find_node_by_path_from(overlay, path);
++	while ((fragment = of_get_parent(fragment)) != NULL) {
++		if (of_get_child_by_name(fragment, "__overlay__"))
++			break;
++	}
++	if (!fragment)
++		return NULL;
++
++	target = find_target(root, fragment);
++	if (!target)
++		return NULL;
++
++	prefix = of_get_child_by_name(fragment, "__overlay__")->full_name;
++	path_tail = path + strlen(prefix);
++
++	return basprintf("%s%s", target->full_name, path_tail);
++}
++
++static int of_overlay_apply_symbols(struct device_node *root,
++				    struct device_node *overlay)
++{
++	const char *old_path;
++	char *new_path;
++	struct property *prop;
++	struct device_node *root_symbols;
++	struct device_node *overlay_symbols;
++
++	root_symbols = of_get_child_by_name(root, "__symbols__");
++	if (!root_symbols)
++		return -EINVAL;
++
++	overlay_symbols = of_get_child_by_name(overlay, "__symbols__");
++	if (!overlay_symbols)
++		return -EINVAL;
++
++	list_for_each_entry(prop, &overlay_symbols->properties, list) {
++		if (of_prop_cmp(prop->name, "name") == 0)
++			continue;
++
++		old_path = of_property_get_value(prop);
++		new_path = of_overlay_fix_path(root, overlay, old_path);
++
++		pr_debug("add symbol %s with new path %s\n",
++			 prop->name, new_path);
++		of_property_write_string(root_symbols, prop->name, new_path);
++	}
++
++	return 0;
++}
++
++static int of_overlay_apply_fragment(struct device_node *root,
++				     struct device_node *fragment)
++{
++	struct device_node *target;
++	struct device_node *overlay;
++
++	overlay = of_get_child_by_name(fragment, "__overlay__");
++	if (!overlay)
++		return 0;
++
++	target = find_target(root, fragment);
++	if (!target)
++		return -EINVAL;
++
++	return of_overlay_apply(target, overlay);
++}
++
++/**
++ * Fix the passed root node using the device tree overlay in data
++ */
++static int of_overlay_fixup(struct device_node *root, void *data)
++{
++	struct device_node *overlay = data;
++	struct device_node *resolved;
++	struct device_node *fragment;
++	int err;
++
++	resolved = of_resolve_phandles(root, overlay);
++	if (!resolved)
++		return -EINVAL;
++
++	/* Copy symbols from resolved overlay to base device tree */
++	err = of_overlay_apply_symbols(root, resolved);
++	if (err)
++		pr_warn("failed to copy symbols from overlay");
++
++	/* Copy nodes and properties from resolved overlay to root */
++	for_each_child_of_node(resolved, fragment) {
++		err = of_overlay_apply_fragment(root, fragment);
++		if (err)
++			pr_warn("failed to apply %s", fragment->name);
++	}
++
++	of_delete_node(resolved);
++
++	return 0;
++}
++
++/**
++ * Register a devicetree overlay
++ *
++ * The overlay is not applied to the live device tree, but registered as fixup
++ * for the fixed up device tree. Therefore, drivers relying on the overlay
++ * must use the fixed device tree.
++ */
++int of_register_overlay(struct device_node *overlay)
++{
++	of_register_fixup(of_overlay_fixup, overlay);
++
++	return 0;
++}
+diff --git a/drivers/of/resolver.c b/drivers/of/resolver.c
+new file mode 100644
+index 0000000000..574c75cb4b
+--- /dev/null
++++ b/drivers/of/resolver.c
+@@ -0,0 +1,278 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Functions for dealing with DT resolution
++ *
++ * Copyright (C) 2012 Pantelis Antoniou <panto@antoniou-consulting.com>
++ * Copyright (C) 2012 Texas Instruments Inc.
++ * Copyright (C) 2019 Pengutronix, Michael Tretter <m.tretter@pengutronix.de>
++ */
++
++#include <common.h>
++#include <of.h>
++#include <errno.h>
++
++/**
++ * Recursively update phandles in overlay by adding delta
++ */
++static void adjust_overlay_phandles(struct device_node *overlay, int delta)
++{
++	struct device_node *child;
++	struct property *prop;
++
++	if (overlay->phandle != 0)
++		overlay->phandle += delta;
++
++	list_for_each_entry(prop, &overlay->properties, list) {
++		if (of_prop_cmp(prop->name, "phandle") != 0 &&
++		    of_prop_cmp(prop->name, "linux,phandle") != 0)
++			continue;
++		if (prop->length < 4)
++			continue;
++
++		be32_add_cpu(prop->value, delta);
++	}
++
++	for_each_child_of_node(overlay, child)
++		adjust_overlay_phandles(child, delta);
++}
++
++/**
++ * Update all unresolved phandles in the overlay using prop_fixup
++ *
++ * prop_fixup contains a list of tuples of path:property_name:offset, each of
++ * which refers to a property that is phandle to a node in the base
++ * devicetree.
++ */
++static int update_usages_of_a_phandle_reference(struct device_node *overlay,
++						struct property *prop_fixup,
++						phandle phandle)
++{
++	struct device_node *refnode;
++	struct property *prop;
++	char *value, *cur, *end, *node_path, *prop_name, *s;
++	int offset, len;
++	int err = 0;
++
++	pr_debug("resolve references to %s to phandle 0x%x\n",
++		 prop_fixup->name, phandle);
++
++	value = kmemdup(prop_fixup->value, prop_fixup->length, GFP_KERNEL);
++	if (!value)
++		return -ENOMEM;
++
++	end = value + prop_fixup->length;
++	for (cur = value; cur < end; cur += len + 1) {
++		len = strlen(cur);
++
++		node_path = cur;
++		s = strchr(cur, ':');
++		if (!s) {
++			err = -EINVAL;
++			goto err_fail;
++		}
++		*s++ = '\0';
++
++		prop_name = s;
++		s = strchr(s, ':');
++		if (!s) {
++			err = -EINVAL;
++			goto err_fail;
++		}
++		*s++ = '\0';
++
++		err = kstrtoint(s, 10, &offset);
++		if (err)
++			goto err_fail;
++
++		refnode = of_find_node_by_path_from(overlay, node_path);
++		if (!refnode)
++			continue;
++
++		prop = of_find_property(refnode, prop_name, NULL);
++		if (!prop) {
++			err = -ENOENT;
++			goto err_fail;
++		}
++
++		if (offset < 0 || offset + sizeof(__be32) > prop->length) {
++			err = -EINVAL;
++			goto err_fail;
++		}
++
++		*(__be32 *)(prop->value + offset) = cpu_to_be32(phandle);
++	}
++
++err_fail:
++	kfree(value);
++
++	if (err)
++		pr_debug("failed to resolve references to %s\n",
++			 prop_fixup->name);
++
++	return err;
++}
++
++/*
++ * Adjust the local phandle references by the given phandle delta.
++ *
++ * Subtree @local_fixups, which is overlay node __local_fixups__,
++ * mirrors the fragment node structure at the root of the overlay.
++ *
++ * For each property in the fragments that contains a phandle reference,
++ * @local_fixups has a property of the same name that contains a list
++ * of offsets of the phandle reference(s) within the respective property
++ * value(s).  The values at these offsets will be fixed up.
++ */
++static int adjust_local_phandle_references(struct device_node *local_fixups,
++		struct device_node *overlay, int phandle_delta)
++{
++	struct device_node *child, *overlay_child;
++	struct property *prop_fix, *prop;
++	int err, i, count;
++	unsigned int off;
++
++	if (!local_fixups)
++		return 0;
++
++	list_for_each_entry(prop_fix, &local_fixups->properties, list) {
++		if (!of_prop_cmp(prop_fix->name, "name") ||
++		    !of_prop_cmp(prop_fix->name, "phandle") ||
++		    !of_prop_cmp(prop_fix->name, "linux,phandle"))
++			continue;
++
++		if ((prop_fix->length % sizeof(__be32)) != 0 ||
++		    prop_fix->length == 0)
++			return -EINVAL;
++		count = prop_fix->length / sizeof(__be32);
++
++		prop = of_find_property(overlay, prop_fix->name, NULL);
++		if (!prop)
++			return -EINVAL;
++
++		for (i = 0; i < count; i++) {
++			off = be32_to_cpu(((__be32 *)prop_fix->value)[i]);
++			if ((off + sizeof(__be32)) > prop->length)
++				return -EINVAL;
++
++			be32_add_cpu(prop->value + off, phandle_delta);
++		}
++	}
++
++	for_each_child_of_node(local_fixups, child) {
++		for_each_child_of_node(overlay, overlay_child)
++			if (!of_node_cmp(child->name, overlay_child->name))
++				break;
++		if (!overlay_child)
++			return -EINVAL;
++
++		err = adjust_local_phandle_references(child, overlay_child,
++				phandle_delta);
++		if (err)
++			return err;
++	}
++
++	return 0;
++}
++
++/**
++ * of_resolve_phandles - Resolve phandles in overlay based on root
++ *
++ * Rename phandles in overlay to avoid conflicts with the base devicetree and
++ * replace all phandles in the overlay with their renamed versions. Resolve
++ * phandles referring to nodes in the base devicetree with the phandle from
++ * the base devicetree.
++ *
++ * Returns a new device_node with resolved phandles which must be deleted by
++ * the caller of this function.
++ */
++struct device_node *of_resolve_phandles(struct device_node *root,
++					const struct device_node *overlay)
++{
++	struct device_node *result;
++	struct device_node *local_fixups;
++	struct device_node *refnode;
++	struct device_node *symbols;
++	struct device_node *overlay_fixups;
++	struct property *prop;
++	const char *refpath;
++	phandle delta;
++	int err;
++
++	result = of_copy_node(NULL, overlay);
++	if (!result)
++		return NULL;
++
++	delta = of_get_tree_max_phandle(root) + 1;
++
++	/*
++	 * Rename the phandles in the devicetree overlay to prevent conflicts
++	 * with the phandles in the base devicetree.
++	 */
++	adjust_overlay_phandles(result, delta);
++
++	/*
++	 * __local_fixups__ contains all locations in the overlay that refer
++	 * to a phandle defined in the overlay. We must update the references,
++	 * because we just adjusted the definitions.
++	 */
++	local_fixups = of_find_node_by_name(result, "__local_fixups__");
++	err = adjust_local_phandle_references(local_fixups, result, delta);
++	if (err) {
++		pr_err("failed to fix phandles in overlay\n");
++		goto err;
++	}
++
++	/*
++	 * __fixups__ contains all locations in the overlay that refer to a
++	 * phandle that is not defined in the overlay and should be defined in
++	 * the base device tree. We must update the references, because they
++	 * are otherwise undefined.
++	 */
++	overlay_fixups = of_find_node_by_name(result, "__fixups__");
++	if (!overlay_fixups) {
++		pr_debug("overlay does not contain phandles to base devicetree\n");
++		goto out;
++	}
++
++	symbols = of_find_node_by_path_from(root, "/__symbols__");
++	if (!symbols) {
++		pr_err("__symbols__ missing from base devicetree\n");
++		goto err;
++	}
++
++	list_for_each_entry(prop, &overlay_fixups->properties, list) {
++		if (!of_prop_cmp(prop->name, "name"))
++			continue;
++
++		err = of_property_read_string(symbols, prop->name, &refpath);
++		if (err) {
++			pr_err("cannot find node %s in base devicetree\n",
++			       prop->name);
++			goto err;
++		}
++
++		refnode = of_find_node_by_path_from(root, refpath);
++		if (!refnode) {
++			pr_err("cannot find path %s in base devicetree\n",
++			       refpath);
++			err = -EINVAL;
++			goto err;
++		}
++
++		err = update_usages_of_a_phandle_reference(result, prop,
++							   refnode->phandle);
++		if (err) {
++			pr_err("failed to update phandles for %s in overlay",
++			       prop->name);
++			goto err;
++		}
++	}
++
++out:
++	return result;
++err:
++	of_delete_node(result);
++
++	return NULL;
++
++}
+diff --git a/include/of.h b/include/of.h
+index b5f54dd4e5..ac80dc3247 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -3,6 +3,7 @@
+ 
+ #include <fdt.h>
+ #include <errno.h>
++#include <notifier.h>
+ #include <linux/types.h>
+ #include <linux/list.h>
+ #include <asm/byteorder.h>
+@@ -870,4 +871,23 @@ static inline struct device_node *of_find_root_node(struct device_node *node)
+ 
+ 	return node;
+ }
++
++#ifdef CONFIG_OF_OVERLAY
++struct device_node *of_resolve_phandles(struct device_node *root,
++					const struct device_node *overlay);
++int of_register_overlay(struct device_node *overlay);
++#else
++static inline struct device_node *of_resolve_phandles(struct device_node *root,
++					const struct device_node *overlay)
++{
++	return NULL;
++}
++
++static inline int of_register_overlay(struct device_node *overlay)
++{
++	return -ENOSYS;
++}
++
++#endif
++
+ #endif /* __OF_H */
 -- 
 2.20.1
 
