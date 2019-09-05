@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i5pMg-00074h-K5
+ id 1i5pMg-00074i-KD
  for barebox@lists.infradead.org; Thu, 05 Sep 2019 10:51:49 +0000
 From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Thu,  5 Sep 2019 12:51:40 +0200
-Message-Id: <20190905105142.13681-6-m.tretter@pengutronix.de>
+Date: Thu,  5 Sep 2019 12:51:42 +0200
+Message-Id: <20190905105142.13681-8-m.tretter@pengutronix.de>
 In-Reply-To: <20190905105142.13681-1-m.tretter@pengutronix.de>
 References: <20190905105142.13681-1-m.tretter@pengutronix.de>
 MIME-Version: 1.0
@@ -21,142 +21,152 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/7] firmware: add support to load firmware from dt overlay
+Subject: [PATCH 7/7] commands: add of_overlay command for device tree overlays
 To: barebox@lists.infradead.org
 Cc: Michael Tretter <m.tretter@pengutronix.de>
 
-fpga-region device tree nodes have the firmware-name property that
-contains the file name of firmware in the firmware search path (but not
-the path) that shall be loaded before the overlay is applied.
-
-Add the firmware_load_overlay() function that accepts an overlay and a
-firmware search path, finds the responsible firmware_mgr and loads the
-firmware.
+Add a new command "of_overlay" for applying device tree overlays,
+because it does not really fit into any other device tree related
+command and would create a mess with the command options.
 
 Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 ---
- common/firmware.c  | 77 ++++++++++++++++++++++++++++++++++++++++++++++
- include/firmware.h |  3 ++
- 2 files changed, 80 insertions(+)
+ commands/Kconfig      | 12 ++++++
+ commands/Makefile     |  1 +
+ commands/of_overlay.c | 89 +++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 102 insertions(+)
+ create mode 100644 commands/of_overlay.c
 
-diff --git a/common/firmware.c b/common/firmware.c
-index 9d55d73e7a..d15026cf07 100644
---- a/common/firmware.c
-+++ b/common/firmware.c
-@@ -62,6 +62,39 @@ struct firmware_mgr *firmwaremgr_find(const char *id)
- 	return NULL;
- }
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 039fd7d1ac..01d82031ad 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -2088,6 +2088,18 @@ config CMD_OF_FIXUP_STATUS
+ 	  Register a fixup to enable or disable a device tree node.
+ 	  Nodes are enabled on default. Disabled with -d.
  
++config CMD_OF_OVERLAY
++	tristate
++	select OFTREE
++	prompt "of_overlay"
++	help
++	  of_overlay - register device tree overlay as fixup
++
++	  Usage: of_overlay [-S path] FILE
++
++	  Options:
++		  -S path	load firmware using this search path
++
+ config CMD_OFTREE
+ 	tristate
+ 	select OFTREE
+diff --git a/commands/Makefile b/commands/Makefile
+index e69fb5046f..62ad9ce2b2 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -78,6 +78,7 @@ obj-$(CONFIG_CMD_OF_NODE)	+= of_node.o
+ obj-$(CONFIG_CMD_OF_DUMP)	+= of_dump.o
+ obj-$(CONFIG_CMD_OF_DISPLAY_TIMINGS)	+= of_display_timings.o
+ obj-$(CONFIG_CMD_OF_FIXUP_STATUS)	+= of_fixup_status.o
++obj-$(CONFIG_CMD_OF_OVERLAY)	+= of_overlay.o
+ obj-$(CONFIG_CMD_MAGICVAR)	+= magicvar.o
+ obj-$(CONFIG_CMD_IOMEM)		+= iomemport.o
+ obj-$(CONFIG_CMD_LINUX_EXEC)	+= linux_exec.o
+diff --git a/commands/of_overlay.c b/commands/of_overlay.c
+new file mode 100644
+index 0000000000..f929443bfe
+--- /dev/null
++++ b/commands/of_overlay.c
+@@ -0,0 +1,89 @@
++// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * firmwaremgr_find_by_node - find a firmware device handler
++ * Copyright (c) 2019 Michael Tretter <m.tretter@pengutronix.de>, Pengutronix
 + *
-+ * Find a firmware device handler using the device node of the firmware
-+ * handler. This allows to retrieve the firmware handler with a phandle from
-+ * the device tree.
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
 + */
-+struct firmware_mgr *firmwaremgr_find_by_node(const struct device_node *np)
++
++#include <command.h>
++#include <common.h>
++#include <environment.h>
++#include <fdt.h>
++#include <firmware.h>
++#include <fs.h>
++#include <getopt.h>
++#include <libfile.h>
++#include <of.h>
++
++static int do_of_overlay(int argc, char *argv[])
 +{
-+	struct firmware_mgr *mgr;
++	int opt, ret;
++	struct fdt_header *fdt;
++	struct device_node *overlay;
++	const char *search_path = NULL;
 +
-+	list_for_each_entry(mgr, &firmwaremgr_list, list)
-+		if (mgr->handler->dev->parent->device_node == np)
-+			return mgr;
-+
-+	return NULL;
-+}
-+
-+static struct firmware_mgr *of_node_get_mgr(const struct device_node *np)
-+{
-+	struct device_node *mgr_node;
-+
-+	do {
-+		if (of_device_is_compatible(np, "fpga-region")) {
-+			mgr_node = of_parse_phandle(np, "fpga-mgr", 0);
-+			if (mgr_node)
-+				return firmwaremgr_find_by_node(mgr_node);
++	while ((opt = getopt(argc, argv, "S:")) > 0) {
++		switch (opt) {
++		case 'S':
++			search_path = optarg;
++			break;
++		default:
++			return COMMAND_ERROR_USAGE;
 +		}
-+	} while ((np = of_get_parent(np)) != NULL);
++	}
 +
-+	return NULL;
++	if (argc != optind + 1)
++		return COMMAND_ERROR_USAGE;
++
++	fdt = read_file(argv[optind], NULL);
++	if (!fdt) {
++		printf("cannot read %s\n", argv[optind]);
++		return 1;
++	}
++
++	overlay = of_unflatten_dtb(fdt);
++	free(fdt);
++	if (IS_ERR(overlay))
++		return PTR_ERR(overlay);
++
++	if (search_path) {
++		ret = firmware_load_overlay(overlay, search_path);
++		if (ret)
++			goto err;
++	}
++
++	ret = of_register_overlay(overlay);
++	if (ret) {
++		printf("cannot apply oftree overlay: %s\n", strerror(-ret));
++		goto err;
++	}
++
++	return 0;
++
++err:
++	of_delete_node(overlay);
++	return ret;
 +}
 +
- /*
-  * firmwaremgr_list_handlers - list registered firmware device handlers
-  *                             in pretty format
-@@ -153,6 +186,40 @@ static int firmware_close(struct cdev *cdev)
- 	return 0;
- }
- 
-+struct overlay_info {
-+	const char *firmware_path;
-+};
++BAREBOX_CMD_HELP_START(of_overlay)
++BAREBOX_CMD_HELP_TEXT("Options:")
++BAREBOX_CMD_HELP_OPT("-S path", "load firmware using this search path")
++BAREBOX_CMD_HELP_END
 +
-+static int load_firmware(struct device_node *target,
-+			 struct device_node *fragment, void *data)
-+{
-+	struct overlay_info *info = data;
-+	const char *firmware_name;
-+	const char *firmware_path = info->firmware_path;
-+	char *firmware;
-+	int err;
-+	struct firmware_mgr *mgr;
-+
-+	err = of_property_read_string(fragment,
-+				      "firmware-name", &firmware_name);
-+	if (err)
-+		return 0;
-+
-+	mgr = of_node_get_mgr(target);
-+	if (!mgr)
-+		return -EINVAL;
-+
-+	firmware = basprintf("%s/%s", firmware_path, firmware_name);
-+	if (!firmware)
-+		return -ENOMEM;
-+
-+	err = firmwaremgr_load_file(mgr, firmware);
-+
-+	free(firmware);
-+
-+	return err;
-+}
-+
- static struct cdev_operations firmware_ops = {
- 	.open = firmware_open,
- 	.write = firmware_write,
-@@ -210,3 +277,13 @@ int firmwaremgr_load_file(struct firmware_mgr *mgr, const char *firmware)
- 
- 	return ret;
- }
-+
-+int firmware_load_overlay(struct device_node *overlay, const char *path)
-+{
-+	struct overlay_info info = {
-+		.firmware_path = path,
-+	};
-+
-+	return of_process_overlay(of_get_root_node(), overlay,
-+				  load_firmware, &info);
-+}
-diff --git a/include/firmware.h b/include/firmware.h
-index 284e0f9705..a3c2f9fe4a 100644
---- a/include/firmware.h
-+++ b/include/firmware.h
-@@ -34,11 +34,14 @@ struct firmware_mgr;
- int firmwaremgr_register(struct firmware_handler *);
- 
- struct firmware_mgr *firmwaremgr_find(const char *);
-+struct firmware_mgr *firmwaremgr_find_by_node(const struct device_node *np);
- 
- void firmwaremgr_list_handlers(void);
- 
- int firmwaremgr_load_file(struct firmware_mgr *, const char *path);
- 
-+int firmware_load_overlay(struct device_node *overlay, const char *path);
-+
- #define get_builtin_firmware(name, start, size) \
- 	{							\
- 		extern char _fw_##name##_start[];		\
++BAREBOX_CMD_START(of_overlay)
++	.cmd = do_of_overlay,
++	BAREBOX_CMD_DESC("register device tree overlay as fixup")
++	BAREBOX_CMD_OPTS("[-S path] FILE")
++	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
++	BAREBOX_CMD_HELP(cmd_of_overlay_help)
++BAREBOX_CMD_END
 -- 
 2.20.1
 
