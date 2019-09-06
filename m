@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i6E9u-0004O0-At
+ id 1i6E9u-0004Ny-9H
  for barebox@lists.infradead.org; Fri, 06 Sep 2019 13:20:17 +0000
 From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Fri,  6 Sep 2019 15:20:08 +0200
-Message-Id: <20190906132008.25309-8-m.tretter@pengutronix.de>
+Date: Fri,  6 Sep 2019 15:20:05 +0200
+Message-Id: <20190906132008.25309-5-m.tretter@pengutronix.de>
 In-Reply-To: <20190906132008.25309-1-m.tretter@pengutronix.de>
 References: <20190906132008.25309-1-m.tretter@pengutronix.de>
 MIME-Version: 1.0
@@ -21,158 +21,117 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 7/7] commands: add of_overlay command for device tree
- overlays
+Subject: [PATCH v2 4/7] of: add iterator for overlays
 To: barebox@lists.infradead.org
 Cc: Michael Tretter <m.tretter@pengutronix.de>
 
-Add a new command "of_overlay" for applying device tree overlays,
-because it does not really fit into any other device tree related
-command and would create a mess with the command options.
+Device tree overlays (the dto files) may contain multiple fragments for
+different target nodes. Each fragment contains a __overlay__ node that
+is applied to target node specified in the fragment.
+
+Add a helper to call a function for each fragment in a device tree
+overlay to avoid having device tree overlay internal information in
+other modules.
 
 Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 
 ---
 Changelog:
 
-v1->v2: none
+v1->v2:
+- add static inline for function stub
 ---
- commands/Kconfig      | 12 ++++++
- commands/Makefile     |  1 +
- commands/of_overlay.c | 89 +++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 102 insertions(+)
- create mode 100644 commands/of_overlay.c
+ drivers/of/overlay.c | 45 ++++++++++++++++++++++++++++++++++++++++++++
+ include/of.h         | 13 +++++++++++++
+ 2 files changed, 58 insertions(+)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 039fd7d1ac..01d82031ad 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -2088,6 +2088,18 @@ config CMD_OF_FIXUP_STATUS
- 	  Register a fixup to enable or disable a device tree node.
- 	  Nodes are enabled on default. Disabled with -d.
+diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
+index f6a0576183..abfb3df9dc 100644
+--- a/drivers/of/overlay.c
++++ b/drivers/of/overlay.c
+@@ -194,6 +194,51 @@ static int of_overlay_fixup(struct device_node *root, void *data)
+ 	return of_overlay_apply_tree(root, overlay);
+ }
  
-+config CMD_OF_OVERLAY
-+	tristate
-+	select OFTREE
-+	prompt "of_overlay"
-+	help
-+	  of_overlay - register device tree overlay as fixup
-+
-+	  Usage: of_overlay [-S path] FILE
-+
-+	  Options:
-+		  -S path	load firmware using this search path
-+
- config CMD_OFTREE
- 	tristate
- 	select OFTREE
-diff --git a/commands/Makefile b/commands/Makefile
-index e69fb5046f..62ad9ce2b2 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -78,6 +78,7 @@ obj-$(CONFIG_CMD_OF_NODE)	+= of_node.o
- obj-$(CONFIG_CMD_OF_DUMP)	+= of_dump.o
- obj-$(CONFIG_CMD_OF_DISPLAY_TIMINGS)	+= of_display_timings.o
- obj-$(CONFIG_CMD_OF_FIXUP_STATUS)	+= of_fixup_status.o
-+obj-$(CONFIG_CMD_OF_OVERLAY)	+= of_overlay.o
- obj-$(CONFIG_CMD_MAGICVAR)	+= magicvar.o
- obj-$(CONFIG_CMD_IOMEM)		+= iomemport.o
- obj-$(CONFIG_CMD_LINUX_EXEC)	+= linux_exec.o
-diff --git a/commands/of_overlay.c b/commands/of_overlay.c
-new file mode 100644
-index 0000000000..f929443bfe
---- /dev/null
-+++ b/commands/of_overlay.c
-@@ -0,0 +1,89 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (c) 2019 Michael Tretter <m.tretter@pengutronix.de>, Pengutronix
++/**
++ * Iterate the overlay and call process for each fragment
 + *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
++ * If process() fails for any fragment, the function will stop to process
++ * other fragments and return the error of the failed process() call.
 + */
-+
-+#include <command.h>
-+#include <common.h>
-+#include <environment.h>
-+#include <fdt.h>
-+#include <firmware.h>
-+#include <fs.h>
-+#include <getopt.h>
-+#include <libfile.h>
-+#include <of.h>
-+
-+static int do_of_overlay(int argc, char *argv[])
++int of_process_overlay(struct device_node *root,
++		       struct device_node *overlay,
++		       int (*process)(struct device_node *target,
++				      struct device_node *overlay, void *data),
++		       void *data)
 +{
-+	int opt, ret;
-+	struct fdt_header *fdt;
-+	struct device_node *overlay;
-+	const char *search_path = NULL;
++	struct device_node *resolved;
++	struct device_node *fragment;
++	int err = 0;
 +
-+	while ((opt = getopt(argc, argv, "S:")) > 0) {
-+		switch (opt) {
-+		case 'S':
-+			search_path = optarg;
-+			break;
-+		default:
-+			return COMMAND_ERROR_USAGE;
++	resolved = of_resolve_phandles(root, overlay);
++	if (!resolved)
++		return -EINVAL;
++
++	for_each_child_of_node(resolved, fragment) {
++		struct device_node *ovl;
++		struct device_node *target;
++
++		ovl = of_get_child_by_name(fragment, "__overlay__");
++		if (!ovl)
++			continue;
++
++		target = find_target(root, fragment);
++		if (!target)
++			continue;
++
++		err = process(target, ovl, data);
++		if (err) {
++			pr_warn("failed to process %s\n", fragment->name);
++			goto out;
 +		}
 +	}
 +
-+	if (argc != optind + 1)
-+		return COMMAND_ERROR_USAGE;
++out:
++	of_delete_node(resolved);
 +
-+	fdt = read_file(argv[optind], NULL);
-+	if (!fdt) {
-+		printf("cannot read %s\n", argv[optind]);
-+		return 1;
-+	}
-+
-+	overlay = of_unflatten_dtb(fdt);
-+	free(fdt);
-+	if (IS_ERR(overlay))
-+		return PTR_ERR(overlay);
-+
-+	if (search_path) {
-+		ret = firmware_load_overlay(overlay, search_path);
-+		if (ret)
-+			goto err;
-+	}
-+
-+	ret = of_register_overlay(overlay);
-+	if (ret) {
-+		printf("cannot apply oftree overlay: %s\n", strerror(-ret));
-+		goto err;
-+	}
-+
-+	return 0;
-+
-+err:
-+	of_delete_node(overlay);
-+	return ret;
++	return err;
 +}
 +
-+BAREBOX_CMD_HELP_START(of_overlay)
-+BAREBOX_CMD_HELP_TEXT("Options:")
-+BAREBOX_CMD_HELP_OPT("-S path", "load firmware using this search path")
-+BAREBOX_CMD_HELP_END
-+
-+BAREBOX_CMD_START(of_overlay)
-+	.cmd = do_of_overlay,
-+	BAREBOX_CMD_DESC("register device tree overlay as fixup")
-+	BAREBOX_CMD_OPTS("[-S path] FILE")
-+	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
-+	BAREBOX_CMD_HELP(cmd_of_overlay_help)
-+BAREBOX_CMD_END
+ /**
+  * Register a devicetree overlay
+  *
+diff --git a/include/of.h b/include/of.h
+index 1483c22db1..06dc9f61a5 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -877,6 +877,11 @@ struct device_node *of_resolve_phandles(struct device_node *root,
+ int of_overlay_apply_tree(struct device_node *root,
+ 			  struct device_node *overlay);
+ int of_register_overlay(struct device_node *overlay);
++int of_process_overlay(struct device_node *root,
++		    struct device_node *overlay,
++		    int (*process)(struct device_node *target,
++				   struct device_node *overlay, void *data),
++		    void *data);
+ #else
+ static inline struct device_node *of_resolve_phandles(struct device_node *root,
+ 					const struct device_node *overlay)
+@@ -895,6 +900,14 @@ static inline int of_register_overlay(struct device_node *overlay)
+ 	return -ENOSYS;
+ }
+ 
++static inline int of_process_overlay(struct device_node *root,
++				     struct device_node *overlay,
++				     int (*process)(struct device_node *target,
++						    struct device_node *overlay, void *data),
++				     void *data)
++{
++	return -ENOSYS;
++}
+ #endif
+ 
+ #endif /* __OF_H */
 -- 
 2.20.1
 
