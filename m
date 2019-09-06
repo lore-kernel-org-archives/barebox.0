@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.22])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i6BQ7-0001Rw-CX
- for barebox@lists.infradead.org; Fri, 06 Sep 2019 10:24:49 +0000
-References: <1567763115-11597-1-git-send-email-iu87m888m@qq.com>
-From: Oleksij Rempel <linux@rempel-privat.de>
-Message-ID: <e2fc1e83-c427-3602-f20b-c1f330f2d764@rempel-privat.de>
-Date: Fri, 6 Sep 2019 12:24:33 +0200
+ id 1i6E9u-0004Nx-9e
+ for barebox@lists.infradead.org; Fri, 06 Sep 2019 13:20:17 +0000
+From: Michael Tretter <m.tretter@pengutronix.de>
+Date: Fri,  6 Sep 2019 15:20:01 +0200
+Message-Id: <20190906132008.25309-1-m.tretter@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <1567763115-11597-1-git-send-email-iu87m888m@qq.com>
-Content-Language: en-GB
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,41 +19,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] CONFIG_PBL_BREAK option is available for MIPS
-To: iu87m888m@qq.com, barebox@lists.infradead.org
-Cc: DU HUANPENG <u74147@gmail.com>
+Subject: [PATCH v2 0/7] Device Tree Overlay Support
+To: barebox@lists.infradead.org
+Cc: Michael Tretter <m.tretter@pengutronix.de>
 
-Hi,
+Hello,
 
-Am 06.09.19 um 11:45 schrieb iu87m888m@qq.com:
-> From: DU HUANPENG <u74147@gmail.com>
->
-> Signed-off-by: DU HUANPENG <u74147@gmail.com>
-> ---
->  common/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/common/Kconfig b/common/Kconfig
-> index 8aad5ba..a86b5e8 100644
-> --- a/common/Kconfig
-> +++ b/common/Kconfig
-> @@ -1290,7 +1290,7 @@ config DEBUG_INITCALLS
->
->  config PBL_BREAK
->  	bool "Execute software break on pbl start"
-> -	depends on ARM
-> +	depends on ARM || MIPS
->  	help
->  	  If this enabled, barebox will be compiled with BKPT instruction
->  	  on early pbl init. This option should be used only with JTAG debugger!
->
+This is the v2 for adding device tree overlay support to barebox.
 
-It is not enough to just enable it for MIPS. MIPS need appropriate code
-to do this.
+The biggest change is the new function of_overlay_apply_tree() which accepts a
+devicetree and the root node of an overlay and applies the overlay to the
+devicetree.
 
---
-Regards,
-Oleksij
+Apart from that, I fixed various issues like memory leaks, useless includes,
+missing documentation, formatting of output messages, and a missing "static
+inline".
+
+Michael
+
+Changelog:
+
+v1 -> v2:
+ - export function for applying a device tree overlay
+ - define pr_fmt for overlay and resolver
+ - remove useless notifier.h
+ - fix error handling/memory leak in blspec handling
+ - document ownership of overlay memory
+
+rfc -> v1:
+ - new of_overlay command
+ - no more notifiers for device tree overlays
+
+Michael Tretter (7):
+  dtc: add -@ option to enable __symbols__
+  of: add support for devicetree overlays
+  blspec: add support for devicetree overlays
+  of: add iterator for overlays
+  firmware: add support to load firmware from dt overlay
+  blspec: load firmware if specified in dt overlay
+  commands: add of_overlay command for device tree overlays
+
+ Documentation/user/booting-linux.rst |   4 +
+ commands/Kconfig                     |  12 ++
+ commands/Makefile                    |   1 +
+ commands/of_overlay.c                |  89 +++++++++
+ common/blspec.c                      |  77 ++++++++
+ common/firmware.c                    |  77 ++++++++
+ drivers/of/Kconfig                   |   9 +
+ drivers/of/Makefile                  |   1 +
+ drivers/of/overlay.c                 | 254 ++++++++++++++++++++++++
+ drivers/of/resolver.c                | 279 +++++++++++++++++++++++++++
+ include/firmware.h                   |   3 +
+ include/of.h                         |  40 ++++
+ scripts/Makefile.lib                 |   2 +-
+ 13 files changed, 847 insertions(+), 1 deletion(-)
+ create mode 100644 commands/of_overlay.c
+ create mode 100644 drivers/of/overlay.c
+ create mode 100644 drivers/of/resolver.c
+
+-- 
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
