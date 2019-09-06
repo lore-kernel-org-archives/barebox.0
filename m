@@ -1,16 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail.data-modul.de ([212.184.205.171] helo=mail2.data-modul.de)
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i68jw-0002aB-4e
- for barebox@lists.infradead.org; Fri, 06 Sep 2019 07:33:05 +0000
-Date: Fri, 6 Sep 2019 09:33:02 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190906073302.uyhxt32q5j73clcg@pengutronix.de>
-References: <20190905105142.13681-1-m.tretter@pengutronix.de>
- <20190905105142.13681-4-m.tretter@pengutronix.de>
+ id 1i6AcB-000756-1H
+ for barebox@lists.infradead.org; Fri, 06 Sep 2019 09:33:12 +0000
+Received: from mail2.data-modul.de (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 161EC3E107
+ for <barebox@lists.infradead.org>; Fri,  6 Sep 2019 11:33:08 +0200 (CEST)
+Received: from mail2.data-modul.de (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0B41D3E102
+ for <barebox@lists.infradead.org>; Fri,  6 Sep 2019 11:33:08 +0200 (CEST)
+Received: from mail.data-modul.de (unknown [10.1.1.120])
+ by mail2.data-modul.de (Postfix) with ESMTPS
+ for <barebox@lists.infradead.org>; Fri,  6 Sep 2019 11:33:08 +0200 (CEST)
+From: "Yazdani, Reyhaneh" <RYazdani@data-modul.com>
+Date: Fri, 6 Sep 2019 09:33:05 +0000
+Message-ID: <edafd62c-08cc-06d4-a0b0-e8607f6fc61b@data-modul.com>
+Content-Language: de-DE
+Content-ID: <F16CC4D787B1D446A46157A415EB0F90@data-modul.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190905105142.13681-4-m.tretter@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,100 +26,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/7] blspec: add support for devicetree overlays
-To: Michael Tretter <m.tretter@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: initrd in imx8mm
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Thu, Sep 05, 2019 at 12:51:38PM +0200, Michael Tretter wrote:
-> Read the devicetree-overlay property from the blspec entry and register
-> the overlays when booting the blspec entry.
-> 
-> Do not fail the boot if an overlay cannot be loaded, because if Linux
-> fails to boot without an overlay, the base device tree is broken.
-> 
-> Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
-> ---
->  Documentation/user/booting-linux.rst |  4 ++
->  common/blspec.c                      | 59 ++++++++++++++++++++++++++++
->  2 files changed, 63 insertions(+)
-> 
-> diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/booting-linux.rst
-> index 437f4e80ca..12cd505e71 100644
-> --- a/Documentation/user/booting-linux.rst
-> +++ b/Documentation/user/booting-linux.rst
-> @@ -232,6 +232,10 @@ device where the entry is found on. This makes it possible to use the same rootf
->  image on different devices without having to specify a different root= option each
->  time.
->  
-> +Additionally to the options defined in the original spec, Barebox has the
-> +``devicetree-overlay`` option. This is a string value that refer to overlays
-> +that will be applied to the device tree before passing it to Linux.
-> +
->  Network boot
->  ------------
->  
-> diff --git a/common/blspec.c b/common/blspec.c
-> index 66e5033e35..6b15d36d67 100644
-> --- a/common/blspec.c
-> +++ b/common/blspec.c
-> @@ -42,6 +42,60 @@ int blspec_entry_var_set(struct blspec_entry *entry, const char *name,
->  			val ? strlen(val) + 1 : 0, 1);
->  }
->  
-> +static int blspec_apply_oftree_overlay(char *file, const char *abspath,
-> +				       int dryrun)
-> +{
-> +	int ret;
-> +	struct fdt_header *fdt;
-> +	struct device_node *overlay;
-> +	char *path;
-> +
-> +	path = basprintf("%s/%s", abspath, file);
-> +
-> +	fdt = read_file(path, NULL);
-
-This memory is never freed.
-
-> +	if (!fdt) {
-> +		pr_warn("unable to read \"%s\"\n", path);
-> +		ret = -EINVAL;
-> +		goto out;
-> +	}
-> +
-> +	overlay = of_unflatten_dtb(fdt);
-> +	if (IS_ERR(overlay)) {
-> +		printf("\"%s\" is not a valid devicetree\n", path);
-> +		ret = -EINVAL;
-> +		goto out;
-> +	}
-> +
-> +	if (dryrun) {
-> +		pr_info("dry run: skip overlay %s\n", path);
-> +		of_delete_node(overlay);
-> +		goto out;
-> +	}
-> +
-> +	ret = of_register_overlay(overlay);
-> +	if (ret)
-> +		pr_warn("cannot register devicetree overlay \"%s\"\n", path);
-
-You do not free the overlay in the error path. What happens to this
-memory when succesful? Should of_register_overlay() make a copy or free
-it when succesfully fixed up?
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8gZXZlcnlvbmUsDQoNCkkgaGF2ZSBhbiBpbml0cmFtZnMgZmlsZSB0aGF0IHdhbnQgdG8g
+YmUgY2FsbGVkIHZpYSBpbml0cmQgaW4gQmFyZWJveC4NCkkgaGF2ZSBjb25maWd1cmVkIG15IGJv
+b3Qgc2NyaXB0IGFzIGJlbG93Og0KDQojIS9iaW4vc2gNCg0KZ2xvYmFsLmJvb3RtLmltYWdlPSIv
+bW50L21tYzEuMC9JbWFnZSINCmdsb2JhbC5ib290bS5pbml0cmQ9Ii9tbnQvbW1jMS4wL2luaXRy
+YW1mcyINCmdsb2JhbC5ib290bS5vZnRyZWU9Ii9tbnQvbW1jMS4wL0ltYWdlLWZzbC1pbXg4bW0t
+ZXZrLmR0YiINCmdsb2JhbC5saW51eC5ib290YXJncy5keW4ucm9vdD0icm9vdD0vZGV2L21tY2Js
+azFwNSByb290d2FpdCB2aWRlbz0tMzINCmZzY2sucmVwYWlyPXllcyINCg0KQnV0IHdoZW4gSSBj
+YWxsIHRoaXMgYm9vdCBzY3JpcHQsIGluaXRyYW1mcyBpcyBub3QgZXhlY3V0ZWQgYW5kIG9ubHkg
+TGludXgNCktlcm5lbCBhbmQgZGV2aWNlIHRyZWUgYXJlIGxvYWRlZCBhbmQgc3lzdGVtIGJvb3Rz
+Lg0KDQpJIGhhdmUgZG9uZSB0aGlzIHByb2Nlc3Mgb24gaW14NiBib2FyZCBwcmV2aW91c2x5IGFu
+ZCBteSBpbml0cmFtZnMgd2FzIGNhbGxlZA0Kc3VjY2Vzc2Z1bGx5IHZpYSBpbml0cmQuDQoNCklz
+IHRoaXMgZmVhdHVyZSBub3QgYXZhaWxhYmxlIGZvciBpbXg4bXEvaW14OG1tPyBBY3R1YWxseSB0
+aGUgZnVuY3Rpb24NCmJvb3RtX2xvYWRfaW5pdHJkIGlzIG5ldmVyIGNhbGxlZC4NCg0KQmVzdCBy
+ZWdhcmRzLA0KUmV5aGFuZWgNCg0KLS0NClJleWhhbmVoIFlhemRhbmkNCkRhdGEgTW9kdWwgQUcg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgVEVMOiAgICArNDktODktNTYwMTctMTU0DQpFbWJl
+ZGRlZCBkZXZlbG9wbWVudCAgICAgICAgICAgICAgICAgRkFYOiAgICArNDktODktNTYwMTctMTE5
+DQpMaW51eCAtIERldmVsb3BtZW50ICAgICAgICAgICAgICAgICAgICAgIFJHOiBIUi1NdWVuY2hl
+biBCLTg1NTkxDQpMYW5kc2JlcmdlciBTdHIuIDMyMiBELTgwNjg3IE11ZW5jaGVuIC0gaHR0cDov
+L3d3dy5kYXRhLW1vZHVsLmNvbQ0KDQpWZXJ0cmF1bGljaGUgRS1NYWlsIHZvbiAvIENvbmZpZGVu
+dGlhbCBlLW1haWwgZnJvbTogREFUQSBNT0RVTCBBRw0KVm9yc3RhbmQgLyBDRU86IERyLiBGbG9y
+aWFuIFBlc2FobA0KVm9yc2l0emVuZGUgZGVzIEF1ZnNpY2h0c3JhdGVzIC8gQ2hhaXJ3b21hbiBv
+ZiB0aGUgU3VwZXJ2aXNvcnkgQm9hcmQ6IEtyaXN0aW4gRC4gUnVzc2VsbA0KU2l0eiBkZXIgR2Vz
+ZWxsc2NoYWZ0IC8gUmVnaXN0ZXJlZCBPZmZpY2U6IE3DvG5jaGVuDQpSZWdpc3RlcmdlcmljaHQg
+LyBSZWdpc3RyYXRpb24gQ291cnQ6IE3DvG5jaGVuIEhhbmRlbHNyZWdpc3RlciBCIDg1IDU5MQ0K
+DQoNCg0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFy
+ZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0
+cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
