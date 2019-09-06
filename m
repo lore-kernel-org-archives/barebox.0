@@ -1,20 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from smtpbg512.qq.com ([203.205.250.48] helo=smtpbg.qq.com)
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i6Anw-0003WU-PW
- for barebox@lists.infradead.org; Fri, 06 Sep 2019 09:45:22 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>) id 1i6Anv-0005Tc-7H
- for barebox@lists.infradead.org; Fri, 06 Sep 2019 11:45:19 +0200
-References: <edafd62c-08cc-06d4-a0b0-e8607f6fc61b@data-modul.com>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <0f71bd5d-8fcd-400a-3dbd-41928e51471a@pengutronix.de>
-Date: Fri, 6 Sep 2019 11:45:19 +0200
-MIME-Version: 1.0
-In-Reply-To: <edafd62c-08cc-06d4-a0b0-e8607f6fc61b@data-modul.com>
-Content-Language: en-US
+ id 1i6AoG-0003Wj-LR
+ for barebox@lists.infradead.org; Fri, 06 Sep 2019 09:45:44 +0000
+From: iu87m888m@qq.com
+Date: Fri,  6 Sep 2019 17:45:15 +0800
+Message-Id: <1567763115-11597-1-git-send-email-iu87m888m@qq.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,54 +14,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: initrd in imx8mm
+Subject: [PATCH] CONFIG_PBL_BREAK option is available for MIPS
 To: barebox@lists.infradead.org
+Cc: DU HUANPENG <u74147@gmail.com>
 
-SGVsbG8sCgpPbiA5LzYvMTkgMTE6MzMgQU0sIFlhemRhbmksIFJleWhhbmVoIHdyb3RlOgo+IEhl
-bGxvIGV2ZXJ5b25lLAo+IAo+IEkgaGF2ZSBhbiBpbml0cmFtZnMgZmlsZSB0aGF0IHdhbnQgdG8g
-YmUgY2FsbGVkIHZpYSBpbml0cmQgaW4gQmFyZWJveC4KPiBJIGhhdmUgY29uZmlndXJlZCBteSBi
-b290IHNjcmlwdCBhcyBiZWxvdzoKPiAKPiAjIS9iaW4vc2gKPiAKPiBnbG9iYWwuYm9vdG0uaW1h
-Z2U9Ii9tbnQvbW1jMS4wL0ltYWdlIgo+IGdsb2JhbC5ib290bS5pbml0cmQ9Ii9tbnQvbW1jMS4w
-L2luaXRyYW1mcyIKPiBnbG9iYWwuYm9vdG0ub2Z0cmVlPSIvbW50L21tYzEuMC9JbWFnZS1mc2wt
-aW14OG1tLWV2ay5kdGIiCj4gZ2xvYmFsLmxpbnV4LmJvb3RhcmdzLmR5bi5yb290PSJyb290PS9k
-ZXYvbW1jYmxrMXA1IHJvb3R3YWl0IHZpZGVvPS0zMgo+IGZzY2sucmVwYWlyPXllcyIKPiAKPiBC
-dXQgd2hlbiBJIGNhbGwgdGhpcyBib290IHNjcmlwdCwgaW5pdHJhbWZzIGlzIG5vdCBleGVjdXRl
-ZCBhbmQgb25seSBMaW51eAo+IEtlcm5lbCBhbmQgZGV2aWNlIHRyZWUgYXJlIGxvYWRlZCBhbmQg
-c3lzdGVtIGJvb3RzLgo+IAo+IEkgaGF2ZSBkb25lIHRoaXMgcHJvY2VzcyBvbiBpbXg2IGJvYXJk
-IHByZXZpb3VzbHkgYW5kIG15IGluaXRyYW1mcyB3YXMgY2FsbGVkCj4gc3VjY2Vzc2Z1bGx5IHZp
-YSBpbml0cmQuCj4gCj4gSXMgdGhpcyBmZWF0dXJlIG5vdCBhdmFpbGFibGUgZm9yIGlteDhtcS9p
-bXg4bW0/IEFjdHVhbGx5IHRoZSBmdW5jdGlvbgo+IGJvb3RtX2xvYWRfaW5pdHJkIGlzIG5ldmVy
-IGNhbGxlZC4KCltTaWRlbm90ZTogYm9vdG0udmVyYm9zZSBzaG93cyBzb21lIGV4dHJhIGJvb3Qg
-aW5mb10KClRoZSBib290bSBoYW5kbGVyIGNvZGUgZm9yIGFybTY0IGlzIGluIGFyY2gvYXJtL2xp
-YjY0L2FybWxpbnV4LmMKVGhlcmUncyBubyBsb2FkaW5nIG9mIGFuIGluaXRyZCB0aGVyZSwgdW5s
-aWtlIGFyY2gvYXJtL2xpYjMyL2Jvb3RtLmMKc28gSSdkIGFzc3VtZSBpdCdzIGluZGVlZCBub3Qg
-aW1wbGVtZW50ZWQsIGJ1dCBJIGRvbid0IHRoaW5rIGl0J3MgZGlmZmljdWx0CnRvIGFkZCB0aG91
-Z2gsIG1heWJlIHlvdSB3YW50IHRvIHdyaXRlIGEgcGF0Y2g/IDopCgpPdGhlcndpc2UsIHlvdSBj
-b3VsZCBhbHdheXMgaGF2ZSB0aGUgaW5pdHJhbWZzIGVtYmVkZGVkIGluIHRoZSBrZXJuZWwgaW1h
-Z2UuCgpDaGVlcnMKQWhtYWQKCj4gCj4gQmVzdCByZWdhcmRzLAo+IFJleWhhbmVoCj4gCj4gLS0K
-PiBSZXloYW5laCBZYXpkYW5pCj4gRGF0YSBNb2R1bCBBRyAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICBURUw6ICAgICs0OS04OS01NjAxNy0xNTQKPiBFbWJlZGRlZCBkZXZlbG9wbWVudCAgICAg
-ICAgICAgICAgICAgRkFYOiAgICArNDktODktNTYwMTctMTE5Cj4gTGludXggLSBEZXZlbG9wbWVu
-dCAgICAgICAgICAgICAgICAgICAgICBSRzogSFItTXVlbmNoZW4gQi04NTU5MQo+IExhbmRzYmVy
-Z2VyIFN0ci4gMzIyIEQtODA2ODcgTXVlbmNoZW4gLSBodHRwOi8vd3d3LmRhdGEtbW9kdWwuY29t
-Cj4gCj4gVmVydHJhdWxpY2hlIEUtTWFpbCB2b24gLyBDb25maWRlbnRpYWwgZS1tYWlsIGZyb206
-IERBVEEgTU9EVUwgQUcKPiBWb3JzdGFuZCAvIENFTzogRHIuIEZsb3JpYW4gUGVzYWhsCj4gVm9y
-c2l0emVuZGUgZGVzIEF1ZnNpY2h0c3JhdGVzIC8gQ2hhaXJ3b21hbiBvZiB0aGUgU3VwZXJ2aXNv
-cnkgQm9hcmQ6IEtyaXN0aW4gRC4gUnVzc2VsbAo+IFNpdHogZGVyIEdlc2VsbHNjaGFmdCAvIFJl
-Z2lzdGVyZWQgT2ZmaWNlOiBNw7xuY2hlbgo+IFJlZ2lzdGVyZ2VyaWNodCAvIFJlZ2lzdHJhdGlv
-biBDb3VydDogTcO8bmNoZW4gSGFuZGVsc3JlZ2lzdGVyIEIgODUgNTkxCj4gCj4gCj4gCj4gX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiBiYXJlYm94IG1h
-aWxpbmcgbGlzdAo+IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+IGh0dHA6Ly9saXN0cy5p
-bmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo+IAoKLS0gClBlbmd1dHJvbml4
-IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICB8CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6
-Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVp
-bSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhp
-bGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1
-NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJl
-Ym94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3Rz
-LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+From: DU HUANPENG <u74147@gmail.com>
+
+Signed-off-by: DU HUANPENG <u74147@gmail.com>
+---
+ common/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/common/Kconfig b/common/Kconfig
+index 8aad5ba..a86b5e8 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -1290,7 +1290,7 @@ config DEBUG_INITCALLS
+ 
+ config PBL_BREAK
+ 	bool "Execute software break on pbl start"
+-	depends on ARM
++	depends on ARM || MIPS
+ 	help
+ 	  If this enabled, barebox will be compiled with BKPT instruction
+ 	  on early pbl init. This option should be used only with JTAG debugger!
+-- 
+2.7.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
