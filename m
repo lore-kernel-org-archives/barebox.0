@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i7FFd-0007Bd-Sp
- for barebox@lists.infradead.org; Mon, 09 Sep 2019 08:42:23 +0000
-Date: Mon, 9 Sep 2019 10:42:20 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190909084220.23dw5yg7ekwni5jw@pengutronix.de>
-References: <20190907235645.22442-1-andrew.smirnov@gmail.com>
+ id 1i6kaq-0004UG-DU
+ for barebox@lists.infradead.org; Sat, 07 Sep 2019 23:58:13 +0000
+Received: by mail-pf1-x441.google.com with SMTP id b13so6835195pfo.8
+ for <barebox@lists.infradead.org>; Sat, 07 Sep 2019 16:58:11 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Sat,  7 Sep 2019 16:58:04 -0700
+Message-Id: <20190907235805.23273-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190907235645.22442-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,33 +17,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: aarch64: Re-implement most of barebox_arm_entry()
- in assembly
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] mfd: da9053: Drop unused 'priority' variable
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-T24gU2F0LCBTZXAgMDcsIDIwMTkgYXQgMDQ6NTY6NDVQTSAtMDcwMCwgQW5kcmV5IFNtaXJub3Yg
-d3JvdGU6Cj4gR0NDOSBub3cgcHJvZHVjZXMgdGhlIGZvbGxvd2luZyB3YXJuaW5nOgo+IAo+IGNv
-bW1vbi5oOjUxOjI6IHdhcm5pbmc6IGxpc3RpbmcgdGhlIHN0YWNrIHBvaW50ZXIgcmVnaXN0ZXIg
-4oCYc3DigJkgaW4gYSBjbG9iYmVyIGxpc3QgaXMgZGVwcmVjYXRlZCBbLVdkZXByZWNhdGVkXQo+
-ICAgIDUxIHwgIF9fYXNtX18gX192b2xhdGlsZV9fKCJtb3Ygc3AsICUwIgo+ICAgICAgIHwgIF5+
-fn5+fn4KPiBjb21tb24uaDo1MToyOiBub3RlOiB0aGUgdmFsdWUgb2YgdGhlIHN0YWNrIHBvaW50
-ZXIgYWZ0ZXIgIGFuIOKAmGFzbeKAmSBzdGF0ZW1lbnQgbXVzdCBiZSB0aGUgc2FtZSBhcyBpdCB3
-YXMgYmVmb3JlIHRoZSBzdGF0ZW1lbnQKCkhtLCB0aGlzIG1ha2VzIGFuIGFybV9zZXR1cF9zdGFj
-aygpIGZ1bmN0aW9uIGlsbGVnYWwgYnkgZGVmaW5pdGlvbi4gSQp0aGluayB3ZSBoYXZlIHdvcmsg
-dG8gZG8gOigKCkNhbiB5b3UgY2hhbmdlIGJvdGggYXJtMzIgYW5kIGFhcmNoNjQgdG8gYXNzZW1i
-bHkgaW4gdGhpcyBwYXRjaD8gV2UgaGF2ZQp0byBkbyBzb21ldGhpbmcgYW55d2F5LCBjaGFuZ2lu
-ZyBib3RoIGFyY2hpdGVjdHVyZXMgbWlnaHQgbWFrZSB0aGlzCnBhdGNoIHNpbXBsZXIuCgpTYXNj
-aGEKCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIHwKSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAg
-ICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4g
-Ni04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0w
-ICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAg
-ICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFk
-ZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVi
-b3gK
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ drivers/mfd/da9053.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/mfd/da9053.c b/drivers/mfd/da9053.c
+index f65f3e0bb2..1faba813be 100644
+--- a/drivers/mfd/da9053.c
++++ b/drivers/mfd/da9053.c
+@@ -214,7 +214,6 @@ static int da9053_set_timeout(struct watchdog *wd, unsigned timeout)
+ 
+ static void da9053_detect_reset_source(struct da9053_priv *da9053)
+ {
+-	unsigned int priority;
+ 	enum reset_src_type type;
+ 	int ret;
+ 	u8 val;
+-- 
+2.21.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
