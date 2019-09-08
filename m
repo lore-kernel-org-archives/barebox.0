@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
+Received: from mail-qt1-x842.google.com ([2607:f8b0:4864:20::842])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i6kiq-0008Kq-Ij
- for barebox@lists.infradead.org; Sun, 08 Sep 2019 00:06:29 +0000
-Received: by mail-pg1-x541.google.com with SMTP id n190so5612098pgn.0
- for <barebox@lists.infradead.org>; Sat, 07 Sep 2019 17:06:28 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat,  7 Sep 2019 17:06:15 -0700
-Message-Id: <20190908000615.28868-7-andrew.smirnov@gmail.com>
-In-Reply-To: <20190908000615.28868-1-andrew.smirnov@gmail.com>
-References: <20190908000615.28868-1-andrew.smirnov@gmail.com>
-MIME-Version: 1.0
+ id 1i75FK-0006o3-GM
+ for barebox@lists.infradead.org; Sun, 08 Sep 2019 22:01:24 +0000
+Received: by mail-qt1-x842.google.com with SMTP id j1so1154271qth.1
+ for <barebox@lists.infradead.org>; Sun, 08 Sep 2019 15:01:21 -0700 (PDT)
+From: dgienda125@gmail.com
+Date: Sun,  8 Sep 2019 18:01:11 -0400
+Message-Id: <20190908220111.694-1-dgienda125@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,35 +16,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/7] ARM: zii-vf610-dev: Re-align SCU4's hostname with
- upstream kernel
+Subject: [PATCH] console: set default console_device devname
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: David Dgien <dgienda125@gmail.com>
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+From: David Dgien <dgienda125@gmail.com>
+
+Some commands (loadb/x/y) rely on console_get_by_name, which searches the list
+of console devices based on console_device->devname. However, some serial
+drivers do not set devname, meaning that their respective console_devices can
+never be found. During console_register, ensure that a default devname is set
+if one is not already explicitly set.
+
+Signed-off-by: David Dgien <dgienda125@gmail.com>
 ---
- arch/arm/boards/zii-vf610-dev/board.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ common/console.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm/boards/zii-vf610-dev/board.c b/arch/arm/boards/zii-vf610-dev/board.c
-index 0697a1660e..1d10f12f63 100644
---- a/arch/arm/boards/zii-vf610-dev/board.c
-+++ b/arch/arm/boards/zii-vf610-dev/board.c
-@@ -128,7 +128,7 @@ static int zii_vf610_dev_set_hostname(void)
- 		{ "zii,vf610cfu1", "cfu1" },
- 		{ "zii,vf610dev-b", "dev-rev-b" },
- 		{ "zii,vf610dev-c", "dev-rev-c" },
--		{ "zii,vf610scu4-aib-c", "scu4-aib-rev-c" },
-+		{ "zii,vf610scu4-aib", "scu4-aib" },
- 	};
+diff --git a/common/console.c b/common/console.c
+index ee17a508b..dacb6001c 100644
+--- a/common/console.c
++++ b/common/console.c
+@@ -324,6 +324,10 @@ int console_register(struct console_device *newcdev)
+ 		dev->parent = newcdev->dev;
+ 	platform_device_register(dev);
  
- 	if (!of_machine_is_compatible("zii,vf610dev"))
++	if (!newcdev->devname) {
++		newcdev->devname = strdup(dev_name(dev));
++	}
++
+ 	newcdev->open_count = 0;
+ 
+ 	/*
 -- 
-2.21.0
+2.17.1
 
 
 _______________________________________________
