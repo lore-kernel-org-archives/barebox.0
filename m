@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
+Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i6kik-0008GT-BI
- for barebox@lists.infradead.org; Sun, 08 Sep 2019 00:06:23 +0000
-Received: by mail-pf1-x444.google.com with SMTP id y72so6830828pfb.12
- for <barebox@lists.infradead.org>; Sat, 07 Sep 2019 17:06:22 -0700 (PDT)
+ id 1i6kil-0008Gj-I4
+ for barebox@lists.infradead.org; Sun, 08 Sep 2019 00:06:24 +0000
+Received: by mail-pf1-x442.google.com with SMTP id q21so6840765pfn.11
+ for <barebox@lists.infradead.org>; Sat, 07 Sep 2019 17:06:23 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat,  7 Sep 2019 17:06:09 -0700
-Message-Id: <20190908000615.28868-1-andrew.smirnov@gmail.com>
+Date: Sat,  7 Sep 2019 17:06:10 -0700
+Message-Id: <20190908000615.28868-2-andrew.smirnov@gmail.com>
+In-Reply-To: <20190908000615.28868-1-andrew.smirnov@gmail.com>
+References: <20190908000615.28868-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,7 +23,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/7] ARM: dts: vf610-zii-dev-rev-b: Fix SPI flash node name
+Subject: [PATCH 2/7] ARM: dts: vf610-zii-dev-rev-c: Fix DSPI flash node name
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
@@ -30,21 +32,21 @@ suit.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/dts/vf610-zii-dev-rev-b.dts | 2 +-
+ arch/arm/dts/vf610-zii-dev-rev-c.dts | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/dts/vf610-zii-dev-rev-b.dts b/arch/arm/dts/vf610-zii-dev-rev-b.dts
-index c90af91a9f..abc5237080 100644
---- a/arch/arm/dts/vf610-zii-dev-rev-b.dts
-+++ b/arch/arm/dts/vf610-zii-dev-rev-b.dts
-@@ -10,7 +10,7 @@
+diff --git a/arch/arm/dts/vf610-zii-dev-rev-c.dts b/arch/arm/dts/vf610-zii-dev-rev-c.dts
+index ecec0b1830..62c70c8905 100644
+--- a/arch/arm/dts/vf610-zii-dev-rev-c.dts
++++ b/arch/arm/dts/vf610-zii-dev-rev-c.dts
+@@ -21,7 +21,7 @@
+ };
  
- / {
- 	spi0 {
--		m25p128@0 {
-+		flash@0 {
- 			#address-cells = <1>;
- 			#size-cells = <0>;
+ &dspi0 {
+-	m25p128@0 {
++	flash@0 {
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
  
 -- 
 2.21.0
