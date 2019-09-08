@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
+Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i6kim-0008H2-Qd
- for barebox@lists.infradead.org; Sun, 08 Sep 2019 00:06:26 +0000
-Received: by mail-pg1-x543.google.com with SMTP id x15so5589029pgg.8
- for <barebox@lists.infradead.org>; Sat, 07 Sep 2019 17:06:24 -0700 (PDT)
+ id 1i6kio-0008Hh-0G
+ for barebox@lists.infradead.org; Sun, 08 Sep 2019 00:06:27 +0000
+Received: by mail-pg1-x541.google.com with SMTP id x15so5589045pgg.8
+ for <barebox@lists.infradead.org>; Sat, 07 Sep 2019 17:06:25 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat,  7 Sep 2019 17:06:11 -0700
-Message-Id: <20190908000615.28868-3-andrew.smirnov@gmail.com>
+Date: Sat,  7 Sep 2019 17:06:12 -0700
+Message-Id: <20190908000615.28868-4-andrew.smirnov@gmail.com>
 In-Reply-To: <20190908000615.28868-1-andrew.smirnov@gmail.com>
 References: <20190908000615.28868-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,36 +23,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/7] ARM: dts: vf610-zii-cfu1: Configure "STATUS" LED as
- heartbeat
+Subject: [PATCH 4/7] ARM: dts: vf610-zii-cfu1: Expose fiber optic module EEPROM
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Chris Healy <cphealy@gmail.com>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Configure "STATUS" LED as heartbeat in addition to "DEBUG" LED not
-exposed on the front panel. This way it becomes a bit easier to see
-what part of the boot process the device is at.
+EEPROM on a fiber optic module present on CFU1 can be exposed as a
+AT24 compatible device. Add corresponding DT node needed for that.
 
-Suggested-by: Chris Healy <cphealy@gmail.com>
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/dts/vf610-zii-cfu1.dts | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/arm/dts/vf610-zii-cfu1.dts | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
 diff --git a/arch/arm/dts/vf610-zii-cfu1.dts b/arch/arm/dts/vf610-zii-cfu1.dts
-index a9793adc3c..aace448e76 100644
+index aace448e76..70cd9d1ba9 100644
 --- a/arch/arm/dts/vf610-zii-cfu1.dts
 +++ b/arch/arm/dts/vf610-zii-cfu1.dts
-@@ -17,4 +17,10 @@
+@@ -16,6 +16,7 @@
+ 		 * fact to create a desirable naming
  		 */
  		switch-eeprom = &switch0;
++		fiber-eeprom0 = &fiber_eeprom0;
  	};
-+
-+	gpio-leds {
-+		led-status {
-+			linux,default-trigger = "heartbeat";
-+		};
-+	};
+ 
+ 	gpio-leds {
+@@ -24,3 +25,11 @@
+ 		};
+ 	};
  };
++
++&i2c0 {
++	fiber_eeprom0: eeprom@50 {
++		compatible = "atmel,24c04";
++		reg = <0x50>;
++		label = "fiber0";
++	};
++};
 -- 
 2.21.0
 
