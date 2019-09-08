@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
+Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i6kee-0006k2-Ba
- for barebox@lists.infradead.org; Sun, 08 Sep 2019 00:02:09 +0000
-Received: by mail-pl1-x643.google.com with SMTP id y1so4836501plp.9
- for <barebox@lists.infradead.org>; Sat, 07 Sep 2019 17:02:07 -0700 (PDT)
+ id 1i6kfp-0006qR-Jo
+ for barebox@lists.infradead.org; Sun, 08 Sep 2019 00:03:22 +0000
+Received: by mail-pf1-x441.google.com with SMTP id s12so6859737pfe.6
+ for <barebox@lists.infradead.org>; Sat, 07 Sep 2019 17:03:21 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat,  7 Sep 2019 17:02:00 -0700
-Message-Id: <20190908000200.26361-1-andrew.smirnov@gmail.com>
+Date: Sat,  7 Sep 2019 17:03:14 -0700
+Message-Id: <20190908000314.27078-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,32 +21,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd: spi-nor: Import missing Micron devices
+Subject: [PATCH] i2c/pca954x: Initialize the mux to disconnected state
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Import entries for n25q00a, mt25qu02g, mt25ql02g, supported by latest
-Linux kernel.
+Port of a Linux kernel commit cd823db8b1161ef0d756514d280715a576d65cc3
+
+    pca954x power-on default is channel 0 connected. If multiple pca954x
+    muxes are connected to the same physical I2C bus, the parent bus will
+    see channel 0 devices behind both muxes by default. This is bad.
+
+    Scenario:
+                -- pca954x @ 0x70 -- ch 0 (I2C-bus-101) -- EEPROM @ 0x50
+                |
+    I2C-bus-1 ---
+                |
+                -- pca954x @ 0x71 -- ch 0 (I2C-bus-111) -- EEPROM @ 0x50
+
+    1. Load I2C bus driver: creates I2C-bus-1
+    2. Load pca954x driver: creates virtual I2C-bus-101 and I2C-bus-111
+    3. Load eeprom driver
+    4. Try to read EEPROM @ 0x50 on I2C-bus-101. The transaction will also bleed
+       onto I2C-bus-111 because pca954x @ 0x71 channel 0 is connected by default.
+
+    Fix: Initialize pca954x to disconnected state in pca954x_probe()
+
+    Signed-off-by: Petri Gynther <pgynther@google.com>
+    Signed-off-by: Jean Delvare <khali@linux-fr.org>
+    Cc: stable@kernel.org
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/mtd/spi-nor/spi-nor.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/i2c/muxes/i2c-mux-pca954x.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index f7eba6568c..b251035982 100644
---- a/drivers/mtd/spi-nor/spi-nor.c
-+++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -726,6 +726,9 @@ static const struct spi_device_id spi_nor_ids[] = {
- 	{ "n25q512a",    INFO(0x20bb20, 0, 64 * 1024, 1024, SECT_4K | USE_FSR | SPI_NOR_QUAD_READ) },
- 	{ "n25q512ax3",  INFO(0x20ba20, 0, 64 * 1024, 1024, SECT_4K | USE_FSR | SPI_NOR_QUAD_READ) },
- 	{ "n25q00",      INFO(0x20ba21, 0, 64 * 1024, 2048, SECT_4K | USE_FSR | SPI_NOR_QUAD_READ) },
-+	{ "n25q00a",     INFO(0x20bb21, 0, 64 * 1024, 2048, SECT_4K | USE_FSR | SPI_NOR_QUAD_READ | NO_CHIP_ERASE) },
-+	{ "mt25qu02g",   INFO(0x20bb22, 0, 64 * 1024, 4096, SECT_4K | USE_FSR | SPI_NOR_QUAD_READ | NO_CHIP_ERASE) },
-+	{ "mt25ql02g",   INFO(0x20ba22, 0, 64 * 1024, 4096, SECT_4K | USE_FSR | SPI_NOR_QUAD_READ | NO_CHIP_ERASE) },
+diff --git a/drivers/i2c/muxes/i2c-mux-pca954x.c b/drivers/i2c/muxes/i2c-mux-pca954x.c
+index bbc4870c3e..b820be0847 100644
+--- a/drivers/i2c/muxes/i2c-mux-pca954x.c
++++ b/drivers/i2c/muxes/i2c-mux-pca954x.c
+@@ -195,10 +195,11 @@ static int pca954x_probe(struct device_d *dev)
+ 	if (gpio_is_valid(gpio))
+ 		gpio_direction_output(gpio, 1);
  
- 	/* PMC */
- 	{ "pm25lv512",   INFO(0,        0, 32 * 1024,    2, SECT_4K_PMC) },
+-	/* Read the mux register at addr to verify
+-	 * that the mux is in fact present.
+-	 */
+-	if (i2c_smbus_read_byte(client) < 0) {
++	/* Write the mux register at addr to verify
++	 * that the mux is in fact present. This also
++	 * initializes the mux to disconnected state.
++ 	*/
++	if (i2c_smbus_write_byte(client, 0) < 0) {
+ 		dev_warn(&client->dev, "probe failed\n");
+ 		goto exit_free;
+ 	}
 -- 
 2.21.0
 
