@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i7FJR-0000TA-Bo
- for barebox@lists.infradead.org; Mon, 09 Sep 2019 08:46:18 +0000
-Date: Mon, 9 Sep 2019 10:46:15 +0200
+ id 1i7FK4-0000ve-Rg
+ for barebox@lists.infradead.org; Mon, 09 Sep 2019 08:46:58 +0000
+Date: Mon, 9 Sep 2019 10:46:55 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190909084615.njfhgkxhutier2vw@pengutronix.de>
-References: <20190907235930.24553-1-andrew.smirnov@gmail.com>
+Message-ID: <20190909084655.7zbssnexcwsvqhjh@pengutronix.de>
+References: <20190908000200.26361-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190907235930.24553-1-andrew.smirnov@gmail.com>
+In-Reply-To: <20190908000200.26361-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,25 +22,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mfd: rave-sp: Emulate firmware/bootloader mode reporting
- on RDU2
+Subject: Re: [PATCH] mtd: spi-nor: Import missing Micron devices
 To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Sat, Sep 07, 2019 at 04:59:30PM -0700, Andrey Smirnov wrote:
-> Add code to emulate firmware/bootloader mode reporting via
-> "general_status" field on RDU2. This is needed to correctly report if
-> RAVE SP is in bootloader of application mode during startup.
+On Sat, Sep 07, 2019 at 05:02:00PM -0700, Andrey Smirnov wrote:
+> Import entries for n25q00a, mt25qu02g, mt25ql02g, supported by latest
+> Linux kernel.
 > 
 > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 > ---
->  drivers/mfd/rave-sp.c       | 18 ++++++++++++++++--
->  include/linux/mfd/rave-sp.h |  1 +
->  2 files changed, 17 insertions(+), 2 deletions(-)
+>  drivers/mtd/spi-nor/spi-nor.c | 3 +++
+>  1 file changed, 3 insertions(+)
 
 Applied, thanks
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
