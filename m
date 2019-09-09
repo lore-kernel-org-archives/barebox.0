@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i7Ey2-0000RP-LJ
- for barebox@lists.infradead.org; Mon, 09 Sep 2019 08:24:11 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  9 Sep 2019 10:24:07 +0200
-Message-Id: <20190909082407.8631-1-a.fatoum@pengutronix.de>
+ id 1i7FY2-0006vh-3R
+ for barebox@lists.infradead.org; Mon, 09 Sep 2019 09:01:23 +0000
+Date: Mon, 9 Sep 2019 11:01:19 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190909090119.bzwe4y7blc6eukei@pengutronix.de>
+References: <20190909082407.8631-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190909082407.8631-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,34 +22,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] param: make dev_add_param_string_fixed value parameter const
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] param: make dev_add_param_string_fixed value parameter
+ const
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-The function is so far unused and the parameter's only use is to be passed
-as argument to dev_add_param_fixed which is const as well.
+On Mon, Sep 09, 2019 at 10:24:07AM +0200, Ahmad Fatoum wrote:
+> The function is so far unused and the parameter's only use is to be passed
+> as argument to dev_add_param_fixed which is const as well.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  include/param.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- include/param.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Applied, thanks
 
-diff --git a/include/param.h b/include/param.h
-index b618a2305d89..dea699049739 100644
---- a/include/param.h
-+++ b/include/param.h
-@@ -272,7 +272,7 @@ static inline struct param_d *dev_add_param_string_ro(struct device_d *dev, cons
- }
- 
- static inline struct param_d *dev_add_param_string_fixed(struct device_d *dev, const char *name,
--		char *value)
-+		const char *value)
- {
- 	return dev_add_param_fixed(dev, name, value);
- }
+Sascha
+
+
 -- 
-2.23.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
