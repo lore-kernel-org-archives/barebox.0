@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1i8IOx-0008Sh-VG
- for barebox@lists.infradead.org; Thu, 12 Sep 2019 06:16:21 +0000
-Date: Thu, 12 Sep 2019 08:16:17 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190912061617.guwsnwogkiya2y36@pengutronix.de>
-References: <20190909203451.13047-1-u.kleine-koenig@pengutronix.de>
- <20190909203451.13047-3-u.kleine-koenig@pengutronix.de>
+ by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
+ id 1i7QNN-0003lI-IZ
+ for barebox@lists.infradead.org; Mon, 09 Sep 2019 20:35:06 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Mon,  9 Sep 2019 22:34:49 +0200
+Message-Id: <20190909203451.13047-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190909203451.13047-3-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,65 +15,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v4 2/2] mci: implement command to switch a mmc device to
- enhanced mode
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v4 0/2] simplify setting enhanced area of mmc devices
+To: barebox@lists.infradead.org
 
-On Mon, Sep 09, 2019 at 10:34:51PM +0200, Uwe Kleine-K=F6nig wrote:
-> +	ret =3D mci_send_ext_csd(mci, ext_csd);
-> +	if (ret) {
-> +		printf("Failure to read EXT_CSD register\n");
-> +		free(ext_csd);
-> +		return ERR_PTR(-EIO);
-> +	}
-> +
-> +	return ext_csd;
-> +}
-> +
-> +/* enh_area -m [-c] /dev/mmcX */
-
--m is not implemented
-
-> +static int do_mmc_enh_area(int argc, char *argv[])
-> +{
-> +	const char *devpath;
-> +	struct mci *mci;
-> +	u8 *ext_csd;
-> +	int set_completed =3D 0;
-> +	int opt;
-> +	int ret;
-> +
-> +	while ((opt =3D getopt(argc, argv, "c")) > 0) {
-> +		switch (opt) {
-> +		case 'c':
-> +			set_completed =3D 1;
-> +			break;
-> +		}
-> +	}
-> +
-> +	/*
-> +	 * -m is currently mandatory to allow more flexible enhanced area
-> +	 * specifications in the future.
-> +	 */
-
--m?
-
-Sascha
-
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8sCgp2MyBvZiB0aGlzIHNlcmllcyBpcyB3YXMgc2VudCBpbiBPY3RvYmVyIDIwMTguIFRo
+aXMgdjQgYWRkcmVzc2VzIHRoZQpmZWVkYmFjayBJIGdvdCB0aGVuIGJ5IFNhc2NoYTogYWRkIGEg
+Y2FsbCB0byBmcmVlIHRoYXQgSSBtaXNzZWQgYW5kIHVzZQpnZXRvcHQgaW5zdGVhZCBvZiBwYXJz
+aW5nIHRoZSBvcHRpb25zIGJ5IGhhbmQuIEkgYWxzbyBkcm9wcGVkIHRoZQptYW5kYXRvcnkgInNl
+dG1heCIgc3ViY29tbWFuZC4gV2l0aCBvcHRpb24gcGFyc2luZyB0aGUgbmV3IGNvbW1hbmQgaXMK
+ZmxleGlibGUgZW5vdWdoIHRvIGJlIGV4cGFuZGVkIGluIHRoZSBmdXR1cmUgZm9yIHNldHRpbmcg
+b3RoZXIgc2l6ZXMKdGhhbiBtYXhpbWFsLgoKVGhlIGZpcnN0IHBhdGNoIGlzIGEgc21hbGwgY2xl
+YW51cCBhbmQgdW5jaGFuZ2VkIHNpbmNlIHYzLgoKQmVzdCByZWdhcmRzClV3ZQoKVXdlIEtsZWlu
+ZS1Lw7ZuaWcgKDIpOgogIG1jaTogcHJvdmlkZSB3cmFwcGVyIGZvciBtY2lfZ2V0X2RldmljZV9i
+eV9uYW1lIOKImCBkZXZwYXRoX3RvX25hbWUKICBtY2k6IGltcGxlbWVudCBjb21tYW5kIHRvIHN3
+aXRjaCBhIG1tYyBkZXZpY2UgdG8gZW5oYW5jZWQgbW9kZQoKIGNvbW1hbmRzL0tjb25maWcgICAg
+ICB8ICAxMSArKysKIGNvbW1hbmRzL01ha2VmaWxlICAgICB8ICAgMSArCiBjb21tYW5kcy9tbWMu
+YyAgICAgICAgfCAyMDAgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+CiBjb21tYW5kcy9tbWNfZXh0Y3NkLmMgfCAgIDYgKy0KIGluY2x1ZGUvbWNpLmggICAgICAgICB8
+ICAxMyArKysKIDUgZmlsZXMgY2hhbmdlZCwgMjI4IGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25z
+KC0pCiBjcmVhdGUgbW9kZSAxMDA2NDQgY29tbWFuZHMvbW1jLmMKCi0tIAoyLjIzLjAKCgpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxp
+bmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVh
+ZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
