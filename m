@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i7Flz-0004no-Na
+ id 1i7Flz-0004nr-Nc
  for barebox@lists.infradead.org; Mon, 09 Sep 2019 09:15:49 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  9 Sep 2019 11:15:39 +0200
-Message-Id: <20190909091542.15671-2-a.fatoum@pengutronix.de>
+Date: Mon,  9 Sep 2019 11:15:41 +0200
+Message-Id: <20190909091542.15671-4-a.fatoum@pengutronix.de>
 In-Reply-To: <20190909091542.15671-1-a.fatoum@pengutronix.de>
 References: <20190909091542.15671-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,131 +21,151 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/4] i2c: port Linux i2c_parse_fw_timings
+Subject: [PATCH v2 3/4] mfd: add support for STPMIC1
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Linux has a generic function for extracting i2c timings parameters from
-device-associated firmware nodes. Port this function to barebox, but
-have it only work on device tree nodes for now.
+The PMIC is addressable over I2C and, besides power management,
+integrates a watchdog, a user power on key handling and 64 bit of
+non-volatile memory.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/i2c/i2c.c | 55 +++++++++++++++++++++++++++++++++++++++++++++++
- include/i2c/i2c.h | 20 +++++++++++++++++
- 2 files changed, 75 insertions(+)
+ drivers/mfd/Kconfig   |  6 +++
+ drivers/mfd/Makefile  |  1 +
+ drivers/mfd/stpmic1.c | 99 +++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 106 insertions(+)
+ create mode 100644 drivers/mfd/stpmic1.c
 
-diff --git a/drivers/i2c/i2c.c b/drivers/i2c/i2c.c
-index 25e0fe7add3f..35ea63ab0729 100644
---- a/drivers/i2c/i2c.c
-+++ b/drivers/i2c/i2c.c
-@@ -24,6 +24,7 @@
- #include <init.h>
- #include <of.h>
- #include <gpio.h>
-+#include <linux/property.h>
+diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+index d04431fbc86d..7d924cfca1eb 100644
+--- a/drivers/mfd/Kconfig
++++ b/drivers/mfd/Kconfig
+@@ -61,4 +61,10 @@ config RAVE_SP_CORE
+ 	  Select this to get support for the Supervisory Processor
+ 	  device found on several devices in RAVE line of hardware.
  
- #include <i2c/i2c.h>
- 
-@@ -556,6 +557,60 @@ struct i2c_adapter *of_find_i2c_adapter_by_node(struct device_node *node)
- 	return NULL;
- }
- 
-+/**
-+ * i2c_parse_fw_timings - get I2C related timing parameters from firmware
-+ * @dev: The device to scan for I2C timing properties
-+ * @t: the i2c_timings struct to be filled with values
-+ * @use_defaults: bool to use sane defaults derived from the I2C specification
-+ *		  when properties are not found, otherwise use 0
-+ *
-+ * Scan the device for the generic I2C properties describing timing parameters
-+ * for the signal and fill the given struct with the results. If a property was
-+ * not found and use_defaults was true, then maximum timings are assumed which
-+ * are derived from the I2C specification. If use_defaults is not used, the
-+ * results will be 0, so drivers can apply their own defaults later. The latter
-+ * is mainly intended for avoiding regressions of existing drivers which want
-+ * to switch to this function. New drivers almost always should use the defaults.
++config MFD_STPMIC1
++	depends on I2C
++	bool "STPMIC1 MFD driver"
++	help
++	  Select this to support communication with the STPMIC1.
++
+ endmenu
+diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
+index 8b23a1023eb3..16a74abd77f3 100644
+--- a/drivers/mfd/Makefile
++++ b/drivers/mfd/Makefile
+@@ -11,3 +11,4 @@ obj-$(CONFIG_MFD_TWLCORE)	+= twl-core.o
+ obj-$(CONFIG_MFD_TWL4030)	+= twl4030.o
+ obj-$(CONFIG_MFD_TWL6030)	+= twl6030.o
+ obj-$(CONFIG_RAVE_SP_CORE)	+= rave-sp.o
++obj-$(CONFIG_MFD_STPMIC1)	+= stpmic1.o
+diff --git a/drivers/mfd/stpmic1.c b/drivers/mfd/stpmic1.c
+new file mode 100644
+index 000000000000..88c7921990fc
+--- /dev/null
++++ b/drivers/mfd/stpmic1.c
+@@ -0,0 +1,99 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2019 Ahmad Fatoum, Pengutronix
 + */
 +
-+void i2c_parse_fw_timings(struct device_d *dev, struct i2c_timings *t, bool use_defaults)
-+{
-+	int ret;
++#include <common.h>
++#include <driver.h>
++#include <errno.h>
++#include <i2c/i2c.h>
++#include <init.h>
++#include <malloc.h>
++#include <of.h>
++#include <regmap.h>
++#include <xfuncs.h>
 +
-+	memset(t, 0, sizeof(*t));
++#define VERSION_SR		0x6
 +
-+	ret = device_property_read_u32(dev, "clock-frequency", &t->bus_freq_hz);
-+	if (ret && use_defaults)
-+		t->bus_freq_hz = 100000;
-+
-+	ret = device_property_read_u32(dev, "i2c-scl-rising-time-ns", &t->scl_rise_ns);
-+	if (ret && use_defaults) {
-+		if (t->bus_freq_hz <= 100000)
-+			t->scl_rise_ns = 1000;
-+		else if (t->bus_freq_hz <= 400000)
-+			t->scl_rise_ns = 300;
-+		else
-+			t->scl_rise_ns = 120;
-+	}
-+
-+	ret = device_property_read_u32(dev, "i2c-scl-falling-time-ns", &t->scl_fall_ns);
-+	if (ret && use_defaults) {
-+		if (t->bus_freq_hz <= 400000)
-+			t->scl_fall_ns = 300;
-+		else
-+			t->scl_fall_ns = 120;
-+	}
-+
-+	device_property_read_u32(dev, "i2c-scl-internal-delay-ns", &t->scl_int_delay_ns);
-+
-+	ret = device_property_read_u32(dev, "i2c-sda-falling-time-ns", &t->sda_fall_ns);
-+	if (ret && use_defaults)
-+		t->sda_fall_ns = t->scl_fall_ns;
-+
-+	device_property_read_u32(dev, "i2c-sda-hold-time-ns", &t->sda_hold_ns);
-+}
-+EXPORT_SYMBOL_GPL(i2c_parse_fw_timings);
-+
- /**
-  * i2c_add_numbered_adapter - declare i2c adapter, use static bus number
-  * @adapter: the adapter to register (with adap->nr initialized)
-diff --git a/include/i2c/i2c.h b/include/i2c/i2c.h
-index 17b507ca2203..a694e4ab2ff1 100644
---- a/include/i2c/i2c.h
-+++ b/include/i2c/i2c.h
-@@ -238,6 +238,24 @@ struct i2c_board_info {
- 	struct device_node *of_node;
- };
- 
-+/**
-+ * struct i2c_timings - I2C timing information
-+ * @bus_freq_hz: the bus frequency in Hz
-+ * @scl_rise_ns: time SCL signal takes to rise in ns; t(r) in the I2C specification
-+ * @scl_fall_ns: time SCL signal takes to fall in ns; t(f) in the I2C specification
-+ * @scl_int_delay_ns: time IP core additionally needs to setup SCL in ns
-+ * @sda_fall_ns: time SDA signal takes to fall in ns; t(f) in the I2C specification
-+ * @sda_hold_ns: time IP core additionally needs to hold SDA in ns
-+ */
-+struct i2c_timings {
-+	u32 bus_freq_hz;
-+	u32 scl_rise_ns;
-+	u32 scl_fall_ns;
-+	u32 scl_int_delay_ns;
-+	u32 sda_fall_ns;
-+	u32 sda_hold_ns;
++struct stpmic1 {
++	struct device_d		*dev;
++	struct i2c_client	*client;
 +};
 +
- /**
-  * I2C_BOARD_INFO - macro used to list an i2c device and its address
-  * @dev_type: identifies the device type
-@@ -264,6 +282,8 @@ extern int i2c_add_numbered_adapter(struct i2c_adapter *adapter);
- struct i2c_adapter *i2c_get_adapter(int busnum);
- struct i2c_adapter *of_find_i2c_adapter_by_node(struct device_node *node);
- 
-+void i2c_parse_fw_timings(struct device_d *dev, struct i2c_timings *t, bool use_defaults);
++static int stpmic1_i2c_reg_read(void *ctx, unsigned int reg, unsigned int *val)
++{
++	struct stpmic1 *stpmic1 = ctx;
++	u8 buf[1];
++	int ret;
 +
- extern struct list_head i2c_adapter_list;
- #define for_each_i2c_adapter(adap) \
- 	list_for_each_entry(adap, &i2c_adapter_list, list)
++	ret = i2c_read_reg(stpmic1->client, reg, buf, 1);
++	*val = buf[0];
++
++	return ret == 1 ? 0 : ret;
++}
++
++static int stpmic1_i2c_reg_write(void *ctx, unsigned int reg, unsigned int val)
++{
++	struct stpmic1 *stpmic1 = ctx;
++	u8 buf[] = {
++		val & 0xff,
++	};
++	int ret;
++
++	ret = i2c_write_reg(stpmic1->client, reg, buf, 1);
++
++	return ret == 1 ? 0 : ret;
++}
++
++static struct regmap_bus regmap_stpmic1_i2c_bus = {
++	.reg_write = stpmic1_i2c_reg_write,
++	.reg_read = stpmic1_i2c_reg_read,
++};
++
++static const struct regmap_config stpmic1_regmap_i2c_config = {
++	.reg_bits = 8,
++	.val_bits = 8,
++	.max_register = 0xB3,
++};
++
++static int __init stpmic1_probe(struct device_d *dev)
++{
++	struct stpmic1 *stpmic1;
++	struct regmap *regmap;
++	u32 reg;
++	int ret;
++
++	stpmic1 = xzalloc(sizeof(*stpmic1));
++	stpmic1->dev = dev;
++
++	stpmic1->client = to_i2c_client(dev);
++	regmap = regmap_init(dev, &regmap_stpmic1_i2c_bus,
++			     stpmic1, &stpmic1_regmap_i2c_config);
++	dev->priv = regmap;
++
++	ret = regmap_register_cdev(regmap, NULL);
++	if (ret)
++		return ret;
++
++	ret = regmap_read(regmap, VERSION_SR, &reg);
++	if (ret) {
++		dev_err(dev, "Unable to read PMIC version\n");
++		return ret;
++	}
++	dev_info(dev, "PMIC Chip Version: 0x%x\n", reg);
++
++	return of_platform_populate(dev->device_node, NULL, dev);
++}
++
++static __maybe_unused struct of_device_id stpmic1_dt_ids[] = {
++	{ .compatible = "st,stpmic1" },
++	{ /* sentinel */ }
++};
++
++static struct driver_d stpmic1_i2c_driver = {
++	.name		= "stpmic1-i2c",
++	.probe		= stpmic1_probe,
++	.of_compatible	= DRV_OF_COMPAT(stpmic1_dt_ids),
++};
++
++device_i2c_driver(stpmic1_i2c_driver);
 -- 
 2.23.0
 
