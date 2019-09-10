@@ -1,18 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-io1-xd42.google.com ([2607:f8b0:4864:20::d42])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i7XlY-0001Mc-SN
- for barebox@lists.infradead.org; Tue, 10 Sep 2019 04:28:34 +0000
-Received: by mail-io1-xd42.google.com with SMTP id r26so34346158ioh.8
- for <barebox@lists.infradead.org>; Mon, 09 Sep 2019 21:28:30 -0700 (PDT)
+ id 1i7d2P-0001iy-1C
+ for barebox@lists.infradead.org; Tue, 10 Sep 2019 10:06:18 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Tue, 10 Sep 2019 12:06:10 +0200
+Message-Id: <20190910100611.22024-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-References: <20190907235456.21535-1-andrew.smirnov@gmail.com>
- <20190907235456.21535-3-andrew.smirnov@gmail.com>
- <20190909102306.kt3wiq5ldnxrjvg7@pengutronix.de>
-In-Reply-To: <20190909102306.kt3wiq5ldnxrjvg7@pengutronix.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 9 Sep 2019 21:28:17 -0700
-Message-ID: <CAHQ1cqFmsxHEcEzpDN5VQqZsnuj8HhAoMQhLUQ+KUdWnw2WjMQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,54 +15,87 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/4] mtd: ubi: Compile fastmap.c with
- -Wno-address-of-packed-member
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 1/2] ARM: dts: drop skeleton.dtsi
+To: barebox@lists.infradead.org
 
-On Mon, Sep 9, 2019 at 3:23 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
->
-> On Sat, Sep 07, 2019 at 04:54:55PM -0700, Andrey Smirnov wrote:
-> > GCC9 for ARM produces the following warnings:
-> >
-> > fastmap.c: In function 'ubi_attach_fastmap':
-> > fastmap.c:700:31: warning: taking address of packed member of 'struct ubi_fm_scan_pool' may result in an unaligned pointer value [-Waddress-of-packed-member]
-> >   700 |  ret = scan_pool(ubi, ai, fmpl->pebs, pool_size, &max_sqnum, &lfree);
-> >       |                           ~~~~^~~~~~
-> > fastmap.c:704:34: warning: taking address of packed member of 'struct ubi_fm_scan_pool' may result in an unaligned pointer value [-Waddress-of-packed-member]
-> >   704 |  ret = scan_pool(ubi, ai, fmpl_wl->pebs, wl_pool_size, &max_sqnum, &lfree);
-> >       |                           ~~~~~~~^~~~~~
-> >
-> > the offending code seems OK and there doesn't seem to be a way to fix
-> > this in code, so disable the warning for that file.
-> >
-> > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> > ---
->
-> Linux disables this warning completely.
-
-Yeah, I saw that. Wasn't sure if we wanted to go that direction or not.
-
-> We just burnt some developer
-> cycles, came to the conclusion that the world isn't perfect, that
-> there's no good (at least good realistic) solution to this problem and
-> that we should just do the same as Linux.
->
-> Disabling this warning for individual files in which it triggers
-> probably doesn't bring us further.
->
-
-Sure, will do. I think "ratp: Mark struct ratp_bb as packed" might
-still be worth applying though.
-
-Thanks,
-Andrey Smirnov
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SW4gdGhlIExpbnV4IGR0cyBmaWxlcyBza2VsZXRvbi5kdHNpIHdhcyBkcm9wcGVkIChpbiBjb21t
+aXQgYWJlNjBhM2E3YWZiCigiQVJNOiBkdHM6IEtpbGwgb2ZmIHNrZWxldG9uezY0fS5kdHNpIikg
+Zm9yIHY1LjEtcmMxKS4gQXQgbGVhc3Qgb25lCnJlYXNvbiBmb3IgdGhpcyBhbHNvIGFwcGxpZXMg
+Zm9yIGJhcmVib3g6IG1lbW9yeSBub2RlcyBhcmUgc3VwcG9zZWQgdG8gaGF2ZQphIHVuaXQgYWRk
+cmVzcyBhbmQgc28gYWRkaW5nIGEgbWVtb3J5IG5vZGUgd2l0aG91dCBhZGRyZXNzIGlzbid0IHNl
+bnNpYmxlLgoKVGhlcmUgYXJlIG9ubHkgZm91ciBkdHNpIGZpbGVzIHRoYXQgdXNlIHNrZWxldG9u
+LmR0c2kuIEFkZCBzb21lIG9mIHRoZQpub2RlcyBhbmQgcHJvcGVydGllcyBkZWZpbmVkIGluIHNr
+ZWxldG9uLmR0c2kgdG8gaXRzIGluY2x1ZGVycy4gSSBkcm9wcGVkCmFkZGluZyBlbXB0eSBhbGlh
+cyBub2RlcyBhcyBuZWl0aGVyIGJhcmVib3ggbm9yIExpbnV4IGRlcGVuZCBvbiBpdHMKcHJlc2Vu
+Y2UuIEFsbCBjb25zdW1lcnMgb3ZlcnJpZGUgcmVnIGluIHRoZSBtZW1vcnkgbm9kZSwgc28gYWRk
+IHRoZQpkZXZpY2VfdHlwZSBwcm9wZXJ0eSB0aGVyZS4gVGhlIHJlbWFpbmluZyBwcm9wZXJ0aWVz
+IGFyZSBhZGRlZCB1bmNoYW5nZWQuCgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8
+dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgotLS0KIGFyY2gvYXJtL2R0cy9jYW5vbi1h
+MTEwMC5kdHMgICAgIHwgIDEgKwogYXJjaC9hcm0vZHRzL2RpZ2ljNC5kdHNpICAgICAgICAgfCAg
+NyArKysrKy0tCiBhcmNoL2FybS9kdHMvZG0zNjUuZHRzaSAgICAgICAgICB8ICA3ICsrKysrLS0K
+IGFyY2gvYXJtL2R0cy9pbXgyNS1rYXJvLXR4MjUuZHRzIHwgIDEgKwogYXJjaC9hcm0vZHRzL2lt
+eDI1LmR0c2kgICAgICAgICAgfCAgNiArKysrKy0KIGFyY2gvYXJtL2R0cy9rMTg3OWhiMXlhLmR0
+c2kgICAgIHwgMTEgKysrKysrKysrLS0KIGFyY2gvYXJtL2R0cy9za2VsZXRvbi5kdHNpICAgICAg
+IHwgMTMgLS0tLS0tLS0tLS0tLQogYXJjaC9hcm0vZHRzL3ZpcnQycmVhbC5kdHMgICAgICAgfCAg
+MSArCiA4IGZpbGVzIGNoYW5nZWQsIDI3IGluc2VydGlvbnMoKyksIDIwIGRlbGV0aW9ucygtKQog
+ZGVsZXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2R0cy9za2VsZXRvbi5kdHNpCgpkaWZmIC0tZ2l0
+IGEvYXJjaC9hcm0vZHRzL2Nhbm9uLWExMTAwLmR0cyBiL2FyY2gvYXJtL2R0cy9jYW5vbi1hMTEw
+MC5kdHMKaW5kZXggYTg4ZWFjZjRkNGFmLi4xOGJhNDk1YmNmN2QgMTAwNjQ0Ci0tLSBhL2FyY2gv
+YXJtL2R0cy9jYW5vbi1hMTEwMC5kdHMKKysrIGIvYXJjaC9hcm0vZHRzL2Nhbm9uLWExMTAwLmR0
+cwpAQCAtNyw2ICs3LDcgQEAKIAljb21wYXRpYmxlID0gImNhbm9uLGExMTAwIjsKIAogCW1lbW9y
+eSB7CisJCWRldmljZV90eXBlID0gIm1lbW9yeSI7CiAJCXJlZyA9IDwweDAwMDAwMDAwIDB4MDQw
+MDAwMDA+OwogCX07CiAKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2R0cy9kaWdpYzQuZHRzaSBiL2Fy
+Y2gvYXJtL2R0cy9kaWdpYzQuZHRzaQppbmRleCAyMWIwMDRkNGEyOTMuLjJkYjkzOTNiMzMwYSAx
+MDA2NDQKLS0tIGEvYXJjaC9hcm0vZHRzL2RpZ2ljNC5kdHNpCisrKyBiL2FyY2gvYXJtL2R0cy9k
+aWdpYzQuZHRzaQpAQCAtMSw4ICsxLDExIEBACi0vaW5jbHVkZS8gInNrZWxldG9uLmR0c2kiCi0K
+IC8geworCSNhZGRyZXNzLWNlbGxzID0gPDE+OworCSNzaXplLWNlbGxzID0gPDE+OworCiAJY29t
+cGF0aWJsZSA9ICJjYW5vbixkaWdpYzQiOwogCisJY2hvc2VuIHsgfTsKKwogCXRpbWVyMDogdGlt
+ZXJAYzAyMTAwMDAgewogCQljb21wYXRpYmxlID0gImNhbm9uLGRpZ2ljLXRpbWVyIjsKIAkJcmVn
+ID0gPDB4YzAyMTAwMDAgMHgxYz47CmRpZmYgLS1naXQgYS9hcmNoL2FybS9kdHMvZG0zNjUuZHRz
+aSBiL2FyY2gvYXJtL2R0cy9kbTM2NS5kdHNpCmluZGV4IGVhNjkwMDdmYTg5Mi4uYjAzY2MzZWZh
+OWE5IDEwMDY0NAotLS0gYS9hcmNoL2FybS9kdHMvZG0zNjUuZHRzaQorKysgYi9hcmNoL2FybS9k
+dHMvZG0zNjUuZHRzaQpAQCAtMSw2ICsxLDkgQEAKLSNpbmNsdWRlICJza2VsZXRvbi5kdHNpIgot
+CiAvIHsKKwkjYWRkcmVzcy1jZWxscyA9IDwxPjsKKwkjc2l6ZS1jZWxscyA9IDwxPjsKKworCWNo
+b3NlbiB7IH07CisKIAlzb2MgewogCQljb21wYXRpYmxlID0gInNpbXBsZS1idXMiOwogCQltb2Rl
+bCA9ICJUSSBUTVMzMjBETTM2NSI7CmRpZmYgLS1naXQgYS9hcmNoL2FybS9kdHMvaW14MjUta2Fy
+by10eDI1LmR0cyBiL2FyY2gvYXJtL2R0cy9pbXgyNS1rYXJvLXR4MjUuZHRzCmluZGV4IDkyOTZl
+OTBiMDc4YS4uMzU0NjRlM2E1YzIwIDEwMDY0NAotLS0gYS9hcmNoL2FybS9kdHMvaW14MjUta2Fy
+by10eDI1LmR0cworKysgYi9hcmNoL2FybS9kdHMvaW14MjUta2Fyby10eDI1LmR0cwpAQCAtNDEs
+NiArNDEsNyBAQAogCX07CiAKIAltZW1vcnkgeworCQlkZXZpY2VfdHlwZSA9ICJtZW1vcnkiOwog
+CQlyZWcgPSA8MHg4MDAwMDAwMCAweDAyMDAwMDAwIDB4OTAwMDAwMDAgMHgwMjAwMDAwMD47CiAJ
+fTsKIH07CmRpZmYgLS1naXQgYS9hcmNoL2FybS9kdHMvaW14MjUuZHRzaSBiL2FyY2gvYXJtL2R0
+cy9pbXgyNS5kdHNpCmluZGV4IGViMzA0NjE3ODAzMS4uMDMzZmZhNTBhMDM1IDEwMDY0NAotLS0g
+YS9hcmNoL2FybS9kdHMvaW14MjUuZHRzaQorKysgYi9hcmNoL2FybS9kdHMvaW14MjUuZHRzaQpA
+QCAtOSwxMCArOSwxNCBAQAogICogaHR0cDovL3d3dy5nbnUub3JnL2NvcHlsZWZ0L2dwbC5odG1s
+CiAgKi8KIAotI2luY2x1ZGUgInNrZWxldG9uLmR0c2kiCiAjaW5jbHVkZSA8YXJtL2lteDI1LmR0
+c2k+CiAKIC8geworCSNhZGRyZXNzLWNlbGxzID0gPDE+OworCSNzaXplLWNlbGxzID0gPDE+Owor
+CisJY2hvc2VuIHsgfTsKKwogCWFsaWFzZXMgewogCQltbWMwID0gJmVzZGhjMTsKIAkJbW1jMiA9
+ICZlc2RoYzI7CmRpZmYgLS1naXQgYS9hcmNoL2FybS9kdHMvazE4NzloYjF5YS5kdHNpIGIvYXJj
+aC9hcm0vZHRzL2sxODc5aGIxeWEuZHRzaQppbmRleCA4M2JhN2ZiMzk5YzcuLjdiYmMzMWVmYzVh
+ZCAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vZHRzL2sxODc5aGIxeWEuZHRzaQorKysgYi9hcmNoL2Fy
+bS9kdHMvazE4NzloYjF5YS5kdHNpCkBAIC0xLDYgKzEsMTMgQEAKLSNpbmNsdWRlICJza2VsZXRv
+bi5kdHNpIgotCiAvIHsKKwkjYWRkcmVzcy1jZWxscyA9IDwxPjsKKwkjc2l6ZS1jZWxscyA9IDwx
+PjsKKworCWNob3NlbiB7IH07CisKKwltZW1vcnkgeworCQlkZXZpY2VfdHlwZSA9ICJtZW1vcnki
+OworCX07CisKIAlzb2MgewogCQljb21wYXRpYmxlID0gInNpbXBsZS1idXMiOwogCQltb2RlbCA9
+ICJSQyBNb2R1bGUgSzE4NzlIQjFZQSI7CmRpZmYgLS1naXQgYS9hcmNoL2FybS9kdHMvc2tlbGV0
+b24uZHRzaSBiL2FyY2gvYXJtL2R0cy9za2VsZXRvbi5kdHNpCmRlbGV0ZWQgZmlsZSBtb2RlIDEw
+MDY0NAppbmRleCBiNDFkMjQxZGUyY2QuLjAwMDAwMDAwMDAwMAotLS0gYS9hcmNoL2FybS9kdHMv
+c2tlbGV0b24uZHRzaQorKysgL2Rldi9udWxsCkBAIC0xLDEzICswLDAgQEAKLS8qCi0gKiBTa2Vs
+ZXRvbiBkZXZpY2UgdHJlZTsgdGhlIGJhcmUgbWluaW11bSBuZWVkZWQgdG8gYm9vdDsganVzdCBp
+bmNsdWRlIGFuZAotICogYWRkIGEgY29tcGF0aWJsZSB2YWx1ZS4gIFRoZSBib290bG9hZGVyIHdp
+bGwgdHlwaWNhbGx5IHBvcHVsYXRlIHRoZSBtZW1vcnkKLSAqIG5vZGUuCi0gKi8KLQotLyB7Ci0J
+I2FkZHJlc3MtY2VsbHMgPSA8MT47Ci0JI3NpemUtY2VsbHMgPSA8MT47Ci0JY2hvc2VuIHsgfTsK
+LQlhbGlhc2VzIHsgfTsKLQltZW1vcnkgeyBkZXZpY2VfdHlwZSA9ICJtZW1vcnkiOyByZWcgPSA8
+MCAwPjsgfTsKLX07CmRpZmYgLS1naXQgYS9hcmNoL2FybS9kdHMvdmlydDJyZWFsLmR0cyBiL2Fy
+Y2gvYXJtL2R0cy92aXJ0MnJlYWwuZHRzCmluZGV4IDA5YWVjMWY3MjJmZS4uOGY4YzY1YmE3YTc0
+IDEwMDY0NAotLS0gYS9hcmNoL2FybS9kdHMvdmlydDJyZWFsLmR0cworKysgYi9hcmNoL2FybS9k
+dHMvdmlydDJyZWFsLmR0cwpAQCAtNiw2ICs2LDcgQEAKIAltb2RlbCA9ICJ2aXJ0MnJlYWwiOwog
+CiAJbWVtb3J5IHsKKwkJZGV2aWNlX3R5cGUgPSAibWVtb3J5IjsKIAkJcmVnID0gPDB4ODIwMDAw
+MDAgMHgwMTAwMDAwMD47CiAJfTsKIAotLSAKMi4yMy4wCgoKX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBs
+aXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
+dGluZm8vYmFyZWJveAo=
