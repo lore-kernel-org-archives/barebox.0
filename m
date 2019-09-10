@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i7d2P-0001iz-53
- for barebox@lists.infradead.org; Tue, 10 Sep 2019 10:06:18 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Tue, 10 Sep 2019 12:06:11 +0200
-Message-Id: <20190910100611.22024-2-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20190910100611.22024-1-u.kleine-koenig@pengutronix.de>
-References: <20190910100611.22024-1-u.kleine-koenig@pengutronix.de>
+ id 1i7fzG-0004Uh-I2
+ for barebox@lists.infradead.org; Tue, 10 Sep 2019 13:15:16 +0000
+Date: Tue, 10 Sep 2019 15:15:12 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190910131512.7u5vmtuvi2i4culs@pengutronix.de>
+References: <20190717170604.23732-1-a.fatoum@pengutronix.de>
+ <20190717170604.23732-6-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190717170604.23732-6-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,83 +19,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ARM: dts: imx25-karo-tx25: include Linux dts instead of
- duplicating it
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v3 5/6] clk: imx6: Fix procedure to switch the parent of
+ LDB_DI_CLK
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
 
-VGhpcyByZWR1Y2VzIGR1cGxpY2F0ZWQgaW5mb3JtYXRpb24gYW5kIGJlbmVmaXRzIGF1dG9tYXRp
-Y2FsbHkgZnJvbSBzb21lCmNoYW5nZXMgdGhhdCB3ZXJlIGRvbmUgaW4gTGludXggc2luY2UgdGhl
-IGJvYXJkIHdhcyBsYXN0IHRvdWNoZWQgaW4KYmFyZWJveC4gQWxzbyB0aGUgaW50ZW5kZWQgZGlm
-ZmVyZW5jZXMgYXJlIG1vcmUgb2J2aW91cyB0aGlzIHdheS4KClRvIG5vdCBpbmNsdWRlIGR0cy9z
-cmMvYXJtL2lteDI1LmR0c2kgdHdpY2UgKHdoaWNoIHVuZG9lcyBzb21lIGludGVuZGVkCmNoYW5n
-ZXMpIGl0IGlzIG5lY2Vzc2FyeSB0byBkcm9wIHRoZSByZXNwZWN0aXZlIGluY2x1ZGUgZnJvbQph
-cmNoL2FybS9kdHMvaW14MjUuZHRzaS4gVGhpcyBpcyBub3QgYSBwcm9ibGVtIGFzIHR4MjUgaXMg
-aXRzIG9ubHkKY29uc3VtZXIuCgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5r
-bGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgotLS0KIGFyY2gvYXJtL2R0cy9pbXgyNS1rYXJv
-LXR4MjUuZHRzIHwgOTUgKy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KIGFyY2gvYXJt
-L2R0cy9pbXgyNS5kdHNpICAgICAgICAgIHwgIDIgLQogMiBmaWxlcyBjaGFuZ2VkLCAxIGluc2Vy
-dGlvbigrKSwgOTYgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vZHRzL2lteDI1
-LWthcm8tdHgyNS5kdHMgYi9hcmNoL2FybS9kdHMvaW14MjUta2Fyby10eDI1LmR0cwppbmRleCAz
-NTQ2NGUzYTVjMjAuLjI3ODVhM2M5MWEyOCAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vZHRzL2lteDI1
-LWthcm8tdHgyNS5kdHMKKysrIGIvYXJjaC9hcm0vZHRzL2lteDI1LWthcm8tdHgyNS5kdHMKQEAg
-LTksMTAzICs5LDE2IEBACiAgKiBodHRwOi8vd3d3LmdudS5vcmcvY29weWxlZnQvZ3BsLmh0bWwK
-ICAqLwogCi0vZHRzLXYxLzsKKyNpbmNsdWRlIDxhcm0vaW14MjUta2Fyby10eDI1LmR0cz4KICNp
-bmNsdWRlICJpbXgyNS5kdHNpIgogCiAvIHsKLQltb2RlbCA9ICJLYS1SbyBUWDI1IjsKLQljb21w
-YXRpYmxlID0gImthcm8saW14MjUtdHgyNSIsICJmc2wsaW14MjUiOwotCiAJY2hvc2VuIHsKLQkJ
-c3Rkb3V0LXBhdGggPSAmdWFydDE7Ci0KIAkJZW52aXJvbm1lbnQgewogCQkJY29tcGF0aWJsZSA9
-ICJiYXJlYm94LGVudmlyb25tZW50IjsKIAkJCWRldmljZS1wYXRoID0gJm5mYywgInBhcnRuYW1l
-OmVudmlyb25tZW50IjsKIAkJfTsKIAl9OwotCi0JcmVndWxhdG9ycyB7Ci0JCWNvbXBhdGlibGUg
-PSAic2ltcGxlLWJ1cyI7Ci0JCSNhZGRyZXNzLWNlbGxzID0gPDE+OwotCQkjc2l6ZS1jZWxscyA9
-IDwwPjsKLQotCQlyZWdfZmVjX3BoeTogcmVndWxhdG9yQDAgewotCQkJY29tcGF0aWJsZSA9ICJy
-ZWd1bGF0b3ItZml4ZWQiOwotCQkJcmVnID0gPDA+OwotCQkJcmVndWxhdG9yLW5hbWUgPSAiZmVj
-LXBoeSI7Ci0JCQlyZWd1bGF0b3ItbWluLW1pY3Jvdm9sdCA9IDwzMzAwMDAwPjsKLQkJCXJlZ3Vs
-YXRvci1tYXgtbWljcm92b2x0ID0gPDMzMDAwMDA+OwotCQkJZ3BpbyA9IDwmZ3BpbzQgOSAwPjsK
-LQkJfTsKLQl9OwotCi0JbWVtb3J5IHsKLQkJZGV2aWNlX3R5cGUgPSAibWVtb3J5IjsKLQkJcmVn
-ID0gPDB4ODAwMDAwMDAgMHgwMjAwMDAwMCAweDkwMDAwMDAwIDB4MDIwMDAwMDA+OwotCX07Ci19
-OwotCi0maW9tdXhjIHsKLQlwaW5jdHJsX3VhcnQxOiB1YXJ0MWdycCB7Ci0JCWZzbCxwaW5zID0g
-PAotCQkJTVgyNV9QQURfVUFSVDFfVFhEX19VQVJUMV9UWEQgMHg4MDAwMDAwMAotCQkJTVgyNV9Q
-QURfVUFSVDFfUlhEX19VQVJUMV9SWEQgMHg4MDAwMDAwMAotCQkJTVgyNV9QQURfVUFSVDFfQ1RT
-X19VQVJUMV9DVFMgMHg4MDAwMDAwMAotCQkJTVgyNV9QQURfVUFSVDFfUlRTX19VQVJUMV9SVFMg
-MHg4MDAwMDAwMAotCQk+OwotCX07Ci0KLQlwaW5jdHJsX2ZlYzogZmVjZ3JwIHsKLQkJZnNsLHBp
-bnMgPSA8Ci0JCQlNWDI1X1BBRF9EMTFfX0dQSU9fNF85CQkweDgwMDAwMDAwIC8qIEZFQyBQSFkg
-cG93ZXIgb24gcGluICovCi0JCQlNWDI1X1BBRF9EMTNfX0dQSU9fNF83CQkweDgwMDAwMDAwIC8q
-IEZFQyByZXNldCAqLwotCQkJTVgyNV9QQURfRkVDX01EQ19fRkVDX01EQwkweDgwMDAwMDAwCi0J
-CQlNWDI1X1BBRF9GRUNfTURJT19fRkVDX01ESU8JMHg4MDAwMDAwMAotCQkJTVgyNV9QQURfRkVD
-X1REQVRBMF9fRkVDX1REQVRBMAkweDgwMDAwMDAwCi0JCQlNWDI1X1BBRF9GRUNfVERBVEExX19G
-RUNfVERBVEExCTB4ODAwMDAwMDAKLQkJCU1YMjVfUEFEX0ZFQ19UWF9FTl9fRkVDX1RYX0VOCTB4
-ODAwMDAwMDAKLQkJCU1YMjVfUEFEX0ZFQ19SREFUQTBfX0ZFQ19SREFUQTAJMHg4MDAwMDAwMAot
-CQkJTVgyNV9QQURfRkVDX1JEQVRBMV9fRkVDX1JEQVRBMQkweDgwMDAwMDAwCi0JCQlNWDI1X1BB
-RF9GRUNfUlhfRFZfX0ZFQ19SWF9EVgkweDgwMDAwMDAwCi0JCQlNWDI1X1BBRF9GRUNfVFhfQ0xL
-X19GRUNfVFhfQ0xLCTB4ODAwMDAwMDAKLQkJPjsKLQl9OwotCi0JcGluY3RybF9uZmM6IG5mY2dy
-cCB7Ci0JCWZzbCxwaW5zID0gPAotCQkJTVgyNV9QQURfTkZfQ0UwX19ORl9DRTAJCTB4ODAwMDAw
-MDAKLQkJCU1YMjVfUEFEX05GV0VfQl9fTkZXRV9CCQkweDgwMDAwMDAwCi0JCQlNWDI1X1BBRF9O
-RlJFX0JfX05GUkVfQgkJMHg4MDAwMDAwMAotCQkJTVgyNV9QQURfTkZBTEVfX05GQUxFCQkweDgw
-MDAwMDAwCi0JCQlNWDI1X1BBRF9ORkNMRV9fTkZDTEUJCTB4ODAwMDAwMDAKLQkJCU1YMjVfUEFE
-X05GV1BfQl9fTkZXUF9CCQkweDgwMDAwMDAwCi0JCQlNWDI1X1BBRF9ORlJCX19ORlJCCQkweDgw
-MDAwMDAwCi0JCQlNWDI1X1BBRF9EN19fRDcJCQkweDgwMDAwMDAwCi0JCQlNWDI1X1BBRF9ENl9f
-RDYJCQkweDgwMDAwMDAwCi0JCQlNWDI1X1BBRF9ENV9fRDUJCQkweDgwMDAwMDAwCi0JCQlNWDI1
-X1BBRF9ENF9fRDQJCQkweDgwMDAwMDAwCi0JCQlNWDI1X1BBRF9EM19fRDMJCQkweDgwMDAwMDAw
-Ci0JCQlNWDI1X1BBRF9EMl9fRDIJCQkweDgwMDAwMDAwCi0JCQlNWDI1X1BBRF9EMV9fRDEJCQkw
-eDgwMDAwMDAwCi0JCQlNWDI1X1BBRF9EMF9fRDAJCQkweDgwMDAwMDAwCi0JCT47Ci0JfTsKLX07
-Ci0KLSZ1YXJ0MSB7Ci0JcGluY3RybC1uYW1lcyA9ICJkZWZhdWx0IjsKLQlwaW5jdHJsLTAgPSA8
-JnBpbmN0cmxfdWFydDE+OwotCXN0YXR1cyA9ICJva2F5IjsKLX07Ci0KLSZmZWMgewotCXBpbmN0
-cmwtbmFtZXMgPSAiZGVmYXVsdCI7Ci0JcGluY3RybC0wID0gPCZwaW5jdHJsX2ZlYz47Ci0JcGh5
-LXJlc2V0LWdwaW9zID0gPCZncGlvNCA3IDA+OwotCXBoeS1tb2RlID0gInJtaWkiOwotCXBoeS1z
-dXBwbHkgPSA8JnJlZ19mZWNfcGh5PjsKLQlzdGF0dXMgPSAib2theSI7CiB9OwogCiAmaWltIHsK
-QEAgLTExMywxNCArMjYsOCBAQAogfTsKIAogJm5mYyB7Ci0JcGluY3RybC1uYW1lcyA9ICJkZWZh
-dWx0IjsKLQlwaW5jdHJsLTAgPSA8JnBpbmN0cmxfbmZjPjsKIAkjYWRkcmVzcy1jZWxscyA9IDwx
-PjsKIAkjc2l6ZS1jZWxscyA9IDwxPjsKLQluYW5kLW9uLWZsYXNoLWJidDsKLQluYW5kLWVjYy1t
-b2RlID0gImh3IjsKLQluYW5kLWJ1cy13aWR0aCA9IDw4PjsKLQlzdGF0dXMgPSAib2theSI7CiAK
-IAlwYXJ0aXRpb25AMCB7CiAJCWxhYmVsID0gImJvb3QiOwpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0v
-ZHRzL2lteDI1LmR0c2kgYi9hcmNoL2FybS9kdHMvaW14MjUuZHRzaQppbmRleCAwMzNmZmE1MGEw
-MzUuLmU3MmRiZDVmMzY4NiAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vZHRzL2lteDI1LmR0c2kKKysr
-IGIvYXJjaC9hcm0vZHRzL2lteDI1LmR0c2kKQEAgLTksOCArOSw2IEBACiAgKiBodHRwOi8vd3d3
-LmdudS5vcmcvY29weWxlZnQvZ3BsLmh0bWwKICAqLwogCi0jaW5jbHVkZSA8YXJtL2lteDI1LmR0
-c2k+Ci0KIC8gewogCSNhZGRyZXNzLWNlbGxzID0gPDE+OwogCSNzaXplLWNlbGxzID0gPDE+Owot
-LSAKMi4yMy4wCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
-Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Hi Ahmad,
+
+On Wed, Jul 17, 2019 at 07:06:03PM +0200, Ahmad Fatoum wrote:
+> From: Fabio Estevam <fabio.estevam@nxp.com>
+> 
+> Due to incorrect placement of the clock gate cell in the ldb_di[x]_clk
+> tree, the glitchy parent mux of ldb_di[x]_clk can cause a glitch to
+> enter the ldb_di_ipu_div divider. If the divider gets locked up, no
+> ldb_di[x]_clk is generated, and the LVDS display will hang when the
+> ipu_di_clk is sourced from ldb_di_clk.
+
+I haven't investigates any further, but this one breaks NAND support at
+least on my phyCORE i.MX6 board. With this patch applied we get:
+
+MXS: Timeout resetting block via register 0x00112000
+mxs_nand 112000.gpmi-nand@112000.of: probe failed: Connection timed out
+
+Does this patch disable any clocks necessary for NAND?
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
