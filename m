@@ -1,20 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1i84D7-00068Q-4s
- for barebox@lists.infradead.org; Wed, 11 Sep 2019 15:07:10 +0000
-Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
- helo=dude02.lab.pengutronix.de)
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <mfe@pengutronix.de>) id 1i84D5-0004B0-Og
- for barebox@lists.infradead.org; Wed, 11 Sep 2019 17:07:07 +0200
-Received: from mfe by dude02.lab.pengutronix.de with local (Exim 4.92)
- (envelope-from <mfe@pengutronix.de>) id 1i84D5-000256-H2
- for barebox@lists.infradead.org; Wed, 11 Sep 2019 17:07:07 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Wed, 11 Sep 2019 17:07:06 +0200
-Message-Id: <20190911150706.7927-1-m.felsch@pengutronix.de>
+ id 1i88HR-0006B6-7J
+ for barebox@lists.infradead.org; Wed, 11 Sep 2019 19:27:54 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Wed, 11 Sep 2019 21:27:37 +0200
+Message-Id: <20190911192738.16983-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,83 +15,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mci: imx-esdhc: fix error handling during probe
+Subject: [PATCH 1/2] state: drop unused code and declarations for non-existing
+ functions
 To: barebox@lists.infradead.org
 
-Currently the the driver don't handle any error and return immediately.
-Handling the errors correctly is a must to support defered probing.
-
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
----
- drivers/mci/imx-esdhc.c | 30 ++++++++++++++++++++++++------
- 1 file changed, 24 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
-index f71ca539ed..db3450a26d 100644
---- a/drivers/mci/imx-esdhc.c
-+++ b/drivers/mci/imx-esdhc.c
-@@ -653,20 +653,24 @@ static int fsl_esdhc_probe(struct device_d *dev)
- 	dma_set_mask(dev, DMA_BIT_MASK(32));
- 
- 	host->clk = clk_get(dev, socdata->clkidx);
--	if (IS_ERR(host->clk))
--		return PTR_ERR(host->clk);
-+	if (IS_ERR(host->clk)) {
-+		ret = PTR_ERR(host->clk);
-+		goto err_free;
-+	}
- 
- 	ret = clk_enable(host->clk);
- 	if (ret) {
- 		dev_err(dev, "Failed to enable clock: %s\n",
- 			strerror(ret));
--		return ret;
-+		goto err_clk_put;
- 	}
- 
- 	host->dev = dev;
- 	iores = dev_request_mem_resource(dev, 0);
--	if (IS_ERR(iores))
--		return PTR_ERR(iores);
-+	if (IS_ERR(iores)) {
-+		ret = PTR_ERR(iores);
-+		goto err_clk_disable;
-+	}
- 	host->regs = IOMEM(iores->start);
- 
- 	caps = esdhc_read32(host, SDHCI_CAPABILITIES);
-@@ -709,7 +713,21 @@ static int fsl_esdhc_probe(struct device_d *dev)
- 
- 	dev->priv = host;
- 
--	return mci_register(&host->mci);
-+	ret = mci_register(&host->mci);
-+	if (ret)
-+		goto err_release_res;
-+
-+	return 0;
-+
-+err_release_res:
-+	release_region(iores);
-+err_clk_disable:
-+	clk_disable(host->clk);
-+err_clk_put:
-+	clk_put(host->clk);
-+err_free:
-+	free(host);
-+	return ret;
- }
- 
- static struct esdhc_soc_data esdhc_imx25_data = {
--- 
-2.20.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+c3RhdGVfZ2V0X25hbWUoKSBpcyBub3QgdXNlZCBhbmQgc28gY2FuIGJlIHJlbW92ZWQuCnN0YXRl
+X2JhY2tlbmRfZHRiX2ZpbGUoKSBhbmQgc3RhdGVfYmFja2VuZF9yYXdfZmlsZSgpIHdlcmUgZHJv
+cHBlZCBpbgpjOTk5YjUwN2RhOTggKCJzdGF0ZTogUmVmYWN0b3Igc3RhdGUgZnJhbWV3b3JrIiku
+CgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1
+dHJvbml4LmRlPgotLS0KIGNvbW1vbi9zdGF0ZS9zdGF0ZS5jIHwgNyAtLS0tLS0tCiBpbmNsdWRl
+L3N0YXRlLmggICAgICB8IDUgLS0tLS0KIDIgZmlsZXMgY2hhbmdlZCwgMTIgZGVsZXRpb25zKC0p
+CgpkaWZmIC0tZ2l0IGEvY29tbW9uL3N0YXRlL3N0YXRlLmMgYi9jb21tb24vc3RhdGUvc3RhdGUu
+YwppbmRleCAzZjVkNDNlY2JmNzMuLmIxNjgzODdlZWYwYiAxMDA2NDQKLS0tIGEvY29tbW9uL3N0
+YXRlL3N0YXRlLmMKKysrIGIvY29tbW9uL3N0YXRlL3N0YXRlLmMKQEAgLTcxNCwxMyArNzE0LDYg
+QEAgc3RydWN0IHN0YXRlICpzdGF0ZV9ieV9ub2RlKGNvbnN0IHN0cnVjdCBkZXZpY2Vfbm9kZSAq
+bm9kZSkKIAlyZXR1cm4gTlVMTDsKIH0KIAotaW50IHN0YXRlX2dldF9uYW1lKGNvbnN0IHN0cnVj
+dCBzdGF0ZSAqc3RhdGUsIGNoYXIgY29uc3QgKipuYW1lKQotewotCSpuYW1lID0geHN0cmR1cChz
+dGF0ZS0+bmFtZSk7Ci0KLQlyZXR1cm4gMDsKLX0KLQogaW50IHN0YXRlX3JlYWRfbWFjKHN0cnVj
+dCBzdGF0ZSAqc3RhdGUsIGNvbnN0IGNoYXIgKm5hbWUsIHU4ICpidWYpCiB7CiAJc3RydWN0IHN0
+YXRlX3ZhcmlhYmxlICpzdmFyOwpkaWZmIC0tZ2l0IGEvaW5jbHVkZS9zdGF0ZS5oIGIvaW5jbHVk
+ZS9zdGF0ZS5oCmluZGV4IDRlOTk1YTE5ZWZlMC4uYTQ5MTU1ZWYyNzc5IDEwMDY0NAotLS0gYS9p
+bmNsdWRlL3N0YXRlLmgKKysrIGIvaW5jbHVkZS9zdGF0ZS5oCkBAIC01LDE3ICs1LDEyIEBACiAK
+IHN0cnVjdCBzdGF0ZTsKIAotaW50IHN0YXRlX2JhY2tlbmRfZHRiX2ZpbGUoc3RydWN0IHN0YXRl
+ICpzdGF0ZSwgY29uc3QgY2hhciAqb2ZfcGF0aCwKLQkJY29uc3QgY2hhciAqcGF0aCk7Ci1pbnQg
+c3RhdGVfYmFja2VuZF9yYXdfZmlsZShzdHJ1Y3Qgc3RhdGUgKnN0YXRlLCBjb25zdCBjaGFyICpv
+Zl9wYXRoLAotCQljb25zdCBjaGFyICpwYXRoLCBvZmZfdCBvZmZzZXQsIHNpemVfdCBzaXplKTsK
+IAogc3RydWN0IHN0YXRlICpzdGF0ZV9uZXdfZnJvbV9ub2RlKHN0cnVjdCBkZXZpY2Vfbm9kZSAq
+bm9kZSwgYm9vbCByZWFkb25seSk7CiB2b2lkIHN0YXRlX3JlbGVhc2Uoc3RydWN0IHN0YXRlICpz
+dGF0ZSk7CiAKIHN0cnVjdCBzdGF0ZSAqc3RhdGVfYnlfbmFtZShjb25zdCBjaGFyICpuYW1lKTsK
+IHN0cnVjdCBzdGF0ZSAqc3RhdGVfYnlfbm9kZShjb25zdCBzdHJ1Y3QgZGV2aWNlX25vZGUgKm5v
+ZGUpOwotaW50IHN0YXRlX2dldF9uYW1lKGNvbnN0IHN0cnVjdCBzdGF0ZSAqc3RhdGUsIGNoYXIg
+Y29uc3QgKipuYW1lKTsKIAogaW50IHN0YXRlX2xvYWRfbm9fYXV0aChzdHJ1Y3Qgc3RhdGUgKnN0
+YXRlKTsKIGludCBzdGF0ZV9sb2FkKHN0cnVjdCBzdGF0ZSAqc3RhdGUpOwotLSAKMi4yMy4wCgoK
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBt
+YWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
+YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
