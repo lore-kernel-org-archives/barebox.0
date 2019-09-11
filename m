@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i68R6-0004ce-JG
- for barebox@lists.infradead.org; Fri, 06 Sep 2019 07:13:37 +0000
-Date: Fri, 6 Sep 2019 09:13:35 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190906071335.jxabi5co3f4g3iof@pengutronix.de>
-References: <20190904111851.13317-1-u.kleine-koenig@pengutronix.de>
+ by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
+ id 1i88HL-0006AF-Be
+ for barebox@lists.infradead.org; Wed, 11 Sep 2019 19:27:48 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Wed, 11 Sep 2019 21:27:38 +0200
+Message-Id: <20190911192738.16983-2-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20190911192738.16983-1-u.kleine-koenig@pengutronix.de>
+References: <20190911192738.16983-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190904111851.13317-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,37 +17,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] video/stm: fix return value handling for
- of_get_display_timings()
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/2] state: provide dummy implementations for some functions
+ when STATE is disabled
+To: barebox@lists.infradead.org
 
-On Wed, Sep 04, 2019 at 01:18:51PM +0200, Uwe Kleine-K=F6nig wrote:
-> of_get_display_timings() returns NULL on failure, not an error pointer.
-> =
-
-> Fixes: 16fd24847d7a ("video: stmfb: Add device tree support")
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> ---
->  drivers/video/stm.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-
-Applied, thanks
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhpcyBhbGxvd3MgdG8gc2ltcGxpZnkgc29tZSBjYWxsZXJzIGFzIGNhbiBiZSBzZWVuIGZyb20g
+dGhlCnBoeXRlYy1zb20tYW0zMzV4L2JvYXJkLmMgY2hhbmdlLiAoVGhlIGNoZWNrIGZvciBzdGF0
+ZSAhPSBOVUxMIGNvdWxkIGJlCmRyb3BwZWQgYWxyZWFkeSBiZWZvcmUuKQoKU2lnbmVkLW9mZi1i
+eTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0t
+CiBhcmNoL2FybS9ib2FyZHMvcGh5dGVjLXNvbS1hbTMzNXgvYm9hcmQuYyB8IDE0ICsrKystLS0t
+LQogaW5jbHVkZS9zdGF0ZS5oICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAzNiArKysrKysr
+KysrKysrKysrKysrKysrKwogMiBmaWxlcyBjaGFuZ2VkLCA0MSBpbnNlcnRpb25zKCspLCA5IGRl
+bGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtc29tLWFtMzM1
+eC9ib2FyZC5jIGIvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1zb20tYW0zMzV4L2JvYXJkLmMKaW5k
+ZXggNDQxZDU2MzQ4Y2M3Li5jMjVmMzNhZTIwZDUgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2JvYXJk
+cy9waHl0ZWMtc29tLWFtMzM1eC9ib2FyZC5jCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMt
+c29tLWFtMzM1eC9ib2FyZC5jCkBAIC0xMjQsMTUgKzEyNCwxMSBAQCBzdGF0aWMgaW50IHBoeXNv
+bV9kZXZpY2VzX2luaXQodm9pZCkKIAkJCQlBUlJBWV9TSVpFKG5hbmRzbG90cykpOwogCWFtMzN4
+eF9iYnVfZW1tY19tbG9fcmVnaXN0ZXJfaGFuZGxlcigiTUxPLmVtbWMiLCAiL2Rldi9tbWMxIik7
+CiAKLQlpZiAoSVNfRU5BQkxFRChDT05GSUdfU1RBVEUpKSB7Ci0JCXN0YXRlID0gc3RhdGVfYnlf
+bmFtZSgiYW0zMzV4X3BoeXRlY19tYWNfc3RhdGUiKTsKLQkJaWYgKHN0YXRlKQotCQkJZm9yIChz
+dGF0ZV9pID0gMDsgc3RhdGVfaSA8IDI7IHN0YXRlX2krKykgewotCQkJCXN0YXRlX3JldCA9IHN0
+YXRlX3JlYWRfbWFjKHN0YXRlLAotCQkJCQkJICAgICAgZXRoX25hbWVzW3N0YXRlX2ldLCAmbWFj
+WzBdKTsKLQkJCQlpZiAoIXN0YXRlX3JldCAmJiBpc192YWxpZF9ldGhlcl9hZGRyKCZtYWNbMF0p
+KQotCQkJCQlldGhfcmVnaXN0ZXJfZXRoYWRkcihzdGF0ZV9pLCBtYWMpOwotCQkJfQorCXN0YXRl
+ID0gc3RhdGVfYnlfbmFtZSgiYW0zMzV4X3BoeXRlY19tYWNfc3RhdGUiKTsKKwlmb3IgKHN0YXRl
+X2kgPSAwOyBzdGF0ZV9pIDwgMjsgc3RhdGVfaSsrKSB7CisJCXN0YXRlX3JldCA9IHN0YXRlX3Jl
+YWRfbWFjKHN0YXRlLCBldGhfbmFtZXNbc3RhdGVfaV0sICZtYWNbMF0pOworCQlpZiAoIXN0YXRl
+X3JldCAmJiBpc192YWxpZF9ldGhlcl9hZGRyKCZtYWNbMF0pKQorCQkJZXRoX3JlZ2lzdGVyX2V0
+aGFkZHIoc3RhdGVfaSwgbWFjKTsKIAl9CiAKIAlpZiAoSVNfRU5BQkxFRChDT05GSUdfUEhZVEVD
+X1NPTV9BTTMzNVhfT0ZfQVVUT0VOQUJMRSkpIHsKZGlmZiAtLWdpdCBhL2luY2x1ZGUvc3RhdGUu
+aCBiL2luY2x1ZGUvc3RhdGUuaAppbmRleCBhNDkxNTVlZjI3NzkuLmQ5OGI3ODFjMjA4OSAxMDA2
+NDQKLS0tIGEvaW5jbHVkZS9zdGF0ZS5oCisrKyBiL2luY2x1ZGUvc3RhdGUuaApAQCAtNSw2ICs1
+LDcgQEAKIAogc3RydWN0IHN0YXRlOwogCisjaWYgSVNfRU5BQkxFRChDT05GSUdfU1RBVEUpCiAK
+IHN0cnVjdCBzdGF0ZSAqc3RhdGVfbmV3X2Zyb21fbm9kZShzdHJ1Y3QgZGV2aWNlX25vZGUgKm5v
+ZGUsIGJvb2wgcmVhZG9ubHkpOwogdm9pZCBzdGF0ZV9yZWxlYXNlKHN0cnVjdCBzdGF0ZSAqc3Rh
+dGUpOwpAQCAtMTksNCArMjAsMzkgQEAgdm9pZCBzdGF0ZV9pbmZvKHZvaWQpOwogCiBpbnQgc3Rh
+dGVfcmVhZF9tYWMoc3RydWN0IHN0YXRlICpzdGF0ZSwgY29uc3QgY2hhciAqbmFtZSwgdTggKmJ1
+Zik7CiAKKyNlbHNlIC8qICNpZiBJU19FTkFCTEVEKENPTkZJR19TVEFURSkgKi8KKworc3RhdGlj
+IGlubGluZSBzdHJ1Y3Qgc3RhdGUgKnN0YXRlX25ld19mcm9tX25vZGUoc3RydWN0IGRldmljZV9u
+b2RlICpub2RlLAorCQkJCQkJYm9vbCByZWFkb25seSkKK3sKKwlyZXR1cm4gRVJSX1BUUigtRU5P
+U1lTKTsKK30KKworc3RhdGljIGlubGluZSBzdHJ1Y3Qgc3RhdGUgKnN0YXRlX2J5X25hbWUoY29u
+c3QgY2hhciAqbmFtZSkKK3sKKwlyZXR1cm4gTlVMTDsKK30KKworc3RhdGljIGlubGluZSBzdHJ1
+Y3Qgc3RhdGUgKnN0YXRlX2J5X25vZGUoY29uc3Qgc3RydWN0IGRldmljZV9ub2RlICpub2RlKQor
+eworCXJldHVybiBOVUxMOworfTsKKworc3RhdGljIGlubGluZSBpbnQgc3RhdGVfbG9hZChzdHJ1
+Y3Qgc3RhdGUgKnN0YXRlKQoreworCXJldHVybiAtRU5PU1lTOworfQorCitzdGF0aWMgaW5saW5l
+IGludCBzdGF0ZV9zYXZlKHN0cnVjdCBzdGF0ZSAqc3RhdGUpCit7CisJcmV0dXJuIC1FTk9TWVM7
+Cit9CisKK3N0YXRpYyBpbmxpbmUgaW50IHN0YXRlX3JlYWRfbWFjKHN0cnVjdCBzdGF0ZSAqc3Rh
+dGUsIGNvbnN0IGNoYXIgKm5hbWUsIHU4ICpidWYpCit7CisJcmV0dXJuIC1FTk9TWVM7Cit9CisK
+KyNlbmRpZiAvKiAjaWYgSVNfRU5BQkxFRChDT05GSUdfU1RBVEUpIC8gI2Vsc2UgKi8KKwogI2Vu
+ZGlmIC8qIF9fU1RBVEVfSCAqLwotLSAKMi4yMy4wCgoKX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0
+cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGlu
+Zm8vYmFyZWJveAo=
