@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1i8J11-0005U5-96
- for barebox@lists.infradead.org; Thu, 12 Sep 2019 06:55:40 +0000
-Date: Thu, 12 Sep 2019 08:55:37 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190912065537.2tsjevnq4x7oekno@pengutronix.de>
-References: <20190907235456.21535-1-andrew.smirnov@gmail.com>
- <20190907235456.21535-3-andrew.smirnov@gmail.com>
- <20190909102306.kt3wiq5ldnxrjvg7@pengutronix.de>
- <CAHQ1cqFmsxHEcEzpDN5VQqZsnuj8HhAoMQhLUQ+KUdWnw2WjMQ@mail.gmail.com>
+ by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
+ id 1i7xRO-0002Kk-H5
+ for barebox@lists.infradead.org; Wed, 11 Sep 2019 07:53:28 +0000
+References: <20190906132008.25309-1-m.tretter@pengutronix.de>
+ <20190906132008.25309-7-m.tretter@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <9d21f10e-9a02-a5c4-e921-42f76c89ebc7@pengutronix.de>
+Date: Wed, 11 Sep 2019 09:53:24 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAHQ1cqFmsxHEcEzpDN5VQqZsnuj8HhAoMQhLUQ+KUdWnw2WjMQ@mail.gmail.com>
+In-Reply-To: <20190906132008.25309-7-m.tretter@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,51 +23,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/4] mtd: ubi: Compile fastmap.c with
- -Wno-address-of-packed-member
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH v2 6/7] blspec: load firmware if specified in dt overlay
+To: Michael Tretter <m.tretter@pengutronix.de>, barebox@lists.infradead.org
 
-On Mon, Sep 09, 2019 at 09:28:17PM -0700, Andrey Smirnov wrote:
-> On Mon, Sep 9, 2019 at 3:23 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> >
-> > On Sat, Sep 07, 2019 at 04:54:55PM -0700, Andrey Smirnov wrote:
-> > > GCC9 for ARM produces the following warnings:
-> > >
-> > > fastmap.c: In function 'ubi_attach_fastmap':
-> > > fastmap.c:700:31: warning: taking address of packed member of 'struct ubi_fm_scan_pool' may result in an unaligned pointer value [-Waddress-of-packed-member]
-> > >   700 |  ret = scan_pool(ubi, ai, fmpl->pebs, pool_size, &max_sqnum, &lfree);
-> > >       |                           ~~~~^~~~~~
-> > > fastmap.c:704:34: warning: taking address of packed member of 'struct ubi_fm_scan_pool' may result in an unaligned pointer value [-Waddress-of-packed-member]
-> > >   704 |  ret = scan_pool(ubi, ai, fmpl_wl->pebs, wl_pool_size, &max_sqnum, &lfree);
-> > >       |                           ~~~~~~~^~~~~~
-> > >
-> > > the offending code seems OK and there doesn't seem to be a way to fix
-> > > this in code, so disable the warning for that file.
-> > >
-> > > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> > > ---
-> >
-> > Linux disables this warning completely.
-> 
-> Yeah, I saw that. Wasn't sure if we wanted to go that direction or not.
-> 
-> > We just burnt some developer
-> > cycles, came to the conclusion that the world isn't perfect, that
-> > there's no good (at least good realistic) solution to this problem and
-> > that we should just do the same as Linux.
-> >
-> > Disabling this warning for individual files in which it triggers
-> > probably doesn't bring us further.
-> >
-> 
-> Sure, will do. I think "ratp: Mark struct ratp_bb as packed" might
-> still be worth applying though.
+Hello Michael,
 
-Applied this and also [PATCH 2/4] net: Adjust net_copy_uint32's
-signature
+On 9/6/19 3:20 PM, Michael Tretter wrote:
+> If a device tree overlay referenced by the blspec depends on firmware,
+> try to load the firmware from the default Linux firmware search path
+> /lib/firmware in the about to be started rootfs.
 
-Sascha
+Linking barebox with CONFIG_BLSPEC, but without CONFIG_OF_OVERLAY
+now fails:
+
+./common/blspec.c:84: undefined reference to `firmware_load_overlay'
+
+Cheers
+Ahmad
+
+> 
+> Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+> 
+> ---
+> Changelog:
+> 
+> v1->v2: none
+> ---
+>  common/blspec.c | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+> 
+> diff --git a/common/blspec.c b/common/blspec.c
+> index fbba2fc78c..e733bf1188 100644
+> --- a/common/blspec.c
+> +++ b/common/blspec.c
+> @@ -14,6 +14,7 @@
+>  
+>  #include <environment.h>
+>  #include <globalvar.h>
+> +#include <firmware.h>
+>  #include <readkey.h>
+>  #include <common.h>
+>  #include <driver.h>
+> @@ -49,6 +50,7 @@ static int blspec_apply_oftree_overlay(char *file, const char *abspath,
+>  	struct fdt_header *fdt;
+>  	struct device_node *overlay;
+>  	char *path;
+> +	char *firmware_path;
+>  
+>  	path = basprintf("%s/%s", abspath, file);
+>  
+> @@ -72,6 +74,20 @@ static int blspec_apply_oftree_overlay(char *file, const char *abspath,
+>  		goto out;
+>  	}
+>  
+> +	/*
+> +	 * Unfortunately the device tree overlay contains only the filename of
+> +	 * the firmware and relies on the firmware search paths to find the
+> +	 * actual file. Use /lib/firmware in the Linux root directory and hope
+> +	 * for the best.
+> +	 */
+> +	firmware_path = basprintf("%s/%s", abspath, "/lib/firmware");
+> +	ret = firmware_load_overlay(overlay, firmware_path);
+> +	free(firmware_path);
+> +	if (ret) {
+> +		of_delete_node(overlay);
+> +		goto out;
+> +	}
+> +
+>  	ret = of_register_overlay(overlay);
+>  	if (ret) {
+>  		pr_warn("cannot register devicetree overlay \"%s\"\n", path);
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
