@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i7xfN-0007Nq-Bq
- for barebox@lists.infradead.org; Wed, 11 Sep 2019 08:07:55 +0000
+ id 1i7xfl-0007iD-EJ
+ for barebox@lists.infradead.org; Wed, 11 Sep 2019 08:08:19 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 11 Sep 2019 10:07:30 +0200
-Message-Id: <20190911080731.23102-7-s.hauer@pengutronix.de>
+Date: Wed, 11 Sep 2019 10:07:29 +0200
+Message-Id: <20190911080731.23102-6-s.hauer@pengutronix.de>
 In-Reply-To: <20190911080731.23102-1-s.hauer@pengutronix.de>
 References: <20190911080731.23102-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,343 +21,215 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/8] net: Remove NETX ethernet driver
+Subject: [PATCH 6/8] serial: Remove NETX serial driver
 To: Barebox List <barebox@lists.infradead.org>
 
-NETX support has been removed from barebox, so remove the ethernet
-driver as well.
+NETX support has been removed from barebox. Remove the serial driver as
+well.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/Kconfig    |   8 --
- drivers/net/Makefile   |   1 -
- drivers/net/netx_eth.c | 279 -----------------------------------------
- 3 files changed, 288 deletions(-)
- delete mode 100644 drivers/net/netx_eth.c
+ drivers/serial/Kconfig       |   5 --
+ drivers/serial/Makefile      |   1 -
+ drivers/serial/serial_netx.c | 161 -----------------------------------
+ 3 files changed, 167 deletions(-)
+ delete mode 100644 drivers/serial/serial_netx.c
 
-diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-index beeb4b8221..57f0b57d64 100644
---- a/drivers/net/Kconfig
-+++ b/drivers/net/Kconfig
-@@ -16,9 +16,6 @@ config HAS_DM9000
- config HAS_MACB
- 	bool
+diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+index f12ff93f6a..c5bce2fa46 100644
+--- a/drivers/serial/Kconfig
++++ b/drivers/serial/Kconfig
+@@ -50,11 +50,6 @@ config DRIVER_SERIAL_AUART
+ 	depends on ARCH_MXS
+ 	bool "i.MX23/i.MX28 application UART serial driver"
  
--config HAS_NETX_ETHER
--	bool
+-config DRIVER_SERIAL_NETX
+-	depends on ARCH_NETX
+-	default y
+-	bool "Netx serial driver"
 -
- config PHYLIB
- 	bool
- 
-@@ -180,11 +177,6 @@ config DRIVER_NET_MVNETA
- 	select PHYLIB
- 	select MDIO_MVEBU
- 
--config DRIVER_NET_NETX
--	bool "Hilscher Netx ethernet driver"
--	depends on HAS_NETX_ETHER
--	select PHYLIB
--
- config DRIVER_NET_ORION
- 	bool "Marvell Orion SoC Ethernet"
- 	depends on ARCH_MVEBU
-diff --git a/drivers/net/Makefile b/drivers/net/Makefile
-index 6ccd22cc10..f6a8213613 100644
---- a/drivers/net/Makefile
-+++ b/drivers/net/Makefile
-@@ -24,7 +24,6 @@ obj-$(CONFIG_DRIVER_NET_MACB)		+= macb.o
- obj-$(CONFIG_DRIVER_NET_MICREL)		+= ksz8864rmn.o
- obj-$(CONFIG_DRIVER_NET_MPC5200)	+= fec_mpc5200.o
- obj-$(CONFIG_DRIVER_NET_MVNETA)		+= mvneta.o
--obj-$(CONFIG_DRIVER_NET_NETX)		+= netx_eth.o
- obj-$(CONFIG_DRIVER_NET_ORION)		+= orion-gbe.o
- obj-$(CONFIG_DRIVER_NET_RTL8139)	+= rtl8139.o
- obj-$(CONFIG_DRIVER_NET_RTL8169)	+= rtl8169.o
-diff --git a/drivers/net/netx_eth.c b/drivers/net/netx_eth.c
+ config DRIVER_SERIAL_LINUX_CONSOLE
+ 	depends on LINUX
+ 	default y
+diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
+index 4174cc1ffb..993e5d6f2d 100644
+--- a/drivers/serial/Makefile
++++ b/drivers/serial/Makefile
+@@ -5,7 +5,6 @@ obj-$(CONFIG_DRIVER_SERIAL_EFI)			+= serial_efi.o
+ obj-$(CONFIG_DRIVER_SERIAL_IMX)			+= serial_imx.o
+ obj-$(CONFIG_DRIVER_SERIAL_STM378X)		+= stm-serial.o
+ obj-$(CONFIG_DRIVER_SERIAL_ATMEL)		+= atmel.o
+-obj-$(CONFIG_DRIVER_SERIAL_NETX)		+= serial_netx.o
+ obj-$(CONFIG_DRIVER_SERIAL_LINUX_CONSOLE)	+= linux_console.o
+ obj-$(CONFIG_DRIVER_SERIAL_MPC5XXX)		+= serial_mpc5xxx.o
+ obj-$(CONFIG_DRIVER_SERIAL_BLACKFIN)		+= serial_blackfin.o
+diff --git a/drivers/serial/serial_netx.c b/drivers/serial/serial_netx.c
 deleted file mode 100644
-index 64e9886d61..0000000000
---- a/drivers/net/netx_eth.c
+index 55ed89bf92..0000000000
+--- a/drivers/serial/serial_netx.c
 +++ /dev/null
-@@ -1,279 +0,0 @@
+@@ -1,161 +0,0 @@
+-/*
+- * (C) Copyright 2005
+- * Sascha Hauer, Pengutronix <s.hauer@pengutronix.de>
+- *
+- * See file CREDITS for list of people who contributed to this
+- * project.
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- */
+-
 -#include <common.h>
--#include <command.h>
--#include <net.h>
--#include <io.h>
--#include <mach/netx-xc.h>
--#include <mach/netx-eth.h>
 -#include <mach/netx-regs.h>
--#include <xfuncs.h>
--#include <init.h>
 -#include <driver.h>
--#include <linux/phy.h>
+-#include <init.h>
+-#include <malloc.h>
+-#include <io.h>
 -
--#define ETH_MAC_LOCAL_CONFIG 0x1560
--#define ETH_MAC_4321         0x1564
--#define ETH_MAC_65           0x1568
--
--#define MAC_TRAFFIC_CLASS_ARRANGEMENT_SHIFT 16
--#define MAC_TRAFFIC_CLASS_ARRANGEMENT_MASK (0xf<<MAC_TRAFFIC_CLASS_ARRANGEMENT_SHIFT)
--#define MAC_TRAFFIC_CLASS_ARRANGEMENT(x) (((x)<<MAC_TRAFFIC_CLASS_ARRANGEMENT_SHIFT) & MAC_TRAFFIC_CLASS_ARRANGEMENT_MASK)
--
--#define FIFO_PTR_FRAMELEN_SHIFT 0
--#define FIFO_PTR_FRAMELEN_MASK  (0x7ff << 0)
--#define FIFO_PTR_FRAMELEN(len)  (((len) << 0) & FIFO_PTR_FRAMELEN_MASK)
--#define FIFO_PTR_TIMETRIG       (1<<11)
--#define FIFO_PTR_MULTI_REQ
--#define FIFO_PTR_ORIGIN         (1<<14)
--#define FIFO_PTR_VLAN           (1<<15)
--#define FIFO_PTR_FRAMENO_SHIFT  16
--#define FIFO_PTR_FRAMENO_MASK   (0x3f << 16)
--#define FIFO_PTR_FRAMENO(no)    ( ((no) << 16) & FIFO_PTR_FRAMENO_MASK)
--#define FIFO_PTR_SEGMENT_SHIFT  22
--#define FIFO_PTR_SEGMENT_MASK   (0xf << 22)
--#define FIFO_PTR_SEGMENT(seg)   (((seg) & 0xf) << 22)
--#define FIFO_PTR_ERROR_SHIFT    28
--#define FIFO_PTR_ERROR_MASK     (0xf << 28)
--
--/* use sram 0 for now */
--#define SRAM_BASE(xcno) (0x8000 * (xcno))
--
--/* XC Fifo Offsets */
--#define EMPTY_PTR_FIFO(xcno)    (0 + ((xcno) << 3))    /* Index of the empty pointer FIFO */
--#define IND_FIFO_PORT_HI(xcno)  (1 + ((xcno) << 3))    /* Index of the FIFO where received Data packages are indicated by XC */
--#define IND_FIFO_PORT_LO(xcno)  (2 + ((xcno) << 3))    /* Index of the FIFO where received Data packages are indicated by XC */
--#define REQ_FIFO_PORT_HI(xcno)  (3 + ((xcno) << 3))    /* Index of the FIFO where Data packages have to be indicated by ARM which shall be sent */
--#define REQ_FIFO_PORT_LO(xcno)  (4 + ((xcno) << 3))    /* Index of the FIFO where Data packages have to be indicated by ARM which shall be sent */
--#define CON_FIFO_PORT_HI(xcno)  (5 + ((xcno) << 3))    /* Index of the FIFO where sent Data packages are confirmed */
--#define CON_FIFO_PORT_LO(xcno)  (6 + ((xcno) << 3))    /* Index of the FIFO where sent Data packages are confirmed */
--
--struct netx_eth_priv {
--	struct mii_bus miibus;
--	int xcno;
+-enum uart_regs {
+-	UART_DR              = 0x00,
+-	UART_SR              = 0x04,
+-	UART_LINE_CR         = 0x08,
+-	UART_BAUDDIV_MSB     = 0x0c,
+-	UART_BAUDDIV_LSB     = 0x10,
+-	UART_CR              = 0x14,
+-	UART_FR              = 0x18,
+-	UART_IIR             = 0x1c,
+-	UART_ILPR            = 0x20,
+-	UART_RTS_CR          = 0x24,
+-	UART_RTS_LEAD        = 0x28,
+-	UART_RTS_TRAIL       = 0x2c,
+-	UART_DRV_ENABLE      = 0x30,
+-	UART_BRM_CR          = 0x34,
+-	UART_RXFIFO_IRQLEVEL = 0x38,
+-	UART_TXFIFO_IRQLEVEL = 0x3c,
 -};
 -
--static int netx_eth_send (struct eth_device *edev,
--		void *packet, int length)
+-#define LINE_CR_5BIT	(0<<5)
+-#define LINE_CR_6BIT    (1<<5)
+-#define LINE_CR_7BIT    (2<<5)
+-#define LINE_CR_8BIT    (3<<5)
+-#define LINE_CR_FEN	(1<<4)
+-
+-#define CR_UARTEN	(1<<0)
+-
+-#define FR_TXFE (1<<7)
+-#define FR_RXFF (1<<6)
+-#define FR_TXFF (1<<5)
+-#define FR_RXFE (1<<4)
+-#define FR_BUSY (1<<3)
+-#define FR_DCD  (1<<2)
+-#define FR_DSR  (1<<1)
+-#define FR_CTS  (1<<0)
+-
+-#define DRV_ENABLE_TX  (1<<1)
+-#define DRV_ENABLE_RTS (1<<0)
+-
+-#define BRM_CR_BAUD_RATE_MODE (1<<0)
+-
+-static int netx_serial_init_port(struct console_device *cdev)
 -{
--	struct netx_eth_priv *priv = (struct netx_eth_priv *)edev->priv;
--	int xcno = priv->xcno;
--	unsigned int val;
--	int timeout = 500;
--	unsigned char *dst = (unsigned char *)(SRAM_BASE(xcno) + 1560);
+-	struct device_d *dev = cdev->dev;
+-	void __iomem *base = dev->priv;
+-	unsigned int divisor;
 -
--	memcpy(dst, (void *)packet, length);
+-	/* disable uart */
+-	writel(0, base + UART_CR);
+-	writel(BRM_CR_BAUD_RATE_MODE, base + UART_BRM_CR);
 -
--	if( length < 60 ) {
--		memset(dst + length, 0, 60 - length);
--		length = 60;
--	}
+-	/* set baud rate */
+-	divisor = 115200 * 4096;
+-	divisor /= 1000;
+-	divisor *= 256;
+-	divisor /= 100000;
 -
--	PFIFO_REG(PFIFO_BASE(REQ_FIFO_PORT_LO(xcno))) =
--		FIFO_PTR_SEGMENT(xcno) |
--		FIFO_PTR_FRAMENO(1) |
--		FIFO_PTR_FRAMELEN(length);
+-	writel(divisor & 0xff, base + UART_BAUDDIV_LSB);
+-	writel((divisor >> 8) & 0xff, base + UART_BAUDDIV_MSB);
+-	writel(DRV_ENABLE_TX | DRV_ENABLE_RTS, base + UART_DRV_ENABLE);
 -
--	while (!PFIFO_REG( PFIFO_FILL_LEVEL(CON_FIFO_PORT_LO(xcno))) && timeout) {
--		timeout--;
--		udelay(100);
--	}
--#if 0
--	if (!timeout) {
--		loadxc(0);
--		loadxc(1);
--		eth_init(gd->bd);
--		return -1;
--	}
--#endif
--	val = PFIFO_REG( PFIFO_BASE(CON_FIFO_PORT_LO(xcno)) );
--	if((val & FIFO_PTR_ERROR_MASK) & 0x8)
--		printf("error sending frame: %u\n", val);
+-	writel(LINE_CR_8BIT | LINE_CR_FEN, base + UART_LINE_CR);
+-
+-	/* Finally, enable the UART */
+-	writel(CR_UARTEN, base + UART_CR);
 -
 -	return 0;
 -}
 -
--static int netx_eth_rx (struct eth_device *edev)
+-static int netx_serial_setbaudrate(struct console_device *cdev, int baudrate)
 -{
--	struct netx_eth_priv *priv = (struct netx_eth_priv *)edev->priv;
--	int xcno = priv->xcno;
--	unsigned int val, frameno, seg, len;
--
--	if(!PFIFO_REG( PFIFO_FILL_LEVEL(IND_FIFO_PORT_LO(xcno)))) {
--		return 0;
--	}
--
--	val = PFIFO_REG( PFIFO_BASE(IND_FIFO_PORT_LO(xcno)) );
--
--	frameno = (val & FIFO_PTR_FRAMENO_MASK) >> FIFO_PTR_FRAMENO_SHIFT;
--	seg = (val & FIFO_PTR_SEGMENT_MASK) >> FIFO_PTR_SEGMENT_SHIFT;
--	len = (val & FIFO_PTR_FRAMELEN_MASK) >> FIFO_PTR_FRAMELEN_SHIFT;
--
--	/* get data */
--	memcpy((void*)NetRxPackets[0], (void *)(SRAM_BASE(seg) + frameno * 1560), len);
--	/* pass to barebox */
--	net_receive(edev, NetRxPackets[0], len);
--
--	PFIFO_REG(PFIFO_BASE(EMPTY_PTR_FIFO(xcno))) =
--		FIFO_PTR_SEGMENT(seg) |
--		FIFO_PTR_FRAMENO(frameno);
 -	return 0;
 -}
 -
--static int netx_miibus_read(struct mii_bus *bus, int phy_addr, int reg)
+-static void netx_serial_putc(struct console_device *cdev, char c)
 -{
--	int value;
+-	struct device_d *dev = cdev->dev;
+-	void __iomem *base = dev->priv;
 -
--	MIIMU_REG = MIIMU_SNRDY | MIIMU_PREAMBLE | MIIMU_PHYADDR(phy_addr) |
--	            MIIMU_REGADDR(reg) | MIIMU_PHY_NRES;
+-	while (readl(base + UART_FR) & FR_TXFF );
 -
--	while(MIIMU_REG & MIIMU_SNRDY);
--
--	value = MIIMU_REG >> 16;
--
--	debug("%s: addr: 0x%02x reg: 0x%02x val: 0x%04x\n", __func__,
--	      phy_addr, reg, value);
--
--	return value;
+-	writel(c, base + UART_DR);
 -}
 -
--static int netx_miibus_write(struct mii_bus *bus, int phy_addr,
--	int reg, u16 val)
+-static int netx_serial_getc(struct console_device *cdev)
 -{
--	debug("%s: addr: 0x%02x reg: 0x%02x val: 0x%04x\n",__func__,
--	      phy_addr, reg, val);
+-	struct device_d *dev = cdev->dev;
+-	void __iomem *base = dev->priv;
+-	int c;
 -
--	MIIMU_REG = MIIMU_SNRDY | MIIMU_PREAMBLE | MIIMU_PHYADDR(phy_addr) |
--	            MIIMU_REGADDR(reg) | MIIMU_PHY_NRES | MIIMU_OPMODE_WRITE |
--		    MIIMU_DATA(val);
+-	while (readl(base + UART_FR) & FR_RXFE );
 -
--	while(MIIMU_REG & MIIMU_SNRDY);
+-	c = readl(base + UART_DR);
 -
--	return 0;
+-	readl(base + UART_SR);
+-
+-	return c;
 -}
 -
--static int netx_eth_init_phy(void)
+-static int netx_serial_tstc(struct console_device *cdev)
 -{
--	unsigned int phy_control;
+-	struct device_d *dev = cdev->dev;
+-	void __iomem *base = dev->priv;
 -
--	phy_control = PHY_CONTROL_PHY_ADDRESS(0xe) |
--	              PHY_CONTROL_PHY1_MODE(PHY_MODE_ALL) |
--		      PHY_CONTROL_PHY1_AUTOMDIX |
--	              PHY_CONTROL_PHY1_EN |
--	              PHY_CONTROL_PHY0_MODE(PHY_MODE_ALL) |
--		      PHY_CONTROL_PHY0_AUTOMDIX |
--	              PHY_CONTROL_PHY0_EN |
--	              PHY_CONTROL_CLK_XLATIN;
+-	return (readl(base + UART_FR) & FR_RXFE) ? 0 : 1;
+-}
 -
--	/* enable asic control */
--	SYSTEM_REG(SYSTEM_IOC_ACCESS_KEY) = SYSTEM_REG(SYSTEM_IOC_ACCESS_KEY);
+-static int netx_serial_probe(struct device_d *dev)
+-{
+-	struct resource *iores;
+-	struct console_device *cdev;
 -
--	SYSTEM_REG(SYSTEM_PHY_CONTROL) = phy_control | PHY_CONTROL_RESET;
--	udelay(100);
+-	cdev = xzalloc(sizeof(struct console_device));
+-	iores = dev_request_mem_resource(dev, 0);
+-	if (IS_ERR(iores))
+-		return PTR_ERR(iores);
+-	dev->priv = IOMEM(iores->start);
+-	cdev->dev = dev;
+-	cdev->tstc = netx_serial_tstc;
+-	cdev->putc = netx_serial_putc;
+-	cdev->getc = netx_serial_getc;
+-	cdev->setbrg = netx_serial_setbaudrate;
 -
--	/* enable asic control */
--	SYSTEM_REG(SYSTEM_IOC_ACCESS_KEY) = SYSTEM_REG(SYSTEM_IOC_ACCESS_KEY);
+-	netx_serial_init_port(cdev);
 -
--	SYSTEM_REG(SYSTEM_PHY_CONTROL) = phy_control;
+-	console_register(cdev);
 -
 -	return 0;
 -}
 -
--static int netx_eth_init_dev(struct eth_device *edev)
--{
--	struct netx_eth_priv *priv = (struct netx_eth_priv *)edev->priv;
--	int xcno = priv->xcno;
--	int i;
--
--	loadxc(xcno);
--
--	/* Fill empty pointer fifo */
--	for (i = 2; i <= 18; i++)
--		PFIFO_REG( PFIFO_BASE(EMPTY_PTR_FIFO(xcno)) ) = FIFO_PTR_FRAMENO(i) | FIFO_PTR_SEGMENT(xcno);
--
--	return 0;
--}
--
--static int netx_eth_open(struct eth_device *edev)
--{
--	struct netx_eth_priv *priv = (struct netx_eth_priv *)edev->priv;
--
--	return phy_device_connect(edev, &priv->miibus, 0, NULL,
--				 0, PHY_INTERFACE_MODE_NA);
--}
--
--static void netx_eth_halt (struct eth_device *edev)
--{
--}
--
--static int netx_eth_get_ethaddr(struct eth_device *edev, unsigned char *adr)
--{
--	/* FIXME: get from crypto flash */
--        return -1;
--}
--
--static int netx_eth_set_ethaddr(struct eth_device *edev, const unsigned char *adr)
--{
--	struct netx_eth_priv *priv = (struct netx_eth_priv *)edev->priv;
--	int xcno = priv->xcno;
--
--	debug("%s\n", __func__);
--
--	/* set MAC address */
--	XMAC_REG(xcno, XMAC_RPU_HOLD_PC) = RPU_HOLD_PC;
--	XMAC_REG(xcno, XMAC_TPU_HOLD_PC) = TPU_HOLD_PC;
--	XPEC_REG(xcno, XPEC_XPU_HOLD_PC) = XPU_HOLD_PC;
--	XPEC_REG(xcno, XPEC_RAM_START + ETH_MAC_4321) = adr[0] | adr[1]<<8 | adr[2]<<16 | adr[3]<<24;
--	XPEC_REG(xcno, XPEC_RAM_START + ETH_MAC_65) = adr[4] | adr[5]<<8;
--	XPEC_REG(xcno, XPEC_RAM_START + ETH_MAC_LOCAL_CONFIG) = MAC_TRAFFIC_CLASS_ARRANGEMENT(8);
--	XMAC_REG(xcno, XMAC_RPU_HOLD_PC) = 0;
--	XMAC_REG(xcno, XMAC_TPU_HOLD_PC) = 0;
--	XPEC_REG(xcno, XPEC_XPU_HOLD_PC) = 0;
--
--#if 0
--	for (i = 0; i < 5; i++)
--		printf ("%02x:", adr[i]);
--	printf ("%02x\n", adr[5]);
--#endif
--	return -0;
--}
--
--static int netx_eth_probe(struct device_d *dev)
--{
--	struct eth_device *edev;
--	struct netx_eth_priv *priv;
--	struct netx_eth_platform_data *pdata;
--
--	debug("netx_eth_probe()\n");
--
--	pdata = dev->platform_data;
--
--	edev = xzalloc(sizeof(struct eth_device) + sizeof(struct netx_eth_priv));
--	edev->priv = (struct netx_priv *)(edev + 1);
--
--	priv = edev->priv;
--	priv->xcno = pdata->xcno;
--
--	edev->init = netx_eth_init_dev;
--	edev->open = netx_eth_open;
--	edev->send = netx_eth_send;
--	edev->recv = netx_eth_rx;
--	edev->halt = netx_eth_halt;
--	edev->get_ethaddr = netx_eth_get_ethaddr;
--	edev->set_ethaddr = netx_eth_set_ethaddr;
--	edev->parent = dev;
--
--	priv->miibus.read = netx_miibus_read;
--	priv->miibus.write = netx_miibus_write;
--	priv->miibus.parent = dev;
--
--	netx_eth_init_phy();
--	mdiobus_register(&priv->miibus);
--	eth_register(edev);
--
--        return 0;
--}
--
--static struct driver_d netx_eth_driver = {
--        .name  = "netx-eth",
--        .probe = netx_eth_probe,
+-static struct driver_d netx_serial_driver = {
+-        .name  = "netx_serial",
+-        .probe = netx_serial_probe,
 -};
--device_platform_driver(netx_eth_driver);
+-console_platform_driver(netx_serial_driver);
 -- 
 2.23.0
 
