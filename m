@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i7xfF-0007HN-AM
- for barebox@lists.infradead.org; Wed, 11 Sep 2019 08:07:47 +0000
+ id 1i7xfN-0007Np-C6
+ for barebox@lists.infradead.org; Wed, 11 Sep 2019 08:07:54 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 11 Sep 2019 10:07:31 +0200
-Message-Id: <20190911080731.23102-8-s.hauer@pengutronix.de>
+Date: Wed, 11 Sep 2019 10:07:25 +0200
+Message-Id: <20190911080731.23102-2-s.hauer@pengutronix.de>
 In-Reply-To: <20190911080731.23102-1-s.hauer@pengutronix.de>
 References: <20190911080731.23102-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,280 +21,112 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 8/8] scripts: Remove NETX image tool
+Subject: [PATCH 2/8] ARM: Remove datamodul-edm-qmx6_defconfig
 To: Barebox List <barebox@lists.infradead.org>
 
-NETX support has been removed from barebox. Remove its image built tool
-as well.
+The edm-qmx6 is covered by the imx_v7_defconfig, so remove the board
+specific config.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- scripts/Makefile         |   1 -
- scripts/gen_netx_image.c | 243 ---------------------------------------
- 2 files changed, 244 deletions(-)
- delete mode 100644 scripts/gen_netx_image.c
+ arch/arm/configs/datamodul-edm-qmx6_defconfig | 88 -------------------
+ 1 file changed, 88 deletions(-)
+ delete mode 100644 arch/arm/configs/datamodul-edm-qmx6_defconfig
 
-diff --git a/scripts/Makefile b/scripts/Makefile
-index dffab53c73..8aaa01f6aa 100644
---- a/scripts/Makefile
-+++ b/scripts/Makefile
-@@ -14,7 +14,6 @@ hostprogs-$(CONFIG_IMD)          += bareboximd
- hostprogs-$(CONFIG_KALLSYMS)     += kallsyms
- hostprogs-$(CONFIG_MIPS)         += mips-relocs
- hostprogs-$(CONFIG_MVEBU_HOSTTOOLS) += kwbimage kwboot mvebuimg
--hostprogs-$(CONFIG_ARCH_NETX)    += gen_netx_image
- hostprogs-$(CONFIG_ARCH_OMAP)    += omap_signGP mk-omap-image
- hostprogs-$(CONFIG_ARCH_S5PCxx)  += s5p_cksum
- hostprogs-$(CONFIG_ARCH_DAVINCI) += mkublheader
-diff --git a/scripts/gen_netx_image.c b/scripts/gen_netx_image.c
+diff --git a/arch/arm/configs/datamodul-edm-qmx6_defconfig b/arch/arm/configs/datamodul-edm-qmx6_defconfig
 deleted file mode 100644
-index 18e10bcaeb..0000000000
---- a/scripts/gen_netx_image.c
+index b828b38e0f..0000000000
+--- a/arch/arm/configs/datamodul-edm-qmx6_defconfig
 +++ /dev/null
-@@ -1,243 +0,0 @@
--#include <stdio.h>
--#include <sys/types.h>
--#include <sys/stat.h>
--#include <unistd.h>
--#include <stdlib.h>
--#include <string.h>
--#include <stdint.h>
--#include <fcntl.h>
--#include <libgen.h>
--#include <getopt.h>
--
--struct netx_block_normal {
--	uint32_t sdram_general_ctrl;	/* SDRam General control value */
--	uint32_t sdram_timing_ctrl;	/* SDRam Timing control register value */
--	uint32_t reserved[3];
--};
--
--struct netx_block_expbus {
--		uint32_t exp_bus_reg;	/* Expension bus register value (EXPBus Bootmode) */
--		uint32_t io_reg_mode0;	/* IORegmode0 register value (EXPBus Bootmode) */
--		uint32_t io_reg_mode1;	/* IORegmode1 register value (EXPBus Bootmode) */
--		uint32_t if_conf1;	/* IfConfig1 register value (EXPBus Bootmode) */
--		uint32_t if_conf2;	/* IfConfig2 register value (EXPBus Bootmode) */
--};
--
--struct netx_bootblock {
--	uint32_t cookie;     /* Cookie identifying bus width and valid bootblock */
--# define MAGICCOOKIE_8BIT      0xF8BEAF08  /* Cookie used for  8Bit Flashes */
--# define MAGICCOOKIE_16BIT     0xF8BEAF16  /* Cookie used for 16Bit Flashes */
--# define MAGICCOOKIE_32BIT     0xF8BEAF32  /* Cookie used for 32Bit Flashes */
--
--	union {
--		uint32_t mem_ctrl;        /* Parallel/Serial Flash Mode for setting up timing parameters */
--		uint32_t speed;          /* I2C/SPI Mode for identifying speed of device */
--		uint32_t reserved;       /* PCI/DPM mode */
--	} ctrl;
--
--	uint32_t appl_entrypoint;   /* Entrypoint to application after relocation */
--	uint32_t appl_checksum;     /* Checksum of application (DWORD sum over application) */
--	uint32_t appl_size;         /* size of application in DWORDs */
--	uint32_t appl_start_addr;    /* Relocation address of application */
--	uint32_t signature;        /* Bootblock signature ('NETX') */
--# define NETX_IDENTIFICATION   0x5854454E /* Valid signature 'N' 'E' 'T' 'X' */
--
--	union {
--		struct netx_block_normal normal;
--		struct netx_block_expbus expbus;
--	} config;
--
--	uint32_t misc_asic_ctrl;            /* ASIC CTRL register value */
--	uint32_t UserParameter;	/* Serial number or user parameter */
--	uint32_t SourceType;	/* 1 = parallel falsh at the SRAM bus */
--# define ST_PFLASH 1
--# define ST_SFLASH 2
--# define ST_SEEPROM 3
--
--	uint32_t boot_checksum;            /* Bootblock checksum (complement of DWORD sum over bootblock) */
--};
--
--void print_usage(char *prg)
--{
--        fprintf(stderr, "Usage: %s [Options]\n"
--                        "Options:\n"
--			" -i, --infile=FILE      input file\n"
--			" -o  --outfile=FILE     outputfile\n"
--			" -m  --memctrl=REG      Memory Control register value\n"
--	                " -s, --sdramctrl=REG    SDRAM Control regster value\n"
--                        " -t, --sdramtimctrl=REG SDRAM Timing Control regster value\n"
--                        " -e, --entrypoint=ADR   Application entrypoint\n"
--                        " -c, --cookie=BITS      Cookie to use (8|16|32)\n"
--			" -h, --help            this help\n",
--				prg);
--}
--
--int main(int argc, char *argv[])
--{
--	struct netx_bootblock *nb;
--	int fd;
--	struct stat s;
--	int opt;
--	unsigned char *buf;
--	int bytes, err, barebox_size, ofs, i;
--	uint32_t *ptr;
--	uint32_t checksum = 0;
--	uint32_t memctrl = 0, sdramctrl = 0, sdramtimctrl = 0, entrypoint = 0, cookie = 0;
--	char *infile = NULL, *outfile = NULL;
--
--	struct option long_options[] = {
--		{ "help", no_argument, 0, 'h' },
--		{ "infile", required_argument, 0, 'i'},
--		{ "outfile", required_argument, 0, 'o'},
--		{ "memctrl", required_argument, 0, 'm'},
--		{ "sdramctrl", required_argument, 0, 's' },
--		{ "sdramtimctrl", required_argument, 0, 't' },
--		{ "entrypoint", required_argument, 0, 'e' },
--		{ "cookie", required_argument, 0 , 'c' },
--		{ 0, 0, 0, 0},
--	};
--
--	while ((opt = getopt_long(argc, argv, "hi:o:m:s:t:e:c:", long_options, NULL)) != -1) {
--		switch (opt) {
--			case 'h':
--				print_usage(basename(argv[0]));
--				exit(0);
--			case 'i':
--				infile = optarg;
--				break;
--			case 'o':
--				outfile = optarg;
--				break;
--			case 'm':
--				memctrl = strtoul(optarg, NULL, 0);
--				break;
--			case 's':
--				sdramctrl = strtoul(optarg, NULL, 0);
--				break;
--			case 't':
--				sdramtimctrl = strtoul(optarg, NULL, 0);
--				break;
--			case 'e':
--				entrypoint = strtoul(optarg, NULL, 0);
--				break;
--			case 'c':
--				cookie = strtoul(optarg, NULL, 0);
--				break;
--		}
--	}
--
--	if(!infile) {
--		printf("no input filename supplied\n");
--		exit(1);
--	}
--
--	if(!outfile) {
--		printf("no outpu filename supplied\n");
--		exit(1);
--	}
--
--	switch (cookie) {
--		case 8:
--			cookie = MAGICCOOKIE_8BIT;
--			break;
--		case 16:
--			cookie = MAGICCOOKIE_16BIT;
--			break;
--		case 32:
--			cookie = MAGICCOOKIE_32BIT;
--			break;
--		default:
--			fprintf(stderr, "invalid coookie size %d\n",cookie);
--	}
--
--	fd = open(infile,O_RDONLY);
--	if(fd < 0) {
--		perror("open");
--		exit(1);
--	}
--
--	if( fstat(fd, &s) < 0) {
--		perror("fstat");
--		exit(1);
--	}
--
--	barebox_size = s.st_size;
--	printf("found barebox image. size: %d bytes. Using entrypoint 0x%08x\n",barebox_size,entrypoint);
--
--	buf = malloc(barebox_size + sizeof(struct netx_bootblock) + 4);
--	if(!buf) {
--		perror("malloc");
--		exit(1);
--	}
--	memset(buf, 0, barebox_size + sizeof(struct netx_bootblock) + 4);
--
--	nb = (struct netx_bootblock *)buf;
--
--	nb->cookie = cookie;
--	nb->ctrl.mem_ctrl = memctrl;
--	nb->appl_entrypoint = entrypoint;
--	nb->appl_size = (barebox_size >> 2);
--
--	nb->appl_start_addr = entrypoint;
--	nb->signature = NETX_IDENTIFICATION;
--	nb->config.normal.sdram_general_ctrl = sdramctrl;
--	nb->config.normal.sdram_timing_ctrl = sdramtimctrl;
--	nb->SourceType = ST_PFLASH;
--
--	ofs = sizeof(struct netx_bootblock);
--	bytes = barebox_size;
--
--	while(bytes) {
--		err = read(fd, buf + ofs, bytes);
--		if( err < 0 ) {
--			perror("read");
--			exit(1);
--		}
--		bytes -= err;
--		ofs += err;
--	}
--
--	close(fd);
--
--	/* calculate application checksum */
--	ptr = (uint32_t *)(buf + sizeof(struct netx_bootblock));
--
--	checksum = 0;
--
--	for( i = 0; i < nb->appl_size; i++) {
--		checksum += *ptr++;
--	}
--
--	nb->appl_checksum = checksum;
--	printf("application checksum: 0x%08x\n",nb->appl_checksum);
--
--	/* calculate bootblock checksum */
--	ptr = (uint32_t *)buf;
--	checksum = 0;
--	for( i = 0; i < (sizeof(struct netx_bootblock) >> 2); i++)
--		checksum += *ptr++;
--	nb->boot_checksum = -1 * checksum;
--
--	fd = open(outfile, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR |
--			S_IRGRP | S_IWGRP | S_IROTH);
--	if(fd < 0) {
--		perror("open");
--		exit(1);
--	}
--
--	bytes = barebox_size + sizeof(struct netx_bootblock);
--	ofs = 0;
--	while(bytes) {
--		err = write(fd, buf + ofs, bytes);
--		if( err < 0) {
--			perror("write");
--			exit(1);
--		}
--		bytes -= err;
--		ofs += err;
--	}
--
--	close(fd);
--	free(buf);
--	return 0;
--}
+@@ -1,88 +0,0 @@
+-CONFIG_ARCH_IMX=y
+-CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x31000
+-CONFIG_IMX_MULTI_BOARDS=y
+-CONFIG_MACH_REALQ7=y
+-CONFIG_IMX_IIM=y
+-CONFIG_IMX_IIM_FUSE_BLOW=y
+-CONFIG_THUMB2_BAREBOX=y
+-CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+-CONFIG_ARM_UNWIND=y
+-CONFIG_MMU=y
+-CONFIG_MALLOC_SIZE=0x0
+-CONFIG_MALLOC_TLSF=y
+-CONFIG_RELOCATABLE=y
+-CONFIG_HUSH_FANCY_PROMPT=y
+-CONFIG_CMDLINE_EDITING=y
+-CONFIG_AUTO_COMPLETE=y
+-CONFIG_BOOTM_SHOW_TYPE=y
+-CONFIG_BOOTM_VERBOSE=y
+-CONFIG_BOOTM_INITRD=y
+-CONFIG_BOOTM_OFTREE=y
+-CONFIG_BOOTM_OFTREE_UIMAGE=y
+-CONFIG_CONSOLE_ACTIVATE_NONE=y
+-CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+-CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/datamodul-edm-qmx6/env"
+-CONFIG_RESET_SOURCE=y
+-CONFIG_LONGHELP=y
+-CONFIG_CMD_IOMEM=y
+-CONFIG_CMD_MEMINFO=y
+-CONFIG_CMD_ARM_MMUINFO=y
+-# CONFIG_CMD_BOOTU is not set
+-CONFIG_CMD_GO=y
+-CONFIG_CMD_RESET=y
+-CONFIG_CMD_PARTITION=y
+-CONFIG_CMD_EXPORT=y
+-CONFIG_CMD_PRINTENV=y
+-CONFIG_CMD_MAGICVAR=y
+-CONFIG_CMD_MAGICVAR_HELP=y
+-CONFIG_CMD_SAVEENV=y
+-CONFIG_CMD_FILETYPE=y
+-CONFIG_CMD_LN=y
+-CONFIG_CMD_MD5SUM=y
+-CONFIG_CMD_UNCOMPRESS=y
+-CONFIG_CMD_MSLEEP=y
+-CONFIG_CMD_SLEEP=y
+-CONFIG_CMD_DHCP=y
+-CONFIG_CMD_MIITOOL=y
+-CONFIG_CMD_PING=y
+-CONFIG_CMD_TFTP=y
+-CONFIG_CMD_ECHO_E=y
+-CONFIG_CMD_EDIT=y
+-CONFIG_CMD_READLINE=y
+-CONFIG_CMD_TIMEOUT=y
+-CONFIG_CMD_CRC=y
+-CONFIG_CMD_CRC_CMP=y
+-CONFIG_CMD_CLK=y
+-CONFIG_CMD_DETECT=y
+-CONFIG_CMD_FLASH=y
+-CONFIG_CMD_GPIO=y
+-CONFIG_CMD_I2C=y
+-CONFIG_CMD_SPI=y
+-CONFIG_CMD_WD=y
+-CONFIG_CMD_BAREBOX_UPDATE=y
+-CONFIG_CMD_OF_NODE=y
+-CONFIG_CMD_OF_PROPERTY=y
+-CONFIG_CMD_OFTREE=y
+-CONFIG_CMD_TIME=y
+-CONFIG_NET=y
+-CONFIG_OFDEVICE=y
+-CONFIG_OF_BAREBOX_DRIVERS=y
+-CONFIG_DRIVER_NET_FEC_IMX=y
+-CONFIG_DRIVER_SPI_IMX=y
+-CONFIG_I2C=y
+-CONFIG_I2C_IMX=y
+-CONFIG_MTD=y
+-CONFIG_MTD_M25P80=y
+-CONFIG_DISK_AHCI=y
+-CONFIG_DISK_AHCI_IMX=y
+-CONFIG_MCI=y
+-CONFIG_MCI_IMX_ESDHC=y
+-CONFIG_MFD_STMPE=y
+-CONFIG_WATCHDOG=y
+-CONFIG_WATCHDOG_IMX=y
+-CONFIG_GPIO_STMPE=y
+-CONFIG_FS_TFTP=y
+-CONFIG_FS_NFS=y
+-CONFIG_FS_FAT=y
+-CONFIG_FS_FAT_WRITE=y
+-CONFIG_FS_FAT_LFN=y
 -- 
 2.23.0
 
