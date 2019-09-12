@@ -1,12 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1i88HR-0006B6-7J
- for barebox@lists.infradead.org; Wed, 11 Sep 2019 19:27:54 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Wed, 11 Sep 2019 21:27:37 +0200
-Message-Id: <20190911192738.16983-1-u.kleine-koenig@pengutronix.de>
+ id 1i8IoT-0000fY-TM
+ for barebox@lists.infradead.org; Thu, 12 Sep 2019 06:42:43 +0000
+Date: Thu, 12 Sep 2019 08:42:40 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20190912064240.nyljjoqhgdharwk7@pengutronix.de>
+References: <20190909203451.13047-1-u.kleine-koenig@pengutronix.de>
+ <20190909203451.13047-3-u.kleine-koenig@pengutronix.de>
+ <20190912061617.guwsnwogkiya2y36@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190912061617.guwsnwogkiya2y36@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,42 +20,104 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] state: drop unused code and declarations for non-existing
- functions
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v4 2/2] mci: implement command to switch a mmc device to
+ enhanced mode
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-c3RhdGVfZ2V0X25hbWUoKSBpcyBub3QgdXNlZCBhbmQgc28gY2FuIGJlIHJlbW92ZWQuCnN0YXRl
-X2JhY2tlbmRfZHRiX2ZpbGUoKSBhbmQgc3RhdGVfYmFja2VuZF9yYXdfZmlsZSgpIHdlcmUgZHJv
-cHBlZCBpbgpjOTk5YjUwN2RhOTggKCJzdGF0ZTogUmVmYWN0b3Igc3RhdGUgZnJhbWV3b3JrIiku
-CgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1
-dHJvbml4LmRlPgotLS0KIGNvbW1vbi9zdGF0ZS9zdGF0ZS5jIHwgNyAtLS0tLS0tCiBpbmNsdWRl
-L3N0YXRlLmggICAgICB8IDUgLS0tLS0KIDIgZmlsZXMgY2hhbmdlZCwgMTIgZGVsZXRpb25zKC0p
-CgpkaWZmIC0tZ2l0IGEvY29tbW9uL3N0YXRlL3N0YXRlLmMgYi9jb21tb24vc3RhdGUvc3RhdGUu
-YwppbmRleCAzZjVkNDNlY2JmNzMuLmIxNjgzODdlZWYwYiAxMDA2NDQKLS0tIGEvY29tbW9uL3N0
-YXRlL3N0YXRlLmMKKysrIGIvY29tbW9uL3N0YXRlL3N0YXRlLmMKQEAgLTcxNCwxMyArNzE0LDYg
-QEAgc3RydWN0IHN0YXRlICpzdGF0ZV9ieV9ub2RlKGNvbnN0IHN0cnVjdCBkZXZpY2Vfbm9kZSAq
-bm9kZSkKIAlyZXR1cm4gTlVMTDsKIH0KIAotaW50IHN0YXRlX2dldF9uYW1lKGNvbnN0IHN0cnVj
-dCBzdGF0ZSAqc3RhdGUsIGNoYXIgY29uc3QgKipuYW1lKQotewotCSpuYW1lID0geHN0cmR1cChz
-dGF0ZS0+bmFtZSk7Ci0KLQlyZXR1cm4gMDsKLX0KLQogaW50IHN0YXRlX3JlYWRfbWFjKHN0cnVj
-dCBzdGF0ZSAqc3RhdGUsIGNvbnN0IGNoYXIgKm5hbWUsIHU4ICpidWYpCiB7CiAJc3RydWN0IHN0
-YXRlX3ZhcmlhYmxlICpzdmFyOwpkaWZmIC0tZ2l0IGEvaW5jbHVkZS9zdGF0ZS5oIGIvaW5jbHVk
-ZS9zdGF0ZS5oCmluZGV4IDRlOTk1YTE5ZWZlMC4uYTQ5MTU1ZWYyNzc5IDEwMDY0NAotLS0gYS9p
-bmNsdWRlL3N0YXRlLmgKKysrIGIvaW5jbHVkZS9zdGF0ZS5oCkBAIC01LDE3ICs1LDEyIEBACiAK
-IHN0cnVjdCBzdGF0ZTsKIAotaW50IHN0YXRlX2JhY2tlbmRfZHRiX2ZpbGUoc3RydWN0IHN0YXRl
-ICpzdGF0ZSwgY29uc3QgY2hhciAqb2ZfcGF0aCwKLQkJY29uc3QgY2hhciAqcGF0aCk7Ci1pbnQg
-c3RhdGVfYmFja2VuZF9yYXdfZmlsZShzdHJ1Y3Qgc3RhdGUgKnN0YXRlLCBjb25zdCBjaGFyICpv
-Zl9wYXRoLAotCQljb25zdCBjaGFyICpwYXRoLCBvZmZfdCBvZmZzZXQsIHNpemVfdCBzaXplKTsK
-IAogc3RydWN0IHN0YXRlICpzdGF0ZV9uZXdfZnJvbV9ub2RlKHN0cnVjdCBkZXZpY2Vfbm9kZSAq
-bm9kZSwgYm9vbCByZWFkb25seSk7CiB2b2lkIHN0YXRlX3JlbGVhc2Uoc3RydWN0IHN0YXRlICpz
-dGF0ZSk7CiAKIHN0cnVjdCBzdGF0ZSAqc3RhdGVfYnlfbmFtZShjb25zdCBjaGFyICpuYW1lKTsK
-IHN0cnVjdCBzdGF0ZSAqc3RhdGVfYnlfbm9kZShjb25zdCBzdHJ1Y3QgZGV2aWNlX25vZGUgKm5v
-ZGUpOwotaW50IHN0YXRlX2dldF9uYW1lKGNvbnN0IHN0cnVjdCBzdGF0ZSAqc3RhdGUsIGNoYXIg
-Y29uc3QgKipuYW1lKTsKIAogaW50IHN0YXRlX2xvYWRfbm9fYXV0aChzdHJ1Y3Qgc3RhdGUgKnN0
-YXRlKTsKIGludCBzdGF0ZV9sb2FkKHN0cnVjdCBzdGF0ZSAqc3RhdGUpOwotLSAKMi4yMy4wCgoK
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBt
-YWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
-YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Hello,
+
+On Thu, Sep 12, 2019 at 08:16:17AM +0200, Sascha Hauer wrote:
+> On Mon, Sep 09, 2019 at 10:34:51PM +0200, Uwe Kleine-K=F6nig wrote:
+> > +	ret =3D mci_send_ext_csd(mci, ext_csd);
+> > +	if (ret) {
+> > +		printf("Failure to read EXT_CSD register\n");
+> > +		free(ext_csd);
+> > +		return ERR_PTR(-EIO);
+> > +	}
+> > +
+> > +	return ext_csd;
+> > +}
+> > +
+> > +/* enh_area -m [-c] /dev/mmcX */
+> =
+
+> -m is not implemented
+> =
+
+> > +static int do_mmc_enh_area(int argc, char *argv[])
+> > +{
+> > +	const char *devpath;
+> > +	struct mci *mci;
+> > +	u8 *ext_csd;
+> > +	int set_completed =3D 0;
+> > +	int opt;
+> > +	int ret;
+> > +
+> > +	while ((opt =3D getopt(argc, argv, "c")) > 0) {
+> > +		switch (opt) {
+> > +		case 'c':
+> > +			set_completed =3D 1;
+> > +			break;
+> > +		}
+> > +	}
+> > +
+> > +	/*
+> > +	 * -m is currently mandatory to allow more flexible enhanced area
+> > +	 * specifications in the future.
+> > +	 */
+> =
+
+> -m?
+
+-m was an intermediate step. You suggested to use -m instead of
+"setmax", but while implementing I noticed that with options there is no
+need for a keyword or option.
+
+Can you please squash this into my patch?:
+
+diff --git a/commands/mmc.c b/commands/mmc.c
+index b51522fce2a6..c696e7b8817b 100644
+--- a/commands/mmc.c
++++ b/commands/mmc.c
+@@ -80,7 +80,7 @@ static u8 *mci_get_ext_csd(struct mci *mci)
+ 	return ext_csd;
+ }
+ =
+
+-/* enh_area -m [-c] /dev/mmcX */
++/* enh_area [-c] /dev/mmcX */
+ static int do_mmc_enh_area(int argc, char *argv[])
+ {
+ 	const char *devpath;
+@@ -98,10 +98,6 @@ static int do_mmc_enh_area(int argc, char *argv[])
+ 		}
+ 	}
+ =
+
+-	/*
+-	 * -m is currently mandatory to allow more flexible enhanced area
+-	 * specifications in the future.
+-	 */
+ 	if (argc - optind !=3D 1) {
+ 		printf("Usage: mmc enh_area [-c] /dev/mmcX\n");
+ 		return COMMAND_ERROR_USAGE;
+
+or should I resend?
+
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
