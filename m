@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1i8MLe-0002as-8G
- for barebox@lists.infradead.org; Thu, 12 Sep 2019 10:29:13 +0000
+ id 1i8MLe-0002b0-9b
+ for barebox@lists.infradead.org; Thu, 12 Sep 2019 10:29:12 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 12 Sep 2019 12:29:02 +0200
-Message-Id: <20190912102905.21307-4-a.fatoum@pengutronix.de>
+Date: Thu, 12 Sep 2019 12:29:03 +0200
+Message-Id: <20190912102905.21307-5-a.fatoum@pengutronix.de>
 In-Reply-To: <20190912102905.21307-1-a.fatoum@pengutronix.de>
 References: <20190912102905.21307-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,34 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/7] filetype: support fastboot barebox_update with layerscape
- image
+Subject: [PATCH 5/7] scripts: pblimage: explicitly set architecture to ARM
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-We do not yet support USB on the Layerscape platforms, but when we do,
-it's imaginable that we would want to export barebox_update targets over
-Fastboot. Prepare for this by adding the layerscape images to those that
-filetype_is_barebox_image returns true for.
+architecture is statically initialized to zero, which happens to be
+ARCH_ARM as it's the first enum element.
+Make this a bit clearer by explicitly assigning ARM_ARM to architecture.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/filetype.c | 2 ++
- 1 file changed, 2 insertions(+)
+ scripts/pblimage.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/common/filetype.c b/common/filetype.c
-index 825bf25ad107..4966c5e068bd 100644
---- a/common/filetype.c
-+++ b/common/filetype.c
-@@ -460,6 +460,8 @@ bool filetype_is_barebox_image(enum filetype ft)
- 	case filetype_mips_barebox:
- 	case filetype_ch_image:
- 	case filetype_ch_image_be:
-+	case filetype_layerscape_image:
-+	case filetype_layerscape_qspi_image:
- 		return true;
- 	default:
- 		return false;
+diff --git a/scripts/pblimage.c b/scripts/pblimage.c
+index 73c0169ac1c1..235af8aa11b1 100644
+--- a/scripts/pblimage.c
++++ b/scripts/pblimage.c
+@@ -61,7 +61,7 @@ enum arch {
+ 	ARCH_POWERPC,
+ };
+ 
+-enum arch architecture;
++enum arch architecture = ARCH_ARM;
+ static char *rcwfile;
+ static char *pbifile;
+ static char *outfile;
 -- 
 2.23.0
 
