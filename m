@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1i8Joy-0004u2-Qh
- for barebox@lists.infradead.org; Thu, 12 Sep 2019 07:47:17 +0000
-Message-ID: <d7ab051027f78ea37d9ab3833765fa70d2ab350f.camel@pengutronix.de>
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Thu, 12 Sep 2019 09:47:09 +0200
-In-Reply-To: <20190912071301.28715-1-s.hauer@pengutronix.de>
-References: <20190912071301.28715-1-s.hauer@pengutronix.de>
+ id 1i8KZS-0001Yh-I0
+ for barebox@lists.infradead.org; Thu, 12 Sep 2019 08:35:20 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 12 Sep 2019 10:35:03 +0200
+Message-Id: <20190912083505.4162-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,37 +19,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] bootm: release tee_res
-To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 1/3] of: Fix memory hole in of_find_node_by_reproducible_name()
+To: Barebox List <barebox@lists.infradead.org>
 
-On Thu, 2019-09-12 at 09:13 +0200, Sascha Hauer wrote:
-> When a tee_res has been acquired it must be released when bootm
-> returns
-> (for dryrun)
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  common/bootm.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/common/bootm.c b/common/bootm.c
-> index d7232f6afa..b50b76ed6f 100644
-> --- a/common/bootm.c
-> +++ b/common/bootm.c
-> @@ -682,6 +682,8 @@ err_out:
->  		release_sdram_region(data->initrd_res);
->  	if (data->oftree_res)
->  		release_sdram_region(data->oftree_res);
-> +	if (data->tee_res)
-> +		release_sdram_region(data->tee_res);
->  	if (data->initrd && data->initrd != data->os)
->  		uimage_close(data->initrd);
->  	if (data->os)
+of_get_reproducible_name() returns an allocated string, so we must free
+it.
 
-Reviewed-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/of/base.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-Regards,
-Rouven Czerwinski
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 838f530f85..22077fa397 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -2306,9 +2306,17 @@ struct device_node *of_find_node_by_reproducible_name(struct device_node *from,
+ {
+ 	struct device_node *np;
+ 
+-	of_tree_for_each_node_from(np, from)
+-		if (!of_node_cmp(of_get_reproducible_name(np), name))
++	of_tree_for_each_node_from(np, from) {
++		char *rep = of_get_reproducible_name(np);
++		int res;
++
++		res = of_node_cmp(rep, name);
++
++		free(rep);
++
++		if (!res)
+ 			return np;
++	}
+ 	return NULL;
+ }
+ 
+-- 
+2.23.0
 
 
 _______________________________________________
