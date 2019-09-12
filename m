@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1i8LD0-0000AC-Kl
- for barebox@lists.infradead.org; Thu, 12 Sep 2019 09:16:12 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 12 Sep 2019 11:16:07 +0200
-Message-Id: <20190912091607.32196-1-s.hauer@pengutronix.de>
+ id 1i8MLe-0002af-1O
+ for barebox@lists.infradead.org; Thu, 12 Sep 2019 10:29:11 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu, 12 Sep 2019 12:28:59 +0200
+Message-Id: <20190912102905.21307-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,31 +19,93 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd: nand: Fix retrieving nand_chip from mtd_info
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 1/7] libfile: introduce copy_file_2 for copying starting with
+ offset
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-With 76b6f74c53 we begin embedding a struct mtd_info into struct
-nand_chip. With this mtd_to_nand() must be changed accordingly.
+barebox already has a copy_file for copying files. Extend the API by a
+copy_file_2 that takes a source offset into account.
 
-Fixes: 76b6f74c53 ("mtd: nand: Embed struct mtd_info into struct nand_chip")
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+This is useful for handling SoC-specific image formats which have a
+fixed-size header, as copy_file_2 can now skip that header and create a
+file with the full barebox image in one go.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/linux/mtd/nand.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/libfile.h |  1 +
+ lib/libfile.c     | 25 +++++++++++++++++++------
+ 2 files changed, 20 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/mtd/nand.h b/include/linux/mtd/nand.h
-index 762f9c4f2a..401f630570 100644
---- a/include/linux/mtd/nand.h
-+++ b/include/linux/mtd/nand.h
-@@ -803,7 +803,7 @@ const struct nand_sdr_timings *onfi_async_timing_mode_to_sdr_timings(int mode);
+diff --git a/include/libfile.h b/include/libfile.h
+index f1d695187790..02269f4877e6 100644
+--- a/include/libfile.h
++++ b/include/libfile.h
+@@ -16,6 +16,7 @@ int write_file(const char *filename, const void *buf, size_t size);
+ int write_file_flash(const char *filename, const void *buf, size_t size);
  
- static inline struct nand_chip *mtd_to_nand(struct mtd_info *mtd)
+ int copy_file(const char *src, const char *dst, int verbose);
++int copy_file_2(const char *src, const char *dst, loff_t pos, int verbose);
+ 
+ int copy_recursive(const char *src, const char *dst);
+ 
+diff --git a/lib/libfile.c b/lib/libfile.c
+index b42753c2b5ea..4bc980816a67 100644
+--- a/lib/libfile.c
++++ b/lib/libfile.c
+@@ -318,14 +318,15 @@ out_close:
+ EXPORT_SYMBOL(write_file_flash);
+ 
+ /**
+- * copy_file - Copy a file
++ * copy_file_2 - Copy a file
+  * @src:	The source filename
+  * @dst:	The destination filename
++ * @pos:	source file position to start reading at
+  * @verbose:	if true, show a progression bar
+  *
+  * Return: 0 for success or negative error code
+  */
+-int copy_file(const char *src, const char *dst, int verbose)
++int copy_file_2(const char *src, const char *dst, loff_t pos, int verbose)
  {
--	return mtd->priv;
-+	return container_of(mtd, struct nand_chip, mtd);
- }
+ 	char *rw_buf = NULL;
+ 	int srcfd = 0, dstfd = 0;
+@@ -337,11 +338,9 @@ int copy_file(const char *src, const char *dst, int verbose)
  
- #endif /* __LINUX_MTD_NAND_H */
+ 	rw_buf = xmalloc(RW_BUF_SIZE);
+ 
+-	srcfd = open(src, O_RDONLY);
+-	if (srcfd < 0) {
+-		printf("could not open %s: %s\n", src, errno_str());
++	srcfd = open_and_lseek(src, O_RDONLY, pos);
++	if (srcfd < 0)
+ 		goto out;
+-	}
+ 
+ 	mode = O_WRONLY | O_CREAT;
+ 
+@@ -403,6 +402,20 @@ out:
+ 
+ 	return ret ?: err1;
+ }
++EXPORT_SYMBOL(copy_file_2);
++
++/**
++ * copy_file - Copy a file
++ * @src:	The source filename
++ * @dst:	The destination filename
++ * @verbose:	if true, show a progression bar
++ *
++ * Return: 0 for success or negative error code
++ */
++int copy_file(const char *src, const char *dst, int verbose)
++{
++	return copy_file_2(src, dst, 0, verbose);
++}
+ EXPORT_SYMBOL(copy_file);
+ 
+ int copy_recursive(const char *src, const char *dst)
 -- 
 2.23.0
 
