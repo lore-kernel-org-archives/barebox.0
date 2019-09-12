@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i7FTF-0004xa-AE
- for barebox@lists.infradead.org; Mon, 09 Sep 2019 08:56:26 +0000
-Date: Mon, 9 Sep 2019 10:56:23 +0200
+ by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
+ id 1i8J2i-00064I-BO
+ for barebox@lists.infradead.org; Thu, 12 Sep 2019 06:57:25 +0000
+Date: Thu, 12 Sep 2019 08:57:22 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190909085623.zjvlscdv4mteamwl@pengutronix.de>
-References: <20190908220111.694-1-dgienda125@gmail.com>
+Message-ID: <20190912065722.rlgazffx6vtzt6ki@pengutronix.de>
+References: <20190906132008.25309-1-m.tretter@pengutronix.de>
+ <20190909085753.g7iiluefz4otlfki@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190908220111.694-1-dgienda125@gmail.com>
+In-Reply-To: <20190909085753.g7iiluefz4otlfki@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,39 +23,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] console: set default console_device devname
-To: dgienda125@gmail.com
+Subject: Re: [PATCH v2 0/7] Device Tree Overlay Support
+To: Michael Tretter <m.tretter@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Sun, Sep 08, 2019 at 06:01:11PM -0400, dgienda125@gmail.com wrote:
-> From: David Dgien <dgienda125@gmail.com>
+On Mon, Sep 09, 2019 at 10:57:53AM +0200, Sascha Hauer wrote:
+> On Fri, Sep 06, 2019 at 03:20:01PM +0200, Michael Tretter wrote:
+> > Hello,
+> > 
+> > This is the v2 for adding device tree overlay support to barebox.
+> > 
+> > The biggest change is the new function of_overlay_apply_tree() which accepts a
+> > devicetree and the root node of an overlay and applies the overlay to the
+> > devicetree.
+> > 
+> > Apart from that, I fixed various issues like memory leaks, useless includes,
+> > missing documentation, formatting of output messages, and a missing "static
+> > inline".
+> > 
+> > Michael
 > 
-> Some commands (loadb/x/y) rely on console_get_by_name, which searches the list
-> of console devices based on console_device->devname. However, some serial
-> drivers do not set devname, meaning that their respective console_devices can
-> never be found. During console_register, ensure that a default devname is set
-> if one is not already explicitly set.
-> 
-> Signed-off-by: David Dgien <dgienda125@gmail.com>
-> ---
->  common/console.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/common/console.c b/common/console.c
-> index ee17a508b..dacb6001c 100644
-> --- a/common/console.c
-> +++ b/common/console.c
-> @@ -324,6 +324,10 @@ int console_register(struct console_device *newcdev)
->  		dev->parent = newcdev->dev;
->  	platform_device_register(dev);
->  
-> +	if (!newcdev->devname) {
-> +		newcdev->devname = strdup(dev_name(dev));
+> Applied, thanks
 
-As the return value is not checked I switched to xstrdup. Applied,
-thanks
+There's more discussion. I dropped the series for now, please resend as
+a whole.
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
