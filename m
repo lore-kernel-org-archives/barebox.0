@@ -1,12 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1i8J05-0004AW-RW
- for barebox@lists.infradead.org; Thu, 12 Sep 2019 06:54:44 +0000
+ id 1i8J11-0005U5-96
+ for barebox@lists.infradead.org; Thu, 12 Sep 2019 06:55:40 +0000
+Date: Thu, 12 Sep 2019 08:55:37 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 12 Sep 2019 08:54:39 +0200
-Message-Id: <20190912065439.2816-1-s.hauer@pengutronix.de>
+Message-ID: <20190912065537.2tsjevnq4x7oekno@pengutronix.de>
+References: <20190907235456.21535-1-andrew.smirnov@gmail.com>
+ <20190907235456.21535-3-andrew.smirnov@gmail.com>
+ <20190909102306.kt3wiq5ldnxrjvg7@pengutronix.de>
+ <CAHQ1cqFmsxHEcEzpDN5VQqZsnuj8HhAoMQhLUQ+KUdWnw2WjMQ@mail.gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAHQ1cqFmsxHEcEzpDN5VQqZsnuj8HhAoMQhLUQ+KUdWnw2WjMQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,35 +25,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] gcc-9: silence 'address-of-packed-member' warning
-To: Barebox List <barebox@lists.infradead.org>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH 3/4] mtd: ubi: Compile fastmap.c with
+ -Wno-address-of-packed-member
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-As done in the Linux Kernel. Most of the packed structures we have
-are optimized to not generate any unaligned accesses, so this warning
-produces a lot of false positives which are hard to fix in the code.
+On Mon, Sep 09, 2019 at 09:28:17PM -0700, Andrey Smirnov wrote:
+> On Mon, Sep 9, 2019 at 3:23 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> >
+> > On Sat, Sep 07, 2019 at 04:54:55PM -0700, Andrey Smirnov wrote:
+> > > GCC9 for ARM produces the following warnings:
+> > >
+> > > fastmap.c: In function 'ubi_attach_fastmap':
+> > > fastmap.c:700:31: warning: taking address of packed member of 'struct ubi_fm_scan_pool' may result in an unaligned pointer value [-Waddress-of-packed-member]
+> > >   700 |  ret = scan_pool(ubi, ai, fmpl->pebs, pool_size, &max_sqnum, &lfree);
+> > >       |                           ~~~~^~~~~~
+> > > fastmap.c:704:34: warning: taking address of packed member of 'struct ubi_fm_scan_pool' may result in an unaligned pointer value [-Waddress-of-packed-member]
+> > >   704 |  ret = scan_pool(ubi, ai, fmpl_wl->pebs, wl_pool_size, &max_sqnum, &lfree);
+> > >       |                           ~~~~~~~^~~~~~
+> > >
+> > > the offending code seems OK and there doesn't seem to be a way to fix
+> > > this in code, so disable the warning for that file.
+> > >
+> > > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> > > ---
+> >
+> > Linux disables this warning completely.
+> 
+> Yeah, I saw that. Wasn't sure if we wanted to go that direction or not.
+> 
+> > We just burnt some developer
+> > cycles, came to the conclusion that the world isn't perfect, that
+> > there's no good (at least good realistic) solution to this problem and
+> > that we should just do the same as Linux.
+> >
+> > Disabling this warning for individual files in which it triggers
+> > probably doesn't bring us further.
+> >
+> 
+> Sure, will do. I think "ratp: Mark struct ratp_bb as packed" might
+> still be worth applying though.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- Makefile | 2 ++
- 1 file changed, 2 insertions(+)
+Applied this and also [PATCH 2/4] net: Adjust net_copy_uint32's
+signature
 
-diff --git a/Makefile b/Makefile
-index 5ca5fab717..aa50aa73ed 100644
---- a/Makefile
-+++ b/Makefile
-@@ -478,6 +478,8 @@ CFLAGS += $(call cc-disable-warning, trampolines)
- 
- CFLAGS += $(call cc-option, -fno-delete-null-pointer-checks,)
- 
-+CFLAGS   += $(call cc-disable-warning, address-of-packed-member)
-+
- # arch Makefile may override CC so keep this after arch Makefile is included
- NOSTDINC_FLAGS += -nostdinc -isystem $(shell $(CC) -print-file-name=include)
- CHECKFLAGS     += $(NOSTDINC_FLAGS)
+Sascha
+
 -- 
-2.23.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
