@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i5TJO-0001AL-4b
- for barebox@lists.infradead.org; Wed, 04 Sep 2019 11:18:55 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Wed,  4 Sep 2019 13:18:51 +0200
-Message-Id: <20190904111851.13317-1-u.kleine-koenig@pengutronix.de>
+ by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
+ id 1i8ISw-0001Vz-TA
+ for barebox@lists.infradead.org; Thu, 12 Sep 2019 06:20:28 +0000
+Date: Thu, 12 Sep 2019 08:20:25 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190912062025.b3jkv25eea7mlalv@pengutronix.de>
+References: <20190910100611.22024-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190910100611.22024-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,27 +18,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] video/stm: fix return value handling for
- of_get_display_timings()
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] ARM: dts: drop skeleton.dtsi
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-b2ZfZ2V0X2Rpc3BsYXlfdGltaW5ncygpIHJldHVybnMgTlVMTCBvbiBmYWlsdXJlLCBub3QgYW4g
-ZXJyb3IgcG9pbnRlci4KCkZpeGVzOiAxNmZkMjQ4NDdkN2EgKCJ2aWRlbzogc3RtZmI6IEFkZCBk
-ZXZpY2UgdHJlZSBzdXBwb3J0IikKU2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUu
-a2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCiBkcml2ZXJzL3ZpZGVvL3N0bS5jIHwg
-NCArKy0tCiAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQoK
-ZGlmZiAtLWdpdCBhL2RyaXZlcnMvdmlkZW8vc3RtLmMgYi9kcml2ZXJzL3ZpZGVvL3N0bS5jCmlu
-ZGV4IDBjMTkwZDM2YWU5Zi4uZDRhNjE4ZmU1MDkxIDEwMDY0NAotLS0gYS9kcml2ZXJzL3ZpZGVv
-L3N0bS5jCisrKyBiL2RyaXZlcnMvdmlkZW8vc3RtLmMKQEAgLTU1MSw5ICs1NTEsOSBAQCBzdGF0
-aWMgaW50IHN0bWZiX3Byb2JlKHN0cnVjdCBkZXZpY2VfZCAqaHdfZGV2KQogCQl9CiAKIAkJbW9k
-ZXMgPSBvZl9nZXRfZGlzcGxheV90aW1pbmdzKGRpc3BsYXkpOwotCQlpZiAoSVNfRVJSKG1vZGVz
-KSkgeworCQlpZiAoIW1vZGVzKSB7CiAJCQlkZXZfZXJyKGh3X2RldiwgInVuYWJsZSB0byBwYXJz
-ZSBkaXNwbGF5IHRpbWluZ3NcbiIpOwotCQkJcmV0dXJuIFBUUl9FUlIobW9kZXMpOworCQkJcmV0
-dXJuIC1FSU5WQUw7CiAJCX0KIAogCQlmYmkuaW5mby5tb2Rlcy5tb2RlcyA9IG1vZGVzLT5tb2Rl
-czsKLS0gCjIuMjMuMAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpo
-dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Tue, Sep 10, 2019 at 12:06:10PM +0200, Uwe Kleine-K=F6nig wrote:
+> In the Linux dts files skeleton.dtsi was dropped (in commit abe60a3a7afb
+> ("ARM: dts: Kill off skeleton{64}.dtsi") for v5.1-rc1). At least one
+> reason for this also applies for barebox: memory nodes are supposed to ha=
+ve
+> a unit address and so adding a memory node without address isn't sensible.
+> =
+
+> There are only four dtsi files that use skeleton.dtsi. Add some of the
+> nodes and properties defined in skeleton.dtsi to its includers. I dropped
+> adding empty alias nodes as neither barebox nor Linux depend on its
+> presence. All consumers override reg in the memory node, so add the
+> device_type property there. The remaining properties are added unchanged.
+> =
+
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+
+Applied, thanks
+
+Sascha
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
