@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1i8lPc-0004og-MC
+ id 1i8lPc-0004oc-Mp
  for barebox@lists.infradead.org; Fri, 13 Sep 2019 13:15:01 +0000
 From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Fri, 13 Sep 2019 15:14:40 +0200
-Message-Id: <20190913131446.8202-3-m.tretter@pengutronix.de>
+Date: Fri, 13 Sep 2019 15:14:45 +0200
+Message-Id: <20190913131446.8202-8-m.tretter@pengutronix.de>
 In-Reply-To: <20190913131446.8202-1-m.tretter@pengutronix.de>
 References: <20190913131446.8202-1-m.tretter@pengutronix.de>
 MIME-Version: 1.0
@@ -21,138 +21,162 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 2/8] blspec: add support for devicetree overlays
+Subject: [PATCH v3 7/8] commands: add of_overlay command for device tree
+ overlays
 To: barebox@lists.infradead.org
 Cc: Michael Tretter <m.tretter@pengutronix.de>
 
-Read the devicetree-overlay property from the blspec entry and register
-the overlays when booting the blspec entry.
-
-Do not fail the boot if an overlay cannot be loaded, because if Linux
-fails to boot without an overlay, the base device tree is broken.
+Add a new command "of_overlay" for applying device tree overlays,
+because it does not really fit into any other device tree related
+command and would create a mess with the command options.
 
 Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 
 ---
 Changelog:
 
-v2->v3: none
+v2->v3:
+- select OF_OVERLAY from CMD_OF_OVERLAY
+- fix name of of_firmware_load_overlay()
 
-v1->v2:
-- fix error handling in blspec handling
+v1->v2: none
 ---
- Documentation/user/booting-linux.rst |  4 ++
- common/blspec.c                      | 61 ++++++++++++++++++++++++++++
- 2 files changed, 65 insertions(+)
+ commands/Kconfig      | 12 ++++++
+ commands/Makefile     |  1 +
+ commands/of_overlay.c | 89 +++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 102 insertions(+)
+ create mode 100644 commands/of_overlay.c
 
-diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/booting-linux.rst
-index 437f4e80ca..12cd505e71 100644
---- a/Documentation/user/booting-linux.rst
-+++ b/Documentation/user/booting-linux.rst
-@@ -232,6 +232,10 @@ device where the entry is found on. This makes it possible to use the same rootf
- image on different devices without having to specify a different root= option each
- time.
+diff --git a/commands/Kconfig b/commands/Kconfig
+index e03110fd46..298e0fb9e9 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -2088,6 +2088,18 @@ config CMD_OF_FIXUP_STATUS
+ 	  Register a fixup to enable or disable a device tree node.
+ 	  Nodes are enabled on default. Disabled with -d.
  
-+Additionally to the options defined in the original spec, Barebox has the
-+``devicetree-overlay`` option. This is a string value that refer to overlays
-+that will be applied to the device tree before passing it to Linux.
++config CMD_OF_OVERLAY
++	tristate
++	select OF_OVERLAY
++	prompt "of_overlay"
++	help
++	  of_overlay - register device tree overlay as fixup
 +
- Network boot
- ------------
- 
-diff --git a/common/blspec.c b/common/blspec.c
-index 66e5033e35..fbba2fc78c 100644
---- a/common/blspec.c
-+++ b/common/blspec.c
-@@ -42,6 +42,62 @@ int blspec_entry_var_set(struct blspec_entry *entry, const char *name,
- 			val ? strlen(val) + 1 : 0, 1);
- }
- 
-+static int blspec_apply_oftree_overlay(char *file, const char *abspath,
-+				       int dryrun)
++	  Usage: of_overlay [-S path] FILE
++
++	  Options:
++		  -S path	load firmware using this search path
++
+ config CMD_OFTREE
+ 	tristate
+ 	select OFTREE
+diff --git a/commands/Makefile b/commands/Makefile
+index 5cd35b78a7..ebdc437e55 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -78,6 +78,7 @@ obj-$(CONFIG_CMD_OF_NODE)	+= of_node.o
+ obj-$(CONFIG_CMD_OF_DUMP)	+= of_dump.o
+ obj-$(CONFIG_CMD_OF_DISPLAY_TIMINGS)	+= of_display_timings.o
+ obj-$(CONFIG_CMD_OF_FIXUP_STATUS)	+= of_fixup_status.o
++obj-$(CONFIG_CMD_OF_OVERLAY)	+= of_overlay.o
+ obj-$(CONFIG_CMD_MAGICVAR)	+= magicvar.o
+ obj-$(CONFIG_CMD_IOMEM)		+= iomemport.o
+ obj-$(CONFIG_CMD_LINUX_EXEC)	+= linux_exec.o
+diff --git a/commands/of_overlay.c b/commands/of_overlay.c
+new file mode 100644
+index 0000000000..de3c3dcee5
+--- /dev/null
++++ b/commands/of_overlay.c
+@@ -0,0 +1,89 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (c) 2019 Michael Tretter <m.tretter@pengutronix.de>, Pengutronix
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#include <command.h>
++#include <common.h>
++#include <environment.h>
++#include <fdt.h>
++#include <firmware.h>
++#include <fs.h>
++#include <getopt.h>
++#include <libfile.h>
++#include <of.h>
++
++static int do_of_overlay(int argc, char *argv[])
 +{
-+	int ret = 0;
++	int opt, ret;
 +	struct fdt_header *fdt;
 +	struct device_node *overlay;
-+	char *path;
++	const char *search_path = NULL;
 +
-+	path = basprintf("%s/%s", abspath, file);
++	while ((opt = getopt(argc, argv, "S:")) > 0) {
++		switch (opt) {
++		case 'S':
++			search_path = optarg;
++			break;
++		default:
++			return COMMAND_ERROR_USAGE;
++		}
++	}
 +
-+	fdt = read_file(path, NULL);
++	if (argc != optind + 1)
++		return COMMAND_ERROR_USAGE;
++
++	fdt = read_file(argv[optind], NULL);
 +	if (!fdt) {
-+		pr_warn("unable to read \"%s\"\n", path);
-+		ret = -EINVAL;
-+		goto out;
++		printf("cannot read %s\n", argv[optind]);
++		return 1;
 +	}
 +
 +	overlay = of_unflatten_dtb(fdt);
 +	free(fdt);
-+	if (IS_ERR(overlay)) {
-+		ret = PTR_ERR(overlay);
-+		goto out;
-+	}
++	if (IS_ERR(overlay))
++		return PTR_ERR(overlay);
 +
-+	if (dryrun) {
-+		pr_info("dry run: skip overlay %s\n", path);
-+		of_delete_node(overlay);
-+		goto out;
++	if (search_path) {
++		ret = of_firmware_load_overlay(overlay, search_path);
++		if (ret)
++			goto err;
 +	}
 +
 +	ret = of_register_overlay(overlay);
 +	if (ret) {
-+		pr_warn("cannot register devicetree overlay \"%s\"\n", path);
-+		of_delete_node(overlay);
++		printf("cannot apply oftree overlay: %s\n", strerror(-ret));
++		goto err;
 +	}
 +
-+out:
-+	free(path);
++	return 0;
 +
++err:
++	of_delete_node(overlay);
 +	return ret;
 +}
 +
-+static void blspec_apply_oftree_overlays(const char *overlays,
-+					 const char *abspath, int dryrun)
-+{
-+	char *overlay;
-+	char *sep, *freep;
++BAREBOX_CMD_HELP_START(of_overlay)
++BAREBOX_CMD_HELP_TEXT("Options:")
++BAREBOX_CMD_HELP_OPT("-S path", "load firmware using this search path")
++BAREBOX_CMD_HELP_END
 +
-+	sep = freep = xstrdup(overlays);
-+
-+	while ((overlay = strsep(&sep, " ")))
-+		blspec_apply_oftree_overlay(overlay, abspath, dryrun);
-+
-+	free(freep);
-+}
-+
- /*
-  * blspec_boot - boot an entry
-  *
-@@ -54,6 +110,7 @@ static int blspec_boot(struct bootentry *be, int verbose, int dryrun)
- 	struct blspec_entry *entry = container_of(be, struct blspec_entry, entry);
- 	int ret;
- 	const char *abspath, *devicetree, *options, *initrd, *linuximage;
-+	const char *overlays;
- 	const char *appendroot;
- 	struct bootm_data data = {
- 		.initrd_address = UIMAGE_INVALID_ADDRESS,
-@@ -73,6 +130,7 @@ static int blspec_boot(struct bootentry *be, int verbose, int dryrun)
- 	initrd = blspec_entry_var_get(entry, "initrd");
- 	options = blspec_entry_var_get(entry, "options");
- 	linuximage = blspec_entry_var_get(entry, "linux");
-+	overlays = blspec_entry_var_get(entry, "devicetree-overlay");
- 
- 	if (entry->rootpath)
- 		abspath = entry->rootpath;
-@@ -92,6 +150,9 @@ static int blspec_boot(struct bootentry *be, int verbose, int dryrun)
- 		}
- 	}
- 
-+	if (overlays)
-+		blspec_apply_oftree_overlays(overlays, abspath, dryrun);
-+
- 	if (initrd)
- 		data.initrd_file = basprintf("%s/%s", abspath, initrd);
- 
++BAREBOX_CMD_START(of_overlay)
++	.cmd = do_of_overlay,
++	BAREBOX_CMD_DESC("register device tree overlay as fixup")
++	BAREBOX_CMD_OPTS("[-S path] FILE")
++	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
++	BAREBOX_CMD_HELP(cmd_of_overlay_help)
++BAREBOX_CMD_END
 -- 
 2.20.1
 
