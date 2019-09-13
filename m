@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1i9Kf2-0003a1-89
- for barebox@lists.infradead.org; Sun, 15 Sep 2019 02:53:13 +0000
-Received: by mail-pf1-x443.google.com with SMTP id h195so20357806pfe.5
- for <barebox@lists.infradead.org>; Sat, 14 Sep 2019 19:53:11 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat, 14 Sep 2019 19:53:01 -0700
-Message-Id: <20190915025301.24456-1-andrew.smirnov@gmail.com>
+ id 1i8lPc-0004ob-Kt
+ for barebox@lists.infradead.org; Fri, 13 Sep 2019 13:14:58 +0000
+From: Michael Tretter <m.tretter@pengutronix.de>
+Date: Fri, 13 Sep 2019 15:14:38 +0200
+Message-Id: <20190913131446.8202-1-m.tretter@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,45 +19,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! net: dsa: mv88e6xxx: Wait for EEPROM done after HW
- reset
+Subject: [PATCH v3 0/8] Device Tree Overlay Support
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Chris Healy <cphealy@gmail.com>
+Cc: Michael Tretter <m.tretter@pengutronix.de>
 
----
+Hello,
 
-Looks like I forgot to change my debugging timeout value as well as
-finish a comment. Sorry about that.
+This is the v3 for adding device tree overlay support to barebox.
 
- drivers/net/phy/mv88e6xxx/global1.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+I added a new config item for building the build-in device tree with
+__symbols__. As __symbols__ increases the size of the dtb and you don't need
+symbols in the build-in device tree to use overlays on other device trees.
+Therefore, this should be disabled unless actually needed.
 
-diff --git a/drivers/net/phy/mv88e6xxx/global1.c b/drivers/net/phy/mv88e6xxx/global1.c
-index 2331195fb3..218f877de3 100644
---- a/drivers/net/phy/mv88e6xxx/global1.c
-+++ b/drivers/net/phy/mv88e6xxx/global1.c
-@@ -24,7 +24,7 @@ static int mv88e6xxx_g1_read(struct mv88e6xxx_chip *chip, int reg, u16 *val)
- void mv88e6xxx_g1_wait_eeprom_done(struct mv88e6xxx_chip *chip)
- {
- 	const uint64_t start   = get_time_ns();
--	const uint64_t timeout = 20 * SECOND;
-+	const uint64_t timeout = SECOND;
- 	u16 val;
- 	int err;
- 
-@@ -38,7 +38,9 @@ void mv88e6xxx_g1_wait_eeprom_done(struct mv88e6xxx_chip *chip)
- 			return;
- 		}
- 
--		if (val != 0xFFFF && /* switch will return 0xffff it it */
-+		if (val != 0xFFFF && /* switch will return 0xffff until
-+				      * EEPROM is loaded
-+				      */
- 		    val & BIT(MV88E6XXX_G1_STS_IRQ_EEPROM_DONE))
- 			return;
- 
+Furthermore, I completely reworked the function to load firmware from a
+devicetree overlay, because it must be successful whenever the overlay does
+not reference firmware. However, it must always fail if the overlay references
+firmware which cannot be loaded, because Barebox must not apply the overlay
+without the according firmware.
+
+There are a few other minor changes which I describe in the respective
+patches.
+
+Michael
+
+Changelog:
+
+v2 -> v3:
+ - new file of_firmware for loading firmware from overlay
+ - fix error handling when CONFIG_FIRMWARE is off
+ - separate patch for firmwaremgr_find_by_node
+ - make __symbols__ in build-in devicetree configurable
+
+v1 -> v2:
+ - export function for applying a device tree overlay
+ - define pr_fmt for overlay and resolver
+ - remove useless notifier.h
+ - fix error handling/memory leak in blspec handling
+ - document ownership of overlay memory
+
+rfc -> v1:
+ - new of_overlay command
+ - no more notifiers for device tree overlays
+
+
+Michael Tretter (8):
+  of: add support for devicetree overlays
+  blspec: add support for devicetree overlays
+  of: add iterator for overlays
+  firmware: add function to find firmware by devicetree node
+  firmware: add support to load firmware from dt overlay
+  blspec: load firmware if specified in dt overlay
+  commands: add of_overlay command for device tree overlays
+  dtc: optionally add add __symbols__ to build-in devicetree
+
+ Documentation/user/booting-linux.rst |   4 +
+ commands/Kconfig                     |  12 ++
+ commands/Makefile                    |   1 +
+ commands/of_overlay.c                |  89 +++++++++
+ common/blspec.c                      |  78 ++++++++
+ common/firmware.c                    |  18 ++
+ drivers/of/Kconfig                   |  26 +++
+ drivers/of/Makefile                  |   1 +
+ drivers/of/of_firmware.c             |  86 +++++++++
+ drivers/of/overlay.c                 | 247 ++++++++++++++++++++++++
+ drivers/of/resolver.c                | 279 +++++++++++++++++++++++++++
+ include/firmware.h                   |  15 ++
+ include/of.h                         |  47 +++++
+ scripts/Makefile.lib                 |   4 +
+ 14 files changed, 907 insertions(+)
+ create mode 100644 commands/of_overlay.c
+ create mode 100644 drivers/of/of_firmware.c
+ create mode 100644 drivers/of/overlay.c
+ create mode 100644 drivers/of/resolver.c
+
 -- 
-2.21.0
+2.20.1
 
 
 _______________________________________________
