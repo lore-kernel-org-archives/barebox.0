@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1i8Q7g-0002Oe-8q
- for barebox@lists.infradead.org; Thu, 12 Sep 2019 14:31:01 +0000
-Date: Thu, 12 Sep 2019 16:30:57 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190912143057.sn7mp37wvprhady4@pengutronix.de>
+ id 1i8miJ-0003q1-AD
+ for barebox@lists.infradead.org; Fri, 13 Sep 2019 14:38:21 +0000
+Date: Fri, 13 Sep 2019 16:38:15 +0200
+From: Roland Hieber <rhi@pengutronix.de>
+Message-ID: <20190913143815.3pgaitt2pj2s54kv@pengutronix.de>
 References: <20190912102905.21307-1-a.fatoum@pengutronix.de>
- <20190912130641.iddh5b7svxbgjlf7@pengutronix.de>
- <90a8b937-2c64-b4ee-426e-b40ba392f490@pengutronix.de>
+ <20190912102905.21307-5-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <90a8b937-2c64-b4ee-426e-b40ba392f490@pengutronix.de>
+In-Reply-To: <20190912102905.21307-5-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,52 +19,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/7] libfile: introduce copy_file_2 for copying starting
- with offset
+Subject: Re: [PATCH 5/7] scripts: pblimage: explicitly set architecture to ARM
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Thu, Sep 12, 2019 at 03:37:49PM +0200, Ahmad Fatoum wrote:
-> Hello Uwe,
-> =
+On Thu, Sep 12, 2019 at 12:29:03PM +0200, Ahmad Fatoum wrote:
+> architecture is statically initialized to zero, which happens to be
+> ARCH_ARM as it's the first enum element.
+> Make this a bit clearer by explicitly assigning ARM_ARM to architecture.
 
-> On 9/12/19 3:06 PM, Uwe Kleine-K=F6nig wrote:
-> > Hello Ahmad,
-> > =
+Nit: s/ARM_ARM/ARCH_ARM/
 
-> > On Thu, Sep 12, 2019 at 12:28:59PM +0200, Ahmad Fatoum wrote:
-> >> barebox already has a copy_file for copying files. Extend the API by a
-> >> copy_file_2 that takes a source offset into account.
-> > =
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  scripts/pblimage.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/scripts/pblimage.c b/scripts/pblimage.c
+> index 73c0169ac1c1..235af8aa11b1 100644
+> --- a/scripts/pblimage.c
+> +++ b/scripts/pblimage.c
+> @@ -61,7 +61,7 @@ enum arch {
+>  	ARCH_POWERPC,
+>  };
+>  
+> -enum arch architecture;
+> +enum arch architecture = ARCH_ARM;
+>  static char *rcwfile;
+>  static char *pbifile;
+>  static char *outfile;
+> -- 
+> 2.23.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-> > Can you give that function a more descriptive name? Something like
-> > copy_file_from_offset()?
-> =
-
-> I chose copy_file_2 for consistency with the read_file function, which
-> had a copy renamed to read_file_2 when it gained a (max) offset parameter.
-> =
-
-> Should read_file_2 be renamed as well? =
-
-
-read_file_2 is named like that because it is a better read_file.
-copy_file_2 more looks like another type of copy_file, so I too would
-prefer copy_file_from_offset, or even better with an additional size
-or end argument and named copy_file_window ;)
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+-- 
+Roland Hieber                     | r.hieber@pengutronix.de     |
+Pengutronix e.K.                  | https://www.pengutronix.de/ |
+Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
