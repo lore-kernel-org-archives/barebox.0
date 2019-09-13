@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1i8lPc-0004oh-LD
+ id 1i8lPc-0004oi-ME
  for barebox@lists.infradead.org; Fri, 13 Sep 2019 13:14:59 +0000
 From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Fri, 13 Sep 2019 15:14:42 +0200
-Message-Id: <20190913131446.8202-5-m.tretter@pengutronix.de>
+Date: Fri, 13 Sep 2019 15:14:46 +0200
+Message-Id: <20190913131446.8202-9-m.tretter@pengutronix.de>
 In-Reply-To: <20190913131446.8202-1-m.tretter@pengutronix.de>
 References: <20190913131446.8202-1-m.tretter@pengutronix.de>
 MIME-Version: 1.0
@@ -21,12 +21,21 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 4/8] firmware: add function to find firmware by devicetree
- node
+Subject: [PATCH v3 8/8] dtc: optionally add add __symbols__ to build-in
+ devicetree
 To: barebox@lists.infradead.org
 Cc: Michael Tretter <m.tretter@pengutronix.de>
 
-Allows to get the firmware manager using a phandle from the devicetree.
+The devicetree overlay driver requires the __symbols__ node to resolve
+phandles to the base devicetree. If Barebox has to apply the overlay to
+the live devicetree, the build-in devicetree must be built with the
+__symbols__ node.
+
+It is configurable, because adding __symbols__ significantly increases
+the size of the devicetree binary. When configuring Barebox, a developer
+should be able to enable or disable devicetree overlay support and as
+this only affects the build-in devicetree, which is linked to the image
+anyway, use a Kconfig item for configuring the __symbols__.
 
 Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 
@@ -34,71 +43,54 @@ Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 Changelog:
 
 v2->v3:
-- new separate patch for adding the function
----
- common/firmware.c  | 18 ++++++++++++++++++
- include/firmware.h | 15 +++++++++++++++
- 2 files changed, 33 insertions(+)
+- make __symbols__ configurable
 
-diff --git a/common/firmware.c b/common/firmware.c
-index 9d55d73e7a..609cf11822 100644
---- a/common/firmware.c
-+++ b/common/firmware.c
-@@ -62,6 +62,24 @@ struct firmware_mgr *firmwaremgr_find(const char *id)
- 	return NULL;
- }
- 
-+/*
-+ * firmwaremgr_find_by_node - find a firmware device handler
-+ *
-+ * Find a firmware device handler using the device node of the firmware
-+ * handler. This allows to retrieve the firmware handler with a phandle from
-+ * the device tree.
-+ */
-+struct firmware_mgr *firmwaremgr_find_by_node(const struct device_node *np)
-+{
-+	struct firmware_mgr *mgr;
+v1->v2: none
+---
+ drivers/of/Kconfig   | 17 +++++++++++++++++
+ scripts/Makefile.lib |  4 ++++
+ 2 files changed, 21 insertions(+)
+
+diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
+index 1bb6639c5a..fd820b26f5 100644
+--- a/drivers/of/Kconfig
++++ b/drivers/of/Kconfig
+@@ -59,3 +59,20 @@ config OF_OVERLAY
+ 	  not patch the live devicetree, but applies the overlays as fixup to
+ 	  the devicetree. Furthermore, overlays cannot be removed after they
+ 	  have been applied.
 +
-+	list_for_each_entry(mgr, &firmwaremgr_list, list)
-+		if (mgr->handler->dev->parent->device_node == np)
-+			return mgr;
++config OF_OVERLAY_LIVE
++	depends on OF_OVERLAY
++	default n
++	bool "Support devicetree overlays on live devicetree"
++	help
++	  This option allows to use devicetree overlays with the live
++	  devicetree. It is not required to apply overlays to any other
++	  devicetree.
 +
-+	return NULL;
-+}
++	  This builds the build-in devicetree with __symbols__, which
++	  significantly increases the size of the dtb file.
 +
- /*
-  * firmwaremgr_list_handlers - list registered firmware device handlers
-  *                             in pretty format
-diff --git a/include/firmware.h b/include/firmware.h
-index 284e0f9705..7c01a77118 100644
---- a/include/firmware.h
-+++ b/include/firmware.h
-@@ -34,10 +34,25 @@ struct firmware_mgr;
- int firmwaremgr_register(struct firmware_handler *);
++	  Enable this option only if you actually need the live devicetree
++	  while applying in the devicetree overlay. This is usually the case if
++	  applying the overlay has other side effects than changing the
++	  devicetree.
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index c4d307ae30..ad0484de3a 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -292,6 +292,10 @@ DTC_FLAGS += -Wno-unit_address_vs_reg \
+ 	 -Wno-unique_unit_address \
+ 	 -Wno-pci_device_reg
  
- struct firmware_mgr *firmwaremgr_find(const char *);
-+#ifdef CONFIG_FIRMWARE
-+struct firmware_mgr *firmwaremgr_find_by_node(const struct device_node *np);
-+#else
-+static inline struct firmware_mgr *firmwaremgr_find_by_node(const struct device_node *np)
-+{
-+	return NULL;
-+}
-+#endif
- 
- void firmwaremgr_list_handlers(void);
- 
-+#ifdef CONFIG_FIRMWARE
- int firmwaremgr_load_file(struct firmware_mgr *, const char *path);
-+#else
-+static inline int firmwaremgr_load_file(struct firmware_mgr *mgr, const char *path)
-+{
-+	return -ENOSYS;
-+}
-+#endif
- 
- #define get_builtin_firmware(name, start, size) \
- 	{							\
++ifeq ($(CONFIG_OF_OVERLAY_LIVE), y)
++DTC_FLAGS += -@
++endif
++
+ # Generate an assembly file to wrap the output of the device tree compiler
+ quiet_cmd_dt_S_dtb = DTB     $@
+ cmd_dt_S_dtb = $(srctree)/scripts/gen-dtb-s $(subst -,_,$(*F)) $< $(CONFIG_IMD) > $@
 -- 
 2.20.1
 
