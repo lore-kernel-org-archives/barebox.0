@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92 #3 (Red Hat Linux))
- id 1i7PWM-00035g-Ow
- for barebox@lists.infradead.org; Mon, 09 Sep 2019 19:40:21 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Mon,  9 Sep 2019 21:40:13 +0200
-Message-Id: <20190909194013.7081-1-u.kleine-koenig@pengutronix.de>
+ by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
+ id 1i8lPc-0004oa-JQ
+ for barebox@lists.infradead.org; Fri, 13 Sep 2019 13:15:02 +0000
+From: Michael Tretter <m.tretter@pengutronix.de>
+Date: Fri, 13 Sep 2019 15:14:39 +0200
+Message-Id: <20190913131446.8202-2-m.tretter@pengutronix.de>
+In-Reply-To: <20190913131446.8202-1-m.tretter@pengutronix.de>
+References: <20190913131446.8202-1-m.tretter@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -15,239 +17,613 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] video: imxfb: make pcr and bpp per-display settings
+Subject: [PATCH v3 1/8] of: add support for devicetree overlays
 To: barebox@lists.infradead.org
+Cc: Michael Tretter <m.tretter@pengutronix.de>
 
-VGhlc2Ugc2V0dGluZ3MgdXNlZCB0byBiZSBzcGVjaWZpZWQgcGVyLW1vZGUuIEJ1dCB0aGUgZGV2
-aWNlIHRyZWUKYmluZGluZ3MgaGF2ZSB0aGVzZSB0d28gdmFsdWVzIGF0dGFjaGVkIHRvIHRoZSBk
-aXNwbGF5IGFuZCBub3QgdG8gZWFjaAptb2RlLiBBbHNvIGZvciB0aGUgc3VwcG9ydGVkIGJvYXJk
-cyBpdCBkb2Vzbid0IG1hdHRlciBhcyB0aGV5IGFsbCBvbmx5CmhhdmUgYSBzaW5nbGUgbW9kZS4K
-ClRoaXMgaXMgcHJlcGFyYXRvcnkgd29yayB0byBhZGQgZGV2aWNldHJlZSBzdXBwb3J0IGZvciB0
-aGUgaW14ZmIgZHJpdmVyLgoKU2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xl
-aW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCkhlbGxvLAoKSSdtIG5vdCBzdXJlIHdoZW4g
-SSB3aWxsIGNvbWUgYXJvdW5kIHRvIGFkZCBkZXZpY2V0cmVlIHN1cHBvcnQgdG8gaW14ZmIuCkl0
-J3MgYSBiaWdnZXIgdGFzayB0aGFuIEkgZXhwZWN0ZWQgc28gSSBwdXQgdGhhdCBvbiBob2xkIGZv
-ciBub3cuIFN0aWxsCkkgd2FudGVkIHRvIHNlbmQgb3V0IHRoaXMgZmlyc3QgcHJlcGFyYXRvcnkg
-cGF0Y2guCgpCZXN0IHJlZ2FyZHMKVXdlCgogLi4uL2JvYXJkcy9ldWtyZWFfY3B1aW14MjUvZXVr
-cmVhX2NwdWlteDI1LmMgIHwgMzAgKysrKystLS0tLQogLi4uL2JvYXJkcy9ldWtyZWFfY3B1aW14
-MjcvZXVrcmVhX2NwdWlteDI3LmMgIHwgMzEgKysrKystLS0tLQogYXJjaC9hcm0vYm9hcmRzL2Zy
-ZWVzY2FsZS1teDIxLWFkcy9pbXgyMWFkcy5jIHwgMzQgKysrKystLS0tLS0KIGFyY2gvYXJtL2Jv
-YXJkcy9ndWYtbmVzby9ib2FyZC5jICAgICAgICAgICAgICB8IDU4ICsrKysrKysrKy0tLS0tLS0t
-LS0KIGFyY2gvYXJtL2JvYXJkcy9rYXJvLXR4MjUvYm9hcmQuYyAgICAgICAgICAgICB8IDM0ICsr
-KysrLS0tLS0tCiBhcmNoL2FybS9ib2FyZHMvcGh5dGVjLXBoeWNvcmUtaW14MjcvcGNtMDM4LmMg
-fCA0NiArKysrKysrLS0tLS0tLS0KIGFyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9pbXhm
-Yi5oICAgICAgICB8IDEwICstLS0KIGRyaXZlcnMvdmlkZW8vaW14LmMgICAgICAgICAgICAgICAg
-ICAgICAgICAgICB8IDIzICsrLS0tLS0tCiA4IGZpbGVzIGNoYW5nZWQsIDEyMCBpbnNlcnRpb25z
-KCspLCAxNDYgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL2V1a3Jl
-YV9jcHVpbXgyNS9ldWtyZWFfY3B1aW14MjUuYyBiL2FyY2gvYXJtL2JvYXJkcy9ldWtyZWFfY3B1
-aW14MjUvZXVrcmVhX2NwdWlteDI1LmMKaW5kZXggMjViZjQwY2U3OTIzLi43NmQ2ZjViYTg2MDUg
-MTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2JvYXJkcy9ldWtyZWFfY3B1aW14MjUvZXVrcmVhX2NwdWlt
-eDI1LmMKKysrIGIvYXJjaC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgyNS9ldWtyZWFfY3B1aW14
-MjUuYwpAQCAtNTYsMjIgKzU2LDE4IEBAIHN0cnVjdCBpbXhfbmFuZF9wbGF0Zm9ybV9kYXRhIG5h
-bmRfaW5mbyA9IHsKIAkuaHdfZWNjCT0gMSwKIH07CiAKLXN0YXRpYyBzdHJ1Y3QgaW14X2ZiX3Zp
-ZGVvbW9kZSBpbXhmYl9tb2RlID0gewotCS5tb2RlID0gewotCQkubmFtZQkJPSAiQ01PLVFWR0Ei
-LAotCQkucmVmcmVzaAk9IDYwLAotCQkueHJlcwkJPSAzMjAsCi0JCS55cmVzCQk9IDI0MCwKLQkJ
-LnBpeGNsb2NrCT0gS0haMlBJQ09TKDY1MDApLAotCQkuaHN5bmNfbGVuCT0gMzAsCi0JCS5sZWZ0
-X21hcmdpbgk9IDM4LAotCQkucmlnaHRfbWFyZ2luCT0gMjAsCi0JCS52c3luY19sZW4JPSAzLAot
-CQkudXBwZXJfbWFyZ2luCT0gMTUsCi0JCS5sb3dlcl9tYXJnaW4JPSA0LAotCX0sCi0JLnBjcgkJ
-PSAweENBRDA4QjgwLAotCS5icHAJCT0gMTYsCitzdGF0aWMgc3RydWN0IGZiX3ZpZGVvbW9kZSBp
-bXhmYl9tb2RlID0geworCS5uYW1lCQk9ICJDTU8tUVZHQSIsCisJLnJlZnJlc2gJPSA2MCwKKwku
-eHJlcwkJPSAzMjAsCisJLnlyZXMJCT0gMjQwLAorCS5waXhjbG9jawk9IEtIWjJQSUNPUyg2NTAw
-KSwKKwkuaHN5bmNfbGVuCT0gMzAsCisJLmxlZnRfbWFyZ2luCT0gMzgsCisJLnJpZ2h0X21hcmdp
-bgk9IDIwLAorCS52c3luY19sZW4JPSAzLAorCS51cHBlcl9tYXJnaW4JPSAxNSwKKwkubG93ZXJf
-bWFyZ2luCT0gNCwKIH07CiAKIHN0YXRpYyBzdHJ1Y3QgaW14X2ZiX3BsYXRmb3JtX2RhdGEgZXVr
-cmVhX2NwdWlteDI1X2ZiX2RhdGEgPSB7CkBAIC04MCw2ICs3Niw4IEBAIHN0YXRpYyBzdHJ1Y3Qg
-aW14X2ZiX3BsYXRmb3JtX2RhdGEgZXVrcmVhX2NwdWlteDI1X2ZiX2RhdGEgPSB7CiAJLnB3bXIJ
-CT0gMHgwMEE5MDNGRiwKIAkubHNjcjEJCT0gMHgwMDEyMDMwMCwKIAkuZG1hY3IJCT0gMHg4MDA0
-MDA2MCwKKwkucGNyCQk9IDB4Q0FEMDhCODAsCisJLmJwcAkJPSAxNiwKIH07CiAKIHN0cnVjdCBn
-cGlvX2xlZCBsZWQwID0gewpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVp
-bXgyNy9ldWtyZWFfY3B1aW14MjcuYyBiL2FyY2gvYXJtL2JvYXJkcy9ldWtyZWFfY3B1aW14Mjcv
-ZXVrcmVhX2NwdWlteDI3LmMKaW5kZXggNjMwMzRlMjc1NWY2Li41Mjk3MWVkN2VlNzkgMTAwNjQ0
-Ci0tLSBhL2FyY2gvYXJtL2JvYXJkcy9ldWtyZWFfY3B1aW14MjcvZXVrcmVhX2NwdWlteDI3LmMK
-KysrIGIvYXJjaC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgyNy9ldWtyZWFfY3B1aW14MjcuYwpA
-QCAtODAsMjIgKzgwLDE5IEBAIHN0YXRpYyBzdHJ1Y3QgaTJjX2JvYXJkX2luZm8gaTJjX2Rldmlj
-ZXNbXSA9IHsKIH07CiAKICNpZmRlZiBDT05GSUdfRFJJVkVSX1ZJREVPX0lNWAotc3RhdGljIHN0
-cnVjdCBpbXhfZmJfdmlkZW9tb2RlIGlteGZiX21vZGUgPSB7Ci0JLm1vZGUgPSB7Ci0JCS5uYW1l
-CQk9ICJDTU8tUVZHQSIsCi0JCS5yZWZyZXNoCT0gNjAsCi0JCS54cmVzCQk9IDMyMCwKLQkJLnly
-ZXMJCT0gMjQwLAotCQkucGl4Y2xvY2sJPSAxNTYwMDAsCi0JCS5oc3luY19sZW4JPSAzMCwKLQkJ
-LmxlZnRfbWFyZ2luCT0gMzgsCi0JCS5yaWdodF9tYXJnaW4JPSAyMCwKLQkJLnZzeW5jX2xlbgk9
-IDMsCi0JCS51cHBlcl9tYXJnaW4JPSAxNSwKLQkJLmxvd2VyX21hcmdpbgk9IDQsCi0JfSwKLQku
-cGNyCQk9IDB4RkFEMDhCODAsCi0JLmJwcAkJPSAxNix9Oworc3RhdGljIHN0cnVjdCBmYl92aWRl
-b21vZGUgaW14ZmJfbW9kZSA9IHsKKwkubmFtZQkJPSAiQ01PLVFWR0EiLAorCS5yZWZyZXNoCT0g
-NjAsCisJLnhyZXMJCT0gMzIwLAorCS55cmVzCQk9IDI0MCwKKwkucGl4Y2xvY2sJPSAxNTYwMDAs
-CisJLmhzeW5jX2xlbgk9IDMwLAorCS5sZWZ0X21hcmdpbgk9IDM4LAorCS5yaWdodF9tYXJnaW4J
-PSAyMCwKKwkudnN5bmNfbGVuCT0gMywKKwkudXBwZXJfbWFyZ2luCT0gMTUsCisJLmxvd2VyX21h
-cmdpbgk9IDQsCit9OwogCiBzdGF0aWMgc3RydWN0IGlteF9mYl9wbGF0Zm9ybV9kYXRhIGV1a3Jl
-YV9jcHVpbXgyN19mYl9kYXRhID0gewogCS5tb2RlCT0gJmlteGZiX21vZGUsCkBAIC0xMDMsNiAr
-MTAwLDggQEAgc3RhdGljIHN0cnVjdCBpbXhfZmJfcGxhdGZvcm1fZGF0YSBldWtyZWFfY3B1aW14
-MjdfZmJfZGF0YSA9IHsKIAkucHdtcgk9IDB4MDBBOTAzRkYsCiAJLmxzY3IxCT0gMHgwMDEyMDMw
-MCwKIAkuZG1hY3IJPSAweDAwMDIwMDEwLAorCS5wY3IJPSAweEZBRDA4QjgwLAorCS5icHAJPSAx
-NiwKIH07CiAjZW5kaWYKIApkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL2ZyZWVzY2FsZS1t
-eDIxLWFkcy9pbXgyMWFkcy5jIGIvYXJjaC9hcm0vYm9hcmRzL2ZyZWVzY2FsZS1teDIxLWFkcy9p
-bXgyMWFkcy5jCmluZGV4IGFhNjU0ZGE0OTRlZC4uMmM1NGNkNzAzMDc0IDEwMDY0NAotLS0gYS9h
-cmNoL2FybS9ib2FyZHMvZnJlZXNjYWxlLW14MjEtYWRzL2lteDIxYWRzLmMKKysrIGIvYXJjaC9h
-cm0vYm9hcmRzL2ZyZWVzY2FsZS1teDIxLWFkcy9pbXgyMWFkcy5jCkBAIC00NywyNCArNDcsMjAg
-QEAgc3RydWN0IGlteF9uYW5kX3BsYXRmb3JtX2RhdGEgbmFuZF9pbmZvID0gewogfTsKIAogLyog
-U2hhcnAgTFEwMzVRN0RCMDIgUVZHQSBkaXNwbGF5ICovCi1zdGF0aWMgc3RydWN0IGlteF9mYl92
-aWRlb21vZGUgaW14X2ZiX21vZGVkYXRhID0gewotICAgICAgICAubW9kZSA9IHsKLQkJLm5hbWUg
-ICAgICAgICAgID0gIlNoYXJwLUxRMDM1UTciLAotCQkucmVmcmVzaCAgICAgICAgPSA2MCwKLQkJ
-LnhyZXMgICAgICAgICAgID0gMjQwLAotCQkueXJlcyAgICAgICAgICAgPSAzMjAsCi0JCS5waXhj
-bG9jayAgICAgICA9IDE4ODY3OSwKLQkJLmxlZnRfbWFyZ2luICAgID0gNiwKLQkJLnJpZ2h0X21h
-cmdpbiAgID0gMTYsCi0JCS51cHBlcl9tYXJnaW4gICA9IDgsCi0JCS5sb3dlcl9tYXJnaW4gICA9
-IDEwLAotCQkuaHN5bmNfbGVuICAgICAgPSAyLAotCQkudnN5bmNfbGVuICAgICAgPSAxLAotCQku
-c3luYyAgICAgICAgICAgPSAwLAotCQkudm1vZGUgICAgICAgICAgPSBGQl9WTU9ERV9OT05JTlRF
-UkxBQ0VELAotCX0sCi0gICAgICAgIC5wY3IgICAgICAgICAgICA9IDB4ZmIxMDhiYzcsCi0gICAg
-ICAgIC5icHAgICAgICAgICAgICA9IDE2LAorc3RhdGljIHN0cnVjdCBmYl92aWRlb21vZGUgaW14
-X2ZiX21vZGVkYXRhID0geworCS5uYW1lICAgICAgICAgICA9ICJTaGFycC1MUTAzNVE3IiwKKwku
-cmVmcmVzaCAgICAgICAgPSA2MCwKKwkueHJlcyAgICAgICAgICAgPSAyNDAsCisJLnlyZXMgICAg
-ICAgICAgID0gMzIwLAorCS5waXhjbG9jayAgICAgICA9IDE4ODY3OSwKKwkubGVmdF9tYXJnaW4g
-ICAgPSA2LAorCS5yaWdodF9tYXJnaW4gICA9IDE2LAorCS51cHBlcl9tYXJnaW4gICA9IDgsCisJ
-Lmxvd2VyX21hcmdpbiAgID0gMTAsCisJLmhzeW5jX2xlbiAgICAgID0gMiwKKwkudnN5bmNfbGVu
-ICAgICAgPSAxLAorCS5zeW5jICAgICAgICAgICA9IDAsCisJLnZtb2RlICAgICAgICAgID0gRkJf
-Vk1PREVfTk9OSU5URVJMQUNFRCwKIH07CiAKIHN0YXRpYyBzdHJ1Y3QgaW14X2ZiX3BsYXRmb3Jt
-X2RhdGEgaW14X2ZiX2RhdGEgPSB7CkBAIC03Niw2ICs3Miw4IEBAIHN0YXRpYyBzdHJ1Y3QgaW14
-X2ZiX3BsYXRmb3JtX2RhdGEgaW14X2ZiX2RhdGEgPSB7CiAJLnB3bXIgICAgICAgICAgID0gMHgw
-MGE5MDNmZiwKIAkubHNjcjEgICAgICAgICAgPSAweDAwMTIwMzAwLAogCS5kbWFjciAgICAgICAg
-ICA9IDB4MDAwMjAwMDgsCisJLnBjciAgICAgICAgICAgID0gMHhmYjEwOGJjNywKKwkuYnBwICAg
-ICAgICAgICAgPSAxNiwKIH07CiAKIHN0YXRpYyBpbnQgaW14MjFhZHNfdGltaW5nX2luaXQodm9p
-ZCkKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9ndWYtbmVzby9ib2FyZC5jIGIvYXJjaC9h
-cm0vYm9hcmRzL2d1Zi1uZXNvL2JvYXJkLmMKaW5kZXggMmE2NGJjMTRmY2I2Li42ODQ2YmE1Nzkz
-ZmYgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2JvYXJkcy9ndWYtbmVzby9ib2FyZC5jCisrKyBiL2Fy
-Y2gvYXJtL2JvYXJkcy9ndWYtbmVzby9ib2FyZC5jCkBAIC02MiwzNiArNjIsMTggQEAgc3RhdGlj
-IHN0cnVjdCBpbXhfbmFuZF9wbGF0Zm9ybV9kYXRhIG5hbmRfaW5mbyA9IHsKIAkuZmxhc2hfYmJ0
-CT0gMSwKIH07CiAKLXN0YXRpYyBzdHJ1Y3QgaW14X2ZiX3ZpZGVvbW9kZSBpbXhmYl9tb2RlID0g
-ewotCS5tb2RlID0gewotCQkubmFtZQkJPSAiQ1BUIENMQUEwNzBMQzBKQ1QiLAotCQkucmVmcmVz
-aAk9IDYwLAotCQkueHJlcwkJPSA4MDAsCi0JCS55cmVzCQk9IDQ4MCwKLQkJLnBpeGNsb2NrCT0g
-S0haMlBJQ09TKDI3MDAwKSwKLQkJLmhzeW5jX2xlbgk9IDEsCS8qIERFIG9ubHkgc3luYyAqLwot
-CQkubGVmdF9tYXJnaW4JPSA1MCwKLQkJLnJpZ2h0X21hcmdpbgk9IDUwLAotCQkudnN5bmNfbGVu
-CT0gMSwJLyogREUgb25seSBzeW5jICovCi0JCS51cHBlcl9tYXJnaW4JPSAxMCwKLQkJLmxvd2Vy
-X21hcmdpbgk9IDEwLAotCX0sCi0JLyoKLQkgKiAtIFRGVCBzdHlsZSBwYW5lbAotCSAqIC0gY2xr
-IGVuYWJsZWQgd2hpbGUgaWRsZQotCSAqIC0gY2xvY2sgaW52ZXJ0ZWQKLQkgKiAtIGRhdGEgbm90
-IGludmVydGVkCi0JICogLSBkYXRhIGVuYWJsZSBoaWdoIGFjdGl2ZQotCSAqLwotCS5wY3IgPSBQ
-Q1JfVEZUIHwKLQkJUENSX0NPTE9SIHwKLQkJUENSX1BCU0laXzggfAotCQlQQ1JfQlBJWF8xNiB8
-Ci0JCVBDUl9DTEtQT0wgfAotCQlQQ1JfU0NMS19TRUwgfAotCQlQQ1JfTFBQT0wgfAotCQlQQ1Jf
-RkxNUE9MLAotCS5icHAgPSAxNiwJLyogVE9ETyAzMiBiaXQgZG9lcyBub3Qgd29yazogVGhlICdn
-cmVlbicgY29tcG9uZW50IGlzIGxhY2tpbmcgaW4gdGhpcyBtb2RlICovCitzdGF0aWMgc3RydWN0
-IGZiX3ZpZGVvbW9kZSBpbXhmYl9tb2RlID0geworCS5uYW1lCQk9ICJDUFQgQ0xBQTA3MExDMEpD
-VCIsCisJLnJlZnJlc2gJPSA2MCwKKwkueHJlcwkJPSA4MDAsCisJLnlyZXMJCT0gNDgwLAorCS5w
-aXhjbG9jawk9IEtIWjJQSUNPUygyNzAwMCksCisJLmhzeW5jX2xlbgk9IDEsCS8qIERFIG9ubHkg
-c3luYyAqLworCS5sZWZ0X21hcmdpbgk9IDUwLAorCS5yaWdodF9tYXJnaW4JPSA1MCwKKwkudnN5
-bmNfbGVuCT0gMSwJLyogREUgb25seSBzeW5jICovCisJLnVwcGVyX21hcmdpbgk9IDEwLAorCS5s
-b3dlcl9tYXJnaW4JPSAxMCwKIH07CiAKIHN0YXRpYyB2b2lkIG5lc29fZmJfZW5hYmxlKGludCBl
-bmFibGUpCkBAIC0xMDksNiArOTEsMjIgQEAgc3RhdGljIHN0cnVjdCBpbXhfZmJfcGxhdGZvcm1f
-ZGF0YSBuZXNvX2ZiX2RhdGEgPSB7CiAJLmRtYWNyCT0gKDAgPDwgMzEpIHwgKDQgPDwgMTYpIHwg
-OTYsCiAJLmVuYWJsZQk9IG5lc29fZmJfZW5hYmxlLAogCS5mcmFtZWJ1ZmZlcl9vdmwgPSAodm9p
-ZCAqKTB4YTdmMDAwMDAsCisJLyoKKwkgKiAtIFRGVCBzdHlsZSBwYW5lbAorCSAqIC0gY2xrIGVu
-YWJsZWQgd2hpbGUgaWRsZQorCSAqIC0gY2xvY2sgaW52ZXJ0ZWQKKwkgKiAtIGRhdGEgbm90IGlu
-dmVydGVkCisJICogLSBkYXRhIGVuYWJsZSBoaWdoIGFjdGl2ZQorCSAqLworCS5wY3IgPSBQQ1Jf
-VEZUIHwKKwkJUENSX0NPTE9SIHwKKwkJUENSX1BCU0laXzggfAorCQlQQ1JfQlBJWF8xNiB8CisJ
-CVBDUl9DTEtQT0wgfAorCQlQQ1JfU0NMS19TRUwgfAorCQlQQ1JfTFBQT0wgfAorCQlQQ1JfRkxN
-UE9MLAorCS5icHAgPSAxNiwJLyogVE9ETyAzMiBiaXQgZG9lcyBub3Qgd29yazogVGhlICdncmVl
-bicgY29tcG9uZW50IGlzIGxhY2tpbmcgaW4gdGhpcyBtb2RlICovCiB9OwogCiAjaWYgZGVmaW5l
-ZChDT05GSUdfVVNCKSAmJiBkZWZpbmVkKENPTkZJR19VU0JfVUxQSSkKZGlmZiAtLWdpdCBhL2Fy
-Y2gvYXJtL2JvYXJkcy9rYXJvLXR4MjUvYm9hcmQuYyBiL2FyY2gvYXJtL2JvYXJkcy9rYXJvLXR4
-MjUvYm9hcmQuYwppbmRleCBlYmViZDU4ZDgwMWMuLmE0ZDRhZjU3YTNiNyAxMDA2NDQKLS0tIGEv
-YXJjaC9hcm0vYm9hcmRzL2thcm8tdHgyNS9ib2FyZC5jCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9r
-YXJvLXR4MjUvYm9hcmQuYwpAQCAtMTI1LDI0ICsxMjUsMjAgQEAgc3RhdGljIGlvbXV4X3YzX2Nm
-Z190IHR4MjVfbGNkY19ncGlvc1tdID0gewogCU1YMjVfUEFEX09FX0FDRF9fT0VfQUNELAogfTsK
-IAotc3RhdGljIHN0cnVjdCBpbXhfZmJfdmlkZW9tb2RlIHN0azVfZmJfbW9kZSA9IHsKLQkuYnBw
-CT0gMTYsCi0JLm1vZGUgPSB7Ci0JCS5uYW1lID0gIkctRVRWNTcwRzBETVUiLAotCQkucGl4Y2xv
-Y2sJPSAzMzMzMywKLQotCQkueHJlcwkJPSA2NDAsCi0JCS55cmVzCQk9IDQ4MCwKLQotCQkuaHN5
-bmNfbGVuCT0gNjQsCi0JCS5sZWZ0X21hcmdpbgk9IDk2LAotCQkucmlnaHRfbWFyZ2luCT0gODAs
-Ci0KLQkJLnZzeW5jX2xlbgk9IDMsCi0JCS51cHBlcl9tYXJnaW4JPSA0NiwKLQkJLmxvd2VyX21h
-cmdpbgk9IDM5LAotCX0sCi0JLnBjcgk9IFBDUl9URlQgfCBQQ1JfQ09MT1IgfCBQQ1JfRkxNUE9M
-IHwgUENSX0xQUE9MIHwgUENSX1NDTEtfU0VMLAorc3RhdGljIHN0cnVjdCBmYl92aWRlb21vZGUg
-c3RrNV9mYl9tb2RlID0geworCS5uYW1lID0gIkctRVRWNTcwRzBETVUiLAorCS5waXhjbG9jawk9
-IDMzMzMzLAorCisJLnhyZXMJCT0gNjQwLAorCS55cmVzCQk9IDQ4MCwKKworCS5oc3luY19sZW4J
-PSA2NCwKKwkubGVmdF9tYXJnaW4JPSA5NiwKKwkucmlnaHRfbWFyZ2luCT0gODAsCisKKwkudnN5
-bmNfbGVuCT0gMywKKwkudXBwZXJfbWFyZ2luCT0gNDYsCisJLmxvd2VyX21hcmdpbgk9IDM5LAog
-fTsKIAogI2RlZmluZSBTVEs1X0xDRF9CQUNLTElHSFRfR1BJTwkJSU1YX0dQSU9fTlIoMSwgMjYp
-CkBAIC0xNjgsNiArMTY0LDggQEAgc3RhdGljIHN0cnVjdCBpbXhfZmJfcGxhdGZvcm1fZGF0YSB0
-eDI1X2ZiX2RhdGEgPSB7CiAJLm51bV9tb2Rlcwk9IDEsCiAJLmRtYWNyCQk9IDB4ODAwNDAwNjAs
-CiAJLmVuYWJsZQkJPSB0eDI1X2ZiX2VuYWJsZSwKKwkuYnBwCQk9IDE2LAorCS5wY3IJCT0gUENS
-X1RGVCB8IFBDUl9DT0xPUiB8IFBDUl9GTE1QT0wgfCBQQ1JfTFBQT0wgfCBQQ1JfU0NMS19TRUws
-CiB9OwogCiBzdGF0aWMgaW50IHR4MjVfaW5pdF9mYih2b2lkKQpkaWZmIC0tZ2l0IGEvYXJjaC9h
-cm0vYm9hcmRzL3BoeXRlYy1waHljb3JlLWlteDI3L3BjbTAzOC5jIGIvYXJjaC9hcm0vYm9hcmRz
-L3BoeXRlYy1waHljb3JlLWlteDI3L3BjbTAzOC5jCmluZGV4IDVlYmVmNTE2YTc1OS4uMDA4MzQ2
-ZmFmMWUxIDEwMDY0NAotLS0gYS9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXBoeWNvcmUtaW14Mjcv
-cGNtMDM4LmMKKysrIGIvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1waHljb3JlLWlteDI3L3BjbTAz
-OC5jCkBAIC0zNCwyMCArMzQsMjYgQEAKIAogI2RlZmluZSBQQ00wMzhfR1BJT19PVEdfU1RQCShH
-UElPX1BPUlRFICsgMSkKIAotc3RhdGljIHN0cnVjdCBpbXhfZmJfdmlkZW9tb2RlIGlteGZiX21v
-ZGUgPSB7Ci0JLm1vZGUgPSB7Ci0JCS5uYW1lCQk9ICJTaGFycC1MUTAzNVE3IiwKLQkJLnJlZnJl
-c2gJPSA2MCwKLQkJLnhyZXMJCT0gMjQwLAotCQkueXJlcwkJPSAzMjAsCi0JCS5waXhjbG9jawk9
-IDE4ODY3OSwgLyogaW4gcHMgKDUuM01IeikgKi8KLQkJLmhzeW5jX2xlbgk9IDcsCi0JCS5sZWZ0
-X21hcmdpbgk9IDUsCi0JCS5yaWdodF9tYXJnaW4JPSAxNiwKLQkJLnZzeW5jX2xlbgk9IDEsCi0J
-CS51cHBlcl9tYXJnaW4JPSA3LAotCQkubG93ZXJfbWFyZ2luCT0gOSwKLQl9LAorc3RhdGljIHN0
-cnVjdCBmYl92aWRlb21vZGUgaW14ZmJfbW9kZSA9IHsKKwkubmFtZQkJPSAiU2hhcnAtTFEwMzVR
-NyIsCisJLnJlZnJlc2gJPSA2MCwKKwkueHJlcwkJPSAyNDAsCisJLnlyZXMJCT0gMzIwLAorCS5w
-aXhjbG9jawk9IDE4ODY3OSwgLyogaW4gcHMgKDUuM01IeikgKi8KKwkuaHN5bmNfbGVuCT0gNywK
-KwkubGVmdF9tYXJnaW4JPSA1LAorCS5yaWdodF9tYXJnaW4JPSAxNiwKKwkudnN5bmNfbGVuCT0g
-MSwKKwkudXBwZXJfbWFyZ2luCT0gNywKKwkubG93ZXJfbWFyZ2luCT0gOSwKK307CisKK3N0YXRp
-YyBzdHJ1Y3QgaW14X2ZiX3BsYXRmb3JtX2RhdGEgcGNtMDM4X2ZiX2RhdGEgPSB7CisJLm1vZGUJ
-PSAmaW14ZmJfbW9kZSwKKwkubnVtX21vZGVzID0gMSwKKwkucHdtcgk9IDB4MDBhOTAzZmYsCisJ
-LmxzY3IxCT0gMHgwMDEyMDMwMCwKKwkuZG1hY3IJPSAweDAwMDIwMDEwLAogCS8qCiAJICogLSBI
-U1lOQyBhY3RpdmUgaGlnaAogCSAqIC0gVlNZTkMgYWN0aXZlIGhpZ2gKQEAgLTU3LDE2ICs2Myw4
-IEBAIHN0YXRpYyBzdHJ1Y3QgaW14X2ZiX3ZpZGVvbW9kZSBpbXhmYl9tb2RlID0gewogCSAqIC0g
-ZGF0YSBlbmFibGUgbG93IGFjdGl2ZQogCSAqIC0gZW5hYmxlIHNoYXJwIG1vZGUKIAkgKi8KLQku
-cGNyCQk9IDB4ZjAwMDgwYzAsCi0JLmJwcAkJPSAxNiwKLX07Ci0KLXN0YXRpYyBzdHJ1Y3QgaW14
-X2ZiX3BsYXRmb3JtX2RhdGEgcGNtMDM4X2ZiX2RhdGEgPSB7Ci0JLm1vZGUJPSAmaW14ZmJfbW9k
-ZSwKLQkubnVtX21vZGVzID0gMSwKLQkucHdtcgk9IDB4MDBhOTAzZmYsCi0JLmxzY3IxCT0gMHgw
-MDEyMDMwMCwKLQkuZG1hY3IJPSAweDAwMDIwMDEwLAorCS5wY3IJPSAweGYwMDA4MGMwLAorCS5i
-cHAJPSAxNiwKIH07CiAKIHN0YXRpYyBjb25zdCB1bnNpZ25lZCBpbnQgcGNtMDM4X3BpbnNbXSA9
-IHsKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9pbXhmYi5oIGIv
-YXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lteGZiLmgKaW5kZXggZWEzOWUzMTk4ZWM1
-Li42ZGY3YTE0ZGRlZGEgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFj
-aC9pbXhmYi5oCisrKyBiL2FyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9pbXhmYi5oCkBA
-IC01MiwxNyArNTIsMTEgQEAKICNkZWZpbmUgRE1BQ1JfSE0oeCkJKCgoeCkgJiAweGYpIDw8IDE2
-KQogI2RlZmluZSBETUFDUl9UTSh4KQkoKHgpICYgMHhmKQogCi1zdHJ1Y3QgaW14X2ZiX3ZpZGVv
-bW9kZSB7Ci0Jc3RydWN0IGZiX3ZpZGVvbW9kZSBtb2RlOwotCXUzMiBwY3I7Ci0JdW5zaWduZWQg
-Y2hhcglicHA7Ci19OwotCiAvKioKICAqIERlZmluZSByZWxldmFudCBmcmFtZWJ1ZmZlciBpbmZv
-cm1hdGlvbgogICovCiBzdHJ1Y3QgaW14X2ZiX3BsYXRmb3JtX2RhdGEgewotCXN0cnVjdCBpbXhf
-ZmJfdmlkZW9tb2RlICptb2RlOworCXN0cnVjdCBmYl92aWRlb21vZGUgKm1vZGU7CiAJdV9pbnQJ
-CQludW1fbW9kZXM7CiAKIAl1X2ludAkJY21hcF9ncmV5c2NhbGU6MSwKQEAgLTczLDYgKzY3LDgg
-QEAgc3RydWN0IGlteF9mYl9wbGF0Zm9ybV9kYXRhIHsKIAl1X2ludAkJcHdtcjsKIAl1X2ludAkJ
-bHNjcjE7CiAJdV9pbnQJCWRtYWNyOworCXUzMiBwY3I7CisJdW5zaWduZWQgY2hhcglicHA7CiAK
-IAkvKiogZm9yY2UgYSBtZW1vcnkgYXJlYSB0byBiZSB1c2VkLCBlbHNlIE5VTEwgZm9yIGR5bmFt
-aWMgYWxsb2NhdGlvbiAqLwogCXZvaWQJCSpmcmFtZWJ1ZmZlcjsKZGlmZiAtLWdpdCBhL2RyaXZl
-cnMvdmlkZW8vaW14LmMgYi9kcml2ZXJzL3ZpZGVvL2lteC5jCmluZGV4IDk0N2Y4ZDUzNDkxMS4u
-ZDE1YzJkODhmYjkxIDEwMDY0NAotLS0gYS9kcml2ZXJzL3ZpZGVvL2lteC5jCisrKyBiL2RyaXZl
-cnMvdmlkZW8vaW14LmMKQEAgLTE1Miw4ICsxNTIsNiBAQCBzdHJ1Y3QgaW14ZmJfaW5mbyB7CiAJ
-CQkJY21hcF9zdGF0aWM6MSwKIAkJCQl1bnVzZWQ6MzA7CiAKLQlzdHJ1Y3QgaW14X2ZiX3ZpZGVv
-bW9kZSAqbW9kZTsKLQogCXN0cnVjdCBmYl9pbmZvCQlpbmZvOwogCXN0cnVjdCBkZXZpY2VfZAkJ
-KmRldjsKIApAQCAtMjkzLDE0ICsyOTEsNiBAQCBzdGF0aWMgaW50IGlteGZiX2FjdGl2YXRlX3Zh
-cihzdHJ1Y3QgZmJfaW5mbyAqaW5mbykKIAl1bnNpZ25lZCBsb25nIGxvbmcgdG1wOwogCXN0cnVj
-dCBpbXhmYl9pbmZvICpmYmkgPSBpbmZvLT5wcml2OwogCXUzMiBwY3I7Ci0JaW50IGk7Ci0KLQlm
-b3IgKGkgPSAwOyBpIDwgaW5mby0+bW9kZXMubnVtX21vZGVzOyBpKyspIHsKLQkJaWYgKCFzdHJj
-bXAoZmJpLT5tb2RlW2ldLm1vZGUubmFtZSwgbW9kZS0+bmFtZSkpIHsKLQkJCWZiaS0+cGNyID0g
-ZmJpLT5tb2RlW2ldLnBjcjsKLQkJCWJyZWFrOwotCQl9Ci0JfQogCiAJLyogcGh5c2ljYWwgc2Ny
-ZWVuIHN0YXJ0IGFkZHJlc3MJICAgICovCiAJd3JpdGVsKFZQV19WUFcobW9kZS0+eHJlcyAqIGlu
-Zm8tPmJpdHNfcGVyX3BpeGVsIC8gOCAvIDQpLApAQCAtNTU2LDcgKzU0Niw3IEBAIHN0YXRpYyBp
-bnQgaW14ZmJfcHJvYmUoc3RydWN0IGRldmljZV9kICpkZXYpCiAKIAltb2RlX2xpc3QgPSB4emFs
-bG9jKHNpemVvZigqbW9kZV9saXN0KSAqIHBkYXRhLT5udW1fbW9kZXMpOwogCWZvciAoaSA9IDA7
-IGkgPCBwZGF0YS0+bnVtX21vZGVzOyBpKyspCi0JCW1vZGVfbGlzdFtpXSA9IHBkYXRhLT5tb2Rl
-W2ldLm1vZGU7CisJCW1vZGVfbGlzdFtpXSA9IHBkYXRhLT5tb2RlW2ldOwogCiAJZmJpID0geHph
-bGxvYyhzaXplb2YoKmZiaSkpOwogCWluZm8gPSAmZmJpLT5pbmZvOwpAQCAtNTczLDEzICs1NjMs
-MTIgQEAgc3RhdGljIGludCBpbXhmYl9wcm9iZShzdHJ1Y3QgZGV2aWNlX2QgKmRldikKIAlpZiAo
-SVNfRVJSKGZiaS0+aXBnX2NsaykpCiAJCXJldHVybiBQVFJfRVJSKGZiaS0+aXBnX2Nsayk7CiAK
-LQlmYmktPm1vZGUgPSBwZGF0YS0+bW9kZTsKIAlpb3JlcyA9IGRldl9yZXF1ZXN0X21lbV9yZXNv
-dXJjZShkZXYsIDApOwogCWlmIChJU19FUlIoaW9yZXMpKQogCQlyZXR1cm4gUFRSX0VSUihpb3Jl
-cyk7CiAJZmJpLT5yZWdzID0gSU9NRU0oaW9yZXMtPnN0YXJ0KTsKIAotCWZiaS0+cGNyID0gcGRh
-dGEtPm1vZGUtPnBjcjsKKwlmYmktPnBjciA9IHBkYXRhLT5wY3I7CiAJZmJpLT5wd21yID0gcGRh
-dGEtPnB3bXI7CiAJZmJpLT5sc2NyMSA9IHBkYXRhLT5sc2NyMTsKIAlmYmktPmRtYWNyID0gcGRh
-dGEtPmRtYWNyOwpAQCAtNTg4LDEwICs1NzcsMTAgQEAgc3RhdGljIGludCBpbXhmYl9wcm9iZShz
-dHJ1Y3QgZGV2aWNlX2QgKmRldikKIAlpbmZvLT5wcml2ID0gZmJpOwogCWluZm8tPm1vZGVzLm1v
-ZGVzID0gbW9kZV9saXN0OwogCWluZm8tPm1vZGVzLm51bV9tb2RlcyA9IHBkYXRhLT5udW1fbW9k
-ZXM7Ci0JaW5mby0+bW9kZSA9ICZwZGF0YS0+bW9kZS0+bW9kZTsKLQlpbmZvLT54cmVzID0gcGRh
-dGEtPm1vZGUtPm1vZGUueHJlczsKLQlpbmZvLT55cmVzID0gcGRhdGEtPm1vZGUtPm1vZGUueXJl
-czsKLQlpbmZvLT5iaXRzX3Blcl9waXhlbCA9IHBkYXRhLT5tb2RlLT5icHA7CisJaW5mby0+bW9k
-ZSA9IHBkYXRhLT5tb2RlOworCWluZm8tPnhyZXMgPSBwZGF0YS0+bW9kZS0+eHJlczsKKwlpbmZv
-LT55cmVzID0gcGRhdGEtPm1vZGUtPnlyZXM7CisJaW5mby0+Yml0c19wZXJfcGl4ZWwgPSBwZGF0
-YS0+YnBwOwogCWluZm8tPmZib3BzID0gJmlteGZiX29wczsKIAogCWRldl9pbmZvKGRldiwgImku
-TVggRnJhbWVidWZmZXIgZHJpdmVyXG4iKTsKLS0gCjIuMjMuMAoKCl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
-b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
-L2xpc3RpbmZvL2JhcmVib3gK
+The devicetree overlay support is based on the Linux driver for device
+tree overlays, but many features that are not required in Barebox are
+left out.
+
+Unlike Linux, which applies the overlay to the live devicetree, Barebox
+registers a fixup for the overlay which is applied with other fixups to
+whatever tree is fixed. This is necessary to apply the overlay to
+devicetrees that are passed to Linux, which might differ from the
+devicetree that is currently live in Barebox.
+
+Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+
+---
+Changelog:
+
+v2->v3: none
+
+v1->v2:
+- export function for applying a device tree overlay
+- define pr_fmt for overlay and resolver
+- remove useless notifier.h
+- document ownership of overlay memory
+---
+ drivers/of/Kconfig    |   9 ++
+ drivers/of/Makefile   |   1 +
+ drivers/of/overlay.c  | 209 +++++++++++++++++++++++++++++++
+ drivers/of/resolver.c | 279 ++++++++++++++++++++++++++++++++++++++++++
+ include/of.h          |  27 ++++
+ 5 files changed, 525 insertions(+)
+ create mode 100644 drivers/of/overlay.c
+ create mode 100644 drivers/of/resolver.c
+
+diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
+index 24cf4465a8..1bb6639c5a 100644
+--- a/drivers/of/Kconfig
++++ b/drivers/of/Kconfig
+@@ -50,3 +50,12 @@ config OF_BAREBOX_ENV_IN_FS
+ 	help
+ 	  Allow the devie tree configuration of the barebox environment path
+ 	  to specify a file in filesystem, which will be mounted.
++
++config OF_OVERLAY
++	select OFTREE
++	bool "Devicetree overlays"
++	help
++	  Overlays allow to patch the devicetree. Unlike Linux, Barebox does
++	  not patch the live devicetree, but applies the overlays as fixup to
++	  the devicetree. Furthermore, overlays cannot be removed after they
++	  have been applied.
+diff --git a/drivers/of/Makefile b/drivers/of/Makefile
+index ec43870061..9c6f8de814 100644
+--- a/drivers/of/Makefile
++++ b/drivers/of/Makefile
+@@ -6,3 +6,4 @@ obj-y += partition.o
+ obj-y += of_net.o
+ obj-$(CONFIG_MTD) += of_mtd.o
+ obj-$(CONFIG_OF_BAREBOX_DRIVERS) += barebox.o
++obj-$(CONFIG_OF_OVERLAY) += overlay.o resolver.o
+diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
+new file mode 100644
+index 0000000000..f6a0576183
+--- /dev/null
++++ b/drivers/of/overlay.c
+@@ -0,0 +1,209 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Functions for working with device tree overlays
++ *
++ * Copyright (C) 2012 Pantelis Antoniou <panto@antoniou-consulting.com>
++ * Copyright (C) 2012 Texas Instruments Inc.
++ * Copyright (C) 2019 Pengutronix, Michael Tretter <m.tretter@pengutronix.de>
++ */
++#define pr_fmt(fmt) "of_overlay: " fmt
++
++#include <common.h>
++#include <of.h>
++#include <errno.h>
++
++static struct device_node *find_target(struct device_node *root,
++				       struct device_node *fragment)
++{
++	struct device_node *node;
++	const char *path;
++	u32 phandle;
++	int ret;
++
++	ret = of_property_read_u32(fragment, "target", &phandle);
++	if (!ret) {
++		node = of_find_node_by_phandle_from(phandle, root);
++		if (!node)
++			pr_err("fragment %pOF: phandle 0x%x not found\n",
++			       fragment, phandle);
++		return node;
++	}
++
++	ret = of_property_read_string(fragment, "target-path", &path);
++	if (!ret) {
++		node = of_find_node_by_path_from(root, path);
++		if (!node)
++			pr_err("fragment %pOF: path '%s' not found\n",
++			       fragment, path);
++		return node;
++	}
++
++	pr_err("fragment %pOF: no target property\n", fragment);
++
++	return NULL;
++}
++
++static int of_overlay_apply(struct device_node *target,
++			    const struct device_node *overlay)
++{
++	struct device_node *child;
++	struct device_node *target_child;
++	struct property *prop;
++	int err;
++
++	if (target == NULL || overlay == NULL)
++		return -EINVAL;
++
++	list_for_each_entry(prop, &overlay->properties, list) {
++		if (of_prop_cmp(prop->name, "name") == 0)
++			continue;
++
++		err = of_set_property(target, prop->name, prop->value,
++				      prop->length, true);
++		if (err)
++			return err;
++	}
++
++	for_each_child_of_node(overlay, child) {
++		target_child = of_get_child_by_name(target, child->name);
++		if (!target_child)
++			target_child = of_new_node(target, child->name);
++		if (!target_child)
++			return -ENOMEM;
++
++		err = of_overlay_apply(target_child, child);
++		if (err)
++			return err;
++	}
++
++	return 0;
++}
++
++static char *of_overlay_fix_path(struct device_node *root,
++				 struct device_node *overlay, const char *path)
++{
++	struct device_node *fragment;
++	struct device_node *target;
++	const char *path_tail;
++	const char *prefix;
++
++	fragment = of_find_node_by_path_from(overlay, path);
++	while ((fragment = of_get_parent(fragment)) != NULL) {
++		if (of_get_child_by_name(fragment, "__overlay__"))
++			break;
++	}
++	if (!fragment)
++		return NULL;
++
++	target = find_target(root, fragment);
++	if (!target)
++		return NULL;
++
++	prefix = of_get_child_by_name(fragment, "__overlay__")->full_name;
++	path_tail = path + strlen(prefix);
++
++	return basprintf("%s%s", target->full_name, path_tail);
++}
++
++static int of_overlay_apply_symbols(struct device_node *root,
++				    struct device_node *overlay)
++{
++	const char *old_path;
++	char *new_path;
++	struct property *prop;
++	struct device_node *root_symbols;
++	struct device_node *overlay_symbols;
++
++	root_symbols = of_get_child_by_name(root, "__symbols__");
++	if (!root_symbols)
++		return -EINVAL;
++
++	overlay_symbols = of_get_child_by_name(overlay, "__symbols__");
++	if (!overlay_symbols)
++		return -EINVAL;
++
++	list_for_each_entry(prop, &overlay_symbols->properties, list) {
++		if (of_prop_cmp(prop->name, "name") == 0)
++			continue;
++
++		old_path = of_property_get_value(prop);
++		new_path = of_overlay_fix_path(root, overlay, old_path);
++
++		pr_debug("add symbol %s with new path %s\n",
++			 prop->name, new_path);
++		of_property_write_string(root_symbols, prop->name, new_path);
++	}
++
++	return 0;
++}
++
++static int of_overlay_apply_fragment(struct device_node *root,
++				     struct device_node *fragment)
++{
++	struct device_node *target;
++	struct device_node *overlay;
++
++	overlay = of_get_child_by_name(fragment, "__overlay__");
++	if (!overlay)
++		return 0;
++
++	target = find_target(root, fragment);
++	if (!target)
++		return -EINVAL;
++
++	return of_overlay_apply(target, overlay);
++}
++
++/**
++ * Apply the overlay on the passed devicetree root
++ * @root: the devicetree onto which the overlay will be applied
++ * @overlay: the devicetree to apply as an overlay
++ */
++int of_overlay_apply_tree(struct device_node *root,
++			  struct device_node *overlay)
++{
++	struct device_node *resolved;
++	struct device_node *fragment;
++	int err;
++
++	resolved = of_resolve_phandles(root, overlay);
++	if (!resolved)
++		return -EINVAL;
++
++	/* Copy symbols from resolved overlay to base device tree */
++	err = of_overlay_apply_symbols(root, resolved);
++	if (err)
++		pr_warn("failed to copy symbols from overlay");
++
++	/* Copy nodes and properties from resolved overlay to root */
++	for_each_child_of_node(resolved, fragment) {
++		err = of_overlay_apply_fragment(root, fragment);
++		if (err)
++			pr_warn("failed to apply %s", fragment->name);
++	}
++
++	of_delete_node(resolved);
++
++	return err;
++}
++
++static int of_overlay_fixup(struct device_node *root, void *data)
++{
++	struct device_node *overlay = data;
++
++	return of_overlay_apply_tree(root, overlay);
++}
++
++/**
++ * Register a devicetree overlay
++ *
++ * The overlay is not applied to the live device tree, but registered as fixup
++ * for the fixed up device tree. Therefore, drivers relying on the overlay
++ * must use the fixed device tree.
++ *
++ * The fixup takes ownership of the overlay.
++ */
++int of_register_overlay(struct device_node *overlay)
++{
++	return of_register_fixup(of_overlay_fixup, overlay);
++}
+diff --git a/drivers/of/resolver.c b/drivers/of/resolver.c
+new file mode 100644
+index 0000000000..9107c1fbb6
+--- /dev/null
++++ b/drivers/of/resolver.c
+@@ -0,0 +1,279 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Functions for dealing with DT resolution
++ *
++ * Copyright (C) 2012 Pantelis Antoniou <panto@antoniou-consulting.com>
++ * Copyright (C) 2012 Texas Instruments Inc.
++ * Copyright (C) 2019 Pengutronix, Michael Tretter <m.tretter@pengutronix.de>
++ */
++#define pr_fmt(fmt) "of_resolver: " fmt
++
++#include <common.h>
++#include <of.h>
++#include <errno.h>
++
++/**
++ * Recursively update phandles in overlay by adding delta
++ */
++static void adjust_overlay_phandles(struct device_node *overlay, int delta)
++{
++	struct device_node *child;
++	struct property *prop;
++
++	if (overlay->phandle != 0)
++		overlay->phandle += delta;
++
++	list_for_each_entry(prop, &overlay->properties, list) {
++		if (of_prop_cmp(prop->name, "phandle") != 0 &&
++		    of_prop_cmp(prop->name, "linux,phandle") != 0)
++			continue;
++		if (prop->length < 4)
++			continue;
++
++		be32_add_cpu(prop->value, delta);
++	}
++
++	for_each_child_of_node(overlay, child)
++		adjust_overlay_phandles(child, delta);
++}
++
++/**
++ * Update all unresolved phandles in the overlay using prop_fixup
++ *
++ * prop_fixup contains a list of tuples of path:property_name:offset, each of
++ * which refers to a property that is phandle to a node in the base
++ * devicetree.
++ */
++static int update_usages_of_a_phandle_reference(struct device_node *overlay,
++						struct property *prop_fixup,
++						phandle phandle)
++{
++	struct device_node *refnode;
++	struct property *prop;
++	char *value, *cur, *end, *node_path, *prop_name, *s;
++	int offset, len;
++	int err = 0;
++
++	pr_debug("resolve references to %s to phandle 0x%x\n",
++		 prop_fixup->name, phandle);
++
++	value = kmemdup(prop_fixup->value, prop_fixup->length, GFP_KERNEL);
++	if (!value)
++		return -ENOMEM;
++
++	end = value + prop_fixup->length;
++	for (cur = value; cur < end; cur += len + 1) {
++		len = strlen(cur);
++
++		node_path = cur;
++		s = strchr(cur, ':');
++		if (!s) {
++			err = -EINVAL;
++			goto err_fail;
++		}
++		*s++ = '\0';
++
++		prop_name = s;
++		s = strchr(s, ':');
++		if (!s) {
++			err = -EINVAL;
++			goto err_fail;
++		}
++		*s++ = '\0';
++
++		err = kstrtoint(s, 10, &offset);
++		if (err)
++			goto err_fail;
++
++		refnode = of_find_node_by_path_from(overlay, node_path);
++		if (!refnode)
++			continue;
++
++		prop = of_find_property(refnode, prop_name, NULL);
++		if (!prop) {
++			err = -ENOENT;
++			goto err_fail;
++		}
++
++		if (offset < 0 || offset + sizeof(__be32) > prop->length) {
++			err = -EINVAL;
++			goto err_fail;
++		}
++
++		*(__be32 *)(prop->value + offset) = cpu_to_be32(phandle);
++	}
++
++err_fail:
++	kfree(value);
++
++	if (err)
++		pr_debug("failed to resolve references to %s\n",
++			 prop_fixup->name);
++
++	return err;
++}
++
++/*
++ * Adjust the local phandle references by the given phandle delta.
++ *
++ * Subtree @local_fixups, which is overlay node __local_fixups__,
++ * mirrors the fragment node structure at the root of the overlay.
++ *
++ * For each property in the fragments that contains a phandle reference,
++ * @local_fixups has a property of the same name that contains a list
++ * of offsets of the phandle reference(s) within the respective property
++ * value(s).  The values at these offsets will be fixed up.
++ */
++static int adjust_local_phandle_references(struct device_node *local_fixups,
++		struct device_node *overlay, int phandle_delta)
++{
++	struct device_node *child, *overlay_child;
++	struct property *prop_fix, *prop;
++	int err, i, count;
++	unsigned int off;
++
++	if (!local_fixups)
++		return 0;
++
++	list_for_each_entry(prop_fix, &local_fixups->properties, list) {
++		if (!of_prop_cmp(prop_fix->name, "name") ||
++		    !of_prop_cmp(prop_fix->name, "phandle") ||
++		    !of_prop_cmp(prop_fix->name, "linux,phandle"))
++			continue;
++
++		if ((prop_fix->length % sizeof(__be32)) != 0 ||
++		    prop_fix->length == 0)
++			return -EINVAL;
++		count = prop_fix->length / sizeof(__be32);
++
++		prop = of_find_property(overlay, prop_fix->name, NULL);
++		if (!prop)
++			return -EINVAL;
++
++		for (i = 0; i < count; i++) {
++			off = be32_to_cpu(((__be32 *)prop_fix->value)[i]);
++			if ((off + sizeof(__be32)) > prop->length)
++				return -EINVAL;
++
++			be32_add_cpu(prop->value + off, phandle_delta);
++		}
++	}
++
++	for_each_child_of_node(local_fixups, child) {
++		for_each_child_of_node(overlay, overlay_child)
++			if (!of_node_cmp(child->name, overlay_child->name))
++				break;
++		if (!overlay_child)
++			return -EINVAL;
++
++		err = adjust_local_phandle_references(child, overlay_child,
++				phandle_delta);
++		if (err)
++			return err;
++	}
++
++	return 0;
++}
++
++/**
++ * of_resolve_phandles - Resolve phandles in overlay based on root
++ *
++ * Rename phandles in overlay to avoid conflicts with the base devicetree and
++ * replace all phandles in the overlay with their renamed versions. Resolve
++ * phandles referring to nodes in the base devicetree with the phandle from
++ * the base devicetree.
++ *
++ * Returns a new device_node with resolved phandles which must be deleted by
++ * the caller of this function.
++ */
++struct device_node *of_resolve_phandles(struct device_node *root,
++					const struct device_node *overlay)
++{
++	struct device_node *result;
++	struct device_node *local_fixups;
++	struct device_node *refnode;
++	struct device_node *symbols;
++	struct device_node *overlay_fixups;
++	struct property *prop;
++	const char *refpath;
++	phandle delta;
++	int err;
++
++	result = of_copy_node(NULL, overlay);
++	if (!result)
++		return NULL;
++
++	delta = of_get_tree_max_phandle(root) + 1;
++
++	/*
++	 * Rename the phandles in the devicetree overlay to prevent conflicts
++	 * with the phandles in the base devicetree.
++	 */
++	adjust_overlay_phandles(result, delta);
++
++	/*
++	 * __local_fixups__ contains all locations in the overlay that refer
++	 * to a phandle defined in the overlay. We must update the references,
++	 * because we just adjusted the definitions.
++	 */
++	local_fixups = of_find_node_by_name(result, "__local_fixups__");
++	err = adjust_local_phandle_references(local_fixups, result, delta);
++	if (err) {
++		pr_err("failed to fix phandles in overlay\n");
++		goto err;
++	}
++
++	/*
++	 * __fixups__ contains all locations in the overlay that refer to a
++	 * phandle that is not defined in the overlay and should be defined in
++	 * the base device tree. We must update the references, because they
++	 * are otherwise undefined.
++	 */
++	overlay_fixups = of_find_node_by_name(result, "__fixups__");
++	if (!overlay_fixups) {
++		pr_debug("overlay does not contain phandles to base devicetree\n");
++		goto out;
++	}
++
++	symbols = of_find_node_by_path_from(root, "/__symbols__");
++	if (!symbols) {
++		pr_err("__symbols__ missing from base devicetree\n");
++		goto err;
++	}
++
++	list_for_each_entry(prop, &overlay_fixups->properties, list) {
++		if (!of_prop_cmp(prop->name, "name"))
++			continue;
++
++		err = of_property_read_string(symbols, prop->name, &refpath);
++		if (err) {
++			pr_err("cannot find node %s in base devicetree\n",
++			       prop->name);
++			goto err;
++		}
++
++		refnode = of_find_node_by_path_from(root, refpath);
++		if (!refnode) {
++			pr_err("cannot find path %s in base devicetree\n",
++			       refpath);
++			err = -EINVAL;
++			goto err;
++		}
++
++		err = update_usages_of_a_phandle_reference(result, prop,
++							   refnode->phandle);
++		if (err) {
++			pr_err("failed to update phandles for %s in overlay",
++			       prop->name);
++			goto err;
++		}
++	}
++
++out:
++	return result;
++err:
++	of_delete_node(result);
++
++	return NULL;
++
++}
+diff --git a/include/of.h b/include/of.h
+index b5f54dd4e5..1483c22db1 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -870,4 +870,31 @@ static inline struct device_node *of_find_root_node(struct device_node *node)
+ 
+ 	return node;
+ }
++
++#ifdef CONFIG_OF_OVERLAY
++struct device_node *of_resolve_phandles(struct device_node *root,
++					const struct device_node *overlay);
++int of_overlay_apply_tree(struct device_node *root,
++			  struct device_node *overlay);
++int of_register_overlay(struct device_node *overlay);
++#else
++static inline struct device_node *of_resolve_phandles(struct device_node *root,
++					const struct device_node *overlay)
++{
++	return NULL;
++}
++
++static inline int of_overlay_apply_tree(struct device_node *root,
++					struct device_node *overlay)
++{
++	return -ENOSYS;
++}
++
++static inline int of_register_overlay(struct device_node *overlay)
++{
++	return -ENOSYS;
++}
++
++#endif
++
+ #endif /* __OF_H */
+-- 
+2.20.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
