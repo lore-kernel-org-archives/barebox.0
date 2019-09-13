@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1i8lPc-0004oZ-LK
- for barebox@lists.infradead.org; Fri, 13 Sep 2019 13:15:00 +0000
+ id 1i8lPc-0004od-LZ
+ for barebox@lists.infradead.org; Fri, 13 Sep 2019 13:15:01 +0000
 From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Fri, 13 Sep 2019 15:14:41 +0200
-Message-Id: <20190913131446.8202-4-m.tretter@pengutronix.de>
+Date: Fri, 13 Sep 2019 15:14:43 +0200
+Message-Id: <20190913131446.8202-6-m.tretter@pengutronix.de>
 In-Reply-To: <20190913131446.8202-1-m.tretter@pengutronix.de>
 References: <20190913131446.8202-1-m.tretter@pengutronix.de>
 MIME-Version: 1.0
@@ -21,17 +21,17 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 3/8] of: add iterator for overlays
+Subject: [PATCH v3 5/8] firmware: add support to load firmware from dt overlay
 To: barebox@lists.infradead.org
 Cc: Michael Tretter <m.tretter@pengutronix.de>
 
-Device tree overlays (the dto files) may contain multiple fragments for
-different target nodes. Each fragment contains a __overlay__ node that
-is applied to target node specified in the fragment.
+fpga-region device tree nodes have the firmware-name property that
+contains the file name of firmware in the firmware search path (but not
+the path) that shall be loaded before the overlay is applied.
 
-Add a helper to call a function for each fragment in a device tree
-overlay to avoid having device tree overlay internal information in
-other modules.
+Add the of_firmware_load_overlay() function that accepts an overlay and a
+firmware search path, finds the responsible firmware_mgr and loads the
+firmware.
 
 Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 
@@ -39,90 +39,139 @@ Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 Changelog:
 
 v2->v3:
-- clarify warning if process fails
-- move phandle resolving step to caller
+- move functions from firmware to new module of_firmware
+- rename function accordingly
+- return success whenever there is no firmware in the overlay
 
-v1->v2:
-- add static inline for function stub
+v1->v2: none
 ---
- drivers/of/overlay.c | 38 ++++++++++++++++++++++++++++++++++++++
- include/of.h         | 13 +++++++++++++
- 2 files changed, 51 insertions(+)
+ drivers/of/Makefile      |  2 +-
+ drivers/of/of_firmware.c | 86 ++++++++++++++++++++++++++++++++++++++++
+ include/of.h             |  7 ++++
+ 3 files changed, 94 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/of/of_firmware.c
 
-diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
-index f6a0576183..de79e05cbc 100644
---- a/drivers/of/overlay.c
-+++ b/drivers/of/overlay.c
-@@ -194,6 +194,44 @@ static int of_overlay_fixup(struct device_node *root, void *data)
- 	return of_overlay_apply_tree(root, overlay);
- }
- 
-+/**
-+ * Iterate the overlay and call process for each fragment
-+ *
-+ * If process() fails for any fragment, the function will stop to process
-+ * other fragments and return the error of the failed process() call.
+diff --git a/drivers/of/Makefile b/drivers/of/Makefile
+index 9c6f8de814..b6847752d2 100644
+--- a/drivers/of/Makefile
++++ b/drivers/of/Makefile
+@@ -6,4 +6,4 @@ obj-y += partition.o
+ obj-y += of_net.o
+ obj-$(CONFIG_MTD) += of_mtd.o
+ obj-$(CONFIG_OF_BAREBOX_DRIVERS) += barebox.o
+-obj-$(CONFIG_OF_OVERLAY) += overlay.o resolver.o
++obj-$(CONFIG_OF_OVERLAY) += overlay.o resolver.o of_firmware.o
+diff --git a/drivers/of/of_firmware.c b/drivers/of/of_firmware.c
+new file mode 100644
+index 0000000000..0135631fb8
+--- /dev/null
++++ b/drivers/of/of_firmware.c
+@@ -0,0 +1,86 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2019 Pengutronix, Michael Tretter <m.tretter@pengutronix.de>
 + */
-+int of_process_overlay(struct device_node *root,
-+		       struct device_node *overlay,
-+		       int (*process)(struct device_node *target,
-+				      struct device_node *overlay, void *data),
-+		       void *data)
++#include <common.h>
++#include <firmware.h>
++#include <of.h>
++
++struct overlay_info {
++	const char *firmware_path;
++};
++
++static struct firmware_mgr *of_node_get_mgr(struct device_node *np)
 +{
-+	struct device_node *fragment;
-+	int err = 0;
++	struct device_node *mgr_node;
 +
-+	for_each_child_of_node(overlay, fragment) {
-+		struct device_node *ovl;
-+		struct device_node *target;
-+
-+		ovl = of_get_child_by_name(fragment, "__overlay__");
-+		if (!ovl)
-+			continue;
-+
-+		target = find_target(root, fragment);
-+		if (!target)
-+			continue;
-+
-+		err = process(target, ovl, data);
-+		if (err) {
-+			pr_warn("failed to process overlay for %s\n",
-+				target->name);
-+			break;
++	do {
++		if (of_device_is_compatible(np, "fpga-region")) {
++			mgr_node = of_parse_phandle(np, "fpga-mgr", 0);
++			if (mgr_node)
++				return firmwaremgr_find_by_node(mgr_node);
 +		}
-+	}
++	} while ((np = of_get_parent(np)) != NULL);
++
++	return NULL;
++}
++
++static int load_firmware(struct device_node *target,
++			 struct device_node *fragment, void *data)
++{
++	struct overlay_info *info = data;
++	const char *firmware_name;
++	const char *firmware_path = info->firmware_path;
++	char *firmware;
++	int err;
++	struct firmware_mgr *mgr;
++
++	err = of_property_read_string(fragment,
++				      "firmware-name", &firmware_name);
++	/* Nothing to do if property does not exist. */
++	if (err == -EINVAL)
++		return 0;
++	else if (err)
++		return -EINVAL;
++
++	mgr = of_node_get_mgr(target);
++	if (!mgr)
++		return -EINVAL;
++
++	firmware = basprintf("%s/%s", firmware_path, firmware_name);
++	if (!firmware)
++		return -ENOMEM;
++
++	err = firmwaremgr_load_file(mgr, firmware);
++
++	free(firmware);
 +
 +	return err;
 +}
 +
- /**
-  * Register a devicetree overlay
-  *
++int of_firmware_load_overlay(struct device_node *overlay, const char *path)
++{
++	struct overlay_info info = {
++		.firmware_path = path,
++	};
++	int err;
++	struct device_node *root;
++	struct device_node *resolved;
++	struct device_node *ovl;
++
++	root = of_get_root_node();
++	/*
++	 * If we cannot resolve the symbols in the overlay, ensure that the
++	 * overlay does depend on firmware to be loaded.
++	 */
++	resolved = of_resolve_phandles(root, overlay);
++	ovl = resolved ? resolved : overlay;
++
++	err = of_process_overlay(root, ovl,
++				 load_firmware, &info);
++
++	if (resolved)
++		of_delete_node(resolved);
++
++	return err;
++}
 diff --git a/include/of.h b/include/of.h
-index 1483c22db1..06dc9f61a5 100644
+index 06dc9f61a5..5466517a6d 100644
 --- a/include/of.h
 +++ b/include/of.h
-@@ -877,6 +877,11 @@ struct device_node *of_resolve_phandles(struct device_node *root,
- int of_overlay_apply_tree(struct device_node *root,
- 			  struct device_node *overlay);
- int of_register_overlay(struct device_node *overlay);
-+int of_process_overlay(struct device_node *root,
-+		    struct device_node *overlay,
-+		    int (*process)(struct device_node *target,
-+				   struct device_node *overlay, void *data),
-+		    void *data);
+@@ -882,6 +882,8 @@ int of_process_overlay(struct device_node *root,
+ 		    int (*process)(struct device_node *target,
+ 				   struct device_node *overlay, void *data),
+ 		    void *data);
++
++int of_firmware_load_overlay(struct device_node *overlay, const char *path);
  #else
  static inline struct device_node *of_resolve_phandles(struct device_node *root,
  					const struct device_node *overlay)
-@@ -895,6 +900,14 @@ static inline int of_register_overlay(struct device_node *overlay)
+@@ -908,6 +910,11 @@ static inline int of_process_overlay(struct device_node *root,
+ {
  	return -ENOSYS;
  }
- 
-+static inline int of_process_overlay(struct device_node *root,
-+				     struct device_node *overlay,
-+				     int (*process)(struct device_node *target,
-+						    struct device_node *overlay, void *data),
-+				     void *data)
++
++static inline int of_firmware_load_overlay(struct device_node *overlay, const char *path)
 +{
 +	return -ENOSYS;
 +}
