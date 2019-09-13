@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1i8lPc-0004oi-ME
- for barebox@lists.infradead.org; Fri, 13 Sep 2019 13:14:59 +0000
+ id 1i8lPc-0004og-MC
+ for barebox@lists.infradead.org; Fri, 13 Sep 2019 13:15:01 +0000
 From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Fri, 13 Sep 2019 15:14:46 +0200
-Message-Id: <20190913131446.8202-9-m.tretter@pengutronix.de>
+Date: Fri, 13 Sep 2019 15:14:40 +0200
+Message-Id: <20190913131446.8202-3-m.tretter@pengutronix.de>
 In-Reply-To: <20190913131446.8202-1-m.tretter@pengutronix.de>
 References: <20190913131446.8202-1-m.tretter@pengutronix.de>
 MIME-Version: 1.0
@@ -21,76 +21,138 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 8/8] dtc: optionally add add __symbols__ to build-in
- devicetree
+Subject: [PATCH v3 2/8] blspec: add support for devicetree overlays
 To: barebox@lists.infradead.org
 Cc: Michael Tretter <m.tretter@pengutronix.de>
 
-The devicetree overlay driver requires the __symbols__ node to resolve
-phandles to the base devicetree. If Barebox has to apply the overlay to
-the live devicetree, the build-in devicetree must be built with the
-__symbols__ node.
+Read the devicetree-overlay property from the blspec entry and register
+the overlays when booting the blspec entry.
 
-It is configurable, because adding __symbols__ significantly increases
-the size of the devicetree binary. When configuring Barebox, a developer
-should be able to enable or disable devicetree overlay support and as
-this only affects the build-in devicetree, which is linked to the image
-anyway, use a Kconfig item for configuring the __symbols__.
+Do not fail the boot if an overlay cannot be loaded, because if Linux
+fails to boot without an overlay, the base device tree is broken.
 
 Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 
 ---
 Changelog:
 
-v2->v3:
-- make __symbols__ configurable
+v2->v3: none
 
-v1->v2: none
+v1->v2:
+- fix error handling in blspec handling
 ---
- drivers/of/Kconfig   | 17 +++++++++++++++++
- scripts/Makefile.lib |  4 ++++
- 2 files changed, 21 insertions(+)
+ Documentation/user/booting-linux.rst |  4 ++
+ common/blspec.c                      | 61 ++++++++++++++++++++++++++++
+ 2 files changed, 65 insertions(+)
 
-diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
-index 1bb6639c5a..fd820b26f5 100644
---- a/drivers/of/Kconfig
-+++ b/drivers/of/Kconfig
-@@ -59,3 +59,20 @@ config OF_OVERLAY
- 	  not patch the live devicetree, but applies the overlays as fixup to
- 	  the devicetree. Furthermore, overlays cannot be removed after they
- 	  have been applied.
-+
-+config OF_OVERLAY_LIVE
-+	depends on OF_OVERLAY
-+	default n
-+	bool "Support devicetree overlays on live devicetree"
-+	help
-+	  This option allows to use devicetree overlays with the live
-+	  devicetree. It is not required to apply overlays to any other
-+	  devicetree.
-+
-+	  This builds the build-in devicetree with __symbols__, which
-+	  significantly increases the size of the dtb file.
-+
-+	  Enable this option only if you actually need the live devicetree
-+	  while applying in the devicetree overlay. This is usually the case if
-+	  applying the overlay has other side effects than changing the
-+	  devicetree.
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index c4d307ae30..ad0484de3a 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -292,6 +292,10 @@ DTC_FLAGS += -Wno-unit_address_vs_reg \
- 	 -Wno-unique_unit_address \
- 	 -Wno-pci_device_reg
+diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/booting-linux.rst
+index 437f4e80ca..12cd505e71 100644
+--- a/Documentation/user/booting-linux.rst
++++ b/Documentation/user/booting-linux.rst
+@@ -232,6 +232,10 @@ device where the entry is found on. This makes it possible to use the same rootf
+ image on different devices without having to specify a different root= option each
+ time.
  
-+ifeq ($(CONFIG_OF_OVERLAY_LIVE), y)
-+DTC_FLAGS += -@
-+endif
++Additionally to the options defined in the original spec, Barebox has the
++``devicetree-overlay`` option. This is a string value that refer to overlays
++that will be applied to the device tree before passing it to Linux.
 +
- # Generate an assembly file to wrap the output of the device tree compiler
- quiet_cmd_dt_S_dtb = DTB     $@
- cmd_dt_S_dtb = $(srctree)/scripts/gen-dtb-s $(subst -,_,$(*F)) $< $(CONFIG_IMD) > $@
+ Network boot
+ ------------
+ 
+diff --git a/common/blspec.c b/common/blspec.c
+index 66e5033e35..fbba2fc78c 100644
+--- a/common/blspec.c
++++ b/common/blspec.c
+@@ -42,6 +42,62 @@ int blspec_entry_var_set(struct blspec_entry *entry, const char *name,
+ 			val ? strlen(val) + 1 : 0, 1);
+ }
+ 
++static int blspec_apply_oftree_overlay(char *file, const char *abspath,
++				       int dryrun)
++{
++	int ret = 0;
++	struct fdt_header *fdt;
++	struct device_node *overlay;
++	char *path;
++
++	path = basprintf("%s/%s", abspath, file);
++
++	fdt = read_file(path, NULL);
++	if (!fdt) {
++		pr_warn("unable to read \"%s\"\n", path);
++		ret = -EINVAL;
++		goto out;
++	}
++
++	overlay = of_unflatten_dtb(fdt);
++	free(fdt);
++	if (IS_ERR(overlay)) {
++		ret = PTR_ERR(overlay);
++		goto out;
++	}
++
++	if (dryrun) {
++		pr_info("dry run: skip overlay %s\n", path);
++		of_delete_node(overlay);
++		goto out;
++	}
++
++	ret = of_register_overlay(overlay);
++	if (ret) {
++		pr_warn("cannot register devicetree overlay \"%s\"\n", path);
++		of_delete_node(overlay);
++	}
++
++out:
++	free(path);
++
++	return ret;
++}
++
++static void blspec_apply_oftree_overlays(const char *overlays,
++					 const char *abspath, int dryrun)
++{
++	char *overlay;
++	char *sep, *freep;
++
++	sep = freep = xstrdup(overlays);
++
++	while ((overlay = strsep(&sep, " ")))
++		blspec_apply_oftree_overlay(overlay, abspath, dryrun);
++
++	free(freep);
++}
++
+ /*
+  * blspec_boot - boot an entry
+  *
+@@ -54,6 +110,7 @@ static int blspec_boot(struct bootentry *be, int verbose, int dryrun)
+ 	struct blspec_entry *entry = container_of(be, struct blspec_entry, entry);
+ 	int ret;
+ 	const char *abspath, *devicetree, *options, *initrd, *linuximage;
++	const char *overlays;
+ 	const char *appendroot;
+ 	struct bootm_data data = {
+ 		.initrd_address = UIMAGE_INVALID_ADDRESS,
+@@ -73,6 +130,7 @@ static int blspec_boot(struct bootentry *be, int verbose, int dryrun)
+ 	initrd = blspec_entry_var_get(entry, "initrd");
+ 	options = blspec_entry_var_get(entry, "options");
+ 	linuximage = blspec_entry_var_get(entry, "linux");
++	overlays = blspec_entry_var_get(entry, "devicetree-overlay");
+ 
+ 	if (entry->rootpath)
+ 		abspath = entry->rootpath;
+@@ -92,6 +150,9 @@ static int blspec_boot(struct bootentry *be, int verbose, int dryrun)
+ 		}
+ 	}
+ 
++	if (overlays)
++		blspec_apply_oftree_overlays(overlays, abspath, dryrun);
++
+ 	if (initrd)
+ 		data.initrd_file = basprintf("%s/%s", abspath, initrd);
+ 
 -- 
 2.20.1
 
