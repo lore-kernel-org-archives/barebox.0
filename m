@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1i8lPc-0004oc-Mp
- for barebox@lists.infradead.org; Fri, 13 Sep 2019 13:15:01 +0000
-From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Fri, 13 Sep 2019 15:14:45 +0200
-Message-Id: <20190913131446.8202-8-m.tretter@pengutronix.de>
-In-Reply-To: <20190913131446.8202-1-m.tretter@pengutronix.de>
-References: <20190913131446.8202-1-m.tretter@pengutronix.de>
+ id 1i919G-0006vk-B1
+ for barebox@lists.infradead.org; Sat, 14 Sep 2019 06:03:07 +0000
+Received: by mail-pl1-x644.google.com with SMTP id d3so14245180plr.1
+ for <barebox@lists.infradead.org>; Fri, 13 Sep 2019 23:03:06 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Fri, 13 Sep 2019 23:02:47 -0700
+Message-Id: <20190914060247.23673-2-andrew.smirnov@gmail.com>
+In-Reply-To: <20190914060247.23673-1-andrew.smirnov@gmail.com>
+References: <20190914060247.23673-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,164 +23,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 7/8] commands: add of_overlay command for device tree
- overlays
+Subject: [PATCH 2/2] ARM: i.MX8MQ: Display UID information on boot
 To: barebox@lists.infradead.org
-Cc: Michael Tretter <m.tretter@pengutronix.de>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Chris Healy <cphealy@gmail.com>
 
-Add a new command "of_overlay" for applying device tree overlays,
-because it does not really fit into any other device tree related
-command and would create a mess with the command options.
-
-Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
-
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: Chris Healy <cphealy@gmail.com>
+Cc: Lucas Stach <l.stach@pengutronix.de>
 ---
-Changelog:
+ arch/arm/mach-imx/imx8mq.c              | 7 +++++++
+ arch/arm/mach-imx/include/mach/imx8mq.h | 2 ++
+ 2 files changed, 9 insertions(+)
 
-v2->v3:
-- select OF_OVERLAY from CMD_OF_OVERLAY
-- fix name of of_firmware_load_overlay()
-
-v1->v2: none
----
- commands/Kconfig      | 12 ++++++
- commands/Makefile     |  1 +
- commands/of_overlay.c | 89 +++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 102 insertions(+)
- create mode 100644 commands/of_overlay.c
-
-diff --git a/commands/Kconfig b/commands/Kconfig
-index e03110fd46..298e0fb9e9 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -2088,6 +2088,18 @@ config CMD_OF_FIXUP_STATUS
- 	  Register a fixup to enable or disable a device tree node.
- 	  Nodes are enabled on default. Disabled with -d.
+diff --git a/arch/arm/mach-imx/imx8mq.c b/arch/arm/mach-imx/imx8mq.c
+index 089344528d..d06ba098c3 100644
+--- a/arch/arm/mach-imx/imx8mq.c
++++ b/arch/arm/mach-imx/imx8mq.c
+@@ -20,6 +20,7 @@
+ #include <mach/revision.h>
+ #include <mach/imx8mq.h>
+ #include <mach/reset-reason.h>
++#include <mach/ocotp.h>
  
-+config CMD_OF_OVERLAY
-+	tristate
-+	select OF_OVERLAY
-+	prompt "of_overlay"
-+	help
-+	  of_overlay - register device tree overlay as fixup
-+
-+	  Usage: of_overlay [-S path] FILE
-+
-+	  Options:
-+		  -S path	load firmware using this search path
-+
- config CMD_OFTREE
- 	tristate
- 	select OFTREE
-diff --git a/commands/Makefile b/commands/Makefile
-index 5cd35b78a7..ebdc437e55 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -78,6 +78,7 @@ obj-$(CONFIG_CMD_OF_NODE)	+= of_node.o
- obj-$(CONFIG_CMD_OF_DUMP)	+= of_dump.o
- obj-$(CONFIG_CMD_OF_DISPLAY_TIMINGS)	+= of_display_timings.o
- obj-$(CONFIG_CMD_OF_FIXUP_STATUS)	+= of_fixup_status.o
-+obj-$(CONFIG_CMD_OF_OVERLAY)	+= of_overlay.o
- obj-$(CONFIG_CMD_MAGICVAR)	+= magicvar.o
- obj-$(CONFIG_CMD_IOMEM)		+= iomemport.o
- obj-$(CONFIG_CMD_LINUX_EXEC)	+= linux_exec.o
-diff --git a/commands/of_overlay.c b/commands/of_overlay.c
-new file mode 100644
-index 0000000000..de3c3dcee5
---- /dev/null
-+++ b/commands/of_overlay.c
-@@ -0,0 +1,89 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (c) 2019 Michael Tretter <m.tretter@pengutronix.de>, Pengutronix
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+
-+#include <command.h>
-+#include <common.h>
-+#include <environment.h>
-+#include <fdt.h>
-+#include <firmware.h>
-+#include <fs.h>
-+#include <getopt.h>
-+#include <libfile.h>
-+#include <of.h>
-+
-+static int do_of_overlay(int argc, char *argv[])
+ #include <linux/iopoll.h>
+ #include <linux/arm-smccc.h>
+@@ -27,6 +28,11 @@
+ #define FSL_SIP_BUILDINFO			0xC2000003
+ #define FSL_SIP_BUILDINFO_GET_COMMITHASH	0x00
+ 
++u64 imx8mq_uid(void)
 +{
-+	int opt, ret;
-+	struct fdt_header *fdt;
-+	struct device_node *overlay;
-+	const char *search_path = NULL;
-+
-+	while ((opt = getopt(argc, argv, "S:")) > 0) {
-+		switch (opt) {
-+		case 'S':
-+			search_path = optarg;
-+			break;
-+		default:
-+			return COMMAND_ERROR_USAGE;
-+		}
-+	}
-+
-+	if (argc != optind + 1)
-+		return COMMAND_ERROR_USAGE;
-+
-+	fdt = read_file(argv[optind], NULL);
-+	if (!fdt) {
-+		printf("cannot read %s\n", argv[optind]);
-+		return 1;
-+	}
-+
-+	overlay = of_unflatten_dtb(fdt);
-+	free(fdt);
-+	if (IS_ERR(overlay))
-+		return PTR_ERR(overlay);
-+
-+	if (search_path) {
-+		ret = of_firmware_load_overlay(overlay, search_path);
-+		if (ret)
-+			goto err;
-+	}
-+
-+	ret = of_register_overlay(overlay);
-+	if (ret) {
-+		printf("cannot apply oftree overlay: %s\n", strerror(-ret));
-+		goto err;
-+	}
-+
-+	return 0;
-+
-+err:
-+	of_delete_node(overlay);
-+	return ret;
++	return imx_ocotp_read_uid(IOMEM(MX8MQ_OCOTP_BASE_ADDR));
 +}
 +
-+BAREBOX_CMD_HELP_START(of_overlay)
-+BAREBOX_CMD_HELP_TEXT("Options:")
-+BAREBOX_CMD_HELP_OPT("-S path", "load firmware using this search path")
-+BAREBOX_CMD_HELP_END
+ int imx8mq_init(void)
+ {
+ 	void __iomem *anatop = IOMEM(MX8MQ_ANATOP_BASE_ADDR);
+@@ -52,6 +58,7 @@ int imx8mq_init(void)
+ 	 * Reset reasons seem to be identical to that of i.MX7
+ 	 */
+ 	imx_set_reset_reason(src + IMX7_SRC_SRSR, imx7_reset_reasons);
++	pr_info("%s unique ID: %llx\n", cputypestr, imx8mq_uid());
+ 
+ 	if (IS_ENABLED(CONFIG_ARM_SMCCC) &&
+ 	    IS_ENABLED(CONFIG_FIRMWARE_IMX8MQ_ATF)) {
+diff --git a/arch/arm/mach-imx/include/mach/imx8mq.h b/arch/arm/mach-imx/include/mach/imx8mq.h
+index 08dc06fdb4..c085894ef7 100644
+--- a/arch/arm/mach-imx/include/mach/imx8mq.h
++++ b/arch/arm/mach-imx/include/mach/imx8mq.h
+@@ -49,4 +49,6 @@ static inline int imx8mq_cpu_revision(void)
+ 	return revision;
+ }
+ 
++u64 imx8mq_uid(void);
 +
-+BAREBOX_CMD_START(of_overlay)
-+	.cmd = do_of_overlay,
-+	BAREBOX_CMD_DESC("register device tree overlay as fixup")
-+	BAREBOX_CMD_OPTS("[-S path] FILE")
-+	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
-+	BAREBOX_CMD_HELP(cmd_of_overlay_help)
-+BAREBOX_CMD_END
+ #endif /* __MACH_IMX8_H */
+\ No newline at end of file
 -- 
-2.20.1
+2.21.0
 
 
 _______________________________________________
