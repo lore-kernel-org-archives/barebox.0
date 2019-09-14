@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
+Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1i91Pb-0002sT-5K
- for barebox@lists.infradead.org; Sat, 14 Sep 2019 06:20:00 +0000
-Received: by mail-pf1-x442.google.com with SMTP id 205so19424643pfw.2
- for <barebox@lists.infradead.org>; Fri, 13 Sep 2019 23:19:53 -0700 (PDT)
+ id 1i91Pb-0002sk-FV
+ for barebox@lists.infradead.org; Sat, 14 Sep 2019 06:20:02 +0000
+Received: by mail-pf1-x441.google.com with SMTP id w22so19417035pfi.9
+ for <barebox@lists.infradead.org>; Fri, 13 Sep 2019 23:19:54 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 13 Sep 2019 23:19:39 -0700
-Message-Id: <20190914061943.4715-4-andrew.smirnov@gmail.com>
+Date: Fri, 13 Sep 2019 23:19:40 -0700
+Message-Id: <20190914061943.4715-5-andrew.smirnov@gmail.com>
 In-Reply-To: <20190914061943.4715-1-andrew.smirnov@gmail.com>
 References: <20190914061943.4715-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,58 +23,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/8] ARM: zii-imx6-rdu2: Swith to using compressed DTB
+Subject: [PATCH 5/8] ARM: zii-imx7d-dev: Swith to using compressed DTB
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Reduces image size by ~100K (from 699K to 598K) on my test
+Reduces image size by 68K (from 652K to 584K) on my test
 configuration.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/boards/zii-imx6q-rdu2/lowlevel.c | 8 ++++----
- arch/arm/mach-imx/Kconfig                 | 1 +
+ arch/arm/boards/zii-imx7d-dev/lowlevel.c | 8 ++++----
+ arch/arm/mach-imx/Kconfig                | 1 +
  2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/boards/zii-imx6q-rdu2/lowlevel.c b/arch/arm/boards/zii-imx6q-rdu2/lowlevel.c
-index 3f5d90b61d..87e634509f 100644
---- a/arch/arm/boards/zii-imx6q-rdu2/lowlevel.c
-+++ b/arch/arm/boards/zii-imx6q-rdu2/lowlevel.c
-@@ -263,8 +263,8 @@ static inline void setup_uart(void)
- 	putc_ll('>');
- }
+diff --git a/arch/arm/boards/zii-imx7d-dev/lowlevel.c b/arch/arm/boards/zii-imx7d-dev/lowlevel.c
+index 3ad4940da8..3bacfd0c7d 100644
+--- a/arch/arm/boards/zii-imx7d-dev/lowlevel.c
++++ b/arch/arm/boards/zii-imx7d-dev/lowlevel.c
+@@ -18,8 +18,8 @@
+ #include <asm/cache.h>
+ #include <mach/esdctl.h>
  
--extern char __dtb_imx6q_zii_rdu2_start[];
--extern char __dtb_imx6qp_zii_rdu2_start[];
-+extern char __dtb_z_imx6q_zii_rdu2_start[];
-+extern char __dtb_z_imx6qp_zii_rdu2_start[];
+-extern char __dtb_imx7d_zii_rpu2_start[];
+-extern char __dtb_imx7d_zii_rmu2_start[];
++extern char __dtb_z_imx7d_zii_rpu2_start[];
++extern char __dtb_z_imx7d_zii_rmu2_start[];
  
- static noinline void rdu2_sram_setup(void)
+ static inline void setup_uart(void)
  {
-@@ -304,9 +304,9 @@ ENTRY_FUNCTION(start_imx6_zii_rdu2, r0, r1, r2)
- 		rdu2_sram_setup();
+@@ -97,10 +97,10 @@ ENTRY_FUNCTION(start_zii_imx7d_dev, r0, r1, r2)
+ 		}
+ 		/* FALLTHROUGH */
+ 	case ZII_PLATFORM_IMX7D_RPU2:
+-		fdt = __dtb_imx7d_zii_rpu2_start;
++		fdt = __dtb_z_imx7d_zii_rpu2_start;
+ 		break;
+ 	case ZII_PLATFORM_IMX7D_RMU2:
+-		fdt = __dtb_imx7d_zii_rmu2_start;
++		fdt = __dtb_z_imx7d_zii_rmu2_start;
+ 		break;
+ 	}
  
- 	if (__imx6_cpu_type() == IMX6_CPUTYPE_IMX6QP)
--		imx6q_barebox_entry(__dtb_imx6qp_zii_rdu2_start +
-+		imx6q_barebox_entry(__dtb_z_imx6qp_zii_rdu2_start +
- 				    get_runtime_offset());
- 	else
--		imx6q_barebox_entry(__dtb_imx6q_zii_rdu2_start +
-+		imx6q_barebox_entry(__dtb_z_imx6q_zii_rdu2_start +
- 				    get_runtime_offset());
- }
 diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index db072caad9..a84a8abc21 100644
+index a84a8abc21..e0ec1f8e2b 100644
 --- a/arch/arm/mach-imx/Kconfig
 +++ b/arch/arm/mach-imx/Kconfig
-@@ -453,6 +453,7 @@ config MACH_ZII_RDU2
- 	select ARCH_IMX6
- 	select MCI_IMX_ESDHC_PBL
- 	select MACH_ZII_COMMON
+@@ -474,6 +474,7 @@ config MACH_ZII_VF610_DEV
+ config MACH_ZII_IMX7D_DEV
+ 	bool "ZII i.MX7D based devices"
+ 	select ARCH_IMX7
 +	select ARM_USE_COMPRESSED_DTB
  
- config MACH_ZII_IMX8MQ_DEV
- 	bool "ZII i.MX8MQ based devices"
+ config MACH_PHYTEC_PHYCORE_IMX7
+ 	bool "Phytec phyCORE i.MX7"
 -- 
 2.21.0
 
