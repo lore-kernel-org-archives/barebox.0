@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
+Received: from mail-pg1-x544.google.com ([2607:f8b0:4864:20::544])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1i91PU-0002sC-Jj
- for barebox@lists.infradead.org; Sat, 14 Sep 2019 06:19:53 +0000
-Received: by mail-pg1-x541.google.com with SMTP id u72so16411080pgb.10
- for <barebox@lists.infradead.org>; Fri, 13 Sep 2019 23:19:52 -0700 (PDT)
+ id 1i91PX-0002sB-H3
+ for barebox@lists.infradead.org; Sat, 14 Sep 2019 06:19:56 +0000
+Received: by mail-pg1-x544.google.com with SMTP id x15so16423561pgg.8
+ for <barebox@lists.infradead.org>; Fri, 13 Sep 2019 23:19:51 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 13 Sep 2019 23:19:38 -0700
-Message-Id: <20190914061943.4715-3-andrew.smirnov@gmail.com>
+Date: Fri, 13 Sep 2019 23:19:37 -0700
+Message-Id: <20190914061943.4715-2-andrew.smirnov@gmail.com>
 In-Reply-To: <20190914061943.4715-1-andrew.smirnov@gmail.com>
 References: <20190914061943.4715-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,89 +23,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/8] ARM: zii-vf610-dev: Swith to using compressed DTB
+Subject: [PATCH 2/8] ARM: zii-imx8mq-dev: Switch to using compressed DTB
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Reduces image size by ~150K (from 765K to 612K) on my test
+Reduces image size by ~50K (from 547K to 496K) on my test
 configuration.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/boards/zii-vf610-dev/lowlevel.c | 28 ++++++++++++------------
- arch/arm/mach-imx/Kconfig                |  1 +
- 2 files changed, 15 insertions(+), 14 deletions(-)
+ arch/arm/boards/zii-imx8mq-dev/lowlevel.c | 8 ++++----
+ arch/arm/mach-imx/Kconfig                 | 1 +
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/boards/zii-vf610-dev/lowlevel.c b/arch/arm/boards/zii-vf610-dev/lowlevel.c
-index b320fbc0cf..9b57581d1b 100644
---- a/arch/arm/boards/zii-vf610-dev/lowlevel.c
-+++ b/arch/arm/boards/zii-vf610-dev/lowlevel.c
-@@ -75,13 +75,13 @@ static unsigned int get_system_type(void)
- 	return pdir;
+diff --git a/arch/arm/boards/zii-imx8mq-dev/lowlevel.c b/arch/arm/boards/zii-imx8mq-dev/lowlevel.c
+index 8442beb4f4..795c98cb66 100644
+--- a/arch/arm/boards/zii-imx8mq-dev/lowlevel.c
++++ b/arch/arm/boards/zii-imx8mq-dev/lowlevel.c
+@@ -117,8 +117,8 @@ static unsigned int get_system_type(void)
+ 	return FIELD_GET(SYSTEM_TYPE, dr);
  }
  
--extern char __dtb_vf610_zii_dev_rev_b_start[];
--extern char __dtb_vf610_zii_dev_rev_c_start[];
--extern char __dtb_vf610_zii_cfu1_start[];
--extern char __dtb_vf610_zii_ssmb_spu3_start[];
--extern char __dtb_vf610_zii_scu4_aib_start[];
--extern char __dtb_vf610_zii_ssmb_dtu_start[];
--extern char __dtb_vf610_zii_spb4_start[];
-+extern char __dtb_z_vf610_zii_dev_rev_b_start[];
-+extern char __dtb_z_vf610_zii_dev_rev_c_start[];
-+extern char __dtb_z_vf610_zii_cfu1_start[];
-+extern char __dtb_z_vf610_zii_ssmb_spu3_start[];
-+extern char __dtb_z_vf610_zii_scu4_aib_start[];
-+extern char __dtb_z_vf610_zii_ssmb_dtu_start[];
-+extern char __dtb_z_vf610_zii_spb4_start[];
+-extern char __dtb_imx8mq_zii_ultra_rmb3_start[];
+-extern char __dtb_imx8mq_zii_ultra_zest_start[];
++extern char __dtb_z_imx8mq_zii_ultra_rmb3_start[];
++extern char __dtb_z_imx8mq_zii_ultra_zest_start[];
  
- ENTRY_FUNCTION(start_zii_vf610_dev, r0, r1, r2)
+ static __noreturn noinline void zii_imx8mq_dev_start(void)
  {
-@@ -105,25 +105,25 @@ ENTRY_FUNCTION(start_zii_vf610_dev, r0, r1, r2)
- 			puts_ll("*********************************\n");
+@@ -163,10 +163,10 @@ static __noreturn noinline void zii_imx8mq_dev_start(void)
  		}
- 	case ZII_PLATFORM_VF610_DEV_REV_B: /* FALLTHROUGH */
--		fdt = __dtb_vf610_zii_dev_rev_b_start;
-+		fdt = __dtb_z_vf610_zii_dev_rev_b_start;
+ 		/* FALLTHROUGH */
+ 	case ZII_PLATFORM_IMX8MQ_ULTRA_RMB3:
+-		fdt = __dtb_imx8mq_zii_ultra_rmb3_start;
++		fdt = __dtb_z_imx8mq_zii_ultra_rmb3_start;
  		break;
- 	case ZII_PLATFORM_VF610_SCU4_AIB:
--		fdt = __dtb_vf610_zii_scu4_aib_start;
-+		fdt = __dtb_z_vf610_zii_scu4_aib_start;
- 		break;
- 	case ZII_PLATFORM_VF610_DEV_REV_C:
--		fdt = __dtb_vf610_zii_dev_rev_c_start;
-+		fdt = __dtb_z_vf610_zii_dev_rev_c_start;
- 		break;
- 	case ZII_PLATFORM_VF610_CFU1:
--		fdt = __dtb_vf610_zii_cfu1_start;
-+		fdt = __dtb_z_vf610_zii_cfu1_start;
- 		break;
- 	case ZII_PLATFORM_VF610_SSMB_SPU3:
--		fdt = __dtb_vf610_zii_ssmb_spu3_start;
-+		fdt = __dtb_z_vf610_zii_ssmb_spu3_start;
- 		break;
- 	case ZII_PLATFORM_VF610_SPB4:
--		fdt = __dtb_vf610_zii_spb4_start;
-+		fdt = __dtb_z_vf610_zii_spb4_start;
- 		break;
- 	case ZII_PLATFORM_VF610_SSMB_DTU:
--		fdt = __dtb_vf610_zii_ssmb_dtu_start;
-+		fdt = __dtb_z_vf610_zii_ssmb_dtu_start;
+ 	case ZII_PLATFORM_IMX8MQ_ULTRA_ZEST:
+-		fdt = __dtb_imx8mq_zii_ultra_zest_start;
++		fdt = __dtb_z_imx8mq_zii_ultra_zest_start;
  		break;
  	}
  
 diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index b61c44a07a..db072caad9 100644
+index e7721621ab..b61c44a07a 100644
 --- a/arch/arm/mach-imx/Kconfig
 +++ b/arch/arm/mach-imx/Kconfig
-@@ -468,6 +468,7 @@ config MACH_ZII_VF610_DEV
- 	bool "ZII VF610 Dev Family"
- 	select ARCH_VF610
- 	select CLKDEV_LOOKUP
+@@ -462,6 +462,7 @@ config MACH_ZII_IMX8MQ_DEV
+ 	select ARM_SMCCC
+ 	select MCI_IMX_ESDHC_PBL
+ 	select MACH_ZII_COMMON
 +	select ARM_USE_COMPRESSED_DTB
  
- config MACH_ZII_IMX7D_DEV
- 	bool "ZII i.MX7D based devices"
+ config MACH_ZII_VF610_DEV
+ 	bool "ZII VF610 Dev Family"
 -- 
 2.21.0
 
