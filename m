@@ -1,21 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from stcim.de ([2a01:4f8:120:63a3::2])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iA8MF-0007uI-D7
- for barebox@lists.infradead.org; Tue, 17 Sep 2019 07:57:08 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1iA8ME-0002gO-12
- for barebox@lists.infradead.org; Tue, 17 Sep 2019 09:57:06 +0200
-Received: from str by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1iA8MD-0006eb-PH
- for barebox@lists.infradead.org; Tue, 17 Sep 2019 09:57:05 +0200
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Tue, 17 Sep 2019 09:57:02 +0200
-Message-Id: <20190917075702.25104-2-s.trumtrar@pengutronix.de>
-In-Reply-To: <20190917075702.25104-1-s.trumtrar@pengutronix.de>
-References: <20190917075702.25104-1-s.trumtrar@pengutronix.de>
+ id 1i9aEz-000416-K9
+ for barebox@lists.infradead.org; Sun, 15 Sep 2019 19:31:23 +0000
+Received: from xdsl-87-79-171-119.nc.de ([87.79.171.119]
+ helo=localhost.localdomain)
+ by stcim with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.89) (envelope-from <contact@stefanchrist.eu>)
+ id 1i9aEt-0006jj-5K
+ for barebox@lists.infradead.org; Sun, 15 Sep 2019 21:31:15 +0200
+From: Stefan Lengfeld <contact@stefanchrist.eu>
+Date: Sun, 15 Sep 2019 21:31:14 +0200
+Message-Id: <20190915193114.3243-1-contact@stefanchrist.eu>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -29,41 +25,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ARM: Layerscape: ls1046a: enable GPIOs
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] docs: add python version in shebang
+To: barebox@lists.infradead.org
 
-Enable GPIOs on LS1046a.
+On my machine 'make docs' fails with
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+    Traceback (most recent call last):
+      File "/home/stc/git/barebox/Documentation/gen_commands.py", line 156, in <module>
+        parse_c(source)
+      File "/home/stc/git/barebox/Documentation/gen_commands.py", line 34, in parse_c
+        for line in file(name, 'r'):
+    NameError: name 'file' is not defined
+
+because /usr/bin/python points to python3 instead of python2. Fix this
+by including the language version in the shebang of the script.
+
+Signed-off-by: Stefan Lengfeld <contact@stefanchrist.eu>
 ---
- arch/arm/dts/fsl-ls1046a-rdb.dts | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ Documentation/gen_commands.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/dts/fsl-ls1046a-rdb.dts b/arch/arm/dts/fsl-ls1046a-rdb.dts
-index e16948bc8a51..e3ae75e42dd5 100644
---- a/arch/arm/dts/fsl-ls1046a-rdb.dts
-+++ b/arch/arm/dts/fsl-ls1046a-rdb.dts
-@@ -29,6 +29,18 @@
- 	};
- };
+diff --git a/Documentation/gen_commands.py b/Documentation/gen_commands.py
+index 6251b4f22..b46165882 100755
+--- a/Documentation/gen_commands.py
++++ b/Documentation/gen_commands.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/env python2
  
-+&gpio0 {
-+	status = "okay";
-+};
-+
-+&gpio1 {
-+	status = "okay";
-+};
-+
-+&gpio2 {
-+	status = "okay";
-+};
-+
- &fman0 {
- 	ethernet@e0000 {
- 		status = "disabled";
+ import errno
+ import os
 -- 
-2.23.0
+2.21.0
 
 
 _______________________________________________
