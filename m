@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1i9lPy-0006w4-L3
- for barebox@lists.infradead.org; Mon, 16 Sep 2019 07:27:27 +0000
+ id 1i9lQ5-00070g-VW
+ for barebox@lists.infradead.org; Mon, 16 Sep 2019 07:27:35 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 16 Sep 2019 09:27:15 +0200
-Message-Id: <20190916072721.12392-1-s.hauer@pengutronix.de>
+Date: Mon, 16 Sep 2019 09:27:16 +0200
+Message-Id: <20190916072721.12392-2-s.hauer@pengutronix.de>
+In-Reply-To: <20190916072721.12392-1-s.hauer@pengutronix.de>
+References: <20190916072721.12392-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,72 +21,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/6] ARM: Merge single PBL code into multi PBL code
+Subject: [PATCH 1/6] ARM: remove PBL_FORCE_PIGGYDATA_COPY
 To: Barebox List <barebox@lists.infradead.org>
 
-Hi All,
+This option is unused in the tree, remove it for now. If you need this
+option, let me know, we'll find another solution.
 
-This series merges the single PBL code into the multi PBL code. Some
-preparations are needed, but in the end the single PBL code just
-vanishes leaving a simpler startup path. The last patch is a rebased
-version of Andreys patch he recently sent.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/cpu/start-pbl.c | 13 -------------
+ pbl/Kconfig              |  8 --------
+ 2 files changed, 21 deletions(-)
 
-Sascha
-
-Andrey Smirnov (1):
-  ARM: aarch64: Re-implement most of barebox_arm_entry() in assembly
-
-Sascha Hauer (5):
-  ARM: remove PBL_FORCE_PIGGYDATA_COPY
-  ARM: Compile dtbs for lowlevel code
-  ARM: drop bultin DTB
-  ARM: Merge single pbl with multi pbl
-  ARM: remove now unused PBL code
-
- Makefile                                      |   2 +-
- arch/arm/Kconfig                              |  14 --
- arch/arm/Makefile                             |   8 -
- arch/arm/boards/canon-a1100/lowlevel.c        |   9 +-
- arch/arm/boards/module-mb7707/lowlevel.c      |   8 +-
- arch/arm/boards/versatile/lowlevel.c          |   9 +-
- arch/arm/boards/virt2real/lowlevel.c          |   8 +-
- arch/arm/configs/canon-a1100_defconfig        |   1 -
- arch/arm/configs/module-mb7707_defconfig      |   1 -
- .../arm/configs/versatilepb_arm1176_defconfig |   2 -
- arch/arm/configs/versatilepb_defconfig        |   2 -
- arch/arm/configs/virt2real_defconfig          |   1 -
- arch/arm/cpu/Makefile                         |   7 +-
- arch/arm/cpu/dtb.c                            |   6 -
- arch/arm/cpu/entry.c                          |  23 ++-
- arch/arm/cpu/entry.h                          |  10 +-
- arch/arm/cpu/entry_ll.S                       |  25 +++
- arch/arm/cpu/entry_ll_64.S                    |  23 +++
- arch/arm/cpu/start-pbl.c                      | 109 ----------
- arch/arm/cpu/uncompress.c                     |  17 +-
- arch/arm/dts/Makefile                         | 195 +++++++++---------
- arch/arm/include/asm/common.h                 |   3 +-
- arch/arm/pbl/.gitignore                       |   9 -
- arch/arm/pbl/Makefile                         |  61 ------
- arch/arm/pbl/piggy.comp_copy.S                |   6 -
- arch/arm/pbl/piggy.gzip.S                     |   6 -
- arch/arm/pbl/piggy.lz4.S                      |   6 -
- arch/arm/pbl/piggy.lzo.S                      |   6 -
- arch/arm/pbl/piggy.xzkern.S                   |   6 -
- images/Makefile                               |   7 +
- pbl/Kconfig                                   |   8 -
- scripts/Makefile.lib                          |   4 +-
- 32 files changed, 218 insertions(+), 384 deletions(-)
- create mode 100644 arch/arm/cpu/entry_ll.S
- create mode 100644 arch/arm/cpu/entry_ll_64.S
- delete mode 100644 arch/arm/cpu/start-pbl.c
- delete mode 100644 arch/arm/pbl/.gitignore
- delete mode 100644 arch/arm/pbl/Makefile
- delete mode 100644 arch/arm/pbl/piggy.comp_copy.S
- delete mode 100644 arch/arm/pbl/piggy.gzip.S
- delete mode 100644 arch/arm/pbl/piggy.lz4.S
- delete mode 100644 arch/arm/pbl/piggy.lzo.S
- delete mode 100644 arch/arm/pbl/piggy.xzkern.S
-
+diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
+index 796239d902..0006f40d55 100644
+--- a/arch/arm/cpu/start-pbl.c
++++ b/arch/arm/cpu/start-pbl.c
+@@ -52,7 +52,6 @@ extern void *input_data_end;
+ __noreturn void barebox_single_pbl_start(unsigned long membase,
+ 		unsigned long memsize, void *boarddata)
+ {
+-	unsigned long offset;
+ 	unsigned long pg_start, pg_end, pg_len, uncompressed_len;
+ 	void __noreturn (*barebox)(unsigned long, unsigned long, void *);
+ 	unsigned long endmem = membase + memsize;
+@@ -61,9 +60,6 @@ __noreturn void barebox_single_pbl_start(unsigned long membase,
+ 	if (IS_ENABLED(CONFIG_PBL_RELOCATABLE))
+ 		relocate_to_current_adr();
+ 
+-	/* Get offset between linked address and runtime address */
+-	offset = get_runtime_offset();
+-
+ 	pg_start = (unsigned long)&input_data + global_variable_offset();
+ 	pg_end = (unsigned long)&input_data_end + global_variable_offset();
+ 	pg_len = pg_end - pg_start;
+@@ -74,15 +70,6 @@ __noreturn void barebox_single_pbl_start(unsigned long membase,
+ 	else
+ 		barebox_base = TEXT_BASE;
+ 
+-	if (offset && (IS_ENABLED(CONFIG_PBL_FORCE_PIGGYDATA_COPY) ||
+-				region_overlap(pg_start, pg_len, barebox_base, pg_len * 4))) {
+-		/*
+-		 * copy piggydata binary to its link address
+-		 */
+-		memcpy(&input_data, (void *)pg_start, pg_len);
+-		pg_start = (uint32_t)&input_data;
+-	}
+-
+ 	setup_c();
+ 
+ 	if (IS_ENABLED(CONFIG_MMU_EARLY)) {
+diff --git a/pbl/Kconfig b/pbl/Kconfig
+index 7e6077f96d..6e8cc3ac04 100644
+--- a/pbl/Kconfig
++++ b/pbl/Kconfig
+@@ -24,14 +24,6 @@ config PBL_SINGLE_IMAGE
+ 	depends on !HAVE_PBL_MULTI_IMAGES
+ 	default y
+ 
+-config PBL_FORCE_PIGGYDATA_COPY
+-	bool
+-	help
+-	  In some case we need to copy the PIGGYDATA as the link address
+-	  as example we run from SRAM and shutdown the SDRAM/DDR for
+-	  reconfiguration but most of the time we just need to copy the
+-	  executable code.
+-
+ if PBL_IMAGE
+ 
+ config PBL_RELOCATABLE
 -- 
 2.23.0
 
