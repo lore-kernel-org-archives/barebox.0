@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1i9lPy-0006w6-L4
- for barebox@lists.infradead.org; Mon, 16 Sep 2019 07:27:28 +0000
+ id 1i9lQ6-00070h-13
+ for barebox@lists.infradead.org; Mon, 16 Sep 2019 07:27:35 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 16 Sep 2019 09:27:21 +0200
-Message-Id: <20190916072721.12392-7-s.hauer@pengutronix.de>
+Date: Mon, 16 Sep 2019 09:27:20 +0200
+Message-Id: <20190916072721.12392-6-s.hauer@pengutronix.de>
 In-Reply-To: <20190916072721.12392-1-s.hauer@pengutronix.de>
 References: <20190916072721.12392-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -17,106 +17,209 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/6] ARM: aarch64: Re-implement most of barebox_arm_entry() in
- assembly
+Subject: [PATCH 5/6] ARM: remove now unused PBL code
 To: Barebox List <barebox@lists.infradead.org>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-RnJvbTogQW5kcmV5IFNtaXJub3YgPGFuZHJldy5zbWlybm92QGdtYWlsLmNvbT4KCkdDQzkgbm93
-IHByb2R1Y2VzIHRoZSBmb2xsb3dpbmcgd2FybmluZzoKCmNvbW1vbi5oOjUxOjI6IHdhcm5pbmc6
-IGxpc3RpbmcgdGhlIHN0YWNrIHBvaW50ZXIgcmVnaXN0ZXIg4oCYc3DigJkgaW4gYSBjbG9iYmVy
-IGxpc3QgaXMgZGVwcmVjYXRlZCBbLVdkZXByZWNhdGVkXQogICA1MSB8ICBfX2FzbV9fIF9fdm9s
-YXRpbGVfXygibW92IHNwLCAlMCIKICAgICAgfCAgXn5+fn5+fgpjb21tb24uaDo1MToyOiBub3Rl
-OiB0aGUgdmFsdWUgb2YgdGhlIHN0YWNrIHBvaW50ZXIgYWZ0ZXIgIGFuIOKAmGFzbeKAmSBzdGF0
-ZW1lbnQgbXVzdCBiZSB0aGUgc2FtZSBhcyBpdCB3YXMgYmVmb3JlIHRoZSBzdGF0ZW1lbnQKClN0
-YWNrIHBvaW50ZXIgd2FzIGFkZGVkIHRvIGNsb2JiZXIgbGlzdCBpbiBjb21taXQgZjlmYzgyNTRi
-MiAoIkFSTToKTWFyayBTUCBhcyBiZWluZyBjbG9iYmVyZWQgaW4gYXJtX3NldHVwX3N0YWNrKCki
-KSB0byBwcmV2ZW50IEdDQyBmcm9tCmdlbmVyYXRpbmcgY29kZSB0aGF0IHdvdWxkIGNvcnJ1cHQg
-J2JvYXJkZGF0YScgcG9pbnRlciBieSB0cnlpbmcgdG8KcmVzdG9yZSBpdCBmcm9tIGludmFsaWQg
-c3RhY2sgZnJhbWUuCgpJbnRlcmVzdGluZ2x5IGVub3VnaCwgc2VlbWluZ2x5IHVucmVsYXRlZCBj
-aGFuZ2UgaW4gY29tbWl0CjY0ZDk1ODk2Y2YgKCJBUk06IGFhcmNoNjQ6IGNvbXBpbGUgd2l0aCBn
-ZW5lcmFsLXJlZ3Mtb25seSIpIGNoYW5nZWQKZ2VuZXJhdGVkIGNvZGUgc3VjaCB0aGF0IGFkZGlu
-ZyBTUCB0byBjbG9iYmVyIGxpc3QgYmVjYW1lIG5vIGxvbmdlcgpuZWNlc3NhcnkuCgpXaGlsZSB0
-aGUgYWJvdmUgY2FuIHByb2JhYmx5IGJlIGEgZml4IGJ5IGl0c2VsZiwgaXQgc2VlbXMgYSBiZXR0
-ZXIgYW5kCm1vcmUgZnV0dXJlIHByb29mIGFwcHJvYWNoIHdvdWxkIGJlIHRvIGFkZHJlc3MgdGhl
-IHByb2JsZW0gYXQgaXRzIHJvb3QKYW5kIHJlLWltcGxlbWVudCBvZmZlbmRpbmcgc3RhcnR1cCBz
-ZXF1ZW5jZSBpbiBhc3NlbWJseS4KClNpZ25lZC1vZmYtYnk6IEFuZHJleSBTbWlybm92IDxhbmRy
-ZXcuc21pcm5vdkBnbWFpbC5jb20+ClNpZ25lZC1vZmYtYnk6IFNhc2NoYSBIYXVlciA8cy5oYXVl
-ckBwZW5ndXRyb25peC5kZT4KLS0tCiBhcmNoL2FybS9jcHUvTWFrZWZpbGUgICAgICAgICB8ICA0
-ICsrLS0KIGFyY2gvYXJtL2NwdS9lbnRyeS5jICAgICAgICAgIHwgMjEgKysrKysrKysrKysrKy0t
-LS0tLS0tCiBhcmNoL2FybS9jcHUvZW50cnlfbGwuUyAgICAgICB8IDI1ICsrKysrKysrKysrKysr
-KysrKysrKysrKysKIGFyY2gvYXJtL2NwdS9lbnRyeV9sbF82NC5TICAgIHwgMjMgKysrKysrKysr
-KysrKysrKysrKysrKysKIGFyY2gvYXJtL2luY2x1ZGUvYXNtL2NvbW1vbi5oIHwgIDMgKy0tCiA1
-IGZpbGVzIGNoYW5nZWQsIDY0IGluc2VydGlvbnMoKyksIDEyIGRlbGV0aW9ucygtKQogY3JlYXRl
-IG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2NwdS9lbnRyeV9sbC5TCiBjcmVhdGUgbW9kZSAxMDA2NDQg
-YXJjaC9hcm0vY3B1L2VudHJ5X2xsXzY0LlMKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9jcHUvTWFr
-ZWZpbGUgYi9hcmNoL2FybS9jcHUvTWFrZWZpbGUKaW5kZXggZTZhMWEzMjFkYy4uZTBiMTY3NDdh
-ZCAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vY3B1L01ha2VmaWxlCisrKyBiL2FyY2gvYXJtL2NwdS9N
-YWtlZmlsZQpAQCAtOCw3ICs4LDcgQEAgb2JqLXBibC0kKENPTkZJR19DUFVfMzJ2NykgKz0gaHlw
-Lm8KIEFGTEFHU19oeXAubyA6PS1XYSwtbWFyY2g9YXJtdjctYSAtV2EsLW1jcHU9YWxsCiBBRkxB
-R1NfcGJsLWh5cC5vIDo9LVdhLC1tYXJjaD1hcm12Ny1hIC1XYSwtbWNwdT1hbGwKIAotb2JqLXkg
-Kz0gc3RhcnQubyBlbnRyeS5vCitvYmoteSArPSBzdGFydC5vIGVudHJ5Lm8gZW50cnlfbGwkKFM2
-NCkubwogCiBwYmwtJChDT05GSUdfQk9BUkRfQVJNX0dFTkVSSUNfRFQpICs9IGJvYXJkLWR0LTJu
-ZC5vCiBwYmwtJChDT05GSUdfQk9BUkRfQVJNX0dFTkVSSUNfRFRfQUFSQ0g2NCkgKz0gYm9hcmQt
-ZHQtMm5kLWFhcmNoNjQubwpAQCAtNDcsNyArNDcsNyBAQCBBRkxBR1NfY2FjaGUtYXJtdjgubyAg
-ICAgICA6PS1XYSwtbWFyY2g9YXJtdjgtYQogb2JqLXBibC0kKENPTkZJR19DUFVfNjR2OCkgKz0g
-Y2FjaGUtYXJtdjgubwogQUZMQUdTX3BibC1jYWNoZS1hcm12OC5vICAgICAgIDo9LVdhLC1tYXJj
-aD1hcm12OC1hCiAKLXBibC15ICs9IGVudHJ5Lm8KK3BibC15ICs9IGVudHJ5Lm8gZW50cnlfbGwk
-KFM2NCkubwogcGJsLXkgKz0gdW5jb21wcmVzcy5vCiAKIG9iai1wYmwteSArPSBjb21tb24ubyBz
-ZWN0aW9ucy5vCmRpZmYgLS1naXQgYS9hcmNoL2FybS9jcHUvZW50cnkuYyBiL2FyY2gvYXJtL2Nw
-dS9lbnRyeS5jCmluZGV4IDhiMTcxNzk0MzcuLjBiNDQ3ZGU4MDEgMTAwNjQ0Ci0tLSBhL2FyY2gv
-YXJtL2NwdS9lbnRyeS5jCisrKyBiL2FyY2gvYXJtL2NwdS9lbnRyeS5jCkBAIC0yNCwxNCArMjQs
-MTkgQEAKICAqIGJlIGZpbmUuCiAgKi8KIAorLyoKKyAqIEl0IGNhbiBiZSBoYXJkIHRvIGNvbnZp
-bmNlIEdDQyB0byBub3QgdXNlIG9sZCBzdGFjayBwb2ludGVyIGFmdGVyCisgKiB3ZSBtb2RpZnkg
-aXQgd2l0aCBhcm1fc2V0dXBfc3RhY2soKSBvbiBBUk02NCwgc28gd2UgaW1wbGVtZW50IHRoZQor
-ICogbG93IGxldmVsIGRldGFpbHMgaW4gYXNzZW1ibHkKKyAqLwordm9pZCBfX25vcmV0dXJuIF9f
-YmFyZWJveF9hcm1fZW50cnkodW5zaWduZWQgbG9uZyBtZW1iYXNlLAorCQkJCSAgICB1bnNpZ25l
-ZCBsb25nIG1lbXNpemUsCisJCQkJICAgIHZvaWQgKmJvYXJkZGF0YSwKKwkJCQkgICAgdW5zaWdu
-ZWQgbG9uZyBzcCk7CisKIHZvaWQgTkFLRUQgX19ub3JldHVybiBiYXJlYm94X2FybV9lbnRyeSh1
-bnNpZ25lZCBsb25nIG1lbWJhc2UsCi0JCQkJCSAgdW5zaWduZWQgbG9uZyBtZW1zaXplLCB2b2lk
-ICpib2FyZGRhdGEpCisJCQkJCXVuc2lnbmVkIGxvbmcgbWVtc2l6ZSwgdm9pZCAqYm9hcmRkYXRh
-KQogewotCWFybV9zZXR1cF9zdGFjayhhcm1fbWVtX3N0YWNrX3RvcChtZW1iYXNlLCBtZW1iYXNl
-ICsgbWVtc2l6ZSkpOwotCWFybV9lYXJseV9tbXVfY2FjaGVfaW52YWxpZGF0ZSgpOwotCi0JaWYg
-KElTX0VOQUJMRUQoQ09ORklHX1BCTF9JTUFHRSkpCi0JCWJhcmVib3hfcGJsX3N0YXJ0KG1lbWJh
-c2UsIG1lbXNpemUsIGJvYXJkZGF0YSk7Ci0JZWxzZQotCQliYXJlYm94X25vbl9wYmxfc3RhcnQo
-bWVtYmFzZSwgbWVtc2l6ZSwgYm9hcmRkYXRhKTsKKwlfX2JhcmVib3hfYXJtX2VudHJ5KG1lbWJh
-c2UsIG1lbXNpemUsIGJvYXJkZGF0YSwKKwkJCSAgICBhcm1fbWVtX3N0YWNrX3RvcChtZW1iYXNl
-LCBtZW1iYXNlICsgbWVtc2l6ZSkpOwogfQpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vY3B1L2VudHJ5
-X2xsLlMgYi9hcmNoL2FybS9jcHUvZW50cnlfbGwuUwpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRl
-eCAwMDAwMDAwMDAwLi44Y2M3YTg0ZjEwCi0tLSAvZGV2L251bGwKKysrIGIvYXJjaC9hcm0vY3B1
-L2VudHJ5X2xsLlMKQEAgLTAsMCArMSwyNSBAQAorI2luY2x1ZGUgPGxpbnV4L2xpbmthZ2UuaD4K
-KyNpbmNsdWRlIDxhc20vc2VjdGlvbnMuaD4KKworLyoKKyAqIHIwOiBtZW1vcnkgYmFzZQorICog
-cjE6IG1lbW9yeSBzaXplCisgKiByMjogYm9hcmQgZGF0YQorICogcjM6IG5ldyB2YWx1ZSBmb3Ig
-U1AKKyAqLworLnNlY3Rpb24gLnRleHQuX19iYXJlYm94X2FybV9lbnRyeQorRU5UUlkoX19iYXJl
-Ym94X2FybV9lbnRyeSkKKwltb3YJc3AsIHIzCisJbW92CXI0LCByMAorCW1vdglyNSwgcjEKKwlt
-b3YJcjYsIHIyCisJYmwJYXJtX2Vhcmx5X21tdV9jYWNoZV9pbnZhbGlkYXRlCisJbW92CXIwLCBy
-NAorCW1vdglyMSwgcjUKKwltb3YJcjIsIHI2CisjaWYgSVNfRU5BQkxFRChDT05GSUdfUEJMX0lN
-QUdFKQorCWIJYmFyZWJveF9wYmxfc3RhcnQKKyNlbHNlCisJYgliYXJlYm94X25vbl9wYmxfc3Rh
-cnQKKyNlbmRpZgorRU5EUFJPQyhfX2JhcmVib3hfYXJtX2VudHJ5KQpkaWZmIC0tZ2l0IGEvYXJj
-aC9hcm0vY3B1L2VudHJ5X2xsXzY0LlMgYi9hcmNoL2FybS9jcHUvZW50cnlfbGxfNjQuUwpuZXcg
-ZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwMDAwLi4zN2UwY2I2NmI1Ci0tLSAvZGV2L251
-bGwKKysrIGIvYXJjaC9hcm0vY3B1L2VudHJ5X2xsXzY0LlMKQEAgLTAsMCArMSwyMyBAQAorI2lu
-Y2x1ZGUgPGxpbnV4L2xpbmthZ2UuaD4KKyNpbmNsdWRlIDxhc20vc2VjdGlvbnMuaD4KKworLyoK
-KyAqIHgwOiBtZW1vcnkgYmFzZQorICogeDE6IG1lbW9yeSBzaXplCisgKiB4MjogYm9hcmQgZGF0
-YQorICogeDM6IG5ldyB2YWx1ZSBmb3IgU1AKKyAqLworLnNlY3Rpb24gLnRleHQuX19iYXJlYm94
-X2FybV9lbnRyeQorRU5UUlkoX19iYXJlYm94X2FybV9lbnRyeSkKKwltb3YJc3AsIHgzCisJLyoK
-KwkgKiBhcm1fZWFybHlfbW11X2NhY2hlX2ludmFsaWRhdGUgaXMganN1dCBhIGNhbGwgdG8KKwkg
-KiB2OF9pbnZhbGlkYXRlX2ljYWNoZV9hbGwoKSB3aGljaCBkb2Vzbid0IGNsb2JiZXIgeDAsIHgx
-IG9yIHgyCisgCSAqLworCWJsCWFybV9lYXJseV9tbXVfY2FjaGVfaW52YWxpZGF0ZQorI2lmIElT
-X0VOQUJMRUQoQ09ORklHX1BCTF9JTUFHRSkKKwliCWJhcmVib3hfcGJsX3N0YXJ0CisjZWxzZQor
-CWIJYmFyZWJveF9ub25fcGJsX3N0YXJ0CisjZW5kaWYKK0VORFBST0MoX19iYXJlYm94X2FybV9l
-bnRyeSkKXCBObyBuZXdsaW5lIGF0IGVuZCBvZiBmaWxlCmRpZmYgLS1naXQgYS9hcmNoL2FybS9p
-bmNsdWRlL2FzbS9jb21tb24uaCBiL2FyY2gvYXJtL2luY2x1ZGUvYXNtL2NvbW1vbi5oCmluZGV4
-IGMzMmNkZmU1ZWMuLmQwM2VlNjI3M2YgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2luY2x1ZGUvYXNt
-L2NvbW1vbi5oCisrKyBiL2FyY2gvYXJtL2luY2x1ZGUvYXNtL2NvbW1vbi5oCkBAIC01MCw4ICs1
-MCw3IEBAIHN0YXRpYyBpbmxpbmUgdm9pZCBhcm1fc2V0dXBfc3RhY2sodW5zaWduZWQgbG9uZyB0
-b3ApCiB7CiAJX19hc21fXyBfX3ZvbGF0aWxlX18oIm1vdiBzcCwgJTAiCiAJCQkgICAgIDoKLQkJ
-CSAgICAgOiAiciIodG9wKQotCQkJICAgICA6ICJzcCIpOworCQkJICAgICA6ICJyIih0b3ApKTsK
-IH0KIAogI2VuZGlmIC8qIF9fQVNNX0FSTV9DT01NT05fSCAqLwotLSAKMi4yMy4wCgoKX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5n
-IGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQu
-b3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Single PBL is now built as part of the multi PBL images, so drop the now
+unused single PBL code.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/Makefile              |  8 -----
+ arch/arm/pbl/.gitignore        |  9 -----
+ arch/arm/pbl/Makefile          | 61 ----------------------------------
+ arch/arm/pbl/piggy.comp_copy.S |  6 ----
+ arch/arm/pbl/piggy.gzip.S      |  6 ----
+ arch/arm/pbl/piggy.lz4.S       |  6 ----
+ arch/arm/pbl/piggy.lzo.S       |  6 ----
+ arch/arm/pbl/piggy.xzkern.S    |  6 ----
+ 8 files changed, 108 deletions(-)
+ delete mode 100644 arch/arm/pbl/.gitignore
+ delete mode 100644 arch/arm/pbl/Makefile
+ delete mode 100644 arch/arm/pbl/piggy.comp_copy.S
+ delete mode 100644 arch/arm/pbl/piggy.gzip.S
+ delete mode 100644 arch/arm/pbl/piggy.lz4.S
+ delete mode 100644 arch/arm/pbl/piggy.lzo.S
+ delete mode 100644 arch/arm/pbl/piggy.xzkern.S
+
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index cbf3d310db..13e8cee286 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -147,11 +147,7 @@ else
+ LDFLAGS_barebox += -static
+ endif
+ 
+-ifdef CONFIG_IMAGE_COMPRESSION
+-KBUILD_BINARY := arch/arm/pbl/zbarebox.bin
+-else
+ KBUILD_BINARY := barebox.bin
+-endif
+ 
+ barebox.s5p: $(KBUILD_BINARY)
+ 	$(Q)scripts/s5p_cksum $< barebox.s5p
+@@ -254,10 +250,6 @@ CFG_barebox.imximg := $(imxcfg-y)
+ KBUILD_IMAGE  := barebox.imximg
+ endif
+ 
+-pbl := arch/arm/pbl
+-$(pbl)/zbarebox.S $(pbl)/zbarebox.bin $(pbl)/zbarebox: barebox.bin FORCE
+-	$(Q)$(MAKE) $(build)=$(pbl) $@
+-
+ archclean:
+ 	$(MAKE) $(clean)=$(pbl)
+ 
+diff --git a/arch/arm/pbl/.gitignore b/arch/arm/pbl/.gitignore
+deleted file mode 100644
+index be604a81bf..0000000000
+--- a/arch/arm/pbl/.gitignore
++++ /dev/null
+@@ -1,9 +0,0 @@
+-piggy.gzip
+-piggy.lzo
+-piggy.lz4
+-piggy.xzkern
+-piggy.shipped
+-zbarebox
+-zbarebox.bin
+-zbarebox.lds
+-zbarebox.map
+diff --git a/arch/arm/pbl/Makefile b/arch/arm/pbl/Makefile
+deleted file mode 100644
+index 5d7e85b373..0000000000
+--- a/arch/arm/pbl/Makefile
++++ /dev/null
+@@ -1,61 +0,0 @@
+-
+-suffix_$(CONFIG_IMAGE_COMPRESSION_GZIP) = gzip
+-suffix_$(CONFIG_IMAGE_COMPRESSION_LZO)	= lzo
+-suffix_$(CONFIG_IMAGE_COMPRESSION_LZ4)	= lz4
+-suffix_$(CONFIG_IMAGE_COMPRESSION_XZKERN)	= xzkern
+-suffix_$(CONFIG_IMAGE_COMPRESSION_NONE)	= comp_copy
+-
+-OBJCOPYFLAGS_zbarebox.bin = -O binary
+-piggy_o := piggy.$(suffix_y).o
+-
+-targets := zbarebox.lds zbarebox zbarebox.bin zbarebox.S \
+-	   $(piggy_o) piggy.$(suffix_y)
+-
+-# Make sure files are removed during clean
+-extra-y       += piggy.gzip piggy.lz4 piggy.lzo piggy.lzma piggy.xzkern piggy.shipped zbarebox.map
+-
+-ifeq ($(CONFIG_CPU_BIG_ENDIAN),y)
+-FIX_SIZE=-b
+-else
+-FIX_SIZE=
+-endif
+-
+-$(obj)/zbarebox.bin:	$(obj)/zbarebox FORCE
+-	$(call if_changed,objcopy)
+-	$(call cmd,check_file_size,$@,$(CONFIG_BAREBOX_MAX_IMAGE_SIZE))
+-	$(Q)$(kecho) '  Barebox: fix size'
+-	$(Q)$(objtree)/scripts/fix_size -i -f $(objtree)/$@ $(FIX_SIZE)
+-	$(Q)$(kecho) '  Barebox: $@ is ready'
+-
+-$(obj)/zbarebox.S: $(obj)/zbarebox FORCE
+-	$(call if_changed,disasm)
+-
+-PBL_CPPFLAGS		+= -fdata-sections -ffunction-sections
+-LDFLAGS_zbarebox	:= -Map $(obj)/zbarebox.map --gc-sections
+-ifdef CONFIG_PBL_RELOCATABLE
+-LDFLAGS_zbarebox += -pie
+-else
+-LDFLAGS_zbarebox += -static
+-endif
+-
+-LDFLAGS_zbarebox += $(call ld-option, --no-dynamic-linker)
+-
+-zbarebox-common := $(barebox-pbl-common) $(obj)/$(piggy_o)
+-zbarebox-lds := $(obj)/zbarebox.lds
+-
+-$(zbarebox-lds): $(obj)/../lib/pbl.lds.S FORCE
+-	$(call if_changed_dep,cpp_lds_S)
+-
+-quiet_cmd_zbarebox__ ?= LD      $@
+-      cmd_zbarebox__ ?= $(LD) $(LDFLAGS) $(LDFLAGS_zbarebox) -o $@ \
+-      -e pbl_start -T $(zbarebox-lds)                              \
+-      --start-group $(zbarebox-common) --end-group                 \
+-      $(filter-out $(zbarebox-lds) $(zbarebox-common) FORCE ,$^)
+-
+-$(obj)/zbarebox: $(zbarebox-lds) $(zbarebox-common) FORCE
+-	$(call if_changed,zbarebox__)
+-
+-$(obj)/piggy.$(suffix_y): $(obj)/../../../barebox.bin FORCE
+-	$(call if_changed,$(suffix_y))
+-
+-$(obj)/$(piggy_o): $(obj)/piggy.$(suffix_y) FORCE
+diff --git a/arch/arm/pbl/piggy.comp_copy.S b/arch/arm/pbl/piggy.comp_copy.S
+deleted file mode 100644
+index 2b5a812ded..0000000000
+--- a/arch/arm/pbl/piggy.comp_copy.S
++++ /dev/null
+@@ -1,6 +0,0 @@
+-	.section .piggydata,#alloc
+-	.globl	input_data
+-input_data:
+-	.incbin	"arch/arm/pbl/piggy.comp_copy"
+-	.globl	input_data_end
+-input_data_end:
+diff --git a/arch/arm/pbl/piggy.gzip.S b/arch/arm/pbl/piggy.gzip.S
+deleted file mode 100644
+index 4a623c0c57..0000000000
+--- a/arch/arm/pbl/piggy.gzip.S
++++ /dev/null
+@@ -1,6 +0,0 @@
+-	.section .piggydata,#alloc
+-	.globl  input_data
+-input_data:
+-	.incbin "arch/arm/pbl/piggy.gzip"
+-	.globl  input_data_end
+-input_data_end:
+diff --git a/arch/arm/pbl/piggy.lz4.S b/arch/arm/pbl/piggy.lz4.S
+deleted file mode 100644
+index fa9b2469e1..0000000000
+--- a/arch/arm/pbl/piggy.lz4.S
++++ /dev/null
+@@ -1,6 +0,0 @@
+-	.section .piggydata,#alloc
+-	.globl	input_data
+-input_data:
+-	.incbin	"arch/arm/pbl/piggy.lz4"
+-	.globl	input_data_end
+-input_data_end:
+diff --git a/arch/arm/pbl/piggy.lzo.S b/arch/arm/pbl/piggy.lzo.S
+deleted file mode 100644
+index e0484c7d5c..0000000000
+--- a/arch/arm/pbl/piggy.lzo.S
++++ /dev/null
+@@ -1,6 +0,0 @@
+-	.section .piggydata,#alloc
+-	.globl	input_data
+-input_data:
+-	.incbin	"arch/arm/pbl/piggy.lzo"
+-	.globl	input_data_end
+-input_data_end:
+diff --git a/arch/arm/pbl/piggy.xzkern.S b/arch/arm/pbl/piggy.xzkern.S
+deleted file mode 100644
+index a7c0259590..0000000000
+--- a/arch/arm/pbl/piggy.xzkern.S
++++ /dev/null
+@@ -1,6 +0,0 @@
+-	.section .piggydata,#alloc
+-	.globl	input_data
+-input_data:
+-	.incbin	"arch/arm/pbl/piggy.xzkern"
+-	.globl	input_data_end
+-input_data_end:
+-- 
+2.23.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
