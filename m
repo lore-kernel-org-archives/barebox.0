@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x641.google.com ([2607:f8b0:4864:20::641])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1i919G-0006vj-9S
- for barebox@lists.infradead.org; Sat, 14 Sep 2019 06:03:07 +0000
-Received: by mail-pl1-x641.google.com with SMTP id 4so14204799pld.10
- for <barebox@lists.infradead.org>; Fri, 13 Sep 2019 23:03:05 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 13 Sep 2019 23:02:46 -0700
-Message-Id: <20190914060247.23673-1-andrew.smirnov@gmail.com>
+ id 1i9lPy-0006w6-L4
+ for barebox@lists.infradead.org; Mon, 16 Sep 2019 07:27:28 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 16 Sep 2019 09:27:21 +0200
+Message-Id: <20190916072721.12392-7-s.hauer@pengutronix.de>
+In-Reply-To: <20190916072721.12392-1-s.hauer@pengutronix.de>
+References: <20190916072721.12392-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -17,79 +17,106 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] i.MX: Introduce imx_ocotp_read_uid()
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Chris Healy <cphealy@gmail.com>
+Subject: [PATCH 6/6] ARM: aarch64: Re-implement most of barebox_arm_entry() in
+ assembly
+To: Barebox List <barebox@lists.infradead.org>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-UID information in OCOTP is located in the same place on at least
-i.MX6, i.MX7 and i.MX8MQ. Create an SoC-agnostic helper to do all the
-work and convert i.MX6 to use it.
-
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: Chris Healy <cphealy@gmail.com>
-Cc: Lucas Stach <l.stach@pengutronix.de>
----
- arch/arm/mach-imx/imx6.c               |  8 +-------
- arch/arm/mach-imx/include/mach/ocotp.h | 14 ++++++++++++++
- 2 files changed, 15 insertions(+), 7 deletions(-)
-
-diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
-index 0fdd9f082f..41e0066add 100644
---- a/arch/arm/mach-imx/imx6.c
-+++ b/arch/arm/mach-imx/imx6.c
-@@ -192,13 +192,7 @@ int imx6_cpu_revision(void)
- 
- u64 imx6_uid(void)
- {
--	void __iomem *ocotpbase = IOMEM(MX6_OCOTP_BASE_ADDR);
--	u64 uid;
--
--	uid = ((u64)readl(ocotpbase + MX6_OCOTP_CFG0) << 32);
--	uid |= (u64)readl(ocotpbase + MX6_OCOTP_CFG1);
--
--	return uid;
-+	return imx_ocotp_read_uid(IOMEM(MX6_OCOTP_BASE_ADDR));
- }
- 
- int imx6_init(void)
-diff --git a/arch/arm/mach-imx/include/mach/ocotp.h b/arch/arm/mach-imx/include/mach/ocotp.h
-index e758238cb9..7ba5da156b 100644
---- a/arch/arm/mach-imx/include/mach/ocotp.h
-+++ b/arch/arm/mach-imx/include/mach/ocotp.h
-@@ -26,10 +26,24 @@
- #define OCOTP_BIT(n)		FIELD_PREP(OCOTP_BIT_MASK, n)
- #define OCOTP_WIDTH(n)		FIELD_PREP(OCOTP_WIDTH_MASK, (n) - 1)
- 
-+#define OCOTP_OFFSET_CFG0	0x410
-+#define OCOTP_OFFSET_CFG1	0x420
-+
- 
- int imx_ocotp_read_field(uint32_t field, unsigned *value);
- int imx_ocotp_write_field(uint32_t field, unsigned value);
- int imx_ocotp_permanent_write(int enable);
- bool imx_ocotp_sense_enable(bool enable);
- 
-+static inline u64 imx_ocotp_read_uid(void __iomem *ocotp)
-+{
-+	u64 uid;
-+
-+	uid  = readl(ocotp + OCOTP_OFFSET_CFG0);
-+	uid <<= 32;
-+	uid |= readl(ocotp + OCOTP_OFFSET_CFG1);
-+
-+	return uid;
-+}
-+
- #endif /* __MACH_IMX_OCOTP_H */
--- 
-2.21.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RnJvbTogQW5kcmV5IFNtaXJub3YgPGFuZHJldy5zbWlybm92QGdtYWlsLmNvbT4KCkdDQzkgbm93
+IHByb2R1Y2VzIHRoZSBmb2xsb3dpbmcgd2FybmluZzoKCmNvbW1vbi5oOjUxOjI6IHdhcm5pbmc6
+IGxpc3RpbmcgdGhlIHN0YWNrIHBvaW50ZXIgcmVnaXN0ZXIg4oCYc3DigJkgaW4gYSBjbG9iYmVy
+IGxpc3QgaXMgZGVwcmVjYXRlZCBbLVdkZXByZWNhdGVkXQogICA1MSB8ICBfX2FzbV9fIF9fdm9s
+YXRpbGVfXygibW92IHNwLCAlMCIKICAgICAgfCAgXn5+fn5+fgpjb21tb24uaDo1MToyOiBub3Rl
+OiB0aGUgdmFsdWUgb2YgdGhlIHN0YWNrIHBvaW50ZXIgYWZ0ZXIgIGFuIOKAmGFzbeKAmSBzdGF0
+ZW1lbnQgbXVzdCBiZSB0aGUgc2FtZSBhcyBpdCB3YXMgYmVmb3JlIHRoZSBzdGF0ZW1lbnQKClN0
+YWNrIHBvaW50ZXIgd2FzIGFkZGVkIHRvIGNsb2JiZXIgbGlzdCBpbiBjb21taXQgZjlmYzgyNTRi
+MiAoIkFSTToKTWFyayBTUCBhcyBiZWluZyBjbG9iYmVyZWQgaW4gYXJtX3NldHVwX3N0YWNrKCki
+KSB0byBwcmV2ZW50IEdDQyBmcm9tCmdlbmVyYXRpbmcgY29kZSB0aGF0IHdvdWxkIGNvcnJ1cHQg
+J2JvYXJkZGF0YScgcG9pbnRlciBieSB0cnlpbmcgdG8KcmVzdG9yZSBpdCBmcm9tIGludmFsaWQg
+c3RhY2sgZnJhbWUuCgpJbnRlcmVzdGluZ2x5IGVub3VnaCwgc2VlbWluZ2x5IHVucmVsYXRlZCBj
+aGFuZ2UgaW4gY29tbWl0CjY0ZDk1ODk2Y2YgKCJBUk06IGFhcmNoNjQ6IGNvbXBpbGUgd2l0aCBn
+ZW5lcmFsLXJlZ3Mtb25seSIpIGNoYW5nZWQKZ2VuZXJhdGVkIGNvZGUgc3VjaCB0aGF0IGFkZGlu
+ZyBTUCB0byBjbG9iYmVyIGxpc3QgYmVjYW1lIG5vIGxvbmdlcgpuZWNlc3NhcnkuCgpXaGlsZSB0
+aGUgYWJvdmUgY2FuIHByb2JhYmx5IGJlIGEgZml4IGJ5IGl0c2VsZiwgaXQgc2VlbXMgYSBiZXR0
+ZXIgYW5kCm1vcmUgZnV0dXJlIHByb29mIGFwcHJvYWNoIHdvdWxkIGJlIHRvIGFkZHJlc3MgdGhl
+IHByb2JsZW0gYXQgaXRzIHJvb3QKYW5kIHJlLWltcGxlbWVudCBvZmZlbmRpbmcgc3RhcnR1cCBz
+ZXF1ZW5jZSBpbiBhc3NlbWJseS4KClNpZ25lZC1vZmYtYnk6IEFuZHJleSBTbWlybm92IDxhbmRy
+ZXcuc21pcm5vdkBnbWFpbC5jb20+ClNpZ25lZC1vZmYtYnk6IFNhc2NoYSBIYXVlciA8cy5oYXVl
+ckBwZW5ndXRyb25peC5kZT4KLS0tCiBhcmNoL2FybS9jcHUvTWFrZWZpbGUgICAgICAgICB8ICA0
+ICsrLS0KIGFyY2gvYXJtL2NwdS9lbnRyeS5jICAgICAgICAgIHwgMjEgKysrKysrKysrKysrKy0t
+LS0tLS0tCiBhcmNoL2FybS9jcHUvZW50cnlfbGwuUyAgICAgICB8IDI1ICsrKysrKysrKysrKysr
+KysrKysrKysrKysKIGFyY2gvYXJtL2NwdS9lbnRyeV9sbF82NC5TICAgIHwgMjMgKysrKysrKysr
+KysrKysrKysrKysrKysKIGFyY2gvYXJtL2luY2x1ZGUvYXNtL2NvbW1vbi5oIHwgIDMgKy0tCiA1
+IGZpbGVzIGNoYW5nZWQsIDY0IGluc2VydGlvbnMoKyksIDEyIGRlbGV0aW9ucygtKQogY3JlYXRl
+IG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2NwdS9lbnRyeV9sbC5TCiBjcmVhdGUgbW9kZSAxMDA2NDQg
+YXJjaC9hcm0vY3B1L2VudHJ5X2xsXzY0LlMKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9jcHUvTWFr
+ZWZpbGUgYi9hcmNoL2FybS9jcHUvTWFrZWZpbGUKaW5kZXggZTZhMWEzMjFkYy4uZTBiMTY3NDdh
+ZCAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vY3B1L01ha2VmaWxlCisrKyBiL2FyY2gvYXJtL2NwdS9N
+YWtlZmlsZQpAQCAtOCw3ICs4LDcgQEAgb2JqLXBibC0kKENPTkZJR19DUFVfMzJ2NykgKz0gaHlw
+Lm8KIEFGTEFHU19oeXAubyA6PS1XYSwtbWFyY2g9YXJtdjctYSAtV2EsLW1jcHU9YWxsCiBBRkxB
+R1NfcGJsLWh5cC5vIDo9LVdhLC1tYXJjaD1hcm12Ny1hIC1XYSwtbWNwdT1hbGwKIAotb2JqLXkg
+Kz0gc3RhcnQubyBlbnRyeS5vCitvYmoteSArPSBzdGFydC5vIGVudHJ5Lm8gZW50cnlfbGwkKFM2
+NCkubwogCiBwYmwtJChDT05GSUdfQk9BUkRfQVJNX0dFTkVSSUNfRFQpICs9IGJvYXJkLWR0LTJu
+ZC5vCiBwYmwtJChDT05GSUdfQk9BUkRfQVJNX0dFTkVSSUNfRFRfQUFSQ0g2NCkgKz0gYm9hcmQt
+ZHQtMm5kLWFhcmNoNjQubwpAQCAtNDcsNyArNDcsNyBAQCBBRkxBR1NfY2FjaGUtYXJtdjgubyAg
+ICAgICA6PS1XYSwtbWFyY2g9YXJtdjgtYQogb2JqLXBibC0kKENPTkZJR19DUFVfNjR2OCkgKz0g
+Y2FjaGUtYXJtdjgubwogQUZMQUdTX3BibC1jYWNoZS1hcm12OC5vICAgICAgIDo9LVdhLC1tYXJj
+aD1hcm12OC1hCiAKLXBibC15ICs9IGVudHJ5Lm8KK3BibC15ICs9IGVudHJ5Lm8gZW50cnlfbGwk
+KFM2NCkubwogcGJsLXkgKz0gdW5jb21wcmVzcy5vCiAKIG9iai1wYmwteSArPSBjb21tb24ubyBz
+ZWN0aW9ucy5vCmRpZmYgLS1naXQgYS9hcmNoL2FybS9jcHUvZW50cnkuYyBiL2FyY2gvYXJtL2Nw
+dS9lbnRyeS5jCmluZGV4IDhiMTcxNzk0MzcuLjBiNDQ3ZGU4MDEgMTAwNjQ0Ci0tLSBhL2FyY2gv
+YXJtL2NwdS9lbnRyeS5jCisrKyBiL2FyY2gvYXJtL2NwdS9lbnRyeS5jCkBAIC0yNCwxNCArMjQs
+MTkgQEAKICAqIGJlIGZpbmUuCiAgKi8KIAorLyoKKyAqIEl0IGNhbiBiZSBoYXJkIHRvIGNvbnZp
+bmNlIEdDQyB0byBub3QgdXNlIG9sZCBzdGFjayBwb2ludGVyIGFmdGVyCisgKiB3ZSBtb2RpZnkg
+aXQgd2l0aCBhcm1fc2V0dXBfc3RhY2soKSBvbiBBUk02NCwgc28gd2UgaW1wbGVtZW50IHRoZQor
+ICogbG93IGxldmVsIGRldGFpbHMgaW4gYXNzZW1ibHkKKyAqLwordm9pZCBfX25vcmV0dXJuIF9f
+YmFyZWJveF9hcm1fZW50cnkodW5zaWduZWQgbG9uZyBtZW1iYXNlLAorCQkJCSAgICB1bnNpZ25l
+ZCBsb25nIG1lbXNpemUsCisJCQkJICAgIHZvaWQgKmJvYXJkZGF0YSwKKwkJCQkgICAgdW5zaWdu
+ZWQgbG9uZyBzcCk7CisKIHZvaWQgTkFLRUQgX19ub3JldHVybiBiYXJlYm94X2FybV9lbnRyeSh1
+bnNpZ25lZCBsb25nIG1lbWJhc2UsCi0JCQkJCSAgdW5zaWduZWQgbG9uZyBtZW1zaXplLCB2b2lk
+ICpib2FyZGRhdGEpCisJCQkJCXVuc2lnbmVkIGxvbmcgbWVtc2l6ZSwgdm9pZCAqYm9hcmRkYXRh
+KQogewotCWFybV9zZXR1cF9zdGFjayhhcm1fbWVtX3N0YWNrX3RvcChtZW1iYXNlLCBtZW1iYXNl
+ICsgbWVtc2l6ZSkpOwotCWFybV9lYXJseV9tbXVfY2FjaGVfaW52YWxpZGF0ZSgpOwotCi0JaWYg
+KElTX0VOQUJMRUQoQ09ORklHX1BCTF9JTUFHRSkpCi0JCWJhcmVib3hfcGJsX3N0YXJ0KG1lbWJh
+c2UsIG1lbXNpemUsIGJvYXJkZGF0YSk7Ci0JZWxzZQotCQliYXJlYm94X25vbl9wYmxfc3RhcnQo
+bWVtYmFzZSwgbWVtc2l6ZSwgYm9hcmRkYXRhKTsKKwlfX2JhcmVib3hfYXJtX2VudHJ5KG1lbWJh
+c2UsIG1lbXNpemUsIGJvYXJkZGF0YSwKKwkJCSAgICBhcm1fbWVtX3N0YWNrX3RvcChtZW1iYXNl
+LCBtZW1iYXNlICsgbWVtc2l6ZSkpOwogfQpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vY3B1L2VudHJ5
+X2xsLlMgYi9hcmNoL2FybS9jcHUvZW50cnlfbGwuUwpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRl
+eCAwMDAwMDAwMDAwLi44Y2M3YTg0ZjEwCi0tLSAvZGV2L251bGwKKysrIGIvYXJjaC9hcm0vY3B1
+L2VudHJ5X2xsLlMKQEAgLTAsMCArMSwyNSBAQAorI2luY2x1ZGUgPGxpbnV4L2xpbmthZ2UuaD4K
+KyNpbmNsdWRlIDxhc20vc2VjdGlvbnMuaD4KKworLyoKKyAqIHIwOiBtZW1vcnkgYmFzZQorICog
+cjE6IG1lbW9yeSBzaXplCisgKiByMjogYm9hcmQgZGF0YQorICogcjM6IG5ldyB2YWx1ZSBmb3Ig
+U1AKKyAqLworLnNlY3Rpb24gLnRleHQuX19iYXJlYm94X2FybV9lbnRyeQorRU5UUlkoX19iYXJl
+Ym94X2FybV9lbnRyeSkKKwltb3YJc3AsIHIzCisJbW92CXI0LCByMAorCW1vdglyNSwgcjEKKwlt
+b3YJcjYsIHIyCisJYmwJYXJtX2Vhcmx5X21tdV9jYWNoZV9pbnZhbGlkYXRlCisJbW92CXIwLCBy
+NAorCW1vdglyMSwgcjUKKwltb3YJcjIsIHI2CisjaWYgSVNfRU5BQkxFRChDT05GSUdfUEJMX0lN
+QUdFKQorCWIJYmFyZWJveF9wYmxfc3RhcnQKKyNlbHNlCisJYgliYXJlYm94X25vbl9wYmxfc3Rh
+cnQKKyNlbmRpZgorRU5EUFJPQyhfX2JhcmVib3hfYXJtX2VudHJ5KQpkaWZmIC0tZ2l0IGEvYXJj
+aC9hcm0vY3B1L2VudHJ5X2xsXzY0LlMgYi9hcmNoL2FybS9jcHUvZW50cnlfbGxfNjQuUwpuZXcg
+ZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwMDAwLi4zN2UwY2I2NmI1Ci0tLSAvZGV2L251
+bGwKKysrIGIvYXJjaC9hcm0vY3B1L2VudHJ5X2xsXzY0LlMKQEAgLTAsMCArMSwyMyBAQAorI2lu
+Y2x1ZGUgPGxpbnV4L2xpbmthZ2UuaD4KKyNpbmNsdWRlIDxhc20vc2VjdGlvbnMuaD4KKworLyoK
+KyAqIHgwOiBtZW1vcnkgYmFzZQorICogeDE6IG1lbW9yeSBzaXplCisgKiB4MjogYm9hcmQgZGF0
+YQorICogeDM6IG5ldyB2YWx1ZSBmb3IgU1AKKyAqLworLnNlY3Rpb24gLnRleHQuX19iYXJlYm94
+X2FybV9lbnRyeQorRU5UUlkoX19iYXJlYm94X2FybV9lbnRyeSkKKwltb3YJc3AsIHgzCisJLyoK
+KwkgKiBhcm1fZWFybHlfbW11X2NhY2hlX2ludmFsaWRhdGUgaXMganN1dCBhIGNhbGwgdG8KKwkg
+KiB2OF9pbnZhbGlkYXRlX2ljYWNoZV9hbGwoKSB3aGljaCBkb2Vzbid0IGNsb2JiZXIgeDAsIHgx
+IG9yIHgyCisgCSAqLworCWJsCWFybV9lYXJseV9tbXVfY2FjaGVfaW52YWxpZGF0ZQorI2lmIElT
+X0VOQUJMRUQoQ09ORklHX1BCTF9JTUFHRSkKKwliCWJhcmVib3hfcGJsX3N0YXJ0CisjZWxzZQor
+CWIJYmFyZWJveF9ub25fcGJsX3N0YXJ0CisjZW5kaWYKK0VORFBST0MoX19iYXJlYm94X2FybV9l
+bnRyeSkKXCBObyBuZXdsaW5lIGF0IGVuZCBvZiBmaWxlCmRpZmYgLS1naXQgYS9hcmNoL2FybS9p
+bmNsdWRlL2FzbS9jb21tb24uaCBiL2FyY2gvYXJtL2luY2x1ZGUvYXNtL2NvbW1vbi5oCmluZGV4
+IGMzMmNkZmU1ZWMuLmQwM2VlNjI3M2YgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2luY2x1ZGUvYXNt
+L2NvbW1vbi5oCisrKyBiL2FyY2gvYXJtL2luY2x1ZGUvYXNtL2NvbW1vbi5oCkBAIC01MCw4ICs1
+MCw3IEBAIHN0YXRpYyBpbmxpbmUgdm9pZCBhcm1fc2V0dXBfc3RhY2sodW5zaWduZWQgbG9uZyB0
+b3ApCiB7CiAJX19hc21fXyBfX3ZvbGF0aWxlX18oIm1vdiBzcCwgJTAiCiAJCQkgICAgIDoKLQkJ
+CSAgICAgOiAiciIodG9wKQotCQkJICAgICA6ICJzcCIpOworCQkJICAgICA6ICJyIih0b3ApKTsK
+IH0KIAogI2VuZGlmIC8qIF9fQVNNX0FSTV9DT01NT05fSCAqLwotLSAKMi4yMy4wCgoKX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5n
+IGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQu
+b3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
