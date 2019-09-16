@@ -1,11 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1i9mLu-0006WF-SQ
- for barebox@lists.infradead.org; Mon, 16 Sep 2019 08:27:20 +0000
-From: =?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
-Date: Mon, 16 Sep 2019 10:27:01 +0200
-Message-Id: <20190916082701.27350-1-u.oelmann@pengutronix.de>
+ id 1i9qME-0006uG-L4
+ for barebox@lists.infradead.org; Mon, 16 Sep 2019 12:43:56 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <str@pengutronix.de>) id 1i9qM8-0008Pn-Fi
+ for barebox@lists.infradead.org; Mon, 16 Sep 2019 14:43:48 +0200
+Received: from str by dude.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <str@pengutronix.de>) id 1i9qM8-0004Ec-5X
+ for barebox@lists.infradead.org; Mon, 16 Sep 2019 14:43:48 +0200
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Mon, 16 Sep 2019 14:43:40 +0200
+Message-Id: <20190916124345.24244-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -15,36 +23,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] imd: fix memory leak
+Subject: [PATCH 1/6] barebox-wrapper: add IRQ_WAKE_THREAD
 To: Barebox List <barebox@lists.infradead.org>
 
-RWFjaCBpbnZvY2F0aW9uIG9mICdpbWQnIGF0ZSB1cCB0byAxTUIgb2YgUkFNLgoKU2lnbmVkLW9m
-Zi1ieTogVWxyaWNoIMOWbG1hbm4gPHUub2VsbWFubkBwZW5ndXRyb25peC5kZT4KLS0tCiBjb21t
-b24vaW1kLmMgfCAyMCArKysrKysrKysrKysrKy0tLS0tLQogMSBmaWxlIGNoYW5nZWQsIDE0IGlu
-c2VydGlvbnMoKyksIDYgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvY29tbW9uL2ltZC5jIGIv
-Y29tbW9uL2ltZC5jCmluZGV4IDA1ZTExOGU3NzM2MS4uOTEzYTAxZGU4N2JmIDEwMDY0NAotLS0g
-YS9jb21tb24vaW1kLmMKKysrIGIvY29tbW9uL2ltZC5jCkBAIC0zMzcsOCArMzM3LDEwIEBAIGlu
-dCBpbWRfY29tbWFuZChpbnQgYXJnYywgY2hhciAqYXJndltdKQogCQlyZXR1cm4gLWVycm5vOwog
-CiAJaW1kX3N0YXJ0ID0gaW1kX2dldChidWYsIHNpemUpOwotCWlmIChJU19FUlIoaW1kX3N0YXJ0
-KSkKLQkJcmV0dXJuIFBUUl9FUlIoaW1kX3N0YXJ0KTsKKwlpZiAoSVNfRVJSKGltZF9zdGFydCkp
-IHsKKwkJcmV0ID0gUFRSX0VSUihpbWRfc3RhcnQpOworCQlnb3RvIG91dDsKKwl9CiAKIAlpZiAo
-dHlwZSA9PSBJTURfVFlQRV9JTlZBTElEKSB7CiAJCWltZF9mb3JfZWFjaChpbWRfc3RhcnQsIGlt
-ZCkgewpAQCAtMzU2LDcgKzM1OCw4IEBAIGludCBpbWRfY29tbWFuZChpbnQgYXJnYywgY2hhciAq
-YXJndltdKQogCQlpbWQgPSBpbWRfZmluZF90eXBlKGltZF9zdGFydCwgdHlwZSk7CiAJCWlmICgh
-aW1kKSB7CiAJCQlkZWJ1ZygiTm8gdGFnIG9mIHR5cGUgMHglMDh4IGZvdW5kXG4iLCB0eXBlKTsK
-LQkJCXJldHVybiAtRU5PREFUQTsKKwkJCXJldCA9IC1FTk9EQVRBOworCQkJZ290byBvdXQ7CiAJ
-CX0KIAogCQlpZiAoaW1kX2lzX3N0cmluZyh0eXBlKSkgewpAQCAtMzcwLDggKzM3MywxMCBAQCBp
-bnQgaW1kX2NvbW1hbmQoaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKIAkJCQlzdHIgPSBpbWRfY29u
-Y2F0X3N0cmluZ3MoaW1kKTsKIAkJCX0KIAotCQkJaWYgKCFzdHIpCi0JCQkJcmV0dXJuIC1FTk9E
-QVRBOworCQkJaWYgKCFzdHIpIHsKKwkJCQlyZXQgPSAtRU5PREFUQTsKKwkJCQlnb3RvIG91dDsK
-KwkJCX0KIAogCQkJaWYgKHZhcmlhYmxlX25hbWUpCiAJCQkJaW1kX2NvbW1hbmRfc2V0ZW52KHZh
-cmlhYmxlX25hbWUsIHN0cik7CkBAIC0zODQsNSArMzg5LDggQEAgaW50IGltZF9jb21tYW5kKGlu
-dCBhcmdjLCBjaGFyICphcmd2W10pCiAJCX0KIAl9CiAKLQlyZXR1cm4gMDsKKwlyZXQgPSAwOwor
-b3V0OgorCWZyZWUoYnVmKTsKKwlyZXR1cm4gcmV0OwogfQotLSAKMi4yMy4wCgoKX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxp
-c3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
-L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Add a new irqreturn_t IRQ_WAKE_THREAD.
+
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+---
+ include/linux/barebox-wrapper.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/include/linux/barebox-wrapper.h b/include/linux/barebox-wrapper.h
+index e998932d1201..fee02d052d94 100644
+--- a/include/linux/barebox-wrapper.h
++++ b/include/linux/barebox-wrapper.h
+@@ -45,6 +45,7 @@ static inline void vfree(const void *addr)
+ typedef int irqreturn_t;
+ #define IRQ_NONE 0
+ #define IRQ_HANDLED 0
++#define IRQ_WAKE_THREAD 2
+ 
+ /* To ease clk drivers porting from Linux kernel */
+ #define __clk_get_name(clk)		(clk->name)
+-- 
+2.23.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
