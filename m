@@ -1,19 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1i9qME-0006uG-L4
+ id 1i9qME-0006uI-Jm
  for barebox@lists.infradead.org; Mon, 16 Sep 2019 12:43:56 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1i9qM8-0008Pn-Fi
+ (envelope-from <str@pengutronix.de>) id 1i9qM8-0008Po-G8
  for barebox@lists.infradead.org; Mon, 16 Sep 2019 14:43:48 +0200
 Received: from str by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1i9qM8-0004Ec-5X
+ (envelope-from <str@pengutronix.de>) id 1i9qM8-0004Ee-67
  for barebox@lists.infradead.org; Mon, 16 Sep 2019 14:43:48 +0200
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon, 16 Sep 2019 14:43:40 +0200
-Message-Id: <20190916124345.24244-1-s.trumtrar@pengutronix.de>
+Date: Mon, 16 Sep 2019 14:43:41 +0200
+Message-Id: <20190916124345.24244-2-s.trumtrar@pengutronix.de>
+In-Reply-To: <20190916124345.24244-1-s.trumtrar@pengutronix.de>
+References: <20190916124345.24244-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -27,28 +29,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/6] barebox-wrapper: add IRQ_WAKE_THREAD
+Subject: [PATCH 2/6] usb: gadget: add usb_gadget_udc_reset function
 To: Barebox List <barebox@lists.infradead.org>
 
-Add a new irqreturn_t IRQ_WAKE_THREAD.
+Add a function to notify the udc core, that a bus reset occured.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- include/linux/barebox-wrapper.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/gadget/udc-core.c | 15 +++++++++++++++
+ include/usb/gadget.h          |  4 ++++
+ 2 files changed, 19 insertions(+)
 
-diff --git a/include/linux/barebox-wrapper.h b/include/linux/barebox-wrapper.h
-index e998932d1201..fee02d052d94 100644
---- a/include/linux/barebox-wrapper.h
-+++ b/include/linux/barebox-wrapper.h
-@@ -45,6 +45,7 @@ static inline void vfree(const void *addr)
- typedef int irqreturn_t;
- #define IRQ_NONE 0
- #define IRQ_HANDLED 0
-+#define IRQ_WAKE_THREAD 2
+diff --git a/drivers/usb/gadget/udc-core.c b/drivers/usb/gadget/udc-core.c
+index e357456098ae..096f05ed48df 100644
+--- a/drivers/usb/gadget/udc-core.c
++++ b/drivers/usb/gadget/udc-core.c
+@@ -108,6 +108,21 @@ void usb_gadget_set_state(struct usb_gadget *gadget,
+ }
+ EXPORT_SYMBOL_GPL(usb_gadget_set_state);
  
- /* To ease clk drivers porting from Linux kernel */
- #define __clk_get_name(clk)		(clk->name)
++/**
++ * usb_gadget_udc_reset - notifies the udc core that bus reset occurs
++ * @gadget: The gadget which bus reset occurs
++ * @driver: The gadget driver we want to notify
++ *
++ * If the udc driver has bus reset handler, it needs to call this when the bus
++ * reset occurs, it notifies the gadget driver that the bus reset occurs as
++ * well as updates gadget state.
++ */
++void usb_gadget_udc_reset(struct usb_gadget *gadget,
++		struct usb_gadget_driver *driver)
++{
++	usb_gadget_set_state(gadget, USB_STATE_DEFAULT);
++}
++EXPORT_SYMBOL_GPL(usb_gadget_udc_reset);
+ /* ------------------------------------------------------------------------- */
+ 
+ /**
+diff --git a/include/usb/gadget.h b/include/usb/gadget.h
+index 80418a9cd447..afa11b2d9d8a 100644
+--- a/include/usb/gadget.h
++++ b/include/usb/gadget.h
+@@ -1018,6 +1018,10 @@ extern void usb_gadget_set_state(struct usb_gadget *gadget,
+ 
+ /*-------------------------------------------------------------------------*/
+ 
++/* utility to tell udc core that the bus reset occurs */
++extern void usb_gadget_udc_reset(struct usb_gadget *gadget,
++				 struct usb_gadget_driver *driver);
++
+ /* utility wrapping a simple endpoint selection policy */
+ 
+ extern struct usb_ep *usb_ep_autoconfig(struct usb_gadget *,
 -- 
 2.23.0
 
