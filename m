@@ -1,12 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([78.46.208.201])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iA99w-0004Fl-Ja
- for barebox@lists.infradead.org; Tue, 17 Sep 2019 08:48:32 +0000
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Tue, 17 Sep 2019 10:48:11 +0200
-Message-Id: <20190917084810.24608-1-r.czerwinski@pengutronix.de>
+ id 1iA9gk-0007ja-Jr
+ for barebox@lists.infradead.org; Tue, 17 Sep 2019 09:22:25 +0000
+References: <20190906140127.17396-1-a.fatoum@pengutronix.de>
+ <20190909072331.4xmc6nvjgfdxged3@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <0f039d89-2b64-ae91-a0c3-30c10c461c34@pengutronix.de>
+Date: Tue, 17 Sep 2019 11:22:19 +0200
 MIME-Version: 1.0
+In-Reply-To: <20190909072331.4xmc6nvjgfdxged3@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,100 +23,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Doc: i.MX: Document image structure for i.MX
-To: barebox@lists.infradead.org
-Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Subject: Re: [PATCH] gpio: add driver for SN74273 output expander
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Document the image and load structure for i.MX6 and i.MX8MQ.
+On 9/9/19 9:23 AM, Sascha Hauer wrote:
+> On Fri, Sep 06, 2019 at 04:01:27PM +0200, Ahmad Fatoum wrote:
+>> The SN74273 is an octal D-Type Flip-Flop. When used as an output expander,
+>> N existing output signals can be turned into (N-8)*8 outputs using
+>> N-8 chips. Add driver to facilitate this.
+> 
+> The reason I haven't mainlined this driver when writing it was that
+> Linux also has a driver for the 74273, but in a completely different
+> setup. In the Linux driver the 74273 is assumed to have its inputs on
+> the data bus together with a separate address decoder.
+> The chip in this driver here instead is connected via GPIO pins. For
+> Using flipflops as GPIO expanders there a myriads of different ways to
+> implement, so I have my doubts how useful it is to even try to put them
+> in a generic driver.
 
-Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
----
- Documentation/boards/imx.rst | 69 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 69 insertions(+)
+FTR: I talked this over with Sascha. As I understood, the main issue is
+with reserving a fairly generic "ti,74273-gpio" compatible with what is
+a very special way of using these flip flops. We could however get it in
+with a different proprietary compatible. I might revisit this in future
+along with a kernel driver, but please dismiss for now.
 
-diff --git a/Documentation/boards/imx.rst b/Documentation/boards/imx.rst
-index 71cc6bb09a..7110492eba 100644
---- a/Documentation/boards/imx.rst
-+++ b/Documentation/boards/imx.rst
-@@ -142,6 +142,75 @@ It must be included in the board's flash header:
- 
- Analogous to HABv4 options and a template exist for HABv3.
- 
-+Secure Boot on i.MX6
-+--------------------
-+
-+The secure boot process on i.MX6 consist of the following image constellation::
-+
-+    0x0 +---------------------------------+
-+        | Barebox Header                  |
-+  0x400 +---------------------------------+       -
-+        | i.MX IVT Header                 |       |
-+        | Boot Data                       +--+    |
-+        | CSF Pointer                     +--|-+  | Signed Area
-+        +---------------------------------+  | |  |
-+        | Device Configuration Data (DCD) |  | |  |
-+ 0x1000 +---------------------------------+  | |  |
-+        | Barebox Prebootloader (PBL)     |<-+ |  |
-+        +---------------------------------+    |  |
-+        | Piggydata (Main Barebox Binary) |    |  |
-+        +---------------------------------+    |  -
-+        | Command Sequence File (CSF)     |<---+
-+        +---------------------------------+
-+
-+Here the Command Sequence File signs the complete Header, PBL and piggy data
-+file. This ensures that the whole barebox binary is authenticated. This is
-+possible since the DDR RAM is configured using the DCD and the whole DDR memory
-+area can be used to load data onto the device for authentication.
-+The boot ROM loads the CSF area and barebox into memory and uses the CSF to
-+verify the complete barebox binary.
-+
-+Secure Boot on i.MX8MQ
-+----------------------
-+
-+For i.MX8MQ the image has the following design::
-+
-+    0x0 +---------------------------------+
-+        | Barebox Header                  |
-+        +---------------------------------+
-+        | i.MX IVT Header                 |
-+        | HDMI Firmware (Signed by NXP)   |
-+        +---------------------------------+        -
-+        | i.MX IVT Header                 |        |
-+        | Boot Data                       +--+     |
-+        | CSF Pointer                     +--|-+   |
-+        +---------------------------------+  | |   | Signed Area
-+        | Device Configuration Data (DCD) |  | |   |
-+        +---------------------------------+  | |   |
-+        | Barebox Prebootloader (PBL)     |<-+ |   |
-+        | Piggydata Hash (SHA256)         +----|-+ |
-+        +---------------------------------+    | | -
-+        | Command Sequence File (CSF)     |<---+ |
-+        +---------------------------------+      | -
-+        | Piggydata (Main Barebox Binary) |<-----+ | Hashed Area
-+        +---------------------------------+        -
-+
-+In contrast to i.MX6, for the i.MX8MQ the piggydata can not be signed together
-+with the PBL binary. The DDR memory is initialized during the start of the PBL,
-+previous to this no access to the DDR memory is possible. Since the Tightly
-+Coupled Memory used for early startup on i.MX8MQ has only 256Kib, the whole
-+barebox can't be loaded and verified at once, since the complete barebox with
-+firmware has a size of ~500Kib.
-+
-+The bootrom loads the HDMI firmware unconditionally, since it is signed by NXP.
-+Afterwards the Prebootloader (PBL) is loaded into SRAM and the bootrom proceeds
-+to verify the PBL according to the Command Sequence File (CSF). The verified
-+PBL initializes the ARM Trusted Firmware (TF-A) and DDR RAM. It subsequently
-+loads the piggydata from the SD card and calculates the sha256sum of the
-+piggydata. This is compared to the sha256sum built into the PBL during compile
-+time, the PBL will only continue to boot if the sha256sum matches the builtin
-+sha256sum.
-+
- Using GPT on i.MX
- ^^^^^^^^^^^^^^^^^
- 
+
+> 
+> Sascha
+> 
+
 -- 
-2.23.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
