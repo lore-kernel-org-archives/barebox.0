@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iAUnI-0001yE-J5
- for barebox@lists.infradead.org; Wed, 18 Sep 2019 07:54:35 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 18 Sep 2019 09:54:15 +0200
-Message-Id: <20190918075421.20456-11-s.hauer@pengutronix.de>
-In-Reply-To: <20190918075421.20456-1-s.hauer@pengutronix.de>
-References: <20190918075421.20456-1-s.hauer@pengutronix.de>
+ id 1iAC4t-0003zF-UZ
+ for barebox@lists.infradead.org; Tue, 17 Sep 2019 11:55:30 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue, 17 Sep 2019 13:55:12 +0200
+Message-Id: <20190917115518.14953-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,55 +19,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/16] ARM: mxs: cfa10036: Switch to multi image support
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v2 0/6] ARM: layerscape: streamline and document boot
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Build the cfa10036 as multi image.
+v1 -> v2:
+  - Not calling back into bootm code. We now read barebox and invoke
+    it directly in the bootm handler (Sascha)
+  - Dropped copy_file_2 implementation, because it's no longer needed
+  - Fixed a commit message typo (Roland)
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/boards/crystalfontz-cfa10036/lowlevel.c | 2 +-
- arch/arm/mach-mxs/Kconfig                        | 1 +
- images/Makefile.mxs                              | 4 ++++
- 3 files changed, 6 insertions(+), 1 deletion(-)
+Ahmad Fatoum (6):
+  ARM: Layerscape: add bootm handler for images
+  ARM: Layerscape: don't generate second-stage 2nd.image
+  filetype: support fastboot barebox_update with layerscape image
+  scripts: pblimage: explicitly set architecture to ARM
+  ARM: layerscape: tqmls1046a: disable all SGMII PHYs
+  Documentation: boards: document layerscape support
 
-diff --git a/arch/arm/boards/crystalfontz-cfa10036/lowlevel.c b/arch/arm/boards/crystalfontz-cfa10036/lowlevel.c
-index 37c162d30d..1bc5947682 100644
---- a/arch/arm/boards/crystalfontz-cfa10036/lowlevel.c
-+++ b/arch/arm/boards/crystalfontz-cfa10036/lowlevel.c
-@@ -5,7 +5,7 @@
- #include <mach/imx28-regs.h>
- #include <generated/mach-types.h>
- 
--void __naked barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint32_t r2d)
-+ENTRY_FUNCTION(start_cfa10036, r0, r1, r2)
- {
- 	arm_cpu_lowlevel_init();
- 	barebox_arm_entry(IMX_MEMORY_BASE, SZ_128M, (void *)MACH_TYPE_CFA10036);
-diff --git a/arch/arm/mach-mxs/Kconfig b/arch/arm/mach-mxs/Kconfig
-index fed7b524de..2409c53dd7 100644
---- a/arch/arm/mach-mxs/Kconfig
-+++ b/arch/arm/mach-mxs/Kconfig
-@@ -83,6 +83,7 @@ config MACH_CFA10036
- 	select MXS_OCOTP
- 	select I2C_GPIO
- 	select EEPROM_AT24
-+	select HAVE_PBL_MULTI_IMAGES
- 	help
- 	  Say Y here if you are using the Crystalfontz CFA-10036 module
- 
-diff --git a/images/Makefile.mxs b/images/Makefile.mxs
-index f93c3fddd0..b230c02562 100644
---- a/images/Makefile.mxs
-+++ b/images/Makefile.mxs
-@@ -64,3 +64,7 @@ FILE_barebox-olinuxino-imx23-sd.img = start_barebox_olinuxino_imx23.mxsbs.mxssd
- image-$(CONFIG_MACH_IMX233_OLINUXINO) += barebox-olinuxino-imx23-sd.img
- FILE_barebox-olinuxino-imx23-2nd.img = start_barebox_olinuxino_imx23.pblb
- image-$(CONFIG_MACH_IMX233_OLINUXINO) += barebox-olinuxino-imx23-2nd.img
-+
-+pblb-$(CONFIG_MACH_CFA10036) += start_cfa10036
-+FILE_barebox-crystalfonts-cfa10036-2nd.img = start_cfa10036.pblb
-+image-$(CONFIG_MACH_CFA10036) += barebox-crystalfonts-cfa10036-2nd.img
+ Documentation/boards/layerscape.rst           | 61 +++++++++++++++++++
+ .../boards/layerscape/ls1046ardb.rst          | 36 +++++++++++
+ .../boards/layerscape/tqmls1046a.rst          | 49 +++++++++++++++
+ .../defaultenv-tqmls1046a/nv/dev.eth0.mode    |  1 +
+ .../defaultenv-tqmls1046a/nv/dev.eth1.mode    |  1 +
+ arch/arm/mach-layerscape/Makefile             |  1 +
+ arch/arm/mach-layerscape/pblimage.c           | 58 ++++++++++++++++++
+ common/filetype.c                             |  2 +
+ images/Makefile.layerscape                    |  8 +--
+ scripts/pblimage.c                            |  2 +-
+ 10 files changed, 212 insertions(+), 7 deletions(-)
+ create mode 100644 Documentation/boards/layerscape.rst
+ create mode 100644 Documentation/boards/layerscape/ls1046ardb.rst
+ create mode 100644 Documentation/boards/layerscape/tqmls1046a.rst
+ create mode 100644 arch/arm/boards/tqmls1046a/defaultenv-tqmls1046a/nv/dev.eth0.mode
+ create mode 100644 arch/arm/boards/tqmls1046a/defaultenv-tqmls1046a/nv/dev.eth1.mode
+ create mode 100644 arch/arm/mach-layerscape/pblimage.c
+
 -- 
 2.23.0
 
