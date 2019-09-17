@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iA8Yk-0003Sh-OH
- for barebox@lists.infradead.org; Tue, 17 Sep 2019 08:10:04 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Tue, 17 Sep 2019 10:09:56 +0200
-Message-Id: <20190917080956.16100-2-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20190917080126.2sp36vixvfvlmvtk@pengutronix.de>
+ id 1iA8v8-0006lU-0o
+ for barebox@lists.infradead.org; Tue, 17 Sep 2019 08:33:11 +0000
+Date: Tue, 17 Sep 2019 10:33:08 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20190917083308.y7xfqlmav3k4ecyy@pengutronix.de>
 References: <20190917080126.2sp36vixvfvlmvtk@pengutronix.de>
+ <20190917080956.16100-2-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190917080956.16100-2-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,78 +19,80 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] Documentation: make gen_commands helper python3 compatible
+Subject: Re: [PATCH 2/2] Documentation: make gen_commands helper python3
+ compatible
 To: barebox@lists.infradead.org
 Cc: Stefan Lengfeld <contact@stefanchrist.eu>
 
-T24gc29tZSBtYWNoaW5lcyB0aGUgcHl0aG9uIGNvbW1hbmQgaXMgcHJvdmlkZWQgYnkgUHl0aG9u
-IDMgd2hpbGUgb24KbW9zdCAoYXQgbGVhc3QgaW4gbXkgYnViYmxlKSBpdCBpcyBzdGlsbCBQeXRo
-b24gMi4gTW9kaWZ5IHRoZSBjb2RlIHRvCm1ha2UgaXQgdXNhYmxlIGJ5IGJvdGggUHl0aG9uIHZl
-cnNpb25zLgoKcHJpbnRfZnVuY3Rpb24gaXMgYXZhaWxhYmxlIGluIF9fZnV0dXJlX18gc2luY2Ug
-UHl0aG9uIDIuNi4wYTIsIHdoaWNoCnNob3VsZG4ndCBiZSBhIHJlbGV2YW50IHJlc3RyaWN0aW9u
-LgoKVGhlIG1vZGlmaWVkIHNjcmlwdCBnZW5lcmF0ZXMgdGhlIHNhbWUgZG9jdW1lbnRhdGlvbiBh
-cyB0aGUgb2xkIG9uZTsKaW5kZXBlbmRlbnQgaWYgdGhlIHNjcmlwdCBpcyBjYWxsZWQgdXNpbmcg
-UHl0aG9uIDIgKGhlcmU6IDIuNy4xNikgb3IKUHl0aG9uIDMgKGhlcmU6IDMuNy4zKS4KClNpZ25l
-ZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXgu
-ZGU+Ci0tLQogRG9jdW1lbnRhdGlvbi9nZW5fY29tbWFuZHMucHkgfCAzMCArKysrKysrKysrKysr
-KysrKystLS0tLS0tLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCAxOCBpbnNlcnRpb25zKCspLCAxMiBk
-ZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9Eb2N1bWVudGF0aW9uL2dlbl9jb21tYW5kcy5weSBi
-L0RvY3VtZW50YXRpb24vZ2VuX2NvbW1hbmRzLnB5CmluZGV4IDYyNTFiNGYyMmVkOS4uZmYwN2Vl
-MDI5N2YxIDEwMDc1NQotLS0gYS9Eb2N1bWVudGF0aW9uL2dlbl9jb21tYW5kcy5weQorKysgYi9E
-b2N1bWVudGF0aW9uL2dlbl9jb21tYW5kcy5weQpAQCAtMSw1ICsxLDcgQEAKICMhL3Vzci9iaW4v
-cHl0aG9uCiAKK2Zyb20gX19mdXR1cmVfXyBpbXBvcnQgcHJpbnRfZnVuY3Rpb24KKwogaW1wb3J0
-IGVycm5vCiBpbXBvcnQgb3MKIGltcG9ydCByZQpAQCAtMjgsMTAgKzMwLDE1IEBAIENPTlQgPSBy
-ZS5jb21waWxlKHIiIiJccyoiKC4qPykiXHMqXCk/XHMqJCIiIikKIAogQ01EUyA9IHt9CiAKK2Rl
-ZiBzdHJpbmdfZXNjYXBlKHMpOgorICAjIFRoaXMgdXNlZCB0byBkbyBzLmRlY29kZSgic3RyaW5n
-X2VzY2FwZSIpIHdoaWNoIGlzbid0IGF2YWlsYWJsZSBvbiBQeXRob24gMy4KKyAgIyBBY3R1YWxs
-eSB3ZSBvbmx5IG5lZWQgdG8gZHJvcCAnXHQnLCBzbyBkbyB0aGlzIGhlcmUuCisgIHJldHVybiBz
-LnJlcGxhY2UocidcdCcsICcnKQorCiBkZWYgcGFyc2VfYyhuYW1lKToKICAgY21kID0gTm9uZQog
-ICBsYXN0ID0gTm9uZQotICBmb3IgbGluZSBpbiBmaWxlKG5hbWUsICdyJyk6CisgIGZvciBsaW5l
-IGluIG9wZW4obmFtZSwgJ3InKToKICAgICB4ID0gSEVMUF9TVEFSVC5tYXRjaChsaW5lKQogICAg
-IGlmIHg6CiAgICAgICBjbWQgPSBDTURTLnNldGRlZmF1bHQoeC5ncm91cCgxKSwgZGVmYXVsdGRp
-Y3QobGlzdCkpCkBAIC01MCwxNCArNTcsMTQgQEAgZGVmIHBhcnNlX2MobmFtZSk6CiAgICAgICAg
-IGxhc3QgPSBjbWRbJ2hfcHJlJ10KICAgICAgIGVsc2U6CiAgICAgICAgIGxhc3QgPSBjbWRbJ2hf
-cG9zdCddCi0gICAgICBsYXN0LmFwcGVuZCh4Lmdyb3VwKDEpLmRlY29kZSgic3RyaW5nX2VzY2Fw
-ZSIpLnN0cmlwKCkpCisgICAgICBsYXN0LmFwcGVuZChzdHJpbmdfZXNjYXBlKHguZ3JvdXAoMSkp
-LnN0cmlwKCkpCiAgICAgICBjb250aW51ZQogICAgIHggPSBIRUxQX09QVC5tYXRjaChsaW5lKQog
-ICAgIGlmIHg6CiAgICAgICBsYXN0ID0gY21kWydoX29wdHMnXQogICAgICAgbGFzdC5hcHBlbmQo
-WwotICAgICAgICB4Lmdyb3VwKDEpLmRlY29kZSgic3RyaW5nX2VzY2FwZSIpLAotICAgICAgICB4
-Lmdyb3VwKDIpLmRlY29kZSgic3RyaW5nX2VzY2FwZSIpCisgICAgICAgIHN0cmluZ19lc2NhcGUo
-eC5ncm91cCgxKSksCisgICAgICAgIHN0cmluZ19lc2NhcGUoeC5ncm91cCgyKSksCiAgICAgICBd
-KQogICAgICAgY29udGludWUKICAgICB4ID0gQ01EX0ZVTkMubWF0Y2gobGluZSkKQEAgLTY4LDEy
-ICs3NSwxMiBAQCBkZWYgcGFyc2VfYyhuYW1lKToKICAgICB4ID0gQ01EX0RFU0MubWF0Y2gobGlu
-ZSkKICAgICBpZiB4OgogICAgICAgbGFzdCA9IGNtZFsnY19kZXNjJ10KLSAgICAgIGxhc3QuYXBw
-ZW5kKHguZ3JvdXAoMSkuZGVjb2RlKCJzdHJpbmdfZXNjYXBlIikpCisgICAgICBsYXN0LmFwcGVu
-ZChzdHJpbmdfZXNjYXBlKHguZ3JvdXAoMSkpKQogICAgICAgY29udGludWUKICAgICB4ID0gQ01E
-X09QVFMubWF0Y2gobGluZSkKICAgICBpZiB4OgogICAgICAgbGFzdCA9IGNtZFsnY19vcHRzJ10K
-LSAgICAgIGxhc3QuYXBwZW5kKHguZ3JvdXAoMSkuZGVjb2RlKCJzdHJpbmdfZXNjYXBlIikpCisg
-ICAgICBsYXN0LmFwcGVuZChzdHJpbmdfZXNjYXBlKHguZ3JvdXAoMSkpKQogICAgICAgY29udGlu
-dWUKICAgICB4ID0gQ01EX0dST1VQLm1hdGNoKGxpbmUpCiAgICAgaWYgeDoKQEAgLTg1LDkgKzky
-LDkgQEAgZGVmIHBhcnNlX2MobmFtZSk6CiAgICAgICBpZiBsYXN0IGlzIE5vbmU6CiAgICAgICAg
-IHJhaXNlIEV4Y2VwdGlvbigiUGFyc2UgZXJyb3IgaW4gJXM6ICVyIiAlIChuYW1lLCBsaW5lKSkK
-ICAgICAgIGlmIGlzaW5zdGFuY2UobGFzdFstMV0sIHN0cik6Ci0gICAgICAgIGxhc3RbLTFdICs9
-IHguZ3JvdXAoMSkuZGVjb2RlKCJzdHJpbmdfZXNjYXBlIikKKyAgICAgICAgbGFzdFstMV0gKz0g
-c3RyaW5nX2VzY2FwZSh4Lmdyb3VwKDEpKQogICAgICAgZWxpZiBpc2luc3RhbmNlKGxhc3RbLTFd
-LCBsaXN0KToKLSAgICAgICAgbGFzdFstMV1bMV0gKz0geC5ncm91cCgxKS5kZWNvZGUoInN0cmlu
-Z19lc2NhcGUiKQorICAgICAgICBsYXN0Wy0xXVsxXSArPSBzdHJpbmdfZXNjYXBlKHguZ3JvdXAo
-MSkpCiAgICAgICBjb250aW51ZQogICAgIHggPSBIRUxQX0VORC5tYXRjaChsaW5lKQogICAgIGlm
-IHg6CkBAIC0xNjMsNyArMTcwLDcgQEAgZm9yIG5hbWUsIGNtZCBpbiBDTURTLml0ZW1zKCk6CiAg
-IHJzdCA9IGdlbl9yc3QobmFtZSwgY21kKQogICBncm91cCA9IGNtZC5nZXQoJ2NfZ3JvdXAnKQog
-ICBpZiBncm91cCBpcyBOb25lOgotICAgIHByaW50ID4+IHN5cy5zdGRlcnIsICJnZW5fY29tbWFu
-ZHM6IHdhcm5pbmc6IHVzaW5nIGRlZmF1bHQgZ3JvdXAgJ21pc2MnIGZvciBjb21tYW5kICclcyci
-ICUgbmFtZQorICAgIHByaW50KCJnZW5fY29tbWFuZHM6IHdhcm5pbmc6IHVzaW5nIGRlZmF1bHQg
-Z3JvdXAgJ21pc2MnIGZvciBjb21tYW5kICclcyciICUgbmFtZSwgZmlsZT1zeXMuc3RkZXJyKQog
-ICAgIGdyb3VwID0gWydtaXNjJ10KICAgc3ViZGlyID0gb3MucGF0aC5qb2luKHN5cy5hcmd2WzJd
-LCBncm91cFswXSkKICAgdHJ5OgpAQCAtMTgzLDkgKzE5MCw4IEBAIGZvciBuYW1lLCBjbWQgaW4g
-Q01EUy5pdGVtcygpOgogICBleGNlcHQ6CiAgICAgcGFzcwogICBoYXNoX25ldyA9IGhhc2hsaWIu
-c2hhMSgpCi0gIGhhc2hfbmV3LnVwZGF0ZShyc3QpCisgIGhhc2hfbmV3LnVwZGF0ZShyc3QuZW5j
-b2RlKCd1dGYtOCcpKQogICBpZiBoYXNoX29sZC5oZXhkaWdlc3QoKSA9PSBoYXNoX25ldy5oZXhk
-aWdlc3QoKToKICAgICBjb250aW51ZQogCi0gIGZpbGUodGFyZ2V0LCAndycpLndyaXRlKHJzdCkK
-LQorICBvcGVuKHRhcmdldCwgJ3cnKS53cml0ZShyc3QpCi0tIAoyLjIzLjAKCgpfX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlz
-dApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcv
-bWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Tue, Sep 17, 2019 at 10:09:56AM +0200, Uwe Kleine-K=F6nig wrote:
+> On some machines the python command is provided by Python 3 while on
+> most (at least in my bubble) it is still Python 2. Modify the code to
+> make it usable by both Python versions.
+> =
+
+> print_function is available in __future__ since Python 2.6.0a2, which
+> shouldn't be a relevant restriction.
+> =
+
+> The modified script generates the same documentation as the old one;
+> independent if the script is called using Python 2 (here: 2.7.16) or
+> Python 3 (here: 3.7.3).
+> =
+
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  Documentation/gen_commands.py | 30 ++++++++++++++++++------------
+>  1 file changed, 18 insertions(+), 12 deletions(-)
+> =
+
+> diff --git a/Documentation/gen_commands.py b/Documentation/gen_commands.py
+> index 6251b4f22ed9..ff07ee0297f1 100755
+> --- a/Documentation/gen_commands.py
+> +++ b/Documentation/gen_commands.py
+> @@ -1,5 +1,7 @@
+>  #!/usr/bin/python
+>  =
+
+> +from __future__ import print_function
+> +
+>  import errno
+>  import os
+>  import re
+> @@ -28,10 +30,15 @@ CONT =3D re.compile(r"""\s*"(.*?)"\s*\)?\s*$""")
+>  =
+
+>  CMDS =3D {}
+>  =
+
+> +def string_escape(s):
+> +  # This used to do s.decode("string_escape") which isn't available on P=
+ython 3.
+> +  # Actually we only need to drop '\t', so do this here.
+> +  return s.replace(r'\t', '')
+
+I just found a change in my working copy that didn't make it into my
+patch:
+
+-  # Actually we only need to drop '\t', so do this here.
+-  return s.replace(r'\t', '')
++  # Actually we only need to drop '\t' and '\n', so do this here.
++  return s.replace(r'\t', '').replace(r'\n', '')
+
+With this the claim that the generated code is identical actually holds.
+
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
