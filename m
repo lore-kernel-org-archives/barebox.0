@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from magratgarlick.emantor.de ([78.46.208.201])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iA8v8-0006lU-0o
- for barebox@lists.infradead.org; Tue, 17 Sep 2019 08:33:11 +0000
-Date: Tue, 17 Sep 2019 10:33:08 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20190917083308.y7xfqlmav3k4ecyy@pengutronix.de>
-References: <20190917080126.2sp36vixvfvlmvtk@pengutronix.de>
- <20190917080956.16100-2-u.kleine-koenig@pengutronix.de>
+ id 1iA99w-0004Fl-Ja
+ for barebox@lists.infradead.org; Tue, 17 Sep 2019 08:48:32 +0000
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Tue, 17 Sep 2019 10:48:11 +0200
+Message-Id: <20190917084810.24608-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190917080956.16100-2-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,78 +15,104 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] Documentation: make gen_commands helper python3
- compatible
+Subject: [PATCH] Doc: i.MX: Document image structure for i.MX
 To: barebox@lists.infradead.org
-Cc: Stefan Lengfeld <contact@stefanchrist.eu>
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-On Tue, Sep 17, 2019 at 10:09:56AM +0200, Uwe Kleine-K=F6nig wrote:
-> On some machines the python command is provided by Python 3 while on
-> most (at least in my bubble) it is still Python 2. Modify the code to
-> make it usable by both Python versions.
-> =
+Document the image and load structure for i.MX6 and i.MX8MQ.
 
-> print_function is available in __future__ since Python 2.6.0a2, which
-> shouldn't be a relevant restriction.
-> =
+Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+---
+ Documentation/boards/imx.rst | 69 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 69 insertions(+)
 
-> The modified script generates the same documentation as the old one;
-> independent if the script is called using Python 2 (here: 2.7.16) or
-> Python 3 (here: 3.7.3).
-> =
+diff --git a/Documentation/boards/imx.rst b/Documentation/boards/imx.rst
+index 71cc6bb09a..7110492eba 100644
+--- a/Documentation/boards/imx.rst
++++ b/Documentation/boards/imx.rst
+@@ -142,6 +142,75 @@ It must be included in the board's flash header:
+ 
+ Analogous to HABv4 options and a template exist for HABv3.
+ 
++Secure Boot on i.MX6
++--------------------
++
++The secure boot process on i.MX6 consist of the following image constellation::
++
++    0x0 +---------------------------------+
++        | Barebox Header                  |
++  0x400 +---------------------------------+       -
++        | i.MX IVT Header                 |       |
++        | Boot Data                       +--+    |
++        | CSF Pointer                     +--|-+  | Signed Area
++        +---------------------------------+  | |  |
++        | Device Configuration Data (DCD) |  | |  |
++ 0x1000 +---------------------------------+  | |  |
++        | Barebox Prebootloader (PBL)     |<-+ |  |
++        +---------------------------------+    |  |
++        | Piggydata (Main Barebox Binary) |    |  |
++        +---------------------------------+    |  -
++        | Command Sequence File (CSF)     |<---+
++        +---------------------------------+
++
++Here the Command Sequence File signs the complete Header, PBL and piggy data
++file. This ensures that the whole barebox binary is authenticated. This is
++possible since the DDR RAM is configured using the DCD and the whole DDR memory
++area can be used to load data onto the device for authentication.
++The boot ROM loads the CSF area and barebox into memory and uses the CSF to
++verify the complete barebox binary.
++
++Secure Boot on i.MX8MQ
++----------------------
++
++For i.MX8MQ the image has the following design::
++
++    0x0 +---------------------------------+
++        | Barebox Header                  |
++        +---------------------------------+
++        | i.MX IVT Header                 |
++        | HDMI Firmware (Signed by NXP)   |
++        +---------------------------------+        -
++        | i.MX IVT Header                 |        |
++        | Boot Data                       +--+     |
++        | CSF Pointer                     +--|-+   |
++        +---------------------------------+  | |   | Signed Area
++        | Device Configuration Data (DCD) |  | |   |
++        +---------------------------------+  | |   |
++        | Barebox Prebootloader (PBL)     |<-+ |   |
++        | Piggydata Hash (SHA256)         +----|-+ |
++        +---------------------------------+    | | -
++        | Command Sequence File (CSF)     |<---+ |
++        +---------------------------------+      | -
++        | Piggydata (Main Barebox Binary) |<-----+ | Hashed Area
++        +---------------------------------+        -
++
++In contrast to i.MX6, for the i.MX8MQ the piggydata can not be signed together
++with the PBL binary. The DDR memory is initialized during the start of the PBL,
++previous to this no access to the DDR memory is possible. Since the Tightly
++Coupled Memory used for early startup on i.MX8MQ has only 256Kib, the whole
++barebox can't be loaded and verified at once, since the complete barebox with
++firmware has a size of ~500Kib.
++
++The bootrom loads the HDMI firmware unconditionally, since it is signed by NXP.
++Afterwards the Prebootloader (PBL) is loaded into SRAM and the bootrom proceeds
++to verify the PBL according to the Command Sequence File (CSF). The verified
++PBL initializes the ARM Trusted Firmware (TF-A) and DDR RAM. It subsequently
++loads the piggydata from the SD card and calculates the sha256sum of the
++piggydata. This is compared to the sha256sum built into the PBL during compile
++time, the PBL will only continue to boot if the sha256sum matches the builtin
++sha256sum.
++
+ Using GPT on i.MX
+ ^^^^^^^^^^^^^^^^^
+ 
+-- 
+2.23.0
 
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> ---
->  Documentation/gen_commands.py | 30 ++++++++++++++++++------------
->  1 file changed, 18 insertions(+), 12 deletions(-)
-> =
-
-> diff --git a/Documentation/gen_commands.py b/Documentation/gen_commands.py
-> index 6251b4f22ed9..ff07ee0297f1 100755
-> --- a/Documentation/gen_commands.py
-> +++ b/Documentation/gen_commands.py
-> @@ -1,5 +1,7 @@
->  #!/usr/bin/python
->  =
-
-> +from __future__ import print_function
-> +
->  import errno
->  import os
->  import re
-> @@ -28,10 +30,15 @@ CONT =3D re.compile(r"""\s*"(.*?)"\s*\)?\s*$""")
->  =
-
->  CMDS =3D {}
->  =
-
-> +def string_escape(s):
-> +  # This used to do s.decode("string_escape") which isn't available on P=
-ython 3.
-> +  # Actually we only need to drop '\t', so do this here.
-> +  return s.replace(r'\t', '')
-
-I just found a change in my working copy that didn't make it into my
-patch:
-
--  # Actually we only need to drop '\t', so do this here.
--  return s.replace(r'\t', '')
-+  # Actually we only need to drop '\t' and '\n', so do this here.
-+  return s.replace(r'\t', '').replace(r'\n', '')
-
-With this the claim that the generated code is identical actually holds.
-
-Best regards
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
