@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iAC4t-0003zN-S6
- for barebox@lists.infradead.org; Tue, 17 Sep 2019 11:55:29 +0000
+ id 1iAC4u-0003zM-0S
+ for barebox@lists.infradead.org; Tue, 17 Sep 2019 11:55:30 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 17 Sep 2019 13:55:17 +0200
-Message-Id: <20190917115518.14953-6-a.fatoum@pengutronix.de>
+Date: Tue, 17 Sep 2019 13:55:16 +0200
+Message-Id: <20190917115518.14953-5-a.fatoum@pengutronix.de>
 In-Reply-To: <20190917115518.14953-1-a.fatoum@pengutronix.de>
 References: <20190917115518.14953-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,42 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 5/6] ARM: layerscape: tqmls1046a: disable all SGMII PHYs
+Subject: [PATCH v2 4/6] scripts: pblimage: explicitly set architecture to ARM
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-We already disable PHYs 4-7, which are currently unusable as they hang
-off SGMII, which barebox' FMan driver does not yet support.
-
-Follow suit for the SGMII eth0 and eth1 as well, so they don't
-unnecessarily clutter the barebox output with
-
-	Unable to find a PHY (unknown ID?)
-
-messages.
+architecture is statically initialized to zero, which happens to be
+ARCH_ARM as it's the first enum constant.
+Make this a bit clearer by explicitly assigning ARCH_ARM to architecture.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- .../arm/boards/tqmls1046a/defaultenv-tqmls1046a/nv/dev.eth0.mode | 1 +
- .../arm/boards/tqmls1046a/defaultenv-tqmls1046a/nv/dev.eth1.mode | 1 +
- 2 files changed, 2 insertions(+)
- create mode 100644 arch/arm/boards/tqmls1046a/defaultenv-tqmls1046a/nv/dev.eth0.mode
- create mode 100644 arch/arm/boards/tqmls1046a/defaultenv-tqmls1046a/nv/dev.eth1.mode
+ scripts/pblimage.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boards/tqmls1046a/defaultenv-tqmls1046a/nv/dev.eth0.mode b/arch/arm/boards/tqmls1046a/defaultenv-tqmls1046a/nv/dev.eth0.mode
-new file mode 100644
-index 000000000000..7a68b11da8b1
---- /dev/null
-+++ b/arch/arm/boards/tqmls1046a/defaultenv-tqmls1046a/nv/dev.eth0.mode
-@@ -0,0 +1 @@
-+disabled
-diff --git a/arch/arm/boards/tqmls1046a/defaultenv-tqmls1046a/nv/dev.eth1.mode b/arch/arm/boards/tqmls1046a/defaultenv-tqmls1046a/nv/dev.eth1.mode
-new file mode 100644
-index 000000000000..7a68b11da8b1
---- /dev/null
-+++ b/arch/arm/boards/tqmls1046a/defaultenv-tqmls1046a/nv/dev.eth1.mode
-@@ -0,0 +1 @@
-+disabled
+diff --git a/scripts/pblimage.c b/scripts/pblimage.c
+index 73c0169ac1c1..235af8aa11b1 100644
+--- a/scripts/pblimage.c
++++ b/scripts/pblimage.c
+@@ -61,7 +61,7 @@ enum arch {
+ 	ARCH_POWERPC,
+ };
+ 
+-enum arch architecture;
++enum arch architecture = ARCH_ARM;
+ static char *rcwfile;
+ static char *pbifile;
+ static char *outfile;
 -- 
 2.23.0
 
