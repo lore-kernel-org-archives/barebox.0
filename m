@@ -1,17 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iAATk-0004Td-Lc
- for barebox@lists.infradead.org; Tue, 17 Sep 2019 10:13:02 +0000
-Date: Tue, 17 Sep 2019 12:12:59 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190917101259.qnpwut4ybwk7a4gz@pengutronix.de>
-References: <20190917084810.24608-1-r.czerwinski@pengutronix.de>
- <cf32aaa74d87b697e70a0e09635c110fc42a1a8a.camel@pengutronix.de>
- <fff93ef5605ca77343a9c60b0b4335aa34d93331.camel@pengutronix.de>
+ id 1iAAjo-0001r4-Ds
+ for barebox@lists.infradead.org; Tue, 17 Sep 2019 10:29:38 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Tue, 17 Sep 2019 12:29:32 +0200
+Message-Id: <20190917102932.22974-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <fff93ef5605ca77343a9c60b0b4335aa34d93331.camel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,90 +15,143 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Doc: i.MX: Document image structure for i.MX
-To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] trivial: fix typo lenght -> length
+To: barebox@lists.infradead.org
 
-On Tue, Sep 17, 2019 at 12:02:15PM +0200, Rouven Czerwinski wrote:
-> On Tue, 2019-09-17 at 11:13 +0200, Lucas Stach wrote:
-> > On Di, 2019-09-17 at 10:48 +0200, Rouven Czerwinski wrote:
-> > > Document the image and load structure for i.MX6 and i.MX8MQ.
-> > > 
-> > > Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-> > > ---
-> > >  Documentation/boards/imx.rst | 69
-> > > ++++++++++++++++++++++++++++++++++++
-> > >  1 file changed, 69 insertions(+)
-> > > 
-> > > diff --git a/Documentation/boards/imx.rst
-> > > b/Documentation/boards/imx.rst
-> > > index 71cc6bb09a..7110492eba 100644
-> > > --- a/Documentation/boards/imx.rst
-> > > +++ b/Documentation/boards/imx.rst
-> > > @@ -142,6 +142,75 @@ It must be included in the board's flash
-> > > header:
-> > >  
-> > >  Analogous to HABv4 options and a template exist for HABv3.
-> > >  
-> > > +Secure Boot on i.MX6
-> > > +--------------------
-> > > +
-> > > +The secure boot process on i.MX6 consist of the following image
-> > > constellation::
-> > > +
-> > > +    0x0 +---------------------------------+
-> > > +        | Barebox Header                  |
-> > > +  0x400 +---------------------------------+       -
-> > > +        | i.MX IVT Header                 |       |
-> > > +        | Boot Data                       +--+    |
-> > > +        | CSF Pointer                     +--|-+  | Signed Area
-> > > +        +---------------------------------+  | |  |
-> > > +        | Device Configuration Data (DCD) |  | |  |
-> > > + 0x1000 +---------------------------------+  | |  |
-> > > +        | Barebox Prebootloader (PBL)     |<-+ |  |
-> > > +        +---------------------------------+    |  |
-> > > +        | Piggydata (Main Barebox Binary) |    |  |
-> > > +        +---------------------------------+    |  -
-> > > +        | Command Sequence File (CSF)     |<---+
-> > > +        +---------------------------------+
-> > > +
-> > > +Here the Command Sequence File signs the complete Header, PBL and
-> > > piggy data
-> > > +file. This ensures that the whole barebox binary is authenticated.
-> > > This is
-> > > +possible since the DDR RAM is configured using the DCD and the
-> > > whole DDR memory
-> > > +area can be used to load data onto the device for authentication.
-> > 
-> > That's not a universally true statement for all i.MX6 boards. There
-> > are
-> > quite a few that also do the two step loading with PBL in SRAM and
-> > DRAM
-> > setup from the PBL. But I'm not sure if and how we want to reflect
-> > this
-> > in the documentation.
-> 
-> Do we even support HAB on these boards? They would require the same
-> setup as done on the i.MX8MQ currently, I have not looked into boards
-> in the tree yet.
-
-No, we don't have HAB support for these boards. Indeed we would have to
-do the same as on i.MX8. Maybe that's worth mentioning here.
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+R2VuZXJhdGVkIGJ5CgoJcGVybCAtcCAtaSAtZSAncy9sZW5naHRlPy9sZW5ndGgvJyBhcmNoL2Fy
+bS9ib2FyZHMvY2h1bWJ5X2ZhbGNvbndpbmcvZmFsY29ud2luZy5jIGFyY2gvYXJtL21hY2gtc2Ft
+c3VuZy9tZW0tczNjNjR4eC5jIGZzL2V4dDQvZXh0X2NvbW1vbi5oIGxpYi9ndWkvbG9kZXBuZy5j
+IGluY2x1ZGUvanRhZy5oCgpUaGVyZSBpcyBhbm90aGVyIGluc3RhbmNlIGluIGR0cy9CaW5kaW5n
+cy91c2IvczNjMjQxMC11c2IudHh0LCB0aGlzIGlzCmZpeGVkIGluIExpbnV4IHY1LjMtcmMxIHNv
+IHN1cHBvc2VkIHRvIGJlIGZpeGVkIHNvb24gaW4gYmFyZWJveCwgdG9vLgoKU2lnbmVkLW9mZi1i
+eTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0t
+ClRoaXMgYXBwbGllcyBvbiB0b3Agb2YgbXkgZWFybGllciBwYXRjaCAiQ29udmVydCBsYXRpbjEg
+ZmlsZXMgdG8gdXRmLTgiLgoKIGFyY2gvYXJtL2JvYXJkcy9jaHVtYnlfZmFsY29ud2luZy9mYWxj
+b253aW5nLmMgfCAgMiArLQogYXJjaC9hcm0vbWFjaC1zYW1zdW5nL21lbS1zM2M2NHh4LmMgICAg
+ICAgICAgICB8ICAyICstCiBmcy9leHQ0L2V4dF9jb21tb24uaCAgICAgICAgICAgICAgICAgICAg
+ICAgICAgIHwgIDIgKy0KIGluY2x1ZGUvanRhZy5oICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgfCAgMiArLQogbGliL2d1aS9sb2RlcG5nLmMgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICB8IDE2ICsrKysrKysrLS0tLS0tLS0KIDUgZmlsZXMgY2hhbmdlZCwgMTIgaW5zZXJ0aW9u
+cygrKSwgMTIgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL2NodW1i
+eV9mYWxjb253aW5nL2ZhbGNvbndpbmcuYyBiL2FyY2gvYXJtL2JvYXJkcy9jaHVtYnlfZmFsY29u
+d2luZy9mYWxjb253aW5nLmMKaW5kZXggNDJkZDgzOGQ3NThlLi5mYjRhNWQxY2YwMzYgMTAwNjQ0
+Ci0tLSBhL2FyY2gvYXJtL2JvYXJkcy9jaHVtYnlfZmFsY29ud2luZy9mYWxjb253aW5nLmMKKysr
+IGIvYXJjaC9hcm0vYm9hcmRzL2NodW1ieV9mYWxjb253aW5nL2ZhbGNvbndpbmcuYwpAQCAtNjUs
+NyArNjUsNyBAQCBzdGF0aWMgc3RydWN0IGZiX3ZpZGVvbW9kZSBmYWxjb253aW5nX3Ztb2RlID0g
+ewogCS54cmVzID0gMzIwLAogCS55cmVzID0gMjQwLAogCS5waXhjbG9jayA9IEtIWjJQSUNPUyg2
+MjUwKSwgICAgLyogbWF4LiAxMCBNSHogKi8KLQkvKiBsaW5lIGxlbmdodCBzaG91bGQgYmUgNjQg
+wrVzICovCisJLyogbGluZSBsZW5ndGggc2hvdWxkIGJlIDY0IMK1cyAqLwogCS5sZWZ0X21hcmdp
+biA9IDI4LAogCS5oc3luY19sZW4gPSAyNCwKIAkucmlnaHRfbWFyZ2luID0gMjgsCmRpZmYgLS1n
+aXQgYS9hcmNoL2FybS9tYWNoLXNhbXN1bmcvbWVtLXMzYzY0eHguYyBiL2FyY2gvYXJtL21hY2gt
+c2Ftc3VuZy9tZW0tczNjNjR4eC5jCmluZGV4IGFjYTJjZjUwNjY4OC4uYzUxMjQ1YTM3OGU3IDEw
+MDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLXNhbXN1bmcvbWVtLXMzYzY0eHguYworKysgYi9hcmNo
+L2FybS9tYWNoLXNhbXN1bmcvbWVtLXMzYzY0eHguYwpAQCAtMzksNyArMzksNyBAQCBpbnQgczNj
+NjQxMF9zZXR1cF9jaGlwc2VsZWN0KGludCBubywgY29uc3Qgc3RydWN0IHMzYzY0MTBfY2hpcHNl
+bGVjdCAqYykKIAl0YWNzID0gRElWX1JPVU5EX1VQKGMtPmFkcl9zZXR1cF90LCBwZXJfdCk7CiAJ
+Lyogc3RhcnQgb2YgQ1MgdG8gcmVhZC93cml0ZSBhc3NlcnRpb24gKD0gYWNjZXNzIHNldHVwKSAq
+LwogCXRjb3MgPSBESVZfUk9VTkRfVVAoYy0+YWNjZXNzX3NldHVwX3QsIHBlcl90KTsKLQkvKiBs
+ZW5ndGggb2YgcmVhZC93cml0ZSBhc3NlcnRpb24gKD0gYWNjZXNzIGxlbmdodCkgKi8KKwkvKiBs
+ZW5ndGggb2YgcmVhZC93cml0ZSBhc3NlcnRpb24gKD0gYWNjZXNzIGxlbmd0aCkgKi8KIAl0YWNj
+ID0gRElWX1JPVU5EX1VQKGMtPmFjY2Vzc190LCBwZXJfdCkgLSAxOwogCS8qIENTIGhvbGQgYWZ0
+ZXIgYWNjZXNzIGlzIGZpbmlzaGVkICovCiAJdGNvaCA9IERJVl9ST1VORF9VUChjLT5jc19ob2xk
+X3QsIHBlcl90KTsKZGlmZiAtLWdpdCBhL2ZzL2V4dDQvZXh0X2NvbW1vbi5oIGIvZnMvZXh0NC9l
+eHRfY29tbW9uLmgKaW5kZXggYzA4NGNmOWEzMmQxLi5hMjhmNTkxYmM0NDEgMTAwNjQ0Ci0tLSBh
+L2ZzL2V4dDQvZXh0X2NvbW1vbi5oCisrKyBiL2ZzL2V4dDQvZXh0X2NvbW1vbi5oCkBAIC0zNyw3
+ICszNyw3IEBACiAKIC8qIEFtb3VudCBvZiBpbmRpcmVjdCBibG9ja3MgaW4gYW4gaW5vZGUuICAq
+LwogI2RlZmluZSBJTkRJUkVDVF9CTE9DS1MJCQkxMgotLyogTWF4aW11bSBsZW5naHQgb2YgYSBw
+YXRobmFtZS4gICovCisvKiBNYXhpbXVtIGxlbmd0aCBvZiBhIHBhdGhuYW1lLiAgKi8KICNkZWZp
+bmUgRVhUMl9QQVRIX01BWAkJCQk0MDk2CiAvKiBNYXhpbXVtIG5lc3Rpbmcgb2Ygc3ltbGlua3Ms
+IHVzZWQgdG8gcHJldmVudCBhIGxvb3AuICAqLwogI2RlZmluZQlFWFQyX01BWF9TWU1MSU5LQ05U
+CQk4CmRpZmYgLS1naXQgYS9pbmNsdWRlL2p0YWcuaCBiL2luY2x1ZGUvanRhZy5oCmluZGV4IDI2
+Yzk1ZmIzMDc3Yy4uNGNjNGVhY2E5MTgyIDEwMDY0NAotLS0gYS9pbmNsdWRlL2p0YWcuaAorKysg
+Yi9pbmNsdWRlL2p0YWcuaApAQCAtMjgsNyArMjgsNyBAQAogICogKHJlcGVhdCBmb3IgZWFjaCBj
+aGlwIGluIHRoZSBjaGFpbikKICAqIC0gaW9jdGwgSlRBR19HRVRfSUQgaWRlbnRpZmllcyB0aGUg
+Y2hpcAogICogLSBpb2N0bCBKVEFHX1NFVF9JUl9MRU5HVEggc2V0cyB0aGUgaW5zdHJ1Y3Rpb24g
+cmVnaXN0ZXIgbGVuZ3RoCi0gKiBCZWZvcmUgYWNjZXNzaW5nIHRoZSBkYXRhIHJlZ2lzdGVycywg
+aW5zdHJ1Y3Rpb24gcmVnaXN0ZXJzJyBsZW5naHRlcworICogQmVmb3JlIGFjY2Vzc2luZyB0aGUg
+ZGF0YSByZWdpc3RlcnMsIGluc3RydWN0aW9uIHJlZ2lzdGVycycgbGVuZ3RocwogICogIE1VU1Qg
+YmUgcHJvZ3JhbW1lZCBmb3IgYWxsIGNoaXBzLgogICogQWZ0ZXIgdGhpcyBpbml0aWFsaXphdGlv
+biwgeW91IGNhbiBleGVjdXRlIEpUQUdfSVJfV1IsIEpUQUdfRFJfUkQsIEpUQUdfRFJfV1IKICAq
+ICBjb21tYW5kcyBpbiBhbnkgc2VxdWVuY2UuCmRpZmYgLS1naXQgYS9saWIvZ3VpL2xvZGVwbmcu
+YyBiL2xpYi9ndWkvbG9kZXBuZy5jCmluZGV4IDc4YTM0ZGI0NzM0NS4uODJmYTkwYWIyM2E4IDEw
+MDY0NAotLS0gYS9saWIvZ3VpL2xvZGVwbmcuYworKysgYi9saWIvZ3VpL2xvZGVwbmcuYwpAQCAt
+ODIyLDcgKzgyMiw3IEBAIHVuc2lnbmVkIGxvZGVwbmdfaHVmZm1hbl9jb2RlX2xlbmd0aHModW5z
+aWduZWQqIGxlbmd0aHMsIGNvbnN0IHVuc2lnbmVkKiBmcmVxdWVuCiAKICAgICBpZighZXJyb3Ip
+CiAgICAgewotICAgICAgLypjYWxjdWxhdGUgdGhlIGxlbmdodHMgb2YgZWFjaCBzeW1ib2wsIGFz
+IHRoZSBhbW91bnQgb2YgdGltZXMgYSBjb2luIG9mIGVhY2ggc3ltYm9sIGlzIHVzZWQqLworICAg
+ICAgLypjYWxjdWxhdGUgdGhlIGxlbmd0aHMgb2YgZWFjaCBzeW1ib2wsIGFzIHRoZSBhbW91bnQg
+b2YgdGltZXMgYSBjb2luIG9mIGVhY2ggc3ltYm9sIGlzIHVzZWQqLwogICAgICAgZm9yKGkgPSAw
+OyBpIDwgbnVtcHJlc2VudCAtIDE7IGkrKykKICAgICAgIHsKICAgICAgICAgQ29pbiogY29pbiA9
+ICZjb2luc1tpXTsKQEAgLTE2NzgsNyArMTY3OCw3IEBAIHN0YXRpYyB1bnNpZ25lZCBkZWZsYXRl
+RHluYW1pYyh1Y3ZlY3Rvciogb3V0LCBzaXplX3QqIGJwLCBIYXNoKiBoYXNoLAogICBhbm90aGVy
+IGh1ZmZtYW4gdHJlZSBpcyB1c2VkIGZvciB0aGUgZGlzdCB2YWx1ZXMgKCJkIikuIFRoZXNlIHR3
+byB0cmVlcyBhcmUKICAgc3RvcmVkIHVzaW5nIHRoZWlyIGNvZGUgbGVuZ3RocywgYW5kIHRvIGNv
+bXByZXNzIGV2ZW4gbW9yZSB0aGVzZSBjb2RlIGxlbmd0aHMKICAgYXJlIGFsc28gcnVuLWxlbmd0
+aCBlbmNvZGVkIGFuZCBodWZmbWFuIGNvbXByZXNzZWQuIFRoaXMgZ2l2ZXMgYSBodWZmbWFuIHRy
+ZWUKLSAgb2YgY29kZSBsZW5ndGhzICJjbCIuIFRoZSBjb2RlIGxlbmdodHMgdXNlZCB0byBkZXNj
+cmliZSB0aGlzIHRoaXJkIHRyZWUgYXJlCisgIG9mIGNvZGUgbGVuZ3RocyAiY2wiLiBUaGUgY29k
+ZSBsZW5ndGhzIHVzZWQgdG8gZGVzY3JpYmUgdGhpcyB0aGlyZCB0cmVlIGFyZQogICB0aGUgY29k
+ZSBsZW5ndGggY29kZSBsZW5ndGhzICgiY2xjbCIpLgogICAqLwogCkBAIC0xNjkwLDcgKzE2OTAs
+NyBAQCBzdGF0aWMgdW5zaWduZWQgZGVmbGF0ZUR5bmFtaWModWN2ZWN0b3IqIG91dCwgc2l6ZV90
+KiBicCwgSGFzaCogaGFzaCwKICAgdWl2ZWN0b3IgZnJlcXVlbmNpZXNfbGw7IC8qZnJlcXVlbmN5
+IG9mIGxpdCxsZW4gY29kZXMqLwogICB1aXZlY3RvciBmcmVxdWVuY2llc19kOyAvKmZyZXF1ZW5j
+eSBvZiBkaXN0IGNvZGVzKi8KICAgdWl2ZWN0b3IgZnJlcXVlbmNpZXNfY2w7IC8qZnJlcXVlbmN5
+IG9mIGNvZGUgbGVuZ3RoIGNvZGVzKi8KLSAgdWl2ZWN0b3IgYml0bGVuX2xsZDsgLypsaXQsbGVu
+LGRpc3QgY29kZSBsZW5naHRzIChpbnQgYml0cyksIGxpdGVyYWxseSAod2l0aG91dCByZXBlYXQg
+Y29kZXMpLiovCisgIHVpdmVjdG9yIGJpdGxlbl9sbGQ7IC8qbGl0LGxlbixkaXN0IGNvZGUgbGVu
+Z3RocyAoaW50IGJpdHMpLCBsaXRlcmFsbHkgKHdpdGhvdXQgcmVwZWF0IGNvZGVzKS4qLwogICB1
+aXZlY3RvciBiaXRsZW5fbGxkX2U7IC8qYml0bGVuX2xsZCBlbmNvZGVkIHdpdGggcmVwZWF0IGNv
+ZGVzICh0aGlzIGlzIGEgcnVkZW10YXJ5IHJ1biBsZW5ndGggY29tcHJlc3Npb24pKi8KICAgLypi
+aXRsZW5fY2wgaXMgdGhlIGNvZGUgbGVuZ3RoIGNvZGUgbGVuZ3RocyAoImNsY2wiKS4gVGhlIGJp
+dCBsZW5ndGhzIG9mIGNvZGVzIHRvIHJlcHJlc2VudCB0cmVlX2NsCiAgICh0aGVzZSBhcmUgd3Jp
+dHRlbiBhcyBpcyBpbiB0aGUgZmlsZSwgaXQgd291bGQgYmUgY3JhenkgdG8gY29tcHJlc3MgdGhl
+c2UgdXNpbmcgeWV0IGFub3RoZXIgaHVmZm1hbgpAQCAtMTgyOCw3ICsxODI4LDcgQEAgc3RhdGlj
+IHVuc2lnbmVkIGRlZmxhdGVEeW5hbWljKHVjdmVjdG9yKiBvdXQsIHNpemVfdCogYnAsIEhhc2gq
+IGhhc2gsCiAgICAgaWYoIXVpdmVjdG9yX3Jlc2l6ZSgmYml0bGVuX2NsLCBOVU1fQ09ERV9MRU5H
+VEhfQ09ERVMpKSBFUlJPUl9CUkVBSyg4MyAvKmFsbG9jIGZhaWwqLyk7CiAgICAgZm9yKGkgPSAw
+OyBpIDwgTlVNX0NPREVfTEVOR1RIX0NPREVTOyBpKyspCiAgICAgewotICAgICAgLypsZW5naHRz
+IG9mIGNvZGUgbGVuZ3RoIHRyZWUgaXMgaW4gdGhlIG9yZGVyIGFzIHNwZWNpZmllZCBieSBkZWZs
+YXRlKi8KKyAgICAgIC8qbGVuZ3RocyBvZiBjb2RlIGxlbmd0aCB0cmVlIGlzIGluIHRoZSBvcmRl
+ciBhcyBzcGVjaWZpZWQgYnkgZGVmbGF0ZSovCiAgICAgICBiaXRsZW5fY2wuZGF0YVtpXSA9IEh1
+ZmZtYW5UcmVlX2dldExlbmd0aCgmdHJlZV9jbCwgQ0xDTF9PUkRFUltpXSk7CiAgICAgfQogICAg
+IHdoaWxlKGJpdGxlbl9jbC5kYXRhW2JpdGxlbl9jbC5zaXplIC0gMV0gPT0gMCAmJiBiaXRsZW5f
+Y2wuc2l6ZSA+IDQpCkBAIC0xODQ0LDcgKzE4NDQsNyBAQCBzdGF0aWMgdW5zaWduZWQgZGVmbGF0
+ZUR5bmFtaWModWN2ZWN0b3IqIG91dCwgc2l6ZV90KiBicCwgSGFzaCogaGFzaCwKICAgICBBZnRl
+ciB0aGUgQkZJTkFMIGFuZCBCVFlQRSwgdGhlIGR5bmFtaWMgYmxvY2sgY29uc2lzdHMgb3V0IG9m
+IHRoZSBmb2xsb3dpbmc6CiAgICAgLSA1IGJpdHMgSExJVCwgNSBiaXRzIEhESVNULCA0IGJpdHMg
+SENMRU4KICAgICAtIChIQ0xFTis0KSozIGJpdHMgY29kZSBsZW5ndGhzIG9mIGNvZGUgbGVuZ3Ro
+IGFscGhhYmV0Ci0gICAgLSBITElUICsgMjU3IGNvZGUgbGVuZ2h0cyBvZiBsaXQvbGVuZ3RoIGFs
+cGhhYmV0IChlbmNvZGVkIHVzaW5nIHRoZSBjb2RlIGxlbmd0aAorICAgIC0gSExJVCArIDI1NyBj
+b2RlIGxlbmd0aHMgb2YgbGl0L2xlbmd0aCBhbHBoYWJldCAoZW5jb2RlZCB1c2luZyB0aGUgY29k
+ZSBsZW5ndGgKICAgICAgIGFscGhhYmV0LCArIHBvc3NpYmxlIHJlcGV0aXRpb24gY29kZXMgMTYs
+IDE3LCAxOCkKICAgICAtIEhESVNUICsgMSBjb2RlIGxlbmd0aHMgb2YgZGlzdGFuY2UgYWxwaGFi
+ZXQgKGVuY29kZWQgdXNpbmcgdGhlIGNvZGUgbGVuZ3RoCiAgICAgICBhbHBoYWJldCwgKyBwb3Nz
+aWJsZSByZXBldGl0aW9uIGNvZGVzIDE2LCAxNywgMTgpCkBAIC0xODY1LDEwICsxODY1LDEwIEBA
+IHN0YXRpYyB1bnNpZ25lZCBkZWZsYXRlRHluYW1pYyh1Y3ZlY3Rvciogb3V0LCBzaXplX3QqIGJw
+LCBIYXNoKiBoYXNoLAogICAgIGFkZEJpdHNUb1N0cmVhbShicCwgb3V0LCBIRElTVCwgNSk7CiAg
+ICAgYWRkQml0c1RvU3RyZWFtKGJwLCBvdXQsIEhDTEVOLCA0KTsKIAotICAgIC8qd3JpdGUgdGhl
+IGNvZGUgbGVuZ2h0cyBvZiB0aGUgY29kZSBsZW5ndGggYWxwaGFiZXQqLworICAgIC8qd3JpdGUg
+dGhlIGNvZGUgbGVuZ3RocyBvZiB0aGUgY29kZSBsZW5ndGggYWxwaGFiZXQqLwogICAgIGZvcihp
+ID0gMDsgaSA8IEhDTEVOICsgNDsgaSsrKSBhZGRCaXRzVG9TdHJlYW0oYnAsIG91dCwgYml0bGVu
+X2NsLmRhdGFbaV0sIDMpOwogCi0gICAgLyp3cml0ZSB0aGUgbGVuZ2h0cyBvZiB0aGUgbGl0L2xl
+biBBTkQgdGhlIGRpc3QgYWxwaGFiZXQqLworICAgIC8qd3JpdGUgdGhlIGxlbmd0aHMgb2YgdGhl
+IGxpdC9sZW4gQU5EIHRoZSBkaXN0IGFscGhhYmV0Ki8KICAgICBmb3IoaSA9IDA7IGkgPCBiaXRs
+ZW5fbGxkX2Uuc2l6ZTsgaSsrKQogICAgIHsKICAgICAgIGFkZEh1ZmZtYW5TeW1ib2woYnAsIG91
+dCwgSHVmZm1hblRyZWVfZ2V0Q29kZSgmdHJlZV9jbCwgYml0bGVuX2xsZF9lLmRhdGFbaV0pLApA
+QCAtNTYwOCw3ICs1NjA4LDcgQEAgY29uc3QgY2hhciogbG9kZXBuZ19lcnJvcl90ZXh0KHVuc2ln
+bmVkIGNvZGUpCiAKICAgICAvKmp1bXBlZCBwYXN0IHRyZWUgd2hpbGUgZ2VuZXJhdGluZyBodWZm
+bWFuIHRyZWUsIHRoaXMgY291bGQgYmUgd2hlbiB0aGUKICAgICB0cmVlIHdpbGwgaGF2ZSBtb3Jl
+IGxlYXZlcyB0aGFuIHN5bWJvbHMgYWZ0ZXIgZ2VuZXJhdGluZyBpdCBvdXQgb2YgdGhlCi0gICAg
+Z2l2ZW4gbGVuZ2h0cy4gVGhleSBjYWxsIHRoaXMgYW4gb3ZlcnN1YnNjcmliZWQgZHluYW1pYyBi
+aXQgbGVuZ3RocyB0cmVlIGluIHpsaWIuKi8KKyAgICBnaXZlbiBsZW5ndGhzLiBUaGV5IGNhbGwg
+dGhpcyBhbiBvdmVyc3Vic2NyaWJlZCBkeW5hbWljIGJpdCBsZW5ndGhzIHRyZWUgaW4gemxpYi4q
+LwogICAgIGNhc2UgNTU6IHJldHVybiAianVtcGVkIHBhc3QgdHJlZSB3aGlsZSBnZW5lcmF0aW5n
+IGh1ZmZtYW4gdHJlZSI7CiAKICAgICBjYXNlIDU2OiByZXR1cm4gImdpdmVuIG91dHB1dCBpbWFn
+ZSBjb2xvcnR5cGUgb3IgYml0ZGVwdGggbm90IHN1cHBvcnRlZCBmb3IgY29sb3IgY29udmVyc2lv
+biI7Ci0tIAoyLjIzLjAKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcK
+aHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
