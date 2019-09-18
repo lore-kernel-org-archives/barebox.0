@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iAUnC-0001qV-LG
+ id 1iAUnC-0001qY-J3
  for barebox@lists.infradead.org; Wed, 18 Sep 2019 07:54:28 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 18 Sep 2019 09:54:18 +0200
-Message-Id: <20190918075421.20456-14-s.hauer@pengutronix.de>
+Date: Wed, 18 Sep 2019 09:54:14 +0200
+Message-Id: <20190918075421.20456-10-s.hauer@pengutronix.de>
 In-Reply-To: <20190918075421.20456-1-s.hauer@pengutronix.de>
 References: <20190918075421.20456-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,84 +21,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/16] ARM: mxs: Move HAVE_PBL_MULTI_IMAGES up to ARCH
+Subject: [PATCH 09/16] ARM: Freescale i.MX23 evk: Check machine type in
+ initcalls
 To: Barebox List <barebox@lists.infradead.org>
 
-Now that all boards in mach-mxs select HAVE_PBL_MULTI_IMAGES we can move
-it up to ARCH_MXS.
+Check for the right machine type in initcalls before executing them to
+make the board multi image safe.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/Kconfig          | 1 +
- arch/arm/mach-mxs/Kconfig | 7 -------
- 2 files changed, 1 insertion(+), 7 deletions(-)
+ arch/arm/boards/freescale-mx23-evk/lowlevel.c | 3 ++-
+ arch/arm/boards/freescale-mx23-evk/mx23-evk.c | 7 +++++++
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index b227bb78b6..e045f0ea64 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -144,6 +144,7 @@ config ARCH_MXS
- 	select COMMON_CLK
- 	select CLKDEV_LOOKUP
- 	select HAS_DEBUG_LL
-+	select HAVE_PBL_MULTI_IMAGES
+diff --git a/arch/arm/boards/freescale-mx23-evk/lowlevel.c b/arch/arm/boards/freescale-mx23-evk/lowlevel.c
+index 13c7435cd6..2321a469ab 100644
+--- a/arch/arm/boards/freescale-mx23-evk/lowlevel.c
++++ b/arch/arm/boards/freescale-mx23-evk/lowlevel.c
+@@ -1,5 +1,6 @@
+ #include <common.h>
+ #include <linux/sizes.h>
++#include <generated/mach-types.h>
+ #include <asm/barebox-arm-head.h>
+ #include <asm/barebox-arm.h>
+ #include <mach/imx23-regs.h>
+@@ -7,5 +8,5 @@
+ void __naked barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint32_t r2)
+ {
+ 	arm_cpu_lowlevel_init();
+-	barebox_arm_entry(IMX_MEMORY_BASE, SZ_32M, NULL);
++	barebox_arm_entry(IMX_MEMORY_BASE, SZ_32M, (void *)MACH_TYPE_MX23EVK);
+ }
+diff --git a/arch/arm/boards/freescale-mx23-evk/mx23-evk.c b/arch/arm/boards/freescale-mx23-evk/mx23-evk.c
+index a3587db063..75a7d5a6b4 100644
+--- a/arch/arm/boards/freescale-mx23-evk/mx23-evk.c
++++ b/arch/arm/boards/freescale-mx23-evk/mx23-evk.c
+@@ -22,6 +22,7 @@
+ #include <linux/err.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
++#include <asm/barebox-arm.h>
+ #include <mach/imx-regs.h>
+ #include <mach/clock.h>
+ #include <mach/mci.h>
+@@ -99,6 +100,9 @@ static int mx23_evk_devices_init(void)
+ {
+ 	int i, rc;
  
- config ARCH_NETX
- 	bool "Hilscher NetX based"
-diff --git a/arch/arm/mach-mxs/Kconfig b/arch/arm/mach-mxs/Kconfig
-index ffaf9a9e61..ea877d24a3 100644
---- a/arch/arm/mach-mxs/Kconfig
-+++ b/arch/arm/mach-mxs/Kconfig
-@@ -34,20 +34,17 @@ choice
++	if (barebox_arm_machine() != MACH_TYPE_MX23EVK)
++		return 0;
++
+ 	/* initizalize gpios */
+ 	for (i = 0; i < ARRAY_SIZE(pad_setup); i++)
+ 		imx_gpio_mode(pad_setup[i]);
+@@ -126,6 +130,9 @@ device_initcall(mx23_evk_devices_init);
  
- config MACH_MX23EVK
- 	bool "mx23-evk"
--	select HAVE_PBL_MULTI_IMAGES
- 	help
- 	  Say Y here if you are using the Freescale i.MX23-EVK board
- 
- config MACH_CHUMBY
- 	bool "Chumby Falconwing"
--	select HAVE_PBL_MULTI_IMAGES
- 	help
- 	  Say Y here if you are using the "chumby one" aka falconwing from
- 	  Chumby Industries
- 
- config MACH_IMX233_OLINUXINO
- 	bool "Olimex.ltd imx223-olinuxino"
--	select HAVE_PBL_MULTI_IMAGES
- 	help
- 	  Say Y here if you are using the imx233-olinuxino
- 
-@@ -62,21 +59,18 @@ choice
- 
- config MACH_TX28
- 	bool "KARO tx28"
--	select HAVE_PBL_MULTI_IMAGES
- 	help
- 	  Say Y here if you are using the KARO TX28 CPU module.
- 
- config MACH_MX28EVK
- 	bool "mx28-evk"
- 	select MXS_OCOTP
--	select HAVE_PBL_MULTI_IMAGES
- 	help
- 	  Say Y here if you are using the Freescale i.MX28-EVK board
- 
- config MACH_DUCKBILL
- 	bool "Duckbill"
- 	select MXS_OCOTP
--	select HAVE_PBL_MULTI_IMAGES
- 	help
- 	  Say Y here if you are using the I2SE Duckbill board
- 
-@@ -85,7 +79,6 @@ config MACH_CFA10036
- 	select MXS_OCOTP
- 	select I2C_GPIO
- 	select EEPROM_AT24
--	select HAVE_PBL_MULTI_IMAGES
- 	help
- 	  Say Y here if you are using the Crystalfontz CFA-10036 module
+ static int mx23_evk_console_init(void)
+ {
++	if (barebox_arm_machine() != MACH_TYPE_MX23EVK)
++		return 0;
++
+ 	barebox_set_model("Freescale i.MX23 EVK");
+ 	barebox_set_hostname("mx23evk");
  
 -- 
 2.23.0
