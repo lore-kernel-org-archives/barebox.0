@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iAUnI-0001yF-Jb
- for barebox@lists.infradead.org; Wed, 18 Sep 2019 07:54:35 +0000
+ id 1iAUnC-0001qW-Kd
+ for barebox@lists.infradead.org; Wed, 18 Sep 2019 07:54:29 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 18 Sep 2019 09:54:16 +0200
-Message-Id: <20190918075421.20456-12-s.hauer@pengutronix.de>
+Date: Wed, 18 Sep 2019 09:54:19 +0200
+Message-Id: <20190918075421.20456-15-s.hauer@pengutronix.de>
 In-Reply-To: <20190918075421.20456-1-s.hauer@pengutronix.de>
 References: <20190918075421.20456-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,55 +21,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/16] ARM: mxs: imx23-evk: Switch to multi image support
+Subject: [PATCH 14/16] ARM: mxs: Allow to compile all boards for a SoC together
 To: Barebox List <barebox@lists.infradead.org>
 
-Build the i.MX23 EVK as multi image.
+All boards in mach-mxs support multi image, so we no longer have to make
+the board type a choice. Let the user compile all boards for a SoC
+together. We cannot compile i.MX23 together with i.MX28 though, there
+are still many conflicting defines which use the IMX_ namespace which
+are really SoC specific.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/freescale-mx23-evk/lowlevel.c | 2 +-
- arch/arm/mach-mxs/Kconfig                     | 1 +
- images/Makefile.mxs                           | 4 ++++
- 3 files changed, 6 insertions(+), 1 deletion(-)
+ arch/arm/mach-mxs/Kconfig | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/arch/arm/boards/freescale-mx23-evk/lowlevel.c b/arch/arm/boards/freescale-mx23-evk/lowlevel.c
-index 2321a469ab..99e08d88c7 100644
---- a/arch/arm/boards/freescale-mx23-evk/lowlevel.c
-+++ b/arch/arm/boards/freescale-mx23-evk/lowlevel.c
-@@ -5,7 +5,7 @@
- #include <asm/barebox-arm.h>
- #include <mach/imx23-regs.h>
- 
--void __naked barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint32_t r2)
-+ENTRY_FUNCTION(start_imx23_evk, r0, r1, r2)
- {
- 	arm_cpu_lowlevel_init();
- 	barebox_arm_entry(IMX_MEMORY_BASE, SZ_32M, (void *)MACH_TYPE_MX23EVK);
 diff --git a/arch/arm/mach-mxs/Kconfig b/arch/arm/mach-mxs/Kconfig
-index 2409c53dd7..fd6b5929a3 100644
+index ea877d24a3..b3a7c6259c 100644
 --- a/arch/arm/mach-mxs/Kconfig
 +++ b/arch/arm/mach-mxs/Kconfig
-@@ -34,6 +34,7 @@ choice
+@@ -29,9 +29,6 @@ endchoice
  
+ if ARCH_IMX23
+ 
+-choice
+-	prompt "i.MX23 Board Type"
+-
  config MACH_MX23EVK
  	bool "mx23-evk"
-+	select HAVE_PBL_MULTI_IMAGES
  	help
- 	  Say Y here if you are using the Freescale i.MX23-EVK board
+@@ -48,15 +45,10 @@ config MACH_IMX233_OLINUXINO
+ 	help
+ 	  Say Y here if you are using the imx233-olinuxino
  
-diff --git a/images/Makefile.mxs b/images/Makefile.mxs
-index b230c02562..4c69c347fb 100644
---- a/images/Makefile.mxs
-+++ b/images/Makefile.mxs
-@@ -68,3 +68,7 @@ image-$(CONFIG_MACH_IMX233_OLINUXINO) += barebox-olinuxino-imx23-2nd.img
- pblb-$(CONFIG_MACH_CFA10036) += start_cfa10036
- FILE_barebox-crystalfonts-cfa10036-2nd.img = start_cfa10036.pblb
- image-$(CONFIG_MACH_CFA10036) += barebox-crystalfonts-cfa10036-2nd.img
-+
-+pblb-$(CONFIG_MACH_MX23EVK) += start_imx23_evk
-+FILE_barebox-freescale-mx23-evk-2nd.img = start_imx23_evk.pblb
-+image-$(CONFIG_MACH_MX23EVK) += barebox-freescale-mx23-evk-2nd.img
+-endchoice
+-
+ endif
+ 
+ if ARCH_IMX28
+ 
+-choice
+-	prompt "i.MX28 Board Type"
+-
+ config MACH_TX28
+ 	bool "KARO tx28"
+ 	help
+@@ -82,8 +74,6 @@ config MACH_CFA10036
+ 	help
+ 	  Say Y here if you are using the Crystalfontz CFA-10036 module
+ 
+-endchoice
+-
+ endif
+ 
+ menu "i.MX specific settings"
 -- 
 2.23.0
 
