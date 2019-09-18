@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iAUnC-0001qY-J3
- for barebox@lists.infradead.org; Wed, 18 Sep 2019 07:54:28 +0000
+ id 1iAUna-00026u-QE
+ for barebox@lists.infradead.org; Wed, 18 Sep 2019 07:54:52 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 18 Sep 2019 09:54:14 +0200
-Message-Id: <20190918075421.20456-10-s.hauer@pengutronix.de>
+Date: Wed, 18 Sep 2019 09:54:20 +0200
+Message-Id: <20190918075421.20456-16-s.hauer@pengutronix.de>
 In-Reply-To: <20190918075421.20456-1-s.hauer@pengutronix.de>
 References: <20190918075421.20456-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,69 +21,345 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/16] ARM: Freescale i.MX23 evk: Check machine type in
- initcalls
+Subject: [PATCH 15/16] ARM: add common i.MX28 defconfig file
 To: Barebox List <barebox@lists.infradead.org>
 
-Check for the right machine type in initcalls before executing them to
-make the board multi image safe.
+Merge the defconfigs for the i.MX28 boards into a common
+imx28_defconfig.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/freescale-mx23-evk/lowlevel.c | 3 ++-
- arch/arm/boards/freescale-mx23-evk/mx23-evk.c | 7 +++++++
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ arch/arm/configs/cfa10036_defconfig           | 38 --------
+ arch/arm/configs/freescale-mx28-evk_defconfig | 89 ------------------
+ .../{duckbill_defconfig => imx28_defconfig}   | 20 ++++
+ arch/arm/configs/tx28stk5_defconfig           | 94 -------------------
+ 4 files changed, 20 insertions(+), 221 deletions(-)
+ delete mode 100644 arch/arm/configs/cfa10036_defconfig
+ delete mode 100644 arch/arm/configs/freescale-mx28-evk_defconfig
+ rename arch/arm/configs/{duckbill_defconfig => imx28_defconfig} (82%)
+ delete mode 100644 arch/arm/configs/tx28stk5_defconfig
 
-diff --git a/arch/arm/boards/freescale-mx23-evk/lowlevel.c b/arch/arm/boards/freescale-mx23-evk/lowlevel.c
-index 13c7435cd6..2321a469ab 100644
---- a/arch/arm/boards/freescale-mx23-evk/lowlevel.c
-+++ b/arch/arm/boards/freescale-mx23-evk/lowlevel.c
-@@ -1,5 +1,6 @@
- #include <common.h>
- #include <linux/sizes.h>
-+#include <generated/mach-types.h>
- #include <asm/barebox-arm-head.h>
- #include <asm/barebox-arm.h>
- #include <mach/imx23-regs.h>
-@@ -7,5 +8,5 @@
- void __naked barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint32_t r2)
- {
- 	arm_cpu_lowlevel_init();
--	barebox_arm_entry(IMX_MEMORY_BASE, SZ_32M, NULL);
-+	barebox_arm_entry(IMX_MEMORY_BASE, SZ_32M, (void *)MACH_TYPE_MX23EVK);
- }
-diff --git a/arch/arm/boards/freescale-mx23-evk/mx23-evk.c b/arch/arm/boards/freescale-mx23-evk/mx23-evk.c
-index a3587db063..75a7d5a6b4 100644
---- a/arch/arm/boards/freescale-mx23-evk/mx23-evk.c
-+++ b/arch/arm/boards/freescale-mx23-evk/mx23-evk.c
-@@ -22,6 +22,7 @@
- #include <linux/err.h>
- #include <asm/armlinux.h>
- #include <generated/mach-types.h>
-+#include <asm/barebox-arm.h>
- #include <mach/imx-regs.h>
- #include <mach/clock.h>
- #include <mach/mci.h>
-@@ -99,6 +100,9 @@ static int mx23_evk_devices_init(void)
- {
- 	int i, rc;
- 
-+	if (barebox_arm_machine() != MACH_TYPE_MX23EVK)
-+		return 0;
-+
- 	/* initizalize gpios */
- 	for (i = 0; i < ARRAY_SIZE(pad_setup); i++)
- 		imx_gpio_mode(pad_setup[i]);
-@@ -126,6 +130,9 @@ device_initcall(mx23_evk_devices_init);
- 
- static int mx23_evk_console_init(void)
- {
-+	if (barebox_arm_machine() != MACH_TYPE_MX23EVK)
-+		return 0;
-+
- 	barebox_set_model("Freescale i.MX23 EVK");
- 	barebox_set_hostname("mx23evk");
- 
+diff --git a/arch/arm/configs/cfa10036_defconfig b/arch/arm/configs/cfa10036_defconfig
+deleted file mode 100644
+index 5a4e2ab45d..0000000000
+--- a/arch/arm/configs/cfa10036_defconfig
++++ /dev/null
+@@ -1,38 +0,0 @@
+-CONFIG_TEXT_BASE=0x43000000
+-CONFIG_ARCH_MXS=y
+-CONFIG_ARCH_IMX28=y
+-CONFIG_MACH_CFA10036=y
+-CONFIG_AEABI=y
+-CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+-CONFIG_MMU=y
+-CONFIG_MALLOC_SIZE=0x800000
+-CONFIG_HUSH_FANCY_PROMPT=y
+-CONFIG_CMDLINE_EDITING=y
+-CONFIG_AUTO_COMPLETE=y
+-CONFIG_BOOTM_SHOW_TYPE=y
+-CONFIG_BOOTM_OFTREE=y
+-CONFIG_CONSOLE_ACTIVATE_ALL=y
+-CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+-CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/crystalfontz-cfa10036/env"
+-CONFIG_LONGHELP=y
+-CONFIG_CMD_GO=y
+-CONFIG_CMD_RESET=y
+-CONFIG_CMD_PARTITION=y
+-CONFIG_CMD_EXPORT=y
+-CONFIG_CMD_PRINTENV=y
+-CONFIG_CMD_SAVEENV=y
+-CONFIG_CMD_SLEEP=y
+-CONFIG_CMD_ECHO_E=y
+-CONFIG_CMD_EDIT=y
+-CONFIG_CMD_READLINE=y
+-CONFIG_CMD_TIMEOUT=y
+-CONFIG_CMD_GPIO=y
+-CONFIG_CMD_OFTREE=y
+-# CONFIG_SPI is not set
+-CONFIG_I2C=y
+-CONFIG_MCI=y
+-CONFIG_MCI_STARTUP=y
+-CONFIG_MCI_MXS=y
+-CONFIG_FS_EXT4=y
+-CONFIG_FS_FAT=y
+-CONFIG_FS_FAT_LFN=y
+diff --git a/arch/arm/configs/freescale-mx28-evk_defconfig b/arch/arm/configs/freescale-mx28-evk_defconfig
+deleted file mode 100644
+index 29db99cee6..0000000000
+--- a/arch/arm/configs/freescale-mx28-evk_defconfig
++++ /dev/null
+@@ -1,89 +0,0 @@
+-CONFIG_ARCH_MXS=y
+-CONFIG_ARCH_IMX28=y
+-CONFIG_MACH_MX28EVK=y
+-CONFIG_AEABI=y
+-CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+-CONFIG_ARM_UNWIND=y
+-CONFIG_MMU=y
+-CONFIG_MALLOC_SIZE=0x0
+-CONFIG_MALLOC_TLSF=y
+-CONFIG_KALLSYMS=y
+-CONFIG_RELOCATABLE=y
+-CONFIG_HUSH_FANCY_PROMPT=y
+-CONFIG_CMDLINE_EDITING=y
+-CONFIG_AUTO_COMPLETE=y
+-CONFIG_MENU=y
+-CONFIG_BOOTM_SHOW_TYPE=y
+-CONFIG_BOOTM_VERBOSE=y
+-CONFIG_BOOTM_INITRD=y
+-CONFIG_BLSPEC=y
+-CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+-CONFIG_RESET_SOURCE=y
+-CONFIG_CMD_DMESG=y
+-CONFIG_LONGHELP=y
+-CONFIG_CMD_IOMEM=y
+-CONFIG_CMD_MEMINFO=y
+-CONFIG_CMD_GO=y
+-CONFIG_CMD_RESET=y
+-CONFIG_CMD_UIMAGE=y
+-CONFIG_CMD_PARTITION=y
+-CONFIG_CMD_EXPORT=y
+-CONFIG_CMD_LOADENV=y
+-CONFIG_CMD_PRINTENV=y
+-CONFIG_CMD_MAGICVAR=y
+-CONFIG_CMD_MAGICVAR_HELP=y
+-CONFIG_CMD_SAVEENV=y
+-CONFIG_CMD_CMP=y
+-CONFIG_CMD_FILETYPE=y
+-CONFIG_CMD_LN=y
+-CONFIG_CMD_MD5SUM=y
+-CONFIG_CMD_UNCOMPRESS=y
+-CONFIG_CMD_LET=y
+-CONFIG_CMD_MSLEEP=y
+-CONFIG_CMD_READF=y
+-CONFIG_CMD_SLEEP=y
+-CONFIG_CMD_DHCP=y
+-CONFIG_CMD_MIITOOL=y
+-CONFIG_CMD_PING=y
+-CONFIG_CMD_TFTP=y
+-CONFIG_CMD_ECHO_E=y
+-CONFIG_CMD_EDIT=y
+-CONFIG_CMD_MENUTREE=y
+-CONFIG_CMD_SPLASH=y
+-CONFIG_CMD_READLINE=y
+-CONFIG_CMD_TIMEOUT=y
+-CONFIG_CMD_CRC=y
+-CONFIG_CMD_CRC_CMP=y
+-CONFIG_CMD_MM=y
+-CONFIG_CMD_CLK=y
+-CONFIG_CMD_DETECT=y
+-CONFIG_CMD_FLASH=y
+-CONFIG_CMD_GPIO=y
+-CONFIG_CMD_NANDTEST=y
+-CONFIG_CMD_SPI=y
+-CONFIG_CMD_OF_NODE=y
+-CONFIG_CMD_OF_PROPERTY=y
+-CONFIG_CMD_OFTREE=y
+-CONFIG_NET=y
+-CONFIG_OFDEVICE=y
+-CONFIG_OF_BAREBOX_DRIVERS=y
+-CONFIG_DRIVER_SERIAL_AUART=y
+-CONFIG_DRIVER_NET_FEC_IMX=y
+-CONFIG_DRIVER_SPI_MXS=y
+-CONFIG_MTD=y
+-CONFIG_MTD_M25P80=y
+-CONFIG_MTD_SST25L=y
+-CONFIG_NAND=y
+-CONFIG_NAND_MXS=y
+-CONFIG_VIDEO=y
+-CONFIG_DRIVER_VIDEO_STM=y
+-CONFIG_MCI=y
+-CONFIG_MCI_STARTUP=y
+-CONFIG_MCI_MXS=y
+-CONFIG_MXS_APBH_DMA=y
+-CONFIG_REGULATOR=y
+-CONFIG_REGULATOR_FIXED=y
+-CONFIG_FS_TFTP=y
+-CONFIG_FS_FAT=y
+-CONFIG_FS_FAT_WRITE=y
+-CONFIG_FS_FAT_LFN=y
+diff --git a/arch/arm/configs/duckbill_defconfig b/arch/arm/configs/imx28_defconfig
+similarity index 82%
+rename from arch/arm/configs/duckbill_defconfig
+rename to arch/arm/configs/imx28_defconfig
+index c0a3c1753b..58cda937a8 100644
+--- a/arch/arm/configs/duckbill_defconfig
++++ b/arch/arm/configs/imx28_defconfig
+@@ -1,6 +1,9 @@
+ CONFIG_ARCH_MXS=y
+ CONFIG_ARCH_IMX28=y
++CONFIG_MACH_TX28=y
++CONFIG_MACH_MX28EVK=y
+ CONFIG_MACH_DUCKBILL=y
++CONFIG_MACH_CFA10036=y
+ CONFIG_AEABI=y
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+ CONFIG_ARM_UNWIND=y
+@@ -17,12 +20,15 @@ CONFIG_BOOTM_SHOW_TYPE=y
+ CONFIG_BOOTM_VERBOSE=y
+ CONFIG_BOOTM_INITRD=y
+ CONFIG_BLSPEC=y
++CONFIG_CONSOLE_ALLOW_COLOR=y
+ CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+ CONFIG_RESET_SOURCE=y
+ CONFIG_CMD_DMESG=y
+ CONFIG_LONGHELP=y
+ CONFIG_CMD_IOMEM=y
++CONFIG_CMD_IMD=y
+ CONFIG_CMD_MEMINFO=y
++# CONFIG_CMD_BOOTU is not set
+ CONFIG_CMD_GO=y
+ CONFIG_CMD_RESET=y
+ CONFIG_CMD_UIMAGE=y
+@@ -37,6 +43,8 @@ CONFIG_CMD_CMP=y
+ CONFIG_CMD_FILETYPE=y
+ CONFIG_CMD_LN=y
+ CONFIG_CMD_MD5SUM=y
++CONFIG_CMD_SHA1SUM=y
++CONFIG_CMD_SHA256SUM=y
+ CONFIG_CMD_UNCOMPRESS=y
+ CONFIG_CMD_LET=y
+ CONFIG_CMD_MSLEEP=y
+@@ -64,18 +72,23 @@ CONFIG_CMD_NANDTEST=y
+ CONFIG_CMD_SPI=y
+ CONFIG_CMD_LED_TRIGGER=y
+ CONFIG_CMD_USBGADGET=y
++CONFIG_CMD_BAREBOX_UPDATE=y
+ CONFIG_CMD_OF_NODE=y
+ CONFIG_CMD_OF_PROPERTY=y
+ CONFIG_CMD_OFTREE=y
++CONFIG_CMD_TIME=y
+ CONFIG_NET=y
+ CONFIG_OFDEVICE=y
+ CONFIG_OF_BAREBOX_DRIVERS=y
+ CONFIG_DRIVER_SERIAL_AUART=y
+ CONFIG_DRIVER_NET_FEC_IMX=y
+ CONFIG_DRIVER_SPI_MXS=y
++CONFIG_I2C=y
+ CONFIG_MTD=y
+ CONFIG_NAND=y
+ CONFIG_NAND_MXS=y
++CONFIG_MTD_UBI=y
++CONFIG_MTD_UBI_FASTMAP=y
+ CONFIG_USB_GADGET=y
+ CONFIG_USB_GADGET_DFU=y
+ CONFIG_USB_GADGET_SERIAL=y
+@@ -89,8 +102,15 @@ CONFIG_LED=y
+ CONFIG_LED_GPIO=y
+ CONFIG_LED_GPIO_OF=y
+ CONFIG_LED_TRIGGERS=y
++CONFIG_WATCHDOG=y
++CONFIG_WATCHDOG_MXS28=y
+ CONFIG_MXS_APBH_DMA=y
++CONFIG_REGULATOR=y
++CONFIG_REGULATOR_FIXED=y
++CONFIG_FS_EXT4=y
+ CONFIG_FS_TFTP=y
++CONFIG_FS_NFS=y
+ CONFIG_FS_FAT=y
+ CONFIG_FS_FAT_WRITE=y
+ CONFIG_FS_FAT_LFN=y
++CONFIG_FS_UBIFS=y
+diff --git a/arch/arm/configs/tx28stk5_defconfig b/arch/arm/configs/tx28stk5_defconfig
+deleted file mode 100644
+index c712975fd9..0000000000
+--- a/arch/arm/configs/tx28stk5_defconfig
++++ /dev/null
+@@ -1,94 +0,0 @@
+-CONFIG_ARCH_MXS=y
+-CONFIG_ARCH_IMX28=y
+-CONFIG_AEABI=y
+-CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+-CONFIG_ARM_UNWIND=y
+-CONFIG_MMU=y
+-CONFIG_MALLOC_SIZE=0x0
+-CONFIG_MALLOC_TLSF=y
+-CONFIG_KALLSYMS=y
+-CONFIG_RELOCATABLE=y
+-CONFIG_HUSH_FANCY_PROMPT=y
+-CONFIG_CMDLINE_EDITING=y
+-CONFIG_AUTO_COMPLETE=y
+-CONFIG_MENU=y
+-CONFIG_BOOTM_SHOW_TYPE=y
+-CONFIG_BOOTM_VERBOSE=y
+-CONFIG_BOOTM_INITRD=y
+-CONFIG_BOOTM_OFTREE=y
+-CONFIG_BOOTM_OFTREE_UIMAGE=y
+-CONFIG_BLSPEC=y
+-CONFIG_IMD=y
+-CONFIG_PBL_CONSOLE=y
+-CONFIG_DEFAULT_COMPRESSION_LZO=y
+-CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+-CONFIG_RESET_SOURCE=y
+-CONFIG_DEBUG_LL=y
+-CONFIG_CMD_DMESG=y
+-CONFIG_LONGHELP=y
+-CONFIG_CMD_IOMEM=y
+-CONFIG_CMD_MEMINFO=y
+-CONFIG_CMD_GO=y
+-CONFIG_CMD_RESET=y
+-CONFIG_CMD_UIMAGE=y
+-CONFIG_CMD_PARTITION=y
+-CONFIG_CMD_EXPORT=y
+-CONFIG_CMD_DEFAULTENV=y
+-CONFIG_CMD_LOADENV=y
+-CONFIG_CMD_PRINTENV=y
+-CONFIG_CMD_MAGICVAR=y
+-CONFIG_CMD_MAGICVAR_HELP=y
+-CONFIG_CMD_SAVEENV=y
+-CONFIG_CMD_CMP=y
+-CONFIG_CMD_FILETYPE=y
+-CONFIG_CMD_LN=y
+-CONFIG_CMD_MD5SUM=y
+-CONFIG_CMD_SHA1SUM=y
+-CONFIG_CMD_SHA224SUM=y
+-CONFIG_CMD_SHA256SUM=y
+-CONFIG_CMD_UNCOMPRESS=y
+-CONFIG_CMD_LET=y
+-CONFIG_CMD_MSLEEP=y
+-CONFIG_CMD_READF=y
+-CONFIG_CMD_SLEEP=y
+-CONFIG_CMD_DHCP=y
+-CONFIG_CMD_MIITOOL=y
+-CONFIG_CMD_PING=y
+-CONFIG_CMD_TFTP=y
+-CONFIG_CMD_ECHO_E=y
+-CONFIG_CMD_EDIT=y
+-CONFIG_CMD_MENUTREE=y
+-CONFIG_CMD_SPLASH=y
+-CONFIG_CMD_READLINE=y
+-CONFIG_CMD_TIMEOUT=y
+-CONFIG_CMD_CRC=y
+-CONFIG_CMD_CRC_CMP=y
+-CONFIG_CMD_CLK=y
+-CONFIG_CMD_DETECT=y
+-CONFIG_CMD_FLASH=y
+-CONFIG_CMD_GPIO=y
+-CONFIG_CMD_2048=y
+-CONFIG_CMD_OF_NODE=y
+-CONFIG_CMD_OF_PROPERTY=y
+-CONFIG_CMD_OF_DISPLAY_TIMINGS=y
+-CONFIG_CMD_OFTREE=y
+-CONFIG_CMD_TIME=y
+-CONFIG_NET=y
+-CONFIG_DRIVER_SERIAL_AUART=y
+-CONFIG_DRIVER_NET_FEC_IMX=y
+-# CONFIG_SPI is not set
+-CONFIG_MTD=y
+-CONFIG_VIDEO=y
+-CONFIG_DRIVER_VIDEO_STM=y
+-CONFIG_MCI=y
+-CONFIG_MCI_STARTUP=y
+-CONFIG_MCI_MXS=y
+-CONFIG_MXS_APBH_DMA=y
+-CONFIG_FS_EXT4=y
+-CONFIG_FS_TFTP=y
+-CONFIG_FS_NFS=y
+-CONFIG_FS_FAT=y
+-CONFIG_FS_FAT_WRITE=y
+-CONFIG_FS_FAT_LFN=y
+-CONFIG_ZLIB=y
+-CONFIG_LZO_DECOMPRESS=y
 -- 
 2.23.0
 
