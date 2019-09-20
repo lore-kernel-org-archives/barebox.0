@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from relay12.mail.gandi.net ([217.70.178.232])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iBd6i-0005qw-Tz
- for barebox@lists.infradead.org; Sat, 21 Sep 2019 10:59:19 +0000
+ id 1iBDoM-0001P6-Bo
+ for barebox@lists.infradead.org; Fri, 20 Sep 2019 07:58:39 +0000
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Fri, 20 Sep 2019 09:58:13 +0200
+Message-Id: <20190920075813.22471-4-ahmad@a3f.at>
+In-Reply-To: <20190920075813.22471-1-ahmad@a3f.at>
 References: <20190920075813.22471-1-ahmad@a3f.at>
- <20190920075813.22471-3-ahmad@a3f.at>
- <d2162c1bbd3785e1891e8a813e0436d045a3cb17.camel@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <2c96cd7b-94eb-a4c6-106c-e4f33365e476@pengutronix.de>
-Date: Sat, 21 Sep 2019 12:59:12 +0200
 MIME-Version: 1.0
-In-Reply-To: <d2162c1bbd3785e1891e8a813e0436d045a3cb17.camel@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,89 +21,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1 3/4] common: ubsan: ignore shifting one into sign bit
-To: barebox@lists.infradead.org, rcz@pengutronix.de
+Subject: [PATCH v1 4/4] USB: gadget: ACM: don't announce V.25ter support
+To: barebox@lists.infradead.org
+Cc: bst@pengutronix.de
 
-Hello Rouven,
+barebox currently announces support for ITU V.25ter AT commands, but
+doesn't handle them specially when they arrive. Instead they are passed
+as is to the sole barebox input console, where it may interfere with
+valid user input.
+This is especially annoying as ModemManager probes ttyACM devices that
+announce their AT command support. So even when not using the ttyACM
+device at all, the other UART ports are affected.
 
-On 9/21/19 9:47 AM, Rouven Czerwinski wrote:
-> Hi Ahmad,
-> 
-> On Fri, 2019-09-20 at 09:58 +0200, Ahmad Fatoum wrote:
->> The __ubsan_handle_shift_out_of_bounds handler would be called for
->> code
->> shifting a one into the sign bit like (1 << 31), which is all too
->> common
->> in barebox.  It's technically UB, but it's so prevalent that it's
->> highly
->> unlikely to be treated by a compiler as anything else than the
->> standard-compliant (1U << 31).
->>
->> Check for this case here and ignore it selectively.
-> 
-> Shouldn't we rather fix the the (1 << 31) to be (1U <<31)?
+Fix this by ceasing to announce USB_CDC_ACM_PROTO_AT_V25TER as function
+protocol. After applying this patch, I can't see any spurious AT or ~x~
+symbols on the console anymore.
 
-Well, we could of course convert all bitwise operations to act on unsigned
-integers or to use the BIT() macro, but that's possibly thousands of instances.
-A very tedious work I'd rather not be doing... :D
+Cc: <bst@pengutronix.de>
+Cc: <jlu@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ drivers/usb/gadget/f_acm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> 
->> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
->> ---
->>  lib/ubsan.c | 20 ++++++++++++++++++++
->>  1 file changed, 20 insertions(+)
->>
->> diff --git a/lib/ubsan.c b/lib/ubsan.c
->> index 89ca6e580bce..41a5731dda66 100644
->> --- a/lib/ubsan.c
->> +++ b/lib/ubsan.c
->> @@ -382,6 +382,26 @@ void __ubsan_handle_shift_out_of_bounds(struct
->> shift_out_of_bounds_data *data,
->>  	if (suppress_report(&data->location))
->>  		return;
->>  
->> +	/* This handler would be called for code shifting a one into
->> the
->> +	 * sign bit like (1 << 31), which is all too common in barebox.
->> +	 * It's technically UB, but it's so prevalent that it's highly
->> +	 * unlikely to be treated by a compiler as anything else than
->> the
->> +	 * standard-compliant (1U << 31). Thus check for this case here
->> +	 * and ignore it selectively
->> +	 */
->> +	if (type_is_signed(lhs_type)) {
->> +		s_max lhs_int, rhs_int;
->> +
->> +		lhs_int = get_signed_val(lhs_type, lhs);
->> +		rhs_int = get_signed_val(rhs_type, rhs);
->> +
->> +		if (fls(lhs_int) + rhs_int == type_bit_width(lhs_type))
->> {
->> +			pr_debug("signed left shift of %lld by %lld
->> ignored.\n",
->> +				(s64)lhs_int, (s64)rhs_int);
->> +			return;
->> +		}
->> +	}
->> +
->>  	ubsan_prologue(&data->location, &flags);
->>  
->>  	val_to_string(rhs_str, sizeof(rhs_str), rhs_type, rhs);
-> 
-> - rcz
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/drivers/usb/gadget/f_acm.c b/drivers/usb/gadget/f_acm.c
+index cba59b15859b..42a2b03ad291 100644
+--- a/drivers/usb/gadget/f_acm.c
++++ b/drivers/usb/gadget/f_acm.c
+@@ -104,7 +104,7 @@ acm_iad_descriptor = {
+ 	.bInterfaceCount = 	2,	// control + data
+ 	.bFunctionClass =	USB_CLASS_COMM,
+ 	.bFunctionSubClass =	USB_CDC_SUBCLASS_ACM,
+-	.bFunctionProtocol =	USB_CDC_ACM_PROTO_AT_V25TER,
++	.bFunctionProtocol =	USB_CDC_PROTO_NONE,
+ 	/* .iFunction =		DYNAMIC */
+ };
+ 
+@@ -116,7 +116,7 @@ static struct usb_interface_descriptor acm_control_interface_desc = {
+ 	.bNumEndpoints =	1,
+ 	.bInterfaceClass =	USB_CLASS_COMM,
+ 	.bInterfaceSubClass =	USB_CDC_SUBCLASS_ACM,
+-	.bInterfaceProtocol =	USB_CDC_ACM_PROTO_AT_V25TER,
++	.bInterfaceProtocol =	USB_CDC_PROTO_NONE,
+ 	/* .iInterface = DYNAMIC */
+ };
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
