@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from stcim.de ([2a01:4f8:120:63a3::2])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iAfaC-0000gw-TL
- for barebox@lists.infradead.org; Wed, 18 Sep 2019 19:25:46 +0000
-Date: Wed, 18 Sep 2019 21:25:40 +0200
-From: Stefan Lengfeld <contact@stefanchrist.eu>
-Message-ID: <20190918192540.j7eeju6diit7ug3w@porty>
-References: <20190915193114.3243-1-contact@stefanchrist.eu>
- <20190917080126.2sp36vixvfvlmvtk@pengutronix.de>
+ id 1iBJdD-0007Ai-SE
+ for barebox@lists.infradead.org; Fri, 20 Sep 2019 14:11:33 +0000
+Date: Fri, 20 Sep 2019 16:11:27 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+Message-ID: <20190920141127.yjdjb7gzz6kjz7ws@pengutronix.de>
+References: <20190911145328.3246-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190917080126.2sp36vixvfvlmvtk@pengutronix.de>
+In-Reply-To: <20190911145328.3246-1-m.felsch@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,37 +18,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] docs: add python version in shebang
-To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] ARM: i.MX: phytec-som-imx6: phycore: fix updating pmic
+ regulators
+To: barebox@lists.infradead.org
+Cc: s.christ@phytec.de, s.riedmueller@phytec.de, j.remmet@phytec.de
 
-SGkgVXdlLAoKT24gVHVlLCBTZXAgMTcsIDIwMTkgYXQgMTA6MDE6MjZBTSArMDIwMCwgVXdlIEts
-ZWluZS1Lw7ZuaWcgd3JvdGU6Cj4gSGVsbG8gU3RlZmFuLAo+IAo+IE9uIFN1biwgU2VwIDE1LCAy
-MDE5IGF0IDA5OjMxOjE0UE0gKzAyMDAsIFN0ZWZhbiBMZW5nZmVsZCB3cm90ZToKPiA+IE9uIG15
-IG1hY2hpbmUgJ21ha2UgZG9jcycgZmFpbHMgd2l0aAo+ID4gCj4gPiAgICAgVHJhY2ViYWNrICht
-b3N0IHJlY2VudCBjYWxsIGxhc3QpOgo+ID4gICAgICAgRmlsZSAiL2hvbWUvc3RjL2dpdC9iYXJl
-Ym94L0RvY3VtZW50YXRpb24vZ2VuX2NvbW1hbmRzLnB5IiwgbGluZSAxNTYsIGluIDxtb2R1bGU+
-Cj4gPiAgICAgICAgIHBhcnNlX2Moc291cmNlKQo+ID4gICAgICAgRmlsZSAiL2hvbWUvc3RjL2dp
-dC9iYXJlYm94L0RvY3VtZW50YXRpb24vZ2VuX2NvbW1hbmRzLnB5IiwgbGluZSAzNCwgaW4gcGFy
-c2VfYwo+ID4gICAgICAgICBmb3IgbGluZSBpbiBmaWxlKG5hbWUsICdyJyk6Cj4gPiAgICAgTmFt
-ZUVycm9yOiBuYW1lICdmaWxlJyBpcyBub3QgZGVmaW5lZAo+ID4gCj4gPiBiZWNhdXNlIC91c3Iv
-YmluL3B5dGhvbiBwb2ludHMgdG8gcHl0aG9uMyBpbnN0ZWFkIG9mIHB5dGhvbjIuIEZpeCB0aGlz
-Cj4gPiBieSBpbmNsdWRpbmcgdGhlIGxhbmd1YWdlIHZlcnNpb24gaW4gdGhlIHNoZWJhbmcgb2Yg
-dGhlIHNjcmlwdC4KPiAKPiBJdCB3b3VsZCBiZSBtdWNoIHByZWZlcmFibGUgdG8gY29udmVydCB0
-aGlzIGNvZGUgdG8gUHl0aG9uMy4gSSBsb29rZWQKPiBpbnRvIHRoYXQgYW5kIGl0IHdhc24ndCB0
-aGF0IGhhcmQgdG8gZXZlbiBtYWtlIGl0IGNvbXBhdGlibGUgdG8gYm90aAo+IFB5dGhvbiAyIGFu
-ZCBQeXRob24gMy4gKE9uZSBkb3duc2lkZSBpcyB0aGF0IFB5dGhvbiAzIGlzIG1vcmUgcGlja3kK
-PiBhYm91dCBmaWxlIGVuY29kaW5ncywgc28gSSBoYXZlIHRvIGluc2VydCBhIHBhdGNoIHRoYXQg
-Y29udmVydHMgdGhlIGZldwo+IGxhdGluMSBmaWxlIGxlZnQgaW4gdGhlIHRyZWUgdG8gdXRmLTgg
-Zmlyc3QuIEJ1dCBhcyB0aGlzIGlzIGEgZ29vZCB0aGluZwo+IG9uIGl0cyBvd24gKElNSE8pIHRo
-YXQncyBub3QgdG9vIGJhZC4pCj4gCj4gRmluZCB0aGUgdHdvIHBhdGNoZXMgaW4gcmVwbHkgdG8g
-dGhpcyBtYWlsLgoKSW5kZWVkLCBjb252ZXJ0aW5nIHRoZSBzY3JpcHQgdG8gc3VwcG9ydCBQeXRo
-b24gMiBhbmQgMyBhdCB0aGUgc2FtZSB0aW1lCmlzIHRoZSBiZXR0ZXIgZml4LgoKVGVzdGVkLUJ5
-OiBTdGVmYW4gTGVuZ2ZlbGQgPGNvbnRhY3RAc3RlZmFuY2hyaXN0LmV1PgoKS2luZCByZWdhcmRz
-LApTdGVmYW4gCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDov
-L2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Hi,
+
+@phytec
+
+Please can you test this? This fixes the issue for my SoM-Rev. but I don't
+wanna break other SoM Revisions.
+
+Regards,
+  Marco
+
+
+On 19-09-11 16:53, Marco Felsch wrote:
+> The PMIC is connected to i2c3 and not i2c1.
+> 
+> Fixes: b6bebb7aca ("ARM: i.MX: phytec-som-imx6: phycore: Set BUCK mode to SYNC")
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> ---
+>  arch/arm/boards/phytec-som-imx6/board.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/boards/phytec-som-imx6/board.c b/arch/arm/boards/phytec-som-imx6/board.c
+> index 730115702b..38e5ede91a 100644
+> --- a/arch/arm/boards/phytec-som-imx6/board.c
+> +++ b/arch/arm/boards/phytec-som-imx6/board.c
+> @@ -117,7 +117,7 @@ static int phycore_da9062_setup_buck_mode(void)
+>  	struct i2c_adapter *adapter = NULL;
+>  	struct i2c_client client;
+>  	unsigned char value;
+> -	int bus = 0;
+> +	int bus = 2;
+>  	int ret;
+>  
+>  	adapter = i2c_get_adapter(bus);
+> -- 
+> 2.20.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
