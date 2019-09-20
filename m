@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iCIAj-0002xT-3Z
- for barebox@lists.infradead.org; Mon, 23 Sep 2019 06:50:10 +0000
-Date: Mon, 23 Sep 2019 08:50:07 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190923065007.vmkhyx7c6rb4wqec@pengutronix.de>
-References: <1568807269-306454-1-git-send-email-r.karszniewicz@phytec.de>
+ id 1iBLp7-0002lj-IB
+ for barebox@lists.infradead.org; Fri, 20 Sep 2019 16:31:58 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 20 Sep 2019 18:31:44 +0200
+Message-Id: <20190920163144.26968-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1568807269-306454-1-git-send-email-r.karszniewicz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,28 +19,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] chdir(): add LOOKUP_DIRECTORY flag to filename_lookup()
-To: Robert Karszniewicz <r.karszniewicz@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] regmap: align documentation in comment with code
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Wed, Sep 18, 2019 at 01:47:49PM +0200, Robert Karszniewicz wrote:
-> This makes sure that automount points get handled even if the path
-> doesn't end with a '/'.
-> 
-> Signed-off-by: Robert Karszniewicz <r.karszniewicz@phytec.de>
-> ---
->  fs/fs.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+dev_get_regmap has some copy-paste left-over in the comment.
+Rectify this.
 
-Applied, thanks
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/base/regmap/regmap.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Sascha
-
+diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
+index d2f8ec70e439..dc7b4f276f31 100644
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -65,7 +65,7 @@ struct regmap *regmap_init(struct device_d *dev,
+ }
+ 
+ /*
+- * regmap_init - initialize and register a regmap
++ * dev_get_regmap - get a regmap from a device
+  *
+  * @dev:         The device the maps is attached to
+  * @name:        Optional name for the map. If given it must match.
+@@ -406,4 +406,4 @@ void regmap_exit(struct regmap *map)
+ 	}
+ 
+ 	free(map);
+-}
+\ No newline at end of file
++}
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.23.0
+
 
 _______________________________________________
 barebox mailing list
