@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from relay12.mail.gandi.net ([217.70.178.232])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iCIDt-0003Re-L3
- for barebox@lists.infradead.org; Mon, 23 Sep 2019 06:53:27 +0000
-Date: Mon, 23 Sep 2019 08:53:24 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190923065324.vf654tt2wyvq2f3q@pengutronix.de>
-References: <1568979319-254499-1-git-send-email-s.riedmueller@phytec.de>
+ id 1iBDoM-0001P3-Bp
+ for barebox@lists.infradead.org; Fri, 20 Sep 2019 07:58:39 +0000
+Received: from geraet.fritz.box (muedsl-82-207-195-051.citykom.de
+ [82.207.195.51]) (Authenticated sender: ahmad@a3f.at)
+ by relay12.mail.gandi.net (Postfix) with ESMTPSA id 41DD620000A
+ for <barebox@lists.infradead.org>; Fri, 20 Sep 2019 07:58:21 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Fri, 20 Sep 2019 09:58:10 +0200
+Message-Id: <20190920075813.22471-1-ahmad@a3f.at>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1568979319-254499-1-git-send-email-s.riedmueller@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,40 +23,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] mtd: ubi: Max out wear-leveling threshold
-To: Stefan Riedmueller <s.riedmueller@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v1 1/4] console: disallow opening for writing when no write
+ method defined
+To: barebox@lists.infradead.org
 
-On Fri, Sep 20, 2019 at 01:35:19PM +0200, Stefan Riedmueller wrote:
-> Due to the recursive ubi_thread implementation in the barebox, a large
-> amount of wear-leveling can lead to a stack overflow.
-> 
-> This was observed during extensive ubi stress tests with the linux
-> kernel and periodic power cycles. We found that if the wear-leveling
-> threshold is exceeded and a large amount of erase blocks need
-> wear-leveling the stack can overflow.
-> 
-> The hardware used to observe this was a phyCORE-i.MX 6 with 1GB NAND flash.
-> 
-> As the kernel is perfectly capable of handling wear-leveling we can
-> disable wear-leveling in the barebox by maxing out the threshold and
-> removing its Kconfig option.
-> 
-> Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
-> ---
-> Changes in v2:
->  - Remove threshold config completely instead of just maxing out the default
-> ---
+Some consoles, like the input console (usually /dev/cs0), don't feature
+a puts or putc callback. Trying to echo out of them would thus crash:
 
-Applied, thanks
+	barebox@Embest MarS Board i.MX6Dual:/ echo -a /dev/cs0
+	prefetch abort
+	pc : [<00000004>]    lr : [<4fd05071>]
+	WARNING: [<...>] (fops_write+0xd/0x10)
+	WARNING: [<...>] (devfs_write+0x21/0x2a)
+	WARNING: [<...>] (__write+0xcb/0xf0)
+	WARNING: [<...>] (write+0x2d/0x68)
+	WARNING: [<...>] (dputc+0x31/0x34)
+	WARNING: [<...>] (do_echo+0xcb/0x144)
 
-Sascha
+Fix this by only allowing open(.., O_WRONLY) or open(..., O_RDWR) when
+puts is defined. Consoles defining putc are covered by this as well as
+those have putc-calling __console_puts assigned as their puts when they
+are registered. Now echo -a /dev/cs0 would yield:
 
+	open: Operation not permitted
+
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ common/console.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/common/console.c b/common/console.c
+index d04aae58f96e..e6e029848d41 100644
+--- a/common/console.c
++++ b/common/console.c
+@@ -272,6 +272,9 @@ static int fops_open(struct cdev *cdev, unsigned long flags)
+ {
+ 	struct console_device *priv = cdev->priv;
+ 
++	if ((flags & (O_WRONLY | O_RDWR)) && !priv->puts )
++		return -EPERM;
++
+ 	return console_open(priv);
+ }
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
