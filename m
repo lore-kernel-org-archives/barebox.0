@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iBLp7-0002lj-IB
- for barebox@lists.infradead.org; Fri, 20 Sep 2019 16:31:58 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 20 Sep 2019 18:31:44 +0200
-Message-Id: <20190920163144.26968-1-a.fatoum@pengutronix.de>
+ id 1iCICd-0003Jb-Na
+ for barebox@lists.infradead.org; Mon, 23 Sep 2019 06:52:09 +0000
+Date: Mon, 23 Sep 2019 08:52:06 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190923065206.t24isxly4lwpic6p@pengutronix.de>
+References: <20190920163144.26968-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190920163144.26968-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,41 +22,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] regmap: align documentation in comment with code
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] regmap: align documentation in comment with code
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-dev_get_regmap has some copy-paste left-over in the comment.
-Rectify this.
+On Fri, Sep 20, 2019 at 06:31:44PM +0200, Ahmad Fatoum wrote:
+> dev_get_regmap has some copy-paste left-over in the comment.
+> Rectify this.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- drivers/base/regmap/regmap.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Applied, thanks
 
-diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
-index d2f8ec70e439..dc7b4f276f31 100644
---- a/drivers/base/regmap/regmap.c
-+++ b/drivers/base/regmap/regmap.c
-@@ -65,7 +65,7 @@ struct regmap *regmap_init(struct device_d *dev,
- }
- 
- /*
-- * regmap_init - initialize and register a regmap
-+ * dev_get_regmap - get a regmap from a device
-  *
-  * @dev:         The device the maps is attached to
-  * @name:        Optional name for the map. If given it must match.
-@@ -406,4 +406,4 @@ void regmap_exit(struct regmap *map)
- 	}
- 
- 	free(map);
--}
-\ No newline at end of file
-+}
+Sascha
+
 -- 
-2.23.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
