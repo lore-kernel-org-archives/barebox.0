@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iCNAj-0001nK-AA
- for barebox@lists.infradead.org; Mon, 23 Sep 2019 12:10:32 +0000
+ id 1iCNAj-0001nL-Ab
+ for barebox@lists.infradead.org; Mon, 23 Sep 2019 12:10:34 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 23 Sep 2019 14:10:18 +0200
-Message-Id: <20190923121018.31574-7-a.fatoum@pengutronix.de>
+Date: Mon, 23 Sep 2019 14:10:16 +0200
+Message-Id: <20190923121018.31574-5-a.fatoum@pengutronix.de>
 In-Reply-To: <20190923121018.31574-1-a.fatoum@pengutronix.de>
 References: <20190923121018.31574-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,83 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/6] Documentation: document barebox device tree handling
+Subject: [PATCH 4/6] scripts/dtc: mention dtc project in update-dtc-source.sh
+ commit message
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Roland Hieber <r.hieber@pengutronix.de>, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The way barebox handles the Linux device trees and the device tree
-compiler source included in the source tree may not be obvious
-to new developers. Add a basic high-level documentation.
+update-dtc-source.sh generates the commit message after it runs
+to completion. The word upstream is often used to refer to the
+Linux kernel within barebox, so change the wording to refer
+explicitly to dtc upstream.
 
+Cc: Roland Hieber <r.hieber@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Documentation/devicetree/index.rst | 56 ++++++++++++++++++++++++++++--
- 1 file changed, 54 insertions(+), 2 deletions(-)
+ scripts/dtc/update-dtc-source.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/index.rst b/Documentation/devicetree/index.rst
-index c6309defdf03..3b911c5a9d42 100644
---- a/Documentation/devicetree/index.rst
-+++ b/Documentation/devicetree/index.rst
-@@ -1,5 +1,57 @@
--Barebox specific devicetree bindings
--====================================
-+Barebox devicetree handling and bindings
-+========================================
-+
-+The preferred way of adding board support to barebox is to have devices
-+on non-enumerable buses probed from device tree.
-+barebox imports the Linux OpenFirmware ``of_*``-API functions for device tree
-+parsing, which makes porting the device tree specific bits from device drivers
-+very straight forward.
-+
-+Additionally, barebox has support for programmatically fixing up device trees
-+it passes to the kernel, either directly via ``of_register_fixup`` or via device
-+tree overlays.
-+
-+Upstream Device Trees
-+---------------------
-+
-+barebox regularly synchronizes with the Linux kernel device tree definitions
-+via the `kernel.org Split device-tree repository`_.
-+They are located under the top-level ``dts/`` directory.
-+
-+Patches against ``dts/`` and its subdirectories are not accepted upstream.
-+
-+.. _kernel.org  device-tree repository: https://git.kernel.org/pub/scm/linux/kernel/git/devicetree/devicetree-rebasing.git/
-+
-+barebox Device Trees
-+--------------------
-+
-+For supporting architectures, barebox device trees are located in
-+``arch/$ARCH/dts``. Usually the barebox ``board.dts`` imports the upstream
-+device tree under ``dts/src/$ARCH`` with ``#include "$ARCH/board.dts"`` and
-+then extends it with barebox-specifics like :ref:`barebox,state`,
-+environment or boot-time device configuration.
-+
-+Device Tree Compiler
-+--------------------
-+
-+barebox makes use of the ``dtc`` and ``fdtget`` utilities from the `Device-Tree
-+Compiler`_ project.
-+
-+.. _Device-Tree Compiler: https://git.kernel.org/pub/scm/utils/dtc/dtc.git
-+
-+These utilities are built as part of the barebox build process.
-+
-+Steps to update ``dtc``:
-+
-+* Place a ``git-checkout`` of the upstream ``dtc`` directory in the parent
-+  directory of your barebox ``git-checkout``.
-+* Run ``scripts/dtc/update-dtc-source.sh`` from the top-level barebox directory.
-+* Wait till ``dtc`` build, test, install and commit conclude.
-+* If ``scripts/dtc/Makefile`` changes are necessary, apply them manually in
-+  a commit preceding the ``dtc`` update.
-+
-+barebox-specific Bindings
-+-------------------------
+diff --git a/scripts/dtc/update-dtc-source.sh b/scripts/dtc/update-dtc-source.sh
+index 0a098df710c3..604ed254f542 100755
+--- a/scripts/dtc/update-dtc-source.sh
++++ b/scripts/dtc/update-dtc-source.sh
+@@ -72,7 +72,7 @@ git add ./libfdt/libfdt.h
+ commit_msg=$(cat << EOF
+ scripts/dtc: Update to upstream version ${dtc_version}
  
- Contents:
+-This adds the following commits from upstream:
++This adds the following commits from upstream dtc:
  
+ ${dtc_log}
+ EOF
 -- 
 2.23.0
 
