@@ -1,12 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-io1-xd42.google.com ([2607:f8b0:4864:20::d42])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iCQzY-00050P-2M
- for barebox@lists.infradead.org; Mon, 23 Sep 2019 16:15:15 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 23 Sep 2019 18:15:08 +0200
-Message-Id: <20190923161508.9163-1-a.fatoum@pengutronix.de>
+ id 1iCSTV-00073G-R3
+ for barebox@lists.infradead.org; Mon, 23 Sep 2019 17:50:15 +0000
+Received: by mail-io1-xd42.google.com with SMTP id z19so13423990ior.0
+ for <barebox@lists.infradead.org>; Mon, 23 Sep 2019 10:50:12 -0700 (PDT)
 MIME-Version: 1.0
+References: <20190914062424.7919-1-andrew.smirnov@gmail.com>
+ <20190916073759.aoqpmyb7rtgw4ae4@pengutronix.de>
+In-Reply-To: <20190916073759.aoqpmyb7rtgw4ae4@pengutronix.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Mon, 23 Sep 2019 10:50:00 -0700
+Message-ID: <CAHQ1cqHMj9wPn-DNDJgwN1WH6Eo0L+qQWy=LT1HCp4u4qDfdbw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,79 +24,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC PATCH] ARM: layerscape: zero-index DEBUG_LAYERSCAPE_UART_PORT
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] net: dsa: mv88e6xxx: Wait for EEPROM done after HW reset
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>, Chris Healy <cphealy@gmail.com>
 
-The layerscape features four UART ports termed UART{1-4} in the
-reference manual.
-In the upstream device tree they have the phandles &duart{0-3}.
+On Mon, Sep 16, 2019 at 12:38 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+>
+> On Fri, Sep 13, 2019 at 11:24:24PM -0700, Andrey Smirnov wrote:
+> > Based on a unpublished patch from Andrew Lunn:
+> >
+> >     The the switch is hardware reset, it reads the contents of the
+> >     EEPROM.
+>
+> Could you correct this sentence to make its meaning clear?
+>
 
-Currently, barebox follows the numbering used in the reference manual
-for the DEBUG_LL port, because that's what the <soc/fsl/immap_lsch2.h>
-header does as well.
+Sure, will do in v2.
 
-It's arguable however that the DEBUG_LL port should be 0-indexed,
-because users are most likely to look in the board device tree for the
-chosen stdout-path and that one's phandle is zero-indexed.
+> >     This can contain instructions for programming values into
+> >     registers and to perform waits between such programming. Reading
+> >     the EEPROM can take longer than the 100ms
+> >     mv88e6xxx_hardware_reset() waits after deasserting the reset
+> >     GPIO. So poll the EEPROM done bit to ensure it is complete.
+> >
+> >     Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+> >
+> > @@ -836,6 +865,11 @@ static int mv88e6xxx_probe(struct device_d *dev)
+> >                */
+> >               mv88e6xxx_hardware_reset_delay();
+> >       }
+> > +     /*
+> > +      * Switch will not retrun valid data over MDIO until EEPROM is
+> > +      * loaded
+>
+> s/retrun/return/
+>
 
-One notable example of a target with one-indexed DEBUG_LL port is the
-i.MX, but there the uart port phandles are one-indexed, so there's no
-discrepancy between DEBUG_LL and /chosen/stdout-path like it's the
-case with the Layerscape.
+Will fix in v2.
 
-Fix the discrepancy by zero-indexing the layerscape UART.
+> > +      */
+> > +     mv88e6xxx_g1_wait_eeprom_done(chip);
+> >
+> >       err = mv88e6xxx_detect(chip);
+> >       if (err)
+> > +void mv88e6xxx_g1_wait_eeprom_done(struct mv88e6xxx_chip *chip)
+> > +{
+> > +     const uint64_t start   = get_time_ns();
+> > +     const uint64_t timeout = 20 * SECOND;
+> > +     u16 val;
+> > +     int err;
+> > +
+> > +     /* Wait up to 1 second for the switch to finish reading the
+> > +      * EEPROM.
+> > +      */
+> > +     while (!is_timeout(start, timeout)) {
+> > +             err = mv88e6xxx_g1_read(chip, MV88E6XXX_G1_STS, &val);
+> > +             if (err) {
+> > +                     dev_err(chip->dev, "Error reading status");
+> > +                     return;
+> > +             }
+> > +
+> > +             if (val != 0xFFFF && /* switch will return 0xffff it it */
+>
+> This comment looks incomplete.
+>
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-I guess it can be argued that either way is the correct one.
-But I'd say from the viewpoint of a barebox developer, changing it to
-zero indexed makes the most sense.
+Yeah, I'll squash the fixup I sent for this into v2.
 
-If we go this route, should the config option be renamed to account
-for existing configs that set it?
----
- arch/arm/mach-layerscape/include/mach/debug_ll.h | 7 ++++++-
- common/Kconfig                                   | 3 +--
- 2 files changed, 7 insertions(+), 3 deletions(-)
-
-diff --git a/arch/arm/mach-layerscape/include/mach/debug_ll.h b/arch/arm/mach-layerscape/include/mach/debug_ll.h
-index 2658a4a7c916..df044728c0ba 100644
---- a/arch/arm/mach-layerscape/include/mach/debug_ll.h
-+++ b/arch/arm/mach-layerscape/include/mach/debug_ll.h
-@@ -4,7 +4,12 @@
- #include <io.h>
- #include <soc/fsl/immap_lsch2.h>
- 
--#define __LS_UART_BASE(num)	LSCH2_NS16550_COM##num
-+#define LS_UART0	LSCH2_NS16550_COM1
-+#define LS_UART1	LSCH2_NS16550_COM2
-+#define LS_UART2	LSCH2_NS16550_COM3
-+#define LS_UART3	LSCH2_NS16550_COM4
-+
-+#define __LS_UART_BASE(num)	LS_UART##num
- #define LS_UART_BASE(num) __LS_UART_BASE(num)
- 
- static inline uint8_t debug_ll_read_reg(int reg)
-diff --git a/common/Kconfig b/common/Kconfig
-index 8aad5baecdda..f79bef01f8cf 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -1264,10 +1264,9 @@ config DEBUG_SOCFPGA_UART_CLOCK
- config DEBUG_LAYERSCAPE_UART_PORT
- 	int "Layerscape UART port selection"
- 	depends on ARCH_LAYERSCAPE
--	default 1
- 	help
- 	  Select the UART port number used for early debugging here. Port
--	  numbers start counting from 1.
-+	  numbers start counting from 0.
- 
- config DEBUG_AT91_UART_BASE
- 	hex "AT91 Debug UART Port Selection" if DEBUG_AT91_UART
--- 
-2.23.0
-
+Thanks,
+Andrey Smirnov
 
 _______________________________________________
 barebox mailing list
