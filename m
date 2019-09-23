@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iCIBZ-00039d-AW
- for barebox@lists.infradead.org; Mon, 23 Sep 2019 06:51:04 +0000
-Date: Mon, 23 Sep 2019 08:50:59 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190923065059.s75p6rvk7ufk65mq@pengutronix.de>
+ id 1iCT6b-00041e-0j
+ for barebox@lists.infradead.org; Mon, 23 Sep 2019 18:30:38 +0000
 References: <20190920124433.31026-1-m.tretter@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <4e5e80d0-2ef2-c474-027f-2b8d0a2bf17a@pengutronix.de>
+Date: Mon, 23 Sep 2019 20:30:35 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
 In-Reply-To: <20190920124433.31026-1-m.tretter@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,47 +18,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] blspec: skip entries that are not blspec entries
-To: Michael Tretter <m.tretter@pengutronix.de>
-Cc: barebox@lists.infradead.org, Thomas =?iso-8859-15?Q?H=E4mmerle?= <Thomas.Haemmerle@wolfvision.net>
+To: barebox@lists.infradead.org, Michael Tretter <m.tretter@pengutronix.de>
 
-On Fri, Sep 20, 2019 at 02:44:33PM +0200, Michael Tretter wrote:
-> The list of boot entries can contain items that are not blspec entries.
-> For example, the bootchooser also adds an item to this list. Therefore,
-> blspec cannot unconditionally interpret entries as blspec entries.
-> =
-
-> The error is reproduced by listing the boot entries with the bootchooser
-> and a rootfs with blspec entries, e.g.:
-> =
-
-> 	boot -l bootchooser /mnt/nfs
-> =
-
-> Check if a bootentry is a blspec entry by testing if the boot function
-> is blspec_boot.
-> =
-
-> Reported-by: Thomas H=E4mmerle <Thomas.Haemmerle@wolfvision.net>
-> Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
-> ---
-
-Applied, thanks
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gOS8yMC8xOSAyOjQ0IFBNLCBNaWNoYWVsIFRyZXR0ZXIgd3JvdGU6Cj4gVGhlIGxpc3Qgb2Yg
+Ym9vdCBlbnRyaWVzIGNhbiBjb250YWluIGl0ZW1zIHRoYXQgYXJlIG5vdCBibHNwZWMgZW50cmll
+cy4KPiBGb3IgZXhhbXBsZSwgdGhlIGJvb3RjaG9vc2VyIGFsc28gYWRkcyBhbiBpdGVtIHRvIHRo
+aXMgbGlzdC4gVGhlcmVmb3JlLAo+IGJsc3BlYyBjYW5ub3QgdW5jb25kaXRpb25hbGx5IGludGVy
+cHJldCBlbnRyaWVzIGFzIGJsc3BlYyBlbnRyaWVzLgo+IAo+IFRoZSBlcnJvciBpcyByZXByb2R1
+Y2VkIGJ5IGxpc3RpbmcgdGhlIGJvb3QgZW50cmllcyB3aXRoIHRoZSBib290Y2hvb3Nlcgo+IGFu
+ZCBhIHJvb3RmcyB3aXRoIGJsc3BlYyBlbnRyaWVzLCBlLmcuOgo+IAo+IAlib290IC1sIGJvb3Rj
+aG9vc2VyIC9tbnQvbmZzCj4gCj4gQ2hlY2sgaWYgYSBib290ZW50cnkgaXMgYSBibHNwZWMgZW50
+cnkgYnkgdGVzdGluZyBpZiB0aGUgYm9vdCBmdW5jdGlvbgo+IGlzIGJsc3BlY19ib290Lgo+IAo+
+IFJlcG9ydGVkLWJ5OiBUaG9tYXMgSMOkbW1lcmxlIDxUaG9tYXMuSGFlbW1lcmxlQHdvbGZ2aXNp
+b24ubmV0Pgo+IFNpZ25lZC1vZmYtYnk6IE1pY2hhZWwgVHJldHRlciA8bS50cmV0dGVyQHBlbmd1
+dHJvbml4LmRlPgo+IC0tLQo+ICBjb21tb24vYmxzcGVjLmMgfCAxMCArKysrKysrKysrCj4gIDEg
+ZmlsZSBjaGFuZ2VkLCAxMCBpbnNlcnRpb25zKCspCj4gCj4gZGlmZiAtLWdpdCBhL2NvbW1vbi9i
+bHNwZWMuYyBiL2NvbW1vbi9ibHNwZWMuYwo+IGluZGV4IDY2ZTUwMzNlMzUuLjNiMTQ4ZTJhYjQg
+MTAwNjQ0Cj4gLS0tIGEvY29tbW9uL2Jsc3BlYy5jCj4gKysrIGIvY29tbW9uL2Jsc3BlYy5jCj4g
+QEAgLTIyOCw2ICsyMjgsMTQgQEAgc3RhdGljIHN0cnVjdCBibHNwZWNfZW50cnkgKmJsc3BlY19l
+bnRyeV9vcGVuKHN0cnVjdCBib290ZW50cmllcyAqYm9vdGVudHJpZXMsCj4gIAlyZXR1cm4gZW50
+cnk7Cj4gIH0KPiAgCj4gKy8qCj4gKyAqIGlzX2Jsc3BlY19lbnRyeSAtIGNoZWNrIGlmIGEgYm9v
+dGVudHJ5IGlzIGEgYmxzcGVjIGVudHJ5Cj4gKyAqLwo+ICtzdGF0aWMgaW5saW5lIGJvb2wgaXNf
+YmxzcGVjX2VudHJ5KHN0cnVjdCBib290ZW50cnkgKmVudHJ5KQo+ICt7Cj4gKwlyZXR1cm4gZW50
+cnkuYm9vdCA9PSBibHNwZWNfYm9vdDsKCmVudHJ5IGlzIGEgcG9pbnRlci4gVGhpcyBkb2Vzbid0
+IGNvbXBpbGU6CgouL2NvbW1vbi9ibHNwZWMuYzozMTQ6MTQ6IGVycm9yOiAnZW50cnknIGlzIGEg
+cG9pbnRlcjsgZGlkIHlvdSBtZWFuIHRvIHVzZSAnLT4nPwogIDMxNCB8ICByZXR1cm4gZW50cnku
+Ym9vdCA9PSBibHNwZWNfYm9vdDsKCj4gK30KPiArCj4gIC8qCj4gICAqIGJsc3BlY19oYXZlX2Vu
+dHJ5IC0gY2hlY2sgaWYgd2UgYWxyZWFkeSBoYXZlIGFuIGVudHJ5IHdpdGgKPiAgICogICAgICAg
+ICAgICAgICAgICAgICBhIGNlcnRhaW4gcGF0aAo+IEBAIC0yMzgsNiArMjQ2LDggQEAgc3RhdGlj
+IGludCBibHNwZWNfaGF2ZV9lbnRyeShzdHJ1Y3QgYm9vdGVudHJpZXMgKmJvb3RlbnRyaWVzLCBj
+b25zdCBjaGFyICpwYXRoKQo+ICAJc3RydWN0IGJsc3BlY19lbnRyeSAqZTsKPiAgCj4gIAlsaXN0
+X2Zvcl9lYWNoX2VudHJ5KGJlLCAmYm9vdGVudHJpZXMtPmVudHJpZXMsIGxpc3QpIHsKPiArCQlp
+ZiAoIWlzX2Jsc3BlY19lbnRyeShiZSkpCj4gKwkJCWNvbnRpbnVlOwo+ICAJCWUgPSBjb250YWlu
+ZXJfb2YoYmUsIHN0cnVjdCBibHNwZWNfZW50cnksIGVudHJ5KTsKPiAgCQlpZiAoZS0+Y29uZmln
+cGF0aCAmJiAhc3RyY21wKGUtPmNvbmZpZ3BhdGgsIHBhdGgpKQo+ICAJCQlyZXR1cm4gMTsKPiAK
+Ci0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAg
+ICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3RyLiA2LTgs
+IDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAg
+fApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5
+LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQu
+b3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
