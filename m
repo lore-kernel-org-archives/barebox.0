@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iCNAd-0001lj-U2
- for barebox@lists.infradead.org; Mon, 23 Sep 2019 12:10:25 +0000
+ id 1iCNAd-0001li-Tk
+ for barebox@lists.infradead.org; Mon, 23 Sep 2019 12:10:26 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 23 Sep 2019 14:10:15 +0200
-Message-Id: <20190923121018.31574-4-a.fatoum@pengutronix.de>
+Date: Mon, 23 Sep 2019 14:10:14 +0200
+Message-Id: <20190923121018.31574-3-a.fatoum@pengutronix.de>
 In-Reply-To: <20190923121018.31574-1-a.fatoum@pengutronix.de>
 References: <20190923121018.31574-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,34 +21,442 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/6] scripts/dtc: git rm old files as part of update process
+Subject: [PATCH 2/6] scripts/dtc: reinstate building of fdtget along with dtc
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-To avoid keeping stale files in the scripts/dtc directory, care had to
-be taken to delete all files except for the ones native to barebox.
-Make this less error-prone by having careupdate-dtc-source.sh delete
-these files as part of the update process.
+Unlike Linux, barebox has a build-time dependency on the fdtget utility.
+For this reason, we can't import the kernel dtc Makefile by mere
+copying. Reinstate the fdtget-specific bits that got lost in the
+last dtc update. This fixes barebox imd generation which has caused
+following error message in master:
 
+	gen-dtb-s: line 37: scripts/dtc/fdtget: No such file or directory
+
+Fixes: 4e731e48d4 ("scripts/dtc: Update to upstream version v1.5.0")
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- scripts/dtc/update-dtc-source.sh | 3 +++
- 1 file changed, 3 insertions(+)
+Please apply to upstream/master
+---
+ scripts/dtc/Makefile |   8 +-
+ scripts/dtc/fdtget.c | 383 +++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 390 insertions(+), 1 deletion(-)
+ create mode 100644 scripts/dtc/fdtget.c
 
-diff --git a/scripts/dtc/update-dtc-source.sh b/scripts/dtc/update-dtc-source.sh
-index fc644c5ada26..0a098df710c3 100755
---- a/scripts/dtc/update-dtc-source.sh
-+++ b/scripts/dtc/update-dtc-source.sh
-@@ -44,6 +44,9 @@ get_last_dtc_version() {
- last_dtc_ver=$(get_last_dtc_version)
+diff --git a/scripts/dtc/Makefile b/scripts/dtc/Makefile
+index 5f227d8d39d8..69b0f6a0e093 100644
+--- a/scripts/dtc/Makefile
++++ b/scripts/dtc/Makefile
+@@ -1,13 +1,19 @@
+ # SPDX-License-Identifier: GPL-2.0
+ # scripts/dtc makefile
  
- # Build DTC
-+cd $DTC_LINUX_PATH
-+git ls-files . | grep -vE '^(update-dtc-source\.sh|Makefile|\.gitignore)$' | xargs git rm
-+mkdir libfdt
- cd $DTC_UPSTREAM_PATH
- make clean
- make check
+-hostprogs-$(CONFIG_DTC) := dtc
++hostprogs-$(CONFIG_DTC) := dtc fdtget
+ always		:= $(hostprogs-y)
+ 
+ dtc-objs	:= dtc.o flattree.o fstree.o data.o livetree.o treesource.o \
+ 		   srcpos.o checks.o util.o
+ dtc-objs	+= dtc-lexer.lex.o dtc-parser.tab.o
+ 
++libfdt-objs	:= fdt.o fdt_ro.o fdt_strerror.o fdt_wip.o fdt_overlay.o
++libfdt-objs	+= fdt_empty_tree.o fdt_rw.o fdt_sw.o
++libfdt-objs	:= $(libfdt-objs:%.o=libfdt/%.o)
++
++fdtget-objs    += fdtget.o $(libfdt-objs) util.o
++
+ # Source files need to get at the userspace version of libfdt_env.h to compile
+ HOST_EXTRACFLAGS := -I$(src)/libfdt
+ 
+diff --git a/scripts/dtc/fdtget.c b/scripts/dtc/fdtget.c
+new file mode 100644
+index 000000000000..a79c3b2aa1b8
+--- /dev/null
++++ b/scripts/dtc/fdtget.c
+@@ -0,0 +1,383 @@
++/*
++ * Copyright (c) 2011 The Chromium OS Authors. All rights reserved.
++ *
++ * Portions from U-Boot cmd_fdt.c (C) Copyright 2007
++ * Gerald Van Baren, Custom IDEAS, vanbaren@cideas.com
++ * Based on code written by:
++ *   Pantelis Antoniou <pantelis.antoniou@gmail.com> and
++ *   Matthew McClintock <msm@freescale.com>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++#include <assert.h>
++#include <ctype.h>
++#include <getopt.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++
++#include <libfdt.h>
++
++#include "util.h"
++
++enum display_mode {
++	MODE_SHOW_VALUE,	/* show values for node properties */
++	MODE_LIST_PROPS,	/* list the properties for a node */
++	MODE_LIST_SUBNODES,	/* list the subnodes of a node */
++};
++
++/* Holds information which controls our output and options */
++struct display_info {
++	int type;		/* data type (s/i/u/x or 0 for default) */
++	int size;		/* data size (1/2/4) */
++	enum display_mode mode;	/* display mode that we are using */
++	const char *default_val; /* default value if node/property not found */
++};
++
++static void report_error(const char *where, int err)
++{
++	fprintf(stderr, "Error at '%s': %s\n", where, fdt_strerror(err));
++}
++
++/**
++ * Shows a list of cells in the requested format
++ *
++ * @param disp		Display information / options
++ * @param data		Data to display
++ * @param len		Maximum length of buffer
++ * @param size		Data size to use for display (e.g. 4 for 32-bit)
++ * @return 0 if ok, -1 on error
++ */
++static int show_cell_list(struct display_info *disp, const char *data, int len,
++			  int size)
++{
++	const uint8_t *p = (const uint8_t *)data;
++	char fmt[3];
++	int value;
++	int i;
++
++	fmt[0] = '%';
++	fmt[1] = disp->type ? disp->type : 'd';
++	fmt[2] = '\0';
++	for (i = 0; i < len; i += size, p += size) {
++		if (i)
++			printf(" ");
++		value = size == 4 ? fdt32_ld((const fdt32_t *)p) :
++			size == 2 ? (*p << 8) | p[1] : *p;
++		printf(fmt, value);
++	}
++
++	return 0;
++}
++
++/**
++ * Displays data of a given length according to selected options
++ *
++ * If a specific data type is provided in disp, then this is used. Otherwise
++ * we try to guess the data type / size from the contents.
++ *
++ * @param disp		Display information / options
++ * @param data		Data to display
++ * @param len		Maximum length of buffer
++ * @return 0 if ok, -1 if data does not match format
++ */
++static int show_data(struct display_info *disp, const char *data, int len)
++{
++	int size;
++	const char *s;
++	int is_string;
++
++	/* no data, don't print */
++	if (len == 0)
++		return 0;
++
++	is_string = (disp->type) == 's' ||
++		(!disp->type && util_is_printable_string(data, len));
++	if (is_string) {
++		if (data[len - 1] != '\0') {
++			fprintf(stderr, "Unterminated string\n");
++			return -1;
++		}
++		for (s = data; s - data < len; s += strlen(s) + 1) {
++			if (s != data)
++				printf(" ");
++			printf("%s", (const char *)s);
++		}
++		return 0;
++	}
++	size = disp->size;
++	if (size == -1) {
++		size = (len % 4) == 0 ? 4 : 1;
++	} else if (len % size) {
++		fprintf(stderr, "Property length must be a multiple of "
++				"selected data size\n");
++		return -1;
++	}
++
++	return show_cell_list(disp, data, len, size);
++}
++
++/**
++ * List all properties in a node, one per line.
++ *
++ * @param blob		FDT blob
++ * @param node		Node to display
++ * @return 0 if ok, or FDT_ERR... if not.
++ */
++static int list_properties(const void *blob, int node)
++{
++	const char *name;
++	int prop;
++
++	prop = fdt_first_property_offset(blob, node);
++	do {
++		/* Stop silently when there are no more properties */
++		if (prop < 0)
++			return prop == -FDT_ERR_NOTFOUND ? 0 : prop;
++		fdt_getprop_by_offset(blob, prop, &name, NULL);
++		if (name)
++			puts(name);
++		prop = fdt_next_property_offset(blob, prop);
++	} while (1);
++}
++
++#define MAX_LEVEL	32		/* how deeply nested we will go */
++
++/**
++ * List all subnodes in a node, one per line
++ *
++ * @param blob		FDT blob
++ * @param node		Node to display
++ * @return 0 if ok, or FDT_ERR... if not.
++ */
++static int list_subnodes(const void *blob, int node)
++{
++	int nextoffset;		/* next node offset from libfdt */
++	uint32_t tag;		/* current tag */
++	int level = 0;		/* keep track of nesting level */
++	const char *pathp;
++	int depth = 1;		/* the assumed depth of this node */
++
++	while (level >= 0) {
++		tag = fdt_next_tag(blob, node, &nextoffset);
++		switch (tag) {
++		case FDT_BEGIN_NODE:
++			pathp = fdt_get_name(blob, node, NULL);
++			if (level <= depth) {
++				if (pathp == NULL)
++					pathp = "/* NULL pointer error */";
++				if (*pathp == '\0')
++					pathp = "/";	/* root is nameless */
++				if (level == 1)
++					puts(pathp);
++			}
++			level++;
++			if (level >= MAX_LEVEL) {
++				printf("Nested too deep, aborting.\n");
++				return 1;
++			}
++			break;
++		case FDT_END_NODE:
++			level--;
++			if (level == 0)
++				level = -1;		/* exit the loop */
++			break;
++		case FDT_END:
++			return 1;
++		case FDT_PROP:
++			break;
++		default:
++			if (level <= depth)
++				printf("Unknown tag 0x%08X\n", tag);
++			return 1;
++		}
++		node = nextoffset;
++	}
++	return 0;
++}
++
++/**
++ * Show the data for a given node (and perhaps property) according to the
++ * display option provided.
++ *
++ * @param blob		FDT blob
++ * @param disp		Display information / options
++ * @param node		Node to display
++ * @param property	Name of property to display, or NULL if none
++ * @return 0 if ok, -ve on error
++ */
++static int show_data_for_item(const void *blob, struct display_info *disp,
++		int node, const char *property)
++{
++	const void *value = NULL;
++	int len, err = 0;
++
++	switch (disp->mode) {
++	case MODE_LIST_PROPS:
++		err = list_properties(blob, node);
++		break;
++
++	case MODE_LIST_SUBNODES:
++		err = list_subnodes(blob, node);
++		break;
++
++	default:
++		assert(property);
++		value = fdt_getprop(blob, node, property, &len);
++		if (value) {
++			if (show_data(disp, value, len))
++				err = -1;
++			else
++				printf("\n");
++		} else if (disp->default_val) {
++			puts(disp->default_val);
++		} else {
++			report_error(property, len);
++			err = -1;
++		}
++		break;
++	}
++
++	return err;
++}
++
++/**
++ * Run the main fdtget operation, given a filename and valid arguments
++ *
++ * @param disp		Display information / options
++ * @param filename	Filename of blob file
++ * @param arg		List of arguments to process
++ * @param arg_count	Number of arguments
++ * @return 0 if ok, -ve on error
++ */
++static int do_fdtget(struct display_info *disp, const char *filename,
++		     char **arg, int arg_count, int args_per_step)
++{
++	char *blob;
++	const char *prop;
++	int i, node;
++
++	blob = utilfdt_read(filename, NULL);
++	if (!blob)
++		return -1;
++
++	for (i = 0; i + args_per_step <= arg_count; i += args_per_step) {
++		node = fdt_path_offset(blob, arg[i]);
++		if (node < 0) {
++			if (disp->default_val) {
++				puts(disp->default_val);
++				continue;
++			} else {
++				report_error(arg[i], node);
++				free(blob);
++				return -1;
++			}
++		}
++		prop = args_per_step == 1 ? NULL : arg[i + 1];
++
++		if (show_data_for_item(blob, disp, node, prop)) {
++			free(blob);
++			return -1;
++		}
++	}
++
++	free(blob);
++
++	return 0;
++}
++
++/* Usage related data. */
++static const char usage_synopsis[] =
++	"read values from device tree\n"
++	"	fdtget <options> <dt file> [<node> <property>]...\n"
++	"	fdtget -p <options> <dt file> [<node> ]...\n"
++	"\n"
++	"Each value is printed on a new line.\n"
++	USAGE_TYPE_MSG;
++static const char usage_short_opts[] = "t:pld:" USAGE_COMMON_SHORT_OPTS;
++static struct option const usage_long_opts[] = {
++	{"type",              a_argument, NULL, 't'},
++	{"properties",       no_argument, NULL, 'p'},
++	{"list",             no_argument, NULL, 'l'},
++	{"default",           a_argument, NULL, 'd'},
++	USAGE_COMMON_LONG_OPTS,
++};
++static const char * const usage_opts_help[] = {
++	"Type of data",
++	"List properties for each node",
++	"List subnodes for each node",
++	"Default value to display when the property is missing",
++	USAGE_COMMON_OPTS_HELP
++};
++
++int main(int argc, char *argv[])
++{
++	int opt;
++	char *filename = NULL;
++	struct display_info disp;
++	int args_per_step = 2;
++
++	/* set defaults */
++	memset(&disp, '\0', sizeof(disp));
++	disp.size = -1;
++	disp.mode = MODE_SHOW_VALUE;
++	while ((opt = util_getopt_long()) != EOF) {
++		switch (opt) {
++		case_USAGE_COMMON_FLAGS
++
++		case 't':
++			if (utilfdt_decode_type(optarg, &disp.type,
++					&disp.size))
++				usage("invalid type string");
++			break;
++
++		case 'p':
++			disp.mode = MODE_LIST_PROPS;
++			args_per_step = 1;
++			break;
++
++		case 'l':
++			disp.mode = MODE_LIST_SUBNODES;
++			args_per_step = 1;
++			break;
++
++		case 'd':
++			disp.default_val = optarg;
++			break;
++		}
++	}
++
++	if (optind < argc)
++		filename = argv[optind++];
++	if (!filename)
++		usage("missing filename");
++
++	argv += optind;
++	argc -= optind;
++
++	/* Allow no arguments, and silently succeed */
++	if (!argc)
++		return 0;
++
++	/* Check for node, property arguments */
++	if (args_per_step == 2 && (argc % 2))
++		usage("must have an even number of arguments");
++
++	if (do_fdtget(&disp, filename, argv, argc, args_per_step))
++		return 1;
++	return 0;
++}
 -- 
 2.23.0
 
