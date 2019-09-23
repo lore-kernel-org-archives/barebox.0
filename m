@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([78.46.208.201])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iAovh-0003a2-90
- for barebox@lists.infradead.org; Thu, 19 Sep 2019 05:24:37 +0000
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Thu, 19 Sep 2019 07:24:04 +0200
-Message-Id: <20190919052403.133717-1-r.czerwinski@pengutronix.de>
+ id 1iCIA2-0001ex-IO
+ for barebox@lists.infradead.org; Mon, 23 Sep 2019 06:49:28 +0000
+Date: Mon, 23 Sep 2019 08:49:22 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190923064922.rj2gesmexprrkiby@pengutronix.de>
+References: <20190919052403.133717-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190919052403.133717-1-r.czerwinski@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,30 +22,25 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! ARM: NETX: remove architecture
-To: barebox@lists.infradead.org
-Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Subject: Re: [PATCH] fixup! ARM: NETX: remove architecture
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Otherwise make clean will complain about the missing Makefile.
----
- arch/arm/boards/Makefile | 1 -
- 1 file changed, 1 deletion(-)
+On Thu, Sep 19, 2019 at 07:24:04AM +0200, Rouven Czerwinski wrote:
+> Otherwise make clean will complain about the missing Makefile.
+> ---
+>  arch/arm/boards/Makefile | 1 -
+>  1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-index 10cd0c413d..61c98adbdc 100644
---- a/arch/arm/boards/Makefile
-+++ b/arch/arm/boards/Makefile
-@@ -82,7 +82,6 @@ obj-$(CONFIG_MACH_NETGEAR_RN2120)		+= netgear-rn2120/
- obj-$(CONFIG_MACH_NOMADIK_8815NHK)		+= nhk8815/
- obj-$(CONFIG_MACH_NVIDIA_BEAVER)		+= nvidia-beaver/
- obj-$(CONFIG_MACH_NVIDIA_JETSON)		+= nvidia-jetson-tk1/
--obj-$(CONFIG_MACH_NXDB500)			+= netx/
- obj-$(CONFIG_MACH_NXP_IMX6ULL_EVK)		+= nxp-imx6ull-evk/
- obj-$(CONFIG_MACH_NXP_IMX8MQ_EVK)		+= nxp-imx8mq-evk/
- obj-$(CONFIG_MACH_OMAP343xSDP)			+= omap343xdsp/
+Applied, thanks
+
+Sascha
+
 -- 
-2.23.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
