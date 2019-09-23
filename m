@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iBIHJ-0002sZ-7R
- for barebox@lists.infradead.org; Fri, 20 Sep 2019 12:44:51 +0000
-From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Fri, 20 Sep 2019 14:44:33 +0200
-Message-Id: <20190920124433.31026-1-m.tretter@pengutronix.de>
+ id 1iCIBZ-00039d-AW
+ for barebox@lists.infradead.org; Mon, 23 Sep 2019 06:51:04 +0000
+Date: Mon, 23 Sep 2019 08:50:59 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190923065059.s75p6rvk7ufk65mq@pengutronix.de>
+References: <20190920124433.31026-1-m.tretter@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190920124433.31026-1-m.tretter@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,41 +18,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] blspec: skip entries that are not blspec entries
-To: barebox@lists.infradead.org
-Cc: =?UTF-8?q?Thomas=20H=C3=A4mmerle?= <Thomas.Haemmerle@wolfvision.net>, Michael Tretter <m.tretter@pengutronix.de>
+Subject: Re: [PATCH] blspec: skip entries that are not blspec entries
+To: Michael Tretter <m.tretter@pengutronix.de>
+Cc: barebox@lists.infradead.org, Thomas =?iso-8859-15?Q?H=E4mmerle?= <Thomas.Haemmerle@wolfvision.net>
 
-VGhlIGxpc3Qgb2YgYm9vdCBlbnRyaWVzIGNhbiBjb250YWluIGl0ZW1zIHRoYXQgYXJlIG5vdCBi
-bHNwZWMgZW50cmllcy4KRm9yIGV4YW1wbGUsIHRoZSBib290Y2hvb3NlciBhbHNvIGFkZHMgYW4g
-aXRlbSB0byB0aGlzIGxpc3QuIFRoZXJlZm9yZSwKYmxzcGVjIGNhbm5vdCB1bmNvbmRpdGlvbmFs
-bHkgaW50ZXJwcmV0IGVudHJpZXMgYXMgYmxzcGVjIGVudHJpZXMuCgpUaGUgZXJyb3IgaXMgcmVw
-cm9kdWNlZCBieSBsaXN0aW5nIHRoZSBib290IGVudHJpZXMgd2l0aCB0aGUgYm9vdGNob29zZXIK
-YW5kIGEgcm9vdGZzIHdpdGggYmxzcGVjIGVudHJpZXMsIGUuZy46CgoJYm9vdCAtbCBib290Y2hv
-b3NlciAvbW50L25mcwoKQ2hlY2sgaWYgYSBib290ZW50cnkgaXMgYSBibHNwZWMgZW50cnkgYnkg
-dGVzdGluZyBpZiB0aGUgYm9vdCBmdW5jdGlvbgppcyBibHNwZWNfYm9vdC4KClJlcG9ydGVkLWJ5
-OiBUaG9tYXMgSMOkbW1lcmxlIDxUaG9tYXMuSGFlbW1lcmxlQHdvbGZ2aXNpb24ubmV0PgpTaWdu
-ZWQtb2ZmLWJ5OiBNaWNoYWVsIFRyZXR0ZXIgPG0udHJldHRlckBwZW5ndXRyb25peC5kZT4KLS0t
-CiBjb21tb24vYmxzcGVjLmMgfCAxMCArKysrKysrKysrCiAxIGZpbGUgY2hhbmdlZCwgMTAgaW5z
-ZXJ0aW9ucygrKQoKZGlmZiAtLWdpdCBhL2NvbW1vbi9ibHNwZWMuYyBiL2NvbW1vbi9ibHNwZWMu
-YwppbmRleCA2NmU1MDMzZTM1Li4zYjE0OGUyYWI0IDEwMDY0NAotLS0gYS9jb21tb24vYmxzcGVj
-LmMKKysrIGIvY29tbW9uL2Jsc3BlYy5jCkBAIC0yMjgsNiArMjI4LDE0IEBAIHN0YXRpYyBzdHJ1
-Y3QgYmxzcGVjX2VudHJ5ICpibHNwZWNfZW50cnlfb3BlbihzdHJ1Y3QgYm9vdGVudHJpZXMgKmJv
-b3RlbnRyaWVzLAogCXJldHVybiBlbnRyeTsKIH0KIAorLyoKKyAqIGlzX2Jsc3BlY19lbnRyeSAt
-IGNoZWNrIGlmIGEgYm9vdGVudHJ5IGlzIGEgYmxzcGVjIGVudHJ5CisgKi8KK3N0YXRpYyBpbmxp
-bmUgYm9vbCBpc19ibHNwZWNfZW50cnkoc3RydWN0IGJvb3RlbnRyeSAqZW50cnkpCit7CisJcmV0
-dXJuIGVudHJ5LmJvb3QgPT0gYmxzcGVjX2Jvb3Q7Cit9CisKIC8qCiAgKiBibHNwZWNfaGF2ZV9l
-bnRyeSAtIGNoZWNrIGlmIHdlIGFscmVhZHkgaGF2ZSBhbiBlbnRyeSB3aXRoCiAgKiAgICAgICAg
-ICAgICAgICAgICAgIGEgY2VydGFpbiBwYXRoCkBAIC0yMzgsNiArMjQ2LDggQEAgc3RhdGljIGlu
-dCBibHNwZWNfaGF2ZV9lbnRyeShzdHJ1Y3QgYm9vdGVudHJpZXMgKmJvb3RlbnRyaWVzLCBjb25z
-dCBjaGFyICpwYXRoKQogCXN0cnVjdCBibHNwZWNfZW50cnkgKmU7CiAKIAlsaXN0X2Zvcl9lYWNo
-X2VudHJ5KGJlLCAmYm9vdGVudHJpZXMtPmVudHJpZXMsIGxpc3QpIHsKKwkJaWYgKCFpc19ibHNw
-ZWNfZW50cnkoYmUpKQorCQkJY29udGludWU7CiAJCWUgPSBjb250YWluZXJfb2YoYmUsIHN0cnVj
-dCBibHNwZWNfZW50cnksIGVudHJ5KTsKIAkJaWYgKGUtPmNvbmZpZ3BhdGggJiYgIXN0cmNtcChl
-LT5jb25maWdwYXRoLCBwYXRoKSkKIAkJCXJldHVybiAxOwotLSAKMi4yMC4xCgoKX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxp
-c3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
-L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Fri, Sep 20, 2019 at 02:44:33PM +0200, Michael Tretter wrote:
+> The list of boot entries can contain items that are not blspec entries.
+> For example, the bootchooser also adds an item to this list. Therefore,
+> blspec cannot unconditionally interpret entries as blspec entries.
+> =
+
+> The error is reproduced by listing the boot entries with the bootchooser
+> and a rootfs with blspec entries, e.g.:
+> =
+
+> 	boot -l bootchooser /mnt/nfs
+> =
+
+> Check if a bootentry is a blspec entry by testing if the boot function
+> is blspec_boot.
+> =
+
+> Reported-by: Thomas H=E4mmerle <Thomas.Haemmerle@wolfvision.net>
+> Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+> ---
+
+Applied, thanks
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
