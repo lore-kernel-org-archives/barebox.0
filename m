@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from antares.kleine-koenig.org ([94.130.110.236])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iA8Ru-0001NN-5V
- for barebox@lists.infradead.org; Tue, 17 Sep 2019 08:03:04 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Tue, 17 Sep 2019 10:02:41 +0200
-Message-Id: <20190917080242.15166-1-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20190917080126.2sp36vixvfvlmvtk@pengutronix.de>
-References: <20190917080126.2sp36vixvfvlmvtk@pengutronix.de>
+ id 1iCNAd-0001lk-Um
+ for barebox@lists.infradead.org; Mon, 23 Sep 2019 12:10:31 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 23 Sep 2019 14:10:17 +0200
+Message-Id: <20190923121018.31574-6-a.fatoum@pengutronix.de>
+In-Reply-To: <20190923121018.31574-1-a.fatoum@pengutronix.de>
+References: <20190923121018.31574-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -17,3081 +17,2240 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1250598585286119086=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] Convert latin1 files to utf-8
+Subject: [PATCH 5/6] scripts/dtc: Update to upstream version v1.5.1
 To: barebox@lists.infradead.org
-Cc: Stefan Lengfeld <contact@stefanchrist.eu>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
---===============1250598585286119086==
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+This adds the following commits from upstream dtc:
 
-The source files are parsed by $(make docs). Currently this is done
-using python2 (actually 'python' which is still python2 on most
-machines). When using python3 however (which has a stricter encoding
-handling) it is easier if all input is in utf-8 encoding. So convert the
-few remaining latin1 encoded files to utf-8. This only affects code
-comments.
+60e0db3d65a1 Ignore phandle properties in /aliases
+95ce19c14064 README: update for Python 3
+5345db19f615 livetree: simplify condition in get_node_by_path
+b8d6eca78210 libfdt: Allow #size-cells of 0
+184f51099471 Makefile: Add EXTRA_CFLAGS variable
+812b1956a076 libfdt: Tweak data handling to satisfy Coverity
+5c715a44776a fdtoverlay: Ignore symbols in overlays which don't apply to the target tree
+b99353474850 fdtoverlay: Allow adding labels to __overlay__ nodes in overlays
+d6de81b81b68 pylibfdt: Add support for fdt_get_alias()
+1c17714dbb3a pylibfdt: Correct the FdtSw example
+ad57e4574a37 tests: Add a failed test case for 'fdtoverlay' with long target path
+bbe3b36f542b fdtoverlay: Rework output allocation
+6c2e61f08396 fdtoverlay: Improve error messages
+297f5abb362e fdtoverlay: Check for truncated overlay blobs
+702c1b6c0e73 README.license: Update to reflect SPDX tag usage
+4097bbffcf1d dtc: Add GPLv2 SPDX tags to files missing license text
+94f87cd5b7c5 libfdt: Add dual GPL/BSD SPDX tags to files missing license text
+c4ffc05574b1 tests: Replace license boilerplate with SPDX tags
+a5ac29baacd2 pylibfdt: Replace dual GPLv2/BSD license boilerplate with SPDX tags
+7fb0f4db2eb7 libfdt: Replace GPL/BSD boilerplate/reference with SPDX tags
+acfe84f2c47e dtc: Replace GPLv2 boilerplate/reference with SPDX tags
+87963ee20693 livetree: add missing type markers in generated overlay properties
+825146d13dc0 Fix typos in various documentation and source files
+25bb080c18d1 Update the GPL2 text to the latest revision
+243176c4ce84 Fix bogus error on rebuild
+ce01b21098a4 libfdt: Add FDT_CREATE_FLAG_NO_NAME_DEDUP flag that trades size for speed
+fbb62754ce45 libfdt: Introduce fdt_create_with_flags()
+228a44cce857 libfdt: Ensure fdt_add_property frees allocated name string on failure
+8f695676227b Avoid assertion in check_interrupts_property()
+5c3513f68921 Link tools and tests against libfdt shared library
+00f9febf9c16 tests: Rename tests.sh to testutils.sh
+c5d45188f923 Clean up LDLIBS handling
+6ef8fcd05b74 Rebuild libfdt shared object if versioning linker script changes
+26ee65a16c38 Use Python3 by default
+cca6546244cb libfdt: Make fdt_get_max_phandle() an inline
+730875016a6a libfdt: Add phandle generation helper
+7dfb61ba96b1 libfdt: Use fdt_find_max_phandle()
+2bc5b66d7f6c libfdt: Add new maximum phandle lookup function
+7fcf8208b8a9 libfdt: add fdt_append_addrrange()
+ae795b2db7a4 checks: Do not omit nodes with labels if symbol generation is requested
+eac2ad495b29 Update version.lds again
+f67b47135523 Revert "libfdt: Add phandle generation helper"
+54ea41c22415 libfdt: Add phandle generation helper
+4762ad051ee0 checks: Fix spelling in check_graph_endpoint
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- .../arm/boards/chumby_falconwing/falconwing.c |   2 +-
- lib/fonts/font_7x14.c                         | 256 +++++++++---------
- lib/fonts/font_8x16.c                         | 256 +++++++++---------
- lib/fonts/font_8x8.c                          | 256 +++++++++---------
- 4 files changed, 385 insertions(+), 385 deletions(-)
+ scripts/dtc/Makefile.dtc             |   1 +
+ scripts/dtc/checks.c                 |  36 +++--
+ scripts/dtc/data.c                   |  17 +--
+ scripts/dtc/dtc-lexer.l              |  17 +--
+ scripts/dtc/dtc-parser.y             |  17 +--
+ scripts/dtc/dtc.c                    |  17 +--
+ scripts/dtc/dtc.h                    |  20 +--
+ scripts/dtc/fdtget.c                 |  16 +--
+ scripts/dtc/flattree.c               |  19 +--
+ scripts/dtc/fstree.c                 |  17 +--
+ scripts/dtc/libfdt/Makefile.libfdt   |   3 +
+ scripts/dtc/libfdt/fdt.c             |  56 ++------
+ scripts/dtc/libfdt/fdt.h             |  47 +------
+ scripts/dtc/libfdt/fdt_addresses.c   | 102 +++++++-------
+ scripts/dtc/libfdt/fdt_empty_tree.c  |  47 +------
+ scripts/dtc/libfdt/fdt_overlay.c     |  85 ++++--------
+ scripts/dtc/libfdt/fdt_ro.c          | 108 ++++++---------
+ scripts/dtc/libfdt/fdt_rw.c          |  69 +++-------
+ scripts/dtc/libfdt/fdt_strerror.c    |  47 +------
+ scripts/dtc/libfdt/fdt_sw.c          | 125 +++++++++--------
+ scripts/dtc/libfdt/fdt_wip.c         |  47 +------
+ scripts/dtc/libfdt/libfdt.h          | 199 ++++++++++++++++++++-------
+ scripts/dtc/libfdt/libfdt_env.h      |  48 +------
+ scripts/dtc/libfdt/libfdt_internal.h |  57 +-------
+ scripts/dtc/livetree.c               |  40 ++----
+ scripts/dtc/srcpos.c                 |  16 +--
+ scripts/dtc/srcpos.h                 |  16 +--
+ scripts/dtc/treesource.c             |  17 +--
+ scripts/dtc/util.c                   |  16 +--
+ scripts/dtc/util.h                   |  20 +--
+ scripts/dtc/yamltree.c               |  16 +--
+ 31 files changed, 435 insertions(+), 923 deletions(-)
 
-diff --git a/arch/arm/boards/chumby_falconwing/falconwing.c b/arch/arm/boards/chumby_falconwing/falconwing.c
-index 5554b78d6d49..42dd838d758e 100644
---- a/arch/arm/boards/chumby_falconwing/falconwing.c
-+++ b/arch/arm/boards/chumby_falconwing/falconwing.c
-@@ -65,7 +65,7 @@ static struct fb_videomode falconwing_vmode = {
- 	.xres = 320,
- 	.yres = 240,
- 	.pixclock = KHZ2PICOS(6250),    /* max. 10 MHz */
--	/* line lenght should be 64 �s */
-+	/* line lenght should be 64 µs */
- 	.left_margin = 28,
- 	.hsync_len = 24,
- 	.right_margin = 28,
-diff --git a/lib/fonts/font_7x14.c b/lib/fonts/font_7x14.c
-index 384ba39f1779..e5ef8323ca7b 100644
---- a/lib/fonts/font_7x14.c
-+++ b/lib/fonts/font_7x14.c
-@@ -2058,7 +2058,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 128 0x80 '�' */
-+	/* 128 0x80 '' */
- 	0x00, /* 0000000 */
- 	0x38, /* 0011100 */
- 	0x6c, /* 0110110 */
-@@ -2074,7 +2074,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x70, /* 0111000 */
- 	0x00, /* 0000000 */
- 
--	/* 129 0x81 '�' */
-+	/* 129 0x81 '' */
- 	0x00, /* 0000000 */
- 	0xcc, /* 1100110 */
- 	0x00, /* 0000000 */
-@@ -2090,7 +2090,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 130 0x82 '�' */
-+	/* 130 0x82 '' */
- 	0x0c, /* 0000110 */
- 	0x18, /* 0001100 */
- 	0x30, /* 0011000 */
-@@ -2106,7 +2106,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 131 0x83 '�' */
-+	/* 131 0x83 '' */
- 	0x10, /* 0001000 */
- 	0x38, /* 0011100 */
- 	0x6c, /* 0110110 */
-@@ -2122,7 +2122,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 132 0x84 '�' */
-+	/* 132 0x84 '' */
- 	0x00, /* 0000000 */
- 	0xcc, /* 1100110 */
- 	0x00, /* 0000000 */
-@@ -2138,7 +2138,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 133 0x85 '�' */
-+	/* 133 0x85 '' */
- 	0x60, /* 0110000 */
- 	0x30, /* 0011000 */
- 	0x18, /* 0001100 */
-@@ -2154,7 +2154,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 134 0x86 '�' */
-+	/* 134 0x86 '' */
- 	0x38, /* 0011100 */
- 	0x6c, /* 0110110 */
- 	0x38, /* 0011100 */
-@@ -2170,7 +2170,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 135 0x87 '�' */
-+	/* 135 0x87 '' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-@@ -2186,7 +2186,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x30, /* 0011000 */
- 	0xe0, /* 1110000 */
- 
--	/* 136 0x88 '�' */
-+	/* 136 0x88 '' */
- 	0x10, /* 0001000 */
- 	0x38, /* 0011100 */
- 	0x6c, /* 0110110 */
-@@ -2202,7 +2202,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 137 0x89 '�' */
-+	/* 137 0x89 '' */
- 	0x00, /* 0000000 */
- 	0xcc, /* 1100110 */
- 	0x00, /* 0000000 */
-@@ -2218,7 +2218,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 138 0x8a '�' */
-+	/* 138 0x8a '' */
- 	0xc0, /* 1100000 */
- 	0x60, /* 0110000 */
- 	0x30, /* 0011000 */
-@@ -2234,7 +2234,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 139 0x8b '�' */
-+	/* 139 0x8b '' */
- 	0x00, /* 0000000 */
- 	0x6c, /* 0110110 */
- 	0x00, /* 0000000 */
-@@ -2250,7 +2250,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 140 0x8c '�' */
-+	/* 140 0x8c '' */
- 	0x30, /* 0011000 */
- 	0x78, /* 0111100 */
- 	0xcc, /* 1100110 */
-@@ -2266,7 +2266,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 141 0x8d '�' */
-+	/* 141 0x8d '' */
- 	0xc0, /* 1100000 */
- 	0x60, /* 0110000 */
- 	0x30, /* 0011000 */
-@@ -2282,7 +2282,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 142 0x8e '�' */
-+	/* 142 0x8e '' */
- 	0x00, /* 0000000 */
- 	0xcc, /* 1100110 */
- 	0x00, /* 0000000 */
-@@ -2298,7 +2298,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 143 0x8f '�' */
-+	/* 143 0x8f '' */
- 	0x30, /* 0011000 */
- 	0x48, /* 0100100 */
- 	0x48, /* 0100100 */
-@@ -2314,7 +2314,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 144 0x90 '�' */
-+	/* 144 0x90 '' */
- 	0x18, /* 0001100 */
- 	0x30, /* 0011000 */
- 	0xfc, /* 1111110 */
-@@ -2330,7 +2330,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 145 0x91 '�' */
-+	/* 145 0x91 '' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-@@ -2346,7 +2346,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 146 0x92 '�' */
-+	/* 146 0x92 '' */
- 	0x00, /* 0000000 */
- 	0x3e, /* 0011111 */
- 	0x6c, /* 0110110 */
-@@ -2362,7 +2362,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 147 0x93 '�' */
-+	/* 147 0x93 '' */
- 	0x10, /* 0001000 */
- 	0x38, /* 0011100 */
- 	0x6c, /* 0110110 */
-@@ -2378,7 +2378,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 148 0x94 '�' */
-+	/* 148 0x94 '' */
- 	0x00, /* 0000000 */
- 	0xcc, /* 1100110 */
- 	0x00, /* 0000000 */
-@@ -2394,7 +2394,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 149 0x95 '�' */
-+	/* 149 0x95 '' */
- 	0xc0, /* 1100000 */
- 	0x60, /* 0110000 */
- 	0x30, /* 0011000 */
-@@ -2410,7 +2410,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 150 0x96 '�' */
-+	/* 150 0x96 '' */
- 	0x30, /* 0011000 */
- 	0x78, /* 0111100 */
- 	0xcc, /* 1100110 */
-@@ -2426,7 +2426,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 151 0x97 '�' */
-+	/* 151 0x97 '' */
- 	0x60, /* 0110000 */
- 	0x30, /* 0011000 */
- 	0x18, /* 0001100 */
-@@ -2442,7 +2442,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 152 0x98 '�' */
-+	/* 152 0x98 '' */
- 	0x00, /* 0000000 */
- 	0xcc, /* 1100110 */
- 	0x00, /* 0000000 */
-@@ -2458,7 +2458,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x18, /* 0001100 */
- 	0x70, /* 0111000 */
- 
--	/* 153 0x99 '�' */
-+	/* 153 0x99 '' */
- 	0xcc, /* 1100110 */
- 	0x00, /* 0000000 */
- 	0x78, /* 0111100 */
-@@ -2474,7 +2474,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 154 0x9a '�' */
-+	/* 154 0x9a '' */
- 	0xcc, /* 1100110 */
- 	0x00, /* 0000000 */
- 	0xcc, /* 1100110 */
-@@ -2490,7 +2490,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 155 0x9b '�' */
-+	/* 155 0x9b '' */
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
- 	0x7c, /* 0111110 */
-@@ -2506,7 +2506,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 156 0x9c '�' */
-+	/* 156 0x9c '' */
- 	0x38, /* 0011100 */
- 	0x6c, /* 0110110 */
- 	0x64, /* 0110010 */
-@@ -2522,7 +2522,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 157 0x9d '�' */
-+	/* 157 0x9d '' */
- 	0x00, /* 0000000 */
- 	0xcc, /* 1100110 */
- 	0xcc, /* 1100110 */
-@@ -2538,7 +2538,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 158 0x9e '�' */
-+	/* 158 0x9e '' */
- 	0xf8, /* 1111100 */
- 	0xcc, /* 1100110 */
- 	0xcc, /* 1100110 */
-@@ -2554,7 +2554,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 159 0x9f '�' */
-+	/* 159 0x9f '' */
- 	0x1c, /* 0001110 */
- 	0x36, /* 0011011 */
- 	0x30, /* 0011000 */
-@@ -2570,7 +2570,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 160 0xa0 '�' */
-+	/* 160 0xa0 ' ' */
- 	0x18, /* 0001100 */
- 	0x30, /* 0011000 */
- 	0x60, /* 0110000 */
-@@ -2586,7 +2586,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 161 0xa1 '�' */
-+	/* 161 0xa1 '¡' */
- 	0x18, /* 0001100 */
- 	0x30, /* 0011000 */
- 	0x60, /* 0110000 */
-@@ -2602,7 +2602,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 162 0xa2 '�' */
-+	/* 162 0xa2 '¢' */
- 	0x18, /* 0001100 */
- 	0x30, /* 0011000 */
- 	0x60, /* 0110000 */
-@@ -2618,7 +2618,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 163 0xa3 '�' */
-+	/* 163 0xa3 '£' */
- 	0x18, /* 0001100 */
- 	0x30, /* 0011000 */
- 	0x60, /* 0110000 */
-@@ -2634,7 +2634,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 164 0xa4 '�' */
-+	/* 164 0xa4 '¤' */
- 	0x00, /* 0000000 */
- 	0x76, /* 0111011 */
- 	0xdc, /* 1101110 */
-@@ -2650,7 +2650,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 165 0xa5 '�' */
-+	/* 165 0xa5 '¥' */
- 	0x76, /* 0111011 */
- 	0xdc, /* 1101110 */
- 	0x00, /* 0000000 */
-@@ -2666,7 +2666,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 166 0xa6 '�' */
-+	/* 166 0xa6 '¦' */
- 	0x00, /* 0000000 */
- 	0x78, /* 0111100 */
- 	0xd8, /* 1101100 */
-@@ -2682,7 +2682,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 167 0xa7 '�' */
-+	/* 167 0xa7 '§' */
- 	0x00, /* 0000000 */
- 	0x70, /* 0111000 */
- 	0xd8, /* 1101100 */
-@@ -2698,7 +2698,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 168 0xa8 '�' */
-+	/* 168 0xa8 '¨' */
- 	0x00, /* 0000000 */
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
-@@ -2714,7 +2714,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 169 0xa9 '�' */
-+	/* 169 0xa9 '©' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-@@ -2730,7 +2730,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 170 0xaa '�' */
-+	/* 170 0xaa 'ª' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-@@ -2746,7 +2746,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 171 0xab '�' */
-+	/* 171 0xab '«' */
- 	0x60, /* 0110000 */
- 	0xe0, /* 1110000 */
- 	0x62, /* 0110001 */
-@@ -2762,7 +2762,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x30, /* 0011000 */
- 	0x7c, /* 0111110 */
- 
--	/* 172 0xac '�' */
-+	/* 172 0xac '¬' */
- 	0x60, /* 0110000 */
- 	0xe0, /* 1110000 */
- 	0x62, /* 0110001 */
-@@ -2778,7 +2778,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x0c, /* 0000110 */
- 	0x00, /* 0000000 */
- 
--	/* 173 0xad '�' */
-+	/* 173 0xad '­' */
- 	0x00, /* 0000000 */
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
-@@ -2794,7 +2794,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 174 0xae '�' */
-+	/* 174 0xae '®' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-@@ -2810,7 +2810,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 175 0xaf '�' */
-+	/* 175 0xaf '¯' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-@@ -2826,7 +2826,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 176 0xb0 '�' */
-+	/* 176 0xb0 '°' */
- 	0x88, /* 1000100 */
- 	0x22, /* 0010001 */
- 	0x88, /* 1000100 */
-@@ -2842,7 +2842,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x88, /* 1000100 */
- 	0x22, /* 0010001 */
- 
--	/* 177 0xb1 '�' */
-+	/* 177 0xb1 '±' */
- 	0x54, /* 0101010 */
- 	0xaa, /* 1010101 */
- 	0x54, /* 0101010 */
-@@ -2858,7 +2858,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x54, /* 0101010 */
- 	0xaa, /* 1010101 */
- 
--	/* 178 0xb2 '�' */
-+	/* 178 0xb2 '²' */
- 	0xee, /* 1110111 */
- 	0xba, /* 1011101 */
- 	0xee, /* 1110111 */
-@@ -2874,7 +2874,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0xee, /* 1110111 */
- 	0xba, /* 1011101 */
- 
--	/* 179 0xb3 '�' */
-+	/* 179 0xb3 '³' */
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
-@@ -2890,7 +2890,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
- 
--	/* 180 0xb4 '�' */
-+	/* 180 0xb4 '´' */
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
-@@ -2906,7 +2906,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
- 
--	/* 181 0xb5 '�' */
-+	/* 181 0xb5 'µ' */
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
-@@ -2922,7 +2922,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
- 
--	/* 182 0xb6 '�' */
-+	/* 182 0xb6 '¶' */
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
-@@ -2938,7 +2938,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
- 
--	/* 183 0xb7 '�' */
-+	/* 183 0xb7 '·' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-@@ -2954,7 +2954,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
- 
--	/* 184 0xb8 '�' */
-+	/* 184 0xb8 '¸' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-@@ -2970,7 +2970,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
- 
--	/* 185 0xb9 '�' */
-+	/* 185 0xb9 '¹' */
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
-@@ -2986,7 +2986,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
- 
--	/* 186 0xba '�' */
-+	/* 186 0xba 'º' */
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
-@@ -3002,7 +3002,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
- 
--	/* 187 0xbb '�' */
-+	/* 187 0xbb '»' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-@@ -3018,7 +3018,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
- 
--	/* 188 0xbc '�' */
-+	/* 188 0xbc '¼' */
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
-@@ -3034,7 +3034,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 189 0xbd '�' */
-+	/* 189 0xbd '½' */
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
-@@ -3050,7 +3050,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 190 0xbe '�' */
-+	/* 190 0xbe '¾' */
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
-@@ -3066,7 +3066,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 191 0xbf '�' */
-+	/* 191 0xbf '¿' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-@@ -3082,7 +3082,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
- 
--	/* 192 0xc0 '�' */
-+	/* 192 0xc0 'À' */
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
-@@ -3098,7 +3098,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 193 0xc1 '�' */
-+	/* 193 0xc1 'Á' */
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
-@@ -3114,7 +3114,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 194 0xc2 '�' */
-+	/* 194 0xc2 'Â' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-@@ -3130,7 +3130,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
- 
--	/* 195 0xc3 '�' */
-+	/* 195 0xc3 'Ã' */
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
-@@ -3146,7 +3146,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
- 
--	/* 196 0xc4 '�' */
-+	/* 196 0xc4 'Ä' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-@@ -3162,7 +3162,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 197 0xc5 '�' */
-+	/* 197 0xc5 'Å' */
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
-@@ -3178,7 +3178,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
- 
--	/* 198 0xc6 '�' */
-+	/* 198 0xc6 'Æ' */
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
-@@ -3194,7 +3194,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
- 
--	/* 199 0xc7 '�' */
-+	/* 199 0xc7 'Ç' */
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
-@@ -3210,7 +3210,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
- 
--	/* 200 0xc8 '�' */
-+	/* 200 0xc8 'È' */
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
-@@ -3226,7 +3226,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 201 0xc9 '�' */
-+	/* 201 0xc9 'É' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-@@ -3242,7 +3242,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
- 
--	/* 202 0xca '�' */
-+	/* 202 0xca 'Ê' */
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
-@@ -3258,7 +3258,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 203 0xcb '�' */
-+	/* 203 0xcb 'Ë' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-@@ -3274,7 +3274,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
- 
--	/* 204 0xcc '�' */
-+	/* 204 0xcc 'Ì' */
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
-@@ -3290,7 +3290,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
- 
--	/* 205 0xcd '�' */
-+	/* 205 0xcd 'Í' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-@@ -3306,7 +3306,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 206 0xce '�' */
-+	/* 206 0xce 'Î' */
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
-@@ -3322,7 +3322,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
- 
--	/* 207 0xcf '�' */
-+	/* 207 0xcf 'Ï' */
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
-@@ -3338,7 +3338,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 208 0xd0 '�' */
-+	/* 208 0xd0 'Ð' */
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
-@@ -3354,7 +3354,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 209 0xd1 '�' */
-+	/* 209 0xd1 'Ñ' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-@@ -3370,7 +3370,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
- 
--	/* 210 0xd2 '�' */
-+	/* 210 0xd2 'Ò' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-@@ -3386,7 +3386,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
- 
--	/* 211 0xd3 '�' */
-+	/* 211 0xd3 'Ó' */
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
-@@ -3402,7 +3402,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 212 0xd4 '�' */
-+	/* 212 0xd4 'Ô' */
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
-@@ -3418,7 +3418,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 213 0xd5 '�' */
-+	/* 213 0xd5 'Õ' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-@@ -3434,7 +3434,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
- 
--	/* 214 0xd6 '�' */
-+	/* 214 0xd6 'Ö' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-@@ -3450,7 +3450,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
- 
--	/* 215 0xd7 '�' */
-+	/* 215 0xd7 '×' */
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
-@@ -3466,7 +3466,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
- 
--	/* 216 0xd8 '�' */
-+	/* 216 0xd8 'Ø' */
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
-@@ -3482,7 +3482,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
- 
--	/* 217 0xd9 '�' */
-+	/* 217 0xd9 'Ù' */
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
-@@ -3498,7 +3498,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 218 0xda '�' */
-+	/* 218 0xda 'Ú' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-@@ -3514,7 +3514,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
- 
--	/* 219 0xdb '�' */
-+	/* 219 0xdb 'Û' */
- 	0xfe, /* 1111111 */
- 	0xfe, /* 1111111 */
- 	0xfe, /* 1111111 */
-@@ -3530,7 +3530,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0xfe, /* 1111111 */
- 	0xfe, /* 1111111 */
- 
--	/* 220 0xdc '�' */
-+	/* 220 0xdc 'Ü' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-@@ -3546,7 +3546,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0xfe, /* 1111111 */
- 	0xfe, /* 1111111 */
- 
--	/* 221 0xdd '�' */
-+	/* 221 0xdd 'Ý' */
- 	0xe0, /* 1110000 */
- 	0xe0, /* 1110000 */
- 	0xe0, /* 1110000 */
-@@ -3562,7 +3562,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0xe0, /* 1110000 */
- 	0xe0, /* 1110000 */
- 
--	/* 222 0xde '�' */
-+	/* 222 0xde 'Þ' */
- 	0x1e, /* 0001111 */
- 	0x1e, /* 0001111 */
- 	0x1e, /* 0001111 */
-@@ -3578,7 +3578,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x1e, /* 0001111 */
- 	0x1e, /* 0001111 */
- 
--	/* 223 0xdf '�' */
-+	/* 223 0xdf 'ß' */
- 	0xfe, /* 1111111 */
- 	0xfe, /* 1111111 */
- 	0xfe, /* 1111111 */
-@@ -3594,7 +3594,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 224 0xe0 '�' */
-+	/* 224 0xe0 'à' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-@@ -3610,7 +3610,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 225 0xe1 '�' */
-+	/* 225 0xe1 'á' */
- 	0x00, /* 0000000 */
- 	0x78, /* 0111100 */
- 	0xcc, /* 1100110 */
-@@ -3626,7 +3626,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 226 0xe2 '�' */
-+	/* 226 0xe2 'â' */
- 	0x00, /* 0000000 */
- 	0xfc, /* 1111110 */
- 	0xcc, /* 1100110 */
-@@ -3642,7 +3642,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 227 0xe3 '�' */
-+	/* 227 0xe3 'ã' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0xfe, /* 1111111 */
-@@ -3658,7 +3658,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 228 0xe4 '�' */
-+	/* 228 0xe4 'ä' */
- 	0x00, /* 0000000 */
- 	0xfc, /* 1111110 */
- 	0xcc, /* 1100110 */
-@@ -3674,7 +3674,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 229 0xe5 '�' */
-+	/* 229 0xe5 'å' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-@@ -3690,7 +3690,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 230 0xe6 '�' */
-+	/* 230 0xe6 'æ' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-@@ -3706,7 +3706,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0xc0, /* 1100000 */
- 	0x80, /* 1000000 */
- 
--	/* 231 0xe7 '�' */
-+	/* 231 0xe7 'ç' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-@@ -3722,7 +3722,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 232 0xe8 '�' */
-+	/* 232 0xe8 'è' */
- 	0x00, /* 0000000 */
- 	0xfc, /* 1111110 */
- 	0x30, /* 0011000 */
-@@ -3738,7 +3738,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 233 0xe9 '�' */
-+	/* 233 0xe9 'é' */
- 	0x00, /* 0000000 */
- 	0x38, /* 0011100 */
- 	0x6c, /* 0110110 */
-@@ -3754,7 +3754,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 234 0xea '�' */
-+	/* 234 0xea 'ê' */
- 	0x00, /* 0000000 */
- 	0x38, /* 0011100 */
- 	0x6c, /* 0110110 */
-@@ -3770,7 +3770,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 235 0xeb '�' */
-+	/* 235 0xeb 'ë' */
- 	0x00, /* 0000000 */
- 	0x3c, /* 0011110 */
- 	0x60, /* 0110000 */
-@@ -3786,7 +3786,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 236 0xec '�' */
-+	/* 236 0xec 'ì' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-@@ -3802,7 +3802,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 237 0xed '�' */
-+	/* 237 0xed 'í' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x06, /* 0000011 */
-@@ -3818,7 +3818,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 238 0xee '�' */
-+	/* 238 0xee 'î' */
- 	0x00, /* 0000000 */
- 	0x1c, /* 0001110 */
- 	0x30, /* 0011000 */
-@@ -3834,7 +3834,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 239 0xef '�' */
-+	/* 239 0xef 'ï' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x78, /* 0111100 */
-@@ -3850,7 +3850,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 240 0xf0 '�' */
-+	/* 240 0xf0 'ð' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-@@ -3866,7 +3866,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 241 0xf1 '�' */
-+	/* 241 0xf1 'ñ' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-@@ -3882,7 +3882,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 242 0xf2 '�' */
-+	/* 242 0xf2 'ò' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x60, /* 0110000 */
-@@ -3898,7 +3898,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 243 0xf3 '�' */
-+	/* 243 0xf3 'ó' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x18, /* 0001100 */
-@@ -3914,7 +3914,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 244 0xf4 '�' */
-+	/* 244 0xf4 'ô' */
- 	0x00, /* 0000000 */
- 	0x1c, /* 0001110 */
- 	0x36, /* 0011011 */
-@@ -3930,7 +3930,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x30, /* 0011000 */
- 	0x30, /* 0011000 */
- 
--	/* 245 0xf5 '�' */
-+	/* 245 0xf5 'õ' */
- 	0x18, /* 0001100 */
- 	0x18, /* 0001100 */
- 	0x18, /* 0001100 */
-@@ -3946,7 +3946,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 246 0xf6 '�' */
-+	/* 246 0xf6 'ö' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-@@ -3962,7 +3962,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 247 0xf7 '�' */
-+	/* 247 0xf7 '÷' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-@@ -3978,7 +3978,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 248 0xf8 '�' */
-+	/* 248 0xf8 'ø' */
- 	0x38, /* 0011100 */
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
-@@ -3994,7 +3994,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 249 0xf9 '�' */
-+	/* 249 0xf9 'ù' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-@@ -4010,7 +4010,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 250 0xfa '�' */
-+	/* 250 0xfa 'ú' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-@@ -4026,7 +4026,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 251 0xfb '�' */
-+	/* 251 0xfb 'û' */
- 	0x1e, /* 0001111 */
- 	0x18, /* 0001100 */
- 	0x18, /* 0001100 */
-@@ -4042,7 +4042,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 252 0xfc '�' */
-+	/* 252 0xfc 'ü' */
- 	0xd8, /* 1101100 */
- 	0x6c, /* 0110110 */
- 	0x6c, /* 0110110 */
-@@ -4058,7 +4058,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 253 0xfd '�' */
-+	/* 253 0xfd 'ý' */
- 	0x78, /* 0111100 */
- 	0xcc, /* 1100110 */
- 	0x18, /* 0001100 */
-@@ -4074,7 +4074,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 254 0xfe '�' */
-+	/* 254 0xfe 'þ' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-@@ -4090,7 +4090,7 @@ static const unsigned char fontdata_7x14[FONTDATAMAX] = {
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 
--	/* 255 0xff '�' */
-+	/* 255 0xff 'ÿ' */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
- 	0x00, /* 0000000 */
-diff --git a/lib/fonts/font_8x16.c b/lib/fonts/font_8x16.c
-index c5c14fc427af..e6d40d0de3e0 100644
---- a/lib/fonts/font_8x16.c
-+++ b/lib/fonts/font_8x16.c
-@@ -2316,7 +2316,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 128 0x80 '�' */
-+	/* 128 0x80 '' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x3c, /* 00111100 */
-@@ -2334,7 +2334,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 129 0x81 '�' */
-+	/* 129 0x81 '' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0xcc, /* 11001100 */
-@@ -2352,7 +2352,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 130 0x82 '�' */
-+	/* 130 0x82 '' */
- 	0x00, /* 00000000 */
- 	0x0c, /* 00001100 */
- 	0x18, /* 00011000 */
-@@ -2370,7 +2370,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 131 0x83 '�' */
-+	/* 131 0x83 '' */
- 	0x00, /* 00000000 */
- 	0x10, /* 00010000 */
- 	0x38, /* 00111000 */
-@@ -2388,7 +2388,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 132 0x84 '�' */
-+	/* 132 0x84 '' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0xcc, /* 11001100 */
-@@ -2406,7 +2406,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 133 0x85 '�' */
-+	/* 133 0x85 '' */
- 	0x00, /* 00000000 */
- 	0x60, /* 01100000 */
- 	0x30, /* 00110000 */
-@@ -2424,7 +2424,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 134 0x86 '�' */
-+	/* 134 0x86 '' */
- 	0x00, /* 00000000 */
- 	0x38, /* 00111000 */
- 	0x6c, /* 01101100 */
-@@ -2442,7 +2442,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 135 0x87 '�' */
-+	/* 135 0x87 '' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -2460,7 +2460,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 136 0x88 '�' */
-+	/* 136 0x88 '' */
- 	0x00, /* 00000000 */
- 	0x10, /* 00010000 */
- 	0x38, /* 00111000 */
-@@ -2478,7 +2478,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 137 0x89 '�' */
-+	/* 137 0x89 '' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0xc6, /* 11000110 */
-@@ -2496,7 +2496,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 138 0x8a '�' */
-+	/* 138 0x8a '' */
- 	0x00, /* 00000000 */
- 	0x60, /* 01100000 */
- 	0x30, /* 00110000 */
-@@ -2514,7 +2514,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 139 0x8b '�' */
-+	/* 139 0x8b '' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x66, /* 01100110 */
-@@ -2532,7 +2532,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 140 0x8c '�' */
-+	/* 140 0x8c '' */
- 	0x00, /* 00000000 */
- 	0x18, /* 00011000 */
- 	0x3c, /* 00111100 */
-@@ -2550,7 +2550,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 141 0x8d '�' */
-+	/* 141 0x8d '' */
- 	0x00, /* 00000000 */
- 	0x60, /* 01100000 */
- 	0x30, /* 00110000 */
-@@ -2568,7 +2568,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 142 0x8e '�' */
-+	/* 142 0x8e '' */
- 	0x00, /* 00000000 */
- 	0xc6, /* 11000110 */
- 	0x00, /* 00000000 */
-@@ -2586,7 +2586,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 143 0x8f '�' */
-+	/* 143 0x8f '' */
- 	0x38, /* 00111000 */
- 	0x6c, /* 01101100 */
- 	0x38, /* 00111000 */
-@@ -2604,7 +2604,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 144 0x90 '�' */
-+	/* 144 0x90 '' */
- 	0x0c, /* 00001100 */
- 	0x18, /* 00011000 */
- 	0x00, /* 00000000 */
-@@ -2622,7 +2622,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 145 0x91 '�' */
-+	/* 145 0x91 '' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -2640,7 +2640,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 146 0x92 '�' */
-+	/* 146 0x92 '' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x3e, /* 00111110 */
-@@ -2658,7 +2658,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 147 0x93 '�' */
-+	/* 147 0x93 '' */
- 	0x00, /* 00000000 */
- 	0x10, /* 00010000 */
- 	0x38, /* 00111000 */
-@@ -2676,7 +2676,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 148 0x94 '�' */
-+	/* 148 0x94 '' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0xc6, /* 11000110 */
-@@ -2694,7 +2694,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 149 0x95 '�' */
-+	/* 149 0x95 '' */
- 	0x00, /* 00000000 */
- 	0x60, /* 01100000 */
- 	0x30, /* 00110000 */
-@@ -2712,7 +2712,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 150 0x96 '�' */
-+	/* 150 0x96 '' */
- 	0x00, /* 00000000 */
- 	0x30, /* 00110000 */
- 	0x78, /* 01111000 */
-@@ -2730,7 +2730,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 151 0x97 '�' */
-+	/* 151 0x97 '' */
- 	0x00, /* 00000000 */
- 	0x60, /* 01100000 */
- 	0x30, /* 00110000 */
-@@ -2748,7 +2748,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 152 0x98 '�' */
-+	/* 152 0x98 '' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0xc6, /* 11000110 */
-@@ -2766,7 +2766,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x78, /* 01111000 */
- 	0x00, /* 00000000 */
- 
--	/* 153 0x99 '�' */
-+	/* 153 0x99 '' */
- 	0x00, /* 00000000 */
- 	0xc6, /* 11000110 */
- 	0x00, /* 00000000 */
-@@ -2784,7 +2784,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 154 0x9a '�' */
-+	/* 154 0x9a '' */
- 	0x00, /* 00000000 */
- 	0xc6, /* 11000110 */
- 	0x00, /* 00000000 */
-@@ -2802,7 +2802,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 155 0x9b '�' */
-+	/* 155 0x9b '' */
- 	0x00, /* 00000000 */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
-@@ -2820,7 +2820,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 156 0x9c '�' */
-+	/* 156 0x9c '' */
- 	0x00, /* 00000000 */
- 	0x38, /* 00111000 */
- 	0x6c, /* 01101100 */
-@@ -2838,7 +2838,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 157 0x9d '�' */
-+	/* 157 0x9d '' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x66, /* 01100110 */
-@@ -2856,7 +2856,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 158 0x9e '�' */
-+	/* 158 0x9e '' */
- 	0x00, /* 00000000 */
- 	0xf8, /* 11111000 */
- 	0xcc, /* 11001100 */
-@@ -2874,7 +2874,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 159 0x9f '�' */
-+	/* 159 0x9f '' */
- 	0x00, /* 00000000 */
- 	0x0e, /* 00001110 */
- 	0x1b, /* 00011011 */
-@@ -2892,7 +2892,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 160 0xa0 '�' */
-+	/* 160 0xa0 ' ' */
- 	0x00, /* 00000000 */
- 	0x18, /* 00011000 */
- 	0x30, /* 00110000 */
-@@ -2910,7 +2910,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 161 0xa1 '�' */
-+	/* 161 0xa1 '¡' */
- 	0x00, /* 00000000 */
- 	0x0c, /* 00001100 */
- 	0x18, /* 00011000 */
-@@ -2928,7 +2928,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 162 0xa2 '�' */
-+	/* 162 0xa2 '¢' */
- 	0x00, /* 00000000 */
- 	0x18, /* 00011000 */
- 	0x30, /* 00110000 */
-@@ -2946,7 +2946,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 163 0xa3 '�' */
-+	/* 163 0xa3 '£' */
- 	0x00, /* 00000000 */
- 	0x18, /* 00011000 */
- 	0x30, /* 00110000 */
-@@ -2964,7 +2964,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 164 0xa4 '�' */
-+	/* 164 0xa4 '¤' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x76, /* 01110110 */
-@@ -2982,7 +2982,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 165 0xa5 '�' */
-+	/* 165 0xa5 '¥' */
- 	0x76, /* 01110110 */
- 	0xdc, /* 11011100 */
- 	0x00, /* 00000000 */
-@@ -3000,7 +3000,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 166 0xa6 '�' */
-+	/* 166 0xa6 '¦' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x3c, /* 00111100 */
-@@ -3018,7 +3018,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 167 0xa7 '�' */
-+	/* 167 0xa7 '§' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x38, /* 00111000 */
-@@ -3036,7 +3036,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 168 0xa8 '�' */
-+	/* 168 0xa8 '¨' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x30, /* 00110000 */
-@@ -3054,7 +3054,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 169 0xa9 '�' */
-+	/* 169 0xa9 '©' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -3072,7 +3072,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 170 0xaa '�' */
-+	/* 170 0xaa 'ª' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -3090,7 +3090,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 171 0xab '�' */
-+	/* 171 0xab '«' */
- 	0x00, /* 00000000 */
- 	0x60, /* 01100000 */
- 	0xe0, /* 11100000 */
-@@ -3108,7 +3108,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 172 0xac '�' */
-+	/* 172 0xac '¬' */
- 	0x00, /* 00000000 */
- 	0x60, /* 01100000 */
- 	0xe0, /* 11100000 */
-@@ -3126,7 +3126,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 173 0xad '�' */
-+	/* 173 0xad '­' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x18, /* 00011000 */
-@@ -3144,7 +3144,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 174 0xae '�' */
-+	/* 174 0xae '®' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -3162,7 +3162,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 175 0xaf '�' */
-+	/* 175 0xaf '¯' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -3180,7 +3180,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 176 0xb0 '�' */
-+	/* 176 0xb0 '°' */
- 	0x11, /* 00010001 */
- 	0x44, /* 01000100 */
- 	0x11, /* 00010001 */
-@@ -3198,7 +3198,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x11, /* 00010001 */
- 	0x44, /* 01000100 */
- 
--	/* 177 0xb1 '�' */
-+	/* 177 0xb1 '±' */
- 	0x55, /* 01010101 */
- 	0xaa, /* 10101010 */
- 	0x55, /* 01010101 */
-@@ -3216,7 +3216,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x55, /* 01010101 */
- 	0xaa, /* 10101010 */
- 
--	/* 178 0xb2 '�' */
-+	/* 178 0xb2 '²' */
- 	0xdd, /* 11011101 */
- 	0x77, /* 01110111 */
- 	0xdd, /* 11011101 */
-@@ -3234,7 +3234,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0xdd, /* 11011101 */
- 	0x77, /* 01110111 */
- 
--	/* 179 0xb3 '�' */
-+	/* 179 0xb3 '³' */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
-@@ -3252,7 +3252,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 
--	/* 180 0xb4 '�' */
-+	/* 180 0xb4 '´' */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
-@@ -3270,7 +3270,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 
--	/* 181 0xb5 '�' */
-+	/* 181 0xb5 'µ' */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
-@@ -3288,7 +3288,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 
--	/* 182 0xb6 '�' */
-+	/* 182 0xb6 '¶' */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
-@@ -3306,7 +3306,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 
--	/* 183 0xb7 '�' */
-+	/* 183 0xb7 '·' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -3324,7 +3324,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 
--	/* 184 0xb8 '�' */
-+	/* 184 0xb8 '¸' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -3342,7 +3342,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 
--	/* 185 0xb9 '�' */
-+	/* 185 0xb9 '¹' */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
-@@ -3360,7 +3360,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 
--	/* 186 0xba '�' */
-+	/* 186 0xba 'º' */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
-@@ -3378,7 +3378,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 
--	/* 187 0xbb '�' */
-+	/* 187 0xbb '»' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -3396,7 +3396,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 
--	/* 188 0xbc '�' */
-+	/* 188 0xbc '¼' */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
-@@ -3414,7 +3414,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 189 0xbd '�' */
-+	/* 189 0xbd '½' */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
-@@ -3432,7 +3432,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 190 0xbe '�' */
-+	/* 190 0xbe '¾' */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
-@@ -3450,7 +3450,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 191 0xbf '�' */
-+	/* 191 0xbf '¿' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -3468,7 +3468,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 
--	/* 192 0xc0 '�' */
-+	/* 192 0xc0 'À' */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
-@@ -3486,7 +3486,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 193 0xc1 '�' */
-+	/* 193 0xc1 'Á' */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
-@@ -3504,7 +3504,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 194 0xc2 '�' */
-+	/* 194 0xc2 'Â' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -3522,7 +3522,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 
--	/* 195 0xc3 '�' */
-+	/* 195 0xc3 'Ã' */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
-@@ -3540,7 +3540,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 
--	/* 196 0xc4 '�' */
-+	/* 196 0xc4 'Ä' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -3558,7 +3558,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 197 0xc5 '�' */
-+	/* 197 0xc5 'Å' */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
-@@ -3576,7 +3576,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 
--	/* 198 0xc6 '�' */
-+	/* 198 0xc6 'Æ' */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
-@@ -3594,7 +3594,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 
--	/* 199 0xc7 '�' */
-+	/* 199 0xc7 'Ç' */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
-@@ -3612,7 +3612,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 
--	/* 200 0xc8 '�' */
-+	/* 200 0xc8 'È' */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
-@@ -3630,7 +3630,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 201 0xc9 '�' */
-+	/* 201 0xc9 'É' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -3648,7 +3648,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 
--	/* 202 0xca '�' */
-+	/* 202 0xca 'Ê' */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
-@@ -3666,7 +3666,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 203 0xcb '�' */
-+	/* 203 0xcb 'Ë' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -3684,7 +3684,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 
--	/* 204 0xcc '�' */
-+	/* 204 0xcc 'Ì' */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
-@@ -3702,7 +3702,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 
--	/* 205 0xcd '�' */
-+	/* 205 0xcd 'Í' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -3720,7 +3720,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 206 0xce '�' */
-+	/* 206 0xce 'Î' */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
-@@ -3738,7 +3738,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 
--	/* 207 0xcf '�' */
-+	/* 207 0xcf 'Ï' */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
-@@ -3756,7 +3756,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 208 0xd0 '�' */
-+	/* 208 0xd0 'Ð' */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
-@@ -3774,7 +3774,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 209 0xd1 '�' */
-+	/* 209 0xd1 'Ñ' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -3792,7 +3792,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 
--	/* 210 0xd2 '�' */
-+	/* 210 0xd2 'Ò' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -3810,7 +3810,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 
--	/* 211 0xd3 '�' */
-+	/* 211 0xd3 'Ó' */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
-@@ -3828,7 +3828,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 212 0xd4 '�' */
-+	/* 212 0xd4 'Ô' */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
-@@ -3846,7 +3846,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 213 0xd5 '�' */
-+	/* 213 0xd5 'Õ' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -3864,7 +3864,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 
--	/* 214 0xd6 '�' */
-+	/* 214 0xd6 'Ö' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -3882,7 +3882,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 
--	/* 215 0xd7 '�' */
-+	/* 215 0xd7 '×' */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
-@@ -3900,7 +3900,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 
--	/* 216 0xd8 '�' */
-+	/* 216 0xd8 'Ø' */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
-@@ -3918,7 +3918,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 
--	/* 217 0xd9 '�' */
-+	/* 217 0xd9 'Ù' */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
-@@ -3936,7 +3936,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 218 0xda '�' */
-+	/* 218 0xda 'Ú' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -3954,7 +3954,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 
--	/* 219 0xdb '�' */
-+	/* 219 0xdb 'Û' */
- 	0xff, /* 11111111 */
- 	0xff, /* 11111111 */
- 	0xff, /* 11111111 */
-@@ -3972,7 +3972,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0xff, /* 11111111 */
- 	0xff, /* 11111111 */
- 
--	/* 220 0xdc '�' */
-+	/* 220 0xdc 'Ü' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -3990,7 +3990,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0xff, /* 11111111 */
- 	0xff, /* 11111111 */
- 
--	/* 221 0xdd '�' */
-+	/* 221 0xdd 'Ý' */
- 	0xf0, /* 11110000 */
- 	0xf0, /* 11110000 */
- 	0xf0, /* 11110000 */
-@@ -4008,7 +4008,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0xf0, /* 11110000 */
- 	0xf0, /* 11110000 */
- 
--	/* 222 0xde '�' */
-+	/* 222 0xde 'Þ' */
- 	0x0f, /* 00001111 */
- 	0x0f, /* 00001111 */
- 	0x0f, /* 00001111 */
-@@ -4026,7 +4026,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x0f, /* 00001111 */
- 	0x0f, /* 00001111 */
- 
--	/* 223 0xdf '�' */
-+	/* 223 0xdf 'ß' */
- 	0xff, /* 11111111 */
- 	0xff, /* 11111111 */
- 	0xff, /* 11111111 */
-@@ -4044,7 +4044,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 224 0xe0 '�' */
-+	/* 224 0xe0 'à' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -4062,7 +4062,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 225 0xe1 '�' */
-+	/* 225 0xe1 'á' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x78, /* 01111000 */
-@@ -4080,7 +4080,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 226 0xe2 '�' */
-+	/* 226 0xe2 'â' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0xfe, /* 11111110 */
-@@ -4098,7 +4098,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 227 0xe3 '�' */
-+	/* 227 0xe3 'ã' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -4116,7 +4116,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 228 0xe4 '�' */
-+	/* 228 0xe4 'ä' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0xfe, /* 11111110 */
-@@ -4134,7 +4134,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 229 0xe5 '�' */
-+	/* 229 0xe5 'å' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -4152,7 +4152,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 230 0xe6 '�' */
-+	/* 230 0xe6 'æ' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -4170,7 +4170,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0xc0, /* 11000000 */
- 	0x00, /* 00000000 */
- 
--	/* 231 0xe7 '�' */
-+	/* 231 0xe7 'ç' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -4188,7 +4188,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 232 0xe8 '�' */
-+	/* 232 0xe8 'è' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x7e, /* 01111110 */
-@@ -4206,7 +4206,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 233 0xe9 '�' */
-+	/* 233 0xe9 'é' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x38, /* 00111000 */
-@@ -4224,7 +4224,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 234 0xea '�' */
-+	/* 234 0xea 'ê' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x38, /* 00111000 */
-@@ -4242,7 +4242,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 235 0xeb '�' */
-+	/* 235 0xeb 'ë' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x1e, /* 00011110 */
-@@ -4260,7 +4260,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 236 0xec '�' */
-+	/* 236 0xec 'ì' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -4278,7 +4278,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 237 0xed '�' */
-+	/* 237 0xed 'í' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -4296,7 +4296,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 238 0xee '�' */
-+	/* 238 0xee 'î' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x1c, /* 00011100 */
-@@ -4314,7 +4314,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 239 0xef '�' */
-+	/* 239 0xef 'ï' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -4332,7 +4332,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 240 0xf0 '�' */
-+	/* 240 0xf0 'ð' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -4350,7 +4350,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 241 0xf1 '�' */
-+	/* 241 0xf1 'ñ' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -4368,7 +4368,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 242 0xf2 '�' */
-+	/* 242 0xf2 'ò' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -4386,7 +4386,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 243 0xf3 '�' */
-+	/* 243 0xf3 'ó' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -4404,7 +4404,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 244 0xf4 '�' */
-+	/* 244 0xf4 'ô' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x0e, /* 00001110 */
-@@ -4422,7 +4422,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 
--	/* 245 0xf5 '�' */
-+	/* 245 0xf5 'õ' */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
-@@ -4440,7 +4440,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 246 0xf6 '�' */
-+	/* 246 0xf6 'ö' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -4458,7 +4458,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 247 0xf7 '�' */
-+	/* 247 0xf7 '÷' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -4476,7 +4476,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 248 0xf8 '�' */
-+	/* 248 0xf8 'ø' */
- 	0x00, /* 00000000 */
- 	0x38, /* 00111000 */
- 	0x6c, /* 01101100 */
-@@ -4494,7 +4494,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 249 0xf9 '�' */
-+	/* 249 0xf9 'ù' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -4512,7 +4512,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 250 0xfa '�' */
-+	/* 250 0xfa 'ú' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -4530,7 +4530,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 251 0xfb '�' */
-+	/* 251 0xfb 'û' */
- 	0x00, /* 00000000 */
- 	0x0f, /* 00001111 */
- 	0x0c, /* 00001100 */
-@@ -4548,7 +4548,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 252 0xfc '�' */
-+	/* 252 0xfc 'ü' */
- 	0x00, /* 00000000 */
- 	0x6c, /* 01101100 */
- 	0x36, /* 00110110 */
-@@ -4566,7 +4566,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 253 0xfd '�' */
-+	/* 253 0xfd 'ý' */
- 	0x00, /* 00000000 */
- 	0x3c, /* 00111100 */
- 	0x66, /* 01100110 */
-@@ -4584,7 +4584,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 254 0xfe '�' */
-+	/* 254 0xfe 'þ' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -4602,7 +4602,7 @@ static const unsigned char fontdata_8x16[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 255 0xff '�' */
-+	/* 255 0xff 'ÿ' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-diff --git a/lib/fonts/font_8x8.c b/lib/fonts/font_8x8.c
-index 24216a68a29c..27d53de57833 100644
---- a/lib/fonts/font_8x8.c
-+++ b/lib/fonts/font_8x8.c
-@@ -1291,7 +1291,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0xfe, /* 11111110 */
- 	0x00, /* 00000000 */
- 
--	/* 128 0x80 '�' */
-+	/* 128 0x80 '' */
- 	0x7c, /* 01111100 */
- 	0xc6, /* 11000110 */
- 	0xc0, /* 11000000 */
-@@ -1301,7 +1301,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x0c, /* 00001100 */
- 	0x78, /* 01111000 */
- 
--	/* 129 0x81 '�' */
-+	/* 129 0x81 '' */
- 	0xcc, /* 11001100 */
- 	0x00, /* 00000000 */
- 	0xcc, /* 11001100 */
-@@ -1311,7 +1311,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x76, /* 01110110 */
- 	0x00, /* 00000000 */
- 
--	/* 130 0x82 '�' */
-+	/* 130 0x82 '' */
- 	0x0c, /* 00001100 */
- 	0x18, /* 00011000 */
- 	0x7c, /* 01111100 */
-@@ -1321,7 +1321,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x7c, /* 01111100 */
- 	0x00, /* 00000000 */
- 
--	/* 131 0x83 '�' */
-+	/* 131 0x83 '' */
- 	0x7c, /* 01111100 */
- 	0x82, /* 10000010 */
- 	0x78, /* 01111000 */
-@@ -1331,7 +1331,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x76, /* 01110110 */
- 	0x00, /* 00000000 */
- 
--	/* 132 0x84 '�' */
-+	/* 132 0x84 '' */
- 	0xc6, /* 11000110 */
- 	0x00, /* 00000000 */
- 	0x78, /* 01111000 */
-@@ -1341,7 +1341,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x76, /* 01110110 */
- 	0x00, /* 00000000 */
- 
--	/* 133 0x85 '�' */
-+	/* 133 0x85 '' */
- 	0x30, /* 00110000 */
- 	0x18, /* 00011000 */
- 	0x78, /* 01111000 */
-@@ -1351,7 +1351,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x76, /* 01110110 */
- 	0x00, /* 00000000 */
- 
--	/* 134 0x86 '�' */
-+	/* 134 0x86 '' */
- 	0x30, /* 00110000 */
- 	0x30, /* 00110000 */
- 	0x78, /* 01111000 */
-@@ -1361,7 +1361,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x76, /* 01110110 */
- 	0x00, /* 00000000 */
- 
--	/* 135 0x87 '�' */
-+	/* 135 0x87 '' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x7e, /* 01111110 */
-@@ -1371,7 +1371,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x0c, /* 00001100 */
- 	0x38, /* 00111000 */
- 
--	/* 136 0x88 '�' */
-+	/* 136 0x88 '' */
- 	0x7c, /* 01111100 */
- 	0x82, /* 10000010 */
- 	0x7c, /* 01111100 */
-@@ -1381,7 +1381,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x7c, /* 01111100 */
- 	0x00, /* 00000000 */
- 
--	/* 137 0x89 '�' */
-+	/* 137 0x89 '' */
- 	0xc6, /* 11000110 */
- 	0x00, /* 00000000 */
- 	0x7c, /* 01111100 */
-@@ -1391,7 +1391,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x7c, /* 01111100 */
- 	0x00, /* 00000000 */
- 
--	/* 138 0x8a '�' */
-+	/* 138 0x8a '' */
- 	0x30, /* 00110000 */
- 	0x18, /* 00011000 */
- 	0x7c, /* 01111100 */
-@@ -1401,7 +1401,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x7c, /* 01111100 */
- 	0x00, /* 00000000 */
- 
--	/* 139 0x8b '�' */
-+	/* 139 0x8b '' */
- 	0x66, /* 01100110 */
- 	0x00, /* 00000000 */
- 	0x38, /* 00111000 */
-@@ -1411,7 +1411,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x3c, /* 00111100 */
- 	0x00, /* 00000000 */
- 
--	/* 140 0x8c '�' */
-+	/* 140 0x8c '' */
- 	0x7c, /* 01111100 */
- 	0x82, /* 10000010 */
- 	0x38, /* 00111000 */
-@@ -1421,7 +1421,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x3c, /* 00111100 */
- 	0x00, /* 00000000 */
- 
--	/* 141 0x8d '�' */
-+	/* 141 0x8d '' */
- 	0x30, /* 00110000 */
- 	0x18, /* 00011000 */
- 	0x00, /* 00000000 */
-@@ -1431,7 +1431,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x3c, /* 00111100 */
- 	0x00, /* 00000000 */
- 
--	/* 142 0x8e '�' */
-+	/* 142 0x8e '' */
- 	0xc6, /* 11000110 */
- 	0x38, /* 00111000 */
- 	0x6c, /* 01101100 */
-@@ -1441,7 +1441,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0xc6, /* 11000110 */
- 	0x00, /* 00000000 */
- 
--	/* 143 0x8f '�' */
-+	/* 143 0x8f '' */
- 	0x38, /* 00111000 */
- 	0x6c, /* 01101100 */
- 	0x7c, /* 01111100 */
-@@ -1451,7 +1451,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0xc6, /* 11000110 */
- 	0x00, /* 00000000 */
- 
--	/* 144 0x90 '�' */
-+	/* 144 0x90 '' */
- 	0x18, /* 00011000 */
- 	0x30, /* 00110000 */
- 	0xfe, /* 11111110 */
-@@ -1461,7 +1461,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0xfe, /* 11111110 */
- 	0x00, /* 00000000 */
- 
--	/* 145 0x91 '�' */
-+	/* 145 0x91 '' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x7e, /* 01111110 */
-@@ -1471,7 +1471,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x7e, /* 01111110 */
- 	0x00, /* 00000000 */
- 
--	/* 146 0x92 '�' */
-+	/* 146 0x92 '' */
- 	0x3e, /* 00111110 */
- 	0x6c, /* 01101100 */
- 	0xcc, /* 11001100 */
-@@ -1481,7 +1481,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0xce, /* 11001110 */
- 	0x00, /* 00000000 */
- 
--	/* 147 0x93 '�' */
-+	/* 147 0x93 '' */
- 	0x7c, /* 01111100 */
- 	0x82, /* 10000010 */
- 	0x7c, /* 01111100 */
-@@ -1491,7 +1491,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x7c, /* 01111100 */
- 	0x00, /* 00000000 */
- 
--	/* 148 0x94 '�' */
-+	/* 148 0x94 '' */
- 	0xc6, /* 11000110 */
- 	0x00, /* 00000000 */
- 	0x7c, /* 01111100 */
-@@ -1501,7 +1501,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x7c, /* 01111100 */
- 	0x00, /* 00000000 */
- 
--	/* 149 0x95 '�' */
-+	/* 149 0x95 '' */
- 	0x30, /* 00110000 */
- 	0x18, /* 00011000 */
- 	0x7c, /* 01111100 */
-@@ -1511,7 +1511,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x7c, /* 01111100 */
- 	0x00, /* 00000000 */
- 
--	/* 150 0x96 '�' */
-+	/* 150 0x96 '' */
- 	0x78, /* 01111000 */
- 	0x84, /* 10000100 */
- 	0x00, /* 00000000 */
-@@ -1521,7 +1521,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x76, /* 01110110 */
- 	0x00, /* 00000000 */
- 
--	/* 151 0x97 '�' */
-+	/* 151 0x97 '' */
- 	0x60, /* 01100000 */
- 	0x30, /* 00110000 */
- 	0xcc, /* 11001100 */
-@@ -1531,7 +1531,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x76, /* 01110110 */
- 	0x00, /* 00000000 */
- 
--	/* 152 0x98 '�' */
-+	/* 152 0x98 '' */
- 	0xc6, /* 11000110 */
- 	0x00, /* 00000000 */
- 	0xc6, /* 11000110 */
-@@ -1541,7 +1541,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x06, /* 00000110 */
- 	0xfc, /* 11111100 */
- 
--	/* 153 0x99 '�' */
-+	/* 153 0x99 '' */
- 	0xc6, /* 11000110 */
- 	0x38, /* 00111000 */
- 	0x6c, /* 01101100 */
-@@ -1551,7 +1551,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x38, /* 00111000 */
- 	0x00, /* 00000000 */
- 
--	/* 154 0x9a '�' */
-+	/* 154 0x9a '' */
- 	0xc6, /* 11000110 */
- 	0x00, /* 00000000 */
- 	0xc6, /* 11000110 */
-@@ -1561,7 +1561,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x7c, /* 01111100 */
- 	0x00, /* 00000000 */
- 
--	/* 155 0x9b '�' */
-+	/* 155 0x9b '' */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 	0x7e, /* 01111110 */
-@@ -1571,7 +1571,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 
--	/* 156 0x9c '�' */
-+	/* 156 0x9c '' */
- 	0x38, /* 00111000 */
- 	0x6c, /* 01101100 */
- 	0x64, /* 01100100 */
-@@ -1581,7 +1581,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0xfc, /* 11111100 */
- 	0x00, /* 00000000 */
- 
--	/* 157 0x9d '�' */
-+	/* 157 0x9d '' */
- 	0x66, /* 01100110 */
- 	0x66, /* 01100110 */
- 	0x3c, /* 00111100 */
-@@ -1591,7 +1591,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 
--	/* 158 0x9e '�' */
-+	/* 158 0x9e '' */
- 	0xf8, /* 11111000 */
- 	0xcc, /* 11001100 */
- 	0xcc, /* 11001100 */
-@@ -1601,7 +1601,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0xc6, /* 11000110 */
- 	0xc7, /* 11000111 */
- 
--	/* 159 0x9f '�' */
-+	/* 159 0x9f '' */
- 	0x0e, /* 00001110 */
- 	0x1b, /* 00011011 */
- 	0x18, /* 00011000 */
-@@ -1611,7 +1611,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x70, /* 01110000 */
- 	0x00, /* 00000000 */
- 
--	/* 160 0xa0 '�' */
-+	/* 160 0xa0 ' ' */
- 	0x18, /* 00011000 */
- 	0x30, /* 00110000 */
- 	0x78, /* 01111000 */
-@@ -1621,7 +1621,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x76, /* 01110110 */
- 	0x00, /* 00000000 */
- 
--	/* 161 0xa1 '�' */
-+	/* 161 0xa1 '¡' */
- 	0x0c, /* 00001100 */
- 	0x18, /* 00011000 */
- 	0x00, /* 00000000 */
-@@ -1631,7 +1631,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x3c, /* 00111100 */
- 	0x00, /* 00000000 */
- 
--	/* 162 0xa2 '�' */
-+	/* 162 0xa2 '¢' */
- 	0x0c, /* 00001100 */
- 	0x18, /* 00011000 */
- 	0x7c, /* 01111100 */
-@@ -1641,7 +1641,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x7c, /* 01111100 */
- 	0x00, /* 00000000 */
- 
--	/* 163 0xa3 '�' */
-+	/* 163 0xa3 '£' */
- 	0x18, /* 00011000 */
- 	0x30, /* 00110000 */
- 	0xcc, /* 11001100 */
-@@ -1651,7 +1651,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x76, /* 01110110 */
- 	0x00, /* 00000000 */
- 
--	/* 164 0xa4 '�' */
-+	/* 164 0xa4 '¤' */
- 	0x76, /* 01110110 */
- 	0xdc, /* 11011100 */
- 	0x00, /* 00000000 */
-@@ -1661,7 +1661,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x66, /* 01100110 */
- 	0x00, /* 00000000 */
- 
--	/* 165 0xa5 '�' */
-+	/* 165 0xa5 '¥' */
- 	0x76, /* 01110110 */
- 	0xdc, /* 11011100 */
- 	0x00, /* 00000000 */
-@@ -1671,7 +1671,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0xce, /* 11001110 */
- 	0x00, /* 00000000 */
- 
--	/* 166 0xa6 '�' */
-+	/* 166 0xa6 '¦' */
- 	0x3c, /* 00111100 */
- 	0x6c, /* 01101100 */
- 	0x6c, /* 01101100 */
-@@ -1681,7 +1681,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 167 0xa7 '�' */
-+	/* 167 0xa7 '§' */
- 	0x38, /* 00111000 */
- 	0x6c, /* 01101100 */
- 	0x6c, /* 01101100 */
-@@ -1691,7 +1691,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 168 0xa8 '�' */
-+	/* 168 0xa8 '¨' */
- 	0x18, /* 00011000 */
- 	0x00, /* 00000000 */
- 	0x18, /* 00011000 */
-@@ -1701,7 +1701,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x3e, /* 00111110 */
- 	0x00, /* 00000000 */
- 
--	/* 169 0xa9 '�' */
-+	/* 169 0xa9 '©' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -1711,7 +1711,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 170 0xaa '�' */
-+	/* 170 0xaa 'ª' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -1721,7 +1721,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 171 0xab '�' */
-+	/* 171 0xab '«' */
- 	0x63, /* 01100011 */
- 	0xe6, /* 11100110 */
- 	0x6c, /* 01101100 */
-@@ -1731,7 +1731,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0xcc, /* 11001100 */
- 	0x0f, /* 00001111 */
- 
--	/* 172 0xac '�' */
-+	/* 172 0xac '¬' */
- 	0x63, /* 01100011 */
- 	0xe6, /* 11100110 */
- 	0x6c, /* 01101100 */
-@@ -1741,7 +1741,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0xdf, /* 11011111 */
- 	0x06, /* 00000110 */
- 
--	/* 173 0xad '�' */
-+	/* 173 0xad '­' */
- 	0x18, /* 00011000 */
- 	0x00, /* 00000000 */
- 	0x18, /* 00011000 */
-@@ -1751,7 +1751,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x18, /* 00011000 */
- 	0x00, /* 00000000 */
- 
--	/* 174 0xae '�' */
-+	/* 174 0xae '®' */
- 	0x00, /* 00000000 */
- 	0x33, /* 00110011 */
- 	0x66, /* 01100110 */
-@@ -1761,7 +1761,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 175 0xaf '�' */
-+	/* 175 0xaf '¯' */
- 	0x00, /* 00000000 */
- 	0xcc, /* 11001100 */
- 	0x66, /* 01100110 */
-@@ -1771,7 +1771,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 176 0xb0 '�' */
-+	/* 176 0xb0 '°' */
- 	0x22, /* 00100010 */
- 	0x88, /* 10001000 */
- 	0x22, /* 00100010 */
-@@ -1781,7 +1781,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x22, /* 00100010 */
- 	0x88, /* 10001000 */
- 
--	/* 177 0xb1 '�' */
-+	/* 177 0xb1 '±' */
- 	0x55, /* 01010101 */
- 	0xaa, /* 10101010 */
- 	0x55, /* 01010101 */
-@@ -1791,7 +1791,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x55, /* 01010101 */
- 	0xaa, /* 10101010 */
- 
--	/* 178 0xb2 '�' */
-+	/* 178 0xb2 '²' */
- 	0x77, /* 01110111 */
- 	0xdd, /* 11011101 */
- 	0x77, /* 01110111 */
-@@ -1801,7 +1801,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x77, /* 01110111 */
- 	0xdd, /* 11011101 */
- 
--	/* 179 0xb3 '�' */
-+	/* 179 0xb3 '³' */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
-@@ -1811,7 +1811,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 
--	/* 180 0xb4 '�' */
-+	/* 180 0xb4 '´' */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
-@@ -1821,7 +1821,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 
--	/* 181 0xb5 '�' */
-+	/* 181 0xb5 'µ' */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 	0xf8, /* 11111000 */
-@@ -1831,7 +1831,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 
--	/* 182 0xb6 '�' */
-+	/* 182 0xb6 '¶' */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
-@@ -1841,7 +1841,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 
--	/* 183 0xb7 '�' */
-+	/* 183 0xb7 '·' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -1851,7 +1851,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 
--	/* 184 0xb8 '�' */
-+	/* 184 0xb8 '¸' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0xf8, /* 11111000 */
-@@ -1861,7 +1861,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 
--	/* 185 0xb9 '�' */
-+	/* 185 0xb9 '¹' */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 	0xf6, /* 11110110 */
-@@ -1871,7 +1871,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 
--	/* 186 0xba '�' */
-+	/* 186 0xba 'º' */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
-@@ -1881,7 +1881,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 
--	/* 187 0xbb '�' */
-+	/* 187 0xbb '»' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0xfe, /* 11111110 */
-@@ -1891,7 +1891,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 
--	/* 188 0xbc '�' */
-+	/* 188 0xbc '¼' */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 	0xf6, /* 11110110 */
-@@ -1901,7 +1901,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 189 0xbd '�' */
-+	/* 189 0xbd '½' */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
-@@ -1911,7 +1911,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 190 0xbe '�' */
-+	/* 190 0xbe '¾' */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 	0xf8, /* 11111000 */
-@@ -1921,7 +1921,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 191 0xbf '�' */
-+	/* 191 0xbf '¿' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -1931,7 +1931,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 
--	/* 192 0xc0 '�' */
-+	/* 192 0xc0 'À' */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
-@@ -1941,7 +1941,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 193 0xc1 '�' */
-+	/* 193 0xc1 'Á' */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
-@@ -1951,7 +1951,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 194 0xc2 '�' */
-+	/* 194 0xc2 'Â' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -1961,7 +1961,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 
--	/* 195 0xc3 '�' */
-+	/* 195 0xc3 'Ã' */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
-@@ -1971,7 +1971,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 
--	/* 196 0xc4 '�' */
-+	/* 196 0xc4 'Ä' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
-@@ -1981,7 +1981,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 197 0xc5 '�' */
-+	/* 197 0xc5 'Å' */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
-@@ -1991,7 +1991,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 
--	/* 198 0xc6 '�' */
-+	/* 198 0xc6 'Æ' */
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 	0x1f, /* 00011111 */
-@@ -2001,7 +2001,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x18, /* 00011000 */
- 	0x18, /* 00011000 */
- 
--	/* 199 0xc7 '�' */
-+	/* 199 0xc7 'Ç' */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
-@@ -2011,7 +2011,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 
--	/* 200 0xc8 '�' */
-+	/* 200 0xc8 'È' */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 	0x37, /* 00110111 */
-@@ -2021,7 +2021,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 201 0xc9 '�' */
-+	/* 201 0xc9 'É' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0x3f, /* 00111111 */
-@@ -2031,7 +2031,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 
--	/* 202 0xca '�' */
-+	/* 202 0xca 'Ê' */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 	0xf7, /* 11110111 */
-@@ -2041,7 +2041,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 203 0xcb '�' */
-+	/* 203 0xcb 'Ë' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0xff, /* 11111111 */
-@@ -2051,7 +2051,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 
--	/* 204 0xcc '�' */
-+	/* 204 0xcc 'Ì' */
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 	0x37, /* 00110111 */
-@@ -2061,7 +2061,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x36, /* 00110110 */
- 	0x36, /* 00110110 */
- 
--	/* 205 0xcd '�' */
-+	/* 205 0xcd 'Í' */
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 	0xff, /* 11111111 */
-@@ -2071,7 +2071,7 @@ static const unsigned char fontdata_8x8[FONTDATAMAX] = {
- 	0x00, /* 00000000 */
- 	0x00, /* 00000000 */
- 
--	/* 206 0xce '�' */
-+	/* 206 0xce 'Î' */
- 	0
+diff --git a/scripts/dtc/Makefile.dtc b/scripts/dtc/Makefile.dtc
+index d4375630a7f7..9c467b096f03 100644
+--- a/scripts/dtc/Makefile.dtc
++++ b/scripts/dtc/Makefile.dtc
+@@ -1,3 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
+ # Makefile.dtc
+ #
+ # This is not a complete Makefile of itself.  Instead, it is designed to
+diff --git a/scripts/dtc/checks.c b/scripts/dtc/checks.c
+index c0ed45e1c3bc..756f0fa9203f 100644
+--- a/scripts/dtc/checks.c
++++ b/scripts/dtc/checks.c
+@@ -1,21 +1,6 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
+ /*
+  * (C) Copyright David Gibson <dwg@au1.ibm.com>, IBM Corporation.  2007.
+- *
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of the
+- * License, or (at your option) any later version.
+- *
+- *  This program is distributed in the hope that it will be useful,
+- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+- *  General Public License for more details.
+- *
+- *  You should have received a copy of the GNU General Public License
+- *  along with this program; if not, write to the Free Software
+- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
+- *                                                                   USA
+  */
+ 
+ #include "dtc.h"
+@@ -660,6 +645,8 @@ ERROR(path_references, fixup_path_references, NULL, &duplicate_node_names);
+ static void fixup_omit_unused_nodes(struct check *c, struct dt_info *dti,
+ 				    struct node *node)
+ {
++	if (generate_symbols && node->labels)
++		return;
+ 	if (node->omit_if_unused && !node->is_referenced)
+ 		delete_node(node);
+ }
+@@ -704,6 +691,11 @@ static void check_alias_paths(struct check *c, struct dt_info *dti,
+ 		return;
+ 
+ 	for_each_property(node, prop) {
++		if (streq(prop->name, "phandle")
++		    || streq(prop->name, "linux,phandle")) {
++			continue;
++		}
++
+ 		if (!prop->val.val || !get_node_by_path(dti->dt, prop->val.val)) {
+ 			FAIL_PROP(c, dti, node, prop, "aliases property is not a valid node (%s)",
+ 				  prop->val.val);
+@@ -1578,10 +1570,14 @@ static void check_interrupts_property(struct check *c,
+ 		prop = get_property(parent, "interrupt-parent");
+ 		if (prop) {
+ 			phandle = propval_cell(prop);
+-			/* Give up if this is an overlay with external references */
+-			if ((phandle == 0 || phandle == -1) &&
+-			    (dti->dtsflags & DTSF_PLUGIN))
++			if ((phandle == 0) || (phandle == -1)) {
++				/* Give up if this is an overlay with
++				 * external references */
++				if (dti->dtsflags & DTSF_PLUGIN)
+ 					return;
++				FAIL_PROP(c, dti, parent, prop, "Invalid phandle");
++				continue;
++			}
+ 
+ 			irq_node = get_node_by_phandle(root, phandle);
+ 			if (!irq_node) {
+@@ -1750,7 +1746,7 @@ static void check_graph_endpoint(struct check *c, struct dt_info *dti,
+ 		return;
+ 
+ 	if (!strprefixeq(node->name, node->basenamelen, "endpoint"))
+-		FAIL(c, dti, node, "graph endpont node name should be 'endpoint'");
++		FAIL(c, dti, node, "graph endpoint node name should be 'endpoint'");
+ 
+ 	check_graph_reg(c, dti, node);
+ 
+diff --git a/scripts/dtc/data.c b/scripts/dtc/data.c
+index 4a204145cc7b..0a43b6de3264 100644
+--- a/scripts/dtc/data.c
++++ b/scripts/dtc/data.c
+@@ -1,21 +1,6 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
+ /*
+  * (C) Copyright David Gibson <dwg@au1.ibm.com>, IBM Corporation.  2005.
+- *
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of the
+- * License, or (at your option) any later version.
+- *
+- *  This program is distributed in the hope that it will be useful,
+- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+- *  General Public License for more details.
+- *
+- *  You should have received a copy of the GNU General Public License
+- *  along with this program; if not, write to the Free Software
+- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
+- *                                                                   USA
+  */
+ 
+ #include "dtc.h"
+diff --git a/scripts/dtc/dtc-lexer.l b/scripts/dtc/dtc-lexer.l
+index 06c040902444..5c6c3fd557d7 100644
+--- a/scripts/dtc/dtc-lexer.l
++++ b/scripts/dtc/dtc-lexer.l
+@@ -1,21 +1,6 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
+ /*
+  * (C) Copyright David Gibson <dwg@au1.ibm.com>, IBM Corporation.  2005.
+- *
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of the
+- * License, or (at your option) any later version.
+- *
+- *  This program is distributed in the hope that it will be useful,
+- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+- *  General Public License for more details.
+- *
+- *  You should have received a copy of the GNU General Public License
+- *  along with this program; if not, write to the Free Software
+- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
+- *                                                                   USA
+  */
+ 
+ %option noyywrap nounput noinput never-interactive
+diff --git a/scripts/dtc/dtc-parser.y b/scripts/dtc/dtc-parser.y
+index 2ec981e86111..2ed4dc1f07fd 100644
+--- a/scripts/dtc/dtc-parser.y
++++ b/scripts/dtc/dtc-parser.y
+@@ -1,21 +1,6 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
+ /*
+  * (C) Copyright David Gibson <dwg@au1.ibm.com>, IBM Corporation.  2005.
+- *
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of the
+- * License, or (at your option) any later version.
+- *
+- *  This program is distributed in the hope that it will be useful,
+- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+- *  General Public License for more details.
+- *
+- *  You should have received a copy of the GNU General Public License
+- *  along with this program; if not, write to the Free Software
+- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
+- *                                                                   USA
+  */
+ %{
+ #include <stdio.h>
+diff --git a/scripts/dtc/dtc.c b/scripts/dtc/dtc.c
+index 695e1f789fc7..bdb3f5945699 100644
+--- a/scripts/dtc/dtc.c
++++ b/scripts/dtc/dtc.c
+@@ -1,21 +1,6 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
+ /*
+  * (C) Copyright David Gibson <dwg@au1.ibm.com>, IBM Corporation.  2005.
+- *
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of the
+- * License, or (at your option) any later version.
+- *
+- *  This program is distributed in the hope that it will be useful,
+- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+- *  General Public License for more details.
+- *
+- *  You should have received a copy of the GNU General Public License
+- *  along with this program; if not, write to the Free Software
+- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
+- *                                                                   USA
+  */
+ 
+ #include <sys/stat.h>
+diff --git a/scripts/dtc/dtc.h b/scripts/dtc/dtc.h
+index 789e0b1bc057..6e74ecea55a3 100644
+--- a/scripts/dtc/dtc.h
++++ b/scripts/dtc/dtc.h
+@@ -1,24 +1,9 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
+ #ifndef DTC_H
+ #define DTC_H
+ 
+ /*
+  * (C) Copyright David Gibson <dwg@au1.ibm.com>, IBM Corporation.  2005.
+- *
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of the
+- * License, or (at your option) any later version.
+- *
+- *  This program is distributed in the hope that it will be useful,
+- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+- *  General Public License for more details.
+- *
+- *  You should have received a copy of the GNU General Public License
+- *  along with this program; if not, write to the Free Software
+- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
+- *                                                                   USA
+  */
+ 
+ #include <stdio.h>
+@@ -231,7 +216,8 @@ void add_child(struct node *parent, struct node *child);
+ void delete_node_by_name(struct node *parent, char *name);
+ void delete_node(struct node *node);
+ void append_to_property(struct node *node,
+-			char *name, const void *data, int len);
++			char *name, const void *data, int len,
++			enum markertype type);
+ 
+ const char *get_unitname(struct node *node);
+ struct property *get_property(struct node *node, const char *propname);
+diff --git a/scripts/dtc/fdtget.c b/scripts/dtc/fdtget.c
+index a79c3b2aa1b8..777582e2d45f 100644
+--- a/scripts/dtc/fdtget.c
++++ b/scripts/dtc/fdtget.c
+@@ -1,3 +1,4 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
+ /*
+  * Copyright (c) 2011 The Chromium OS Authors. All rights reserved.
+  *
+@@ -6,21 +7,6 @@
+  * Based on code written by:
+  *   Pantelis Antoniou <pantelis.antoniou@gmail.com> and
+  *   Matthew McClintock <msm@freescale.com>
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+- * MA 02111-1307 USA
+  */
+ 
+ #include <assert.h>
+diff --git a/scripts/dtc/flattree.c b/scripts/dtc/flattree.c
+index acf04c30669f..bd6977eedcb8 100644
+--- a/scripts/dtc/flattree.c
++++ b/scripts/dtc/flattree.c
+@@ -1,21 +1,6 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
+ /*
+  * (C) Copyright David Gibson <dwg@au1.ibm.com>, IBM Corporation.  2005.
+- *
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of the
+- * License, or (at your option) any later version.
+- *
+- *  This program is distributed in the hope that it will be useful,
+- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+- *  General Public License for more details.
+- *
+- *  You should have received a copy of the GNU General Public License
+- *  along with this program; if not, write to the Free Software
+- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
+- *                                                                   USA
+  */
+ 
+ #include "dtc.h"
+@@ -525,7 +510,7 @@ void dt_to_asm(FILE *f, struct dt_info *dti, int version)
+ 	fprintf(f, "/* Memory reserve map from source file */\n");
+ 
+ 	/*
+-	 * Use .long on high and low halfs of u64s to avoid .quad
++	 * Use .long on high and low halves of u64s to avoid .quad
+ 	 * as it appears .quad isn't available in some assemblers.
+ 	 */
+ 	for (re = dti->reservelist; re; re = re->next) {
+diff --git a/scripts/dtc/fstree.c b/scripts/dtc/fstree.c
+index 1e7eeba47ff6..9871689b4afb 100644
+--- a/scripts/dtc/fstree.c
++++ b/scripts/dtc/fstree.c
+@@ -1,21 +1,6 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
+ /*
+  * (C) Copyright David Gibson <dwg@au1.ibm.com>, IBM Corporation.  2005.
+- *
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of the
+- * License, or (at your option) any later version.
+- *
+- *  This program is distributed in the hope that it will be useful,
+- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+- *  General Public License for more details.
+- *
+- *  You should have received a copy of the GNU General Public License
+- *  along with this program; if not, write to the Free Software
+- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
+- *                                                                   USA
+  */
+ 
+ #include "dtc.h"
+diff --git a/scripts/dtc/libfdt/Makefile.libfdt b/scripts/dtc/libfdt/Makefile.libfdt
+index 3af3656df801..e54639738c8e 100644
+--- a/scripts/dtc/libfdt/Makefile.libfdt
++++ b/scripts/dtc/libfdt/Makefile.libfdt
+@@ -1,3 +1,4 @@
++# SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
+ # Makefile.libfdt
+ #
+ # This is not a complete Makefile of itself.  Instead, it is designed to
+@@ -9,7 +10,9 @@ LIBFDT_VERSION = version.lds
+ LIBFDT_SRCS = fdt.c fdt_ro.c fdt_wip.c fdt_sw.c fdt_rw.c fdt_strerror.c fdt_empty_tree.c \
+ 	fdt_addresses.c fdt_overlay.c
+ LIBFDT_OBJS = $(LIBFDT_SRCS:%.c=%.o)
++LIBFDT_LIB = libfdt-$(DTC_VERSION).$(SHAREDLIB_EXT)
+ 
+ libfdt_clean:
+ 	@$(VECHO) CLEAN "(libfdt)"
+ 	rm -f $(STD_CLEANFILES:%=$(LIBFDT_dir)/%)
++	rm -f $(LIBFDT_dir)/$(LIBFDT_soname)
+diff --git a/scripts/dtc/libfdt/fdt.c b/scripts/dtc/libfdt/fdt.c
+index ae03b1112961..d6ce7c052dc8 100644
+--- a/scripts/dtc/libfdt/fdt.c
++++ b/scripts/dtc/libfdt/fdt.c
+@@ -1,52 +1,7 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
+ /*
+  * libfdt - Flat Device Tree manipulation
+  * Copyright (C) 2006 David Gibson, IBM Corporation.
+- *
+- * libfdt is dual licensed: you can use it either under the terms of
+- * the GPL, or the BSD license, at your option.
+- *
+- *  a) This library is free software; you can redistribute it and/or
+- *     modify it under the terms of the GNU General Public License as
+- *     published by the Free Software Foundation; either version 2 of the
+- *     License, or (at your option) any later version.
+- *
+- *     This library is distributed in the hope that it will be useful,
+- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *     GNU General Public License for more details.
+- *
+- *     You should have received a copy of the GNU General Public
+- *     License along with this library; if not, write to the Free
+- *     Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
+- *     MA 02110-1301 USA
+- *
+- * Alternatively,
+- *
+- *  b) Redistribution and use in source and binary forms, with or
+- *     without modification, are permitted provided that the following
+- *     conditions are met:
+- *
+- *     1. Redistributions of source code must retain the above
+- *        copyright notice, this list of conditions and the following
+- *        disclaimer.
+- *     2. Redistributions in binary form must reproduce the above
+- *        copyright notice, this list of conditions and the following
+- *        disclaimer in the documentation and/or other materials
+- *        provided with the distribution.
+- *
+- *     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+- *     CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+- *     INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+- *     MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+- *     DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+- *     CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+- *     SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *     NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+- *     LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+- *     HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+- *     CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+- *     OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+- *     EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  */
+ #include "libfdt_env.h"
+ 
+@@ -60,8 +15,10 @@
+  * that the given buffer contains what appears to be a flattened
+  * device tree with sane information in its header.
+  */
+-int fdt_ro_probe_(const void *fdt)
++int32_t fdt_ro_probe_(const void *fdt)
+ {
++	uint32_t totalsize = fdt_totalsize(fdt);
++
+ 	if (fdt_magic(fdt) == FDT_MAGIC) {
+ 		/* Complete tree */
+ 		if (fdt_version(fdt) < FDT_FIRST_SUPPORTED_VERSION)
+@@ -76,7 +33,10 @@ int fdt_ro_probe_(const void *fdt)
+ 		return -FDT_ERR_BADMAGIC;
+ 	}
+ 
+-	return 0;
++	if (totalsize < INT32_MAX)
++		return totalsize;
++	else
++		return -FDT_ERR_TRUNCATED;
+ }
+ 
+ static int check_off_(uint32_t hdrsize, uint32_t totalsize, uint32_t off)
+diff --git a/scripts/dtc/libfdt/fdt.h b/scripts/dtc/libfdt/fdt.h
+index 74961f9026d1..f2e68807f277 100644
+--- a/scripts/dtc/libfdt/fdt.h
++++ b/scripts/dtc/libfdt/fdt.h
+@@ -1,55 +1,10 @@
++/* SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause) */
+ #ifndef FDT_H
+ #define FDT_H
+ /*
+  * libfdt - Flat Device Tree manipulation
+  * Copyright (C) 2006 David Gibson, IBM Corporation.
+  * Copyright 2012 Kim Phillips, Freescale Semiconductor.
+- *
+- * libfdt is dual licensed: you can use it either under the terms of
+- * the GPL, or the BSD license, at your option.
+- *
+- *  a) This library is free software; you can redistribute it and/or
+- *     modify it under the terms of the GNU General Public License as
+- *     published by the Free Software Foundation; either version 2 of the
+- *     License, or (at your option) any later version.
+- *
+- *     This library is distributed in the hope that it will be useful,
+- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *     GNU General Public License for more details.
+- *
+- *     You should have received a copy of the GNU General Public
+- *     License along with this library; if not, write to the Free
+- *     Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
+- *     MA 02110-1301 USA
+- *
+- * Alternatively,
+- *
+- *  b) Redistribution and use in source and binary forms, with or
+- *     without modification, are permitted provided that the following
+- *     conditions are met:
+- *
+- *     1. Redistributions of source code must retain the above
+- *        copyright notice, this list of conditions and the following
+- *        disclaimer.
+- *     2. Redistributions in binary form must reproduce the above
+- *        copyright notice, this list of conditions and the following
+- *        disclaimer in the documentation and/or other materials
+- *        provided with the distribution.
+- *
+- *     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+- *     CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+- *     INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+- *     MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+- *     DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+- *     CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+- *     SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *     NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+- *     LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+- *     HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+- *     CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+- *     OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+- *     EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  */
+ 
+ #ifndef __ASSEMBLY__
+diff --git a/scripts/dtc/libfdt/fdt_addresses.c b/scripts/dtc/libfdt/fdt_addresses.c
+index f13a87dfa068..9a82cd0ba2f9 100644
+--- a/scripts/dtc/libfdt/fdt_addresses.c
++++ b/scripts/dtc/libfdt/fdt_addresses.c
+@@ -1,53 +1,8 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
+ /*
+  * libfdt - Flat Device Tree manipulation
+  * Copyright (C) 2014 David Gibson <david@gibson.dropbear.id.au>
+  * Copyright (C) 2018 embedded brains GmbH
+- *
+- * libfdt is dual licensed: you can use it either under the terms of
+- * the GPL, or the BSD license, at your option.
+- *
+- *  a) This library is free software; you can redistribute it and/or
+- *     modify it under the terms of the GNU General Public License as
+- *     published by the Free Software Foundation; either version 2 of the
+- *     License, or (at your option) any later version.
+- *
+- *     This library is distributed in the hope that it will be useful,
+- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *     GNU General Public License for more details.
+- *
+- *     You should have received a copy of the GNU General Public
+- *     License along with this library; if not, write to the Free
+- *     Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
+- *     MA 02110-1301 USA
+- *
+- * Alternatively,
+- *
+- *  b) Redistribution and use in source and binary forms, with or
+- *     without modification, are permitted provided that the following
+- *     conditions are met:
+- *
+- *     1. Redistributions of source code must retain the above
+- *        copyright notice, this list of conditions and the following
+- *        disclaimer.
+- *     2. Redistributions in binary form must reproduce the above
+- *        copyright notice, this list of conditions and the following
+- *        disclaimer in the documentation and/or other materials
+- *        provided with the distribution.
+- *
+- *     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+- *     CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+- *     INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+- *     MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+- *     DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+- *     CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+- *     SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *     NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+- *     LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+- *     HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+- *     CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+- *     OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+- *     EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  */
+ #include "libfdt_env.h"
+ 
+@@ -59,7 +14,7 @@
+ static int fdt_cells(const void *fdt, int nodeoffset, const char *name)
+ {
+ 	const fdt32_t *c;
+-	int val;
++	uint32_t val;
+ 	int len;
+ 
+ 	c = fdt_getprop(fdt, nodeoffset, name, &len);
+@@ -70,10 +25,10 @@ static int fdt_cells(const void *fdt, int nodeoffset, const char *name)
+ 		return -FDT_ERR_BADNCELLS;
+ 
+ 	val = fdt32_to_cpu(*c);
+-	if ((val <= 0) || (val > FDT_MAX_NCELLS))
++	if (val > FDT_MAX_NCELLS)
+ 		return -FDT_ERR_BADNCELLS;
+ 
+-	return val;
++	return (int)val;
+ }
+ 
+ int fdt_address_cells(const void *fdt, int nodeoffset)
+@@ -81,6 +36,8 @@ int fdt_address_cells(const void *fdt, int nodeoffset)
+ 	int val;
+ 
+ 	val = fdt_cells(fdt, nodeoffset, "#address-cells");
++	if (val == 0)
++		return -FDT_ERR_BADNCELLS;
+ 	if (val == -FDT_ERR_NOTFOUND)
+ 		return 2;
+ 	return val;
+@@ -95,3 +52,50 @@ int fdt_size_cells(const void *fdt, int nodeoffset)
+ 		return 1;
+ 	return val;
+ }
++
++/* This function assumes that [address|size]_cells is 1 or 2 */
++int fdt_appendprop_addrrange(void *fdt, int parent, int nodeoffset,
++			     const char *name, uint64_t addr, uint64_t size)
++{
++	int addr_cells, size_cells, ret;
++	uint8_t data[sizeof(fdt64_t) * 2], *prop;
++
++	ret = fdt_address_cells(fdt, parent);
++	if (ret < 0)
++		return ret;
++	addr_cells = ret;
++
++	ret = fdt_size_cells(fdt, parent);
++	if (ret < 0)
++		return ret;
++	size_cells = ret;
++
++	/* check validity of address */
++	prop = data;
++	if (addr_cells == 1) {
++		if ((addr > UINT32_MAX) || ((UINT32_MAX + 1 - addr) < size))
++			return -FDT_ERR_BADVALUE;
++
++		fdt32_st(prop, (uint32_t)addr);
++	} else if (addr_cells == 2) {
++		fdt64_st(prop, addr);
++	} else {
++		return -FDT_ERR_BADNCELLS;
++	}
++
++	/* check validity of size */
++	prop += addr_cells * sizeof(fdt32_t);
++	if (size_cells == 1) {
++		if (size > UINT32_MAX)
++			return -FDT_ERR_BADVALUE;
++
++		fdt32_st(prop, (uint32_t)size);
++	} else if (size_cells == 2) {
++		fdt64_st(prop, size);
++	} else {
++		return -FDT_ERR_BADNCELLS;
++	}
++
++	return fdt_appendprop(fdt, nodeoffset, name, data,
++			      (addr_cells + size_cells) * sizeof(fdt32_t));
++}
+diff --git a/scripts/dtc/libfdt/fdt_empty_tree.c b/scripts/dtc/libfdt/fdt_empty_tree.c
+index f2ae9b77c285..49d54d44b8e7 100644
+--- a/scripts/dtc/libfdt/fdt_empty_tree.c
++++ b/scripts/dtc/libfdt/fdt_empty_tree.c
+@@ -1,52 +1,7 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
+ /*
+  * libfdt - Flat Device Tree manipulation
+  * Copyright (C) 2012 David Gibson, IBM Corporation.
+- *
+- * libfdt is dual licensed: you can use it either under the terms of
+- * the GPL, or the BSD license, at your option.
+- *
+- *  a) This library is free software; you can redistribute it and/or
+- *     modify it under the terms of the GNU General Public License as
+- *     published by the Free Software Foundation; either version 2 of the
+- *     License, or (at your option) any later version.
+- *
+- *     This library is distributed in the hope that it will be useful,
+- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *     GNU General Public License for more details.
+- *
+- *     You should have received a copy of the GNU General Public
+- *     License along with this library; if not, write to the Free
+- *     Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
+- *     MA 02110-1301 USA
+- *
+- * Alternatively,
+- *
+- *  b) Redistribution and use in source and binary forms, with or
+- *     without modification, are permitted provided that the following
+- *     conditions are met:
+- *
+- *     1. Redistributions of source code must retain the above
+- *        copyright notice, this list of conditions and the following
+- *        disclaimer.
+- *     2. Redistributions in binary form must reproduce the above
+- *        copyright notice, this list of conditions and the following
+- *        disclaimer in the documentation and/or other materials
+- *        provided with the distribution.
+- *
+- *     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+- *     CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+- *     INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+- *     MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+- *     DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+- *     CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+- *     SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *     NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+- *     LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+- *     HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+- *     CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+- *     OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+- *     EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  */
+ #include "libfdt_env.h"
+ 
+diff --git a/scripts/dtc/libfdt/fdt_overlay.c b/scripts/dtc/libfdt/fdt_overlay.c
+index 5fdab6c6371d..be7187336615 100644
+--- a/scripts/dtc/libfdt/fdt_overlay.c
++++ b/scripts/dtc/libfdt/fdt_overlay.c
+@@ -1,53 +1,8 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
+ /*
+  * libfdt - Flat Device Tree manipulation
+  * Copyright (C) 2016 Free Electrons
+  * Copyright (C) 2016 NextThing Co.
+- *
+- * libfdt is dual licensed: you can use it either under the terms of
+- * the GPL, or the BSD license, at your option.
+- *
+- *  a) This library is free software; you can redistribute it and/or
+- *     modify it under the terms of the GNU General Public License as
+- *     published by the Free Software Foundation; either version 2 of the
+- *     License, or (at your option) any later version.
+- *
+- *     This library is distributed in the hope that it will be useful,
+- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *     GNU General Public License for more details.
+- *
+- *     You should have received a copy of the GNU General Public
+- *     License along with this library; if not, write to the Free
+- *     Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
+- *     MA 02110-1301 USA
+- *
+- * Alternatively,
+- *
+- *  b) Redistribution and use in source and binary forms, with or
+- *     without modification, are permitted provided that the following
+- *     conditions are met:
+- *
+- *     1. Redistributions of source code must retain the above
+- *        copyright notice, this list of conditions and the following
+- *        disclaimer.
+- *     2. Redistributions in binary form must reproduce the above
+- *        copyright notice, this list of conditions and the following
+- *        disclaimer in the documentation and/or other materials
+- *        provided with the distribution.
+- *
+- *     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+- *     CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+- *     INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+- *     MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+- *     DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+- *     CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+- *     SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *     NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+- *     LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+- *     HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+- *     CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+- *     OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+- *     EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  */
+ #include "libfdt_env.h"
+ 
+@@ -93,11 +48,11 @@ static uint32_t overlay_get_target_phandle(const void *fdto, int fragment)
+  * @pathp: pointer which receives the path of the target (or NULL)
+  *
+  * overlay_get_target() retrieves the target offset in the base
+- * device tree of a fragment, no matter how the actual targetting is
++ * device tree of a fragment, no matter how the actual targeting is
+  * done (through a phandle or a path)
+  *
+  * returns:
+- *      the targetted node offset in the base device tree
++ *      the targeted node offset in the base device tree
+  *      Negative error code on error
+  */
+ static int overlay_get_target(const void *fdt, const void *fdto,
+@@ -778,26 +733,36 @@ static int overlay_symbol_update(void *fdt, void *fdto)
+ 		/* keep end marker to avoid strlen() */
+ 		e = path + path_len;
+ 
+-		/* format: /<fragment-name>/__overlay__/<relative-subnode-path> */
+-
+ 		if (*path != '/')
+ 			return -FDT_ERR_BADVALUE;
+ 
+ 		/* get fragment name first */
+ 		s = strchr(path + 1, '/');
+-		if (!s)
+-			return -FDT_ERR_BADOVERLAY;
++		if (!s) {
++			/* Symbol refers to something that won't end
++			 * up in the target tree */
++			continue;
++		}
+ 
+ 		frag_name = path + 1;
+ 		frag_name_len = s - path - 1;
+ 
+ 		/* verify format; safe since "s" lies in \0 terminated prop */
+ 		len = sizeof("/__overlay__/") - 1;
+-		if ((e - s) < len || memcmp(s, "/__overlay__/", len))
+-			return -FDT_ERR_BADOVERLAY;
+-
+-		rel_path = s + len;
+-		rel_path_len = e - rel_path;
++		if ((e - s) > len && (memcmp(s, "/__overlay__/", len) == 0)) {
++			/* /<fragment-name>/__overlay__/<relative-subnode-path> */
++			rel_path = s + len;
++			rel_path_len = e - rel_path;
++		} else if ((e - s) == len
++			   && (memcmp(s, "/__overlay__", len - 1) == 0)) {
++			/* /<fragment-name>/__overlay__ */
++			rel_path = "";
++			rel_path_len = 0;
++		} else {
++			/* Symbol refers to something that won't end
++			 * up in the target tree */
++			continue;
++		}
+ 
+ 		/* find the fragment index in which the symbol lies */
+ 		ret = fdt_subnode_offset_namelen(fdto, 0, frag_name,
+@@ -863,12 +828,16 @@ static int overlay_symbol_update(void *fdt, void *fdto)
+ 
+ int fdt_overlay_apply(void *fdt, void *fdto)
+ {
+-	uint32_t delta = fdt_get_max_phandle(fdt);
++	uint32_t delta;
+ 	int ret;
+ 
+ 	FDT_RO_PROBE(fdt);
+ 	FDT_RO_PROBE(fdto);
+ 
++	ret = fdt_find_max_phandle(fdt, &delta);
++	if (ret)
++		goto err;
++
+ 	ret = overlay_adjust_local_phandles(fdto, delta);
+ 	if (ret)
+ 		goto err;
+diff --git a/scripts/dtc/libfdt/fdt_ro.c b/scripts/dtc/libfdt/fdt_ro.c
+index eafc14282892..a5c2797cde65 100644
+--- a/scripts/dtc/libfdt/fdt_ro.c
++++ b/scripts/dtc/libfdt/fdt_ro.c
+@@ -1,52 +1,7 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
+ /*
+  * libfdt - Flat Device Tree manipulation
+  * Copyright (C) 2006 David Gibson, IBM Corporation.
+- *
+- * libfdt is dual licensed: you can use it either under the terms of
+- * the GPL, or the BSD license, at your option.
+- *
+- *  a) This library is free software; you can redistribute it and/or
+- *     modify it under the terms of the GNU General Public License as
+- *     published by the Free Software Foundation; either version 2 of the
+- *     License, or (at your option) any later version.
+- *
+- *     This library is distributed in the hope that it will be useful,
+- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *     GNU General Public License for more details.
+- *
+- *     You should have received a copy of the GNU General Public
+- *     License along with this library; if not, write to the Free
+- *     Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
+- *     MA 02110-1301 USA
+- *
+- * Alternatively,
+- *
+- *  b) Redistribution and use in source and binary forms, with or
+- *     without modification, are permitted provided that the following
+- *     conditions are met:
+- *
+- *     1. Redistributions of source code must retain the above
+- *        copyright notice, this list of conditions and the following
+- *        disclaimer.
+- *     2. Redistributions in binary form must reproduce the above
+- *        copyright notice, this list of conditions and the following
+- *        disclaimer in the documentation and/or other materials
+- *        provided with the distribution.
+- *
+- *     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+- *     CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+- *     INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+- *     MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+- *     DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+- *     CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+- *     SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *     NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+- *     LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+- *     HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+- *     CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+- *     OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+- *     EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  */
+ #include "libfdt_env.h"
+ 
+@@ -78,19 +33,20 @@ static int fdt_nodename_eq_(const void *fdt, int offset,
+ 
+ const char *fdt_get_string(const void *fdt, int stroffset, int *lenp)
+ {
++	int32_t totalsize = fdt_ro_probe_(fdt);
+ 	uint32_t absoffset = stroffset + fdt_off_dt_strings(fdt);
+ 	size_t len;
+ 	int err;
+ 	const char *s, *n;
+ 
+-	err = fdt_ro_probe_(fdt);
+-	if (err != 0)
++	err = totalsize;
++	if (totalsize < 0)
+ 		goto fail;
+ 
+ 	err = -FDT_ERR_BADOFFSET;
+-	if (absoffset >= fdt_totalsize(fdt))
++	if (absoffset >= totalsize)
+ 		goto fail;
+-	len = fdt_totalsize(fdt) - absoffset;
++	len = totalsize - absoffset;
+ 
+ 	if (fdt_magic(fdt) == FDT_MAGIC) {
+ 		if (stroffset < 0)
+@@ -144,29 +100,49 @@ static int fdt_string_eq_(const void *fdt, int stroffset,
+ 	return p && (slen == len) && (memcmp(p, s, len) == 0);
+ }
+ 
+-uint32_t fdt_get_max_phandle(const void *fdt)
++int fdt_find_max_phandle(const void *fdt, uint32_t *phandle)
+ {
+-	uint32_t max_phandle = 0;
+-	int offset;
++	uint32_t max = 0;
++	int offset = -1;
+ 
+-	for (offset = fdt_next_node(fdt, -1, NULL);;
+-	     offset = fdt_next_node(fdt, offset, NULL)) {
+-		uint32_t phandle;
++	while (true) {
++		uint32_t value;
+ 
+-		if (offset == -FDT_ERR_NOTFOUND)
+-			return max_phandle;
++		offset = fdt_next_node(fdt, offset, NULL);
++		if (offset < 0) {
++			if (offset == -FDT_ERR_NOTFOUND)
++				break;
+ 
+-		if (offset < 0)
+-			return (uint32_t)-1;
++			return offset;
++		}
+ 
+-		phandle = fdt_get_phandle(fdt, offset);
+-		if (phandle == (uint32_t)-1)
+-			continue;
++		value = fdt_get_phandle(fdt, offset);
+ 
+-		if (phandle > max_phandle)
+-			max_phandle = phandle;
++		if (value > max)
++			max = value;
+ 	}
+ 
++	if (phandle)
++		*phandle = max;
++
++	return 0;
++}
++
++int fdt_generate_phandle(const void *fdt, uint32_t *phandle)
++{
++	uint32_t max;
++	int err;
++
++	err = fdt_find_max_phandle(fdt, &max);
++	if (err < 0)
++		return err;
++
++	if (max == FDT_MAX_PHANDLE)
++		return -FDT_ERR_NOPHANDLES;
++
++	if (phandle)
++		*phandle = max + 1;
++
+ 	return 0;
+ }
+ 
+@@ -313,7 +289,7 @@ const char *fdt_get_name(const void *fdt, int nodeoffset, int *len)
+ 	const char *nameptr;
+ 	int err;
+ 
+-	if (((err = fdt_ro_probe_(fdt)) != 0)
++	if (((err = fdt_ro_probe_(fdt)) < 0)
+ 	    || ((err = fdt_check_node_offset_(fdt, nodeoffset)) < 0))
+ 			goto fail;
+ 
+diff --git a/scripts/dtc/libfdt/fdt_rw.c b/scripts/dtc/libfdt/fdt_rw.c
+index 2e49855d7cf8..8795947c00dd 100644
+--- a/scripts/dtc/libfdt/fdt_rw.c
++++ b/scripts/dtc/libfdt/fdt_rw.c
+@@ -1,52 +1,7 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
+ /*
+  * libfdt - Flat Device Tree manipulation
+  * Copyright (C) 2006 David Gibson, IBM Corporation.
+- *
+- * libfdt is dual licensed: you can use it either under the terms of
+- * the GPL, or the BSD license, at your option.
+- *
+- *  a) This library is free software; you can redistribute it and/or
+- *     modify it under the terms of the GNU General Public License as
+- *     published by the Free Software Foundation; either version 2 of the
+- *     License, or (at your option) any later version.
+- *
+- *     This library is distributed in the hope that it will be useful,
+- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *     GNU General Public License for more details.
+- *
+- *     You should have received a copy of the GNU General Public
+- *     License along with this library; if not, write to the Free
+- *     Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
+- *     MA 02110-1301 USA
+- *
+- * Alternatively,
+- *
+- *  b) Redistribution and use in source and binary forms, with or
+- *     without modification, are permitted provided that the following
+- *     conditions are met:
+- *
+- *     1. Redistributions of source code must retain the above
+- *        copyright notice, this list of conditions and the following
+- *        disclaimer.
+- *     2. Redistributions in binary form must reproduce the above
+- *        copyright notice, this list of conditions and the following
+- *        disclaimer in the documentation and/or other materials
+- *        provided with the distribution.
+- *
+- *     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+- *     CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+- *     INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+- *     MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+- *     DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+- *     CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+- *     SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *     NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+- *     LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+- *     HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+- *     CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+- *     OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+- *     EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  */
+ #include "libfdt_env.h"
+ 
+@@ -136,6 +91,14 @@ static int fdt_splice_struct_(void *fdt, void *p,
+ 	return 0;
+ }
+ 
++/* Must only be used to roll back in case of error */
++static void fdt_del_last_string_(void *fdt, const char *s)
++{
++	int newlen = strlen(s) + 1;
++
++	fdt_set_size_dt_strings(fdt, fdt_size_dt_strings(fdt) - newlen);
++}
++
+ static int fdt_splice_string_(void *fdt, int newlen)
+ {
+ 	void *p = (char *)fdt
+@@ -149,7 +112,7 @@ static int fdt_splice_string_(void *fdt, int newlen)
+ 	return 0;
+ }
+ 
+-static int fdt_find_add_string_(void *fdt, const char *s)
++static int fdt_find_add_string_(void *fdt, const char *s, int *allocated)
+ {
+ 	char *strtab = (char *)fdt + fdt_off_dt_strings(fdt);
+ 	const char *p;
+@@ -157,6 +120,8 @@ static int fdt_find_add_string_(void *fdt, const char *s)
+ 	int len = strlen(s) + 1;
+ 	int err;
+ 
++	*allocated = 0;
++
+ 	p = fdt_find_string_(strtab, fdt_size_dt_strings(fdt), s);
+ 	if (p)
+ 		/* found it */
+@@ -167,6 +132,8 @@ static int fdt_find_add_string_(void *fdt, const char *s)
+ 	if (err)
+ 		return err;
+ 
++	*allocated = 1;
++
+ 	memcpy(new, s, len);
+ 	return (new - strtab);
+ }
+@@ -225,11 +192,12 @@ static int fdt_add_property_(void *fdt, int nodeoffset, const char *name,
+ 	int nextoffset;
+ 	int namestroff;
+ 	int err;
++	int allocated;
+ 
+ 	if ((nextoffset = fdt_check_node_offset_(fdt, nodeoffset)) < 0)
+ 		return nextoffset;
+ 
+-	namestroff = fdt_find_add_string_(fdt, name);
++	namestroff = fdt_find_add_string_(fdt, name, &allocated);
+ 	if (namestroff < 0)
+ 		return namestroff;
+ 
+@@ -237,8 +205,11 @@ static int fdt_add_property_(void *fdt, int nodeoffset, const char *name,
+ 	proplen = sizeof(**prop) + FDT_TAGALIGN(len);
+ 
+ 	err = fdt_splice_struct_(fdt, *prop, 0, proplen);
+-	if (err)
++	if (err) {
++		if (allocated)
++			fdt_del_last_string_(fdt, name);
+ 		return err;
++	}
+ 
+ 	(*prop)->tag = cpu_to_fdt32(FDT_PROP);
+ 	(*prop)->nameoff = cpu_to_fdt32(namestroff);
+diff --git a/scripts/dtc/libfdt/fdt_strerror.c b/scripts/dtc/libfdt/fdt_strerror.c
+index 9677a1887e57..768db66eada5 100644
+--- a/scripts/dtc/libfdt/fdt_strerror.c
++++ b/scripts/dtc/libfdt/fdt_strerror.c
+@@ -1,51 +1,7 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
+ /*
+  * libfdt - Flat Device Tree manipulation
+  * Copyright (C) 2006 David Gibson, IBM Corporation.
+- *
+- * libfdt is dual licensed: you can use it either under the terms of
+- * the GPL, or the BSD license, at your option.
+- *
+- *  a) This library is free software; you can redistribute it and/or
+- *     modify it under the terms of the GNU General Public License as
+- *     published by the Free Software Foundation; either version 2 of the
+- *     License, or (at your option) any later version.
+- *
+- *     This library is distributed in the hope that it will be useful,
+- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *     GNU General Public License for more details.
+- *
+- *     You should have received a copy of the GNU General Public
+- *     License along with this library; if not, write to the Free
+- *     Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
+- *     MA 02110-1301 USA
+- *
+- * Alternatively,
+- *
+- *  b) Redistribution and use in source and binary forms, with or
+- *     without modification, are permitted provided that the following
+- *     conditions are met:
+- *
+- *     1. Redistributions of source code must retain the above
+- *        copyright notice, this list of conditions and the following
+- *        disclaimer.
+- *     2. Redistributions in binary form must reproduce the above
+- *        copyright notice, this list of conditions and the following
+- *        disclaimer in the documentation and/or other materials
+- *        provided with the distribution.
+- *
+- *     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+- *     CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+- *     INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+- *     MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+- *     DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+- *     CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+- *     SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *     NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+- *     LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+- *     HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+- *     CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+- *     OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+  *     EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  */
+ #include "libfdt_env.h"
+@@ -82,6 +38,7 @@ static struct fdt_errtabent fdt_errtable[] = {
+ 	FDT_ERRTABENT(FDT_ERR_BADVALUE),
+ 	FDT_ERRTABENT(FDT_ERR_BADOVERLAY),
+ 	FDT_ERRTABENT(FDT_ERR_NOPHANDLES),
++	FDT_ERRTABENT(FDT_ERR_BADFLAGS),
+ };
+ #define FDT_ERRTABSIZE	(sizeof(fdt_errtable) / sizeof(fdt_errtable[0]))
+ 
+diff --git a/scripts/dtc/libfdt/fdt_sw.c b/scripts/dtc/libfdt/fdt_sw.c
+index 9fa4a94d83c3..76bea22f734f 100644
+--- a/scripts/dtc/libfdt/fdt_sw.c
++++ b/scripts/dtc/libfdt/fdt_sw.c
+@@ -1,52 +1,7 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
+ /*
+  * libfdt - Flat Device Tree manipulation
+  * Copyright (C) 2006 David Gibson, IBM Corporation.
+- *
+- * libfdt is dual licensed: you can use it either under the terms of
+- * the GPL, or the BSD license, at your option.
+- *
+- *  a) This library is free software; you can redistribute it and/or
+- *     modify it under the terms of the GNU General Public License as
+- *     published by the Free Software Foundation; either version 2 of the
+- *     License, or (at your option) any later version.
+- *
+- *     This library is distributed in the hope that it will be useful,
+- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *     GNU General Public License for more details.
+- *
+- *     You should have received a copy of the GNU General Public
+- *     License along with this library; if not, write to the Free
+- *     Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
+- *     MA 02110-1301 USA
+- *
+- * Alternatively,
+- *
+- *  b) Redistribution and use in source and binary forms, with or
+- *     without modification, are permitted provided that the following
+- *     conditions are met:
+- *
+- *     1. Redistributions of source code must retain the above
+- *        copyright notice, this list of conditions and the following
+- *        disclaimer.
+- *     2. Redistributions in binary form must reproduce the above
+- *        copyright notice, this list of conditions and the following
+- *        disclaimer in the documentation and/or other materials
+- *        provided with the distribution.
+- *
+- *     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+- *     CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+- *     INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+- *     MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+- *     DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+- *     CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+- *     SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *     NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+- *     LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+- *     HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+- *     CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+- *     OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+- *     EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  */
+ #include "libfdt_env.h"
+ 
+@@ -121,6 +76,12 @@ static int fdt_sw_probe_struct_(void *fdt)
+ 			return err; \
+ 	}
+ 
++static inline uint32_t sw_flags(void *fdt)
++{
++	/* assert: (fdt_magic(fdt) == FDT_SW_MAGIC) */
++	return fdt_last_comp_version(fdt);
++}
++
+ /* 'complete' state:	Enter this state after fdt_finish()
+  *
+  * Allowed functions: none
+@@ -141,7 +102,7 @@ static void *fdt_grab_space_(void *fdt, size_t len)
+ 	return fdt_offset_ptr_w_(fdt, offset);
+ }
+ 
+-int fdt_create(void *buf, int bufsize)
++int fdt_create_with_flags(void *buf, int bufsize, uint32_t flags)
+ {
+ 	const size_t hdrsize = FDT_ALIGN(sizeof(struct fdt_header),
+ 					 sizeof(struct fdt_reserve_entry));
+@@ -150,11 +111,22 @@ int fdt_create(void *buf, int bufsize)
+ 	if (bufsize < hdrsize)
+ 		return -FDT_ERR_NOSPACE;
+ 
++	if (flags & ~FDT_CREATE_FLAGS_ALL)
++		return -FDT_ERR_BADFLAGS;
++
+ 	memset(buf, 0, bufsize);
+ 
++	/*
++	 * magic and last_comp_version keep intermediate state during the fdt
++	 * creation process, which is replaced with the proper FDT format by
++	 * fdt_finish().
++	 *
++	 * flags should be accessed with sw_flags().
++	 */
+ 	fdt_set_magic(fdt, FDT_SW_MAGIC);
+ 	fdt_set_version(fdt, FDT_LAST_SUPPORTED_VERSION);
+-	fdt_set_last_comp_version(fdt, FDT_FIRST_SUPPORTED_VERSION);
++	fdt_set_last_comp_version(fdt, flags);
++
+ 	fdt_set_totalsize(fdt,  bufsize);
+ 
+ 	fdt_set_off_mem_rsvmap(fdt, hdrsize);
+@@ -164,6 +136,11 @@ int fdt_create(void *buf, int bufsize)
+ 	return 0;
+ }
+ 
++int fdt_create(void *buf, int bufsize)
++{
++	return fdt_create_with_flags(buf, bufsize, 0);
++}
++
+ int fdt_resize(void *fdt, void *buf, int bufsize)
+ {
+ 	size_t headsize, tailsize;
+@@ -262,19 +239,13 @@ int fdt_end_node(void *fdt)
+ 	return 0;
+ }
+ 
+-static int fdt_find_add_string_(void *fdt, const char *s)
++static int fdt_add_string_(void *fdt, const char *s)
+ {
+ 	char *strtab = (char *)fdt + fdt_totalsize(fdt);
+-	const char *p;
+ 	int strtabsize = fdt_size_dt_strings(fdt);
+ 	int len = strlen(s) + 1;
+ 	int struct_top, offset;
+ 
+-	p = fdt_find_string_(strtab - strtabsize, strtabsize, s);
+-	if (p)
+-		return p - strtab;
+-
+-	/* Add it */
+ 	offset = -strtabsize - len;
+ 	struct_top = fdt_off_dt_struct(fdt) + fdt_size_dt_struct(fdt);
+ 	if (fdt_totalsize(fdt) + offset < struct_top)
+@@ -285,20 +256,56 @@ static int fdt_find_add_string_(void *fdt, const char *s)
+ 	return offset;
+ }
+ 
++/* Must only be used to roll back in case of error */
++static void fdt_del_last_string_(void *fdt, const char *s)
++{
++	int strtabsize = fdt_size_dt_strings(fdt);
++	int len = strlen(s) + 1;
++
++	fdt_set_size_dt_strings(fdt, strtabsize - len);
++}
++
++static int fdt_find_add_string_(void *fdt, const char *s, int *allocated)
++{
++	char *strtab = (char *)fdt + fdt_totalsize(fdt);
++	int strtabsize = fdt_size_dt_strings(fdt);
++	const char *p;
++
++	*allocated = 0;
++
++	p = fdt_find_string_(strtab - strtabsize, strtabsize, s);
++	if (p)
++		return p - strtab;
++
++	*allocated = 1;
++
++	return fdt_add_string_(fdt, s);
++}
++
+ int fdt_property_placeholder(void *fdt, const char *name, int len, void **valp)
+ {
+ 	struct fdt_property *prop;
+ 	int nameoff;
++	int allocated;
+ 
+ 	FDT_SW_PROBE_STRUCT(fdt);
+ 
+-	nameoff = fdt_find_add_string_(fdt, name);
++	/* String de-duplication can be slow, _NO_NAME_DEDUP skips it */
++	if (sw_flags(fdt) & FDT_CREATE_FLAG_NO_NAME_DEDUP) {
++		allocated = 1;
++		nameoff = fdt_add_string_(fdt, name);
++	} else {
++		nameoff = fdt_find_add_string_(fdt, name, &allocated);
++	}
+ 	if (nameoff == 0)
+ 		return -FDT_ERR_NOSPACE;
+ 
+ 	prop = fdt_grab_space_(fdt, sizeof(*prop) + FDT_TAGALIGN(len));
+-	if (! prop)
++	if (! prop) {
++		if (allocated)
++			fdt_del_last_string_(fdt, name);
+ 		return -FDT_ERR_NOSPACE;
++	}
+ 
+ 	prop->tag = cpu_to_fdt32(FDT_PROP);
+ 	prop->nameoff = cpu_to_fdt32(nameoff);
+@@ -360,6 +367,10 @@ int fdt_finish(void *fdt)
+ 
+ 	/* Finally, adjust the header */
+ 	fdt_set_totalsize(fdt, newstroffset + fdt_size_dt_strings(fdt));
++
++	/* And fix up fields that were keeping intermediate state. */
++	fdt_set_last_comp_version(fdt, FDT_FIRST_SUPPORTED_VERSION);
+ 	fdt_set_magic(fdt, FDT_MAGIC);
++
+ 	return 0;
+ }
+diff --git a/scripts/dtc/libfdt/fdt_wip.c b/scripts/dtc/libfdt/fdt_wip.c
+index 534c1cbbb2f3..f64139e0b3dc 100644
+--- a/scripts/dtc/libfdt/fdt_wip.c
++++ b/scripts/dtc/libfdt/fdt_wip.c
+@@ -1,52 +1,7 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
+ /*
+  * libfdt - Flat Device Tree manipulation
+  * Copyright (C) 2006 David Gibson, IBM Corporation.
+- *
+- * libfdt is dual licensed: you can use it either under the terms of
+- * the GPL, or the BSD license, at your option.
+- *
+- *  a) This library is free software; you can redistribute it and/or
+- *     modify it under the terms of the GNU General Public License as
+- *     published by the Free Software Foundation; either version 2 of the
+- *     License, or (at your option) any later version.
+- *
+- *     This library is distributed in the hope that it will be useful,
+- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *     GNU General Public License for more details.
+- *
+- *     You should have received a copy of the GNU General Public
+- *     License along with this library; if not, write to the Free
+- *     Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
+- *     MA 02110-1301 USA
+- *
+- * Alternatively,
+- *
+- *  b) Redistribution and use in source and binary forms, with or
+- *     without modification, are permitted provided that the following
+- *     conditions are met:
+- *
+- *     1. Redistributions of source code must retain the above
+- *        copyright notice, this list of conditions and the following
+- *        disclaimer.
+- *     2. Redistributions in binary form must reproduce the above
+- *        copyright notice, this list of conditions and the following
+- *        disclaimer in the documentation and/or other materials
+- *        provided with the distribution.
+- *
+- *     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+- *     CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+- *     INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+- *     MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+- *     DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+- *     CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+- *     SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *     NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+- *     LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+- *     HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+- *     CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+- *     OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+- *     EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  */
+ #include "libfdt_env.h"
+ 
+diff --git a/scripts/dtc/libfdt/libfdt.h b/scripts/dtc/libfdt/libfdt.h
+index 15eb0fd3c6bb..7b5ffd13a887 100644
+--- a/scripts/dtc/libfdt/libfdt.h
++++ b/scripts/dtc/libfdt/libfdt.h
+@@ -1,54 +1,9 @@
++/* SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause) */
+ #ifndef LIBFDT_H
+ #define LIBFDT_H
+ /*
+  * libfdt - Flat Device Tree manipulation
+  * Copyright (C) 2006 David Gibson, IBM Corporation.
+- *
+- * libfdt is dual licensed: you can use it either under the terms of
+- * the GPL, or the BSD license, at your option.
+- *
+- *  a) This library is free software; you can redistribute it and/or
+- *     modify it under the terms of the GNU General Public License as
+- *     published by the Free Software Foundation; either version 2 of the
+- *     License, or (at your option) any later version.
+- *
+- *     This library is distributed in the hope that it will be useful,
+- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *     GNU General Public License for more details.
+- *
+- *     You should have received a copy of the GNU General Public
+- *     License along with this library; if not, write to the Free
+- *     Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
+- *     MA 02110-1301 USA
+- *
+- * Alternatively,
+- *
+- *  b) Redistribution and use in source and binary forms, with or
+- *     without modification, are permitted provided that the following
+- *     conditions are met:
+- *
+- *     1. Redistributions of source code must retain the above
+- *        copyright notice, this list of conditions and the following
+- *        disclaimer.
+- *     2. Redistributions in binary form must reproduce the above
+- *        copyright notice, this list of conditions and the following
+- *        disclaimer in the documentation and/or other materials
+- *        provided with the distribution.
+- *
+- *     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+- *     CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+- *     INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+- *     MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+- *     DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+- *     CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+- *     SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *     NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+- *     LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+- *     HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+- *     CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+- *     OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+- *     EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  */
+ 
+ #include "libfdt_env.h"
+@@ -138,7 +93,15 @@
+ 	/* FDT_ERR_NOPHANDLES: The device tree doesn't have any
+ 	 * phandle available anymore without causing an overflow */
+ 
+-#define FDT_ERR_MAX		17
++#define FDT_ERR_BADFLAGS	18
++	/* FDT_ERR_BADFLAGS: The function was passed a flags field that
++	 * contains invalid flags or an invalid combination of flags. */
++
++#define FDT_ERR_MAX		18
++
++/* constants */
++#define FDT_MAX_PHANDLE 0xfffffffe
++	/* Valid values for phandles range from 1 to 2^32-2. */
+ 
+ /**********************************************************************/
+ /* Low-level functions (you probably don't need these)                */
+@@ -171,6 +134,16 @@ static inline uint32_t fdt32_ld(const fdt32_t *p)
+ 		| bp[3];
+ }
+ 
++static inline void fdt32_st(void *property, uint32_t value)
++{
++	uint8_t *bp = property;
++
++	bp[0] = value >> 24;
++	bp[1] = (value >> 16) & 0xff;
++	bp[2] = (value >> 8) & 0xff;
++	bp[3] = value & 0xff;
++}
++
+ static inline uint64_t fdt64_ld(const fdt64_t *p)
+ {
+ 	const uint8_t *bp = (const uint8_t *)p;
+@@ -185,6 +158,20 @@ static inline uint64_t fdt64_ld(const fdt64_t *p)
+ 		| bp[7];
+ }
+ 
++static inline void fdt64_st(void *property, uint64_t value)
++{
++	uint8_t *bp = property;
++
++	bp[0] = value >> 56;
++	bp[1] = (value >> 48) & 0xff;
++	bp[2] = (value >> 40) & 0xff;
++	bp[3] = (value >> 32) & 0xff;
++	bp[4] = (value >> 24) & 0xff;
++	bp[5] = (value >> 16) & 0xff;
++	bp[6] = (value >> 8) & 0xff;
++	bp[7] = value & 0xff;
++}
++
+ /**********************************************************************/
+ /* Traversal functions                                                */
+ /**********************************************************************/
+@@ -361,6 +348,20 @@ const char *fdt_get_string(const void *fdt, int stroffset, int *lenp);
+  */
+ const char *fdt_string(const void *fdt, int stroffset);
+ 
++/**
++ * fdt_find_max_phandle - find and return the highest phandle in a tree
++ * @fdt: pointer to the device tree blob
++ * @phandle: return location for the highest phandle value found in the tree
++ *
++ * fdt_find_max_phandle() finds the highest phandle value in the given device
++ * tree. The value returned in @phandle is only valid if the function returns
++ * success.
++ *
++ * returns:
++ *     0 on success or a negative error code on failure
++ */
++int fdt_find_max_phandle(const void *fdt, uint32_t *phandle);
++
+ /**
+  * fdt_get_max_phandle - retrieves the highest phandle in a tree
+  * @fdt: pointer to the device tree blob
+@@ -369,12 +370,39 @@ const char *fdt_string(const void *fdt, int stroffset);
+  * device tree. This will ignore badly formatted phandles, or phandles
+  * with a value of 0 or -1.
+  *
++ * This function is deprecated in favour of fdt_find_max_phandle().
++ *
+  * returns:
+  *      the highest phandle on success
+  *      0, if no phandle was found in the device tree
+  *      -1, if an error occurred
+  */
+-uint32_t fdt_get_max_phandle(const void *fdt);
++static inline uint32_t fdt_get_max_phandle(const void *fdt)
++{
++	uint32_t phandle;
++	int err;
++
++	err = fdt_find_max_phandle(fdt, &phandle);
++	if (err < 0)
++		return (uint32_t)-1;
++
++	return phandle;
++}
++
++/**
++ * fdt_generate_phandle - return a new, unused phandle for a device tree blob
++ * @fdt: pointer to the device tree blob
++ * @phandle: return location for the new phandle
++ *
++ * Walks the device tree blob and looks for the highest phandle value. On
++ * success, the new, unused phandle value (one higher than the previously
++ * highest phandle value in the device tree blob) will be returned in the
++ * @phandle parameter.
++ *
++ * Returns:
++ *   0 on success or a negative error-code on failure
++ */
++int fdt_generate_phandle(const void *fdt, uint32_t *phandle);
+ 
+ /**
+  * fdt_num_mem_rsv - retrieve the number of memory reserve map entries
+@@ -1360,7 +1388,45 @@ int fdt_nop_node(void *fdt, int nodeoffset);
+ /* Sequential write functions                                         */
+ /**********************************************************************/
+ 
++/* fdt_create_with_flags flags */
++#define FDT_CREATE_FLAG_NO_NAME_DEDUP 0x1
++	/* FDT_CREATE_FLAG_NO_NAME_DEDUP: Do not try to de-duplicate property
++	 * names in the fdt. This can result in faster creation times, but
++	 * a larger fdt. */
++
++#define FDT_CREATE_FLAGS_ALL	(FDT_CREATE_FLAG_NO_NAME_DEDUP)
++
++/**
++ * fdt_create_with_flags - begin creation of a new fdt
++ * @fdt: pointer to memory allocated where fdt will be created
++ * @bufsize: size of the memory space at fdt
++ * @flags: a valid combination of FDT_CREATE_FLAG_ flags, or 0.
++ *
++ * fdt_create_with_flags() begins the process of creating a new fdt with
++ * the sequential write interface.
++ *
++ * fdt creation process must end with fdt_finished() to produce a valid fdt.
++ *
++ * returns:
++ *	0, on success
++ *	-FDT_ERR_NOSPACE, bufsize is insufficient for a minimal fdt
++ *	-FDT_ERR_BADFLAGS, flags is not valid
++ */
++int fdt_create_with_flags(void *buf, int bufsize, uint32_t flags);
++
++/**
++ * fdt_create - begin creation of a new fdt
++ * @fdt: pointer to memory allocated where fdt will be created
++ * @bufsize: size of the memory space at fdt
++ *
++ * fdt_create() is equivalent to fdt_create_with_flags() with flags=0.
++ *
++ * returns:
++ *	0, on success
++ *	-FDT_ERR_NOSPACE, bufsize is insufficient for a minimal fdt
++ */
+ int fdt_create(void *buf, int bufsize);
++
+ int fdt_resize(void *fdt, void *buf, int bufsize);
+ int fdt_add_reservemap_entry(void *fdt, uint64_t addr, uint64_t size);
+ int fdt_finish_reservemap(void *fdt);
+@@ -1831,6 +1897,43 @@ static inline int fdt_appendprop_cell(void *fdt, int nodeoffset,
+ #define fdt_appendprop_string(fdt, nodeoffset, name, str) \
+ 	fdt_appendprop((fdt), (nodeoffset), (name), (str), strlen(str)+1)
+ 
++/**
++ * fdt_appendprop_addrrange - append a address range property
++ * @fdt: pointer to the device tree blob
++ * @parent: offset of the parent node
++ * @nodeoffset: offset of the node to add a property at
++ * @name: name of property
++ * @addr: start address of a given range
++ * @size: size of a given range
++ *
++ * fdt_appendprop_addrrange() appends an address range value (start
++ * address and size) to the value of the named property in the given
++ * node, or creates a new property with that value if it does not
++ * already exist.
++ * If "name" is not specified, a default "reg" is used.
++ * Cell sizes are determined by parent's #address-cells and #size-cells.
++ *
++ * This function may insert data into the blob, and will therefore
++ * change the offsets of some existing nodes.
++ *
++ * returns:
++ *	0, on success
++ *	-FDT_ERR_BADLAYOUT,
++ *	-FDT_ERR_BADMAGIC,
++ *	-FDT_ERR_BADNCELLS, if the node has a badly formatted or invalid
++ *		#address-cells property
++ *	-FDT_ERR_BADOFFSET, nodeoffset did not point to FDT_BEGIN_NODE tag
++ *	-FDT_ERR_BADSTATE,
++ *	-FDT_ERR_BADSTRUCTURE,
++ *	-FDT_ERR_BADVERSION,
++ *	-FDT_ERR_BADVALUE, addr or size doesn't fit to respective cells size
++ *	-FDT_ERR_NOSPACE, there is insufficient free space in the blob to
++ *		contain a new property
++ *	-FDT_ERR_TRUNCATED, standard meanings
++ */
++int fdt_appendprop_addrrange(void *fdt, int parent, int nodeoffset,
++			     const char *name, uint64_t addr, uint64_t size);
++
+ /**
+  * fdt_delprop - delete a property
+  * @fdt: pointer to the device tree blob
+diff --git a/scripts/dtc/libfdt/libfdt_env.h b/scripts/dtc/libfdt/libfdt_env.h
+index eb2053845c9c..73b6d40450ac 100644
+--- a/scripts/dtc/libfdt/libfdt_env.h
++++ b/scripts/dtc/libfdt/libfdt_env.h
+@@ -1,57 +1,13 @@
++/* SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause) */
+ #ifndef LIBFDT_ENV_H
+ #define LIBFDT_ENV_H
+ /*
+  * libfdt - Flat Device Tree manipulation
+  * Copyright (C) 2006 David Gibson, IBM Corporation.
+  * Copyright 2012 Kim Phillips, Freescale Semiconductor.
+- *
+- * libfdt is dual licensed: you can use it either under the terms of
+- * the GPL, or the BSD license, at your option.
+- *
+- *  a) This library is free software; you can redistribute it and/or
+- *     modify it under the terms of the GNU General Public License as
+- *     published by the Free Software Foundation; either version 2 of the
+- *     License, or (at your option) any later version.
+- *
+- *     This library is distributed in the hope that it will be useful,
+- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *     GNU General Public License for more details.
+- *
+- *     You should have received a copy of the GNU General Public
+- *     License along with this library; if not, write to the Free
+- *     Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
+- *     MA 02110-1301 USA
+- *
+- * Alternatively,
+- *
+- *  b) Redistribution and use in source and binary forms, with or
+- *     without modification, are permitted provided that the following
+- *     conditions are met:
+- *
+- *     1. Redistributions of source code must retain the above
+- *        copyright notice, this list of conditions and the following
+- *        disclaimer.
+- *     2. Redistributions in binary form must reproduce the above
+- *        copyright notice, this list of conditions and the following
+- *        disclaimer in the documentation and/or other materials
+- *        provided with the distribution.
+- *
+- *     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+- *     CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+- *     INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+- *     MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+- *     DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+- *     CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+- *     SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *     NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+- *     LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+- *     HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+- *     CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+- *     OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+- *     EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  */
+ 
++#include <stdbool.h>
+ #include <stddef.h>
+ #include <stdint.h>
+ #include <stdlib.h>
+diff --git a/scripts/dtc/libfdt/libfdt_internal.h b/scripts/dtc/libfdt/libfdt_internal.h
+index 4109f890ae60..741eeb31502b 100644
+--- a/scripts/dtc/libfdt/libfdt_internal.h
++++ b/scripts/dtc/libfdt/libfdt_internal.h
+@@ -1,54 +1,9 @@
++/* SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause) */
+ #ifndef LIBFDT_INTERNAL_H
+ #define LIBFDT_INTERNAL_H
+ /*
+  * libfdt - Flat Device Tree manipulation
+  * Copyright (C) 2006 David Gibson, IBM Corporation.
+- *
+- * libfdt is dual licensed: you can use it either under the terms of
+- * the GPL, or the BSD license, at your option.
+- *
+- *  a) This library is free software; you can redistribute it and/or
+- *     modify it under the terms of the GNU General Public License as
+- *     published by the Free Software Foundation; either version 2 of the
+- *     License, or (at your option) any later version.
+- *
+- *     This library is distributed in the hope that it will be useful,
+- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *     GNU General Public License for more details.
+- *
+- *     You should have received a copy of the GNU General Public
+- *     License along with this library; if not, write to the Free
+- *     Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
+- *     MA 02110-1301 USA
+- *
+- * Alternatively,
+- *
+- *  b) Redistribution and use in source and binary forms, with or
+- *     without modification, are permitted provided that the following
+- *     conditions are met:
+- *
+- *     1. Redistributions of source code must retain the above
+- *        copyright notice, this list of conditions and the following
+- *        disclaimer.
+- *     2. Redistributions in binary form must reproduce the above
+- *        copyright notice, this list of conditions and the following
+- *        disclaimer in the documentation and/or other materials
+- *        provided with the distribution.
+- *
+- *     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+- *     CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+- *     INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+- *     MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+- *     DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+- *     CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+- *     SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *     NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+- *     LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+- *     HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+- *     CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+- *     OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+- *     EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  */
+ #include <fdt.h>
+ 
+@@ -56,11 +11,11 @@
+ #define FDT_TAGALIGN(x)		(FDT_ALIGN((x), FDT_TAGSIZE))
+ 
+ int fdt_ro_probe_(const void *fdt);
+-#define FDT_RO_PROBE(fdt)			\
+-	{ \
+-		int err_; \
+-		if ((err_ = fdt_ro_probe_(fdt)) != 0)	\
+-			return err_; \
++#define FDT_RO_PROBE(fdt)					\
++	{							\
++		int totalsize_;					\
++		if ((totalsize_ = fdt_ro_probe_(fdt)) < 0)	\
++			return totalsize_;			\
+ 	}
+ 
+ int fdt_check_node_offset_(const void *fdt, int offset);
+diff --git a/scripts/dtc/livetree.c b/scripts/dtc/livetree.c
+index 7a2e6446a17b..032df5878ccc 100644
+--- a/scripts/dtc/livetree.c
++++ b/scripts/dtc/livetree.c
+@@ -1,21 +1,6 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
+ /*
+  * (C) Copyright David Gibson <dwg@au1.ibm.com>, IBM Corporation.  2005.
+- *
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of the
+- * License, or (at your option) any later version.
+- *
+- *  This program is distributed in the hope that it will be useful,
+- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+- *  General Public License for more details.
+- *
+- *  You should have received a copy of the GNU General Public License
+- *  along with this program; if not, write to the Free Software
+- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
+- *                                                                   USA
+  */
+ 
+ #include "dtc.h"
+@@ -249,6 +234,7 @@ struct node * add_orphan_node(struct node *dt, struct node *new_node, char *ref)
+ 	char *name;
+ 
+ 	if (ref[0] == '/') {
++		d = data_add_marker(d, TYPE_STRING, ref);
+ 		d = data_append_data(d, ref, strlen(ref) + 1);
+ 
+ 		p = build_property("target-path", d, NULL);
+@@ -350,17 +336,20 @@ void delete_node(struct node *node)
+ }
+ 
+ void append_to_property(struct node *node,
+-				    char *name, const void *data, int len)
++			char *name, const void *data, int len,
++			enum markertype type)
+ {
+ 	struct data d;
+ 	struct property *p;
+ 
+ 	p = get_property(node, name);
+ 	if (p) {
+-		d = data_append_data(p->val, data, len);
++		d = data_add_marker(p->val, type, name);
++		d = data_append_data(d, data, len);
+ 		p->val = d;
+ 	} else {
+-		d = data_append_data(empty_data, data, len);
++		d = data_add_marker(empty_data, type, name);
++		d = data_append_data(d, data, len);
+ 		p = build_property(name, d, NULL);
+ 		add_property(node, p);
+ 	}
+@@ -537,8 +526,7 @@ struct node *get_node_by_path(struct node *tree, const char *path)
+ 	p = strchr(path, '/');
+ 
+ 	for_each_child(tree, child) {
+-		if (p && (strlen(child->name) == p-path) &&
+-		    strprefixeq(path, p - path, child->name))
++		if (p && strprefixeq(path, p - path, child->name))
+ 			return get_node_by_path(child, p+1);
+ 		else if (!p && streq(path, child->name))
+ 			return child;
+@@ -858,8 +846,8 @@ static void generate_label_tree_internal(struct dt_info *dti,
+ 
+ 			/* insert it */
+ 			p = build_property(l->label,
+-				data_copy_mem(node->fullpath,
+-						strlen(node->fullpath) + 1),
++				data_copy_escape_string(node->fullpath,
++						strlen(node->fullpath)),
+ 				NULL);
+ 			add_property(an, p);
+ 		}
+@@ -910,7 +898,7 @@ static void add_fixup_entry(struct dt_info *dti, struct node *fn,
+ 
+ 	xasprintf(&entry, "%s:%s:%u",
+ 			node->fullpath, prop->name, m->offset);
+-	append_to_property(fn, m->ref, entry, strlen(entry) + 1);
++	append_to_property(fn, m->ref, entry, strlen(entry) + 1, TYPE_STRING);
+ 
+ 	free(entry);
+ }
+@@ -970,7 +958,7 @@ static void add_local_fixup_entry(struct dt_info *dti,
+ 	char **compp;
+ 	int i, depth;
+ 
+-	/* walk back retreiving depth */
++	/* walk back retrieving depth */
+ 	depth = 0;
+ 	for (wn = node; wn; wn = wn->parent)
+ 		depth++;
+@@ -993,7 +981,7 @@ static void add_local_fixup_entry(struct dt_info *dti,
+ 	free(compp);
+ 
+ 	value_32 = cpu_to_fdt32(m->offset);
+-	append_to_property(wn, prop->name, &value_32, sizeof(value_32));
++	append_to_property(wn, prop->name, &value_32, sizeof(value_32), TYPE_UINT32);
+ }
+ 
+ static void generate_local_fixups_tree_internal(struct dt_info *dti,
+diff --git a/scripts/dtc/srcpos.c b/scripts/dtc/srcpos.c
+index 41f83700ee91..f5205fb9c1ff 100644
+--- a/scripts/dtc/srcpos.c
++++ b/scripts/dtc/srcpos.c
+@@ -1,20 +1,6 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
+ /*
+  * Copyright 2007 Jon Loeliger, Freescale Semiconductor, Inc.
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of the
+- * License, or (at your option) any later version.
+- *
+- *  This program is distributed in the hope that it will be useful,
+- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+- *  General Public License for more details.
+- *
+- *  You should have received a copy of the GNU General Public License
+- *  along with this program; if not, write to the Free Software
+- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
+- *                                                                   USA
+  */
+ 
+ #define _GNU_SOURCE
+diff --git a/scripts/dtc/srcpos.h b/scripts/dtc/srcpos.h
+index 6326a952c40e..4318d7ad34d9 100644
+--- a/scripts/dtc/srcpos.h
++++ b/scripts/dtc/srcpos.h
+@@ -1,20 +1,6 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
+ /*
+  * Copyright 2007 Jon Loeliger, Freescale Semiconductor, Inc.
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of the
+- * License, or (at your option) any later version.
+- *
+- *  This program is distributed in the hope that it will be useful,
+- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+- *  General Public License for more details.
+- *
+- *  You should have received a copy of the GNU General Public License
+- *  along with this program; if not, write to the Free Software
+- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
+- *                                                                   USA
+  */
+ 
+ #ifndef SRCPOS_H
+diff --git a/scripts/dtc/treesource.c b/scripts/dtc/treesource.c
+index 1af36628b75f..c9d980c8abfc 100644
+--- a/scripts/dtc/treesource.c
++++ b/scripts/dtc/treesource.c
+@@ -1,21 +1,6 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
+ /*
+  * (C) Copyright David Gibson <dwg@au1.ibm.com>, IBM Corporation.  2005.
+- *
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of the
+- * License, or (at your option) any later version.
+- *
+- *  This program is distributed in the hope that it will be useful,
+- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+- *  General Public License for more details.
+- *
+- *  You should have received a copy of the GNU General Public License
+- *  along with this program; if not, write to the Free Software
+- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
+- *                                                                   USA
+  */
+ 
+ #include "dtc.h"
+diff --git a/scripts/dtc/util.c b/scripts/dtc/util.c
+index 9c6fb5f286ae..48af961dcc8c 100644
+--- a/scripts/dtc/util.c
++++ b/scripts/dtc/util.c
+@@ -1,24 +1,10 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
+ /*
+  * Copyright 2011 The Chromium Authors, All Rights Reserved.
+  * Copyright 2008 Jon Loeliger, Freescale Semiconductor, Inc.
+  *
+  * util_is_printable_string contributed by
+  *	Pantelis Antoniou <pantelis.antoniou AT gmail.com>
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of the
+- * License, or (at your option) any later version.
+- *
+- *  This program is distributed in the hope that it will be useful,
+- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+- *  General Public License for more details.
+- *
+- *  You should have received a copy of the GNU General Public License
+- *  along with this program; if not, write to the Free Software
+- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
+- *                                                                   USA
+  */
+ 
+ #include <ctype.h>
+diff --git a/scripts/dtc/util.h b/scripts/dtc/util.h
+index 7658781a6200..ca5cb52928e3 100644
+--- a/scripts/dtc/util.h
++++ b/scripts/dtc/util.h
+@@ -1,3 +1,4 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
+ #ifndef UTIL_H
+ #define UTIL_H
+ 
+@@ -8,21 +9,6 @@
+ /*
+  * Copyright 2011 The Chromium Authors, All Rights Reserved.
+  * Copyright 2008 Jon Loeliger, Freescale Semiconductor, Inc.
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of the
+- * License, or (at your option) any later version.
+- *
+- *  This program is distributed in the hope that it will be useful,
+- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+- *  General Public License for more details.
+- *
+- *  You should have received a copy of the GNU General Public License
+- *  along with this program; if not, write to the Free Software
+- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
+- *                                                                   USA
+  */
+ 
+ #ifdef __GNUC__
+@@ -122,7 +108,7 @@ int utilfdt_read_err(const char *filename, char **buffp, size_t *len);
+  * stderr.
+  *
+  * @param filename	The filename to write, or - for stdout
+- * @param blob		Poiner to buffer containing fdt
++ * @param blob		Pointer to buffer containing fdt
+  * @return 0 if ok, -1 on error
+  */
+ int utilfdt_write(const char *filename, const void *blob);
+@@ -133,7 +119,7 @@ int utilfdt_write(const char *filename, const void *blob);
+  * an error message for the user.
+  *
+  * @param filename	The filename to write, or - for stdout
+- * @param blob		Poiner to buffer containing fdt
++ * @param blob		Pointer to buffer containing fdt
+  * @return 0 if ok, else an errno value representing the error
+  */
+ int utilfdt_write_err(const char *filename, const void *blob);
+diff --git a/scripts/dtc/yamltree.c b/scripts/dtc/yamltree.c
+index a00285a5a9ec..5b6ea8ea862f 100644
+--- a/scripts/dtc/yamltree.c
++++ b/scripts/dtc/yamltree.c
+@@ -1,22 +1,8 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
+ /*
+  * (C) Copyright Linaro, Ltd. 2018
+  * (C) Copyright Arm Holdings.  2017
+  * (C) Copyright David Gibson <dwg@au1.ibm.com>, IBM Corporation.  2005.
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of the
+- * License, or (at your option) any later version.
+- *
+- *  This program is distributed in the hope that it will be useful,
+- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+- *  General Public License for more details.
+- *
+- *  You should have received a copy of the GNU General Public License
+- *  along with this program; if not, write to the Free Software
+- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
+- *                                                                   USA
+  */
+ 
+ #include <stdlib.h>
+-- 
+2.23.0
 
-
---===============1250598585286119086==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============1250598585286119086==--
