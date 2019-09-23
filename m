@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iCL49-0000D4-2T
- for barebox@lists.infradead.org; Mon, 23 Sep 2019 09:55:35 +0000
+ id 1iCL49-0000D5-0b
+ for barebox@lists.infradead.org; Mon, 23 Sep 2019 09:55:34 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Mon, 23 Sep 2019 11:55:24 +0200
-Message-Id: <20190923095527.29174-1-o.rempel@pengutronix.de>
+Date: Mon, 23 Sep 2019 11:55:25 +0200
+Message-Id: <20190923095527.29174-2-o.rempel@pengutronix.de>
+In-Reply-To: <20190923095527.29174-1-o.rempel@pengutronix.de>
+References: <20190923095527.29174-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,39 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 0/3] remoteproc for barebox
+Subject: [PATCH v3 1/3] elf: add missing elf32_shdr
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-changes v3:
-- rebase against latest barebox version
-- remove [PATCH v2 1/4] add syscon_regmap_lookup_by_phandle() support
+From: Oleksij Rempel <linux@rempel-privat.de>
 
-Oleksij Rempel (3):
-  elf: add missing elf32_shdr
-  of: base: don't try to read cells_name property if no cells_name set
-  port reduced version of remoteproc framework from linux
+needed for remoteproc port
 
- drivers/Kconfig                            |   1 +
- drivers/Makefile                           |   1 +
- drivers/of/base.c                          |   3 +-
- drivers/remoteproc/Kconfig                 |  26 ++
- drivers/remoteproc/Makefile                |   7 +
- drivers/remoteproc/imx_rproc.c             | 402 +++++++++++++++++++++
- drivers/remoteproc/remoteproc_core.c       | 166 +++++++++
- drivers/remoteproc/remoteproc_elf_loader.c |  88 +++++
- drivers/remoteproc/remoteproc_internal.h   |  30 ++
- include/elf.h                              |   2 +-
- include/linux/remoteproc.h                 |  51 +++
- 11 files changed, 775 insertions(+), 2 deletions(-)
- create mode 100644 drivers/remoteproc/Kconfig
- create mode 100644 drivers/remoteproc/Makefile
- create mode 100644 drivers/remoteproc/imx_rproc.c
- create mode 100644 drivers/remoteproc/remoteproc_core.c
- create mode 100644 drivers/remoteproc/remoteproc_elf_loader.c
- create mode 100644 drivers/remoteproc/remoteproc_internal.h
- create mode 100644 include/linux/remoteproc.h
+Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
+---
+ include/elf.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/include/elf.h b/include/elf.h
+index 633f4992dd..44be07f73a 100644
+--- a/include/elf.h
++++ b/include/elf.h
+@@ -286,7 +286,7 @@ typedef struct elf64_phdr {
+ #define SHN_COMMON	0xfff2
+ #define SHN_HIRESERVE	0xffff
+ 
+-typedef struct {
++typedef struct elf32_shdr {
+   Elf32_Word	sh_name;
+   Elf32_Word	sh_type;
+   Elf32_Word	sh_flags;
 -- 
 2.23.0
 
