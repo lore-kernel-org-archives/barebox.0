@@ -1,19 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iCOZ0-0007gO-Hm
- for barebox@lists.infradead.org; Mon, 23 Sep 2019 13:39:40 +0000
-References: <20190819133847.17015-1-s.hauer@pengutronix.de>
- <20190819133847.17015-3-s.hauer@pengutronix.de>
- <20190819135240.le2mhbyf3v3ysqiw@pengutronix.de>
- <20190819135656.jgnplrkn3ipjj6ve@pengutronix.de>
- <20190819140950.sos7gfiyx3c45ybd@pengutronix.de>
+ id 1iCNAr-0001si-Ba
+ for barebox@lists.infradead.org; Mon, 23 Sep 2019 12:10:39 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <5dbfcb67-d85c-ecf8-afc2-4d5c9ca7e5ab@pengutronix.de>
-Date: Mon, 23 Sep 2019 15:39:33 +0200
+Date: Mon, 23 Sep 2019 14:10:12 +0200
+Message-Id: <20190923121018.31574-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20190819140950.sos7gfiyx3c45ybd@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,49 +19,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/8] scripts/dtc: Update to upstream version v1.5.0
-To: Roland Hieber <rhi@pengutronix.de>, Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 0/6] scripts/dtc: rework dtc import handling
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On 8/19/19 4:09 PM, Roland Hieber wrote:
-> On Mon, Aug 19, 2019 at 03:56:56PM +0200, Sascha Hauer wrote:
->> On Mon, Aug 19, 2019 at 03:52:40PM +0200, Roland Hieber wrote:
->>> On Mon, Aug 19, 2019 at 03:38:41PM +0200, Sascha Hauer wrote:
->>>> This adds the following commits from upstream:
->>>>
->>>> d37f6b2 Bump version to v1.5.0
->>>> a4b1a30 pylibfdt:tests: Extend the way how to find a Python module
->>>
->>> I'm sorry if this will probably mean a lot of work for you, but sadly
->>> those SHA1 hashes are too short to be unique :-(
->>>
->>>     linux (master) $ git show d37f6b2
->>>     fatal: ambiguous argument 'd37f6b2': unknown revision or path not in the working tree.
->>>     Use '--' to separate paths from revisions, like this:
->>>     'git <command> [<revision>...] -- [<file>...]'
->>
->> These are dtc commits, not Linux kernel commits.
-> 
-> OK, that explains it. Then the comment should probably mention where
-> upstream lives :-)
+Linux upstream doesn't use fdtget. barebox does however for IMD.
+Commits 46bdae84e8 ("dtc: Update update-dtc-source.sh from Linux") and
+4e731e48d4 ("scripts/dtc: Update to upstream version v1.5.0") broke
+this, which the first two patches in this series fix. They should be
+applied to upstream/master.
 
-FYI: Sent out <20190923121018.31574-5-a.fatoum@pengutronix.de> today,
-which does just that.
+This probably went undtected because an old ftdget would survive a
+mrproper, so this issue only happens on fresh check-outs.
 
-Cheers
-Ahmad
+The other 4 patches address the fact that the process by which we update
+dtc is error-prone. This is evident by this patch and 1df07fbcdf
+("scripts/dtc: Reenable fdtget"), which fixed the same issue a year
+prior.
 
+To address this add documentation on how to update dtc and make the
+script easier to use. The update to v1.5.1 is included as well to test
+this out, but can be dropped.
 
-> 
->  - Roland
-> 
+Ahmad Fatoum (6):
+  scripts/dtc: Reinstate barebox-specifics in update-dtc-source.sh
+  scripts/dtc: reinstate building of fdtget along with dtc
+  scripts/dtc: git rm old files as part of update process
+  scripts/dtc: mention dtc project in update-dtc-source.sh commit
+    message
+  scripts/dtc: Update to upstream version v1.5.1
+  Documentation: document barebox device tree handling
 
+ Documentation/devicetree/index.rst   |  56 +++-
+ scripts/dtc/Makefile                 |   8 +-
+ scripts/dtc/Makefile.dtc             |   1 +
+ scripts/dtc/checks.c                 |  36 ++-
+ scripts/dtc/data.c                   |  17 +-
+ scripts/dtc/dtc-lexer.l              |  17 +-
+ scripts/dtc/dtc-parser.y             |  17 +-
+ scripts/dtc/dtc.c                    |  17 +-
+ scripts/dtc/dtc.h                    |  20 +-
+ scripts/dtc/fdtget.c                 | 369 +++++++++++++++++++++++++++
+ scripts/dtc/flattree.c               |  19 +-
+ scripts/dtc/fstree.c                 |  17 +-
+ scripts/dtc/libfdt/Makefile.libfdt   |   3 +
+ scripts/dtc/libfdt/fdt.c             |  56 +---
+ scripts/dtc/libfdt/fdt.h             |  47 +---
+ scripts/dtc/libfdt/fdt_addresses.c   | 102 ++++----
+ scripts/dtc/libfdt/fdt_empty_tree.c  |  47 +---
+ scripts/dtc/libfdt/fdt_overlay.c     |  85 ++----
+ scripts/dtc/libfdt/fdt_ro.c          | 108 +++-----
+ scripts/dtc/libfdt/fdt_rw.c          |  69 ++---
+ scripts/dtc/libfdt/fdt_strerror.c    |  47 +---
+ scripts/dtc/libfdt/fdt_sw.c          | 125 ++++-----
+ scripts/dtc/libfdt/fdt_wip.c         |  47 +---
+ scripts/dtc/libfdt/libfdt.h          | 199 +++++++++++----
+ scripts/dtc/libfdt/libfdt_env.h      |  48 +---
+ scripts/dtc/libfdt/libfdt_internal.h |  57 +----
+ scripts/dtc/livetree.c               |  40 +--
+ scripts/dtc/srcpos.c                 |  16 +-
+ scripts/dtc/srcpos.h                 |  16 +-
+ scripts/dtc/treesource.c             |  17 +-
+ scripts/dtc/update-dtc-source.sh     |  16 +-
+ scripts/dtc/util.c                   |  16 +-
+ scripts/dtc/util.h                   |  20 +-
+ scripts/dtc/yamltree.c               |  16 +-
+ 34 files changed, 873 insertions(+), 918 deletions(-)
+ create mode 100644 scripts/dtc/fdtget.c
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.23.0
+
 
 _______________________________________________
 barebox mailing list
