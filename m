@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iCMiD-0001F5-S8
- for barebox@lists.infradead.org; Mon, 23 Sep 2019 11:41:04 +0000
-Date: Mon, 23 Sep 2019 13:40:56 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-Message-ID: <20190923114056.3r5ukleoadbhtu5e@pengutronix.de>
+Received: from mickerik.phytec.de ([195.145.39.210])
+ by bombadil.infradead.org with esmtp (Exim 4.92.2 #3 (Red Hat Linux))
+ id 1iCktu-00044w-2Y
+ for barebox@lists.infradead.org; Tue, 24 Sep 2019 13:30:45 +0000
 References: <20190911145636.4637-1-m.felsch@pengutronix.de>
  <20190920141226.w3alja43ud5ri5cs@pengutronix.de>
  <b0f2076b-ba33-47b1-b4ed-01b9cd842181@phytec.de>
+ <20190923114056.3r5ukleoadbhtu5e@pengutronix.de>
+From: =?UTF-8?Q?Stefan_Riedm=c3=bcller?= <s.riedmueller@phytec.de>
+Message-ID: <13ee9dc1-a8ff-ce96-0147-692c05d0d0f9@phytec.de>
+Date: Tue, 24 Sep 2019 15:30:34 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <b0f2076b-ba33-47b1-b4ed-01b9cd842181@phytec.de>
+In-Reply-To: <20190923114056.3r5ukleoadbhtu5e@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,764 +21,399 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 1/2] ARM: dts: imx6: phycore: make use of upstream dts
-To: Stefan =?iso-8859-1?Q?Riedm=FCller?= <s.riedmueller@phytec.de>
+To: Marco Felsch <m.felsch@pengutronix.de>
 Cc: d.schultz@phytec.de, barebox@lists.infradead.org, s.christ@phytec.de, j.remmet@phytec.de
 
-Hi Stefan,
-
-On 19-09-23 10:31, Stefan Riedm=FCller wrote:
-> Hi Marco,
-> =
-
-> Usually we would like to keep the features supported in the barebox to a
-> minimum set that is mostly supported by the SOM itself and thus is mostly
-> base board independent.
-
-Yes, I understand that but the barebox SoM dtsi had also muxing options
-which made only sense with the mira board.
-
-> My suggestion would be to just use the upstream phycore devicetree. Would
-> that be ok with you? Of course that means some features like e.g. USB need
-> to be duplicated but that should be overseeable.
-
-I was also thinking about just use the upstream phycore dtsi but than I
-saw that the barebox dtsi is adding mira board specific code. The
-upstream devicetree's are a bit cleaner. Can you identify possible
-mistakes I made? I tought the changes I made don't affect barebox in a
-negative way. Maybe there are new devices but barebox will ignore them
-if you didn't enable the driver support for it.
-
-Regards,
-  Marco
-
-> I can send a new patch if you like but I would need to find some free time
-> to do it.
-> =
-
-> Regards,
-> Stefan
-> =
-
-> =
-
-> On 20.09.19 16:12, Marco Felsch wrote:
-> > Hi,
-> > =
-
-> > @phytec
-> > =
-
-> > Please can you test those changes because I don't have all these boards.
-> > =
-
-> > Regards,
-> >    Marco
-> > =
-
-> > On 19-09-11 16:56, Marco Felsch wrote:
-> > > Since a quite time we can use the upstream Phytec mira devicetree's a=
-nd
-> > > the phycore dtsi to reduce code duplication and possible unwanted
-> > > divergences. I've converted all boards devicetree's to use the upstre=
-am
-> > > mira devicetree's except the:
-> > >    - imx6dl-phytec-phycore-som-emmc.dts
-> > >    - imx6dl-phytec-phycore-som-lc-emmc.dts
-> > >    - imx6dl-phytec-phycore-som-lc-nand.dts
-> > > boards because those variants are not upstream available yet.
-> > > =
-
-> > > This commit also removes mixtures between barebox phycore SoM dtsi and
-> > > barebox board devicetree's within the imx6qdl-phytec-phycore-som.dtsi.
-> > > This SoM dtsi contained muxing options which are only valid in
-> > > combination with the mira baseboard.
-> > > =
-
-> > > Now all barebox dts(i) files contain only the necessary things or
-> > > divergences from upstream e.g. the compatible wasn't exactly the same.
-> > > =
-
-> > > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> > > ---
-> > >   .../dts/imx6dl-phytec-phycore-som-emmc.dts    |  12 +-
-> > >   .../dts/imx6dl-phytec-phycore-som-lc-emmc.dts |  12 +-
-> > >   .../dts/imx6dl-phytec-phycore-som-lc-nand.dts |   6 +-
-> > >   .../dts/imx6dl-phytec-phycore-som-nand.dts    |  31 +--
-> > >   .../arm/dts/imx6q-phytec-phycore-som-emmc.dts |  39 +--
-> > >   .../arm/dts/imx6q-phytec-phycore-som-nand.dts |  39 +--
-> > >   arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi  | 261 ++-------------=
----
-> > >   .../dts/imx6qp-phytec-phycore-som-nand.dts    |  38 +--
-> > >   8 files changed, 49 insertions(+), 389 deletions(-)
-> > > =
-
-> > > diff --git a/arch/arm/dts/imx6dl-phytec-phycore-som-emmc.dts b/arch/a=
-rm/dts/imx6dl-phytec-phycore-som-emmc.dts
-> > > index 21cbb5f944..d9a40599c7 100644
-> > > --- a/arch/arm/dts/imx6dl-phytec-phycore-som-emmc.dts
-> > > +++ b/arch/arm/dts/imx6dl-phytec-phycore-som-emmc.dts
-> > > @@ -13,6 +13,8 @@
-> > >   /dts-v1/;
-> > >   #include <arm/imx6dl.dtsi>
-> > > +#include <arm/imx6qdl-phytec-phycore-som.dtsi>
-> > > +#include <arm/imx6qdl-phytec-mira.dtsi>
-> > >   #include "imx6dl.dtsi"
-> > >   #include "imx6qdl-phytec-phycore-som.dtsi"
-> > >   #include "imx6qdl-phytec-state.dtsi"
-> > > @@ -22,14 +24,6 @@
-> > >   	compatible =3D "phytec,imx6dl-pcm058-emmc", "fsl,imx6dl";
-> > >   };
-> > > -&ecspi1 {
-> > > -	status =3D "okay";
-> > > -};
-> > > -
-> > > -&eeprom {
-> > > -	status =3D "okay";
-> > > -};
-> > > -
-> > >   &ethphy {
-> > >   	max-speed =3D <1000>;
-> > >   };
-> > > @@ -38,7 +32,7 @@
-> > >   	status =3D "okay";
-> > >   };
-> > > -&flash {
-> > > +&m25p80 {
-> > >   	status =3D "okay";
-> > >   };
-> > > diff --git a/arch/arm/dts/imx6dl-phytec-phycore-som-lc-emmc.dts b/arc=
-h/arm/dts/imx6dl-phytec-phycore-som-lc-emmc.dts
-> > > index b8efb95ee0..516df5ff5a 100644
-> > > --- a/arch/arm/dts/imx6dl-phytec-phycore-som-lc-emmc.dts
-> > > +++ b/arch/arm/dts/imx6dl-phytec-phycore-som-lc-emmc.dts
-> > > @@ -7,6 +7,8 @@
-> > >   /dts-v1/;
-> > >   #include <arm/imx6dl.dtsi>
-> > > +#include <arm/imx6qdl-phytec-phycore-som.dtsi>
-> > > +#include <arm/imx6qdl-phytec-mira.dtsi>
-> > >   #include "imx6dl.dtsi"
-> > >   #include "imx6qdl-phytec-phycore-som.dtsi"
-> > >   #include "imx6qdl-phytec-state.dtsi"
-> > > @@ -16,14 +18,6 @@
-> > >   	compatible =3D "phytec,imx6dl-pcm058-emmc", "fsl,imx6dl";
-> > >   };
-> > > -&ecspi1 {
-> > > -	status =3D "okay";
-> > > -};
-> > > -
-> > > -&eeprom {
-> > > -	status =3D "okay";
-> > > -};
-> > > -
-> > >   &ethphy {
-> > >   	max-speed =3D <100>;
-> > >   };
-> > > @@ -32,7 +26,7 @@
-> > >   	status =3D "okay";
-> > >   };
-> > > -&flash {
-> > > +&m25p80 {
-> > >   	status =3D "okay";
-> > >   };
-> > > diff --git a/arch/arm/dts/imx6dl-phytec-phycore-som-lc-nand.dts b/arc=
-h/arm/dts/imx6dl-phytec-phycore-som-lc-nand.dts
-> > > index 4d38d1698a..ab13d6b77b 100644
-> > > --- a/arch/arm/dts/imx6dl-phytec-phycore-som-lc-nand.dts
-> > > +++ b/arch/arm/dts/imx6dl-phytec-phycore-som-lc-nand.dts
-> > > @@ -7,6 +7,8 @@
-> > >   /dts-v1/;
-> > >   #include <arm/imx6dl.dtsi>
-> > > +#include <arm/imx6qdl-phytec-phycore-som.dtsi>
-> > > +#include <arm/imx6qdl-phytec-mira.dtsi>
-> > >   #include "imx6dl.dtsi"
-> > >   #include "imx6qdl-phytec-phycore-som.dtsi"
-> > >   #include "imx6qdl-phytec-state.dtsi"
-> > > @@ -16,10 +18,6 @@
-> > >   	compatible =3D "phytec,imx6dl-pcm058-nand", "fsl,imx6dl";
-> > >   };
-> > > -&eeprom {
-> > > -	status =3D "okay";
-> > > -};
-> > > -
-> > >   &ethphy {
-> > >   	max-speed =3D <100>;
-> > >   };
-> > > diff --git a/arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts b/arch/a=
-rm/dts/imx6dl-phytec-phycore-som-nand.dts
-> > > index 3ad3723d28..db4d930b29 100644
-> > > --- a/arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts
-> > > +++ b/arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts
-> > > @@ -9,45 +9,22 @@
-> > >    * http://www.gnu.org/copyleft/gpl.html
-> > >    */
-> > > -/dts-v1/;
-> > > -
-> > > -#include <arm/imx6dl.dtsi>
-> > > +#include <arm/imx6dl-phytec-mira-rdk-nand.dts>
-> > >   #include "imx6dl.dtsi"
-> > >   #include "imx6qdl-phytec-phycore-som.dtsi"
-> > >   #include "imx6qdl-phytec-state.dtsi"
-> > >   / {
-> > > -	model =3D "Phytec phyCORE-i.MX6 Duallite/SOLO with NAND";
-> > > -	compatible =3D "phytec,imx6dl-pcm058-nand", "fsl,imx6dl";
-> > > -};
-> > > -
-> > > -&eeprom {
-> > > -	status =3D "okay";
-> > > +	compatible =3D "phytec,imx6dl-pbac06-nand", "phytec,imx6dl-pbac06",
-> > > +		     "phytec,imx6dl-pcm058-nand", "phytec,imx6qdl-pcm058",
-> > > +		     "fsl,imx6dl";
-> > >   };
-> > >   &ethphy {
-> > >   	max-speed =3D <1000>;
-> > >   };
-> > > -&fec {
-> > > -	status =3D "okay";
-> > > -};
-> > > -
-> > > -&gpmi {
-> > > -	status =3D "okay";
-> > > -};
-> > > -
-> > > -&usbh1 {
-> > > -	status =3D "okay";
-> > > -};
-> > > -
-> > > -&usbotg {
-> > > -	status =3D "okay";
-> > > -};
-> > > -
-> > >   &usdhc1 {
-> > > -	status =3D "okay";
-> > > -
-> > >   	partitions {
-> > >   		compatible =3D "fixed-partitions";
-> > >   		#address-cells =3D <1>;
-> > > diff --git a/arch/arm/dts/imx6q-phytec-phycore-som-emmc.dts b/arch/ar=
-m/dts/imx6q-phytec-phycore-som-emmc.dts
-> > > index 7a86d5b94d..55dc1f91f7 100644
-> > > --- a/arch/arm/dts/imx6q-phytec-phycore-som-emmc.dts
-> > > +++ b/arch/arm/dts/imx6q-phytec-phycore-som-emmc.dts
-> > > @@ -9,49 +9,22 @@
-> > >    * http://www.gnu.org/copyleft/gpl.html
-> > >    */
-> > > -/dts-v1/;
-> > > -
-> > > -#include <arm/imx6q.dtsi>
-> > > +#include <arm/imx6q-phytec-mira-rdk-emmc.dts>
-> > >   #include "imx6q.dtsi"
-> > >   #include "imx6qdl-phytec-phycore-som.dtsi"
-> > >   #include "imx6qdl-phytec-state.dtsi"
-> > >   / {
-> > > -	model =3D "Phytec phyCORE-i.MX6 Quad with eMMC";
-> > > -	compatible =3D "phytec,imx6q-pcm058-emmc", "fsl,imx6q";
-> > > -};
-> > > -
-> > > -&ecspi1 {
-> > > -	status =3D "okay";
-> > > -};
-> > > -
-> > > -&eeprom {
-> > > -	status =3D "okay";
-> > > +	compatible =3D "phytec,imx6q-pbac06-emmc", "phytec,imx6q-pbac06",
-> > > +		     "phytec,imx6q-pcm058-emmc", "phytec,imx6qdl-pcm058",
-> > > +		     "fsl,imx6q";
-> > >   };
-> > >   &ethphy {
-> > >   	max-speed =3D <1000>;
-> > >   };
-> > > -&fec {
-> > > -	status =3D "okay";
-> > > -};
-> > > -
-> > > -&flash {
-> > > -	status =3D "okay";
-> > > -};
-> > > -
-> > > -&usbh1 {
-> > > -	status =3D "okay";
-> > > -};
-> > > -
-> > > -&usbotg {
-> > > -	status =3D "okay";
-> > > -};
-> > > -
-> > >   &usdhc1 {
-> > > -	status =3D "okay";
-> > > -
-> > >   	partitions {
-> > >   		compatible =3D "fixed-partitions";
-> > >   		#address-cells =3D <1>;
-> > > @@ -68,7 +41,3 @@
-> > >   		};
-> > >   	};
-> > >   };
-> > > -
-> > > -&usdhc4 {
-> > > -	status =3D "okay";
-> > > -};
-> > > diff --git a/arch/arm/dts/imx6q-phytec-phycore-som-nand.dts b/arch/ar=
-m/dts/imx6q-phytec-phycore-som-nand.dts
-> > > index 96d1de224c..56812c2473 100644
-> > > --- a/arch/arm/dts/imx6q-phytec-phycore-som-nand.dts
-> > > +++ b/arch/arm/dts/imx6q-phytec-phycore-som-nand.dts
-> > > @@ -9,54 +9,23 @@
-> > >    * http://www.gnu.org/copyleft/gpl.html
-> > >    */
-> > > -/dts-v1/;
-> > > -
-> > > -#include <arm/imx6q.dtsi>
-> > > +#include <arm/imx6q-phytec-mira-rdk-nand.dts>
-> > >   #include "imx6q.dtsi"
-> > >   #include "imx6qdl-phytec-phycore-som.dtsi"
-> > >   #include "imx6qdl-phytec-state.dtsi"
-> > >   / {
-> > > -	model =3D "Phytec phyCORE-i.MX6 Quad with NAND";
-> > > -	compatible =3D "phytec,imx6q-pcm058-nand", "fsl,imx6q";
-> > > -
-> > > -};
-> > > -
-> > > -&ecspi1 {
-> > > -	status =3D "okay";
-> > > -};
-> > > +	compatible =3D "phytec,imx6q-pbac06-nand", "phytec,imx6q-pbac06",
-> > > +		     "phytec,imx6q-pcm058-nand", "phytec,imx6qdl-pcm058",
-> > > +		     "fsl,imx6q";
-> > > -&eeprom {
-> > > -	status =3D "okay";
-> > >   };
-> > >   &ethphy {
-> > >   	max-speed =3D <1000>;
-> > >   };
-> > > -&fec {
-> > > -	status =3D "okay";
-> > > -};
-> > > -
-> > > -&flash {
-> > > -	status =3D "okay";
-> > > -};
-> > > -
-> > > -&gpmi {
-> > > -	status =3D "okay";
-> > > -};
-> > > -
-> > > -&usbh1 {
-> > > -	status =3D "okay";
-> > > -};
-> > > -
-> > > -&usbotg {
-> > > -	status =3D "okay";
-> > > -};
-> > > -
-> > >   &usdhc1 {
-> > > -	status =3D "okay";
-> > > -
-> > >   	partitions {
-> > >   		compatible =3D "fixed-partitions";
-> > >   		#address-cells =3D <1>;
-> > > diff --git a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi b/arch/arm/=
-dts/imx6qdl-phytec-phycore-som.dtsi
-> > > index 1d39368165..e17304c42b 100644
-> > > --- a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-> > > +++ b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-> > > @@ -13,8 +13,6 @@
-> > >   / {
-> > >   	chosen {
-> > > -		stdout-path =3D &uart2;
-> > > -
-> > >   		environment-sd1 {
-> > >   			compatible =3D "barebox,environment";
-> > >   			device-path =3D &usdhc1, "partname:barebox-environment";
-> > > @@ -35,102 +33,51 @@
-> > >   		environment-spinor {
-> > >   			compatible =3D "barebox,environment";
-> > > -			device-path =3D &flash, "partname:barebox-environment";
-> > > +			device-path =3D &m25p80, "partname:barebox-environment";
-> > >   			status =3D "disabled";
-> > >   		};
-> > >   	};
-> > > -	reg_usbh1_vbus: regulator-usbh1 {
-> > > -		compatible =3D "regulator-fixed";
-> > > -		pinctrl-names =3D "default";
-> > > -		pinctrl-0 =3D <&pinctrl_usbh1_vbus>;
-> > > -		regulator-name =3D "usbh1_vbus";
-> > > -		regulator-min-microvolt =3D <5000000>;
-> > > -		regulator-max-microvolt =3D <5000000>;
-> > > -		gpio =3D <&gpio2 18 GPIO_ACTIVE_HIGH>;
-> > > -		enable-active-high;
-> > > -	};
-> > > -
-> > > -	reg_usbotg_vbus: regulator-usbotg {
-> > > -		compatible =3D "regulator-fixed";
-> > > -		pinctrl-names =3D "default";
-> > > -		pinctrl-0 =3D <&pinctrl_usbotg_vbus>;
-> > > -		regulator-name =3D "usbotg_vbus";
-> > > -		regulator-min-microvolt =3D <5000000>;
-> > > -		regulator-max-microvolt =3D <5000000>;
-> > > -		gpio =3D <&gpio2 19 GPIO_ACTIVE_HIGH>;
-> > > -		enable-active-high;
-> > > +	/* Let the bootloader set the real size */
-> > > +	memory@10000000 {
-> > > +		device_type =3D "memory";
-> > > +		reg =3D <0x0 0x0>;
-> > >   	};
-> > >   };
-> > > -&ecspi1 {
-> > > -	pinctrl-names =3D "default";
-> > > -	pinctrl-0 =3D <&pinctrl_ecspi1>;
-> > > -	fsl,spi-num-chipselects =3D <1>;
-> > > -	cs-gpios =3D <&gpio3 19 0>;
-> > > -	status =3D "disabled";
-> > > -
-> > > -	flash: flash@0 {
-> > > -		compatible =3D "jedec,spi-nor";
-> > > -		spi-max-frequency =3D <20000000>;
-> > > -		reg =3D <0>;
-> > > -		status =3D "disabled";
-> > > -
-> > > -		partitions {
-> > > -			compatible =3D "fixed-partitions";
-> > > -			#address-cells =3D <1>;
-> > > -			#size-cells =3D <1>;
-> > > +&m25p80 {
-> > > +	partitions {
-> > > +		compatible =3D "fixed-partitions";
-> > > +		#address-cells =3D <1>;
-> > > +		#size-cells =3D <1>;
-> > > -			partition@0 {
-> > > -				label =3D "barebox";
-> > > -				reg =3D <0x0 0x100000>;
-> > > -			};
-> > > +		partition@0 {
-> > > +			label =3D "barebox";
-> > > +			reg =3D <0x0 0x100000>;
-> > > +		};
-> > > -			partition@100000 {
-> > > -				label =3D "barebox-environment";
-> > > -				reg =3D <0x100000 0x20000>;
-> > > -			};
-> > > +		partition@100000 {
-> > > +			label =3D "barebox-environment";
-> > > +			reg =3D <0x100000 0x20000>;
-> > > +		};
-> > > -			partition@120000 {
-> > > -				label =3D "oftree";
-> > > -				reg =3D <0x120000 0x20000>;
-> > > -			};
-> > > +		partition@120000 {
-> > > +			label =3D "oftree";
-> > > +			reg =3D <0x120000 0x20000>;
-> > > +		};
-> > > -			partition@140000 {
-> > > -				label =3D "kernel";
-> > > -				reg =3D <0x140000 0x0>;
-> > > -			};
-> > > +		partition@140000 {
-> > > +			label =3D "kernel";
-> > > +			reg =3D <0x140000 0x0>;
-> > >   		};
-> > >   	};
-> > >   };
-> > >   &fec {
-> > > -	pinctrl-names =3D "default";
-> > > -	pinctrl-0 =3D <&pinctrl_enet>;
-> > > -	phy-handle =3D <&ethphy>;
-> > > -	phy-mode =3D "rgmii";
-> > > -	phy-reset-gpios =3D <&gpio1 14 GPIO_ACTIVE_LOW>;
-> > >   	phy-reset-duration =3D <10>; /* in msecs */
-> > > -	status =3D "disabled";
-> > > -
-> > > -	mdio {
-> > > -		#address-cells =3D <1>;
-> > > -		#size-cells =3D <0>;
-> > > -
-> > > -		ethphy: ethernet-phy@3 {
-> > > -			reg =3D <3>;
-> > > -			txc-skew-ps =3D <1680>;
-> > > -			rxc-skew-ps =3D <1860>;
-> > > -		};
-> > > -	};
-> > >   };
-> > >   &gpmi {
-> > > -	pinctrl-names =3D "default";
-> > > -	pinctrl-0 =3D <&pinctrl_gpmi_nand>;
-> > > -	nand-on-flash-bbt;
-> > > -	status =3D "disabled";
-> > > -
-> > >   	partitions {
-> > >   		compatible =3D "fixed-partitions";
-> > >   		#address-cells =3D <1>;
-> > > @@ -154,11 +101,6 @@
-> > >   };
-> > >   &i2c3 {
-> > > -	pinctrl-names =3D "default";
-> > > -	pinctrl-0 =3D <&pinctrl_i2c3>;
-> > > -	clock-frequency =3D <400000>;
-> > > -	status =3D "okay";
-> > > -
-> > >   	eeprom: eeprom@50 {
-> > >   		status =3D "disabled";
-> > >   		compatible =3D "24c32";
-> > > @@ -166,170 +108,17 @@
-> > >   	};
-> > >   	pmic@58 {
-> > > -		compatible =3D "dlg,da9062";
-> > > -		reg =3D <0x58>;
-> > > -		status =3D "okay";
-> > > -
-> > >   		watchdog-priority =3D <500>;
-> > >   		restart-priority =3D <500>;
-> > >   		reset-source-priority =3D <500>;
-> > >   	};
-> > >   };
-> > > -&iomuxc {
-> > > -	pinctrl_ecspi1: ecspi1grp {
-> > > -		fsl,pins =3D <
-> > > -			MX6QDL_PAD_EIM_D16__ECSPI1_SCLK		0x100b1
-> > > -			MX6QDL_PAD_EIM_D17__ECSPI1_MISO		0x100b1
-> > > -			MX6QDL_PAD_EIM_D18__ECSPI1_MOSI		0x100b1
-> > > -			MX6QDL_PAD_EIM_D19__GPIO3_IO19		0x80000000
-> > > -		>;
-> > > -	};
-> > > -
-> > > -	pinctrl_enet: enetgrp {
-> > > -		fsl,pins =3D <
-> > > -			MX6QDL_PAD_ENET_MDIO__ENET_MDIO		0x1b0b0
-> > > -			MX6QDL_PAD_ENET_MDC__ENET_MDC		0x1b0b0
-> > > -			MX6QDL_PAD_RGMII_TXC__RGMII_TXC		0x1b0b0
-> > > -			MX6QDL_PAD_RGMII_TD0__RGMII_TD0		0x1b0b0
-> > > -			MX6QDL_PAD_RGMII_TD1__RGMII_TD1		0x1b0b0
-> > > -			MX6QDL_PAD_RGMII_TD2__RGMII_TD2		0x1b0b0
-> > > -			MX6QDL_PAD_RGMII_TD3__RGMII_TD3		0x1b0b0
-> > > -			MX6QDL_PAD_RGMII_TX_CTL__RGMII_TX_CTL	0x1b0b0
-> > > -			MX6QDL_PAD_ENET_REF_CLK__ENET_TX_CLK	0x1b0b0
-> > > -			MX6QDL_PAD_RGMII_RXC__RGMII_RXC		0x1b0b0
-> > > -			MX6QDL_PAD_RGMII_RD0__RGMII_RD0		0x1b0b0
-> > > -			MX6QDL_PAD_RGMII_RD1__RGMII_RD1		0x1b0b0
-> > > -			MX6QDL_PAD_RGMII_RD2__RGMII_RD2		0x1b0b0
-> > > -			MX6QDL_PAD_RGMII_RD3__RGMII_RD3		0x1b0b0
-> > > -			MX6QDL_PAD_RGMII_RX_CTL__RGMII_RX_CTL	0x1b0b0
-> > > -			MX6QDL_PAD_ENET_TX_EN__ENET_TX_EN	0x1b0b0
-> > > -			MX6QDL_PAD_SD2_DAT1__GPIO1_IO14		0x80000000
-> > > -		>;
-> > > -	};
-> > > -
-> > > -	pinctrl_gpmi_nand: gpmigrp {
-> > > -		fsl,pins =3D <
-> > > -			MX6QDL_PAD_NANDF_CLE__NAND_CLE		0xb0b1
-> > > -			MX6QDL_PAD_NANDF_ALE__NAND_ALE		0xb0b1
-> > > -			MX6QDL_PAD_NANDF_WP_B__NAND_WP_B	0xb0b1
-> > > -			MX6QDL_PAD_NANDF_RB0__NAND_READY_B	0xb000
-> > > -			MX6QDL_PAD_NANDF_CS0__NAND_CE0_B	0xb0b1
-> > > -			MX6QDL_PAD_NANDF_CS1__NAND_CE1_B	0xb0b1
-> > > -			MX6QDL_PAD_NANDF_CS2__NAND_CE2_B	0xb0b1
-> > > -			MX6QDL_PAD_NANDF_CS3__NAND_CE3_B	0xb0b1
-> > > -			MX6QDL_PAD_SD4_CMD__NAND_RE_B		0xb0b1
-> > > -			MX6QDL_PAD_SD4_CLK__NAND_WE_B		0xb0b1
-> > > -			MX6QDL_PAD_NANDF_D0__NAND_DATA00	0xb0b1
-> > > -			MX6QDL_PAD_NANDF_D1__NAND_DATA01	0xb0b1
-> > > -			MX6QDL_PAD_NANDF_D2__NAND_DATA02	0xb0b1
-> > > -			MX6QDL_PAD_NANDF_D3__NAND_DATA03	0xb0b1
-> > > -			MX6QDL_PAD_NANDF_D4__NAND_DATA04	0xb0b1
-> > > -			MX6QDL_PAD_NANDF_D5__NAND_DATA05	0xb0b1
-> > > -			MX6QDL_PAD_NANDF_D6__NAND_DATA06	0xb0b1
-> > > -			MX6QDL_PAD_NANDF_D7__NAND_DATA07	0xb0b1
-> > > -			MX6QDL_PAD_SD4_DAT0__NAND_DQS		0x00b1
-> > > -		>;
-> > > -	};
-> > > -
-> > > -	pinctrl_i2c3: i2c3grp {
-> > > -		fsl,pins =3D <
-> > > -			MX6QDL_PAD_GPIO_6__I2C3_SDA		0x4001b8b1
-> > > -			MX6QDL_PAD_GPIO_5__I2C3_SCL		0x4001b8b1
-> > > -		>;
-> > > -	};
-> > > -
-> > > -	pinctrl_uart2: uart2grp {
-> > > -		fsl,pins =3D <
-> > > -			MX6QDL_PAD_EIM_D26__UART2_TX_DATA	0x1b0b1
-> > > -			MX6QDL_PAD_EIM_D27__UART2_RX_DATA	0x1b0b1
-> > > -		>;
-> > > -	};
-> > > -
-> > > -	pinctrl_usbh1_vbus: usbh1vbusgrp {
-> > > -		fsl,pins =3D <
-> > > -			MX6QDL_PAD_EIM_A20__GPIO2_IO18		0xb0b1
-> > > -		>;
-> > > -	};
-> > > -
-> > > -	pinctrl_usbotg: usbotggrp {
-> > > -		fsl,pins =3D <
-> > > -			MX6QDL_PAD_GPIO_1__USB_OTG_ID		0x17059
-> > > -		>;
-> > > -	};
-> > > -
-> > > -	pinctrl_usbotg_vbus: usbotgvbusgrp {
-> > > -		fsl,pins =3D <
-> > > -			MX6QDL_PAD_EIM_A19__GPIO2_IO19		0xb0b1
-> > > -			>;
-> > > -	};
-> > > -
-> > > -	pinctrl_usdhc1: usdhc1grp {
-> > > -		fsl,pins =3D <
-> > > -			MX6QDL_PAD_SD1_CMD__SD1_CMD		0x170f9
-> > > -			MX6QDL_PAD_SD1_CLK__SD1_CLK		0x100f9
-> > > -			MX6QDL_PAD_SD1_DAT0__SD1_DATA0		0x170f9
-> > > -			MX6QDL_PAD_SD1_DAT1__SD1_DATA1		0x170f9
-> > > -			MX6QDL_PAD_SD1_DAT2__SD1_DATA2		0x170f9
-> > > -			MX6QDL_PAD_SD1_DAT3__SD1_DATA3		0x170f9
-> > > -			MX6QDL_PAD_EIM_BCLK__GPIO6_IO31		0x80000000 /* CD */
-> > > -		>;
-> > > -	};
-> > > -
-> > > -	pinctrl_usdhc4: usdhc4grp {
-> > > -		fsl,pins =3D <
-> > > -			MX6QDL_PAD_SD4_CMD__SD4_CMD		0x17059
-> > > -			MX6QDL_PAD_SD4_CLK__SD4_CLK		0x10059
-> > > -			MX6QDL_PAD_SD4_DAT0__SD4_DATA0		0x17059
-> > > -			MX6QDL_PAD_SD4_DAT1__SD4_DATA1		0x17059
-> > > -			MX6QDL_PAD_SD4_DAT2__SD4_DATA2		0x17059
-> > > -			MX6QDL_PAD_SD4_DAT3__SD4_DATA3		0x17059
-> > > -			MX6QDL_PAD_SD4_DAT4__SD4_DATA4		0x17059
-> > > -			MX6QDL_PAD_SD4_DAT5__SD4_DATA5		0x17059
-> > > -			MX6QDL_PAD_SD4_DAT6__SD4_DATA6		0x17059
-> > > -			MX6QDL_PAD_SD4_DAT7__SD4_DATA7		0x17059
-> > > -		>;
-> > > -	};
-> > > -};
-> > > -
-> > >   &ocotp {
-> > >   	barebox,provide-mac-address =3D <&fec 0x620>;
-> > >   };
-> > > -&uart2 {
-> > > -	pinctrl-names =3D "default";
-> > > -	pinctrl-0 =3D <&pinctrl_uart2>;
-> > > -	status =3D "okay";
-> > > -};
-> > > -
-> > > -&usbh1 {
-> > > -	vbus-supply =3D <&reg_usbh1_vbus>;
-> > > -	disable-over-current;
-> > > -	status =3D "disabled";
-> > > -};
-> > > -
-> > > -&usbotg {
-> > > -	pinctrl-names =3D "default";
-> > > -	pinctrl-0 =3D <&pinctrl_usbotg>;
-> > > -	vbus-supply =3D <&reg_usbotg_vbus>;
-> > > -	disable-over-current;
-> > > -	status =3D "disabled";
-> > > -};
-> > > -
-> > > -&usdhc1 {
-> > > -	pinctrl-names =3D "default";
-> > > -	pinctrl-0 =3D <&pinctrl_usdhc1>;
-> > > -	cd-gpios =3D <&gpio6 31 0>;
-> > > -	status =3D "disabled";
-> > > -};
-> > > -
-> > >   &usdhc4 {
-> > > -	pinctrl-names =3D "default";
-> > > -	pinctrl-0 =3D <&pinctrl_usdhc4>;
-> > > -	bus-width =3D <8>;
-> > > -	non-removable;
-> > > -	status =3D "disabled";
-> > > -
-> > >   	#address-cells =3D <1>;
-> > >   	#size-cells =3D <1>;
-> > > diff --git a/arch/arm/dts/imx6qp-phytec-phycore-som-nand.dts b/arch/a=
-rm/dts/imx6qp-phytec-phycore-som-nand.dts
-> > > index 437457ce75..06def935b0 100644
-> > > --- a/arch/arm/dts/imx6qp-phytec-phycore-som-nand.dts
-> > > +++ b/arch/arm/dts/imx6qp-phytec-phycore-som-nand.dts
-> > > @@ -10,50 +10,20 @@
-> > >    * http://www.gnu.org/copyleft/gpl.html
-> > >    */
-> > > -/dts-v1/;
-> > > -#include <arm/imx6qp.dtsi>
-> > > +#include <arm/imx6qp-phytec-mira-rdk-nand.dts>
-> > >   #include "imx6qdl-phytec-phycore-som.dtsi"
-> > >   / {
-> > > -	model =3D "Phytec phyCORE-i.MX6 Quad with NAND";
-> > > -	compatible =3D "phytec,imx6qp-pcm058-nand", "fsl,imx6qp";
-> > > -};
-> > > -
-> > > -&ecspi1 {
-> > > -	status =3D "okay";
-> > > -};
-> > > -
-> > > -&eeprom {
-> > > -	status =3D "okay";
-> > > +	compatible =3D "phytec,imx6qp-pbac06-nand", "phytec,imx6qp-pbac06",
-> > > +		     "phytec,imx6qp-pcm058-nand", "phytec,imx6qdl-pcm058",
-> > > +		     "fsl,imx6qp";
-> > >   };
-> > >   &ethphy {
-> > >   	max-speed =3D <1000>;
-> > >   };
-> > > -&fec {
-> > > -	status =3D "okay";
-> > > -};
-> > > -
-> > > -&flash {
-> > > -	status =3D "okay";
-> > > -};
-> > > -
-> > > -&gpmi {
-> > > -	status =3D "okay";
-> > > -};
-> > > -
-> > > -&usbh1 {
-> > > -	status =3D "okay";
-> > > -};
-> > > -
-> > > -&usbotg {
-> > > -	status =3D "okay";
-> > > -};
-> > > -
-> > >   &usdhc1 {
-> > > -	status =3D "okay";
-> > > -
-> > >   	partitions {
-> > >   		compatible =3D "fixed-partitions";
-> > >   		#address-cells =3D <1>;
-> > > -- =
-
-> > > 2.20.1
-> > > =
-
-> > > =
-
-> > > _______________________________________________
-> > > barebox mailing list
-> > > barebox@lists.infradead.org
-> > > http://lists.infradead.org/mailman/listinfo/barebox
-> > > =
-
-> > =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> =
-
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgTWFyY28sCgpPbiAyMy4wOS4xOSAxMzo0MCwgTWFyY28gRmVsc2NoIHdyb3RlOgo+IEhpIFN0
+ZWZhbiwKPiAKPiBPbiAxOS0wOS0yMyAxMDozMSwgU3RlZmFuIFJpZWRtw7xsbGVyIHdyb3RlOgo+
+PiBIaSBNYXJjbywKPj4KPj4gVXN1YWxseSB3ZSB3b3VsZCBsaWtlIHRvIGtlZXAgdGhlIGZlYXR1
+cmVzIHN1cHBvcnRlZCBpbiB0aGUgYmFyZWJveCB0byBhCj4+IG1pbmltdW0gc2V0IHRoYXQgaXMg
+bW9zdGx5IHN1cHBvcnRlZCBieSB0aGUgU09NIGl0c2VsZiBhbmQgdGh1cyBpcyBtb3N0bHkKPj4g
+YmFzZSBib2FyZCBpbmRlcGVuZGVudC4KPiAKPiBZZXMsIEkgdW5kZXJzdGFuZCB0aGF0IGJ1dCB0
+aGUgYmFyZWJveCBTb00gZHRzaSBoYWQgYWxzbyBtdXhpbmcgb3B0aW9ucwo+IHdoaWNoIG1hZGUg
+b25seSBzZW5zZSB3aXRoIHRoZSBtaXJhIGJvYXJkLgo+IAo+PiBNeSBzdWdnZXN0aW9uIHdvdWxk
+IGJlIHRvIGp1c3QgdXNlIHRoZSB1cHN0cmVhbSBwaHljb3JlIGRldmljZXRyZWUuIFdvdWxkCj4+
+IHRoYXQgYmUgb2sgd2l0aCB5b3U/IE9mIGNvdXJzZSB0aGF0IG1lYW5zIHNvbWUgZmVhdHVyZXMg
+bGlrZSBlLmcuIFVTQiBuZWVkCj4+IHRvIGJlIGR1cGxpY2F0ZWQgYnV0IHRoYXQgc2hvdWxkIGJl
+IG92ZXJzZWVhYmxlLgo+IAo+IEkgd2FzIGFsc28gdGhpbmtpbmcgYWJvdXQganVzdCB1c2UgdGhl
+IHVwc3RyZWFtIHBoeWNvcmUgZHRzaSBidXQgdGhhbiBJCj4gc2F3IHRoYXQgdGhlIGJhcmVib3gg
+ZHRzaSBpcyBhZGRpbmcgbWlyYSBib2FyZCBzcGVjaWZpYyBjb2RlLiBUaGUKPiB1cHN0cmVhbSBk
+ZXZpY2V0cmVlJ3MgYXJlIGEgYml0IGNsZWFuZXIuIENhbiB5b3UgaWRlbnRpZnkgcG9zc2libGUK
+PiBtaXN0YWtlcyBJIG1hZGU/IEkgdG91Z2h0IHRoZSBjaGFuZ2VzIEkgbWFkZSBkb24ndCBhZmZl
+Y3QgYmFyZWJveCBpbiBhCj4gbmVnYXRpdmUgd2F5LiBNYXliZSB0aGVyZSBhcmUgbmV3IGRldmlj
+ZXMgYnV0IGJhcmVib3ggd2lsbCBpZ25vcmUgdGhlbQo+IGlmIHlvdSBkaWRuJ3QgZW5hYmxlIHRo
+ZSBkcml2ZXIgc3VwcG9ydCBmb3IgaXQuCgpXZSBhZGRlZCBvcHRpb25zIGZvciB0aGUgU0QgY2Fy
+ZCBpbnRlcmZhY2UgYW5kIFVTQiBpbnRlcmZhY2VzIHdoaWNoIGFyZSBpbiAKZmFjdCBwYXJ0IG9m
+IHRoZSBNaXJhIGJ1dCBhcmUgYWxzbyBvZnRlbiB1c2VkIGluIHRoZSBzYW1lIGNvbmZpZ3VyYXRp
+b24gd2l0aCAKb3RoZXIgYm9hcmRzLiBUaGVzZSBvcHRpb25zIGp1c3QgZ2l2ZSB1cyBtb3JlIGZs
+ZXhpYmlsaXR5IGZvciBib290IHNjZW5hcmlvcyAKYW5kIGNoYW5nZXMgdGhhdCBtaWdodCBiZSBu
+ZWNlc3NhcnkgZm9yIG90aGVyIGJvYXJkcyBhcmUga2VwdCB0byBhIG1pbmltdW0uCgpJdCBpcyBu
+b3QgYWJvdXQgbWlzdGFrZXMgeW91IG1hZGUsIGl0IGlzIGp1c3QgdGhhdCB3ZSB3b3VsZCBsaWtl
+IHRvIGtlZXAgdGhlIApiYXJlYm94IHJlcHJlc2VudGluZyB0aGUgU09NIGFuZCBub3QgdGhlIGJh
+c2Vib2FyZC4gVGhhdCBpcyB3aHkgdXNpbmcgb25seSAKdGhlIHBoeWNvcmUgdXBzdHJlYW0gZGV2
+aWNldHJlZSBhbmQgYWRkaW5nIHRoZSB0aGUgU0QgaW50ZXJmYWNlIGFuZCBVU0IgaXMgCm91ciBm
+YXZvcml0ZSBzb2x1dGlvbgoKUmVnYXJkcywKU3RlZmFuCgo+IAo+IFJlZ2FyZHMsCj4gICAgTWFy
+Y28KPiAKPj4gSSBjYW4gc2VuZCBhIG5ldyBwYXRjaCBpZiB5b3UgbGlrZSBidXQgSSB3b3VsZCBu
+ZWVkIHRvIGZpbmQgc29tZSBmcmVlIHRpbWUKPj4gdG8gZG8gaXQuCj4+Cj4+IFJlZ2FyZHMsCj4+
+IFN0ZWZhbgo+Pgo+Pgo+PiBPbiAyMC4wOS4xOSAxNjoxMiwgTWFyY28gRmVsc2NoIHdyb3RlOgo+
+Pj4gSGksCj4+Pgo+Pj4gQHBoeXRlYwo+Pj4KPj4+IFBsZWFzZSBjYW4geW91IHRlc3QgdGhvc2Ug
+Y2hhbmdlcyBiZWNhdXNlIEkgZG9uJ3QgaGF2ZSBhbGwgdGhlc2UgYm9hcmRzLgo+Pj4KPj4+IFJl
+Z2FyZHMsCj4+PiAgICAgTWFyY28KPj4+Cj4+PiBPbiAxOS0wOS0xMSAxNjo1NiwgTWFyY28gRmVs
+c2NoIHdyb3RlOgo+Pj4+IFNpbmNlIGEgcXVpdGUgdGltZSB3ZSBjYW4gdXNlIHRoZSB1cHN0cmVh
+bSBQaHl0ZWMgbWlyYSBkZXZpY2V0cmVlJ3MgYW5kCj4+Pj4gdGhlIHBoeWNvcmUgZHRzaSB0byBy
+ZWR1Y2UgY29kZSBkdXBsaWNhdGlvbiBhbmQgcG9zc2libGUgdW53YW50ZWQKPj4+PiBkaXZlcmdl
+bmNlcy4gSSd2ZSBjb252ZXJ0ZWQgYWxsIGJvYXJkcyBkZXZpY2V0cmVlJ3MgdG8gdXNlIHRoZSB1
+cHN0cmVhbQo+Pj4+IG1pcmEgZGV2aWNldHJlZSdzIGV4Y2VwdCB0aGU6Cj4+Pj4gICAgIC0gaW14
+NmRsLXBoeXRlYy1waHljb3JlLXNvbS1lbW1jLmR0cwo+Pj4+ICAgICAtIGlteDZkbC1waHl0ZWMt
+cGh5Y29yZS1zb20tbGMtZW1tYy5kdHMKPj4+PiAgICAgLSBpbXg2ZGwtcGh5dGVjLXBoeWNvcmUt
+c29tLWxjLW5hbmQuZHRzCj4+Pj4gYm9hcmRzIGJlY2F1c2UgdGhvc2UgdmFyaWFudHMgYXJlIG5v
+dCB1cHN0cmVhbSBhdmFpbGFibGUgeWV0Lgo+Pj4+Cj4+Pj4gVGhpcyBjb21taXQgYWxzbyByZW1v
+dmVzIG1peHR1cmVzIGJldHdlZW4gYmFyZWJveCBwaHljb3JlIFNvTSBkdHNpIGFuZAo+Pj4+IGJh
+cmVib3ggYm9hcmQgZGV2aWNldHJlZSdzIHdpdGhpbiB0aGUgaW14NnFkbC1waHl0ZWMtcGh5Y29y
+ZS1zb20uZHRzaS4KPj4+PiBUaGlzIFNvTSBkdHNpIGNvbnRhaW5lZCBtdXhpbmcgb3B0aW9ucyB3
+aGljaCBhcmUgb25seSB2YWxpZCBpbgo+Pj4+IGNvbWJpbmF0aW9uIHdpdGggdGhlIG1pcmEgYmFz
+ZWJvYXJkLgo+Pj4+Cj4+Pj4gTm93IGFsbCBiYXJlYm94IGR0cyhpKSBmaWxlcyBjb250YWluIG9u
+bHkgdGhlIG5lY2Vzc2FyeSB0aGluZ3Mgb3IKPj4+PiBkaXZlcmdlbmNlcyBmcm9tIHVwc3RyZWFt
+IGUuZy4gdGhlIGNvbXBhdGlibGUgd2Fzbid0IGV4YWN0bHkgdGhlIHNhbWUuCj4+Pj4KPj4+PiBT
+aWduZWQtb2ZmLWJ5OiBNYXJjbyBGZWxzY2ggPG0uZmVsc2NoQHBlbmd1dHJvbml4LmRlPgo+Pj4+
+IC0tLQo+Pj4+ICAgIC4uLi9kdHMvaW14NmRsLXBoeXRlYy1waHljb3JlLXNvbS1lbW1jLmR0cyAg
+ICB8ICAxMiArLQo+Pj4+ICAgIC4uLi9kdHMvaW14NmRsLXBoeXRlYy1waHljb3JlLXNvbS1sYy1l
+bW1jLmR0cyB8ICAxMiArLQo+Pj4+ICAgIC4uLi9kdHMvaW14NmRsLXBoeXRlYy1waHljb3JlLXNv
+bS1sYy1uYW5kLmR0cyB8ICAgNiArLQo+Pj4+ICAgIC4uLi9kdHMvaW14NmRsLXBoeXRlYy1waHlj
+b3JlLXNvbS1uYW5kLmR0cyAgICB8ICAzMSArLS0KPj4+PiAgICAuLi4vYXJtL2R0cy9pbXg2cS1w
+aHl0ZWMtcGh5Y29yZS1zb20tZW1tYy5kdHMgfCAgMzkgKy0tCj4+Pj4gICAgLi4uL2FybS9kdHMv
+aW14NnEtcGh5dGVjLXBoeWNvcmUtc29tLW5hbmQuZHRzIHwgIDM5ICstLQo+Pj4+ICAgIGFyY2gv
+YXJtL2R0cy9pbXg2cWRsLXBoeXRlYy1waHljb3JlLXNvbS5kdHNpICB8IDI2MSArKy0tLS0tLS0t
+LS0tLS0tLS0KPj4+PiAgICAuLi4vZHRzL2lteDZxcC1waHl0ZWMtcGh5Y29yZS1zb20tbmFuZC5k
+dHMgICAgfCAgMzggKy0tCj4+Pj4gICAgOCBmaWxlcyBjaGFuZ2VkLCA0OSBpbnNlcnRpb25zKCsp
+LCAzODkgZGVsZXRpb25zKC0pCj4+Pj4KPj4+PiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vZHRzL2lt
+eDZkbC1waHl0ZWMtcGh5Y29yZS1zb20tZW1tYy5kdHMgYi9hcmNoL2FybS9kdHMvaW14NmRsLXBo
+eXRlYy1waHljb3JlLXNvbS1lbW1jLmR0cwo+Pj4+IGluZGV4IDIxY2JiNWY5NDQuLmQ5YTQwNTk5
+YzcgMTAwNjQ0Cj4+Pj4gLS0tIGEvYXJjaC9hcm0vZHRzL2lteDZkbC1waHl0ZWMtcGh5Y29yZS1z
+b20tZW1tYy5kdHMKPj4+PiArKysgYi9hcmNoL2FybS9kdHMvaW14NmRsLXBoeXRlYy1waHljb3Jl
+LXNvbS1lbW1jLmR0cwo+Pj4+IEBAIC0xMyw2ICsxMyw4IEBACj4+Pj4gICAgL2R0cy12MS87Cj4+
+Pj4gICAgI2luY2x1ZGUgPGFybS9pbXg2ZGwuZHRzaT4KPj4+PiArI2luY2x1ZGUgPGFybS9pbXg2
+cWRsLXBoeXRlYy1waHljb3JlLXNvbS5kdHNpPgo+Pj4+ICsjaW5jbHVkZSA8YXJtL2lteDZxZGwt
+cGh5dGVjLW1pcmEuZHRzaT4KPj4+PiAgICAjaW5jbHVkZSAiaW14NmRsLmR0c2kiCj4+Pj4gICAg
+I2luY2x1ZGUgImlteDZxZGwtcGh5dGVjLXBoeWNvcmUtc29tLmR0c2kiCj4+Pj4gICAgI2luY2x1
+ZGUgImlteDZxZGwtcGh5dGVjLXN0YXRlLmR0c2kiCj4+Pj4gQEAgLTIyLDE0ICsyNCw2IEBACj4+
+Pj4gICAgCWNvbXBhdGlibGUgPSAicGh5dGVjLGlteDZkbC1wY20wNTgtZW1tYyIsICJmc2wsaW14
+NmRsIjsKPj4+PiAgICB9Owo+Pj4+IC0mZWNzcGkxIHsKPj4+PiAtCXN0YXR1cyA9ICJva2F5IjsK
+Pj4+PiAtfTsKPj4+PiAtCj4+Pj4gLSZlZXByb20gewo+Pj4+IC0Jc3RhdHVzID0gIm9rYXkiOwo+
+Pj4+IC19Owo+Pj4+IC0KPj4+PiAgICAmZXRocGh5IHsKPj4+PiAgICAJbWF4LXNwZWVkID0gPDEw
+MDA+Owo+Pj4+ICAgIH07Cj4+Pj4gQEAgLTM4LDcgKzMyLDcgQEAKPj4+PiAgICAJc3RhdHVzID0g
+Im9rYXkiOwo+Pj4+ICAgIH07Cj4+Pj4gLSZmbGFzaCB7Cj4+Pj4gKyZtMjVwODAgewo+Pj4+ICAg
+IAlzdGF0dXMgPSAib2theSI7Cj4+Pj4gICAgfTsKPj4+PiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0v
+ZHRzL2lteDZkbC1waHl0ZWMtcGh5Y29yZS1zb20tbGMtZW1tYy5kdHMgYi9hcmNoL2FybS9kdHMv
+aW14NmRsLXBoeXRlYy1waHljb3JlLXNvbS1sYy1lbW1jLmR0cwo+Pj4+IGluZGV4IGI4ZWZiOTVl
+ZTAuLjUxNmRmNWZmNWEgMTAwNjQ0Cj4+Pj4gLS0tIGEvYXJjaC9hcm0vZHRzL2lteDZkbC1waHl0
+ZWMtcGh5Y29yZS1zb20tbGMtZW1tYy5kdHMKPj4+PiArKysgYi9hcmNoL2FybS9kdHMvaW14NmRs
+LXBoeXRlYy1waHljb3JlLXNvbS1sYy1lbW1jLmR0cwo+Pj4+IEBAIC03LDYgKzcsOCBAQAo+Pj4+
+ICAgIC9kdHMtdjEvOwo+Pj4+ICAgICNpbmNsdWRlIDxhcm0vaW14NmRsLmR0c2k+Cj4+Pj4gKyNp
+bmNsdWRlIDxhcm0vaW14NnFkbC1waHl0ZWMtcGh5Y29yZS1zb20uZHRzaT4KPj4+PiArI2luY2x1
+ZGUgPGFybS9pbXg2cWRsLXBoeXRlYy1taXJhLmR0c2k+Cj4+Pj4gICAgI2luY2x1ZGUgImlteDZk
+bC5kdHNpIgo+Pj4+ICAgICNpbmNsdWRlICJpbXg2cWRsLXBoeXRlYy1waHljb3JlLXNvbS5kdHNp
+Igo+Pj4+ICAgICNpbmNsdWRlICJpbXg2cWRsLXBoeXRlYy1zdGF0ZS5kdHNpIgo+Pj4+IEBAIC0x
+NiwxNCArMTgsNiBAQAo+Pj4+ICAgIAljb21wYXRpYmxlID0gInBoeXRlYyxpbXg2ZGwtcGNtMDU4
+LWVtbWMiLCAiZnNsLGlteDZkbCI7Cj4+Pj4gICAgfTsKPj4+PiAtJmVjc3BpMSB7Cj4+Pj4gLQlz
+dGF0dXMgPSAib2theSI7Cj4+Pj4gLX07Cj4+Pj4gLQo+Pj4+IC0mZWVwcm9tIHsKPj4+PiAtCXN0
+YXR1cyA9ICJva2F5IjsKPj4+PiAtfTsKPj4+PiAtCj4+Pj4gICAgJmV0aHBoeSB7Cj4+Pj4gICAg
+CW1heC1zcGVlZCA9IDwxMDA+Owo+Pj4+ICAgIH07Cj4+Pj4gQEAgLTMyLDcgKzI2LDcgQEAKPj4+
+PiAgICAJc3RhdHVzID0gIm9rYXkiOwo+Pj4+ICAgIH07Cj4+Pj4gLSZmbGFzaCB7Cj4+Pj4gKyZt
+MjVwODAgewo+Pj4+ICAgIAlzdGF0dXMgPSAib2theSI7Cj4+Pj4gICAgfTsKPj4+PiBkaWZmIC0t
+Z2l0IGEvYXJjaC9hcm0vZHRzL2lteDZkbC1waHl0ZWMtcGh5Y29yZS1zb20tbGMtbmFuZC5kdHMg
+Yi9hcmNoL2FybS9kdHMvaW14NmRsLXBoeXRlYy1waHljb3JlLXNvbS1sYy1uYW5kLmR0cwo+Pj4+
+IGluZGV4IDRkMzhkMTY5OGEuLmFiMTNkNmI3N2IgMTAwNjQ0Cj4+Pj4gLS0tIGEvYXJjaC9hcm0v
+ZHRzL2lteDZkbC1waHl0ZWMtcGh5Y29yZS1zb20tbGMtbmFuZC5kdHMKPj4+PiArKysgYi9hcmNo
+L2FybS9kdHMvaW14NmRsLXBoeXRlYy1waHljb3JlLXNvbS1sYy1uYW5kLmR0cwo+Pj4+IEBAIC03
+LDYgKzcsOCBAQAo+Pj4+ICAgIC9kdHMtdjEvOwo+Pj4+ICAgICNpbmNsdWRlIDxhcm0vaW14NmRs
+LmR0c2k+Cj4+Pj4gKyNpbmNsdWRlIDxhcm0vaW14NnFkbC1waHl0ZWMtcGh5Y29yZS1zb20uZHRz
+aT4KPj4+PiArI2luY2x1ZGUgPGFybS9pbXg2cWRsLXBoeXRlYy1taXJhLmR0c2k+Cj4+Pj4gICAg
+I2luY2x1ZGUgImlteDZkbC5kdHNpIgo+Pj4+ICAgICNpbmNsdWRlICJpbXg2cWRsLXBoeXRlYy1w
+aHljb3JlLXNvbS5kdHNpIgo+Pj4+ICAgICNpbmNsdWRlICJpbXg2cWRsLXBoeXRlYy1zdGF0ZS5k
+dHNpIgo+Pj4+IEBAIC0xNiwxMCArMTgsNiBAQAo+Pj4+ICAgIAljb21wYXRpYmxlID0gInBoeXRl
+YyxpbXg2ZGwtcGNtMDU4LW5hbmQiLCAiZnNsLGlteDZkbCI7Cj4+Pj4gICAgfTsKPj4+PiAtJmVl
+cHJvbSB7Cj4+Pj4gLQlzdGF0dXMgPSAib2theSI7Cj4+Pj4gLX07Cj4+Pj4gLQo+Pj4+ICAgICZl
+dGhwaHkgewo+Pj4+ICAgIAltYXgtc3BlZWQgPSA8MTAwPjsKPj4+PiAgICB9Owo+Pj4+IGRpZmYg
+LS1naXQgYS9hcmNoL2FybS9kdHMvaW14NmRsLXBoeXRlYy1waHljb3JlLXNvbS1uYW5kLmR0cyBi
+L2FyY2gvYXJtL2R0cy9pbXg2ZGwtcGh5dGVjLXBoeWNvcmUtc29tLW5hbmQuZHRzCj4+Pj4gaW5k
+ZXggM2FkMzcyM2QyOC4uZGI0ZDkzMGIyOSAxMDA2NDQKPj4+PiAtLS0gYS9hcmNoL2FybS9kdHMv
+aW14NmRsLXBoeXRlYy1waHljb3JlLXNvbS1uYW5kLmR0cwo+Pj4+ICsrKyBiL2FyY2gvYXJtL2R0
+cy9pbXg2ZGwtcGh5dGVjLXBoeWNvcmUtc29tLW5hbmQuZHRzCj4+Pj4gQEAgLTksNDUgKzksMjIg
+QEAKPj4+PiAgICAgKiBodHRwOi8vd3d3LmdudS5vcmcvY29weWxlZnQvZ3BsLmh0bWwKPj4+PiAg
+ICAgKi8KPj4+PiAtL2R0cy12MS87Cj4+Pj4gLQo+Pj4+IC0jaW5jbHVkZSA8YXJtL2lteDZkbC5k
+dHNpPgo+Pj4+ICsjaW5jbHVkZSA8YXJtL2lteDZkbC1waHl0ZWMtbWlyYS1yZGstbmFuZC5kdHM+
+Cj4+Pj4gICAgI2luY2x1ZGUgImlteDZkbC5kdHNpIgo+Pj4+ICAgICNpbmNsdWRlICJpbXg2cWRs
+LXBoeXRlYy1waHljb3JlLXNvbS5kdHNpIgo+Pj4+ICAgICNpbmNsdWRlICJpbXg2cWRsLXBoeXRl
+Yy1zdGF0ZS5kdHNpIgo+Pj4+ICAgIC8gewo+Pj4+IC0JbW9kZWwgPSAiUGh5dGVjIHBoeUNPUkUt
+aS5NWDYgRHVhbGxpdGUvU09MTyB3aXRoIE5BTkQiOwo+Pj4+IC0JY29tcGF0aWJsZSA9ICJwaHl0
+ZWMsaW14NmRsLXBjbTA1OC1uYW5kIiwgImZzbCxpbXg2ZGwiOwo+Pj4+IC19Owo+Pj4+IC0KPj4+
+PiAtJmVlcHJvbSB7Cj4+Pj4gLQlzdGF0dXMgPSAib2theSI7Cj4+Pj4gKwljb21wYXRpYmxlID0g
+InBoeXRlYyxpbXg2ZGwtcGJhYzA2LW5hbmQiLCAicGh5dGVjLGlteDZkbC1wYmFjMDYiLAo+Pj4+
+ICsJCSAgICAgInBoeXRlYyxpbXg2ZGwtcGNtMDU4LW5hbmQiLCAicGh5dGVjLGlteDZxZGwtcGNt
+MDU4IiwKPj4+PiArCQkgICAgICJmc2wsaW14NmRsIjsKPj4+PiAgICB9Owo+Pj4+ICAgICZldGhw
+aHkgewo+Pj4+ICAgIAltYXgtc3BlZWQgPSA8MTAwMD47Cj4+Pj4gICAgfTsKPj4+PiAtJmZlYyB7
+Cj4+Pj4gLQlzdGF0dXMgPSAib2theSI7Cj4+Pj4gLX07Cj4+Pj4gLQo+Pj4+IC0mZ3BtaSB7Cj4+
+Pj4gLQlzdGF0dXMgPSAib2theSI7Cj4+Pj4gLX07Cj4+Pj4gLQo+Pj4+IC0mdXNiaDEgewo+Pj4+
+IC0Jc3RhdHVzID0gIm9rYXkiOwo+Pj4+IC19Owo+Pj4+IC0KPj4+PiAtJnVzYm90ZyB7Cj4+Pj4g
+LQlzdGF0dXMgPSAib2theSI7Cj4+Pj4gLX07Cj4+Pj4gLQo+Pj4+ICAgICZ1c2RoYzEgewo+Pj4+
+IC0Jc3RhdHVzID0gIm9rYXkiOwo+Pj4+IC0KPj4+PiAgICAJcGFydGl0aW9ucyB7Cj4+Pj4gICAg
+CQljb21wYXRpYmxlID0gImZpeGVkLXBhcnRpdGlvbnMiOwo+Pj4+ICAgIAkJI2FkZHJlc3MtY2Vs
+bHMgPSA8MT47Cj4+Pj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2R0cy9pbXg2cS1waHl0ZWMtcGh5
+Y29yZS1zb20tZW1tYy5kdHMgYi9hcmNoL2FybS9kdHMvaW14NnEtcGh5dGVjLXBoeWNvcmUtc29t
+LWVtbWMuZHRzCj4+Pj4gaW5kZXggN2E4NmQ1Yjk0ZC4uNTVkYzFmOTFmNyAxMDA2NDQKPj4+PiAt
+LS0gYS9hcmNoL2FybS9kdHMvaW14NnEtcGh5dGVjLXBoeWNvcmUtc29tLWVtbWMuZHRzCj4+Pj4g
+KysrIGIvYXJjaC9hcm0vZHRzL2lteDZxLXBoeXRlYy1waHljb3JlLXNvbS1lbW1jLmR0cwo+Pj4+
+IEBAIC05LDQ5ICs5LDIyIEBACj4+Pj4gICAgICogaHR0cDovL3d3dy5nbnUub3JnL2NvcHlsZWZ0
+L2dwbC5odG1sCj4+Pj4gICAgICovCj4+Pj4gLS9kdHMtdjEvOwo+Pj4+IC0KPj4+PiAtI2luY2x1
+ZGUgPGFybS9pbXg2cS5kdHNpPgo+Pj4+ICsjaW5jbHVkZSA8YXJtL2lteDZxLXBoeXRlYy1taXJh
+LXJkay1lbW1jLmR0cz4KPj4+PiAgICAjaW5jbHVkZSAiaW14NnEuZHRzaSIKPj4+PiAgICAjaW5j
+bHVkZSAiaW14NnFkbC1waHl0ZWMtcGh5Y29yZS1zb20uZHRzaSIKPj4+PiAgICAjaW5jbHVkZSAi
+aW14NnFkbC1waHl0ZWMtc3RhdGUuZHRzaSIKPj4+PiAgICAvIHsKPj4+PiAtCW1vZGVsID0gIlBo
+eXRlYyBwaHlDT1JFLWkuTVg2IFF1YWQgd2l0aCBlTU1DIjsKPj4+PiAtCWNvbXBhdGlibGUgPSAi
+cGh5dGVjLGlteDZxLXBjbTA1OC1lbW1jIiwgImZzbCxpbXg2cSI7Cj4+Pj4gLX07Cj4+Pj4gLQo+
+Pj4+IC0mZWNzcGkxIHsKPj4+PiAtCXN0YXR1cyA9ICJva2F5IjsKPj4+PiAtfTsKPj4+PiAtCj4+
+Pj4gLSZlZXByb20gewo+Pj4+IC0Jc3RhdHVzID0gIm9rYXkiOwo+Pj4+ICsJY29tcGF0aWJsZSA9
+ICJwaHl0ZWMsaW14NnEtcGJhYzA2LWVtbWMiLCAicGh5dGVjLGlteDZxLXBiYWMwNiIsCj4+Pj4g
+KwkJICAgICAicGh5dGVjLGlteDZxLXBjbTA1OC1lbW1jIiwgInBoeXRlYyxpbXg2cWRsLXBjbTA1
+OCIsCj4+Pj4gKwkJICAgICAiZnNsLGlteDZxIjsKPj4+PiAgICB9Owo+Pj4+ICAgICZldGhwaHkg
+ewo+Pj4+ICAgIAltYXgtc3BlZWQgPSA8MTAwMD47Cj4+Pj4gICAgfTsKPj4+PiAtJmZlYyB7Cj4+
+Pj4gLQlzdGF0dXMgPSAib2theSI7Cj4+Pj4gLX07Cj4+Pj4gLQo+Pj4+IC0mZmxhc2ggewo+Pj4+
+IC0Jc3RhdHVzID0gIm9rYXkiOwo+Pj4+IC19Owo+Pj4+IC0KPj4+PiAtJnVzYmgxIHsKPj4+PiAt
+CXN0YXR1cyA9ICJva2F5IjsKPj4+PiAtfTsKPj4+PiAtCj4+Pj4gLSZ1c2JvdGcgewo+Pj4+IC0J
+c3RhdHVzID0gIm9rYXkiOwo+Pj4+IC19Owo+Pj4+IC0KPj4+PiAgICAmdXNkaGMxIHsKPj4+PiAt
+CXN0YXR1cyA9ICJva2F5IjsKPj4+PiAtCj4+Pj4gICAgCXBhcnRpdGlvbnMgewo+Pj4+ICAgIAkJ
+Y29tcGF0aWJsZSA9ICJmaXhlZC1wYXJ0aXRpb25zIjsKPj4+PiAgICAJCSNhZGRyZXNzLWNlbGxz
+ID0gPDE+Owo+Pj4+IEBAIC02OCw3ICs0MSwzIEBACj4+Pj4gICAgCQl9Owo+Pj4+ICAgIAl9Owo+
+Pj4+ICAgIH07Cj4+Pj4gLQo+Pj4+IC0mdXNkaGM0IHsKPj4+PiAtCXN0YXR1cyA9ICJva2F5IjsK
+Pj4+PiAtfTsKPj4+PiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vZHRzL2lteDZxLXBoeXRlYy1waHlj
+b3JlLXNvbS1uYW5kLmR0cyBiL2FyY2gvYXJtL2R0cy9pbXg2cS1waHl0ZWMtcGh5Y29yZS1zb20t
+bmFuZC5kdHMKPj4+PiBpbmRleCA5NmQxZGUyMjRjLi41NjgxMmMyNDczIDEwMDY0NAo+Pj4+IC0t
+LSBhL2FyY2gvYXJtL2R0cy9pbXg2cS1waHl0ZWMtcGh5Y29yZS1zb20tbmFuZC5kdHMKPj4+PiAr
+KysgYi9hcmNoL2FybS9kdHMvaW14NnEtcGh5dGVjLXBoeWNvcmUtc29tLW5hbmQuZHRzCj4+Pj4g
+QEAgLTksNTQgKzksMjMgQEAKPj4+PiAgICAgKiBodHRwOi8vd3d3LmdudS5vcmcvY29weWxlZnQv
+Z3BsLmh0bWwKPj4+PiAgICAgKi8KPj4+PiAtL2R0cy12MS87Cj4+Pj4gLQo+Pj4+IC0jaW5jbHVk
+ZSA8YXJtL2lteDZxLmR0c2k+Cj4+Pj4gKyNpbmNsdWRlIDxhcm0vaW14NnEtcGh5dGVjLW1pcmEt
+cmRrLW5hbmQuZHRzPgo+Pj4+ICAgICNpbmNsdWRlICJpbXg2cS5kdHNpIgo+Pj4+ICAgICNpbmNs
+dWRlICJpbXg2cWRsLXBoeXRlYy1waHljb3JlLXNvbS5kdHNpIgo+Pj4+ICAgICNpbmNsdWRlICJp
+bXg2cWRsLXBoeXRlYy1zdGF0ZS5kdHNpIgo+Pj4+ICAgIC8gewo+Pj4+IC0JbW9kZWwgPSAiUGh5
+dGVjIHBoeUNPUkUtaS5NWDYgUXVhZCB3aXRoIE5BTkQiOwo+Pj4+IC0JY29tcGF0aWJsZSA9ICJw
+aHl0ZWMsaW14NnEtcGNtMDU4LW5hbmQiLCAiZnNsLGlteDZxIjsKPj4+PiAtCj4+Pj4gLX07Cj4+
+Pj4gLQo+Pj4+IC0mZWNzcGkxIHsKPj4+PiAtCXN0YXR1cyA9ICJva2F5IjsKPj4+PiAtfTsKPj4+
+PiArCWNvbXBhdGlibGUgPSAicGh5dGVjLGlteDZxLXBiYWMwNi1uYW5kIiwgInBoeXRlYyxpbXg2
+cS1wYmFjMDYiLAo+Pj4+ICsJCSAgICAgInBoeXRlYyxpbXg2cS1wY20wNTgtbmFuZCIsICJwaHl0
+ZWMsaW14NnFkbC1wY20wNTgiLAo+Pj4+ICsJCSAgICAgImZzbCxpbXg2cSI7Cj4+Pj4gLSZlZXBy
+b20gewo+Pj4+IC0Jc3RhdHVzID0gIm9rYXkiOwo+Pj4+ICAgIH07Cj4+Pj4gICAgJmV0aHBoeSB7
+Cj4+Pj4gICAgCW1heC1zcGVlZCA9IDwxMDAwPjsKPj4+PiAgICB9Owo+Pj4+IC0mZmVjIHsKPj4+
+PiAtCXN0YXR1cyA9ICJva2F5IjsKPj4+PiAtfTsKPj4+PiAtCj4+Pj4gLSZmbGFzaCB7Cj4+Pj4g
+LQlzdGF0dXMgPSAib2theSI7Cj4+Pj4gLX07Cj4+Pj4gLQo+Pj4+IC0mZ3BtaSB7Cj4+Pj4gLQlz
+dGF0dXMgPSAib2theSI7Cj4+Pj4gLX07Cj4+Pj4gLQo+Pj4+IC0mdXNiaDEgewo+Pj4+IC0Jc3Rh
+dHVzID0gIm9rYXkiOwo+Pj4+IC19Owo+Pj4+IC0KPj4+PiAtJnVzYm90ZyB7Cj4+Pj4gLQlzdGF0
+dXMgPSAib2theSI7Cj4+Pj4gLX07Cj4+Pj4gLQo+Pj4+ICAgICZ1c2RoYzEgewo+Pj4+IC0Jc3Rh
+dHVzID0gIm9rYXkiOwo+Pj4+IC0KPj4+PiAgICAJcGFydGl0aW9ucyB7Cj4+Pj4gICAgCQljb21w
+YXRpYmxlID0gImZpeGVkLXBhcnRpdGlvbnMiOwo+Pj4+ICAgIAkJI2FkZHJlc3MtY2VsbHMgPSA8
+MT47Cj4+Pj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2R0cy9pbXg2cWRsLXBoeXRlYy1waHljb3Jl
+LXNvbS5kdHNpIGIvYXJjaC9hcm0vZHRzL2lteDZxZGwtcGh5dGVjLXBoeWNvcmUtc29tLmR0c2kK
+Pj4+PiBpbmRleCAxZDM5MzY4MTY1Li5lMTczMDRjNDJiIDEwMDY0NAo+Pj4+IC0tLSBhL2FyY2gv
+YXJtL2R0cy9pbXg2cWRsLXBoeXRlYy1waHljb3JlLXNvbS5kdHNpCj4+Pj4gKysrIGIvYXJjaC9h
+cm0vZHRzL2lteDZxZGwtcGh5dGVjLXBoeWNvcmUtc29tLmR0c2kKPj4+PiBAQCAtMTMsOCArMTMs
+NiBAQAo+Pj4+ICAgIC8gewo+Pj4+ICAgIAljaG9zZW4gewo+Pj4+IC0JCXN0ZG91dC1wYXRoID0g
+JnVhcnQyOwo+Pj4+IC0KPj4+PiAgICAJCWVudmlyb25tZW50LXNkMSB7Cj4+Pj4gICAgCQkJY29t
+cGF0aWJsZSA9ICJiYXJlYm94LGVudmlyb25tZW50IjsKPj4+PiAgICAJCQlkZXZpY2UtcGF0aCA9
+ICZ1c2RoYzEsICJwYXJ0bmFtZTpiYXJlYm94LWVudmlyb25tZW50IjsKPj4+PiBAQCAtMzUsMTAy
+ICszMyw1MSBAQAo+Pj4+ICAgIAkJZW52aXJvbm1lbnQtc3Bpbm9yIHsKPj4+PiAgICAJCQljb21w
+YXRpYmxlID0gImJhcmVib3gsZW52aXJvbm1lbnQiOwo+Pj4+IC0JCQlkZXZpY2UtcGF0aCA9ICZm
+bGFzaCwgInBhcnRuYW1lOmJhcmVib3gtZW52aXJvbm1lbnQiOwo+Pj4+ICsJCQlkZXZpY2UtcGF0
+aCA9ICZtMjVwODAsICJwYXJ0bmFtZTpiYXJlYm94LWVudmlyb25tZW50IjsKPj4+PiAgICAJCQlz
+dGF0dXMgPSAiZGlzYWJsZWQiOwo+Pj4+ICAgIAkJfTsKPj4+PiAgICAJfTsKPj4+PiAtCXJlZ191
+c2JoMV92YnVzOiByZWd1bGF0b3ItdXNiaDEgewo+Pj4+IC0JCWNvbXBhdGlibGUgPSAicmVndWxh
+dG9yLWZpeGVkIjsKPj4+PiAtCQlwaW5jdHJsLW5hbWVzID0gImRlZmF1bHQiOwo+Pj4+IC0JCXBp
+bmN0cmwtMCA9IDwmcGluY3RybF91c2JoMV92YnVzPjsKPj4+PiAtCQlyZWd1bGF0b3ItbmFtZSA9
+ICJ1c2JoMV92YnVzIjsKPj4+PiAtCQlyZWd1bGF0b3ItbWluLW1pY3Jvdm9sdCA9IDw1MDAwMDAw
+PjsKPj4+PiAtCQlyZWd1bGF0b3ItbWF4LW1pY3Jvdm9sdCA9IDw1MDAwMDAwPjsKPj4+PiAtCQln
+cGlvID0gPCZncGlvMiAxOCBHUElPX0FDVElWRV9ISUdIPjsKPj4+PiAtCQllbmFibGUtYWN0aXZl
+LWhpZ2g7Cj4+Pj4gLQl9Owo+Pj4+IC0KPj4+PiAtCXJlZ191c2JvdGdfdmJ1czogcmVndWxhdG9y
+LXVzYm90ZyB7Cj4+Pj4gLQkJY29tcGF0aWJsZSA9ICJyZWd1bGF0b3ItZml4ZWQiOwo+Pj4+IC0J
+CXBpbmN0cmwtbmFtZXMgPSAiZGVmYXVsdCI7Cj4+Pj4gLQkJcGluY3RybC0wID0gPCZwaW5jdHJs
+X3VzYm90Z192YnVzPjsKPj4+PiAtCQlyZWd1bGF0b3ItbmFtZSA9ICJ1c2JvdGdfdmJ1cyI7Cj4+
+Pj4gLQkJcmVndWxhdG9yLW1pbi1taWNyb3ZvbHQgPSA8NTAwMDAwMD47Cj4+Pj4gLQkJcmVndWxh
+dG9yLW1heC1taWNyb3ZvbHQgPSA8NTAwMDAwMD47Cj4+Pj4gLQkJZ3BpbyA9IDwmZ3BpbzIgMTkg
+R1BJT19BQ1RJVkVfSElHSD47Cj4+Pj4gLQkJZW5hYmxlLWFjdGl2ZS1oaWdoOwo+Pj4+ICsJLyog
+TGV0IHRoZSBib290bG9hZGVyIHNldCB0aGUgcmVhbCBzaXplICovCj4+Pj4gKwltZW1vcnlAMTAw
+MDAwMDAgewo+Pj4+ICsJCWRldmljZV90eXBlID0gIm1lbW9yeSI7Cj4+Pj4gKwkJcmVnID0gPDB4
+MCAweDA+Owo+Pj4+ICAgIAl9Owo+Pj4+ICAgIH07Cj4+Pj4gLSZlY3NwaTEgewo+Pj4+IC0JcGlu
+Y3RybC1uYW1lcyA9ICJkZWZhdWx0IjsKPj4+PiAtCXBpbmN0cmwtMCA9IDwmcGluY3RybF9lY3Nw
+aTE+Owo+Pj4+IC0JZnNsLHNwaS1udW0tY2hpcHNlbGVjdHMgPSA8MT47Cj4+Pj4gLQljcy1ncGlv
+cyA9IDwmZ3BpbzMgMTkgMD47Cj4+Pj4gLQlzdGF0dXMgPSAiZGlzYWJsZWQiOwo+Pj4+IC0KPj4+
+PiAtCWZsYXNoOiBmbGFzaEAwIHsKPj4+PiAtCQljb21wYXRpYmxlID0gImplZGVjLHNwaS1ub3Ii
+Owo+Pj4+IC0JCXNwaS1tYXgtZnJlcXVlbmN5ID0gPDIwMDAwMDAwPjsKPj4+PiAtCQlyZWcgPSA8
+MD47Cj4+Pj4gLQkJc3RhdHVzID0gImRpc2FibGVkIjsKPj4+PiAtCj4+Pj4gLQkJcGFydGl0aW9u
+cyB7Cj4+Pj4gLQkJCWNvbXBhdGlibGUgPSAiZml4ZWQtcGFydGl0aW9ucyI7Cj4+Pj4gLQkJCSNh
+ZGRyZXNzLWNlbGxzID0gPDE+Owo+Pj4+IC0JCQkjc2l6ZS1jZWxscyA9IDwxPjsKPj4+PiArJm0y
+NXA4MCB7Cj4+Pj4gKwlwYXJ0aXRpb25zIHsKPj4+PiArCQljb21wYXRpYmxlID0gImZpeGVkLXBh
+cnRpdGlvbnMiOwo+Pj4+ICsJCSNhZGRyZXNzLWNlbGxzID0gPDE+Owo+Pj4+ICsJCSNzaXplLWNl
+bGxzID0gPDE+Owo+Pj4+IC0JCQlwYXJ0aXRpb25AMCB7Cj4+Pj4gLQkJCQlsYWJlbCA9ICJiYXJl
+Ym94IjsKPj4+PiAtCQkJCXJlZyA9IDwweDAgMHgxMDAwMDA+Owo+Pj4+IC0JCQl9Owo+Pj4+ICsJ
+CXBhcnRpdGlvbkAwIHsKPj4+PiArCQkJbGFiZWwgPSAiYmFyZWJveCI7Cj4+Pj4gKwkJCXJlZyA9
+IDwweDAgMHgxMDAwMDA+Owo+Pj4+ICsJCX07Cj4+Pj4gLQkJCXBhcnRpdGlvbkAxMDAwMDAgewo+
+Pj4+IC0JCQkJbGFiZWwgPSAiYmFyZWJveC1lbnZpcm9ubWVudCI7Cj4+Pj4gLQkJCQlyZWcgPSA8
+MHgxMDAwMDAgMHgyMDAwMD47Cj4+Pj4gLQkJCX07Cj4+Pj4gKwkJcGFydGl0aW9uQDEwMDAwMCB7
+Cj4+Pj4gKwkJCWxhYmVsID0gImJhcmVib3gtZW52aXJvbm1lbnQiOwo+Pj4+ICsJCQlyZWcgPSA8
+MHgxMDAwMDAgMHgyMDAwMD47Cj4+Pj4gKwkJfTsKPj4+PiAtCQkJcGFydGl0aW9uQDEyMDAwMCB7
+Cj4+Pj4gLQkJCQlsYWJlbCA9ICJvZnRyZWUiOwo+Pj4+IC0JCQkJcmVnID0gPDB4MTIwMDAwIDB4
+MjAwMDA+Owo+Pj4+IC0JCQl9Owo+Pj4+ICsJCXBhcnRpdGlvbkAxMjAwMDAgewo+Pj4+ICsJCQls
+YWJlbCA9ICJvZnRyZWUiOwo+Pj4+ICsJCQlyZWcgPSA8MHgxMjAwMDAgMHgyMDAwMD47Cj4+Pj4g
+KwkJfTsKPj4+PiAtCQkJcGFydGl0aW9uQDE0MDAwMCB7Cj4+Pj4gLQkJCQlsYWJlbCA9ICJrZXJu
+ZWwiOwo+Pj4+IC0JCQkJcmVnID0gPDB4MTQwMDAwIDB4MD47Cj4+Pj4gLQkJCX07Cj4+Pj4gKwkJ
+cGFydGl0aW9uQDE0MDAwMCB7Cj4+Pj4gKwkJCWxhYmVsID0gImtlcm5lbCI7Cj4+Pj4gKwkJCXJl
+ZyA9IDwweDE0MDAwMCAweDA+Owo+Pj4+ICAgIAkJfTsKPj4+PiAgICAJfTsKPj4+PiAgICB9Owo+
+Pj4+ICAgICZmZWMgewo+Pj4+IC0JcGluY3RybC1uYW1lcyA9ICJkZWZhdWx0IjsKPj4+PiAtCXBp
+bmN0cmwtMCA9IDwmcGluY3RybF9lbmV0PjsKPj4+PiAtCXBoeS1oYW5kbGUgPSA8JmV0aHBoeT47
+Cj4+Pj4gLQlwaHktbW9kZSA9ICJyZ21paSI7Cj4+Pj4gLQlwaHktcmVzZXQtZ3Bpb3MgPSA8Jmdw
+aW8xIDE0IEdQSU9fQUNUSVZFX0xPVz47Cj4+Pj4gICAgCXBoeS1yZXNldC1kdXJhdGlvbiA9IDwx
+MD47IC8qIGluIG1zZWNzICovCj4+Pj4gLQlzdGF0dXMgPSAiZGlzYWJsZWQiOwo+Pj4+IC0KPj4+
+PiAtCW1kaW8gewo+Pj4+IC0JCSNhZGRyZXNzLWNlbGxzID0gPDE+Owo+Pj4+IC0JCSNzaXplLWNl
+bGxzID0gPDA+Owo+Pj4+IC0KPj4+PiAtCQlldGhwaHk6IGV0aGVybmV0LXBoeUAzIHsKPj4+PiAt
+CQkJcmVnID0gPDM+Owo+Pj4+IC0JCQl0eGMtc2tldy1wcyA9IDwxNjgwPjsKPj4+PiAtCQkJcnhj
+LXNrZXctcHMgPSA8MTg2MD47Cj4+Pj4gLQkJfTsKPj4+PiAtCX07Cj4+Pj4gICAgfTsKPj4+PiAg
+ICAmZ3BtaSB7Cj4+Pj4gLQlwaW5jdHJsLW5hbWVzID0gImRlZmF1bHQiOwo+Pj4+IC0JcGluY3Ry
+bC0wID0gPCZwaW5jdHJsX2dwbWlfbmFuZD47Cj4+Pj4gLQluYW5kLW9uLWZsYXNoLWJidDsKPj4+
+PiAtCXN0YXR1cyA9ICJkaXNhYmxlZCI7Cj4+Pj4gLQo+Pj4+ICAgIAlwYXJ0aXRpb25zIHsKPj4+
+PiAgICAJCWNvbXBhdGlibGUgPSAiZml4ZWQtcGFydGl0aW9ucyI7Cj4+Pj4gICAgCQkjYWRkcmVz
+cy1jZWxscyA9IDwxPjsKPj4+PiBAQCAtMTU0LDExICsxMDEsNiBAQAo+Pj4+ICAgIH07Cj4+Pj4g
+ICAgJmkyYzMgewo+Pj4+IC0JcGluY3RybC1uYW1lcyA9ICJkZWZhdWx0IjsKPj4+PiAtCXBpbmN0
+cmwtMCA9IDwmcGluY3RybF9pMmMzPjsKPj4+PiAtCWNsb2NrLWZyZXF1ZW5jeSA9IDw0MDAwMDA+
+Owo+Pj4+IC0Jc3RhdHVzID0gIm9rYXkiOwo+Pj4+IC0KPj4+PiAgICAJZWVwcm9tOiBlZXByb21A
+NTAgewo+Pj4+ICAgIAkJc3RhdHVzID0gImRpc2FibGVkIjsKPj4+PiAgICAJCWNvbXBhdGlibGUg
+PSAiMjRjMzIiOwo+Pj4+IEBAIC0xNjYsMTcwICsxMDgsMTcgQEAKPj4+PiAgICAJfTsKPj4+PiAg
+ICAJcG1pY0A1OCB7Cj4+Pj4gLQkJY29tcGF0aWJsZSA9ICJkbGcsZGE5MDYyIjsKPj4+PiAtCQly
+ZWcgPSA8MHg1OD47Cj4+Pj4gLQkJc3RhdHVzID0gIm9rYXkiOwo+Pj4+IC0KPj4+PiAgICAJCXdh
+dGNoZG9nLXByaW9yaXR5ID0gPDUwMD47Cj4+Pj4gICAgCQlyZXN0YXJ0LXByaW9yaXR5ID0gPDUw
+MD47Cj4+Pj4gICAgCQlyZXNldC1zb3VyY2UtcHJpb3JpdHkgPSA8NTAwPjsKPj4+PiAgICAJfTsK
+Pj4+PiAgICB9Owo+Pj4+IC0maW9tdXhjIHsKPj4+PiAtCXBpbmN0cmxfZWNzcGkxOiBlY3NwaTFn
+cnAgewo+Pj4+IC0JCWZzbCxwaW5zID0gPAo+Pj4+IC0JCQlNWDZRRExfUEFEX0VJTV9EMTZfX0VD
+U1BJMV9TQ0xLCQkweDEwMGIxCj4+Pj4gLQkJCU1YNlFETF9QQURfRUlNX0QxN19fRUNTUEkxX01J
+U08JCTB4MTAwYjEKPj4+PiAtCQkJTVg2UURMX1BBRF9FSU1fRDE4X19FQ1NQSTFfTU9TSQkJMHgx
+MDBiMQo+Pj4+IC0JCQlNWDZRRExfUEFEX0VJTV9EMTlfX0dQSU8zX0lPMTkJCTB4ODAwMDAwMDAK
+Pj4+PiAtCQk+Owo+Pj4+IC0JfTsKPj4+PiAtCj4+Pj4gLQlwaW5jdHJsX2VuZXQ6IGVuZXRncnAg
+ewo+Pj4+IC0JCWZzbCxwaW5zID0gPAo+Pj4+IC0JCQlNWDZRRExfUEFEX0VORVRfTURJT19fRU5F
+VF9NRElPCQkweDFiMGIwCj4+Pj4gLQkJCU1YNlFETF9QQURfRU5FVF9NRENfX0VORVRfTURDCQkw
+eDFiMGIwCj4+Pj4gLQkJCU1YNlFETF9QQURfUkdNSUlfVFhDX19SR01JSV9UWEMJCTB4MWIwYjAK
+Pj4+PiAtCQkJTVg2UURMX1BBRF9SR01JSV9URDBfX1JHTUlJX1REMAkJMHgxYjBiMAo+Pj4+IC0J
+CQlNWDZRRExfUEFEX1JHTUlJX1REMV9fUkdNSUlfVEQxCQkweDFiMGIwCj4+Pj4gLQkJCU1YNlFE
+TF9QQURfUkdNSUlfVEQyX19SR01JSV9URDIJCTB4MWIwYjAKPj4+PiAtCQkJTVg2UURMX1BBRF9S
+R01JSV9URDNfX1JHTUlJX1REMwkJMHgxYjBiMAo+Pj4+IC0JCQlNWDZRRExfUEFEX1JHTUlJX1RY
+X0NUTF9fUkdNSUlfVFhfQ1RMCTB4MWIwYjAKPj4+PiAtCQkJTVg2UURMX1BBRF9FTkVUX1JFRl9D
+TEtfX0VORVRfVFhfQ0xLCTB4MWIwYjAKPj4+PiAtCQkJTVg2UURMX1BBRF9SR01JSV9SWENfX1JH
+TUlJX1JYQwkJMHgxYjBiMAo+Pj4+IC0JCQlNWDZRRExfUEFEX1JHTUlJX1JEMF9fUkdNSUlfUkQw
+CQkweDFiMGIwCj4+Pj4gLQkJCU1YNlFETF9QQURfUkdNSUlfUkQxX19SR01JSV9SRDEJCTB4MWIw
+YjAKPj4+PiAtCQkJTVg2UURMX1BBRF9SR01JSV9SRDJfX1JHTUlJX1JEMgkJMHgxYjBiMAo+Pj4+
+IC0JCQlNWDZRRExfUEFEX1JHTUlJX1JEM19fUkdNSUlfUkQzCQkweDFiMGIwCj4+Pj4gLQkJCU1Y
+NlFETF9QQURfUkdNSUlfUlhfQ1RMX19SR01JSV9SWF9DVEwJMHgxYjBiMAo+Pj4+IC0JCQlNWDZR
+RExfUEFEX0VORVRfVFhfRU5fX0VORVRfVFhfRU4JMHgxYjBiMAo+Pj4+IC0JCQlNWDZRRExfUEFE
+X1NEMl9EQVQxX19HUElPMV9JTzE0CQkweDgwMDAwMDAwCj4+Pj4gLQkJPjsKPj4+PiAtCX07Cj4+
+Pj4gLQo+Pj4+IC0JcGluY3RybF9ncG1pX25hbmQ6IGdwbWlncnAgewo+Pj4+IC0JCWZzbCxwaW5z
+ID0gPAo+Pj4+IC0JCQlNWDZRRExfUEFEX05BTkRGX0NMRV9fTkFORF9DTEUJCTB4YjBiMQo+Pj4+
+IC0JCQlNWDZRRExfUEFEX05BTkRGX0FMRV9fTkFORF9BTEUJCTB4YjBiMQo+Pj4+IC0JCQlNWDZR
+RExfUEFEX05BTkRGX1dQX0JfX05BTkRfV1BfQgkweGIwYjEKPj4+PiAtCQkJTVg2UURMX1BBRF9O
+QU5ERl9SQjBfX05BTkRfUkVBRFlfQgkweGIwMDAKPj4+PiAtCQkJTVg2UURMX1BBRF9OQU5ERl9D
+UzBfX05BTkRfQ0UwX0IJMHhiMGIxCj4+Pj4gLQkJCU1YNlFETF9QQURfTkFOREZfQ1MxX19OQU5E
+X0NFMV9CCTB4YjBiMQo+Pj4+IC0JCQlNWDZRRExfUEFEX05BTkRGX0NTMl9fTkFORF9DRTJfQgkw
+eGIwYjEKPj4+PiAtCQkJTVg2UURMX1BBRF9OQU5ERl9DUzNfX05BTkRfQ0UzX0IJMHhiMGIxCj4+
+Pj4gLQkJCU1YNlFETF9QQURfU0Q0X0NNRF9fTkFORF9SRV9CCQkweGIwYjEKPj4+PiAtCQkJTVg2
+UURMX1BBRF9TRDRfQ0xLX19OQU5EX1dFX0IJCTB4YjBiMQo+Pj4+IC0JCQlNWDZRRExfUEFEX05B
+TkRGX0QwX19OQU5EX0RBVEEwMAkweGIwYjEKPj4+PiAtCQkJTVg2UURMX1BBRF9OQU5ERl9EMV9f
+TkFORF9EQVRBMDEJMHhiMGIxCj4+Pj4gLQkJCU1YNlFETF9QQURfTkFOREZfRDJfX05BTkRfREFU
+QTAyCTB4YjBiMQo+Pj4+IC0JCQlNWDZRRExfUEFEX05BTkRGX0QzX19OQU5EX0RBVEEwMwkweGIw
+YjEKPj4+PiAtCQkJTVg2UURMX1BBRF9OQU5ERl9ENF9fTkFORF9EQVRBMDQJMHhiMGIxCj4+Pj4g
+LQkJCU1YNlFETF9QQURfTkFOREZfRDVfX05BTkRfREFUQTA1CTB4YjBiMQo+Pj4+IC0JCQlNWDZR
+RExfUEFEX05BTkRGX0Q2X19OQU5EX0RBVEEwNgkweGIwYjEKPj4+PiAtCQkJTVg2UURMX1BBRF9O
+QU5ERl9EN19fTkFORF9EQVRBMDcJMHhiMGIxCj4+Pj4gLQkJCU1YNlFETF9QQURfU0Q0X0RBVDBf
+X05BTkRfRFFTCQkweDAwYjEKPj4+PiAtCQk+Owo+Pj4+IC0JfTsKPj4+PiAtCj4+Pj4gLQlwaW5j
+dHJsX2kyYzM6IGkyYzNncnAgewo+Pj4+IC0JCWZzbCxwaW5zID0gPAo+Pj4+IC0JCQlNWDZRRExf
+UEFEX0dQSU9fNl9fSTJDM19TREEJCTB4NDAwMWI4YjEKPj4+PiAtCQkJTVg2UURMX1BBRF9HUElP
+XzVfX0kyQzNfU0NMCQkweDQwMDFiOGIxCj4+Pj4gLQkJPjsKPj4+PiAtCX07Cj4+Pj4gLQo+Pj4+
+IC0JcGluY3RybF91YXJ0MjogdWFydDJncnAgewo+Pj4+IC0JCWZzbCxwaW5zID0gPAo+Pj4+IC0J
+CQlNWDZRRExfUEFEX0VJTV9EMjZfX1VBUlQyX1RYX0RBVEEJMHgxYjBiMQo+Pj4+IC0JCQlNWDZR
+RExfUEFEX0VJTV9EMjdfX1VBUlQyX1JYX0RBVEEJMHgxYjBiMQo+Pj4+IC0JCT47Cj4+Pj4gLQl9
+Owo+Pj4+IC0KPj4+PiAtCXBpbmN0cmxfdXNiaDFfdmJ1czogdXNiaDF2YnVzZ3JwIHsKPj4+PiAt
+CQlmc2wscGlucyA9IDwKPj4+PiAtCQkJTVg2UURMX1BBRF9FSU1fQTIwX19HUElPMl9JTzE4CQkw
+eGIwYjEKPj4+PiAtCQk+Owo+Pj4+IC0JfTsKPj4+PiAtCj4+Pj4gLQlwaW5jdHJsX3VzYm90Zzog
+dXNib3RnZ3JwIHsKPj4+PiAtCQlmc2wscGlucyA9IDwKPj4+PiAtCQkJTVg2UURMX1BBRF9HUElP
+XzFfX1VTQl9PVEdfSUQJCTB4MTcwNTkKPj4+PiAtCQk+Owo+Pj4+IC0JfTsKPj4+PiAtCj4+Pj4g
+LQlwaW5jdHJsX3VzYm90Z192YnVzOiB1c2JvdGd2YnVzZ3JwIHsKPj4+PiAtCQlmc2wscGlucyA9
+IDwKPj4+PiAtCQkJTVg2UURMX1BBRF9FSU1fQTE5X19HUElPMl9JTzE5CQkweGIwYjEKPj4+PiAt
+CQkJPjsKPj4+PiAtCX07Cj4+Pj4gLQo+Pj4+IC0JcGluY3RybF91c2RoYzE6IHVzZGhjMWdycCB7
+Cj4+Pj4gLQkJZnNsLHBpbnMgPSA8Cj4+Pj4gLQkJCU1YNlFETF9QQURfU0QxX0NNRF9fU0QxX0NN
+RAkJMHgxNzBmOQo+Pj4+IC0JCQlNWDZRRExfUEFEX1NEMV9DTEtfX1NEMV9DTEsJCTB4MTAwZjkK
+Pj4+PiAtCQkJTVg2UURMX1BBRF9TRDFfREFUMF9fU0QxX0RBVEEwCQkweDE3MGY5Cj4+Pj4gLQkJ
+CU1YNlFETF9QQURfU0QxX0RBVDFfX1NEMV9EQVRBMQkJMHgxNzBmOQo+Pj4+IC0JCQlNWDZRRExf
+UEFEX1NEMV9EQVQyX19TRDFfREFUQTIJCTB4MTcwZjkKPj4+PiAtCQkJTVg2UURMX1BBRF9TRDFf
+REFUM19fU0QxX0RBVEEzCQkweDE3MGY5Cj4+Pj4gLQkJCU1YNlFETF9QQURfRUlNX0JDTEtfX0dQ
+SU82X0lPMzEJCTB4ODAwMDAwMDAgLyogQ0QgKi8KPj4+PiAtCQk+Owo+Pj4+IC0JfTsKPj4+PiAt
+Cj4+Pj4gLQlwaW5jdHJsX3VzZGhjNDogdXNkaGM0Z3JwIHsKPj4+PiAtCQlmc2wscGlucyA9IDwK
+Pj4+PiAtCQkJTVg2UURMX1BBRF9TRDRfQ01EX19TRDRfQ01ECQkweDE3MDU5Cj4+Pj4gLQkJCU1Y
+NlFETF9QQURfU0Q0X0NMS19fU0Q0X0NMSwkJMHgxMDA1OQo+Pj4+IC0JCQlNWDZRRExfUEFEX1NE
+NF9EQVQwX19TRDRfREFUQTAJCTB4MTcwNTkKPj4+PiAtCQkJTVg2UURMX1BBRF9TRDRfREFUMV9f
+U0Q0X0RBVEExCQkweDE3MDU5Cj4+Pj4gLQkJCU1YNlFETF9QQURfU0Q0X0RBVDJfX1NENF9EQVRB
+MgkJMHgxNzA1OQo+Pj4+IC0JCQlNWDZRRExfUEFEX1NENF9EQVQzX19TRDRfREFUQTMJCTB4MTcw
+NTkKPj4+PiAtCQkJTVg2UURMX1BBRF9TRDRfREFUNF9fU0Q0X0RBVEE0CQkweDE3MDU5Cj4+Pj4g
+LQkJCU1YNlFETF9QQURfU0Q0X0RBVDVfX1NENF9EQVRBNQkJMHgxNzA1OQo+Pj4+IC0JCQlNWDZR
+RExfUEFEX1NENF9EQVQ2X19TRDRfREFUQTYJCTB4MTcwNTkKPj4+PiAtCQkJTVg2UURMX1BBRF9T
+RDRfREFUN19fU0Q0X0RBVEE3CQkweDE3MDU5Cj4+Pj4gLQkJPjsKPj4+PiAtCX07Cj4+Pj4gLX07
+Cj4+Pj4gLQo+Pj4+ICAgICZvY290cCB7Cj4+Pj4gICAgCWJhcmVib3gscHJvdmlkZS1tYWMtYWRk
+cmVzcyA9IDwmZmVjIDB4NjIwPjsKPj4+PiAgICB9Owo+Pj4+IC0mdWFydDIgewo+Pj4+IC0JcGlu
+Y3RybC1uYW1lcyA9ICJkZWZhdWx0IjsKPj4+PiAtCXBpbmN0cmwtMCA9IDwmcGluY3RybF91YXJ0
+Mj47Cj4+Pj4gLQlzdGF0dXMgPSAib2theSI7Cj4+Pj4gLX07Cj4+Pj4gLQo+Pj4+IC0mdXNiaDEg
+ewo+Pj4+IC0JdmJ1cy1zdXBwbHkgPSA8JnJlZ191c2JoMV92YnVzPjsKPj4+PiAtCWRpc2FibGUt
+b3Zlci1jdXJyZW50Owo+Pj4+IC0Jc3RhdHVzID0gImRpc2FibGVkIjsKPj4+PiAtfTsKPj4+PiAt
+Cj4+Pj4gLSZ1c2JvdGcgewo+Pj4+IC0JcGluY3RybC1uYW1lcyA9ICJkZWZhdWx0IjsKPj4+PiAt
+CXBpbmN0cmwtMCA9IDwmcGluY3RybF91c2JvdGc+Owo+Pj4+IC0JdmJ1cy1zdXBwbHkgPSA8JnJl
+Z191c2JvdGdfdmJ1cz47Cj4+Pj4gLQlkaXNhYmxlLW92ZXItY3VycmVudDsKPj4+PiAtCXN0YXR1
+cyA9ICJkaXNhYmxlZCI7Cj4+Pj4gLX07Cj4+Pj4gLQo+Pj4+IC0mdXNkaGMxIHsKPj4+PiAtCXBp
+bmN0cmwtbmFtZXMgPSAiZGVmYXVsdCI7Cj4+Pj4gLQlwaW5jdHJsLTAgPSA8JnBpbmN0cmxfdXNk
+aGMxPjsKPj4+PiAtCWNkLWdwaW9zID0gPCZncGlvNiAzMSAwPjsKPj4+PiAtCXN0YXR1cyA9ICJk
+aXNhYmxlZCI7Cj4+Pj4gLX07Cj4+Pj4gLQo+Pj4+ICAgICZ1c2RoYzQgewo+Pj4+IC0JcGluY3Ry
+bC1uYW1lcyA9ICJkZWZhdWx0IjsKPj4+PiAtCXBpbmN0cmwtMCA9IDwmcGluY3RybF91c2RoYzQ+
+Owo+Pj4+IC0JYnVzLXdpZHRoID0gPDg+Owo+Pj4+IC0Jbm9uLXJlbW92YWJsZTsKPj4+PiAtCXN0
+YXR1cyA9ICJkaXNhYmxlZCI7Cj4+Pj4gLQo+Pj4+ICAgIAkjYWRkcmVzcy1jZWxscyA9IDwxPjsK
+Pj4+PiAgICAJI3NpemUtY2VsbHMgPSA8MT47Cj4+Pj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2R0
+cy9pbXg2cXAtcGh5dGVjLXBoeWNvcmUtc29tLW5hbmQuZHRzIGIvYXJjaC9hcm0vZHRzL2lteDZx
+cC1waHl0ZWMtcGh5Y29yZS1zb20tbmFuZC5kdHMKPj4+PiBpbmRleCA0Mzc0NTdjZTc1Li4wNmRl
+ZjkzNWIwIDEwMDY0NAo+Pj4+IC0tLSBhL2FyY2gvYXJtL2R0cy9pbXg2cXAtcGh5dGVjLXBoeWNv
+cmUtc29tLW5hbmQuZHRzCj4+Pj4gKysrIGIvYXJjaC9hcm0vZHRzL2lteDZxcC1waHl0ZWMtcGh5
+Y29yZS1zb20tbmFuZC5kdHMKPj4+PiBAQCAtMTAsNTAgKzEwLDIwIEBACj4+Pj4gICAgICogaHR0
+cDovL3d3dy5nbnUub3JnL2NvcHlsZWZ0L2dwbC5odG1sCj4+Pj4gICAgICovCj4+Pj4gLS9kdHMt
+djEvOwo+Pj4+IC0jaW5jbHVkZSA8YXJtL2lteDZxcC5kdHNpPgo+Pj4+ICsjaW5jbHVkZSA8YXJt
+L2lteDZxcC1waHl0ZWMtbWlyYS1yZGstbmFuZC5kdHM+Cj4+Pj4gICAgI2luY2x1ZGUgImlteDZx
+ZGwtcGh5dGVjLXBoeWNvcmUtc29tLmR0c2kiCj4+Pj4gICAgLyB7Cj4+Pj4gLQltb2RlbCA9ICJQ
+aHl0ZWMgcGh5Q09SRS1pLk1YNiBRdWFkIHdpdGggTkFORCI7Cj4+Pj4gLQljb21wYXRpYmxlID0g
+InBoeXRlYyxpbXg2cXAtcGNtMDU4LW5hbmQiLCAiZnNsLGlteDZxcCI7Cj4+Pj4gLX07Cj4+Pj4g
+LQo+Pj4+IC0mZWNzcGkxIHsKPj4+PiAtCXN0YXR1cyA9ICJva2F5IjsKPj4+PiAtfTsKPj4+PiAt
+Cj4+Pj4gLSZlZXByb20gewo+Pj4+IC0Jc3RhdHVzID0gIm9rYXkiOwo+Pj4+ICsJY29tcGF0aWJs
+ZSA9ICJwaHl0ZWMsaW14NnFwLXBiYWMwNi1uYW5kIiwgInBoeXRlYyxpbXg2cXAtcGJhYzA2IiwK
+Pj4+PiArCQkgICAgICJwaHl0ZWMsaW14NnFwLXBjbTA1OC1uYW5kIiwgInBoeXRlYyxpbXg2cWRs
+LXBjbTA1OCIsCj4+Pj4gKwkJICAgICAiZnNsLGlteDZxcCI7Cj4+Pj4gICAgfTsKPj4+PiAgICAm
+ZXRocGh5IHsKPj4+PiAgICAJbWF4LXNwZWVkID0gPDEwMDA+Owo+Pj4+ICAgIH07Cj4+Pj4gLSZm
+ZWMgewo+Pj4+IC0Jc3RhdHVzID0gIm9rYXkiOwo+Pj4+IC19Owo+Pj4+IC0KPj4+PiAtJmZsYXNo
+IHsKPj4+PiAtCXN0YXR1cyA9ICJva2F5IjsKPj4+PiAtfTsKPj4+PiAtCj4+Pj4gLSZncG1pIHsK
+Pj4+PiAtCXN0YXR1cyA9ICJva2F5IjsKPj4+PiAtfTsKPj4+PiAtCj4+Pj4gLSZ1c2JoMSB7Cj4+
+Pj4gLQlzdGF0dXMgPSAib2theSI7Cj4+Pj4gLX07Cj4+Pj4gLQo+Pj4+IC0mdXNib3RnIHsKPj4+
+PiAtCXN0YXR1cyA9ICJva2F5IjsKPj4+PiAtfTsKPj4+PiAtCj4+Pj4gICAgJnVzZGhjMSB7Cj4+
+Pj4gLQlzdGF0dXMgPSAib2theSI7Cj4+Pj4gLQo+Pj4+ICAgIAlwYXJ0aXRpb25zIHsKPj4+PiAg
+ICAJCWNvbXBhdGlibGUgPSAiZml4ZWQtcGFydGl0aW9ucyI7Cj4+Pj4gICAgCQkjYWRkcmVzcy1j
+ZWxscyA9IDwxPjsKPj4+PiAtLSAKPj4+PiAyLjIwLjEKPj4+Pgo+Pj4+Cj4+Pj4gX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPj4+PiBiYXJlYm94IG1haWxp
+bmcgbGlzdAo+Pj4+IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+Pj4+IGh0dHA6Ly9saXN0
+cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo+Pj4+Cj4+Pgo+Pgo+PiBf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwo+PiBiYXJlYm94
+IG1haWxpbmcgbGlzdAo+PiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKPj4gaHR0cDovL2xp
+c3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cj4+Cj4gCgpfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcg
+bGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5v
+cmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
