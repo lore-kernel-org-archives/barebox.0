@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iD4F3-0004V5-Sf
- for barebox@lists.infradead.org; Wed, 25 Sep 2019 10:09:55 +0000
-Date: Wed, 25 Sep 2019 12:09:46 +0200
+ id 1iD5f7-0007O9-F4
+ for barebox@lists.infradead.org; Wed, 25 Sep 2019 11:40:51 +0000
+Date: Wed, 25 Sep 2019 13:40:47 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190925100946.ki35rc52pdbakfa7@pengutronix.de>
-References: <20190924075441.26252-1-o.rempel@pengutronix.de>
+Message-ID: <20190925114047.ip23swk6phthgw3j@pengutronix.de>
+References: <20190923063320.4177-1-a.schwarzkopf@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190924075441.26252-1-o.rempel@pengutronix.de>
+In-Reply-To: <20190923063320.4177-1-a.schwarzkopf@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,83 +22,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3] Documentation: add watchdog documentation
-To: Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: Re: [PATCH] Allow usage of default environment without environment
+ file storage
+To: Albert Schwarzkopf <a.schwarzkopf@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Sep 24, 2019 at 09:54:41AM +0200, Oleksij Rempel wrote:
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> ---
->  Documentation/user/user-manual.rst |   1 +
->  Documentation/user/watchdog.rst    | 116 +++++++++++++++++++++++++++++
->  2 files changed, 117 insertions(+)
->  create mode 100644 Documentation/user/watchdog.rst
+Hi Albert,
+
+On Mon, Sep 23, 2019 at 08:33:20AM +0200, Albert Schwarzkopf wrote:
+> Currently, the default environment is only used when the
+> barebox environment on the persistent store is not valid
+> or when ENVFS_FLAGS_FORCE_BUILT_IN is set in the super block.
 > 
-> diff --git a/Documentation/user/user-manual.rst b/Documentation/user/user-manual.rst
-> index f04981c3f0..41fdb8805c 100644
-> --- a/Documentation/user/user-manual.rst
-> +++ b/Documentation/user/user-manual.rst
-> @@ -34,6 +34,7 @@ Contents:
->     state
->     random
->     debugging
-> +   watchdog
->  
->  * :ref:`search`
->  * :ref:`genindex`
-> diff --git a/Documentation/user/watchdog.rst b/Documentation/user/watchdog.rst
-> new file mode 100644
-> index 0000000000..87c63aa078
-> --- /dev/null
-> +++ b/Documentation/user/watchdog.rst
-> @@ -0,0 +1,116 @@
-> +Watchdog Support
-> +================
-> +
-> +Warnings and Design Consideration
-> +---------------------------------
-> +
-> +A watchdog is the last line of defense on misbehaving systems. Thus, proper
-> +hardware and watchdog design considerations should be made to be able to reduce
-> +the impact of failing systems in the field. In the best case, the bootloader
-> +should not touch it at all. No watchdog feeding should be done until
-> +application-critical software (or a userspace service manager such as
-> +'systemd') was started.
-> +
-> +In case the bootloader is responsible for watchdog activation, the system can
-> +be considered as failed by design. The following threats can affect the system
-> +which are mostly addressable by properly designed watchdog and watchdog
-> +strategy:
-> +
-> +- software-based misconfigurations or bugs prevent the system from starting.
-> +- glitches caused by under-voltage, inappropriate power-on sequence or noisy
-> +  power supply.
-> +- physical damages caused by humidity, vibration or temperature.
-> +- temperature-based misbehavior of the system, e.g. clock is not running or
-> +  running with wrong frequency.
-> +- chemical reactions, e.g. some clock crystals will stop to work in contact
-> +  with Helium, see for example:
-> +  https://ifixit.org/blog/11986/iphones-are-allergic-to-helium/
-> +- failed storage prevents booting. NAND, SD, SSD, HDD, SPI-flash all of this
-> +  some day stop to work because their read/write cycles are exceeded.
-> +
-> +In all these cases, the bootloader won't be able to start and a properly
-> +designed watchdog may take some action. For example: recover the system by
-> +resetting it, or power it off to reduce the damage.
+> However, ENVFS_FLAGS_FORCE_BUILT_IN can be cleared and the
+> environmnet variables in the persistent store will be
+> used again. This may not be desirable.
+> 
+> This patch allows building CONFIG_DEFAULT_ENVIRONMENT
+> independent of CONFIG_ENV_HANDLING. This can be useful
+> if you never want to load or write values from the
+> persistent store and you only need to read environment variables
+> from your default environment.
+> 
+> If CONFIG_ENV_HANDLING is not set, a message will be printed to the
+> user indicating that changes to non-volatile variables won't be
+> persisted.
 
-I haven't seen any watchdogs powering off the system.
+I understand what you want to archieve, but your patch currently
+introduces too many new #ifdefs in a code that has too many of them
+already. This has to be cleaned up before I can merge this.
 
-In the list above only in the case of glitches caused by under-voltage a
-watchdog makes a difference. In all the other cases a watchdog won't
-help either.
+> diff --git a/common/Makefile b/common/Makefile
+> index a284655fc..d4528bb5c 100644
+> --- a/common/Makefile
+> +++ b/common/Makefile
+> @@ -26,6 +26,7 @@ obj-$(CONFIG_CONSOLE_SIMPLE)	+= console_simple.o
+>  obj-y				+= console_countdown.o
+>  obj-pbl-$(CONFIG_DDR_SPD)	+= ddr_spd.o
+>  obj-$(CONFIG_ENV_HANDLING)	+= environment.o
+> +obj-$(CONFIG_DEFAULT_ENVIRONMENT) += environment.o
 
-Given that I don't agree to the claim that systems where the bootloader
-has to enable the watchdog are a design failure. Also I bet there are
-SoCs on which the watchdog can't be enabled by default before the
-bootloader. I wouldn't call boards designed around such a SoC a failure
-by design.
+So this file is compiled when CONFIG_ENV_HANDLING or
+CONFIG_DEFAULT_ENVIRONMENT is set. At the same time the file has #ifdef
+CONFIG_ENV_HANDLING in it. This might indicate that the code in this
+file has to be split up into multiple files, or maybe the functions have
+to be rearranged.
 
-Sascha
+Regards,
+  Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
