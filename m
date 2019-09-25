@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-eopbgr740115.outbound.protection.outlook.com
+ ([40.107.74.115] helo=NAM01-BN3-obe.outbound.protection.outlook.com)
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iDk4p-0004eD-S5
- for barebox@lists.infradead.org; Fri, 27 Sep 2019 06:50:06 +0000
-Date: Fri, 27 Sep 2019 08:50:01 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190927065001.hhnlvojb7bqb7rt4@pengutronix.de>
-References: <20190923161508.9163-1-a.fatoum@pengutronix.de>
+ id 1iDBKt-0007f6-Qu
+ for barebox@lists.infradead.org; Wed, 25 Sep 2019 17:44:21 +0000
+From: "Barbier, Renaud" <renaud.barbier@abaco.com>
+Date: Wed, 25 Sep 2019 17:44:16 +0000
+Message-ID: <MN2PR16MB3117C56576A8FB7A258431B691870@MN2PR16MB3117.namprd16.prod.outlook.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190923161508.9163-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,59 +21,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC PATCH] ARM: layerscape: zero-index DEBUG_LAYERSCAPE_UART_PORT
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: barebox 2019.07 ubiformat
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Mon, Sep 23, 2019 at 06:15:08PM +0200, Ahmad Fatoum wrote:
-> The layerscape features four UART ports termed UART{1-4} in the
-> reference manual.
-> In the upstream device tree they have the phandles &duart{0-3}.
-> 
-> Currently, barebox follows the numbering used in the reference manual
-> for the DEBUG_LL port, because that's what the <soc/fsl/immap_lsch2.h>
-> header does as well.
-> 
-> It's arguable however that the DEBUG_LL port should be 0-indexed,
-> because users are most likely to look in the board device tree for the
-> chosen stdout-path and that one's phandle is zero-indexed.
-> 
-> One notable example of a target with one-indexed DEBUG_LL port is the
-> i.MX, but there the uart port phandles are one-indexed, so there's no
-> discrepancy between DEBUG_LL and /chosen/stdout-path like it's the
-> case with the Layerscape.
-> 
-> Fix the discrepancy by zero-indexing the layerscape UART.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
-> I guess it can be argued that either way is the correct one.
+We recently jumped from barebox 2016.07 to 2019.07. 
+Everything went well till the NAND got ubiformated.
 
-Indeed ;)
+Using the version from2016.07, the NOR boot partition can be formatted (FIT image) and NAND (file system) and the system boots.
+When using the barebox 2019-07, both storage can be formatted but when booting (Linux 4.16 or 5.2) I get:
 
-> But I'd say from the viewpoint of a barebox developer, changing it to
-> zero indexed makes the most sense.
+nand: device found, Manufacturer ID: 0x01, Chip ID: 0xdc
+nand: AMD/Spansion S34ML04G1
+nand: 512 MiB, SLC, erase size: 128 KiB, page size: 2048, OOB size: 64
+Bad block table found at page 262080, version 0x01
+Bad block table found at page 262016, version 0x01
+1 fixed-partitions partitions found on MTD device ff800000.flash
+Creating 1 MTD partitions on "ff800000.flash":
+0x000000000000-0x000020000000 : "nand"
+fsl,ifc-nand ff800000.nand: IFC NAND device at 0xff800000, bank 1
+...
+...
+ubi0: default fastmap pool size: 200
+ubi0: default fastmap WL pool size: 100
+ubi0: attaching mtd5
+ubi0: fixable bit-flip detected at PEB 2
+ubi0: fixable bit-flip detected at PEB 3
+ubi0: fixable bit-flip detected at PEB 4
+...
+ubi0: fixable bit-flip detected at PEB 3270
+random: crng init done
+ubi0: scanning is finished
+__nand_correct_data: uncorrectable ECC error
+__nand_correct_data: uncorrectable ECC error
+__nand_correct_data: uncorrectable ECC error
+...
+__nand_correct_data: uncorrectable ECC error
+ubi0 warning: ubi_io_read: error -74 (ECC error) while reading 22528 bytes from PEB 0:4096, read only 22528 bytes, retry
+__nand_correct_data: uncorrectable ECC error
+...
+ubi0 error: ubi_io_read: error -74 (ECC error) while reading 22528 bytes from PE
+B 0:4096, read 22528 bytes
+CPU: 0 PID: 1 Comm: swapper Not tainted 5.2.0-owc-g39fb4f3.tethys-dx1014 #1
+Call Trace:
+[cf825d18] [c02e7d0c] ubi_io_read+0x1b4/0x37c (unreliable)
+[cf825d68] [c02dd9a0] ubi_read_volume_table+0x128/0xb8c
+[cf825dc8] [c02ef46c] ubi_attach+0xbc/0x3a0
+[cf825df8] [c02e1710] ubi_attach_mtd_dev+0x654/0xcf8
+[cf825e58] [c0575ec0] ubi_init+0x198/0x224
+[cf825e98] [c0003194] do_one_initcall+0x3c/0x1a8
+[cf825ef8] [c055fba8] kernel_init_freeable+0x12c/0x1dc
+[cf825f28] [c00033b0] kernel_init+0x14/0x114
+[cf825f38] [c000f268] ret_from_kernel_thread+0x14/0x1c
 
-If you could argue that it was inconsistent before and you make it
-consistent now, then I would say go for it. Unfortunately it's
-inconsistent now and still inconsistent with your patch, so changing
-it IMO doesn't improve anything.
-
->  	help
->  	  Select the UART port number used for early debugging here. Port
-> -	  numbers start counting from 1.
-> +	  numbers start counting from 0.
-
-Actually I don't care much, so I may be convinced. What I do care about
-though is that it's documented, and fortunately in this case it is ;)
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+So far I have been looking at the commit in barebox regarding MTD/UBI/UBIFS to v2019.09 and cannot see anything obvious.
+I could rebase forward if necessary. Is that something that is been observed by anybody?
 
 _______________________________________________
 barebox mailing list
