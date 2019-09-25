@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([78.46.208.201])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iCJZv-0001vE-Fp
- for barebox@lists.infradead.org; Mon, 23 Sep 2019 08:20:17 +0000
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Mon, 23 Sep 2019 10:19:02 +0200
-Message-Id: <20190923081901.61830-1-r.czerwinski@pengutronix.de>
+ id 1iD3xJ-0007qu-NS
+ for barebox@lists.infradead.org; Wed, 25 Sep 2019 09:51:31 +0000
+Date: Wed, 25 Sep 2019 11:51:27 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190925095127.tekk37oaqmvdfyxj@pengutronix.de>
+References: <20190923121018.31574-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190923121018.31574-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,108 +22,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] Doc: i.MX: Document image structure for i.MX
-To: barebox@lists.infradead.org
-Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Subject: Re: [PATCH 0/6] scripts/dtc: rework dtc import handling
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Document the image and load structure for i.MX6 and i.MX8MQ.
+On Mon, Sep 23, 2019 at 02:10:12PM +0200, Ahmad Fatoum wrote:
+> Linux upstream doesn't use fdtget. barebox does however for IMD.
+> Commits 46bdae84e8 ("dtc: Update update-dtc-source.sh from Linux") and
+> 4e731e48d4 ("scripts/dtc: Update to upstream version v1.5.0") broke
+> this, which the first two patches in this series fix. They should be
+> applied to upstream/master.
+> 
+> This probably went undtected because an old ftdget would survive a
+> mrproper, so this issue only happens on fresh check-outs.
+> 
+> The other 4 patches address the fact that the process by which we update
+> dtc is error-prone. This is evident by this patch and 1df07fbcdf
+> ("scripts/dtc: Reenable fdtget"), which fixed the same issue a year
+> prior.
+> 
+> To address this add documentation on how to update dtc and make the
+> script easier to use. The update to v1.5.1 is included as well to test
+> this out, but can be dropped.
+> 
+> Ahmad Fatoum (6):
+>   scripts/dtc: Reinstate barebox-specifics in update-dtc-source.sh
+>   scripts/dtc: reinstate building of fdtget along with dtc
+>   scripts/dtc: git rm old files as part of update process
+>   scripts/dtc: mention dtc project in update-dtc-source.sh commit
+>     message
+>   scripts/dtc: Update to upstream version v1.5.1
+>   Documentation: document barebox device tree handling
 
-Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
----
-v2:
-- mention that i>MX6 setup for most boards, but note that some boards may require new implementations
-- change sd card to boot media
+Applied, thanks
 
- Documentation/boards/imx.rst | 73 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 73 insertions(+)
+Sascha
 
-diff --git a/Documentation/boards/imx.rst b/Documentation/boards/imx.rst
-index 71cc6bb09a..8fe0a2828d 100644
---- a/Documentation/boards/imx.rst
-+++ b/Documentation/boards/imx.rst
-@@ -142,6 +142,79 @@ It must be included in the board's flash header:
- 
- Analogous to HABv4 options and a template exist for HABv3.
- 
-+Secure Boot on i.MX6
-+~~~~~~~~~~~~~~~~~~~~
-+
-+For most boards, the secure boot process on i.MX6 consist of the following image
-+constellation::
-+
-+    0x0 +---------------------------------+
-+        | Barebox Header                  |
-+  0x400 +---------------------------------+       -
-+        | i.MX IVT Header                 |       |
-+        | Boot Data                       +--+    |
-+        | CSF Pointer                     +--|-+  | Signed Area
-+        +---------------------------------+  | |  |
-+        | Device Configuration Data (DCD) |  | |  |
-+ 0x1000 +---------------------------------+  | |  |
-+        | Barebox Prebootloader (PBL)     |<-+ |  |
-+        +---------------------------------+    |  |
-+        | Piggydata (Main Barebox Binary) |    |  |
-+        +---------------------------------+    |  -
-+        | Command Sequence File (CSF)     |<---+
-+        +---------------------------------+
-+
-+Here the Command Sequence File signs the complete Header, PBL and piggy data
-+file. This ensures that the whole barebox binary is authenticated. This is
-+possible since the DDR RAM is configured using the DCD and the whole DDR memory
-+area can be used to load data onto the device for authentication.
-+The boot ROM loads the CSF area and barebox into memory and uses the CSF to
-+verify the complete barebox binary.
-+
-+Boards which do require a boot via SRAM, need changes akin to the implementation
-+for i.MX8MQ described in the next chapter.
-+
-+Secure Boot on i.MX8MQ
-+~~~~~~~~~~~~~~~~~~~~~~
-+
-+For i.MX8MQ the image has the following design::
-+
-+    0x0 +---------------------------------+
-+        | Barebox Header                  |
-+        +---------------------------------+
-+        | i.MX IVT Header                 |
-+        | HDMI Firmware (Signed by NXP)   |
-+        +---------------------------------+        -
-+        | i.MX IVT Header                 |        |
-+        | Boot Data                       +--+     |
-+        | CSF Pointer                     +--|-+   |
-+        +---------------------------------+  | |   | Signed Area
-+        | Device Configuration Data (DCD) |  | |   |
-+        +---------------------------------+  | |   |
-+        | Barebox Prebootloader (PBL)     |<-+ |   |
-+        | Piggydata Hash (SHA256)         +----|-+ |
-+        +---------------------------------+    | | -
-+        | Command Sequence File (CSF)     |<---+ |
-+        +---------------------------------+      | -
-+        | Piggydata (Main Barebox Binary) |<-----+ | Hashed Area
-+        +---------------------------------+        -
-+
-+In contrast to i.MX6, for the i.MX8MQ the piggydata can not be signed together
-+with the PBL binary. The DDR memory is initialized during the start of the PBL,
-+previous to this no access to the DDR memory is possible. Since the Tightly
-+Coupled Memory used for early startup on i.MX8MQ has only 256Kib, the whole
-+barebox can't be loaded and verified at once, since the complete barebox with
-+firmware has a size of ~500Kib.
-+
-+The bootrom loads the HDMI firmware unconditionally, since it is signed by NXP.
-+Afterwards the Prebootloader (PBL) is loaded into SRAM and the bootrom proceeds
-+to verify the PBL according to the Command Sequence File (CSF). The verified
-+PBL initializes the ARM Trusted Firmware (TF-A) and DDR RAM. It subsequently
-+loads the piggydata from the boot media and calculates the sha256sum of the
-+piggydata. This is compared to the sha256sum built into the PBL during compile
-+time, the PBL will only continue to boot if the sha256sum matches the builtin
-+sha256sum.
-+
- Using GPT on i.MX
- ^^^^^^^^^^^^^^^^^
- 
+
 -- 
-2.23.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
