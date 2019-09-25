@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iCwKv-00074A-Jd
- for barebox@lists.infradead.org; Wed, 25 Sep 2019 01:43:23 +0000
-Received: by mail-pg1-x543.google.com with SMTP id c17so2273089pgg.4
- for <barebox@lists.infradead.org>; Tue, 24 Sep 2019 18:43:21 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 24 Sep 2019 18:43:13 -0700
-Message-Id: <20190925014313.26876-1-andrew.smirnov@gmail.com>
+ id 1iD17U-0004jj-FC
+ for barebox@lists.infradead.org; Wed, 25 Sep 2019 06:49:49 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 25 Sep 2019 08:49:44 +0200
+Message-Id: <20190925064944.21584-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,403 +19,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3] net: dsa: mv88e6xxx: Wait for EEPROM done after HW reset
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Chris Healy <cphealy@gmail.com>
+Subject: [PATCH] imx-bbu-nand-fcb: Mark block as bad when erasing it fails
+To: Barebox List <barebox@lists.infradead.org>
 
-Based on a unpublished patch from Andrew Lunn:
+When a block cannot be erased it must be marked as bad. Previously we
+accidently ignored the erase failure and the the code just wrote the
+firmware into that block which resulted in boot failure.
 
-    When the switch is hardware reset, it reads the contents of the
-    EEPROM. This can contain instructions for programming values into
-    registers and to perform waits between such programming. Reading
-    the EEPROM can take longer than the 100ms
-    mv88e6xxx_hardware_reset() waits after deasserting the reset
-    GPIO. So poll the EEPROM done bit to ensure it is complete.
-
-    Signed-off-by: Andrew Lunn <andrew@lunn.ch>
-
-orignal patch augmented to have necessary Global 1 plubming, ported to
-Barebox and slightly changed.
-
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: Chris Healy <cphealy@gmail.com>
-Cc: Lucas Stach <l.stach@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/phy/mv88e6xxx/Makefile  |  1 +
- drivers/net/phy/mv88e6xxx/chip.c    | 34 +++++++++++++++++++
- drivers/net/phy/mv88e6xxx/chip.h    |  1 +
- drivers/net/phy/mv88e6xxx/global1.c | 51 +++++++++++++++++++++++++++++
- drivers/net/phy/mv88e6xxx/global1.h | 37 +++++++++++++++++++++
- 5 files changed, 124 insertions(+)
- create mode 100644 drivers/net/phy/mv88e6xxx/global1.c
- create mode 100644 drivers/net/phy/mv88e6xxx/global1.h
+ common/imx-bbu-nand-fcb.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/mv88e6xxx/Makefile b/drivers/net/phy/mv88e6xxx/Makefile
-index e09ea0aa47..e1d4b1b9d7 100644
---- a/drivers/net/phy/mv88e6xxx/Makefile
-+++ b/drivers/net/phy/mv88e6xxx/Makefile
-@@ -1,5 +1,6 @@
- obj-y += mv88e6xxx.o
+diff --git a/common/imx-bbu-nand-fcb.c b/common/imx-bbu-nand-fcb.c
+index bb6dd1d4e9..aa3f733912 100644
+--- a/common/imx-bbu-nand-fcb.c
++++ b/common/imx-bbu-nand-fcb.c
+@@ -626,8 +626,15 @@ static int imx_bbu_write_firmware(struct mtd_info *mtd, unsigned num, void *buf,
+ 			continue;
  
- mv88e6xxx-objs := chip.o
-+mv88e6xxx-objs += global1.o
- mv88e6xxx-objs += global2.o
- mv88e6xxx-objs += port.o
-diff --git a/drivers/net/phy/mv88e6xxx/chip.c b/drivers/net/phy/mv88e6xxx/chip.c
-index 9688dbd1be..3af2b64eda 100644
---- a/drivers/net/phy/mv88e6xxx/chip.c
-+++ b/drivers/net/phy/mv88e6xxx/chip.c
-@@ -11,6 +11,7 @@
- #include <of_gpio.h>
- 
- #include "chip.h"
-+#include "global1.h"
- #include "global2.h"
- #include "port.h"
- 
-@@ -342,6 +343,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.name = "Marvell 88E6085",
- 		.num_ports = 10,
- 		.port_base_addr = 0x10,
-+		.global1_addr = 0x1b,
- 		.global2_addr = 0x1c,
- 		.ops = &mv88e6085_ops,
- 	},
-@@ -352,6 +354,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.name = "Marvell 88E6095/88E6095F",
- 		.num_ports = 11,
- 		.port_base_addr = 0x10,
-+		.global1_addr = 0x1b,
- 		.global2_addr = 0x1c,
- 		.ops = &mv88e6095_ops,
- 	},
-@@ -362,6 +365,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.name = "Marvell 88E6097/88E6097F",
- 		.num_ports = 11,
- 		.port_base_addr = 0x10,
-+		.global1_addr = 0x1b,
- 		.global2_addr = 0x1c,
- 		.ops = &mv88e6097_ops,
- 	},
-@@ -372,6 +376,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.name = "Marvell 88E6123",
- 		.num_ports = 3,
- 		.port_base_addr = 0x10,
-+		.global1_addr = 0x1b,
- 		.global2_addr = 0x1c,
- 		.ops = &mv88e6123_ops,
- 	},
-@@ -382,6 +387,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.name = "Marvell 88E6131",
- 		.num_ports = 8,
- 		.port_base_addr = 0x10,
-+		.global1_addr = 0x1b,
- 		.global2_addr = 0x1c,
- 		.ops = &mv88e6131_ops,
- 	},
-@@ -392,6 +398,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.name = "Marvell 88E6341",
- 		.num_ports = 6,
- 		.port_base_addr = 0x10,
-+		.global1_addr = 0x1b,
- 		.global2_addr = 0x1c,
- 		.ops = &mv88e6141_ops,
- 	},
-@@ -402,6 +409,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.name = "Marvell 88E6161",
- 		.num_ports = 6,
- 		.port_base_addr = 0x10,
-+		.global1_addr = 0x1b,
- 		.global2_addr = 0x1c,
- 		.ops = &mv88e6161_ops,
- 	},
-@@ -412,6 +420,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.name = "Marvell 88E6165",
- 		.num_ports = 6,
- 		.port_base_addr = 0x10,
-+		.global1_addr = 0x1b,
- 		.global2_addr = 0x1c,
- 		.ops = &mv88e6165_ops,
- 	},
-@@ -422,6 +431,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.name = "Marvell 88E6171",
- 		.num_ports = 7,
- 		.port_base_addr = 0x10,
-+		.global1_addr = 0x1b,
- 		.global2_addr = 0x1c,
- 		.ops = &mv88e6171_ops,
- 	},
-@@ -432,6 +442,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.name = "Marvell 88E6172",
- 		.num_ports = 7,
- 		.port_base_addr = 0x10,
-+		.global1_addr = 0x1b,
- 		.global2_addr = 0x1c,
- 		.ops = &mv88e6172_ops,
- 	},
-@@ -442,6 +453,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.name = "Marvell 88E6175",
- 		.num_ports = 7,
- 		.port_base_addr = 0x10,
-+		.global1_addr = 0x1b,
- 		.global2_addr = 0x1c,
- 		.ops = &mv88e6175_ops,
- 	},
-@@ -452,6 +464,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.name = "Marvell 88E6176",
- 		.num_ports = 7,
- 		.port_base_addr = 0x10,
-+		.global1_addr = 0x1b,
- 		.global2_addr = 0x1c,
- 		.ops = &mv88e6176_ops,
- 	},
-@@ -462,6 +475,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.name = "Marvell 88E6185",
- 		.num_ports = 10,
- 		.port_base_addr = 0x10,
-+		.global1_addr = 0x1b,
- 		.global2_addr = 0x1c,
- 		.ops = &mv88e6185_ops,
- 	},
-@@ -472,6 +486,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.name = "Marvell 88E6190",
- 		.num_ports = 11,	/* 10 + Z80 */
- 		.port_base_addr = 0x0,
-+		.global1_addr = 0x1b,
- 		.global2_addr = 0x1c,
- 		.ops = &mv88e6190_ops,
- 	},
-@@ -482,6 +497,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.name = "Marvell 88E6190X",
- 		.num_ports = 11,	/* 10 + Z80 */
- 		.port_base_addr = 0x0,
-+		.global1_addr = 0x1b,
- 		.global2_addr = 0x1c,
- 		.ops = &mv88e6190x_ops,
- 	},
-@@ -492,6 +508,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.name = "Marvell 88E6191",
- 		.num_ports = 11,	/* 10 + Z80 */
- 		.port_base_addr = 0x0,
-+		.global1_addr = 0x1b,
- 		.global2_addr = 0x1c,
- 		.ops = &mv88e6191_ops,
- 	},
-@@ -502,6 +519,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.name = "Marvell 88E6240",
- 		.num_ports = 7,
- 		.port_base_addr = 0x10,
-+		.global1_addr = 0x1b,
- 		.global2_addr = 0x1c,
- 		.ops = &mv88e6240_ops,
- 	},
-@@ -512,6 +530,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.name = "Marvell 88E6290",
- 		.num_ports = 11,	/* 10 + Z80 */
- 		.port_base_addr = 0x0,
-+		.global1_addr = 0x1b,
- 		.global2_addr = 0x1c,
- 		.ops = &mv88e6290_ops,
- 	},
-@@ -522,6 +541,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.name = "Marvell 88E6320",
- 		.num_ports = 7,
- 		.port_base_addr = 0x10,
-+		.global1_addr = 0x1b,
- 		.global2_addr = 0x1c,
- 		.ops = &mv88e6320_ops,
- 	},
-@@ -532,6 +552,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.name = "Marvell 88E6321",
- 		.num_ports = 7,
- 		.port_base_addr = 0x10,
-+		.global1_addr = 0x1b,
- 		.global2_addr = 0x1c,
- 		.ops = &mv88e6321_ops,
- 	},
-@@ -542,6 +563,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.name = "Marvell 88E6341",
- 		.num_ports = 6,
- 		.port_base_addr = 0x10,
-+		.global1_addr = 0x1b,
- 		.global2_addr = 0x1c,
- 		.ops = &mv88e6341_ops,
- 	},
-@@ -552,6 +574,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.name = "Marvell 88E6350",
- 		.num_ports = 7,
- 		.port_base_addr = 0x10,
-+		.global1_addr = 0x1b,
- 		.global2_addr = 0x1c,
- 		.ops = &mv88e6350_ops,
- 	},
-@@ -562,6 +585,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.name = "Marvell 88E6351",
- 		.num_ports = 7,
- 		.port_base_addr = 0x10,
-+		.global1_addr = 0x1b,
- 		.global2_addr = 0x1c,
- 		.ops = &mv88e6351_ops,
- 	},
-@@ -572,6 +596,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.name = "Marvell 88E6352",
- 		.num_ports = 7,
- 		.port_base_addr = 0x10,
-+		.global1_addr = 0x1b,
- 		.global2_addr = 0x1c,
- 		.ops = &mv88e6352_ops,
- 	},
-@@ -582,6 +607,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.name = "Marvell 88E6390",
- 		.num_ports = 11,	/* 10 + Z80 */
- 		.port_base_addr = 0x0,
-+		.global1_addr = 0x1b,
- 		.global2_addr = 0x1c,
- 		.ops = &mv88e6390_ops,
- 	},
-@@ -592,6 +618,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.name = "Marvell 88E6390X",
- 		.num_ports = 11,	/* 10 + Z80 */
- 		.port_base_addr = 0x0,
-+		.global1_addr = 0x1b,
- 		.global2_addr = 0x1c,
- 		.ops = &mv88e6390x_ops,
- 	},
-@@ -741,6 +768,8 @@ static void mv88e6xxx_hardware_reset(struct mv88e6xxx_chip *chip)
- 		mv88e6xxx_hardware_reset_delay();
- 		gpio_set_active(chip->reset, 0);
- 		mv88e6xxx_hardware_reset_delay();
+ 		ret = mtd_peb_erase(mtd, block + i);
+-		if (ret && ret != -EIO)
++		if (ret == -EIO) {
++			newbadblock = 1;
 +
-+		mv88e6xxx_g1_wait_eeprom_done(chip);
- 	}
- }
- 
-@@ -836,6 +865,11 @@ static int mv88e6xxx_probe(struct device_d *dev)
- 		 */
- 		mv88e6xxx_hardware_reset_delay();
- 	}
-+	/*
-+	 * Switch will not return valid data over MDIO until EEPROM is
-+	 * loaded
-+	 */
-+	mv88e6xxx_g1_wait_eeprom_done(chip);
- 
- 	err = mv88e6xxx_detect(chip);
- 	if (err)
-diff --git a/drivers/net/phy/mv88e6xxx/chip.h b/drivers/net/phy/mv88e6xxx/chip.h
-index 7548358de0..57f74a39a0 100644
---- a/drivers/net/phy/mv88e6xxx/chip.h
-+++ b/drivers/net/phy/mv88e6xxx/chip.h
-@@ -34,6 +34,7 @@ struct mv88e6xxx_info {
- 	const char *name;
- 	unsigned int num_ports;
- 	unsigned int port_base_addr;
-+	unsigned int global1_addr;
- 	unsigned int global2_addr;
- 
- 	const struct mv88e6xxx_ops *ops;
-diff --git a/drivers/net/phy/mv88e6xxx/global1.c b/drivers/net/phy/mv88e6xxx/global1.c
-new file mode 100644
-index 0000000000..bace5396e9
---- /dev/null
-+++ b/drivers/net/phy/mv88e6xxx/global1.c
-@@ -0,0 +1,51 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Marvell 88E6xxx Switch Global (1) Registers support
-+ *
-+ * Copyright (c) 2008 Marvell Semiconductor
-+ *
-+ * Copyright (c) 2016-2017 Savoir-faire Linux Inc.
-+ *	Vivien Didelot <vivien.didelot@savoirfairelinux.com>
-+ */
-+
-+#include <clock.h>
-+#include <linux/bitfield.h>
-+
-+#include "chip.h"
-+#include "global1.h"
-+
-+static int mv88e6xxx_g1_read(struct mv88e6xxx_chip *chip, int reg, u16 *val)
-+{
-+	int addr = chip->info->global1_addr;
-+
-+	return mv88e6xxx_read(chip, addr, reg, val);
-+}
-+
-+void mv88e6xxx_g1_wait_eeprom_done(struct mv88e6xxx_chip *chip)
-+{
-+	const uint64_t start   = get_time_ns();
-+	const uint64_t timeout = SECOND;
-+	u16 val;
-+	int err;
-+
-+	/* Wait up to 1 second for the switch to finish reading the
-+	 * EEPROM.
-+	 */
-+	while (!is_timeout(start, timeout)) {
-+		err = mv88e6xxx_g1_read(chip, MV88E6XXX_G1_STS, &val);
-+		if (err) {
-+			dev_err(chip->dev, "Error reading status\n");
-+			return;
++			ret = mtd_peb_mark_bad(mtd, block + i);
++			if (ret)
++				return ret;
++		} else if (ret) {
+ 			return ret;
 +		}
-+
-+		if (val != 0xFFFF && /* switch will return 0xffff until
-+				      * EEPROM is loaded
-+				      */
-+		    val & BIT(MV88E6XXX_G1_STS_IRQ_EEPROM_DONE))
-+			return;
-+
-+		mdelay(2);
-+	}
-+
-+	dev_err(chip->dev, "Timeout waiting for EEPROM done\n");
-+}
-diff --git a/drivers/net/phy/mv88e6xxx/global1.h b/drivers/net/phy/mv88e6xxx/global1.h
-new file mode 100644
-index 0000000000..a505bae2bf
---- /dev/null
-+++ b/drivers/net/phy/mv88e6xxx/global1.h
-@@ -0,0 +1,37 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * Marvell 88E6xxx Switch Global (1) Registers support
-+ *
-+ * Copyright (c) 2008 Marvell Semiconductor
-+ *
-+ * Copyright (c) 2016-2017 Savoir-faire Linux Inc.
-+ *	Vivien Didelot <vivien.didelot@savoirfairelinux.com>
-+ */
-+
-+#ifndef _MV88E6XXX_GLOBAL1_H
-+#define _MV88E6XXX_GLOBAL1_H
-+
-+#include "chip.h"
-+
-+/* Offset 0x00: Switch Global Status Register */
-+#define MV88E6XXX_G1_STS				0x00
-+#define MV88E6352_G1_STS_PPU_STATE			0x8000
-+#define MV88E6185_G1_STS_PPU_STATE_MASK			0xc000
-+#define MV88E6185_G1_STS_PPU_STATE_DISABLED_RST		0x0000
-+#define MV88E6185_G1_STS_PPU_STATE_INITIALIZING		0x4000
-+#define MV88E6185_G1_STS_PPU_STATE_DISABLED		0x8000
-+#define MV88E6185_G1_STS_PPU_STATE_POLLING		0xc000
-+#define MV88E6XXX_G1_STS_INIT_READY			0x0800
-+#define MV88E6XXX_G1_STS_IRQ_AVB			8
-+#define MV88E6XXX_G1_STS_IRQ_DEVICE			7
-+#define MV88E6XXX_G1_STS_IRQ_STATS			6
-+#define MV88E6XXX_G1_STS_IRQ_VTU_PROB			5
-+#define MV88E6XXX_G1_STS_IRQ_VTU_DONE			4
-+#define MV88E6XXX_G1_STS_IRQ_ATU_PROB			3
-+#define MV88E6XXX_G1_STS_IRQ_ATU_DONE			2
-+#define MV88E6XXX_G1_STS_IRQ_TCAM_DONE			1
-+#define MV88E6XXX_G1_STS_IRQ_EEPROM_DONE		0
-+
-+void mv88e6xxx_g1_wait_eeprom_done(struct mv88e6xxx_chip *chip);
-+
-+#endif /* _MV88E6XXX_GLOBAL1_H */
+ 	}
+ 
+ 	while (len > 0) {
 -- 
-2.21.0
+2.23.0
 
 
 _______________________________________________
