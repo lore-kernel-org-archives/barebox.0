@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iD3xJ-0007qu-NS
- for barebox@lists.infradead.org; Wed, 25 Sep 2019 09:51:31 +0000
-Date: Wed, 25 Sep 2019 11:51:27 +0200
+ id 1iD40S-0008KA-Dq
+ for barebox@lists.infradead.org; Wed, 25 Sep 2019 09:54:45 +0000
+Date: Wed, 25 Sep 2019 11:54:42 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190925095127.tekk37oaqmvdfyxj@pengutronix.de>
-References: <20190923121018.31574-1-a.fatoum@pengutronix.de>
+Message-ID: <20190925095442.cojzrqnfouod7ufr@pengutronix.de>
+References: <20190923191210.1600-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190923121018.31574-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20190923191210.1600-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,37 +22,17 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/6] scripts/dtc: rework dtc import handling
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] net: dsa: mv88e6xxx: Fix error message typo
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Sep 23, 2019 at 02:10:12PM +0200, Ahmad Fatoum wrote:
-> Linux upstream doesn't use fdtget. barebox does however for IMD.
-> Commits 46bdae84e8 ("dtc: Update update-dtc-source.sh from Linux") and
-> 4e731e48d4 ("scripts/dtc: Update to upstream version v1.5.0") broke
-> this, which the first two patches in this series fix. They should be
-> applied to upstream/master.
+On Mon, Sep 23, 2019 at 12:12:10PM -0700, Andrey Smirnov wrote:
+> s/MIDO/MDIO
 > 
-> This probably went undtected because an old ftdget would survive a
-> mrproper, so this issue only happens on fresh check-outs.
-> 
-> The other 4 patches address the fact that the process by which we update
-> dtc is error-prone. This is evident by this patch and 1df07fbcdf
-> ("scripts/dtc: Reenable fdtget"), which fixed the same issue a year
-> prior.
-> 
-> To address this add documentation on how to update dtc and make the
-> script easier to use. The update to v1.5.1 is included as well to test
-> this out, but can be dropped.
-> 
-> Ahmad Fatoum (6):
->   scripts/dtc: Reinstate barebox-specifics in update-dtc-source.sh
->   scripts/dtc: reinstate building of fdtget along with dtc
->   scripts/dtc: git rm old files as part of update process
->   scripts/dtc: mention dtc project in update-dtc-source.sh commit
->     message
->   scripts/dtc: Update to upstream version v1.5.1
->   Documentation: document barebox device tree handling
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> ---
+>  drivers/net/phy/mv88e6xxx/chip.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
 Applied, thanks
 
