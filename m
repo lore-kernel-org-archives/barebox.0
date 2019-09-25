@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iD40S-0008KA-Dq
- for barebox@lists.infradead.org; Wed, 25 Sep 2019 09:54:45 +0000
-Date: Wed, 25 Sep 2019 11:54:42 +0200
+ id 1iD41o-0001Dj-Tm
+ for barebox@lists.infradead.org; Wed, 25 Sep 2019 09:56:10 +0000
+Date: Wed, 25 Sep 2019 11:56:07 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190925095442.cojzrqnfouod7ufr@pengutronix.de>
-References: <20190923191210.1600-1-andrew.smirnov@gmail.com>
+Message-ID: <20190925095607.ezgsbrtf7heds2un@pengutronix.de>
+References: <20190925014313.26876-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190923191210.1600-1-andrew.smirnov@gmail.com>
+In-Reply-To: <20190925014313.26876-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,22 +22,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net: dsa: mv88e6xxx: Fix error message typo
+Subject: Re: [PATCH v3] net: dsa: mv88e6xxx: Wait for EEPROM done after HW
+ reset
 To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Cc: barebox@lists.infradead.org, Chris Healy <cphealy@gmail.com>
 
-On Mon, Sep 23, 2019 at 12:12:10PM -0700, Andrey Smirnov wrote:
-> s/MIDO/MDIO
+On Tue, Sep 24, 2019 at 06:43:13PM -0700, Andrey Smirnov wrote:
+> Based on a unpublished patch from Andrew Lunn:
+> 
+>     When the switch is hardware reset, it reads the contents of the
+>     EEPROM. This can contain instructions for programming values into
+>     registers and to perform waits between such programming. Reading
+>     the EEPROM can take longer than the 100ms
+>     mv88e6xxx_hardware_reset() waits after deasserting the reset
+>     GPIO. So poll the EEPROM done bit to ensure it is complete.
+> 
+>     Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+> 
+> orignal patch augmented to have necessary Global 1 plubming, ported to
+> Barebox and slightly changed.
 > 
 > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> Cc: Chris Healy <cphealy@gmail.com>
+> Cc: Lucas Stach <l.stach@pengutronix.de>
 > ---
->  drivers/net/phy/mv88e6xxx/chip.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 
 Applied, thanks
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
