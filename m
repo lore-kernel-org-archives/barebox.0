@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-eopbgr740115.outbound.protection.outlook.com
- ([40.107.74.115] helo=NAM01-BN3-obe.outbound.protection.outlook.com)
+Received: from mail-eopbgr800124.outbound.protection.outlook.com
+ ([40.107.80.124] helo=NAM03-DM3-obe.outbound.protection.outlook.com)
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iDBKt-0007f6-Qu
- for barebox@lists.infradead.org; Wed, 25 Sep 2019 17:44:21 +0000
+ id 1iDUYs-00068c-B9
+ for barebox@lists.infradead.org; Thu, 26 Sep 2019 14:16:05 +0000
 From: "Barbier, Renaud" <renaud.barbier@abaco.com>
-Date: Wed, 25 Sep 2019 17:44:16 +0000
-Message-ID: <MN2PR16MB3117C56576A8FB7A258431B691870@MN2PR16MB3117.namprd16.prod.outlook.com>
+Date: Thu, 26 Sep 2019 14:15:57 +0000
+Message-ID: <MN2PR16MB3117311DB17F1F18B283BCE391860@MN2PR16MB3117.namprd16.prod.outlook.com>
+References: <MN2PR16MB3117C56576A8FB7A258431B691870@MN2PR16MB3117.namprd16.prod.outlook.com>
+ <20190926064116.aix5mx2fwtbqyrzc@pengutronix.de>
+In-Reply-To: <20190926064116.aix5mx2fwtbqyrzc@pengutronix.de>
 Content-Language: en-US
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
@@ -21,60 +24,100 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: barebox 2019.07 ubiformat
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: RE: barebox 2019.07 ubiformat
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-We recently jumped from barebox 2016.07 to 2019.07. 
-Everything went well till the NAND got ubiformated.
+My apology, I used a model (DX1014) that we have not upstream to your repository.
+It is based on the Freescale P1014 unlike the DA923RC (MPC8544). More answer below
+Including both the DA923RC and DX1014.
 
-Using the version from2016.07, the NOR boot partition can be formatted (FIT image) and NAND (file system) and the system boots.
-When using the barebox 2019-07, both storage can be formatted but when booting (Linux 4.16 or 5.2) I get:
 
-nand: device found, Manufacturer ID: 0x01, Chip ID: 0xdc
-nand: AMD/Spansion S34ML04G1
-nand: 512 MiB, SLC, erase size: 128 KiB, page size: 2048, OOB size: 64
-Bad block table found at page 262080, version 0x01
-Bad block table found at page 262016, version 0x01
-1 fixed-partitions partitions found on MTD device ff800000.flash
-Creating 1 MTD partitions on "ff800000.flash":
-0x000000000000-0x000020000000 : "nand"
-fsl,ifc-nand ff800000.nand: IFC NAND device at 0xff800000, bank 1
-...
-...
-ubi0: default fastmap pool size: 200
-ubi0: default fastmap WL pool size: 100
-ubi0: attaching mtd5
-ubi0: fixable bit-flip detected at PEB 2
-ubi0: fixable bit-flip detected at PEB 3
-ubi0: fixable bit-flip detected at PEB 4
-...
-ubi0: fixable bit-flip detected at PEB 3270
-random: crng init done
-ubi0: scanning is finished
-__nand_correct_data: uncorrectable ECC error
-__nand_correct_data: uncorrectable ECC error
-__nand_correct_data: uncorrectable ECC error
-...
-__nand_correct_data: uncorrectable ECC error
-ubi0 warning: ubi_io_read: error -74 (ECC error) while reading 22528 bytes from PEB 0:4096, read only 22528 bytes, retry
-__nand_correct_data: uncorrectable ECC error
-...
-ubi0 error: ubi_io_read: error -74 (ECC error) while reading 22528 bytes from PE
-B 0:4096, read 22528 bytes
-CPU: 0 PID: 1 Comm: swapper Not tainted 5.2.0-owc-g39fb4f3.tethys-dx1014 #1
-Call Trace:
-[cf825d18] [c02e7d0c] ubi_io_read+0x1b4/0x37c (unreliable)
-[cf825d68] [c02dd9a0] ubi_read_volume_table+0x128/0xb8c
-[cf825dc8] [c02ef46c] ubi_attach+0xbc/0x3a0
-[cf825df8] [c02e1710] ubi_attach_mtd_dev+0x654/0xcf8
-[cf825e58] [c0575ec0] ubi_init+0x198/0x224
-[cf825e98] [c0003194] do_one_initcall+0x3c/0x1a8
-[cf825ef8] [c055fba8] kernel_init_freeable+0x12c/0x1dc
-[cf825f28] [c00033b0] kernel_init+0x14/0x114
-[cf825f38] [c000f268] ret_from_kernel_thread+0x14/0x1c
 
-So far I have been looking at the commit in barebox regarding MTD/UBI/UBIFS to v2019.09 and cannot see anything obvious.
-I could rebase forward if necessary. Is that something that is been observed by anybody?
+> >
+> > Using the version from2016.07, the NOR boot partition can be formatted (FIT
+> image) and NAND (file system) and the system boots.
+> > When using the barebox 2019-07, both storage can be formatted but when
+> booting (Linux 4.16 or 5.2) I get:
+> 
+> There is no driver for this NAND controller upstream, I assume you have
+> it in your tree, right? 
+[Barbier, Renaud] 
+Correct. The NAND driver has not been upstream for the DA923RC.
+I have now used the DA923RC to do the same test.
+
+With barebox from 2016.07, ubiformat gives me:
+OWBOOT> / addpart -n /dev/ram0 77070336@0x10000(image)
+OWBOOT> / ls /dev/nand0
+/dev/nand0
+OWBOOT> / ubiformat -q -y /dev/nand0 -f /dev/image
+OWBOOT> /
+
+With 2019.07, ubiformat gives:
+OWBOOT> / ubiformat -y -q /dev/nand0 -f /dev/image
+ubi1: detaching mtd0 from ubi1
+ubi1: removing nand0.ubi
+ubi1: mtd0 is detached
+nand0: error -74 (ECC error) while reading 64 bytes from PEB 14:0
+nand0: error -74 (ECC error) while reading 64 bytes from PEB 15:0
+nand0: error -74 (ECC error) while reading 64 bytes from PEB 21:0
+nand0: error -74 (ECC error) while reading 64 bytes from PEB 21:512
+nand0: error -74 (ECC error) while reading 64 bytes from PEB 24:0
+nand0: error -74 (ECC error) while reading 64 bytes from PEB 24:512
+nand0: error -74 (ECC error) while reading 64 bytes from PEB 30:0
+nand0: error -74 (ECC error) while reading 64 bytes from PEB 30:512
+nand0: error -74 (ECC error) while reading 64 bytes from PEB 37:0
+nand0: error -74 (ECC error) while reading 64 bytes from PEB 37:512
+nand0: error -74 (ECC error) while reading 64 bytes from PEB 47:0
+nand0: error -74 (ECC error) while reading 64 bytes from PEB 47:512
+nand0: error -74 (ECC error) while reading 64 bytes from PEB 470:0
+nand0: error -74 (ECC error) while reading 64 bytes from PEB 470:512
+nand0: error -74 (ECC error) while reading 64 bytes from PEB 473:0
+nand0: error -74 (ECC error) while reading 64 bytes from PEB 473:512
+ubi1: scanning is finished
+ubi1 error: ubi_update_fastmap: could not find any anchor PEB
+ubi1 warning: ubi_update_fastmap: Unable to write new fastmap, err=-28
+nand0: error -74 (ECC error) while reading 64 bytes from PEB 30:512
+ubi1: scrubbed PEB 30 (LEB 0:28), data moved to PEB 2702
+nand0: error -74 (ECC error) while reading 64 bytes from PEB 37:512
+ubi1: scrubbed PEB 37 (LEB 0:35), data moved to PEB 2104
+nand0: error -74 (ECC error) while reading 64 bytes from PEB 47:512
+ubi1: scrubbed PEB 47 (LEB 0:45), data moved to PEB 2103
+ubi1: scrubbed PEB 328 (LEB 1:33), data moved to PEB 2101
+nand0: error -74 (ECC error) while reading 64 bytes from PEB 21:512
+ubi1: scrubbed PEB 21 (LEB 0:19), data moved to PEB 2100
+nand0: error -74 (ECC error) while reading 64 bytes from PEB 24:512
+ubi1: scrubbed PEB 24 (LEB 0:22), data moved to PEB 2099
+ubi1: scrubbed PEB 26 (LEB 0:24), data moved to PEB 1925
+ubi1: scrubbed PEB 448 (LEB 1:153), data moved to PEB 1922
+nand0: error -74 (ECC error) while reading 64 bytes from PEB 470:512
+ubi1: scrubbed PEB 470 (LEB 1:175), data moved to PEB 1921
+nand0: error -74 (ECC error) while reading 64 bytes from PEB 473:512
+ubi1: scrubbed PEB 473 (LEB 1:178), data moved to PEB 1920
+nand0: error -74 (ECC error) while reading 64 bytes from PEB 13:512
+
+On the DX1014, ubiformat never reported an ECC errors on both 2016 and 2019
+
+Can barebox itself read what it has written,
+> i.e. ubiattach / mount it?
+[Barbier, Renaud] 
+
+DA923RC:
+Barebox can attach and mount, do ls and copy a file to memory and boot.
+
+DX1014:
+Barebox can attach and mount, do ls but not copy a file to memory.
+OWBOOT> / cp /bin/busybox.nosuid /
+could not open /bin/busybox.nosuid: No such file or directory
+
+
+I could upstream the DA923RC nand driver if you like but I think it may be easier for me to do a dichotomy between 2016 and 2019 and find when it  went wrong. 
+If you have any idea, let me know.
+
+Cheers,
+Renaud
+
+
 
 _______________________________________________
 barebox mailing list
