@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iF0Z5-0005NJ-Nc
- for barebox@lists.infradead.org; Mon, 30 Sep 2019 18:38:33 +0000
-Date: Mon, 30 Sep 2019 20:38:30 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20190930183830.agca4xyneqjjqsav@pengutronix.de>
-References: <1569573281-12592-1-git-send-email-s.riedmueller@phytec.de>
+ id 1iDn2c-0005dE-L1
+ for barebox@lists.infradead.org; Fri, 27 Sep 2019 10:00:00 +0000
+From: Bastian Krause <bst@pengutronix.de>
+Date: Fri, 27 Sep 2019 11:59:50 +0200
+Message-Id: <20190927095954.13168-1-bst@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1569573281-12592-1-git-send-email-s.riedmueller@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,29 +19,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] nvmem: Fix read/write access to partition devices
-To: Stefan Riedmueller <s.riedmueller@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v4 0/4] Machine ID Support
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Bastian Krause <bst@pengutronix.de>
 
-On Fri, Sep 27, 2019 at 10:34:41AM +0200, Stefan Riedmueller wrote:
-> Partition devices are not directly associated with the nvmem instance but via
-> their master cdev. Thus reading and writing needs to be handled via the
-> master.
-> 
-> Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
-> ---
->  drivers/nvmem/core.c | 14 ++++++++++++--
->  1 file changed, 12 insertions(+), 2 deletions(-)
+By default systemd generates a machine id on first boot and tries to
+persist it (see `man machine-id`). When the root file system is read-only
+systemd cannot persist the machine id. In case multiple redundant slots
+are used the machine id will vary. When not handled explicitly the
+machine id will also change during system updates.
 
-Applied, thanks
+It is possible to pass a machine id to the kernel which will be used by
+systemd (systemd.machine_id=).
 
-Sascha
+This series adds a way to provide device-specific hashable information
+to generate a unique, persistent id. The i.MX unique id from the OCOTP
+registers is added as hashable exemplarily. The id is available as
+global.machine_id in barebox. It can be overwritten with nv.machine_id
+if necessary.
+The machine id is passed on to the Kernel by bootm based on
+global.bootm.provide_machine_id.
+
+Changes since v3:
+  - nvmem: ocotp: use existing OCOTP_UNIQUE_ID instead of introducing a
+    new define
+  - convert imx_ocotp_set_unique_machine_id() to void as it's return
+    is not used, simplify it
+
+Changes since v2:
+  - set id to global.machine_id in init call instead of preparing the
+    bootarg already (so it's usable within barebox, too)
+  - move global.linux.bootargs.machine_id preparations to bootm code
+  - make global.linux.bootargs.machine_id preparations conditionally,
+    based on bootm.provide_machine_id
+  - free machine id char pointer after globalvar_add_simple()
+  - make global.machine_id a magicvar
+  - make global.bootm.provide_machine_id a magicvar
+
+Changes since (implicit) v1:
+  - depend on SHA1 instead of selecting DIGEST/DIGEST_SHA1_GENERIC
+  - add note about multiple sources providing hashables to kconfig
+  - add note about no hashable provided to kconfig
+  - remove warning about "no hashable info provided" along with pr_fmt
+  - make machine_id_set_hashable()'s hashable parameter const
+  - make a copy of the hashable provided rather than storing the pointer
+  - hash data instead of pointer address
+  - use basprintf() and dedicated variables for hex machine id/machine id
+    bootarg
+  - add static inline wrapper if CONFIG_MACHINE_ID is disabled
+  - nvmem: ocotp: remove explicit address-of operator for unique_id_parts
+
+Regards,
+Bastian
+
+Bastian Krause (3):
+  common: machine_id: introduce machine id generation
+  nvmem: ocotp: set unique id as machine-id hashable
+  bootm: allow providing machine id to Kernel
+
+Juergen Borleis (1):
+  digest.h: needs errno definitions
+
+ common/Kconfig        | 18 +++++++++++
+ common/Makefile       |  1 +
+ common/bootm.c        | 19 ++++++++++++
+ common/machine_id.c   | 69 +++++++++++++++++++++++++++++++++++++++++++
+ drivers/nvmem/ocotp.c | 19 ++++++++++++
+ include/bootm.h       |  5 ++++
+ include/digest.h      |  1 +
+ include/machine_id.h  | 16 ++++++++++
+ 8 files changed, 148 insertions(+)
+ create mode 100644 common/machine_id.c
+ create mode 100644 include/machine_id.h
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.23.0
+
 
 _______________________________________________
 barebox mailing list
