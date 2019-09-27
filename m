@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iDn2c-0005dI-M4
+ id 1iDn2c-0005dG-Lp
  for barebox@lists.infradead.org; Fri, 27 Sep 2019 10:00:01 +0000
 From: Bastian Krause <bst@pengutronix.de>
-Date: Fri, 27 Sep 2019 11:59:54 +0200
-Message-Id: <20190927095954.13168-5-bst@pengutronix.de>
+Date: Fri, 27 Sep 2019 11:59:52 +0200
+Message-Id: <20190927095954.13168-3-bst@pengutronix.de>
 In-Reply-To: <20190927095954.13168-1-bst@pengutronix.de>
 References: <20190927095954.13168-1-bst@pengutronix.de>
 MIME-Version: 1.0
@@ -21,104 +21,169 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 4/4] bootm: allow providing machine id to Kernel
+Subject: [PATCH v4 2/4] common: machine_id: introduce machine id generation
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Bastian Krause <bst@pengutronix.de>
 
-By default systemd generates a machine id on first boot and tries to
-persist it (see `man machine-id`). When the root file system is read-only
-systemd cannot persist the machine id. In case multiple redundant slots
-are used the machine id will vary. When not handled explicitly the
-machine id will also change during system updates.
+This patch adds functionality to pass device-specific information that
+will be hashed to generate a persistent unique machine id. It is then
+available as global.machine_id. It can be overwritten with
+nv.machine_id if necessary. Passing the machine id to the kernel is
+done in a separate patch.
 
-It is possible to pass a machine id to the kernel which will be used by
-systemd (systemd.machine_id=).
-
-If global.bootm.provide_machine_id (or nv.bootm.provide_machine_id) is
-true then provide the machine id from global.machine_id as
-systemd.machine_id= parameter to the Kernel.
-
-Note that global.machine_id must be set, either by the
-machine_id_set_bootarg late init call or by setting it manually with
-nv.machine_id if necessary.
+Note: if multiple sources provide hashable device-specific information
+(via machine_id_set_hashable()) the information provided by the last call
+prior to the late initcall set_machine_id() is used to generate the
+machine id from. Thus when updating barebox the machine id might change.
 
 Signed-off-by: Bastian Krause <bst@pengutronix.de>
 ---
- common/bootm.c  | 19 +++++++++++++++++++
- include/bootm.h |  5 +++++
- 2 files changed, 24 insertions(+)
+ common/Kconfig       | 18 ++++++++++++
+ common/Makefile      |  1 +
+ common/machine_id.c  | 69 ++++++++++++++++++++++++++++++++++++++++++++
+ include/machine_id.h | 16 ++++++++++
+ 4 files changed, 104 insertions(+)
+ create mode 100644 common/machine_id.c
+ create mode 100644 include/machine_id.h
 
-diff --git a/common/bootm.c b/common/bootm.c
-index b50b76ed6f..366f314555 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -51,6 +51,7 @@ static struct image_handler *bootm_find_handler(enum filetype filetype,
- }
+diff --git a/common/Kconfig b/common/Kconfig
+index cafaadb3d4..7c56eb469e 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -982,6 +982,24 @@ config RESET_SOURCE
+ 	  of the reset and why the bootloader is currently running. It can be
+ 	  useful for any kind of system recovery or repair.
  
- static int bootm_appendroot;
-+static int bootm_provide_machine_id;
- static int bootm_verbosity;
- 
- void bootm_data_init_defaults(struct bootm_data *data)
-@@ -65,6 +66,7 @@ void bootm_data_init_defaults(struct bootm_data *data)
- 	data->initrd_file = getenv_nonempty("global.bootm.initrd");
- 	data->verify = bootm_get_verify_mode();
- 	data->appendroot = bootm_appendroot;
-+	data->provide_machine_id = bootm_provide_machine_id;
- 	data->verbose = bootm_verbosity;
- }
- 
-@@ -646,6 +648,21 @@ int bootm_boot(struct bootm_data *bootm_data)
- 		}
- 	}
- 
-+	if (bootm_data->provide_machine_id) {
-+		const char *machine_id = getenv_nonempty("global.machine_id");
-+		char *machine_id_bootarg;
++config MACHINE_ID
++	bool "pass machine-id to kernel"
++	depends on FLEXIBLE_BOOTARGS
++	depends on SHA1
++	help
++	  Sets the linux.bootargs.machine_id global variable with a value of
++	  systemd.machine_id=UID. The UID is a persistent device-specific
++	  id. It is a hash over device-specific information provided by various
++	  sources.
 +
-+		if (!machine_id) {
-+			printf("Providing machine id is enabled but no machine id set\n");
-+			ret = -EINVAL;
-+			goto err_out;
-+		}
++	  Note: if multiple sources provide hashable device-specific information
++	  (via machine_id_set_hashable()) the information provided by the last call
++	  prior to the late initcall set_machine_id() is used to generate the
++	  machine id from. Thus when updating barebox the machine id might change.
 +
-+		machine_id_bootarg = basprintf("systemd.machine_id=%s", machine_id);
-+		globalvar_add_simple("linux.bootargs.machine_id", machine_id_bootarg);
-+		free(machine_id_bootarg);
-+	}
++	  Note: if no hashable information is available no machine id will be passed
++	  to the kernel.
 +
- 	printf("\nLoading %s '%s'", file_type_to_string(os_type),
- 			data->os_file);
- 	if (os_type == filetype_uimage &&
-@@ -711,6 +728,7 @@ static int bootm_init(void)
- 	globalvar_add_simple("bootm.oftree", NULL);
- 	globalvar_add_simple("bootm.tee", NULL);
- 	globalvar_add_simple_bool("bootm.appendroot", &bootm_appendroot);
-+	globalvar_add_simple_bool("bootm.provide_machine_id", &bootm_provide_machine_id);
- 	if (IS_ENABLED(CONFIG_BOOTM_INITRD)) {
- 		globalvar_add_simple("bootm.initrd", NULL);
- 		globalvar_add_simple("bootm.initrd.loadaddr", NULL);
-@@ -738,3 +756,4 @@ BAREBOX_MAGICVAR_NAMED(global_bootm_tee, global.bootm.tee, "bootm default tee im
- BAREBOX_MAGICVAR_NAMED(global_bootm_verify, global.bootm.verify, "bootm default verify level");
- BAREBOX_MAGICVAR_NAMED(global_bootm_verbose, global.bootm.verbose, "bootm default verbosity level (0=quiet)");
- BAREBOX_MAGICVAR_NAMED(global_bootm_appendroot, global.bootm.appendroot, "Add root= option to Kernel to mount rootfs from the device the Kernel comes from");
-+BAREBOX_MAGICVAR_NAMED(global_bootm_provide_machine_id, global.bootm.provide_machine_id, "If true, add systemd.machine_id= with value of global.machine_id to Kernel");
-diff --git a/include/bootm.h b/include/bootm.h
-index 5ce3318ecc..a041aa35b9 100644
---- a/include/bootm.h
-+++ b/include/bootm.h
-@@ -26,6 +26,11 @@ struct bootm_data {
- 	 * mount the rootfs from the same device as the Kernel comes from.
- 	 */
- 	bool appendroot;
-+	/*
-+	 * provide_machine_id - if true, try to add systemd.machine_id= with
-+	 * value of global.machine_id to Kernel.
-+	 */
-+	bool provide_machine_id;
- 	unsigned long initrd_address;
- 	unsigned long os_address;
- 	unsigned long os_entry;
+ endmenu
+ 
+ menu "Debugging"
+diff --git a/common/Makefile b/common/Makefile
+index a284655fc1..10960169f9 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -11,6 +11,7 @@ obj-y				+= bootsource.o
+ obj-$(CONFIG_ELF)		+= elf.o
+ obj-y				+= restart.o
+ obj-y				+= poweroff.o
++obj-$(CONFIG_MACHINE_ID)	+= machine_id.o
+ obj-$(CONFIG_AUTO_COMPLETE)	+= complete.o
+ obj-y				+= version.o
+ obj-$(CONFIG_BAREBOX_UPDATE)	+= bbu.o
+diff --git a/common/machine_id.c b/common/machine_id.c
+new file mode 100644
+index 0000000000..e678bb7fe8
+--- /dev/null
++++ b/common/machine_id.c
+@@ -0,0 +1,69 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (C) 2019 Pengutronix, Bastian Krause <kernel@pengutronix.de>
++ */
++
++#include <common.h>
++#include <init.h>
++#include <digest.h>
++#include <globalvar.h>
++#include <magicvar.h>
++#include <crypto/sha.h>
++#include <machine_id.h>
++
++#define MACHINE_ID_LENGTH 32
++
++static void *__machine_id_hashable;
++static size_t __machine_id_hashable_length;
++
++
++void machine_id_set_hashable(const void *hashable, size_t len)
++{
++
++	__machine_id_hashable = xmemdup(hashable, len);
++	__machine_id_hashable_length = len;
++}
++
++static int machine_id_set_bootarg(void)
++{
++	struct digest *digest = NULL;
++	unsigned char machine_id[SHA1_DIGEST_SIZE];
++	char hex_machine_id[MACHINE_ID_LENGTH];
++	char *env_machine_id;
++	int ret = 0;
++
++	/* nothing to do if no hashable information provided */
++	if (!__machine_id_hashable)
++		goto out;
++
++	digest = digest_alloc_by_algo(HASH_ALGO_SHA1);
++	ret = digest_init(digest);
++	if (ret)
++		goto out;
++
++	ret = digest_update(digest, __machine_id_hashable,
++			    __machine_id_hashable_length);
++	if (ret)
++		goto out;
++
++	ret = digest_final(digest, machine_id);
++	if (ret)
++		goto out;
++
++	/* use the first 16 bytes of the sha1 hash as the machine id */
++	bin2hex(hex_machine_id, machine_id, MACHINE_ID_LENGTH/2);
++
++	env_machine_id = basprintf("%.*s", MACHINE_ID_LENGTH, hex_machine_id);
++	globalvar_add_simple("machine_id", env_machine_id);
++	free(env_machine_id);
++
++out:
++	globalvar_add_simple("machine_id", NULL);
++
++	digest_free(digest);
++	return ret;
++
++}
++late_initcall(machine_id_set_bootarg);
++
++BAREBOX_MAGICVAR_NAMED(global_machine_id, global.machine_id, "Persistent device-specific, hexadecimal, 32-character id");
+diff --git a/include/machine_id.h b/include/machine_id.h
+new file mode 100644
+index 0000000000..31d5e0bb28
+--- /dev/null
++++ b/include/machine_id.h
+@@ -0,0 +1,16 @@
++#ifndef __MACHINE_ID_H__
++#define __MACHINE_ID_H__
++
++#if IS_ENABLED(CONFIG_MACHINE_ID)
++
++void machine_id_set_hashable(const void *hashable, size_t len);
++
++#else
++
++static inline void machine_id_set_hashable(const void *hashable, size_t len)
++{
++}
++
++#endif /* CONFIG_MACHINE_ID */
++
++#endif  /* __MACHINE_ID_H__ */
 -- 
 2.23.0
 
