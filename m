@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iDn2c-0005dH-LF
+ id 1iDn2c-0005dI-M4
  for barebox@lists.infradead.org; Fri, 27 Sep 2019 10:00:01 +0000
 From: Bastian Krause <bst@pengutronix.de>
-Date: Fri, 27 Sep 2019 11:59:53 +0200
-Message-Id: <20190927095954.13168-4-bst@pengutronix.de>
+Date: Fri, 27 Sep 2019 11:59:54 +0200
+Message-Id: <20190927095954.13168-5-bst@pengutronix.de>
 In-Reply-To: <20190927095954.13168-1-bst@pengutronix.de>
 References: <20190927095954.13168-1-bst@pengutronix.de>
 MIME-Version: 1.0
@@ -21,69 +21,104 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 3/4] nvmem: ocotp: set unique id as machine-id hashable
+Subject: [PATCH v4 4/4] bootm: allow providing machine id to Kernel
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Bastian Krause <bst@pengutronix.de>
 
-Pass the OCOTP unique id as hashable information to machine id
-generation.
+By default systemd generates a machine id on first boot and tries to
+persist it (see `man machine-id`). When the root file system is read-only
+systemd cannot persist the machine id. In case multiple redundant slots
+are used the machine id will vary. When not handled explicitly the
+machine id will also change during system updates.
+
+It is possible to pass a machine id to the kernel which will be used by
+systemd (systemd.machine_id=).
+
+If global.bootm.provide_machine_id (or nv.bootm.provide_machine_id) is
+true then provide the machine id from global.machine_id as
+systemd.machine_id= parameter to the Kernel.
+
+Note that global.machine_id must be set, either by the
+machine_id_set_bootarg late init call or by setting it manually with
+nv.machine_id if necessary.
 
 Signed-off-by: Bastian Krause <bst@pengutronix.de>
 ---
- drivers/nvmem/ocotp.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ common/bootm.c  | 19 +++++++++++++++++++
+ include/bootm.h |  5 +++++
+ 2 files changed, 24 insertions(+)
 
-diff --git a/drivers/nvmem/ocotp.c b/drivers/nvmem/ocotp.c
-index 3f9f162860..79693e22e0 100644
---- a/drivers/nvmem/ocotp.c
-+++ b/drivers/nvmem/ocotp.c
-@@ -29,6 +29,8 @@
- #include <regmap.h>
- #include <linux/clk.h>
- #include <mach/ocotp.h>
-+#include <machine_id.h>
-+#include <mach/ocotp-fusemap.h>
- #include <linux/nvmem-provider.h>
- 
- /*
-@@ -77,6 +79,7 @@
- #define MAC_OFFSET_1			(0x24 * 4)
- #define MAX_MAC_OFFSETS			2
- #define MAC_BYTES			8
-+#define UNIQUE_ID_NUM			2
- 
- enum imx_ocotp_format_mac_direction {
- 	OCOTP_HW_TO_MAC,
-@@ -548,6 +551,19 @@ static int imx_ocotp_read(struct device_d *dev, const int offset, void *val,
- 	return regmap_bulk_read(priv->map, offset, val, bytes);
+diff --git a/common/bootm.c b/common/bootm.c
+index b50b76ed6f..366f314555 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -51,6 +51,7 @@ static struct image_handler *bootm_find_handler(enum filetype filetype,
  }
  
-+static void imx_ocotp_set_unique_machine_id(void)
-+{
-+	uint32_t unique_id_parts[UNIQUE_ID_NUM];
-+	int i;
-+
-+	for (i = 0; i < UNIQUE_ID_NUM; i++)
-+		if (imx_ocotp_read_field(OCOTP_UNIQUE_ID(i),
-+					 &unique_id_parts[i]))
-+			return;
-+
-+	machine_id_set_hashable(unique_id_parts, sizeof(unique_id_parts));
-+}
-+
- static const struct nvmem_bus imx_ocotp_nvmem_bus = {
- 	.write = imx_ocotp_write,
- 	.read  = imx_ocotp_read,
-@@ -633,6 +649,9 @@ static int imx_ocotp_probe(struct device_d *dev)
- 				  ethaddr->value, ethaddr);
+ static int bootm_appendroot;
++static int bootm_provide_machine_id;
+ static int bootm_verbosity;
+ 
+ void bootm_data_init_defaults(struct bootm_data *data)
+@@ -65,6 +66,7 @@ void bootm_data_init_defaults(struct bootm_data *data)
+ 	data->initrd_file = getenv_nonempty("global.bootm.initrd");
+ 	data->verify = bootm_get_verify_mode();
+ 	data->appendroot = bootm_appendroot;
++	data->provide_machine_id = bootm_provide_machine_id;
+ 	data->verbose = bootm_verbosity;
+ }
+ 
+@@ -646,6 +648,21 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 		}
  	}
  
-+	if (IS_ENABLED(CONFIG_MACHINE_ID))
-+		imx_ocotp_set_unique_machine_id();
++	if (bootm_data->provide_machine_id) {
++		const char *machine_id = getenv_nonempty("global.machine_id");
++		char *machine_id_bootarg;
 +
- 	imx_ocotp_init_dt(priv);
- 
- 	dev_add_param_bool(&(priv->dev), "sense_enable", NULL, NULL, &priv->sense_enable, priv);
++		if (!machine_id) {
++			printf("Providing machine id is enabled but no machine id set\n");
++			ret = -EINVAL;
++			goto err_out;
++		}
++
++		machine_id_bootarg = basprintf("systemd.machine_id=%s", machine_id);
++		globalvar_add_simple("linux.bootargs.machine_id", machine_id_bootarg);
++		free(machine_id_bootarg);
++	}
++
+ 	printf("\nLoading %s '%s'", file_type_to_string(os_type),
+ 			data->os_file);
+ 	if (os_type == filetype_uimage &&
+@@ -711,6 +728,7 @@ static int bootm_init(void)
+ 	globalvar_add_simple("bootm.oftree", NULL);
+ 	globalvar_add_simple("bootm.tee", NULL);
+ 	globalvar_add_simple_bool("bootm.appendroot", &bootm_appendroot);
++	globalvar_add_simple_bool("bootm.provide_machine_id", &bootm_provide_machine_id);
+ 	if (IS_ENABLED(CONFIG_BOOTM_INITRD)) {
+ 		globalvar_add_simple("bootm.initrd", NULL);
+ 		globalvar_add_simple("bootm.initrd.loadaddr", NULL);
+@@ -738,3 +756,4 @@ BAREBOX_MAGICVAR_NAMED(global_bootm_tee, global.bootm.tee, "bootm default tee im
+ BAREBOX_MAGICVAR_NAMED(global_bootm_verify, global.bootm.verify, "bootm default verify level");
+ BAREBOX_MAGICVAR_NAMED(global_bootm_verbose, global.bootm.verbose, "bootm default verbosity level (0=quiet)");
+ BAREBOX_MAGICVAR_NAMED(global_bootm_appendroot, global.bootm.appendroot, "Add root= option to Kernel to mount rootfs from the device the Kernel comes from");
++BAREBOX_MAGICVAR_NAMED(global_bootm_provide_machine_id, global.bootm.provide_machine_id, "If true, add systemd.machine_id= with value of global.machine_id to Kernel");
+diff --git a/include/bootm.h b/include/bootm.h
+index 5ce3318ecc..a041aa35b9 100644
+--- a/include/bootm.h
++++ b/include/bootm.h
+@@ -26,6 +26,11 @@ struct bootm_data {
+ 	 * mount the rootfs from the same device as the Kernel comes from.
+ 	 */
+ 	bool appendroot;
++	/*
++	 * provide_machine_id - if true, try to add systemd.machine_id= with
++	 * value of global.machine_id to Kernel.
++	 */
++	bool provide_machine_id;
+ 	unsigned long initrd_address;
+ 	unsigned long os_address;
+ 	unsigned long os_entry;
 -- 
 2.23.0
 
