@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay12.mail.gandi.net ([217.70.178.232])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iDjOm-0006zC-C4
- for barebox@lists.infradead.org; Fri, 27 Sep 2019 06:06:37 +0000
-Received: from geraet.fritz.box (muedsl-82-207-220-121.citykom.de
- [82.207.220.121]) (Authenticated sender: ahmad@a3f.at)
- by relay12.mail.gandi.net (Postfix) with ESMTPSA id 52F76200005
- for <barebox@lists.infradead.org>; Fri, 27 Sep 2019 06:06:30 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Fri, 27 Sep 2019 08:06:24 +0200
-Message-Id: <20190927060624.25815-1-ahmad@a3f.at>
+ id 1iF0Wx-0002et-LH
+ for barebox@lists.infradead.org; Mon, 30 Sep 2019 18:36:21 +0000
+Date: Mon, 30 Sep 2019 20:36:17 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190930183617.3oznd5ur27effzzt@pengutronix.de>
+References: <20190927060624.25815-1-ahmad@a3f.at>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190927060624.25815-1-ahmad@a3f.at>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,33 +22,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] commands: ubsan: remove redundant depends
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] commands: ubsan: remove redundant depends
+To: Ahmad Fatoum <ahmad@a3f.at>
+Cc: barebox@lists.infradead.org
 
-the config is already in an if COMMAND_SUPPORT clause, so no need to
-depend on it as well. Remove the redundancy.
+On Fri, Sep 27, 2019 at 08:06:24AM +0200, Ahmad Fatoum wrote:
+> the config is already in an if COMMAND_SUPPORT clause, so no need to
+> depend on it as well. Remove the redundancy.
+> 
+> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+> ---
+>  commands/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
----
- commands/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Applied, thanks
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 5cacf9e05ed8..0189b4715bb9 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -2174,7 +2174,7 @@ config CMD_SEED
- 
- config CMD_UBSAN
- 	tristate "ubsan"
--	depends on UBSAN && COMMAND_SUPPORT
-+	depends on UBSAN
- 	help
- 	  This is a test command for the undefined behavior sanitizer.
- 	  It triggers various undefined behavior, and detect it.
+Sascha
+
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
