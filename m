@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iEpNQ-0001Lx-Gz
- for barebox@lists.infradead.org; Mon, 30 Sep 2019 06:41:46 +0000
-From: =?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
-Date: Mon, 30 Sep 2019 08:41:36 +0200
-Message-Id: <20190930064137.2091-2-u.oelmann@pengutronix.de>
-In-Reply-To: <20190930064137.2091-1-u.oelmann@pengutronix.de>
+ id 1iF0bs-0007ud-UK
+ for barebox@lists.infradead.org; Mon, 30 Sep 2019 18:41:26 +0000
+Date: Mon, 30 Sep 2019 20:41:23 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190930184123.4xud5xnzjz3g3bo2@pengutronix.de>
 References: <20190930064137.2091-1-u.oelmann@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190930064137.2091-1-u.oelmann@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,37 +18,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] state: backend_bucket_circular: fix double free()
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH 1/3] state: backend_bucket_circular: harmonize code with
+ dt-utils
+To: Ulrich =?iso-8859-15?Q?=D6lmann?= <u.oelmann@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-VGhpcyBwb3J0cyB0aGUgZm9sbG93aW5nIGR0LXV0aWxzIGNvbW1pdCAoYXMgdGhlIGFjdHVhbCBj
-b2RlIHRoYXQgaXMgY2hhbmdlZCBpcwpyZW1vdmVkIGJ5IHRoZSBwcmVwcm9jZXNzZXIgd2hlbiBj
-b21waWxpbmcgYmFyZWJveCB0aGlzIHBhdGNoIGlzIG9ubHkgb2YKY29zbWV0aWMgbmF0dXJlIHRv
-IGtlZXAgYm90aCBjb2RlIGJhc2VzIGluIHN5bmMpOgoKfCBjb21taXQgNjM0MzE3Y2M5MTIwMjMw
-NGMxNDc3YTZkNzM4ZDdjNzY5MWI4MDQxOQp8IEF1dGhvcjogS2ltIENocmlzdGVuc2VuIDxrY2hA
-c2tvdi5kaz4KfCBEYXRlOiAgIFdlZCBTZXAgMTggMTY6NDg6MjMgMjAxOSArMDIwMAp8CnwgICAg
-IHN0YXRlOiBiYWNrZW5kX2J1Y2tldF9jaXJjdWxhcjogZml4IGRvdWJsZSBmcmVlKCkKfAp8ICAg
-ICBUaGUgZnVuY3Rpb24gc3RhdGVfbXRkX3BlYl9yZWFkKCkgaXMgb25seSBhIHVzZXIgb2YgYnVm
-IGFuZCBub3QgaXRzIG93bmVyLAp8ICAgICBoZW5jZSBpdCBtYXkgbm90IGRlYWxsb2NhdGUgaXQu
-CnwKfCAgICAgU2lnbmVkLW9mZi1ieTogS2ltIENocmlzdGVuc2VuIDxrY2hAc2tvdi5kaz4KfCAg
-ICAgUmV2aWV3ZWQtYnk6IFVscmljaCDDlmxtYW5uIDx1Lm9lbG1hbm5AcGVuZ3V0cm9uaXguZGU+
-CnwgICAgIFJldmlld2VkLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBl
-bmd1dHJvbml4LmRlPgp8ICAgICBTaWduZWQtb2ZmLWJ5OiBSb2xhbmQgSGllYmVyIDxyaGlAcGVu
-Z3V0cm9uaXguZGU+CgpTaWduZWQtb2ZmLWJ5OiBVbHJpY2ggw5ZsbWFubiA8dS5vZWxtYW5uQHBl
-bmd1dHJvbml4LmRlPgotLS0KIGNvbW1vbi9zdGF0ZS9iYWNrZW5kX2J1Y2tldF9jaXJjdWxhci5j
-IHwgMSAtCiAxIGZpbGUgY2hhbmdlZCwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdpdCBhL2NvbW1v
-bi9zdGF0ZS9iYWNrZW5kX2J1Y2tldF9jaXJjdWxhci5jIGIvY29tbW9uL3N0YXRlL2JhY2tlbmRf
-YnVja2V0X2NpcmN1bGFyLmMKaW5kZXggNjEyZmEwY2Q4YTExLi43MzU1MTBlMGQzNmIgMTAwNjQ0
-Ci0tLSBhL2NvbW1vbi9zdGF0ZS9iYWNrZW5kX2J1Y2tldF9jaXJjdWxhci5jCisrKyBiL2NvbW1v
-bi9zdGF0ZS9iYWNrZW5kX2J1Y2tldF9jaXJjdWxhci5jCkBAIC0xNzgsNyArMTc4LDYgQEAgc3Rh
-dGljIGludCBzdGF0ZV9tdGRfcGViX3JlYWQoc3RydWN0IHN0YXRlX2JhY2tlbmRfc3RvcmFnZV9i
-dWNrZXRfY2lyY3VsYXIgKmNpcmMKIAlpZiAocmV0IDwgMCkgewogCQlkZXZfZXJyKGNpcmMtPmRl
-diwgIkZhaWxlZCB0byByZWFkIGNpcmN1bGFyIHN0b3JhZ2UgbGVuICVkLCAlZFxuIiwKIAkJCWxl
-biwgcmV0KTsKLQkJZnJlZShidWYpOwogCQlyZXR1cm4gcmV0OwogCX0KIAotLSAKMi4yMy4wCgoK
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBt
-YWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
-YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Mon, Sep 30, 2019 at 08:41:35AM +0200, Ulrich =D6lmann wrote:
+> Comparing barebox' commit [1] with dt-utils' commit [2] it is obvious that
+> adjusting the return value has been forgotten in barebox - fix that.
+> (As the actual code that is changed is removed by the preprocesser when
+> compiling barebox this patch is only of cosmetic nature to keep both code=
+ bases
+> in sync).
+> =
+
+> [1] 9d6d91931afb ("state: Remove -EUCLEAN check from userspace tool")
+> [2] 791a2404116d ("state: Remove -EUCLEAN check from userspace tool")
+> =
+
+> Signed-off-by: Ulrich =D6lmann <u.oelmann@pengutronix.de>
+> ---
+>  common/state/backend_bucket_circular.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+
+Applied, thanks
+
+Sascha
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
