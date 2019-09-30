@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay7-d.mail.gandi.net ([217.70.183.200])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iDjOC-0006n7-Lo
- for barebox@lists.infradead.org; Fri, 27 Sep 2019 06:06:02 +0000
-Received: from geraet.fritz.box (muedsl-82-207-220-121.citykom.de
- [82.207.220.121]) (Authenticated sender: ahmad@a3f.at)
- by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 90C1220004
- for <barebox@lists.infradead.org>; Fri, 27 Sep 2019 06:05:44 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Fri, 27 Sep 2019 08:05:36 +0200
-Message-Id: <20190927060536.25664-1-ahmad@a3f.at>
+ id 1iF0WY-00029P-0S
+ for barebox@lists.infradead.org; Mon, 30 Sep 2019 18:35:56 +0000
+Date: Mon, 30 Sep 2019 20:35:51 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20190930183551.seuch7ni4yvyrd7e@pengutronix.de>
+References: <20190927060536.25664-1-ahmad@a3f.at>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190927060536.25664-1-ahmad@a3f.at>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,50 +18,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] kbuild, LLVMLinux: Add -Werror to cc-option to support clang
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] kbuild, LLVMLinux: Add -Werror to cc-option to support
+ clang
+To: Ahmad Fatoum <ahmad@a3f.at>
+Cc: barebox@lists.infradead.org
 
-RnJvbTogTWFyayBDaGFybGVib2lzIDxjaGFybGVibUBnbWFpbC5jb20+CgpDbGFuZyB3aWxsIHdh
-cm4gYWJvdXQgdW5rbm93biB3YXJuaW5ncyBidXQgd2lsbCBub3QgcmV0dXJuIGZhbHNlCnVubGVz
-cyAtV2Vycm9yIGlzIHNldC4gR0NDIHdpbGwgcmV0dXJuIGZhbHNlIGlmIGFuIHVua25vd24Kd2Fy
-bmluZyBpcyBwYXNzZWQuCgpBZGRpbmcgLVdlcnJvciBtYWtlIGJvdGggY29tcGlsZXIgYmVoYXZl
-IHRoZSBzYW1lLgoKW2FybmQ6IGl0IHR1cm5zIG91dCB3ZSBuZWVkIHRoZSBzYW1lIHBhdGNoIGZv
-ciB0ZXN0aW5nIHdoZXRoZXIgLWZmdW5jdGlvbi1zZWN0aW9ucwogICAgICAgd29ya3MgcmlnaHQg
-d2l0aCBnY2MuIEkndmUgYnVpbGQgdGVzdGVkIGV4dGVuc2l2ZWx5IHdpdGggdGhpcyBwYXRjaAog
-ICAgICAgYXBwbGllZCwgc28gbGV0J3MganVzdCBtZXJnZSB0aGlzIG9uZSBub3cuXQoKU2lnbmVk
-LW9mZi1ieTogTWFyayBDaGFybGVib2lzIDxjaGFybGVibUBnbWFpbC5jb20+ClNpZ25lZC1vZmYt
-Ynk6IEJlaGFuIFdlYnN0ZXIgPGJlaGFud0Bjb252ZXJzZWluY29kZS5jb20+ClJldmlld2VkLWJ5
-OiBKYW4tU2ltb24gTcO2bGxlciA8ZGw5cGZAZ214LmRlPgpTaWduZWQtb2ZmLWJ5OiBBcm5kIEJl
-cmdtYW5uIDxhcm5kQGFybmRiLmRlPgpBY2tlZC1ieTogS2VlcyBDb29rIDxrZWVzY29va0BjaHJv
-bWl1bS5vcmc+ClNpZ25lZC1vZmYtYnk6IE1hc2FoaXJvIFlhbWFkYSA8eWFtYWRhLm1hc2FoaXJv
-QHNvY2lvbmV4dC5jb20+ClthZmE6IHBvcnRlZCB0byBiYXJlYm94IGZyb20gdXBzdHJlYW0gYzNm
-MGQwYmM1YjAxYWQ5XQpTaWduZWQtb2ZmLWJ5OiBBaG1hZCBGYXRvdW0gPGFobWFkQGEzZi5hdD4K
-LS0tCiBzY3JpcHRzL0tidWlsZC5pbmNsdWRlIHwgNiArKystLS0KIDEgZmlsZSBjaGFuZ2VkLCAz
-IGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvc2NyaXB0cy9LYnVp
-bGQuaW5jbHVkZSBiL3NjcmlwdHMvS2J1aWxkLmluY2x1ZGUKaW5kZXggYTJkYmJkOGEwMDg0Li41
-ZjAzY2Y0ZmZiOTQgMTAwNjQ0Ci0tLSBhL3NjcmlwdHMvS2J1aWxkLmluY2x1ZGUKKysrIGIvc2Ny
-aXB0cy9LYnVpbGQuaW5jbHVkZQpAQCAtMTA5LDE3ICsxMDksMTcgQEAgYXMtaW5zdHIgPSAkKGNh
-bGwgdHJ5LXJ1bixcCiAjIFVzYWdlOiBjZmxhZ3MteSArPSAkKGNhbGwgY2Mtb3B0aW9uLC1tYXJj
-aD13aW5jaGlwLWM2LC1tYXJjaD1pNTg2KQogCiBjYy1vcHRpb24gPSAkKGNhbGwgdHJ5LXJ1bixc
-Ci0JJChDQykgJChLQlVJTERfQ1BQRkxBR1MpICQoQ0ZMQUdTKSAkKDEpIC1jIC14YyAvZGV2L251
-bGwgLW8gIiQkVE1QIiwkKDEpLCQoMikpCisJJChDQykgLVdlcnJvciAkKEtCVUlMRF9DUFBGTEFH
-UykgJChDRkxBR1MpICQoMSkgLWMgLXhjIC9kZXYvbnVsbCAtbyAiJCRUTVAiLCQoMSksJCgyKSkK
-IAogIyBjYy1vcHRpb24teW4KICMgVXNhZ2U6IGZsYWcgOj0gJChjYWxsIGNjLW9wdGlvbi15biwt
-bWFyY2g9d2luY2hpcC1jNikKIGNjLW9wdGlvbi15biA9ICQoY2FsbCB0cnktcnVuLFwKLQkkKEND
-KSAkKEtCVUlMRF9DUFBGTEFHUykgJChDRkxBR1MpICQoMSkgLWMgLXhjIC9kZXYvbnVsbCAtbyAi
-JCRUTVAiLHksbikKKwkkKENDKSAtV2Vycm9yICQoS0JVSUxEX0NQUEZMQUdTKSAkKENGTEFHUykg
-JCgxKSAtYyAteGMgL2Rldi9udWxsIC1vICIkJFRNUCIseSxuKQogCiAjIGNjLWRpc2FibGUtd2Fy
-bmluZwogIyBVc2FnZTogY2ZsYWdzLXkgKz0gJChjYWxsIGNjLWRpc2FibGUtd2FybmluZyx1bnVz
-ZWQtYnV0LXNldC12YXJpYWJsZSkKIGNjLWRpc2FibGUtd2FybmluZyA9ICQoY2FsbCB0cnktcnVu
-LFwKLQkkKENDKSAkKEtCVUlMRF9DUFBGTEFHUykgJChDRkxBR1MpIC1XJChzdHJpcCAkKDEpKSAt
-YyAteGMgL2Rldi9udWxsIC1vICIkJFRNUCIsLVduby0kKHN0cmlwICQoMSkpKQorCSQoQ0MpIC1X
-ZXJyb3IgJChLQlVJTERfQ1BQRkxBR1MpICQoQ0ZMQUdTKSAtVyQoc3RyaXAgJCgxKSkgLWMgLXhj
-IC9kZXYvbnVsbCAtbyAiJCRUTVAiLC1Xbm8tJChzdHJpcCAkKDEpKSkKIAogIyBjYy12ZXJzaW9u
-CiAjIFVzYWdlIGdjYy12ZXIgOj0gJChjYWxsIGNjLXZlcnNpb24pCi0tIAoyLjIwLjEKCgpfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxp
-bmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVh
-ZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Fri, Sep 27, 2019 at 08:05:36AM +0200, Ahmad Fatoum wrote:
+> From: Mark Charlebois <charlebm@gmail.com>
+> =
+
+> Clang will warn about unknown warnings but will not return false
+> unless -Werror is set. GCC will return false if an unknown
+> warning is passed.
+> =
+
+> Adding -Werror make both compiler behave the same.
+> =
+
+> [arnd: it turns out we need the same patch for testing whether -ffunction=
+-sections
+>        works right with gcc. I've build tested extensively with this patch
+>        applied, so let's just merge this one now.]
+> =
+
+> Signed-off-by: Mark Charlebois <charlebm@gmail.com>
+> Signed-off-by: Behan Webster <behanw@converseincode.com>
+> Reviewed-by: Jan-Simon M=F6ller <dl9pf@gmx.de>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> Acked-by: Kees Cook <keescook@chromium.org>
+> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+> [afa: ported to barebox from upstream c3f0d0bc5b01ad9]
+> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+> ---
+>  scripts/Kbuild.include | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+
+Applied, thanks
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
