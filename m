@@ -1,19 +1,32 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-eopbgr720115.outbound.protection.outlook.com
- ([40.107.72.115] helo=NAM05-CO1-obe.outbound.protection.outlook.com)
+Received: from out-2.mail.amis.net ([212.18.32.14])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iDlr0-00065v-B0
- for barebox@lists.infradead.org; Fri, 27 Sep 2019 08:43:55 +0000
-From: "Barbier, Renaud" <renaud.barbier@abaco.com>
-Date: Fri, 27 Sep 2019 08:43:51 +0000
-Message-ID: <MN2PR16MB311733CE9E54B05E89F0090291810@MN2PR16MB3117.namprd16.prod.outlook.com>
-References: <MN2PR16MB3117C56576A8FB7A258431B691870@MN2PR16MB3117.namprd16.prod.outlook.com>
- <20190926064116.aix5mx2fwtbqyrzc@pengutronix.de>
- <MN2PR16MB3117311DB17F1F18B283BCE391860@MN2PR16MB3117.namprd16.prod.outlook.com>
- <20190927064405.lfcibvom2xo3awy6@pengutronix.de>
-In-Reply-To: <20190927064405.lfcibvom2xo3awy6@pengutronix.de>
-Content-Language: en-US
+ id 1iEuxB-00074a-0P
+ for barebox@lists.infradead.org; Mon, 30 Sep 2019 12:39:05 +0000
+Received: from in-2.mail.amis.net (in-2.mail.amis.net [212.18.32.19])
+ by out-2.mail.amis.net (Postfix) with ESMTP id 8450D80CC4
+ for <barebox@lists.infradead.org>; Mon, 30 Sep 2019 14:28:23 +0200 (CEST)
+Received: from in-2.mail.amis.net (localhost [127.0.0.1])
+ by in-2.mail.amis.net (Postfix) with ESMTP id 82680C947A
+ for <barebox@lists.infradead.org>; Mon, 30 Sep 2019 14:28:23 +0200 (CEST)
+Received: from in-2.mail.amis.net ([127.0.0.1])
+ by in-2.mail.amis.net (in-2.mail.amis.net [127.0.0.1]) (amavisd-new,
+ port 10024)
+ with ESMTP id iUb2Bw_laVqZ for <barebox@lists.infradead.org>;
+ Mon, 30 Sep 2019 14:28:23 +0200 (CEST)
+Received: from smtp1.amis.net (smtp1.amis.net [IPv6:2001:15c0:ffff:f::41])
+ by in-2.mail.amis.net (Postfix) with ESMTP id 37F6AC9479
+ for <barebox@lists.infradead.org>; Mon, 30 Sep 2019 14:28:23 +0200 (CEST)
+Received: from [192.168.69.110] (89-212-21-243.static.t-2.net [89.212.21.243])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128
+ bits)) (No client certificate requested)
+ by smtp1.amis.net (Postfix) with ESMTPSA id 75A76C2DD6
+ for <barebox@lists.infradead.org>; Mon, 30 Sep 2019 14:28:22 +0200 (CEST)
+From: Primoz Fiser <primoz.fiser@norik.com>
+Message-ID: <42349182-ea94-c34d-0f18-ff20d075b580@norik.com>
+Date: Mon, 30 Sep 2019 14:28:22 +0200
 MIME-Version: 1.0
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,28 +35,13 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: barebox 2019.07 ubiformat
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+To: barebox@lists.infradead.org
 
 
-> Not all blocks seem to be unreadable. Have you looked into subpage
-> reads? subpage reads have been enabled in 18ea738 ("mtd: nand: Enable
-> subpage reads"), but on the other hand that commit is already included
-> in 2016.07. Anyway, maybe the old barebox doesn't do subpage reads for
-> some reason.
-> What ECC are you using, software or hardware? Is it still the same in
-> the new barebox or are you maybe ending up with some other ECC scheme?
-[Barbier, Renaud] 
-The PPC platforms uses software ECC. I will compare with our ARM platforms that uses hardware ECC.
-Thanks for the information. Answer hopefully in two weeks as I am going in holidays
-
-Cheers,
-Renaud
 
 _______________________________________________
 barebox mailing list
