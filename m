@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iFYQt-00034w-Kj
- for barebox@lists.infradead.org; Wed, 02 Oct 2019 06:48:21 +0000
-Date: Wed, 2 Oct 2019 08:48:17 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191002064817.7mrmk4tzab37jqt5@pengutronix.de>
-References: <20191001062853.1256-1-ahmad@a3f.at>
+ id 1iFDJT-0001lC-3U
+ for barebox@lists.infradead.org; Tue, 01 Oct 2019 08:15:17 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Tue,  1 Oct 2019 10:15:09 +0200
+Message-Id: <20191001081509.28051-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191001062853.1256-1-ahmad@a3f.at>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,31 +19,101 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] dtc: fix breakage of in-barebox libfdt
-To: Ahmad Fatoum <ahmad@a3f.at>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v1] MIPS: net: ag71xx/ar9331: partially sync network support
+ with upstream
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-On Tue, Oct 01, 2019 at 08:28:51AM +0200, Ahmad Fatoum wrote:
-> I missed that I have to test CONFIG_BOARD_ARM_GENERIC_DT as well when
-> updating dtc. Please apply the first commit before the
-> ("scripts/dtc: Update to upstream version v1.5.1") commit, so it's not
-> intermittently broken.
-> 
-> Also attached is a fixup to the documentation that makes note of this.
-> 
-> Ahmad Fatoum (2):
->   lib: fdt: define INT32_MAX for in-barebox use
->   fixup! Documentation: document barebox device tree handling
+Ethernet support for ar9331 is upstream now. So, drop every thing what
+is provided by upstream devicetree and rename compatible in the driver.
 
-Applied, thanks
+barebox network driver will need more work to be upstream compliant. For
+example we should not request or touch the gmac register directly. Since
+currently it is not clear how this should be implemented, patch the
+upstream dts with reg-names = "ge0", "gmac".
 
-Sascha
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ arch/mips/dts/ar9331-dptechnics-dpt-module.dts |  6 +-----
+ arch/mips/dts/ar9331.dtsi                      | 15 ++++++---------
+ arch/mips/dts/tplink-mr3020.dts                |  2 +-
+ drivers/net/ag71xx.c                           |  2 +-
+ 4 files changed, 9 insertions(+), 16 deletions(-)
 
+diff --git a/arch/mips/dts/ar9331-dptechnics-dpt-module.dts b/arch/mips/dts/ar9331-dptechnics-dpt-module.dts
+index 315589aab9..cbaf5ab39e 100644
+--- a/arch/mips/dts/ar9331-dptechnics-dpt-module.dts
++++ b/arch/mips/dts/ar9331-dptechnics-dpt-module.dts
+@@ -15,7 +15,7 @@
+ 		art@0 {
+ 			compatible = "qca,art-ar9331", "qca,art";
+ 			device-path = &spiflash_art;
+-			barebox,provide-mac-address = <&mac0>;
++			barebox,provide-mac-address = <&eth0>;
+ 		};
+ 	};
+ 
+@@ -48,7 +48,3 @@
+ 		reg = <0x7f0000 0x10000>;
+ 	};
+ };
+-
+-&mac0 {
+-	status = "okay";
+-};
+diff --git a/arch/mips/dts/ar9331.dtsi b/arch/mips/dts/ar9331.dtsi
+index 42baae1e89..72f029754e 100644
+--- a/arch/mips/dts/ar9331.dtsi
++++ b/arch/mips/dts/ar9331.dtsi
+@@ -5,14 +5,11 @@
+ 			reg = <0x18060008 0x8>;
+ 			clocks = <&pll ATH79_CLK_CPU>;
+ 		};
+-
+-		mac0: mac@19000000 {
+-			compatible = "qca,ar9331-ge0";
+-			reg = <0x18070000 0x00000100>,
+-			      <0x19000000 0x01000000>;
+-			reg-names = "gmac", "ge0";
+-			phy-mode = "mii";
+-			status = "disabled";
+-               };
+ 	};
+ };
++
++&eth0 {
++	reg = <0x19000000 0x200>,
++	      <0x18070000 0x00000100>;
++	reg-names = "ge0", "gmac";
++};
+diff --git a/arch/mips/dts/tplink-mr3020.dts b/arch/mips/dts/tplink-mr3020.dts
+index e30eae1578..c6ae154f4f 100644
+--- a/arch/mips/dts/tplink-mr3020.dts
++++ b/arch/mips/dts/tplink-mr3020.dts
+@@ -28,6 +28,6 @@
+ 	};
+ };
+ 
+-&mac0 {
++&eth0 {
+ 	status = "okay";
+ };
+diff --git a/drivers/net/ag71xx.c b/drivers/net/ag71xx.c
+index 0565c90490..70aaa60f1a 100644
+--- a/drivers/net/ag71xx.c
++++ b/drivers/net/ag71xx.c
+@@ -667,7 +667,7 @@ static void ag71xx_remove(struct device_d *dev)
+ }
+ 
+ static __maybe_unused struct of_device_id ag71xx_dt_ids[] = {
+-	{ .compatible = "qca,ar9331-ge0", .data = &ag71xx_cfg_ar9331_ge0, },
++	{ .compatible = "qca,ar9330-eth", .data = &ag71xx_cfg_ar9331_ge0, },
+ 	{ .compatible = "qca,ar9344-gmac0", .data = &ag71xx_cfg_ar9344_gmac0, },
+ 	{ /* sentinel */ }
+ };
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.23.0
+
 
 _______________________________________________
 barebox mailing list
