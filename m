@@ -1,31 +1,33 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from out-2.mail.amis.net ([212.18.32.14])
+Received: from out-1.mail.amis.net ([212.18.32.4])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iFDMI-0002JL-Gu
- for barebox@lists.infradead.org; Tue, 01 Oct 2019 08:18:13 +0000
-Received: from in-3.mail.amis.net (in-3.mail.amis.net [212.18.32.22])
- by out-2.mail.amis.net (Postfix) with ESMTP id C414280E54
+ id 1iFDMG-0002JI-2G
+ for barebox@lists.infradead.org; Tue, 01 Oct 2019 08:18:09 +0000
+Received: from in-2.mail.amis.net (in-2.mail.amis.net [212.18.32.19])
+ by out-1.mail.amis.net (Postfix) with ESMTP id A736681F9C
  for <barebox@lists.infradead.org>; Tue,  1 Oct 2019 10:18:03 +0200 (CEST)
-Received: from in-3.mail.amis.net (localhost [127.0.0.1])
- by in-3.mail.amis.net (Postfix) with ESMTP id A9279C947B
+Received: from in-2.mail.amis.net (localhost [127.0.0.1])
+ by in-2.mail.amis.net (Postfix) with ESMTP id A5926C9476
  for <barebox@lists.infradead.org>; Tue,  1 Oct 2019 10:18:03 +0200 (CEST)
-Received: from in-3.mail.amis.net ([127.0.0.1])
- by in-3.mail.amis.net (in-3.mail.amis.net [127.0.0.1]) (amavisd-new,
+Received: from in-2.mail.amis.net ([127.0.0.1])
+ by in-2.mail.amis.net (in-2.mail.amis.net [127.0.0.1]) (amavisd-new,
  port 10024)
- with ESMTP id tGImm0JopL-W for <barebox@lists.infradead.org>;
+ with ESMTP id ZaAcrBNIvfJH for <barebox@lists.infradead.org>;
  Tue,  1 Oct 2019 10:18:03 +0200 (CEST)
-Received: from smtp2.amis.net (smtp2.amis.net [212.18.32.44])
- by in-3.mail.amis.net (Postfix) with ESMTP id 322F1C9473
+Received: from smtp2.amis.net (smtp2.amis.net [IPv6:2001:15c0:ffff:f::44])
+ by in-2.mail.amis.net (Postfix) with ESMTP id 3FBC9C9406
  for <barebox@lists.infradead.org>; Tue,  1 Oct 2019 10:18:03 +0200 (CEST)
 Received: from localhost.localdomain (89-212-21-243.static.t-2.net
  [89.212.21.243])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by smtp2.amis.net (Postfix) with ESMTPSA id 0EF977FCA0
- for <barebox@lists.infradead.org>; Tue,  1 Oct 2019 10:18:00 +0200 (CEST)
+ by smtp2.amis.net (Postfix) with ESMTPSA id 314F880BA8
+ for <barebox@lists.infradead.org>; Tue,  1 Oct 2019 10:18:03 +0200 (CEST)
 From: Primoz Fiser <primoz.fiser@norik.com>
-Date: Tue,  1 Oct 2019 10:17:57 +0200
-Message-Id: <20191001081800.19128-1-primoz.fiser@norik.com>
+Date: Tue,  1 Oct 2019 10:17:59 +0200
+Message-Id: <20191001081800.19128-3-primoz.fiser@norik.com>
+In-Reply-To: <20191001081800.19128-1-primoz.fiser@norik.com>
+References: <20191001081800.19128-1-primoz.fiser@norik.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -39,62 +41,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/3] usb: Reduce USB scanning time
+Subject: [PATCH 2/3] usb: usb_hub_port_connect_change(): Remove unnecessary
+ delays
 To: barebox@lists.infradead.org
 
-Hello, 
+Remove two mdelay(200) calls from usb_hub_port_connect_change() before
+and after calling hub_port_reset().
 
-Recently we came across an embedded platform which has a very complex           
-USB infrastructure. In total, 17 USB devices are connected over various         
-USB hubs. Initial USB scanning on this platform takes an incredible             
-amounts of time ~22 seconds. This huge delay is unacceptable if we are          
-required to boot from USB and need to perform scanning on each boot-up.         
-                                                                                
-However this huge USB scanning delay is only apparent in Barebox as             
-subsequent Linux drivers don't take as much time to enumerate the bus.          
-Thus we decided to investigate and try to optimize USB scanning time as         
-much as possible without loosing any functionality & retain stability.          
-                                                                                
-Code analysis of USB hub driver revealed many calls to mdelay(). Some of         
-them unnecessary and some even longer than 1 second per port, statically           
-placed without any checks if required at all. These delays significantly           
-degrade USB scanning performance and must be reworked.                             
-                                                                                   
-Investigation lead us also to U-boot which was already tested by us on             
-the same i.MX6 platform and didn't show such poor USB performance. We              
-found out U-boot already implements quasi parallel USB scanning                    
-strategy and thus we decided to port this functionality to Barebox.                
-                                                                                   
-We took great deal of ideas and code from U-boot patch series by Stefan            
-Roese: https://lists.denx.de/pipermail/u-boot/2016-March/248493.html               
-                                                                                   
-Although we didn't achieve the same level of delay reduction as reported           
-by Mr. Roese (28.4 to 1.8 seconds), USB scanning in our case now takes             
-around 4.5 seconds (21.7 to 4.5 seconds) which is a significant                    
-improvement!                                                                       
-                                                                                   
-We could take this patch series a step further by also porting patch 3/4           
-"usb: Don't reset the USB hub a 2nd time" from U-boot. But according to            
-comment in Barebox code: "This is a Windows scheme of initialization               
-sequence, with double reset of the device (Linux uses the same                     
-sequence)" we wanted to be safe and left the double device reset                   
-functionality intact for the sake of retaining stability over speed                
-performance.
+These delays don't seem to be necessary since hub_port_reset() already
+incorporates delays on its own.
 
-All further details on changes are described in each patch description.
+Without patch:
 
-Best regards,
-Primoz Fiser
+    $ time usb
+    usb: USB: scanning bus for devices...
+    usb: 17 USB Device(s) found
+    time: 16355ms
 
-Primoz Fiser (3):
-  usb: hub_port_reset(): Speedup hub reset handling
-  usb: usb_hub_port_connect_change(): Remove unnecessary delays
-  usb: Change power-on / scanning timeout handling
+With patch:
 
- drivers/usb/core/hub.c | 184 +++++++++++++++++++++++++++++++++++------
- include/usb/usb.h      |   3 +
- 2 files changed, 162 insertions(+), 25 deletions(-)
+    $ time usb
+    usb: USB: scanning bus for devices...
+    usb: 17 USB Device(s) found
+    time: 10344ms
 
+Delta: ~6 seconds
+
+Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+---
+ drivers/usb/core/hub.c | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+index 91604e1ef..7de6aedc4 100644
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -211,8 +211,6 @@ static void usb_hub_port_connect_change(struct usb_device *dev, int port)
+ 	if (dev->children[port] && !(portstatus & USB_PORT_STAT_ENABLE))
+ 		usb_remove_device(dev->children[port]);
+ 
+-	mdelay(200);
+-
+ 	/* Allocate a new device struct for the port */
+ 	usb = usb_alloc_new_device();
+ 	usb->dev.parent = &dev->dev;
+@@ -225,8 +223,6 @@ static void usb_hub_port_connect_change(struct usb_device *dev, int port)
+ 		return;
+ 	}
+ 
+-	mdelay(200);
+-
+ 	dev->children[port] = usb;
+ 	usb->parent = dev;
+ 	usb->portnr = port + 1;
 -- 
 2.17.1
 
