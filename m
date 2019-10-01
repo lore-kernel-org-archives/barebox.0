@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from relay8-d.mail.gandi.net ([217.70.183.201])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iFYP2-0002x9-3K
- for barebox@lists.infradead.org; Wed, 02 Oct 2019 06:46:25 +0000
-Date: Wed, 2 Oct 2019 08:46:22 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191002064622.cxy4lle73auyzhab@pengutronix.de>
-References: <20191001062518.1123-1-ahmad@a3f.at>
+ id 1iFBeq-00083S-BX
+ for barebox@lists.infradead.org; Tue, 01 Oct 2019 06:29:13 +0000
+Received: from geraet.fritz.box (muedsl-82-207-205-165.citykom.de
+ [82.207.205.165]) (Authenticated sender: ahmad@a3f.at)
+ by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 136D41BF212
+ for <barebox@lists.infradead.org>; Tue,  1 Oct 2019 06:29:00 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Tue,  1 Oct 2019 08:28:51 +0200
+Message-Id: <20191001062853.1256-1-ahmad@a3f.at>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191001062518.1123-1-ahmad@a3f.at>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,31 +23,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] gpio: da9062: fix uninitialized variable read
-To: Ahmad Fatoum <ahmad@a3f.at>
-Cc: barebox@lists.infradead.org, mfe@pengutronix.de
+Subject: [PATCH 0/2] dtc: fix breakage of in-barebox libfdt
+To: barebox@lists.infradead.org
 
-On Tue, Oct 01, 2019 at 08:25:18AM +0200, Ahmad Fatoum wrote:
-> In cases where reg < 0x100, WARN_ON will evaluate the uninitialized
-> client variable. Fix this by initializing it to NULL.
-> This way, the function will always early-return if the reg is < 0x100.
-> 
-> Fixes: 17a43d293c ("gpio: add DA9062 MFD gpio support")
-> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
-> ---
->  drivers/gpio/gpio-da9062.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+I missed that I have to test CONFIG_BOARD_ARM_GENERIC_DT as well when
+updating dtc. Please apply the first commit before the
+("scripts/dtc: Update to upstream version v1.5.1") commit, so it's not
+intermittently broken.
 
-Applied, thanks
+Also attached is a fixup to the documentation that makes note of this.
 
-Sascha
+Ahmad Fatoum (2):
+  lib: fdt: define INT32_MAX for in-barebox use
+  fixup! Documentation: document barebox device tree handling
 
+ Documentation/devicetree/index.rst | 17 ++++++++++-------
+ include/linux/libfdt_env.h         |  2 ++
+ 2 files changed, 12 insertions(+), 7 deletions(-)
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
