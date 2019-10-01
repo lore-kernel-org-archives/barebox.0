@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from relay6-d.mail.gandi.net ([217.70.183.198])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iFYLl-0001Qp-EZ
- for barebox@lists.infradead.org; Wed, 02 Oct 2019 06:43:03 +0000
-Date: Wed, 2 Oct 2019 08:42:59 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191002064259.5tiaflocagcvssxw@pengutronix.de>
-References: <20191001005650.11810-1-andrew.smirnov@gmail.com>
+ id 1iFBaa-0006VX-Mr
+ for barebox@lists.infradead.org; Tue, 01 Oct 2019 06:24:50 +0000
+Received: from geraet.fritz.box (muedsl-82-207-205-165.citykom.de
+ [82.207.205.165]) (Authenticated sender: ahmad@a3f.at)
+ by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id B3015C000F
+ for <barebox@lists.infradead.org>; Tue,  1 Oct 2019 06:24:35 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Tue,  1 Oct 2019 08:24:30 +0200
+Message-Id: <20191001062430.804-1-ahmad@a3f.at>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191001005650.11810-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,26 +23,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: start: Cast board data to "unsigned long"
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] input: specialkeys: remove unused printk argument
+To: barebox@lists.infradead.org
 
-On Mon, Sep 30, 2019 at 05:56:50PM -0700, Andrey Smirnov wrote:
-> Cast board data to "unsigned long", not "uint32_t" to avoid warnings
-> on ARM64.
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
+Two pr_info calls have no format specifiers, but are still passed an
+argument. Remove the unused arguments.
 
-Squashed into the patch introducing this warning.
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ drivers/input/specialkeys.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Sascha
-
+diff --git a/drivers/input/specialkeys.c b/drivers/input/specialkeys.c
+index ff29b8455d7a..a3f2bf4e4f48 100644
+--- a/drivers/input/specialkeys.c
++++ b/drivers/input/specialkeys.c
+@@ -13,12 +13,12 @@ static void input_specialkeys_notify(struct input_notifier *in,
+ {
+ 	switch (ev->code) {
+ 	case KEY_RESTART:
+-		pr_info("Triggering reset due to special key.\n", ev->code);
++		pr_info("Triggering reset due to special key.\n");
+ 		restart_machine();
+ 		break;
+ 
+ 	case KEY_POWER:
+-		pr_info("Triggering poweroff due to special key.\n", ev->code);
++		pr_info("Triggering poweroff due to special key.\n");
+ 		poweroff_machine();
+ 		break;
+ 	}
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
