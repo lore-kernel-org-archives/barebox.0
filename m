@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iFYIY-0008Qk-Km
- for barebox@lists.infradead.org; Wed, 02 Oct 2019 06:39:45 +0000
-Date: Wed, 2 Oct 2019 08:39:34 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191002063934.yfuunz67zff43d6n@pengutronix.de>
-References: <20191001003527.1257-1-andrew.smirnov@gmail.com>
+ id 1iF6Tb-0000aL-AC
+ for barebox@lists.infradead.org; Tue, 01 Oct 2019 00:57:16 +0000
+Received: by mail-pg1-x542.google.com with SMTP id i14so8376293pgt.11
+ for <barebox@lists.infradead.org>; Mon, 30 Sep 2019 17:57:10 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Mon, 30 Sep 2019 17:56:50 -0700
+Message-Id: <20191001005650.11810-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191001003527.1257-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,53 +21,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] mci: imx-esdhc-pbl: Fix watermark level value for i.MX
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org, Chris Healy <cphealy@gmail.com>, Ruslan Sushko <ruslan.sushko@zii.aero>
+Subject: [PATCH] ARM: start: Cast board data to "unsigned long"
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Mon, Sep 30, 2019 at 05:35:27PM -0700, Andrey Smirnov wrote:
-> Layerscape and i.MX have different semantics of Watermark Level
-> Register. Whereas the former uses "0" to signify maximum allowed
-> value, the latter does not.
-> 
-> According to the RM (i.MX8MQ, i.MX6):
-> 
-> "...The read burst length must be less than or equal to the read
-> watermark level.."
-> 
-> Setting Watermark Level Register to zero violates that limitation. It
-> appears that, on i.MX8MQ, not following that rule causes certain
-> configs + toolchains to result in non-bootable image. Specifically,
-> polling for CICHB, CIDHB and DLA to clear in esdhc_send_cmd() times
-> out. There doesn't appear to be any clear relationship as to what kind
-> of image will have the problem, but the following combinations failed
-> to boot on ZII i.MX8MQ Zest board:
-> 
->   - gcc version 9.2.1 20190827 (Red Hat Cross 9.2.1-1) (GCC) +
->     imx_v8_defconfig + CONFIG_DEBUG_LL and CONFIG_PBL_CONSOLE
-> 
->   - gcc version 5.5.0 (Timesys 20190405) (custom toolchain) +
->     imx_v8_defconfig
-> 
-> Setting WML's *_BRST_LE to 16 and *_WML to 128 on i.MX resolves the
-> issue (same setting that's selected by writing 0 on Layerscape).
-> 
-> Fixes: 48562aeaa8 ("esdhc-xload: check for PRSSTAT_BREN only after each block")
-> Cc: Chris Healy <cphealy@gmail.com>
-> Cc: Ruslan Sushko <ruslan.sushko@zii.aero>
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
+Cast board data to "unsigned long", not "uint32_t" to avoid warnings
+on ARM64.
 
-Applied, thanks
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ arch/arm/cpu/start.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Sascha
-
-
+diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+index 0c2e9fb9a8..44d974e40e 100644
+--- a/arch/arm/cpu/start.c
++++ b/arch/arm/cpu/start.c
+@@ -195,7 +195,7 @@ __noreturn void barebox_non_pbl_start(unsigned long membase,
+ 
+ 		if ((unsigned long)boarddata < 8192) {
+ 			struct barebox_arm_boarddata *bd;
+-			uint32_t machine_type = (uint32_t)boarddata;
++			uint32_t machine_type = (unsigned long)boarddata;
+ 			unsigned long mem = arm_mem_boarddata(membase, endmem,
+ 							      sizeof(*bd));
+ 			pr_debug("found machine type %d in boarddata\n",
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.21.0
+
 
 _______________________________________________
 barebox mailing list
