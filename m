@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk3.altibox.net ([109.247.116.14])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iFjkr-0004IV-VE
- for barebox@lists.infradead.org; Wed, 02 Oct 2019 18:53:44 +0000
-Date: Wed, 2 Oct 2019 20:53:37 +0200
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20191002185337.GB32491@ravnborg.org>
+ id 1iFfs1-0004o2-1P
+ for barebox@lists.infradead.org; Wed, 02 Oct 2019 14:44:50 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed,  2 Oct 2019 16:44:29 +0200
+Message-Id: <20191002144430.14946-7-s.hauer@pengutronix.de>
+In-Reply-To: <20191002144430.14946-1-s.hauer@pengutronix.de>
 References: <20191002144430.14946-1-s.hauer@pengutronix.de>
- <20191002144430.14946-6-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191002144430.14946-6-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,58 +21,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/7] X86: lds: remove unnecessary alignments
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 6/7] lds: remove more unnecessary alignments
+To: Barebox List <barebox@lists.infradead.org>
 
-Hi Sascha.
+The alignemnt in the DTB and clk_of_table shouldn't be needed. Remove
+them.
 
-On Wed, Oct 02, 2019 at 04:44:28PM +0200, Sascha Hauer wrote:
-> We do not seem to need all these alignments in the rodata sections
-> except the one for the command array. Remove them and put the alignment
-> for the command array into the BAREBOX_CMDS define.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ include/asm-generic/barebox.lds.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-The changelog does not match the code.
-The alignment is only for x86_64.
+diff --git a/include/asm-generic/barebox.lds.h b/include/asm-generic/barebox.lds.h
+index acf838e85f..a3e367c9ed 100644
+--- a/include/asm-generic/barebox.lds.h
++++ b/include/asm-generic/barebox.lds.h
+@@ -73,14 +73,12 @@
+ 	__barebox_magicvar_end = .;
+ 
+ #define BAREBOX_CLK_TABLE			\
+-	. = ALIGN(8);				\
+ 	__clk_of_table_start = .;		\
+ 	KEEP(*(.__clk_of_table));		\
+ 	KEEP(*(.__clk_of_table_end));		\
+ 	__clk_of_table_end = .;
+ 
+ #define BAREBOX_DTB				\
+-	. = ALIGN(8);				\
+ 	__dtb_start = .;			\
+ 	KEEP(*(.dtb.rodata.*));			\
+ 	__dtb_end = .;
+-- 
+2.23.0
 
-> --- a/include/asm-generic/barebox.lds.h
-> +++ b/include/asm-generic/barebox.lds.h
-> @@ -46,7 +46,13 @@
->  	KEEP(*(.exitcall.6))			\
->  	__barebox_exitcalls_end = .;
->  
-> +/* For some obscure reason X86_64 needs these 64bit aligned */
-
-The obscure reason looks like this (from include/command.h):
-#ifdef __x86_64__
-/* This is required because the linker will put symbols on a 64 bit alignment */
-__attribute__((aligned(64)))
-#endif
-
-I did not try it. But I would assume removing the alignment from the .h
-file and the .lds file would sort it out.
-
-
-	Sam
-
-
-> +#ifdef __x86_64__
-> +#define X86_64_ALIGN . = ALIGN(64);
-> +#endif
-> +
->  #define BAREBOX_CMDS				\
-> +	X86_64_ALIGN				\
->  	__barebox_cmd_start = .;		\
->  	KEEP(*(SORT_BY_NAME(.barebox_cmd*)))	\
->  	__barebox_cmd_end = .;
-> -- 
-> 2.23.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
