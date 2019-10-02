@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iFfsP-0006Jv-5t
- for barebox@lists.infradead.org; Wed, 02 Oct 2019 14:45:15 +0000
+ id 1iFfs9-0004xg-0p
+ for barebox@lists.infradead.org; Wed, 02 Oct 2019 14:44:59 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed,  2 Oct 2019 16:44:30 +0200
-Message-Id: <20191002144430.14946-8-s.hauer@pengutronix.de>
+Date: Wed,  2 Oct 2019 16:44:26 +0200
+Message-Id: <20191002144430.14946-4-s.hauer@pengutronix.de>
 In-Reply-To: <20191002144430.14946-1-s.hauer@pengutronix.de>
 References: <20191002144430.14946-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,406 +21,535 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/7] lds: Add and use RO_DATA_SECTION macro
+Subject: [PATCH 3/7] lds: Move start/end address variables into defines
 To: Barebox List <barebox@lists.infradead.org>
 
-We have many different pointer arrays which we put into linker sections
-and each time there's one added we have to adjust all linker scripts.
-This adds a common RO_DATA_SECTION define and uses it for all
-architectures. This makes it easier to add a new linker array.
+For the older section defines we specify the start and end addresses
+outside the macro which means we have to repeat them in each linker
+script. Make the start/end addresses part of the define to simplify
+things. While at it, add a BAREBOX_ prefix to the INITCALLS and EXITCALLS
+macros for consistency to the other defines.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/lib32/barebox.lds.S           | 14 ++++--------
- arch/arm/lib64/barebox.lds.S           | 16 ++++---------
- arch/mips/lib/barebox.lds.S            | 16 ++++---------
- arch/nios2/cpu/barebox.lds.S           | 12 ++++------
- arch/openrisc/cpu/barebox.lds.S        | 11 +--------
- arch/ppc/boards/pcm030/barebox.lds.S   |  9 +-------
- arch/ppc/mach-mpc85xx/barebox.lds.S    |  8 +------
- arch/riscv/lib/barebox.lds.S           | 12 ++++------
- arch/sandbox/board/barebox.lds.S       |  8 +++----
- arch/x86/lib/barebox.lds.S             | 31 +-------------------------
- arch/x86/mach-efi/elf_ia32_efi.lds.S   |  9 +-------
- arch/x86/mach-efi/elf_x86_64_efi.lds.S |  9 +-------
- include/asm-generic/barebox.lds.h      | 11 +++++++++
- 13 files changed, 40 insertions(+), 126 deletions(-)
+ arch/arm/lib32/barebox.lds.S           | 21 ++------------
+ arch/arm/lib64/barebox.lds.S           | 21 ++------------
+ arch/mips/lib/barebox.lds.S            | 21 ++------------
+ arch/nios2/cpu/barebox.lds.S           | 21 ++------------
+ arch/openrisc/cpu/barebox.lds.S        | 22 ++------------
+ arch/ppc/boards/pcm030/barebox.lds.S   | 21 ++------------
+ arch/ppc/mach-mpc85xx/barebox.lds.S    | 18 ++----------
+ arch/riscv/lib/barebox.lds.S           | 18 ++----------
+ arch/sandbox/board/barebox.lds.S       | 14 ++-------
+ arch/x86/lib/barebox.lds.S             | 16 ++---------
+ arch/x86/mach-efi/elf_ia32_efi.lds.S   | 15 ++--------
+ arch/x86/mach-efi/elf_x86_64_efi.lds.S | 15 ++--------
+ include/asm-generic/barebox.lds.h      | 40 ++++++++++++++++++--------
+ 13 files changed, 52 insertions(+), 211 deletions(-)
 
 diff --git a/arch/arm/lib32/barebox.lds.S b/arch/arm/lib32/barebox.lds.S
-index 3a19d8faab..c479e02e91 100644
+index 05a50afaad..9ffcffd66d 100644
 --- a/arch/arm/lib32/barebox.lds.S
 +++ b/arch/arm/lib32/barebox.lds.S
-@@ -55,7 +55,10 @@ SECTIONS
- 	BAREBOX_BARE_INIT_SIZE
- 
- 	. = ALIGN(4);
--	.rodata : { *(.rodata*) }
-+	.rodata : {
-+		*(.rodata*)
-+		RO_DATA_SECTION
-+	}
- 
- #ifdef CONFIG_ARM_UNWIND
- 	/*
-@@ -82,15 +85,6 @@ SECTIONS
+@@ -82,29 +82,12 @@ SECTIONS
  	.barebox_imd : { BAREBOX_IMD }
  
  	. = .;
--	.barebox_cmd : { BAREBOX_CMDS }
--	.barebox_ratp_cmd : { BAREBOX_RATP_CMDS }
--	.barebox_magicvar : { BAREBOX_MAGICVARS }
--	.barebox_initcalls : { BAREBOX_INITCALLS }
--	.barebox_exitcalls : { BAREBOX_EXITCALLS }
--	__usymtab : { BAREBOX_SYMS }
--	.pci_fixup : { BAREBOX_PCI_FIXUP }
--	.oftables : { BAREBOX_CLK_TABLE }
--	.dtb : { BAREBOX_DTB }
+-	__barebox_cmd_start = .;
+ 	.barebox_cmd : { BAREBOX_CMDS }
+-	__barebox_cmd_end = .;
+-
+-	__barebox_ratp_cmd_start = .;
+ 	.barebox_ratp_cmd : { BAREBOX_RATP_CMDS }
+-	__barebox_ratp_cmd_end = .;
+-
+-	__barebox_magicvar_start = .;
+ 	.barebox_magicvar : { BAREBOX_MAGICVARS }
+-	__barebox_magicvar_end = .;
+-
+-	__barebox_initcalls_start = .;
+-	.barebox_initcalls : { INITCALLS }
+-	__barebox_initcalls_end = .;
+-
+-	__barebox_exitcalls_start = .;
+-	.barebox_exitcalls : { EXITCALLS }
+-	__barebox_exitcalls_end = .;
+-
+-	__usymtab_start = .;
++	.barebox_initcalls : { BAREBOX_INITCALLS }
++	.barebox_exitcalls : { BAREBOX_EXITCALLS }
+ 	__usymtab : { BAREBOX_SYMS }
+-	__usymtab_end = .;
  
- 	.rel_dyn_start : { *(.__rel_dyn_start) }
- 	.rel.dyn : { *(.rel*) }
+ #ifdef CONFIG_PCI
+ 	__start_pci_fixups_early = .;
 diff --git a/arch/arm/lib64/barebox.lds.S b/arch/arm/lib64/barebox.lds.S
-index 3ad9d5f132..cf6ef18895 100644
+index 5e9d94bee9..1cc00eca11 100644
 --- a/arch/arm/lib64/barebox.lds.S
 +++ b/arch/arm/lib64/barebox.lds.S
-@@ -53,7 +53,10 @@ SECTIONS
- 	BAREBOX_BARE_INIT_SIZE
- 
- 	. = ALIGN(4);
--	.rodata : { *(.rodata*) }
-+	.rodata : {
-+		*(.rodata*)
-+		RO_DATA_SECTION
-+	}
- 
- 	_etext = .;			/* End of text and rodata section */
- 	_sdata = .;
-@@ -63,17 +66,6 @@ SECTIONS
- 
+@@ -64,29 +64,12 @@ SECTIONS
  	.barebox_imd : { BAREBOX_IMD }
  
--	. = .;
--	.barebox_cmd : { BAREBOX_CMDS }
--	.barebox_ratp_cmd : { BAREBOX_RATP_CMDS }
--	.barebox_magicvar : { BAREBOX_MAGICVARS }
--	.barebox_initcalls : { BAREBOX_INITCALLS }
--	.barebox_exitcalls : { BAREBOX_EXITCALLS }
--	__usymtab : { BAREBOX_SYMS }
--	.pci_fixup : { BAREBOX_PCI_FIXUP }
--	.oftables : { BAREBOX_CLK_TABLE }
--	.dtb : { BAREBOX_DTB }
+ 	. = .;
+-	__barebox_cmd_start = .;
+ 	.barebox_cmd : { BAREBOX_CMDS }
+-	__barebox_cmd_end = .;
 -
- 	.rel_dyn_start : { *(.__rel_dyn_start) }
- 	.rela.dyn : { *(.rela*) }
- 	.rel_dyn_end : { *(.__rel_dyn_end) }
+-	__barebox_ratp_cmd_start = .;
+ 	.barebox_ratp_cmd : { BAREBOX_RATP_CMDS }
+-	__barebox_ratp_cmd_end = .;
+-
+-	__barebox_magicvar_start = .;
+ 	.barebox_magicvar : { BAREBOX_MAGICVARS }
+-	__barebox_magicvar_end = .;
+-
+-	__barebox_initcalls_start = .;
+-	.barebox_initcalls : { INITCALLS }
+-	__barebox_initcalls_end = .;
+-
+-	__barebox_exitcalls_start = .;
+-	.barebox_exitcalls : { EXITCALLS }
+-	__barebox_exitcalls_end = .;
+-
+-	__usymtab_start = .;
++	.barebox_initcalls : { BAREBOX_INITCALLS }
++	.barebox_exitcalls : { BAREBOX_EXITCALLS }
+ 	__usymtab : { BAREBOX_SYMS }
+-	__usymtab_end = .;
+ 
+ #ifdef CONFIG_PCI
+ 	__start_pci_fixups_early = .;
 diff --git a/arch/mips/lib/barebox.lds.S b/arch/mips/lib/barebox.lds.S
-index f9a0b44937..e96c3bf6e2 100644
+index 7109d73372..86a469a042 100644
 --- a/arch/mips/lib/barebox.lds.S
 +++ b/arch/mips/lib/barebox.lds.S
-@@ -30,7 +30,10 @@ SECTIONS
- 	PRE_IMAGE
- 
- 	. = ALIGN(4);
--	.rodata : { *(.rodata*) }
-+	.rodata : {
-+		*(.rodata*)
-+		RO_DATA_SECTION
-+	}
- 
- 	_etext = .;			/* End of text and rodata section */
- 	_sdata = .;
-@@ -40,17 +43,6 @@ SECTIONS
- 
+@@ -41,29 +41,12 @@ SECTIONS
  	.barebox_imd : { BAREBOX_IMD }
  
--	. = .;
--	.barebox_cmd : { BAREBOX_CMDS }
--	.barebox_ratp_cmd : { BAREBOX_RATP_CMDS }
--	.barebox_magicvar : { BAREBOX_MAGICVARS }
--	.barebox_initcalls : { BAREBOX_INITCALLS }
--	.barebox_exitcalls : { BAREBOX_EXITCALLS }
--	__usymtab : { BAREBOX_SYMS }
--	.pci_fixup : { BAREBOX_PCI_FIXUP }
--	.oftables : { BAREBOX_CLK_TABLE }
--	.dtb : { BAREBOX_DTB }
+ 	. = .;
+-	__barebox_cmd_start = .;
+ 	.barebox_cmd : { BAREBOX_CMDS }
+-	__barebox_cmd_end = .;
 -
- 	_edata = .;
- 	.image_end : { *(.__image_end) }
+-	__barebox_ratp_cmd_start = .;
+ 	.barebox_ratp_cmd : { BAREBOX_RATP_CMDS }
+-	__barebox_ratp_cmd_end = .;
+-
+-	__barebox_magicvar_start = .;
+ 	.barebox_magicvar : { BAREBOX_MAGICVARS }
+-	__barebox_magicvar_end = .;
+-
+-	__barebox_initcalls_start = .;
+-	.barebox_initcalls : { INITCALLS }
+-	__barebox_initcalls_end = .;
+-
+-	__barebox_exitcalls_start = .;
+-	.barebox_exitcalls : { EXITCALLS }
+-	__barebox_exitcalls_end = .;
+-
+-	__usymtab_start = .;
++	.barebox_initcalls : { BAREBOX_INITCALLS }
++	.barebox_exitcalls : { BAREBOX_EXITCALLS }
+ 	__usymtab : { BAREBOX_SYMS }
+-	__usymtab_end = .;
  
+ #ifdef CONFIG_PCI
+ 	__start_pci_fixups_early = .;
 diff --git a/arch/nios2/cpu/barebox.lds.S b/arch/nios2/cpu/barebox.lds.S
-index efe8e106a1..8d82aa59e7 100644
+index fbcd1cd3f7..efe8e106a1 100644
 --- a/arch/nios2/cpu/barebox.lds.S
 +++ b/arch/nios2/cpu/barebox.lds.S
-@@ -48,15 +48,11 @@ SECTIONS
- 	BAREBOX_BARE_INIT_SIZE
+@@ -51,29 +51,12 @@ SECTIONS
+ 	.rodata : { *(.rodata) }
  
- 	. = ALIGN(4);
--	.rodata : { *(.rodata) }
- 
--	. = .;
--	.barebox_cmd : { BAREBOX_CMDS }
--	.barebox_ratp_cmd : { BAREBOX_RATP_CMDS }
--	.barebox_magicvar : { BAREBOX_MAGICVARS }
--	.barebox_initcalls : { BAREBOX_INITCALLS }
--	.barebox_exitcalls : { BAREBOX_EXITCALLS }
--	__usymtab : { BAREBOX_SYMS }
-+	.rodata : {
-+		*(.rodata*)
-+		RO_DATA_SECTION
-+	}
+ 	. = .;
+-	__barebox_cmd_start = .;
+ 	.barebox_cmd : { BAREBOX_CMDS }
+-	__barebox_cmd_end = .;
+-
+-	__barebox_ratp_cmd_start = .;
+ 	.barebox_ratp_cmd : { BAREBOX_RATP_CMDS }
+-	__barebox_ratp_cmd_end = .;
+-
+-	__barebox_magicvar_start = .;
+ 	.barebox_magicvar : { BAREBOX_MAGICVARS }
+-	__barebox_magicvar_end = .;
+-
+-	__barebox_initcalls_start = .;
+-	.barebox_initcalls : { INITCALLS }
+-	__barebox_initcalls_end = .;
+-
+-	__barebox_exitcalls_start = .;
+-	.barebox_exitcalls : { EXITCALLS }
+-	__barebox_exitcalls_end = .;
+-
+-	___usymtab_start = .;
++	.barebox_initcalls : { BAREBOX_INITCALLS }
++	.barebox_exitcalls : { BAREBOX_EXITCALLS }
+ 	__usymtab : { BAREBOX_SYMS }
+-	___usymtab_end = .;
  
  	_etext = .; /* End of text and rodata section */
  
 diff --git a/arch/openrisc/cpu/barebox.lds.S b/arch/openrisc/cpu/barebox.lds.S
-index 37242f9c5e..adb0c22f85 100644
+index ed9b90ed70..37242f9c5e 100644
 --- a/arch/openrisc/cpu/barebox.lds.S
 +++ b/arch/openrisc/cpu/barebox.lds.S
-@@ -49,18 +49,9 @@ SECTIONS
- 		*(.rodata);
- 		*(.rodata.*)
- 		*(.bbenv.rodata.*)
-+		RO_DATA_SECTION
- 	} > ram
- 
--	. = ALIGN(4);
--	. = .;
--	.barebox_cmd : { BAREBOX_CMDS } > ram
--	.barebox_ratp_cmd : { BAREBOX_RATP_CMDS } > ram
--	.barebox_magicvar : { BAREBOX_MAGICVARS } > ram
--	.barebox_initcalls : { BAREBOX_INITCALLS } > ram
--	.barebox_exitcalls : { BAREBOX_EXITCALLS } > ram
--	__usymtab : { BAREBOX_SYMS } > ram
--	.dtb : { BAREBOX_DTB } > ram
--
- 	__etext = .; /* End of text and rodata section */
+@@ -53,30 +53,12 @@ SECTIONS
  
  	. = ALIGN(4);
+ 	. = .;
+-	__barebox_cmd_start = .;
+ 	.barebox_cmd : { BAREBOX_CMDS } > ram
+-	__barebox_cmd_end = .;
+-
+-	__barebox_ratp_cmd_start = .;
+ 	.barebox_ratp_cmd : { BAREBOX_RATP_CMDS } > ram
+-	__barebox_ratp_cmd_end = .;
+-
+-	__barebox_magicvar_start = .;
+ 	.barebox_magicvar : { BAREBOX_MAGICVARS } > ram
+-	__barebox_magicvar_end = .;
+-
+-	__barebox_initcalls_start = .;
+-	.barebox_initcalls : { INITCALLS } > ram
+-	__barebox_initcalls_end = .;
+-
+-	__barebox_exitcalls_start = .;
+-	.barebox_exitcalls : { EXITCALLS } > ram
+-	__barebox_exitcalls_end = .;
+-
+-	___usymtab_start = .;
++	.barebox_initcalls : { BAREBOX_INITCALLS } > ram
++	.barebox_exitcalls : { BAREBOX_EXITCALLS } > ram
+ 	__usymtab : { BAREBOX_SYMS } > ram
+-	___usymtab_end = .;
+-
+ 	.dtb : { BAREBOX_DTB } > ram
+ 
+ 	__etext = .; /* End of text and rodata section */
 diff --git a/arch/ppc/boards/pcm030/barebox.lds.S b/arch/ppc/boards/pcm030/barebox.lds.S
-index 73e4bde434..6c91ed6256 100644
+index 12b551e685..73e4bde434 100644
 --- a/arch/ppc/boards/pcm030/barebox.lds.S
 +++ b/arch/ppc/boards/pcm030/barebox.lds.S
-@@ -38,6 +38,7 @@ SECTIONS
-     *(.rodata*)
-     *(.rodata1*)
-     *(.rodata.str1.4)
-+    RO_DATA_SECTION
-   }
- 
-   /* Read-only sections, merged into text segment: */
-@@ -99,14 +100,6 @@ SECTIONS
-   _edata  =  .;
+@@ -100,29 +100,12 @@ SECTIONS
    PROVIDE (edata = .);
  
--  . = .;
--  .barebox_cmd : { BAREBOX_CMDS }
--  .barebox_ratp_cmd : { BAREBOX_RATP_CMDS }
--  .barebox_magicvar : { BAREBOX_MAGICVARS }
--  .barebox_initcalls : { BAREBOX_INITCALLS }
--  .barebox_exitcalls : { BAREBOX_EXITCALLS }
--  __usymtab : { BAREBOX_SYMS }
+   . = .;
+-  __barebox_cmd_start = .;
+   .barebox_cmd : { BAREBOX_CMDS }
+-  __barebox_cmd_end = .;
 -
+-  __barebox_ratp_cmd_start = .;
+   .barebox_ratp_cmd : { BAREBOX_RATP_CMDS }
+-  __barebox_ratp_cmd_end = .;
+-
+-  __barebox_magicvar_start = .;
+   .barebox_magicvar : { BAREBOX_MAGICVARS }
+-  __barebox_magicvar_end = .;
+-
+-  __barebox_initcalls_start = .;
+-  .barebox_initcalls : { INITCALLS }
+-  __barebox_initcalls_end = .;
+-
+-  __barebox_exitcalls_start = .;
+-  .barebox_exitcalls : { EXITCALLS }
+-  __barebox_exitcalls_end = .;
+-
+-  __usymtab_start = .;
++  .barebox_initcalls : { BAREBOX_INITCALLS }
++  .barebox_exitcalls : { BAREBOX_EXITCALLS }
+   __usymtab : { BAREBOX_SYMS }
+-  __usymtab_end = .;
+ 
    __start___ex_table = .;
    __ex_table : { *(__ex_table) }
-   __stop___ex_table = .;
 diff --git a/arch/ppc/mach-mpc85xx/barebox.lds.S b/arch/ppc/mach-mpc85xx/barebox.lds.S
-index 1874319e71..a09a01eba1 100644
+index 30a1c571d7..1874319e71 100644
 --- a/arch/ppc/mach-mpc85xx/barebox.lds.S
 +++ b/arch/ppc/mach-mpc85xx/barebox.lds.S
-@@ -71,6 +71,7 @@ SECTIONS
-    .rodata    :
-    {
-     *(SORT_BY_ALIGNMENT(SORT_BY_NAME(.rodata*)))
-+    RO_DATA_SECTION
-   } :text
- 
-   /* Read-write section, merged into data segment: */
-@@ -100,13 +101,6 @@ SECTIONS
-     CONSTRUCTORS
+@@ -101,25 +101,11 @@ SECTIONS
    }
  
--  . = .;
--  .barebox_cmd : { BAREBOX_CMDS }
--  .barebox_ratp_cmd : { BAREBOX_RATP_CMDS }
--  .barebox_initcalls : { BAREBOX_INITCALLS }
--  .barebox_exitcalls : { BAREBOX_EXITCALLS }
--  __usymtab : { BAREBOX_SYMS }
+   . = .;
+-  __barebox_cmd_start = .;
+   .barebox_cmd : { BAREBOX_CMDS }
+-  __barebox_cmd_end = .;
 -
+-  __barebox_ratp_cmd_start = .;
+   .barebox_ratp_cmd : { BAREBOX_RATP_CMDS }
+-  __barebox_ratp_cmd_end = .;
+-
+-  __barebox_initcalls_start = .;
+-  .barebox_initcalls : { INITCALLS }
+-  __barebox_initcalls_end = .;
+-
+-  __barebox_exitcalls_start = .;
+-  .barebox_exitcalls : { EXITCALLS }
+-  __barebox_exitcalls_end = .;
+-
+-  __usymtab_start = .;
++  .barebox_initcalls : { BAREBOX_INITCALLS }
++  .barebox_exitcalls : { BAREBOX_EXITCALLS }
+   __usymtab : { BAREBOX_SYMS }
+-  __usymtab_end = .;
+ 
    . = .;
    __start___ex_table = .;
-   __ex_table : { *(__ex_table) }
 diff --git a/arch/riscv/lib/barebox.lds.S b/arch/riscv/lib/barebox.lds.S
-index 23e4468e2f..5149f8ce28 100644
+index 10c19f15de..23e4468e2f 100644
 --- a/arch/riscv/lib/barebox.lds.S
 +++ b/arch/riscv/lib/barebox.lds.S
-@@ -30,7 +30,10 @@ SECTIONS
- 	}
- 
- 	. = ALIGN(8);
--	.rodata : { *(.rodata*) }
-+	.rodata : {
-+		*(.rodata*)
-+		RO_DATA_SECTION
-+	}
- 
- 	_etext = .;			/* End of text and rodata section */
- 	_sdata = .;
-@@ -43,13 +46,6 @@ SECTIONS
- 	. = ALIGN(8);
+@@ -44,25 +44,11 @@ SECTIONS
  	.got : { *(.got*) }
  
--	. = .;
--	.barebox_cmd : { BAREBOX_CMDS }
--	.barebox_magicvar : { BAREBOX_MAGICVARS }
--	.barebox_initcalls : { BAREBOX_INITCALLS }
--	.barebox_exitcalls : { BAREBOX_EXITCALLS }
--	__usymtab : { BAREBOX_SYMS }
+ 	. = .;
+-	__barebox_cmd_start = .;
+ 	.barebox_cmd : { BAREBOX_CMDS }
+-	__barebox_cmd_end = .;
 -
+-	__barebox_magicvar_start = .;
+ 	.barebox_magicvar : { BAREBOX_MAGICVARS }
+-	__barebox_magicvar_end = .;
+-
+-	__barebox_initcalls_start = .;
+-	.barebox_initcalls : { INITCALLS }
+-	__barebox_initcalls_end = .;
+-
+-	__barebox_exitcalls_start = .;
+-	.barebox_exitcalls : { EXITCALLS }
+-	__barebox_exitcalls_end = .;
+-
+-	__usymtab_start = .;
++	.barebox_initcalls : { BAREBOX_INITCALLS }
++	.barebox_exitcalls : { BAREBOX_EXITCALLS }
+ 	__usymtab : { BAREBOX_SYMS }
+-	__usymtab_end = .;
+ 
  	.rela.dyn : { *(.rela*) }
  
- 	.oftables : { BAREBOX_CLK_TABLE }
 diff --git a/arch/sandbox/board/barebox.lds.S b/arch/sandbox/board/barebox.lds.S
-index 862376dd0e..7a5a8eb1e7 100644
+index 80e27fe87d..bdce8ecbd6 100644
 --- a/arch/sandbox/board/barebox.lds.S
 +++ b/arch/sandbox/board/barebox.lds.S
-@@ -3,11 +3,9 @@
+@@ -3,29 +3,19 @@
  SECTIONS
  {
  	. = ALIGN(64);
--	.barebox_initcalls : { BAREBOX_INITCALLS }
--	.barebox_exitcalls : { BAREBOX_EXITCALLS }
--	.barebox_magicvar : { BAREBOX_MAGICVARS }
--	__barebox_cmd : { BAREBOX_CMDS }
--	__barebox_ratp_cmd : { BAREBOX_RATP_CMDS }
-+	.barebox_rodata : {
-+		RO_DATA_SECTION
-+	}
+-	__barebox_initcalls_start = .;
+-	__barebox_initcalls : { INITCALLS }
+-	__barebox_initcalls_end = .;
++	.barebox_initcalls : { BAREBOX_INITCALLS }
+ 
+ 	. = ALIGN(64);
+-	__barebox_exitcalls_start = .;
+-	__barebox_exitcalls : { EXITCALLS }
+-	__barebox_exitcalls_end = .;
++	.barebox_exitcalls : { BAREBOX_EXITCALLS }
+ 
+ 	. = ALIGN(64);
+-	__barebox_magicvar_start = .;
+ 	.barebox_magicvar : { BAREBOX_MAGICVARS }
+-	__barebox_magicvar_end = .;
+ 
+ 	. = ALIGN(64);
+-	__barebox_cmd_start = .;
+ 	__barebox_cmd : { BAREBOX_CMDS }
+-	__barebox_cmd_end = .;
+ 
+ 	. = ALIGN(64);
+-	__barebox_ratp_cmd_start = .;
+ 	__barebox_ratp_cmd : { BAREBOX_RATP_CMDS }
+-	__barebox_ratp_cmd_end = .;
  }
  
  INSERT BEFORE .rodata;
 diff --git a/arch/x86/lib/barebox.lds.S b/arch/x86/lib/barebox.lds.S
-index d26f060a3e..71251642dc 100644
+index 6ee9342f47..d26f060a3e 100644
 --- a/arch/x86/lib/barebox.lds.S
 +++ b/arch/x86/lib/barebox.lds.S
-@@ -133,6 +133,7 @@ SECTIONS
- 		*(.boot.rodata*)
- 		*(.boot.data*)
- 		. = ALIGN(4);
-+		RO_DATA_SECTION
+@@ -165,44 +165,32 @@ SECTIONS
  	} > barebox
- #endif
  
-@@ -164,36 +165,6 @@ SECTIONS
+ 	.barebox_cmd : AT ( LOADADDR(.got) + SIZEOF (.got) ) {
+-		__barebox_cmd_start = .;
+ 		BAREBOX_CMDS
+-		__barebox_cmd_end = .;
  		. = ALIGN(4);
  	} > barebox
  
--	.barebox_cmd : AT ( LOADADDR(.got) + SIZEOF (.got) ) {
--		BAREBOX_CMDS
--		. = ALIGN(4);
--	} > barebox
--
--	.barebox_ratp_cmd : AT ( LOADADDR(.got) + SIZEOF (.got) ) {
--		BAREBOX_RATP_CMDS
--		. = ALIGN(4);
--	} > barebox
--
--	.barebox_magicvars : AT ( LOADADDR(.barebox_cmd) + SIZEOF (.barebox_cmd) ) {
--		BAREBOX_MAGICVARS
--		. = ALIGN(4);
--	} > barebox
--
--	.barebox_initcalls : AT ( LOADADDR(.barebox_magicvars) + SIZEOF (.barebox_magicvars) ) {
--		BAREBOX_INITCALLS
--		. = ALIGN(4);
--	} > barebox
--
--	.barebox_exitcalls : AT ( LOADADDR(.barebox_initcalls) + SIZEOF (.barebox_initcalls) ) {
--		BAREBOX_EXITCALLS
--		. = ALIGN(4);
--	} > barebox
--
--	.__usymtab : AT ( LOADADDR(.barebox_exitcalls) + SIZEOF (.barebox_exitcalls) ) {
--		BAREBOX_SYMS
--		. = ALIGN(4);
--	} > barebox
--
- 	_edata = .;
- 	.bss : {
- 		__bss_start = .;
+ 	.barebox_ratp_cmd : AT ( LOADADDR(.got) + SIZEOF (.got) ) {
+-		__barebox_ratp_cmd_start = .;
+ 		BAREBOX_RATP_CMDS
+-		__barebox_ratp_cmd_end = .;
+ 		. = ALIGN(4);
+ 	} > barebox
+ 
+ 	.barebox_magicvars : AT ( LOADADDR(.barebox_cmd) + SIZEOF (.barebox_cmd) ) {
+-		__barebox_magicvar_start = .;
+ 		BAREBOX_MAGICVARS
+-		__barebox_magicvar_end = .;
+ 		. = ALIGN(4);
+ 	} > barebox
+ 
+ 	.barebox_initcalls : AT ( LOADADDR(.barebox_magicvars) + SIZEOF (.barebox_magicvars) ) {
+-		__barebox_initcalls_start = .;
+-		INITCALLS
+-		__barebox_initcalls_end = .;
++		BAREBOX_INITCALLS
+ 		. = ALIGN(4);
+ 	} > barebox
+ 
+ 	.barebox_exitcalls : AT ( LOADADDR(.barebox_initcalls) + SIZEOF (.barebox_initcalls) ) {
+-		__barebox_exitcalls_start = .;
+-		EXITCALLS
+-		__barebox_exitcalls_end = .;
++		BAREBOX_EXITCALLS
+ 		. = ALIGN(4);
+ 	} > barebox
+ 
+ 	.__usymtab : AT ( LOADADDR(.barebox_exitcalls) + SIZEOF (.barebox_exitcalls) ) {
+-		__usymtab_start = .;
+ 		BAREBOX_SYMS
+-		__usymtab_end = .;
+ 		. = ALIGN(4);
+ 	} > barebox
+ 
 diff --git a/arch/x86/mach-efi/elf_ia32_efi.lds.S b/arch/x86/mach-efi/elf_ia32_efi.lds.S
-index 70d34f4871..18ddf17802 100644
+index 9477aa7d73..a5874c448b 100644
 --- a/arch/x86/mach-efi/elf_ia32_efi.lds.S
 +++ b/arch/x86/mach-efi/elf_ia32_efi.lds.S
-@@ -35,6 +35,7 @@ SECTIONS
+@@ -52,28 +52,17 @@ SECTIONS
  
- 	.data : {
- 		*(.rodata*)
-+		RO_DATA_SECTION
- 		*(.data)
- 		*(.data1)
- 		*(.data.*)
-@@ -50,14 +51,6 @@ SECTIONS
- 		*(COMMON)
- 	}
+ 	. = ALIGN(64);
  
--	. = ALIGN(64);
+-	__barebox_initcalls_start = .;
+-	__barebox_initcalls : { INITCALLS }
+-	__barebox_initcalls_end = .;
 -
--	.barebox_initcalls : { BAREBOX_INITCALLS }
--	.barebox_exitcalls : { BAREBOX_EXITCALLS }
--	.barebox_magicvar : { BAREBOX_MAGICVARS }
--	__barebox_cmd : { BAREBOX_CMDS }
--	__barebox_ratp_cmd : { BAREBOX_RATP_CMDS }
--
+-	__barebox_exitcalls_start = .;
+-	__barebox_exitcalls : { EXITCALLS }
+-	__barebox_exitcalls_end = .;
++	.barebox_initcalls : { BAREBOX_INITCALLS }
++	.barebox_exitcalls : { BAREBOX_EXITCALLS }
+ 
+ 	. = ALIGN(64);
+-	__barebox_magicvar_start = .;
+ 	.barebox_magicvar : { BAREBOX_MAGICVARS }
+-	__barebox_magicvar_end = .;
+ 
+ 	. = ALIGN(64);
+-	__barebox_cmd_start = .;
+ 	__barebox_cmd : { BAREBOX_CMDS }
+-	__barebox_cmd_end = .;
+ 
+ 	. = ALIGN(64);
+-	__barebox_ratp_cmd_start = .;
+ 	__barebox_ratp_cmd : { BAREBOX_RATP_CMDS }
+-	__barebox_ratp_cmd_end = .;
+ 
  	. = ALIGN(4096);
  	.dynamic : { *(.dynamic) }
- 	. = ALIGN(4096);
 diff --git a/arch/x86/mach-efi/elf_x86_64_efi.lds.S b/arch/x86/mach-efi/elf_x86_64_efi.lds.S
-index 53de22d75c..40a9425034 100644
+index 90b6b9f3f1..b00cb98c97 100644
 --- a/arch/x86/mach-efi/elf_x86_64_efi.lds.S
 +++ b/arch/x86/mach-efi/elf_x86_64_efi.lds.S
-@@ -38,6 +38,7 @@ SECTIONS
+@@ -54,28 +54,17 @@ SECTIONS
  
- 	.data : {
- 		*(.rodata*)
-+		RO_DATA_SECTION
- 		*(.got.plt)
- 		*(.got)
- 		*(.data*)
-@@ -52,14 +53,6 @@ SECTIONS
- 		*(.rel.local)
- 	}
+ 	. = ALIGN(64);
  
--	. = ALIGN(64);
+-	__barebox_initcalls_start = .;
+-	__barebox_initcalls : { INITCALLS }
+-	__barebox_initcalls_end = .;
 -
--	.barebox_initcalls : { BAREBOX_INITCALLS }
--	.barebox_exitcalls : { BAREBOX_EXITCALLS }
--	.barebox_magicvar : { BAREBOX_MAGICVARS }
--	__barebox_cmd : { BAREBOX_CMDS }
--	__barebox_ratp_cmd : { BAREBOX_RATP_CMDS }
--
+-	__barebox_exitcalls_start = .;
+-	__barebox_exitcalls : { EXITCALLS }
+-	__barebox_exitcalls_end = .;
++	.barebox_initcalls : { BAREBOX_INITCALLS }
++	.barebox_exitcalls : { BAREBOX_EXITCALLS }
+ 
+ 	. = ALIGN(64);
+-	__barebox_magicvar_start = .;
+ 	.barebox_magicvar : { BAREBOX_MAGICVARS }
+-	__barebox_magicvar_end = .;
+ 
+ 	. = ALIGN(64);
+-	__barebox_cmd_start = .;
+ 	__barebox_cmd : { BAREBOX_CMDS }
+-	__barebox_cmd_end = .;
+ 
+ 	. = ALIGN(64);
+-	__barebox_ratp_cmd_start = .;
+ 	__barebox_ratp_cmd : { BAREBOX_RATP_CMDS }
+-	__barebox_ratp_cmd_end = .;
+ 
  	. = ALIGN(4096);
  	.dynamic : { *(.dynamic) }
- 	. = ALIGN(4096);
 diff --git a/include/asm-generic/barebox.lds.h b/include/asm-generic/barebox.lds.h
-index a3e367c9ed..491f879c8d 100644
+index c9fb8f47ae..0784048eb6 100644
 --- a/include/asm-generic/barebox.lds.h
 +++ b/include/asm-generic/barebox.lds.h
-@@ -104,6 +104,17 @@
- #define BAREBOX_PCI_FIXUP
+@@ -16,7 +16,8 @@
+ #define PRE_IMAGE
  #endif
  
-+#define RO_DATA_SECTION				\
-+	BAREBOX_INITCALLS			\
-+	BAREBOX_EXITCALLS			\
-+	BAREBOX_CMDS				\
-+	BAREBOX_RATP_CMDS			\
-+	BAREBOX_SYMS				\
-+	BAREBOX_MAGICVARS			\
-+	BAREBOX_CLK_TABLE			\
-+	BAREBOX_DTB				\
-+	BAREBOX_PCI_FIXUP
+-#define INITCALLS			\
++#define BAREBOX_INITCALLS			\
++	__barebox_initcalls_start = .;		\
+ 	KEEP(*(.initcall.0))			\
+ 	KEEP(*(.initcall.1))			\
+ 	KEEP(*(.initcall.2))			\
+@@ -31,24 +32,39 @@
+ 	KEEP(*(.initcall.11))			\
+ 	KEEP(*(.initcall.12))			\
+ 	KEEP(*(.initcall.13))			\
+-	KEEP(*(.initcall.14))
++	KEEP(*(.initcall.14))			\
++	__barebox_initcalls_end = .;
+ 
+-#define EXITCALLS			\
++#define BAREBOX_EXITCALLS			\
++	__barebox_exitcalls_start = .;		\
+ 	KEEP(*(.exitcall.0))			\
+ 	KEEP(*(.exitcall.1))			\
+ 	KEEP(*(.exitcall.2))			\
+ 	KEEP(*(.exitcall.3))			\
+ 	KEEP(*(.exitcall.4))			\
+ 	KEEP(*(.exitcall.5))			\
+-	KEEP(*(.exitcall.6))
+-
+-#define BAREBOX_CMDS	KEEP(*(SORT_BY_NAME(.barebox_cmd*)))
+-
+-#define BAREBOX_RATP_CMDS	KEEP(*(SORT_BY_NAME(.barebox_ratp_cmd*)))
+-
+-#define BAREBOX_SYMS	KEEP(*(__usymtab))
+-
+-#define BAREBOX_MAGICVARS	KEEP(*(SORT_BY_NAME(.barebox_magicvar*)))
++	KEEP(*(.exitcall.6))			\
++	__barebox_exitcalls_end = .;
 +
- #if defined(CONFIG_ARCH_BAREBOX_MAX_BARE_INIT_SIZE) && \
- CONFIG_ARCH_BAREBOX_MAX_BARE_INIT_SIZE < CONFIG_BAREBOX_MAX_BARE_INIT_SIZE
- #define MAX_BARE_INIT_SIZE CONFIG_ARCH_BAREBOX_MAX_BARE_INIT_SIZE
++#define BAREBOX_CMDS				\
++	__barebox_cmd_start = .;		\
++	KEEP(*(SORT_BY_NAME(.barebox_cmd*)))	\
++	__barebox_cmd_end = .;
++
++#define BAREBOX_RATP_CMDS			\
++	__barebox_ratp_cmd_start = .;		\
++	KEEP(*(SORT_BY_NAME(.barebox_ratp_cmd*)))	\
++	__barebox_ratp_cmd_end = .;
++
++#define BAREBOX_SYMS				\
++	__usymtab_start = .;			\
++	KEEP(*(__usymtab))			\
++	__usymtab_end = .;
++
++#define BAREBOX_MAGICVARS			\
++	__barebox_magicvar_start = .;		\
++	KEEP(*(SORT_BY_NAME(.barebox_magicvar*)))	\
++	__barebox_magicvar_end = .;
+ 
+ #define BAREBOX_CLK_TABLE			\
+ 	. = ALIGN(8);				\
 -- 
 2.23.0
 
