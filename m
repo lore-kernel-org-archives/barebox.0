@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iFZWC-0004GI-Bu
- for barebox@lists.infradead.org; Wed, 02 Oct 2019 07:57:53 +0000
-Date: Wed, 2 Oct 2019 09:57:50 +0200
+ id 1iFYwI-0006zN-5j
+ for barebox@lists.infradead.org; Wed, 02 Oct 2019 07:20:47 +0000
+Date: Wed, 2 Oct 2019 09:20:43 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191002075750.bov55by6yqvpmq4j@pengutronix.de>
-References: <20191001151808.25187-1-a.fatoum@pengutronix.de>
+Message-ID: <20191002072043.ujput2lroimm3yx6@pengutronix.de>
+References: <20190911145328.3246-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20191001151808.25187-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20190911145328.3246-1-m.felsch@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,29 +22,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: stm32mp: add bootm handler for images
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] ARM: i.MX: phytec-som-imx6: phycore: fix updating pmic
+ regulators
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: barebox@lists.infradead.org, s.christ@phytec.de, s.riedmueller@phytec.de, j.remmet@phytec.de
 
-On Tue, Oct 01, 2019 at 05:18:08PM +0200, Ahmad Fatoum wrote:
-> STM32 images are preceded by a fixed-size 256 byte header, which is
-> interpreted by the TF-A first stage bootloader and isn't executable
-> as ARM code.
++Cc Christian Hemp who is the author of b6bebb7aca
+
+On Wed, Sep 11, 2019 at 04:53:28PM +0200, Marco Felsch wrote:
+> The PMIC is connected to i2c3 and not i2c1.
 > 
-> To maintain the ability to network boot them, add a bootm handler that
-> skips the header.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Fixes: b6bebb7aca ("ARM: i.MX: phytec-som-imx6: phycore: Set BUCK mode to SYNC")
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 > ---
->  arch/arm/mach-stm32mp/Makefile     |  2 +-
->  arch/arm/mach-stm32mp/stm32image.c | 50 ++++++++++++++++++++++++++++++
->  2 files changed, 51 insertions(+), 1 deletion(-)
->  create mode 100644 arch/arm/mach-stm32mp/stm32image.c
-
-Applied, thanks
-
-Sascha
-
+>  arch/arm/boards/phytec-som-imx6/board.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/boards/phytec-som-imx6/board.c b/arch/arm/boards/phytec-som-imx6/board.c
+> index 730115702b..38e5ede91a 100644
+> --- a/arch/arm/boards/phytec-som-imx6/board.c
+> +++ b/arch/arm/boards/phytec-som-imx6/board.c
+> @@ -117,7 +117,7 @@ static int phycore_da9062_setup_buck_mode(void)
+>  	struct i2c_adapter *adapter = NULL;
+>  	struct i2c_client client;
+>  	unsigned char value;
+> -	int bus = 0;
+> +	int bus = 2;
+>  	int ret;
+>  
+>  	adapter = i2c_get_adapter(bus);
+> -- 
+> 2.20.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
