@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iFa5M-0000ci-1e
- for barebox@lists.infradead.org; Wed, 02 Oct 2019 08:34:21 +0000
-Date: Wed, 2 Oct 2019 10:34:08 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-Message-ID: <20191002083408.mfs3bady4d5r7hlg@pengutronix.de>
+Received: from mickerik.phytec.de ([195.145.39.210])
+ by bombadil.infradead.org with esmtp (Exim 4.92.2 #3 (Red Hat Linux))
+ id 1iFaOA-0007FJ-KC
+ for barebox@lists.infradead.org; Wed, 02 Oct 2019 08:53:41 +0000
 References: <20190911145328.3246-1-m.felsch@pengutronix.de>
  <20191002072043.ujput2lroimm3yx6@pengutronix.de>
  <20191002072310.36lu4bxnao3eaulk@pengutronix.de>
  <bb944030-e292-151b-26df-c548e7b502d8@phytec.de>
+ <20191002083408.mfs3bady4d5r7hlg@pengutronix.de>
+From: =?UTF-8?Q?Stefan_Riedm=c3=bcller?= <s.riedmueller@phytec.de>
+Message-ID: <4340da63-53a3-5275-ca6f-7ecdad4b7e56@phytec.de>
+Date: Wed, 2 Oct 2019 10:53:35 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <bb944030-e292-151b-26df-c548e7b502d8@phytec.de>
+In-Reply-To: <20191002083408.mfs3bady4d5r7hlg@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,100 +22,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] ARM: i.MX: phytec-som-imx6: phycore: fix updating pmic
  regulators
-To: Stefan =?iso-8859-1?Q?Riedm=FCller?= <s.riedmueller@phytec.de>
+To: Marco Felsch <m.felsch@pengutronix.de>
 Cc: barebox@lists.infradead.org, s.christ@phytec.de, j.remmet@phytec.de
 
-Hi Stefan,
-
-On 19-10-02 09:34, Stefan Riedm=FCller wrote:
-> Hi Marco, Sascha,
-> On 02.10.19 09:23, Sascha Hauer wrote:
-> > Marco,
-> > =
-
-> > On Wed, Oct 02, 2019 at 09:20:43AM +0200, Sascha Hauer wrote:
-> > > +Cc Christian Hemp who is the author of b6bebb7aca
-> > > =
-
-> > > On Wed, Sep 11, 2019 at 04:53:28PM +0200, Marco Felsch wrote:
-> > > > The PMIC is connected to i2c3 and not i2c1.
-> > > > =
-
-> > > > Fixes: b6bebb7aca ("ARM: i.MX: phytec-som-imx6: phycore: Set BUCK m=
-ode to SYNC")
-> > > > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> > > > ---
-> > > >   arch/arm/boards/phytec-som-imx6/board.c | 2 +-
-> > > >   1 file changed, 1 insertion(+), 1 deletion(-)
-> > > > =
-
-> > > > diff --git a/arch/arm/boards/phytec-som-imx6/board.c b/arch/arm/boa=
-rds/phytec-som-imx6/board.c
-> > > > index 730115702b..38e5ede91a 100644
-> > > > --- a/arch/arm/boards/phytec-som-imx6/board.c
-> > > > +++ b/arch/arm/boards/phytec-som-imx6/board.c
-> > > > @@ -117,7 +117,7 @@ static int phycore_da9062_setup_buck_mode(void)
-> > > >   	struct i2c_adapter *adapter =3D NULL;
-> > > >   	struct i2c_client client;
-> > > >   	unsigned char value;
-> > > > -	int bus =3D 0;
-> > > > +	int bus =3D 2;
-> > > >   	int ret;
-> > > >   	adapter =3D i2c_get_adapter(bus);
-> > =
-
-> > You could test it directly on b6bebb7aca instead of master. Is this
-> > change necessary there aswell or has the bus numbering changed in
-> > between?
-> =
-
-> this bus numbering changed with Marco's patch to use the upstream device =
-tree.
-> =
-
-> ARM: dts: imx6: phycore: make use of upstream dts
-> =
-
-> The phyCORE-i.MX 6 uses just one i2c interface but on the phyBOARD-Mira t=
-wo
-> more i2c interfaces are used.
-
-Or if another baseboard uses the SoM and a Baseboard with more i2c interfac=
-es.
-After talking with Sascha we should fix this by using
-of_find_i2c_adapter_by_node(). So it is fixed in my case and in your
-case too. Are you agree?
-
-Regards,
-  Marco
-
-> =
-
-> Stefan
-> =
-
-> > =
-
-> > Sascha
-> > =
-
-> =
-
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgTWFyY28sCgpPbiAwMi4xMC4xOSAxMDozNCwgTWFyY28gRmVsc2NoIHdyb3RlOgo+IEhpIFN0
+ZWZhbiwKPiAKPiBPbiAxOS0xMC0wMiAwOTozNCwgU3RlZmFuIFJpZWRtw7xsbGVyIHdyb3RlOgo+
+PiBIaSBNYXJjbywgU2FzY2hhLAo+PiBPbiAwMi4xMC4xOSAwOToyMywgU2FzY2hhIEhhdWVyIHdy
+b3RlOgo+Pj4gTWFyY28sCj4+Pgo+Pj4gT24gV2VkLCBPY3QgMDIsIDIwMTkgYXQgMDk6MjA6NDNB
+TSArMDIwMCwgU2FzY2hhIEhhdWVyIHdyb3RlOgo+Pj4+ICtDYyBDaHJpc3RpYW4gSGVtcCB3aG8g
+aXMgdGhlIGF1dGhvciBvZiBiNmJlYmI3YWNhCj4+Pj4KPj4+PiBPbiBXZWQsIFNlcCAxMSwgMjAx
+OSBhdCAwNDo1MzoyOFBNICswMjAwLCBNYXJjbyBGZWxzY2ggd3JvdGU6Cj4+Pj4+IFRoZSBQTUlD
+IGlzIGNvbm5lY3RlZCB0byBpMmMzIGFuZCBub3QgaTJjMS4KPj4+Pj4KPj4+Pj4gRml4ZXM6IGI2
+YmViYjdhY2EgKCJBUk06IGkuTVg6IHBoeXRlYy1zb20taW14NjogcGh5Y29yZTogU2V0IEJVQ0sg
+bW9kZSB0byBTWU5DIikKPj4+Pj4gU2lnbmVkLW9mZi1ieTogTWFyY28gRmVsc2NoIDxtLmZlbHNj
+aEBwZW5ndXRyb25peC5kZT4KPj4+Pj4gLS0tCj4+Pj4+ICAgIGFyY2gvYXJtL2JvYXJkcy9waHl0
+ZWMtc29tLWlteDYvYm9hcmQuYyB8IDIgKy0KPj4+Pj4gICAgMSBmaWxlIGNoYW5nZWQsIDEgaW5z
+ZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pCj4+Pj4+Cj4+Pj4+IGRpZmYgLS1naXQgYS9hcmNoL2Fy
+bS9ib2FyZHMvcGh5dGVjLXNvbS1pbXg2L2JvYXJkLmMgYi9hcmNoL2FybS9ib2FyZHMvcGh5dGVj
+LXNvbS1pbXg2L2JvYXJkLmMKPj4+Pj4gaW5kZXggNzMwMTE1NzAyYi4uMzhlNWVkZTkxYSAxMDA2
+NDQKPj4+Pj4gLS0tIGEvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1zb20taW14Ni9ib2FyZC5jCj4+
+Pj4+ICsrKyBiL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtc29tLWlteDYvYm9hcmQuYwo+Pj4+PiBA
+QCAtMTE3LDcgKzExNyw3IEBAIHN0YXRpYyBpbnQgcGh5Y29yZV9kYTkwNjJfc2V0dXBfYnVja19t
+b2RlKHZvaWQpCj4+Pj4+ICAgIAlzdHJ1Y3QgaTJjX2FkYXB0ZXIgKmFkYXB0ZXIgPSBOVUxMOwo+
+Pj4+PiAgICAJc3RydWN0IGkyY19jbGllbnQgY2xpZW50Owo+Pj4+PiAgICAJdW5zaWduZWQgY2hh
+ciB2YWx1ZTsKPj4+Pj4gLQlpbnQgYnVzID0gMDsKPj4+Pj4gKwlpbnQgYnVzID0gMjsKPj4+Pj4g
+ICAgCWludCByZXQ7Cj4+Pj4+ICAgIAlhZGFwdGVyID0gaTJjX2dldF9hZGFwdGVyKGJ1cyk7Cj4+
+Pgo+Pj4gWW91IGNvdWxkIHRlc3QgaXQgZGlyZWN0bHkgb24gYjZiZWJiN2FjYSBpbnN0ZWFkIG9m
+IG1hc3Rlci4gSXMgdGhpcwo+Pj4gY2hhbmdlIG5lY2Vzc2FyeSB0aGVyZSBhc3dlbGwgb3IgaGFz
+IHRoZSBidXMgbnVtYmVyaW5nIGNoYW5nZWQgaW4KPj4+IGJldHdlZW4/Cj4+Cj4+IHRoaXMgYnVz
+IG51bWJlcmluZyBjaGFuZ2VkIHdpdGggTWFyY28ncyBwYXRjaCB0byB1c2UgdGhlIHVwc3RyZWFt
+IGRldmljZSB0cmVlLgo+Pgo+PiBBUk06IGR0czogaW14NjogcGh5Y29yZTogbWFrZSB1c2Ugb2Yg
+dXBzdHJlYW0gZHRzCj4+Cj4+IFRoZSBwaHlDT1JFLWkuTVggNiB1c2VzIGp1c3Qgb25lIGkyYyBp
+bnRlcmZhY2UgYnV0IG9uIHRoZSBwaHlCT0FSRC1NaXJhIHR3bwo+PiBtb3JlIGkyYyBpbnRlcmZh
+Y2VzIGFyZSB1c2VkLgo+IAo+IE9yIGlmIGFub3RoZXIgYmFzZWJvYXJkIHVzZXMgdGhlIFNvTSBh
+bmQgYSBCYXNlYm9hcmQgd2l0aCBtb3JlIGkyYyBpbnRlcmZhY2VzLgo+IEFmdGVyIHRhbGtpbmcg
+d2l0aCBTYXNjaGEgd2Ugc2hvdWxkIGZpeCB0aGlzIGJ5IHVzaW5nCj4gb2ZfZmluZF9pMmNfYWRh
+cHRlcl9ieV9ub2RlKCkuIFNvIGl0IGlzIGZpeGVkIGluIG15IGNhc2UgYW5kIGluIHlvdXIKPiBj
+YXNlIHRvby4gQXJlIHlvdSBhZ3JlZT8KClllcyBJIGxpa2UgdGhhdCEKClJlZ2FyZHMsClN0ZWZh
+bgoKPiAKPiBSZWdhcmRzLAo+ICAgIE1hcmNvCj4gCj4+Cj4+IFN0ZWZhbgo+Pgo+Pj4KPj4+IFNh
+c2NoYQo+Pj4KPj4KPiAKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpo
+dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
