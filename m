@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([78.46.208.201])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iFHWm-0002C2-5Q
- for barebox@lists.infradead.org; Tue, 01 Oct 2019 12:45:17 +0000
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Tue,  1 Oct 2019 14:45:04 +0200
-Message-Id: <20191001124503.583729-1-r.czerwinski@pengutronix.de>
+ id 1iFYqa-00040l-F9
+ for barebox@lists.infradead.org; Wed, 02 Oct 2019 07:14:54 +0000
+Date: Wed, 2 Oct 2019 09:14:50 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20191002071450.i5de6lsekarnocz4@pengutronix.de>
+References: <20191001124503.583729-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20191001124503.583729-1-r.czerwinski@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,47 +22,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: aarch64: add image markers to linker script
-To: barebox@lists.infradead.org
-Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Subject: Re: [PATCH] ARM: aarch64: add image markers to linker script
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-The __image_start and __image_end marker are used by barebox to
-calculate the size of the barebox binary inside the RAM. Without the
-definitions barebox calculates its own size to zero, which works until a
-certain size is exceeded, than the PBL will place the binary lower into
-memory than the calculation inside barebox.
-Fix this by adding the appropriate image markers to the linker script.
+On Tue, Oct 01, 2019 at 02:45:04PM +0200, Rouven Czerwinski wrote:
+> The __image_start and __image_end marker are used by barebox to
+> calculate the size of the barebox binary inside the RAM. Without the
+> definitions barebox calculates its own size to zero, which works until a
+> certain size is exceeded, than the PBL will place the binary lower into
+> memory than the calculation inside barebox.
+> Fix this by adding the appropriate image markers to the linker script.
+> 
+> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+> ---
+>  arch/arm/lib64/barebox.lds.S | 4 ++++
+>  1 file changed, 4 insertions(+)
 
-Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
----
- arch/arm/lib64/barebox.lds.S | 4 ++++
- 1 file changed, 4 insertions(+)
+Applied to master, thanks
 
-diff --git a/arch/arm/lib64/barebox.lds.S b/arch/arm/lib64/barebox.lds.S
-index b3e6843a15..694bbcaaf1 100644
---- a/arch/arm/lib64/barebox.lds.S
-+++ b/arch/arm/lib64/barebox.lds.S
-@@ -31,6 +31,8 @@ SECTIONS
- 	. = TEXT_BASE;
- #endif
- 
-+	.image_start : { *(.__image_start) }
-+
- #ifndef CONFIG_PBL_IMAGE
- 	PRE_IMAGE
- #endif
-@@ -112,6 +114,8 @@ SECTIONS
- 
- 	_edata = .;
- 
-+	.image_end : { *(.__image_end) }
-+
- 	. = ALIGN(4);
- 	.__bss_start :  { *(.__bss_start) }
- 	.bss : { *(.bss*) }
+Sascha
+
 -- 
-2.23.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
