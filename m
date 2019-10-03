@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtpbguseast2.qq.com ([54.204.34.130])
- by merlin.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iG1K0-0007aq-UT
- for barebox@lists.infradead.org; Thu, 03 Oct 2019 13:39:10 +0000
-Received: from router.tkernel.org (unknown [59.35.36.150])
- by esmtp4.qq.com (ESMTP) with SMTP id 0
- for <barebox@lists.infradead.org>; Thu, 03 Oct 2019 21:38:05 +0800 (CST)
-Date: Thu, 3 Oct 2019 21:38:04 +0800
-From: duhuanpeng <iu87m888m@qq.com>
-Message-ID: <20191003133804.GA19263@router.tkernel.org>+DE39D1E20C6B8A18
-References: <20191003122624.GA12292@router.tkernel.org>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191003122624.GA12292@router.tkernel.org>
+ by casper.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
+ id 1iG1Xc-0003PI-LU
+ for barebox@lists.infradead.org; Thu, 03 Oct 2019 13:53:15 +0000
+From: iu87m888m@qq.com
+Date: Thu,  3 Oct 2019 21:52:12 +0800
+Message-Id: <1570110732-20309-1-git-send-email-iu87m888m@qq.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,17 +14,16 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: compile error report: CONFIG_CONSOLE_SIMPLE=y
-To: barebox@lists.infradead.org
-
-From 13cf76cfb965abac9433447c71f46d6c7abb0c50 Mon Sep 17 00:00:00 2001
-From: DU HUANPENG <u74147@gmail.com>
-Date: Thu, 3 Oct 2019 21:27:40 +0800
 Subject: [PATCH] fix compile error when set CONFIG_CONSOLE_SIMPLE=y
+To: barebox@lists.infradead.org
+Cc: DU HUANPENG <u74147@gmail.com>
+
+From: DU HUANPENG <u74147@gmail.com>
 
 Signed-off-by: DU HUANPENG <u74147@gmail.com>
 ---
@@ -70,7 +62,6 @@ index 385da2f..010e0b3 100644
  int console_register(struct console_device *newcdev)
 -- 
 2.7.4
-
 
 
 
