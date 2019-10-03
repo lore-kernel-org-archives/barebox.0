@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk3.altibox.net ([109.247.116.14])
- by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iFjmq-0005kf-8r
- for barebox@lists.infradead.org; Wed, 02 Oct 2019 18:55:45 +0000
-Date: Wed, 2 Oct 2019 20:55:41 +0200
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20191002185541.GC32491@ravnborg.org>
-References: <20191002144430.14946-1-s.hauer@pengutronix.de>
- <20191002144430.14946-7-s.hauer@pengutronix.de>
+Received: from smtpbgbr2.qq.com ([54.207.22.56])
+ by merlin.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
+ id 1iG0CK-0006np-IZ
+ for barebox@lists.infradead.org; Thu, 03 Oct 2019 12:27:11 +0000
+Received: from router.tkernel.org (unknown [59.35.36.150])
+ by esmtp4.qq.com (ESMTP) with SMTP id 0
+ for <barebox@lists.infradead.org>; Thu, 03 Oct 2019 20:26:25 +0800 (CST)
+Date: Thu, 3 Oct 2019 20:26:25 +0800
+From: duhuanpeng <iu87m888m@qq.com>
+Message-ID: <20191003122624.GA12292@router.tkernel.org>+EEA430FBC845A34A
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20191002144430.14946-7-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,56 +23,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/7] lds: remove more unnecessary alignments
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: compile error report: CONFIG_CONSOLE_SIMPLE=y
+To: barebox@lists.infradead.org
 
-Hi Sascha.
+Hello, I cloned the lastest version(2019.10.3) of barebox,
+compile error when set
+  CONFIG_CONSOLE_SIMPLE=y
 
-On Wed, Oct 02, 2019 at 04:44:29PM +0200, Sascha Hauer wrote:
-> The alignemnt in the DTB and clk_of_table shouldn't be needed. Remove
-s/alignemnt/alignment/g
+compile log:
 
-I do this type of spelling error all the time :-(
+(more logs...)
+  ENVH    defaultenv/barebox_default_env.h
+  CC      defaultenv/defaultenv.o
+  ENV     defaultenv/defaultenv-2-base.bbenv
+  ENV.S   defaultenv/defaultenv-2-base.bbenv.S
+  AS      defaultenv/defaultenv-2-base.bbenv.o
+  LD      defaultenv/built-in.o
+  PBLLD   defaultenv/built-in-pbl.o
+  ENVZ    defaultenv/barebox_zero_env
+  GEN     .version
+  CHK     include/generated/compile.h
+  UPD     include/generated/compile.h
+  CC      common/version.o
+  LD      common/built-in.o
+  PBLCC   common/pbl-imd-barebox.o
+  PBLLD   common/built-in-pbl.o
+  LD      barebox
+common/built-in.o: In function `run_init':
+common/startup.c:(.text.run_init+0x210): undefined reference to `console_ctrlc_allow'
+common/built-in.o: In function `run_shell':
+(.text.run_shell+0x44): undefined reference to `ctrlc_handled'
+Unable to open input file barebox
+Makefile:783: recipe for target 'barebox' failed
+make: *** [barebox] Error 2
 
-	Sam
 
-Acked-by: Sam Ravnborg <sam@ravnborg.org>
+:D, could any one please fix this error~~
 
-> them.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  include/asm-generic/barebox.lds.h | 2 --
->  1 file changed, 2 deletions(-)
-> 
-> diff --git a/include/asm-generic/barebox.lds.h b/include/asm-generic/barebox.lds.h
-> index acf838e85f..a3e367c9ed 100644
-> --- a/include/asm-generic/barebox.lds.h
-> +++ b/include/asm-generic/barebox.lds.h
-> @@ -73,14 +73,12 @@
->  	__barebox_magicvar_end = .;
->  
->  #define BAREBOX_CLK_TABLE			\
-> -	. = ALIGN(8);				\
->  	__clk_of_table_start = .;		\
->  	KEEP(*(.__clk_of_table));		\
->  	KEEP(*(.__clk_of_table_end));		\
->  	__clk_of_table_end = .;
->  
->  #define BAREBOX_DTB				\
-> -	. = ALIGN(8);				\
->  	__dtb_start = .;			\
->  	KEEP(*(.dtb.rodata.*));			\
->  	__dtb_end = .;
-> -- 
-> 2.23.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+
+Regards,
+Du Huanpeng
+
+
+
 
 _______________________________________________
 barebox mailing list
