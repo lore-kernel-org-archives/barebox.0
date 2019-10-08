@@ -1,13 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mickerik.phytec.de ([195.145.39.210])
- by bombadil.infradead.org with esmtp (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iHlI2-0004tD-9W
- for barebox@lists.infradead.org; Tue, 08 Oct 2019 08:56:19 +0000
-From: Stefan Riedmueller <s.riedmueller@phytec.de>
-Date: Tue, 8 Oct 2019 10:56:12 +0200
-Message-Id: <1570524972-208631-2-git-send-email-s.riedmueller@phytec.de>
-In-Reply-To: <1570524972-208631-1-git-send-email-s.riedmueller@phytec.de>
-References: <1570524972-208631-1-git-send-email-s.riedmueller@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
+ id 1iHqJQ-000742-Ox
+ for barebox@lists.infradead.org; Tue, 08 Oct 2019 14:18:05 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue,  8 Oct 2019 16:18:01 +0200
+Message-Id: <20191008141801.3388-1-a.fatoum@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,40 +15,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ARM: dts: imx6qdl: pfla02: Remove fec phy-supply
+Subject: [PATCH] ARM: mmu: remove no longer accurate comment
 To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-There is no driver for the phyFLEX-i.MX 6 phy-supply regulator in
-the barebox. Use a dummy regulator instead by simply deleting the
-phy-supply property.
+This comment refers to the state of things prior to e3e54c644
+("ARM: mmu: Implement on-demand PTE allocation"). Since then, we no
+longer generate 2nd level page tables directly below. Remove it
+to avoid confusion.
 
-Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
+Cc: Lucas Stach <l.stach@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/dts/imx6qdl-phytec-pfla02.dtsi | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm/cpu/mmu.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
-index f0bba2e09881..846ebbe6b18b 100644
---- a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
-+++ b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
-@@ -86,6 +86,10 @@
- 	};
- };
+diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
+index 2c5c4b574928..158b130b5765 100644
+--- a/arch/arm/cpu/mmu.c
++++ b/arch/arm/cpu/mmu.c
+@@ -461,11 +461,6 @@ void __mmu_init(bool mmu_on)
  
-+&fec {
-+	/delete-property/ phy-supply;
-+};
-+
- &gpmi {
- 	partitions {
- 		compatible = "fixed-partitions";
+ 	vectors_init();
+ 
+-	/*
+-	 * First remap sdram cached using sections.
+-	 * This is to speed up the generation of 2nd level page tables
+-	 * below
+-	 */
+ 	for_each_memory_bank(bank) {
+ 		create_sections(ttb, bank->start, bank->start + bank->size - 1,
+ 				PMD_SECT_DEF_CACHED);
 -- 
-2.7.4
+2.23.0
 
 
 _______________________________________________
