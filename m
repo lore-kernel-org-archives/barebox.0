@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mickerik.phytec.de ([195.145.39.210])
  by bombadil.infradead.org with esmtp (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iHlI0-0004tD-0L
- for barebox@lists.infradead.org; Tue, 08 Oct 2019 08:56:17 +0000
+ id 1iHlI2-0004tD-9W
+ for barebox@lists.infradead.org; Tue, 08 Oct 2019 08:56:19 +0000
 From: Stefan Riedmueller <s.riedmueller@phytec.de>
-Date: Tue, 8 Oct 2019 10:56:11 +0200
-Message-Id: <1570524972-208631-1-git-send-email-s.riedmueller@phytec.de>
+Date: Tue, 8 Oct 2019 10:56:12 +0200
+Message-Id: <1570524972-208631-2-git-send-email-s.riedmueller@phytec.de>
+In-Reply-To: <1570524972-208631-1-git-send-email-s.riedmueller@phytec.de>
+References: <1570524972-208631-1-git-send-email-s.riedmueller@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,40 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] net: fec_imx: Fix resource rollback with regulator errors
+Subject: [PATCH 2/2] ARM: dts: imx6qdl: pfla02: Remove fec phy-supply
 To: barebox@lists.infradead.org
 
-When the driver is not able to get or control the phy regulator memory
-resources are already acquired and need to be released during rollback.
+There is no driver for the phyFLEX-i.MX 6 phy-supply regulator in
+the barebox. Use a dummy regulator instead by simply deleting the
+phy-supply property.
 
 Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
 ---
- drivers/net/fec_imx.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/arm/dts/imx6qdl-phytec-pfla02.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-index 31c91021893a..5ef1d4359e91 100644
---- a/drivers/net/fec_imx.c
-+++ b/drivers/net/fec_imx.c
-@@ -781,7 +781,8 @@ static int fec_probe(struct device_d *dev)
- 	if (IS_ERR(fec->reg_phy)) {
- 		if (PTR_ERR(fec->reg_phy) == -EPROBE_DEFER) {
- 			ret = -EPROBE_DEFER;
--			goto disable_clk;
-+			fec->reg_phy = NULL;
-+			goto release_res;
- 		}
- 		fec->reg_phy = NULL;
- 	}
-@@ -789,7 +790,7 @@ static int fec_probe(struct device_d *dev)
- 	ret = regulator_enable(fec->reg_phy);
- 	if (ret) {
- 		dev_err(dev, "Failed to enable phy regulator: %d\n", ret);
--		goto disable_clk;
-+		goto release_res;
- 	}
+diff --git a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+index f0bba2e09881..846ebbe6b18b 100644
+--- a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
++++ b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+@@ -86,6 +86,10 @@
+ 	};
+ };
  
- 	phy_reset = of_get_named_gpio(dev->device_node, "phy-reset-gpios", 0);
++&fec {
++	/delete-property/ phy-supply;
++};
++
+ &gpmi {
+ 	partitions {
+ 		compatible = "fixed-partitions";
 -- 
 2.7.4
 
