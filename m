@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x243.google.com ([2a00:1450:4864:20::243])
- by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iHke5-0005ce-JU
- for barebox@lists.infradead.org; Tue, 08 Oct 2019 08:15:03 +0000
-Received: by mail-lj1-x243.google.com with SMTP id a22so16542691ljd.0
- for <barebox@lists.infradead.org>; Tue, 08 Oct 2019 01:15:00 -0700 (PDT)
-Date: Tue, 8 Oct 2019 11:14:53 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20191008111453.f86347799806b48209b6df1f@gmail.com>
-In-Reply-To: <CAHQ1cqEKP4KPRLy+XTbQzeDB9ucisP95LdS84ZpfkdBT4hZxTA@mail.gmail.com>
-References: <20191001005718.27165-1-andrew.smirnov@gmail.com>
- <20191001090331.81644cde6b0b9efd04a8a7a7@gmail.com>
- <CAHQ1cqEKP4KPRLy+XTbQzeDB9ucisP95LdS84ZpfkdBT4hZxTA@mail.gmail.com>
-Mime-Version: 1.0
+Received: from mickerik.phytec.de ([195.145.39.210])
+ by bombadil.infradead.org with esmtp (Exim 4.92.2 #3 (Red Hat Linux))
+ id 1iHlI0-0004tD-0L
+ for barebox@lists.infradead.org; Tue, 08 Oct 2019 08:56:17 +0000
+From: Stefan Riedmueller <s.riedmueller@phytec.de>
+Date: Tue, 8 Oct 2019 10:56:11 +0200
+Message-Id: <1570524972-208631-1-git-send-email-s.riedmueller@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,83 +14,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] version_string: Add toolchain and build host info
-To: Andrey Smirnov <andrew.smirnov@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 1/2] net: fec_imx: Fix resource rollback with regulator errors
+To: barebox@lists.infradead.org
 
-On Mon, 7 Oct 2019 22:14:41 -0700
-Andrey Smirnov <andrew.smirnov@gmail.com> wrote:
+When the driver is not able to get or control the phy regulator memory
+resources are already acquired and need to be released during rollback.
 
-> On Mon, Sep 30, 2019 at 11:03 PM Antony Pavlov <antonynpavlov@gmail.com> =
-wrote:
-> >
-> > On Mon, 30 Sep 2019 17:57:18 -0700
-> > Andrey Smirnov <andrew.smirnov@gmail.com> wrote:
-> >
-> > Hi!
-> >
-> > > Linux kernel reports the version of toolchain it was built with as a
-> > > part of its version string, which can be extremely useful when
-> > > debugging toolchain related issues. Make Barebox version string, mimic
-> > > that of Linux to get the same level of information in Barebox.
-> > >
-> > > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> > > ---
-> > >  common/version.c | 3 ++-
-> > >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/common/version.c b/common/version.c
-> > > index 8b1fd4dbe7..5f57022dac 100644
-> > > --- a/common/version.c
-> > > +++ b/common/version.c
-> > > @@ -3,7 +3,8 @@
-> > >  #include <generated/utsrelease.h>
-> > >
-> > >  const char version_string[] =3D
-> > > -     "barebox " UTS_RELEASE " " UTS_VERSION "\n";
-> > > +     "barebox " UTS_RELEASE " (" BAREBOX_COMPILE_BY "@"
-> > > +     BAREBOX_COMPILE_HOST ") (" BAREBOX_COMPILER ") " UTS_VERSION "\=
-n";
-> > >  EXPORT_SYMBOL(version_string);
-> >
-> >
-> > Can we keep COMPILE_BY and COMPILE_HOST in one line (as linux does)?
-> =
+Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
+---
+ drivers/net/fec_imx.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-> I don't understand. This line already follows formatting found in
-> Linux, e. g. https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin=
-ux.git/tree/init/version.c?h=3Dv5.4-rc2#n46
-> =
+diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+index 31c91021893a..5ef1d4359e91 100644
+--- a/drivers/net/fec_imx.c
++++ b/drivers/net/fec_imx.c
+@@ -781,7 +781,8 @@ static int fec_probe(struct device_d *dev)
+ 	if (IS_ERR(fec->reg_phy)) {
+ 		if (PTR_ERR(fec->reg_phy) == -EPROBE_DEFER) {
+ 			ret = -EPROBE_DEFER;
+-			goto disable_clk;
++			fec->reg_phy = NULL;
++			goto release_res;
+ 		}
+ 		fec->reg_phy = NULL;
+ 	}
+@@ -789,7 +790,7 @@ static int fec_probe(struct device_d *dev)
+ 	ret = regulator_enable(fec->reg_phy);
+ 	if (ret) {
+ 		dev_err(dev, "Failed to enable phy regulator: %d\n", ret);
+-		goto disable_clk;
++		goto release_res;
+ 	}
+ 
+ 	phy_reset = of_get_named_gpio(dev->device_node, "phy-reset-gpios", 0);
+-- 
+2.7.4
 
-> I have no preference how this is going to be formatted, really. Can
-> you just take this patch reformat it the way you want to see it and
-> submit it?
-
-Sorry!
-I have made local patch several months ago. I have used it for debug purpos=
-es
-only because the resulting version string is very long and looks ugly
-on start.
-
-It looks like I have used linux **proc_banner** as a reference for my patch.
-Please ignore my previous message.
-
-@Sascha
-I think that long version string with all these *_COMPILE_BY and *_COMPILER
-can be very handy. On the other hand this information is not very interesti=
-ng for
-most users.
-Can we put all these *_COMPILE_BY and *_COMPILER into some "global" variabl=
-es?
-
--- =
-
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
