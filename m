@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ironport.klsmartin.com ([212.211.191.11])
+Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iHTnv-0006QL-8D
- for barebox@lists.infradead.org; Mon, 07 Oct 2019 14:16:05 +0000
-From: "Middelschulte, Leif" <Leif.Middelschulte@klsmartin.com>
-Date: Mon, 7 Oct 2019 14:15:39 +0000
-Message-ID: <ec68b5aec8f0a144e9391dd1dfabe129ecdd4b6a.camel@klsmartin.com>
-Content-Language: de-DE
-Content-ID: <5E22AF952DDCEC498EE79B544CC5F2DB@klsmartin.com>
+ id 1iHhfz-0008JQ-Dp
+ for barebox@lists.infradead.org; Tue, 08 Oct 2019 05:04:49 +0000
+Received: by mail-pl1-x644.google.com with SMTP id f21so7933264plj.10
+ for <barebox@lists.infradead.org>; Mon, 07 Oct 2019 22:04:43 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Mon,  7 Oct 2019 22:04:26 -0700
+Message-Id: <20191008050426.29849-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -17,54 +17,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: "Middelschulte, Leif" <Leif.Middelschulte@klsmartin.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: erroneous behavior for iMX+GPT
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] Documentation: zii-vf610-dev: Fix bogus DDR configuration
+ values
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Hi,
+There's a clear mismatch between actual TCL code and comment right
+next to it. Comments are definetly right, so fix the TCL code.
 
-setting up GPT on an iMX6, I noticed a small bug subject to CONFIG_PARTITION_DISK_EFI_GPT_NO_FORCE that leads to unparsed GPTs.
+Fixes: 02738f4b59 ("Documentation: zii-vf610-dev: Reconcile DDR setup with DCD")
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ Documentation/boards/imx/zii-vf610-dev/openocd.cfg | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Background: The iMX supports the mmc user partition as bootmedia source too.
-
-Problem: The (additional) filetype check[0] fails, if the given buffer contains multiple, subsequent file(type)s. The buffer might contain the beginning of a disk that contains i.e. a Barebox image
-*and* a partition table. The function file_detect_type returns a single (first recognized) type[1]. In my case, it returns the Barebox image type.
-
-There is a comment about this additional check noting it will be mandatory as it will be "[..] added to the EFI Spec. per Intel after v1.02.". Anybody can elaborate on that?
-That feedback could help to understand why file_detect_partition_table is insufficient in this case.
-
-
-[0] https://git.pengutronix.de/cgit/barebox/tree/common/partitions/efi.c#n372
-[1] https://git.pengutronix.de/cgit/barebox/tree/common/filetype.c#n352
-
--- 
-Kind Regards,
-
-Leif Middelschulte
-Software Development Engineer
-
-KLS Martin GmbH + Co. KG,
-A Company of the KLS Martin Group
-Am Flughafen 18
-79108 Freiburg, Germany
-
-Phone +49 (761) 557 997-543
-Fax   +49 (761) 557 997-520 
-Web   leif.middelschulte@klsmartin.com
-      www.klsmartin.com
-
-Commercial Register: Freiburg im Breisgau HRA 4044
-Managing directors: Michael Martin, Karl Leibinger, Christian Leibinger
-General partner: KLS Martin Verwaltungsgesellschaft mbH
-Commercial register: Stuttgart HRB 451316
-Tax ID number: DE 237467280
+diff --git a/Documentation/boards/imx/zii-vf610-dev/openocd.cfg b/Documentation/boards/imx/zii-vf610-dev/openocd.cfg
+index 5127c7623d..c94f9d048d 100644
+--- a/Documentation/boards/imx/zii-vf610-dev/openocd.cfg
++++ b/Documentation/boards/imx/zii-vf610-dev/openocd.cfg
+@@ -148,10 +148,10 @@ proc ddr_init { } {
+ 	mww phys 0x400ae210 0x00000506 ;# wm 32 DDRMC_CR132 0x00000506
+ 	mww phys 0x400ae224 0x00020000 ;# wm 32 DDRMC_CR137 0x00020000
+ 	mww phys 0x400ae228 0x01000100 ;# wm 32 DDRMC_CR138 0x01000100
+-	mww phys 0x400ae22c 0x04070303 ;# wm 32 DDRMC_CR154 0x682c4000
+-	mww phys 0x400ae230 0x00000040 ;# wm 32 DDRMC_CR155 0x00000009
+-	mww phys 0x400ae23c 0x06000080 ;# wm 32 DDRMC_CR158 0x00000006
+-	mww phys 0x400ae240 0x04070303 ;# wm 32 DDRMC_CR161 0x00010606
++	mww phys 0x400ae268 0x682c4000 ;# wm 32 DDRMC_CR154 0x682c4000
++	mww phys 0x400ae26c 0x00000009 ;# wm 32 DDRMC_CR155 0x00000009
++	mww phys 0x400ae278 0x00000006 ;# wm 32 DDRMC_CR158 0x00000006
++	mww phys 0x400ae284 0x00010606 ;# wm 32 DDRMC_CR161 0x00010606
  
-This e-mail may contain confidential and/or privileged information. If you are not the intended recipient (or have received this e-mail in error) please notify the sender immediately and destroy this
-e-mail. Any unauthorized copying, disclosure or distribution of the material in this e-mail is strictly forbidden.
+ 	#
+ 	# flash-header-zii-vf610-dev.imxcfg
+-- 
+2.21.0
+
+
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
