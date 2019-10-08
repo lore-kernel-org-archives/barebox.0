@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
+Received: from mail-io1-xd42.google.com ([2607:f8b0:4864:20::d42])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iHhiC-0001VC-N6
- for barebox@lists.infradead.org; Tue, 08 Oct 2019 05:07:05 +0000
-Received: by mail-pl1-x644.google.com with SMTP id d22so7974643pls.0
- for <barebox@lists.infradead.org>; Mon, 07 Oct 2019 22:07:04 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  7 Oct 2019 22:06:57 -0700
-Message-Id: <20191008050657.1605-2-andrew.smirnov@gmail.com>
-In-Reply-To: <20191008050657.1605-1-andrew.smirnov@gmail.com>
-References: <20191008050657.1605-1-andrew.smirnov@gmail.com>
+ id 1iHhpl-0003ZX-QD
+ for barebox@lists.infradead.org; Tue, 08 Oct 2019 05:14:55 +0000
+Received: by mail-io1-xd42.google.com with SMTP id a1so33858919ioc.6
+ for <barebox@lists.infradead.org>; Mon, 07 Oct 2019 22:14:53 -0700 (PDT)
 MIME-Version: 1.0
+References: <20191001005718.27165-1-andrew.smirnov@gmail.com>
+ <20191001090331.81644cde6b0b9efd04a8a7a7@gmail.com>
+In-Reply-To: <20191001090331.81644cde6b0b9efd04a8a7a7@gmail.com>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Mon, 7 Oct 2019 22:14:41 -0700
+Message-ID: <CAHQ1cqEKP4KPRLy+XTbQzeDB9ucisP95LdS84ZpfkdBT4hZxTA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,38 +24,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ARM: dts: vf610-zii-scu4-aib: Add
- "i2c-mux-idle-disconnect" to I2C muxes
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH] version_string: Add toolchain and build host info
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-Add "i2c-mux-idle-disconnect" to I2C muxes to prevent identical slaves
-from different segments from interfering with each other.
+On Mon, Sep 30, 2019 at 11:03 PM Antony Pavlov <antonynpavlov@gmail.com> wrote:
+>
+> On Mon, 30 Sep 2019 17:57:18 -0700
+> Andrey Smirnov <andrew.smirnov@gmail.com> wrote:
+>
+> Hi!
+>
+> > Linux kernel reports the version of toolchain it was built with as a
+> > part of its version string, which can be extremely useful when
+> > debugging toolchain related issues. Make Barebox version string, mimic
+> > that of Linux to get the same level of information in Barebox.
+> >
+> > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> > ---
+> >  common/version.c | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/common/version.c b/common/version.c
+> > index 8b1fd4dbe7..5f57022dac 100644
+> > --- a/common/version.c
+> > +++ b/common/version.c
+> > @@ -3,7 +3,8 @@
+> >  #include <generated/utsrelease.h>
+> >
+> >  const char version_string[] =
+> > -     "barebox " UTS_RELEASE " " UTS_VERSION "\n";
+> > +     "barebox " UTS_RELEASE " (" BAREBOX_COMPILE_BY "@"
+> > +     BAREBOX_COMPILE_HOST ") (" BAREBOX_COMPILER ") " UTS_VERSION "\n";
+> >  EXPORT_SYMBOL(version_string);
+>
+>
+> Can we keep COMPILE_BY and COMPILE_HOST in one line (as linux does)?
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- arch/arm/dts/vf610-zii-scu4-aib.dts | 8 ++++++++
- 1 file changed, 8 insertions(+)
+I don't understand. This line already follows formatting found in
+Linux, e. g. https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/init/version.c?h=v5.4-rc2#n46
 
-diff --git a/arch/arm/dts/vf610-zii-scu4-aib.dts b/arch/arm/dts/vf610-zii-scu4-aib.dts
-index 43a13e243d..1e6a54954a 100644
---- a/arch/arm/dts/vf610-zii-scu4-aib.dts
-+++ b/arch/arm/dts/vf610-zii-scu4-aib.dts
-@@ -109,3 +109,11 @@
- 		label = "fiber9";
- 	};
- };
-+
-+/*
-+ * FIXME: Remove once this code appears in kernel DTS
-+*/
-+&i2c2 {
-+	tca9548@70 { i2c-mux-idle-disconnect; };
-+	tca9548@71 { i2c-mux-idle-disconnect; };
-+};
--- 
-2.21.0
+I have no preference how this is going to be formatted, really. Can
+you just take this patch reformat it the way you want to see it and
+submit it?
 
+Thanks,
+Andrey Smirnov
 
 _______________________________________________
 barebox mailing list
