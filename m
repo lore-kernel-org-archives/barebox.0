@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
+Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iHhfz-0008JQ-Dp
- for barebox@lists.infradead.org; Tue, 08 Oct 2019 05:04:49 +0000
-Received: by mail-pl1-x644.google.com with SMTP id f21so7933264plj.10
- for <barebox@lists.infradead.org>; Mon, 07 Oct 2019 22:04:43 -0700 (PDT)
+ id 1iHhiC-0001Ur-Dm
+ for barebox@lists.infradead.org; Tue, 08 Oct 2019 05:07:05 +0000
+Received: by mail-pf1-x443.google.com with SMTP id q21so10070388pfn.11
+ for <barebox@lists.infradead.org>; Mon, 07 Oct 2019 22:07:04 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  7 Oct 2019 22:04:26 -0700
-Message-Id: <20191008050426.29849-1-andrew.smirnov@gmail.com>
+Date: Mon,  7 Oct 2019 22:06:56 -0700
+Message-Id: <20191008050657.1605-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,39 +21,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Documentation: zii-vf610-dev: Fix bogus DDR configuration
- values
+Subject: [PATCH 1/2] i2c-mux-pca954x: Add support for "i2c-mux-idle-disconnect"
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-There's a clear mismatch between actual TCL code and comment right
-next to it. Comments are definetly right, so fix the TCL code.
+Add support for "i2c-mux-idle-disconnect" binding to match the
+behavior, already present in upstream kernel driver. This feature is a
+must have for I2C bus topologies with multiple muxes connected to
+child segments containing slaves with identical addresses (e.g. ZII's
+SCU4)
 
-Fixes: 02738f4b59 ("Documentation: zii-vf610-dev: Reconcile DDR setup with DCD")
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- Documentation/boards/imx/zii-vf610-dev/openocd.cfg | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/i2c/muxes/i2c-mux-pca954x.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/boards/imx/zii-vf610-dev/openocd.cfg b/Documentation/boards/imx/zii-vf610-dev/openocd.cfg
-index 5127c7623d..c94f9d048d 100644
---- a/Documentation/boards/imx/zii-vf610-dev/openocd.cfg
-+++ b/Documentation/boards/imx/zii-vf610-dev/openocd.cfg
-@@ -148,10 +148,10 @@ proc ddr_init { } {
- 	mww phys 0x400ae210 0x00000506 ;# wm 32 DDRMC_CR132 0x00000506
- 	mww phys 0x400ae224 0x00020000 ;# wm 32 DDRMC_CR137 0x00020000
- 	mww phys 0x400ae228 0x01000100 ;# wm 32 DDRMC_CR138 0x01000100
--	mww phys 0x400ae22c 0x04070303 ;# wm 32 DDRMC_CR154 0x682c4000
--	mww phys 0x400ae230 0x00000040 ;# wm 32 DDRMC_CR155 0x00000009
--	mww phys 0x400ae23c 0x06000080 ;# wm 32 DDRMC_CR158 0x00000006
--	mww phys 0x400ae240 0x04070303 ;# wm 32 DDRMC_CR161 0x00010606
-+	mww phys 0x400ae268 0x682c4000 ;# wm 32 DDRMC_CR154 0x682c4000
-+	mww phys 0x400ae26c 0x00000009 ;# wm 32 DDRMC_CR155 0x00000009
-+	mww phys 0x400ae278 0x00000006 ;# wm 32 DDRMC_CR158 0x00000006
-+	mww phys 0x400ae284 0x00010606 ;# wm 32 DDRMC_CR161 0x00010606
+diff --git a/drivers/i2c/muxes/i2c-mux-pca954x.c b/drivers/i2c/muxes/i2c-mux-pca954x.c
+index 42bde5ed1c..aa7dcb8c31 100644
+--- a/drivers/i2c/muxes/i2c-mux-pca954x.c
++++ b/drivers/i2c/muxes/i2c-mux-pca954x.c
+@@ -170,6 +170,16 @@ static int pca954x_select_chan(struct i2c_adapter *adap,
+ 	return ret;
+ }
  
- 	#
- 	# flash-header-zii-vf610-dev.imxcfg
++static int pca954x_deselect_chan(struct i2c_adapter *adap,
++				 void *client, u32 chan)
++{
++	struct pca954x *data = i2c_get_clientdata(client);
++
++	/* Deselect active channel */
++	data->last_chan = 0;
++	return pca954x_reg_write(adap, client, data->last_chan);
++}
++
+ /*
+  * I2C init/probing/exit functions
+  */
+@@ -182,6 +192,7 @@ static int pca954x_probe(struct device_d *dev)
+ 	uintptr_t tmp;
+ 	int ret = -ENODEV;
+ 	int gpio;
++	bool idle_disconnect;
+ 
+ 	data = kzalloc(sizeof(struct pca954x), GFP_KERNEL);
+ 	if (!data) {
+@@ -209,6 +220,9 @@ static int pca954x_probe(struct device_d *dev)
+ 	if (ret)
+ 		goto exit_free;
+ 
++	idle_disconnect = of_property_read_bool(dev->device_node,
++						"i2c-mux-idle-disconnect");
++
+ 	data->last_chan = 0;		   /* force the first selection */
+ 
+ 	/* Now create an adapter for each channel */
+@@ -216,7 +230,10 @@ static int pca954x_probe(struct device_d *dev)
+ 
+ 		data->virt_adaps[num] =
+ 			i2c_add_mux_adapter(adap, &client->dev, client,
+-				0, num, pca954x_select_chan, NULL);
++					    0, num, pca954x_select_chan,
++					    idle_disconnect ?
++					    pca954x_deselect_chan :
++					    NULL);
+ 
+ 		if (data->virt_adaps[num] == NULL) {
+ 			ret = -ENODEV;
 -- 
 2.21.0
 
