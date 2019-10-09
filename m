@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iHqky-0002gA-7P
- for barebox@lists.infradead.org; Tue, 08 Oct 2019 14:46:33 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue,  8 Oct 2019 16:46:28 +0200
-Message-Id: <20191008144628.7991-1-a.fatoum@pengutronix.de>
+ id 1iI9hk-0000WA-CU
+ for barebox@lists.infradead.org; Wed, 09 Oct 2019 11:00:29 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Wed,  9 Oct 2019 13:00:22 +0200
+Message-Id: <20191009110023.15352-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,33 +19,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: cache-armv7: remove superfluous instruction
+Subject: [PATCH v1 1/2] ARM: stm32mp: enable ARM_AMBA
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-There are two tst r11, #0xf with nothing in between them that changes
-r11. This a left over from the kernel code that checks for VMSA twice,
-once to check if the page table should be setup and once to more to
-flush the TLB. We do the setup in the caller already, so the tst serves
-no useful purpose. Delete one.
+It is needed for mci/sd/mmc driver.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- arch/arm/cpu/cache-armv7.S | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/cpu/cache-armv7.S b/arch/arm/cpu/cache-armv7.S
-index 6a8aff8bb12c..43ec9021330e 100644
---- a/arch/arm/cpu/cache-armv7.S
-+++ b/arch/arm/cpu/cache-armv7.S
-@@ -7,7 +7,6 @@ ENTRY(v7_mmu_cache_on)
- 		mov	r12, lr
- #ifdef CONFIG_MMU
- 		mrc	p15, 0, r11, c0, c1, 4	@ read ID_MMFR0
--		tst	r11, #0xf		@ VMSA
- 		mov	r0, #0
- 		dsb				@ drain write buffer
- 		tst	r11, #0xf		@ VMSA
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index b227bb78b6..1691aecb5a 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -217,6 +217,7 @@ config ARCH_STM32MP
+ 	select HAS_DEBUG_LL
+ 	select HAVE_CLK
+ 	select GPIOLIB
++	select ARM_AMBA
+ 
+ config ARCH_VERSATILE
+ 	bool "ARM Versatile boards (ARM926EJ-S)"
 -- 
 2.23.0
 
