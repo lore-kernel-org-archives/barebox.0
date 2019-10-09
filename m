@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iIF0Z-0001Ji-0y
- for barebox@lists.infradead.org; Wed, 09 Oct 2019 16:40:16 +0000
+ id 1iIF0Z-0001Jj-3R
+ for barebox@lists.infradead.org; Wed, 09 Oct 2019 16:40:17 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  9 Oct 2019 18:40:08 +0200
-Message-Id: <20191009164009.24265-3-a.fatoum@pengutronix.de>
+Date: Wed,  9 Oct 2019 18:40:07 +0200
+Message-Id: <20191009164009.24265-2-a.fatoum@pengutronix.de>
 In-Reply-To: <20191009164009.24265-1-a.fatoum@pengutronix.de>
 References: <20191009164009.24265-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,49 +21,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] ARM: mmu: set R/W bits in ARMv7 translation table
+Subject: [PATCH 1/3] ARM: cache-armv7: remove duplicate domain initialization
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <ahmad@a3f.at>
 
 From: Ahmad Fatoum <ahmad@a3f.at>
 
-With barebox using the manager permissions for domain 0 that's used for
-all page table entries and directories, we never had the need so far to
-explicitly set R/W bits. We did so anyway for sections in the early MMU
-code, but later on in the normal MMU setup, we didn't do so consistently.
+We already call set_domain each time we do __mmu_cache_on. Writing the
+DACR in the armv7 __mmu_cache_on is thus superfluous. Drop it.
 
-In preparation for switching to DOMAIN_CLIENT for ARMv7, configure R/W
-everywhere in normal MMU code as well.
+This changes existing behavior, whereas all 16 memory domains had the same
+access permissions set (manager) before, now only the first domain has.
+This is ok, as we only ever use domain 0 in barebox and on non-armv7,
+we don't bother with the other ones at all.
 
 Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- arch/arm/cpu/mmu.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ arch/arm/cpu/cache-armv7.S | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index 123e19e9e55c..f7158871fe6f 100644
---- a/arch/arm/cpu/mmu.c
-+++ b/arch/arm/cpu/mmu.c
-@@ -56,13 +56,14 @@ static inline void tlb_invalidate(void)
- 	);
- }
- 
--#define PTE_FLAGS_CACHED_V7 (PTE_EXT_TEX(1) | PTE_BUFFERABLE | PTE_CACHEABLE)
--#define PTE_FLAGS_WC_V7 (PTE_EXT_TEX(1) | PTE_EXT_XN)
--#define PTE_FLAGS_UNCACHED_V7 PTE_EXT_XN
-+#define PTE_FLAGS_CACHED_V7 (PTE_EXT_TEX(1) | PTE_BUFFERABLE | PTE_CACHEABLE | \
-+			     PTE_EXT_AP_URW_SRW)
-+#define PTE_FLAGS_WC_V7 (PTE_EXT_TEX(1) | PTE_EXT_AP_URW_SRW | PTE_EXT_XN)
-+#define PTE_FLAGS_UNCACHED_V7 (PTE_EXT_AP_URW_SRW | PTE_EXT_XN)
- #define PTE_FLAGS_CACHED_V4 (PTE_SMALL_AP_UNO_SRW | PTE_BUFFERABLE | PTE_CACHEABLE)
- #define PTE_FLAGS_UNCACHED_V4 PTE_SMALL_AP_UNO_SRW
--#define PGD_FLAGS_WC_V7 (PMD_SECT_TEX(1) | PMD_TYPE_SECT | PMD_SECT_BUFFERABLE | \
--			 PMD_SECT_XN)
-+#define PGD_FLAGS_WC_V7 (PMD_SECT_TEX(1) | PMD_SECT_DEF_UNCACHED | \
-+			 PMD_SECT_BUFFERABLE | PMD_SECT_XN)
- #define PGD_FLAGS_UNCACHED_V7 (PMD_SECT_DEF_UNCACHED | PMD_SECT_XN)
- 
- /*
+diff --git a/arch/arm/cpu/cache-armv7.S b/arch/arm/cpu/cache-armv7.S
+index 6a8aff8bb12c..2aa34ab4d7d8 100644
+--- a/arch/arm/cpu/cache-armv7.S
++++ b/arch/arm/cpu/cache-armv7.S
+@@ -21,8 +21,6 @@ ENTRY(v7_mmu_cache_on)
+ 		orr	r0, r0, #1 << 25	@ big-endian page tables
+ #endif
+ 		orrne	r0, r0, #1		@ MMU enabled
+-		movne	r1, #-1
+-		mcrne	p15, 0, r1, c3, c0, 0	@ load domain access control
+ #endif
+ 		isb
+ 		mcr	p15, 0, r0, c1, c0, 0	@ load control register
 -- 
 2.23.0
 
