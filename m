@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iIF0Z-0001Jg-2L
- for barebox@lists.infradead.org; Wed, 09 Oct 2019 16:40:17 +0000
+ id 1iIF0Z-0001Ji-0y
+ for barebox@lists.infradead.org; Wed, 09 Oct 2019 16:40:16 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  9 Oct 2019 18:40:06 +0200
-Message-Id: <20191009164009.24265-1-a.fatoum@pengutronix.de>
+Date: Wed,  9 Oct 2019 18:40:08 +0200
+Message-Id: <20191009164009.24265-3-a.fatoum@pengutronix.de>
+In-Reply-To: <20191009164009.24265-1-a.fatoum@pengutronix.de>
+References: <20191009164009.24265-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,62 +21,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/3] ARMv7: mmu: fix setting eXecute Never for device memory
+Subject: [PATCH 2/3] ARM: mmu: set R/W bits in ARMv7 translation table
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <ahmad@a3f.at>
 
-Greetings,
+From: Ahmad Fatoum <ahmad@a3f.at>
 
-in 0198567c4 ("ARM: mmu: mark uncached regions as eXecute never on v7"),
-I had my first attempt at supporting eXecute Never in barebox.
-This was meant to prevent speculative execution from accessing
-read-sensitive device memory and the erratic behavior it could entail.
+With barebox using the manager permissions for domain 0 that's used for
+all page table entries and directories, we never had the need so far to
+explicitly set R/W bits. We did so anyway for sections in the early MMU
+code, but later on in the normal MMU setup, we didn't do so consistently.
 
-The XN bit not only prevents speculation, but also any execution at all,
-as the name suggests, so the patchset can be tested by just executing
-the code and asserting that the prefetch abort occurs, something that
-I unfortunately missed during the first time round.
+In preparation for switching to DOMAIN_CLIENT for ARMv7, configure R/W
+everywhere in normal MMU code as well.
 
-This patchset rectifies this and now Prefetch Aborts are thrown as
-expected. They weren't before barebox uses a domain with manager permissions
-for all mappings. This means that no permission checks at all are conducted
-and our new XN settings were without effect.
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ arch/arm/cpu/mmu.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-There are theoritical regressions with this patch: any ARMv7 barebox platform
-that directly jumps into ROM code with the MMU enabled will cease to
-work. Assuming all memory outside of the barebox text section and SDRAM to be
-non-executable however seems the right thing to do. Platforms that do
-call back into ROM code should explicitly indicate that they intend to
-do so in the PBL.
-
-These patches fix a cache corruption issue[1] I've observed on the i.MX6UL(L)
-that resulted from speculative fetches into the MMDC region following the 512M
-SDRAM on the EVKs.
-
-This time I tested it by by jumping into IO memory with go -m, which I had
-introduced in this patch:
-https://www.spinics.net/lists/u-boot-v2/msg38947.html
-
-Tested SoCs:
-
-- i.MX6UL (Cortex-A7, barebox directly loaded into SDRAM)
-- i.MX6Q  (Cortex-A9, barebox directly loaded into SDRAM)
-- SAMA5D3 (Cortex-A5, barebox loaded into SRAM then SDRAM)
-
-[1]: https://community.nxp.com/thread/511925
-
-Cheers
-Ahmad Fatoum (3):
-  ARM: cache-armv7: remove duplicate domain initialization
-  ARM: mmu: set R/W bits in ARMv7 translation table
-  ARM: mmu: use client domain permissions to support ARMv7 eXecute Never
-
- arch/arm/cpu/cache-armv7.S |  2 --
- arch/arm/cpu/mmu-early.c   |  7 ++++++-
- arch/arm/cpu/mmu.c         | 18 ++++++++++++------
- arch/arm/cpu/mmu.h         |  1 +
- 4 files changed, 19 insertions(+), 9 deletions(-)
-
+diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
+index 123e19e9e55c..f7158871fe6f 100644
+--- a/arch/arm/cpu/mmu.c
++++ b/arch/arm/cpu/mmu.c
+@@ -56,13 +56,14 @@ static inline void tlb_invalidate(void)
+ 	);
+ }
+ 
+-#define PTE_FLAGS_CACHED_V7 (PTE_EXT_TEX(1) | PTE_BUFFERABLE | PTE_CACHEABLE)
+-#define PTE_FLAGS_WC_V7 (PTE_EXT_TEX(1) | PTE_EXT_XN)
+-#define PTE_FLAGS_UNCACHED_V7 PTE_EXT_XN
++#define PTE_FLAGS_CACHED_V7 (PTE_EXT_TEX(1) | PTE_BUFFERABLE | PTE_CACHEABLE | \
++			     PTE_EXT_AP_URW_SRW)
++#define PTE_FLAGS_WC_V7 (PTE_EXT_TEX(1) | PTE_EXT_AP_URW_SRW | PTE_EXT_XN)
++#define PTE_FLAGS_UNCACHED_V7 (PTE_EXT_AP_URW_SRW | PTE_EXT_XN)
+ #define PTE_FLAGS_CACHED_V4 (PTE_SMALL_AP_UNO_SRW | PTE_BUFFERABLE | PTE_CACHEABLE)
+ #define PTE_FLAGS_UNCACHED_V4 PTE_SMALL_AP_UNO_SRW
+-#define PGD_FLAGS_WC_V7 (PMD_SECT_TEX(1) | PMD_TYPE_SECT | PMD_SECT_BUFFERABLE | \
+-			 PMD_SECT_XN)
++#define PGD_FLAGS_WC_V7 (PMD_SECT_TEX(1) | PMD_SECT_DEF_UNCACHED | \
++			 PMD_SECT_BUFFERABLE | PMD_SECT_XN)
+ #define PGD_FLAGS_UNCACHED_V7 (PMD_SECT_DEF_UNCACHED | PMD_SECT_XN)
+ 
+ /*
 -- 
 2.23.0
 
