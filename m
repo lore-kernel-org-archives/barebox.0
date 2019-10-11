@@ -1,21 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-qk1-x742.google.com ([2607:f8b0:4864:20::742])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iIpFk-0005XC-D3
- for barebox@lists.infradead.org; Fri, 11 Oct 2019 07:22:22 +0000
-Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
- helo=dude02.lab.pengutronix.de)
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <mfe@pengutronix.de>) id 1iIpFj-0008Vq-9r
- for barebox@lists.infradead.org; Fri, 11 Oct 2019 09:22:19 +0200
-Received: from mfe by dude02.lab.pengutronix.de with local (Exim 4.92)
- (envelope-from <mfe@pengutronix.de>) id 1iIpFj-0003Yl-2A
- for barebox@lists.infradead.org; Fri, 11 Oct 2019 09:22:19 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Fri, 11 Oct 2019 09:22:17 +0200
-Message-Id: <20191011072217.13607-1-m.felsch@pengutronix.de>
+ id 1iIrWU-0008Q6-MJ
+ for barebox@lists.infradead.org; Fri, 11 Oct 2019 09:47:49 +0000
+Received: by mail-qk1-x742.google.com with SMTP id y144so8294893qkb.7
+ for <barebox@lists.infradead.org>; Fri, 11 Oct 2019 02:47:45 -0700 (PDT)
 MIME-Version: 1.0
+References: <CAEp+FuCjbdBi8JKEg_pesy-9OeDYzKh7zJFQRDqQqYqws=XBUg@mail.gmail.com>
+ <20191011072110.dgtegrdzkojwco3u@pengutronix.de>
+In-Reply-To: <20191011072110.dgtegrdzkojwco3u@pengutronix.de>
+From: Mihaita Ivascu <mihaita_ivascu@trimble.com>
+Date: Fri, 11 Oct 2019 11:47:33 +0200
+Message-ID: <CAEp+FuAi6+cUSxk0pXVOpKoE=GPCxU9QubzdDdgcLP9hvMzcbg@mail.gmail.com>
+Content-Type: multipart/mixed; boundary="000000000000ebfa3305949f68b7"
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,454 +21,263 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! gpio: add DA9062 MFD gpio support
-To: barebox@lists.infradead.org
+Subject: Re: MFGTools from NXP
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
----
-Hi,
+--000000000000ebfa3305949f68b7
+Content-Type: text/plain; charset="UTF-8"
 
-We need to move the gpio-controller to the mfd root node due to
-hierarchical GPIO irqchips to keep inline with the linux bindings.
-Please see the discussion [1] for further information.
+Hello Marco,
 
-[1] https://patchwork.ozlabs.org/patch/1163309/
+   Thanks to your reply. I am not keen to use specifically MFGTool but
+I do need a method to load flash new barebox and kernel images from
+windows side.
+   I have tried with MFGTools but was not successfully when using
+kobs-ng to flash the barebox.  I have attached a log that I send to
+NXP.
 
-Regards,
-  Marco
+   If there is more knowledge on how to use imx-usb-loader than I
+would give it a try.
 
- drivers/gpio/Kconfig       |   4 -
- drivers/gpio/Makefile      |   1 -
- drivers/gpio/gpio-da9062.c | 206 -------------------------------------
- drivers/mfd/da9063.c       | 136 ++++++++++++++++++++++++
- 4 files changed, 136 insertions(+), 211 deletions(-)
- delete mode 100644 drivers/gpio/gpio-da9062.c
+Thanks,
+      Mihaita
 
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index 806b96ae26..7a1503198b 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -13,10 +13,6 @@ config GPIO_DIGIC
- 	bool "GPIO support for Canon DIGIC"
- 	depends on ARCH_DIGIC
- 
--config GPIO_DA9062
--	bool "GPIO support for DA9062 MFD"
--	depends on MFD_DA9063
--
- config GPIO_74164
- 	bool "Generic SPI attached shift register"
- 	depends on SPI
-diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-index 6f2bf11af8..990df01788 100644
---- a/drivers/gpio/Makefile
-+++ b/drivers/gpio/Makefile
-@@ -4,7 +4,6 @@ obj-$(CONFIG_GPIO_74164)	+= gpio-74164.o
- obj-$(CONFIG_MACH_MIPS_ATH79)	+= gpio-ath79.o
- obj-$(CONFIG_GPIO_DAVINCI)	+= gpio-davinci.o
- obj-$(CONFIG_GPIO_CLPS711X)	+= gpio-clps711x.o
--obj-$(CONFIG_GPIO_DA9062)	+= gpio-da9062.o
- obj-$(CONFIG_GPIO_DIGIC)	+= gpio-digic.o
- obj-$(CONFIG_GPIO_GENERIC)	+= gpio-generic.o
- obj-$(CONFIG_GPIO_IMX)		+= gpio-imx.o
-diff --git a/drivers/gpio/gpio-da9062.c b/drivers/gpio/gpio-da9062.c
-deleted file mode 100644
-index 2f018166cc..0000000000
---- a/drivers/gpio/gpio-da9062.c
-+++ /dev/null
-@@ -1,206 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--/*
-- * Copyright (C) 2019 Pengutronix, Marco Felsch <kernel@pengutronix.de>
-- */
--
--#include <common.h>
--#include <driver.h>
--#include <gpio.h>
--#include <i2c/i2c.h>
--#include <linux/bitops.h>
--#include <malloc.h>
--
--struct da9062_gpio {
--	struct gpio_chip	gpio;
--	struct i2c_client	*client;
--	struct device_d		*dev;
--};
--
--#define DA9062AA_STATUS_B       0x002
--#define DA9062AA_GPIO_0_1       0x015
--#define DA9062AA_GPIO_MODE0_4	0x01D
--
--/* DA9062AA_GPIO_0_1 (addr=0x015) */
--#define DA9062AA_GPIO0_PIN_MASK         0x03
--
--#define DA9062_PIN_SHIFT(offset)	(4 * (offset % 2))
--#define DA9062_PIN_ALTERNATE		0x00 /* gpio alternate mode */
--#define DA9062_PIN_GPI			0x01 /* gpio in */
--#define DA9062_PIN_GPO_OD		0x02 /* gpio out open-drain */
--#define DA9062_PIN_GPO_PP		0x03 /* gpio out push-pull */
--
--static inline struct da9062_gpio *to_da9062(struct gpio_chip *chip)
--{
--	return container_of(chip, struct da9062_gpio, gpio);
--}
--
--static int gpio_da9062_reg_update(struct da9062_gpio *priv, unsigned int reg,
--				  uint8_t mask, uint8_t val)
--{
--	struct i2c_client *client;
--	uint8_t tmp;
--	int ret;
--
--	if (reg < 0x100)
--		client = priv->client;
--
--	if (WARN_ON(!client))
--		return -EINVAL;
--
--	ret = i2c_read_reg(client, reg & 0xffu, &tmp, 1);
--	if (ret < 0) {
--		dev_warn(priv->dev, "failed to read reg %02x\n", reg);
--		return ret;
--	}
--
--	tmp &= ~mask;
--	tmp |= val;
--
--	ret = i2c_write_reg(client, reg & 0xffu, &tmp, 1);
--	if (ret < 0) {
--		dev_warn(priv->dev, "failed to write %02x into reg %02x\n",
--			 tmp, reg);
--		return ret;
--	}
--
--	return 0;
--}
--
--static int gpio_da9062_direction_input(struct gpio_chip *chip, unsigned offset)
--{
--	struct da9062_gpio *priv = to_da9062(chip);
--	u8 mask, mode;
--
--	mode = DA9062_PIN_GPI << DA9062_PIN_SHIFT(offset);
--	mask = DA9062AA_GPIO0_PIN_MASK << DA9062_PIN_SHIFT(offset);
--
--	return gpio_da9062_reg_update(priv, DA9062AA_GPIO_0_1 + (offset >> 1),
--				      mask, mode);
--}
--
--static int gpio_da9062_direction_output(struct gpio_chip *chip, unsigned offset,
--					int value)
--{
--	struct da9062_gpio *priv = to_da9062(chip);
--
--	return gpio_da9062_reg_update(priv, DA9062AA_GPIO_MODE0_4, BIT(offset),
--				      value << offset);
--}
--
--static int gpio_da9062_get_pin_mode(struct da9062_gpio *priv, unsigned offset)
--{
--	int ret;
--	u8 val;
--
--	ret = i2c_read_reg(priv->client, DA9062AA_GPIO_0_1 + (offset >> 1),
--			   &val, 1);
--	if (ret < 0)
--		return ret;
--
--	val >>= DA9062_PIN_SHIFT(offset);
--	val &= DA9062AA_GPIO0_PIN_MASK;
--
--	return val;
--}
--
--static int gpio_da9062_get(struct gpio_chip *chip, unsigned offset)
--{
--	struct da9062_gpio *priv = to_da9062(chip);
--	int gpio_dir;
--	int ret;
--	u8 val;
--
--	gpio_dir = gpio_da9062_get_pin_mode(priv, offset);
--	if (gpio_dir < 0)
--		return gpio_dir;
--
--	switch (gpio_dir) {
--	case DA9062_PIN_ALTERNATE:
--		return -ENOTSUPP;
--	case DA9062_PIN_GPI:
--		ret = i2c_read_reg(priv->client, DA9062AA_STATUS_B, &val, 1);
--		if (ret < 0)
--			return ret;
--		break;
--	case DA9062_PIN_GPO_OD:
--		/* falltrough */
--	case DA9062_PIN_GPO_PP:
--		ret = i2c_read_reg(priv->client, DA9062AA_GPIO_MODE0_4, &val, 1);
--		if (ret < 0)
--			return ret;
--	}
--
--	return val & BIT(offset);
--}
--
--static int gpio_da9062_get_direction(struct gpio_chip *chip, unsigned offset)
--{
--	struct da9062_gpio *priv = to_da9062(chip);
--	int gpio_dir;
--
--	gpio_dir = gpio_da9062_get_pin_mode(priv, offset);
--	if (gpio_dir < 0)
--		return gpio_dir;
--
--	switch (gpio_dir) {
--	case DA9062_PIN_ALTERNATE:
--		return -ENOTSUPP;
--	case DA9062_PIN_GPI:
--		return 1;
--	case DA9062_PIN_GPO_OD:
--		/* falltrough */
--	case DA9062_PIN_GPO_PP:
--		return 0;
--	}
--
--	return -EINVAL;
--}
--
--static void gpio_da9062_set(struct gpio_chip *chip, unsigned offset, int value)
--{
--	struct da9062_gpio *priv = to_da9062(chip);
--
--	gpio_da9062_reg_update(priv, DA9062AA_GPIO_MODE0_4, BIT(offset),
--			       value << offset);
--}
--
--static struct gpio_ops gpio_da9062_ops = {
--	.direction_input	= gpio_da9062_direction_input,
--	.direction_output	= gpio_da9062_direction_output,
--	.get_direction		= gpio_da9062_get_direction,
--	.get			= gpio_da9062_get,
--	.set			= gpio_da9062_set,
--};
--
--static int gpio_da9062_probe(struct device_d *dev)
--{
--	struct da9062_gpio *priv;
--
--	if (!dev->parent)
--		return -EPROBE_DEFER;
--
--	priv = xzalloc(sizeof(*priv));
--	if (!priv)
--		return -ENOMEM;
--
--	priv->client = to_i2c_client(dev->parent);
--	priv->dev = dev;
--	priv->gpio.base = -1;
--	priv->gpio.ngpio = 5;
--	priv->gpio.ops  = &gpio_da9062_ops;
--	priv->gpio.dev = dev;
--
--	return gpiochip_add(&priv->gpio);
--}
--
--static struct of_device_id const gpio_da9062_dt_ids[] = {
--	{ .compatible	= "dlg,da9062-gpio", },
--	{ }
--};
--
--static struct driver_d gpio_da9062_driver = {
--	.name = "da9062-gpio",
--	.probe = gpio_da9062_probe,
--	.of_compatible  = DRV_OF_COMPAT(gpio_da9062_dt_ids),
--};
--device_platform_driver(gpio_da9062_driver);
-diff --git a/drivers/mfd/da9063.c b/drivers/mfd/da9063.c
-index 9c1752a38c..f0381944d9 100644
---- a/drivers/mfd/da9063.c
-+++ b/drivers/mfd/da9063.c
-@@ -15,8 +15,10 @@
- 
- #include <common.h>
- #include <driver.h>
-+#include <gpio.h>
- #include <restart.h>
- #include <i2c/i2c.h>
-+#include <linux/bitops.h>
- #include <malloc.h>
- #include <notifier.h>
- #include <reset_source.h>
-@@ -25,6 +27,7 @@
- struct da9063 {
- 	struct restart_handler	restart;
- 	struct watchdog		wd;
-+	struct gpio_chip	gpio;
- 	struct i2c_client	*client;
- 	/* dummy client for accessing bank #1 */
- 	struct i2c_client	*client1;
-@@ -61,6 +64,19 @@ struct da9063 {
- /* DA9063_REG_CONTROL_I (addr=0x10e) */
- #define DA9062_WATCHDOG_SD	BIT(3)
- 
-+#define DA9062AA_STATUS_B       0x002
-+#define DA9062AA_GPIO_0_1       0x015
-+#define DA9062AA_GPIO_MODE0_4	0x01D
-+
-+/* DA9062AA_GPIO_0_1 (addr=0x015) */
-+#define DA9062AA_GPIO0_PIN_MASK         0x03
-+
-+#define DA9062_PIN_SHIFT(offset)	(4 * (offset % 2))
-+#define DA9062_PIN_ALTERNATE		0x00 /* gpio alternate mode */
-+#define DA9062_PIN_GPI			0x01 /* gpio in */
-+#define DA9062_PIN_GPO_OD		0x02 /* gpio out open-drain */
-+#define DA9062_PIN_GPO_PP		0x03 /* gpio out push-pull */
-+
- struct da906x_device_data {
- 	int	(*init)(struct da9063 *priv);
- };
-@@ -104,6 +120,118 @@ static int da906x_reg_update(struct da9063 *priv, unsigned int reg,
- 	return 0;
- }
- 
-+static inline struct da9063 *to_da9063(struct gpio_chip *chip)
-+{
-+	return container_of(chip, struct da9063, gpio);
-+}
-+
-+static int da9063_gpio_direction_input(struct gpio_chip *chip, unsigned offset)
-+{
-+	struct da9063 *priv = to_da9063(chip);
-+	u8 mask, mode;
-+
-+	mode = DA9062_PIN_GPI << DA9062_PIN_SHIFT(offset);
-+	mask = DA9062AA_GPIO0_PIN_MASK << DA9062_PIN_SHIFT(offset);
-+
-+	return da906x_reg_update(priv, DA9062AA_GPIO_0_1 + (offset >> 1),
-+				 mask, mode);
-+}
-+
-+static int da9063_gpio_direction_output(struct gpio_chip *chip, unsigned offset,
-+					int value)
-+{
-+	struct da9063 *priv = to_da9063(chip);
-+
-+	return da906x_reg_update(priv, DA9062AA_GPIO_MODE0_4, BIT(offset),
-+				 value << offset);
-+}
-+
-+static int da9063_gpio_get_pin_mode(struct da9063 *priv, unsigned offset)
-+{
-+	int ret;
-+	u8 val;
-+
-+	ret = i2c_read_reg(priv->client, DA9062AA_GPIO_0_1 + (offset >> 1),
-+			   &val, 1);
-+	if (ret < 0)
-+		return ret;
-+
-+	val >>= DA9062_PIN_SHIFT(offset);
-+	val &= DA9062AA_GPIO0_PIN_MASK;
-+
-+	return val;
-+}
-+
-+static int da9063_gpio_get(struct gpio_chip *chip, unsigned offset)
-+{
-+	struct da9063 *priv = to_da9063(chip);
-+	int gpio_dir;
-+	int ret;
-+	u8 val;
-+
-+	gpio_dir = da9063_gpio_get_pin_mode(priv, offset);
-+	if (gpio_dir < 0)
-+		return gpio_dir;
-+
-+	switch (gpio_dir) {
-+	case DA9062_PIN_ALTERNATE:
-+		return -ENOTSUPP;
-+	case DA9062_PIN_GPI:
-+		ret = i2c_read_reg(priv->client, DA9062AA_STATUS_B, &val, 1);
-+		if (ret < 0)
-+			return ret;
-+		break;
-+	case DA9062_PIN_GPO_OD:
-+		/* falltrough */
-+	case DA9062_PIN_GPO_PP:
-+		ret = i2c_read_reg(priv->client, DA9062AA_GPIO_MODE0_4, &val, 1);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
-+	return val & BIT(offset);
-+}
-+
-+static int da9063_gpio_get_direction(struct gpio_chip *chip, unsigned offset)
-+{
-+	struct da9063 *priv = to_da9063(chip);
-+	int gpio_dir;
-+
-+	gpio_dir = da9063_gpio_get_pin_mode(priv, offset);
-+	if (gpio_dir < 0)
-+		return gpio_dir;
-+
-+	switch (gpio_dir) {
-+	case DA9062_PIN_ALTERNATE:
-+		return -ENOTSUPP;
-+	case DA9062_PIN_GPI:
-+		return 1;
-+	case DA9062_PIN_GPO_OD:
-+		/* falltrough */
-+	case DA9062_PIN_GPO_PP:
-+		return 0;
-+	}
-+
-+	return -EINVAL;
-+}
-+
-+static void da9063_gpio_set(struct gpio_chip *chip, unsigned offset, int value)
-+{
-+	struct da9063 *priv = to_da9063(chip);
-+
-+	da906x_reg_update(priv, DA9062AA_GPIO_MODE0_4, BIT(offset),
-+			  value << offset);
-+
-+}
-+
-+static struct gpio_ops da9063_gpio_ops = {
-+	.direction_input	= da9063_gpio_direction_input,
-+	.direction_output	= da9063_gpio_direction_output,
-+	.get_direction		= da9063_gpio_get_direction,
-+	.get			= da9063_gpio_get,
-+	.set			= da9063_gpio_set,
-+};
-+
- static int da9063_watchdog_ping(struct da9063 *priv)
- {
- 	int ret;
-@@ -265,6 +393,14 @@ static int da9063_probe(struct device_d *dev)
- 
- 	restart_handler_register(&priv->restart);
- 
-+	priv->gpio.base = -1;
-+	priv->gpio.ngpio = 5;
-+	priv->gpio.ops  = &da9063_gpio_ops;
-+	priv->gpio.dev = dev;
-+	ret = gpiochip_add(&priv->gpio);
-+	if (ret)
-+		goto on_error;
-+
- 	if (IS_ENABLED(CONFIG_OFDEVICE) && dev->device_node)
- 		return of_platform_populate(dev->device_node, NULL, dev);
- 
--- 
-2.20.1
+On Fri, Oct 11, 2019 at 9:21 AM Marco Felsch <m.felsch@pengutronix.de> wrote:
+>
+> Hi Mihaita,
+>
+> On 19-10-10 15:03, Mihaita Ivascu wrote:
+> > Hello all,
+> >
+> >     Does anybody have experience with using MFGTools to flash the
+> > barebox and kernel in NAND for imx6ul platforms?
+>
+> Hm.. I think the most of us are using the imx-usb-loader tool ;) I
+> used it a long time ago but let's try if I can help you. So what is your
+> question?
+>
+> Regards,
+>   Marco
+>
+> > Thanks,
+> >        Mihaita
+> >
+> > _______________________________________________
+> > barebox mailing list
+> > barebox@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/barebox
+> >
+>
+> --
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
+--000000000000ebfa3305949f68b7
+Content-Type: text/plain; charset="US-ASCII"; name="kobs-ng.txt"
+Content-Disposition: attachment; filename="kobs-ng.txt"
+Content-Transfer-Encoding: base64
+Content-ID: <f_k1ly5ipt0>
+X-Attachment-Id: f_k1ly5ipt0
+
+SSBhbSB0cnlpbmcgdG8gdXBkYXRlIHRoZSBtdGQgcGFydGl0aW9ucyBvbiBpbXg2dWwgcGxhdGZv
+cm0gdXNpbmcgbWZndG9vbHMgLiBJIGhhdmUgY3JlYXRlZCBhIC54bWwgc2NyaXB0DQoNCiAgICBF
+dmVyeXRoaW5nIHJ1bnMgd2l0aG91dCBpc3N1ZXMgdW50aWwgSSB3YW50IHRvIGZsYXNoIHRoZSBu
+ZXcgYmFyZWJveCBib290bG9hZGVyIHVzaW5nIGtvYnMtbmcgdG9vbC4NCg0KIA0KDQpVVFA6IHJl
+Y2VpdmVkIGNvbW1hbmQgJyQgbW91bnQgLXQgZGVidWdmcyBkZWJ1Z2ZzIC9zeXMva2VybmVsL2Rl
+YnVnJw0KVVRQOiBleGVjdXRpbmcgIm1vdW50IC10IGRlYnVnZnMgZGVidWdmcyAvc3lzL2tlcm5l
+bC9kZWJ1ZyINClVUUDogc2VuZGluZyBTdWNjZXNzIHRvIGtlcm5lbCBmb3IgY29tbWFuZCAkIG1v
+dW50IC10IGRlYnVnZnMgZGVidWdmcyAvc3lzL2tlcm5lbC9kZWJ1Zy4NClsgNi4wMDk0NjNdIHV0
+cF9wb2xsOiBwYXNzIHJldHVybmVkLg0KVVRQOiByZWNlaXZlZCBjb21tYW5kICckIG1vdW50IHwg
+Z3JlcCBeZGVidWdmcycNClVUUDogZXhlY3V0aW5nICJtb3VudCB8IGdyZXAgXmRlYnVnZnMiDQpk
+ZWJ1Z2ZzIG9uIC9zeXMva2VybmVsL2RlYnVnIHR5cGUgZGVidWdmcyAocncscmVsYXRpbWUpDQpV
+VFA6IHNlbmRpbmcgU3VjY2VzcyB0byBrZXJuZWwgZm9yIGNvbW1hbmQgJCBtb3VudCB8IGdyZXAg
+XmRlYnVnZnMuDQpbIDYuMjcxMDY2XSB1dHBfcG9sbDogcGFzcyByZXR1cm5lZC4NClVUUDogcmVj
+ZWl2ZWQgY29tbWFuZCAnJCBmbGFzaF9lcmFzZSAvZGV2L210ZDAgMCAwJw0KVVRQOiBleGVjdXRp
+bmcgImZsYXNoX2VyYXNlIC9kZXYvbXRkMCAwIDAiDQpFcmFzaW5nIDEyOCBLaWJ5dGUgQCA2NDAw
+NGUwMDAwIC0tIC0xICUgY29tcGxldGUNClVUUDogc2VuZGluZyBTdWNjZXNzIHRvIGtlcm5lbCBm
+b3IgY29tbWFuZCAkIGZsYXNoX2VyYXNlIC9kZXYvbXRkMCAwIDAuDQpbIDYuNTMwNjIyXSB1dHBf
+cG9sbDogcGFzcyByZXR1cm5lZC4NClVUUDogcmVjZWl2ZWQgY29tbWFuZCAnc2VuZCcNClVUUDog
+c2VuZGluZyBTdWNjZXNzIHRvIGtlcm5lbCBmb3IgY29tbWFuZCBzZW5kLg0KVVRQOiByZWNlaXZl
+ZCBjb21tYW5kICckIGtvYnMtbmcgaW5pdCAteCAtdiAtLWNoaXBfMF9kZXZpY2VfcGF0aD0vZGV2
+L210ZDAgJEZJTEUnDQpVVFA6IGV4ZWN1dGluZyAia29icy1uZyBpbml0IC14IC12IC0tY2hpcF8w
+X2RldmljZV9wYXRoPS9kZXYvbXRkMCAkRklMRSINCk1URCBDT05GSUc6DQpjaGlwXzBfZGV2aWNl
+X3BhdGggPSAiL2Rldi9tdGQwIg0KY2hpcF8xX2RldmljZV9wYXRoID0gIihudWxsKSINCnNlYXJj
+aF9leHBvbmVudCA9IDINCmRhdGFfc2V0dXBfdGltZSA9IDgwDQpkYXRhX2hvbGRfdGltZSA9IDYw
+DQphZGRyZXNzX3NldHVwX3RpbWUgPSAyNQ0KZGF0YV9zYW1wbGVfdGltZSA9IDYNCnJvd19hZGRy
+ZXNzX3NpemUgPSAzDQpjb2x1bW5fYWRkcmVzc19zaXplID0gMg0KcmVhZF9jb21tYW5kX2NvZGUx
+ID0gMA0KcmVhZF9jb21tYW5kX2NvZGUyID0gNDgNCmJvb3Rfc3RyZWFtX21ham9yX3ZlcnNpb24g
+PSAxDQpib290X3N0cmVhbV9taW5vcl92ZXJzaW9uID0gMA0KYm9vdF9zdHJlYW1fc3ViX3ZlcnNp
+b24gPSAwDQpuY2JfdmVyc2lvbiA9IDMNCmJvb3Rfc3RyZWFtXzFfYWRkcmVzcyA9IDANCmJvb3Rf
+c3RyZWFtXzJfYWRkcmVzcyA9IDANCi0tIFdlIGFkZCB0aGUgMWstcGFkZGluZyB0byB0aGUgdWJv
+b3QuDQoudG1wX2tvYnNfbmc6IHZlcmlmeWluZyB1c2luZyBrZXkgJzAwMDAwMDAwMDAwMDAwMDAw
+MDAwMDAwMDAwMDAwMDAwJw0KLnRtcF9rb2JzX25nOiBpcyBhIHZhbGlkIGJvb3RzdHJlYW0gZm9y
+IGtleSAnMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAnDQptdGQ6IExpbnV4WyA2LjY5
+MzE1OF0gLS0tLS0tLS0tLS0tWyBjdXQgaGVyZSBdLS0tLS0tLS0tLS0tDQpbIDYuNjk4MDA1XSBL
+ZXJuZWwgQlVHIGF0IGMwNTdjZGZjIFt2ZXJib3NlIGRlYnVnIGluZm8gdW5hdmFpbGFibGVdDQpb
+IDYuNzA0MjkxXSBJbnRlcm5hbCBlcnJvcjogT29wcyAtIEJVRzogMCBbIzFdIFNNUCBBUk0NClsg
+Ni43MDk0NDldIE1vZHVsZXMgbGlua2VkIGluOg0KWyA2LjcxMjU1Ml0gQ1BVOiAwIFBJRDogMTEx
+IENvbW06IGtvYnMtbmcgTm90IHRhaW50ZWQgNC44LjAgIzE4DQpbIDYuNzE4NDg2XSBIYXJkd2Fy
+ZSBuYW1lOiBGcmVlc2NhbGUgaS5NWDYgVWx0cmFsaXRlIChEZXZpY2UgVHJlZSkNClsgNi43MjQ2
+ODRdIHRhc2s6IGMzZTU4MDAwIHRhc2suc3RhY2s6IGMzZTJlMDAwDQpbIDYuNzI5MjQ4XSBQQyBp
+cyBhdCBuYW5kX2ZpbGxfb29iKzB4NDQvMHhhYw0KWyA2LjczMzU0Nl0gTFIgaXMgYXQgbXRkX29v
+YmxheW91dF9mcmVlKzB4NWMvMHg3NA0KWyA2LjczODI3Ml0gcGMgOiBbPGMwNTdjZGZjPl0gbHIg
+OiBbPGMwNTVmODhjPl0gcHNyOiBhMDAwMDAxMw0KWyA2LjczODI3Ml0gc3AgOiBjM2UyZmNhMCBp
+cCA6IGMzZTJmYmYwIGZwIDogYzNlMmZjYzQNClsgNi43NDk3NzBdIHIxMDogYzNkODk4MDAgcjkg
+OiAwMDAwMDEwMCByOCA6IDAwMDAwMDAwDQpbIDYuNzU1MDEzXSByNyA6IDAwMDAwMDAwIHI2IDog
+YzNlMmZkYzggcjUgOiBkZTQyZTBiOCByNCA6IDAwMDAwMDEwDQpbIDYuNzYxNTYxXSByMyA6IGMz
+ZTJmYzUwIHIyIDogYzNlMmZjNTAgcjEgOiAwMDAwMDAwMSByMCA6IGZmZmZmZmRlDQpbIDYuNzY4
+MTA5XSBGbGFnczogTnpDdiBJUlFzIG9uIEZJUXMgb24gTW9kZSBTVkNfMzIgSVNBIEFSTSBTZWdt
+ZW50IG5vbmUNClsgNi43NzUyNjJdIENvbnRyb2w6IDEwYzUzODdkIFRhYmxlOiA4M2U2MDA2YSBE
+QUM6IDAwMDAwMDUxDQpbIDYuNzgxMDIzXSBQcm9jZXNzIGtvYnMtbmcgKHBpZDogMTExLCBzdGFj
+ayBsaW1pdCA9IDB4YzNlMmUyMTApDQpbIDYuNzg3MDQ2XSBTdGFjazogKDB4YzNlMmZjYTAgdG8g
+MHhjM2UzMDAwMCkNClsgNi43OTE0MzJdIGZjYTA6IDAwMDAwMDAwIGMzZTJmY2IwIGRlNDJlMGI4
+IDAwMDAwODAwIDAwMDAwODAwIDAwMDAwMDAwIGMzZTJmZDM0IGMzZTJmY2M4DQpbIDYuNzk5NjM0
+XSBmY2MwOiBjMDU3ZDE5YyBjMDU3Y2RjNCBjM2UyZmNlYyBjM2UyZmNkOCBjMDk2NGU3OCBjMDE3
+M2Y5OCBkZTQyZTBiOCBkZTQyZTcxMA0KWyA2LjgwNzgzOF0gZmNlMDogYzNlMmZkMzQgMDAwMDAw
+M2YgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMTAgMDAwMDAwMTAgYzNkODk4MDAN
+ClsgNi44MTYwMzldIGZkMDA6IDAwMDAwMTAwIDAwMDAwMDAwIDYwMDAwMDEzIGMzZTJmZGM4IGRl
+NDJlMGI4IDAwMDgwMDAwIDAwMDAwMDAwIDAwMDAwODAwDQpbIDYuODI0MjQxXSBmZDIwOiAwMDAw
+MDAwMCAwMDAwMDAwMCBjM2UyZmQ1YyBjM2UyZmQzOCBjMDU3ZDZhOCBjMDU3Y2U3MCBjM2UyZmRj
+OCBjM2UyZmQ0OA0KWyA2LjgzMjQ0NF0gZmQ0MDogMDAwMDAwMDAgMDAwMDAwMDAgMDAwODA4MDAg
+MDAwMDAwMDAgYzNlMmZkODQgYzNlMmZkNjAgYzA1NjI2NzAgYzA1N2Q2MTQNClsgNi44NDA2NDZd
+IGZkNjA6IGMzZTJmZGM4IDAwMDAwODAwIGMwNTYyNjA0IDAwMDAwMDUxIGMzY2NiODAwIGJlZGU0
+YWM4IGMzZTJmZGE0IGMzZTJmZDg4DQpbIDYuODQ4ODQ3XSBmZDgwOiBjMDU1ZWM5YyBjMDU2MjYx
+MCBjM2UyZmRjOCBiZWRlNGFjOCAwMDAwMDgwMCAwMDA5OTExMCBjM2UyZmVkYyBjM2UyZmRhOA0K
+WyA2Ljg1NzA0OV0gZmRhMDogYzA1NjRiOGMgYzA1NWVjNjQgYzNlMmZkYzggMDAwMDAwMDIgYzBm
+MjI5ZTggMDAwMDAwMDAgYzNlMmZlNGMgYzNlMmZkYzgNClsgNi44NjUyNDldIGZkYzA6IGMwMTZm
+NDljIGMwMTZlNGU4IDAwMDAwMDAxIDAwMDAwODAwIDAwMDAwMDAwIDAwMDAwMDAwIDAwMDAwMDAw
+IDAwMDAwMDAwDQpbIDYuODczNDUxXSBmZGUwOiBjM2Q4OTgwMCAwMDAwMDAxMCAwMDA4MDAwMCAw
+MDAwMDAwMCAwMDAwMDgwMCAwMDAwMDAwMCAwMDAwMDAwMCAwMDAwMDAwMA0KWyA2Ljg4MTY1NF0g
+ZmUwMDogMDAwOTg5MTAgMDAwMDAwMDAgMDAwOTkxMTAgMDAwMDAwMDAgMDAwMDAwMDEgMDAwODAw
+MDAgYzNlMmUwMDAgMDAwMDAwMDANClsgNi44ODk4NTZdIGZlMjA6IGMzZTJmZTU0IGMzZTJmZTMw
+IGMwMTZlYzE0IGMwMTZlNGU4IGMwOTYxMDFjIGMzZTU4MDAwIDAwMDAwMDAxIGMxNzNkNDE0DQpb
+IDYuODk4MDU5XSBmZTQwOiBjM2U1ODAwMCBjM2UyZTAwMCBjM2UyZmU3NCBjM2UyZmU1OCBjMDE2
+ZWQ3OCBjMDE2ZWJiNCBjMGYzNWNjNCA2MDAwMDAxMw0KWyA2LjkwNjI2MV0gZmU2MDogYzBmMzVj
+YzggYzE3M2Q0MTQgYzNlMmZlODQgYzNlMmZlNzggYzAxNmVlNDQgYzAxNmVjNDggYzNlMmZlZGMg
+YzNlMmZlODgNClsgNi45MTQ0NjJdIGZlODA6IGMwOTYxMDFjIGMwMTZlZTNjIDAwMDAwMDAxIDAw
+MDAwMDAwIGMwNTY1NTRjIGMzZTJmZWEwIGMwOTYyZGE0IGMwMTRlMzBjDQpbIDYuOTIyNjY1XSBm
+ZWEwOiAwMDAwMDAwMSBjM2UyZmVhMCBjM2UyZmVkYyBjMGYzNWNjNCAwMDAwMDAwMCBjMGYzNWNj
+NCBjM2UwMWRjMCBjMDMwNGQxOA0KWyA2LjkzMDg2NV0gZmVjMDogYmVkZTRhYzggMDAwMDAwMDcg
+YzNlMmUwMDAgMDAwMDAwMDAgYzNlMmZlZmMgYzNlMmZlZTAgYzA1NjU1NWMgYzA1NjQxMzANClsg
+Ni45MzkwNjhdIGZlZTA6IGJlZGU0YWM4IGRlN2VlZjUwIGMzZTAxZGMwIGMwMjMxOWM0IGMzZTJm
+ZjdjIGMzZTJmZjAwIGMwMjMwZmMwIGMwNTY1NTMwDQpbIDYuOTQ3MjY5XSBmZjAwOiBkZTY0ZThj
+OCBjMDIyZDY5YyAwMDAwMDAwMiBkZTVjOTZhMCBmZmZmZmY5YyBjM2NkYzAwMCAwMDAwMDAwMCAw
+MDAwMDAwMA0KWyA2Ljk1NTQ3MV0gZmYyMDogYzNlMmUwMDAgMDAwMDAwMmEgZGU2NGU4YzAgZGU1
+Yzk2YTAgMDAwMDAwMDIgZGU2NGU4YzggYzNlMmUwMDAgMDAwMDAwMDANClsgNi45NjM2NzJdIGZm
+NDA6IGMzZTJmZjdjIGMzZTJmZjUwIGMwMjFlMDMwIGMwMjYxMGEwIDAwMDAwMDAwIGMzZTAxZGMw
+IDAwMDAwMDA3IGMzZTAxZGMwDQpbIDYuOTcxODc0XSBmZjYwOiBjMDMwNGQxOCBiZWRlNGFjOCBj
+M2UyZTAwMCAwMDAwMDAwMCBjM2UyZmZhNCBjM2UyZmY4MCBjMDIzMTljNCBjMDIzMGYzMA0KWyA2
+Ljk4MDA3NV0gZmY4MDogMDAwOTc4MzggMDAwMDAwMDAgMDAwMDAwMDEgMDAwMDAwMzYgYzAxMDdm
+YzQgYzNlMmUwMDAgMDAwMDAwMDAgYzNlMmZmYTgNClsgNi45ODgyNzhdIGZmYTA6IGMwMTA3ZTIw
+IGMwMjMxOTk0IDAwMDk3ODM4IDAwMDAwMDAwIDAwMDAwMDA3IGMwMzA0ZDE4IGJlZGU0YWM4IDAw
+MDAwMDAwDQpbIDYuOTk2NDgwXSBmZmMwOiAwMDA5NzgzOCAwMDAwMDAwMCAwMDAwMDAwMSAwMDAw
+MDAzNiAwMDA5ODkxMCAwMDAwMDgwMCAwMDAwMDgwMCAwMDA5NzgzOA0KWyA3LjAwNDY4Ml0gZmZl
+MDogMDAwM2YwNjQgYmVkZTRhOWMgMDAwMTQ3MGMgYjZlYmFiOWMgMjAwMDAwMTAgMDAwMDAwMDcg
+OWVmZjY4NjEgOWVmZjZjNjENClsgNy4wMTI4NzJdIEJhY2t0cmFjZToNClsgNy4wMTUzNzddIFs8
+YzA1N2NkYjg+XSAobmFuZF9maWxsX29vYikgZnJvbSBbPGMwNTdkMTljPl0gKG5hbmRfZG9fd3Jp
+dGVfb3BzKzB4MzM4LzB4NDFjKQ0KWyA3LjAyMzY1N10gcjc6MDAwMDAwMDAgcjY6MDAwMDA4MDAg
+cjU6MDAwMDA4MDAgcjQ6ZGU0MmUwYjgNClsgNy4wMjk0MzVdIFs8YzA1N2NlNjQ+XSAobmFuZF9k
+b193cml0ZV9vcHMpIGZyb20gWzxjMDU3ZDZhOD5dIChuYW5kX3dyaXRlX29vYisweGEwLzB4YzAp
+DQpbIDcuMDM3NjI3XSByMTA6MDAwMDAwMDAgcjk6MDAwMDAwMDAgcjg6MDAwMDA4MDAgcjc6MDAw
+MDAwMDAgcjY6MDAwODAwMDAgcjU6ZGU0MmUwYjgNClsgNy4wNDU1ODJdIHI0OmMzZTJmZGM4DQpb
+IDcuMDQ4MTY2XSBbPGMwNTdkNjA4Pl0gKG5hbmRfd3JpdGVfb29iKSBmcm9tIFs8YzA1NjI2NzA+
+XSAocGFydF93cml0ZV9vb2IrMHg2Yy8weDdjKQ0KWyA3LjA1NjA5NV0gcjc6MDAwMDAwMDAgcjY6
+MDAwODA4MDAgcjU6MDAwMDAwMDAgcjQ6MDAwMDAwMDANClsgNy4wNjE4NzBdIFs8YzA1NjI2MDQ+
+XSAocGFydF93cml0ZV9vb2IpIGZyb20gWzxjMDU1ZWM5Yz5dIChtdGRfd3JpdGVfb29iKzB4NDQv
+MHg1YykNClsgNy4wNjk3MTNdIHI3OmJlZGU0YWM4IHI2OmMzY2NiODAwIHI1OjAwMDAwMDUxIHI0
+OmMwNTYyNjA0DQpbIDcuMDc1NDkxXSBbPGMwNTVlYzU4Pl0gKG10ZF93cml0ZV9vb2IpIGZyb20g
+WzxjMDU2NGI4Yz5dIChtdGRjaGFyX2lvY3RsKzB4YTY4LzB4MTQwMCkNClsgNy4wODM1MDddIHI0
+OjAwMDk5MTEwDQpbIDcuMDg2MDkyXSBbPGMwNTY0MTI0Pl0gKG10ZGNoYXJfaW9jdGwpIGZyb20g
+WzxjMDU2NTU1Yz5dIChtdGRjaGFyX3VubG9ja2VkX2lvY3RsKzB4MzgvMHg1MCkNClsgNy4wOTQ2
+MjldIHIxMDowMDAwMDAwMCByOTpjM2UyZTAwMCByODowMDAwMDAwNyByNzpiZWRlNGFjOCByNjpj
+MDMwNGQxOCByNTpjM2UwMWRjMA0KWyA3LjEwMjU4NF0gcjQ6YzBmMzVjYzQNClsgNy4xMDUxNjdd
+IFs8YzA1NjU1MjQ+XSAobXRkY2hhcl91bmxvY2tlZF9pb2N0bCkgZnJvbSBbPGMwMjMwZmMwPl0g
+KGRvX3Zmc19pb2N0bCsweDljLzB4YTY0KQ0KWyA3LjExMzcwNV0gcjc6YzAyMzE5YzQgcjY6YzNl
+MDFkYzAgcjU6ZGU3ZWVmNTAgcjQ6YmVkZTRhYzgNClsgNy4xMTk0NzRdIFs8YzAyMzBmMjQ+XSAo
+ZG9fdmZzX2lvY3RsKSBmcm9tIFs8YzAyMzE5YzQ+XSAoU3lTX2lvY3RsKzB4M2MvMHg2NCkNClsg
+Ny4xMjY3OThdIHIxMDowMDAwMDAwMCByOTpjM2UyZTAwMCByODpiZWRlNGFjOCByNzpjMDMwNGQx
+OCByNjpjM2UwMWRjMCByNTowMDAwMDAwNw0KWyA3LjEzNDc1MV0gcjQ6YzNlMDFkYzANClsgNy4x
+MzczMzVdIFs8YzAyMzE5ODg+XSAoU3lTX2lvY3RsKSBmcm9tIFs8YzAxMDdlMjA+XSAocmV0X2Zh
+c3Rfc3lzY2FsbCsweDAvMHgxYykNClsgNy4xNDQ5MjJdIHI5OmMzZTJlMDAwIHI4OmMwMTA3ZmM0
+IHI3OjAwMDAwMDM2IHI2OjAwMDAwMDAxIHI1OjAwMDAwMDAwIHI0OjAwMDk3ODM4DQpbIDcuMTUy
+ODAzXSBDb2RlOiAwYTAwMDAwYyAzYTAwMDAwMiBlMzUzMDAwMiAwYTAwMDAwMCAoZTdmMDAxZjIp
+DQpbIDcuMTU4OTI1XSAtLS1bIGVuZCB0cmFjZSA5OWViYzMzY2Y1M2YxYmI1IF0tLS0NCjQuOA0K
+bXRkOiB1c2UgbmV3IGJjaCBsYXlvdXQgcmF3IGFjY2VzcyBtb2RlDQptdGQ6IG9wZW5pbmc6ICIv
+ZGV2L210ZDAiDQpDYW5ub3Qgb3BlbiBCQ0ggZ2VvbWV0cnkgbm9kZTogIi9zeXMva2VybmVsL2Rl
+YnVnL2dwbWktbmFuZC9iY2hfZ2VvbWV0cnkiDQpORkMgZ2VvbWV0cnkgOg0KRUNDIFN0cmVuZ3Ro
+IDogOA0KUGFnZSBTaXplIGluIEJ5dGVzIDogMjExMg0KTWV0YWRhdGEgc2l6ZSA6IDEwDQpFQ0Mg
+Q2h1bmsgU2l6ZSBpbiBieXRlIDogNTEyDQpFQ0MgQ2h1bmsgY291bnQgOiA0DQpCbG9jayBNYXJr
+IEJ5dGUgT2Zmc2V0IDogMTk5OQ0KQmxvY2sgTWFyayBCaXQgT2Zmc2V0IDogMA0KPT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQ0KbXRkOiBvcGVuZWQg
+Jy9kZXYvbXRkMCcgLSAnKG51bGwpJw0KbXRkOiBtYXhfYm9vdF9zdHJlYW1fc2l6ZV9pbl9ieXRl
+cyA9IDIwOTcxNTINCm10ZDogYm9vdF9zdHJlYW1fc2l6ZV9pbl9ieXRlcyA9IDYwMzY0OQ0KbXRk
+OiBib290X3N0cmVhbV9zaXplX2luX3BhZ2VzID0gMjk1DQptdGQ6ICMxIDB4MDAxMDAwMDAgLSAw
+eDAwMzAwMDAwICgweDAwMTkzNjAxKQ0KbXRkOiAjMiAweDAwMzAwMDAwIC0gMHgwMDUwMDAwMCAo
+MHgwMDM5MzYwMSkNCkZDQg0KbV91MzJDaGVja3N1bSA9IDB4MDAwMDAwMDANCm1fdTMyRmluZ2Vy
+UHJpbnQgPSAweDIwNDI0MzQ2DQptX3UzMlZlcnNpb24gPSAweDAxMDAwMDAwDQptX05BTkRUaW1p
+bmcubV91OERhdGFTZXR1cCA9IDgwDQptX05BTkRUaW1pbmcubV91OERhdGFIb2xkID0gNjANCm1f
+TkFORFRpbWluZy5tX3U4QWRkcmVzc1NldHVwID0gMjUNCm1fTkFORFRpbWluZy5tX3U4RFNBTVBM
+RV9USU1FID0gNg0KbV91MzJQYWdlRGF0YVNpemUgPSAyMDQ4DQptX3UzMlRvdGFsUGFnZVNpemUg
+PSAyMTEyDQptX3UzMlNlY3RvcnNQZXJCbG9jayA9IDY0DQptX3UzMk51bWJlck9mTkFORHMgPSAw
+DQptX3UzMlRvdGFsSW50ZXJuYWxEaWUgPSAwDQptX3UzMkNlbGxUeXBlID0gMA0KbV91MzJFY2NC
+bG9ja05FY2NUeXBlID0gNA0KbV91MzJFY2NCbG9jazBTaXplID0gNTEyDQptX3UzMkVjY0Jsb2Nr
+TlNpemUgPSA1MTINCm1fdTMyRWNjQmxvY2swRWNjVHlwZSA9IDQNCm1fdTMyTWV0YWRhdGFCeXRl
+cyA9IDEwDQptX3UzMk51bUVjY0Jsb2Nrc1BlclBhZ2UgPSAzDQptX3UzMkVjY0Jsb2NrTkVjY0xl
+dmVsU0RLID0gMA0KbV91MzJFY2NCbG9jazBTaXplU0RLID0gMA0KbV91MzJFY2NCbG9ja05TaXpl
+U0RLID0gMA0KbV91MzJFY2NCbG9jazBFY2NMZXZlbFNESyA9IDANCm1fdTMyTnVtRWNjQmxvY2tz
+UGVyUGFnZVNESyA9IDANCm1fdTMyTWV0YWRhdGFCeXRlc1NESyA9IDANCm1fdTMyRXJhc2VUaHJl
+c2hvbGQgPSAwDQptX3UzMkZpcm13YXJlMV9zdGFydGluZ1BhZ2UgPSA1MTINCm1fdTMyRmlybXdh
+cmUyX3N0YXJ0aW5nUGFnZSA9IDE1MzYNCm1fdTMyUGFnZXNJbkZpcm13YXJlMSA9IDI5NQ0KbV91
+MzJQYWdlc0luRmlybXdhcmUyID0gMjk1DQptX3UzMkRCQlRTZWFyY2hBcmVhU3RhcnRBZGRyZXNz
+ID0gMjU2DQptX3UzMkJhZEJsb2NrTWFya2VyQnl0ZSA9IDE5OTkNCm1fdTMyQmFkQmxvY2tNYXJr
+ZXJTdGFydEJpdCA9IDANCm1fdTMyQkJNYXJrZXJQaHlzaWNhbE9mZnNldCA9IDIwNDgNCm1fdTMy
+QkNIVHlwZSA9IDANCm1fTkFORFRNVGltaW5nLm1fdTMyVE1UaW1pbmcyX1JlYWRMYXRlbmN5ID0g
+MA0KbV9OQU5EVE1UaW1pbmcubV91MzJUTVRpbWluZzJfUHJlYW1ibGVEZWxheSA9IDANCm1fTkFO
+RFRNVGltaW5nLm1fdTMyVE1UaW1pbmcyX0NFRGVsYXkgPSAwDQptX05BTkRUTVRpbWluZy5tX3Uz
+MlRNVGltaW5nMl9Qb3N0YW1ibGVEZWxheSA9IDANCm1fTkFORFRNVGltaW5nLm1fdTMyVE1UaW1p
+bmcyX0NtZEFkZFBhdXNlID0gMA0KbV9OQU5EVE1UaW1pbmcubV91MzJUTVRpbWluZzJfRGF0YVBh
+dXNlID0gMA0KbV9OQU5EVE1UaW1pbmcubV91MzJUTVNwZWVkID0gMA0KbV9OQU5EVE1UaW1pbmcu
+bV91MzJUTVRpbWluZzFfQnVzeVRpbWVvdXQgPSAwDQptX3UzMkRJU0JCTSA9IDANCm1fdTMyQkJN
+YXJrZXJQaHlzaWNhbE9mZnNldEluU3BhcmVEYXRhID0gMA0KbV91MzJPbmZpU3luY0VuYWJsZSA9
+IDANCm1fTkFORE9ORklUaW1pbmcubV91MzJPTkZJU3BlZWQgPSAwDQptX05BTkRPTkZJVGltaW5n
+Lm1fdTMyT05GSVRpbWluZ19SZWFkTGF0ZW5jeSA9IDANCm1fTkFORE9ORklUaW1pbmcubV91MzJP
+TkZJVGltaW5nX0NFRGVsYXkgPSAwDQptX05BTkRPTkZJVGltaW5nLm1fdTMyT05GSVRpbWluZ19Q
+cmVhbWJsZURlbGF5ID0gMA0KbV9OQU5ET05GSVRpbWluZy5tX3UzMk9ORklUaW1pbmdfUG9zdGFt
+YmxlRGVsYXkgPSAwDQptX05BTkRPTkZJVGltaW5nLm1fdTMyT05GSVRpbWluZ19DbWRBZGRQYXVz
+ZSA9IDANCm1fTkFORE9ORklUaW1pbmcubV91MzJPTkZJVGltaW5nX0RhdGFQYXVzZSA9IDANCm1f
+TkFORE9ORklUaW1pbmcubV91MzJPTkZJVGltaW5nX0J1c3lUaW1lb3V0ID0gMA0KbV91MzJESVNC
+QlNlYXJjaCA9IDANCm1fdTMyUmFuZG9taXplckVuYWJsZSA9IDANCm1fdTMyUmVhZFJldHJ5RW5h
+YmxlID0gMA0KbV91MzJSZWFkUmV0cnlTZXFMZW5ndGggPSAwDQpEQkJUDQptX3UzMkNoZWNrc3Vt
+ID0gMHgwMDAwMDAwMA0KbV91MzJGaW5nZXJQcmludCA9IDB4NTQ0MjQyNDQNCm1fdTMyVmVyc2lv
+biA9IDB4MDEwMDAwMDANCm1fdTMyREJCVE51bU9mUGFnZXMgPSAwDQpGaXJtd2FyZTogaW1hZ2Ug
+IzAgQCAweDEwMDAwMCBzaXplIDB4OTM4MDAgLSBhdmFpbGFibGUgMHgyMDAwMDANCkZpcm13YXJl
+OiBpbWFnZSAjMSBAIDB4MzAwMDAwIHNpemUgMHg5MzgwMCAtIGF2YWlsYWJsZSAweDIwMDAwMA0K
+LS0tLS0tLS0tLS0tLS0gU3RhcnQgdG8gd3JpdGUgdGhlIFsgRkNCIF0gLS0tLS0NCm10ZDogZXJh
+c2luZyBAMDoweDAtMHgyMDAwMA0KbXRkOiBXcml0aW5nIEZDQjAgWyBAMDoweDAgXSAoODQwKSAq
+DQptdGQ6IGVyYXNpbmcgQDA6MHgyMDAwMC0weDQwMDAwDQptdGQ6IFdyaXRpbmcgRkNCMSBbIEAw
+OjB4MjAwMDAgXSAoODQwKSAqDQptdGQ6IGVyYXNpbmcgQDA6MHg0MDAwMC0weDYwMDAwDQptdGQ6
+IFdyaXRpbmcgRkNCMiBbIEAwOjB4NDAwMDAgXSAoODQwKSAqDQptdGQ6IGVyYXNpbmcgQDA6MHg2
+MDAwMC0weDgwMDAwDQptdGQ6IFdyaXRpbmcgRkNCMyBbIEAwOjB4NjAwMDAgXSAoODQwKSAqDQpt
+dGRfY29tbWl0X2JjYihGQ0IpOiBzdGF0dXMgMA0KDQotLS0tLS0tLS0tLS0tLSBTdGFydCB0byB3
+cml0ZSB0aGUgWyBEQkJUIF0gLS0tLS0NCm10ZDogZXJhc2luZyBAMDoweDgwMDAwLTB4YTAwMDAN
+Cm10ZDogV3JpdGluZyBEQkJUMCBbIEAwOjB4ODAwMDAgXSAoODAwKSAqDQoNCiANCg0KQXMgaXQg
+Y2FuIGJlIHNlZW4gZGVidWZzIHNlZW1zIHRvIGJlIG1vdW50ZWQgc3VjY2Vzc2Z1bGx5IGJ1dCBz
+dGlsbCBpIGdldCA6DQoNCiANCg0KQ2Fubm90IG9wZW4gQkNIIGdlb21ldHJ5IG5vZGU6ICIvc3lz
+L2tlcm5lbC9kZWJ1Zy9ncG1pLW5hbmQvYmNoX2dlb21ldHJ5Ig==
+--000000000000ebfa3305949f68b7
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--000000000000ebfa3305949f68b7--
