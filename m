@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iIxlm-0007Em-9H
+ id 1iIxlm-0007El-9P
  for barebox@lists.infradead.org; Fri, 11 Oct 2019 16:27:59 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 11 Oct 2019 18:27:53 +0200
-Message-Id: <20191011162753.17100-4-a.fatoum@pengutronix.de>
+Date: Fri, 11 Oct 2019 18:27:51 +0200
+Message-Id: <20191011162753.17100-2-a.fatoum@pengutronix.de>
 In-Reply-To: <20191011162753.17100-1-a.fatoum@pengutronix.de>
 References: <20191011162753.17100-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,75 +21,87 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] mfd: superio: add base SMSC MFD driver
+Subject: [PATCH 2/4] mfd: superio: add Fintek MFD driver
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <ahmad@a3f.at>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-From: Ahmad Fatoum <ahmad@a3f.at>
+Super I/O chips require a password to unlock access to the I/O ports.
+Add a driver that pokes the password and registers the appropriate GPIO
+and Watchdog devices as well as a regmap reflecting the Super I/O chip.
 
-The SMSC FDC37C93xAPM is the Super I/O chip on the Dell Latitude 7490.
-This adds device detection for it and its siblings, so device drivers
-can be written against it or init scripts can use its regmap interface.
-
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/mfd/Kconfig        |   6 ++
- drivers/mfd/Makefile       |   1 +
- drivers/mfd/smsc-superio.c | 115 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 122 insertions(+)
- create mode 100644 drivers/mfd/smsc-superio.c
+ drivers/mfd/Kconfig          |   6 ++
+ drivers/mfd/Makefile         |   1 +
+ drivers/mfd/fintek-superio.c | 122 +++++++++++++++++++++++++++++++++++
+ 3 files changed, 129 insertions(+)
+ create mode 100644 drivers/mfd/fintek-superio.c
 
 diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-index e2c74a575da4..f4cc71ef0ec8 100644
+index bd6f14a59f56..e2c74a575da4 100644
 --- a/drivers/mfd/Kconfig
 +++ b/drivers/mfd/Kconfig
-@@ -76,4 +76,10 @@ config FINTEK_SUPERIO
-        help
-          Select this to probe for IO-port connected Fintek Super I/O chips.
+@@ -70,4 +70,10 @@ config MFD_STPMIC1
+ config MFD_SUPERIO
+ 	bool
  
-+config SMSC_SUPERIO
-+       bool "SMSC Super I/O chip"
++config FINTEK_SUPERIO
++       bool "Fintek Super I/O chip"
 +       select MFD_SUPERIO
 +       help
-+         Select this to probe for IO-port connected SMSC Super I/O chips.
++         Select this to probe for IO-port connected Fintek Super I/O chips.
 +
  endmenu
 diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
-index 59b401dd2ea0..0c24493e3d86 100644
+index 690788eefb44..59b401dd2ea0 100644
 --- a/drivers/mfd/Makefile
 +++ b/drivers/mfd/Makefile
-@@ -14,3 +14,4 @@ obj-$(CONFIG_RAVE_SP_CORE)	+= rave-sp.o
+@@ -13,3 +13,4 @@ obj-$(CONFIG_MFD_TWL6030)	+= twl6030.o
+ obj-$(CONFIG_RAVE_SP_CORE)	+= rave-sp.o
  obj-$(CONFIG_MFD_STPMIC1)	+= stpmic1.o
  obj-$(CONFIG_MFD_SUPERIO)	+= superio.o
- obj-$(CONFIG_FINTEK_SUPERIO)	+= fintek-superio.o
-+obj-$(CONFIG_SMSC_SUPERIO)	+= smsc-superio.o
-diff --git a/drivers/mfd/smsc-superio.c b/drivers/mfd/smsc-superio.c
++obj-$(CONFIG_FINTEK_SUPERIO)	+= fintek-superio.o
+diff --git a/drivers/mfd/fintek-superio.c b/drivers/mfd/fintek-superio.c
 new file mode 100644
-index 000000000000..349c878cefe0
+index 000000000000..60785bce279f
 --- /dev/null
-+++ b/drivers/mfd/smsc-superio.c
-@@ -0,0 +1,115 @@
++++ b/drivers/mfd/fintek-superio.c
+@@ -0,0 +1,122 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2019 Ahmad Fatoum, Pengutronix
 + */
 +
-+#define pr_fmt(fmt) "smsc-superio: " fmt
++#define pr_fmt(fmt) "fintek-superio: " fmt
 +
 +#include <superio.h>
 +#include <init.h>
 +#include <asm/io.h>
 +#include <common.h>
 +
-+#define SIO_UNLOCK_KEY		0x55	/* Key to enable Super-I/O */
++#define SIO_UNLOCK_KEY		0x87	/* Key to enable Super-I/O */
 +#define SIO_LOCK_KEY		0xAA	/* Key to disable Super-I/O */
 +
-+#define SMSC_ID			0x10b8  /* Standard Microsystems Corp PCI ID */
++#define SIO_REG_LDSEL		0x07	/* Logical device select */
++
++#define SIO_FINTEK_ID		0x1934	/* Manufacturers ID */
++
++#define SIO_F71808_ID		0x0901
++#define SIO_F71858_ID		0x0507
++#define SIO_F71862_ID		0x0601
++#define SIO_F71868_ID		0x1106
++#define SIO_F71869_ID		0x0814
++#define SIO_F71869A_ID		0x1007
++#define SIO_F71882_ID		0x0541
++#define SIO_F71889_ID		0x0723
++#define SIO_F71889A_ID		0x1005
++#define SIO_F81865_ID		0x0704
++#define SIO_F81866_ID		0x1010
 +
 +static void superio_enter(u16 sioaddr)
 +{
++	/* according to the datasheet the key must be sent twice! */
 +	outb(SIO_UNLOCK_KEY, sioaddr);
-+	mdelay(1);
 +	outb(SIO_UNLOCK_KEY, sioaddr);
 +}
 +
@@ -98,92 +110,85 @@ index 000000000000..349c878cefe0
 +	outb(SIO_LOCK_KEY, sioaddr);
 +}
 +
-+static void smsc_superio_find(u16 sioaddr, u16 id_reg)
++static void fintek_superio_find(u16 sioaddr)
 +{
 +	struct superio_chip *chip;
-+	u16 devid;
++	u16 vid;
 +
 +	superio_enter(sioaddr);
 +
-+	devid = superio_inw(sioaddr, id_reg);
-+	switch(devid >> 8) {
-+	case 0x02:
-+	case 0x03:
-+	case 0x07:
-+	case 0x09:
-+	case 0x0a:
-+	case 0x0b:
-+	case 0x0e:
-+	case 0x14:
-+	case 0x30:
-+	case 0x40:
-+	case 0x42:
-+	case 0x43:
-+	case 0x44:
-+	case 0x46:
-+	case 0x47:
-+	case 0x4c:
-+	case 0x4d:
-+	case 0x51:
-+	case 0x52:
-+	case 0x54:
-+	case 0x56:
-+	case 0x57:
-+	case 0x59:
-+	case 0x5d:
-+	case 0x5f:
-+	case 0x60:
-+	case 0x62:
-+	case 0x67:
-+	case 0x6b:
-+	case 0x6e:
-+	case 0x6f:
-+	case 0x74:
-+	case 0x76:
-+	case 0x77:
-+	case 0x78:
-+	case 0x79:
-+	case 0x7a:
-+	case 0x7c:
-+	case 0x7d:
-+	case 0x7f:
-+	case 0x81:
-+	case 0x83:
-+	case 0x85:
-+	case 0x86:
-+	case 0x89:
-+	case 0x8c:
-+	case 0x90:
-+		break;
-+	default:
-+		pr_debug("Not a SMSC device (port=0x%02x, devid=0x%04x)\n",
-+			 sioaddr, devid);
++	vid = superio_inw(sioaddr, SIO_REG_MANID);
++	if (vid != SIO_FINTEK_ID) {
++		pr_debug("Not a Fintek device (port=0x%02x, vid=0x%04x)\n",
++			 sioaddr, vid);
 +		return;
 +	}
 +
 +	chip = xzalloc(sizeof(*chip));
 +
-+	chip->devid = devid;
-+	chip->vid = SMSC_ID;
++	chip->devid = superio_inw(sioaddr, SIO_REG_DEVID);
++	chip->vid = vid;
 +	chip->sioaddr = sioaddr;
 +	chip->enter = superio_enter;
 +	chip->exit = superio_exit;
 +
 +	superio_chip_add(chip);
 +
++	switch (chip->devid) {
++	case SIO_F71808_ID:
++		superio_func_add(chip, "f71808fg_wdt");
++		break;
++	case SIO_F71862_ID:
++		superio_func_add(chip, "f71862fg_wdt");
++		break;
++	case SIO_F71868_ID:
++		superio_func_add(chip, "f71868_wdt");
++		break;
++	case SIO_F71869_ID:
++		superio_func_add(chip, "f71869_wdt");
++		superio_func_add(chip, "gpio-f71869");
++		break;
++	case SIO_F71869A_ID:
++		superio_func_add(chip, "f71869_wdt");
++		superio_func_add(chip, "gpio-f71869a");
++		break;
++	case SIO_F71882_ID:
++		superio_func_add(chip, "f71882fg_wdt");
++		superio_func_add(chip, "gpio-f71882fg");
++		break;
++	case SIO_F71889_ID:
++		superio_func_add(chip, "f71889fg_wdt");
++		superio_func_add(chip, "gpio-f71889f");
++		break;
++	case SIO_F71889A_ID:
++		superio_func_add(chip, "f71889fg_wdt");
++		superio_func_add(chip, "gpio-f71889a");
++		break;
++	case SIO_F71858_ID:
++		/* Confirmed (by datasheet) not to have a watchdog. */
++		break;
++	case SIO_F81865_ID:
++		superio_func_add(chip, "f81865_wdt");
++		break;
++	case SIO_F81866_ID:
++		superio_func_add(chip, "f81866_wdt");
++		superio_func_add(chip, "gpio-f81866");
++		break;
++	default:
++		pr_info("Unrecognized Fintek device: 0x%04x\n", chip->devid);
++	}
++
 +	superio_exit(sioaddr);
 +}
 +
-+static int smsc_superio_detect(void)
++static int fintek_superio_detect(void)
 +{
-+	u16 ports[] = { 0x2e, 0x4e, 0x162e, 0x164e, 0x3f0, 0x370 };
-+
-+	for (int i = 0; i < ARRAY_SIZE(ports); i++)
-+		smsc_superio_find(ports[i], SIO_REG_DEVID);
++	fintek_superio_find(0x2e);
++	fintek_superio_find(0x4e);
 +
 +	return 0;
 +}
-+coredevice_initcall(smsc_superio_detect);
++coredevice_initcall(fintek_superio_detect);
 -- 
 2.23.0
 
