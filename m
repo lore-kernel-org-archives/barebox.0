@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qk1-x72f.google.com ([2607:f8b0:4864:20::72f])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iIY6t-0002mb-UA
- for barebox@lists.infradead.org; Thu, 10 Oct 2019 13:04:05 +0000
-Received: by mail-qk1-x72f.google.com with SMTP id q203so5515748qke.1
- for <barebox@lists.infradead.org>; Thu, 10 Oct 2019 06:04:03 -0700 (PDT)
+ id 1iIpEe-0005Nl-T8
+ for barebox@lists.infradead.org; Fri, 11 Oct 2019 07:21:14 +0000
+Date: Fri, 11 Oct 2019 09:21:10 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+Message-ID: <20191011072110.dgtegrdzkojwco3u@pengutronix.de>
+References: <CAEp+FuCjbdBi8JKEg_pesy-9OeDYzKh7zJFQRDqQqYqws=XBUg@mail.gmail.com>
 MIME-Version: 1.0
-From: Mihaita Ivascu <mihaita_ivascu@trimble.com>
-Date: Thu, 10 Oct 2019 15:03:51 +0200
-Message-ID: <CAEp+FuCjbdBi8JKEg_pesy-9OeDYzKh7zJFQRDqQqYqws=XBUg@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <CAEp+FuCjbdBi8JKEg_pesy-9OeDYzKh7zJFQRDqQqYqws=XBUg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,16 +22,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: MFGTools from NXP
-To: barebox@lists.infradead.org
+Subject: Re: MFGTools from NXP
+To: Mihaita Ivascu <mihaita_ivascu@trimble.com>
+Cc: barebox@lists.infradead.org
 
-Hello all,
+Hi Mihaita,
 
-    Does anybody have experience with using MFGTools to flash the
-barebox and kernel in NAND for imx6ul platforms?
+On 19-10-10 15:03, Mihaita Ivascu wrote:
+> Hello all,
+> 
+>     Does anybody have experience with using MFGTools to flash the
+> barebox and kernel in NAND for imx6ul platforms?
 
-Thanks,
-       Mihaita
+Hm.. I think the most of us are using the imx-usb-loader tool ;) I
+used it a long time ago but let's try if I can help you. So what is your
+question?
+
+Regards,
+  Marco
+
+> Thanks,
+>        Mihaita
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
