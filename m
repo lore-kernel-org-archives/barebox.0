@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iJz67-0004cU-Na
- for barebox@lists.infradead.org; Mon, 14 Oct 2019 12:05:15 +0000
-Date: Mon, 14 Oct 2019 14:05:05 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191014120505.sjvtz3vlymm2ya6q@pengutronix.de>
-References: <1570110732-20309-1-git-send-email-iu87m888m@qq.com>
+ id 1iJICC-0001uv-Lh
+ for barebox@lists.infradead.org; Sat, 12 Oct 2019 14:16:38 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Sat, 12 Oct 2019 16:16:31 +0200
+Message-Id: <20191012141632.14995-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1570110732-20309-1-git-send-email-iu87m888m@qq.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,27 +19,74 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fix compile error when set CONFIG_CONSOLE_SIMPLE=y
-To: iu87m888m@qq.com
-Cc: barebox@lists.infradead.org, DU HUANPENG <u74147@gmail.com>
+Subject: [PATCH 1/2] regulator: pfuze: remove unused driver_data
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Thu, Oct 03, 2019 at 09:52:12PM +0800, iu87m888m@qq.com wrote:
-> From: DU HUANPENG <u74147@gmail.com>
-> 
-> Signed-off-by: DU HUANPENG <u74147@gmail.com>
-> ---
->  common/console_simple.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
+We pass along driver_data that goes unused. Drop it.
 
-Applied, thanks
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/regulator/pfuze.c | 26 ++++++--------------------
+ 1 file changed, 6 insertions(+), 20 deletions(-)
 
-Sascha
-
+diff --git a/drivers/regulator/pfuze.c b/drivers/regulator/pfuze.c
+index dc41e8f55b84..eeb787cdab1f 100644
+--- a/drivers/regulator/pfuze.c
++++ b/drivers/regulator/pfuze.c
+@@ -161,16 +161,11 @@ static const struct regmap_config pfuze_regmap_i2c_config = {
+ 
+ static int __init pfuze_probe(struct device_d *dev)
+ {
+-	struct pfuze_devtype *devtype;
+ 	int ret;
+ 
+ 	if (pfuze_dev)
+ 		return -EBUSY;
+ 
+-	ret = dev_get_drvdata(dev, (const void **)&devtype);
+-	if (ret)
+-		return ret;
+-
+ 	pfuze_dev = xzalloc(sizeof(*pfuze_dev));
+ 	pfuze_dev->dev = dev;
+ 
+@@ -192,26 +187,17 @@ static int __init pfuze_probe(struct device_d *dev)
+ 	return 0;
+ }
+ 
+-static struct pfuze_devtype pfuze100_devtype = {
+-};
+-
+-static struct pfuze_devtype pfuze200_devtype = {
+-};
+-
+-static struct pfuze_devtype pfuze3000_devtype = {
+-};
+-
+ static struct platform_device_id pfuze_ids[] = {
+-	{ .name = "pfuze100", .driver_data = (ulong)&pfuze100_devtype, },
+-	{ .name = "pfuze200", .driver_data = (ulong)&pfuze200_devtype, },
+-	{ .name = "pfuze3000", .driver_data = (ulong)&pfuze3000_devtype, },
++	{ .name = "pfuze100" },
++	{ .name = "pfuze200" },
++	{ .name = "pfuze3000" },
+ 	{ }
+ };
+ 
+ static __maybe_unused struct of_device_id pfuze_dt_ids[] = {
+-	{ .compatible = "fsl,pfuze100", .data = &pfuze100_devtype, },
+-	{ .compatible = "fsl,pfuze200", .data = &pfuze200_devtype, },
+-	{ .compatible = "fsl,pfuze3000", .data = &pfuze3000_devtype, },
++	{ .compatible = "fsl,pfuze100" },
++	{ .compatible = "fsl,pfuze200" },
++	{ .compatible = "fsl,pfuze3000" },
+ 	{ }
+ };
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.23.0
+
 
 _______________________________________________
 barebox mailing list
