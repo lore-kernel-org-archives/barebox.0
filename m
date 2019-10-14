@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iK0FN-0002jn-8U
- for barebox@lists.infradead.org; Mon, 14 Oct 2019 13:18:50 +0000
-Date: Mon, 14 Oct 2019 15:18:47 +0200
+ by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1iJzQ8-0008KR-SC
+ for barebox@lists.infradead.org; Mon, 14 Oct 2019 12:25:53 +0000
+Date: Mon, 14 Oct 2019 14:25:46 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191014131847.z7hvwp2p2qlee57s@pengutronix.de>
-References: <20191011162753.17100-1-a.fatoum@pengutronix.de>
+Message-ID: <20191014122546.ey5bjayf7ilkohpj@pengutronix.de>
+References: <ec68b5aec8f0a144e9391dd1dfabe129ecdd4b6a.camel@klsmartin.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20191011162753.17100-1-a.fatoum@pengutronix.de>
+In-Reply-To: <ec68b5aec8f0a144e9391dd1dfabe129ecdd4b6a.camel@klsmartin.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,45 +22,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] mfd: add basic Super I/O chip helpers
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: erroneous behavior for iMX+GPT
+To: "Middelschulte, Leif" <Leif.Middelschulte@klsmartin.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Fri, Oct 11, 2019 at 06:27:50PM +0200, Ahmad Fatoum wrote:
-> Super I/O chips are ICs common to x86 that are used for interfacing
-> to low-bandwidth peripherals. They often contain serial ports, watchdog
-> timers and hardware monitoring units.
-> 
-> They are usually addressable via one of two I/O port pairs, either
-> 0x2e-0x2f or 0x4e-0x4f, but they don't typically respond to reads from
-> their range unless a device-specific 'password' has been poked in.
-> After this is done, they are read and written in the same manner however.
-> 
-> On Linux, these devices aren't subject to any device/driver model.
-> Each driver for some function (e.g. watchdog or GPIO) duplicates the
-> device probe in the module_init and board-specific configuration
-> is handled via module parameters.
-> 
-> Lets do it a bit fancier in barebox and add a helper to register chips
-> and a regmap for the control and configuration registers as well as a
-> helper to register child devices for each function contained within the
-> Super I/O chip.
-> Board-specific configuration, e.g. which pin to use as a watchdog reset,
-> can then be realized using barebox device-specific parameters.
-> 
-> The regmap will be more of a debugging aid, however.
-> For ease of porting from Linux, it's expected that access to the
-> I/O ports won't happen via the regmap. For this reason, the new
-> <superio.h> header offers functions to read/write these chips' registers
-> as well.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
+Hi Leif,
 
-Applied, thanks
+On Mon, Oct 07, 2019 at 02:15:39PM +0000, Middelschulte, Leif wrote:
+> Hi,
+> 
+> setting up GPT on an iMX6, I noticed a small bug subject to
+> CONFIG_PARTITION_DISK_EFI_GPT_NO_FORCE that leads to unparsed GPTs.
+> 
+> Background: The iMX supports the mmc user partition as bootmedia
+> source too.
+> 
+> Problem: The (additional) filetype check[0] fails, if the given buffer
+> contains multiple, subsequent file(type)s. The buffer might contain
+> the beginning of a disk that contains i.e. a Barebox image *and* a
+> partition table. The function file_detect_type returns a single (first
+> recognized) type[1]. In my case, it returns the Barebox image type.
+
+Looks like the file_detect_type() there should be replaced with
+file_detect_partition_table().
+
+> 
+> There is a comment about this additional check noting it will be
+> mandatory as it will be "[..] added to the EFI Spec. per Intel after
+> v1.02.". Anybody can elaborate on that?
+> That feedback could help to understand why file_detect_partition_table
+> is insufficient in this case.
+
+What makes you think that file_detect_partition_table() is insufficient?
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
