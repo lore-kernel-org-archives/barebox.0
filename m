@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-qk1-x741.google.com ([2607:f8b0:4864:20::741])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iJzpP-00009A-26
- for barebox@lists.infradead.org; Mon, 14 Oct 2019 12:52:00 +0000
-Date: Mon, 14 Oct 2019 14:51:57 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191014125157.f4ckzgwpqjugt7pq@pengutronix.de>
-References: <20191014063922.17233-1-a.fatoum@pengutronix.de>
- <20191014063922.17233-5-a.fatoum@pengutronix.de>
+ id 1iK04l-0006nb-3T
+ for barebox@lists.infradead.org; Mon, 14 Oct 2019 13:07:52 +0000
+Received: by mail-qk1-x741.google.com with SMTP id x134so15829364qkb.0
+ for <barebox@lists.infradead.org>; Mon, 14 Oct 2019 06:07:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191014063922.17233-5-a.fatoum@pengutronix.de>
+References: <CAEp+FuCjbdBi8JKEg_pesy-9OeDYzKh7zJFQRDqQqYqws=XBUg@mail.gmail.com>
+ <20191011072110.dgtegrdzkojwco3u@pengutronix.de>
+ <CAEp+FuAi6+cUSxk0pXVOpKoE=GPCxU9QubzdDdgcLP9hvMzcbg@mail.gmail.com>
+In-Reply-To: <CAEp+FuAi6+cUSxk0pXVOpKoE=GPCxU9QubzdDdgcLP9hvMzcbg@mail.gmail.com>
+From: Mihaita Ivascu <mihaita_ivascu@trimble.com>
+Date: Mon, 14 Oct 2019 15:07:31 +0200
+Message-ID: <CAEp+FuCHiycZ-LSfVkcUSN5Nv+Bj0X8==0UkJjP9ET+udnv8sQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,58 +25,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/5] ARM: stm32mp: dk2: add barebox SD-Card update handler
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: MFGTools from NXP
+To: Marco Felsch <m.felsch@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Oct 14, 2019 at 08:39:21AM +0200, Ahmad Fatoum wrote:
-> Now with the SD/MMC controller supported, lets add a bbu handler, so we
-> can use it to update the second stage boot loader partition.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  arch/arm/boards/stm32mp157c-dk2/board.c  | 14 ++++++++++++++
->  arch/arm/mach-stm32mp/include/mach/bbu.h | 14 ++++++++++++++
->  2 files changed, 28 insertions(+)
->  create mode 100644 arch/arm/mach-stm32mp/include/mach/bbu.h
-> 
-> diff --git a/arch/arm/boards/stm32mp157c-dk2/board.c b/arch/arm/boards/stm32mp157c-dk2/board.c
-> index 9cb861af85d8..23eb6728b15a 100644
-> --- a/arch/arm/boards/stm32mp157c-dk2/board.c
-> +++ b/arch/arm/boards/stm32mp157c-dk2/board.c
-> @@ -4,6 +4,7 @@
->  #include <init.h>
->  #include <asm/memory.h>
->  #include <mach/stm32.h>
-> +#include <mach/bbu.h>
->  
->  static int dk2_mem_init(void)
->  {
-> @@ -15,3 +16,16 @@ static int dk2_mem_init(void)
->  	return 0;
->  }
->  mem_initcall(dk2_mem_init);
-> +
-> +static int dk2_postcore_init(void)
-> +{
-> +	if (!of_machine_is_compatible("st,stm32mp157c-dk2"))
-> +		return 0;
-> +
-> +	stm32mp_bbu_mmc_register_handler("sd", "/dev/disk0.ssbl",
-> +					 BBU_HANDLER_FLAG_DEFAULT);
+Hello all,
 
-You should create an alias in dt for the sd device node (might exist
-already, don't know) and use mci_of_parse_node() in the SD driver. With
-this you get consistent names. "disk0" will be different devices
-depending on probe order.
+    Can I use imx-usb-loader tool from a windows host? I don't think
+so. If that is the case then I am stuck with MFGTools
 
-Sascha
+Thanks,
+       Mihaita
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+On Fri, Oct 11, 2019 at 11:47 AM Mihaita Ivascu
+<mihaita_ivascu@trimble.com> wrote:
+>
+> Hello Marco,
+>
+>    Thanks to your reply. I am not keen to use specifically MFGTool but
+> I do need a method to load flash new barebox and kernel images from
+> windows side.
+>    I have tried with MFGTools but was not successfully when using
+> kobs-ng to flash the barebox.  I have attached a log that I send to
+> NXP.
+>
+>    If there is more knowledge on how to use imx-usb-loader than I
+> would give it a try.
+>
+> Thanks,
+>       Mihaita
+>
+> On Fri, Oct 11, 2019 at 9:21 AM Marco Felsch <m.felsch@pengutronix.de> wrote:
+> >
+> > Hi Mihaita,
+> >
+> > On 19-10-10 15:03, Mihaita Ivascu wrote:
+> > > Hello all,
+> > >
+> > >     Does anybody have experience with using MFGTools to flash the
+> > > barebox and kernel in NAND for imx6ul platforms?
+> >
+> > Hm.. I think the most of us are using the imx-usb-loader tool ;) I
+> > used it a long time ago but let's try if I can help you. So what is your
+> > question?
+> >
+> > Regards,
+> >   Marco
+> >
+> > > Thanks,
+> > >        Mihaita
+> > >
+> > > _______________________________________________
+> > > barebox mailing list
+> > > barebox@lists.infradead.org
+> > > http://lists.infradead.org/mailman/listinfo/barebox
+> > >
+> >
+> > --
+> > Pengutronix e.K.                           |                             |
+> > Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> > Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> > Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
