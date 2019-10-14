@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iJzdM-0000Ls-Aa
- for barebox@lists.infradead.org; Mon, 14 Oct 2019 12:39:34 +0000
-Date: Mon, 14 Oct 2019 14:39:30 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191014123930.x2ea4ka6hwu3u7uv@pengutronix.de>
-References: <20191011162753.17100-1-a.fatoum@pengutronix.de>
- <20191011162753.17100-3-a.fatoum@pengutronix.de>
+ id 1iJzkx-0006N8-S2
+ for barebox@lists.infradead.org; Mon, 14 Oct 2019 12:47:25 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 14 Oct 2019 14:47:21 +0200
+Message-Id: <20191014124721.1965-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20191014123930.x2ea4ka6hwu3u7uv@pengutronix.de>
+References: <20191014123930.x2ea4ka6hwu3u7uv@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191011162753.17100-3-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,56 +21,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/4] watchdog: add support for Fintek F718xx and, F818xx
- Super I/O
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] fixup! watchdog: add support for Fintek F718xx and,
+ F818xx Super I/O
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Fri, Oct 11, 2019 at 06:27:52PM +0200, Ahmad Fatoum wrote:
-> This is an adaptation of the Linux v5.3 f71808e_wdt driver for the watchdog
-> component of the Fintek Super I/O chips.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  drivers/watchdog/Kconfig       |  10 +
->  drivers/watchdog/Makefile      |   1 +
->  drivers/watchdog/f71808e_wdt.c | 379 +++++++++++++++++++++++++++++++++
->  3 files changed, 390 insertions(+)
->  create mode 100644 drivers/watchdog/f71808e_wdt.c
-> 
-> diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-> index fbaab896d460..b1c2a39b6629 100644
-> --- a/drivers/watchdog/Kconfig
-> +++ b/drivers/watchdog/Kconfig
-> @@ -90,10 +90,20 @@ config STM32_IWDG_WATCHDOG
->  	  Enable to support configuration of the STM32's on-SoC IWDG watchdog.
->  	  Once started by the user, the IWDG can't be disabled.
->  
-> +
+ Remove unrelated hunk, replace select with depends like suggested by
+ Sascha.
 
-Please drop this hunk.
+---
+ drivers/watchdog/Kconfig | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
->  config STPMIC1_WATCHDOG
->  	bool "STPMIC1 Watchdog"
->  	depends on MFD_STPMIC1
->  	help
->  	  Enable to support configuration of the stpmic1's built-in watchdog.
->  
-> +config F71808E_WDT
-> +	bool "Fintek F718xx, F818xx Super I/O Watchdog"
-> +	depends on X86
-> +	select FINTEK_SUPERIO
-
-I prefer a "depends on" here.
-
-Sascha
-
-
+diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+index b1c2a39b6629..45dd41a2a2f3 100644
+--- a/drivers/watchdog/Kconfig
++++ b/drivers/watchdog/Kconfig
+@@ -90,7 +90,6 @@ config STM32_IWDG_WATCHDOG
+ 	  Enable to support configuration of the STM32's on-SoC IWDG watchdog.
+ 	  Once started by the user, the IWDG can't be disabled.
+ 
+-
+ config STPMIC1_WATCHDOG
+ 	bool "STPMIC1 Watchdog"
+ 	depends on MFD_STPMIC1
+@@ -100,7 +99,7 @@ config STPMIC1_WATCHDOG
+ config F71808E_WDT
+ 	bool "Fintek F718xx, F818xx Super I/O Watchdog"
+ 	depends on X86
+-	select FINTEK_SUPERIO
++	depends on FINTEK_SUPERIO
+ 	help
+ 	  This is the driver for the hardware watchdog on the Fintek F71808E,
+ 	  F71862FG, F71868, F71869, F71882FG, F71889FG, F81865 and F81866
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.23.0
+
 
 _______________________________________________
 barebox mailing list
