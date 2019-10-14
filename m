@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iJu0u-0006G5-4K
+ id 1iJu0u-0006Fz-4q
  for barebox@lists.infradead.org; Mon, 14 Oct 2019 06:39:33 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 14 Oct 2019 08:39:20 +0200
-Message-Id: <20191014063922.17233-4-a.fatoum@pengutronix.de>
+Date: Mon, 14 Oct 2019 08:39:19 +0200
+Message-Id: <20191014063922.17233-3-a.fatoum@pengutronix.de>
 In-Reply-To: <20191014063922.17233-1-a.fatoum@pengutronix.de>
 References: <20191014063922.17233-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,37 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] ARM: stm32mp: dk2: rename function according to init level
+Subject: [PATCH 2/5] ARM: dts: stm32mp: add barebox-enviroment on DK boards
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-dk2_postcore_init is not at postcore init level like the name would
-suggest, but at mem init level. Rename it accordingly.
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- arch/arm/boards/stm32mp157c-dk2/board.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/dts/stm32mp157a-dk1.dtsi | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/arm/boards/stm32mp157c-dk2/board.c b/arch/arm/boards/stm32mp157c-dk2/board.c
-index cbfe21db6a8c..9cb861af85d8 100644
---- a/arch/arm/boards/stm32mp157c-dk2/board.c
-+++ b/arch/arm/boards/stm32mp157c-dk2/board.c
-@@ -5,7 +5,7 @@
- #include <asm/memory.h>
- #include <mach/stm32.h>
+diff --git a/arch/arm/dts/stm32mp157a-dk1.dtsi b/arch/arm/dts/stm32mp157a-dk1.dtsi
+index cd3d614d4623..f7fbdcd1749a 100644
+--- a/arch/arm/dts/stm32mp157a-dk1.dtsi
++++ b/arch/arm/dts/stm32mp157a-dk1.dtsi
+@@ -8,6 +8,13 @@
+ #include <dt-bindings/gpio/gpio.h>
  
--static int dk2_postcore_init(void)
-+static int dk2_mem_init(void)
- {
- 	if (!of_machine_is_compatible("st,stm32mp157c-dk2"))
- 		return 0;
-@@ -14,4 +14,4 @@ static int dk2_postcore_init(void)
- 
- 	return 0;
- }
--mem_initcall(dk2_postcore_init);
-+mem_initcall(dk2_mem_init);
+ / {
++	chosen {
++		environment {
++			compatible = "barebox,environment";
++			device-path = &sdmmc1, "partname:barebox-environment";
++		};
++	};
++
+ 	led {
+ 		red {
+ 			label = "error";
 -- 
 2.23.0
 
