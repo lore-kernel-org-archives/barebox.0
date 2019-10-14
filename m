@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iJzJb-00029R-I7
+ id 1iJzJb-00029U-I9
  for barebox@lists.infradead.org; Mon, 14 Oct 2019 12:19:09 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 14 Oct 2019 14:18:59 +0200
-Message-Id: <20191014121901.19471-11-a.fatoum@pengutronix.de>
+Date: Mon, 14 Oct 2019 14:18:55 +0200
+Message-Id: <20191014121901.19471-7-a.fatoum@pengutronix.de>
 In-Reply-To: <20191014121901.19471-1-a.fatoum@pengutronix.de>
 References: <20191014121901.19471-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,73 +21,102 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/12] ARM: at91: microchip-ksz9477-evb: add debug_ll UART
+Subject: [PATCH 06/12] ARM: at91: use compressed DTB for AT91_MULTI_BOARDS
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The EVB has the dbgu TX on PB31. Pinmux and set up the UART on it when
-DEBUG_LL is enabled, so early barebox boot messages can be printed.
+To offset the size increase by using multi-image have the DTBs be
+compressed. This reduces e.g. the microchip_ksz9477_evb_defconfig
+by about 22K from 244K to 222K.
+This will also come in handy when implementing first stage support
+later on.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- .../boards/microchip-ksz9477-evb/lowlevel.c   | 30 +++++++++++++++++--
- 1 file changed, 28 insertions(+), 2 deletions(-)
+ arch/arm/boards/at91sam9263ek/lowlevel_init.c    | 4 ++--
+ arch/arm/boards/at91sam9x5ek/lowlevel.c          | 4 ++--
+ arch/arm/boards/microchip-ksz9477-evb/lowlevel.c | 5 +++--
+ arch/arm/mach-at91/Kconfig                       | 1 +
+ 4 files changed, 8 insertions(+), 6 deletions(-)
 
+diff --git a/arch/arm/boards/at91sam9263ek/lowlevel_init.c b/arch/arm/boards/at91sam9263ek/lowlevel_init.c
+index ba0ae39c7fee..0bf0e0fb4eeb 100644
+--- a/arch/arm/boards/at91sam9263ek/lowlevel_init.c
++++ b/arch/arm/boards/at91sam9263ek/lowlevel_init.c
+@@ -115,7 +115,7 @@ static void __bare_init at91sam9263ek_init(void *fdt)
+ 			  fdt);
+ }
+ 
+-extern char __dtb_at91sam9263ek_start[];
++extern char __dtb_z_at91sam9263ek_start[];
+ 
+ ENTRY_FUNCTION(start_at91sam9263ek, r0, r1, r2)
+ {
+@@ -126,7 +126,7 @@ ENTRY_FUNCTION(start_at91sam9263ek, r0, r1, r2)
+ 	arm_setup_stack(AT91SAM9263_SRAM0_BASE + AT91SAM9263_SRAM0_SIZE);
+ 
+ 	if (IS_ENABLED(CONFIG_MACH_AT91SAM9263EK_DT))
+-		fdt = __dtb_at91sam9263ek_start + get_runtime_offset();
++		fdt = __dtb_z_at91sam9263ek_start + get_runtime_offset();
+ 	else
+ 		fdt = NULL;
+ 
+diff --git a/arch/arm/boards/at91sam9x5ek/lowlevel.c b/arch/arm/boards/at91sam9x5ek/lowlevel.c
+index 9033597e7cb1..c1433c8f7e84 100644
+--- a/arch/arm/boards/at91sam9x5ek/lowlevel.c
++++ b/arch/arm/boards/at91sam9x5ek/lowlevel.c
+@@ -7,7 +7,7 @@
+ #include <io.h>
+ #include <debug_ll.h>
+ 
+-extern char __dtb_at91sam9x5ek_start[];
++extern char __dtb_z_at91sam9x5ek_start[];
+ 
+ ENTRY_FUNCTION(start_at91sam9x5ek, r0, r1, r2)
+ {
+@@ -16,7 +16,7 @@ ENTRY_FUNCTION(start_at91sam9x5ek, r0, r1, r2)
+ 	arm_cpu_lowlevel_init();
+ 	arm_setup_stack(AT91SAM9X5_SRAM_BASE + AT91SAM9X5_SRAM_SIZE);
+ 
+-	fdt = __dtb_at91sam9x5ek_start + get_runtime_offset();
++	fdt = __dtb_z_at91sam9x5ek_start + get_runtime_offset();
+ 
+ 	barebox_arm_entry(AT91_CHIPSELECT_1, at91sam9x5_get_ddram_size(), fdt);
+ }
 diff --git a/arch/arm/boards/microchip-ksz9477-evb/lowlevel.c b/arch/arm/boards/microchip-ksz9477-evb/lowlevel.c
-index 2a72ca321a09..30a5760da6a4 100644
+index 0ce2b299edbd..2a72ca321a09 100644
 --- a/arch/arm/boards/microchip-ksz9477-evb/lowlevel.c
 +++ b/arch/arm/boards/microchip-ksz9477-evb/lowlevel.c
-@@ -1,7 +1,7 @@
-+// SPDX-License-Identifier: GPL-2.0-only AND BSD-1-Clause
- /*
-+ * Copyright (C) 2014, Atmel Corporation
-  * Copyright (C) 2018 Ahmad Fatoum, Pengutronix
-- *
-- * Under GPLv2
-  */
- 
- #include <common.h>
-@@ -9,8 +9,32 @@
- 
- #include <asm/barebox-arm-head.h>
- #include <asm/barebox-arm.h>
-+#include <mach/at91_pmc_ll.h>
+@@ -12,7 +12,7 @@
  
  #include <mach/hardware.h>
-+#include <mach/iomux.h>
-+#include <debug_ll.h>
-+#include <mach/at91_dbgu.h>
-+
-+/* PCK = 528MHz, MCK = 132MHz */
-+#define MASTER_CLOCK	132000000
-+
-+#define sama5d3_pmc_enable_periph_clock(clk) \
-+	at91_pmc_enable_periph_clock(IOMEM(SAMA5D3_BASE_PMC), clk)
-+
-+static void dbgu_init(void)
-+{
-+	void __iomem *pio = IOMEM(SAMA5D3_BASE_PIOB);
-+
-+	sama5d3_pmc_enable_periph_clock(SAMA5D3_ID_PIOB);
-+
-+	at91_mux_pio3_pin(pio, pin_to_mask(AT91_PIN_PB31), AT91_MUX_PERIPH_A, 0);
-+
-+	sama5d3_pmc_enable_periph_clock(SAMA5D3_ID_DBGU);
-+	at91_dbgu_setup_ll(IOMEM(AT91_BASE_DBGU1), MASTER_CLOCK, 115200);
-+
-+	putc_ll('>');
-+}
  
- extern char __dtb_z_at91_microchip_ksz9477_evb_start[];
+-extern char __dtb_at91_microchip_ksz9477_evb_start[];
++extern char __dtb_z_at91_microchip_ksz9477_evb_start[];
  
-@@ -22,6 +46,8 @@ ENTRY_FUNCTION(start_sama5d3_xplained_ung8071, r0, r1, r2)
+ ENTRY_FUNCTION(start_sama5d3_xplained_ung8071, r0, r1, r2)
+ {
+@@ -22,7 +22,8 @@ ENTRY_FUNCTION(start_sama5d3_xplained_ung8071, r0, r1, r2)
  
  	arm_setup_stack(SAMA5D3_SRAM_BASE + SAMA5D3_SRAM_SIZE);
  
-+	if (IS_ENABLED(CONFIG_DEBUG_LL))
-+		dbgu_init();
+-	fdt = __dtb_at91_microchip_ksz9477_evb_start + get_runtime_offset();
++
++	fdt = __dtb_z_at91_microchip_ksz9477_evb_start + get_runtime_offset();
  
- 	fdt = __dtb_z_at91_microchip_ksz9477_evb_start + get_runtime_offset();
+ 	barebox_arm_entry(SAMA5_DDRCS, SZ_256M, fdt);
+ }
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index 8bb9cf8bbea8..070f2f6893dc 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -536,6 +536,7 @@ endif
+ config AT91_MULTI_BOARDS
+ 	bool "Allow multiple boards to be selected"
+ 	select HAVE_PBL_MULTI_IMAGES
++	select ARM_USE_COMPRESSED_DTB
+ 
+ if AT91_MULTI_BOARDS
  
 -- 
 2.23.0
