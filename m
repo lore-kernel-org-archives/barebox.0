@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iJxtI-0005AY-0U
- for barebox@lists.infradead.org; Mon, 14 Oct 2019 10:47:55 +0000
-Date: Mon, 14 Oct 2019 12:47:50 +0200
+ id 1iJy2R-00027J-IY
+ for barebox@lists.infradead.org; Mon, 14 Oct 2019 10:57:21 +0000
+Date: Mon, 14 Oct 2019 12:57:17 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191014104750.7img6qntx3mcwoor@pengutronix.de>
-References: <20191009164009.24265-1-a.fatoum@pengutronix.de>
+Message-ID: <20191014105717.zncffdfdg5ul4yev@pengutronix.de>
+References: <20191011072217.13607-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20191009164009.24265-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20191011072217.13607-1-m.felsch@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,61 +22,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/3] ARMv7: mmu: fix setting eXecute Never for device
- memory
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] fixup! gpio: add DA9062 MFD gpio support
+To: Marco Felsch <m.felsch@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Oct 09, 2019 at 06:40:06PM +0200, Ahmad Fatoum wrote:
-> Greetings,
+On Fri, Oct 11, 2019 at 09:22:17AM +0200, Marco Felsch wrote:
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> ---
+> Hi,
 > 
-> in 0198567c4 ("ARM: mmu: mark uncached regions as eXecute never on v7"),
-> I had my first attempt at supporting eXecute Never in barebox.
-> This was meant to prevent speculative execution from accessing
-> read-sensitive device memory and the erratic behavior it could entail.
+> We need to move the gpio-controller to the mfd root node due to
+> hierarchical GPIO irqchips to keep inline with the linux bindings.
+> Please see the discussion [1] for further information.
 > 
-> The XN bit not only prevents speculation, but also any execution at all,
-> as the name suggests, so the patchset can be tested by just executing
-> the code and asserting that the prefetch abort occurs, something that
-> I unfortunately missed during the first time round.
+> [1] https://patchwork.ozlabs.org/patch/1163309/
 > 
-> This patchset rectifies this and now Prefetch Aborts are thrown as
-> expected. They weren't before barebox uses a domain with manager permissions
-> for all mappings. This means that no permission checks at all are conducted
-> and our new XN settings were without effect.
+> Regards,
+>   Marco
 > 
-> There are theoritical regressions with this patch: any ARMv7 barebox platform
-> that directly jumps into ROM code with the MMU enabled will cease to
-> work. Assuming all memory outside of the barebox text section and SDRAM to be
-> non-executable however seems the right thing to do. Platforms that do
-> call back into ROM code should explicitly indicate that they intend to
-> do so in the PBL.
-> 
-> These patches fix a cache corruption issue[1] I've observed on the i.MX6UL(L)
-> that resulted from speculative fetches into the MMDC region following the 512M
-> SDRAM on the EVKs.
-> 
-> This time I tested it by by jumping into IO memory with go -m, which I had
-> introduced in this patch:
-> https://www.spinics.net/lists/u-boot-v2/msg38947.html
-> 
-> Tested SoCs:
-> 
-> - i.MX6UL (Cortex-A7, barebox directly loaded into SDRAM)
-> - i.MX6Q  (Cortex-A9, barebox directly loaded into SDRAM)
-> - SAMA5D3 (Cortex-A5, barebox loaded into SRAM then SDRAM)
-> 
-> [1]: https://community.nxp.com/thread/511925
-> 
-> Cheers
-> Ahmad Fatoum (3):
->   ARM: cache-armv7: remove duplicate domain initialization
->   ARM: mmu: set R/W bits in ARMv7 translation table
->   ARM: mmu: use client domain permissions to support ARMv7 eXecute Never
+>  drivers/gpio/Kconfig       |   4 -
+>  drivers/gpio/Makefile      |   1 -
+>  drivers/gpio/gpio-da9062.c | 206 -------------------------------------
+>  drivers/mfd/da9063.c       | 136 ++++++++++++++++++++++++
+>  4 files changed, 136 insertions(+), 211 deletions(-)
+>  delete mode 100644 drivers/gpio/gpio-da9062.c
 
-Finally this is resolved \o/
-
-Thanks Ahmad. Applied.
+Applied, thanks
 
 Sascha
 
