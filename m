@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iJzkx-0006N8-S2
- for barebox@lists.infradead.org; Mon, 14 Oct 2019 12:47:25 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 14 Oct 2019 14:47:21 +0200
-Message-Id: <20191014124721.1965-1-a.fatoum@pengutronix.de>
-In-Reply-To: <20191014123930.x2ea4ka6hwu3u7uv@pengutronix.de>
-References: <20191014123930.x2ea4ka6hwu3u7uv@pengutronix.de>
+ id 1iK0FN-0002jn-8U
+ for barebox@lists.infradead.org; Mon, 14 Oct 2019 13:18:50 +0000
+Date: Mon, 14 Oct 2019 15:18:47 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20191014131847.z7hvwp2p2qlee57s@pengutronix.de>
+References: <20191011162753.17100-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20191011162753.17100-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,42 +22,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! watchdog: add support for Fintek F718xx and,
- F818xx Super I/O
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH 1/4] mfd: add basic Super I/O chip helpers
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
- Remove unrelated hunk, replace select with depends like suggested by
- Sascha.
+On Fri, Oct 11, 2019 at 06:27:50PM +0200, Ahmad Fatoum wrote:
+> Super I/O chips are ICs common to x86 that are used for interfacing
+> to low-bandwidth peripherals. They often contain serial ports, watchdog
+> timers and hardware monitoring units.
+> 
+> They are usually addressable via one of two I/O port pairs, either
+> 0x2e-0x2f or 0x4e-0x4f, but they don't typically respond to reads from
+> their range unless a device-specific 'password' has been poked in.
+> After this is done, they are read and written in the same manner however.
+> 
+> On Linux, these devices aren't subject to any device/driver model.
+> Each driver for some function (e.g. watchdog or GPIO) duplicates the
+> device probe in the module_init and board-specific configuration
+> is handled via module parameters.
+> 
+> Lets do it a bit fancier in barebox and add a helper to register chips
+> and a regmap for the control and configuration registers as well as a
+> helper to register child devices for each function contained within the
+> Super I/O chip.
+> Board-specific configuration, e.g. which pin to use as a watchdog reset,
+> can then be realized using barebox device-specific parameters.
+> 
+> The regmap will be more of a debugging aid, however.
+> For ease of porting from Linux, it's expected that access to the
+> I/O ports won't happen via the regmap. For this reason, the new
+> <superio.h> header offers functions to read/write these chips' registers
+> as well.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
 
----
- drivers/watchdog/Kconfig | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Applied, thanks
 
-diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-index b1c2a39b6629..45dd41a2a2f3 100644
---- a/drivers/watchdog/Kconfig
-+++ b/drivers/watchdog/Kconfig
-@@ -90,7 +90,6 @@ config STM32_IWDG_WATCHDOG
- 	  Enable to support configuration of the STM32's on-SoC IWDG watchdog.
- 	  Once started by the user, the IWDG can't be disabled.
- 
--
- config STPMIC1_WATCHDOG
- 	bool "STPMIC1 Watchdog"
- 	depends on MFD_STPMIC1
-@@ -100,7 +99,7 @@ config STPMIC1_WATCHDOG
- config F71808E_WDT
- 	bool "Fintek F718xx, F818xx Super I/O Watchdog"
- 	depends on X86
--	select FINTEK_SUPERIO
-+	depends on FINTEK_SUPERIO
- 	help
- 	  This is the driver for the hardware watchdog on the Fintek F71808E,
- 	  F71862FG, F71868, F71869, F71882FG, F71889FG, F81865 and F81866
+Sascha
+
+
 -- 
-2.23.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
