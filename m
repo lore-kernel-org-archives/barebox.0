@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iJxYT-00049I-06
- for barebox@lists.infradead.org; Mon, 14 Oct 2019 10:26:22 +0000
-Date: Mon, 14 Oct 2019 12:26:19 +0200
+ id 1iJxZB-0004GJ-RT
+ for barebox@lists.infradead.org; Mon, 14 Oct 2019 10:27:07 +0000
+Date: Mon, 14 Oct 2019 12:27:04 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191014102619.m6o5lo7vayfjdaij@pengutronix.de>
-References: <20191008141801.3388-1-a.fatoum@pengutronix.de>
+Message-ID: <20191014102704.eecredgqwossr4qw@pengutronix.de>
+References: <20191008144628.7991-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20191008141801.3388-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20191008144628.7991-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,22 +22,21 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: mmu: remove no longer accurate comment
+Subject: Re: [PATCH] ARM: cache-armv7: remove superfluous instruction
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Oct 08, 2019 at 04:18:01PM +0200, Ahmad Fatoum wrote:
-> This comment refers to the state of things prior to e3e54c644
-> ("ARM: mmu: Implement on-demand PTE allocation"). Since then, we no
-> longer generate 2nd level page tables directly below. Remove it
-> to avoid confusion.
+On Tue, Oct 08, 2019 at 04:46:28PM +0200, Ahmad Fatoum wrote:
+> There are two tst r11, #0xf with nothing in between them that changes
+> r11. This a left over from the kernel code that checks for VMSA twice,
+> once to check if the page table should be setup and once to more to
+> flush the TLB. We do the setup in the caller already, so the tst serves
+> no useful purpose. Delete one.
 > 
-> Cc: Lucas Stach <l.stach@pengutronix.de>
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  arch/arm/cpu/mmu.c | 5 -----
->  1 file changed, 5 deletions(-)
-> 
+>  arch/arm/cpu/cache-armv7.S | 1 -
+>  1 file changed, 1 deletion(-)
 
 Applied, thanks
 
