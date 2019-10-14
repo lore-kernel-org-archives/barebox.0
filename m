@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iJxK6-0006RF-RR
- for barebox@lists.infradead.org; Mon, 14 Oct 2019 10:11:32 +0000
-Date: Mon, 14 Oct 2019 12:11:28 +0200
+ id 1iJxL8-0006aH-HU
+ for barebox@lists.infradead.org; Mon, 14 Oct 2019 10:12:35 +0000
+Date: Mon, 14 Oct 2019 12:12:32 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191014101128.blr63u4oowudetci@pengutronix.de>
-References: <20191007102859.9521-1-a.fatoum@pengutronix.de>
+Message-ID: <20191014101232.c2c4zldf7lg777dx@pengutronix.de>
+References: <20191008050426.29849-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20191007102859.9521-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20191008050426.29849-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,24 +22,20 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: use system.h's get_cr() for cpuinfo
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] Documentation: zii-vf610-dev: Fix bogus DDR
+ configuration values
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Oct 07, 2019 at 12:28:59PM +0200, Ahmad Fatoum wrote:
-> Instead of open-coding the get_cr(), use the already available helper
-> in <asm/system.h> same as we do for 64-bit ARMv8.
-> The only difference is that the "memory" clobber is replaced by "cc".
-> This is ok as we don't expect get_cr() to affect memory and because
-> we do it elsewhere in barebox without a "memory" clobber already.
+On Mon, Oct 07, 2019 at 10:04:26PM -0700, Andrey Smirnov wrote:
+> There's a clear mismatch between actual TCL code and comment right
+> next to it. Comments are definetly right, so fix the TCL code.
 > 
-> While at it, move it out the #if/#else clause as the helper changes
-> behavior depending on the same CONFIG option anyway.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Fixes: 02738f4b59 ("Documentation: zii-vf610-dev: Reconcile DDR setup with DCD")
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 > ---
->  arch/arm/cpu/cpuinfo.c | 9 +--------
->  1 file changed, 1 insertion(+), 8 deletions(-)
+>  Documentation/boards/imx/zii-vf610-dev/openocd.cfg | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 
 Applied, thanks
 
