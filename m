@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iJzJz-0002U6-B1
- for barebox@lists.infradead.org; Mon, 14 Oct 2019 12:19:33 +0000
+ id 1iJzJd-00029c-AI
+ for barebox@lists.infradead.org; Mon, 14 Oct 2019 12:19:12 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 14 Oct 2019 14:18:49 +0200
-Message-Id: <20191014121901.19471-1-a.fatoum@pengutronix.de>
+Date: Mon, 14 Oct 2019 14:18:58 +0200
+Message-Id: <20191014121901.19471-10-a.fatoum@pengutronix.de>
+In-Reply-To: <20191014121901.19471-1-a.fatoum@pengutronix.de>
+References: <20191014121901.19471-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,72 +21,115 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/12] ARM: at91: improve sama5 and multi-image support
+Subject: [PATCH 09/12] ARM: at91: import lowlevel dbgu UART init code from
+ at91bootstrap
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <ahmad@a3f.at>, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-So far we had a menu that allowed multi-images only on a per-SoC basis.
-This patch drop this, so we can use the newly added sama5d2 and sama5d3
-support in the same image. The sama5d2 support is not yet complete, but
-it boots to shell and network and QSPI-NOR drivers are already
-available.
+From: Ahmad Fatoum <ahmad@a3f.at>
 
-Ahmad Fatoum (12):
-  ARM: at91: at91sam9x5ek: squelch new dtc warning
-  ARM: at91: delete no-longer needed #ifdef guards
-  usb: gadget: at91_udc: don't depend on !ARCH_SAMA5D4
-  ARM: at91: don't define ARCH_BAREBOX_MAX_BARE_INIT_SIZE for
-    multi-image
-  ARM: at91: build for all SoCs when AT91_MULTI_BOARDS is selected
-  ARM: at91: use compressed DTB for AT91_MULTI_BOARDS
-  LICENSES: add BSD-1-Clause license
-  ARM: at91: import lowlevel clock initialization from at91bootstrap
-  ARM: at91: import lowlevel dbgu UART init code from at91bootstrap
-  ARM: at91: microchip-ksz9477-evb: add debug_ll UART
-  ARM: at91: add basic sama5d2 support
-  ARM: at91: add basic sama5d2-som1-ek1 support
+For use in PBL, import dbgu init code from:
+https://github.com/linux4sam/at91bootstrap/blob/v3.8.12/driver/at91_usart.c
 
- LICENSES/preferred/BSD-1-Clause               |  26 ++
- arch/arm/boards/Makefile                      |   1 +
- arch/arm/boards/at91sam9263ek/lowlevel_init.c |   4 +-
- arch/arm/boards/at91sam9x5ek/lowlevel.c       |   4 +-
- .../boards/microchip-ksz9477-evb/lowlevel.c   |  35 ++-
- arch/arm/boards/sama5d27-som1/Makefile        |   1 +
- arch/arm/boards/sama5d27-som1/lowlevel.c      |  81 ++++++
- arch/arm/configs/sama5d27_som1_ek_defconfig   |  88 ++++++
- arch/arm/dts/Makefile                         |   1 +
- arch/arm/dts/at91-sama5d27_som1_ek.dts        |  36 +++
- arch/arm/dts/at91sam9x5ek.dts                 |  19 +-
- arch/arm/dts/sama5d2.dtsi                     |   0
- arch/arm/mach-at91/Kconfig                    |  78 ++++--
- arch/arm/mach-at91/Makefile                   |  23 +-
- arch/arm/mach-at91/at91_pmc_ll.c              | 183 ++++++++++++
- arch/arm/mach-at91/clock.c                    |  15 +-
- arch/arm/mach-at91/include/mach/at91_dbgu.h   |  63 ++++-
- arch/arm/mach-at91/include/mach/at91_pmc.h    |  24 +-
- arch/arm/mach-at91/include/mach/at91_pmc_ll.h |  78 ++++++
- .../include/mach/at91sam926x_board_init.h     |   6 -
- arch/arm/mach-at91/include/mach/cpu.h         |  60 +++-
- arch/arm/mach-at91/include/mach/hardware.h    |   1 +
- arch/arm/mach-at91/include/mach/sama5d2.h     | 261 ++++++++++++++++++
- arch/arm/mach-at91/include/mach/sama5d3.h     |   2 +-
- arch/arm/mach-at91/sam9_smc.c                 |   5 +-
- arch/arm/mach-at91/setup.c                    | 104 ++++++-
- common/Kconfig                                |   5 +-
- drivers/usb/gadget/Kconfig                    |   1 -
- drivers/usb/gadget/at91_udc.c                 |   6 -
- images/Makefile.at91                          |   4 +
- 30 files changed, 1125 insertions(+), 90 deletions(-)
- create mode 100644 LICENSES/preferred/BSD-1-Clause
- create mode 100644 arch/arm/boards/sama5d27-som1/Makefile
- create mode 100644 arch/arm/boards/sama5d27-som1/lowlevel.c
- create mode 100644 arch/arm/configs/sama5d27_som1_ek_defconfig
- create mode 100644 arch/arm/dts/at91-sama5d27_som1_ek.dts
- create mode 100644 arch/arm/dts/sama5d2.dtsi
- create mode 100644 arch/arm/mach-at91/at91_pmc_ll.c
- create mode 100644 arch/arm/mach-at91/include/mach/at91_pmc_ll.h
- create mode 100644 arch/arm/mach-at91/include/mach/sama5d2.h
+The brgr calculation at the beginning is a untangled version
+of the BAUDRATE macro from the usart.h header:
 
+	#define BAUDRATE(mck, baud) \
+		(((((mck) * 10) / ((baud) * 16)) % 10) >= 5) ? \
+		(mck / (baud * 16) + 1) : ((mck) / (baud * 16))
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/arm/mach-at91/include/mach/at91_dbgu.h | 63 ++++++++++++++++++++-
+ 1 file changed, 62 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/mach-at91/include/mach/at91_dbgu.h b/arch/arm/mach-at91/include/mach/at91_dbgu.h
+index e33a358153f9..0ba9cdae10ce 100644
+--- a/arch/arm/mach-at91/include/mach/at91_dbgu.h
++++ b/arch/arm/mach-at91/include/mach/at91_dbgu.h
+@@ -5,7 +5,7 @@
+  * Copyright (C) SAN People
+  *
+  * Debug Unit (DBGU) - System peripherals registers.
+- * Based on AT91RM9200 datasheet revision E.
++ * Based on AT91RM9200 datasheet revision E and SAMA5D3 datasheet revision B.
+  *
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published by
+@@ -17,7 +17,33 @@
+ #define AT91_DBGU_H
+ 
+ #define AT91_DBGU_CR		(0x00)	/* Control Register */
++#define 	AT91_DBGU_RSTRX		(1 << 2)		/* Reset Receiver */
++#define 	AT91_DBGU_RSTTX		(1 << 3)		/* Reset Transmitter */
++#define 	AT91_DBGU_RXEN		(1 << 4)		/* Receiver Enable */
++#define 	AT91_DBGU_RXDIS		(1 << 5)		/* Receiver Disable */
++#define 	AT91_DBGU_TXEN		(1 << 6)		/* Transmitter Enable */
++#define 	AT91_DBGU_TXDIS		(1 << 7)		/* Transmitter Disable */
++#define 	AT91_DBGU_RSTSTA	(1 << 8)		/* Reset Status Bits */
+ #define AT91_DBGU_MR		(0x04)	/* Mode Register */
++#define		AT91_DBGU_NBSTOP_1BIT		(0 << 12) /* 1 stop bit */
++#define		AT91_DBGU_NBSTOP_1_5BIT	(1 << 12) /* 1.5 stop bits */
++#define		AT91_DBGU_NBSTOP_2BIT		(2 << 12) /* 2 stop bits */
++
++#define		AT91_DBGU_CHRL_5BIT	(0 << 6) /* 5 bit character length */
++#define		AT91_DBGU_CHRL_6BIT	(1 << 6) /* 6 bit character length */
++#define		AT91_DBGU_CHRL_7BIT	(2 << 6) /* 7 bit character length */
++#define		AT91_DBGU_CHRL_8BIT	(3 << 6) /* 8 bit character length */
++
++#define 	AT91_DBGU_PAR_EVEN	(0 << 9)		/* Even Parity */
++#define 	AT91_DBGU_PAR_ODD	(1 << 9)		/* Odd Parity */
++#define 	AT91_DBGU_PAR_SPACE	(2 << 9)		/* Space: Force Parity to 0 */
++#define 	AT91_DBGU_PAR_MARK	(3 << 9)		/* Mark: Force Parity to 1 */
++#define 	AT91_DBGU_PAR_NONE	(4 << 9)		/* No Parity */
++
++#define 	AT91_DBGU_CHMODE_NORMAL	(0 << 14) /* Normal mode */
++#define 	AT91_DBGU_CHMODE_AUTO		(1 << 14) /* Automatic Echo */
++#define 	AT91_DBGU_CHMODE_LOCAL		(2 << 14) /* Local Loopback */
++#define 	AT91_DBGU_CHMODE_REMOTE	(3 << 14) /* Remote Loopback */
+ #define AT91_DBGU_IER		(0x08)	/* Interrupt Enable Register */
+ #define		AT91_DBGU_TXRDY		(1 << 1)		/* Transmitter Ready */
+ #define		AT91_DBGU_TXEMPTY	(1 << 9)		/* Transmitter Empty */
+@@ -61,4 +87,39 @@
+ #define		AT91_CIDR_NVPTYP	(7    << 28)		/* Nonvolatile Program Memory Type */
+ #define		AT91_CIDR_EXT		(1    << 31)		/* Extension Flag */
+ 
++#ifndef __ASSEMBLY__
++
++#include <asm/io.h>
++static inline void at91_dbgu_setup_ll(void __iomem *dbgu_base,
++				      unsigned mck,
++				      unsigned baudrate)
++{
++	if (IS_ENABLED(CONFIG_DEBUG_LL)) {
++		u32 brgr = mck / (baudrate * 16);
++
++		if ((mck / (baudrate * 16)) % 10 >= 5)
++			brgr++;
++
++		writel(~0, dbgu_base + AT91_DBGU_IDR);
++
++		writel(AT91_DBGU_RSTRX
++		       | AT91_DBGU_RSTTX
++		       | AT91_DBGU_RXDIS
++		       | AT91_DBGU_TXDIS,
++		       dbgu_base + AT91_DBGU_CR);
++
++		writel(brgr, dbgu_base + AT91_DBGU_BRGR);
++
++		writel(AT91_DBGU_PAR_NONE
++		       | AT91_DBGU_CHMODE_NORMAL
++		       | AT91_DBGU_CHRL_8BIT
++		       | AT91_DBGU_NBSTOP_1BIT,
++		       dbgu_base + AT91_DBGU_MR);
++
++		writel(AT91_DBGU_RXEN | AT91_DBGU_TXEN, dbgu_base + AT91_DBGU_CR);
++	}
++}
++
++#endif
++
+ #endif
 -- 
 2.23.0
 
