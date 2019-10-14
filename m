@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iJxO7-00087N-2x
- for barebox@lists.infradead.org; Mon, 14 Oct 2019 10:15:40 +0000
-Date: Mon, 14 Oct 2019 12:15:37 +0200
+ id 1iJxXW-0003rM-68
+ for barebox@lists.infradead.org; Mon, 14 Oct 2019 10:25:23 +0000
+Date: Mon, 14 Oct 2019 12:25:20 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191014101537.rtslhyuzlx3wquo4@pengutronix.de>
-References: <20191008050657.1605-1-andrew.smirnov@gmail.com>
+Message-ID: <20191014102520.d5c3eyfv4tww3mn6@pengutronix.de>
+References: <1570524972-208631-1-git-send-email-s.riedmueller@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20191008050657.1605-1-andrew.smirnov@gmail.com>
+In-Reply-To: <1570524972-208631-1-git-send-email-s.riedmueller@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,22 +22,20 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] i2c-mux-pca954x: Add support for
- "i2c-mux-idle-disconnect"
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH 1/2] net: fec_imx: Fix resource rollback with regulator
+ errors
+To: Stefan Riedmueller <s.riedmueller@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Oct 07, 2019 at 10:06:56PM -0700, Andrey Smirnov wrote:
-> Add support for "i2c-mux-idle-disconnect" binding to match the
-> behavior, already present in upstream kernel driver. This feature is a
-> must have for I2C bus topologies with multiple muxes connected to
-> child segments containing slaves with identical addresses (e.g. ZII's
-> SCU4)
+On Tue, Oct 08, 2019 at 10:56:11AM +0200, Stefan Riedmueller wrote:
+> When the driver is not able to get or control the phy regulator memory
+> resources are already acquired and need to be released during rollback.
 > 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
 > ---
->  drivers/i2c/muxes/i2c-mux-pca954x.c | 19 ++++++++++++++++++-
->  1 file changed, 18 insertions(+), 1 deletion(-)
+>  drivers/net/fec_imx.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
 
 Applied, thanks
 
