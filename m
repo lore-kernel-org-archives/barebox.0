@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iJz1M-0003JV-8M
- for barebox@lists.infradead.org; Mon, 14 Oct 2019 12:00:17 +0000
-Date: Mon, 14 Oct 2019 14:00:14 +0200
+ id 1iJz5B-00049o-O0
+ for barebox@lists.infradead.org; Mon, 14 Oct 2019 12:04:15 +0000
+Date: Mon, 14 Oct 2019 14:04:12 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191014120014.l2weokpk6l2oscrg@pengutronix.de>
-References: <20191001005718.27165-1-andrew.smirnov@gmail.com>
+Message-ID: <20191014120412.uy3tlxj36tscbv3y@pengutronix.de>
+References: <20191002130959.2856-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20191001005718.27165-1-andrew.smirnov@gmail.com>
+In-Reply-To: <20191002130959.2856-1-m.felsch@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,38 +22,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] version_string: Add toolchain and build host info
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH v2] ARM: i.MX: phytec-som-imx6: phycore: fix updating
+ pmic regulators
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: barebox@lists.infradead.org, s.riedmueller@phytec.de, mfe@pengutronix.de, s.christ@phytec.de, j.remmet@phytec.de
 
-On Mon, Sep 30, 2019 at 05:57:18PM -0700, Andrey Smirnov wrote:
-> Linux kernel reports the version of toolchain it was built with as a
-> part of its version string, which can be extremely useful when
-> debugging toolchain related issues. Make Barebox version string, mimic
-> that of Linux to get the same level of information in Barebox.
+On Wed, Oct 02, 2019 at 03:09:59PM +0200, Marco Felsch wrote:
+> Currently the fixup code assumes that only one i2c bus is active. If we
+> reuse the board code for other boards this isn't always true. Fix that
+> by using of_find_i2c_adapter_by_node() to address both cases.
 > 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> Fixes: b6bebb7aca ("ARM: i.MX: phytec-som-imx6: phycore: Set BUCK mode to SYNC")
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 > ---
->  common/version.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+> Changelog:
 > 
-> diff --git a/common/version.c b/common/version.c
-> index 8b1fd4dbe7..5f57022dac 100644
-> --- a/common/version.c
-> +++ b/common/version.c
-> @@ -3,7 +3,8 @@
->  #include <generated/utsrelease.h>
->  
->  const char version_string[] =
-> -	"barebox " UTS_RELEASE " " UTS_VERSION "\n";
-> +	"barebox " UTS_RELEASE " (" BAREBOX_COMPILE_BY "@"
-> +	BAREBOX_COMPILE_HOST ") (" BAREBOX_COMPILER ") " UTS_VERSION "\n";
+> v2:
+> - Make use of of_find_i2c_adapter_by_node() to get the right adapter.
+> ---
+>  arch/arm/boards/phytec-som-imx6/board.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
 
-I think we shouldn't make version_string longer than it actually is. We
-could print the information as additional lines (without adding it to
-version_string), or as Antony suggested, as global variables.
+Applied, thanks
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
