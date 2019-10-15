@@ -1,20 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lj1-x242.google.com ([2a00:1450:4864:20::242])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iKOew-0006xx-MX
- for barebox@lists.infradead.org; Tue, 15 Oct 2019 15:22:52 +0000
-Received: from [2001:67c:670:100:6a05:caff:fe2d:a9b1]
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>) id 1iKOev-0007xo-CY
- for barebox@lists.infradead.org; Tue, 15 Oct 2019 17:22:49 +0200
-References: <20191015150842.pti6kze33kcsmrsm@reflex>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <729772a1-c869-5346-595a-3c0986e3f7f9@pengutronix.de>
-Date: Tue, 15 Oct 2019 17:22:49 +0200
-MIME-Version: 1.0
+ id 1iKTt5-0002hD-Vo
+ for barebox@lists.infradead.org; Tue, 15 Oct 2019 20:57:49 +0000
+Received: by mail-lj1-x242.google.com with SMTP id 7so21705539ljw.7
+ for <barebox@lists.infradead.org>; Tue, 15 Oct 2019 13:57:45 -0700 (PDT)
+Date: Tue, 15 Oct 2019 23:57:41 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20191015235741.434bac5dbcc287aa8d984cbf@gmail.com>
 In-Reply-To: <20191015150842.pti6kze33kcsmrsm@reflex>
-Content-Language: en-US
+References: <20191015150842.pti6kze33kcsmrsm@reflex>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,59 +19,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: setup for a working framebuffer in qemu
-To: barebox@lists.infradead.org
+To: Denis Roio <jaromil@dyne.org>
+Cc: barebox@lists.infradead.org
 
-Hello Denis,
-
-On 10/15/19 5:08 PM, Denis Roio wrote:
-> 
-> hi all! noob question here, hope you don't mind
-> 
-> is there a recommended, matching configuration to run barebox in qemu
-> with a working /dev/fb0 ?
-
-Easiest way is to use barebox sandbox. It has a SDL fb driver.
-
-> 
-> 
-> I have made some tries already with no success:
-> 
-> - qemu emulated mips-malta boots, but no fb0
-> - qemu emulated vexpress boots, but no fb0
-
-Could be that they don't have driver support in barebox.
-Check under drivers/fb.
-
-> - qemu emulated sabrelite can't even get it to boot
-
-There's a CONFIG_BOARD_ARM_GENERIC_DT option that yields a barebox image
-that boots like Linux does and can be passed to qemu's -kernel
-option. The commit introducing it has some extra info on how to use
-it with QEMU + sabrelite.
-https://www.spinics.net/lists/u-boot-v2/msg38795.html
-
-> 
-> I'm a bit out of ideas. Would really appreciate guidance, this is
-> mostly for fun while poking around this wonderful project.
-> 
-> 
-> Thanks!
-> 
-> 
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gVHVlLCAxNSBPY3QgMjAxOSAxNzowODo0MiArMDIwMApEZW5pcyBSb2lvIDxqYXJvbWlsQGR5
+bmUub3JnPiB3cm90ZToKCj4gCj4gaGkgYWxsISBub29iIHF1ZXN0aW9uIGhlcmUsIGhvcGUgeW91
+IGRvbid0IG1pbmQKPiAKPiBpcyB0aGVyZSBhIHJlY29tbWVuZGVkLCBtYXRjaGluZyBjb25maWd1
+cmF0aW9uIHRvIHJ1biBiYXJlYm94IGluIHFlbXUKPiB3aXRoIGEgd29ya2luZyAvZGV2L2ZiMCA/
+Cj4gCj4gCj4gSSBoYXZlIG1hZGUgc29tZSB0cmllcyBhbHJlYWR5IHdpdGggbm8gc3VjY2VzczoK
+PiAKPiAtIHFlbXUgZW11bGF0ZWQgbWlwcy1tYWx0YSBib290cywgYnV0IG5vIGZiMAoKU29ycnks
+IG1pcHMtbWFsdGEgZG9lcyBub3Qgc3VwcG9ydCBmYjAuCgpVc2Ugc2FuZGJveCAoeW91IGhhdmUg
+dG8gaW5zdGFsbCBsaWJzZGwgZGV2ZWxvcG1lbnQgcGFja2FnZSk6CgokIHdnZXQgaHR0cHM6Ly93
+d3cuYmFyZWJveC5vcmcvZG93bmxvYWQvYmFyZWJveC0yMDE5LjEwLjAudGFyLmJ6MgokIHRhciB2
+ZnggYmFyZWJveC0yMDE5LjEwLjAudGFyLmJ6MgokIGNkIGJhcmVib3gtMjAxOS4xMC4wCiQgbWFr
+ZSBzYW5kYm94X2RlZmNvbmZpZwokIGVjaG8gQ09ORklHX0RSSVZFUl9WSURFT19TREw9eSA+PiAu
+Y29uZmlnCiQgbWFrZSBvbGRjb25maWcKJCBtYWtlCgokIC4vYmFyZWJveAoKCkVuYWJsZSBmcmFt
+ZWJ1ZmZlciBjb25zb2xlIGZyb20gYmFyZWJveCBjb21tYW5kIGxpbmU6CgpiYXJlYm94QGJhcmVi
+b3ggc2FuZGJveDovIGZiY29uc29sZTAuYWN0aXZlPW9lCgpvciB5b3UgY2FuIGVuYWJsZSBvbmx5
+IGZyYW1lYnVmZmVyICh3aXRob3V0IGNvbnNvbGUpOgoKYmFyZWJveEBiYXJlYm94IHNhbmRib3g6
+LyBmYjAuZW5hYmxlPTEKCnVzZSAnc3BsYXNoIC9sb2dvL2JhcmVib3gtbG9nby0yNDAucG5nJyB0
+byB0ZXN0IHBpY3R1cmUgb3V0cHV0LgoKLS0gCkJlc3QgcmVnYXJkcywKwqAgQW50b255IFBhdmxv
+dgoKPiAtIHFlbXUgZW11bGF0ZWQgdmV4cHJlc3MgYm9vdHMsIGJ1dCBubyBmYjAKPiAtIHFlbXUg
+ZW11bGF0ZWQgc2FicmVsaXRlIGNhbid0IGV2ZW4gZ2V0IGl0IHRvIGJvb3QKPiAKPiBJJ20gYSBi
+aXQgb3V0IG9mIGlkZWFzLiBXb3VsZCByZWFsbHkgYXBwcmVjaWF0ZSBndWlkYW5jZSwgdGhpcyBp
+cwo+IG1vc3RseSBmb3IgZnVuIHdoaWxlIHBva2luZyBhcm91bmQgdGhpcyB3b25kZXJmdWwgcHJv
+amVjdC4KPiAKPiAKPiBUaGFua3MhCj4gCj4gCj4gLS0gCj4gICBEZW5pcyAiSmFyb21pbCIgUm9p
+byAgICAgIGh0dHBzOi8vRHluZS5vcmcgdGhpbmsgJmRvIHRhbmsKPiAgIFBoLkQsIENUTyAmIGNv
+LWZvdW5kZXIgICAgc29mdHdhcmUgdG8gZW1wb3dlciBjb21tdW5pdGllcwo+ICAg4pyJIEhhcGFy
+YW5kYWRhbSA3LUExLCAxMDEzQUsgQW1zdGVyZGFtLCBUaGUgTmV0aGVybGFuZHMKPiAgIPCdhJ4g
+Y3J5cHRvIM66z4HPhc+Az4TOvyDQutGA0LjQv9GC0L4g4KSX4KWB4KSq4KWN4KSk4KWNIOWKoOWv
+hiDXlNeQ16DXldeh15nXnSDYp9mE2YXYtNmB2LHZhwo+ICAg4pq3IDYxMTNEODlDIEE4MjVDNUNF
+IEREMDJDODcyIDczQjM1REE1IDRBQ0I3RDEwCj4gCj4gCj4gX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX18KPiBiYXJlYm94IG1haWxpbmcgbGlzdAo+IGJhcmVi
+b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxt
+YW4vbGlzdGluZm8vYmFyZWJveAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFk
+Lm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
