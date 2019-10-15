@@ -1,12 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from smtpbguseast2.qq.com ([54.204.34.130])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iKbNa-0003uJ-3O
- for barebox@lists.infradead.org; Wed, 16 Oct 2019 04:57:47 +0000
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Wed, 16 Oct 2019 06:57:42 +0200
-Message-Id: <20191016045743.22818-1-o.rempel@pengutronix.de>
-MIME-Version: 1.0
+ id 1iKUmB-0007qT-1t
+ for barebox@lists.infradead.org; Tue, 15 Oct 2019 21:54:44 +0000
+From: sendpatch@qq.com
+Date: Wed, 16 Oct 2019 05:54:20 +0800
+Message-Id: <1571176460-11235-1-git-send-email-sendpatch@qq.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,65 +14,84 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] MIPS: init cache before using it
+Subject: [PATCH] readline: make ctrl-u to work like linux console
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: DU HUANPENG <u74147@gmail.com>
 
-flush_cache_all() uses 'struct cpuinfo_mips current_cpu_data' data
-fields. These data fields are initialized in r4k_cache_init().
+From: DU HUANPENG <u74147@gmail.com>
 
-However in the current implementation the r4k_cache_init() function
-is called __AFTER__ relocate_code().
+currtly, the ctrl-u discards the whole line, in most linux
+boxes, ctrl-u just remove character before cursor.
+this patch make ctrl-u to do this.
 
-Suggested-by: Antony Pavlov <antonynpavlov@gmail.com>
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Signed-off-by: DU HUANPENG <u74147@gmail.com>
 ---
- arch/mips/lib/reloc.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ lib/readline.c | 34 +++++++++++++++++++++++++++++++---
+ 1 file changed, 31 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/lib/reloc.c b/arch/mips/lib/reloc.c
-index 9a9e404f7e..14195d6f96 100644
---- a/arch/mips/lib/reloc.c
-+++ b/arch/mips/lib/reloc.c
-@@ -31,6 +31,7 @@
- #include <asm/bitops.h>
- #include <asm/cache.h>
- #include <asm/cacheops.h>
-+#include <asm/cpu-features.h>
- #include <asm/cpu.h>
- #include <asm/cpu-info.h>
- #include <asm/io.h>
-@@ -40,6 +41,7 @@
- #include <linux/sizes.h>
- #include <asm-generic/memory_layout.h>
+diff --git a/lib/readline.c b/lib/readline.c
+index d026af1..c0b194c 100644
+--- a/lib/readline.c
++++ b/lib/readline.c
+@@ -188,9 +188,10 @@ int readline(const char *prompt, char *buf, int len)
+ 	unsigned wlen;
+ 	int ichar;
+ 	int insert = 1;
++	int i;
+ #ifdef CONFIG_AUTO_COMPLETE
+ 	char tmp;
+-	int reprint, i;
++	int reprint;
+ 	char *completestr;
  
-+extern void r4k_cache_init(void);
- void main_entry(void *fdt, u32 fdt_size);
- void relocate_code(void *fdt, u32 fdt_size, u32 relocaddr);
- 
-@@ -146,8 +148,14 @@ void relocate_code(void *fdt, u32 fdt_size, u32 ram_size)
- 		apply_reloc(type, (void *)addr, off);
- 	}
- 
--	/* Ensure the icache is coherent */
--	flush_cache_all();
-+	memset(__bss_start, 0, bss_len);
+ 	complete_reset();
+@@ -291,8 +292,35 @@ int readline(const char *prompt, char *buf, int len)
+ 			break;
+ 		case BB_KEY_ERASE_LINE:
+ 		case CTL_CH('u'):
+-			BEGINNING_OF_LINE();
+-			ERASE_TO_EOL();
++			if(num >= eol_num) {
++				BEGINNING_OF_LINE();
++				ERASE_TO_EOL();
++			} else {
++				for(i=num; i<eol_num; i++) {
++					buf[i-num] = buf[i];
++				}
++				buf[i] = '\0';
 +
-+	cpu_probe();
-+	if (cpu_has_4k_cache) {
-+		r4k_cache_init();
-+		/* Ensure the icache is coherent */
-+		flush_cache_all();
-+	}
- 
- 	/* Clear the .bss section */
- 	bss_start = (uint8_t *)((unsigned long)__bss_start + off);
++				for(i=0; i<num; i++) {
++					getcmd_putch(CTL_BACKSPACE);
++				}
++				for(i=0; i<eol_num; i++) {
++					getcmd_putch(' ');
++				}
++				for(i=0; i<eol_num; i++) {
++					getcmd_putch(CTL_BACKSPACE);
++				}
++
++				eol_num -= num;
++				num = 0;
++
++				for(i=0; i<eol_num; i++) {
++					getcmd_putch(buf[i]);
++				}
++				for(i=0; i<eol_num; i++) {
++					getcmd_putch(CTL_BACKSPACE);
++				}
++			}
+ 			break;
+ 		case DEL:
+ 		case BB_KEY_DEL7:
 -- 
-2.23.0
+2.7.4
+
+
 
 
 _______________________________________________
