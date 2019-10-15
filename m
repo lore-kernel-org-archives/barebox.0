@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iKHgO-0008PP-Tn
+ id 1iKHgO-0008PM-Tp
  for barebox@lists.infradead.org; Tue, 15 Oct 2019 07:55:56 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 15 Oct 2019 09:55:48 +0200
-Message-Id: <20191015075549.4380-5-s.hauer@pengutronix.de>
+Date: Tue, 15 Oct 2019 09:55:46 +0200
+Message-Id: <20191015075549.4380-3-s.hauer@pengutronix.de>
 In-Reply-To: <20191015075549.4380-1-s.hauer@pengutronix.de>
 References: <20191015075549.4380-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,198 +21,495 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] rsa: Allow to directly compile in rsa public keys
+Subject: [PATCH 2/5] scripts: Add rsatoc tool
 To: Barebox List <barebox@lists.infradead.org>
 
-So far we relied on the U-Boot mkimage tool to generate us device tree
-snippets containing rsa public keys which we then compiled into barebox.
-Make this easier and allow to directly specify a filename or PKCS#11 URI
-in Kconfig. With this we no longer need the U-Boot mkimage tool here and
-no more external steps to prepare device tree snippets.
-
-With this rsa public keys can be directly compiled as C structs into
-barebox which is much more direct than putting it into the device tree.
+The rsatoc tool converts rsa public keys into C structs suitable to
+compile with barebox. Most of the openssl rsa related stuff has been
+taken from the U-Boot mkimage tool.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- crypto/.gitignore                 |  2 ++
- crypto/Kconfig                    | 19 ++++++++++++++++++
- crypto/Makefile                   | 10 ++++++++++
- crypto/rsa.c                      | 33 +++++++++++++++++++++++++++++++
- include/asm-generic/barebox.lds.h |  6 ++++++
- include/rsa.h                     |  2 ++
- scripts/Makefile.lib              | 18 +++++++++++++++++
- 7 files changed, 90 insertions(+)
- create mode 100644 crypto/.gitignore
+ scripts/.gitignore |   1 +
+ scripts/Makefile   |   3 +
+ scripts/rsatoc.c   | 445 +++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 449 insertions(+)
+ create mode 100644 scripts/rsatoc.c
 
-diff --git a/crypto/.gitignore b/crypto/.gitignore
+diff --git a/scripts/.gitignore b/scripts/.gitignore
+index 45c81bf8f4..76ea271abb 100644
+--- a/scripts/.gitignore
++++ b/scripts/.gitignore
+@@ -29,3 +29,4 @@ mxs-usb-loader
+ omap4_usbboot
+ omap3-usb-loader
+ mips-relocs
++rsatoc
+diff --git a/scripts/Makefile b/scripts/Makefile
+index dffab53c73..81d1a501b0 100644
+--- a/scripts/Makefile
++++ b/scripts/Makefile
+@@ -10,6 +10,9 @@ hostprogs-y                      += fix_size
+ hostprogs-y                      += bareboxenv
+ hostprogs-y                      += bareboxcrc32
+ hostprogs-y                      += kernel-install
++hostprogs-$(CONFIG_CRYPTO_RSA_BUILTIN_KEYS) += rsatoc
++HOSTCFLAGS_rsatoc = `pkg-config --cflags openssl`
++HOSTLDLIBS_rsatoc = `pkg-config --libs openssl`
+ hostprogs-$(CONFIG_IMD)          += bareboximd
+ hostprogs-$(CONFIG_KALLSYMS)     += kallsyms
+ hostprogs-$(CONFIG_MIPS)         += mips-relocs
+diff --git a/scripts/rsatoc.c b/scripts/rsatoc.c
 new file mode 100644
-index 0000000000..92d8af3cf4
+index 0000000000..f853691908
 --- /dev/null
-+++ b/crypto/.gitignore
-@@ -0,0 +1,2 @@
-+rsa-keys.h
-+rsa-keys.h.tmp
-diff --git a/crypto/Kconfig b/crypto/Kconfig
-index c06d3c054e..42b018b296 100644
---- a/crypto/Kconfig
-+++ b/crypto/Kconfig
-@@ -94,6 +94,25 @@ config CRYPTO_PBKDF2
- config CRYPTO_RSA
- 	bool
- 
-+config CRYPTO_RSA_BUILTIN_KEYS
-+	bool
-+	default y if CRYPTO_RSA_KEYS != ""
++++ b/scripts/rsatoc.c
+@@ -0,0 +1,445 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * rsatoc - utility to convert an RSA key to a C struct
++ *
++ * This tool converts an RSA key given as file or PKCS#11
++ * URI to a C struct suitable to compile with barebox.
++ */
++#include <stdio.h>
++#include <string.h>
++#include <time.h>
++#include <openssl/bn.h>
++#include <openssl/rsa.h>
++#include <openssl/pem.h>
++#include <openssl/err.h>
++#include <openssl/ssl.h>
++#include <openssl/evp.h>
++#include <openssl/engine.h>
 +
-+config CRYPTO_RSA_KEY
-+	depends on CRYPTO_RSA
-+	string "RSA key to compile in"
-+	help
-+	  This option should be a filename of a PEM-formatted file containing
-+	  X.509 certificates to be included into barebox. If the string starts
-+	  with "pkcs11:" it is interpreted as a PKCS#11 URI rather than a file.
-+
-+config CRYPTO_RSA_KEY_NAME_HINT
-+	depends on CRYPTO_RSA
-+	string "FIT image key name hint"
-+	help
-+	  In FIT images keys are identified by a key name hint string. Provide
-+	  the key name hint here.
-+
- config CRYPTO_KEYSTORE
- 	bool "Keystore"
- 	help
-diff --git a/crypto/Makefile b/crypto/Makefile
-index d6fb74aad9..018f85e253 100644
---- a/crypto/Makefile
-+++ b/crypto/Makefile
-@@ -16,3 +16,13 @@ obj-$(CONFIG_DIGEST_SHA512_GENERIC)	+= sha4.o
- obj-$(CONFIG_CRYPTO_PBKDF2)	+= pbkdf2.o
- obj-$(CONFIG_CRYPTO_RSA)	+= rsa.o
- obj-$(CONFIG_CRYPTO_KEYSTORE)	+= keystore.o
-+
-+extra-y += rsa-keys.h
-+
-+ifdef CONFIG_CRYPTO_RSA_BUILTIN_KEYS
-+
-+$(obj)/rsa.o: $(obj)/rsa-keys.h
-+$(eval $(call config_filename,CRYPTO_RSA_KEY))
-+$(obj)/rsa-keys.h: FORCE
-+	$(call cmd,rsa_keys,$(CONFIG_CRYPTO_RSA_KEY_NAME_HINT):$(CRYPTO_RSA_KEY_SRCPREFIX)$(CRYPTO_RSA_KEY_FILENAME))
-+endif
-diff --git a/crypto/rsa.c b/crypto/rsa.c
-index 2e70c8127d..64241854c8 100644
---- a/crypto/rsa.c
-+++ b/crypto/rsa.c
-@@ -438,3 +438,36 @@ void rsa_key_free(struct rsa_public_key *key)
- 	free(key->rr);
- 	free(key);
- }
-+
-+#ifdef CONFIG_CRYPTO_RSA_BUILTIN_KEYS
-+#include "rsa-keys.h"
-+
-+extern const struct rsa_public_key * const __rsa_keys_start;
-+extern const struct rsa_public_key * const __rsa_keys_end;
-+
-+struct rsa_public_key *rsa_get_key(const char *name)
++static int rsa_err(const char *msg)
 +{
-+	const struct rsa_public_key *key;
-+	struct rsa_public_key *new;
-+	const struct rsa_public_key * const *iter;
++	unsigned long sslErr = ERR_get_error();
 +
-+	for (iter = &__rsa_keys_start; iter != &__rsa_keys_end; iter++) {
-+		key = *iter;
-+		if (!strcmp(name, key->key_name_hint))
-+			goto found;
++	fprintf(stderr, "%s", msg);
++	fprintf(stderr, ": %s\n",
++		ERR_error_string(sslErr, 0));
++
++	return -1;
++}
++
++/**
++ * rsa_pem_get_pub_key() - read a public key from a .crt file
++ *
++ * @keydir:	Directory containins the key
++ * @name	Name of key file (will have a .crt extension)
++ * @rsap	Returns RSA object, or NULL on failure
++ * @return 0 if ok, -ve on error (in which case *rsap will be set to NULL)
++ */
++static int rsa_pem_get_pub_key(const char *path, RSA **rsap)
++{
++	EVP_PKEY *key;
++	X509 *cert;
++	RSA *rsa;
++	FILE *f;
++	int ret;
++
++	*rsap = NULL;
++	f = fopen(path, "r");
++	if (!f) {
++		fprintf(stderr, "Couldn't open RSA certificate: '%s': %s\n",
++			path, strerror(errno));
++		return -EACCES;
 +	}
 +
-+	return ERR_PTR(-ENOENT);
-+found:
-+	new = xmemdup(key, sizeof(*key));
-+	new->modulus = xmemdup(key->modulus, key->len * sizeof(uint32_t));
-+	new->rr = xmemdup(key->rr, key->len  * sizeof(uint32_t));
++	/* Read the certificate */
++	cert = NULL;
++	if (!PEM_read_X509(f, &cert, NULL, NULL)) {
++		rsa_err("Couldn't read certificate");
++		ret = -EINVAL;
++		goto err_cert;
++	}
 +
-+	return new;
++	/* Get the public key from the certificate. */
++	key = X509_get_pubkey(cert);
++	if (!key) {
++		rsa_err("Couldn't read public key\n");
++		ret = -EINVAL;
++		goto err_pubkey;
++	}
++
++	/* Convert to a RSA_style key. */
++	rsa = EVP_PKEY_get1_RSA(key);
++	if (!rsa) {
++		rsa_err("Couldn't convert to a RSA style key");
++		ret = -EINVAL;
++		goto err_rsa;
++	}
++	fclose(f);
++	EVP_PKEY_free(key);
++	X509_free(cert);
++	*rsap = rsa;
++
++	return 0;
++
++err_rsa:
++	EVP_PKEY_free(key);
++err_pubkey:
++	X509_free(cert);
++err_cert:
++	fclose(f);
++	return ret;
 +}
-+#else
-+struct rsa_public_key *rsa_get_key(const char *name)
++
++/**
++ * rsa_engine_get_pub_key() - read a public key from given engine
++ *
++ * @keydir:	Key prefix
++ * @name	Name of key
++ * @engine	Engine to use
++ * @rsap	Returns RSA object, or NULL on failure
++ * @return 0 if ok, -ve on error (in which case *rsap will be set to NULL)
++ */
++static int rsa_engine_get_pub_key(const char *key_id,
++				  ENGINE *engine, RSA **rsap)
 +{
-+	return ERR_PTR(-ENOENT);
++	EVP_PKEY *key;
++	RSA *rsa;
++	int ret;
++
++	*rsap = NULL;
++
++	key = ENGINE_load_public_key(engine, key_id, NULL, NULL);
++	if (!key)
++		return rsa_err("Failure loading public key from engine");
++
++	/* Convert to a RSA_style key. */
++	rsa = EVP_PKEY_get1_RSA(key);
++	if (!rsa) {
++		rsa_err("Couldn't convert to a RSA style key");
++		ret = -EINVAL;
++		goto err_rsa;
++	}
++
++	EVP_PKEY_free(key);
++	*rsap = rsa;
++
++	return 0;
++
++err_rsa:
++	EVP_PKEY_free(key);
++	return ret;
 +}
++
++/*
++ * rsa_get_exponent(): - Get the public exponent from an RSA key
++ */
++static int rsa_get_exponent(RSA *key, uint64_t *e)
++{
++	int ret;
++	BIGNUM *bn_te;
++	const BIGNUM *key_e;
++	uint64_t te;
++
++	ret = -EINVAL;
++	bn_te = NULL;
++
++	if (!e)
++		goto cleanup;
++
++	RSA_get0_key(key, NULL, &key_e, NULL);
++	if (BN_num_bits(key_e) > 64)
++		goto cleanup;
++
++	*e = BN_get_word(key_e);
++
++	if (BN_num_bits(key_e) < 33) {
++		ret = 0;
++		goto cleanup;
++	}
++
++	bn_te = BN_dup(key_e);
++	if (!bn_te)
++		goto cleanup;
++
++	if (!BN_rshift(bn_te, bn_te, 32))
++		goto cleanup;
++
++	if (!BN_mask_bits(bn_te, 32))
++		goto cleanup;
++
++	te = BN_get_word(bn_te);
++	te <<= 32;
++	*e |= te;
++	ret = 0;
++
++cleanup:
++	if (bn_te)
++		BN_free(bn_te);
++
++	return ret;
++}
++
++/*
++ * rsa_get_params(): - Get the important parameters of an RSA public key
++ */
++int rsa_get_params(RSA *key, uint64_t *exponent, uint32_t *n0_invp,
++		   BIGNUM **modulusp, BIGNUM **r_squaredp)
++{
++	BIGNUM *big1, *big2, *big32, *big2_32;
++	BIGNUM *n, *r, *r_squared, *tmp;
++	const BIGNUM *key_n;
++	BN_CTX *bn_ctx = BN_CTX_new();
++	int ret = 0;
++
++	/* Initialize BIGNUMs */
++	big1 = BN_new();
++	big2 = BN_new();
++	big32 = BN_new();
++	r = BN_new();
++	r_squared = BN_new();
++	tmp = BN_new();
++	big2_32 = BN_new();
++	n = BN_new();
++	if (!big1 || !big2 || !big32 || !r || !r_squared || !tmp || !big2_32 ||
++	    !n) {
++		fprintf(stderr, "Out of memory (bignum)\n");
++		return -ENOMEM;
++	}
++
++	if (0 != rsa_get_exponent(key, exponent))
++		ret = -1;
++
++	RSA_get0_key(key, &key_n, NULL, NULL);
++	if (!BN_copy(n, key_n) || !BN_set_word(big1, 1L) ||
++	    !BN_set_word(big2, 2L) || !BN_set_word(big32, 32L))
++		ret = -1;
++
++	/* big2_32 = 2^32 */
++	if (!BN_exp(big2_32, big2, big32, bn_ctx))
++		ret = -1;
++
++	/* Calculate n0_inv = -1 / n[0] mod 2^32 */
++	if (!BN_mod_inverse(tmp, n, big2_32, bn_ctx) ||
++	    !BN_sub(tmp, big2_32, tmp))
++		ret = -1;
++	*n0_invp = BN_get_word(tmp);
++
++	/* Calculate R = 2^(# of key bits) */
++	if (!BN_set_word(tmp, BN_num_bits(n)) ||
++	    !BN_exp(r, big2, tmp, bn_ctx))
++		ret = -1;
++
++	/* Calculate r_squared = R^2 mod n */
++	if (!BN_copy(r_squared, r) ||
++	    !BN_mul(tmp, r_squared, r, bn_ctx) ||
++	    !BN_mod(r_squared, tmp, n, bn_ctx))
++		ret = -1;
++
++	*modulusp = n;
++	*r_squaredp = r_squared;
++
++	BN_free(big1);
++	BN_free(big2);
++	BN_free(big32);
++	BN_free(r);
++	BN_free(tmp);
++	BN_free(big2_32);
++	if (ret) {
++		fprintf(stderr, "Bignum operations failed\n");
++		return -ENOMEM;
++	}
++
++	return ret;
++}
++
++static int rsa_engine_init(ENGINE **pe)
++{
++	ENGINE *e;
++	int ret;
++
++	ENGINE_load_builtin_engines();
++
++	e = ENGINE_by_id("pkcs11");
++	if (!e) {
++		fprintf(stderr, "Engine isn't available\n");
++		ret = -1;
++		goto err_engine_by_id;
++	}
++
++	if (!ENGINE_init(e)) {
++		fprintf(stderr, "Couldn't initialize engine\n");
++		ret = -1;
++		goto err_engine_init;
++	}
++
++	if (!ENGINE_set_default_RSA(e)) {
++		fprintf(stderr, "Couldn't set engine as default for RSA\n");
++		ret = -1;
++		goto err_set_rsa;
++	}
++
++	*pe = e;
++
++	return 0;
++
++err_set_rsa:
++	ENGINE_finish(e);
++err_engine_init:
++	ENGINE_free(e);
++err_engine_by_id:
++#if OPENSSL_VERSION_NUMBER < 0x10100000L || \
++	(defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER < 0x02070000fL)
++	ENGINE_cleanup();
 +#endif
-diff --git a/include/asm-generic/barebox.lds.h b/include/asm-generic/barebox.lds.h
-index 8e8ae183db..b6ca8eb2be 100644
---- a/include/asm-generic/barebox.lds.h
-+++ b/include/asm-generic/barebox.lds.h
-@@ -98,6 +98,11 @@
- #define BAREBOX_PCI_FIXUP
- #endif
- 
-+#define BAREBOX_RSA_KEYS			\
-+	__rsa_keys_start = .;			\
-+	KEEP(*(.rsa_keys.rodata.*));		\
-+	__rsa_keys_end = .;			\
++	return ret;
++}
 +
- #define RO_DATA_SECTION				\
- 	BAREBOX_INITCALLS			\
- 	BAREBOX_EXITCALLS			\
-@@ -107,6 +112,7 @@
- 	BAREBOX_MAGICVARS			\
- 	BAREBOX_CLK_TABLE			\
- 	BAREBOX_DTB				\
-+	BAREBOX_RSA_KEYS			\
- 	BAREBOX_PCI_FIXUP
- 
- #if defined(CONFIG_ARCH_BAREBOX_MAX_BARE_INIT_SIZE) && \
-diff --git a/include/rsa.h b/include/rsa.h
-index cf2e6c7e08..803660d19a 100644
---- a/include/rsa.h
-+++ b/include/rsa.h
-@@ -28,6 +28,7 @@ struct rsa_public_key {
- 	uint32_t *modulus;	/* modulus as little endian array */
- 	uint32_t *rr;		/* R^2 as little endian array */
- 	uint64_t exponent;	/* public exponent */
-+	char *key_name_hint;
- };
- 
- /**
-@@ -51,5 +52,6 @@ int rsa_verify(const struct rsa_public_key *key, const uint8_t *sig,
- 
- struct rsa_public_key *rsa_of_read_key(struct device_node *node);
- void rsa_key_free(struct rsa_public_key *key);
-+struct rsa_public_key *rsa_get_key(const char *name);
- 
- #endif
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index c4d307ae30..ecaf5e1e7b 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -526,5 +526,23 @@ quiet_cmd_stm32_image = STM32-IMG $@
- quiet_cmd_b64dec = B64DEC  $@
-       cmd_b64dec = base64 -d $< > $@
- 
-+# rsa_keys
-+# ---------------------------------------------------------------------------
-+# Build a header file containing a rsa public key.
-+#
-+# The keys can change without the build system noticing, so we always
-+# have to call rsatoc. To avoid unnecessary rebuilds of barebox compare
-+# its output to the last rsatoc output. Only if it differs overwrite the
-+# target file.
-+quiet_cmd_rsa_keys = RSAKEY  $@
-+cmd_rsa_keys = \
-+	$(srctree)/scripts/rsatoc $2 \
-+		> $@.tmp &&						\
-+	if cmp -s $@.tmp $@; then					\
-+		rm $@.tmp;						\
-+	else								\
-+		mv $@.tmp $@;						\
-+	fi
++static int print_bignum(BIGNUM *num, int num_bits)
++{
++	BIGNUM *tmp, *big2, *big32, *big2_32;
++	BN_CTX *ctx;
++	int i;
 +
- %: %.base64
- 	$(call cmd,b64dec)
++	tmp = BN_new();
++	big2 = BN_new();
++	big32 = BN_new();
++	big2_32 = BN_new();
++
++	/*
++	 * Note: This code assumes that all of the above succeed, or all fail.
++	 * In practice memory allocations generally do not fail (unless the
++	 * process is killed), so it does not seem worth handling each of these
++	 * as a separate case. Technicaly this could leak memory on failure,
++	 * but a) it won't happen in practice, and b) it doesn't matter as we
++	 * will immediately exit with a failure code.
++	 */
++	if (!tmp || !big2 || !big32 || !big2_32) {
++		fprintf(stderr, "Out of memory (bignum)\n");
++		return -ENOMEM;
++	}
++	ctx = BN_CTX_new();
++	if (!tmp) {
++		fprintf(stderr, "Out of memory (bignum context)\n");
++		return -ENOMEM;
++	}
++	BN_set_word(big2, 2L);
++	BN_set_word(big32, 32L);
++	BN_exp(big2_32, big2, big32, ctx); /* B = 2^32 */
++
++	for (i = 0; i < num_bits / 32; i++) {
++		BN_mod(tmp, num, big2_32, ctx); /* n = N mod B */
++		if (i % 4)
++			printf(" ");
++		else
++			printf("\n\t");
++		printf("0x%08lx,", BN_get_word(tmp));
++		BN_rshift(num, num, 32); /*  N = N/B */
++	}
++
++	BN_free(tmp);
++	BN_free(big2);
++	BN_free(big32);
++	BN_free(big2_32);
++
++	return 0;
++}
++
++static int gen_key(const char *keyname, const char *path)
++{
++	BIGNUM *modulus, *r_squared;
++	uint64_t exponent;
++	uint32_t n0_inv;
++	int ret;
++	int bits;
++	RSA *rsa;
++	ENGINE *e = NULL;
++	char *tmp, *key_name_c;
++
++	tmp = key_name_c = strdup(keyname);
++
++	while (*tmp) {
++		if (*tmp == '-')
++			*tmp = '_';
++		tmp++;
++	}
++
++	if (!strncmp(path, "__ENV__", 7)) {
++		const char *var = getenv(path + 7);
++		if (!var) {
++			fprintf(stderr,
++				"environment variable \"%s\" is empty\n", path + 7);
++			exit(1);
++		}
++		path = var;
++	}
++
++	if (!strncmp(path, "pkcs11:", 7)) {
++		ret = rsa_engine_init(&e);
++		if (ret)
++			exit(1);
++		ret = rsa_engine_get_pub_key(path, e, &rsa);
++		if (ret)
++			exit(1);
++	} else {
++		ret = rsa_pem_get_pub_key(path, &rsa);
++		if (ret)
++			exit(1);
++	}
++
++	ret = rsa_get_params(rsa, &exponent, &n0_inv, &modulus, &r_squared);
++	if (ret)
++		return ret;
++
++	bits = BN_num_bits(modulus);
++
++	printf("\nstatic uint32_t %s_modulus[] = {", key_name_c);
++	print_bignum(modulus, bits);
++	printf("\n};\n\n");
++
++	printf("static uint32_t %s_rr[] = {", key_name_c);
++	print_bignum(r_squared, bits);
++	printf("\n};\n\n");
++
++	printf("static struct rsa_public_key %s = {\n", key_name_c);
++	printf("\t.len = %d,\n", bits / 32);
++	printf("\t.n0inv = 0x%0x,\n", n0_inv);
++	printf("\t.modulus = %s_modulus,\n", key_name_c);
++	printf("\t.rr = %s_rr,\n", key_name_c);
++	printf("\t.exponent = 0x%0lx,\n", exponent);
++	printf("\t.key_name_hint = \"%s\",\n", keyname);
++	printf("};\n\n");
++
++	printf("struct rsa_public_key *%sp __attribute__((section(\".rsa_keys.rodata.%s\"))) = &%s;\n",
++	       key_name_c, key_name_c, key_name_c);
++
++	return 0;
++}
++
++int main(int argc, char *argv[])
++{
++	char *path, *keyname;
++	int i;
++
++	if (argc < 2) {
++		fprintf(stderr, "Usage: %s <key_name_hint>:<crt> ...\n", argv[0]);
++		exit(1);
++	}
++
++	for (i = 1; i < argc; i++) {
++		keyname = argv[i];
++
++		path = strchr(keyname, ':');
++		if (!path) {
++			fprintf(stderr,
++				"keys must be given as <key_name_hint>:<crt>\n");
++			exit(1);
++		}
++
++		*path = 0;
++		path++;
++
++		gen_key(keyname, path);
++	}
++
++	exit(0);
++}
 -- 
 2.23.0
 
