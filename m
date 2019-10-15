@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtpbg507.qq.com ([203.205.250.51] helo=smtpbg.qq.com)
+Received: from smtpbgsg2.qq.com ([54.254.200.128])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iKTxL-0004wp-0n
- for barebox@lists.infradead.org; Tue, 15 Oct 2019 21:02:13 +0000
-Date: Wed, 16 Oct 2019 04:57:45 +0800
-From: duhuanpeng <sendpatch@qq.com>
-Message-ID: <20191015205744.GA30054@router.tkernel.org>+8A09C73BF723B13D
-MIME-Version: 1.0
-Content-Disposition: inline
+ id 1iKTyA-00054M-Bj
+ for barebox@lists.infradead.org; Tue, 15 Oct 2019 21:03:04 +0000
+From: sendpatch@qq.com
+Date: Wed, 16 Oct 2019 05:02:49 +0800
+Message-Id: <1571173369-30230-1-git-send-email-sendpatch@qq.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,25 +14,73 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: readling, ctrl-u is not working like linux console
+Subject: [PATCH] readline: make ctrl-u to work like linux console
 To: barebox@lists.infradead.org
-Cc: r.karszniewicz@phytec.de
+Cc: DU HUANPENG <u74147@gmail.com>
 
-Hi,
+From: DU HUANPENG <u74147@gmail.com>
 
-I find it the barebox console's ctrl-u is not working like my
-linux host.
-for now, the barebox's ctrl-u discard the whole line. but the
-linux consle just remove characters before cursor.
-is the barebox ctrl-u follows any standard, if not, how about
-make it just works like linux(ah, it is gnu readline) does.
+currtly, the ctrl-u discards the whole line, in most linux
+boxes, ctrl-u just remove character before cursor.
+this patch make ctrl-u to do this.
 
-Regards,
-duhuanpeng
+Signed-off-by: DU HUANPENG <u74147@gmail.com>
+---
+ lib/readline.c | 31 +++++++++++++++++++++++++++++--
+ 1 file changed, 29 insertions(+), 2 deletions(-)
+
+diff --git a/lib/readline.c b/lib/readline.c
+index d026af1..eba3da4 100644
+--- a/lib/readline.c
++++ b/lib/readline.c
+@@ -291,8 +291,35 @@ int readline(const char *prompt, char *buf, int len)
+ 			break;
+ 		case BB_KEY_ERASE_LINE:
+ 		case CTL_CH('u'):
+-			BEGINNING_OF_LINE();
+-			ERASE_TO_EOL();
++			if(num >= eol_num) {
++				BEGINNING_OF_LINE();
++				ERASE_TO_EOL();
++			} else {
++				for(i=num; i<eol_num; i++) {
++					buf[i-num] = buf[i];
++				}
++				buf[i] = '\0';
++
++				for(i=0; i<num; i++) {
++					putchar(CTL_BACKSPACE);
++				}
++				for(i=0; i<eol_num; i++) {
++					putchar(' ');
++				}
++				for(i=0; i<eol_num; i++) {
++					putchar(CTL_BACKSPACE);
++				}
++
++				eol_num -= num;
++				num = 0;
++
++				for(i=0; i<eol_num; i++) {
++					putchar(buf[i]);
++				}
++				for(i=0; i<eol_num; i++) {
++					putchar(CTL_BACKSPACE);
++				}
++			}
+ 			break;
+ 		case DEL:
+ 		case BB_KEY_DEL7:
+-- 
+2.7.4
+
+
+
 
 _______________________________________________
 barebox mailing list
