@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iKJDD-0007Ov-VI
- for barebox@lists.infradead.org; Tue, 15 Oct 2019 09:33:53 +0000
+ id 1iKJDE-0007Ox-NQ
+ for barebox@lists.infradead.org; Tue, 15 Oct 2019 09:33:54 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Tue, 15 Oct 2019 11:33:45 +0200
-Message-Id: <20191015093347.5032-1-o.rempel@pengutronix.de>
+Date: Tue, 15 Oct 2019 11:33:47 +0200
+Message-Id: <20191015093347.5032-3-o.rempel@pengutronix.de>
+In-Reply-To: <20191015093347.5032-1-o.rempel@pengutronix.de>
+References: <20191015093347.5032-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,29 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/3] ARM: stm32mp: enable ARM_AMBA
+Subject: [PATCH v2 3/3] ARM: dts: stm32mp157a-dk1: overwrite regulator for
+ sdmmc node
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-It is needed for mci/sd/mmc driver.
+There is currently no driver for the STPMIC1, which supplies the 3v3
+rail into the SDMMC2. The regulator is on on boot though, so lets
+replace it with a fixed regulator till we have a regulator driver for
+the STPMIC1.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+[afa: replaced /delete-node/ with fixed-regulator]
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/dts/stm32mp157a-dk1.dtsi | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 30a380f2f2..5e110bfff7 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -199,6 +199,7 @@ config ARCH_STM32MP
- 	select HAS_DEBUG_LL
- 	select HAVE_CLK
- 	select GPIOLIB
-+	select ARM_AMBA
- 
- config ARCH_VERSATILE
- 	bool "ARM Versatile boards (ARM926EJ-S)"
+diff --git a/arch/arm/dts/stm32mp157a-dk1.dtsi b/arch/arm/dts/stm32mp157a-dk1.dtsi
+index cd3d614d46..460637450a 100644
+--- a/arch/arm/dts/stm32mp157a-dk1.dtsi
++++ b/arch/arm/dts/stm32mp157a-dk1.dtsi
+@@ -33,4 +33,17 @@
+ 			pool;
+ 		};
+ 	};
++
++	reg_vmmc: regulator-vmmc {
++		compatible = "regulator-fixed";
++		regulator-name = "vmmc";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		regulator-always-on;
++	};
++};
++
++&sdmmc1 {
++	/* regulator driver not yet ported to barebox, but always on */
++	vmmc-supply = <&reg_vmmc>;
+ };
 -- 
 2.23.0
 
