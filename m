@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from relay5-d.mail.gandi.net ([217.70.183.197])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iLQld-0003JB-0e
- for barebox@lists.infradead.org; Fri, 18 Oct 2019 11:50:02 +0000
-Date: Fri, 18 Oct 2019 13:49:59 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191018114959.66a6t2njafdkmmv7@pengutronix.de>
-References: <20191016045743.22818-1-o.rempel@pengutronix.de>
+ id 1iKdd2-0007ls-5b
+ for barebox@lists.infradead.org; Wed, 16 Oct 2019 07:21:55 +0000
+Received: from geraet.fritz.box (i538755FA.versanet.de [83.135.85.250])
+ (Authenticated sender: ahmad@a3f.at)
+ by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id C7F0A1C0008
+ for <barebox@lists.infradead.org>; Wed, 16 Oct 2019 07:21:44 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Wed, 16 Oct 2019 09:21:35 +0200
+Message-Id: <20191016072139.2323-1-ahmad@a3f.at>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191016045743.22818-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,72 +23,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] MIPS: init cache before using it
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/5] efi: Fix typo in description string
+To: barebox@lists.infradead.org
 
-On Wed, Oct 16, 2019 at 06:57:42AM +0200, Oleksij Rempel wrote:
-> flush_cache_all() uses 'struct cpuinfo_mips current_cpu_data' data
-> fields. These data fields are initialized in r4k_cache_init().
-> 
-> However in the current implementation the r4k_cache_init() function
-> is called __AFTER__ relocate_code().
-> 
-> Suggested-by: Antony Pavlov <antonynpavlov@gmail.com>
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> ---
->  arch/mips/lib/reloc.c | 12 ++++++++++--
->  1 file changed, 10 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/mips/lib/reloc.c b/arch/mips/lib/reloc.c
-> index 9a9e404f7e..14195d6f96 100644
-> --- a/arch/mips/lib/reloc.c
-> +++ b/arch/mips/lib/reloc.c
-> @@ -31,6 +31,7 @@
->  #include <asm/bitops.h>
->  #include <asm/cache.h>
->  #include <asm/cacheops.h>
-> +#include <asm/cpu-features.h>
->  #include <asm/cpu.h>
->  #include <asm/cpu-info.h>
->  #include <asm/io.h>
-> @@ -40,6 +41,7 @@
->  #include <linux/sizes.h>
->  #include <asm-generic/memory_layout.h>
->  
-> +extern void r4k_cache_init(void);
->  void main_entry(void *fdt, u32 fdt_size);
->  void relocate_code(void *fdt, u32 fdt_size, u32 relocaddr);
->  
-> @@ -146,8 +148,14 @@ void relocate_code(void *fdt, u32 fdt_size, u32 ram_size)
->  		apply_reloc(type, (void *)addr, off);
->  	}
->  
-> -	/* Ensure the icache is coherent */
-> -	flush_cache_all();
-> +	memset(__bss_start, 0, bss_len);
-> +
-> +	cpu_probe();
-> +	if (cpu_has_4k_cache) {
-> +		r4k_cache_init();
-> +		/* Ensure the icache is coherent */
-> +		flush_cache_all();
-> +	}
->  
->  	/* Clear the .bss section */
->  	bss_start = (uint8_t *)((unsigned long)__bss_start + off);
->	memset(bss_start, 0, bss_len);
+s/Conosle/Console/
 
-bss is cleared twice now and with two different addresses. This looks
-wrong.
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ common/efi-guid.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Sascha
-
+diff --git a/common/efi-guid.c b/common/efi-guid.c
+index 1e45ccf4d238..2bf2395e8540 100644
+--- a/common/efi-guid.c
++++ b/common/efi-guid.c
+@@ -52,7 +52,7 @@ const char *efi_guid_string(efi_guid_t *g)
+ 	EFI_GUID_STRING(EFI_ISA_IO_PROTOCOL_GUID, "ISA IO Protocol", "ISA IO Protocol");
+ 	EFI_GUID_STRING(EFI_STANDARD_ERROR_DEVICE_GUID, "Standard Error Device Guid", "EFI Standard Error Device Guid");
+ 	EFI_GUID_STRING(EFI_CONSOLE_OUT_DEVICE_GUID, "Console Out Device Guid", "EFI Console Out Device Guid");
+-	EFI_GUID_STRING(EFI_CONSOLE_IN_DEVICE_GUID, "Console In Device Guid", "EFI Conosle In Device Guid");
++	EFI_GUID_STRING(EFI_CONSOLE_IN_DEVICE_GUID, "Console In Device Guid", "EFI Console In Device Guid");
+ 	EFI_GUID_STRING(EFI_SIMPLE_TEXT_OUT_PROTOCOL_GUID, "Simple Text Out Protocol", "EFI 1.0 Simple Text Out Protocol");
+ 	EFI_GUID_STRING(EFI_SIMPLE_TEXT_INPUT_EX_PROTOCOL_GUID, "Simple Text Input Ex Protocol", "UEFI 2.1 Simple Text Input Ex Protocol");
+ 	EFI_GUID_STRING(EFI_SIMPLE_TEXT_IN_PROTOCOL_GUID, "Simple Text In Protocol", "EFI 1.0 Simple Text In Protocol");
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
