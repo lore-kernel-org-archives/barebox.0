@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iLQsq-0006yt-Dw
- for barebox@lists.infradead.org; Fri, 18 Oct 2019 11:57:29 +0000
-Date: Fri, 18 Oct 2019 13:57:26 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191018115726.xk27asioa5x6ebnj@pengutronix.de>
-References: <1571243997-278445-1-git-send-email-r.karszniewicz@phytec.de>
+ id 1iKfqN-0003Kx-4C
+ for barebox@lists.infradead.org; Wed, 16 Oct 2019 09:43:48 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 16 Oct 2019 11:43:44 +0200
+Message-Id: <20191016094344.2091-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1571243997-278445-1-git-send-email-r.karszniewicz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,26 +19,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] cp: complete command help
-To: Robert Karszniewicz <r.karszniewicz@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: stm32mp: select ARCH_HAS_RESET_CONTROLLER
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Wed, Oct 16, 2019 at 06:39:57PM +0200, Robert Karszniewicz wrote:
-> Signed-off-by: Robert Karszniewicz <r.karszniewicz@phytec.de>
-> ---
->  commands/cp.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+Many STM32 peripherals, including I2C, SPI, USB and SDMMC use the RCC
+reset controller for reset. Enable ARCH_HAS_RESET_CONTROLLER, so drivers
+depending on RESET_CONTROLLER become available for selection.
 
-Applied, thanks
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/arm/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-Sascha
-
-
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index b227bb78b64f..16bd82fe6b9f 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -217,6 +217,7 @@ config ARCH_STM32MP
+ 	select HAS_DEBUG_LL
+ 	select HAVE_CLK
+ 	select GPIOLIB
++	select ARCH_HAS_RESET_CONTROLLER
+ 
+ config ARCH_VERSATILE
+ 	bool "ARM Versatile boards (ARM926EJ-S)"
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.23.0
+
 
 _______________________________________________
 barebox mailing list
