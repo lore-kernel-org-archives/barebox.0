@@ -1,8 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-qt1-x82e.google.com ([2607:f8b0:4864:20::82e])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iKfzV-00011y-W1
- for barebox@lists.infradead.org; Wed, 16 Oct 2019 09:53:15 +0000
+ id 1iKhXI-00080W-HG
+ for barebox@lists.infradead.org; Wed, 16 Oct 2019 11:32:14 +0000
+Received: by mail-qt1-x82e.google.com with SMTP id c21so35475104qtj.12
+ for <barebox@lists.infradead.org>; Wed, 16 Oct 2019 04:32:12 -0700 (PDT)
+MIME-Version: 1.0
 References: <CAEp+FuCjbdBi8JKEg_pesy-9OeDYzKh7zJFQRDqQqYqws=XBUg@mail.gmail.com>
  <20191011072110.dgtegrdzkojwco3u@pengutronix.de>
  <CAEp+FuAi6+cUSxk0pXVOpKoE=GPCxU9QubzdDdgcLP9hvMzcbg@mail.gmail.com>
@@ -17,12 +20,11 @@ References: <CAEp+FuCjbdBi8JKEg_pesy-9OeDYzKh7zJFQRDqQqYqws=XBUg@mail.gmail.com>
  <CAEp+FuDM3y9gvc1qN74A5Fg5VVHU2-qx_apWFrcSXX1s1SbxnQ@mail.gmail.com>
  <5d57ecff-6a4b-fb9e-b02d-88a730bb92b8@pengutronix.de>
  <CAEp+FuCrVaoAHgd=9KnZ42=cFKuVybk-u_B4V1DAeUqn2+9NZg@mail.gmail.com>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <ef8ff0a5-ba72-228a-7be9-09d64cccac0b@pengutronix.de>
-Date: Wed, 16 Oct 2019 11:53:12 +0200
-MIME-Version: 1.0
-In-Reply-To: <CAEp+FuCrVaoAHgd=9KnZ42=cFKuVybk-u_B4V1DAeUqn2+9NZg@mail.gmail.com>
-Content-Language: en-US
+ <ef8ff0a5-ba72-228a-7be9-09d64cccac0b@pengutronix.de>
+In-Reply-To: <ef8ff0a5-ba72-228a-7be9-09d64cccac0b@pengutronix.de>
+From: Mihaita Ivascu <mihaita_ivascu@trimble.com>
+Date: Wed, 16 Oct 2019 13:32:00 +0200
+Message-ID: <CAEp+FuBLCoSzraX4BCXiWE5Cge0M4GFxVk+kbyi6eS+=Nr=2NQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -36,140 +38,169 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: MFGTools from NXP
-To: Mihaita Ivascu <mihaita_ivascu@trimble.com>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
+On Wed, Oct 16, 2019 at 11:53 AM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+>
+>
+> On 10/16/19 11:48 AM, Mihaita Ivascu wrote:
+> > On Wed, Oct 16, 2019 at 11:26 AM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+> >>
+> >> On 10/16/19 11:21 AM, Mihaita Ivascu wrote:
+> >>> Hello,
+> >>>
+> >>>    Thanks for your answer. Yes i am able to connect via PUTTY to the target.
+> >>>    Then I should use some adb commands in order to push the new
+> >>> barebox/firmware ? do you know where I could find some examples?
+> >>
+> >> fastboot device -l works normally on Linux. You need to check what you need
+> >> to do on Windows to do the same. You should only need the Fastboot utility
+> >> for this.
+> >>
+> > [mi] Yes I have both fastboot and adb installed on both Windows and
+> > Linux machines. In both cases it does not list any device.
+> >        The board is detected as fastboot android is windows device
+> > manager. But the fastboot and adb does not list it. same for Linux.
+> > Please see attachment
+>
+> Let's focus on Linux. You don't see a device there?
+> What does barebox say? Does it say 'multi_bind: creating Fastboot function'?
+> What does you Linux host's dmesg say?
 
-On 10/16/19 11:48 AM, Mihaita Ivascu wrote:
-> On Wed, Oct 16, 2019 at 11:26 AM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
->>
->> On 10/16/19 11:21 AM, Mihaita Ivascu wrote:
->>> Hello,
->>>
->>>    Thanks for your answer. Yes i am able to connect via PUTTY to the target.
->>>    Then I should use some adb commands in order to push the new
->>> barebox/firmware ? do you know where I could find some examples?
->>
->> fastboot device -l works normally on Linux. You need to check what you need
->> to do on Windows to do the same. You should only need the Fastboot utility
->> for this.
->>
-> [mi] Yes I have both fastboot and adb installed on both Windows and
-> Linux machines. In both cases it does not list any device.
->        The board is detected as fastboot android is windows device
-> manager. But the fastboot and adb does not list it. same for Linux.
-> Please see attachment
 
-Let's focus on Linux. You don't see a device there?
-What does barebox say? Does it say 'multi_bind: creating Fastboot function'?
-What does you Linux host's dmesg say?
+barebox@Phytec phyCORE-i.MX6 Ultra Lite SOM:/ usbgadget -aA
+udc0: registering UDC driver [g_multi]
+multi_bind: creating Fastboot function
+multi_bind: creating ACM function
+g_multi usbgadget: Multifunction Composite Gadget
+g_multi usbgadget: userspace failed to provide iSerialNumber
+g_multi usbgadget: g_multi ready
+barebox@Phytec phyCORE-i.MX6 Ultra Lite SOM:/ g_multi usbgadget:
+high-speed config #1: Multifunction Composite Gadget
 
- > 
->>>
->>>    Also I have a question: purpose of this activity is for me to be
->>> able to flash some imx6ul boards that have no firmware: no barebox.
->>>    So I know hardware config for the port is otg mode but as I have no
->>> barebox running them before I am wondering if I will be able to
->>> connect via PUTTY if I do not set the ACM gadget from barebox?
->>
->> Check the Embest MarS board's environment in barebox master. It sets up
->> a fastboot gadget automatically on boot from imx-usb-loader.
->> You can adjust it to your liking.
-> 
->   [mi] I was not able to find any docs about this board. I will keep
-> searching/asking in the nxp community. If you have already ahve any
-> files related to it would be helpful. Thanks
+dmesg:
 
-It's in the barebox next branch (not master, sorry), see here:
-https://github.com/saschahauer/barebox/blob/next/arch/arm/boards/embest-marsboard/defaultenv-mars/init/fastboot
+[   25.602275] usb 1-1.3: USB disconnect, device number 3
+[   28.359930] usb 1-1.3: new high-speed USB device number 5 using ehci-pci
+[   28.452971] usb 1-1.3: New USB device found, idVendor=1d6b, idProduct=0104
+[   28.452976] usb 1-1.3: New USB device strings: Mfr=0, Product=2,
+SerialNumber=0
+[   28.452980] usb 1-1.3: Product: Phytec phyCORE-i.MX6 Ultra Lite SOM
+[   28.457925] cdc_acm 1-1.3:1.1: ttyACM0: USB ACM device
 
-You can copy and adjust the environment setup for your board. 
 
->>
->> Cheers
->> Ahmad
->>
->>>
->>> Thanks,
->>>       Mihaita
->>>
->>> On Wed, Oct 16, 2019 at 10:51 AM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
->>>>
->>>> On 10/16/19 10:40 AM, Mihaita Ivascu wrote:
->>>>> Hello again,
->>>>>
->>>>>    I have the target in otg peripheral mode, ADB and fastboot drivers
->>>>> installed but fastboot does not list any device. The board is detected
->>>>> in device manager
->>>>
->>>> Try enabling the ACM gadget in barebox and connect with PuTTY and see if
->>>> at least that works. It worked for me on Windows with another i.MX board
->>>> a month ago.
->>>>
->>>> As for fastboot, I don't know how to configure it on Windows, but surely
->>>> Android Modding boards will have you covered there.
->>>>
->>>>>    Please see attachment. Any ideas how should I proceed? Thanks for
->>>>> the support.
->>>>
->>>> You can enable the ACM gadget in barebox and see if that works, I tested
->>>> it on Windows with an i.MX board a month ago
->>>>
->>>> Cheers
->>>> Ahmad
->>>>
->>>>>
->>>>> Thanks,
->>>>>       Mihaita
->>>>>
->>>>> On Wed, Oct 16, 2019 at 9:32 AM Mihaita Ivascu
->>>>> <mihaita_ivascu@trimble.com> wrote:
->>>>>>
->>>>>> Thanks. I have installed ADB and fastboot drivers for Win from
->>>>>> https://www.getdroidtips.com/how-to-install-adb-and-fastboot-on-windows/
->>>>>> I have installed according to the attachment.
->>>>>> But is not recognized in Windows. I did reboot the system after
->>>>>> installation but did not add any new env variable.
->>>>>>
->>>>>> H:\>fastboot devices -l
->>>>>> 'fastboot' is not recognized as an internal or external command,
->>>>>> operable program or batch file.
->>>>>>
->>>>>> Thanks,
->>>>>>       Mihaita
->>>>>>
->>>>>>
->>>>>> On Tue, Oct 15, 2019 at 4:44 PM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
->>>>>>>
->>>>>>> On 10/15/19 4:41 PM, Mihaita Ivascu wrote:
->>>>>>>> barebox@Phytec phyCORE-i.MX6 Ultra Lite SOM:/ fastboot devices -l
->>>>>>> That's what you run on your host system, not on the target.
->>>>>>> --
->>>>>>> Pengutronix e.K.                           |                             |
->>>>>>> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
->>>>>>> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
->>>>>>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
->>>>
->>>>
->>>> --
->>>> Pengutronix e.K.                           |                             |
->>>> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
->>>> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
->>>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
->>>
->>
->>
->> --
->> Pengutronix e.K.                           |                             |
->> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
->> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
->> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+So I see the device on Linux. But fastboot does not list any device on Linux.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+>
+>
+>  >
+> >>>
+> >>>    Also I have a question: purpose of this activity is for me to be
+> >>> able to flash some imx6ul boards that have no firmware: no barebox.
+> >>>    So I know hardware config for the port is otg mode but as I have no
+> >>> barebox running them before I am wondering if I will be able to
+> >>> connect via PUTTY if I do not set the ACM gadget from barebox?
+> >>
+> >> Check the Embest MarS board's environment in barebox master. It sets up
+> >> a fastboot gadget automatically on boot from imx-usb-loader.
+> >> You can adjust it to your liking.
+> >
+> >   [mi] I was not able to find any docs about this board. I will keep
+> > searching/asking in the nxp community. If you have already ahve any
+> > files related to it would be helpful. Thanks
+>
+> It's in the barebox next branch (not master, sorry), see here:
+> https://github.com/saschahauer/barebox/blob/next/arch/arm/boards/embest-marsboard/defaultenv-mars/init/fastboot
+>
+> You can copy and adjust the environment setup for your board.
+>
+> >>
+> >> Cheers
+> >> Ahmad
+> >>
+> >>>
+> >>> Thanks,
+> >>>       Mihaita
+> >>>
+> >>> On Wed, Oct 16, 2019 at 10:51 AM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+> >>>>
+> >>>> On 10/16/19 10:40 AM, Mihaita Ivascu wrote:
+> >>>>> Hello again,
+> >>>>>
+> >>>>>    I have the target in otg peripheral mode, ADB and fastboot drivers
+> >>>>> installed but fastboot does not list any device. The board is detected
+> >>>>> in device manager
+> >>>>
+> >>>> Try enabling the ACM gadget in barebox and connect with PuTTY and see if
+> >>>> at least that works. It worked for me on Windows with another i.MX board
+> >>>> a month ago.
+> >>>>
+> >>>> As for fastboot, I don't know how to configure it on Windows, but surely
+> >>>> Android Modding boards will have you covered there.
+> >>>>
+> >>>>>    Please see attachment. Any ideas how should I proceed? Thanks for
+> >>>>> the support.
+> >>>>
+> >>>> You can enable the ACM gadget in barebox and see if that works, I tested
+> >>>> it on Windows with an i.MX board a month ago
+> >>>>
+> >>>> Cheers
+> >>>> Ahmad
+> >>>>
+> >>>>>
+> >>>>> Thanks,
+> >>>>>       Mihaita
+> >>>>>
+> >>>>> On Wed, Oct 16, 2019 at 9:32 AM Mihaita Ivascu
+> >>>>> <mihaita_ivascu@trimble.com> wrote:
+> >>>>>>
+> >>>>>> Thanks. I have installed ADB and fastboot drivers for Win from
+> >>>>>> https://www.getdroidtips.com/how-to-install-adb-and-fastboot-on-windows/
+> >>>>>> I have installed according to the attachment.
+> >>>>>> But is not recognized in Windows. I did reboot the system after
+> >>>>>> installation but did not add any new env variable.
+> >>>>>>
+> >>>>>> H:\>fastboot devices -l
+> >>>>>> 'fastboot' is not recognized as an internal or external command,
+> >>>>>> operable program or batch file.
+> >>>>>>
+> >>>>>> Thanks,
+> >>>>>>       Mihaita
+> >>>>>>
+> >>>>>>
+> >>>>>> On Tue, Oct 15, 2019 at 4:44 PM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+> >>>>>>>
+> >>>>>>> On 10/15/19 4:41 PM, Mihaita Ivascu wrote:
+> >>>>>>>> barebox@Phytec phyCORE-i.MX6 Ultra Lite SOM:/ fastboot devices -l
+> >>>>>>> That's what you run on your host system, not on the target.
+> >>>>>>> --
+> >>>>>>> Pengutronix e.K.                           |                             |
+> >>>>>>> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> >>>>>>> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> >>>>>>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> >>>>
+> >>>>
+> >>>> --
+> >>>> Pengutronix e.K.                           |                             |
+> >>>> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> >>>> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> >>>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> >>>
+> >>
+> >>
+> >> --
+> >> Pengutronix e.K.                           |                             |
+> >> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> >> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> >> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+>
+> --
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
