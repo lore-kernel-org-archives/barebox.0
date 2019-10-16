@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from relay5-d.mail.gandi.net ([217.70.183.197])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iKdd2-0007ls-5b
- for barebox@lists.infradead.org; Wed, 16 Oct 2019 07:21:55 +0000
+ id 1iKdd2-0007lv-5H
+ for barebox@lists.infradead.org; Wed, 16 Oct 2019 07:21:53 +0000
 Received: from geraet.fritz.box (i538755FA.versanet.de [83.135.85.250])
  (Authenticated sender: ahmad@a3f.at)
- by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id C7F0A1C0008
- for <barebox@lists.infradead.org>; Wed, 16 Oct 2019 07:21:44 +0000 (UTC)
+ by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 4BA981C0013
+ for <barebox@lists.infradead.org>; Wed, 16 Oct 2019 07:21:46 +0000 (UTC)
 From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Wed, 16 Oct 2019 09:21:35 +0200
-Message-Id: <20191016072139.2323-1-ahmad@a3f.at>
+Date: Wed, 16 Oct 2019 09:21:39 +0200
+Message-Id: <20191016072139.2323-5-ahmad@a3f.at>
+In-Reply-To: <20191016072139.2323-1-ahmad@a3f.at>
+References: <20191016072139.2323-1-ahmad@a3f.at>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,29 +25,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] efi: Fix typo in description string
+Subject: [PATCH 5/5] efi: silence warning about un-prototyped assembly-called
+ functions
 To: barebox@lists.infradead.org
 
-s/Conosle/Console/
+Both _relocate and efi_main are only called from assembly, but
+-Wmissing-prototypes doesn't know that and warns about them.
+Pre-declare prototypes to silence the warnings.
 
 Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- common/efi-guid.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/mach-efi/reloc_x86_64.c | 3 +++
+ common/efi/efi.c                 | 3 +++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/common/efi-guid.c b/common/efi-guid.c
-index 1e45ccf4d238..2bf2395e8540 100644
---- a/common/efi-guid.c
-+++ b/common/efi-guid.c
-@@ -52,7 +52,7 @@ const char *efi_guid_string(efi_guid_t *g)
- 	EFI_GUID_STRING(EFI_ISA_IO_PROTOCOL_GUID, "ISA IO Protocol", "ISA IO Protocol");
- 	EFI_GUID_STRING(EFI_STANDARD_ERROR_DEVICE_GUID, "Standard Error Device Guid", "EFI Standard Error Device Guid");
- 	EFI_GUID_STRING(EFI_CONSOLE_OUT_DEVICE_GUID, "Console Out Device Guid", "EFI Console Out Device Guid");
--	EFI_GUID_STRING(EFI_CONSOLE_IN_DEVICE_GUID, "Console In Device Guid", "EFI Conosle In Device Guid");
-+	EFI_GUID_STRING(EFI_CONSOLE_IN_DEVICE_GUID, "Console In Device Guid", "EFI Console In Device Guid");
- 	EFI_GUID_STRING(EFI_SIMPLE_TEXT_OUT_PROTOCOL_GUID, "Simple Text Out Protocol", "EFI 1.0 Simple Text Out Protocol");
- 	EFI_GUID_STRING(EFI_SIMPLE_TEXT_INPUT_EX_PROTOCOL_GUID, "Simple Text Input Ex Protocol", "UEFI 2.1 Simple Text Input Ex Protocol");
- 	EFI_GUID_STRING(EFI_SIMPLE_TEXT_IN_PROTOCOL_GUID, "Simple Text In Protocol", "EFI 1.0 Simple Text In Protocol");
+diff --git a/arch/x86/mach-efi/reloc_x86_64.c b/arch/x86/mach-efi/reloc_x86_64.c
+index 1db72f5dbc52..e83bacb302ca 100644
+--- a/arch/x86/mach-efi/reloc_x86_64.c
++++ b/arch/x86/mach-efi/reloc_x86_64.c
+@@ -35,11 +35,14 @@
+     SUCH DAMAGE.
+ */
+ 
++#include <linux/linkage.h>
+ #include <common.h>
+ #include <efi.h>
+ 
+ #include <elf.h>
+ 
++asmlinkage efi_status_t _relocate (long, Elf64_Dyn *, efi_handle_t, efi_system_table_t *);
++
+ efi_status_t _relocate (long ldbase, Elf64_Dyn *dyn, efi_handle_t image, efi_system_table_t *systab)
+ {
+ 	long relsz = 0, relent = 0;
+diff --git a/common/efi/efi.c b/common/efi/efi.c
+index a7b25cbbe251..73cea3703695 100644
+--- a/common/efi/efi.c
++++ b/common/efi/efi.c
+@@ -17,6 +17,7 @@
+  *
+  */
+ 
++#include <linux/linkage.h>
+ #include <common.h>
+ #include <linux/sizes.h>
+ #include <memory.h>
+@@ -318,6 +319,8 @@ static int efi_init(void)
+ }
+ device_initcall(efi_init);
+ 
++asmlinkage efi_status_t efi_main(efi_handle_t, efi_system_table_t *);
++
+ /**
+  * efi-main - Entry point for EFI images
+  */
 -- 
 2.20.1
 
