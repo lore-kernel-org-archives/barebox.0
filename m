@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iKffh-00067w-Vl
- for barebox@lists.infradead.org; Wed, 16 Oct 2019 09:32:47 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 16 Oct 2019 11:32:41 +0200
-Message-Id: <20191016093241.17382-1-a.fatoum@pengutronix.de>
-In-Reply-To: <20191015093347.5032-1-o.rempel@pengutronix.de>
-References: <20191015093347.5032-1-o.rempel@pengutronix.de>
+ id 1iKf7u-0007Od-AZ
+ for barebox@lists.infradead.org; Wed, 16 Oct 2019 08:57:51 +0000
+Date: Wed, 16 Oct 2019 10:57:47 +0200
+From: Roland Hieber <rhi@pengutronix.de>
+Message-ID: <20191016085747.dhb6z3s2ckw5tpnq@pengutronix.de>
+References: <20191015205744.GA30054@router.tkernel.org>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20191015205744.GA30054@router.tkernel.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,30 +22,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! mci: add support for stm32mp sd/mmc controller
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: readling, ctrl-u is not working like linux console
+To: barebox@lists.infradead.org, r.karszniewicz@phytec.de
 
-We need reset controller support in the driver, depend on it.
----
- drivers/mci/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+On Wed, Oct 16, 2019 at 04:57:45AM +0800, duhuanpeng wrote:
+> Hi,
+> 
+> I find it the barebox console's ctrl-u is not working like my
+> linux host.
+> for now, the barebox's ctrl-u discard the whole line. but the
+> linux consle just remove characters before cursor.
+> is the barebox ctrl-u follows any standard, if not, how about
+> make it just works like linux(ah, it is gnu readline) does.
 
-diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
-index 5b560310136a..4a71a4609763 100644
---- a/drivers/mci/Kconfig
-+++ b/drivers/mci/Kconfig
-@@ -156,6 +156,7 @@ config MMC_SPI_CRC_ON
- config MCI_STM32_SDMMC2
- 	bool "STMicroelectronics STM32H7 SD/MMC Host Controller support"
- 	depends on ARM_AMBA
-+	depends on RESET_CONTROLLER
- 	help
- 	  This selects support for the SD/MMC controller on STM32H7 SoCs.
- 	  If you have a board based on such a SoC and with a SD/MMC slot,
+FWIW, in bash on both my tty2 and urxvt, Ctrl-U clears the whole line.
+But I don't know if there is a standard for this shortkey.
+
+ - Roland
+
 -- 
-2.23.0
-
+Roland Hieber                     | r.hieber@pengutronix.de     |
+Pengutronix e.K.                  | https://www.pengutronix.de/ |
+Peiner Str. 6-8, 31137 Hildesheim | Phone: +49-5121-206917-5086 |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
