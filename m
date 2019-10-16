@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.22])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iKcLX-0007KM-7O
- for barebox@lists.infradead.org; Wed, 16 Oct 2019 05:59:46 +0000
-References: <1571204055-5028-1-git-send-email-sendpatch@qq.com>
-From: Oleksij Rempel <fishor@gmx.net>
-Message-ID: <61112c57-a57d-f6f2-7b4f-62b55e80a76b@gmx.net>
-Date: Wed, 16 Oct 2019 07:59:30 +0200
+Received: from mout.gmx.net ([212.227.17.21])
+ by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1iKduP-0001l9-Ud
+ for barebox@lists.infradead.org; Wed, 16 Oct 2019 07:39:51 +0000
+References: <1571210705-18315-1-git-send-email-sendpatch@qq.com>
+From: Oleksij Rempel <linux@rempel-privat.de>
+Message-ID: <e8cdac6a-dc25-57c2-f6e1-c2238ba2e6eb@rempel-privat.de>
+Date: Wed, 16 Oct 2019 09:39:01 +0200
 MIME-Version: 1.0
-In-Reply-To: <1571204055-5028-1-git-send-email-sendpatch@qq.com>
+In-Reply-To: <1571210705-18315-1-git-send-email-sendpatch@qq.com>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,149 +18,86 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============2592918434902928917=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] readline: make ctrl-u to work like linux console
+Subject: Re: [PATCH v3] readline: make ctrl-u to work like linux console
 To: sendpatch@qq.com, barebox@lists.infradead.org
 Cc: DU HUANPENG <u74147@gmail.com>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---===============2592918434902928917==
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="5fHVZFvLIpvYqiEowU1SKz9RjI6AO2cQw"
-
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---5fHVZFvLIpvYqiEowU1SKz9RjI6AO2cQw
-Content-Type: multipart/mixed; boundary="ypxYfM5gClpjTfJNsWQaM7elJpi1EBUqu";
- protected-headers="v1"
-From: Oleksij Rempel <fishor@gmx.net>
-To: sendpatch@qq.com, barebox@lists.infradead.org
-Cc: DU HUANPENG <u74147@gmail.com>
-Message-ID: <61112c57-a57d-f6f2-7b4f-62b55e80a76b@gmx.net>
-Subject: Re: [PATCH] readline: make ctrl-u to work like linux console
-References: <1571204055-5028-1-git-send-email-sendpatch@qq.com>
-In-Reply-To: <1571204055-5028-1-git-send-email-sendpatch@qq.com>
-
---ypxYfM5gClpjTfJNsWQaM7elJpi1EBUqu
-Content-Type: text/plain; charset=utf-8
-Content-Language: ru
-Content-Transfer-Encoding: quoted-printable
-
-Hi,
-
-Am 16.10.19 um 07:34 schrieb sendpatch@qq.com:
+Am 16.10.19 um 09:25 schrieb sendpatch@qq.com:
 > From: DU HUANPENG <u74147@gmail.com>
->=20
+>
 > currtly, the ctrl-u discards the whole line, in most linux
 > boxes, ctrl-u just erase characters before cursor to the
 > begginning of the line. this patch make ctrl-u to do this.
-
-Cool, didn=C3=84t know i can use ctrl-u like this :)
-
->=20
+>
 > Signed-off-by: DU HUANPENG <u74147@gmail.com>
 > ---
->  lib/readline.c | 34 +++++++++++++++++++++++++++++++---
->  1 file changed, 31 insertions(+), 3 deletions(-)
->=20
+>  lib/readline.c | 26 ++++++++++++++++++++++++--
+>  1 file changed, 24 insertions(+), 2 deletions(-)
+>
 > diff --git a/lib/readline.c b/lib/readline.c
-> index d026af1..c0b194c 100644
+> index d026af1..3d5fafd 100644
 > --- a/lib/readline.c
 > +++ b/lib/readline.c
-> @@ -188,9 +188,10 @@ int readline(const char *prompt, char *buf, int le=
-n)
+> @@ -188,9 +188,10 @@ int readline(const char *prompt, char *buf, int len)
 >  	unsigned wlen;
 >  	int ichar;
->  	int insert =3D 1;
+>  	int insert = 1;
 > +	int i;
 >  #ifdef CONFIG_AUTO_COMPLETE
 >  	char tmp;
 > -	int reprint, i;
 > +	int reprint;
 >  	char *completestr;
-> =20
+>
 >  	complete_reset();
-> @@ -291,8 +292,35 @@ int readline(const char *prompt, char *buf, int le=
-n)
+> @@ -290,10 +291,31 @@ int readline(const char *prompt, char *buf, int len)
+>  			insert = !insert;
 >  			break;
 >  		case BB_KEY_ERASE_LINE:
->  		case CTL_CH('u'):
-> -			BEGINNING_OF_LINE();
-> -			ERASE_TO_EOL();
-> +			if(num >=3D eol_num) {
-> +				BEGINNING_OF_LINE();
-> +				ERASE_TO_EOL();
-
-Please use kernel/barebox coding style.
-=2E/scripts/checkpatch.pl in barebox repository can help you.
-
-
-> +			} else {
-> +				for(i=3Dnum; i<eol_num; i++) {
-> +					buf[i-num] =3D buf[i];
-> +				}
-> +				buf[i] =3D '\0';
-> +
-> +				for(i=3D0; i<num; i++) {
-> +					getcmd_putch(CTL_BACKSPACE);
-> +				}
-> +				for(i=3D0; i<eol_num; i++) {
-> +					getcmd_putch(' ');
-> +				}
-> +				for(i=3D0; i<eol_num; i++) {
-> +					getcmd_putch(CTL_BACKSPACE);
-> +				}
-> +
-> +				eol_num -=3D num;
-> +				num =3D 0;
-> +
-> +				for(i=3D0; i<eol_num; i++) {
-> +					getcmd_putch(buf[i]);
-> +				}
-> +				for(i=3D0; i<eol_num; i++) {
-> +					getcmd_putch(CTL_BACKSPACE);
-> +				}
-> +			}
+> -		case CTL_CH('u'):
+>  			BEGINNING_OF_LINE();
+>  			ERASE_TO_EOL();
 >  			break;
+> +		case CTL_CH('u'):
+> +			if (num <= eol_num) {
+
+i doubt num can be ever bigger then eol_num. or do i missing some thing?
+
+> +				for (i = num; i < eol_num; i++)
+> +					buf[i-num] = buf[i];
+> +				buf[i] = '\0';
+> +
+> +				for (i = 0; i < num; i++)
+> +					getcmd_putch(CTL_BACKSPACE);
+> +				for (i = 0; i < eol_num; i++)
+> +					getcmd_putch(' ');
+> +				for (i = 0; i < eol_num; i++)
+> +					getcmd_putch(CTL_BACKSPACE);
+> +
+> +				eol_num -= num;
+> +				num = 0;
+> +
+> +				for (i = 0 ; i < eol_num; i++)
+> +					getcmd_putch(buf[i]);
+> +				for (i = 0; i < eol_num; i++)
+> +					getcmd_putch(CTL_BACKSPACE);
+> +			}
+> +			break;
 >  		case DEL:
 >  		case BB_KEY_DEL7:
->=20
+>  		case 8:
+>
 
 
-
---ypxYfM5gClpjTfJNsWQaM7elJpi1EBUqu--
-
---5fHVZFvLIpvYqiEowU1SKz9RjI6AO2cQw
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEpENFL0P3hvQ7p0DDdQOiSHVI77QFAl2mscMACgkQdQOiSHVI
-77SxmQf/UL39yox262AF1yBbArPl7PXoAzA+8kweecKjj3ebR05hSUVxiQjDSrRu
-S6q1xHYUyvWGwyRMtllFXlukTylKhlutIzwoIkYI3lqNRcuiiJgUIvOv6GCKWIS3
-xLF+GS0rgOMJoU/qdvTsuPfxxTRLDrkvYPyHOIawvqvvyQcc36u/ZvQl/VrJlaGM
-SbPB5FJWY/rYDbHrAoT0AU5uob2XObbs/sKqrgLy2na8+uu6WhY1zBX6PhsAujQ+
-mkuz0w7HLazeAKQ4eLD/MaI/hAn0VRLt+Za9VLPIfH80q5fSNrp1zi0WMhI+bju2
-Kl9BikRWPOAbJr6YVvj5agw3D/BW/A==
-=QvbP
------END PGP SIGNATURE-----
-
---5fHVZFvLIpvYqiEowU1SKz9RjI6AO2cQw--
-
-
---===============2592918434902928917==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+--
+Regards,
+Oleksij
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============2592918434902928917==--
