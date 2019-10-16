@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from relay5-d.mail.gandi.net ([217.70.183.197])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iKdd2-0007lt-4p
- for barebox@lists.infradead.org; Wed, 16 Oct 2019 07:21:53 +0000
+ id 1iKdd2-0007lu-5P
+ for barebox@lists.infradead.org; Wed, 16 Oct 2019 07:21:54 +0000
 Received: from geraet.fritz.box (i538755FA.versanet.de [83.135.85.250])
  (Authenticated sender: ahmad@a3f.at)
- by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 835631C0004
+ by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id EE7071C0011
  for <barebox@lists.infradead.org>; Wed, 16 Oct 2019 07:21:45 +0000 (UTC)
 From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Wed, 16 Oct 2019 09:21:37 +0200
-Message-Id: <20191016072139.2323-3-ahmad@a3f.at>
+Date: Wed, 16 Oct 2019 09:21:38 +0200
+Message-Id: <20191016072139.2323-4-ahmad@a3f.at>
 In-Reply-To: <20191016072139.2323-1-ahmad@a3f.at>
 References: <20191016072139.2323-1-ahmad@a3f.at>
 MIME-Version: 1.0
@@ -25,43 +25,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] efi: use efi_guidcmp helper where appropriate
+Subject: [PATCH 4/5] x86: include: add asmlinkage 'storage class'
 To: barebox@lists.infradead.org
 
-We have a helper for it. Let's use it.
+We've a number of C functions with external linkage that are only called
+from assembly. -Wmissing-prototypes warns about these unless they have
+a prototype that goes unused. Let's standardize on using the asmlinkage
+'storage class' to mark such declarations.
+
+As <linux/linkage.h> defines asmlinkage to naught unless <asm/linkage.h>
+does, it's sufficient to add an empty header to make this usable on x86
+as well.
 
 Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- drivers/efi/efi-device.c | 2 +-
- fs/efivarfs.c            | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/linkage.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
+ create mode 100644 arch/x86/include/asm/linkage.h
 
-diff --git a/drivers/efi/efi-device.c b/drivers/efi/efi-device.c
-index 305d337aabf5..68d81caf010b 100644
---- a/drivers/efi/efi-device.c
-+++ b/drivers/efi/efi-device.c
-@@ -311,7 +311,7 @@ static int efi_bus_match(struct device_d *dev, struct driver_d *drv)
- 	int i;
- 
- 	for (i = 0; i < efidev->num_guids; i++) {
--		if (!memcmp(&efidrv->guid, &efidev->guids[i], sizeof(efi_guid_t))) {
-+		if (!efi_guidcmp(efidrv->guid, efidev->guids[i])) {
- 			BS->handle_protocol(efidev->handle, &efidev->guids[i],
- 					&efidev->protocol);
- 			return 0;
-diff --git a/fs/efivarfs.c b/fs/efivarfs.c
-index 1e8049362168..9eadda41215c 100644
---- a/fs/efivarfs.c
-+++ b/fs/efivarfs.c
-@@ -145,7 +145,7 @@ static int efivars_create(struct device_d *dev, const char *pathname, mode_t mod
- 	if (ret)
- 		return -ENOENT;
- 
--	if (memcmp(&vendor, &EFI_BAREBOX_VENDOR_GUID, sizeof(efi_guid_t)))
-+	if (efi_guidcmp(vendor, EFI_BAREBOX_VENDOR_GUID))
- 		return -EPERM;
- 
- 	inode = xzalloc(sizeof(*inode));
+diff --git a/arch/x86/include/asm/linkage.h b/arch/x86/include/asm/linkage.h
+new file mode 100644
+index 000000000000..a8d1bdb7de1f
+--- /dev/null
++++ b/arch/x86/include/asm/linkage.h
+@@ -0,0 +1,6 @@
++#ifndef __ASM_LINKAGE_H
++#define __ASM_LINKAGE_H
++
++/* referenced by <linux/linkage.h> */
++
++#endif
 -- 
 2.20.1
 
