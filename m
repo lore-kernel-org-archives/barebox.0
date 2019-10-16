@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iLQsC-0006pr-3q
- for barebox@lists.infradead.org; Fri, 18 Oct 2019 11:56:49 +0000
-Date: Fri, 18 Oct 2019 13:56:45 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191018115645.y2hh7uqbkmjutekr@pengutronix.de>
-References: <20191016072139.2323-1-ahmad@a3f.at>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191016072139.2323-1-ahmad@a3f.at>
+Received: from mickerik.phytec.de ([195.145.39.210])
+ by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1iKmLA-000655-Kk
+ for barebox@lists.infradead.org; Wed, 16 Oct 2019 16:40:02 +0000
+From: Robert Karszniewicz <r.karszniewicz@phytec.de>
+Date: Wed, 16 Oct 2019 18:39:57 +0200
+Message-Id: <1571243997-278445-1-git-send-email-r.karszniewicz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,31 +14,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/5] efi: Fix typo in description string
-To: Ahmad Fatoum <ahmad@a3f.at>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] cp: complete command help
+To: barebox@lists.infradead.org
 
-On Wed, Oct 16, 2019 at 09:21:35AM +0200, Ahmad Fatoum wrote:
-> s/Conosle/Console/
-> 
-> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
-> ---
->  common/efi-guid.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+Signed-off-by: Robert Karszniewicz <r.karszniewicz@phytec.de>
+---
+ commands/cp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Applied, thanks
-
-Sascha
-
+diff --git a/commands/cp.c b/commands/cp.c
+index 54934dd..845dae6 100644
+--- a/commands/cp.c
++++ b/commands/cp.c
+@@ -100,13 +100,14 @@ BAREBOX_CMD_HELP_START(cp)
+ BAREBOX_CMD_HELP_TEXT("Copy file from SRC to DEST.")
+ BAREBOX_CMD_HELP_TEXT("")
+ BAREBOX_CMD_HELP_TEXT("Options:")
++BAREBOX_CMD_HELP_OPT ("-r", "recursive")
+ BAREBOX_CMD_HELP_OPT ("-v", "verbose")
+ BAREBOX_CMD_HELP_END
+ 
+ BAREBOX_CMD_START(cp)
+ 	.cmd		= do_cp,
+ 	BAREBOX_CMD_DESC("copy files")
+-	BAREBOX_CMD_OPTS("[-v] SRC DEST")
++	BAREBOX_CMD_OPTS("[-rv] SRC DEST")
+ 	BAREBOX_CMD_GROUP(CMD_GRP_FILE)
+ 	BAREBOX_CMD_HELP(cmd_cp_help)
+ BAREBOX_CMD_END
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.7.4
+
 
 _______________________________________________
 barebox mailing list
