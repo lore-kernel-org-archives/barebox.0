@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iKavh-00014Q-3l
- for barebox@lists.infradead.org; Wed, 16 Oct 2019 04:28:58 +0000
-Date: Wed, 16 Oct 2019 06:28:47 +0200
+ id 1iKb12-0004WQ-62
+ for barebox@lists.infradead.org; Wed, 16 Oct 2019 04:34:29 +0000
+Date: Wed, 16 Oct 2019 06:34:26 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Message-ID: <20191016042847.kgf7f4u7fvc2dy5r@pengutronix.de>
+Message-ID: <20191016043426.peutxkqx2s62ds5r@pengutronix.de>
 References: <20191015160945.7930-1-o.rempel@pengutronix.de>
  <20191015234106.9cfb8923875a4354d94b31ea@gmail.com>
 MIME-Version: 1.0
@@ -18,7 +18,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============5266492390840975147=="
+Content-Type: multipart/mixed; boundary="===============2508169550697991695=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] MIPS: init cache before flashing it
@@ -26,18 +26,16 @@ To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
 
---===============5266492390840975147==
+--===============2508169550697991695==
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="yn6cmp4yaxziz2we"
+	protocol="application/pgp-signature"; boundary="x3whm4yaieptdcwj"
 Content-Disposition: inline
 
 
---yn6cmp4yaxziz2we
+--x3whm4yaieptdcwj
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-
-Hi Antony,
 
 On Tue, Oct 15, 2019 at 11:41:06PM +0300, Antony Pavlov wrote:
 > On Tue, 15 Oct 2019 18:09:45 +0200
@@ -49,10 +47,7 @@ On Tue, Oct 15, 2019 at 11:41:06PM +0300, Antony Pavlov wrote:
 19-June/038530.html
 > AFAIR we have to clear BSS before calling r4k_cache_init().
 
-Ah... you right! Can you please resend your patch?
-
-Best regards,
-Oleksij
+Hm... your patch need some rework as well. I'll send updated version.
 
 > --=20
 > Best regards,
@@ -96,6 +91,11 @@ _size)
 > > barebox@lists.infradead.org
 > > http://lists.infradead.org/mailman/listinfo/barebox
 >=20
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+>=20
 
 --=20
 Pengutronix e.K.                           |                             |
@@ -103,30 +103,30 @@ Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
---yn6cmp4yaxziz2we
+--x3whm4yaieptdcwj
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCAAdFiEERBNZvwSgvmcMY/T74omh9DUaUbMFAl2mnH4ACgkQ4omh9DUa
-UbOtXBAAyzzYWqwNHK6iS+aneuUMGbiXRrkw8n3CvIWqA9lCZU0P6WU0ZB294xee
-R+tPOBsRLTyO3L2mPgfopcVJ982eRVkLR4PSxM0v26yu5Av4j4295A0seqGtoX4G
-fFQLOCOtk4FnN1CbvKygQHjNoLYtshfEcn4llwkMRB5ka29sA7RLJmTVDQmJw4Wk
-QnXa3cQGMxyecuZ1Ra4BHOuxx0BrIiuw/XP1xKeSDOJtsYqTaeia5jRwxv8LjFec
-+jYxZ3CfEpT0VuykA4JzsbX32rk0g9NYHXS/eQOKhydeXwCvT8K+cpTMGbqJqWRO
-tqSF7SfGQWs+lr6XvxjXzS7T6UfNPBICAi/YEkQxrFHdNM8bhvssfhWWyjFSjb24
-4jmCKhHpyLb5o94kbRUoJrTjMq6v+NCu6csrCk8zwBMBJ9BiyQOVWUiJ9eK8Eum6
-yu6wcjmgMSJ73hWRH9Jqqn4yYqOOCy1rUXavFK3O1T8IzaDCQ+pU9f81lOHDyc8r
-hxE9wvN36gN989HEJB83LhzTnKNuYdL16QC/y0jJX7phLANlk8WUXSLXLox6lCqZ
-TbRaqsbnLikdRf4Ji+4vNF+61onbIFlSalgnTuAFA/Tp7G0kVcSchUL9JLWNGtdx
-D/xBb0n1CTmKu0KTHKA4fGn/Jyeg5Gdz3iXf2kn8u7Wcdu33Wsg=
-=EM63
+iQIzBAABCAAdFiEERBNZvwSgvmcMY/T74omh9DUaUbMFAl2mndEACgkQ4omh9DUa
+UbPAGRAAhtuPGv4rd55cVC1OYahQm/H8wzdPC6KZjCrvGYc8Ad5shmMef9aDwpnI
+Yh3UuLKD3wnNJHqWnJxsZA3EkujSKaKUygO2ANxgCP/KTOW/kUN5LzA+TUM+HnnK
+q8N68taqwDxR3+v0jdBJTgPqnQSMB84Q4LG9wGYJThLZjGPu40mFNgy83N8FfAP3
+BVDk9hIz3V/jn8ZrK+37e4D96fjcJ6qKFY24/4xvB2GoYICpmjob2TzKt8tjAzH9
+vFe6PLAgM3R5qqQfGJ786RMtJG//nhfRHEKumsXa4EBp6aYE19La7JAQzV4fbeN0
+IxJgZ6/oRGvY82rH1nRYOr4U3k/yD++fANPpcCz+EMt5L336O+BmXUIiFFTkyOTM
+VHy2UtZBi/PMCtNy+Uee19IlS1HOQhIWlGlzbC79SHjtEU2SPWj7CN4OPB34lHJ8
+Yu0jhjTvoOYw1DynQ9uiwK+R61jIZWWbM+2huGZsPF7WIlKg/s/nnZervoOvepU1
+3KvFeza1f3PqoaD3/naDotkvWkaLn55cB1EPije1nWmTGR17Q44zw0z14C5hRTB9
+ZZqeKHKUVYzyZJZhfJPA7XHzAIPMOyLMB7bjNpXW9KOhcQLWmxbrLLC8+pFp3Uo3
+nGRWf5FYz34MMhxij/J1qJDXwh8txMJMEOBIQkaYjxRTfYKc4js=
+=FPQJ
 -----END PGP SIGNATURE-----
 
---yn6cmp4yaxziz2we--
+--x3whm4yaieptdcwj--
 
 
---===============5266492390840975147==
+--===============2508169550697991695==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -137,4 +137,4 @@ barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
 
---===============5266492390840975147==--
+--===============2508169550697991695==--
