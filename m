@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from relay5-d.mail.gandi.net ([217.70.183.197])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iKdd2-0007lv-5H
+ id 1iKdd2-0007lt-4p
  for barebox@lists.infradead.org; Wed, 16 Oct 2019 07:21:53 +0000
 Received: from geraet.fritz.box (i538755FA.versanet.de [83.135.85.250])
  (Authenticated sender: ahmad@a3f.at)
- by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 4BA981C0013
- for <barebox@lists.infradead.org>; Wed, 16 Oct 2019 07:21:46 +0000 (UTC)
+ by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 835631C0004
+ for <barebox@lists.infradead.org>; Wed, 16 Oct 2019 07:21:45 +0000 (UTC)
 From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Wed, 16 Oct 2019 09:21:39 +0200
-Message-Id: <20191016072139.2323-5-ahmad@a3f.at>
+Date: Wed, 16 Oct 2019 09:21:37 +0200
+Message-Id: <20191016072139.2323-3-ahmad@a3f.at>
 In-Reply-To: <20191016072139.2323-1-ahmad@a3f.at>
 References: <20191016072139.2323-1-ahmad@a3f.at>
 MIME-Version: 1.0
@@ -25,60 +25,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] efi: silence warning about un-prototyped assembly-called
- functions
+Subject: [PATCH 3/5] efi: use efi_guidcmp helper where appropriate
 To: barebox@lists.infradead.org
 
-Both _relocate and efi_main are only called from assembly, but
--Wmissing-prototypes doesn't know that and warns about them.
-Pre-declare prototypes to silence the warnings.
+We have a helper for it. Let's use it.
 
 Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- arch/x86/mach-efi/reloc_x86_64.c | 3 +++
- common/efi/efi.c                 | 3 +++
- 2 files changed, 6 insertions(+)
+ drivers/efi/efi-device.c | 2 +-
+ fs/efivarfs.c            | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/mach-efi/reloc_x86_64.c b/arch/x86/mach-efi/reloc_x86_64.c
-index 1db72f5dbc52..e83bacb302ca 100644
---- a/arch/x86/mach-efi/reloc_x86_64.c
-+++ b/arch/x86/mach-efi/reloc_x86_64.c
-@@ -35,11 +35,14 @@
-     SUCH DAMAGE.
- */
+diff --git a/drivers/efi/efi-device.c b/drivers/efi/efi-device.c
+index 305d337aabf5..68d81caf010b 100644
+--- a/drivers/efi/efi-device.c
++++ b/drivers/efi/efi-device.c
+@@ -311,7 +311,7 @@ static int efi_bus_match(struct device_d *dev, struct driver_d *drv)
+ 	int i;
  
-+#include <linux/linkage.h>
- #include <common.h>
- #include <efi.h>
+ 	for (i = 0; i < efidev->num_guids; i++) {
+-		if (!memcmp(&efidrv->guid, &efidev->guids[i], sizeof(efi_guid_t))) {
++		if (!efi_guidcmp(efidrv->guid, efidev->guids[i])) {
+ 			BS->handle_protocol(efidev->handle, &efidev->guids[i],
+ 					&efidev->protocol);
+ 			return 0;
+diff --git a/fs/efivarfs.c b/fs/efivarfs.c
+index 1e8049362168..9eadda41215c 100644
+--- a/fs/efivarfs.c
++++ b/fs/efivarfs.c
+@@ -145,7 +145,7 @@ static int efivars_create(struct device_d *dev, const char *pathname, mode_t mod
+ 	if (ret)
+ 		return -ENOENT;
  
- #include <elf.h>
+-	if (memcmp(&vendor, &EFI_BAREBOX_VENDOR_GUID, sizeof(efi_guid_t)))
++	if (efi_guidcmp(vendor, EFI_BAREBOX_VENDOR_GUID))
+ 		return -EPERM;
  
-+asmlinkage efi_status_t _relocate (long, Elf64_Dyn *, efi_handle_t, efi_system_table_t *);
-+
- efi_status_t _relocate (long ldbase, Elf64_Dyn *dyn, efi_handle_t image, efi_system_table_t *systab)
- {
- 	long relsz = 0, relent = 0;
-diff --git a/common/efi/efi.c b/common/efi/efi.c
-index a7b25cbbe251..73cea3703695 100644
---- a/common/efi/efi.c
-+++ b/common/efi/efi.c
-@@ -17,6 +17,7 @@
-  *
-  */
- 
-+#include <linux/linkage.h>
- #include <common.h>
- #include <linux/sizes.h>
- #include <memory.h>
-@@ -318,6 +319,8 @@ static int efi_init(void)
- }
- device_initcall(efi_init);
- 
-+asmlinkage efi_status_t efi_main(efi_handle_t, efi_system_table_t *);
-+
- /**
-  * efi-main - Entry point for EFI images
-  */
+ 	inode = xzalloc(sizeof(*inode));
 -- 
 2.20.1
 
