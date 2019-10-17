@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iLPka-0000ke-6m
- for barebox@lists.infradead.org; Fri, 18 Oct 2019 10:44:53 +0000
-Date: Fri, 18 Oct 2019 12:44:50 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191018104450.amnsi6k2uy6k3hyy@pengutronix.de>
-References: <20191015082105.5197-1-a.fatoum@pengutronix.de>
+ id 1iKyyp-0007Fw-DB
+ for barebox@lists.infradead.org; Thu, 17 Oct 2019 06:09:49 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <str@pengutronix.de>) id 1iKyyi-0001cE-JJ
+ for barebox@lists.infradead.org; Thu, 17 Oct 2019 08:09:40 +0200
+Received: from str by dude.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <str@pengutronix.de>) id 1iKyyb-0006Pd-LA
+ for barebox@lists.infradead.org; Thu, 17 Oct 2019 08:09:33 +0200
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Thu, 17 Oct 2019 08:09:26 +0200
+Message-Id: <20191017060928.23882-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191015082105.5197-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,30 +27,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fixup! ARM: at91: build for all SoCs when
- AT91_MULTI_BOARDS is selected
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/3] ARM: socfpga: reset-manager: fix Wmissing-prototypes
+To: Barebox List <barebox@lists.infradead.org>
 
-On Tue, Oct 15, 2019 at 10:21:05AM +0200, Ahmad Fatoum wrote:
-> This reverts a hunk I missed after a rebase:
-> A previous commit restricts ARCH_BAREBOX_MAX_BARE_INIT to only
-> non-multi-image boards, so no need to touch it to be compatible
-> with the new multi-image changes.
-> 
-> ---
->  arch/arm/mach-at91/Kconfig | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+Fix the following warnings
 
-Applied, thanks
+arch/arm/mach-socfpga/arria10-reset-manager.c:152:6: warning: no previous prototype for
+'arria10_reset_deassert_shared_peripherals_q1' [-Wmissing-prototypes]
+  152 | void arria10_reset_deassert_shared_peripherals_q1(uint32_t *mask0,
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arch/arm/mach-socfpga/arria10-reset-manager.c:226:6: warning: no previous prototype for
+'arria10_reset_deassert_shared_peripherals_q2' [-Wmissing-prototypes]
+  226 | void arria10_reset_deassert_shared_peripherals_q2(uint32_t *mask0,
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arch/arm/mach-socfpga/arria10-reset-manager.c:272:6: warning: no previous prototype for
+'arria10_reset_deassert_shared_peripherals_q3' [-Wmissing-prototypes]
+  272 | void arria10_reset_deassert_shared_peripherals_q3(uint32_t *mask0,
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arch/arm/mach-socfpga/arria10-reset-manager.c:329:6: warning: no previous prototype for
+'arria10_reset_deassert_shared_peripherals_q4' [-Wmissing-prototypes]
+  329 | void arria10_reset_deassert_shared_peripherals_q4(uint32_t *mask0, uint32_t *mask1)
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Sascha
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+---
+ arch/arm/mach-socfpga/include/mach/arria10-reset-manager.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
+diff --git a/arch/arm/mach-socfpga/include/mach/arria10-reset-manager.h b/arch/arm/mach-socfpga/include/mach/arria10-reset-manager.h
+index ebd20434263a..2033de77a39f 100644
+--- a/arch/arm/mach-socfpga/include/mach/arria10-reset-manager.h
++++ b/arch/arm/mach-socfpga/include/mach/arria10-reset-manager.h
+@@ -108,6 +108,10 @@
+ void arria10_reset_peripherals(void);
+ void arria10_reset_deassert_dedicated_peripherals(void);
+ void arria10_reset_deassert_shared_peripherals(void);
++void arria10_reset_deassert_shared_peripherals_q1(uint32_t *mask0, uint32_t *mask1);
++void arria10_reset_deassert_shared_peripherals_q2(uint32_t *mask0, uint32_t *mask1);
++void arria10_reset_deassert_shared_peripherals_q3(uint32_t *mask0, uint32_t *mask1);
++void arria10_reset_deassert_shared_peripherals_q4(uint32_t *mask0, uint32_t *mask1);
+ void arria10_reset_deassert_fpga_peripherals(void);
+ 
+ #endif
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.23.0
+
 
 _______________________________________________
 barebox mailing list
