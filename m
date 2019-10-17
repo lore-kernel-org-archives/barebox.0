@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iL3D4-0002AY-98
+ id 1iL3D4-0002Aa-9A
  for barebox@lists.infradead.org; Thu, 17 Oct 2019 10:40:48 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1iL3D1-0006Cy-Cl
+ (envelope-from <str@pengutronix.de>) id 1iL3D1-0006Cz-Cq
  for barebox@lists.infradead.org; Thu, 17 Oct 2019 12:40:43 +0200
 Received: from str by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1iL3D1-0002lJ-4R
+ (envelope-from <str@pengutronix.de>) id 1iL3D1-0002lS-5J
  for barebox@lists.infradead.org; Thu, 17 Oct 2019 12:40:43 +0200
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Thu, 17 Oct 2019 12:40:40 +0200
-Message-Id: <20191017104041.31923-2-s.trumtrar@pengutronix.de>
+Date: Thu, 17 Oct 2019 12:40:41 +0200
+Message-Id: <20191017104041.31923-3-s.trumtrar@pengutronix.de>
 In-Reply-To: <20191017104041.31923-1-s.trumtrar@pengutronix.de>
 References: <20191017104041.31923-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
@@ -29,37 +29,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] ARM: socfpga: cyclone5-system-manager.h: remove defines
+Subject: [PATCH 3/3] ARM: socfpga: defconfig: enable state_drv
 To: Barebox List <barebox@lists.infradead.org>
 
-These defines are common for arria10 and cyclone5.
-Instead of having them here, they are moved to drivers/net/designware_socfpga.c.
+The Arria10 DTS uses the state framework.
+Enable the driver so it gets probed.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- .../include/mach/cyclone5-system-manager.h            | 11 -----------
- 1 file changed, 11 deletions(-)
+ arch/arm/configs/socfpga-arria10_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/mach-socfpga/include/mach/cyclone5-system-manager.h b/arch/arm/mach-socfpga/include/mach/cyclone5-system-manager.h
-index 24f52effd886..7cec60937b84 100644
---- a/arch/arm/mach-socfpga/include/mach/cyclone5-system-manager.h
-+++ b/arch/arm/mach-socfpga/include/mach/cyclone5-system-manager.h
-@@ -57,15 +57,4 @@ void socfpga_sysmgr_pinmux_init(unsigned long *sys_mgr_init_table, int num);
- #define SYSMGR_FPGAINTF_NAND		(1<<4)
- #define SYSMGR_FPGAINTF_SDMMC		(1<<5)
- 
--/* Enumeration: sysmgr::emacgrp::ctrl::physel::enum                        */
--#define SYSMGR_EMACGRP_CTRL_PHYSEL_ENUM_GMII_MII 0x0
--#define SYSMGR_EMACGRP_CTRL_PHYSEL_ENUM_RGMII 0x1
--#define SYSMGR_EMACGRP_CTRL_PHYSEL_ENUM_RMII 0x2
--#define SYSMGR_EMACGRP_CTRL_PHYSEL0_LSB 0
--#define SYSMGR_EMACGRP_CTRL_PHYSEL1_LSB 2
--#define SYSMGR_EMACGRP_CTRL_PHYSEL_MASK 0x00000003
--
--#define SYSMGR_FPGAGRP_MODULE  0x00000028
--#define SYSMGR_FPGAGRP_MODULE_EMAC 0x00000004
--
- #endif /* _SYSTEM_MANAGER_H_ */
+diff --git a/arch/arm/configs/socfpga-arria10_defconfig b/arch/arm/configs/socfpga-arria10_defconfig
+index ae420c1dd290..e47a0ab1836d 100644
+--- a/arch/arm/configs/socfpga-arria10_defconfig
++++ b/arch/arm/configs/socfpga-arria10_defconfig
+@@ -74,6 +74,7 @@ CONFIG_MCI=y
+ CONFIG_MCI_STARTUP=y
+ CONFIG_MCI_MMC_BOOT_PARTITIONS=y
+ CONFIG_MCI_DW=y
++CONFIG_STATE_DRV=y
+ # CONFIG_PINCTRL is not set
+ CONFIG_FS_TFTP=y
+ CONFIG_FS_NFS=y
 -- 
 2.23.0
 
