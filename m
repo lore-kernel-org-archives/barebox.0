@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iLPua-0005nA-HX
- for barebox@lists.infradead.org; Fri, 18 Oct 2019 10:55:17 +0000
-Date: Fri, 18 Oct 2019 12:55:10 +0200
+ id 1iLQld-0003JB-0e
+ for barebox@lists.infradead.org; Fri, 18 Oct 2019 11:50:02 +0000
+Date: Fri, 18 Oct 2019 13:49:59 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191018105509.s6vz7xeix6gjaczw@pengutronix.de>
-References: <1571159405-18672-1-git-send-email-iu87m888m@qq.com>
+Message-ID: <20191018114959.66a6t2njafdkmmv7@pengutronix.de>
+References: <20191016045743.22818-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1571159405-18672-1-git-send-email-iu87m888m@qq.com>
+In-Reply-To: <20191016045743.22818-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,40 +22,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] console_simple: fix linking error when ARCH_HAS_CTRLC
- enabled
-To: iu87m888m@qq.com
-Cc: barebox@lists.infradead.org, DU HUANPENG <u74147@gmail.com>
+Subject: Re: [PATCH v2] MIPS: init cache before using it
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Wed, Oct 16, 2019 at 01:10:05AM +0800, iu87m888m@qq.com wrote:
-> From: DU HUANPENG <u74147@gmail.com>
+On Wed, Oct 16, 2019 at 06:57:42AM +0200, Oleksij Rempel wrote:
+> flush_cache_all() uses 'struct cpuinfo_mips current_cpu_data' data
+> fields. These data fields are initialized in r4k_cache_init().
 > 
-> this error happens in sandbox with simple console, sandbox
-> has ARCH_HAS_CTRLC enabled by default
+> However in the current implementation the r4k_cache_init() function
+> is called __AFTER__ relocate_code().
 > 
-> $ make sandbox_defconfig
-> $ make menuconfig
-> (select CONFIG_SHELL_SIMPLE)
-> $ make
-> 
-> LD      barebox
-> common/built-in.o: In function `__pr_memory_display':
-> /home/du/source/barebox/common/memory_display.c:117: undefined reference to `ctrlc'
-> common/built-in.o: In function `run_init':
-> /home/du/source/barebox/common/startup.c:317: undefined reference to `console_ctrlc_allow'
-> common/built-in.o: In function `parse_stream_outer':
-> /home/du/source/barebox/common/hush.c:1742: undefined reference to `ctrlc'
-> common/built-in.o: In function `run_list_real':
-> /home/du/source/barebox/common/hush.c:895: undefined reference to `ctrlc'
-> common/built-in.o: In function `run_shell':
-> /home/du/source/barebox/common/hush.c:1940: undefined reference to `ctrlc_handled'
-> 
-> Signed-off-by: DU HUANPENG <u74147@gmail.com>
+> Suggested-by: Antony Pavlov <antonynpavlov@gmail.com>
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 > ---
->  common/console_simple.c | 12 +++++++-----
->  1 file changed, 7 insertions(+), 5 deletions(-)
+>  arch/mips/lib/reloc.c | 12 ++++++++++--
+>  1 file changed, 10 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/mips/lib/reloc.c b/arch/mips/lib/reloc.c
+> index 9a9e404f7e..14195d6f96 100644
+> --- a/arch/mips/lib/reloc.c
+> +++ b/arch/mips/lib/reloc.c
+> @@ -31,6 +31,7 @@
+>  #include <asm/bitops.h>
+>  #include <asm/cache.h>
+>  #include <asm/cacheops.h>
+> +#include <asm/cpu-features.h>
+>  #include <asm/cpu.h>
+>  #include <asm/cpu-info.h>
+>  #include <asm/io.h>
+> @@ -40,6 +41,7 @@
+>  #include <linux/sizes.h>
+>  #include <asm-generic/memory_layout.h>
+>  
+> +extern void r4k_cache_init(void);
+>  void main_entry(void *fdt, u32 fdt_size);
+>  void relocate_code(void *fdt, u32 fdt_size, u32 relocaddr);
+>  
+> @@ -146,8 +148,14 @@ void relocate_code(void *fdt, u32 fdt_size, u32 ram_size)
+>  		apply_reloc(type, (void *)addr, off);
+>  	}
+>  
+> -	/* Ensure the icache is coherent */
+> -	flush_cache_all();
+> +	memset(__bss_start, 0, bss_len);
+> +
+> +	cpu_probe();
+> +	if (cpu_has_4k_cache) {
+> +		r4k_cache_init();
+> +		/* Ensure the icache is coherent */
+> +		flush_cache_all();
+> +	}
+>  
+>  	/* Clear the .bss section */
+>  	bss_start = (uint8_t *)((unsigned long)__bss_start + off);
+>	memset(bss_start, 0, bss_len);
 
-Applied, thanks
+bss is cleared twice now and with two different addresses. This looks
+wrong.
 
 Sascha
 
