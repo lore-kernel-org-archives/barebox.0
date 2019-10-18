@@ -1,22 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iL3D4-0002Aa-9A
- for barebox@lists.infradead.org; Thu, 17 Oct 2019 10:40:48 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1iL3D1-0006Cz-Cq
- for barebox@lists.infradead.org; Thu, 17 Oct 2019 12:40:43 +0200
-Received: from str by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1iL3D1-0002lS-5J
- for barebox@lists.infradead.org; Thu, 17 Oct 2019 12:40:43 +0200
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Thu, 17 Oct 2019 12:40:41 +0200
-Message-Id: <20191017104041.31923-3-s.trumtrar@pengutronix.de>
-In-Reply-To: <20191017104041.31923-1-s.trumtrar@pengutronix.de>
+ id 1iLPrV-0003t4-AM
+ for barebox@lists.infradead.org; Fri, 18 Oct 2019 10:52:02 +0000
+Date: Fri, 18 Oct 2019 12:51:59 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20191018105159.dwapuqnagow2q3xx@pengutronix.de>
 References: <20191017104041.31923-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20191017104041.31923-1-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,32 +22,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] ARM: socfpga: defconfig: enable state_drv
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH 1/3] net: designware: socfpga: fix phy setup for Arria10
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-The Arria10 DTS uses the state framework.
-Enable the driver so it gets probed.
+On Thu, Oct 17, 2019 at 12:40:39PM +0200, Steffen Trumtrar wrote:
+> Barebox-version of the Linux v5.2 patch:
+> 
+>     40ae25505fe834648ce4aa70b073ee934942bfdb
+>     net: stmmac: socfpga: fix phy and ptp_ref setup for Arria10/Stratix10
+> 
+>     On the Arria10, Agilex, and Stratix10 SoC, there are a few differences from
+>     the Cyclone5 and Arria5:
+>      - The emac PHY setup bits are in separate registers.
+>      - The PTP reference clock select mask is different.
+>      - The register to enable the emac signal from FPGA is different.
+> 
+>     Thus, this patch creates a separate function for setting the phy modes on
+>     Arria10/Agilex/Stratix10. The separation is based a new DTS binding:
+>     "altr,socfpga-stmmac-a10-s10".
+> 
+>     Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
+>     Signed-off-by: David S. Miller <davem@davemloft.net>
+> 
+> The new DTS binding is already part of v2019.10.0 and the driver doesn't
+> probe on Arria10 without the new binding introduced in this patch.
+> 
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> ---
+>  drivers/net/designware.h         |   1 +
+>  drivers/net/designware_socfpga.c | 133 +++++++++++++++++++++++++++----
+>  2 files changed, 118 insertions(+), 16 deletions(-)
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
----
- arch/arm/configs/socfpga-arria10_defconfig | 1 +
- 1 file changed, 1 insertion(+)
+Applied, thanks
 
-diff --git a/arch/arm/configs/socfpga-arria10_defconfig b/arch/arm/configs/socfpga-arria10_defconfig
-index ae420c1dd290..e47a0ab1836d 100644
---- a/arch/arm/configs/socfpga-arria10_defconfig
-+++ b/arch/arm/configs/socfpga-arria10_defconfig
-@@ -74,6 +74,7 @@ CONFIG_MCI=y
- CONFIG_MCI_STARTUP=y
- CONFIG_MCI_MMC_BOOT_PARTITIONS=y
- CONFIG_MCI_DW=y
-+CONFIG_STATE_DRV=y
- # CONFIG_PINCTRL is not set
- CONFIG_FS_TFTP=y
- CONFIG_FS_NFS=y
+Sascha
+
+
 -- 
-2.23.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
