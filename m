@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iNAdS-0005Qd-Vs
- for barebox@lists.infradead.org; Wed, 23 Oct 2019 07:00:48 +0000
-Date: Wed, 23 Oct 2019 09:00:41 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191023070041.2dvdtmnql4z2cd4b@pengutronix.de>
-References: <20191021092341.27633-1-a.fatoum@pengutronix.de>
+ id 1iMWCh-0003WO-KS
+ for barebox@lists.infradead.org; Mon, 21 Oct 2019 11:50:28 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Mon, 21 Oct 2019 13:50:19 +0200
+Message-Id: <20191021115021.3129-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191021092341.27633-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,32 +19,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] serial: efi-stdio: replace globals with handles in
- priv struct
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v3 1/3] MIPS: reloc: remove init of relocated bss
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-On Mon, Oct 21, 2019 at 11:23:40AM +0200, Ahmad Fatoum wrote:
-> Despite assigning efi_sys_table->{con_in,con_out} to priv->{in,out},
-> some functions still use the global efi_sys_table->{con_in,con_out}.
-> Let's restrict globals access to the probe function and have the priv
-> struct completely describe input and output used in the callbacks.
-> No functional change.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  drivers/serial/efi-stdio.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+It will be done in main_entry() any way.
 
-Applied, thanks
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ arch/mips/lib/reloc.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-Sascha
-
+diff --git a/arch/mips/lib/reloc.c b/arch/mips/lib/reloc.c
+index 9a9e404f7e..798a68680d 100644
+--- a/arch/mips/lib/reloc.c
++++ b/arch/mips/lib/reloc.c
+@@ -110,7 +110,7 @@ void relocate_code(void *fdt, u32 fdt_size, u32 ram_size)
+ {
+ 	unsigned long addr, length, bss_len;
+ 	u32 relocaddr, new_stack;
+-	uint8_t *buf, *bss_start;
++	uint8_t *buf;
+ 	unsigned int type;
+ 	long off;
+ 
+@@ -149,10 +149,6 @@ void relocate_code(void *fdt, u32 fdt_size, u32 ram_size)
+ 	/* Ensure the icache is coherent */
+ 	flush_cache_all();
+ 
+-	/* Clear the .bss section */
+-	bss_start = (uint8_t *)((unsigned long)__bss_start + off);
+-	memset(bss_start, 0, bss_len);
+-
+ 	 __asm__ __volatile__ (
+ 			"move	$a0, %0\n"
+ 		"	move	$a1, %1\n"
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.23.0
+
 
 _______________________________________________
 barebox mailing list
