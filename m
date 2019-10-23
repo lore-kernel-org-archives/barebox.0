@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iMWg7-0007vB-E0
- for barebox@lists.infradead.org; Mon, 21 Oct 2019 12:20:52 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 21 Oct 2019 14:20:47 +0200
-Message-Id: <20191021122047.12204-2-a.fatoum@pengutronix.de>
-In-Reply-To: <20191021122047.12204-1-a.fatoum@pengutronix.de>
+ id 1iNAje-0007I1-LY
+ for barebox@lists.infradead.org; Wed, 23 Oct 2019 07:07:12 +0000
+Date: Wed, 23 Oct 2019 09:07:09 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20191023070709.dqsg5msny5tyi7e4@pengutronix.de>
 References: <20191021122047.12204-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20191021122047.12204-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,42 +22,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] commands: passwd: suggest sandbox for offline password
- generation
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH 1/2] hwrng: dev-random: always use /dev/urandom
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Users might want to generate the password while the target is offline.
-We don't provide a dedicated host tool for that, but barebox sandbox can
-be used. Document this possibility.
+On Mon, Oct 21, 2019 at 02:20:46PM +0200, Ahmad Fatoum wrote:
+> /dev/random can block long after boot time. It seems there's a consensus
+> that /dev/urandom is safe to use except for very early boot, which isn't
+> when barebox sandbox is usually run. To make the HWRNG more useful,
+> always use /dev/urandom.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  arch/sandbox/board/dev-random.c                | 7 +------
+>  arch/sandbox/mach-sandbox/include/mach/linux.h | 1 -
+>  drivers/hw_random/Kconfig                      | 6 +++---
+>  3 files changed, 4 insertions(+), 10 deletions(-)
 
-While at it, remove a misplaced single quite and slash in the help text.
+Applied, thanks
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- commands/Kconfig | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Sascha
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 0189b4715bb9..a6db52ae54b7 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -1389,8 +1389,10 @@ config CMD_PASSWD
- 	help
- 	  Set password
- 
--	  'Interactively asks for a password. The digest of this password will be
--	  stored in /env/etc//passwd. This is then used by the 'login' command.
-+	  Interactively asks for a password. The digest of this password will be
-+	  stored in /env/etc/passwd. This is then used by the 'login' command.
-+
-+	  Passwords can be generated on the host machine using barebox sandbox.
- 
- 	  Entering an empty string will disable the password function.
- 
 -- 
-2.23.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
