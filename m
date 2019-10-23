@@ -1,22 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iNJq8-0006ur-1b
- for barebox@lists.infradead.org; Wed, 23 Oct 2019 16:50:29 +0000
-Received: from [2001:67c:670:100:6a05:caff:fe2d:a9b1]
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>) id 1iNJq6-0003WK-In
- for barebox@lists.infradead.org; Wed, 23 Oct 2019 18:50:26 +0200
-References: <20191023162259.21895-1-o.rempel@pengutronix.de>
- <48ad5316-9817-f4d3-680d-e4ee173d774d@pengutronix.de>
- <4a1b5482-ca22-7e79-dcd9-b988b6a70644@pengutronix.de>
+ id 1iNJvo-0002hZ-Oj
+ for barebox@lists.infradead.org; Wed, 23 Oct 2019 16:56:23 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <24196965-a840-f338-c429-dbcdae319e51@pengutronix.de>
-Date: Wed, 23 Oct 2019 18:50:26 +0200
+Date: Wed, 23 Oct 2019 18:55:56 +0200
+Message-Id: <20191023165601.16441-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <4a1b5482-ca22-7e79-dcd9-b988b6a70644@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,25 +19,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v5 1/2] Documentation: add watchdog documentation
+Subject: [PATCH 1/6] Documentation: efi: emphasize watchdog deactivation on
+ ExitBootServices
 To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On 10/23/19 6:45 PM, Ahmad Fatoum wrote:
-> On a system with multiple watchdogs, the highest priority watchdog is the one
-> affected by the ``boot.watchdog_timeout`` parameter. If multiple watchdogs
-> share the same priority, only one will be started.
+The UEFI specification paragraph quoted above notes:
+> The watchdog timer is only used during boot services. On successful
+> completion of ExitBootServices() the watchdog timer is disabled.
 
-Oh still not correct, but wait now I got it:
+Thus disabling the watchdog is _the_ only proper behavior. Adjust the
+wording accordingly.
 
-On a system with multiple watchdogs, the watchdog with the highest positive
-priority is the one affected by the ``boot.watchdog_timeout`` parameter.
-If multiple watchdogs share the same priority, only one will be started.
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ Documentation/boards/efi.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/Documentation/boards/efi.rst b/Documentation/boards/efi.rst
+index 2178c9ab4293..f04b1d32378b 100644
+--- a/Documentation/boards/efi.rst
++++ b/Documentation/boards/efi.rst
+@@ -350,7 +350,7 @@ https://uefi.org/sites/default/files/resources/UEFI_Spec_2_1_D.pdf
+ 
+ Current linux kernel (v5.0) will execute ExitBootServices() during the early
+ boot stage and thus will automatically disable the (U)EFI watchdog. Since it is
+-a proper behavior according to the (U)EFI specification, it is impossible to
++the proper behavior according to the (U)EFI specification, it is impossible to
+ protect full boot chain by using this watchdog only. It is recommended to use
+ an alternative hardware watchdog, preferably started before the bootloader. If (U)EFI
+ firmware lacks this feature, the bootloader should be able to start an alternative
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.23.0
+
 
 _______________________________________________
 barebox mailing list
