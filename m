@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iMWCh-0003WP-MH
- for barebox@lists.infradead.org; Mon, 21 Oct 2019 11:50:30 +0000
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Mon, 21 Oct 2019 13:50:21 +0200
-Message-Id: <20191021115021.3129-3-o.rempel@pengutronix.de>
-In-Reply-To: <20191021115021.3129-1-o.rempel@pengutronix.de>
+ id 1iNAih-00079A-QW
+ for barebox@lists.infradead.org; Wed, 23 Oct 2019 07:06:13 +0000
+Date: Wed, 23 Oct 2019 09:06:10 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20191023070610.d3lawindqmwwzhi5@pengutronix.de>
 References: <20191021115021.3129-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20191021115021.3129-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,33 +22,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 3/3] MIPS: reloc: init bss and cpu
-To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: Re: [PATCH v3 1/3] MIPS: reloc: remove init of relocated bss
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-We need it to make flush_cache_all() work properly.
+On Mon, Oct 21, 2019 at 01:50:19PM +0200, Oleksij Rempel wrote:
+> It will be done in main_entry() any way.
+> 
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> ---
+>  arch/mips/lib/reloc.c | 6 +-----
+>  1 file changed, 1 insertion(+), 5 deletions(-)
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- arch/mips/lib/reloc.c | 2 ++
- 1 file changed, 2 insertions(+)
+Applied, thanks
 
-diff --git a/arch/mips/lib/reloc.c b/arch/mips/lib/reloc.c
-index 798a68680d..df9760e38c 100644
---- a/arch/mips/lib/reloc.c
-+++ b/arch/mips/lib/reloc.c
-@@ -115,6 +115,8 @@ void relocate_code(void *fdt, u32 fdt_size, u32 ram_size)
- 	long off;
- 
- 	bss_len = (unsigned long)&__bss_stop - (unsigned long)__bss_start;
-+	memset(__bss_start, 0, bss_len);
-+	cpu_probe();
- 
- 	length = barebox_image_size + bss_len;
- 	relocaddr = ALIGN_DOWN(ram_size - length, SZ_64K);
+Sascha
+
 -- 
-2.23.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
