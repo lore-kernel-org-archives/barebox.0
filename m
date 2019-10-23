@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iNJva-0002Gz-KV
- for barebox@lists.infradead.org; Wed, 23 Oct 2019 16:56:08 +0000
+ id 1iNJvg-0002PU-M9
+ for barebox@lists.infradead.org; Wed, 23 Oct 2019 16:56:14 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 23 Oct 2019 18:55:57 +0200
-Message-Id: <20191023165601.16441-2-a.fatoum@pengutronix.de>
+Date: Wed, 23 Oct 2019 18:55:59 +0200
+Message-Id: <20191023165601.16441-4-a.fatoum@pengutronix.de>
 In-Reply-To: <20191023165601.16441-1-a.fatoum@pengutronix.de>
 References: <20191023165601.16441-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,50 +21,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/6] efi: efi-image: don't mask x86 interrupts on boot
+Subject: [PATCH 4/6] watchdog: export priority as device parameter
 To: barebox@lists.infradead.org
-Cc: Michael Olbrich <mol@pengutronix.de>, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-55da0cf1 ("efi: add support for initrd loading") introduced support for
-the Linux v3.6+ handover protocol[1]. As part of this change a x86 cli
-(Clear Interrupt Flag) instruction was introduced just prior to the jump
-into the kernel's EFI handover protocol entry point.
+8f4cf30903 ("watchdog: Allow multiple watchdogs") introduced the ability
+to set a per-watchdog priority from within drivers, which is usually
+populated with of_get_watchdog_priority.
 
-While the normal Linux x86 boot protocols require that interrupts are
-masked on entry, this doesn't apply to the EFI stub, because the EFI
-stub itself is the one implementing the boot protocol and as such
-masks the interrupts itself[2].
+For debugging, it can be useful to query and override this priority on
+the fly.  Provide a device parameter to do so.
+As watchdog_get_default only considers priorities > 0, it makes sense
+to have a newly set priority of 0 disable the watchdog.
 
-EFI watchdogs may, and often are, implemented using a timer interrupt.
-Dropping the cli will allow monitoring the boot of the kernel up to it
-calling ExitBootServices.
-
-In absence of a hardware watchdog, this is the only watchdog available
-to users with EFI 1.0+, so it seems prudent to not make it even more
-useless.
-
-[1]: https://www.kernel.org/doc/Documentation/x86/boot.txt
-[2]: Linux v5.4-rc4, arch/x86/boot/compressed/eboot.c
-
-Cc: Michael Olbrich <mol@pengutronix.de>
-Fixes: 55da0cf1 ("efi: add support for initrd loading")
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/efi/efi-image.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/watchdog/wd_core.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/common/efi/efi-image.c b/common/efi/efi-image.c
-index 939663a6e250..9c66c9f882c5 100644
---- a/common/efi/efi-image.c
-+++ b/common/efi/efi-image.c
-@@ -174,7 +174,6 @@ static inline void linux_efi_handover(efi_handle_t handle,
- {
- 	handover_fn handover;
+diff --git a/drivers/watchdog/wd_core.c b/drivers/watchdog/wd_core.c
+index e6e5ddecd2f8..ae29a76064aa 100644
+--- a/drivers/watchdog/wd_core.c
++++ b/drivers/watchdog/wd_core.c
+@@ -41,6 +41,16 @@ static int _watchdog_set_timeout(struct watchdog *wd, unsigned timeout)
+ 	return wd->set_timeout(wd, timeout);
+ }
  
--	asm volatile ("cli");
- 	handover = (handover_fn)((long)header->code32_start + 512 +
- 				 header->handover_offset);
- 	handover(handle, efi_sys_table, header);
++static int watchdog_set_priority(struct param_d *param, void *priv)
++{
++	struct watchdog *wd = priv;
++
++	if (wd->priority == 0)
++		return _watchdog_set_timeout(wd, 0);
++
++	return 0;
++}
++
+ static int watchdog_set_cur(struct param_d *param, void *priv)
+ {
+ 	struct watchdog *wd = priv;
+@@ -130,6 +140,12 @@ int watchdog_register(struct watchdog *wd)
+ 	if (!wd->priority)
+ 		wd->priority = WATCHDOG_DEFAULT_PRIORITY;
+ 
++	p = dev_add_param_uint32(&wd->dev, "priority",
++				 watchdog_set_priority, NULL,
++				 &wd->priority, "%u", wd);
++	if (IS_ERR(p))
++		return PTR_ERR(p);
++
+ 	/* set some default sane value */
+ 	if (!wd->timeout_max)
+ 		wd->timeout_max = 60 * 60 * 24;
 -- 
 2.23.0
 
