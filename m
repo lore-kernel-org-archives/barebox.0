@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-eopbgr150045.outbound.protection.outlook.com
+ ([40.107.15.45] helo=EUR01-DB5-obe.outbound.protection.outlook.com)
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iNcfT-0005sI-OL
- for barebox@lists.infradead.org; Thu, 24 Oct 2019 12:56:45 +0000
-Date: Thu, 24 Oct 2019 14:56:33 +0200
-From: Michael Tretter <m.tretter@pengutronix.de>
-Message-ID: <20191024145633.48150454@litschi.hi.pengutronix.de>
-In-Reply-To: <1571912781-17152-2-git-send-email-thomas.haemmerle@wolfvision.net>
+ id 1iNaKX-0004Av-7r
+ for barebox@lists.infradead.org; Thu, 24 Oct 2019 10:26:58 +0000
+From: =?iso-8859-1?Q?Thomas_H=E4mmerle?= <Thomas.Haemmerle@wolfvision.net>
+Date: Thu, 24 Oct 2019 10:26:51 +0000
+Message-ID: <1571912781-17152-3-git-send-email-thomas.haemmerle@wolfvision.net>
 References: <1571912781-17152-1-git-send-email-thomas.haemmerle@wolfvision.net>
- <1571912781-17152-2-git-send-email-thomas.haemmerle@wolfvision.net>
+In-Reply-To: <1571912781-17152-1-git-send-email-thomas.haemmerle@wolfvision.net>
+Content-Language: en-US
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -18,51 +19,122 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/5] ARM: zynqmp: dts: move firmware node to src tree
-To: Thomas =?UTF-8?B?SMOkbW1lcmxl?= <Thomas.Haemmerle@wolfvision.net>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 2/5] firmware-zynqmp: extend driver with fpga relavant
+ functions
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Cc: =?iso-8859-1?Q?Thomas_H=E4mmerle?= <Thomas.Haemmerle@wolfvision.net>
 
-T24gVGh1LCAyNCBPY3QgMjAxOSAxMDoyNjo1MCArMDAwMCwgVGhvbWFzIEjDpG1tZXJsZSB3cm90
-ZToKPiBGcm9tOiBNaWNoYWVsIFRyZXR0ZXIgPG0udHJldHRlckBwZW5ndXRyb25peC5kZT4KPiAK
-PiBUaGUgZmlybXdhcmUgbm9kZSB3aWxsIGJlIGFkZGVkIHRvIHRoZSBtYWlubGluZSBkZXZpY2Ug
-dHJlZS4gQXMgaXQgd2lsbAo+IGV2ZW50dWFsbHkgZW50ZXIgQmFyZWJveCB2aWEgYSBkZXZpY2Ug
-dHJlZSBzeW5jLCBhZGQgaXQgdG8gdGhlIHNyYyB0cmVlCj4gYWxyZWFkeS4KCk5vdCBzdXJlLCBi
-dXQgSSB0aGluayB0aGF0IHdlIHNob3VsZCB3YWl0IHdpdGggdGhlIGRldmljZSB0cmVlIGNoYW5n
-ZXMKdW50aWwgdGhleSBhcnJpdmUgdmlhIGEgc3luYyB3aXRoIHRoZSBrZXJuZWwgdHJlZS4KCk1p
-Y2hhZWwKCj4gCj4gU2lnbmVkLW9mZi1ieTogTWljaGFlbCBUcmV0dGVyIDxtLnRyZXR0ZXJAcGVu
-Z3V0cm9uaXguZGU+Cj4gLS0tCj4gIGFyY2gvYXJtL2R0cy96eW5xbXAtemN1MTA0LXJldkEuZHRz
-IHwgIDEgLQo+ICBhcmNoL2FybS9kdHMvenlucW1wLmR0c2kgICAgICAgICAgICB8IDE3IC0tLS0t
-LS0tLS0tLS0tLS0tCj4gIGR0cy9zcmMvYXJtNjQveGlsaW54L3p5bnFtcC5kdHNpICAgIHwgIDcg
-KysrKysrKwo+ICAzIGZpbGVzIGNoYW5nZWQsIDcgaW5zZXJ0aW9ucygrKSwgMTggZGVsZXRpb25z
-KC0pCj4gIGRlbGV0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9kdHMvenlucW1wLmR0c2kKPiAKPiBk
-aWZmIC0tZ2l0IGEvYXJjaC9hcm0vZHRzL3p5bnFtcC16Y3UxMDQtcmV2QS5kdHMgYi9hcmNoL2Fy
-bS9kdHMvenlucW1wLXpjdTEwNC1yZXZBLmR0cwo+IGluZGV4IGMwMzExMmQuLjhiOGRkODQgMTAw
-NjQ0Cj4gLS0tIGEvYXJjaC9hcm0vZHRzL3p5bnFtcC16Y3UxMDQtcmV2QS5kdHMKPiArKysgYi9h
-cmNoL2FybS9kdHMvenlucW1wLXpjdTEwNC1yZXZBLmR0cwo+IEBAIC04LDUgKzgsNCBAQAo+ICAg
-Ki8KPiAgCj4gICNpbmNsdWRlIDxhcm02NC94aWxpbngvenlucW1wLXpjdTEwNC1yZXZBLmR0cz4K
-PiAtI2luY2x1ZGUgInp5bnFtcC5kdHNpIgo+ICAjaW5jbHVkZSAienlucW1wLWNsay5kdHNpIgo+
-IGRpZmYgLS1naXQgYS9hcmNoL2FybS9kdHMvenlucW1wLmR0c2kgYi9hcmNoL2FybS9kdHMvenlu
-cW1wLmR0c2kKPiBkZWxldGVkIGZpbGUgbW9kZSAxMDA2NDQKPiBpbmRleCA1OTk4NGVlLi4wMDAw
-MDAwCj4gLS0tIGEvYXJjaC9hcm0vZHRzL3p5bnFtcC5kdHNpCj4gKysrIC9kZXYvbnVsbAo+IEBA
-IC0xLDE3ICswLDAgQEAKPiAtLy8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjArCj4g
-LS8qCj4gLSAqIGR0cyBmaWxlIGZvciBYaWxpbnggWnlucU1QCj4gLSAqCj4gLSAqIChDKSBDb3B5
-cmlnaHQgMjAxNCAtIDIwMTUsIFhpbGlueCwgSW5jLgo+IC0gKgo+IC0gKiBNaWNoYWwgU2ltZWsg
-PG1pY2hhbC5zaW1la0B4aWxpbnguY29tPgo+IC0gKi8KPiAtCj4gLS8gewo+IC0JZmlybXdhcmUg
-ewo+IC0JCXp5bnFtcF9maXJtd2FyZTogenlucW1wLWZpcm13YXJlIHsKPiAtCQkJY29tcGF0aWJs
-ZSA9ICJ4bG54LHp5bnFtcC1maXJtd2FyZSI7Cj4gLQkJCW1ldGhvZCA9ICJzbWMiOwo+IC0JCX07
-Cj4gLQl9Owo+IC19Owo+IGRpZmYgLS1naXQgYS9kdHMvc3JjL2FybTY0L3hpbGlueC96eW5xbXAu
-ZHRzaSBiL2R0cy9zcmMvYXJtNjQveGlsaW54L3p5bnFtcC5kdHNpCj4gaW5kZXggOWFhNjczNC4u
-OTExNWVhZSAxMDA2NDQKPiAtLS0gYS9kdHMvc3JjL2FybTY0L3hpbGlueC96eW5xbXAuZHRzaQo+
-ICsrKyBiL2R0cy9zcmMvYXJtNjQveGlsaW54L3p5bnFtcC5kdHNpCj4gQEAgLTExNSw2ICsxMTUs
-MTMgQEAKPiAgCQltZXRob2QgPSAic21jIjsKPiAgCX07Cj4gIAo+ICsJZmlybXdhcmUgewo+ICsJ
-CXp5bnFtcF9maXJtd2FyZTogenlucW1wLWZpcm13YXJlIHsKPiArCQkJY29tcGF0aWJsZSA9ICJ4
-bG54LHp5bnFtcC1maXJtd2FyZSI7Cj4gKwkJCW1ldGhvZCA9ICJzbWMiOwo+ICsJCX07Cj4gKwl9
-Owo+ICsKPiAgCXRpbWVyIHsKPiAgCQljb21wYXRpYmxlID0gImFybSxhcm12OC10aW1lciI7Cj4g
-IAkJaW50ZXJydXB0LXBhcmVudCA9IDwmZ2ljPjsKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
-aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2JhcmVib3gK
+From: Thomas Haemmerle <thomas.haemmerle@wolfvision.net>
+
+Port functions from xlnx-linux to get FPGA status and invoke bitstream
+loading.
+
+Signed-off-by: Thomas Haemmerle <thomas.haemmerle@wolfvision.net>
+---
+ arch/arm/mach-zynqmp/firmware-zynqmp.c             | 47 ++++++++++++++++++++++
+ .../arm/mach-zynqmp/include/mach/firmware-zynqmp.h |  8 ++++
+ 2 files changed, 55 insertions(+)
+
+diff --git a/arch/arm/mach-zynqmp/firmware-zynqmp.c b/arch/arm/mach-zynqmp/firmware-zynqmp.c
+index f2187e9..18a1a51 100644
+--- a/arch/arm/mach-zynqmp/firmware-zynqmp.c
++++ b/arch/arm/mach-zynqmp/firmware-zynqmp.c
+@@ -508,6 +508,51 @@ static int zynqmp_pm_ioctl(u32 node_id, u32 ioctl_id, u32 arg1, u32 arg2,
+ 				   arg1, arg2, out);
+ }
+ 
++/**
++ * zynqmp_pm_fpga_load - Perform the fpga load
++ * @address:	Address to write to
++ * @size:	pl bitstream size
++ * @flags:	Flags are used to specify the type of Bitstream file -
++ * 		defined in ZYNQMP_FPGA_BIT_*-macros
++ *
++ * This function provides access to xilfpga library to transfer
++ * the required bitstream into PL.
++ *
++ * Return:	Returns status, either success or error+reason
++ */
++static int zynqmp_pm_fpga_load(u64 address, u32 size, u32 flags)
++{
++	if (!address || !size)
++		return -EINVAL;
++
++	return zynqmp_pm_invoke_fn(PM_FPGA_LOAD,
++			lower_32_bits(address),	upper_32_bits(address),
++			size, flags, NULL);
++}
++
++/**
++ * zynqmp_pm_fpga_get_status - Read value from PCAP status register
++ * @value:	Value to read
++ *
++ * This function provides access to the xilfpga library to get
++ * the PCAP status
++ *
++ * Return:	Returns status, either success or error+reason
++ */
++static int zynqmp_pm_fpga_get_status(u32 *value)
++{
++	u32 ret_payload[PAYLOAD_ARG_CNT];
++	int ret = 0;
++
++	if (!value)
++		return -EINVAL;
++
++	ret = zynqmp_pm_invoke_fn(PM_FPGA_GET_STATUS, 0, 0, 0, 0, ret_payload);
++	*value = ret_payload[1];
++
++	return ret;
++}
++
+ static const struct zynqmp_eemi_ops eemi_ops = {
+ 	.get_api_version = zynqmp_pm_get_api_version,
+ 	.query_data = zynqmp_pm_query_data,
+@@ -521,6 +566,8 @@ static const struct zynqmp_eemi_ops eemi_ops = {
+ 	.clock_setparent = zynqmp_pm_clock_setparent,
+ 	.clock_getparent = zynqmp_pm_clock_getparent,
+ 	.ioctl = zynqmp_pm_ioctl,
++	.fpga_getstatus = zynqmp_pm_fpga_get_status,
++	.fpga_load = zynqmp_pm_fpga_load,
+ };
+ 
+ /**
+diff --git a/arch/arm/mach-zynqmp/include/mach/firmware-zynqmp.h b/arch/arm/mach-zynqmp/include/mach/firmware-zynqmp.h
+index 9e7a2e3..f19d73d 100644
+--- a/arch/arm/mach-zynqmp/include/mach/firmware-zynqmp.h
++++ b/arch/arm/mach-zynqmp/include/mach/firmware-zynqmp.h
+@@ -17,6 +17,12 @@
+ 
+ #define PAYLOAD_ARG_CNT         4
+ 
++#define ZYNQMP_FPGA_BIT_AUTH_DDR	BIT(1)
++#define ZYNQMP_FPGA_BIT_AUTH_OCM	BIT(2)
++#define ZYNQMP_FPGA_BIT_ENC_USR_KEY	BIT(3)
++#define ZYNQMP_FPGA_BIT_ENC_DEV_KEY	BIT(4)
++#define ZYNQMP_FPGA_BIT_ONLY_BIN	BIT(5)
++
+ enum pm_ioctl_id {
+ 	IOCTL_SET_PLL_FRAC_MODE = 8,
+ 	IOCTL_GET_PLL_FRAC_MODE,
+@@ -61,6 +67,8 @@ struct zynqmp_eemi_ops {
+ 	int (*clock_setparent)(u32 clock_id, u32 parent_id);
+ 	int (*clock_getparent)(u32 clock_id, u32 *parent_id);
+ 	int (*ioctl)(u32 node_id, u32 ioctl_id, u32 arg1, u32 arg2, u32 *out);
++	int (*fpga_getstatus)(u32 *status);
++	int (*fpga_load)(u64 address, u32 size, u32 flags);
+ };
+ 
+ const struct zynqmp_eemi_ops *zynqmp_pm_get_eemi_ops(void);
+-- 
+2.7.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
