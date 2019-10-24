@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iP3SE-0002dF-KC
- for barebox@lists.infradead.org; Mon, 28 Oct 2019 11:45:00 +0000
-Date: Mon, 28 Oct 2019 12:44:57 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191028114457.q6u2yo6rjlqyyoe5@pengutronix.de>
-References: <9bc4633e-6f71-0c6c-988c-e8a1e11e713a@pengutronix.de>
- <1572002352-387612-1-git-send-email-r.karszniewicz@phytec.de>
+ id 1iNeye-0006s2-FV
+ for barebox@lists.infradead.org; Thu, 24 Oct 2019 15:24:42 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu, 24 Oct 2019 17:24:26 +0200
+Message-Id: <20191024152428.4536-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1572002352-387612-1-git-send-email-r.karszniewicz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,32 +19,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] sandbox: add_image: mmap block devices
-To: Robert Karszniewicz <r.karszniewicz@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/3] watchdog: remove wrong uses of timeout_cur
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Fri, Oct 25, 2019 at 01:19:12PM +0200, Robert Karszniewicz wrote:
-> This makes it possible to mount block devices from the host machine,
-> which have been passed as arguments to --image
-> 
-> Signed-off-by: Robert Karszniewicz <r.karszniewicz@phytec.de>
-> ---
-> Changes from v1:
-> - move -1 to the right side of the comparison
-> 
->  arch/sandbox/os/common.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
+The barebox watchdog poller uses the struct watchdog.timeout_cur as
+the timeout value to configure the watchdog with.
 
-Applied, thanks
+There's no need for the device driver to set this. I didn't know that
+when I wrote the drivers, but I do now, hence this commit.
 
-Sascha
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/watchdog/stm32_iwdg.c  | 1 -
+ drivers/watchdog/stpmic1_wdt.c | 1 -
+ 2 files changed, 2 deletions(-)
 
-
+diff --git a/drivers/watchdog/stm32_iwdg.c b/drivers/watchdog/stm32_iwdg.c
+index 20536cb4ab2d..4d252e558c32 100644
+--- a/drivers/watchdog/stm32_iwdg.c
++++ b/drivers/watchdog/stm32_iwdg.c
+@@ -256,7 +256,6 @@ static int stm32_iwdg_probe(struct device_d *dev)
+ 	wdd->set_timeout = stm32_iwdg_set_timeout;
+ 	wdd->timeout_max = (RLR_MAX + 1) * data->max_prescaler * 1000;
+ 	wdd->timeout_max /= wd->rate * 1000;
+-	wdd->timeout_cur = wdd->timeout_max;
+ 
+ 	ret = watchdog_register(wdd);
+ 	if (ret) {
+diff --git a/drivers/watchdog/stpmic1_wdt.c b/drivers/watchdog/stpmic1_wdt.c
+index eb8c43f716a8..f79b7e8c2768 100644
+--- a/drivers/watchdog/stpmic1_wdt.c
++++ b/drivers/watchdog/stpmic1_wdt.c
+@@ -175,7 +175,6 @@ static int stpmic1_wdt_probe(struct device_d *dev)
+ 	wdd->hwdev = dev;
+ 	wdd->set_timeout = stpmic1_wdt_set_timeout;
+ 	wdd->timeout_max = PMIC_WDT_MAX_TIMEOUT;
+-	wdd->timeout_cur = PMIC_WDT_DEFAULT_TIMEOUT;
+ 
+ 	/* have the watchdog reset, not power-off the system */
+ 	regmap_write_bits(wdt->regmap, MAIN_CR, RREQ_EN, RREQ_EN);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.23.0
+
 
 _______________________________________________
 barebox mailing list
