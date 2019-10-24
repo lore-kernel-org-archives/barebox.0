@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-eopbgr150045.outbound.protection.outlook.com
- ([40.107.15.45] helo=EUR01-DB5-obe.outbound.protection.outlook.com)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iNaKX-0004Av-7r
- for barebox@lists.infradead.org; Thu, 24 Oct 2019 10:26:58 +0000
-From: =?iso-8859-1?Q?Thomas_H=E4mmerle?= <Thomas.Haemmerle@wolfvision.net>
-Date: Thu, 24 Oct 2019 10:26:51 +0000
-Message-ID: <1571912781-17152-3-git-send-email-thomas.haemmerle@wolfvision.net>
+ id 1iNcfd-0005yJ-E4
+ for barebox@lists.infradead.org; Thu, 24 Oct 2019 12:56:54 +0000
+Date: Thu, 24 Oct 2019 14:56:51 +0200
+From: Michael Tretter <m.tretter@pengutronix.de>
+Message-ID: <20191024145651.373ed4ae@litschi.hi.pengutronix.de>
+In-Reply-To: <1571912781-17152-3-git-send-email-thomas.haemmerle@wolfvision.net>
 References: <1571912781-17152-1-git-send-email-thomas.haemmerle@wolfvision.net>
-In-Reply-To: <1571912781-17152-1-git-send-email-thomas.haemmerle@wolfvision.net>
-Content-Language: en-US
+ <1571912781-17152-3-git-send-email-thomas.haemmerle@wolfvision.net>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,122 +18,82 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] firmware-zynqmp: extend driver with fpga relavant
+Subject: Re: [PATCH 2/5] firmware-zynqmp: extend driver with fpga relavant
  functions
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-Cc: =?iso-8859-1?Q?Thomas_H=E4mmerle?= <Thomas.Haemmerle@wolfvision.net>
+To: Thomas =?UTF-8?B?SMOkbW1lcmxl?= <Thomas.Haemmerle@wolfvision.net>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-From: Thomas Haemmerle <thomas.haemmerle@wolfvision.net>
-
-Port functions from xlnx-linux to get FPGA status and invoke bitstream
-loading.
-
-Signed-off-by: Thomas Haemmerle <thomas.haemmerle@wolfvision.net>
----
- arch/arm/mach-zynqmp/firmware-zynqmp.c             | 47 ++++++++++++++++++++++
- .../arm/mach-zynqmp/include/mach/firmware-zynqmp.h |  8 ++++
- 2 files changed, 55 insertions(+)
-
-diff --git a/arch/arm/mach-zynqmp/firmware-zynqmp.c b/arch/arm/mach-zynqmp/firmware-zynqmp.c
-index f2187e9..18a1a51 100644
---- a/arch/arm/mach-zynqmp/firmware-zynqmp.c
-+++ b/arch/arm/mach-zynqmp/firmware-zynqmp.c
-@@ -508,6 +508,51 @@ static int zynqmp_pm_ioctl(u32 node_id, u32 ioctl_id, u32 arg1, u32 arg2,
- 				   arg1, arg2, out);
- }
- 
-+/**
-+ * zynqmp_pm_fpga_load - Perform the fpga load
-+ * @address:	Address to write to
-+ * @size:	pl bitstream size
-+ * @flags:	Flags are used to specify the type of Bitstream file -
-+ * 		defined in ZYNQMP_FPGA_BIT_*-macros
-+ *
-+ * This function provides access to xilfpga library to transfer
-+ * the required bitstream into PL.
-+ *
-+ * Return:	Returns status, either success or error+reason
-+ */
-+static int zynqmp_pm_fpga_load(u64 address, u32 size, u32 flags)
-+{
-+	if (!address || !size)
-+		return -EINVAL;
-+
-+	return zynqmp_pm_invoke_fn(PM_FPGA_LOAD,
-+			lower_32_bits(address),	upper_32_bits(address),
-+			size, flags, NULL);
-+}
-+
-+/**
-+ * zynqmp_pm_fpga_get_status - Read value from PCAP status register
-+ * @value:	Value to read
-+ *
-+ * This function provides access to the xilfpga library to get
-+ * the PCAP status
-+ *
-+ * Return:	Returns status, either success or error+reason
-+ */
-+static int zynqmp_pm_fpga_get_status(u32 *value)
-+{
-+	u32 ret_payload[PAYLOAD_ARG_CNT];
-+	int ret = 0;
-+
-+	if (!value)
-+		return -EINVAL;
-+
-+	ret = zynqmp_pm_invoke_fn(PM_FPGA_GET_STATUS, 0, 0, 0, 0, ret_payload);
-+	*value = ret_payload[1];
-+
-+	return ret;
-+}
-+
- static const struct zynqmp_eemi_ops eemi_ops = {
- 	.get_api_version = zynqmp_pm_get_api_version,
- 	.query_data = zynqmp_pm_query_data,
-@@ -521,6 +566,8 @@ static const struct zynqmp_eemi_ops eemi_ops = {
- 	.clock_setparent = zynqmp_pm_clock_setparent,
- 	.clock_getparent = zynqmp_pm_clock_getparent,
- 	.ioctl = zynqmp_pm_ioctl,
-+	.fpga_getstatus = zynqmp_pm_fpga_get_status,
-+	.fpga_load = zynqmp_pm_fpga_load,
- };
- 
- /**
-diff --git a/arch/arm/mach-zynqmp/include/mach/firmware-zynqmp.h b/arch/arm/mach-zynqmp/include/mach/firmware-zynqmp.h
-index 9e7a2e3..f19d73d 100644
---- a/arch/arm/mach-zynqmp/include/mach/firmware-zynqmp.h
-+++ b/arch/arm/mach-zynqmp/include/mach/firmware-zynqmp.h
-@@ -17,6 +17,12 @@
- 
- #define PAYLOAD_ARG_CNT         4
- 
-+#define ZYNQMP_FPGA_BIT_AUTH_DDR	BIT(1)
-+#define ZYNQMP_FPGA_BIT_AUTH_OCM	BIT(2)
-+#define ZYNQMP_FPGA_BIT_ENC_USR_KEY	BIT(3)
-+#define ZYNQMP_FPGA_BIT_ENC_DEV_KEY	BIT(4)
-+#define ZYNQMP_FPGA_BIT_ONLY_BIN	BIT(5)
-+
- enum pm_ioctl_id {
- 	IOCTL_SET_PLL_FRAC_MODE = 8,
- 	IOCTL_GET_PLL_FRAC_MODE,
-@@ -61,6 +67,8 @@ struct zynqmp_eemi_ops {
- 	int (*clock_setparent)(u32 clock_id, u32 parent_id);
- 	int (*clock_getparent)(u32 clock_id, u32 *parent_id);
- 	int (*ioctl)(u32 node_id, u32 ioctl_id, u32 arg1, u32 arg2, u32 *out);
-+	int (*fpga_getstatus)(u32 *status);
-+	int (*fpga_load)(u64 address, u32 size, u32 flags);
- };
- 
- const struct zynqmp_eemi_ops *zynqmp_pm_get_eemi_ops(void);
--- 
-2.7.4
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gVGh1LCAyNCBPY3QgMjAxOSAxMDoyNjo1MSArMDAwMCwgVGhvbWFzIEjDpG1tZXJsZSB3cm90
+ZToKPiBGcm9tOiBUaG9tYXMgSGFlbW1lcmxlIDx0aG9tYXMuaGFlbW1lcmxlQHdvbGZ2aXNpb24u
+bmV0Pgo+IAo+IFBvcnQgZnVuY3Rpb25zIGZyb20geGxueC1saW51eCB0byBnZXQgRlBHQSBzdGF0
+dXMgYW5kIGludm9rZSBiaXRzdHJlYW0KPiBsb2FkaW5nLgo+IAo+IFNpZ25lZC1vZmYtYnk6IFRo
+b21hcyBIYWVtbWVybGUgPHRob21hcy5oYWVtbWVybGVAd29sZnZpc2lvbi5uZXQ+CgpSZXZpZXdl
+ZC1ieTogTWljaGFlbCBUcmV0dGVyIDxtLnRyZXR0ZXJAcGVuZ3V0cm9uaXguZGU+Cgo+IC0tLQo+
+ICBhcmNoL2FybS9tYWNoLXp5bnFtcC9maXJtd2FyZS16eW5xbXAuYyAgICAgICAgICAgICB8IDQ3
+ICsrKysrKysrKysrKysrKysrKysrKysKPiAgLi4uL2FybS9tYWNoLXp5bnFtcC9pbmNsdWRlL21h
+Y2gvZmlybXdhcmUtenlucW1wLmggfCAgOCArKysrCj4gIDIgZmlsZXMgY2hhbmdlZCwgNTUgaW5z
+ZXJ0aW9ucygrKQo+IAo+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLXp5bnFtcC9maXJtd2Fy
+ZS16eW5xbXAuYyBiL2FyY2gvYXJtL21hY2gtenlucW1wL2Zpcm13YXJlLXp5bnFtcC5jCj4gaW5k
+ZXggZjIxODdlOS4uMThhMWE1MSAxMDA2NDQKPiAtLS0gYS9hcmNoL2FybS9tYWNoLXp5bnFtcC9m
+aXJtd2FyZS16eW5xbXAuYwo+ICsrKyBiL2FyY2gvYXJtL21hY2gtenlucW1wL2Zpcm13YXJlLXp5
+bnFtcC5jCj4gQEAgLTUwOCw2ICs1MDgsNTEgQEAgc3RhdGljIGludCB6eW5xbXBfcG1faW9jdGwo
+dTMyIG5vZGVfaWQsIHUzMiBpb2N0bF9pZCwgdTMyIGFyZzEsIHUzMiBhcmcyLAo+ICAJCQkJICAg
+YXJnMSwgYXJnMiwgb3V0KTsKPiAgfQo+ICAKPiArLyoqCj4gKyAqIHp5bnFtcF9wbV9mcGdhX2xv
+YWQgLSBQZXJmb3JtIHRoZSBmcGdhIGxvYWQKPiArICogQGFkZHJlc3M6CUFkZHJlc3MgdG8gd3Jp
+dGUgdG8KPiArICogQHNpemU6CXBsIGJpdHN0cmVhbSBzaXplCj4gKyAqIEBmbGFnczoJRmxhZ3Mg
+YXJlIHVzZWQgdG8gc3BlY2lmeSB0aGUgdHlwZSBvZiBCaXRzdHJlYW0gZmlsZSAtCj4gKyAqIAkJ
+ZGVmaW5lZCBpbiBaWU5RTVBfRlBHQV9CSVRfKi1tYWNyb3MKPiArICoKPiArICogVGhpcyBmdW5j
+dGlvbiBwcm92aWRlcyBhY2Nlc3MgdG8geGlsZnBnYSBsaWJyYXJ5IHRvIHRyYW5zZmVyCj4gKyAq
+IHRoZSByZXF1aXJlZCBiaXRzdHJlYW0gaW50byBQTC4KPiArICoKPiArICogUmV0dXJuOglSZXR1
+cm5zIHN0YXR1cywgZWl0aGVyIHN1Y2Nlc3Mgb3IgZXJyb3IrcmVhc29uCj4gKyAqLwo+ICtzdGF0
+aWMgaW50IHp5bnFtcF9wbV9mcGdhX2xvYWQodTY0IGFkZHJlc3MsIHUzMiBzaXplLCB1MzIgZmxh
+Z3MpCj4gK3sKPiArCWlmICghYWRkcmVzcyB8fCAhc2l6ZSkKPiArCQlyZXR1cm4gLUVJTlZBTDsK
+PiArCj4gKwlyZXR1cm4genlucW1wX3BtX2ludm9rZV9mbihQTV9GUEdBX0xPQUQsCj4gKwkJCWxv
+d2VyXzMyX2JpdHMoYWRkcmVzcyksCXVwcGVyXzMyX2JpdHMoYWRkcmVzcyksCj4gKwkJCXNpemUs
+IGZsYWdzLCBOVUxMKTsKPiArfQo+ICsKPiArLyoqCj4gKyAqIHp5bnFtcF9wbV9mcGdhX2dldF9z
+dGF0dXMgLSBSZWFkIHZhbHVlIGZyb20gUENBUCBzdGF0dXMgcmVnaXN0ZXIKPiArICogQHZhbHVl
+OglWYWx1ZSB0byByZWFkCj4gKyAqCj4gKyAqIFRoaXMgZnVuY3Rpb24gcHJvdmlkZXMgYWNjZXNz
+IHRvIHRoZSB4aWxmcGdhIGxpYnJhcnkgdG8gZ2V0Cj4gKyAqIHRoZSBQQ0FQIHN0YXR1cwo+ICsg
+Kgo+ICsgKiBSZXR1cm46CVJldHVybnMgc3RhdHVzLCBlaXRoZXIgc3VjY2VzcyBvciBlcnJvcity
+ZWFzb24KPiArICovCj4gK3N0YXRpYyBpbnQgenlucW1wX3BtX2ZwZ2FfZ2V0X3N0YXR1cyh1MzIg
+KnZhbHVlKQo+ICt7Cj4gKwl1MzIgcmV0X3BheWxvYWRbUEFZTE9BRF9BUkdfQ05UXTsKPiArCWlu
+dCByZXQgPSAwOwo+ICsKPiArCWlmICghdmFsdWUpCj4gKwkJcmV0dXJuIC1FSU5WQUw7Cj4gKwo+
+ICsJcmV0ID0genlucW1wX3BtX2ludm9rZV9mbihQTV9GUEdBX0dFVF9TVEFUVVMsIDAsIDAsIDAs
+IDAsIHJldF9wYXlsb2FkKTsKPiArCSp2YWx1ZSA9IHJldF9wYXlsb2FkWzFdOwo+ICsKPiArCXJl
+dHVybiByZXQ7Cj4gK30KPiArCj4gIHN0YXRpYyBjb25zdCBzdHJ1Y3QgenlucW1wX2VlbWlfb3Bz
+IGVlbWlfb3BzID0gewo+ICAJLmdldF9hcGlfdmVyc2lvbiA9IHp5bnFtcF9wbV9nZXRfYXBpX3Zl
+cnNpb24sCj4gIAkucXVlcnlfZGF0YSA9IHp5bnFtcF9wbV9xdWVyeV9kYXRhLAo+IEBAIC01MjEs
+NiArNTY2LDggQEAgc3RhdGljIGNvbnN0IHN0cnVjdCB6eW5xbXBfZWVtaV9vcHMgZWVtaV9vcHMg
+PSB7Cj4gIAkuY2xvY2tfc2V0cGFyZW50ID0genlucW1wX3BtX2Nsb2NrX3NldHBhcmVudCwKPiAg
+CS5jbG9ja19nZXRwYXJlbnQgPSB6eW5xbXBfcG1fY2xvY2tfZ2V0cGFyZW50LAo+ICAJLmlvY3Rs
+ID0genlucW1wX3BtX2lvY3RsLAo+ICsJLmZwZ2FfZ2V0c3RhdHVzID0genlucW1wX3BtX2ZwZ2Ff
+Z2V0X3N0YXR1cywKPiArCS5mcGdhX2xvYWQgPSB6eW5xbXBfcG1fZnBnYV9sb2FkLAo+ICB9Owo+
+ICAKPiAgLyoqCj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtenlucW1wL2luY2x1ZGUvbWFj
+aC9maXJtd2FyZS16eW5xbXAuaCBiL2FyY2gvYXJtL21hY2gtenlucW1wL2luY2x1ZGUvbWFjaC9m
+aXJtd2FyZS16eW5xbXAuaAo+IGluZGV4IDllN2EyZTMuLmYxOWQ3M2QgMTAwNjQ0Cj4gLS0tIGEv
+YXJjaC9hcm0vbWFjaC16eW5xbXAvaW5jbHVkZS9tYWNoL2Zpcm13YXJlLXp5bnFtcC5oCj4gKysr
+IGIvYXJjaC9hcm0vbWFjaC16eW5xbXAvaW5jbHVkZS9tYWNoL2Zpcm13YXJlLXp5bnFtcC5oCj4g
+QEAgLTE3LDYgKzE3LDEyIEBACj4gIAo+ICAjZGVmaW5lIFBBWUxPQURfQVJHX0NOVCAgICAgICAg
+IDQKPiAgCj4gKyNkZWZpbmUgWllOUU1QX0ZQR0FfQklUX0FVVEhfRERSCUJJVCgxKQo+ICsjZGVm
+aW5lIFpZTlFNUF9GUEdBX0JJVF9BVVRIX09DTQlCSVQoMikKPiArI2RlZmluZSBaWU5RTVBfRlBH
+QV9CSVRfRU5DX1VTUl9LRVkJQklUKDMpCj4gKyNkZWZpbmUgWllOUU1QX0ZQR0FfQklUX0VOQ19E
+RVZfS0VZCUJJVCg0KQo+ICsjZGVmaW5lIFpZTlFNUF9GUEdBX0JJVF9PTkxZX0JJTglCSVQoNSkK
+PiArCgpJIHdhcyBub3Qgc3VyZSBpZiB0aGUgZmxhZ3MgYmVsb25nIHRvIHRoZSBmaXJtd2FyZSBp
+bnRlcmZhY2Ugb3IgaW50bwp0aGUgZHJpdmVyIHRoYXQgdXNlcyB0aGUgaW50ZXJmYWNlLiBXaGls
+ZSB1bmxpa2VseSwgb3RoZXIgZHJpdmVycyBtaWdodAp1c2UgdGhlIGNhbGxzIGFzIHdlbGwgYW5k
+LCB0aHVzLCBoZXJlIGlzIHRoZSByaWdodCBwbGFjZS4KCk1pY2hhZWwKCj4gIGVudW0gcG1faW9j
+dGxfaWQgewo+ICAJSU9DVExfU0VUX1BMTF9GUkFDX01PREUgPSA4LAo+ICAJSU9DVExfR0VUX1BM
+TF9GUkFDX01PREUsCj4gQEAgLTYxLDYgKzY3LDggQEAgc3RydWN0IHp5bnFtcF9lZW1pX29wcyB7
+Cj4gIAlpbnQgKCpjbG9ja19zZXRwYXJlbnQpKHUzMiBjbG9ja19pZCwgdTMyIHBhcmVudF9pZCk7
+Cj4gIAlpbnQgKCpjbG9ja19nZXRwYXJlbnQpKHUzMiBjbG9ja19pZCwgdTMyICpwYXJlbnRfaWQp
+Owo+ICAJaW50ICgqaW9jdGwpKHUzMiBub2RlX2lkLCB1MzIgaW9jdGxfaWQsIHUzMiBhcmcxLCB1
+MzIgYXJnMiwgdTMyICpvdXQpOwo+ICsJaW50ICgqZnBnYV9nZXRzdGF0dXMpKHUzMiAqc3RhdHVz
+KTsKPiArCWludCAoKmZwZ2FfbG9hZCkodTY0IGFkZHJlc3MsIHUzMiBzaXplLCB1MzIgZmxhZ3Mp
+Owo+ICB9Owo+ICAKPiAgY29uc3Qgc3RydWN0IHp5bnFtcF9lZW1pX29wcyAqenlucW1wX3BtX2dl
+dF9lZW1pX29wcyh2b2lkKTsKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9y
+ZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
