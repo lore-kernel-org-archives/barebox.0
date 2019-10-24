@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-eopbgr150045.outbound.protection.outlook.com
- ([40.107.15.45] helo=EUR01-DB5-obe.outbound.protection.outlook.com)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iNaKY-0004Av-VF
- for barebox@lists.infradead.org; Thu, 24 Oct 2019 10:27:01 +0000
-From: =?iso-8859-1?Q?Thomas_H=E4mmerle?= <Thomas.Haemmerle@wolfvision.net>
-Date: Thu, 24 Oct 2019 10:26:51 +0000
-Message-ID: <1571912781-17152-4-git-send-email-thomas.haemmerle@wolfvision.net>
+ id 1iNcfh-0006Bq-ME
+ for barebox@lists.infradead.org; Thu, 24 Oct 2019 12:56:59 +0000
+Date: Thu, 24 Oct 2019 14:56:55 +0200
+From: Michael Tretter <m.tretter@pengutronix.de>
+Message-ID: <20191024145655.1c939d37@litschi.hi.pengutronix.de>
+In-Reply-To: <1571912781-17152-4-git-send-email-thomas.haemmerle@wolfvision.net>
 References: <1571912781-17152-1-git-send-email-thomas.haemmerle@wolfvision.net>
-In-Reply-To: <1571912781-17152-1-git-send-email-thomas.haemmerle@wolfvision.net>
-Content-Language: en-US
+ <1571912781-17152-4-git-send-email-thomas.haemmerle@wolfvision.net>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,402 +18,210 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] firmware: zynqmp-fpga: introduce driver to load bitstream
- to FPGA
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-Cc: =?iso-8859-1?Q?Thomas_H=E4mmerle?= <Thomas.Haemmerle@wolfvision.net>
+Subject: Re: [PATCH 3/5] firmware: zynqmp-fpga: introduce driver to load
+ bitstream to FPGA
+To: Thomas =?UTF-8?B?SMOkbW1lcmxl?= <Thomas.Haemmerle@wolfvision.net>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-From: Thomas Haemmerle <thomas.haemmerle@wolfvision.net>
-
-The driver provides functionalities to check and load a bitstream to FPGA.
-A boolean parameter to check if FPGA is already programmed is
-added.
-
-Signed-off-by: Thomas Haemmerle <thomas.haemmerle@wolfvision.net>
----
- arch/arm/configs/zynqmp_defconfig                  |   1 +
- .../arm/mach-zynqmp/include/mach/firmware-zynqmp.h |   2 +
- drivers/firmware/Kconfig                           |   5 +
- drivers/firmware/Makefile                          |   1 +
- drivers/firmware/zynqmp-fpga.c                     | 315 +++++++++++++++++++++
- 5 files changed, 324 insertions(+)
- create mode 100644 drivers/firmware/zynqmp-fpga.c
-
-diff --git a/arch/arm/configs/zynqmp_defconfig b/arch/arm/configs/zynqmp_defconfig
-index 4dea964..834212e 100644
---- a/arch/arm/configs/zynqmp_defconfig
-+++ b/arch/arm/configs/zynqmp_defconfig
-@@ -35,4 +35,5 @@ CONFIG_CMD_OFTREE=y
- CONFIG_CMD_TIME=y
- CONFIG_DRIVER_SERIAL_CADENCE=y
- # CONFIG_SPI is not set
-+CONFIG_FIRMWARE_ZYNQMP_PL=y
- CONFIG_DIGEST=y
-diff --git a/arch/arm/mach-zynqmp/include/mach/firmware-zynqmp.h b/arch/arm/mach-zynqmp/include/mach/firmware-zynqmp.h
-index f19d73d..6fcfba5 100644
---- a/arch/arm/mach-zynqmp/include/mach/firmware-zynqmp.h
-+++ b/arch/arm/mach-zynqmp/include/mach/firmware-zynqmp.h
-@@ -23,6 +23,8 @@
- #define ZYNQMP_FPGA_BIT_ENC_DEV_KEY	BIT(4)
- #define ZYNQMP_FPGA_BIT_ONLY_BIN	BIT(5)
- 
-+#define ZYNQMP_PCAP_STATUS_FPGA_DONE	BIT(3)
-+
- enum pm_ioctl_id {
- 	IOCTL_SET_PLL_FRAC_MODE = 8,
- 	IOCTL_GET_PLL_FRAC_MODE,
-diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
-index 710b500..3113f40 100644
---- a/drivers/firmware/Kconfig
-+++ b/drivers/firmware/Kconfig
-@@ -14,4 +14,9 @@ config FIRMWARE_ALTERA_SOCFPGA
- 	bool "Altera SoCFPGA fpga loader"
- 	depends on ARCH_SOCFPGA
- 	select FIRMWARE
-+	
-+config FIRMWARE_ZYNQMP_FPGA
-+	bool "Xilinx ZynqMP FPGA loader"
-+	depends on ARCH_ZYNQMP
-+	select FIRMWARE
- endmenu
-diff --git a/drivers/firmware/Makefile b/drivers/firmware/Makefile
-index c3a3c34..b162b08 100644
---- a/drivers/firmware/Makefile
-+++ b/drivers/firmware/Makefile
-@@ -1,2 +1,3 @@
- obj-$(CONFIG_FIRMWARE_ALTERA_SERIAL) += altera_serial.o
- obj-$(CONFIG_FIRMWARE_ALTERA_SOCFPGA) += socfpga.o
-+obj-$(CONFIG_FIRMWARE_ZYNQMP_FPGA) += zynqmp-fpga.o
-diff --git a/drivers/firmware/zynqmp-fpga.c b/drivers/firmware/zynqmp-fpga.c
-new file mode 100644
-index 0000000..6a32d28
---- /dev/null
-+++ b/drivers/firmware/zynqmp-fpga.c
-@@ -0,0 +1,315 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Xilinx Zynq MPSoC PL loading
-+ *
-+ * Copyright (c) 2018 Thomas Haemmerle <thomas.haemmerle@wolfvision.net>
-+ *
-+ * based on U-Boot zynqmppl code
-+ *
-+ * (C) Copyright 2015 - 2016, Xilinx, Inc,
-+ * Michal Simek <michal.simek@xilinx.com>
-+ * Siva Durga Prasad <siva.durga.paladugu@xilinx.com> *
-+ */
-+
-+#include <firmware.h>
-+#include <common.h>
-+#include <init.h>
-+#include <dma.h>
-+#include <mach/firmware-zynqmp.h>
-+
-+#define ZYNQMP_PM_VERSION_1_1			((1 << 16) | 1)
-+
-+#define ZYNQMP_PM_FEATURE_BYTE_ORDER_IRREL	BIT(0)
-+
-+#define ZYNQMP_PM_VERSION_1_0_FEATURES	0
-+#define ZYNQMP_PM_VERSION_1_1_FEATURES  ZYNQMP_PM_FEATURE_BYTE_ORDER_IRREL
-+
-+#define DUMMY_WORD			0xFFFFFFFF
-+
-+#define XILINX_BYTE_ORDER_BIT		0
-+#define XILINX_BYTE_ORDER_BIN		1
-+
-+struct fpgamgr {
-+	struct firmware_handler fh;
-+	struct device_d dev;
-+	const struct zynqmp_eemi_ops *eemi_ops;
-+	int programmed;
-+	char *buf;
-+	size_t size;
-+	u32 features;
-+};
-+
-+/* Xilinx binary format header */
-+static const u32 bin_format[] = {
-+	DUMMY_WORD,
-+	DUMMY_WORD,
-+	DUMMY_WORD,
-+	DUMMY_WORD,
-+	DUMMY_WORD,
-+	DUMMY_WORD,
-+	DUMMY_WORD,
-+	DUMMY_WORD,
-+	DUMMY_WORD,
-+	DUMMY_WORD,
-+	DUMMY_WORD,
-+	DUMMY_WORD,
-+	DUMMY_WORD,
-+	DUMMY_WORD,
-+	DUMMY_WORD,
-+	DUMMY_WORD,
-+	0x000000bb,
-+	0x11220044,
-+	DUMMY_WORD,
-+	DUMMY_WORD,
-+	0xaa995566,
-+};
-+
-+static void copy_words_swapped(u32 *dst, const u32 *src, size_t size)
-+{
-+	int i;
-+
-+	for (i = 0; i < size; i++)
-+		dst[i] = __swab32(src[i]);
-+}
-+
-+static int get_byte_order(const u32 *buf, size_t size)
-+{
-+	u32 buf_check[ARRAY_SIZE(bin_format)];
-+
-+	memcpy(buf_check, buf, ARRAY_SIZE(buf_check));
-+	if (memcmp(buf_check, bin_format, sizeof(buf_check)) == 0)
-+		return XILINX_BYTE_ORDER_BIT;
-+
-+	copy_words_swapped(buf_check, buf, ARRAY_SIZE(buf_check));
-+	if (memcmp(buf_check, bin_format, sizeof(buf_check)) == 0)
-+		return XILINX_BYTE_ORDER_BIN;
-+
-+	return -EINVAL;
-+}
-+
-+static int get_header_length(const char *buf, size_t size)
-+{
-+	u32 *buf_u32;
-+	int p;
-+
-+	for (p = 0; p < size; p++) {
-+		buf_u32 = (u32 *)&buf[p];
-+		if (*buf_u32 == DUMMY_WORD)
-+			return p;
-+	}
-+	return -EINVAL;
-+}
-+
-+static int fpgamgr_program_finish(struct firmware_handler *fh)
-+{
-+	struct fpgamgr *mgr = container_of(fh, struct fpgamgr, fh);
-+	char *buf_aligned;
-+	u32 *buf_size = NULL;
-+	int header_length = 0, byte_order = 0;
-+	u64 addr;
-+	int status = 0, xilfpga_old = 1;
-+	u8 flags = 0;
-+
-+	if (!mgr->buf) {
-+		status = -ENOBUFS;
-+		dev_err(&mgr->dev, "buffer is NULL\n");
-+		goto err_free;
-+	}
-+
-+	header_length = get_header_length(mgr->buf, mgr->size);
-+	if (header_length < 0) {
-+		status = header_length;
-+		goto err_free;
-+	}
-+
-+	byte_order = get_byte_order((u32 *)&mgr->buf[header_length],
-+			mgr->size - header_length);
-+	if (byte_order < 0) {
-+		status = byte_order;
-+		goto err_free;
-+	}
-+
-+	if (mgr->features & ZYNQMP_PM_FEATURE_BYTE_ORDER_IRREL) {
-+		/* PMUFW version > 1.0 accepts both byte orders*/
-+		byte_order = 0;
-+		xilfpga_old = 0;
-+	} else {
-+		buf_size = dma_alloc_coherent(sizeof(*buf_size),
-+		DMA_ADDRESS_BROKEN);
-+		if (!buf_size) {
-+			status = -ENOBUFS;
-+			goto err_free;
-+		}
-+		*buf_size = mgr->size - header_length;
-+	}
-+
-+	buf_aligned = dma_alloc_coherent(mgr->size - header_length,
-+			DMA_ADDRESS_BROKEN);
-+	if (!buf_aligned) {
-+		status = -ENOBUFS;
-+		goto err_free;
-+	}
-+
-+	if (byte_order == XILINX_BYTE_ORDER_BIN)
-+		copy_words_swapped((u32 *)buf_aligned,
-+				(u32 *)(&(mgr->buf[header_length])),
-+				(mgr->size - header_length) / sizeof(u32));
-+	else
-+		memcpy((u32 *)buf_aligned, (u32 *)(&(mgr->buf[header_length])),
-+			(mgr->size - header_length));
-+
-+	addr = (u64)buf_aligned;
-+
-+	/* we do not provide a header */
-+	flags |= ZYNQMP_FPGA_BIT_ONLY_BIN;
-+
-+	if (xilfpga_old && buf_size) {
-+		status = mgr->eemi_ops->fpga_load(addr,
-+				(u32)(uintptr_t)buf_size,
-+				flags);
-+		dma_free_coherent(buf_size, 0, sizeof(*buf_size));
-+	} else {
-+		status = mgr->eemi_ops->fpga_load(addr,
-+				(u32)(mgr->size - header_length),
-+				flags);
-+	}
-+
-+	if (status < 0)
-+		dev_err(&mgr->dev, "unable to load fpga\n");
-+
-+	dma_free_coherent(buf_aligned, 0, mgr->size - header_length);
-+
-+ err_free:
-+	free(mgr->buf);
-+
-+	return status;
-+}
-+
-+static int fpgamgr_program_write_buf(struct firmware_handler *fh,
-+		const void *buf, size_t size)
-+{
-+	struct fpgamgr *mgr = container_of(fh, struct fpgamgr, fh);
-+
-+	/* Since write() is called by copy_file, we only receive chuncks with
-+	 * size RW_BUF_SIZE of the bitstream.
-+	 * Buffer the chunks here and handle it in close()
-+	 */
-+
-+	mgr->buf = realloc(mgr->buf, mgr->size + size);
-+	if (!mgr->buf)
-+		return -ENOBUFS;
-+
-+	memcpy(&(mgr->buf[mgr->size]), buf, size);
-+	mgr->size += size;
-+
-+	return 0;
-+}
-+
-+static int fpgamgr_program_start(struct firmware_handler *fh)
-+{
-+	struct fpgamgr *mgr = container_of(fh, struct fpgamgr, fh);
-+
-+	mgr->size = 0;
-+	mgr->buf = NULL;
-+
-+	return 0;
-+}
-+
-+static int programmed_get(struct param_d *p, void *priv)
-+{
-+	struct fpgamgr *mgr = priv;
-+	u32 status = 0x00;
-+	int ret = 0;
-+
-+	ret = mgr->eemi_ops->fpga_getstatus(&status);
-+	if (ret)
-+		return ret;
-+
-+	mgr->programmed = !!(status & ZYNQMP_PCAP_STATUS_FPGA_DONE);
-+
-+	return 0;
-+}
-+
-+static int zynqmp_fpga_probe(struct device_d *dev)
-+{
-+	struct fpgamgr *mgr;
-+	struct firmware_handler *fh;
-+	const char *alias = of_alias_get(dev->device_node);
-+	const char *model = NULL;
-+	struct param_d *p;
-+	u32 api_version;
-+	int ret;
-+
-+	mgr = xzalloc(sizeof(*mgr));
-+	fh = &mgr->fh;
-+
-+	if (alias)
-+		fh->id = xstrdup(alias);
-+	else
-+		fh->id = xstrdup("zynqmp-fpga-manager");
-+
-+	fh->open = fpgamgr_program_start;
-+	fh->write = fpgamgr_program_write_buf;
-+	fh->close = fpgamgr_program_finish;
-+	of_property_read_string(dev->device_node, "compatible", &model);
-+	if (model)
-+		fh->model = xstrdup(model);
-+	fh->dev = dev;
-+
-+	mgr->eemi_ops = zynqmp_pm_get_eemi_ops();
-+
-+	ret = mgr->eemi_ops->get_api_version(&api_version);
-+	if (ret) {
-+		dev_err(&mgr->dev, "could not get API version\n");
-+		goto out;
-+	}
-+
-+	mgr->features = 0;
-+
-+	if (api_version >= ZYNQMP_PM_VERSION_1_1)
-+		mgr->features |= ZYNQMP_PM_FEATURE_BYTE_ORDER_IRREL;
-+
-+	dev_dbg(dev, "Registering ZynqMP FPGA programmer\n");
-+	mgr->dev.id = DEVICE_ID_SINGLE;
-+	dev_set_name(&mgr->dev, "zynqmp_fpga");
-+	mgr->dev.parent = dev;
-+	ret = register_device(&mgr->dev);
-+	if (ret)
-+		goto out;
-+
-+	p = dev_add_param_bool(&mgr->dev, "programmed", NULL, programmed_get,
-+			&mgr->programmed, mgr);
-+	if (IS_ERR(p)) {
-+		ret = PTR_ERR(p);
-+		goto out_unreg;
-+	}
-+
-+	fh->dev = &mgr->dev;
-+	ret = firmwaremgr_register(fh);
-+	if (ret != 0) {
-+		free(mgr);
-+		goto out_unreg;
-+	}
-+
-+	return 0;
-+out_unreg:
-+	unregister_device(&mgr->dev);
-+out:
-+	free(fh->id);
-+	free(mgr);
-+
-+	return ret;
-+}
-+
-+static struct of_device_id zynqmpp_fpga_id_table[] = {
-+	{
-+		.compatible = "xlnx,zynqmp-pcap-fpga",
-+	},
-+};
-+
-+static struct driver_d zynqmp_fpga_driver = {
-+	.name = "zynqmp_fpga_manager",
-+	.of_compatible = DRV_OF_COMPAT(zynqmpp_fpga_id_table),
-+	.probe = zynqmp_fpga_probe,
-+};
-+device_platform_driver(zynqmp_fpga_driver);
--- 
-2.7.4
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gVGh1LCAyNCBPY3QgMjAxOSAxMDoyNjo1MSArMDAwMCwgVGhvbWFzIEjDpG1tZXJsZSB3cm90
+ZToKPiBGcm9tOiBUaG9tYXMgSGFlbW1lcmxlIDx0aG9tYXMuaGFlbW1lcmxlQHdvbGZ2aXNpb24u
+bmV0Pgo+IAo+IFRoZSBkcml2ZXIgcHJvdmlkZXMgZnVuY3Rpb25hbGl0aWVzIHRvIGNoZWNrIGFu
+ZCBsb2FkIGEgYml0c3RyZWFtIHRvIEZQR0EuCj4gQSBib29sZWFuIHBhcmFtZXRlciB0byBjaGVj
+ayBpZiBGUEdBIGlzIGFscmVhZHkgcHJvZ3JhbW1lZCBpcwo+IGFkZGVkLgo+IAo+IFNpZ25lZC1v
+ZmYtYnk6IFRob21hcyBIYWVtbWVybGUgPHRob21hcy5oYWVtbWVybGVAd29sZnZpc2lvbi5uZXQ+
+Cj4gLS0tCj4gIGFyY2gvYXJtL2NvbmZpZ3MvenlucW1wX2RlZmNvbmZpZyAgICAgICAgICAgICAg
+ICAgIHwgICAxICsKPiAgLi4uL2FybS9tYWNoLXp5bnFtcC9pbmNsdWRlL21hY2gvZmlybXdhcmUt
+enlucW1wLmggfCAgIDIgKwo+ICBkcml2ZXJzL2Zpcm13YXJlL0tjb25maWcgICAgICAgICAgICAg
+ICAgICAgICAgICAgICB8ICAgNSArCj4gIGRyaXZlcnMvZmlybXdhcmUvTWFrZWZpbGUgICAgICAg
+ICAgICAgICAgICAgICAgICAgIHwgICAxICsKPiAgZHJpdmVycy9maXJtd2FyZS96eW5xbXAtZnBn
+YS5jICAgICAgICAgICAgICAgICAgICAgfCAzMTUgKysrKysrKysrKysrKysrKysrKysrCj4gIDUg
+ZmlsZXMgY2hhbmdlZCwgMzI0IGluc2VydGlvbnMoKykKPiAgY3JlYXRlIG1vZGUgMTAwNjQ0IGRy
+aXZlcnMvZmlybXdhcmUvenlucW1wLWZwZ2EuYwo+IAo+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9j
+b25maWdzL3p5bnFtcF9kZWZjb25maWcgYi9hcmNoL2FybS9jb25maWdzL3p5bnFtcF9kZWZjb25m
+aWcKPiBpbmRleCA0ZGVhOTY0Li44MzQyMTJlIDEwMDY0NAo+IC0tLSBhL2FyY2gvYXJtL2NvbmZp
+Z3MvenlucW1wX2RlZmNvbmZpZwo+ICsrKyBiL2FyY2gvYXJtL2NvbmZpZ3MvenlucW1wX2RlZmNv
+bmZpZwo+IEBAIC0zNSw0ICszNSw1IEBAIENPTkZJR19DTURfT0ZUUkVFPXkKPiAgQ09ORklHX0NN
+RF9USU1FPXkKPiAgQ09ORklHX0RSSVZFUl9TRVJJQUxfQ0FERU5DRT15Cj4gICMgQ09ORklHX1NQ
+SSBpcyBub3Qgc2V0Cj4gK0NPTkZJR19GSVJNV0FSRV9aWU5RTVBfUEw9eQo+ICBDT05GSUdfRElH
+RVNUPXkKPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC16eW5xbXAvaW5jbHVkZS9tYWNoL2Zp
+cm13YXJlLXp5bnFtcC5oIGIvYXJjaC9hcm0vbWFjaC16eW5xbXAvaW5jbHVkZS9tYWNoL2Zpcm13
+YXJlLXp5bnFtcC5oCj4gaW5kZXggZjE5ZDczZC4uNmZjZmJhNSAxMDA2NDQKPiAtLS0gYS9hcmNo
+L2FybS9tYWNoLXp5bnFtcC9pbmNsdWRlL21hY2gvZmlybXdhcmUtenlucW1wLmgKPiArKysgYi9h
+cmNoL2FybS9tYWNoLXp5bnFtcC9pbmNsdWRlL21hY2gvZmlybXdhcmUtenlucW1wLmgKPiBAQCAt
+MjMsNiArMjMsOCBAQAo+ICAjZGVmaW5lIFpZTlFNUF9GUEdBX0JJVF9FTkNfREVWX0tFWQlCSVQo
+NCkKPiAgI2RlZmluZSBaWU5RTVBfRlBHQV9CSVRfT05MWV9CSU4JQklUKDUpCj4gIAo+ICsjZGVm
+aW5lIFpZTlFNUF9QQ0FQX1NUQVRVU19GUEdBX0RPTkUJQklUKDMpCj4gKwoKU2hvdWxkIGJlIHBh
+cnQgb2YgdGhlIHByZXZpb3VzIHBhdGNoLgoKPiAgZW51bSBwbV9pb2N0bF9pZCB7Cj4gIAlJT0NU
+TF9TRVRfUExMX0ZSQUNfTU9ERSA9IDgsCj4gIAlJT0NUTF9HRVRfUExMX0ZSQUNfTU9ERSwKPiBk
+aWZmIC0tZ2l0IGEvZHJpdmVycy9maXJtd2FyZS9LY29uZmlnIGIvZHJpdmVycy9maXJtd2FyZS9L
+Y29uZmlnCj4gaW5kZXggNzEwYjUwMC4uMzExM2Y0MCAxMDA2NDQKPiAtLS0gYS9kcml2ZXJzL2Zp
+cm13YXJlL0tjb25maWcKPiArKysgYi9kcml2ZXJzL2Zpcm13YXJlL0tjb25maWcKPiBAQCAtMTQs
+NCArMTQsOSBAQCBjb25maWcgRklSTVdBUkVfQUxURVJBX1NPQ0ZQR0EKPiAgCWJvb2wgIkFsdGVy
+YSBTb0NGUEdBIGZwZ2EgbG9hZGVyIgo+ICAJZGVwZW5kcyBvbiBBUkNIX1NPQ0ZQR0EKPiAgCXNl
+bGVjdCBGSVJNV0FSRQo+ICsJCj4gK2NvbmZpZyBGSVJNV0FSRV9aWU5RTVBfRlBHQQo+ICsJYm9v
+bCAiWGlsaW54IFp5bnFNUCBGUEdBIGxvYWRlciIKPiArCWRlcGVuZHMgb24gQVJDSF9aWU5RTVAK
+PiArCXNlbGVjdCBGSVJNV0FSRQo+ICBlbmRtZW51Cj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvZmly
+bXdhcmUvTWFrZWZpbGUgYi9kcml2ZXJzL2Zpcm13YXJlL01ha2VmaWxlCj4gaW5kZXggYzNhM2Mz
+NC4uYjE2MmIwOCAxMDA2NDQKPiAtLS0gYS9kcml2ZXJzL2Zpcm13YXJlL01ha2VmaWxlCj4gKysr
+IGIvZHJpdmVycy9maXJtd2FyZS9NYWtlZmlsZQo+IEBAIC0xLDIgKzEsMyBAQAo+ICBvYmotJChD
+T05GSUdfRklSTVdBUkVfQUxURVJBX1NFUklBTCkgKz0gYWx0ZXJhX3NlcmlhbC5vCj4gIG9iai0k
+KENPTkZJR19GSVJNV0FSRV9BTFRFUkFfU09DRlBHQSkgKz0gc29jZnBnYS5vCj4gK29iai0kKENP
+TkZJR19GSVJNV0FSRV9aWU5RTVBfRlBHQSkgKz0genlucW1wLWZwZ2Eubwo+IGRpZmYgLS1naXQg
+YS9kcml2ZXJzL2Zpcm13YXJlL3p5bnFtcC1mcGdhLmMgYi9kcml2ZXJzL2Zpcm13YXJlL3p5bnFt
+cC1mcGdhLmMKPiBuZXcgZmlsZSBtb2RlIDEwMDY0NAo+IGluZGV4IDAwMDAwMDAuLjZhMzJkMjgK
+PiAtLS0gL2Rldi9udWxsCj4gKysrIGIvZHJpdmVycy9maXJtd2FyZS96eW5xbXAtZnBnYS5jCj4g
+QEAgLTAsMCArMSwzMTUgQEAKPiArLyogU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjAg
+Ki8KPiArLyoKPiArICogWGlsaW54IFp5bnEgTVBTb0MgUEwgbG9hZGluZwo+ICsgKgo+ICsgKiBD
+b3B5cmlnaHQgKGMpIDIwMTggVGhvbWFzIEhhZW1tZXJsZSA8dGhvbWFzLmhhZW1tZXJsZUB3b2xm
+dmlzaW9uLm5ldD4KPiArICoKPiArICogYmFzZWQgb24gVS1Cb290IHp5bnFtcHBsIGNvZGUKPiAr
+ICoKPiArICogKEMpIENvcHlyaWdodCAyMDE1IC0gMjAxNiwgWGlsaW54LCBJbmMsCj4gKyAqIE1p
+Y2hhbCBTaW1layA8bWljaGFsLnNpbWVrQHhpbGlueC5jb20+Cj4gKyAqIFNpdmEgRHVyZ2EgUHJh
+c2FkIDxzaXZhLmR1cmdhLnBhbGFkdWd1QHhpbGlueC5jb20+ICoKPiArICovCj4gKwo+ICsjaW5j
+bHVkZSA8ZmlybXdhcmUuaD4KPiArI2luY2x1ZGUgPGNvbW1vbi5oPgo+ICsjaW5jbHVkZSA8aW5p
+dC5oPgo+ICsjaW5jbHVkZSA8ZG1hLmg+Cj4gKyNpbmNsdWRlIDxtYWNoL2Zpcm13YXJlLXp5bnFt
+cC5oPgo+ICsKPiArI2RlZmluZSBaWU5RTVBfUE1fVkVSU0lPTl8xXzEJCQkoKDEgPDwgMTYpIHwg
+MSkKCkEgbWFjcm8gWllOUU1QX1BNX1ZFUlNJT04oTUFKT1IsIE1JTk9SKSB3b3VsZCBiZSBtb3Jl
+IGludHVpdGl2ZS4KCj4gKwo+ICsjZGVmaW5lIFpZTlFNUF9QTV9GRUFUVVJFX0JZVEVfT1JERVJf
+SVJSRUwJQklUKDApCj4gKwo+ICsjZGVmaW5lIFpZTlFNUF9QTV9WRVJTSU9OXzFfMF9GRUFUVVJF
+UwkwCj4gKyNkZWZpbmUgWllOUU1QX1BNX1ZFUlNJT05fMV8xX0ZFQVRVUkVTICBaWU5RTVBfUE1f
+RkVBVFVSRV9CWVRFX09SREVSX0lSUkVMCj4gKwo+ICsjZGVmaW5lIERVTU1ZX1dPUkQJCQkweEZG
+RkZGRkZGCj4gKwo+ICsjZGVmaW5lIFhJTElOWF9CWVRFX09SREVSX0JJVAkJMAo+ICsjZGVmaW5l
+IFhJTElOWF9CWVRFX09SREVSX0JJTgkJMQo+ICsKPiArc3RydWN0IGZwZ2FtZ3Igewo+ICsJc3Ry
+dWN0IGZpcm13YXJlX2hhbmRsZXIgZmg7Cj4gKwlzdHJ1Y3QgZGV2aWNlX2QgZGV2Owo+ICsJY29u
+c3Qgc3RydWN0IHp5bnFtcF9lZW1pX29wcyAqZWVtaV9vcHM7Cj4gKwlpbnQgcHJvZ3JhbW1lZDsK
+PiArCWNoYXIgKmJ1ZjsKPiArCXNpemVfdCBzaXplOwo+ICsJdTMyIGZlYXR1cmVzOwo+ICt9Owo+
+ICsKPiArLyogWGlsaW54IGJpbmFyeSBmb3JtYXQgaGVhZGVyICovCj4gK3N0YXRpYyBjb25zdCB1
+MzIgYmluX2Zvcm1hdFtdID0gewo+ICsJRFVNTVlfV09SRCwKPiArCURVTU1ZX1dPUkQsCj4gKwlE
+VU1NWV9XT1JELAo+ICsJRFVNTVlfV09SRCwKPiArCURVTU1ZX1dPUkQsCj4gKwlEVU1NWV9XT1JE
+LAo+ICsJRFVNTVlfV09SRCwKPiArCURVTU1ZX1dPUkQsCj4gKwlEVU1NWV9XT1JELAo+ICsJRFVN
+TVlfV09SRCwKPiArCURVTU1ZX1dPUkQsCj4gKwlEVU1NWV9XT1JELAo+ICsJRFVNTVlfV09SRCwK
+PiArCURVTU1ZX1dPUkQsCj4gKwlEVU1NWV9XT1JELAo+ICsJRFVNTVlfV09SRCwKPiArCTB4MDAw
+MDAwYmIsCj4gKwkweDExMjIwMDQ0LAo+ICsJRFVNTVlfV09SRCwKPiArCURVTU1ZX1dPUkQsCj4g
+KwkweGFhOTk1NTY2LAo+ICt9Owo+ICsKPiArc3RhdGljIHZvaWQgY29weV93b3Jkc19zd2FwcGVk
+KHUzMiAqZHN0LCBjb25zdCB1MzIgKnNyYywgc2l6ZV90IHNpemUpCj4gK3sKPiArCWludCBpOwo+
+ICsKPiArCWZvciAoaSA9IDA7IGkgPCBzaXplOyBpKyspCj4gKwkJZHN0W2ldID0gX19zd2FiMzIo
+c3JjW2ldKTsKPiArfQo+ICsKPiArc3RhdGljIGludCBnZXRfYnl0ZV9vcmRlcihjb25zdCB1MzIg
+KmJ1Ziwgc2l6ZV90IHNpemUpCj4gK3sKPiArCXUzMiBidWZfY2hlY2tbQVJSQVlfU0laRShiaW5f
+Zm9ybWF0KV07Cj4gKwo+ICsJbWVtY3B5KGJ1Zl9jaGVjaywgYnVmLCBBUlJBWV9TSVpFKGJ1Zl9j
+aGVjaykpOwo+ICsJaWYgKG1lbWNtcChidWZfY2hlY2ssIGJpbl9mb3JtYXQsIHNpemVvZihidWZf
+Y2hlY2spKSA9PSAwKQo+ICsJCXJldHVybiBYSUxJTlhfQllURV9PUkRFUl9CSVQ7Cj4gKwo+ICsJ
+Y29weV93b3Jkc19zd2FwcGVkKGJ1Zl9jaGVjaywgYnVmLCBBUlJBWV9TSVpFKGJ1Zl9jaGVjaykp
+Owo+ICsJaWYgKG1lbWNtcChidWZfY2hlY2ssIGJpbl9mb3JtYXQsIHNpemVvZihidWZfY2hlY2sp
+KSA9PSAwKQo+ICsJCXJldHVybiBYSUxJTlhfQllURV9PUkRFUl9CSU47Cj4gKwo+ICsJcmV0dXJu
+IC1FSU5WQUw7Cj4gK30KClRoZSBmdW5jdGlvbiBkb2VzIG5vdCBvbmx5IGZpbmQgdGhlIGJ5dGUg
+b3JkZXIsIGJ1dCBhbHNvIGNoZWNrcyBpZiB0aGUKaGVhZGVyIGlzIHZhbGlkLiBJIHdvdWxkIHBy
+ZWZlciwgaWYgd2UgY291bGQgaGF2ZSBhIGZ1bmN0aW9uIGZvcgpnZXR0aW5nIHRoZSBieXRlIG9y
+ZGVyIChubyBjb3B5IG5lY2Vzc2FyeSwganVzdCBjaGVjayBmb3Igb25lIG9mIHRoZQp2YWx1ZXMg
+dGhhdCBhbGxvdyB0byBkaXN0aW5ndWlzaCB0aGUgYnl0ZSBvcmRlcikgYW5kIGFub3RoZXIgZnVu
+Y3Rpb24KZm9yIGNoZWNraW5nIGlmIHRoZSBoZWFkZXIgaXMgdmFsaWQuIAoKPiArCj4gK3N0YXRp
+YyBpbnQgZ2V0X2hlYWRlcl9sZW5ndGgoY29uc3QgY2hhciAqYnVmLCBzaXplX3Qgc2l6ZSkKPiAr
+ewo+ICsJdTMyICpidWZfdTMyOwo+ICsJaW50IHA7Cj4gKwo+ICsJZm9yIChwID0gMDsgcCA8IHNp
+emU7IHArKykgewo+ICsJCWJ1Zl91MzIgPSAodTMyICopJmJ1ZltwXTsKPiArCQlpZiAoKmJ1Zl91
+MzIgPT0gRFVNTVlfV09SRCkKPiArCQkJcmV0dXJuIHA7Cj4gKwl9Cj4gKwlyZXR1cm4gLUVJTlZB
+TDsKPiArfQo+ICsKPiArc3RhdGljIGludCBmcGdhbWdyX3Byb2dyYW1fZmluaXNoKHN0cnVjdCBm
+aXJtd2FyZV9oYW5kbGVyICpmaCkKPiArewo+ICsJc3RydWN0IGZwZ2FtZ3IgKm1nciA9IGNvbnRh
+aW5lcl9vZihmaCwgc3RydWN0IGZwZ2FtZ3IsIGZoKTsKPiArCWNoYXIgKmJ1Zl9hbGlnbmVkOwo+
+ICsJdTMyICpidWZfc2l6ZSA9IE5VTEw7Cj4gKwlpbnQgaGVhZGVyX2xlbmd0aCA9IDAsIGJ5dGVf
+b3JkZXIgPSAwOwo+ICsJdTY0IGFkZHI7Cj4gKwlpbnQgc3RhdHVzID0gMCwgeGlsZnBnYV9vbGQg
+PSAxOwo+ICsJdTggZmxhZ3MgPSAwOwo+ICsKPiArCWlmICghbWdyLT5idWYpIHsKPiArCQlzdGF0
+dXMgPSAtRU5PQlVGUzsKPiArCQlkZXZfZXJyKCZtZ3ItPmRldiwgImJ1ZmZlciBpcyBOVUxMXG4i
+KTsKPiArCQlnb3RvIGVycl9mcmVlOwo+ICsJfQo+ICsKPiArCWhlYWRlcl9sZW5ndGggPSBnZXRf
+aGVhZGVyX2xlbmd0aChtZ3ItPmJ1ZiwgbWdyLT5zaXplKTsKPiArCWlmIChoZWFkZXJfbGVuZ3Ro
+IDwgMCkgewo+ICsJCXN0YXR1cyA9IGhlYWRlcl9sZW5ndGg7Cj4gKwkJZ290byBlcnJfZnJlZTsK
+PiArCX0KPiArCj4gKwlieXRlX29yZGVyID0gZ2V0X2J5dGVfb3JkZXIoKHUzMiAqKSZtZ3ItPmJ1
+ZltoZWFkZXJfbGVuZ3RoXSwKPiArCQkJbWdyLT5zaXplIC0gaGVhZGVyX2xlbmd0aCk7CgpJIHRo
+aW5rIGhlbHBlciB2YXJpYWJsZXMgdTMyICpib2R5IGFuZCBzaXplX3QgYm9keV9zaXplIHdvdWxk
+IHByb2JhYmx5IG1ha2UKdGhpcyBhIGxvdCBtb3JlIHJlYWRhYmxlLgoKPiArCWlmIChieXRlX29y
+ZGVyIDwgMCkgewo+ICsJCXN0YXR1cyA9IGJ5dGVfb3JkZXI7Cj4gKwkJZ290byBlcnJfZnJlZTsK
+PiArCX0KPiArCj4gKwlpZiAobWdyLT5mZWF0dXJlcyAmIFpZTlFNUF9QTV9GRUFUVVJFX0JZVEVf
+T1JERVJfSVJSRUwpIHsKPiArCQkvKiBQTVVGVyB2ZXJzaW9uID4gMS4wIGFjY2VwdHMgYm90aCBi
+eXRlIG9yZGVycyovCj4gKwkJYnl0ZV9vcmRlciA9IDA7Cj4gKwkJeGlsZnBnYV9vbGQgPSAwOwo+
+ICsJfSBlbHNlIHsKPiArCQlidWZfc2l6ZSA9IGRtYV9hbGxvY19jb2hlcmVudChzaXplb2YoKmJ1
+Zl9zaXplKSwKPiArCQlETUFfQUREUkVTU19CUk9LRU4pOwo+ICsJCWlmICghYnVmX3NpemUpIHsK
+PiArCQkJc3RhdHVzID0gLUVOT0JVRlM7Cj4gKwkJCWdvdG8gZXJyX2ZyZWU7Cj4gKwkJfQo+ICsJ
+CSpidWZfc2l6ZSA9IG1nci0+c2l6ZSAtIGhlYWRlcl9sZW5ndGg7Cj4gKwl9Cj4gKwo+ICsJYnVm
+X2FsaWduZWQgPSBkbWFfYWxsb2NfY29oZXJlbnQobWdyLT5zaXplIC0gaGVhZGVyX2xlbmd0aCwK
+PiArCQkJRE1BX0FERFJFU1NfQlJPS0VOKTsKPiArCWlmICghYnVmX2FsaWduZWQpIHsKPiArCQlz
+dGF0dXMgPSAtRU5PQlVGUzsKPiArCQlnb3RvIGVycl9mcmVlOwo+ICsJfQo+ICsKPiArCWlmIChi
+eXRlX29yZGVyID09IFhJTElOWF9CWVRFX09SREVSX0JJTikKPiArCQljb3B5X3dvcmRzX3N3YXBw
+ZWQoKHUzMiAqKWJ1Zl9hbGlnbmVkLAo+ICsJCQkJKHUzMiAqKSgmKG1nci0+YnVmW2hlYWRlcl9s
+ZW5ndGhdKSksCj4gKwkJCQkobWdyLT5zaXplIC0gaGVhZGVyX2xlbmd0aCkgLyBzaXplb2YodTMy
+KSk7Cj4gKwllbHNlCj4gKwkJbWVtY3B5KCh1MzIgKilidWZfYWxpZ25lZCwgKHUzMiAqKSgmKG1n
+ci0+YnVmW2hlYWRlcl9sZW5ndGhdKSksCj4gKwkJCShtZ3ItPnNpemUgLSBoZWFkZXJfbGVuZ3Ro
+KSk7Cj4gKwo+ICsJYWRkciA9ICh1NjQpYnVmX2FsaWduZWQ7Cj4gKwo+ICsJLyogd2UgZG8gbm90
+IHByb3ZpZGUgYSBoZWFkZXIgKi8KPiArCWZsYWdzIHw9IFpZTlFNUF9GUEdBX0JJVF9PTkxZX0JJ
+TjsKPiArCj4gKwlpZiAoeGlsZnBnYV9vbGQgJiYgYnVmX3NpemUpIHsKClRoZSB4aWxmcGdhX29s
+ZCB2YXJpYWJsZSBpcyBwcmV0dHkgaGFyZCB0byBmb2xsb3cuIE1heWJlIGFsd2F5cyBjaGVjawpm
+b3IgdGhlIGZlYXR1cmUgZmxhZyBvciB0ZXN0IHRoZSBmZWF0dXJlIGZsYWcgb25jZSBhbmQgc2V0
+IGEgbG9jYWwKdmFyaWFibGUgKHdpdGggYSBwcm9wZXIgbmFtZSkgdGhhdCBpcyB1c2VkIHdoZW5l
+dmVyIHRoZSBmZWF0dXJlIGZsYWcgaXMKcmVsZXZhbnQuCgpNaWNoYWVsCgo+ICsJCXN0YXR1cyA9
+IG1nci0+ZWVtaV9vcHMtPmZwZ2FfbG9hZChhZGRyLAo+ICsJCQkJKHUzMikodWludHB0cl90KWJ1
+Zl9zaXplLAo+ICsJCQkJZmxhZ3MpOwo+ICsJCWRtYV9mcmVlX2NvaGVyZW50KGJ1Zl9zaXplLCAw
+LCBzaXplb2YoKmJ1Zl9zaXplKSk7Cj4gKwl9IGVsc2Ugewo+ICsJCXN0YXR1cyA9IG1nci0+ZWVt
+aV9vcHMtPmZwZ2FfbG9hZChhZGRyLAo+ICsJCQkJKHUzMikobWdyLT5zaXplIC0gaGVhZGVyX2xl
+bmd0aCksCj4gKwkJCQlmbGFncyk7Cj4gKwl9Cj4gKwo+ICsJaWYgKHN0YXR1cyA8IDApCj4gKwkJ
+ZGV2X2VycigmbWdyLT5kZXYsICJ1bmFibGUgdG8gbG9hZCBmcGdhXG4iKTsKPiArCj4gKwlkbWFf
+ZnJlZV9jb2hlcmVudChidWZfYWxpZ25lZCwgMCwgbWdyLT5zaXplIC0gaGVhZGVyX2xlbmd0aCk7
+Cj4gKwo+ICsgZXJyX2ZyZWU6Cj4gKwlmcmVlKG1nci0+YnVmKTsKPiArCj4gKwlyZXR1cm4gc3Rh
+dHVzOwo+ICt9Cj4gKwo+ICtzdGF0aWMgaW50IGZwZ2FtZ3JfcHJvZ3JhbV93cml0ZV9idWYoc3Ry
+dWN0IGZpcm13YXJlX2hhbmRsZXIgKmZoLAo+ICsJCWNvbnN0IHZvaWQgKmJ1Ziwgc2l6ZV90IHNp
+emUpCj4gK3sKPiArCXN0cnVjdCBmcGdhbWdyICptZ3IgPSBjb250YWluZXJfb2YoZmgsIHN0cnVj
+dCBmcGdhbWdyLCBmaCk7Cj4gKwo+ICsJLyogU2luY2Ugd3JpdGUoKSBpcyBjYWxsZWQgYnkgY29w
+eV9maWxlLCB3ZSBvbmx5IHJlY2VpdmUgY2h1bmNrcyB3aXRoCj4gKwkgKiBzaXplIFJXX0JVRl9T
+SVpFIG9mIHRoZSBiaXRzdHJlYW0uCj4gKwkgKiBCdWZmZXIgdGhlIGNodW5rcyBoZXJlIGFuZCBo
+YW5kbGUgaXQgaW4gY2xvc2UoKQo+ICsJICovCj4gKwo+ICsJbWdyLT5idWYgPSByZWFsbG9jKG1n
+ci0+YnVmLCBtZ3ItPnNpemUgKyBzaXplKTsKPiArCWlmICghbWdyLT5idWYpCj4gKwkJcmV0dXJu
+IC1FTk9CVUZTOwo+ICsKPiArCW1lbWNweSgmKG1nci0+YnVmW21nci0+c2l6ZV0pLCBidWYsIHNp
+emUpOwo+ICsJbWdyLT5zaXplICs9IHNpemU7Cj4gKwo+ICsJcmV0dXJuIDA7Cj4gK30KPiArCj4g
+K3N0YXRpYyBpbnQgZnBnYW1ncl9wcm9ncmFtX3N0YXJ0KHN0cnVjdCBmaXJtd2FyZV9oYW5kbGVy
+ICpmaCkKPiArewo+ICsJc3RydWN0IGZwZ2FtZ3IgKm1nciA9IGNvbnRhaW5lcl9vZihmaCwgc3Ry
+dWN0IGZwZ2FtZ3IsIGZoKTsKPiArCj4gKwltZ3ItPnNpemUgPSAwOwo+ICsJbWdyLT5idWYgPSBO
+VUxMOwo+ICsKPiArCXJldHVybiAwOwo+ICt9Cj4gKwo+ICtzdGF0aWMgaW50IHByb2dyYW1tZWRf
+Z2V0KHN0cnVjdCBwYXJhbV9kICpwLCB2b2lkICpwcml2KQo+ICt7Cj4gKwlzdHJ1Y3QgZnBnYW1n
+ciAqbWdyID0gcHJpdjsKPiArCXUzMiBzdGF0dXMgPSAweDAwOwo+ICsJaW50IHJldCA9IDA7Cj4g
+Kwo+ICsJcmV0ID0gbWdyLT5lZW1pX29wcy0+ZnBnYV9nZXRzdGF0dXMoJnN0YXR1cyk7Cj4gKwlp
+ZiAocmV0KQo+ICsJCXJldHVybiByZXQ7Cj4gKwo+ICsJbWdyLT5wcm9ncmFtbWVkID0gISEoc3Rh
+dHVzICYgWllOUU1QX1BDQVBfU1RBVFVTX0ZQR0FfRE9ORSk7Cj4gKwo+ICsJcmV0dXJuIDA7Cj4g
+K30KPiArCj4gK3N0YXRpYyBpbnQgenlucW1wX2ZwZ2FfcHJvYmUoc3RydWN0IGRldmljZV9kICpk
+ZXYpCj4gK3sKPiArCXN0cnVjdCBmcGdhbWdyICptZ3I7Cj4gKwlzdHJ1Y3QgZmlybXdhcmVfaGFu
+ZGxlciAqZmg7Cj4gKwljb25zdCBjaGFyICphbGlhcyA9IG9mX2FsaWFzX2dldChkZXYtPmRldmlj
+ZV9ub2RlKTsKPiArCWNvbnN0IGNoYXIgKm1vZGVsID0gTlVMTDsKPiArCXN0cnVjdCBwYXJhbV9k
+ICpwOwo+ICsJdTMyIGFwaV92ZXJzaW9uOwo+ICsJaW50IHJldDsKPiArCj4gKwltZ3IgPSB4emFs
+bG9jKHNpemVvZigqbWdyKSk7Cj4gKwlmaCA9ICZtZ3ItPmZoOwo+ICsKPiArCWlmIChhbGlhcykK
+PiArCQlmaC0+aWQgPSB4c3RyZHVwKGFsaWFzKTsKPiArCWVsc2UKPiArCQlmaC0+aWQgPSB4c3Ry
+ZHVwKCJ6eW5xbXAtZnBnYS1tYW5hZ2VyIik7Cj4gKwo+ICsJZmgtPm9wZW4gPSBmcGdhbWdyX3By
+b2dyYW1fc3RhcnQ7Cj4gKwlmaC0+d3JpdGUgPSBmcGdhbWdyX3Byb2dyYW1fd3JpdGVfYnVmOwo+
+ICsJZmgtPmNsb3NlID0gZnBnYW1ncl9wcm9ncmFtX2ZpbmlzaDsKPiArCW9mX3Byb3BlcnR5X3Jl
+YWRfc3RyaW5nKGRldi0+ZGV2aWNlX25vZGUsICJjb21wYXRpYmxlIiwgJm1vZGVsKTsKPiArCWlm
+IChtb2RlbCkKPiArCQlmaC0+bW9kZWwgPSB4c3RyZHVwKG1vZGVsKTsKPiArCWZoLT5kZXYgPSBk
+ZXY7Cj4gKwo+ICsJbWdyLT5lZW1pX29wcyA9IHp5bnFtcF9wbV9nZXRfZWVtaV9vcHMoKTsKPiAr
+Cj4gKwlyZXQgPSBtZ3ItPmVlbWlfb3BzLT5nZXRfYXBpX3ZlcnNpb24oJmFwaV92ZXJzaW9uKTsK
+PiArCWlmIChyZXQpIHsKPiArCQlkZXZfZXJyKCZtZ3ItPmRldiwgImNvdWxkIG5vdCBnZXQgQVBJ
+IHZlcnNpb25cbiIpOwo+ICsJCWdvdG8gb3V0Owo+ICsJfQo+ICsKPiArCW1nci0+ZmVhdHVyZXMg
+PSAwOwo+ICsKPiArCWlmIChhcGlfdmVyc2lvbiA+PSBaWU5RTVBfUE1fVkVSU0lPTl8xXzEpCj4g
+KwkJbWdyLT5mZWF0dXJlcyB8PSBaWU5RTVBfUE1fRkVBVFVSRV9CWVRFX09SREVSX0lSUkVMOwo+
+ICsKPiArCWRldl9kYmcoZGV2LCAiUmVnaXN0ZXJpbmcgWnlucU1QIEZQR0EgcHJvZ3JhbW1lclxu
+Iik7Cj4gKwltZ3ItPmRldi5pZCA9IERFVklDRV9JRF9TSU5HTEU7Cj4gKwlkZXZfc2V0X25hbWUo
+Jm1nci0+ZGV2LCAienlucW1wX2ZwZ2EiKTsKPiArCW1nci0+ZGV2LnBhcmVudCA9IGRldjsKPiAr
+CXJldCA9IHJlZ2lzdGVyX2RldmljZSgmbWdyLT5kZXYpOwo+ICsJaWYgKHJldCkKPiArCQlnb3Rv
+IG91dDsKPiArCj4gKwlwID0gZGV2X2FkZF9wYXJhbV9ib29sKCZtZ3ItPmRldiwgInByb2dyYW1t
+ZWQiLCBOVUxMLCBwcm9ncmFtbWVkX2dldCwKPiArCQkJJm1nci0+cHJvZ3JhbW1lZCwgbWdyKTsK
+PiArCWlmIChJU19FUlIocCkpIHsKPiArCQlyZXQgPSBQVFJfRVJSKHApOwo+ICsJCWdvdG8gb3V0
+X3VucmVnOwo+ICsJfQo+ICsKPiArCWZoLT5kZXYgPSAmbWdyLT5kZXY7Cj4gKwlyZXQgPSBmaXJt
+d2FyZW1ncl9yZWdpc3RlcihmaCk7Cj4gKwlpZiAocmV0ICE9IDApIHsKPiArCQlmcmVlKG1ncik7
+Cj4gKwkJZ290byBvdXRfdW5yZWc7Cj4gKwl9Cj4gKwo+ICsJcmV0dXJuIDA7Cj4gK291dF91bnJl
+ZzoKPiArCXVucmVnaXN0ZXJfZGV2aWNlKCZtZ3ItPmRldik7Cj4gK291dDoKPiArCWZyZWUoZmgt
+PmlkKTsKPiArCWZyZWUobWdyKTsKPiArCj4gKwlyZXR1cm4gcmV0Owo+ICt9Cj4gKwo+ICtzdGF0
+aWMgc3RydWN0IG9mX2RldmljZV9pZCB6eW5xbXBwX2ZwZ2FfaWRfdGFibGVbXSA9IHsKPiArCXsK
+PiArCQkuY29tcGF0aWJsZSA9ICJ4bG54LHp5bnFtcC1wY2FwLWZwZ2EiLAo+ICsJfSwKPiArfTsK
+PiArCj4gK3N0YXRpYyBzdHJ1Y3QgZHJpdmVyX2QgenlucW1wX2ZwZ2FfZHJpdmVyID0gewo+ICsJ
+Lm5hbWUgPSAienlucW1wX2ZwZ2FfbWFuYWdlciIsCj4gKwkub2ZfY29tcGF0aWJsZSA9IERSVl9P
+Rl9DT01QQVQoenlucW1wcF9mcGdhX2lkX3RhYmxlKSwKPiArCS5wcm9iZSA9IHp5bnFtcF9mcGdh
+X3Byb2JlLAo+ICt9Owo+ICtkZXZpY2VfcGxhdGZvcm1fZHJpdmVyKHp5bnFtcF9mcGdhX2RyaXZl
+cik7CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJl
+Ym94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3Rz
+LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
