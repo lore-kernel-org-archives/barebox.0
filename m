@@ -2,11 +2,11 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from mail-eopbgr140052.outbound.protection.outlook.com
  ([40.107.14.52] helo=EUR01-VE1-obe.outbound.protection.outlook.com)
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iNaKb-0004BG-Cm
- for barebox@lists.infradead.org; Thu, 24 Oct 2019 10:27:03 +0000
+ id 1iNaKX-0004BG-HR
+ for barebox@lists.infradead.org; Thu, 24 Oct 2019 10:26:59 +0000
 From: =?iso-8859-1?Q?Thomas_H=E4mmerle?= <Thomas.Haemmerle@wolfvision.net>
-Date: Thu, 24 Oct 2019 10:26:51 +0000
-Message-ID: <1571912781-17152-6-git-send-email-thomas.haemmerle@wolfvision.net>
+Date: Thu, 24 Oct 2019 10:26:50 +0000
+Message-ID: <1571912781-17152-2-git-send-email-thomas.haemmerle@wolfvision.net>
 References: <1571912781-17152-1-git-send-email-thomas.haemmerle@wolfvision.net>
 In-Reply-To: <1571912781-17152-1-git-send-email-thomas.haemmerle@wolfvision.net>
 Content-Language: en-US
@@ -23,101 +23,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] firmware: zynqmp-fpga: print Xilinx bitstream header
+Subject: [PATCH 1/5] ARM: zynqmp: dts: move firmware node to src tree
 To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 Cc: Michael Tretter <m.tretter@pengutronix.de>
 
 From: Michael Tretter <m.tretter@pengutronix.de>
 
-The bitstream header has 5 fields, that start with a char for the type.
-Four fields have a big-ending length and a null-terminated string for
-the design name, the part number, and the date and time of creation. The
-last field is a big-endian 32 bit unsigned int for the size of the
-bitstream.
-
-Print this info when loading the bitstream.
+The firmware node will be added to the mainline device tree. As it will
+eventually enter Barebox via a device tree sync, add it to the src tree
+already.
 
 Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 ---
- drivers/firmware/zynqmp-fpga.c | 51 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
+ arch/arm/dts/zynqmp-zcu104-revA.dts |  1 -
+ arch/arm/dts/zynqmp.dtsi            | 17 -----------------
+ dts/src/arm64/xilinx/zynqmp.dtsi    |  7 +++++++
+ 3 files changed, 7 insertions(+), 18 deletions(-)
+ delete mode 100644 arch/arm/dts/zynqmp.dtsi
 
-diff --git a/drivers/firmware/zynqmp-fpga.c b/drivers/firmware/zynqmp-fpga.c
-index 6a32d28..7bf880f 100644
---- a/drivers/firmware/zynqmp-fpga.c
-+++ b/drivers/firmware/zynqmp-fpga.c
-@@ -39,6 +39,19 @@ struct fpgamgr {
- 	u32 features;
- };
+diff --git a/arch/arm/dts/zynqmp-zcu104-revA.dts b/arch/arm/dts/zynqmp-zcu104-revA.dts
+index c03112d..8b8dd84 100644
+--- a/arch/arm/dts/zynqmp-zcu104-revA.dts
++++ b/arch/arm/dts/zynqmp-zcu104-revA.dts
+@@ -8,5 +8,4 @@
+  */
  
-+struct bs_header {
-+	__be16 length;
-+	u8 padding[9];
-+	__be16 size;
-+	char entries[0];
-+} __attribute__ ((packed));
-+
-+struct bs_header_entry {
-+	char type;
-+	__be16 length;
-+	char data[0];
-+} __attribute__ ((packed));
-+
- /* Xilinx binary format header */
- static const u32 bin_format[] = {
- 	DUMMY_WORD,
-@@ -100,6 +113,42 @@ static int get_header_length(const char *buf, size_t size)
- 	return -EINVAL;
- }
+ #include <arm64/xilinx/zynqmp-zcu104-revA.dts>
+-#include "zynqmp.dtsi"
+ #include "zynqmp-clk.dtsi"
+diff --git a/arch/arm/dts/zynqmp.dtsi b/arch/arm/dts/zynqmp.dtsi
+deleted file mode 100644
+index 59984ee..0000000
+--- a/arch/arm/dts/zynqmp.dtsi
++++ /dev/null
+@@ -1,17 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0+
+-/*
+- * dts file for Xilinx ZynqMP
+- *
+- * (C) Copyright 2014 - 2015, Xilinx, Inc.
+- *
+- * Michal Simek <michal.simek@xilinx.com>
+- */
+-
+-/ {
+-	firmware {
+-		zynqmp_firmware: zynqmp-firmware {
+-			compatible = "xlnx,zynqmp-firmware";
+-			method = "smc";
+-		};
+-	};
+-};
+diff --git a/dts/src/arm64/xilinx/zynqmp.dtsi b/dts/src/arm64/xilinx/zynqmp.dtsi
+index 9aa6734..9115eae 100644
+--- a/dts/src/arm64/xilinx/zynqmp.dtsi
++++ b/dts/src/arm64/xilinx/zynqmp.dtsi
+@@ -115,6 +115,13 @@
+ 		method = "smc";
+ 	};
  
-+static void zynqmp_fpga_show_header(const struct device_d *dev,
-+			 struct bs_header *header, size_t size)
-+{
-+	struct bs_header_entry *entry;
-+	unsigned int i;
-+	unsigned int length;
++	firmware {
++		zynqmp_firmware: zynqmp-firmware {
++			compatible = "xlnx,zynqmp-firmware";
++			method = "smc";
++		};
++	};
 +
-+	for (i = 0; i < size - sizeof(*header); i += sizeof(*entry) + length) {
-+		entry = (struct bs_header_entry *)&header->entries[i];
-+		length = __be16_to_cpu(entry->length);
-+
-+		switch (entry->type) {
-+		case 'a':
-+			printf("Design: %s\n", entry->data);
-+			break;
-+		case 'b':
-+			printf("Part number: %s\n", entry->data);
-+			break;
-+		case 'c':
-+			printf("Date: %s\n", entry->data);
-+			break;
-+		case 'd':
-+			printf("Time: %s\n", entry->data);
-+			break;
-+		case 'e':
-+			/* Size entry does not have a length but is be32 int */
-+			printf("Size: %d bytes\n",
-+			       (length << 16) + (entry->data[0] << 8) + entry->data[1]);
-+			return;
-+		default:
-+			dev_warn(dev, "Invalid header entry: %c", entry->type);
-+			return;
-+		}
-+	}
-+}
-+
- static int fpgamgr_program_finish(struct firmware_handler *fh)
- {
- 	struct fpgamgr *mgr = container_of(fh, struct fpgamgr, fh);
-@@ -121,6 +170,8 @@ static int fpgamgr_program_finish(struct firmware_handler *fh)
- 		status = header_length;
- 		goto err_free;
- 	}
-+	zynqmp_fpga_show_header(&mgr->dev,
-+			      (struct bs_header *)mgr->buf, header_length);
- 
- 	byte_order = get_byte_order((u32 *)&mgr->buf[header_length],
- 			mgr->size - header_length);
+ 	timer {
+ 		compatible = "arm,armv8-timer";
+ 		interrupt-parent = <&gic>;
 -- 
 2.7.4
 
