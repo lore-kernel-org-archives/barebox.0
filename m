@@ -1,14 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iPrQz-0002a6-Kg
- for barebox@lists.infradead.org; Wed, 30 Oct 2019 17:07:02 +0000
-From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Wed, 30 Oct 2019 18:06:53 +0100
-Message-Id: <20191030170653.5559-2-m.felsch@pengutronix.de>
-In-Reply-To: <20191030170653.5559-1-m.felsch@pengutronix.de>
-References: <20191030170653.5559-1-m.felsch@pengutronix.de>
-MIME-Version: 1.0
+Received: from mickerik.phytec.de ([195.145.39.210])
+ by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1iO1wh-0004l9-EJ
+ for barebox@lists.infradead.org; Fri, 25 Oct 2019 15:56:15 +0000
+From: Robert Karszniewicz <r.karszniewicz@phytec.de>
+Date: Fri, 25 Oct 2019 17:56:08 +0200
+Message-Id: <1572018968-343065-1-git-send-email-r.karszniewicz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,66 +14,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] mfd: da9063: fix watchdog ping execution
-To: barebox@lists.infradead.org, p.zabel@pengutronix.de, enrico.scholz@sigma-chemnitz.de
+Subject: [PATCH] usb: storage: Increase retries for usb_stor_transport()
+To: barebox@lists.infradead.org
 
-The watchdog resets the system if the watchdog gets pinged to fast.
-Between each watchdog ping must be a pause of at least 200ms.
+This should make writing and reading more reliable.
 
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Also:
+- change loop condition to make "retries" semantically correct
+- add a debug message in case of fatal failure
 ---
- drivers/mfd/da9063.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+We've had problems writing (and even reading) a 10 MiB file from barebox
+to multiple USB flash drives.
+The 10 MiB file copy failed with "write: I/O error" almost every time.
+Increasing the retry count made 100 MiB file copies succeed every time.
 
-diff --git a/drivers/mfd/da9063.c b/drivers/mfd/da9063.c
-index 4d459c7f18..ab57885240 100644
---- a/drivers/mfd/da9063.c
-+++ b/drivers/mfd/da9063.c
-@@ -14,6 +14,7 @@
-  */
+ drivers/usb/storage/usb.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/usb/storage/usb.c b/drivers/usb/storage/usb.c
+index 63d624e..e0ef4f5 100644
+--- a/drivers/usb/storage/usb.c
++++ b/drivers/usb/storage/usb.c
+@@ -87,8 +87,7 @@ static int usb_stor_transport(struct us_blk_dev *usb_blkdev,
+ 	struct device_d *dev = &us->pusb_dev->dev;
+ 	int i, ret;
  
- #include <common.h>
-+#include <clock.h>
- #include <driver.h>
- #include <gpio.h>
- #include <restart.h>
-@@ -33,6 +34,7 @@ struct da9063 {
- 	struct i2c_client	*client1;
- 	struct device_d		*dev;
- 	unsigned int		timeout;
-+	uint64_t		last_ping;
- };
+-
+-	for (i = 0; i < retries; i++) {
++	for (i = 0; i <= retries; i++) {
+ 		dev_dbg(dev, "%s\n", usb_stor_opcode_name(cmd[0]));
+ 		ret = us->transport(usb_blkdev, cmd, cmdlen, data, datalen);
+ 		dev_dbg(dev, "%s returns %d\n", usb_stor_opcode_name(cmd[0]),
+@@ -105,6 +104,8 @@ static int usb_stor_transport(struct us_blk_dev *usb_blkdev,
+ 			mdelay(request_sense_delay_ms);
+ 	}
  
- /* forbidden/impossible value; timeout will be set to this value initially to
-@@ -237,6 +239,13 @@ static int da9063_watchdog_ping(struct da9063 *priv)
- 	int ret;
- 	u8 val;
- 
-+	/* We need to wait at least 200ms till we can resend a ping */
-+	if (!is_timeout_non_interruptible(priv->last_ping, 200 * MSECOND)) {
-+		dev_dbg(priv->dev, "active ping delay\n");
-+		mdelay(50);
-+		return da9063_watchdog_ping(priv);
-+	}
++	dev_dbg(dev, "Retried %s %d times, and failed.\n", usb_stor_opcode_name(cmd[0]), retries);
 +
- 	dev_dbg(priv->dev, "ping\n");
- 
- 	/* reset watchdog timer; register is self clearing */
-@@ -245,6 +254,8 @@ static int da9063_watchdog_ping(struct da9063 *priv)
- 	if (ret < 0)
- 		return ret;
- 
-+	priv->last_ping = get_time_ns();
-+
- 	return 0;
+ 	return -EIO;
  }
  
+@@ -194,7 +195,7 @@ static int usb_stor_io_10(struct us_blk_dev *usb_blkdev, u8 opcode,
+ 	put_unaligned_be16(blocks, &cmd[7]);
+ 
+ 	return usb_stor_transport(usb_blkdev, cmd, sizeof(cmd), data,
+-				  blocks * SECTOR_SIZE, 2, 0);
++				  blocks * SECTOR_SIZE, 10, 0);
+ }
+ 
+ /***********************************************************************
 -- 
-2.20.1
+2.7.4
 
 
 _______________________________________________
