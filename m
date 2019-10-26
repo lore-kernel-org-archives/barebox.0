@@ -1,16 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iP2ku-0002TG-K8
- for barebox@lists.infradead.org; Mon, 28 Oct 2019 11:00:14 +0000
-Date: Mon, 28 Oct 2019 12:00:04 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191028110004.t2vcryjm4ymoeqtm@pengutronix.de>
-References: <1571912781-17152-1-git-send-email-thomas.haemmerle@wolfvision.net>
- <1572008129-24020-1-git-send-email-thomas.haemmerle@wolfvision.net>
+ id 1iOINb-0004Q5-8X
+ for barebox@lists.infradead.org; Sat, 26 Oct 2019 09:29:04 +0000
+Received: by mail-wm1-x32c.google.com with SMTP id 11so4620887wmk.0
+ for <barebox@lists.infradead.org>; Sat, 26 Oct 2019 02:29:02 -0700 (PDT)
+Received: from ?IPv6:2001:470:26:ba5:652b:2255:3415:9336?
+ ([2001:470:26:ba5:652b:2255:3415:9336])
+ by smtp.gmail.com with ESMTPSA id o25sm5605585wro.21.2019.10.26.02.29.00
+ for <barebox@lists.infradead.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 26 Oct 2019 02:29:00 -0700 (PDT)
+From: "aanno.trash" <aanno.trash@gmail.com>
+Message-ID: <180b0932-d2ab-7142-d76a-8937eb76d99c@gmail.com>
+Date: Sat, 26 Oct 2019 11:28:59 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1572008129-24020-1-git-send-email-thomas.haemmerle@wolfvision.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,45 +23,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 0/4] ARM: zynqmp: add support for bitstream loading
-To: Thomas =?iso-8859-15?Q?H=E4mmerle?= <Thomas.Haemmerle@wolfvision.net>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Uefi version with 'bare metal' drivers?
+To: barebox@lists.infradead.org
 
-On Fri, Oct 25, 2019 at 12:55:38PM +0000, Thomas H=E4mmerle wrote:
-> From: Thomas Haemmerle <thomas.haemmerle@wolfvision.net>
-> =
+Well,
 
-> Changes from v1:
-> - remove dts commits
-> - add commit for pmu and trustzone firmware virsion macro
-> - split bin-header validation and byte-order detection
-> - add description for bitstream
-> =
+I tried the uefi version of barebox on my lenovo miix 320. It is
+working, but it has the same problem like all the boot loaders I tried
+before: it does not recognize a SDCard that can be inserted into the
+display. On a running linux, it is recognized as 2nd eMMC (**not** as a
+USB device).
 
-> Michael Tretter (1):
->   firmware: zynqmp-fpga: print Xilinx bitstream header
-> =
+The uefi included with the device has the problem as well. So this is my
+question: When using the uefi version of barebox, is it possible to to
+include a 'bare metal' eMMC driver? If it is, how to do that?
 
-> Thomas Haemmerle (3):
->   firmware-zynqmp: add macros for PMU and trustzone firmware versions
->   firmware-zynqmp: extend driver with fpga relavant functions
->   firmware: zynqmp-fpga: introduce driver to load bitstream to FPGA
+Kind regards,
 
-Applied, thanks
+aanno2
 
-Sascha
-
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
