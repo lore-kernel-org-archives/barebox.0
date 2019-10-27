@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iOrnw-0005aI-Bj
- for barebox@lists.infradead.org; Sun, 27 Oct 2019 23:18:37 +0000
+ id 1iOrnw-0005aJ-Bk
+ for barebox@lists.infradead.org; Sun, 27 Oct 2019 23:18:39 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 28 Oct 2019 00:18:26 +0100
-Message-Id: <20191027231832.10247-2-a.fatoum@pengutronix.de>
+Date: Mon, 28 Oct 2019 00:18:27 +0100
+Message-Id: <20191027231832.10247-3-a.fatoum@pengutronix.de>
 In-Reply-To: <20191027231832.10247-1-a.fatoum@pengutronix.de>
 References: <20191027231832.10247-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,74 +21,234 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/8] pinctrl: demote dev_info on successful probes to
- dev_dbg
+Subject: [PATCH v2 3/8] pinctrl: stm32: parse pinctrl nodes without subnodes
+ as well
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The SoC's pin controller is virtually always built and probed, so
-there's is little information to gain from the fact it was successfully
-probed. Have the success message show up as debug message to reduce probe
-clutter like this:
-
-	NOTICE: stm32-pinctrl soc:pin-controller@50002000.of: pinctrl/gpio driver registered
-	NOTICE: stm32-pinctrl soc:pin-controller-z@54004000.of: pinctrl/gpio driver registered
+The bindings allow the pinmux node to occur directly in the node under
+the pin controller as well. Check for this and support both types of
+pinctrl specification.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/pinctrl/pinctrl-at91-pio4.c | 4 ++--
- drivers/pinctrl/pinctrl-bcm2835.c   | 2 +-
- drivers/pinctrl/pinctrl-stm32.c     | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/pinctrl/pinctrl-stm32.c | 180 ++++++++++++++++++--------------
+ 1 file changed, 99 insertions(+), 81 deletions(-)
 
-diff --git a/drivers/pinctrl/pinctrl-at91-pio4.c b/drivers/pinctrl/pinctrl-at91-pio4.c
-index 9bc259f84cca..b527114f1ba0 100644
---- a/drivers/pinctrl/pinctrl-at91-pio4.c
-+++ b/drivers/pinctrl/pinctrl-at91-pio4.c
-@@ -260,7 +260,7 @@ static int pinctrl_at91_pio4_gpiochip_add(struct device_d *dev,
- 		return ret;
- 	}
- 
--	dev_info(dev, "gpio driver registered\n");
-+	dev_dbg(dev, "gpio driver registered\n");
- 
- 	return 0;
- }
-@@ -290,7 +290,7 @@ static int pinctrl_at91_pio4_probe(struct device_d *dev)
- 	if (ret)
- 		return ret;
- 
--	dev_info(dev, "pinctrl driver registered\n");
-+	dev_dbg(dev, "pinctrl driver registered\n");
- 
- 	if (of_get_property(np, "gpio-controller", NULL))
- 		return pinctrl_at91_pio4_gpiochip_add(dev, pinctrl);
-diff --git a/drivers/pinctrl/pinctrl-bcm2835.c b/drivers/pinctrl/pinctrl-bcm2835.c
-index 5fd5740e8184..b8e9b60372e3 100644
---- a/drivers/pinctrl/pinctrl-bcm2835.c
-+++ b/drivers/pinctrl/pinctrl-bcm2835.c
-@@ -171,7 +171,7 @@ static int bcm2835_gpio_probe(struct device_d *dev)
- 		goto err;
- 	}
- 
--	dev_info(dev, "probed gpiochip%d with base %d\n", dev->id, bcmgpio->chip.base);
-+	dev_dbg(dev, "probed gpiochip%d with base %d\n", dev->id, bcmgpio->chip.base);
- 
- 	if (IS_ENABLED(CONFIG_PINCTRL)) {
- 		ret = pinctrl_register(&bcmgpio->pctl);
 diff --git a/drivers/pinctrl/pinctrl-stm32.c b/drivers/pinctrl/pinctrl-stm32.c
-index ab121998a37f..c199d74846e8 100644
+index c199d74846e8..cdaed510c564 100644
 --- a/drivers/pinctrl/pinctrl-stm32.c
 +++ b/drivers/pinctrl/pinctrl-stm32.c
-@@ -401,7 +401,7 @@ static int stm32_pinctrl_probe(struct device_d *dev)
- 		}
- 	}
- 
--	dev_info(dev, "pinctrl/gpio driver registered\n");
-+	dev_dbg(dev, "pinctrl/gpio driver registered\n");
- 
+@@ -87,110 +87,128 @@ static inline u32 stm32_gpio_get_alt(u32 function)
  	return 0;
  }
+ 
+-static int stm32_pinctrl_set_state(struct pinctrl_device *pdev, struct device_node *group)
++static int __stm32_pinctrl_set_state(struct device_d *dev, struct device_node *pins)
+ {
+-	struct stm32_pinctrl *pinctrl = to_stm32_pinctrl(pdev);
+-	struct device_node *pins;
+ 	int ret;
+ 
+-	ret = hwspinlock_lock_timeout(&pinctrl->hws, 10);
+-	if (ret == -ETIMEDOUT) {
+-		dev_err(pdev->dev, "hw spinlock timeout\n");
+-		return ret;
++	int num_pins = 0, i;
++	u32 slew_rate;
++	bool adjust_slew_rate = false;
++	enum stm32_pin_bias bias = -1;
++	enum stm32_pin_out_type out_type = -1;
++	enum { PIN_INPUT, PIN_OUTPUT_LOW, PIN_OUTPUT_HIGH } dir = -1;
++
++	of_get_property(pins, "pinmux", &num_pins);
++	num_pins /= sizeof(__be32);
++	if (!num_pins) {
++		dev_err(dev, "Invalid pinmux property in %s\n",
++			pins->full_name);
++		return -EINVAL;
+ 	}
+ 
+-	for_each_child_of_node(group, pins) {
+-		int num_pins = 0, i;
+-		u32 slew_rate;
+-		bool adjust_slew_rate = false;
+-		enum stm32_pin_bias bias = -1;
+-		enum stm32_pin_out_type out_type = -1;
+-		enum { PIN_INPUT, PIN_OUTPUT_LOW, PIN_OUTPUT_HIGH } dir = -1;
+-
+-		of_get_property(pins, "pinmux", &num_pins);
+-		num_pins /= sizeof(__be32);
+-		if (!num_pins) {
+-			dev_err(pdev->dev, "Invalid pinmux property in %s\n",
+-				pins->full_name);
+-			return -EINVAL;
+-		}
+-
+-		ret = of_property_read_u32(pins, "slew-rate", &slew_rate);
+-		if (!ret)
+-			adjust_slew_rate = true;
+-
+-		if (of_get_property(pins, "bias-disable", NULL))
+-			bias = STM32_PIN_NO_BIAS;
+-		else if (of_get_property(pins, "bias-pull-up", NULL))
+-			bias = STM32_PIN_PULL_UP;
+-		else if (of_get_property(pins, "bias-pull-down", NULL))
+-			bias = STM32_PIN_PULL_DOWN;
++	ret = of_property_read_u32(pins, "slew-rate", &slew_rate);
++	if (!ret)
++		adjust_slew_rate = true;
++
++	if (of_get_property(pins, "bias-disable", NULL))
++		bias = STM32_PIN_NO_BIAS;
++	else if (of_get_property(pins, "bias-pull-up", NULL))
++		bias = STM32_PIN_PULL_UP;
++	else if (of_get_property(pins, "bias-pull-down", NULL))
++		bias = STM32_PIN_PULL_DOWN;
++
++	if (of_get_property(pins, "drive-push-pull", NULL))
++		out_type = STM32_PIN_OUT_PUSHPULL;
++	else if (of_get_property(pins, "drive-open-drain", NULL))
++		out_type = STM32_PIN_OUT_OPENDRAIN;
++
++	if (of_get_property(pins, "input-enable", NULL))
++		dir = PIN_INPUT;
++	else if (of_get_property(pins, "output-low", NULL))
++		dir = PIN_OUTPUT_LOW;
++	else if (of_get_property(pins, "output-high", NULL))
++		dir = PIN_OUTPUT_HIGH;
++
++	dev_dbg(dev, "%s: multiplexing %d pins\n", pins->full_name, num_pins);
++
++	for (i = 0; i < num_pins; i++) {
++		struct stm32_gpio_bank *bank = NULL;
++		u32 pinfunc, mode, alt;
++		unsigned func;
++		int offset;
++
++		ret = of_property_read_u32_index(pins, "pinmux",
++				i, &pinfunc);
++		if (ret)
++			return ret;
+ 
+-		if (of_get_property(pins, "drive-push-pull", NULL))
+-			out_type = STM32_PIN_OUT_PUSHPULL;
+-		else if (of_get_property(pins, "drive-open-drain", NULL))
+-			out_type = STM32_PIN_OUT_OPENDRAIN;
++		func = STM32_GET_PIN_FUNC(pinfunc);
++		offset = stm32_gpio_pin(STM32_GET_PIN_NO(pinfunc), &bank);
++		if (offset < 0)
++			return -ENODEV;
+ 
+-		if (of_get_property(pins, "input-enable", NULL))
+-			dir = PIN_INPUT;
+-		else if (of_get_property(pins, "output-low", NULL))
+-			dir = PIN_OUTPUT_LOW;
+-		else if (of_get_property(pins, "output-high", NULL))
+-			dir = PIN_OUTPUT_HIGH;
++		mode = stm32_gpio_get_mode(func);
++		alt = stm32_gpio_get_alt(func);
+ 
+-		dev_dbg(pdev->dev, "%s: multiplexing %d pins\n",
+-			pins->full_name, num_pins);
++		dev_dbg(dev, "configuring port %s pin %u with:\n\t"
++			"fn %u, mode %u, alt %u\n",
++			bank->name, offset, func, mode, alt);
+ 
+-		for (i = 0; i < num_pins; i++) {
+-			struct stm32_gpio_bank *bank = NULL;
+-			u32 pinfunc, mode, alt;
+-			unsigned func;
+-			int offset;
++		clk_enable(bank->clk);
+ 
+-			ret = of_property_read_u32_index(pins, "pinmux",
+-					i, &pinfunc);
+-			if (ret)
+-				return ret;
++		__stm32_pmx_set_mode(bank->base, offset, mode, alt);
+ 
+-			func = STM32_GET_PIN_FUNC(pinfunc);
+-			offset = stm32_gpio_pin(STM32_GET_PIN_NO(pinfunc), &bank);
+-			if (offset < 0)
+-				return -ENODEV;
++		if (adjust_slew_rate)
++			__stm32_pmx_set_speed(bank->base, offset, slew_rate);
+ 
+-			mode = stm32_gpio_get_mode(func);
+-			alt = stm32_gpio_get_alt(func);
++		if (bias != -1)
++			__stm32_pmx_set_bias(bank->base, offset, bias);
+ 
+-			dev_dbg(pdev->dev, "configuring port %s pin %u with:\n\t"
+-				"fn %u, mode %u, alt %u\n",
+-				bank->name, offset, func, mode, alt);
++		if (out_type != -1)
++			__stm32_pmx_set_output_type(bank->base, offset, out_type);
+ 
+-			clk_enable(bank->clk);
++		if (dir == PIN_INPUT)
++			__stm32_pmx_gpio_input(bank->base, offset);
++		else if (dir == PIN_OUTPUT_LOW)
++			__stm32_pmx_gpio_output(bank->base, offset, 0);
++		else if (dir == PIN_OUTPUT_HIGH)
++			__stm32_pmx_gpio_output(bank->base, offset, 1);
+ 
+-			__stm32_pmx_set_mode(bank->base, offset, mode, alt);
++		clk_disable(bank->clk);
++	}
+ 
+-			if (adjust_slew_rate)
+-				__stm32_pmx_set_speed(bank->base, offset, slew_rate);
++	return 0;
++}
+ 
+-			if (bias != -1)
+-				__stm32_pmx_set_bias(bank->base, offset, bias);
++static int stm32_pinctrl_set_state(struct pinctrl_device *pdev, struct device_node *np)
++{
++	struct stm32_pinctrl *pinctrl = to_stm32_pinctrl(pdev);
++	struct device_d *dev = pdev->dev;
++	struct device_node *pins;
++	void *prop;
++	int ret;
+ 
+-			if (out_type != -1)
+-				__stm32_pmx_set_output_type(bank->base, offset, out_type);
++	ret = hwspinlock_lock_timeout(&pinctrl->hws, 10);
++	if (ret == -ETIMEDOUT) {
++		dev_err(dev, "hw spinlock timeout\n");
++		return ret;
++	}
+ 
+-			if (dir == PIN_INPUT)
+-				__stm32_pmx_gpio_input(bank->base, offset);
+-			else if (dir == PIN_OUTPUT_LOW)
+-				__stm32_pmx_gpio_output(bank->base, offset, 0);
+-			else if (dir == PIN_OUTPUT_HIGH)
+-				__stm32_pmx_gpio_output(bank->base, offset, 1);
++	prop = of_find_property(np, "pinmux", NULL);
++	if (prop) {
++		ret = __stm32_pinctrl_set_state(dev, np);
++		goto out;
++	}
+ 
+-			clk_disable(bank->clk);
+-		}
++	for_each_child_of_node(np, pins) {
++		ret = __stm32_pinctrl_set_state(dev, pins);
++		if (ret)
++			goto out;
+ 	}
+ 
++out:
+ 	hwspinlock_unlock(&pinctrl->hws);
+-
+-	return 0;
++	return ret;
+ }
+ 
+ /* GPIO functions */
 -- 
 2.23.0
 
