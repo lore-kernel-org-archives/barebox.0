@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iOro4-0005hU-Io
- for barebox@lists.infradead.org; Sun, 27 Oct 2019 23:18:49 +0000
+ id 1iOro4-0005hT-Ge
+ for barebox@lists.infradead.org; Sun, 27 Oct 2019 23:18:48 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 28 Oct 2019 00:18:32 +0100
-Message-Id: <20191027231832.10247-8-a.fatoum@pengutronix.de>
+Date: Mon, 28 Oct 2019 00:18:30 +0100
+Message-Id: <20191027231832.10247-6-a.fatoum@pengutronix.de>
 In-Reply-To: <20191027231832.10247-1-a.fatoum@pengutronix.de>
 References: <20191027231832.10247-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,382 +21,378 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 8/8] ARM: stm32mp: implement SoC and boot source
- identification
+Subject: [PATCH v2 6/8] nvmem: add read support for STM32MP1 bsec OTP
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The BSEC OTP holds information about SoC type and package.
-The Tamp registers hold information from the BootROM about boot
-source. Add support for both.
-
-Additionally, the tamp registers can also hold a request from the
-operating system about what mode to enter after boot, e.g.
-boot-into-recovery. A global function is exported for this, but
-unused so far.
+The bsec on the STM32MP157C provides a 380 byte OTP. Add initial support
+for reading and writing the shadow copy of the fuses. Direct fuse
+access is not yet supported.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/mach-stm32mp/Makefile                |   3 +-
- .../mach-stm32mp/include/mach/bootsource.h    |  33 +++
- arch/arm/mach-stm32mp/include/mach/revision.h |  32 +++
- arch/arm/mach-stm32mp/init.c                  | 260 ++++++++++++++++++
- 4 files changed, 327 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/mach-stm32mp/include/mach/bootsource.h
- create mode 100644 arch/arm/mach-stm32mp/include/mach/revision.h
- create mode 100644 arch/arm/mach-stm32mp/init.c
+ arch/arm/dts/stm32mp157c.dtsi             |   4 +
+ arch/arm/mach-stm32mp/include/mach/bsec.h |  41 ++++
+ arch/arm/mach-stm32mp/include/mach/smc.h  |  28 +++
+ drivers/nvmem/Kconfig                     |   8 +
+ drivers/nvmem/Makefile                    |   5 +-
+ drivers/nvmem/bsec.c                      | 221 ++++++++++++++++++++++
+ 6 files changed, 306 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/mach-stm32mp/include/mach/bsec.h
+ create mode 100644 arch/arm/mach-stm32mp/include/mach/smc.h
+ create mode 100644 drivers/nvmem/bsec.c
 
-diff --git a/arch/arm/mach-stm32mp/Makefile b/arch/arm/mach-stm32mp/Makefile
-index 204cad608f56..6f495288923a 100644
---- a/arch/arm/mach-stm32mp/Makefile
-+++ b/arch/arm/mach-stm32mp/Makefile
-@@ -1 +1,2 @@
--obj-$(CONFIG_BOOTM) := stm32image.o
-+obj-y := init.o
-+obj-$(CONFIG_BOOTM) += stm32image.o
-diff --git a/arch/arm/mach-stm32mp/include/mach/bootsource.h b/arch/arm/mach-stm32mp/include/mach/bootsource.h
+diff --git a/arch/arm/dts/stm32mp157c.dtsi b/arch/arm/dts/stm32mp157c.dtsi
+index 8d9c84a04785..771139c28af0 100644
+--- a/arch/arm/dts/stm32mp157c.dtsi
++++ b/arch/arm/dts/stm32mp157c.dtsi
+@@ -20,3 +20,7 @@
+ 		gpio25 = &gpioz;
+ 	};
+ };
++
++&bsec {
++	barebox,provide-mac-address = <&ethernet0 0x39>;
++};
+diff --git a/arch/arm/mach-stm32mp/include/mach/bsec.h b/arch/arm/mach-stm32mp/include/mach/bsec.h
 new file mode 100644
-index 000000000000..1b6f562ac301
+index 000000000000..559faaa2bac3
 --- /dev/null
-+++ b/arch/arm/mach-stm32mp/include/mach/bootsource.h
-@@ -0,0 +1,33 @@
-+/* SPDX-License-Identifier: GPL-2.0+ OR BSD-3-Clause */
-+/*
-+ * Copyright (C) 2018, STMicroelectronics - All Rights Reserved
-+ */
++++ b/arch/arm/mach-stm32mp/include/mach/bsec.h
+@@ -0,0 +1,41 @@
++#ifndef __MACH_STM32_BSEC_H__
++#define __MACH_STM32_BSEC_H__
 +
-+#ifndef __MACH_STM32_BOOTSOURCE_H__
-+#define __MACH_STM32_BOOTSOURCE_H__
++#include <mach/smc.h>
 +
-+enum stm32mp_boot_device {
-+	STM32MP_BOOT_FLASH_SD		= 0x10, /* .. 0x13 */
-+	STM32MP_BOOT_FLASH_EMMC		= 0x20, /* .. 0x23 */
-+	STM32MP_BOOT_FLASH_NAND		= 0x30,
-+	STM32MP_BOOT_FLASH_NAND_FMC	= 0x31,
-+	STM32MP_BOOT_FLASH_NOR		= 0x40,
-+	STM32MP_BOOT_FLASH_NOR_QSPI	= 0x41,
-+	STM32MP_BOOT_SERIAL_UART	= 0x50, /* .. 0x58 */
-+	STM32MP_BOOT_SERIAL_USB		= 0x60,
-+	STM32MP_BOOT_SERIAL_USB_OTG	= 0x62,
++/* Return status */
++enum bsec_smc {
++	BSEC_SMC_OK		= 0,
++	BSEC_SMC_ERROR		= -1,
++	BSEC_SMC_DISTURBED	= -2,
++	BSEC_SMC_INVALID_PARAM	= -3,
++	BSEC_SMC_PROG_FAIL	= -4,
++	BSEC_SMC_LOCK_FAIL	= -5,
++	BSEC_SMC_WRITE_FAIL	= -6,
++	BSEC_SMC_SHADOW_FAIL	= -7,
++	BSEC_SMC_TIMEOUT	= -8,
 +};
 +
-+enum stm32mp_forced_boot_mode {
-+	STM32MP_BOOT_NORMAL	= 0x00,
-+	STM32MP_BOOT_FASTBOOT	= 0x01,
-+	STM32MP_BOOT_RECOVERY	= 0x02,
-+	STM32MP_BOOT_STM32PROG	= 0x03,
-+	STM32MP_BOOT_UMS_MMC0	= 0x10,
-+	STM32MP_BOOT_UMS_MMC1	= 0x11,
-+	STM32MP_BOOT_UMS_MMC2	= 0x12,
++/* Service for BSEC */
++enum bsec_field {
++	BSEC_SMC_READ_SHADOW	= 1,
++	BSEC_SMC_PROG_OTP	= 2,
++	BSEC_SMC_WRITE_SHADOW	= 3,
++	BSEC_SMC_READ_OTP	= 4,
++	BSEC_SMC_READ_ALL	= 5,
++	BSEC_SMC_WRITE_ALL	= 6,
 +};
 +
-+enum stm32mp_forced_boot_mode st32mp_get_forced_boot_mode(void);
++static inline enum bsec_smc bsec_read_field(enum bsec_field field, unsigned *val)
++{
++	return stm32mp_smc(STM32_SMC_BSEC, BSEC_SMC_READ_SHADOW,
++			   field, 0, val);
++}
++
++static inline enum bsec_smc bsec_write_field(enum bsec_field field, unsigned val)
++{
++	return stm32mp_smc(STM32_SMC_BSEC, BSEC_SMC_WRITE_SHADOW,
++			   field, val, NULL);
++}
 +
 +#endif
-diff --git a/arch/arm/mach-stm32mp/include/mach/revision.h b/arch/arm/mach-stm32mp/include/mach/revision.h
+diff --git a/arch/arm/mach-stm32mp/include/mach/smc.h b/arch/arm/mach-stm32mp/include/mach/smc.h
 new file mode 100644
-index 000000000000..387201421de7
+index 000000000000..6b8e62bd5302
 --- /dev/null
-+++ b/arch/arm/mach-stm32mp/include/mach/revision.h
-@@ -0,0 +1,32 @@
-+/* SPDX-License-Identifier: GPL-2.0+ OR BSD-3-Clause */
-+/*
-+ * Copyright (C) 2015-2017, STMicroelectronics - All Rights Reserved
-+ */
++++ b/arch/arm/mach-stm32mp/include/mach/smc.h
+@@ -0,0 +1,28 @@
++#ifndef __MACH_STM32_SMC_H__
++#define __MACH_STM32_SMC_H__
 +
-+#ifndef __MACH_CPUTYPE_H__
-+#define __MACH_CPUTYPE_H__
++#include <linux/arm-smccc.h>
 +
-+/* ID = Device Version (bit31:16) + Device Part Number (RPN) (bit15:0)*/
-+#define CPU_STM32MP157Cxx	0x05000000
-+#define CPU_STM32MP157Axx	0x05000001
-+#define CPU_STM32MP153Cxx	0x05000024
-+#define CPU_STM32MP153Axx	0x05000025
-+#define CPU_STM32MP151Cxx	0x0500002E
-+#define CPU_STM32MP151Axx	0x0500002F
++/* Secure Service access from Non-secure */
++#define STM32_SMC_RCC                   0x82001000
++#define STM32_SMC_PWR                   0x82001001
++#define STM32_SMC_RTC                   0x82001002
++#define STM32_SMC_BSEC                  0x82001003
 +
-+/* silicon revisions */
-+#define CPU_REV_A	0x1000
-+#define CPU_REV_B	0x2000
++/* Register access service use for RCC/RTC/PWR */
++#define STM32_SMC_REG_WRITE             0x1
++#define STM32_SMC_REG_SET               0x2
++#define STM32_SMC_REG_CLEAR             0x3
 +
-+int stm32mp_silicon_revision(void);
-+int stm32mp_cputype(void);
-+int stm32mp_package(void);
++static inline int stm32mp_smc(u32 svc, u8 op, u32 data1, u32 data2, u32 *val)
++{
++        struct arm_smccc_res res;
 +
-+#define cpu_is_stm32mp157c() (stm32mp_cputype() == CPU_STM32MP157Cxx)
-+#define cpu_is_stm32mp157a() (stm32mp_cputype() == CPU_STM32MP157Axx)
-+#define cpu_is_stm32mp153c() (stm32mp_cputype() == CPU_STM32MP153Cxx)
-+#define cpu_is_stm32mp153a() (stm32mp_cputype() == CPU_STM32MP153Axx)
-+#define cpu_is_stm32mp151c() (stm32mp_cputype() == CPU_STM32MP151Cxx)
-+#define cpu_is_stm32mp151a() (stm32mp_cputype() == CPU_STM32MP151Axx)
++        arm_smccc_smc(svc, op, data1, data2, 0, 0, 0, 0, &res);
++        if (val)
++                *val = res.a1;
 +
-+#endif /* __MACH_CPUTYPE_H__ */
-diff --git a/arch/arm/mach-stm32mp/init.c b/arch/arm/mach-stm32mp/init.c
++        return (int)res.a0;
++}
++
++#endif
+diff --git a/drivers/nvmem/Kconfig b/drivers/nvmem/Kconfig
+index c28a6d4e43c8..968342b281ad 100644
+--- a/drivers/nvmem/Kconfig
++++ b/drivers/nvmem/Kconfig
+@@ -51,4 +51,12 @@ config EEPROM_93XX46
+ 	  supports both read and write commands and also the command to
+ 	  erase the whole EEPROM.
+ 
++config STM32_BSEC
++	tristate "STM32 Boot and security and OTP control"
++	depends on ARCH_STM32MP
++	depends on OFDEVICE
++	help
++	  This adds support for the STM32 OTP controller. Reads and writes
++	  to will go to the shadow RAM, not the OTP fuses themselvers.
++
+ endif
+diff --git a/drivers/nvmem/Makefile b/drivers/nvmem/Makefile
+index abf9dae429e2..7101c5aca44c 100644
+--- a/drivers/nvmem/Makefile
++++ b/drivers/nvmem/Makefile
+@@ -16,4 +16,7 @@ obj-$(CONFIG_RAVE_SP_EEPROM)	+= nvmem-rave-sp-eeprom.o
+ nvmem-rave-sp-eeprom-y		:= rave-sp-eeprom.o
+ 
+ obj-$(CONFIG_EEPROM_93XX46)	+= nvmem_eeprom_93xx46.o
+-nvmem_eeprom_93xx46-y		:= eeprom_93xx46.o
+\ No newline at end of file
++nvmem_eeprom_93xx46-y		:= eeprom_93xx46.o
++
++obj-$(CONFIG_STM32_BSEC)	+= nvmem_bsec.o
++nvmem_bsec-y			:= bsec.o
+diff --git a/drivers/nvmem/bsec.c b/drivers/nvmem/bsec.c
 new file mode 100644
-index 000000000000..7bad989a609b
+index 000000000000..8235d468d16d
 --- /dev/null
-+++ b/arch/arm/mach-stm32mp/init.c
-@@ -0,0 +1,260 @@
-+// SPDX-License-Identifier: GPL-2.0+ OR BSD-3-Clause
++++ b/drivers/nvmem/bsec.c
+@@ -0,0 +1,221 @@
++// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2018, STMicroelectronics - All Rights Reserved
-+ * Copyright (C) 2019 Ahmad Fatoum, Pengutronix
++ * Copyright (c) 2019 Ahmad Fatoum, Pengutronix
 + */
-+
-+#define pr_fmt(fmt) "stm32mp-init: " fmt
 +
 +#include <common.h>
++#include <driver.h>
++#include <malloc.h>
++#include <xfuncs.h>
++#include <errno.h>
 +#include <init.h>
-+#include <mach/stm32.h>
++#include <net.h>
++#include <io.h>
++#include <of.h>
++#include <regmap.h>
 +#include <mach/bsec.h>
-+#include <mach/revision.h>
-+#include <mach/bootsource.h>
-+#include <bootsource.h>
++#include <machine_id.h>
++#include <linux/nvmem-provider.h>
 +
-+/* DBGMCU register */
-+#define DBGMCU_IDC		(STM32_DBGMCU_BASE + 0x00)
-+#define DBGMCU_APB4FZ1		(STM32_DBGMCU_BASE + 0x2C)
-+#define DBGMCU_APB4FZ1_IWDG2	BIT(2)
-+#define DBGMCU_IDC_DEV_ID_MASK	GENMASK(11, 0)
-+#define DBGMCU_IDC_DEV_ID_SHIFT	0
-+#define DBGMCU_IDC_REV_ID_MASK	GENMASK(31, 16)
-+#define DBGMCU_IDC_REV_ID_SHIFT	16
++#define BSEC_OTP_SERIAL	13
 +
-+#define RCC_DBGCFGR		(STM32_RCC_BASE + 0x080C)
-+#define RCC_DBGCFGR_DBGCKEN	BIT(8)
++struct bsec_priv {
++	struct regmap *map;
++	u32 svc_id;
++	struct device_d dev;
++	struct regmap_config map_config;
++	struct nvmem_config config;
++};
 +
-+/* BSEC OTP index */
-+#define BSEC_OTP_RPN	1
-+#define BSEC_OTP_PKG	16
++struct stm32_bsec_data {
++	unsigned long svc_id;
++	int num_regs;
++};
 +
-+/* Device Part Number (RPN) = OTP_DATA1 lower 8 bits */
-+#define RPN_SHIFT	0
-+#define RPN_MASK	GENMASK(7, 0)
-+
-+/* Package = bit 27:29 of OTP16
-+ * - 100: LBGA448  (FFI) => AA = LFBGA 18x18mm 448 balls p. 0.8mm
-+ * - 011: LBGA354  (LCI) => AB = LFBGA 16x16mm 359 balls p. 0.8mm
-+ * - 010: TFBGA361 (FFC) => AC = TFBGA 12x12mm 361 balls p. 0.5mm
-+ * - 001: TFBGA257 (LCC) => AD = TFBGA 10x10mm 257 balls p. 0.5mm
-+ * - others: Reserved
-+ */
-+#define PKG_SHIFT	27
-+#define PKG_MASK	GENMASK(2, 0)
-+
-+#define PKG_AA_LBGA448	4
-+#define PKG_AB_LBGA354	3
-+#define PKG_AC_TFBGA361	2
-+#define PKG_AD_TFBGA257	1
-+
-+/*
-+ * enumerated for boot interface from Bootrom, used in TAMP_BOOT_CONTEXT
-+ * - boot device = bit 8:4
-+ * - boot instance = bit 3:0
-+ */
-+#define BOOT_TYPE_MASK		0xF0
-+#define BOOT_TYPE_SHIFT		4
-+#define BOOT_INSTANCE_MASK	0x0F
-+#define BOOT_INSTANCE_SHIFT	0
-+
-+/* TAMP registers */
-+#define TAMP_BACKUP_REGISTER(x)         (STM32_TAMP_BASE + 0x100 + 4 * x)
-+/* secure access */
-+#define TAMP_BACKUP_MAGIC_NUMBER        TAMP_BACKUP_REGISTER(4)
-+#define TAMP_BACKUP_BRANCH_ADDRESS      TAMP_BACKUP_REGISTER(5)
-+/* non secure access */
-+#define TAMP_BOOT_CONTEXT               TAMP_BACKUP_REGISTER(20)
-+#define TAMP_BOOTCOUNT                  TAMP_BACKUP_REGISTER(21)
-+
-+#define TAMP_BOOT_MODE_MASK             GENMASK(15, 8)
-+#define TAMP_BOOT_MODE_SHIFT            8
-+#define TAMP_BOOT_DEVICE_MASK           GENMASK(7, 4)
-+#define TAMP_BOOT_INSTANCE_MASK         GENMASK(3, 0)
-+#define TAMP_BOOT_FORCED_MASK           GENMASK(7, 0)
-+#define TAMP_BOOT_DEBUG_ON              BIT(16)
-+
-+
-+static enum stm32mp_forced_boot_mode __stm32mp_forced_boot_mode;
-+enum stm32mp_forced_boot_mode st32mp_get_forced_boot_mode(void)
++static int bsec_smc(struct bsec_priv *priv, u8 op, enum bsec_field field,
++		    unsigned data2, unsigned *val)
 +{
-+	return __stm32mp_forced_boot_mode;
-+}
-+
-+static void setup_boot_mode(void)
-+{
-+	u32 boot_ctx = readl(TAMP_BOOT_CONTEXT);
-+	u32 boot_mode =
-+		(boot_ctx & TAMP_BOOT_MODE_MASK) >> TAMP_BOOT_MODE_SHIFT;
-+	int instance = (boot_mode & TAMP_BOOT_INSTANCE_MASK) - 1;
-+	enum bootsource src = BOOTSOURCE_UNKNOWN;
-+
-+	switch (boot_mode & TAMP_BOOT_DEVICE_MASK) {
-+	case STM32MP_BOOT_SERIAL_UART:
-+		src = BOOTSOURCE_SERIAL;
-+		break;
-+	case STM32MP_BOOT_SERIAL_USB:
-+		src = BOOTSOURCE_USB;
-+		break;
-+	case STM32MP_BOOT_FLASH_SD:
-+	case STM32MP_BOOT_FLASH_EMMC:
-+		src = BOOTSOURCE_MMC;
-+		break;
-+	case STM32MP_BOOT_FLASH_NAND:
-+		src = BOOTSOURCE_NAND;
-+		break;
-+	case STM32MP_BOOT_FLASH_NOR:
-+		instance = 0;
-+		src = BOOTSOURCE_NOR;
-+		break;
-+	case STM32MP_BOOT_FLASH_NOR_QSPI:
-+		instance--;
-+		src = BOOTSOURCE_SPI_NOR;
-+		break;
-+	default:
-+		pr_debug("unexpected boot mode\n");
-+		break;
++	enum bsec_smc ret = stm32mp_smc(priv->svc_id, op, field / 4, data2, val);
++	switch(ret)
++	{
++	case BSEC_SMC_OK:
++		return 0;
++	case BSEC_SMC_ERROR:
++	case BSEC_SMC_DISTURBED:
++	case BSEC_SMC_PROG_FAIL:
++	case BSEC_SMC_LOCK_FAIL:
++	case BSEC_SMC_WRITE_FAIL:
++	case BSEC_SMC_SHADOW_FAIL:
++		return -EIO;
++	case BSEC_SMC_INVALID_PARAM:
++		return -EINVAL;
++	case BSEC_SMC_TIMEOUT:
++		return -ETIMEDOUT;
 +	}
 +
-+	__stm32mp_forced_boot_mode = boot_ctx & TAMP_BOOT_FORCED_MASK;
-+
-+	pr_debug("[boot_ctx=0x%x] => mode=0x%x, instance=%d forced=0x%x\n",
-+		 boot_ctx, boot_mode, instance, __stm32mp_forced_boot_mode);
-+
-+	bootsource_set(src);
-+	bootsource_set_instance(instance);
-+
-+	/* clear TAMP for next reboot */
-+	clrsetbits_le32(TAMP_BOOT_CONTEXT, TAMP_BOOT_FORCED_MASK,
-+			STM32MP_BOOT_NORMAL);
++	return -ENXIO;
 +}
 +
-+static int __stm32mp_cputype;
-+int stm32mp_cputype(void)
++static int st32_bsec_read_shadow(void *ctx, unsigned reg, unsigned *val)
 +{
-+	return __stm32mp_cputype;
++	return bsec_smc(ctx, BSEC_SMC_READ_SHADOW, reg, 0, val);
 +}
 +
-+static int __stm32mp_silicon_revision;
-+int stm32mp_silicon_revision(void)
++static int stm32_bsec_reg_write_shadow(void *ctx, unsigned reg, unsigned val)
 +{
-+	return __stm32mp_silicon_revision;
++	return bsec_smc(ctx, BSEC_SMC_WRITE_SHADOW, reg, val, NULL);
 +}
 +
-+static int __stm32mp_package;
-+int stm32mp_package(void)
++static struct regmap_bus stm32_bsec_regmap_bus = {
++	.reg_write = stm32_bsec_reg_write_shadow,
++	.reg_read = st32_bsec_read_shadow,
++};
++
++static int stm32_bsec_write(struct device_d *dev, int offset,
++			    const void *val, int bytes)
 +{
-+	return __stm32mp_package;
++	struct bsec_priv *priv = dev->parent->priv;
++
++	return regmap_bulk_write(priv->map, offset, val, bytes);
 +}
 +
-+static inline u32 read_idc(void)
++static int stm32_bsec_read(struct device_d *dev, int offset,
++			   void *val, int bytes)
 +{
-+	setbits_le32(RCC_DBGCFGR, RCC_DBGCFGR_DBGCKEN);
-+	return readl(IOMEM(DBGMCU_IDC));
++	struct bsec_priv *priv = dev->parent->priv;
++
++	return regmap_bulk_read(priv->map, offset, val, bytes);
 +}
 +
-+/* Get Device Part Number (RPN) from OTP */
-+static u32 get_cpu_rpn(u32 *rpn)
++static const struct nvmem_bus stm32_bsec_nvmem_bus = {
++	.write = stm32_bsec_write,
++	.read  = stm32_bsec_read,
++};
++
++static void stm32_bsec_set_unique_machine_id(struct regmap *map)
 +{
-+	int ret = bsec_read_field(BSEC_OTP_RPN, rpn);
++	u32 unique_id[3];
++	int ret;
++
++	ret = regmap_bulk_read(map, BSEC_OTP_SERIAL * 4,
++			       unique_id, sizeof(unique_id));
++	if (ret)
++		return;
++
++	machine_id_set_hashable(unique_id, sizeof(unique_id));
++}
++
++static int stm32_bsec_read_mac(struct regmap *map, int offset, u8 *mac)
++{
++	u8 res[8];
++	int ret;
++
++	ret = regmap_bulk_read(map, offset * 4, res, 8);
 +	if (ret)
 +		return ret;
 +
-+	*rpn = (*rpn >> RPN_SHIFT) & RPN_MASK;
++	memcpy(mac, res, ETH_ALEN);
 +	return 0;
 +}
 +
-+static u32 get_cpu_revision(void)
++static void stm32_bsec_init_dt(struct bsec_priv *priv)
 +{
-+	return (read_idc() & DBGMCU_IDC_REV_ID_MASK) >> DBGMCU_IDC_REV_ID_SHIFT;
++	struct device_node *node = priv->dev.parent->device_node;
++	struct device_node *rnode;
++	u32 phandle, offset;
++	char mac[ETH_ALEN];
++	const __be32 *prop;
++
++	int len;
++	int ret;
++
++	if (!node)
++		return;
++
++	prop = of_get_property(node, "barebox,provide-mac-address", &len);
++	if (!prop)
++		return;
++
++	if (len != 2 * sizeof(__be32))
++		return;
++
++	phandle = be32_to_cpup(prop++);
++
++	rnode = of_find_node_by_phandle(phandle);
++	offset = be32_to_cpup(prop++);
++
++	ret = stm32_bsec_read_mac(priv->map, offset, mac);
++	if (ret) {
++		dev_warn(&priv->dev, "error setting MAC address: %s\n",
++			 strerror(-ret));
++		return;
++	}
++
++	of_eth_register_ethaddr(rnode, mac);
 +}
 +
-+static u32 get_cpu_type(u32 *type)
++static int stm32_bsec_probe(struct device_d *dev)
 +{
-+	u32 id;
-+	int ret = get_cpu_rpn(type);
++	struct bsec_priv *priv;
++	int ret = 0;
++	const struct stm32_bsec_data *data;
++	struct nvmem_device *nvmem;
++
++	ret = dev_get_drvdata(dev, (const void **)&data);
 +	if (ret)
 +		return ret;
 +
-+	id = (read_idc() & DBGMCU_IDC_DEV_ID_MASK) >> DBGMCU_IDC_DEV_ID_SHIFT;
-+	*type |= id << 16;
-+	return 0;
-+}
++	priv = xzalloc(sizeof(*priv));
 +
-+static int get_cpu_package(u32 *pkg)
-+{
-+	int ret = bsec_read_field(BSEC_OTP_PKG, pkg);
-+	if (ret)
-+		return ret;
++	priv->svc_id = data->svc_id;
 +
-+	*pkg = (*pkg >> PKG_SHIFT) & PKG_MASK;
-+	return 0;
-+}
++	dev_set_name(&priv->dev, "bsec");
++	priv->dev.parent = dev;
++	register_device(&priv->dev);
 +
-+static int setup_cpu_type(void)
-+{
-+	const char *cputypestr;
-+	const char *cpupkgstr;
++	priv->map_config.reg_bits = 32;
++	priv->map_config.val_bits = 32;
++	priv->map_config.reg_stride = 4;
++	priv->map_config.max_register = data->num_regs;
 +
-+	get_cpu_type(&__stm32mp_cputype);
-+	switch (__stm32mp_cputype) {
-+	case CPU_STM32MP157Cxx:
-+		cputypestr = "157C";
-+		break;
-+	case CPU_STM32MP157Axx:
-+		cputypestr = "157A";
-+		break;
-+	case CPU_STM32MP153Cxx:
-+		cputypestr = "153C";
-+		break;
-+	case CPU_STM32MP153Axx:
-+		cputypestr = "153A";
-+		break;
-+	case CPU_STM32MP151Cxx:
-+		cputypestr = "151C";
-+		break;
-+	case CPU_STM32MP151Axx:
-+		cputypestr = "151A";
-+		break;
-+	default:
-+		cputypestr = "????";
-+		break;
-+	}
++	priv->map = regmap_init(dev, &stm32_bsec_regmap_bus, priv, &priv->map_config);
++	if (IS_ERR(priv->map))
++		return PTR_ERR(priv->map);
 +
-+	get_cpu_package(&__stm32mp_package );
-+	switch (__stm32mp_package) {
-+	case PKG_AA_LBGA448:
-+		cpupkgstr = "AA";
-+		break;
-+	case PKG_AB_LBGA354:
-+		cpupkgstr = "AB";
-+		break;
-+	case PKG_AC_TFBGA361:
-+		cpupkgstr = "AC";
-+		break;
-+	case PKG_AD_TFBGA257:
-+		cpupkgstr = "AD";
-+		break;
-+	default:
-+		cpupkgstr = "??";
-+		break;
-+	}
++	priv->config.name = "stm32-bsec";
++	priv->config.dev = dev;
++	priv->config.stride = 4;
++	priv->config.word_size = 4;
++	priv->config.size = data->num_regs;
++	priv->config.bus = &stm32_bsec_nvmem_bus;
++	dev->priv = priv;
 +
-+	__stm32mp_silicon_revision = get_cpu_revision();
++	nvmem = nvmem_register(&priv->config);
++	if (IS_ERR(nvmem))
++		return PTR_ERR(nvmem);
 +
-+	pr_debug("cputype = 0x%x, package = 0x%x, revision = 0x%x\n",
-+		 __stm32mp_cputype, __stm32mp_package, __stm32mp_silicon_revision);
-+	pr_info("detected STM32MP%s%s Rev.%c\n", cputypestr, cpupkgstr,
-+		(__stm32mp_silicon_revision >> 12) + 'A' - 1);
-+	return 0;
-+}
++	if (IS_ENABLED(CONFIG_MACHINE_ID))
++		stm32_bsec_set_unique_machine_id(priv->map);
 +
-+static int stm32mp_init(void)
-+{
-+	setup_cpu_type();
-+	setup_boot_mode();
++	stm32_bsec_init_dt(priv);
 +
 +	return 0;
 +}
-+postcore_initcall(stm32mp_init);
++
++static struct stm32_bsec_data stm32mp15_bsec_data = {
++	.num_regs = 95 * 4,
++	.svc_id = STM32_SMC_BSEC,
++};
++
++static __maybe_unused struct of_device_id stm32_bsec_dt_ids[] = {
++	{ .compatible = "st,stm32mp15-bsec", .data = &stm32mp15_bsec_data },
++	{ /* sentinel */ }
++};
++
++static struct driver_d stm32_bsec_driver = {
++	.name	= "stm32_bsec",
++	.probe	= stm32_bsec_probe,
++	.of_compatible = DRV_OF_COMPAT(stm32_bsec_dt_ids),
++};
++postcore_platform_driver(stm32_bsec_driver);
 -- 
 2.23.0
 
