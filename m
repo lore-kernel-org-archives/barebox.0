@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mickerik.phytec.de ([195.145.39.210])
- by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iNxcf-0001sJ-R7
- for barebox@lists.infradead.org; Fri, 25 Oct 2019 11:19:15 +0000
-From: Robert Karszniewicz <r.karszniewicz@phytec.de>
-Date: Fri, 25 Oct 2019 13:19:12 +0200
-Message-Id: <1572002352-387612-1-git-send-email-r.karszniewicz@phytec.de>
-In-Reply-To: <9bc4633e-6f71-0c6c-988c-e8a1e11e713a@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1iP3SE-0002dF-KC
+ for barebox@lists.infradead.org; Mon, 28 Oct 2019 11:45:00 +0000
+Date: Mon, 28 Oct 2019 12:44:57 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20191028114457.q6u2yo6rjlqyyoe5@pengutronix.de>
 References: <9bc4633e-6f71-0c6c-988c-e8a1e11e713a@pengutronix.de>
+ <1572002352-387612-1-git-send-email-r.karszniewicz@phytec.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1572002352-387612-1-git-send-email-r.karszniewicz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,54 +19,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] sandbox: add_image: mmap block devices
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2] sandbox: add_image: mmap block devices
+To: Robert Karszniewicz <r.karszniewicz@phytec.de>
+Cc: barebox@lists.infradead.org
 
-This makes it possible to mount block devices from the host machine,
-which have been passed as arguments to --image
+On Fri, Oct 25, 2019 at 01:19:12PM +0200, Robert Karszniewicz wrote:
+> This makes it possible to mount block devices from the host machine,
+> which have been passed as arguments to --image
+> 
+> Signed-off-by: Robert Karszniewicz <r.karszniewicz@phytec.de>
+> ---
+> Changes from v1:
+> - move -1 to the right side of the comparison
+> 
+>  arch/sandbox/os/common.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 
-Signed-off-by: Robert Karszniewicz <r.karszniewicz@phytec.de>
----
-Changes from v1:
-- move -1 to the right side of the comparison
+Applied, thanks
 
- arch/sandbox/os/common.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Sascha
 
-diff --git a/arch/sandbox/os/common.c b/arch/sandbox/os/common.c
-index 86118822a..e826c9cb3 100644
---- a/arch/sandbox/os/common.c
-+++ b/arch/sandbox/os/common.c
-@@ -39,6 +39,8 @@
- #include <signal.h>
- #include <sys/select.h>
- #include <sys/wait.h>
-+#include <sys/ioctl.h>
-+#include <linux/fs.h>
- /*
-  * ...except the ones needed to connect with barebox
-  */
-@@ -260,6 +262,12 @@ static int add_image(char *str, char *devname_template, int *devname_number)
- 	hf->size = s.st_size;
- 	hf->devname = strdup(devname);
- 
-+	if (S_ISBLK(s.st_mode)) {
-+		if (ioctl(fd, BLKGETSIZE64, &hf->size) == -1) {
-+			perror("ioctl");
-+			goto err_out;
-+		}
-+	}
- 	hf->base = (unsigned long)mmap(NULL, hf->size,
- 			PROT_READ | (readonly ? 0 : PROT_WRITE),
- 			MAP_SHARED, fd, 0);
+
 -- 
-2.11.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
