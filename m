@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iNWDt-0004yK-Fo
- for barebox@lists.infradead.org; Thu, 24 Oct 2019 06:03:50 +0000
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Thu, 24 Oct 2019 08:03:42 +0200
-Message-Id: <20191024060342.15541-2-o.rempel@pengutronix.de>
-In-Reply-To: <20191024060342.15541-1-o.rempel@pengutronix.de>
+ id 1iP3K5-0000QA-3D
+ for barebox@lists.infradead.org; Mon, 28 Oct 2019 11:36:34 +0000
+Date: Mon, 28 Oct 2019 12:36:31 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20191028113631.fxau27abnmbhru45@pengutronix.de>
 References: <20191024060342.15541-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20191024060342.15541-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,35 +22,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v6 2/2] doc: watchdog: add note about danger of autoping
-To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: Re: [PATCH v6 1/2] Documentation: add watchdog documentation
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- Documentation/user/watchdog.rst | 6 ++++++
- 1 file changed, 6 insertions(+)
+On Thu, Oct 24, 2019 at 08:03:41AM +0200, Oleksij Rempel wrote:
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> ---
+>  Documentation/user/user-manual.rst |  1 +
+>  Documentation/user/watchdog.rst    | 85 ++++++++++++++++++++++++++++++
+>  2 files changed, 86 insertions(+)
+>  create mode 100644 Documentation/user/watchdog.rst
+> 
 
-diff --git a/Documentation/user/watchdog.rst b/Documentation/user/watchdog.rst
-index 26e347d5f6..02bd576a89 100644
---- a/Documentation/user/watchdog.rst
-+++ b/Documentation/user/watchdog.rst
-@@ -29,6 +29,12 @@ enabled by default. To start polling from command line run:
- 
-   wdog0.autoping=1
- 
-+**NOTE** Using this feature might have the effect that the watchdog is
-+effectively disabled. In case barebox is stuck in a loop that includes feeding
-+the watchdog, then the watchdog will never trigger. Only use this feature
-+during development or when a bad watchdog design (Short watchdog timeout
-+enabled as boot default) doesn't give you another choice.
-+
- The poller interval is not configurable, but fixed at 500ms and the watchdog
- timeout is configured by default to the maximum of the supported values by
- hardware. To change the timeout used by the poller, run:
+Applied, thanks
+
+Sascha
+
 -- 
-2.23.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
