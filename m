@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from relay3-d.mail.gandi.net ([217.70.183.195])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iPCk7-0003n9-Ml
- for barebox@lists.infradead.org; Mon, 28 Oct 2019 21:40:07 +0000
+ id 1iPCkB-0004V6-I8
+ for barebox@lists.infradead.org; Mon, 28 Oct 2019 21:40:10 +0000
 From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Mon, 28 Oct 2019 22:39:39 +0100
-Message-Id: <20191028213943.32071-3-ahmad@a3f.at>
+Date: Mon, 28 Oct 2019 22:39:42 +0100
+Message-Id: <20191028213943.32071-6-ahmad@a3f.at>
 In-Reply-To: <20191028213943.32071-1-ahmad@a3f.at>
 References: <20191028213943.32071-1-ahmad@a3f.at>
 MIME-Version: 1.0
@@ -21,86 +21,84 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/6] ARM: stm32mp: dk2: add barebox SD-Card update handler
+Subject: [PATCH v2 5/6] ARM: stm32mp: include new drivers in defconfig
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Now with the SD/MMC controller supported, lets add a bbu handler, so we
-can use it to update the second stage boot loader partition.
+We've had some new drivers added for the STM32MP since the defconfig was
+first added. Include the newcomers.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/boards/stm32mp157c-dk2/board.c  | 13 +++++++++++++
- arch/arm/dts/stm32mp157a-dk1.dtsi        |  4 ++++
- arch/arm/mach-stm32mp/include/mach/bbu.h | 14 ++++++++++++++
- 3 files changed, 31 insertions(+)
- create mode 100644 arch/arm/mach-stm32mp/include/mach/bbu.h
+ arch/arm/configs/stm32mp_defconfig | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/boards/stm32mp157c-dk2/board.c b/arch/arm/boards/stm32mp157c-dk2/board.c
-index 9cb861af85d8..f15ae0b4aff0 100644
---- a/arch/arm/boards/stm32mp157c-dk2/board.c
-+++ b/arch/arm/boards/stm32mp157c-dk2/board.c
-@@ -4,6 +4,7 @@
- #include <init.h>
- #include <asm/memory.h>
- #include <mach/stm32.h>
-+#include <mach/bbu.h>
- 
- static int dk2_mem_init(void)
- {
-@@ -15,3 +16,15 @@ static int dk2_mem_init(void)
- 	return 0;
- }
- mem_initcall(dk2_mem_init);
-+
-+static int dk2_postcore_init(void)
-+{
-+	if (!of_machine_is_compatible("st,stm32mp157c-dk2"))
-+		return 0;
-+
-+	stm32mp_bbu_mmc_register_handler("sd", "/dev/mmc0.ssbl",
-+					 BBU_HANDLER_FLAG_DEFAULT);
-+
-+	return 0;
-+}
-+postcore_initcall(dk2_postcore_init);
-diff --git a/arch/arm/dts/stm32mp157a-dk1.dtsi b/arch/arm/dts/stm32mp157a-dk1.dtsi
-index 7f3b6fcf55ae..05a39d32e2fa 100644
---- a/arch/arm/dts/stm32mp157a-dk1.dtsi
-+++ b/arch/arm/dts/stm32mp157a-dk1.dtsi
-@@ -8,6 +8,10 @@
- #include <dt-bindings/gpio/gpio.h>
- 
- / {
-+	aliases {
-+		mmc0 = &sdmmc1;
-+	};
-+
- 	chosen {
- 		environment {
- 			compatible = "barebox,environment";
-diff --git a/arch/arm/mach-stm32mp/include/mach/bbu.h b/arch/arm/mach-stm32mp/include/mach/bbu.h
-new file mode 100644
-index 000000000000..8b9504400e9e
---- /dev/null
-+++ b/arch/arm/mach-stm32mp/include/mach/bbu.h
-@@ -0,0 +1,14 @@
-+#ifndef MACH_STM32MP_BBU_H_
-+#define MACH_STM32MP_BBU_H_
-+
-+#include <bbu.h>
-+
-+static inline int stm32mp_bbu_mmc_register_handler(const char *name,
-+						   const char *devicefile,
-+						   unsigned long flags)
-+{
-+	return bbu_register_std_file_update(name, flags, devicefile,
-+					    filetype_stm32_image_v1);
-+}
-+
-+#endif /* MACH_STM32MP_BBU_H_ */
+diff --git a/arch/arm/configs/stm32mp_defconfig b/arch/arm/configs/stm32mp_defconfig
+index 9f30bb1caa48..292d7751e112 100644
+--- a/arch/arm/configs/stm32mp_defconfig
++++ b/arch/arm/configs/stm32mp_defconfig
+@@ -4,7 +4,6 @@ CONFIG_THUMB2_BAREBOX=y
+ CONFIG_ARM_BOARD_APPEND_ATAG=y
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+ CONFIG_ARM_UNWIND=y
+-CONFIG_ARM_PSCI=y
+ CONFIG_MMU=y
+ CONFIG_MALLOC_SIZE=0x0
+ CONFIG_MALLOC_TLSF=y
+@@ -23,10 +22,12 @@ CONFIG_BLSPEC=y
+ CONFIG_CONSOLE_ACTIVATE_NONE=y
+ CONFIG_CONSOLE_ALLOW_COLOR=y
+ CONFIG_PBL_CONSOLE=y
+-CONFIG_PARTITION=y
++CONFIG_PARTITION_DISK_EFI=y
++# CONFIG_PARTITION_DISK_EFI_GPT_NO_FORCE is not set
++# CONFIG_PARTITION_DISK_EFI_GPT_COMPARE is not set
+ CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+ CONFIG_RESET_SOURCE=y
+-CONFIG_DEBUG_INITCALLS=y
++CONFIG_MACHINE_ID=y
+ CONFIG_CMD_DMESG=y
+ CONFIG_LONGHELP=y
+ CONFIG_CMD_IOMEM=y
+@@ -82,19 +83,31 @@ CONFIG_NET=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_OFDEVICE=y
+ CONFIG_OF_BAREBOX_DRIVERS=y
++CONFIG_DRIVER_SERIAL_STM32=y
+ CONFIG_DRIVER_NET_DESIGNWARE=y
+ CONFIG_DRIVER_NET_DESIGNWARE_GENERIC=y
++CONFIG_DRIVER_NET_DESIGNWARE_EQOS=y
++CONFIG_DRIVER_NET_DESIGNWARE_STM32=y
+ CONFIG_AT803X_PHY=y
+ CONFIG_MICREL_PHY=y
++CONFIG_REALTEK_PHY=y
+ # CONFIG_SPI is not set
++CONFIG_I2C=y
++CONFIG_I2C_STM32=y
++CONFIG_MCI=y
++CONFIG_MCI_STARTUP=y
++CONFIG_MCI_STM32_SDMMC2=y
+ CONFIG_LED=y
+ CONFIG_LED_GPIO=y
+ CONFIG_LED_GPIO_OF=y
+ CONFIG_WATCHDOG=y
+ CONFIG_WATCHDOG_POLLER=y
+ CONFIG_STM32_IWDG_WATCHDOG=y
++CONFIG_NVMEM=y
++CONFIG_STM32_BSEC=y
+ CONFIG_REGULATOR=y
+ CONFIG_REGULATOR_FIXED=y
++CONFIG_RESET_STM32=y
+ CONFIG_FS_EXT4=y
+ CONFIG_FS_TFTP=y
+ CONFIG_FS_NFS=y
+@@ -103,3 +116,4 @@ CONFIG_FS_FAT_WRITE=y
+ CONFIG_FS_FAT_LFN=y
+ CONFIG_ZLIB=y
+ CONFIG_CRC8=y
++CONFIG_DIGEST_SHA1_ARM=y
 -- 
 2.20.1
 
