@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from relay3-d.mail.gandi.net ([217.70.183.195])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iPCk7-0003nA-Mr
- for barebox@lists.infradead.org; Mon, 28 Oct 2019 21:40:05 +0000
+ id 1iPCk7-0003n9-Ml
+ for barebox@lists.infradead.org; Mon, 28 Oct 2019 21:40:07 +0000
 From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Mon, 28 Oct 2019 22:39:38 +0100
-Message-Id: <20191028213943.32071-2-ahmad@a3f.at>
+Date: Mon, 28 Oct 2019 22:39:39 +0100
+Message-Id: <20191028213943.32071-3-ahmad@a3f.at>
 In-Reply-To: <20191028213943.32071-1-ahmad@a3f.at>
 References: <20191028213943.32071-1-ahmad@a3f.at>
 MIME-Version: 1.0
@@ -21,59 +21,86 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/6] mci: stm32_sdmmc2: parse generic MCI oftree properties
+Subject: [PATCH v2 2/6] ARM: stm32mp: dk2: add barebox SD-Card update handler
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-mci_of_parse takes care of the generic oftree bits, like removable flag,
-aliases and max-frequency. Insert it, so we can start to refer to the
-controller's block devices by a fixed name.
-
-Sticking in the mci_of_parse shows that the SD/MMC2 driver in barebox
-doesn't play nicely with the device tree specification of the SD/MMC2
-for the dk2 board, however:
-
-Specifying the bus-width = <4> property in the device tree now made mmc
-usage fail when reading the environment:
-
-  ERROR: error SDMMC_STA_DCRCFAIL (0x81042) for cmd 18
-  ERROR: stm32_sdmmc2_end_cmd: error SDMMC_STA_CTIMEOUT (0x4) for cmd 12
-  WARNING: stm32_sdmmc2_send_cmd: cmd 12 failed, retrying ...
-  ERROR: stm32_sdmmc2_end_cmd: error SDMMC_STA_CTIMEOUT (0x4) for cmd 12
-  WARNING: stm32_sdmmc2_send_cmd: cmd 12 failed, retrying ...
-  ERROR: stm32_sdmmc2_end_cmd: error SDMMC_STA_CTIMEOUT (0x4) for cmd 12
-  WARNING: stm32_sdmmc2_send_cmd: cmd 12 failed, retrying ...
-  ERROR: stm32_sdmmc2_end_cmd: error SDMMC_STA_CTIMEOUT (0x4) for cmd 12
-
-We'll want to fix this eventually, but for now force the bus width to 1.
-So we don't forget about this, print a notice to the console that we've
-done so.
+Now with the SD/MMC controller supported, lets add a bbu handler, so we
+can use it to update the second stage boot loader partition.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/mci/stm32_sdmmc2.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/arm/boards/stm32mp157c-dk2/board.c  | 13 +++++++++++++
+ arch/arm/dts/stm32mp157a-dk1.dtsi        |  4 ++++
+ arch/arm/mach-stm32mp/include/mach/bbu.h | 14 ++++++++++++++
+ 3 files changed, 31 insertions(+)
+ create mode 100644 arch/arm/mach-stm32mp/include/mach/bbu.h
 
-diff --git a/drivers/mci/stm32_sdmmc2.c b/drivers/mci/stm32_sdmmc2.c
-index 7346c8a3f5d6..1a41c34d24e2 100644
---- a/drivers/mci/stm32_sdmmc2.c
-+++ b/drivers/mci/stm32_sdmmc2.c
-@@ -632,6 +632,13 @@ static int stm32_sdmmc2_probe(struct amba_device *adev,
- 	mci->f_max = 208000000;
- 	mci->voltages = MMC_VDD_32_33 | MMC_VDD_33_34 | MMC_VDD_165_195;
+diff --git a/arch/arm/boards/stm32mp157c-dk2/board.c b/arch/arm/boards/stm32mp157c-dk2/board.c
+index 9cb861af85d8..f15ae0b4aff0 100644
+--- a/arch/arm/boards/stm32mp157c-dk2/board.c
++++ b/arch/arm/boards/stm32mp157c-dk2/board.c
+@@ -4,6 +4,7 @@
+ #include <init.h>
+ #include <asm/memory.h>
+ #include <mach/stm32.h>
++#include <mach/bbu.h>
  
-+	mci_of_parse(&priv->mci);
+ static int dk2_mem_init(void)
+ {
+@@ -15,3 +16,15 @@ static int dk2_mem_init(void)
+ 	return 0;
+ }
+ mem_initcall(dk2_mem_init);
 +
-+	if (mci->host_caps & (MMC_CAP_4_BIT_DATA | MMC_CAP_8_BIT_DATA)) {
-+		dev_notice(dev, "Fixing bus-width to 1 due to driver limitation\n");
-+		mci->host_caps &= ~(MMC_CAP_4_BIT_DATA | MMC_CAP_8_BIT_DATA);
-+	}
++static int dk2_postcore_init(void)
++{
++	if (!of_machine_is_compatible("st,stm32mp157c-dk2"))
++		return 0;
 +
- 	return mci_register(&priv->mci);
++	stm32mp_bbu_mmc_register_handler("sd", "/dev/mmc0.ssbl",
++					 BBU_HANDLER_FLAG_DEFAULT);
++
++	return 0;
++}
++postcore_initcall(dk2_postcore_init);
+diff --git a/arch/arm/dts/stm32mp157a-dk1.dtsi b/arch/arm/dts/stm32mp157a-dk1.dtsi
+index 7f3b6fcf55ae..05a39d32e2fa 100644
+--- a/arch/arm/dts/stm32mp157a-dk1.dtsi
++++ b/arch/arm/dts/stm32mp157a-dk1.dtsi
+@@ -8,6 +8,10 @@
+ #include <dt-bindings/gpio/gpio.h>
  
- priv_free:
+ / {
++	aliases {
++		mmc0 = &sdmmc1;
++	};
++
+ 	chosen {
+ 		environment {
+ 			compatible = "barebox,environment";
+diff --git a/arch/arm/mach-stm32mp/include/mach/bbu.h b/arch/arm/mach-stm32mp/include/mach/bbu.h
+new file mode 100644
+index 000000000000..8b9504400e9e
+--- /dev/null
++++ b/arch/arm/mach-stm32mp/include/mach/bbu.h
+@@ -0,0 +1,14 @@
++#ifndef MACH_STM32MP_BBU_H_
++#define MACH_STM32MP_BBU_H_
++
++#include <bbu.h>
++
++static inline int stm32mp_bbu_mmc_register_handler(const char *name,
++						   const char *devicefile,
++						   unsigned long flags)
++{
++	return bbu_register_std_file_update(name, flags, devicefile,
++					    filetype_stm32_image_v1);
++}
++
++#endif /* MACH_STM32MP_BBU_H_ */
 -- 
 2.20.1
 
