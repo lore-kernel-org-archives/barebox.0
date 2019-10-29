@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iPNWK-0008No-Hz
- for barebox@lists.infradead.org; Tue, 29 Oct 2019 09:10:35 +0000
+ id 1iPNWS-0008To-BU
+ for barebox@lists.infradead.org; Tue, 29 Oct 2019 09:10:41 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 29 Oct 2019 10:10:27 +0100
-Message-Id: <20191029091029.22215-3-s.hauer@pengutronix.de>
+Date: Tue, 29 Oct 2019 10:10:28 +0100
+Message-Id: <20191029091029.22215-4-s.hauer@pengutronix.de>
 In-Reply-To: <20191029091029.22215-1-s.hauer@pengutronix.de>
 References: <20191029091029.22215-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -17,118 +17,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] fs: ext4: remove unnecessarily clever file read
+Subject: [PATCH 3/4] fs: ext4: Fix handling of sparse files
 To: Barebox List <barebox@lists.infradead.org>
 
-ext4fs_read_file() tries to tries to bundle contiguous block reads into
-longer reads from the device. In barebox we cache in the block layer
-already, so this is unnecessary. Simplify the code by removing the
-bundled reads.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- fs/ext4/ext4fs.c | 59 +++++-------------------------------------------
- 1 file changed, 6 insertions(+), 53 deletions(-)
-
-diff --git a/fs/ext4/ext4fs.c b/fs/ext4/ext4fs.c
-index acecccd6b9..2d231d273a 100644
---- a/fs/ext4/ext4fs.c
-+++ b/fs/ext4/ext4fs.c
-@@ -55,12 +55,6 @@ int ext4fs_read_file(struct ext2fs_node *node, int pos,
- 	int log2blocksize = LOG2_EXT2_BLOCK_SIZE(node->data);
- 	int blocksize = 1 << (log2blocksize + DISK_SECTOR_BITS);
- 	unsigned int filesize = le32_to_cpu(node->inode.size);
--	int previous_block_number = -1;
--	int delayed_start = 0;
--	int delayed_extent = 0;
--	int delayed_skipfirst = 0;
--	int delayed_next = 0;
--	char *delayed_buf = NULL;
- 	short ret;
- 	struct ext_filesystem *fs = node->data->fs;
- 
-@@ -75,6 +69,7 @@ int ext4fs_read_file(struct ext2fs_node *node, int pos,
- 		int blockoff = pos % blocksize;
- 		int blockend = blocksize;
- 		int skipfirst = 0;
-+
- 		blknr = read_allocated_block(node, i);
- 		if (blknr < 0)
- 			return blknr;
-@@ -95,59 +90,17 @@ int ext4fs_read_file(struct ext2fs_node *node, int pos,
- 			skipfirst = blockoff;
- 			blockend -= skipfirst;
- 		}
-+
- 		if (blknr) {
--			if (previous_block_number != -1) {
--				if (delayed_next == blknr) {
--					delayed_extent += blockend;
--					delayed_next += blockend >> SECTOR_BITS;
--				} else {	/* spill */
--					ret = ext4fs_devread(fs, delayed_start,
--							delayed_skipfirst,
--							delayed_extent,
--							delayed_buf);
--					if (ret)
--						return ret;
--					previous_block_number = blknr;
--					delayed_start = blknr;
--					delayed_extent = blockend;
--					delayed_skipfirst = skipfirst;
--					delayed_buf = buf;
--					delayed_next = blknr +
--						(blockend >> SECTOR_BITS);
--				}
--			} else {
--				previous_block_number = blknr;
--				delayed_start = blknr;
--				delayed_extent = blockend;
--				delayed_skipfirst = skipfirst;
--				delayed_buf = buf;
--				delayed_next = blknr +
--					(blockend >> SECTOR_BITS);
--			}
-+			ret = ext4fs_devread(fs, blknr, skipfirst, blockend, buf);
-+			if (ret)
-+				return ret;
- 		} else {
--			if (previous_block_number != -1) {
--				/* spill */
--				ret = ext4fs_devread(fs, delayed_start,
--							delayed_skipfirst,
--							delayed_extent,
--							delayed_buf);
--				if (ret)
--					return ret;
--				previous_block_number = -1;
--			}
- 			memset(buf, 0, blockend);
- 		}
-+
- 		buf += blocksize - skipfirst;
- 	}
--	if (previous_block_number != -1) {
--		/* spill */
--		ret = ext4fs_devread(fs, delayed_start,
--					delayed_skipfirst, delayed_extent,
--					delayed_buf);
--		if (ret)
--			return ret;
--		previous_block_number = -1;
--	}
- 
- 	return len;
- }
--- 
-2.24.0.rc1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QWRvcHRpb24gb2YgVS1Cb290IGNvbW1pdDoKCnwgY29tbWl0IGY4MWRiNTZmMmZkNmRjMTZlZmVh
+ZWMyOTYxMTIxMjQ0NzY1YTFmMTEKfCBBdXRob3I6IFN0ZWZhbiBCcsO8bnMgPHN0ZWZhbi5icnVl
+bnNAcnd0aC1hYWNoZW4uZGU+CnwgRGF0ZTogICBTYXQgTm92IDUgMjI6MTc6MTQgMjAxNiArMDEw
+MAp8CnwgICAgIGV4dDQ6IEZpeCBoYW5kbGluZyBvZiBzcGFyc2UgZmlsZXMKfAp8ICAgICBBIHNw
+YXJzZSBmaWxlIG1heSBoYXZlIHJlZ2lvbnMgbm90IG1hcHBlZCBieSBhbnkgZXh0ZW50cywgYXQg
+dGhlIHN0YXJ0CnwgICAgIG9yIGF0IHRoZSBlbmQgb2YgdGhlIGZpbGUsIG9yIGFueXdoZXJlIGJl
+dHdlZW4sIHRodXMgbm90IGZpbmRpbmcgYQp8ICAgICBtYXRjaGluZyBleHRlbnQgcmVnaW9uIGlz
+IG5ldmVyIGFuIGVycm9yLgp8CnwgICAgIEZvdW5kIGJ5IHB5dGhvbiBmaWxlc3lzdGVtIHRlc3Rz
+LgoKU2lnbmVkLW9mZi1ieTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgot
+LS0KIGZzL2V4dDQvZXh0NF9jb21tb24uYyB8IDI4ICsrKysrKysrKysrKysrLS0tLS0tLS0tLS0t
+LS0KIDEgZmlsZSBjaGFuZ2VkLCAxNCBpbnNlcnRpb25zKCspLCAxNCBkZWxldGlvbnMoLSkKCmRp
+ZmYgLS1naXQgYS9mcy9leHQ0L2V4dDRfY29tbW9uLmMgYi9mcy9leHQ0L2V4dDRfY29tbW9uLmMK
+aW5kZXggNTVlODM3YjRiZC4uMjcwM2I1NWU5OSAxMDA2NDQKLS0tIGEvZnMvZXh0NC9leHQ0X2Nv
+bW1vbi5jCisrKyBiL2ZzL2V4dDQvZXh0NF9jb21tb24uYwpAQCAtMTY3LDEwICsxNjcsMTEgQEAg
+bG9uZyBpbnQgcmVhZF9hbGxvY2F0ZWRfYmxvY2soc3RydWN0IGV4dDJmc19ub2RlICpub2RlLCBp
+bnQgZmlsZWJsb2NrKQogCWxvZzJfYmxrc3ogPSBMT0cyX0VYVDJfQkxPQ0tfU0laRShub2RlLT5k
+YXRhKTsKIAogCWlmIChsZTMyX3RvX2NwdShpbm9kZS0+ZmxhZ3MpICYgRVhUNF9FWFRFTlRTX0ZM
+KSB7CisJCWxvbmcgaW50IHN0YXJ0YmxvY2ssIGVuZGJsb2NrOwogCQljaGFyICpidWYgPSB6YWxs
+b2MoYmxrc3opOwogCQlzdHJ1Y3QgZXh0NF9leHRlbnRfaGVhZGVyICpleHRfYmxvY2s7CiAJCXN0
+cnVjdCBleHQ0X2V4dGVudCAqZXh0ZW50OwotCQlpbnQgaSA9IC0xOworCQlpbnQgaTsKIAogCQlp
+ZiAoIWJ1ZikKIAkJCXJldHVybiAtRU5PTUVNOwpAQCAtMTg2LDI4ICsxODcsMjcgQEAgbG9uZyBp
+bnQgcmVhZF9hbGxvY2F0ZWRfYmxvY2soc3RydWN0IGV4dDJmc19ub2RlICpub2RlLCBpbnQgZmls
+ZWJsb2NrKQogCiAJCWV4dGVudCA9IChzdHJ1Y3QgZXh0NF9leHRlbnQgKikoZXh0X2Jsb2NrICsg
+MSk7CiAKLQkJZG8gewotCQkJaSsrOwotCQkJaWYgKGkgPj0gbGUxNl90b19jcHUoZXh0X2Jsb2Nr
+LT5laF9lbnRyaWVzKSkKLQkJCQlicmVhazsKLQkJfSB3aGlsZSAoZmlsZWJsb2NrID49IGxlMzJf
+dG9fY3B1KGV4dGVudFtpXS5lZV9ibG9jaykpOworCQlmb3IgKGkgPSAwOyBpIDwgbGUxNl90b19j
+cHUoZXh0X2Jsb2NrLT5laF9lbnRyaWVzKTsgaSsrKSB7CisJCQlzdGFydGJsb2NrID0gbGUzMl90
+b19jcHUoZXh0ZW50W2ldLmVlX2Jsb2NrKTsKKwkJCWVuZGJsb2NrID0gc3RhcnRibG9jayArIGxl
+MTZfdG9fY3B1KGV4dGVudFtpXS5lZV9sZW4pOwogCi0JCWlmICgtLWkgPj0gMCkgewotCQkJZmls
+ZWJsb2NrIC09IGxlMzJfdG9fY3B1KGV4dGVudFtpXS5lZV9ibG9jayk7Ci0JCQlpZiAoZmlsZWJs
+b2NrID49IGxlMTZfdG9fY3B1KGV4dGVudFtpXS5lZV9sZW4pKSB7CisJCQlpZiAoc3RhcnRibG9j
+ayA+IGZpbGVibG9jaykgeworCQkJCS8qIFNwYXJzZSBmaWxlICovCiAJCQkJZnJlZShidWYpOwog
+CQkJCXJldHVybiAwOwogCQkJfQogCi0JCQlzdGFydCA9IGxlMTZfdG9fY3B1KGV4dGVudFtpXS5l
+ZV9zdGFydF9oaSk7Ci0JCQlzdGFydCA9IChzdGFydCA8PCAzMikgKworCQkJaWYgKGZpbGVibG9j
+ayA8IGVuZGJsb2NrKSB7CisJCQkJc3RhcnQgPSBsZTE2X3RvX2NwdShleHRlbnRbaV0uZWVfc3Rh
+cnRfaGkpOworCQkJCXN0YXJ0ID0gKHN0YXJ0IDw8IDMyKSArCiAJCQkJCWxlMzJfdG9fY3B1KGV4
+dGVudFtpXS5lZV9zdGFydF9sbyk7Ci0JCQlmcmVlKGJ1Zik7Ci0JCQlyZXR1cm4gZmlsZWJsb2Nr
+ICsgc3RhcnQ7CisJCQkJZnJlZShidWYpOworCQkJCXJldHVybiAoZmlsZWJsb2NrIC0gc3RhcnRi
+bG9jaykgKyBzdGFydDsKKwkJCX0KIAkJfQogCiAJCWZyZWUoYnVmKTsKLQkJcmV0dXJuIC1FSU87
+CisJCXJldHVybiAwOwogCX0KIAogCWlmIChmaWxlYmxvY2sgPCBJTkRJUkVDVF9CTE9DS1MpIHsK
+LS0gCjIuMjQuMC5yYzEKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcK
+aHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
