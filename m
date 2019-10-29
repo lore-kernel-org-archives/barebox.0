@@ -1,17 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iP8t1-0007Lm-6M
- for barebox@lists.infradead.org; Mon, 28 Oct 2019 17:33:00 +0000
-References: <20191027231832.10247-1-a.fatoum@pengutronix.de>
- <20191027231832.10247-7-a.fatoum@pengutronix.de>
- <20191028113157.oem65ah2fkaoh42s@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <a2649862-2249-c8f4-6d02-5e38e22208df@pengutronix.de>
-Date: Mon, 28 Oct 2019 18:32:57 +0100
+ id 1iPNWK-0008Nn-Hq
+ for barebox@lists.infradead.org; Tue, 29 Oct 2019 09:10:35 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 29 Oct 2019 10:10:25 +0100
+Message-Id: <20191029091029.22215-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20191028113157.oem65ah2fkaoh42s@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,91 +19,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 7/8] ARM: stm32mp: dk2: add barebox SD-Card update
- handler
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/4] ext4 fixes
+To: Barebox List <barebox@lists.infradead.org>
 
+This series fixes some issues with the ext4 code regarding to sparse
+files.
 
+Sascha
 
-On 10/28/19 12:31 PM, Sascha Hauer wrote:
-> On Mon, Oct 28, 2019 at 12:18:31AM +0100, Ahmad Fatoum wrote:
->> Now with the SD/MMC controller supported, lets add a bbu handler, so we
->> can use it to update the second stage boot loader partition.
->>
->> While doing this, I noticed that making use of the bus-width = <4>
->> property in the device tree now makes mmc usage fail when reading the
->> environment:
->>
->>   ERROR: error SDMMC_STA_DCRCFAIL (0x81042) for cmd 18
->>   ERROR: stm32_sdmmc2_end_cmd: error SDMMC_STA_CTIMEOUT (0x4) for cmd 12
->>   WARNING: stm32_sdmmc2_send_cmd: cmd 12 failed, retrying ...
->>   ERROR: stm32_sdmmc2_end_cmd: error SDMMC_STA_CTIMEOUT (0x4) for cmd 12
->>   WARNING: stm32_sdmmc2_send_cmd: cmd 12 failed, retrying ...
->>   ERROR: stm32_sdmmc2_end_cmd: error SDMMC_STA_CTIMEOUT (0x4) for cmd 12
->>   WARNING: stm32_sdmmc2_send_cmd: cmd 12 failed, retrying ...
->>   ERROR: stm32_sdmmc2_end_cmd: error SDMMC_STA_CTIMEOUT (0x4) for cmd 12
-> 
-> Could you make this an extra patch?
+Sascha Hauer (4):
+  fs: ext4: Fix out of bounds memset
+  fs: ext4: remove unnecessarily clever file read
+  fs: ext4: Fix handling of sparse files
+  fs: ext4: return NULL instead of 0
 
-Can do.
-
-> 
->>
->> We'll want to fix this eventually, but for now force the bus width to 1
->> and print a notice to the console that we've done so. This is not
->> enough, however because it then fails at loading the kernel from MMC:
->>
->>   ERROR: Time out on waiting for SDMMC_STA. cmd 18
->>   ERROR: stm32_sdmmc2_end_cmd: error SDMMC_STA_CTIMEOUT (0x804) for cmd 12
->>   WARNING: stm32_sdmmc2_send_cmd: cmd 18 failed, retrying ...
->>
->> Fixing the max frequency at 208 MHz fixes this. So do that and print a
->> notice for it as well.
->>
->> @@ -627,11 +627,22 @@ static int stm32_sdmmc2_probe(struct amba_device *adev,
->>  	if (IS_ERR(priv->reset_ctl))
->>  		priv->reset_ctl = NULL;
->>  
->> +	mci_of_parse(&priv->mci);
->> +
->>  	mci->f_min = 400000;
->> -	/* f_max is taken from kernel v5.3 variant_stm32_sdmmc */
->> -	mci->f_max = 208000000;
->>  	mci->voltages = MMC_VDD_32_33 | MMC_VDD_33_34 | MMC_VDD_165_195;
->>  
->> +	if (mci->f_max != 208000000) {
->> +		/* f_max is taken from kernel v5.3 variant_stm32_sdmmc */
->> +		dev_notice(dev, "Fixing max-frequency to 208 MHz due to driver limitation\n");
->> +		mci->f_max = 208000000;
->> +	}
-> 
-> f_max previously was hardcoded to 208MHz. It still is now, so this can't
-> fix anything.
-> Looking at the device tree we have max-frequency = <120000000>, so you
-> probably mean that it doesn't work with the 120MHz specified here,
-> right? If it doesn't work with a lower frequency it really looks fishy.
-
-Exactly.
-
-> 
-> Could you have another look what is going on here?
-
-I intend to, but not sure if it'll be before the cut-off for v2019.12.0.
-I'd like for that release to have full STM32MP support.
-
-I'll send a v2. 
-
-> 
-> Sascha
-> 
-> 
+ fs/ext4/ext4_common.c | 32 +++++++++++------------
+ fs/ext4/ext4fs.c      | 61 +++++--------------------------------------
+ 2 files changed, 23 insertions(+), 70 deletions(-)
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.24.0.rc1
+
 
 _______________________________________________
 barebox mailing list
