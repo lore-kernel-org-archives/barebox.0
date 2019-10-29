@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iPNWK-0008Nq-I1
+ id 1iPNWK-0008Np-Hr
  for barebox@lists.infradead.org; Tue, 29 Oct 2019 09:10:33 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 29 Oct 2019 10:10:29 +0100
-Message-Id: <20191029091029.22215-5-s.hauer@pengutronix.de>
+Date: Tue, 29 Oct 2019 10:10:26 +0100
+Message-Id: <20191029091029.22215-2-s.hauer@pengutronix.de>
 In-Reply-To: <20191029091029.22215-1-s.hauer@pengutronix.de>
 References: <20191029091029.22215-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,39 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] fs: ext4: return NULL instead of 0
+Subject: [PATCH 1/4] fs: ext4: Fix out of bounds memset
 To: Barebox List <barebox@lists.infradead.org>
 
-ext4fs_get_extent_block() returns a pointer, so return NULL instead of
-integer 0.
+When a block we read is a sparse block, we memset the corresponding
+output buffer to zero. If that block is the last block we read, we
+may not memset the whole block, but only up to the length of the output
+buffer, which may be shorter than a full block.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/ext4/ext4_common.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ext4/ext4fs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ext4/ext4_common.c b/fs/ext4/ext4_common.c
-index 2703b55e99..c9f27f1278 100644
---- a/fs/ext4/ext4_common.c
-+++ b/fs/ext4/ext4_common.c
-@@ -52,7 +52,7 @@ static struct ext4_extent_header *ext4fs_get_extent_block(struct ext2_data *data
- 		index = (struct ext4_extent_idx *)(ext_block + 1);
- 
- 		if (le16_to_cpu(ext_block->eh_magic) != EXT4_EXT_MAGIC)
--			return 0;
-+			return NULL;
- 
- 		if (ext_block->eh_depth == 0)
- 			return ext_block;
-@@ -64,7 +64,7 @@ static struct ext4_extent_header *ext4fs_get_extent_block(struct ext2_data *data
- 		} while (fileblock >= le32_to_cpu(index[i].ei_block));
- 
- 		if (--i < 0)
--			return 0;
-+			return NULL;
- 
- 		block = le16_to_cpu(index[i].ei_leaf_hi);
- 		block = (block << 32) + le32_to_cpu(index[i].ei_leaf_lo);
+diff --git a/fs/ext4/ext4fs.c b/fs/ext4/ext4fs.c
+index bfc5f27cc3..acecccd6b9 100644
+--- a/fs/ext4/ext4fs.c
++++ b/fs/ext4/ext4fs.c
+@@ -135,7 +135,7 @@ int ext4fs_read_file(struct ext2fs_node *node, int pos,
+ 					return ret;
+ 				previous_block_number = -1;
+ 			}
+-			memset(buf, 0, blocksize - skipfirst);
++			memset(buf, 0, blockend);
+ 		}
+ 		buf += blocksize - skipfirst;
+ 	}
 -- 
 2.24.0.rc1
 
