@@ -1,13 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iPrSQ-0002nR-MK
- for barebox@lists.infradead.org; Wed, 30 Oct 2019 17:08:31 +0000
-Message-ID: <c77a628a5dd966772a21e8a634e9aa9f3bc35662.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Wed, 30 Oct 2019 18:08:27 +0100
-In-Reply-To: <20191030165321.6779-1-andrew.smirnov@gmail.com>
-References: <20191030165321.6779-1-andrew.smirnov@gmail.com>
+ id 1iPrNw-00012I-14
+ for barebox@lists.infradead.org; Wed, 30 Oct 2019 17:03:53 +0000
+Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
+ helo=dude02.lab.pengutronix.de)
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <mfe@pengutronix.de>) id 1iPrNt-0005cu-D7
+ for barebox@lists.infradead.org; Wed, 30 Oct 2019 18:03:49 +0100
+Received: from mfe by dude02.lab.pengutronix.de with local (Exim 4.92)
+ (envelope-from <mfe@pengutronix.de>) id 1iPrNt-0007qs-5a
+ for barebox@lists.infradead.org; Wed, 30 Oct 2019 18:03:49 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+Date: Wed, 30 Oct 2019 18:03:39 +0100
+Message-Id: <20191030170338.29446-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,39 +28,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: zii-commmon: Fix NULL pointer dereference in
- do_rdu1_switch_reset()
-To: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
+Subject: [PATCH] parameter: strip leading and trailing whitespaces
+To: barebox@lists.infradead.org
 
-On Mi, 2019-10-30 at 09:53 -0700, Andrey Smirnov wrote:
-> We need to go to parent's private data to get a pointer to struct
-> rave_sp. Fix that.
-> 
-> Fixes: 493e2ee38f ("ARM: zii-common: add support for switch reset on RDU1")
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+My initial bug was the following: I set the
+global.boot.default="boot1 boot2 " and executed the 'boot' command. If
+both targets are not bootable barebox starts to execute the boot scripts
+found under /env/boot. This is because of the command/boot.c
+implementation and the leading whitespace. Without the whitespace only
+the two desired boot targets are tried.
 
-Urgh, I remember that I fixed the very same bug some time ago. Seems I
-lost that fixup before upstreaming...
+IMHO leading and trailing whitespaces are error-prone in many cases. If
+someone wants to concatenate strings he/she should add spaces on
+purpose. So I fixed the bug above globally by always stripping leading
+and trailing whitespaces.
 
-Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+---
+ lib/parameter.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-> ---
->  arch/arm/boards/zii-common/switch-cmd.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/boards/zii-common/switch-cmd.c b/arch/arm/boards/zii-common/switch-cmd.c
-> index 30438053a1..2b9c34bfac 100644
-> --- a/arch/arm/boards/zii-common/switch-cmd.c
-> +++ b/arch/arm/boards/zii-common/switch-cmd.c
-> @@ -42,7 +42,7 @@ static int do_rdu2_switch_reset(void)
->  static int do_rdu1_switch_reset(void)
->  {
->  	struct device_d *sp_dev = get_device_by_name("sp");
-> -	struct rave_sp *sp = sp_dev->priv;
-> +	struct rave_sp *sp = sp_dev->parent->priv;
->  	u8 cmd[] = {
->  		[0] = RAVE_SP_CMD_RESET_ETH_SWITCH,
->  		[1] = 0
+diff --git a/lib/parameter.c b/lib/parameter.c
+index 00e9a9ff4e..fdbb2e71d1 100644
+--- a/lib/parameter.c
++++ b/lib/parameter.c
+@@ -253,11 +253,14 @@ static int param_string_set(struct device_d *dev, struct param_d *p, const char
+ 	struct param_string *ps = to_param_string(p);
+ 	int ret;
+ 	char *value_save = *ps->value;
++	char *value_new;
+ 
+ 	if (!val)
+ 		val = "";
+ 
+-	*ps->value = xstrdup(val);
++	value_new = xstrdup(val);
++	value_new = strim(value_new);
++	*ps->value = value_new;
+ 
+ 	if (!ps->set)
+ 		return 0;
+-- 
+2.20.1
 
 
 _______________________________________________
