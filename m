@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iPlpc-0001j6-QC
- for barebox@lists.infradead.org; Wed, 30 Oct 2019 11:08:05 +0000
+ id 1iPltG-0003DN-Cy
+ for barebox@lists.infradead.org; Wed, 30 Oct 2019 11:11:51 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
  helo=dude02.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <l.stach@pengutronix.de>) id 1iPlpb-0003cA-5x
- for barebox@lists.infradead.org; Wed, 30 Oct 2019 12:08:03 +0100
+ (envelope-from <l.stach@pengutronix.de>) id 1iPltF-0003x5-8A
+ for barebox@lists.infradead.org; Wed, 30 Oct 2019 12:11:49 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Wed, 30 Oct 2019 12:08:03 +0100
-Message-Id: <20191030110803.11648-1-l.stach@pengutronix.de>
+Date: Wed, 30 Oct 2019 12:11:49 +0100
+Message-Id: <20191030111149.6761-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,30 +24,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: zii-common: setup Linux cmdline network config on RDU3
+Subject: [PATCH] fs: ubootvarfs: use correct format specifier for pointer diff
 To: barebox@lists.infradead.org
 
-Works the same way as with the older units.
+The difference between two pointers is represented as a ptrdiff_t, use the
+correct format specifier when printing to get rid of the following warning
+in a 64bit build:
+
+warning: format '%x' expects argument of type 'unsigned int',
+but argument 3 has type 'long int' [-Wformat=]
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- arch/arm/boards/zii-common/board.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/ubootvarfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boards/zii-common/board.c b/arch/arm/boards/zii-common/board.c
-index 9a9564e6d138..eafb5a3aa8ed 100644
---- a/arch/arm/boards/zii-common/board.c
-+++ b/arch/arm/boards/zii-common/board.c
-@@ -80,7 +80,8 @@ static int rdu_networkconfig(void)
- 	static char *rdu_netconfig;
- 	struct device_d *sp_dev;
+diff --git a/fs/ubootvarfs.c b/fs/ubootvarfs.c
+index 81ec05d5efaa..475e4b7a79c4 100644
+--- a/fs/ubootvarfs.c
++++ b/fs/ubootvarfs.c
+@@ -409,7 +409,7 @@ static void ubootvarfs_parse(struct ubootvarfs_data *data, char *blob,
  
--	if (!of_machine_is_compatible("zii,imx6q-zii-rdu2") &&
-+	if (!of_machine_is_compatible("zii,imx8mq-ultra") &&
-+	    !of_machine_is_compatible("zii,imx6q-zii-rdu2") &&
- 	    !of_machine_is_compatible("zii,imx6qp-zii-rdu2") &&
- 	    !of_machine_is_compatible("zii,imx51-rdu1"))
- 		return 0;
+ 			list_add_tail(&var->list, &data->var_list);
+ 		} else {
+-			pr_err("No separator in data @ 0x%08x. Skipped.",
++			pr_err("No separator in data @ 0x%08tx. Skipped.",
+ 			       blob - start);
+ 			free(var);
+ 		}
 -- 
 2.20.1
 
