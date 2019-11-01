@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iRYAL-0006Yt-OU
- for barebox@lists.infradead.org; Mon, 04 Nov 2019 08:56:51 +0000
-Date: Mon, 4 Nov 2019 09:56:48 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191104085648.cz5ez6rw7hxhp6dk@pengutronix.de>
-References: <20191101195338.7597-1-dev@lynxeye.de>
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+ by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1iQdAq-0005G9-AR
+ for barebox@lists.infradead.org; Fri, 01 Nov 2019 20:05:34 +0000
+Received: from astat.fritz.box (a89-183-34-18.net-htp.de [89.183.34.18])
+ by lynxeye.de (Postfix) with ESMTPA id 44186E7414D
+ for <barebox@lists.infradead.org>; Fri,  1 Nov 2019 20:54:33 +0100 (CET)
+From: Lucas Stach <dev@lynxeye.de>
+Date: Fri,  1 Nov 2019 20:54:29 +0100
+Message-Id: <20191101195429.7728-1-dev@lynxeye.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191101195338.7597-1-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,30 +22,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM: pbl: keep __image_end section
-To: Lucas Stach <dev@lynxeye.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] serial: cadence: fix serial_flush
+To: barebox@lists.infradead.org
 
-On Fri, Nov 01, 2019 at 08:53:37PM +0100, Lucas Stach wrote:
-> Not all architectures are referencing the image_end section from
-> code, in which case the linker is free to drop the section, which
-> then messes up the calculation of the _barebox_image_size linker
-> variable.
-> 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> ---
->  arch/arm/lib/pbl.lds.S | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+The TXEMPTY bit gets set as soon as the transmit FIFO gets empty, so
+flushing must wait until the bit is set instead of being unset.
 
-Applied (this one), thanks
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
+---
+ drivers/serial/serial_cadence.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Sascha
-
+diff --git a/drivers/serial/serial_cadence.c b/drivers/serial/serial_cadence.c
+index 0501c400b129..6454888e3c5b 100644
+--- a/drivers/serial/serial_cadence.c
++++ b/drivers/serial/serial_cadence.c
+@@ -199,7 +199,7 @@ static void cadence_serial_flush(struct console_device *cdev)
+ 					struct cadence_serial_priv, cdev);
+ 
+ 	while ((readl(priv->regs + CADENCE_UART_CHANNEL_STS) &
+-		CADENCE_STS_TEMPTY) != 0)
++		CADENCE_STS_TEMPTY) == 0)
+ 		;
+ }
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.23.0
+
 
 _______________________________________________
 barebox mailing list
