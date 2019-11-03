@@ -1,12 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iVYzL-0007UV-5P
- for barebox@lists.infradead.org; Fri, 15 Nov 2019 10:38:04 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 15 Nov 2019 11:38:00 +0100
-Message-Id: <20191115103800.15564-1-s.hauer@pengutronix.de>
-MIME-Version: 1.0
+ id 1iRI4D-00004t-4t
+ for barebox@lists.infradead.org; Sun, 03 Nov 2019 15:45:26 +0000
+Received: by mail-wr1-x431.google.com with SMTP id f2so5406645wrs.11
+ for <barebox@lists.infradead.org>; Sun, 03 Nov 2019 07:45:22 -0800 (PST)
+Received: from [192.168.0.87]
+ (HSI-KBW-109-192-080-035.hsi6.kabel-badenwuerttemberg.de. [109.192.80.35])
+ by smtp.gmail.com with ESMTPSA id b1sm7316253wrw.77.2019.11.03.07.45.19
+ for <barebox@lists.infradead.org>
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Sun, 03 Nov 2019 07:45:19 -0800 (PST)
+Message-ID: <1572795919.10526.27.camel@googlemail.com>
+From: Christoph Fritz <chf.fritz@googlemail.com>
+Date: Sun, 03 Nov 2019 16:45:19 +0100
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,64 +23,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Reply-To: chf.fritz@googlemail.com
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] filetype: mvebu: Fix kwbimage v1 detection
-To: Barebox List <barebox@lists.infradead.org>
-Cc: ukl@pengutronix.de
+Subject: state: eMMC boot0-partitions backend for Linux
+To: barebox@lists.infradead.org
 
-The kwbimage detection calculates a checksum over the first 31 bytes of
-the image. This is correct for the v0 image format, but for the v1 image
-format the checksum in the image also covers the extenstion headers.
-These might not be completely present in the initial buffer provided to
-file_detect_type(), so just drop the checksum calculation for v1 images.
+Hi,
 
-Fixes: bf8b6d46db ("kwbimage_v0: add support to detect and boot a mvebu v0 image")
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/filetype.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ I would like to use emmc-hardware-partition boot1 as a state backend,
+this has the charm of keeping the big hw-partition clean while using SLC
+for e.g. serial numbers.
 
-diff --git a/common/filetype.c b/common/filetype.c
-index 4966c5e068..ad7f301d71 100644
---- a/common/filetype.c
-+++ b/common/filetype.c
-@@ -316,19 +316,21 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
- 	     buf8[0] == 0x8b || buf8[0] == 0x9c) &&
- 	    buf8[0x1] == 0 && buf8[0x2] == 0 && buf8[0x3] == 0 &&
- 	    buf8[0x18] == 0 && buf8[0x1b] == 0 && buf8[0x1c] == 0) {
--		unsigned char sum = 0;
--		int i;
- 
--		for (i = 0; i <= 0x1e; ++i)
--			sum += buf8[i];
-+		if (buf8[0x8] == 0) {
-+			unsigned char sum = 0;
-+			int i;
- 
--		if (sum == buf8[0x1f] && buf8[0x8] == 0)
--			return filetype_kwbimage_v0;
-+			for (i = 0; i <= 0x1e; ++i)
-+				sum += buf8[i];
- 
--		if (sum == buf8[0x1f] &&
--		    buf8[0x8] == 1 && buf8[0x1d] == 0 &&
--		    (buf8[0x1e] == 0 || buf8[0x1e] == 1))
--			return filetype_kwbimage_v1;
-+			if (sum == buf8[0x1f])
-+				return filetype_kwbimage_v0;
-+		} else if (buf8[0x8] == 1) {
-+			if (sum == buf8[0x1f] && buf8[0x1d] == 0 &&
-+			    (buf8[0x1e] == 0 || buf8[0x1e] == 1))
-+				return filetype_kwbimage_v1;
-+		}
- 	}
- 
- 	if (is_sparse_image(_buf))
--- 
-2.24.0
+Within barebox using an emmc-hardware-partition boot1 as a state backend
+just works!
+
+But trying to hand over this backend to Linux fails right before
+starting the kernel:
+
+  WARNING: Failed to fixup node in of_state_fixup+0x1/0x288: No such device
+
+I guess dt-utils also has no support for using /dev/mmcblk1boot0 as a
+backend (by default Linux doesn't allow to write to boot0/1) ?
+
+What would be the best way to add this feature?
+
+Any ideas?
+
+ -- Christoph
 
 
 _______________________________________________
