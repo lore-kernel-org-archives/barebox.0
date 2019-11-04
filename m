@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iRh3B-0000BK-1u
- for barebox@lists.infradead.org; Mon, 04 Nov 2019 18:26:06 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  4 Nov 2019 19:25:55 +0100
-Message-Id: <20191104182555.9874-4-a.fatoum@pengutronix.de>
-In-Reply-To: <20191104182555.9874-1-a.fatoum@pengutronix.de>
-References: <20191104182555.9874-1-a.fatoum@pengutronix.de>
+ id 1iRZaj-00030u-RZ
+ for barebox@lists.infradead.org; Mon, 04 Nov 2019 10:28:11 +0000
+From: Marco Felsch <m.felsch@pengutronix.de>
+Date: Mon,  4 Nov 2019 11:28:05 +0100
+Message-Id: <20191104102806.8044-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,45 +19,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] watchdog: f71808e: support .running device parameter
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: [PATCH v2 1/2] mfd: da9063: fix TWDSCALE debug message
+To: barebox@lists.infradead.org, a.fatoum@pengutronix.de
 
-The American Megatrends BIOS I am using can be configured to start the
-Fintek watchdog prior to the UEFI payloads. To avoid BIOS updates that reset
-this functionality going unnoticed, implement support for WDOG_HW_RUNNING.
+The TWDSCALE is the found scale + 1 as described in the datasheets
+for the DA9062/3 devices. The driver logic is correct just the debug
+message is wrong.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- drivers/watchdog/f71808e_wdt.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/mfd/da9063.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/watchdog/f71808e_wdt.c b/drivers/watchdog/f71808e_wdt.c
-index 4f881a1d02bc..2b2f98a12cca 100644
---- a/drivers/watchdog/f71808e_wdt.c
-+++ b/drivers/watchdog/f71808e_wdt.c
-@@ -222,7 +222,7 @@ static int f71808e_wdt_init(struct f71808e_wdt *wd, struct device_d *dev)
- {
- 	struct watchdog *wdd = &wd->wdd;
- 	const char * const *names = pulse_width_names;
--	int wdt_conf;
-+	unsigned long wdt_conf;
- 	int ret;
+diff --git a/drivers/mfd/da9063.c b/drivers/mfd/da9063.c
+index f0381944d9..4d459c7f18 100644
+--- a/drivers/mfd/da9063.c
++++ b/drivers/mfd/da9063.c
+@@ -270,7 +270,7 @@ static int da9063_watchdog_set_timeout(struct watchdog *wd, unsigned timeout)
+ 		while (timeout > (2048 << scale) && scale <= 6)
+ 			scale++;
+ 		dev_dbg(dev, "calculated TWDSCALE=%u (req=%ims calc=%ims)\n",
+-				scale, timeout, 2048 << scale);
++			scale + 1, timeout, 2048 << scale);
+ 		scale++; /* scale 0 disables the WD */
+ 	}
  
- 	superio_enter(wd->sioaddr);
-@@ -262,6 +262,10 @@ static int f71808e_wdt_init(struct f71808e_wdt *wd, struct device_d *dev)
- 
- 	dev_info(dev, "reset reason: %s\n", reset_source_name());
- 
-+	set_bit(WDOG_HW_RUNNING, &wdd->status_supported);
-+	if (test_bit(F71808FG_FLAG_WD_EN, &wdt_conf))
-+		set_bit(WDOG_HW_RUNNING, &wdd->status);
-+
- 	ret = watchdog_register(wdd);
- 	if (ret)
- 		return ret;
 -- 
-2.24.0.rc1
+2.20.1
 
 
 _______________________________________________
