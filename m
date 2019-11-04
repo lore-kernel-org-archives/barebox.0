@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iRh3B-0000BJ-1T
- for barebox@lists.infradead.org; Mon, 04 Nov 2019 18:26:05 +0000
+ id 1iRh3B-0000BK-1u
+ for barebox@lists.infradead.org; Mon, 04 Nov 2019 18:26:06 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  4 Nov 2019 19:25:54 +0100
-Message-Id: <20191104182555.9874-3-a.fatoum@pengutronix.de>
+Date: Mon,  4 Nov 2019 19:25:55 +0100
+Message-Id: <20191104182555.9874-4-a.fatoum@pengutronix.de>
 In-Reply-To: <20191104182555.9874-1-a.fatoum@pengutronix.de>
 References: <20191104182555.9874-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,65 +21,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] watchdog: imxwd: support .running device parameter on
- i.MX2+
+Subject: [PATCH 4/4] watchdog: f71808e: support .running device parameter
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The i.MX can be fused to start the watchdog on power-on reset.
-To give users an easy way to determine whether the watchdog is running,
-implement support for WDOG_HW_RUNNING.
+The American Megatrends BIOS I am using can be configured to start the
+Fintek watchdog prior to the UEFI payloads. To avoid BIOS updates that reset
+this functionality going unnoticed, implement support for WDOG_HW_RUNNING.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/watchdog/imxwd.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/watchdog/f71808e_wdt.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/watchdog/imxwd.c b/drivers/watchdog/imxwd.c
-index 77a3bd76cefa..eb4f2c16c60a 100644
---- a/drivers/watchdog/imxwd.c
-+++ b/drivers/watchdog/imxwd.c
-@@ -28,6 +28,7 @@ struct imx_wd_ops {
- 	int (*set_timeout)(struct imx_wd *, unsigned);
- 	void (*soc_reset)(struct imx_wd *);
- 	int (*init)(struct imx_wd *);
-+	bool (*is_running)(struct imx_wd *);
- 	unsigned int timeout_max;
- };
- 
-@@ -111,6 +112,11 @@ static void imx1_soc_reset(struct imx_wd *priv)
- 	writew(IMX1_WDOG_WCR_WDE, priv->base + IMX1_WDOG_WCR);
- }
- 
-+static inline bool imx21_watchdog_is_running(struct imx_wd *priv)
-+{
-+	return imxwd_read(priv, IMX21_WDOG_WCR) & IMX21_WDOG_WCR_WDE;
-+}
-+
- static int imx21_watchdog_set_timeout(struct imx_wd *priv, unsigned timeout)
+diff --git a/drivers/watchdog/f71808e_wdt.c b/drivers/watchdog/f71808e_wdt.c
+index 4f881a1d02bc..2b2f98a12cca 100644
+--- a/drivers/watchdog/f71808e_wdt.c
++++ b/drivers/watchdog/f71808e_wdt.c
+@@ -222,7 +222,7 @@ static int f71808e_wdt_init(struct f71808e_wdt *wd, struct device_d *dev)
  {
- 	u16 val;
-@@ -243,6 +249,12 @@ static int imx_wd_probe(struct device_d *dev)
- 						"fsl,ext-reset-output");
+ 	struct watchdog *wdd = &wd->wdd;
+ 	const char * const *names = pulse_width_names;
+-	int wdt_conf;
++	unsigned long wdt_conf;
+ 	int ret;
  
- 	if (IS_ENABLED(CONFIG_WATCHDOG_IMX)) {
-+		if (priv->ops->is_running) {
-+			set_bit(WDOG_HW_RUNNING, &priv->wd.status_supported);
-+			if (priv->ops->is_running(priv))
-+				set_bit(WDOG_HW_RUNNING, &priv->wd.status);
-+		}
+ 	superio_enter(wd->sioaddr);
+@@ -262,6 +262,10 @@ static int f71808e_wdt_init(struct f71808e_wdt *wd, struct device_d *dev)
+ 
+ 	dev_info(dev, "reset reason: %s\n", reset_source_name());
+ 
++	set_bit(WDOG_HW_RUNNING, &wdd->status_supported);
++	if (test_bit(F71808FG_FLAG_WD_EN, &wdt_conf))
++		set_bit(WDOG_HW_RUNNING, &wdd->status);
 +
- 		ret = watchdog_register(&priv->wd);
- 		if (ret)
- 			goto on_error;
-@@ -277,6 +289,7 @@ static const struct imx_wd_ops imx21_wd_ops = {
- 	.set_timeout = imx21_watchdog_set_timeout,
- 	.soc_reset = imx21_soc_reset,
- 	.init = imx21_wd_init,
-+	.is_running = imx21_watchdog_is_running,
- 	.timeout_max = 128,
- };
- 
+ 	ret = watchdog_register(wdd);
+ 	if (ret)
+ 		return ret;
 -- 
 2.24.0.rc1
 
