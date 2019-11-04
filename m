@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iRI4D-00004t-4t
- for barebox@lists.infradead.org; Sun, 03 Nov 2019 15:45:26 +0000
-Received: by mail-wr1-x431.google.com with SMTP id f2so5406645wrs.11
- for <barebox@lists.infradead.org>; Sun, 03 Nov 2019 07:45:22 -0800 (PST)
-Received: from [192.168.0.87]
- (HSI-KBW-109-192-080-035.hsi6.kabel-badenwuerttemberg.de. [109.192.80.35])
- by smtp.gmail.com with ESMTPSA id b1sm7316253wrw.77.2019.11.03.07.45.19
- for <barebox@lists.infradead.org>
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Sun, 03 Nov 2019 07:45:19 -0800 (PST)
-Message-ID: <1572795919.10526.27.camel@googlemail.com>
-From: Christoph Fritz <chf.fritz@googlemail.com>
-Date: Sun, 03 Nov 2019 16:45:19 +0100
-Mime-Version: 1.0
+ id 1iRXM4-0007gt-KZ
+ for barebox@lists.infradead.org; Mon, 04 Nov 2019 08:04:54 +0000
+Date: Mon, 4 Nov 2019 09:04:50 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20191104080450.3be6yfluewwuo3nb@pengutronix.de>
+References: <20191028213943.32071-1-ahmad@a3f.at>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20191028213943.32071-1-ahmad@a3f.at>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,37 +18,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: chf.fritz@googlemail.com
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: state: eMMC boot0-partitions backend for Linux
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 0/6] ARM: stm32mp: finalize second stage support
+To: Ahmad Fatoum <ahmad@a3f.at>
+Cc: barebox@lists.infradead.org
 
-Hi,
+On Mon, Oct 28, 2019 at 10:39:37PM +0100, Ahmad Fatoum wrote:
+> Add barebox update handler and Ethernet driver.
+> 
+> v1 -> v2:
+>  - Split off patch to override unsupported device tree specified
+>    bus-widths
+>  - Delete fixing the frequency to 208MHz. I can no longer reproduce
+>    120MHz to trigger timeouts
+>  - Last 4 patches are new
+> 
+> Ahmad Fatoum (6):
+>   mci: stm32_sdmmc2: parse generic MCI oftree properties
+>   ARM: stm32mp: dk2: add barebox SD-Card update handler
+>   net: add Designware Ethernet QoS for STM32MP
+>   net: eqos: extend Designware Ethernet QoS for Tegra 186 support
+>   ARM: stm32mp: include new drivers in defconfig
+>   Documentation: boards: stm32mp: remove done TODOs
 
- I would like to use emmc-hardware-partition boot1 as a state backend,
-this has the charm of keeping the big hw-partition clean while using SLC
-for e.g. serial numbers.
+Applied, thanks
 
-Within barebox using an emmc-hardware-partition boot1 as a state backend
-just works!
+Sascha
 
-But trying to hand over this backend to Linux fails right before
-starting the kernel:
-
-  WARNING: Failed to fixup node in of_state_fixup+0x1/0x288: No such device
-
-I guess dt-utils also has no support for using /dev/mmcblk1boot0 as a
-backend (by default Linux doesn't allow to write to boot0/1) ?
-
-What would be the best way to add this feature?
-
-Any ideas?
-
- -- Christoph
-
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
