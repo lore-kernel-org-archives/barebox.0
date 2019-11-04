@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iRYqv-0007uh-C6
- for barebox@lists.infradead.org; Mon, 04 Nov 2019 09:40:50 +0000
-Date: Mon, 4 Nov 2019 10:40:47 +0100
+ id 1iRXht-0002bk-O3
+ for barebox@lists.infradead.org; Mon, 04 Nov 2019 08:27:27 +0000
+Date: Mon, 4 Nov 2019 09:27:23 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191104094047.44ypd7fv5b3lddbe@pengutronix.de>
-References: <20191030170455.31973-1-m.felsch@pengutronix.de>
+Message-ID: <20191104082723.uyjfis5syqfrtqr6@pengutronix.de>
+References: <20191030170653.5559-1-m.felsch@pengutronix.de>
+ <20191030170653.5559-2-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20191030170455.31973-1-m.felsch@pengutronix.de>
+In-Reply-To: <20191030170653.5559-2-m.felsch@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,21 +23,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] of: of_path: fix return in case of EPROBE_DEFER
+Subject: Re: [PATCH 2/2] mfd: da9063: fix watchdog ping execution
 To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: barebox@lists.infradead.org, abbotti@mev.co.uk
+Cc: barebox@lists.infradead.org, enrico.scholz@sigma-chemnitz.de
 
-On Wed, Oct 30, 2019 at 06:04:55PM +0100, Marco Felsch wrote:
-> As said in commit 82eb3dff10 ("of_path: handle no driver for device")
-> this case happens if the driver isn't probed yet. So we should return
-> -EPROBE_DEFER to signal that.
+On Wed, Oct 30, 2019 at 06:06:53PM +0100, Marco Felsch wrote:
+> The watchdog resets the system if the watchdog gets pinged to fast.
+> Between each watchdog ping must be a pause of at least 200ms.
 > 
 > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 > ---
->  drivers/of/of_path.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/mfd/da9063.c | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+> 
+> diff --git a/drivers/mfd/da9063.c b/drivers/mfd/da9063.c
+> index 4d459c7f18..ab57885240 100644
+> --- a/drivers/mfd/da9063.c
+> +++ b/drivers/mfd/da9063.c
+> @@ -14,6 +14,7 @@
+>   */
+>  
+>  #include <common.h>
+> +#include <clock.h>
+>  #include <driver.h>
+>  #include <gpio.h>
+>  #include <restart.h>
+> @@ -33,6 +34,7 @@ struct da9063 {
+>  	struct i2c_client	*client1;
+>  	struct device_d		*dev;
+>  	unsigned int		timeout;
+> +	uint64_t		last_ping;
+>  };
+>  
+>  /* forbidden/impossible value; timeout will be set to this value initially to
+> @@ -237,6 +239,13 @@ static int da9063_watchdog_ping(struct da9063 *priv)
+>  	int ret;
+>  	u8 val;
+>  
+> +	/* We need to wait at least 200ms till we can resend a ping */
+> +	if (!is_timeout_non_interruptible(priv->last_ping, 200 * MSECOND)) {
+> +		dev_dbg(priv->dev, "active ping delay\n");
+> +		mdelay(50);
 
-Applied, thanks
+I would expect to wait the missing time to 200ms here. Maybe doing
+nothing in this case would be more appropriate here. I mean, why should
+you slow down barebox here when some code triggers the watchdog too
+often?
+
+> +		return da9063_watchdog_ping(priv);
+
+Drop this, just fall through.
 
 Sascha
 
