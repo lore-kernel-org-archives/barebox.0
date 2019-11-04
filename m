@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mickerik.phytec.de ([195.145.39.210])
  by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iRdu0-0007Ba-80
- for barebox@lists.infradead.org; Mon, 04 Nov 2019 15:04:21 +0000
+ id 1iRdp0-0004iK-5r
+ for barebox@lists.infradead.org; Mon, 04 Nov 2019 14:59:11 +0000
+References: <1572018968-343065-1-git-send-email-r.karszniewicz@phytec.de>
+ <20191104094250.wn2ib2fs7hspacou@pengutronix.de>
+ <20191104145448.7b4g4qmadpyxaygj@pengutronix.de>
 From: Robert Karszniewicz <r.karszniewicz@phytec.de>
-Date: Mon, 4 Nov 2019 16:04:18 +0100
-Message-Id: <1572879858-77435-1-git-send-email-r.karszniewicz@phytec.de>
+Message-ID: <fe9e9928-5b68-c5a1-d6b9-3376e07f0c6e@phytec.de>
+Date: Mon, 4 Nov 2019 15:59:08 +0100
+MIME-Version: 1.0
 In-Reply-To: <20191104145448.7b4g4qmadpyxaygj@pengutronix.de>
-References: <20191104145448.7b4g4qmadpyxaygj@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,59 +20,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] usb: storage: Increase retries for usb_stor_transport()
+Subject: Re: [PATCH] usb: storage: Increase retries for usb_stor_transport()
 To: barebox@lists.infradead.org
 
-This should make writing and reading more reliable.
+On 11/4/19 3:54 PM, Marco Felsch wrote:
+> Hi Sascha,
+> 
+> On 19-11-04 10:42, Sascha Hauer wrote:
+>> On Fri, Oct 25, 2019 at 05:56:08PM +0200, Robert Karszniewicz wrote:
+>>> This should make writing and reading more reliable.
+>>>
+>>> Also:
+>>> - change loop condition to make "retries" semantically correct
+>>> - add a debug message in case of fatal failure
+>>> ---
+>>> We've had problems writing (and even reading) a 10 MiB file from barebox
+>>> to multiple USB flash drives.
+>>> The 10 MiB file copy failed with "write: I/O error" almost every time.
+>>> Increasing the retry count made 100 MiB file copies succeed every time.
+>>>
+>>
+>> Doing this doesn't hurt, so I applied this patch. I wonder though if
+>> there's something else wrong which makes increasing the retry counts
+>> necessary.
+>>
+>> Sascha
+> 
+> there is a missing sob is that okay with you? Robert can you add a
+> signed-off-by line?
+> 
 
-Also:
-- change loop condition to make "retries" semantically correct
-- add a debug message in case of fatal failure
+Oops, I'm sorry for that! How do we handle this? Should I just amend and 
+resubmit the patch?
 
-Signed-off-by: Robert Karszniewicz <r.karszniewicz@phytec.de>
----
- drivers/usb/storage/usb.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/usb/storage/usb.c b/drivers/usb/storage/usb.c
-index 63d624e..e0ef4f5 100644
---- a/drivers/usb/storage/usb.c
-+++ b/drivers/usb/storage/usb.c
-@@ -87,8 +87,7 @@ static int usb_stor_transport(struct us_blk_dev *usb_blkdev,
- 	struct device_d *dev = &us->pusb_dev->dev;
- 	int i, ret;
- 
--
--	for (i = 0; i < retries; i++) {
-+	for (i = 0; i <= retries; i++) {
- 		dev_dbg(dev, "%s\n", usb_stor_opcode_name(cmd[0]));
- 		ret = us->transport(usb_blkdev, cmd, cmdlen, data, datalen);
- 		dev_dbg(dev, "%s returns %d\n", usb_stor_opcode_name(cmd[0]),
-@@ -105,6 +104,8 @@ static int usb_stor_transport(struct us_blk_dev *usb_blkdev,
- 			mdelay(request_sense_delay_ms);
- 	}
- 
-+	dev_dbg(dev, "Retried %s %d times, and failed.\n", usb_stor_opcode_name(cmd[0]), retries);
-+
- 	return -EIO;
- }
- 
-@@ -194,7 +195,7 @@ static int usb_stor_io_10(struct us_blk_dev *usb_blkdev, u8 opcode,
- 	put_unaligned_be16(blocks, &cmd[7]);
- 
- 	return usb_stor_transport(usb_blkdev, cmd, sizeof(cmd), data,
--				  blocks * SECTOR_SIZE, 2, 0);
-+				  blocks * SECTOR_SIZE, 10, 0);
- }
- 
- /***********************************************************************
--- 
-2.7.4
+> Regards,
+>    Marco
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 
 _______________________________________________
