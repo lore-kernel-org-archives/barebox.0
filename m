@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iRh3A-0000Au-8p
- for barebox@lists.infradead.org; Mon, 04 Nov 2019 18:26:03 +0000
+ id 1iRh3A-0000BG-Tl
+ for barebox@lists.infradead.org; Mon, 04 Nov 2019 18:26:05 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  4 Nov 2019 19:25:52 +0100
-Message-Id: <20191104182555.9874-1-a.fatoum@pengutronix.de>
+Date: Mon,  4 Nov 2019 19:25:53 +0100
+Message-Id: <20191104182555.9874-2-a.fatoum@pengutronix.de>
+In-Reply-To: <20191104182555.9874-1-a.fatoum@pengutronix.de>
+References: <20191104182555.9874-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,130 +21,146 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] watchdog: always populate watchdog priority from device
- tree if possible
+Subject: [PATCH 2/4] watchdog: implement generic support for .running device
+ parameter
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-So far, only the da9063 and da9053 have made use of the optional barebox
-watchdog-priority binding. Move it into the core, so other device
-drivers automatically have their watchdog-priority property parsed as
-well. This patch doesn't introduce any functional changes for upstream
-boards.
+Linux watchdog have an optional WDOG_HW_RUNNING bit that is used in
+conjunction with CONFIG_WATCHDOG_HANDLE_BOOT_ENABLED to automatically
+ping running watchdogs until userspace takes over.
+
+So far, when we ported Linux drivers, we dropped this detection, but it
+would be useful to have this information in barebox as well:
+
+The American Megatrends BIOS I am using allows configuring the hardware
+watchdog from the BIOS. barebox enables the WDT as well, so in normal
+operation we would never notice if after a BIOS update, the watchdog is
+no longer enabled. If we maintain a running parameter on watchdog
+devices, board code can be written to check whether the watchdog device
+is indeed running.
+
+To achieve this, add the necessary bits to the watchdog API. How we go
+about it differs from Linux a little:
+
+- We use a status_supported bitmask to differentiate between watchdogs
+  that are not running and watchdogs whose running status is
+  unknown.
+- Because we can check the status_supported bitmask watchdog_hw_running
+  can fail and would return a negative value
+- We do the maintenance of the running parameter after barebox
+  feeds/disables the watchdog in the core, so it doesn't need to
+  be replicated across drivers. Drivers will only need to initialize the
+  bitmasks once at probe time.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/mfd/da9053.c       |  1 -
- drivers/mfd/da9063.c       |  1 -
- drivers/watchdog/wd_core.c | 34 ++++++++++++++++++----------------
- include/watchdog.h         |  7 -------
- 4 files changed, 18 insertions(+), 25 deletions(-)
+ drivers/watchdog/wd_core.c | 33 ++++++++++++++++++++++++++++++++-
+ include/watchdog.h         | 17 +++++++++++++++++
+ 2 files changed, 49 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/da9053.c b/drivers/mfd/da9053.c
-index 1faba813bee8..f4bfb68d0301 100644
---- a/drivers/mfd/da9053.c
-+++ b/drivers/mfd/da9053.c
-@@ -271,7 +271,6 @@ static int da9053_probe(struct device_d *dev)
- 	da9053->dev = dev;
- 	da9053->client = to_i2c_client(dev);
- 	da9053->wd.set_timeout = da9053_set_timeout;
--	da9053->wd.priority = of_get_watchdog_priority(dev->device_node);
- 	da9053->wd.hwdev = dev;
- 
- 	ret = da9053_enable_multiwrite(da9053);
-diff --git a/drivers/mfd/da9063.c b/drivers/mfd/da9063.c
-index b61e7648768e..342424a8b377 100644
---- a/drivers/mfd/da9063.c
-+++ b/drivers/mfd/da9063.c
-@@ -365,7 +365,6 @@ static int da9063_probe(struct device_d *dev)
- 	dev_data = ret < 0 ? NULL : dev_data_tmp;
- 
- 	priv = xzalloc(sizeof(struct da9063));
--	priv->wd.priority = of_get_watchdog_priority(dev->device_node);
- 	priv->wd.set_timeout = da9063_watchdog_set_timeout;
- 	priv->wd.hwdev = dev;
- 	priv->timeout = DA9063_INITIAL_TIMEOUT;
 diff --git a/drivers/watchdog/wd_core.c b/drivers/watchdog/wd_core.c
-index 8b13950238c9..39cac6f6c494 100644
+index 39cac6f6c494..ee9b413ff95b 100644
 --- a/drivers/watchdog/wd_core.c
 +++ b/drivers/watchdog/wd_core.c
-@@ -127,6 +127,23 @@ static int watchdog_register_dev(struct watchdog *wd, const char *name, int id)
- 	return register_device(&wd->dev);
+@@ -37,6 +37,8 @@ static const char *watchdog_name(struct watchdog *wd)
+  */
+ int watchdog_set_timeout(struct watchdog *wd, unsigned timeout)
+ {
++	int ret;
++
+ 	if (!wd)
+ 		return -ENODEV;
+ 
+@@ -45,7 +47,18 @@ int watchdog_set_timeout(struct watchdog *wd, unsigned timeout)
+ 
+ 	pr_debug("setting timeout on %s to %ds\n", watchdog_name(wd), timeout);
+ 
+-	return wd->set_timeout(wd, timeout);
++	ret = wd->set_timeout(wd, timeout);
++	if (ret)
++		return ret;
++
++	if (test_bit(WDOG_HW_RUNNING, &wd->status_supported)) {
++		if (timeout)
++			set_bit(WDOG_HW_RUNNING, &wd->status);
++		else
++			clear_bit(WDOG_HW_RUNNING, &wd->status);
++	}
++
++	return ret;
+ }
+ EXPORT_SYMBOL(watchdog_set_timeout);
+ 
+@@ -118,6 +131,15 @@ static int watchdog_register_poller(struct watchdog *wd)
+ 	return PTR_ERR_OR_ZERO(p);
  }
  
-+/**
-+ * dev_get_watchdog_priority() - get a device's desired watchdog priority
-+ * @dev:	The device, which device_node to read the property from
-+ *
-+ * return: The priority
-+ */
-+static unsigned int dev_get_watchdog_priority(struct device_d *dev)
++static const char *watchdog_get_running(struct device_d *dev, struct param_d *p)
 +{
-+	unsigned int priority = WATCHDOG_DEFAULT_PRIORITY;
-+
-+	if (dev)
-+		of_property_read_u32(dev->device_node, "watchdog-priority",
-+				     &priority);
-+
-+	return priority;
++	/*
++	 * This won't ever fail, because the parameter is only registed when
++	 * test_bit(WDOG_HW_RUNNING, &w->status_supported) is true
++	 */
++	return watchdog_hw_running((struct watchdog *)p->value) ? "1" : "0";
 +}
 +
- int watchdog_register(struct watchdog *wd)
+ static int watchdog_register_dev(struct watchdog *wd, const char *name, int id)
  {
- 	struct param_d *p;
-@@ -146,7 +163,7 @@ int watchdog_register(struct watchdog *wd)
+ 	wd->dev.parent = wd->hwdev;
+@@ -162,6 +184,15 @@ int watchdog_register(struct watchdog *wd)
+ 	if (ret)
  		return ret;
  
++	if (test_bit(WDOG_HW_RUNNING, &wd->status_supported)) {
++		p = dev_add_param(&wd->dev, "running", NULL,
++				  watchdog_get_running, PARAM_FLAG_RO);
++		if (IS_ERR(p))
++			return PTR_ERR(p);
++
++		p->value = (char *)wd;
++	}
++
  	if (!wd->priority)
--		wd->priority = WATCHDOG_DEFAULT_PRIORITY;
-+		wd->priority = dev_get_watchdog_priority(wd->hwdev);
+ 		wd->priority = dev_get_watchdog_priority(wd->hwdev);
  
- 	p = dev_add_param_uint32(&wd->dev, "priority",
- 				 watchdog_set_priority, NULL,
-@@ -232,18 +249,3 @@ struct watchdog *watchdog_get_by_name(const char *name)
- 	return NULL;
- }
- EXPORT_SYMBOL(watchdog_get_by_name);
--
--/**
-- * of_get_watchdog_priority() - get the desired watchdog priority from device tree
-- * @node:	The device_node to read the property from
-- *
-- * return: The priority
-- */
--unsigned int of_get_watchdog_priority(struct device_node *node)
--{
--	unsigned int priority = WATCHDOG_DEFAULT_PRIORITY;
--
--	of_property_read_u32(node, "watchdog-priority", &priority);
--
--	return priority;
--}
 diff --git a/include/watchdog.h b/include/watchdog.h
-index 184a218916f4..105b7ca81093 100644
+index 105b7ca81093..eccddac1b8bb 100644
 --- a/include/watchdog.h
 +++ b/include/watchdog.h
-@@ -35,7 +35,6 @@ int watchdog_deregister(struct watchdog *);
- struct watchdog *watchdog_get_default(void);
- struct watchdog *watchdog_get_by_name(const char *name);
- int watchdog_set_timeout(struct watchdog*, unsigned);
--unsigned int of_get_watchdog_priority(struct device_node *node);
- #else
- static inline int watchdog_register(struct watchdog *w)
- {
-@@ -61,12 +60,6 @@ static inline int watchdog_set_timeout(struct watchdog*w, unsigned t)
- {
- 	return 0;
- }
--
--
--static inline unsigned int of_get_watchdog_priority(struct device_node *node)
--{
--	return 0;
--}
- #endif
+@@ -15,6 +15,9 @@
  
- #define WATCHDOG_DEFAULT_PRIORITY 100
+ #include <poller.h>
+ #include <driver.h>
++#include <linux/bitops.h>
++
++#define WDOG_HW_RUNNING	3
+ 
+ struct watchdog {
+ 	int (*set_timeout)(struct watchdog *, unsigned);
+@@ -27,8 +30,22 @@ struct watchdog {
+ 	unsigned int poller_enable;
+ 	struct poller_async poller;
+ 	struct list_head list;
++	unsigned long status;
++	unsigned long status_supported;
+ };
+ 
++/*
++ * Use the following function to check whether or not the hardware watchdog
++ * is running
++ */
++static inline int watchdog_hw_running(struct watchdog *w)
++{
++	if (!test_bit(WDOG_HW_RUNNING, &w->status_supported))
++		return -ENOSYS;
++
++	return !!test_bit(WDOG_HW_RUNNING, &w->status);
++}
++
+ #ifdef CONFIG_WATCHDOG
+ int watchdog_register(struct watchdog *);
+ int watchdog_deregister(struct watchdog *);
 -- 
 2.24.0.rc1
 
