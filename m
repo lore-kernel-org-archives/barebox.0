@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from relay1-d.mail.gandi.net ([217.70.183.193])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iRvn9-0003LS-1e
- for barebox@lists.infradead.org; Tue, 05 Nov 2019 10:10:28 +0000
-Date: Tue, 5 Nov 2019 11:10:21 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191105101021.deksnoqcbcyqho4f@pengutronix.de>
-References: <20191104102806.8044-1-m.felsch@pengutronix.de>
- <20191104102806.8044-2-m.felsch@pengutronix.de>
+ id 1iRfmO-00046o-91
+ for barebox@lists.infradead.org; Mon, 04 Nov 2019 17:04:37 +0000
+Received: from geraet.pengutronix.de (hazel.nat.pengutronix.de [85.220.165.66])
+ (Authenticated sender: ahmad@a3f.at)
+ by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id 5E35924001E
+ for <barebox@lists.infradead.org>; Mon,  4 Nov 2019 17:04:24 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Mon,  4 Nov 2019 18:04:18 +0100
+Message-Id: <20191104170418.32414-1-ahmad@a3f.at>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191104102806.8044-2-m.felsch@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,44 +23,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 2/2] mfd: da9063: fix watchdog ping execution
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: barebox@lists.infradead.org, a.fatoum@pengutronix.de
+Subject: [PATCH] param: drop unused parameters in helpers
+To: barebox@lists.infradead.org
 
-On Mon, Nov 04, 2019 at 11:28:06AM +0100, Marco Felsch wrote:
-> The watchdog resets the system if the watchdog gets pinged to fast.
-> Between each watchdog ping must be a pause of at least 200ms. This
-> commit fixes that by rejecting two fast requests.
-> 
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> ---
-> @@ -237,6 +239,14 @@ static int da9063_watchdog_ping(struct da9063 *priv)
->  	int ret;
->  	u8 val;
->  
-> +	/*
-> +	 * The watchdog has a cool down phase of 200ms and if we ping to fast
-> +	 * the da9062/3 resets the system. Reject those requests has a maximum
-> +	 * failure of 10% if the watchdog timeout is set to 2.048s.
-> +	 */
-> +	if ((int64_t)(priv->last_ping + 200 * MSECOND - get_time_ns()) > 0)
-> +		return 0;
+These parameters aren't currently used anywhere, but are still useful to
+have nonetheless. Keep them but drop the unused parameters.
 
-Changed this to:
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ include/param.h | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-	if (!is_timeout(priv->last_ping, 200 * MSECOND))
-		return 0;
-
-And applied, thanks
-
-Sascha
-
-
+diff --git a/include/param.h b/include/param.h
+index bc4370b908a4..bd2f9f67a2b4 100644
+--- a/include/param.h
++++ b/include/param.h
+@@ -270,8 +270,6 @@ static inline struct param_d *dev_add_param_bool_ro(struct device_d *dev, const
+ }
+ 
+ static inline struct param_d *dev_add_param_string_ro(struct device_d *dev, const char *name,
+-		int (*set)(struct param_d *p, void *priv),
+-		int (*get)(struct param_d *p, void *priv),
+ 		char **value, void *priv)
+ {
+ 	return dev_add_param_string(dev, name, param_set_readonly, NULL, value, NULL);
+@@ -291,9 +289,7 @@ static inline struct param_d *dev_add_param_enum_ro(struct device_d *dev, const
+ }
+ 
+ static inline struct param_d *dev_add_param_bitmask_ro(struct device_d *dev, const char *name,
+-		int (*set)(struct param_d *p, void *priv),
+-		int (*get)(struct param_d *p, void *priv),
+-		unsigned long *value, const char * const *names, int max, void *priv)
++		unsigned long *value, const char * const *names, int max)
+ {
+ 	return dev_add_param_bitmask(dev, name, param_set_readonly, NULL,
+ 				     value, names, max, NULL);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
