@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iRwQi-0006Dd-8U
- for barebox@lists.infradead.org; Tue, 05 Nov 2019 10:51:21 +0000
-Date: Tue, 5 Nov 2019 11:51:18 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191105105118.ni4vs57wc5hu4d63@pengutronix.de>
+ id 1iRwjd-0007xY-Pf
+ for barebox@lists.infradead.org; Tue, 05 Nov 2019 11:10:57 +0000
 References: <20191104221407.14791-1-a.fatoum@pengutronix.de>
  <20191104221407.14791-2-a.fatoum@pengutronix.de>
  <20191105104008.qrivs4orphopplzz@pengutronix.de>
  <9c68dcf1-5033-efa5-66b5-50679f1ca6b0@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <e4eb7efc-7985-6c76-6215-b5583ac0d380@pengutronix.de>
+Date: Tue, 5 Nov 2019 12:10:51 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
 In-Reply-To: <9c68dcf1-5033-efa5-66b5-50679f1ca6b0@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,39 +27,56 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v2 2/4] watchdog: implement generic support for .running
  device parameter
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
 
-On Tue, Nov 05, 2019 at 11:46:18AM +0100, Ahmad Fatoum wrote:
+On 11/5/19 11:46 AM, Ahmad Fatoum wrote:
 > Hi,
 > 
 > On 11/5/19 11:40 AM, Sascha Hauer wrote:
-> > Hi Ahmad,
-> > 
-> > On Mon, Nov 04, 2019 at 11:14:05PM +0100, Ahmad Fatoum wrote:
-> >> Linux watchdog have an optional WDOG_HW_RUNNING bit that is used in
-> >> conjunction with CONFIG_WATCHDOG_HANDLE_BOOT_ENABLED to automatically
-> >> ping running watchdogs until userspace takes over.
-> >>
-> >> So far, when we ported Linux drivers, we dropped this detection, but it
-> >> would be useful to have this information in barebox as well:
-> >>
-> >> The American Megatrends BIOS I am using allows configuring the hardware
-> >> watchdog from the BIOS. barebox enables the WDT as well, so in normal
-> >> operation we would never notice if after a BIOS update, the watchdog is
-> >> no longer enabled. If we maintain a running parameter on watchdog
-> >> devices, board code can be written to check whether the watchdog device
-> >> is indeed running.
-> > 
-> > To write such code I would prefer to have a function which returns the
-> > running status rather than playing with getenv().
+>> When we just started the watchdog we actually know that it is running,
+>> so we could support the parameter for all watchdogs once it's started.
+
+I'll do this.
+
+>> Casting p->value to (struct watchdog *) seems wrong. However, this
+>> function shouldn't be needed, see below.
+
+It's well-defined, but ye, it feels a bit wrong.
+
+>>> +
+>>>  static int watchdog_register_dev(struct watchdog *wd, const char *name, int id)
+>>>  {
+>>>  	wd->dev.parent = wd->hwdev;
+>>> @@ -162,6 +184,15 @@ int watchdog_register(struct watchdog *wd)
+>>>  	if (ret)
+>>>  		return ret;
+>>>  
+>>> +	if (test_bit(WDOG_HW_RUNNING_SUPPORTED, &wd->status)) {
+>>> +		p = dev_add_param(&wd->dev, "running", NULL,
+>>> +				  watchdog_get_running, PARAM_FLAG_RO);
+>>> +		if (IS_ERR(p))
+>>> +			return PTR_ERR(p);
+>>> +
+>>> +		p->value = (char *)wd;
+>>> +	}
+>>
+>> How about adding this parameter unconditionally, with "unknown" as value
+>> when WDOG_HW_RUNNING_SUPPORTED is not set. You can use
+>> dev_add_param_enum() here.
+
+Thinking about it, I'd rather not use dev_add_param_enum here. I would like
+to leave the driver-side API not too different from Linux, i.e. status bits
+that can be set. If I use dev_add_param_enum, I'll have to add a new struct
+member for every new status bit. I can respin the patch with an unconditional
+dev_add_param though.
+
 > 
-> Ye, board code can use watchdog_hw_running added in this patch.
-> Hush scripts can use the device parameter. I'll amend the commit message.
-
-You are right, I missed watchdog_hw_running() in your patch.
-
-Sascha
+> Sounds good.
+> 
+>>
+>> Sascha
+>>
+> 
 
 
 -- 
