@@ -1,19 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iRwrV-0002JS-NM
- for barebox@lists.infradead.org; Tue, 05 Nov 2019 11:19:09 +0000
-Date: Tue, 5 Nov 2019 12:18:59 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191105111859.wvtd3vnm62l532qk@pengutronix.de>
-References: <20191104221407.14791-1-a.fatoum@pengutronix.de>
- <20191104221407.14791-2-a.fatoum@pengutronix.de>
- <20191105104008.qrivs4orphopplzz@pengutronix.de>
- <9c68dcf1-5033-efa5-66b5-50679f1ca6b0@pengutronix.de>
- <e4eb7efc-7985-6c76-6215-b5583ac0d380@pengutronix.de>
+ id 1iSFSi-0001VR-Nv
+ for barebox@lists.infradead.org; Wed, 06 Nov 2019 07:10:43 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed,  6 Nov 2019 08:10:28 +0100
+Message-Id: <20191106071034.24452-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <e4eb7efc-7985-6c76-6215-b5583ac0d380@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,62 +19,81 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 2/4] watchdog: implement generic support for .running
- device parameter
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/7] misc: psci: translate PSCI error codes in smc command
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Tue, Nov 05, 2019 at 12:10:51PM +0100, Ahmad Fatoum wrote:
-> On 11/5/19 11:46 AM, Ahmad Fatoum wrote:
-> > Hi,
-> > 
-> > On 11/5/19 11:40 AM, Sascha Hauer wrote:
-> >> When we just started the watchdog we actually know that it is running,
-> >> so we could support the parameter for all watchdogs once it's started.
-> 
-> I'll do this.
-> 
-> >> Casting p->value to (struct watchdog *) seems wrong. However, this
-> >> function shouldn't be needed, see below.
-> 
-> It's well-defined, but ye, it feels a bit wrong.
-> 
-> >>> +
-> >>>  static int watchdog_register_dev(struct watchdog *wd, const char *name, int id)
-> >>>  {
-> >>>  	wd->dev.parent = wd->hwdev;
-> >>> @@ -162,6 +184,15 @@ int watchdog_register(struct watchdog *wd)
-> >>>  	if (ret)
-> >>>  		return ret;
-> >>>  
-> >>> +	if (test_bit(WDOG_HW_RUNNING_SUPPORTED, &wd->status)) {
-> >>> +		p = dev_add_param(&wd->dev, "running", NULL,
-> >>> +				  watchdog_get_running, PARAM_FLAG_RO);
-> >>> +		if (IS_ERR(p))
-> >>> +			return PTR_ERR(p);
-> >>> +
-> >>> +		p->value = (char *)wd;
-> >>> +	}
-> >>
-> >> How about adding this parameter unconditionally, with "unknown" as value
-> >> when WDOG_HW_RUNNING_SUPPORTED is not set. You can use
-> >> dev_add_param_enum() here.
-> 
-> Thinking about it, I'd rather not use dev_add_param_enum here. I would like
-> to leave the driver-side API not too different from Linux, i.e. status bits
-> that can be set. If I use dev_add_param_enum, I'll have to add a new struct
-> member for every new status bit.
+For more usability, translate CPU_ON error codes into the error
+descriptions found in the PSCI Platform Design Document[1].
 
-Not for every bit, but for every flag you want to export as a parameter.
-But where's the problem with that?
+[1]: http://infocenter.arm.com/help/topic/com.arm.doc.den0022d/Power_State_Coordination_Interface_PDD_v1_1_DEN0022D.pdf
 
-Sascha
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/arm/cpu/psci.c | 38 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 37 insertions(+), 1 deletion(-)
 
+diff --git a/arch/arm/cpu/psci.c b/arch/arm/cpu/psci.c
+index a976ddbb5c65..b02e83986af8 100644
+--- a/arch/arm/cpu/psci.c
++++ b/arch/arm/cpu/psci.c
+@@ -248,8 +248,41 @@ void second_entry(void)
+ 	while (1);
+ }
+ 
++static const char *psci_xlate_str(long err)
++{
++       static char errno_string[sizeof "error 0x123456789ABCDEF0"];
++
++       switch(err)
++       {
++       case ARM_PSCI_RET_SUCCESS:
++	       return "Success";
++       case ARM_PSCI_RET_NOT_SUPPORTED:
++	       return "Operation not supported";
++       case ARM_PSCI_RET_INVAL:
++	       return "Invalid argument";
++       case ARM_PSCI_RET_DENIED:
++	       return "Operation not permitted";
++       case ARM_PSCI_RET_ALREADY_ON:
++	       return "CPU already on";
++       case ARM_PSCI_RET_ON_PENDING:
++	       return "CPU_ON in progress";
++       case ARM_PSCI_RET_INTERNAL_FAILURE:
++	       return "Internal failure";
++       case ARM_PSCI_RET_NOT_PRESENT:
++	       return "Trusted OS not present on core";
++       case ARM_PSCI_RET_DISABLED:
++	       return "CPU is disabled";
++       case ARM_PSCI_RET_INVALID_ADDRESS:
++	       return "Bad address";
++       }
++
++       sprintf(errno_string, "error 0x%lx", err);
++       return errno_string;
++}
++
+ static int do_smc(int argc, char *argv[])
+ {
++	long ret;
+ 	int opt;
+ 	struct arm_smccc_res res = {
+ 		.a0 = 0xdeadbee0,
+@@ -271,7 +304,10 @@ static int do_smc(int argc, char *argv[])
+ 		case 'c':
+ 			arm_smccc_smc(ARM_PSCI_0_2_FN_CPU_ON,
+ 				      1, (unsigned long)second_entry, 0, 0, 0, 0, 0, &res);
+-			break;
++			ret = (long)res.a0;
++			printf("CPU_ON returns with: %s\n", psci_xlate_str(ret));
++			if (ret)
++				return COMMAND_ERROR;
+ 		}
+ 	}
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.24.0.rc1
+
 
 _______________________________________________
 barebox mailing list
