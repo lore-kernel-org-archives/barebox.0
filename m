@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iSp4u-0002Mu-QZ
- for barebox@lists.infradead.org; Thu, 07 Nov 2019 21:12:33 +0000
+ id 1iSp4w-0002Ng-A7
+ for barebox@lists.infradead.org; Thu, 07 Nov 2019 21:12:35 +0000
 Received: from astat.fritz.box (a89-183-53-44.net-htp.de [89.183.53.44])
- by lynxeye.de (Postfix) with ESMTPA id DA698E7425C
- for <barebox@lists.infradead.org>; Thu,  7 Nov 2019 22:11:25 +0100 (CET)
+ by lynxeye.de (Postfix) with ESMTPA id 47DEDE74264
+ for <barebox@lists.infradead.org>; Thu,  7 Nov 2019 22:11:26 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Thu,  7 Nov 2019 22:11:08 +0100
-Message-Id: <20191107211119.68064-8-dev@lynxeye.de>
+Date: Thu,  7 Nov 2019 22:11:10 +0100
+Message-Id: <20191107211119.68064-10-dev@lynxeye.de>
 In-Reply-To: <20191107211119.68064-1-dev@lynxeye.de>
 References: <20191107211119.68064-1-dev@lynxeye.de>
 MIME-Version: 1.0
@@ -24,81 +24,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/18] net: macb: handle more clocks
+Subject: [PATCH 09/18] ARM: zynq: move clock controller driver to drivers/clk
 To: barebox@lists.infradead.org
 
-Both pclk and hclk are required clocks in the DT binding.
-rx_clk and tx_clk are optional, but must be enabled if a system
-has separate gates for them.
+No functional change, just adjusting the Zynq code to common practise.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/net/macb.c | 24 ++++++++++++++++++++++--
- 1 file changed, 22 insertions(+), 2 deletions(-)
+ arch/arm/mach-zynq/Makefile                                  | 2 +-
+ drivers/clk/Makefile                                         | 1 +
+ drivers/clk/zynq/Makefile                                    | 1 +
+ arch/arm/mach-zynq/clk-zynq7000.c => drivers/clk/zynq/clkc.c | 0
+ 4 files changed, 3 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/clk/zynq/Makefile
+ rename arch/arm/mach-zynq/clk-zynq7000.c => drivers/clk/zynq/clkc.c (100%)
 
-diff --git a/drivers/net/macb.c b/drivers/net/macb.c
-index c4ab9efb639c..df1e606454b1 100644
---- a/drivers/net/macb.c
-+++ b/drivers/net/macb.c
-@@ -69,7 +69,7 @@ struct macb_device {
- 
- 	int			phy_addr;
- 
--	struct clk		*pclk;
-+	struct clk		*pclk, *hclk, *txclk, *rxclk;
- 	const struct device_d	*dev;
- 	struct eth_device	netdev;
- 
-@@ -653,7 +653,7 @@ static int macb_probe(struct device_d *dev)
- 	struct resource *iores;
- 	struct eth_device *edev;
- 	struct macb_device *macb;
--	const char *pclk_name;
-+	const char *pclk_name, *hclk_name;
- 	u32 ncfgr;
- 
- 	macb = xzalloc(sizeof(*macb));
-@@ -689,6 +689,7 @@ static int macb_probe(struct device_d *dev)
- 		macb->phy_addr = pdata->phy_addr;
- 		macb->phy_flags = pdata->phy_flags;
- 		pclk_name = "macb_clk";
-+		hclk_name = NULL;
- 	} else if (IS_ENABLED(CONFIG_OFDEVICE) && dev->device_node) {
- 		int ret;
- 		struct device_node *mdiobus;
-@@ -705,6 +706,7 @@ static int macb_probe(struct device_d *dev)
- 
- 		macb->phy_addr = -1;
- 		pclk_name = "pclk";
-+		hclk_name = "hclk";
- 	} else {
- 		dev_err(dev, "macb: no platform_data\n");
- 		return -ENODEV;
-@@ -727,6 +729,24 @@ static int macb_probe(struct device_d *dev)
- 
- 	clk_enable(macb->pclk);
- 
-+	if (hclk_name) {
-+		macb->hclk = clk_get(dev, pclk_name);
-+		if (IS_ERR(macb->pclk)) {
-+			dev_err(dev, "no hclk\n");
-+			return PTR_ERR(macb->hclk);
-+		}
-+
-+		clk_enable(macb->hclk);
-+	}
-+
-+	macb->txclk = clk_get(dev, "tx_clk");
-+	if (!IS_ERR(macb->txclk))
-+		clk_enable(macb->txclk);
-+
-+	macb->rxclk = clk_get(dev, "rx_clk");
-+	if (!IS_ERR(macb->rxclk))
-+		clk_enable(macb->rxclk);
-+
- 	macb->is_gem = read_is_gem(macb);
- 
- 	if (macb_is_gem(macb))
+diff --git a/arch/arm/mach-zynq/Makefile b/arch/arm/mach-zynq/Makefile
+index 459c95762256..b401c77983d3 100644
+--- a/arch/arm/mach-zynq/Makefile
++++ b/arch/arm/mach-zynq/Makefile
+@@ -1 +1 @@
+-obj-y += zynq.o devices.o clk-zynq7000.o
++obj-y += zynq.o devices.o
+diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
+index 1bd5f9035896..8160620dc618 100644
+--- a/drivers/clk/Makefile
++++ b/drivers/clk/Makefile
+@@ -9,6 +9,7 @@ obj-$(CONFIG_ARCH_MVEBU)	+= mvebu/
+ obj-$(CONFIG_ARCH_MXS)		+= mxs/
+ obj-$(CONFIG_ARCH_ROCKCHIP)	+= rockchip/
+ obj-$(CONFIG_ARCH_TEGRA)	+= tegra/
++obj-$(CONFIG_ARCH_ZYNQ)		+= zynq/
+ obj-$(CONFIG_ARCH_ZYNQMP)	+= zynqmp/
+ obj-$(CONFIG_CLK_SOCFPGA)	+= socfpga/
+ obj-$(CONFIG_SOC_QCA_AR9331)	+= clk-ar933x.o
+diff --git a/drivers/clk/zynq/Makefile b/drivers/clk/zynq/Makefile
+new file mode 100644
+index 000000000000..8fedfc77e4dc
+--- /dev/null
++++ b/drivers/clk/zynq/Makefile
+@@ -0,0 +1 @@
++obj-y += clkc.o
+diff --git a/arch/arm/mach-zynq/clk-zynq7000.c b/drivers/clk/zynq/clkc.c
+similarity index 100%
+rename from arch/arm/mach-zynq/clk-zynq7000.c
+rename to drivers/clk/zynq/clkc.c
 -- 
 2.23.0
 
