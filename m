@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iSp4z-0002Ov-Nc
+ id 1iSp4z-0002Mu-T8
  for barebox@lists.infradead.org; Thu, 07 Nov 2019 21:12:39 +0000
 Received: from astat.fritz.box (a89-183-53-44.net-htp.de [89.183.53.44])
- by lynxeye.de (Postfix) with ESMTPA id 1315BE7426A
- for <barebox@lists.infradead.org>; Thu,  7 Nov 2019 22:11:27 +0100 (CET)
+ by lynxeye.de (Postfix) with ESMTPA id 58705E742AB
+ for <barebox@lists.infradead.org>; Thu,  7 Nov 2019 22:11:28 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Thu,  7 Nov 2019 22:11:13 +0100
-Message-Id: <20191107211119.68064-13-dev@lynxeye.de>
+Date: Thu,  7 Nov 2019 22:11:19 +0100
+Message-Id: <20191107211119.68064-19-dev@lynxeye.de>
 In-Reply-To: <20191107211119.68064-1-dev@lynxeye.de>
 References: <20191107211119.68064-1-dev@lynxeye.de>
 MIME-Version: 1.0
@@ -24,61 +24,85 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/18] clk: zynq: improve PLL enable handling
+Subject: [PATCH 18/18] ARM: zynq: add bootsource detection
 To: barebox@lists.infradead.org
 
-Ensure that both the powerdown and reset bits are cleared when the PLL
-gets enabled, as any of those set would prevent the PLL from working.
-
-Also add a status readback function, so the real status of the PLL is
-reflected in the Barebox clock state.
+Implement the bootsource detection by reading the BOOT_MODE SLCR register
+which holds the strap values used to select the boot source.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/clk/zynq/clkc.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ .../mach-zynq/include/mach/zynq7000-regs.h    |  1 +
+ arch/arm/mach-zynq/zynq.c                     | 27 +++++++++++++++++--
+ 2 files changed, 26 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/zynq/clkc.c b/drivers/clk/zynq/clkc.c
-index ba441740c585..07152e2ada3f 100644
---- a/drivers/clk/zynq/clkc.c
-+++ b/drivers/clk/zynq/clkc.c
-@@ -48,6 +48,8 @@ enum zynq_pll_type {
- #define PLL_STATUS_DDR_PLL_STABLE	(1 << 1)
- #define PLL_STATUS_IO_PLL_STABLE	(1 << 2)
- #define PLL_CTRL_BYPASS_FORCE		(1 << 4)
-+#define PLL_CTRL_PWRDOWN		(1 << 1)
-+#define PLL_CTRL_RESET			(1 << 0)
+diff --git a/arch/arm/mach-zynq/include/mach/zynq7000-regs.h b/arch/arm/mach-zynq/include/mach/zynq7000-regs.h
+index dd02f5b4072a..eeecfe1ded43 100644
+--- a/arch/arm/mach-zynq/include/mach/zynq7000-regs.h
++++ b/arch/arm/mach-zynq/include/mach/zynq7000-regs.h
+@@ -63,6 +63,7 @@
+ #define ZYNQ_FPGA3_CLK_CTRL		0x0A0
+ #define ZYNQ_CLK_621_TRUE		0x0C4
+ #define ZYNQ_RST_CTRL_BASE		(ZYNQ_SLCR_BASE + 0x200)
++#define ZYNQ_SLCR_BOOT_MODE		(ZYNQ_SLCR_BASE + 0x25C)
+ #define ZYNQ_PSS_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x000)
+ #define ZYNQ_DDR_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x004)
+ #define ZYNQ_TOPSW_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x008)
+diff --git a/arch/arm/mach-zynq/zynq.c b/arch/arm/mach-zynq/zynq.c
+index ad06c624d90b..79a6b908e000 100644
+--- a/arch/arm/mach-zynq/zynq.c
++++ b/arch/arm/mach-zynq/zynq.c
+@@ -14,11 +14,12 @@
+  */
  
- static struct clk *clks[clks_max];
+ #include <asm/system.h>
+-#include <io.h>
++#include <bootsource.h>
+ #include <common.h>
+ #include <init.h>
+-#include <restart.h>
++#include <io.h>
+ #include <mach/zynq7000-regs.h>
++#include <restart.h>
  
-@@ -75,7 +77,7 @@ static int zynq_pll_enable(struct clk *clk)
- 	int timeout = 10000;
- 
- 	val = readl(pll->pll_ctrl);
--	val &= ~PLL_CTRL_BYPASS_FORCE;
-+	val &= ~(PLL_CTRL_BYPASS_FORCE | PLL_CTRL_PWRDOWN | PLL_CTRL_RESET);
- 	writel(val, pll->pll_ctrl);
- 
- 	while (timeout--) {
-@@ -89,9 +91,18 @@ static int zynq_pll_enable(struct clk *clk)
- 	return 0;
+ static void __noreturn zynq_restart_soc(struct restart_handler *rst)
+ {
+@@ -30,6 +31,26 @@ static void __noreturn zynq_restart_soc(struct restart_handler *rst)
+ 	hang();
  }
  
-+static int zynq_pll_is_enabled(struct clk *clk)
++static enum bootsource zynq_bootsource_get(void)
 +{
-+	struct zynq_pll_clk *pll = to_zynq_pll_clk(clk);
-+	u32 val = readl(pll->pll_ctrl);
++	u32 boot_mode = readl(ZYNQ_SLCR_BOOT_MODE);
 +
-+	return !(val & (PLL_CTRL_PWRDOWN | PLL_CTRL_RESET));
++	switch (boot_mode & 0x7) {
++	case 0x0:
++		return BOOTSOURCE_JTAG;
++	case 0x1:
++		return BOOTSOURCE_SPI;
++	case 0x2:
++		return BOOTSOURCE_NOR;
++	case 0x4:
++		return BOOTSOURCE_NAND;
++	case 0x5:
++		return BOOTSOURCE_MMC;
++	default:
++		return BOOTSOURCE_UNKNOWN;
++	}
 +}
 +
- static struct clk_ops zynq_pll_clk_ops = {
- 	.recalc_rate = zynq_pll_recalc_rate,
- 	.enable = zynq_pll_enable,
-+	.is_enabled = zynq_pll_is_enabled,
- };
+ static int zynq_init(void)
+ {
+ 	u32 val;
+@@ -50,6 +71,8 @@ static int zynq_init(void)
  
- static inline struct clk *zynq_pll_clk(enum zynq_pll_type type,
+ 	restart_handler_register_fn(zynq_restart_soc);
+ 
++	bootsource_set(zynq_bootsource_get());
++
+ 	return 0;
+ }
+ postcore_initcall(zynq_init);
 -- 
 2.23.0
 
