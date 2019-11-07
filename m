@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iSp4u-0002Ms-Q3
- for barebox@lists.infradead.org; Thu, 07 Nov 2019 21:12:32 +0000
+ id 1iSp4u-0002Mu-QZ
+ for barebox@lists.infradead.org; Thu, 07 Nov 2019 21:12:33 +0000
 Received: from astat.fritz.box (a89-183-53-44.net-htp.de [89.183.53.44])
- by lynxeye.de (Postfix) with ESMTPA id A1BE5E74251
+ by lynxeye.de (Postfix) with ESMTPA id DA698E7425C
  for <barebox@lists.infradead.org>; Thu,  7 Nov 2019 22:11:25 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Thu,  7 Nov 2019 22:11:07 +0100
-Message-Id: <20191107211119.68064-7-dev@lynxeye.de>
+Date: Thu,  7 Nov 2019 22:11:08 +0100
+Message-Id: <20191107211119.68064-8-dev@lynxeye.de>
 In-Reply-To: <20191107211119.68064-1-dev@lynxeye.de>
 References: <20191107211119.68064-1-dev@lynxeye.de>
 MIME-Version: 1.0
@@ -24,70 +24,81 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/18] ARM: zynq: zedboard: provide DTB
+Subject: [PATCH 07/18] net: macb: handle more clocks
 To: barebox@lists.infradead.org
 
-Provide the DTB to allow devices to be probed from there,
-instead of board code.
+Both pclk and hclk are required clocks in the DT binding.
+rx_clk and tx_clk are optional, but must be enabled if a system
+has separate gates for them.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/boards/avnet-zedboard/lowlevel.c | 8 +++++++-
- arch/arm/dts/Makefile                     | 1 +
- arch/arm/dts/zynq-zed.dts                 | 7 +++++++
- 3 files changed, 15 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/dts/zynq-zed.dts
+ drivers/net/macb.c | 24 ++++++++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boards/avnet-zedboard/lowlevel.c b/arch/arm/boards/avnet-zedboard/lowlevel.c
-index cf3c4ebd0c7e..ae279e4e64af 100644
---- a/arch/arm/boards/avnet-zedboard/lowlevel.c
-+++ b/arch/arm/boards/avnet-zedboard/lowlevel.c
-@@ -27,8 +27,13 @@
- #define PLL_DDR_LOCK	(1 << 1)
- #define PLL_IO_LOCK	(1 << 2)
+diff --git a/drivers/net/macb.c b/drivers/net/macb.c
+index c4ab9efb639c..df1e606454b1 100644
+--- a/drivers/net/macb.c
++++ b/drivers/net/macb.c
+@@ -69,7 +69,7 @@ struct macb_device {
  
-+extern char __dtb_zynq_zed_start[];
-+
- void __naked barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint32_t r2)
- {
-+
-+	void *fdt = __dtb_zynq_zed_start + get_runtime_offset();
-+
- 	/* open sesame */
- 	writel(0x0000DF0D, ZYNQ_SLCR_UNLOCK);
+ 	int			phy_addr;
  
-@@ -257,5 +262,6 @@ void __naked barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint32_t r2)
- 	writel(0x0000767B, ZYNQ_SLCR_LOCK);
+-	struct clk		*pclk;
++	struct clk		*pclk, *hclk, *txclk, *rxclk;
+ 	const struct device_d	*dev;
+ 	struct eth_device	netdev;
  
- 	arm_cpu_lowlevel_init();
--	barebox_arm_entry(0, SZ_512M, NULL);
-+
-+	barebox_arm_entry(0, SZ_512M, fdt);
- }
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index 294a0bfa5525..c097c10186a4 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -143,5 +143,6 @@ lwl-dtb-$(CONFIG_MACH_ZII_IMX7D_DEV) += imx7d-zii-rpu2.dtb.o imx7d-zii-rmu2.dtb.
- lwl-dtb-$(CONFIG_MACH_WAGO_PFC_AM35XX) += am35xx-pfc-750_820x.dtb.o
- lwl-dtb-$(CONFIG_MACH_LS1046ARDB) += fsl-ls1046a-rdb.dtb.o
- lwl-dtb-$(CONFIG_MACH_TQMLS1046A) += fsl-tqmls1046a-mbls10xxa.dtb.o
-+lwl-dtb-$(CONFIG_MACH_ZEDBOARD) += zynq-zed.dtb.o
+@@ -653,7 +653,7 @@ static int macb_probe(struct device_d *dev)
+ 	struct resource *iores;
+ 	struct eth_device *edev;
+ 	struct macb_device *macb;
+-	const char *pclk_name;
++	const char *pclk_name, *hclk_name;
+ 	u32 ncfgr;
  
- clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts *.dtb.lzo
-diff --git a/arch/arm/dts/zynq-zed.dts b/arch/arm/dts/zynq-zed.dts
-new file mode 100644
-index 000000000000..52d68332499a
---- /dev/null
-+++ b/arch/arm/dts/zynq-zed.dts
-@@ -0,0 +1,7 @@
-+#include <arm/zynq-zed.dts>
+ 	macb = xzalloc(sizeof(*macb));
+@@ -689,6 +689,7 @@ static int macb_probe(struct device_d *dev)
+ 		macb->phy_addr = pdata->phy_addr;
+ 		macb->phy_flags = pdata->phy_flags;
+ 		pclk_name = "macb_clk";
++		hclk_name = NULL;
+ 	} else if (IS_ENABLED(CONFIG_OFDEVICE) && dev->device_node) {
+ 		int ret;
+ 		struct device_node *mdiobus;
+@@ -705,6 +706,7 @@ static int macb_probe(struct device_d *dev)
+ 
+ 		macb->phy_addr = -1;
+ 		pclk_name = "pclk";
++		hclk_name = "hclk";
+ 	} else {
+ 		dev_err(dev, "macb: no platform_data\n");
+ 		return -ENODEV;
+@@ -727,6 +729,24 @@ static int macb_probe(struct device_d *dev)
+ 
+ 	clk_enable(macb->pclk);
+ 
++	if (hclk_name) {
++		macb->hclk = clk_get(dev, pclk_name);
++		if (IS_ERR(macb->pclk)) {
++			dev_err(dev, "no hclk\n");
++			return PTR_ERR(macb->hclk);
++		}
 +
-+/ {
-+	chosen {
-+		stdout-path = &uart1;
-+	};
-+};
++		clk_enable(macb->hclk);
++	}
++
++	macb->txclk = clk_get(dev, "tx_clk");
++	if (!IS_ERR(macb->txclk))
++		clk_enable(macb->txclk);
++
++	macb->rxclk = clk_get(dev, "rx_clk");
++	if (!IS_ERR(macb->rxclk))
++		clk_enable(macb->rxclk);
++
+ 	macb->is_gem = read_is_gem(macb);
+ 
+ 	if (macb_is_gem(macb))
 -- 
 2.23.0
 
