@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iSp4O-0001wr-Pw
- for barebox@lists.infradead.org; Thu, 07 Nov 2019 21:11:58 +0000
+ id 1iSp4S-0001y8-5g
+ for barebox@lists.infradead.org; Thu, 07 Nov 2019 21:12:01 +0000
 Received: from astat.fritz.box (a89-183-53-44.net-htp.de [89.183.53.44])
- by lynxeye.de (Postfix) with ESMTPA id 7F80FE7421F
- for <barebox@lists.infradead.org>; Thu,  7 Nov 2019 22:11:24 +0100 (CET)
+ by lynxeye.de (Postfix) with ESMTPA id 60583E7424E
+ for <barebox@lists.infradead.org>; Thu,  7 Nov 2019 22:11:25 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Thu,  7 Nov 2019 22:11:02 +0100
-Message-Id: <20191107211119.68064-2-dev@lynxeye.de>
+Date: Thu,  7 Nov 2019 22:11:06 +0100
+Message-Id: <20191107211119.68064-6-dev@lynxeye.de>
 In-Reply-To: <20191107211119.68064-1-dev@lynxeye.de>
 References: <20191107211119.68064-1-dev@lynxeye.de>
 MIME-Version: 1.0
@@ -24,28 +24,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/18] ARM: zynq: zedboard: enable MACB driver in defconfig
+Subject: [PATCH 05/18] ARM: zynq: add size check in zynq_mkimage
 To: barebox@lists.infradead.org
 
-The board support is a bit more useful with active networking.
+Currently Barebox does not support 2 stage loading on Zynq, so the
+image must fit into the free OCRAM area. Add a check to the mkimage
+tool to validate this.
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/configs/zedboard_defconfig | 1 +
- 1 file changed, 1 insertion(+)
+ scripts/zynq_mkimage.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm/configs/zedboard_defconfig b/arch/arm/configs/zedboard_defconfig
-index cc0336875173..be5720fd42b5 100644
---- a/arch/arm/configs/zedboard_defconfig
-+++ b/arch/arm/configs/zedboard_defconfig
-@@ -40,6 +40,7 @@ CONFIG_CMD_OFTREE=y
- CONFIG_CMD_TIME=y
- CONFIG_NET=y
- CONFIG_DRIVER_SERIAL_CADENCE=y
-+CONFIG_DRIVER_NET_MACB=y
- # CONFIG_SPI is not set
- CONFIG_FS_TFTP=y
- CONFIG_DIGEST=y
+diff --git a/scripts/zynq_mkimage.c b/scripts/zynq_mkimage.c
+index bf214ca5d0d1..0a1c069472e9 100644
+--- a/scripts/zynq_mkimage.c
++++ b/scripts/zynq_mkimage.c
+@@ -283,6 +283,11 @@ int main(int argc, char *argv[])
+ 		exit(EXIT_FAILURE);
+ 	}
+ 
++	if (st.st_size > 192 * 1024) {
++		fprintf(stderr, "Image too big, will not fit in OCRAM!\n");
++		exit(EXIT_FAILURE);
++	}
++
+ 	buf = calloc(st.st_size + IMAGE_OFFSET, sizeof(char));
+ 	if (!buf) {
+ 		fprintf(stderr, "Unable to allocate buffer\n");
 -- 
 2.23.0
 
