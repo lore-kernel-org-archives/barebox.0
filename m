@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iSp4z-0002Mu-T8
- for barebox@lists.infradead.org; Thu, 07 Nov 2019 21:12:39 +0000
+ id 1iSp50-0002PR-78
+ for barebox@lists.infradead.org; Thu, 07 Nov 2019 21:12:40 +0000
 Received: from astat.fritz.box (a89-183-53-44.net-htp.de [89.183.53.44])
- by lynxeye.de (Postfix) with ESMTPA id 58705E742AB
- for <barebox@lists.infradead.org>; Thu,  7 Nov 2019 22:11:28 +0100 (CET)
+ by lynxeye.de (Postfix) with ESMTPA id 78C83E7426B
+ for <barebox@lists.infradead.org>; Thu,  7 Nov 2019 22:11:27 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Thu,  7 Nov 2019 22:11:19 +0100
-Message-Id: <20191107211119.68064-19-dev@lynxeye.de>
+Date: Thu,  7 Nov 2019 22:11:15 +0100
+Message-Id: <20191107211119.68064-15-dev@lynxeye.de>
 In-Reply-To: <20191107211119.68064-1-dev@lynxeye.de>
 References: <20191107211119.68064-1-dev@lynxeye.de>
 MIME-Version: 1.0
@@ -24,85 +24,150 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 18/18] ARM: zynq: add bootsource detection
+Subject: [PATCH 14/18] ARM: zynq: switch to DT based probing
 To: barebox@lists.infradead.org
 
-Implement the bootsource detection by reading the BOOT_MODE SLCR register
-which holds the strap values used to select the boot source.
+All the currently supported devices can now be probed
+from the DT. Remove platform devices and switch to DT.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- .../mach-zynq/include/mach/zynq7000-regs.h    |  1 +
- arch/arm/mach-zynq/zynq.c                     | 27 +++++++++++++++++--
- 2 files changed, 26 insertions(+), 2 deletions(-)
+ arch/arm/boards/avnet-zedboard/board.c    | 24 -----------------------
+ arch/arm/mach-zynq/Kconfig                |  3 +++
+ arch/arm/mach-zynq/Makefile               |  2 +-
+ arch/arm/mach-zynq/devices.c              | 13 ------------
+ arch/arm/mach-zynq/include/mach/devices.h | 20 -------------------
+ arch/arm/mach-zynq/zynq.c                 |  4 ----
+ 6 files changed, 4 insertions(+), 62 deletions(-)
+ delete mode 100644 arch/arm/mach-zynq/devices.c
+ delete mode 100644 arch/arm/mach-zynq/include/mach/devices.h
 
-diff --git a/arch/arm/mach-zynq/include/mach/zynq7000-regs.h b/arch/arm/mach-zynq/include/mach/zynq7000-regs.h
-index dd02f5b4072a..eeecfe1ded43 100644
---- a/arch/arm/mach-zynq/include/mach/zynq7000-regs.h
-+++ b/arch/arm/mach-zynq/include/mach/zynq7000-regs.h
-@@ -63,6 +63,7 @@
- #define ZYNQ_FPGA3_CLK_CTRL		0x0A0
- #define ZYNQ_CLK_621_TRUE		0x0C4
- #define ZYNQ_RST_CTRL_BASE		(ZYNQ_SLCR_BASE + 0x200)
-+#define ZYNQ_SLCR_BOOT_MODE		(ZYNQ_SLCR_BASE + 0x25C)
- #define ZYNQ_PSS_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x000)
- #define ZYNQ_DDR_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x004)
- #define ZYNQ_TOPSW_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x008)
-diff --git a/arch/arm/mach-zynq/zynq.c b/arch/arm/mach-zynq/zynq.c
-index ad06c624d90b..79a6b908e000 100644
---- a/arch/arm/mach-zynq/zynq.c
-+++ b/arch/arm/mach-zynq/zynq.c
-@@ -14,11 +14,12 @@
-  */
- 
- #include <asm/system.h>
--#include <io.h>
-+#include <bootsource.h>
- #include <common.h>
+diff --git a/arch/arm/boards/avnet-zedboard/board.c b/arch/arm/boards/avnet-zedboard/board.c
+index 722bda302e1f..f53dde47c204 100644
+--- a/arch/arm/boards/avnet-zedboard/board.c
++++ b/arch/arm/boards/avnet-zedboard/board.c
+@@ -17,38 +17,14 @@
+ #include <environment.h>
+ #include <generated/mach-types.h>
  #include <init.h>
--#include <restart.h>
-+#include <io.h>
+-#include <mach/devices.h>
  #include <mach/zynq7000-regs.h>
-+#include <restart.h>
+ #include <linux/sizes.h>
  
- static void __noreturn zynq_restart_soc(struct restart_handler *rst)
+-static int zedboard_mem_init(void)
+-{
+-	arm_add_mem_device("ram0", 0, SZ_512M);
+-
+-	return 0;
+-}
+-mem_initcall(zedboard_mem_init);
+-
+-static struct macb_platform_data macb_pdata = {
+-	.phy_interface = PHY_INTERFACE_MODE_RGMII,
+-	.phy_addr = 0x0,
+-};
+-
+-static int zedboard_device_init(void)
+-{
+-	zynq_add_eth0(&macb_pdata);
+-
+-	return 0;
+-}
+-device_initcall(zedboard_device_init);
+ 
+ static int zedboard_console_init(void)
  {
-@@ -30,6 +31,26 @@ static void __noreturn zynq_restart_soc(struct restart_handler *rst)
- 	hang();
- }
+-	barebox_set_model("Avnet ZedBoard");
+ 	barebox_set_hostname("zedboard");
  
-+static enum bootsource zynq_bootsource_get(void)
-+{
-+	u32 boot_mode = readl(ZYNQ_SLCR_BOOT_MODE);
-+
-+	switch (boot_mode & 0x7) {
-+	case 0x0:
-+		return BOOTSOURCE_JTAG;
-+	case 0x1:
-+		return BOOTSOURCE_SPI;
-+	case 0x2:
-+		return BOOTSOURCE_NOR;
-+	case 0x4:
-+		return BOOTSOURCE_NAND;
-+	case 0x5:
-+		return BOOTSOURCE_MMC;
-+	default:
-+		return BOOTSOURCE_UNKNOWN;
-+	}
-+}
-+
- static int zynq_init(void)
- {
- 	u32 val;
-@@ -50,6 +71,8 @@ static int zynq_init(void)
- 
- 	restart_handler_register_fn(zynq_restart_soc);
- 
-+	bootsource_set(zynq_bootsource_get());
-+
+-	zynq_add_uart1();
+-
  	return 0;
  }
- postcore_initcall(zynq_init);
+ console_initcall(zedboard_console_init);
+diff --git a/arch/arm/mach-zynq/Kconfig b/arch/arm/mach-zynq/Kconfig
+index d35bd41232a1..944f325bcc08 100644
+--- a/arch/arm/mach-zynq/Kconfig
++++ b/arch/arm/mach-zynq/Kconfig
+@@ -16,8 +16,11 @@ config ARCH_ZYNQ7000
+ 	select CPU_V7
+ 	select CLKDEV_LOOKUP
+ 	select COMMON_CLK
++	select COMMON_CLK_OF_PROVIDER
+ 	select ARM_SMP_TWD
+ 	select HAS_MACB
++	select OFTREE
++	select OFDEVICE
+ 
+ endchoice
+ 
+diff --git a/arch/arm/mach-zynq/Makefile b/arch/arm/mach-zynq/Makefile
+index b401c77983d3..3252247d176d 100644
+--- a/arch/arm/mach-zynq/Makefile
++++ b/arch/arm/mach-zynq/Makefile
+@@ -1 +1 @@
+-obj-y += zynq.o devices.o
++obj-y += zynq.o
+diff --git a/arch/arm/mach-zynq/devices.c b/arch/arm/mach-zynq/devices.c
+deleted file mode 100644
+index 55e9433c517d..000000000000
+--- a/arch/arm/mach-zynq/devices.c
++++ /dev/null
+@@ -1,13 +0,0 @@
+-#include <common.h>
+-#include <driver.h>
+-#include <mach/devices.h>
+-
+-struct device_d *zynq_add_uart(resource_size_t base, int id)
+-{
+-	return add_generic_device("cadence-uart", id, NULL, base, 0x1000, IORESOURCE_MEM, NULL);
+-}
+-
+-struct device_d *zynq_add_eth(resource_size_t base, int id, struct macb_platform_data *pdata)
+-{
+-	return add_generic_device("macb", id, NULL, base, 0x1000, IORESOURCE_MEM, pdata);
+-}
+diff --git a/arch/arm/mach-zynq/include/mach/devices.h b/arch/arm/mach-zynq/include/mach/devices.h
+deleted file mode 100644
+index c9670b02f30c..000000000000
+--- a/arch/arm/mach-zynq/include/mach/devices.h
++++ /dev/null
+@@ -1,20 +0,0 @@
+-#include <mach/zynq7000-regs.h>
+-#include <platform_data/macb.h>
+-
+-struct device_d *zynq_add_uart(resource_size_t base, int id);
+-struct device_d *zynq_add_eth(resource_size_t base, int id, struct macb_platform_data *pdata);
+-
+-static inline struct device_d *zynq_add_uart0(void)
+-{
+-	return zynq_add_uart((resource_size_t)ZYNQ_UART0_BASE_ADDR, 0);
+-}
+-
+-static inline struct device_d *zynq_add_uart1(void)
+-{
+-	return zynq_add_uart((resource_size_t)ZYNQ_UART1_BASE_ADDR, 1);
+-}
+-
+-static inline struct device_d *zynq_add_eth0(struct macb_platform_data *pdata)
+-{
+-	return zynq_add_eth((resource_size_t)ZYNQ_GEM0_BASE_ADDR, 0, pdata);
+-}
+diff --git a/arch/arm/mach-zynq/zynq.c b/arch/arm/mach-zynq/zynq.c
+index ec22b16c91cd..ad06c624d90b 100644
+--- a/arch/arm/mach-zynq/zynq.c
++++ b/arch/arm/mach-zynq/zynq.c
+@@ -48,10 +48,6 @@ static int zynq_init(void)
+ 	writel(val, 0xf8f00000);
+ 	dmb();
+ 
+-	add_generic_device("zynq-clock", 0, NULL, ZYNQ_SLCR_BASE + 0x100,
+-			   0x4000, IORESOURCE_MEM, NULL);
+-	add_generic_device("smp_twd", 0, NULL, CORTEXA9_SCU_TIMER_BASE_ADDR,
+-				0x4000, IORESOURCE_MEM, NULL);
+ 	restart_handler_register_fn(zynq_restart_soc);
+ 
+ 	return 0;
 -- 
 2.23.0
 
