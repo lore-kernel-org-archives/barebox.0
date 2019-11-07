@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iSp4w-0002Ng-A7
+ id 1iSp4w-0002Nf-9v
  for barebox@lists.infradead.org; Thu, 07 Nov 2019 21:12:35 +0000
 Received: from astat.fritz.box (a89-183-53-44.net-htp.de [89.183.53.44])
- by lynxeye.de (Postfix) with ESMTPA id 47DEDE74264
+ by lynxeye.de (Postfix) with ESMTPA id 1793AE74261
  for <barebox@lists.infradead.org>; Thu,  7 Nov 2019 22:11:26 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Thu,  7 Nov 2019 22:11:10 +0100
-Message-Id: <20191107211119.68064-10-dev@lynxeye.de>
+Date: Thu,  7 Nov 2019 22:11:09 +0100
+Message-Id: <20191107211119.68064-9-dev@lynxeye.de>
 In-Reply-To: <20191107211119.68064-1-dev@lynxeye.de>
 References: <20191107211119.68064-1-dev@lynxeye.de>
 MIME-Version: 1.0
@@ -24,51 +24,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/18] ARM: zynq: move clock controller driver to drivers/clk
+Subject: [PATCH 08/18] net: macb: add Zynq compatible
 To: barebox@lists.infradead.org
 
-No functional change, just adjusting the Zynq code to common practise.
+Add compatible for the GEM on the Zynq 7000 device.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/mach-zynq/Makefile                                  | 2 +-
- drivers/clk/Makefile                                         | 1 +
- drivers/clk/zynq/Makefile                                    | 1 +
- arch/arm/mach-zynq/clk-zynq7000.c => drivers/clk/zynq/clkc.c | 0
- 4 files changed, 3 insertions(+), 1 deletion(-)
- create mode 100644 drivers/clk/zynq/Makefile
- rename arch/arm/mach-zynq/clk-zynq7000.c => drivers/clk/zynq/clkc.c (100%)
+ drivers/net/macb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/mach-zynq/Makefile b/arch/arm/mach-zynq/Makefile
-index 459c95762256..b401c77983d3 100644
---- a/arch/arm/mach-zynq/Makefile
-+++ b/arch/arm/mach-zynq/Makefile
-@@ -1 +1 @@
--obj-y += zynq.o devices.o clk-zynq7000.o
-+obj-y += zynq.o devices.o
-diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
-index 1bd5f9035896..8160620dc618 100644
---- a/drivers/clk/Makefile
-+++ b/drivers/clk/Makefile
-@@ -9,6 +9,7 @@ obj-$(CONFIG_ARCH_MVEBU)	+= mvebu/
- obj-$(CONFIG_ARCH_MXS)		+= mxs/
- obj-$(CONFIG_ARCH_ROCKCHIP)	+= rockchip/
- obj-$(CONFIG_ARCH_TEGRA)	+= tegra/
-+obj-$(CONFIG_ARCH_ZYNQ)		+= zynq/
- obj-$(CONFIG_ARCH_ZYNQMP)	+= zynqmp/
- obj-$(CONFIG_CLK_SOCFPGA)	+= socfpga/
- obj-$(CONFIG_SOC_QCA_AR9331)	+= clk-ar933x.o
-diff --git a/drivers/clk/zynq/Makefile b/drivers/clk/zynq/Makefile
-new file mode 100644
-index 000000000000..8fedfc77e4dc
---- /dev/null
-+++ b/drivers/clk/zynq/Makefile
-@@ -0,0 +1 @@
-+obj-y += clkc.o
-diff --git a/arch/arm/mach-zynq/clk-zynq7000.c b/drivers/clk/zynq/clkc.c
-similarity index 100%
-rename from arch/arm/mach-zynq/clk-zynq7000.c
-rename to drivers/clk/zynq/clkc.c
+diff --git a/drivers/net/macb.c b/drivers/net/macb.c
+index df1e606454b1..4850e60c49ab 100644
+--- a/drivers/net/macb.c
++++ b/drivers/net/macb.c
+@@ -792,6 +792,7 @@ static const struct of_device_id macb_dt_ids[] = {
+ 	{ .compatible = "cdns,at91sam9260-macb",},
+ 	{ .compatible = "atmel,sama5d2-gem",},
+ 	{ .compatible = "atmel,sama5d3-gem",},
++	{ .compatible = "cdns,zynq-gem",},
+ 	{ .compatible = "cdns,zynqmp-gem",},
+ 	{ /* sentinel */ }
+ };
 -- 
 2.23.0
 
