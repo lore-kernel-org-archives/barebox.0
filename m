@@ -1,13 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mickerik.phytec.de ([195.145.39.210])
- by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iO27W-0000CO-OB
- for barebox@lists.infradead.org; Fri, 25 Oct 2019 16:07:24 +0000
-From: Robert Karszniewicz <r.karszniewicz@phytec.de>
-Date: Fri, 25 Oct 2019 18:07:19 +0200
-Message-Id: <1572019639-343291-1-git-send-email-r.karszniewicz@phytec.de>
-In-Reply-To: <1572018968-343065-1-git-send-email-r.karszniewicz@phytec.de>
-References: <1572018968-343065-1-git-send-email-r.karszniewicz@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1iSzch-00058v-5T
+ for barebox@lists.infradead.org; Fri, 08 Nov 2019 08:28:04 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri,  8 Nov 2019 09:28:00 +0100
+Message-Id: <20191108082800.22044-1-s.hauer@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,70 +15,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] test: usb: storage: Increase retries for usb_stor_transport()
-To: barebox@lists.infradead.org
+Subject: [PATCH] ARM: mmu-early: On i.MX6 with HAB map ROM is mapped without XN
+To: Barebox List <barebox@lists.infradead.org>
 
-This should make writing and reading more reliable.
+On i.MX6 with HAB enabled we call into the ROM later in
+imx6_hab_get_status(). This only works when the XN bit is not set for
+this area, so remap the first MiB as cached which doesn't have the XN
+bit set.
 
-Also:
-- change loop condition to make "retries" semantically correct
-- add a debug message in case of fatal failure
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
-And here is the test for how many retries were required at maximum. In case
-anyone wants to try for themselves.
+ arch/arm/cpu/mmu-early.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-barebox:/ usb && mkdir /mnt/usb && mount /dev/disk0.0 /mnt/usb && echo 'generating 100MiB file' && memcpy -s /dev/prng -d testfile 0x0 0x0 104857600 && echo 'writing file to drive' && cp testfile /mnt/usb/testfile && md5sum testfile /mnt/usb/testfile; ls -l testfile /mnt/usb/testfile
-
-The highest max_retries for our three drives was 4. So 10 should be high enough.
-
- drivers/usb/storage/usb.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/usb/storage/usb.c b/drivers/usb/storage/usb.c
-index 63d624e..90e4492 100644
---- a/drivers/usb/storage/usb.c
-+++ b/drivers/usb/storage/usb.c
-@@ -86,9 +86,13 @@ static int usb_stor_transport(struct us_blk_dev *usb_blkdev,
- 	struct us_data *us = usb_blkdev->us;
- 	struct device_d *dev = &us->pusb_dev->dev;
- 	int i, ret;
-+	static int max_retries = 0;
+diff --git a/arch/arm/cpu/mmu-early.c b/arch/arm/cpu/mmu-early.c
+index 7c30526b94..b985aa455f 100644
+--- a/arch/arm/cpu/mmu-early.c
++++ b/arch/arm/cpu/mmu-early.c
+@@ -58,5 +58,12 @@ void mmu_early_enable(unsigned long membase, unsigned long memsize,
+ 	/* maps main memory as cachable */
+ 	map_region(membase, memsize, PMD_SECT_DEF_CACHED);
  
--
--	for (i = 0; i < retries; i++) {
-+	for (i = 0; i <= retries; i++) {
-+		if (cmd[0] == SCSI_WRITE10 && i > max_retries) {
-+			max_retries = i;
-+			printf("max_retries = %d\n", max_retries);
-+		}
- 		dev_dbg(dev, "%s\n", usb_stor_opcode_name(cmd[0]));
- 		ret = us->transport(usb_blkdev, cmd, cmdlen, data, datalen);
- 		dev_dbg(dev, "%s returns %d\n", usb_stor_opcode_name(cmd[0]),
-@@ -105,6 +109,8 @@ static int usb_stor_transport(struct us_blk_dev *usb_blkdev,
- 			mdelay(request_sense_delay_ms);
- 	}
- 
-+	dev_dbg(dev, "Retried %s %d times, and failed.\n", usb_stor_opcode_name(cmd[0]), retries);
++	/*
++	 * With HAB enabled we call into the ROM code later in imx6_hab_get_status().
++	 * Map the ROM cached which has the effect that the XN bit is not set.
++	 */
++	if (IS_ENABLED(CONFIG_HABV4) && IS_ENABLED(CONFIG_ARCH_IMX6))
++		map_region(0x0, SZ_1M, PMD_SECT_DEF_CACHED);
 +
- 	return -EIO;
+ 	__mmu_cache_on();
  }
- 
-@@ -194,7 +200,7 @@ static int usb_stor_io_10(struct us_blk_dev *usb_blkdev, u8 opcode,
- 	put_unaligned_be16(blocks, &cmd[7]);
- 
- 	return usb_stor_transport(usb_blkdev, cmd, sizeof(cmd), data,
--				  blocks * SECTOR_SIZE, 2, 0);
-+				  blocks * SECTOR_SIZE, 100, 0);
- }
- 
- /***********************************************************************
 -- 
-2.7.4
+2.24.0.rc1
 
 
 _______________________________________________
