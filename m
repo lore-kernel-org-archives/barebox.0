@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iTRjq-0006rg-RD
+ id 1iTRjr-0006qr-5w
  for barebox@lists.infradead.org; Sat, 09 Nov 2019 14:29:21 +0000
 Received: from astat.fritz.box (a89-183-91-60.net-htp.de [89.183.91.60])
- by lynxeye.de (Postfix) with ESMTPA id 913BDE74222
- for <barebox@lists.infradead.org>; Sat,  9 Nov 2019 15:28:41 +0100 (CET)
+ by lynxeye.de (Postfix) with ESMTPA id 70E55E74251
+ for <barebox@lists.infradead.org>; Sat,  9 Nov 2019 15:28:42 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sat,  9 Nov 2019 15:28:22 +0100
-Message-Id: <20191109142837.82409-3-dev@lynxeye.de>
+Date: Sat,  9 Nov 2019 15:28:25 +0100
+Message-Id: <20191109142837.82409-6-dev@lynxeye.de>
 In-Reply-To: <20191109142837.82409-1-dev@lynxeye.de>
 References: <20191109142837.82409-1-dev@lynxeye.de>
 MIME-Version: 1.0
@@ -24,104 +24,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 03/18] ARM: zynq: use getopt in zynq_mkimage
+Subject: [PATCH v2 06/18] ARM: zynq: zedboard: provide DTB
 To: barebox@lists.infradead.org
 
-Makes extending the command line much easier.
+Provide the DTB to allow devices to be probed from there,
+instead of board code.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- images/Makefile.zynq   |  4 +++-
- scripts/zynq_mkimage.c | 43 +++++++++++++++++++++++++++++++++---------
- 2 files changed, 37 insertions(+), 10 deletions(-)
+ arch/arm/boards/avnet-zedboard/lowlevel.c | 8 +++++++-
+ arch/arm/dts/Makefile                     | 1 +
+ arch/arm/dts/zynq-zed.dts                 | 7 +++++++
+ 3 files changed, 15 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/dts/zynq-zed.dts
 
-diff --git a/images/Makefile.zynq b/images/Makefile.zynq
-index e162aafae336..cc0cf6d2dfa0 100644
---- a/images/Makefile.zynq
-+++ b/images/Makefile.zynq
-@@ -2,7 +2,9 @@
- # barebox image generation Makefile for Xilinx Zynq images
- #
- quiet_cmd_zynq_image = ZYNQIMG  $@
--      cmd_zynq_image = $(objtree)/scripts/zynq_mkimage $(subst .zynqimg,,$@) $@
-+      cmd_zynq_image = \
-+         $(objtree)/scripts/zynq_mkimage -f $(subst .zynqimg,,$@) -o $@
+diff --git a/arch/arm/boards/avnet-zedboard/lowlevel.c b/arch/arm/boards/avnet-zedboard/lowlevel.c
+index cf3c4ebd0c7e..ae279e4e64af 100644
+--- a/arch/arm/boards/avnet-zedboard/lowlevel.c
++++ b/arch/arm/boards/avnet-zedboard/lowlevel.c
+@@ -27,8 +27,13 @@
+ #define PLL_DDR_LOCK	(1 << 1)
+ #define PLL_IO_LOCK	(1 << 2)
+ 
++extern char __dtb_zynq_zed_start[];
 +
- $(obj)/%.zynqimg: $(obj)/% FORCE
- 	$(call if_changed,zynq_image)
- 
-diff --git a/scripts/zynq_mkimage.c b/scripts/zynq_mkimage.c
-index a096b834d156..905d6fc69a54 100644
---- a/scripts/zynq_mkimage.c
-+++ b/scripts/zynq_mkimage.c
-@@ -14,33 +14,58 @@
- 
- #include <endian.h>
- #include <errno.h>
-+#include <getopt.h>
- #include <malloc.h>
- #include <stdio.h>
- #include <stdlib.h>
- #include <sys/stat.h>
- 
-+static char *prgname;
-+
- static void usage(char *name)
+ void __naked barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint32_t r2)
  {
--	printf("Usage: %s barebox-flash-image <outfile>\n", name);
-+	fprintf(stderr, "usage: %s [OPTIONS]\n\n"
-+			"-f <input>   input image file\n"
-+			"-o <output>  output file\n"
-+			"-h           this help\n", prgname);
-+		exit(1);
++
++	void *fdt = __dtb_zynq_zed_start + get_runtime_offset();
++
+ 	/* open sesame */
+ 	writel(0x0000DF0D, ZYNQ_SLCR_UNLOCK);
+ 
+@@ -257,5 +262,6 @@ void __naked barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint32_t r2)
+ 	writel(0x0000767B, ZYNQ_SLCR_LOCK);
+ 
+ 	arm_cpu_lowlevel_init();
+-	barebox_arm_entry(0, SZ_512M, NULL);
++
++	barebox_arm_entry(0, SZ_512M, fdt);
  }
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 294a0bfa5525..c097c10186a4 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -143,5 +143,6 @@ lwl-dtb-$(CONFIG_MACH_ZII_IMX7D_DEV) += imx7d-zii-rpu2.dtb.o imx7d-zii-rmu2.dtb.
+ lwl-dtb-$(CONFIG_MACH_WAGO_PFC_AM35XX) += am35xx-pfc-750_820x.dtb.o
+ lwl-dtb-$(CONFIG_MACH_LS1046ARDB) += fsl-ls1046a-rdb.dtb.o
+ lwl-dtb-$(CONFIG_MACH_TQMLS1046A) += fsl-tqmls1046a-mbls10xxa.dtb.o
++lwl-dtb-$(CONFIG_MACH_ZEDBOARD) += zynq-zed.dtb.o
  
- int main(int argc, char *argv[])
- {
- 	FILE *ifile, *ofile;
- 	unsigned int *buf;
--	const char *infile;
--	const char *outfile;
-+	const char *infile = NULL, *outfile = NULL;
- 	struct stat st;
--	unsigned int i;
--	unsigned long sum = 0;
-+	unsigned int i,sum = 0;
-+	int opt;
- 
--	if (argc != 3) {
--		usage(argv[0]);
-+	prgname = argv[0];
+ clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts *.dtb.lzo
+diff --git a/arch/arm/dts/zynq-zed.dts b/arch/arm/dts/zynq-zed.dts
+new file mode 100644
+index 000000000000..52d68332499a
+--- /dev/null
++++ b/arch/arm/dts/zynq-zed.dts
+@@ -0,0 +1,7 @@
++#include <arm/zynq-zed.dts>
 +
-+	while ((opt = getopt(argc, argv, "f:ho:")) != -1) {
-+		switch (opt) {
-+		case 'f':
-+			infile = optarg;
-+			break;
-+		case 'o':
-+			outfile = optarg;
-+			break;
-+		case 'h':
-+			usage(argv[0]);
-+		default:
-+			exit(1);
-+		}
-+	}
-+
-+	if (!infile) {
-+		fprintf(stderr, "input file not given\n");
- 		exit(1);
- 	}
- 
--	infile = argv[1];
--	outfile = argv[2];
-+	if (!outfile) {
-+		fprintf(stderr, "output file not given\n");
-+		exit(1);
-+	}
- 
- 	if (stat(infile, &st) == -1) {
- 		perror("stat");
++/ {
++	chosen {
++		stdout-path = &uart1;
++	};
++};
 -- 
 2.23.0
 
