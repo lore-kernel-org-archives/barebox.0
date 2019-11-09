@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iTRkM-0007FQ-EF
+ id 1iTRkM-0007FR-ED
  for barebox@lists.infradead.org; Sat, 09 Nov 2019 14:29:52 +0000
 Received: from astat.fritz.box (a89-183-91-60.net-htp.de [89.183.91.60])
- by lynxeye.de (Postfix) with ESMTPA id 18F16E74261
+ by lynxeye.de (Postfix) with ESMTPA id 9122AE74268
  for <barebox@lists.infradead.org>; Sat,  9 Nov 2019 15:28:43 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sat,  9 Nov 2019 15:28:28 +0100
-Message-Id: <20191109142837.82409-9-dev@lynxeye.de>
+Date: Sat,  9 Nov 2019 15:28:30 +0100
+Message-Id: <20191109142837.82409-11-dev@lynxeye.de>
 In-Reply-To: <20191109142837.82409-1-dev@lynxeye.de>
 References: <20191109142837.82409-1-dev@lynxeye.de>
 MIME-Version: 1.0
@@ -24,52 +24,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 09/18] ARM: zynq: move clock controller driver to
- drivers/clk
+Subject: [PATCH v2 11/18] clk: zynq: improve PLL enable handling
 To: barebox@lists.infradead.org
 
-No functional change, just adjusting the Zynq code to common practise.
+Ensure that both the powerdown and reset bits are cleared when the PLL
+gets enabled, as any of those set would prevent the PLL from working.
+
+Also add a status readback function, so the real status of the PLL is
+reflected in the Barebox clock state.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/mach-zynq/Makefile                                  | 2 +-
- drivers/clk/Makefile                                         | 1 +
- drivers/clk/zynq/Makefile                                    | 1 +
- arch/arm/mach-zynq/clk-zynq7000.c => drivers/clk/zynq/clkc.c | 0
- 4 files changed, 3 insertions(+), 1 deletion(-)
- create mode 100644 drivers/clk/zynq/Makefile
- rename arch/arm/mach-zynq/clk-zynq7000.c => drivers/clk/zynq/clkc.c (100%)
+ drivers/clk/zynq/clkc.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-zynq/Makefile b/arch/arm/mach-zynq/Makefile
-index 459c95762256..b401c77983d3 100644
---- a/arch/arm/mach-zynq/Makefile
-+++ b/arch/arm/mach-zynq/Makefile
-@@ -1 +1 @@
--obj-y += zynq.o devices.o clk-zynq7000.o
-+obj-y += zynq.o devices.o
-diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
-index 1bd5f9035896..8160620dc618 100644
---- a/drivers/clk/Makefile
-+++ b/drivers/clk/Makefile
-@@ -9,6 +9,7 @@ obj-$(CONFIG_ARCH_MVEBU)	+= mvebu/
- obj-$(CONFIG_ARCH_MXS)		+= mxs/
- obj-$(CONFIG_ARCH_ROCKCHIP)	+= rockchip/
- obj-$(CONFIG_ARCH_TEGRA)	+= tegra/
-+obj-$(CONFIG_ARCH_ZYNQ)		+= zynq/
- obj-$(CONFIG_ARCH_ZYNQMP)	+= zynqmp/
- obj-$(CONFIG_CLK_SOCFPGA)	+= socfpga/
- obj-$(CONFIG_SOC_QCA_AR9331)	+= clk-ar933x.o
-diff --git a/drivers/clk/zynq/Makefile b/drivers/clk/zynq/Makefile
-new file mode 100644
-index 000000000000..8fedfc77e4dc
---- /dev/null
-+++ b/drivers/clk/zynq/Makefile
-@@ -0,0 +1 @@
-+obj-y += clkc.o
-diff --git a/arch/arm/mach-zynq/clk-zynq7000.c b/drivers/clk/zynq/clkc.c
-similarity index 100%
-rename from arch/arm/mach-zynq/clk-zynq7000.c
-rename to drivers/clk/zynq/clkc.c
+diff --git a/drivers/clk/zynq/clkc.c b/drivers/clk/zynq/clkc.c
+index ba441740c585..07152e2ada3f 100644
+--- a/drivers/clk/zynq/clkc.c
++++ b/drivers/clk/zynq/clkc.c
+@@ -48,6 +48,8 @@ enum zynq_pll_type {
+ #define PLL_STATUS_DDR_PLL_STABLE	(1 << 1)
+ #define PLL_STATUS_IO_PLL_STABLE	(1 << 2)
+ #define PLL_CTRL_BYPASS_FORCE		(1 << 4)
++#define PLL_CTRL_PWRDOWN		(1 << 1)
++#define PLL_CTRL_RESET			(1 << 0)
+ 
+ static struct clk *clks[clks_max];
+ 
+@@ -75,7 +77,7 @@ static int zynq_pll_enable(struct clk *clk)
+ 	int timeout = 10000;
+ 
+ 	val = readl(pll->pll_ctrl);
+-	val &= ~PLL_CTRL_BYPASS_FORCE;
++	val &= ~(PLL_CTRL_BYPASS_FORCE | PLL_CTRL_PWRDOWN | PLL_CTRL_RESET);
+ 	writel(val, pll->pll_ctrl);
+ 
+ 	while (timeout--) {
+@@ -89,9 +91,18 @@ static int zynq_pll_enable(struct clk *clk)
+ 	return 0;
+ }
+ 
++static int zynq_pll_is_enabled(struct clk *clk)
++{
++	struct zynq_pll_clk *pll = to_zynq_pll_clk(clk);
++	u32 val = readl(pll->pll_ctrl);
++
++	return !(val & (PLL_CTRL_PWRDOWN | PLL_CTRL_RESET));
++}
++
+ static struct clk_ops zynq_pll_clk_ops = {
+ 	.recalc_rate = zynq_pll_recalc_rate,
+ 	.enable = zynq_pll_enable,
++	.is_enabled = zynq_pll_is_enabled,
+ };
+ 
+ static inline struct clk *zynq_pll_clk(enum zynq_pll_type type,
 -- 
 2.23.0
 
