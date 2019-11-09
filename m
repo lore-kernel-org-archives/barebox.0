@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iTRkO-0007FM-1U
- for barebox@lists.infradead.org; Sat, 09 Nov 2019 14:29:57 +0000
+ id 1iTRkO-0007FN-3A
+ for barebox@lists.infradead.org; Sat, 09 Nov 2019 14:29:58 +0000
 Received: from astat.fritz.box (a89-183-91-60.net-htp.de [89.183.91.60])
- by lynxeye.de (Postfix) with ESMTPA id A1C11E74283
- for <barebox@lists.infradead.org>; Sat,  9 Nov 2019 15:28:45 +0100 (CET)
+ by lynxeye.de (Postfix) with ESMTPA id DAA77E74282
+ for <barebox@lists.infradead.org>; Sat,  9 Nov 2019 15:28:44 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sat,  9 Nov 2019 15:28:37 +0100
-Message-Id: <20191109142837.82409-18-dev@lynxeye.de>
+Date: Sat,  9 Nov 2019 15:28:35 +0100
+Message-Id: <20191109142837.82409-16-dev@lynxeye.de>
 In-Reply-To: <20191109142837.82409-1-dev@lynxeye.de>
 References: <20191109142837.82409-1-dev@lynxeye.de>
 MIME-Version: 1.0
@@ -24,85 +24,115 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 18/18] ARM: zynq: add bootsource detection
+Subject: [PATCH v2 16/18] ARM: zynq: switch to multi-image build
 To: barebox@lists.infradead.org
 
-Implement the bootsource detection by reading the BOOT_MODE SLCR register
-which holds the strap values used to select the boot source.
+Finally move over to a multi-image based build.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- .../mach-zynq/include/mach/zynq7000-regs.h    |  1 +
- arch/arm/mach-zynq/zynq.c                     | 27 +++++++++++++++++--
- 2 files changed, 26 insertions(+), 2 deletions(-)
+ arch/arm/boards/avnet-zedboard/lowlevel.c      |  2 +-
+ .../{zedboard_defconfig => zynq_defconfig}     |  2 ++
+ arch/arm/mach-zynq/Kconfig                     | 18 +++++++-----------
+ images/Makefile.zynq                           |  4 ++--
+ 4 files changed, 12 insertions(+), 14 deletions(-)
+ rename arch/arm/configs/{zedboard_defconfig => zynq_defconfig} (95%)
 
-diff --git a/arch/arm/mach-zynq/include/mach/zynq7000-regs.h b/arch/arm/mach-zynq/include/mach/zynq7000-regs.h
-index dd02f5b4072a..eeecfe1ded43 100644
---- a/arch/arm/mach-zynq/include/mach/zynq7000-regs.h
-+++ b/arch/arm/mach-zynq/include/mach/zynq7000-regs.h
-@@ -63,6 +63,7 @@
- #define ZYNQ_FPGA3_CLK_CTRL		0x0A0
- #define ZYNQ_CLK_621_TRUE		0x0C4
- #define ZYNQ_RST_CTRL_BASE		(ZYNQ_SLCR_BASE + 0x200)
-+#define ZYNQ_SLCR_BOOT_MODE		(ZYNQ_SLCR_BASE + 0x25C)
- #define ZYNQ_PSS_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x000)
- #define ZYNQ_DDR_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x004)
- #define ZYNQ_TOPSW_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x008)
-diff --git a/arch/arm/mach-zynq/zynq.c b/arch/arm/mach-zynq/zynq.c
-index ad06c624d90b..79a6b908e000 100644
---- a/arch/arm/mach-zynq/zynq.c
-+++ b/arch/arm/mach-zynq/zynq.c
-@@ -14,11 +14,12 @@
-  */
+diff --git a/arch/arm/boards/avnet-zedboard/lowlevel.c b/arch/arm/boards/avnet-zedboard/lowlevel.c
+index ae279e4e64af..93e4da96ecd4 100644
+--- a/arch/arm/boards/avnet-zedboard/lowlevel.c
++++ b/arch/arm/boards/avnet-zedboard/lowlevel.c
+@@ -29,7 +29,7 @@
  
- #include <asm/system.h>
--#include <io.h>
-+#include <bootsource.h>
- #include <common.h>
- #include <init.h>
--#include <restart.h>
-+#include <io.h>
- #include <mach/zynq7000-regs.h>
-+#include <restart.h>
+ extern char __dtb_zynq_zed_start[];
  
- static void __noreturn zynq_restart_soc(struct restart_handler *rst)
+-void __naked barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint32_t r2)
++ENTRY_FUNCTION(start_avnet_zedboard, r0, r1, r2)
  {
-@@ -30,6 +31,26 @@ static void __noreturn zynq_restart_soc(struct restart_handler *rst)
- 	hang();
- }
  
-+static enum bootsource zynq_bootsource_get(void)
-+{
-+	u32 boot_mode = readl(ZYNQ_SLCR_BOOT_MODE);
-+
-+	switch (boot_mode & 0x7) {
-+	case 0x0:
-+		return BOOTSOURCE_JTAG;
-+	case 0x1:
-+		return BOOTSOURCE_SPI;
-+	case 0x2:
-+		return BOOTSOURCE_NOR;
-+	case 0x4:
-+		return BOOTSOURCE_NAND;
-+	case 0x5:
-+		return BOOTSOURCE_MMC;
-+	default:
-+		return BOOTSOURCE_UNKNOWN;
-+	}
-+}
-+
- static int zynq_init(void)
- {
- 	u32 val;
-@@ -50,6 +71,8 @@ static int zynq_init(void)
+ 	void *fdt = __dtb_zynq_zed_start + get_runtime_offset();
+diff --git a/arch/arm/configs/zedboard_defconfig b/arch/arm/configs/zynq_defconfig
+similarity index 95%
+rename from arch/arm/configs/zedboard_defconfig
+rename to arch/arm/configs/zynq_defconfig
+index 0e5078c40246..a16c57d5cebb 100644
+--- a/arch/arm/configs/zedboard_defconfig
++++ b/arch/arm/configs/zynq_defconfig
+@@ -1,4 +1,5 @@
+ CONFIG_ARCH_ZYNQ=y
++CONFIG_MACH_ZEDBOARD=y
+ CONFIG_AEABI=y
+ CONFIG_ARM_UNWIND=y
+ CONFIG_MMU=y
+@@ -41,5 +42,6 @@ CONFIG_NET=y
+ CONFIG_DRIVER_SERIAL_CADENCE=y
+ CONFIG_DRIVER_NET_MACB=y
+ # CONFIG_SPI is not set
++# CONFIG_PINCTRL is not set
+ CONFIG_FS_TFTP=y
+ CONFIG_DIGEST=y
+diff --git a/arch/arm/mach-zynq/Kconfig b/arch/arm/mach-zynq/Kconfig
+index 944f325bcc08..3e07633e5f08 100644
+--- a/arch/arm/mach-zynq/Kconfig
++++ b/arch/arm/mach-zynq/Kconfig
+@@ -2,37 +2,33 @@ if ARCH_ZYNQ
  
- 	restart_handler_register_fn(zynq_restart_soc);
+ config ARCH_TEXT_BASE
+ 	hex
+-	default 0x1ff00000 if MACH_ZEDBOARD
++	default 0x0
  
-+	bootsource_set(zynq_bootsource_get());
-+
- 	return 0;
- }
- postcore_initcall(zynq_init);
+ config ZYNQ_DEBUG_LL_UART_BASE
+ 	hex
+ 	default 0xe0001000 if MACH_ZEDBOARD
+ 
+-choice
+-	prompt "Xilinx Zynq type board"
+-
+ config ARCH_ZYNQ7000
+-	bool "Zynq-7000"
++	bool
+ 	select CPU_V7
+ 	select CLKDEV_LOOKUP
+ 	select COMMON_CLK
+ 	select COMMON_CLK_OF_PROVIDER
+ 	select ARM_SMP_TWD
+ 	select HAS_MACB
++	select HAVE_PBL_MULTI_IMAGES
+ 	select OFTREE
+ 	select OFDEVICE
++	select RELOCATABLE
+ 
+-endchoice
+ 
+-if ARCH_ZYNQ7000
+ 
+-choice
+-	prompt "Zynq-7000 Board Type"
++menu "select Zynq boards to be built"
+ 
+ config MACH_ZEDBOARD
+ 	bool "Avnet Zynq-7000 ZedBoard"
++	select ARCH_ZYNQ7000
+ 
+-endchoice
+-endif
++endmenu
+ 
+ endif
+diff --git a/images/Makefile.zynq b/images/Makefile.zynq
+index b089a9fd26f4..062496ac7d41 100644
+--- a/images/Makefile.zynq
++++ b/images/Makefile.zynq
+@@ -18,6 +18,6 @@ $(obj)/%.zynqimg: $(obj)/% FORCE
+ 
+ #------------------------------------------------------------------------------
+ 
+-CFG_start_pbl.pblb.zynqimg = $(board)/avnet-zedboard/zedboard.zynqcfg
+-FILE_barebox-avnet-zedboard.img = start_pbl.pblb.zynqimg
++CFG_start_avnet_zedboard.pblb.zynqimg = $(board)/avnet-zedboard/zedboard.zynqcfg
++FILE_barebox-avnet-zedboard.img = start_avnet_zedboard.pblb.zynqimg
+ image-$(CONFIG_MACH_ZEDBOARD) += barebox-avnet-zedboard.img
 -- 
 2.23.0
 
