@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iTRjq-0006qp-52
- for barebox@lists.infradead.org; Sat, 09 Nov 2019 14:29:20 +0000
+ id 1iTRjq-0006rg-RD
+ for barebox@lists.infradead.org; Sat, 09 Nov 2019 14:29:21 +0000
 Received: from astat.fritz.box (a89-183-91-60.net-htp.de [89.183.91.60])
- by lynxeye.de (Postfix) with ESMTPA id 27AEBE74241
- for <barebox@lists.infradead.org>; Sat,  9 Nov 2019 15:28:42 +0100 (CET)
+ by lynxeye.de (Postfix) with ESMTPA id 913BDE74222
+ for <barebox@lists.infradead.org>; Sat,  9 Nov 2019 15:28:41 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sat,  9 Nov 2019 15:28:24 +0100
-Message-Id: <20191109142837.82409-5-dev@lynxeye.de>
+Date: Sat,  9 Nov 2019 15:28:22 +0100
+Message-Id: <20191109142837.82409-3-dev@lynxeye.de>
 In-Reply-To: <20191109142837.82409-1-dev@lynxeye.de>
 References: <20191109142837.82409-1-dev@lynxeye.de>
 MIME-Version: 1.0
@@ -24,34 +24,104 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 05/18] ARM: zynq: add size check in zynq_mkimage
+Subject: [PATCH v2 03/18] ARM: zynq: use getopt in zynq_mkimage
 To: barebox@lists.infradead.org
 
-Currently Barebox does not support 2 stage loading on Zynq, so the
-image must fit into the free OCRAM area. Add a check to the mkimage
-tool to validate this.
+Makes extending the command line much easier.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- scripts/zynq_mkimage.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ images/Makefile.zynq   |  4 +++-
+ scripts/zynq_mkimage.c | 43 +++++++++++++++++++++++++++++++++---------
+ 2 files changed, 37 insertions(+), 10 deletions(-)
 
+diff --git a/images/Makefile.zynq b/images/Makefile.zynq
+index e162aafae336..cc0cf6d2dfa0 100644
+--- a/images/Makefile.zynq
++++ b/images/Makefile.zynq
+@@ -2,7 +2,9 @@
+ # barebox image generation Makefile for Xilinx Zynq images
+ #
+ quiet_cmd_zynq_image = ZYNQIMG  $@
+-      cmd_zynq_image = $(objtree)/scripts/zynq_mkimage $(subst .zynqimg,,$@) $@
++      cmd_zynq_image = \
++         $(objtree)/scripts/zynq_mkimage -f $(subst .zynqimg,,$@) -o $@
++
+ $(obj)/%.zynqimg: $(obj)/% FORCE
+ 	$(call if_changed,zynq_image)
+ 
 diff --git a/scripts/zynq_mkimage.c b/scripts/zynq_mkimage.c
-index bf214ca5d0d1..0a1c069472e9 100644
+index a096b834d156..905d6fc69a54 100644
 --- a/scripts/zynq_mkimage.c
 +++ b/scripts/zynq_mkimage.c
-@@ -283,6 +283,11 @@ int main(int argc, char *argv[])
- 		exit(EXIT_FAILURE);
- 	}
+@@ -14,33 +14,58 @@
  
-+	if (st.st_size > 192 * 1024) {
-+		fprintf(stderr, "Image too big, will not fit in OCRAM!\n");
-+		exit(EXIT_FAILURE);
+ #include <endian.h>
+ #include <errno.h>
++#include <getopt.h>
+ #include <malloc.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <sys/stat.h>
+ 
++static char *prgname;
++
+ static void usage(char *name)
+ {
+-	printf("Usage: %s barebox-flash-image <outfile>\n", name);
++	fprintf(stderr, "usage: %s [OPTIONS]\n\n"
++			"-f <input>   input image file\n"
++			"-o <output>  output file\n"
++			"-h           this help\n", prgname);
++		exit(1);
+ }
+ 
+ int main(int argc, char *argv[])
+ {
+ 	FILE *ifile, *ofile;
+ 	unsigned int *buf;
+-	const char *infile;
+-	const char *outfile;
++	const char *infile = NULL, *outfile = NULL;
+ 	struct stat st;
+-	unsigned int i;
+-	unsigned long sum = 0;
++	unsigned int i,sum = 0;
++	int opt;
+ 
+-	if (argc != 3) {
+-		usage(argv[0]);
++	prgname = argv[0];
++
++	while ((opt = getopt(argc, argv, "f:ho:")) != -1) {
++		switch (opt) {
++		case 'f':
++			infile = optarg;
++			break;
++		case 'o':
++			outfile = optarg;
++			break;
++		case 'h':
++			usage(argv[0]);
++		default:
++			exit(1);
++		}
 +	}
 +
- 	buf = calloc(st.st_size + IMAGE_OFFSET, sizeof(char));
- 	if (!buf) {
- 		fprintf(stderr, "Unable to allocate buffer\n");
++	if (!infile) {
++		fprintf(stderr, "input file not given\n");
+ 		exit(1);
+ 	}
+ 
+-	infile = argv[1];
+-	outfile = argv[2];
++	if (!outfile) {
++		fprintf(stderr, "output file not given\n");
++		exit(1);
++	}
+ 
+ 	if (stat(infile, &st) == -1) {
+ 		perror("stat");
 -- 
 2.23.0
 
