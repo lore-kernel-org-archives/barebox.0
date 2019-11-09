@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iTRkN-0007Gb-OF
- for barebox@lists.infradead.org; Sat, 09 Nov 2019 14:29:53 +0000
+ id 1iTRkN-0007Ge-Sh
+ for barebox@lists.infradead.org; Sat, 09 Nov 2019 14:29:56 +0000
 Received: from astat.fritz.box (a89-183-91-60.net-htp.de [89.183.91.60])
- by lynxeye.de (Postfix) with ESMTPA id 910EFE74270
- for <barebox@lists.infradead.org>; Sat,  9 Nov 2019 15:28:44 +0100 (CET)
+ by lynxeye.de (Postfix) with ESMTPA id 2F4E6E7421F
+ for <barebox@lists.infradead.org>; Sat,  9 Nov 2019 15:28:45 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sat,  9 Nov 2019 15:28:34 +0100
-Message-Id: <20191109142837.82409-15-dev@lynxeye.de>
+Date: Sat,  9 Nov 2019 15:28:36 +0100
+Message-Id: <20191109142837.82409-17-dev@lynxeye.de>
 In-Reply-To: <20191109142837.82409-1-dev@lynxeye.de>
 References: <20191109142837.82409-1-dev@lynxeye.de>
 MIME-Version: 1.0
@@ -24,37 +24,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 15/18] clk: zynq: remove clkdevs
+Subject: [PATCH v2 17/18] bootsource: add JTAG bootsource
 To: barebox@lists.infradead.org
 
-They aren't needed anymore, as all the Zynq devices now
-use a DT based clock lookup.
+Some SoCs are able to detect if they are booted from JTAG. Add the
+enum value to be able to represent this as a valid bootsource.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/clk/zynq/clkc.c | 9 ---------
- 1 file changed, 9 deletions(-)
+ common/bootsource.c  | 1 +
+ include/bootsource.h | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/clk/zynq/clkc.c b/drivers/clk/zynq/clkc.c
-index f30aa8238a0c..30ca5a60faf3 100644
---- a/drivers/clk/zynq/clkc.c
-+++ b/drivers/clk/zynq/clkc.c
-@@ -476,15 +476,6 @@ static int zynq_clock_probe(struct device_d *dev)
- 	clks[smc_aper] = clk_gate("smc_aper", "cpu_1x",
- 				  clk_base + 0x2C, 24, 0, 0);
+diff --git a/common/bootsource.c b/common/bootsource.c
+index 4ef8d8ad9585..1f2bf87e99ed 100644
+--- a/common/bootsource.c
++++ b/common/bootsource.c
+@@ -37,6 +37,7 @@ static const char *bootsource_str[] = {
+ 	[BOOTSOURCE_USB] = "usb",
+ 	[BOOTSOURCE_NET] = "net",
+ 	[BOOTSOURCE_CAN] = "can",
++	[BOOTSOURCE_JTAG] = "jtag",
+ };
  
--	clk_register_clkdev(clks[cpu_3or2x], NULL, "arm_smp_twd");
--	clk_register_clkdev(clks[uart0], NULL, "zynq_serial0");
--	clk_register_clkdev(clks[uart1], NULL, "zynq_serial1");
--	clk_register_clkdev(clks[gem0], NULL, "macb0");
--	clk_register_clkdev(clks[gem1], NULL, "macb1");
--
--	clkdev_add_physbase(clks[cpu_3or2x], CORTEXA9_SCU_TIMER_BASE_ADDR, NULL);
--	clkdev_add_physbase(clks[uart1], ZYNQ_UART1_BASE_ADDR, NULL);
--
- 	clk_data.clks = clks;
- 	clk_data.clk_num = ARRAY_SIZE(clks);
- 	of_clk_add_provider(dev->device_node, of_clk_src_onecell_get,
+ static enum bootsource bootsource = BOOTSOURCE_UNKNOWN;
+diff --git a/include/bootsource.h b/include/bootsource.h
+index 29347aaeb042..92f7f27cd4fa 100644
+--- a/include/bootsource.h
++++ b/include/bootsource.h
+@@ -17,6 +17,7 @@ enum bootsource {
+ 	BOOTSOURCE_USB,
+ 	BOOTSOURCE_NET,
+ 	BOOTSOURCE_CAN,
++	BOOTSOURCE_JTAG,
+ };
+ 
+ #define BOOTSOURCE_INSTANCE_UNKNOWN	-1
 -- 
 2.23.0
 
