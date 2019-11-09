@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iTRkN-0007Gc-Oj
+ id 1iTRkN-0007GZ-Hi
  for barebox@lists.infradead.org; Sat, 09 Nov 2019 14:29:56 +0000
 Received: from astat.fritz.box (a89-183-91-60.net-htp.de [89.183.91.60])
- by lynxeye.de (Postfix) with ESMTPA id 1739DE7426A
- for <barebox@lists.infradead.org>; Sat,  9 Nov 2019 15:28:44 +0100 (CET)
+ by lynxeye.de (Postfix) with ESMTPA id 5C336E74264
+ for <barebox@lists.infradead.org>; Sat,  9 Nov 2019 15:28:43 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sat,  9 Nov 2019 15:28:32 +0100
-Message-Id: <20191109142837.82409-13-dev@lynxeye.de>
+Date: Sat,  9 Nov 2019 15:28:29 +0100
+Message-Id: <20191109142837.82409-10-dev@lynxeye.de>
 In-Reply-To: <20191109142837.82409-1-dev@lynxeye.de>
 References: <20191109142837.82409-1-dev@lynxeye.de>
 MIME-Version: 1.0
@@ -24,160 +24,91 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 13/18] clk: zynq: partially sync with Linux
+Subject: [PATCH v2 10/18] clk: zynq: use base address of clock controller
 To: barebox@lists.infradead.org
 
-Sync the clock enum with the clocks used by Linux and the DT binding.
-Implement AMBA bus clocks and SPI and SDIO peripheral clocks and
-register a DT clock controller, so the clocks can be looked up by
-DT handle.
+The clock controller is a subregion of the SLCR, use the real base
+of this region for mapping the registers. This will allow to switch
+to DT based probing later.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/clk/zynq/clkc.c | 87 +++++++++++++++++++++++++++++++++--------
- 1 file changed, 71 insertions(+), 16 deletions(-)
+ arch/arm/mach-zynq/zynq.c |  3 ++-
+ drivers/clk/zynq/clkc.c   | 30 +++++++++++++++---------------
+ 2 files changed, 17 insertions(+), 16 deletions(-)
 
+diff --git a/arch/arm/mach-zynq/zynq.c b/arch/arm/mach-zynq/zynq.c
+index f6112fd249ce..ec22b16c91cd 100644
+--- a/arch/arm/mach-zynq/zynq.c
++++ b/arch/arm/mach-zynq/zynq.c
+@@ -48,7 +48,8 @@ static int zynq_init(void)
+ 	writel(val, 0xf8f00000);
+ 	dmb();
+ 
+-	add_generic_device("zynq-clock", 0, NULL, ZYNQ_SLCR_BASE, 0x4000, IORESOURCE_MEM, NULL);
++	add_generic_device("zynq-clock", 0, NULL, ZYNQ_SLCR_BASE + 0x100,
++			   0x4000, IORESOURCE_MEM, NULL);
+ 	add_generic_device("smp_twd", 0, NULL, CORTEXA9_SCU_TIMER_BASE_ADDR,
+ 				0x4000, IORESOURCE_MEM, NULL);
+ 	restart_handler_register_fn(zynq_restart_soc);
 diff --git a/drivers/clk/zynq/clkc.c b/drivers/clk/zynq/clkc.c
-index 90ab71fe9662..f30aa8238a0c 100644
+index cd49d8478f58..ba441740c585 100644
 --- a/drivers/clk/zynq/clkc.c
 +++ b/drivers/clk/zynq/clkc.c
-@@ -29,10 +29,16 @@
- #include <mach/zynq7000-regs.h>
- #include <malloc.h>
+@@ -360,38 +360,38 @@ static struct clk *zynq_cpu_subclk(const char *name,
+ static int zynq_clock_probe(struct device_d *dev)
+ {
+ 	struct resource *iores;
+-	void __iomem *slcr_base;
++	void __iomem *clk_base;
+ 	unsigned long ps_clk_rate = 33333330;
  
--enum zynq_clks {
--	dummy, ps_clk, arm_pll, ddr_pll, io_pll, uart_clk, uart0, uart1,
--	cpu_clk, cpu_6x4x, cpu_3x2x, cpu_2x, cpu_1x,
--	gem_clk, gem0, gem1, clks_max
-+enum zynq_clk {
-+	armpll, ddrpll, iopll,
-+	cpu_6or4x, cpu_3or2x, cpu_2x, cpu_1x,
-+	ddr2x, ddr3x, dci,
-+	lqspi, smc, pcap, gem0, gem1, fclk0, fclk1, fclk2, fclk3, can0, can1,
-+	sdio0, sdio1, uart0, uart1, spi0, spi1, dma,
-+	usb0_aper, usb1_aper, gem0_aper, gem1_aper,
-+	sdio0_aper, sdio1_aper, spi0_aper, spi1_aper, can0_aper, can1_aper,
-+	i2c0_aper, i2c1_aper, uart0_aper, uart1_aper, gpio_aper, lqspi_aper,
-+	smc_aper, swdt, dbg_trc, dbg_apb, clk_max
- };
+ 	iores = dev_request_mem_resource(dev, 0);
+ 	if (IS_ERR(iores))
+ 		return PTR_ERR(iores);
+-	slcr_base = IOMEM(iores->start);
++	clk_base = IOMEM(iores->start);
  
- enum zynq_pll_type {
-@@ -51,7 +57,8 @@ enum zynq_pll_type {
- #define PLL_CTRL_PWRDOWN		(1 << 1)
- #define PLL_CTRL_RESET			(1 << 0)
+ 	clks[ps_clk]  = clk_fixed("ps_clk", ps_clk_rate);
  
--static struct clk *clks[clks_max];
-+static struct clk *clks[clk_max];
-+static struct clk_onecell_data clk_data;
+-	clks[arm_pll] = zynq_pll_clk(ZYNQ_PLL_ARM, "arm_pll", slcr_base + 0x100);
+-	clks[ddr_pll] = zynq_pll_clk(ZYNQ_PLL_DDR, "ddr_pll", slcr_base + 0x104);
+-	clks[io_pll]  = zynq_pll_clk(ZYNQ_PLL_IO,  "io_pll", slcr_base + 0x108);
++	clks[arm_pll] = zynq_pll_clk(ZYNQ_PLL_ARM, "arm_pll", clk_base + 0x0);
++	clks[ddr_pll] = zynq_pll_clk(ZYNQ_PLL_DDR, "ddr_pll", clk_base + 0x4);
++	clks[io_pll]  = zynq_pll_clk(ZYNQ_PLL_IO,  "io_pll", clk_base + 0x8);
  
- struct zynq_pll_clk {
- 	struct clk	clk;
-@@ -401,46 +408,94 @@ static int zynq_clock_probe(struct device_d *dev)
+-	clks[uart_clk] = zynq_periph_clk("uart_clk", slcr_base + 0x154);
++	clks[uart_clk] = zynq_periph_clk("uart_clk", clk_base + 0x54);
  
- 	clk_base = IOMEM(iores->start);
+-	clks[uart0] = clk_gate("uart0", "uart_clk", slcr_base + 0x154, 0, 0, 0);
+-	clks[uart1] = clk_gate("uart1", "uart_clk", slcr_base + 0x154, 1, 0, 0);
++	clks[uart0] = clk_gate("uart0", "uart_clk", clk_base + 0x54, 0, 0, 0);
++	clks[uart1] = clk_gate("uart1", "uart_clk", clk_base + 0x54, 1, 0, 0);
  
--	clks[ps_clk]  = clk_fixed("ps_clk", ps_clk_rate);
-+	clk_fixed("ps_clk", ps_clk_rate);
+-	clks[gem0] = clk_gate("gem0", "io_pll", slcr_base + 0x140, 0, 0, 0);
+-	clks[gem1] = clk_gate("gem1", "io_pll", slcr_base + 0x144, 1, 0, 0);
++	clks[gem0] = clk_gate("gem0", "io_pll", clk_base + 0x40, 0, 0, 0);
++	clks[gem1] = clk_gate("gem1", "io_pll", clk_base + 0x44, 1, 0, 0);
  
--	clks[arm_pll] = zynq_pll_clk(ZYNQ_PLL_ARM, "arm_pll", clk_base + 0x0);
--	clks[ddr_pll] = zynq_pll_clk(ZYNQ_PLL_DDR, "ddr_pll", clk_base + 0x4);
--	clks[io_pll]  = zynq_pll_clk(ZYNQ_PLL_IO,  "io_pll", clk_base + 0x8);
-+	clks[armpll] = zynq_pll_clk(ZYNQ_PLL_ARM, "arm_pll", clk_base + 0x0);
-+	clks[ddrpll] = zynq_pll_clk(ZYNQ_PLL_DDR, "ddr_pll", clk_base + 0x4);
-+	clks[iopll] = zynq_pll_clk(ZYNQ_PLL_IO,  "io_pll", clk_base + 0x8);
+-	clks[cpu_clk] = zynq_cpu_clk("cpu_clk", slcr_base + 0x120);
++	clks[cpu_clk] = zynq_cpu_clk("cpu_clk", clk_base + 0x20);
  
--	clks[uart_clk] = zynq_periph_clk("uart_clk", clk_base + 0x54);
-+	zynq_periph_clk("sdio_clk", clk_base + 0x50);
-+	clks[sdio0] = clk_gate("sdio0", "sdio_clk", clk_base + 0x50, 0, 0, 0);
-+	clks[sdio1] = clk_gate("sdio1", "sdio_clk", clk_base + 0x50, 1, 0, 0);
- 
-+	zynq_periph_clk("uart_clk", clk_base + 0x54);
- 	clks[uart0] = clk_gate("uart0", "uart_clk", clk_base + 0x54, 0, 0, 0);
- 	clks[uart1] = clk_gate("uart1", "uart_clk", clk_base + 0x54, 1, 0, 0);
- 
-+	zynq_periph_clk("spi_clk", clk_base + 0x58);
-+	clks[spi0] = clk_gate("spi0", "spi_clk", clk_base + 0x58, 0, 0, 0);
-+	clks[spi1] = clk_gate("spi1", "spi_clk", clk_base + 0x58, 1, 0, 0);
-+
- 	clks[gem0] = clk_gate("gem0", "io_pll", clk_base + 0x40, 0, 0, 0);
- 	clks[gem1] = clk_gate("gem1", "io_pll", clk_base + 0x44, 1, 0, 0);
- 
--	clks[cpu_clk] = zynq_cpu_clk("cpu_clk", clk_base + 0x20);
-+	zynq_cpu_clk("cpu_clk", clk_base + 0x20);
- 
--	clks[cpu_6x4x] = zynq_cpu_subclk("cpu_6x4x", CPU_SUBCLK_6X4X,
-+	clks[cpu_6or4x] = zynq_cpu_subclk("cpu_6x4x", CPU_SUBCLK_6X4X,
- 					clk_base + 0x20, clk_base + 0xC4);
--	clks[cpu_3x2x] = zynq_cpu_subclk("cpu_3x2x", CPU_SUBCLK_3X2X,
-+	clks[cpu_3or2x] = zynq_cpu_subclk("cpu_3x2x", CPU_SUBCLK_3X2X,
- 					clk_base + 0x20, clk_base + 0xC4);
+ 	clks[cpu_6x4x] = zynq_cpu_subclk("cpu_6x4x", CPU_SUBCLK_6X4X,
+-					slcr_base + 0x120, slcr_base + 0x1C4);
++					clk_base + 0x20, clk_base + 0xC4);
+ 	clks[cpu_3x2x] = zynq_cpu_subclk("cpu_3x2x", CPU_SUBCLK_3X2X,
+-					slcr_base + 0x120, slcr_base + 0x1C4);
++					clk_base + 0x20, clk_base + 0xC4);
  	clks[cpu_2x] = zynq_cpu_subclk("cpu_2x", CPU_SUBCLK_2X,
- 					clk_base + 0x20, clk_base + 0xC4);
+-					slcr_base + 0x120, slcr_base + 0x1C4);
++					clk_base + 0x20, clk_base + 0xC4);
  	clks[cpu_1x] = zynq_cpu_subclk("cpu_1x", CPU_SUBCLK_1X,
- 					clk_base + 0x20, clk_base + 0xC4);
+-					slcr_base + 0x120, slcr_base + 0x1C4);
++					clk_base + 0x20, clk_base + 0xC4);
  
--	clk_register_clkdev(clks[cpu_3x2x], NULL, "arm_smp_twd");
-+	clks[dma] = clk_gate("dma", "cpu_2x", clk_base + 0x2C, 0, 0, 0);
-+	clks[usb0_aper] = clk_gate("usb0_aper", "cpu_1x",
-+				   clk_base + 0x2C, 2, 0, 0);
-+	clks[usb1_aper] = clk_gate("usb1_aper", "cpu_1x",
-+				   clk_base + 0x2C, 3, 0, 0);
-+	clks[gem0_aper] = clk_gate("gem0_aper", "cpu_1x",
-+				   clk_base + 0x2C, 6, 0, 0);
-+	clks[gem1_aper] = clk_gate("gem1_aper", "cpu_1x",
-+				   clk_base + 0x2C, 7, 0, 0);
-+	clks[sdio0_aper] = clk_gate("sdio0_aper", "cpu_1x",
-+				    clk_base + 0x2C, 10, 0, 0);
-+	clks[sdio1_aper] = clk_gate("sdio1_aper", "cpu_1x",
-+				    clk_base + 0x2C, 11, 0, 0);
-+	clks[spi0_aper] = clk_gate("spi0_aper", "cpu_1x",
-+				   clk_base + 0x2C, 14, 0, 0);
-+	clks[spi1_aper] = clk_gate("spi1_aper", "cpu_1x",
-+				   clk_base + 0x2C, 15, 0, 0);
-+	clks[can0_aper] = clk_gate("can0_aper", "cpu_1x",
-+				   clk_base + 0x2C, 16, 0, 0);
-+	clks[can1_aper] = clk_gate("can1_aper", "cpu_1x",
-+				   clk_base + 0x2C, 17, 0, 0);
-+	clks[i2c0_aper] = clk_gate("i2c0_aper", "cpu_1x",
-+				   clk_base + 0x2C, 18, 0, 0);
-+	clks[i2c1_aper] = clk_gate("i2c1_aper", "cpu_1x",
-+				   clk_base + 0x2C, 19, 0, 0);
-+	clks[uart0_aper] = clk_gate("uart0_aper", "cpu_1x",
-+				    clk_base + 0x2C, 20, 0, 0);
-+	clks[uart1_aper] = clk_gate("uart1_aper", "cpu_1x",
-+				    clk_base + 0x2C, 21, 0, 0);
-+	clks[gpio_aper] = clk_gate("gpio_aper", "cpu_1x",
-+				   clk_base + 0x2C, 22, 0, 0);
-+	clks[lqspi_aper] = clk_gate("lqspi_aper", "cpu_1x",
-+				    clk_base + 0x2C, 23, 0, 0);
-+	clks[smc_aper] = clk_gate("smc_aper", "cpu_1x",
-+				  clk_base + 0x2C, 24, 0, 0);
-+
-+	clk_register_clkdev(clks[cpu_3or2x], NULL, "arm_smp_twd");
+ 	clk_register_clkdev(clks[cpu_3x2x], NULL, "arm_smp_twd");
  	clk_register_clkdev(clks[uart0], NULL, "zynq_serial0");
- 	clk_register_clkdev(clks[uart1], NULL, "zynq_serial1");
- 	clk_register_clkdev(clks[gem0], NULL, "macb0");
- 	clk_register_clkdev(clks[gem1], NULL, "macb1");
- 
--	clkdev_add_physbase(clks[cpu_3x2x], CORTEXA9_SCU_TIMER_BASE_ADDR, NULL);
-+	clkdev_add_physbase(clks[cpu_3or2x], CORTEXA9_SCU_TIMER_BASE_ADDR, NULL);
- 	clkdev_add_physbase(clks[uart1], ZYNQ_UART1_BASE_ADDR, NULL);
- 
-+	clk_data.clks = clks;
-+	clk_data.clk_num = ARRAY_SIZE(clks);
-+	of_clk_add_provider(dev->device_node, of_clk_src_onecell_get,
-+			    &clk_data);
-+
- 	return 0;
- }
- 
- static __maybe_unused struct of_device_id zynq_clock_dt_ids[] = {
- 	{
--		.compatible = "xlnx,zynq-clock",
-+		.compatible = "xlnx,ps7-clkc",
- 	}, {
- 		/* sentinel */
- 	}
 -- 
 2.23.0
 
