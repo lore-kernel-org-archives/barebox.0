@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iTRkN-0007GZ-Hi
- for barebox@lists.infradead.org; Sat, 09 Nov 2019 14:29:56 +0000
+ id 1iTRkO-0007FM-1U
+ for barebox@lists.infradead.org; Sat, 09 Nov 2019 14:29:57 +0000
 Received: from astat.fritz.box (a89-183-91-60.net-htp.de [89.183.91.60])
- by lynxeye.de (Postfix) with ESMTPA id 5C336E74264
- for <barebox@lists.infradead.org>; Sat,  9 Nov 2019 15:28:43 +0100 (CET)
+ by lynxeye.de (Postfix) with ESMTPA id A1C11E74283
+ for <barebox@lists.infradead.org>; Sat,  9 Nov 2019 15:28:45 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sat,  9 Nov 2019 15:28:29 +0100
-Message-Id: <20191109142837.82409-10-dev@lynxeye.de>
+Date: Sat,  9 Nov 2019 15:28:37 +0100
+Message-Id: <20191109142837.82409-18-dev@lynxeye.de>
 In-Reply-To: <20191109142837.82409-1-dev@lynxeye.de>
 References: <20191109142837.82409-1-dev@lynxeye.de>
 MIME-Version: 1.0
@@ -24,91 +24,85 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 10/18] clk: zynq: use base address of clock controller
+Subject: [PATCH v2 18/18] ARM: zynq: add bootsource detection
 To: barebox@lists.infradead.org
 
-The clock controller is a subregion of the SLCR, use the real base
-of this region for mapping the registers. This will allow to switch
-to DT based probing later.
+Implement the bootsource detection by reading the BOOT_MODE SLCR register
+which holds the strap values used to select the boot source.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/mach-zynq/zynq.c |  3 ++-
- drivers/clk/zynq/clkc.c   | 30 +++++++++++++++---------------
- 2 files changed, 17 insertions(+), 16 deletions(-)
+ .../mach-zynq/include/mach/zynq7000-regs.h    |  1 +
+ arch/arm/mach-zynq/zynq.c                     | 27 +++++++++++++++++--
+ 2 files changed, 26 insertions(+), 2 deletions(-)
 
+diff --git a/arch/arm/mach-zynq/include/mach/zynq7000-regs.h b/arch/arm/mach-zynq/include/mach/zynq7000-regs.h
+index dd02f5b4072a..eeecfe1ded43 100644
+--- a/arch/arm/mach-zynq/include/mach/zynq7000-regs.h
++++ b/arch/arm/mach-zynq/include/mach/zynq7000-regs.h
+@@ -63,6 +63,7 @@
+ #define ZYNQ_FPGA3_CLK_CTRL		0x0A0
+ #define ZYNQ_CLK_621_TRUE		0x0C4
+ #define ZYNQ_RST_CTRL_BASE		(ZYNQ_SLCR_BASE + 0x200)
++#define ZYNQ_SLCR_BOOT_MODE		(ZYNQ_SLCR_BASE + 0x25C)
+ #define ZYNQ_PSS_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x000)
+ #define ZYNQ_DDR_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x004)
+ #define ZYNQ_TOPSW_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x008)
 diff --git a/arch/arm/mach-zynq/zynq.c b/arch/arm/mach-zynq/zynq.c
-index f6112fd249ce..ec22b16c91cd 100644
+index ad06c624d90b..79a6b908e000 100644
 --- a/arch/arm/mach-zynq/zynq.c
 +++ b/arch/arm/mach-zynq/zynq.c
-@@ -48,7 +48,8 @@ static int zynq_init(void)
- 	writel(val, 0xf8f00000);
- 	dmb();
+@@ -14,11 +14,12 @@
+  */
  
--	add_generic_device("zynq-clock", 0, NULL, ZYNQ_SLCR_BASE, 0x4000, IORESOURCE_MEM, NULL);
-+	add_generic_device("zynq-clock", 0, NULL, ZYNQ_SLCR_BASE + 0x100,
-+			   0x4000, IORESOURCE_MEM, NULL);
- 	add_generic_device("smp_twd", 0, NULL, CORTEXA9_SCU_TIMER_BASE_ADDR,
- 				0x4000, IORESOURCE_MEM, NULL);
- 	restart_handler_register_fn(zynq_restart_soc);
-diff --git a/drivers/clk/zynq/clkc.c b/drivers/clk/zynq/clkc.c
-index cd49d8478f58..ba441740c585 100644
---- a/drivers/clk/zynq/clkc.c
-+++ b/drivers/clk/zynq/clkc.c
-@@ -360,38 +360,38 @@ static struct clk *zynq_cpu_subclk(const char *name,
- static int zynq_clock_probe(struct device_d *dev)
+ #include <asm/system.h>
+-#include <io.h>
++#include <bootsource.h>
+ #include <common.h>
+ #include <init.h>
+-#include <restart.h>
++#include <io.h>
+ #include <mach/zynq7000-regs.h>
++#include <restart.h>
+ 
+ static void __noreturn zynq_restart_soc(struct restart_handler *rst)
  {
- 	struct resource *iores;
--	void __iomem *slcr_base;
-+	void __iomem *clk_base;
- 	unsigned long ps_clk_rate = 33333330;
+@@ -30,6 +31,26 @@ static void __noreturn zynq_restart_soc(struct restart_handler *rst)
+ 	hang();
+ }
  
- 	iores = dev_request_mem_resource(dev, 0);
- 	if (IS_ERR(iores))
- 		return PTR_ERR(iores);
--	slcr_base = IOMEM(iores->start);
-+	clk_base = IOMEM(iores->start);
++static enum bootsource zynq_bootsource_get(void)
++{
++	u32 boot_mode = readl(ZYNQ_SLCR_BOOT_MODE);
++
++	switch (boot_mode & 0x7) {
++	case 0x0:
++		return BOOTSOURCE_JTAG;
++	case 0x1:
++		return BOOTSOURCE_SPI;
++	case 0x2:
++		return BOOTSOURCE_NOR;
++	case 0x4:
++		return BOOTSOURCE_NAND;
++	case 0x5:
++		return BOOTSOURCE_MMC;
++	default:
++		return BOOTSOURCE_UNKNOWN;
++	}
++}
++
+ static int zynq_init(void)
+ {
+ 	u32 val;
+@@ -50,6 +71,8 @@ static int zynq_init(void)
  
- 	clks[ps_clk]  = clk_fixed("ps_clk", ps_clk_rate);
+ 	restart_handler_register_fn(zynq_restart_soc);
  
--	clks[arm_pll] = zynq_pll_clk(ZYNQ_PLL_ARM, "arm_pll", slcr_base + 0x100);
--	clks[ddr_pll] = zynq_pll_clk(ZYNQ_PLL_DDR, "ddr_pll", slcr_base + 0x104);
--	clks[io_pll]  = zynq_pll_clk(ZYNQ_PLL_IO,  "io_pll", slcr_base + 0x108);
-+	clks[arm_pll] = zynq_pll_clk(ZYNQ_PLL_ARM, "arm_pll", clk_base + 0x0);
-+	clks[ddr_pll] = zynq_pll_clk(ZYNQ_PLL_DDR, "ddr_pll", clk_base + 0x4);
-+	clks[io_pll]  = zynq_pll_clk(ZYNQ_PLL_IO,  "io_pll", clk_base + 0x8);
- 
--	clks[uart_clk] = zynq_periph_clk("uart_clk", slcr_base + 0x154);
-+	clks[uart_clk] = zynq_periph_clk("uart_clk", clk_base + 0x54);
- 
--	clks[uart0] = clk_gate("uart0", "uart_clk", slcr_base + 0x154, 0, 0, 0);
--	clks[uart1] = clk_gate("uart1", "uart_clk", slcr_base + 0x154, 1, 0, 0);
-+	clks[uart0] = clk_gate("uart0", "uart_clk", clk_base + 0x54, 0, 0, 0);
-+	clks[uart1] = clk_gate("uart1", "uart_clk", clk_base + 0x54, 1, 0, 0);
- 
--	clks[gem0] = clk_gate("gem0", "io_pll", slcr_base + 0x140, 0, 0, 0);
--	clks[gem1] = clk_gate("gem1", "io_pll", slcr_base + 0x144, 1, 0, 0);
-+	clks[gem0] = clk_gate("gem0", "io_pll", clk_base + 0x40, 0, 0, 0);
-+	clks[gem1] = clk_gate("gem1", "io_pll", clk_base + 0x44, 1, 0, 0);
- 
--	clks[cpu_clk] = zynq_cpu_clk("cpu_clk", slcr_base + 0x120);
-+	clks[cpu_clk] = zynq_cpu_clk("cpu_clk", clk_base + 0x20);
- 
- 	clks[cpu_6x4x] = zynq_cpu_subclk("cpu_6x4x", CPU_SUBCLK_6X4X,
--					slcr_base + 0x120, slcr_base + 0x1C4);
-+					clk_base + 0x20, clk_base + 0xC4);
- 	clks[cpu_3x2x] = zynq_cpu_subclk("cpu_3x2x", CPU_SUBCLK_3X2X,
--					slcr_base + 0x120, slcr_base + 0x1C4);
-+					clk_base + 0x20, clk_base + 0xC4);
- 	clks[cpu_2x] = zynq_cpu_subclk("cpu_2x", CPU_SUBCLK_2X,
--					slcr_base + 0x120, slcr_base + 0x1C4);
-+					clk_base + 0x20, clk_base + 0xC4);
- 	clks[cpu_1x] = zynq_cpu_subclk("cpu_1x", CPU_SUBCLK_1X,
--					slcr_base + 0x120, slcr_base + 0x1C4);
-+					clk_base + 0x20, clk_base + 0xC4);
- 
- 	clk_register_clkdev(clks[cpu_3x2x], NULL, "arm_smp_twd");
- 	clk_register_clkdev(clks[uart0], NULL, "zynq_serial0");
++	bootsource_set(zynq_bootsource_get());
++
+ 	return 0;
+ }
+ postcore_initcall(zynq_init);
 -- 
 2.23.0
 
