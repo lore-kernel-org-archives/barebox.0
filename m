@@ -1,12 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iU9cj-0004SS-UK
- for barebox@lists.infradead.org; Mon, 11 Nov 2019 13:20:55 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 11 Nov 2019 14:20:45 +0100
-Message-Id: <20191111132045.20058-1-s.hauer@pengutronix.de>
+ id 1iUC1l-0006KN-VG
+ for barebox@lists.infradead.org; Mon, 11 Nov 2019 15:54:55 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>) id 1iUC1i-0003e7-SJ
+ for barebox@lists.infradead.org; Mon, 11 Nov 2019 16:54:50 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+References: <1572795919.10526.27.camel@googlemail.com>
+Message-ID: <288f22e2-d468-0262-6780-adc690ec6f3d@pengutronix.de>
+Date: Mon, 11 Nov 2019 16:54:50 +0100
 MIME-Version: 1.0
+In-Reply-To: <1572795919.10526.27.camel@googlemail.com>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,44 +27,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: am335x: Enable MMC2 clock
-To: Barebox List <barebox@lists.infradead.org>
-Cc: rsc@pengutronix.de, rhi@pengutronix.de
+Subject: Re: state: eMMC boot0-partitions backend for Linux
+To: barebox@lists.infradead.org
 
-Since Kernel commit 5b63fb90adb9 ("ARM: dts: Fix incomplete dts data for
-am3 and am4 mmc") (barebox commit 419db1f984 ("dts: update to
-v5.3-rc7")) the AM33xx MMC2 controller is unconditionally enabled in the
-dts. This has the effect that the driver probes for this device and then
-can't access the registers as the clock is disabled. Enable the clock to
-let the driver probe successfully.
+Hello Christoph,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/mach-omap/am33xx_clock.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+On 11/3/19 4:45 PM, Christoph Fritz wrote:
+> Hi,
+> 
+>  I would like to use emmc-hardware-partition boot1 as a state backend,
+> this has the charm of keeping the big hw-partition clean while using SLC
+> for e.g. serial numbers.
+> Within barebox using an emmc-hardware-partition boot1 as a state backend
+> just works!
+> 
+> But trying to hand over this backend to Linux fails right before
+> starting the kernel:
+> 
+>   WARNING: Failed to fixup node in of_state_fixup+0x1/0x288: No such device
 
-diff --git a/arch/arm/mach-omap/am33xx_clock.c b/arch/arm/mach-omap/am33xx_clock.c
-index e63e93601e..0a49038270 100644
---- a/arch/arm/mach-omap/am33xx_clock.c
-+++ b/arch/arm/mach-omap/am33xx_clock.c
-@@ -142,11 +142,13 @@ void am33xx_enable_per_clocks(void)
- 	__raw_writel(PRCM_MOD_EN, CM_PER_CPSW_CLKSTCTRL);
- 	while ((__raw_readl(CM_PER_CPGMAC0_CLKCTRL) & 0x30000) != 0x0);
- 
--	/* MMC 0 & 1 */
-+	/* MMC 0, 1 & 2 */
- 	__raw_writel(PRCM_MOD_EN, CM_PER_MMC0_CLKCTRL);
- 	while (__raw_readl(CM_PER_MMC0_CLKCTRL) != PRCM_MOD_EN);
- 	__raw_writel(PRCM_MOD_EN, CM_PER_MMC1_CLKCTRL);
- 	while (__raw_readl(CM_PER_MMC1_CLKCTRL) != PRCM_MOD_EN);
-+	__raw_writel(PRCM_MOD_EN, CM_PER_MMC2_CLKCTRL);
-+	while (__raw_readl(CM_PER_MMC2_CLKCTRL) != PRCM_MOD_EN);
- 
- 	/* Enable the control module though RBL would have done it*/
- 	__raw_writel(PRCM_MOD_EN, CM_WKUP_CONTROL_CLKCTRL);
+I ran into this before, but with the barebox environment.
+I 'solved' it by moving the environment out of the boot partition..
+See d5285342d87 ("mci: skip of_partitions_register_fixup for boot partitions").
+
+> I guess dt-utils also has no support for using /dev/mmcblk1boot0 as a
+> backend (by default Linux doesn't allow to write to boot0/1) ?
+
+Yes.
+
+> What would be the best way to add this feature?
+> 
+> Any ideas?
+
+How about:
+- formalize the eMMC boot partitions binding with
+  a compatible = "barebox,emmc-bootpart" and change barebox to fix it up
+  into the kernel's device tree.
+- have barebox_state handle this properly. You can check out how RAUC
+  (LGPL-2.1) does it.
+
+Cheers
+Ahmad
+
+> 
+>  -- Christoph
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+
 -- 
-2.24.0.rc1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
