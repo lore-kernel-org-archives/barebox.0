@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iU4wG-0002K4-MO
- for barebox@lists.infradead.org; Mon, 11 Nov 2019 08:20:45 +0000
-Date: Mon, 11 Nov 2019 09:20:43 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191111082043.bfgfqzrixi4avlg7@pengutronix.de>
-References: <20191108110332.32010-1-a.fatoum@pengutronix.de>
+Received: from relaygw4-3.mclink.it ([213.21.178.146])
+ by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1iU6JU-0004VA-JZ
+ for barebox@lists.infradead.org; Mon, 11 Nov 2019 09:48:50 +0000
+Received: from [172.24.30.41] (HELO smtpoutgw1.mclink.it)
+ by relaygw4-3.mclink.it (CommuniGate Pro SMTP 6.0.6)
+ with ESMTP id 164217115 for barebox@lists.infradead.org;
+ Mon, 11 Nov 2019 10:48:44 +0100
+From: Mauro Condarelli <mc5686@mclink.it>
+Message-ID: <911adbc2-61ca-dd09-f42d-a656a844a2ba@mclink.it>
+Date: Mon, 11 Nov 2019 10:48:26 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191108110332.32010-1-a.fatoum@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,37 +20,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 1/4] watchdog: always populate watchdog priority from
- device tree if possible
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: barebox on VoCore2
+To: barebox@lists.infradead.org
 
-On Fri, Nov 08, 2019 at 12:03:29PM +0100, Ahmad Fatoum wrote:
-> So far, only the da9063 and da9053 have made use of the optional barebox
-> watchdog-priority binding. Move it into the core, so other device
-> drivers automatically have their watchdog-priority property parsed as
-> well. This patch doesn't introduce any functional changes for upstream
-> boards.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
-
-Applied, thanks
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGksCkkgd291bGQgbGlrZSB0byB1c2UgYmFyZWJveCB3aXRoIGEgY3VzdG9tIGJvYXJkIChWb0Nv
+cmUyLCBiYXNlZCBvbgpNVDc2MjgpIGN1cnJlbnRseSBydW5uaW5nIG9uIGEgcGFsZW9saXRoaWMg
+dmVyc2lvbiBvZiB1LWJvb3QuCkkndmUgc2VlbiB0aGVyZSBoYXMgYmVlbiBzb21lIHdvcmsgb24g
+dGhpcyBib2FyZAooaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvcGlwZXJtYWlsL2JhcmVib3gv
+MjAxNy1BdWd1c3QvMDMwOTQ1Lmh0bWwpLApidXQgaXQncyB1bmNsZWFyIHRvIG1lIGlmIHRoaXMg
+cmVzdWx0ZWQgaW4gYSB1c2FibGUgYmFyZWJveCBhbmQsIGlmIHNvLAp3aGF0J3MgdGhlIHJpZ2h0
+IGJyYW5jaCB0byB1c2UuCgpJJ20gbm90IHNjYXJlZCBhYm91dCBkaXJ0eWluZyBteSBmaW5nZXJz
+IGluIGxvdyAocmVnaXN0ZXIpIGxldmVsCnByb2dyYW1taW5nLCBpZiBuZWVkZWQsIGJ1dCBJIGtu
+b3cgdmVyeSBsaXR0bGUgYWJvdXQgYmFyZWJveCwgc28gc29tZQpndWlkYW5jZSAoYW5kIGRvY3Vt
+ZW50YXRpb24pIHdvdWxkIGJlIG5lZWRlZC4KCldoZXJlIGNhbiBJIGZpbmQgZGV0YWlsZWQgZGVz
+Y3JpcHRpb24gb2YgbmVlZGVkIHN0ZXBzPwoKTm90ZTogSSB0cmllZCBhICJkdW1iIGNvbXBpbGF0
+aW9uIiAoYWZ0ZXIgcnVsZS1vZi10aHVtYiBjb25maWd1cmF0aW9uKSwKYnV0IEkgZ290IGxpbmsg
+ZXJyb3I6CgptY29uQGNpbmRlcmVsbGE6fi92b2NvcmUvcHJvdmUvYmFyZWJveCQKUEFUSD0vaG9t
+ZS9tY29uL3ZvY29yZS9wcm92ZS9taXBzZWwtYnVpbGRyb290LWxpbnV4LXVjbGliY19zZGstYnVp
+bGRyb290L2JpbjokUEFUSAptYWtlIEFSQ0g9bWlwcyBDUk9TU19DT01QSUxFPW1pcHNlbC1saW51
+eC0KwqAgQ0hLwqDCoMKgwqAgaW5jbHVkZS9nZW5lcmF0ZWQvdmVyc2lvbi5oCsKgIENIS8KgwqDC
+oMKgIGluY2x1ZGUvZ2VuZXJhdGVkL3V0c3JlbGVhc2UuaMKgCsKgIC4uLgrCoCBDQ8KgwqDCoMKg
+wqAgY29tbW9uL3ZlcnNpb24ubwrCoCBMRMKgwqDCoMKgwqAgY29tbW9uL2J1aWx0LWluLm8KwqAg
+TETCoMKgwqDCoMKgIGJhcmVib3gKbWlwc2VsLWxpbnV4LWxkOiBhcmNoL21pcHMvYm9vdC9idWls
+dC1pbi5vOiBpbiBmdW5jdGlvbiBgbWFpbl9lbnRyeSc6CigudGV4dF9iYXJlX2luaXQudGV4dCsw
+eGU0KTogdW5kZWZpbmVkIHJlZmVyZW5jZSB0byBgZ2xvYl9mZHQnCm1pcHNlbC1saW51eC1sZDog
+KC50ZXh0X2JhcmVfaW5pdC50ZXh0KzB4ZTgpOiB1bmRlZmluZWQgcmVmZXJlbmNlIHRvCmBnbG9i
+X2ZkdCcKbWlwc2VsLWxpbnV4LWxkOiAoLnRleHRfYmFyZV9pbml0LnRleHQrMHhlYyk6IHVuZGVm
+aW5lZCByZWZlcmVuY2UgdG8KYGdsb2JfZmR0X3NpemUnCm1pcHNlbC1saW51eC1sZDogKC50ZXh0
+X2JhcmVfaW5pdC50ZXh0KzB4ZjQpOiB1bmRlZmluZWQgcmVmZXJlbmNlIHRvCmBnbG9iX2ZkdF9z
+aXplJwpVbmFibGUgdG8gb3BlbiBpbnB1dCBmaWxlIGJhcmVib3gKbWFrZTogKioqIFtNYWtlZmls
+ZTo3ODQ6IGJhcmVib3hdIEVycm9yIDIKCi4uLiBzbyBJJ20gc3VyZWx5IG1pc3Npbmcgc29tZSBy
+ZWxldmFudCBzdGVwLgoKVGhhbmtzIGluIEFkdmFuY2UKTWF1cm8KCl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
+b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
+L2xpc3RpbmZvL2JhcmVib3gK
