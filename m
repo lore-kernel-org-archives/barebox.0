@@ -1,20 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf1-x142.google.com ([2a00:1450:4864:20::142])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iUC1l-0006KN-VG
- for barebox@lists.infradead.org; Mon, 11 Nov 2019 15:54:55 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>) id 1iUC1i-0003e7-SJ
- for barebox@lists.infradead.org; Mon, 11 Nov 2019 16:54:50 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-References: <1572795919.10526.27.camel@googlemail.com>
-Message-ID: <288f22e2-d468-0262-6780-adc690ec6f3d@pengutronix.de>
-Date: Mon, 11 Nov 2019 16:54:50 +0100
-MIME-Version: 1.0
-In-Reply-To: <1572795919.10526.27.camel@googlemail.com>
-Content-Language: en-US
+ id 1iUHWV-0005KY-VE
+ for barebox@lists.infradead.org; Mon, 11 Nov 2019 21:47:02 +0000
+Received: by mail-lf1-x142.google.com with SMTP id q28so11072459lfa.5
+ for <barebox@lists.infradead.org>; Mon, 11 Nov 2019 13:46:58 -0800 (PST)
+Date: Tue, 12 Nov 2019 00:46:54 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20191112004654.a2048136fe7d3a99994c8329@gmail.com>
+In-Reply-To: <911adbc2-61ca-dd09-f42d-a656a844a2ba@mclink.it>
+References: <911adbc2-61ca-dd09-f42d-a656a844a2ba@mclink.it>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,68 +19,94 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: state: eMMC boot0-partitions backend for Linux
-To: barebox@lists.infradead.org
+Subject: Re: barebox on VoCore2
+To: Mauro Condarelli <mc5686@mclink.it>
+Cc: barebox@lists.infradead.org
 
-Hello Christoph,
+On Mon, 11 Nov 2019 10:48:26 +0100
+Mauro Condarelli <mc5686@mclink.it> wrote:
 
-On 11/3/19 4:45 PM, Christoph Fritz wrote:
 > Hi,
-> 
->  I would like to use emmc-hardware-partition boot1 as a state backend,
-> this has the charm of keeping the big hw-partition clean while using SLC
-> for e.g. serial numbers.
-> Within barebox using an emmc-hardware-partition boot1 as a state backend
-> just works!
-> 
-> But trying to hand over this backend to Linux fails right before
-> starting the kernel:
-> 
->   WARNING: Failed to fixup node in of_state_fixup+0x1/0x288: No such device
+> I would like to use barebox with a custom board (VoCore2, based on
+> MT7628) currently running on a paleolithic version of u-boot.
+> I've seen there has been some work on this board
+> (http://lists.infradead.org/pipermail/barebox/2017-August/030945.html),
+> but it's unclear to me if this resulted in a usable barebox and, if so,
+> what's the right branch to use.
+> I'm not scared about dirtying my fingers in low (register) level
+> programming, if needed, but I know very little about barebox, so some
+> guidance (and documentation) would be needed.
 
-I ran into this before, but with the barebox environment.
-I 'solved' it by moving the environment out of the boot partition..
-See d5285342d87 ("mci: skip of_partitions_register_fixup for boot partitions").
+Please try this branch for your initial experiments
+https://github.com/frantony/barebox/commits/20160815.mediatek
 
-> I guess dt-utils also has no support for using /dev/mmcblk1boot0 as a
-> backend (by default Linux doesn't allow to write to boot0/1) ?
+At the moment there is no PBL support for mediatek mips chips.
+You can only run barebox from u-boot.
 
-Yes.
+> =
 
-> What would be the best way to add this feature?
-> 
-> Any ideas?
+> Where can I find detailed description of needed steps?
 
-How about:
-- formalize the eMMC boot partitions binding with
-  a compatible = "barebox,emmc-bootpart" and change barebox to fix it up
-  into the kernel's device tree.
-- have barebox_state handle this properly. You can check out how RAUC
-  (LGPL-2.1) does it.
+First try to run barebox for qemu-mips-malta (big endian version is simplie=
+r).
 
-Cheers
-Ahmad
+The qemu run instruction can be found in Documentation/boards/mips/qemu-mal=
+ta.rst
 
-> 
->  -- Christoph
-> 
-> 
+There is an old but stil usefull barebox mips compilation demo at youtube:
+https://www.youtube.com/watch?v=3DWWnX__5wJfg
+
+For cross compiling I recommend to use Debian linux: just install gcc-mips-=
+linux-gnu package.
+
+
+> Note: I tried a "dumb compilation" (after rule-of-thumb configuration),
+> but I got link error:
+> =
+
+> mcon@cinderella:~/vocore/prove/barebox$
+> PATH=3D/home/mcon/vocore/prove/mipsel-buildroot-linux-uclibc_sdk-buildroo=
+t/bin:$PATH
+> make ARCH=3Dmips CROSS_COMPILE=3Dmipsel-linux-
+> =A0 CHK=A0=A0=A0=A0 include/generated/version.h
+> =A0 CHK=A0=A0=A0=A0 include/generated/utsrelease.h=A0
+> =A0 ...
+> =A0 CC=A0=A0=A0=A0=A0 common/version.o
+> =A0 LD=A0=A0=A0=A0=A0 common/built-in.o
+> =A0 LD=A0=A0=A0=A0=A0 barebox
+> mipsel-linux-ld: arch/mips/boot/built-in.o: in function `main_entry':
+> (.text_bare_init.text+0xe4): undefined reference to `glob_fdt'
+> mipsel-linux-ld: (.text_bare_init.text+0xe8): undefined reference to
+> `glob_fdt'
+> mipsel-linux-ld: (.text_bare_init.text+0xec): undefined reference to
+> `glob_fdt_size'
+> mipsel-linux-ld: (.text_bare_init.text+0xf4): undefined reference to
+> `glob_fdt_size'
+> Unable to open input file barebox
+> make: *** [Makefile:784: barebox] Error 2
+> =
+
+> ... so I'm surely missing some relevant step.
+> =
+
+> Thanks in Advance
+> Mauro
+> =
+
 > _______________________________________________
 > barebox mailing list
 > barebox@lists.infradead.org
 > http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+-- =
+
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
