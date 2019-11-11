@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay5-d.mail.gandi.net ([217.70.183.197])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iU6R3-0007hd-Bg
- for barebox@lists.infradead.org; Mon, 11 Nov 2019 09:56:38 +0000
-Received: from geraet.pengutronix.de (hazel.nat.pengutronix.de [85.220.165.66])
- (Authenticated sender: ahmad@a3f.at)
- by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 71F161C0008
- for <barebox@lists.infradead.org>; Mon, 11 Nov 2019 09:56:33 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Mon, 11 Nov 2019 10:56:07 +0100
-Message-Id: <20191111095607.1813-2-ahmad@a3f.at>
-In-Reply-To: <20191111095607.1813-1-ahmad@a3f.at>
-References: <20191111095607.1813-1-ahmad@a3f.at>
+ id 1iU9cj-0004SS-UK
+ for barebox@lists.infradead.org; Mon, 11 Nov 2019 13:20:55 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 11 Nov 2019 14:20:45 +0100
+Message-Id: <20191111132045.20058-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,47 +19,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] net: designware: eqos: stop DMA on halt
-To: barebox@lists.infradead.org
+Subject: [PATCH] ARM: am335x: Enable MMC2 clock
+To: Barebox List <barebox@lists.infradead.org>
+Cc: rsc@pengutronix.de, rhi@pengutronix.de
 
-designware_eqos.c contains an eqos_stop implementation to stop the NIC
-when halting the interface. Unfortunately it wasn't used leading to
-memory corruption on boot, possibly due to DMA. Fix this.
+Since Kernel commit 5b63fb90adb9 ("ARM: dts: Fix incomplete dts data for
+am3 and am4 mmc") (barebox commit 419db1f984 ("dts: update to
+v5.3-rc7")) the AM33xx MMC2 controller is unconditionally enabled in the
+dts. This has the effect that the driver probes for this device and then
+can't access the registers as the clock is disabled. Enable the clock to
+let the driver probe successfully.
 
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/designware_stm32.c    | 2 ++
- drivers/net/designware_tegra186.c | 2 ++
- 2 files changed, 4 insertions(+)
+ arch/arm/mach-omap/am33xx_clock.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/designware_stm32.c b/drivers/net/designware_stm32.c
-index 5b087ad5a371..ed54ff2b2615 100644
---- a/drivers/net/designware_stm32.c
-+++ b/drivers/net/designware_stm32.c
-@@ -199,6 +199,8 @@ static void eqos_stop_stm32(struct eth_device *edev)
- {
- 	struct eqos_stm32 *priv = to_stm32(edev->priv);
+diff --git a/arch/arm/mach-omap/am33xx_clock.c b/arch/arm/mach-omap/am33xx_clock.c
+index e63e93601e..0a49038270 100644
+--- a/arch/arm/mach-omap/am33xx_clock.c
++++ b/arch/arm/mach-omap/am33xx_clock.c
+@@ -142,11 +142,13 @@ void am33xx_enable_per_clocks(void)
+ 	__raw_writel(PRCM_MOD_EN, CM_PER_CPSW_CLKSTCTRL);
+ 	while ((__raw_readl(CM_PER_CPGMAC0_CLKCTRL) & 0x30000) != 0x0);
  
-+	eqos_stop(edev);
-+
- 	clk_bulk_disable(priv->num_clks, priv->clks);
- }
+-	/* MMC 0 & 1 */
++	/* MMC 0, 1 & 2 */
+ 	__raw_writel(PRCM_MOD_EN, CM_PER_MMC0_CLKCTRL);
+ 	while (__raw_readl(CM_PER_MMC0_CLKCTRL) != PRCM_MOD_EN);
+ 	__raw_writel(PRCM_MOD_EN, CM_PER_MMC1_CLKCTRL);
+ 	while (__raw_readl(CM_PER_MMC1_CLKCTRL) != PRCM_MOD_EN);
++	__raw_writel(PRCM_MOD_EN, CM_PER_MMC2_CLKCTRL);
++	while (__raw_readl(CM_PER_MMC2_CLKCTRL) != PRCM_MOD_EN);
  
-diff --git a/drivers/net/designware_tegra186.c b/drivers/net/designware_tegra186.c
-index 58484d4095dc..618ae113971d 100644
---- a/drivers/net/designware_tegra186.c
-+++ b/drivers/net/designware_tegra186.c
-@@ -282,6 +282,8 @@ static void eqos_stop_tegra186(struct eth_device *edev)
- {
- 	struct eqos_tegra186 *priv = to_tegra186(edev->priv);
- 
-+	eqos_stop(edev);
-+
- 	eqos_reset_tegra186(priv, true);
- 
- 	clk_bulk_disable(priv->num_clks, priv->clks);
+ 	/* Enable the control module though RBL would have done it*/
+ 	__raw_writel(PRCM_MOD_EN, CM_WKUP_CONTROL_CLKCTRL);
 -- 
-2.20.1
+2.24.0.rc1
 
 
 _______________________________________________
