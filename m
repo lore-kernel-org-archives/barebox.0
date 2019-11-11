@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relaygw4-3.mclink.it ([213.21.178.146])
- by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iU6JU-0004VA-JZ
- for barebox@lists.infradead.org; Mon, 11 Nov 2019 09:48:50 +0000
-Received: from [172.24.30.41] (HELO smtpoutgw1.mclink.it)
- by relaygw4-3.mclink.it (CommuniGate Pro SMTP 6.0.6)
- with ESMTP id 164217115 for barebox@lists.infradead.org;
- Mon, 11 Nov 2019 10:48:44 +0100
-From: Mauro Condarelli <mc5686@mclink.it>
-Message-ID: <911adbc2-61ca-dd09-f42d-a656a844a2ba@mclink.it>
-Date: Mon, 11 Nov 2019 10:48:26 +0100
+Received: from relay5-d.mail.gandi.net ([217.70.183.197])
+ by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1iU6R3-0007ha-9s
+ for barebox@lists.infradead.org; Mon, 11 Nov 2019 09:56:38 +0000
+Received: from geraet.pengutronix.de (hazel.nat.pengutronix.de [85.220.165.66])
+ (Authenticated sender: ahmad@a3f.at)
+ by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id EA4121C0004
+ for <barebox@lists.infradead.org>; Mon, 11 Nov 2019 09:56:25 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Mon, 11 Nov 2019 10:56:06 +0100
+Message-Id: <20191111095607.1813-1-ahmad@a3f.at>
 MIME-Version: 1.0
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,41 +19,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: barebox on VoCore2
+Subject: [PATCH 0/1] net: designware: eqos: stop DMA on halt
 To: barebox@lists.infradead.org
 
-SGksCkkgd291bGQgbGlrZSB0byB1c2UgYmFyZWJveCB3aXRoIGEgY3VzdG9tIGJvYXJkIChWb0Nv
-cmUyLCBiYXNlZCBvbgpNVDc2MjgpIGN1cnJlbnRseSBydW5uaW5nIG9uIGEgcGFsZW9saXRoaWMg
-dmVyc2lvbiBvZiB1LWJvb3QuCkkndmUgc2VlbiB0aGVyZSBoYXMgYmVlbiBzb21lIHdvcmsgb24g
-dGhpcyBib2FyZAooaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvcGlwZXJtYWlsL2JhcmVib3gv
-MjAxNy1BdWd1c3QvMDMwOTQ1Lmh0bWwpLApidXQgaXQncyB1bmNsZWFyIHRvIG1lIGlmIHRoaXMg
-cmVzdWx0ZWQgaW4gYSB1c2FibGUgYmFyZWJveCBhbmQsIGlmIHNvLAp3aGF0J3MgdGhlIHJpZ2h0
-IGJyYW5jaCB0byB1c2UuCgpJJ20gbm90IHNjYXJlZCBhYm91dCBkaXJ0eWluZyBteSBmaW5nZXJz
-IGluIGxvdyAocmVnaXN0ZXIpIGxldmVsCnByb2dyYW1taW5nLCBpZiBuZWVkZWQsIGJ1dCBJIGtu
-b3cgdmVyeSBsaXR0bGUgYWJvdXQgYmFyZWJveCwgc28gc29tZQpndWlkYW5jZSAoYW5kIGRvY3Vt
-ZW50YXRpb24pIHdvdWxkIGJlIG5lZWRlZC4KCldoZXJlIGNhbiBJIGZpbmQgZGV0YWlsZWQgZGVz
-Y3JpcHRpb24gb2YgbmVlZGVkIHN0ZXBzPwoKTm90ZTogSSB0cmllZCBhICJkdW1iIGNvbXBpbGF0
-aW9uIiAoYWZ0ZXIgcnVsZS1vZi10aHVtYiBjb25maWd1cmF0aW9uKSwKYnV0IEkgZ290IGxpbmsg
-ZXJyb3I6CgptY29uQGNpbmRlcmVsbGE6fi92b2NvcmUvcHJvdmUvYmFyZWJveCQKUEFUSD0vaG9t
-ZS9tY29uL3ZvY29yZS9wcm92ZS9taXBzZWwtYnVpbGRyb290LWxpbnV4LXVjbGliY19zZGstYnVp
-bGRyb290L2JpbjokUEFUSAptYWtlIEFSQ0g9bWlwcyBDUk9TU19DT01QSUxFPW1pcHNlbC1saW51
-eC0KwqAgQ0hLwqDCoMKgwqAgaW5jbHVkZS9nZW5lcmF0ZWQvdmVyc2lvbi5oCsKgIENIS8KgwqDC
-oMKgIGluY2x1ZGUvZ2VuZXJhdGVkL3V0c3JlbGVhc2UuaMKgCsKgIC4uLgrCoCBDQ8KgwqDCoMKg
-wqAgY29tbW9uL3ZlcnNpb24ubwrCoCBMRMKgwqDCoMKgwqAgY29tbW9uL2J1aWx0LWluLm8KwqAg
-TETCoMKgwqDCoMKgIGJhcmVib3gKbWlwc2VsLWxpbnV4LWxkOiBhcmNoL21pcHMvYm9vdC9idWls
-dC1pbi5vOiBpbiBmdW5jdGlvbiBgbWFpbl9lbnRyeSc6CigudGV4dF9iYXJlX2luaXQudGV4dCsw
-eGU0KTogdW5kZWZpbmVkIHJlZmVyZW5jZSB0byBgZ2xvYl9mZHQnCm1pcHNlbC1saW51eC1sZDog
-KC50ZXh0X2JhcmVfaW5pdC50ZXh0KzB4ZTgpOiB1bmRlZmluZWQgcmVmZXJlbmNlIHRvCmBnbG9i
-X2ZkdCcKbWlwc2VsLWxpbnV4LWxkOiAoLnRleHRfYmFyZV9pbml0LnRleHQrMHhlYyk6IHVuZGVm
-aW5lZCByZWZlcmVuY2UgdG8KYGdsb2JfZmR0X3NpemUnCm1pcHNlbC1saW51eC1sZDogKC50ZXh0
-X2JhcmVfaW5pdC50ZXh0KzB4ZjQpOiB1bmRlZmluZWQgcmVmZXJlbmNlIHRvCmBnbG9iX2ZkdF9z
-aXplJwpVbmFibGUgdG8gb3BlbiBpbnB1dCBmaWxlIGJhcmVib3gKbWFrZTogKioqIFtNYWtlZmls
-ZTo3ODQ6IGJhcmVib3hdIEVycm9yIDIKCi4uLiBzbyBJJ20gc3VyZWx5IG1pc3Npbmcgc29tZSBy
-ZWxldmFudCBzdGVwLgoKVGhhbmtzIGluIEFkdmFuY2UKTWF1cm8KCl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
-b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
-L2xpc3RpbmZvL2JhcmVib3gK
+Hello Sascha,
+
+Would be great if you could apply this to master.
+
+Thanks,
+Ahmad
+
+Ahmad Fatoum (1):
+  net: designware: eqos: stop DMA on halt
+
+ drivers/net/designware_stm32.c    | 2 ++
+ drivers/net/designware_tegra186.c | 2 ++
+ 2 files changed, 4 insertions(+)
+
+-- 
+2.20.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
