@@ -1,13 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mickerik.phytec.de ([195.145.39.210])
- by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iUQi0-0002KI-RZ
- for barebox@lists.infradead.org; Tue, 12 Nov 2019 07:35:31 +0000
-From: Stefan Riedmueller <s.riedmueller@phytec.de>
-Date: Tue, 12 Nov 2019 08:35:23 +0100
-Message-Id: <1573544123-338486-2-git-send-email-s.riedmueller@phytec.de>
-In-Reply-To: <1573544123-338486-1-git-send-email-s.riedmueller@phytec.de>
-References: <1573544123-338486-1-git-send-email-s.riedmueller@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1iUUAn-00046x-4M
+ for barebox@lists.infradead.org; Tue, 12 Nov 2019 11:17:26 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 12 Nov 2019 12:17:22 +0100
+Message-Id: <20191112111722.30000-1-s.hauer@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,195 +15,165 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ARM: dts: imx6: phycore: Update License,
- copyright and model description
-To: barebox@lists.infradead.org
-Cc: Marco Felsch <m.felsch@pengutronix.de>
+Subject: [PATCH] ARM: Compile with -fPIE
+To: Barebox List <barebox@lists.infradead.org>
 
-Make use of SPDX license identifiers and update copyright notices and model
-descriptions of the phyCORE-i.MX 6 SOM's.
+Early code in barebox often runs at an address the binary is not linked
+at. This causes problems for example when simple initializations in a
+switch are converted to an array lookup (-ftree-switch-conversion).
+These arrays are then addressed where they are linked at. Some code
+where this is known to cause problems is already compiled with
+-fno-tree-switch-conversion. This however is limited to single files.
 
-Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
+This patch compiles barebox with -fPIE enabled. This causes such tables
+to be looked up PC relative rather than with its absolute address. This
+makes the -fno-tree-switch-conversion and -fno-jump-table options
+unnecessary.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/dts/imx6dl-phytec-phycore-som-emmc.dts | 10 ++--------
- arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts | 13 ++++---------
- arch/arm/dts/imx6q-phytec-phycore-som-emmc.dts  | 13 ++++---------
- arch/arm/dts/imx6q-phytec-phycore-som-nand.dts  | 13 ++++---------
- arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi    | 11 +++--------
- arch/arm/dts/imx6qp-phytec-phycore-som-nand.dts | 12 +++---------
- 6 files changed, 20 insertions(+), 52 deletions(-)
+ arch/arm/Makefile                            |  3 +++
+ arch/arm/boards/nvidia-beaver/Makefile       |  4 +---
+ arch/arm/boards/nvidia-jetson-tk1/Makefile   |  4 +---
+ arch/arm/boards/toradex-colibri-t20/Makefile |  6 ++----
+ arch/arm/boards/toshiba-ac100/Makefile       |  4 +---
+ arch/arm/boards/zii-imx51-rdu1/Makefile      |  1 -
+ arch/arm/boards/zii-imx7d-dev/Makefile       |  1 -
+ arch/arm/boards/zii-vf610-dev/Makefile       |  1 -
+ arch/arm/mach-omap/Makefile                  |  2 --
+ arch/arm/mach-tegra/Makefile                 | 12 ++----------
+ 10 files changed, 10 insertions(+), 28 deletions(-)
 
-diff --git a/arch/arm/dts/imx6dl-phytec-phycore-som-emmc.dts b/arch/arm/dts/imx6dl-phytec-phycore-som-emmc.dts
-index 8ce0066c691d..b2e86eae175a 100644
---- a/arch/arm/dts/imx6dl-phytec-phycore-som-emmc.dts
-+++ b/arch/arm/dts/imx6dl-phytec-phycore-som-emmc.dts
-@@ -1,13 +1,7 @@
-+// SPDX-License-Identifier: (GPL-2.0-or-later)
- /*
-  * Copyright (C) 2015 PHYTEC Messtechnik GmbH,
-  * Author: Stefan Christ <s.christ@phytec.de>
-- *
-- * The code contained herein is licensed under the GNU General Public
-- * License. You may obtain a copy of the GNU General Public License
-- * Version 2 or later at the following locations:
-- *
-- * http://www.opensource.org/licenses/gpl-license.html
-- * http://www.gnu.org/copyleft/gpl.html
-  */
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 13e8cee286..740b0790e7 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -141,6 +141,9 @@ CPPFLAGS += -DTEXT_BASE=$(TEXT_BASE)
+ CPPFLAGS += -fdata-sections -ffunction-sections
+ LDFLAGS_barebox += --gc-sections
  
- /dts-v1/;
-@@ -19,7 +13,7 @@
- #include "imx6qdl-phytec-state.dtsi"
- 
- / {
--	model = "Phytec phyCORE-i.MX6 DualLite/SOLO with eMMC";
-+	model = "PHYTEC phyCORE-i.MX6 DualLite/SOLO with eMMC";
- 	compatible = "phytec,imx6dl-pcm058-emmc", "fsl,imx6dl";
- };
- 
-diff --git a/arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts b/arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts
-index 18d14d6b945c..d747c837a535 100644
---- a/arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts
-+++ b/arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts
-@@ -1,12 +1,7 @@
-+// SPDX-License-Identifier: (GPL-2.0-or-later)
- /*
-- * Copyright 2015 Christian Hemp, Phytec Messtechnik GmbH
-- *
-- * The code contained herein is licensed under the GNU General Public
-- * License. You may obtain a copy of the GNU General Public License
-- * Version 2 or later at the following locations:
-- *
-- * http://www.opensource.org/licenses/gpl-license.html
-- * http://www.gnu.org/copyleft/gpl.html
-+ * Copyright (C) 2015 PHYTEC Messtechnik GmbH
-+ * Author: Christian Hemp <c.hemp@phytec.de>
-  */
- 
- /dts-v1/;
-@@ -18,7 +13,7 @@
- #include "imx6qdl-phytec-state.dtsi"
- 
- / {
--	model = "Phytec phyCORE-i.MX6 Duallite/SOLO with NAND";
-+	model = "PHYTEC phyCORE-i.MX6 Duallite/SOLO with NAND";
- 	compatible = "phytec,imx6dl-pcm058-nand", "fsl,imx6dl";
- };
- 
-diff --git a/arch/arm/dts/imx6q-phytec-phycore-som-emmc.dts b/arch/arm/dts/imx6q-phytec-phycore-som-emmc.dts
-index 2ff4ae7a488a..0acc6493cc51 100644
---- a/arch/arm/dts/imx6q-phytec-phycore-som-emmc.dts
-+++ b/arch/arm/dts/imx6q-phytec-phycore-som-emmc.dts
-@@ -1,12 +1,7 @@
-+// SPDX-License-Identifier: (GPL-2.0-or-later)
- /*
-- * Copyright 2015 Christian Hemp, Phytec Messtechnik GmbH
-- *
-- * The code contained herein is licensed under the GNU General Public
-- * License. You may obtain a copy of the GNU General Public License
-- * Version 2 or later at the following locations:
-- *
-- * http://www.opensource.org/licenses/gpl-license.html
-- * http://www.gnu.org/copyleft/gpl.html
-+ * Copyright (C) 2015 PHYTEC Messtechnik GmbH
-+ * Author: Christian Hemp <c.hemp@phytec.de>
-  */
- 
- /dts-v1/;
-@@ -18,7 +13,7 @@
- #include "imx6qdl-phytec-state.dtsi"
- 
- / {
--	model = "Phytec phyCORE-i.MX6 Quad with eMMC";
-+	model = "PHYTEC phyCORE-i.MX6 Quad with eMMC";
- 	compatible = "phytec,imx6q-pcm058-emmc", "fsl,imx6q";
- };
- 
-diff --git a/arch/arm/dts/imx6q-phytec-phycore-som-nand.dts b/arch/arm/dts/imx6q-phytec-phycore-som-nand.dts
-index cc5ef7d11d30..12f2b21f3b11 100644
---- a/arch/arm/dts/imx6q-phytec-phycore-som-nand.dts
-+++ b/arch/arm/dts/imx6q-phytec-phycore-som-nand.dts
-@@ -1,12 +1,7 @@
-+// SPDX-License-Identifier: (GPL-2.0-or-later)
- /*
-- * Copyright 2015 Christian Hemp, Phytec Messtechnik GmbH
-- *
-- * The code contained herein is licensed under the GNU General Public
-- * License. You may obtain a copy of the GNU General Public License
-- * Version 2 or later at the following locations:
-- *
-- * http://www.opensource.org/licenses/gpl-license.html
-- * http://www.gnu.org/copyleft/gpl.html
-+ * Copyright (C) 2015 PHYTEC Messtechnik GmbH
-+ * Author: Christian Hemp <c.hemp@phytec.de>
-  */
- 
- /dts-v1/;
-@@ -18,7 +13,7 @@
- #include "imx6qdl-phytec-state.dtsi"
- 
- / {
--	model = "Phytec phyCORE-i.MX6 Quad with NAND";
-+	model = "PHYTEC phyCORE-i.MX6 Quad with NAND";
- 	compatible = "phytec,imx6q-pcm058-nand", "fsl,imx6q";
- 
- };
-diff --git a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-index 3bb21ce8f761..69f252b42382 100644
---- a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-+++ b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-@@ -1,12 +1,7 @@
-+// SPDX-License-Identifier: (GPL-2.0-or-later)
- /*
-- * Copyright 2015 Christian Hemp, Phytec Messtechnik GmbH
-- *
-- * The code contained herein is licensed under the GNU General Public
-- * License. You may obtain a copy of the GNU General Public License
-- * Version 2 or later at the following locations:
-- *
-- * http://www.opensource.org/licenses/gpl-license.html
-- * http://www.gnu.org/copyleft/gpl.html
-+ * Copyright (C) 2015 PHYTEC Messtechnik GmbH
-+ * Author: Christian Hemp <c.hemp@phytec.de>
-  */
- 
- #include <arm/imx6qdl-phytec-phycore-som.dtsi>
-diff --git a/arch/arm/dts/imx6qp-phytec-phycore-som-nand.dts b/arch/arm/dts/imx6qp-phytec-phycore-som-nand.dts
-index 410071192eee..13dbd2cb3b0d 100644
---- a/arch/arm/dts/imx6qp-phytec-phycore-som-nand.dts
-+++ b/arch/arm/dts/imx6qp-phytec-phycore-som-nand.dts
-@@ -1,13 +1,7 @@
-+// SPDX-License-Identifier: (GPL-2.0-or-later)
- /*
-- * Copyright (C) 2016 Phytec Messtechnik GmbH
-+ * Copyright (C) 2016 PHYTEC Messtechnik GmbH
-  * Author: Christian Hemp <c.hemp@phytec.de>
-- *
-- * The code contained herein is licensed under the GNU General Public
-- * License. You may obtain a copy of the GNU General Public License
-- * Version 2 or later at the following locations:
-- *
-- * http://www.opensource.org/licenses/gpl-license.html
-- * http://www.gnu.org/copyleft/gpl.html
-  */
- 
- /dts-v1/;
-@@ -16,7 +10,7 @@
- #include "imx6qdl-phytec-mira.dtsi"
- 
- / {
--	model = "Phytec phyCORE-i.MX6 Quad with NAND";
-+	model = "PHYTEC phyCORE-i.MX6 QuadPlus with NAND";
- 	compatible = "phytec,imx6qp-pcm058-nand", "fsl,imx6qp";
- };
- 
++# early code often runs at addresses we are not linked at
++CPPFLAGS += -fPIE
++
+ ifdef CONFIG_RELOCATABLE
+ LDFLAGS_barebox += -pie
+ else
+diff --git a/arch/arm/boards/nvidia-beaver/Makefile b/arch/arm/boards/nvidia-beaver/Makefile
+index 7ade54e854..f0eb7b2de0 100644
+--- a/arch/arm/boards/nvidia-beaver/Makefile
++++ b/arch/arm/boards/nvidia-beaver/Makefile
+@@ -1,6 +1,4 @@
+-CFLAGS_pbl-entry.o := \
+-	-mcpu=arm7tdmi -march=armv4t \
+-	-fno-tree-switch-conversion -fno-jump-tables
++CFLAGS_pbl-entry.o := -mcpu=arm7tdmi -march=armv4t
+ soc := tegra30
+ lwl-y += entry.o
+ obj-y += board.o
+diff --git a/arch/arm/boards/nvidia-jetson-tk1/Makefile b/arch/arm/boards/nvidia-jetson-tk1/Makefile
+index 16b203f9f3..5487f0289a 100644
+--- a/arch/arm/boards/nvidia-jetson-tk1/Makefile
++++ b/arch/arm/boards/nvidia-jetson-tk1/Makefile
+@@ -1,6 +1,4 @@
+-CFLAGS_pbl-entry.o := \
+-	-mcpu=arm7tdmi -march=armv4t \
+-	-fno-tree-switch-conversion -fno-jump-tables
++CFLAGS_pbl-entry.o := -mcpu=arm7tdmi -march=armv4t
+ soc := tegra124
+ lwl-y += entry.o
+ obj-y += board.o
+diff --git a/arch/arm/boards/toradex-colibri-t20/Makefile b/arch/arm/boards/toradex-colibri-t20/Makefile
+index d0347f2382..644a8e5269 100644
+--- a/arch/arm/boards/toradex-colibri-t20/Makefile
++++ b/arch/arm/boards/toradex-colibri-t20/Makefile
+@@ -1,9 +1,7 @@
+-CFLAGS_pbl-entry.o := \
+-	-mcpu=arm7tdmi -march=armv4t \
+-	-fno-tree-switch-conversion -fno-jump-tables
++CFLAGS_pbl-entry.o := -mcpu=arm7tdmi -march=armv4t
+ soc := tegra20
+ lwl-y += entry.o
+ obj-y += board.o
+ extra-y += colibri-t20_256_hsmmc.bct colibri-t20_256_v11_nand.bct \
+            colibri-t20_256_v12_nand.bct colibri-t20_512_hsmmc.bct \
+-           colibri-t20_512_v11_nand.bct colibri-t20_512_v12_nand.bct
+\ No newline at end of file
++           colibri-t20_512_v11_nand.bct colibri-t20_512_v12_nand.bct
+diff --git a/arch/arm/boards/toshiba-ac100/Makefile b/arch/arm/boards/toshiba-ac100/Makefile
+index 2b6c09e279..4ef18c0ce9 100644
+--- a/arch/arm/boards/toshiba-ac100/Makefile
++++ b/arch/arm/boards/toshiba-ac100/Makefile
+@@ -1,5 +1,3 @@
+-CFLAGS_pbl-entry.o := \
+-	-mcpu=arm7tdmi -march=armv4t \
+-	-fno-tree-switch-conversion -fno-jump-tables
++CFLAGS_pbl-entry.o := -mcpu=arm7tdmi -march=armv4t
+ lwl-y += entry.o
+ obj-y += board.o
+diff --git a/arch/arm/boards/zii-imx51-rdu1/Makefile b/arch/arm/boards/zii-imx51-rdu1/Makefile
+index 604b3621be..01c7a259e9 100644
+--- a/arch/arm/boards/zii-imx51-rdu1/Makefile
++++ b/arch/arm/boards/zii-imx51-rdu1/Makefile
+@@ -1,3 +1,2 @@
+ obj-y += board.o
+-CFLAGS_pbl-lowlevel.o := -fno-tree-switch-conversion -fno-jump-tables
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/zii-imx7d-dev/Makefile b/arch/arm/boards/zii-imx7d-dev/Makefile
+index e1baed17ba..01c7a259e9 100644
+--- a/arch/arm/boards/zii-imx7d-dev/Makefile
++++ b/arch/arm/boards/zii-imx7d-dev/Makefile
+@@ -1,3 +1,2 @@
+-CFLAGS_pbl-lowlevel.o := -fno-tree-switch-conversion -fno-jump-tables
+ obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/zii-vf610-dev/Makefile b/arch/arm/boards/zii-vf610-dev/Makefile
+index 3c3a3f2387..1297d815e3 100644
+--- a/arch/arm/boards/zii-vf610-dev/Makefile
++++ b/arch/arm/boards/zii-vf610-dev/Makefile
+@@ -1,4 +1,3 @@
+ obj-y += board.o
+-CFLAGS_pbl-lowlevel.o := -fno-tree-switch-conversion -fno-jump-tables
+ lwl-y += lowlevel.o
+ bbenv-y += defaultenv-zii-vf610-dev
+diff --git a/arch/arm/mach-omap/Makefile b/arch/arm/mach-omap/Makefile
+index 06cd191f95..36b2aa090e 100644
+--- a/arch/arm/mach-omap/Makefile
++++ b/arch/arm/mach-omap/Makefile
+@@ -22,8 +22,6 @@ pbl-$(CONFIG_ARCH_OMAP3) += omap3_generic.o auxcr.o
+ obj-$(CONFIG_ARCH_OMAP4) += omap4_generic.o omap4_clock.o
+ pbl-$(CONFIG_ARCH_OMAP4) += omap4_generic.o omap4_clock.o
+ obj-pbl-$(CONFIG_ARCH_AM33XX) += am33xx_generic.o am33xx_clock.o am33xx_mux.o am3xxx.o
+-CFLAGS_pbl-am33xx_generic.o := -fno-tree-switch-conversion -fno-jump-tables
+-CFLAGS_am33xx_generic.o := -fno-tree-switch-conversion -fno-jump-tables
+ obj-pbl-$(CONFIG_ARCH_AM35XX) += am3xxx.o am35xx_emif4.o
+ obj-$(CONFIG_ARCH_AM33XX) += am33xx_scrm.o
+ obj-$(CONFIG_ARCH_OMAP3) += omap3_clock.o
+diff --git a/arch/arm/mach-tegra/Makefile b/arch/arm/mach-tegra/Makefile
+index 7c4c1fd137..7547951752 100644
+--- a/arch/arm/mach-tegra/Makefile
++++ b/arch/arm/mach-tegra/Makefile
+@@ -1,13 +1,5 @@
+-CFLAGS_tegra_avp_init.o := \
+-	-mcpu=arm7tdmi -march=armv4t \
+-	-fno-tree-switch-conversion -fno-jump-tables
+-CFLAGS_pbl-tegra_avp_init.o := \
+-	-mcpu=arm7tdmi -march=armv4t \
+-	-fno-tree-switch-conversion -fno-jump-tables
+-CFLAGS_tegra_maincomplex_init.o := \
+-	-fno-tree-switch-conversion -fno-jump-tables
+-CFLAGS_pbl-tegra_maincomplex_init.o := \
+-	-fno-tree-switch-conversion -fno-jump-tables
++CFLAGS_tegra_avp_init.o := -mcpu=arm7tdmi -march=armv4t
++CFLAGS_pbl-tegra_avp_init.o := -mcpu=arm7tdmi -march=armv4t
+ lwl-y += tegra_avp_init.o
+ lwl-y += tegra_maincomplex_init.o
+ obj-y += tegra20.o
 -- 
-2.7.4
+2.24.0.rc1
 
 
 _______________________________________________
