@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iUSLD-0006gZ-25
+ id 1iUSLD-0006gY-2E
  for barebox@lists.infradead.org; Tue, 12 Nov 2019 09:20:07 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 12 Nov 2019 10:19:51 +0100
-Message-Id: <20191112091956.26628-5-a.fatoum@pengutronix.de>
+Date: Tue, 12 Nov 2019 10:19:52 +0100
+Message-Id: <20191112091956.26628-6-a.fatoum@pengutronix.de>
 In-Reply-To: <20191112091956.26628-1-a.fatoum@pengutronix.de>
 References: <20191112091956.26628-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,48 +21,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/10] i2c: stm32: use device_reset_us helper instead of
- open-coding
+Subject: [PATCH 06/10] Documentation: boards: stm32mp: document boot error LED
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The exact sequence is already available in form of device_reset_us. Make
-use of it.
+The STM32MP Evaluation Kits place a LED on PA13 to display boot status.
+Document its blinking patterns.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/i2c/busses/i2c-stm32.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ Documentation/boards/stm32mp.rst | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/i2c/busses/i2c-stm32.c b/drivers/i2c/busses/i2c-stm32.c
-index 6af55fb3ffda..9f34760e3fdf 100644
---- a/drivers/i2c/busses/i2c-stm32.c
-+++ b/drivers/i2c/busses/i2c-stm32.c
-@@ -785,7 +785,6 @@ static int __init stm32_i2c_probe(struct device_d *dev)
- 	struct resource *iores;
- 	struct stm32_i2c *stm32_i2c;
- 	struct i2c_platform_data *pdata;
--	struct reset_control *rst;
- 	const struct stm32_i2c_setup *setup;
- 	struct i2c_timings *timings;
- 	int ret;
-@@ -799,13 +798,9 @@ static int __init stm32_i2c_probe(struct device_d *dev)
- 		return PTR_ERR(stm32_i2c->clk);
- 	clk_enable(stm32_i2c->clk);
- 
--	rst = reset_control_get(dev, NULL);
--	if (IS_ERR(rst))
--		return PTR_ERR(rst);
--
--	reset_control_assert(rst);
--	udelay(2);
--	reset_control_deassert(rst);
-+	ret = device_reset_us(dev, 2);
-+	if (ret)
-+		return ret;
- 
- 	ret = dev_get_drvdata(dev, (const void **)&setup);
- 	if (ret)
+diff --git a/Documentation/boards/stm32mp.rst b/Documentation/boards/stm32mp.rst
+index f93ec04eb04d..6d97b0d6d4a2 100644
+--- a/Documentation/boards/stm32mp.rst
++++ b/Documentation/boards/stm32mp.rst
+@@ -81,3 +81,13 @@ pulled down and BOOT0 and BOOT2 are connected to a 2P DIP switch::
+  BOOT2 | O --O |
+  BOOT0 | N --O |  <---- DFU on UART and USB OTG
+        +-------+
++
++Boot status indicator
++---------------------
++
++The ROM code on the first Cortex-A7 core pulses the PA13 pad.
++An error LED on this pad can be used to indicate boot status:
++
++* **Boot Failure:** LED lights bright
++* **UART/USB Boot:** LED blinks fast
++* **Debug access:** LED lights weak
 -- 
 2.24.0.rc1
 
