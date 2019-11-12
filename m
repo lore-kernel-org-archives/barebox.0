@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from your2.active-elements.de ([88.99.59.121] helo=atsonline.de)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iUXIt-0003me-39
- for barebox@lists.infradead.org; Tue, 12 Nov 2019 14:38:00 +0000
-Received: from Mail-10-6.ATS-Intranet.local (p57800e76.dip0.t-ipconnect.de
- [87.128.14.118])
- by xenon.active-elements.de (Postfix) with ESMTPSA id 5317F402396C
- for <barebox@lists.infradead.org>; Tue, 12 Nov 2019 15:37:56 +0100 (CET)
-References: <875f8014-b696-b0dc-3c9b-0a9e2d573aa6@atsonline.de>
- <20191112110051.5eujr5354pwgrvvu@pengutronix.de>
-From: Andreas Geisenhainer <Andreas.Geisenhainer@atsonline.de>
-Message-ID: <d081b9c6-e965-6aab-d2db-1a59f8018a6f@atsonline.de>
-Date: Tue, 12 Nov 2019 15:37:55 +0100
+ id 1iUUhp-0000AV-0l
+ for barebox@lists.infradead.org; Tue, 12 Nov 2019 11:51:34 +0000
+Date: Tue, 12 Nov 2019 12:51:30 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20191112115130.iass34olxahhbd5s@pengutronix.de>
+References: <1566397308-450229-1-git-send-email-m.otto@phytec.de>
 MIME-Version: 1.0
-In-Reply-To: <20191112110051.5eujr5354pwgrvvu@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <1566397308-450229-1-git-send-email-m.otto@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,28 +18,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Oselas 2018.12.0 toolchain seems to break barebox for AM335x
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v4 1/5] i.mx6: signed boot: add habv4-imx6-gencsf.h to
+ the flash header of the PHYTEC boards
+To: Maik Otto <m.otto@phytec.de>
+Cc: barebox@lists.infradead.org
 
-On 2019-11-12 12:00 p.m., Sascha Hauer wrote:
-> 
-> Sorry for the delay, I probably knew this issue will be something
-> unfortunate to look at...
+Hi Maik,
 
-No Problem, thanks for your hard work. :)
+On Wed, Aug 21, 2019 at 04:21:44PM +0200, Maik Otto wrote:
+> the habv4-imx6-gencsf.h is necessary in the board flash header to build
+> a signed barebox
 
-> The second solution is to add -fPIE to CPPFLAGS which is a more general
-> approach. I'd like to give this a try in -next.
+Applied now. Please note that in the meantime it is no longer necessary
+to put the public key for the FIT image into the device tree source
+file. We can now specify the path to the key (or alternatively, a
+PKCS#11 URI) in Kconfig using the CONFIG_CRYPTO_RSA_KEY option:
 
-I tried this more generic, second approach on our local setup and it 
-works. \o/
+9341918ba8 fit-image: Use compiled-in keys
+b39100bcea rsa: Allow to directly compile in rsa public keys
 
-Thanks and kind regards
-Andreas
+What I missed to mention explicitly is that CONFIG_CRYPTO_RSA_KEY can
+be specified as "__ENV__FOOBAR". When done like this the path (or
+PKCS#11 URI) is taken from the environment variable FOOBAR. This is
+done to help build systems which then no longer have to patch the
+CONFIG_CRYPTO_RSA_KEY option in the barebox config file.
+
+You might want to give it a try, it could simplify your workflow with
+the keys.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
