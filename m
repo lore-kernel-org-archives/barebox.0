@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from your2.active-elements.de ([88.99.59.121] helo=atsonline.de)
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iUUqc-0003Ta-1j
- for barebox@lists.infradead.org; Tue, 12 Nov 2019 12:00:39 +0000
-Date: Tue, 12 Nov 2019 13:00:36 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191112120036.5dghk76prcxsxtjh@pengutronix.de>
-References: <20191111095607.1813-1-ahmad@a3f.at>
- <20191111095607.1813-2-ahmad@a3f.at>
+ id 1iUQuH-0006J9-3d
+ for barebox@lists.infradead.org; Tue, 12 Nov 2019 07:48:10 +0000
+From: Andreas Geisenhainer <Andreas.Geisenhainer@atsonline.de>
+References: <875f8014-b696-b0dc-3c9b-0a9e2d573aa6@atsonline.de>
+ <239d939b-9b3e-d3c8-6f46-5b29aeec1b66@atsonline.de>
+Message-ID: <ac715f82-c7f4-f2fd-1ec4-81fb619a457d@atsonline.de>
+Date: Tue, 12 Nov 2019 08:48:04 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191111095607.1813-2-ahmad@a3f.at>
+In-Reply-To: <239d939b-9b3e-d3c8-6f46-5b29aeec1b66@atsonline.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,33 +19,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] net: designware: eqos: stop DMA on halt
-To: Ahmad Fatoum <ahmad@a3f.at>
-Cc: barebox@lists.infradead.org
+Subject: Re: Oselas 2018.12.0 toolchain seems to break barebox for AM335x
+To: barebox@lists.infradead.org
 
-On Mon, Nov 11, 2019 at 10:56:07AM +0100, Ahmad Fatoum wrote:
-> designware_eqos.c contains an eqos_stop implementation to stop the NIC
-> when halting the interface. Unfortunately it wasn't used leading to
-> memory corruption on boot, possibly due to DMA. Fix this.
-> 
-> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
-> ---
-
-Applied to master, thanks
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+R29vZCBkYXksIGV2ZXJ5b25lLgoKKmJ1bXAqCgpPbiAyMDE5LTEwLTI1IDEwOjQ4IGEubS4sIEFu
+ZHJlYXMgR2Vpc2VuaGFpbmVyIHdyb3RlOgo+IEhlbGxvIFNhc2NoYSwgaGVsbG8gYmFyZWJveC1t
+bC4KPiAKPiAgPiBPbiAyMDE5LTA3LTEwIDk6NTggYS5tLiwgU2FzY2hhIEhhdWVyIHdyb3RlOgo+
+ICA+PiBPbiBNb24sIEp1bCAwOCwgMjAxOSBhdCAwNDoxNTowMFBNICswMjAwLCBBbmRyZWFzIEdl
+aXNlbmhhaW5lciB3cm90ZToKPiAgPj4+IFdlJ3JlIHJ1bm5pbmcgYmFyZWJveCBhbiBhIFBoeXRl
+YyBQaHlDT1JFIEFNMzM1eCBwbGF0Zm9ybSwgYW5kIHRoZQo+ICA+Pj4gYmVoYXZpb3VyIGRvZXMg
+ZW1lcmdlIGZvciB0aGUgZGVmYXVsdAo+ICA+Pj4gImJhcmVib3gtYW0zMzV4LXBoeXRlYy1waHlj
+b3JlLmltZyIKPiAgPj4+IGltYWdlIGZyb20gYmFyZWJveC4KPiAgPj4gSSBqdXN0IHRyaWVkIHRv
+IHJlcHJvZHVjZSB0aGlzIG9uIGEgYmVhZ2xlYm9uZSBibGFjayBhcyB0aGlzIGlzIGF0IAo+IGxl
+YXN0Cj4gID4+IHRoZSBzYW1lIFNvQy4gVW5mb3J0dW5hdGVseSBJIHdhcyBub3Qgc3VjY2Vzc2Z1
+bC4KPiAKPiBJIGZpbmFsbHkgZm91bmQgdGhlIHRpbWUgdG8gcmVwcm9kdWNlIHRoaXMgb24gYSBi
+ZWFnbGVib25lIGJsYWNrLgo+IEkgdHJpZWQgdHdvIGRpZmZlcmVudCBiYXJlYm94IHZlcnNpb25z
+ICh2MjAxOC4wMyBhbmQgdjIwMTkuMTApCj4gd2l0aG91dCBhbnkgY2hhbmdlcyB0byB0aGUgc291
+cmNlLgo+IAo+IE15IGN1cnJlbnQgc3RlcHMgd2hlcmUKPiAKPiAxKSBtYWtlIGFtMzM1eF9tbG9f
+ZGVmY29uZmlnIC8gYW0zMzV4X2RlZmNvbmZpZwo+ICDCoMKgwqDCoChkZXBlbmRpbmcgb24gdGhl
+IHZlcnNpb24pCj4gMikgbWFrZQo+IDMpIGNvcGllZCB0d28gZmlsZXMgb250byB0aGUgdVNEIGNh
+cmQgSSBib290ZWQgdGhlIGJvbmVibGFjawo+ICDCoMKgIGZyb206Cj4gIMKgwqDCoCAtIGJhcmVi
+b3gtYW0zM3h4LWJlYWdsZWJvbmUuaW1nIChJKQo+ICDCoMKgwqAgLSBiYXJlYm94LWFtMzN4eC1w
+aHl0ZWMtcGh5Y29yZS5pbWcgKElJKQo+IDQpIGJvb3RlZCB0aGUgYm9uZWJsYWNrIGFuZCBsb2Fk
+ZWQgZWFjaCBmaWxlIG1hbnVhbGx5IHVzaW5nIHRoZQo+ICDCoMKgIGBib290bWAgY29tbWFuZC4K
+PiAKPiAKPiBJJ20gd29ya2luZyB1bmRlciB0aGUgZm9sbG93aW5nIGFzc3VtcHRpb246Cj4gIMKg
+YSkgdGhlIGJlYWdsZWJvbmVibGFjayBpbWFnZSBpcyB3b3JraW5nIGZvciBvdXIgQU0zMzV4LXBo
+eWNvcmUKPiAgwqBiKSB0aGUgcGh5dGVjLXBoeWNvcmUgaW1hZ2Ugc2hvdWxkIHdvcmsgb24gYSBi
+b25lYmxhY2sKPiAgwqDCoMKgwqAgKGF0IGxlYXN0IHJ1ZGltZW50YXJ5KQo+IAo+IFdoZW4gSSdt
+IHVzaW5nIHRoZSBPU0VMQVMuMjAxOC4wMi4wIHRvb2xjaGFpbiBhKSB1bmQgYikgaG9sZCB1cC4g
+Cj4gQWRkaXRpb25hbGx5IHdlIGdldAo+ICDCoCBjKSBvbiB0aGUgYm9uZWJsYWNrIGJvdGggaW1h
+Z2VzIChJKSBhbmQgKElJKSBhcmUgd29ya2luZwo+IAo+IFdpdGggdGhlIE9TRUxBUy4yMDE5LjA5
+LjAgdG9vbGNoYWluLCB0aGUgYm9uZWJsYWNrIGltYWdlIChJKSBpcwo+IHdvcmtpbmcgb24gdGhl
+IGJvbmVibGFjaywgYnV0IHRoZSBwaHljb3JlLWltYWdlIChJSSkgaXMgbm90Lgo+IAo+IFRoZXJl
+IHNlZW0gdG8gYmUgYXQgbGVhc3QgdHdvIHNsaWdodGx5IGRpZmZlcmVudCBiZWhhdmlvcnMKPiBJ
+J3ZlIGJlZW4gb2JzZXJ2aW5nOgo+IFllc3RlcmRheSBpdCBqdXN0cyBzdG9wcyB3b3JraW5nLCBu
+byBmdXJ0aGVyIG91dHB1dCwgbm90aGluZyAoc2VlIFBhcnQgCj4gQikgd2l0aGluIGF0dGFjaG1l
+bnQuCj4gVHdvIGRheXMgYWdvIGl0IGNvbXBsYWluZWQgYWJvdXQgYSAidW5oYW5kbGVkIE5VTEwg
+cG9pbnRlciBkZXJlZmVyZW5jZSIsIAo+IGZvbGxvd2VkIGJ5IGEgcmVzZXQgb2YgdGhlIGNoaXAg
+KGkgY2FwdHVyZWQgdGhhdCB3aXRoaW4gdGhlIGF0dGFjaG1lbnQgCj4gYXQgQykuCj4gCj4gT25l
+IG1vcmUgcG9pbnQ6IEkndmUgY2hvc2VuIHRvIGJ1aWxkIHRoZSB0b29sY2hhaW5zIGZvciAKPiAi
+YXJtLWNvcnRleGE4LWxpbnV4LWdudWVhYmloZiIuCj4gVG8gcnVsZSBvdXQgcHJvYmxlbXMgd2l0
+aCB0aGlzIGRlY2lzaW9uIEkgYnVpbGQgYSBtb3JlIGdlbmVyaWMgCj4gImFybS12N2EtbGludXgt
+Z251ZWFiaWhmIgo+IG9uZSwgYnV0IHRoZSBwcm9ibGVtIHBlcnNpc3RzIHdpdGggaXQsIHRvby4K
+PiAKPiBJcyB0aGVyZSBhbnl0aGluZyBtb3JlIEkgY2FuIGRvIG9uIG15IGVuZD8KPiBJJ20gb3Bl
+biBmb3IgYW55IGlkZWFzLCBoZXJlLiA6KQoKV2FzIGFueW9uZSBhYmxlIGZpbmQgc29tZXRoaW5n
+IHJlZ2FyZGluZyB0aGlzPwoKRG8gc29tZSBjcmF6eSBpZGVhcyBleGlzdCBhbnl3aGVyZT8KCmtp
+bmQgcmVnYXJkcywKQW5kcmVhcyBHZWlzZW5oYWluZXIKCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
+dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
+bmZvL2JhcmVib3gK
