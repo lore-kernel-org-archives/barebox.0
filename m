@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iUSLH-0007OO-J0
+ id 1iUSLH-0007OP-JI
  for barebox@lists.infradead.org; Tue, 12 Nov 2019 09:20:10 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 12 Nov 2019 10:19:48 +0100
-Message-Id: <20191112091956.26628-2-a.fatoum@pengutronix.de>
+Date: Tue, 12 Nov 2019 10:19:50 +0100
+Message-Id: <20191112091956.26628-4-a.fatoum@pengutronix.de>
 In-Reply-To: <20191112091956.26628-1-a.fatoum@pengutronix.de>
 References: <20191112091956.26628-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,49 +21,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/10] ARM: stm32mp157c-dk2: add optional DEBUG_LL print to
- entry point
+Subject: [PATCH 04/10] watchdog: stm32_iwdg: return -ENOSYS on attempt to
+ disable
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The TF-A sets up pin muxing and clocking for the UART4 which is the UART
-suggested by ST for use as debug console.
-
-Eventually, we might want to do this ourselves to be sure, but for now
-lets just stick in a putc_ll('>'), so user selecting DEBUG_LL can see
-that barebox started.
+The stm32_iwdg watchdog can't be disabled. To have the wd commant report
+this fact correctly to the user, the ->set_timeout needs to return -ENOSYS
+which is interpreted as "Watchdog cannot be disabled" instead of -EINVAL
+which means "Timeout value out of range".
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/boards/stm32mp157c-dk2/lowlevel.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/watchdog/stm32_iwdg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boards/stm32mp157c-dk2/lowlevel.c b/arch/arm/boards/stm32mp157c-dk2/lowlevel.c
-index 566ace79c956..2106eaadc93a 100644
---- a/arch/arm/boards/stm32mp157c-dk2/lowlevel.c
-+++ b/arch/arm/boards/stm32mp157c-dk2/lowlevel.c
-@@ -7,12 +7,21 @@
+diff --git a/drivers/watchdog/stm32_iwdg.c b/drivers/watchdog/stm32_iwdg.c
+index 4d252e558c32..808d7c83720e 100644
+--- a/drivers/watchdog/stm32_iwdg.c
++++ b/drivers/watchdog/stm32_iwdg.c
+@@ -132,7 +132,7 @@ static int stm32_iwdg_set_timeout(struct watchdog *wdd, unsigned int timeout)
+ 	int ret;
  
- extern char __dtb_z_stm32mp157c_dk2_start[];
+ 	if (!timeout)
+-		return -EINVAL; /* can't disable */
++		return -ENOSYS; /* can't disable */
  
-+static void setup_uart(void)
-+{
-+	/* first stage has set up the UART, so nothing to do here */
-+	putc_ll('>');
-+}
-+
- ENTRY_FUNCTION(start_stm32mp157c_dk2, r0, r1, r2)
- {
- 	void *fdt;
- 
- 	arm_cpu_lowlevel_init();
- 
-+	if (IS_ENABLED(CONFIG_DEBUG_LL))
-+		setup_uart();
-+
- 	fdt = __dtb_z_stm32mp157c_dk2_start + get_runtime_offset();
- 
- 	barebox_arm_entry(STM32_DDR_BASE, SZ_512M, fdt);
+ 	if (timeout > wdd->timeout_max)
+ 		return -EINVAL;
 -- 
 2.24.0.rc1
 
