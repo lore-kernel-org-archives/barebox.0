@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iUoxm-0001aj-Fb
- for barebox@lists.infradead.org; Wed, 13 Nov 2019 09:29:23 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 13 Nov 2019 10:29:20 +0100
-Message-Id: <20191113092920.22469-1-a.fatoum@pengutronix.de>
-In-Reply-To: <20191112091956.26628-10-a.fatoum@pengutronix.de>
-References: <20191112091956.26628-10-a.fatoum@pengutronix.de>
+ id 1iUtaC-0004r0-GH
+ for barebox@lists.infradead.org; Wed, 13 Nov 2019 14:25:21 +0000
+Date: Wed, 13 Nov 2019 15:25:16 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20191113142516.ymxrdqvwxev6b5v7@pengutronix.de>
+References: <1573544123-338486-1-git-send-email-s.riedmueller@phytec.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1573544123-338486-1-git-send-email-s.riedmueller@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,33 +22,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! ARM: stm32mp: dk2: don't hard-code memory size
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH 1/2] ARM: dts: imx6: phycore: Make use of upstream
+ devicetree
+To: Stefan Riedmueller <s.riedmueller@phytec.de>
+Cc: barebox@lists.infradead.org, Marco Felsch <m.felsch@pengutronix.de>
 
-While Linux doesn't have a device node for the DDR controller,
-U-Boot and ARM TF-A do and they both use the st,stm32mp1-ddr compatible,
-which encompasses both DDRCTRL and DDRPHY. Follow suit.
----
- arch/arm/dts/stm32mp157c.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Tue, Nov 12, 2019 at 08:35:22AM +0100, Stefan Riedmueller wrote:
+> Make use of the upstream devicetree for the phyCORE-i.MX 6 and the
+> phyBOARD-Mira to reduce code duplication. In this context also add a
+> Mira devicetree for barebox to better differentiate between phyCORE
+> related settings and baseboard related settings.
+> 
+> Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
+> ---
+>  arch/arm/dts/imx6dl-phytec-phycore-som-emmc.dts    |  23 +-
+>  arch/arm/dts/imx6dl-phytec-phycore-som-lc-emmc.dts |  20 +-
+>  arch/arm/dts/imx6dl-phytec-phycore-som-lc-nand.dts |  14 +-
+>  arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts    |  17 +-
+>  arch/arm/dts/imx6q-phytec-phycore-som-emmc.dts     |  23 +-
+>  arch/arm/dts/imx6q-phytec-phycore-som-nand.dts     |  23 +-
+>  arch/arm/dts/imx6qdl-phytec-mira.dtsi              |  44 ++++
+>  arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi       | 286 +++------------------
+>  arch/arm/dts/imx6qp-phytec-phycore-som-nand.dts    |  23 +-
+>  9 files changed, 94 insertions(+), 379 deletions(-)
+>  create mode 100644 arch/arm/dts/imx6qdl-phytec-mira.dtsi
 
-diff --git a/arch/arm/dts/stm32mp157c.dtsi b/arch/arm/dts/stm32mp157c.dtsi
-index bd2aabe6343a..e416c89856a2 100644
---- a/arch/arm/dts/stm32mp157c.dtsi
-+++ b/arch/arm/dts/stm32mp157c.dtsi
-@@ -27,7 +27,7 @@
- 
- 	soc {
- 		memory-controller@5a003000 {
--			compatible = "st,stm32-ddrctrl";
-+			compatible = "st,stm32mp1-ddr";
- 			reg = <0x5a003000 0x1000>;
- 		};
- 	};
+Applied, thanks
+
+Sascha
+
+
 -- 
-2.24.0.rc1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
