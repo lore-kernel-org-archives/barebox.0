@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iUtaQ-0004vw-4Y
- for barebox@lists.infradead.org; Wed, 13 Nov 2019 14:25:35 +0000
-Date: Wed, 13 Nov 2019 15:25:32 +0100
+ id 1iVG3k-00016Y-RF
+ for barebox@lists.infradead.org; Thu, 14 Nov 2019 14:25:22 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191113142532.ula2cz7zdma3cxk3@pengutronix.de>
-References: <20191112091956.26628-1-a.fatoum@pengutronix.de>
+Date: Thu, 14 Nov 2019 15:25:17 +0100
+Message-Id: <20191114142517.4694-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191112091956.26628-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,30 +19,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 01/10] ARM: dts: stm32mp: move alias to SoC device tree
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] usb: dwc3: Remove wrong error messages
+To: Barebox List <barebox@lists.infradead.org>
 
-On Tue, Nov 12, 2019 at 10:19:47AM +0100, Ahmad Fatoum wrote:
-> We'll want reliable ordering for other SD/MMC using boards as well, thus
-> move the alias out of the board device tree into the SoC's.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  arch/arm/dts/stm32mp157a-dk1.dtsi | 4 ----
->  arch/arm/dts/stm32mp157c.dtsi     | 1 +
->  2 files changed, 1 insertion(+), 4 deletions(-)
+When phy_get() returns -ENOSYS or -ENODEV it means we can go without
+phy. Do not print an error message in this case.
 
-Applied, thanks
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/usb/dwc3/core.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-Sascha
-
-
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index d3f9d9ef27..c17327c791 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -914,7 +914,6 @@ static int dwc3_core_get_phy(struct dwc3 *dwc)
+ 	if (IS_ERR(dwc->usb2_generic_phy)) {
+ 		ret = PTR_ERR(dwc->usb2_generic_phy);
+ 		if (ret == -ENOSYS || ret == -ENODEV) {
+-			dev_err(dev, "no usb2 phy configured\n");
+ 			dwc->usb2_generic_phy = NULL;
+ 		} else if (ret == -EPROBE_DEFER) {
+ 			return ret;
+@@ -928,7 +927,6 @@ static int dwc3_core_get_phy(struct dwc3 *dwc)
+ 	if (IS_ERR(dwc->usb3_generic_phy)) {
+ 		ret = PTR_ERR(dwc->usb3_generic_phy);
+ 		if (ret == -ENOSYS || ret == -ENODEV) {
+-			dev_err(dev, "no usb2 phy configured\n");
+ 			dwc->usb3_generic_phy = NULL;
+ 		} else if (ret == -EPROBE_DEFER) {
+ 			return ret;
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.24.0
+
 
 _______________________________________________
 barebox mailing list
