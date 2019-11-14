@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iVEjw-00073m-SO
- for barebox@lists.infradead.org; Thu, 14 Nov 2019 13:00:52 +0000
+ id 1iVEjZ-0006jK-4i
+ for barebox@lists.infradead.org; Thu, 14 Nov 2019 13:00:26 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 14 Nov 2019 14:00:20 +0100
-Message-Id: <20191114130021.1029-6-s.hauer@pengutronix.de>
+Date: Thu, 14 Nov 2019 14:00:16 +0100
+Message-Id: <20191114130021.1029-2-s.hauer@pengutronix.de>
 In-Reply-To: <20191114130021.1029-1-s.hauer@pengutronix.de>
 References: <20191114130021.1029-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,57 +21,99 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/6] net: fsl-fman: simplify setting next offset
+Subject: [PATCH 1/6] net: fsl-fman: reset device before leaving
 To: Barebox List <barebox@lists.infradead.org>
 
-The offset of the current packet can be retrieved from the current txbd
-index, so do this instead of increasing the offset with each new packet.
+edev->halt is implemented, but not called by the core during shutdown.
+We have to call it manually during device remove. With this and also
+resetting the whole FMan during shutdown the driver now works properly
+when started second stage from another barebox.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/fsl-fman.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ drivers/net/fsl-fman.c     | 19 +++++++++++++++++++
+ include/soc/fsl/fsl_fman.h |  3 +++
+ 2 files changed, 22 insertions(+)
 
 diff --git a/drivers/net/fsl-fman.c b/drivers/net/fsl-fman.c
-index 196be3f6bd..01f7064fd2 100644
+index 4e6bb2ecfd..287a891a63 100644
 --- a/drivers/net/fsl-fman.c
 +++ b/drivers/net/fsl-fman.c
-@@ -835,7 +835,6 @@ static int fm_eth_send(struct eth_device *edev, void *buf, int len)
- 	struct fm_eth *fm_eth = to_fm_eth(edev);
- 	struct fm_port_global_pram *pram;
- 	struct fm_port_bd *txbd;
--	u16 offset_in;
- 	int i;
- 	dma_addr_t dma;
+@@ -1175,6 +1175,8 @@ static int fsl_fman_memac_probe(struct device_d *dev)
+ 	/* alloc the FMan ethernet private struct */
+ 	fm_eth = xzalloc(sizeof(*fm_eth));
  
-@@ -862,12 +861,12 @@ static int fm_eth_send(struct eth_device *edev, void *buf, int len)
- 	muram_writew(&txbd->len, len);
- 	muram_writew(&txbd->status, TxBD_READY | TxBD_LAST);
- 
-+	/* advance the TxBD */
-+	fm_eth->cur_txbd_idx = (fm_eth->cur_txbd_idx + 1) % TX_BD_RING_SIZE;
++	dev->priv = fm_eth;
 +
- 	/* update TxQD, let RISC to send the packet */
--	offset_in = muram_readw(&pram->txqd.offset_in);
--	offset_in += sizeof(struct fm_port_bd);
--	if (offset_in >= muram_readw(&pram->txqd.bd_ring_size))
--		offset_in = 0;
--	muram_writew(&pram->txqd.offset_in, offset_in);
-+	muram_writew(&pram->txqd.offset_in,
-+		     fm_eth->cur_txbd_idx * sizeof(struct fm_port_bd));
+ 	fm_eth->dev = dev;
  
- 	/* wait for buffer to be transmitted */
- 	for (i = 0; muram_readw(&txbd->status) & TxBD_READY; i++) {
-@@ -881,9 +880,6 @@ static int fm_eth_send(struct eth_device *edev, void *buf, int len)
- 
- 	dma_unmap_single(fm_eth->dev, dma, len, DMA_TO_DEVICE);
- 
--	/* advance the TxBD */
--	fm_eth->cur_txbd_idx = (fm_eth->cur_txbd_idx + 1) % TX_BD_RING_SIZE;
--
+ 	ret = fsl_fman_memac_port_bind(fm_eth, FMAN_PORT_TYPE_TX);
+@@ -1216,6 +1218,13 @@ static int fsl_fman_memac_probe(struct device_d *dev)
  	return 0;
  }
  
++static void fsl_fman_memac_remove(struct device_d *dev)
++{
++	struct fm_eth *fm_eth = dev->priv;
++
++	fm_eth_halt(&fm_eth->edev);
++}
++
+ static int fsl_fman_muram_probe(struct device_d *dev)
+ {
+ 	struct resource *iores;
+@@ -1274,6 +1283,7 @@ static struct of_device_id fsl_fman_memac_dt_ids[] = {
+ static struct driver_d fman_memac_driver = {
+ 	.name   = "fsl-fman-memac",
+ 	.probe  = fsl_fman_memac_probe,
++	.remove = fsl_fman_memac_remove,
+ 	.of_compatible = DRV_OF_COMPAT(fsl_fman_memac_dt_ids),
+ };
+ 
+@@ -1303,6 +1313,7 @@ static int fsl_fman_probe(struct device_d *dev)
+ 		return PTR_ERR(iores);
+ 
+ 	reg = IOMEM(iores->start);
++	dev->priv = reg;
+ 
+ 	ret = of_platform_populate(dev->device_node, NULL, dev);
+ 	if (ret)
+@@ -1320,6 +1331,13 @@ static int fsl_fman_probe(struct device_d *dev)
+ 	return 0;
+ }
+ 
++static void fsl_fman_remove(struct device_d *dev)
++{
++	struct ccsr_fman *reg = dev->priv;
++
++	setbits_be32(&reg->fm_fpm.fmrstc, FMFP_RSTC_RFM);
++}
++
+ static struct of_device_id fsl_fman_dt_ids[] = {
+ 	{
+ 		.compatible = "fsl,fman",
+@@ -1330,6 +1348,7 @@ static struct of_device_id fsl_fman_dt_ids[] = {
+ static struct driver_d fman_driver = {
+ 	.name   = "fsl-fman",
+ 	.probe  = fsl_fman_probe,
++	.remove = fsl_fman_remove,
+ 	.of_compatible = DRV_OF_COMPAT(fsl_fman_dt_ids),
+ };
+ device_platform_driver(fman_driver);
+diff --git a/include/soc/fsl/fsl_fman.h b/include/soc/fsl/fsl_fman.h
+index 96d61298ef..fd69fded38 100644
+--- a/include/soc/fsl/fsl_fman.h
++++ b/include/soc/fsl/fsl_fman.h
+@@ -348,6 +348,9 @@ struct fm_fpm {
+ /* FPM Flush Control Register */
+ #define FMFP_FLC_DISP_LIM_NONE	0x00000000 /* no dispatch limitation */
+ 
++/* FMan Reset Command Register */
++#define FMFP_RSTC_RFM		0x80000000 /* FMan Soft Reset Command */
++
+ /* FMFP_EE - FPM event and enable register */
+ #define FMFPEE_DECC		0x80000000 /* double ECC err on FPM ram */
+ #define FMFPEE_STL		0x40000000 /* stall of task ... */
 -- 
 2.24.0
 
