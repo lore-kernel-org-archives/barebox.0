@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iVEjh-0006oY-0f
- for barebox@lists.infradead.org; Thu, 14 Nov 2019 13:00:34 +0000
+ id 1iVEjo-0006wL-OU
+ for barebox@lists.infradead.org; Thu, 14 Nov 2019 13:00:42 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 14 Nov 2019 14:00:18 +0100
-Message-Id: <20191114130021.1029-4-s.hauer@pengutronix.de>
+Date: Thu, 14 Nov 2019 14:00:17 +0100
+Message-Id: <20191114130021.1029-3-s.hauer@pengutronix.de>
 In-Reply-To: <20191114130021.1029-1-s.hauer@pengutronix.de>
 References: <20191114130021.1029-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,45 +21,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/6] net: fsl-fman: move status read into loop
+Subject: [PATCH 2/6] net: fsl-fman: Store index for txbd
 To: Barebox List <barebox@lists.infradead.org>
 
-Instead of reading the status once before the loop and then again right
-before the next iteration, just read the status in the loop.
+Instead of storing a pointer to the current txbd store the index of the
+current buffer. This makes the code more straight forward.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/fsl-fman.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/net/fsl-fman.c | 21 ++++++++-------------
+ 1 file changed, 8 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/net/fsl-fman.c b/drivers/net/fsl-fman.c
-index b5d617212e..5dc7ed5090 100644
+index 287a891a63..b5d617212e 100644
 --- a/drivers/net/fsl-fman.c
 +++ b/drivers/net/fsl-fman.c
-@@ -900,9 +900,12 @@ static int fm_eth_recv(struct eth_device *edev)
+@@ -107,8 +107,8 @@ struct fm_eth {
+ 	void *rx_bd_ring;		/* Rx BD ring base */
+ 	void *cur_rxbd;			/* current Rx BD */
+ 	void *rx_buf;			/* Rx buffer base */
+-	void *tx_bd_ring;		/* Tx BD ring base */
+-	void *cur_txbd;			/* current Tx BD */
++	struct fm_port_bd *tx_bd_ring;	/* Tx BD ring base */
++	int cur_txbd_idx;		/* current Tx BD index */
+ 	struct memac *regs;
+ };
  
- 	pram = fm_eth->rx_pram;
- 	rxbd = fm_eth->cur_rxbd;
--	status = muram_readw(&rxbd->status);
+@@ -702,16 +702,16 @@ static int fm_eth_tx_port_parameter_init(struct fm_eth *fm_eth)
+ 			* TX_BD_RING_SIZE);
+ 	/* save it to fm_eth */
+ 	fm_eth->tx_bd_ring = tx_bd_ring_base;
+-	fm_eth->cur_txbd = tx_bd_ring_base;
++	fm_eth->cur_txbd_idx = 0;
  
--	while (!(status & RxBD_EMPTY)) {
-+	while (1) {
-+		status = muram_readw(&rxbd->status);
-+		if (status & RxBD_EMPTY)
-+			break;
+ 	/* init Tx BDs ring */
+-	txbd = tx_bd_ring_base;
+ 	for (i = 0; i < TX_BD_RING_SIZE; i++) {
++		txbd = &fm_eth->tx_bd_ring[i];
 +
- 		if (!(status & RxBD_ERROR)) {
- 			buf_hi = muram_readw(&rxbd->buf_ptr_hi);
- 			buf_lo = in_be32(&rxbd->buf_ptr_lo);
-@@ -932,8 +935,6 @@ static int fm_eth_recv(struct eth_device *edev)
- 		rxbd_base = fm_eth->rx_bd_ring;
- 		if (rxbd >= (rxbd_base + RX_BD_RING_SIZE))
- 			rxbd = rxbd_base;
--		/* read next status */
--		status = muram_readw(&rxbd->status);
+ 		muram_writew(&txbd->status, TxBD_LAST);
+ 		muram_writew(&txbd->len, 0);
+ 		muram_writew(&txbd->buf_ptr_hi, 0);
+ 		out_be32(&txbd->buf_ptr_lo, 0);
+-		txbd++;
+ 	}
  
- 		/* update RxQD */
- 		offset_out = muram_readw(&pram->rxqd.offset_out);
+ 	/* set the Tx queue decriptor */
+@@ -834,13 +834,13 @@ static int fm_eth_send(struct eth_device *edev, void *buf, int len)
+ {
+ 	struct fm_eth *fm_eth = to_fm_eth(edev);
+ 	struct fm_port_global_pram *pram;
+-	struct fm_port_bd *txbd, *txbd_base;
++	struct fm_port_bd *txbd;
+ 	u16 offset_in;
+ 	int i;
+ 	dma_addr_t dma;
+ 
+ 	pram = fm_eth->tx_pram;
+-	txbd = fm_eth->cur_txbd;
++	txbd = &fm_eth->tx_bd_ring[fm_eth->cur_txbd_idx];
+ 
+ 	/* find one empty TxBD */
+ 	for (i = 0; muram_readw(&txbd->status) & TxBD_READY; i++) {
+@@ -882,12 +882,7 @@ static int fm_eth_send(struct eth_device *edev, void *buf, int len)
+ 	dma_unmap_single(fm_eth->dev, dma, len, DMA_TO_DEVICE);
+ 
+ 	/* advance the TxBD */
+-	txbd++;
+-	txbd_base = fm_eth->tx_bd_ring;
+-	if (txbd >= (txbd_base + TX_BD_RING_SIZE))
+-		txbd = txbd_base;
+-	/* update current txbd */
+-	fm_eth->cur_txbd = (void *)txbd;
++	fm_eth->cur_txbd_idx = (fm_eth->cur_txbd_idx + 1) % TX_BD_RING_SIZE;
+ 
+ 	return 0;
+ }
 -- 
 2.24.0
 
