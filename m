@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from relay11.mail.gandi.net ([217.70.178.231])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iVW68-0004rn-6K
- for barebox@lists.infradead.org; Fri, 15 Nov 2019 07:32:54 +0000
+ id 1iVW68-0004rp-6N
+ for barebox@lists.infradead.org; Fri, 15 Nov 2019 07:32:53 +0000
 Received: from geraet.fritz.box (48-248-142-46.pool.kielnet.net
  [46.142.248.48]) (Authenticated sender: ahmad@a3f.at)
- by relay11.mail.gandi.net (Postfix) with ESMTPSA id D1364100005
- for <barebox@lists.infradead.org>; Fri, 15 Nov 2019 07:32:43 +0000 (UTC)
+ by relay11.mail.gandi.net (Postfix) with ESMTPSA id C7B65100013
+ for <barebox@lists.infradead.org>; Fri, 15 Nov 2019 07:32:47 +0000 (UTC)
 From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Fri, 15 Nov 2019 08:32:36 +0100
-Message-Id: <20191115073239.21013-1-ahmad@a3f.at>
-In-Reply-To: <20191112120036.5dghk76prcxsxtjh@pengutronix.de>
+Date: Fri, 15 Nov 2019 08:32:39 +0100
+Message-Id: <20191115073239.21013-4-ahmad@a3f.at>
+In-Reply-To: <20191115073239.21013-1-ahmad@a3f.at>
 References: <20191112120036.5dghk76prcxsxtjh@pengutronix.de>
+ <20191115073239.21013-1-ahmad@a3f.at>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,39 +26,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 0/3] net: designware: eqos: stop DMA on halt
+Subject: [PATCH 3/3] net: designware: eqos: fix NULL pointer use in dev_printf
 To: barebox@lists.infradead.org
 
-I recently learnt that barebox Ethernet drivers need to call ->halt 
-themselves, either directly or indirectly.
+Inside mdio_register, a read of the PHY's id register is attempted.
+If it fails, we print an error message with eqos_err, which uses the
+ethernet device's unique name, but at this time there has been none set,
+because eth_register was not yet called. Fix this by using the MDIO bus
+device instead.
 
-The first patch does this. Sascha, do you do fixups into master? If so,
-you could fix the first commit up into my previous patch.
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ drivers/net/designware_eqos.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-After applying the patch and doing a round of boot bnet, the first MDIO
-access during probe times out:
-
-    ERROR: <NULL>: MDIO not idle at entry
-
-This is fixed by the other two commits.
-
-The driver isn't in a release yet, so I hope they could join the driver
-in master.
-
-Cheers
-Ahmad
-
-Ahmad Fatoum (3):
-  fixup! net: designware: eqos: stop DMA on halt
-  net: designware: eqos: enable clocks before mdio_register
-  net: designware: eqos: fix NULL pointer use in dev_printf
-
- drivers/net/designware_eqos.c     | 18 ++++++------
- drivers/net/designware_eqos.h     |  4 ---
- drivers/net/designware_stm32.c    | 33 +---------------------
- drivers/net/designware_tegra186.c | 47 ++++++-------------------------
- 4 files changed, 20 insertions(+), 82 deletions(-)
-
+diff --git a/drivers/net/designware_eqos.c b/drivers/net/designware_eqos.c
+index 84dcd04a3fc9..da67adf9a0f0 100644
+--- a/drivers/net/designware_eqos.c
++++ b/drivers/net/designware_eqos.c
+@@ -204,7 +204,7 @@ static int eqos_mdio_read(struct mii_bus *bus, int addr, int reg)
+ 
+ 	ret = eqos_mdio_wait_idle(eqos);
+ 	if (ret) {
+-		eqos_err(eqos, "MDIO not idle at entry\n");
++		dev_err(&bus->dev, "MDIO not idle at entry\n");
+ 		return ret;
+ 	}
+ 
+@@ -222,7 +222,7 @@ static int eqos_mdio_read(struct mii_bus *bus, int addr, int reg)
+ 
+ 	ret = eqos_mdio_wait_idle(eqos);
+ 	if (ret) {
+-		eqos_err(eqos, "MDIO read didn't complete\n");
++		dev_err(&bus->dev, "MDIO read didn't complete\n");
+ 		return ret;
+ 	}
+ 
+@@ -237,7 +237,7 @@ static int eqos_mdio_write(struct mii_bus *bus, int addr, int reg, u16 val)
+ 
+ 	ret = eqos_mdio_wait_idle(eqos);
+ 	if (ret) {
+-		eqos_err(eqos, "MDIO not idle at entry\n");
++		dev_err(&bus->dev, "MDIO not idle at entry\n");
+ 		return ret;
+ 	}
+ 
+@@ -256,7 +256,7 @@ static int eqos_mdio_write(struct mii_bus *bus, int addr, int reg, u16 val)
+ 
+ 	ret = eqos_mdio_wait_idle(eqos);
+ 	if (ret) {
+-		eqos_err(eqos, "MDIO read didn't complete\n");
++		dev_err(&bus->dev, "MDIO read didn't complete\n");
+ 		return ret;
+ 	}
+ 
 -- 
 2.20.1
 
