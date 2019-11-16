@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iWcFV-0008Ba-PM
- for barebox@lists.infradead.org; Mon, 18 Nov 2019 08:19:07 +0000
-Date: Mon, 18 Nov 2019 09:19:04 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191118081904.vgmgik3c4katqdwy@pengutronix.de>
-References: <20191115162014.16111-1-m.grzeschik@pengutronix.de>
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+ by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1iVz8e-0008IW-KA
+ for barebox@lists.infradead.org; Sat, 16 Nov 2019 14:33:26 +0000
+Received: from astat.fritz.box (a89-183-55-231.net-htp.de [89.183.55.231])
+ by lynxeye.de (Postfix) with ESMTPA id 9C84FE74217
+ for <barebox@lists.infradead.org>; Sat, 16 Nov 2019 15:32:47 +0100 (CET)
+From: Lucas Stach <dev@lynxeye.de>
+Date: Sat, 16 Nov 2019 15:32:43 +0100
+Message-Id: <20191116143243.143653-1-dev@lynxeye.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191115162014.16111-1-m.grzeschik@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,58 +22,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net: disable all other devices when enabling the new one
-To: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] image: add zynqimg to gitignore
+To: barebox@lists.infradead.org
 
-On Fri, Nov 15, 2019 at 05:20:14PM +0100, Michael Grzeschik wrote:
-> Some network devices need proper reinitialization before they can be
-> used. This is especially the case when using devices that share the same
-> driver.
-> 
-> Therefor the current approach, starting the open routine of an ether
-> device just once with the first call of send, runs those devices into
-> some unreliable behaviour.
-> 
-> This patch disables all devices that are not being used so they get
-> reinitialized with the next usage.
-> 
-> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-> ---
->  net/eth.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/net/eth.c b/net/eth.c
-> index 53d24baa16..0c26324d3f 100644
-> --- a/net/eth.c
-> +++ b/net/eth.c
-> @@ -217,6 +217,7 @@ static int eth_carrier_check(struct eth_device *edev, int force)
->   */
->  static int eth_check_open(struct eth_device *edev)
->  {
-> +	struct eth_device *tmpedev;
->  	int ret;
->  
->  	if (edev->active)
-> @@ -226,6 +227,9 @@ static int eth_check_open(struct eth_device *edev)
->  	if (ret)
->  		return ret;
->  
-> +	for_each_netdev(tmpedev)
-> +		tmpedev->active = 0;
+Those are results of the Zynq image build, don't clobber the
+git status output.
 
-This is wrong. barebox can handle multiple open network devices just
-fine. The bug is in the cpsw driver like described in my response to
-your cpsw patch.
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
+---
+ images/.gitignore | 1 +
+ 1 file changed, 1 insertion(+)
 
-Sascha
-
-
+diff --git a/images/.gitignore b/images/.gitignore
+index 949f534d9a38..b673c9819455 100644
+--- a/images/.gitignore
++++ b/images/.gitignore
+@@ -27,3 +27,4 @@ barebox.sha.bin
+ barebox.sum
+ *.pimximg
+ *.psimximg
++*.zynqimg
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.23.0
+
 
 _______________________________________________
 barebox mailing list
