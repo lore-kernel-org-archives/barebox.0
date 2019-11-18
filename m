@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iWm4N-0008GJ-Ne
- for barebox@lists.infradead.org; Mon, 18 Nov 2019 18:48:17 +0000
+ id 1iWm4O-0008GH-CX
+ for barebox@lists.infradead.org; Mon, 18 Nov 2019 18:48:18 +0000
 From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Mon, 18 Nov 2019 19:48:08 +0100
-Message-Id: <20191118184809.27173-2-m.tretter@pengutronix.de>
+Date: Mon, 18 Nov 2019 19:48:09 +0100
+Message-Id: <20191118184809.27173-3-m.tretter@pengutronix.de>
 In-Reply-To: <20191118184809.27173-1-m.tretter@pengutronix.de>
 References: <20191118184809.27173-1-m.tretter@pengutronix.de>
 MIME-Version: 1.0
@@ -21,29 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] ARM: zynqmp: defconfig: fix FIRMWARE_ZYNQMP_FPGA
+Subject: [PATCH 2/2] ARM: zynqmp: defconfig: reenable DRIVER_NET_MACB
 To: barebox@lists.infradead.org
 Cc: Michael Tretter <m.tretter@pengutronix.de>
 
-The config item has been renamed from FIRMWARE_ZYNQMP_PL to
-FIRMWARE_ZYNQMP_FPGA, but the defconfig has not been updated. Update it
-now.
+Commit d952a0eeba37 ("Regenerate defconfig files") disabled the macb
+driver in the ZynqMP defconfig, because CONFIG_NET was not enabled in
+the defconfig. While not strictly required, you probably want to enable
+the macb driver on the ZynqMP.
+
+Enable CONFIG_NET and reenable CONFIG_DRIVER_NET_MACB.
 
 Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 ---
- arch/arm/configs/zynqmp_defconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/configs/zynqmp_defconfig | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/arch/arm/configs/zynqmp_defconfig b/arch/arm/configs/zynqmp_defconfig
-index 834212e30f..50b7556081 100644
+index 50b7556081..762103c541 100644
 --- a/arch/arm/configs/zynqmp_defconfig
 +++ b/arch/arm/configs/zynqmp_defconfig
-@@ -35,5 +35,5 @@ CONFIG_CMD_OFTREE=y
+@@ -33,7 +33,9 @@ CONFIG_CMD_TIMEOUT=y
+ CONFIG_CMD_CLK=y
+ CONFIG_CMD_OFTREE=y
  CONFIG_CMD_TIME=y
++CONFIG_NET=y
  CONFIG_DRIVER_SERIAL_CADENCE=y
++CONFIG_DRIVER_NET_MACB=y
  # CONFIG_SPI is not set
--CONFIG_FIRMWARE_ZYNQMP_PL=y
-+CONFIG_FIRMWARE_ZYNQMP_FPGA=y
+ CONFIG_FIRMWARE_ZYNQMP_FPGA=y
  CONFIG_DIGEST=y
 -- 
 2.20.1
