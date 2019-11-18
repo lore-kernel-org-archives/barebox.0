@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
- by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iVz8e-0008IW-KA
- for barebox@lists.infradead.org; Sat, 16 Nov 2019 14:33:26 +0000
-Received: from astat.fritz.box (a89-183-55-231.net-htp.de [89.183.55.231])
- by lynxeye.de (Postfix) with ESMTPA id 9C84FE74217
- for <barebox@lists.infradead.org>; Sat, 16 Nov 2019 15:32:47 +0100 (CET)
-From: Lucas Stach <dev@lynxeye.de>
-Date: Sat, 16 Nov 2019 15:32:43 +0100
-Message-Id: <20191116143243.143653-1-dev@lynxeye.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1iWcGE-0000Bk-Cx
+ for barebox@lists.infradead.org; Mon, 18 Nov 2019 08:19:52 +0000
+Date: Mon, 18 Nov 2019 09:19:48 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20191118081948.q5pkpsyydyo7ofa2@pengutronix.de>
+References: <20191116143243.143653-1-dev@lynxeye.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20191116143243.143653-1-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,29 +22,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] image: add zynqimg to gitignore
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] image: add zynqimg to gitignore
+To: Lucas Stach <dev@lynxeye.de>
+Cc: barebox@lists.infradead.org
 
-Those are results of the Zynq image build, don't clobber the
-git status output.
+On Sat, Nov 16, 2019 at 03:32:43PM +0100, Lucas Stach wrote:
+> Those are results of the Zynq image build, don't clobber the
+> git status output.
+> 
+> Signed-off-by: Lucas Stach <dev@lynxeye.de>
+> ---
+>  images/.gitignore | 1 +
+>  1 file changed, 1 insertion(+)
 
-Signed-off-by: Lucas Stach <dev@lynxeye.de>
----
- images/.gitignore | 1 +
- 1 file changed, 1 insertion(+)
+Applied, thanks
 
-diff --git a/images/.gitignore b/images/.gitignore
-index 949f534d9a38..b673c9819455 100644
---- a/images/.gitignore
-+++ b/images/.gitignore
-@@ -27,3 +27,4 @@ barebox.sha.bin
- barebox.sum
- *.pimximg
- *.psimximg
-+*.zynqimg
+Sascha
+
 -- 
-2.23.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
