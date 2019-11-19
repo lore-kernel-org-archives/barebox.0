@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iX161-0006Kn-AE
- for barebox@lists.infradead.org; Tue, 19 Nov 2019 10:51:04 +0000
+ id 1iX165-0006Ou-FD
+ for barebox@lists.infradead.org; Tue, 19 Nov 2019 10:51:05 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 19 Nov 2019 11:50:27 +0100
-Message-Id: <20191119105036.12300-13-s.hauer@pengutronix.de>
+Date: Tue, 19 Nov 2019 11:50:31 +0100
+Message-Id: <20191119105036.12300-17-s.hauer@pengutronix.de>
 In-Reply-To: <20191119105036.12300-1-s.hauer@pengutronix.de>
 References: <20191119105036.12300-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,119 +21,109 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/21] mci: sdhci: remove duplicate transfer mode register
- defines
+Subject: [PATCH 16/21] mci: imx-esdhc: Use sdhci_set_cmd_xfer_mode()
 To: Barebox List <barebox@lists.infradead.org>
 
-We have duplicate register bit defines for the transfer mode register.
-Remove the duplicates.
+Use sdhci_set_cmd_xfer_mode() to share more code.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mci/imx-esdhc-pbl.c | 4 ++--
- drivers/mci/imx-esdhc.c     | 8 ++++----
- drivers/mci/mci-bcm2835.c   | 6 +++---
- drivers/mci/sdhci.h         | 6 ------
- drivers/mci/tegra-sdmmc.c   | 6 +++---
- 5 files changed, 12 insertions(+), 18 deletions(-)
+ drivers/mci/imx-esdhc.c | 57 ++++++++---------------------------------
+ 1 file changed, 11 insertions(+), 46 deletions(-)
 
-diff --git a/drivers/mci/imx-esdhc-pbl.c b/drivers/mci/imx-esdhc-pbl.c
-index 0d15668fbe..82e1d83d2a 100644
---- a/drivers/mci/imx-esdhc-pbl.c
-+++ b/drivers/mci/imx-esdhc-pbl.c
-@@ -67,8 +67,8 @@ static u32 esdhc_xfertyp(struct mci_cmd *cmd, struct mci_data *data)
- 
- 	if (data) {
- 		command |= SDHCI_DATA_PRESENT;
--		xfertyp |= TRANSFER_MODE_MSBSEL | TRANSFER_MODE_BCEN |
--			   TRANSFER_MODE_DTDSEL;
-+		xfertyp |= SDHCI_MULTIPLE_BLOCKS | SDHCI_BLOCK_COUNT_EN |
-+			   SDHCI_DATA_TO_HOST;
- 	}
- 
- 	if (cmd->resp_type & MMC_RSP_CRC)
 diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
-index 11ece677d3..9f797bf7b1 100644
+index c2c9d1e24c..4d23788eec 100644
 --- a/drivers/mci/imx-esdhc.c
 +++ b/drivers/mci/imx-esdhc.c
-@@ -172,15 +172,15 @@ static u32 esdhc_xfertyp(struct fsl_esdhc_host *host,
- 		command |= SDHCI_DATA_PRESENT;
+@@ -164,47 +164,6 @@ static inline void esdhc_setbits32(struct fsl_esdhc_host *host, unsigned int reg
+ 	esdhc_clrsetbits32(host, reg, 0, set);
+ }
  
- 		if (!IS_ENABLED(CONFIG_MCI_IMX_ESDHC_PIO))
--			xfertyp |= TRANSFER_MODE_DMAEN;
-+			xfertyp |= SDHCI_DMA_EN;
- 
- 		if (data->blocks > 1) {
--			xfertyp |= TRANSFER_MODE_MSBSEL;
--			xfertyp |= TRANSFER_MODE_BCEN;
-+			xfertyp |= SDHCI_MULTIPLE_BLOCKS;
-+			xfertyp |= SDHCI_BLOCK_COUNT_EN;
- 		}
- 
- 		if (data->flags & MMC_DATA_READ)
--			xfertyp |= TRANSFER_MODE_DTDSEL;
-+			xfertyp |= SDHCI_DATA_TO_HOST;
- 	}
- 
- 	if (cmd->resp_type & MMC_RSP_CRC)
-diff --git a/drivers/mci/mci-bcm2835.c b/drivers/mci/mci-bcm2835.c
-index d154dfa46d..a16d192832 100644
---- a/drivers/mci/mci-bcm2835.c
-+++ b/drivers/mci/mci-bcm2835.c
-@@ -221,13 +221,13 @@ static int bcm2835_mci_request(struct mci_host *mci, struct mci_cmd *cmd,
- 	}
- 	if (data != NULL) {
- 		command |= SDHCI_DATA_PRESENT;
--		transfer_mode |= TRANSFER_MODE_BCEN;
-+		transfer_mode |= SDHCI_BLOCK_COUNT_EN;
- 
- 		if (data->blocks > 1)
--			transfer_mode |= TRANSFER_MODE_MSBSEL;
-+			transfer_mode |= SDHCI_MULTIPLE_BLOCKS;
- 
- 		if (data->flags & MMC_DATA_READ)
--			transfer_mode |= TRANSFER_MODE_DTDSEL;
-+			transfer_mode |= SDHCI_DATA_TO_HOST;
- 
- 		block_data = (data->blocks << BLOCK_SHIFT);
- 		block_data |= data->blocksize;
-diff --git a/drivers/mci/sdhci.h b/drivers/mci/sdhci.h
-index c1e4f06606..9ee8d6ff02 100644
---- a/drivers/mci/sdhci.h
-+++ b/drivers/mci/sdhci.h
-@@ -82,12 +82,6 @@
- #define SDHCI_SPEC_200_MAX_CLK_DIVIDER	256
- #define SDHCI_MMC_BOOT						0xC4
- 
--#define TRANSFER_MODE_MSBSEL	0x00000020
--#define TRANSFER_MODE_DTDSEL	0x00000010
--#define TRANSFER_MODE_AC12EN	0x00000004
--#define TRANSFER_MODE_BCEN	0x00000002
--#define TRANSFER_MODE_DMAEN	0x00000001
+-/* Return the XFERTYP flags for a given command and data packet */
+-static u32 esdhc_xfertyp(struct fsl_esdhc_host *host,
+-			 struct mci_cmd *cmd, struct mci_data *data)
+-{
+-	u32 xfertyp = 0;
+-	u32 command = 0;
 -
- #define IRQSTAT_TE		0x04000000
- #define IRQSTAT_DMAE		0x02000000
- #define IRQSTAT_AC12E		0x01000000
-diff --git a/drivers/mci/tegra-sdmmc.c b/drivers/mci/tegra-sdmmc.c
-index 79c76bbb0f..034081ec62 100644
---- a/drivers/mci/tegra-sdmmc.c
-+++ b/drivers/mci/tegra-sdmmc.c
-@@ -148,12 +148,12 @@ static int tegra_sdmmc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
- 
- 	if (data) {
- 		if (data->blocks > 1)
--			val |= TRANSFER_MODE_MSBSEL;
-+			val |= SDHCI_MULTIPLE_BLOCKS;
- 
- 		if (data->flags & MMC_DATA_READ)
--			val |= TRANSFER_MODE_DTDSEL;
-+			val |= SDHCI_DATA_TO_HOST;
- 
--		val |= TRANSFER_MODE_DMAEN | TRANSFER_MODE_BCEN;
-+		val |= SDHCI_DMA_EN | SDHCI_BLOCK_COUNT_EN;
+-	if (data) {
+-		command |= SDHCI_DATA_PRESENT;
+-
+-		if (!IS_ENABLED(CONFIG_MCI_IMX_ESDHC_PIO))
+-			xfertyp |= SDHCI_DMA_EN;
+-
+-		if (data->blocks > 1) {
+-			xfertyp |= SDHCI_MULTIPLE_BLOCKS;
+-			xfertyp |= SDHCI_BLOCK_COUNT_EN;
+-		}
+-
+-		if (data->flags & MMC_DATA_READ)
+-			xfertyp |= SDHCI_DATA_TO_HOST;
+-	}
+-
+-	if (cmd->resp_type & MMC_RSP_CRC)
+-		command |= SDHCI_CMD_CRC_CHECK_EN;
+-	if (cmd->resp_type & MMC_RSP_OPCODE)
+-		command |= SDHCI_CMD_INDEX_CHECK_EN;
+-	if (cmd->resp_type & MMC_RSP_136)
+-		command |= SDHCI_RESP_TYPE_136;
+-	else if (cmd->resp_type & MMC_RSP_BUSY)
+-		command |= SDHCI_RESP_TYPE_48_BUSY;
+-	else if (cmd->resp_type & MMC_RSP_PRESENT)
+-		command |= SDHCI_RESP_TYPE_48;
+-	if ((host->socdata->flags & ESDHC_FLAG_MULTIBLK_NO_INT) &&
+-	    (cmd->cmdidx == MMC_CMD_STOP_TRANSMISSION))
+-		command |= SDHCI_COMMAND_CMDTYP_ABORT;
+-
+-	command |= SDHCI_CMD_INDEX(cmd->cmdidx);
+-
+-	return command << 16 | xfertyp;
+-}
+-
+ /*
+  * PIO Read/Write Mode reduce the performace as DMA is not used in this mode.
+  */
+@@ -330,7 +289,7 @@ static int esdhc_do_data(struct mci_host *mci, struct mci_data *data)
+ static int
+ esdhc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
+ {
+-	u32	xfertyp, mixctrl;
++	u32	xfertyp, mixctrl, command;
+ 	u32	irqstat;
+ 	struct fsl_esdhc_host *host = to_fsl_esdhc(mci);
+ 	unsigned int num_bytes = 0;
+@@ -369,21 +328,27 @@ esdhc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
+ 			return err;
  	}
  
- 	if (!(cmd->resp_type & MMC_RSP_PRESENT))
+-	/* Figure out the transfer arguments */
+-	xfertyp = esdhc_xfertyp(host, cmd, data);
++	sdhci_set_cmd_xfer_mode(&host->sdhci, cmd, data,
++				!IS_ENABLED(CONFIG_MCI_IMX_ESDHC_PIO), &command,
++				&xfertyp);
++
++	if ((host->socdata->flags & ESDHC_FLAG_MULTIBLK_NO_INT) &&
++	    (cmd->cmdidx == MMC_CMD_STOP_TRANSMISSION))
++		command |= SDHCI_COMMAND_CMDTYP_ABORT;
+ 
+ 	/* Send the command */
+ 	sdhci_write32(&host->sdhci, SDHCI_ARGUMENT, cmd->cmdarg);
+ 
+ 	if (esdhc_is_usdhc(host)) {
+ 		/* write lower-half of xfertyp to mixctrl */
+-		mixctrl = xfertyp & 0xFFFF;
++		mixctrl = xfertyp;
+ 		/* Keep the bits 22-25 of the register as is */
+ 		mixctrl |= (sdhci_read32(&host->sdhci, IMX_SDHCI_MIXCTRL) & (0xF << 22));
+ 		sdhci_write32(&host->sdhci, IMX_SDHCI_MIXCTRL, mixctrl);
+ 	}
+ 
+-	sdhci_write32(&host->sdhci, SDHCI_TRANSFER_MODE__COMMAND, xfertyp);
++	sdhci_write32(&host->sdhci, SDHCI_TRANSFER_MODE__COMMAND,
++		      command << 16 | xfertyp);
+ 
+ 	/* Wait for the command to complete */
+ 	ret = wait_on_timeout(100 * MSECOND,
 -- 
 2.24.0
 
