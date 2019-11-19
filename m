@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iX16D-0006Xi-D0
- for barebox@lists.infradead.org; Tue, 19 Nov 2019 10:51:15 +0000
+ id 1iX15x-0006Fl-59
+ for barebox@lists.infradead.org; Tue, 19 Nov 2019 10:50:54 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 19 Nov 2019 11:50:32 +0100
-Message-Id: <20191119105036.12300-18-s.hauer@pengutronix.de>
+Date: Tue, 19 Nov 2019 11:50:34 +0100
+Message-Id: <20191119105036.12300-20-s.hauer@pengutronix.de>
 In-Reply-To: <20191119105036.12300-1-s.hauer@pengutronix.de>
 References: <20191119105036.12300-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,51 +21,103 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 17/21] mci: bcm2835: Use sdhci_set_cmd_xfer_mode()
+Subject: [PATCH 19/21] mci: imx-esdhci: Use generic PIO transfer function
 To: Barebox List <barebox@lists.infradead.org>
 
-Use sdhci_set_cmd_xfer_mode() to share more code.
+Use sdhci_transfer_data() in PIO mode to share mode code.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mci/mci-bcm2835.c | 22 ++--------------------
- 1 file changed, 2 insertions(+), 20 deletions(-)
+ drivers/mci/imx-esdhc.c | 69 +----------------------------------------
+ 1 file changed, 1 insertion(+), 68 deletions(-)
 
-diff --git a/drivers/mci/mci-bcm2835.c b/drivers/mci/mci-bcm2835.c
-index 61995a2883..f17bae7c8d 100644
---- a/drivers/mci/mci-bcm2835.c
-+++ b/drivers/mci/mci-bcm2835.c
-@@ -207,28 +207,10 @@ static int bcm2835_mci_request(struct mci_host *mci, struct mci_cmd *cmd,
- 	u32 wait_inhibit_mask = SDHCI_CMD_INHIBIT_CMD | SDHCI_CMD_INHIBIT_DATA;
- 	struct bcm2835_mci_host *host = to_bcm2835_host(mci);
+diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
+index 4d23788eec..bebc36d0b6 100644
+--- a/drivers/mci/imx-esdhc.c
++++ b/drivers/mci/imx-esdhc.c
+@@ -164,73 +164,6 @@ static inline void esdhc_setbits32(struct fsl_esdhc_host *host, unsigned int reg
+ 	esdhc_clrsetbits32(host, reg, 0, set);
+ }
  
--	command = SDHCI_CMD_INDEX(cmd->cmdidx);
-+	sdhci_set_cmd_xfer_mode(&host->sdhci, cmd, data, false,
-+				&command, &transfer_mode);
- 
--	if (cmd->resp_type != MMC_RSP_NONE) {
--		if (cmd->resp_type & MMC_RSP_136)
--			command |= SDHCI_RESP_TYPE_136;
--		else if (cmd->resp_type & MMC_RSP_BUSY)
--			command |= SDHCI_RESP_TYPE_48_BUSY;
--		else
--			command |= SDHCI_RESP_TYPE_48;
--		if (cmd->resp_type & MMC_RSP_CRC)
--			command |= SDHCI_CMD_CRC_CHECK_EN;
+-/*
+- * PIO Read/Write Mode reduce the performace as DMA is not used in this mode.
+- */
+-static int
+-esdhc_pio_read_write(struct mci_host *mci, struct mci_data *data)
+-{
+-	struct fsl_esdhc_host *host = to_fsl_esdhc(mci);
+-	u32 blocks;
+-	char *buffer;
+-	u32 databuf;
+-	u32 size;
+-	u32 irqstat;
+-	u32 timeout;
+-
+-	if (data->flags & MMC_DATA_READ) {
+-		blocks = data->blocks;
+-		buffer = data->dest;
+-		while (blocks) {
+-			timeout = PIO_TIMEOUT;
+-			size = data->blocksize;
+-			irqstat = sdhci_read32(&host->sdhci, SDHCI_INT_STATUS);
+-			while (!(sdhci_read32(&host->sdhci, SDHCI_PRESENT_STATE) &
+-					SDHCI_BUFFER_READ_ENABLE)
+-				&& --timeout);
+-			if (timeout <= 0) {
+-				dev_err(host->dev, "Data Read Failed\n");
+-				return -ETIMEDOUT;
+-			}
+-			while (size && (!(irqstat & SDHCI_INT_XFER_COMPLETE))) {
+-				udelay(100); /* Wait before last byte transfer complete */
+-				irqstat = sdhci_read32(&host->sdhci, SDHCI_INT_STATUS);
+-				databuf = sdhci_read32(&host->sdhci, SDHCI_BUFFER);
+-				*((u32 *)buffer) = databuf;
+-				buffer += 4;
+-				size -= 4;
+-			}
+-			blocks--;
+-		}
+-	} else {
+-		blocks = data->blocks;
+-		buffer = (char *)data->src;
+-		while (blocks) {
+-			timeout = PIO_TIMEOUT;
+-			size = data->blocksize;
+-			irqstat = sdhci_read32(&host->sdhci, SDHCI_INT_STATUS);
+-			while (!(sdhci_read32(&host->sdhci, SDHCI_PRESENT_STATE) &
+-					SDHCI_BUFFER_WRITE_ENABLE)
+-				&& --timeout);
+-			if (timeout <= 0) {
+-				dev_err(host->dev, "Data Write Failed\n");
+-				return -ETIMEDOUT;
+-			}
+-			while (size && (!(irqstat & SDHCI_INT_XFER_COMPLETE))) {
+-				udelay(100); /* Wait before last byte transfer complete */
+-				databuf = *((u32 *)buffer);
+-				buffer += 4;
+-				size -= 4;
+-				irqstat = sdhci_read32(&host->sdhci, SDHCI_INT_STATUS);
+-				sdhci_write32(&host->sdhci, SDHCI_BUFFER, databuf);
+-			}
+-			blocks--;
+-		}
 -	}
- 	if (data != NULL) {
--		command |= SDHCI_DATA_PRESENT;
--		transfer_mode |= SDHCI_BLOCK_COUNT_EN;
 -
--		if (data->blocks > 1)
--			transfer_mode |= SDHCI_MULTIPLE_BLOCKS;
+-	return 0;
+-}
 -
--		if (data->flags & MMC_DATA_READ)
--			transfer_mode |= SDHCI_DATA_TO_HOST;
--
- 		block_data = (data->blocks << BLOCK_SHIFT);
- 		block_data |= data->blocksize;
- 	}
+ static int esdhc_setup_data(struct mci_host *mci, struct mci_data *data,
+ 			    dma_addr_t dma)
+ {
+@@ -266,7 +199,7 @@ static int esdhc_do_data(struct mci_host *mci, struct mci_data *data)
+ 	u32 irqstat;
+ 
+ 	if (IS_ENABLED(CONFIG_MCI_IMX_ESDHC_PIO))
+-		return esdhc_pio_read_write(mci, data);
++		return sdhci_transfer_data(&host->sdhci, data);
+ 
+ 	do {
+ 		irqstat = sdhci_read32(&host->sdhci, SDHCI_INT_STATUS);
 -- 
 2.24.0
 
