@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from relay10.mail.gandi.net ([217.70.178.230])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iZ98W-0007aT-Q7
- for barebox@lists.infradead.org; Mon, 25 Nov 2019 07:50:22 +0000
-Date: Mon, 25 Nov 2019 08:50:18 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191125075018.w76un6bju47qx3dv@pengutronix.de>
-References: <20191120055250.21711-1-antonynpavlov@gmail.com>
+ id 1iXKZN-00015m-Qj
+ for barebox@lists.infradead.org; Wed, 20 Nov 2019 07:38:35 +0000
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Wed, 20 Nov 2019 08:38:16 +0100
+Message-Id: <20191120073816.16119-1-ahmad@a3f.at>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191120055250.21711-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,26 +19,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] i2c: gpio: use of_get_named_gpio() instead of
- of_get_named_gpio_flags()
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] mci: dove: fix dereference of nullable pointer
+To: barebox@lists.infradead.org
 
-On Wed, Nov 20, 2019 at 08:52:50AM +0300, Antony Pavlov wrote:
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  drivers/i2c/busses/i2c-gpio.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+data->{blocks, blocksize, flags} are all used outside of the if clause
+checking whether data is not NULL.
+Fix this to avoid dereferencing null pointers.
 
-Applied, thanks
+Fixes: bdcf89d274 ("mci: add Marvell Dove SDHCI driver")
+Cc: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ drivers/mci/dove-sdhci.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-Sascha
-
+diff --git a/drivers/mci/dove-sdhci.c b/drivers/mci/dove-sdhci.c
+index e71a27ce4f33..bccda5399491 100644
+--- a/drivers/mci/dove-sdhci.c
++++ b/drivers/mci/dove-sdhci.c
+@@ -116,7 +116,7 @@ static int dove_sdhci_mci_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
+ 	u32 command, xfer;
+ 	u64 start;
+ 	int ret;
+-	unsigned int num_bytes = data->blocks * data->blocksize;
++	unsigned int num_bytes = 0;
+ 	struct dove_sdhci *host = priv_from_mci_host(mci);
+ 
+ 	sdhci_write32(&host->sdhci, SDHCI_INT_STATUS, ~0);
+@@ -140,6 +140,7 @@ static int dove_sdhci_mci_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
+ 
+ 	/* setup transfer data */
+ 	if (data) {
++		num_bytes = data->blocks * data->blocksize;
+ 		if (data->flags & MMC_DATA_READ)
+ 			sdhci_write32(&host->sdhci, SDHCI_DMA_ADDRESS, (u32)data->dest);
+ 		else
+@@ -178,14 +179,14 @@ static int dove_sdhci_mci_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
+ 
+ 	sdhci_read_response(&host->sdhci, cmd);
+ 
+-	if (data->flags & MMC_DATA_WRITE)
+-		dma_sync_single_for_cpu((unsigned long)data->src,
+-					 num_bytes, DMA_TO_DEVICE);
+-	else
+-		dma_sync_single_for_cpu((unsigned long)data->dest,
++	if (data) {
++		if (data->flags & MMC_DATA_WRITE)
++			dma_sync_single_for_cpu((unsigned long)data->src,
++						num_bytes, DMA_TO_DEVICE);
++		else
++			dma_sync_single_for_cpu((unsigned long)data->dest,
+ 					 num_bytes, DMA_FROM_DEVICE);
+ 
+-	if (data) {
+ 		ret = dove_sdhci_wait_for_done(host, SDHCI_INT_XFER_COMPLETE);
+ 		if (ret) {
+ 			dev_err(host->mci.hw_dev, "error while transfering data for command %d\n",
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
