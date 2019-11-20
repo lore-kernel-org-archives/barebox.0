@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf1-x143.google.com ([2a00:1450:4864:20::143])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iZ962-0006XS-FA
- for barebox@lists.infradead.org; Mon, 25 Nov 2019 07:47:47 +0000
-Date: Mon, 25 Nov 2019 08:47:45 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191125074744.wbtktsqljwsmmxvz@pengutronix.de>
-References: <20190819133847.17015-1-s.hauer@pengutronix.de>
- <20190819133847.17015-7-s.hauer@pengutronix.de>
- <27e33ef9-bb89-dcd0-9829-6dd3036eeae9@pengutronix.de>
+ id 1iXIvD-00024H-4m
+ for barebox@lists.infradead.org; Wed, 20 Nov 2019 05:53:00 +0000
+Received: by mail-lf1-x143.google.com with SMTP id y19so171177lfl.9
+ for <barebox@lists.infradead.org>; Tue, 19 Nov 2019 21:52:58 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Wed, 20 Nov 2019 08:52:50 +0300
+Message-Id: <20191120055250.21711-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <27e33ef9-bb89-dcd0-9829-6dd3036eeae9@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,33 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/8] ARM: Add generic device tree 2nd stage support
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] i2c: gpio: use of_get_named_gpio() instead of
+ of_get_named_gpio_flags()
+To: barebox@lists.infradead.org
 
-On Tue, Nov 19, 2019 at 09:26:58AM +0100, Ahmad Fatoum wrote:
-> Hello Sascha,
-> 
-> On 8/19/19 3:38 PM, Sascha Hauer wrote:
-> > +void dt_2nd_aarch64(void *fdt)
-> > +{
-> > +	unsigned long image_start = (unsigned long)_text + global_variable_offset();
-> > +
-> > +	arm_setup_stack(image_start);
-> 
-> Shouldn't we rather place the stack somewhere beyond the end of the barebox image
-> instead of assuming that we can access the memory before the start?
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ drivers/i2c/busses/i2c-gpio.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Yes, this should be better. barebox is sometimes loaded directly to the
-start of SDRAM.
-
-Sascha
-
+diff --git a/drivers/i2c/busses/i2c-gpio.c b/drivers/i2c/busses/i2c-gpio.c
+index 5ab43fe935..7ccdb0b222 100644
+--- a/drivers/i2c/busses/i2c-gpio.c
++++ b/drivers/i2c/busses/i2c-gpio.c
+@@ -94,8 +94,8 @@ static int of_i2c_gpio_probe(struct device_node *np,
+ 	if (!IS_ENABLED(CONFIG_OFDEVICE))
+ 		return -ENODEV;
+ 
+-	pdata->sda_pin = of_get_named_gpio_flags(np, "sda-gpios", 0, NULL);
+-	pdata->scl_pin = of_get_named_gpio_flags(np, "scl-gpios", 0, NULL);
++	pdata->sda_pin = of_get_named_gpio(np, "sda-gpios", 0);
++	pdata->scl_pin = of_get_named_gpio(np, "scl-gpios", 0);
+ 
+ 	if ((!gpio_is_valid(pdata->sda_pin) || !gpio_is_valid(pdata->scl_pin))
+ 	    && (of_gpio_count(np) >= 2)) {
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.23.0
+
 
 _______________________________________________
 barebox mailing list
