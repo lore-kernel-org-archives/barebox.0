@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from relay8-d.mail.gandi.net ([217.70.183.201])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iZ9vv-0002OF-Bc
- for barebox@lists.infradead.org; Mon, 25 Nov 2019 08:41:24 +0000
-Date: Mon, 25 Nov 2019 09:41:21 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191125084121.vay2klbysaypsfyv@pengutronix.de>
-References: <20191122143132.26652-1-cleger@kalray.eu>
- <20191122190427.917-1-cleger@kalray.eu>
+ id 1iXi0l-0006RK-PQ
+ for barebox@lists.infradead.org; Thu, 21 Nov 2019 08:40:25 +0000
+Received: from geraet.fritz.box (142-252-142-46.pool.kielnet.net
+ [46.142.252.142]) (Authenticated sender: ahmad@a3f.at)
+ by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id C670B1BF20C
+ for <barebox@lists.infradead.org>; Thu, 21 Nov 2019 08:40:09 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Thu, 21 Nov 2019 09:40:03 +0100
+Message-Id: <20191121084005.683-1-ahmad@a3f.at>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191122190427.917-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,29 +23,103 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mtd: spi-nor: Add support for is25lp01g
-To: Clement Leger <cleger@kalray.eu>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/3] param: add dev_add_param_tristate(_ro) helpers
+To: barebox@lists.infradead.org
 
-On Fri, Nov 22, 2019 at 08:04:27PM +0100, Clement Leger wrote:
-> Add ISSI 128Mb nor flash.
-> 
-> Signed-off-by: Clement Leger <cleger@kalray.eu>
-> ---
-> - Add missing Signed-off-by
-> 
->  drivers/mtd/spi-nor/spi-nor.c | 2 ++
->  1 file changed, 2 insertions(+)
+This is can be considered an extension to the dev_add_param_bool
+interfaces with a third value that's "unknown".
+This can be used for cases, where barebox can flip a bit somewhere,
+but it has no way of knowing what the initial state of the bit was,
+e.g. turn on/off the watchdog, but no watchdog status.
+Turn on/off a co-processor, but no co-processor online status.
+And so on. Not providing a way to customize the "unknown" string
+is a deliberate choice, so future device parameters follow the same
+naming scheme.
 
-Applied, thanks
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ include/param.h | 24 ++++++++++++++++++++++++
+ lib/parameter.c | 22 ++++++++++++++++++++++
+ 2 files changed, 46 insertions(+)
 
-Sascha
-
+diff --git a/include/param.h b/include/param.h
+index 4ac502e726c0..d75f50ea3e60 100644
+--- a/include/param.h
++++ b/include/param.h
+@@ -63,6 +63,16 @@ struct param_d *dev_add_param_enum(struct device_d *dev, const char *name,
+ 		int (*get)(struct param_d *p, void *priv),
+ 		int *value, const char * const *names, int max, void *priv);
+ 
++enum param_tristate { PARAM_TRISTATE_UNKNOWN, PARAM_TRISTATE_TRUE, PARAM_TRISTATE_FALSE };
++
++struct param_d *dev_add_param_tristate(struct device_d *dev, const char *name,
++		int (*set)(struct param_d *p, void *priv),
++		int (*get)(struct param_d *p, void *priv),
++		int *value, void *priv);
++
++struct param_d *dev_add_param_tristate_ro(struct device_d *dev, const char *name,
++		int *value);
++
+ struct param_d *dev_add_param_bitmask(struct device_d *dev, const char *name,
+ 		int (*set)(struct param_d *p, void *priv),
+ 		int (*get)(struct param_d *p, void *priv),
+@@ -144,6 +154,20 @@ static inline struct param_d *dev_add_param_bitmask(struct device_d *dev, const
+ 	return ERR_PTR(-ENOSYS);
+ }
+ 
++static inline struct param_d *dev_add_param_tristate(struct device_d *dev, const char *name,
++		int (*set)(struct param_d *p, void *priv),
++		int (*get)(struct param_d *p, void *priv),
++		int *value, void *priv)
++{
++	return ERR_PTR(-ENOSYS);
++}
++
++static inline struct param_d *dev_add_param_tristate_ro(struct device_d *dev, const char *name,
++		int *value)
++{
++	return ERR_PTR(-ENOSYS);
++}
++
+ static inline struct param_d *dev_add_param_ip(struct device_d *dev, const char *name,
+ 		int (*set)(struct param_d *p, void *priv),
+ 		int (*get)(struct param_d *p, void *priv),
+diff --git a/lib/parameter.c b/lib/parameter.c
+index fdbb2e71d15d..22695634e5f1 100644
+--- a/lib/parameter.c
++++ b/lib/parameter.c
+@@ -588,6 +588,28 @@ struct param_d *dev_add_param_enum(struct device_d *dev, const char *name,
+ 	return &pe->param;
+ }
+ 
++static const char *const tristate_names[] = {
++	[PARAM_TRISTATE_UNKNOWN] = "unknown",
++	[PARAM_TRISTATE_TRUE] = "1",
++	[PARAM_TRISTATE_FALSE] = "0",
++};
++
++struct param_d *dev_add_param_tristate(struct device_d *dev, const char *name,
++		int (*set)(struct param_d *p, void *priv),
++		int (*get)(struct param_d *p, void *priv),
++		int *value, void *priv)
++{
++	return dev_add_param_enum(dev, name, set, get, value, tristate_names,
++				  ARRAY_SIZE(tristate_names), priv);
++}
++
++struct param_d *dev_add_param_tristate_ro(struct device_d *dev, const char *name,
++		int *value)
++{
++	return dev_add_param_enum_ro(dev, name, value, tristate_names,
++				     ARRAY_SIZE(tristate_names));
++}
++
+ struct param_bitmask {
+ 	struct param_d param;
+ 	unsigned long *value;
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
