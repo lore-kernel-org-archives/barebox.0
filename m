@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from relay8-d.mail.gandi.net ([217.70.183.201])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iXi0n-0006SF-2a
- for barebox@lists.infradead.org; Thu, 21 Nov 2019 08:40:27 +0000
+ id 1iXi0l-0006SM-W9
+ for barebox@lists.infradead.org; Thu, 21 Nov 2019 08:40:25 +0000
 Received: from geraet.fritz.box (142-252-142-46.pool.kielnet.net
  [46.142.252.142]) (Authenticated sender: ahmad@a3f.at)
- by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 1DFAF1BF209
- for <barebox@lists.infradead.org>; Thu, 21 Nov 2019 08:40:21 +0000 (UTC)
+ by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 7DAF71BF212
+ for <barebox@lists.infradead.org>; Thu, 21 Nov 2019 08:40:22 +0000 (UTC)
 From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Thu, 21 Nov 2019 09:40:04 +0100
-Message-Id: <20191121084005.683-2-ahmad@a3f.at>
+Date: Thu, 21 Nov 2019 09:40:05 +0100
+Message-Id: <20191121084005.683-3-ahmad@a3f.at>
 In-Reply-To: <20191121084005.683-1-ahmad@a3f.at>
 References: <20191121084005.683-1-ahmad@a3f.at>
 MIME-Version: 1.0
@@ -25,65 +25,91 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] watchdog: core: use new dev_add_param_tristate helper for
- .running param
+Subject: [PATCH 3/3] remoteproc: add .stop device parameter for stopping
+ remote processor
 To: barebox@lists.infradead.org
 
-Previous commit added a dev_add_param_tristate_ro that can be readily
-used instead of the enum parameter here. Use it.
-This also fixes the issue that running_names had external linkage.
+Both the STM32 and i.MX7 remote proc drivers populate the .stop member
+in the struct rproc, but it's not used anywhere. The firmware API is not
+really fitting to 'unload' firmware. Add instead a device parameter to
+stop a remote processor, e.g. remoteproc0.stop=1. This is similar to the
+probe command used with MMCs.
 
 Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- drivers/watchdog/wd_core.c | 9 +--------
- include/watchdog.h         | 5 ++++-
- 2 files changed, 5 insertions(+), 9 deletions(-)
+ drivers/remoteproc/remoteproc_core.c | 30 +++++++++++++++++++++++-----
+ include/linux/remoteproc.h           |  2 ++
+ 2 files changed, 27 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/watchdog/wd_core.c b/drivers/watchdog/wd_core.c
-index fcead1175558..b6e2a37b1f0c 100644
---- a/drivers/watchdog/wd_core.c
-+++ b/drivers/watchdog/wd_core.c
-@@ -152,12 +152,6 @@ static unsigned int dev_get_watchdog_priority(struct device_d *dev)
- 	return priority;
+diff --git a/drivers/remoteproc/remoteproc_core.c b/drivers/remoteproc/remoteproc_core.c
+index 8a28c1bafc1b..e031640bc7a0 100644
+--- a/drivers/remoteproc/remoteproc_core.c
++++ b/drivers/remoteproc/remoteproc_core.c
+@@ -101,6 +101,8 @@ static int rproc_firmware_finish(struct firmware_handler *fh)
+ 	fw.size = rproc->fw_buf_ofs;
+ 
+ 	ret = rproc_start(rproc, &fw);
++	if (ret == 0)
++		rproc->stop = PARAM_TRISTATE_FALSE;
+ 
+ 	kfree(rproc->fw_buf);
+ 
+@@ -120,6 +122,19 @@ static int rproc_register_dev(struct rproc *rproc, const char *alias)
+ 	return register_device(&rproc->dev);
  }
  
--const char *running_names[] = {
--	[WDOG_HW_RUNNING_UNSUPPORTED] = "unknown",
--	[WDOG_HW_RUNNING] = "1",
--	[WDOG_HW_NOT_RUNNING] = "0",
--};
--
- int watchdog_register(struct watchdog *wd)
++static int rproc_set_stop(struct param_d *param, void *priv)
++{
++	struct rproc *rproc = priv;
++	int (*stop)(struct rproc *);
++
++	stop = rproc->ops->stop;
++
++	if (!stop)
++		return -ENOSYS;
++
++	return stop(rproc);
++}
++
+ int rproc_add(struct rproc *rproc)
  {
- 	struct param_d *p;
-@@ -176,8 +170,7 @@ int watchdog_register(struct watchdog *wd)
- 	if (ret)
- 		return ret;
+ 	struct device_d *dev = &rproc->dev;
+@@ -142,12 +157,17 @@ int rproc_add(struct rproc *rproc)
+ 	fh->close = rproc_firmware_finish;
  
--	p = dev_add_param_enum_ro(&wd->dev, "running", &wd->running,
--				  running_names, ARRAY_SIZE(running_names));
-+	p = dev_add_param_tristate_ro(&wd->dev, "running", &wd->running);
- 	if (IS_ERR(p))
- 		return PTR_ERR(p);
+ 	ret = firmwaremgr_register(fh);
+-	if (ret)
+-		dev_err(dev, "filed to register firmware handler %s\n", rproc->name);
+-	else
+-		dev_info(dev, "%s is available\n", rproc->name);
++	if (ret) {
++		dev_err(dev, "failed to register firmware handler %s\n", rproc->name);
++		return ret;
++	}
  
-diff --git a/include/watchdog.h b/include/watchdog.h
-index 5790205a487b..9741570ce229 100644
---- a/include/watchdog.h
-+++ b/include/watchdog.h
-@@ -15,9 +15,12 @@
+-	return ret;
++	rproc->stop = PARAM_TRISTATE_UNKNOWN;
++	dev_add_param_tristate(&rproc->dev, "stop", rproc_set_stop, NULL,
++			   &rproc->stop, rproc);
++
++	dev_info(dev, "%s is available\n", rproc->name);
++	return 0;
+ }
  
- #include <poller.h>
- #include <driver.h>
-+#include <param.h>
+ struct rproc *rproc_alloc(struct device_d *dev, const char *name,
+diff --git a/include/linux/remoteproc.h b/include/linux/remoteproc.h
+index c6264d1c0a49..af35837fb39a 100644
+--- a/include/linux/remoteproc.h
++++ b/include/linux/remoteproc.h
+@@ -41,6 +41,8 @@ struct rproc {
  
- enum wdog_hw_runnning {
--	 WDOG_HW_RUNNING_UNSUPPORTED, WDOG_HW_RUNNING, WDOG_HW_NOT_RUNNING
-+	 WDOG_HW_RUNNING_UNSUPPORTED = PARAM_TRISTATE_UNKNOWN,
-+	 WDOG_HW_RUNNING = PARAM_TRISTATE_TRUE,
-+	 WDOG_HW_NOT_RUNNING = PARAM_TRISTATE_FALSE
+ 	void *fw_buf;
+ 	size_t fw_buf_ofs;
++
++	int stop;
  };
  
- struct watchdog {
+ struct rproc *rproc_alloc(struct device_d *dev, const char *name,
 -- 
 2.20.1
 
