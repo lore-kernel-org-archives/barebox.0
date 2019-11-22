@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pl1-x641.google.com ([2607:f8b0:4864:20::641])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iZ9nN-0005wn-It
- for barebox@lists.infradead.org; Mon, 25 Nov 2019 08:32:35 +0000
-Date: Mon, 25 Nov 2019 09:32:31 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191125083231.dxqbnh24vgxpbqzs@pengutronix.de>
-References: <20191122133929.31050-1-a.fatoum@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191122133929.31050-1-a.fatoum@pengutronix.de>
+ id 1iY4Oo-0006I5-Px
+ for barebox@lists.infradead.org; Fri, 22 Nov 2019 08:34:44 +0000
+Received: by mail-pl1-x641.google.com with SMTP id f9so2826029plr.7
+ for <barebox@lists.infradead.org>; Fri, 22 Nov 2019 00:34:41 -0800 (PST)
+From: Du Huanpeng <u74147@gmail.com>
+Date: Fri, 22 Nov 2019 16:34:24 +0800
+Message-Id: <1574411664-11733-1-git-send-email-duhuanpeng@loongson.cn>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,40 +16,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] watchdog: stm32_iwdg: explicitly set .running to
- UNSUPPORTED
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] MIPS: Makefile: minor codingstyle fix
+To: barebox@lists.infradead.org
+Cc: Du Huanpeng <duhuanpeng@loongson.cn>, Du Huanpeng <u74147@gmail.com>
 
-On Fri, Nov 22, 2019 at 02:39:29PM +0100, Ahmad Fatoum wrote:
-> I've spent some time trying to get the ONF (Watchdog enable status)
-> bit in the IWDG_SR register to read as something other than zero.
-> 
-> It has since been confirmed to be non-functional[1]. To avoid someone
-> else spending time on this, document that running status is unsupported
-> on this hardware explicitly.
-> No functional change as UNSUPPORTED is already the default.
-> 
-> [1]: https://www.spinics.net/lists/arm-kernel/msg770527.html
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  drivers/watchdog/stm32_iwdg.c | 1 +
->  1 file changed, 1 insertion(+)
+From: Du Huanpeng <u74147@gmail.com>
 
-Applied, thanks
+Signed-off-by: Du Huanpeng <duhuanpeng@loongson.cn>
+---
+ arch/mips/Makefile | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-Sascha
-
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index ee465dc..1c10db5 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -52,9 +52,7 @@ cflags-$(CONFIG_CPU_MIPS32_R1) += $(call cc-option,-march=mips32,-mips32 -U_MIPS
+ cflags-$(CONFIG_CPU_MIPS32_R2) += $(call cc-option,-march=mips32r2,-mips32r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS32) -Wa,-mips32r2 -Wa,--trap
+ cflags-$(CONFIG_CPU_MIPS64_R1) += $(call cc-option,-march=mips64,-mips64 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64) -Wa,-mips64 -Wa,--trap
+ cflags-$(CONFIG_CPU_MIPS64_R2) += $(call cc-option,-march=mips64r2,-mips64r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64) -Wa,-mips64r2 -Wa,--trap
+-cflags-$(CONFIG_CPU_LOONGSON1)	+= \
+-	$(call cc-option,-march=mips32r2,-mips32r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS32) \
+-	-Wa,-mips32r2 -Wa,--trap
++cflags-$(CONFIG_CPU_LOONGSON1) += $(call cc-option,-march=mips32r2,-mips32r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS32) -Wa,-mips32r2 -Wa,--trap
+ 
+ CPPFLAGS += -DTEXT_BASE=$(CONFIG_TEXT_BASE)
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.7.4
+
 
 _______________________________________________
 barebox mailing list
