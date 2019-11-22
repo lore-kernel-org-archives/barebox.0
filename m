@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iY9yg-0006Xg-I6
- for barebox@lists.infradead.org; Fri, 22 Nov 2019 14:32:08 +0000
+ id 1iYEER-0006qp-4T
+ for barebox@lists.infradead.org; Fri, 22 Nov 2019 19:04:40 +0000
 From: Clement Leger <cleger@kalray.eu>
-Date: Fri, 22 Nov 2019 15:31:32 +0100
-Message-Id: <20191122143132.26652-1-cleger@kalray.eu>
+Date: Fri, 22 Nov 2019 20:04:27 +0100
+Message-Id: <20191122190427.917-1-cleger@kalray.eu>
+In-Reply-To: <20191122143132.26652-1-cleger@kalray.eu>
+References: <20191122143132.26652-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,7 +26,11 @@ To: barebox@lists.infradead.org
 Cc: Clement Leger <cleger@kalray.eu>
 
 Add ISSI 128Mb nor flash.
+
+Signed-off-by: Clement Leger <cleger@kalray.eu>
 ---
+- Add missing Signed-off-by
+
  drivers/mtd/spi-nor/spi-nor.c | 2 ++
  1 file changed, 2 insertions(+)
 
