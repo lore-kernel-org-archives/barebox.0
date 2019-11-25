@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from zimbra2.kalray.eu ([92.103.151.219])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iYEER-0006qp-4T
- for barebox@lists.infradead.org; Fri, 22 Nov 2019 19:04:40 +0000
-From: Clement Leger <cleger@kalray.eu>
-Date: Fri, 22 Nov 2019 20:04:27 +0100
-Message-Id: <20191122190427.917-1-cleger@kalray.eu>
-In-Reply-To: <20191122143132.26652-1-cleger@kalray.eu>
+ id 1iZ9vv-0002OF-Bc
+ for barebox@lists.infradead.org; Mon, 25 Nov 2019 08:41:24 +0000
+Date: Mon, 25 Nov 2019 09:41:21 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20191125084121.vay2klbysaypsfyv@pengutronix.de>
 References: <20191122143132.26652-1-cleger@kalray.eu>
+ <20191122190427.917-1-cleger@kalray.eu>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20191122190427.917-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,40 +19,33 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd: spi-nor: Add support for is25lp01g
-To: barebox@lists.infradead.org
-Cc: Clement Leger <cleger@kalray.eu>
+Subject: Re: [PATCH] mtd: spi-nor: Add support for is25lp01g
+To: Clement Leger <cleger@kalray.eu>
+Cc: barebox@lists.infradead.org
 
-Add ISSI 128Mb nor flash.
+On Fri, Nov 22, 2019 at 08:04:27PM +0100, Clement Leger wrote:
+> Add ISSI 128Mb nor flash.
+> 
+> Signed-off-by: Clement Leger <cleger@kalray.eu>
+> ---
+> - Add missing Signed-off-by
+> 
+>  drivers/mtd/spi-nor/spi-nor.c | 2 ++
+>  1 file changed, 2 insertions(+)
 
-Signed-off-by: Clement Leger <cleger@kalray.eu>
----
-- Add missing Signed-off-by
+Applied, thanks
 
- drivers/mtd/spi-nor/spi-nor.c | 2 ++
- 1 file changed, 2 insertions(+)
+Sascha
 
-diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index b25103598..1e1b69626 100644
---- a/drivers/mtd/spi-nor/spi-nor.c
-+++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -677,6 +677,8 @@ static const struct spi_device_id spi_nor_ids[] = {
- 			     SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ) },
- 	{ "is25lp016d", INFO(0x9d6015, 0,  64 * 1024,  32,
- 			     SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ) },
-+	{ "is25lp01g", INFO(0x9d601b, 0,  64 * 1024,  2048,
-+			     SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ) },
- 	{ "is25lp080d", INFO(0x9d6014, 0,  64 * 1024,  16,
- 			     SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ) },
- 	{ "is25lp032",  INFO(0x9d6016, 0,  64 * 1024,  64,
 -- 
-2.15.0.276.g89ea799
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
