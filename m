@@ -1,20 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iY7Yp-0004yy-Et
- for barebox@lists.infradead.org; Fri, 22 Nov 2019 11:57:16 +0000
-Received: by mail-pg1-x542.google.com with SMTP id t3so2812700pgl.5
- for <barebox@lists.infradead.org>; Fri, 22 Nov 2019 03:57:15 -0800 (PST)
-Date: Fri, 22 Nov 2019 19:57:03 +0800
-From: Du Huanpeng <u74147@gmail.com>
-Message-ID: <20191122115700.GA15570@brew>
+ id 1iZ9vC-00028n-PU
+ for barebox@lists.infradead.org; Mon, 25 Nov 2019 08:40:40 +0000
+Date: Mon, 25 Nov 2019 09:40:36 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20191125084036.p7akxlzumpieod7u@pengutronix.de>
 References: <1574411664-11733-1-git-send-email-duhuanpeng@loongson.cn>
  <a3ba081f-5789-1f6c-cdba-e09a13561d7d@rempel-privat.de>
  <20191122094639.GA13533@brew>
  <ac7ed1a9-4632-644b-da7a-d642ca3ecc68@rempel-privat.de>
+ <20191122115700.GA15570@brew>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <ac7ed1a9-4632-644b-da7a-d642ca3ecc68@rempel-privat.de>
+In-Reply-To: <20191122115700.GA15570@brew>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,19 +27,35 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] MIPS: Makefile: minor codingstyle fix
-To: Oleksij Rempel <linux@rempel-privat.de>
-Cc: barebox@lists.infradead.org
+To: Du Huanpeng <u74147@gmail.com>
+Cc: barebox@lists.infradead.org, Oleksij Rempel <linux@rempel-privat.de>
 
-Hi.
+On Fri, Nov 22, 2019 at 07:57:03PM +0800, Du Huanpeng wrote:
+> Hi.
+> 
+> > Actually all of this lines haw incorrect coding style. It should be 80
+> > char width style.
+> I see this, but it is more practical here. the editor will automatic warp lines.
+> 
+> I can write a better description and send a v2 patch.
 
-> Actually all of this lines haw incorrect coding style. It should be 80
-> char width style.
-I see this, but it is more practical here. the editor will automatic warp lines.
+Please do so. Please don't take 80 chars as a hard limit. While I think
+the lines we are talking about here are a bit long, forcing it to 80
+chars doesn't really improve readability.
 
-I can write a better description and send a v2 patch.
+i.e the following looks good, eventhough it's longer than 80 chars:
 
-Regards,
-Du Huanpeng
+cflags-$(CONFIG_CPU_LOONGSON1) += \
+	$(call cc-option,-march=mips32r2,-mips32r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS32) \
+	-Wa,-mips32r2 -Wa,--trap
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
