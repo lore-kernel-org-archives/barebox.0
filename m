@@ -1,12 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iaMn6-0007d5-8V
- for barebox@lists.infradead.org; Thu, 28 Nov 2019 16:37:17 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 28 Nov 2019 17:37:08 +0100
-Message-Id: <20191128163707.6055-1-a.fatoum@pengutronix.de>
+Received: from mail.loongson.cn ([114.242.206.163] helo=loongson.cn)
+ by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1iZZTu-0008IA-87
+ for barebox@lists.infradead.org; Tue, 26 Nov 2019 11:58:12 +0000
+Date: Tue, 26 Nov 2019 19:57:50 +0800
+From: Du Huanpeng <duhuanpeng@loongson.cn>
+Message-ID: <20191126115119.GA20169@brew>
 MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,98 +16,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] scripts: imx: report file where error occurred
+Subject: macro about loongson's CPU & SoC
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Especially when using #include directives in imxcfg files, error
-messages can be hard to follow because line numbers differ between
-preprocessor and source files. Teach the imx image generation tool about
-preprocessing line number / file name directive, so it can give more
-useful error messages. Instead of:
-
-  error in line 11: Invalid argument
-
-It now says:
-
-  $barebox/arch/arm/boards/$som/flash-header-$board.imxcfg:5: Invalid argument
-
-No change in compiled barebox binaries.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- scripts/imx/imx.c | 23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
-
-diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
-index b3e8d62ba8b6..b8d939a43177 100644
---- a/scripts/imx/imx.c
-+++ b/scripts/imx/imx.c
-@@ -673,13 +673,16 @@ static char *readcmd(struct config_data *data, FILE *f)
- 	}
- }
- 
--int parse_config(struct config_data *data, const char *filename)
-+int parse_config(struct config_data *data, const char *_filename)
- {
- 	FILE *f;
- 	int lineno = 0;
- 	char *line = NULL, *tmp;
- 	char *argv[MAXARGS];
- 	int nargs, i, ret = 0;
-+	char *filename;
-+
-+	filename = strdup(_filename);
- 
- 	f = fopen(filename, "r");
- 	if (!f) {
-@@ -695,8 +698,17 @@ int parse_config(struct config_data *data, const char *filename)
- 		lineno++;
- 
- 		tmp = strchr(line, '#');
--		if (tmp)
--			*tmp = 0;
-+		if (tmp) {
-+			char *endptr;
-+			long linenum = strtol(tmp + 1, &endptr, 10);
-+			if (strncmp(endptr, " \"", 2) == 0 && endptr[2]) {
-+				free(filename);
-+				lineno = linenum - 1;
-+				filename = strdup(endptr + 2);
-+				filename[strlen(filename) - 1] = '\0';
-+			}
-+			*tmp = '\0';
-+		}
- 
- 		nargs = parse_line(line, argv);
- 		if (!nargs)
-@@ -708,8 +720,8 @@ int parse_config(struct config_data *data, const char *filename)
- 			if (!strcmp(cmds[i].name, argv[0])) {
- 				ret = cmds[i].parse(data, nargs, argv);
- 				if (ret) {
--					fprintf(stderr, "error in line %d: %s\n",
--							lineno, strerror(-ret));
-+					fprintf(stderr, "%s:%d: %s\n",
-+						filename, lineno, strerror(-ret));
- 					goto cleanup;
- 				}
- 				break;
-@@ -724,5 +736,6 @@ int parse_config(struct config_data *data, const char *filename)
- 
- cleanup:
- 	fclose(f);
-+	free(filename);
- 	return ret;
- }
--- 
-2.24.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8sIEkgZmluZCB0aGVyZSBhcmUgc29tZSBtYWNyb3MgYWJvdXQgbG9vbmdzb24ncyBDUFUg
+YW5kIFNvQywKCiQgdmltIGJhcmVib3gvYXJjaC9taXBzL0tjb25maWcKCjE3NCBjb25maWcgQ1BV
+X0xPT05HU09OMUIKMTc1ICAgICAgICAgYm9vbCAiTG9vbmdzb24gMUIiCjE3NiAgICAgICAgIGRl
+cGVuZHMgb24gU1lTX0hBU19DUFVfTE9PTkdTT04xQgoxNzcgICAgICAgICBzZWxlY3QgQ1BVX0xP
+T05HU09OMQoxNzggICAgICAgICBoZWxwCjE3OSAgICAgICAgICAgVGhlIExvb25nc29uIDFCIGlz
+IGEgMzItYml0IFNvQywgd2hpY2ggaW1wbGVtZW50cyB0aGUgTUlQUzMyCjE4MCAgICAgICAgICAg
+cmVsZWFzZSAyIGluc3RydWN0aW9uIHNldC4KCkhlcmUgSSB3YW50IHRvIGxpc3Qgc29tZSBDaGlw
+cyBmcm9tIHRoaXMgcGFnZToKICBodHRwOi8vd3d3Lmxvb25nc29uLmNuL3Byb2R1Y3QvCgpOQU1F
+ICAgICAgICAgICAgICBDUFUgICAgICAgQ29yZShzKQoKVGhlIGxvb25nc29uIDMsIGZvciBzZXJp
+ZXMvc2VydmVyICYgZGVza3RvcAozQTMwMDAvM0IzMDAwICAgICBHUzQ2NEUgICAgNjRiaXQgeDQK
+M0EyMDAwLzNCMjAwMCAgICAgR1M0NjRFICAgIDY0Yml0IHg0CjNCMTUwMCAgICAgICAgICAgIEdT
+NDY0ICAgICA2NGJpdCB4OAozQTEwMDAgICAgICAgICAgICBHUzQ2NCAgICAgNjRiaXQgeDQKClRo
+ZSBsb29uZ3NvbiAyLCBmb3Igc2VyaWVzL2xvdyBwb3dlcgoySzEwMDAgICAgICAgICAgICBHUzI2
+NCAgICAgNjRiaXQgeDIKMkYgICAgICAgICAgICAgICAgR1M0NjQgICAgIDY0Yml0IHgxCjJIICAg
+ICAgICAgICAgICAgIEdTNDY0ICAgICA2NGJpdCB4MQoKVGhlIGxvb25nc29uIDEsIGZvciBzZXJp
+ZXMvZW1iZWRlZAoxQzEwMSAgICAgICAgICAgICBHUzEzMlIgICAgMzJiaXQgPwoxRCAgICAgICAg
+ICAgICAgICBHUzEzMiAgICAgMzJiaXQgPwoxQyAgICAgICAgICAgICAgICBHUzIzMiAgICAgMzJi
+aXQgeDEKMUIgICAgICAgICAgICAgICAgR1MyMzIgICAgIDMyYml0IHgxICA8LS0gbG9vbmdzb24g
+MWIKMUEgICAgICAgICAgICAgICAgR1MyMzIgICAgIDMyYml0IHgxCgp0aGUgQ1BVIG5hbWUgb2Yg
+TE9PTkdTT04xQiBpcyBzb2NhbGxlZCBHUzIzMiwgc2hhbGwgd2UKCiAgICBjaGFuZ2UgQ1BVX0xP
+T05HU09OMSB0byBDUFVfR1MyMzI/CgpoZXJlIGlzIGEgaW50cm9kdWNlIGZvciBHUzIzMiBpbiBD
+aGluZXNlOgotIC0gLSAtCum+meiKryAyMzIg5qC45piv5LiA5qy+5a6e546wIE1JUFMzMiDlhbzl
+rrnkuJTmlK/mjIEgRUpUQUcg6LCD6K+V55qE5Y+M5Y+R5bCE5aSE55CG5Zmo77yM6YCa6L+H6YeH
+55So6L2s56e7CumihOa1i+OAgeWvhOWtmOWZqOmHjeWRveWQjeOAgeS5seW6j+WPkeWwhOOAgei3
+r+mihOa1i+eahOaMh+S7pCBDQUNIReOAgemdnumYu+WhnueahOaVsOaNriBDQUNIReOAgeWGmeWQ
+iOW5tuaUtumbhgrnrYnmioDmnK/mnaXmj5Dpq5jmtYHmsLTnur/nmoTmlYjnjofjgIIKLSAtIC0g
+LQpiYXNlIG9uIHRoaXMgZGVzY3JpcHRpb24sIGlzIGl0IGNvbXBhY3Qgd2l0aCBNSVBTMzIuCgpm
+b3IgbG9vbmdzb24ncyBvdGhlciBjb3Jlcywgc2hhbGwgd2UgZGVmaW5lIHNvbWUgbWFjcm86CgoK
+CUNPTkZJR19DUFVfR1MyMzIKCUNPTkZJR19DUFVfR1MyNjQKCUNPTkZJR19DUFVfR1M0NjQKClJl
+Z2FyZHMsCmR1aHVhbnBlbmcKCgoKCgoKCgoKCgoKCgoKCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
+dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
+bmZvL2JhcmVib3gK
