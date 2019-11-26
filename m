@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf1-x141.google.com ([2a00:1450:4864:20::141])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iZZhD-00033g-LC
- for barebox@lists.infradead.org; Tue, 26 Nov 2019 12:11:57 +0000
-Received: by mail-lf1-x141.google.com with SMTP id f18so13855001lfj.6
- for <barebox@lists.infradead.org>; Tue, 26 Nov 2019 04:11:52 -0800 (PST)
-Date: Tue, 26 Nov 2019 15:11:48 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20191126151148.07d113bac6f01bea1dd57d77@gmail.com>
-In-Reply-To: <20191126115119.GA20169@brew>
+Received: from mail.loongson.cn ([114.242.206.163] helo=loongson.cn)
+ by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1iZaVo-00023q-Iq
+ for barebox@lists.infradead.org; Tue, 26 Nov 2019 13:04:14 +0000
+Date: Tue, 26 Nov 2019 21:03:58 +0800
+From: Du Huanpeng <duhuanpeng@loongson.cn>
+Message-ID: <20191126130357.GA23625@brew>
 References: <20191126115119.GA20169@brew>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20191126115119.GA20169@brew>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,49 +18,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: macro about loongson's CPU & SoC
-To: Du Huanpeng <duhuanpeng@loongson.cn>
-Cc: barebox@lists.infradead.org
+To: barebox@lists.infradead.org
 
-T24gVHVlLCAyNiBOb3YgMjAxOSAxOTo1Nzo1MCArMDgwMApEdSBIdWFucGVuZyA8ZHVodWFucGVu
-Z0Bsb29uZ3Nvbi5jbj4gd3JvdGU6Cgo+IEhlbGxvLCBJIGZpbmQgdGhlcmUgYXJlIHNvbWUgbWFj
-cm9zIGFib3V0IGxvb25nc29uJ3MgQ1BVIGFuZCBTb0MsCj4gCj4gJCB2aW0gYmFyZWJveC9hcmNo
-L21pcHMvS2NvbmZpZwo+IAo+IDE3NCBjb25maWcgQ1BVX0xPT05HU09OMUIKPiAxNzUgICAgICAg
-ICBib29sICJMb29uZ3NvbiAxQiIKPiAxNzYgICAgICAgICBkZXBlbmRzIG9uIFNZU19IQVNfQ1BV
-X0xPT05HU09OMUIKPiAxNzcgICAgICAgICBzZWxlY3QgQ1BVX0xPT05HU09OMQo+IDE3OCAgICAg
-ICAgIGhlbHAKPiAxNzkgICAgICAgICAgIFRoZSBMb29uZ3NvbiAxQiBpcyBhIDMyLWJpdCBTb0Ms
-IHdoaWNoIGltcGxlbWVudHMgdGhlIE1JUFMzMgo+IDE4MCAgICAgICAgICAgcmVsZWFzZSAyIGlu
-c3RydWN0aW9uIHNldC4KPiAKPiBIZXJlIEkgd2FudCB0byBsaXN0IHNvbWUgQ2hpcHMgZnJvbSB0
-aGlzIHBhZ2U6Cj4gICBodHRwOi8vd3d3Lmxvb25nc29uLmNuL3Byb2R1Y3QvCj4gCj4gTkFNRSAg
-ICAgICAgICAgICAgQ1BVICAgICAgIENvcmUocykKPiAKPiBUaGUgbG9vbmdzb24gMywgZm9yIHNl
-cmllcy9zZXJ2ZXIgJiBkZXNrdG9wCj4gM0EzMDAwLzNCMzAwMCAgICAgR1M0NjRFICAgIDY0Yml0
-IHg0Cj4gM0EyMDAwLzNCMjAwMCAgICAgR1M0NjRFICAgIDY0Yml0IHg0Cj4gM0IxNTAwICAgICAg
-ICAgICAgR1M0NjQgICAgIDY0Yml0IHg4Cj4gM0ExMDAwICAgICAgICAgICAgR1M0NjQgICAgIDY0
-Yml0IHg0Cj4gCj4gVGhlIGxvb25nc29uIDIsIGZvciBzZXJpZXMvbG93IHBvd2VyCj4gMksxMDAw
-ICAgICAgICAgICAgR1MyNjQgICAgIDY0Yml0IHgyCj4gMkYgICAgICAgICAgICAgICAgR1M0NjQg
-ICAgIDY0Yml0IHgxCj4gMkggICAgICAgICAgICAgICAgR1M0NjQgICAgIDY0Yml0IHgxCj4gCj4g
-VGhlIGxvb25nc29uIDEsIGZvciBzZXJpZXMvZW1iZWRlZAo+IDFDMTAxICAgICAgICAgICAgIEdT
-MTMyUiAgICAzMmJpdCA/Cj4gMUQgICAgICAgICAgICAgICAgR1MxMzIgICAgIDMyYml0ID8KPiAx
-QyAgICAgICAgICAgICAgICBHUzIzMiAgICAgMzJiaXQgeDEKPiAxQiAgICAgICAgICAgICAgICBH
-UzIzMiAgICAgMzJiaXQgeDEgIDwtLSBsb29uZ3NvbiAxYgo+IDFBICAgICAgICAgICAgICAgIEdT
-MjMyICAgICAzMmJpdCB4MQo+IAo+IHRoZSBDUFUgbmFtZSBvZiBMT09OR1NPTjFCIGlzIHNvY2Fs
-bGVkIEdTMjMyLCBzaGFsbCB3ZQo+IAo+ICAgICBjaGFuZ2UgQ1BVX0xPT05HU09OMSB0byBDUFVf
-R1MyMzI/Cj4gCj4gaGVyZSBpcyBhIGludHJvZHVjZSBmb3IgR1MyMzIgaW4gQ2hpbmVzZToKPiAt
-IC0gLSAtCj4g6b6Z6IqvIDIzMiDmoLjmmK/kuIDmrL7lrp7njrAgTUlQUzMyIOWFvOWuueS4lOaU
-r+aMgSBFSlRBRyDosIPor5XnmoTlj4zlj5HlsITlpITnkIblmajvvIzpgJrov4fph4fnlKjovazn
-p7sKPiDpooTmtYvjgIHlr4TlrZjlmajph43lkb3lkI3jgIHkubHluo/lj5HlsITjgIHot6/pooTm
-tYvnmoTmjIfku6QgQ0FDSEXjgIHpnZ7pmLvloZ7nmoTmlbDmja4gQ0FDSEXjgIHlhpnlkIjlubbm
-lLbpm4YKPiDnrYnmioDmnK/mnaXmj5Dpq5jmtYHmsLTnur/nmoTmlYjnjofjgIIKPiAtIC0gLSAt
-Cj4gYmFzZSBvbiB0aGlzIGRlc2NyaXB0aW9uLCBpcyBpdCBjb21wYWN0IHdpdGggTUlQUzMyLgo+
-IAo+IGZvciBsb29uZ3NvbidzIG90aGVyIGNvcmVzLCBzaGFsbCB3ZSBkZWZpbmUgc29tZSBtYWNy
-bzoKPiAKPiAKPiAJQ09ORklHX0NQVV9HUzIzMgo+IAlDT05GSUdfQ1BVX0dTMjY0Cj4gCUNPTkZJ
-R19DUFVfR1M0NjQKClRoZSBuYW1lIENQVV9MT09OR1NPTjFCIGlzIHVzZWQgaW4gdGhlIGxpbnV4
-IGtlcm5lbC4KUGxlYXNlIGtlZXAgYmFyZWJveCBtYWNybyBuYW1lIGluIHN5bmMgd2l0aCBsaW51
-eCBrZXJuZWwuCgotLSAKQmVzdCByZWdhcmRzLArCoCBBbnRvbnkgUGF2bG92CgpfX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlz
-dApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcv
-bWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+> The name CPU_LOONGSON1B is used in the linux kernel.
+> Please keep barebox macro name in sync with linux kernel.
+shall we use the rules in a "balanced" way? :)
+
+the name CPU_LOONGSON1B is used in the kernel, it is true.
+if you dive into the source tree, you will find more~
+
+in bootloader, do we need so many kinds of CPU, are they
+realy different? two or three ISA set(CPU) is enough for
+loongson's chip(see the table in my last mail) to run barebox.
+
+Regards,
+duhuanpeng
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
