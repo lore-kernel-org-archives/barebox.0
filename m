@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iZWR7-0001GW-27
- for barebox@lists.infradead.org; Tue, 26 Nov 2019 08:43:06 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 26 Nov 2019 09:43:00 +0100
-Message-Id: <20191126084300.4805-1-s.hauer@pengutronix.de>
+ id 1iZYtZ-00061R-N8
+ for barebox@lists.infradead.org; Tue, 26 Nov 2019 11:20:39 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue, 26 Nov 2019 12:20:25 +0100
+Message-Id: <20191126112025.13013-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,82 +19,114 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] treewide trivial: Fix typo filed -> failed
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] gpiolib: have gpioinfo show line name if no label was set
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+The upstream Linux bindings support an optional gpio-line-names for GPIO
+controllers that can assign names to each GPIO of the controller.
+
+In Linux userspace, utilities like gpiofind can be used to reference these
+line-names. For barebox development purposes it can be nice to have the
+line names printed when running gpioinfo to make finding the GPIO number
+needed easier. populate a line_name gpio_desc member and print it when
+using gpioinfo.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/remoteproc/imx_rproc.c       | 8 ++++----
- drivers/remoteproc/remoteproc_core.c | 2 +-
- drivers/watchdog/efi_wdt.c           | 2 +-
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/gpio/gpiolib.c | 47 +++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 46 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-index c5cba3711a..370bebe6e2 100644
---- a/drivers/remoteproc/imx_rproc.c
-+++ b/drivers/remoteproc/imx_rproc.c
-@@ -172,7 +172,7 @@ static int imx_rproc_start(struct rproc *rproc)
- 	ret = regmap_update_bits(priv->regmap, dcfg->src_reg,
- 				 dcfg->src_mask, dcfg->src_start);
- 	if (ret)
--		dev_err(dev, "Filed to enable M4!\n");
-+		dev_err(dev, "Failed to enable M4!\n");
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index f96009896a41..3c75c560b411 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -16,6 +16,7 @@ struct gpio_info {
+ 	bool requested;
+ 	bool active_low;
+ 	char *label;
++	const char *line_name;
+ };
  
- 	return ret;
+ static struct gpio_info *gpio_desc;
+@@ -434,6 +435,42 @@ static int of_gpiochip_scan_hogs(struct gpio_chip *chip)
+ 	return 0;
  }
-@@ -187,7 +187,7 @@ static int imx_rproc_stop(struct rproc *rproc)
- 	ret = regmap_update_bits(priv->regmap, dcfg->src_reg,
- 				 dcfg->src_mask, dcfg->src_stop);
- 	if (ret)
--		dev_err(dev, "Filed to stop M4!\n");
-+		dev_err(dev, "Failed to stop M4!\n");
  
- 	return ret;
++/**
++ * of_gpiochip_set_names - Set GPIO line names using device properties
++ * @chip: GPIO chip whose lines should be named, if possible
++ * @np: device_node containing the gpio-line-names property
++ *
++ * Looks for device property "gpio-line-names" and if it exists assigns
++ * GPIO line names for the chip. The memory allocated for the assigned
++ * names belong to the underlying device tree node and should not be released
++ * by the caller.
++ */
++static void of_gpiochip_set_names(struct gpio_chip *chip,
++				  struct device_node *np)
++{
++	int ret, i;
++	const char *name;
++	int count;
++
++	count = of_property_count_strings(np, "gpio-line-names");
++	if (count < 0)
++		return;
++
++	if (count > chip->ngpio)
++		count = chip->ngpio;
++
++	for (i = 0; i < count; i++) {
++		ret = of_property_read_string_index(np, "gpio-line-names",
++						    i, &name);
++		if (ret < 0) {
++			dev_warn(chip->dev, "failed to read GPIO line names\n");
++			return;
++		}
++
++		gpio_desc[chip->base + i].line_name = name;
++	}
++}
++
+ int gpiochip_add(struct gpio_chip *chip)
+ {
+ 	int base, i;
+@@ -452,6 +489,8 @@ int gpiochip_add(struct gpio_chip *chip)
+ 	for (i = chip->base; i < chip->base + chip->ngpio; i++)
+ 		gpio_desc[i].chip = chip;
+ 
++	of_gpiochip_set_names(chip, chip->dev->device_node);
++
+ 	return of_gpiochip_scan_hogs(chip);
  }
-@@ -210,7 +210,7 @@ static int imx_rproc_da_to_sys(struct imx_rproc *priv, u64 da,
- 		}
+ 
+@@ -490,6 +529,7 @@ static int do_gpiolib(int argc, char *argv[])
+ 	for (i = 0; i < ARCH_NR_GPIOS; i++) {
+ 		struct gpio_info *gi = &gpio_desc[i];
+ 		int val = -1, dir = -1;
++		const char *name = "";
+ 
+ 		if (!gi->chip)
+ 			continue;
+@@ -510,11 +550,16 @@ static int do_gpiolib(int argc, char *argv[])
+ 			val = gi->chip->ops->get(gi->chip,
+ 						i - gi->chip->base);
+ 
++		if (gi->requested && gi->label)
++			name = gi->label;
++		else if (gi->line_name)
++			name = gi->line_name;
++
+ 		printf("  GPIO %*d: %*s %*s %*s  %s\n", 4, i,
+ 			3, (dir < 0) ? "unk" : ((dir == GPIOF_DIR_IN) ? "in" : "out"),
+ 			3, (val < 0) ? "unk" : ((val == 0) ? "lo" : "hi"),
+ 		        12, gi->requested ? (gi->active_low ? "active low" : "true") : "false",
+-			(gi->requested && gi->label) ? gi->label : "");
++			name);
  	}
  
--	dev_warn(priv->dev, "Translation filed: da = 0x%llx len = 0x%x\n",
-+	dev_warn(priv->dev, "Translation failed: da = 0x%llx len = 0x%x\n",
- 		 da, len);
- 	return -ENOENT;
- }
-@@ -353,7 +353,7 @@ static int imx_rproc_probe(struct device_d *dev)
- 
- 	ret = imx_rproc_addr_init(priv, dev);
- 	if (ret) {
--		dev_err(dev, "filed on imx_rproc_addr_init\n");
-+		dev_err(dev, "failed on imx_rproc_addr_init\n");
- 		goto err_put_rproc;
- 	}
- 
-diff --git a/drivers/remoteproc/remoteproc_core.c b/drivers/remoteproc/remoteproc_core.c
-index 8a28c1bafc..a81787bc6c 100644
---- a/drivers/remoteproc/remoteproc_core.c
-+++ b/drivers/remoteproc/remoteproc_core.c
-@@ -143,7 +143,7 @@ int rproc_add(struct rproc *rproc)
- 
- 	ret = firmwaremgr_register(fh);
- 	if (ret)
--		dev_err(dev, "filed to register firmware handler %s\n", rproc->name);
-+		dev_err(dev, "failed to register firmware handler %s\n", rproc->name);
- 	else
- 		dev_info(dev, "%s is available\n", rproc->name);
- 
-diff --git a/drivers/watchdog/efi_wdt.c b/drivers/watchdog/efi_wdt.c
-index ea1ede1381..1512b1d99a 100644
---- a/drivers/watchdog/efi_wdt.c
-+++ b/drivers/watchdog/efi_wdt.c
-@@ -24,7 +24,7 @@ static int efi_wdt_set_timeout(struct watchdog *wd, unsigned timeout)
- 
- 	efiret = BS->set_watchdog_timer(timeout, 0, 0, NULL);
- 	if (EFI_ERROR(efiret)) {
--		dev_err(priv->dev, "filed to set EFI watchdog: %lx\n", efiret);
-+		dev_err(priv->dev, "failed to set EFI watchdog: %lx\n", efiret);
- 		return -EINVAL;
- 	}
- 
+ 	return 0;
 -- 
 2.24.0
 
