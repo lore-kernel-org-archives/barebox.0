@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iZYZs-0007Zh-J3
- for barebox@lists.infradead.org; Tue, 26 Nov 2019 11:00:17 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 26 Nov 2019 11:57:00 +0100
-Message-Id: <20191126105659.9555-2-a.fatoum@pengutronix.de>
-In-Reply-To: <20191126105659.9555-1-a.fatoum@pengutronix.de>
+ id 1iZxXu-0007gY-91
+ for barebox@lists.infradead.org; Wed, 27 Nov 2019 13:39:55 +0000
+Date: Wed, 27 Nov 2019 14:39:52 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20191127133952.hysi4kzwjhhogh2s@pengutronix.de>
 References: <20191126105659.9555-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20191126105659.9555-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,32 +22,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] pstore: remove unused goto label
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH 1/2] pstore: fix build by re-resolving botched merge
+ conflict
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Previous refactoring removed jumps to fail_clear. Remove it.
+On Tue, Nov 26, 2019 at 11:56:59AM +0100, Ahmad Fatoum wrote:
+> 297ac7288 ("pstore: Only capture log messages") removed the pstore console.
+> v3 of the eventually merged 75a74b5c ("console: fix out-of-bounds read
+> in dputc(/dev/*, ...)") reinstated part of this code, which broke the
+> pstore build because the now removed bufsize member had a user
+> reintroduced in the patch.
+> 
+> Fix this by reverting the offending patch's changes to the pstore code.
+> It wasn't applicable to begin with.
+> 
+> Fixes: 75a74b5c ("console: fix out-of-bounds read in dputc(/dev/*, ...)")
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+> Hello Sascha,
+> 
+> I broke pstore in v2019.10.0 because of the botched merge conflict
+> resolve described above. Can this patch be applied to master?
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- fs/pstore/ram.c | 1 -
- 1 file changed, 1 deletion(-)
+Just did that.
 
-diff --git a/fs/pstore/ram.c b/fs/pstore/ram.c
-index 86049f989e13..b96857969269 100644
---- a/fs/pstore/ram.c
-+++ b/fs/pstore/ram.c
-@@ -646,7 +646,6 @@ static int ramoops_probe(struct device_d *dev)
- 	return 0;
- 
- fail_buf:
--fail_clear:
- 	kfree(cxt->mprz);
- fail_init_mprz:
- 	kfree(cxt->fprz);
+Sascha
+
 -- 
-2.24.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
