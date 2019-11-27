@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iZvNO-0005pM-Sh
- for barebox@lists.infradead.org; Wed, 27 Nov 2019 11:20:57 +0000
+ id 1iZvNO-0005pO-Sw
+ for barebox@lists.infradead.org; Wed, 27 Nov 2019 11:20:56 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 27 Nov 2019 12:20:39 +0100
-Message-Id: <20191127112051.9427-1-s.hauer@pengutronix.de>
+Date: Wed, 27 Nov 2019 12:20:41 +0100
+Message-Id: <20191127112051.9427-3-s.hauer@pengutronix.de>
+In-Reply-To: <20191127112051.9427-1-s.hauer@pengutronix.de>
+References: <20191127112051.9427-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,38 +21,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/12] Designware PCIe updates and Layerscape support
+Subject: [PATCH 02/12] PCI: dwc: Make use of IS_ALIGNED()
 To: Barebox List <barebox@lists.infradead.org>
 
-s series has some updates to the Designware PCIe controller driver
-taken from Linux and finally adds support for the Layerscape incarnation
-of the Designware PCIe core.
+Port of Linux commit 4f8bbd2f8e7c4f3112506bf7362aed3a5495d51b
 
-Sascha Hauer (12):
-  PCI: dwc: Don't hard-code DBI/ATU offset
-  PCI: dwc: Make use of IS_ALIGNED()
-  PCI: dwc: Add dw_pcie_disable_atu()
-  PCI: dwc: Make use of BIT() in constant definitions
-  PCI: dwc: Enable iATU unroll for endpoint too
-  PCI: dwc: Fix ATU identification for designware version >= 4.80
-  PCI: dwc: imx6: Share PHY debug register definitions
-  PCI: dwc: Cleanup DBI,ATU read and write APIs
-  PCI: dwc: rename readl/writel_dbi ops to read/write_dbi
-  PCI: dwc: Sync register definitions with Linux-5.4
-  PCI: dwc: Return directly when num-lanes is not found
-  PCI: Add layerscape PCIe driver
+    Make the intent a bit more clear as well as get rid of explicit
+    arithmetic by using IS_ALIGNED() to determine if "addr" is aligned to
+    "size". No functional change intended.
 
- arch/arm/Kconfig                   |   1 +
- drivers/pci/Kconfig                |   7 +
- drivers/pci/Makefile               |   1 +
- drivers/pci/pci-imx6.c             |  11 +-
- drivers/pci/pci-layerscape.c       | 484 +++++++++++++++++++++++++++++
- drivers/pci/pcie-designware-host.c |  16 -
- drivers/pci/pcie-designware.c      | 108 +++++--
- drivers/pci/pcie-designware.h      | 152 ++++++---
- 8 files changed, 688 insertions(+), 92 deletions(-)
- create mode 100644 drivers/pci/pci-layerscape.c
+    Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+    Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+    Acked-by: Gustavo Pimentel <gustavo.pimentel@synopsys.com>
+    Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+    Cc: Bjorn Helgaas <bhelgaas@google.com>
+    Cc: Fabio Estevam <fabio.estevam@nxp.com>
+    Cc: Chris Healy <cphealy@gmail.com>
+    Cc: Lucas Stach <l.stach@pengutronix.de>
+    Cc: Leonard Crestez <leonard.crestez@nxp.com>
+    Cc: "A.s. Dong" <aisheng.dong@nxp.com>
+    Cc: Richard Zhu <hongxing.zhu@nxp.com>
+    Cc: linux-imx@nxp.com
+    Cc: linux-arm-kernel@lists.infradead.org
+    Cc: linux-kernel@vger.kernel.org
+    Cc: linux-pci@vger.kernel.org
 
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/pci/pcie-designware.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
+index 4fe99b1ffb..5747704cd5 100644
+--- a/drivers/pci/pcie-designware.c
++++ b/drivers/pci/pcie-designware.c
+@@ -29,7 +29,7 @@
+ 
+ int dw_pcie_read(void __iomem *addr, int size, u32 *val)
+ {
+-	if ((uintptr_t)addr & (size - 1)) {
++	if (!IS_ALIGNED((uintptr_t)addr, size)) {
+ 		*val = 0;
+ 		return PCIBIOS_BAD_REGISTER_NUMBER;
+ 	}
+@@ -50,7 +50,7 @@ int dw_pcie_read(void __iomem *addr, int size, u32 *val)
+ 
+ int dw_pcie_write(void __iomem *addr, int size, u32 val)
+ {
+-	if ((uintptr_t)addr & (size - 1))
++	if (!IS_ALIGNED((uintptr_t)addr, size))
+ 		return PCIBIOS_BAD_REGISTER_NUMBER;
+ 
+ 	if (size == 4)
 -- 
 2.24.0
 
