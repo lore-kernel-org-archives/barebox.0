@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iZvNO-0005pQ-Si
- for barebox@lists.infradead.org; Wed, 27 Nov 2019 11:20:57 +0000
+ id 1iZvNW-0005xL-MQ
+ for barebox@lists.infradead.org; Wed, 27 Nov 2019 11:21:04 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 27 Nov 2019 12:20:48 +0100
-Message-Id: <20191127112051.9427-10-s.hauer@pengutronix.de>
+Date: Wed, 27 Nov 2019 12:20:45 +0100
+Message-Id: <20191127112051.9427-7-s.hauer@pengutronix.de>
 In-Reply-To: <20191127112051.9427-1-s.hauer@pengutronix.de>
 References: <20191127112051.9427-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,86 +21,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/12] PCI: dwc: rename readl/writel_dbi ops to read/write_dbi
+Subject: [PATCH 06/12] PCI: dwc: Fix ATU identification for designware version
+ >= 4.80
 To: Barebox List <barebox@lists.infradead.org>
 
-struct dw_pcie_ops read/writel_dbi functions can read values of any
-size, so with readl/writel they are misnamed. Rename them to read/write
-which also matches the kernel driver.
+Port of Linux commit 2aadcb0cd39198833fabe1c45084f78686e71a6c
+
+    Synopsys designware version >= 4.80 uses a separate register space
+    for programming ATU. The current code identifies if there exists a
+    separate register space by accessing the register address of ATUs
+    in designware version < 4.80. Accessing this address results in
+    abort in the case of K2G.
+
+    Fix it here by adding "version" member to struct dw_pcie. This should be
+    set by platform specific drivers and designware core will use it to
+    identify if the platform has a separate ATU space. For platforms which
+    have not populated the version member, the old method of identification
+    will still be used.
+
+    Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
+    Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/pci/pcie-designware.c | 16 ++++++++--------
- drivers/pci/pcie-designware.h |  8 ++++----
- 2 files changed, 12 insertions(+), 12 deletions(-)
+ drivers/pci/pcie-designware.c | 14 ++++++++------
+ drivers/pci/pcie-designware.h |  1 +
+ 2 files changed, 9 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
-index 1da0947414..72deeee4ed 100644
+index 91aac8dec0..f9a759b8fd 100644
 --- a/drivers/pci/pcie-designware.c
 +++ b/drivers/pci/pcie-designware.c
-@@ -70,8 +70,8 @@ u32 dw_pcie_read_dbi(struct dw_pcie *pci, u32 reg, size_t size)
- 	int ret;
- 	u32 val;
+@@ -257,13 +257,15 @@ void dw_pcie_setup(struct dw_pcie *pci)
+ 	struct device_d *dev = pci->dev;
+ 	struct device_node *np = dev->device_node;
  
--	if (pci->ops->readl_dbi)
--		return pci->ops->readl_dbi(pci, pci->dbi_base, reg, size);
-+	if (pci->ops->read_dbi)
-+		return pci->ops->read_dbi(pci, pci->dbi_base, reg, size);
+-	/* Get iATU unroll support */
+-	pci->iatu_unroll_enabled = dw_pcie_iatu_unroll_enabled(pci);
+-	dev_dbg(pci->dev, "iATU unroll: %s\n",
+-		pci->iatu_unroll_enabled ? "enabled" : "disabled");
++	if (pci->version >= 0x480A || (!pci->version &&
++				       dw_pcie_iatu_unroll_enabled(pci))) {
++		pci->iatu_unroll_enabled = true;
++		if (!pci->atu_base)
++			pci->atu_base = pci->dbi_base + DEFAULT_DBI_ATU_OFFSET;
++	}
++	dev_dbg(pci->dev, "iATU unroll: %s\n", pci->iatu_unroll_enabled ?
++		"enabled" : "disabled");
  
- 	ret = dw_pcie_read(pci->dbi_base + reg, size, &val);
+-	if (pci->iatu_unroll_enabled && !pci->atu_base)
+-		pci->atu_base = pci->dbi_base + DEFAULT_DBI_ATU_OFFSET;
+ 
+ 	ret = of_property_read_u32(np, "num-lanes", &lanes);
  	if (ret)
-@@ -84,8 +84,8 @@ void dw_pcie_write_dbi(struct dw_pcie *pci, u32 reg, size_t size, u32 val)
- {
- 	int ret;
- 
--	if (pci->ops->writel_dbi) {
--		pci->ops->writel_dbi(pci, pci->dbi_base, reg, size, val);
-+	if (pci->ops->write_dbi) {
-+		pci->ops->write_dbi(pci, pci->dbi_base, reg, size, val);
- 		return;
- 	}
- 
-@@ -99,8 +99,8 @@ u32 dw_pcie_read_atu(struct dw_pcie *pci, u32 reg, size_t size)
- 	int ret;
- 	u32 val;
- 
--	if (pci->ops->readl_dbi)
--		return pci->ops->readl_dbi(pci, pci->atu_base, reg, size);
-+	if (pci->ops->read_dbi)
-+		return pci->ops->read_dbi(pci, pci->atu_base, reg, size);
- 
- 	ret = dw_pcie_read(pci->atu_base + reg, size, &val);
- 	if (ret)
-@@ -113,8 +113,8 @@ void dw_pcie_write_atu(struct dw_pcie *pci, u32 reg, size_t size, u32 val)
- {
- 	int ret;
- 
--	if (pci->ops->writel_dbi) {
--		pci->ops->writel_dbi(pci, pci->atu_base, reg, size, val);
-+	if (pci->ops->write_dbi) {
-+		pci->ops->write_dbi(pci, pci->atu_base, reg, size, val);
- 		return;
- 	}
- 
 diff --git a/drivers/pci/pcie-designware.h b/drivers/pci/pcie-designware.h
-index 1ffeaa8d1d..449c72aeaa 100644
+index 30bdc0ed6e..8cd48a27c1 100644
 --- a/drivers/pci/pcie-designware.h
 +++ b/drivers/pci/pcie-designware.h
-@@ -155,10 +155,10 @@ struct pcie_port {
+@@ -164,6 +164,7 @@ struct dw_pcie {
+ 	u8                      iatu_unroll_enabled;
+ 	struct pcie_port        pp;
+ 	const struct dw_pcie_ops *ops;
++	unsigned int		version;
  };
  
- struct dw_pcie_ops {
--	u32     (*readl_dbi)(struct dw_pcie *pcie, void __iomem *base, u32 reg,
--			     size_t size);
--	void    (*writel_dbi)(struct dw_pcie *pcie, void __iomem *base, u32 reg,
--			      size_t size, u32 val);
-+	u32     (*read_dbi)(struct dw_pcie *pcie, void __iomem *base, u32 reg,
-+			    size_t size);
-+	void    (*write_dbi)(struct dw_pcie *pcie, void __iomem *base, u32 reg,
-+			     size_t size, u32 val);
- 	int     (*link_up)(struct dw_pcie *pcie);
- };
- 
+ #define to_dw_pcie_from_pp(port) container_of((port), struct dw_pcie, pp)
 -- 
 2.24.0
 
