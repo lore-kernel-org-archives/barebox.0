@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iZxXu-0007gY-91
- for barebox@lists.infradead.org; Wed, 27 Nov 2019 13:39:55 +0000
-Date: Wed, 27 Nov 2019 14:39:52 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191127133952.hysi4kzwjhhogh2s@pengutronix.de>
-References: <20191126105659.9555-1-a.fatoum@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191126105659.9555-1-a.fatoum@pengutronix.de>
+Received: from mail.loongson.cn ([114.242.206.163] helo=loongson.cn)
+ by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1iZloP-0003Eg-DD
+ for barebox@lists.infradead.org; Wed, 27 Nov 2019 01:08:11 +0000
+From: Du Huanpeng <duhuanpeng@loongson.cn>
+Date: Wed, 27 Nov 2019 09:07:51 +0800
+Message-Id: <1574816871-3742-1-git-send-email-duhuanpeng@loongson.cn>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,42 +14,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] pstore: fix build by re-resolving botched merge
- conflict
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] MIPS: Makefile: minor codingstyle fix
+To: barebox@lists.infradead.org
+Cc: Du Huanpeng <duhuanpeng@loongson.cn>
 
-On Tue, Nov 26, 2019 at 11:56:59AM +0100, Ahmad Fatoum wrote:
-> 297ac7288 ("pstore: Only capture log messages") removed the pstore console.
-> v3 of the eventually merged 75a74b5c ("console: fix out-of-bounds read
-> in dputc(/dev/*, ...)") reinstated part of this code, which broke the
-> pstore build because the now removed bufsize member had a user
-> reintroduced in the patch.
-> 
-> Fix this by reverting the offending patch's changes to the pstore code.
-> It wasn't applicable to begin with.
-> 
-> Fixes: 75a74b5c ("console: fix out-of-bounds read in dputc(/dev/*, ...)")
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
-> Hello Sascha,
-> 
-> I broke pstore in v2019.10.0 because of the botched merge conflict
-> resolve described above. Can this patch be applied to master?
+it exceeds 80 chararacters per line, but is more readable and
+agrees agrees with the previous lines.
 
-Just did that.
+Signed-off-by: Du Huanpeng <duhuanpeng@loongson.cn>
+---
+ arch/mips/Makefile | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-Sascha
-
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index ee465dc..1c10db5 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -52,9 +52,7 @@ cflags-$(CONFIG_CPU_MIPS32_R1) += $(call cc-option,-march=mips32,-mips32 -U_MIPS
+ cflags-$(CONFIG_CPU_MIPS32_R2) += $(call cc-option,-march=mips32r2,-mips32r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS32) -Wa,-mips32r2 -Wa,--trap
+ cflags-$(CONFIG_CPU_MIPS64_R1) += $(call cc-option,-march=mips64,-mips64 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64) -Wa,-mips64 -Wa,--trap
+ cflags-$(CONFIG_CPU_MIPS64_R2) += $(call cc-option,-march=mips64r2,-mips64r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64) -Wa,-mips64r2 -Wa,--trap
+-cflags-$(CONFIG_CPU_LOONGSON1)	+= \
+-	$(call cc-option,-march=mips32r2,-mips32r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS32) \
+-	-Wa,-mips32r2 -Wa,--trap
++cflags-$(CONFIG_CPU_LOONGSON1) += $(call cc-option,-march=mips32r2,-mips32r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS32) -Wa,-mips32r2 -Wa,--trap
+ 
+ CPPFLAGS += -DTEXT_BASE=$(CONFIG_TEXT_BASE)
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.7.4
+
 
 _______________________________________________
 barebox mailing list
