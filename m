@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.loongson.cn ([114.242.206.163] helo=loongson.cn)
- by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iZqLI-0003PU-Ma
- for barebox@lists.infradead.org; Wed, 27 Nov 2019 05:58:26 +0000
-Date: Wed, 27 Nov 2019 13:58:07 +0800
-From: Du Huanpeng <duhuanpeng@loongson.cn>
-Message-ID: <20191127055806.GA21907@brew>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1iZxtq-00084f-4e
+ for barebox@lists.infradead.org; Wed, 27 Nov 2019 14:02:35 +0000
+Date: Wed, 27 Nov 2019 15:02:31 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20191127140231.ynhwqhdeeqjqfqmv@pengutronix.de>
 References: <1574816871-3742-1-git-send-email-duhuanpeng@loongson.cn>
- <eebcf084-de0d-c491-246a-1cd5a1aaae06@rempel-privat.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <eebcf084-de0d-c491-246a-1cd5a1aaae06@rempel-privat.de>
+In-Reply-To: <1574816871-3742-1-git-send-email-duhuanpeng@loongson.cn>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,16 +23,28 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] MIPS: Makefile: minor codingstyle fix
-To: Oleksij Rempel <linux@rempel-privat.de>
+To: Du Huanpeng <duhuanpeng@loongson.cn>
 Cc: barebox@lists.infradead.org
 
-> The version can be added automatically by creating the mail with:
-> git format-patch -v3
-Ah, thank you very much.
+On Wed, Nov 27, 2019 at 09:07:51AM +0800, Du Huanpeng wrote:
+> it exceeds 80 chararacters per line, but is more readable and
+> agrees agrees with the previous lines.
+> 
+> Signed-off-by: Du Huanpeng <duhuanpeng@loongson.cn>
+> ---
+>  arch/mips/Makefile | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
 
-Regards,
-duhuanpeng
+Applied, thanks
 
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
