@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iaMcE-0003pb-Im
- for barebox@lists.infradead.org; Thu, 28 Nov 2019 16:26:04 +0000
+ id 1iaMfw-0004LV-Re
+ for barebox@lists.infradead.org; Thu, 28 Nov 2019 16:29:53 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 28 Nov 2019 17:25:56 +0100
-Message-Id: <20191128162556.23111-1-a.fatoum@pengutronix.de>
+Date: Thu, 28 Nov 2019 17:29:12 +0100
+Message-Id: <20191128162911.25595-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20191128162556.23111-1-a.fatoum@pengutronix.de>
+References: <20191128162556.23111-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,82 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] scripts: imx: report file where error occurred
+Subject: [PATCH] fixup! scripts: imx: report file where error occurred
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Especially when using #include directives in imxcfg files, error
-messages can be hard to follow because line numbers differ between
-preprocessor and source files. Teach the imx image generation tool about
-the postprocessed line number / file name directive, so it can give more
-useful error messages. Instead of:
+It's called once only, so doesn't matter much. But let's lead by example.
+:-)
 
-  error in line 11: Invalid argument
 
-It now says:
-
-  $barebox/arch/arm/boards/$som/flash-header-$board.imxcfg:5: Invalid argument
-
-No change in compiled barebox binaries.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- scripts/imx/imx.c | 22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+ scripts/imx/imx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
-index b3e8d62ba8b6..8cefdee6ceec 100644
+index 8cefdee6ceec..c52f99112021 100644
 --- a/scripts/imx/imx.c
 +++ b/scripts/imx/imx.c
-@@ -673,13 +673,16 @@ static char *readcmd(struct config_data *data, FILE *f)
- 	}
+@@ -736,5 +736,6 @@ int parse_config(struct config_data *data, const char *_filename)
+ 
+ cleanup:
+ 	fclose(f);
++	free(filename)
+ 	return ret;
  }
- 
--int parse_config(struct config_data *data, const char *filename)
-+int parse_config(struct config_data *data, const char *_filename)
- {
- 	FILE *f;
- 	int lineno = 0;
- 	char *line = NULL, *tmp;
- 	char *argv[MAXARGS];
- 	int nargs, i, ret = 0;
-+	char *filename;
-+
-+	filename = strdup(_filename);
- 
- 	f = fopen(filename, "r");
- 	if (!f) {
-@@ -695,8 +698,17 @@ int parse_config(struct config_data *data, const char *filename)
- 		lineno++;
- 
- 		tmp = strchr(line, '#');
--		if (tmp)
--			*tmp = 0;
-+		if (tmp) {
-+			char *endptr;
-+			long linenum = strtol(tmp + 1, &endptr, 10);
-+			if (strncmp(endptr, " \"", 2) == 0 && endptr[2]) {
-+				free(filename);
-+				lineno = linenum - 1;
-+				filename = strdup(endptr + 2);
-+				filename[strlen(filename) - 1] = '\0';
-+			}
-+			*tmp = '\0';
-+		}
- 
- 		nargs = parse_line(line, argv);
- 		if (!nargs)
-@@ -708,8 +720,8 @@ int parse_config(struct config_data *data, const char *filename)
- 			if (!strcmp(cmds[i].name, argv[0])) {
- 				ret = cmds[i].parse(data, nargs, argv);
- 				if (ret) {
--					fprintf(stderr, "error in line %d: %s\n",
--							lineno, strerror(-ret));
-+					fprintf(stderr, "%s:%d: %s\n",
-+						filename, lineno, strerror(-ret));
- 					goto cleanup;
- 				}
- 				break;
 -- 
 2.24.0
 
