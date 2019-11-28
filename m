@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.zeus.flokli.de ([88.198.15.28] helo=zeus.flokli.de)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ia6kQ-0005dm-0m
- for barebox@lists.infradead.org; Wed, 27 Nov 2019 23:29:27 +0000
-From: Florian Klink <flokli@flokli.de>
-Date: Thu, 28 Nov 2019 00:19:45 +0100
-Message-Id: <20191127231946.27941-3-flokli@flokli.de>
-In-Reply-To: <20191127231946.27941-1-flokli@flokli.de>
-References: <20191127231946.27941-1-flokli@flokli.de>
+ id 1iaMn6-0007d5-8V
+ for barebox@lists.infradead.org; Thu, 28 Nov 2019 16:37:17 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu, 28 Nov 2019 17:37:08 +0100
+Message-Id: <20191128163707.6055-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,51 +19,89 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] dts/scripts: use #!/usr/bin/env bash shebang instead of
- #!/bin/bash
+Subject: [PATCH v2] scripts: imx: report file where error occurred
 To: barebox@lists.infradead.org
-Cc: Florian Klink <flokli@flokli.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Some distributions might not have bash in /bin, but in $PATH.
+Especially when using #include directives in imxcfg files, error
+messages can be hard to follow because line numbers differ between
+preprocessor and source files. Teach the imx image generation tool about
+preprocessing line number / file name directive, so it can give more
+useful error messages. Instead of:
 
-Using #!/usr/bin/env bash solves this, and is consistent with how the
-perl and python shebangs look like in the tree.
+  error in line 11: Invalid argument
+
+It now says:
+
+  $barebox/arch/arm/boards/$som/flash-header-$board.imxcfg:5: Invalid argument
+
+No change in compiled barebox binaries.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- dts/scripts/cronjob              | 2 +-
- dts/scripts/index-filter.sh      | 2 +-
- dts/scripts/merge-new-release.sh | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ scripts/imx/imx.c | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/dts/scripts/cronjob b/dts/scripts/cronjob
-index ccdbc0607..b7511e425 100755
---- a/dts/scripts/cronjob
-+++ b/dts/scripts/cronjob
-@@ -1,4 +1,4 @@
--#!/bin/bash
-+#!/usr/bin/env bash
+diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
+index b3e8d62ba8b6..b8d939a43177 100644
+--- a/scripts/imx/imx.c
++++ b/scripts/imx/imx.c
+@@ -673,13 +673,16 @@ static char *readcmd(struct config_data *data, FILE *f)
+ 	}
+ }
  
- set -e
+-int parse_config(struct config_data *data, const char *filename)
++int parse_config(struct config_data *data, const char *_filename)
+ {
+ 	FILE *f;
+ 	int lineno = 0;
+ 	char *line = NULL, *tmp;
+ 	char *argv[MAXARGS];
+ 	int nargs, i, ret = 0;
++	char *filename;
++
++	filename = strdup(_filename);
  
-diff --git a/dts/scripts/index-filter.sh b/dts/scripts/index-filter.sh
-index 961085502..c301fcea1 100755
---- a/dts/scripts/index-filter.sh
-+++ b/dts/scripts/index-filter.sh
-@@ -1,4 +1,4 @@
--#!/bin/bash
-+#!/usr/bin/env bash
+ 	f = fopen(filename, "r");
+ 	if (!f) {
+@@ -695,8 +698,17 @@ int parse_config(struct config_data *data, const char *filename)
+ 		lineno++;
  
- set -e
- set -o pipefail
-diff --git a/dts/scripts/merge-new-release.sh b/dts/scripts/merge-new-release.sh
-index a2763c69b..554b97b8e 100755
---- a/dts/scripts/merge-new-release.sh
-+++ b/dts/scripts/merge-new-release.sh
-@@ -1,4 +1,4 @@
--#!/bin/bash
-+#!/usr/bin/env bash
+ 		tmp = strchr(line, '#');
+-		if (tmp)
+-			*tmp = 0;
++		if (tmp) {
++			char *endptr;
++			long linenum = strtol(tmp + 1, &endptr, 10);
++			if (strncmp(endptr, " \"", 2) == 0 && endptr[2]) {
++				free(filename);
++				lineno = linenum - 1;
++				filename = strdup(endptr + 2);
++				filename[strlen(filename) - 1] = '\0';
++			}
++			*tmp = '\0';
++		}
  
- case $1 in
-     v*-dts) ;;
+ 		nargs = parse_line(line, argv);
+ 		if (!nargs)
+@@ -708,8 +720,8 @@ int parse_config(struct config_data *data, const char *filename)
+ 			if (!strcmp(cmds[i].name, argv[0])) {
+ 				ret = cmds[i].parse(data, nargs, argv);
+ 				if (ret) {
+-					fprintf(stderr, "error in line %d: %s\n",
+-							lineno, strerror(-ret));
++					fprintf(stderr, "%s:%d: %s\n",
++						filename, lineno, strerror(-ret));
+ 					goto cleanup;
+ 				}
+ 				break;
+@@ -724,5 +736,6 @@ int parse_config(struct config_data *data, const char *filename)
+ 
+ cleanup:
+ 	fclose(f);
++	free(filename);
+ 	return ret;
+ }
 -- 
 2.24.0
 
