@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iahzE-0006RI-U0
- for barebox@lists.infradead.org; Fri, 29 Nov 2019 15:15:13 +0000
+ id 1iahzF-0006RF-5f
+ for barebox@lists.infradead.org; Fri, 29 Nov 2019 15:15:14 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
  helo=dude02.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <l.stach@pengutronix.de>) id 1iahzA-0006u0-14
- for barebox@lists.infradead.org; Fri, 29 Nov 2019 16:15:08 +0100
+ (envelope-from <l.stach@pengutronix.de>) id 1iahz9-0006u0-RB
+ for barebox@lists.infradead.org; Fri, 29 Nov 2019 16:15:07 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Fri, 29 Nov 2019 16:14:57 +0100
-Message-Id: <20191129151505.23946-32-l.stach@pengutronix.de>
+Date: Fri, 29 Nov 2019 16:14:54 +0100
+Message-Id: <20191129151505.23946-29-l.stach@pengutronix.de>
 In-Reply-To: <20191129151505.23946-1-l.stach@pengutronix.de>
 References: <20191129151505.23946-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
@@ -26,42 +26,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 31/39] ARM: layerscape: ppa: use sync_for_execution instead of
- a manual cache flush
+Subject: [PATCH 28/39] ARM: layerscape: select OFTREE and OFDEVICE
 To: barebox@lists.infradead.org
 
-The copied code is then jumped to, so we need to sync the caches for
-execution instead of just flushing the data caches.
+The Layerscape architectures probes exclusively from DT, so
+make sure the correct config options are enabled.
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- arch/arm/mach-layerscape/ppa.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/Kconfig | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/mach-layerscape/ppa.c b/arch/arm/mach-layerscape/ppa.c
-index 607045102071..987cb6587608 100644
---- a/arch/arm/mach-layerscape/ppa.c
-+++ b/arch/arm/mach-layerscape/ppa.c
-@@ -14,9 +14,9 @@
- #include <image-fit.h>
- #include <asm/psci.h>
- #include <mach/layerscape.h>
-+#include <asm/cache.h>
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 98abc2b97f72..780a4707a299 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -106,6 +106,8 @@ config ARCH_LAYERSCAPE
+ 	select COMMON_CLK
+ 	select CLKDEV_LOOKUP
+ 	select COMMON_CLK_OF_PROVIDER
++	select OFTREE
++	select OFDEVICE
  
- int ppa_entry(const void *, u32 *, u32 *);
--void dma_flush_range(void *ptr, size_t size);
- 
- static int of_psci_do_fixup(struct device_node *root, void *unused)
- {
-@@ -73,7 +73,7 @@ static int ppa_init(void *ppa, size_t ppa_size, void *sec_firmware_addr)
- 
- 	/* Copy the secure firmware to secure memory */
- 	memcpy(sec_firmware_addr, buf, firmware_size);
--	dma_flush_range(sec_firmware_addr, ppa_size);
-+	sync_caches_for_execution();
- 
- 	ret = ppa_entry(sec_firmware_addr, boot_loc_ptr_l, boot_loc_ptr_h);
- 	if (ret) {
+ config ARCH_MVEBU
+ 	bool "Marvell EBU platforms"
 -- 
 2.20.1
 
