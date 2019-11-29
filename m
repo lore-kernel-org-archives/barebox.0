@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iahz9-0006fT-U4
- for barebox@lists.infradead.org; Fri, 29 Nov 2019 15:15:15 +0000
+ id 1iahzA-0006n7-6O
+ for barebox@lists.infradead.org; Fri, 29 Nov 2019 15:15:17 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
  helo=dude02.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <l.stach@pengutronix.de>) id 1iahz7-0006u0-Si
- for barebox@lists.infradead.org; Fri, 29 Nov 2019 16:15:05 +0100
+ (envelope-from <l.stach@pengutronix.de>) id 1iahz8-0006u0-Oo
+ for barebox@lists.infradead.org; Fri, 29 Nov 2019 16:15:06 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Fri, 29 Nov 2019 16:14:29 +0100
-Message-Id: <20191129151505.23946-4-l.stach@pengutronix.de>
+Date: Fri, 29 Nov 2019 16:14:41 +0100
+Message-Id: <20191129151505.23946-16-l.stach@pengutronix.de>
 In-Reply-To: <20191129151505.23946-1-l.stach@pengutronix.de>
 References: <20191129151505.23946-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
@@ -26,49 +26,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/39] ARM: move into ARM32 specific optee kernel start into
- lib32 dir
+Subject: [PATCH 15/39] mtd: nand: don't call BBT functions if BBT support
+ isn't built
 To: barebox@lists.infradead.org
-
-Otherwise it may also get built on a ARM64 config, which obviously
-fails.
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- arch/arm/cpu/Makefile                        | 1 -
- arch/arm/lib32/Makefile                      | 1 +
- arch/arm/{cpu => lib32}/start-kernel-optee.S | 0
- 3 files changed, 1 insertion(+), 1 deletion(-)
- rename arch/arm/{cpu => lib32}/start-kernel-optee.S (100%)
+ drivers/mtd/nand/nand_base.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
-index 09b3bc2eeab9..4b6e2384973e 100644
---- a/arch/arm/cpu/Makefile
-+++ b/arch/arm/cpu/Makefile
-@@ -15,7 +15,6 @@ pbl-$(CONFIG_BOARD_ARM_GENERIC_DT_AARCH64) += board-dt-2nd-aarch64.o
+diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
+index 6b7d01919c59..00f0f7588434 100644
+--- a/drivers/mtd/nand/nand_base.c
++++ b/drivers/mtd/nand/nand_base.c
+@@ -407,7 +407,7 @@ static int nand_block_markbad_lowlevel(struct mtd_info *mtd, loff_t ofs)
+ 	}
  
- obj-pbl-y += setupc$(S64).o cache$(S64).o
+ 	/* Mark block bad in BBT */
+-	if (chip->bbt) {
++	if (IS_ENABLED(CONFIG_NAND_BBT) && chip->bbt) {
+ 		res = nand_markbad_bbt(mtd, ofs);
+ 		if (!ret)
+ 			ret = res;
+@@ -458,7 +458,7 @@ static int nand_block_markgood_lowlevel(struct mtd_info *mtd, loff_t ofs)
+ 	}
  
--obj-$(CONFIG_BOOTM_OPTEE) += start-kernel-optee.o
- obj-$(CONFIG_ARM_PSCI_CLIENT) += psci-client.o
- 
- #
-diff --git a/arch/arm/lib32/Makefile b/arch/arm/lib32/Makefile
-index 3c02a0bf96d7..cd43147e662a 100644
---- a/arch/arm/lib32/Makefile
-+++ b/arch/arm/lib32/Makefile
-@@ -1,6 +1,7 @@
- obj-$(CONFIG_ARM_LINUX)	+= armlinux.o
- obj-$(CONFIG_CMD_BOOTZ)	+= bootz.o
- obj-$(CONFIG_BOOTM)     += bootm.o
-+obj-$(CONFIG_BOOTM_OPTEE) += start-kernel-optee.o
- obj-$(CONFIG_CMD_BOOTU) += bootu.o
- obj-y	+= div0.o
- obj-y	+= findbit.o
-diff --git a/arch/arm/cpu/start-kernel-optee.S b/arch/arm/lib32/start-kernel-optee.S
-similarity index 100%
-rename from arch/arm/cpu/start-kernel-optee.S
-rename to arch/arm/lib32/start-kernel-optee.S
+ 	/* Mark block good in BBT */
+-	if (chip->bbt) {
++	if (IS_ENABLED(CONFIG_NAND_BBT) && chip->bbt) {
+ 		ret = nand_markgood_bbt(mtd, ofs);
+ 		if (ret)
+ 			return ret;
 -- 
 2.20.1
 
