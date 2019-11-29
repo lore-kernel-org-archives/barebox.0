@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iahze-00052e-WB
- for barebox@lists.infradead.org; Fri, 29 Nov 2019 15:15:44 +0000
+ by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1iahzF-0006RB-9j
+ for barebox@lists.infradead.org; Fri, 29 Nov 2019 15:15:15 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
  helo=dude02.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <l.stach@pengutronix.de>) id 1iahzA-0006u0-5f
- for barebox@lists.infradead.org; Fri, 29 Nov 2019 16:15:08 +0100
+ (envelope-from <l.stach@pengutronix.de>) id 1iahz9-0006u0-6d
+ for barebox@lists.infradead.org; Fri, 29 Nov 2019 16:15:07 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Fri, 29 Nov 2019 16:14:59 +0100
-Message-Id: <20191129151505.23946-34-l.stach@pengutronix.de>
+Date: Fri, 29 Nov 2019 16:14:46 +0100
+Message-Id: <20191129151505.23946-21-l.stach@pengutronix.de>
 In-Reply-To: <20191129151505.23946-1-l.stach@pengutronix.de>
 References: <20191129151505.23946-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
@@ -26,30 +26,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 33/39] ARM: davinci: virt2real: select OFTREE and OFDEVICE
+Subject: [PATCH 20/39] pstore: don't try to grab non-existent logbuf
 To: barebox@lists.infradead.org
-
-The board probes from DT, so there is no point in allowing a
-configuration without OF support.
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- arch/arm/mach-davinci/Kconfig | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/pstore/platform.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm/mach-davinci/Kconfig b/arch/arm/mach-davinci/Kconfig
-index 66d3d7a5f7ab..c6d4fce603ae 100644
---- a/arch/arm/mach-davinci/Kconfig
-+++ b/arch/arm/mach-davinci/Kconfig
-@@ -9,6 +9,8 @@ choice
+diff --git a/fs/pstore/platform.c b/fs/pstore/platform.c
+index 0a6fa38edca9..f4b77226d906 100644
+--- a/fs/pstore/platform.c
++++ b/fs/pstore/platform.c
+@@ -73,6 +73,9 @@ static void pstore_console_capture_log(void)
+ 	uint64_t id;
+ 	struct log_entry *log, *tmp;
  
- config MACH_VIRT2REAL
- 	bool "Virt2Real"
-+	select OFTREE
-+	select OFDEVICE
- 
- endchoice
- 
++	if (IS_ENABLED(CONFIG_CONSOLE_NONE))
++		return;
++
+ 	list_for_each_entry_safe(log, tmp, &barebox_logbuf, list) {
+ 		psinfo->write_buf(PSTORE_TYPE_CONSOLE, 0, &id, 0,
+ 				  log->msg, 0, strlen(log->msg), psinfo);
 -- 
 2.20.1
 
