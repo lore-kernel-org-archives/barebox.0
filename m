@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iahzF-0006RF-5f
- for barebox@lists.infradead.org; Fri, 29 Nov 2019 15:15:14 +0000
+ id 1iahzG-0006RL-T7
+ for barebox@lists.infradead.org; Fri, 29 Nov 2019 15:15:15 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
  helo=dude02.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <l.stach@pengutronix.de>) id 1iahz9-0006u0-RB
- for barebox@lists.infradead.org; Fri, 29 Nov 2019 16:15:07 +0100
+ (envelope-from <l.stach@pengutronix.de>) id 1iahzA-0006u0-9R
+ for barebox@lists.infradead.org; Fri, 29 Nov 2019 16:15:08 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Fri, 29 Nov 2019 16:14:54 +0100
-Message-Id: <20191129151505.23946-29-l.stach@pengutronix.de>
+Date: Fri, 29 Nov 2019 16:15:01 +0100
+Message-Id: <20191129151505.23946-36-l.stach@pengutronix.de>
 In-Reply-To: <20191129151505.23946-1-l.stach@pengutronix.de>
 References: <20191129151505.23946-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
@@ -26,30 +26,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 28/39] ARM: layerscape: select OFTREE and OFDEVICE
+Subject: [PATCH 35/39] net: designware-eqos: depend on COMMON_CLK
 To: barebox@lists.infradead.org
 
-The Layerscape architectures probes exclusively from DT, so
-make sure the correct config options are enabled.
+The clk_bulk_* functions are only available with common clock.
+Also OFTREE should not be selected, but is a dependency.
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- arch/arm/Kconfig | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/Kconfig | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 98abc2b97f72..780a4707a299 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -106,6 +106,8 @@ config ARCH_LAYERSCAPE
- 	select COMMON_CLK
- 	select CLKDEV_LOOKUP
- 	select COMMON_CLK_OF_PROVIDER
-+	select OFTREE
-+	select OFDEVICE
- 
- config ARCH_MVEBU
- 	bool "Marvell EBU platforms"
+diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+index 62e522a302ad..5823320b03f1 100644
+--- a/drivers/net/Kconfig
++++ b/drivers/net/Kconfig
+@@ -90,8 +90,9 @@ endif
+ config DRIVER_NET_DESIGNWARE_EQOS
+ 	bool "Designware Designware Ethernet QoS support"
+ 	depends on HAS_DMA
++	depends on COMMON_CLK
++	depends on OFTREE
+ 	select PHYLIB
+-	select OFTREE
+ 	help
+ 	  This option enables support for the Synopsys
+ 	  Designware Ethernet Quality-of-Service (GMAC4).
 -- 
 2.20.1
 
