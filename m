@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iahzF-0006RB-9j
- for barebox@lists.infradead.org; Fri, 29 Nov 2019 15:15:15 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1iahzA-0006np-8h
+ for barebox@lists.infradead.org; Fri, 29 Nov 2019 15:15:16 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
  helo=dude02.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <l.stach@pengutronix.de>) id 1iahz9-0006u0-6d
- for barebox@lists.infradead.org; Fri, 29 Nov 2019 16:15:07 +0100
+ (envelope-from <l.stach@pengutronix.de>) id 1iahz8-0006u0-RA
+ for barebox@lists.infradead.org; Fri, 29 Nov 2019 16:15:06 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Fri, 29 Nov 2019 16:14:46 +0100
-Message-Id: <20191129151505.23946-21-l.stach@pengutronix.de>
+Date: Fri, 29 Nov 2019 16:14:42 +0100
+Message-Id: <20191129151505.23946-17-l.stach@pengutronix.de>
 In-Reply-To: <20191129151505.23946-1-l.stach@pengutronix.de>
 References: <20191129151505.23946-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
@@ -26,28 +26,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 20/39] pstore: don't try to grab non-existent logbuf
+Subject: [PATCH 16/39] mfd: da9063: don't try to register gpiochip when
+ GPIOLIB isn't built
 To: barebox@lists.infradead.org
 
+Fixes: feee4b638048 (gpio: add DA9062 MFD gpio support)
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- fs/pstore/platform.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/mfd/da9063.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/fs/pstore/platform.c b/fs/pstore/platform.c
-index 0a6fa38edca9..f4b77226d906 100644
---- a/fs/pstore/platform.c
-+++ b/fs/pstore/platform.c
-@@ -73,6 +73,9 @@ static void pstore_console_capture_log(void)
- 	uint64_t id;
- 	struct log_entry *log, *tmp;
+diff --git a/drivers/mfd/da9063.c b/drivers/mfd/da9063.c
+index e1343bac7618..967ca9ac51e4 100644
+--- a/drivers/mfd/da9063.c
++++ b/drivers/mfd/da9063.c
+@@ -402,13 +402,15 @@ static int da9063_probe(struct device_d *dev)
  
-+	if (IS_ENABLED(CONFIG_CONSOLE_NONE))
-+		return;
-+
- 	list_for_each_entry_safe(log, tmp, &barebox_logbuf, list) {
- 		psinfo->write_buf(PSTORE_TYPE_CONSOLE, 0, &id, 0,
- 				  log->msg, 0, strlen(log->msg), psinfo);
+ 	restart_handler_register(&priv->restart);
+ 
+-	priv->gpio.base = -1;
+-	priv->gpio.ngpio = 5;
+-	priv->gpio.ops  = &da9063_gpio_ops;
+-	priv->gpio.dev = dev;
+-	ret = gpiochip_add(&priv->gpio);
+-	if (ret)
+-		goto on_error;
++	if (IS_ENABLED(CONFIG_GPIOLIB)) {
++		priv->gpio.base = -1;
++		priv->gpio.ngpio = 5;
++		priv->gpio.ops  = &da9063_gpio_ops;
++		priv->gpio.dev = dev;
++		ret = gpiochip_add(&priv->gpio);
++		if (ret)
++			goto on_error;
++	}
+ 
+ 	if (IS_ENABLED(CONFIG_OFDEVICE) && dev->device_node)
+ 		return of_platform_populate(dev->device_node, NULL, dev);
 -- 
 2.20.1
 
