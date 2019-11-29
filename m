@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iahz9-0006ix-Sr
- for barebox@lists.infradead.org; Fri, 29 Nov 2019 15:15:14 +0000
+ by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1iahze-00052h-UU
+ for barebox@lists.infradead.org; Fri, 29 Nov 2019 15:15:43 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
  helo=dude02.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <l.stach@pengutronix.de>) id 1iahz8-0006u0-8w
- for barebox@lists.infradead.org; Fri, 29 Nov 2019 16:15:06 +0100
+ (envelope-from <l.stach@pengutronix.de>) id 1iahzA-0006u0-Fg
+ for barebox@lists.infradead.org; Fri, 29 Nov 2019 16:15:08 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Fri, 29 Nov 2019 16:14:35 +0100
-Message-Id: <20191129151505.23946-10-l.stach@pengutronix.de>
+Date: Fri, 29 Nov 2019 16:15:04 +0100
+Message-Id: <20191129151505.23946-39-l.stach@pengutronix.de>
 In-Reply-To: <20191129151505.23946-1-l.stach@pengutronix.de>
 References: <20191129151505.23946-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
@@ -26,32 +26,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/39] reset_source: add stub for reset_source_set_device
+Subject: [PATCH 38/39] pinctrl: tegra: mark drvdata as maybe unused
 To: barebox@lists.infradead.org
 
-Fixes: a0748840c104 (reset_source: implement helper to set a
-       device as reset source)
+If the driver is only built for one of the two supported SoCs we end
+up with some unused structures.
+
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- include/reset_source.h | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/pinctrl/pinctrl-tegra30.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/reset_source.h b/include/reset_source.h
-index 3ccd529fdd42..305dde0102d5 100644
---- a/include/reset_source.h
-+++ b/include/reset_source.h
-@@ -60,6 +60,11 @@ static inline struct device_d *reset_source_get_device(void)
- 	return NULL;
- }
+diff --git a/drivers/pinctrl/pinctrl-tegra30.c b/drivers/pinctrl/pinctrl-tegra30.c
+index ffb04eebbffd..278ea8c4a0b3 100644
+--- a/drivers/pinctrl/pinctrl-tegra30.c
++++ b/drivers/pinctrl/pinctrl-tegra30.c
+@@ -388,7 +388,7 @@ static const struct tegra_drive_pingroup tegra30_drive_groups[] = {
+ 	DRV_PG(vi1,   0x8c8, -1, -1, -1,  14,  5,  19,  5,  24,  4,  28,  4),
+ };
  
-+static inline void reset_source_set_device(struct device_d *dev,
-+					   enum reset_src_type st)
-+{
-+}
-+
- static inline void reset_source_set_prinst(enum reset_src_type type,
- 					   unsigned int priority, int instance)
- {
+-static const struct pinctrl_tegra30_drvdata tegra30_drvdata = {
++__maybe_unused static const struct pinctrl_tegra30_drvdata tegra30_drvdata = {
+ 	.pingrps = tegra30_pin_groups,
+ 	.num_pingrps = ARRAY_SIZE(tegra30_pin_groups),
+ 	.drvgrps = tegra30_drive_groups,
+@@ -632,7 +632,7 @@ static const struct tegra_drive_pingroup tegra124_drive_groups[] = {
+ 	DRV_PG(ao4,   0x9c8,  2,  3,  4,  12,  7,  20,  7,  28,  2,  30,  2),
+ };
+ 
+-static const struct pinctrl_tegra30_drvdata tegra124_drvdata = {
++__maybe_unused static const struct pinctrl_tegra30_drvdata tegra124_drvdata = {
+ 	.pingrps = tegra124_pin_groups,
+ 	.num_pingrps = ARRAY_SIZE(tegra124_pin_groups),
+ 	.drvgrps = tegra124_drive_groups,
 -- 
 2.20.1
 
