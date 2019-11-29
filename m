@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iahze-00052Z-V3
- for barebox@lists.infradead.org; Fri, 29 Nov 2019 15:15:43 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1iahz9-0006ix-Sr
+ for barebox@lists.infradead.org; Fri, 29 Nov 2019 15:15:14 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
  helo=dude02.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <l.stach@pengutronix.de>) id 1iahz9-0006u0-Kn
- for barebox@lists.infradead.org; Fri, 29 Nov 2019 16:15:07 +0100
+ (envelope-from <l.stach@pengutronix.de>) id 1iahz8-0006u0-8w
+ for barebox@lists.infradead.org; Fri, 29 Nov 2019 16:15:06 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Fri, 29 Nov 2019 16:14:51 +0100
-Message-Id: <20191129151505.23946-26-l.stach@pengutronix.de>
+Date: Fri, 29 Nov 2019 16:14:35 +0100
+Message-Id: <20191129151505.23946-10-l.stach@pengutronix.de>
 In-Reply-To: <20191129151505.23946-1-l.stach@pengutronix.de>
 References: <20191129151505.23946-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
@@ -26,30 +26,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 25/39] ARM: layerscape: add missing selects for TQMLS1046A
+Subject: [PATCH 09/39] reset_source: add stub for reset_source_set_device
 To: barebox@lists.infradead.org
 
-Make sure that all the lowlevel components are selected when only
-this board is built.
-
+Fixes: a0748840c104 (reset_source: implement helper to set a
+       device as reset source)
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- arch/arm/mach-layerscape/Kconfig | 3 +++
- 1 file changed, 3 insertions(+)
+ include/reset_source.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm/mach-layerscape/Kconfig b/arch/arm/mach-layerscape/Kconfig
-index 139c63f66d39..c15d5873a55e 100644
---- a/arch/arm/mach-layerscape/Kconfig
-+++ b/arch/arm/mach-layerscape/Kconfig
-@@ -30,5 +30,8 @@ config MACH_LS1046ARDB
- config MACH_TQMLS1046A
- 	bool "TQ TQMLS1046A Board"
- 	select ARCH_LS1046
-+	select MCI_IMX_ESDHC_PBL
-+	select DDR_FSL
-+	select DDR_FSL_DDR4
+diff --git a/include/reset_source.h b/include/reset_source.h
+index 3ccd529fdd42..305dde0102d5 100644
+--- a/include/reset_source.h
++++ b/include/reset_source.h
+@@ -60,6 +60,11 @@ static inline struct device_d *reset_source_get_device(void)
+ 	return NULL;
+ }
  
- endif
++static inline void reset_source_set_device(struct device_d *dev,
++					   enum reset_src_type st)
++{
++}
++
+ static inline void reset_source_set_prinst(enum reset_src_type type,
+ 					   unsigned int priority, int instance)
+ {
 -- 
 2.20.1
 
