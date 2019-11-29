@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iahz9-0006jQ-TA
- for barebox@lists.infradead.org; Fri, 29 Nov 2019 15:15:11 +0000
+ id 1iahz9-0006mJ-Sh
+ for barebox@lists.infradead.org; Fri, 29 Nov 2019 15:15:12 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
  helo=dude02.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <l.stach@pengutronix.de>) id 1iahz8-0006u0-Af
+ (envelope-from <l.stach@pengutronix.de>) id 1iahz8-0006u0-L0
  for barebox@lists.infradead.org; Fri, 29 Nov 2019 16:15:06 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Fri, 29 Nov 2019 16:14:36 +0100
-Message-Id: <20191129151505.23946-11-l.stach@pengutronix.de>
+Date: Fri, 29 Nov 2019 16:14:40 +0100
+Message-Id: <20191129151505.23946-15-l.stach@pengutronix.de>
 In-Reply-To: <20191129151505.23946-1-l.stach@pengutronix.de>
 References: <20191129151505.23946-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
@@ -26,28 +26,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/39] spi: fix symbol export for spi_register_controller
+Subject: [PATCH 14/39] usb: dwc3: depend on OFDEVICE
 To: barebox@lists.infradead.org
 
-Fixes: 812a9ddcdf21 (spi: Generalize SPI "master" to "controller")
+The DWC3 driver uses some functions which are only available when
+Barebox is built with OFDEVICE support. Since there is no platform
+without DT support suing DWC3 we can reasonably depend on this
+config option.
+
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- drivers/spi/spi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/dwc3/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index d9311d4af508..bd615b4e99c8 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -283,7 +283,7 @@ int spi_register_controller(struct spi_controller *ctrl)
- 
- 	return status;
- }
--EXPORT_SYMBOL(spi_register_ctrl);
-+EXPORT_SYMBOL(spi_register_controller);
- 
- struct spi_controller *spi_get_controller(int bus)
- {
+diff --git a/drivers/usb/dwc3/Kconfig b/drivers/usb/dwc3/Kconfig
+index 09da1213744d..9d7b868dbafa 100644
+--- a/drivers/usb/dwc3/Kconfig
++++ b/drivers/usb/dwc3/Kconfig
+@@ -1,6 +1,7 @@
+ config USB_DWC3
+ 	tristate "DesignWare USB3 DRD Core Support"
+ 	depends on USB && HAS_DMA
++	depends on OFDEVICE
+ 	select USB_XHCI
+ 	help
+ 	  Say Y or M here if your system has a Dual Role SuperSpeed
 -- 
 2.20.1
 
