@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iahz9-0006k7-Tn
+ id 1iahz9-0006h1-St
  for barebox@lists.infradead.org; Fri, 29 Nov 2019 15:15:14 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
  helo=dude02.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <l.stach@pengutronix.de>) id 1iahz8-0006u0-CW
+ (envelope-from <l.stach@pengutronix.de>) id 1iahz8-0006u0-0i
  for barebox@lists.infradead.org; Fri, 29 Nov 2019 16:15:06 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Fri, 29 Nov 2019 16:14:37 +0100
-Message-Id: <20191129151505.23946-12-l.stach@pengutronix.de>
+Date: Fri, 29 Nov 2019 16:14:31 +0100
+Message-Id: <20191129151505.23946-6-l.stach@pengutronix.de>
 In-Reply-To: <20191129151505.23946-1-l.stach@pengutronix.de>
 References: <20191129151505.23946-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
@@ -26,34 +26,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/39] mfd: superio: add missing semicolon after EXPORT_SYMBOL
+Subject: [PATCH 05/39] lib: zstd: declare locally used functions as static
 To: barebox@lists.infradead.org
 
-Fixes: efd517c35f12 (mfd: add basic Super I/O chip helpers)
+Fixes "no previous prototype for...) warnings in the zstd code.
+
+Fixes: 1a39d4dcbffc (lib: Add zstd decompression module)
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- drivers/mfd/superio.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ lib/zstd/decompress.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/mfd/superio.c b/drivers/mfd/superio.c
-index 12d74b40f6f8..ab94a4fa8f75 100644
---- a/drivers/mfd/superio.c
-+++ b/drivers/mfd/superio.c
-@@ -24,7 +24,7 @@ struct device_d *superio_func_add(struct superio_chip *siochip, const char *name
- 
- 	return dev;
+diff --git a/lib/zstd/decompress.c b/lib/zstd/decompress.c
+index 8203b815caf4..19bf71288111 100644
+--- a/lib/zstd/decompress.c
++++ b/lib/zstd/decompress.c
+@@ -123,7 +123,7 @@ size_t ZSTD_decompressBegin(ZSTD_DCtx *dctx)
+ 	return 0;
  }
--EXPORT_SYMBOL(superio_func_add)
-+EXPORT_SYMBOL(superio_func_add);
  
- static int superio_reg_read(void *ctx, unsigned int reg, unsigned int *val)
+-ZSTD_DCtx *ZSTD_createDCtx_advanced(ZSTD_customMem customMem)
++static ZSTD_DCtx *ZSTD_createDCtx_advanced(ZSTD_customMem customMem)
  {
-@@ -95,4 +95,4 @@ void superio_chip_add(struct superio_chip *siochip)
- 		pr_warn("registering %s regmap cdev failed: %s\n",
- 			chipname, strerror(-ret));
+ 	ZSTD_DCtx *dctx;
+ 
+@@ -391,7 +391,7 @@ typedef struct {
+ 
+ /*! ZSTD_getcBlockSize() :
+ *   Provides the size of compressed block from block header `src` */
+-size_t ZSTD_getcBlockSize(const void *src, size_t srcSize, blockProperties_t *bpPtr)
++static size_t ZSTD_getcBlockSize(const void *src, size_t srcSize, blockProperties_t *bpPtr)
+ {
+ 	if (srcSize < ZSTD_blockHeaderSize)
+ 		return ERROR(srcSize_wrong);
+@@ -429,7 +429,7 @@ static size_t ZSTD_setRleBlock(void *dst, size_t dstCapacity, const void *src, s
+ 
+ /*! ZSTD_decodeLiteralsBlock() :
+ 	@return : nb of bytes read from src (< srcSize ) */
+-size_t ZSTD_decodeLiteralsBlock(ZSTD_DCtx *dctx, const void *src, size_t srcSize) /* note : srcSize < BLOCKSIZE */
++static size_t ZSTD_decodeLiteralsBlock(ZSTD_DCtx *dctx, const void *src, size_t srcSize) /* note : srcSize < BLOCKSIZE */
+ {
+ 	if (srcSize < MIN_CBLOCK_SIZE)
+ 		return ERROR(corruption_detected);
+@@ -791,7 +791,7 @@ static size_t ZSTD_buildSeqTable(FSE_DTable *DTableSpace, const FSE_DTable **DTa
+ 	}
  }
--EXPORT_SYMBOL(superio_chip_add)
-+EXPORT_SYMBOL(superio_chip_add);
+ 
+-size_t ZSTD_decodeSeqHeaders(ZSTD_DCtx *dctx, int *nbSeqPtr, const void *src, size_t srcSize)
++static size_t ZSTD_decodeSeqHeaders(ZSTD_DCtx *dctx, int *nbSeqPtr, const void *src, size_t srcSize)
+ {
+ 	const BYTE *const istart = (const BYTE *const)src;
+ 	const BYTE *const iend = istart + srcSize;
+@@ -1494,7 +1494,7 @@ size_t ZSTD_insertBlock(ZSTD_DCtx *dctx, const void *blockStart, size_t blockSiz
+ 	return blockSize;
+ }
+ 
+-size_t ZSTD_generateNxBytes(void *dst, size_t dstCapacity, BYTE byte, size_t length)
++static size_t ZSTD_generateNxBytes(void *dst, size_t dstCapacity, BYTE byte, size_t length)
+ {
+ 	if (length > dstCapacity)
+ 		return ERROR(dstSize_tooSmall);
 -- 
 2.20.1
 
