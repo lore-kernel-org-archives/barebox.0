@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iahz9-0006mJ-Sh
- for barebox@lists.infradead.org; Fri, 29 Nov 2019 15:15:12 +0000
+ by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1iahze-00052g-Qb
+ for barebox@lists.infradead.org; Fri, 29 Nov 2019 15:15:40 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
  helo=dude02.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <l.stach@pengutronix.de>) id 1iahz8-0006u0-L0
- for barebox@lists.infradead.org; Fri, 29 Nov 2019 16:15:06 +0100
+ (envelope-from <l.stach@pengutronix.de>) id 1iahzA-0006u0-BE
+ for barebox@lists.infradead.org; Fri, 29 Nov 2019 16:15:08 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Fri, 29 Nov 2019 16:14:40 +0100
-Message-Id: <20191129151505.23946-15-l.stach@pengutronix.de>
+Date: Fri, 29 Nov 2019 16:15:02 +0100
+Message-Id: <20191129151505.23946-37-l.stach@pengutronix.de>
 In-Reply-To: <20191129151505.23946-1-l.stach@pengutronix.de>
 References: <20191129151505.23946-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
@@ -26,31 +26,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/39] usb: dwc3: depend on OFDEVICE
+Subject: [PATCH 36/39] ARM: mvebu: correct DTB rule for MARVELL_ARMADA_XP_DB
 To: barebox@lists.infradead.org
-
-The DWC3 driver uses some functions which are only available when
-Barebox is built with OFDEVICE support. Since there is no platform
-without DT support suing DWC3 we can reasonably depend on this
-config option.
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- drivers/usb/dwc3/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/dts/Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/dwc3/Kconfig b/drivers/usb/dwc3/Kconfig
-index 09da1213744d..9d7b868dbafa 100644
---- a/drivers/usb/dwc3/Kconfig
-+++ b/drivers/usb/dwc3/Kconfig
-@@ -1,6 +1,7 @@
- config USB_DWC3
- 	tristate "DesignWare USB3 DRD Core Support"
- 	depends on USB && HAS_DMA
-+	depends on OFDEVICE
- 	select USB_XHCI
- 	help
- 	  Say Y or M here if your system has a Dual Role SuperSpeed
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 294a0bfa5525..9566e975551e 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -33,7 +33,8 @@ lwl-dtb-$(CONFIG_MACH_GW_VENTANA) += imx6q-gw54xx.dtb.o
+ lwl-dtb-$(CONFIG_MACH_KONTRON_SAMX6I) += imx6q-samx6i.dtb.o \
+ 					imx6dl-samx6i.dtb.o
+ lwl-dtb-$(CONFIG_MACH_LENOVO_IX4_300D) += armada-xp-lenovo-ix4-300d-bb.dtb.o
+-lwl-dtb-$(CONFIG_MACH_MARVELL_ARMADA_XP_GP) += armada-xp-gp-bb.dtb.o armada-xp-db-bb.dtb.o
++lwl-dtb-$(CONFIG_MACH_MARVELL_ARMADA_XP_GP) += armada-xp-gp-bb.dtb.o
++lwl-dtb-$(CONFIG_MACH_MARVELL_ARMADA_XP_DB) += armada-xp-db-bb.dtb.o
+ lwl-dtb-$(CONFIG_MACH_MB7707) += module-mb7707.dtb.o
+ lwl-dtb-$(CONFIG_MACH_MX28EVK) += imx28-evk.dtb.o
+ lwl-dtb-$(CONFIG_MACH_NETGEAR_RN104) += armada-370-rn104-bb.dtb.o
 -- 
 2.20.1
 
