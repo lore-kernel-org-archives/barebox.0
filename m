@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
+Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ibnUt-0004e8-3n
- for barebox@lists.infradead.org; Mon, 02 Dec 2019 15:20:24 +0000
-Received: by mail-pl1-x643.google.com with SMTP id x13so50820plr.9
- for <barebox@lists.infradead.org>; Mon, 02 Dec 2019 07:20:22 -0800 (PST)
+ id 1ibnUw-0004i3-S0
+ for barebox@lists.infradead.org; Mon, 02 Dec 2019 15:20:29 +0000
+Received: by mail-pf1-x441.google.com with SMTP id l22so6152124pff.9
+ for <barebox@lists.infradead.org>; Mon, 02 Dec 2019 07:20:26 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  2 Dec 2019 07:19:48 -0800
-Message-Id: <20191202151954.16032-7-andrew.smirnov@gmail.com>
+Date: Mon,  2 Dec 2019 07:19:50 -0800
+Message-Id: <20191202151954.16032-9-andrew.smirnov@gmail.com>
 In-Reply-To: <20191202151954.16032-1-andrew.smirnov@gmail.com>
 References: <20191202151954.16032-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,90 +23,113 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/12] mci: imx-esdhc-pbl: Drop 'wrap_wml' flag
+Subject: [PATCH 08/12] mci: imx-esdhc-pbl: Use sdhci_transfer_data()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-IMX_SDHCI_WML doesn't change its value during PBL opearation, so it
-should be possible to configure it once. Doing it once also allows us
-to move the call into SoC specific code making 'wrap_wml' flag
-unnecessary.
+Drop some extra code by converting esdhc_do_data() to use
+sdhci_transfer_data().
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/mci/imx-esdhc-pbl.c | 26 +++++++++-----------------
- 1 file changed, 9 insertions(+), 17 deletions(-)
+ drivers/mci/Kconfig         |  1 +
+ drivers/mci/Makefile        |  2 +-
+ drivers/mci/imx-esdhc-pbl.c | 35 +----------------------------------
+ drivers/mci/sdhci.c         | 13 +++++++++++++
+ 4 files changed, 16 insertions(+), 35 deletions(-)
 
+diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
+index c269b71e8..13fa58504 100644
+--- a/drivers/mci/Kconfig
++++ b/drivers/mci/Kconfig
+@@ -105,6 +105,7 @@ config MCI_IMX_ESDHC_PIO
+ 
+ config MCI_IMX_ESDHC_PBL
+ 	bool
++        select MCI_SDHCI
+ 
+ config MCI_OMAP_HSMMC
+ 	bool "OMAP HSMMC"
+diff --git a/drivers/mci/Makefile b/drivers/mci/Makefile
+index cfb84a899..54eb65978 100644
+--- a/drivers/mci/Makefile
++++ b/drivers/mci/Makefile
+@@ -16,4 +16,4 @@ obj-$(CONFIG_MCI_SPI)		+= mci_spi.o
+ obj-$(CONFIG_MCI_DW)		+= dw_mmc.o
+ obj-$(CONFIG_MCI_MMCI)		+= mmci.o
+ obj-$(CONFIG_MCI_STM32_SDMMC2)	+= stm32_sdmmc2.o
+-obj-$(CONFIG_MCI_SDHCI)		+= sdhci.o
++obj-pbl-$(CONFIG_MCI_SDHCI)	+= sdhci.o
 diff --git a/drivers/mci/imx-esdhc-pbl.c b/drivers/mci/imx-esdhc-pbl.c
-index d5d83d18e..e81f0f107 100644
+index 08f28471c..b61cba2ba 100644
 --- a/drivers/mci/imx-esdhc-pbl.c
 +++ b/drivers/mci/imx-esdhc-pbl.c
-@@ -34,7 +34,6 @@ struct esdhc {
- 	void __iomem *regs;
- 	bool is_mx6;
- 	bool is_be;
--	bool wrap_wml;
- };
+@@ -66,40 +66,7 @@ static u32 esdhc_xfertyp(struct mci_cmd *cmd, struct mci_data *data)
  
- static uint32_t esdhc_read32(struct esdhc *esdhc, int reg)
-@@ -204,7 +203,7 @@ static int esdhc_read_blocks(struct esdhc *esdhc, void *dst, size_t len)
+ static int esdhc_do_data(struct fsl_esdhc_host *host, struct mci_data *data)
  {
- 	struct mci_cmd cmd;
- 	struct mci_data data;
--	u32 val, wml;
-+	u32 val;
- 	int ret;
- 
- 	esdhc_write32(esdhc, SDHCI_INT_ENABLE,
-@@ -213,19 +212,6 @@ static int esdhc_read_blocks(struct esdhc *esdhc, void *dst, size_t len)
- 		      SDHCI_INT_END_BIT | SDHCI_INT_INDEX | SDHCI_INT_DATA_TIMEOUT |
- 		      SDHCI_INT_DATA_CRC | SDHCI_INT_DATA_END_BIT | SDHCI_INT_DMA);
- 
--	wml = FIELD_PREP(WML_WR_BRST_LEN, 16)         |
--	      FIELD_PREP(WML_WR_WML_MASK, SECTOR_WML) |
--	      FIELD_PREP(WML_RD_BRST_LEN, 16)         |
--	      FIELD_PREP(WML_RD_WML_MASK, SECTOR_WML);
--	/*
--	 * Some SoCs intrpret 0 as MAX value so for those cases the
--	 * above value translates to zero
--	 */
--	if (esdhc->wrap_wml)
--		wml = 0;
+-	char *buffer;
+-	u32 databuf;
+-	u32 size;
+-	u32 irqstat;
+-	u32 present;
 -
--	esdhc_write32(esdhc, IMX_SDHCI_WML, wml);
+-	buffer = data->dest;
 -
- 	val = esdhc_read32(esdhc, SDHCI_CLOCK_CONTROL__TIMEOUT_CONTROL__SOFTWARE_RESET);
- 	val |= SYSCTL_HCKEN | SYSCTL_IPGEN;
- 	esdhc_write32(esdhc, SDHCI_CLOCK_CONTROL__TIMEOUT_CONTROL__SOFTWARE_RESET, val);
-@@ -369,7 +355,12 @@ static void imx_esdhc_init(struct esdhc *esdhc)
- {
- 	esdhc->is_be = 0;
- 	esdhc->is_mx6 = 1;
--	esdhc->wrap_wml = false;
-+
-+	esdhc_write32(esdhc, IMX_SDHCI_WML,
-+		      FIELD_PREP(WML_WR_BRST_LEN, 16)         |
-+		      FIELD_PREP(WML_WR_WML_MASK, SECTOR_WML) |
-+		      FIELD_PREP(WML_RD_BRST_LEN, 16)         |
-+		      FIELD_PREP(WML_RD_WML_MASK, SECTOR_WML));
+-	size = data->blocksize * data->blocks;
+-	irqstat = sdhci_read32(&host->sdhci, SDHCI_INT_STATUS);
+-
+-	while (size) {
+-		int i;
+-		int timeout = 1000000;
+-
+-		while (1) {
+-			present = sdhci_read32(&host->sdhci, SDHCI_PRESENT_STATE) & SDHCI_BUFFER_READ_ENABLE;
+-			if (present)
+-				break;
+-			if (!--timeout) {
+-				pr_err("read time out\n");
+-				return -ETIMEDOUT;
+-			}
+-		}
+-
+-		for (i = 0; i < SECTOR_WML; i++) {
+-			databuf = sdhci_read32(&host->sdhci, SDHCI_BUFFER);
+-			*((u32 *)buffer) = databuf;
+-			buffer += 4;
+-			size -= 4;
+-		}
+-	}
+-
+-	return 0;
++	return sdhci_transfer_data(&host->sdhci, data);
  }
  
- static int imx8_esdhc_init(struct esdhc *esdhc, int instance)
-@@ -520,12 +511,13 @@ int ls1046a_esdhc_start_image(unsigned long r0, unsigned long r1, unsigned long
- 	struct esdhc esdhc = {
- 		.regs = IOMEM(0x01560000),
- 		.is_be = true,
--		.wrap_wml = true,
- 	};
- 	unsigned long sdram = 0x80000000;
- 	void (*barebox)(unsigned long, unsigned long, unsigned long) =
- 		(void *)(sdram + LS1046A_SD_IMAGE_OFFSET);
+ static int
+diff --git a/drivers/mci/sdhci.c b/drivers/mci/sdhci.c
+index 1ab1c0f23..172c8343a 100644
+--- a/drivers/mci/sdhci.c
++++ b/drivers/mci/sdhci.c
+@@ -88,6 +88,19 @@ static void sdhci_tx_pio(struct sdhci *sdhci, struct mci_data *data,
+ 		sdhci_write32(sdhci, SDHCI_BUFFER, buf[i]);
+ }
  
-+	esdhc_write32(&esdhc, IMX_SDHCI_WML, 0);
++#ifdef __PBL__
++/*
++ * Stubs to make timeout logic below work in PBL
++ */
 +
- 	/*
- 	 * The ROM leaves us here with a clock frequency of around 400kHz. Speed
- 	 * this up a bit. FIXME: The resulting frequency has not yet been verified
++#define get_time_ns()		0
++/*
++ * Use time in us as a busy counter timeout value
++ */
++#define is_timeout(s, t)	((s)++ > ((t) / 1000))
++
++#endif
++
+ int sdhci_transfer_data(struct sdhci *sdhci, struct mci_data *data)
+ {
+ 	unsigned int block = 0;
 -- 
 2.21.0
 
