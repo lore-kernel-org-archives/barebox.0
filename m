@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pj1-x1042.google.com ([2607:f8b0:4864:20::1042])
+Received: from mail-pg1-x544.google.com ([2607:f8b0:4864:20::544])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ibnUx-0004j5-FF
- for barebox@lists.infradead.org; Mon, 02 Dec 2019 15:20:29 +0000
-Received: by mail-pj1-x1042.google.com with SMTP id ca19so7447349pjb.8
- for <barebox@lists.infradead.org>; Mon, 02 Dec 2019 07:20:27 -0800 (PST)
+ id 1ibnUz-0004ls-Gf
+ for barebox@lists.infradead.org; Mon, 02 Dec 2019 15:20:31 +0000
+Received: by mail-pg1-x544.google.com with SMTP id z124so2777342pgb.13
+ for <barebox@lists.infradead.org>; Mon, 02 Dec 2019 07:20:29 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon,  2 Dec 2019 07:19:51 -0800
-Message-Id: <20191202151954.16032-10-andrew.smirnov@gmail.com>
+Date: Mon,  2 Dec 2019 07:19:53 -0800
+Message-Id: <20191202151954.16032-12-andrew.smirnov@gmail.com>
 In-Reply-To: <20191202151954.16032-1-andrew.smirnov@gmail.com>
 References: <20191202151954.16032-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,91 +23,227 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/12] mci: imx-esdhc-pbl: Use sdhci_set_cmd_xfer_mode()
+Subject: [PATCH 11/12] mci: imx-esdhc: Introduce esdhc_poll()
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Drop extra code by converting imx-esdhc-pbl.c to use
-sdhci_set_cmd_xfer_mode().
+Replace all of the explcitly coded timeout loops with a shared
+subroutine that is used by both regular driver and PBL code.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/mci/imx-esdhc-pbl.c | 41 +++++++++----------------------------
- 1 file changed, 10 insertions(+), 31 deletions(-)
+ drivers/mci/imx-esdhc-common.c | 30 ++++++++++++++++++++++
+ drivers/mci/imx-esdhc-pbl.c    | 24 ++++++++---------
+ drivers/mci/imx-esdhc.c        | 47 +++++++++++++++++-----------------
+ drivers/mci/imx-esdhc.h        |  4 ++-
+ 4 files changed, 66 insertions(+), 39 deletions(-)
 
+diff --git a/drivers/mci/imx-esdhc-common.c b/drivers/mci/imx-esdhc-common.c
+index 55a337557..5e1f28401 100644
+--- a/drivers/mci/imx-esdhc-common.c
++++ b/drivers/mci/imx-esdhc-common.c
+@@ -120,3 +120,33 @@ int esdhc_do_data(struct fsl_esdhc_host *host, struct mci_data *data,
+ 
+ 	return 0;
+ }
++
++static bool esdhc_match32(struct fsl_esdhc_host *host, unsigned int off,
++			  unsigned int mask, unsigned int val)
++{
++	const unsigned int reg = sdhci_read32(&host->sdhci, off) & mask;
++
++	return reg == val;
++}
++
++#ifdef __PBL__
++/*
++ * Stubs to make timeout logic below work in PBL
++ */
++
++#define get_time_ns()		0
++/*
++ * Use time in us (approx) as a busy counter timeout value
++ */
++#define is_timeout(s, t)	((s)++ > ((t) / 1024))
++
++#endif
++
++int esdhc_poll(struct fsl_esdhc_host *host, unsigned int off,
++	       unsigned int mask, unsigned int val,
++	       uint64_t timeout)
++{
++	return wait_on_timeout(timeout,
++			       esdhc_match32(host, off, mask, val));
++}
++
 diff --git a/drivers/mci/imx-esdhc-pbl.c b/drivers/mci/imx-esdhc-pbl.c
-index b61cba2ba..43e0093cd 100644
+index 21aa758f9..d6c178651 100644
 --- a/drivers/mci/imx-esdhc-pbl.c
 +++ b/drivers/mci/imx-esdhc-pbl.c
-@@ -37,33 +37,6 @@ static void __udelay(int us)
- 	for (i = 0; i < us * 4; i++);
- }
- 
--static u32 esdhc_xfertyp(struct mci_cmd *cmd, struct mci_data *data)
--{
--	u32 xfertyp = 0;
--	u32 command = 0;
--
--	if (data) {
--		command |= SDHCI_DATA_PRESENT;
--		xfertyp |= SDHCI_MULTIPLE_BLOCKS | SDHCI_BLOCK_COUNT_EN |
--			   SDHCI_DATA_TO_HOST;
--	}
--
--	if (cmd->resp_type & MMC_RSP_CRC)
--		command |= SDHCI_CMD_CRC_CHECK_EN;
--	if (cmd->resp_type & MMC_RSP_OPCODE)
--		xfertyp |= SDHCI_CMD_INDEX_CHECK_EN;
--	if (cmd->resp_type & MMC_RSP_136)
--		command |= SDHCI_RESP_TYPE_136;
--	else if (cmd->resp_type & MMC_RSP_BUSY)
--		command |= SDHCI_RESP_TYPE_48_BUSY;
--	else if (cmd->resp_type & MMC_RSP_PRESENT)
--		command |= SDHCI_RESP_TYPE_48;
--
--	command |= SDHCI_CMD_INDEX(cmd->cmdidx);
--
--	return command << 16 | xfertyp;
--}
--
- static int esdhc_do_data(struct fsl_esdhc_host *host, struct mci_data *data)
- {
- 	return sdhci_transfer_data(&host->sdhci, data);
-@@ -72,7 +45,7 @@ static int esdhc_do_data(struct fsl_esdhc_host *host, struct mci_data *data)
- static int
- esdhc_send_cmd(struct fsl_esdhc_host *host, struct mci_cmd *cmd, struct mci_data *data)
- {
--	u32	xfertyp, mixctrl;
-+	u32	xfertyp, mixctrl, command;
+@@ -44,7 +44,6 @@ esdhc_send_cmd(struct fsl_esdhc_host *host, struct mci_cmd *cmd, struct mci_data
+ 	u32	xfertyp, mixctrl, command;
  	u32	irqstat;
  	int ret;
- 	int timeout;
-@@ -87,8 +60,12 @@ esdhc_send_cmd(struct fsl_esdhc_host *host, struct mci_cmd *cmd, struct mci_data
- 		sdhci_write32(&host->sdhci, SDHCI_BLOCK_SIZE__BLOCK_COUNT, data->blocks << 16 | SECTOR_SIZE);
- 	}
+-	int timeout;
  
--	/* Figure out the transfer arguments */
--	xfertyp = esdhc_xfertyp(cmd, data);
-+	sdhci_set_cmd_xfer_mode(&host->sdhci, cmd, data,
-+				false, &command, &xfertyp);
-+
-+	if ((host->socdata->flags & ESDHC_FLAG_MULTIBLK_NO_INT) &&
-+	    (cmd->cmdidx == MMC_CMD_STOP_TRANSMISSION))
-+		command |= SDHCI_COMMAND_CMDTYP_ABORT;
+ 	sdhci_write32(&host->sdhci, SDHCI_INT_STATUS, -1);
  
- 	/* Send the command */
- 	sdhci_write32(&host->sdhci, SDHCI_ARGUMENT, cmd->cmdarg);
-@@ -101,7 +78,9 @@ esdhc_send_cmd(struct fsl_esdhc_host *host, struct mci_cmd *cmd, struct mci_data
- 		sdhci_write32(&host->sdhci, IMX_SDHCI_MIXCTRL, mixctrl);
- 	}
- 
--	sdhci_write32(&host->sdhci, SDHCI_TRANSFER_MODE__COMMAND, xfertyp);
-+
-+	sdhci_write32(&host->sdhci, SDHCI_TRANSFER_MODE__COMMAND,
-+		      command << 16 | xfertyp);
+@@ -81,12 +80,11 @@ esdhc_send_cmd(struct fsl_esdhc_host *host, struct mci_cmd *cmd, struct mci_data
+ 		      command << 16 | xfertyp);
  
  	/* Wait for the command to complete */
- 	timeout = 10000;
+-	timeout = 10000;
+-	while (!(sdhci_read32(&host->sdhci, SDHCI_INT_STATUS) & SDHCI_INT_CMD_COMPLETE)) {
+-		__udelay(1);
+-		if (!timeout--)
+-			return -ETIMEDOUT;
+-	}
++	ret = esdhc_poll(host, SDHCI_INT_STATUS,
++			 SDHCI_INT_CMD_COMPLETE, SDHCI_INT_CMD_COMPLETE,
++			 100 * MSECOND);
++	if (ret)
++		return ret;
+ 
+ 	irqstat = sdhci_read32(&host->sdhci, SDHCI_INT_STATUS);
+ 	sdhci_write32(&host->sdhci, SDHCI_INT_STATUS, irqstat);
+@@ -110,13 +108,11 @@ esdhc_send_cmd(struct fsl_esdhc_host *host, struct mci_cmd *cmd, struct mci_data
+ 	sdhci_write32(&host->sdhci, SDHCI_INT_STATUS, -1);
+ 
+ 	/* Wait for the bus to be idle */
+-	timeout = 10000;
+-	while (sdhci_read32(&host->sdhci, SDHCI_PRESENT_STATE) & (SDHCI_CMD_INHIBIT_CMD |
+-			SDHCI_CMD_INHIBIT_DATA | SDHCI_DATA_LINE_ACTIVE)) {
+-		__udelay(1);
+-		if (!timeout--)
+-			return -ETIMEDOUT;
+-	}
++	ret = esdhc_poll(host, SDHCI_PRESENT_STATE,
++			 SDHCI_CMD_INHIBIT_CMD  |
++			 SDHCI_CMD_INHIBIT_DATA |
++			 SDHCI_DATA_LINE_ACTIVE, 0,
++			 100 * MSECOND);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
+index 8e6f66ce4..7e24b2b02 100644
+--- a/drivers/mci/imx-esdhc.c
++++ b/drivers/mci/imx-esdhc.c
+@@ -94,8 +94,9 @@ esdhc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
+ 		      command << 16 | xfertyp);
+ 
+ 	/* Wait for the command to complete */
+-	ret = wait_on_timeout(100 * MSECOND,
+-			sdhci_read32(&host->sdhci, SDHCI_INT_STATUS) & SDHCI_INT_CMD_COMPLETE);
++	ret = esdhc_poll(host, SDHCI_INT_STATUS,
++			 SDHCI_INT_CMD_COMPLETE, SDHCI_INT_CMD_COMPLETE,
++			 100 * MSECOND);
+ 	if (ret) {
+ 		dev_dbg(host->dev, "timeout 1\n");
+ 		return -ETIMEDOUT;
+@@ -116,9 +117,9 @@ esdhc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
+ 		 * Poll on DATA0 line for cmd with busy signal for
+ 		 * timout / 10 usec since DLA polling can be insecure.
+ 		 */
+-		ret = wait_on_timeout(2500 * MSECOND,
+-			(sdhci_read32(&host->sdhci, SDHCI_PRESENT_STATE) & PRSSTAT_DAT0));
+-
++		ret = esdhc_poll(host, SDHCI_PRESENT_STATE,
++				 PRSSTAT_DAT0, PRSSTAT_DAT0,
++				 2500 * MSECOND);
+ 		if (ret) {
+ 			dev_err(host->dev, "timeout PRSSTAT_DAT0\n");
+ 			return -ETIMEDOUT;
+@@ -137,16 +138,17 @@ esdhc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
+ 	sdhci_write32(&host->sdhci, SDHCI_INT_STATUS, -1);
+ 
+ 	/* Wait for the bus to be idle */
+-	ret = wait_on_timeout(SECOND,
+-			!(sdhci_read32(&host->sdhci, SDHCI_PRESENT_STATE) &
+-				(SDHCI_CMD_INHIBIT_CMD | SDHCI_CMD_INHIBIT_DATA)));
++	ret = esdhc_poll(host, SDHCI_PRESENT_STATE,
++			 SDHCI_CMD_INHIBIT_CMD | SDHCI_CMD_INHIBIT_DATA, 0,
++			 SECOND);
+ 	if (ret) {
+ 		dev_err(host->dev, "timeout 2\n");
+ 		return -ETIMEDOUT;
+ 	}
+ 
+-	ret = wait_on_timeout(100 * MSECOND,
+-			!(sdhci_read32(&host->sdhci, SDHCI_PRESENT_STATE) & SDHCI_DATA_LINE_ACTIVE));
++	ret = esdhc_poll(host, SDHCI_PRESENT_STATE,
++			 SDHCI_DATA_LINE_ACTIVE, 0,
++			 100 * MSECOND);
+ 	if (ret) {
+ 		dev_err(host->dev, "timeout 3\n");
+ 		return -ETIMEDOUT;
+@@ -201,16 +203,18 @@ static void set_sysctl(struct mci_host *mci, u32 clock)
+ 	esdhc_clrsetbits32(host, SDHCI_CLOCK_CONTROL__TIMEOUT_CONTROL__SOFTWARE_RESET,
+ 			SYSCTL_CLOCK_MASK, clk);
+ 
+-	wait_on_timeout(10 * MSECOND,
+-			sdhci_read32(&host->sdhci, SDHCI_PRESENT_STATE) & PRSSTAT_SDSTB);
++	esdhc_poll(host, SDHCI_PRESENT_STATE,
++		   PRSSTAT_SDSTB, PRSSTAT_SDSTB,
++		   10 * MSECOND);
+ 
+ 	clk = SYSCTL_PEREN | SYSCTL_CKEN | SYSCTL_INITA;
+ 
+ 	esdhc_setbits32(host, SDHCI_CLOCK_CONTROL__TIMEOUT_CONTROL__SOFTWARE_RESET,
+ 			clk);
+ 
+-	wait_on_timeout(1 * MSECOND,
+-			!(sdhci_read32(&host->sdhci, SDHCI_CLOCK_CONTROL) & SYSCTL_INITA));
++	esdhc_poll(host, SDHCI_CLOCK_CONTROL,
++		   SYSCTL_INITA, SYSCTL_INITA,
++		   10 * MSECOND);
+ }
+ 
+ static void esdhc_set_ios(struct mci_host *mci, struct mci_ios *ios)
+@@ -268,7 +272,6 @@ static int esdhc_card_present(struct mci_host *mci)
+ 
+ static int esdhc_reset(struct fsl_esdhc_host *host)
+ {
+-	uint64_t start;
+ 	int val;
+ 
+ 	/* reset the controller */
+@@ -286,16 +289,12 @@ static int esdhc_reset(struct fsl_esdhc_host *host)
+ 		sdhci_write32(&host->sdhci, IMX_SDHCI_DLL_CTRL, 0x0);
+ 	}
+ 
+-	start = get_time_ns();
+ 	/* hardware clears the bit when it is done */
+-	while (1) {
+-		if (!(sdhci_read32(&host->sdhci, SDHCI_CLOCK_CONTROL__TIMEOUT_CONTROL__SOFTWARE_RESET)
+-					& SYSCTL_RSTA))
+-			break;
+-		if (is_timeout(start, 100 * MSECOND)) {
+-			dev_err(host->dev, "Reset never completed.\n");
+-			return -EIO;
+-		}
++	if (esdhc_poll(host,
++		       SDHCI_CLOCK_CONTROL__TIMEOUT_CONTROL__SOFTWARE_RESET,
++		       SYSCTL_RSTA, 0, 100 * MSECOND)) {
++		dev_err(host->dev, "Reset never completed.\n");
++		return -EIO;
+ 	}
+ 
+ 	return 0;
+diff --git a/drivers/mci/imx-esdhc.h b/drivers/mci/imx-esdhc.h
+index 8ab6b0bb8..ac1208789 100644
+--- a/drivers/mci/imx-esdhc.h
++++ b/drivers/mci/imx-esdhc.h
+@@ -177,6 +177,8 @@ int esdhc_setup_data(struct fsl_esdhc_host *host, struct mci_data *data,
+ 		     struct fsl_esdhc_dma_transfer *tr);
+ int esdhc_do_data(struct fsl_esdhc_host *host, struct mci_data *data,
+ 		  struct fsl_esdhc_dma_transfer *tr);
+-
++int esdhc_poll(struct fsl_esdhc_host *host, unsigned int off,
++	       unsigned int mask, unsigned int val,
++	       uint64_t timeout);
+ 
+ #endif  /* __FSL_ESDHC_H__ */
 -- 
 2.21.0
 
