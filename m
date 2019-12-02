@@ -1,15 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ibhcw-0006iR-Vh
- for barebox@lists.infradead.org; Mon, 02 Dec 2019 09:04:20 +0000
-Date: Mon, 2 Dec 2019 10:04:17 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191202090417.c4lc5iomlb7rkmmw@pengutronix.de>
-References: <20191201174028.30319-1-rhi@pengutronix.de>
+ id 1ibisu-0003Xj-Q8
+ for barebox@lists.infradead.org; Mon, 02 Dec 2019 10:24:53 +0000
+Received: from ginster.hi.pengutronix.de
+ ([2001:67c:670:100:2e4d:54ff:fe67:bfa5] helo=ginster)
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <jbe@pengutronix.de>) id 1ibiss-0006ve-15
+ for barebox@lists.infradead.org; Mon, 02 Dec 2019 11:24:50 +0100
+Received: from jbe by ginster with local (Exim 4.92)
+ (envelope-from <jbe@pengutronix.de>) id 1ibisr-00068L-Ov
+ for barebox@lists.infradead.org; Mon, 02 Dec 2019 11:24:49 +0100
+From: Juergen Borleis <jbe@pengutronix.de>
+Date: Mon,  2 Dec 2019 11:24:48 +0100
+Message-Id: <20191202102449.23535-1-jbe@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191201174028.30319-1-rhi@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,38 +28,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] usb: gadget: fastboot: fix typo
-To: Roland Hieber <rhi@pengutronix.de>
-Cc: Barebox Mailing List <barebox@lists.infradead.org>
+Subject: [PATCH 1/2] HABv4: remove useless error message
+To: barebox@lists.infradead.org
 
-On Sun, Dec 01, 2019 at 06:40:28PM +0100, Roland Hieber wrote:
-> According to Wikipedia[1]:
-> 
->   [The indefinite article] "an" is used before words starting with a
->   vowel sound, regardless of whether the word begins with a vowel
->   letter. This avoids the glottal stop (momentary silent pause) that
->   would otherwise be required between a and a following vowel sound.
-> 
-> "UBI" is pronounced like "you-bee-eye" or "youbee", so it starts with a
-> consonant sound, therefore the correct indefinite article is "a".
-> 
-> [1]: https://en.wikipedia.org/w/index.php?title=English_articles&oldid=928781459#Distinction_between_a_and_an
-> 
-> Signed-off-by: Roland Hieber <rhi@pengutronix.de>
-> ---
->  drivers/usb/gadget/f_fastboot.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+This change removes the stupid error message at the end of the generated
+list of HAB events. It seems it was added for debugging/development
+purposes, because it always reports an error like
 
-Applied, thanks
+  "HABv4: ERROR: Recompile with larger event data buffer (at least 20 bytes)"
 
-Sascha
+which is completely nonsense, since the we already provide a buffer with
+256 bytes...
 
+Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
+---
+ drivers/hab/habv4.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
+diff --git a/drivers/hab/habv4.c b/drivers/hab/habv4.c
+index e3c1de1a4d..f1f45648f5 100644
+--- a/drivers/hab/habv4.c
++++ b/drivers/hab/habv4.c
+@@ -555,12 +555,6 @@ static int habv4_get_status(const struct habv4_rvt *rvt)
+ 		index++;
+ 	}
+ 
+-	/* Check reason for stopping */
+-	len = sizeof(data);
+-	index = 0;
+-	if (rvt->report_event(HAB_STATUS_ANY, index, NULL, &len) == HAB_STATUS_SUCCESS)
+-		pr_err("ERROR: Recompile with larger event data buffer (at least %d bytes)\n\n", len);
+-
+ 	return -EPERM;
+ }
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
