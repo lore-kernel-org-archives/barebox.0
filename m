@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ic9IB-0004e0-CV
- for barebox@lists.infradead.org; Tue, 03 Dec 2019 14:36:45 +0000
-Date: Tue, 3 Dec 2019 15:36:40 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191203143640.cyk6gorjqkj2twtq@pengutronix.de>
+ id 1ic9SR-0000iz-Nt
+ for barebox@lists.infradead.org; Tue, 03 Dec 2019 14:47:21 +0000
 References: <20191202102449.23535-1-jbe@pengutronix.de>
  <20191202130736.xgs53nadr5uvokea@pengutronix.de>
  <fa5ac462-27f0-d9c5-e771-1c6775616f05@pengutronix.de>
  <c2d8530aa1da0e5e8e7ae950fe445b200776667f.camel@pengutronix.de>
  <c141e85b-4da6-f33e-559c-52706ebb4cf4@pengutronix.de>
+ <20191203143640.cyk6gorjqkj2twtq@pengutronix.de>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Message-ID: <004f884e-f8a4-0646-8571-96952468a350@pengutronix.de>
+Date: Tue, 3 Dec 2019 15:47:12 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <c141e85b-4da6-f33e-559c-52706ebb4cf4@pengutronix.de>
+In-Reply-To: <20191203143640.cyk6gorjqkj2twtq@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,133 +22,183 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============4189310377674682691=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 1/2] HABv4: remove useless error message
-To: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org, jbe@pengutronix.de, Roland Hieber <rhi@pengutronix.de>
 
-T24gVHVlLCBEZWMgMDMsIDIwMTkgYXQgMDM6MDQ6NDVQTSArMDEwMCwgTWFyYyBLbGVpbmUtQnVk
-ZGUgd3JvdGU6Cj4gT24gMTIvMi8xOSAzOjMwIFBNLCBKdWVyZ2VuIEJvcmxlaXMgd3JvdGU6Cj4g
-PiBBbSBNb250YWcsIGRlbiAwMi4xMi4yMDE5LCAxNDoyNCArMDEwMCBzY2hyaWViIE1hcmMgS2xl
-aW5lLUJ1ZGRlOgo+ID4+IE9uIDEyLzIvMTkgMjowNyBQTSwgUm9sYW5kIEhpZWJlciB3cm90ZToK
-PiA+Pj4gT24gTW9uLCBEZWMgMDIsIDIwMTkgYXQgMTE6MjQ6NDhBTSArMDEwMCwgSnVlcmdlbiBC
-b3JsZWlzIHdyb3RlOgo+ID4+Pj4gVGhpcyBjaGFuZ2UgcmVtb3ZlcyB0aGUgc3R1cGlkIGVycm9y
-IG1lc3NhZ2UgYXQgdGhlIGVuZCBvZiB0aGUgZ2VuZXJhdGVkCj4gPj4+Cj4gPj4+IEkgdGhpbmsg
-dGhlcmUgd2FzIHNvbWUgcmVhc29uIGJlaGluZCB0aGF0IGNvZGUsIHNvIGl0IGlzIHByb2JhYmx5
-IG5vdAo+ID4+PiBzdHVwaWQsIGFuZCB5b3UndmUgcnVuIGludG8gYW4gZWRnZSBjYXNlIHRoYXQg
-bmV2ZXIgaGFwcGVuZWQgYmVmb3JlIChhdAo+ID4+PiBsZWFzdCBJJ3ZlIG5ldmVyIHNlZW4gdGhp
-cyBvbiBhbnkgb2YgbXkgYm9hcmRzIHdoZW4gdXNpbmcgSEFCdjQpLgo+ID4+Cj4gPj4gVGhlIGxh
-c3QgdGltZSwgSSd2ZSBzZWVuIHRoaXMgbWVzc2FnZXMgd2FzIGJlZm9yZSBpbXBsZW1lbnRpbmc6
-Cj4gPj4KPiA+PiA4MWUyYjUwOGU3ODUgaS5NWCBoYWJ2NDogaGFidjRfZ2V0X3N0YXR1cygpOiBk
-aXNwbGF5IHdhcm5pbmcgZXZlbnRzLCB0b28KPiA+Pgo+ID4+IFNvIFJvbGFuZCBpcyBwcm9iYWJs
-eSByaWdodCwgeW91J3ZlIGhpdCBhIGNvcm5lciBjYXNlLCB0aGF0J3Mgbm90Cj4gPj4gY29ycmVj
-dGx5IGhhbmRsZWQuCj4gPiAKPiA+IEhtbW06Cj4gPiAKPiA+IFvigKZdCj4gPiBiYXJlYm94IDIw
-MTkuMTEuMC0yMDE5MTEyMS0zICMxIFRodSBOb3YgMjEgMTQ6Mjg6MjEgVVRDIDIwMTkKPiA+IAo+
-ID4gQm9hcmQ6IDxzb21lIGN1c3RvbWVyIGJvYXJkPgo+ID4gZGV0ZWN0ZWQgaS5NWDYgVWx0cmFM
-aXRlIHJldmlzaW9uIDEuMgo+ID4gaS5NWCByZXNldCByZWFzb24gV0RHIChTUlNSOiAweDAwMDAw
-MDEwKQo+ID4gaS5NWDYgVWx0cmFMaXRlIHVuaXF1ZSBJRDogeHh4eHh4eHh4eHh4eHh4eAo+ID4g
-SEFCdjQ6IFN0YXR1czogT3BlcmF0aW9uIGZhaWxlZCAoMHgzMykKPiA+IEhBQnY0OiBDb25maWc6
-IE5vbi1zZWN1cmUgSUMgKDB4ZjApCj4gPiBIQUJ2NDogU3RhdGU6IE5vbi1zZWN1cmUgc3RhdGUg
-KDB4NjYpCj4gPiBIQUJ2NDogLS0tLS0tLS0gSEFCIGZhaWx1cmUgRXZlbnQgMCAtLS0tLS0tLQo+
-ID4gSEFCdjQ6IGV2ZW50IGRhdGE6Cj4gPiBIQUJ2NDogIGRiIDAwIDA4IDQyICAzMyAyMiAwYSAw
-MAo+ID4gSEFCdjQ6IFN0YXR1czogT3BlcmF0aW9uIGZhaWxlZCAoMHgzMykKPiA+IEhBQnY0OiBS
-ZWFzb246IEludmFsaWQgYWRkcmVzczogYWNjZXNzIGRlbmllZCAoMHgyMikKPiA+IEhBQnY0OiBD
-b250ZXh0OiBMb2dnZWQgaW4gaGFiX3J2dC5hdXRoZW50aWNhdGVfaW1hZ2UoKSAoMHgwYSkKPiA+
-IEhBQnY0OiBFbmdpbmU6IFNlbGVjdCBmaXJzdCBjb21wYXRpYmxlIGVuZ2luZSAoMHgwMCkKPiA+
-IEhBQnY0OiAtLS0tLS0tLSBIQUIgZmFpbHVyZSBFdmVudCAxIC0tLS0tLS0tCj4gPiBIQUJ2NDog
-ZXZlbnQgZGF0YToKPiA+IEhBQnY0OiAgZGIgMDAgMTQgNDIgIDMzIDBjIGEwIDAwCj4gPiBIQUJ2
-NDogIDAwIDAwIDAwIDAwICA4MCAwMCAwNCAwMAo+ID4gSEFCdjQ6ICAwMCAwMCAwMCAyMAo+ID4g
-SEFCdjQ6IFN0YXR1czogT3BlcmF0aW9uIGZhaWxlZCAoMHgzMykKPiA+IEhBQnY0OiBSZWFzb246
-IEludmFsaWQgYXNzZXJ0aW9uICgweDBjKQo+ID4gSEFCdjQ6IENvbnRleHQ6IEV2ZW50IGxvZ2dl
-ZCBpbiBoYWJfcnZ0LmFzc2VydCgpICgweGEwKQo+ID4gSEFCdjQ6IEVuZ2luZTogU2VsZWN0IGZp
-cnN0IGNvbXBhdGlibGUgZW5naW5lICgweDAwKQo+ID4gSEFCdjQ6IC0tLS0tLS0tIEhBQiBmYWls
-dXJlIEV2ZW50IDIgLS0tLS0tLS0KPiA+IEhBQnY0OiBldmVudCBkYXRhOgo+ID4gSEFCdjQ6ICBk
-YiAwMCAxNCA0MiAgMzMgMGMgYTAgMDAKPiA+IEhBQnY0OiAgMDAgMDAgMDAgMDAgIDgwIDAwIDA0
-IDIwCj4gPiBIQUJ2NDogIDAwIDAwIDAwIDAxCj4gPiBIQUJ2NDogU3RhdHVzOiBPcGVyYXRpb24g
-ZmFpbGVkICgweDMzKQo+ID4gSEFCdjQ6IFJlYXNvbjogSW52YWxpZCBhc3NlcnRpb24gKDB4MGMp
-Cj4gPiBIQUJ2NDogQ29udGV4dDogRXZlbnQgbG9nZ2VkIGluIGhhYl9ydnQuYXNzZXJ0KCkgKDB4
-YTApCj4gPiBIQUJ2NDogRW5naW5lOiBTZWxlY3QgZmlyc3QgY29tcGF0aWJsZSBlbmdpbmUgKDB4
-MDApCj4gPiBIQUJ2NDogLS0tLS0tLS0gSEFCIGZhaWx1cmUgRXZlbnQgMyAtLS0tLS0tLQo+ID4g
-SEFCdjQ6IGV2ZW50IGRhdGE6Cj4gPiBIQUJ2NDogIGRiIDAwIDE0IDQyICAzMyAwYyBhMCAwMAo+
-ID4gSEFCdjQ6ICAwMCAwMCAwMCAwMCAgODAgMDAgMTAgMDAKPiA+IEhBQnY0OiAgMDAgMDAgMDAg
-MDQKPiA+IEhBQnY0OiBTdGF0dXM6IE9wZXJhdGlvbiBmYWlsZWQgKDB4MzMpCj4gPiBIQUJ2NDog
-UmVhc29uOiBJbnZhbGlkIGFzc2VydGlvbiAoMHgwYykKPiA+IEhBQnY0OiBDb250ZXh0OiBFdmVu
-dCBsb2dnZWQgaW4gaGFiX3J2dC5hc3NlcnQoKSAoMHhhMCkKPiA+IEhBQnY0OiBFbmdpbmU6IFNl
-bGVjdCBmaXJzdCBjb21wYXRpYmxlIGVuZ2luZSAoMHgwMCkKPiA+IEhBQnY0OiBFUlJPUjogUmVj
-b21waWxlIHdpdGggbGFyZ2VyIGV2ZW50IGRhdGEgYnVmZmVyIChhdCBsZWFzdCA4IGJ5dGVzKQo+
-ID4gW+KApl0KPiA+IAo+ID4gYmFyZWJveCAyMDE5LjExLjAtMjAxOTExMjYtMSAjMSBXZWQgTm92
-IDI3IDEwOjE5OjIyIFVUQyAyMDE5Cj4gPiAKPiA+IEJvYXJkOiA8c29tZSBjdXN0b21lciBib2Fy
-ZD4KPiA+IGRldGVjdGVkIGkuTVg2IFVsdHJhTGl0ZSByZXZpc2lvbiAxLjIKPiA+IGkuTVggcmVz
-ZXQgcmVhc29uIFBPUiAoU1JTUjogMHgwMDAwMDAwMSkKPiA+IGkuTVg2IFVsdHJhTGl0ZSB1bmlx
-dWUgSUQ6IHh4eHh4eHh4eHh4eHh4eHgKPiA+IEhBQnY0OiBTdGF0dXM6IE9wZXJhdGlvbiBmYWls
-ZWQgKDB4MzMpCj4gPiBIQUJ2NDogQ29uZmlnOiBTZWN1cmUgSUMgKDB4Y2MpCj4gPiBIQUJ2NDog
-U3RhdGU6IFRydXN0ZWQgc3RhdGUgKDB4OTkpCj4gPiBIQUJ2NDogLS0tLS0tLS0gSEFCIGZhaWx1
-cmUgRXZlbnQgMCAtLS0tLS0tLQo+ID4gSEFCdjQ6IGV2ZW50IGRhdGE6Cj4gPiBIQUJ2NDogIGRi
-IDAwIDE0IDQyICAzMyAyMiAzMyAwMAo+ID4gSEFCdjQ6ICAwMCAwMCAwMCA1NSAgMDIgMWQgMDEg
-MDgKPiA+IEhBQnY0OiAgMDAgMDAgMDAgMDQKPiA+IEhBQnY0OiBTdGF0dXM6IE9wZXJhdGlvbiBm
-YWlsZWQgKDB4MzMpCj4gPiBIQUJ2NDogUmVhc29uOiBJbnZhbGlkIGFkZHJlc3M6IGFjY2VzcyBk
-ZW5pZWQgKDB4MjIpCj4gPiBIQUJ2NDogQ29udGV4dDogRXZlbnQgbG9nZ2VkIGluIGhhYl9ydnQu
-Y2hlY2tfdGFyZ2V0KCkgKDB4MzMpCj4gPiBIQUJ2NDogRW5naW5lOiBTZWxlY3QgZmlyc3QgY29t
-cGF0aWJsZSBlbmdpbmUgKDB4MDApCj4gPiBIQUJ2NDogRVJST1I6IFJlY29tcGlsZSB3aXRoIGxh
-cmdlciBldmVudCBkYXRhIGJ1ZmZlciAoYXQgbGVhc3QgMjAgYnl0ZXMpCj4gPiBb4oCmXQo+ID4g
-Cj4gPj4+IFRoZSBjb2RlIGdvZXMgYmFjayB1bnRpbCB0aGUgZmlyc3QgaW5jYXJuYWN0aW9uIG9m
-IEhBQnY0IGluIGNvbW1pdAo+ID4+PiAyOWFiYzEwZDQ0YzIgLSBNYXJjLCBkbyB5b3Ugc3RpbGwg
-a25vdyBtb3JlIGRldGFpbHMgd2h5IGl0IHdhcyBkb25lIHRoaXMKPiA+Pj4gd2F5Pwo+ID4+Cj4g
-Pj4gVGhpcyB3YXMgcGFydCBvZiB0aGUgcGF0Y2hlcyBJIHBpY2tlZCB1cCBmcm9tIGZzbCwgc2Vl
-IGNvbW1pdCBtZXNzYWdlCj4gPj4gZm9yIG1vcmUgZGV0YWlsczoKPiA+Pgo+ID4+IDI5YWJjMTBk
-NDRjMiBoYWJ2NDogYWRkIEhpZ2ggQXNzdXJhbmNlIEJvb3QgdjQKPiA+Pgo+ID4+IEFsYmVpdCBn
-aXZpbmcgYW4gaW5jb3JyZWN0IGVycm9yIG1lc3NhZ2UsIGl0IHNob3dlZCB0aGF0IHRoZXJlIHdl
-cmUKPiA+PiB3YXJuaW5ncyBldmVudHMgb24gdGhlIG5ldyBteDYgc2lsaWNvbiByZXZpc2lvbnMg
-dGhhdCB3ZXJlIG5vdCBoYW5kbGVkCj4gPj4gYmVmb3JlIDgxZTJiNTA4ZTc4NS4KPiA+IAo+ID4g
-SG1tLCA4MWUyYjUwOGU3ODUgZG9lcyBub3QgbWF0Y2ggdGhlIGRvY3VtZW50ZWQgQVBJIGFuZCBi
-cmVha3MgdGhlIHJlcG9ydC4gSXQKPiA+IHdhcyBmaXhlZCBieSBlN2MzMzU0MGQwYzA5MmMyOGIy
-MjdkNGI3NjAyY2VmOGFiMjAzZWYzIGxhdGVyIG9uLgo+ID4gCj4gPiBCdXQgYWxzbyB3aXRoIGU3
-YzMzNTQwZDBjMDkyYzI4YjIyN2Q0Yjc2MDJjZWY4YWIyMDNlZjMgdGhlIHF1ZXJ5IHJlbGF0ZWQg
-dG8gdGhpcwo+ID4gZXJyb3IgbWVzc2FnZSB3YXMgY2hhbmdlZCB0byBpbmRleCAwIGFzIHdlbGwu
-IEFuZCBub3csIGlmIGF0IGxlYXN0IG9uZSBldmVudCBpcwo+ID4gaW4gdGhlICBidWZmZXIsIHRo
-aXMgZXJyb3IgbWVzc2FnZSB3aWxsIGFsd2F5cyBiZSBwcmludGVkLiBCZWZvcmUKPiA+IGU3YzMz
-NTQwZDBjMDkyYzI4YjIyN2Q0Yjc2MDJjZWY4YWIyMDNlZjMgaXQgd2FzIChtb3N0IG9mIHRoZSB0
-aW1lKSBuZXZlciBiZQo+ID4gcHJpbnRlZCwgYmVjYXVzZSBpdCB0cmllcyBvbmNlIGFnYWluIHRv
-IHF1ZXJ5IGFuIGluZGV4IHdoaWNoIHdhcyBhbHJlYWR5IHRoZQo+ID4gY2F1c2UgdG8gbGVhdmUg
-dGhlIGxvb3AgYmVmb3JlLgo+ID4gQW5kIGxldCBtZSBndWVzczogeW91IHNhdyB0aGUgZXJyb3Ig
-bWVzc2FnZSwgYmVjYXVzZSB5b3VyIGV2ZW50IGJ1ZmZlciBjb250YWluZWQKPiA+IG9uZSBmYWls
-dXJlIGFuZCB0d28gd2FybmluZ3MuLi4KPiAKPiBJIHRoaW5rIHRoZXJlIGlzIGp1c3Qgb25lIHdh
-cm5pbmcgaW4gdGhlIGJ1ZmZlcjoKPiAKPiA+IEhBQnY0OiBTdGF0dXM6IE9wZXJhdGlvbiBjb21w
-bGV0ZWQgd2l0aCB3YXJuaW5nICgweDY5KQo+ID4gSEFCdjQ6IENvbmZpZzogU2VjdXJlIElDICgw
-eGNjKQo+ID4gSEFCdjQ6IFN0YXRlOiBUcnVzdGVkIHN0YXRlICgweDk5KQo+ID4gSEFCdjQ6IEVS
-Uk9SOiBSZWNvbXBpbGUgd2l0aCBsYXJnZXIgZXZlbnQgZGF0YSBidWZmZXIgKGF0IGxlYXN0IDM2
-IGJ5dGVzKQo+IAo+IFRoZSBiYXJlYm94IHByb2R1Y2luZyB0aGF0IG91dHB1dCBpcyBtaXNzaW5n
-IGJvdGggcGF0Y2hlczoKPiAKPiA4MWUyYjUwOGU3ODUgaS5NWCBoYWJ2NDogaGFidjRfZ2V0X3N0
-YXR1cygpOiBkaXNwbGF5IHdhcm5pbmcgZXZlbnRzLCB0b28KPiBlN2MzMzU0MGQwYzAgaS5NWDog
-SEFCdjQ6IFJlc2V0IGluZGV4IHZhcmlhYmxlIGFmdGVyIGVycm9yIHR5cGUKPiAKPiBUaGUgcXVl
-c3Rpb24gaXMsIGRvIHdlIGtub3cgd2h5IHdlIHNlZSB0aGlzIGVycm9yIG1lc3NhZ2U/IEkgZG9u
-J3QgaGF2ZQo+IGdvb2QgZmVlbGluZyB3aGVuIHdlIHJlbW92ZSBpdCwgYmVjYXVzZSBpdCdzIGFu
-bm95aW5nIGFuZCB3ZSBkb24ndAo+IHVuZGVyc3RhbmQgd2h5IHdlIHNlZSBpdC4KClRoZSBtZXNz
-YWdlIGlzIHdyb25nIGJlY2F1c2UgdGhlIGNvZGUgaXMgd3JvbmcuIExldCdzIHNlZToKCiAgICAg
-ICAgLyogQ2hlY2sgcmVhc29uIGZvciBzdG9wcGluZyAqLwogICAgICAgIGxlbiA9IHNpemVvZihk
-YXRhKTsKICAgICAgICBpbmRleCA9IDA7CiAgICAgICAgaWYgKHJ2dC0+cmVwb3J0X2V2ZW50KEhB
-Ql9TVEFUVVNfQU5ZLCBpbmRleCwgTlVMTCwgJmxlbikgPT0gSEFCX1NUQVRVU19TVUNDRVNTKQog
-ICAgICAgICAgICAgICAgcHJfZXJyKCJFUlJPUjogUmVjb21waWxlIHdpdGggbGFyZ2VyIGV2ZW50
-IGRhdGEgYnVmZmVyIChhdCBsZWFzdCAlZCBieXRlcylcblxuIiwgbGVuKTsKCnJlcG9ydF9ldmVu
-dCgpIGxpa2UgY2FsbGVkIGFib3ZlIHdpbGwgZ2l2ZSB5b3UgdGhlIGZpcnN0IG1lc3NhZ2Ugb2Yg
-YW55CnR5cGUgKEhBQl9TVEFUVVNfQU5ZKSB3aXRoIGluZGV4IDAuIEl0IHdpbGwgZG8gc28gc3Vj
-Y2Vzc2Z1bGx5LCBzbyBpdApyZXR1cm5zIEhBQl9TVEFUVVNfU1VDQ0VTUy4KCiZsZW4gb24gZW50
-cnkgbWVhbnMgdGhlIGxlbmd0aCBvZiB0aGUgYnVmZmVyIChoZXJlIHNpemVvZihkYXRhKSwgbGFy
-Z2UKZW5vdWdoKS4gJmxlbiBvbiBleGl0IGlzIHRoZSBsZW5ndGggb2YgdGhlIGFjdHVhbCBtZXNz
-YWdlIHJldHVybmVkLiBJZgombGVuIGlzIHNtYWxsZXIgdGhhbiBvbiBlbnRyeSBpdCBtZWFucyB0
-aGUgbWVzc2FnZSBidWZmZXIgd2FzIGJpZwplbm91Z2guIElmIGl0J3MgYmlnZ2VyLCB0aGVuIHdl
-IG11c3QgaW5jcmVhc2UgdGhlIGJ1ZmZlciBzaXplIGFuZCBjYWxsCmFnYWluLgoKVGhlIG1lc3Nh
-Z2UgYnVmZmVyIGlzIGJpZyBlbm91Z2gsIHNvIHJlcG9ydF9ldmVudCBjb3BpZXMgdGhlIGJ1ZmZl
-cgphbmQgcmV0dXJucyAzNiBieXRlcyB3ZXJlIGNvcGllZCwgYnV0IHdlIGFuc3dlciB3aXRoICJF
-cnJvcjogUmVjb21waWxlCndpdGggYSBsYXJnZXIgZXZlbnQgZGF0YSBidWZmZXIiLgoKU2FzY2hh
-CgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgIHwKU3RldWVyd2FsZGVyIFN0ci4gMjEgICAgICAgICAgICAg
-ICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKMzExMzcgSGlsZGVzaGVp
-bSwgR2VybWFueSAgICAgICAgICAgICAgICAgIHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAg
-IHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0
-OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFk
-Lm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--===============4189310377674682691==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature";
+ boundary="xUzwtvt6uenU2vXruvIDmC9rGs74sB3eE"
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--xUzwtvt6uenU2vXruvIDmC9rGs74sB3eE
+Content-Type: multipart/mixed; boundary="SEzwZ1FtUpctMPosF2cIO4cwcVkEyDsIn";
+ protected-headers="v1"
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: jbe@pengutronix.de, Roland Hieber <rhi@pengutronix.de>,
+ barebox@lists.infradead.org
+Message-ID: <004f884e-f8a4-0646-8571-96952468a350@pengutronix.de>
+Subject: Re: [PATCH 1/2] HABv4: remove useless error message
+References: <20191202102449.23535-1-jbe@pengutronix.de>
+ <20191202130736.xgs53nadr5uvokea@pengutronix.de>
+ <fa5ac462-27f0-d9c5-e771-1c6775616f05@pengutronix.de>
+ <c2d8530aa1da0e5e8e7ae950fe445b200776667f.camel@pengutronix.de>
+ <c141e85b-4da6-f33e-559c-52706ebb4cf4@pengutronix.de>
+ <20191203143640.cyk6gorjqkj2twtq@pengutronix.de>
+In-Reply-To: <20191203143640.cyk6gorjqkj2twtq@pengutronix.de>
+
+--SEzwZ1FtUpctMPosF2cIO4cwcVkEyDsIn
+Content-Type: text/plain; charset=utf-8
+Content-Language: de-DE
+Content-Transfer-Encoding: quoted-printable
+
+On 12/3/19 3:36 PM, Sascha Hauer wrote:
+>> I think there is just one warning in the buffer:
+>>
+>>> HABv4: Status: Operation completed with warning (0x69)
+>>> HABv4: Config: Secure IC (0xcc)
+>>> HABv4: State: Trusted state (0x99)
+>>> HABv4: ERROR: Recompile with larger event data buffer (at least 36 by=
+tes)
+>>
+>> The barebox producing that output is missing both patches:
+>>
+>> 81e2b508e785 i.MX habv4: habv4_get_status(): display warning events, t=
+oo
+>> e7c33540d0c0 i.MX: HABv4: Reset index variable after error type
+>>
+>> The question is, do we know why we see this error message? I don't hav=
+e
+>> good feeling when we remove it, because it's annoying and we don't
+>> understand why we see it.
+>=20
+> The message is wrong because the code is wrong. Let's see:
+>=20
+>         /* Check reason for stopping */
+>         len =3D sizeof(data);
+>         index =3D 0;
+>         if (rvt->report_event(HAB_STATUS_ANY, index, NULL, &len) =3D=3D=
+ HAB_STATUS_SUCCESS)
+>                 pr_err("ERROR: Recompile with larger event data buffer =
+(at least %d bytes)\n\n", len);
+>=20
+> report_event() like called above will give you the first message of any=
+
+> type (HAB_STATUS_ANY) with index 0. It will do so successfully, so it
+> returns HAB_STATUS_SUCCESS.
+>=20
+> &len on entry means the length of the buffer (here sizeof(data), large
+> enough). &len on exit is the length of the actual message returned. If
+> &len is smaller than on entry it means the message buffer was big
+> enough. If it's bigger, then we must increase the buffer size and call
+> again.
+>=20
+> The message buffer is big enough, so report_event copies the buffer
+> and returns 36 bytes were copied, but we answer with "Error: Recompile
+> with a larger event data buffer".
+
+I see, this means since:
+
+| e7c33540d0c0 i.MX: HABv4: Reset index variable after error type
+
+the check is even more broken and fires every time we have at least one
+warning and/or error.
+
+So we can either remove the check/message with a proper commit log or
+change the code to semething like:
+
+> diff --git a/drivers/hab/habv4.c b/drivers/hab/habv4.c
+> index e3c1de1a4dbe..013cdea1bc43 100644
+> --- a/drivers/hab/habv4.c
+> +++ b/drivers/hab/habv4.c
+> @@ -507,7 +507,7 @@ static int habv4_get_status(const struct habv4_rvt =
+*rvt)
+>  {
+>         uint8_t data[256];
+>         uint32_t len;
+> -       uint32_t index =3D 0;
+> +       uint32_t index =3D 0, done =3D 0;
+>         enum hab_status status;
+>         enum hab_config config =3D 0x0;
+>         enum hab_state state =3D 0x0;
+> @@ -542,6 +542,7 @@ static int habv4_get_status(const struct habv4_rvt =
+*rvt)
+> =20
+>                 len =3D sizeof(data);
+>                 index++;
+> +               done++;
+>         }
+> =20
+>         len =3D sizeof(data);
+> @@ -553,13 +554,13 @@ static int habv4_get_status(const struct habv4_rv=
+t *rvt)
+>                 habv4_display_event(data, len);
+>                 len =3D sizeof(data);
+>                 index++;
+> +               done++;
+>         }
+> =20
+> -       /* Check reason for stopping */
+> +       /* Check if we've handled every event */
+>         len =3D sizeof(data);
+> -       index =3D 0;
+> -       if (rvt->report_event(HAB_STATUS_ANY, index, NULL, &len) =3D=3D=
+ HAB_STATUS_SUCCESS)
+> -               pr_err("ERROR: Recompile with larger event data buffer =
+(at least %d bytes)\n\n", len);
+> +       if (rvt->report_event(HAB_STATUS_ANY, done, NULL, &len) =3D=3D =
+HAB_STATUS_SUCCESS)
+> +               pr_err("ERROR: unhandled HAB event!\n\n", len);
+> =20
+>         return -EPERM;
+>  }
+
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde           |
+Embedded Linux                   | https://www.pengutronix.de  |
+Vertretung West/Dortmund         | Phone: +49-231-2826-924     |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-5555 |
+
+
+--SEzwZ1FtUpctMPosF2cIO4cwcVkEyDsIn--
+
+--xUzwtvt6uenU2vXruvIDmC9rGs74sB3eE
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEmvEkXzgOfc881GuFWsYho5HknSAFAl3mdXAACgkQWsYho5Hk
+nSBXdAf/Yjsug6Be1iA5BSNb4f63H1q3hkErwPDvWWAWPsYbqDtemEDvXv+96iyA
+O0iBjo5CcNxKe+iC6WcxFw3MYXDOqk3IH8cai4u41oLrApyBRN6z2zckHPQ1xoHf
+j/mXpiGw0oxMt5hldqmS5VCW4A1CSoQ50Wwj8aH1UfXQInKofHP6Y9ZNYqb+4qCW
+JSgRHM+9kC2yGYFuc92FTsdb39jFnaUk1iD+PbGvoDg8FYYT3OsgiuYb768x/z/5
+kGxA8RUCfpZi4xdvSdLSeXQGLWu/EXzwzF6lMsIpQqfAQyx2tM017y3wL5DQetp6
+39VsuD0urbjpJXcxmLcamvBx1dYzZQ==
+=yvJA
+-----END PGP SIGNATURE-----
+
+--xUzwtvt6uenU2vXruvIDmC9rGs74sB3eE--
+
+
+--===============4189310377674682691==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============4189310377674682691==--
