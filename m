@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1idEX7-0002v3-Kr
- for barebox@lists.infradead.org; Fri, 06 Dec 2019 14:24:39 +0000
-Date: Fri, 6 Dec 2019 15:24:36 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191206142436.iymseouoi7eltuzg@pengutronix.de>
-References: <1575383339-231689-1-git-send-email-s.riedmueller@phytec.de>
+ id 1ic1wl-0003G1-Fb
+ for barebox@lists.infradead.org; Tue, 03 Dec 2019 06:46:09 +0000
+Date: Tue, 3 Dec 2019 07:46:03 +0100
+From: Michael Olbrich <m.olbrich@pengutronix.de>
+Message-ID: <20191203064603.63puhjwyoeaagba5@pengutronix.de>
+References: <20191127231946.27941-1-flokli@flokli.de>
+ <20191127231946.27941-2-flokli@flokli.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1575383339-231689-1-git-send-email-s.riedmueller@phytec.de>
+In-Reply-To: <20191127231946.27941-2-flokli@flokli.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,38 +19,83 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: boards: phytec-som-imx6: Replace spi by spi-nor in
- bootsource script
-To: Stefan Riedmueller <s.riedmueller@phytec.de>
+Subject: Re: [PATCH 1/3] scripts: use #!/usr/bin/env bash shebang instead of
+ #!/bin/bash
+To: Florian Klink <flokli@flokli.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Dec 03, 2019 at 03:28:59PM +0100, Stefan Riedmueller wrote:
-> Commit 7802c6f891b7 ("ARM: i.MX6: boot: Return BOOTSOURCE_SPI_NOR, not
-> BOOTSOURCE_SPI") changed the returned boot source for SPI NOR on i.MX 6
-> from SPI to SPI_NOR. This needs to be accounted for in the bootsource
-> scripts.
-> 
-> Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
-> ---
->  .../phytec-som-imx6/defaultenv-physom-imx6-phycore/init/bootsource      | 2 +-
->  arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/init/bootsource  | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
-
-Applied, thanks
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gVGh1LCBOb3YgMjgsIDIwMTkgYXQgMTI6MTk6NDRBTSArMDEwMCwgRmxvcmlhbiBLbGluayB3
+cm90ZToKPiBTb21lIGRpc3RyaWJ1dGlvbnMgbWlnaHQgbm90IGhhdmUgYmFzaCBpbiAvYmluLCBi
+dXQgaW4gJFBBVEguCj4gCj4gVXNpbmcgIyEvdXNyL2Jpbi9lbnYgYmFzaCBzb2x2ZXMgdGhpcywg
+YW5kIGlzIGNvbnNpc3RlbnQgd2l0aCBob3cgdGhlCj4gcGVybCBhbmQgcHl0aG9uIHNoZWJhbmdz
+IGxvb2sgbGlrZSBpbiB0aGUgdHJlZS4KPiAtLS0KPiAgc2NyaXB0cy9jYW5vbi1hMTEwMC1pbWFn
+ZSAgICAgICAgfCAyICstCj4gIHNjcmlwdHMvY2hlY2tfc2l6ZSAgICAgICAgICAgICAgIHwgMiAr
+LQo+ICBzY3JpcHRzL2RmdWJvb3Quc2ggICAgICAgICAgICAgICB8IDIgKy0KPiAgc2NyaXB0cy9l
+eHRyYWN0X3N5bWJvbF9vZmZzZXQgICAgfCAyICstCj4gIHNjcmlwdHMvZ2VuLWR0Yi1zICAgICAg
+ICAgICAgICAgIHwgMiArLQo+ICBzY3JpcHRzL2dlbmVudiAgICAgICAgICAgICAgICAgICB8IDIg
+Ky0KPiAgc2NyaXB0cy9zb2NmcGdhX2dldF9zZXF1ZW5jZXIgICAgfCAyICstCj4gIHNjcmlwdHMv
+c29jZnBnYV9pbXBvcnRfcHJlbG9hZGVyIHwgMiArLQo+ICBzY3JpcHRzL3NvY2ZwZ2FfeG1sX3Rv
+X2NvbmZpZy5zaCB8IDIgKy0KPiAgOSBmaWxlcyBjaGFuZ2VkLCA5IGluc2VydGlvbnMoKyksIDkg
+ZGVsZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBhL3NjcmlwdHMvY2Fub24tYTExMDAtaW1hZ2Ug
+Yi9zY3JpcHRzL2Nhbm9uLWExMTAwLWltYWdlCj4gaW5kZXggNmMwOGQ3NDkzLi4yMzdjZTI2ZDgg
+MTAwNzU1Cj4gLS0tIGEvc2NyaXB0cy9jYW5vbi1hMTEwMC1pbWFnZQo+ICsrKyBiL3NjcmlwdHMv
+Y2Fub24tYTExMDAtaW1hZ2UKPiBAQCAtMSw0ICsxLDQgQEAKPiAtIyEvYmluL2Jhc2ggLWUKPiAr
+IyEvdXNyL2Jpbi9lbnYgYmFzaCAtZQoKVGhpcyBkb2VzIG5vdCB3b3JrOgoKL3Vzci9iaW4vZW52
+OiDigJhiYXNoIC1l4oCZOiBObyBzdWNoIGZpbGUgb3IgZGlyZWN0b3J5Ci91c3IvYmluL2Vudjog
+dXNlIC1bdl1TIHRvIHBhc3Mgb3B0aW9ucyBpbiBzaGViYW5nIGxpbmVzCgpVc2luZyAnL3Vzci9i
+aW4vZW52IC1TIGJhc2ggLWUnIHdvcmtzLCBidXQgSSdtIG5vdCBzdXJlIGhvdyBwb3J0YWJsZSB0
+aGF0CmlzLgoKTWljaGFlbAoKPiAgCj4gIElGSUxFPSQxCj4gIE9GSUxFPSQyCj4gZGlmZiAtLWdp
+dCBhL3NjcmlwdHMvY2hlY2tfc2l6ZSBiL3NjcmlwdHMvY2hlY2tfc2l6ZQo+IGluZGV4IDg1MzA0
+MzVkMy4uNzY2MDhlY2NjIDEwMDc1NQo+IC0tLSBhL3NjcmlwdHMvY2hlY2tfc2l6ZQo+ICsrKyBi
+L3NjcmlwdHMvY2hlY2tfc2l6ZQo+IEBAIC0xLDQgKzEsNCBAQAo+IC0jIS9iaW4vYmFzaAo+ICsj
+IS91c3IvYmluL2VudiBiYXNoCj4gIAo+ICBzeW1ib2w9IiQxIgo+ICBmaWxlPSIkMiIKPiBkaWZm
+IC0tZ2l0IGEvc2NyaXB0cy9kZnVib290LnNoIGIvc2NyaXB0cy9kZnVib290LnNoCj4gaW5kZXgg
+NTI0MTEzYjYxLi45ODQ3NTc5Y2UgMTAwNzU1Cj4gLS0tIGEvc2NyaXB0cy9kZnVib290LnNoCj4g
+KysrIGIvc2NyaXB0cy9kZnVib290LnNoCj4gQEAgLTEsNCArMSw0IEBACj4gLSMhL2Jpbi9iYXNo
+Cj4gKyMhL3Vzci9iaW4vZW52IGJhc2gKPiAgCj4gIERFVklDRVRSRUU9Cj4gIEtFUk5FTD0KPiBk
+aWZmIC0tZ2l0IGEvc2NyaXB0cy9leHRyYWN0X3N5bWJvbF9vZmZzZXQgYi9zY3JpcHRzL2V4dHJh
+Y3Rfc3ltYm9sX29mZnNldAo+IGluZGV4IDc4Yjg2NjgzMC4uZDBlYTIyNDM0IDEwMDc1NQo+IC0t
+LSBhL3NjcmlwdHMvZXh0cmFjdF9zeW1ib2xfb2Zmc2V0Cj4gKysrIGIvc2NyaXB0cy9leHRyYWN0
+X3N5bWJvbF9vZmZzZXQKPiBAQCAtMSw0ICsxLDQgQEAKPiAtIyEvYmluL2Jhc2gKPiArIyEvdXNy
+L2Jpbi9lbnYgYmFzaAo+ICAKPiAgc3ltYm9sPSIkMSIKPiAgZmlsZT0iJDIiCj4gZGlmZiAtLWdp
+dCBhL3NjcmlwdHMvZ2VuLWR0Yi1zIGIvc2NyaXB0cy9nZW4tZHRiLXMKPiBpbmRleCBiMmRkMjUz
+YzIuLjA2NDkyNDdmOSAxMDA3NTUKPiAtLS0gYS9zY3JpcHRzL2dlbi1kdGItcwo+ICsrKyBiL3Nj
+cmlwdHMvZ2VuLWR0Yi1zCj4gQEAgLTEsNCArMSw0IEBACj4gLSMhL2Jpbi9iYXNoCj4gKyMhL3Vz
+ci9iaW4vZW52IGJhc2gKPiAgCj4gIG5hbWU9JDEKPiAgZHRiPSQyCj4gZGlmZiAtLWdpdCBhL3Nj
+cmlwdHMvZ2VuZW52IGIvc2NyaXB0cy9nZW5lbnYKPiBpbmRleCA1ZWJlNjk5NjMuLjQ1NGYyMzI3
+YiAxMDA3NTUKPiAtLS0gYS9zY3JpcHRzL2dlbmVudgo+ICsrKyBiL3NjcmlwdHMvZ2VuZW52Cj4g
+QEAgLTEsNCArMSw0IEBACj4gLSMhL2Jpbi9iYXNoCj4gKyMhL3Vzci9iaW4vZW52IGJhc2gKPiAg
+Cj4gICMgR2VuZXJhdGUgdGhlIGRlZmF1bHQgZW52aXJvbm1lbnQgZmlsZSBmcm9tIGEgbGlzdCBv
+ZiBkaXJlY3Rvcmllcwo+ICAjIHVzYWdlOiBnZW5lbnYgPGJhc2VkaXI+IDxvYmpkaXI+IDx0YXJn
+ZXQ+IDxkaXI+Li4uCj4gZGlmZiAtLWdpdCBhL3NjcmlwdHMvc29jZnBnYV9nZXRfc2VxdWVuY2Vy
+IGIvc2NyaXB0cy9zb2NmcGdhX2dldF9zZXF1ZW5jZXIKPiBpbmRleCAzNmY2NzQ5OGIuLjU0MDVi
+ZmE2YiAxMDA3NTUKPiAtLS0gYS9zY3JpcHRzL3NvY2ZwZ2FfZ2V0X3NlcXVlbmNlcgo+ICsrKyBi
+L3NjcmlwdHMvc29jZnBnYV9nZXRfc2VxdWVuY2VyCj4gQEAgLTEsNCArMSw0IEBACj4gLSMhL2Jp
+bi9iYXNoCj4gKyMhL3Vzci9iaW4vZW52IGJhc2gKPiAgCj4gIGlmIFsgIiQjIiAtbHQgIjIiIF0K
+PiAgdGhlbgo+IGRpZmYgLS1naXQgYS9zY3JpcHRzL3NvY2ZwZ2FfaW1wb3J0X3ByZWxvYWRlciBi
+L3NjcmlwdHMvc29jZnBnYV9pbXBvcnRfcHJlbG9hZGVyCj4gaW5kZXggNmM3NDhmYWRiLi4yM2Uz
+YzM4MGQgMTAwNzU1Cj4gLS0tIGEvc2NyaXB0cy9zb2NmcGdhX2ltcG9ydF9wcmVsb2FkZXIKPiAr
+KysgYi9zY3JpcHRzL3NvY2ZwZ2FfaW1wb3J0X3ByZWxvYWRlcgo+IEBAIC0xLDQgKzEsNCBAQAo+
+IC0jIS9iaW4vYmFzaAo+ICsjIS91c3IvYmluL2VudiBiYXNoCj4gIAo+ICBpZiBbICIkIyIgLWx0
+ICIyIiBdCj4gIHRoZW4KPiBkaWZmIC0tZ2l0IGEvc2NyaXB0cy9zb2NmcGdhX3htbF90b19jb25m
+aWcuc2ggYi9zY3JpcHRzL3NvY2ZwZ2FfeG1sX3RvX2NvbmZpZy5zaAo+IGluZGV4IDdlMjJlYmI5
+ZS4uM2JiMGRkMjgzIDEwMDc1NQo+IC0tLSBhL3NjcmlwdHMvc29jZnBnYV94bWxfdG9fY29uZmln
+LnNoCj4gKysrIGIvc2NyaXB0cy9zb2NmcGdhX3htbF90b19jb25maWcuc2gKPiBAQCAtMSw0ICsx
+LDQgQEAKPiAtIyEvYmluL2Jhc2gKPiArIyEvdXNyL2Jpbi9lbnYgYmFzaAo+ICAKPiAgIyMgVE9E
+TzoKPiAgIyMgLSByZWFkIGluIG1wdWNsayBhbmQgbm9jY2xrLCBtdXN0IGJlIGNhbGN1bGF0ZWQg
+YnkgaGFuZCBhdCB0aGUgbW9tZW50Cj4gLS0gCj4gMi4yNC4wCj4gCj4gCj4gX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiBiYXJlYm94IG1haWxpbmcgbGlz
+dAo+IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQu
+b3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo+IAoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAg
+ICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ClN0
+ZXVlcndhbGRlciBTdHIuIDIxICAgICAgICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVu
+Z3V0cm9uaXguZGUvICB8CjMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgICAgICAgICAgICAgICAg
+ICB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0s
+IEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxp
+bmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVh
+ZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
