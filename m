@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ic8nO-0007SQ-7N
- for barebox@lists.infradead.org; Tue, 03 Dec 2019 14:04:56 +0000
+ id 1ic9IB-0004e0-CV
+ for barebox@lists.infradead.org; Tue, 03 Dec 2019 14:36:45 +0000
+Date: Tue, 3 Dec 2019 15:36:40 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20191203143640.cyk6gorjqkj2twtq@pengutronix.de>
 References: <20191202102449.23535-1-jbe@pengutronix.de>
  <20191202130736.xgs53nadr5uvokea@pengutronix.de>
  <fa5ac462-27f0-d9c5-e771-1c6775616f05@pengutronix.de>
  <c2d8530aa1da0e5e8e7ae950fe445b200776667f.camel@pengutronix.de>
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Message-ID: <c141e85b-4da6-f33e-559c-52706ebb4cf4@pengutronix.de>
-Date: Tue, 3 Dec 2019 15:04:45 +0100
+ <c141e85b-4da6-f33e-559c-52706ebb4cf4@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <c2d8530aa1da0e5e8e7ae950fe445b200776667f.camel@pengutronix.de>
+Content-Disposition: inline
+In-Reply-To: <c141e85b-4da6-f33e-559c-52706ebb4cf4@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,222 +22,133 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============3444066839773473329=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 1/2] HABv4: remove useless error message
-To: jbe@pengutronix.de, Roland Hieber <rhi@pengutronix.de>
-Cc: barebox@lists.infradead.org
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: barebox@lists.infradead.org, jbe@pengutronix.de, Roland Hieber <rhi@pengutronix.de>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---===============3444066839773473329==
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature";
- boundary="cS7ZOBuWDHKrmbYGddZsrVjBveVNduYRQ"
-
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---cS7ZOBuWDHKrmbYGddZsrVjBveVNduYRQ
-Content-Type: multipart/mixed; boundary="y56I1alGtra2aRPt8Y22ufwVqjh2a5nRn";
- protected-headers="v1"
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: jbe@pengutronix.de, Roland Hieber <rhi@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <c141e85b-4da6-f33e-559c-52706ebb4cf4@pengutronix.de>
-Subject: Re: [PATCH 1/2] HABv4: remove useless error message
-References: <20191202102449.23535-1-jbe@pengutronix.de>
- <20191202130736.xgs53nadr5uvokea@pengutronix.de>
- <fa5ac462-27f0-d9c5-e771-1c6775616f05@pengutronix.de>
- <c2d8530aa1da0e5e8e7ae950fe445b200776667f.camel@pengutronix.de>
-In-Reply-To: <c2d8530aa1da0e5e8e7ae950fe445b200776667f.camel@pengutronix.de>
-
---y56I1alGtra2aRPt8Y22ufwVqjh2a5nRn
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-
-On 12/2/19 3:30 PM, Juergen Borleis wrote:
-> Am Montag, den 02.12.2019, 14:24 +0100 schrieb Marc Kleine-Budde:
->> On 12/2/19 2:07 PM, Roland Hieber wrote:
->>> On Mon, Dec 02, 2019 at 11:24:48AM +0100, Juergen Borleis wrote:
->>>> This change removes the stupid error message at the end of the gener=
-ated
->>>
->>> I think there was some reason behind that code, so it is probably not=
-
->>> stupid, and you've run into an edge case that never happened before (=
-at
->>> least I've never seen this on any of my boards when using HABv4).
->>
->> The last time, I've seen this messages was before implementing:
->>
->> 81e2b508e785 i.MX habv4: habv4_get_status(): display warning events, t=
-oo
->>
->> So Roland is probably right, you've hit a corner case, that's not
->> correctly handled.
->=20
-> Hmmm:
->=20
-> [=E2=80=A6]
-> barebox 2019.11.0-20191121-3 #1 Thu Nov 21 14:28:21 UTC 2019
->=20
-> Board: <some customer board>
-> detected i.MX6 UltraLite revision 1.2
-> i.MX reset reason WDG (SRSR: 0x00000010)
-> i.MX6 UltraLite unique ID: xxxxxxxxxxxxxxxx
-> HABv4: Status: Operation failed (0x33)
-> HABv4: Config: Non-secure IC (0xf0)
-> HABv4: State: Non-secure state (0x66)
-> HABv4: -------- HAB failure Event 0 --------
-> HABv4: event data:
-> HABv4:  db 00 08 42  33 22 0a 00
-> HABv4: Status: Operation failed (0x33)
-> HABv4: Reason: Invalid address: access denied (0x22)
-> HABv4: Context: Logged in hab_rvt.authenticate_image() (0x0a)
-> HABv4: Engine: Select first compatible engine (0x00)
-> HABv4: -------- HAB failure Event 1 --------
-> HABv4: event data:
-> HABv4:  db 00 14 42  33 0c a0 00
-> HABv4:  00 00 00 00  80 00 04 00
-> HABv4:  00 00 00 20
-> HABv4: Status: Operation failed (0x33)
-> HABv4: Reason: Invalid assertion (0x0c)
-> HABv4: Context: Event logged in hab_rvt.assert() (0xa0)
-> HABv4: Engine: Select first compatible engine (0x00)
-> HABv4: -------- HAB failure Event 2 --------
-> HABv4: event data:
-> HABv4:  db 00 14 42  33 0c a0 00
-> HABv4:  00 00 00 00  80 00 04 20
-> HABv4:  00 00 00 01
-> HABv4: Status: Operation failed (0x33)
-> HABv4: Reason: Invalid assertion (0x0c)
-> HABv4: Context: Event logged in hab_rvt.assert() (0xa0)
-> HABv4: Engine: Select first compatible engine (0x00)
-> HABv4: -------- HAB failure Event 3 --------
-> HABv4: event data:
-> HABv4:  db 00 14 42  33 0c a0 00
-> HABv4:  00 00 00 00  80 00 10 00
-> HABv4:  00 00 00 04
-> HABv4: Status: Operation failed (0x33)
-> HABv4: Reason: Invalid assertion (0x0c)
-> HABv4: Context: Event logged in hab_rvt.assert() (0xa0)
-> HABv4: Engine: Select first compatible engine (0x00)
-> HABv4: ERROR: Recompile with larger event data buffer (at least 8 bytes=
-)
-> [=E2=80=A6]
->=20
-> barebox 2019.11.0-20191126-1 #1 Wed Nov 27 10:19:22 UTC 2019
->=20
-> Board: <some customer board>
-> detected i.MX6 UltraLite revision 1.2
-> i.MX reset reason POR (SRSR: 0x00000001)
-> i.MX6 UltraLite unique ID: xxxxxxxxxxxxxxxx
-> HABv4: Status: Operation failed (0x33)
-> HABv4: Config: Secure IC (0xcc)
-> HABv4: State: Trusted state (0x99)
-> HABv4: -------- HAB failure Event 0 --------
-> HABv4: event data:
-> HABv4:  db 00 14 42  33 22 33 00
-> HABv4:  00 00 00 55  02 1d 01 08
-> HABv4:  00 00 00 04
-> HABv4: Status: Operation failed (0x33)
-> HABv4: Reason: Invalid address: access denied (0x22)
-> HABv4: Context: Event logged in hab_rvt.check_target() (0x33)
-> HABv4: Engine: Select first compatible engine (0x00)
-> HABv4: ERROR: Recompile with larger event data buffer (at least 20 byte=
-s)
-> [=E2=80=A6]
->=20
->>> The code goes back until the first incarnaction of HABv4 in commit
->>> 29abc10d44c2 - Marc, do you still know more details why it was done t=
-his
->>> way?
->>
->> This was part of the patches I picked up from fsl, see commit message
->> for more details:
->>
->> 29abc10d44c2 habv4: add High Assurance Boot v4
->>
->> Albeit giving an incorrect error message, it showed that there were
->> warnings events on the new mx6 silicon revisions that were not handled=
-
->> before 81e2b508e785.
->=20
-> Hmm, 81e2b508e785 does not match the documented API and breaks the repo=
-rt. It
-> was fixed by e7c33540d0c092c28b227d4b7602cef8ab203ef3 later on.
->=20
-> But also with e7c33540d0c092c28b227d4b7602cef8ab203ef3 the query relate=
-d to this
-> error message was changed to index 0 as well. And now, if at least one =
-event is
-> in the  buffer, this error message will always be printed. Before
-> e7c33540d0c092c28b227d4b7602cef8ab203ef3 it was (most of the time) neve=
-r be
-> printed, because it tries once again to query an index which was alread=
-y the
-> cause to leave the loop before.
-> And let me guess: you saw the error message, because your event buffer =
-contained
-> one failure and two warnings...
-
-I think there is just one warning in the buffer:
-
-> HABv4: Status: Operation completed with warning (0x69)
-> HABv4: Config: Secure IC (0xcc)
-> HABv4: State: Trusted state (0x99)
-> HABv4: ERROR: Recompile with larger event data buffer (at least 36 byte=
-s)
-
-The barebox producing that output is missing both patches:
-
-81e2b508e785 i.MX habv4: habv4_get_status(): display warning events, too
-e7c33540d0c0 i.MX: HABv4: Reset index variable after error type
-
-The question is, do we know why we see this error message? I don't have
-good feeling when we remove it, because it's annoying and we don't
-understand why we see it.
-
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde           |
-Embedded Linux                   | https://www.pengutronix.de  |
-Vertretung West/Dortmund         | Phone: +49-231-2826-924     |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-5555 |
-
-
---y56I1alGtra2aRPt8Y22ufwVqjh2a5nRn--
-
---cS7ZOBuWDHKrmbYGddZsrVjBveVNduYRQ
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEmvEkXzgOfc881GuFWsYho5HknSAFAl3ma34ACgkQWsYho5Hk
-nSAUVAf9HRgd5yO4MBs9Tjpaa/AHunhO0JMtTz/6SsfPzVKeQ+cR333VYSzGGMVa
-BMs7zIpWDox4QeOtdoemhpJ820ihxN5pHsjInukxnvfa0YmP8KVHXAZA26Dn4AoD
-/J7ODAPKHwdo171UgIvT5y0AzNJkk+wsBeXZfNu54Z4Cty+Ikl7oDGbucAEjWuVr
-MFXvWLkCaGLuIvVd5Ty4kSUNpz3R1N1+9z+YK10Qp8NSJiV8Q9Zu2YoK0QySp4pC
-aHd6SGDzh8LeQ6xrNeYUVmSjKCgF/A/YJr4MfdyiVpfpdxuwU3eHdwjlnyXYjUBY
-8q84oYy5vW0vMK2gJ+mBOS+/vlXAiQ==
-=N/uN
------END PGP SIGNATURE-----
-
---cS7ZOBuWDHKrmbYGddZsrVjBveVNduYRQ--
-
-
---===============3444066839773473329==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
-
---===============3444066839773473329==--
+T24gVHVlLCBEZWMgMDMsIDIwMTkgYXQgMDM6MDQ6NDVQTSArMDEwMCwgTWFyYyBLbGVpbmUtQnVk
+ZGUgd3JvdGU6Cj4gT24gMTIvMi8xOSAzOjMwIFBNLCBKdWVyZ2VuIEJvcmxlaXMgd3JvdGU6Cj4g
+PiBBbSBNb250YWcsIGRlbiAwMi4xMi4yMDE5LCAxNDoyNCArMDEwMCBzY2hyaWViIE1hcmMgS2xl
+aW5lLUJ1ZGRlOgo+ID4+IE9uIDEyLzIvMTkgMjowNyBQTSwgUm9sYW5kIEhpZWJlciB3cm90ZToK
+PiA+Pj4gT24gTW9uLCBEZWMgMDIsIDIwMTkgYXQgMTE6MjQ6NDhBTSArMDEwMCwgSnVlcmdlbiBC
+b3JsZWlzIHdyb3RlOgo+ID4+Pj4gVGhpcyBjaGFuZ2UgcmVtb3ZlcyB0aGUgc3R1cGlkIGVycm9y
+IG1lc3NhZ2UgYXQgdGhlIGVuZCBvZiB0aGUgZ2VuZXJhdGVkCj4gPj4+Cj4gPj4+IEkgdGhpbmsg
+dGhlcmUgd2FzIHNvbWUgcmVhc29uIGJlaGluZCB0aGF0IGNvZGUsIHNvIGl0IGlzIHByb2JhYmx5
+IG5vdAo+ID4+PiBzdHVwaWQsIGFuZCB5b3UndmUgcnVuIGludG8gYW4gZWRnZSBjYXNlIHRoYXQg
+bmV2ZXIgaGFwcGVuZWQgYmVmb3JlIChhdAo+ID4+PiBsZWFzdCBJJ3ZlIG5ldmVyIHNlZW4gdGhp
+cyBvbiBhbnkgb2YgbXkgYm9hcmRzIHdoZW4gdXNpbmcgSEFCdjQpLgo+ID4+Cj4gPj4gVGhlIGxh
+c3QgdGltZSwgSSd2ZSBzZWVuIHRoaXMgbWVzc2FnZXMgd2FzIGJlZm9yZSBpbXBsZW1lbnRpbmc6
+Cj4gPj4KPiA+PiA4MWUyYjUwOGU3ODUgaS5NWCBoYWJ2NDogaGFidjRfZ2V0X3N0YXR1cygpOiBk
+aXNwbGF5IHdhcm5pbmcgZXZlbnRzLCB0b28KPiA+Pgo+ID4+IFNvIFJvbGFuZCBpcyBwcm9iYWJs
+eSByaWdodCwgeW91J3ZlIGhpdCBhIGNvcm5lciBjYXNlLCB0aGF0J3Mgbm90Cj4gPj4gY29ycmVj
+dGx5IGhhbmRsZWQuCj4gPiAKPiA+IEhtbW06Cj4gPiAKPiA+IFvigKZdCj4gPiBiYXJlYm94IDIw
+MTkuMTEuMC0yMDE5MTEyMS0zICMxIFRodSBOb3YgMjEgMTQ6Mjg6MjEgVVRDIDIwMTkKPiA+IAo+
+ID4gQm9hcmQ6IDxzb21lIGN1c3RvbWVyIGJvYXJkPgo+ID4gZGV0ZWN0ZWQgaS5NWDYgVWx0cmFM
+aXRlIHJldmlzaW9uIDEuMgo+ID4gaS5NWCByZXNldCByZWFzb24gV0RHIChTUlNSOiAweDAwMDAw
+MDEwKQo+ID4gaS5NWDYgVWx0cmFMaXRlIHVuaXF1ZSBJRDogeHh4eHh4eHh4eHh4eHh4eAo+ID4g
+SEFCdjQ6IFN0YXR1czogT3BlcmF0aW9uIGZhaWxlZCAoMHgzMykKPiA+IEhBQnY0OiBDb25maWc6
+IE5vbi1zZWN1cmUgSUMgKDB4ZjApCj4gPiBIQUJ2NDogU3RhdGU6IE5vbi1zZWN1cmUgc3RhdGUg
+KDB4NjYpCj4gPiBIQUJ2NDogLS0tLS0tLS0gSEFCIGZhaWx1cmUgRXZlbnQgMCAtLS0tLS0tLQo+
+ID4gSEFCdjQ6IGV2ZW50IGRhdGE6Cj4gPiBIQUJ2NDogIGRiIDAwIDA4IDQyICAzMyAyMiAwYSAw
+MAo+ID4gSEFCdjQ6IFN0YXR1czogT3BlcmF0aW9uIGZhaWxlZCAoMHgzMykKPiA+IEhBQnY0OiBS
+ZWFzb246IEludmFsaWQgYWRkcmVzczogYWNjZXNzIGRlbmllZCAoMHgyMikKPiA+IEhBQnY0OiBD
+b250ZXh0OiBMb2dnZWQgaW4gaGFiX3J2dC5hdXRoZW50aWNhdGVfaW1hZ2UoKSAoMHgwYSkKPiA+
+IEhBQnY0OiBFbmdpbmU6IFNlbGVjdCBmaXJzdCBjb21wYXRpYmxlIGVuZ2luZSAoMHgwMCkKPiA+
+IEhBQnY0OiAtLS0tLS0tLSBIQUIgZmFpbHVyZSBFdmVudCAxIC0tLS0tLS0tCj4gPiBIQUJ2NDog
+ZXZlbnQgZGF0YToKPiA+IEhBQnY0OiAgZGIgMDAgMTQgNDIgIDMzIDBjIGEwIDAwCj4gPiBIQUJ2
+NDogIDAwIDAwIDAwIDAwICA4MCAwMCAwNCAwMAo+ID4gSEFCdjQ6ICAwMCAwMCAwMCAyMAo+ID4g
+SEFCdjQ6IFN0YXR1czogT3BlcmF0aW9uIGZhaWxlZCAoMHgzMykKPiA+IEhBQnY0OiBSZWFzb246
+IEludmFsaWQgYXNzZXJ0aW9uICgweDBjKQo+ID4gSEFCdjQ6IENvbnRleHQ6IEV2ZW50IGxvZ2dl
+ZCBpbiBoYWJfcnZ0LmFzc2VydCgpICgweGEwKQo+ID4gSEFCdjQ6IEVuZ2luZTogU2VsZWN0IGZp
+cnN0IGNvbXBhdGlibGUgZW5naW5lICgweDAwKQo+ID4gSEFCdjQ6IC0tLS0tLS0tIEhBQiBmYWls
+dXJlIEV2ZW50IDIgLS0tLS0tLS0KPiA+IEhBQnY0OiBldmVudCBkYXRhOgo+ID4gSEFCdjQ6ICBk
+YiAwMCAxNCA0MiAgMzMgMGMgYTAgMDAKPiA+IEhBQnY0OiAgMDAgMDAgMDAgMDAgIDgwIDAwIDA0
+IDIwCj4gPiBIQUJ2NDogIDAwIDAwIDAwIDAxCj4gPiBIQUJ2NDogU3RhdHVzOiBPcGVyYXRpb24g
+ZmFpbGVkICgweDMzKQo+ID4gSEFCdjQ6IFJlYXNvbjogSW52YWxpZCBhc3NlcnRpb24gKDB4MGMp
+Cj4gPiBIQUJ2NDogQ29udGV4dDogRXZlbnQgbG9nZ2VkIGluIGhhYl9ydnQuYXNzZXJ0KCkgKDB4
+YTApCj4gPiBIQUJ2NDogRW5naW5lOiBTZWxlY3QgZmlyc3QgY29tcGF0aWJsZSBlbmdpbmUgKDB4
+MDApCj4gPiBIQUJ2NDogLS0tLS0tLS0gSEFCIGZhaWx1cmUgRXZlbnQgMyAtLS0tLS0tLQo+ID4g
+SEFCdjQ6IGV2ZW50IGRhdGE6Cj4gPiBIQUJ2NDogIGRiIDAwIDE0IDQyICAzMyAwYyBhMCAwMAo+
+ID4gSEFCdjQ6ICAwMCAwMCAwMCAwMCAgODAgMDAgMTAgMDAKPiA+IEhBQnY0OiAgMDAgMDAgMDAg
+MDQKPiA+IEhBQnY0OiBTdGF0dXM6IE9wZXJhdGlvbiBmYWlsZWQgKDB4MzMpCj4gPiBIQUJ2NDog
+UmVhc29uOiBJbnZhbGlkIGFzc2VydGlvbiAoMHgwYykKPiA+IEhBQnY0OiBDb250ZXh0OiBFdmVu
+dCBsb2dnZWQgaW4gaGFiX3J2dC5hc3NlcnQoKSAoMHhhMCkKPiA+IEhBQnY0OiBFbmdpbmU6IFNl
+bGVjdCBmaXJzdCBjb21wYXRpYmxlIGVuZ2luZSAoMHgwMCkKPiA+IEhBQnY0OiBFUlJPUjogUmVj
+b21waWxlIHdpdGggbGFyZ2VyIGV2ZW50IGRhdGEgYnVmZmVyIChhdCBsZWFzdCA4IGJ5dGVzKQo+
+ID4gW+KApl0KPiA+IAo+ID4gYmFyZWJveCAyMDE5LjExLjAtMjAxOTExMjYtMSAjMSBXZWQgTm92
+IDI3IDEwOjE5OjIyIFVUQyAyMDE5Cj4gPiAKPiA+IEJvYXJkOiA8c29tZSBjdXN0b21lciBib2Fy
+ZD4KPiA+IGRldGVjdGVkIGkuTVg2IFVsdHJhTGl0ZSByZXZpc2lvbiAxLjIKPiA+IGkuTVggcmVz
+ZXQgcmVhc29uIFBPUiAoU1JTUjogMHgwMDAwMDAwMSkKPiA+IGkuTVg2IFVsdHJhTGl0ZSB1bmlx
+dWUgSUQ6IHh4eHh4eHh4eHh4eHh4eHgKPiA+IEhBQnY0OiBTdGF0dXM6IE9wZXJhdGlvbiBmYWls
+ZWQgKDB4MzMpCj4gPiBIQUJ2NDogQ29uZmlnOiBTZWN1cmUgSUMgKDB4Y2MpCj4gPiBIQUJ2NDog
+U3RhdGU6IFRydXN0ZWQgc3RhdGUgKDB4OTkpCj4gPiBIQUJ2NDogLS0tLS0tLS0gSEFCIGZhaWx1
+cmUgRXZlbnQgMCAtLS0tLS0tLQo+ID4gSEFCdjQ6IGV2ZW50IGRhdGE6Cj4gPiBIQUJ2NDogIGRi
+IDAwIDE0IDQyICAzMyAyMiAzMyAwMAo+ID4gSEFCdjQ6ICAwMCAwMCAwMCA1NSAgMDIgMWQgMDEg
+MDgKPiA+IEhBQnY0OiAgMDAgMDAgMDAgMDQKPiA+IEhBQnY0OiBTdGF0dXM6IE9wZXJhdGlvbiBm
+YWlsZWQgKDB4MzMpCj4gPiBIQUJ2NDogUmVhc29uOiBJbnZhbGlkIGFkZHJlc3M6IGFjY2VzcyBk
+ZW5pZWQgKDB4MjIpCj4gPiBIQUJ2NDogQ29udGV4dDogRXZlbnQgbG9nZ2VkIGluIGhhYl9ydnQu
+Y2hlY2tfdGFyZ2V0KCkgKDB4MzMpCj4gPiBIQUJ2NDogRW5naW5lOiBTZWxlY3QgZmlyc3QgY29t
+cGF0aWJsZSBlbmdpbmUgKDB4MDApCj4gPiBIQUJ2NDogRVJST1I6IFJlY29tcGlsZSB3aXRoIGxh
+cmdlciBldmVudCBkYXRhIGJ1ZmZlciAoYXQgbGVhc3QgMjAgYnl0ZXMpCj4gPiBb4oCmXQo+ID4g
+Cj4gPj4+IFRoZSBjb2RlIGdvZXMgYmFjayB1bnRpbCB0aGUgZmlyc3QgaW5jYXJuYWN0aW9uIG9m
+IEhBQnY0IGluIGNvbW1pdAo+ID4+PiAyOWFiYzEwZDQ0YzIgLSBNYXJjLCBkbyB5b3Ugc3RpbGwg
+a25vdyBtb3JlIGRldGFpbHMgd2h5IGl0IHdhcyBkb25lIHRoaXMKPiA+Pj4gd2F5Pwo+ID4+Cj4g
+Pj4gVGhpcyB3YXMgcGFydCBvZiB0aGUgcGF0Y2hlcyBJIHBpY2tlZCB1cCBmcm9tIGZzbCwgc2Vl
+IGNvbW1pdCBtZXNzYWdlCj4gPj4gZm9yIG1vcmUgZGV0YWlsczoKPiA+Pgo+ID4+IDI5YWJjMTBk
+NDRjMiBoYWJ2NDogYWRkIEhpZ2ggQXNzdXJhbmNlIEJvb3QgdjQKPiA+Pgo+ID4+IEFsYmVpdCBn
+aXZpbmcgYW4gaW5jb3JyZWN0IGVycm9yIG1lc3NhZ2UsIGl0IHNob3dlZCB0aGF0IHRoZXJlIHdl
+cmUKPiA+PiB3YXJuaW5ncyBldmVudHMgb24gdGhlIG5ldyBteDYgc2lsaWNvbiByZXZpc2lvbnMg
+dGhhdCB3ZXJlIG5vdCBoYW5kbGVkCj4gPj4gYmVmb3JlIDgxZTJiNTA4ZTc4NS4KPiA+IAo+ID4g
+SG1tLCA4MWUyYjUwOGU3ODUgZG9lcyBub3QgbWF0Y2ggdGhlIGRvY3VtZW50ZWQgQVBJIGFuZCBi
+cmVha3MgdGhlIHJlcG9ydC4gSXQKPiA+IHdhcyBmaXhlZCBieSBlN2MzMzU0MGQwYzA5MmMyOGIy
+MjdkNGI3NjAyY2VmOGFiMjAzZWYzIGxhdGVyIG9uLgo+ID4gCj4gPiBCdXQgYWxzbyB3aXRoIGU3
+YzMzNTQwZDBjMDkyYzI4YjIyN2Q0Yjc2MDJjZWY4YWIyMDNlZjMgdGhlIHF1ZXJ5IHJlbGF0ZWQg
+dG8gdGhpcwo+ID4gZXJyb3IgbWVzc2FnZSB3YXMgY2hhbmdlZCB0byBpbmRleCAwIGFzIHdlbGwu
+IEFuZCBub3csIGlmIGF0IGxlYXN0IG9uZSBldmVudCBpcwo+ID4gaW4gdGhlICBidWZmZXIsIHRo
+aXMgZXJyb3IgbWVzc2FnZSB3aWxsIGFsd2F5cyBiZSBwcmludGVkLiBCZWZvcmUKPiA+IGU3YzMz
+NTQwZDBjMDkyYzI4YjIyN2Q0Yjc2MDJjZWY4YWIyMDNlZjMgaXQgd2FzIChtb3N0IG9mIHRoZSB0
+aW1lKSBuZXZlciBiZQo+ID4gcHJpbnRlZCwgYmVjYXVzZSBpdCB0cmllcyBvbmNlIGFnYWluIHRv
+IHF1ZXJ5IGFuIGluZGV4IHdoaWNoIHdhcyBhbHJlYWR5IHRoZQo+ID4gY2F1c2UgdG8gbGVhdmUg
+dGhlIGxvb3AgYmVmb3JlLgo+ID4gQW5kIGxldCBtZSBndWVzczogeW91IHNhdyB0aGUgZXJyb3Ig
+bWVzc2FnZSwgYmVjYXVzZSB5b3VyIGV2ZW50IGJ1ZmZlciBjb250YWluZWQKPiA+IG9uZSBmYWls
+dXJlIGFuZCB0d28gd2FybmluZ3MuLi4KPiAKPiBJIHRoaW5rIHRoZXJlIGlzIGp1c3Qgb25lIHdh
+cm5pbmcgaW4gdGhlIGJ1ZmZlcjoKPiAKPiA+IEhBQnY0OiBTdGF0dXM6IE9wZXJhdGlvbiBjb21w
+bGV0ZWQgd2l0aCB3YXJuaW5nICgweDY5KQo+ID4gSEFCdjQ6IENvbmZpZzogU2VjdXJlIElDICgw
+eGNjKQo+ID4gSEFCdjQ6IFN0YXRlOiBUcnVzdGVkIHN0YXRlICgweDk5KQo+ID4gSEFCdjQ6IEVS
+Uk9SOiBSZWNvbXBpbGUgd2l0aCBsYXJnZXIgZXZlbnQgZGF0YSBidWZmZXIgKGF0IGxlYXN0IDM2
+IGJ5dGVzKQo+IAo+IFRoZSBiYXJlYm94IHByb2R1Y2luZyB0aGF0IG91dHB1dCBpcyBtaXNzaW5n
+IGJvdGggcGF0Y2hlczoKPiAKPiA4MWUyYjUwOGU3ODUgaS5NWCBoYWJ2NDogaGFidjRfZ2V0X3N0
+YXR1cygpOiBkaXNwbGF5IHdhcm5pbmcgZXZlbnRzLCB0b28KPiBlN2MzMzU0MGQwYzAgaS5NWDog
+SEFCdjQ6IFJlc2V0IGluZGV4IHZhcmlhYmxlIGFmdGVyIGVycm9yIHR5cGUKPiAKPiBUaGUgcXVl
+c3Rpb24gaXMsIGRvIHdlIGtub3cgd2h5IHdlIHNlZSB0aGlzIGVycm9yIG1lc3NhZ2U/IEkgZG9u
+J3QgaGF2ZQo+IGdvb2QgZmVlbGluZyB3aGVuIHdlIHJlbW92ZSBpdCwgYmVjYXVzZSBpdCdzIGFu
+bm95aW5nIGFuZCB3ZSBkb24ndAo+IHVuZGVyc3RhbmQgd2h5IHdlIHNlZSBpdC4KClRoZSBtZXNz
+YWdlIGlzIHdyb25nIGJlY2F1c2UgdGhlIGNvZGUgaXMgd3JvbmcuIExldCdzIHNlZToKCiAgICAg
+ICAgLyogQ2hlY2sgcmVhc29uIGZvciBzdG9wcGluZyAqLwogICAgICAgIGxlbiA9IHNpemVvZihk
+YXRhKTsKICAgICAgICBpbmRleCA9IDA7CiAgICAgICAgaWYgKHJ2dC0+cmVwb3J0X2V2ZW50KEhB
+Ql9TVEFUVVNfQU5ZLCBpbmRleCwgTlVMTCwgJmxlbikgPT0gSEFCX1NUQVRVU19TVUNDRVNTKQog
+ICAgICAgICAgICAgICAgcHJfZXJyKCJFUlJPUjogUmVjb21waWxlIHdpdGggbGFyZ2VyIGV2ZW50
+IGRhdGEgYnVmZmVyIChhdCBsZWFzdCAlZCBieXRlcylcblxuIiwgbGVuKTsKCnJlcG9ydF9ldmVu
+dCgpIGxpa2UgY2FsbGVkIGFib3ZlIHdpbGwgZ2l2ZSB5b3UgdGhlIGZpcnN0IG1lc3NhZ2Ugb2Yg
+YW55CnR5cGUgKEhBQl9TVEFUVVNfQU5ZKSB3aXRoIGluZGV4IDAuIEl0IHdpbGwgZG8gc28gc3Vj
+Y2Vzc2Z1bGx5LCBzbyBpdApyZXR1cm5zIEhBQl9TVEFUVVNfU1VDQ0VTUy4KCiZsZW4gb24gZW50
+cnkgbWVhbnMgdGhlIGxlbmd0aCBvZiB0aGUgYnVmZmVyIChoZXJlIHNpemVvZihkYXRhKSwgbGFy
+Z2UKZW5vdWdoKS4gJmxlbiBvbiBleGl0IGlzIHRoZSBsZW5ndGggb2YgdGhlIGFjdHVhbCBtZXNz
+YWdlIHJldHVybmVkLiBJZgombGVuIGlzIHNtYWxsZXIgdGhhbiBvbiBlbnRyeSBpdCBtZWFucyB0
+aGUgbWVzc2FnZSBidWZmZXIgd2FzIGJpZwplbm91Z2guIElmIGl0J3MgYmlnZ2VyLCB0aGVuIHdl
+IG11c3QgaW5jcmVhc2UgdGhlIGJ1ZmZlciBzaXplIGFuZCBjYWxsCmFnYWluLgoKVGhlIG1lc3Nh
+Z2UgYnVmZmVyIGlzIGJpZyBlbm91Z2gsIHNvIHJlcG9ydF9ldmVudCBjb3BpZXMgdGhlIGJ1ZmZl
+cgphbmQgcmV0dXJucyAzNiBieXRlcyB3ZXJlIGNvcGllZCwgYnV0IHdlIGFuc3dlciB3aXRoICJF
+cnJvcjogUmVjb21waWxlCndpdGggYSBsYXJnZXIgZXZlbnQgZGF0YSBidWZmZXIiLgoKU2FzY2hh
+CgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIHwKU3RldWVyd2FsZGVyIFN0ci4gMjEgICAgICAgICAgICAg
+ICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKMzExMzcgSGlsZGVzaGVp
+bSwgR2VybWFueSAgICAgICAgICAgICAgICAgIHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAg
+IHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0
+OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFk
+Lm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
