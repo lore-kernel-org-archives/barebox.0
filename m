@@ -1,19 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1idEWQ-0002eL-OZ
- for barebox@lists.infradead.org; Fri, 06 Dec 2019 14:23:56 +0000
-Date: Fri, 6 Dec 2019 15:23:52 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191206142352.dqlneyrq4jd3ukya@pengutronix.de>
-References: <1575380921-160915-1-git-send-email-s.riedmueller@phytec.de>
- <20191205080755.nc2ao3hjb5eli7ud@pengutronix.de>
- <67c1cd67-9156-9e43-2be4-b3502877d95f@pengutronix.de>
- <b75f1cd1-7f49-007e-11f6-80544d729fe4@phytec.de>
- <4fc52985-bcfb-f6e4-0a87-7a3d710baa45@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <4fc52985-bcfb-f6e4-0a87-7a3d710baa45@pengutronix.de>
+Received: from mickerik.phytec.de ([195.145.39.210])
+ by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1ic9Ak-0000IT-1C
+ for barebox@lists.infradead.org; Tue, 03 Dec 2019 14:29:03 +0000
+From: Stefan Riedmueller <s.riedmueller@phytec.de>
+Date: Tue, 3 Dec 2019 15:28:59 +0100
+Message-Id: <1575383339-231689-1-git-send-email-s.riedmueller@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,41 +14,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: dts: imx6qdl: phycore: Remove emmc vmmc-supply
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: boards: phytec-som-imx6: Replace spi by spi-nor in
+ bootsource script
+To: barebox@lists.infradead.org
 
-On Thu, Dec 05, 2019 at 02:31:53PM +0100, Ahmad Fatoum wrote:
-> Hi,
-> =
+Commit 7802c6f891b7 ("ARM: i.MX6: boot: Return BOOTSOURCE_SPI_NOR, not
+BOOTSOURCE_SPI") changed the returned boot source for SPI NOR on i.MX 6
+from SPI to SPI_NOR. This needs to be accounted for in the bootsource
+scripts.
 
-> On 12/5/19 2:08 PM, Stefan Riedm=FCller wrote:
-> > What about regulators that are marked as regulator-always-on but need v=
-oltage adjustments? Or isn't this a real use case for the bootloader?
-> =
+Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
+---
+ .../phytec-som-imx6/defaultenv-physom-imx6-phycore/init/bootsource      | 2 +-
+ arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/init/bootsource  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-> If someone absolutely need the voltage adjustments, they'll have to imple=
-ment
-> a proper regulator driver to realize it[1]. The [barebox,]regulator-alway=
-s-on
-> handling I suggest, is only a fallback if there is no regulator found.
+diff --git a/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6-phycore/init/bootsource b/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6-phycore/init/bootsource
+index 515613b04161..fa5f7f26c5a7 100644
+--- a/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6-phycore/init/bootsource
++++ b/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6-phycore/init/bootsource
+@@ -12,7 +12,7 @@ if [ $bootsource = mmc ]; then
+ 	fi
+ elif [ $bootsource = nand ]; then
+ 	global.boot.default="nand spi emmc mmc net"
+-elif [ $bootsource = spi ]; then
++elif [ $bootsource = spi-nor ]; then
+ 	global.boot.default="spi nand emmc mmc net"
+ elif [ $bootsource = net ]; then
+ 	global.boot.default="net nand spi emmc mmc"
+diff --git a/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/init/bootsource b/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/init/bootsource
+index 3f2ff4bcc836..9c9f0ec3810f 100644
+--- a/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/init/bootsource
++++ b/arch/arm/boards/phytec-som-imx6/defaultenv-physom-imx6/init/bootsource
+@@ -8,7 +8,7 @@ if [ $bootsource = mmc ]; then
+ 	global.boot.default="mmc nand spi net"
+ elif [ $bootsource = nand ]; then
+ 	global.boot.default="nand spi mmc net"
+-elif [ $bootsource = spi ]; then
++elif [ $bootsource = spi-nor ]; then
+ 	global.boot.default="spi nand mmc net"
+ elif [ $bootsource = net ]; then
+ 	global.boot.default="net nand spi mmc"
+-- 
+2.7.4
 
-What if the driver is present but not yet probed? We would return a
-dummy regulator and no longer -EPROBE_DEFER.
-
-Sascha
-
-
--- =
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
