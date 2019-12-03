@@ -1,19 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ic7ay-00015y-KS
- for barebox@lists.infradead.org; Tue, 03 Dec 2019 12:48:02 +0000
+ id 1ic7ay-00015x-KN
+ for barebox@lists.infradead.org; Tue, 03 Dec 2019 12:48:01 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1ic7av-0006ou-Ik
+ (envelope-from <str@pengutronix.de>) id 1ic7av-0006ot-Ik
  for barebox@lists.infradead.org; Tue, 03 Dec 2019 13:47:57 +0100
 Received: from str by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1ic7aq-0002z6-UG
+ (envelope-from <str@pengutronix.de>) id 1ic7aq-0002z8-V9
  for barebox@lists.infradead.org; Tue, 03 Dec 2019 13:47:52 +0100
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Tue,  3 Dec 2019 13:47:47 +0100
-Message-Id: <20191203124748.11400-1-s.trumtrar@pengutronix.de>
+Date: Tue,  3 Dec 2019 13:47:48 +0100
+Message-Id: <20191203124748.11400-2-s.trumtrar@pengutronix.de>
+In-Reply-To: <20191203124748.11400-1-s.trumtrar@pengutronix.de>
+References: <20191203124748.11400-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -27,314 +29,95 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] imd: add support for checksum generation/verification
+Subject: [PATCH 2/2] commands: bbu: add support for imd checksum
 To: Barebox List <barebox@lists.infradead.org>
 
-Add a new imd type "checksum". This type consists of the CRC32 checksum
-of the whole barebox image minus the checksum itself.
-The checksum can be written to the imd field with the bareboximd host-tool.
-It can be verified with said tool or with "imd" on the target.
+Add support for verifying an image by use of the imd checksum.
+If the checksum that is saved in the image and the one that is
+calculated over the image differ, barebox_update aborts.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- commands/imd.c           |   1 +
- common/imd-barebox.c     |   1 +
- common/imd.c             | 115 ++++++++++++++++++++++++++++++++++++++-
- include/image-metadata.h |  17 ++++++
- scripts/bareboximd.c     |  32 +++++++++++
- 5 files changed, 165 insertions(+), 1 deletion(-)
+ commands/barebox-update.c | 9 +++++++--
+ common/bbu.c              | 6 ++++++
+ include/bbu.h             | 1 +
+ 3 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/commands/imd.c b/commands/imd.c
-index f1a22cef96bd..16ab7290c920 100644
---- a/commands/imd.c
-+++ b/commands/imd.c
-@@ -46,6 +46,7 @@ BAREBOX_CMD_HELP_TEXT("Options:")
- BAREBOX_CMD_HELP_OPT ("-t <type>", "only show information of <type>")
- BAREBOX_CMD_HELP_OPT ("-n <no>", "for tags with multiple strings only show string <no>")
- BAREBOX_CMD_HELP_OPT ("-s VARNAME",  "set variable VARNAME instead of showing information")
-+BAREBOX_CMD_HELP_OPT ("-V",  "Verify checksum of image")
- BAREBOX_CMD_HELP_TEXT("")
- BAREBOX_CMD_HELP_TEXT("Without options all information available is printed. Valid types are:")
- BAREBOX_CMD_HELP_TEXT("release, build, model, of_compatible")
-diff --git a/common/imd-barebox.c b/common/imd-barebox.c
-index e9cd37d83ec8..4aec51bfbdc2 100644
---- a/common/imd-barebox.c
-+++ b/common/imd-barebox.c
-@@ -23,3 +23,4 @@ __BAREBOX_IMD_SECTION(.barebox_imd_end) = {
- 
- BAREBOX_IMD_TAG_STRING(imd_build_tag, IMD_TYPE_BUILD, UTS_VERSION, 1);
- BAREBOX_IMD_TAG_STRING(imd_release_tag, IMD_TYPE_RELEASE, UTS_RELEASE, 1);
-+BAREBOX_IMD_CRC(imd_checksum, 0x0, 1);
-diff --git a/common/imd.c b/common/imd.c
-index 913a01de87bf..c62507f0ad5d 100644
---- a/common/imd.c
-+++ b/common/imd.c
-@@ -22,6 +22,7 @@
- #include <getopt.h>
- #include <malloc.h>
+diff --git a/commands/barebox-update.c b/commands/barebox-update.c
+index 53af2a851137..10ea4dd915cc 100644
+--- a/commands/barebox-update.c
++++ b/commands/barebox-update.c
+@@ -23,6 +23,7 @@
+ #include <errno.h>
+ #include <bbu.h>
  #include <fs.h>
-+#include <crc.h>
++#include <image-metadata.h>
  
- #ifndef CONFIG_CMD_IMD
- int imd_command_setenv(const char *variable_name, const char *value)
-@@ -167,6 +168,9 @@ static struct imd_type_names imd_types[] = {
- 	}, {
- 		.type = IMD_TYPE_OF_COMPATIBLE,
- 		.name = "of_compatible",
-+	}, {
-+		.type = IMD_TYPE_CHECKSUM,
-+		.name = "checksum",
- 	},
- };
+ static void print_handlers_list(void)
+ {
+@@ -39,7 +40,7 @@ static int do_barebox_update(int argc, char *argv[])
+ 	const char *name;
+ 	const char *fmt;
  
-@@ -287,6 +291,102 @@ const char *imd_get_param(const struct imd_header *imd, const char *name)
- 	return NULL;
- }
- 
-+static int imd_calculate_crc32(void *input, const struct imd_header *imd_start,
-+			const struct imd_header **imd_crc, uint32_t *crc,
-+			size_t size)
-+{
-+	int length;
-+	const struct imd_header *imd;
-+	int end_ofs = (char *)imd_start - (char *)input + sizeof(char) * 8;
-+
-+	*crc = crc32(*crc, input, end_ofs);
-+	debug("Calculated checksum from %d to %d: 0x%08x\n", 0, end_ofs, *crc);
-+
-+	input += end_ofs;
-+
-+	imd_for_each(imd_start, imd) {
-+		length = imd_read_length(imd);
-+		length = ALIGN(length, 4);
-+		length += 8;
-+
-+		if (imd_read_type(imd) != IMD_TYPE_CHECKSUM) {
-+			*crc = crc32(*crc, input, length);
-+			debug("Calculated checksum from %d to %d: 0x%08x\n",
-+			      end_ofs, end_ofs + length, *crc);
-+		} else {
-+			*imd_crc = imd;
-+		}
-+
-+		end_ofs += length;
-+		input += length;
-+	}
-+
-+	*crc = crc32(*crc, input, size - end_ofs);
-+	debug("Calculated checksum from %d to %d: 0x%08x\n", end_ofs,
-+	      end_ofs + (size - end_ofs), *crc);
-+
-+	return 0;
-+}
-+
-+static int imd_write_crc32(void *buf, const struct imd_header *imd_start,
-+		    const char *filename, size_t size)
-+{
-+	const struct imd_header *imd_crc;
-+	uint32_t crc = 0;
-+
-+	imd_calculate_crc32(buf, imd_start, &imd_crc, &crc, size);
-+	debug("Calculated crc: 0x%08x\n", crc);
-+
-+	if (!imd_crc) {
-+		debug("No tag of type 0x%08x found\n", IMD_TYPE_CHECKSUM);
-+
-+		return -ENODATA;
-+	} else {
-+		uint32_t *p = (uint32_t *)(imd_crc + 1);
-+
-+		if (*p != crc) {
-+			debug("Update crc 0x%08x to 0x%08x\n", *p, crc);
-+			*p = crc;
-+
-+			write_file(filename, buf, size);
-+		}
-+	}
-+
-+	return 0;
-+};
-+
-+int imd_verify_crc32(void *buf, size_t size)
-+{
-+	const struct imd_header *imd_start;
-+	const struct imd_header *imd_crc;
-+	uint32_t crc = 0;
-+
-+	imd_start = imd_get(buf, size);
-+	if (IS_ERR(imd_start))
-+		return PTR_ERR(imd_start);
-+
-+	imd_calculate_crc32(buf, imd_start, &imd_crc, &crc, size);
-+	debug("Calculated crc: 0x%08x\n", crc);
-+
-+	if (!imd_crc) {
-+		debug("No tag of type 0x%08x found\n", IMD_TYPE_CHECKSUM);
-+
-+		return -ENOENT;
-+	} else {
-+		uint32_t *p = (uint32_t *)(imd_crc + 1);
-+
-+		if (*p != crc) {
-+			eprintf("CRC: image corrupted. Found checksum 0x%08x instead of 0x%08x\n",
-+			       *p, crc);
-+			return -EINVAL;
-+		} else {
-+			printf("CRC: valid\n");
-+		}
-+	}
-+
-+	return 0;
-+};
-+
- int imd_command_verbose;
- 
- int imd_command(int argc, char *argv[])
-@@ -299,10 +399,12 @@ int imd_command(int argc, char *argv[])
- 	const char *filename;
- 	const char *variable_name = NULL;
- 	char *str;
-+	uint32_t checksum = 0;
-+	uint32_t verify = 0;
- 
- 	imd_command_verbose = 0;
- 
--	while ((opt = getopt(argc, argv, "vt:s:n:")) > 0) {
-+	while ((opt = getopt(argc, argv, "vt:s:n:cV")) > 0) {
- 		switch(opt) {
- 		case 't':
- 			type = imd_name_to_type(optarg);
-@@ -320,6 +422,12 @@ int imd_command(int argc, char *argv[])
- 		case 'n':
- 			strno = simple_strtoul(optarg, NULL, 0);
+-	while ((opt = getopt(argc, argv, "t:yf:ld:r")) > 0) {
++	while ((opt = getopt(argc, argv, "t:yf:ld:rV")) > 0) {
+ 		switch (opt) {
+ 		case 'd':
+ 			data.devicefile = optarg;
+@@ -60,6 +61,9 @@ static int do_barebox_update(int argc, char *argv[])
+ 		case 'r':
+ 			repair = 1;
  			break;
-+		case 'c':
-+			checksum = 1;
-+			break;
 +		case 'V':
-+			verify = 1;
++			data.flags |= BBU_FLAG_VERIFY;
 +			break;
  		default:
- 			return -ENOSYS;
+ 			return COMMAND_ERROR_USAGE;
  		}
-@@ -342,6 +450,11 @@ int imd_command(int argc, char *argv[])
- 		goto out;
- 	}
+@@ -119,12 +123,13 @@ BAREBOX_CMD_HELP_OPT("-d DEVICE", "write image to DEVICE")
+ BAREBOX_CMD_HELP_OPT("-r\t", "refresh or repair. Do not update, but repair an existing image")
+ BAREBOX_CMD_HELP_OPT("-y\t", "autom. use 'yes' when asking confirmations")
+ BAREBOX_CMD_HELP_OPT("-f LEVEL", "set force level")
++BAREBOX_CMD_HELP_OPT("-V\t", "Validate checksum of image")
+ BAREBOX_CMD_HELP_END
  
-+	if (checksum)
-+		imd_write_crc32(buf, imd_start, filename, size);
-+	if (verify)
-+		imd_verify_crc32(buf, size);
-+
- 	if (type == IMD_TYPE_INVALID) {
- 		imd_for_each(imd_start, imd) {
- 			uint32_t type = imd_read_type(imd);
-diff --git a/include/image-metadata.h b/include/image-metadata.h
-index 5904d95acd37..fee5a7546bd7 100644
---- a/include/image-metadata.h
-+++ b/include/image-metadata.h
-@@ -25,6 +25,7 @@
- #define IMD_TYPE_MODEL		0x640c8004 /* The board name this image is for */
- #define IMD_TYPE_OF_COMPATIBLE	0x640c8005 /* the device tree compatible string */
- #define IMD_TYPE_PARAMETER	0x640c8006 /* A generic parameter. Use key=value as data */
-+#define IMD_TYPE_CHECKSUM	0x640c0007 /* the checksum of the barebox images */
- #define IMD_TYPE_END		0x640c7fff
- #define IMD_TYPE_INVALID	0xffffffff
+ BAREBOX_CMD_START(barebox_update)
+ 	.cmd		= do_barebox_update,
+ 	BAREBOX_CMD_DESC("update barebox to persistent media")
+-	BAREBOX_CMD_OPTS("[-ltdyfr] [IMAGE]")
++	BAREBOX_CMD_OPTS("[-ltdyfrV] [IMAGE]")
+ 	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
+ 	BAREBOX_CMD_HELP(cmd_barebox_update_help)
+ BAREBOX_CMD_END
+diff --git a/common/bbu.c b/common/bbu.c
+index 00bec32a860a..4bca4b598c4c 100644
+--- a/common/bbu.c
++++ b/common/bbu.c
+@@ -206,6 +206,12 @@ static int bbu_check_metadata(struct bbu_data *data)
+ 	if (ret)
+ 		return ret;
  
-@@ -51,6 +52,14 @@ static inline int imd_is_string(uint32_t type)
- 	return (type & 0x8000) ? 1 : 0;
- }
- 
-+/*
-+ * A IMD int.
-+ */
-+struct imd_entry_uint32 {
-+	struct imd_header header;
-+	uint32_t data;
-+};
-+
- static inline int imd_type_valid(uint32_t type)
- {
- 	return (type & 0xffff0000) == 0x640c0000;
-@@ -90,6 +99,7 @@ const char *imd_get_param(const struct imd_header *imd, const char *name);
- extern int imd_command_verbose;
- int imd_command_setenv(const char *variable_name, const char *value);
- int imd_command(int argc, char *argv[]);
-+int imd_verify_crc32(void *buf, size_t size);
- 
- #ifdef __BAREBOX__
- 
-@@ -107,6 +117,13 @@ int imd_command(int argc, char *argv[]);
- 		.data = _string,							\
- 	}
- 
-+#define BAREBOX_IMD_CRC(_name, _crc, _keep_if_unused)					\
-+	const struct imd_entry_uint32 __barebox_imd_##__name 				\
-+  	__BAREBOX_IMD_SECTION(.barebox_imd_ ## _keep_if_unused ## _ ## _name) = {	\
-+		.header.type = cpu_to_le32(IMD_TYPE_CHECKSUM),				\
-+		.header.datalength = cpu_to_le32(sizeof(uint32_t)),			\
-+		.data = _crc,								\
-+  }
- 
- #ifdef CONFIG_IMD
- void imd_used(const void *);
-diff --git a/scripts/bareboximd.c b/scripts/bareboximd.c
-index 5ef91831c457..b9056cdca7d9 100644
---- a/scripts/bareboximd.c
-+++ b/scripts/bareboximd.c
-@@ -33,6 +33,7 @@
- #include <errno.h>
- #include <stdarg.h>
- #include <linux/err.h>
-+#include <linux/kernel.h>
- 
- #include "../include/image-metadata.h"
- 
-@@ -57,6 +58,35 @@ int imd_command_setenv(const char *variable_name, const char *value)
- 	return -EINVAL;
- }
- 
-+static int write_file(const char *filename, const void *buf, size_t size)
-+{
-+	int fd, ret;
-+	int now;
-+
-+	fd = open(filename, O_WRONLY | O_TRUNC | O_CREAT);
-+	if (fd < 0)
-+		return fd;
-+
-+	while (size) {
-+		now = write(fd, buf, size);
-+		if (now == 0) {
-+			errno = ENOSPC;
-+			return -1;
-+		}
-+		if (now < 0)
-+			return now;
-+		size -= now;
-+		buf += now;
++	if (data->flags & BBU_FLAG_VERIFY) {
++		ret = imd_verify_crc32((void *)data->image, data->len);
++		if (ret)
++			return ret;
 +	}
 +
-+	close(fd);
-+
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
- static int read_file_2(const char *filename, size_t *size, void **outbuf, size_t max_size)
- {
- 	off_t fsize;
-@@ -129,6 +159,8 @@ static unsigned long simple_strtoul(const char *cp, char **endp, unsigned int ba
- 	return strtoul(cp, endp, base);
+ 	return 0;
  }
  
-+#include "../include/xfuncs.h"
-+#include "../crypto/crc32.c"
- #include "../common/imd.c"
- 
- static void usage(const char *prgname)
+diff --git a/include/bbu.h b/include/bbu.h
+index 9da6785d2e67..56c61093bba2 100644
+--- a/include/bbu.h
++++ b/include/bbu.h
+@@ -9,6 +9,7 @@
+ struct bbu_data {
+ #define BBU_FLAG_FORCE	(1 << 0)
+ #define BBU_FLAG_YES	(1 << 1)
++#define BBU_FLAG_VERIFY	(1 << 2)
+ 	unsigned long flags;
+ 	int force;
+ 	const void *image;
 -- 
 2.24.0
 
