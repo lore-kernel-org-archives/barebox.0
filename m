@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ieG4l-0004rF-Q2
- for barebox@lists.infradead.org; Mon, 09 Dec 2019 10:15:37 +0000
-Date: Mon, 9 Dec 2019 11:15:31 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-Message-ID: <20191209101531.jzbivhbpgq3osenn@pengutronix.de>
-References: <20191209100034.16755-1-s.hauer@pengutronix.de>
+ id 1icUDK-0001Ag-8s
+ for barebox@lists.infradead.org; Wed, 04 Dec 2019 12:57:07 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed,  4 Dec 2019 13:56:50 +0100
+Message-Id: <20191204125659.22506-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191209100034.16755-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,61 +19,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Revert "mci: core: make mci_register -EPROBE_DEFER
- sensitive"
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 0/9] efi: add PCI controller driver
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Hi Sascha,
+This series adds support for reusing existing barebox PCI drivers under
+EFI. This means implementation of the EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_GUID,
+instead of EFI_PCI_IO_PROTOCOL_GUID, which abstracts the devices and
+handles enumeration.
 
-On 19-12-09 11:00, Sascha Hauer wrote:
-> The patch does the right thing: When a regulator can't be found and
-> -EPROBE_DEFER is returned we forward it. However, we have several boards
-> in the tree which do not have any driver for the regulator, but still
-> work because the regulator is enabled by default or by board code.
-> 
-> Revert this patch until a solution for these board is found.
+This was tested with the default QEMU x86_64 machine and OVMF (Tianocore)
+as UEFI firmware and an emulated 8250_pci (driver included in this
+series):
 
-Unfortunately those boards relying on a wrong default behaviour.
+qemu-system-x86_64 -pflash OVMF.fd -device pci-serial,chardev=cdev0 \
+	-chardev file,id=cdev0,path=COM -nographic /dev/sdb
 
-> This reverts commit 2e16c52ea277dd002235835a10f349233c31d965.
+Driver is written against UEFI Specification 2.1D. This is my first
+dabble with PCI controllers, so please take a more thorough look.
 
-Anyway if it breaks to much we need to revert it. Should we add a
-comment to told future developers to don't add the check here again?
+Thanks!
+Ahmad
 
-Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
 
-Regards,
-  Marco
-> ---
->  drivers/mci/mci-core.c | 4 ----
->  1 file changed, 4 deletions(-)
-> 
-> diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-> index 9e39cbbb55..67257bcd18 100644
-> --- a/drivers/mci/mci-core.c
-> +++ b/drivers/mci/mci-core.c
-> @@ -1819,10 +1819,6 @@ int mci_register(struct mci_host *host)
->  
->  	host->supply = regulator_get(host->hw_dev, "vmmc");
->  	if (IS_ERR(host->supply)) {
-> -		if (host->supply == ERR_PTR(-EPROBE_DEFER)) {
-> -			ret = -EPROBE_DEFER;
-> -			goto err_free;
-> -		}
->  		dev_err(&mci->dev, "Failed to get 'vmmc' regulator.\n");
->  		host->supply = NULL;
->  	}
-> -- 
-> 2.24.0
-> 
-> 
+Ahmad Fatoum (9):
+  efi: add and use new efi_device_has_guid helper
+  driver: add missing parentheses around macro argument
+  efi: fix off-by-one in mem_malloc_init(..., end)
+  x86: efi: lds: don't discard any relocation sections
+  PCI: add driver_data member to struct pci_device_id
+  PCI: copy over some Linux PCI helpers
+  efi: turn set of defines into enumerations
+  pci: add EFI PCI root bridge IO protocol driver
+  serial: add support for PCI NS16550 UARTs
+
+ arch/x86/mach-efi/elf_x86_64_efi.lds.S |    7 +-
+ common/efi/efi.c                       |    2 +-
+ drivers/block/efi-block-io.c           |   11 +-
+ drivers/efi/Kconfig                    |    1 +
+ drivers/efi/efi-device.c               |   11 +-
+ drivers/pci/Kconfig                    |    5 +
+ drivers/pci/Makefile                   |    1 +
+ drivers/pci/bus.c                      |   26 +
+ drivers/pci/pci-efi.c                  |  311 ++
+ drivers/pci/pci-efi.h                  |  331 ++
+ drivers/serial/Kconfig                 |    8 +
+ drivers/serial/Makefile                |    1 +
+ drivers/serial/serial_ns16550_pci.c    | 5311 ++++++++++++++++++++++++
+ include/driver.h                       |    4 +-
+ include/efi.h                          |   42 +-
+ include/efi/efi-device.h               |   12 +
+ include/linux/mod_devicetable.h        |    1 +
+ include/linux/pci.h                    |   34 +
+ 18 files changed, 6073 insertions(+), 46 deletions(-)
+ create mode 100644 drivers/pci/pci-efi.c
+ create mode 100644 drivers/pci/pci-efi.h
+ create mode 100644 drivers/serial/serial_ns16550_pci.c
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.24.0
+
 
 _______________________________________________
 barebox mailing list
