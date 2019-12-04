@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ieFHL-0002FY-0L
- for barebox@lists.infradead.org; Mon, 09 Dec 2019 09:24:32 +0000
-Date: Mon, 9 Dec 2019 10:24:28 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191209092428.2cjqq2n7sgpwd3fo@pengutronix.de>
+ id 1icX6J-00024p-Lx
+ for barebox@lists.infradead.org; Wed, 04 Dec 2019 16:02:05 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed,  4 Dec 2019 17:01:59 +0100
+Message-Id: <20191204160200.4920-2-a.fatoum@pengutronix.de>
+In-Reply-To: <20191204160200.4920-1-a.fatoum@pengutronix.de>
 References: <20191204160200.4920-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191204160200.4920-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,35 +21,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] images: i.MX: rearrange image rules in preparation
- for boilerplate removal
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/3] ARM: i.MX: introduce imx_image_rule variable for code
+ deduplication
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Wed, Dec 04, 2019 at 05:01:58PM +0100, Ahmad Fatoum wrote:
-> The following commit will introduce a variable define to remove the
-> duplication in the different [supe]*imximg rules.
-> 
-> Prepare for this by rearranging the command line flags to line up with
-> the letters in the extension (i.e. -e -s for esimximg instead of -s -e)
-> and by splitting off a multi-target rule into two.
-> 
-> The former improves readability when the define is introduced, as it is
-> then easy to see the correspondence between extension and arguments.
-> 
-> The latter is needed because we will call the variable for each target.
-> 
-> No functional change.
+The next patch will add the .imxcfg file as a rule prerequisite, so the
+target is rebuilt if it changes. Instead of duplicating it in all rules,
+factor out the common parts into a imx_image_rule variable.
 
-Applied, thanks
+No functional change.
 
-Sascha
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ images/Makefile.imx | 32 +++++++++++---------------------
+ 1 file changed, 11 insertions(+), 21 deletions(-)
 
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index 53d4ac8202c5..078b6b9d6a93 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -23,28 +23,18 @@ endef
+ # %.imximg - convert into i.MX image
+ # ----------------------------------------------------------------
+ 
+-$(obj)/%.imximg: $(obj)/% FORCE
+-	$(call if_changed,imx_image,$(CFG_$(@F)),)
+-
+-$(obj)/%.pimximg: $(obj)/% FORCE
+-	$(call if_changed,imx_image,$(CFG_$(patsubst %.pimximg,%.imximg,$(@F))),\
+-	-p $($(patsubst $(obj)/%.pblb,PBL_MEMORY_SIZE_%,$<)))
+-
+-$(obj)/%.psimximg: $(obj)/% FORCE
+-	$(call if_changed,imx_image,$(CFG_$(patsubst %.psimximg,%.imximg,$(@F))),\
+-	-p $($(patsubst $(obj)/%.pblb,PBL_MEMORY_SIZE_%,$<)) -s)
+-
+-$(obj)/%.simximg: $(obj)/% FORCE
+-	$(call if_changed,imx_image,$(CFG_$(patsubst %.simximg,%.imximg,$(@F))),-s)
+-
+-$(obj)/%.usimximg: $(obj)/% FORCE
+-	$(call if_changed,imx_image,$(CFG_$(patsubst %.usimximg,%.imximg,$(@F))),-u -s)
+-
+-$(obj)/%.esimximg: $(obj)/% FORCE
+-	$(call if_changed,imx_image,$(CFG_$(patsubst %.esimximg,%.imximg,$(@F))),-e -s)
++define imx_image_rule
++$$(obj)/%.$(strip $(1)): $$(obj)/% FORCE
++	$$(call if_changed,imx_image,$$(CFG_$$(patsubst %.$(strip $(1)),%.imximg,$$(@F))),$(strip $(2)))
++endef
+ 
+-$(obj)/%.esimximg.dek: $(obj)/% FORCE
+-	$(call if_changed,imx_image,$(CFG_$(patsubst %.esimximg,%.imximg,$(@F))),-e -s)
++$(eval $(call imx_image_rule,imximg))
++$(eval $(call imx_image_rule,pimximg, -p $($(patsubst $(obj)/%.pblb,PBL_MEMORY_SIZE_%,$<))))
++$(eval $(call imx_image_rule,psimximg, -p $($(patsubst $(obj)/%.pblb,PBL_MEMORY_SIZE_%,$<)) -s))
++$(eval $(call imx_image_rule,simximg, -s))
++$(eval $(call imx_image_rule,usimximg, -u -s))
++$(eval $(call imx_image_rule,esimximg, -e -s))
++$(eval $(call imx_image_rule,esimximg.dek, -e -s))
+ 
+ .SECONDEXPANSION:
+ $(obj)/%.img.dek: $(obj)/$$(FILE_$$(@F))
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.24.0
+
 
 _______________________________________________
 barebox mailing list
