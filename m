@@ -1,21 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ieGRU-00061k-G1
- for barebox@lists.infradead.org; Mon, 09 Dec 2019 10:39:05 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[127.0.0.1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>) id 1ieGRR-0001a7-7k
- for barebox@lists.infradead.org; Mon, 09 Dec 2019 11:39:01 +0100
-References: <20191204125659.22506-1-a.fatoum@pengutronix.de>
- <20191204125659.22506-9-a.fatoum@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <0a1b179b-399b-e28f-aaa2-d4215496fdd5@pengutronix.de>
-Date: Mon, 9 Dec 2019 11:39:01 +0100
+Received: from relay5-d.mail.gandi.net ([217.70.183.197])
+ by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1icVK1-0000sr-Q9
+ for barebox@lists.infradead.org; Wed, 04 Dec 2019 14:08:06 +0000
+Received: from geraet.pengutronix.de (hazel.nat.pengutronix.de [85.220.165.66])
+ (Authenticated sender: ahmad@a3f.at)
+ by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 9C2B61C000B
+ for <barebox@lists.infradead.org>; Wed,  4 Dec 2019 14:07:26 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Wed,  4 Dec 2019 15:07:19 +0100
+Message-Id: <20191204140721.20299-1-ahmad@a3f.at>
 MIME-Version: 1.0
-In-Reply-To: <20191204125659.22506-9-a.fatoum@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,34 +23,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 8/9] pci: add EFI PCI root bridge IO protocol driver
+Subject: [PATCH 0/2] bus: efi: add basic ACPI bus infrastructure
 To: barebox@lists.infradead.org
 
-On 12/4/19 1:56 PM, Ahmad Fatoum wrote:
-> UEFI 2.1D specifies two protocols for abstracting both the PCI host bus
-> controller and for PCI devices. The protocol for PCI devices provides
-> function pointers for accessing IO Port, Memory and PCI configuration
-> space, among others. The protocol for bus controllers provides the
-> ability to read the root bridge's PCI configuration space and to query
-> resources.
-> 
-> In barebox, we would want to reuse existing PCI drivers unmodified, so
-> we utilize the root bridge protocol, unlike most other EFI payloads.
+Microsoft specifies an ACPI Watchdog Action Table for its server
+offerings that abstracts away hardware-specifics of watchdog devices.
+This can be an alternative to implementing many different watchdog
+driver in barebox for x86 H/W, as the driver is implemented in the
+BIOS and barebox would only need to implement the H/W.
 
-Please dismiss this patch for now. While it works on QEMU,
-it doesn't handle address space descriptors of zero size (easily fixable)
-and the PCI bridges on my laptop (not so easily fixable).
+Unfortunately, I don't H/W handy that provides the WDAT table.
+I've implemented the ACPI bus nevertheless, so here's the patch.
 
-I'll resend when I had time to figure it out.
+I haven't found anything else I'd like to do with ACPI, so I wrote a
+sample driver to test the API. Not sure if it should go into the tree,
+but I'd be in favor of adding it till there is a real user of the ACPI
+bus (besides devinfo).
 
 Cheers
 Ahmad
 
+Ahmad Fatoum (2):
+  bus: efi: add basic ACPI bus infrastructure
+  misc: add ACPI test driver
+
+ drivers/bus/Kconfig      |   8 ++
+ drivers/bus/Makefile     |   1 +
+ drivers/bus/acpi.c       | 255 +++++++++++++++++++++++++++++++++++++++
+ drivers/misc/Kconfig     |   6 +
+ drivers/misc/Makefile    |   1 +
+ drivers/misc/acpi-test.c |  61 ++++++++++
+ include/acpi.h           |  73 +++++++++++
+ 7 files changed, 405 insertions(+)
+ create mode 100644 drivers/bus/acpi.c
+ create mode 100644 drivers/misc/acpi-test.c
+ create mode 100644 include/acpi.h
+
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
