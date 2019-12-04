@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1icUDK-0001Ao-7S
+ id 1icUDK-0001Ar-8g
  for barebox@lists.infradead.org; Wed, 04 Dec 2019 12:57:08 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  4 Dec 2019 13:56:52 +0100
-Message-Id: <20191204125659.22506-3-a.fatoum@pengutronix.de>
+Date: Wed,  4 Dec 2019 13:56:53 +0100
+Message-Id: <20191204125659.22506-4-a.fatoum@pengutronix.de>
 In-Reply-To: <20191204125659.22506-1-a.fatoum@pengutronix.de>
 References: <20191204125659.22506-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,37 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/9] driver: add missing parentheses around macro argument
+Subject: [PATCH 3/9] efi: fix off-by-one in mem_malloc_init(..., end)
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Currently, the macro can't be used for more complex expressions
-like &pci_dev->dev. Fix this by adding the missing parentheses.
+The second (end) parameter of mem_malloc_init() denotes the last address
+in the malloc region, so we need to subtract one from the current value
+to arrive at the correct end. So far this went not noticed, because iomem
+doesn't yet display barebox malloc memory region.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/driver.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ common/efi/efi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/driver.h b/include/driver.h
-index 300603fa3277..ad59ce90c3a3 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -155,12 +155,12 @@ int unregister_device(struct device_d *);
- /* Iterate over a devices children
-  */
- #define device_for_each_child(dev, child) \
--	list_for_each_entry(child, &dev->children, sibling)
-+	list_for_each_entry(child, &(dev)->children, sibling)
+diff --git a/common/efi/efi.c b/common/efi/efi.c
+index 73cea3703695..ed8158355020 100644
+--- a/common/efi/efi.c
++++ b/common/efi/efi.c
+@@ -361,7 +361,7 @@ efi_status_t efi_main(efi_handle_t image, efi_system_table_t *sys_table)
+ 	if (EFI_ERROR(efiret))
+ 		panic("failed to allocate malloc pool: %s\n",
+ 		      efi_strerror(efiret));
+-	mem_malloc_init((void *)mem, (void *)mem + memsize);
++	mem_malloc_init((void *)mem, (void *)mem + memsize - 1);
  
- /* Iterate over a devices children - Safe against removal version
-  */
- #define device_for_each_child_safe(dev, tmpdev, child) \
--	list_for_each_entry_safe(child, tmpdev, &dev->children, sibling)
-+	list_for_each_entry_safe(child, tmpdev, &(dev)->children, sibling)
+ 	start_barebox();
  
- /* Iterate through the devices of a given type. if last is NULL, the
-  * first device of this type is returned. Put this pointer in as
 -- 
 2.24.0
 
