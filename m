@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail.zeus.flokli.de ([88.198.15.28] helo=zeus.flokli.de)
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ic4E0-00010T-WD
- for barebox@lists.infradead.org; Tue, 03 Dec 2019 09:12:06 +0000
-Date: Tue, 3 Dec 2019 10:12:02 +0100
-From: Michael Olbrich <m.olbrich@pengutronix.de>
-Message-ID: <20191203091202.cuamocvdyxtr5b6u@pengutronix.de>
-References: <20191127231946.27941-1-flokli@flokli.de>
- <20191127231946.27941-2-flokli@flokli.de>
- <20191203064603.63puhjwyoeaagba5@pengutronix.de>
- <20191203084528.3hzpwbmcvfrihwho@pengutronix.de>
+ id 1icyx4-0008JT-8N
+ for barebox@lists.infradead.org; Thu, 05 Dec 2019 21:46:23 +0000
+From: Florian Klink <flokli@flokli.de>
+Date: Thu,  5 Dec 2019 22:45:47 +0100
+Message-Id: <20191205214550.21212-1-flokli@flokli.de>
+In-Reply-To: <20191203091202.cuamocvdyxtr5b6u@pengutronix.de>
+References: <20191203091202.cuamocvdyxtr5b6u@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191203084528.3hzpwbmcvfrihwho@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,47 +17,128 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] scripts: use #!/usr/bin/env bash shebang instead of
+Subject: [PATCH v2 1/4] scripts: use #!/usr/bin/env bash shebang instead of
  #!/bin/bash
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Florian Klink <flokli@flokli.de>, barebox@lists.infradead.org
+To: barebox@lists.infradead.org
+Cc: Florian Klink <flokli@flokli.de>
 
-T24gVHVlLCBEZWMgMDMsIDIwMTkgYXQgMDk6NDU6MjhBTSArMDEwMCwgU2FzY2hhIEhhdWVyIHdy
-b3RlOgo+IE9uIFR1ZSwgRGVjIDAzLCAyMDE5IGF0IDA3OjQ2OjAzQU0gKzAxMDAsIE1pY2hhZWwg
-T2xicmljaCB3cm90ZToKPiA+IE9uIFRodSwgTm92IDI4LCAyMDE5IGF0IDEyOjE5OjQ0QU0gKzAx
-MDAsIEZsb3JpYW4gS2xpbmsgd3JvdGU6Cj4gPiA+IFNvbWUgZGlzdHJpYnV0aW9ucyBtaWdodCBu
-b3QgaGF2ZSBiYXNoIGluIC9iaW4sIGJ1dCBpbiAkUEFUSC4KPiA+ID4gCj4gPiA+IFVzaW5nICMh
-L3Vzci9iaW4vZW52IGJhc2ggc29sdmVzIHRoaXMsIGFuZCBpcyBjb25zaXN0ZW50IHdpdGggaG93
-IHRoZQo+ID4gPiBwZXJsIGFuZCBweXRob24gc2hlYmFuZ3MgbG9vayBsaWtlIGluIHRoZSB0cmVl
-Lgo+ID4gPiAtLS0KPiA+ID4gIHNjcmlwdHMvY2Fub24tYTExMDAtaW1hZ2UgICAgICAgIHwgMiAr
-LQo+ID4gPiAgc2NyaXB0cy9jaGVja19zaXplICAgICAgICAgICAgICAgfCAyICstCj4gPiA+ICBz
-Y3JpcHRzL2RmdWJvb3Quc2ggICAgICAgICAgICAgICB8IDIgKy0KPiA+ID4gIHNjcmlwdHMvZXh0
-cmFjdF9zeW1ib2xfb2Zmc2V0ICAgIHwgMiArLQo+ID4gPiAgc2NyaXB0cy9nZW4tZHRiLXMgICAg
-ICAgICAgICAgICAgfCAyICstCj4gPiA+ICBzY3JpcHRzL2dlbmVudiAgICAgICAgICAgICAgICAg
-ICB8IDIgKy0KPiA+ID4gIHNjcmlwdHMvc29jZnBnYV9nZXRfc2VxdWVuY2VyICAgIHwgMiArLQo+
-ID4gPiAgc2NyaXB0cy9zb2NmcGdhX2ltcG9ydF9wcmVsb2FkZXIgfCAyICstCj4gPiA+ICBzY3Jp
-cHRzL3NvY2ZwZ2FfeG1sX3RvX2NvbmZpZy5zaCB8IDIgKy0KPiA+ID4gIDkgZmlsZXMgY2hhbmdl
-ZCwgOSBpbnNlcnRpb25zKCspLCA5IGRlbGV0aW9ucygtKQo+ID4gPiAKPiA+ID4gZGlmZiAtLWdp
-dCBhL3NjcmlwdHMvY2Fub24tYTExMDAtaW1hZ2UgYi9zY3JpcHRzL2Nhbm9uLWExMTAwLWltYWdl
-Cj4gPiA+IGluZGV4IDZjMDhkNzQ5My4uMjM3Y2UyNmQ4IDEwMDc1NQo+ID4gPiAtLS0gYS9zY3Jp
-cHRzL2Nhbm9uLWExMTAwLWltYWdlCj4gPiA+ICsrKyBiL3NjcmlwdHMvY2Fub24tYTExMDAtaW1h
-Z2UKPiA+ID4gQEAgLTEsNCArMSw0IEBACj4gPiA+IC0jIS9iaW4vYmFzaCAtZQo+ID4gPiArIyEv
-dXNyL2Jpbi9lbnYgYmFzaCAtZQo+ID4gCj4gPiBUaGlzIGRvZXMgbm90IHdvcms6Cj4gPiAKPiA+
-IC91c3IvYmluL2Vudjog4oCYYmFzaCAtZeKAmTogTm8gc3VjaCBmaWxlIG9yIGRpcmVjdG9yeQo+
-ID4gL3Vzci9iaW4vZW52OiB1c2UgLVt2XVMgdG8gcGFzcyBvcHRpb25zIGluIHNoZWJhbmcgbGlu
-ZXMKPiA+IAo+ID4gVXNpbmcgJy91c3IvYmluL2VudiAtUyBiYXNoIC1lJyB3b3JrcywgYnV0IEkn
-bSBub3Qgc3VyZSBob3cgcG9ydGFibGUgdGhhdAo+ID4gaXMuCj4gCj4gV2h5IG5vdDoKPiAKPiAj
-IS91c3IvYmluL2VudiBiYXNoCj4gCj4gc2V0IC1lCgpZZXMsIHRoYXQgc2hvdWxkIHdvcmsuCgpN
-aWNoYWVsCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKU3RldWVyd2FsZGVyIFN0ci4gMjEgICAgICAg
-ICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKMzExMzcgSGls
-ZGVzaGVpbSwgR2VybWFueSAgICAgICAgICAgICAgICAgIHwgUGhvbmU6ICs0OS01MTIxLTIwNjkx
-Ny0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4
-OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5m
-cmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2Jh
-cmVib3gK
+Some distributions might not have bash in /bin, but in $PATH.
+
+Using #!/usr/bin/env bash solves this, and is consistent with how the
+perl and python shebangs look like in the tree.
+---
+ scripts/canon-a1100-image        | 4 +++-
+ scripts/check_size               | 2 +-
+ scripts/dfuboot.sh               | 2 +-
+ scripts/extract_symbol_offset    | 2 +-
+ scripts/gen-dtb-s                | 2 +-
+ scripts/genenv                   | 2 +-
+ scripts/socfpga_get_sequencer    | 2 +-
+ scripts/socfpga_import_preloader | 2 +-
+ scripts/socfpga_xml_to_config.sh | 2 +-
+ 9 files changed, 11 insertions(+), 9 deletions(-)
+
+diff --git a/scripts/canon-a1100-image b/scripts/canon-a1100-image
+index 6c08d7493..17fd47373 100755
+--- a/scripts/canon-a1100-image
++++ b/scripts/canon-a1100-image
+@@ -1,4 +1,6 @@
+-#!/bin/bash -e
++#!/usr/bin/env bash
++
++set -e
+ 
+ IFILE=$1
+ OFILE=$2
+diff --git a/scripts/check_size b/scripts/check_size
+index 8530435d3..76608eccc 100755
+--- a/scripts/check_size
++++ b/scripts/check_size
+@@ -1,4 +1,4 @@
+-#!/bin/bash
++#!/usr/bin/env bash
+ 
+ symbol="$1"
+ file="$2"
+diff --git a/scripts/dfuboot.sh b/scripts/dfuboot.sh
+index 524113b61..9847579ce 100755
+--- a/scripts/dfuboot.sh
++++ b/scripts/dfuboot.sh
+@@ -1,4 +1,4 @@
+-#!/bin/bash
++#!/usr/bin/env bash
+ 
+ DEVICETREE=
+ KERNEL=
+diff --git a/scripts/extract_symbol_offset b/scripts/extract_symbol_offset
+index 78b866830..d0ea22434 100755
+--- a/scripts/extract_symbol_offset
++++ b/scripts/extract_symbol_offset
+@@ -1,4 +1,4 @@
+-#!/bin/bash
++#!/usr/bin/env bash
+ 
+ symbol="$1"
+ file="$2"
+diff --git a/scripts/gen-dtb-s b/scripts/gen-dtb-s
+index b2dd253c2..0649247f9 100755
+--- a/scripts/gen-dtb-s
++++ b/scripts/gen-dtb-s
+@@ -1,4 +1,4 @@
+-#!/bin/bash
++#!/usr/bin/env bash
+ 
+ name=$1
+ dtb=$2
+diff --git a/scripts/genenv b/scripts/genenv
+index 5ebe69963..454f2327b 100755
+--- a/scripts/genenv
++++ b/scripts/genenv
+@@ -1,4 +1,4 @@
+-#!/bin/bash
++#!/usr/bin/env bash
+ 
+ # Generate the default environment file from a list of directories
+ # usage: genenv <basedir> <objdir> <target> <dir>...
+diff --git a/scripts/socfpga_get_sequencer b/scripts/socfpga_get_sequencer
+index 36f67498b..5405bfa6b 100755
+--- a/scripts/socfpga_get_sequencer
++++ b/scripts/socfpga_get_sequencer
+@@ -1,4 +1,4 @@
+-#!/bin/bash
++#!/usr/bin/env bash
+ 
+ if [ "$#" -lt "2" ]
+ then
+diff --git a/scripts/socfpga_import_preloader b/scripts/socfpga_import_preloader
+index 6c748fadb..23e3c380d 100755
+--- a/scripts/socfpga_import_preloader
++++ b/scripts/socfpga_import_preloader
+@@ -1,4 +1,4 @@
+-#!/bin/bash
++#!/usr/bin/env bash
+ 
+ if [ "$#" -lt "2" ]
+ then
+diff --git a/scripts/socfpga_xml_to_config.sh b/scripts/socfpga_xml_to_config.sh
+index 7e22ebb9e..3bb0dd283 100755
+--- a/scripts/socfpga_xml_to_config.sh
++++ b/scripts/socfpga_xml_to_config.sh
+@@ -1,4 +1,4 @@
+-#!/bin/bash
++#!/usr/bin/env bash
+ 
+ ## TODO:
+ ## - read in mpuclk and nocclk, must be calculated by hand at the moment
+-- 
+2.24.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
