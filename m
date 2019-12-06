@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.zeus.flokli.de ([88.198.15.28] helo=zeus.flokli.de)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1idCnV-0006Jn-9K
- for barebox@lists.infradead.org; Fri, 06 Dec 2019 12:33:26 +0000
-From: Florian Klink <flokli@flokli.de>
-Date: Fri,  6 Dec 2019 13:32:55 +0100
-Message-Id: <20191206123255.2537-5-flokli@flokli.de>
-In-Reply-To: <20191206123255.2537-1-flokli@flokli.de>
+ id 1idEY5-0004Fk-DJ
+ for barebox@lists.infradead.org; Fri, 06 Dec 2019 14:25:38 +0000
+Date: Fri, 6 Dec 2019 15:25:35 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20191206142535.qmwhfdh2md37s2rv@pengutronix.de>
 References: <20191206113100.yeop7bqjvolfujl2@pengutronix.de>
  <20191206123255.2537-1-flokli@flokli.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20191206123255.2537-1-flokli@flokli.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,34 +23,25 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 4/4] docs: use #!/usr/bin/env python shebang instead of
- #!/usr/bin/python
-To: barebox@lists.infradead.org
-Cc: Florian Klink <flokli@flokli.de>
+Subject: Re: use #!/usr/bin/env binary instead of #!/usr/bin/binary
+To: Florian Klink <flokli@flokli.de>
+Cc: barebox@lists.infradead.org
 
-Some distributions might not have python in /usr/bin, but in $PATH.
+On Fri, Dec 06, 2019 at 01:32:51PM +0100, Florian Klink wrote:
+> 
+> This adds the missing Signed-off-by Tag to all patches. Sorry for the
+> noise.
 
-Using #!/usr/bin/env python solves this, and is consistent with how the
-other perl and python shebangs look like in the tree.
+Applied, thanks
 
-Signed-off-by: Florian Klink <flokli@flokli.de>
----
- Documentation/gen_commands.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Sascha
 
-diff --git a/Documentation/gen_commands.py b/Documentation/gen_commands.py
-index 203a39bb1..a55b1acd8 100755
---- a/Documentation/gen_commands.py
-+++ b/Documentation/gen_commands.py
-@@ -1,4 +1,4 @@
--#!/usr/bin/python
-+#!/usr/bin/env python
- 
- from __future__ import print_function
- 
+
 -- 
-2.24.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
