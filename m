@@ -1,23 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1icrEd-0006kr-B0
- for barebox@lists.infradead.org; Thu, 05 Dec 2019 13:32:00 +0000
-Received: from [2001:67c:670:100:6a05:caff:fe2d:a9b1]
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>) id 1icrEX-0001jd-Ou
- for barebox@lists.infradead.org; Thu, 05 Dec 2019 14:31:53 +0100
+ id 1idEWQ-0002eL-OZ
+ for barebox@lists.infradead.org; Fri, 06 Dec 2019 14:23:56 +0000
+Date: Fri, 6 Dec 2019 15:23:52 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20191206142352.dqlneyrq4jd3ukya@pengutronix.de>
 References: <1575380921-160915-1-git-send-email-s.riedmueller@phytec.de>
  <20191205080755.nc2ao3hjb5eli7ud@pengutronix.de>
  <67c1cd67-9156-9e43-2be4-b3502877d95f@pengutronix.de>
  <b75f1cd1-7f49-007e-11f6-80544d729fe4@phytec.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <4fc52985-bcfb-f6e4-0a87-7a3d710baa45@pengutronix.de>
-Date: Thu, 5 Dec 2019 14:31:53 +0100
+ <4fc52985-bcfb-f6e4-0a87-7a3d710baa45@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <b75f1cd1-7f49-007e-11f6-80544d729fe4@phytec.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <4fc52985-bcfb-f6e4-0a87-7a3d710baa45@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,26 +22,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] ARM: dts: imx6qdl: phycore: Remove emmc vmmc-supply
-To: barebox@lists.infradead.org
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-SGksCgpPbiAxMi81LzE5IDI6MDggUE0sIFN0ZWZhbiBSaWVkbcO8bGxlciB3cm90ZToKPiBXaGF0
-IGFib3V0IHJlZ3VsYXRvcnMgdGhhdCBhcmUgbWFya2VkIGFzIHJlZ3VsYXRvci1hbHdheXMtb24g
-YnV0IG5lZWQgdm9sdGFnZSBhZGp1c3RtZW50cz8gT3IgaXNuJ3QgdGhpcyBhIHJlYWwgdXNlIGNh
-c2UgZm9yIHRoZSBib290bG9hZGVyPwoKSWYgc29tZW9uZSBhYnNvbHV0ZWx5IG5lZWQgdGhlIHZv
-bHRhZ2UgYWRqdXN0bWVudHMsIHRoZXknbGwgaGF2ZSB0byBpbXBsZW1lbnQKYSBwcm9wZXIgcmVn
-dWxhdG9yIGRyaXZlciB0byByZWFsaXplIGl0WzFdLiBUaGUgW2JhcmVib3gsXXJlZ3VsYXRvci1h
-bHdheXMtb24KaGFuZGxpbmcgSSBzdWdnZXN0LCBpcyBvbmx5IGEgZmFsbGJhY2sgaWYgdGhlcmUg
-aXMgbm8gcmVndWxhdG9yIGZvdW5kLgoKCkNoZWVycwpBaG1hZAoKLS0gClBlbmd1dHJvbml4IGUu
-Sy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICB8ClN0ZXVlcndhbGRlciBTdHIuIDIxICAgICAgICAgICAgICAgICAgICAgICB8IGh0dHBzOi8v
-d3d3LnBlbmd1dHJvbml4LmRlLyB8CjMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgICAgICAgICAg
-ICAgICAgICB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRl
-c2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8
-CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94
-IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmlu
-ZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Thu, Dec 05, 2019 at 02:31:53PM +0100, Ahmad Fatoum wrote:
+> Hi,
+> =
+
+> On 12/5/19 2:08 PM, Stefan Riedm=FCller wrote:
+> > What about regulators that are marked as regulator-always-on but need v=
+oltage adjustments? Or isn't this a real use case for the bootloader?
+> =
+
+> If someone absolutely need the voltage adjustments, they'll have to imple=
+ment
+> a proper regulator driver to realize it[1]. The [barebox,]regulator-alway=
+s-on
+> handling I suggest, is only a fallback if there is no regulator found.
+
+What if the driver is present but not yet probed? We would return a
+dummy regulator and no longer -EPROBE_DEFER.
+
+Sascha
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
