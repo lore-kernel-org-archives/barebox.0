@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ieJkt-0007dG-NC
- for barebox@lists.infradead.org; Mon, 09 Dec 2019 14:11:21 +0000
+ id 1ieJkt-0007dH-SY
+ for barebox@lists.infradead.org; Mon, 09 Dec 2019 14:11:22 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  9 Dec 2019 15:11:13 +0100
-Message-Id: <20191209141114.12130-2-a.fatoum@pengutronix.de>
+Date: Mon,  9 Dec 2019 15:11:14 +0100
+Message-Id: <20191209141114.12130-3-a.fatoum@pengutronix.de>
 In-Reply-To: <20191209141114.12130-1-a.fatoum@pengutronix.de>
 References: <20191209141114.12130-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,77 +21,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/3] ARM: i.MX: introduce imx_image_rule variable for code
- deduplication
+Subject: [PATCH v2 3/3] ARM: i.MX: rebuild .imximg if DCD table in .imxcfg
+ changes
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The next patch will add the .imxcfg file as a rule prerequisite, so the
-target is rebuilt if it changes. Instead of duplicating it in all rules,
-factor out the common parts into a imx_image_rule variable.
+So far changing the DCD table didn't trigger a rerun of the i.MX
+image utility. To fix this, we need to have the DCD table as prerequisite
+to the .imximg rule. The file name is contained in $(CFG_$(@F)), but
+can't be used directly because $@ (and by extension @F) has no value
+when first expanded in the read-in phase. If we expand a second time
+during the target-update phase however, we would get the correct value.
 
-As the arguments are now going through an eval, any use of $ must be
-escaped with another $ to become $$.
+GNU make provides .SECONDEXPANSION to expand all following prerequisites
+a second time. Use it to have changes to the DCD table rebuild the
+image.
 
-No functional change.
+Because we are now using imx_image_rule to generate the target, we must
+escape each $ one more time to arrive at $$$$(CFG_$$$$(@F)).
+
+In the final step, we replace $$$$(@F) with %.imximg, so we support the
+rules not ending in .imximg as well.
+
+Dependency file generation is still broken however and changed to headers
+included in DCD tables won't be caught, but this functionality can be
+fixed in a separate patch.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
-v1 -> v2:
-  * escaped PBL_MEMORY_SIZE dollars to fix imx_v8_defconfig pimximg build
-  * moved eval into define, so it doesn't need replication for each
-    extension
+No changes in v2.
 ---
- images/Makefile.imx | 36 ++++++++++++++----------------------
- 1 file changed, 14 insertions(+), 22 deletions(-)
+ images/Makefile.imx | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/images/Makefile.imx b/images/Makefile.imx
-index daf0cf1fcfaa..80e1acf941c5 100644
+index 80e1acf941c5..c4b1bfb35e9f 100644
 --- a/images/Makefile.imx
 +++ b/images/Makefile.imx
-@@ -5,28 +5,20 @@
+@@ -5,9 +5,10 @@
  # %.imximg - convert into i.MX image
  # ----------------------------------------------------------------
  
--$(obj)/%.imximg: $(obj)/% FORCE
--	$(call if_changed,imx_image,$(CFG_$(@F)),)
--
--$(obj)/%.pimximg: $(obj)/% FORCE
--	$(call if_changed,imx_image,$(CFG_$(patsubst %.pimximg,%.imximg,$(@F))),\
--	-p $($(patsubst $(obj)/%.pblb,PBL_MEMORY_SIZE_%,$<)))
--
--$(obj)/%.psimximg: $(obj)/% FORCE
--	$(call if_changed,imx_image,$(CFG_$(patsubst %.psimximg,%.imximg,$(@F))),\
--	-p $($(patsubst $(obj)/%.pblb,PBL_MEMORY_SIZE_%,$<)) -s)
--
--$(obj)/%.simximg: $(obj)/% FORCE
--	$(call if_changed,imx_image,$(CFG_$(patsubst %.simximg,%.imximg,$(@F))),-s)
--
--$(obj)/%.usimximg: $(obj)/% FORCE
--	$(call if_changed,imx_image,$(CFG_$(patsubst %.usimximg,%.imximg,$(@F))),-u -s)
--
--$(obj)/%.esimximg: $(obj)/% FORCE
--	$(call if_changed,imx_image,$(CFG_$(patsubst %.esimximg,%.imximg,$(@F))),-e -s)
--
--$(obj)/%.esimximg.dek: $(obj)/% FORCE
--	$(call if_changed,imx_image,$(CFG_$(patsubst %.esimximg,%.imximg,$(@F))),-e -s)
-+define imx_image_rule
-+$(eval
-+$$(obj)/%.$(strip $(1)): $$(obj)/% FORCE
-+	$$(call if_changed,imx_image,$$(CFG_$$(patsubst %.$(strip $(1)),%.imximg,$$(@F))),$(strip $(2)))
-+)
-+endef
-+
-+$(call imx_image_rule,imximg)
-+$(call imx_image_rule,pimximg, -p $$($$(patsubst $$(obj)/%.pblb,PBL_MEMORY_SIZE_%,$$<)))
-+$(call imx_image_rule,psimximg, -p $$($$(patsubst $$(obj)/%.pblb,PBL_MEMORY_SIZE_%,$$<)) -s)
-+$(call imx_image_rule,simximg, -s)
-+$(call imx_image_rule,usimximg, -u -s)
-+$(call imx_image_rule,esimximg, -e -s)
-+$(call imx_image_rule,esimximg.dek, -e -s)
++.SECONDEXPANSION:
+ define imx_image_rule
+ $(eval
+-$$(obj)/%.$(strip $(1)): $$(obj)/% FORCE
++$$(obj)/%.$(strip $(1)): $$(obj)/% $$$$(CFG_%.imximg) FORCE
+ 	$$(call if_changed,imx_image,$$(CFG_$$(patsubst %.$(strip $(1)),%.imximg,$$(@F))),$(strip $(2)))
+ )
+ endef
+@@ -20,7 +21,6 @@ $(call imx_image_rule,usimximg, -u -s)
+ $(call imx_image_rule,esimximg, -e -s)
+ $(call imx_image_rule,esimximg.dek, -e -s)
  
- .SECONDEXPANSION:
+-.SECONDEXPANSION:
  $(obj)/%.img.dek: $(obj)/$$(FILE_$$(@F))
+ 	$(Q)if [ -z $(FILE_$(@F)) ]; then echo "FILE_$(@F) empty!"; false; fi
+ 	$(call if_changed,shipped)
 -- 
 2.24.0
 
