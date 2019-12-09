@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ieEN0-0003CG-Cs
- for barebox@lists.infradead.org; Mon, 09 Dec 2019 08:26:20 +0000
-Date: Mon, 9 Dec 2019 09:26:12 +0100
+ id 1ieFQU-0007Fv-9g
+ for barebox@lists.infradead.org; Mon, 09 Dec 2019 09:33:59 +0000
+Date: Mon, 9 Dec 2019 10:33:56 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191209082612.7nzpuqdwtdy2k465@pengutronix.de>
-References: <AM0PR08MB3842FB9ECFC8E8368A4DBF0DEB5E0@AM0PR08MB3842.eurprd08.prod.outlook.com>
+Message-ID: <20191209093356.jrqra7oedczuxph5@pengutronix.de>
+References: <20190923113634.22746-1-cleger@kalray.eu>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <AM0PR08MB3842FB9ECFC8E8368A4DBF0DEB5E0@AM0PR08MB3842.eurprd08.prod.outlook.com>
+In-Reply-To: <20190923113634.22746-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,26 +22,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Writing to ubifs
-To: Patrick Schneider <patrick.schneider@bhtronik.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] mtd: spi-nor: fix wrong value for CR_QUAD_EN_SPAN
+To: Clement Leger <cleger@kalray.eu>
+Cc: barebox <barebox@lists.infradead.org>, Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Hi Patrick,
+Hi Clement,
 
-On Sat, Dec 07, 2019 at 10:15:26AM +0000, Patrick Schneider wrote:
-> I have a use case where I would need to be able to manipulate the
-> fstab on the rootfs before booting, so I wondered if it is possible to
-> write to a mounted ubifs from barebox?
-> Currently I am trying with: 
-> 
-> mount /dev/nand0.root.ubi.rootfs /mnt/rootfs -o rw
-> 
-> which still yields in a readonly mount of the rootfs where I cannot
-> manipulate files. Does barebox have write support to ubifs or is there
-> another way?
+On Mon, Sep 23, 2019 at 01:36:34PM +0200, Clement Leger wrote:
+> Durign a previous patch, 0x2 was mistakenly converted to BIT(2) whereas
+> it should be BIT(1).
+> ---
+>  include/linux/mtd/spi-nor.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-No, barebox does not have UBIFS write support. What are you trying to
-archieve?
+Applied now, thanks.
+
+Note you sent the mail to barebox-bounces@lists.infradead.org instead
+of barebox@lists.infradead.org, so the patch never made it to the list.
 
 Sascha
 
