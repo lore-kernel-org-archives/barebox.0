@@ -1,21 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mickerik.phytec.de ([195.145.39.210])
- by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iefj0-0003md-P1
- for barebox@lists.infradead.org; Tue, 10 Dec 2019 13:38:52 +0000
-References: <1575894703-316604-1-git-send-email-s.riedmueller@phytec.de>
- <1575894703-316604-5-git-send-email-s.riedmueller@phytec.de>
- <20191209153740.w7klpla2pi6xlnnq@pengutronix.de>
- <0edc4e68-8fd6-8e6d-450a-41db3ae975be@phytec.de>
- <20191210080554.gzar2hlvhbzjtewt@pengutronix.de>
- <b3a97721-c6a9-0458-5c55-f7feab869451@phytec.de>
- <20191210104525.oee5ygpzwyhtzvha@pengutronix.de>
-From: =?UTF-8?Q?Stefan_Riedm=c3=bcller?= <s.riedmueller@phytec.de>
-Message-ID: <8a2d6f08-b350-674a-65bc-a51b844bee8a@phytec.de>
-Date: Tue, 10 Dec 2019 14:38:46 +0100
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1ieJkt-0007dF-N7
+ for barebox@lists.infradead.org; Mon, 09 Dec 2019 14:11:21 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon,  9 Dec 2019 15:11:12 +0100
+Message-Id: <20191209141114.12130-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20191210104525.oee5ygpzwyhtzvha@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,55 +15,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-15"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 5/8] ARM: dts: imx6: phycard: Use partname for
- environment device-path
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 1/3] images: i.MX: rearrange image rules in preparation for
+ boilerplate removal
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Hi Sascha,
+The following commit will introduce a variable define to remove the
+duplication in the different [supe]*imximg rules.
 
-On 10.12.19 11:45, Sascha Hauer wrote:
-> On Tue, Dec 10, 2019 at 09:15:52AM +0100, Stefan Riedm=FCller wrote:
->> Hi Sascha,
->>
->> On 10.12.19 09:05, Sascha Hauer wrote:
->>> On Tue, Dec 10, 2019 at 08:50:41AM +0100, Stefan Riedm=FCller wrote:
->>>> Hi Sascha,
->>>>
->>>> On 09.12.19 16:37, Sascha Hauer wrote:
->>>>> On Mon, Dec 09, 2019 at 01:31:40PM +0100, Stefan Riedmueller wrote:
->>>>>> Change environment device-path from using a separate label to
->>>>>> referencing a device plus partname.
->>>>>
->>>>> Why? The way it was is fine.
->>>>
->>>> Just to be consistent with phyCORE and phyFLEX. Is there a downside I'=
-m not
->>>> aware of?
->>>
->>> It feels more natural to directly point to the partition, that's why I
->>> prefer that way. So if you don't have a good reason I suggest to convert
->>> it the other way round for consistency
->>
->> I will recheck if there was a specific reason for us to use the partname
->> approach. But you can drop this patch for now.
-> =
+Prepare for this by rearranging the command line flags to line up with
+the letters in the extension (i.e. -e -s for esimximg instead of -s -e)
+and by splitting off a multi-target rule into two.
 
-> I just tried. The series doesn't apply on current master. Could you
-> rebase it?
+The former improves readability when the define is introduced, as it is
+then easy to see the correspondence between extension and arguments.
 
-Yes, of course.
+The latter is needed because we will call the variable for each target.
 
-Stefan
+No functional change.
 
-> =
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+No changes in v2.
+---
+ images/Makefile.imx | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-> Sascha
-> =
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index a8f8a9b7d622..daf0cf1fcfaa 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -13,17 +13,20 @@ $(obj)/%.pimximg: $(obj)/% FORCE
+ 	-p $($(patsubst $(obj)/%.pblb,PBL_MEMORY_SIZE_%,$<)))
+ 
+ $(obj)/%.psimximg: $(obj)/% FORCE
+-	$(call if_changed,imx_image,$(CFG_$(patsubst %.psimximg,%.imximg,$(@F))),-s \
+-	-p $($(patsubst $(obj)/%.pblb,PBL_MEMORY_SIZE_%,$<)))
++	$(call if_changed,imx_image,$(CFG_$(patsubst %.psimximg,%.imximg,$(@F))),\
++	-p $($(patsubst $(obj)/%.pblb,PBL_MEMORY_SIZE_%,$<)) -s)
+ 
+ $(obj)/%.simximg: $(obj)/% FORCE
+ 	$(call if_changed,imx_image,$(CFG_$(patsubst %.simximg,%.imximg,$(@F))),-s)
+ 
+ $(obj)/%.usimximg: $(obj)/% FORCE
+-	$(call if_changed,imx_image,$(CFG_$(patsubst %.usimximg,%.imximg,$(@F))),-s -u)
++	$(call if_changed,imx_image,$(CFG_$(patsubst %.usimximg,%.imximg,$(@F))),-u -s)
++
++$(obj)/%.esimximg: $(obj)/% FORCE
++	$(call if_changed,imx_image,$(CFG_$(patsubst %.esimximg,%.imximg,$(@F))),-e -s)
+ 
+-$(obj)/%.esimximg $(obj)/%.esimximg.dek: $(obj)/% FORCE
+-	$(call if_changed,imx_image,$(CFG_$(patsubst %.esimximg,%.imximg,$(@F))),-s -e)
++$(obj)/%.esimximg.dek: $(obj)/% FORCE
++	$(call if_changed,imx_image,$(CFG_$(patsubst %.esimximg,%.imximg,$(@F))),-e -s)
+ 
+ .SECONDEXPANSION:
+ $(obj)/%.img.dek: $(obj)/$$(FILE_$$(@F))
+-- 
+2.24.0
 
 
 _______________________________________________
