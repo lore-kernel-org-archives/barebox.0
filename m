@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mickerik.phytec.de ([195.145.39.210])
  by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ieEvb-0001H2-A5
- for barebox@lists.infradead.org; Mon, 09 Dec 2019 09:02:05 +0000
+ id 1ieEvc-0001H9-Kq
+ for barebox@lists.infradead.org; Mon, 09 Dec 2019 09:02:06 +0000
 From: Stefan Riedmueller <s.riedmueller@phytec.de>
-Date: Mon, 9 Dec 2019 10:01:45 +0100
-Message-Id: <1575882108-108853-4-git-send-email-s.riedmueller@phytec.de>
+Date: Mon, 9 Dec 2019 10:01:46 +0100
+Message-Id: <1575882108-108853-5-git-send-email-s.riedmueller@phytec.de>
 In-Reply-To: <1575882108-108853-1-git-send-email-s.riedmueller@phytec.de>
 References: <1575882108-108853-1-git-send-email-s.riedmueller@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,45 +21,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/7] ARM: dts: imx6: phycard: Make eeprom configurable
+Subject: [PATCH 5/7] ARM: dts: imx6: phycard: Use partname for environment
+ device-path
 To: barebox@lists.infradead.org
 
-The EEPROM is a configurable option. So make it configurable from the
-dts file.
+Change environment device-path from using a separate label to
+referencing a device plus partname.
 
 Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
 ---
- arch/arm/dts/imx6q-phytec-phycard.dts        | 4 ++++
- arch/arm/dts/imx6qdl-phytec-phycard-som.dtsi | 1 +
- 2 files changed, 5 insertions(+)
+ arch/arm/dts/imx6qdl-phytec-phycard-som.dtsi | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/dts/imx6q-phytec-phycard.dts b/arch/arm/dts/imx6q-phytec-phycard.dts
-index cfcdcd2a1343..f06acb010095 100644
---- a/arch/arm/dts/imx6q-phytec-phycard.dts
-+++ b/arch/arm/dts/imx6q-phytec-phycard.dts
-@@ -16,6 +16,10 @@
- 	};
- };
- 
-+&eeprom {
-+	status = "okay";
-+};
-+
- &fec {
- 	status = "okay";
- };
 diff --git a/arch/arm/dts/imx6qdl-phytec-phycard-som.dtsi b/arch/arm/dts/imx6qdl-phytec-phycard-som.dtsi
-index 5e0495996d52..78fc0c719637 100644
+index 78fc0c719637..c28076294092 100644
 --- a/arch/arm/dts/imx6qdl-phytec-phycard-som.dtsi
 +++ b/arch/arm/dts/imx6qdl-phytec-phycard-som.dtsi
-@@ -66,6 +66,7 @@
- 	eeprom: m24c32@50 {
- 		compatible = "st,24c32", "at24";
- 		reg = <0x50>;
-+		status = "disabled";
- 	};
- };
+@@ -11,13 +11,13 @@
+ 	chosen {
+ 		environment-nand {
+ 			compatible = "barebox,environment";
+-			device-path = &environment_nand;
++			device-path = &gpmi, "partname:barebox-environment";
+ 			status = "disabled";
+ 		};
  
+ 		environment-sd3 {
+ 			compatible = "barebox,environment";
+-			device-path = &environment_usdhc3;
++			device-path = &usdhc3, "partname:barebox-environment";
+ 			status = "disabled";
+ 		};
+ 	};
+@@ -46,7 +46,7 @@
+ 			reg = <0x0 0x400000>;
+ 		};
+ 
+-		environment_nand: partition@400000 {
++		partition@400000 {
+ 			label = "barebox-environment";
+ 			reg = <0x400000 0x20000>;
+ 		};
+@@ -168,7 +168,8 @@
+ 		label = "barebox";
+ 		reg = <0x0 0xe0000>;
+ 	};
+-	environment_usdhc3: partition@e0000 {
++
++	partition@e0000 {
+ 		label = "barebox-environment";
+ 		reg = <0xe0000 0x20000>;
+ 	};
 -- 
 2.7.4
 
