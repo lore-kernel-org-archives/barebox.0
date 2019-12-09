@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mickerik.phytec.de ([195.145.39.210])
  by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ieICg-0001ki-IH
- for barebox@lists.infradead.org; Mon, 09 Dec 2019 12:31:56 +0000
+ id 1ieICj-0001ki-1w
+ for barebox@lists.infradead.org; Mon, 09 Dec 2019 12:31:58 +0000
 From: Stefan Riedmueller <s.riedmueller@phytec.de>
-Date: Mon, 9 Dec 2019 13:31:42 +0100
-Message-Id: <1575894703-316604-7-git-send-email-s.riedmueller@phytec.de>
+Date: Mon, 9 Dec 2019 13:31:41 +0100
+Message-Id: <1575894703-316604-6-git-send-email-s.riedmueller@phytec.de>
 In-Reply-To: <1575894703-316604-1-git-send-email-s.riedmueller@phytec.de>
 References: <1575894703-316604-1-git-send-email-s.riedmueller@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,39 +21,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 7/8] ARM: dts: imx6: phycard: Use gpio binding constants
+Subject: [PATCH v2 6/8] ARM: dts: imx6: phycard: Switch to new partitions
+ binding
 To: barebox@lists.infradead.org
+
+The SD card interface is still using the legacy partition binding.
+Change this by switching to the new bindings.
 
 Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
 ---
-Changes in v2:
- - Added this patch
+No changes in v2
 ---
- arch/arm/dts/imx6qdl-phytec-phycard-som.dtsi | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm/dts/imx6qdl-phytec-phycard-som.dtsi | 21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
 diff --git a/arch/arm/dts/imx6qdl-phytec-phycard-som.dtsi b/arch/arm/dts/imx6qdl-phytec-phycard-som.dtsi
-index de07562c6884..13ffc8ee02ef 100644
+index 51cece26837a..de07562c6884 100644
 --- a/arch/arm/dts/imx6qdl-phytec-phycard-som.dtsi
 +++ b/arch/arm/dts/imx6qdl-phytec-phycard-som.dtsi
-@@ -4,6 +4,8 @@
-  * Author: Christian Hemp <c.hemp@phytec.de>
-  */
- 
-+#include <dt-bindings/gpio/gpio.h>
-+
- / {
- 	chosen {
- 		environment-nand {
-@@ -155,7 +157,7 @@
- &usdhc3 {
-         pinctrl-names = "default";
-         pinctrl-0 = <&pinctrl_usdhc3>;
--        cd-gpios = <&gpio5 22 0>;
-+        cd-gpios = <&gpio5 22 GPIO_ACTIVE_HIGH>;
+@@ -158,16 +158,19 @@
+         cd-gpios = <&gpio5 22 0>;
          status = "disabled";
  
- 	partitions {
+-	#address-cells = <1>;
+-	#size-cells = <1>;
++	partitions {
++		compatible = "fixed-partitions";
++		#address-cells = <1>;
++		#size-cells = <1>;
+ 
+-	partition@0 {
+-		label = "barebox";
+-		reg = <0x0 0xe0000>;
+-	};
++		partition@0 {
++			label = "barebox";
++			reg = <0x0 0xe0000>;
++		};
+ 
+-	partition@e0000 {
+-		label = "barebox-environment";
+-		reg = <0xe0000 0x20000>;
++		partition@e0000 {
++			label = "barebox-environment";
++			reg = <0xe0000 0x20000>;
++		};
+ 	};
+ };
 -- 
 2.7.4
 
