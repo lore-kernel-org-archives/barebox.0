@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mickerik.phytec.de ([195.145.39.210])
  by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ieEvX-0001H2-Nh
- for barebox@lists.infradead.org; Mon, 09 Dec 2019 09:02:02 +0000
+ id 1ieEvX-0001H9-Ni
+ for barebox@lists.infradead.org; Mon, 09 Dec 2019 09:02:03 +0000
 From: Stefan Riedmueller <s.riedmueller@phytec.de>
-Date: Mon, 9 Dec 2019 10:01:42 +0100
-Message-Id: <1575882108-108853-1-git-send-email-s.riedmueller@phytec.de>
+Date: Mon, 9 Dec 2019 10:01:44 +0100
+Message-Id: <1575882108-108853-3-git-send-email-s.riedmueller@phytec.de>
+In-Reply-To: <1575882108-108853-1-git-send-email-s.riedmueller@phytec.de>
+References: <1575882108-108853-1-git-send-email-s.riedmueller@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,223 +21,113 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/7] ARM: dts: imx6: pcaaxl3: Order nodes alphabetically
+Subject: [PATCH 3/7] ARM: dts: imx6: pcaaxl3: Make use of the simpler name
+ phycard
 To: barebox@lists.infradead.org
 
-Bring the device tree nodes in alphabetical order and in this context
-also remove the deprecated iomux group.
+Use the simpler name phycard instead of the article number pcaaxl3
+for device tree file names and image names of the phyCARD-i.MX 6.
 
 Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
 ---
- arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi | 182 ++++++++++++++++-----------------
- 1 file changed, 90 insertions(+), 92 deletions(-)
+ arch/arm/boards/phytec-som-imx6/lowlevel.c         |  6 ++---
+ arch/arm/dts/Makefile                              |  2 +-
+ ...-phytec-pbaa03.dts => imx6q-phytec-phycard.dts} |  2 +-
+ ...caaxl3.dtsi => imx6qdl-phytec-phycard-som.dtsi} |  0
+ images/Makefile.imx                                | 28 +++++++++++-----------
+ 5 files changed, 19 insertions(+), 19 deletions(-)
+ rename arch/arm/dts/{imx6q-phytec-pbaa03.dts => imx6q-phytec-phycard.dts} (90%)
+ rename arch/arm/dts/{imx6q-phytec-pcaaxl3.dtsi => imx6qdl-phytec-phycard-som.dtsi} (100%)
 
-diff --git a/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi b/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi
-index 66b547ad8eef..db986f87ef26 100644
---- a/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi
-+++ b/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi
-@@ -17,104 +17,16 @@
- 	compatible = "phytec,imx6q-pcaaxl3", "fsl,imx6q";
+diff --git a/arch/arm/boards/phytec-som-imx6/lowlevel.c b/arch/arm/boards/phytec-som-imx6/lowlevel.c
+index 2de84169c692..900aa19c19ea 100644
+--- a/arch/arm/boards/phytec-som-imx6/lowlevel.c
++++ b/arch/arm/boards/phytec-som-imx6/lowlevel.c
+@@ -90,9 +90,9 @@ static void __noreturn start_imx6_phytec_common(uint32_t size,
+ 					 __dtb_##fdt_name##_start);	\
+ 	}
  
- 	chosen {
--		environment-sd3 {
--			compatible = "barebox,environment";
--			device-path = &environment_usdhc3;
--			status = "disabled";
--		};
--
- 		environment-nand {
- 			compatible = "barebox,environment";
- 			device-path = &environment_nand;
- 			status = "disabled";
- 		};
--	};
--};
--
--&i2c1 {
--	status = "okay";
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_i2c1>;
--
--	eeprom: m24c32@50 {
--		compatible = "st,24c32", "at24";
--		reg = <0x50>;
--	};
--};
--
--&iomuxc {
--	pinctrl-names = "default";
--
--	imx6q-phytec-pcaaxl3 {
--		pinctrl_enet: enetgrp {
--			fsl,pins = <
--				MX6QDL_PAD_ENET_MDC__ENET_MDC		0x1b0b0
--				MX6QDL_PAD_ENET_MDIO__ENET_MDIO		0x1b0b0
--				MX6QDL_PAD_ENET_RXD0__ENET_RX_DATA0	0x1b0b0
--				MX6QDL_PAD_ENET_RXD1__ENET_RX_DATA1	0x1b0b0
--				MX6QDL_PAD_ENET_RX_ER__ENET_RX_ER	0x1b0b0
--				MX6QDL_PAD_ENET_TX_EN__ENET_TX_EN	0x1b0b0
--				MX6QDL_PAD_ENET_TXD0__ENET_TX_DATA0	0x1b0b0
--				MX6QDL_PAD_ENET_TXD1__ENET_TX_DATA1	0x1b0b0
--				MX6QDL_PAD_ENET_CRS_DV__ENET_RX_EN	0x1b0b0
--				MX6QDL_PAD_ENET_REF_CLK__ENET_TX_CLK	0x1b0b0
--				MX6QDL_PAD_KEY_COL0__ENET_RX_DATA3	0x1b0b0
--				MX6QDL_PAD_KEY_ROW0__ENET_TX_DATA3	0x1b0b0
--				MX6QDL_PAD_KEY_ROW1__ENET_COL		0x1b0b0
--				MX6QDL_PAD_KEY_COL2__ENET_RX_DATA2	0x1b0b0
--				MX6QDL_PAD_KEY_ROW2__ENET_TX_DATA2	0x1b0b0
--				MX6QDL_PAD_KEY_COL3__ENET_CRS		0x1b0b0
--				MX6QDL_PAD_GPIO_18__ENET_RX_CLK		0x1b0b0
--				MX6QDL_PAD_GPIO_19__ENET_TX_ER		0x1b0b0
--			>;
--		};
--
--		pinctrl_gpmi_nand: gpmigrp {
--			fsl,pins = <
--				MX6QDL_PAD_NANDF_CLE__NAND_CLE		0xb0b1
--				MX6QDL_PAD_NANDF_ALE__NAND_ALE		0xb0b1
--				MX6QDL_PAD_NANDF_WP_B__NAND_WP_B	0xb0b1
--				MX6QDL_PAD_NANDF_RB0__NAND_READY_B	0xb000
--				MX6QDL_PAD_NANDF_CS0__NAND_CE0_B	0xb0b1
--				MX6QDL_PAD_NANDF_CS1__NAND_CE1_B	0xb0b1
--				MX6QDL_PAD_SD4_CMD__NAND_RE_B		0xb0b1
--				MX6QDL_PAD_SD4_CLK__NAND_WE_B		0xb0b1
--				MX6QDL_PAD_NANDF_D0__NAND_DATA00	0xb0b1
--				MX6QDL_PAD_NANDF_D1__NAND_DATA01	0xb0b1
--				MX6QDL_PAD_NANDF_D2__NAND_DATA02	0xb0b1
--				MX6QDL_PAD_NANDF_D3__NAND_DATA03	0xb0b1
--				MX6QDL_PAD_NANDF_D4__NAND_DATA04	0xb0b1
--				MX6QDL_PAD_NANDF_D5__NAND_DATA05	0xb0b1
--				MX6QDL_PAD_NANDF_D6__NAND_DATA06	0xb0b1
--				MX6QDL_PAD_NANDF_D7__NAND_DATA07	0xb0b1
--				MX6QDL_PAD_SD4_DAT0__NAND_DQS		0x00b1
--			>;
--		};
--
--		pinctrl_i2c1: i2c1grp {
--			fsl,pins = <
--				MX6QDL_PAD_EIM_D21__I2C1_SCL		0x4001b8b1
--				MX6QDL_PAD_EIM_D28__I2C1_SDA		0x4001b8b1
--			>;
--		};
--
--		pinctrl_uart3: uart3grp {
--			fsl,pins = <
--				MX6QDL_PAD_EIM_D24__UART3_TX_DATA	0x1b0b1
--				MX6QDL_PAD_EIM_D25__UART3_RX_DATA	0x1b0b1
--			>;
--		};
+-PHYTEC_ENTRY(start_phytec_pbaa03_1gib, imx6q_phytec_pbaa03, SZ_1G, true);
+-PHYTEC_ENTRY(start_phytec_pbaa03_1gib_1bank, imx6q_phytec_pbaa03, SZ_1G, true);
+-PHYTEC_ENTRY(start_phytec_pbaa03_2gib, imx6q_phytec_pbaa03, SZ_2G, true);
++PHYTEC_ENTRY(start_phytec_phycard_imx6q_1gib, imx6q_phytec_phycard, SZ_1G, true);
++PHYTEC_ENTRY(start_phytec_phycard_imx6q_1gib_1bank, imx6q_phytec_phycard, SZ_1G, true);
++PHYTEC_ENTRY(start_phytec_phycard_imx6q_2gib, imx6q_phytec_phycard, SZ_2G, true);
  
--		pinctrl_usdhc3: usdhc3grp {
--			fsl,pins = <
--				MX6QDL_PAD_SD3_CMD__SD3_CMD		0x17059
--				MX6QDL_PAD_SD3_CLK__SD3_CLK		0x10059
--				MX6QDL_PAD_SD3_DAT0__SD3_DATA0		0x17059
--				MX6QDL_PAD_SD3_DAT1__SD3_DATA1		0x17059
--				MX6QDL_PAD_SD3_DAT2__SD3_DATA2		0x17059
--				MX6QDL_PAD_SD3_DAT3__SD3_DATA3		0x17059
--				MX6QDL_PAD_CSI0_DAT4__GPIO5_IO22	0x80000000 /* CD */
--			>;
-+		environment-sd3 {
-+			compatible = "barebox,environment";
-+			device-path = &environment_usdhc3;
-+			status = "disabled";
- 		};
- 	};
- };
-@@ -154,6 +66,92 @@
- 	};
- };
+ PHYTEC_ENTRY(start_phytec_pbab01_512mb_1bank, imx6q_phytec_pbab01, SZ_512M, true);
+ PHYTEC_ENTRY(start_phytec_pbab01_1gib, imx6q_phytec_pbab01, SZ_1G, true);
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 294a0bfa5525..5f854bd22f2f 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -51,7 +51,7 @@ lwl-dtb-$(CONFIG_MACH_PHYTEC_SOM_AM335X) += am335x-phytec-phyflex-som.dtb.o am33
+ 	am335x-phytec-phycore-som-nand-no-eeprom.dtb.o am335x-phytec-phycore-som-nand-no-spi-no-eeprom.dtb.o \
+ 	am335x-phytec-phycore-som-emmc.dtb.o \
+ 	am335x-phytec-phycard-som.dtb.o am335x-phytec-phycard-som-mlo.dtb.o
+-lwl-dtb-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += imx6q-phytec-pbaa03.dtb.o \
++lwl-dtb-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += imx6q-phytec-phycard.dtb.o \
+ 				imx6s-phytec-pbab01.dtb.o \
+ 				imx6dl-phytec-pbab01.dtb.o \
+ 				imx6q-phytec-pbab01.dtb.o \
+diff --git a/arch/arm/dts/imx6q-phytec-pbaa03.dts b/arch/arm/dts/imx6q-phytec-phycard.dts
+similarity index 90%
+rename from arch/arm/dts/imx6q-phytec-pbaa03.dts
+rename to arch/arm/dts/imx6q-phytec-phycard.dts
+index b11b8b3f93fe..cfcdcd2a1343 100644
+--- a/arch/arm/dts/imx6q-phytec-pbaa03.dts
++++ b/arch/arm/dts/imx6q-phytec-phycard.dts
+@@ -5,7 +5,7 @@
+  */
  
-+&i2c1 {
-+	status = "okay";
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_i2c1>;
+ /dts-v1/;
+-#include "imx6q-phytec-pcaaxl3.dtsi"
++#include "imx6qdl-phytec-phycard-som.dtsi"
+ 
+ / {
+ 	model = "PHYTEC phyCARD-i.MX6 Quad";
+diff --git a/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi b/arch/arm/dts/imx6qdl-phytec-phycard-som.dtsi
+similarity index 100%
+rename from arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi
+rename to arch/arm/dts/imx6qdl-phytec-phycard-som.dtsi
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index a8f8a9b7d622..fea43e0e5516 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -416,20 +416,20 @@ CFG_start_imx6s_riotboard.pblb.imximg = $(board)/embest-riotboard/flash-header-e
+ FILE_barebox-embest-imx6s-riotboard.img = start_imx6s_riotboard.pblb.imximg
+ image-$(CONFIG_MACH_EMBEST_RIOTBOARD) += barebox-embest-imx6s-riotboard.img
+ 
+-pblb-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += start_phytec_pbaa03_1gib
+-CFG_start_phytec_pbaa03_1gib.pblb.imximg = $(board)/phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib.imxcfg
+-FILE_barebox-phytec-pbaa03-1gib.img = start_phytec_pbaa03_1gib.pblb.imximg
+-image-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += barebox-phytec-pbaa03-1gib.img
+-
+-pblb-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += start_phytec_pbaa03_1gib_1bank
+-CFG_start_phytec_pbaa03_1gib_1bank.pblb.imximg = $(board)/phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib-1bank.imxcfg
+-FILE_barebox-phytec-pbaa03-1gib-1bank.img = start_phytec_pbaa03_1gib_1bank.pblb.imximg
+-image-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += barebox-phytec-pbaa03-1gib-1bank.img
+-
+-pblb-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += start_phytec_pbaa03_2gib
+-CFG_start_phytec_pbaa03_2gib.pblb.imximg = $(board)/phytec-som-imx6/flash-header-phytec-pcaaxl3-2gib.imxcfg
+-FILE_barebox-phytec-pbaa03-2gib.img = start_phytec_pbaa03_2gib.pblb.imximg
+-image-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += barebox-phytec-pbaa03-2gib.img
++pblb-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += start_phytec_phycard_imx6q_1gib
++CFG_start_phytec_phycard_imx6q_1gib.pblb.imximg = $(board)/phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib.imxcfg
++FILE_barebox-phytec-phycard-imx6q-1gib.img = start_phytec_phycard_imx6q_1gib.pblb.imximg
++image-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += barebox-phytec-phycard-imx6q-1gib.img
 +
-+	eeprom: m24c32@50 {
-+		compatible = "st,24c32", "at24";
-+		reg = <0x50>;
-+	};
-+};
++pblb-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += start_phytec_phycard_imx6q_1gib_1bank
++CFG_start_phytec_phycard_imx6q_1gib_1bank.pblb.imximg = $(board)/phytec-som-imx6/flash-header-phytec-pcaaxl3-1gib-1bank.imxcfg
++FILE_barebox-phytec-phycard-imx6q-1gib-1bank.img = start_phytec_phycard_imx6q_1gib_1bank.pblb.imximg
++image-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += barebox-phytec-phycard-imx6q-1gib-1bank.img
 +
-+&iomuxc {
-+	pinctrl-names = "default";
-+
-+	pinctrl_enet: enetgrp {
-+		fsl,pins = <
-+			MX6QDL_PAD_ENET_MDC__ENET_MDC		0x1b0b0
-+			MX6QDL_PAD_ENET_MDIO__ENET_MDIO		0x1b0b0
-+			MX6QDL_PAD_ENET_RXD0__ENET_RX_DATA0	0x1b0b0
-+			MX6QDL_PAD_ENET_RXD1__ENET_RX_DATA1	0x1b0b0
-+			MX6QDL_PAD_ENET_RX_ER__ENET_RX_ER	0x1b0b0
-+			MX6QDL_PAD_ENET_TX_EN__ENET_TX_EN	0x1b0b0
-+			MX6QDL_PAD_ENET_TXD0__ENET_TX_DATA0	0x1b0b0
-+			MX6QDL_PAD_ENET_TXD1__ENET_TX_DATA1	0x1b0b0
-+			MX6QDL_PAD_ENET_CRS_DV__ENET_RX_EN	0x1b0b0
-+			MX6QDL_PAD_ENET_REF_CLK__ENET_TX_CLK	0x1b0b0
-+			MX6QDL_PAD_KEY_COL0__ENET_RX_DATA3	0x1b0b0
-+			MX6QDL_PAD_KEY_ROW0__ENET_TX_DATA3	0x1b0b0
-+			MX6QDL_PAD_KEY_ROW1__ENET_COL		0x1b0b0
-+			MX6QDL_PAD_KEY_COL2__ENET_RX_DATA2	0x1b0b0
-+			MX6QDL_PAD_KEY_ROW2__ENET_TX_DATA2	0x1b0b0
-+			MX6QDL_PAD_KEY_COL3__ENET_CRS		0x1b0b0
-+			MX6QDL_PAD_GPIO_18__ENET_RX_CLK		0x1b0b0
-+			MX6QDL_PAD_GPIO_19__ENET_TX_ER		0x1b0b0
-+		>;
-+	};
-+
-+	pinctrl_gpmi_nand: gpmigrp {
-+		fsl,pins = <
-+			MX6QDL_PAD_NANDF_CLE__NAND_CLE		0xb0b1
-+			MX6QDL_PAD_NANDF_ALE__NAND_ALE		0xb0b1
-+			MX6QDL_PAD_NANDF_WP_B__NAND_WP_B	0xb0b1
-+			MX6QDL_PAD_NANDF_RB0__NAND_READY_B	0xb000
-+			MX6QDL_PAD_NANDF_CS0__NAND_CE0_B	0xb0b1
-+			MX6QDL_PAD_NANDF_CS1__NAND_CE1_B	0xb0b1
-+			MX6QDL_PAD_SD4_CMD__NAND_RE_B		0xb0b1
-+			MX6QDL_PAD_SD4_CLK__NAND_WE_B		0xb0b1
-+			MX6QDL_PAD_NANDF_D0__NAND_DATA00	0xb0b1
-+			MX6QDL_PAD_NANDF_D1__NAND_DATA01	0xb0b1
-+			MX6QDL_PAD_NANDF_D2__NAND_DATA02	0xb0b1
-+			MX6QDL_PAD_NANDF_D3__NAND_DATA03	0xb0b1
-+			MX6QDL_PAD_NANDF_D4__NAND_DATA04	0xb0b1
-+			MX6QDL_PAD_NANDF_D5__NAND_DATA05	0xb0b1
-+			MX6QDL_PAD_NANDF_D6__NAND_DATA06	0xb0b1
-+			MX6QDL_PAD_NANDF_D7__NAND_DATA07	0xb0b1
-+			MX6QDL_PAD_SD4_DAT0__NAND_DQS		0x00b1
-+		>;
-+	};
-+
-+	pinctrl_i2c1: i2c1grp {
-+		fsl,pins = <
-+			MX6QDL_PAD_EIM_D21__I2C1_SCL		0x4001b8b1
-+			MX6QDL_PAD_EIM_D28__I2C1_SDA		0x4001b8b1
-+		>;
-+	};
-+
-+	pinctrl_uart3: uart3grp {
-+		fsl,pins = <
-+			MX6QDL_PAD_EIM_D24__UART3_TX_DATA	0x1b0b1
-+			MX6QDL_PAD_EIM_D25__UART3_RX_DATA	0x1b0b1
-+		>;
-+	};
-+
-+	pinctrl_usdhc3: usdhc3grp {
-+		fsl,pins = <
-+			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x17059
-+			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x10059
-+			MX6QDL_PAD_SD3_DAT0__SD3_DATA0		0x17059
-+			MX6QDL_PAD_SD3_DAT1__SD3_DATA1		0x17059
-+			MX6QDL_PAD_SD3_DAT2__SD3_DATA2		0x17059
-+			MX6QDL_PAD_SD3_DAT3__SD3_DATA3		0x17059
-+			MX6QDL_PAD_CSI0_DAT4__GPIO5_IO22	0x80000000 /* CD */
-+		>;
-+	};
-+};
-+
- &ocotp {
- 	barebox,provide-mac-address = <&fec 0x620>;
- };
++pblb-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += start_phytec_phycard_imx6q_2gib
++CFG_start_phytec_phycard_imx6q_2gib.pblb.imximg = $(board)/phytec-som-imx6/flash-header-phytec-pcaaxl3-2gib.imxcfg
++FILE_barebox-phytec-phycard-imx6q-2gib.img = start_phytec_phycard_imx6q_2gib.pblb.imximg
++image-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += barebox-phytec-phycard-imx6q-2gib.img
+ 
+ pblb-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += start_phytec_phycore_imx6q_som_nand_1gib
+ CFG_start_phytec_phycore_imx6q_som_nand_1gib.pblb.imximg = $(board)/phytec-som-imx6/flash-header-phytec-pcm058-1gib.imxcfg
 -- 
 2.7.4
 
