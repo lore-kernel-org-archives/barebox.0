@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mickerik.phytec.de ([195.145.39.210])
- by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ieICg-0001kh-7d
- for barebox@lists.infradead.org; Mon, 09 Dec 2019 12:31:55 +0000
-From: Stefan Riedmueller <s.riedmueller@phytec.de>
-Date: Mon, 9 Dec 2019 13:31:40 +0100
-Message-Id: <1575894703-316604-5-git-send-email-s.riedmueller@phytec.de>
-In-Reply-To: <1575894703-316604-1-git-send-email-s.riedmueller@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1ieL6Y-0001Ei-9c
+ for barebox@lists.infradead.org; Mon, 09 Dec 2019 15:37:47 +0000
+Date: Mon, 9 Dec 2019 16:37:40 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20191209153740.w7klpla2pi6xlnnq@pengutronix.de>
 References: <1575894703-316604-1-git-send-email-s.riedmueller@phytec.de>
+ <1575894703-316604-5-git-send-email-s.riedmueller@phytec.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1575894703-316604-5-git-send-email-s.riedmueller@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,67 +19,28 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 5/8] ARM: dts: imx6: phycard: Use partname for environment
- device-path
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 5/8] ARM: dts: imx6: phycard: Use partname for
+ environment device-path
+To: Stefan Riedmueller <s.riedmueller@phytec.de>
+Cc: barebox@lists.infradead.org
 
-Change environment device-path from using a separate label to
-referencing a device plus partname.
+On Mon, Dec 09, 2019 at 01:31:40PM +0100, Stefan Riedmueller wrote:
+> Change environment device-path from using a separate label to
+> referencing a device plus partname.
 
-Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
----
-No changes in v2
----
- arch/arm/dts/imx6qdl-phytec-phycard-som.dtsi | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+Why? The way it was is fine.
 
-diff --git a/arch/arm/dts/imx6qdl-phytec-phycard-som.dtsi b/arch/arm/dts/imx6qdl-phytec-phycard-som.dtsi
-index f1a5e5962362..51cece26837a 100644
---- a/arch/arm/dts/imx6qdl-phytec-phycard-som.dtsi
-+++ b/arch/arm/dts/imx6qdl-phytec-phycard-som.dtsi
-@@ -8,13 +8,13 @@
- 	chosen {
- 		environment-nand {
- 			compatible = "barebox,environment";
--			device-path = &environment_nand;
-+			device-path = &gpmi, "partname:barebox-environment";
- 			status = "disabled";
- 		};
- 
- 		environment-sd3 {
- 			compatible = "barebox,environment";
--			device-path = &environment_usdhc3;
-+			device-path = &usdhc3, "partname:barebox-environment";
- 			status = "disabled";
- 		};
- 	};
-@@ -43,7 +43,7 @@
- 			reg = <0x0 0x400000>;
- 		};
- 
--		environment_nand: partition@400000 {
-+		partition@400000 {
- 			label = "barebox-environment";
- 			reg = <0x400000 0x20000>;
- 		};
-@@ -165,7 +165,8 @@
- 		label = "barebox";
- 		reg = <0x0 0xe0000>;
- 	};
--	environment_usdhc3: partition@e0000 {
-+
-+	partition@e0000 {
- 		label = "barebox-environment";
- 		reg = <0xe0000 0x20000>;
- 	};
+Sascha
+
 -- 
-2.7.4
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
