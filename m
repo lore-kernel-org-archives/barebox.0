@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mickerik.phytec.de ([195.145.39.210])
  by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ieEve-0001H2-ET
- for barebox@lists.infradead.org; Mon, 09 Dec 2019 09:02:08 +0000
+ id 1ieEvX-0001H3-Ni
+ for barebox@lists.infradead.org; Mon, 09 Dec 2019 09:02:03 +0000
 From: Stefan Riedmueller <s.riedmueller@phytec.de>
-Date: Mon, 9 Dec 2019 10:01:48 +0100
-Message-Id: <1575882108-108853-7-git-send-email-s.riedmueller@phytec.de>
+Date: Mon, 9 Dec 2019 10:01:43 +0100
+Message-Id: <1575882108-108853-2-git-send-email-s.riedmueller@phytec.de>
 In-Reply-To: <1575882108-108853-1-git-send-email-s.riedmueller@phytec.de>
 References: <1575882108-108853-1-git-send-email-s.riedmueller@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,97 +21,76 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/7] ARM: dts: imx6: phytec: Increase NAND barebox partition
- size
+Subject: [PATCH 2/7] ARM: dts: imx6: pcaaxl3: Update license and model
+ description
 To: barebox@lists.infradead.org
 
-For NAND flash with eraseblock size 1 MB and more the current
-barebox partition size is not sufficient. The 4 FCB copies alone occupy
-the 4 MB partition size. Increase the partition size to 16 MB to be fit
-for the future and leaving some blocks for bad block handling as well.
+Make use of SPDX license identifiers and update copyright notices and
+model descriptions of the phyCARD-i.MX 6 SOM.
 
 Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
 ---
- arch/arm/dts/imx6qdl-phytec-pfla02.dtsi      | 6 +++---
- arch/arm/dts/imx6qdl-phytec-phycard-som.dtsi | 6 +++---
- arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi | 6 +++---
- 3 files changed, 9 insertions(+), 9 deletions(-)
+ arch/arm/dts/imx6q-phytec-pbaa03.dts   | 13 ++++---------
+ arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi | 14 +++-----------
+ 2 files changed, 7 insertions(+), 20 deletions(-)
 
-diff --git a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
-index 846ebbe6b18b..841ad653b26d 100644
---- a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
-+++ b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
-@@ -98,17 +98,17 @@
+diff --git a/arch/arm/dts/imx6q-phytec-pbaa03.dts b/arch/arm/dts/imx6q-phytec-pbaa03.dts
+index 4724a02ad7d8..b11b8b3f93fe 100644
+--- a/arch/arm/dts/imx6q-phytec-pbaa03.dts
++++ b/arch/arm/dts/imx6q-phytec-pbaa03.dts
+@@ -1,19 +1,14 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later)
+ /*
+- * Copyright 2014 Christian Hemp, Phytec Messtechnik GmbH
+- *
+- * The code contained herein is licensed under the GNU General Public
+- * License. You may obtain a copy of the GNU General Public License
+- * Version 2 or later at the following locations:
+- *
+- * http://www.opensource.org/licenses/gpl-license.html
+- * http://www.gnu.org/copyleft/gpl.html
++ * Copyright (C) 2014 PHYTEC Messtechnik GmbH
++ * Author: Christian Hemp <c.hemp@phytec.de>
+  */
  
- 		partition@0 {
- 			label = "barebox";
--			reg = <0x0 0x400000>;
-+			reg = <0x0 0x1000000>;
- 		};
+ /dts-v1/;
+ #include "imx6q-phytec-pcaaxl3.dtsi"
  
- 		partition@400000 {
- 			label = "barebox-environment";
--			reg = <0x400000 0x100000>;
-+			reg = <0x1000000 0x100000>;
- 		};
+ / {
+-	model = "Phytec phyCARD-i.MX6 Quad Carrier-Board";
++	model = "PHYTEC phyCARD-i.MX6 Quad";
+ 	compatible = "phytec,imx6q-pbaa03", "phytec,imx6q-pcaaxl3", "fsl,imx6q";
  
- 		partition@500000 {
- 			label = "root";
--			reg = <0x500000 0x0>;
-+			reg = <0x1100000 0x0>;
- 		};
- 	};
- };
-diff --git a/arch/arm/dts/imx6qdl-phytec-phycard-som.dtsi b/arch/arm/dts/imx6qdl-phytec-phycard-som.dtsi
-index d607bfd0d95f..251134424470 100644
---- a/arch/arm/dts/imx6qdl-phytec-phycard-som.dtsi
-+++ b/arch/arm/dts/imx6qdl-phytec-phycard-som.dtsi
-@@ -43,17 +43,17 @@
+ 	chosen {
+diff --git a/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi b/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi
+index db986f87ef26..5e0495996d52 100644
+--- a/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi
++++ b/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi
+@@ -1,21 +1,13 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later)
+ /*
+- * Copyright 2014444 Christian Hemp, Phytec Messtechnik GmbH
+- *
+- * The code contained herein is licensed under the GNU General Public
+- * License. You may obtain a copy of the GNU General Public License
+- * Version 2 or later at the following locations:
+- *
+- * http://www.opensource.org/licenses/gpl-license.html
+- * http://www.gnu.org/copyleft/gpl.html
++ * Copyright (C) 2014 PHYTEC Messtechnik GmbH
++ * Author: Christian Hemp <c.hemp@phytec.de>
+  */
  
- 		partition@0 {
- 			label = "barebox";
--			reg = <0x0 0x400000>;
-+			reg = <0x0 0x1000000>;
- 		};
+ #include <arm/imx6q.dtsi>
+ #include "imx6q.dtsi"
  
- 		partition@400000 {
- 			label = "barebox-environment";
--			reg = <0x400000 0x20000>;
-+			reg = <0x1000000 0x100000>;
- 		};
- 
- 		partition@420000 {
- 			label = "root";
--			reg = <0x420000 0x0>;
-+			reg = <0x1100000 0x0>;
- 		};
- 	};
- };
-diff --git a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-index 1d39368165db..2e03c08aa8e5 100644
---- a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-+++ b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-@@ -138,17 +138,17 @@
- 
- 		partition@0 {
- 			label = "barebox";
--			reg = <0x0 0x400000>;
-+			reg = <0x0 0x1000000>;
- 		};
- 
- 		partition@400000 {
- 			label = "barebox-environment";
--			reg = <0x400000 0x100000>;
-+			reg = <0x1000000 0x100000>;
- 		};
- 
- 		partition@500000 {
- 			label = "root";
--			reg = <0x500000 0x0>;
-+			reg = <0x1100000 0x0>;
- 		};
- 	};
- };
+ / {
+-	model = "Phytec phyCARD-i.MX6 Quad";
+-	compatible = "phytec,imx6q-pcaaxl3", "fsl,imx6q";
+-
+ 	chosen {
+ 		environment-nand {
+ 			compatible = "barebox,environment";
 -- 
 2.7.4
 
