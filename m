@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ieFQU-0007Fv-9g
- for barebox@lists.infradead.org; Mon, 09 Dec 2019 09:33:59 +0000
-Date: Mon, 9 Dec 2019 10:33:56 +0100
+ id 1ieFcE-0008CH-EI
+ for barebox@lists.infradead.org; Mon, 09 Dec 2019 09:46:08 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191209093356.jrqra7oedczuxph5@pengutronix.de>
-References: <20190923113634.22746-1-cleger@kalray.eu>
+Date: Mon,  9 Dec 2019 10:46:03 +0100
+Message-Id: <20191209094603.8309-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190923113634.22746-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,31 +19,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mtd: spi-nor: fix wrong value for CR_QUAD_EN_SPAN
-To: Clement Leger <cleger@kalray.eu>
-Cc: barebox <barebox@lists.infradead.org>, Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: [PATCH] clk: i.MX6ul: Disable GPMI_IO clk before reparenting
+To: Barebox List <barebox@lists.infradead.org>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Hi Clement,
+Before reparenting the ENFC_SEL mux we have to make sure the GPMI_IO clk
+is disabled as recommended in the reference manual. Otherwise glitches
+may occur on the GPMI clk which result in a later NAND failure:
 
-On Mon, Sep 23, 2019 at 01:36:34PM +0200, Clement Leger wrote:
-> Durign a previous patch, 0x2 was mistakenly converted to BIT(2) whereas
-> it should be BIT(1).
-> ---
->  include/linux/mtd/spi-nor.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+MXS: Timeout resetting block via register 0x01806000
+mxs_nand 1806000.gpmi-nand@1806000.of: probe failed: Connection timed out
 
-Applied now, thanks.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/clk/imx/clk-imx6ul.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Note you sent the mail to barebox-bounces@lists.infradead.org instead
-of barebox@lists.infradead.org, so the patch never made it to the list.
-
-Sascha
-
+diff --git a/drivers/clk/imx/clk-imx6ul.c b/drivers/clk/imx/clk-imx6ul.c
+index b0a6bb0e8d..35483efde6 100644
+--- a/drivers/clk/imx/clk-imx6ul.c
++++ b/drivers/clk/imx/clk-imx6ul.c
+@@ -450,6 +450,9 @@ static int imx6_ccm_probe(struct device_d *dev)
+ 		clk_set_parent(clks[IMX6ULL_CLK_EPDC_PRE_SEL],
+ 				clks[IMX6UL_CLK_PLL3_PFD2]);
+ 
++	/* Disable GPMI_IO clk before reparenting to avoid glitches */
++	clks[IMX6UL_CLK_GPMI_IO]->ops->disable(clks[IMX6UL_CLK_GPMI_IO]);
++
+ 	clk_set_parent(clks[IMX6UL_CLK_ENFC_SEL], clks[IMX6UL_CLK_PLL2_PFD2]);
+ 
+ 	return 0;
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.24.0
+
 
 _______________________________________________
 barebox mailing list
