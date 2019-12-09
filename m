@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mickerik.phytec.de ([195.145.39.210])
  by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ieICa-0001ki-RN
- for barebox@lists.infradead.org; Mon, 09 Dec 2019 12:31:50 +0000
+ id 1ieICd-0001kh-RI
+ for barebox@lists.infradead.org; Mon, 09 Dec 2019 12:31:53 +0000
 From: Stefan Riedmueller <s.riedmueller@phytec.de>
-Date: Mon, 9 Dec 2019 13:31:37 +0100
-Message-Id: <1575894703-316604-2-git-send-email-s.riedmueller@phytec.de>
+Date: Mon, 9 Dec 2019 13:31:39 +0100
+Message-Id: <1575894703-316604-4-git-send-email-s.riedmueller@phytec.de>
 In-Reply-To: <1575894703-316604-1-git-send-email-s.riedmueller@phytec.de>
 References: <1575894703-316604-1-git-send-email-s.riedmueller@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,78 +21,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/8] ARM: dts: imx6: pcaaxl3: Update license and model
- description
+Subject: [PATCH v2 4/8] ARM: dts: imx6: phycard: Make eeprom configurable
 To: barebox@lists.infradead.org
 
-Make use of SPDX license identifiers and update copyright notices and
-model descriptions of the phyCARD-i.MX 6 SOM.
+The EEPROM is a configurable option. So make it configurable from the
+dts file.
 
 Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
 ---
-Changes in v2:
- - Don't remove dtsi's model and compatible yet
+No changes in v2
 ---
- arch/arm/dts/imx6q-phytec-pbaa03.dts   | 13 ++++---------
- arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi | 13 ++++---------
- 2 files changed, 8 insertions(+), 18 deletions(-)
+ arch/arm/dts/imx6q-phytec-phycard.dts        | 4 ++++
+ arch/arm/dts/imx6qdl-phytec-phycard-som.dtsi | 1 +
+ 2 files changed, 5 insertions(+)
 
-diff --git a/arch/arm/dts/imx6q-phytec-pbaa03.dts b/arch/arm/dts/imx6q-phytec-pbaa03.dts
-index 4724a02ad7d8..b11b8b3f93fe 100644
---- a/arch/arm/dts/imx6q-phytec-pbaa03.dts
-+++ b/arch/arm/dts/imx6q-phytec-pbaa03.dts
-@@ -1,19 +1,14 @@
-+// SPDX-License-Identifier: (GPL-2.0-or-later)
- /*
-- * Copyright 2014 Christian Hemp, Phytec Messtechnik GmbH
-- *
-- * The code contained herein is licensed under the GNU General Public
-- * License. You may obtain a copy of the GNU General Public License
-- * Version 2 or later at the following locations:
-- *
-- * http://www.opensource.org/licenses/gpl-license.html
-- * http://www.gnu.org/copyleft/gpl.html
-+ * Copyright (C) 2014 PHYTEC Messtechnik GmbH
-+ * Author: Christian Hemp <c.hemp@phytec.de>
-  */
+diff --git a/arch/arm/dts/imx6q-phytec-phycard.dts b/arch/arm/dts/imx6q-phytec-phycard.dts
+index a56130a31ca6..7f6e0b76ec56 100644
+--- a/arch/arm/dts/imx6q-phytec-phycard.dts
++++ b/arch/arm/dts/imx6q-phytec-phycard.dts
+@@ -18,6 +18,10 @@
+ 	};
+ };
  
- /dts-v1/;
- #include "imx6q-phytec-pcaaxl3.dtsi"
++&eeprom {
++	status = "okay";
++};
++
+ &fec {
+ 	status = "okay";
+ };
+diff --git a/arch/arm/dts/imx6qdl-phytec-phycard-som.dtsi b/arch/arm/dts/imx6qdl-phytec-phycard-som.dtsi
+index 6d963f191024..f1a5e5962362 100644
+--- a/arch/arm/dts/imx6qdl-phytec-phycard-som.dtsi
++++ b/arch/arm/dts/imx6qdl-phytec-phycard-som.dtsi
+@@ -63,6 +63,7 @@
+ 	eeprom: m24c32@50 {
+ 		compatible = "st,24c32", "at24";
+ 		reg = <0x50>;
++		status = "disabled";
+ 	};
+ };
  
- / {
--	model = "Phytec phyCARD-i.MX6 Quad Carrier-Board";
-+	model = "PHYTEC phyCARD-i.MX6 Quad";
- 	compatible = "phytec,imx6q-pbaa03", "phytec,imx6q-pcaaxl3", "fsl,imx6q";
- 
- 	chosen {
-diff --git a/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi b/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi
-index db986f87ef26..0dbd5419ba10 100644
---- a/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi
-+++ b/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi
-@@ -1,19 +1,14 @@
-+// SPDX-License-Identifier: (GPL-2.0-or-later)
- /*
-- * Copyright 2014444 Christian Hemp, Phytec Messtechnik GmbH
-- *
-- * The code contained herein is licensed under the GNU General Public
-- * License. You may obtain a copy of the GNU General Public License
-- * Version 2 or later at the following locations:
-- *
-- * http://www.opensource.org/licenses/gpl-license.html
-- * http://www.gnu.org/copyleft/gpl.html
-+ * Copyright (C) 2014 PHYTEC Messtechnik GmbH
-+ * Author: Christian Hemp <c.hemp@phytec.de>
-  */
- 
- #include <arm/imx6q.dtsi>
- #include "imx6q.dtsi"
- 
- / {
--	model = "Phytec phyCARD-i.MX6 Quad";
-+	model = "PHYTEC phyCARD-i.MX6 Quad";
- 	compatible = "phytec,imx6q-pcaaxl3", "fsl,imx6q";
- 
- 	chosen {
 -- 
 2.7.4
 
