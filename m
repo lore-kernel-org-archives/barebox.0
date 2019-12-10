@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mickerik.phytec.de ([195.145.39.210])
- by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ieaI8-0008Vz-I9
- for barebox@lists.infradead.org; Tue, 10 Dec 2019 07:50:46 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1ieaWq-0006Di-5Q
+ for barebox@lists.infradead.org; Tue, 10 Dec 2019 08:05:57 +0000
+Date: Tue, 10 Dec 2019 09:05:54 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20191210080554.gzar2hlvhbzjtewt@pengutronix.de>
 References: <1575894703-316604-1-git-send-email-s.riedmueller@phytec.de>
  <1575894703-316604-5-git-send-email-s.riedmueller@phytec.de>
  <20191209153740.w7klpla2pi6xlnnq@pengutronix.de>
-From: =?UTF-8?Q?Stefan_Riedm=c3=bcller?= <s.riedmueller@phytec.de>
-Message-ID: <0edc4e68-8fd6-8e6d-450a-41db3ae975be@phytec.de>
-Date: Tue, 10 Dec 2019 08:50:41 +0100
+ <0edc4e68-8fd6-8e6d-450a-41db3ae975be@phytec.de>
 MIME-Version: 1.0
-In-Reply-To: <20191209153740.w7klpla2pi6xlnnq@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <0edc4e68-8fd6-8e6d-450a-41db3ae975be@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,33 +21,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v2 5/8] ARM: dts: imx6: phycard: Use partname for
  environment device-path
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Stefan =?iso-8859-15?Q?Riedm=FCller?= <s.riedmueller@phytec.de>
 Cc: barebox@lists.infradead.org
 
-Hi Sascha,
+On Tue, Dec 10, 2019 at 08:50:41AM +0100, Stefan Riedm=FCller wrote:
+> Hi Sascha,
+> =
 
-On 09.12.19 16:37, Sascha Hauer wrote:
-> On Mon, Dec 09, 2019 at 01:31:40PM +0100, Stefan Riedmueller wrote:
->> Change environment device-path from using a separate label to
->> referencing a device plus partname.
-> 
-> Why? The way it was is fine.
+> On 09.12.19 16:37, Sascha Hauer wrote:
+> > On Mon, Dec 09, 2019 at 01:31:40PM +0100, Stefan Riedmueller wrote:
+> > > Change environment device-path from using a separate label to
+> > > referencing a device plus partname.
+> > =
 
-Just to be consistent with phyCORE and phyFLEX. Is there a downside I'm not 
-aware of?
+> > Why? The way it was is fine.
+> =
 
-Regards,
-Stefan
+> Just to be consistent with phyCORE and phyFLEX. Is there a downside I'm n=
+ot
+> aware of?
 
-> 
-> Sascha
-> 
+It feels more natural to directly point to the partition, that's why I
+prefer that way. So if you don't have a good reason I suggest to convert
+it the other way round for consistency
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
