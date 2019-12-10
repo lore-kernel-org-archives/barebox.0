@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr1-x441.google.com ([2a00:1450:4864:20::441])
+Received: from mail-wr1-x442.google.com ([2a00:1450:4864:20::442])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iej4q-0001fP-BY
- for barebox@lists.infradead.org; Tue, 10 Dec 2019 17:13:37 +0000
-Received: by mail-wr1-x441.google.com with SMTP id c9so20995295wrw.8
- for <barebox@lists.infradead.org>; Tue, 10 Dec 2019 09:13:33 -0800 (PST)
+ id 1iej4q-0001ff-Q5
+ for barebox@lists.infradead.org; Tue, 10 Dec 2019 17:13:39 +0000
+Received: by mail-wr1-x442.google.com with SMTP id a15so20961837wrf.9
+ for <barebox@lists.infradead.org>; Tue, 10 Dec 2019 09:13:35 -0800 (PST)
 From: Hubert Feurstein <h.feurstein@gmail.com>
-Date: Tue, 10 Dec 2019 18:13:01 +0100
-Message-Id: <20191210171305.24276-1-h.feurstein@gmail.com>
+Date: Tue, 10 Dec 2019 18:13:03 +0100
+Message-Id: <20191210171305.24276-3-h.feurstein@gmail.com>
+In-Reply-To: <20191210171305.24276-1-h.feurstein@gmail.com>
+References: <20191210171305.24276-1-h.feurstein@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,126 +23,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] led: unify led trigger tables
+Subject: [PATCH 3/4] led: check for 'barebox, default-trigger' when 'linux,
+ default-trigger' is not found
 To: barebox@lists.infradead.org
 Cc: Hubert Feurstein <h.feurstein@gmail.com>
 
-Currently we have two slightly different led-trigger tables. One in the
-core module, and the other one in the led-triggers module. The one in the
-core module, which is used to parse the device-tree triggers, is lacking
-net-rx and net-tx.
+When the linux,default-trigger is not found by barebox, then also check if
+there might be a barebox,default-trigger.
 
 Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
 ---
- drivers/led/core.c         | 46 +++++++++++++++++++++++---------------
- drivers/led/led-triggers.c | 25 ---------------------
- 2 files changed, 28 insertions(+), 43 deletions(-)
+ drivers/led/core.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/led/core.c b/drivers/led/core.c
-index 431966d06..fec7324e7 100644
+index fec7324e7..4bf19abcc 100644
 --- a/drivers/led/core.c
 +++ b/drivers/led/core.c
-@@ -256,22 +256,35 @@ void led_unregister(struct led *led)
- 	list_del(&led->list);
- }
- 
--struct led_trg {
--	const char *str;
--	enum led_trigger trg;
-+static char *trigger_names[] = {
-+	[LED_TRIGGER_PANIC] = "panic",
-+	[LED_TRIGGER_HEARTBEAT] = "heartbeat",
-+	[LED_TRIGGER_NET_RX] = "net-rx",
-+	[LED_TRIGGER_NET_TX] = "net-tx",
-+	[LED_TRIGGER_NET_TXRX] = "net",
-+	[LED_TRIGGER_DEFAULT_ON] = "default-on",
- };
- 
--static struct led_trg triggers[] = {
--	{ .str = "heartbeat", LED_TRIGGER_HEARTBEAT, },
--	{ .str = "panic", LED_TRIGGER_PANIC, },
--	{ .str = "net", LED_TRIGGER_NET_TXRX, },
--	{ .str = "default-on", LED_TRIGGER_DEFAULT_ON, },
--};
-+const char *trigger_name(enum led_trigger trigger)
-+{
-+	return trigger_names[trigger];
-+}
-+
-+enum led_trigger trigger_by_name(const char *name)
-+{
-+	int i;
-+
-+	for (i = 0; i < LED_TRIGGER_MAX; i++)
-+		if (!strcmp(name, trigger_names[i]))
-+			return i;
-+
-+	return LED_TRIGGER_MAX;
-+}
- 
- void led_of_parse_trigger(struct led *led, struct device_node *np)
+@@ -274,6 +274,9 @@ enum led_trigger trigger_by_name(const char *name)
  {
-+	enum led_trigger trg;
+ 	int i;
+ 
++	if (!name)
++		return LED_TRIGGER_MAX;
++
+ 	for (i = 0; i < LED_TRIGGER_MAX; i++)
+ 		if (!strcmp(name, trigger_names[i]))
+ 			return i;
+@@ -287,13 +290,13 @@ void led_of_parse_trigger(struct led *led, struct device_node *np)
  	const char *trigger;
--	int i;
  
  	trigger = of_get_property(np, "linux,default-trigger", NULL);
- 	if (!trigger)
-@@ -280,13 +293,10 @@ void led_of_parse_trigger(struct led *led, struct device_node *np)
- 	if (!trigger)
- 		return;
- 
--	for (i = 0; i < ARRAY_SIZE(triggers); i++) {
--		struct led_trg *trg = &triggers[i];
--		if (!strcmp(trg->str, trigger)) {
--			/* disable LED before installing trigger */
--			led_set(led, 0);
--			led_set_trigger(trg->trg, led);
--			return;
--		}
+-	if (!trigger)
+-		trigger = of_get_property(np, "barebox,default-trigger", NULL);
 +	trg = trigger_by_name(trigger);
-+	if (trg != LED_TRIGGER_MAX) {
-+		/* disable LED before installing trigger */
-+		led_set(led, 0);
-+		led_set_trigger(trg, led);
- 	}
- }
-diff --git a/drivers/led/led-triggers.c b/drivers/led/led-triggers.c
-index 76a1481e1..216c8639b 100644
---- a/drivers/led/led-triggers.c
-+++ b/drivers/led/led-triggers.c
-@@ -143,31 +143,6 @@ int led_set_trigger(enum led_trigger trigger, struct led *led)
- 	return 0;
- }
  
--static char *trigger_names[] = {
--	[LED_TRIGGER_PANIC] = "panic",
--	[LED_TRIGGER_HEARTBEAT] = "heartbeat",
--	[LED_TRIGGER_NET_RX] = "net-rx",
--	[LED_TRIGGER_NET_TX] = "net-tx",
--	[LED_TRIGGER_NET_TXRX] = "net",
--	[LED_TRIGGER_DEFAULT_ON] = "default-on",
--};
--
--const char *trigger_name(enum led_trigger trigger)
--{
--	return trigger_names[trigger];
--}
--
--enum led_trigger trigger_by_name(const char *name)
--{
--	int i;
--
--	for (i = 0; i < LED_TRIGGER_MAX; i++)
--		if (!strcmp(name, trigger_names[i]))
--			return i;
--
--	return LED_TRIGGER_MAX;
--}
--
- /**
-  * led_triggers_show_info - Show information about all registered
-  * triggers
+-	if (!trigger)
+-		return;
++	if (trg == LED_TRIGGER_MAX) {
++		trigger = of_get_property(np, "barebox,default-trigger", NULL);
++		trg = trigger_by_name(trigger);
++	}
+ 
+-	trg = trigger_by_name(trigger);
+ 	if (trg != LED_TRIGGER_MAX) {
+ 		/* disable LED before installing trigger */
+ 		led_set(led, 0);
 -- 
 2.24.0
 
