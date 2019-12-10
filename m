@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ienbw-0000FU-HQ
- for barebox@lists.infradead.org; Tue, 10 Dec 2019 22:04:09 +0000
+ id 1ienbw-0000FT-Gu
+ for barebox@lists.infradead.org; Tue, 10 Dec 2019 22:04:10 +0000
 Received: from astat.fritz.box (a89-183-112-47.net-htp.de [89.183.112.47])
- by lynxeye.de (Postfix) with ESMTPA id DAEAEE74240
+ by lynxeye.de (Postfix) with ESMTPA id A1B84E74222
  for <barebox@lists.infradead.org>; Tue, 10 Dec 2019 23:03:26 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Tue, 10 Dec 2019 23:03:22 +0100
-Message-Id: <20191210220322.47425-4-dev@lynxeye.de>
+Date: Tue, 10 Dec 2019 23:03:21 +0100
+Message-Id: <20191210220322.47425-3-dev@lynxeye.de>
 In-Reply-To: <20191210220322.47425-1-dev@lynxeye.de>
 References: <20191210220322.47425-1-dev@lynxeye.de>
 MIME-Version: 1.0
@@ -24,81 +24,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] ARM: zynq: add Zynq image bootm handler
+Subject: [PATCH 3/4] filetype: add Zynq image type
 To: barebox@lists.infradead.org
 
-This adds a bootm handler for the Zynq image, to allow second
-stage booting of a unchanged Zynq boot image.
+Use the 2 invariant words (width detection and image identification)
+from the Zynq image header to detect the filetype.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/mach-zynq/Makefile        |  2 +-
- arch/arm/mach-zynq/bootm-zynqimg.c | 49 ++++++++++++++++++++++++++++++
- 2 files changed, 50 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/mach-zynq/bootm-zynqimg.c
+ common/filetype.c  | 4 ++++
+ include/filetype.h | 1 +
+ 2 files changed, 5 insertions(+)
 
-diff --git a/arch/arm/mach-zynq/Makefile b/arch/arm/mach-zynq/Makefile
-index 3252247d176d..c88ab4666f0f 100644
---- a/arch/arm/mach-zynq/Makefile
-+++ b/arch/arm/mach-zynq/Makefile
-@@ -1 +1 @@
--obj-y += zynq.o
-+obj-y += zynq.o bootm-zynqimg.o
-diff --git a/arch/arm/mach-zynq/bootm-zynqimg.c b/arch/arm/mach-zynq/bootm-zynqimg.c
-new file mode 100644
-index 000000000000..e903ab667905
---- /dev/null
-+++ b/arch/arm/mach-zynq/bootm-zynqimg.c
-@@ -0,0 +1,49 @@
-+// SPDX-License-Identifier: GPL-2.0
+diff --git a/common/filetype.c b/common/filetype.c
+index 39fea45edff5..fd6e8e3d1c35 100644
+--- a/common/filetype.c
++++ b/common/filetype.c
+@@ -80,6 +80,7 @@ static const struct filetype_str filetype_str[] = {
+ 	[filetype_ubootvar] = { "U-Boot environmemnt variable data",
+ 				"ubootvar" },
+ 	[filetype_stm32_image_v1] = { "STM32 image (v1)", "stm32-image-v1" },
++	[filetype_zynq_image] = { "Zynq image", "zynq-image" },
+ };
+ 
+ const char *file_type_to_string(enum filetype f)
+@@ -392,6 +393,9 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
+ 	if (is_imx_flash_header_v2(_buf))
+ 		return filetype_imx_image_v2;
+ 
++	if (buf[8] == 0xAA995566 && buf[9] == 0x584C4E58)
++		return filetype_zynq_image;
 +
-+#include <bootm.h>
-+#include <common.h>
-+#include <init.h>
-+#include <memory.h>
-+
-+static int do_bootm_zynqimage(struct image_data *data)
-+{
-+	resource_size_t start, end;
-+	void (*barebox)(void);
-+	u32 *header;
-+	int ret;
-+
-+	ret = memory_bank_first_find_space(&start, &end);
-+	if (ret)
-+		return ret;
-+
-+	ret = bootm_load_os(data, start);
-+	if (ret)
-+		return ret;
-+
-+	header = (u32*)start;
-+	barebox = (void*)start + header[12];
-+
-+	if (data->verbose)
-+		printf("Loaded barebox image to 0x%08lx\n",
-+		       (unsigned long)barebox);
-+
-+	shutdown_barebox();
-+
-+	barebox();
-+
-+	return -EIO;
-+}
-+
-+static struct image_handler zynq_image_handler = {
-+	.name = "Zynq image",
-+	.bootm = do_bootm_zynqimage,
-+	.filetype = filetype_zynq_image,
-+};
-+
-+static int zynq_register_image_handler(void)
-+{
-+	register_image_handler(&zynq_image_handler);
-+
-+	return 0;
-+}
-+late_initcall(zynq_register_image_handler);
+ 	return filetype_unknown;
+ }
+ 
+diff --git a/include/filetype.h b/include/filetype.h
+index 90a03de58105..db95fdaa0a5f 100644
+--- a/include/filetype.h
++++ b/include/filetype.h
+@@ -49,6 +49,7 @@ enum filetype {
+ 	filetype_layerscape_qspi_image,
+ 	filetype_ubootvar,
+ 	filetype_stm32_image_v1,
++	filetype_zynq_image,
+ 	filetype_max,
+ };
+ 
 -- 
 2.23.0
 
