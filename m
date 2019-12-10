@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iexgl-0007gn-5r
- for barebox@lists.infradead.org; Wed, 11 Dec 2019 08:49:44 +0000
-Date: Wed, 11 Dec 2019 09:49:41 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191211084941.5tt2mfs5j6bnka3q@pengutronix.de>
-References: <20191210144657.18973-1-h.feurstein@gmail.com>
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+ by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1ienbw-0000FS-He
+ for barebox@lists.infradead.org; Tue, 10 Dec 2019 22:04:10 +0000
+Received: from astat.fritz.box (a89-183-112-47.net-htp.de [89.183.112.47])
+ by lynxeye.de (Postfix) with ESMTPA id 2C24DE74217
+ for <barebox@lists.infradead.org>; Tue, 10 Dec 2019 23:03:26 +0100 (CET)
+From: Lucas Stach <dev@lynxeye.de>
+Date: Tue, 10 Dec 2019 23:03:19 +0100
+Message-Id: <20191210220322.47425-1-dev@lynxeye.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191210144657.18973-1-h.feurstein@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,28 +22,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] mci: imx-esdhc: fix termination of statement
-To: Hubert Feurstein <h.feurstein@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/4] ARM: zynq: zedboard: split out PS7 init
+To: barebox@lists.infradead.org
 
-On Tue, Dec 10, 2019 at 03:46:57PM +0100, Hubert Feurstein wrote:
-> Use semicolon instead of comma to terminate statement.
-> 
-> Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
-> ---
->  drivers/mci/imx-esdhc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+Move the PS7 inititalization into its own function. This helps
+readability and logically splits the FPGA toolchain generated
+setup from the reset of the board init.
 
-Applied, thanks
+Also execute the PS7 setup after the lowlevel CPU init, as this
+is the regular order used in the Barebox codebase.
 
-Sascha
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
+---
+ arch/arm/boards/avnet-zedboard/lowlevel.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-
+diff --git a/arch/arm/boards/avnet-zedboard/lowlevel.c b/arch/arm/boards/avnet-zedboard/lowlevel.c
+index 93e4da96ecd4..b50c36b28869 100644
+--- a/arch/arm/boards/avnet-zedboard/lowlevel.c
++++ b/arch/arm/boards/avnet-zedboard/lowlevel.c
+@@ -29,11 +29,8 @@
+ 
+ extern char __dtb_zynq_zed_start[];
+ 
+-ENTRY_FUNCTION(start_avnet_zedboard, r0, r1, r2)
++static void avnet_zedboard_ps7_init(void)
+ {
+-
+-	void *fdt = __dtb_zynq_zed_start + get_runtime_offset();
+-
+ 	/* open sesame */
+ 	writel(0x0000DF0D, ZYNQ_SLCR_UNLOCK);
+ 
+@@ -260,8 +257,16 @@ ENTRY_FUNCTION(start_avnet_zedboard, r0, r1, r2)
+ 
+ 	/* lock up. secure, secure */
+ 	writel(0x0000767B, ZYNQ_SLCR_LOCK);
++}
++
++ENTRY_FUNCTION(start_avnet_zedboard, r0, r1, r2)
++{
++
++	void *fdt = __dtb_zynq_zed_start + get_runtime_offset();
+ 
+ 	arm_cpu_lowlevel_init();
+ 
++	avnet_zedboard_ps7_init();
++
+ 	barebox_arm_entry(0, SZ_512M, fdt);
+ }
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.23.0
+
 
 _______________________________________________
 barebox mailing list
