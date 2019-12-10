@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wr1-x443.google.com ([2a00:1450:4864:20::443])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iexWV-000340-6S
- for barebox@lists.infradead.org; Wed, 11 Dec 2019 08:39:08 +0000
-Date: Wed, 11 Dec 2019 09:39:05 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191211083905.k4pzx6ckm2paokzs@pengutronix.de>
-References: <20191210171305.24276-1-h.feurstein@gmail.com>
+ id 1iejQl-0002nX-Ay
+ for barebox@lists.infradead.org; Tue, 10 Dec 2019 17:36:16 +0000
+Received: by mail-wr1-x443.google.com with SMTP id c14so21057140wrn.7
+ for <barebox@lists.infradead.org>; Tue, 10 Dec 2019 09:36:15 -0800 (PST)
+From: Hubert Feurstein <h.feurstein@gmail.com>
+Date: Tue, 10 Dec 2019 18:36:01 +0100
+Message-Id: <20191210173601.26166-1-h.feurstein@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191210171305.24276-1-h.feurstein@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,31 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] led: unify led trigger tables
-To: Hubert Feurstein <h.feurstein@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] commands: digest: don't be to restrictive with the length of
+ verification files
+To: barebox@lists.infradead.org
+Cc: Hubert Feurstein <h.feurstein@gmail.com>
 
-On Tue, Dec 10, 2019 at 06:13:01PM +0100, Hubert Feurstein wrote:
-> Currently we have two slightly different led-trigger tables. One in the
-> core module, and the other one in the led-triggers module. The one in the
-> core module, which is used to parse the device-tree triggers, is lacking
-> net-rx and net-tx.
-> 
-> Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
-> ---
->  drivers/led/core.c         | 46 +++++++++++++++++++++++---------------
->  drivers/led/led-triggers.c | 25 ---------------------
->  2 files changed, 28 insertions(+), 43 deletions(-)
+Otherwise it is not possible to verify against a file created by shaXsum
+from linux. Usually there is the filename appended after the hash.
 
-Applied, thanks
+Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
+---
+ commands/digest.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Sascha
-
+diff --git a/commands/digest.c b/commands/digest.c
+index 99b27dcc2..21a091717 100644
+--- a/commands/digest.c
++++ b/commands/digest.c
+@@ -164,7 +164,7 @@ static int do_digest(int argc, char *argv[])
+ 
+ 	if (sig) {
+ 		digestlen = digest_length(d);
+-		if (siglen == 2 * digestlen) {
++		if (siglen >= 2 * digestlen) {
+ 			if (!tmp_sig)
+ 				tmp_sig = xmalloc(digestlen);
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.24.0
+
 
 _______________________________________________
 barebox mailing list
