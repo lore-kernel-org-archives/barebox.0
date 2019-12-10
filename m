@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wm1-x343.google.com ([2a00:1450:4864:20::343])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iexfI-0007XJ-Hi
- for barebox@lists.infradead.org; Wed, 11 Dec 2019 08:48:13 +0000
-Date: Wed, 11 Dec 2019 09:48:08 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191211084808.semgbbp7ksqwngwr@pengutronix.de>
-References: <20191209104928.1479-1-a.schwarzkopf@phytec.de>
+ id 1iegn1-00023F-2b
+ for barebox@lists.infradead.org; Tue, 10 Dec 2019 14:47:04 +0000
+Received: by mail-wm1-x343.google.com with SMTP id d73so260350wmd.1
+ for <barebox@lists.infradead.org>; Tue, 10 Dec 2019 06:47:02 -0800 (PST)
+From: Hubert Feurstein <h.feurstein@gmail.com>
+Date: Tue, 10 Dec 2019 15:46:57 +0100
+Message-Id: <20191210144657.18973-1-h.feurstein@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191209104928.1479-1-a.schwarzkopf@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,45 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] Allow usage of default environment without
- environment file storage
-To: Albert Schwarzkopf <a.schwarzkopf@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/1] mci: imx-esdhc: fix termination of statement
+To: barebox@lists.infradead.org
+Cc: Hubert Feurstein <h.feurstein@gmail.com>
 
-On Mon, Dec 09, 2019 at 11:49:28AM +0100, Albert Schwarzkopf wrote:
-> Currently, the default environment is only used when the
-> barebox environment on the persistent store is not valid
-> or when ENVFS_FLAGS_FORCE_BUILT_IN is set in the super block.
-> 
-> However, ENVFS_FLAGS_FORCE_BUILT_IN can be cleared and the
-> environmnet variables in the persistent store will be
-> used again. This may not be desirable.
-> 
-> This patch allows building CONFIG_DEFAULT_ENVIRONMENT
-> independent of CONFIG_ENV_HANDLING. This can be useful
-> if you never want to load or write values from the
-> persistent store and you only need to read environment variables
-> from your default environment.
-> 
-> If CONFIG_ENV_HANDLING is not set, a message will be printed to the
-> user indicating that changes to non-volatile variables won't be
-> persisted.
-> 
-> Move envfs functions that are needed when CONFIG_DEFAULT_ENVIRONMENT
-> and/or CONFIG_ENV_HANDLING is set to a new file common/envfs-core.c.
-> 
-> Signed-off-by: Albert Schwarzkopf <a.schwarzkopf@phytec.de>
-> ---
+Use semicolon instead of comma to terminate statement.
 
-Applied, thanks
+Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
+---
+ drivers/mci/imx-esdhc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Sascha
-
+diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
+index db3450a26..4f9fe2996 100644
+--- a/drivers/mci/imx-esdhc.c
++++ b/drivers/mci/imx-esdhc.c
+@@ -697,7 +697,7 @@ static int fsl_esdhc_probe(struct device_d *dev)
+ 	host->mci.card_present = esdhc_card_present;
+ 	host->mci.hw_dev = dev;
+ 
+-	dev->detect = fsl_esdhc_detect,
++	dev->detect = fsl_esdhc_detect;
+ 
+ 	rate = clk_get_rate(host->clk);
+ 	host->mci.f_min = rate >> 12;
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.24.0
+
 
 _______________________________________________
 barebox mailing list
