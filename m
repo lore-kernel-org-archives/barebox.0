@@ -1,20 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ifhQA-0003qq-1V
- for barebox@lists.infradead.org; Fri, 13 Dec 2019 09:39:39 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>) id 1ifhQ7-0005Eb-78
- for barebox@lists.infradead.org; Fri, 13 Dec 2019 10:39:35 +0100
-References: <20191211200243.21164-1-rhi@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <92143e1d-9013-d016-fd05-928d2f1581d2@pengutronix.de>
-Date: Fri, 13 Dec 2019 10:39:35 +0100
+ id 1iegl7-0000h8-Lg
+ for barebox@lists.infradead.org; Tue, 10 Dec 2019 14:45:06 +0000
+Received: by mail-lj1-x22c.google.com with SMTP id a13so20185333ljm.10
+ for <barebox@lists.infradead.org>; Tue, 10 Dec 2019 06:45:04 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20191211200243.21164-1-rhi@pengutronix.de>
-Content-Language: en-US
+From: Hubert Feurstein <h.feurstein@gmail.com>
+Date: Tue, 10 Dec 2019 15:44:52 +0100
+Message-ID: <CAFfN3gV-kAhDE6=EBJetWT0+T8hgq5tUXAn0qzwK2Q7c8-wsUQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,51 +21,25 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM: omap: support for WAGO PFC200v3 750-821x
+Subject: [BUG] imx6qdl: degraded eMMC write performance
 To: barebox@lists.infradead.org
 
-Hello Roland,
+Hi,
 
-On 12/11/19 9:02 PM, Roland Hieber wrote:
-> diff --git a/arch/arm/boards/wago-pfc-am335x/ram-timings.h b/arch/arm/boards/wago-pfc-am335x/ram-timings.h
-> new file mode 100644
-> index 000000000000..cc3d518f0c27
-> --- /dev/null
-> +++ b/arch/arm/boards/wago-pfc-am335x/ram-timings.h
-> @@ -0,0 +1,94 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * Copyright (C) 2015 Wadim Egorov, PHYTEC Messtechnik GmbH
-> + *
-> + * Copyright (C) 2018 WAGO Kontakttechnik GmbH & Co. KG <http://global.wago.com>
-> + * Author: Oleg Karfich <oleg.karfich@wago.com>
-> + */
-> +
-> +#ifndef __RAM_TIMINGS_H
-> +#define __RAM_TIMINGS_H
-> +
-> +#define DDR_IOCTRL	0x18B
-> +
-> +struct am335x_sdram_timings {
-> +	struct am33xx_emif_regs regs;
-> +	struct am33xx_ddr_data data;
-> +	struct am33xx_cmd_control cmd_ctrl;
-> +};
-> +
-> +enum {
-> +	PFC_DDR3_256MB,
-> +	PFC_DDR3_512MB,
-> +};
-> +
-> +struct am335x_sdram_timings pfc_timings[] = {
+I've updated barebox for our custom platform from v2015.06.0 to
+v2019.12.0. With the new version I have noticed a much worse write
+performance onto the onboard eMMC.
 
-This should be static.
+With v2015.06.0 the indicated progress of the copy command is very
+smooth. Calling "cp -v /dev/zero /dev/mmc3.root" takes about 80
+seconds for 256MB. But with v2019.12.0 the progress is very bumpy and
+the copy takes about 280 seconds.
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+I've tracked this down to this commit which destroys the performance:
+"block: Adjust cache sizes" (b6fef20c1215c6ef0004f6af4a9c4b77af51dc43)
+
+Regards
+Hubert
 
 _______________________________________________
 barebox mailing list
