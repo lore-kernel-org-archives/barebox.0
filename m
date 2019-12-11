@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm1-x343.google.com ([2a00:1450:4864:20::343])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iej4q-0001fT-DN
- for barebox@lists.infradead.org; Tue, 10 Dec 2019 17:13:37 +0000
-Received: by mail-wm1-x343.google.com with SMTP id p17so4085314wma.1
- for <barebox@lists.infradead.org>; Tue, 10 Dec 2019 09:13:34 -0800 (PST)
-From: Hubert Feurstein <h.feurstein@gmail.com>
-Date: Tue, 10 Dec 2019 18:13:02 +0100
-Message-Id: <20191210171305.24276-2-h.feurstein@gmail.com>
-In-Reply-To: <20191210171305.24276-1-h.feurstein@gmail.com>
+ id 1iexWV-000340-6S
+ for barebox@lists.infradead.org; Wed, 11 Dec 2019 08:39:08 +0000
+Date: Wed, 11 Dec 2019 09:39:05 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20191211083905.k4pzx6ckm2paokzs@pengutronix.de>
 References: <20191210171305.24276-1-h.feurstein@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20191210171305.24276-1-h.feurstein@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,33 +22,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] led: add documentation for net-tx and net-rx triggers
-To: barebox@lists.infradead.org
-Cc: Hubert Feurstein <h.feurstein@gmail.com>
+Subject: Re: [PATCH 1/4] led: unify led trigger tables
+To: Hubert Feurstein <h.feurstein@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
----
- Documentation/devicetree/bindings/leds/common.rst | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+On Tue, Dec 10, 2019 at 06:13:01PM +0100, Hubert Feurstein wrote:
+> Currently we have two slightly different led-trigger tables. One in the
+> core module, and the other one in the led-triggers module. The one in the
+> core module, which is used to parse the device-tree triggers, is lacking
+> net-rx and net-tx.
+> 
+> Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
+> ---
+>  drivers/led/core.c         | 46 +++++++++++++++++++++++---------------
+>  drivers/led/led-triggers.c | 25 ---------------------
+>  2 files changed, 28 insertions(+), 43 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/leds/common.rst b/Documentation/devicetree/bindings/leds/common.rst
-index 1f5ae42ca..5a592d67d 100644
---- a/Documentation/devicetree/bindings/leds/common.rst
-+++ b/Documentation/devicetree/bindings/leds/common.rst
-@@ -6,7 +6,9 @@ Common leds properties
- 
-     * ``heartbeat`` - LED flashes at a constant rate
-     * ``panic`` - LED turns on when barebox panics
--    * ``net`` - LED indicates network activity
-+    * ``net`` - LED indicates network activity (tx and rx)
-+    * ``net-rx`` - LED indicates network activity (rx only)
-+    * ``net-tx`` - LED indicates network activity (tx only)
- 
- * ``label``: The label for this LED. If omitted, the label is taken
-   from the node name (excluding the unit address).
+Applied, thanks
+
+Sascha
+
 -- 
-2.24.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
