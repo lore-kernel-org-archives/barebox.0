@@ -1,13 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ifksb-0003qU-Mz
- for barebox@lists.infradead.org; Fri, 13 Dec 2019 13:21:17 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 13 Dec 2019 14:20:53 +0100
-Message-Id: <20191213132055.7461-3-s.hauer@pengutronix.de>
-In-Reply-To: <20191213132055.7461-1-s.hauer@pengutronix.de>
-References: <20191213132055.7461-1-s.hauer@pengutronix.de>
+Received: from mail.data-modul.de ([212.184.205.171] helo=mail2.data-modul.de)
+ by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat
+ Linux)) id 1ifLTl-00075S-KQ
+ for barebox@lists.infradead.org; Thu, 12 Dec 2019 10:13:55 +0000
+Received: from mail2.data-modul.de (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C4A243E0C1
+ for <barebox@lists.infradead.org>; Thu, 12 Dec 2019 11:13:50 +0100 (CET)
+Received: from mail2.data-modul.de (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B9CA23E0B9
+ for <barebox@lists.infradead.org>; Thu, 12 Dec 2019 11:13:50 +0100 (CET)
+Received: from mail.data-modul.de (unknown [10.1.1.120])
+ by mail2.data-modul.de (Postfix) with ESMTPS
+ for <barebox@lists.infradead.org>; Thu, 12 Dec 2019 11:13:50 +0100 (CET)
+From: "Yazdani, Reyhaneh" <RYazdani@data-modul.com>
+Date: Thu, 12 Dec 2019 10:13:49 +0000
+Message-ID: <c0e44a15-802d-b008-36b3-3b3d6007e587@data-modul.com>
+Content-Language: de-DE
+Content-ID: <DB4539A694F0914987806B41E9589D18@data-modul.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -17,78 +26,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] cdev: Add discard_range hook
-To: Barebox List <barebox@lists.infradead.org>
+Subject: imx-usb-loader on imx8mq/mm
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-To pass though discard_range() to the underlying drivers add a
-discard_range hook to struct cdev_operations.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- fs/devfs.c       | 21 +++++++++++++++++++++
- include/driver.h |  1 +
- 2 files changed, 22 insertions(+)
-
-diff --git a/fs/devfs.c b/fs/devfs.c
-index d088c1a66c..e1893d1bd0 100644
---- a/fs/devfs.c
-+++ b/fs/devfs.c
-@@ -94,6 +94,26 @@ static int devfs_protect(struct device_d *_dev, FILE *f, size_t count, loff_t of
- 	return cdev->ops->protect(cdev, count, offset + cdev->offset, prot);
- }
- 
-+static int devfs_discard_range(struct device_d *dev, FILE *f, loff_t count,
-+			       loff_t offset)
-+{
-+	struct cdev *cdev = f->priv;
-+
-+	if (!cdev->ops->discard_range)
-+		return -ENOSYS;
-+
-+	if (cdev->flags & DEVFS_PARTITION_READONLY)
-+		return -EPERM;
-+
-+	if (offset >= cdev->size)
-+		return 0;
-+
-+	if (count + offset > cdev->size)
-+		count = cdev->size - offset;
-+
-+	return cdev->ops->discard_range(cdev, count, offset + cdev->offset);
-+}
-+
- static int devfs_memmap(struct device_d *_dev, FILE *f, void **map, int flags)
- {
- 	struct cdev *cdev = f->priv;
-@@ -329,6 +349,7 @@ static struct fs_driver_d devfs_driver = {
- 	.truncate  = devfs_truncate,
- 	.erase     = devfs_erase,
- 	.protect   = devfs_protect,
-+	.discard_range = devfs_discard_range,
- 	.memmap    = devfs_memmap,
- 	.flags     = FS_DRIVER_NO_DEV,
- 	.drv = {
-diff --git a/include/driver.h b/include/driver.h
-index ad59ce90c3..f379b0cc73 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -439,6 +439,7 @@ struct cdev_operations {
- 	int (*flush)(struct cdev*);
- 	int (*erase)(struct cdev*, loff_t count, loff_t offset);
- 	int (*protect)(struct cdev*, size_t count, loff_t offset, int prot);
-+	int (*discard_range)(struct cdev*, loff_t count, loff_t offset);
- 	int (*memmap)(struct cdev*, void **map, int flags);
- 	int (*truncate)(struct cdev*, size_t size);
- };
--- 
-2.24.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8gZXZlcnlvbmUsDQoNCkkgYW0gdHJ5aW5nIHRvIGxvYWQgQmFyZWJveCB0byB0aGUgaW14
+OG1tIGJvYXJkIHZpYSBpbXgtdXNiLWxvYWRlciwgYnV0IGl0IHN0b3BzDQppbiB0aGUgbWlkZGxl
+LiBJIHRoaW5rIG1heWJlIGl0IGlzIGJlY2F1c2Ugd2UgZG8gbm90IGhhdmUgYSBmbGFzaC1oZWFk
+ZXIgZmlsZQ0Kd2l0aCB0aGUgc3RhdGljIFJBTSBjb25maWd1cmF0aW9uLiBEb2VzIHNvbWVvbmUg
+aGF2ZSBhbnkgaWRlYSBhYm91dCB0aGF0Pw0KDQpCZXN0LA0KUmV5aGFuZWgNCi0tDQpSZXloYW5l
+aCBZYXpkYW5pDQpEYXRhIE1vZHVsIEFHICAgICAgICAgICAgICAgICAgICAgICAgICAgIFRFTDog
+ICAgKzQ5LTg5LTU2MDE3LTE1NA0KRW1iZWRkZWQgZGV2ZWxvcG1lbnQgICAgICAgICAgICAgICAg
+IEZBWDogICAgKzQ5LTg5LTU2MDE3LTExOQ0KTGludXggLSBEZXZlbG9wbWVudCAgICAgICAgICAg
+ICAgICAgICAgICBSRzogSFItTXVlbmNoZW4gQi04NTU5MQ0KTGFuZHNiZXJnZXIgU3RyLiAzMjIg
+RC04MDY4NyBNdWVuY2hlbiAtIGh0dHA6Ly93d3cuZGF0YS1tb2R1bC5jb20NCg0KVmVydHJhdWxp
+Y2hlIEUtTWFpbCB2b24gLyBDb25maWRlbnRpYWwgZS1tYWlsIGZyb206IERBVEEgTU9EVUwgQUcN
+ClZvcnN0YW5kIC8gQ0VPOiBEci4gRmxvcmlhbiBQZXNhaGwNClZvcnNpdHplbmRlIGRlcyBBdWZz
+aWNodHNyYXRlcyAvIENoYWlyd29tYW4gb2YgdGhlIFN1cGVydmlzb3J5IEJvYXJkOiBLcmlzdGlu
+IEQuIFJ1c3NlbGwNClNpdHogZGVyIEdlc2VsbHNjaGFmdCAvIFJlZ2lzdGVyZWQgT2ZmaWNlOiBN
+w7xuY2hlbg0KUmVnaXN0ZXJnZXJpY2h0IC8gUmVnaXN0cmF0aW9uIENvdXJ0OiBNw7xuY2hlbiBI
+YW5kZWxzcmVnaXN0ZXIgQiA4NSA1OTENCg0KDQoNCl9fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
+aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
+L2JhcmVib3gK
