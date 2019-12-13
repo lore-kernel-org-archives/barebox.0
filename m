@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm1-x344.google.com ([2a00:1450:4864:20::344])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ieygb-0008Lj-FL
- for barebox@lists.infradead.org; Wed, 11 Dec 2019 09:53:38 +0000
-Received: by mail-wm1-x344.google.com with SMTP id d5so4715974wmb.4
- for <barebox@lists.infradead.org>; Wed, 11 Dec 2019 01:53:36 -0800 (PST)
-From: Hubert Feurstein <h.feurstein@gmail.com>
-Date: Wed, 11 Dec 2019 10:53:32 +0100
-Message-Id: <20191211095332.16883-1-h.feurstein@gmail.com>
+ id 1ifgHC-0006Ty-Uz
+ for barebox@lists.infradead.org; Fri, 13 Dec 2019 08:26:20 +0000
+Date: Fri, 13 Dec 2019 09:26:16 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20191213082616.3pp34dhhoscyhe75@pengutronix.de>
+References: <20191211095332.16883-1-h.feurstein@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20191211095332.16883-1-h.feurstein@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,43 +22,25 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] commands: miitool: handle powerdown-flag
-To: barebox@lists.infradead.org
-Cc: Hubert Feurstein <h.feurstein@gmail.com>
+Subject: Re: [PATCH] commands: miitool: handle powerdown-flag
+To: Hubert Feurstein <h.feurstein@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
----
- commands/miitool.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+On Wed, Dec 11, 2019 at 10:53:32AM +0100, Hubert Feurstein wrote:
+> Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
+> ---
+>  commands/miitool.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/commands/miitool.c b/commands/miitool.c
-index 4ea6fda34..a87d567ac 100644
---- a/commands/miitool.c
-+++ b/commands/miitool.c
-@@ -140,7 +140,10 @@ static int show_basic_mii(struct mii_bus *mii, struct phy_device *phydev,
- 	}
- 
- 	*buf = '\0';
--	if (bmcr & BMCR_ANENABLE) {
-+
-+	if (bmcr & BMCR_PDOWN) {
-+		sprintf(buf, "powerdown, ");
-+	} else if (bmcr & BMCR_ANENABLE) {
- 		if (bmsr & BMSR_ANEGCOMPLETE) {
- 			if (advert & lkpar) {
- 				sprintf(buf, "%s%s, ", (lkpar & LPA_LPACK) ?
-@@ -192,6 +195,8 @@ static int show_basic_mii(struct mii_bus *mii, struct phy_device *phydev,
- 			printf("loopback, ");
- 		if (bmcr & BMCR_ISOLATE)
- 			printf("isolate, ");
-+		if (bmcr & BMCR_PDOWN)
-+			printf("powerdown, ");
- 		if (bmcr & BMCR_CTST)
- 			printf("collision test, ");
- 		if (bmcr & BMCR_ANENABLE) {
+Applied, thanks
+
+Sascha
+
 -- 
-2.24.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
