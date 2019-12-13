@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iejbA-0006gi-Uo
- for barebox@lists.infradead.org; Tue, 10 Dec 2019 17:47:02 +0000
-Received: by mail-lj1-x234.google.com with SMTP id e10so20876109ljj.6
- for <barebox@lists.infradead.org>; Tue, 10 Dec 2019 09:47:00 -0800 (PST)
-MIME-Version: 1.0
+ id 1ifkkU-0008UL-Fd
+ for barebox@lists.infradead.org; Fri, 13 Dec 2019 13:12:52 +0000
+Date: Fri, 13 Dec 2019 14:12:42 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20191213131242.nznq2yhasvfmp7s6@pengutronix.de>
 References: <CAFfN3gV-kAhDE6=EBJetWT0+T8hgq5tUXAn0qzwK2Q7c8-wsUQ@mail.gmail.com>
- <20191210151042.pkmavrxwlry3525t@pengutronix.de>
- <CAFfN3gURy6N4F=u-uCUU-sYabvjBUfts2XeKNyJXfBxY1frKYg@mail.gmail.com>
- <20191210161812.t7mf72pdm53odmdn@pengutronix.de>
-In-Reply-To: <20191210161812.t7mf72pdm53odmdn@pengutronix.de>
-From: Hubert Feurstein <h.feurstein@gmail.com>
-Date: Tue, 10 Dec 2019 18:46:46 +0100
-Message-ID: <CAFfN3gWFD_mDRyHLmLh5WdYyGMT_YE3486+KeDf8LVREMRf5gA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAFfN3gV-kAhDE6=EBJetWT0+T8hgq5tUXAn0qzwK2Q7c8-wsUQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,30 +23,34 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [BUG] imx6qdl: degraded eMMC write performance
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Hubert Feurstein <h.feurstein@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Am Di., 10. Dez. 2019 um 17:18 Uhr schrieb Sascha Hauer
-<s.hauer@pengutronix.de>:
-[...]
-> > > We could adjust RW_BUF_SIZE (used by copy_file as buffer size) to a full
-> > > chunk size (16KiB). Does this give you back some lost performance?
-> > No, changing RW_BUF_SIZE did not help.
->
-> And I also see why :-/
->
-> block_op_write() works around block sizes (512bytes), not around chunk
-> sizes. This means we always read before we write. This could probably be
-> optimized somehow, but this would only speed up the write case you
-> described in your initial mail. It seems what you are more interested in
-> is the read performance.
-Well, I'm interested in both. Of course the read-performance is important
-for booting. But the write-performance is important for production. It simply
-matters if you have to wait for another 200 seconds for a device to
-get programmed.
+On Tue, Dec 10, 2019 at 03:44:52PM +0100, Hubert Feurstein wrote:
+> Hi,
+> 
+> I've updated barebox for our custom platform from v2015.06.0 to
+> v2019.12.0. With the new version I have noticed a much worse write
+> performance onto the onboard eMMC.
+> 
+> With v2015.06.0 the indicated progress of the copy command is very
+> smooth. Calling "cp -v /dev/zero /dev/mmc3.root" takes about 80
+> seconds for 256MB. But with v2019.12.0 the progress is very bumpy and
+> the copy takes about 280 seconds.
+> 
+> I've tracked this down to this commit which destroys the performance:
+> "block: Adjust cache sizes" (b6fef20c1215c6ef0004f6af4a9c4b77af51dc43)
 
-Regards
-Hubert
+We could just revert this patch. I can't find any workload that gets
+faster with b6fef20c1215. It's rather the other way round.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
