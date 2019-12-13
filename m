@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ifksL-0003bL-Ni
- for barebox@lists.infradead.org; Fri, 13 Dec 2019 13:20:59 +0000
+ id 1ifksL-0003bK-Nj
+ for barebox@lists.infradead.org; Fri, 13 Dec 2019 13:21:00 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 13 Dec 2019 14:20:54 +0100
-Message-Id: <20191213132055.7461-4-s.hauer@pengutronix.de>
+Date: Fri, 13 Dec 2019 14:20:52 +0100
+Message-Id: <20191213132055.7461-2-s.hauer@pengutronix.de>
 In-Reply-To: <20191213132055.7461-1-s.hauer@pengutronix.de>
 References: <20191213132055.7461-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,83 +21,83 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] block: Implement discard_range
+Subject: [PATCH 1/4] fs: Introduce discard_range()
 To: Barebox List <barebox@lists.infradead.org>
 
-This implements the discard_range hook. When a range of data is
-discarded then we do not have to read it from the device and can
-pass a zeroed buffer instead.
+discard_range() is a way to tell the lower layers that we are no longer
+interested in a data range of a file, so that the lower layers can
+discard the underlying data if desired.
+
+This is mainly designed to bypass the deficiencies of our block layer.
+We cache the block data in chunks of multiple KiB (16 currently) if
+we fall into the block layer with write requests smaller than that
+we have to read/modify/write a chunk. With the help of discard_range()
+code writing files to a raw block device can now discard the range the
+file will be written to. The block layer then no longer has to read
+the chunks first that are inside the discard range.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/block.c  | 21 +++++++++++++++++++++
- include/block.h |  3 +++
- 2 files changed, 24 insertions(+)
+ fs/fs.c      | 25 +++++++++++++++++++++++++
+ include/fs.h |  3 +++
+ 2 files changed, 28 insertions(+)
 
-diff --git a/common/block.c b/common/block.c
-index 97cf5dc4de..8b43c3c83a 100644
---- a/common/block.c
-+++ b/common/block.c
-@@ -161,6 +161,14 @@ static int block_cache(struct block_device *blk, int block)
- 	dev_dbg(blk->dev, "%s: %d to %d\n", __func__, chunk->block_start,
- 		chunk->num);
- 
-+	if (chunk->block_start * BLOCKSIZE(blk) >= blk->discard_start &&
-+	    chunk->block_start * BLOCKSIZE(blk) + writebuffer_io_len(blk, chunk)
-+	    <= blk->discard_start + blk->discard_size) {
-+		memset(chunk->data, 0, writebuffer_io_len(blk, chunk));
-+		list_add(&chunk->list, &blk->buffered_blocks);
-+		return 0;
-+	}
-+
- 	ret = blk->ops->read(blk, chunk->data, chunk->block_start,
- 			     writebuffer_io_len(blk, chunk));
- 	if (ret) {
-@@ -337,11 +345,23 @@ static int block_op_flush(struct cdev *cdev)
- {
- 	struct block_device *blk = cdev->priv;
- 
-+	blk->discard_start = blk->discard_size = 0;
-+
- 	return writebuffer_flush(blk);
+diff --git a/fs/fs.c b/fs/fs.c
+index 12faaebc27..e00bbcd223 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -497,6 +497,31 @@ int protect(int fd, size_t count, loff_t offset, int prot)
  }
+ EXPORT_SYMBOL(protect);
  
- static int block_op_close(struct cdev *cdev) __alias(block_op_flush);
- 
-+static int block_op_discard_range(struct cdev *cdev, loff_t count, loff_t offset)
++int discard_range(int fd, loff_t count, loff_t offset)
 +{
-+	struct block_device *blk = cdev->priv;
++	struct fs_driver_d *fsdrv;
++	FILE *f = fd_to_file(fd);
++	int ret;
 +
-+	blk->discard_start = offset;
-+	blk->discard_size = count;
++	if (IS_ERR(f))
++		return -errno;
++	if (offset >= f->size)
++		return 0;
++	if (count > f->size - offset)
++		count = f->size - offset;
 +
-+	return 0;
++	fsdrv = f->fsdev->driver;
++	if (fsdrv->discard_range)
++		ret = fsdrv->discard_range(&f->fsdev->dev, f, count, offset);
++	else
++		ret = -ENOSYS;
++
++	if (ret)
++		errno = -ret;
++
++	return ret;
 +}
 +
- static struct cdev_operations block_ops = {
- 	.read	= block_op_read,
- #ifdef CONFIG_BLOCK_WRITE
-@@ -349,6 +369,7 @@ static struct cdev_operations block_ops = {
- #endif
- 	.close	= block_op_close,
- 	.flush	= block_op_flush,
-+	.discard_range = block_op_discard_range,
- };
+ int protect_file(const char *file, int prot)
+ {
+ 	int fd, ret;
+diff --git a/include/fs.h b/include/fs.h
+index 38debfc41b..d9684c82b1 100644
+--- a/include/fs.h
++++ b/include/fs.h
+@@ -60,6 +60,8 @@ struct fs_driver_d {
+ 			loff_t offset);
+ 	int (*protect)(struct device_d *dev, FILE *f, size_t count,
+ 			loff_t offset, int prot);
++	int (*discard_range)(struct device_d *dev, FILE *f, loff_t count,
++			loff_t offset);
  
- int blockdevice_register(struct block_device *blk)
-diff --git a/include/block.h b/include/block.h
-index 91377679b0..d35c4ecdf4 100644
---- a/include/block.h
-+++ b/include/block.h
-@@ -23,6 +23,9 @@ struct block_device {
- 	int rdbufsize;
- 	int blkmask;
+ 	int (*memmap)(struct device_d *dev, FILE *f, void **map, int flags);
  
-+	loff_t discard_start;
-+	loff_t discard_size;
-+
- 	struct list_head buffered_blocks;
- 	struct list_head idle_blocks;
+@@ -127,6 +129,7 @@ int umount_by_cdev(struct cdev *cdev);
+ #define ERASE_SIZE_ALL	((loff_t) - 1)
+ int erase(int fd, loff_t count, loff_t offset);
+ int protect(int fd, size_t count, loff_t offset, int prot);
++int discard_range(int fd, loff_t count, loff_t offset);
+ int protect_file(const char *file, int prot);
+ void *memmap(int fd, int flags);
  
 -- 
 2.24.0
