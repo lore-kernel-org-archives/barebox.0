@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.data-modul.de ([212.184.205.171] helo=mail2.data-modul.de)
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat
- Linux)) id 1iffFL-0004I0-7z
- for barebox@lists.infradead.org; Fri, 13 Dec 2019 07:20:21 +0000
-From: "Yazdani, Reyhaneh" <RYazdani@data-modul.com>
-Date: Fri, 13 Dec 2019 07:20:15 +0000
-Message-ID: <cfdb29ab-63b9-6d85-52b2-e76dd88839fd@data-modul.com>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1iffnm-0001pB-DX
+ for barebox@lists.infradead.org; Fri, 13 Dec 2019 07:55:55 +0000
+Date: Fri, 13 Dec 2019 08:55:49 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20191213075549.bsugsd4fjo6lqox5@pengutronix.de>
 References: <c0e44a15-802d-b008-36b3-3b3d6007e587@data-modul.com>
  <f67d5b7fec7c354a8d632dc8e20d15e5c273030f.camel@pengutronix.de>
-In-Reply-To: <f67d5b7fec7c354a8d632dc8e20d15e5c273030f.camel@pengutronix.de>
-Content-Language: de-DE
-Content-ID: <E100C0409EC0214482008FAFA558BBFC@data-modul.com>
+ <cfdb29ab-63b9-6d85-52b2-e76dd88839fd@data-modul.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <cfdb29ab-63b9-6d85-52b2-e76dd88839fd@data-modul.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,54 +20,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: imx-usb-loader on imx8mq/mm
-To: Lucas Stach <l.stach@pengutronix.de>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+To: "Yazdani, Reyhaneh" <RYazdani@data-modul.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-VGhhbmtzIEx1Y2FzLg0KDQpTbywgaWYgSSBoYXZlIGEgYm9hcmQgd2hpY2ggaGFzIG9ubHkgZU1N
-QyAobm8gU0QgY2FyZCkuIFdoYXQgd291bGQgYmUgeW91cg0KcmVjb21tZW5kYXRpb24gYWJvdXQg
-cHJvZ3JhbW1pbmcgaXQgd2l0aCBCYXJlYm94Pw0KDQpDdXJyZW50bHksIEkgcHJvZ3JhbSBVLUJv
-b3QgdmlhIHV1dSB1dGlsaXR5IGFuZCB0aGVuIGZyb20gS2VybmVsLCBJIHByb2dyYW0NCkJhcmVi
-b3ggb24gYm9vdDEgcGFydGl0aW9uIG9mIGVNTUMgKGJvb3QwIGlzIG5vdCBwb3NzaWJsZSkuDQoN
-CkkgYW0gdHJ5aW5nIGF0IGxlYXN0IHRvIHByb2dyYW0gQmFyZWJveCBpbiBVLWJvb3QgdmlhIHVt
-cywgbW1jIHdyaXRlICwgLi4uIGJ1dA0KdW50aWwgbm93IEkgYW0gbm90IHN1Y2Nlc3NmdWwuIERv
-IHlvdSBoYXZlIGFueSBleHBlcmllbmNlIG9yIGlkZWE/DQoNCihJIGhhZCBmb3Jnb3R0ZW4gdG8g
-cmVwbHktYWxsIGFuZCBCYXJlYm94IG1haWxpbmcgbGlzdCB3YXMgbm90IG9uIG15IHByZXZpb3Vz
-DQpFbWFpbCwgc28gSSBzZW5kIHRoZSBFbWFpbCBhZ2FpbikNCg0KQmVzdCwNClJleWhhbmVoDQoN
-Cg0KT24gMTIvMTIvMTkgMTE6MjQgQU0sIEx1Y2FzIFN0YWNoIHdyb3RlOg0KPiBIaSBSZXloYW5l
-aCwNCj4NCj4gT24gRG8sIDIwMTktMTItMTIgYXQgMTA6MTMgKzAwMDAsIFlhemRhbmksIFJleWhh
-bmVoIHdyb3RlOg0KPj4gSGVsbG8gZXZlcnlvbmUsDQo+Pg0KPj4gSSBhbSB0cnlpbmcgdG8gbG9h
-ZCBCYXJlYm94IHRvIHRoZSBpbXg4bW0gYm9hcmQgdmlhIGlteC11c2ItbG9hZGVyLCBidXQgaXQg
-c3RvcHMNCj4+IGluIHRoZSBtaWRkbGUuIEkgdGhpbmsgbWF5YmUgaXQgaXMgYmVjYXVzZSB3ZSBk
-byBub3QgaGF2ZSBhIGZsYXNoLWhlYWRlciBmaWxlDQo+PiB3aXRoIHRoZSBzdGF0aWMgUkFNIGNv
-bmZpZ3VyYXRpb24uIERvZXMgc29tZW9uZSBoYXZlIGFueSBpZGVhIGFib3V0IHRoYXQ/DQo+DQo+
-IEN1cnJlbnRseSBpdCdzIGltcG9zc2libGUgdG8gbG9hZCBCYXJlYm94IG9uIHRoZSBpLk1YOE0g
-dmlhIHRoZSBpbXgtDQo+IHVzYi1sb2FkZXIuIFRoZSBiYXNpYyBpc3N1ZSBpcyB0aGF0IHRoZSBE
-UkFNIHNldHVwIGhhcHBlbnMgaW4gdGhlIFBCTCwNCj4gc28gdGhlcmUgaXMgbm8gd2F5IHRvIHBs
-YXkgdGhlIERDRCBhbmQgbG9hZCBhIGNvbXBsZXRlIEJhcmVib3ggaW1hZ2UNCj4gaW50byBEUkFN
-IGxpa2Ugd2UgZG8gb24gdGhlIG9sZGVyIFNvQ3MuDQo+DQo+IEZvciBib2FyZHMgdGhhdCBkbyB0
-aGUgRFJBTSBzZXR1cCBpbiB0aGUgUEJMIHdlIHdvdWxkIG5lZWQgdG8gaW1wbGVtZW50DQo+IGEg
-MiBzdGVwIGxvYWRpbmcgYXBwcm9hY2ggaW4gaW14LXVzYi1sb2FkZXI6DQo+IEZpcnN0IGxvYWQg
-dGhlIFBCTCBwYXJ0IChtYXhfbG9hZF9zaXplIGluIHRoZSBmbGFzaC1oZWFkZXIpIGludG8gU1JB
-TSwNCj4gZXhlY3V0ZSB0aGUgRFJBTSBzZXR1cCwgdGhlbiBoYXZlIGEgaW1wbGVtZW50YXRpb24g
-b2YgdGhlIGlteCBzZXJpYWwNCj4gbG9hZCBVU0IgcHJvdG9jb2wgaW4gdGhlIFBCTCwgc28gaW14
-LXVzYi1sb2FkZXIgY2FuIGxvYWQgdGhlIGNvbXBsZXRlDQo+IGltYWdlIGludG8gRFJBTS4NCj4N
-Cj4gVGhlcmUncyBxdWl0ZSBhIGJpdCBvZiBpbXBsZW1lbnRhdGlvbiB3b3JrIHRvIGJlIGRvbmUg
-aGVyZSwgYnV0IGl0DQo+IHdvdWxkIGJlIGEgdmVyeSB3ZWxjb21lIGFkZGl0aW9uIHRvIEJhcmVi
-b3guDQo+DQo+IFJlZ2FyZHMsDQo+IEx1Y2FzDQo+DQoNCi0tDQpSZXloYW5laCBZYXpkYW5pDQpE
-YXRhIE1vZHVsIEFHICAgICAgICAgICAgICAgICAgICAgICAgICAgIFRFTDogICAgKzQ5LTg5LTU2
-MDE3LTE1NA0KRW1iZWRkZWQgZGV2ZWxvcG1lbnQgICAgICAgICAgICAgICAgIEZBWDogICAgKzQ5
-LTg5LTU2MDE3LTExOQ0KTGludXggLSBEZXZlbG9wbWVudCAgICAgICAgICAgICAgICAgICAgICBS
-RzogSFItTXVlbmNoZW4gQi04NTU5MQ0KTGFuZHNiZXJnZXIgU3RyLiAzMjIgRC04MDY4NyBNdWVu
-Y2hlbiAtIGh0dHA6Ly93d3cuZGF0YS1tb2R1bC5jb20NCg0KVmVydHJhdWxpY2hlIEUtTWFpbCB2
-b24gLyBDb25maWRlbnRpYWwgZS1tYWlsIGZyb206IERBVEEgTU9EVUwgQUcNClZvcnN0YW5kIC8g
-Q0VPOiBEci4gRmxvcmlhbiBQZXNhaGwNClZvcnNpdHplbmRlIGRlcyBBdWZzaWNodHNyYXRlcyAv
-IENoYWlyd29tYW4gb2YgdGhlIFN1cGVydmlzb3J5IEJvYXJkOiBLcmlzdGluIEQuIFJ1c3NlbGwN
-ClNpdHogZGVyIEdlc2VsbHNjaGFmdCAvIFJlZ2lzdGVyZWQgT2ZmaWNlOiBNw7xuY2hlbg0KUmVn
-aXN0ZXJnZXJpY2h0IC8gUmVnaXN0cmF0aW9uIENvdXJ0OiBNw7xuY2hlbiBIYW5kZWxzcmVnaXN0
-ZXIgQiA4NSA1OTENCg0KDQoNCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9y
-ZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Fri, Dec 13, 2019 at 07:20:15AM +0000, Yazdani, Reyhaneh wrote:
+> Thanks Lucas.
+> 
+> So, if I have a board which has only eMMC (no SD card). What would be your
+> recommendation about programming it with Barebox?
+> 
+> Currently, I program U-Boot via uuu utility and then from Kernel, I program
+> Barebox on boot1 partition of eMMC (boot0 is not possible).
+> 
+> I am trying at least to program Barebox in U-boot via ums, mmc write , ... but
+> until now I am not successful. Do you have any experience or idea?
+
+The image as it's falling out of the barebox build should be written
+straight to the eMMC. The eMMC itself has a setting which specifies
+where the i.MX will boot from, valid setting are user area, boot0 or
+boot1. It can be that this setting doesn't match the area you are
+writing to.
+
+Another way would be to start barebox from U-Boot and let the
+barebox-update command do the job of writing barebox to the eMMC.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
