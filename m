@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ifksL-0003bK-Nj
- for barebox@lists.infradead.org; Fri, 13 Dec 2019 13:21:00 +0000
+ id 1ifksb-0003qU-Mz
+ for barebox@lists.infradead.org; Fri, 13 Dec 2019 13:21:17 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 13 Dec 2019 14:20:52 +0100
-Message-Id: <20191213132055.7461-2-s.hauer@pengutronix.de>
+Date: Fri, 13 Dec 2019 14:20:53 +0100
+Message-Id: <20191213132055.7461-3-s.hauer@pengutronix.de>
 In-Reply-To: <20191213132055.7461-1-s.hauer@pengutronix.de>
 References: <20191213132055.7461-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,84 +21,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] fs: Introduce discard_range()
+Subject: [PATCH 2/4] cdev: Add discard_range hook
 To: Barebox List <barebox@lists.infradead.org>
 
-discard_range() is a way to tell the lower layers that we are no longer
-interested in a data range of a file, so that the lower layers can
-discard the underlying data if desired.
-
-This is mainly designed to bypass the deficiencies of our block layer.
-We cache the block data in chunks of multiple KiB (16 currently) if
-we fall into the block layer with write requests smaller than that
-we have to read/modify/write a chunk. With the help of discard_range()
-code writing files to a raw block device can now discard the range the
-file will be written to. The block layer then no longer has to read
-the chunks first that are inside the discard range.
+To pass though discard_range() to the underlying drivers add a
+discard_range hook to struct cdev_operations.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/fs.c      | 25 +++++++++++++++++++++++++
- include/fs.h |  3 +++
- 2 files changed, 28 insertions(+)
+ fs/devfs.c       | 21 +++++++++++++++++++++
+ include/driver.h |  1 +
+ 2 files changed, 22 insertions(+)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index 12faaebc27..e00bbcd223 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -497,6 +497,31 @@ int protect(int fd, size_t count, loff_t offset, int prot)
+diff --git a/fs/devfs.c b/fs/devfs.c
+index d088c1a66c..e1893d1bd0 100644
+--- a/fs/devfs.c
++++ b/fs/devfs.c
+@@ -94,6 +94,26 @@ static int devfs_protect(struct device_d *_dev, FILE *f, size_t count, loff_t of
+ 	return cdev->ops->protect(cdev, count, offset + cdev->offset, prot);
  }
- EXPORT_SYMBOL(protect);
  
-+int discard_range(int fd, loff_t count, loff_t offset)
++static int devfs_discard_range(struct device_d *dev, FILE *f, loff_t count,
++			       loff_t offset)
 +{
-+	struct fs_driver_d *fsdrv;
-+	FILE *f = fd_to_file(fd);
-+	int ret;
++	struct cdev *cdev = f->priv;
 +
-+	if (IS_ERR(f))
-+		return -errno;
-+	if (offset >= f->size)
++	if (!cdev->ops->discard_range)
++		return -ENOSYS;
++
++	if (cdev->flags & DEVFS_PARTITION_READONLY)
++		return -EPERM;
++
++	if (offset >= cdev->size)
 +		return 0;
-+	if (count > f->size - offset)
-+		count = f->size - offset;
 +
-+	fsdrv = f->fsdev->driver;
-+	if (fsdrv->discard_range)
-+		ret = fsdrv->discard_range(&f->fsdev->dev, f, count, offset);
-+	else
-+		ret = -ENOSYS;
++	if (count + offset > cdev->size)
++		count = cdev->size - offset;
 +
-+	if (ret)
-+		errno = -ret;
-+
-+	return ret;
++	return cdev->ops->discard_range(cdev, count, offset + cdev->offset);
 +}
 +
- int protect_file(const char *file, int prot)
+ static int devfs_memmap(struct device_d *_dev, FILE *f, void **map, int flags)
  {
- 	int fd, ret;
-diff --git a/include/fs.h b/include/fs.h
-index 38debfc41b..d9684c82b1 100644
---- a/include/fs.h
-+++ b/include/fs.h
-@@ -60,6 +60,8 @@ struct fs_driver_d {
- 			loff_t offset);
- 	int (*protect)(struct device_d *dev, FILE *f, size_t count,
- 			loff_t offset, int prot);
-+	int (*discard_range)(struct device_d *dev, FILE *f, loff_t count,
-+			loff_t offset);
- 
- 	int (*memmap)(struct device_d *dev, FILE *f, void **map, int flags);
- 
-@@ -127,6 +129,7 @@ int umount_by_cdev(struct cdev *cdev);
- #define ERASE_SIZE_ALL	((loff_t) - 1)
- int erase(int fd, loff_t count, loff_t offset);
- int protect(int fd, size_t count, loff_t offset, int prot);
-+int discard_range(int fd, loff_t count, loff_t offset);
- int protect_file(const char *file, int prot);
- void *memmap(int fd, int flags);
- 
+ 	struct cdev *cdev = f->priv;
+@@ -329,6 +349,7 @@ static struct fs_driver_d devfs_driver = {
+ 	.truncate  = devfs_truncate,
+ 	.erase     = devfs_erase,
+ 	.protect   = devfs_protect,
++	.discard_range = devfs_discard_range,
+ 	.memmap    = devfs_memmap,
+ 	.flags     = FS_DRIVER_NO_DEV,
+ 	.drv = {
+diff --git a/include/driver.h b/include/driver.h
+index ad59ce90c3..f379b0cc73 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -439,6 +439,7 @@ struct cdev_operations {
+ 	int (*flush)(struct cdev*);
+ 	int (*erase)(struct cdev*, loff_t count, loff_t offset);
+ 	int (*protect)(struct cdev*, size_t count, loff_t offset, int prot);
++	int (*discard_range)(struct cdev*, loff_t count, loff_t offset);
+ 	int (*memmap)(struct cdev*, void **map, int flags);
+ 	int (*truncate)(struct cdev*, size_t size);
+ };
 -- 
 2.24.0
 
