@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iffnm-0001pB-DX
- for barebox@lists.infradead.org; Fri, 13 Dec 2019 07:55:55 +0000
-Date: Fri, 13 Dec 2019 08:55:49 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191213075549.bsugsd4fjo6lqox5@pengutronix.de>
+Received: from mail.data-modul.de ([212.184.205.171] helo=mail2.data-modul.de)
+ by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat
+ Linux)) id 1iflrU-0005SE-Kt
+ for barebox@lists.infradead.org; Fri, 13 Dec 2019 14:24:10 +0000
+From: "Yazdani, Reyhaneh" <RYazdani@data-modul.com>
+Date: Fri, 13 Dec 2019 14:24:03 +0000
+Message-ID: <94de90ba-583b-1181-c9b8-0375b3b3e834@data-modul.com>
 References: <c0e44a15-802d-b008-36b3-3b3d6007e587@data-modul.com>
  <f67d5b7fec7c354a8d632dc8e20d15e5c273030f.camel@pengutronix.de>
  <cfdb29ab-63b9-6d85-52b2-e76dd88839fd@data-modul.com>
+ <20191213075549.bsugsd4fjo6lqox5@pengutronix.de>
+In-Reply-To: <20191213075549.bsugsd4fjo6lqox5@pengutronix.de>
+Content-Language: de-DE
+Content-ID: <2A192A5B06128E4FA09B58C94630AC9C@data-modul.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <cfdb29ab-63b9-6d85-52b2-e76dd88839fd@data-modul.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,44 +22,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: imx-usb-loader on imx8mq/mm
-To: "Yazdani, Reyhaneh" <RYazdani@data-modul.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Fri, Dec 13, 2019 at 07:20:15AM +0000, Yazdani, Reyhaneh wrote:
-> Thanks Lucas.
-> 
-> So, if I have a board which has only eMMC (no SD card). What would be your
-> recommendation about programming it with Barebox?
-> 
-> Currently, I program U-Boot via uuu utility and then from Kernel, I program
-> Barebox on boot1 partition of eMMC (boot0 is not possible).
-> 
-> I am trying at least to program Barebox in U-boot via ums, mmc write , ... but
-> until now I am not successful. Do you have any experience or idea?
-
-The image as it's falling out of the barebox build should be written
-straight to the eMMC. The eMMC itself has a setting which specifies
-where the i.MX will boot from, valid setting are user area, boot0 or
-boot1. It can be that this setting doesn't match the area you are
-writing to.
-
-Another way would be to start barebox from U-Boot and let the
-barebox-update command do the job of writing barebox to the eMMC.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhhbmtzIFNhc2NoYSwNCg0KSSBjb3VsZCBmaW5hbGx5IHByb2dyYW0gQmFyZWJveCBvbiBlTU1D
+IGZyb20gdS1ib290IDopDQoNCkJlc3QsDQpSZXloYW5laA0KDQpPbiAxMi8xMy8xOSA4OjU1IEFN
+LCBTYXNjaGEgSGF1ZXIgd3JvdGU6DQo+IE9uIEZyaSwgRGVjIDEzLCAyMDE5IGF0IDA3OjIwOjE1
+QU0gKzAwMDAsIFlhemRhbmksIFJleWhhbmVoIHdyb3RlOg0KPj4gVGhhbmtzIEx1Y2FzLg0KPj4N
+Cj4+IFNvLCBpZiBJIGhhdmUgYSBib2FyZCB3aGljaCBoYXMgb25seSBlTU1DIChubyBTRCBjYXJk
+KS4gV2hhdCB3b3VsZCBiZSB5b3VyDQo+PiByZWNvbW1lbmRhdGlvbiBhYm91dCBwcm9ncmFtbWlu
+ZyBpdCB3aXRoIEJhcmVib3g/DQo+Pg0KPj4gQ3VycmVudGx5LCBJIHByb2dyYW0gVS1Cb290IHZp
+YSB1dXUgdXRpbGl0eSBhbmQgdGhlbiBmcm9tIEtlcm5lbCwgSSBwcm9ncmFtDQo+PiBCYXJlYm94
+IG9uIGJvb3QxIHBhcnRpdGlvbiBvZiBlTU1DIChib290MCBpcyBub3QgcG9zc2libGUpLg0KPj4N
+Cj4+IEkgYW0gdHJ5aW5nIGF0IGxlYXN0IHRvIHByb2dyYW0gQmFyZWJveCBpbiBVLWJvb3Qgdmlh
+IHVtcywgbW1jIHdyaXRlICwgLi4uIGJ1dA0KPj4gdW50aWwgbm93IEkgYW0gbm90IHN1Y2Nlc3Nm
+dWwuIERvIHlvdSBoYXZlIGFueSBleHBlcmllbmNlIG9yIGlkZWE/DQo+DQo+IFRoZSBpbWFnZSBh
+cyBpdCdzIGZhbGxpbmcgb3V0IG9mIHRoZSBiYXJlYm94IGJ1aWxkIHNob3VsZCBiZSB3cml0dGVu
+DQo+IHN0cmFpZ2h0IHRvIHRoZSBlTU1DLiBUaGUgZU1NQyBpdHNlbGYgaGFzIGEgc2V0dGluZyB3
+aGljaCBzcGVjaWZpZXMNCj4gd2hlcmUgdGhlIGkuTVggd2lsbCBib290IGZyb20sIHZhbGlkIHNl
+dHRpbmcgYXJlIHVzZXIgYXJlYSwgYm9vdDAgb3INCj4gYm9vdDEuIEl0IGNhbiBiZSB0aGF0IHRo
+aXMgc2V0dGluZyBkb2Vzbid0IG1hdGNoIHRoZSBhcmVhIHlvdSBhcmUNCj4gd3JpdGluZyB0by4N
+Cj4NCj4gQW5vdGhlciB3YXkgd291bGQgYmUgdG8gc3RhcnQgYmFyZWJveCBmcm9tIFUtQm9vdCBh
+bmQgbGV0IHRoZQ0KPiBiYXJlYm94LXVwZGF0ZSBjb21tYW5kIGRvIHRoZSBqb2Igb2Ygd3JpdGlu
+ZyBiYXJlYm94IHRvIHRoZSBlTU1DLg0KPg0KPiBTYXNjaGENCj4NCg0KLS0NClJleWhhbmVoIFlh
+emRhbmkNCkRhdGEgTW9kdWwgQUcgICAgICAgICAgICAgICAgICAgICAgICAgICAgVEVMOiAgICAr
+NDktODktNTYwMTctMTU0DQpFbWJlZGRlZCBkZXZlbG9wbWVudCAgICAgICAgICAgICAgICAgRkFY
+OiAgICArNDktODktNTYwMTctMTE5DQpMaW51eCAtIERldmVsb3BtZW50ICAgICAgICAgICAgICAg
+ICAgICAgIFJHOiBIUi1NdWVuY2hlbiBCLTg1NTkxDQpMYW5kc2JlcmdlciBTdHIuIDMyMiBELTgw
+Njg3IE11ZW5jaGVuIC0gaHR0cDovL3d3dy5kYXRhLW1vZHVsLmNvbQ0KDQpWZXJ0cmF1bGljaGUg
+RS1NYWlsIHZvbiAvIENvbmZpZGVudGlhbCBlLW1haWwgZnJvbTogREFUQSBNT0RVTCBBRw0KVm9y
+c3RhbmQgLyBDRU86IERyLiBGbG9yaWFuIFBlc2FobA0KVm9yc2l0emVuZGUgZGVzIEF1ZnNpY2h0
+c3JhdGVzIC8gQ2hhaXJ3b21hbiBvZiB0aGUgU3VwZXJ2aXNvcnkgQm9hcmQ6IEtyaXN0aW4gRC4g
+UnVzc2VsbA0KU2l0eiBkZXIgR2VzZWxsc2NoYWZ0IC8gUmVnaXN0ZXJlZCBPZmZpY2U6IE3DvG5j
+aGVuDQpSZWdpc3RlcmdlcmljaHQgLyBSZWdpc3RyYXRpb24gQ291cnQ6IE3DvG5jaGVuIEhhbmRl
+bHNyZWdpc3RlciBCIDg1IDU5MQ0KDQoNCg0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZy
+YWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
+ZWJveAo=
