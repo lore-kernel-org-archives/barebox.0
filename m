@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.data-modul.de ([212.184.205.171] helo=mail2.data-modul.de)
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat
- Linux)) id 1iflrU-0005SE-Kt
- for barebox@lists.infradead.org; Fri, 13 Dec 2019 14:24:10 +0000
-From: "Yazdani, Reyhaneh" <RYazdani@data-modul.com>
-Date: Fri, 13 Dec 2019 14:24:03 +0000
-Message-ID: <94de90ba-583b-1181-c9b8-0375b3b3e834@data-modul.com>
-References: <c0e44a15-802d-b008-36b3-3b3d6007e587@data-modul.com>
- <f67d5b7fec7c354a8d632dc8e20d15e5c273030f.camel@pengutronix.de>
- <cfdb29ab-63b9-6d85-52b2-e76dd88839fd@data-modul.com>
- <20191213075549.bsugsd4fjo6lqox5@pengutronix.de>
-In-Reply-To: <20191213075549.bsugsd4fjo6lqox5@pengutronix.de>
-Content-Language: de-DE
-Content-ID: <2A192A5B06128E4FA09B58C94630AC9C@data-modul.com>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1ihAw3-0008JE-SJ
+ for barebox@lists.infradead.org; Tue, 17 Dec 2019 11:22:44 +0000
+Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
+ helo=dude02.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <l.stach@pengutronix.de>) id 1ihAw2-0005Rq-Nu
+ for barebox@lists.infradead.org; Tue, 17 Dec 2019 12:22:38 +0100
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Tue, 17 Dec 2019 12:22:38 +0100
+Message-Id: <20191217112238.32333-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,45 +20,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: imx-usb-loader on imx8mq/mm
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] ARM: rdu-common: restart machine after fixing i210 device ID
+To: barebox@lists.infradead.org
 
-VGhhbmtzIFNhc2NoYSwNCg0KSSBjb3VsZCBmaW5hbGx5IHByb2dyYW0gQmFyZWJveCBvbiBlTU1D
-IGZyb20gdS1ib290IDopDQoNCkJlc3QsDQpSZXloYW5laA0KDQpPbiAxMi8xMy8xOSA4OjU1IEFN
-LCBTYXNjaGEgSGF1ZXIgd3JvdGU6DQo+IE9uIEZyaSwgRGVjIDEzLCAyMDE5IGF0IDA3OjIwOjE1
-QU0gKzAwMDAsIFlhemRhbmksIFJleWhhbmVoIHdyb3RlOg0KPj4gVGhhbmtzIEx1Y2FzLg0KPj4N
-Cj4+IFNvLCBpZiBJIGhhdmUgYSBib2FyZCB3aGljaCBoYXMgb25seSBlTU1DIChubyBTRCBjYXJk
-KS4gV2hhdCB3b3VsZCBiZSB5b3VyDQo+PiByZWNvbW1lbmRhdGlvbiBhYm91dCBwcm9ncmFtbWlu
-ZyBpdCB3aXRoIEJhcmVib3g/DQo+Pg0KPj4gQ3VycmVudGx5LCBJIHByb2dyYW0gVS1Cb290IHZp
-YSB1dXUgdXRpbGl0eSBhbmQgdGhlbiBmcm9tIEtlcm5lbCwgSSBwcm9ncmFtDQo+PiBCYXJlYm94
-IG9uIGJvb3QxIHBhcnRpdGlvbiBvZiBlTU1DIChib290MCBpcyBub3QgcG9zc2libGUpLg0KPj4N
-Cj4+IEkgYW0gdHJ5aW5nIGF0IGxlYXN0IHRvIHByb2dyYW0gQmFyZWJveCBpbiBVLWJvb3Qgdmlh
-IHVtcywgbW1jIHdyaXRlICwgLi4uIGJ1dA0KPj4gdW50aWwgbm93IEkgYW0gbm90IHN1Y2Nlc3Nm
-dWwuIERvIHlvdSBoYXZlIGFueSBleHBlcmllbmNlIG9yIGlkZWE/DQo+DQo+IFRoZSBpbWFnZSBh
-cyBpdCdzIGZhbGxpbmcgb3V0IG9mIHRoZSBiYXJlYm94IGJ1aWxkIHNob3VsZCBiZSB3cml0dGVu
-DQo+IHN0cmFpZ2h0IHRvIHRoZSBlTU1DLiBUaGUgZU1NQyBpdHNlbGYgaGFzIGEgc2V0dGluZyB3
-aGljaCBzcGVjaWZpZXMNCj4gd2hlcmUgdGhlIGkuTVggd2lsbCBib290IGZyb20sIHZhbGlkIHNl
-dHRpbmcgYXJlIHVzZXIgYXJlYSwgYm9vdDAgb3INCj4gYm9vdDEuIEl0IGNhbiBiZSB0aGF0IHRo
-aXMgc2V0dGluZyBkb2Vzbid0IG1hdGNoIHRoZSBhcmVhIHlvdSBhcmUNCj4gd3JpdGluZyB0by4N
-Cj4NCj4gQW5vdGhlciB3YXkgd291bGQgYmUgdG8gc3RhcnQgYmFyZWJveCBmcm9tIFUtQm9vdCBh
-bmQgbGV0IHRoZQ0KPiBiYXJlYm94LXVwZGF0ZSBjb21tYW5kIGRvIHRoZSBqb2Igb2Ygd3JpdGlu
-ZyBiYXJlYm94IHRvIHRoZSBlTU1DLg0KPg0KPiBTYXNjaGENCj4NCg0KLS0NClJleWhhbmVoIFlh
-emRhbmkNCkRhdGEgTW9kdWwgQUcgICAgICAgICAgICAgICAgICAgICAgICAgICAgVEVMOiAgICAr
-NDktODktNTYwMTctMTU0DQpFbWJlZGRlZCBkZXZlbG9wbWVudCAgICAgICAgICAgICAgICAgRkFY
-OiAgICArNDktODktNTYwMTctMTE5DQpMaW51eCAtIERldmVsb3BtZW50ICAgICAgICAgICAgICAg
-ICAgICAgIFJHOiBIUi1NdWVuY2hlbiBCLTg1NTkxDQpMYW5kc2JlcmdlciBTdHIuIDMyMiBELTgw
-Njg3IE11ZW5jaGVuIC0gaHR0cDovL3d3dy5kYXRhLW1vZHVsLmNvbQ0KDQpWZXJ0cmF1bGljaGUg
-RS1NYWlsIHZvbiAvIENvbmZpZGVudGlhbCBlLW1haWwgZnJvbTogREFUQSBNT0RVTCBBRw0KVm9y
-c3RhbmQgLyBDRU86IERyLiBGbG9yaWFuIFBlc2FobA0KVm9yc2l0emVuZGUgZGVzIEF1ZnNpY2h0
-c3JhdGVzIC8gQ2hhaXJ3b21hbiBvZiB0aGUgU3VwZXJ2aXNvcnkgQm9hcmQ6IEtyaXN0aW4gRC4g
-UnVzc2VsbA0KU2l0eiBkZXIgR2VzZWxsc2NoYWZ0IC8gUmVnaXN0ZXJlZCBPZmZpY2U6IE3DvG5j
-aGVuDQpSZWdpc3RlcmdlcmljaHQgLyBSZWdpc3RyYXRpb24gQ291cnQ6IE3DvG5jaGVuIEhhbmRl
-bHNyZWdpc3RlciBCIDg1IDU5MQ0KDQoNCg0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZy
-YWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
-ZWJveAo=
+For the iNVM change to take effect we need to reset the i210 adapter.
+As this is not really possible in isolation in Barebox, we just go
+through a full machine reset cycle. As this should only happen once
+during the lifetime of each device there is no need for a more
+elaborate solution.
+
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+ arch/arm/boards/zii-common/board.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/boards/zii-common/board.c b/arch/arm/boards/zii-common/board.c
+index c13b04c2221e..3e44b85a4d70 100644
+--- a/arch/arm/boards/zii-common/board.c
++++ b/arch/arm/boards/zii-common/board.c
+@@ -13,11 +13,12 @@
+  */
+ 
+ #include <common.h>
++#include <fs.h>
+ #include <globalvar.h>
+ #include <init.h>
+-#include <fs.h>
+-#include <net.h>
+ #include <linux/nvmem-consumer.h>
++#include <net.h>
++#include <restart.h>
+ 
+ static int rdu_eth_register_ethaddr(struct device_node *np)
+ {
+@@ -129,6 +130,9 @@ static int rdu_i210_invm(void)
+ 	val = I210_CFGWORD_PCIID_157B;
+ 	pwrite(fd, &val, sizeof(val), 0);
+ 
++	shutdown_barebox();
++	restart_machine();
++
+ 	return 0;
+ }
+ late_initcall(rdu_i210_invm);
+-- 
+2.20.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
