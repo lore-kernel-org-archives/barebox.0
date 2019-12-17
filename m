@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ihTmm-00013O-VC
- for barebox@lists.infradead.org; Wed, 18 Dec 2019 07:30:23 +0000
-Date: Wed, 18 Dec 2019 08:30:19 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191218073019.lu7kxrth4pzbfoge@pengutronix.de>
-References: <20191217112238.32333-1-l.stach@pengutronix.de>
+ id 1ihB1V-0001x8-VB
+ for barebox@lists.infradead.org; Tue, 17 Dec 2019 11:28:19 +0000
+Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
+ helo=dude02.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <l.stach@pengutronix.de>) id 1ihB1U-00063F-PC
+ for barebox@lists.infradead.org; Tue, 17 Dec 2019 12:28:16 +0100
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Tue, 17 Dec 2019 12:28:14 +0100
+Message-Id: <20191217112816.13305-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191217112238.32333-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,32 +24,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: rdu-common: restart machine after fixing i210
- device ID
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/3] RDU2: add support to boot from SD card autonomosly
+To: barebox@lists.infradead.org
 
-On Tue, Dec 17, 2019 at 12:22:38PM +0100, Lucas Stach wrote:
-> For the iNVM change to take effect we need to reset the i210 adapter.
-> As this is not really possible in isolation in Barebox, we just go
-> through a full machine reset cycle. As this should only happen once
-> during the lifetime of each device there is no need for a more
-> elaborate solution.
-> 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> ---
->  arch/arm/boards/zii-common/board.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
+From: "Ruslan V. Sushko" <ruslan.sushko@zii.aero>
 
-Applied, thanks
+Signed-off-by: Ruslan Sushko <Ruslan.Sushko@zii.aero>
+---
+ .../boards/zii-imx6q-rdu2/defaultenv-rdu2/boot/rdu-default    | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Sascha
-
+diff --git a/arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/boot/rdu-default b/arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/boot/rdu-default
+index f391d91eba4c..e3406d554373 100644
+--- a/arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/boot/rdu-default
++++ b/arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/boot/rdu-default
+@@ -2,6 +2,10 @@
+ 
+ backlight0.brightness=0
+ if [ "$bootsource" = "spi-nor" ]; then
++	echo Boot source is SPI NOR, booting SD card firmware with rootfs on SD card
++	boot mmc1
++elif [ "$bootsource" = "mmc" ] && [ "$bootsource_instance" = "1" ]; then
++	echo Boot source is SD card, booting SD card firmware with rootfs on SD card
+ 	boot mmc1
+ else
+ 	detect mmc3
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
