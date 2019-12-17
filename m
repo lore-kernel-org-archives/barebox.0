@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ihTpM-0001iX-NP
- for barebox@lists.infradead.org; Wed, 18 Dec 2019 07:33:02 +0000
-Date: Wed, 18 Dec 2019 08:32:59 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191218073259.c22jz7majc2zqzuk@pengutronix.de>
-References: <20191217114042.11301-1-l.stach@pengutronix.de>
+ id 1ihAsU-00042b-G1
+ for barebox@lists.infradead.org; Tue, 17 Dec 2019 11:18:59 +0000
+Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
+ helo=dude02.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <l.stach@pengutronix.de>) id 1ihAsQ-0004Wc-LB
+ for barebox@lists.infradead.org; Tue, 17 Dec 2019 12:18:54 +0100
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Tue, 17 Dec 2019 12:18:52 +0100
+Message-Id: <20191217111854.3164-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191217114042.11301-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,42 +24,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: rdu1: add default environment
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/3] ARM: zii-imx8mq-dev: make eMMC update target the default
+To: barebox@lists.infradead.org
 
-On Tue, Dec 17, 2019 at 12:40:42PM +0100, Lucas Stach wrote:
-> Adds scripts for network detection in development case and
-> autoboot from the SD card.
-> 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> ---
->  arch/arm/boards/zii-imx51-rdu1/Makefile       |  1 +
->  arch/arm/boards/zii-imx51-rdu1/board.c        |  3 +++
->  .../zii-imx51-rdu1/defaultenv-rdu1/boot/net   | 24 +++++++++++++++++++
->  .../zii-imx51-rdu1/defaultenv-rdu1/boot/nfs   |  6 +++++
->  .../defaultenv-rdu1/boot/rdu-default          | 14 +++++++++++
->  .../defaultenv-rdu1/network/eth0-discover     |  4 ++++
->  .../defaultenv-rdu1/nv/autoboot_abort_key     |  1 +
->  .../defaultenv-rdu1/nv/boot.default           |  1 +
->  8 files changed, 54 insertions(+)
->  create mode 100644 arch/arm/boards/zii-imx51-rdu1/defaultenv-rdu1/boot/net
->  create mode 100644 arch/arm/boards/zii-imx51-rdu1/defaultenv-rdu1/boot/nfs
->  create mode 100644 arch/arm/boards/zii-imx51-rdu1/defaultenv-rdu1/boot/rdu-default
->  create mode 100644 arch/arm/boards/zii-imx51-rdu1/defaultenv-rdu1/network/eth0-discover
->  create mode 100644 arch/arm/boards/zii-imx51-rdu1/defaultenv-rdu1/nv/autoboot_abort_key
->  create mode 100644 arch/arm/boards/zii-imx51-rdu1/defaultenv-rdu1/nv/boot.default
+We only have a single update target, so make it the default.
 
-Applied, thanks
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+ arch/arm/boards/zii-imx8mq-dev/board.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Sascha
-
-
+diff --git a/arch/arm/boards/zii-imx8mq-dev/board.c b/arch/arm/boards/zii-imx8mq-dev/board.c
+index 144adb9cef18..dcf945db495a 100644
+--- a/arch/arm/boards/zii-imx8mq-dev/board.c
++++ b/arch/arm/boards/zii-imx8mq-dev/board.c
+@@ -19,7 +19,8 @@ static int zii_imx8mq_dev_init(void)
+ 
+ 	barebox_set_hostname("imx8mq-zii-rdu3");
+ 
+-	imx8mq_bbu_internal_mmcboot_register_handler("eMMC", "/dev/mmc0", 0);
++	imx8mq_bbu_internal_mmcboot_register_handler("eMMC", "/dev/mmc0",
++						     BBU_HANDLER_FLAG_DEFAULT);
+ 
+ 	if (bootsource_get_instance() == 0)
+ 		of_device_enable_path("/chosen/environment-emmc");
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
