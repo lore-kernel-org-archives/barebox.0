@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iiJUh-00010y-AN
- for barebox@lists.infradead.org; Fri, 20 Dec 2019 14:43:09 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 20 Dec 2019 15:43:05 +0100
-Message-Id: <20191220144305.11017-1-s.hauer@pengutronix.de>
+ id 1ihawe-0007Bx-9D
+ for barebox@lists.infradead.org; Wed, 18 Dec 2019 15:09:01 +0000
+Received: by mail-pg1-x543.google.com with SMTP id 6so1448288pgk.0
+ for <barebox@lists.infradead.org>; Wed, 18 Dec 2019 07:08:59 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Wed, 18 Dec 2019 07:08:41 -0800
+Message-Id: <20191218150841.30840-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -15,38 +17,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: i.MX: Fix PBL size test
+Subject: [PATCH] ARM: aarch64: Add support for passing initrd to Linux
 To: Barebox List <barebox@lists.infradead.org>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-TUFYX1BCTF9NRU1PUllfU0laRSBuZWVkcyB0aGUgc3RhcnQgc3ltYm9sIG5hbWUgd2l0aG91dCBh
-bnkgc3VmZml4LiBGaXgKdGhpcyB0byBtYWtlIHRoZSBQQkwgc2l6ZSB0ZXN0cyBlZmZlY3RpdmUu
-CgpSZXBvcnRlZC1ieTogVWxyaWNoIMOWbG1hbm4gPHUub2VsbWFubkBwZW5ndXRyb25peC5kZT4K
-U2lnbmVkLW9mZi1ieTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgotLS0K
-IGltYWdlcy9NYWtlZmlsZS5pbXggfCA0ICsrLS0KIDEgZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlv
-bnMoKyksIDIgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvaW1hZ2VzL01ha2VmaWxlLmlteCBi
-L2ltYWdlcy9NYWtlZmlsZS5pbXgKaW5kZXggNTNkNGFjODIwMi4uZTU1NThiMWM2MCAxMDA2NDQK
-LS0tIGEvaW1hZ2VzL01ha2VmaWxlLmlteAorKysgYi9pbWFnZXMvTWFrZWZpbGUuaW14CkBAIC0z
-NzgsMTIgKzM3OCwxMiBAQCBpbWFnZS0kKENPTkZJR19NQUNIX05YUF9JTVg4TVFfRVZLKSArPSBi
-YXJlYm94LW54cC1pbXg4bXEtZXZrLmltZwogCiBwYmxiLSQoQ09ORklHX01BQ0hfWklJX0lNWDhN
-UV9ERVYpICs9IHN0YXJ0X3ppaV9pbXg4bXFfZGV2CiBDRkdfc3RhcnRfemlpX2lteDhtcV9kZXYu
-cGJsYi5pbXhpbWcgPSAkKGJvYXJkKS96aWktaW14OG1xLWRldi9mbGFzaC1oZWFkZXItemlpLWlt
-eDhtcS1kZXYuaW14Y2ZnCi1NQVhfUEJMX01FTU9SWV9TSVpFX3N0YXJ0X3ppaV9pbXg4bXFfZGV2
-LnBibCA9IDB4M2YwMDAKK01BWF9QQkxfTUVNT1JZX1NJWkVfc3RhcnRfemlpX2lteDhtcV9kZXYg
-PSAweDNmMDAwCiBGSUxFX2JhcmVib3gtemlpLWlteDhtcS1kZXYuaW1nID0gc3RhcnRfemlpX2lt
-eDhtcV9kZXYucGJsYi5pbXhpbWcKIGltYWdlLSQoQ09ORklHX01BQ0hfWklJX0lNWDhNUV9ERVYp
-ICs9IGJhcmVib3gtemlpLWlteDhtcS1kZXYuaW1nCiAKIHBibGItJChDT05GSUdfTUFDSF9QSFlU
-RUNfU09NX0lNWDhNUSkgKz0gc3RhcnRfcGh5dGVjX3BoeWNvcmVfaW14OG1xCiBDRkdfc3RhcnRf
-cGh5dGVjX3BoeWNvcmVfaW14OG1xLnBibGIuaW14aW1nID0gJChib2FyZCkvcGh5dGVjLXNvbS1p
-bXg4bXEvZmxhc2gtaGVhZGVyLXBoeWNvcmUtaW14OG1xLmlteGNmZwotTUFYX1BCTF9NRU1PUllf
-U0laRV9zdGFydF9waHl0ZWNfcGh5Y29yZV9pbXg4bXEucGJsID0gMHgzZjAwMAorTUFYX1BCTF9N
-RU1PUllfU0laRV9zdGFydF9waHl0ZWNfcGh5Y29yZV9pbXg4bXEgPSAweDNmMDAwCiBGSUxFX2Jh
-cmVib3gtcGh5dGVjLXBoeWNvcmUtaW14OG1xLmltZyA9IHN0YXJ0X3BoeXRlY19waHljb3JlX2lt
-eDhtcS5wYmxiLmlteGltZwogaW1hZ2UtJChDT05GSUdfTUFDSF9QSFlURUNfU09NX0lNWDhNUSkg
-Kz0gYmFyZWJveC1waHl0ZWMtcGh5Y29yZS1pbXg4bXEuaW1nCi0tIAoyLjI0LjAKCgpfX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcg
-bGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5v
-cmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+This adds basic support for passing intird to Linux
+
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ arch/arm/lib64/armlinux.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/lib64/armlinux.c b/arch/arm/lib64/armlinux.c
+index afa56792f..31bd987f1 100644
+--- a/arch/arm/lib64/armlinux.c
++++ b/arch/arm/lib64/armlinux.c
+@@ -37,6 +37,7 @@ static int do_bootm_linux(struct image_data *data)
+ 		       unsigned long x3);
+ 	resource_size_t start, end;
+ 	unsigned long text_offset, image_size, devicetree, kernel;
++	unsigned long image_end;
+ 	int ret;
+ 	void *fdt;
+ 
+@@ -53,7 +54,18 @@ static int do_bootm_linux(struct image_data *data)
+ 	if (ret)
+ 		goto out;
+ 
+-	devicetree = ALIGN(kernel + image_size, PAGE_SIZE);
++	image_end = PAGE_ALIGN(kernel + image_size);
++
++	if (bootm_has_initrd(data)) {
++		ret = bootm_load_initrd(data, image_end);
++		if (ret)
++			return ret;
++
++		image_end += resource_size(data->initrd_res);
++		image_end = PAGE_ALIGN(image_end);
++	}
++
++	devicetree = image_end;
+ 
+ 	fdt = bootm_get_devicetree(data);
+ 	if (IS_ERR(fdt)) {
+-- 
+2.21.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
