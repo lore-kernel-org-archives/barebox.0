@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iiJtO-0005sK-GK
- for barebox@lists.infradead.org; Fri, 20 Dec 2019 15:08:39 +0000
-Date: Fri, 20 Dec 2019 16:08:36 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191220150836.iwsw3dfw22snkdlt@pengutronix.de>
-References: <20191218150841.30840-1-andrew.smirnov@gmail.com>
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+ by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1ihi3R-0002B6-5D
+ for barebox@lists.infradead.org; Wed, 18 Dec 2019 22:44:30 +0000
+Received: from astat.fritz.box (a89-183-111-97.net-htp.de [89.183.111.97])
+ by lynxeye.de (Postfix) with ESMTPA id 2580FE74217
+ for <barebox@lists.infradead.org>; Wed, 18 Dec 2019 23:43:53 +0100 (CET)
+From: Lucas Stach <dev@lynxeye.de>
+Date: Wed, 18 Dec 2019 23:43:46 +0100
+Message-Id: <20191218224349.107261-1-dev@lynxeye.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191218150841.30840-1-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,27 +22,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: aarch64: Add support for passing initrd to Linux
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 1/4] clk: zynq: add QSPI reference clock
+To: barebox@lists.infradead.org
 
-On Wed, Dec 18, 2019 at 07:08:41AM -0800, Andrey Smirnov wrote:
-> This adds basic support for passing intird to Linux
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  arch/arm/lib64/armlinux.c | 14 +++++++++++++-
->  1 file changed, 13 insertions(+), 1 deletion(-)
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
+---
+ drivers/clk/zynq/clkc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Applied, thanks
-
-Sascha
-
+diff --git a/drivers/clk/zynq/clkc.c b/drivers/clk/zynq/clkc.c
+index 30ca5a60faf3..a6d8ba92cabc 100644
+--- a/drivers/clk/zynq/clkc.c
++++ b/drivers/clk/zynq/clkc.c
+@@ -414,6 +414,9 @@ static int zynq_clock_probe(struct device_d *dev)
+ 	clks[ddrpll] = zynq_pll_clk(ZYNQ_PLL_DDR, "ddr_pll", clk_base + 0x4);
+ 	clks[iopll] = zynq_pll_clk(ZYNQ_PLL_IO,  "io_pll", clk_base + 0x8);
+ 
++	zynq_periph_clk("lqspi_clk", clk_base + 0x4c);
++	clks[lqspi] = clk_gate("qspi0", "lqspi_clk", clk_base + 0x4c, 0, 0, 0);
++
+ 	zynq_periph_clk("sdio_clk", clk_base + 0x50);
+ 	clks[sdio0] = clk_gate("sdio0", "sdio_clk", clk_base + 0x50, 0, 0, 0);
+ 	clks[sdio1] = clk_gate("sdio1", "sdio_clk", clk_base + 0x50, 1, 0, 0);
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.23.0
+
 
 _______________________________________________
 barebox mailing list
