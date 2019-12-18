@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk4.altibox.net ([109.247.116.15])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ikPDC-0007Tm-2K
- for barebox@lists.infradead.org; Thu, 26 Dec 2019 09:13:44 +0000
-Date: Thu, 26 Dec 2019 10:11:30 +0100
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20191226091130.GA3251@ravnborg.org>
-References: <20191209080029.3905-1-dev@lynxeye.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191209080029.3905-1-dev@lynxeye.de>
+Received: from mickerik.phytec.de ([195.145.39.210])
+ by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1ihYtH-0006Ev-SQ
+ for barebox@lists.infradead.org; Wed, 18 Dec 2019 12:57:25 +0000
+From: Maik Otto <m.otto@phytec.de>
+Date: Wed, 18 Dec 2019 13:57:17 +0100
+Message-Id: <1576673837-71180-1-git-send-email-m.otto@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,144 +14,98 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] lds: align RO_DATA_SECTION members
-To: Lucas Stach <dev@lynxeye.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2] habv4: imx change signing area from full to the executed
+ image
+To: barebox@lists.infradead.org
+Cc: Maik Otto <m.otto@phytec.de>
 
-Hi Lucas.
+the whole barebox with mbr and partition table were be signed by default.
+change the signing to the executed image without signing the mbr,
+partition table and header_gap by imx8mq
+additional delete option full, from-dcdofs and skip-mbr
 
-On Mon, Dec 09, 2019 at 09:00:29AM +0100, Lucas Stach wrote:
-> When using the RO_DATA_SECTION macro, all the individual components
-> are put into the rodata section. As they now end up in the same
-> section there is no alignment enforced between them anymore. This
-> leads to unaligned start pointers when any of the components have a
-> unaligned size. Enforce some alignment between them.
-> 
-> Fixes: c5d38e920101 (lds: Add and use RO_DATA_SECTION macro)
-> Signed-off-by: Lucas Stach <dev@lynxeye.de>
+Signed-off-by: Maik Otto <m.otto@phytec.de>
+---
+Changes in v2:
+    - change subject from habv4: add the possibility to changing the signing
+      area from Kconfig to 
+    - delete KConfig entries
+    - delete changes habv4-imx6-gencsf.h
+    - delete full, from-dcdofs and skip-mbr options
+---
+ scripts/imx/imx.c | 33 +++++++++------------------------
+ 1 file changed, 9 insertions(+), 24 deletions(-)
 
-After a rather painful bisect I ended up with the commit
-c5d38e920101 (lds: Add and use RO_DATA_SECTION macro) as the bad
-commit.
-So in my case missing the alignment prevented barebox from starting up.
+diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
+index b3e8d62..b2dd25c 100644
+--- a/scripts/imx/imx.c
++++ b/scripts/imx/imx.c
+@@ -338,16 +338,13 @@ static int do_hab_blocks(struct config_data *data, int argc, char *argv[])
+ 	char *str;
+ 	int ret;
+ 	uint32_t signed_size = data->load_size;
+-	uint32_t offset = 0;
++	uint32_t offset_load_address = 0x400; //skip MBR and Partition Table
++	uint32_t offset_size = offset_load_address;
++	uint32_t offset = offset_load_address;
+ 
+ 	if (!data->csf)
+ 		return -EINVAL;
+ 
+-	if (argc < 2)
+-		type = "full";
+-	else
+-		type = argv[1];
+-
+ 	/*
+ 	 * In case of encrypted image we reduce signed area to beginning
+ 	 * of encrypted area.
+@@ -359,31 +356,19 @@ static int do_hab_blocks(struct config_data *data, int argc, char *argv[])
+ 	 * Ensure we only sign the PBL for i.MX8MQ
+ 	 */
+ 	if (data->pbl_code_size && data->cpu_type == IMX_CPU_IMX8MQ) {
+-		offset = data->header_gap;
++		offset += data->header_gap;
+ 		signed_size = roundup(data->pbl_code_size + HEADER_LEN, 0x1000);
+ 		if (data->signed_hdmi_firmware_file)
+ 			offset += PLUGIN_HDMI_SIZE;
+ 	}
+ 
+-	if (!strcmp(type, "full")) {
++	if (signed_size > 0) {
+ 		ret = asprintf(&str, "Blocks = 0x%08x 0x%08x 0x%08x \"%s\"\n",
+-			       data->image_load_addr, offset, signed_size,
+-			       data->outfile);
+-	} else if (!strcmp(type, "from-dcdofs")) {
+-		ret = asprintf(&str, "Blocks = 0x%08x 0x%x %d \"%s\"\n",
+-			       data->image_load_addr + data->image_dcd_offset,
+-			       data->image_dcd_offset,
+-			       signed_size - data->image_dcd_offset,
+-			       data->outfile);
+-	} else if (!strcmp(type, "skip-mbr")) {
+-		ret = asprintf(&str,
+-			       "Blocks = 0x%08x 0 440 \"%s\", \\\n"
+-			       "         0x%08x 512 %d \"%s\"\n",
+-			       data->image_load_addr, data->outfile,
+-			       data->image_load_addr + 512,
+-			       signed_size - 512, data->outfile);
++			data->image_load_addr + offset_load_address, offset,
++			signed_size - offset_size, data->outfile);
+ 	} else {
+-		fprintf(stderr, "Invalid hab_blocks option: %s\n", type);
++		fprintf(stderr, "Invalid signed size area 0x%08x\n",
++			signed_size);
+ 		return -EINVAL;
+ 	}
+ 
+-- 
+2.7.4
 
-The bisect was painful because this is a proprietary board
-where I have too many patches accumulated - and my first attempt
-pointed out used a good commit as bad (missing edits after applying
-patches).
-
-I saw a v2 of this patch that I already deleted from my mailbox,
-but re-did it locally.  That fixed barebox for me.
-
-According to: http://lists.infradead.org/pipermail/barebox/2019-December/040439.html
-the patch is applied - but I cannot find it neither in master nor in
-next. Seems it has not been pushed out in the xmas rush.
-
-You can add a:
-Tested-by: Sam Ravnborg <sam@ravnborg.org>  # fixes barebox startup on at91sam9263
-in case it is relevant / doable.
-
-	Sam
-
-
-
-> ---
->  include/asm-generic/barebox.lds.h | 11 +++++++++++
->  1 file changed, 11 insertions(+)
-> 
-> diff --git a/include/asm-generic/barebox.lds.h b/include/asm-generic/barebox.lds.h
-> index b6ca8eb2be27..113392d567fa 100644
-> --- a/include/asm-generic/barebox.lds.h
-> +++ b/include/asm-generic/barebox.lds.h
-> @@ -17,6 +17,7 @@
->  #endif
->  
->  #define BAREBOX_INITCALLS			\
-> +	. = ALIGN(8);				\
->  	__barebox_initcalls_start = .;		\
->  	KEEP(*(.initcall.0))			\
->  	KEEP(*(.initcall.1))			\
-> @@ -36,6 +37,7 @@
->  	__barebox_initcalls_end = .;
->  
->  #define BAREBOX_EXITCALLS			\
-> +	. = ALIGN(8);				\
->  	__barebox_exitcalls_start = .;		\
->  	KEEP(*(.exitcall.0))			\
->  	KEEP(*(.exitcall.1))			\
-> @@ -47,37 +49,44 @@
->  	__barebox_exitcalls_end = .;
->  
->  #define BAREBOX_CMDS				\
-> +	. = ALIGN(8);				\
->  	__barebox_cmd_start = .;		\
->  	KEEP(*(SORT_BY_NAME(.barebox_cmd*)))	\
->  	__barebox_cmd_end = .;
->  
->  #define BAREBOX_RATP_CMDS			\
-> +	. = ALIGN(8);				\
->  	__barebox_ratp_cmd_start = .;		\
->  	KEEP(*(SORT_BY_NAME(.barebox_ratp_cmd*)))	\
->  	__barebox_ratp_cmd_end = .;
->  
->  #define BAREBOX_SYMS				\
-> +	. = ALIGN(8);				\
->  	__usymtab_start = .;			\
->  	KEEP(*(__usymtab))			\
->  	__usymtab_end = .;
->  
->  #define BAREBOX_MAGICVARS			\
-> +	. = ALIGN(8);				\
->  	__barebox_magicvar_start = .;		\
->  	KEEP(*(SORT_BY_NAME(.barebox_magicvar*)))	\
->  	__barebox_magicvar_end = .;
->  
->  #define BAREBOX_CLK_TABLE			\
-> +	. = ALIGN(8);				\
->  	__clk_of_table_start = .;		\
->  	KEEP(*(.__clk_of_table));		\
->  	KEEP(*(.__clk_of_table_end));		\
->  	__clk_of_table_end = .;
->  
->  #define BAREBOX_DTB				\
-> +	. = ALIGN(8);				\
->  	__dtb_start = .;			\
->  	KEEP(*(.dtb.rodata.*));			\
->  	__dtb_end = .;
->  
->  #define BAREBOX_IMD				\
-> +	. = ALIGN(8);				\
->  	KEEP(*(.barebox_imd_start))		\
->  	KEEP(*(.barebox_imd_1*))		\
->  	*(.barebox_imd_0*)			\
-> @@ -85,6 +94,7 @@
->  
->  #ifdef CONFIG_PCI
->  #define BAREBOX_PCI_FIXUP			\
-> +	. = ALIGN(8);				\
->  	__start_pci_fixups_early = .;		\
->  	KEEP(*(.pci_fixup_early))		\
->  	__end_pci_fixups_early = .;		\
-> @@ -99,6 +109,7 @@
->  #endif
->  
->  #define BAREBOX_RSA_KEYS			\
-> +	. = ALIGN(8);				\
->  	__rsa_keys_start = .;			\
->  	KEEP(*(.rsa_keys.rodata.*));		\
->  	__rsa_keys_end = .;			\
-> -- 
-> 2.23.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
