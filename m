@@ -1,21 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm1-x341.google.com ([2a00:1450:4864:20::341])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ihb0n-0001Em-VT
- for barebox@lists.infradead.org; Wed, 18 Dec 2019 15:13:20 +0000
-Received: by mail-wm1-x341.google.com with SMTP id f129so2295561wmf.2
- for <barebox@lists.infradead.org>; Wed, 18 Dec 2019 07:13:17 -0800 (PST)
+ id 1ihnkH-0003fB-6O
+ for barebox@lists.infradead.org; Thu, 19 Dec 2019 04:49:06 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 19 Dec 2019 05:48:59 +0100
+Message-Id: <20191219044859.20766-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-References: <20191217111854.3164-1-l.stach@pengutronix.de>
- <20191217111854.3164-2-l.stach@pengutronix.de>
- <CAHQ1cqH59VFi8EaZAE4MGv57mCZaF_g0KfdA4DWwL3-k+B12KQ@mail.gmail.com>
- <f4d64d2aed86fb9d59a71a8b2d90a1e0179f55d6.camel@pengutronix.de>
- <CAHQ1cqHGSrDejarOynOnmLPjyusZgBfqQV=Z-ZHEtmhffbe38A@mail.gmail.com>
- <14e20ce67fe57357845ccc92cd8f1612a68cc3e3.camel@pengutronix.de>
-In-Reply-To: <14e20ce67fe57357845ccc92cd8f1612a68cc3e3.camel@pengutronix.de>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 18 Dec 2019 07:13:04 -0800
-Message-ID: <CAHQ1cqG1tc_NP79+P37kJ+U86s9q6i8_5S7TQu3Me7PkZhgBgg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,246 +19,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] ARM: zii-imx8mq-dev: add DT fixups
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] ARM: rpi: Do not warn when firmware doesn't pass a dtb
+To: Barebox List <barebox@lists.infradead.org>
 
-On Wed, Dec 18, 2019 at 7:05 AM Lucas Stach <l.stach@pengutronix.de> wrote:
->
-> On Mi, 2019-12-18 at 06:37 -0800, Andrey Smirnov wrote:
-> > On Wed, Dec 18, 2019 at 5:56 AM Lucas Stach <l.stach@pengutronix.de> wrote:
-> > > On Mi, 2019-12-18 at 05:54 -0800, Andrey Smirnov wrote:
-> > > > On Tue, Dec 17, 2019 at 3:19 AM Lucas Stach <l.stach@pengutronix.de> wrote:
-> > > > > There are only two fixups we need to apply at the moment:
-> > > > > - The 27" RMB3 based unit has a eGalax Touchscreen instead of Synaptics.
-> > > > > - The 10.1" SCU/CCU unit has no DEB and thus no switch, but instead the
-> > > > >   i210 ethernet is routed to the external connector directly.
-> > > > >
-> > > > > Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> > > > > ---
-> > > > >  arch/arm/boards/zii-imx8mq-dev/board.c | 138 +++++++++++++++++++++++++
-> > > > >  arch/arm/dts/imx8mq-zii-ultra.dtsi     |  10 ++
-> > > > >  2 files changed, 148 insertions(+)
-> > > > >
-> > > > > diff --git a/arch/arm/boards/zii-imx8mq-dev/board.c b/arch/arm/boards/zii-imx8mq-dev/board.c
-> > > > > index dcf945db495a..0be68423d9bf 100644
-> > > > > --- a/arch/arm/boards/zii-imx8mq-dev/board.c
-> > > > > +++ b/arch/arm/boards/zii-imx8mq-dev/board.c
-> > > > > @@ -11,6 +11,15 @@
-> > > > >  #include <asm/memory.h>
-> > > > >  #include <linux/sizes.h>
-> > > > >  #include <mach/bbu.h>
-> > > > > +#include "../zii-common/pn-fixup.h"
-> > > > > +
-> > > > > +#define LRU_FLAG_EGALAX                BIT(0)
-> > > > > +#define LRU_FLAG_NO_DEB                BIT(1)
-> > > > > +
-> > > > > +struct zii_imx8mq_dev_lru_fixup {
-> > > > > +       struct zii_pn_fixup fixup;
-> > > > > +       unsigned int flags;
-> > > > > +};
-> > > > >
-> > > > >  static int zii_imx8mq_dev_init(void)
-> > > > >  {
-> > > > > @@ -32,3 +41,132 @@ static int zii_imx8mq_dev_init(void)
-> > > > >         return 0;
-> > > > >  }
-> > > > >  device_initcall(zii_imx8mq_dev_init);
-> > > > > +
-> > > > > +static int zii_imx8mq_dev_fixup_egalax_ts(struct device_node *root, void *ctx)
-> > > > > +{
-> > > > > +       struct device_node *np;
-> > > > > +
-> > > > > +       /*
-> > > > > +        * The 27" unit has a EETI eGalax touchscreen instead of the
-> > > > > +        * Synaptics RMI4 found on other units.
-> > > > > +        */
-> > > > > +       pr_info("Enabling eGalax touchscreen instead of RMI4\n");
-> > > > > +
-> > > > > +       np = of_find_compatible_node(root, NULL, "syna,rmi4-i2c");
-> > > > > +       if (!np)
-> > > > > +               return -ENODEV;
-> > > > > +
-> > > > > +       of_device_disable(np);
-> > > > > +
-> > > > > +       np = of_find_compatible_node(root, NULL, "eeti,exc3000");
-> > > > > +       if (!np)
-> > > > > +               return -ENODEV;
-> > > > > +
-> > > > > +       of_device_enable(np);
-> > > > > +
-> > > > > +       return 0;
-> > > > > +}
-> > > > > +
-> > > > > +static int zii_imx8mq_dev_fixup_deb_internal(void)
-> > > > > +{
-> > > > > +       struct device_node *np, *aliases;
-> > > > > +       struct device_d *dev;
-> > > > > +
-> > > > > +       /*
-> > > > > +        * In the internal DT remove the complete FEC hierarchy and move the
-> > > > > +        * i210 to be the eth0 interface to allow network boot to work without
-> > > > > +        * rewriting all the boot scripts.
-> > > > > +        */
-> > > > > +       aliases = of_find_node_by_path("/aliases");
-> > > > > +       if (!aliases)
-> > > > > +               return -ENODEV;
-> > > > > +
-> > > > > +       np = of_find_compatible_node(NULL, NULL, "fsl,imx8mq-fec");
-> > > > > +       if (!np)
-> > > > > +               return -ENODEV;
-> > > > > +
-> > > > > +       of_device_disable(np);
-> > > > > +
-> > > > > +       of_property_write_string(aliases, "ethernet1", np->full_name);
-> > > > > +
-> > > > > +       dev = get_device_by_device_node(np);
-> > > >
-> > > > The patch adding this function might be missing from the series. Or
-> > > > did I miss it going in earlier?
-> > >
-> > > Urgh, yes. Sorry about that, I missed this one when preparing the stuff
-> > > t send out. I'll send it as soon as my Barebox tree isn't messed up
-> > > anymore.
-> > >
-> >
-> > No worries. One other thing that I noticed is that I don't think that
-> > "watchdog@38" on "i2c3" node has trickled down from upstream to our
-> > copy of imx8mq-zii-ultra.dtsi, so the line doing
-> >
-> > of_find_compatible_node(root, NULL, "zii,rave-wdt");
-> >
-> > might not find what it is looking for. I might have missed something
-> > here too, but I think it is worth double checking.
->
-> Your are talking about the line in zii_imx8mq_dev_fixup_deb() below,
-> right? This fixup is only run on the DT passed to the Linux kernel, not
-> the internal DT, so it's not an issue that this node isn't present in
-> the Barebox DT yet.
+When there is no dtb placed in the boot partition then none is passed by
+the firmware to barebox. This may be intended, so do not warn about it.
 
-Ah, that's what I was missing. Make sense, then. Disregard my comment.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/raspberry-pi/lowlevel.c   |  9 ++++++++-
+ arch/arm/boards/raspberry-pi/rpi-common.c | 11 +++++++----
+ 2 files changed, 15 insertions(+), 5 deletions(-)
 
->
-> Regards,
-> Lucas
->
-> > > > > +       if (!dev)
-> > > > > +               return -ENODEV;
-> > > > > +
-> > > > > +       unregister_device(dev);
-> > > > > +
-> > > > > +       np = of_find_node_by_name(NULL, "i210@0");
-> > > > > +       if (!np)
-> > > > > +               return -ENODEV;
-> > > > > +
-> > > > > +       of_property_write_string(aliases, "ethernet0", np->full_name);
-> > > > > +
-> > > > > +       /* Refresh the internal aliases list from the patched DT */
-> > > > > +       of_alias_scan();
-> > > > > +
-> > > > > +       return 0;
-> > > > > +}
-> > > > > +
-> > > > > +static int zii_imx8mq_dev_fixup_deb(struct device_node *root, void *ctx)
-> > > > > +{
-> > > > > +       struct device_node *np;
-> > > > > +
-> > > > > +       /*
-> > > > > +        * In the kernel DT remove all devices from the DEB, which isn't
-> > > > > +        * present on this system.
-> > > > > +        */
-> > > > > +       np = of_find_compatible_node(root, NULL, "marvell,mv88e6085");
-> > > > > +       if (!np)
-> > > > > +               return -ENODEV;
-> > > > > +
-> > > > > +       of_device_disable(np);
-> > > > > +
-> > > > > +       np = of_find_compatible_node(root, NULL, "zii,rave-wdt");
-> > > > > +       if (!np)
-> > > > > +               return -ENODEV;
-> > > > > +
-> > > > > +       of_device_disable(np);
-> > > > > +
-> > > > > +       return 0;
-> > > > > +}
-> > > > > +
-> > > > > +static void zii_imx8mq_dev_lru_fixup(const struct zii_pn_fixup *context)
-> > > > > +{
-> > > > > +       const struct zii_imx8mq_dev_lru_fixup *fixup =
-> > > > > +               container_of(context, struct zii_imx8mq_dev_lru_fixup, fixup);
-> > > > > +
-> > > > > +       if (fixup->flags & LRU_FLAG_EGALAX)
-> > > > > +               of_register_fixup(zii_imx8mq_dev_fixup_egalax_ts, NULL);
-> > > > > +
-> > > > > +       if (fixup->flags & LRU_FLAG_NO_DEB) {
-> > > > > +               zii_imx8mq_dev_fixup_deb_internal();
-> > > > > +               of_register_fixup(zii_imx8mq_dev_fixup_deb, NULL);
-> > > > > +       }
-> > > > > +}
-> > > > > +
-> > > > > +#define ZII_IMX8MQ_DEV_LRU_FIXUP(__pn, __flags)                \
-> > > > > +       {                                               \
-> > > > > +               { __pn, zii_imx8mq_dev_lru_fixup },     \
-> > > > > +               __flags                                 \
-> > > > > +       }
-> > > > > +
-> > > > > +static const struct zii_imx8mq_dev_lru_fixup zii_imx8mq_dev_lru_fixups[] = {
-> > > > > +       ZII_IMX8MQ_DEV_LRU_FIXUP("00-5131-02", LRU_FLAG_EGALAX),
-> > > > > +       ZII_IMX8MQ_DEV_LRU_FIXUP("00-5131-03", LRU_FLAG_EGALAX),
-> > > > > +       ZII_IMX8MQ_DEV_LRU_FIXUP("00-5170-01", LRU_FLAG_NO_DEB),
-> > > > > +};
-> > > > > +
-> > > > > +/*
-> > > > > + * This initcall needs to be executed before coredevices, so we have a chance
-> > > > > + * to fix up the devices with the correct information.
-> > > > > + */
-> > > > > +static int zii_imx8mq_dev_process_fixups(void)
-> > > > > +{
-> > > > > +       if (!of_machine_is_compatible("zii,imx8mq-ultra"))
-> > > > > +               return 0;
-> > > > > +
-> > > > > +       zii_process_lru_fixups(zii_imx8mq_dev_lru_fixups);
-> > > > > +
-> > > > > +       return 0;
-> > > > > +}
-> > > > > +postmmu_initcall(zii_imx8mq_dev_process_fixups);
-> > > > > diff --git a/arch/arm/dts/imx8mq-zii-ultra.dtsi b/arch/arm/dts/imx8mq-zii-ultra.dtsi
-> > > > > index 6180f21ab0a4..50bad9b1a27e 100644
-> > > > > --- a/arch/arm/dts/imx8mq-zii-ultra.dtsi
-> > > > > +++ b/arch/arm/dts/imx8mq-zii-ultra.dtsi
-> > > > > @@ -22,6 +22,11 @@
-> > > > >                 };
-> > > > >         };
-> > > > >
-> > > > > +       device-info {
-> > > > > +               nvmem-cells = <&lru_part_number>;
-> > > > > +               nvmem-cell-names = "lru-part-number";
-> > > > > +       };
-> > > > > +
-> > > > >         aliases {
-> > > > >                 ethernet0 = &fec1;
-> > > > >                 ethernet1 = &i210;
-> > > > > @@ -64,6 +69,11 @@
-> > > > >  &uart2 {
-> > > > >         rave-sp {
-> > > > >                 eeprom@a4 {
-> > > > > +                       lru_part_number: lru-part-number@21 {
-> > > > > +                               reg = <0x21 15>;
-> > > > > +                               read-only;
-> > > > > +                       };
-> > > > > +
-> > > > >                         mac_address_0: mac-address@180 {
-> > > > >                                 reg = <0x180 6>;
-> > > > >                         };
-> > > > > --
-> > > > > 2.20.1
-> > > > >
-> > > > >
-> > > > > _______________________________________________
-> > > > > barebox mailing list
-> > > > > barebox@lists.infradead.org
-> > > > > http://lists.infradead.org/mailman/listinfo/barebox
->
+diff --git a/arch/arm/boards/raspberry-pi/lowlevel.c b/arch/arm/boards/raspberry-pi/lowlevel.c
+index 70f1936522..d58beb6052 100644
+--- a/arch/arm/boards/raspberry-pi/lowlevel.c
++++ b/arch/arm/boards/raspberry-pi/lowlevel.c
+@@ -11,8 +11,15 @@ static void copy_vc_fdt(void *dest, void *src, unsigned long max_size)
+ {
+ 	struct fdt_header *oftree_src = src;
+ 	struct fdt_header *oftree_dest = dest;
++	unsigned long size;
+ 
+-	unsigned long size = be32_to_cpu(oftree_src->totalsize);
++	if (!src) {
++		oftree_dest->magic = cpu_to_be32(VIDEOCORE_FDT_ERROR);
++		oftree_dest->totalsize = cpu_to_be32(0);
++		return;
++	}
++
++	size = be32_to_cpu(oftree_src->totalsize);
+ 	if (size > max_size) {
+ 		oftree_dest->magic = cpu_to_be32(VIDEOCORE_FDT_ERROR);
+ 		/* Save an error code after the magic value for easier
+diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
+index dd6bbd5bdd..acb26f6a64 100644
+--- a/arch/arm/boards/raspberry-pi/rpi-common.c
++++ b/arch/arm/boards/raspberry-pi/rpi-common.c
+@@ -433,13 +433,16 @@ static void rpi_vc_fdt(void)
+ 
+ 	oftree = saved_vc_fdt;
+ 	magic = be32_to_cpu(oftree->magic);
+-	if (magic != FDT_MAGIC) {
+-		pr_err("videocore fdt saved in pbl has invalid magic\n");
+ 
+-		if (magic == VIDEOCORE_FDT_ERROR) {
++	if (magic == VIDEOCORE_FDT_ERROR) {
++		if (oftree->totalsize)
+ 			pr_err("there was an error copying fdt in pbl: %d\n",
+ 					be32_to_cpu(oftree->totalsize));
+-		}
++		return;
++	}
++
++	if (magic != FDT_MAGIC) {
++		pr_err("videocore fdt saved in pbl has invalid magic\n");
+ 		return;
+ 	}
+ 
+-- 
+2.24.0
+
 
 _______________________________________________
 barebox mailing list
