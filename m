@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iiJwq-0007Tq-Sx
- for barebox@lists.infradead.org; Fri, 20 Dec 2019 15:12:14 +0000
-Date: Fri, 20 Dec 2019 16:12:11 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20191220151211.bots2cny4f3tluli@pengutronix.de>
-References: <20191219090101.10030-1-l.stach@pengutronix.de>
+ id 1ihxaO-0005Np-PE
+ for barebox@lists.infradead.org; Thu, 19 Dec 2019 15:19:36 +0000
+Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
+ helo=dude02.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <l.stach@pengutronix.de>) id 1ihxaL-0005so-Hl
+ for barebox@lists.infradead.org; Thu, 19 Dec 2019 16:19:29 +0100
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Thu, 19 Dec 2019 16:19:26 +0100
+Message-Id: <20191219151929.19521-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191219090101.10030-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,36 +24,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] lds: align RO_DATA_SECTION members
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/4] ARM: nxp-imx8mq-evk: switch to SPDX license header
+To: barebox@lists.infradead.org
 
-On Thu, Dec 19, 2019 at 10:01:01AM +0100, Lucas Stach wrote:
-> From: Lucas Stach <dev@lynxeye.de>
-> 
-> When using the RO_DATA_SECTION macro, all the individual components
-> are put into the rodata section. As they now end up in the same
-> section there is no alignment enforced between them anymore. This
-> leads to unaligned start pointers when any of the components have a
-> unaligned size. Enforce some alignment between them.
-> 
-> Fixes: c5d38e920101 (lds: Add and use RO_DATA_SECTION macro)
-> Signed-off-by: Lucas Stach <dev@lynxeye.de>
-> ---
-> v2: use STRUCT_ALIGN
-> ---
->  include/asm-generic/barebox.lds.h | 11 +++++++++++
->  1 file changed, 11 insertions(+)
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+ arch/arm/boards/nxp-imx8mq-evk/lowlevel.c | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
-Applied, thanks
-
-Sascha
-
+diff --git a/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
+index 9d060fb5890b..d2042bffcacc 100644
+--- a/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
++++ b/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
+@@ -1,13 +1,4 @@
+-/*
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; version 2.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+- * General Public License for more details.
+- */
++// SPDX-License-Identifier: GPL-2.0
+ 
+ #include <common.h>
+ #include <linux/sizes.h>
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
