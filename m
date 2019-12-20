@@ -1,14 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp.megiteam.pl ([31.186.83.105])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ij9UC-00027K-Kz
- for barebox@lists.infradead.org; Sun, 22 Dec 2019 22:14:07 +0000
-References: <1576673837-71180-1-git-send-email-m.otto@phytec.de>
- <20191220152441.thp3kn2wfnw76xgl@pengutronix.de>
-From: Marcin =?utf-8?Q?Niestr=C3=B3j?= <m.niestroj@grinn-global.com>
-In-reply-to: <20191220152441.thp3kn2wfnw76xgl@pengutronix.de>
-Date: Sun, 22 Dec 2019 23:13:48 +0100
-Message-ID: <87imm8huub.fsf@grinn-global.com>
+ id 1iiJKY-0003jf-FD
+ for barebox@lists.infradead.org; Fri, 20 Dec 2019 14:32:44 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 20 Dec 2019 15:32:22 +0100
+Message-Id: <20191220143232.28354-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -18,87 +15,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] habv4: imx change signing area from full to the
- executed image
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Maik Otto <m.otto@phytec.de>, barebox@lists.infradead.org
+Subject: [PATCH 00/10] Add Raspberry Pi USB support
+To: Barebox List <barebox@lists.infradead.org>
 
-SGkgU2FzaGEsIE1haWssCgpTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+IHdy
-aXRlczoKCj4gT24gV2VkLCBEZWMgMTgsIDIwMTkgYXQgMDE6NTc6MTdQTSArMDEwMCwgTWFpayBP
-dHRvIHdyb3RlOgo+PiB0aGUgd2hvbGUgYmFyZWJveCB3aXRoIG1iciBhbmQgcGFydGl0aW9uIHRh
-YmxlIHdlcmUgYmUgc2lnbmVkIGJ5IGRlZmF1bHQuCj4+IGNoYW5nZSB0aGUgc2lnbmluZyB0byB0
-aGUgZXhlY3V0ZWQgaW1hZ2Ugd2l0aG91dCBzaWduaW5nIHRoZSBtYnIsCj4+IHBhcnRpdGlvbiB0
-YWJsZSBhbmQgaGVhZGVyX2dhcCBieSBpbXg4bXEKPj4gYWRkaXRpb25hbCBkZWxldGUgb3B0aW9u
-IGZ1bGwsIGZyb20tZGNkb2ZzIGFuZCBza2lwLW1icgo+Pgo+PiBTaWduZWQtb2ZmLWJ5OiBNYWlr
-IE90dG8gPG0ub3R0b0BwaHl0ZWMuZGU+Cj4+IC0tLQo+PiBDaGFuZ2VzIGluIHYyOgo+PiAgICAg
-LSBjaGFuZ2Ugc3ViamVjdCBmcm9tIGhhYnY0OiBhZGQgdGhlIHBvc3NpYmlsaXR5IHRvIGNoYW5n
-aW5nIHRoZSBzaWduaW5nCj4+ICAgICAgIGFyZWEgZnJvbSBLY29uZmlnIHRvCj4+ICAgICAtIGRl
-bGV0ZSBLQ29uZmlnIGVudHJpZXMKPj4gICAgIC0gZGVsZXRlIGNoYW5nZXMgaGFidjQtaW14Ni1n
-ZW5jc2YuaAo+PiAgICAgLSBkZWxldGUgZnVsbCwgZnJvbS1kY2RvZnMgYW5kIHNraXAtbWJyIG9w
-dGlvbnMKPj4gLS0tCj4+ICBzY3JpcHRzL2lteC9pbXguYyB8IDMzICsrKysrKysrKy0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLQo+PiAgMSBmaWxlIGNoYW5nZWQsIDkgaW5zZXJ0aW9ucygrKSwgMjQg
-ZGVsZXRpb25zKC0pCj4KPiBBcHBsaWVkLCB0aGFua3MuCj4KPiBATWFyY2luLCBhcyB5b3UgaW50
-cm9kdWNlZCB0aGUgImZyb20tZGNkb2ZzIiBhbmQgImZ1bGwiIG9wdGlvbnMsIGFyZSB5b3UKPiBo
-YXBweSB3aXRoIHRoaXMgcGF0Y2g/IEl0IHJlbW92ZXMgdGhlIG9wdGlvbnMsIGJ1dCBzaG91bGQg
-ZGVmYXVsdCB0bwo+IHdoYXQgeW91IG9yaWdpbmFsbHkgd2FudGVkIHRvIGFyY2hpZXZlLCByaWdo
-dD8KCkkgdGhpbmsgdGhhdCB3aGVuIGFkZGluZyBzZXBhcmF0ZSBza2lwLW1iciBhbmQgZnJvbS1k
-Y2RvZnMgSSB3YW50ZWQgdG8KcHJvdGVjdCAod2l0aCBza2lwLW1icikgZmlyc3QgYnl0ZXMgb2Yg
-Z2VuZXJhdGVkIGltYWdlLCB3aGljaCBjb250YWluCmJhcmVib3ggaGVhZGVyICh3aXRoIGl0cyB2
-ZXJzaW9uPykgZnJvbSB3aGF0IEkgcmVtZW1iZXIuIEkgbmV2ZXIgdXNlZAp0aGF0IGluZm9ybWF0
-aW9uIGZyb20gdGhlcmUsIHNvIEkgYW0gcXVpdGUgb2theSB3aXRoIGRyb3BwaW5nIHNraXAtbWJy
-CnN1cHBvcnQgaW4gZmF2b3Igb2Ygb25seSBmcm9tLWRjZG9mcy4KCkhvd2V2ZXIgSSB3b25kZXIg
-d2h5IG9mZnNldF9sb2FkX2FkZHJlc3MgaXMgaGFyZGNvZGVkIHRvCjB4NDAwLiBTaG91bGRuJ3Qg
-d2UgbGVhdmUgZnJvbS1kY2RvZnMgYXMgaXMgYW5kIHNpbXBseSBkcm9wcGluZyBhbGwKb3RoZXIg
-b3B0aW9ucyAoZnVsbCBhbmQgc2tpcC1tYnIpPwoKUmVnYXJkcywKTWFyY2luCgo+Cj4gUmVnYXJk
-cwo+ICBTYXNjaGEKPgo+Pgo+PiBkaWZmIC0tZ2l0IGEvc2NyaXB0cy9pbXgvaW14LmMgYi9zY3Jp
-cHRzL2lteC9pbXguYwo+PiBpbmRleCBiM2U4ZDYyLi5iMmRkMjVjIDEwMDY0NAo+PiAtLS0gYS9z
-Y3JpcHRzL2lteC9pbXguYwo+PiArKysgYi9zY3JpcHRzL2lteC9pbXguYwo+PiBAQCAtMzM4LDE2
-ICszMzgsMTMgQEAgc3RhdGljIGludCBkb19oYWJfYmxvY2tzKHN0cnVjdCBjb25maWdfZGF0YSAq
-ZGF0YSwgaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKPj4gIAljaGFyICpzdHI7Cj4+ICAJaW50IHJl
-dDsKPj4gIAl1aW50MzJfdCBzaWduZWRfc2l6ZSA9IGRhdGEtPmxvYWRfc2l6ZTsKPj4gLQl1aW50
-MzJfdCBvZmZzZXQgPSAwOwo+PiArCXVpbnQzMl90IG9mZnNldF9sb2FkX2FkZHJlc3MgPSAweDQw
-MDsgLy9za2lwIE1CUiBhbmQgUGFydGl0aW9uIFRhYmxlCj4+ICsJdWludDMyX3Qgb2Zmc2V0X3Np
-emUgPSBvZmZzZXRfbG9hZF9hZGRyZXNzOwo+PiArCXVpbnQzMl90IG9mZnNldCA9IG9mZnNldF9s
-b2FkX2FkZHJlc3M7Cj4+Cj4+ICAJaWYgKCFkYXRhLT5jc2YpCj4+ICAJCXJldHVybiAtRUlOVkFM
-Owo+Pgo+PiAtCWlmIChhcmdjIDwgMikKPj4gLQkJdHlwZSA9ICJmdWxsIjsKPj4gLQllbHNlCj4+
-IC0JCXR5cGUgPSBhcmd2WzFdOwo+PiAtCj4+ICAJLyoKPj4gIAkgKiBJbiBjYXNlIG9mIGVuY3J5
-cHRlZCBpbWFnZSB3ZSByZWR1Y2Ugc2lnbmVkIGFyZWEgdG8gYmVnaW5uaW5nCj4+ICAJICogb2Yg
-ZW5jcnlwdGVkIGFyZWEuCj4+IEBAIC0zNTksMzEgKzM1NiwxOSBAQCBzdGF0aWMgaW50IGRvX2hh
-Yl9ibG9ja3Moc3RydWN0IGNvbmZpZ19kYXRhICpkYXRhLCBpbnQgYXJnYywgY2hhciAqYXJndltd
-KQo+PiAgCSAqIEVuc3VyZSB3ZSBvbmx5IHNpZ24gdGhlIFBCTCBmb3IgaS5NWDhNUQo+PiAgCSAq
-Lwo+PiAgCWlmIChkYXRhLT5wYmxfY29kZV9zaXplICYmIGRhdGEtPmNwdV90eXBlID09IElNWF9D
-UFVfSU1YOE1RKSB7Cj4+IC0JCW9mZnNldCA9IGRhdGEtPmhlYWRlcl9nYXA7Cj4+ICsJCW9mZnNl
-dCArPSBkYXRhLT5oZWFkZXJfZ2FwOwo+PiAgCQlzaWduZWRfc2l6ZSA9IHJvdW5kdXAoZGF0YS0+
-cGJsX2NvZGVfc2l6ZSArIEhFQURFUl9MRU4sIDB4MTAwMCk7Cj4+ICAJCWlmIChkYXRhLT5zaWdu
-ZWRfaGRtaV9maXJtd2FyZV9maWxlKQo+PiAgCQkJb2Zmc2V0ICs9IFBMVUdJTl9IRE1JX1NJWkU7
-Cj4+ICAJfQo+Pgo+PiAtCWlmICghc3RyY21wKHR5cGUsICJmdWxsIikpIHsKPj4gKwlpZiAoc2ln
-bmVkX3NpemUgPiAwKSB7Cj4+ICAJCXJldCA9IGFzcHJpbnRmKCZzdHIsICJCbG9ja3MgPSAweCUw
-OHggMHglMDh4IDB4JTA4eCBcIiVzXCJcbiIsCj4+IC0JCQkgICAgICAgZGF0YS0+aW1hZ2VfbG9h
-ZF9hZGRyLCBvZmZzZXQsIHNpZ25lZF9zaXplLAo+PiAtCQkJICAgICAgIGRhdGEtPm91dGZpbGUp
-Owo+PiAtCX0gZWxzZSBpZiAoIXN0cmNtcCh0eXBlLCAiZnJvbS1kY2RvZnMiKSkgewo+PiAtCQly
-ZXQgPSBhc3ByaW50Zigmc3RyLCAiQmxvY2tzID0gMHglMDh4IDB4JXggJWQgXCIlc1wiXG4iLAo+
-PiAtCQkJICAgICAgIGRhdGEtPmltYWdlX2xvYWRfYWRkciArIGRhdGEtPmltYWdlX2RjZF9vZmZz
-ZXQsCj4+IC0JCQkgICAgICAgZGF0YS0+aW1hZ2VfZGNkX29mZnNldCwKPj4gLQkJCSAgICAgICBz
-aWduZWRfc2l6ZSAtIGRhdGEtPmltYWdlX2RjZF9vZmZzZXQsCj4+IC0JCQkgICAgICAgZGF0YS0+
-b3V0ZmlsZSk7Cj4+IC0JfSBlbHNlIGlmICghc3RyY21wKHR5cGUsICJza2lwLW1iciIpKSB7Cj4+
-IC0JCXJldCA9IGFzcHJpbnRmKCZzdHIsCj4+IC0JCQkgICAgICAgIkJsb2NrcyA9IDB4JTA4eCAw
-IDQ0MCBcIiVzXCIsIFxcXG4iCj4+IC0JCQkgICAgICAgIiAgICAgICAgIDB4JTA4eCA1MTIgJWQg
-XCIlc1wiXG4iLAo+PiAtCQkJICAgICAgIGRhdGEtPmltYWdlX2xvYWRfYWRkciwgZGF0YS0+b3V0
-ZmlsZSwKPj4gLQkJCSAgICAgICBkYXRhLT5pbWFnZV9sb2FkX2FkZHIgKyA1MTIsCj4+IC0JCQkg
-ICAgICAgc2lnbmVkX3NpemUgLSA1MTIsIGRhdGEtPm91dGZpbGUpOwo+PiArCQkJZGF0YS0+aW1h
-Z2VfbG9hZF9hZGRyICsgb2Zmc2V0X2xvYWRfYWRkcmVzcywgb2Zmc2V0LAo+PiArCQkJc2lnbmVk
-X3NpemUgLSBvZmZzZXRfc2l6ZSwgZGF0YS0+b3V0ZmlsZSk7Cj4+ICAJfSBlbHNlIHsKPj4gLQkJ
-ZnByaW50ZihzdGRlcnIsICJJbnZhbGlkIGhhYl9ibG9ja3Mgb3B0aW9uOiAlc1xuIiwgdHlwZSk7
-Cj4+ICsJCWZwcmludGYoc3RkZXJyLCAiSW52YWxpZCBzaWduZWQgc2l6ZSBhcmVhIDB4JTA4eFxu
-IiwKPj4gKwkJCXNpZ25lZF9zaXplKTsKPj4gIAkJcmV0dXJuIC1FSU5WQUw7Cj4+ICAJfQo+Pgo+
-PiAtLQo+PiAyLjcuNAo+Pgo+Pgo+PiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwo+PiBiYXJlYm94IG1haWxpbmcgbGlzdAo+PiBiYXJlYm94QGxpc3RzLmlu
-ZnJhZGVhZC5vcmcKPj4gaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5m
-by9iYXJlYm94Cj4+CgoKLS0gCk1hcmNpbiBOaWVzdHLDs2oKCl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hA
-bGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xp
-c3RpbmZvL2JhcmVib3gK
+This series adds USB host support for the Raspberry Pi. The dwc2 USB
+host driver is ported from U-Boot and tested on a Raspberry Pi 3b with
+the USB ethernet adapter found on that board.
+
+Finally we have ethernet support on the Raspberry Pi \o/
+
+Sascha
+
+Sascha Hauer (10):
+  usb: Make timeout unit clear
+  of: Add of_bus_n_xxx_cells()
+  device: Introduce dma_offset
+  of: Read dma_offset from device tree
+  usb: Add usbroothubdes.h
+  regulator: add function to get regulator by its name
+  rpi: Enable USB Power domain during startup
+  usb: Forward error code from usb_set_configuration
+  usb: Add dwc2 host driver
+  ARM: rpi_defconfig: Enable networking support
+
+ arch/arm/boards/raspberry-pi/rpi-common.c |   10 +
+ arch/arm/configs/rpi_defconfig            |   13 +
+ arch/arm/cpu/mmu-common.c                 |   33 +-
+ arch/arm/cpu/mmu.c                        |    4 +
+ arch/arm/cpu/mmu_64.c                     |    4 +
+ drivers/of/address.c                      |  109 ++
+ drivers/of/base.c                         |   46 +-
+ drivers/of/platform.c                     |   18 +
+ drivers/regulator/core.c                  |   30 +-
+ drivers/usb/core/usb.c                    |   18 +-
+ drivers/usb/host/Kconfig                  |    3 +
+ drivers/usb/host/Makefile                 |    1 +
+ drivers/usb/host/dwc2.c                   | 1132 +++++++++++++++++++++
+ drivers/usb/host/dwc2.h                   |  778 ++++++++++++++
+ include/driver.h                          |    2 +
+ include/of.h                              |   12 +
+ include/of_address.h                      |    9 +
+ include/regulator.h                       |    1 +
+ include/usb/usb.h                         |    8 +-
+ include/usb/usbroothubdes.h               |  128 +++
+ 20 files changed, 2326 insertions(+), 33 deletions(-)
+ create mode 100644 drivers/usb/host/dwc2.c
+ create mode 100644 drivers/usb/host/dwc2.h
+ create mode 100644 include/usb/usbroothubdes.h
+
+-- 
+2.24.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
