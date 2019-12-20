@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iiJKY-0003jn-KT
- for barebox@lists.infradead.org; Fri, 20 Dec 2019 14:32:45 +0000
+ id 1iiJKY-0003ju-H6
+ for barebox@lists.infradead.org; Fri, 20 Dec 2019 14:32:46 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 20 Dec 2019 15:32:26 +0100
-Message-Id: <20191220143232.28354-5-s.hauer@pengutronix.de>
+Date: Fri, 20 Dec 2019 15:32:30 +0100
+Message-Id: <20191220143232.28354-9-s.hauer@pengutronix.de>
 In-Reply-To: <20191220143232.28354-1-s.hauer@pengutronix.de>
 References: <20191220143232.28354-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,208 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/10] of: Read dma_offset from device tree
+Subject: [PATCH 08/10] usb: Forward error code from usb_set_configuration
 To: Barebox List <barebox@lists.infradead.org>
 
-This reads the dma-ranges property from the device tree and sets
-dma_offset in the devices accordingly. The code is mostly taken
-from the Kernel as of v5.5-rc1. of_dma_configure() is trimmed down
-to the cases we want to support currently.
+Instead of returning -1 forward the error code and take the opportunity
+to print the error string.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/of/address.c  | 109 ++++++++++++++++++++++++++++++++++++++++++
- drivers/of/platform.c |  18 +++++++
- include/of_address.h  |   9 ++++
- 3 files changed, 136 insertions(+)
+ drivers/usb/core/usb.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/of/address.c b/drivers/of/address.c
-index 4e12522a0a..2020f5b7b1 100644
---- a/drivers/of/address.c
-+++ b/drivers/of/address.c
-@@ -458,6 +458,33 @@ bool of_can_translate_address(struct device_node *dev)
+diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+index ad3bacf236..1c3dcb79a8 100644
+--- a/drivers/usb/core/usb.c
++++ b/drivers/usb/core/usb.c
+@@ -124,7 +124,7 @@ static int usb_set_configuration(struct usb_device *dev, int configuration)
+ 		dev->toggle[1] = 0;
+ 		return 0;
+ 	} else
+-		return -1;
++		return res;
  }
- EXPORT_SYMBOL(of_can_translate_address);
  
-+static struct device_node *__of_get_dma_parent(struct device_node *np)
-+{
-+	struct of_phandle_args args;
-+	int ret, index;
-+
-+	index = of_property_match_string(np, "interconnect-names", "dma-mem");
-+	if (index < 0)
-+		return of_get_parent(np);
-+
-+	ret = of_parse_phandle_with_args(np, "interconnects",
-+					 "#interconnect-cells",
-+					 index, &args);
-+	if (ret < 0)
-+		return of_get_parent(np);
-+
-+	return args.np;
-+}
-+
-+static struct device_node *of_get_next_dma_parent(struct device_node *np)
-+{
-+	struct device_node *parent;
-+
-+	parent = __of_get_dma_parent(np);
-+
-+	return parent;
-+}
-+
- const __be32 *of_get_address(struct device_node *dev, int index, u64 *size,
- 		    unsigned int *flags)
- {
-@@ -586,3 +613,85 @@ void __iomem *of_iomap(struct device_node *np, int index)
- 	return IOMEM(res.start);
- }
- EXPORT_SYMBOL(of_iomap);
-+
-+/**
-+ * of_dma_get_range - Get DMA range info
-+ * @np:		device node to get DMA range info
-+ * @dma_addr:	pointer to store initial DMA address of DMA range
-+ * @paddr:	pointer to store initial CPU address of DMA range
-+ * @size:	pointer to store size of DMA range
-+ *
-+ * Look in bottom up direction for the first "dma-ranges" property
-+ * and parse it.
-+ *  dma-ranges format:
-+ *	DMA addr (dma_addr)	: naddr cells
-+ *	CPU addr (phys_addr_t)	: pna cells
-+ *	size			: nsize cells
-+ *
-+ * It returns -ENODEV if "dma-ranges" property was not found
-+ * for this device in DT.
-+ */
-+int of_dma_get_range(struct device_node *np, u64 *dma_addr, u64 *paddr, u64 *size)
-+{
-+	struct device_node *node = np;
-+	const __be32 *ranges = NULL;
-+	int len, naddr, nsize, pna;
-+	int ret = 0;
-+	bool found_dma_ranges = false;
-+	u64 dmaaddr;
-+
-+	while (node) {
-+		ranges = of_get_property(node, "dma-ranges", &len);
-+
-+		/* Ignore empty ranges, they imply no translation required */
-+		if (ranges && len > 0)
-+			break;
-+
-+		/* Once we find 'dma-ranges', then a missing one is an error */
-+		if (found_dma_ranges && !ranges) {
-+			ret = -ENODEV;
-+			goto out;
-+		}
-+		found_dma_ranges = true;
-+
-+		node = of_get_next_dma_parent(node);
-+	}
-+
-+	if (!node || !ranges) {
-+		pr_debug("no dma-ranges found for node(%pOF)\n", np);
-+		ret = -ENODEV;
-+		goto out;
-+	}
-+
-+	naddr = of_bus_n_addr_cells(node);
-+	nsize = of_bus_n_size_cells(node);
-+	pna = of_n_addr_cells(node);
-+	if ((len / sizeof(__be32)) % (pna + naddr + nsize)) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
-+	/* dma-ranges format:
-+	 * DMA addr	: naddr cells
-+	 * CPU addr	: pna cells
-+	 * size		: nsize cells
-+	 */
-+	dmaaddr = of_read_number(ranges, naddr);
-+	*paddr = of_translate_dma_address(node, ranges + naddr);
-+	if (*paddr == OF_BAD_ADDR) {
-+		pr_err("translation of DMA address(%llx) to CPU address failed node(%pOF)\n",
-+		       dmaaddr, np);
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+	*dma_addr = dmaaddr;
-+
-+	*size = of_read_number(ranges + naddr + pna, nsize);
-+
-+	pr_debug("dma_addr(%llx) cpu_addr(%llx) size(%llx)\n",
-+		 *dma_addr, *paddr, *size);
-+
-+out:
-+
-+	return ret;
-+}
-diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-index d3795d799a..b1a7eb6730 100644
---- a/drivers/of/platform.c
-+++ b/drivers/of/platform.c
-@@ -74,6 +74,22 @@ static void of_device_make_bus_id(struct device_d *dev)
+ /* The routine usb_set_maxpacket_ep() is extracted from the loop of routine
+@@ -412,9 +412,11 @@ int usb_new_device(struct usb_device *dev)
+ 	usb_parse_config(dev, buf, 0);
+ 	usb_set_maxpacket(dev);
+ 	/* we set the default configuration here */
+-	if (usb_set_configuration(dev, dev->config.desc.bConfigurationValue)) {
+-		printf("failed to set default configuration " \
+-			"len %d, status %lX\n", dev->act_len, dev->status);
++	err = usb_set_configuration(dev, dev->config.desc.bConfigurationValue);
++	if (err) {
++		printf("Setting default configuration failed with: %s\n" \
++			"len %d, status %lX\n", strerror(-err),
++		       dev->act_len, dev->status);
+ 		goto err_out;
  	}
- }
- 
-+static void of_dma_configure(struct device_d *dev, struct device_node *np)
-+{
-+	u64 dma_addr, paddr, size = 0;
-+	unsigned long offset;
-+	int ret;
-+
-+	ret = of_dma_get_range(np, &dma_addr, &paddr, &size);
-+	if (ret < 0) {
-+		dma_addr = offset = 0;
-+	} else {
-+		offset = paddr - dma_addr;
-+	}
-+
-+	dev->dma_offset = offset;
-+}
-+
- /**
-  * of_platform_device_create - Alloc, initialize and register an of_device
-  * @np: pointer to node to create device for
-@@ -148,6 +164,8 @@ struct device_d *of_platform_device_create(struct device_node *np,
- 	dev->num_resources = num_reg;
- 	of_device_make_bus_id(dev);
- 
-+	of_dma_configure(dev, np);
-+
- 	resinval = (-1);
- 
- 	debug("%s: register device %s, io=%pa\n",
-diff --git a/include/of_address.h b/include/of_address.h
-index ebf3ec2a24..350ecaec82 100644
---- a/include/of_address.h
-+++ b/include/of_address.h
-@@ -56,6 +56,9 @@ extern struct device_node *of_find_matching_node_by_address(
- 	u64 base_address);
- extern void __iomem *of_iomap(struct device_node *np, int index);
- 
-+extern int of_dma_get_range(struct device_node *np, u64 *dma_addr, u64 *paddr,
-+			    u64 *size);
-+
- #else /* CONFIG_OFTREE */
- 
- static inline u64 of_translate_address(struct device_node *dev,
-@@ -99,6 +102,12 @@ static inline void __iomem *of_iomap(struct device_node *np, int index)
- 	return NULL;
- }
- 
-+static inline int of_dma_get_range(struct device_node *np, u64 *dma_addr,
-+				   u64 *paddr, u64 *size)
-+{
-+	return -ENOSYS;
-+}
-+
- #endif /* CONFIG_OFTREE */
- 
- #ifdef CONFIG_OF_PCI
+ 	pr_debug("new device: Mfr=%d, Product=%d, SerialNumber=%d\n",
 -- 
 2.24.0
 
