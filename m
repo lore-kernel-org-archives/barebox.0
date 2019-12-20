@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ihrrs-0004Ek-00
- for barebox@lists.infradead.org; Thu, 19 Dec 2019 09:13:14 +0000
-Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
- helo=dude02.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <l.stach@pengutronix.de>) id 1ihrrq-0003A9-Ot
- for barebox@lists.infradead.org; Thu, 19 Dec 2019 10:13:10 +0100
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Thu, 19 Dec 2019 10:13:10 +0100
-Message-Id: <20191219091310.27421-4-l.stach@pengutronix.de>
-In-Reply-To: <20191219091310.27421-1-l.stach@pengutronix.de>
+ id 1iiJzF-0007f7-K7
+ for barebox@lists.infradead.org; Fri, 20 Dec 2019 15:14:43 +0000
+Date: Fri, 20 Dec 2019 16:14:40 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20191220151440.d5tpdnyoqfwl3iwy@pengutronix.de>
 References: <20191219091310.27421-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20191219091310.27421-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,49 +22,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] ARM: cache_64: invalidate icache in
- arm_early_mmu_cache_flush
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/3] ARM64 early cache fixes
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+On Thu, Dec 19, 2019 at 10:13:07AM +0100, Lucas Stach wrote:
+> This is a resend of the 2 ARM64 early cache fixes by Ahmad. They were
+> not applied at the time, as there was a report of them breaking Barebox
+> on i.MX8M. I finally had time to look into that, the first patch by
+> me cleans the stage, so the cache fixes no longer break anything.
+> 
+> At least the icache invalidation patch fixes an issue I hit on one
+> system, were minimal (harmless) changes to the Barebox code would
+> break execution.
+> 
+> Regards,
+> Lucas
+> 
+> Ahmad Fatoum (2):
+>   ARM: cache_64: invalidate dcache in arm_early_mmu_cache_invalidate
+>   ARM: cache_64: invalidate icache in arm_early_mmu_cache_flush
+> 
+> Lucas Stach (1):
+>   ARM64: entry: save/restore potentially clobbered registers
+> 
+>  arch/arm/cpu/cache_64.c    |  2 ++
+>  arch/arm/cpu/entry_ll_64.S | 12 +++++++-----
+>  2 files changed, 9 insertions(+), 5 deletions(-)
 
-So far arm_early_mmu_cache_flush has only been used in preparation for
-executing newly-written code. For this reason, on ARMv7 and below,
-it had always invalidate the icache after the dcache flush.
-We don't do this on ARM64, but sync_caches_for_execution depends on this,
-which had this comment that didn't hold true for ARM64:
+Applied, thanks
 
-> Despite the name arm_early_mmu_cache_flush not only flushes the
-> data cache, but also invalidates the instruction cache.
+Sascha
 
-It might be worthwhile to decouple dcache flushing from icache
-invalidation, but for now, align what we do on ARM64 with what we do for
-32-bit ARMs.
-
-This fixes a potential read of stale instructions when loading
-second-stage barebox from the PBL with MMU disabled.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
----
- arch/arm/cpu/cache_64.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/arm/cpu/cache_64.c b/arch/arm/cpu/cache_64.c
-index 81c37e1c34fd..6e18d981a434 100644
---- a/arch/arm/cpu/cache_64.c
-+++ b/arch/arm/cpu/cache_64.c
-@@ -27,6 +27,7 @@ int arm_set_cache_functions(void)
- void arm_early_mmu_cache_flush(void)
- {
- 	v8_flush_dcache_all();
-+	v8_invalidate_icache_all();
- }
- 
- void arm_early_mmu_cache_invalidate(void)
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
