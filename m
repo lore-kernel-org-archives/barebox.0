@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iiJKY-0003ji-P9
- for barebox@lists.infradead.org; Fri, 20 Dec 2019 14:32:47 +0000
+ id 1iiJKd-0003ry-8w
+ for barebox@lists.infradead.org; Fri, 20 Dec 2019 14:32:48 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 20 Dec 2019 15:32:27 +0100
-Message-Id: <20191220143232.28354-6-s.hauer@pengutronix.de>
+Date: Fri, 20 Dec 2019 15:32:29 +0100
+Message-Id: <20191220143232.28354-8-s.hauer@pengutronix.de>
 In-Reply-To: <20191220143232.28354-1-s.hauer@pengutronix.de>
 References: <20191220143232.28354-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,151 +21,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/10] usb: Add usbroothubdes.h
+Subject: [PATCH 07/10] rpi: Enable USB Power domain during startup
 To: Barebox List <barebox@lists.infradead.org>
 
-Taken from U-Boot, needed for the upcoming dwc2 driver.
+Enable the USB Power domain during startup. The power domain is
+abstracted as a regulator in barebox, but modelled as a power domain in
+the device tree. Until this is sorted out just enable the power domain
+or regulator in the board code.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/usb/usbroothubdes.h | 128 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 128 insertions(+)
- create mode 100644 include/usb/usbroothubdes.h
+ arch/arm/boards/raspberry-pi/rpi-common.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/include/usb/usbroothubdes.h b/include/usb/usbroothubdes.h
-new file mode 100644
-index 0000000000..e743555d8e
---- /dev/null
-+++ b/include/usb/usbroothubdes.h
-@@ -0,0 +1,128 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+/*
-+ * USB virtual root hub descriptors
-+ *
-+ * (C) Copyright 2014
-+ * Stephen Warren swarren@wwwdotorg.org
-+ *
-+ * Based on ohci-hcd.c
-+ */
+diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
+index acb26f6a64..45961b52ee 100644
+--- a/arch/arm/boards/raspberry-pi/rpi-common.c
++++ b/arch/arm/boards/raspberry-pi/rpi-common.c
+@@ -21,6 +21,7 @@
+ #include <linux/clk.h>
+ #include <linux/clkdev.h>
+ #include <envfs.h>
++#include <regulator.h>
+ #include <malloc.h>
+ #include <libfile.h>
+ #include <gpio.h>
+@@ -462,11 +463,20 @@ static void rpi_vc_fdt(void)
+ 
+ static int rpi_devices_init(void)
+ {
++	struct regulator *reg;
 +
-+#ifndef __USBROOTHUBDES_H__
-+#define __USBROOTHUBDES_H__
+ 	rpi_model_init();
+ 	bcm2835_register_fb();
+ 	armlinux_set_architecture(MACH_TYPE_BCM2708);
+ 	rpi_env_init();
+ 	rpi_vc_fdt();
 +
-+/* Device descriptor */
-+static __u8 root_hub_dev_des[] = {
-+	0x12,		/* __u8  bLength; */
-+	0x01,		/* __u8  bDescriptorType; Device */
-+	0x10,		/* __u16 bcdUSB; v1.1 */
-+	0x01,
-+	0x09,		/* __u8  bDeviceClass; HUB_CLASSCODE */
-+	0x00,		/* __u8  bDeviceSubClass; */
-+	0x00,		/* __u8  bDeviceProtocol; */
-+	0x08,		/* __u8  bMaxPacketSize0; 8 Bytes */
-+	0x00,		/* __u16 idVendor; */
-+	0x00,
-+	0x00,		/* __u16 idProduct; */
-+	0x00,
-+	0x00,		/* __u16 bcdDevice; */
-+	0x00,
-+	0x00,		/* __u8  iManufacturer; */
-+	0x01,		/* __u8  iProduct; */
-+	0x00,		/* __u8  iSerialNumber; */
-+	0x01,		/* __u8  bNumConfigurations; */
-+};
++	reg = regulator_get_name("bcm2835_usb");
++	if (IS_ERR(reg))
++		return PTR_ERR(reg);
 +
-+/* Configuration descriptor */
-+static __u8 root_hub_config_des[] = {
-+	0x09,		/* __u8  bLength; */
-+	0x02,		/* __u8  bDescriptorType; Configuration */
-+	0x19,		/* __u16 wTotalLength; */
-+	0x00,
-+	0x01,		/* __u8  bNumInterfaces; */
-+	0x01,		/* __u8  bConfigurationValue; */
-+	0x00,		/* __u8  iConfiguration; */
-+	0x40,		/* __u8  bmAttributes;
-+			 *       Bit 7: Bus-powered
-+			 *       6: Self-powered,
-+			 *       5 Remote-wakwup,
-+			 *       4..0: resvd
-+			 */
-+	0x00,		/* __u8  MaxPower; */
-+	/* interface */
-+	0x09,		/* __u8  if_bLength; */
-+	0x04,		/* __u8  if_bDescriptorType; Interface */
-+	0x00,		/* __u8  if_bInterfaceNumber; */
-+	0x00,		/* __u8  if_bAlternateSetting; */
-+	0x01,		/* __u8  if_bNumEndpoints; */
-+	0x09,		/* __u8  if_bInterfaceClass; HUB_CLASSCODE */
-+	0x00,		/* __u8  if_bInterfaceSubClass; */
-+	0x00,		/* __u8  if_bInterfaceProtocol; */
-+	0x00,		/* __u8  if_iInterface; */
-+	/* endpoint */
-+	0x07,		/* __u8  ep_bLength; */
-+	0x05,		/* __u8  ep_bDescriptorType; Endpoint */
-+	0x81,		/* __u8  ep_bEndpointAddress; IN Endpoint 1 */
-+	0x03,		/* __u8  ep_bmAttributes; Interrupt */
-+	0x02,		/* __u16 ep_wMaxPacketSize; ((MAX_ROOT_PORTS + 1) / 8 */
-+	0x00,
-+	0xff,		/* __u8  ep_bInterval; 255 ms */
-+};
++	regulator_enable(reg);
 +
-+#ifdef WANT_USB_ROOT_HUB_HUB_DES
-+static unsigned char root_hub_hub_des[] = {
-+	0x09,		/* __u8  bLength; */
-+	0x29,		/* __u8  bDescriptorType; Hub-descriptor */
-+	0x02,		/* __u8  bNbrPorts; */
-+	0x00,		/* __u16 wHubCharacteristics; */
-+	0x00,
-+	0x01,		/* __u8  bPwrOn2pwrGood; 2ms */
-+	0x00,		/* __u8  bHubContrCurrent; 0 mA */
-+	0x00,		/* __u8  DeviceRemovable; *** 7 Ports max *** */
-+	0xff,		/* __u8  PortPwrCtrlMask; *** 7 ports max *** */
-+};
-+#endif
-+
-+static unsigned char root_hub_str_index0[] = {
-+	0x04,		/* __u8  bLength; */
-+	0x03,		/* __u8  bDescriptorType; String-descriptor */
-+	0x09,		/* __u8  lang ID */
-+	0x04,		/* __u8  lang ID */
-+};
-+
-+static unsigned char root_hub_str_index1[] = {
-+	32,		/* __u8  bLength; */
-+	0x03,		/* __u8  bDescriptorType; String-descriptor */
-+	'U',		/* __u8  Unicode */
-+	0,		/* __u8  Unicode */
-+	'-',		/* __u8  Unicode */
-+	0,		/* __u8  Unicode */
-+	'B',		/* __u8  Unicode */
-+	0,		/* __u8  Unicode */
-+	'o',		/* __u8  Unicode */
-+	0,		/* __u8  Unicode */
-+	'o',		/* __u8  Unicode */
-+	0,		/* __u8  Unicode */
-+	't',		/* __u8  Unicode */
-+	0,		/* __u8  Unicode */
-+	' ',		/* __u8  Unicode */
-+	0,		/* __u8  Unicode */
-+	'R',		/* __u8  Unicode */
-+	0,		/* __u8  Unicode */
-+	'o',		/* __u8  Unicode */
-+	0,		/* __u8  Unicode */
-+	'o',		/* __u8  Unicode */
-+	0,		/* __u8  Unicode */
-+	't',		/* __u8  Unicode */
-+	0,		/* __u8  Unicode */
-+	' ',		/* __u8  Unicode */
-+	0,		/* __u8  Unicode */
-+	'H',		/* __u8  Unicode */
-+	0,		/* __u8  Unicode */
-+	'u',		/* __u8  Unicode */
-+	0,		/* __u8  Unicode */
-+	'b',		/* __u8  Unicode */
-+	0,		/* __u8  Unicode */
-+};
-+
-+#endif
+ 	return 0;
+ }
+ late_initcall(rpi_devices_init);
 -- 
 2.24.0
 
