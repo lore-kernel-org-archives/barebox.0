@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iiJKY-0003jh-7G
- for barebox@lists.infradead.org; Fri, 20 Dec 2019 14:32:42 +0000
+ id 1iiJKY-0003jj-Gm
+ for barebox@lists.infradead.org; Fri, 20 Dec 2019 14:32:44 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 20 Dec 2019 15:32:28 +0100
-Message-Id: <20191220143232.28354-7-s.hauer@pengutronix.de>
+Date: Fri, 20 Dec 2019 15:32:24 +0100
+Message-Id: <20191220143232.28354-3-s.hauer@pengutronix.de>
 In-Reply-To: <20191220143232.28354-1-s.hauer@pengutronix.de>
 References: <20191220143232.28354-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,78 +21,122 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/10] regulator: add function to get regulator by its name
+Subject: [PATCH 02/10] of: Add of_bus_n_xxx_cells()
 To: Barebox List <barebox@lists.infradead.org>
 
-Useful for getting regulators that are not correctly associated with a
-device.
+Added straight from the Kernel.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/regulator/core.c | 30 +++++++++++++++++++++++++++++-
- include/regulator.h      |  1 +
- 2 files changed, 30 insertions(+), 1 deletion(-)
+ drivers/of/base.c | 46 ++++++++++++++++++++++++++++------------------
+ include/of.h      | 12 ++++++++++++
+ 2 files changed, 40 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index 4ca035ae94..f0de7a52e3 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -327,6 +327,34 @@ struct regulator *regulator_get(struct device_d *dev, const char *supply)
- 	return r;
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 80ceeab13b..9ede052274 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -78,36 +78,46 @@ static struct device_node *of_aliases;
+ #define OF_ROOT_NODE_SIZE_CELLS_DEFAULT 1
+ #define OF_ROOT_NODE_ADDR_CELLS_DEFAULT 1
+ 
+-int of_n_addr_cells(struct device_node *np)
++int of_bus_n_addr_cells(struct device_node *np)
+ {
+-	const __be32 *ip;
++	u32 cells;
++
++	for (; np; np = np->parent)
++		if (!of_property_read_u32(np, "#address-cells", &cells))
++			return cells;
+ 
+-	do {
+-		if (np->parent)
+-			np = np->parent;
+-		ip = of_get_property(np, "#address-cells", NULL);
+-		if (ip)
+-			return be32_to_cpup(ip);
+-	} while (np->parent);
+ 	/* No #address-cells property for the root node */
+ 	return OF_ROOT_NODE_ADDR_CELLS_DEFAULT;
+ }
++
++int of_n_addr_cells(struct device_node *np)
++{
++	if (np->parent)
++		np = np->parent;
++
++	return of_bus_n_addr_cells(np);
++}
+ EXPORT_SYMBOL(of_n_addr_cells);
+ 
+-int of_n_size_cells(struct device_node *np)
++int of_bus_n_size_cells(struct device_node *np)
+ {
+-	const __be32 *ip;
++	u32 cells;
++
++	for (; np; np = np->parent)
++		if (!of_property_read_u32(np, "#size-cells", &cells))
++			return cells;
+ 
+-	do {
+-		if (np->parent)
+-			np = np->parent;
+-		ip = of_get_property(np, "#size-cells", NULL);
+-		if (ip)
+-			return be32_to_cpup(ip);
+-	} while (np->parent);
+ 	/* No #size-cells property for the root node */
+ 	return OF_ROOT_NODE_SIZE_CELLS_DEFAULT;
+ }
++
++int of_n_size_cells(struct device_node *np)
++{
++	if (np->parent)
++		np = np->parent;
++
++	return of_bus_n_size_cells(np);
++}
+ EXPORT_SYMBOL(of_n_size_cells);
+ 
+ struct property *of_find_property(const struct device_node *np,
+diff --git a/include/of.h b/include/of.h
+index f63a3efe13..67601ce80c 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -113,7 +113,9 @@ struct device_node *of_unflatten_dtb_const(const void *infdt);
+ struct cdev;
+ 
+ #ifdef CONFIG_OFTREE
++extern int of_bus_n_addr_cells(struct device_node *np);
+ extern int of_n_addr_cells(struct device_node *np);
++extern int of_bus_n_size_cells(struct device_node *np);
+ extern int of_n_size_cells(struct device_node *np);
+ 
+ extern struct property *of_find_property(const struct device_node *np,
+@@ -328,11 +330,21 @@ static inline struct device_d *of_platform_device_create(struct device_node *np,
+ 	return NULL;
  }
  
-+static struct regulator_internal *regulator_by_name(const char *name)
++static inline int of_bus_n_addr_cells(struct device_node *np)
 +{
-+	struct regulator_internal *ri;
-+
-+	list_for_each_entry(ri, &regulator_list, list)
-+		if (ri->name && !strcmp(ri->name, name))
-+			return ri;
-+
-+	return NULL;
++	return 0;
 +}
 +
-+struct regulator *regulator_get_name(const char *name)
-+{
-+	struct regulator_internal *ri;
-+	struct regulator *r;
-+
-+	ri = regulator_by_name(name);
-+	if (!ri)
-+		return ERR_PTR(-ENODEV);
-+
-+	r = xzalloc(sizeof(*r));
-+	r->ri = ri;
-+
-+	list_add_tail(&r->list, &ri->consumer_list);
-+
-+	return r;
-+}
-+
- /*
-  * regulator_enable - enable a regulator.
-  * @r:		the regulator to enable
-@@ -379,7 +407,7 @@ static void regulator_print_one(struct regulator_internal *ri)
- 		printf(" consumers:\n");
- 
- 		list_for_each_entry(r, &ri->consumer_list, list)
--			printf("   %s\n", dev_name(r->dev));
-+			printf("   %s\n", r->dev ? dev_name(r->dev) : "none");
- 	}
+ static inline int of_n_addr_cells(struct device_node *np)
+ {
+ 	return 0;
  }
  
-diff --git a/include/regulator.h b/include/regulator.h
-index 156acb82f8..a445c5c3d1 100644
---- a/include/regulator.h
-+++ b/include/regulator.h
-@@ -116,6 +116,7 @@ void regulators_print(void);
- #ifdef CONFIG_REGULATOR
- 
- struct regulator *regulator_get(struct device_d *, const char *);
-+struct regulator *regulator_get_name(const char *name);
- int regulator_enable(struct regulator *);
- int regulator_disable(struct regulator *);
- int regulator_is_enabled_regmap(struct regulator_dev *);
++static inline int of_bus_n_size_cells(struct device_node *np)
++{
++	return 0;
++}
++
+ static inline int of_n_size_cells(struct device_node *np)
+ {
+ 	return 0;
 -- 
 2.24.0
 
