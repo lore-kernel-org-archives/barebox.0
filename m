@@ -1,14 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ihtSd-0007BN-TM
- for barebox@lists.infradead.org; Thu, 19 Dec 2019 10:55:17 +0000
-Message-ID: <8ecfb46e932d3153937f8d568ac0e8b37fe40cc0.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Thu, 19 Dec 2019 11:55:14 +0100
-In-Reply-To: <20191219105243.GA16955@localhost.localdomain>
-References: <20191219101011.17583-1-l.stach@pengutronix.de>
- <20191219105243.GA16955@localhost.localdomain>
+ id 1iiJUh-00010y-AN
+ for barebox@lists.infradead.org; Fri, 20 Dec 2019 14:43:09 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 20 Dec 2019 15:43:05 +0100
+Message-Id: <20191220144305.11017-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -18,61 +15,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] driver: add function to look up device by DT node
-To: Peter Mamonov <pmamonov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: i.MX: Fix PBL size test
+To: Barebox List <barebox@lists.infradead.org>
 
-On Do, 2019-12-19 at 13:52 +0300, Peter Mamonov wrote:
-> Hi, Lucas,
-> 
-> On Thu, Dec 19, 2019 at 11:10:11AM +0100, Lucas Stach wrote:
-> > Useful if we need to remove a deivce from the Barebox internal DT.
-> > 
-> > Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> > ---
-> > This is a prerequisite for "ARM: zii-imx8mq-dev: add DT fixups",
-> > which
-> > I missed to send out in the series.
-> > ---
-> >  drivers/base/driver.c | 12 ++++++++++++
-> >  include/driver.h      |  1 +
-> >  2 files changed, 13 insertions(+)
-> > 
-> > diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-> > index eec2a2d8a2a5..437b0162d3f7 100644
-> > --- a/drivers/base/driver.c
-> > +++ b/drivers/base/driver.c
-> > @@ -70,6 +70,18 @@ static struct device_d
-> > *get_device_by_name_id(const char *name, int id)
-> >  	return NULL;
-> >  }
-> >  
-> > +struct device_d *get_device_by_device_node(struct device_node *np)
-> > +{
-> > +	struct device_d *dev;
-> > +
-> > +	for_each_device(dev) {
-> > +		if(dev->device_node == np)
-> > +			return dev;
-> > +	}
-> > +
-> > +	return NULL;
-> > +}
-> > +
-> 
-> This is already implemented in `of_find_device_by_node`.
-
-Thanks! How did I miss that?
-
-Regards,
-Lucas
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+TUFYX1BCTF9NRU1PUllfU0laRSBuZWVkcyB0aGUgc3RhcnQgc3ltYm9sIG5hbWUgd2l0aG91dCBh
+bnkgc3VmZml4LiBGaXgKdGhpcyB0byBtYWtlIHRoZSBQQkwgc2l6ZSB0ZXN0cyBlZmZlY3RpdmUu
+CgpSZXBvcnRlZC1ieTogVWxyaWNoIMOWbG1hbm4gPHUub2VsbWFubkBwZW5ndXRyb25peC5kZT4K
+U2lnbmVkLW9mZi1ieTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgotLS0K
+IGltYWdlcy9NYWtlZmlsZS5pbXggfCA0ICsrLS0KIDEgZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlv
+bnMoKyksIDIgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvaW1hZ2VzL01ha2VmaWxlLmlteCBi
+L2ltYWdlcy9NYWtlZmlsZS5pbXgKaW5kZXggNTNkNGFjODIwMi4uZTU1NThiMWM2MCAxMDA2NDQK
+LS0tIGEvaW1hZ2VzL01ha2VmaWxlLmlteAorKysgYi9pbWFnZXMvTWFrZWZpbGUuaW14CkBAIC0z
+NzgsMTIgKzM3OCwxMiBAQCBpbWFnZS0kKENPTkZJR19NQUNIX05YUF9JTVg4TVFfRVZLKSArPSBi
+YXJlYm94LW54cC1pbXg4bXEtZXZrLmltZwogCiBwYmxiLSQoQ09ORklHX01BQ0hfWklJX0lNWDhN
+UV9ERVYpICs9IHN0YXJ0X3ppaV9pbXg4bXFfZGV2CiBDRkdfc3RhcnRfemlpX2lteDhtcV9kZXYu
+cGJsYi5pbXhpbWcgPSAkKGJvYXJkKS96aWktaW14OG1xLWRldi9mbGFzaC1oZWFkZXItemlpLWlt
+eDhtcS1kZXYuaW14Y2ZnCi1NQVhfUEJMX01FTU9SWV9TSVpFX3N0YXJ0X3ppaV9pbXg4bXFfZGV2
+LnBibCA9IDB4M2YwMDAKK01BWF9QQkxfTUVNT1JZX1NJWkVfc3RhcnRfemlpX2lteDhtcV9kZXYg
+PSAweDNmMDAwCiBGSUxFX2JhcmVib3gtemlpLWlteDhtcS1kZXYuaW1nID0gc3RhcnRfemlpX2lt
+eDhtcV9kZXYucGJsYi5pbXhpbWcKIGltYWdlLSQoQ09ORklHX01BQ0hfWklJX0lNWDhNUV9ERVYp
+ICs9IGJhcmVib3gtemlpLWlteDhtcS1kZXYuaW1nCiAKIHBibGItJChDT05GSUdfTUFDSF9QSFlU
+RUNfU09NX0lNWDhNUSkgKz0gc3RhcnRfcGh5dGVjX3BoeWNvcmVfaW14OG1xCiBDRkdfc3RhcnRf
+cGh5dGVjX3BoeWNvcmVfaW14OG1xLnBibGIuaW14aW1nID0gJChib2FyZCkvcGh5dGVjLXNvbS1p
+bXg4bXEvZmxhc2gtaGVhZGVyLXBoeWNvcmUtaW14OG1xLmlteGNmZwotTUFYX1BCTF9NRU1PUllf
+U0laRV9zdGFydF9waHl0ZWNfcGh5Y29yZV9pbXg4bXEucGJsID0gMHgzZjAwMAorTUFYX1BCTF9N
+RU1PUllfU0laRV9zdGFydF9waHl0ZWNfcGh5Y29yZV9pbXg4bXEgPSAweDNmMDAwCiBGSUxFX2Jh
+cmVib3gtcGh5dGVjLXBoeWNvcmUtaW14OG1xLmltZyA9IHN0YXJ0X3BoeXRlY19waHljb3JlX2lt
+eDhtcS5wYmxiLmlteGltZwogaW1hZ2UtJChDT05GSUdfTUFDSF9QSFlURUNfU09NX0lNWDhNUSkg
+Kz0gYmFyZWJveC1waHl0ZWMtcGh5Y29yZS1pbXg4bXEuaW1nCi0tIAoyLjI0LjAKCgpfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcg
+bGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5v
+cmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
