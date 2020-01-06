@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1imxv7-0005Mc-K7
- for barebox@lists.infradead.org; Thu, 02 Jan 2020 10:41:39 +0000
+ id 1ioPK7-0000sO-31
+ for barebox@lists.infradead.org; Mon, 06 Jan 2020 10:09:24 +0000
+Message-ID: <c9fe57bcfa3bd840af877d9a888d0f651a59a125.camel@pengutronix.de>
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Mon, 06 Jan 2020 11:09:18 +0100
+In-Reply-To: <84001e838c22a3e17a1b2ca5b7e535ec9ee9ce16.camel@pengutronix.de>
 References: <20200102102334.73726-1-r.czerwinski@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <70a44a2d-cf60-34e7-8ca8-1d7753f77e72@pengutronix.de>
-Date: Thu, 2 Jan 2020 11:41:31 +0100
+ <84001e838c22a3e17a1b2ca5b7e535ec9ee9ce16.camel@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20200102102334.73726-1-r.czerwinski@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,50 +23,22 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] ARM: nitrogen6: add lowlevel UART initialization
-To: rcz@pengutronix.de, barebox@lists.infradead.org
+To: Lucas Stach <l.stach@pengutronix.de>, barebox@lists.infradead.org
 
-Hello Rouven,
+On Mon, 2020-01-06 at 10:46 +0100, Lucas Stach wrote:
+> On Do, 2020-01-02 at 11:23 +0100, Rouven Czerwinski wrote:
+> > Mux UART1 and UART2 correctly to allow usage of DEBUG_LL.
+> 
+> There is only one UART intended as console on this board. Why are you
+> setting up 2 UARTs here?
 
-On 1/2/20 11:23 AM, Rouven Czerwinski wrote:
-> +static inline void setup_uart(void)
-> +{
-> +   void __iomem *iomuxbase = (void *)MX6_IOMUXC_BASE_ADDR;
-> +
-> +   //UART 1
-> +   writel(0x1, iomuxbase + 0x02a8);
-> +   writel(0x1, iomuxbase + 0x02ac);
-> +
-> +   //UART 2
-> +   writel(0x4, iomuxbase + 0x00bc);
-> +   writel(0x4, iomuxbase + 0x00c0);
-> +   writel(0x0, iomuxbase + 0x0928);
+I am using this to work on OP-TEE, which does not implement the UART
+initialization and instead relies on the bootloader. This way barebox
+and OP-TEE don't need to share the same UART.
+ 
+Regards,
+Rouven
 
-There's imx_setup_pad that you can use along with symbolic names for
-better readability.
-
-> +   imx6_ungate_all_peripherals();
-> +   imx6_uart_setup((void *)MX6_UART2_BASE_ADDR);
-
-There's imx6_uart_setup_ll that passes in the address of CONFIG_DEBUG_IMX_UART_PORT.
-Use that one instead.
-
-> +   pbl_set_putc(imx_uart_putc, (void *)MX6_UART2_BASE_ADDR);
-
-DEBUG_LL is a global setting. pbl_set_putc can be used to have PBL console
-output for a board, even if DEBUG_LL is off or configured for another board.
-Thus having pbl_set_putc guarded by a IS_ENABLED(CONFIG_DEBUG_LL) doesn't make
-sense. pbl_set_putc can also only be called after relocation, which hasn't
-happened yet.
-
-Cheers
-Ahmad
-
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
