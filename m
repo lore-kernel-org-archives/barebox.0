@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from relay5-d.mail.gandi.net ([217.70.183.197])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ioWIP-0000HR-AP
- for barebox@lists.infradead.org; Mon, 06 Jan 2020 17:36:10 +0000
+ id 1ioWIP-0000HV-B0
+ for barebox@lists.infradead.org; Mon, 06 Jan 2020 17:36:11 +0000
 From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Mon,  6 Jan 2020 18:35:35 +0100
-Message-Id: <20200106173540.20367-1-ahmad@a3f.at>
+Date: Mon,  6 Jan 2020 18:35:39 +0100
+Message-Id: <20200106173540.20367-5-ahmad@a3f.at>
+In-Reply-To: <20200106173540.20367-1-ahmad@a3f.at>
+References: <20200106173540.20367-1-ahmad@a3f.at>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,60 +21,127 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC PATCH 0/5] fs: fat: extend for in-PBL support
+Subject: [RFC PATCH 4/5] ARM: at91: add helpers for MCI barebox chain-loading
 To: barebox@lists.infradead.org
 Cc: lst@pengutronix.de
 
-The AT91 BootROM loads a boot.bin file from the first FAT partition
-into SRAM, when booting from MMC. SoCs like the Zynq do likewise.
+With PBL FAT support implemented, provide an sama5d2_sdhci_start_image
+helper that cann called from the PBL to chainload a barebox.bin file
+from the first FAT partition.
 
-To avoid the need for a different configuration for each of the bootloader
-stages, add PBL support for reading from FAT.
-This way each stage need only have a different PBL entry point.
-
-The first two commits are valid as-is. The rest makes use of them for
-the sama5d2. The sama5d2 first stage support is not yet complete (and
-won't be for a while if it's up to me), but Lucas asked about it for
-the Zynq, so here it is.
-
-Feedback welcome.
-
-Cheers,
-Ahmad Fatoum (5):
-  pbl: add block I/O API
-  fs: fat: extend for in-PBL support
-  mci: add first-stage at91-sdhci driver
-  ARM: at91: add helpers for MCI barebox chain-loading
-  [WIP] ARM: at91: sama5d27-som1: add first stage entry point
-
- arch/arm/boards/sama5d27-som1/lowlevel.c |  16 +
- arch/arm/mach-at91/Kconfig               |   6 +
- arch/arm/mach-at91/Makefile              |   1 +
- arch/arm/mach-at91/include/mach/xload.h  |  12 +
- arch/arm/mach-at91/xload-mmc.c           |  51 +++
- drivers/mci/Kconfig                      |   4 +
- drivers/mci/Makefile                     |   1 +
- drivers/mci/atmel-sdhci-common.c         | 279 ++++++++++++++
- drivers/mci/atmel-sdhci-pbl.c            | 440 +++++++++++++++++++++++
- drivers/mci/atmel-sdhci.h                |  38 ++
- drivers/mci/sdhci.h                      |  17 +
- fs/Makefile                              |   2 +-
- fs/fat/Kconfig                           |   7 +
- fs/fat/Makefile                          |   4 +-
- fs/fat/diskio.h                          |   7 +-
- fs/fat/fat-pbl.c                         | 148 ++++++++
- fs/fat/ff.c                              | 104 +++---
- fs/fat/ff.h                              |  17 +-
- images/Makefile.at91                     |   4 +
- include/pbl.h                            |   7 +
- 20 files changed, 1112 insertions(+), 53 deletions(-)
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ arch/arm/mach-at91/Kconfig              |  5 +++
+ arch/arm/mach-at91/Makefile             |  1 +
+ arch/arm/mach-at91/include/mach/xload.h | 12 ++++++
+ arch/arm/mach-at91/xload-mmc.c          | 51 +++++++++++++++++++++++++
+ 4 files changed, 69 insertions(+)
  create mode 100644 arch/arm/mach-at91/include/mach/xload.h
  create mode 100644 arch/arm/mach-at91/xload-mmc.c
- create mode 100644 drivers/mci/atmel-sdhci-common.c
- create mode 100644 drivers/mci/atmel-sdhci-pbl.c
- create mode 100644 drivers/mci/atmel-sdhci.h
- create mode 100644 fs/fat/fat-pbl.c
 
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index 5267102bf94e..a14aa59773fa 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -34,6 +34,11 @@ config HAVE_AT91_GENERATED_CLK
+ config HAVE_AT91_BOOTSTRAP
+ 	bool
+ 
++config AT91_MCI_PBL
++	bool
++	depends on MCI_ATMEL_SDHCI_PBL
++	default y
++
+ # Select if board uses the common at91sam926x_board_init
+ config AT91SAM926X_BOARD_INIT
+ 	bool
+diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
+index 66d0b700f61e..8db30f338c37 100644
+--- a/arch/arm/mach-at91/Makefile
++++ b/arch/arm/mach-at91/Makefile
+@@ -11,6 +11,7 @@ obj-$(CONFIG_AT91_BOOTSTRAP)	+= bootstrap.o
+ 
+ obj-y += at91sam9_reset.o
+ obj-y += at91sam9g45_reset.o
++pbl-$(CONFIG_AT91_MCI_PBL) +=  xload-mmc.o
+ 
+ obj-$(CONFIG_AT91SAM9_SMC) += sam9_smc.o
+ 
+diff --git a/arch/arm/mach-at91/include/mach/xload.h b/arch/arm/mach-at91/include/mach/xload.h
+new file mode 100644
+index 000000000000..d73be6d45f67
+--- /dev/null
++++ b/arch/arm/mach-at91/include/mach/xload.h
+@@ -0,0 +1,12 @@
++#ifndef __MACH_XLOAD_H
++#define __MACH_XLOAD_H
++
++#include <linux/compiler.h>
++#include <pbl.h>
++
++void __noreturn sama5d2_sdhci_start_image(int instance);
++
++int atmel_sdhci_bio_init(struct pbl_bio *bio, void __iomem *base);
++
++#endif /* __MACH_XLOAD_H */
++
+diff --git a/arch/arm/mach-at91/xload-mmc.c b/arch/arm/mach-at91/xload-mmc.c
+new file mode 100644
+index 000000000000..adb260f40e33
+--- /dev/null
++++ b/arch/arm/mach-at91/xload-mmc.c
+@@ -0,0 +1,51 @@
++#include <common.h>
++#include <mach/xload.h>
++#include <mach/hardware.h>
++#include <asm/barebox-arm.h>
++#include <linux/sizes.h> // FIXME remove
++#include <asm/cache.h>
++#include <pbl.h>
++#include <debug_ll.h>
++
++static void at91_fat_start_image(struct pbl_bio *bio, void *buf, unsigned int len)
++{
++	void __noreturn (*bb)(void);
++	int ret;
++
++	ret = pbl_fat_load(bio, "barebox.bin", buf, len);
++	if (ret) {
++		pr_err("pbl_fat_load: error %d\n", ret);
++		return;
++	}
++
++	bb = buf;
++
++	sync_caches_for_execution();
++
++	bb();
++}
++
++/**
++ * sama5d2_sdhci_start_image - Load and start an image from FAT-formatted SDHCI
++ * @instance: The SDHCI instance {0,1}
++ *
++ * Return: If successul, this function does not return. A negative error
++ * code is returned when this function fails.
++ */
++void __noreturn sama5d2_sdhci_start_image(int instance)
++{
++	void *buf = (void *)SAMA5_DDRCS + SZ_64M;
++	void __iomem *base;
++	struct pbl_bio bio;
++	int ret;
++
++	base = IOMEM(instance ? SAMA5D2_BASE_SDHC1 : SAMA5D2_BASE_SDHC0);
++	ret = atmel_sdhci_bio_init(&bio, base);
++	if (ret)
++		goto out_panic;
++
++	at91_fat_start_image(&bio, buf, SZ_64M);
++
++out_panic:
++	panic("FAT chainloading failed\n");
++}
 -- 
 2.20.1
 
