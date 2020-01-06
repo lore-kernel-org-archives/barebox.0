@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ioOmy-0002FI-6Q
- for barebox@lists.infradead.org; Mon, 06 Jan 2020 09:35:21 +0000
-Date: Mon, 6 Jan 2020 10:35:03 +0100
+ id 1ioOuG-0006sx-J5
+ for barebox@lists.infradead.org; Mon, 06 Jan 2020 09:42:41 +0000
+Date: Mon, 6 Jan 2020 10:42:35 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200106093503.v4kftjlk3p5u6ut2@pengutronix.de>
-References: <1576673837-71180-1-git-send-email-m.otto@phytec.de>
- <20191220152441.thp3kn2wfnw76xgl@pengutronix.de>
- <87imm8huub.fsf@grinn-global.com>
+Message-ID: <20200106094235.iiafszzpurjtqfdj@pengutronix.de>
+References: <1574771276-27996-1-git-send-email-duhuanpeng@loongson.cn>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <87imm8huub.fsf@grinn-global.com>
+In-Reply-To: <1574771276-27996-1-git-send-email-duhuanpeng@loongson.cn>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,69 +18,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] habv4: imx change signing area from full to the
- executed image
-To: Marcin =?iso-8859-15?Q?Niestr=F3j?= <m.niestroj@grinn-global.com>
-Cc: Maik Otto <m.otto@phytec.de>, barebox@lists.infradead.org
+Subject: Re: [PATCH] MIPS: loongson: rename CPU_LOONGSON1 to CPU_GS232
+To: Du Huanpeng <duhuanpeng@loongson.cn>
+Cc: barebox@lists.infradead.org
 
-On Sun, Dec 22, 2019 at 11:13:48PM +0100, Marcin Niestr=F3j wrote:
-> Hi Sasha, Maik,
-> =
+On Tue, Nov 26, 2019 at 08:27:56PM +0800, Du Huanpeng wrote:
+> The CPU in the loongson 1b SoC is called GS232.
+> Here is some active chips and it's core:
+> 
+> NAME              CPU       Core(s)
+> The loongson 3 series/server & desktop
+>   3A3000/3B3000     GS464E    64bit x4
+>   3A2000/3B2000     GS464E    64bit x4
+>   3B1500            GS464     64bit x8
+>   3A1000            GS464     64bit x4
+> 
+> The loongson 2 series/low power
+>   2K1000            GS264     64bit x2
+>   2F                GS464     64bit x1
+>   2H                GS464     64bit x1
+> 
+> The loongson 1 series/embeded
+>   1C101             GS132R    32bit ?
+>   1D                GS132     32bit ?
+>   1C                GS232     32bit x1
+>   1B                GS232     32bit x1
+>   1A                GS232     32bit x1
+> 
+> see:
+> [1] http://www.loongson.cn/product/
+> 
+> Signed-off-by: Du Huanpeng <duhuanpeng@loongson.cn>
+> ---
+>  arch/mips/Kconfig           | 4 ++--
+>  arch/mips/Makefile          | 2 +-
+>  arch/mips/include/asm/cpu.h | 4 ++--
+>  arch/mips/lib/cpu-probe.c   | 4 ++--
+>  4 files changed, 7 insertions(+), 7 deletions(-)
 
-> Sascha Hauer <s.hauer@pengutronix.de> writes:
-> =
-
-> > On Wed, Dec 18, 2019 at 01:57:17PM +0100, Maik Otto wrote:
-> >> the whole barebox with mbr and partition table were be signed by defau=
-lt.
-> >> change the signing to the executed image without signing the mbr,
-> >> partition table and header_gap by imx8mq
-> >> additional delete option full, from-dcdofs and skip-mbr
-> >>
-> >> Signed-off-by: Maik Otto <m.otto@phytec.de>
-> >> ---
-> >> Changes in v2:
-> >>     - change subject from habv4: add the possibility to changing the s=
-igning
-> >>       area from Kconfig to
-> >>     - delete KConfig entries
-> >>     - delete changes habv4-imx6-gencsf.h
-> >>     - delete full, from-dcdofs and skip-mbr options
-> >> ---
-> >>  scripts/imx/imx.c | 33 +++++++++------------------------
-> >>  1 file changed, 9 insertions(+), 24 deletions(-)
-> >
-> > Applied, thanks.
-> >
-> > @Marcin, as you introduced the "from-dcdofs" and "full" options, are you
-> > happy with this patch? It removes the options, but should default to
-> > what you originally wanted to archieve, right?
-> =
-
-> I think that when adding separate skip-mbr and from-dcdofs I wanted to
-> protect (with skip-mbr) first bytes of generated image, which contain
-> barebox header (with its version?) from what I remember. I never used
-> that information from there, so I am quite okay with dropping skip-mbr
-> support in favor of only from-dcdofs.
-
-The version is not contained in the header.
-
-> =
-
-> However I wonder why offset_load_address is hardcoded to
-> 0x400. Shouldn't we leave from-dcdofs as is and simply dropping all
-> other options (full and skip-mbr)?
-
-Yes, this sounds better. Maik, can you change the patch accordingly?
+Applied, thanks
 
 Sascha
 
--- =
 
+-- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
