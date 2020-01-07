@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iolxX-0004mo-9e
- for barebox@lists.infradead.org; Tue, 07 Jan 2020 10:19:39 +0000
+ id 1iolxf-0004ss-Fp
+ for barebox@lists.infradead.org; Tue, 07 Jan 2020 10:19:44 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  7 Jan 2020 11:19:29 +0100
-Message-Id: <20200107101931.4535-2-s.hauer@pengutronix.de>
+Date: Tue,  7 Jan 2020 11:19:30 +0100
+Message-Id: <20200107101931.4535-3-s.hauer@pengutronix.de>
 In-Reply-To: <20200107101931.4535-1-s.hauer@pengutronix.de>
 References: <20200107101931.4535-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,341 +21,142 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] gpio: Add raspberrypi exp gpio driver
+Subject: [PATCH 3/4] ARM: bcm2835 mbox: use pr_* to print messages
 To: Barebox List <barebox@lists.infradead.org>
 
-Taken from the kernel adopted to barebox.
+To give the user an idea where the messages come from.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-bcm283x/include/mach/mbox.h |   4 +
- drivers/gpio/Kconfig                      |   7 +
- drivers/gpio/Makefile                     |   1 +
- drivers/gpio/gpio-raspberrypi-exp.c       | 273 ++++++++++++++++++++++
- 4 files changed, 285 insertions(+)
- create mode 100644 drivers/gpio/gpio-raspberrypi-exp.c
+ arch/arm/mach-bcm283x/mbox.c | 36 +++++++++++++++++++-----------------
+ 1 file changed, 19 insertions(+), 17 deletions(-)
 
-diff --git a/arch/arm/mach-bcm283x/include/mach/mbox.h b/arch/arm/mach-bcm283x/include/mach/mbox.h
-index 6db961b807..f10f5bc148 100644
---- a/arch/arm/mach-bcm283x/include/mach/mbox.h
-+++ b/arch/arm/mach-bcm283x/include/mach/mbox.h
-@@ -126,6 +126,10 @@ struct bcm2835_mbox_tag_hdr {
+diff --git a/arch/arm/mach-bcm283x/mbox.c b/arch/arm/mach-bcm283x/mbox.c
+index 4405efaffd..1b1981f7cb 100644
+--- a/arch/arm/mach-bcm283x/mbox.c
++++ b/arch/arm/mach-bcm283x/mbox.c
+@@ -6,6 +6,8 @@
+  * SPDX-License-Identifier:	GPL-2.0+
   */
  
- #define BCM2835_MBOX_TAG_GET_BOARD_REV	0x00010002
-+#define BCM2835_MBOX_TAG_GET_GPIO_STATE 0x00030041
-+#define BCM2835_MBOX_TAG_SET_GPIO_STATE 0x00038041
-+#define BCM2835_MBOX_TAG_GET_GPIO_CONFIG 0x00030043
-+#define BCM2835_MBOX_TAG_SET_GPIO_CONFIG 0x00038043
++#define pr_fmt(fmt) "rpi-mbox: " fmt
++
+ #include <clock.h>
+ #include <common.h>
+ #include <dma.h>
+@@ -26,7 +28,7 @@ static int bcm2835_mbox_call_raw(u32 chan, struct bcm2835_mbox_hdr *buffer,
+ 	u32 val;
  
- /*
-  * ids
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index 0f924d135f..7e4fc90d39 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -129,6 +129,13 @@ config GPIO_PL061
- 	help
- 	  Say yes here to support the PrimeCell PL061 GPIO device
+ 	if (send & BCM2835_CHAN_MASK) {
+-		printf("mbox: Illegal mbox data 0x%08x\n", send);
++		pr_err("mbox: Illegal mbox data 0x%08x\n", send);
+ 		return -EINVAL;
+ 	}
  
-+config GPIO_RASPBERRYPI_EXP
-+	bool "Raspberry Pi 3 GPIO Expander"
-+	depends on ARCH_BCM283X
-+	help
-+	  Turn on GPIO support for the expander on Raspberry Pi 3 boards, using
-+	  the firmware mailbox to communicate with VideoCore on BCM283x chips.
-+
- config GPIO_STMPE
- 	depends on MFD_STMPE
- 	bool "STMPE GPIO Expander"
-diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-index bc5c500e4d..77dcf58f64 100644
---- a/drivers/gpio/Makefile
-+++ b/drivers/gpio/Makefile
-@@ -22,3 +22,4 @@ obj-$(CONFIG_GPIO_TEGRA)	+= gpio-tegra.o
- obj-$(CONFIG_GPIO_DESIGNWARE)	+= gpio-dw.o
- obj-$(CONFIG_GPIO_SX150X)	+= gpio-sx150x.o
- obj-$(CONFIG_GPIO_VF610)	+= gpio-vf610.o
-+obj-$(CONFIG_GPIO_RASPBERRYPI_EXP) += gpio-raspberrypi-exp.o
-diff --git a/drivers/gpio/gpio-raspberrypi-exp.c b/drivers/gpio/gpio-raspberrypi-exp.c
-new file mode 100644
-index 0000000000..f03a2a2579
---- /dev/null
-+++ b/drivers/gpio/gpio-raspberrypi-exp.c
-@@ -0,0 +1,273 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ *  Raspberry Pi 3 expander GPIO driver
-+ *
-+ *  Uses the firmware mailbox service to communicate with the
-+ *  GPIO expander on the VPU.
-+ *
-+ *  Copyright (C) 2017 Raspberry Pi Trading Ltd.
-+ */
-+
-+#include <common.h>
-+#include <gpio.h>
-+#include <init.h>
-+#include <mach/mbox.h>
-+
-+#define NUM_GPIO 8
-+
-+#define RPI_EXP_GPIO_BASE	128
-+
-+#define RPI_EXP_GPIO_DIR_IN	0
-+#define RPI_EXP_GPIO_DIR_OUT	1
-+
-+struct rpi_exp_gpio {
-+	struct gpio_chip gc;
-+	struct rpi_firmware *fw;
-+};
-+
-+/* VC4 firmware mailbox interface data structures */
-+struct gpio_set_config {
-+	struct bcm2835_mbox_hdr hdr;		/* buf_size, code */
-+	struct bcm2835_mbox_tag_hdr tag_hdr;	/* tag, val_buf_size, val_len */
-+        union {
-+                struct {
-+			u32 gpio;
-+			u32 direction;
-+			u32 polarity;
-+			u32 term_en;
-+			u32 term_pull_up;
-+			u32 state;
-+                } req;
-+	} body;
-+	u32 end_tag;
-+};
-+
-+struct gpio_get_config {
-+	struct bcm2835_mbox_hdr hdr;
-+	struct bcm2835_mbox_tag_hdr tag_hdr;
-+        union {
-+                struct {
-+			u32 gpio;
-+			u32 direction;
-+			u32 polarity;
-+			u32 term_en;
-+			u32 term_pull_up;
-+                } req;
-+	} body;
-+	u32 end_tag;
-+};
-+
-+struct gpio_get_set_state {
-+	struct bcm2835_mbox_hdr hdr;
-+	struct bcm2835_mbox_tag_hdr tag_hdr;
-+        union {
-+                struct {
-+			u32 gpio;
-+			u32 state;
-+                } req;
-+	} body;
-+	u32 end_tag;
-+};
-+
-+static inline struct rpi_exp_gpio *to_rpi_gpio(struct gpio_chip *gc)
-+{
-+	return container_of(gc, struct rpi_exp_gpio, gc);
+@@ -36,7 +38,7 @@ static int bcm2835_mbox_call_raw(u32 chan, struct bcm2835_mbox_hdr *buffer,
+ 		if (val & BCM2835_MBOX_STATUS_RD_EMPTY)
+ 			break;
+ 		if (is_timeout(starttime, TIMEOUT)) {
+-			printf("mbox: Timeout draining stale responses\n");
++			pr_err("mbox: Timeout draining stale responses\n");
+ 			return -ETIMEDOUT;
+ 		}
+ 		val = readl(mbox_base + MAIL0_RD);
+@@ -48,14 +50,14 @@ static int bcm2835_mbox_call_raw(u32 chan, struct bcm2835_mbox_hdr *buffer,
+ 		if (!(val & BCM2835_MBOX_STATUS_WR_FULL))
+ 			break;
+ 		if (is_timeout(starttime, TIMEOUT)) {
+-			printf("mbox: Timeout waiting for send space\n");
++			pr_err("mbox: Timeout waiting for send space\n");
+ 			return -ETIMEDOUT;
+ 		}
+ 	}
+ 
+ 	/* Send the request */
+ 	val = BCM2835_MBOX_PACK(chan, send);
+-	debug("mbox: TX raw: 0x%08x\n", val);
++	pr_debug("mbox: TX raw: 0x%08x\n", val);
+ 	dma_sync_single_for_device((unsigned long)send, buffer->buf_size,
+ 				   DMA_BIDIRECTIONAL);
+ 	writel(val, mbox_base + MAIL1_WRT);
+@@ -66,20 +68,20 @@ static int bcm2835_mbox_call_raw(u32 chan, struct bcm2835_mbox_hdr *buffer,
+ 		if (!(val & BCM2835_MBOX_STATUS_RD_EMPTY))
+ 			break;
+ 		if (is_timeout(starttime, TIMEOUT)) {
+-			printf("mbox: Timeout waiting for response\n");
++			pr_err("mbox: Timeout waiting for response\n");
+ 			return -ETIMEDOUT;
+ 		}
+ 	}
+ 
+ 	/* Read the response */
+ 	val = readl(mbox_base + MAIL0_RD);
+-	debug("mbox: RX raw: 0x%08x\n", val);
++	pr_debug("mbox: RX raw: 0x%08x\n", val);
+ 	dma_sync_single_for_cpu((unsigned long)send, buffer->buf_size,
+ 				DMA_BIDIRECTIONAL);
+ 
+ 	/* Validate the response */
+ 	if (BCM2835_MBOX_UNPACK_CHAN(val) != chan) {
+-		printf("mbox: Response channel mismatch\n");
++		pr_err("mbox: Response channel mismatch\n");
+ 		return -EIO;
+ 	}
+ 
+@@ -89,7 +91,7 @@ static int bcm2835_mbox_call_raw(u32 chan, struct bcm2835_mbox_hdr *buffer,
+ }
+ 
+ #ifdef DEBUG
+-void dump_buf(struct bcm2835_mbox_hdr *buffer)
++static void dump_buf(struct bcm2835_mbox_hdr *buffer)
+ {
+ 	u32 *p;
+ 	u32 words;
+@@ -98,7 +100,11 @@ void dump_buf(struct bcm2835_mbox_hdr *buffer)
+ 	p = (u32 *)buffer;
+ 	words = buffer->buf_size / 4;
+ 	for (i = 0; i < words; i++)
+-		printf("    0x%04x: 0x%08x\n", i * 4, p[i]);
++		pr_debug("    0x%04x: 0x%08x\n", i * 4, p[i]);
 +}
-+
-+static int rpi_exp_gpio_get_polarity(struct gpio_chip *gc, unsigned int off)
++#else
++static void dump_buf(struct bcm2835_mbox_hdr *buffer)
 +{
-+	struct rpi_exp_gpio *gpio;
-+	int ret;
-+	BCM2835_MBOX_STACK_ALIGN(struct gpio_get_config, get);
-+	BCM2835_MBOX_INIT_HDR(get);
-+	BCM2835_MBOX_INIT_TAG(get, GET_GPIO_CONFIG);
-+
-+	gpio = to_rpi_gpio(gc);
-+
-+	get->body.req.gpio = off + RPI_EXP_GPIO_BASE;	/* GPIO to update */
-+
-+	ret = bcm2835_mbox_call_prop(BCM2835_MBOX_PROP_CHAN, &get->hdr);
-+	if (ret || get->body.req.gpio != 0) {
-+		dev_err(gc->dev, "Failed to get GPIO %u config (%d %x)\n",
-+			off, ret, get->body.req.gpio);
-+		return ret ? ret : -EIO;
-+	}
-+	return get->body.req.polarity;
-+}
-+
-+static int rpi_exp_gpio_dir_in(struct gpio_chip *gc, unsigned int off)
-+{
-+	struct rpi_exp_gpio *gpio;
-+	int ret;
-+	BCM2835_MBOX_STACK_ALIGN(struct gpio_set_config, set_in);
-+	BCM2835_MBOX_INIT_HDR(set_in);
-+	BCM2835_MBOX_INIT_TAG(set_in, SET_GPIO_CONFIG);
-+
-+	gpio = to_rpi_gpio(gc);
-+
-+	set_in->body.req.gpio = off + RPI_EXP_GPIO_BASE;	/* GPIO to update */
-+	set_in->body.req.direction = RPI_EXP_GPIO_DIR_IN;
-+	set_in->body.req.term_en = 0;		/* termination disabled */
-+	set_in->body.req.term_pull_up = 0;	/* n/a as termination disabled */
-+	set_in->body.req.state = 0;		/* n/a as configured as an input */
-+
-+	ret = rpi_exp_gpio_get_polarity(gc, off);
-+	if (ret < 0)
-+		return ret;
-+
-+	set_in->body.req.polarity = ret;		/* Retain existing setting */
-+
-+	ret = bcm2835_mbox_call_prop(BCM2835_MBOX_PROP_CHAN, &set_in->hdr);
-+	if (ret || set_in->body.req.gpio != 0) {
-+		dev_err(gc->dev, "Failed to set GPIO %u to input (%d %x)\n",
-+			off, ret, set_in->body.req.gpio);
-+		return ret ? ret : -EIO;
-+	}
-+
-+	return 0;
-+}
-+
-+static int rpi_exp_gpio_dir_out(struct gpio_chip *gc, unsigned int off, int val)
-+{
-+	struct rpi_exp_gpio *gpio;
-+	int ret;
-+	BCM2835_MBOX_STACK_ALIGN(struct gpio_set_config, set_out);
-+	BCM2835_MBOX_INIT_HDR(set_out);
-+	BCM2835_MBOX_INIT_TAG(set_out, SET_GPIO_CONFIG);
-+
-+	gpio = to_rpi_gpio(gc);
-+
-+	set_out->body.req.gpio = off + RPI_EXP_GPIO_BASE;	/* GPIO to update */
-+	set_out->body.req.direction = RPI_EXP_GPIO_DIR_OUT;
-+	set_out->body.req.term_en = 0;		/* n/a as an output */
-+	set_out->body.req.term_pull_up = 0;	/* n/a as termination disabled */
-+	set_out->body.req.state = val;		/* Output state */
-+
-+	ret = rpi_exp_gpio_get_polarity(gc, off);
-+	if (ret < 0)
-+		return ret;
-+	set_out->body.req.polarity = ret;		/* Retain existing setting */
-+
-+	ret = bcm2835_mbox_call_prop(BCM2835_MBOX_PROP_CHAN, &set_out->hdr);
-+	if (ret || set_out->body.req.gpio != 0) {
-+		dev_err(gc->dev, "Failed to set GPIO %u to output (%d %x)\n",
-+			off, ret, set_out->body.req.gpio);
-+		return ret ? ret : -EIO;
-+	}
-+	return 0;
-+}
-+
-+static int rpi_exp_gpio_get_direction(struct gpio_chip *gc, unsigned int off)
-+{
-+	struct rpi_exp_gpio *gpio;
-+	int ret;
-+	BCM2835_MBOX_STACK_ALIGN(struct gpio_get_config, get);
-+	BCM2835_MBOX_INIT_HDR(get);
-+	BCM2835_MBOX_INIT_TAG(get, GET_GPIO_CONFIG);
-+
-+	gpio = to_rpi_gpio(gc);
-+
-+	get->body.req.gpio = off + RPI_EXP_GPIO_BASE;	/* GPIO to update */
-+
-+	ret = bcm2835_mbox_call_prop(BCM2835_MBOX_PROP_CHAN, &get->hdr);
-+	if (ret || get->body.req.gpio != 0) {
-+		dev_err(gc->dev,
-+			"Failed to get GPIO %u config (%d %x)\n", off, ret,
-+			get->body.req.gpio);
-+		return ret ? ret : -EIO;
-+	}
-+	if (get->body.req.direction)
-+		return GPIOF_DIR_OUT;
-+
-+	return GPIOF_DIR_IN;
-+}
-+
-+static int rpi_exp_gpio_get(struct gpio_chip *gc, unsigned int off)
-+{
-+	struct rpi_exp_gpio *gpio;
-+	int ret;
-+	BCM2835_MBOX_STACK_ALIGN(struct gpio_get_set_state, get);
-+	BCM2835_MBOX_INIT_HDR(get);
-+	BCM2835_MBOX_INIT_TAG(get, GET_GPIO_STATE);
-+
-+	gpio = to_rpi_gpio(gc);
-+
-+	get->body.req.gpio = off + RPI_EXP_GPIO_BASE;	/* GPIO to update */
-+	get->body.req.state = 0;		/* storage for returned value */
-+
-+	ret = bcm2835_mbox_call_prop(BCM2835_MBOX_PROP_CHAN, &get->hdr);
-+	if (ret || get->body.req.gpio != 0) {
-+		dev_err(gc->dev,
-+			"Failed to get GPIO %u state (%d %x)\n", off, ret,
-+			get->body.req.gpio);
-+		return ret ? ret : -EIO;
-+	}
-+	return !!get->body.req.state;
-+}
-+
-+static void rpi_exp_gpio_set(struct gpio_chip *gc, unsigned int off, int val)
-+{
-+	struct rpi_exp_gpio *gpio;
-+	int ret;
-+	BCM2835_MBOX_STACK_ALIGN(struct gpio_get_set_state, set);
-+	BCM2835_MBOX_INIT_HDR(set);
-+	BCM2835_MBOX_INIT_TAG(set, SET_GPIO_STATE);
-+
-+	gpio = to_rpi_gpio(gc);
-+
-+	set->body.req.gpio = off + RPI_EXP_GPIO_BASE;	/* GPIO to update */
-+	set->body.req.state = val;	/* Output state */
-+
-+	ret = bcm2835_mbox_call_prop(BCM2835_MBOX_PROP_CHAN, &set->hdr);
-+	if (ret || set->body.req.gpio != 0)
-+		dev_err(gc->dev,
-+			"Failed to set GPIO %u state (%d %x)\n", off, ret,
-+			set->body.req.gpio);
-+}
-+
-+static struct gpio_ops rpi_exp_gpio_ops = {
-+	.direction_input = rpi_exp_gpio_dir_in,
-+	.direction_output = rpi_exp_gpio_dir_out,
-+	.get_direction = rpi_exp_gpio_get_direction,
-+	.get = rpi_exp_gpio_get,
-+	.set = rpi_exp_gpio_set,
-+};
-+
-+static int rpi_exp_gpio_probe(struct device_d *dev)
-+{
-+	struct device_node *np = dev->device_node;
-+	struct rpi_exp_gpio *rpi_gpio;
-+	int ret;
-+
-+	rpi_gpio = xzalloc(sizeof(*rpi_gpio));
-+
-+	rpi_gpio->gc.dev = dev;
-+	rpi_gpio->gc.base = -1;
-+	rpi_gpio->gc.ngpio = NUM_GPIO;
-+	rpi_gpio->gc.ops = &rpi_exp_gpio_ops;
-+
-+	ret = gpiochip_add(&rpi_gpio->gc);
-+	if (ret)
-+		return ret;
-+
-+	dev_dbg(dev, "probed gpiochip with %d gpios, base %d\n",
-+			rpi_gpio->gc.ngpio, rpi_gpio->gc.base);
-+
-+	return 0;
-+}
-+
-+static __maybe_unused struct of_device_id rpi_exp_gpio_ids[] = {
-+	{
-+		.compatible = "raspberrypi,firmware-gpio",
-+	}, {
-+		/* sentinel */
-+	},
-+};
-+
-+static struct driver_d rpi_exp_gpio_driver = {
-+	.name = "dw-apb-gpio",
-+	.probe = rpi_exp_gpio_probe,
-+	.of_compatible = DRV_OF_COMPAT(rpi_exp_gpio_ids),
-+};
-+
-+device_platform_driver(rpi_exp_gpio_driver);
+ }
+ #endif
+ 
+@@ -109,27 +115,23 @@ int bcm2835_mbox_call_prop(u32 chan, struct bcm2835_mbox_hdr *buffer)
+ 	struct bcm2835_mbox_tag_hdr *tag;
+ 	int tag_index;
+ 
+-#ifdef DEBUG
+-	printf("mbox: TX buffer\n");
++	pr_debug("mbox: TX buffer\n");
+ 	dump_buf(buffer);
+-#endif
+ 
+ 	ret = bcm2835_mbox_call_raw(chan, buffer, &rbuffer);
+ 	if (ret)
+ 		return ret;
+ 	if (rbuffer != (u32)buffer) {
+-		printf("mbox: Response buffer mismatch\n");
++		pr_err("mbox: Response buffer mismatch\n");
+ 		return -EIO;
+ 	}
+ 
+-#ifdef DEBUG
+-	printf("mbox: RX buffer\n");
++	pr_debug("mbox: RX buffer\n");
+ 	dump_buf(buffer);
+-#endif
+ 
+ 	/* Validate overall response status */
+ 	if (buffer->code != BCM2835_MBOX_RESP_CODE_SUCCESS) {
+-		printf("mbox: Header response code invalid\n");
++		pr_err("mbox: Header response code invalid\n");
+ 		return -EIO;
+ 	}
+ 
 -- 
 2.24.0
 
