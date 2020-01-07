@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iolxX-0004mn-9H
+ id 1iolxX-0004mp-9G
  for barebox@lists.infradead.org; Tue, 07 Jan 2020 10:19:37 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  7 Jan 2020 11:19:28 +0100
-Message-Id: <20200107101931.4535-1-s.hauer@pengutronix.de>
+Date: Tue,  7 Jan 2020 11:19:31 +0100
+Message-Id: <20200107101931.4535-4-s.hauer@pengutronix.de>
+In-Reply-To: <20200107101931.4535-1-s.hauer@pengutronix.de>
+References: <20200107101931.4535-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,34 +21,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] ARM: bcm2835 mbox: Remove response valid check
+Subject: [PATCH 4/4] ARM: rpi_defconfig: Enable raspberry GPIO exp driver
 To: Barebox List <barebox@lists.infradead.org>
 
-Not all messages return a valid response as they do not send a response
-at all. This is at least true for the SET_GPIO_STATE and SET_GPIO_CONFIG
-messages.
+Enable the recently introduced GPIO exp driver.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-bcm283x/mbox.c | 5 -----
- 1 file changed, 5 deletions(-)
+ arch/arm/configs/rpi_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/mach-bcm283x/mbox.c b/arch/arm/mach-bcm283x/mbox.c
-index b295993359..4405efaffd 100644
---- a/arch/arm/mach-bcm283x/mbox.c
-+++ b/arch/arm/mach-bcm283x/mbox.c
-@@ -137,11 +137,6 @@ int bcm2835_mbox_call_prop(u32 chan, struct bcm2835_mbox_hdr *buffer)
- 	tag = (void *)(buffer + 1);
- 	tag_index = 0;
- 	while (tag->tag) {
--		if (!(tag->val_len & BCM2835_MBOX_TAG_VAL_LEN_RESPONSE)) {
--			printf("mbox: Tag %d missing val_len response bit\n",
--				tag_index);
--			return -EIO;
--		}
- 		/*
- 		 * Clear the reponse bit so clients can just look right at the
- 		 * length field without extra processing
+diff --git a/arch/arm/configs/rpi_defconfig b/arch/arm/configs/rpi_defconfig
+index 9603a0fa30..560b3d1b11 100644
+--- a/arch/arm/configs/rpi_defconfig
++++ b/arch/arm/configs/rpi_defconfig
+@@ -83,6 +83,7 @@ CONFIG_LED_GPIO=y
+ CONFIG_LED_TRIGGERS=y
+ CONFIG_WATCHDOG=y
+ CONFIG_WATCHDOG_BCM2835=y
++CONFIG_GPIO_RASPBERRYPI_EXP=y
+ CONFIG_PINCTRL_BCM283X=y
+ CONFIG_REGULATOR=y
+ CONFIG_FS_EXT4=y
 -- 
 2.24.0
 
