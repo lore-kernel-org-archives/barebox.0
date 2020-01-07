@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ip9io-0005Xk-EP
- for barebox@lists.infradead.org; Wed, 08 Jan 2020 11:41:59 +0000
-Date: Wed, 8 Jan 2020 12:41:56 +0100
+ id 1iolh4-0006jv-SQ
+ for barebox@lists.infradead.org; Tue, 07 Jan 2020 10:02:36 +0000
+Date: Tue, 7 Jan 2020 11:02:31 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200108114156.3nclomi5bua6lcn2@pengutronix.de>
-References: <20200107102515.29198-1-l.stach@pengutronix.de>
+Message-ID: <20200107100231.g5wwq7ockn37e3ag@pengutronix.de>
+References: <XnsAB3D61BD490A1fgotham@195.159.176.226>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200107102515.29198-1-l.stach@pengutronix.de>
+In-Reply-To: <XnsAB3D61BD490A1fgotham@195.159.176.226>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,26 +22,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] esdhc-pbl: allow to skip starting i.MX8 image
-To: Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: Why the internal kernel header?
+To: Frederick Gotham <cauldwell.thomas@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jan 07, 2020 at 11:25:13AM +0100, Lucas Stach wrote:
-> Add an option that allows to just load the image into memory, but
-> return to the calling function instead of directly jumping to the
-> loaded image.
+On Tue, Jan 07, 2020 at 09:36:29AM -0000, Frederick Gotham wrote:
 > 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> ---
->  arch/arm/boards/phytec-som-imx8mq/lowlevel.c |  2 +-
->  arch/arm/boards/zii-imx8mq-dev/lowlevel.c    |  2 +-
->  arch/arm/mach-imx/include/mach/xload.h       |  2 +-
->  drivers/mci/imx-esdhc-pbl.c                  | 22 ++++++++++++--------
->  4 files changed, 16 insertions(+), 12 deletions(-)
+> I'm using Barebox with Buildroot. Previously I was using Barebox version 
+> 2018.12.0, and now I have upgraded to version 2019.12.0.
+> 
+> Barebox version 2019.12.0 won't compile for me with Buildroot, because the 
+> header "<linux/list.h>" is missing.
+> 
+> The reason why this header file is missing is that "list.h" is an internal 
+> kernel header file, rather than a userspace kernel header file.
+> 
+> I could try simply copying "list.h" into the appropriate directory in order 
+> to get Barebox to compile, but I'm not keen on doing that.
+> 
+> Does Barebox really need that header file, and if so, why?
 
-Applied, thanks
+barebox needs that file, but it provides it itself. If it doesn't find
+it during build then your setup seems odd. Could you provide the exact
+error message?
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
