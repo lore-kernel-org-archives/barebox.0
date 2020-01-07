@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay5-d.mail.gandi.net ([217.70.183.197])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ioWIP-0000HT-AK
- for barebox@lists.infradead.org; Mon, 06 Jan 2020 17:36:08 +0000
-From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Mon,  6 Jan 2020 18:35:36 +0100
-Message-Id: <20200106173540.20367-2-ahmad@a3f.at>
-In-Reply-To: <20200106173540.20367-1-ahmad@a3f.at>
-References: <20200106173540.20367-1-ahmad@a3f.at>
+ id 1iolxX-0004mn-9H
+ for barebox@lists.infradead.org; Tue, 07 Jan 2020 10:19:37 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue,  7 Jan 2020 11:19:28 +0100
+Message-Id: <20200107101931.4535-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,49 +19,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC PATCH 1/5] pbl: add block I/O API
-To: barebox@lists.infradead.org
-Cc: lst@pengutronix.de
+Subject: [PATCH 1/4] ARM: bcm2835 mbox: Remove response valid check
+To: Barebox List <barebox@lists.infradead.org>
 
-We already have some PBL MCI implementations in barebox, but none
-are used for chainloading a barebox from a file system.
+Not all messages return a valid response as they do not send a response
+at all. This is at least true for the SET_GPIO_STATE and SET_GPIO_CONFIG
+messages.
 
-In preparation for supporting first stage boot on SoCs where it's
-customary for both the BootROM and first stage bootloader to load the
-follow-up stage from FAT, add a very basic block I/O API that MCI
-drivers can implement.
-
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/pbl.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/arm/mach-bcm283x/mbox.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/include/pbl.h b/include/pbl.h
-index 787bd8293ff1..7cc162dfd039 100644
---- a/include/pbl.h
-+++ b/include/pbl.h
-@@ -7,6 +7,8 @@
- #ifndef __PBL_H__
- #define __PBL_H__
- 
-+#include <linux/types.h>
-+
- extern unsigned long free_mem_ptr;
- extern unsigned long free_mem_end_ptr;
- 
-@@ -14,6 +16,10 @@ void pbl_barebox_uncompress(void *dest, void *compressed_start, unsigned int len
- 
- #ifdef __PBL__
- #define IN_PBL	1
-+struct pbl_bio {
-+	void *priv;
-+	int (*read)(struct pbl_bio *bio, off_t block_off, void *buf, unsigned int nblocks);
-+};
- #else
- #define IN_PBL	0
- #endif
+diff --git a/arch/arm/mach-bcm283x/mbox.c b/arch/arm/mach-bcm283x/mbox.c
+index b295993359..4405efaffd 100644
+--- a/arch/arm/mach-bcm283x/mbox.c
++++ b/arch/arm/mach-bcm283x/mbox.c
+@@ -137,11 +137,6 @@ int bcm2835_mbox_call_prop(u32 chan, struct bcm2835_mbox_hdr *buffer)
+ 	tag = (void *)(buffer + 1);
+ 	tag_index = 0;
+ 	while (tag->tag) {
+-		if (!(tag->val_len & BCM2835_MBOX_TAG_VAL_LEN_RESPONSE)) {
+-			printf("mbox: Tag %d missing val_len response bit\n",
+-				tag_index);
+-			return -EIO;
+-		}
+ 		/*
+ 		 * Clear the reponse bit so clients can just look right at the
+ 		 * length field without extra processing
 -- 
-2.20.1
+2.24.0
 
 
 _______________________________________________
