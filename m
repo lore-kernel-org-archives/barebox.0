@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
- by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ioZ1D-0004mM-Eq
- for barebox@lists.infradead.org; Mon, 06 Jan 2020 20:30:33 +0000
-Received: from astat.fritz.box (a89-183-93-199.net-htp.de [89.183.93.199])
- by lynxeye.de (Postfix) with ESMTPA id 5D238E7421F
- for <barebox@lists.infradead.org>; Mon,  6 Jan 2020 21:29:53 +0100 (CET)
-From: Lucas Stach <dev@lynxeye.de>
-Date: Mon,  6 Jan 2020 21:29:45 +0100
-Message-Id: <20200106202945.4565-2-dev@lynxeye.de>
-In-Reply-To: <20200106202945.4565-1-dev@lynxeye.de>
-References: <20200106202945.4565-1-dev@lynxeye.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1ip9Te-0006rf-7E
+ for barebox@lists.infradead.org; Wed, 08 Jan 2020 11:26:20 +0000
+Date: Wed, 8 Jan 2020 12:26:16 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200108112616.es2pdczdo5n5vcbu@pengutronix.de>
+References: <1578386762-197152-1-git-send-email-m.otto@phytec.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1578386762-197152-1-git-send-email-m.otto@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,40 +22,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ARM: zynq: zed: use zynq_cpu_lowlevel_init()
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v3] habv4: imx change signing area from full to the
+ executed image
+To: Maik Otto <m.otto@phytec.de>
+Cc: barebox@lists.infradead.org
 
-Make sure the required workarounds for CPU errata are applied.
+On Tue, Jan 07, 2020 at 09:46:02AM +0100, Maik Otto wrote:
+> the whole barebox with mbr and partition table were be signed by default.
+> change the signing to the executed image without signing the mbr,
+> partition table and header_gap by imx8mq
+> additional delete option full, from-dcdofs and skip-mbr
+> 
+> Signed-off-by: Maik Otto <m.otto@phytec.de>
+> ---
+> Changes in v3:
+>     - change hardcoded 0x400 to data->image_dcd_offset
+>     - delete offset_load_address
+>     - delete offset_size
+> Changes in v2:
+>     - change subject from habv4: add the possibility to changing the signing
+>       area from Kconfig to     
+>     - delete KConfig entries
+>     - delete changes habv4-imx6-gencsf.h
+>     - delete full, from-dcdofs and skip-mbr options
+> ---
+>  scripts/imx/imx.c | 31 +++++++------------------------
+>  1 file changed, 7 insertions(+), 24 deletions(-)
 
-Signed-off-by: Lucas Stach <dev@lynxeye.de>
----
- arch/arm/boards/avnet-zedboard/lowlevel.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Applied, thanks
 
-diff --git a/arch/arm/boards/avnet-zedboard/lowlevel.c b/arch/arm/boards/avnet-zedboard/lowlevel.c
-index 58f9e40d11c9..c987db75b068 100644
---- a/arch/arm/boards/avnet-zedboard/lowlevel.c
-+++ b/arch/arm/boards/avnet-zedboard/lowlevel.c
-@@ -20,6 +20,7 @@
- #include <io.h>
- #include <asm/barebox-arm.h>
- #include <asm/barebox-arm-head.h>
-+#include <mach/init.h>
- #include <mach/zynq7000-regs.h>
- 
- #define DCI_DONE	(1 << 13)
-@@ -283,7 +284,7 @@ ENTRY_FUNCTION(start_avnet_zedboard, r0, r1, r2)
- 
- 	void *fdt = __dtb_zynq_zed_start + get_runtime_offset();
- 
--	arm_cpu_lowlevel_init();
-+	zynq_cpu_lowlevel_init();
- 
- 	avnet_zedboard_ps7_init();
- 
+Sascha
+
 -- 
-2.24.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
