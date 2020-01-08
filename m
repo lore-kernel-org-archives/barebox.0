@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iolh4-0006jv-SQ
- for barebox@lists.infradead.org; Tue, 07 Jan 2020 10:02:36 +0000
-Date: Tue, 7 Jan 2020 11:02:31 +0100
+ id 1ip9jO-00064A-TM
+ for barebox@lists.infradead.org; Wed, 08 Jan 2020 11:42:36 +0000
+Date: Wed, 8 Jan 2020 12:42:33 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200107100231.g5wwq7ockn37e3ag@pengutronix.de>
-References: <XnsAB3D61BD490A1fgotham@195.159.176.226>
+Message-ID: <20200108114233.3c3alvzniw32dntk@pengutronix.de>
+References: <20200107210746.32371-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <XnsAB3D61BD490A1fgotham@195.159.176.226>
+In-Reply-To: <20200107210746.32371-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,32 +22,19 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Why the internal kernel header?
-To: Frederick Gotham <cauldwell.thomas@gmail.com>
+Subject: Re: [PATCH] include/linux/amba/bus.h: drop unused declarations
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jan 07, 2020 at 09:36:29AM -0000, Frederick Gotham wrote:
-> 
-> I'm using Barebox with Buildroot. Previously I was using Barebox version 
-> 2018.12.0, and now I have upgraded to version 2019.12.0.
-> 
-> Barebox version 2019.12.0 won't compile for me with Buildroot, because the 
-> header "<linux/list.h>" is missing.
-> 
-> The reason why this header file is missing is that "list.h" is an internal 
-> kernel header file, rather than a userspace kernel header file.
-> 
-> I could try simply copying "list.h" into the appropriate directory in order 
-> to get Barebox to compile, but I'm not keen on doing that.
-> 
-> Does Barebox really need that header file, and if so, why?
+On Wed, Jan 08, 2020 at 12:07:46AM +0300, Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  include/linux/amba/bus.h | 6 ------
+>  1 file changed, 6 deletions(-)
 
-barebox needs that file, but it provides it itself. If it doesn't find
-it during build then your setup seems odd. Could you provide the exact
-error message?
+Applied, thanks
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
