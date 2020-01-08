@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x241.google.com ([2a00:1450:4864:20::241])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ipS8J-0001tB-AF
- for barebox@lists.infradead.org; Thu, 09 Jan 2020 07:21:32 +0000
-Received: by mail-lj1-x241.google.com with SMTP id u71so6005697lje.11
- for <barebox@lists.infradead.org>; Wed, 08 Jan 2020 23:21:28 -0800 (PST)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu,  9 Jan 2020 10:21:22 +0300
-Message-Id: <20200109072122.13886-1-antonynpavlov@gmail.com>
+ id 1ip9R1-0004ih-CR
+ for barebox@lists.infradead.org; Wed, 08 Jan 2020 11:23:36 +0000
+Date: Wed, 8 Jan 2020 12:23:33 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200108112333.oq5phovukrcgwh2h@pengutronix.de>
+References: <20200106173540.20367-1-ahmad@a3f.at>
+ <20200106173540.20367-4-ahmad@a3f.at>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200106173540.20367-4-ahmad@a3f.at>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,49 +23,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] MIPS: dts: rename tplink-mr3020.dts -> ar9331_tl_mr3020.dts
-To: barebox@lists.infradead.org
+Subject: Re: [RFC PATCH 3/5] mci: add first-stage at91-sdhci driver
+To: Ahmad Fatoum <ahmad@a3f.at>
+Cc: barebox@lists.infradead.org, lst@pengutronix.de
 
-Linux MIPS uses <soc-name>_<board-name>.dts board dts-file
-naming scheme so use it in barebox too.
+On Mon, Jan 06, 2020 at 06:35:38PM +0100, Ahmad Fatoum wrote:
+> diff --git a/drivers/mci/sdhci.h b/drivers/mci/sdhci.h
+> index a307dc97cd9a..48dc3f36530c 100644
+> --- a/drivers/mci/sdhci.h
+> +++ b/drivers/mci/sdhci.h
+> @@ -38,6 +38,7 @@
+>  #define SDHCI_RESPONSE_1					0x14
+>  #define SDHCI_RESPONSE_2					0x18
+>  #define SDHCI_RESPONSE_3					0x1c
+> +#define SDHCI_RESPONSE(i)					(SDHCI_RESPONSE_0 + 4 * (i))
+>  #define SDHCI_BUFFER						0x20
+>  #define SDHCI_PRESENT_STATE					0x24
+>  #define  SDHCI_WRITE_PROTECT			BIT(19)
+> @@ -53,6 +54,7 @@
+>  #define  SDHCI_CARD_DETECT_SIGNAL_SELECTION	BIT(7)
+>  #define  SDHCI_CARD_DETECT_TEST_LEVEL		BIT(6)
+>  #define  SDHCI_DATA_WIDTH_8BIT			BIT(5)
+> +#define  SDHCI_DMASEL_ADMA32			BIT(4)
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/boards/tplink-mr3020/lowlevel.S                 | 2 +-
- arch/mips/dts/Makefile                                    | 2 +-
- arch/mips/dts/{tplink-mr3020.dts => ar9331_tl_mr3020.dts} | 0
- 3 files changed, 2 insertions(+), 2 deletions(-)
+Have you verified that all bits you add in this file are valid for the
+generic SDHCI controller? There shouldn't be any Atmel specific bits
+between them.
 
-diff --git a/arch/mips/boards/tplink-mr3020/lowlevel.S b/arch/mips/boards/tplink-mr3020/lowlevel.S
-index b96292ecc4..5844530986 100644
---- a/arch/mips/boards/tplink-mr3020/lowlevel.S
-+++ b/arch/mips/boards/tplink-mr3020/lowlevel.S
-@@ -17,4 +17,4 @@ ENTRY_FUNCTION(BOARD_PBL_START)
- 
- 	ar9331_pbl_generic_start
- 
--ENTRY_FUNCTION_END(BOARD_PBL_START, tplink_mr3020, SZ_32M)
-+ENTRY_FUNCTION_END(BOARD_PBL_START, ar9331_tl_mr3020, SZ_32M)
-diff --git a/arch/mips/dts/Makefile b/arch/mips/dts/Makefile
-index 7485f85a14..b3660cd286 100644
---- a/arch/mips/dts/Makefile
-+++ b/arch/mips/dts/Makefile
-@@ -11,7 +11,7 @@ pbl-dtb-$(CONFIG_BOARD_DPTECHNICS_DPT_MODULE) += ar9331-dptechnics-dpt-module.dt
- pbl-dtb-$(CONFIG_BOARD_LOONGSON_TECH_LS1B) += loongson-ls1b.dtb.o
- pbl-dtb-$(CONFIG_BOARD_QEMU_MALTA) += qemu-malta.dtb.o
- pbl-dtb-$(CONFIG_BOARD_RZX50) += rzx50.dtb.o
--pbl-dtb-$(CONFIG_BOARD_TPLINK_MR3020) += tplink-mr3020.dtb.o
-+pbl-dtb-$(CONFIG_BOARD_TPLINK_MR3020) += ar9331_tl_mr3020.dtb.o
- pbl-dtb-$(CONFIG_BOARD_TPLINK_WDR4300) += ar9344-tl-wdr4300-v1.7.dtb.o
- 
- clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts *.dtb.lzo
-diff --git a/arch/mips/dts/tplink-mr3020.dts b/arch/mips/dts/ar9331_tl_mr3020.dts
-similarity index 100%
-rename from arch/mips/dts/tplink-mr3020.dts
-rename to arch/mips/dts/ar9331_tl_mr3020.dts
+Sascha
+
 -- 
-2.24.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
