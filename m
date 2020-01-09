@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
- by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ir5X6-0007no-83
- for barebox@lists.infradead.org; Mon, 13 Jan 2020 19:37:53 +0000
-Received: from astat.fritz.box (a89-183-121-189.net-htp.de [89.183.121.189])
- by lynxeye.de (Postfix) with ESMTPA id EF449E7421F
- for <barebox@lists.infradead.org>; Mon, 13 Jan 2020 20:37:18 +0100 (CET)
-From: Lucas Stach <dev@lynxeye.de>
-Date: Mon, 13 Jan 2020 20:37:14 +0100
-Message-Id: <20200113193716.133305-1-dev@lynxeye.de>
+Received: from mail-lj1-x244.google.com ([2a00:1450:4864:20::244])
+ by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1ipSFa-0005gU-Rg
+ for barebox@lists.infradead.org; Thu, 09 Jan 2020 07:29:04 +0000
+Received: by mail-lj1-x244.google.com with SMTP id w1so6087102ljh.5
+ for <barebox@lists.infradead.org>; Wed, 08 Jan 2020 23:29:02 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Thu,  9 Jan 2020 10:28:54 +0300
+Message-Id: <20200109072855.14154-5-antonynpavlov@gmail.com>
+In-Reply-To: <20200109072855.14154-1-antonynpavlov@gmail.com>
+References: <20200109072855.14154-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,119 +23,99 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] serial: cadence: move register definitions into header
- file
+Subject: [RFC 4/5] net: rtl8169: make it work on big-endian system
 To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Peter Mamonov <pmamonov@gmail.com>
 
-Signed-off-by: Lucas Stach <dev@lynxeye.de>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- drivers/serial/serial_cadence.c | 41 ++++-----------------------------
- include/serial/cadence.h        | 37 +++++++++++++++++++++++++++++
- 2 files changed, 42 insertions(+), 36 deletions(-)
- create mode 100644 include/serial/cadence.h
+ drivers/net/rtl8169.c | 34 +++++++++++++++++-----------------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/serial/serial_cadence.c b/drivers/serial/serial_cadence.c
-index 6454888e3c5b..416800b84723 100644
---- a/drivers/serial/serial_cadence.c
-+++ b/drivers/serial/serial_cadence.c
-@@ -12,47 +12,16 @@
-  * GNU General Public License for more details.
-  *
-  */
-+
- #include <common.h>
- #include <driver.h>
- #include <init.h>
--#include <malloc.h>
--#include <notifier.h>
- #include <io.h>
--#include <linux/err.h>
- #include <linux/clk.h>
--
--#define CADENCE_UART_CONTROL		0x00
--#define CADENCE_UART_MODE		0x04
--#define CADENCE_UART_BAUD_GEN		0x18
--#define CADENCE_UART_CHANNEL_STS	0x2C
--#define CADENCE_UART_RXTXFIFO		0x30
--#define CADENCE_UART_BAUD_DIV		0x34
--
--#define CADENCE_CTRL_RXRES		(1 << 0)
--#define CADENCE_CTRL_TXRES		(1 << 1)
--#define CADENCE_CTRL_RXEN		(1 << 2)
--#define CADENCE_CTRL_RXDIS		(1 << 3)
--#define CADENCE_CTRL_TXEN		(1 << 4)
--#define CADENCE_CTRL_TXDIS		(1 << 5)
--#define CADENCE_CTRL_RSTTO		(1 << 6)
--#define CADENCE_CTRL_STTBRK		(1 << 7)
--#define CADENCE_CTRL_STPBRK		(1 << 8)
--
--#define CADENCE_MODE_CLK_REF		(0 << 0)
--#define CADENCE_MODE_CLK_REF_DIV	(1 << 0)
--#define CADENCE_MODE_CHRL_6		(3 << 1)
--#define CADENCE_MODE_CHRL_7		(2 << 1)
--#define CADENCE_MODE_CHRL_8		(0 << 1)
--#define CADENCE_MODE_PAR_EVEN		(0 << 3)
--#define CADENCE_MODE_PAR_ODD		(1 << 3)
--#define CADENCE_MODE_PAR_SPACE		(2 << 3)
--#define CADENCE_MODE_PAR_MARK		(3 << 3)
--#define CADENCE_MODE_PAR_NONE		(4 << 3)
--
--#define CADENCE_STS_REMPTY		(1 << 1)
--#define CADENCE_STS_RFUL		(1 << 2)
--#define CADENCE_STS_TEMPTY		(1 << 3)
--#define CADENCE_STS_TFUL		(1 << 4)
-+#include <linux/err.h>
-+#include <malloc.h>
-+#include <notifier.h>
-+#include <serial/cadence.h>
+diff --git a/drivers/net/rtl8169.c b/drivers/net/rtl8169.c
+index 80997dc89f..3762cb6354 100644
+--- a/drivers/net/rtl8169.c
++++ b/drivers/net/rtl8169.c
+@@ -230,13 +230,13 @@ static void rtl8169_init_ring(struct rtl8169_priv *priv)
+ 	for (i = 0; i < NUM_RX_DESC; i++) {
+ 		if (i == (NUM_RX_DESC - 1))
+ 			priv->rx_desc[i].status =
+-				BD_STAT_OWN | BD_STAT_EOR | PKT_BUF_SIZE;
++				cpu_to_le32(BD_STAT_OWN | BD_STAT_EOR | PKT_BUF_SIZE);
+ 		else
+ 			priv->rx_desc[i].status =
+-				BD_STAT_OWN | PKT_BUF_SIZE;
++				cpu_to_le32(BD_STAT_OWN | PKT_BUF_SIZE);
  
- /*
-  * create default values for different platforms
-diff --git a/include/serial/cadence.h b/include/serial/cadence.h
-new file mode 100644
-index 000000000000..014fb01203a9
---- /dev/null
-+++ b/include/serial/cadence.h
-@@ -0,0 +1,37 @@
-+#ifndef __CADENCE_UART_H__
-+#define __CADENCE_UART_H__
-+
-+#define CADENCE_UART_CONTROL		0x00
-+#define CADENCE_UART_MODE		0x04
-+#define CADENCE_UART_BAUD_GEN		0x18
-+#define CADENCE_UART_CHANNEL_STS	0x2C
-+#define CADENCE_UART_RXTXFIFO		0x30
-+#define CADENCE_UART_BAUD_DIV		0x34
-+
-+#define CADENCE_CTRL_RXRES		(1 << 0)
-+#define CADENCE_CTRL_TXRES		(1 << 1)
-+#define CADENCE_CTRL_RXEN		(1 << 2)
-+#define CADENCE_CTRL_RXDIS		(1 << 3)
-+#define CADENCE_CTRL_TXEN		(1 << 4)
-+#define CADENCE_CTRL_TXDIS		(1 << 5)
-+#define CADENCE_CTRL_RSTTO		(1 << 6)
-+#define CADENCE_CTRL_STTBRK		(1 << 7)
-+#define CADENCE_CTRL_STPBRK		(1 << 8)
-+
-+#define CADENCE_MODE_CLK_REF		(0 << 0)
-+#define CADENCE_MODE_CLK_REF_DIV	(1 << 0)
-+#define CADENCE_MODE_CHRL_6		(3 << 1)
-+#define CADENCE_MODE_CHRL_7		(2 << 1)
-+#define CADENCE_MODE_CHRL_8		(0 << 1)
-+#define CADENCE_MODE_PAR_EVEN		(0 << 3)
-+#define CADENCE_MODE_PAR_ODD		(1 << 3)
-+#define CADENCE_MODE_PAR_SPACE		(2 << 3)
-+#define CADENCE_MODE_PAR_MARK		(3 << 3)
-+#define CADENCE_MODE_PAR_NONE		(4 << 3)
-+
-+#define CADENCE_STS_REMPTY		(1 << 1)
-+#define CADENCE_STS_RFUL		(1 << 2)
-+#define CADENCE_STS_TEMPTY		(1 << 3)
-+#define CADENCE_STS_TFUL		(1 << 4)
-+
-+#endif /* __CADENCE_UART_H__ */
+ 		priv->rx_desc[i].buf_addr =
+-				virt_to_phys(priv->rx_buf + i * PKT_BUF_SIZE);
++				cpu_to_le32(virt_to_phys(priv->rx_buf + i * PKT_BUF_SIZE));
+ 	}
+ }
+ 
+@@ -358,21 +358,21 @@ static int rtl8169_eth_send(struct eth_device *edev, void *packet,
+ 
+ 	priv->tx_desc[entry].buf_Haddr = 0;
+ 	priv->tx_desc[entry].buf_addr =
+-		virt_to_phys(priv->tx_buf + entry * PKT_BUF_SIZE);
++		cpu_to_le32(virt_to_phys(priv->tx_buf + entry * PKT_BUF_SIZE));
+ 
+ 	if (entry != (NUM_TX_DESC - 1)) {
+ 		priv->tx_desc[entry].status =
+-			BD_STAT_OWN | BD_STAT_FS | BD_STAT_LS |
+-			((packet_length > ETH_ZLEN) ? packet_length : ETH_ZLEN);
++			cpu_to_le32(BD_STAT_OWN | BD_STAT_FS | BD_STAT_LS |
++			((packet_length > ETH_ZLEN) ? packet_length : ETH_ZLEN));
+ 	} else {
+ 		priv->tx_desc[entry].status =
+-			BD_STAT_OWN | BD_STAT_EOR | BD_STAT_FS | BD_STAT_LS |
+-			((packet_length > ETH_ZLEN) ? packet_length : ETH_ZLEN);
++			cpu_to_le32(BD_STAT_OWN | BD_STAT_EOR | BD_STAT_FS | BD_STAT_LS |
++			((packet_length > ETH_ZLEN) ? packet_length : ETH_ZLEN));
+ 	}
+ 
+ 	RTL_W8(priv, TxPoll, 0x40);
+ 
+-	while (priv->tx_desc[entry].status & BD_STAT_OWN)
++	while (le32_to_cpu(priv->tx_desc[entry].status) & BD_STAT_OWN)
+ 		;
+ 
+ 	dma_sync_single_for_cpu((unsigned long)priv->tx_buf + entry *
+@@ -391,9 +391,9 @@ static int rtl8169_eth_rx(struct eth_device *edev)
+ 
+ 	entry = priv->cur_rx % NUM_RX_DESC;
+ 
+-	if ((priv->rx_desc[entry].status & BD_STAT_OWN) == 0) {
+-		if (!(priv->rx_desc[entry].status & BD_STAT_RX_RES)) {
+-			pkt_size = (priv->rx_desc[entry].status & 0x1fff) - 4;
++	if ((le32_to_cpu(priv->rx_desc[entry].status) & BD_STAT_OWN) == 0) {
++		if (!(le32_to_cpu(priv->rx_desc[entry].status) & BD_STAT_RX_RES)) {
++			pkt_size = (le32_to_cpu(priv->rx_desc[entry].status) & 0x1fff) - 4;
+ 
+ 			dma_sync_single_for_cpu((unsigned long)priv->rx_buf
+ 						+ entry * PKT_BUF_SIZE,
+@@ -407,14 +407,14 @@ static int rtl8169_eth_rx(struct eth_device *edev)
+ 						   pkt_size, DMA_FROM_DEVICE);
+ 
+ 			if (entry == NUM_RX_DESC - 1)
+-				priv->rx_desc[entry].status = BD_STAT_OWN |
+-					BD_STAT_EOR | PKT_BUF_SIZE;
++				priv->rx_desc[entry].status = cpu_to_le32(BD_STAT_OWN |
++					BD_STAT_EOR | PKT_BUF_SIZE);
+ 			else
+ 				priv->rx_desc[entry].status =
+-					BD_STAT_OWN | PKT_BUF_SIZE;
++					cpu_to_le32(BD_STAT_OWN | PKT_BUF_SIZE);
+ 			priv->rx_desc[entry].buf_addr =
+-				virt_to_phys(priv->rx_buf +
+-				             entry * PKT_BUF_SIZE);
++				cpu_to_le32(virt_to_phys(priv->rx_buf +
++				             entry * PKT_BUF_SIZE));
+ 		} else {
+ 			dev_err(&edev->dev, "rx error\n");
+ 		}
 -- 
-2.24.1
+2.24.0
 
 
 _______________________________________________
