@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lj1-x244.google.com ([2a00:1450:4864:20::244])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ipsrk-0006Mh-Uu
- for barebox@lists.infradead.org; Fri, 10 Jan 2020 11:54:14 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 10 Jan 2020 12:54:09 +0100
-Message-Id: <20200110115410.18265-5-s.hauer@pengutronix.de>
-In-Reply-To: <20200110115410.18265-1-s.hauer@pengutronix.de>
-References: <20200110115410.18265-1-s.hauer@pengutronix.de>
+ id 1ipSFa-0005fe-70
+ for barebox@lists.infradead.org; Thu, 09 Jan 2020 07:29:03 +0000
+Received: by mail-lj1-x244.google.com with SMTP id z22so6114786ljg.1
+ for <barebox@lists.infradead.org>; Wed, 08 Jan 2020 23:29:01 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Thu,  9 Jan 2020 10:28:53 +0300
+Message-Id: <20200109072855.14154-4-antonynpavlov@gmail.com>
+In-Reply-To: <20200109072855.14154-1-antonynpavlov@gmail.com>
+References: <20200109072855.14154-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,47 +23,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] net: fsl-fman: Do not put hardware in reset before Linux
- start
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [RFC 3/5] net: e1000: make it work on MIPS
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Peter Mamonov <pmamonov@gmail.com>
 
-Linux depends on the icid values configured in the DPAA. Do not put
-the hardware into reset in order to preserve the register values.
-Without this, the IOMMU doesn't work properly.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- drivers/net/fsl-fman.c | 8 --------
- 1 file changed, 8 deletions(-)
+ drivers/net/e1000/e1000.h | 2 ++
+ drivers/net/e1000/main.c  | 8 ++++----
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/fsl-fman.c b/drivers/net/fsl-fman.c
-index 1aae58e494..6d54fcc7c9 100644
---- a/drivers/net/fsl-fman.c
-+++ b/drivers/net/fsl-fman.c
-@@ -1322,13 +1322,6 @@ static int fsl_fman_probe(struct device_d *dev)
- 	return 0;
- }
+diff --git a/drivers/net/e1000/e1000.h b/drivers/net/e1000/e1000.h
+index 52ad3d4cdb..d26e6dcc02 100644
+--- a/drivers/net/e1000/e1000.h
++++ b/drivers/net/e1000/e1000.h
+@@ -2180,7 +2180,9 @@ struct e1000_hw {
+ 	struct mii_bus miibus;
  
--static void fsl_fman_remove(struct device_d *dev)
--{
--	struct ccsr_fman *reg = dev->priv;
--
--	setbits_be32(&reg->fm_fpm.fmrstc, FMFP_RSTC_RFM);
--}
--
- static struct of_device_id fsl_fman_dt_ids[] = {
- 	{
- 		.compatible = "fsl,fman",
-@@ -1339,7 +1332,6 @@ static struct of_device_id fsl_fman_dt_ids[] = {
- static struct driver_d fman_driver = {
- 	.name   = "fsl-fman",
- 	.probe  = fsl_fman_probe,
--	.remove = fsl_fman_remove,
- 	.of_compatible = DRV_OF_COMPAT(fsl_fman_dt_ids),
- };
- device_platform_driver(fman_driver);
+ 	struct e1000_tx_desc *tx_base;
++	dma_addr_t tx_base_phys;
+ 	struct e1000_rx_desc *rx_base;
++	dma_addr_t rx_base_phys;
+ 	unsigned char *packet;
+ 	dma_addr_t packet_dma;
+ 
+diff --git a/drivers/net/e1000/main.c b/drivers/net/e1000/main.c
+index f67c5d867b..69b1516640 100644
+--- a/drivers/net/e1000/main.c
++++ b/drivers/net/e1000/main.c
+@@ -3232,7 +3232,7 @@ static void e1000_configure_tx(struct e1000_hw *hw)
+ 	unsigned long tctl;
+ 	unsigned long tipg, tarc;
+ 	uint32_t ipgr1, ipgr2;
+-	const unsigned long tx_base = (unsigned long)hw->tx_base;
++	const unsigned long tx_base = (unsigned long)hw->tx_base_phys;
+ 
+ 	e1000_write_reg(hw, E1000_TDBAL, lower_32_bits(tx_base));
+ 	e1000_write_reg(hw, E1000_TDBAH, upper_32_bits(tx_base));
+@@ -3351,7 +3351,7 @@ static void e1000_setup_rctl(struct e1000_hw *hw)
+ static void e1000_configure_rx(struct e1000_hw *hw)
+ {
+ 	unsigned long rctl, ctrl_ext;
+-	const unsigned long rx_base = (unsigned long)hw->rx_base;
++	const unsigned long rx_base = (unsigned long)hw->rx_base_phys;
+ 
+ 	hw->rx_tail = 0;
+ 	/* make sure receives are disabled while setting up the descriptors */
+@@ -3564,8 +3564,8 @@ static int e1000_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 
+ 	hw = xzalloc(sizeof(*hw));
+ 
+-	hw->tx_base = dma_alloc_coherent(16 * sizeof(*hw->tx_base), DMA_ADDRESS_BROKEN);
+-	hw->rx_base = dma_alloc_coherent(16 * sizeof(*hw->rx_base), DMA_ADDRESS_BROKEN);
++	hw->tx_base = dma_alloc_coherent(16 * sizeof(*hw->tx_base), &hw->tx_base_phys);
++	hw->rx_base = dma_alloc_coherent(16 * sizeof(*hw->rx_base), &hw->rx_base_phys);
+ 
+ 	edev = &hw->edev;
+ 
 -- 
-2.25.0.rc1
+2.24.0
 
 
 _______________________________________________
