@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x241.google.com ([2a00:1450:4864:20::241])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ipSFX-0005f2-7O
- for barebox@lists.infradead.org; Thu, 09 Jan 2020 07:29:00 +0000
-Received: by mail-lj1-x241.google.com with SMTP id y6so6135782lji.0
- for <barebox@lists.infradead.org>; Wed, 08 Jan 2020 23:28:58 -0800 (PST)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu,  9 Jan 2020 10:28:50 +0300
-Message-Id: <20200109072855.14154-1-antonynpavlov@gmail.com>
+ id 1ipsrk-0006Mf-Uo
+ for barebox@lists.infradead.org; Fri, 10 Jan 2020 11:54:14 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 10 Jan 2020 12:54:07 +0100
+Message-Id: <20200110115410.18265-3-s.hauer@pengutronix.de>
+In-Reply-To: <20200110115410.18265-1-s.hauer@pengutronix.de>
+References: <20200110115410.18265-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,36 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 0/5] WIP: MIPS: implement dma mapping functions
-To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Peter Mamonov <pmamonov@gmail.com>
+Subject: [PATCH 2/5] include/soc/fsl: remove unused function prototypes
+To: Barebox List <barebox@lists.infradead.org>
 
-Implementing dma mapping function on MIPS makes it possible
-to use e1000 and rtl8169 PCI network cards.
+include/soc/fsl/fsl_qbman.h contains function prototypes we do not
+implement, drop them.
 
-At the moment e1000 works under qemu. However additional
-dma mapping functions testing on real hardware is necessary.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ include/soc/fsl/fsl_qbman.h | 5 -----
+ 1 file changed, 5 deletions(-)
 
-Antony Pavlov (4):
-  WIP: MIPS: implement dma mapping functions
-  net: e1000: make it work on MIPS
-  net: rtl8169: make it work on big-endian system
-  MIPS: qemu-malta_defconfig: enable e1000 network driver
-
-Peter Mamonov (1):
-  WIP: MIPS: configure ebase according CONFIG_MMU
-
- arch/mips/boot/main_entry.c            |  5 ++++
- arch/mips/configs/qemu-malta_defconfig |  1 +
- arch/mips/include/asm/dma-mapping.h    |  2 +-
- arch/mips/lib/dma-default.c            | 22 +++++++++++++++--
- drivers/net/e1000/e1000.h              |  2 ++
- drivers/net/e1000/main.c               |  8 +++---
- drivers/net/rtl8169.c                  | 34 +++++++++++++-------------
- 7 files changed, 50 insertions(+), 24 deletions(-)
-
+diff --git a/include/soc/fsl/fsl_qbman.h b/include/soc/fsl/fsl_qbman.h
+index 4687eb9bb1..10cbb16833 100644
+--- a/include/soc/fsl/fsl_qbman.h
++++ b/include/soc/fsl/fsl_qbman.h
+@@ -5,11 +5,6 @@
+ 
+ #ifndef __FSL_QBMAN_H__
+ #define __FSL_QBMAN_H__
+-void fdt_fixup_qportals(void *blob);
+-void fdt_fixup_bportals(void *blob);
+-void inhibit_portals(void __iomem *addr, int max_portals,
+-		     int arch_max_portals, int portal_cinh_size);
+-void setup_qbman_portals(void);
+ 
+ struct ccsr_qman {
+ #ifdef CONFIG_SYS_FSL_QMAN_V3
 -- 
-2.24.0
+2.25.0.rc1
 
 
 _______________________________________________
