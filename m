@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x242.google.com ([2a00:1450:4864:20::242])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ipSFZ-0005fL-6W
- for barebox@lists.infradead.org; Thu, 09 Jan 2020 07:29:02 +0000
-Received: by mail-lj1-x242.google.com with SMTP id z22so6114741ljg.1
- for <barebox@lists.infradead.org>; Wed, 08 Jan 2020 23:29:00 -0800 (PST)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu,  9 Jan 2020 10:28:52 +0300
-Message-Id: <20200109072855.14154-3-antonynpavlov@gmail.com>
-In-Reply-To: <20200109072855.14154-1-antonynpavlov@gmail.com>
-References: <20200109072855.14154-1-antonynpavlov@gmail.com>
+ id 1ipsrk-0006Mh-Uu
+ for barebox@lists.infradead.org; Fri, 10 Jan 2020 11:54:14 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 10 Jan 2020 12:54:09 +0100
+Message-Id: <20200110115410.18265-5-s.hauer@pengutronix.de>
+In-Reply-To: <20200110115410.18265-1-s.hauer@pengutronix.de>
+References: <20200110115410.18265-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,61 +17,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 2/5] WIP: MIPS: implement dma mapping functions
-To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Peter Mamonov <pmamonov@gmail.com>
+Subject: [PATCH 4/5] net: fsl-fman: Do not put hardware in reset before Linux
+ start
+To: Barebox List <barebox@lists.infradead.org>
 
-VE9ETzogZml4IHdhcm5pbmdzCgphcmNoL21pcHMvaW5jbHVkZS9hc20vZG1hLW1hcHBpbmcuaDog
-SW4gZnVuY3Rpb24g4oCYZG1hX2ZyZWVfY29oZXJlbnTigJk6CmFyY2gvbWlwcy9pbmNsdWRlL2Fz
-bS9kbWEtbWFwcGluZy5oOjMxOjIxOiB3YXJuaW5nOiBwYXNzaW5nIGFyZ3VtZW50IDEgb2Yg4oCY
-cGh5c190b192aXJ04oCZCm1ha2VzIGludGVnZXIgZnJvbSBwb2ludGVyIHdpdGhvdXQgYSBjYXN0
-IFstV2ludC1jb252ZXJzaW9uXQogICBmcmVlKHBoeXNfdG9fdmlydCh2YWRkcikpOwogICAgICAg
-ICAgICAgICAgICAgICBefn5+fgpJbiBmaWxlIGluY2x1ZGVkIGZyb20gaW5jbHVkZS9jb21tb24u
-aDozMzowLAogICAgICAgICAgICAgICAgIGZyb20gZHJpdmVycy9uZXQvZTEwMDAvbWFpbi5jOjMy
-OgphcmNoL21pcHMvaW5jbHVkZS9hc20vaW8uaDo0MDoyMTogbm90ZTogZXhwZWN0ZWQg4oCYbG9u
-ZyB1bnNpZ25lZCBpbnTigJkgYnV0IGFyZ3VtZW50IGlzIG9mIHR5cGUg4oCYdm9pZCAq4oCZCiBz
-dGF0aWMgaW5saW5lIHZvaWQgKnBoeXNfdG9fdmlydCh1bnNpZ25lZCBsb25nIGFkZHJlc3MpCiAg
-ICAgICAgICAgICAgICAgICAgIF5+fn5+fn5+fn5+fgoKU2lnbmVkLW9mZi1ieTogQW50b255IFBh
-dmxvdiA8YW50b255bnBhdmxvdkBnbWFpbC5jb20+ClNpZ25lZC1vZmYtYnk6IFBldGVyIE1hbW9u
-b3YgPHBtYW1vbm92QGdtYWlsLmNvbT4KLS0tCiBhcmNoL21pcHMvaW5jbHVkZS9hc20vZG1hLW1h
-cHBpbmcuaCB8ICAyICstCiBhcmNoL21pcHMvbGliL2RtYS1kZWZhdWx0LmMgICAgICAgICB8IDIy
-ICsrKysrKysrKysrKysrKysrKysrLS0KIDIgZmlsZXMgY2hhbmdlZCwgMjEgaW5zZXJ0aW9ucygr
-KSwgMyBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9hcmNoL21pcHMvaW5jbHVkZS9hc20vZG1h
-LW1hcHBpbmcuaCBiL2FyY2gvbWlwcy9pbmNsdWRlL2FzbS9kbWEtbWFwcGluZy5oCmluZGV4IGM3
-MWEwODcwMzguLjUwMTNlN2IzNjkgMTAwNjQ0Ci0tLSBhL2FyY2gvbWlwcy9pbmNsdWRlL2FzbS9k
-bWEtbWFwcGluZy5oCisrKyBiL2FyY2gvbWlwcy9pbmNsdWRlL2FzbS9kbWEtbWFwcGluZy5oCkBA
-IC0yOCw3ICsyOCw3IEBAIHN0YXRpYyBpbmxpbmUgdm9pZCBkbWFfZnJlZV9jb2hlcmVudCh2b2lk
-ICp2YWRkciwgZG1hX2FkZHJfdCBkbWFfaGFuZGxlLAogCQkJCSAgICAgc2l6ZV90IHNpemUpCiB7
-CiAJaWYgKElTX0VOQUJMRUQoQ09ORklHX01NVSkpCi0JCWZyZWUoKHZvaWQgKilDS1NFRzBBRERS
-KHZhZGRyKSk7CisJCWZyZWUocGh5c190b192aXJ0KHZhZGRyKSk7CiAJZWxzZQogCQlmcmVlKHZh
-ZGRyKTsKIH0KZGlmZiAtLWdpdCBhL2FyY2gvbWlwcy9saWIvZG1hLWRlZmF1bHQuYyBiL2FyY2gv
-bWlwcy9saWIvZG1hLWRlZmF1bHQuYwppbmRleCBmYmU2MjdjMjRjLi40MGNhZjZmOTFiIDEwMDY0
-NAotLS0gYS9hcmNoL21pcHMvbGliL2RtYS1kZWZhdWx0LmMKKysrIGIvYXJjaC9taXBzL2xpYi9k
-bWEtZGVmYXVsdC5jCkBAIC04LDkgKzgsMTEgQEAKIAogI2lmIGRlZmluZWQoQ09ORklHX0NQVV9N
-SVBTMzIpIHx8IFwKIAlkZWZpbmVkKENPTkZJR19DUFVfTUlQUzY0KQotc3RhdGljIGlubGluZSB2
-b2lkIF9fZG1hX3N5bmNfbWlwcyh1bnNpZ25lZCBsb25nIGFkZHIsIHNpemVfdCBzaXplLAorc3Rh
-dGljIGlubGluZSB2b2lkIF9fZG1hX3N5bmNfbWlwcyhkbWFfYWRkcl90IF9hZGRyLCBzaXplX3Qg
-c2l6ZSwKIAkJCQkgICBlbnVtIGRtYV9kYXRhX2RpcmVjdGlvbiBkaXJlY3Rpb24pCiB7CisJdm9p
-ZCAqYWRkciA9IHBoeXNfdG9fdmlydChfYWRkcik7CisKIAlzd2l0Y2ggKGRpcmVjdGlvbikgewog
-CWNhc2UgRE1BX1RPX0RFVklDRToKIAkJZG1hX2ZsdXNoX3JhbmdlKGFkZHIsIGFkZHIgKyBzaXpl
-KTsKQEAgLTI5LDcgKzMxLDcgQEAgc3RhdGljIGlubGluZSB2b2lkIF9fZG1hX3N5bmNfbWlwcyh1
-bnNpZ25lZCBsb25nIGFkZHIsIHNpemVfdCBzaXplLAogCX0KIH0KICNlbHNlCi1zdGF0aWMgaW5s
-aW5lIHZvaWQgX19kbWFfc3luY19taXBzKHZvaWQgKmFkZHIsIHNpemVfdCBzaXplLAorc3RhdGlj
-IGlubGluZSB2b2lkIF9fZG1hX3N5bmNfbWlwcyhkbWFfYWRkcl90IGFkZHIsIHNpemVfdCBzaXpl
-LAogCWVudW0gZG1hX2RhdGFfZGlyZWN0aW9uIGRpcmVjdGlvbikKIHsKIH0KQEAgLTQ2LDMgKzQ4
-LDE5IEBAIHZvaWQgZG1hX3N5bmNfc2luZ2xlX2Zvcl9kZXZpY2UoZG1hX2FkZHJfdCBhZGRyZXNz
-LCBzaXplX3Qgc2l6ZSwKIHsKIAlfX2RtYV9zeW5jX21pcHMoYWRkcmVzcywgc2l6ZSwgZGlyKTsK
-IH0KKworZG1hX2FkZHJfdCBkbWFfbWFwX3NpbmdsZShzdHJ1Y3QgZGV2aWNlX2QgKmRldiwgdm9p
-ZCAqcHRyLCBzaXplX3Qgc2l6ZSwKKwkJCSAgZW51bSBkbWFfZGF0YV9kaXJlY3Rpb24gZGlyKQor
-eworCXVuc2lnbmVkIGxvbmcgYWRkciA9IHZpcnRfdG9fcGh5cyhwdHIpOworCisJZG1hX3N5bmNf
-c2luZ2xlX2Zvcl9kZXZpY2UoYWRkciwgc2l6ZSwgZGlyKTsKKworCXJldHVybiBhZGRyOworfQor
-Cit2b2lkIGRtYV91bm1hcF9zaW5nbGUoc3RydWN0IGRldmljZV9kICpkZXYsIGRtYV9hZGRyX3Qg
-YWRkciwgc2l6ZV90IHNpemUsCisJCSAgICAgIGVudW0gZG1hX2RhdGFfZGlyZWN0aW9uIGRpcikK
-K3sKKwlkbWFfc3luY19zaW5nbGVfZm9yX2NwdShhZGRyLCBzaXplLCBkaXIpOworfQotLSAKMi4y
-NC4wCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFy
-ZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0
-cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Linux depends on the icid values configured in the DPAA. Do not put
+the hardware into reset in order to preserve the register values.
+Without this, the IOMMU doesn't work properly.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/net/fsl-fman.c | 8 --------
+ 1 file changed, 8 deletions(-)
+
+diff --git a/drivers/net/fsl-fman.c b/drivers/net/fsl-fman.c
+index 1aae58e494..6d54fcc7c9 100644
+--- a/drivers/net/fsl-fman.c
++++ b/drivers/net/fsl-fman.c
+@@ -1322,13 +1322,6 @@ static int fsl_fman_probe(struct device_d *dev)
+ 	return 0;
+ }
+ 
+-static void fsl_fman_remove(struct device_d *dev)
+-{
+-	struct ccsr_fman *reg = dev->priv;
+-
+-	setbits_be32(&reg->fm_fpm.fmrstc, FMFP_RSTC_RFM);
+-}
+-
+ static struct of_device_id fsl_fman_dt_ids[] = {
+ 	{
+ 		.compatible = "fsl,fman",
+@@ -1339,7 +1332,6 @@ static struct of_device_id fsl_fman_dt_ids[] = {
+ static struct driver_d fman_driver = {
+ 	.name   = "fsl-fman",
+ 	.probe  = fsl_fman_probe,
+-	.remove = fsl_fman_remove,
+ 	.of_compatible = DRV_OF_COMPAT(fsl_fman_dt_ids),
+ };
+ device_platform_driver(fman_driver);
+-- 
+2.25.0.rc1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
