@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iqtWv-0007CI-Kh
- for barebox@lists.infradead.org; Mon, 13 Jan 2020 06:48:55 +0000
-References: <20200109072855.14154-1-antonynpavlov@gmail.com>
- <20200109072855.14154-2-antonynpavlov@gmail.com>
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Message-ID: <e96e0f13-c679-57ae-acbe-a4c4ac21406d@pengutronix.de>
-Date: Mon, 13 Jan 2020 07:48:48 +0100
+ id 1iqxWY-0006oY-9o
+ for barebox@lists.infradead.org; Mon, 13 Jan 2020 11:04:47 +0000
+Date: Mon, 13 Jan 2020 12:04:42 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200113110442.fhi6vodwirt5el2m@pengutronix.de>
+References: <99c3d904-b27d-57ad-89ee-ee2510391618@data-modul.com>
 MIME-Version: 1.0
-In-Reply-To: <20200109072855.14154-2-antonynpavlov@gmail.com>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <99c3d904-b27d-57ad-89ee-ee2510391618@data-modul.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,80 +18,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 1/5] WIP: MIPS: configure ebase according CONFIG_MMU
-To: Antony Pavlov <antonynpavlov@gmail.com>, barebox@lists.infradead.org
-Cc: Peter Mamonov <pmamonov@gmail.com>
+Subject: Re: barebox for iMX8MMini crashes while usb_rescan for USB type A
+To: "Albert, Elmar" <EAlbert@data-modul.com>
+Cc: andrew.smirnov@gmail.com, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi,
+Hi Albert,
 
-On 09.01.20 08:28, Antony Pavlov wrote:
-> From: Peter Mamonov <pmamonov@gmail.com>
+On Mon, Jan 13, 2020 at 07:54:54AM +0000, Albert, Elmar wrote:
+> Hello everybody,
 > 
-> Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->   arch/mips/boot/main_entry.c | 5 +++++
->   1 file changed, 5 insertions(+)
+> I'm working on a customer board based on an iMX8MMini using Barebox
+> based on version 2019.05.0. We have problems to bring-up the USB with
+> type A connector,
+> we are not using type C as on the NXP EVK.
 > 
-> diff --git a/arch/mips/boot/main_entry.c b/arch/mips/boot/main_entry.c
-> index 2c18bc81c3..41350aad18 100644
-> --- a/arch/mips/boot/main_entry.c
-> +++ b/arch/mips/boot/main_entry.c
-> @@ -34,7 +34,11 @@ static void trap_init(void)
->   
->   	unsigned long ebase;
->   
-> +#ifdef CONFIG_MMU
-> +	ebase = CKSEG0;
-> +#else
->   	ebase = CKSEG1;
-> +#endif
->   
->   	/*
->   	 * Copy the generic exception handlers to their final destination.
-> @@ -56,6 +60,7 @@ static void trap_init(void)
->   	/* FIXME: handle tlb */
->   	memcpy((void *)(ebase), &except_vec3_generic, 0x80);
->   
-> +	write_c0_ebase(ebase);
-
-The spec says:
-"The reset state of bits 31..12 of the EBase register initialize the exception base 
-register to 0x8000.0000, providing backward compatibility with Release 1 implementations.
-....
-If the write-gate bit is not implemented, bits 31..30 of the EBase register are fixed with 
-the value 0b10,and the addi-tion of the base address and the exception offset is done 
-inhibiting a carry between bit 29 and bit 30 of the final excep-tion address. The 
-combination of these two restrictions forces the final exception address to be in the 
-kseg0 or kseg1 unmapped virtual address segments. For cache error exceptions, bit 29 is 
-forced to a 1 in the ultimate exception base address so that this exception always runs in 
-the kseg1 unmapped, uncached virtual address segment."
-
-
-So, in case of MMU the reset value stay unchanged = KSEG0 (cached), but the cpu will jump 
-to KSEG1 (uncached) in case of cache related exception any way. In case of CONFIG_MMU=n, 
-we force to work with KSEG1 (uncached) for all types of exceptions.
-
-So, if I see it correctly, this fix is needed anyway and not DMA related. Correct?
-Can you please add this to commit message, to let no MIPS reviewers understand what is 
-here happening.
-
->   	/* unset BOOT EXCEPTION VECTOR bit */
->   	write_c0_status(read_c0_status() & ~ST0_BEV);
->   }
+> I added the iMX8MMini to the drivers/usb/imx/imx-usb-misc.c completely
+> separated from the already implementation for the iMX7D.
 > 
+> When starting an usb_rescan using the usb command, barebox crashes with
+> an exception. I updated the usb driver to version 2019.12.0, but get the
+> same behaviour,
+> it crashes with an exception:
+> 
+> DABT (current EL) exception (ESR 0x96000061) at 0x000000005ff4005c
 
-Kind regards,
-Oleksij Rempel
+The problem seems to be here that memset is called on non aligned memory
+that is allocated with dma_alloc_coherent(). On ARM64 we have memset
+implemented like this:
+
+void *memset(void *dst, int c, __kernel_size_t size)
+{
+        if (likely(get_cr() & CR_M))
+                return __arch_memset(dst, c, size);
+
+        return __default_memset(dst, c, size);
+}
+
+As you found out __arch_memset() crashes in your case. The test
+get_cr() & CR_M isn't quite correct here. We must test here how the page
+is mapped, not if the MMU is enabled. This test might be too expensive
+here, so that it's probably better to introduce and use memset_io here
+which doesn't try this optimization.
+
+Andrey, as you introduced this code, do you have any ideas to share what
+we want to do here?
+
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
