@@ -1,11 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1irKoA-0002EL-J0
- for barebox@lists.infradead.org; Tue, 14 Jan 2020 11:56:33 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 14 Jan 2020 12:56:26 +0100
-Message-Id: <20200114115626.1553-1-s.hauer@pengutronix.de>
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+ by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1ir5X8-0007oJ-4s
+ for barebox@lists.infradead.org; Mon, 13 Jan 2020 19:37:55 +0000
+Received: from astat.fritz.box (a89-183-121-189.net-htp.de [89.183.121.189])
+ by lynxeye.de (Postfix) with ESMTPA id 60E10E74240
+ for <barebox@lists.infradead.org>; Mon, 13 Jan 2020 20:37:19 +0100 (CET)
+From: Lucas Stach <dev@lynxeye.de>
+Date: Mon, 13 Jan 2020 20:37:16 +0100
+Message-Id: <20200113193716.133305-3-dev@lynxeye.de>
+In-Reply-To: <20200113193716.133305-1-dev@lynxeye.de>
+References: <20200113193716.133305-1-dev@lynxeye.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,71 +24,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] usb: ehci: Do not use memset on dma coherent memory
-To: Barebox List <barebox@lists.infradead.org>
-Cc: EAlbert@data-modul.com
+Subject: [PATCH 3/3] ARM: zynq: zedboard: add PBL console support
+To: barebox@lists.infradead.org
 
-memset is an optimized operation that at least on ARM64 may only be
-called on cached memory, see 32e8842c40 ("ARM: lib64: Make string
-functions aware of MMU configuration"). To avoid crashes in the ehci
-driver we no longer call memset on memory allocated with
-dma_alloc_coherent(), but use a simple memzero32 function instead.
+Allows for significantly easier debugging of PBL functions.
 
-Reported-by: Elmar Albert <EAlbert@data-modul.com>
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/usb/host/ehci-hcd.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ arch/arm/boards/avnet-zedboard/lowlevel.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index f3be177ceb..417ae5df75 100644
---- a/drivers/usb/host/ehci-hcd.c
-+++ b/drivers/usb/host/ehci-hcd.c
-@@ -137,6 +137,15 @@ static struct descriptor {
+diff --git a/arch/arm/boards/avnet-zedboard/lowlevel.c b/arch/arm/boards/avnet-zedboard/lowlevel.c
+index 8edc6293f210..912eb11fdac0 100644
+--- a/arch/arm/boards/avnet-zedboard/lowlevel.c
++++ b/arch/arm/boards/avnet-zedboard/lowlevel.c
+@@ -22,6 +22,7 @@
+ #include <asm/barebox-arm-head.h>
+ #include <mach/init.h>
+ #include <mach/zynq7000-regs.h>
++#include <serial/cadence.h>
  
- #define ehci_is_TDI()	(ehci->flags & EHCI_HAS_TT)
+ #define DCI_DONE	(1 << 13)
+ #define PLL_ARM_LOCK	(1 << 0)
+@@ -279,6 +280,18 @@ static void avnet_zedboard_ps7_init(void)
+ 	writel(0x0000767B, ZYNQ_SLCR_LOCK);
+ }
  
-+static void memzero32(void *ptr, size_t size)
++static void avnet_zedboard_pbl_console_init(void)
 +{
-+	uint32_t *ptr32 = ptr;
-+	int i;
++	relocate_to_current_adr();
++	setup_c();
++	barrier();
 +
-+	for (i = 0; i < size / sizeof(uint32_t); i++)
-+		ptr32[i] = 0x0;
++	cadence_uart_init((void *)ZYNQ_UART1_BASE_ADDR);
++	pbl_set_putc(cadence_uart_putc, (void *)ZYNQ_UART1_BASE_ADDR);
++
++	pr_debug("\nAvnet ZedBoard PBL\n");
 +}
 +
- static int handshake(uint32_t *ptr, uint32_t mask, uint32_t done, int usec)
+ ENTRY_FUNCTION(start_avnet_zedboard, r0, r1, r2)
  {
- 	uint32_t result;
-@@ -237,7 +246,7 @@ static int ehci_prepare_qtd(struct device_d *dev,
- 		if (ret)
- 			return ret;
- 	} else {
--		memset(td->qt_buffer, 0, sizeof(td->qt_buffer));
-+		memzero32(td->qt_buffer, sizeof(td->qt_buffer));
- 	}
  
- 	return 0;
-@@ -318,7 +327,7 @@ ehci_submit_async(struct usb_device *dev, unsigned long pipe, void *buffer,
- 	qh->qh_endpt2 = cpu_to_hc32(endpt);
- 	qh->qh_curtd = 0;
- 	qh->qt_token = 0;
--	memset(qh->qt_buffer, 0, sizeof(qh->qt_buffer));
-+	memzero32(qh->qt_buffer, sizeof(qh->qt_buffer));
+@@ -289,5 +302,8 @@ ENTRY_FUNCTION(start_avnet_zedboard, r0, r1, r2)
  
- 	tdp = &qh->qt_next;
+ 	avnet_zedboard_ps7_init();
  
-@@ -854,7 +863,7 @@ static int ehci_init(struct usb_host *host)
- 	 */
- 	ehci->periodic_schedules = 0;
- 	periodic = ehci->periodic_queue;
--	memset(periodic, 0, sizeof(*periodic));
-+	memzero32(periodic, sizeof(*periodic));
- 	periodic->qh_link = cpu_to_hc32(QH_LINK_TERMINATE);
- 	periodic->qt_next = cpu_to_hc32(QT_NEXT_TERMINATE);
- 	periodic->qt_altnext = cpu_to_hc32(QT_NEXT_TERMINATE);
++	if (IS_ENABLED(CONFIG_PBL_CONSOLE))
++		avnet_zedboard_pbl_console_init();
++
+ 	barebox_arm_entry(0, SZ_512M, fdt);
+ }
 -- 
-2.25.0.rc1
+2.24.1
 
 
 _______________________________________________
