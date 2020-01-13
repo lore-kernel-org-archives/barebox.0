@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ipSFc-0005hr-6n
- for barebox@lists.infradead.org; Thu, 09 Jan 2020 07:29:05 +0000
-Received: by mail-lj1-x230.google.com with SMTP id z22so6114887ljg.1
- for <barebox@lists.infradead.org>; Wed, 08 Jan 2020 23:29:03 -0800 (PST)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu,  9 Jan 2020 10:28:55 +0300
-Message-Id: <20200109072855.14154-6-antonynpavlov@gmail.com>
-In-Reply-To: <20200109072855.14154-1-antonynpavlov@gmail.com>
+ id 1iqv3X-0004PV-Tf
+ for barebox@lists.infradead.org; Mon, 13 Jan 2020 08:26:41 +0000
 References: <20200109072855.14154-1-antonynpavlov@gmail.com>
+ <20200109072855.14154-3-antonynpavlov@gmail.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Message-ID: <deb20a19-7177-5ab6-bf86-65ead7a9ae19@pengutronix.de>
+Date: Mon, 13 Jan 2020 09:26:36 +0100
 MIME-Version: 1.0
+In-Reply-To: <20200109072855.14154-3-antonynpavlov@gmail.com>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,36 +19,73 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 5/5] MIPS: qemu-malta_defconfig: enable e1000 network driver
-To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Peter Mamonov <pmamonov@gmail.com>
+Subject: Re: [RFC 2/5] WIP: MIPS: implement dma mapping functions
+To: Antony Pavlov <antonynpavlov@gmail.com>, barebox@lists.infradead.org
+Cc: Peter Mamonov <pmamonov@gmail.com>
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/configs/qemu-malta_defconfig | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/mips/configs/qemu-malta_defconfig b/arch/mips/configs/qemu-malta_defconfig
-index 2465c0260d..1625d68874 100644
---- a/arch/mips/configs/qemu-malta_defconfig
-+++ b/arch/mips/configs/qemu-malta_defconfig
-@@ -59,6 +59,7 @@ CONFIG_NET_NFS=y
- CONFIG_NET_NETCONSOLE=y
- CONFIG_OFDEVICE=y
- CONFIG_OF_BAREBOX_DRIVERS=y
-+CONFIG_DRIVER_NET_E1000=y
- CONFIG_DRIVER_NET_RTL8139=y
- # CONFIG_SPI is not set
- CONFIG_I2C=y
--- 
-2.24.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+CgpPbiAwOS4wMS4yMCAwODoyOCwgQW50b255IFBhdmxvdiB3cm90ZToKPiBUT0RPOiBmaXggd2Fy
+bmluZ3MKPiAKPiBhcmNoL21pcHMvaW5jbHVkZS9hc20vZG1hLW1hcHBpbmcuaDogSW4gZnVuY3Rp
+b24g4oCYZG1hX2ZyZWVfY29oZXJlbnTigJk6Cj4gYXJjaC9taXBzL2luY2x1ZGUvYXNtL2RtYS1t
+YXBwaW5nLmg6MzE6MjE6IHdhcm5pbmc6IHBhc3NpbmcgYXJndW1lbnQgMSBvZiDigJhwaHlzX3Rv
+X3ZpcnTigJkKPiBtYWtlcyBpbnRlZ2VyIGZyb20gcG9pbnRlciB3aXRob3V0IGEgY2FzdCBbLVdp
+bnQtY29udmVyc2lvbl0KPiAgICAgZnJlZShwaHlzX3RvX3ZpcnQodmFkZHIpKTsKPiAgICAgICAg
+ICAgICAgICAgICAgICAgXn5+fn4KPiBJbiBmaWxlIGluY2x1ZGVkIGZyb20gaW5jbHVkZS9jb21t
+b24uaDozMzowLAo+ICAgICAgICAgICAgICAgICAgIGZyb20gZHJpdmVycy9uZXQvZTEwMDAvbWFp
+bi5jOjMyOgo+IGFyY2gvbWlwcy9pbmNsdWRlL2FzbS9pby5oOjQwOjIxOiBub3RlOiBleHBlY3Rl
+ZCDigJhsb25nIHVuc2lnbmVkIGludOKAmSBidXQgYXJndW1lbnQgaXMgb2YgdHlwZSDigJh2b2lk
+ICrigJkKPiAgIHN0YXRpYyBpbmxpbmUgdm9pZCAqcGh5c190b192aXJ0KHVuc2lnbmVkIGxvbmcg
+YWRkcmVzcykKPiAgICAgICAgICAgICAgICAgICAgICAgXn5+fn5+fn5+fn5+Cj4gCj4gU2lnbmVk
+LW9mZi1ieTogQW50b255IFBhdmxvdiA8YW50b255bnBhdmxvdkBnbWFpbC5jb20+Cj4gU2lnbmVk
+LW9mZi1ieTogUGV0ZXIgTWFtb25vdiA8cG1hbW9ub3ZAZ21haWwuY29tPgo+IC0tLQo+ICAgYXJj
+aC9taXBzL2luY2x1ZGUvYXNtL2RtYS1tYXBwaW5nLmggfCAgMiArLQo+ICAgYXJjaC9taXBzL2xp
+Yi9kbWEtZGVmYXVsdC5jICAgICAgICAgfCAyMiArKysrKysrKysrKysrKysrKysrKy0tCj4gICAy
+IGZpbGVzIGNoYW5nZWQsIDIxIGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pCj4gCj4gZGlm
+ZiAtLWdpdCBhL2FyY2gvbWlwcy9pbmNsdWRlL2FzbS9kbWEtbWFwcGluZy5oIGIvYXJjaC9taXBz
+L2luY2x1ZGUvYXNtL2RtYS1tYXBwaW5nLmgKPiBpbmRleCBjNzFhMDg3MDM4Li41MDEzZTdiMzY5
+IDEwMDY0NAo+IC0tLSBhL2FyY2gvbWlwcy9pbmNsdWRlL2FzbS9kbWEtbWFwcGluZy5oCj4gKysr
+IGIvYXJjaC9taXBzL2luY2x1ZGUvYXNtL2RtYS1tYXBwaW5nLmgKPiBAQCAtMjgsNyArMjgsNyBA
+QCBzdGF0aWMgaW5saW5lIHZvaWQgZG1hX2ZyZWVfY29oZXJlbnQodm9pZCAqdmFkZHIsIGRtYV9h
+ZGRyX3QgZG1hX2hhbmRsZSwKPiAgIAkJCQkgICAgIHNpemVfdCBzaXplKQo+ICAgewo+ICAgCWlm
+IChJU19FTkFCTEVEKENPTkZJR19NTVUpKQo+IC0JCWZyZWUoKHZvaWQgKilDS1NFRzBBRERSKHZh
+ZGRyKSk7Cj4gKwkJZnJlZShwaHlzX3RvX3ZpcnQodmFkZHIpKTsKPiAgIAllbHNlCj4gICAJCWZy
+ZWUodmFkZHIpOwo+ICAgfQo+IGRpZmYgLS1naXQgYS9hcmNoL21pcHMvbGliL2RtYS1kZWZhdWx0
+LmMgYi9hcmNoL21pcHMvbGliL2RtYS1kZWZhdWx0LmMKPiBpbmRleCBmYmU2MjdjMjRjLi40MGNh
+ZjZmOTFiIDEwMDY0NAo+IC0tLSBhL2FyY2gvbWlwcy9saWIvZG1hLWRlZmF1bHQuYwo+ICsrKyBi
+L2FyY2gvbWlwcy9saWIvZG1hLWRlZmF1bHQuYwo+IEBAIC04LDkgKzgsMTEgQEAKPiAgIAo+ICAg
+I2lmIGRlZmluZWQoQ09ORklHX0NQVV9NSVBTMzIpIHx8IFwKPiAgIAlkZWZpbmVkKENPTkZJR19D
+UFVfTUlQUzY0KQo+IC1zdGF0aWMgaW5saW5lIHZvaWQgX19kbWFfc3luY19taXBzKHVuc2lnbmVk
+IGxvbmcgYWRkciwgc2l6ZV90IHNpemUsCj4gK3N0YXRpYyBpbmxpbmUgdm9pZCBfX2RtYV9zeW5j
+X21pcHMoZG1hX2FkZHJfdCBfYWRkciwgc2l6ZV90IHNpemUsCj4gICAJCQkJICAgZW51bSBkbWFf
+ZGF0YV9kaXJlY3Rpb24gZGlyZWN0aW9uKQo+ICAgewo+ICsJdm9pZCAqYWRkciA9IHBoeXNfdG9f
+dmlydChfYWRkcik7Cj4gKwo+ICAgCXN3aXRjaCAoZGlyZWN0aW9uKSB7Cj4gICAJY2FzZSBETUFf
+VE9fREVWSUNFOgo+ICAgCQlkbWFfZmx1c2hfcmFuZ2UoYWRkciwgYWRkciArIHNpemUpOwo+IEBA
+IC0yOSw3ICszMSw3IEBAIHN0YXRpYyBpbmxpbmUgdm9pZCBfX2RtYV9zeW5jX21pcHModW5zaWdu
+ZWQgbG9uZyBhZGRyLCBzaXplX3Qgc2l6ZSwKPiAgIAl9Cj4gICB9Cj4gICAjZWxzZQo+IC1zdGF0
+aWMgaW5saW5lIHZvaWQgX19kbWFfc3luY19taXBzKHZvaWQgKmFkZHIsIHNpemVfdCBzaXplLAo+
+ICtzdGF0aWMgaW5saW5lIHZvaWQgX19kbWFfc3luY19taXBzKGRtYV9hZGRyX3QgYWRkciwgc2l6
+ZV90IHNpemUsCj4gICAJZW51bSBkbWFfZGF0YV9kaXJlY3Rpb24gZGlyZWN0aW9uKQo+ICAgewo+
+ICAgfQo+IEBAIC00NiwzICs0OCwxOSBAQCB2b2lkIGRtYV9zeW5jX3NpbmdsZV9mb3JfZGV2aWNl
+KGRtYV9hZGRyX3QgYWRkcmVzcywgc2l6ZV90IHNpemUsCj4gICB7Cj4gICAJX19kbWFfc3luY19t
+aXBzKGFkZHJlc3MsIHNpemUsIGRpcik7Cj4gICB9Cj4gKwo+ICtkbWFfYWRkcl90IGRtYV9tYXBf
+c2luZ2xlKHN0cnVjdCBkZXZpY2VfZCAqZGV2LCB2b2lkICpwdHIsIHNpemVfdCBzaXplLAo+ICsJ
+CQkgIGVudW0gZG1hX2RhdGFfZGlyZWN0aW9uIGRpcikKPiArewo+ICsJdW5zaWduZWQgbG9uZyBh
+ZGRyID0gdmlydF90b19waHlzKHB0cik7Cj4gKwo+ICsJZG1hX3N5bmNfc2luZ2xlX2Zvcl9kZXZp
+Y2UoYWRkciwgc2l6ZSwgZGlyKTsKCkhtLi4gaSB3YXMgdGhpbmtpbmcgSGl0IEludmFsaWRhdGUg
+RCBpbnN0cnVjdGlvbiB3b3JrcyB3aXRoIFZpcnR1YWwgYWRkcmVzc2VzLiBBcmUgeW91IApzdXJl
+IHdlIG5lZWQgdG8gdXNlIHZpcnRfdG9fcGh5cygpIGhlcmU/Cgo+ICsKPiArCXJldHVybiBhZGRy
+Owo+ICt9Cj4gKwo+ICt2b2lkIGRtYV91bm1hcF9zaW5nbGUoc3RydWN0IGRldmljZV9kICpkZXYs
+IGRtYV9hZGRyX3QgYWRkciwgc2l6ZV90IHNpemUsCj4gKwkJICAgICAgZW51bSBkbWFfZGF0YV9k
+aXJlY3Rpb24gZGlyKQo+ICt7Cj4gKwlkbWFfc3luY19zaW5nbGVfZm9yX2NwdShhZGRyLCBzaXpl
+LCBkaXIpOwo+ICt9Cj4gCgpLaW5kIHJlZ2FyZHMsCk9sZWtzaWogUmVtcGVsCgotLSAKUGVuZ3V0
+cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgIHwKSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwg
+aHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxk
+ZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmlj
+aHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkx
+Ny01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+CmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8v
+bGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
