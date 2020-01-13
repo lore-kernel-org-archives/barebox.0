@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iqv3X-0004PV-Tf
- for barebox@lists.infradead.org; Mon, 13 Jan 2020 08:26:41 +0000
-References: <20200109072855.14154-1-antonynpavlov@gmail.com>
- <20200109072855.14154-3-antonynpavlov@gmail.com>
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Message-ID: <deb20a19-7177-5ab6-bf86-65ead7a9ae19@pengutronix.de>
-Date: Mon, 13 Jan 2020 09:26:36 +0100
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+ by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1ir5X6-0007no-83
+ for barebox@lists.infradead.org; Mon, 13 Jan 2020 19:37:53 +0000
+Received: from astat.fritz.box (a89-183-121-189.net-htp.de [89.183.121.189])
+ by lynxeye.de (Postfix) with ESMTPA id EF449E7421F
+ for <barebox@lists.infradead.org>; Mon, 13 Jan 2020 20:37:18 +0100 (CET)
+From: Lucas Stach <dev@lynxeye.de>
+Date: Mon, 13 Jan 2020 20:37:14 +0100
+Message-Id: <20200113193716.133305-1-dev@lynxeye.de>
 MIME-Version: 1.0
-In-Reply-To: <20200109072855.14154-3-antonynpavlov@gmail.com>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,73 +18,126 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 2/5] WIP: MIPS: implement dma mapping functions
-To: Antony Pavlov <antonynpavlov@gmail.com>, barebox@lists.infradead.org
-Cc: Peter Mamonov <pmamonov@gmail.com>
+Subject: [PATCH 1/3] serial: cadence: move register definitions into header
+ file
+To: barebox@lists.infradead.org
 
-CgpPbiAwOS4wMS4yMCAwODoyOCwgQW50b255IFBhdmxvdiB3cm90ZToKPiBUT0RPOiBmaXggd2Fy
-bmluZ3MKPiAKPiBhcmNoL21pcHMvaW5jbHVkZS9hc20vZG1hLW1hcHBpbmcuaDogSW4gZnVuY3Rp
-b24g4oCYZG1hX2ZyZWVfY29oZXJlbnTigJk6Cj4gYXJjaC9taXBzL2luY2x1ZGUvYXNtL2RtYS1t
-YXBwaW5nLmg6MzE6MjE6IHdhcm5pbmc6IHBhc3NpbmcgYXJndW1lbnQgMSBvZiDigJhwaHlzX3Rv
-X3ZpcnTigJkKPiBtYWtlcyBpbnRlZ2VyIGZyb20gcG9pbnRlciB3aXRob3V0IGEgY2FzdCBbLVdp
-bnQtY29udmVyc2lvbl0KPiAgICAgZnJlZShwaHlzX3RvX3ZpcnQodmFkZHIpKTsKPiAgICAgICAg
-ICAgICAgICAgICAgICAgXn5+fn4KPiBJbiBmaWxlIGluY2x1ZGVkIGZyb20gaW5jbHVkZS9jb21t
-b24uaDozMzowLAo+ICAgICAgICAgICAgICAgICAgIGZyb20gZHJpdmVycy9uZXQvZTEwMDAvbWFp
-bi5jOjMyOgo+IGFyY2gvbWlwcy9pbmNsdWRlL2FzbS9pby5oOjQwOjIxOiBub3RlOiBleHBlY3Rl
-ZCDigJhsb25nIHVuc2lnbmVkIGludOKAmSBidXQgYXJndW1lbnQgaXMgb2YgdHlwZSDigJh2b2lk
-ICrigJkKPiAgIHN0YXRpYyBpbmxpbmUgdm9pZCAqcGh5c190b192aXJ0KHVuc2lnbmVkIGxvbmcg
-YWRkcmVzcykKPiAgICAgICAgICAgICAgICAgICAgICAgXn5+fn5+fn5+fn5+Cj4gCj4gU2lnbmVk
-LW9mZi1ieTogQW50b255IFBhdmxvdiA8YW50b255bnBhdmxvdkBnbWFpbC5jb20+Cj4gU2lnbmVk
-LW9mZi1ieTogUGV0ZXIgTWFtb25vdiA8cG1hbW9ub3ZAZ21haWwuY29tPgo+IC0tLQo+ICAgYXJj
-aC9taXBzL2luY2x1ZGUvYXNtL2RtYS1tYXBwaW5nLmggfCAgMiArLQo+ICAgYXJjaC9taXBzL2xp
-Yi9kbWEtZGVmYXVsdC5jICAgICAgICAgfCAyMiArKysrKysrKysrKysrKysrKysrKy0tCj4gICAy
-IGZpbGVzIGNoYW5nZWQsIDIxIGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pCj4gCj4gZGlm
-ZiAtLWdpdCBhL2FyY2gvbWlwcy9pbmNsdWRlL2FzbS9kbWEtbWFwcGluZy5oIGIvYXJjaC9taXBz
-L2luY2x1ZGUvYXNtL2RtYS1tYXBwaW5nLmgKPiBpbmRleCBjNzFhMDg3MDM4Li41MDEzZTdiMzY5
-IDEwMDY0NAo+IC0tLSBhL2FyY2gvbWlwcy9pbmNsdWRlL2FzbS9kbWEtbWFwcGluZy5oCj4gKysr
-IGIvYXJjaC9taXBzL2luY2x1ZGUvYXNtL2RtYS1tYXBwaW5nLmgKPiBAQCAtMjgsNyArMjgsNyBA
-QCBzdGF0aWMgaW5saW5lIHZvaWQgZG1hX2ZyZWVfY29oZXJlbnQodm9pZCAqdmFkZHIsIGRtYV9h
-ZGRyX3QgZG1hX2hhbmRsZSwKPiAgIAkJCQkgICAgIHNpemVfdCBzaXplKQo+ICAgewo+ICAgCWlm
-IChJU19FTkFCTEVEKENPTkZJR19NTVUpKQo+IC0JCWZyZWUoKHZvaWQgKilDS1NFRzBBRERSKHZh
-ZGRyKSk7Cj4gKwkJZnJlZShwaHlzX3RvX3ZpcnQodmFkZHIpKTsKPiAgIAllbHNlCj4gICAJCWZy
-ZWUodmFkZHIpOwo+ICAgfQo+IGRpZmYgLS1naXQgYS9hcmNoL21pcHMvbGliL2RtYS1kZWZhdWx0
-LmMgYi9hcmNoL21pcHMvbGliL2RtYS1kZWZhdWx0LmMKPiBpbmRleCBmYmU2MjdjMjRjLi40MGNh
-ZjZmOTFiIDEwMDY0NAo+IC0tLSBhL2FyY2gvbWlwcy9saWIvZG1hLWRlZmF1bHQuYwo+ICsrKyBi
-L2FyY2gvbWlwcy9saWIvZG1hLWRlZmF1bHQuYwo+IEBAIC04LDkgKzgsMTEgQEAKPiAgIAo+ICAg
-I2lmIGRlZmluZWQoQ09ORklHX0NQVV9NSVBTMzIpIHx8IFwKPiAgIAlkZWZpbmVkKENPTkZJR19D
-UFVfTUlQUzY0KQo+IC1zdGF0aWMgaW5saW5lIHZvaWQgX19kbWFfc3luY19taXBzKHVuc2lnbmVk
-IGxvbmcgYWRkciwgc2l6ZV90IHNpemUsCj4gK3N0YXRpYyBpbmxpbmUgdm9pZCBfX2RtYV9zeW5j
-X21pcHMoZG1hX2FkZHJfdCBfYWRkciwgc2l6ZV90IHNpemUsCj4gICAJCQkJICAgZW51bSBkbWFf
-ZGF0YV9kaXJlY3Rpb24gZGlyZWN0aW9uKQo+ICAgewo+ICsJdm9pZCAqYWRkciA9IHBoeXNfdG9f
-dmlydChfYWRkcik7Cj4gKwo+ICAgCXN3aXRjaCAoZGlyZWN0aW9uKSB7Cj4gICAJY2FzZSBETUFf
-VE9fREVWSUNFOgo+ICAgCQlkbWFfZmx1c2hfcmFuZ2UoYWRkciwgYWRkciArIHNpemUpOwo+IEBA
-IC0yOSw3ICszMSw3IEBAIHN0YXRpYyBpbmxpbmUgdm9pZCBfX2RtYV9zeW5jX21pcHModW5zaWdu
-ZWQgbG9uZyBhZGRyLCBzaXplX3Qgc2l6ZSwKPiAgIAl9Cj4gICB9Cj4gICAjZWxzZQo+IC1zdGF0
-aWMgaW5saW5lIHZvaWQgX19kbWFfc3luY19taXBzKHZvaWQgKmFkZHIsIHNpemVfdCBzaXplLAo+
-ICtzdGF0aWMgaW5saW5lIHZvaWQgX19kbWFfc3luY19taXBzKGRtYV9hZGRyX3QgYWRkciwgc2l6
-ZV90IHNpemUsCj4gICAJZW51bSBkbWFfZGF0YV9kaXJlY3Rpb24gZGlyZWN0aW9uKQo+ICAgewo+
-ICAgfQo+IEBAIC00NiwzICs0OCwxOSBAQCB2b2lkIGRtYV9zeW5jX3NpbmdsZV9mb3JfZGV2aWNl
-KGRtYV9hZGRyX3QgYWRkcmVzcywgc2l6ZV90IHNpemUsCj4gICB7Cj4gICAJX19kbWFfc3luY19t
-aXBzKGFkZHJlc3MsIHNpemUsIGRpcik7Cj4gICB9Cj4gKwo+ICtkbWFfYWRkcl90IGRtYV9tYXBf
-c2luZ2xlKHN0cnVjdCBkZXZpY2VfZCAqZGV2LCB2b2lkICpwdHIsIHNpemVfdCBzaXplLAo+ICsJ
-CQkgIGVudW0gZG1hX2RhdGFfZGlyZWN0aW9uIGRpcikKPiArewo+ICsJdW5zaWduZWQgbG9uZyBh
-ZGRyID0gdmlydF90b19waHlzKHB0cik7Cj4gKwo+ICsJZG1hX3N5bmNfc2luZ2xlX2Zvcl9kZXZp
-Y2UoYWRkciwgc2l6ZSwgZGlyKTsKCkhtLi4gaSB3YXMgdGhpbmtpbmcgSGl0IEludmFsaWRhdGUg
-RCBpbnN0cnVjdGlvbiB3b3JrcyB3aXRoIFZpcnR1YWwgYWRkcmVzc2VzLiBBcmUgeW91IApzdXJl
-IHdlIG5lZWQgdG8gdXNlIHZpcnRfdG9fcGh5cygpIGhlcmU/Cgo+ICsKPiArCXJldHVybiBhZGRy
-Owo+ICt9Cj4gKwo+ICt2b2lkIGRtYV91bm1hcF9zaW5nbGUoc3RydWN0IGRldmljZV9kICpkZXYs
-IGRtYV9hZGRyX3QgYWRkciwgc2l6ZV90IHNpemUsCj4gKwkJICAgICAgZW51bSBkbWFfZGF0YV9k
-aXJlY3Rpb24gZGlyKQo+ICt7Cj4gKwlkbWFfc3luY19zaW5nbGVfZm9yX2NwdShhZGRyLCBzaXpl
-LCBkaXIpOwo+ICt9Cj4gCgpLaW5kIHJlZ2FyZHMsCk9sZWtzaWogUmVtcGVsCgotLSAKUGVuZ3V0
-cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgIHwKSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwg
-aHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxk
-ZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmlj
-aHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkx
-Ny01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8v
-bGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
+---
+ drivers/serial/serial_cadence.c | 41 ++++-----------------------------
+ include/serial/cadence.h        | 37 +++++++++++++++++++++++++++++
+ 2 files changed, 42 insertions(+), 36 deletions(-)
+ create mode 100644 include/serial/cadence.h
+
+diff --git a/drivers/serial/serial_cadence.c b/drivers/serial/serial_cadence.c
+index 6454888e3c5b..416800b84723 100644
+--- a/drivers/serial/serial_cadence.c
++++ b/drivers/serial/serial_cadence.c
+@@ -12,47 +12,16 @@
+  * GNU General Public License for more details.
+  *
+  */
++
+ #include <common.h>
+ #include <driver.h>
+ #include <init.h>
+-#include <malloc.h>
+-#include <notifier.h>
+ #include <io.h>
+-#include <linux/err.h>
+ #include <linux/clk.h>
+-
+-#define CADENCE_UART_CONTROL		0x00
+-#define CADENCE_UART_MODE		0x04
+-#define CADENCE_UART_BAUD_GEN		0x18
+-#define CADENCE_UART_CHANNEL_STS	0x2C
+-#define CADENCE_UART_RXTXFIFO		0x30
+-#define CADENCE_UART_BAUD_DIV		0x34
+-
+-#define CADENCE_CTRL_RXRES		(1 << 0)
+-#define CADENCE_CTRL_TXRES		(1 << 1)
+-#define CADENCE_CTRL_RXEN		(1 << 2)
+-#define CADENCE_CTRL_RXDIS		(1 << 3)
+-#define CADENCE_CTRL_TXEN		(1 << 4)
+-#define CADENCE_CTRL_TXDIS		(1 << 5)
+-#define CADENCE_CTRL_RSTTO		(1 << 6)
+-#define CADENCE_CTRL_STTBRK		(1 << 7)
+-#define CADENCE_CTRL_STPBRK		(1 << 8)
+-
+-#define CADENCE_MODE_CLK_REF		(0 << 0)
+-#define CADENCE_MODE_CLK_REF_DIV	(1 << 0)
+-#define CADENCE_MODE_CHRL_6		(3 << 1)
+-#define CADENCE_MODE_CHRL_7		(2 << 1)
+-#define CADENCE_MODE_CHRL_8		(0 << 1)
+-#define CADENCE_MODE_PAR_EVEN		(0 << 3)
+-#define CADENCE_MODE_PAR_ODD		(1 << 3)
+-#define CADENCE_MODE_PAR_SPACE		(2 << 3)
+-#define CADENCE_MODE_PAR_MARK		(3 << 3)
+-#define CADENCE_MODE_PAR_NONE		(4 << 3)
+-
+-#define CADENCE_STS_REMPTY		(1 << 1)
+-#define CADENCE_STS_RFUL		(1 << 2)
+-#define CADENCE_STS_TEMPTY		(1 << 3)
+-#define CADENCE_STS_TFUL		(1 << 4)
++#include <linux/err.h>
++#include <malloc.h>
++#include <notifier.h>
++#include <serial/cadence.h>
+ 
+ /*
+  * create default values for different platforms
+diff --git a/include/serial/cadence.h b/include/serial/cadence.h
+new file mode 100644
+index 000000000000..014fb01203a9
+--- /dev/null
++++ b/include/serial/cadence.h
+@@ -0,0 +1,37 @@
++#ifndef __CADENCE_UART_H__
++#define __CADENCE_UART_H__
++
++#define CADENCE_UART_CONTROL		0x00
++#define CADENCE_UART_MODE		0x04
++#define CADENCE_UART_BAUD_GEN		0x18
++#define CADENCE_UART_CHANNEL_STS	0x2C
++#define CADENCE_UART_RXTXFIFO		0x30
++#define CADENCE_UART_BAUD_DIV		0x34
++
++#define CADENCE_CTRL_RXRES		(1 << 0)
++#define CADENCE_CTRL_TXRES		(1 << 1)
++#define CADENCE_CTRL_RXEN		(1 << 2)
++#define CADENCE_CTRL_RXDIS		(1 << 3)
++#define CADENCE_CTRL_TXEN		(1 << 4)
++#define CADENCE_CTRL_TXDIS		(1 << 5)
++#define CADENCE_CTRL_RSTTO		(1 << 6)
++#define CADENCE_CTRL_STTBRK		(1 << 7)
++#define CADENCE_CTRL_STPBRK		(1 << 8)
++
++#define CADENCE_MODE_CLK_REF		(0 << 0)
++#define CADENCE_MODE_CLK_REF_DIV	(1 << 0)
++#define CADENCE_MODE_CHRL_6		(3 << 1)
++#define CADENCE_MODE_CHRL_7		(2 << 1)
++#define CADENCE_MODE_CHRL_8		(0 << 1)
++#define CADENCE_MODE_PAR_EVEN		(0 << 3)
++#define CADENCE_MODE_PAR_ODD		(1 << 3)
++#define CADENCE_MODE_PAR_SPACE		(2 << 3)
++#define CADENCE_MODE_PAR_MARK		(3 << 3)
++#define CADENCE_MODE_PAR_NONE		(4 << 3)
++
++#define CADENCE_STS_REMPTY		(1 << 1)
++#define CADENCE_STS_RFUL		(1 << 2)
++#define CADENCE_STS_TEMPTY		(1 << 3)
++#define CADENCE_STS_TFUL		(1 << 4)
++
++#endif /* __CADENCE_UART_H__ */
+-- 
+2.24.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
