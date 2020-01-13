@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x244.google.com ([2a00:1450:4864:20::244])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ipSFa-0005gU-Rg
- for barebox@lists.infradead.org; Thu, 09 Jan 2020 07:29:04 +0000
-Received: by mail-lj1-x244.google.com with SMTP id w1so6087102ljh.5
- for <barebox@lists.infradead.org>; Wed, 08 Jan 2020 23:29:02 -0800 (PST)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu,  9 Jan 2020 10:28:54 +0300
-Message-Id: <20200109072855.14154-5-antonynpavlov@gmail.com>
-In-Reply-To: <20200109072855.14154-1-antonynpavlov@gmail.com>
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+ by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1ir53a-0004WH-7i
+ for barebox@lists.infradead.org; Mon, 13 Jan 2020 19:07:24 +0000
+Message-ID: <b29aadb633dda02bb26b062338e1cd8f19f4dd61.camel@lynxeye.de>
+From: Lucas Stach <dev@lynxeye.de>
+Date: Mon, 13 Jan 2020 20:06:43 +0100
+In-Reply-To: <0e202cc5-a5af-309e-c55c-5c508592fa9d@pengutronix.de>
 References: <20200109072855.14154-1-antonynpavlov@gmail.com>
+ <20200109072855.14154-4-antonynpavlov@gmail.com>
+ <0e202cc5-a5af-309e-c55c-5c508592fa9d@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,99 +23,90 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 4/5] net: rtl8169: make it work on big-endian system
-To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Peter Mamonov <pmamonov@gmail.com>
+Subject: Re: [RFC 3/5] net: e1000: make it work on MIPS
+To: Oleksij Rempel <o.rempel@pengutronix.de>, Antony Pavlov <antonynpavlov@gmail.com>, barebox@lists.infradead.org
+Cc: Peter Mamonov <pmamonov@gmail.com>
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- drivers/net/rtl8169.c | 34 +++++++++++++++++-----------------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+Am Montag, den 13.01.2020, 08:29 +0100 schrieb Oleksij Rempel:
+> Hm... how was it working before? We was just lucky to have physical address equal to 
+> virtual. I would say, it is not really MIPS only fix.
 
-diff --git a/drivers/net/rtl8169.c b/drivers/net/rtl8169.c
-index 80997dc89f..3762cb6354 100644
---- a/drivers/net/rtl8169.c
-+++ b/drivers/net/rtl8169.c
-@@ -230,13 +230,13 @@ static void rtl8169_init_ring(struct rtl8169_priv *priv)
- 	for (i = 0; i < NUM_RX_DESC; i++) {
- 		if (i == (NUM_RX_DESC - 1))
- 			priv->rx_desc[i].status =
--				BD_STAT_OWN | BD_STAT_EOR | PKT_BUF_SIZE;
-+				cpu_to_le32(BD_STAT_OWN | BD_STAT_EOR | PKT_BUF_SIZE);
- 		else
- 			priv->rx_desc[i].status =
--				BD_STAT_OWN | PKT_BUF_SIZE;
-+				cpu_to_le32(BD_STAT_OWN | PKT_BUF_SIZE);
- 
- 		priv->rx_desc[i].buf_addr =
--				virt_to_phys(priv->rx_buf + i * PKT_BUF_SIZE);
-+				cpu_to_le32(virt_to_phys(priv->rx_buf + i * PKT_BUF_SIZE));
- 	}
- }
- 
-@@ -358,21 +358,21 @@ static int rtl8169_eth_send(struct eth_device *edev, void *packet,
- 
- 	priv->tx_desc[entry].buf_Haddr = 0;
- 	priv->tx_desc[entry].buf_addr =
--		virt_to_phys(priv->tx_buf + entry * PKT_BUF_SIZE);
-+		cpu_to_le32(virt_to_phys(priv->tx_buf + entry * PKT_BUF_SIZE));
- 
- 	if (entry != (NUM_TX_DESC - 1)) {
- 		priv->tx_desc[entry].status =
--			BD_STAT_OWN | BD_STAT_FS | BD_STAT_LS |
--			((packet_length > ETH_ZLEN) ? packet_length : ETH_ZLEN);
-+			cpu_to_le32(BD_STAT_OWN | BD_STAT_FS | BD_STAT_LS |
-+			((packet_length > ETH_ZLEN) ? packet_length : ETH_ZLEN));
- 	} else {
- 		priv->tx_desc[entry].status =
--			BD_STAT_OWN | BD_STAT_EOR | BD_STAT_FS | BD_STAT_LS |
--			((packet_length > ETH_ZLEN) ? packet_length : ETH_ZLEN);
-+			cpu_to_le32(BD_STAT_OWN | BD_STAT_EOR | BD_STAT_FS | BD_STAT_LS |
-+			((packet_length > ETH_ZLEN) ? packet_length : ETH_ZLEN));
- 	}
- 
- 	RTL_W8(priv, TxPoll, 0x40);
- 
--	while (priv->tx_desc[entry].status & BD_STAT_OWN)
-+	while (le32_to_cpu(priv->tx_desc[entry].status) & BD_STAT_OWN)
- 		;
- 
- 	dma_sync_single_for_cpu((unsigned long)priv->tx_buf + entry *
-@@ -391,9 +391,9 @@ static int rtl8169_eth_rx(struct eth_device *edev)
- 
- 	entry = priv->cur_rx % NUM_RX_DESC;
- 
--	if ((priv->rx_desc[entry].status & BD_STAT_OWN) == 0) {
--		if (!(priv->rx_desc[entry].status & BD_STAT_RX_RES)) {
--			pkt_size = (priv->rx_desc[entry].status & 0x1fff) - 4;
-+	if ((le32_to_cpu(priv->rx_desc[entry].status) & BD_STAT_OWN) == 0) {
-+		if (!(le32_to_cpu(priv->rx_desc[entry].status) & BD_STAT_RX_RES)) {
-+			pkt_size = (le32_to_cpu(priv->rx_desc[entry].status) & 0x1fff) - 4;
- 
- 			dma_sync_single_for_cpu((unsigned long)priv->rx_buf
- 						+ entry * PKT_BUF_SIZE,
-@@ -407,14 +407,14 @@ static int rtl8169_eth_rx(struct eth_device *edev)
- 						   pkt_size, DMA_FROM_DEVICE);
- 
- 			if (entry == NUM_RX_DESC - 1)
--				priv->rx_desc[entry].status = BD_STAT_OWN |
--					BD_STAT_EOR | PKT_BUF_SIZE;
-+				priv->rx_desc[entry].status = cpu_to_le32(BD_STAT_OWN |
-+					BD_STAT_EOR | PKT_BUF_SIZE);
- 			else
- 				priv->rx_desc[entry].status =
--					BD_STAT_OWN | PKT_BUF_SIZE;
-+					cpu_to_le32(BD_STAT_OWN | PKT_BUF_SIZE);
- 			priv->rx_desc[entry].buf_addr =
--				virt_to_phys(priv->rx_buf +
--				             entry * PKT_BUF_SIZE);
-+				cpu_to_le32(virt_to_phys(priv->rx_buf +
-+				             entry * PKT_BUF_SIZE));
- 		} else {
- 			dev_err(&edev->dev, "rx error\n");
- 		}
--- 
-2.24.0
+Yes, drivers using DMA_ADDRESS_BROKEN don't work on any
+architecture/SoC that doesn't have a 1:1 CPU to DMA address mapping.
+The name of that define might give a slight hint to that fact. ;)
+
+Regards,
+Lucas
+
+> Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> 
+> On 09.01.20 08:28, Antony Pavlov wrote:
+> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> > ---
+> >   drivers/net/e1000/e1000.h | 2 ++
+> >   drivers/net/e1000/main.c  | 8 ++++----
+> >   2 files changed, 6 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/drivers/net/e1000/e1000.h b/drivers/net/e1000/e1000.h
+> > index 52ad3d4cdb..d26e6dcc02 100644
+> > --- a/drivers/net/e1000/e1000.h
+> > +++ b/drivers/net/e1000/e1000.h
+> > @@ -2180,7 +2180,9 @@ struct e1000_hw {
+> >   	struct mii_bus miibus;
+> >   
+> >   	struct e1000_tx_desc *tx_base;
+> > +	dma_addr_t tx_base_phys;
+> >   	struct e1000_rx_desc *rx_base;
+> > +	dma_addr_t rx_base_phys;
+> >   	unsigned char *packet;
+> >   	dma_addr_t packet_dma;
+> >   
+> > diff --git a/drivers/net/e1000/main.c b/drivers/net/e1000/main.c
+> > index f67c5d867b..69b1516640 100644
+> > --- a/drivers/net/e1000/main.c
+> > +++ b/drivers/net/e1000/main.c
+> > @@ -3232,7 +3232,7 @@ static void e1000_configure_tx(struct
+> > e1000_hw *hw)
+> >   	unsigned long tctl;
+> >   	unsigned long tipg, tarc;
+> >   	uint32_t ipgr1, ipgr2;
+> > -	const unsigned long tx_base = (unsigned long)hw->tx_base;
+> > +	const unsigned long tx_base = (unsigned long)hw->tx_base_phys;
+> >   
+> >   	e1000_write_reg(hw, E1000_TDBAL, lower_32_bits(tx_base));
+> >   	e1000_write_reg(hw, E1000_TDBAH, upper_32_bits(tx_base));
+> > @@ -3351,7 +3351,7 @@ static void e1000_setup_rctl(struct e1000_hw
+> > *hw)
+> >   static void e1000_configure_rx(struct e1000_hw *hw)
+> >   {
+> >   	unsigned long rctl, ctrl_ext;
+> > -	const unsigned long rx_base = (unsigned long)hw->rx_base;
+> > +	const unsigned long rx_base = (unsigned long)hw->rx_base_phys;
+> >   
+> >   	hw->rx_tail = 0;
+> >   	/* make sure receives are disabled while setting up the
+> > descriptors */
+> > @@ -3564,8 +3564,8 @@ static int e1000_probe(struct pci_dev *pdev,
+> > const struct pci_device_id *id)
+> >   
+> >   	hw = xzalloc(sizeof(*hw));
+> >   
+> > -	hw->tx_base = dma_alloc_coherent(16 * sizeof(*hw->tx_base),
+> > DMA_ADDRESS_BROKEN);
+> > -	hw->rx_base = dma_alloc_coherent(16 * sizeof(*hw->rx_base),
+> > DMA_ADDRESS_BROKEN);
+> > +	hw->tx_base = dma_alloc_coherent(16 * sizeof(*hw->tx_base),
+> > &hw->tx_base_phys);
+> > +	hw->rx_base = dma_alloc_coherent(16 * sizeof(*hw->rx_base),
+> > &hw->rx_base_phys);
+> >   
+> >   	edev = &hw->edev;
+> >   
+> > 
+> 
+> Kind regards,
+> Oleksij Rempel
+> 
 
 
 _______________________________________________
