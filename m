@@ -1,14 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ot1-x32d.google.com ([2607:f8b0:4864:20::32d])
+Received: from mail-lf1-x143.google.com ([2a00:1450:4864:20::143])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1irQBH-0003tg-V1
- for barebox@lists.infradead.org; Tue, 14 Jan 2020 17:40:48 +0000
-Received: by mail-ot1-x32d.google.com with SMTP id p8so13403059oth.10
- for <barebox@lists.infradead.org>; Tue, 14 Jan 2020 09:40:43 -0800 (PST)
-MIME-Version: 1.0
-From: Wesley Chow <wes@cortico.ai>
-Date: Tue, 14 Jan 2020 12:40:32 -0500
-Message-ID: <CAG=Azd9mtQJuweJaeJNxRWq2-6r7Yu0L5oS9zFX1YNvvXHoo=A@mail.gmail.com>
+ id 1irTLE-0004mI-Mx
+ for barebox@lists.infradead.org; Tue, 14 Jan 2020 21:03:16 +0000
+Received: by mail-lf1-x143.google.com with SMTP id m30so10942034lfp.8
+ for <barebox@lists.infradead.org>; Tue, 14 Jan 2020 13:03:09 -0800 (PST)
+Date: Wed, 15 Jan 2020 00:03:04 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20200115000304.1df0bac7ea06713dec0749cc@gmail.com>
+In-Reply-To: <deb20a19-7177-5ab6-bf86-65ead7a9ae19@pengutronix.de>
+References: <20200109072855.14154-1-antonynpavlov@gmail.com>
+ <20200109072855.14154-3-antonynpavlov@gmail.com>
+ <deb20a19-7177-5ab6-bf86-65ead7a9ae19@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,40 +21,82 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: qemu arm vexpress / virt32 support
-To: barebox@lists.infradead.org
+Subject: Re: [RFC 2/5] WIP: MIPS: implement dma mapping functions
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>
 
-I see here that vexpress is supposed to be the 32 bit arm config of choice:
-
-http://lists.infradead.org/pipermail/barebox/2017-November/031597.html
-
-Is this still the case, ie there's no interest in supporting the 32 bit virt?
-
-Using vexpress, I get this:
-
-ARCH=arm CROSS_COMPILE=/usr/bin/arm-linux-gnueabihf- make vexpress_defconfig
-...
-$ qemu-system-arm -M vexpress-a9 -cpu cortex-a9 -m 256 -nographic
--kernel images/barebox-vexpress-ca9.img
-pulseaudio: set_sink_input_volume() failed
-pulseaudio: Reason: Invalid argument
-pulseaudio: set_sink_input_mute() failed
-pulseaudio: Reason: Invalid argument
-PFLASH: Possible BUG - Write block confirm
-
-(then qemu exits)
-
-This is with barebox head, qemu 2.11, but same results with qemu 4.2.0
-too. I'm new to barebox -- is this the correct invocation?
-
-Thanks,
-Wes
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gTW9uLCAxMyBKYW4gMjAyMCAwOToyNjozNiArMDEwMApPbGVrc2lqIFJlbXBlbCA8by5yZW1w
+ZWxAcGVuZ3V0cm9uaXguZGU+IHdyb3RlOgoKPiBPbiAwOS4wMS4yMCAwODoyOCwgQW50b255IFBh
+dmxvdiB3cm90ZToKPiA+IFRPRE86IGZpeCB3YXJuaW5ncwo+ID4gCj4gPiBhcmNoL21pcHMvaW5j
+bHVkZS9hc20vZG1hLW1hcHBpbmcuaDogSW4gZnVuY3Rpb24g4oCYZG1hX2ZyZWVfY29oZXJlbnTi
+gJk6Cj4gPiBhcmNoL21pcHMvaW5jbHVkZS9hc20vZG1hLW1hcHBpbmcuaDozMToyMTogd2Fybmlu
+ZzogcGFzc2luZyBhcmd1bWVudCAxIG9mIOKAmHBoeXNfdG9fdmlydOKAmQo+ID4gbWFrZXMgaW50
+ZWdlciBmcm9tIHBvaW50ZXIgd2l0aG91dCBhIGNhc3QgWy1XaW50LWNvbnZlcnNpb25dCj4gPiAg
+ICAgZnJlZShwaHlzX3RvX3ZpcnQodmFkZHIpKTsKPiA+ICAgICAgICAgICAgICAgICAgICAgICBe
+fn5+fgo+ID4gSW4gZmlsZSBpbmNsdWRlZCBmcm9tIGluY2x1ZGUvY29tbW9uLmg6MzM6MCwKPiA+
+ICAgICAgICAgICAgICAgICAgIGZyb20gZHJpdmVycy9uZXQvZTEwMDAvbWFpbi5jOjMyOgo+ID4g
+YXJjaC9taXBzL2luY2x1ZGUvYXNtL2lvLmg6NDA6MjE6IG5vdGU6IGV4cGVjdGVkIOKAmGxvbmcg
+dW5zaWduZWQgaW504oCZIGJ1dCBhcmd1bWVudCBpcyBvZiB0eXBlIOKAmHZvaWQgKuKAmQo+ID4g
+ICBzdGF0aWMgaW5saW5lIHZvaWQgKnBoeXNfdG9fdmlydCh1bnNpZ25lZCBsb25nIGFkZHJlc3Mp
+Cj4gPiAgICAgICAgICAgICAgICAgICAgICAgXn5+fn5+fn5+fn5+Cj4gPiAKPiA+IFNpZ25lZC1v
+ZmYtYnk6IEFudG9ueSBQYXZsb3YgPGFudG9ueW5wYXZsb3ZAZ21haWwuY29tPgo+ID4gU2lnbmVk
+LW9mZi1ieTogUGV0ZXIgTWFtb25vdiA8cG1hbW9ub3ZAZ21haWwuY29tPgo+ID4gLS0tCj4gPiAg
+IGFyY2gvbWlwcy9pbmNsdWRlL2FzbS9kbWEtbWFwcGluZy5oIHwgIDIgKy0KPiA+ICAgYXJjaC9t
+aXBzL2xpYi9kbWEtZGVmYXVsdC5jICAgICAgICAgfCAyMiArKysrKysrKysrKysrKysrKysrKy0t
+Cj4gPiAgIDIgZmlsZXMgY2hhbmdlZCwgMjEgaW5zZXJ0aW9ucygrKSwgMyBkZWxldGlvbnMoLSkK
+PiA+IAo+ID4gZGlmZiAtLWdpdCBhL2FyY2gvbWlwcy9pbmNsdWRlL2FzbS9kbWEtbWFwcGluZy5o
+IGIvYXJjaC9taXBzL2luY2x1ZGUvYXNtL2RtYS1tYXBwaW5nLmgKPiA+IGluZGV4IGM3MWEwODcw
+MzguLjUwMTNlN2IzNjkgMTAwNjQ0Cj4gPiAtLS0gYS9hcmNoL21pcHMvaW5jbHVkZS9hc20vZG1h
+LW1hcHBpbmcuaAo+ID4gKysrIGIvYXJjaC9taXBzL2luY2x1ZGUvYXNtL2RtYS1tYXBwaW5nLmgK
+PiA+IEBAIC0yOCw3ICsyOCw3IEBAIHN0YXRpYyBpbmxpbmUgdm9pZCBkbWFfZnJlZV9jb2hlcmVu
+dCh2b2lkICp2YWRkciwgZG1hX2FkZHJfdCBkbWFfaGFuZGxlLAo+ID4gICAJCQkJICAgICBzaXpl
+X3Qgc2l6ZSkKPiA+ICAgewo+ID4gICAJaWYgKElTX0VOQUJMRUQoQ09ORklHX01NVSkpCj4gPiAt
+CQlmcmVlKCh2b2lkICopQ0tTRUcwQUREUih2YWRkcikpOwo+ID4gKwkJZnJlZShwaHlzX3RvX3Zp
+cnQodmFkZHIpKTsKPiA+ICAgCWVsc2UKPiA+ICAgCQlmcmVlKHZhZGRyKTsKPiA+ICAgfQo+ID4g
+ZGlmZiAtLWdpdCBhL2FyY2gvbWlwcy9saWIvZG1hLWRlZmF1bHQuYyBiL2FyY2gvbWlwcy9saWIv
+ZG1hLWRlZmF1bHQuYwo+ID4gaW5kZXggZmJlNjI3YzI0Yy4uNDBjYWY2ZjkxYiAxMDA2NDQKPiA+
+IC0tLSBhL2FyY2gvbWlwcy9saWIvZG1hLWRlZmF1bHQuYwo+ID4gKysrIGIvYXJjaC9taXBzL2xp
+Yi9kbWEtZGVmYXVsdC5jCj4gPiBAQCAtOCw5ICs4LDExIEBACj4gPiAgIAo+ID4gICAjaWYgZGVm
+aW5lZChDT05GSUdfQ1BVX01JUFMzMikgfHwgXAo+ID4gICAJZGVmaW5lZChDT05GSUdfQ1BVX01J
+UFM2NCkKPiA+IC1zdGF0aWMgaW5saW5lIHZvaWQgX19kbWFfc3luY19taXBzKHVuc2lnbmVkIGxv
+bmcgYWRkciwgc2l6ZV90IHNpemUsCj4gPiArc3RhdGljIGlubGluZSB2b2lkIF9fZG1hX3N5bmNf
+bWlwcyhkbWFfYWRkcl90IF9hZGRyLCBzaXplX3Qgc2l6ZSwKPiA+ICAgCQkJCSAgIGVudW0gZG1h
+X2RhdGFfZGlyZWN0aW9uIGRpcmVjdGlvbikKPiA+ICAgewo+ID4gKwl2b2lkICphZGRyID0gcGh5
+c190b192aXJ0KF9hZGRyKTsKPiA+ICsKPiA+ICAgCXN3aXRjaCAoZGlyZWN0aW9uKSB7Cj4gPiAg
+IAljYXNlIERNQV9UT19ERVZJQ0U6Cj4gPiAgIAkJZG1hX2ZsdXNoX3JhbmdlKGFkZHIsIGFkZHIg
+KyBzaXplKTsKPiA+IEBAIC0yOSw3ICszMSw3IEBAIHN0YXRpYyBpbmxpbmUgdm9pZCBfX2RtYV9z
+eW5jX21pcHModW5zaWduZWQgbG9uZyBhZGRyLCBzaXplX3Qgc2l6ZSwKPiA+ICAgCX0KPiA+ICAg
+fQo+ID4gICAjZWxzZQo+ID4gLXN0YXRpYyBpbmxpbmUgdm9pZCBfX2RtYV9zeW5jX21pcHModm9p
+ZCAqYWRkciwgc2l6ZV90IHNpemUsCj4gPiArc3RhdGljIGlubGluZSB2b2lkIF9fZG1hX3N5bmNf
+bWlwcyhkbWFfYWRkcl90IGFkZHIsIHNpemVfdCBzaXplLAo+ID4gICAJZW51bSBkbWFfZGF0YV9k
+aXJlY3Rpb24gZGlyZWN0aW9uKQo+ID4gICB7Cj4gPiAgIH0KPiA+IEBAIC00NiwzICs0OCwxOSBA
+QCB2b2lkIGRtYV9zeW5jX3NpbmdsZV9mb3JfZGV2aWNlKGRtYV9hZGRyX3QgYWRkcmVzcywgc2l6
+ZV90IHNpemUsCj4gPiAgIHsKPiA+ICAgCV9fZG1hX3N5bmNfbWlwcyhhZGRyZXNzLCBzaXplLCBk
+aXIpOwo+ID4gICB9Cj4gPiArCj4gPiArZG1hX2FkZHJfdCBkbWFfbWFwX3NpbmdsZShzdHJ1Y3Qg
+ZGV2aWNlX2QgKmRldiwgdm9pZCAqcHRyLCBzaXplX3Qgc2l6ZSwKPiA+ICsJCQkgIGVudW0gZG1h
+X2RhdGFfZGlyZWN0aW9uIGRpcikKPiA+ICt7Cj4gPiArCXVuc2lnbmVkIGxvbmcgYWRkciA9IHZp
+cnRfdG9fcGh5cyhwdHIpOwo+ID4gKwo+ID4gKwlkbWFfc3luY19zaW5nbGVfZm9yX2RldmljZShh
+ZGRyLCBzaXplLCBkaXIpOwo+IAo+IEhtLi4gaSB3YXMgdGhpbmtpbmcgSGl0IEludmFsaWRhdGUg
+RCBpbnN0cnVjdGlvbiB3b3JrcyB3aXRoIFZpcnR1YWwgYWRkcmVzc2VzLiBBcmUgeW91IAo+IHN1
+cmUgd2UgbmVlZCB0byB1c2UgdmlydF90b19waHlzKCkgaGVyZT8KCmRtYV9zeW5jX3NpbmdsZV9m
+b3JfZGV2aWNlKCkgaXMgYSBiYXJlYm94LXdpZGUgZnVuY3Rpb24gKHNlZSBpbmNsdWRlL2RtYS5o
+KS4KVGhlIGRtYV9zeW5jX3NpbmdsZV9mb3JfZGV2aWNlKCkgMXN0IGFyZ3VtZW50IHR5cGUgaXMg
+ZG1hX2FkZHJfdCAocGh5c2ljYWwgYWRkcmVzcykuClNvIHZpcnRfdG9fcGh5cygpIGNvbnZlcnNp
+b24gaXMgbmVjZXNzYXJ5IGhlcmUuCiAKPiA+ICsKPiA+ICsJcmV0dXJuIGFkZHI7Cj4gPiArfQo+
+ID4gKwo+ID4gK3ZvaWQgZG1hX3VubWFwX3NpbmdsZShzdHJ1Y3QgZGV2aWNlX2QgKmRldiwgZG1h
+X2FkZHJfdCBhZGRyLCBzaXplX3Qgc2l6ZSwKPiA+ICsJCSAgICAgIGVudW0gZG1hX2RhdGFfZGly
+ZWN0aW9uIGRpcikKPiA+ICt7Cj4gPiArCWRtYV9zeW5jX3NpbmdsZV9mb3JfY3B1KGFkZHIsIHNp
+emUsIGRpcik7Cj4gPiArfQo+ID4gCj4gCj4gS2luZCByZWdhcmRzLAo+IE9sZWtzaWogUmVtcGVs
+Cj4gCj4gLS0gCj4gUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKPiBJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9u
+cyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfAo+IFBlaW5l
+ciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0y
+MDY5MTctMCAgICB8Cj4gQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAg
+IHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCgotLSAKQmVzdCByZWdhcmRzLArCoCBB
+bnRvbnkgUGF2bG92CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0
+cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
