@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from zimbra2.kalray.eu ([92.103.151.219])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1irM8s-0002Le-0Z
- for barebox@lists.infradead.org; Tue, 14 Jan 2020 13:22:02 +0000
-From: Jules Maselbas <jmaselbas@kalray.eu>
-Date: Tue, 14 Jan 2020 14:21:07 +0100
-Message-Id: <20200114132112.4119-3-jmaselbas@kalray.eu>
-In-Reply-To: <20200114132112.4119-1-jmaselbas@kalray.eu>
+ id 1irN9v-0004WG-4M
+ for barebox@lists.infradead.org; Tue, 14 Jan 2020 14:27:11 +0000
+Date: Tue, 14 Jan 2020 15:27:04 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200114142704.3t7vra5wlrzivi3n@pengutronix.de>
 References: <20191220143232.28354-10-s.hauer@pengutronix.de>
  <20200114132112.4119-1-jmaselbas@kalray.eu>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200114132112.4119-1-jmaselbas@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,34 +23,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC PATCH 2/7] usb: dwc2: host: Handle dma mapping errors
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>, Jules Maselbas <jmaselbas@kalray.eu>
+Subject: Re: [RFC PATCH 0/7] usb: dwc2 host driver
+To: Jules Maselbas <jmaselbas@kalray.eu>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
----
- drivers/usb/dwc2/host.c | 5 +++++
- 1 file changed, 5 insertions(+)
+Hi Jules,
 
-diff --git a/drivers/usb/dwc2/host.c b/drivers/usb/dwc2/host.c
-index 4137dd3cb..a1f2e3ea1 100644
---- a/drivers/usb/dwc2/host.c
-+++ b/drivers/usb/dwc2/host.c
-@@ -154,6 +154,11 @@ static int transfer_chunk(struct dwc2 *dwc2, u8 hc,
- 	dma_addr = dma_map_single(dwc2->dev, buffer, xfer_len,
- 				  in ? DMA_FROM_DEVICE : DMA_TO_DEVICE);
- 
-+	if (dma_mapping_error(dwc2->dev, dma_addr)) {
-+		dwc2_err(dwc2, "Failed to map buffer@0x%p for dma\n", buffer);
-+		return -EFAULT;
-+	}
-+
- 	dwc2_dbg(dwc2, "chunk: pid=%d xfer_len=%u pkts=%u dma_addr=%llx\n",
- 			*pid, xfer_len, num_packets, dma_addr);
- 
+On Tue, Jan 14, 2020 at 02:21:05PM +0100, Jules Maselbas wrote:
+> Hi Sascha,
+> 
+> I've been working on a driver for the dwc2 otg controller, for both host
+> and device mode.  Like you I've started from U-Boot driver and I mixed
+> it with some part from Linux.  For instance I've removed the register
+> structs and I've been using the same defines for register bit-fields as
+> in Linux.
+> 
+> I would like to share my version of the host driver, as the gadget driver
+> one still requires some cleanup.  This series is not to be applied on the
+> driver you proposed. However I am willing to propose a new series that can
+> be applied on the driver you proposed.  What do you think?
+
+The dwc2 driver was a quick shot, I am all in for improvements. Removing
+the register structs is very nice and I would be interested in gadget
+support as well.
+
+What SoC are you using the driver on?
+
+I am not sure if it makes sense to rebase your patches on my driver. If
+you can convince me that yours is better then we could just remove mine
+and merge yours instead.
+
+Sascha
+
 -- 
-2.21.0.196.g041f5ea
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
