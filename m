@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-ot1-x336.google.com ([2607:f8b0:4864:20::336])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1itSUp-0004FG-2G
- for barebox@lists.infradead.org; Mon, 20 Jan 2020 08:33:21 +0000
-Date: Mon, 20 Jan 2020 09:33:16 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200120083316.nmsq44hrcmnse4md@pengutronix.de>
-References: <20200114145140.15766-1-cleger@kalray.eu>
+ id 1irQ7r-0001Wn-IQ
+ for barebox@lists.infradead.org; Tue, 14 Jan 2020 17:37:16 +0000
+Received: by mail-ot1-x336.google.com with SMTP id 77so13422069oty.6
+ for <barebox@lists.infradead.org>; Tue, 14 Jan 2020 09:37:10 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200114145140.15766-1-cleger@kalray.eu>
+From: Wesley Chow <wes@cortico.ai>
+Date: Tue, 14 Jan 2020 12:36:59 -0500
+Message-ID: <CAG=Azd9zT6ahWf94hAVT3YYF6g=63K__6YoGeP9kDEqF-BSR9Q@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,43 +17,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] pinctrl-single: Handle "pinctrl-single, function-mask" dt
- property
-To: Clement Leger <cleger@kalray.eu>
-Cc: barebox@lists.infradead.org, =?iso-8859-15?Q?Sim=E9on?= Marijon <simeon.marijon@kalray.eu>, Simeon Marijon <simeon@marijon.fr>
+Subject: qemu arm virt64 hangs
+To: barebox@lists.infradead.org
 
-On Tue, Jan 14, 2020 at 03:51:40PM +0100, Clement Leger wrote:
-> From: Sim=E9on Marijon <simeon.marijon@kalray.eu>
-> =
+hi all!
 
-> Implement linux behavior regarding "pinctrl-single,function-mask" and
-> "pinctrl-single,bits".
-> It allows multiple pins control per register.
-> =
+64 bit virt doesn't appear to be working.
 
-> (linux sha1: 4e7e8017a80e1810100c9b416b86e3baef900285)
-> =
+$ ARCH=arm CROSS_COMPILE=/usr/bin/aarch64-linux-gnu- make qemu_virt64_defconfig
+...
+$ qemu-system-aarch64 -M virt -cpu cortex-a57 -nographic -kernel barebox
 
-> Signed-off-by: Simeon Marijon <simeon@marijon.fr>
-> ---
->  drivers/pinctrl/pinctrl-single.c | 81 ++++++++++++++++++++++++++++++----=
-------
->  1 file changed, 62 insertions(+), 19 deletions(-)
+(qemu hangs)
 
-Applied, thanks
+I see here that at some point aarch64 had issues, but do these remain
+unresolved? https://www.spinics.net/lists/u-boot-v2/msg33882.html
 
-Sascha
+I'm new to barebox, so apologies if I did something boneheaded.
 
--- =
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Thanks,
+Wes
 
 _______________________________________________
 barebox mailing list
