@@ -1,12 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1irNXq-0007bl-Ju
- for barebox@lists.infradead.org; Tue, 14 Jan 2020 14:51:54 +0000
-From: Clement Leger <cleger@kalray.eu>
-Date: Tue, 14 Jan 2020 15:51:40 +0100
-Message-Id: <20200114145140.15766-1-cleger@kalray.eu>
+ id 1irPk1-00075Z-RW
+ for barebox@lists.infradead.org; Tue, 14 Jan 2020 17:12:38 +0000
+Date: Tue, 14 Jan 2020 18:12:26 +0100
+From: Jules Maselbas <jmaselbas@kalray.eu>
+Message-ID: <20200114171226.evt4nvuxe7gdc5bb@tellis.lin.mbt.kalray.eu>
+References: <20191220143232.28354-10-s.hauer@pengutronix.de>
+ <20200114132112.4119-1-jmaselbas@kalray.eu>
+ <20200114142704.3t7vra5wlrzivi3n@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200114142704.3t7vra5wlrzivi3n@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,76 +20,75 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] pinctrl-single: Handle "pinctrl-single,
- function-mask" dt property
-To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
-Cc: =?UTF-8?q?Sim=C3=A9on=20Marijon?= <simeon.marijon@kalray.eu>, Simeon Marijon <simeon@marijon.fr>
+Subject: Re: [RFC PATCH 0/7] usb: dwc2 host driver
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-RnJvbTogU2ltw6lvbiBNYXJpam9uIDxzaW1lb24ubWFyaWpvbkBrYWxyYXkuZXU+CgpJbXBsZW1l
-bnQgbGludXggYmVoYXZpb3IgcmVnYXJkaW5nICJwaW5jdHJsLXNpbmdsZSxmdW5jdGlvbi1tYXNr
-IiBhbmQKInBpbmN0cmwtc2luZ2xlLGJpdHMiLgpJdCBhbGxvd3MgbXVsdGlwbGUgcGlucyBjb250
-cm9sIHBlciByZWdpc3Rlci4KCihsaW51eCBzaGExOiA0ZTdlODAxN2E4MGUxODEwMTAwYzliNDE2
-Yjg2ZTNiYWVmOTAwMjg1KQoKU2lnbmVkLW9mZi1ieTogU2ltZW9uIE1hcmlqb24gPHNpbWVvbkBt
-YXJpam9uLmZyPgotLS0KIGRyaXZlcnMvcGluY3RybC9waW5jdHJsLXNpbmdsZS5jIHwgODEgKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLQogMSBmaWxlIGNoYW5nZWQsIDYy
-IGluc2VydGlvbnMoKyksIDE5IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvcGlu
-Y3RybC9waW5jdHJsLXNpbmdsZS5jIGIvZHJpdmVycy9waW5jdHJsL3BpbmN0cmwtc2luZ2xlLmMK
-aW5kZXggM2M1ODFlZDVkLi5kNGY0MTFiNGEgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvcGluY3RybC9w
-aW5jdHJsLXNpbmdsZS5jCisrKyBiL2RyaXZlcnMvcGluY3RybC9waW5jdHJsLXNpbmdsZS5jCkBA
-IC0yOSw3ICsyOSwxMyBAQCBzdHJ1Y3QgcGluY3RybF9zaW5nbGUgewogCXN0cnVjdCBwaW5jdHJs
-X2RldmljZSBwaW5jdHJsOwogCXVuc2lnbmVkICgqcmVhZCkodm9pZCBfX2lvbWVtICpyZWcpOwog
-CXZvaWQgKCp3cml0ZSkodW5zaWduZWQgdmFsLCB2b2lkIF9faW9tZW0gKnJlZyk7Ci0JdW5zaWdu
-ZWQgd2lkdGg7CisJdW5zaWduZWQgaW50IHdpZHRoOworCXVuc2lnbmVkIGludCAgZm1hc2s7CisJ
-dW5zaWduZWQgaW50IGZzaGlmdDsKKwl1bnNpZ25lZCBpbnQgZm1heDsKKworCWJvb2wgYml0c19w
-ZXJfbXV4OworCXVuc2lnbmVkIGludCBiaXRzX3Blcl9waW47CiB9OwogCiBzdGF0aWMgdW5zaWdu
-ZWQgX19tYXliZV91bnVzZWQgcGNzX3JlYWRiKHZvaWQgX19pb21lbSAqcmVnKQpAQCAtNjYsMjcg
-KzcyLDQ3IEBAIHN0YXRpYyBpbnQgcGNzX3NldF9zdGF0ZShzdHJ1Y3QgcGluY3RybF9kZXZpY2Ug
-KnBkZXYsIHN0cnVjdCBkZXZpY2Vfbm9kZSAqbnApCiB7CiAJc3RydWN0IHBpbmN0cmxfc2luZ2xl
-ICpwY3MgPSBjb250YWluZXJfb2YocGRldiwgc3RydWN0IHBpbmN0cmxfc2luZ2xlLCBwaW5jdHJs
-KTsKIAl1bnNpZ25lZCBzaXplID0gMCwgaW5kZXggPSAwOworCXVuc2lnbmVkIGludCBvZmZzZXQs
-IHZhbCwgcm93cywgbWFzaywgcmVnLCBpOwogCWNvbnN0IF9fYmUzMiAqbXV4OwogCiAJZGV2X2Ri
-ZyhwY3MtPnBpbmN0cmwuZGV2LCAic2V0IHN0YXRlOiAlc1xuIiwgbnAtPmZ1bGxfbmFtZSk7Ci0K
-LQltdXggPSBvZl9nZXRfcHJvcGVydHkobnAsICJwaW5jdHJsLXNpbmdsZSxwaW5zIiwgJnNpemUp
-OwotCi0Jc2l6ZSAvPSBzaXplb2YoKm11eCk7CS8qIE51bWJlciBvZiBlbGVtZW50cyBpbiBhcnJh
-eSAqLwotCi0JaWYgKCFtdXggfHwgIXNpemUgfHwgKHNpemUgJiAxKSkgewotCQlkZXZfZXJyKHBj
-cy0+cGluY3RybC5kZXYsICJiYWQgZGF0YSBmb3IgbXV4ICVzXG4iLAotCQkJbnAtPmZ1bGxfbmFt
-ZSk7Ci0JCXJldHVybiAtRUlOVkFMOwotCX0KLQotCXdoaWxlIChpbmRleCA8IHNpemUpIHsKLQkJ
-dW5zaWduZWQgb2Zmc2V0LCB2YWw7Ci0KLQkJb2Zmc2V0ID0gYmUzMl90b19jcHVwKG11eCArIGlu
-ZGV4KyspOwotCQl2YWwgPSBiZTMyX3RvX2NwdXAobXV4ICsgaW5kZXgrKyk7Ci0KLQkJcGNzLT53
-cml0ZSh2YWwsIHBjcy0+YmFzZSArIG9mZnNldCk7CisJaWYgKHBjcy0+Yml0c19wZXJfbXV4KSB7
-CisJCW11eCA9IG9mX2dldF9wcm9wZXJ0eShucCwgInBpbmN0cmwtc2luZ2xlLGJpdHMiLCAmc2l6
-ZSk7CisJCWlmIChzaXplICUgMyAhPSAwKQorCQkJZGV2X2VycihwY3MtPnBpbmN0cmwuZGV2LAor
-CQkJCSJpbnZhbGlkIGFyZ3NfY291bnQgZm9yIHNwZWM6ICV1XG4iLCBzaXplKTsKKworCQlzaXpl
-IC89IHNpemVvZigqbXV4KTsJLyogTnVtYmVyIG9mIGVsZW1lbnRzIGluIGFycmF5ICovCisJCXJv
-d3MgPSBzaXplIC8gMzsKKworCQlmb3IgKGkgPSAwOyBpIDwgcm93czsgaSsrKSB7CisJCQlvZmZz
-ZXQgPSBiZTMyX3RvX2NwdXAobXV4ICsgaW5kZXgrKyk7CisJCQltYXNrID0gYmUzMl90b19jcHVw
-KG11eCArIGluZGV4KyspOworCQkJdmFsID0gYmUzMl90b19jcHVwKG11eCArIGluZGV4KyspOwor
-CQkJcmVnID0gcGNzLT5yZWFkKHBjcy0+YmFzZSArIG9mZnNldCk7CisJCQlyZWcgJj0gfm1hc2s7
-CisJCQlyZWcgfD0gdmFsOworCQkJcGNzLT53cml0ZShyZWcsIHBjcy0+YmFzZSArIG9mZnNldCk7
-CisJCX0KKwl9IGVsc2UgeworCQltdXggPSBvZl9nZXRfcHJvcGVydHkobnAsICJwaW5jdHJsLXNp
-bmdsZSxwaW5zIiwgJnNpemUpOworCisJCXNpemUgLz0gc2l6ZW9mKCptdXgpOwkvKiBOdW1iZXIg
-b2YgZWxlbWVudHMgaW4gYXJyYXkgKi8KKworCQlpZiAoIW11eCB8fCAhc2l6ZSB8fCAoc2l6ZSAm
-IDEpKSB7CisJCQlkZXZfZXJyKHBjcy0+cGluY3RybC5kZXYsICJiYWQgZGF0YSBmb3IgbXV4ICVz
-XG4iLAorCQkJCW5wLT5mdWxsX25hbWUpOworCQkJcmV0dXJuIC1FSU5WQUw7CisJCX0KKworCQl3
-aGlsZSAoaW5kZXggPCBzaXplKSB7CisJCQl1bnNpZ25lZCBpbnQgb2Zmc2V0LCB2YWw7CisKKwkJ
-CW9mZnNldCA9IGJlMzJfdG9fY3B1cChtdXggKyBpbmRleCsrKTsKKwkJCXZhbCA9IGJlMzJfdG9f
-Y3B1cChtdXggKyBpbmRleCsrKTsKKworCQkJcGNzLT53cml0ZSh2YWwsIHBjcy0+YmFzZSArIG9m
-ZnNldCk7CisJCX0KIAl9CiAKIAlyZXR1cm4gMDsKQEAgLTEzNyw2ICsxNjMsMjMgQEAgc3RhdGlj
-IGludCBwY3NfcHJvYmUoc3RydWN0IGRldmljZV9kICpkZXYpCiAJCWdvdG8gb3V0OwogCX0KIAor
-CXJldCA9IG9mX3Byb3BlcnR5X3JlYWRfdTMyKG5wLCAicGluY3RybC1zaW5nbGUsZnVuY3Rpb24t
-bWFzayIsCisJCQkJICAgJnBjcy0+Zm1hc2spOworCWlmICghcmV0KSB7CisJCXBjcy0+ZnNoaWZ0
-ID0gX19mZnMocGNzLT5mbWFzayk7CisJCXBjcy0+Zm1heCA9IHBjcy0+Zm1hc2sgPj4gcGNzLT5m
-c2hpZnQ7CisJfSBlbHNlIHsKKwkJLyogSWYgbWFzayBwcm9wZXJ0eSBkb2Vzbid0IGV4aXN0LCBm
-dW5jdGlvbiBtdXggaXMgaW52YWxpZC4gKi8KKwkJcGNzLT5mbWFzayA9IDA7CisJCXBjcy0+ZnNo
-aWZ0ID0gMDsKKwkJcGNzLT5mbWF4ID0gMDsKKwl9CisKKwlwY3MtPmJpdHNfcGVyX211eCA9CisJ
-CW9mX3Byb3BlcnR5X3JlYWRfYm9vbChucCwgInBpbmN0cmwtc2luZ2xlLGJpdC1wZXItbXV4Iik7
-CisJaWYgKHBjcy0+Yml0c19wZXJfbXV4KQorCQlwY3MtPmJpdHNfcGVyX3BpbiA9IGZscyhwY3Mt
-PmZtYXNrKTsKKwogCXJldCA9IHBpbmN0cmxfcmVnaXN0ZXIoJnBjcy0+cGluY3RybCk7CiAJaWYg
-KHJldCkKIAkJZ290byBvdXQ7Ci0tIAoyLjE1LjAuMjc2Lmc4OWVhNzk5CgoKX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QK
-YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
-aWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Tue, Jan 14, 2020 at 03:27:04PM +0100, Sascha Hauer wrote:
+> Hi Jules,
+> 
+> On Tue, Jan 14, 2020 at 02:21:05PM +0100, Jules Maselbas wrote:
+> > Hi Sascha,
+> > 
+> > I've been working on a driver for the dwc2 otg controller, for both host
+> > and device mode.  Like you I've started from U-Boot driver and I mixed
+> > it with some part from Linux.  For instance I've removed the register
+> > structs and I've been using the same defines for register bit-fields as
+> > in Linux.
+> > 
+> > I would like to share my version of the host driver, as the gadget driver
+> > one still requires some cleanup.  This series is not to be applied on the
+> > driver you proposed. However I am willing to propose a new series that can
+> > be applied on the driver you proposed.  What do you think?
+> 
+> The dwc2 driver was a quick shot, I am all in for improvements. Removing
+> the register structs is very nice and I would be interested in gadget
+> support as well.
+The gadget support is almost ready, I got the dfu gadget working. :) 
+ 
+> What SoC are you using the driver on?
+I am using this driver on our custom SoC, the Kalray Coolidge MPPA (k1c).
+I didn't tried on other SoC.
+
+> I am not sure if it makes sense to rebase your patches on my driver. If
+> you can convince me that yours is better then we could just remove mine
+> and merge yours instead.
+I don't have a strong argument in favor of my version. Except that I have
+already made some changes over the original U-Boot version: 
+
+I've tried to improve the roothub interface making it easier to decode
+new requests.
+
+I have removed the memcpy done in transfer_chunk between the usb data
+buffer and the dma buffer :/
+However this mean that all buffer used for usb tranfert must be dma
+capable.  Not all usb transfers use dma_alloc for it's buffers but
+sometime they are allocated on the stack, this can be problematic if
+the stack cannot be used by DMA.
+
+I also have fixed an error in the handling of the toggle bit, but I
+think the solution is a bit hacky. I think the driver should rather
+use the toggle bit stored in the usb_device structure, but this will
+require more rework.
+
+If theses changes make sense then let's use this version.
+
+Best,
+Jules
+
+> Sascha
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
