@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1irHuI-0003ty-Ik
- for barebox@lists.infradead.org; Tue, 14 Jan 2020 08:50:39 +0000
+ id 1irLW0-0004B5-IU
+ for barebox@lists.infradead.org; Tue, 14 Jan 2020 12:41:53 +0000
+Date: Tue, 14 Jan 2020 13:41:46 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 14 Jan 2020 09:50:26 +0100
-Message-Id: <20200114085027.30669-1-s.hauer@pengutronix.de>
+Message-ID: <20200114124146.2rvc5ruk7si6xmxh@pengutronix.de>
+References: <20200109072122.13886-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200109072122.13886-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,75 +22,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] PCI: layerscape: rename variable
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] MIPS: dts: rename tplink-mr3020.dts ->
+ ar9331_tl_mr3020.dts
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Rename 'arr' to 'msi_map' which is a better name when we add another
-array in the next patch.
+On Thu, Jan 09, 2020 at 10:21:22AM +0300, Antony Pavlov wrote:
+> Linux MIPS uses <soc-name>_<board-name>.dts board dts-file
+> naming scheme so use it in barebox too.
+> 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  arch/mips/boards/tplink-mr3020/lowlevel.S                 | 2 +-
+>  arch/mips/dts/Makefile                                    | 2 +-
+>  arch/mips/dts/{tplink-mr3020.dts => ar9331_tl_mr3020.dts} | 0
+>  3 files changed, 2 insertions(+), 2 deletions(-)
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/pci/pci-layerscape.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+Applied, thanks
 
-diff --git a/drivers/pci/pci-layerscape.c b/drivers/pci/pci-layerscape.c
-index ccdc025c2e..0e41321a9a 100644
---- a/drivers/pci/pci-layerscape.c
-+++ b/drivers/pci/pci-layerscape.c
-@@ -342,7 +342,7 @@ static int ls_pcie_of_fixup(struct device_node *root, void *ctx)
- 	struct device_d *dev = pcie->pci.dev;
- 	struct device_node *np;
- 	char *name;
--	u32 *arr, phandle;
-+	u32 *msi_map, phandle;
- 	int nluts;
- 	int ret, i;
- 	u32 devid, stream_id;
-@@ -364,7 +364,7 @@ static int ls_pcie_of_fixup(struct device_node *root, void *ctx)
- 		return ret;
- 	}
- 
--	arr = xmalloc(nluts * sizeof(u32) * 4);
-+	msi_map = xmalloc(nluts * sizeof(u32) * 4);
- 
- 	for (i = 0; i < nluts; i++) {
- 		u32 udr = lut_readl(pcie, PCIE_LUT_UDR(i));
-@@ -376,10 +376,10 @@ static int ls_pcie_of_fixup(struct device_node *root, void *ctx)
- 		devid = udr >> 16;
- 		stream_id = ldr & 0x7fff;
- 
--		arr[i * 4] = devid;
--		arr[i * 4 + 1] = phandle;
--		arr[i * 4 + 2] = stream_id;
--		arr[i * 4 + 3] = 1;
-+		msi_map[i * 4] = devid;
-+		msi_map[i * 4 + 1] = phandle;
-+		msi_map[i * 4 + 2] = stream_id;
-+		msi_map[i * 4 + 3] = 1;
- 	}
- 
- 	/*
-@@ -391,7 +391,7 @@ static int ls_pcie_of_fixup(struct device_node *root, void *ctx)
- 	 *                 [devid] [phandle-to-msi-ctrl] [stream-id] [count]>;
- 	 */
- 
--	ret = of_property_write_u32_array(np, "msi-map", arr, nluts * 4);
-+	ret = of_property_write_u32_array(np, "msi-map", msi_map, nluts * 4);
- 	if (ret)
- 		goto out;
- 
-@@ -400,7 +400,7 @@ static int ls_pcie_of_fixup(struct device_node *root, void *ctx)
- 	ret = 0;
- 
- out:
--	free(arr);
-+	free(msi_map);
- 	return ret;
- }
- 
+Sascha
+
 -- 
-2.25.0.rc1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
