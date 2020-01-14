@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-ot1-x32d.google.com ([2607:f8b0:4864:20::32d])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1irN9v-0004WG-4M
- for barebox@lists.infradead.org; Tue, 14 Jan 2020 14:27:11 +0000
-Date: Tue, 14 Jan 2020 15:27:04 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200114142704.3t7vra5wlrzivi3n@pengutronix.de>
-References: <20191220143232.28354-10-s.hauer@pengutronix.de>
- <20200114132112.4119-1-jmaselbas@kalray.eu>
+ id 1irQBH-0003tg-V1
+ for barebox@lists.infradead.org; Tue, 14 Jan 2020 17:40:48 +0000
+Received: by mail-ot1-x32d.google.com with SMTP id p8so13403059oth.10
+ for <barebox@lists.infradead.org>; Tue, 14 Jan 2020 09:40:43 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200114132112.4119-1-jmaselbas@kalray.eu>
+From: Wesley Chow <wes@cortico.ai>
+Date: Tue, 14 Jan 2020 12:40:32 -0500
+Message-ID: <CAG=Azd9mtQJuweJaeJNxRWq2-6r7Yu0L5oS9zFX1YNvvXHoo=A@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,43 +21,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC PATCH 0/7] usb: dwc2 host driver
-To: Jules Maselbas <jmaselbas@kalray.eu>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: qemu arm vexpress / virt32 support
+To: barebox@lists.infradead.org
 
-Hi Jules,
+I see here that vexpress is supposed to be the 32 bit arm config of choice:
 
-On Tue, Jan 14, 2020 at 02:21:05PM +0100, Jules Maselbas wrote:
-> Hi Sascha,
-> 
-> I've been working on a driver for the dwc2 otg controller, for both host
-> and device mode.  Like you I've started from U-Boot driver and I mixed
-> it with some part from Linux.  For instance I've removed the register
-> structs and I've been using the same defines for register bit-fields as
-> in Linux.
-> 
-> I would like to share my version of the host driver, as the gadget driver
-> one still requires some cleanup.  This series is not to be applied on the
-> driver you proposed. However I am willing to propose a new series that can
-> be applied on the driver you proposed.  What do you think?
+http://lists.infradead.org/pipermail/barebox/2017-November/031597.html
 
-The dwc2 driver was a quick shot, I am all in for improvements. Removing
-the register structs is very nice and I would be interested in gadget
-support as well.
+Is this still the case, ie there's no interest in supporting the 32 bit virt?
 
-What SoC are you using the driver on?
+Using vexpress, I get this:
 
-I am not sure if it makes sense to rebase your patches on my driver. If
-you can convince me that yours is better then we could just remove mine
-and merge yours instead.
+ARCH=arm CROSS_COMPILE=/usr/bin/arm-linux-gnueabihf- make vexpress_defconfig
+...
+$ qemu-system-arm -M vexpress-a9 -cpu cortex-a9 -m 256 -nographic
+-kernel images/barebox-vexpress-ca9.img
+pulseaudio: set_sink_input_volume() failed
+pulseaudio: Reason: Invalid argument
+pulseaudio: set_sink_input_mute() failed
+pulseaudio: Reason: Invalid argument
+PFLASH: Possible BUG - Write block confirm
 
-Sascha
+(then qemu exits)
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+This is with barebox head, qemu 2.11, but same results with qemu 4.2.0
+too. I'm new to barebox -- is this the correct invocation?
+
+Thanks,
+Wes
 
 _______________________________________________
 barebox mailing list
