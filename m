@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1irfzU-0000VZ-8v
- for barebox@lists.infradead.org; Wed, 15 Jan 2020 10:33:40 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Wed, 15 Jan 2020 11:33:28 +0100
-Message-Id: <20200115103328.24700-1-u.kleine-koenig@pengutronix.de>
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+ by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1irSi6-0000O8-R2
+ for barebox@lists.infradead.org; Tue, 14 Jan 2020 20:22:49 +0000
+Message-ID: <0640b84370d284e080f3d771c84c6ecc9eeae797.camel@lynxeye.de>
+From: Lucas Stach <dev@lynxeye.de>
+Date: Tue, 14 Jan 2020 21:22:14 +0100
+In-Reply-To: <CAG=Azd9zT6ahWf94hAVT3YYF6g=63K__6YoGeP9kDEqF-BSR9Q@mail.gmail.com>
+References: <CAG=Azd9zT6ahWf94hAVT3YYF6g=63K__6YoGeP9kDEqF-BSR9Q@mail.gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -15,31 +17,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] imx25: drop global over-current setting for USB
-To: barebox@lists.infradead.org
+Subject: Re: qemu arm virt64 hangs
+To: Wesley Chow <wes@cortico.ai>, barebox@lists.infradead.org
 
-VGhlcmUgaXMgbm8gbXgyNSBib2FyZCBpbiBtYWlubGluZSB0aGF0IGFjdHVhbGx5IHVzZXMgVVNC
-LiBNeQoob3V0LW9mLXRyZWUpIGJvYXJkIGhhcyBhY3RpdmUgbG93IHBvbGFyaXR5IHdoaWNoIG1h
-a2VzIGl0IG5lY2Vzc2FyeSB0bwpoYXZlCgoJL2RlbGV0ZS1wcm9wZXJ0eS8gb3Zlci1jdXJyZW50
-LWFjdGl2ZS1oaWdoOwoJb3Zlci1jdXJyZW50LWFjdGl2ZS1sb3c7CgppbiB0aGUgYm9hcmQncyBk
-dHMgd2hpY2ggaXMgdWdseS4KCkluIHRoZSBhYnNlbmNlIG9mIHRoaXMgcHJvcGVydHkgTGludXgg
-ZGVmYXVsdHMgdG8gYWN0aXZlLWhpZ2ggYW5kCmVuY291cmFnZXMgZXhwbGljaXQgY29uZmlndXJh
-dGlvbiAoc2VlIGNvbW1pdCAxYmY0NzQzZjY0MWQgKCJ1c2I6CmNoaXBpZGVhOiBpbXg6IFdhcm4g
-aWYgb2MgcG9sYXJpdHkgaXNuJ3Qgc3BlY2lmaWVkIikpLCBzbyBvdGhlciBleHRlcm5hbApib2Fy
-ZCBkdHMgZmlsZXMgbGlrZWx5IGFscmVhZHkgaGF2ZSB0aGlzIHNldHRpbmcgYW55aG93LiAoT0ss
-IG1heWJlIGEKYml0IG9wdGltaXN0aWMgaGVyZSA6LSkKClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVp
-bmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Ci0tLQogYXJjaC9hcm0v
-ZHRzL2lteDI1LmR0c2kgfCA4IC0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgOCBkZWxldGlvbnMo
-LSkKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9kdHMvaW14MjUuZHRzaSBiL2FyY2gvYXJtL2R0cy9p
-bXgyNS5kdHNpCmluZGV4IGU3MmRiZDVmMzY4Ni4uMDU2NzhhZjcxYWFlIDEwMDY0NAotLS0gYS9h
-cmNoL2FybS9kdHMvaW14MjUuZHRzaQorKysgYi9hcmNoL2FybS9kdHMvaW14MjUuZHRzaQpAQCAt
-MjQsMTEgKzI0LDMgQEAKICZ1c2JtaXNjIHsKIAlzdGF0dXMgPSAib2theSI7CiB9OwotCi0mdXNi
-b3RnIHsKLQlvdmVyLWN1cnJlbnQtYWN0aXZlLWhpZ2g7Ci19OwotCi0mdXNiaG9zdDEgewotCW92
-ZXItY3VycmVudC1hY3RpdmUtaGlnaDsKLX07Ci0tIAoyLjI0LjAKCgpfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJl
-Ym94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9iYXJlYm94Cg==
+Hi Wesley,
+
+Am Dienstag, den 14.01.2020, 12:36 -0500 schrieb Wesley Chow:
+> hi all!
+> 
+> 64 bit virt doesn't appear to be working.
+> 
+> $ ARCH=arm CROSS_COMPILE=/usr/bin/aarch64-linux-gnu- make
+> qemu_virt64_defconfig
+> ...
+> $ qemu-system-aarch64 -M virt -cpu cortex-a57 -nographic -kernel
+> barebox
+> 
+> (qemu hangs)
+> 
+> I see here that at some point aarch64 had issues, but do these remain
+> unresolved? https://www.spinics.net/lists/u-boot-v2/msg33882.html
+
+I've just sent a patch to at least solve the stack issues discussed in
+this thread. Unfortunately this doesn't yield a completely working
+Barebox for me. I get the following output before things go downhill in
+a data abort:
+
+barebox 2019.12.0-00296-g6b1cae953fba #370 Tue Jan 14 21:18:14 CET 2020
+Board: ARM QEMU virt64
+
+Regards,
+Lucas
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
