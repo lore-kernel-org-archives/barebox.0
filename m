@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
- by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ir53a-0004WH-7i
- for barebox@lists.infradead.org; Mon, 13 Jan 2020 19:07:24 +0000
-Message-ID: <b29aadb633dda02bb26b062338e1cd8f19f4dd61.camel@lynxeye.de>
-From: Lucas Stach <dev@lynxeye.de>
-Date: Mon, 13 Jan 2020 20:06:43 +0100
-In-Reply-To: <0e202cc5-a5af-309e-c55c-5c508592fa9d@pengutronix.de>
-References: <20200109072855.14154-1-antonynpavlov@gmail.com>
- <20200109072855.14154-4-antonynpavlov@gmail.com>
- <0e202cc5-a5af-309e-c55c-5c508592fa9d@pengutronix.de>
+Received: from mail-ot1-x341.google.com ([2607:f8b0:4864:20::341])
+ by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1irUTL-00023Q-OP
+ for barebox@lists.infradead.org; Tue, 14 Jan 2020 22:15:41 +0000
+Received: by mail-ot1-x341.google.com with SMTP id a15so14266579otf.1
+ for <barebox@lists.infradead.org>; Tue, 14 Jan 2020 14:15:39 -0800 (PST)
 MIME-Version: 1.0
+References: <CAG=Azd9mtQJuweJaeJNxRWq2-6r7Yu0L5oS9zFX1YNvvXHoo=A@mail.gmail.com>
+ <5d1c6ffa63be590d5135dadf9200405cd5a28ba0.camel@lynxeye.de>
+In-Reply-To: <5d1c6ffa63be590d5135dadf9200405cd5a28ba0.camel@lynxeye.de>
+From: Wesley Chow <wes@cortico.ai>
+Date: Tue, 14 Jan 2020 17:15:27 -0500
+Message-ID: <CAG=Azd8MdL6C-bpHWHBO6wXscA-xYFj7yM-YrHFTHajxnu-aRQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,91 +24,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 3/5] net: e1000: make it work on MIPS
-To: Oleksij Rempel <o.rempel@pengutronix.de>, Antony Pavlov <antonynpavlov@gmail.com>, barebox@lists.infradead.org
-Cc: Peter Mamonov <pmamonov@gmail.com>
+Subject: Re: qemu arm vexpress / virt32 support
+To: Lucas Stach <dev@lynxeye.de>
+Cc: barebox@lists.infradead.org
 
-Am Montag, den 13.01.2020, 08:29 +0100 schrieb Oleksij Rempel:
-> Hm... how was it working before? We was just lucky to have physical address equal to 
-> virtual. I would say, it is not really MIPS only fix.
+Thanks, -next works! Also since 2020.10.0 cut right after I wrote this
+email, I just tested head (4cce60b7fe2798e81b04c5d9ad79dc9b443635a8)
+and the 2020.10.0 release. Both work. I no longer know what githash I
+was on at the time of my original email. FWIW, I think in my previous
+testing 2019.12.0 and 2019.11.0 didn't work, but 2019.10.0 did. Though
+that was via buildroot integration, and I'm honestly not sure if they
+apply any patches. At any rate, I'll stick to 2020.10.0 and see how
+that goes.
 
-Yes, drivers using DMA_ADDRESS_BROKEN don't work on any
-architecture/SoC that doesn't have a 1:1 CPU to DMA address mapping.
-The name of that define might give a slight hint to that fact. ;)
+Wes
 
-Regards,
-Lucas
 
-> Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> 
-> On 09.01.20 08:28, Antony Pavlov wrote:
-> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> > ---
-> >   drivers/net/e1000/e1000.h | 2 ++
-> >   drivers/net/e1000/main.c  | 8 ++++----
-> >   2 files changed, 6 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/drivers/net/e1000/e1000.h b/drivers/net/e1000/e1000.h
-> > index 52ad3d4cdb..d26e6dcc02 100644
-> > --- a/drivers/net/e1000/e1000.h
-> > +++ b/drivers/net/e1000/e1000.h
-> > @@ -2180,7 +2180,9 @@ struct e1000_hw {
-> >   	struct mii_bus miibus;
-> >   
-> >   	struct e1000_tx_desc *tx_base;
-> > +	dma_addr_t tx_base_phys;
-> >   	struct e1000_rx_desc *rx_base;
-> > +	dma_addr_t rx_base_phys;
-> >   	unsigned char *packet;
-> >   	dma_addr_t packet_dma;
-> >   
-> > diff --git a/drivers/net/e1000/main.c b/drivers/net/e1000/main.c
-> > index f67c5d867b..69b1516640 100644
-> > --- a/drivers/net/e1000/main.c
-> > +++ b/drivers/net/e1000/main.c
-> > @@ -3232,7 +3232,7 @@ static void e1000_configure_tx(struct
-> > e1000_hw *hw)
-> >   	unsigned long tctl;
-> >   	unsigned long tipg, tarc;
-> >   	uint32_t ipgr1, ipgr2;
-> > -	const unsigned long tx_base = (unsigned long)hw->tx_base;
-> > +	const unsigned long tx_base = (unsigned long)hw->tx_base_phys;
-> >   
-> >   	e1000_write_reg(hw, E1000_TDBAL, lower_32_bits(tx_base));
-> >   	e1000_write_reg(hw, E1000_TDBAH, upper_32_bits(tx_base));
-> > @@ -3351,7 +3351,7 @@ static void e1000_setup_rctl(struct e1000_hw
-> > *hw)
-> >   static void e1000_configure_rx(struct e1000_hw *hw)
-> >   {
-> >   	unsigned long rctl, ctrl_ext;
-> > -	const unsigned long rx_base = (unsigned long)hw->rx_base;
-> > +	const unsigned long rx_base = (unsigned long)hw->rx_base_phys;
-> >   
-> >   	hw->rx_tail = 0;
-> >   	/* make sure receives are disabled while setting up the
-> > descriptors */
-> > @@ -3564,8 +3564,8 @@ static int e1000_probe(struct pci_dev *pdev,
-> > const struct pci_device_id *id)
-> >   
-> >   	hw = xzalloc(sizeof(*hw));
-> >   
-> > -	hw->tx_base = dma_alloc_coherent(16 * sizeof(*hw->tx_base),
-> > DMA_ADDRESS_BROKEN);
-> > -	hw->rx_base = dma_alloc_coherent(16 * sizeof(*hw->rx_base),
-> > DMA_ADDRESS_BROKEN);
-> > +	hw->tx_base = dma_alloc_coherent(16 * sizeof(*hw->tx_base),
-> > &hw->tx_base_phys);
-> > +	hw->rx_base = dma_alloc_coherent(16 * sizeof(*hw->rx_base),
-> > &hw->rx_base_phys);
-> >   
-> >   	edev = &hw->edev;
-> >   
-> > 
-> 
-> Kind regards,
-> Oleksij Rempel
-> 
-
+On Tue, Jan 14, 2020 at 3:06 PM Lucas Stach <dev@lynxeye.de> wrote:
+>
+> Hi Wesley,
+>
+> Am Dienstag, den 14.01.2020, 12:40 -0500 schrieb Wesley Chow:
+> > I see here that vexpress is supposed to be the 32 bit arm config of choice:
+> >
+> > http://lists.infradead.org/pipermail/barebox/2017-November/031597.html
+> >
+> > Is this still the case, ie there's no interest in supporting the 32 bit virt?
+>
+> I wouldn't say there is no interest in supporting the virt platform in
+> Barebox. It's true that none of the current developers have a strong
+> interest in the virt platform.
+>
+> If someone from the community shows an interest and implements all the
+> virtio infrastructure and related drivers, I see no reason why those
+> patches wouldn't be considered for mainline inclusion.
+>
+> I guess that's an elaborate way to say: patches welcome!
+>
+> >
+> > Using vexpress, I get this:
+> >
+> > ARCH=arm CROSS_COMPILE=/usr/bin/arm-linux-gnueabihf- make vexpress_defconfig
+> > ...
+> > $ qemu-system-arm -M vexpress-a9 -cpu cortex-a9 -m 256 -nographic
+> > -kernel images/barebox-vexpress-ca9.img
+> > pulseaudio: set_sink_input_volume() failed
+> > pulseaudio: Reason: Invalid argument
+> > pulseaudio: set_sink_input_mute() failed
+> > pulseaudio: Reason: Invalid argument
+> > PFLASH: Possible BUG - Write block confirm
+> >
+> > (then qemu exits)
+> >
+> > This is with barebox head, qemu 2.11, but same results with qemu 4.2.0
+> > too. I'm new to barebox -- is this the correct invocation?
+>
+> I've just built barebox -next and using qemu 4.1.1 the documented
+> (Documentation/boards/arm-qemu-vexpress.rst) commandline
+> "qemu-system-arm -m 1024M -machine vexpress-a9 -cpu cortex-a9
+> -nographic -no-reboot -kernel images/barebox-vexpress-ca9.img" yields a
+> working Barebox for me.
+>
+> Regards,
+> Lucas
+>
 
 _______________________________________________
 barebox mailing list
