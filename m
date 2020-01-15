@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1irjme-0004Hs-5u
- for barebox@lists.infradead.org; Wed, 15 Jan 2020 14:36:40 +0000
+ id 1irjxT-0000fZ-R1
+ for barebox@lists.infradead.org; Wed, 15 Jan 2020 14:47:52 +0000
+Message-ID: <1579099664.13056.29.camel@pengutronix.de>
+From: Enrico Joerns <ejo@pengutronix.de>
+Date: Wed, 15 Jan 2020 15:47:44 +0100
+In-Reply-To: <f451a45a-a4bc-f285-0614-001cb3a57405@pengutronix.de>
 References: <r276.1579090214262888471.6UJY@lists.yoctoproject.org>
  <1579093362.13056.13.camel@pengutronix.de>
  <DB8PR03MB54983C09B221B210D29A26AAFE370@DB8PR03MB5498.eurprd03.prod.outlook.com>
  <45b34e63-a9fd-2295-311c-393bf49fdf93@pengutronix.de>
  <DB8PR03MB549847FD100DF7192459527FFE370@DB8PR03MB5498.eurprd03.prod.outlook.com>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <f451a45a-a4bc-f285-0614-001cb3a57405@pengutronix.de>
-Date: Wed, 15 Jan 2020 15:36:33 +0100
-MIME-Version: 1.0
-In-Reply-To: <DB8PR03MB549847FD100DF7192459527FFE370@DB8PR03MB5498.eurprd03.prod.outlook.com>
-Content-Language: en-US
+ <f451a45a-a4bc-f285-0614-001cb3a57405@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,156 +22,117 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [yocto] #yocto bootchooser: Cannot get state 'state'
-To: Hans-Ulrich Schlieben <hu.schlieben@codewrights.de>, Enrico Joerns <ejo@pengutronix.de>, "yocto@lists.yoctoproject.org" <yocto@lists.yoctoproject.org>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+To: Hans-Ulrich Schlieben <hu.schlieben@codewrights.de>
+Cc: "yocto@lists.yoctoproject.org" <yocto@lists.yoctoproject.org>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Hello Hans-Ulrich,
-
-On 1/15/20 3:25 PM, Hans-Ulrich Schlieben wrote:
->> Can you copy the device tree snippet you use for defining state?
-> Is there a problem because ubi works now and garbles the data in the flash?
-> 
->> What does running the state command say?
-> barebox@Phytec phyCORE-i.MX6 Quad with NAND:/ state
-> registered state instances:
-> 
-> is empty in zeus, whereas thud returned: (backend: raw, path: /dev/eeprom0.update-eeprom)
-
-According to the state command output under thud, your state is stored
-on the EEPROM, not the NAND. Look for update-eeprom in your device tree.
-There should also be an /dev/eeprom0.update-eeprom in barebox.
-if not, try executing the drvinfo command and see if the driver has
-probed the EEPROM.
-
-Can you also paste the full barebox output from power-on till failure?
-
-Your board should boot normally with upstream barebox, I think.
-Can you try and see if v2020.01.0 suffers from the same problem?
-
-Cheers
-Ahmad
-
-> 
-> Thank you and Regards
-> 
-> hu
-> 
-> 
-> -----Original Message-----
-> From: Ahmad Fatoum <a.fatoum@pengutronix.de> 
-> Sent: Wednesday, 15 January 2020 14:40
-> To: Hans-Ulrich Schlieben <hu.schlieben@codewrights.de>; Enrico Joerns <ejo@pengutronix.de>; yocto@lists.yoctoproject.org
-> Cc: barebox@lists.infradead.org
-> Subject: Re: [yocto] #yocto bootchooser: Cannot get state 'state'
-> 
-> On 1/15/20 2:26 PM, Hans-Ulrich Schlieben wrote:
->> Hi Enrico,
->>
->> thank you very much for your help. 
->> I'm using barebox_2019.01.0-phy4-r7.0 now. In thud I used 
->> barebox_2017.12.0 The image is built using my own ims layer which 
->> depends on core-image-minimal LAYERDEPENDS_ims-layer = "core-image-minimal openembedded-layer phytec-layer"
->> Its using the meta-phytec Layer and a custom layer from phytec named meta-ksp0663.
->> Forgot to mention that rauc is used too, which moved from 1.1 to now 1.2.
->> Just changed the LAYERSERIES_COMPAT to "zeus" here to check whether yocto zeus works.
->>
->> Is there some info what to change in the devicetree and so on when moving to warrior/zeus?
->> In thud this worked.
-> 
-> Are there any other error messages?
-> Can you copy the device tree snippet you use for defining state?
-> What does running the state command say?
-> 
-> (now again, but with CC-list intact)
-> 
->>
->> Thank you
->> Regards
->>
->> hu
->>
->>> -----Original Message-----
->>> From: Enrico Joerns <ejo@pengutronix.de>
->>> Sent: Wednesday, 15 January 2020 14:03
->>> To: Hans-Ulrich Schlieben <hu.schlieben@codewrights.de>; 
->>> yocto@lists.yoctoproject.org
->>> Cc: barebox@lists.infradead.org
->>> Subject: Re: [yocto] #yocto bootchooser: Cannot get state 'state'
->>>
->>> Hi,
->>>
->>> this is mainly a barebox-related question, thus I'd suggest asking it on the barebox ML.
->>>
->>> [cc-ing barebox mailing list]
->>>
->>> On Wed, 2020-01-15 at 04:10 -0800, hu.schlieben@codewrights.de wrote:
->>>> Hi,
->>>>
->>>> booting the new yocto zeus system manually by "boot mmc" works fine 
->>>> but default bootchooser fails with:
->>>>
->>>> bootchooser: Cannot get state 'state'
->>>> Nothing bootable found on 'bootchooser'
->>>> Nothing bootable found
->>>
->>> Looks like the state node is missing in your device tree.
->>> Which version of barebox do you use?
->>> And from which layer / recipe?
->>>
->>>> Building the "same" image in yocto thud works fine. The boot 
->>>> variables
->>>> are:
->>>>
->>>> * BOOT_system0_.default: 3
->>>> * BOOT_system1_.default: 3
->>>> * allow_color: 0
->>>> * autoboot_timeout: 3
->>>> * boot.default: bootchooser
->>>>   boot.watchdog_timeout: 0
->>>>   bootchooser.default_attempts: 3
->>>>   bootchooser.default_priority: 1
->>>>   bootchooser.disable_on_zero_attempts: 0
->>>>   bootchooser.reset_attempts:  (list: "power-on", "all-zero")
->>>>   bootchooser.reset_priorities:
->>>>   bootchooser.retry: 0
->>>> * bootchooser.state_prefix: state.bootstate
->>>> * bootchooser.system0.boot: mmc
->>>> * bootchooser.system0.default_attempts: 3
->>>> * bootchooser.system0.default_priority: 20
->>>> * bootchooser.system1.boot: mmc1
->>>> * bootchooser.system1.default_attempts: 3
->>>> * bootchooser.system1.default_priority: 21
->>>> * bootchooser.targets: system0 system1
->>>>   bootm.appendroot: 0
->>>> ...
->>>>
->>>
->>> Regards, Enrico
->>
->> _______________________________________________
->> barebox mailing list
->> barebox@lists.infradead.org
->> https://eur04.safelinks.protection.outlook.com/?url=http%3A%2F%2Flists
->> .infradead.org%2Fmailman%2Flistinfo%2Fbarebox&amp;data=01%7C01%7Chu.sc
->> hlieben%40codewrights.de%7Cb6b1eddf633845b6004308d799c06b3c%7C0974af9b
->> 352b437cb606e9f242c0c227%7C0&amp;sdata=xYCzF1pdhTQArF5%2BHffieEkHNmdqX
->> w%2BVo2EFWg%2FKOHY%3D&amp;reserved=0
->>
-> 
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gV2VkLCAyMDIwLTAxLTE1IGF0IDE1OjM2ICswMTAwLCBBaG1hZCBGYXRvdW0gd3JvdGU6Cj4g
+SGVsbG8gSGFucy1VbHJpY2gsCj4gCj4gT24gMS8xNS8yMCAzOjI1IFBNLCBIYW5zLVVscmljaCBT
+Y2hsaWViZW4gd3JvdGU6Cj4gPiA+IENhbiB5b3UgY29weSB0aGUgZGV2aWNlIHRyZWUgc25pcHBl
+dCB5b3UgdXNlIGZvciBkZWZpbmluZyBzdGF0ZT8KPiA+IAo+ID4gSXMgdGhlcmUgYSBwcm9ibGVt
+IGJlY2F1c2UgdWJpIHdvcmtzIG5vdyBhbmQgZ2FyYmxlcyB0aGUgZGF0YSBpbiB0aGUgZmxhc2g/
+Cj4gPiAKPiA+ID4gV2hhdCBkb2VzIHJ1bm5pbmcgdGhlIHN0YXRlIGNvbW1hbmQgc2F5Pwo+ID4g
+Cj4gPiBiYXJlYm94QFBoeXRlYyBwaHlDT1JFLWkuTVg2IFF1YWQgd2l0aCBOQU5EOi8gc3RhdGUK
+PiA+IHJlZ2lzdGVyZWQgc3RhdGUgaW5zdGFuY2VzOgo+ID4gCj4gPiBpcyBlbXB0eSBpbiB6ZXVz
+LCB3aGVyZWFzIHRodWQgcmV0dXJuZWQ6IChiYWNrZW5kOiByYXcsIHBhdGg6IC9kZXYvZWVwcm9t
+MC51cGRhdGUtZWVwcm9tKQoKVGhlIGRpZmZlcmVuY2UgYmV0d2VlbiAnemV1cycgYW5kICd0aHVk
+JyBpcyBtYWlubHkgdGhlIGJhcmVib3ggdmVyc2lvbiB0aGF0IHlvdQpnZXQgZnJvbSB0aGUgbWV0
+YS1waHl0ZWMgbGF5ZXIuCgpXZSBoYWQgc29tZSBjaGFuZ2VzIGluIHJlcXVpcmVtZW50cyBmb3Ig
+dGhlIHN0YXRlIG5vZGUgYWxpYXMgd2l0aGluIHRoZSB0d28KeWVhciwgYnV0IHVuc3VyZSBpZiB0
+aGF0IGhpdHMgeW91LgoKTm90ZSB0aGF0IHlvdSBjYW4gZmluZCB0aGUgYnVpbGQgZHRiIGluIHlv
+dXIgQlNQJ3MgZGVwbG95IGRpci4gWW91IGNvdWxkIHJ1bgoKICBmZHRkdW1wIHRtcC9kZXBsb3kv
+aW1hZ2VzLzxtYWNoaW5lPi88bmFtZS1vZi1kdGI+LmR0YgoKdG8gZHVtcCBpdC4KCgpSZWdhcmRz
+LCBFbnJpY28KCj4gQWNjb3JkaW5nIHRvIHRoZSBzdGF0ZSBjb21tYW5kIG91dHB1dCB1bmRlciB0
+aHVkLCB5b3VyIHN0YXRlIGlzIHN0b3JlZAo+IG9uIHRoZSBFRVBST00sIG5vdCB0aGUgTkFORC4g
+TG9vayBmb3IgdXBkYXRlLWVlcHJvbSBpbiB5b3VyIGRldmljZSB0cmVlLgo+IFRoZXJlIHNob3Vs
+ZCBhbHNvIGJlIGFuIC9kZXYvZWVwcm9tMC51cGRhdGUtZWVwcm9tIGluIGJhcmVib3guCj4gaWYg
+bm90LCB0cnkgZXhlY3V0aW5nIHRoZSBkcnZpbmZvIGNvbW1hbmQgYW5kIHNlZSBpZiB0aGUgZHJp
+dmVyIGhhcwo+IHByb2JlZCB0aGUgRUVQUk9NLgo+IAo+IENhbiB5b3UgYWxzbyBwYXN0ZSB0aGUg
+ZnVsbCBiYXJlYm94IG91dHB1dCBmcm9tIHBvd2VyLW9uIHRpbGwgZmFpbHVyZT8KPiAKPiBZb3Vy
+IGJvYXJkIHNob3VsZCBib290IG5vcm1hbGx5IHdpdGggdXBzdHJlYW0gYmFyZWJveCwgSSB0aGlu
+ay4KPiBDYW4geW91IHRyeSBhbmQgc2VlIGlmIHYyMDIwLjAxLjAgc3VmZmVycyBmcm9tIHRoZSBz
+YW1lIHByb2JsZW0/Cj4gCj4gQ2hlZXJzCj4gQWhtYWQKPiAKPiA+IAo+ID4gVGhhbmsgeW91IGFu
+ZCBSZWdhcmRzCj4gPiAKPiA+IGh1Cj4gPiAKPiA+IAo+ID4gLS0tLS1PcmlnaW5hbCBNZXNzYWdl
+LS0tLS0KPiA+IEZyb206IEFobWFkIEZhdG91bSA8YS5mYXRvdW1AcGVuZ3V0cm9uaXguZGU+IAo+
+ID4gU2VudDogV2VkbmVzZGF5LCAxNSBKYW51YXJ5IDIwMjAgMTQ6NDAKPiA+IFRvOiBIYW5zLVVs
+cmljaCBTY2hsaWViZW4gPGh1LnNjaGxpZWJlbkBjb2Rld3JpZ2h0cy5kZT47IEVucmljbyBKb2Vy
+bnMgPGVqb0BwZW5ndXRyb25peC5kZT47IHlvY3RvQGxpc3RzLnlvY3RvcHJvamVjdC5vcmcKPiA+
+IENjOiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKPiA+IFN1YmplY3Q6IFJlOiBbeW9jdG9d
+ICN5b2N0byBib290Y2hvb3NlcjogQ2Fubm90IGdldCBzdGF0ZSAnc3RhdGUnCj4gPiAKPiA+IE9u
+IDEvMTUvMjAgMjoyNiBQTSwgSGFucy1VbHJpY2ggU2NobGllYmVuIHdyb3RlOgo+ID4gPiBIaSBF
+bnJpY28sCj4gPiA+IAo+ID4gPiB0aGFuayB5b3UgdmVyeSBtdWNoIGZvciB5b3VyIGhlbHAuIAo+
+ID4gPiBJJ20gdXNpbmcgYmFyZWJveF8yMDE5LjAxLjAtcGh5NC1yNy4wIG5vdy4gSW4gdGh1ZCBJ
+IHVzZWQgCj4gPiA+IGJhcmVib3hfMjAxNy4xMi4wIFRoZSBpbWFnZSBpcyBidWlsdCB1c2luZyBt
+eSBvd24gaW1zIGxheWVyIHdoaWNoIAo+ID4gPiBkZXBlbmRzIG9uIGNvcmUtaW1hZ2UtbWluaW1h
+bCBMQVlFUkRFUEVORFNfaW1zLWxheWVyID0gImNvcmUtaW1hZ2UtbWluaW1hbCBvcGVuZW1iZWRk
+ZWQtbGF5ZXIgcGh5dGVjLWxheWVyIgo+ID4gPiBJdHMgdXNpbmcgdGhlIG1ldGEtcGh5dGVjIExh
+eWVyIGFuZCBhIGN1c3RvbSBsYXllciBmcm9tIHBoeXRlYyBuYW1lZCBtZXRhLWtzcDA2NjMuCj4g
+PiA+IEZvcmdvdCB0byBtZW50aW9uIHRoYXQgcmF1YyBpcyB1c2VkIHRvbywgd2hpY2ggbW92ZWQg
+ZnJvbSAxLjEgdG8gbm93IDEuMi4KPiA+ID4gSnVzdCBjaGFuZ2VkIHRoZSBMQVlFUlNFUklFU19D
+T01QQVQgdG8gInpldXMiIGhlcmUgdG8gY2hlY2sgd2hldGhlciB5b2N0byB6ZXVzIHdvcmtzLgo+
+ID4gPiAKPiA+ID4gSXMgdGhlcmUgc29tZSBpbmZvIHdoYXQgdG8gY2hhbmdlIGluIHRoZSBkZXZp
+Y2V0cmVlIGFuZCBzbyBvbiB3aGVuIG1vdmluZyB0byB3YXJyaW9yL3pldXM/Cj4gPiA+IEluIHRo
+dWQgdGhpcyB3b3JrZWQuCj4gPiAKPiA+IEFyZSB0aGVyZSBhbnkgb3RoZXIgZXJyb3IgbWVzc2Fn
+ZXM/Cj4gPiBDYW4geW91IGNvcHkgdGhlIGRldmljZSB0cmVlIHNuaXBwZXQgeW91IHVzZSBmb3Ig
+ZGVmaW5pbmcgc3RhdGU/Cj4gPiBXaGF0IGRvZXMgcnVubmluZyB0aGUgc3RhdGUgY29tbWFuZCBz
+YXk/Cj4gPiAKPiA+IChub3cgYWdhaW4sIGJ1dCB3aXRoIENDLWxpc3QgaW50YWN0KQo+ID4gCj4g
+PiA+IAo+ID4gPiBUaGFuayB5b3UKPiA+ID4gUmVnYXJkcwo+ID4gPiAKPiA+ID4gaHUKPiA+ID4g
+Cj4gPiA+ID4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0KPiA+ID4gPiBGcm9tOiBFbnJpY28g
+Sm9lcm5zIDxlam9AcGVuZ3V0cm9uaXguZGU+Cj4gPiA+ID4gU2VudDogV2VkbmVzZGF5LCAxNSBK
+YW51YXJ5IDIwMjAgMTQ6MDMKPiA+ID4gPiBUbzogSGFucy1VbHJpY2ggU2NobGllYmVuIDxodS5z
+Y2hsaWViZW5AY29kZXdyaWdodHMuZGU+OyAKPiA+ID4gPiB5b2N0b0BsaXN0cy55b2N0b3Byb2pl
+Y3Qub3JnCj4gPiA+ID4gQ2M6IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+ID4gPiA+IFN1
+YmplY3Q6IFJlOiBbeW9jdG9dICN5b2N0byBib290Y2hvb3NlcjogQ2Fubm90IGdldCBzdGF0ZSAn
+c3RhdGUnCj4gPiA+ID4gCj4gPiA+ID4gSGksCj4gPiA+ID4gCj4gPiA+ID4gdGhpcyBpcyBtYWlu
+bHkgYSBiYXJlYm94LXJlbGF0ZWQgcXVlc3Rpb24sIHRodXMgSSdkIHN1Z2dlc3QgYXNraW5nIGl0
+IG9uIHRoZSBiYXJlYm94IE1MLgo+ID4gPiA+IAo+ID4gPiA+IFtjYy1pbmcgYmFyZWJveCBtYWls
+aW5nIGxpc3RdCj4gPiA+ID4gCj4gPiA+ID4gT24gV2VkLCAyMDIwLTAxLTE1IGF0IDA0OjEwIC0w
+ODAwLCBodS5zY2hsaWViZW5AY29kZXdyaWdodHMuZGUgd3JvdGU6Cj4gPiA+ID4gPiBIaSwKPiA+
+ID4gPiA+IAo+ID4gPiA+ID4gYm9vdGluZyB0aGUgbmV3IHlvY3RvIHpldXMgc3lzdGVtIG1hbnVh
+bGx5IGJ5ICJib290IG1tYyIgd29ya3MgZmluZSAKPiA+ID4gPiA+IGJ1dCBkZWZhdWx0IGJvb3Rj
+aG9vc2VyIGZhaWxzIHdpdGg6Cj4gPiA+ID4gPiAKPiA+ID4gPiA+IGJvb3RjaG9vc2VyOiBDYW5u
+b3QgZ2V0IHN0YXRlICdzdGF0ZScKPiA+ID4gPiA+IE5vdGhpbmcgYm9vdGFibGUgZm91bmQgb24g
+J2Jvb3RjaG9vc2VyJwo+ID4gPiA+ID4gTm90aGluZyBib290YWJsZSBmb3VuZAo+ID4gPiA+IAo+
+ID4gPiA+IExvb2tzIGxpa2UgdGhlIHN0YXRlIG5vZGUgaXMgbWlzc2luZyBpbiB5b3VyIGRldmlj
+ZSB0cmVlLgo+ID4gPiA+IFdoaWNoIHZlcnNpb24gb2YgYmFyZWJveCBkbyB5b3UgdXNlPwo+ID4g
+PiA+IEFuZCBmcm9tIHdoaWNoIGxheWVyIC8gcmVjaXBlPwo+ID4gPiA+IAo+ID4gPiA+ID4gQnVp
+bGRpbmcgdGhlICJzYW1lIiBpbWFnZSBpbiB5b2N0byB0aHVkIHdvcmtzIGZpbmUuIFRoZSBib290
+IAo+ID4gPiA+ID4gdmFyaWFibGVzCj4gPiA+ID4gPiBhcmU6Cj4gPiA+ID4gPiAKPiA+ID4gPiA+
+ICogQk9PVF9zeXN0ZW0wXy5kZWZhdWx0OiAzCj4gPiA+ID4gPiAqIEJPT1Rfc3lzdGVtMV8uZGVm
+YXVsdDogMwo+ID4gPiA+ID4gKiBhbGxvd19jb2xvcjogMAo+ID4gPiA+ID4gKiBhdXRvYm9vdF90
+aW1lb3V0OiAzCj4gPiA+ID4gPiAqIGJvb3QuZGVmYXVsdDogYm9vdGNob29zZXIKPiA+ID4gPiA+
+ICAgYm9vdC53YXRjaGRvZ190aW1lb3V0OiAwCj4gPiA+ID4gPiAgIGJvb3RjaG9vc2VyLmRlZmF1
+bHRfYXR0ZW1wdHM6IDMKPiA+ID4gPiA+ICAgYm9vdGNob29zZXIuZGVmYXVsdF9wcmlvcml0eTog
+MQo+ID4gPiA+ID4gICBib290Y2hvb3Nlci5kaXNhYmxlX29uX3plcm9fYXR0ZW1wdHM6IDAKPiA+
+ID4gPiA+ICAgYm9vdGNob29zZXIucmVzZXRfYXR0ZW1wdHM6ICAobGlzdDogInBvd2VyLW9uIiwg
+ImFsbC16ZXJvIikKPiA+ID4gPiA+ICAgYm9vdGNob29zZXIucmVzZXRfcHJpb3JpdGllczoKPiA+
+ID4gPiA+ICAgYm9vdGNob29zZXIucmV0cnk6IDAKPiA+ID4gPiA+ICogYm9vdGNob29zZXIuc3Rh
+dGVfcHJlZml4OiBzdGF0ZS5ib290c3RhdGUKPiA+ID4gPiA+ICogYm9vdGNob29zZXIuc3lzdGVt
+MC5ib290OiBtbWMKPiA+ID4gPiA+ICogYm9vdGNob29zZXIuc3lzdGVtMC5kZWZhdWx0X2F0dGVt
+cHRzOiAzCj4gPiA+ID4gPiAqIGJvb3RjaG9vc2VyLnN5c3RlbTAuZGVmYXVsdF9wcmlvcml0eTog
+MjAKPiA+ID4gPiA+ICogYm9vdGNob29zZXIuc3lzdGVtMS5ib290OiBtbWMxCj4gPiA+ID4gPiAq
+IGJvb3RjaG9vc2VyLnN5c3RlbTEuZGVmYXVsdF9hdHRlbXB0czogMwo+ID4gPiA+ID4gKiBib290
+Y2hvb3Nlci5zeXN0ZW0xLmRlZmF1bHRfcHJpb3JpdHk6IDIxCj4gPiA+ID4gPiAqIGJvb3RjaG9v
+c2VyLnRhcmdldHM6IHN5c3RlbTAgc3lzdGVtMQo+ID4gPiA+ID4gICBib290bS5hcHBlbmRyb290
+OiAwCj4gPiA+ID4gPiAuLi4KPiA+ID4gPiA+IAo+ID4gPiA+IAo+ID4gPiA+IFJlZ2FyZHMsIEVu
+cmljbwo+ID4gPiAKPiA+ID4gX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KPiA+ID4gYmFyZWJveCBtYWlsaW5nIGxpc3QKPiA+ID4gYmFyZWJveEBsaXN0cy5p
+bmZyYWRlYWQub3JnCj4gPiA+IGh0dHBzOi8vZXVyMDQuc2FmZWxpbmtzLnByb3RlY3Rpb24ub3V0
+bG9vay5jb20vP3VybD1odHRwJTNBJTJGJTJGbGlzdHMKPiA+ID4gLmluZnJhZGVhZC5vcmclMkZt
+YWlsbWFuJTJGbGlzdGluZm8lMkZiYXJlYm94JmFtcDtkYXRhPTAxJTdDMDElN0NodS5zYwo+ID4g
+PiBobGllYmVuJTQwY29kZXdyaWdodHMuZGUlN0NiNmIxZWRkZjYzMzg0NWI2MDA0MzA4ZDc5OWMw
+NmIzYyU3QzA5NzRhZjliCj4gPiA+IDM1MmI0MzdjYjYwNmU5ZjI0MmMwYzIyNyU3QzAmYW1wO3Nk
+YXRhPXhZQ3pGMXBkaFRRQXJGNSUyQkhmZmllRWtITm1kcVgKPiA+ID4gdyUyQlZvMkVGV2clMkZL
+T0hZJTNEJmFtcDtyZXNlcnZlZD0wCj4gPiA+IAo+ID4gCj4gPiAKPiAKPiAKLS0gClBlbmd1dHJv
+bml4IGUuSy4gICAgICAgICAgICAgICAgICAgIHwgRW5yaWNvIErDtnJucyAgICAgICAgICAgICAg
+ICB8CkVtYmVkZGVkIExpbnV4IENvbnN1bHRpbmcgJiBTdXBwb3J0IHwgVGVhbSBMZWFkIEludGVn
+cmF0aW9uICAgICAgIHwKU3RldWVyd2FsZGVyIFN0ci4gMjEgICAgICAgICAgICAgICAgfCBodHRw
+czovL3d3dy5wZW5ndXRyb25peC5kZSAgfAozMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55ICAgICAg
+ICAgICB8IFBob25lOiArNDktNTEyMS0yMDY5MTctNTA4MCB8CgpfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94
+QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9s
+aXN0aW5mby9iYXJlYm94Cg==
