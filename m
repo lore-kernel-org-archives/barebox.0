@@ -1,17 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iuM52-0002yU-J6
- for barebox@lists.infradead.org; Wed, 22 Jan 2020 19:54:26 +0000
-Date: Wed, 22 Jan 2020 20:54:16 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200122195416.32acs5tzb5qlyufy@pengutronix.de>
-References: <20200121114421.24401-1-ceggers@arri.de>
- <20200122082115.tgwaf72ootkmkf5s@pengutronix.de>
- <1607136.7P1be9KPAr@n95hx1g2>
+ id 1irisP-0002K2-7c
+ for barebox@lists.infradead.org; Wed, 15 Jan 2020 13:38:33 +0000
+Received: from [2001:67c:670:100:6a05:caff:fe2d:a9b1]
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>) id 1irisM-0007Zh-Dj
+ for barebox@lists.infradead.org; Wed, 15 Jan 2020 14:38:26 +0100
+References: <r276.1579090214262888471.6UJY@lists.yoctoproject.org>
+ <1579093362.13056.13.camel@pengutronix.de>
+ <DB8PR03MB54983C09B221B210D29A26AAFE370@DB8PR03MB5498.eurprd03.prod.outlook.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <0ef8fdeb-bbff-b137-e6de-134e646f2f17@pengutronix.de>
+Date: Wed, 15 Jan 2020 14:38:26 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1607136.7P1be9KPAr@n95hx1g2>
+In-Reply-To: <DB8PR03MB54983C09B221B210D29A26AAFE370@DB8PR03MB5498.eurprd03.prod.outlook.com>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,90 +29,99 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] watchdog: Select CONFIG_PARAMETER
-To: Christian Eggers <ceggers@arri.de>
-Cc: barebox@lists.infradead.org, ceggers@gmx.de
+Subject: Re: [yocto] #yocto bootchooser: Cannot get state 'state'
+To: barebox@lists.infradead.org
 
-On Wed, Jan 22, 2020 at 10:39:07AM +0100, Christian Eggers wrote:
-> Hi Sascha,
+On 1/15/20 2:26 PM, Hans-Ulrich Schlieben wrote:
+> Hi Enrico,
 > 
-> Am Mittwoch, 22. Januar 2020, 09:21:15 CET schrieb Sascha Hauer:
-> > Hi Christian,
-> >
-> > > diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-> > > index 45dd41a2a..34b7fea39 100644
-> > > --- a/drivers/watchdog/Kconfig
-> > > +++ b/drivers/watchdog/Kconfig
-> > > @@ -4,6 +4,7 @@ config WATCHDOG_IMX_RESET_SOURCE
-> > >
-> > >  menuconfig WATCHDOG
-> > >
-> > >     bool "Watchdog support"
-> > >
-> > > +   select PARAMETER
-> >
-> > I think this goes into the wrong direction. With CONFIG_PARAMETER
-> > enabled we get support for adjusting device parameters from the shell.
-> > In environments without shell support parameter support is not needed.
-> > For example the watchdog C API doesn't need parameter support and is
-> > still usable.
-> >
-> > The static inline wrappers for dev_add_param_* should return NULL
-> > instead of returning ERR_PTR(-ENOSYS).
+> thank you very much for your help. 
+> I'm using barebox_2019.01.0-phy4-r7.0 now. In thud I used barebox_2017.12.0
+> The image is built using my own ims layer which depends on core-image-minimal
+> LAYERDEPENDS_ims-layer = "core-image-minimal openembedded-layer phytec-layer"
+> Its using the meta-phytec Layer and a custom layer from phytec named meta-ksp0663.
+> Forgot to mention that rauc is used too, which moved from 1.1 to now 1.2.
+> Just changed the LAYERSERIES_COMPAT to "zeus" here to check whether yocto zeus works.
 > 
-> initially I came to the same result. But previous commits to param.h went in
-> the opposite direction:
-> 
-> > 03b59bdb64 ("paramter: The dev_add_param_*() return ERR_PTR(), change
-> > no-ops") to return ERR_PTR(-ENOSYS) instead of NULL
+> Is there some info what to change in the devicetree and so on when moving to warrior/zeus?
 
-Shouldn't have merged this one as it lacks an explanation why this has
-been done. Marc, do you have an idea what the motivation for this patch
-was?
+Are there any other error messages?
+Can you copy the device tree snippet you use for defining state?
+What does running the state command say?
 
-> >
-> > Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> In thud this worked.
 > 
-> and
+> Thank you
+> Regards
 > 
-> > c5d95eb4c7 ("param: make parameter functions more consistent")
-> >
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> hu
 > 
-> Most of the callers of dev_add_param*()  don't care about the returned param
-> pointer at all. Some are checking against PTR_ERR() which would not be hit if
-> returning NULL (this is what we want).
+>> -----Original Message-----
+>> From: Enrico Joerns <ejo@pengutronix.de> 
+>> Sent: Wednesday, 15 January 2020 14:03
+>> To: Hans-Ulrich Schlieben <hu.schlieben@codewrights.de>; yocto@lists.yoctoproject.org
+>> Cc: barebox@lists.infradead.org
+>> Subject: Re: [yocto] #yocto bootchooser: Cannot get state 'state'
+>>
+>> Hi,
+>>
+>> this is mainly a barebox-related question, thus I'd suggest asking it on the barebox ML.
+>>
+>> [cc-ing barebox mailing list]
+>>
+>> On Wed, 2020-01-15 at 04:10 -0800, hu.schlieben@codewrights.de wrote:
+>>> Hi,
+>>>
+>>> booting the new yocto zeus system manually by "boot mmc" works fine 
+>>> but default bootchooser fails with:
+>>>
+>>> bootchooser: Cannot get state 'state'
+>>> Nothing bootable found on 'bootchooser'
+>>> Nothing bootable found
+>>
+>> Looks like the state node is missing in your device tree.
+>> Which version of barebox do you use?
+>> And from which layer / recipe?
+>>
+>>> Building the "same" image in yocto thud works fine. The boot variables 
+>>> are:
+>>>
+>>> * BOOT_system0_.default: 3
+>>> * BOOT_system1_.default: 3
+>>> * allow_color: 0
+>>> * autoboot_timeout: 3
+>>> * boot.default: bootchooser
+>>>   boot.watchdog_timeout: 0
+>>>   bootchooser.default_attempts: 3
+>>>   bootchooser.default_priority: 1
+>>>   bootchooser.disable_on_zero_attempts: 0
+>>>   bootchooser.reset_attempts:  (list: "power-on", "all-zero")
+>>>   bootchooser.reset_priorities:
+>>>   bootchooser.retry: 0
+>>> * bootchooser.state_prefix: state.bootstate
+>>> * bootchooser.system0.boot: mmc
+>>> * bootchooser.system0.default_attempts: 3
+>>> * bootchooser.system0.default_priority: 20
+>>> * bootchooser.system1.boot: mmc1
+>>> * bootchooser.system1.default_attempts: 3
+>>> * bootchooser.system1.default_priority: 21
+>>> * bootchooser.targets: system0 system1
+>>>   bootm.appendroot: 0
+>>> ...
+>>>
+>>
+>> Regards, Enrico
 > 
-> A few callers have to changed if a NULL pointer can be returned:
-> - __nvvar_add()
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-nvvar doesn't really make sense without CONFIG_PARAMETER enabled. There
-currently is no dependency between these options, but probably there
-should be.
-
-> - state_string_create()  stores the result in state_string::param, but seems
-> to be used nowhere
-> - mci_register() dito for mci::param_probe
-> - state_uint8_create() dito for state_uint32::param
-> - state_uint32_create() dito
-> 
-> For me it looks reasonable to return a NULL pointer if CONFIG_PARAMETER is not
-> set (as you suggested). Only __nvvar_add() needs slight changes and I would
-> remove needless storage of param in structs state_string, mci and
-> state_uint32.
-> 
-> Shall I start?
-
-Let's wait for Marc if he has an idea why we introduced 03b59bdb64, but
-otherwise yes, this sounds like a good plan.
-
-
-Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
