@@ -1,19 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1irisP-0002K2-7c
- for barebox@lists.infradead.org; Wed, 15 Jan 2020 13:38:33 +0000
-Received: from [2001:67c:670:100:6a05:caff:fe2d:a9b1]
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>) id 1irisM-0007Zh-Dj
- for barebox@lists.infradead.org; Wed, 15 Jan 2020 14:38:26 +0100
+ id 1iritr-0002TZ-GM
+ for barebox@lists.infradead.org; Wed, 15 Jan 2020 13:40:03 +0000
 References: <r276.1579090214262888471.6UJY@lists.yoctoproject.org>
  <1579093362.13056.13.camel@pengutronix.de>
  <DB8PR03MB54983C09B221B210D29A26AAFE370@DB8PR03MB5498.eurprd03.prod.outlook.com>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <0ef8fdeb-bbff-b137-e6de-134e646f2f17@pengutronix.de>
-Date: Wed, 15 Jan 2020 14:38:26 +0100
+Message-ID: <45b34e63-a9fd-2295-311c-393bf49fdf93@pengutronix.de>
+Date: Wed, 15 Jan 2020 14:39:56 +0100
 MIME-Version: 1.0
 In-Reply-To: <DB8PR03MB54983C09B221B210D29A26AAFE370@DB8PR03MB5498.eurprd03.prod.outlook.com>
 Content-Language: en-US
@@ -30,7 +25,8 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [yocto] #yocto bootchooser: Cannot get state 'state'
-To: barebox@lists.infradead.org
+To: Hans-Ulrich Schlieben <hu.schlieben@codewrights.de>, Enrico Joerns <ejo@pengutronix.de>, "yocto@lists.yoctoproject.org" <yocto@lists.yoctoproject.org>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
 On 1/15/20 2:26 PM, Hans-Ulrich Schlieben wrote:
 > Hi Enrico,
@@ -44,12 +40,14 @@ On 1/15/20 2:26 PM, Hans-Ulrich Schlieben wrote:
 > Just changed the LAYERSERIES_COMPAT to "zeus" here to check whether yocto zeus works.
 > 
 > Is there some info what to change in the devicetree and so on when moving to warrior/zeus?
+> In thud this worked.
 
 Are there any other error messages?
 Can you copy the device tree snippet you use for defining state?
 What does running the state command say?
 
-> In thud this worked.
+(now again, but with CC-list intact)
+
 > 
 > Thank you
 > Regards
