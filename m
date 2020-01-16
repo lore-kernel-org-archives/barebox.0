@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iriJt-0004J0-1t
- for barebox@lists.infradead.org; Wed, 15 Jan 2020 13:02:53 +0000
-Message-ID: <1579093362.13056.13.camel@pengutronix.de>
-From: Enrico Joerns <ejo@pengutronix.de>
-Date: Wed, 15 Jan 2020 14:02:42 +0100
-In-Reply-To: <r276.1579090214262888471.6UJY@lists.yoctoproject.org>
-References: <r276.1579090214262888471.6UJY@lists.yoctoproject.org>
-Mime-Version: 1.0
+ id 1is0cI-0008M8-DU
+ for barebox@lists.infradead.org; Thu, 16 Jan 2020 08:35:07 +0000
+Date: Thu, 16 Jan 2020 09:35:00 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200116083500.wpip2dqzkox435au@pengutronix.de>
+References: <20200115112828.20050-1-antonynpavlov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200115112828.20050-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,39 +18,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [yocto] #yocto bootchooser: Cannot get state 'state'
-To: hu.schlieben@codewrights.de, yocto@lists.yoctoproject.org
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] MIPS: actually use CONFIG_MIPS_RELOCATION_TABLE_SIZE
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org, Oleksij Rempel <o.rempel@pengutronix.de>
 
-SGksCgp0aGlzIGlzIG1haW5seSBhIGJhcmVib3gtcmVsYXRlZCBxdWVzdGlvbiwgdGh1cyBJJ2Qg
-c3VnZ2VzdCBhc2tpbmcgaXQKb24gdGhlIGJhcmVib3ggTUwuCgpbY2MtaW5nIGJhcmVib3ggbWFp
-bGluZyBsaXN0XQoKT24gV2VkLCAyMDIwLTAxLTE1IGF0IDA0OjEwIC0wODAwLCBodS5zY2hsaWVi
-ZW5AY29kZXdyaWdodHMuZGUgd3JvdGU6Cj4gSGksCj4gCj4gYm9vdGluZyB0aGUgbmV3IHlvY3Rv
-IHpldXMgc3lzdGVtIG1hbnVhbGx5IGJ5ICJib290IG1tYyIgd29ya3MgZmluZQo+IGJ1dCBkZWZh
-dWx0IGJvb3RjaG9vc2VyIGZhaWxzIHdpdGg6wqAKPiAKPiBib290Y2hvb3NlcjogQ2Fubm90IGdl
-dCBzdGF0ZSAnc3RhdGUnCj4gTm90aGluZyBib290YWJsZSBmb3VuZCBvbiAnYm9vdGNob29zZXIn
-Cj4gTm90aGluZyBib290YWJsZSBmb3VuZAoKTG9va3MgbGlrZSB0aGUgc3RhdGUgbm9kZSBpcyBt
-aXNzaW5nIGluIHlvdXIgZGV2aWNlIHRyZWUuCldoaWNoIHZlcnNpb24gb2YgYmFyZWJveCBkbyB5
-b3UgdXNlPwpBbmQgZnJvbSB3aGljaCBsYXllciAvIHJlY2lwZT8KCj4gQnVpbGRpbmcgdGhlICJz
-YW1lIiBpbWFnZSBpbiB5b2N0byB0aHVkIHdvcmtzIGZpbmUuIFRoZSBib290Cj4gdmFyaWFibGVz
-IGFyZToKPiAKPiAqIEJPT1Rfc3lzdGVtMF8uZGVmYXVsdDogMwo+ICogQk9PVF9zeXN0ZW0xXy5k
-ZWZhdWx0OiAzCj4gKiBhbGxvd19jb2xvcjogMAo+ICogYXV0b2Jvb3RfdGltZW91dDogMwo+ICog
-Ym9vdC5kZWZhdWx0OiBib290Y2hvb3Nlcgo+IMKgIGJvb3Qud2F0Y2hkb2dfdGltZW91dDogMAo+
-IMKgIGJvb3RjaG9vc2VyLmRlZmF1bHRfYXR0ZW1wdHM6IDMKPiDCoCBib290Y2hvb3Nlci5kZWZh
-dWx0X3ByaW9yaXR5OiAxCj4gwqAgYm9vdGNob29zZXIuZGlzYWJsZV9vbl96ZXJvX2F0dGVtcHRz
-OiAwCj4gwqAgYm9vdGNob29zZXIucmVzZXRfYXR0ZW1wdHM6wqAgKGxpc3Q6ICJwb3dlci1vbiIs
-ICJhbGwtemVybyIpCj4gwqAgYm9vdGNob29zZXIucmVzZXRfcHJpb3JpdGllczoKPiDCoCBib290
-Y2hvb3Nlci5yZXRyeTogMAo+ICogYm9vdGNob29zZXIuc3RhdGVfcHJlZml4OiBzdGF0ZS5ib290
-c3RhdGUKPiAqIGJvb3RjaG9vc2VyLnN5c3RlbTAuYm9vdDogbW1jCj4gKiBib290Y2hvb3Nlci5z
-eXN0ZW0wLmRlZmF1bHRfYXR0ZW1wdHM6IDMKPiAqIGJvb3RjaG9vc2VyLnN5c3RlbTAuZGVmYXVs
-dF9wcmlvcml0eTogMjAKPiAqIGJvb3RjaG9vc2VyLnN5c3RlbTEuYm9vdDogbW1jMQo+ICogYm9v
-dGNob29zZXIuc3lzdGVtMS5kZWZhdWx0X2F0dGVtcHRzOiAzCj4gKiBib290Y2hvb3Nlci5zeXN0
-ZW0xLmRlZmF1bHRfcHJpb3JpdHk6IDIxCj4gKiBib290Y2hvb3Nlci50YXJnZXRzOiBzeXN0ZW0w
-IHN5c3RlbTEKPiDCoCBib290bS5hcHBlbmRyb290OiAwCj4gLi4uCj4gCgpSZWdhcmRzLCBFbnJp
-Y28KCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJl
-Ym94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3Rz
-LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Wed, Jan 15, 2020 at 02:28:28PM +0300, Antony Pavlov wrote:
+> The commit 28ed10d6a67c9 ("MIPS: relocation: add relocation support")
+> introduce the Kconfig CONFIG_MIPS_RELOCATION_TABLE_SIZE parameter
+> but it is never used.
+> 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  arch/mips/lib/barebox.lds.S | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+
+Applied, thanks
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
