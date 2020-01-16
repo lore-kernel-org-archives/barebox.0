@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x244.google.com ([2a00:1450:4864:20::244])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1irgqk-0007yb-03
- for barebox@lists.infradead.org; Wed, 15 Jan 2020 11:28:43 +0000
-Received: by mail-lj1-x244.google.com with SMTP id l2so18103492lja.6
- for <barebox@lists.infradead.org>; Wed, 15 Jan 2020 03:28:34 -0800 (PST)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed, 15 Jan 2020 14:28:28 +0300
-Message-Id: <20200115112828.20050-1-antonynpavlov@gmail.com>
+ id 1is0WE-00063B-85
+ for barebox@lists.infradead.org; Thu, 16 Jan 2020 08:28:52 +0000
+Date: Thu, 16 Jan 2020 09:28:43 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200116082843.q2fh7yiw22pv64ru@pengutronix.de>
+References: <20200114201744.267746-1-dev@lynxeye.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200114201744.267746-1-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,35 +22,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] MIPS: actually use CONFIG_MIPS_RELOCATION_TABLE_SIZE
-To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: Re: [PATCH] ARM: qemu-virt64: convert to assembly entry
+To: Lucas Stach <dev@lynxeye.de>
+Cc: barebox@lists.infradead.org
 
-The commit 28ed10d6a67c9 ("MIPS: relocation: add relocation support")
-introduce the Kconfig CONFIG_MIPS_RELOCATION_TABLE_SIZE parameter
-but it is never used.
+On Tue, Jan 14, 2020 at 09:17:44PM +0100, Lucas Stach wrote:
+> The C entry function isn't naked, so tries to push to the stack
+> in the function prologue. This doesn't work on QEMU where there
+> is no valid SP on entry. Convert the lowlevel entry to the
+> assembly facilities provided for this case.
+> 
+> Signed-off-by: Lucas Stach <dev@lynxeye.de>
+> ---
+>  arch/arm/boards/qemu-virt64/Makefile        |  2 +-
+>  arch/arm/boards/qemu-virt64/lowlevel.c      |  4 +++-
+>  arch/arm/boards/qemu-virt64/lowlevel_init.S | 12 ++++++++++++
+>  3 files changed, 16 insertions(+), 2 deletions(-)
+>  create mode 100644 arch/arm/boards/qemu-virt64/lowlevel_init.S
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/lib/barebox.lds.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Applied, thanks
 
-diff --git a/arch/mips/lib/barebox.lds.S b/arch/mips/lib/barebox.lds.S
-index e96c3bf6e2..693a778980 100644
---- a/arch/mips/lib/barebox.lds.S
-+++ b/arch/mips/lib/barebox.lds.S
-@@ -54,7 +54,7 @@ SECTIONS
- 	.data.reloc : {
- 		__rel_start = .;
- 		BYTE(0x0)
--		. += (32 * 1024) - 1;
-+		. += CONFIG_MIPS_RELOCATION_TABLE_SIZE - 1;
- 	}
- 
- 	_end = .;
+Sascha
+
 -- 
-2.24.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
