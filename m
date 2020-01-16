@@ -1,12 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from zimbra2.kalray.eu ([92.103.151.219])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1is5A8-0007k5-OZ
- for barebox@lists.infradead.org; Thu, 16 Jan 2020 13:26:21 +0000
-Date: Thu, 16 Jan 2020 14:26:13 +0100 (CET)
-From: =?utf-8?Q?Cl=C3=A9ment?= Leger <cleger@kalray.eu>
-Message-ID: <1412004075.12577531.1579181173442.JavaMail.zimbra@kalray.eu>
-In-Reply-To: <20200116131153.mpmtntns4c4s5kk3@pengutronix.de>
+ id 1is5Hl-0006xA-Ve
+ for barebox@lists.infradead.org; Thu, 16 Jan 2020 13:34:14 +0000
+Date: Thu, 16 Jan 2020 14:34:08 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200116133408.3o3yxtedsn3laudk@pengutronix.de>
 References: <20200115102650.11739-1-cleger@kalray.eu>
  <20200115102650.11739-2-cleger@kalray.eu>
  <20200116092648.gkvfpjprffkutvej@pengutronix.de>
@@ -14,7 +13,10 @@ References: <20200115102650.11739-1-cleger@kalray.eu>
  <20200116105534.6wfpjkmrgeixaehy@pengutronix.de>
  <1878342639.12568406.1579177481299.JavaMail.zimbra@kalray.eu>
  <20200116131153.mpmtntns4c4s5kk3@pengutronix.de>
+ <1412004075.12577531.1579181173442.JavaMail.zimbra@kalray.eu>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1412004075.12577531.1579181173442.JavaMail.zimbra@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,85 +25,172 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 1/5] k1c: Initial Kalray Coolidge (k1c) architecture
  support
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: =?iso-8859-15?Q?Cl=E9ment?= Leger <cleger@kalray.eu>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-CgotLS0tLSBPbiAxNiBKYW4sIDIwMjAsIGF0IDE0OjExLCBTYXNjaGEgSGF1ZXIgcy5oYXVlckBw
-ZW5ndXRyb25peC5kZSB3cm90ZToKCj4gT24gVGh1LCBKYW4gMTYsIDIwMjAgYXQgMDE6MjQ6NDFQ
-TSArMDEwMCwgQ2zDqW1lbnQgTGVnZXIgd3JvdGU6Cj4+IAo+PiAtLS0tLSBPbiAxNiBKYW4sIDIw
-MjAsIGF0IDExOjU1LCBTYXNjaGEgSGF1ZXIgcy5oYXVlckBwZW5ndXRyb25peC5kZSB3cm90ZToK
-Pj4gCj4+ID4gT24gVGh1LCBKYW4gMTYsIDIwMjAgYXQgMTE6NDk6MzFBTSArMDEwMCwgQ2zDqW1l
-bnQgTGVnZXIgd3JvdGU6Cj4+ID4+IEhpIFNhc2hhCj4+ID4+IAo+PiA+PiAtLS0tLSBPbiAxNiBK
-YW4sIDIwMjAsIGF0IDEwOjI2LCBTYXNjaGEgSGF1ZXIgcy5oYXVlckBwZW5ndXRyb25peC5kZSB3
-cm90ZToKPj4gPj4gCj4+ID4+ID4gT24gV2VkLCBKYW4gMTUsIDIwMjAgYXQgMTE6MjY6NDZBTSAr
-MDEwMCwgQ2xlbWVudCBMZWdlciB3cm90ZToKPj4gPj4gPj4gK2NvbmZpZyBNQUxMT0NfQkFTRQo+
-PiA+PiA+PiArCWhleAo+PiA+PiA+PiArCWRlZmF1bHQgMHgxMDAwMDAwMDAKPj4gPj4gPj4gKwo+
-PiA+PiA+PiArY29uZmlnIE1BTExPQ19TSVpFCj4+ID4+ID4+ICsJaGV4Cj4+ID4+ID4+ICsJZGVm
-YXVsdCAweDgwMDAwMAo+PiA+PiA+PiArCXByb21wdCAibWFsbG9jIGFyZWEgc2l6ZSIKPj4gPj4g
-Pj4gK2VuZG1lbnUKPj4gPj4gPiAKPj4gPj4gPj4gZGlmZiAtLWdpdCBhL2FyY2gvazFjL2xpYi9i
-b2FyZC5jIGIvYXJjaC9rMWMvbGliL2JvYXJkLmMKPj4gPj4gPj4gbmV3IGZpbGUgbW9kZSAxMDA2
-NDQKPj4gPj4gPj4gaW5kZXggMDAwMDAwMDAwLi5kMTdhMzI2MTQKPj4gPj4gPj4gLS0tIC9kZXYv
-bnVsbAo+PiA+PiA+PiArKysgYi9hcmNoL2sxYy9saWIvYm9hcmQuYwo+PiA+PiA+PiBAQCAtMCww
-ICsxLDIwIEBACj4+ID4+ID4+ICsvLyBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMC1v
-bmx5Cj4+ID4+ID4+ICsvKgo+PiA+PiA+PiArICogQ29weXJpZ2h0IChDKSAyMDE5IEthbHJheSBJ
-bmMuCj4+ID4+ID4+ICsgKi8KPj4gPj4gPj4gKwo+PiA+PiA+PiArI2luY2x1ZGUgPGNvbW1vbi5o
-Pgo+PiA+PiA+PiArI2luY2x1ZGUgPG1hbGxvYy5oPgo+PiA+PiA+PiArI2luY2x1ZGUgPG1lbW9y
-eS5oPgo+PiA+PiA+PiArI2luY2x1ZGUgPGFzbS1nZW5lcmljL21lbW9yeV9sYXlvdXQuaD4KPj4g
-Pj4gPj4gKwo+PiA+PiA+PiArCj4+ID4+ID4+ICt2b2lkIF9fbm9yZXR1cm4gazFjX3N0YXJ0X2Jh
-cmVib3godm9pZCkKPj4gPj4gPj4gK3sKPj4gPj4gPj4gKwltZW1fbWFsbG9jX2luaXQoKHZvaWQg
-KilDT05GSUdfTUFMTE9DX0JBU0UsCj4+ID4+ID4+ICsJCQkodm9pZCAqKShDT05GSUdfTUFMTE9D
-X0JBU0UgKyBNQUxMT0NfU0laRSAtIDEpKTsKPj4gPj4gPiAKPj4gPj4gPiBZb3UgY291bGQgZXh0
-cmFjdCB2YWxpZCBtZW1vcnkgZnJvbSB0aGUgZGV2aWNlIHRyZWUgaW5zdGVhZCBhbmQgcGljawo+
-PiA+PiA+IHNvbWUgbWVtb3J5IGZvciBtYWxsb2MgdGhlcmUuIFNlZSBvZl9maW5kX21lbSgpIGhv
-dyB0aGlzIGNhbiBiZSBkb25lLgo+PiA+PiAKPj4gPj4gSSB0aGluayB3ZSBhcmUgZ29pbmcgdG8g
-Yml0ZSBvdXIgdGFpbCBoZXJlIHNpbmNlIG9mX3VuZmxhdHRlbl9kdGIgZG9lcwo+PiA+PiBzb21l
-IHh6YWxsb2MgdG8gdW5mbGF0dGVuIHRoZSBEVEIgc28gd2UgbmVlZCB0byBpbml0aWFsaXplIHRo
-ZSBtYWxsb2MKPj4gPj4gYWxsb2NhdG9yIGJlZm9yZSBhY2Nlc3NpbmcgRFRCLgo+PiA+IAo+PiA+
-IG9mX2ZpbmRfbWVtKCkgZG9lc24ndCB1c2Ugb2ZfdW5mbGF0dGVuX2R0YigpLCBpdCB1c2VzIGxp
-YmZkdCB0byBwYXJzZQo+PiA+IHRoZSBkZXZpY2UgdHJlZS4KPj4gCj4+IE9oIGluZGVlZC4gSSBs
-b29rZWQgYXQgaXQgYW5kIEkgc2VlIHBvdGVudGlhbCBwcm9ibGVtczoKPj4gLSBTdGFjayBhZGRy
-ZXNzL3NpemUgd2lsbCBzdGlsbCBuZWVkIHRvIGJlIGhhcmRjb2RlZCBiZWNhdXNlIGl0IG5lZWRz
-IHRvCj4+ICAgYmUgc2V0dXAgYmVmb3JlIGV4ZWN1dGluZyBDIGNvZGUuCj4gCj4gbWVtX21hbGxv
-Y19pbml0KCkgYWN0dWFsbHkgaXMgQyBjb2RlLCBzbyB5b3UgbXVzdCBoYXZlIGhhdmUgY29uZmln
-dXJlZCBhCj4gc3RhY2sgYWxyZWFkeSA7KQoKWWVzIG9mIGNvdXJzZSAhIEN1cnJlbnRseSwgSSB3
-YXMgdXNpbmcgTUFMTE9DX0JBU0UuIHRoaXMgd2F5LCBzdGFjayBhbmQKbWFsbG9jIHdlcmUgZ3Jv
-d2luZyBhdCBvcHBvc2l0ZSBzaWRlcy4KCkJ1dCBpbiBmYWN0LCBtYXliZSB0aGUgc3RhY2sgY291
-bGQgYmUgYWRkZWQgaW50byB0aGUgbGlua2VyIHNjcmlwdC4gVGhpcyB3YXksCndlIHdvdWxkIG5v
-dCBoYXZlIHRvIGhhcmRjb2RlIGl0IHVzaW5nIFNUQUNLX0JBU0UuClRoaXMgd2F5IGl0IHdvdWxk
-IG5vdCBkZXBlbmQgYW55bW9yZSBvbiBtYWxsb2MgYmFzZS4KCkRvIHlvdSB0aGluayBpdCB3b3Vs
-ZCBiZSBvayA/Cgo+IAo+PiAtIFdlIGhhdmUgbXVsdGlwbGUgbWVtb3J5IG5vZGVzIGluIG91ciBk
-ZXZpY2UgdHJlZSAoU01FTSBhbmQgRERSKSBzbyB3ZSB3aWxsCj4+ICAgcHJvYmFibHkgaGF2ZSB0
-byBkbyBzb21lIHF1aXJrcyB0byBmaW5hbGx5IGZpbmQgdGhlIEREUiBtZW1vcnkgbm9kZS4KPiAK
-PiBJbmRlZWQuCj4gCj4+IC0gTUFMTE9DX1NJWkUgd2lsbCBzdGlsbCBuZWVkcyB0byBiZSB0aGVy
-ZQo+IAo+IE9uIEFSTSB3ZSB1c2Ugcm91Z2hseSBoYWxmIG9mIHRoZSBhdmFpbGFibGUgbWVtb3J5
-IGZvciBtYWxsb2MuIE1heGltdW0KPiBpcyAxR2lCIGFueXdheSwgYXMgdGhpcyBpcyB0aGUgbWF4
-aW11bSBzdXBwb3J0ZWQgYnkgdGxzZiBtYWxsb2MuCj4gCj4gVGhlIHByZWZlcnJlZCBsYXlvdXQg
-aXMgdG8gcHV0IGJhcmVib3ggYmluYXJ5IGFuZCBzdGFjayB0byB0aGUgZW5kIG9mCj4gYXZhaWxh
-YmxlIFNEUkFNIGFuZCBwdXQgdGhlIG1hbGxvYyBhcmVhIGJlbmVhdGggaXQuIFRoYXQgb2YgY291
-cnNlIG5lZWRzCj4gYSByZWxvY2F0YWJsZSBiYXJlYm94IGJpbmFyeSwgSSBkb24ndCBrbm93IGlm
-IHlvdSBjYW4gZ2VuZXJhdGUgc3VjaCBhbgo+IGltYWdlLiBJZiBub3QgeW91IGhhdmUgdG8gdGhp
-bmsgb2Ygc29tZSBnb29kIGJhc2UgYWRkcmVzcyBhbmQgcHV0IHRoZQo+IG1hbGxvYyBhcmVhIHdo
-ZXJlZXZlciBpdCBmaXRzLgoKVGhhdCB3b3VsZCBiZSBhIGdvb2Qgc29sdXRpb24geWVzICEgQnV0
-IHdlIGRvbid0IGhhdmUgaW1wbGVtZW50ZWQgcmVsb2NhdGFibGUKc3VwcG9ydCB5ZXQuClNpbmNl
-IHdlIHdpbGwgYWx3YXlzIGhhdmUgRERSIG9uIENvb2xpZGdlIFNvQywgd2UgY2FuIHNhZmVseSBh
-c3N1bWUgU0RSQU0Kd2lsbCBhbHdheXMgYmUgcHJlc2VudC4KU28gaW4gdGhlIG1lYW50aW1lLCB3
-ZSBjYW4gaGF2ZSB0aGUgZm9sbG93aW5nIG1lbW9yeSBsYXlvdXQgKGlmIHN0YWNrIGluY2x1ZGVk
-CmluIGJhcmVib3ggYmluYXJ5KToKCi0gMHgxMDAwMDAwMDAgLT4gMTI4TSByZXNlcnZlZCBmb3Ig
-TGludXggbG9hZGluZwotIDB4MTAwMDAwMDAwICsgMTI4TSAtPiBiYXJlYm94IGJpbmFyeQotIDB4
-MTAwMDAwMDAwICsgMTI4TSArIHRleHRfc2l6ZSA9IG1hbGxvYyBhcmVhIHN0YXJ0CgpEZXZpY2Ug
-dHJlZSBjb3VsZCB0aGVuIGJlIHVzZWQgdG8gY2hlY2sgdGhlIGF2YWlsYWJsZSBhbW91bnQgb2Yg
-bWVtb3J5LgoKQ2zDqW1lbnQKCj4gCj4gU2FzY2hhCj4gCj4gLS0KPiBQZW5ndXRyb25peCBlLksu
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-fAo+IFN0ZXVlcndhbGRlciBTdHIuIDIxICAgICAgICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93
-d3cucGVuZ3V0cm9uaXguZGUvICB8Cj4gMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSAgICAgICAg
-ICAgICAgICAgIHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKPiBBbXRzZ2VyaWNodCBI
-aWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1
-NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFy
-ZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0
-cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Thu, Jan 16, 2020 at 02:26:13PM +0100, Cl=E9ment Leger wrote:
+> =
+
+> =
+
+> ----- On 16 Jan, 2020, at 14:11, Sascha Hauer s.hauer@pengutronix.de wrot=
+e:
+> =
+
+> > On Thu, Jan 16, 2020 at 01:24:41PM +0100, Cl=E9ment Leger wrote:
+> >> =
+
+> >> ----- On 16 Jan, 2020, at 11:55, Sascha Hauer s.hauer@pengutronix.de w=
+rote:
+> >> =
+
+> >> > On Thu, Jan 16, 2020 at 11:49:31AM +0100, Cl=E9ment Leger wrote:
+> >> >> Hi Sasha
+> >> >> =
+
+> >> >> ----- On 16 Jan, 2020, at 10:26, Sascha Hauer s.hauer@pengutronix.d=
+e wrote:
+> >> >> =
+
+> >> >> > On Wed, Jan 15, 2020 at 11:26:46AM +0100, Clement Leger wrote:
+> >> >> >> +config MALLOC_BASE
+> >> >> >> +	hex
+> >> >> >> +	default 0x100000000
+> >> >> >> +
+> >> >> >> +config MALLOC_SIZE
+> >> >> >> +	hex
+> >> >> >> +	default 0x800000
+> >> >> >> +	prompt "malloc area size"
+> >> >> >> +endmenu
+> >> >> > =
+
+> >> >> >> diff --git a/arch/k1c/lib/board.c b/arch/k1c/lib/board.c
+> >> >> >> new file mode 100644
+> >> >> >> index 000000000..d17a32614
+> >> >> >> --- /dev/null
+> >> >> >> +++ b/arch/k1c/lib/board.c
+> >> >> >> @@ -0,0 +1,20 @@
+> >> >> >> +// SPDX-License-Identifier: GPL-2.0-only
+> >> >> >> +/*
+> >> >> >> + * Copyright (C) 2019 Kalray Inc.
+> >> >> >> + */
+> >> >> >> +
+> >> >> >> +#include <common.h>
+> >> >> >> +#include <malloc.h>
+> >> >> >> +#include <memory.h>
+> >> >> >> +#include <asm-generic/memory_layout.h>
+> >> >> >> +
+> >> >> >> +
+> >> >> >> +void __noreturn k1c_start_barebox(void)
+> >> >> >> +{
+> >> >> >> +	mem_malloc_init((void *)CONFIG_MALLOC_BASE,
+> >> >> >> +			(void *)(CONFIG_MALLOC_BASE + MALLOC_SIZE - 1));
+> >> >> > =
+
+> >> >> > You could extract valid memory from the device tree instead and p=
+ick
+> >> >> > some memory for malloc there. See of_find_mem() how this can be d=
+one.
+> >> >> =
+
+> >> >> I think we are going to bite our tail here since of_unflatten_dtb d=
+oes
+> >> >> some xzalloc to unflatten the DTB so we need to initialize the mall=
+oc
+> >> >> allocator before accessing DTB.
+> >> > =
+
+> >> > of_find_mem() doesn't use of_unflatten_dtb(), it uses libfdt to parse
+> >> > the device tree.
+> >> =
+
+> >> Oh indeed. I looked at it and I see potential problems:
+> >> - Stack address/size will still need to be hardcoded because it needs =
+to
+> >>   be setup before executing C code.
+> > =
+
+> > mem_malloc_init() actually is C code, so you must have have configured a
+> > stack already ;)
+> =
+
+> Yes of course ! Currently, I was using MALLOC_BASE. this way, stack and
+> malloc were growing at opposite sides.
+> =
+
+> But in fact, maybe the stack could be added into the linker script. This =
+way,
+> we would not have to hardcode it using STACK_BASE.
+> This way it would not depend anymore on malloc base.
+> =
+
+> Do you think it would be ok ?
+
+Yes, that sounds good.
+
+> =
+
+> > =
+
+> >> - We have multiple memory nodes in our device tree (SMEM and DDR) so w=
+e will
+> >>   probably have to do some quirks to finally find the DDR memory node.
+> > =
+
+> > Indeed.
+> > =
+
+> >> - MALLOC_SIZE will still needs to be there
+> > =
+
+> > On ARM we use roughly half of the available memory for malloc. Maximum
+> > is 1GiB anyway, as this is the maximum supported by tlsf malloc.
+> > =
+
+> > The preferred layout is to put barebox binary and stack to the end of
+> > available SDRAM and put the malloc area beneath it. That of course needs
+> > a relocatable barebox binary, I don't know if you can generate such an
+> > image. If not you have to think of some good base address and put the
+> > malloc area whereever it fits.
+> =
+
+> That would be a good solution yes ! But we don't have implemented relocat=
+able
+> support yet.
+> Since we will always have DDR on Coolidge SoC, we can safely assume SDRAM
+> will always be present.
+> So in the meantime, we can have the following memory layout (if stack inc=
+luded
+> in barebox binary):
+> =
+
+> - 0x100000000 -> 128M reserved for Linux loading
+> - 0x100000000 + 128M -> barebox binary
+> - 0x100000000 + 128M + text_size =3D malloc area start
+> =
+
+> Device tree could then be used to check the available amount of memory.
+
+With todays multi gigabyte RAM sizes this approach is fine. In the old
+days when memory was sparse it was painful when barebox ended up
+somewhere in the middle of SDRAM and divided the usable memory size.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
