@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1is1qH-0002MI-LP
- for barebox@lists.infradead.org; Thu, 16 Jan 2020 09:53:38 +0000
-Date: Thu, 16 Jan 2020 10:53:31 +0100 (CET)
+ id 1is2iW-0002mz-Pa
+ for barebox@lists.infradead.org; Thu, 16 Jan 2020 10:49:42 +0000
+Date: Thu, 16 Jan 2020 11:49:31 +0100 (CET)
 From: =?utf-8?Q?Cl=C3=A9ment?= Leger <cleger@kalray.eu>
-Message-ID: <1874850414.12533097.1579168411117.JavaMail.zimbra@kalray.eu>
-In-Reply-To: <20200116094919.4zqv43u2u4mdsw2k@pengutronix.de>
+Message-ID: <579667717.12546207.1579171771523.JavaMail.zimbra@kalray.eu>
+In-Reply-To: <20200116092648.gkvfpjprffkutvej@pengutronix.de>
 References: <20200115102650.11739-1-cleger@kalray.eu>
- <20200116094919.4zqv43u2u4mdsw2k@pengutronix.de>
+ <20200115102650.11739-2-cleger@kalray.eu>
+ <20200116092648.gkvfpjprffkutvej@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -18,42 +19,71 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/5] Add support for Kalray k1c core
-To: Roland Hieber <rhi@pengutronix.de>
+Subject: Re: [PATCH 1/5] k1c: Initial Kalray Coolidge (k1c) architecture
+ support
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-SGkgUm9sYW5kLAoKLS0tLS0gT24gMTYgSmFuLCAyMDIwLCBhdCAxMDo0OSwgUm9sYW5kIEhpZWJl
-ciByaGlAcGVuZ3V0cm9uaXguZGUgd3JvdGU6Cgo+IE9uIFdlZCwgSmFuIDE1LCAyMDIwIGF0IDEx
-OjI2OjQ1QU0gKzAxMDAsIENsZW1lbnQgTGVnZXIgd3JvdGU6Cj4+IEthbHJheSBrMWMgY29yZSBp
-cyBlbWJlZGRlZCBpbiBLYWxyYXkgQ29vbGlkZ2UgU29DLiBUaGlzIGNvcmUgaGFzIHRoZQo+PiBm
-b2xsb3dpbmcgZmVhdHVyZXM6Cj4+ICAtIDMyLzY0IGJpdHMKPj4gIC0gNi1pc3N1ZSBWTElXIGFy
-Y2hpdGVjdHVyZQo+PiAgLSA2NCB4IDY0Yml0cyBnZW5lcmFsIHB1cnBvc2UgcmVnaXN0ZXJzCj4+
-ICAtIFNJTUQgaW5zdHJ1Y3Rpb25zCj4+ICAtIGxpdHRsZS1lbmRpYW4KPj4gCj4+IFRoaXMgcG9y
-dCBpcyBhIDY0IGJpdHMgb25lIGFuZCBhbGxvd3MgdG8gYm9vdCB1cCB0byBhIGJhcmVib3ggcHJv
-bXB0IG9uIGEgazIwMAo+PiBib2FyZC4gazFjIHN1cHBvcnQgZm9yIGNsb2Nrc291cmNlIGFuZCB3
-YXRjaGRvZyBpcyBhbHNvIHBhcnQgb2YgdGhpcyBwb3J0Lgo+PiAKPj4gSW4gb3JkZXIgdG8gYnVp
-bGQgYSB1c2FibGUgdG9vbGNoYWluLCBidWlsZCBzY3JpcHRzIGFyZSBwcm92aWRlZCBhdCB0aGUK
-Pj4gZm9sbG93aW5nIGFkZHJlc3M6IGh0dHBzOi8vZ2l0aHViLmNvbS9rYWxyYXkvYnVpbGQtc2Ny
-aXB0cy4KPj4gCj4+IEthbHJheSB1c2VzIEZPU1Mgd2hpY2ggaXMgYXZhaWxhYmxlIGF0IGh0dHBz
-Oi8vZ2l0aHViLmNvbS9rYWxyYXkKPj4gCj4+IENsZW1lbnQgTGVnZXIgKDUpOgo+PiAgIGsxYzog
-SW5pdGlhbCBLYWxyYXkgQ29vbGlkZ2UgKGsxYykgYXJjaGl0ZWN0dXJlIHN1cHBvcnQKPj4gICBr
-MWM6IEFkZCBwcm9jZXNzb3IgZGVmaW5pdGlvbnMKPj4gICBrMWM6IEFkZCBzdXBwb3J0IGZvciBk
-ZXZpY2UgdHJlZQo+PiAgIGNsb2Nrc291cmNlOiBrMWM6IEFkZCBrMWMgY2xvY2tzb3VyY2Ugc3Vw
-cG9ydAo+PiAgIHdhdGNoZG9nOiBrMWM6IEFkZCBrMWMgd2F0Y2hkb2cgc3VwcG9ydAo+IAo+IFV1
-dWgsIGEgc2hpbnkgbmV3IGFyY2hpdGVjdHVyZSEgWW91IG1pZ2h0IGFsc28gd2FudCB0byBhZGQg
-c29tZQo+IChtaW5pbWFsKSBkb2N1bWVudGF0aW9uIGluIERvY3VtZW50YXRpb24vYm9hcmRzLyB0
-byBhZHZlcnRpc2UgaXQuIFRoaXMKPiB3YXkgaXQgd2lsbCBhbHNvIGFwcGVhciBvbgo+IGh0dHBz
-Oi8vd3d3LmJhcmVib3gub3JnL2RvYy9sYXRlc3QvYm9hcmRzLmh0bWwgOikKCk5pY2UsIHRoYW5r
-cyBmb3IgdGhlIGluZm8gIQoKQ2zDqW1lbnQKCj4gCj4gIC0gUm9sYW5kCj4gCj4gLS0KPiBSb2xh
-bmQgSGllYmVyLCBQZW5ndXRyb25peCBlLksuICAgICAgICAgIHwgci5oaWViZXJAcGVuZ3V0cm9u
-aXguZGUgICAgIHwKPiBTdGV1ZXJ3YWxkZXIgU3RyLiAyMSAgICAgICAgICAgICAgICAgICAgIHwg
-aHR0cHM6Ly93d3cucGVuZ3V0cm9uaXguZGUvIHwKPiAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55
-ICAgICAgICAgICAgICAgIHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKPiBBbXRzZ2Vy
-aWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkx
-Ny01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8v
-bGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Hi Sasha
+
+----- On 16 Jan, 2020, at 10:26, Sascha Hauer s.hauer@pengutronix.de wrote:
+
+> On Wed, Jan 15, 2020 at 11:26:46AM +0100, Clement Leger wrote:
+>> +config MALLOC_BASE
+>> +	hex
+>> +	default 0x100000000
+>> +
+>> +config MALLOC_SIZE
+>> +	hex
+>> +	default 0x800000
+>> +	prompt "malloc area size"
+>> +endmenu
+> 
+>> diff --git a/arch/k1c/lib/board.c b/arch/k1c/lib/board.c
+>> new file mode 100644
+>> index 000000000..d17a32614
+>> --- /dev/null
+>> +++ b/arch/k1c/lib/board.c
+>> @@ -0,0 +1,20 @@
+>> +// SPDX-License-Identifier: GPL-2.0-only
+>> +/*
+>> + * Copyright (C) 2019 Kalray Inc.
+>> + */
+>> +
+>> +#include <common.h>
+>> +#include <malloc.h>
+>> +#include <memory.h>
+>> +#include <asm-generic/memory_layout.h>
+>> +
+>> +
+>> +void __noreturn k1c_start_barebox(void)
+>> +{
+>> +	mem_malloc_init((void *)CONFIG_MALLOC_BASE,
+>> +			(void *)(CONFIG_MALLOC_BASE + MALLOC_SIZE - 1));
+> 
+> You could extract valid memory from the device tree instead and pick
+> some memory for malloc there. See of_find_mem() how this can be done.
+
+I think we are going to bite our tail here since of_unflatten_dtb does
+some xzalloc to unflatten the DTB so we need to initialize the malloc
+allocator before accessing DTB.
+
+
+> 
+> Sascha
+> 
+> 
+> --
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
