@@ -1,22 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1is5Hl-0006xA-Ve
- for barebox@lists.infradead.org; Thu, 16 Jan 2020 13:34:14 +0000
-Date: Thu, 16 Jan 2020 14:34:08 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200116133408.3o3yxtedsn3laudk@pengutronix.de>
-References: <20200115102650.11739-1-cleger@kalray.eu>
- <20200115102650.11739-2-cleger@kalray.eu>
- <20200116092648.gkvfpjprffkutvej@pengutronix.de>
- <579667717.12546207.1579171771523.JavaMail.zimbra@kalray.eu>
- <20200116105534.6wfpjkmrgeixaehy@pengutronix.de>
- <1878342639.12568406.1579177481299.JavaMail.zimbra@kalray.eu>
- <20200116131153.mpmtntns4c4s5kk3@pengutronix.de>
- <1412004075.12577531.1579181173442.JavaMail.zimbra@kalray.eu>
+ id 1is6KL-0000Xg-BF
+ for barebox@lists.infradead.org; Thu, 16 Jan 2020 14:40:58 +0000
+References: <20200115111409.24129-1-a.fatoum@pengutronix.de>
+ <20200116083405.62dy2zjf63l6f246@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <eae1b40e-49ff-a0c6-b7a2-de90fed902ba@pengutronix.de>
+Date: Thu, 16 Jan 2020 15:40:49 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1412004075.12577531.1579181173442.JavaMail.zimbra@kalray.eu>
+In-Reply-To: <20200116083405.62dy2zjf63l6f246@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,168 +19,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/5] k1c: Initial Kalray Coolidge (k1c) architecture
- support
-To: =?iso-8859-15?Q?Cl=E9ment?= Leger <cleger@kalray.eu>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] Revert "clocksource: ARMv8 timer can only be built on
+ ARMv8"
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Thu, Jan 16, 2020 at 02:26:13PM +0100, Cl=E9ment Leger wrote:
-> =
+Hello Sascha,
 
-> =
+On 1/16/20 9:34 AM, Sascha Hauer wrote:
+>> diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+>> index 44a6cef6fbae..43c5bfc9736a 100644
+>> --- a/drivers/clocksource/Kconfig
+>> +++ b/drivers/clocksource/Kconfig
+>> @@ -73,7 +73,7 @@ config CLOCKSOURCE_ATMEL_PIT
+>>  config CLOCKSOURCE_ARMV8_TIMER
+>>  	bool
+>>  	default y
+>> -	depends on ARM && CPU_V8
+>> +	depends on ARM && (CPU_64v8 || CPU_V7)
+> 
+> Is it worth renaming the driver to something not v8 specific?
+> ARM_ARCHITECTED_TIMER maybe?
 
-> ----- On 16 Jan, 2020, at 14:11, Sascha Hauer s.hauer@pengutronix.de wrot=
-e:
-> =
+Hmm, it's default y, so we won't risk anyone losing the config
+option on oldfconfig. Yes, I think we should rename it.
 
-> > On Thu, Jan 16, 2020 at 01:24:41PM +0100, Cl=E9ment Leger wrote:
-> >> =
+Cheers
+Ahmad
 
-> >> ----- On 16 Jan, 2020, at 11:55, Sascha Hauer s.hauer@pengutronix.de w=
-rote:
-> >> =
+> 
+> Sascha
+> 
+> 
 
-> >> > On Thu, Jan 16, 2020 at 11:49:31AM +0100, Cl=E9ment Leger wrote:
-> >> >> Hi Sasha
-> >> >> =
 
-> >> >> ----- On 16 Jan, 2020, at 10:26, Sascha Hauer s.hauer@pengutronix.d=
-e wrote:
-> >> >> =
-
-> >> >> > On Wed, Jan 15, 2020 at 11:26:46AM +0100, Clement Leger wrote:
-> >> >> >> +config MALLOC_BASE
-> >> >> >> +	hex
-> >> >> >> +	default 0x100000000
-> >> >> >> +
-> >> >> >> +config MALLOC_SIZE
-> >> >> >> +	hex
-> >> >> >> +	default 0x800000
-> >> >> >> +	prompt "malloc area size"
-> >> >> >> +endmenu
-> >> >> > =
-
-> >> >> >> diff --git a/arch/k1c/lib/board.c b/arch/k1c/lib/board.c
-> >> >> >> new file mode 100644
-> >> >> >> index 000000000..d17a32614
-> >> >> >> --- /dev/null
-> >> >> >> +++ b/arch/k1c/lib/board.c
-> >> >> >> @@ -0,0 +1,20 @@
-> >> >> >> +// SPDX-License-Identifier: GPL-2.0-only
-> >> >> >> +/*
-> >> >> >> + * Copyright (C) 2019 Kalray Inc.
-> >> >> >> + */
-> >> >> >> +
-> >> >> >> +#include <common.h>
-> >> >> >> +#include <malloc.h>
-> >> >> >> +#include <memory.h>
-> >> >> >> +#include <asm-generic/memory_layout.h>
-> >> >> >> +
-> >> >> >> +
-> >> >> >> +void __noreturn k1c_start_barebox(void)
-> >> >> >> +{
-> >> >> >> +	mem_malloc_init((void *)CONFIG_MALLOC_BASE,
-> >> >> >> +			(void *)(CONFIG_MALLOC_BASE + MALLOC_SIZE - 1));
-> >> >> > =
-
-> >> >> > You could extract valid memory from the device tree instead and p=
-ick
-> >> >> > some memory for malloc there. See of_find_mem() how this can be d=
-one.
-> >> >> =
-
-> >> >> I think we are going to bite our tail here since of_unflatten_dtb d=
-oes
-> >> >> some xzalloc to unflatten the DTB so we need to initialize the mall=
-oc
-> >> >> allocator before accessing DTB.
-> >> > =
-
-> >> > of_find_mem() doesn't use of_unflatten_dtb(), it uses libfdt to parse
-> >> > the device tree.
-> >> =
-
-> >> Oh indeed. I looked at it and I see potential problems:
-> >> - Stack address/size will still need to be hardcoded because it needs =
-to
-> >>   be setup before executing C code.
-> > =
-
-> > mem_malloc_init() actually is C code, so you must have have configured a
-> > stack already ;)
-> =
-
-> Yes of course ! Currently, I was using MALLOC_BASE. this way, stack and
-> malloc were growing at opposite sides.
-> =
-
-> But in fact, maybe the stack could be added into the linker script. This =
-way,
-> we would not have to hardcode it using STACK_BASE.
-> This way it would not depend anymore on malloc base.
-> =
-
-> Do you think it would be ok ?
-
-Yes, that sounds good.
-
-> =
-
-> > =
-
-> >> - We have multiple memory nodes in our device tree (SMEM and DDR) so w=
-e will
-> >>   probably have to do some quirks to finally find the DDR memory node.
-> > =
-
-> > Indeed.
-> > =
-
-> >> - MALLOC_SIZE will still needs to be there
-> > =
-
-> > On ARM we use roughly half of the available memory for malloc. Maximum
-> > is 1GiB anyway, as this is the maximum supported by tlsf malloc.
-> > =
-
-> > The preferred layout is to put barebox binary and stack to the end of
-> > available SDRAM and put the malloc area beneath it. That of course needs
-> > a relocatable barebox binary, I don't know if you can generate such an
-> > image. If not you have to think of some good base address and put the
-> > malloc area whereever it fits.
-> =
-
-> That would be a good solution yes ! But we don't have implemented relocat=
-able
-> support yet.
-> Since we will always have DDR on Coolidge SoC, we can safely assume SDRAM
-> will always be present.
-> So in the meantime, we can have the following memory layout (if stack inc=
-luded
-> in barebox binary):
-> =
-
-> - 0x100000000 -> 128M reserved for Linux loading
-> - 0x100000000 + 128M -> barebox binary
-> - 0x100000000 + 128M + text_size =3D malloc area start
-> =
-
-> Device tree could then be used to check the available amount of memory.
-
-With todays multi gigabyte RAM sizes this approach is fine. In the old
-days when memory was sparse it was painful when barebox ended up
-somewhere in the middle of SDRAM and divided the usable memory size.
-
-Sascha
-
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
