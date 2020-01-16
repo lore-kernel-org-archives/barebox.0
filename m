@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from zimbra2.kalray.eu ([92.103.151.219])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1is1ai-0003HC-Ut
- for barebox@lists.infradead.org; Thu, 16 Jan 2020 09:37:35 +0000
-Date: Thu, 16 Jan 2020 10:37:26 +0100 (CET)
-From: =?utf-8?Q?Cl=C3=A9ment?= Leger <cleger@kalray.eu>
-Message-ID: <2078885517.12526029.1579167446195.JavaMail.zimbra@kalray.eu>
-In-Reply-To: <20200116092234.tbsesmtu7s7dwxp6@pengutronix.de>
+ id 1is2oK-00072R-OW
+ for barebox@lists.infradead.org; Thu, 16 Jan 2020 10:55:41 +0000
+Date: Thu, 16 Jan 2020 11:55:34 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200116105534.6wfpjkmrgeixaehy@pengutronix.de>
 References: <20200115102650.11739-1-cleger@kalray.eu>
- <20200116082547.l6ba2wcsrne7mozb@pengutronix.de>
- <1952699039.12511906.1579164821437.JavaMail.zimbra@kalray.eu>
- <20200116092234.tbsesmtu7s7dwxp6@pengutronix.de>
+ <20200115102650.11739-2-cleger@kalray.eu>
+ <20200116092648.gkvfpjprffkutvej@pengutronix.de>
+ <579667717.12546207.1579171771523.JavaMail.zimbra@kalray.eu>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <579667717.12546207.1579171771523.JavaMail.zimbra@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,115 +21,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/5] Add support for Kalray k1c core
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 1/5] k1c: Initial Kalray Coolidge (k1c) architecture
+ support
+To: =?iso-8859-15?Q?Cl=E9ment?= Leger <cleger@kalray.eu>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-CgotLS0tLSBPbiAxNiBKYW4sIDIwMjAsIGF0IDEwOjIyLCBTYXNjaGEgSGF1ZXIgcy5oYXVlckBw
-ZW5ndXRyb25peC5kZSB3cm90ZToKCj4gT24gVGh1LCBKYW4gMTYsIDIwMjAgYXQgMDk6NTM6NDFB
-TSArMDEwMCwgQ2zDqW1lbnQgTGVnZXIgd3JvdGU6Cj4+IEhpIFNhc2hhCj4+IAo+PiAtLS0tLSBP
-biAxNiBKYW4sIDIwMjAsIGF0IDA5OjI1LCBTYXNjaGEgSGF1ZXIgcy5oYXVlckBwZW5ndXRyb25p
-eC5kZSB3cm90ZToKPj4gCj4+ID4gSGkgQ2xlbWVudCwKPj4gPiAKPj4gPiBPbiBXZWQsIEphbiAx
-NSwgMjAyMCBhdCAxMToyNjo0NUFNICswMTAwLCBDbGVtZW50IExlZ2VyIHdyb3RlOgo+PiA+PiBL
-YWxyYXkgazFjIGNvcmUgaXMgZW1iZWRkZWQgaW4gS2FscmF5IENvb2xpZGdlIFNvQy4gVGhpcyBj
-b3JlIGhhcyB0aGUKPj4gPj4gZm9sbG93aW5nIGZlYXR1cmVzOgo+PiA+PiAgLSAzMi82NCBiaXRz
-Cj4+ID4+ICAtIDYtaXNzdWUgVkxJVyBhcmNoaXRlY3R1cmUKPj4gPj4gIC0gNjQgeCA2NGJpdHMg
-Z2VuZXJhbCBwdXJwb3NlIHJlZ2lzdGVycwo+PiA+PiAgLSBTSU1EIGluc3RydWN0aW9ucwo+PiA+
-PiAgLSBsaXR0bGUtZW5kaWFuCj4+ID4+IAo+PiA+PiBUaGlzIHBvcnQgaXMgYSA2NCBiaXRzIG9u
-ZSBhbmQgYWxsb3dzIHRvIGJvb3QgdXAgdG8gYSBiYXJlYm94IHByb21wdCBvbiBhIGsyMDAKPj4g
-Pj4gYm9hcmQuIGsxYyBzdXBwb3J0IGZvciBjbG9ja3NvdXJjZSBhbmQgd2F0Y2hkb2cgaXMgYWxz
-byBwYXJ0IG9mIHRoaXMgcG9ydC4KPj4gPj4gCj4+ID4+IEluIG9yZGVyIHRvIGJ1aWxkIGEgdXNh
-YmxlIHRvb2xjaGFpbiwgYnVpbGQgc2NyaXB0cyBhcmUgcHJvdmlkZWQgYXQgdGhlCj4+ID4+IGZv
-bGxvd2luZyBhZGRyZXNzOiBodHRwczovL2dpdGh1Yi5jb20va2FscmF5L2J1aWxkLXNjcmlwdHMu
-Cj4+ID4+IAo+PiA+PiBLYWxyYXkgdXNlcyBGT1NTIHdoaWNoIGlzIGF2YWlsYWJsZSBhdCBodHRw
-czovL2dpdGh1Yi5jb20va2FscmF5Cj4+ID4+IAo+PiA+PiBDbGVtZW50IExlZ2VyICg1KToKPj4g
-Pj4gICBrMWM6IEluaXRpYWwgS2FscmF5IENvb2xpZGdlIChrMWMpIGFyY2hpdGVjdHVyZSBzdXBw
-b3J0Cj4+ID4+ICAgazFjOiBBZGQgcHJvY2Vzc29yIGRlZmluaXRpb25zCj4+ID4+ICAgazFjOiBB
-ZGQgc3VwcG9ydCBmb3IgZGV2aWNlIHRyZWUKPj4gPj4gICBjbG9ja3NvdXJjZTogazFjOiBBZGQg
-azFjIGNsb2Nrc291cmNlIHN1cHBvcnQKPj4gPj4gICB3YXRjaGRvZzogazFjOiBBZGQgazFjIHdh
-dGNoZG9nIHN1cHBvcnQKPj4gPiAKPj4gPiBGcm9tIGEgZmlyc3QgbG9vayB0aGlzIGlzIGFsbCBw
-cmV0dHkgc3RyYWlnaHQgZm9yd2FyZCwgbG9va3MgZ29vZCA7KQo+PiA+IAo+PiA+IGJhcmVib3gg
-aXMgZW50ZXJlZCBhdCAweDAuIEFjY29yZGluZyB0byB0aGUgbGlua2VyIHNjcmlwdCBhbmQgdGhl
-IGRldmljZQo+PiA+IHRyZWUgeW91IGhhdmUgNE1pQiBvZiBTUkFNIHRoZXJlLCByaWdodD8KPj4g
-Cj4+IEluZGVlZCwgeW91IGFyZSByaWdodCwgY3VycmVudGx5LCB3aXRoIHRoaXMgc2V0dXAgdGhl
-IHByb2Nlc3NvciBib290cwo+PiBhdCBhZGRyZXNzIDB4MC4KPj4gQ3VycmVudGx5LCB0aGlzIGlz
-IHVzZWQgc2luY2UgdGhlIEpUQUcgbG9hZGVyIGNhbiBvbmx5IHN0YXJ0IGFuIGVsZgo+PiBhdCBh
-ZGRyZXNzIDAgKHRlbXBvcmFyeSBsaW1pdGF0aW9uKS4gVGhlIEZTQkwgKEZpcnN0IFN0YWdlIGJv
-b3QgbG9hZGVyKQo+PiBjYW4gaG93ZXZlciBsb2FkIHRoZSBlbGYgZmlsZSBhdCBhbnkgYWRkcmVz
-cy4KPj4gCj4+IEkgaGF2ZSBhIHBhdGNoIHRvIGxvY2F0ZSBhbGwgdGhlIGJhcmVib3ggY29kZSBp
-biBTRFJBTSB3aGljaCBpcyB1c2VkCj4+IGJ5IHRoZSBGU0JMIChzZWUgYmVsb3cpIHRvIGxvYWQg
-YmFyZWJveCBpbiBTRFJBTS4KPj4gCj4+IEkgY2FuIHByb2JhYmx5IGNvbnRyaWJ1dGUgdGhpcyB2
-ZXJzaW9uIGlmIHlvdSBwcmVmZXIuIE1vcmVvdmVyLCB0aGlzIHdpbGwKPj4gYmUgdGhlIGZpbmFs
-IHVzYWdlIHNvIGJldHRlciBnZXQgaXQgb2sgcmlnaHQgbm93Lgo+PiAKPj4gRm9yIHlvdXIgaW5m
-b3JtYXRpb24gYWJvdXQgU29DIG1lbW9yeSBtYXAsIHRoZSBTRFJBTSBpcyBsb2NhdGVkIGF0Cj4+
-IDB4MTAwMDAwMDAwIGFuZCBzcGFuIG9uIDY0RywgQWRkaXRpb25hbGx5LCA0RyBhcmUgbWlycm9y
-ZWQgYXQKPj4gMHg4MDAwMDAwMCBmb3IgMzIgYml0cyBjb21wYXRpYmlsaXR5Lgo+PiAKPj4gPiAK
-Pj4gPiBJIGRvbid0IHNlZSBhbnkgU0RSQU0gc2V0dXAgY29kZSBpbiB0aGlzIHNlcmllcywgbmV2
-ZXJ0aGVsZXNzIGl0IGlzCj4+ID4gdXNlZC4gSG93IGlzIFNEUkFNIHNldHVwIGRvbmU/IElzIGl0
-IGRvbmUgaW4gUk9NIG9yIGlzIGl0IHNvbWUgYm9hcmQKPj4gPiBzcGVjaWZpYyBiaW5hcnkgdGhh
-dCBydW5zIGJlZm9yZSBiYXJlYm94Pwo+PiAKPj4gVGhpcyBpcyBkb25lIHVzaW5nIFJPTSBjb2Rl
-IHdoaWNoIHJ1bnMgYmVmb3JlIGJhcmVib3guIEJvb3QgZmxvdyBpcyB0aGUKPj4gZm9sbG93aW5n
-Ogo+PiAtIFByb2Nlc3NvciBib290cyBpbiBOT1IgU1BJIChYSVApCj4+IC0gRXhlY3V0ZSBST00g
-RlNCTCAoRmlyc3QgU3RhZ2UgQm9vdGxvYWRlcikgd2hpY2ggaW5pdGlhbGl6ZSBuZWVkZWQKPj4g
-ICBwZXJpcGhlcmFscyAoRERSLCBQQ0llLCBldGMpCj4+IC0gTG9hZCBTU0JMIChzZWNvbmQgc3Rh
-Z2UgYm9vdGxvYWRlcikgd2hpY2ggaXMgYmFyZWJveCBFTEYgZmlsZSBpbiBvdXIgY2FzZS4KPj4g
-IC0gLmR0YiBFTEYgc2VjdGlvbiBpcyBwYXRjaGVkIGJ5IHRoaXMgYm9vdGxvYWRlciB1c2luZyB0
-aGUgZGV2aWNlIHRyZWUKPj4gICAgZmxhc2hlZCBpbnRvIHRoZSBib2FyZCBTUEkgTk9SLgo+PiAt
-IFRoZW4ganVtcHMgdG8gYmFyZWJveC4KPj4gCj4+IFNvIHRoZSB2ZXJzaW9uIEkgc2VudCB5b3Ug
-aXMgYSBiaXQgZGlmZmVyZW50IHNpbmNlIGl0IGFsbG93IHRvIGhhdmUgYQo+PiBidWlsdGluIERU
-Qi4gSSB3YW50ZWQgdG8gYmUgbW9yZSBzdGFuZGFyZCB3aXRoIGV4aXN0aW5nIGFyY2hpdGVjdHVy
-ZS4KPj4gCj4+IEluIG91ciB2ZXJzaW9uLCB3ZSBoYXZlIGFuIGVtcHR5IC5kdGIgc2VjdGlvbiAo
-d2hpY2ggaXMgb2YgZml4ZWQgc2l6ZSAyNEspLgo+PiBBbmQgdGhlIHRvb2xzIHRvIGxvYWQgZWxm
-IGZpbGVzIChlaXRoZXIgdGhlIEZTQkwgb3IgSlRBRyB0b29scykgYXJlCj4+IGZsYXNoaW5nIHRo
-ZSByaWdodCBkdGIgKGVpdGhlciBmcm9tIGZsYXNoIGZvciBGU0JMIG9yIGJ5IGJvYXJkIGRldGVj
-dGlvbgo+PiB3aXRoIEpUQUcpIGludG8gdGhlIC5kdGIgc2VjdGlvbi4KPj4gCj4+IFRlbGwgbWUg
-aWYgeW91IHdhbnQgbWUgdG8gc3RheSB0aGUgInN0YW5kYXJkIiB3YXkgd2l0aCBidWlsdGluIERU
-QiBvciBpZgo+PiBJIGNhbiBnbyB3aXRoIG91ciB3YXkgKGZpeGVkIHNpemUgLmR0YiBzZWN0aW9u
-IHBhdGNoZWQgZHluYW1pY2FsbHkpLgo+IAo+IFdlbGwsIHBhdGNoaW5nIHRoZSBiYXJlYm94IGJp
-bmFyeSB3aXRoIGEgZGV2aWNlIHRyZWUgaXMgbm90IHZlcnkKPiBzdGFuZGFyZCBhdCBhbGwgOykK
-PiAKPiBIb3cgYWJvdXQganVzdCBwYXNzaW5nIHRoZSBkdGIgYXMgYSBwb2ludGVyIHRvIGJhcmVi
-b3g/IFlvdSBhcmUgcHJvYmFibHkKPiBwYXNzaW5nIHRoZSBkZXZpY2UgdHJlZSB0byBsaW51eCBh
-cyB3ZWxsLCByaWdodD8gTWF5YmUgeW91IGNhbiByZXVzZQo+IHlvdXIgS2VybmVsIGNhbGxpbmcg
-Y29udmVudGlvbiBmb3IgYmFyZWJveD8gVGhhdCB3YXkgaXQgd291bGRuJ3QgbWF0dGVyCj4gaWYg
-YSBzdGFydGVkIGltYWdlIGlzIGJhcmVib3ggb3IgbGludXgsIGl0J3MgYm90aCB0aGUgc2FtZS4K
-CkFncmVlZCwgbW9yZW92ZXIsIHRoaXMgaXMgYWxyZWFkeSBkb25lIGluIG91ciBMaW51eCBwb3J0
-IDopCgpTbyB0byBzdW1hcml6ZSwgSSBzaG91bGQga2VlcCB0aGUgYnVpdGxpbiBEVEIgbWVjYW5p
-c20gKyBkdGIgcGFzc2luZwp2aWEgcmVnaXN0ZXJzLiBJcyBpdCBvayA/Cgo+IAo+PiAKPj4gPiAK
-Pj4gPiBHZW5lcmFsbHkgaXQgc2VlbXMgdGhhdCB0aGUgYm9hcmQgY29kZSBpcyBub3QgdmVyeSB3
-ZWxsIHNlcGFyYXRlZCBmcm9tCj4+ID4gdGhlIFNvQyBjb2RlLiBJZGVhbGx5IGJhcmVib3ggc3Rh
-cnR1cCBpcyBsaWtlOgo+PiA+IAo+PiA+IC0gVGhlIGVudHJ5IHBvaW50IGlzIGJvYXJkIHNwZWNp
-ZmljCj4+ID4gLSBpbiB0aGlzIGJvYXJkIHNwZWNpZmljIGNvZGUgZXZlcnl0aGluZyBpcyBkb25l
-IHRoYXQgaXMgbmVlZGVkIGZvciBhCj4+ID4gIHByb3Blcmx5IHJ1bm5pbmcgU29DIHdpdGggU0RS
-QU0gZW5hYmxlZC4gVGhpcyBtYXkgcmVxdWlyZSBzb21lIGhlbHBlcgo+PiA+ICBmdW5jdGlvbnMg
-dG8gYmUgc2hhcmVkIGJldHdlZW4gYm9hcmRzCj4+ID4gLSB0aGUgZW50cnkgY29kZSBqdW1wcyB0
-byB0aGUgZ2VuZXJpYyBjb2RlLCBwYXNzaW5nIGEgcG9pbnRlciB0bwo+PiA+ICB0aGUgZGV2aWNl
-IHRyZWUgYW5kIGlmIG5lY2Vzc2FyeSBTRFJBTSBiYXNlL3NpemUKPj4gPiAKPj4gPiBXaXRoIHRo
-aXMgc2V0dXAgd2UgY2FuIGJ1aWxkIGJhcmVib3ggaW1hZ2VzIGZvciBtdWx0aXBsZSBib2FyZHMg
-KG9yCj4+ID4gbXVsdGlwbGUgY29uZmlndXJhdGlvbnMgb2YgYm9hcmRzKSBpbiBvbmUgZ28uIEFz
-IGEgZGV2ZWxvcGVyIHlvdSBjYW4KPj4gPiB0ZXN0IG9uIG11bHRpcGxlIGJvYXJkcyB3aXRob3V0
-IGhhdmluZyB0byByZWNvbXBpbGUuIEZvciBhIGNvbXBpbGUKPj4gPiB0ZXN0ZXIgaXQgcmVkdWNl
-cyB0aGUgbnVtYmVyIG9mIGNvbmZpZ3VyYXRpb25zIHRvIGJ1aWxkIChmYXN0ZXIKPj4gPiByZXN1
-bHRzKS4gRm9yIGFuIGludGVncmF0b3IgaXQgcmVkdWNlcyB0aGUgbnVtYmVyIG9mIGJhcmVib3gg
-cmVjZWlwdHMgdG8KPj4gPiBrZWVwIHRyYWNrIG9mLiAgT3ZlcmFsbCBpdCdzIHdvcnRoIGltcGxl
-bWVudGluZyBzdWNoIGEgc2NoZW1lLgo+PiAKPj4gQWN0dWFsbHksIGR1ZSB0byB0aGUgZmFjdCB3
-ZSB1c2UgZGV2aWNlIHRyZWUgZnJvbSB0aGUgc2NyYXRjaCwgd2UgZG9uJ3QKPj4gaGF2ZSBhbnkg
-Ym9hcmQgc3BlY2lmaWMgY29kZS4gQWxtb3N0IGV2ZXJ5dGhpbmcgaXMgcHJvYmVkIGZyb20gdGhl
-IGRldmljZQo+PiB0cmVlLiBTbyB3ZSBhbHdheXMgaGF2ZSBvbmx5IG9uZSBiYXJlYm94IGJpbmFy
-eSB3aGljaCBydW5zIG9uIG11bHRpcGxlCj4+IGJvYXJkcyBhbmQgdGhlIC5kdGIgc2VjdGlvbiBp
-cyBwYXRjaGVkIGR5bmFtaWNhbGx5Lgo+IAo+IE9rLCB0aGF0J3MgZ29vZCBuZXdzLiBXaXRoIHRo
-YXQgeW91ciBiYXJlYm94IHN0YXJ0dXAgaXMganVzdCBmaW5lIGFuZAo+IHlvdSBkb24ndCBuZWVk
-IGFueSBtdWx0aSBpbWFnZSBidWlsZHMsIGF0IGxlYXN0IGFzIGxvbmcgYXMgeW91IGRvIG5vdAo+
-IGludGVncmF0ZSB0aGUgZmlyc3Qgc3RhZ2UgbG9hZGVyIGludG8gYmFyZWJveCA7KQoKWWVzICEK
-Cj4gCj4gUmVnYXJkcywKPiBTYXNjaGEKPiAKPiAtLQo+IFBlbmd1dHJvbml4IGUuSy4gICAgICAg
-ICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8Cj4gU3Rl
-dWVyd2FsZGVyIFN0ci4gMjEgICAgICAgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5n
-dXRyb25peC5kZS8gIHwKPiAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55ICAgICAgICAgICAgICAg
-ICAgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfAo+IEFtdHNnZXJpY2h0IEhpbGRlc2hl
-aW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8Cgpf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
-aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
-ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Thu, Jan 16, 2020 at 11:49:31AM +0100, Cl=E9ment Leger wrote:
+> Hi Sasha
+> =
+
+> ----- On 16 Jan, 2020, at 10:26, Sascha Hauer s.hauer@pengutronix.de wrot=
+e:
+> =
+
+> > On Wed, Jan 15, 2020 at 11:26:46AM +0100, Clement Leger wrote:
+> >> +config MALLOC_BASE
+> >> +	hex
+> >> +	default 0x100000000
+> >> +
+> >> +config MALLOC_SIZE
+> >> +	hex
+> >> +	default 0x800000
+> >> +	prompt "malloc area size"
+> >> +endmenu
+> > =
+
+> >> diff --git a/arch/k1c/lib/board.c b/arch/k1c/lib/board.c
+> >> new file mode 100644
+> >> index 000000000..d17a32614
+> >> --- /dev/null
+> >> +++ b/arch/k1c/lib/board.c
+> >> @@ -0,0 +1,20 @@
+> >> +// SPDX-License-Identifier: GPL-2.0-only
+> >> +/*
+> >> + * Copyright (C) 2019 Kalray Inc.
+> >> + */
+> >> +
+> >> +#include <common.h>
+> >> +#include <malloc.h>
+> >> +#include <memory.h>
+> >> +#include <asm-generic/memory_layout.h>
+> >> +
+> >> +
+> >> +void __noreturn k1c_start_barebox(void)
+> >> +{
+> >> +	mem_malloc_init((void *)CONFIG_MALLOC_BASE,
+> >> +			(void *)(CONFIG_MALLOC_BASE + MALLOC_SIZE - 1));
+> > =
+
+> > You could extract valid memory from the device tree instead and pick
+> > some memory for malloc there. See of_find_mem() how this can be done.
+> =
+
+> I think we are going to bite our tail here since of_unflatten_dtb does
+> some xzalloc to unflatten the DTB so we need to initialize the malloc
+> allocator before accessing DTB.
+
+of_find_mem() doesn't use of_unflatten_dtb(), it uses libfdt to parse
+the device tree.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
