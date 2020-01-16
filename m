@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
- by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1irSi6-0000O8-R2
- for barebox@lists.infradead.org; Tue, 14 Jan 2020 20:22:49 +0000
-Message-ID: <0640b84370d284e080f3d771c84c6ecc9eeae797.camel@lynxeye.de>
-From: Lucas Stach <dev@lynxeye.de>
-Date: Tue, 14 Jan 2020 21:22:14 +0100
-In-Reply-To: <CAG=Azd9zT6ahWf94hAVT3YYF6g=63K__6YoGeP9kDEqF-BSR9Q@mail.gmail.com>
-References: <CAG=Azd9zT6ahWf94hAVT3YYF6g=63K__6YoGeP9kDEqF-BSR9Q@mail.gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1is0XY-00079H-C5
+ for barebox@lists.infradead.org; Thu, 16 Jan 2020 08:30:13 +0000
+Date: Thu, 16 Jan 2020 09:30:06 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200116083006.7a72h2opdvn4jcau@pengutronix.de>
+References: <20200115103328.24700-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200115103328.24700-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,42 +18,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: qemu arm virt64 hangs
-To: Wesley Chow <wes@cortico.ai>, barebox@lists.infradead.org
+Subject: Re: [PATCH] imx25: drop global over-current setting for USB
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi Wesley,
+On Wed, Jan 15, 2020 at 11:33:28AM +0100, Uwe Kleine-K=F6nig wrote:
+> There is no mx25 board in mainline that actually uses USB. My
+> (out-of-tree) board has active low polarity which makes it necessary to
+> have
+> =
 
-Am Dienstag, den 14.01.2020, 12:36 -0500 schrieb Wesley Chow:
-> hi all!
-> 
-> 64 bit virt doesn't appear to be working.
-> 
-> $ ARCH=arm CROSS_COMPILE=/usr/bin/aarch64-linux-gnu- make
-> qemu_virt64_defconfig
-> ...
-> $ qemu-system-aarch64 -M virt -cpu cortex-a57 -nographic -kernel
-> barebox
-> 
-> (qemu hangs)
-> 
-> I see here that at some point aarch64 had issues, but do these remain
-> unresolved? https://www.spinics.net/lists/u-boot-v2/msg33882.html
+> 	/delete-property/ over-current-active-high;
+> 	over-current-active-low;
+> =
 
-I've just sent a patch to at least solve the stack issues discussed in
-this thread. Unfortunately this doesn't yield a completely working
-Barebox for me. I get the following output before things go downhill in
-a data abort:
+> in the board's dts which is ugly.
+> =
 
-barebox 2019.12.0-00296-g6b1cae953fba #370 Tue Jan 14 21:18:14 CET 2020
-Board: ARM QEMU virt64
+> In the absence of this property Linux defaults to active-high and
+> encourages explicit configuration (see commit 1bf4743f641d ("usb:
+> chipidea: imx: Warn if oc polarity isn't specified")), so other external
+> board dts files likely already have this setting anyhow. (OK, maybe a
+> bit optimistic here :-)
+> =
 
-Regards,
-Lucas
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  arch/arm/dts/imx25.dtsi | 8 --------
+>  1 file changed, 8 deletions(-)
 
+Applied, thanks
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
