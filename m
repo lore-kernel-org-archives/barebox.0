@@ -1,15 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mailout03.rmx.de ([94.199.88.101])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1is0TN-0005bS-Ru
- for barebox@lists.infradead.org; Thu, 16 Jan 2020 08:25:54 +0000
-Date: Thu, 16 Jan 2020 09:25:47 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200116082547.l6ba2wcsrne7mozb@pengutronix.de>
-References: <20200115102650.11739-1-cleger@kalray.eu>
+ id 1isOHO-0005fX-AB
+ for barebox@lists.infradead.org; Fri, 17 Jan 2020 09:51:06 +0000
+Received: from kdin02.retarus.com (unknown [172.19.17.49])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mailout03.rmx.de (Postfix) with ESMTPS id 47zbsk089kzlcBT
+ for <barebox@lists.infradead.org>; Fri, 17 Jan 2020 10:50:50 +0100 (CET)
+Received: from ppmail.arri.de (unknown [217.111.95.7])
+ (using TLSv1 with cipher AES128-SHA (128/128 bits))
+ (No client certificate requested)
+ by kdin02.retarus.com (Postfix) with ESMTPS id 47zbsg1pJwz2TTNL
+ for <barebox@lists.infradead.org>; Fri, 17 Jan 2020 10:50:47 +0100 (CET)
+From: Christian Eggers <ceggers@arri.de>
+Date: Fri, 17 Jan 2020 10:50:13 +0100
+Message-ID: <20200117095013.31379-1-ceggers@arri.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200115102650.11739-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,85 +25,198 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============8280825614273118690=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/5] Add support for Kalray k1c core
-To: Clement Leger <cleger@kalray.eu>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] lds: Fix alignment of initcall table
+To: barebox@lists.infradead.org
+Cc: Christian Eggers <ceggers@arri.de>, ceggers@gmx.de
 
-Hi Clement,
+--===============8280825614273118690==
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 15, 2020 at 11:26:45AM +0100, Clement Leger wrote:
-> Kalray k1c core is embedded in Kalray Coolidge SoC. This core has the
-> following features:
->  - 32/64 bits
->  - 6-issue VLIW architecture
->  - 64 x 64bits general purpose registers
->  - SIMD instructions
->  - little-endian
-> 
-> This port is a 64 bits one and allows to boot up to a barebox prompt on a k200
-> board. k1c support for clocksource and watchdog is also part of this port.
-> 
-> In order to build a usable toolchain, build scripts are provided at the
-> following address: https://github.com/kalray/build-scripts.
-> 
-> Kalray uses FOSS which is available at https://github.com/kalray
-> 
-> Clement Leger (5):
->   k1c: Initial Kalray Coolidge (k1c) architecture support
->   k1c: Add processor definitions
->   k1c: Add support for device tree
->   clocksource: k1c: Add k1c clocksource support
->   watchdog: k1c: Add k1c watchdog support
+Depending on the preceding *(.rodata*) sections, the contents of the
+RO_DATA_SECTION macro may be unaligned.
 
-From a first look this is all pretty straight forward, looks good ;)
+In my case, the initcall table was unaligned, because the preceding
+.rodata ended with the defaultenv when CONFIG_KALLSYMS was set to N.
 
-barebox is entered at 0x0. According to the linker script and the device
-tree you have 4MiB of SRAM there, right?
+                0x00000000000b0a00      0x1c2 arch/arm/lib32/built-in.o
+ .rodata.unwind_get_byte.str1.1
+                0x00000000000b0bc2       0x1e arch/arm/lib32/built-in.o
+ .rodata.default_environment
+                0x00000000000b0be0       0x1d defaultenv/built-in.o
+ .rodata.defaultenv_add_base.part.0.str1.1
+                0x00000000000b0bfd       0x35 defaultenv/built-in.o
+ .rodata.defaultenv_load.str1.1
+                0x00000000000b0c32       0x2b defaultenv/built-in.o
+                                         0x36 (size before relaxing)
+                0x00000000000b0c5d       <--- oops
+                 __barebox_initcalls_start =3D .
+ *(.initcall.0)
 
-I don't see any SDRAM setup code in this series, nevertheless it is
-used. How is SDRAM setup done? Is it done in ROM or is it some board
-specific binary that runs before barebox?
+Tested on i.MX6 (ARM v7).
 
-Generally it seems that the board code is not very well separated from
-the SoC code. Ideally barebox startup is like:
+Fixes: c5d38e9201 ("lds: Add and use RO_DATA_SECTION macro")
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+---
+ arch/arm/lib32/barebox.lds.S           | 1 +
+ arch/arm/lib64/barebox.lds.S           | 1 +
+ arch/mips/lib/barebox.lds.S            | 1 +
+ arch/nios2/cpu/barebox.lds.S           | 1 +
+ arch/openrisc/cpu/barebox.lds.S        | 1 +
+ arch/ppc/boards/pcm030/barebox.lds.S   | 1 +
+ arch/riscv/lib/barebox.lds.S           | 1 +
+ arch/x86/mach-efi/elf_ia32_efi.lds.S   | 1 +
+ arch/x86/mach-efi/elf_x86_64_efi.lds.S | 1 +
+ 9 files changed, 9 insertions(+)
 
-- The entry point is board specific
-- in this board specific code everything is done that is needed for a
-  properly running SoC with SDRAM enabled. This may require some helper
-  functions to be shared between boards
-- the entry code jumps to the generic code, passing a pointer to
-  the device tree and if necessary SDRAM base/size
+diff --git a/arch/arm/lib32/barebox.lds.S b/arch/arm/lib32/barebox.lds.S
+index c479e02e9..e08833d22 100644
+--- a/arch/arm/lib32/barebox.lds.S
++++ b/arch/arm/lib32/barebox.lds.S
+@@ -57,6 +57,7 @@ SECTIONS
+        . =3D ALIGN(4);
+        .rodata : {
+                *(.rodata*)
++               . =3D ALIGN(4);
+                RO_DATA_SECTION
+        }
 
-With this setup we can build barebox images for multiple boards (or
-multiple configurations of boards) in one go. As a developer you can
-test on multiple boards without having to recompile. For a compile
-tester it reduces the number of configurations to build (faster
-results). For an integrator it reduces the number of barebox receipts to
-keep track of.  Overall it's worth implementing such a scheme.
+diff --git a/arch/arm/lib64/barebox.lds.S b/arch/arm/lib64/barebox.lds.S
+index cf6ef1889..f361c7c55 100644
+--- a/arch/arm/lib64/barebox.lds.S
++++ b/arch/arm/lib64/barebox.lds.S
+@@ -55,6 +55,7 @@ SECTIONS
+        . =3D ALIGN(4);
+        .rodata : {
+                *(.rodata*)
++               . =3D ALIGN(4);
+                RO_DATA_SECTION
+        }
 
-It would be great to get there with the Kalray SoC as well, that's why I
-asked about the SDRAM setup above. If there is board specific code
-running before barebox, it should be possible to pass information to
-barebox on which board we are actually running. With this information we
-could reduce the need for board specifics in barebox.
+diff --git a/arch/mips/lib/barebox.lds.S b/arch/mips/lib/barebox.lds.S
+index e96c3bf6e..331fb0e83 100644
+--- a/arch/mips/lib/barebox.lds.S
++++ b/arch/mips/lib/barebox.lds.S
+@@ -32,6 +32,7 @@ SECTIONS
+        . =3D ALIGN(4);
+        .rodata : {
+                *(.rodata*)
++               . =3D ALIGN(4);
+                RO_DATA_SECTION
+        }
 
-I hope my questions go into the right direction, maybe just tell me a
-little bit more about the SoC startup.
+diff --git a/arch/nios2/cpu/barebox.lds.S b/arch/nios2/cpu/barebox.lds.S
+index 8d82aa59e..c7a6626d2 100644
+--- a/arch/nios2/cpu/barebox.lds.S
++++ b/arch/nios2/cpu/barebox.lds.S
+@@ -51,6 +51,7 @@ SECTIONS
 
-Regards,
- Sascha
+        .rodata : {
+                *(.rodata*)
++               . =3D ALIGN(4);
+                RO_DATA_SECTION
+        }
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+diff --git a/arch/openrisc/cpu/barebox.lds.S b/arch/openrisc/cpu/barebox.ld=
+s.S
+index adb0c22f8..da48c35e5 100644
+--- a/arch/openrisc/cpu/barebox.lds.S
++++ b/arch/openrisc/cpu/barebox.lds.S
+@@ -49,6 +49,7 @@ SECTIONS
+                *(.rodata);
+                *(.rodata.*)
+                *(.bbenv.rodata.*)
++               . =3D ALIGN(4);
+                RO_DATA_SECTION
+        } > ram
+
+diff --git a/arch/ppc/boards/pcm030/barebox.lds.S b/arch/ppc/boards/pcm030/=
+barebox.lds.S
+index 6c91ed625..051a94058 100644
+--- a/arch/ppc/boards/pcm030/barebox.lds.S
++++ b/arch/ppc/boards/pcm030/barebox.lds.S
+@@ -38,6 +38,7 @@ SECTIONS
+     *(.rodata*)
+     *(.rodata1*)
+     *(.rodata.str1.4)
++    . =3D ALIGN(16);
+     RO_DATA_SECTION
+   }
+
+diff --git a/arch/riscv/lib/barebox.lds.S b/arch/riscv/lib/barebox.lds.S
+index 5149f8ce2..6e6641043 100644
+--- a/arch/riscv/lib/barebox.lds.S
++++ b/arch/riscv/lib/barebox.lds.S
+@@ -32,6 +32,7 @@ SECTIONS
+        . =3D ALIGN(8);
+        .rodata : {
+                *(.rodata*)
++               . =3D ALIGN(8);
+                RO_DATA_SECTION
+        }
+
+diff --git a/arch/x86/mach-efi/elf_ia32_efi.lds.S b/arch/x86/mach-efi/elf_i=
+a32_efi.lds.S
+index 18ddf1780..2232b8d86 100644
+--- a/arch/x86/mach-efi/elf_ia32_efi.lds.S
++++ b/arch/x86/mach-efi/elf_ia32_efi.lds.S
+@@ -35,6 +35,7 @@ SECTIONS
+
+        .data : {
+                *(.rodata*)
++               . =3D ALIGN(4096);
+                RO_DATA_SECTION
+                *(.data)
+                *(.data1)
+diff --git a/arch/x86/mach-efi/elf_x86_64_efi.lds.S b/arch/x86/mach-efi/elf=
+_x86_64_efi.lds.S
+index 40a942503..0d42e6ddd 100644
+--- a/arch/x86/mach-efi/elf_x86_64_efi.lds.S
++++ b/arch/x86/mach-efi/elf_x86_64_efi.lds.S
+@@ -38,6 +38,7 @@ SECTIONS
+
+        .data : {
+                *(.rodata*)
++               . =3D ALIGN(4096);
+                RO_DATA_SECTION
+                *(.got.plt)
+                *(.got)
+--
+2.16.4
+
+________________________________
+ [http://assets.arri.com/media/sign/2019-12-13a-ARRI-E-mail-Signatur-Parkst=
+adt.jpg] <https://www.google.com/maps/place/Herbert-Bayer-Stra%C3%9Fe+10,+8=
+0807+M%C3%BCnchen/data=3D!4m2!3m1!1s0x479e74379489f045:0x4bbf0c7a9e893d66?s=
+a=3DX&ved=3D2ahUKEwjjvdSlh8TmAhWIp4sKHe3vDlQQ8gEwAHoECAsQAQ>
+
+Get all the latest information from www.arri.com<https://www.arri.com/>, Fa=
+cebook<https://www.facebook.com/TeamARRI>, Twitter<https://twitter.com/ARRI=
+Channel>, Instagram<https://instagram.com/arri> and YouTube<https://www.you=
+tube.com/user/ARRIChannel>.
+
+Arnold & Richter Cine Technik GmbH & Co. Betriebs KG
+Sitz: M=FCnchen - Registergericht: Amtsgericht M=FCnchen - Handelsregistern=
+ummer: HRA 57918
+Pers=F6nlich haftender Gesellschafter: Arnold & Richter Cine Technik GmbH
+Sitz: M=FCnchen - Registergericht: Amtsgericht M=FCnchen - Handelsregistern=
+ummer: HRB 54477
+Gesch=E4ftsf=FChrer: Dr. Michael Neuh=E4user; Stephan Schenk; Walter Trauni=
+nger; Markus Zeiler
+
+
+--===============8280825614273118690==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============8280825614273118690==--
