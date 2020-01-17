@@ -1,25 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mailout06.rmx.de ([94.199.90.92])
+Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1isPYP-00012H-ME
- for barebox@lists.infradead.org; Fri, 17 Jan 2020 11:12:47 +0000
-Received: from kdin01.retarus.com (kdin01.dmz1.retloc [172.19.17.48])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mailout06.rmx.de (Postfix) with ESMTPS id 47zdh41F8lz9yCb
- for <barebox@lists.infradead.org>; Fri, 17 Jan 2020 12:12:36 +0100 (CET)
-Received: from ppmail.arri.de (unknown [217.111.95.7])
- (using TLSv1 with cipher AES128-SHA (128/128 bits))
- (No client certificate requested)
- by kdin01.retarus.com (Postfix) with ESMTPS id 47zdh31PMfz301b
- for <barebox@lists.infradead.org>; Fri, 17 Jan 2020 12:12:35 +0100 (CET)
-From: Christian Eggers <ceggers@arri.de>
-Date: Fri, 17 Jan 2020 12:12:33 +0100
-Message-ID: <1795465.69go6dTdiT@n95hx1g2>
-In-Reply-To: <20200117102637.GA3698@ravnborg.org>
+ id 1isOrv-0007yu-US
+ for barebox@lists.infradead.org; Fri, 17 Jan 2020 10:28:51 +0000
+Date: Fri, 17 Jan 2020 11:26:37 +0100
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20200117102637.GA3698@ravnborg.org>
 References: <20200117095013.31379-1-ceggers@arri.de>
- <20200117102637.GA3698@ravnborg.org>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200117095013.31379-1-ceggers@arri.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,45 +18,81 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] lds: Fix alignment of initcall table
-To: ceggers@gmx.de
-Cc: barebox@lists.infradead.org
+To: Christian Eggers <ceggers@arri.de>
+Cc: barebox@lists.infradead.org, ceggers@gmx.de
 
-SGkgU2FtLAoKQW0gRnJlaXRhZywgMTcuIEphbnVhciAyMDIwLCAxMToyNjozNyBDRVQgc2Nocmll
-YmVuIFNpZToKPiBIaSBDaHJpc3RpYW4uCj4KPiBUaGFua3MgZm9yIHRoZSBwYXRjaC4KPgo+IFsu
-Li5dCj4gSGF2ZSB5b3Ugc2VlbjoKPiBkNWY4YmQ5YzUwM2UwYTE3ZWYwNzFlZWM1MGM1MzdjYzgy
-YTc5NTZjICgibGRzOiBhbGlnbiBST19EQVRBX1NFQ1RJT04KPiBtZW1iZXJzIikgd2hpY2ggd2Fz
-IHJlY2VudGx5IGNvbW1pdHRlZCB0byBtYXN0ZXI/CnVuZm9ydHVuYXRlbHkgSSBoYXZlbid0LiBJ
-IHN0YXJ0ZWQgZGV2ZWxvcG1lbnQgMiBkYXlzIGJlZm9yZSAyMDIwLjAxIGhhcwpiZWVuIHJlbGVh
-c2VkLi4uCgo+IEl0IGxvb2tzIGxpa2UgdGhlIHR3byBwYXRjaGVzIGZpeGVzIHRoZSBzYW1lLgo+
-IEV4cGVjdCB0aGF0IHlvdSBoYXZlIG11Y2ggaGlnaGVyIGFsaWdubWVudCBkZW1hbmRzIGluIGEg
-ZmV3IGNhc2VzIChpYTMyLAo+IHg4NikuCkkgaGF2ZSBubyBkZW1hbmRzIGZvciBvdGhlciBhcmNo
-aXRlY3R1cmVzIHRoYW4gQVJNdjcsIEkgb25seSB0b29rCnRoZSBhbGlnbm1lbnQgdmFsdWVzIGZy
-b20gdGhlIG90aGVyIC5hbGlnbigpIHN0YXRlbWVudHMgaW4gdGhlIHBsYXRmb3JtCmxpbmtlciBz
-Y3JpcHRzLgoKPiBDb3VsZCB5b3UgdmVyaWZ5IGlmIHRoaW5ncyB3b3JrcyBvbiBsYXRlc3QgbWFz
-dGVyIG9yIHlvdSBzdGlsbCBuZWVkCj4gYWRkaXRpb25hbCBhbGlnbm1lbnQ/CkJhcmVib3ggMjAy
-MC4wMSB3b3JrcyBmaW5kIHdpdGhvdXQgbXkgcGF0Y2guIFNvIHlvdSBjYW4gZHJvcCBpdC4KCnJl
-Z2FyZHMKQ2hyaXN0aWFuCgoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCiBbaHR0
-cDovL2Fzc2V0cy5hcnJpLmNvbS9tZWRpYS9zaWduLzIwMTktMTItMTNhLUFSUkktRS1tYWlsLVNp
-Z25hdHVyLVBhcmtzdGFkdC5qcGddIDxodHRwczovL3d3dy5nb29nbGUuY29tL21hcHMvcGxhY2Uv
-SGVyYmVydC1CYXllci1TdHJhJUMzJTlGZSsxMCwrODA4MDcrTSVDMyVCQ25jaGVuL2RhdGE9ITRt
-MiEzbTEhMXMweDQ3OWU3NDM3OTQ4OWYwNDU6MHg0YmJmMGM3YTllODkzZDY2P3NhPVgmdmVkPTJh
-aFVLRXdqanZkU2xoOFRtQWhXSXA0c0tIZTN2RGxRUThnRXdBSG9FQ0FzUUFRPgoKR2V0IGFsbCB0
-aGUgbGF0ZXN0IGluZm9ybWF0aW9uIGZyb20gd3d3LmFycmkuY29tPGh0dHBzOi8vd3d3LmFycmku
-Y29tLz4sIEZhY2Vib29rPGh0dHBzOi8vd3d3LmZhY2Vib29rLmNvbS9UZWFtQVJSST4sIFR3aXR0
-ZXI8aHR0cHM6Ly90d2l0dGVyLmNvbS9BUlJJQ2hhbm5lbD4sIEluc3RhZ3JhbTxodHRwczovL2lu
-c3RhZ3JhbS5jb20vYXJyaT4gYW5kIFlvdVR1YmU8aHR0cHM6Ly93d3cueW91dHViZS5jb20vdXNl
-ci9BUlJJQ2hhbm5lbD4uCgpBcm5vbGQgJiBSaWNodGVyIENpbmUgVGVjaG5payBHbWJIICYgQ28u
-IEJldHJpZWJzIEtHClNpdHo6IE3DvG5jaGVuIC0gUmVnaXN0ZXJnZXJpY2h0OiBBbXRzZ2VyaWNo
-dCBNw7xuY2hlbiAtIEhhbmRlbHNyZWdpc3Rlcm51bW1lcjogSFJBIDU3OTE4ClBlcnPDtm5saWNo
-IGhhZnRlbmRlciBHZXNlbGxzY2hhZnRlcjogQXJub2xkICYgUmljaHRlciBDaW5lIFRlY2huaWsg
-R21iSApTaXR6OiBNw7xuY2hlbiAtIFJlZ2lzdGVyZ2VyaWNodDogQW10c2dlcmljaHQgTcO8bmNo
-ZW4gLSBIYW5kZWxzcmVnaXN0ZXJudW1tZXI6IEhSQiA1NDQ3NwpHZXNjaMOkZnRzZsO8aHJlcjog
-RHIuIE1pY2hhZWwgTmV1aMOkdXNlcjsgU3RlcGhhbiBTY2hlbms7IFdhbHRlciBUcmF1bmluZ2Vy
-OyBNYXJrdXMgWmVpbGVyCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcK
-aHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Hi Christian.
+
+Thanks for the patch.
+
+On Fri, Jan 17, 2020 at 10:50:13AM +0100, Christian Eggers wrote:
+> Depending on the preceding *(.rodata*) sections, the contents of the
+> RO_DATA_SECTION macro may be unaligned.
+> 
+> In my case, the initcall table was unaligned, because the preceding
+> .rodata ended with the defaultenv when CONFIG_KALLSYMS was set to N.
+> 
+>                 0x00000000000b0a00      0x1c2 arch/arm/lib32/built-in.o
+>  .rodata.unwind_get_byte.str1.1
+>                 0x00000000000b0bc2       0x1e arch/arm/lib32/built-in.o
+>  .rodata.default_environment
+>                 0x00000000000b0be0       0x1d defaultenv/built-in.o
+>  .rodata.defaultenv_add_base.part.0.str1.1
+>                 0x00000000000b0bfd       0x35 defaultenv/built-in.o
+>  .rodata.defaultenv_load.str1.1
+>                 0x00000000000b0c32       0x2b defaultenv/built-in.o
+>                                          0x36 (size before relaxing)
+>                 0x00000000000b0c5d       <--- oops
+>                  __barebox_initcalls_start = .
+>  *(.initcall.0)
+> 
+> Tested on i.MX6 (ARM v7).
+> 
+> Fixes: c5d38e9201 ("lds: Add and use RO_DATA_SECTION macro")
+> Signed-off-by: Christian Eggers <ceggers@arri.de>
+
+Have you seen:
+d5f8bd9c503e0a17ef071eec50c537cc82a7956c ("lds: align RO_DATA_SECTION members")
+which was recently committed to master?
+
+It looks like the two patches fixes the same.
+Expect that you have much higher alignment demands in a few cases (ia32, x86).
+
+Could you verify if things works on latest master or you still need
+additional alignment?
+
+Thanks,
+	Sam
+
+> +++ b/arch/x86/mach-efi/elf_ia32_efi.lds.S
+> @@ -35,6 +35,7 @@ SECTIONS
+> 
+>         .data : {
+>                 *(.rodata*)
+> +               . = ALIGN(4096);
+>                 RO_DATA_SECTION
+>                 *(.data)
+>                 *(.data1)
+> diff --git a/arch/x86/mach-efi/elf_x86_64_efi.lds.S b/arch/x86/mach-efi/elf_x86_64_efi.lds.S
+> index 40a942503..0d42e6ddd 100644
+> --- a/arch/x86/mach-efi/elf_x86_64_efi.lds.S
+> +++ b/arch/x86/mach-efi/elf_x86_64_efi.lds.S
+> @@ -38,6 +38,7 @@ SECTIONS
+> 
+>         .data : {
+>                 *(.rodata*)
+> +               . = ALIGN(4096);
+>                 RO_DATA_SECTION
+>                 *(.got.plt)
+>                 *(.got)
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
