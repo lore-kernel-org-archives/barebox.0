@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1itS3k-0004Xv-On
- for barebox@lists.infradead.org; Mon, 20 Jan 2020 08:05:25 +0000
-Date: Mon, 20 Jan 2020 09:05:19 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200120080519.mdrx4ka3omfmgach@pengutronix.de>
-References: <20200117121653.21371-1-ceggers@arri.de>
+ id 1isWBU-0004Zt-SW
+ for barebox@lists.infradead.org; Fri, 17 Jan 2020 18:17:33 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 17 Jan 2020 19:17:16 +0100
+Message-Id: <20200117181716.1775-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200117121653.21371-1-ceggers@arri.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,25 +19,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] pinctrl: imx-v3: Support for imx6ull-iomuxc-snvs
-To: Christian Eggers <ceggers@arri.de>
-Cc: barebox@lists.infradead.org, ceggers@gmx.de
+Subject: [PATCH] net: designware: eqos: don't funnel all MDIO writes to
+ register 0
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Fri, Jan 17, 2020 at 01:16:53PM +0100, Christian Eggers wrote:
-> Signed-off-by: Christian Eggers <ceggers@arri.de>
-> ---
->  drivers/pinctrl/imx-iomux-v3.c | 7 +++++++
->  1 file changed, 7 insertions(+)
+eqos_mdio_write ended up using the addr parameter instead of the
+computed miiaddr variable, which would've factored in the reg parameter.
 
-Applied, thanks
+This had the effect that all writes went to PHY register 0, which was
+fine as long as there were only register 0 writes. As soon there are more
+writes, e.g. because a PHY driver was enabled, register 0 became
+clobbered and erratic behavior ensued.
+Fix the typo and while at it rename the val parameter to a more
+descriptive name.
 
-Sascha
+Fixes: a4f709bbb ("net: add Designware Ethernet QoS for STM32MP")
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+Could this be applied to master? Thanks.
+---
+ drivers/net/designware_eqos.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
+diff --git a/drivers/net/designware_eqos.c b/drivers/net/designware_eqos.c
+index da67adf9a0f0..4ae07fe059ca 100644
+--- a/drivers/net/designware_eqos.c
++++ b/drivers/net/designware_eqos.c
+@@ -229,7 +229,7 @@ static int eqos_mdio_read(struct mii_bus *bus, int addr, int reg)
+ 	return readl(&eqos->mac_regs->mdio_data) & 0xffff;
+ }
+ 
+-static int eqos_mdio_write(struct mii_bus *bus, int addr, int reg, u16 val)
++static int eqos_mdio_write(struct mii_bus *bus, int addr, int reg, u16 data)
+ {
+ 	struct eqos *eqos = bus->priv;
+ 	u32 miiaddr = 0;
+@@ -249,8 +249,8 @@ static int eqos_mdio_write(struct mii_bus *bus, int addr, int reg, u16 val)
+ 	miiaddr |= EQOS_MDIO_ADDR(addr) | EQOS_MDIO_REG(reg);
+ 	miiaddr |= MII_BUSY;
+ 
+-	writel(val, &eqos->mac_regs->mdio_data);
+-	writel(addr, &eqos->mac_regs->mdio_address);
++	writel(data, &eqos->mac_regs->mdio_data);
++	writel(miiaddr, &eqos->mac_regs->mdio_address);
+ 
+ 	udelay(eqos->ops->mdio_wait_us);
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.25.0
+
 
 _______________________________________________
 barebox mailing list
