@@ -1,12 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1isWBU-0004Zt-SW
- for barebox@lists.infradead.org; Fri, 17 Jan 2020 18:17:33 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 17 Jan 2020 19:17:16 +0100
-Message-Id: <20200117181716.1775-1-a.fatoum@pengutronix.de>
+ id 1itSJ9-0000gy-PH
+ for barebox@lists.infradead.org; Mon, 20 Jan 2020 08:21:20 +0000
+Date: Mon, 20 Jan 2020 09:21:14 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200120082114.gqizvodxf6ufikzt@pengutronix.de>
+References: <20200120050330.161859-1-r.czerwinski@pengutronix.de>
+ <20200120050330.161859-2-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200120050330.161859-2-r.czerwinski@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,56 +23,114 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] net: designware: eqos: don't funnel all MDIO writes to
- register 0
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH 2/4] ARM: add optee early loading function
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-eqos_mdio_write ended up using the addr parameter instead of the
-computed miiaddr variable, which would've factored in the reg parameter.
+On Mon, Jan 20, 2020 at 06:03:28AM +0100, Rouven Czerwinski wrote:
+> Add a OP-TEE early loading function which expects a pointer to a valid
+> tee binary and the device tree. OP-TEE will then be started and barebox
+> will continue to run in normal mode.
+> 
+> The function start_optee_early should be used in a boards lowlevel.c
+> file. Ensure that barebox has been relocated and a proper c environment
+> has been setup beforehand. Depending on the OP-TEE configuration, the
+> fdt will be modified. If the internal barebox device tree is passed,
+> OP-TEE will overwrite barebox PBL memory during this modification. Copy
+> the fdt to a save memory location beforehand to avoid a corruption of
 
-This had the effect that all writes went to PHY register 0, which was
-fine as long as there were only register 0 writes. As soon there are more
-writes, e.g. because a PHY driver was enabled, register 0 became
-clobbered and erratic behavior ensued.
-Fix the typo and while at it rename the val parameter to a more
-descriptive name.
+s/save/safe/
 
-Fixes: a4f709bbb ("net: add Designware Ethernet QoS for STM32MP")
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-Could this be applied to master? Thanks.
----
- drivers/net/designware_eqos.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+> barebox PBL memory.
+> 
+> This also moves the OP-TEE Kconfig symbols into a separate menu.
+> 
+> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+> ---
+>  arch/arm/lib32/Makefile             |  3 ++
+>  arch/arm/lib32/optee-early.c        | 29 ++++++++++++++++
+>  common/Kconfig                      | 54 ++++++++++++++++++-----------
+>  common/Makefile                     |  1 +
+>  include/asm-generic/memory_layout.h |  4 +--
+>  include/tee/optee.h                 |  6 ++++
+>  6 files changed, 74 insertions(+), 23 deletions(-)
+>  create mode 100644 arch/arm/lib32/optee-early.c
+> 
+> diff --git a/arch/arm/lib32/Makefile b/arch/arm/lib32/Makefile
+> index cd43147e66..18f6973fcc 100644
+> --- a/arch/arm/lib32/Makefile
+> +++ b/arch/arm/lib32/Makefile
+> @@ -28,3 +28,6 @@ extra-y += barebox.lds
+>  pbl-y	+= lib1funcs.o
+>  pbl-y	+= ashldi3.o
+>  pbl-y	+= div0.o
+> +
+> +pbl-$(CONFIG_PBL_OPTEE)	+= setjmp.o
 
-diff --git a/drivers/net/designware_eqos.c b/drivers/net/designware_eqos.c
-index da67adf9a0f0..4ae07fe059ca 100644
---- a/drivers/net/designware_eqos.c
-+++ b/drivers/net/designware_eqos.c
-@@ -229,7 +229,7 @@ static int eqos_mdio_read(struct mii_bus *bus, int addr, int reg)
- 	return readl(&eqos->mac_regs->mdio_data) & 0xffff;
- }
- 
--static int eqos_mdio_write(struct mii_bus *bus, int addr, int reg, u16 val)
-+static int eqos_mdio_write(struct mii_bus *bus, int addr, int reg, u16 data)
- {
- 	struct eqos *eqos = bus->priv;
- 	u32 miiaddr = 0;
-@@ -249,8 +249,8 @@ static int eqos_mdio_write(struct mii_bus *bus, int addr, int reg, u16 val)
- 	miiaddr |= EQOS_MDIO_ADDR(addr) | EQOS_MDIO_REG(reg);
- 	miiaddr |= MII_BUSY;
- 
--	writel(val, &eqos->mac_regs->mdio_data);
--	writel(addr, &eqos->mac_regs->mdio_address);
-+	writel(data, &eqos->mac_regs->mdio_data);
-+	writel(miiaddr, &eqos->mac_regs->mdio_address);
- 
- 	udelay(eqos->ops->mdio_wait_us);
- 
+This should be in the patch adding setjmp/longjmp support. Where is it
+btw?
+
+> +pbl-$(CONFIG_PBL_OPTEE)	+= optee-early.o
+> diff --git a/arch/arm/lib32/optee-early.c b/arch/arm/lib32/optee-early.c
+> new file mode 100644
+> index 0000000000..f1755e075f
+> --- /dev/null
+> +++ b/arch/arm/lib32/optee-early.c
+> @@ -0,0 +1,29 @@
+
+spdx?
+
+> +#include <asm/cache.h>
+> +#include <asm/setjmp.h>
+> +#include <tee/optee.h>
+> +#include <debug_ll.h>
+> +
+> +jmp_buf tee_buf;
+
+static?
+
+> +
+> +int start_optee_early(void* fdt, void* tee) {
+
+Coding style nitpick: opening braces of a function should be on the next
+line. Also, should be "void *fdt", not "void* fdt"
+
+> +	void (*tee_start)(void* r0, void* r1, void* r2);
+> +	struct optee_header *hdr;
+> +	int ret = 0;
+
+Unnecessary initialization.
+
+> +
+> +	hdr = tee;
+> +	ret = optee_verify_header(hdr);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	memcpy((void *)hdr->init_load_addr_lo, tee + sizeof(*hdr), hdr->init_size);
+> +	tee_start = (void *) hdr->init_load_addr_lo;
+> +	ret = 1;
+
+Why?
+
+> +	ret = setjmp(tee_buf);
+> +	if (ret == 0) {
+> +		sync_caches_for_execution();
+> +		tee_start(0, 0, fdt);
+> +		longjmp(tee_buf, 1);
+> +	}
+
+Some comment like "We use setjmp/longjmp here because OP-TEE clobbers
+most registers" would be nice here.
+
+Sascha
+
+
 -- 
-2.25.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
