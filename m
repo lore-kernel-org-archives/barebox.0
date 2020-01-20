@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ot1-x336.google.com ([2607:f8b0:4864:20::336])
+Received: from magratgarlick.emantor.de ([78.46.208.201])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1irQ7r-0001Wn-IQ
- for barebox@lists.infradead.org; Tue, 14 Jan 2020 17:37:16 +0000
-Received: by mail-ot1-x336.google.com with SMTP id 77so13422069oty.6
- for <barebox@lists.infradead.org>; Tue, 14 Jan 2020 09:37:10 -0800 (PST)
+ id 1itSso-00069O-J7
+ for barebox@lists.infradead.org; Mon, 20 Jan 2020 08:58:12 +0000
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Mon, 20 Jan 2020 09:56:45 +0100
+Message-Id: <20200120085647.19784-2-r.czerwinski@pengutronix.de>
+In-Reply-To: <20200120085647.19784-1-r.czerwinski@pengutronix.de>
+References: <20200120085647.19784-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
-From: Wesley Chow <wes@cortico.ai>
-Date: Tue, 14 Jan 2020 12:36:59 -0500
-Message-ID: <CAG=Azd9zT6ahWf94hAVT3YYF6g=63K__6YoGeP9kDEqF-BSR9Q@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,26 +21,98 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: qemu arm virt64 hangs
+Subject: [PATCH v2 2/5] ARM: import setjmp implementation from U-Boot
 To: barebox@lists.infradead.org
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-hi all!
+Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+---
+ arch/arm/include/asm/setjmp.h | 29 ++++++++++++++++++++++++++++
+ arch/arm/lib32/setjmp.S       | 36 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 65 insertions(+)
+ create mode 100644 arch/arm/include/asm/setjmp.h
+ create mode 100644 arch/arm/lib32/setjmp.S
 
-64 bit virt doesn't appear to be working.
+diff --git a/arch/arm/include/asm/setjmp.h b/arch/arm/include/asm/setjmp.h
+new file mode 100644
+index 0000000000..62bac613d6
+--- /dev/null
++++ b/arch/arm/include/asm/setjmp.h
+@@ -0,0 +1,29 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * (C) Copyright 2017 Theobroma Systems Design und Consulting GmbH
++ * (C) Copyright 2016 Alexander Graf <agraf@suse.de>
++ */
++
++#ifndef _SETJMP_H_
++#define _SETJMP_H_	1
++
++#include <asm/types.h>
++
++/*
++ * This really should be opaque, but the EFI implementation wrongly
++ * assumes that a 'struct jmp_buf_data' is defined.
++ */
++struct jmp_buf_data {
++#if defined(__aarch64__)
++	u64  regs[13];
++#else
++	u32  regs[10];  /* r4-r9, sl, fp, sp, lr */
++#endif
++};
++
++typedef struct jmp_buf_data jmp_buf[1];
++
++int setjmp(jmp_buf jmp);
++void longjmp(jmp_buf jmp, int ret);
++
++#endif /* _SETJMP_H_ */
+diff --git a/arch/arm/lib32/setjmp.S b/arch/arm/lib32/setjmp.S
+new file mode 100644
+index 0000000000..f0606a7f66
+--- /dev/null
++++ b/arch/arm/lib32/setjmp.S
+@@ -0,0 +1,36 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * (C) 2017 Theobroma Systems Design und Consulting GmbH
++ */
++
++#include <config.h>
++#include <asm/assembler.h>
++#include <linux/linkage.h>
++
++.pushsection .text.setjmp, "ax"
++ENTRY(setjmp)
++	/*
++	 * A subroutine must preserve the contents of the registers
++	 * r4-r8, r10, r11 (v1-v5, v7 and v8) and SP (and r9 in PCS
++	 * variants that designate r9 as v6).
++	 */
++	mov  ip, sp
++	stm  a1, {v1-v8, ip, lr}
++	mov  a1, #0
++	bx   lr
++ENDPROC(setjmp)
++.popsection
++
++.pushsection .text.longjmp, "ax"
++ENTRY(longjmp)
++	ldm  a1, {v1-v8, ip, lr}
++	mov  sp, ip
++	mov  a1, a2
++	/* If we were passed a return value of zero, return one instead */
++	cmp  a1, #0
++	bne  1f
++	mov  a1, #1
++1:
++	bx   lr
++ENDPROC(longjmp)
++.popsection
+-- 
+2.25.0
 
-$ ARCH=arm CROSS_COMPILE=/usr/bin/aarch64-linux-gnu- make qemu_virt64_defconfig
-...
-$ qemu-system-aarch64 -M virt -cpu cortex-a57 -nographic -kernel barebox
-
-(qemu hangs)
-
-I see here that at some point aarch64 had issues, but do these remain
-unresolved? https://www.spinics.net/lists/u-boot-v2/msg33882.html
-
-I'm new to barebox, so apologies if I did something boneheaded.
-
-Thanks,
-Wes
 
 _______________________________________________
 barebox mailing list
