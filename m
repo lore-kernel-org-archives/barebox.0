@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from magratgarlick.emantor.de ([78.46.208.201])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1itPER-000600-43
- for barebox@lists.infradead.org; Mon, 20 Jan 2020 05:04:12 +0000
+ id 1itPEU-00061Y-Gt
+ for barebox@lists.infradead.org; Mon, 20 Jan 2020 05:04:15 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Mon, 20 Jan 2020 06:03:30 +0100
-Message-Id: <20200120050330.161859-4-r.czerwinski@pengutronix.de>
+Date: Mon, 20 Jan 2020 06:03:29 +0100
+Message-Id: <20200120050330.161859-3-r.czerwinski@pengutronix.de>
 In-Reply-To: <20200120050330.161859-1-r.czerwinski@pengutronix.de>
 References: <20200120050330.161859-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
@@ -21,66 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] user: add documentation for OP-TEE loading
+Subject: [PATCH 3/4] ARM: mach-imx: OPTEE PBL configures PL210
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Some rudimentary documentation how to load OP-TEE.
+If OP-TEE early loading is performed, OP-TEE will configure the PL210
+and lock access to the controller from the normal world. Skip the
+configuration in this case.
 
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- Documentation/user/optee.rst       | 29 +++++++++++++++++++++++++++++
- Documentation/user/user-manual.rst |  1 +
- 2 files changed, 30 insertions(+)
- create mode 100644 Documentation/user/optee.rst
+ arch/arm/mach-imx/imx6.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/user/optee.rst b/Documentation/user/optee.rst
-new file mode 100644
-index 0000000000..950917b446
---- /dev/null
-+++ b/Documentation/user/optee.rst
-@@ -0,0 +1,29 @@
-+
-+.. _optee:
-+
-+OP-TEE
-+======
-+
-+Barebox is able to start the Open Portable Trusted Execution Environment
-+(OP-TEE) either before starting the linux kernel or during lowlevel board
-+initialization in the Pre Bootloader ``PBL``.
-+
-+Before Linux start
-+------------------
-+Enable the `CONFIG_BOOTM_OPTEE` configuration variable and configure the
-+`CONFIG_OPTEE_SIZE` variable. This will reserve a memory area at the end
-+of memory for OP-TEE to run, usually Barebox would relocate itself there. To
-+load OP-TEE before the kernel is started, configure the global ``bootm.tee``
-+variable to point to a valid OPTEE v1 binary.
-+
-+During the PBL
-+--------------
-+To start OP-TEE during the lowlevel initialization of your board in the ``PBL``,
-+enable the ``CONFIG_PBL_OPTEE`` configuration variable. your board should then
-+call the function ``start_optee_early(void* tee, void* fdt)`` with a valid tee
-+and FDT. Ensure that your OP-TEE is compiled with ``CFG_NS_ENTRY_ADDR`` unset,
-+otherwise OP-TEE will not correctly return to barebox after startup.
-+Since OP-TEE in the default configuration also modifies the device tree, don't
-+pass the barebox internal device tree, instead copy it into a different memory
-+location and pass it to OP-TEE afterwards.
-+The modified device tree can then be passed to the main barebox start function.
-diff --git a/Documentation/user/user-manual.rst b/Documentation/user/user-manual.rst
-index 41fdb8805c..827683eaa0 100644
---- a/Documentation/user/user-manual.rst
-+++ b/Documentation/user/user-manual.rst
-@@ -33,6 +33,7 @@ Contents:
-    system-reset
-    state
-    random
-+   optee
-    debugging
-    watchdog
+diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
+index 41e0066add..f2311efd92 100644
+--- a/arch/arm/mach-imx/imx6.c
++++ b/arch/arm/mach-imx/imx6.c
+@@ -278,7 +278,7 @@ static int imx6_mmu_init(void)
+ 	void __iomem *l2x0_base = IOMEM(0x00a02000);
+ 	u32 val, cache_part, cache_rtl;
  
+-	if (!cpu_is_mx6())
++	if (!cpu_is_mx6() || IS_ENABLED(CONFIG_PBL_OPTEE))
+ 		return 0;
+ 
+ 	val = readl(l2x0_base + L2X0_CACHE_ID);
 -- 
 2.25.0
 
