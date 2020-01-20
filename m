@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qt1-x82e.google.com ([2607:f8b0:4864:20::82e])
+Received: from magratgarlick.emantor.de ([78.46.208.201])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1itVIy-0007Jh-Qx
- for barebox@lists.infradead.org; Mon, 20 Jan 2020 11:33:22 +0000
-Received: by mail-qt1-x82e.google.com with SMTP id c24so16568375qtp.5
- for <barebox@lists.infradead.org>; Mon, 20 Jan 2020 03:33:16 -0800 (PST)
+ id 1itSsy-0006Eb-OA
+ for barebox@lists.infradead.org; Mon, 20 Jan 2020 08:58:22 +0000
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Mon, 20 Jan 2020 09:56:48 +0100
+Message-Id: <20200120085647.19784-5-r.czerwinski@pengutronix.de>
+In-Reply-To: <20200120085647.19784-1-r.czerwinski@pengutronix.de>
+References: <20200120085647.19784-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
-From: Frederick Gotham <cauldwell.thomas@gmail.com>
-Date: Mon, 20 Jan 2020 11:33:13 +0000
-Message-ID: <CALtZhhMAHMh0HBatmQVL=uU6hYBuK3wvYPntqbQ-7rR5OzX_xA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,44 +17,73 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: cauldwell.thomas@gmail.com
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Issue CPU instructions to start watchdog?
+Subject: [PATCH v2 5/5] user: add documentation for OP-TEE loading
 To: barebox@lists.infradead.org
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-I'm developing an embedded Linux device, and I'm using Barebox as a
-part of Buildroot. The CPU is x64 with 4 cores, and it has an Intel
-TCO watchdog timer.
+Some rudimentary documentation how to load OP-TEE.
 
-The exact processor I'm using is the Intel Silver N5000, and the
-datasheet for it says:
-"TCO_TMR is the watchdog timer provided by the ACPI block. It is used
-by an OS monitor for OS crashes."
+Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+---
+ Documentation/user/optee.rst       | 29 +++++++++++++++++++++++++++++
+ Documentation/user/user-manual.rst |  1 +
+ 2 files changed, 30 insertions(+)
+ create mode 100644 Documentation/user/optee.rst
 
-When I boot up Barebox, it does not have the file "/dev/watchdog".
-I've tried a few different things but I just simply can't get Barebox
-to recognise the Intel watchdog timer.
+diff --git a/Documentation/user/optee.rst b/Documentation/user/optee.rst
+new file mode 100644
+index 0000000000..950917b446
+--- /dev/null
++++ b/Documentation/user/optee.rst
+@@ -0,0 +1,29 @@
++
++.. _optee:
++
++OP-TEE
++======
++
++Barebox is able to start the Open Portable Trusted Execution Environment
++(OP-TEE) either before starting the linux kernel or during lowlevel board
++initialization in the Pre Bootloader ``PBL``.
++
++Before Linux start
++------------------
++Enable the `CONFIG_BOOTM_OPTEE` configuration variable and configure the
++`CONFIG_OPTEE_SIZE` variable. This will reserve a memory area at the end
++of memory for OP-TEE to run, usually Barebox would relocate itself there. To
++load OP-TEE before the kernel is started, configure the global ``bootm.tee``
++variable to point to a valid OPTEE v1 binary.
++
++During the PBL
++--------------
++To start OP-TEE during the lowlevel initialization of your board in the ``PBL``,
++enable the ``CONFIG_PBL_OPTEE`` configuration variable. your board should then
++call the function ``start_optee_early(void* tee, void* fdt)`` with a valid tee
++and FDT. Ensure that your OP-TEE is compiled with ``CFG_NS_ENTRY_ADDR`` unset,
++otherwise OP-TEE will not correctly return to barebox after startup.
++Since OP-TEE in the default configuration also modifies the device tree, don't
++pass the barebox internal device tree, instead copy it into a different memory
++location and pass it to OP-TEE afterwards.
++The modified device tree can then be passed to the main barebox start function.
+diff --git a/Documentation/user/user-manual.rst b/Documentation/user/user-manual.rst
+index 41fdb8805c..827683eaa0 100644
+--- a/Documentation/user/user-manual.rst
++++ b/Documentation/user/user-manual.rst
+@@ -33,6 +33,7 @@ Contents:
+    system-reset
+    state
+    random
++   optee
+    debugging
+    watchdog
+ 
+-- 
+2.25.0
 
-Ideally I would like to have the watchdog timer start running at Power
-On, however my current BIOS  hasn't got any watchdog settings, and so
-until I get a new BIOS (which might never happen), I have to start the
-watchdog timer from within Barebox in order to get the device to
-reboot if the Linux kernel freezes while it's loading.
-
-At this stage I think I might actually have to write assembler to
-issue instructions to the CPU to start the Watchdog timer. I have
-looked this up and it's definitely not straight-forward, e.g.
-interfacing with the ACPI block and its registers... I would be pretty
-much writing a device driver.
-
-Anyone got any ideas?
-
-I really need my device to reboot if the Linux kernel freezes while loading.
-
-Frederick
 
 _______________________________________________
 barebox mailing list
