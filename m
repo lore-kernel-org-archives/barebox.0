@@ -1,21 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mailout03.rmx.de ([94.199.88.101])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1itYtM-0002z2-LG
- for barebox@lists.infradead.org; Mon, 20 Jan 2020 15:23:07 +0000
-References: <r276.1579090214262888471.6UJY@lists.yoctoproject.org>
- <1579093362.13056.13.camel@pengutronix.de>
- <DB8PR03MB54983C09B221B210D29A26AAFE370@DB8PR03MB5498.eurprd03.prod.outlook.com>
- <45b34e63-a9fd-2295-311c-393bf49fdf93@pengutronix.de>
- <DB8PR03MB549847FD100DF7192459527FFE370@DB8PR03MB5498.eurprd03.prod.outlook.com>
- <f451a45a-a4bc-f285-0614-001cb3a57405@pengutronix.de>
- <AM6PR03MB54938204A7FDEB6C5E93A749FE360@AM6PR03MB5493.eurprd03.prod.outlook.com>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <cd5008fe-b93f-92c6-8f97-6f7adce32f0e@pengutronix.de>
-Date: Mon, 20 Jan 2020 16:23:02 +0100
+ id 1ita4u-0005jo-6E
+ for barebox@lists.infradead.org; Mon, 20 Jan 2020 16:39:08 +0000
+Received: from kdin02.retarus.com (unknown [172.19.17.49])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mailout03.rmx.de (Postfix) with ESMTPS id 481cmx0s86zlbK1
+ for <barebox@lists.infradead.org>; Mon, 20 Jan 2020 17:38:41 +0100 (CET)
+Received: from ppmail.arri.de (unknown [217.111.95.7])
+ (using TLSv1 with cipher AES128-SHA (128/128 bits))
+ (No client certificate requested)
+ by kdin02.retarus.com (Postfix) with ESMTPS id 481cmw0dyNz2TRlL
+ for <barebox@lists.infradead.org>; Mon, 20 Jan 2020 17:38:40 +0100 (CET)
+From: Christian Eggers <ceggers@arri.de>
+Date: Mon, 20 Jan 2020 17:38:36 +0100
+Message-ID: <2198510.7r5C0NBLhF@n95hx1g2>
 MIME-Version: 1.0
-In-Reply-To: <AM6PR03MB54938204A7FDEB6C5E93A749FE360@AM6PR03MB5493.eurprd03.prod.outlook.com>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,53 +25,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [yocto] #yocto bootchooser: Cannot get state 'state'
-To: Hans-Ulrich Schlieben <hu.schlieben@codewrights.de>, Enrico Joerns <ejo@pengutronix.de>, "yocto@lists.yoctoproject.org" <yocto@lists.yoctoproject.org>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Configuring for secure boot
+To: barebox@lists.infradead.org
 
-Hello,
-
-On 1/16/20 4:09 PM, Hans-Ulrich Schlieben wrote:
-> Hi Ahmad,
-> 
-> Thanks to your Mail I tested with barebox_2017.12.0-phy6.bb (thud used barebox_2017.12.0-phy4.bb) and this works in zeus too. 
-> 
->> According to the state command output under thud, your state is stored on the EEPROM, not the NAND. Look for update-eeprom in your device tree.
->> There should also be an /dev/eeprom0.update-eeprom in barebox.
-> That seems right, when working the eeprom is written to on each boot.
-> But I could not find any references to *eep* inside barebox in any layer.
-
-Does it come from the phytec git directly? Upstream barebox has this:
-https://git.pengutronix.de/cgit/barebox/tree/arch/arm/dts/imx6qdl-phytec-state.dtsi?h=next
-
-I would imagine, yours does to. You can check in the yocto build directory.
-(If you have rm_work enabled, you might need RM_WORK_EXCLUDE += "your-barebox-recipe"
-in your local.conf)
-
-Also try of_dump /state inside of barebox to see the device tree node.
-
-The reason, you haven't found it in the deploy/ device tree is that barebox modifies
-the kernel device tree on loading and adds the state nodes to it.
-
->> if not, try executing the drvinfo command and see if the driver has probed the EEPROM.
->>>> Looks like the state node is missing in your device tree.
-
-Do you have the state driver enabled? drvinfo should tell you that.
-
-Cheers
-Ahmad
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Qm9hcmQ6IHBoeXRlYy1zb20taW14NgoKSSBuZWVkIHRvIGNvbmZpZ3VyZSBiYXJlYm94IGluIGEg
+d2F5LCB0aGF0IGEgbWFsaWNpb3VzIGF0dGFja2VyIGNhbiBub3QgYnJlYWsKaW50byB0aGUgc3lz
+dGVtLiBJdCBsb29rcyBsaWtlIEkgbmVlZCB0byBwZXJmb3JtIHRoZSBmb2xsb3dpbmcgc3RlcHM6
+CgoxLiBFbmZvcmNlIHNpZ25hdHVyZSB2ZXJpZmljYXRpb24gb2YgRklUIGltYWdlCi0tPiBDT05G
+SUdfQk9PVE1fRk9SQ0VfU0lHTkVEX0lNQUdFUwoKMi4gUHJldmVudCBtYW5pcHVsYXRpb24gb2Yg
+dGhlIHNhdmVkIGVudmlyb25tZW50IGluIGZsYXNoCi0tPiBEbyBub3QgbG9hZCBhbnkgZW52aXJv
+bm1lbnQgc2V0dGluZ3MgZnJvbSBmbGFzaCwgb25seSB1c2UgY29tcGlsZWQgaW4KZGVmYXVsdCBl
+bnZpcm9ubWVudC4KLS0+IFJlbW92ZSAvIHBlcm1hbmVudGx5IGRpc2FibGUgImJhcmVib3gsZW52
+aXJvbm1lbnQiIG5vZGUgaW4gZGV2aWNlLXRyZWU/Ci0tPiBDb21waWxlIHdpdGhvdXQgQ09ORklH
+X09GX0JBUkVCT1hfRFJJVkVSUz8KCjMuIFByZXZlbnQgYWNjZXNzIHRvIHRoZSBiYXJlYm94IHNo
+ZWxsCi0tPiBDT05GSUdfQ01EX0xPR0lOPwotLT4gQ09ORklHX1NIRUxMX05PTkU/CgpXaGF0IGlz
+IHRoZSBiZXN0IHdheSB0byBwcmV2ZW50IChvZmZsaW5lKSBtYW5pcHVsYXRpb24gb2YgdGhlIGJh
+cmVib3gKZW52aXJvbm1lbnQ/IFdoYXQgaXMgdGhlIGJlc3Qgd2F5IHRvIGJsb2NrIHRoZSBzaGVs
+bCBhY2Nlc3M/CgpyZWdhcmRzCkNocmlzdGlhbgoKCgpfX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fXwogW2h0dHA6Ly9hc3NldHMuYXJyaS5jb20vbWVkaWEvc2lnbi8yMDE5LTEyLTEzYS1B
+UlJJLUUtbWFpbC1TaWduYXR1ci1QYXJrc3RhZHQuanBnXSA8aHR0cHM6Ly93d3cuZ29vZ2xlLmNv
+bS9tYXBzL3BsYWNlL0hlcmJlcnQtQmF5ZXItU3RyYSVDMyU5RmUrMTAsKzgwODA3K00lQzMlQkNu
+Y2hlbi9kYXRhPSE0bTIhM20xITFzMHg0NzllNzQzNzk0ODlmMDQ1OjB4NGJiZjBjN2E5ZTg5M2Q2
+Nj9zYT1YJnZlZD0yYWhVS0V3amp2ZFNsaDhUbUFoV0lwNHNLSGUzdkRsUVE4Z0V3QUhvRUNBc1FB
+UT4KCkdldCBhbGwgdGhlIGxhdGVzdCBpbmZvcm1hdGlvbiBmcm9tIHd3dy5hcnJpLmNvbTxodHRw
+czovL3d3dy5hcnJpLmNvbS8+LCBGYWNlYm9vazxodHRwczovL3d3dy5mYWNlYm9vay5jb20vVGVh
+bUFSUkk+LCBUd2l0dGVyPGh0dHBzOi8vdHdpdHRlci5jb20vQVJSSUNoYW5uZWw+LCBJbnN0YWdy
+YW08aHR0cHM6Ly9pbnN0YWdyYW0uY29tL2Fycmk+IGFuZCBZb3VUdWJlPGh0dHBzOi8vd3d3Lnlv
+dXR1YmUuY29tL3VzZXIvQVJSSUNoYW5uZWw+LgoKQXJub2xkICYgUmljaHRlciBDaW5lIFRlY2hu
+aWsgR21iSCAmIENvLiBCZXRyaWVicyBLRwpTaXR6OiBNw7xuY2hlbiAtIFJlZ2lzdGVyZ2VyaWNo
+dDogQW10c2dlcmljaHQgTcO8bmNoZW4gLSBIYW5kZWxzcmVnaXN0ZXJudW1tZXI6IEhSQSA1Nzkx
+OApQZXJzw7ZubGljaCBoYWZ0ZW5kZXIgR2VzZWxsc2NoYWZ0ZXI6IEFybm9sZCAmIFJpY2h0ZXIg
+Q2luZSBUZWNobmlrIEdtYkgKU2l0ejogTcO8bmNoZW4gLSBSZWdpc3RlcmdlcmljaHQ6IEFtdHNn
+ZXJpY2h0IE3DvG5jaGVuIC0gSGFuZGVsc3JlZ2lzdGVybnVtbWVyOiBIUkIgNTQ0NzcKR2VzY2jD
+pGZ0c2bDvGhyZXI6IERyLiBNaWNoYWVsIE5ldWjDpHVzZXI7IFN0ZXBoYW4gU2NoZW5rOyBXYWx0
+ZXIgVHJhdW5pbmdlcjsgTWFya3VzIFplaWxlcgoKX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5p
+bmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8v
+YmFyZWJveAo=
