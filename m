@@ -1,22 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1itZ1h-0006mJ-Ro
- for barebox@lists.infradead.org; Mon, 20 Jan 2020 15:31:46 +0000
-References: <r276.1579090214262888471.6UJY@lists.yoctoproject.org>
- <1579093362.13056.13.camel@pengutronix.de>
- <DB8PR03MB54983C09B221B210D29A26AAFE370@DB8PR03MB5498.eurprd03.prod.outlook.com>
- <45b34e63-a9fd-2295-311c-393bf49fdf93@pengutronix.de>
- <DB8PR03MB549847FD100DF7192459527FFE370@DB8PR03MB5498.eurprd03.prod.outlook.com>
- <f451a45a-a4bc-f285-0614-001cb3a57405@pengutronix.de>
- <1579099664.13056.29.camel@pengutronix.de>
- <AM6PR03MB54939235100D4D6E455AF4C1FE360@AM6PR03MB5493.eurprd03.prod.outlook.com>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <1c275d4d-cf23-caf5-072e-2517080950c1@pengutronix.de>
-Date: Mon, 20 Jan 2020 16:31:39 +0100
+ id 1itd7S-0003nT-Ip
+ for barebox@lists.infradead.org; Mon, 20 Jan 2020 19:53:56 +0000
+Date: Mon, 20 Jan 2020 20:53:51 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200120195351.skm7ujz7yjr6mu32@pengutronix.de>
+References: <2198510.7r5C0NBLhF@n95hx1g2>
 MIME-Version: 1.0
-In-Reply-To: <AM6PR03MB54939235100D4D6E455AF4C1FE360@AM6PR03MB5493.eurprd03.prod.outlook.com>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <2198510.7r5C0NBLhF@n95hx1g2>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,63 +22,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [yocto] #yocto bootchooser: Cannot get state 'state'
-To: Hans-Ulrich Schlieben <hu.schlieben@codewrights.de>, Enrico Joerns <ejo@pengutronix.de>
-Cc: "yocto@lists.yoctoproject.org" <yocto@lists.yoctoproject.org>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: Configuring for secure boot
+To: Christian Eggers <ceggers@arri.de>
+Cc: barebox@lists.infradead.org
 
-Hello,
+Hi Christian,
 
-On 1/16/20 4:13 PM, Hans-Ulrich Schlieben wrote:
-> Hi Enrico,
+On Mon, Jan 20, 2020 at 05:38:36PM +0100, Christian Eggers wrote:
+> Board: phytec-som-imx6
 > 
-> thank you for your help and for telling me about fdtdump. Works great.
-> I could not find any references to state in the device tree.
-> There where no references to state and bootchooser in the devicetree. 
-> The only references to barebox are two addresses inside the nand:
->         gpmi-nand@00112000 {
-> ...
->             partition@0 {
->                 label = "barebox";
->                 reg = <0x00000000 0x00400000>;
->             };
->             partition@1 {
->                 label = "barebox-environment";
->                 reg = <0x00400000 0x00100000>;
->             };
-> ...
-> And there is a eeprom entry:
->             i2c@021a8000 {
-> ...
->                 eeprom@50 {
->                     compatible = "atmel,24c32";
->                     reg = <0x00000050>;
->                 };
-> Where to look for state in the devicetree?
+> I need to configure barebox in a way, that a malicious attacker can not break
+> into the system. It looks like I need to perform the following steps:
+> 
+> 1. Enforce signature verification of FIT image
+> --> CONFIG_BOOTM_FORCE_SIGNED_IMAGES
 
-As mentioned in the other mail, it's in the barebox device tree
-and on Linux boot fixed up into the Linux device tree.
+Yes.
 
-> Anyhow I compiled a zeus image using the old barebox version 2017.12.0 and bootchooser works again with zeus.
-> Interesting is that ubi fails too like in thud. So it seems as long as ubi fails state could be used or the other way around.
+> 
+> 2. Prevent manipulation of the saved environment in flash
+> --> Do not load any environment settings from flash, only use compiled in
+> default environment.
+> --> Remove / permanently disable "barebox,environment" node in device-tree?
+> --> Compile without CONFIG_OF_BAREBOX_DRIVERS?
 
-I don't think they are related.
+Disable CONFIG_ENV_HANDLING, that alone is sufficient.
 
-It would be best if you can try to reproduce this issue with upstream barebox.
-To do so without yocto:
+> 
+> 3. Prevent access to the barebox shell
+> --> CONFIG_CMD_LOGIN?
+> --> CONFIG_SHELL_NONE?
 
-  git clone https://git.pengutronix.de/git/barebox
-  cd barebox
-  cp $your_barebox_config_in_yocto .config
-  make -j$(nproc) CROSS_COMPILE=/path/to/your/yocto/toolchain/bin/arm-$your_vendor-linux-gnueabihf- ARCH=arm
+I wouldn't trust CONFIG_CMD_LOGIN that much. If you do, at least make
+sure to use a safe hash function for the password, i.e. not the default
+md5.
+Disabling the shell entirely with CONFIG_SHELL_NONE is the best you can
+do. This also forces you to program your boot process in C which helps
+you to get a well defined boot without diving into potentially unsafe
+shell commands.
 
-under images/ you will have the barebox images. You can get that onto your
-device using a SD-Card, imx-usb-loader, tftp ... etc.
+To state the obvious, you have to enable HAB support, sign your barebox
+images and burn the necessary fuses to forbid loading unsigned images.
 
-If you want to do it in Yocto, there are meta-ptx and meta-barebox that have
-more recent barebox versions.
-
-Cheers
-Ahmad
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
