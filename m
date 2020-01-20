@@ -1,12 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1irgcq-0001wp-BA
- for barebox@lists.infradead.org; Wed, 15 Jan 2020 11:14:20 +0000
+ id 1itYtM-0002z2-LG
+ for barebox@lists.infradead.org; Mon, 20 Jan 2020 15:23:07 +0000
+References: <r276.1579090214262888471.6UJY@lists.yoctoproject.org>
+ <1579093362.13056.13.camel@pengutronix.de>
+ <DB8PR03MB54983C09B221B210D29A26AAFE370@DB8PR03MB5498.eurprd03.prod.outlook.com>
+ <45b34e63-a9fd-2295-311c-393bf49fdf93@pengutronix.de>
+ <DB8PR03MB549847FD100DF7192459527FFE370@DB8PR03MB5498.eurprd03.prod.outlook.com>
+ <f451a45a-a4bc-f285-0614-001cb3a57405@pengutronix.de>
+ <AM6PR03MB54938204A7FDEB6C5E93A749FE360@AM6PR03MB5493.eurprd03.prod.outlook.com>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 15 Jan 2020 12:14:09 +0100
-Message-Id: <20200115111409.24129-1-a.fatoum@pengutronix.de>
+Message-ID: <cd5008fe-b93f-92c6-8f97-6f7adce32f0e@pengutronix.de>
+Date: Mon, 20 Jan 2020 16:23:02 +0100
 MIME-Version: 1.0
+In-Reply-To: <AM6PR03MB54938204A7FDEB6C5E93A749FE360@AM6PR03MB5493.eurprd03.prod.outlook.com>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,61 +28,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Revert "clocksource: ARMv8 timer can only be built on ARMv8"
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [yocto] #yocto bootchooser: Cannot get state 'state'
+To: Hans-Ulrich Schlieben <hu.schlieben@codewrights.de>, Enrico Joerns <ejo@pengutronix.de>, "yocto@lists.yoctoproject.org" <yocto@lists.yoctoproject.org>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-This reverts commit 33ec8cb5872617fa95aea08d9f7f2b684d95b6de,
-so that barebox can once again match against "arm,armv7-timer"
-compatibles. The reverted commit restricted the timer to CPU_V8,
-because in i.MX multi-image configuration with MACH_SCB9328 set,
-we can have both CPU_32v7 and CPU_32v4T in the same build.
+Hello,
 
-To avoid this issue properly, force use of -march=armv7-a for
-non-CONFIG_CPU_V8 targets. This is acceptable as we don't expect
-non-ARMv7 device trees to have the architected arm,armv7-timer.
+On 1/16/20 4:09 PM, Hans-Ulrich Schlieben wrote:
+> Hi Ahmad,
+> 
+> Thanks to your Mail I tested with barebox_2017.12.0-phy6.bb (thud used barebox_2017.12.0-phy4.bb) and this works in zeus too. 
+> 
+>> According to the state command output under thud, your state is stored on the EEPROM, not the NAND. Look for update-eeprom in your device tree.
+>> There should also be an /dev/eeprom0.update-eeprom in barebox.
+> That seems right, when working the eeprom is written to on each boot.
+> But I could not find any references to *eep* inside barebox in any layer.
 
-Suggested-by: Lucas Stach <l.stach@pengutronix.de>
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- drivers/clocksource/Kconfig  | 2 +-
- drivers/clocksource/Makefile | 5 ++++-
- 2 files changed, 5 insertions(+), 2 deletions(-)
+Does it come from the phytec git directly? Upstream barebox has this:
+https://git.pengutronix.de/cgit/barebox/tree/arch/arm/dts/imx6qdl-phytec-state.dtsi?h=next
 
-diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-index 44a6cef6fbae..43c5bfc9736a 100644
---- a/drivers/clocksource/Kconfig
-+++ b/drivers/clocksource/Kconfig
-@@ -73,7 +73,7 @@ config CLOCKSOURCE_ATMEL_PIT
- config CLOCKSOURCE_ARMV8_TIMER
- 	bool
- 	default y
--	depends on ARM && CPU_V8
-+	depends on ARM && (CPU_64v8 || CPU_V7)
- 
- config CLOCKSOURCE_ARM_GLOBAL_TIMER
- 	bool
-diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
-index f8ff83d60a46..8dbf91f323f3 100644
---- a/drivers/clocksource/Makefile
-+++ b/drivers/clocksource/Makefile
-@@ -12,8 +12,11 @@ obj-$(CONFIG_CLOCKSOURCE_UEMD)    += uemd.o
- obj-$(CONFIG_CLOCKSOURCE_ROCKCHIP)+= rk_timer.o
- obj-$(CONFIG_CLOCKSOURCE_ATMEL_PIT) += timer-atmel-pit.o
- obj-$(CONFIG_CLOCKSOURCE_ARMV8_TIMER) += armv8-timer.o
-+ifneq ($(CONFIG_CPU_V8),y)
-+CFLAGS_armv8-timer.o := -march=armv7-a
-+endif
- obj-$(CONFIG_CLOCKSOURCE_ARM_GLOBAL_TIMER) += arm_global_timer.o
- obj-$(CONFIG_CLOCKSOURCE_IMX_GPT) += timer-imx-gpt.o
- obj-$(CONFIG_CLOCKSOURCE_DW_APB_TIMER) += dw_apb_timer.o
- obj-$(CONFIG_CLOCKSOURCE_TI_DM) += timer-ti-dm.o
--obj-$(CONFIG_CLOCKSOURCE_TI_32K) += timer-ti-32k.o
-\ No newline at end of file
-+obj-$(CONFIG_CLOCKSOURCE_TI_32K) += timer-ti-32k.o
+I would imagine, yours does to. You can check in the yocto build directory.
+(If you have rm_work enabled, you might need RM_WORK_EXCLUDE += "your-barebox-recipe"
+in your local.conf)
+
+Also try of_dump /state inside of barebox to see the device tree node.
+
+The reason, you haven't found it in the deploy/ device tree is that barebox modifies
+the kernel device tree on loading and adds the state nodes to it.
+
+>> if not, try executing the drvinfo command and see if the driver has probed the EEPROM.
+>>>> Looks like the state node is missing in your device tree.
+
+Do you have the state driver enabled? drvinfo should tell you that.
+
+Cheers
+Ahmad
+
 -- 
-2.25.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
