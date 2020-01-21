@@ -1,19 +1,25 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-db3eur04on0708.outbound.protection.outlook.com
+ ([2a01:111:f400:fe0c::708]
+ helo=EUR04-DB3-obe.outbound.protection.outlook.com)
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1itte2-0004IG-Fw
- for barebox@lists.infradead.org; Tue, 21 Jan 2020 13:32:41 +0000
-Date: Tue, 21 Jan 2020 14:32:34 +0100
-From: Michael Grzeschik <mgr@pengutronix.de>
-Message-ID: <20200121133234.2jjfukr44glptil4@pengutronix.de>
-References: <20191220143232.28354-10-s.hauer@pengutronix.de>
- <20200114132112.4119-1-jmaselbas@kalray.eu>
- <20200114142704.3t7vra5wlrzivi3n@pengutronix.de>
- <20200114171226.evt4nvuxe7gdc5bb@tellis.lin.mbt.kalray.eu>
- <20200116065027.psohiqog4awxye4h@pengutronix.de>
- <20200116172508.eqeomvadqvjl5nvj@tellis.lin.mbt.kalray.eu>
+ id 1ityG9-0005RI-T0
+ for barebox@lists.infradead.org; Tue, 21 Jan 2020 18:28:21 +0000
+From: Hans-Ulrich Schlieben <hu.schlieben@codewrights.de>
+Date: Tue, 21 Jan 2020 18:28:15 +0000
+Message-ID: <DB8PR03MB54985379C7F9387F160929E7FE0D0@DB8PR03MB5498.eurprd03.prod.outlook.com>
+References: <r276.1579090214262888471.6UJY@lists.yoctoproject.org>
+ <1579093362.13056.13.camel@pengutronix.de>
+ <DB8PR03MB54983C09B221B210D29A26AAFE370@DB8PR03MB5498.eurprd03.prod.outlook.com>
+ <45b34e63-a9fd-2295-311c-393bf49fdf93@pengutronix.de>
+ <DB8PR03MB549847FD100DF7192459527FFE370@DB8PR03MB5498.eurprd03.prod.outlook.com>
+ <f451a45a-a4bc-f285-0614-001cb3a57405@pengutronix.de>
+ <1579099664.13056.29.camel@pengutronix.de>
+ <AM6PR03MB54939235100D4D6E455AF4C1FE360@AM6PR03MB5493.eurprd03.prod.outlook.com>
+ <1c275d4d-cf23-caf5-072e-2517080950c1@pengutronix.de>
+In-Reply-To: <1c275d4d-cf23-caf5-072e-2517080950c1@pengutronix.de>
+Content-Language: en-US
 MIME-Version: 1.0
-In-Reply-To: <20200116172508.eqeomvadqvjl5nvj@tellis.lin.mbt.kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,82 +28,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============2223382404050430163=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC PATCH 0/7] usb: dwc2 host driver
-To: Jules Maselbas <jmaselbas@kalray.eu>
-Cc: Barebox List <barebox@lists.infradead.org>, Matthias Mann <m.mann@arkona-technologies.de>
+Subject: RE: [yocto] #yocto bootchooser: Cannot get state 'state'
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>, Enrico Joerns <ejo@pengutronix.de>
+Cc: "yocto@lists.yoctoproject.org" <yocto@lists.yoctoproject.org>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
+Hi Ahmad, 
 
---===============2223382404050430163==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="z5vlp7dbtfuu5f2p"
-Content-Disposition: inline
+>   git clone https://eur04.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.pengutronix.de%2Fgit%2Fbarebox&amp;data=01%7C01%7Chu.schlieben%40codewrights.de%7C5fdd291346554b1d5e3d08d79dbdda2b%7C0974af9b352b437cb606e9f242c0c227%7C0&amp;sdata=L8WAZYdcm0kjTNZG8OFnedXXyG3DHyIHx1r4gh%2B%2FC%2BI%3D&amp;reserved=0
+>   cd barebox
+>   cp $your_barebox_config_in_yocto .config
+>   make -j$(nproc) CROSS_COMPILE=/path/to/your/yocto/toolchain/bin/arm-$your_vendor-linux-gnueabihf- ARCH=arm
 
+I tried to build the barebox sources but got the following error:
+$ make -j$(nproc) CROSS_COMPILE=/path/to/your/yocto/toolchain/bin/arm-$your_vendor-linux-gnueabihf- ARCH=arm
+make: /path/to/your/yocto/toolchain/bin/arm--linux-gnueabihf-gcc: Kommando nicht gefunden
+  LEX     scripts/kconfig/lexer.lex.c
+/bin/sh: 1: flex: not found
+make[2]: *** [scripts/Makefile.lib:194: scripts/kconfig/lexer.lex.c] Fehler 127
+make[2]: *** Es wird auf noch nicht beendete Prozesse gewartet....
+  YACC    scripts/kconfig/parser.tab.h
+/bin/sh: 1: bison: not found
+make[2]: *** [scripts/Makefile.lib:208: scripts/kconfig/parser.tab.h] Fehler 127
+make[1]: *** [/opt/apps/zeus/barebox/barebox/Makefile:422: syncconfig] Fehler 2
+make: *** [Makefile:463: include/config/auto.conf.cmd] Fehler 2
 
---z5vlp7dbtfuu5f2p
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Is the .config file wrong? I copied it from the barebox folder where I built barebox 2017 version.
 
-Hi Jules,
+ 
+> under images/ you will have the barebox images. You can get that onto your device using a SD-Card, imx-usb-loader, tftp ... etc.
+When the build succeeds where or how to put the image on the sdcard?
+By the way, which image is it there a lots of images in the ./image folder and there is none named imx6qdl? There are some named imx6dl and one imx6q.
 
-On Thu, Jan 16, 2020 at 06:25:08PM +0100, Jules Maselbas wrote:
-> On Thu, Jan 16, 2020 at 07:50:27AM +0100, Sascha Hauer wrote:
-> >=20
-> > Well, USB gadget support would be a strong argument for your version ;)
-> I am going to send a new version for the host driver alongside the gadget
-> support. I've made few cleanup (in both host and gadget driver). Although
-> there is still some stub functions in the gadget driver, I think is this
-> a good start.
+> 
+> If you want to do it in Yocto, there are meta-ptx and meta-barebox that have more recent barebox versions.
+Tomorrow I will try too, to build the upstream version using yocto.
 
-I did not get this conversation and also started the gadget support on
-dwc2. My target machine is stm32, so my work includes also the internal
-stm32 phy and some regulators, to get this done. I could rework this on
-top of your patches, if you send them on the list.
+Thank you so much.
 
-Regards,
-Michael
+Best Regards
 
---=20
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
---z5vlp7dbtfuu5f2p
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEElXvEUs6VPX6mDPT8C+njFXoeLGQFAl4m/W8ACgkQC+njFXoe
-LGRrGQ/+KTH13VXTTFW8cMy/C1juNZXR7+cGBg46frKNagqHh4EceOg+xDO9b/Z9
-lSnZqqR9Bkwzj/2ZMD5HQsv66R6sufqWR1g/x10ds3mpMGn93XLyMvm8AIATMIuC
-iTXN67Cnhpf2Hpstlkc5wxig9fVPP3tcgBihTXOk4Li5C9bEowYogkyY/FVOA4x1
-Riuhb/r5t5JrY4h3fTF7t86Vb2wttbwUnU8TBoRKbXcRKBxErhd7so+hCzO5SLDC
-ma23FhaMg5G4vKdka3FTL1/WVCg13yd9V+gI5XsvXlMLvwBFq7acuBVVp0PWsNwi
-0EVo1JskPQaxTFcV7/T9goCVBAiZ4NG4njDEl4U0ZAI7Z38HakghF7t/IWnZmbTN
-0vYgnXSrzk0LHsz2KOc0aXgjkoazG1M/mKT0qurLtJu4dKz5sNqN2gSVDe54Pg7T
-Ce8CzoM08SeulfQrMetCrO4Px0Idf8b0K9WBSUdCKpKv5xeS7AReMumbAdWRGmI7
-45jKqlc5pRwc317DJ1uNu92VDLtdsmk/s5CxBch0UgFavbmJTmxRM9Wk5acPbYAN
-4zs4hS7jWBIOFTwi8uzZAZDzkulkgyGNw4cEG++xXZVvYhcSqAgm1Y+/59eERA5s
-ucbxeBLW403wWIZ2ZMMtKjWCzN2vybpuTMUXGtEXtnUAIlfH0rc=
-=yXLb
------END PGP SIGNATURE-----
-
---z5vlp7dbtfuu5f2p--
-
-
---===============2223382404050430163==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
+hu
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============2223382404050430163==--
