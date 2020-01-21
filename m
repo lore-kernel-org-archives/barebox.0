@@ -1,21 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mailout11.rmx.de ([94.199.88.76])
+Received: from mailout05.rmx.de ([94.199.90.90])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1itrxf-00032X-E2
- for barebox@lists.infradead.org; Tue, 21 Jan 2020 11:44:52 +0000
+ id 1itrxl-000333-9C
+ for barebox@lists.infradead.org; Tue, 21 Jan 2020 11:44:57 +0000
 Received: from kdin01.retarus.com (unknown [172.19.17.48])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mailout11.rmx.de (Postfix) with ESMTPS id 4826CH2tvPz3yw9
- for <barebox@lists.infradead.org>; Tue, 21 Jan 2020 12:44:43 +0100 (CET)
+ by mailout05.rmx.de (Postfix) with ESMTPS id 4826CQ1p2Jz9tMl
+ for <barebox@lists.infradead.org>; Tue, 21 Jan 2020 12:44:50 +0100 (CET)
 Received: from ppmail.arri.de (unknown [217.111.95.7])
  (using TLSv1 with cipher AES128-SHA (128/128 bits))
  (No client certificate requested)
- by kdin01.retarus.com (Postfix) with ESMTPS id 4826C83zkkz2xN4
- for <barebox@lists.infradead.org>; Tue, 21 Jan 2020 12:44:36 +0100 (CET)
+ by kdin01.retarus.com (Postfix) with ESMTPS id 4826CH30jBz2yvR
+ for <barebox@lists.infradead.org>; Tue, 21 Jan 2020 12:44:43 +0100 (CET)
 From: Christian Eggers <ceggers@arri.de>
-Date: Tue, 21 Jan 2020 12:44:19 +0100
-Message-ID: <20200121114421.24401-1-ceggers@arri.de>
+Date: Tue, 21 Jan 2020 12:44:20 +0100
+Message-ID: <20200121114421.24401-2-ceggers@arri.de>
+In-Reply-To: <20200121114421.24401-1-ceggers@arri.de>
+References: <20200121114421.24401-1-ceggers@arri.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -29,29 +31,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] watchdog: Select CONFIG_PARAMETER
+Subject: [PATCH 2/3] usb: otg: Select CONFIG_PARAMETER
 To: barebox@lists.infradead.org
 Cc: Christian Eggers <ceggers@arri.de>, ceggers@gmx.de
 
-Without CONFIG_PARAMETER, watchdog_register() will always fail.
+Without CONFIG_PARAMETER, usb_register_otg_device() will always fail.
 
 Signed-off-by: Christian Eggers <ceggers@arri.de>
 ---
- drivers/watchdog/Kconfig | 1 +
+ drivers/usb/otg/Kconfig | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-index 45dd41a2a..34b7fea39 100644
---- a/drivers/watchdog/Kconfig
-+++ b/drivers/watchdog/Kconfig
-@@ -4,6 +4,7 @@ config WATCHDOG_IMX_RESET_SOURCE
+diff --git a/drivers/usb/otg/Kconfig b/drivers/usb/otg/Kconfig
+index 2c094452b..20b4d7f8c 100644
+--- a/drivers/usb/otg/Kconfig
++++ b/drivers/usb/otg/Kconfig
+@@ -9,4 +9,5 @@ config USB_TWL4030
  
- menuconfig WATCHDOG
- 	bool "Watchdog support"
+ config USB_OTGDEV
+ 	bool
 +	select PARAMETER
- 	help
- 	  Many platforms support a watchdog to keep track of a working machine.
- 	  This framework provides routines to handle these watchdogs.
+ 
 -- 
 Christian Eggers
 Embedded software developer
