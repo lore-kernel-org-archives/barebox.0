@@ -1,21 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mailout01.rmx.de ([94.199.90.91])
+Received: from mailout07.rmx.de ([94.199.90.95])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iubTw-0000h9-CZ
- for barebox@lists.infradead.org; Thu, 23 Jan 2020 12:21:10 +0000
-Received: from kdin02.retarus.com (kdin02.dmz1.retloc [172.19.17.49])
+ id 1itrxn-00034q-Oh
+ for barebox@lists.infradead.org; Tue, 21 Jan 2020 11:45:01 +0000
+Received: from kdin01.retarus.com (unknown [172.19.17.48])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mailout01.rmx.de (Postfix) with ESMTPS id 483LwJ58Kjz2SYLy
- for <barebox@lists.infradead.org>; Thu, 23 Jan 2020 13:21:04 +0100 (CET)
+ by mailout07.rmx.de (Postfix) with ESMTPS id 4826CT0VZszBwjv
+ for <barebox@lists.infradead.org>; Tue, 21 Jan 2020 12:44:53 +0100 (CET)
 Received: from ppmail.arri.de (unknown [217.111.95.7])
  (using TLSv1 with cipher AES128-SHA (128/128 bits))
  (No client certificate requested)
- by kdin02.retarus.com (Postfix) with ESMTPS id 483LwH74RSz2TRlK
- for <barebox@lists.infradead.org>; Thu, 23 Jan 2020 13:21:03 +0100 (CET)
+ by kdin01.retarus.com (Postfix) with ESMTPS id 4826CQ1zQfz2xgd
+ for <barebox@lists.infradead.org>; Tue, 21 Jan 2020 12:44:50 +0100 (CET)
 From: Christian Eggers <ceggers@arri.de>
-Date: Thu, 23 Jan 2020 13:20:41 +0100
-Message-ID: <20200123122045.25507-1-ceggers@arri.de>
+Date: Tue, 21 Jan 2020 12:44:21 +0100
+Message-ID: <20200121114421.24401-3-ceggers@arri.de>
+In-Reply-To: <20200121114421.24401-1-ceggers@arri.de>
+References: <20200121114421.24401-1-ceggers@arri.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -29,57 +31,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] state: remove param member from struct state_string
+Subject: [PATCH 3/3] globalvar: Select CONFIG_PARAMETER
 To: barebox@lists.infradead.org
 Cc: Christian Eggers <ceggers@arri.de>, ceggers@gmx.de
 
-After adding the parameter, the pointer isn't required anymore.
+Without CONFIG_PARAMETER, __nvar_add() will always fail.
 
 Signed-off-by: Christian Eggers <ceggers@arri.de>
 ---
- common/state/state.h           | 1 -
- common/state/state_variables.c | 7 ++++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ common/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/common/state/state.h b/common/state/state.h
-index 912d6d484..40450feff 100644
---- a/common/state/state.h
-+++ b/common/state/state.h
-@@ -191,7 +191,6 @@ struct state_mac {
-  */
- struct state_string {
- 	struct state_variable var;
--	struct param_d *param;
- 	char *value;
- 	const char *value_default;
- 	char raw[];
-diff --git a/common/state/state_variables.c b/common/state/state_variables.c
-index 6a00c8220..003542307 100644
---- a/common/state/state_variables.c
-+++ b/common/state/state_variables.c
-@@ -413,6 +413,7 @@ static struct state_variable *state_string_create(struct state *state,
- {
- 	struct state_string *string;
- 	uint32_t start_size[2];
-+	struct param_d *param;
- 	int ret;
- 
- 	ret = of_property_read_u32_array(node, "reg", start_size,
-@@ -432,11 +433,11 @@ static struct state_variable *state_string_create(struct state *state,
- 	string->var.raw = &string->raw;
- 	string->var.state = state;
- 
--	string->param = dev_add_param_string(&state->dev, name,
-+	param = dev_add_param_string(&state->dev, name,
- 					     state_string_set, state_string_get,
- 					     &string->value, &string->var);
--	if (IS_ERR(string->param)) {
--		ret = PTR_ERR(string->param);
-+	if (IS_ERR(param)) {
-+		ret = PTR_ERR(param);
- 		goto out;
- 	}
- 
+diff --git a/common/Kconfig b/common/Kconfig
+index 60237d305..c2ec995f1 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -166,6 +166,7 @@ config GLOBALVAR
+ 	bool "global environment variables support"
+ 	default y if !SHELL_NONE
+ 	select FNMATCH
++	select PARAMETER
+ 	help
+ 	  Global environment variables begin with "global.". Unlike normal
+ 	  shell variables they have the same values in all contexts. Global
 -- 
 Christian Eggers
 Embedded software developer
