@@ -1,11 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([78.46.208.201])
+Received: from mailout01.rmx.de ([94.199.90.91])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1itSsn-000698-6e
- for barebox@lists.infradead.org; Mon, 20 Jan 2020 08:58:11 +0000
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Mon, 20 Jan 2020 09:56:44 +0100
-Message-Id: <20200120085647.19784-1-r.czerwinski@pengutronix.de>
+ id 1itr2h-0006AD-Ua
+ for barebox@lists.infradead.org; Tue, 21 Jan 2020 10:46:02 +0000
+Received: from kdin01.retarus.com (kdin01.dmz1.retloc [172.19.17.48])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mailout01.rmx.de (Postfix) with ESMTPS id 4824vK3G3Mz2SWQW
+ for <barebox@lists.infradead.org>; Tue, 21 Jan 2020 11:45:49 +0100 (CET)
+Received: from ppmail.arri.de (unknown [217.111.95.7])
+ (using TLSv1 with cipher AES128-SHA (128/128 bits))
+ (No client certificate requested)
+ by kdin01.retarus.com (Postfix) with ESMTPS id 4824vG2lhRz2xng
+ for <barebox@lists.infradead.org>; Tue, 21 Jan 2020 11:45:46 +0100 (CET)
+From: Christian Eggers <ceggers@arri.de>
+Date: Tue, 21 Jan 2020 11:45:27 +0100
+Message-ID: <20200121104527.14109-1-ceggers@arri.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,108 +29,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/5] optee: move optee_verify_header() to common
+Subject: [PATCH] param: Make enum param_tristate always visible
 To: barebox@lists.infradead.org
-Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Cc: Christian Eggers <ceggers@arri.de>, ceggers@gmx.de
 
-Subsequent patches will use this to verify the header in the PBL, move
-it to common to make it potentially available for both.
+When disabling CONFIG_SHELL_HUSH, also CONFIG_PARAMETER may be disabled.
+In this case, the definition "enum param_tristate" is not reachable from
+watchdog.h.
 
-Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+I also considered moving almost everything in watchdog.h inside the
+CONFIG_WATCHDOG guard. But this doesn't work for me because
+drivers/watchdog/imxwd.c can also be built without CONFIG_WATCHDOG.
+
+Signed-off-by: Christian Eggers <ceggers@arri.de>
 ---
-v2: fix the comments from Sascha.
+ @Sascha: I've asked my IT department to stop modifiying my patch
+emails. I hope the mails are ok now.
 
- arch/arm/lib32/bootm.c | 12 +++---------
- common/Makefile        |  1 +
- common/optee.c         | 19 +++++++++++++++++++
- include/tee/optee.h    |  5 +++++
- 4 files changed, 28 insertions(+), 9 deletions(-)
- create mode 100644 common/optee.c
+ include/param.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/lib32/bootm.c b/arch/arm/lib32/bootm.c
-index 180624445d..d64e705c40 100644
---- a/arch/arm/lib32/bootm.c
-+++ b/arch/arm/lib32/bootm.c
-@@ -137,16 +137,10 @@ static int get_kernel_addresses(size_t image_size,
- static int optee_verify_header_request_region(struct image_data *data, struct optee_header *hdr)
- {
- 	int ret = 0;
--	if (hdr->magic != OPTEE_MAGIC) {
--		pr_err("Invalid header magic 0x%08x, expected 0x%08x\n",
--		       hdr->magic, OPTEE_MAGIC);
--		return -EINVAL;
--	}
- 
--	if (hdr->arch != OPTEE_ARCH_ARM32 || hdr->init_load_addr_hi) {
--		pr_err("Only 32bit supported\n");
--		return -EINVAL;
--	}
-+	ret = optee_verify_header(hdr);
-+	if (ret < 0)
-+		return ret;
- 
- 	data->tee_res = request_sdram_region("TEE", hdr->init_load_addr_lo, hdr->init_size);
- 	if (!data->tee_res) {
-diff --git a/common/Makefile b/common/Makefile
-index 10960169f9..fbdd74a9fd 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -66,6 +66,7 @@ obj-$(CONFIG_BAREBOX_UPDATE_IMX_NAND_FCB) += imx-bbu-nand-fcb.o
- obj-$(CONFIG_BOOT)		+= boot.o
- obj-$(CONFIG_SERIAL_DEV_BUS)	+= serdev.o
- obj-$(CONFIG_USBGADGET_START)	+= usbgadget.o
-+obj-$(CONFIG_BOOTM_OPTEE)	+= optee.o
- 
- ifdef CONFIG_PASSWORD
- 
-diff --git a/common/optee.c b/common/optee.c
-new file mode 100644
-index 0000000000..9cbed0a520
---- /dev/null
-+++ b/common/optee.c
-@@ -0,0 +1,19 @@
-+#include <tee/optee.h>
-+#include <printk.h>
-+#include <asm-generic/errno.h>
-+
-+int optee_verify_header (struct optee_header *hdr)
-+{
-+	if (hdr->magic != OPTEE_MAGIC) {
-+		pr_err("Invalid header magic 0x%08x, expected 0x%08x\n",
-+			   hdr->magic, OPTEE_MAGIC);
-+		return -EINVAL;
-+	}
-+
-+	if (hdr->arch != OPTEE_ARCH_ARM32 || hdr->init_load_addr_hi) {
-+		pr_err("Only 32bit supported\n");
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-diff --git a/include/tee/optee.h b/include/tee/optee.h
-index 8cfe06d889..9fb27fcec0 100644
---- a/include/tee/optee.h
-+++ b/include/tee/optee.h
-@@ -10,6 +10,9 @@
- #ifndef _OPTEE_H
- #define _OPTEE_H
- 
-+#include <types.h>
-+#include <asm-generic/errno.h>
-+
- #define OPTEE_MAGIC             0x4554504f
- #define OPTEE_VERSION           1
- #define OPTEE_ARCH_ARM32        0
-@@ -27,4 +30,6 @@ struct optee_header {
- 	uint32_t paged_size;
+diff --git a/include/param.h b/include/param.h
+index d75f50ea3..f1166eb28 100644
+--- a/include/param.h
++++ b/include/param.h
+@@ -37,6 +37,8 @@ struct param_d {
+ 	enum param_type type;
  };
  
-+int optee_verify_header (struct optee_header *hdr);
++enum param_tristate { PARAM_TRISTATE_UNKNOWN, PARAM_TRISTATE_TRUE, PARAM_TRISTATE_FALSE };
 +
- #endif /* _OPTEE_H */
+ #ifdef CONFIG_PARAMETER
+ const char *get_param_type(struct param_d *param);
+ const char *dev_get_param(struct device_d *dev, const char *name);
+@@ -63,8 +65,6 @@ struct param_d *dev_add_param_enum(struct device_d *dev, const char *name,
+ 		int (*get)(struct param_d *p, void *priv),
+ 		int *value, const char * const *names, int max, void *priv);
+ 
+-enum param_tristate { PARAM_TRISTATE_UNKNOWN, PARAM_TRISTATE_TRUE, PARAM_TRISTATE_FALSE };
+-
+ struct param_d *dev_add_param_tristate(struct device_d *dev, const char *name,
+ 		int (*set)(struct param_d *p, void *priv),
+ 		int (*get)(struct param_d *p, void *priv),
 -- 
-2.25.0
+2.16.4
 
 
 _______________________________________________
