@@ -1,16 +1,24 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from zimbra2.kalray.eu ([92.103.151.219])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1itZbq-0003Cr-V8
- for barebox@lists.infradead.org; Mon, 20 Jan 2020 16:09:08 +0000
-Date: Mon, 20 Jan 2020 17:08:56 +0100 (CET)
-From: =?utf-8?Q?Cl=C3=A9ment?= Leger <cleger@kalray.eu>
-Message-ID: <1043390847.13051146.1579536536042.JavaMail.zimbra@kalray.eu>
-In-Reply-To: <f34584e3-f756-f756-f75f-39813587f40d@pengutronix.de>
-References: <20200115102650.11739-1-cleger@kalray.eu>
- <20200115102650.11739-6-cleger@kalray.eu>
- <f34584e3-f756-f756-f75f-39813587f40d@pengutronix.de>
+ id 1itzzG-0002XX-Kb
+ for barebox@lists.infradead.org; Tue, 21 Jan 2020 20:19:02 +0000
+References: <r276.1579090214262888471.6UJY@lists.yoctoproject.org>
+ <1579093362.13056.13.camel@pengutronix.de>
+ <DB8PR03MB54983C09B221B210D29A26AAFE370@DB8PR03MB5498.eurprd03.prod.outlook.com>
+ <45b34e63-a9fd-2295-311c-393bf49fdf93@pengutronix.de>
+ <DB8PR03MB549847FD100DF7192459527FFE370@DB8PR03MB5498.eurprd03.prod.outlook.com>
+ <f451a45a-a4bc-f285-0614-001cb3a57405@pengutronix.de>
+ <1579099664.13056.29.camel@pengutronix.de>
+ <AM6PR03MB54939235100D4D6E455AF4C1FE360@AM6PR03MB5493.eurprd03.prod.outlook.com>
+ <1c275d4d-cf23-caf5-072e-2517080950c1@pengutronix.de>
+ <DB8PR03MB54985379C7F9387F160929E7FE0D0@DB8PR03MB5498.eurprd03.prod.outlook.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <d5e84c4e-caa0-9685-207f-0964bbc2dada@pengutronix.de>
+Date: Tue, 21 Jan 2020 21:18:53 +0100
 MIME-Version: 1.0
+In-Reply-To: <DB8PR03MB54985379C7F9387F160929E7FE0D0@DB8PR03MB5498.eurprd03.prod.outlook.com>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,133 +27,73 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/5] watchdog: k1c: Add k1c watchdog support
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [yocto] #yocto bootchooser: Cannot get state 'state'
+To: Hans-Ulrich Schlieben <hu.schlieben@codewrights.de>, Enrico Joerns <ejo@pengutronix.de>
+Cc: "yocto@lists.yoctoproject.org" <yocto@lists.yoctoproject.org>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-SGkgQWhtYWQsCgotLS0tLSBPbiAyMCBKYW4sIDIwMjAsIGF0IDE2OjEwLCBBaG1hZCBGYXRvdW0g
-YS5mYXRvdW1AcGVuZ3V0cm9uaXguZGUgd3JvdGU6Cgo+IE9uIDEvMTUvMjAgMTE6MjYgQU0sIENs
-ZW1lbnQgTGVnZXIgd3JvdGU6Cj4+IEFkZCBhIHdhdGNoZG9nIGZvciBrMWMgYXJjaGl0ZWN0dXJl
-IGJhc2VkIG9uIGNvcmUgd2F0Y2hkb2cuCj4+IAo+PiBTaWduZWQtb2ZmLWJ5OiBDbGVtZW50IExl
-Z2VyIDxjbGVnZXJAa2FscmF5LmV1Pgo+PiAtLS0KPj4gIGFyY2gvazFjL2NvbmZpZ3MvZ2VuZXJp
-Y19kZWZjb25maWcgfCAgIDMgKwo+PiAgZHJpdmVycy93YXRjaGRvZy9LY29uZmlnICAgICAgICAg
-ICB8ICAgNyArKysKPj4gIGRyaXZlcnMvd2F0Y2hkb2cvTWFrZWZpbGUgICAgICAgICAgfCAgIDEg
-Kwo+PiAgZHJpdmVycy93YXRjaGRvZy9rMWNfd2R0LmMgICAgICAgICB8IDEyNiArKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrCj4+ICA0IGZpbGVzIGNoYW5nZWQsIDEzNyBpbnNl
-cnRpb25zKCspCj4+ICBjcmVhdGUgbW9kZSAxMDA2NDQgZHJpdmVycy93YXRjaGRvZy9rMWNfd2R0
-LmMKPj4gCj4+IGRpZmYgLS1naXQgYS9hcmNoL2sxYy9jb25maWdzL2dlbmVyaWNfZGVmY29uZmln
-Cj4+IGIvYXJjaC9rMWMvY29uZmlncy9nZW5lcmljX2RlZmNvbmZpZwo+PiBpbmRleCAwODIxMDMw
-ZjYuLjZjOGQ2NzZkZiAxMDA2NDQKPj4gLS0tIGEvYXJjaC9rMWMvY29uZmlncy9nZW5lcmljX2Rl
-ZmNvbmZpZwo+PiArKysgYi9hcmNoL2sxYy9jb25maWdzL2dlbmVyaWNfZGVmY29uZmlnCj4+IEBA
-IC01LDYgKzUsOSBAQCBDT05GSUdfQ0xPQ0tTT1VSQ0VfSzFDPXkKPj4gIENPTkZJR19DTURfQ01Q
-PXkKPj4gIENPTkZJR19DTURfT0ZfRFVNUD15Cj4+ICBDT05GSUdfQ01EX1BPV0VST0ZGPXkKPj4g
-K0NPTkZJR19DTURfV0Q9eQo+PiAgQ09ORklHX0NPTlNPTEVfUkFUUD15Cj4+ICBDT05GSUdfRFJJ
-VkVSX1NFUklBTF9OUzE2NTUwPXkKPj4gIENPTkZJR19QSU5DVFJMX1NJTkdMRT15Cj4+ICtDT05G
-SUdfV0FUQ0hET0c9eQo+PiArQ09ORklHX1dBVENIRE9HX0sxQz15Cj4+IGRpZmYgLS1naXQgYS9k
-cml2ZXJzL3dhdGNoZG9nL0tjb25maWcgYi9kcml2ZXJzL3dhdGNoZG9nL0tjb25maWcKPj4gaW5k
-ZXggNDVkZDQxYTJhLi4xN2E4NTBkZTYgMTAwNjQ0Cj4+IC0tLSBhL2RyaXZlcnMvd2F0Y2hkb2cv
-S2NvbmZpZwo+PiArKysgYi9kcml2ZXJzL3dhdGNoZG9nL0tjb25maWcKPj4gQEAgLTcwLDYgKzcw
-LDEzIEBAIGNvbmZpZyBXQVRDSERPR19PUklPTgo+PiAgCWhlbHAKPj4gIAkgIEFkZCBzdXBwb3J0
-IGZvciB3YXRjaGRvZyBvbiB0aGUgTWFydmFsbCBBcm1hZGEgWFAKPj4gIAo+PiArY29uZmlnIFdB
-VENIRE9HX0sxQwo+PiArCWJvb2wgIksxQyBDb3JlIHdhdGNoZG9nIgo+PiArCXNlbGVjdCBSRVNF
-VF9DT05UUk9MTEVSCj4gCj4gVGhpcyBzZWVtcyBvbmx5IHVzZWQgZm9yIHN0cnVjdCByZXNldF9j
-b250cm9sICpyc3QsIHdoaWNoIHlvdQo+IGRvbid0IHVzZSBhbnl3aGVyZS4KCkluZGVlZC4KCj4g
-Cj4+ICsJZGVwZW5kcyBvbiBLMUMKPj4gKwloZWxwCj4+ICsJICBBZGQgc3VwcG9ydCBmb3IgdGhl
-IEsxQyBjb3JlIHdhdGNoZG9nLgo+PiArCj4+ICBjb25maWcgV0FUQ0hET0dfQkNNMjgzNQo+PiAg
-CWJvb2wgIldhdGNoZG9nIGZvciBCQ00yODN4IFNvQ3MiCj4+ICAJZGVwZW5kcyBvbiBBUkNIX0JD
-TTI4M1gKPj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvd2F0Y2hkb2cvTWFrZWZpbGUgYi9kcml2ZXJz
-L3dhdGNoZG9nL01ha2VmaWxlCj4+IGluZGV4IDYzZWZjMmE4Ny4uYmJmNWU4NzY3IDEwMDY0NAo+
-PiAtLS0gYS9kcml2ZXJzL3dhdGNoZG9nL01ha2VmaWxlCj4+ICsrKyBiL2RyaXZlcnMvd2F0Y2hk
-b2cvTWFrZWZpbGUKPj4gQEAgLTgsNiArOCw3IEBAIG9iai0kKENPTkZJR19XQVRDSERPR19EVykg
-Kz0gZHdfd2R0Lm8KPj4gIG9iai0kKENPTkZJR19XQVRDSERPR19KWjQ3NDApICs9IGp6NDc0MC5v
-Cj4+ICBvYmotJChDT05GSUdfV0FUQ0hET0dfSU1YX1JFU0VUX1NPVVJDRSkgKz0gaW14d2Qubwo+
-PiAgb2JqLSQoQ09ORklHX1dBVENIRE9HX0lNWCkgKz0gaW14d2Qubwo+PiArb2JqLSQoQ09ORklH
-X1dBVENIRE9HX0sxQykgKz0gazFjX3dkdC5vCj4+ICBvYmotJChDT05GSUdfV0FUQ0hET0dfT1JJ
-T04pICs9IG9yaW9uX3dkdC5vCj4+ICBvYmotJChDT05GSUdfQVJDSF9CQ00yODNYKSArPSBiY20y
-ODM1X3dkdC5vCj4+ICBvYmotJChDT05GSUdfUkFWRV9TUF9XQVRDSERPRykgKz0gcmF2ZS1zcC13
-ZHQubwo+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy93YXRjaGRvZy9rMWNfd2R0LmMgYi9kcml2ZXJz
-L3dhdGNoZG9nL2sxY193ZHQuYwo+PiBuZXcgZmlsZSBtb2RlIDEwMDY0NAo+PiBpbmRleCAwMDAw
-MDAwMDAuLjIzYjZjYmYzMwo+PiAtLS0gL2Rldi9udWxsCj4+ICsrKyBiL2RyaXZlcnMvd2F0Y2hk
-b2cvazFjX3dkdC5jCj4+IEBAIC0wLDAgKzEsMTI2IEBACj4+ICsvLyBTUERYLUxpY2Vuc2UtSWRl
-bnRpZmllcjogR1BMLTIuMC1vci1sYXRlcgo+PiArLyoKPj4gKyAqIENvcHlyaWdodCAoQykgMjAx
-OCBLYWxyYXkgSW5jLgo+PiArICovCj4+ICsKPj4gKyNpbmNsdWRlIDxjb21tb24uaD4KPj4gKyNp
-bmNsdWRlIDxpbml0Lmg+Cj4+ICsjaW5jbHVkZSA8aW8uaD4KPj4gKyNpbmNsdWRlIDxvZi5oPgo+
-PiArI2luY2x1ZGUgPHJlc3RhcnQuaD4KPj4gKyNpbmNsdWRlIDx3YXRjaGRvZy5oPgo+PiArCj4+
-ICsjaW5jbHVkZSA8bGludXgvY2xrLmg+Cj4+ICsjaW5jbHVkZSA8bGludXgvZXJyLmg+Cj4+ICsK
-Pj4gKyNpbmNsdWRlIDxhc20vc2ZyLmg+Cj4+ICsKPj4gKyNkZWZpbmUgdG9fZHdfd2R0KHdkZCkJ
-Y29udGFpbmVyX29mKHdkZCwgc3RydWN0IGR3X3dkdCwgd2RkKQo+IAo+IHVzZWQgbm8gd2hlcmUK
-ClllcwoKPiAKPj4gKwo+PiArc3RydWN0IGsxY193ZHQgewo+PiArCXVpbnQ2NF90IGNsa19yYXRl
-Owo+PiArCXN0cnVjdCB3YXRjaGRvZyB3ZGQ7Cj4+ICsJc3RydWN0IHJlc3RhcnRfaGFuZGxlciBy
-ZXN0YXJ0Owo+PiArCXN0cnVjdCByZXNldF9jb250cm9sICpyc3Q7Cj4+ICt9Owo+PiArCj4+ICtz
-dGF0aWMgdm9pZCBrMWNfd2F0Y2hkb2dfZGlzYWJsZSh2b2lkKQo+PiArewo+PiArCWsxY19zZnJf
-Y2xlYXJfYml0KEsxQ19TRlJfVENSLCBLMUNfU0ZSX1RDUl9XVUlfU0hJRlQpOwo+PiArCWsxY19z
-ZnJfY2xlYXJfYml0KEsxQ19TRlJfVENSLCBLMUNfU0ZSX1RDUl9XQ0VfU0hJRlQpOwo+PiArfQo+
-PiArCj4+ICtzdGF0aWMgaW50IGsxY193ZHRfc2V0X3RpbWVvdXQoc3RydWN0IHdhdGNoZG9nICp3
-ZGQsIHVuc2lnbmVkIGludCB0aW1lb3V0KQo+PiArewo+PiArCXN0cnVjdCBrMWNfd2R0ICp3ZHQg
-PSBjb250YWluZXJfb2Yod2RkLCBzdHJ1Y3QgazFjX3dkdCwgd2RkKTsKPj4gKwl1aW50NjRfdCBj
-eWNsZV90aW1lb3V0ID0gd2R0LT5jbGtfcmF0ZSAqIHRpbWVvdXQ7Cj4+ICsKPj4gKwkvKiBEaXNh
-YmxlIHdhdGNoZG9nICovCj4+ICsJaWYgKHRpbWVvdXQgPT0gMCkgewo+PiArCQlrMWNfd2F0Y2hk
-b2dfZGlzYWJsZSgpOwo+PiArCQlyZXR1cm4gMDsKPj4gKwl9Cj4+ICsKPj4gKwlrMWNfc2ZyX3Nl
-dChLMUNfU0ZSX1dEViwgY3ljbGVfdGltZW91dCk7Cj4+ICsJazFjX3Nmcl9zZXQoSzFDX1NGUl9X
-RFIsIDApOwo+PiArCj4+ICsJLyogU3RhcnQgd2F0Y2hkb2cgY291bnRpbmcgKi8KPj4gKwlrMWNf
-c2ZyX3NldF9iaXQoSzFDX1NGUl9UQ1IsIEsxQ19TRlJfVENSX1dVSV9TSElGVCk7Cj4+ICsJazFj
-X3Nmcl9zZXRfYml0KEsxQ19TRlJfVENSLCBLMUNfU0ZSX1RDUl9XQ0VfU0hJRlQpOwo+PiArCj4+
-ICsJcmV0dXJuIDA7Cj4+ICt9Cj4+ICsKPj4gK3N0YXRpYyB2b2lkIF9fbm9yZXR1cm4gazFjX3dk
-dF9yZXN0YXJ0X2hhbmRsZShzdHJ1Y3QgcmVzdGFydF9oYW5kbGVyICpyc3QpCj4+ICt7Cj4+ICsJ
-c3RydWN0IGsxY193ZHQgKmsxY193ZHQ7Cj4+ICsKPj4gKwlrMWNfd2R0ID0gY29udGFpbmVyX29m
-KHJzdCwgc3RydWN0IGsxY193ZHQsIHJlc3RhcnQpOwo+PiArCj4+ICsJazFjX3dkdC0+d2RkLnNl
-dF90aW1lb3V0KCZrMWNfd2R0LT53ZGQsIDEpOwo+IAo+IERvIHlvdSBkbyB0aGUgc2FtZSB1bmRl
-ciBMaW51eCBhcyB3ZWxsPyBUaGlzIG1lYW5zIHlvdSBjYW4ndCBkaWZmZXJlbnRpYXRlCj4gYmV0
-d2VlbiB3YXRjaGRvZyBhbmQgbm9ybWFsIHJlc2V0cy4KCkFncmVlZCwgb24gbGludXggd2UgZGlk
-IG5vdCBpbXBsZW1lbnRlZCBpdCBsaWtlIHRoYXQgYW5kIHlvdSBhcmUgcmlnaHQsIHRoZQpyZXNl
-dCBjYXVzZSB3aWxsIGJlIHRoZSBzYW1lLgpJIHRoaW5rIEkgc2hvdWxkIHJlbW92ZSB0aGlzIHJl
-c3RhcnQgaGFuZGxlciBwYXJ0IChTZWUgbXkgY29tbWVudCBiZWxvdykuIAoKPiAKPj4gKwo+PiAr
-CW1kZWxheSgxMDAwKTsKPj4gKwo+PiArCWhhbmcoKTsKPj4gK30KPj4gKwo+PiArc3RhdGljIGlu
-dCBjb3VudDsKPj4gKwo+PiArc3RhdGljIGludCBrMWNfd2R0X2Rydl9wcm9iZShzdHJ1Y3QgZGV2
-aWNlX2QgKmRldikKPj4gK3sKPj4gKwlzdHJ1Y3Qgd2F0Y2hkb2cgKndkZDsKPj4gKwlzdHJ1Y3Qg
-Y2xrICpjbGs7Cj4+ICsJc3RydWN0IGsxY193ZHQgKmsxY193ZHQ7Cj4+ICsJaW50IHJldDsKPj4g
-Kwo+PiArCWlmIChjb3VudCAhPSAwKSB7Cj4+ICsJCWRldl93YXJuKGRldiwgIlRyaWVkIHRvIHJl
-Z2lzdGVyIGNvcmUgd2F0Y2hkb2cgdHdpY2VcbiIpOwo+PiArCQlyZXR1cm4gLUVJTlZBTDsKPj4g
-Kwl9Cj4+ICsJY291bnQrKzsKPj4gKwo+PiArCWsxY193ZHQgPSB4emFsbG9jKHNpemVvZigqazFj
-X3dkdCkpOwo+PiArCWNsayA9IGNsa19nZXQoZGV2LCBOVUxMKTsKPj4gKwlpZiAoSVNfRVJSKGNs
-aykpCj4+ICsJCXJldHVybiBQVFJfRVJSKGNsayk7Cj4+ICsKPj4gKwlrMWNfd2R0LT5jbGtfcmF0
-ZSA9IGNsa19nZXRfcmF0ZShjbGspOwo+PiArCWNsa19wdXQoY2xrKTsKPj4gKwo+PiArCXdkZCA9
-ICZrMWNfd2R0LT53ZGQ7Cj4+ICsJd2RkLT5uYW1lID0gImsxY193ZHQiOwo+PiArCXdkZC0+aHdk
-ZXYgPSBkZXY7Cj4+ICsJd2RkLT5zZXRfdGltZW91dCA9IGsxY193ZHRfc2V0X3RpbWVvdXQ7Cj4+
-ICsKPj4gKwkvKiBCZSBzdXJlIHRoYXQgaW50ZXJydXB0IGlzIGRpc2FibGVkICovCj4+ICsJazFj
-X3Nmcl9jbGVhcl9iaXQoSzFDX1NGUl9UQ1IsIEsxQ19TRlJfVENSX1dJRV9TSElGVCk7Cj4+ICsK
-Pj4gKwlrMWNfd2F0Y2hkb2dfZGlzYWJsZSgpOwo+PiArCj4+ICsJcmV0ID0gd2F0Y2hkb2dfcmVn
-aXN0ZXIod2RkKTsKPj4gKwlpZiAocmV0KQo+PiArCQlyZXR1cm4gLUVJTlZBTDsKPj4gKwo+PiAr
-CWsxY193ZHQtPnJlc3RhcnQubmFtZSA9ICJrMWNfd2R0IjsKPj4gKwlrMWNfd2R0LT5yZXN0YXJ0
-LnByaW9yaXR5ID0gNTA7Cj4gCj4gTWF5YmUgYWRkIGEgY29tbWVudCBvbiB3aHkgeW91IHNldCBh
-IGxvd2VyIHRoYW4gZGVmYXVsdCBwcmlvcml0eT8KCkluZGVlZC4KV2UgYWN0dWFsbHkgaGF2ZSBh
-bm90aGVyIG1lYW4gb2YgcmVzZXR0aW5nIHNvIHRoaXMgaXMgbm90IHRoZSBwcmVmZXJyZWQKd2F5
-IHRvIHJlc3RhcnQuIEknbSBub3QgZXZlbiBzdXJlIGlmIEkgc2hvdWxkIGtlZXAgdGhlIHJlc3Rh
-cnQgaGFuZGxlci4KTWF5YmUgSSBzaG91bGQgbGVmdCBpdCBvdXQgYW5kIHVzZSB0aGUgcmVzZXQg
-cmVnaXN0ZXIuCgpUaGFua3MgZm9yIHlvdXIgcmV2aWV3CgpDbMOpbWVudAoKPiAKPj4gKwlrMWNf
-d2R0LT5yZXN0YXJ0LnJlc3RhcnQgPSBrMWNfd2R0X3Jlc3RhcnRfaGFuZGxlOwo+PiArCj4+ICsJ
-cmV0ID0gcmVzdGFydF9oYW5kbGVyX3JlZ2lzdGVyKCZrMWNfd2R0LT5yZXN0YXJ0KTsKPj4gKwlp
-ZiAocmV0KQo+PiArCQlkZXZfd2FybihkZXYsICJjYW5ub3QgcmVnaXN0ZXIgcmVzdGFydCBoYW5k
-bGVyXG4iKTsKPj4gKwo+PiArCXJldHVybiAwOwo+PiArCj4+ICt9Cj4+ICsKPj4gK3N0YXRpYyBz
-dHJ1Y3Qgb2ZfZGV2aWNlX2lkIGsxY193ZHRfb2ZfbWF0Y2hbXSA9IHsKPj4gKwl7IC5jb21wYXRp
-YmxlID0gImthbHJheSxrMWMtY29yZS13YXRjaGRvZyIsIH0sCj4+ICsJeyAvKiBzZW50aW5lbCAq
-LyB9Cj4+ICt9Owo+PiArCj4+ICtzdGF0aWMgc3RydWN0IGRyaXZlcl9kIGsxY193ZHRfZHJpdmVy
-ID0gewo+PiArCS5uYW1lCQk9ICJrMWMtd2R0IiwKPj4gKwkucHJvYmUJCT0gazFjX3dkdF9kcnZf
-cHJvYmUsCj4+ICsJLm9mX2NvbXBhdGlibGUJPSBEUlZfT0ZfQ09NUEFUKGsxY193ZHRfb2ZfbWF0
-Y2gpLAo+PiArfTsKPj4gK2RldmljZV9wbGF0Zm9ybV9kcml2ZXIoazFjX3dkdF9kcml2ZXIpOwo+
-PiAKPiAKPiAKPiAtLQo+IFBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAg
-ICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8Cj4gU3RldWVyd2FsZGVyIFN0ci4gMjEg
-ICAgICAgICAgICAgICAgICAgICAgIHwgaHR0cHM6Ly93d3cucGVuZ3V0cm9uaXguZGUvIHwKPiAz
-MTEzNyBIaWxkZXNoZWltLCBHZXJtYW55ICAgICAgICAgICAgICAgICAgfCBQaG9uZTogKzQ5LTUx
-MjEtMjA2OTE3LTAgICAgfAo+IEFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAg
-ICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8Cj4gCj4gX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiBiYXJlYm94IG1haWxpbmcgbGlzdAo+
-IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
-L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZy
-YWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
-ZWJveAo=
+Hello Hans-Ulrich,
+
+On 1/21/20 7:28 PM, Hans-Ulrich Schlieben wrote:
+> Hi Ahmad, 
+> 
+>>   git clone https://eur04.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.pengutronix.de%2Fgit%2Fbarebox&amp;data=01%7C01%7Chu.schlieben%40codewrights.de%7C5fdd291346554b1d5e3d08d79dbdda2b%7C0974af9b352b437cb606e9f242c0c227%7C0&amp;sdata=L8WAZYdcm0kjTNZG8OFnedXXyG3DHyIHx1r4gh%2B%2FC%2BI%3D&amp;reserved=0
+>>   cd barebox
+>>   cp $your_barebox_config_in_yocto .config
+>>   make -j$(nproc) CROSS_COMPILE=/path/to/your/yocto/toolchain/bin/arm-$your_vendor-linux-gnueabihf- ARCH=arm
+> 
+> I tried to build the barebox sources but got the following error:
+> $ make -j$(nproc) CROSS_COMPILE=/path/to/your/yocto/toolchain/bin/arm-$your_vendor-linux-gnueabihf- ARCH=arm
+> make: /path/to/your/yocto/toolchain/bin/arm--linux-gnueabihf-gcc: Kommando nicht gefunden
+>   LEX     scripts/kconfig/lexer.lex.c
+> /bin/sh: 1: flex: not found
+> make[2]: *** [scripts/Makefile.lib:194: scripts/kconfig/lexer.lex.c] Fehler 127
+> make[2]: *** Es wird auf noch nicht beendete Prozesse gewartet....
+>   YACC    scripts/kconfig/parser.tab.h
+> /bin/sh: 1: bison: not found
+> make[2]: *** [scripts/Makefile.lib:208: scripts/kconfig/parser.tab.h] Fehler 127
+> make[1]: *** [/opt/apps/zeus/barebox/barebox/Makefile:422: syncconfig] Fehler 2
+> make: *** [Makefile:463: include/config/auto.conf.cmd] Fehler 2
+> 
+> Is the .config file wrong? I copied it from the barebox folder where I built barebox 2017 version.
+
+You missed the $your_vendor placeholders, which you need to replace with the toolchain vendor you
+configured for your Yocto Toolchain. If in doubt, just
+
+apt install gcc-arm-linux-gnueabihf
+
+and use CROSS_COMPILE=gcc-arm-linux-gnueabihf
+
+You also need to install flex and bison.
+
+>> under images/ you will have the barebox images. You can get that onto your device using a SD-Card, imx-usb-loader, tftp ... etc.
+> When the build succeeds where or how to put the image on the sdcard?
+> By the way, which image is it there a lots of images in the ./image folder and there is none named imx6qdl? There are some named imx6dl and one imx6q.
+
+You will note that device trees starting with imx6qdl always have a .dtsi extension,
+which are device tree source _includes_. They aren't full device trees. Most importantly,
+they miss the SoC nodes that differentiate between i.MX6 Quad and DualLite.
+
+This is done this way, so you can have the same dtsi and use it in a dts once with imx6q.dtsi
+and once more with imx6dl.dtsi without having to replicate the common parts on the SoM.
+
+As for which one to use, depends on your board. If you have a Quad or Dual, use imx6q-$boardname,
+if you have Dual Lite or Solo use imx6dl-.
+
+
+Cheers
+Ahmad
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
