@@ -1,25 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mailout04.rmx.de ([94.199.90.94])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iuZkd-0003cH-Cb
- for barebox@lists.infradead.org; Thu, 23 Jan 2020 10:30:17 +0000
-Received: from kdin01.retarus.com (unknown [172.19.17.48])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mailout04.rmx.de (Postfix) with ESMTPS id 483JS20NYCz3r0Xl
- for <barebox@lists.infradead.org>; Thu, 23 Jan 2020 11:29:54 +0100 (CET)
-Received: from ppmail.arri.de (unknown [217.111.95.7])
- (using TLSv1 with cipher AES128-SHA (128/128 bits))
- (No client certificate requested)
- by kdin01.retarus.com (Postfix) with ESMTPS id 483JRp3M5Lz2yyY
- for <barebox@lists.infradead.org>; Thu, 23 Jan 2020 11:29:42 +0100 (CET)
-From: Christian Eggers <ceggers@arri.de>
-Date: Thu, 23 Jan 2020 11:29:41 +0100
-Message-ID: <2068200.0Z92YdXjpK@n95hx1g2>
-In-Reply-To: <20200120195351.skm7ujz7yjr6mu32@pengutronix.de>
-References: <2198510.7r5C0NBLhF@n95hx1g2>
- <20200120195351.skm7ujz7yjr6mu32@pengutronix.de>
+ id 1ito6b-00024H-B4
+ for barebox@lists.infradead.org; Tue, 21 Jan 2020 07:37:47 +0000
+Date: Tue, 21 Jan 2020 08:37:39 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200121073739.wwyjp5n74vlpdt7q@pengutronix.de>
+References: <20200120085647.19784-1-r.czerwinski@pengutronix.de>
+ <20200120085647.19784-4-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200120085647.19784-4-r.czerwinski@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -32,93 +23,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Configuring for secure boot / Using bootchooser
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH v2 4/5] ARM: mach-imx: test PL310 write access
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Sascha,
-
-seems I ran into trouble (see below) with CONFIG_SHELL_NONE.
-
-Am Montag, 20. Januar 2020, 20:53:51 CET schrieb Sascha Hauer:
-> Hi Christian,
+On Mon, Jan 20, 2020 at 09:56:47AM +0100, Rouven Czerwinski wrote:
+> If OP-TEE early loading is performed, OP-TEE will configure the PL210
+> and lock write access to the controller from the normal world. Test this
+> by trying to write the same value back and do not configure if we can
+> not write to the PL310.
 > 
-> On Mon, Jan 20, 2020 at 05:38:36PM +0100, Christian Eggers wrote:
-> > Board: phytec-som-imx6
-> > 
-> > I need to configure barebox in a way, that a malicious attacker can not
-> > break into the system. It looks like I need to perform the following
-> > steps:
-> > 
-> > 3. Prevent access to the barebox shell
-> > --> CONFIG_CMD_LOGIN?
-> > --> CONFIG_SHELL_NONE?
+> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+> ---
+>  arch/arm/mach-imx/imx6.c | 20 ++++++++++++++++++++
+>  1 file changed, 20 insertions(+)
 > 
-> I wouldn't trust CONFIG_CMD_LOGIN that much. If you do, at least make
-> sure to use a safe hash function for the password, i.e. not the default
-> md5.
-> Disabling the shell entirely with CONFIG_SHELL_NONE is the best you can
-> do. This also forces you to program your boot process in C which helps
-> you to get a well defined boot without diving into potentially unsafe
-> shell commands.
+> diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
+> index 41e0066add..c6fd862379 100644
+> --- a/arch/arm/mach-imx/imx6.c
+> +++ b/arch/arm/mach-imx/imx6.c
+> @@ -11,6 +11,7 @@
+>   *
+>   */
+>  
+> +#include <abort.h>
+>  #include <init.h>
+>  #include <common.h>
+>  #include <io.h>
+> @@ -273,6 +274,22 @@ int imx6_devices_init(void)
+>  	return 0;
+>  }
+>  
+> +static bool imx6_can_write_l2x0(void)
+> +{
+> +	void __iomem *l2x0_base = IOMEM(0x00a02000);
+> +	u32 val;
+> +	/*
+> +	 * Mask data aborts and try to access the PL210. If OP-TEE is running we
+> +	 * will receive a data-abort and assume barebox is running in the normal
+> +	 * world.
+> +	 */
+> +	val = readl(l2x0_base + L2X0_PREFETCH_CTRL);
+> +
+> +	data_abort_mask();
+> +	writel(val, l2x0_base + L2X0_PREFETCH_CTRL);
+> +	return data_abort_unmask();
+> +}
+> +
+>  static int imx6_mmu_init(void)
+>  {
+>  	void __iomem *l2x0_base = IOMEM(0x00a02000);
+> @@ -281,6 +298,9 @@ static int imx6_mmu_init(void)
+>  	if (!cpu_is_mx6())
+>  		return 0;
+>  
+> +	if (imx6_can_write_l2x0())
+> +		return 0;
 
-I've tried to implement my boot process in C. Attaching the MTD partition to 
-UBI and directly calling bootm_data() looks straightforward and seems to work.
+Function name seems wrong, should be imx6_cannot_write_l2x0()
 
-	bootm_data_init_defaults(&data);
-	data.os_file = "/dev/nand0.root.ubi.kernel";
+Sascha
 
-	ret = bootm_boot(&data);
-	if (ret) {
-		printf("handler failed with: %s\n", strerror(-ret));
-		goto error_return;
-	}
-
-Now I'm trying to integrate bootchooser. My first attempt was to call 
-bootchooser directly from my barebox_main:
-
-	bc = bootchooser_get();
-	if (IS_ERR(bc))
-		return PTR_ERR(bc);
-
-	ret = bootchooser_boot(bc);
-
-	bootchooser_put(bc);
-
-Unfortunately this doesn't work, because there is no boot provider available 
-for booting the result of bootchooser (e.g. "nand0.root.ubi.kernel").
-
-From the documentation of the "boot" command, this should be possible:
-
-----------------8<---------------
-BAREBOX_CMD_HELP_TEXT("BOOTSRC can be:")
-BAREBOX_CMD_HELP_TEXT("- a filename under /env/boot/")
-BAREBOX_CMD_HELP_TEXT("- a full path to a boot script")
-BAREBOX_CMD_HELP_TEXT("- a device name")   
-BAREBOX_CMD_HELP_TEXT("- a partition name under /dev/")  <---- tried this one
-BAREBOX_CMD_HELP_TEXT("- a full path to a directory which")
-BAREBOX_CMD_HELP_TEXT("   - contains boot scripts, or")
-BAREBOX_CMD_HELP_TEXT("   - contains a loader/entries/ directory containing 
-bootspec entries")
----------------->8---------------
-
-Looking into bootentry_create_from_name() I didn't find how booting from "a 
-device name" or "a partition name" can work.
-
-Also using the shell doesn't help:
-----------------8<---------------
-barebox:/ boot nand0.root.ubi.kernel
-Nothing bootable found on 'nand0.root.ubi.kernel'
-Nothing bootable found
----------------->8---------------
-So I'm able to run bootm_boot() directly from C, but I've not found a way to 
-boot indirectly via bootchooser.
-
-Any hints how I can use bootchooser from my own barebox_main() with 
-CONFIG_SHELL_NONE?
-
-
-
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
