@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iuIGd-000879-Pi
+ id 1iuIGd-000878-J2
  for barebox@lists.infradead.org; Wed, 22 Jan 2020 15:50:17 +0000
 Received: from localhost (localhost [127.0.0.1])
- by zimbra2.kalray.eu (Postfix) with ESMTP id 6C31C27E0FF8
- for <barebox@lists.infradead.org>; Wed, 22 Jan 2020 16:50:02 +0100 (CET)
+ by zimbra2.kalray.eu (Postfix) with ESMTP id 0984127E121B
+ for <barebox@lists.infradead.org>; Wed, 22 Jan 2020 16:50:03 +0100 (CET)
 From: Jules Maselbas <jmaselbas@kalray.eu>
-Date: Wed, 22 Jan 2020 16:49:46 +0100
-Message-Id: <20200122154950.22746-6-jmaselbas@kalray.eu>
+Date: Wed, 22 Jan 2020 16:49:47 +0100
+Message-Id: <20200122154950.22746-7-jmaselbas@kalray.eu>
 In-Reply-To: <20200122154950.22746-1-jmaselbas@kalray.eu>
 References: <20200122154950.22746-1-jmaselbas@kalray.eu>
 MIME-Version: 1.0
@@ -24,72 +24,85 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC PATCH 5/9] usb: dwc2: Add function to flush a tx fifo
+Subject: [RFC PATCH 6/9] usb: dwc2: Add structure for gadget driver
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Jules Maselbas <jmaselbas@kalray.eu>
 
 Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
 ---
- drivers/usb/dwc2/core.c | 33 +++++++++++++++++++++++++++++++++
- drivers/usb/dwc2/dwc2.h |  1 +
- 2 files changed, 34 insertions(+)
+ drivers/usb/dwc2/core.h | 52 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 52 insertions(+)
 
-diff --git a/drivers/usb/dwc2/core.c b/drivers/usb/dwc2/core.c
-index 1812de034..90e7c0116 100644
---- a/drivers/usb/dwc2/core.c
-+++ b/drivers/usb/dwc2/core.c
-@@ -294,6 +294,39 @@ void dwc2_flush_all_fifo(struct dwc2 *dwc2)
- 	udelay(1);
- }
+diff --git a/drivers/usb/dwc2/core.h b/drivers/usb/dwc2/core.h
+index 56d5cbbfb..e25674558 100644
+--- a/drivers/usb/dwc2/core.h
++++ b/drivers/usb/dwc2/core.h
+@@ -421,6 +421,49 @@ enum usb_otg_state {
+ 	OTG_STATE_B_PERIPHERAL,
+ };
  
-+/**
-+ * dwc2_flush_tx_fifo() - Flushes a Tx FIFO
-+ *
-+ * @hsotg: Programming view of DWC_otg controller
-+ * @idx: The fifo index (0..15)
-+ */
-+void dwc2_flush_tx_fifo(struct dwc2 *dwc2, const int idx)
-+{
-+	u32 greset;
++struct dwc2_ep {
++	struct usb_ep ep;
++	struct dwc2 *dwc2;
++	struct list_head queue;
++	struct dwc2_request *req;
++	char name[8];
 +
-+	if (idx > 15)
-+		return;
++	unsigned int            size_loaded;
++	unsigned int            last_load;
++	unsigned short          fifo_size;
++	unsigned short		fifo_index;
 +
-+	dwc2_dbg(dwc2, "Flush Tx FIFO %d\n", idx);
++	u8 dir_in;
++	u8 epnum;
++	u8 mc;
++	u16 interval;
 +
-+	/* Wait for AHB master IDLE state */
-+	if (dwc2_wait_bit_set(dwc2, GRSTCTL, GRSTCTL_AHBIDLE, 10000)) {
-+		dwc2_warn(dwc2, "%s: Timeout waiting for AHB Idle\n", __func__);
-+		return;
-+	}
++	unsigned int            halted:1;
++	unsigned int            periodic:1;
++	unsigned int            isochronous:1;
++	unsigned int            send_zlp:1;
++	unsigned int            target_frame;
++#define TARGET_FRAME_INITIAL   0xFFFFFFFF
++	bool			frame_overrun;
++};
 +
-+	greset = GRSTCTL_TXFFLSH;
-+	greset |= GRSTCTL_TXFNUM(idx) & GRSTCTL_TXFNUM_MASK;
-+	dwc2_writel(dwc2, greset, GRSTCTL);
++struct dwc2_request {
++	struct usb_request req;
++	struct list_head queue;
++};
 +
-+	if (dwc2_wait_bit_clear(dwc2, GRSTCTL, GRSTCTL_TXFFLSH, 10000))
-+		dwc2_warn(dwc2, "%s: Timeout flushing tx fifo (GRSTCTL=%08x)\n",
-+			 __func__, dwc2_readl(dwc2, GRSTCTL));
++/* Gadget ep0 states */
++enum dwc2_ep0_state {
++	DWC2_EP0_SETUP,
++	DWC2_EP0_DATA_IN,
++	DWC2_EP0_DATA_OUT,
++	DWC2_EP0_STATUS_IN,
++	DWC2_EP0_STATUS_OUT,
++};
 +
-+	/* Wait for at least 3 PHY Clocks */
-+	udelay(1);
-+}
++/* Size of control and EP0 buffers */
++#define DWC2_CTRL_BUFF_SIZE 8
 +
- static int dwc2_fs_phy_init(struct dwc2 *dwc2, bool select_phy)
- {
- 	u32 usbcfg, ggpio, i2cctl;
-diff --git a/drivers/usb/dwc2/dwc2.h b/drivers/usb/dwc2/dwc2.h
-index 35ba00660..1141573bb 100644
---- a/drivers/usb/dwc2/dwc2.h
-+++ b/drivers/usb/dwc2/dwc2.h
-@@ -17,6 +17,7 @@ void dwc2_get_hwparams(struct dwc2 *dwc2);
+ struct dwc2 {
+ 	struct device_d *dev;
+ 	struct usb_host host;
+@@ -433,6 +476,15 @@ struct dwc2 {
+ 	void __iomem *regs;
+ 	int root_hub_devnum;
  
- void dwc2_init_fs_ls_pclk_sel(struct dwc2 *dwc2);
- void dwc2_flush_all_fifo(struct dwc2 *dwc2);
-+void dwc2_flush_tx_fifo(struct dwc2 *dwc2, const int idx);
- 
- int dwc2_phy_init(struct dwc2 *dwc2, bool select_phy);
- int dwc2_gahbcfg_init(struct dwc2 *dwc2);
++	int num_eps;
++	struct dwc2_ep *eps_in[MAX_ENDPOINT];
++	struct dwc2_ep *eps_out[MAX_ENDPOINT];
++	struct usb_request *ctrl_req;
++	void *ep0_buff;
++	void *ctrl_buff;
++	enum dwc2_ep0_state ep0_state;
++	struct usb_gadget_driver *driver;
++
+ 	enum usb_dr_mode dr_mode;
+ 	enum usb_otg_state op_state;
+ };
 -- 
 2.21.0.196.g041f5ea
 
