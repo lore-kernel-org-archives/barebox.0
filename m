@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iuIG8-0007LH-FM
- for barebox@lists.infradead.org; Wed, 22 Jan 2020 15:49:39 +0000
+ id 1iuIGX-0007gN-UW
+ for barebox@lists.infradead.org; Wed, 22 Jan 2020 15:50:14 +0000
 Received: from localhost (localhost [127.0.0.1])
- by zimbra2.kalray.eu (Postfix) with ESMTP id C38CC27E1056
- for <barebox@lists.infradead.org>; Wed, 22 Jan 2020 16:49:29 +0100 (CET)
+ by zimbra2.kalray.eu (Postfix) with ESMTP id 64D2B27E1068
+ for <barebox@lists.infradead.org>; Wed, 22 Jan 2020 16:50:00 +0100 (CET)
 From: Jules Maselbas <jmaselbas@kalray.eu>
-Date: Wed, 22 Jan 2020 16:49:03 +0100
-Message-Id: <20200122154908.22635-3-jmaselbas@kalray.eu>
-In-Reply-To: <20200122154908.22635-1-jmaselbas@kalray.eu>
-References: <20200122154908.22635-1-jmaselbas@kalray.eu>
+Date: Wed, 22 Jan 2020 16:49:43 +0100
+Message-Id: <20200122154950.22746-3-jmaselbas@kalray.eu>
+In-Reply-To: <20200122154950.22746-1-jmaselbas@kalray.eu>
+References: <20200122154950.22746-1-jmaselbas@kalray.eu>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,149 +24,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/7] usb: dwc2: host: Read dr_mode from device tree
+Subject: [RFC PATCH 2/9] BACKPORT: usb: ch9: make usb_endpoint_maxp() return
+ only packet size
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Jules Maselbas <jmaselbas@kalray.eu>
 
+Now that we have a helper to gather periodic
+endpoints' multiplier bits from wMaxPacketSize and
+every driver is using it, we can safely make sure
+that usb_endpoint_maxp() returns only bits 10:0 of
+wMaxPacketSize which is where the actual packet size
+lies.
+
+(backported from linux commit abb621844f6a0c93bbc934f9a096752c4c1c5722)
+
 Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
 ---
- drivers/usb/dwc2/core.c | 89 +++++++++++++++++++++++++++++++++++++++++
- drivers/usb/dwc2/dwc2.c |  2 +
- drivers/usb/dwc2/dwc2.h |  1 +
- 3 files changed, 92 insertions(+)
+ include/usb/ch9.h | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/dwc2/core.c b/drivers/usb/dwc2/core.c
-index 0046e955f..1812de034 100644
---- a/drivers/usb/dwc2/core.c
-+++ b/drivers/usb/dwc2/core.c
-@@ -1,6 +1,33 @@
- // SPDX-License-Identifier: GPL-2.0+
- #include "dwc2.h"
+diff --git a/include/usb/ch9.h b/include/usb/ch9.h
+index fc6ec862c..5adabcaee 100644
+--- a/include/usb/ch9.h
++++ b/include/usb/ch9.h
+@@ -401,6 +401,7 @@ struct usb_endpoint_descriptor {
+ #define USB_ENDPOINT_XFER_INT		3
+ #define USB_ENDPOINT_MAX_ADJUSTABLE	0x80
  
-+/* Returns the controller's GHWCFG2.OTG_MODE. */
-+static unsigned int dwc2_op_mode(struct dwc2 *dwc2)
-+{
-+	u32 ghwcfg2 = dwc2_readl(dwc2, GHWCFG2);
-+
-+	return (ghwcfg2 & GHWCFG2_OP_MODE_MASK) >>
-+		GHWCFG2_OP_MODE_SHIFT;
-+}
-+
-+/* Returns true if the controller is host-only. */
-+static bool dwc2_hw_is_host(struct dwc2 *dwc2)
-+{
-+	unsigned int op_mode = dwc2_op_mode(dwc2);
-+
-+	return (op_mode == GHWCFG2_OP_MODE_SRP_CAPABLE_HOST) ||
-+		(op_mode == GHWCFG2_OP_MODE_NO_SRP_CAPABLE_HOST);
-+}
-+
-+/* Returns true if the controller is device-only. */
-+static bool dwc2_hw_is_device(struct dwc2 *dwc2)
-+{
-+	unsigned int op_mode = dwc2_op_mode(dwc2);
-+
-+	return (op_mode == GHWCFG2_OP_MODE_SRP_CAPABLE_DEVICE) ||
-+		(op_mode == GHWCFG2_OP_MODE_NO_SRP_CAPABLE_DEVICE);
-+}
-+
- void dwc2_set_param_otg_cap(struct dwc2 *dwc2)
++#define USB_ENDPOINT_MAXP_MASK		0x07ff
+ #define USB_EP_MAXP_MULT_SHIFT		11
+ #define USB_EP_MAXP_MULT_MASK		(3 << USB_EP_MAXP_MULT_SHIFT)
+ #define USB_EP_MAXP_MULT(m) \
+@@ -620,11 +621,11 @@ usb_endpoint_maxp_mult(const struct usb_endpoint_descriptor *epd)
+  * usb_endpoint_maxp - get endpoint's max packet size
+  * @epd: endpoint to be checked
+  *
+- * Returns @epd's max packet
++ * Returns @epd's max packet bits [10:0]
+  */
+ static inline int usb_endpoint_maxp(const struct usb_endpoint_descriptor *epd)
  {
- 	u8 val;
-@@ -493,6 +520,68 @@ void dwc2_gusbcfg_init(struct dwc2 *dwc2)
- 	dwc2_writel(dwc2, usbcfg, GUSBCFG);
+-	return __le16_to_cpu(epd->wMaxPacketSize);
++	return __le16_to_cpu(epd->wMaxPacketSize) & USB_ENDPOINT_MAXP_MASK;
  }
  
-+/*
-+ * Check the dr_mode against the module configuration and hardware
-+ * capabilities.
-+ *
-+ * The hardware, module, and dr_mode, can each be set to host, device,
-+ * or otg. Check that all these values are compatible and adjust the
-+ * value of dr_mode if possible.
-+ *
-+ *                      actual
-+ *    HW  MOD dr_mode   dr_mode
-+ *  ------------------------------
-+ *   HST  HST  any    :  HST
-+ *   HST  DEV  any    :  ---
-+ *   HST  OTG  any    :  HST
-+ *
-+ *   DEV  HST  any    :  ---
-+ *   DEV  DEV  any    :  DEV
-+ *   DEV  OTG  any    :  DEV
-+ *
-+ *   OTG  HST  any    :  HST
-+ *   OTG  DEV  any    :  DEV
-+ *   OTG  OTG  any    :  dr_mode
-+ */
-+int dwc2_get_dr_mode(struct dwc2 *dwc2)
-+{
-+	enum usb_dr_mode mode;
-+
-+	mode = of_usb_get_dr_mode(dwc2->dev->device_node, NULL);
-+	dwc2->dr_mode = mode;
-+
-+	if (dwc2_hw_is_device(dwc2)) {
-+		if (IS_ENABLED(CONFIG_USB_DWC2_HOST)) {
-+			dwc2_err(dwc2,
-+				"Controller does not support host mode.\n");
-+			return -EINVAL;
-+		}
-+		mode = USB_DR_MODE_PERIPHERAL;
-+	} else if (dwc2_hw_is_host(dwc2)) {
-+		if (IS_ENABLED(CONFIG_USB_DWC2_PERIPHERAL)) {
-+			dwc2_err(dwc2,
-+				"Controller does not support device mode.\n");
-+			return -EINVAL;
-+		}
-+		mode = USB_DR_MODE_HOST;
-+	} else {
-+		if (IS_ENABLED(CONFIG_USB_DWC2_HOST))
-+			mode = USB_DR_MODE_HOST;
-+		else if (IS_ENABLED(CONFIG_USB_DWC2_PERIPHERAL))
-+			mode = USB_DR_MODE_PERIPHERAL;
-+	}
-+
-+	if (mode != dwc2->dr_mode) {
-+		dwc2_warn(dwc2,
-+			 "Configuration mismatch. dr_mode forced to %s\n",
-+			mode == USB_DR_MODE_HOST ? "host" : "device");
-+
-+		dwc2->dr_mode = mode;
-+	}
-+
-+	return 0;
-+}
-+
- /*
-  * Do core a soft reset of the core.  Be careful with this because it
-  * resets all the internal state machines of the core.
-diff --git a/drivers/usb/dwc2/dwc2.c b/drivers/usb/dwc2/dwc2.c
-index 893f573bc..1df393e77 100644
---- a/drivers/usb/dwc2/dwc2.c
-+++ b/drivers/usb/dwc2/dwc2.c
-@@ -62,6 +62,8 @@ static int dwc2_probe(struct device_d *dev)
- 	/* Detect config values from hardware */
- 	dwc2_get_hwparams(dwc2);
- 
-+	dwc2_get_dr_mode(dwc2);
-+
- 	dwc2_set_default_params(dwc2);
- 
- 	dma_set_mask(dev, DMA_BIT_MASK(32));
-diff --git a/drivers/usb/dwc2/dwc2.h b/drivers/usb/dwc2/dwc2.h
-index 0ac4b40fc..60cdca520 100644
---- a/drivers/usb/dwc2/dwc2.h
-+++ b/drivers/usb/dwc2/dwc2.h
-@@ -21,6 +21,7 @@ void dwc2_flush_all_fifo(struct dwc2 *dwc2);
- int dwc2_phy_init(struct dwc2 *dwc2, bool select_phy);
- int dwc2_gahbcfg_init(struct dwc2 *dwc2);
- void dwc2_gusbcfg_init(struct dwc2 *dwc2);
-+int dwc2_get_dr_mode(struct dwc2 *dwc2);
- 
- int dwc2_core_reset(struct dwc2 *dwc2);
- void dwc2_core_init(struct dwc2 *dwc2);
+ static inline int usb_endpoint_interrupt_type(
 -- 
 2.21.0.196.g041f5ea
 
