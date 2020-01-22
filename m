@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iuIGd-000878-J2
- for barebox@lists.infradead.org; Wed, 22 Jan 2020 15:50:17 +0000
+ id 1iuIGl-0000eO-TS
+ for barebox@lists.infradead.org; Wed, 22 Jan 2020 15:50:29 +0000
 Received: from localhost (localhost [127.0.0.1])
- by zimbra2.kalray.eu (Postfix) with ESMTP id 0984127E121B
+ by zimbra2.kalray.eu (Postfix) with ESMTP id 8CF0D27E11A1
  for <barebox@lists.infradead.org>; Wed, 22 Jan 2020 16:50:03 +0100 (CET)
 From: Jules Maselbas <jmaselbas@kalray.eu>
-Date: Wed, 22 Jan 2020 16:49:47 +0100
-Message-Id: <20200122154950.22746-7-jmaselbas@kalray.eu>
+Date: Wed, 22 Jan 2020 16:49:48 +0100
+Message-Id: <20200122154950.22746-8-jmaselbas@kalray.eu>
 In-Reply-To: <20200122154950.22746-1-jmaselbas@kalray.eu>
 References: <20200122154950.22746-1-jmaselbas@kalray.eu>
 MIME-Version: 1.0
@@ -24,85 +24,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC PATCH 6/9] usb: dwc2: Add structure for gadget driver
+Subject: [RFC PATCH 7/9] usb: dwc2: Add getter for gadget fifo hwparams
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Jules Maselbas <jmaselbas@kalray.eu>
 
 Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
 ---
- drivers/usb/dwc2/core.h | 52 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 52 insertions(+)
+ drivers/usb/dwc2/core.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/drivers/usb/dwc2/core.h b/drivers/usb/dwc2/core.h
-index 56d5cbbfb..e25674558 100644
---- a/drivers/usb/dwc2/core.h
-+++ b/drivers/usb/dwc2/core.h
-@@ -421,6 +421,49 @@ enum usb_otg_state {
- 	OTG_STATE_B_PERIPHERAL,
- };
+diff --git a/drivers/usb/dwc2/core.c b/drivers/usb/dwc2/core.c
+index 90e7c0116..5376a3586 100644
+--- a/drivers/usb/dwc2/core.c
++++ b/drivers/usb/dwc2/core.c
+@@ -167,6 +167,33 @@ int dwc2_core_snpsid(struct dwc2 *dwc2)
+ 	return 0;
+ }
  
-+struct dwc2_ep {
-+	struct usb_ep ep;
-+	struct dwc2 *dwc2;
-+	struct list_head queue;
-+	struct dwc2_request *req;
-+	char name[8];
++static int dwc2_num_dev_tx_fifo(struct dwc2 *dwc2)
++{
++	if (dwc2->hw_params.en_multiple_tx_fifo)
++		/* In dedicated FIFO mode we need count of IN EPs */
++		return dwc2->hw_params.num_dev_in_eps;
++	else
++		/* In shared FIFO mode we need count of Periodic IN EPs */
++		return dwc2->hw_params.num_dev_perio_in_ep;
++}
 +
-+	unsigned int            size_loaded;
-+	unsigned int            last_load;
-+	unsigned short          fifo_size;
-+	unsigned short		fifo_index;
++static void dwc2_get_dev_hwparams(struct dwc2 *dwc2)
++{
++	struct dwc2_hw_params *hw = &dwc2->hw_params;
++	u32 size;
++	int num, i;
 +
-+	u8 dir_in;
-+	u8 epnum;
-+	u8 mc;
-+	u16 interval;
++	size = FIFOSIZE_DEPTH_GET(dwc2_readl(dwc2, GNPTXFSIZ));
++	hw->dev_nperio_tx_fifo_size = size;
 +
-+	unsigned int            halted:1;
-+	unsigned int            periodic:1;
-+	unsigned int            isochronous:1;
-+	unsigned int            send_zlp:1;
-+	unsigned int            target_frame;
-+#define TARGET_FRAME_INITIAL   0xFFFFFFFF
-+	bool			frame_overrun;
-+};
++	num = dwc2_num_dev_tx_fifo(dwc2);
 +
-+struct dwc2_request {
-+	struct usb_request req;
-+	struct list_head queue;
-+};
++	for (i = 1; i <= num; i++) {
++		size = FIFOSIZE_DEPTH_GET(dwc2_readl(dwc2, DPTXFSIZN(i)));
++		hw->g_tx_fifo_size[i] = size;
++	}
++}
 +
-+/* Gadget ep0 states */
-+enum dwc2_ep0_state {
-+	DWC2_EP0_SETUP,
-+	DWC2_EP0_DATA_IN,
-+	DWC2_EP0_DATA_OUT,
-+	DWC2_EP0_STATUS_IN,
-+	DWC2_EP0_STATUS_OUT,
-+};
+ /**
+  * During device initialization, read various hardware configuration
+  * registers and interpret the contents.
+@@ -243,6 +270,8 @@ void dwc2_get_hwparams(struct dwc2 *dwc2)
+ 	/* fifo sizes */
+ 	hw->rx_fifo_size = (grxfsiz & GRXFSIZ_DEPTH_MASK) >>
+ 				GRXFSIZ_DEPTH_SHIFT;
 +
-+/* Size of control and EP0 buffers */
-+#define DWC2_CTRL_BUFF_SIZE 8
-+
- struct dwc2 {
- 	struct device_d *dev;
- 	struct usb_host host;
-@@ -433,6 +476,15 @@ struct dwc2 {
- 	void __iomem *regs;
- 	int root_hub_devnum;
++	dwc2_get_dev_hwparams(dwc2);
+ }
  
-+	int num_eps;
-+	struct dwc2_ep *eps_in[MAX_ENDPOINT];
-+	struct dwc2_ep *eps_out[MAX_ENDPOINT];
-+	struct usb_request *ctrl_req;
-+	void *ep0_buff;
-+	void *ctrl_buff;
-+	enum dwc2_ep0_state ep0_state;
-+	struct usb_gadget_driver *driver;
-+
- 	enum usb_dr_mode dr_mode;
- 	enum usb_otg_state op_state;
- };
+ /*
 -- 
 2.21.0.196.g041f5ea
 
