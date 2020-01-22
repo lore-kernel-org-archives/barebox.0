@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iuIGY-0007h5-Sx
+ id 1iuIGZ-0007hs-Cx
  for barebox@lists.infradead.org; Wed, 22 Jan 2020 15:50:15 +0000
 Received: from localhost (localhost [127.0.0.1])
- by zimbra2.kalray.eu (Postfix) with ESMTP id F2E3827E1056
- for <barebox@lists.infradead.org>; Wed, 22 Jan 2020 16:50:00 +0100 (CET)
+ by zimbra2.kalray.eu (Postfix) with ESMTP id 8F47C27E10A2
+ for <barebox@lists.infradead.org>; Wed, 22 Jan 2020 16:50:01 +0100 (CET)
 From: Jules Maselbas <jmaselbas@kalray.eu>
-Date: Wed, 22 Jan 2020 16:49:44 +0100
-Message-Id: <20200122154950.22746-4-jmaselbas@kalray.eu>
+Date: Wed, 22 Jan 2020 16:49:45 +0100
+Message-Id: <20200122154950.22746-5-jmaselbas@kalray.eu>
 In-Reply-To: <20200122154950.22746-1-jmaselbas@kalray.eu>
 References: <20200122154950.22746-1-jmaselbas@kalray.eu>
 MIME-Version: 1.0
@@ -24,87 +24,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC PATCH 3/9] usb: Update uses of usb_endpoint_maxp
+Subject: [RFC PATCH 4/9] usb: dwc2: Add otg state
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Jules Maselbas <jmaselbas@kalray.eu>
 
-Now usb_endpoint_maxp only returns the 11 lowest bits, it does no
-longer include the mult bits. And such functions that uses the mult
-bits must be updated to uses the usb_endpoint_maxp_mult function.
-
 Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
 ---
- drivers/usb/gadget/epautoconf.c |  2 +-
- drivers/usb/musb/musb_gadget.c  | 12 ++++--------
- drivers/usb/musb/musb_host.c    |  3 +--
- 3 files changed, 6 insertions(+), 11 deletions(-)
+ drivers/usb/dwc2/core.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/usb/gadget/epautoconf.c b/drivers/usb/gadget/epautoconf.c
-index ced568921..c4c4a5672 100644
---- a/drivers/usb/gadget/epautoconf.c
-+++ b/drivers/usb/gadget/epautoconf.c
-@@ -132,7 +132,7 @@ ep_matches (
- 	 * where it's an output parameter representing the full speed limit.
- 	 * the usb spec fixes high speed bulk maxpacket at 512 bytes.
- 	 */
--	max = 0x7ff & usb_endpoint_maxp(desc);
-+	max = usb_endpoint_maxp(desc);
- 	switch (type) {
- 	case USB_ENDPOINT_XFER_INT:
- 		/* INT:  limit 64 bytes full speed, 1024 high/super speed */
-diff --git a/drivers/usb/musb/musb_gadget.c b/drivers/usb/musb/musb_gadget.c
-index fc5cfb13f..c5e46cfe0 100644
---- a/drivers/usb/musb/musb_gadget.c
-+++ b/drivers/usb/musb/musb_gadget.c
-@@ -443,8 +443,10 @@ static int musb_gadget_enable(struct usb_ep *ep,
- 		goto fail;
+diff --git a/drivers/usb/dwc2/core.h b/drivers/usb/dwc2/core.h
+index 0c89217c5..56d5cbbfb 100644
+--- a/drivers/usb/dwc2/core.h
++++ b/drivers/usb/dwc2/core.h
+@@ -416,6 +416,11 @@ struct dwc2_hw_params {
+ #define MAX_DEVICE			16
+ #define MAX_ENDPOINT DWC2_MAX_EPS_CHANNELS
  
- 	/* REVISIT this rules out high bandwidth periodic transfers */
--	tmp = usb_endpoint_maxp(desc);
--	if (tmp & ~0x07ff) {
-+	musb_ep->packet_sz = usb_endpoint_maxp(desc);
-+	musb_ep->hb_mult = usb_endpoint_maxp_mult(desc);
-+	tmp = musb_ep->packet_sz * musb_ep->hb_mult;
-+	if (musb_ep->hb_mult > 1) {
- 		int ok;
++enum usb_otg_state {
++	OTG_STATE_A_HOST,
++	OTG_STATE_B_PERIPHERAL,
++};
++
+ struct dwc2 {
+ 	struct device_d *dev;
+ 	struct usb_host host;
+@@ -429,6 +434,7 @@ struct dwc2 {
+ 	int root_hub_devnum;
  
- 		if (usb_endpoint_dir_in(desc))
-@@ -456,14 +458,8 @@ static int musb_gadget_enable(struct usb_ep *ep,
- 			dev_dbg(musb->controller, "no support for high bandwidth ISO\n");
- 			goto fail;
- 		}
--		musb_ep->hb_mult = (tmp >> 11) & 3;
--	} else {
--		musb_ep->hb_mult = 0;
- 	}
+ 	enum usb_dr_mode dr_mode;
++	enum usb_otg_state op_state;
+ };
  
--	musb_ep->packet_sz = tmp & 0x7ff;
--	tmp = musb_ep->packet_sz * (musb_ep->hb_mult + 1);
--
- 	/* enable the interrupts for the endpoint, set the endpoint
- 	 * packet size (or fail), set the mode, clear the fifo
- 	 */
-diff --git a/drivers/usb/musb/musb_host.c b/drivers/usb/musb/musb_host.c
-index 68d819af2..11fde729a 100644
---- a/drivers/usb/musb/musb_host.c
-+++ b/drivers/usb/musb/musb_host.c
-@@ -1493,7 +1493,7 @@ int musb_urb_enqueue(
- 	 * Some musb cores don't support high bandwidth ISO transfers; and
- 	 * we don't (yet!) support high bandwidth interrupt transfers.
- 	 */
--	qh->hb_mult = 1 + ((qh->maxpacket >> 11) & 0x03);
-+	qh->hb_mult = usb_endpoint_maxp_mult(epd);
- 	if (qh->hb_mult > 1) {
- 		int ok = (qh->type == USB_ENDPOINT_XFER_ISOC);
- 
-@@ -1504,7 +1504,6 @@ int musb_urb_enqueue(
- 			ret = -EMSGSIZE;
- 			goto done;
- 		}
--		qh->maxpacket &= 0x7ff;
- 	}
- 
- 	qh->epnum = usb_endpoint_num(epd);
+ #define host_to_dwc2(ptr) container_of(ptr, struct dwc2, host)
 -- 
 2.21.0.196.g041f5ea
 
