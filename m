@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1itr8r-0008LK-IX
- for barebox@lists.infradead.org; Tue, 21 Jan 2020 10:52:22 +0000
-References: <2198510.7r5C0NBLhF@n95hx1g2>
- <20200120195351.skm7ujz7yjr6mu32@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <2df2f2dc-06ed-c85e-b37e-313e1ef51538@pengutronix.de>
-Date: Tue, 21 Jan 2020 11:52:02 +0100
+ id 1iuBGH-0005v0-Ev
+ for barebox@lists.infradead.org; Wed, 22 Jan 2020 08:21:18 +0000
+Date: Wed, 22 Jan 2020 09:21:15 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200122082115.tgwaf72ootkmkf5s@pengutronix.de>
+References: <20200121114421.24401-1-ceggers@arri.de>
 MIME-Version: 1.0
-In-Reply-To: <20200120195351.skm7ujz7yjr6mu32@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20200121114421.24401-1-ceggers@arri.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,31 +22,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Configuring for secure boot
-To: Sascha Hauer <s.hauer@pengutronix.de>, Christian Eggers <ceggers@arri.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/3] watchdog: Select CONFIG_PARAMETER
+To: Christian Eggers <ceggers@arri.de>
+Cc: barebox@lists.infradead.org, ceggers@gmx.de
 
-Hello,
+Hi Christian,
 
-On 1/20/20 8:53 PM, Sascha Hauer wrote:
-> Disabling the shell entirely with CONFIG_SHELL_NONE is the best you can
-> do. This also forces you to program your boot process in C which helps
-> you to get a well defined boot without diving into potentially unsafe
-> shell commands.
+On Tue, Jan 21, 2020 at 12:44:19PM +0100, Christian Eggers wrote:
+> Without CONFIG_PARAMETER, watchdog_register() will always fail.
 > 
-> To state the obvious, you have to enable HAB support, sign your barebox
-> images and burn the necessary fuses to forbid loading unsigned images.
-
-I think it would be great to have a CONFIG_LOCKDOWN option that has inverse
-dependencies on the stuff that should not be enabled and normal dependencies
-on the stuff that should be. Such a CONFIG_LOCKDOWN barebox can then be used in
-secure boot scenarios or for fuzzing efforts.
-
-Thoughts?
-
+> Signed-off-by: Christian Eggers <ceggers@arri.de>
+> ---
+>  drivers/watchdog/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> Sascha
-> 
+> diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+> index 45dd41a2a..34b7fea39 100644
+> --- a/drivers/watchdog/Kconfig
+> +++ b/drivers/watchdog/Kconfig
+> @@ -4,6 +4,7 @@ config WATCHDOG_IMX_RESET_SOURCE
+>  
+>  menuconfig WATCHDOG
+>  	bool "Watchdog support"
+> +	select PARAMETER
+
+I think this goes into the wrong direction. With CONFIG_PARAMETER
+enabled we get support for adjusting device parameters from the shell.
+In environments without shell support parameter support is not needed.
+For example the watchdog C API doesn't need parameter support and is
+still usable.
+
+The static inline wrappers for dev_add_param_* should return NULL
+instead of returning ERR_PTR(-ENOSYS).
+
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
