@@ -1,24 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-db3eur04on0708.outbound.protection.outlook.com
- ([2a01:111:f400:fe0c::708]
- helo=EUR04-DB3-obe.outbound.protection.outlook.com)
+Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ityG9-0005RI-T0
- for barebox@lists.infradead.org; Tue, 21 Jan 2020 18:28:21 +0000
-From: Hans-Ulrich Schlieben <hu.schlieben@codewrights.de>
-Date: Tue, 21 Jan 2020 18:28:15 +0000
-Message-ID: <DB8PR03MB54985379C7F9387F160929E7FE0D0@DB8PR03MB5498.eurprd03.prod.outlook.com>
-References: <r276.1579090214262888471.6UJY@lists.yoctoproject.org>
- <1579093362.13056.13.camel@pengutronix.de>
- <DB8PR03MB54983C09B221B210D29A26AAFE370@DB8PR03MB5498.eurprd03.prod.outlook.com>
- <45b34e63-a9fd-2295-311c-393bf49fdf93@pengutronix.de>
- <DB8PR03MB549847FD100DF7192459527FFE370@DB8PR03MB5498.eurprd03.prod.outlook.com>
- <f451a45a-a4bc-f285-0614-001cb3a57405@pengutronix.de>
- <1579099664.13056.29.camel@pengutronix.de>
- <AM6PR03MB54939235100D4D6E455AF4C1FE360@AM6PR03MB5493.eurprd03.prod.outlook.com>
- <1c275d4d-cf23-caf5-072e-2517080950c1@pengutronix.de>
-In-Reply-To: <1c275d4d-cf23-caf5-072e-2517080950c1@pengutronix.de>
-Content-Language: en-US
+ id 1iuIG8-0007LH-FM
+ for barebox@lists.infradead.org; Wed, 22 Jan 2020 15:49:39 +0000
+Received: from localhost (localhost [127.0.0.1])
+ by zimbra2.kalray.eu (Postfix) with ESMTP id C38CC27E1056
+ for <barebox@lists.infradead.org>; Wed, 22 Jan 2020 16:49:29 +0100 (CET)
+From: Jules Maselbas <jmaselbas@kalray.eu>
+Date: Wed, 22 Jan 2020 16:49:03 +0100
+Message-Id: <20200122154908.22635-3-jmaselbas@kalray.eu>
+In-Reply-To: <20200122154908.22635-1-jmaselbas@kalray.eu>
+References: <20200122154908.22635-1-jmaselbas@kalray.eu>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -32,46 +24,153 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: [yocto] #yocto bootchooser: Cannot get state 'state'
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>, Enrico Joerns <ejo@pengutronix.de>
-Cc: "yocto@lists.yoctoproject.org" <yocto@lists.yoctoproject.org>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH v2 2/7] usb: dwc2: host: Read dr_mode from device tree
+To: Barebox List <barebox@lists.infradead.org>
+Cc: Jules Maselbas <jmaselbas@kalray.eu>
 
-Hi Ahmad, 
+Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
+---
+ drivers/usb/dwc2/core.c | 89 +++++++++++++++++++++++++++++++++++++++++
+ drivers/usb/dwc2/dwc2.c |  2 +
+ drivers/usb/dwc2/dwc2.h |  1 +
+ 3 files changed, 92 insertions(+)
 
->   git clone https://eur04.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.pengutronix.de%2Fgit%2Fbarebox&amp;data=01%7C01%7Chu.schlieben%40codewrights.de%7C5fdd291346554b1d5e3d08d79dbdda2b%7C0974af9b352b437cb606e9f242c0c227%7C0&amp;sdata=L8WAZYdcm0kjTNZG8OFnedXXyG3DHyIHx1r4gh%2B%2FC%2BI%3D&amp;reserved=0
->   cd barebox
->   cp $your_barebox_config_in_yocto .config
->   make -j$(nproc) CROSS_COMPILE=/path/to/your/yocto/toolchain/bin/arm-$your_vendor-linux-gnueabihf- ARCH=arm
-
-I tried to build the barebox sources but got the following error:
-$ make -j$(nproc) CROSS_COMPILE=/path/to/your/yocto/toolchain/bin/arm-$your_vendor-linux-gnueabihf- ARCH=arm
-make: /path/to/your/yocto/toolchain/bin/arm--linux-gnueabihf-gcc: Kommando nicht gefunden
-  LEX     scripts/kconfig/lexer.lex.c
-/bin/sh: 1: flex: not found
-make[2]: *** [scripts/Makefile.lib:194: scripts/kconfig/lexer.lex.c] Fehler 127
-make[2]: *** Es wird auf noch nicht beendete Prozesse gewartet....
-  YACC    scripts/kconfig/parser.tab.h
-/bin/sh: 1: bison: not found
-make[2]: *** [scripts/Makefile.lib:208: scripts/kconfig/parser.tab.h] Fehler 127
-make[1]: *** [/opt/apps/zeus/barebox/barebox/Makefile:422: syncconfig] Fehler 2
-make: *** [Makefile:463: include/config/auto.conf.cmd] Fehler 2
-
-Is the .config file wrong? I copied it from the barebox folder where I built barebox 2017 version.
-
+diff --git a/drivers/usb/dwc2/core.c b/drivers/usb/dwc2/core.c
+index 0046e955f..1812de034 100644
+--- a/drivers/usb/dwc2/core.c
++++ b/drivers/usb/dwc2/core.c
+@@ -1,6 +1,33 @@
+ // SPDX-License-Identifier: GPL-2.0+
+ #include "dwc2.h"
  
-> under images/ you will have the barebox images. You can get that onto your device using a SD-Card, imx-usb-loader, tftp ... etc.
-When the build succeeds where or how to put the image on the sdcard?
-By the way, which image is it there a lots of images in the ./image folder and there is none named imx6qdl? There are some named imx6dl and one imx6q.
++/* Returns the controller's GHWCFG2.OTG_MODE. */
++static unsigned int dwc2_op_mode(struct dwc2 *dwc2)
++{
++	u32 ghwcfg2 = dwc2_readl(dwc2, GHWCFG2);
++
++	return (ghwcfg2 & GHWCFG2_OP_MODE_MASK) >>
++		GHWCFG2_OP_MODE_SHIFT;
++}
++
++/* Returns true if the controller is host-only. */
++static bool dwc2_hw_is_host(struct dwc2 *dwc2)
++{
++	unsigned int op_mode = dwc2_op_mode(dwc2);
++
++	return (op_mode == GHWCFG2_OP_MODE_SRP_CAPABLE_HOST) ||
++		(op_mode == GHWCFG2_OP_MODE_NO_SRP_CAPABLE_HOST);
++}
++
++/* Returns true if the controller is device-only. */
++static bool dwc2_hw_is_device(struct dwc2 *dwc2)
++{
++	unsigned int op_mode = dwc2_op_mode(dwc2);
++
++	return (op_mode == GHWCFG2_OP_MODE_SRP_CAPABLE_DEVICE) ||
++		(op_mode == GHWCFG2_OP_MODE_NO_SRP_CAPABLE_DEVICE);
++}
++
+ void dwc2_set_param_otg_cap(struct dwc2 *dwc2)
+ {
+ 	u8 val;
+@@ -493,6 +520,68 @@ void dwc2_gusbcfg_init(struct dwc2 *dwc2)
+ 	dwc2_writel(dwc2, usbcfg, GUSBCFG);
+ }
+ 
++/*
++ * Check the dr_mode against the module configuration and hardware
++ * capabilities.
++ *
++ * The hardware, module, and dr_mode, can each be set to host, device,
++ * or otg. Check that all these values are compatible and adjust the
++ * value of dr_mode if possible.
++ *
++ *                      actual
++ *    HW  MOD dr_mode   dr_mode
++ *  ------------------------------
++ *   HST  HST  any    :  HST
++ *   HST  DEV  any    :  ---
++ *   HST  OTG  any    :  HST
++ *
++ *   DEV  HST  any    :  ---
++ *   DEV  DEV  any    :  DEV
++ *   DEV  OTG  any    :  DEV
++ *
++ *   OTG  HST  any    :  HST
++ *   OTG  DEV  any    :  DEV
++ *   OTG  OTG  any    :  dr_mode
++ */
++int dwc2_get_dr_mode(struct dwc2 *dwc2)
++{
++	enum usb_dr_mode mode;
++
++	mode = of_usb_get_dr_mode(dwc2->dev->device_node, NULL);
++	dwc2->dr_mode = mode;
++
++	if (dwc2_hw_is_device(dwc2)) {
++		if (IS_ENABLED(CONFIG_USB_DWC2_HOST)) {
++			dwc2_err(dwc2,
++				"Controller does not support host mode.\n");
++			return -EINVAL;
++		}
++		mode = USB_DR_MODE_PERIPHERAL;
++	} else if (dwc2_hw_is_host(dwc2)) {
++		if (IS_ENABLED(CONFIG_USB_DWC2_PERIPHERAL)) {
++			dwc2_err(dwc2,
++				"Controller does not support device mode.\n");
++			return -EINVAL;
++		}
++		mode = USB_DR_MODE_HOST;
++	} else {
++		if (IS_ENABLED(CONFIG_USB_DWC2_HOST))
++			mode = USB_DR_MODE_HOST;
++		else if (IS_ENABLED(CONFIG_USB_DWC2_PERIPHERAL))
++			mode = USB_DR_MODE_PERIPHERAL;
++	}
++
++	if (mode != dwc2->dr_mode) {
++		dwc2_warn(dwc2,
++			 "Configuration mismatch. dr_mode forced to %s\n",
++			mode == USB_DR_MODE_HOST ? "host" : "device");
++
++		dwc2->dr_mode = mode;
++	}
++
++	return 0;
++}
++
+ /*
+  * Do core a soft reset of the core.  Be careful with this because it
+  * resets all the internal state machines of the core.
+diff --git a/drivers/usb/dwc2/dwc2.c b/drivers/usb/dwc2/dwc2.c
+index 893f573bc..1df393e77 100644
+--- a/drivers/usb/dwc2/dwc2.c
++++ b/drivers/usb/dwc2/dwc2.c
+@@ -62,6 +62,8 @@ static int dwc2_probe(struct device_d *dev)
+ 	/* Detect config values from hardware */
+ 	dwc2_get_hwparams(dwc2);
+ 
++	dwc2_get_dr_mode(dwc2);
++
+ 	dwc2_set_default_params(dwc2);
+ 
+ 	dma_set_mask(dev, DMA_BIT_MASK(32));
+diff --git a/drivers/usb/dwc2/dwc2.h b/drivers/usb/dwc2/dwc2.h
+index 0ac4b40fc..60cdca520 100644
+--- a/drivers/usb/dwc2/dwc2.h
++++ b/drivers/usb/dwc2/dwc2.h
+@@ -21,6 +21,7 @@ void dwc2_flush_all_fifo(struct dwc2 *dwc2);
+ int dwc2_phy_init(struct dwc2 *dwc2, bool select_phy);
+ int dwc2_gahbcfg_init(struct dwc2 *dwc2);
+ void dwc2_gusbcfg_init(struct dwc2 *dwc2);
++int dwc2_get_dr_mode(struct dwc2 *dwc2);
+ 
+ int dwc2_core_reset(struct dwc2 *dwc2);
+ void dwc2_core_init(struct dwc2 *dwc2);
+-- 
+2.21.0.196.g041f5ea
 
-> 
-> If you want to do it in Yocto, there are meta-ptx and meta-barebox that have more recent barebox versions.
-Tomorrow I will try too, to build the upstream version using yocto.
 
-Thank you so much.
-
-Best Regards
-
-hu
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
