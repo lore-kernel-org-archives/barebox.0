@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iuIG8-0007LI-Pc
- for barebox@lists.infradead.org; Wed, 22 Jan 2020 15:49:39 +0000
+ id 1iuIG8-0007LG-Fi
+ for barebox@lists.infradead.org; Wed, 22 Jan 2020 15:49:38 +0000
 Received: from localhost (localhost [127.0.0.1])
- by zimbra2.kalray.eu (Postfix) with ESMTP id C6CB327E116E
+ by zimbra2.kalray.eu (Postfix) with ESMTP id B24D727E0FF8
  for <barebox@lists.infradead.org>; Wed, 22 Jan 2020 16:49:29 +0100 (CET)
 From: Jules Maselbas <jmaselbas@kalray.eu>
-Date: Wed, 22 Jan 2020 16:49:07 +0100
-Message-Id: <20200122154908.22635-7-jmaselbas@kalray.eu>
+Date: Wed, 22 Jan 2020 16:49:05 +0100
+Message-Id: <20200122154908.22635-5-jmaselbas@kalray.eu>
 In-Reply-To: <20200122154908.22635-1-jmaselbas@kalray.eu>
 References: <20200122154908.22635-1-jmaselbas@kalray.eu>
 MIME-Version: 1.0
@@ -24,50 +24,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 6/7] usb: dwc2: host: Fix toggle reset
+Subject: [PATCH v2 4/7] usb: dwc2: host: Handle dma mapping errors
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Jules Maselbas <jmaselbas@kalray.eu>
 
-From USB 2.0 specification, section 9.4.5:
-  ClearFeature(ENDPOINT_HALT) request always results in
-  the data toggle being reinitialized to DATA0.
-
-The hacky solution for now is to reset the toggle bit to DATA0 when
-the host controller send a ClearFeature request on an endpoint.
-
 Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
 ---
- drivers/usb/dwc2/host.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/usb/dwc2/host.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/drivers/usb/dwc2/host.c b/drivers/usb/dwc2/host.c
-index 5be101752..e6344ea41 100644
+index 61c29910e..09cf04b46 100644
 --- a/drivers/usb/dwc2/host.c
 +++ b/drivers/usb/dwc2/host.c
-@@ -372,7 +372,23 @@ int dwc2_submit_control_msg(struct usb_device *udev,
- 	if (ret)
- 		return ret;
+@@ -153,6 +153,11 @@ static int transfer_chunk(struct dwc2 *dwc2, u8 hc,
+ 	dma_addr = dma_map_single(dwc2->dev, buffer, xfer_len,
+ 				  in ? DMA_FROM_DEVICE : DMA_TO_DEVICE);
  
-+	if (setup->requesttype == USB_RECIP_ENDPOINT
-+	    && setup->request == USB_REQ_CLEAR_FEATURE) {
-+		/* From USB 2.0, section 9.4.5:
-+		 * ClearFeature(ENDPOINT_HALT) request always results
-+		 * in the data toggle being reinitialized to DATA0.
-+		 */
-+		int ep = usb_pipeendpoint(pipe);
-+		int data0 = TSIZ_SC_MC_PID_DATA0;
-+
-+		if (usb_pipein(pipe))
-+			dwc2->in_data_toggle[devnum][ep] = data0;
-+		else
-+			dwc2->out_data_toggle[devnum][ep] = data0;
++	if (dma_mapping_error(dwc2->dev, dma_addr)) {
++		dwc2_err(dwc2, "Failed to map buffer@0x%p for dma\n", buffer);
++		return -EFAULT;
 +	}
 +
- 	udev->act_len = act_len;
-+	udev->status = 0;
+ 	dwc2_dbg(dwc2, "chunk: pid=%d xfer_len=%u pkts=%u dma_addr=%llx\n",
+ 			*pid, xfer_len, num_packets, dma_addr);
  
- 	return 0;
- }
 -- 
 2.21.0.196.g041f5ea
 
