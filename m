@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iuIGW-0007eP-F4
- for barebox@lists.infradead.org; Wed, 22 Jan 2020 15:50:05 +0000
+ id 1iuIGX-0007fh-Ae
+ for barebox@lists.infradead.org; Wed, 22 Jan 2020 15:50:14 +0000
 Received: from localhost (localhost [127.0.0.1])
- by zimbra2.kalray.eu (Postfix) with ESMTP id 67A1027E0F5A
- for <barebox@lists.infradead.org>; Wed, 22 Jan 2020 16:49:58 +0100 (CET)
+ by zimbra2.kalray.eu (Postfix) with ESMTP id BF8D627E102A
+ for <barebox@lists.infradead.org>; Wed, 22 Jan 2020 16:49:59 +0100 (CET)
 From: Jules Maselbas <jmaselbas@kalray.eu>
-Date: Wed, 22 Jan 2020 16:49:41 +0100
-Message-Id: <20200122154950.22746-1-jmaselbas@kalray.eu>
+Date: Wed, 22 Jan 2020 16:49:42 +0100
+Message-Id: <20200122154950.22746-2-jmaselbas@kalray.eu>
+In-Reply-To: <20200122154950.22746-1-jmaselbas@kalray.eu>
+References: <20200122154950.22746-1-jmaselbas@kalray.eu>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,55 +24,79 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC PATCH 0/9] usb: Add dwc2 gadget driver
+Subject: [RFC PATCH 1/9] BACKPORT: usb: Add helper to extract bits 12:11 of
+ wMaxPacketize
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Jules Maselbas <jmaselbas@kalray.eu>
 
-This driver is a slimed down version of Linux's dwc2 gadget driver.
-It only support direct dma (not descriptor based dma) and does not
-support direct buffer (aka slave mode) although this could be nice
-to have.
+According to USB Specification 2.0 table 9-4,
+wMaxPacketSize is a bitfield. Endpoint's maxpacket
+is laid out in bits 10:0. For high-speed,
+high-bandwidth isochronous endpoints, bits 12:11
+contain a multiplier to tell us how many
+transactions we want to try per uframe.
 
-This patchset also backport two commits from Linux that change the
-behavior of usb_endpint_maxp() to only return the packet size, the
-other information is now available in usb_endpoint_maxp_mult().
-At the time I write this lines, I notice that the mult information
-is only needed for isochronous transfers, which are not supported
-by this driver...
+This means that if we want an isochronous endpoint
+to issue 3 transfers of 1024 bytes per uframe,
+wMaxPacketSize should contain the value:
 
-Once again this driver as only be tested on our custom SoC, this is
-still a work in progress.
+        1024 | (2 << 11)
 
-Any feedback are welcome, cheers.
-Jules
+or 5120 (0x1400). In order to make Host and
+Peripheral controller drivers' life easier, we're
+adding a helper which returns bits 12:11. Note that
+no care is made WRT to checking endpoint type and
+gadget's speed. That's left for drivers to handle.
 
+(cherry picked from linux commit 541b6fe63023f3059cf85d47ff2767a3e42a8e44)
+
+Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
 ---
+ include/usb/ch9.h | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-Jules Maselbas (9):
-  BACKPORT: usb: Add helper to extract bits 12:11 of wMaxPacketize
-  BACKPORT: usb: ch9: make usb_endpoint_maxp() return only packet size
-  usb: Update uses of usb_endpoint_maxp
-  usb: dwc2: Add otg state
-  usb: dwc2: Add function to flush a tx fifo
-  usb: dwc2: Add structure for gadget driver
-  usb: dwc2: Add getter for gadget fifo hwparams
-  usb: dwc2: gadget: Configure fifo size
-  usb: dwc2: Add gadget driver
-
- drivers/usb/dwc2/Makefile       |    2 +-
- drivers/usb/dwc2/core.c         |  148 ++
- drivers/usb/dwc2/core.h         |   64 +
- drivers/usb/dwc2/dwc2.c         |    2 +
- drivers/usb/dwc2/dwc2.h         |    3 +
- drivers/usb/dwc2/gadget.c       | 2668 +++++++++++++++++++++++++++++++
- drivers/usb/dwc2/regs.h         |    1 +
- drivers/usb/gadget/epautoconf.c |    2 +-
- drivers/usb/musb/musb_gadget.c  |   12 +-
- drivers/usb/musb/musb_host.c    |    3 +-
- include/usb/ch9.h               |   25 +-
- 11 files changed, 2916 insertions(+), 14 deletions(-)
- create mode 100644 drivers/usb/dwc2/gadget.c
-
+diff --git a/include/usb/ch9.h b/include/usb/ch9.h
+index 85f3e64ca..fc6ec862c 100644
+--- a/include/usb/ch9.h
++++ b/include/usb/ch9.h
+@@ -1,3 +1,4 @@
++
+ /*
+  * This file holds USB constants and structures that are needed for
+  * USB device APIs.  These are used by the USB device model, which is
+@@ -400,6 +401,11 @@ struct usb_endpoint_descriptor {
+ #define USB_ENDPOINT_XFER_INT		3
+ #define USB_ENDPOINT_MAX_ADJUSTABLE	0x80
+ 
++#define USB_EP_MAXP_MULT_SHIFT		11
++#define USB_EP_MAXP_MULT_MASK		(3 << USB_EP_MAXP_MULT_SHIFT)
++#define USB_EP_MAXP_MULT(m) \
++	(((m) & USB_EP_MAXP_MULT_MASK) >> USB_EP_MAXP_MULT_SHIFT)
++
+ /* The USB 3.0 spec redefines bits 5:4 of bmAttributes as interrupt ep type. */
+ #define USB_ENDPOINT_INTRTYPE		0x30
+ #define USB_ENDPOINT_INTR_PERIODIC	(0 << 4)
+@@ -596,6 +602,20 @@ static inline int usb_endpoint_is_isoc_out(
+ 	return usb_endpoint_xfer_isoc(epd) && usb_endpoint_dir_out(epd);
+ }
+ 
++/**
++ * usb_endpoint_maxp_mult - get endpoint's transactional opportunities
++ * @epd: endpoint to be checked
++ *
++ * Return @epd's wMaxPacketSize[12:11] + 1
++ */
++static inline int
++usb_endpoint_maxp_mult(const struct usb_endpoint_descriptor *epd)
++{
++       int maxp = __le16_to_cpu(epd->wMaxPacketSize);
++
++       return USB_EP_MAXP_MULT(maxp) + 1;
++}
++
+ /**
+  * usb_endpoint_maxp - get endpoint's max packet size
+  * @epd: endpoint to be checked
 -- 
 2.21.0.196.g041f5ea
 
