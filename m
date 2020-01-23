@@ -1,23 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mailout05.rmx.de ([94.199.90.90])
+Received: from mailout01.rmx.de ([94.199.90.91])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1itrxl-000333-9C
- for barebox@lists.infradead.org; Tue, 21 Jan 2020 11:44:57 +0000
-Received: from kdin01.retarus.com (unknown [172.19.17.48])
+ id 1iubTw-0000h9-CZ
+ for barebox@lists.infradead.org; Thu, 23 Jan 2020 12:21:10 +0000
+Received: from kdin02.retarus.com (kdin02.dmz1.retloc [172.19.17.49])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mailout05.rmx.de (Postfix) with ESMTPS id 4826CQ1p2Jz9tMl
- for <barebox@lists.infradead.org>; Tue, 21 Jan 2020 12:44:50 +0100 (CET)
+ by mailout01.rmx.de (Postfix) with ESMTPS id 483LwJ58Kjz2SYLy
+ for <barebox@lists.infradead.org>; Thu, 23 Jan 2020 13:21:04 +0100 (CET)
 Received: from ppmail.arri.de (unknown [217.111.95.7])
  (using TLSv1 with cipher AES128-SHA (128/128 bits))
  (No client certificate requested)
- by kdin01.retarus.com (Postfix) with ESMTPS id 4826CH30jBz2yvR
- for <barebox@lists.infradead.org>; Tue, 21 Jan 2020 12:44:43 +0100 (CET)
+ by kdin02.retarus.com (Postfix) with ESMTPS id 483LwH74RSz2TRlK
+ for <barebox@lists.infradead.org>; Thu, 23 Jan 2020 13:21:03 +0100 (CET)
 From: Christian Eggers <ceggers@arri.de>
-Date: Tue, 21 Jan 2020 12:44:20 +0100
-Message-ID: <20200121114421.24401-2-ceggers@arri.de>
-In-Reply-To: <20200121114421.24401-1-ceggers@arri.de>
-References: <20200121114421.24401-1-ceggers@arri.de>
+Date: Thu, 23 Jan 2020 13:20:41 +0100
+Message-ID: <20200123122045.25507-1-ceggers@arri.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -31,26 +29,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] usb: otg: Select CONFIG_PARAMETER
+Subject: [PATCH 1/5] state: remove param member from struct state_string
 To: barebox@lists.infradead.org
 Cc: Christian Eggers <ceggers@arri.de>, ceggers@gmx.de
 
-Without CONFIG_PARAMETER, usb_register_otg_device() will always fail.
+After adding the parameter, the pointer isn't required anymore.
 
 Signed-off-by: Christian Eggers <ceggers@arri.de>
 ---
- drivers/usb/otg/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ common/state/state.h           | 1 -
+ common/state/state_variables.c | 7 ++++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/otg/Kconfig b/drivers/usb/otg/Kconfig
-index 2c094452b..20b4d7f8c 100644
---- a/drivers/usb/otg/Kconfig
-+++ b/drivers/usb/otg/Kconfig
-@@ -9,4 +9,5 @@ config USB_TWL4030
+diff --git a/common/state/state.h b/common/state/state.h
+index 912d6d484..40450feff 100644
+--- a/common/state/state.h
++++ b/common/state/state.h
+@@ -191,7 +191,6 @@ struct state_mac {
+  */
+ struct state_string {
+ 	struct state_variable var;
+-	struct param_d *param;
+ 	char *value;
+ 	const char *value_default;
+ 	char raw[];
+diff --git a/common/state/state_variables.c b/common/state/state_variables.c
+index 6a00c8220..003542307 100644
+--- a/common/state/state_variables.c
++++ b/common/state/state_variables.c
+@@ -413,6 +413,7 @@ static struct state_variable *state_string_create(struct state *state,
+ {
+ 	struct state_string *string;
+ 	uint32_t start_size[2];
++	struct param_d *param;
+ 	int ret;
  
- config USB_OTGDEV
- 	bool
-+	select PARAMETER
+ 	ret = of_property_read_u32_array(node, "reg", start_size,
+@@ -432,11 +433,11 @@ static struct state_variable *state_string_create(struct state *state,
+ 	string->var.raw = &string->raw;
+ 	string->var.state = state;
+ 
+-	string->param = dev_add_param_string(&state->dev, name,
++	param = dev_add_param_string(&state->dev, name,
+ 					     state_string_set, state_string_get,
+ 					     &string->value, &string->var);
+-	if (IS_ERR(string->param)) {
+-		ret = PTR_ERR(string->param);
++	if (IS_ERR(param)) {
++		ret = PTR_ERR(param);
+ 		goto out;
+ 	}
  
 -- 
 Christian Eggers
