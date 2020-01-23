@@ -1,13 +1,8 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-db3eur04on070e.outbound.protection.outlook.com
- ([2a01:111:f400:fe0c::70e]
- helo=EUR04-DB3-obe.outbound.protection.outlook.com)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iueRC-0002A1-KA
- for barebox@lists.infradead.org; Thu, 23 Jan 2020 15:30:32 +0000
-From: Hans-Ulrich Schlieben <hu.schlieben@codewrights.de>
-Date: Thu, 23 Jan 2020 15:30:25 +0000
-Message-ID: <DB8PR03MB549871DF5E2805242C71347AFE0F0@DB8PR03MB5498.eurprd03.prod.outlook.com>
+ id 1iueXU-0004TX-Q8
+ for barebox@lists.infradead.org; Thu, 23 Jan 2020 15:37:02 +0000
 References: <r276.1579090214262888471.6UJY@lists.yoctoproject.org>
  <1579093362.13056.13.camel@pengutronix.de>
  <DB8PR03MB54983C09B221B210D29A26AAFE370@DB8PR03MB5498.eurprd03.prod.outlook.com>
@@ -19,9 +14,13 @@ References: <r276.1579090214262888471.6UJY@lists.yoctoproject.org>
  <1c275d4d-cf23-caf5-072e-2517080950c1@pengutronix.de>
  <DB8PR03MB54985379C7F9387F160929E7FE0D0@DB8PR03MB5498.eurprd03.prod.outlook.com>
  <0a8e32e7-7100-e834-97c8-de27959e41dd@gmail.com>
-In-Reply-To: <0a8e32e7-7100-e834-97c8-de27959e41dd@gmail.com>
-Content-Language: en-US
+ <DB8PR03MB549871DF5E2805242C71347AFE0F0@DB8PR03MB5498.eurprd03.prod.outlook.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <88f6a8d6-872d-62ea-9113-1c9a4983e300@pengutronix.de>
+Date: Thu, 23 Jan 2020 16:36:51 +0100
 MIME-Version: 1.0
+In-Reply-To: <DB8PR03MB549871DF5E2805242C71347AFE0F0@DB8PR03MB5498.eurprd03.prod.outlook.com>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -34,55 +33,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: [yocto] #yocto bootchooser: Cannot get state 'state'
-To: "Robert Berger@yocto.user" <robert.berger.yocto.user@gmail.com>, Ahmad Fatoum <a.fatoum@pengutronix.de>, Enrico Joerns <ejo@pengutronix.de>
+Subject: Re: [yocto] #yocto bootchooser: Cannot get state 'state'
+To: Hans-Ulrich Schlieben <hu.schlieben@codewrights.de>, "Robert Berger@yocto.user" <robert.berger.yocto.user@gmail.com>, Enrico Joerns <ejo@pengutronix.de>
 Cc: "yocto@lists.yoctoproject.org" <yocto@lists.yoctoproject.org>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi Robert,
+Hello,
 
-there where no SDK, bison and flex missing. Now it compiled. Thanx.
-There are 
+On 1/23/20 4:30 PM, Hans-Ulrich Schlieben wrote:
+> Hi Robert,
+> 
+> there where no SDK, bison and flex missing. Now it compiled. Thanx.
+> There are 
+> 
+> Copying it onto the system and running it from the console just returned error code 132 and: 
+> Illegal instruction
 
-Copying it onto the system and running it from the console just returned error code 132 and: 
-Illegal instruction
+Running what?
 
-I copied the .config file from yocto into the barebox directory. Do I have still the wrong architecture?
+> I copied the .config file from yocto into the barebox directory. Do I have still the wrong architecture?
+> 
+> Perhaps I have to copy  ./images/barebox-phytec-phycard-imx6q-1gib.img onto the destination system starting at offset 0x1000 using dd.
+> How to copy barebox onto the sdcard? There is no setupmbr executable in ./scripts/setupmbr, just a c file and no working Makefile.
 
-Perhaps I have to copy  ./images/barebox-phytec-phycard-imx6q-1gib.img onto the destination system starting at offset 0x1000 using dd.
-How to copy barebox onto the sdcard? There is no setupmbr executable in ./scripts/setupmbr, just a c file and no working Makefile.
+barebox already has the dcd offset in, just dd the correct image to the start of your SD-Card and it should work.
 
-Thank you and Best Regards
-
-hu
-
-
+Cheers
+Ahmad
 
 
------Original Message-----
-From: Robert Berger@yocto.user <robert.berger.yocto.user@gmail.com> 
-Sent: Wednesday, 22 January 2020 18:59
-To: Hans-Ulrich Schlieben <hu.schlieben@codewrights.de>; Ahmad Fatoum <a.fatoum@pengutronix.de>; Enrico Joerns <ejo@pengutronix.de>
-Cc: yocto@lists.yoctoproject.org; barebox@lists.infradead.org
-Subject: Re: [yocto] #yocto bootchooser: Cannot get state 'state'
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
-Hi,
-
-Did you install the SDK?
-
-Did you run the environment script?
-
-> make: /path/to/your/yocto/toolchain/bin/arm--linux-gnueabihf-gcc: Kommando nicht gefunden
->    LEX     scripts/kconfig/lexer.lex.c
-> /bin/sh: 1: flex: not found
-
->    YACC    scripts/kconfig/parser.tab.h
-> /bin/sh: 1: bison: not found
-
-flex and bison seem to be missing as well.
-
-Regards,
-
-Robert
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
