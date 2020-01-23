@@ -1,21 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mailout12.rmx.de ([94.199.88.78])
+Received: from mailout04.rmx.de ([94.199.90.94])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iubUM-0000r3-9Z
- for barebox@lists.infradead.org; Thu, 23 Jan 2020 12:21:35 +0000
+ id 1iubUX-0000w1-Re
+ for barebox@lists.infradead.org; Thu, 23 Jan 2020 12:21:47 +0000
 Received: from kdin02.retarus.com (kdin02.dmz1.retloc [172.19.17.49])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mailout12.rmx.de (Postfix) with ESMTPS id 483Lwp5YR4zRkSt
- for <barebox@lists.infradead.org>; Thu, 23 Jan 2020 13:21:30 +0100 (CET)
+ by mailout04.rmx.de (Postfix) with ESMTPS id 483Lx24BGjz3qpgW
+ for <barebox@lists.infradead.org>; Thu, 23 Jan 2020 13:21:42 +0100 (CET)
 Received: from ppmail.arri.de (unknown [217.111.95.7])
  (using TLSv1 with cipher AES128-SHA (128/128 bits))
  (No client certificate requested)
- by kdin02.retarus.com (Postfix) with ESMTPS id 483Lwn4LZHz2TSCY
- for <barebox@lists.infradead.org>; Thu, 23 Jan 2020 13:21:29 +0100 (CET)
+ by kdin02.retarus.com (Postfix) with ESMTPS id 483Lwx5BKMz2TSCf
+ for <barebox@lists.infradead.org>; Thu, 23 Jan 2020 13:21:37 +0100 (CET)
 From: Christian Eggers <ceggers@arri.de>
-Date: Thu, 23 Jan 2020 13:20:43 +0100
-Message-ID: <20200123122045.25507-3-ceggers@arri.de>
+Date: Thu, 23 Jan 2020 13:20:44 +0100
+Message-ID: <20200123122045.25507-4-ceggers@arri.de>
 In-Reply-To: <20200123122045.25507-1-ceggers@arri.de>
 References: <20200123122045.25507-1-ceggers@arri.de>
 MIME-Version: 1.0
@@ -31,112 +31,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] state: remove param member from state_uint32, state_enum32,
- state_mac
+Subject: [PATCH 4/5] globalvar: Allow NULL pointers to be returned by
+ dev_add_param()
 To: barebox@lists.infradead.org
 Cc: Christian Eggers <ceggers@arri.de>, ceggers@gmx.de
 
-After adding the parameter, the pointer isn't required anymore.
+The following commit will change the return value of dev_add_param()
+from -ENOSYS to NULL if CONFIG_PARAMETER is disabled. After that,
+building without CONFIG_PARAMETER will return a NULL pointer to
+__nvvar_add() instead of an error.
 
 Signed-off-by: Christian Eggers <ceggers@arri.de>
 ---
- common/state/state.h           |  3 ---
- common/state/state_variables.c | 16 ++++++++--------
- 2 files changed, 8 insertions(+), 11 deletions(-)
+ common/globalvar.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/common/state/state.h b/common/state/state.h
-index 40450feff..1881d92ea 100644
---- a/common/state/state.h
-+++ b/common/state/state.h
-@@ -159,7 +159,6 @@ struct state_variable {
-  */
- struct state_uint32 {
- 	struct state_variable var;
--	struct param_d *param;
- 	uint32_t value;
- 	uint32_t value_default;
- };
-@@ -169,7 +168,6 @@ struct state_uint32 {
-  */
- struct state_enum32 {
- 	struct state_variable var;
--	struct param_d *param;
- 	uint32_t value;
- 	uint32_t value_default;
- 	const char **names;
-@@ -181,7 +179,6 @@ struct state_enum32 {
-  */
- struct state_mac {
- 	struct state_variable var;
--	struct param_d *param;
- 	uint8_t value[6];
- 	uint8_t value_default[6];
- };
-diff --git a/common/state/state_variables.c b/common/state/state_variables.c
-index 003542307..66c66f38b 100644
---- a/common/state/state_variables.c
-+++ b/common/state/state_variables.c
-@@ -116,7 +116,6 @@ static struct state_variable *state_uint8_create(struct state *state,
- 		return ERR_CAST(param);
- 	}
+diff --git a/common/globalvar.c b/common/globalvar.c
+index cec0a9cc4..8dcbc04bd 100644
+--- a/common/globalvar.c
++++ b/common/globalvar.c
+@@ -166,21 +166,24 @@ static int nvvar_device_dispatch(const char *name, struct device_d **dev,
+ 	return 1;
+ }
  
--	su32->param = param;
- 	su32->var.type = vtype;
- 	su32->var.size = sizeof(uint8_t);
- #ifdef __LITTLE_ENDIAN
-@@ -146,7 +145,6 @@ static struct state_variable *state_uint32_create(struct state *state,
- 		return ERR_CAST(param);
- 	}
- 
--	su32->param = param;
- 	su32->var.type = vtype;
- 	su32->var.size = sizeof(uint32_t);
- 	su32->var.raw = &su32->value;
-@@ -226,6 +224,7 @@ static struct state_variable *state_enum32_create(struct state *state,
- 						  const struct variable_type *vtype)
+-static int nv_set(struct device_d *dev, struct param_d *p, const char *val)
++static int nv_set(struct device_d *dev, struct param_d *p, const char *name, const char *val)
  {
- 	struct state_enum32 *enum32;
-+	struct param_d *param;
- 	int ret, i, num_names;
- 
- 	enum32 = xzalloc(sizeof(*enum32));
-@@ -253,11 +252,11 @@ static struct state_variable *state_enum32_create(struct state *state,
- 		enum32->names[i] = xstrdup(name);
- 	}
- 
--	enum32->param = dev_add_param_enum(&state->dev, name, state_set_dirty,
-+	param = dev_add_param_enum(&state->dev, name, state_set_dirty,
- 					   NULL, &enum32->value, enum32->names,
- 					   num_names, &enum32->var);
--	if (IS_ERR(enum32->param)) {
--		ret = PTR_ERR(enum32->param);
-+	if (IS_ERR(param)) {
-+		ret = PTR_ERR(param);
- 		goto out;
- 	}
- 
-@@ -310,6 +309,7 @@ static struct state_variable *state_mac_create(struct state *state,
- 					       const struct variable_type *vtype)
- {
- 	struct state_mac *mac;
-+	struct param_d *param;
  	int ret;
  
- 	mac = xzalloc(sizeof(*mac));
-@@ -319,10 +319,10 @@ static struct state_variable *state_mac_create(struct state *state,
- 	mac->var.raw = mac->value;
- 	mac->var.state = state;
- 
--	mac->param = dev_add_param_mac(&state->dev, name, state_set_dirty,
-+	param = dev_add_param_mac(&state->dev, name, state_set_dirty,
- 				       NULL, mac->value, &mac->var);
--	if (IS_ERR(mac->param)) {
--		ret = PTR_ERR(mac->param);
-+	if (IS_ERR(param)) {
-+		ret = PTR_ERR(param);
- 		goto out;
+ 	if (!val) {
+-		free(p->value);
++		if (p)
++			free(p->value);
+ 		return 0;
  	}
  
+-	ret = dev_set_param(&global_device, p->name, val);
++	ret = dev_set_param(&global_device, name, val);
+ 	if (ret)
+ 		return ret;
+ 
+-	free(p->value);
+-	p->value = xstrdup(val);
++	if (p) {
++		free(p->value);
++		p->value = xstrdup(val);
++	}
+ 
+ 	return 0;
+ }
+@@ -194,7 +197,7 @@ static int nv_param_set(struct device_d *dev, struct param_d *p, const char *val
+ {
+ 	int ret;
+ 
+-	ret = nv_set(dev, p, val);
++	ret = nv_set(dev, p, p->name, val);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -225,7 +228,7 @@ static int __nvvar_add(const char *name, const char *value)
+ 		return ret;
+ 
+ 	if (value)
+-		return nv_set(&nv_device, p, value);
++		return nv_set(&nv_device, p, name, value);
+ 
+ 	ret = nvvar_device_dispatch(name, &dev, &pname);
+ 	if (ret > 0)
+@@ -233,7 +236,7 @@ static int __nvvar_add(const char *name, const char *value)
+ 	else
+ 		value = dev_get_param(&global_device, name);
+ 
+-	if (value) {
++	if (value && p) {
+ 		free(p->value);
+ 		p->value = xstrdup(value);
+ 	}
 -- 
 Christian Eggers
 Embedded software developer
