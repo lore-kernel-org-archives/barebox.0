@@ -1,21 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mailout04.rmx.de ([94.199.90.94])
+Received: from mailout07.rmx.de ([94.199.90.95])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iubUX-0000w1-Re
- for barebox@lists.infradead.org; Thu, 23 Jan 2020 12:21:47 +0000
-Received: from kdin02.retarus.com (kdin02.dmz1.retloc [172.19.17.49])
+ id 1iubUi-000129-SI
+ for barebox@lists.infradead.org; Thu, 23 Jan 2020 12:21:58 +0000
+Received: from kdin01.retarus.com (kdin01.dmz1.retloc [172.19.17.48])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mailout04.rmx.de (Postfix) with ESMTPS id 483Lx24BGjz3qpgW
- for <barebox@lists.infradead.org>; Thu, 23 Jan 2020 13:21:42 +0100 (CET)
+ by mailout07.rmx.de (Postfix) with ESMTPS id 483LxF3FTFzBxNZ
+ for <barebox@lists.infradead.org>; Thu, 23 Jan 2020 13:21:53 +0100 (CET)
 Received: from ppmail.arri.de (unknown [217.111.95.7])
  (using TLSv1 with cipher AES128-SHA (128/128 bits))
  (No client certificate requested)
- by kdin02.retarus.com (Postfix) with ESMTPS id 483Lwx5BKMz2TSCf
- for <barebox@lists.infradead.org>; Thu, 23 Jan 2020 13:21:37 +0100 (CET)
+ by kdin01.retarus.com (Postfix) with ESMTPS id 483Lx44bf0z2yvV
+ for <barebox@lists.infradead.org>; Thu, 23 Jan 2020 13:21:44 +0100 (CET)
 From: Christian Eggers <ceggers@arri.de>
-Date: Thu, 23 Jan 2020 13:20:44 +0100
-Message-ID: <20200123122045.25507-4-ceggers@arri.de>
+Date: Thu, 23 Jan 2020 13:20:45 +0100
+Message-ID: <20200123122045.25507-5-ceggers@arri.de>
 In-Reply-To: <20200123122045.25507-1-ceggers@arri.de>
 References: <20200123122045.25507-1-ceggers@arri.de>
 MIME-Version: 1.0
@@ -31,82 +31,115 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] globalvar: Allow NULL pointers to be returned by
- dev_add_param()
+Subject: [PATCH 5/5] parameter: Return NULL instead of ENOSYS if
+ CONFIG_PARAMETER is disabled
 To: barebox@lists.infradead.org
 Cc: Christian Eggers <ceggers@arri.de>, ceggers@gmx.de
 
-The following commit will change the return value of dev_add_param()
-from -ENOSYS to NULL if CONFIG_PARAMETER is disabled. After that,
-building without CONFIG_PARAMETER will return a NULL pointer to
-__nvvar_add() instead of an error.
+This reverts 03b59bdb64 ("paramter: The dev_add_param_*() return
+ERR_PTR(), change no-ops to return ERR_PTR(-ENOSYS) instead of NULL").
+
+Most callers of dev_add_param_*() don't care about whether
+CONFIG_PARAMETER is enabled or not. The remaining ones have already been
+prepared for getting a NULL pointer. As a result, these callers will not
+fail itself, only because CONFIG_PARAMETER (which is always optional) is
+disabled.
 
 Signed-off-by: Christian Eggers <ceggers@arri.de>
 ---
- common/globalvar.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ include/param.h | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/common/globalvar.c b/common/globalvar.c
-index cec0a9cc4..8dcbc04bd 100644
---- a/common/globalvar.c
-+++ b/common/globalvar.c
-@@ -166,21 +166,24 @@ static int nvvar_device_dispatch(const char *name, struct device_d **dev,
- 	return 1;
+diff --git a/include/param.h b/include/param.h
+index f1166eb28..c79b908b1 100644
+--- a/include/param.h
++++ b/include/param.h
+@@ -118,7 +118,7 @@ static inline struct param_d *dev_add_param(struct device_d *dev, const char *na
+ 		const char *(*get)(struct device_d *, struct param_d *p),
+ 		unsigned long flags)
+ {
+-	return ERR_PTR(-ENOSYS);
++	return NULL;
  }
  
--static int nv_set(struct device_d *dev, struct param_d *p, const char *val)
-+static int nv_set(struct device_d *dev, struct param_d *p, const char *name, const char *val)
+ static inline struct param_d *dev_add_param_string(struct device_d *dev, const char *name,
+@@ -126,7 +126,7 @@ static inline struct param_d *dev_add_param_string(struct device_d *dev, const c
+ 		int (*get)(struct param_d *p, void *priv),
+ 		char **value, void *priv)
  {
- 	int ret;
- 
- 	if (!val) {
--		free(p->value);
-+		if (p)
-+			free(p->value);
- 		return 0;
- 	}
- 
--	ret = dev_set_param(&global_device, p->name, val);
-+	ret = dev_set_param(&global_device, name, val);
- 	if (ret)
- 		return ret;
- 
--	free(p->value);
--	p->value = xstrdup(val);
-+	if (p) {
-+		free(p->value);
-+		p->value = xstrdup(val);
-+	}
- 
- 	return 0;
+-	return ERR_PTR(-ENOSYS);
++	return NULL;
  }
-@@ -194,7 +197,7 @@ static int nv_param_set(struct device_d *dev, struct param_d *p, const char *val
+ 
+ static inline struct param_d *__dev_add_param_int(struct device_d *dev, const char *name,
+@@ -134,7 +134,7 @@ static inline struct param_d *__dev_add_param_int(struct device_d *dev, const ch
+ 		int (*get)(struct param_d *p, void *priv),
+ 		void *value, enum param_type type, const char *format, void *priv)
  {
- 	int ret;
+-	return ERR_PTR(-ENOSYS);
++	return NULL;
+ }
  
--	ret = nv_set(dev, p, val);
-+	ret = nv_set(dev, p, p->name, val);
- 	if (ret)
- 		return ret;
+ static inline struct param_d *dev_add_param_enum(struct device_d *dev, const char *name,
+@@ -143,7 +143,7 @@ static inline struct param_d *dev_add_param_enum(struct device_d *dev, const cha
+ 		int *value, const char * const *names, int max, void *priv)
  
-@@ -225,7 +228,7 @@ static int __nvvar_add(const char *name, const char *value)
- 		return ret;
+ {
+-	return ERR_PTR(-ENOSYS);
++	return NULL;
+ }
  
- 	if (value)
--		return nv_set(&nv_device, p, value);
-+		return nv_set(&nv_device, p, name, value);
+ static inline struct param_d *dev_add_param_bitmask(struct device_d *dev, const char *name,
+@@ -151,7 +151,7 @@ static inline struct param_d *dev_add_param_bitmask(struct device_d *dev, const
+                 int (*get)(struct param_d *p, void *priv),
+                 unsigned long *value, const char * const *names, int max, void *priv)
+ {
+-	return ERR_PTR(-ENOSYS);
++	return NULL;
+ }
  
- 	ret = nvvar_device_dispatch(name, &dev, &pname);
- 	if (ret > 0)
-@@ -233,7 +236,7 @@ static int __nvvar_add(const char *name, const char *value)
- 	else
- 		value = dev_get_param(&global_device, name);
+ static inline struct param_d *dev_add_param_tristate(struct device_d *dev, const char *name,
+@@ -159,13 +159,13 @@ static inline struct param_d *dev_add_param_tristate(struct device_d *dev, const
+ 		int (*get)(struct param_d *p, void *priv),
+ 		int *value, void *priv)
+ {
+-	return ERR_PTR(-ENOSYS);
++	return NULL;
+ }
  
--	if (value) {
-+	if (value && p) {
- 		free(p->value);
- 		p->value = xstrdup(value);
- 	}
+ static inline struct param_d *dev_add_param_tristate_ro(struct device_d *dev, const char *name,
+ 		int *value)
+ {
+-	return ERR_PTR(-ENOSYS);
++	return NULL;
+ }
+ 
+ static inline struct param_d *dev_add_param_ip(struct device_d *dev, const char *name,
+@@ -173,7 +173,7 @@ static inline struct param_d *dev_add_param_ip(struct device_d *dev, const char
+ 		int (*get)(struct param_d *p, void *priv),
+ 		IPaddr_t *ip, void *priv)
+ {
+-	return ERR_PTR(-ENOSYS);
++	return NULL;
+ }
+ 
+ static inline struct param_d *dev_add_param_mac(struct device_d *dev, const char *name,
+@@ -181,13 +181,13 @@ static inline struct param_d *dev_add_param_mac(struct device_d *dev, const char
+ 		int (*get)(struct param_d *p, void *priv),
+ 		u8 *mac, void *priv)
+ {
+-	return ERR_PTR(-ENOSYS);
++	return NULL;
+ }
+ 
+ static inline struct param_d *dev_add_param_fixed(struct device_d *dev, const char *name,
+ 						  const char *value)
+ {
+-	return ERR_PTR(-ENOSYS);
++	return NULL;
+ }
+ 
+ static inline void dev_remove_param(struct param_d *p) {}
 -- 
 Christian Eggers
 Embedded software developer
