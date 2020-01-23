@@ -1,17 +1,24 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mailout05.rmx.de ([94.199.90.90])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iuaVe-0006vC-M9
- for barebox@lists.infradead.org; Thu, 23 Jan 2020 11:18:52 +0000
-References: <20200121114421.24401-1-ceggers@arri.de>
- <20200122082115.tgwaf72ootkmkf5s@pengutronix.de>
- <1607136.7P1be9KPAr@n95hx1g2>
- <20200122195416.32acs5tzb5qlyufy@pengutronix.de>
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Message-ID: <518be9d3-a348-2126-db0a-3482db2127b0@pengutronix.de>
-Date: Thu, 23 Jan 2020 12:18:44 +0100
+ id 1iubU7-0000kE-GO
+ for barebox@lists.infradead.org; Thu, 23 Jan 2020 12:21:20 +0000
+Received: from kdin01.retarus.com (kdin01.dmz1.retloc [172.19.17.48])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mailout05.rmx.de (Postfix) with ESMTPS id 483LwX1vd7z9tRy
+ for <barebox@lists.infradead.org>; Thu, 23 Jan 2020 13:21:16 +0100 (CET)
+Received: from ppmail.arri.de (unknown [217.111.95.7])
+ (using TLSv1 with cipher AES128-SHA (128/128 bits))
+ (No client certificate requested)
+ by kdin01.retarus.com (Postfix) with ESMTPS id 483LwW12s7z2yt5
+ for <barebox@lists.infradead.org>; Thu, 23 Jan 2020 13:21:15 +0100 (CET)
+From: Christian Eggers <ceggers@arri.de>
+Date: Thu, 23 Jan 2020 13:20:42 +0100
+Message-ID: <20200123122045.25507-2-ceggers@arri.de>
+In-Reply-To: <20200123122045.25507-1-ceggers@arri.de>
+References: <20200123122045.25507-1-ceggers@arri.de>
 MIME-Version: 1.0
-In-Reply-To: <20200122195416.32acs5tzb5qlyufy@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,124 +27,73 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============7664508493444648837=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] watchdog: Select CONFIG_PARAMETER
-To: Sascha Hauer <s.hauer@pengutronix.de>, Christian Eggers <ceggers@arri.de>
-Cc: barebox@lists.infradead.org, ceggers@gmx.de
+Subject: [PATCH 2/5] mci: remove param_probe member from struct mci
+To: barebox@lists.infradead.org
+Cc: Christian Eggers <ceggers@arri.de>, ceggers@gmx.de
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---===============7664508493444648837==
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature";
- boundary="0K6oimHCxgUJkc9Iaqk8ovECsFFdMIIxz"
+After adding the parameter, the pointer isn't required anymore.
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---0K6oimHCxgUJkc9Iaqk8ovECsFFdMIIxz
-Content-Type: multipart/mixed; boundary="zIEs1YUHQX6ztgkqyrWrIzbeODaT1UmaH";
- protected-headers="v1"
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>, Christian Eggers <ceggers@arri.de>
-Cc: barebox@lists.infradead.org, ceggers@gmx.de
-Message-ID: <518be9d3-a348-2126-db0a-3482db2127b0@pengutronix.de>
-Subject: Re: [PATCH 1/3] watchdog: Select CONFIG_PARAMETER
-References: <20200121114421.24401-1-ceggers@arri.de>
- <20200122082115.tgwaf72ootkmkf5s@pengutronix.de>
- <1607136.7P1be9KPAr@n95hx1g2>
- <20200122195416.32acs5tzb5qlyufy@pengutronix.de>
-In-Reply-To: <20200122195416.32acs5tzb5qlyufy@pengutronix.de>
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+---
+ drivers/mci/mci-core.c | 7 ++++---
+ include/mci.h          | 1 -
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
---zIEs1YUHQX6ztgkqyrWrIzbeODaT1UmaH
-Content-Type: text/plain; charset=utf-8
-Content-Language: de-DE
-Content-Transfer-Encoding: quoted-printable
+diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+index 67257bcd1..7f2d3d46d 100644
+--- a/drivers/mci/mci-core.c
++++ b/drivers/mci/mci-core.c
+@@ -1798,6 +1798,7 @@ static int mci_detect(struct device_d *dev)
+ int mci_register(struct mci_host *host)
+ {
+ 	struct mci *mci;
++	struct param_d *param_probe;
+ 	int ret;
+ 
+ 	mci = xzalloc(sizeof(*mci));
+@@ -1829,11 +1830,11 @@ int mci_register(struct mci_host *host)
+ 
+ 	dev_info(mci->host->hw_dev, "registered as %s\n", dev_name(&mci->dev));
+ 
+-	mci->param_probe = dev_add_param_bool(&mci->dev, "probe",
++	param_probe = dev_add_param_bool(&mci->dev, "probe",
+ 			mci_set_probe, NULL, &mci->probe, mci);
+ 
+-	if (IS_ERR(mci->param_probe) && PTR_ERR(mci->param_probe) != -ENOSYS) {
+-		ret = PTR_ERR(mci->param_probe);
++	if (IS_ERR(param_probe) && PTR_ERR(param_probe) != -ENOSYS) {
++		ret = PTR_ERR(param_probe);
+ 		dev_dbg(&mci->dev, "Failed to add 'probe' parameter to the MCI device\n");
+ 		goto err_unregister;
+ 	}
+diff --git a/include/mci.h b/include/mci.h
+index a45d74476..96150739f 100644
+--- a/include/mci.h
++++ b/include/mci.h
+@@ -468,7 +468,6 @@ struct mci {
+ 	int dsr_imp;		/**< DSR implementation state from CSD */
+ 	char *ext_csd;
+ 	int probe;
+-	struct param_d *param_probe;
+ 	struct param_d *param_boot;
+ 	int bootpart;
+ 
+-- 
+Christian Eggers
+Embedded software developer
 
-On 1/22/20 8:54 PM, Sascha Hauer wrote:
-> On Wed, Jan 22, 2020 at 10:39:07AM +0100, Christian Eggers wrote:
->> Hi Sascha,
->>
->> Am Mittwoch, 22. Januar 2020, 09:21:15 CET schrieb Sascha Hauer:
->>> Hi Christian,
->>>
->>>> diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
->>>> index 45dd41a2a..34b7fea39 100644
->>>> --- a/drivers/watchdog/Kconfig
->>>> +++ b/drivers/watchdog/Kconfig
->>>> @@ -4,6 +4,7 @@ config WATCHDOG_IMX_RESET_SOURCE
->>>>
->>>>  menuconfig WATCHDOG
->>>>
->>>>     bool "Watchdog support"
->>>>
->>>> +   select PARAMETER
->>>
->>> I think this goes into the wrong direction. With CONFIG_PARAMETER
->>> enabled we get support for adjusting device parameters from the shell=
-=2E
->>> In environments without shell support parameter support is not needed=
-=2E
->>> For example the watchdog C API doesn't need parameter support and is
->>> still usable.
->>>
->>> The static inline wrappers for dev_add_param_* should return NULL
->>> instead of returning ERR_PTR(-ENOSYS).
->>
->> initially I came to the same result. But previous commits to param.h w=
-ent in
->> the opposite direction:
->>
->>> 03b59bdb64 ("paramter: The dev_add_param_*() return ERR_PTR(), change=
+Arnold & Richter Cine Technik GmbH & Co. Betriebs KG
+Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRA 57918
+Persoenlich haftender Gesellschafter: Arnold & Richter Cine Technik GmbH
+Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRB 54477
+Geschaeftsfuehrer: Dr. Michael Neuhaeuser; Stephan Schenk; Walter Trauninger; Markus Zeiler
 
->>> no-ops") to return ERR_PTR(-ENOSYS) instead of NULL
->=20
-> Shouldn't have merged this one as it lacks an explanation why this has
-> been done. Marc, do you have an idea what the motivation for this patch=
-
-> was?
-
-Sorry, I don't remember....
-
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde           |
-Embedded Linux                   | https://www.pengutronix.de  |
-Vertretung West/Dortmund         | Phone: +49-231-2826-924     |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-5555 |
-
-
---zIEs1YUHQX6ztgkqyrWrIzbeODaT1UmaH--
-
---0K6oimHCxgUJkc9Iaqk8ovECsFFdMIIxz
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEmvEkXzgOfc881GuFWsYho5HknSAFAl4pgRQACgkQWsYho5Hk
-nSC7VwgAscsAbKLxIh4zczG+OUpPh+vi7M+RbaB91+CYT/c22fY3ax1FZvxPadJV
-VV92X2pAxqqGS5zPojQ0j6ETjH4yrCR5KysIEqTyVqF/iIyuVzp8JdHDXRWGGQv1
-G0Ax0GX00Pa/ArDL1h8qf4I+BQs+95LZ1fuAKgRd6yXDk+9dPqufwPlg6qWIEHsa
-XrVQgwErgn2YPVuX4xEa6rTmKweo1DlzfOn3o574xO0RdimyK06N+6BZWt3U9jJS
-AlC35DX7yrb0CVIcldMIoz4S6Pyt/jxPcCXNu+q/XB+5KiRFuumPbD/LusPGSM9C
-aC/XeuJMvahN5nvaUeQnAtR5z/eRKg==
-=5J5w
------END PGP SIGNATURE-----
-
---0K6oimHCxgUJkc9Iaqk8ovECsFFdMIIxz--
-
-
---===============7664508493444648837==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============7664508493444648837==--
