@@ -1,22 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from submit-2.e-mind.com ([188.94.192.46])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iv0wr-0006Zg-Ky
- for barebox@lists.infradead.org; Fri, 24 Jan 2020 15:32:43 +0000
-Received: from localhost (unknown [127.0.0.1])
- by submit-2.e-mind.com (Postfix) with ESMTP id 5F3ED8410F2
- for <barebox@lists.infradead.org>; Fri, 24 Jan 2020 15:32:33 +0000 (UTC)
-Received: from submit-2.e-mind.com ([127.0.0.1])
- by localhost (submit-2.e-mind.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id o1R6CuLs0hlq for <barebox@lists.infradead.org>;
- Fri, 24 Jan 2020 16:32:33 +0100 (CET)
-Received: from qmail.e-mind.com (qmail34.e-mind.com [188.94.192.34])
- by submit-2.e-mind.com (Postfix) with SMTP id 3E45083E7BC
- for <barebox@lists.infradead.org>; Fri, 24 Jan 2020 16:32:31 +0100 (CET)
-From: gianluca <gianlucarenzi@eurek.it>
-Message-ID: <5f02d95b-418e-f0c0-68c6-29d7d9ab0db6@eurek.it>
-Date: Fri, 24 Jan 2020 16:32:28 +0100
+ id 1iv1aG-00046w-KY
+ for barebox@lists.infradead.org; Fri, 24 Jan 2020 16:13:26 +0000
+References: <5f02d95b-418e-f0c0-68c6-29d7d9ab0db6@eurek.it>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <65cb5ff1-9cac-ea88-e06d-6658d814c251@pengutronix.de>
+Date: Fri, 24 Jan 2020 17:13:20 +0100
 MIME-Version: 1.0
+In-Reply-To: <5f02d95b-418e-f0c0-68c6-29d7d9ab0db6@eurek.it>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,53 +18,74 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Barebox 2020.01.0 and Device Tree from Linux Kernel 5.4
-To: barebox@lists.infradead.org
+Subject: Re: Barebox 2020.01.0 and Device Tree from Linux Kernel 5.4
+To: gianluca <gianlucarenzi@eurek.it>, barebox@lists.infradead.org
 
-Hello list!
+Hello,
 
-I was wondering if the device tree from (latest) Linux Kernel can be 
-used when building Barebox 2020.01.0 for iMX6 compatible custom board.
+On 1/24/20 4:32 PM, gianluca wrote:
+> I was wondering if the device tree from (latest) Linux Kernel can be used when building Barebox 2020.01.0 for iMX6 compatible custom board.
+> For sure the include path and other stuff are quite different (kernel and barebox), so I am pretty sure it will fail to build with some sort of "foreign" device-tree.
 
-For sure the include path and other stuff are quite different (kernel 
-and barebox), so I am pretty sure it will fail to build with some sort 
-of "foreign" device-tree. Another issue, will be the drivers to have 
-full access from Barebox-Point-Of-View. If the device-tree properties 
-and compatible strings are quite different, Barebox will fail to 
-activating/probing/using the internal driver.
+barebox already regularly imports Linux's device tree directories into its dts/ directory.
+v2020.01.0 contains the v5.4-rc7 state.
 
-So I am asking:
-There is a "official" way to manage those differencies?
+Another issue, will be the drivers to have full access from Barebox-Point-Of-View. If the device-tree properties and compatible strings are quite different, Barebox will fail to activating/probing/using the internal driver.
 
-Am I forced to use TWO device-tree dts files (almost identical each 
-other) ???
+barebox driver compatibles should be aligned with the kernel's.
+If a barebox driver lacks handling for a property, the driver can be extended.
 
-It seems it is like re-inventing the wheel...
+> So I am asking:
+> There is a "official" way to manage those differencies?
 
-I think this procedure can be used with ALL supported boards present in 
-barebox source tree.
+I recently added a short section about this in the Documentation
+(https://barebox.org/doc/latest/devicetree/index.html):
 
-Actually I am using a slightly modified device-tree for my boards from 
-kernel, then adapted to be compiled for Barebox.
-Some nodes are "disabled" by default as status, so Barebox will activate 
-them when probing the real-hardware.
+  "For supporting architectures, barebox device trees are located in arch/$ARCH/dts.
+   Usually the barebox board.dts imports the upstream device tree under dts/src/$ARCH
+   with #include "$ARCH/board.dts" and then extends it with barebox-specifics like
+   Barebox state, environment or boot-time device configuration."
 
-I would like to keep my code to activate/deactivate device-tree drivers, 
-but without modifying the Kernel device-tree each time when I do a 
-Kernel update.
+Take a look at arch/arm/dts/imx6q-marsboard.dts to see how that looks in practice.
+The kernel device tree is reused as is and extended slightly for barebox use.
 
-Any hint will be very accepted.
+> Am I forced to use TWO device-tree dts files (almost identical each other) ???
+> 
+> It seems it is like re-inventing the wheel...
 
-Regards,
+No, as you can can extend the kernel device tree (see below).
+
+> I think this procedure can be used with ALL supported boards present in barebox source tree.
+> 
+> Actually I am using a slightly modified device-tree for my boards from kernel, then adapted to be compiled for Barebox.
+> Some nodes are "disabled" by default as status, so Barebox will activate them when probing the real-hardware.
+
+I think
+
+#include <arm/imx6q-yourboard.dts>
+
+&device {
+	status = "okay";
+};
+
+is what you're after.
+
+> I would like to keep my code to activate/deactivate device-tree drivers, but without modifying the Kernel device-tree each time when I do a Kernel update.
+> 
+> Any hint will be very accepted.
+
+HTH,
+Ahmad
+
 -- 
-Eurek s.r.l.                          |
-Electronic Engineering                | http://www.eurek.it
-via Celletta 8/B, 40026 Imola, Italy  | Phone: +39-(0)542-609120
-p.iva 00690621206 - c.f. 04020030377  | Fax:   +39-(0)542-609212
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
