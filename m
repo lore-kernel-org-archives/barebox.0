@@ -1,17 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mailout04.rmx.de ([94.199.90.94])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iw1IY-000092-6q
- for barebox@lists.infradead.org; Mon, 27 Jan 2020 10:07:15 +0000
-Date: Mon, 27 Jan 2020 11:07:11 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200127100711.wo2fwdq4o3cax3jl@pengutronix.de>
-References: <2198510.7r5C0NBLhF@n95hx1g2>
- <20200120195351.skm7ujz7yjr6mu32@pengutronix.de>
- <2068200.0Z92YdXjpK@n95hx1g2>
+ id 1iw4Tk-0003pV-AR
+ for barebox@lists.infradead.org; Mon, 27 Jan 2020 13:31:02 +0000
+Received: from kdin01.retarus.com (kdin01.dmz1.retloc [172.19.17.48])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mailout04.rmx.de (Postfix) with ESMTPS id 485rH25bBRz3r02r
+ for <barebox@lists.infradead.org>; Mon, 27 Jan 2020 14:30:54 +0100 (CET)
+Received: from ppmail.arri.de (unknown [217.111.95.7])
+ (using TLSv1 with cipher AES128-SHA (128/128 bits))
+ (No client certificate requested)
+ by kdin01.retarus.com (Postfix) with ESMTPS id 485rH20BKNz2yvL
+ for <barebox@lists.infradead.org>; Mon, 27 Jan 2020 14:30:54 +0100 (CET)
+From: Christian Eggers <ceggers@arri.de>
+Date: Mon, 27 Jan 2020 14:30:43 +0100
+Message-ID: <20200127133043.8012-1-ceggers@arri.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <2068200.0Z92YdXjpK@n95hx1g2>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,103 +29,95 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Configuring for secure boot / Using bootchooser
-To: Christian Eggers <ceggers@arri.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] images: Use separate LDFLAGS for PBL
+To: barebox@lists.infradead.org
+Cc: Christian Eggers <ceggers@arri.de>, ceggers@gmx.de
 
-On Thu, Jan 23, 2020 at 11:29:41AM +0100, Christian Eggers wrote:
-> Hi Sascha,
-> 
-> seems I ran into trouble (see below) with CONFIG_SHELL_NONE.
-> 
-> Am Montag, 20. Januar 2020, 20:53:51 CET schrieb Sascha Hauer:
-> > Hi Christian,
-> >
-> > On Mon, Jan 20, 2020 at 05:38:36PM +0100, Christian Eggers wrote:
-> > > Board: phytec-som-imx6
-> > >
-> > > I need to configure barebox in a way, that a malicious attacker can not
-> > > break into the system. It looks like I need to perform the following
-> > > steps:
-> > >
-> > > 3. Prevent access to the barebox shell
-> > > --> CONFIG_CMD_LOGIN?
-> > > --> CONFIG_SHELL_NONE?
-> >
-> > I wouldn't trust CONFIG_CMD_LOGIN that much. If you do, at least make
-> > sure to use a safe hash function for the password, i.e. not the default
-> > md5.
-> > Disabling the shell entirely with CONFIG_SHELL_NONE is the best you can
-> > do. This also forces you to program your boot process in C which helps
-> > you to get a well defined boot without diving into potentially unsafe
-> > shell commands.
-> 
-> I've tried to implement my boot process in C. Attaching the MTD partition to
-> UBI and directly calling bootm_data() looks straightforward and seems to work.
-> 
->         bootm_data_init_defaults(&data);
->         data.os_file = "/dev/nand0.root.ubi.kernel";
-> 
->         ret = bootm_boot(&data);
->         if (ret) {
->                 printf("handler failed with: %s\n", strerror(-ret));
->                 goto error_return;
->         }
-> 
-> Now I'm trying to integrate bootchooser. My first attempt was to call
-> bootchooser directly from my barebox_main:
-> 
->         bc = bootchooser_get();
->         if (IS_ERR(bc))
->                 return PTR_ERR(bc);
-> 
->         ret = bootchooser_boot(bc);
-> 
->         bootchooser_put(bc);
-> 
-> Unfortunately this doesn't work, because there is no boot provider available
-> for booting the result of bootchooser (e.g. "nand0.root.ubi.kernel").
-> 
-> From the documentation of the "boot" command, this should be possible:
-> 
-> ----------------8<---------------
-> BAREBOX_CMD_HELP_TEXT("BOOTSRC can be:")
-> BAREBOX_CMD_HELP_TEXT("- a filename under /env/boot/")
-> BAREBOX_CMD_HELP_TEXT("- a full path to a boot script")
-> BAREBOX_CMD_HELP_TEXT("- a device name")
-> BAREBOX_CMD_HELP_TEXT("- a partition name under /dev/")  <---- tried this one
-> BAREBOX_CMD_HELP_TEXT("- a full path to a directory which")
-> BAREBOX_CMD_HELP_TEXT("   - contains boot scripts, or")
-> BAREBOX_CMD_HELP_TEXT("   - contains a loader/entries/ directory containing
-> bootspec entries")
-> ---------------->8---------------
-> 
-> Looking into bootentry_create_from_name() I didn't find how booting from "a
-> device name" or "a partition name" can work.
-> 
-> Also using the shell doesn't help:
-> ----------------8<---------------
-> barebox:/ boot nand0.root.ubi.kernel
-> Nothing bootable found on 'nand0.root.ubi.kernel'
-> Nothing bootable found
-> ---------------->8---------------
-> So I'm able to run bootm_boot() directly from C, but I've not found a way to
-> boot indirectly via bootchooser.
-> 
-> Any hints how I can use bootchooser from my own barebox_main() with
-> CONFIG_SHELL_NONE?
+When setting CONFIG_PBL_RELOCATABLE=y (selected by PBL_MULTI_IMAGES) and
+CONFIG_RELOCATABLE=n (trying to reduce image size), the PBL is also
+linked with "-static" instead of "-pie". The result is a non-working
+PBL.
 
-Obviously anything involving shell scripts cannot work when no shell is
-enabled. I suggest using bootloader spec (CONFIG_BLSPEC) to boot a
-kernel. This works without shell support.
+As a side effect, also get rid of erroneous "-Map barebox.map" when
+linking the PBL.
 
-Sascha
+Only changed for ARM, are any other platforms affected?
 
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+---
+ Makefile          | 2 ++
+ arch/arm/Makefile | 7 +++++++
+ images/Makefile   | 2 +-
+ 3 files changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index e08849718..49861508a 100644
+--- a/Makefile
++++ b/Makefile
+@@ -313,6 +313,7 @@ LDFLAGS_barebox	:= -Map barebox.map
+ 
+ # Avoid 'Not enough room for program headers' error on binutils 2.28 onwards.
+ LDFLAGS_barebox += $(call ld-option, --no-dynamic-linker)
++LDFLAGS_pbl += $(call ld-option, --no-dynamic-linker)
+ 
+ # Read KERNELRELEASE from include/config/kernel.release (if it exists)
+ KERNELRELEASE = $(shell cat include/config/kernel.release 2> /dev/null)
+@@ -328,6 +329,7 @@ export CPPFLAGS NOSTDINC_FLAGS LINUXINCLUDE OBJCOPYFLAGS LDFLAGS
+ export CFLAGS CFLAGS_KERNEL
+ export AFLAGS AFLAGS_KERNEL
+ export LDFLAGS_barebox
++export LDFLAGS_pbl
+ 
+ export CFLAGS_UBSAN
+ 
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 740b0790e..29fd8e276 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -140,6 +140,7 @@ CPPFLAGS += -DTEXT_BASE=$(TEXT_BASE)
+ # Add cleanup flags
+ CPPFLAGS += -fdata-sections -ffunction-sections
+ LDFLAGS_barebox += --gc-sections
++LDFLAGS_pbl += --gc-sections
+ 
+ # early code often runs at addresses we are not linked at
+ CPPFLAGS += -fPIE
+@@ -150,6 +151,12 @@ else
+ LDFLAGS_barebox += -static
+ endif
+ 
++ifdef CONFIG_PBL_RELOCATABLE
++LDFLAGS_pbl += -pie
++else
++LDFLAGS_pbl += -static
++endif
++
+ KBUILD_BINARY := barebox.bin
+ 
+ barebox.s5p: $(KBUILD_BINARY)
+diff --git a/images/Makefile b/images/Makefile
+index 34b7a5610..650baf170 100644
+--- a/images/Makefile
++++ b/images/Makefile
+@@ -54,7 +54,7 @@ $(pbl-lds): $(obj)/../arch/$(ARCH)/lib/pbl.lds.S FORCE
+ 	$(call if_changed_dep,cpp_lds_S)
+ 
+ quiet_cmd_elf__ ?= LD      $@
+-      cmd_elf__ ?= $(LD) $(LDFLAGS_barebox) --gc-sections		\
++      cmd_elf__ ?= $(LD) $(LDFLAGS_pbl) --gc-sections		\
+ 		-e $(2) -Map $@.map $(LDFLAGS_$(@F)) -o $@		\
+ 		-T $(pbl-lds)						\
+ 		--start-group $(barebox-pbl-common) $(obj)/piggy.o	\
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Christian Eggers
+Embedded software developer
+
+Arnold & Richter Cine Technik GmbH & Co. Betriebs KG
+Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRA 57918
+Persoenlich haftender Gesellschafter: Arnold & Richter Cine Technik GmbH
+Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRB 54477
+Geschaeftsfuehrer: Dr. Michael Neuhaeuser; Stephan Schenk; Walter Trauninger; Markus Zeiler
+
 
 _______________________________________________
 barebox mailing list
