@@ -1,21 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mout.gmx.net ([212.227.15.15])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iw5k8-0002et-A7
- for barebox@lists.infradead.org; Mon, 27 Jan 2020 14:52:01 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1iw5k5-0000gs-8A
- for barebox@lists.infradead.org; Mon, 27 Jan 2020 15:51:57 +0100
-Received: from str by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1iw5k4-00007O-UV
- for barebox@lists.infradead.org; Mon, 27 Jan 2020 15:51:56 +0100
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon, 27 Jan 2020 15:51:51 +0100
-Message-Id: <20200127145151.31954-3-s.trumtrar@pengutronix.de>
-In-Reply-To: <20200127145151.31954-1-s.trumtrar@pengutronix.de>
-References: <20200127145151.31954-1-s.trumtrar@pengutronix.de>
+ id 1iwA31-0000d0-1y
+ for barebox@lists.infradead.org; Mon, 27 Jan 2020 19:27:49 +0000
+From: Christian Eggers <ceggers@gmx.de>
+Date: Mon, 27 Jan 2020 20:26:55 +0100
+Message-ID: <5510527.4tIn2iqgWU@zbook-opensuse.wgnetz.xx>
+In-Reply-To: <20200127124938.ajhbdy2rev7ijz2c@pengutronix.de>
+References: <20200127100711.wo2fwdq4o3cax3jl@pengutronix.de>
+ <20200127101831.27601-1-ceggers@arri.de>
+ <20200127124938.ajhbdy2rev7ijz2c@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -29,35 +23,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 3/3] commands: bbu: add support for imd checksum
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [RFC PATCH] bootm: Register as bootentry provider
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, Christian Eggers <ceggers@arri.de>
 
-Add support for verifying an image by use of the imd checksum.
-If the checksum that is saved in the image and the one that is
-calculated over the image differ, barebox_update aborts.
+Hi Sascha,
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
----
- common/bbu.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Am Montag, 27. Januar 2020, 13:49:38 CET schrieb Sascha Hauer:
+> On Mon, Jan 27, 2020 at 11:18:31AM +0100, Christian Eggers wrote:
+> > > Obviously anything involving shell scripts cannot work when no shell is
+> > > enabled. I suggest using bootloader spec (CONFIG_BLSPEC) to boot a
+> > > kernel. This works without shell support.
+> >
+> > I would like to avoid using bootloader spec. The patch below works fine
+> > for me. Do you think that this (or something similar) can be added to
+> > barebox?
+> >
+> >
+> you could leave bootchooser.system0.boot empty in which case bootchooser
+> tries to boot something called "system0".
+>
+> Like in your patch below call bootentry_register_provider() from your
+> boardcode and put behind "system0" whatever you want.
+works fine, thanks.
 
-diff --git a/common/bbu.c b/common/bbu.c
-index 00bec32a860a..b976b99d7c95 100644
---- a/common/bbu.c
-+++ b/common/bbu.c
-@@ -206,6 +206,10 @@ static int bbu_check_metadata(struct bbu_data *data)
- 	if (ret)
- 		return ret;
- 
-+	ret = imd_verify_crc32((void *)data->image, data->len);
-+	if (ret == -EILSEQ && !(data->flags & BBU_FLAG_FORCE))
-+		return ret;
-+
- 	return 0;
- }
- 
--- 
-2.25.0
+> I don't like interpreting a device name as a kernel image very much,
+> given that there's no possibility to also specify the devicetree and
+> commandline.
+>
+> Another thing is that just enabling CONFIG_BLSPEC in a config shouldn't
+> prevent a board from booting. the "Only enabled if CONFIG_BLSPEC is
+> disabled" is not an option here.
+Agreed.
+
+>
+> Sascha
+
+regards
+Christian
+
+
 
 
 _______________________________________________
