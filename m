@@ -1,19 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iw5k8-0002eu-AM
- for barebox@lists.infradead.org; Mon, 27 Jan 2020 14:52:01 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1iw5k5-0000gt-8K
- for barebox@lists.infradead.org; Mon, 27 Jan 2020 15:51:57 +0100
-Received: from str by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1iw5k4-00007K-T5
- for barebox@lists.infradead.org; Mon, 27 Jan 2020 15:51:56 +0100
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon, 27 Jan 2020 15:51:49 +0100
-Message-Id: <20200127145151.31954-1-s.trumtrar@pengutronix.de>
+ id 1iw2pN-0005Hb-Cv
+ for barebox@lists.infradead.org; Mon, 27 Jan 2020 11:45:14 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>
+Date: Mon, 27 Jan 2020 12:44:51 +0100
+Message-Id: <20200127114453.366-1-uwe@kleine-koenig.org>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,55 +15,27 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 1/3] imd: replace magicvalue with sizeof(struct)
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 0/2] gpiolib: minor optimization
+To: barebox@lists.infradead.org
+Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 
-Instead of using "8" as the size of an imd_header, use the sizeof operator.
-
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
----
- common/imd.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/common/imd.c b/common/imd.c
-index 913a01de87bf..e0dab69644c0 100644
---- a/common/imd.c
-+++ b/common/imd.c
-@@ -41,7 +41,7 @@ const struct imd_header *imd_next(const struct imd_header *imd)
- 
- 	length = imd_read_length(imd);
- 	length = ALIGN(length, 4);
--	length += 8;
-+	length += sizeof(struct imd_header);
- 
- 	return (const void *)imd + length;
- }
-@@ -63,14 +63,14 @@ static int imd_next_validate(const void *buf, int bufsize, int start_ofs)
- 
- 	size = bufsize - start_ofs;
- 
--	if (size < 8) {
-+	if (size < sizeof(struct imd_header)) {
- 		debug("trunkated tag at offset %dd\n", start_ofs);
- 		return -EINVAL;
- 	}
- 
- 	length = imd_read_length(imd);
- 	length = ALIGN(length, 4);
--	length += 8;
-+	length += sizeof(struct imd_header);
- 
- 	if (size < length) {
- 		debug("tag at offset %d with size %d exceeds bufsize %d\n",
--- 
-2.25.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RnJvbTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4K
+CkhlbGxvLAoKd2hpbGUgd29ya2luZyBvbiBncGlvbGliIEkgbm90aWNlZCB0aGF0IGdwaW9fcmVx
+dWVzdF9vbmUoKSByZXBlYXRlZGx5CmNoZWNrcyB0aGUgdmFsaWRpdHkgb2YgdGhlIGdwaW9faW5m
+byBvYnRhaW5lZCBieSBncGlvX3RvX2Rlc2MoKS4KClRoaXMgc2VyaWVzIGludHJvZHVjZXMgc29t
+ZSBoZWxwZXIgZnVuY3Rpb25zIChwcmVmaXhlZCBncGlvaW5mb18pIHRoYXQKdGFrZSBhbiBncGlv
+X2luZm8gaW5zdGVhZCBvZiBhIHBsYWluIGdwaW8gbnVtYmVyIGFuZCBhc3N1bWUgdGhpcyBwb2lu
+dGVyCnRvIGJlIHZhbGlkLgoKVGhlIHNhdmVkIHJ1bnRpbWUgaXMgcHJvYmFibHkgdG9vIHNtYWxs
+IHRvIG1lYXN1cmUsIHNvIEkgZGlkbid0IGV2ZW4KdHJ5LiBTZW1hbnRpY2FsbHkgdGhlcmUgaXMg
+bm8gY2hhbmdlIGludGVuZGVkLgoKQmVzdCByZWdhcmRzClV3ZQoKVXdlIEtsZWluZS1Lw7ZuaWcg
+KDIpOgogIGdwaW9saWI6IHJlb3JkZXIgZnVuY3Rpb25zCiAgZ3Bpb2xpYjogaW50cm9kdWNlIGhl
+bHBlciBmdW5jdGlvbnMgd29ya2luZyBvbiBncGlvX2luZm8gc3RydWN0cwoKIGRyaXZlcnMvZ3Bp
+by9ncGlvbGliLmMgfCAyNDMgKysrKysrKysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLS0tLS0t
+LS0KIDEgZmlsZSBjaGFuZ2VkLCAxNTAgaW5zZXJ0aW9ucygrKSwgOTMgZGVsZXRpb25zKC0pCgot
+LSAKMi4yNC4wCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
+Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
