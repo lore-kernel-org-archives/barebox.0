@@ -1,22 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mailout10.rmx.de ([94.199.88.75])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ivz4N-0006Gg-Re
- for barebox@lists.infradead.org; Mon, 27 Jan 2020 07:44:29 +0000
-Received: from kdin02.retarus.com (kdin02.dmz1.retloc [172.19.17.49])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mailout10.rmx.de (Postfix) with ESMTPS id 485hbF0qL4z35XG
- for <barebox@lists.infradead.org>; Mon, 27 Jan 2020 08:44:25 +0100 (CET)
-Received: from ppmail.arri.de (unknown [217.111.95.7])
- (using TLSv1 with cipher AES128-SHA (128/128 bits))
- (No client certificate requested)
- by kdin02.retarus.com (Postfix) with ESMTPS id 485hbD2Wkmz2TSCf
- for <barebox@lists.infradead.org>; Mon, 27 Jan 2020 08:44:24 +0100 (CET)
-From: Christian Eggers <ceggers@arri.de>
-Date: Mon, 27 Jan 2020 08:44:15 +0100
-Message-ID: <20200127074415.17165-1-ceggers@arri.de>
+ id 1iw44W-000101-9t
+ for barebox@lists.infradead.org; Mon, 27 Jan 2020 13:04:57 +0000
+Date: Mon, 27 Jan 2020 14:04:54 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200127130454.csj7ziu7b2z2nmfc@pengutronix.de>
+References: <20200127074415.17165-1-ceggers@arri.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200127074415.17165-1-ceggers@arri.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,53 +22,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] common: make CONFIG_BAREBOX_UPDATE visible
-To: barebox@lists.infradead.org
-Cc: Christian Eggers <ceggers@arri.de>, ceggers@gmx.de
+Subject: Re: [PATCH] common: make CONFIG_BAREBOX_UPDATE visible
+To: Christian Eggers <ceggers@arri.de>
+Cc: barebox@lists.infradead.org, ceggers@gmx.de
 
-The barebox update infrastructure is also useful without
-CONFIG_CMD_BAREBOX_UPDATE (e.g. from a own barebox_main() with
-CONFIG_SHELL_NONE).
+On Mon, Jan 27, 2020 at 08:44:15AM +0100, Christian Eggers wrote:
+> The barebox update infrastructure is also useful without
+> CONFIG_CMD_BAREBOX_UPDATE (e.g. from a own barebox_main() with
+> CONFIG_SHELL_NONE).
+> 
+> Signed-off-by: Christian Eggers <ceggers@arri.de>
+> ---
+>  common/Kconfig | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 
-Signed-off-by: Christian Eggers <ceggers@arri.de>
----
- common/Kconfig | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Applied, thanks
 
-diff --git a/common/Kconfig b/common/Kconfig
-index 60237d305..06d4bb068 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -69,9 +69,6 @@ config LOGBUF
- config STDDEV
- 	bool
- 
--config BAREBOX_UPDATE
--	bool
--
- config MENUTREE
- 	bool
- 	select GLOB
-@@ -692,6 +689,9 @@ config FLEXIBLE_BOOTARGS
- 	  to replace parts of the bootargs string without reconstructing it
- 	  completely.
- 
-+config BAREBOX_UPDATE
-+	bool "In-system barebox update infrastructure"
-+
- config IMD
- 	bool "barebox metadata support"
- 
+Sascha
+
 -- 
-Christian Eggers
-Embedded software developer
-
-Arnold & Richter Cine Technik GmbH & Co. Betriebs KG
-Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRA 57918
-Persoenlich haftender Gesellschafter: Arnold & Richter Cine Technik GmbH
-Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRB 54477
-Geschaeftsfuehrer: Dr. Michael Neuhaeuser; Stephan Schenk; Walter Trauninger; Markus Zeiler
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
