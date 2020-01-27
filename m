@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iw6eZ-0001MS-2w
+ id 1iw6eZ-0001MQ-3E
  for barebox@lists.infradead.org; Mon, 27 Jan 2020 15:50:20 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <mgr@pengutronix.de>) id 1iw6eW-0006gz-DT
+ (envelope-from <mgr@pengutronix.de>) id 1iw6eW-0006h0-Ck
  for barebox@lists.infradead.org; Mon, 27 Jan 2020 16:50:16 +0100
 Received: from mgr by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <mgr@pengutronix.de>) id 1iw6eW-00019s-4D
+ (envelope-from <mgr@pengutronix.de>) id 1iw6eW-00019q-3Y
  for barebox@lists.infradead.org; Mon, 27 Jan 2020 16:50:16 +0100
 From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Date: Mon, 27 Jan 2020 16:50:13 +0100
-Message-Id: <20200127155013.4388-4-m.grzeschik@pengutronix.de>
+Date: Mon, 27 Jan 2020 16:50:12 +0100
+Message-Id: <20200127155013.4388-3-m.grzeschik@pengutronix.de>
 In-Reply-To: <20200127155013.4388-1-m.grzeschik@pengutronix.de>
 References: <20200127155013.4388-1-m.grzeschik@pengutronix.de>
 MIME-Version: 1.0
@@ -29,77 +29,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] ARM: phyCORE-i.MX8M SOM: add pmic initialisation for
- power good
+Subject: [PATCH 3/4] regulator: pfuze: add include regmap.h so struct regmap
+ is known
 To: barebox@lists.infradead.org
 
-This patch is adding the same PMIC handling as the u-boot spl does for
-this Board. It ensures sane defaults.
+Without this the user of the function will get a compile warning
+about the undeclared struct regmap.
 
 Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 ---
- arch/arm/boards/phytec-som-imx8mq/board.c | 38 +++++++++++++++++++++++
- 1 file changed, 38 insertions(+)
+ include/mfd/pfuze.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/boards/phytec-som-imx8mq/board.c b/arch/arm/boards/phytec-som-imx8mq/board.c
-index 4fd098c5f6..7df53a7cfb 100644
---- a/arch/arm/boards/phytec-som-imx8mq/board.c
-+++ b/arch/arm/boards/phytec-som-imx8mq/board.c
-@@ -10,9 +10,45 @@
- #include <init.h>
- #include <linux/sizes.h>
- #include <mach/bbu.h>
-+#include <mfd/pfuze.h>
+diff --git a/include/mfd/pfuze.h b/include/mfd/pfuze.h
+index 6045ceec0a..5427b21005 100644
+--- a/include/mfd/pfuze.h
++++ b/include/mfd/pfuze.h
+@@ -1,6 +1,8 @@
+ #ifndef __INCLUDE_PFUZE_H
+ #define __INCLUDE_PFUZE_H
  
- #include <envfs.h>
++#include <regmap.h>
++
+ int pfuze_register_init_callback(void(*callback)(struct regmap *map));
  
-+#define PFUZE100_DEVICEID	0x0
-+#define PFUZE100_REVID		0x3
-+
-+#define PFUZE100_SW1ABMODE	0x23
-+#define PFUZE100_SW2MODE	0x38
-+#define PFUZE100_SW1CMODE	0x31
-+#define PFUZE100_SW3AVOL	0x3c
-+
-+#define APS_PFM			0xc
-+
-+static void imx8mq_setup_pmic_voltages(struct regmap *map)
-+{
-+	int offset = PFUZE100_SW1CMODE;
-+	int switch_num = 6;
-+	int val, i;
-+
-+	regmap_read(map, PFUZE100_SW3AVOL, &val);
-+
-+	/* ensure the correct VDD_DRAM_0V9 output voltage */
-+	regmap_write_bits(map, PFUZE100_SW3AVOL, 0x3f, 0x18);
-+
-+	/* pfuze200 */
-+	regmap_read(map, PFUZE100_DEVICEID, &val);
-+	if (val & 0xf) {
-+		offset = PFUZE100_SW2MODE;
-+		switch_num = 4;
-+	}
-+
-+	/* set all switches APS in normal and PFM mode in standby */
-+	regmap_write(map, PFUZE100_SW1ABMODE, APS_PFM);
-+
-+	for (i = 0; i < switch_num - 1; i++)
-+		regmap_write(map, offset + i * 7, APS_PFM);
-+}
-+
- static int physom_imx8mq_devices_init(void)
- {
- 	int flag_emmc = 0;
-@@ -23,6 +59,8 @@ static int physom_imx8mq_devices_init(void)
- 
- 	barebox_set_hostname("phycore-imx8mq");
- 
-+	pfuze_register_init_callback(imx8mq_setup_pmic_voltages);
-+
- 	switch (bootsource_get_instance()) {
- 	case 0:
- 		flag_emmc = BBU_HANDLER_FLAG_DEFAULT;
+ #endif /* __INCLUDE_PFUZE_H */
 -- 
 2.25.0
 
