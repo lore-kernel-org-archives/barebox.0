@@ -1,17 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from magratgarlick.emantor.de ([78.46.208.201])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iwR8v-0000p4-Qb
- for barebox@lists.infradead.org; Tue, 28 Jan 2020 13:43:03 +0000
-References: <20200128092832.18615-1-o.rempel@pengutronix.de>
- <20200128145513.aae1244ee8e7faf94d661640@gmail.com>
- <20200128130656.GB25105@localhost.localdomain>
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Message-ID: <09c48af0-26de-7b4f-7f8c-155107f3ef55@pengutronix.de>
-Date: Tue, 28 Jan 2020 14:43:00 +0100
+ id 1iwNRH-0001nr-B4
+ for barebox@lists.infradead.org; Tue, 28 Jan 2020 09:45:44 +0000
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Tue, 28 Jan 2020 10:44:56 +0100
+Message-Id: <20200128094456.711520-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20200128130656.GB25105@localhost.localdomain>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,123 +15,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1] MIPS: remove .bss to __rel_start overlay
-To: Peter Mamonov <pmamonov@gmail.com>, Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] fixup! ARM: add optee early loading function
+To: barebox@lists.infradead.org
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
+---
+ arch/arm/include/asm/barebox-arm.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-
-On 28.01.20 14:06, Peter Mamonov wrote:
-> On Tue, Jan 28, 2020 at 02:55:13PM +0300, Antony Pavlov wrote:
->> On Tue, 28 Jan 2020 10:28:32 +0100
->> Oleksij Rempel <o.rempel@pengutronix.de> wrote:
->>
->> Hi!
->>
->> Looks like this patch has some undocummented side effects
->> (or in other words, it makes undocummented fixups).
->>
->> I have tested this patch on qemu-malta with current master,
->> ee8960aec018df2de ("ARM: imx6: properly check for IPU presence").
->> It works fine: memtest works, iomem output looks good.
->>
->> But the patch fixes several issues and commit message does not contain
->> any information about it.
->>
->> I rebuild current master with qemu-malta_defconfig and MMU enabled.
->>
->> I used this qemu cmdline to enable qemu monitor:
->>
->> qemu-system-mips -nodefaults -M malta -m 256 -nographic -bios barebox-flash-image
->>     -net user -net nic,model=rtl8139 -serial mon:stdio
->>
->> With '-serial mon:stdio' one can invoke qemu monitor with "ctrl-a c" keypress sequence.
->>
->> So I tried 'info registers' qemu monitor command after barebox startup:
->>
->> Hit any to stop autoboot:    3
->> barebox@qemu malta:/
->> barebox@qemu malta:/
->> barebox@qemu malta:/ iomem
->> 0x00000000 - 0xffffffff (size 0x00000000) iomem
->>    0x180003f8 - 0x180003ff (size 0x00000008) 180003f8.serial@180003f8.of
->>    0x1e000000 - 0x1e3fffff (size 0x00400000) 1e000000.flash@1e000000.of
->>    0x1f000900 - 0x1f00093f (size 0x00000040) 1f000900.serial@1f000900.of
->>    0x1f000b00 - 0x1f000b1f (size 0x00000020) 1f000b00.gpio@1f000b00.of
->>    0x80000000 - 0x8fffffff (size 0x10000000) kseg0_ram0
->> barebox@qemu malta:/ QEMU 4.2.0 monitor - type 'help' for more information
->> (qemu) info registers
->> pc=0xa081232c HI=0x00000026 LO=0x20000000 ds 0090 a081232c 1
->> GPR00: r0 00000000 at 00000000 v0 b80003f8 v1 00000000
->> GPR04: a0 a0408668 a1 b80003fd a2 b80003f8 a3 ffffffff
->> GPR08: t0 00000001 t1 00000000 t2 0000005a t3 00000023
->> GPR12: t4 00000000 t5 00010000 t6 00000040 t7 00000010
->> GPR16: s0 a0408668 s1 a085cd20 s2 a0860000 s3 a0860000
->> GPR20: s4 a0860000 s5 00000400 s6 a08613c0 s7 00000001
->> GPR24: t8 00000008 t9 a0812340 k0 00400000 k1 fffffffa
->> GPR28: gp 00000000 sp 8fb8fd10 s8 ffffffff ra a0812420
->> CP0 Status  0x00000000 Cause   0x00000400 EPC    0x00000000
->>      Config0 0x80008482 Config1 0x9e190c8f LLAddr 0x0000000000000000
->>      Config2 0x80000000 Config3 0x00000000
->>      Config4 0x00000000 Config5 0x00000000
->> (qemu) quit
->>
->> So I see several issues in current master at once:
->>
->>    * iomem output has no information on sdram regions, so memtest is unusable;
->>    * pc=0xa081232c, relocation does not work, barebox is located with 8M offset
->>      from start of RAM. The board has 256M and relocation routine
->>      should move barebox code much higher;
->>    * pc=0xa081232c, so barebox code works from KSEG1 not from KSEG0 as MMU=y option implies.
->>
->> Your patch fixes all these symptoms at ones however the commit message
->> says nothing about them.
-> 
-> I've tested the patch, everything looks right now:
-> 
-> 	barebox@qemu malta:/ iomem
-> 	0x00000000 - 0xffffffff (size 0x00000000) iomem
-> 	  0x180003f8 - 0x180003ff (size 0x00000008) 180003f8.serial@180003f8.of
-> 	  0x1e000000 - 0x1e3fffff (size 0x00400000) 1e000000.flash@1e000000.of
-> 	  0x1f000900 - 0x1f00093f (size 0x00000040) 1f000900.serial@1f000900.of
-> 	  0x1f000b00 - 0x1f000b1f (size 0x00000020) 1f000b00.gpio@1f000b00.of
-> 	  0x80000000 - 0x8fffffff (size 0x10000000) kseg0_ram0
-> 	    0x8fb89000 - 0x8fb8ffff (size 0x00007000) stack
-> 	    0x8fb90000 - 0x8ff8ffff (size 0x00400000) malloc space
-> 	    0x8ff90000 - 0x8ffeae9f (size 0x0005aea0) barebox
-> 	    0x8ffeaea0 - 0x8ffefadf (size 0x00004c40) barebox data
-> 	    0x8fff7ae0 - 0x8fffbbdf (size 0x00004100) bss
-> 	barebox@qemu malta:/ whereami
-> 	code   @ 8ffb9bcc (8ffb9bc0)
-> 	data   @ 8ffef3c0
-> 	bss    @ 8fff9ae0
-> 	heap   @ 8fbb9518
-> 	stack  @ 8fb8fd50
-> 	barebox@qemu malta:/
-> 
-> However I have to enable CONFIG_MMU after `make qemu-malta_defconfig`, or I get
-> `ERROR: Error: Cannot request SDRAM region for stack`, and no barebox memory
-> areas in `iomem` output.  CONFIG_MMU seems to be enabled for ath79 only:
-> 
-> 	$ git grep CONFIG_MMU arch/mips/configs/
-> 	arch/mips/configs/ath79_defconfig:CONFIG_MMU=y
-> 	$
-
-Yes, this should be fixed in a separate patch.
-
-
-Kind regards,
-Oleksij Rempel
-
+diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
+index 8b2ecd9ab2..599852d644 100644
+--- a/arch/arm/include/asm/barebox-arm.h
++++ b/arch/arm/include/asm/barebox-arm.h
+@@ -119,7 +119,7 @@ void *barebox_arm_boot_dtb(void);
+ static inline unsigned long arm_mem_stack_top(unsigned long membase,
+ 					      unsigned long endmem)
+ {
+-	if (IS_ENABLED(CONFIG_BOOTM_OPTEE))
++	if (IS_ENABLED(CONFIG_BOOTM_OPTEE) || IS_ENABLED(CONFIG_PBL_OPTEE))
+ 		endmem -= OPTEE_SIZE;
+ 
+ 	return endmem - SZ_64K;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.25.0
+
 
 _______________________________________________
 barebox mailing list
