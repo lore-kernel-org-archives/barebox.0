@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x244.google.com ([2a00:1450:4864:20::244])
+Received: from mail-lj1-x242.google.com ([2a00:1450:4864:20::242])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iwOlb-0003gI-Kb
- for barebox@lists.infradead.org; Tue, 28 Jan 2020 11:10:49 +0000
-Received: by mail-lj1-x244.google.com with SMTP id f25so1362443ljg.12
- for <barebox@lists.infradead.org>; Tue, 28 Jan 2020 03:10:45 -0800 (PST)
-Date: Tue, 28 Jan 2020 14:10:34 +0300
-From: Peter Mamonov <pmamonov@gmail.com>
-Message-ID: <20200128111033.GA25105@localhost.localdomain>
-References: <49d641a2-d827-885f-64a1-aac54877cfb5@pengutronix.de>
- <20200128104955.10994-1-pmamonov@gmail.com>
- <64c9e041-d554-ac17-6326-b50c8eefe51a@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <64c9e041-d554-ac17-6326-b50c8eefe51a@pengutronix.de>
+ id 1iwPSf-0004Fy-4h
+ for barebox@lists.infradead.org; Tue, 28 Jan 2020 11:55:18 +0000
+Received: by mail-lj1-x242.google.com with SMTP id r19so14410702ljg.3
+ for <barebox@lists.infradead.org>; Tue, 28 Jan 2020 03:55:16 -0800 (PST)
+Date: Tue, 28 Jan 2020 14:55:13 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20200128145513.aae1244ee8e7faf94d661640@gmail.com>
+In-Reply-To: <20200128092832.18615-1-o.rempel@pengutronix.de>
+References: <20200128092832.18615-1-o.rempel@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,171 +19,130 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: MIPS: relocation issue
+Subject: Re: [PATCH v1] MIPS: remove .bss to __rel_start overlay
 To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>
 
-On Tue, Jan 28, 2020 at 12:03:35PM +0100, Oleksij Rempel wrote:
-> 
-> 
-> On 28.01.20 11:49, Peter Mamonov wrote:
-> > Hi Oleksij,
-> > 
-> > Below you will find the patch, which adds the `whereami` command. The command
-> > prints several addresses belonging to code, data, bss, heap and stack areas.
-> > I've run it on qemu/malta with relocations enabled and disabled as per Antony's
-> > mail. Output comparison shows that only the stack is relocated. Looks like
-> > relocation doesn't work as expected. Also note that the stack was relocated
-> > from the uncached KSEG1 to the cached KSEG0 segment, which is inconsistent at
-> > least.
-> > 
-> 
-> ACK. The patch "MIPS: remove .bss to __rel_start overlay" should fix it. Please test :)
+On Tue, 28 Jan 2020 10:28:32 +0100
+Oleksij Rempel <o.rempel@pengutronix.de> wrote:
 
-Ok, will report back soon.
+Hi!
 
-> 
-> > Relocation enabled:
-> > 
-> > 	barebox@qemu malta:/ whereami
-> > 	code   @ a0829bcc (a0829bc0)
-> > 	data   @ a085f3c0
-> > 	bss    @ a0861ae0
-> > 	heap   @ a0428c38
-> > 	stack  @ 8fb8fd50
-> > 	barebox@qemu malta:/ version
-> > 
-> > 	barebox 2020.01.0-00104-gfe12ba2776 #3 Tue Jan 28 13:34:06 MSK 2020
-> > 
-> > 
-> > Relocation disabled:
-> > 
-> > 	barebox@qemu malta:/ whereami
-> > 	code   @ a0829bcc (a0829bc0)
-> > 	data   @ a085f1e0
-> > 	bss    @ a0861900
-> > 	heap   @ a0428c38
-> > 	stack  @ a03ffd50
-> 
-> This functionality is available with command iomem.
+Looks like this patch has some undocummented side effects
+(or in other words, it makes undocummented fixups).
 
-At the moment iomem's output is inconsistent in case of the stack at least:
+I have tested this patch on qemu-malta with current master,
+ee8960aec018df2de ("ARM: imx6: properly check for IPU presence").
+It works fine: memtest works, iomem output looks good.
+
+But the patch fixes several issues and commit message does not contain
+any information about it.
+
+I rebuild current master with qemu-malta_defconfig and MMU enabled.
+
+I used this qemu cmdline to enable qemu monitor:
+
+qemu-system-mips -nodefaults -M malta -m 256 -nographic -bios barebox-flash=
+-image
+   -net user -net nic,model=3Drtl8139 -serial mon:stdio
+
+With '-serial mon:stdio' one can invoke qemu monitor with "ctrl-a c" keypre=
+ss sequence.
+
+So I tried 'info registers' qemu monitor command after barebox startup:
+
+Hit any to stop autoboot:    3
+barebox@qemu malta:/ =
+
+barebox@qemu malta:/ =
 
 barebox@qemu malta:/ iomem
-...
-  0xa0000000 - 0xafffffff (size 0x10000000) kseg1_ram0
-    0xa03f9000 - 0xa03fffff (size 0x00007000) stack <<<<<<<<<<<<<<<<<<< !!!!
-    0xa0400000 - 0xa07fffff (size 0x00400000) malloc space
-    0xa0800000 - 0xa085ae9f (size 0x0005aea0) barebox
-    0xa085aea0 - 0xa085fadf (size 0x00004c40) barebox data
-    0xa085fae0 - 0xa0863bdf (size 0x00004100) bss
-barebox@qemu malta:/ whereami
-code   @ a0829bcc (a0829bc0)
-data   @ a085f3c0
-bss    @ a0861ae0
-heap   @ a0429518
-stack  @ 8fb8fd50  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< !!!
-barebox@qemu malta:/ 
+0x00000000 - 0xffffffff (size 0x00000000) iomem
+  0x180003f8 - 0x180003ff (size 0x00000008) 180003f8.serial@180003f8.of
+  0x1e000000 - 0x1e3fffff (size 0x00400000) 1e000000.flash@1e000000.of
+  0x1f000900 - 0x1f00093f (size 0x00000040) 1f000900.serial@1f000900.of
+  0x1f000b00 - 0x1f000b1f (size 0x00000020) 1f000b00.gpio@1f000b00.of
+  0x80000000 - 0x8fffffff (size 0x10000000) kseg0_ram0
+barebox@qemu malta:/ QEMU 4.2.0 monitor - type 'help' for more information
+(qemu) info registers =
 
-Regards,
-Peter
+pc=3D0xa081232c HI=3D0x00000026 LO=3D0x20000000 ds 0090 a081232c 1
+GPR00: r0 00000000 at 00000000 v0 b80003f8 v1 00000000
+GPR04: a0 a0408668 a1 b80003fd a2 b80003f8 a3 ffffffff
+GPR08: t0 00000001 t1 00000000 t2 0000005a t3 00000023
+GPR12: t4 00000000 t5 00010000 t6 00000040 t7 00000010
+GPR16: s0 a0408668 s1 a085cd20 s2 a0860000 s3 a0860000
+GPR20: s4 a0860000 s5 00000400 s6 a08613c0 s7 00000001
+GPR24: t8 00000008 t9 a0812340 k0 00400000 k1 fffffffa
+GPR28: gp 00000000 sp 8fb8fd10 s8 ffffffff ra a0812420
+CP0 Status  0x00000000 Cause   0x00000400 EPC    0x00000000
+    Config0 0x80008482 Config1 0x9e190c8f LLAddr 0x0000000000000000
+    Config2 0x80000000 Config3 0x00000000
+    Config4 0x00000000 Config5 0x00000000
+(qemu) quit
 
-> > ---
-> >   commands/Kconfig    |  5 +++++
-> >   commands/Makefile   |  1 +
-> >   commands/whereami.c | 45 +++++++++++++++++++++++++++++++++++++++++++++
-> >   3 files changed, 51 insertions(+)
-> >   create mode 100644 commands/whereami.c
-> > 
-> > diff --git a/commands/Kconfig b/commands/Kconfig
-> > index add0d26ee9..a660e09db4 100644
-> > --- a/commands/Kconfig
-> > +++ b/commands/Kconfig
-> > @@ -2217,6 +2217,11 @@ config CMD_UBSAN
-> >   	  This is a test command for the undefined behavior sanitizer.
-> >   	  It triggers various undefined behavior, and detect it.
-> > +config CMD_WHEREAMI
-> > +	tristate "whereami"
-> > +	depends on MIPS
-> > +	default y
-> > +
-> >   # end Miscellaneous commands
-> >   endmenu
-> > diff --git a/commands/Makefile b/commands/Makefile
-> > index 8e8c449bc1..dfa3d6e447 100644
-> > --- a/commands/Makefile
-> > +++ b/commands/Makefile
-> > @@ -128,6 +128,7 @@ obj-$(CONFIG_CMD_NAND_BITFLIP)	+= nand-bitflip.o
-> >   obj-$(CONFIG_CMD_SEED)		+= seed.o
-> >   obj-$(CONFIG_CMD_IP_ROUTE_GET)  += ip-route-get.o
-> >   obj-$(CONFIG_CMD_UBSAN)		+= ubsan.o
-> > +obj-$(CONFIG_CMD_WHEREAMI)	+= whereami.o
-> >   UBSAN_SANITIZE_ubsan.o := y
-> > diff --git a/commands/whereami.c b/commands/whereami.c
-> > new file mode 100644
-> > index 0000000000..3edb070fe8
-> > --- /dev/null
-> > +++ b/commands/whereami.c
-> > @@ -0,0 +1,45 @@
-> > +#include <common.h>
-> > +#include <command.h>
-> > +#include <complete.h>
-> > +
-> > +static volatile int data = 1;
-> > +static volatile int bss;
-> > +
-> > +static void* code();
-> > +static noinline void* code()
-> > +{
-> > +	void *ret;
-> > +	__asm__ __volatile__(
-> > +		".set	push\n"
-> > +		".set	noreorder\n"
-> > +		".set	noat\n"
-> > +		"	move	$1, $31\n"
-> > +		"	bal	255f\n"
-> > +		"	nop\n"
-> > +		"255:	move	%0, $31\n"
-> > +		"	move	$31, $1\n"
-> > +		".set	pop\n"
-> > +		:"=r" (ret)
-> > +	);
-> > +	return ret;
-> > +}
-> > +
-> > +static int do_whereami(int argc, char *argv[])
-> > +{
-> > +	volatile int stack;
-> > +	int *heapp = malloc(sizeof(int));
-> > +
-> > +	printf("code   @ %p (%p)\n", code(), &code);
-> > +	printf("data   @ %p\n", &data);
-> > +	printf("bss    @ %p\n", &bss);
-> > +	printf("heap   @ %p\n", heapp);
-> > +	printf("stack  @ %p\n", &stack);
-> > +	return 0;
-> > +}
-> > +
-> > +BAREBOX_CMD_START(whereami)
-> > +	.cmd		= do_whereami,
-> > +	BAREBOX_CMD_DESC("print addresses from code, stack, heap and data sections")
-> > +	BAREBOX_CMD_GROUP(CMD_GRP_INFO)
-> > +	BAREBOX_CMD_COMPLETE(empty_complete)
-> > +BAREBOX_CMD_END
-> > 
-> 
-> Kind regards,
-> Oleksij Rempel
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+So I see several issues in current master at once:
+
+  * iomem output has no information on sdram regions, so memtest is unusabl=
+e;
+  * pc=3D0xa081232c, relocation does not work, barebox is located with 8M o=
+ffset
+    from start of RAM. The board has 256M and relocation routine
+    should move barebox code much higher;
+  * pc=3D0xa081232c, so barebox code works from KSEG1 not from KSEG0 as MMU=
+=3Dy option implies.
+
+Your patch fixes all these symptoms at ones however the commit message
+says nothing about them.
+
+> .bss __rel_start (OVERLAY) was used to optimize RAM size used by
+> barebox. Since .bss and __rel_start overlap, we should clear bss only
+> after __rel_start was used.
+> =
+
+> There is a choice of moving .bss clear sequence after __rel_start or
+> remove this optimization. Since the use of this optimization is minimal
+> and danger to trap in to similar issue is still high, i prefer to remove
+> this optimization.
+> =
+
+> Fixes: 1e5aef61fc6a444 ("MIPS: reloc: init bss and cpu")
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> ---
+>  arch/mips/lib/barebox.lds.S | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> =
+
+> diff --git a/arch/mips/lib/barebox.lds.S b/arch/mips/lib/barebox.lds.S
+> index 693a778980..c954df41f3 100644
+> --- a/arch/mips/lib/barebox.lds.S
+> +++ b/arch/mips/lib/barebox.lds.S
+> @@ -59,7 +59,7 @@ SECTIONS
+>  =
+
+>  	_end =3D .;
+>  =
+
+> -	.bss __rel_start (OVERLAY) : {
+> +	.bss : {
+>  		__bss_start =3D .;
+>  		*(.sbss.*)
+>  		*(.bss.*)
+> -- =
+
+> 2.25.0
+> =
+
+
+
+-- =
+
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
