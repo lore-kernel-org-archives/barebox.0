@@ -1,22 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iw6eZ-0001MQ-3E
- for barebox@lists.infradead.org; Mon, 27 Jan 2020 15:50:20 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <mgr@pengutronix.de>) id 1iw6eW-0006h0-Ck
- for barebox@lists.infradead.org; Mon, 27 Jan 2020 16:50:16 +0100
-Received: from mgr by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <mgr@pengutronix.de>) id 1iw6eW-00019q-3Y
- for barebox@lists.infradead.org; Mon, 27 Jan 2020 16:50:16 +0100
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Date: Mon, 27 Jan 2020 16:50:12 +0100
-Message-Id: <20200127155013.4388-3-m.grzeschik@pengutronix.de>
-In-Reply-To: <20200127155013.4388-1-m.grzeschik@pengutronix.de>
-References: <20200127155013.4388-1-m.grzeschik@pengutronix.de>
+ id 1iwN5k-0000iw-5W
+ for barebox@lists.infradead.org; Tue, 28 Jan 2020 09:23:29 +0000
+Date: Tue, 28 Jan 2020 10:23:26 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200128092326.vyuglbphzwncrvj5@pengutronix.de>
+References: <20200128053821.677207-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200128053821.677207-1-r.czerwinski@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,34 +22,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] regulator: pfuze: add include regmap.h so struct regmap
- is known
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v3 0/5] OP-TEE early loading
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Without this the user of the function will get a compile warning
-about the undeclared struct regmap.
+On Tue, Jan 28, 2020 at 06:38:17AM +0100, Rouven Czerwinski wrote:
+> v3 of the OP-TEE early loading patch series.
+> 
+> This allows loading OP-TEE during the lowlevel board initialization,
+> instead of loading it before the kernel is started.
+> 
+> v3:
+> - include arm64 setjmp from U-Boot
+> - build setjmp unconditionally
+> - rename pl2x0 write test function
+> 
+> v2:
+> - fixed smaller nits by Sascha Hauer
+> - include the setjmp import
+> 
+> Rouven Czerwinski (5):
+>   optee: move optee_verify_header() to common
+>   ARM: import setjmp implementation from U-Boot
+>   ARM: add optee early loading function
+>   ARM: mach-imx: test PL310 write access
+>   user: add documentation for OP-TEE loading
 
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
----
- include/mfd/pfuze.h | 2 ++
- 1 file changed, 2 insertions(+)
+Applied, thanks
 
-diff --git a/include/mfd/pfuze.h b/include/mfd/pfuze.h
-index 6045ceec0a..5427b21005 100644
---- a/include/mfd/pfuze.h
-+++ b/include/mfd/pfuze.h
-@@ -1,6 +1,8 @@
- #ifndef __INCLUDE_PFUZE_H
- #define __INCLUDE_PFUZE_H
- 
-+#include <regmap.h>
-+
- int pfuze_register_init_callback(void(*callback)(struct regmap *map));
- 
- #endif /* __INCLUDE_PFUZE_H */
+Sascha
+
 -- 
-2.25.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
