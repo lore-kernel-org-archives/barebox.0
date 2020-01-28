@@ -1,14 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf1-x141.google.com ([2a00:1450:4864:20::141])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iwQbD-0006N9-1R
- for barebox@lists.infradead.org; Tue, 28 Jan 2020 13:08:13 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Tue, 28 Jan 2020 14:08:00 +0100
-Message-Id: <20200128130801.24890-3-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20200128130801.24890-1-u.kleine-koenig@pengutronix.de>
-References: <20200128130801.24890-1-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
+ id 1iwS4Z-000894-LW
+ for barebox@lists.infradead.org; Tue, 28 Jan 2020 14:42:37 +0000
+Received: by mail-lf1-x141.google.com with SMTP id r14so9286937lfm.5
+ for <barebox@lists.infradead.org>; Tue, 28 Jan 2020 06:42:35 -0800 (PST)
+Date: Tue, 28 Jan 2020 17:42:31 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20200128174231.c17bdeb1b67df64a466bb34c@gmail.com>
+In-Reply-To: <5bcf8c57-1e42-44fa-1681-4bb1cafa5d88@pengutronix.de>
+References: <20200128092832.18615-1-o.rempel@pengutronix.de>
+ <20200128145513.aae1244ee8e7faf94d661640@gmail.com>
+ <20200128130656.GB25105@localhost.localdomain>
+ <09c48af0-26de-7b4f-7f8c-155107f3ef55@pengutronix.de>
+ <5bcf8c57-1e42-44fa-1681-4bb1cafa5d88@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,38 +23,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] commands/test: Improve option parsing to handle "]" less
- special
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v1] MIPS: remove .bss to __rel_start overlay
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>
 
-VGVzdGluZyBmb3IgKmFwWzFdICE9ICddJyBpcyBib2d1cyBkdXJpbmcgb3B0aW9uIHByb2Nlc3Np
-bmcuIEluc3RlYWQKdGVzdCBpZiB0aGVyZSBhcmUgb3B0aW9ucyBsZWZ0IHRvIGJlIHByb2Nlc3Nl
-ZC4KClRoaXMgZml4ZXMgdGhlIHJldHVybiB2YWx1ZSBmb3IgZS5nLgoKCXRlc3QgLXogJ11sYWxh
-JwoKU2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5n
-dXRyb25peC5kZT4KLS0tCiBjb21tYW5kcy90ZXN0LmMgfCAxMyArKysrKysrKy0tLS0tCiAxIGZp
-bGUgY2hhbmdlZCwgOCBpbnNlcnRpb25zKCspLCA1IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBh
-L2NvbW1hbmRzL3Rlc3QuYyBiL2NvbW1hbmRzL3Rlc3QuYwppbmRleCBhYjEwOGZjODQ1ZDUuLjkw
-NzBlNDkwNzQ5NiAxMDA2NDQKLS0tIGEvY29tbWFuZHMvdGVzdC5jCisrKyBiL2NvbW1hbmRzL3Rl
-c3QuYwpAQCAtMTI5LDggKzEyOSwxMSBAQCBzdGF0aWMgaW50IGRvX3Rlc3QoaW50IGFyZ2MsIGNo
-YXIgKmFyZ3ZbXSkKIAkJY2FzZSBPUFRfWkVSTzoKIAkJY2FzZSBPUFRfTk9OWkVSTzoKIAkJCWFk
-diA9IDI7CisJCQlpZiAobGVmdCA8IDIpCisJCQkJYnJlYWs7CiAJCQl6ZXJvID0gMTsKLQkJCWlm
-IChhcFsxXSAmJiAqYXBbMV0gIT0gJ10nICYmIHN0cmxlbihhcFsxXSkpCisKKwkJCWlmIChzdHJs
-ZW4oYXBbMV0pKQogCQkJCXplcm8gPSAwOwogCiAJCQlleHByID0gKG9wdCA9PSBPUFRfWkVSTykg
-PyB6ZXJvIDogIXplcm87CkBAIC0xNDEsNyArMTQ0LDkgQEAgc3RhdGljIGludCBkb190ZXN0KGlu
-dCBhcmdjLCBjaGFyICphcmd2W10pCiAJCWNhc2UgT1BUX0VYSVNUUzoKIAkJY2FzZSBPUFRfU1lN
-Qk9MSUNfTElOSzoKIAkJCWFkdiA9IDI7Ci0JCQlpZiAoYXBbMV0gJiYgKmFwWzFdICE9ICddJyAm
-JiBzdHJsZW4oYXBbMV0pKSB7CisJCQlpZiAobGVmdCA8IDIpCisJCQkJYnJlYWs7CisJCQlpZiAo
-c3RybGVuKGFwWzFdKSkgewogCQkJCWV4cHIgPSAob3B0ID09IE9QVF9TWU1CT0xJQ19MSU5LID8g
-bHN0YXQgOiBzdGF0KShhcFsxXSwgJnN0YXRidWYpOwogCQkJCWlmIChleHByIDwgMCkgewogCQkJ
-CQlleHByID0gMDsKQEAgLTE3MCwxMCArMTc1LDggQEAgc3RhdGljIGludCBkb190ZXN0KGludCBh
-cmdjLCBjaGFyICphcmd2W10pCiAJCS8qIHRocmVlIGFyZ3VtZW50IG9wdGlvbnMgKi8KIAkJZGVm
-YXVsdDoKIAkJCWFkdiA9IDM7Ci0JCQlpZiAobGVmdCA8IDMpIHsKLQkJCQlleHByID0gMTsKKwkJ
-CWlmIChsZWZ0IDwgMykKIAkJCQlicmVhazsKLQkJCX0KIAogCQkJYSA9IHNpbXBsZV9zdHJ0b2wo
-YXBbMF0sIE5VTEwsIDApOwogCQkJYiA9IHNpbXBsZV9zdHJ0b2woYXBbMl0sIE5VTEwsIDApOwot
-LSAKMi4yNC4wCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
-Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Tue, 28 Jan 2020 14:53:07 +0100
+Oleksij Rempel <o.rempel@pengutronix.de> wrote:
+
+> Note:
+> memtest on ar9331 works only with this patch:
+> =
+
+> diff --git a/arch/mips/lib/cpu-probe.c b/arch/mips/lib/cpu-probe.c
+> index cbde43a595..0d2dcf8b03 100644
+> --- a/arch/mips/lib/cpu-probe.c
+> +++ b/arch/mips/lib/cpu-probe.c
+> @@ -177,6 +177,9 @@ static int mips_request_stack(void)
+>          if (!request_sdram_region("stack", mips_stack_top - STACK_SIZE, =
+STACK_SIZE))
+>                  pr_err("Error: Cannot request SDRAM region for stack\n");
+> =
+
+> +       if (!request_sdram_region("vector", 0x80000000, 0x8000))
+> +               pr_err("Error: Cannot request SDRAM region for vector\n");
+> +
+>          return 0;
+>   }
+>   coredevice_initcall(mips_request_stack);
+
+
+Can we put this request_sdram_region() into main_entry.c to keep it close t=
+o trap_init?
+Thereby we have a change to reuse ebase value instead of the 0x80000000 mag=
+ic constant.
+Also 0x8000 size is too large. See MIPS Run, 2nd Edition by Dominic Sweetma=
+n states =
+
+general exception entry point is BASE+0x180 (used by barebox), and Interrup=
+t Special
+starts at BASE+0x200 (not used by barebox), so 0x200 is just enough.
+
+-- =
+
+Best regards,
+=A0 Antony Pavlov
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
