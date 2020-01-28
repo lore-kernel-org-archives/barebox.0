@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr1-x441.google.com ([2a00:1450:4864:20::441])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iwSeM-0005j2-6M
- for barebox@lists.infradead.org; Tue, 28 Jan 2020 15:19:35 +0000
-Received: by mail-wr1-x441.google.com with SMTP id z7so16422800wrl.13
- for <barebox@lists.infradead.org>; Tue, 28 Jan 2020 07:19:32 -0800 (PST)
+ id 1iwRnv-0001J1-0v
+ for barebox@lists.infradead.org; Tue, 28 Jan 2020 14:25:24 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Tue, 28 Jan 2020 15:25:17 +0100
+Message-Id: <20200128142517.27979-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-References: <CAEKVsgZHZR2b28wcMcpac4Qa3KebrXMRf14STZ8GCum0NmnLgg@mail.gmail.com>
-In-Reply-To: <CAEKVsgZHZR2b28wcMcpac4Qa3KebrXMRf14STZ8GCum0NmnLgg@mail.gmail.com>
-From: Cameron Ferguson <cameron.bare86@gmail.com>
-Date: Tue, 28 Jan 2020 15:19:19 +0000
-Message-ID: <CAEKVsgaAVyREvfB-bCCuPCVwi87S1Oq=4xMK6hjEXuJp2kZm+A@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,41 +15,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Small tweak to get ACPI watchdog working (iTCO)
-To: barebox@lists.infradead.org, a.fatoum@pengutronix.de, wim@iguana.be
+Subject: [PATCH] Documentation/sandbox: Add hint how to end a sandboxed barebox
+To: barebox@lists.infradead.org
 
-In my previous email, I only had the "write" operations associated
-with controlling the watchdog timer. I have edited my code to include
-the "read" operations too, but still it's not working.
-
-Here's my new code:
-
-    /* R */    retval = ioread32(base +  4u);  // This should be 0x0
-    /* R */    retval = ioread32(base +  4u);  // This should be 0x0
-    /* W */    iowrite32(0x20000, base + 4u);
-    /* R */    retval = ioread32(base +  8u);  // This should be 0x1800
-    /* R */    retval = ioread32(base +  8u);  // This should be 0x1800
-    /* W */    iowrite32(0x1000, base + 8u);
-    /* R */    retval = ioread32(base +  0u);  // This should be 0x4
-    /* W */    iowrite32(0x4, base + 0u);
-    /* R */    retval = ioread32(base + 10u);  // This should be 0x40000
-    /* W */    iowrite32(0x640000, base + 10u);
-    /* R */    retval = ioread32(base +  0u);  // This should be 0x2
-    /* W */    iowrite32(0x4, base + 0u);  // This is a kick
-    /* R */    retval = ioread32(base +  0u);  // This should be 0x34
-    /* W */    iowrite32(0x4, base + 0u);  // This is a kick
-
-The first two read operations should both return 0x0, however I'm
-getting what looks like a random number. Also it consitently reads the
-value 0x4 from "base + 0u".
-
-Anyone got an idea?
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
+b25peC5kZT4KLS0tCiBEb2N1bWVudGF0aW9uL2JvYXJkcy9zYW5kYm94LnJzdCB8ICAzICsrKwog
+Y29tbWFuZHMvdGVzdC5jICAgICAgICAgICAgICAgICAgfCAzMyArKysrKysrKysrKysrKysrLS0t
+LS0tLS0tLS0tLS0tLQogMiBmaWxlcyBjaGFuZ2VkLCAyMCBpbnNlcnRpb25zKCspLCAxNiBkZWxl
+dGlvbnMoLSkKCmRpZmYgLS1naXQgYS9Eb2N1bWVudGF0aW9uL2JvYXJkcy9zYW5kYm94LnJzdCBi
+L0RvY3VtZW50YXRpb24vYm9hcmRzL3NhbmRib3gucnN0CmluZGV4IDg1YTU0ZTZiMDRkNi4uOGIw
+MDA5M2ZiOWYzIDEwMDY0NAotLS0gYS9Eb2N1bWVudGF0aW9uL2JvYXJkcy9zYW5kYm94LnJzdAor
+KysgYi9Eb2N1bWVudGF0aW9uL2JvYXJkcy9zYW5kYm94LnJzdApAQCAtNTcsMyArNTcsNiBAQCBB
+dmFpbGFibGUgc2FuZGJveCBpbnZvY2F0aW9uIG9wdGlvbnMgaW5jbHVkZToKICAgYGAteWBgLCBg
+YC0teXJlcyA8cmVzPmBgCiAKICAgICBTcGVjaWZ5IFNETCBoZWlnaHQuCisKK1RvIHRlcm1pbmF0
+ZSBiYXJlYm94IGFuZCByZXR1cm4gdG8gdGhlIGNhbGxpbmcgc2hlbGwsIHRoZSBwb3dlcm9mZiBj
+b21tYW5kIGlzCitzdWl0YWJsZS4KZGlmZiAtLWdpdCBhL2NvbW1hbmRzL3Rlc3QuYyBiL2NvbW1h
+bmRzL3Rlc3QuYwppbmRleCA4NjYzNmRlMWMyODMuLmY3MDY4Zjc1NzkwNCAxMDA2NDQKLS0tIGEv
+Y29tbWFuZHMvdGVzdC5jCisrKyBiL2NvbW1hbmRzL3Rlc3QuYwpAQCAtMTU5LDI4ICsxNTksMjkg
+QEAgc3RhdGljIGludCBkb190ZXN0KGludCBhcmdjLCBjaGFyICphcmd2W10pCiAJCQkJCWJyZWFr
+OwogCQkJCX0KIAkJCQlleHByID0gMDsKLQkJCQlpZiAob3B0ID09IE9QVF9FWElTVFMpIHsKKwkJ
+CQlzd2l0Y2ggKG9wdCkgeworCQkJCWNhc2UgT1BUX0VYSVNUUzoKIAkJCQkJZXhwciA9IDE7CiAJ
+CQkJCWJyZWFrOwotCQkJCX0KLQkJCQlpZiAob3B0ID09IE9QVF9GSUxFICYmIFNfSVNSRUcoc3Rh
+dGJ1Zi5zdF9tb2RlKSkgewotCQkJCQlleHByID0gMTsKKworCQkJCWNhc2UgT1BUX0ZJTEU6CisJ
+CQkJCWV4cHIgPSBTX0lTUkVHKHN0YXRidWYuc3RfbW9kZSk7CiAJCQkJCWJyZWFrOwotCQkJCX0K
+LQkJCQlpZiAob3B0ID09IE9QVF9ESVJFQ1RPUlkgJiYgU19JU0RJUihzdGF0YnVmLnN0X21vZGUp
+KSB7Ci0JCQkJCWV4cHIgPSAxOworCisJCQkJY2FzZSBPUFRfRElSRUNUT1JZOgorCQkJCQlleHBy
+ID0gU19JU0RJUihzdGF0YnVmLnN0X21vZGUpOwogCQkJCQlicmVhazsKLQkJCQl9Ci0JCQkJaWYg
+KG9wdCA9PSBPUFRfU1lNQk9MSUNfTElOSyAmJiBTX0lTTE5LKHN0YXRidWYuc3RfbW9kZSkpIHsK
+LQkJCQkJZXhwciA9IDE7CisKKwkJCQljYXNlIE9QVF9TWU1CT0xJQ19MSU5LOgorCQkJCQlleHBy
+ID0gU19JU0xOSyhzdGF0YnVmLnN0X21vZGUpOwogCQkJCQlicmVhazsKLQkJCQl9Ci0JCQkJaWYg
+KG9wdCA9PSBPUFRfQkxPQ0sgJiYgU19JU0JMSyhzdGF0YnVmLnN0X21vZGUpKSB7Ci0JCQkJCWV4
+cHIgPSAxOworCisJCQkJY2FzZSBPUFRfQkxPQ0s6CisJCQkJCWV4cHIgPSBTX0lTQkxLKHN0YXRi
+dWYuc3RfbW9kZSk7CiAJCQkJCWJyZWFrOwotCQkJCX0KLQkJCQlpZiAob3B0ID09IE9QVF9DSEFS
+ICYmIFNfSVNDSFIoc3RhdGJ1Zi5zdF9tb2RlKSkgewotCQkJCQlleHByID0gMTsKKworCQkJCWNh
+c2UgT1BUX0NIQVI6CisJCQkJCWV4cHIgPSBTX0lTQ0hSKHN0YXRidWYuc3RfbW9kZSk7CiAJCQkJ
+CWJyZWFrOwogCQkJCX0KIAkJCX0KLS0gCjIuMjQuMAoKCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
+dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
+bmZvL2JhcmVib3gK
