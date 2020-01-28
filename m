@@ -1,21 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mailout04.rmx.de ([94.199.90.94])
+Received: from magratgarlick.emantor.de ([78.46.208.201])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ivz1l-0005Uc-9j
- for barebox@lists.infradead.org; Mon, 27 Jan 2020 07:41:47 +0000
-Received: from kdin01.retarus.com (unknown [172.19.17.48])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mailout04.rmx.de (Postfix) with ESMTPS id 485hWw5JKvz3qvBB
- for <barebox@lists.infradead.org>; Mon, 27 Jan 2020 08:41:32 +0100 (CET)
-Received: from ppmail.arri.de (unknown [217.111.95.7])
- (using TLSv1 with cipher AES128-SHA (128/128 bits))
- (No client certificate requested)
- by kdin01.retarus.com (Postfix) with ESMTPS id 485hWv742Kz2xFJ
- for <barebox@lists.infradead.org>; Mon, 27 Jan 2020 08:41:31 +0100 (CET)
-From: Christian Eggers <ceggers@arri.de>
-Date: Mon, 27 Jan 2020 08:41:15 +0100
-Message-ID: <20200127074115.17013-1-ceggers@arri.de>
+ id 1iwJaE-00060d-Ed
+ for barebox@lists.infradead.org; Tue, 28 Jan 2020 05:38:44 +0000
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Tue, 28 Jan 2020 06:38:21 +0100
+Message-Id: <20200128053821.677207-5-r.czerwinski@pengutronix.de>
+In-Reply-To: <20200128053821.677207-1-r.czerwinski@pengutronix.de>
+References: <20200128053821.677207-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -29,58 +21,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] eeprom: at25: Allow page sizes greater than 16 bit
+Subject: [PATCH v3 4/5] ARM: mach-imx: test PL310 write access
 To: barebox@lists.infradead.org
-Cc: Christian Eggers <ceggers@arri.de>, ceggers@gmx.de
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-For FRAM devices the page size is usually equal to the device size. Some
-available devices are greater than 64kB, so a 32 bit variable must be
-used.
+If OP-TEE early loading is performed, OP-TEE will configure the PL210
+and lock write access to the controller from the normal world. Test this
+by trying to write the same value back and do not configure if we can
+not write to the PL310.
 
-The same change has to be done for the Linux driver. I'll try to
-upstream this as soon as possible.
-
-Signed-off-by: Christian Eggers <ceggers@arri.de>
+Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- drivers/eeprom/at25.c | 2 +-
- include/spi/eeprom.h  | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/mach-imx/imx6.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/eeprom/at25.c b/drivers/eeprom/at25.c
-index 1c9ef1232..56168c216 100644
---- a/drivers/eeprom/at25.c
-+++ b/drivers/eeprom/at25.c
-@@ -259,7 +259,7 @@ static int at25_np_to_chip(struct device_d *dev,
- 
- 	if (of_property_read_u32(np, "pagesize", &val) == 0 ||
- 	    of_property_read_u32(np, "at25,page-size", &val) == 0) {
--		chip->page_size = (u16)val;
-+		chip->page_size = val;
- 	} else {
- 		dev_err(dev, "Error: missing \"pagesize\" property\n");
- 		return -ENODEV;
-diff --git a/include/spi/eeprom.h b/include/spi/eeprom.h
-index 15495e59f..137718f02 100644
---- a/include/spi/eeprom.h
-+++ b/include/spi/eeprom.h
-@@ -10,7 +10,7 @@
+diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
+index 41e0066add..d94a81e779 100644
+--- a/arch/arm/mach-imx/imx6.c
++++ b/arch/arm/mach-imx/imx6.c
+@@ -11,6 +11,7 @@
+  *
   */
- struct spi_eeprom {
- 	char		name[10];
--	u16		page_size;		/* for writes */
-+	u32		page_size;		/* for writes */
- 	u16		flags;
- #define	EE_ADDR1	0x0001			/*  8 bit addrs */
- #define	EE_ADDR2	0x0002			/* 16 bit addrs */
+ 
++#include <abort.h>
+ #include <init.h>
+ #include <common.h>
+ #include <io.h>
+@@ -273,6 +274,22 @@ int imx6_devices_init(void)
+ 	return 0;
+ }
+ 
++static bool imx6_cannot_write_l2x0(void)
++{
++	void __iomem *l2x0_base = IOMEM(0x00a02000);
++	u32 val;
++	/*
++	 * Mask data aborts and try to access the PL210. If OP-TEE is running we
++	 * will receive a data-abort and assume barebox is running in the normal
++	 * world.
++	 */
++	val = readl(l2x0_base + L2X0_PREFETCH_CTRL);
++
++	data_abort_mask();
++	writel(val, l2x0_base + L2X0_PREFETCH_CTRL);
++	return data_abort_unmask();
++}
++
+ static int imx6_mmu_init(void)
+ {
+ 	void __iomem *l2x0_base = IOMEM(0x00a02000);
+@@ -281,6 +298,9 @@ static int imx6_mmu_init(void)
+ 	if (!cpu_is_mx6())
+ 		return 0;
+ 
++	if (imx6_cannot_write_l2x0())
++		return 0;
++
+ 	val = readl(l2x0_base + L2X0_CACHE_ID);
+ 	cache_part = val & L2X0_CACHE_ID_PART_MASK;
+ 	cache_rtl  = val & L2X0_CACHE_ID_RTL_MASK;
 -- 
-Christian Eggers
-Embedded software developer
-
-Arnold & Richter Cine Technik GmbH & Co. Betriebs KG
-Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRA 57918
-Persoenlich haftender Gesellschafter: Arnold & Richter Cine Technik GmbH
-Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRB 54477
-Geschaeftsfuehrer: Dr. Michael Neuhaeuser; Stephan Schenk; Walter Trauninger; Markus Zeiler
+2.25.0
 
 
 _______________________________________________
