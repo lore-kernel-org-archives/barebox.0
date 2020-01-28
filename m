@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([78.46.208.201])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iwJaE-00060d-Ed
- for barebox@lists.infradead.org; Tue, 28 Jan 2020 05:38:44 +0000
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Tue, 28 Jan 2020 06:38:21 +0100
-Message-Id: <20200128053821.677207-5-r.czerwinski@pengutronix.de>
-In-Reply-To: <20200128053821.677207-1-r.czerwinski@pengutronix.de>
-References: <20200128053821.677207-1-r.czerwinski@pengutronix.de>
+ id 1iwMVL-0003Bm-UK
+ for barebox@lists.infradead.org; Tue, 28 Jan 2020 08:45:53 +0000
+Date: Tue, 28 Jan 2020 09:45:50 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200128084550.uxe7hn2qlvcik5tz@pengutronix.de>
+References: <20200127155013.4388-1-m.grzeschik@pengutronix.de>
+ <20200127155013.4388-2-m.grzeschik@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200127155013.4388-2-m.grzeschik@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,68 +23,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 4/5] ARM: mach-imx: test PL310 write access
-To: barebox@lists.infradead.org
-Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Subject: Re: [PATCH 2/4] regulator: pfuze: add support to other architectures
+To: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-If OP-TEE early loading is performed, OP-TEE will configure the PL210
-and lock write access to the controller from the normal world. Test this
-by trying to write the same value back and do not configure if we can
-not write to the PL310.
+Hi Michael,
 
-Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
----
- arch/arm/mach-imx/imx6.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+On Mon, Jan 27, 2020 at 04:50:11PM +0100, Michael Grzeschik wrote:
+> Currently the pfuze driver is build dependent to ARCH_IMX6. To make it
+> possible to work with ARCH_IMX8 we move the imx6_poweroff call to an own
+> poweroff handler.
+> 
+> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+> ---
+>  arch/arm/mach-imx/imx6.c  | 8 ++++++++
+>  drivers/regulator/Kconfig | 2 +-
+>  drivers/regulator/pfuze.c | 2 --
+>  3 files changed, 9 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
+> index 41e0066add..8f1638c1ea 100644
+> --- a/arch/arm/mach-imx/imx6.c
+> +++ b/arch/arm/mach-imx/imx6.c
+> @@ -401,3 +401,11 @@ void __noreturn imx6_pm_stby_poweroff(void)
+>  
+>  	while(1);
+>  }
+> +
+> +static int imx6_init(void)
+> +{
+> +	poweroff_handler_register_fn(imx6_pm_stby_poweroff);
+> +
+> +	return 0;
+> +}
 
-diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
-index 41e0066add..d94a81e779 100644
---- a/arch/arm/mach-imx/imx6.c
-+++ b/arch/arm/mach-imx/imx6.c
-@@ -11,6 +11,7 @@
-  *
-  */
- 
-+#include <abort.h>
- #include <init.h>
- #include <common.h>
- #include <io.h>
-@@ -273,6 +274,22 @@ int imx6_devices_init(void)
- 	return 0;
- }
- 
-+static bool imx6_cannot_write_l2x0(void)
-+{
-+	void __iomem *l2x0_base = IOMEM(0x00a02000);
-+	u32 val;
-+	/*
-+	 * Mask data aborts and try to access the PL210. If OP-TEE is running we
-+	 * will receive a data-abort and assume barebox is running in the normal
-+	 * world.
-+	 */
-+	val = readl(l2x0_base + L2X0_PREFETCH_CTRL);
-+
-+	data_abort_mask();
-+	writel(val, l2x0_base + L2X0_PREFETCH_CTRL);
-+	return data_abort_unmask();
-+}
-+
- static int imx6_mmu_init(void)
- {
- 	void __iomem *l2x0_base = IOMEM(0x00a02000);
-@@ -281,6 +298,9 @@ static int imx6_mmu_init(void)
- 	if (!cpu_is_mx6())
- 		return 0;
- 
-+	if (imx6_cannot_write_l2x0())
-+		return 0;
-+
- 	val = readl(l2x0_base + L2X0_CACHE_ID);
- 	cache_part = val & L2X0_CACHE_ID_PART_MASK;
- 	cache_rtl  = val & L2X0_CACHE_ID_RTL_MASK;
+imx6_pm_stby_poweroff() only works when a pfuze is present and is
+configured correctly. Calling this on every i.MX board is not nice.
+
+What you can do is to call pfuze_register_init_callback() from here.
+You'll have to add a static inline wrapper for this in case pfuze
+support is not compiled in.
+
+I wonder how this compiles as my version of this file already has a
+function named imx6_init(). Using this is preferred btw as it's already
+made sure that it will run only on i.MX6.
+
+> +coredevice_initcall(imx6_init);
+
+Note that this doesn't necessarily means that we are running an i.MX6.
+It could be whatever else is compiled in.
+
+Sascha
+
 -- 
-2.25.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
