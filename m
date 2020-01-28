@@ -1,20 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf1-x141.google.com ([2a00:1450:4864:20::141])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iwS4Z-000894-LW
- for barebox@lists.infradead.org; Tue, 28 Jan 2020 14:42:37 +0000
-Received: by mail-lf1-x141.google.com with SMTP id r14so9286937lfm.5
- for <barebox@lists.infradead.org>; Tue, 28 Jan 2020 06:42:35 -0800 (PST)
-Date: Tue, 28 Jan 2020 17:42:31 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20200128174231.c17bdeb1b67df64a466bb34c@gmail.com>
-In-Reply-To: <5bcf8c57-1e42-44fa-1681-4bb1cafa5d88@pengutronix.de>
-References: <20200128092832.18615-1-o.rempel@pengutronix.de>
- <20200128145513.aae1244ee8e7faf94d661640@gmail.com>
- <20200128130656.GB25105@localhost.localdomain>
- <09c48af0-26de-7b4f-7f8c-155107f3ef55@pengutronix.de>
- <5bcf8c57-1e42-44fa-1681-4bb1cafa5d88@pengutronix.de>
-Mime-Version: 1.0
+ id 1iwSDs-0004H4-9T
+ for barebox@lists.infradead.org; Tue, 28 Jan 2020 14:52:13 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Tue, 28 Jan 2020 15:52:05 +0100
+Message-Id: <20200128145205.30671-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20200128174523.a96ddb3231191ad2a0015f88@gmail.com>
+References: <20200128174523.a96ddb3231191ad2a0015f88@gmail.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,56 +17,24 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1] MIPS: remove .bss to __rel_start overlay
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>
+Subject: [PATCH v2] Documentation/sandbox: Add hint how to end a sandboxed
+ barebox
+To: barebox@lists.infradead.org
 
-On Tue, 28 Jan 2020 14:53:07 +0100
-Oleksij Rempel <o.rempel@pengutronix.de> wrote:
-
-> Note:
-> memtest on ar9331 works only with this patch:
-> =
-
-> diff --git a/arch/mips/lib/cpu-probe.c b/arch/mips/lib/cpu-probe.c
-> index cbde43a595..0d2dcf8b03 100644
-> --- a/arch/mips/lib/cpu-probe.c
-> +++ b/arch/mips/lib/cpu-probe.c
-> @@ -177,6 +177,9 @@ static int mips_request_stack(void)
->          if (!request_sdram_region("stack", mips_stack_top - STACK_SIZE, =
-STACK_SIZE))
->                  pr_err("Error: Cannot request SDRAM region for stack\n");
-> =
-
-> +       if (!request_sdram_region("vector", 0x80000000, 0x8000))
-> +               pr_err("Error: Cannot request SDRAM region for vector\n");
-> +
->          return 0;
->   }
->   coredevice_initcall(mips_request_stack);
-
-
-Can we put this request_sdram_region() into main_entry.c to keep it close t=
-o trap_init?
-Thereby we have a change to reuse ebase value instead of the 0x80000000 mag=
-ic constant.
-Also 0x8000 size is too large. See MIPS Run, 2nd Edition by Dominic Sweetma=
-n states =
-
-general exception entry point is BASE+0x180 (used by barebox), and Interrup=
-t Special
-starts at BASE+0x200 (not used by barebox), so 0x200 is just enough.
-
--- =
-
-Best regards,
-=A0 Antony Pavlov
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
+b25peC5kZT4KLS0tCiBEb2N1bWVudGF0aW9uL2JvYXJkcy9zYW5kYm94LnJzdCB8IDMgKysrCiAx
+IGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvRG9jdW1lbnRhdGlv
+bi9ib2FyZHMvc2FuZGJveC5yc3QgYi9Eb2N1bWVudGF0aW9uL2JvYXJkcy9zYW5kYm94LnJzdApp
+bmRleCA4NWE1NGU2YjA0ZDYuLjhiMDAwOTNmYjlmMyAxMDA2NDQKLS0tIGEvRG9jdW1lbnRhdGlv
+bi9ib2FyZHMvc2FuZGJveC5yc3QKKysrIGIvRG9jdW1lbnRhdGlvbi9ib2FyZHMvc2FuZGJveC5y
+c3QKQEAgLTU3LDMgKzU3LDYgQEAgQXZhaWxhYmxlIHNhbmRib3ggaW52b2NhdGlvbiBvcHRpb25z
+IGluY2x1ZGU6CiAgIGBgLXlgYCwgYGAtLXlyZXMgPHJlcz5gYAogCiAgICAgU3BlY2lmeSBTREwg
+aGVpZ2h0LgorCitUbyB0ZXJtaW5hdGUgYmFyZWJveCBhbmQgcmV0dXJuIHRvIHRoZSBjYWxsaW5n
+IHNoZWxsLCB0aGUgcG93ZXJvZmYgY29tbWFuZCBpcworc3VpdGFibGUuCi0tIAoyLjI0LjAKCgpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
+aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
+ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
