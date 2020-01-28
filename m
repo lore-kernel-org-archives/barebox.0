@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iwOeg-0007yY-Ee
- for barebox@lists.infradead.org; Tue, 28 Jan 2020 11:03:41 +0000
-References: <49d641a2-d827-885f-64a1-aac54877cfb5@pengutronix.de>
- <20200128104955.10994-1-pmamonov@gmail.com>
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Message-ID: <64c9e041-d554-ac17-6326-b50c8eefe51a@pengutronix.de>
-Date: Tue, 28 Jan 2020 12:03:35 +0100
-MIME-Version: 1.0
-In-Reply-To: <20200128104955.10994-1-pmamonov@gmail.com>
-Content-Language: en-US
+ id 1iwKdx-0000Mm-8A
+ for barebox@lists.infradead.org; Tue, 28 Jan 2020 06:46:38 +0000
+Received: by mail-lj1-x22d.google.com with SMTP id w1so13536342ljh.5
+ for <barebox@lists.infradead.org>; Mon, 27 Jan 2020 22:46:36 -0800 (PST)
+Date: Tue, 28 Jan 2020 09:46:29 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20200128094629.4fb7c2bcad814990c7997eb2@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,152 +17,92 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: MIPS: relocation issue
-To: Peter Mamonov <pmamonov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: MIPS: relocation issue
+To: Oleksij Rempel <linux@rempel-privat.de>
+Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>, Oleksij Rempel <o.rempel@pengutronix.de>
+
+Hi!
+
+Since 28ed10d6a6 ("MIPS: relocation: add relocation support")
+iomem output on memory regions is invalid,
+all the code that rely on registered sdram memory regions
+after relocation can fail. E.g. the memtest commands fails
+on barebox.
+
+How to reproduce the problem ov v2020.01.0:
+
+$ wget https://www.barebox.org/download/barebox-2020.01.0.tar.bz2
+...
+$ tar fx barebox-2020.01.0.tar.bz2
+$ cd barebox-2020.01.0
+$ export ARCH=3Dmips
+$ export CROSS_COMPILE=3Dmips-linux-gnu-
+$ make qemu-malta_defconfig
+$ sed -i "s/^.*CONFIG_CMD_MEMTEST.*/CONFIG_CMD_MEMTEST=3Dy/" .config
+$ make
+$ qemu-system-mips -nodefaults -M malta -m 256 -nographic -serial stdio -mo=
+nitor null -bios barebox-flash-image
+...
+barebox@qemu malta:/ memtest
+Start iteration 1 of 1.
+Testing memory space: 0xa0865000 -> 0xafffffff:
+Starting data line test.
+Check for address bits stuck high.
+Check for address bits stuck low or shorted.
+Starting moving inversions test of RAM:
+Fill with address, compare, fill with inverted address, compare again
+	[##########################################                       ]
+FAILURE (read/write): expected 0x03cca9f2, actual 0xa08126c4 at address 0xa=
+fb8f7c4.
+
+Ooops, TLB miss on load or ifetch!
+
+$ 0   : 00000000 00000000 fffffffb a085c900
+$ 4   : a0407e90 0000000a b80003f8 00000001
+$ 8   : a0858f28 00000000 00000053 00000008
+$12   : 00000000 00000000 0000005c 00000001
+$16   : 03ccab3c 03ccab3d a0825c48 00000000
+$20   : 00000000 00000001 a0853518 a085352c
+$24   : 00000018 a08124b8                  =
+
+$28   : 00000000 8fb8fcf8 a0860000 03ccab3e
+Hi    : 0000000a
+Lo    : 00000000
+epc   : 03ccab3e
+ra    : 03ccab3e
+Status: 00000002
+Cause : 00000408
+Config: 80008482
+
+### ERROR ### Please RESET the board ###
 
 
+memtest for qemu-malta can be repaired by disabling relocation, e.g.
 
-On 28.01.20 11:49, Peter Mamonov wrote:
-> Hi Oleksij,
-> 
-> Below you will find the patch, which adds the `whereami` command. The command
-> prints several addresses belonging to code, data, bss, heap and stack areas.
-> I've run it on qemu/malta with relocations enabled and disabled as per Antony's
-> mail. Output comparison shows that only the stack is relocated. Looks like
-> relocation doesn't work as expected. Also note that the stack was relocated
-> from the uncached KSEG1 to the cached KSEG0 segment, which is inconsistent at
-> least.
->
+diff --git a/arch/mips/boot/start.S b/arch/mips/boot/start.S
+index c1cd2d9dd5..95b6596dde 100644
+--- a/arch/mips/boot/start.S
++++ b/arch/mips/boot/start.S
+@@ -34,7 +34,7 @@ EXPORT(_start)
+        move    a0, s0
+        move    a1, s1
+        move    a2, s2
+-       la      v0, relocate_code
++       la      v0, main_entry
+        jal     v0
+         nop
 
-ACK. The patch "MIPS: remove .bss to __rel_start overlay" should fix it. Please test :)
 
-> Relocation enabled:
-> 
-> 	barebox@qemu malta:/ whereami
-> 	code   @ a0829bcc (a0829bc0)
-> 	data   @ a085f3c0
-> 	bss    @ a0861ae0
-> 	heap   @ a0428c38
-> 	stack  @ 8fb8fd50
-> 	barebox@qemu malta:/ version
-> 
-> 	barebox 2020.01.0-00104-gfe12ba2776 #3 Tue Jan 28 13:34:06 MSK 2020
-> 
-> 
-> Relocation disabled:
-> 
-> 	barebox@qemu malta:/ whereami
-> 	code   @ a0829bcc (a0829bc0)
-> 	data   @ a085f1e0
-> 	bss    @ a0861900
-> 	heap   @ a0428c38
-> 	stack  @ a03ffd50
+Additional testing on real hardware has to be done.
 
-This functionality is available with command iomem.
+-- =
 
-> Regards,
-> Peter
-> ---
->   commands/Kconfig    |  5 +++++
->   commands/Makefile   |  1 +
->   commands/whereami.c | 45 +++++++++++++++++++++++++++++++++++++++++++++
->   3 files changed, 51 insertions(+)
->   create mode 100644 commands/whereami.c
-> 
-> diff --git a/commands/Kconfig b/commands/Kconfig
-> index add0d26ee9..a660e09db4 100644
-> --- a/commands/Kconfig
-> +++ b/commands/Kconfig
-> @@ -2217,6 +2217,11 @@ config CMD_UBSAN
->   	  This is a test command for the undefined behavior sanitizer.
->   	  It triggers various undefined behavior, and detect it.
->   
-> +config CMD_WHEREAMI
-> +	tristate "whereami"
-> +	depends on MIPS
-> +	default y
-> +
->   # end Miscellaneous commands
->   endmenu
->   
-> diff --git a/commands/Makefile b/commands/Makefile
-> index 8e8c449bc1..dfa3d6e447 100644
-> --- a/commands/Makefile
-> +++ b/commands/Makefile
-> @@ -128,6 +128,7 @@ obj-$(CONFIG_CMD_NAND_BITFLIP)	+= nand-bitflip.o
->   obj-$(CONFIG_CMD_SEED)		+= seed.o
->   obj-$(CONFIG_CMD_IP_ROUTE_GET)  += ip-route-get.o
->   obj-$(CONFIG_CMD_UBSAN)		+= ubsan.o
-> +obj-$(CONFIG_CMD_WHEREAMI)	+= whereami.o
->   
->   UBSAN_SANITIZE_ubsan.o := y
->   
-> diff --git a/commands/whereami.c b/commands/whereami.c
-> new file mode 100644
-> index 0000000000..3edb070fe8
-> --- /dev/null
-> +++ b/commands/whereami.c
-> @@ -0,0 +1,45 @@
-> +#include <common.h>
-> +#include <command.h>
-> +#include <complete.h>
-> +
-> +static volatile int data = 1;
-> +static volatile int bss;
-> +
-> +static void* code();
-> +static noinline void* code()
-> +{
-> +	void *ret;
-> +	__asm__ __volatile__(
-> +		".set	push\n"
-> +		".set	noreorder\n"
-> +		".set	noat\n"
-> +		"	move	$1, $31\n"
-> +		"	bal	255f\n"
-> +		"	nop\n"
-> +		"255:	move	%0, $31\n"
-> +		"	move	$31, $1\n"
-> +		".set	pop\n"
-> +		:"=r" (ret)
-> +	);
-> +	return ret;
-> +}
-> +
-> +static int do_whereami(int argc, char *argv[])
-> +{
-> +	volatile int stack;
-> +	int *heapp = malloc(sizeof(int));
-> +
-> +	printf("code   @ %p (%p)\n", code(), &code);
-> +	printf("data   @ %p\n", &data);
-> +	printf("bss    @ %p\n", &bss);
-> +	printf("heap   @ %p\n", heapp);
-> +	printf("stack  @ %p\n", &stack);
-> +	return 0;
-> +}
-> +
-> +BAREBOX_CMD_START(whereami)
-> +	.cmd		= do_whereami,
-> +	BAREBOX_CMD_DESC("print addresses from code, stack, heap and data sections")
-> +	BAREBOX_CMD_GROUP(CMD_GRP_INFO)
-> +	BAREBOX_CMD_COMPLETE(empty_complete)
-> +BAREBOX_CMD_END
-> 
-
-Kind regards,
-Oleksij Rempel
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
