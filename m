@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lj1-x244.google.com ([2a00:1450:4864:20::244])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iwQF6-0006qg-VU
- for barebox@lists.infradead.org; Tue, 28 Jan 2020 12:45:22 +0000
-References: <5f02d95b-418e-f0c0-68c6-29d7d9ab0db6@eurek.it>
- <65cb5ff1-9cac-ea88-e06d-6658d814c251@pengutronix.de>
- <8f731e2b-9c11-d183-a660-e0a7ea621074@eurek.it>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <4f81ce73-ead6-fad4-1336-2f89819227ce@pengutronix.de>
-Date: Tue, 28 Jan 2020 13:45:13 +0100
-MIME-Version: 1.0
-In-Reply-To: <8f731e2b-9c11-d183-a660-e0a7ea621074@eurek.it>
-Content-Language: en-US
+ id 1iwQNl-0008PU-Gm
+ for barebox@lists.infradead.org; Tue, 28 Jan 2020 12:54:18 +0000
+Received: by mail-lj1-x244.google.com with SMTP id f25so1691224ljg.12
+ for <barebox@lists.infradead.org>; Tue, 28 Jan 2020 04:54:16 -0800 (PST)
+Date: Tue, 28 Jan 2020 15:54:13 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20200128155413.68391b096ffdd891b76802b3@gmail.com>
+In-Reply-To: <20200128092832.18615-1-o.rempel@pengutronix.de>
+References: <20200128092832.18615-1-o.rempel@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,75 +19,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Barebox 2020.01.0 and Device Tree from Linux Kernel 5.4
-To: gianluca <gianlucarenzi@eurek.it>, Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH v1] MIPS: remove .bss to __rel_start overlay
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-SGVsbG8sCgoocGxlYXNlIGtlZXAgdGhlIGJhcmVib3ggbWFpbGluZyBsaXN0IGluIENDKQoKT24g
-MS8yNy8yMCAzOjAyIFBNLCBnaWFubHVjYSB3cm90ZToKPiBPbiAwMS8yNC8yMDIwIDA1OjEzIFBN
-LCBBaG1hZCBGYXRvdW0gd3JvdGU6Cj4+IEhlbGxvLAo+Pgo+PiBPbiAxLzI0LzIwIDQ6MzIgUE0s
-IGdpYW5sdWNhIHdyb3RlOgo+Pj4gSSB3YXMgd29uZGVyaW5nIGlmIHRoZSBkZXZpY2UgdHJlZSBm
-cm9tIChsYXRlc3QpIExpbnV4IEtlcm5lbCBjYW4gYmUgdXNlZCB3aGVuIGJ1aWxkaW5nIEJhcmVi
-b3ggMjAyMC4wMS4wIGZvciBpTVg2IGNvbXBhdGlibGUgY3VzdG9tIGJvYXJkLgo+Pj4gRm9yIHN1
-cmUgdGhlIGluY2x1ZGUgcGF0aCBhbmQgb3RoZXIgc3R1ZmYgYXJlIHF1aXRlIGRpZmZlcmVudCAo
-a2VybmVsIGFuZCBiYXJlYm94KSwgc28gSSBhbSBwcmV0dHkgc3VyZSBpdCB3aWxsIGZhaWwgdG8g
-YnVpbGQgd2l0aCBzb21lIHNvcnQgb2YgImZvcmVpZ24iIGRldmljZS10cmVlLgo+Pgo+PiBiYXJl
-Ym94IGFscmVhZHkgcmVndWxhcmx5IGltcG9ydHMgTGludXgncyBkZXZpY2UgdHJlZSBkaXJlY3Rv
-cmllcyBpbnRvIGl0cyBkdHMvIGRpcmVjdG9yeS4KPj4gdjIwMjAuMDEuMCBjb250YWlucyB0aGUg
-djUuNC1yYzcgc3RhdGUuCj4+Cj4gCj4gR29vZCB0byBoZWFyLi4uCj4gCj4+IEFub3RoZXIgaXNz
-dWUsIHdpbGwgYmUgdGhlIGRyaXZlcnMgdG8gaGF2ZSBmdWxsIGFjY2VzcyBmcm9tIEJhcmVib3gt
-UG9pbnQtT2YtVmlldy4gSWYgdGhlIGRldmljZS10cmVlIHByb3BlcnRpZXMgYW5kIGNvbXBhdGli
-bGUgc3RyaW5ncyBhcmUgcXVpdGUgZGlmZmVyZW50LCBCYXJlYm94IHdpbGwgZmFpbCB0byBhY3Rp
-dmF0aW5nL3Byb2JpbmcvdXNpbmcgdGhlIGludGVybmFsIGRyaXZlci4KPj4KPj4gYmFyZWJveCBk
-cml2ZXIgY29tcGF0aWJsZXMgc2hvdWxkIGJlIGFsaWduZWQgd2l0aCB0aGUga2VybmVsJ3MuCj4+
-IElmIGEgYmFyZWJveCBkcml2ZXIgbGFja3MgaGFuZGxpbmcgZm9yIGEgcHJvcGVydHksIHRoZSBk
-cml2ZXIgY2FuIGJlIGV4dGVuZGVkLgo+Pgo+Pj4gU28gSSBhbSBhc2tpbmc6Cj4+PiBUaGVyZSBp
-cyBhICJvZmZpY2lhbCIgd2F5IHRvIG1hbmFnZSB0aG9zZSBkaWZmZXJlbmNpZXM/Cj4+Cj4+IEkg
-cmVjZW50bHkgYWRkZWQgYSBzaG9ydCBzZWN0aW9uIGFib3V0IHRoaXMgaW4gdGhlIERvY3VtZW50
-YXRpb24KPj4gKGh0dHBzOi8vYmFyZWJveC5vcmcvZG9jL2xhdGVzdC9kZXZpY2V0cmVlL2luZGV4
-Lmh0bWwpOgo+Pgo+PiDCoCAiRm9yIHN1cHBvcnRpbmcgYXJjaGl0ZWN0dXJlcywgYmFyZWJveCBk
-ZXZpY2UgdHJlZXMgYXJlIGxvY2F0ZWQgaW4gYXJjaC8kQVJDSC9kdHMuCj4+IMKgwqAgVXN1YWxs
-eSB0aGUgYmFyZWJveCBib2FyZC5kdHMgaW1wb3J0cyB0aGUgdXBzdHJlYW0gZGV2aWNlIHRyZWUg
-dW5kZXIgZHRzL3NyYy8kQVJDSAo+PiDCoMKgIHdpdGggI2luY2x1ZGUgIiRBUkNIL2JvYXJkLmR0
-cyIgYW5kIHRoZW4gZXh0ZW5kcyBpdCB3aXRoIGJhcmVib3gtc3BlY2lmaWNzIGxpa2UKPj4gwqDC
-oCBCYXJlYm94IHN0YXRlLCBlbnZpcm9ubWVudCBvciBib290LXRpbWUgZGV2aWNlIGNvbmZpZ3Vy
-YXRpb24uIgo+Pgo+PiBUYWtlIGEgbG9vayBhdCBhcmNoL2FybS9kdHMvaW14NnEtbWFyc2JvYXJk
-LmR0cyB0byBzZWUgaG93IHRoYXQgbG9va3MgaW4gcHJhY3RpY2UuCj4+IFRoZSBrZXJuZWwgZGV2
-aWNlIHRyZWUgaXMgcmV1c2VkIGFzIGlzIGFuZCBleHRlbmRlZCBzbGlnaHRseSBmb3IgYmFyZWJv
-eCB1c2UuCj4gCj4gU28sIGJhc2ljYWxseSB0aGUgZGV2aWNlLXRyZWUgc3R1ZmYgaW4gQmFyZWJv
-eCBhcmUgZGlmZmVyZW50IGZyb20gdGhlIExpbnV4IGtlcm5lbCBvbmUgb25seSBmb3IgdGhlICNp
-bmNsdWRlIHBhdGg/CgpUaGUgYmFyZWJveCBkZXZpY2UgdHJlZXMgZm9yIEFSTSBhcmUgaW4gYXJj
-aC9hcm0vZHRzLiBCZXN0IHByYWN0aWNlCmlzIHRoYXQgdGhlc2UgZGV2aWNlIHRyZWVzIGluY2x1
-ZGUgdGhlIHVwc3RyZWFtIGRldmljZSB0cmVlIHdpdGgganVzdAp0aGUgYmFyZWJveCBjaGFuZ2Vz
-IGN1c3RvbS4KCj4gVGhlIGJpZ2dlc3QgaXNzdWUgSSd2ZSBmb3VuZCBoZXJlLCBpcyB0aGUgY29t
-cGF0aWJpbGl0eSBvZiB0aGUgZGV2aWNlLXRyZWUgbm9kZXMgZm9yIG15IGJvYXJkIHJlZmVycmlu
-ZyB0aGUgc3RhbmRhcmQgaW14NiBib2FyZC4gRm9yIGV4YW1wbGU6Cj4gCj4gJnVhcnQzIHsKPiDC
-oMKgwqAgc3RhdHVzID0gIm9rYXkiOwo+IH07Cj4gCj4gaXMgZ29vZCBhcyB5b3UgYXJlIHVzaW5n
-IHRoZSBzdGFuZGFyZCBwaW5vdXQgZm9yIHVhcnQzLgo+IAo+IEJ1dCwgaWYgSSBhbSB1c2luZyBh
-IGRpZmZlcmVudCBwaW5vdXQgbGF5b3V0IGZvciB0aGUgc2FtZSBkZXZpY2UsIHRoaXMgaXMgbm90
-IHdvcmtpbmcgYXQgYWxsLgo+IAo+IE1heWJlIEkgaGF2ZSB0byBmaW5kIHRoZSBkZXZpY2Utbm9k
-ZSBwYXJlbnQsIHRoZW4gbG9va2luZyBmb3IgaXRzIGNvbmZpZ3VyYXRpb24sIGFuZCBpZiBpdCBm
-aXRzIG15IG5lZWRzLCBvayBJIHdpbGwgdXNlIGl0Lgo+IAo+IE90aGVyd2lzZSBJIGhhdmUgdG8g
-cmVkZWZpbmUgYSBuZXcgY29uZmlndXJhdGlvbiBub2RlOgo+IAo+IHVhcnQzIHsKPiDCoMKgwqAg
-cGluY3RybCA9IC4uLi4KPiDCoMKgwqAgaW50ZXJydXB0cyA9IC4uLgo+IH07Cj4gCj4gQnV0IHRo
-aXMgZG9lcyBub3Qgd29yay4gdWFydDMgaXMgYWxyZWFkeSBkZWZpbmVkIGludG8gdGhlIHBhcmVu
-dCBub2RlIG9mIGlteDZxLmR0c2kuCj4gCj4gSW4gdGhhdCBjYXNlIEkgbmVlZCB0byByZWRlZmlu
-ZSBhIG5ldyBuYW1lOgo+IAo+IG15X3VhcnQzIHsKPiDCoMKgIHBpbmN0cmwgPSAuLi4KPiDCoMKg
-IGludGVycnVwdHMgPSAuLi4KPiB9Owo+IAo+ICZteV91YXJ0MyB7Cj4gwqDCoCBzdGF0dXMgPSAi
-b2theSI7Cj4gfTsKPiAKPiBJIGhvcGUgeW91IHVuZGVyc3RhbmQgd2hhdCBJIGFtIHRyeWluZyB0
-byB0ZWxsIHlvdS4KCllvdSBkb24ndCBuZWVkIHRvIGRvIHRoaXMsIHlvdSBjYW4ganVzdCB3cml0
-ZQoKJnVhcnQzIHsKCXBpbmN0cmwgPSAuLi47CglzdGF0dXMgPSAib2theSI7Cn07CgpUaGVzZSBw
-cm9wZXJ0aWVzIHdpbGwgb3ZlcnJpZGUgdGhlIHByb3BlcnRpZXMgZnJvbSBlYXJsaWVyIGluIHRo
-ZSBwcmVwcm9jZXNzZWQgZmlsZS4KCkNoZWVycwpBaG1hZAoKPiAKPiBCZXN0IHJlZ2FyZHMsCj4g
-R2lhbmx1Y2EKCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAg
-IHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKU3RldWVyd2FsZGVyIFN0ci4gMjEgICAg
-ICAgICAgICAgICAgICAgICAgIHwgaHR0cHM6Ly93d3cucGVuZ3V0cm9uaXguZGUvIHwKMzExMzcg
-SGlsZGVzaGVpbSwgR2VybWFueSAgICAgICAgICAgICAgICAgIHwgUGhvbmU6ICs0OS01MTIxLTIw
-NjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwg
-RmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
-aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2JhcmVib3gK
+On Tue, 28 Jan 2020 10:28:32 +0100
+Oleksij Rempel <o.rempel@pengutronix.de> wrote:
+
+Hi!
+
+Have you tested the patch on real hardware?
+
+-- =
+
+Best regards,
+=A0 Antony Pavlov
+
+> .bss __rel_start (OVERLAY) was used to optimize RAM size used by
+> barebox. Since .bss and __rel_start overlap, we should clear bss only
+> after __rel_start was used.
+> =
+
+> There is a choice of moving .bss clear sequence after __rel_start or
+> remove this optimization. Since the use of this optimization is minimal
+> and danger to trap in to similar issue is still high, i prefer to remove
+> this optimization.
+> =
+
+> Fixes: 1e5aef61fc6a444 ("MIPS: reloc: init bss and cpu")
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> ---
+>  arch/mips/lib/barebox.lds.S | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> =
+
+> diff --git a/arch/mips/lib/barebox.lds.S b/arch/mips/lib/barebox.lds.S
+> index 693a778980..c954df41f3 100644
+> --- a/arch/mips/lib/barebox.lds.S
+> +++ b/arch/mips/lib/barebox.lds.S
+> @@ -59,7 +59,7 @@ SECTIONS
+>  =
+
+>  	_end =3D .;
+>  =
+
+> -	.bss __rel_start (OVERLAY) : {
+> +	.bss : {
+>  		__bss_start =3D .;
+>  		*(.sbss.*)
+>  		*(.bss.*)
+> -- =
+
+> 2.25.0
+> =
+
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
