@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from magratgarlick.emantor.de ([78.46.208.201])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iw41a-0000fn-86
- for barebox@lists.infradead.org; Mon, 27 Jan 2020 13:01:55 +0000
-Date: Mon, 27 Jan 2020 14:01:52 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200127130152.ag7chnpqcriucog3@pengutronix.de>
-References: <20200127074115.17013-1-ceggers@arri.de>
+ id 1iwJaG-00061z-HE
+ for barebox@lists.infradead.org; Tue, 28 Jan 2020 05:38:45 +0000
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Tue, 28 Jan 2020 06:38:17 +0100
+Message-Id: <20200128053821.677207-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200127074115.17013-1-ceggers@arri.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,33 +19,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] eeprom: at25: Allow page sizes greater than 16 bit
-To: Christian Eggers <ceggers@arri.de>
-Cc: barebox@lists.infradead.org, ceggers@gmx.de
+Subject: [PATCH v3 0/5] OP-TEE early loading
+To: barebox@lists.infradead.org
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-On Mon, Jan 27, 2020 at 08:41:15AM +0100, Christian Eggers wrote:
-> For FRAM devices the page size is usually equal to the device size. Some
-> available devices are greater than 64kB, so a 32 bit variable must be
-> used.
-> 
-> The same change has to be done for the Linux driver. I'll try to
-> upstream this as soon as possible.
-> 
-> Signed-off-by: Christian Eggers <ceggers@arri.de>
-> ---
->  drivers/eeprom/at25.c | 2 +-
->  include/spi/eeprom.h  | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
+v3 of the OP-TEE early loading patch series.
 
-Applied, thanks
+This allows loading OP-TEE during the lowlevel board initialization,
+instead of loading it before the kernel is started.
 
-Sascha
+v3:
+- include arm64 setjmp from U-Boot
+- build setjmp unconditionally
+- rename pl2x0 write test function
+
+v2:
+- fixed smaller nits by Sascha Hauer
+- include the setjmp import
+
+Rouven Czerwinski (5):
+  optee: move optee_verify_header() to common
+  ARM: import setjmp implementation from U-Boot
+  ARM: add optee early loading function
+  ARM: mach-imx: test PL310 write access
+  user: add documentation for OP-TEE loading
+
+ Documentation/user/optee.rst        | 29 ++++++++++++++++
+ Documentation/user/user-manual.rst  |  1 +
+ arch/arm/include/asm/setjmp.h       | 29 ++++++++++++++++
+ arch/arm/lib32/Makefile             |  4 +++
+ arch/arm/lib32/bootm.c              | 12 ++-----
+ arch/arm/lib32/optee-early.c        | 38 ++++++++++++++++++++
+ arch/arm/lib32/setjmp.S             | 36 +++++++++++++++++++
+ arch/arm/lib64/Makefile             |  1 +
+ arch/arm/lib64/setjmp.S             | 41 ++++++++++++++++++++++
+ arch/arm/mach-imx/imx6.c            | 20 +++++++++++
+ common/Kconfig                      | 54 ++++++++++++++++++-----------
+ common/Makefile                     |  2 ++
+ common/optee.c                      | 19 ++++++++++
+ include/asm-generic/memory_layout.h |  4 +--
+ include/tee/optee.h                 | 11 ++++++
+ 15 files changed, 269 insertions(+), 32 deletions(-)
+ create mode 100644 Documentation/user/optee.rst
+ create mode 100644 arch/arm/include/asm/setjmp.h
+ create mode 100644 arch/arm/lib32/optee-early.c
+ create mode 100644 arch/arm/lib32/setjmp.S
+ create mode 100644 arch/arm/lib64/setjmp.S
+ create mode 100644 common/optee.c
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.25.0
+
 
 _______________________________________________
 barebox mailing list
