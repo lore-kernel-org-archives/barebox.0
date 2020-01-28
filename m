@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([78.46.208.201])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iwJaI-00062X-3o
- for barebox@lists.infradead.org; Tue, 28 Jan 2020 05:38:48 +0000
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Tue, 28 Jan 2020 06:38:20 +0100
-Message-Id: <20200128053821.677207-4-r.czerwinski@pengutronix.de>
-In-Reply-To: <20200128053821.677207-1-r.czerwinski@pengutronix.de>
+ id 1iwKDQ-0007DI-Nd
+ for barebox@lists.infradead.org; Tue, 28 Jan 2020 06:19:14 +0000
 References: <20200128053821.677207-1-r.czerwinski@pengutronix.de>
+ <20200128053821.677207-2-r.czerwinski@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <b550d9ba-bc7a-eabf-8c9b-418cee28e683@pengutronix.de>
+Date: Tue, 28 Jan 2020 07:19:04 +0100
 MIME-Version: 1.0
+In-Reply-To: <20200128053821.677207-2-r.czerwinski@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,206 +23,117 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 3/5] ARM: add optee early loading function
-To: barebox@lists.infradead.org
-Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Subject: Re: [PATCH v3 1/5] optee: move optee_verify_header() to common
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>, barebox@lists.infradead.org
 
-Add a OP-TEE early loading function which expects a pointer to a valid
-tee binary and the device tree. OP-TEE will then be started and barebox
-will continue to run in normal mode.
+Hello Rouven,
 
-The function start_optee_early should be used in a boards lowlevel.c
-file. Ensure that barebox has been relocated and a proper c environment
-has been setup beforehand. Depending on the OP-TEE configuration, the
-fdt will be modified. If the internal barebox device tree is passed,
-OP-TEE will overwrite barebox PBL memory during this modification. Copy
-the fdt to a save memory location beforehand to avoid a corruption of
-barebox PBL memory.
+On 1/28/20 6:38 AM, Rouven Czerwinski wrote:
+> Subsequent patches will use this to verify the header in the PBL, move
+> it to common to make it potentially available for both.
+> 
+> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+> ---
+>  arch/arm/lib32/bootm.c | 12 +++---------
+>  common/Makefile        |  1 +
+>  common/optee.c         | 19 +++++++++++++++++++
+>  include/tee/optee.h    |  5 +++++
+>  4 files changed, 28 insertions(+), 9 deletions(-)
+>  create mode 100644 common/optee.c
+> 
+> diff --git a/arch/arm/lib32/bootm.c b/arch/arm/lib32/bootm.c
+> index 180624445d..d64e705c40 100644
+> --- a/arch/arm/lib32/bootm.c
+> +++ b/arch/arm/lib32/bootm.c
+> @@ -137,16 +137,10 @@ static int get_kernel_addresses(size_t image_size,
+>  static int optee_verify_header_request_region(struct image_data *data, struct optee_header *hdr)
+>  {
+>  	int ret = 0;
+> -	if (hdr->magic != OPTEE_MAGIC) {
+> -		pr_err("Invalid header magic 0x%08x, expected 0x%08x\n",
+> -		       hdr->magic, OPTEE_MAGIC);
+> -		return -EINVAL;
+> -	}
+>  
+> -	if (hdr->arch != OPTEE_ARCH_ARM32 || hdr->init_load_addr_hi) {
+> -		pr_err("Only 32bit supported\n");
+> -		return -EINVAL;
+> -	}
+> +	ret = optee_verify_header(hdr);
+> +	if (ret < 0)
+> +		return ret;
+>  
+>  	data->tee_res = request_sdram_region("TEE", hdr->init_load_addr_lo, hdr->init_size);
+>  	if (!data->tee_res) {
+> diff --git a/common/Makefile b/common/Makefile
+> index 10960169f9..fbdd74a9fd 100644
+> --- a/common/Makefile
+> +++ b/common/Makefile
+> @@ -66,6 +66,7 @@ obj-$(CONFIG_BAREBOX_UPDATE_IMX_NAND_FCB) += imx-bbu-nand-fcb.o
+>  obj-$(CONFIG_BOOT)		+= boot.o
+>  obj-$(CONFIG_SERIAL_DEV_BUS)	+= serdev.o
+>  obj-$(CONFIG_USBGADGET_START)	+= usbgadget.o
+> +obj-$(CONFIG_BOOTM_OPTEE)	+= optee.o
+>  
+>  ifdef CONFIG_PASSWORD
+>  
+> diff --git a/common/optee.c b/common/optee.c
+> new file mode 100644
+> index 0000000000..9cbed0a520
+> --- /dev/null
+> +++ b/common/optee.c
+> @@ -0,0 +1,19 @@
+> +#include <tee/optee.h>
+> +#include <printk.h>
+> +#include <asm-generic/errno.h>
+> +
+> +int optee_verify_header (struct optee_header *hdr)
+> +{
+> +	if (hdr->magic != OPTEE_MAGIC) {
+> +		pr_err("Invalid header magic 0x%08x, expected 0x%08x\n",
+> +			   hdr->magic, OPTEE_MAGIC);
 
-This also moves the OP-TEE Kconfig symbols into a separate menu.
+Wouldn't just print "Only 32 bit supported" without any context that this is referring
+to OP-TEE loading in particular? Adding a pr_fmt(fmt) "optee: " fmt would fix this.
 
-Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
----
- arch/arm/lib32/Makefile             |  2 ++
- arch/arm/lib32/optee-early.c        | 38 ++++++++++++++++++++
- common/Kconfig                      | 54 ++++++++++++++++++-----------
- common/Makefile                     |  1 +
- include/asm-generic/memory_layout.h |  4 +--
- include/tee/optee.h                 |  6 ++++
- 6 files changed, 82 insertions(+), 23 deletions(-)
- create mode 100644 arch/arm/lib32/optee-early.c
+> +		return -EINVAL;
+> +	}
+> +
+> +	if (hdr->arch != OPTEE_ARCH_ARM32 || hdr->init_load_addr_hi) {
+> +		pr_err("Only 32bit supported\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	return 0;
+> +}
+> diff --git a/include/tee/optee.h b/include/tee/optee.h
+> index 8cfe06d889..9fb27fcec0 100644
+> --- a/include/tee/optee.h
+> +++ b/include/tee/optee.h
+> @@ -10,6 +10,9 @@
+>  #ifndef _OPTEE_H
+>  #define _OPTEE_H
+>  
+> +#include <types.h>
+> +#include <asm-generic/errno.h>
+> +
+>  #define OPTEE_MAGIC             0x4554504f
+>  #define OPTEE_VERSION           1
+>  #define OPTEE_ARCH_ARM32        0
+> @@ -27,4 +30,6 @@ struct optee_header {
+>  	uint32_t paged_size;
+>  };
+>  
+> +int optee_verify_header (struct optee_header *hdr);
+> +
+>  #endif /* _OPTEE_H */
+> 
 
-diff --git a/arch/arm/lib32/Makefile b/arch/arm/lib32/Makefile
-index cfcf3bc8f1..597bc07905 100644
---- a/arch/arm/lib32/Makefile
-+++ b/arch/arm/lib32/Makefile
-@@ -30,3 +30,5 @@ pbl-y	+= ashldi3.o
- pbl-y	+= div0.o
- 
- obj-pbl-y	+= setjmp.o
-+
-+pbl-$(CONFIG_PBL_OPTEE)	+= optee-early.o
-diff --git a/arch/arm/lib32/optee-early.c b/arch/arm/lib32/optee-early.c
-new file mode 100644
-index 0000000000..197325b8a0
---- /dev/null
-+++ b/arch/arm/lib32/optee-early.c
-@@ -0,0 +1,38 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * optee-early.c - start OP-TEE during PBL
-+ *
-+ * Copyright (c) 2019 Rouven Czerwinski <r.czerwinski@pengutronix.de>, Pengutronix
-+ *
-+ */
-+#include <asm/cache.h>
-+#include <asm/setjmp.h>
-+#include <tee/optee.h>
-+#include <debug_ll.h>
-+
-+static jmp_buf tee_buf;
-+
-+int start_optee_early(void *fdt, void *tee)
-+{
-+	void (*tee_start)(void *r0, void *r1, void *r2);
-+	struct optee_header *hdr;
-+	int ret;
-+
-+	hdr = tee;
-+	ret = optee_verify_header(hdr);
-+	if (ret < 0)
-+		return ret;
-+
-+	memcpy((void *)hdr->init_load_addr_lo, tee + sizeof(*hdr), hdr->init_size);
-+	tee_start = (void *) hdr->init_load_addr_lo;
-+
-+	/* We use setjmp/longjmp here because OP-TEE clobbers most registers */
-+	ret = setjmp(tee_buf);
-+	if (ret == 0) {
-+		sync_caches_for_execution();
-+		tee_start(0, 0, fdt);
-+		longjmp(tee_buf, 1);
-+	}
-+
-+	return 0;
-+}
-diff --git a/common/Kconfig b/common/Kconfig
-index 60237d3056..25587d1927 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -643,27 +643,6 @@ config BOOTM_FORCE_SIGNED_IMAGES
- 	  are refused to boot. Effectively this means only FIT images can be booted
- 	  since they are the only supported image type that support signing.
- 
--config BOOTM_OPTEE
--	bool
--	prompt "support booting OP-TEE"
--	depends on BOOTM && ARM
--	help
--	  OP-TEE is a trusted execution environment (TEE). With this option
--	  enabled barebox supports starting optee_os as part of the bootm command.
--	  Instead of the kernel bootm starts the optee_os binary which then starts
--	  the kernel in nonsecure mode. Pass the optee_os binary with the -t option
--	  or in the global.bootm.tee variable.
--
--config BOOTM_OPTEE_SIZE
--	hex
--	default 0x02000000
--	prompt "OP-TEE Memory Size"
--	depends on BOOTM_OPTEE
--	help
--	  Size to reserve in main memory for OP-TEE.
--	  Can be smaller than the actual size used by OP-TEE, this is used to prevent
--	  barebox from allocating memory in this area.
--
- config BLSPEC
- 	depends on FLEXIBLE_BOOTARGS
- 	depends on !SHELL_NONE
-@@ -1000,6 +979,39 @@ config MACHINE_ID
- 	  Note: if no hashable information is available no machine id will be passed
- 	  to the kernel.
- 
-+menu "OP-TEE loading"
-+
-+config OPTEE_SIZE
-+	hex
-+	default 0x02000000
-+	prompt "OP-TEE Memory Size"
-+	depends on BOOTM_OPTEE || PBL_OPTEE
-+	help
-+	  Size to reserve in main memory for OP-TEE.
-+	  Can be smaller than the actual size used by OP-TEE, this is used to prevent
-+	  barebox from allocating memory in this area.
-+
-+config BOOTM_OPTEE
-+	bool
-+	prompt "support booting OP-TEE"
-+	depends on BOOTM && ARM
-+	help
-+	  OP-TEE is a trusted execution environment (TEE). With this option
-+	  enabled barebox supports starting optee_os as part of the bootm command.
-+	  Instead of the kernel bootm starts the optee_os binary which then starts
-+	  the kernel in nonsecure mode. Pass the optee_os binary with the -t option
-+	  or in the global.bootm.tee variable.
-+
-+config PBL_OPTEE
-+	bool "Enable OP-TEE early start"
-+	depends on ARM
-+	depends on !THUMB2_BAREBOX
-+	help
-+	  Allows starting OP-TEE during lowlevel initialization of the PBL.
-+	  Requires explicit support in the boards lowlevel file.
-+
-+endmenu
-+
- endmenu
- 
- menu "Debugging"
-diff --git a/common/Makefile b/common/Makefile
-index fbdd74a9fd..8312e88572 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -66,6 +66,7 @@ obj-$(CONFIG_BAREBOX_UPDATE_IMX_NAND_FCB) += imx-bbu-nand-fcb.o
- obj-$(CONFIG_BOOT)		+= boot.o
- obj-$(CONFIG_SERIAL_DEV_BUS)	+= serdev.o
- obj-$(CONFIG_USBGADGET_START)	+= usbgadget.o
-+pbl-$(CONFIG_PBL_OPTEE)		+= optee.o
- obj-$(CONFIG_BOOTM_OPTEE)	+= optee.o
- 
- ifdef CONFIG_PASSWORD
-diff --git a/include/asm-generic/memory_layout.h b/include/asm-generic/memory_layout.h
-index 3f69664aa0..0d7ce3fe02 100644
---- a/include/asm-generic/memory_layout.h
-+++ b/include/asm-generic/memory_layout.h
-@@ -11,8 +11,8 @@
- #define MALLOC_BASE CONFIG_MALLOC_BASE
- #endif
- 
--#ifdef CONFIG_BOOTM_OPTEE_SIZE
--#define OPTEE_SIZE CONFIG_BOOTM_OPTEE_SIZE
-+#ifdef CONFIG_OPTEE_SIZE
-+#define OPTEE_SIZE CONFIG_OPTEE_SIZE
- #else
- #define OPTEE_SIZE 0
- #endif
-diff --git a/include/tee/optee.h b/include/tee/optee.h
-index 9fb27fcec0..fa124236ba 100644
---- a/include/tee/optee.h
-+++ b/include/tee/optee.h
-@@ -32,4 +32,10 @@ struct optee_header {
- 
- int optee_verify_header (struct optee_header *hdr);
- 
-+#ifdef __PBL__
-+
-+int start_optee_early(void* fdt, void* tee);
-+
-+#endif /* __PBL__ */
-+
- #endif /* _OPTEE_H */
 -- 
-2.25.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
