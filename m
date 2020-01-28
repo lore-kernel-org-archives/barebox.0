@@ -1,12 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf1-x143.google.com ([2a00:1450:4864:20::143])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iwVOf-0004Cx-BK
- for barebox@lists.infradead.org; Tue, 28 Jan 2020 18:15:34 +0000
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Tue, 28 Jan 2020 19:15:28 +0100
-Message-Id: <20200128181528.10976-1-o.rempel@pengutronix.de>
+ id 1iwXW1-0006Bp-UK
+ for barebox@lists.infradead.org; Tue, 28 Jan 2020 20:31:19 +0000
+Received: by mail-lf1-x143.google.com with SMTP id n25so10160502lfl.0
+ for <barebox@lists.infradead.org>; Tue, 28 Jan 2020 12:31:17 -0800 (PST)
+Date: Tue, 28 Jan 2020 23:31:06 +0300
+From: Peter Mamonov <pmamonov@gmail.com>
+Message-ID: <20200128203105.GA9757@chr>
+References: <20200128175307.13584-1-pmamonov@gmail.com>
+ <20200128182951.vq4pfer3zinz36ih@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200128182951.vq4pfer3zinz36ih@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,51 +25,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] MIPS: remove .bss to __rel_start overlay
-To: antonynpavlov@gmail.com, barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: Re: [PATCH] MIPS: relocate_code: fix relocation area size
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-.bss __rel_start (OVERLAY) was used to optimize RAM size used by
-barebox. Since .bss and __rel_start overlap, we should clear bss only
-after __rel_start was used. Following patch changed initialization
-sequence to clear .bss before __rel_start:
-1e5aef61fc6a444 ("MIPS: reloc: init bss and cpu")
+On Tue, Jan 28, 2020 at 07:29:51PM +0100, Oleksij Rempel wrote:
+> On Tue, Jan 28, 2020 at 08:53:07PM +0300, Peter Mamonov wrote:
+> > relocate_code() calculates relocation area size as a sum (barebox_image_size +
+> > bss_len). barebox_image_size and bss_len are calculated as (__image_end -
+> > __image_start) and (__bss_stop - __bss_start) respectively. This doesn't take
+> > into account relocation data placed between  __image_end and __bss_start.
+> > However relocation preserves BSS position relative to image start, as if
+> > relocation data is still there. This causes RAM overflow during BSS
+> > initialization in main_entry(). This problem may be hidden due to the alignment
+> > of the `relocaddr`.
+> 
+> Thx! Works on ar9331
 
-This make relocation buffer unusable and broke relocation with different
-symptoms reported by Antony Pavlov <antonynpavlov@gmail.com>:
-  * iomem output has no information on sdram regions, so memtest is unusable;
-  * pc = 0xa081232c, relocation does not work, barebox is located with 8M offset
-    from start of RAM. The board has 256M and relocation routine
-    should move barebox code much higher;
-  * pc = 0xa081232c, so barebox code works from KSEG1 not from KSEG0 as MMU=y option implies.
+Guess you should squash this patch into "MIPS: remove .bss to __rel_start 
+overlay", since it fixes the issue caused by the latter.
 
-There is a choice of moving .bss clear sequence after __rel_start or
-remove this optimization. Since the use of this optimization is minimal
-and danger to trap in to similar issue is still high, i prefer to remove
-this optimization.
+Regards,
+Peter
 
-Reported-by: Antony Pavlov <antonynpavlov@gmail.com>
-Fixes: 1e5aef61fc6a444 ("MIPS: reloc: init bss and cpu")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- arch/mips/lib/barebox.lds.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> 
+> > Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+> > ---
+> >  arch/mips/lib/reloc.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/arch/mips/lib/reloc.c b/arch/mips/lib/reloc.c
+> > index 32d776a6a6..41e2d5c75f 100644
+> > --- a/arch/mips/lib/reloc.c
+> > +++ b/arch/mips/lib/reloc.c
+> > @@ -121,7 +121,7 @@ void relocate_code(void *fdt, u32 fdt_size, u32 ram_size)
+> >  	memset(__bss_start, 0, bss_len);
+> >  	cpu_probe();
+> >  
+> > -	length = barebox_image_size + bss_len;
+> > +	length = __bss_stop - __image_start;
+> >  	relocaddr = ALIGN_DOWN(ram_size - length, SZ_64K);
+> >  	relocaddr = KSEG0ADDR(relocaddr);
+> >  	new_stack = relocaddr - MALLOC_SIZE - 16;
+> > -- 
+> > 2.24.0
+> > 
+> > 
+> > _______________________________________________
+> > barebox mailing list
+> > barebox@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/barebox
+> > 
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
-diff --git a/arch/mips/lib/barebox.lds.S b/arch/mips/lib/barebox.lds.S
-index 693a778980..c954df41f3 100644
---- a/arch/mips/lib/barebox.lds.S
-+++ b/arch/mips/lib/barebox.lds.S
-@@ -59,7 +59,7 @@ SECTIONS
- 
- 	_end = .;
- 
--	.bss __rel_start (OVERLAY) : {
-+	.bss : {
- 		__bss_start = .;
- 		*(.sbss.*)
- 		*(.bss.*)
--- 
-2.25.0
 
 
 _______________________________________________
