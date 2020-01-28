@@ -1,12 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf1-x143.google.com ([2a00:1450:4864:20::143])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iwRnv-0001J1-0v
- for barebox@lists.infradead.org; Tue, 28 Jan 2020 14:25:24 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Tue, 28 Jan 2020 15:25:17 +0100
-Message-Id: <20200128142517.27979-1-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
+ id 1iwS7N-0001nd-U9
+ for barebox@lists.infradead.org; Tue, 28 Jan 2020 14:45:31 +0000
+Received: by mail-lf1-x143.google.com with SMTP id b15so9290406lfc.4
+ for <barebox@lists.infradead.org>; Tue, 28 Jan 2020 06:45:25 -0800 (PST)
+Date: Tue, 28 Jan 2020 17:45:23 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20200128174523.a96ddb3231191ad2a0015f88@gmail.com>
+In-Reply-To: <20200128142517.27979-1-u.kleine-koenig@pengutronix.de>
+References: <20200128142517.27979-1-u.kleine-koenig@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,45 +19,112 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Documentation/sandbox: Add hint how to end a sandboxed barebox
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] Documentation/sandbox: Add hint how to end a sandboxed
+ barebox
+To: Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
-b25peC5kZT4KLS0tCiBEb2N1bWVudGF0aW9uL2JvYXJkcy9zYW5kYm94LnJzdCB8ICAzICsrKwog
-Y29tbWFuZHMvdGVzdC5jICAgICAgICAgICAgICAgICAgfCAzMyArKysrKysrKysrKysrKysrLS0t
-LS0tLS0tLS0tLS0tLQogMiBmaWxlcyBjaGFuZ2VkLCAyMCBpbnNlcnRpb25zKCspLCAxNiBkZWxl
-dGlvbnMoLSkKCmRpZmYgLS1naXQgYS9Eb2N1bWVudGF0aW9uL2JvYXJkcy9zYW5kYm94LnJzdCBi
-L0RvY3VtZW50YXRpb24vYm9hcmRzL3NhbmRib3gucnN0CmluZGV4IDg1YTU0ZTZiMDRkNi4uOGIw
-MDA5M2ZiOWYzIDEwMDY0NAotLS0gYS9Eb2N1bWVudGF0aW9uL2JvYXJkcy9zYW5kYm94LnJzdAor
-KysgYi9Eb2N1bWVudGF0aW9uL2JvYXJkcy9zYW5kYm94LnJzdApAQCAtNTcsMyArNTcsNiBAQCBB
-dmFpbGFibGUgc2FuZGJveCBpbnZvY2F0aW9uIG9wdGlvbnMgaW5jbHVkZToKICAgYGAteWBgLCBg
-YC0teXJlcyA8cmVzPmBgCiAKICAgICBTcGVjaWZ5IFNETCBoZWlnaHQuCisKK1RvIHRlcm1pbmF0
-ZSBiYXJlYm94IGFuZCByZXR1cm4gdG8gdGhlIGNhbGxpbmcgc2hlbGwsIHRoZSBwb3dlcm9mZiBj
-b21tYW5kIGlzCitzdWl0YWJsZS4KZGlmZiAtLWdpdCBhL2NvbW1hbmRzL3Rlc3QuYyBiL2NvbW1h
-bmRzL3Rlc3QuYwppbmRleCA4NjYzNmRlMWMyODMuLmY3MDY4Zjc1NzkwNCAxMDA2NDQKLS0tIGEv
-Y29tbWFuZHMvdGVzdC5jCisrKyBiL2NvbW1hbmRzL3Rlc3QuYwpAQCAtMTU5LDI4ICsxNTksMjkg
-QEAgc3RhdGljIGludCBkb190ZXN0KGludCBhcmdjLCBjaGFyICphcmd2W10pCiAJCQkJCWJyZWFr
-OwogCQkJCX0KIAkJCQlleHByID0gMDsKLQkJCQlpZiAob3B0ID09IE9QVF9FWElTVFMpIHsKKwkJ
-CQlzd2l0Y2ggKG9wdCkgeworCQkJCWNhc2UgT1BUX0VYSVNUUzoKIAkJCQkJZXhwciA9IDE7CiAJ
-CQkJCWJyZWFrOwotCQkJCX0KLQkJCQlpZiAob3B0ID09IE9QVF9GSUxFICYmIFNfSVNSRUcoc3Rh
-dGJ1Zi5zdF9tb2RlKSkgewotCQkJCQlleHByID0gMTsKKworCQkJCWNhc2UgT1BUX0ZJTEU6CisJ
-CQkJCWV4cHIgPSBTX0lTUkVHKHN0YXRidWYuc3RfbW9kZSk7CiAJCQkJCWJyZWFrOwotCQkJCX0K
-LQkJCQlpZiAob3B0ID09IE9QVF9ESVJFQ1RPUlkgJiYgU19JU0RJUihzdGF0YnVmLnN0X21vZGUp
-KSB7Ci0JCQkJCWV4cHIgPSAxOworCisJCQkJY2FzZSBPUFRfRElSRUNUT1JZOgorCQkJCQlleHBy
-ID0gU19JU0RJUihzdGF0YnVmLnN0X21vZGUpOwogCQkJCQlicmVhazsKLQkJCQl9Ci0JCQkJaWYg
-KG9wdCA9PSBPUFRfU1lNQk9MSUNfTElOSyAmJiBTX0lTTE5LKHN0YXRidWYuc3RfbW9kZSkpIHsK
-LQkJCQkJZXhwciA9IDE7CisKKwkJCQljYXNlIE9QVF9TWU1CT0xJQ19MSU5LOgorCQkJCQlleHBy
-ID0gU19JU0xOSyhzdGF0YnVmLnN0X21vZGUpOwogCQkJCQlicmVhazsKLQkJCQl9Ci0JCQkJaWYg
-KG9wdCA9PSBPUFRfQkxPQ0sgJiYgU19JU0JMSyhzdGF0YnVmLnN0X21vZGUpKSB7Ci0JCQkJCWV4
-cHIgPSAxOworCisJCQkJY2FzZSBPUFRfQkxPQ0s6CisJCQkJCWV4cHIgPSBTX0lTQkxLKHN0YXRi
-dWYuc3RfbW9kZSk7CiAJCQkJCWJyZWFrOwotCQkJCX0KLQkJCQlpZiAob3B0ID09IE9QVF9DSEFS
-ICYmIFNfSVNDSFIoc3RhdGJ1Zi5zdF9tb2RlKSkgewotCQkJCQlleHByID0gMTsKKworCQkJCWNh
-c2UgT1BUX0NIQVI6CisJCQkJCWV4cHIgPSBTX0lTQ0hSKHN0YXRidWYuc3RfbW9kZSk7CiAJCQkJ
-CWJyZWFrOwogCQkJCX0KIAkJCX0KLS0gCjIuMjQuMAoKCl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
-dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
-bmZvL2JhcmVib3gK
+On Tue, 28 Jan 2020 15:25:17 +0100
+Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de> wrote:
+
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  Documentation/boards/sandbox.rst |  3 +++
+>  commands/test.c                  | 33 ++++++++++++++++----------------
+
+Have changes in the commands/test.c file any relation to commit message?
+
+
+>  2 files changed, 20 insertions(+), 16 deletions(-)
+> =
+
+> diff --git a/Documentation/boards/sandbox.rst b/Documentation/boards/sand=
+box.rst
+> index 85a54e6b04d6..8b00093fb9f3 100644
+> --- a/Documentation/boards/sandbox.rst
+> +++ b/Documentation/boards/sandbox.rst
+> @@ -57,3 +57,6 @@ Available sandbox invocation options include:
+>    ``-y``, ``--yres <res>``
+>  =
+
+>      Specify SDL height.
+> +
+> +To terminate barebox and return to the calling shell, the poweroff comma=
+nd is
+> +suitable.
+> diff --git a/commands/test.c b/commands/test.c
+> index 86636de1c283..f7068f757904 100644
+> --- a/commands/test.c
+> +++ b/commands/test.c
+> @@ -159,28 +159,29 @@ static int do_test(int argc, char *argv[])
+>  					break;
+>  				}
+>  				expr =3D 0;
+> -				if (opt =3D=3D OPT_EXISTS) {
+> +				switch (opt) {
+> +				case OPT_EXISTS:
+>  					expr =3D 1;
+>  					break;
+> -				}
+> -				if (opt =3D=3D OPT_FILE && S_ISREG(statbuf.st_mode)) {
+> -					expr =3D 1;
+> +
+> +				case OPT_FILE:
+> +					expr =3D S_ISREG(statbuf.st_mode);
+>  					break;
+> -				}
+> -				if (opt =3D=3D OPT_DIRECTORY && S_ISDIR(statbuf.st_mode)) {
+> -					expr =3D 1;
+> +
+> +				case OPT_DIRECTORY:
+> +					expr =3D S_ISDIR(statbuf.st_mode);
+>  					break;
+> -				}
+> -				if (opt =3D=3D OPT_SYMBOLIC_LINK && S_ISLNK(statbuf.st_mode)) {
+> -					expr =3D 1;
+> +
+> +				case OPT_SYMBOLIC_LINK:
+> +					expr =3D S_ISLNK(statbuf.st_mode);
+>  					break;
+> -				}
+> -				if (opt =3D=3D OPT_BLOCK && S_ISBLK(statbuf.st_mode)) {
+> -					expr =3D 1;
+> +
+> +				case OPT_BLOCK:
+> +					expr =3D S_ISBLK(statbuf.st_mode);
+>  					break;
+> -				}
+> -				if (opt =3D=3D OPT_CHAR && S_ISCHR(statbuf.st_mode)) {
+> -					expr =3D 1;
+> +
+> +				case OPT_CHAR:
+> +					expr =3D S_ISCHR(statbuf.st_mode);
+>  					break;
+>  				}
+>  			}
+> -- =
+
+> 2.24.0
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+
+-- =
+
+Best regards,
+=A0 Antony Pavlov
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
