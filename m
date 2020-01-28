@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from magratgarlick.emantor.de ([78.46.208.201])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iwLoW-0001I0-BO
- for barebox@lists.infradead.org; Tue, 28 Jan 2020 08:01:37 +0000
-Date: Tue, 28 Jan 2020 09:01:30 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200128080130.fcps4emjoudtixzx@pengutronix.de>
-References: <20200122154908.22635-1-jmaselbas@kalray.eu>
- <20200122154908.22635-2-jmaselbas@kalray.eu>
- <20200124143259.7f4hxax2onus7giq@pengutronix.de>
- <20200127172312.pwkse4ggrmnv4smd@tellis.lin.mbt.kalray.eu>
+ id 1iwJaK-00064O-O8
+ for barebox@lists.infradead.org; Tue, 28 Jan 2020 05:38:50 +0000
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Tue, 28 Jan 2020 06:38:22 +0100
+Message-Id: <20200128053821.677207-6-r.czerwinski@pengutronix.de>
+In-Reply-To: <20200128053821.677207-1-r.czerwinski@pengutronix.de>
+References: <20200128053821.677207-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200127172312.pwkse4ggrmnv4smd@tellis.lin.mbt.kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,51 +21,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/7] usb: dwc2: Add host controller driver
-To: Jules Maselbas <jmaselbas@kalray.eu>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v3 5/5] user: add documentation for OP-TEE loading
+To: barebox@lists.infradead.org
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-On Mon, Jan 27, 2020 at 06:23:12PM +0100, Jules Maselbas wrote:
-> Hi Sascha,
-> 
-> On Fri, Jan 24, 2020 at 03:32:59PM +0100, Sascha Hauer wrote:
-> > Hi Jules,
-> > 
-> > I can confirm the driver works on the RaspberryPi with some adjustments,
-> > see below. Some more comments inline.
-> > 
-> > > +static int wait_for_chhltd(struct dwc2 *dwc2, u8 hc, uint32_t *sub, u8 *tgl)
-> > > +{
-> > > +	int ret;
-> > > +	uint32_t hcint, hctsiz;
-> > > +
-> > > +	ret = dwc2_wait_bit_set(dwc2, HCINT(hc), HCINTMSK_CHHLTD, 10000);
-> > > +	if (ret)
-> > > +		dwc2_err(dwc2, "%s: Timeout! Channel not halted\n", __func__);
-> > 
-> > This is not an error, but a normal usecase. This should be:
-> > 
-> > 	if (ret) {
-> > 		uint32_t val = dwc2_readl(dwc2, HCCHAR(hc));
-> > 		dwc2_writel(dwc2, val | HCCHAR_CHDIS, HCCHAR(hc));
-> > 		dwc2_wait_bit_set(dwc2, HCINT(hc), HCINTMSK_CHHLTD, 10000);
-> > 		return ret;
-> > 	}
-> Okay I will make this change, but should this return if the last call to
-> wait_bit_set() is successful?
+Some rudimentary documentation how to load OP-TEE.
 
-No. If the last call to wait_bit_set is successful it means that we
-successfully stopped the ongoing transfer. The transfer itself still
-timed out and we want to tell this to the caller.
+Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+---
+ Documentation/user/optee.rst       | 29 +++++++++++++++++++++++++++++
+ Documentation/user/user-manual.rst |  1 +
+ 2 files changed, 30 insertions(+)
+ create mode 100644 Documentation/user/optee.rst
 
-Sascha
-
-
+diff --git a/Documentation/user/optee.rst b/Documentation/user/optee.rst
+new file mode 100644
+index 0000000000..950917b446
+--- /dev/null
++++ b/Documentation/user/optee.rst
+@@ -0,0 +1,29 @@
++
++.. _optee:
++
++OP-TEE
++======
++
++Barebox is able to start the Open Portable Trusted Execution Environment
++(OP-TEE) either before starting the linux kernel or during lowlevel board
++initialization in the Pre Bootloader ``PBL``.
++
++Before Linux start
++------------------
++Enable the `CONFIG_BOOTM_OPTEE` configuration variable and configure the
++`CONFIG_OPTEE_SIZE` variable. This will reserve a memory area at the end
++of memory for OP-TEE to run, usually Barebox would relocate itself there. To
++load OP-TEE before the kernel is started, configure the global ``bootm.tee``
++variable to point to a valid OPTEE v1 binary.
++
++During the PBL
++--------------
++To start OP-TEE during the lowlevel initialization of your board in the ``PBL``,
++enable the ``CONFIG_PBL_OPTEE`` configuration variable. your board should then
++call the function ``start_optee_early(void* tee, void* fdt)`` with a valid tee
++and FDT. Ensure that your OP-TEE is compiled with ``CFG_NS_ENTRY_ADDR`` unset,
++otherwise OP-TEE will not correctly return to barebox after startup.
++Since OP-TEE in the default configuration also modifies the device tree, don't
++pass the barebox internal device tree, instead copy it into a different memory
++location and pass it to OP-TEE afterwards.
++The modified device tree can then be passed to the main barebox start function.
+diff --git a/Documentation/user/user-manual.rst b/Documentation/user/user-manual.rst
+index 41fdb8805c..827683eaa0 100644
+--- a/Documentation/user/user-manual.rst
++++ b/Documentation/user/user-manual.rst
+@@ -33,6 +33,7 @@ Contents:
+    system-reset
+    state
+    random
++   optee
+    debugging
+    watchdog
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.25.0
+
 
 _______________________________________________
 barebox mailing list
