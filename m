@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iwi3Y-0004Xn-W2
- for barebox@lists.infradead.org; Wed, 29 Jan 2020 07:46:38 +0000
-Date: Wed, 29 Jan 2020 08:46:34 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200129074634.u3udmhelglexxblf@pengutronix.de>
-References: <20200128174523.a96ddb3231191ad2a0015f88@gmail.com>
- <20200128145205.30671-1-u.kleine-koenig@pengutronix.de>
+ id 1iwiq6-00063e-G1
+ for barebox@lists.infradead.org; Wed, 29 Jan 2020 08:36:47 +0000
+Received: by mail-lf1-x12c.google.com with SMTP id y19so11260920lfl.9
+ for <barebox@lists.infradead.org>; Wed, 29 Jan 2020 00:36:45 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200128145205.30671-1-u.kleine-koenig@pengutronix.de>
+References: <CAEKVsgZHZR2b28wcMcpac4Qa3KebrXMRf14STZ8GCum0NmnLgg@mail.gmail.com>
+ <CAEKVsgaAVyREvfB-bCCuPCVwi87S1Oq=4xMK6hjEXuJp2kZm+A@mail.gmail.com>
+In-Reply-To: <CAEKVsgaAVyREvfB-bCCuPCVwi87S1Oq=4xMK6hjEXuJp2kZm+A@mail.gmail.com>
+From: Cameron Ferguson <cameron.bare86@gmail.com>
+Date: Wed, 29 Jan 2020 08:36:32 +0000
+Message-ID: <CAEKVsgbaTzX-eRCxwgF4MA1LKMeNTS5jVTgZG1Ciz-gh65YVgA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,31 +20,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] Documentation/sandbox: Add hint how to end a
- sandboxed barebox
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: Small tweak to get ACPI watchdog working (iTCO)
+To: barebox@lists.infradead.org, a.fatoum@pengutronix.de, wim@iguana.be
 
-On Tue, Jan 28, 2020 at 03:52:05PM +0100, Uwe Kleine-K=F6nig wrote:
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> ---
->  Documentation/boards/sandbox.rst | 3 +++
->  1 file changed, 3 insertions(+)
+I have double-checked all the instructions that I'm issuing to the
+ACPI watchdog timer, and they are identical to the instructions issued
+by the Linux kernel driver which I'm trying to mimic. Also I have
+verified that my IO calls (ioread32,iowrite32) are working properly.
 
-Applied, thanks
+I think the problem is that the entire ACPI system as a whole is not
+initialized. I think I need to issue a few instructions at the very
+beginning to initialise the ACPI system.
 
-Sascha
+Anyone got any ideas?
 
--- =
 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+
+---------- Forwarded message ---------
+From: Cameron Ferguson <cameron.bare86@gmail.com>
+Date: Tue, Jan 28, 2020 at 3:19 PM
+Subject: Re: Small tweak to get ACPI watchdog working (iTCO)
+To: <barebox@lists.infradead.org>, <a.fatoum@pengutronix.de>, <wim@iguana.be>
+
+
+In my previous email, I only had the "write" operations associated
+with controlling the watchdog timer. I have edited my code to include
+the "read" operations too, but still it's not working.
+
+Here's my new code:
+
+    /* R */    retval = ioread32(base +  4u);  // This should be 0x0
+    /* R */    retval = ioread32(base +  4u);  // This should be 0x0
+    /* W */    iowrite32(0x20000, base + 4u);
+    /* R */    retval = ioread32(base +  8u);  // This should be 0x1800
+    /* R */    retval = ioread32(base +  8u);  // This should be 0x1800
+    /* W */    iowrite32(0x1000, base + 8u);
+    /* R */    retval = ioread32(base +  0u);  // This should be 0x4
+    /* W */    iowrite32(0x4, base + 0u);
+    /* R */    retval = ioread32(base + 10u);  // This should be 0x40000
+    /* W */    iowrite32(0x640000, base + 10u);
+    /* R */    retval = ioread32(base +  0u);  // This should be 0x2
+    /* W */    iowrite32(0x4, base + 0u);  // This is a kick
+    /* R */    retval = ioread32(base +  0u);  // This should be 0x34
+    /* W */    iowrite32(0x4, base + 0u);  // This is a kick
+
+The first two read operations should both return 0x0, however I'm
+getting what looks like a random number. Also it consitently reads the
+value 0x4 from "base + 0u".
+
+Anyone got an idea?
 
 _______________________________________________
 barebox mailing list
