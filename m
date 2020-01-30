@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iwvgC-0003Wy-8o
- for barebox@lists.infradead.org; Wed, 29 Jan 2020 22:19:25 +0000
-Date: Wed, 29 Jan 2020 23:19:20 +0100
-From: Michael Grzeschik <mgr@pengutronix.de>
-Message-ID: <20200129221920.g2ercgyrxmu62gc3@pengutronix.de>
-References: <20200127155013.4388-1-m.grzeschik@pengutronix.de>
- <20200127155013.4388-2-m.grzeschik@pengutronix.de>
- <20200128084550.uxe7hn2qlvcik5tz@pengutronix.de>
+ id 1ix4Pq-0005Xx-Rb
+ for barebox@lists.infradead.org; Thu, 30 Jan 2020 07:39:08 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Thu, 30 Jan 2020 08:38:57 +0100
+Message-Id: <20200130073857.18396-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20200128084550.uxe7hn2qlvcik5tz@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,127 +15,84 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1864572321610658196=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/4] regulator: pfuze: add support to other architectures
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v4] MIPS: don't overlay relocation data with BSS
+To: antonynpavlov@gmail.com, barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Peter Mamonov <pmamonov@gmail.com>
 
+.bss __rel_start (OVERLAY) was used to optimize RAM size used by
+barebox. Since .bss and __rel_start overlap, we should clear bss only
+after __rel_start was used. Following patch changed initialization
+sequence to clear .bss before __rel_start:
+1e5aef61fc6a444 ("MIPS: reloc: init bss and cpu")
 
---===============1864572321610658196==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="ws4tdnhcn4mt5zul"
-Content-Disposition: inline
+This make relocation buffer unusable and broke relocation with different
+symptoms reported by Antony Pavlov <antonynpavlov@gmail.com>:
+  * iomem output has no information on sdram regions, so memtest is unusable;
+  * pc = 0xa081232c, relocation does not work, barebox is located with 8M offset
+    from start of RAM. The board has 256M and relocation routine
+    should move barebox code much higher;
+  * pc = 0xa081232c, so barebox code works from KSEG1 not from KSEG0 as MMU=y option implies.
 
+There is a choice of moving .bss clear sequence after __rel_start or
+remove this optimization. Since the use of this optimization is minimal
+and danger to trap in to similar issue is still high, i prefer to remove
+this optimization.
 
---ws4tdnhcn4mt5zul
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+As result of this change, we need to fix calculation of relocation are
+size:
+relocate_code() calculates relocation area size as a sum (barebox_image_size +
+bss_len). barebox_image_size and bss_len are calculated as (__image_end -
+__image_start) and (__bss_stop - __bss_start) respectively. This doesn't take
+into account relocation data placed between  __image_end and __bss_start.
+However relocation preserves BSS position relative to image start, as if
+relocation data is still there. This causes RAM overflow during BSS
+initialization in main_entry(). This problem may be hidden due to the alignment
+of the `relocaddr`.
 
-Hi Sascha,
+Reported-by: Antony Pavlov <antonynpavlov@gmail.com>
+Fixes: 1e5aef61fc6a444 ("MIPS: reloc: init bss and cpu")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+---
+ arch/mips/lib/barebox.lds.S | 2 +-
+ arch/mips/lib/reloc.c       | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-On Tue, Jan 28, 2020 at 09:45:50AM +0100, Sascha Hauer wrote:
-> Hi Michael,
->=20
-> On Mon, Jan 27, 2020 at 04:50:11PM +0100, Michael Grzeschik wrote:
-> > Currently the pfuze driver is build dependent to ARCH_IMX6. To make it
-> > possible to work with ARCH_IMX8 we move the imx6_poweroff call to an own
-> > poweroff handler.
-> >=20
-> > Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-> > ---
-> >  arch/arm/mach-imx/imx6.c  | 8 ++++++++
-> >  drivers/regulator/Kconfig | 2 +-
-> >  drivers/regulator/pfuze.c | 2 --
-> >  3 files changed, 9 insertions(+), 3 deletions(-)
-> >=20
-> > diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
-> > index 41e0066add..8f1638c1ea 100644
-> > --- a/arch/arm/mach-imx/imx6.c
-> > +++ b/arch/arm/mach-imx/imx6.c
-> > @@ -401,3 +401,11 @@ void __noreturn imx6_pm_stby_poweroff(void)
-> > =20
-> >  	while(1);
-> >  }
-> > +
-> > +static int imx6_init(void)
-> > +{
-> > +	poweroff_handler_register_fn(imx6_pm_stby_poweroff);
-> > +
-> > +	return 0;
-> > +}
->=20
-> imx6_pm_stby_poweroff() only works when a pfuze is present and is
-> configured correctly. Calling this on every i.MX board is not nice.
+diff --git a/arch/mips/lib/barebox.lds.S b/arch/mips/lib/barebox.lds.S
+index 693a778980..c954df41f3 100644
+--- a/arch/mips/lib/barebox.lds.S
++++ b/arch/mips/lib/barebox.lds.S
+@@ -59,7 +59,7 @@ SECTIONS
+ 
+ 	_end = .;
+ 
+-	.bss __rel_start (OVERLAY) : {
++	.bss : {
+ 		__bss_start = .;
+ 		*(.sbss.*)
+ 		*(.bss.*)
+diff --git a/arch/mips/lib/reloc.c b/arch/mips/lib/reloc.c
+index df9760e38c..4b0e252352 100644
+--- a/arch/mips/lib/reloc.c
++++ b/arch/mips/lib/reloc.c
+@@ -118,7 +118,7 @@ void relocate_code(void *fdt, u32 fdt_size, u32 ram_size)
+ 	memset(__bss_start, 0, bss_len);
+ 	cpu_probe();
+ 
+-	length = barebox_image_size + bss_len;
++	length = __bss_stop - __image_start;
+ 	relocaddr = ALIGN_DOWN(ram_size - length, SZ_64K);
+ 	relocaddr = KSEG0ADDR(relocaddr);
+ 	new_stack = relocaddr - MALLOC_SIZE - 16;
+-- 
+2.25.0
 
-Right
-
-> What you can do is to call pfuze_register_init_callback() from here.
-> You'll have to add a static inline wrapper for this in case pfuze
-> support is not compiled in.
-
-So you mean, call pfuze_register_init_callback to register a callback
-function which then itself registers the poweroff_handler as above?
-
-I think that could work, but then the init_callback is already used for
-every imx6. The callback would also be overwritten by users in board
-code trying to preconfigure the pfuze into a sane state, right?
-
-> I wonder how this compiles as my version of this file already has a
-> function named imx6_init(). Using this is preferred btw as it's already
-> made sure that it will run only on i.MX6.
-
-Duh, it wont. I tried it with imx6 disabled.
-
-> > +coredevice_initcall(imx6_init);
->=20
-> Note that this doesn't necessarily means that we are running an i.MX6.
-> It could be whatever else is compiled in.
-
-Yes, therefor the callback approach is to be prefered.
-
-Michael
-
---=20
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
---ws4tdnhcn4mt5zul
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEElXvEUs6VPX6mDPT8C+njFXoeLGQFAl4yBOUACgkQC+njFXoe
-LGRAFA//bJKfr1s998ZXqz5U3mMgiQAgz3eOhwosHjq3S769gZJAPH3SUsDmvhH/
-bevHN9PBWuwnWPytlVtWJHgcwHWIkfiOGQobDtd+AQm/VhZazac6uJc1ezbTmOIc
-BwXecD6iR8SmVuZBZ+QjvAMTCxgDAi4p9nw8eFdyisLRv+LuSllbGyeca3JdEyqj
-ibE9PcTrnzQOUsmdq5eG+5xdPP9aCN8UrGJ8WwRGSXYkmmJKvPKta0nLvubvP7RW
-4TTGPmsl0gfL62/31t+KmM7p3OxF4FCfNG7qyAd73Mvx4OkzYESkiQRjWyIaftSU
-PgzujtVR76Pen3bWM77fUvThTTlZeSB+pV5ST64nXNYUmexChxTQBDv5iJ1r0GKe
-NihzFu3ZAwt6xg5W0wxUP+UPpZmxFkXW7YIKpny7B8h+ftgAIpB/B6K1tqoVncci
-aRDUJHFKjdOsJQtb35eLOnTd06g3JO3RvZSOFry5cE28B8pvmNCYJ9VA0X74/T+z
-3It9d+2VJarjp8RPfZZd3qtFQ72j991xwqAymuzm8eCJh4mg8y9mM1VqLMMPC9Se
-D5iGvwbhrEttMH0w+syIKdl8rOlhF/v2UCTaJbrsRrwrud89gSMu5+gJMnBwnfm/
-ooz8tvc4tt0Rn82QjLUqW+fhIaiHWbXU5s54Qj0mkv86upfDs9Y=
-=48OX
------END PGP SIGNATURE-----
-
---ws4tdnhcn4mt5zul--
-
-
---===============1864572321610658196==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============1864572321610658196==--
