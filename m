@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ix4hQ-0003JR-2T
- for barebox@lists.infradead.org; Thu, 30 Jan 2020 07:57:17 +0000
-Date: Thu, 30 Jan 2020 08:57:12 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200130075712.icgvhv53wpqsg4j2@pengutronix.de>
-References: <20200127155013.4388-1-m.grzeschik@pengutronix.de>
- <20200127155013.4388-2-m.grzeschik@pengutronix.de>
- <20200128084550.uxe7hn2qlvcik5tz@pengutronix.de>
- <20200129221920.g2ercgyrxmu62gc3@pengutronix.de>
+ id 1ixDFO-0007vh-5W
+ for barebox@lists.infradead.org; Thu, 30 Jan 2020 17:04:55 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu, 30 Jan 2020 18:04:45 +0100
+Message-Id: <20200130170449.9761-2-a.fatoum@pengutronix.de>
+In-Reply-To: <20200130170449.9761-1-a.fatoum@pengutronix.de>
+References: <20200130170449.9761-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200129221920.g2ercgyrxmu62gc3@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,72 +21,117 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/4] regulator: pfuze: add support to other architectures
-To: Michael Grzeschik <mgr@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/5] mci: stm32_sdmmc2: use correct card power cycle sequence
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Wed, Jan 29, 2020 at 11:19:20PM +0100, Michael Grzeschik wrote:
-> Hi Sascha,
-> 
-> On Tue, Jan 28, 2020 at 09:45:50AM +0100, Sascha Hauer wrote:
-> > Hi Michael,
-> > 
-> > On Mon, Jan 27, 2020 at 04:50:11PM +0100, Michael Grzeschik wrote:
-> > > Currently the pfuze driver is build dependent to ARCH_IMX6. To make it
-> > > possible to work with ARCH_IMX8 we move the imx6_poweroff call to an own
-> > > poweroff handler.
-> > > 
-> > > Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-> > > ---
-> > >  arch/arm/mach-imx/imx6.c  | 8 ++++++++
-> > >  drivers/regulator/Kconfig | 2 +-
-> > >  drivers/regulator/pfuze.c | 2 --
-> > >  3 files changed, 9 insertions(+), 3 deletions(-)
-> > > 
-> > > diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
-> > > index 41e0066add..8f1638c1ea 100644
-> > > --- a/arch/arm/mach-imx/imx6.c
-> > > +++ b/arch/arm/mach-imx/imx6.c
-> > > @@ -401,3 +401,11 @@ void __noreturn imx6_pm_stby_poweroff(void)
-> > >  
-> > >  	while(1);
-> > >  }
-> > > +
-> > > +static int imx6_init(void)
-> > > +{
-> > > +	poweroff_handler_register_fn(imx6_pm_stby_poweroff);
-> > > +
-> > > +	return 0;
-> > > +}
-> > 
-> > imx6_pm_stby_poweroff() only works when a pfuze is present and is
-> > configured correctly. Calling this on every i.MX board is not nice.
-> 
-> Right
-> 
-> > What you can do is to call pfuze_register_init_callback() from here.
-> > You'll have to add a static inline wrapper for this in case pfuze
-> > support is not compiled in.
-> 
-> So you mean, call pfuze_register_init_callback to register a callback
-> function which then itself registers the poweroff_handler as above?
-> 
-> I think that could work, but then the init_callback is already used for
-> every imx6. The callback would also be overwritten by users in board
-> code trying to preconfigure the pfuze into a sane state, right?
+The stm32mp157c RM0436 reference manual lists following sequence for
+resetting the SDMMC:
 
-Yes. Board code would then have to call imx6_pm_stby_poweroff()
-additionally to its own fixups.
+1. Reset using the RCC.SDMMCxRST register bit
+  -> We do this via reset_control_assert
 
-Sascha
+2. Disable Vcc power to the card
+  -> We don't do this, because the rail often has other 3v3 peripherals
+     hanging off it
 
+3. Set the SDMMC to power-cycle state
+  -> We do this only when the MCI core sets the frequency to zero, not
+     on init!
 
+4. reenable Vcc power to the card after a >1ms
+  -> We don't do this, because we don't disable Vcc
 
+5. Wait >1ms for the power ramp period, then put card into power-off
+  -> We do this in stm32_sdmmc2_pwron
+
+6. Wait >1ms, then put card into power-on state
+  -> We do this in stm32_sdmmc2_pwron
+
+7. Wait 74 SDMMC_CK cycles before sending the first command to the card
+  -> We don't have an explicit delay between mci_startup_{sd,mmc} and
+     mci_set_blocklen, so a low max-speed may run afoul of the timing
+     constraint
+
+Fix 3 & 7. 3 is the main one and doing it fixes an issue of timeouts
+occurring, when having barebox in a reboot loop or the SD-Card inside
+a USB-SD-Mux.
+
+Fixes: ce99d0c86b32ec ("mci: add support for stm32mp sd/mmc controller")
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/mci/stm32_sdmmc2.c | 29 ++++++++++++++---------------
+ 1 file changed, 14 insertions(+), 15 deletions(-)
+
+diff --git a/drivers/mci/stm32_sdmmc2.c b/drivers/mci/stm32_sdmmc2.c
+index 1a41c34d24e2..eba079f1799b 100644
+--- a/drivers/mci/stm32_sdmmc2.c
++++ b/drivers/mci/stm32_sdmmc2.c
+@@ -185,31 +185,31 @@ struct stm32_sdmmc2_priv {
+ 
+ #define to_mci_host(mci)	container_of(mci, struct stm32_sdmmc2_priv, mci)
+ 
+-/*
+- * Reset the SDMMC with the RCC.SDMMCxRST register bit.
+- * This will reset the SDMMC to the reset state and the CPSM and DPSM
+- * to the Idle state. SDMMC is disabled, Signals Hiz.
+- */
+ static int stm32_sdmmc2_reset(struct mci_host *mci, struct device_d *mci_dev)
+ {
+ 	struct stm32_sdmmc2_priv *priv = to_mci_host(mci);
+ 
++	/*
++	 * Reset the SDMMC with the RCC.SDMMCxRST register bit.
++	 * This will reset the SDMMC to the reset state and the CPSM and DPSM
++	 * to the Idle state. SDMMC is disabled, Signals Hiz.
++	 */
+ 	reset_control_assert(priv->reset_ctl);
+ 	udelay(2);
+ 	reset_control_deassert(priv->reset_ctl);
+ 
+-	/* init the needed SDMMC register after reset */
+-	writel(priv->pwr_reg_msk, priv->base + SDMMC_POWER);
++	/*
++	 * Set the SDMMC in power-cycle state.
++	 * This will make that the SDMMC_D[7:0],
++	 * SDMMC_CMD and SDMMC_CK are driven low, to prevent the card from being
++	 * supplied through the signal lines.
++	 */
++	writel(SDMMC_POWER_PWRCTRL_CYCLE | priv->pwr_reg_msk,
++	       priv->base + SDMMC_POWER);
+ 
+ 	return 0;
+ }
+ 
+-/*
+- * Set the SDMMC in power-cycle state.
+- * This will make that the SDMMC_D[7:0],
+- * SDMMC_CMD and SDMMC_CK are driven low, to prevent the card from being
+- * supplied through the signal lines.
+- */
+ static void stm32_sdmmc2_pwrcycle(struct stm32_sdmmc2_priv *priv)
+ {
+ 	if ((readl(priv->base + SDMMC_POWER) & SDMMC_POWER_PWRCTRL_MASK) ==
+@@ -217,8 +217,6 @@ static void stm32_sdmmc2_pwrcycle(struct stm32_sdmmc2_priv *priv)
+ 		return;
+ 
+ 	stm32_sdmmc2_reset(&priv->mci, priv->dev);
+-	writel(SDMMC_POWER_PWRCTRL_CYCLE | priv->pwr_reg_msk,
+-	       priv->base + SDMMC_POWER);
+ }
+ 
+ /*
+@@ -256,6 +254,7 @@ static void stm32_sdmmc2_pwron(struct stm32_sdmmc2_priv *priv)
+ 	       priv->base + SDMMC_POWER);
+ 
+ 	/* during the first 74 SDMMC_CK cycles the SDMMC is still disabled. */
++	udelay(DIV_ROUND_UP(74 * USEC_PER_SEC, priv->mci.clock));
+ }
+ 
+ static void stm32_sdmmc2_start_data(struct stm32_sdmmc2_priv *priv,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.25.0
+
 
 _______________________________________________
 barebox mailing list
