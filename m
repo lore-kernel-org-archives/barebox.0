@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iwqeo-0004wl-Qz
- for barebox@lists.infradead.org; Wed, 29 Jan 2020 16:57:40 +0000
-Received: by mail-lj1-x22d.google.com with SMTP id w1so105681ljh.5
- for <barebox@lists.infradead.org>; Wed, 29 Jan 2020 08:57:38 -0800 (PST)
+ id 1ixDFO-0007vi-7L
+ for barebox@lists.infradead.org; Thu, 30 Jan 2020 17:04:56 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu, 30 Jan 2020 18:04:48 +0100
+Message-Id: <20200130170449.9761-5-a.fatoum@pengutronix.de>
+In-Reply-To: <20200130170449.9761-1-a.fatoum@pengutronix.de>
+References: <20200130170449.9761-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-References: <CAEKVsgZHZR2b28wcMcpac4Qa3KebrXMRf14STZ8GCum0NmnLgg@mail.gmail.com>
- <a0c0afa2-cb44-3e40-b7e7-962fd80f2902@pengutronix.de>
- <CAEKVsgYu15u7d6ptaU7aZGy6OXOhN7743aLdGOz_3fZOPK2JpQ@mail.gmail.com>
-In-Reply-To: <CAEKVsgYu15u7d6ptaU7aZGy6OXOhN7743aLdGOz_3fZOPK2JpQ@mail.gmail.com>
-From: Cameron Ferguson <cameron.bare86@gmail.com>
-Date: Wed, 29 Jan 2020 16:57:25 +0000
-Message-ID: <CAEKVsgbzOKhD4gVkHNUf2RanXO40MD8hFVkFZh6=gE_CU38G9w@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,21 +21,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Small tweak to get ACPI watchdog working (iTCO)
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
+Subject: [PATCH 4/5] mci: stm32_sdmmc2: compare ios ->bus_width with correct
+ constants
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Wed, Jan 29, 2020 at 4:07 PM Cameron Ferguson
-<cameron.bare86@gmail.com> wrote:
+MMC_BUS_WIDTH_4 != 4 && MMC_BUS_WIDTH_8 != 8.
 
-> I'm still tinkering about with this. Still no joy.
+This enables driver support for 4-bit SD-Cards and 8-bit MMCs,
+which before was disabled because of CRC errors:
 
-I've been toying around with this for so long that I'm really
-beginning to think that I'm missing an initial call to initialise the
-entire ACPI system.
+  ERROR: error SDMMC_STA_DCRCFAIL (0x81042) for cmd 18
+  ERROR: stm32_sdmmc2_end_cmd: error SDMMC_STA_CTIMEOUT (0x4) for cmd 12
 
-Anyone got any ideas?
+These happened because the card was correctly instructed to use the new
+bus width, but the controller wasn't.
 
-Cameron
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Fixes: ce99d0c86b32ec ("mci: add support for stm32mp sd/mmc controller")
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/mci/stm32_sdmmc2.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/mci/stm32_sdmmc2.c b/drivers/mci/stm32_sdmmc2.c
+index 7f22a90668e4..fdd0e7858f9e 100644
+--- a/drivers/mci/stm32_sdmmc2.c
++++ b/drivers/mci/stm32_sdmmc2.c
+@@ -574,9 +574,9 @@ static void stm32_sdmmc2_set_ios(struct mci_host *mci, struct mci_ios *ios)
+ 			clk = SDMMC_CLKCR_CLKDIV_MAX;
+ 	}
+ 
+-	if (mci->bus_width == 4)
++	if (mci->bus_width == MMC_BUS_WIDTH_4)
+ 		clk |= SDMMC_CLKCR_WIDBUS_4;
+-	if (mci->bus_width == 8)
++	if (mci->bus_width == MMC_BUS_WIDTH_8)
+ 		clk |= SDMMC_CLKCR_WIDBUS_8;
+ 
+ 	writel(clk | priv->clk_reg_msk | SDMMC_CLKCR_HWFC_EN,
+@@ -631,11 +631,6 @@ static int stm32_sdmmc2_probe(struct amba_device *adev,
+ 
+ 	mci_of_parse(&priv->mci);
+ 
+-	if (mci->host_caps & (MMC_CAP_4_BIT_DATA | MMC_CAP_8_BIT_DATA)) {
+-		dev_notice(dev, "Fixing bus-width to 1 due to driver limitation\n");
+-		mci->host_caps &= ~(MMC_CAP_4_BIT_DATA | MMC_CAP_8_BIT_DATA);
+-	}
+-
+ 	return mci_register(&priv->mci);
+ 
+ priv_free:
+-- 
+2.25.0
+
 
 _______________________________________________
 barebox mailing list
