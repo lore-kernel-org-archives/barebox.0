@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ixDFO-0007vi-7L
+ id 1ixDFO-0007vj-7c
  for barebox@lists.infradead.org; Thu, 30 Jan 2020 17:04:56 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 30 Jan 2020 18:04:48 +0100
-Message-Id: <20200130170449.9761-5-a.fatoum@pengutronix.de>
+Date: Thu, 30 Jan 2020 18:04:47 +0100
+Message-Id: <20200130170449.9761-4-a.fatoum@pengutronix.de>
 In-Reply-To: <20200130170449.9761-1-a.fatoum@pengutronix.de>
 References: <20200130170449.9761-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,57 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] mci: stm32_sdmmc2: compare ios ->bus_width with correct
- constants
+Subject: [PATCH 3/5] mci: core: don't test 4-bit-buswidth support if MMC host
+ lacks capability
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-MMC_BUS_WIDTH_4 != 4 && MMC_BUS_WIDTH_8 != 8.
+We already check for MMC_CAP_8_BIT_DATA before trying if buswidth=8
+yields legible data. For consistency, don't test whether buswidth=4
+works if the MMC host doesn't indicated MMC_CAP_4_BIT_DATA.
 
-This enables driver support for 4-bit SD-Cards and 8-bit MMCs,
-which before was disabled because of CRC errors:
-
-  ERROR: error SDMMC_STA_DCRCFAIL (0x81042) for cmd 18
-  ERROR: stm32_sdmmc2_end_cmd: error SDMMC_STA_CTIMEOUT (0x4) for cmd 12
-
-These happened because the card was correctly instructed to use the new
-bus width, but the controller wasn't.
-
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-Fixes: ce99d0c86b32ec ("mci: add support for stm32mp sd/mmc controller")
+Fixes: 68db956d ("mci: Fix 8 bit mmc cards")
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/mci/stm32_sdmmc2.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ drivers/mci/mci-core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/mci/stm32_sdmmc2.c b/drivers/mci/stm32_sdmmc2.c
-index 7f22a90668e4..fdd0e7858f9e 100644
---- a/drivers/mci/stm32_sdmmc2.c
-+++ b/drivers/mci/stm32_sdmmc2.c
-@@ -574,9 +574,9 @@ static void stm32_sdmmc2_set_ios(struct mci_host *mci, struct mci_ios *ios)
- 			clk = SDMMC_CLKCR_CLKDIV_MAX;
- 	}
+diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+index 67257bcd186c..dd163c3d1652 100644
+--- a/drivers/mci/mci-core.c
++++ b/drivers/mci/mci-core.c
+@@ -1025,6 +1025,9 @@ static int mci_startup_mmc(struct mci *mci)
  
--	if (mci->bus_width == 4)
-+	if (mci->bus_width == MMC_BUS_WIDTH_4)
- 		clk |= SDMMC_CLKCR_WIDBUS_4;
--	if (mci->bus_width == 8)
-+	if (mci->bus_width == MMC_BUS_WIDTH_8)
- 		clk |= SDMMC_CLKCR_WIDBUS_8;
+ 	mci_set_clock(mci, mci->tran_speed);
  
- 	writel(clk | priv->clk_reg_msk | SDMMC_CLKCR_HWFC_EN,
-@@ -631,11 +631,6 @@ static int stm32_sdmmc2_probe(struct amba_device *adev,
- 
- 	mci_of_parse(&priv->mci);
- 
--	if (mci->host_caps & (MMC_CAP_4_BIT_DATA | MMC_CAP_8_BIT_DATA)) {
--		dev_notice(dev, "Fixing bus-width to 1 due to driver limitation\n");
--		mci->host_caps &= ~(MMC_CAP_4_BIT_DATA | MMC_CAP_8_BIT_DATA);
--	}
--
- 	return mci_register(&priv->mci);
- 
- priv_free:
++	if (!(host->host_caps & (MMC_CAP_4_BIT_DATA | MMC_CAP_8_BIT_DATA)))
++		return 0;
++
+ 	/*
+ 	 * Unlike SD, MMC cards dont have a configuration register to notify
+ 	 * supported bus width. So bus test command should be run to identify
 -- 
 2.25.0
 
