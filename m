@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iyWuD-0002zb-No
- for barebox@lists.infradead.org; Mon, 03 Feb 2020 08:16:31 +0000
-Date: Mon, 3 Feb 2020 09:16:27 +0100
+ id 1iyWvz-0003A7-1R
+ for barebox@lists.infradead.org; Mon, 03 Feb 2020 08:18:20 +0000
+Date: Mon, 3 Feb 2020 09:18:17 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200203081627.mlzg7j7q326dqoob@pengutronix.de>
-References: <20200130170449.9761-1-a.fatoum@pengutronix.de>
+Message-ID: <20200203081817.s6cux2fug6wxo2ge@pengutronix.de>
+References: <20200130073857.18396-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200130170449.9761-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20200130073857.18396-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,44 +22,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/4] mci: stm32_sdmmc2: timeout and bus-width bug fixes
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH v4] MIPS: don't overlay relocation data with BSS
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>
 
-On Thu, Jan 30, 2020 at 06:04:44PM +0100, Ahmad Fatoum wrote:
-> Hi,
+On Thu, Jan 30, 2020 at 08:38:57AM +0100, Oleksij Rempel wrote:
+> .bss __rel_start (OVERLAY) was used to optimize RAM size used by
+> barebox. Since .bss and __rel_start overlap, we should clear bss only
+> after __rel_start was used. Following patch changed initialization
+> sequence to clear .bss before __rel_start:
+> 1e5aef61fc6a444 ("MIPS: reloc: init bss and cpu")
 > 
-> would be great if the first 4 patches could go into master.
+> This make relocation buffer unusable and broke relocation with different
+> symptoms reported by Antony Pavlov <antonynpavlov@gmail.com>:
+>   * iomem output has no information on sdram regions, so memtest is unusable;
+>   * pc = 0xa081232c, relocation does not work, barebox is located with 8M offset
+>     from start of RAM. The board has 256M and relocation routine
+>     should move barebox code much higher;
+>   * pc = 0xa081232c, so barebox code works from KSEG1 not from KSEG0 as MMU=y option implies.
+> 
+> There is a choice of moving .bss clear sequence after __rel_start or
+> remove this optimization. Since the use of this optimization is minimal
+> and danger to trap in to similar issue is still high, i prefer to remove
+> this optimization.
+> 
+> As result of this change, we need to fix calculation of relocation are
+> size:
+> relocate_code() calculates relocation area size as a sum (barebox_image_size +
+> bss_len). barebox_image_size and bss_len are calculated as (__image_end -
+> __image_start) and (__bss_stop - __bss_start) respectively. This doesn't take
+> into account relocation data placed between  __image_end and __bss_start.
+> However relocation preserves BSS position relative to image start, as if
+> relocation data is still there. This causes RAM overflow during BSS
+> initialization in main_entry(). This problem may be hidden due to the alignment
+> of the `relocaddr`.
+> 
+> Reported-by: Antony Pavlov <antonynpavlov@gmail.com>
+> Fixes: 1e5aef61fc6a444 ("MIPS: reloc: init bss and cpu")
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+> ---
+>  arch/mips/lib/barebox.lds.S | 2 +-
+>  arch/mips/lib/reloc.c       | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
 
-Did that, thanks
+Applied, thanks
 
 Sascha
 
-> 
-> Cheers,
-> Ahmad
-> 
-> Ahmad Fatoum (5):
->   mci: stm32_sdmmc2: use correct card power cycle sequence
->   mci: stm32_sdmmc2: don't reset before retrying failed operations
->   mci: core: don't test 4-bit-buswidth support if MMC host lacks
->     capability
->   mci: stm32_sdmmc2: compare ios ->bus_width with correct constants
->   mci: stm32_sdmmc2: fix typo in debug string
-> 
->  drivers/mci/mci-core.c     |  3 +++
->  drivers/mci/stm32_sdmmc2.c | 42 +++++++++++++++-----------------------
->  2 files changed, 20 insertions(+), 25 deletions(-)
-> 
-> -- 
-> 2.25.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
