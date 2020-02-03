@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from calrissian.rohieb.name ([81.20.132.56] helo=rohieb.name)
  by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iygkl-0006yR-1a
- for barebox@lists.infradead.org; Mon, 03 Feb 2020 18:47:24 +0000
-Date: Mon, 03 Feb 2020 19:46:40 +0100
-In-Reply-To: <132a35ef-1521-ccdd-03ee-a06067b328fa@pengutronix.de>
+ id 1iygmh-0007sD-MS
+ for barebox@lists.infradead.org; Mon, 03 Feb 2020 18:49:25 +0000
+Date: Mon, 03 Feb 2020 19:48:48 +0100
+In-Reply-To: <7988c528-53bf-2a39-d7e8-fce782bf3797@pengutronix.de>
 References: <20190207223906.24394-1-rohieb@rohieb.name>
  <20200202154301.18383-1-rohieb@rohieb.name>
- <20200202154301.18383-3-rohieb@rohieb.name>
- <132a35ef-1521-ccdd-03ee-a06067b328fa@pengutronix.de>
+ <20200202154301.18383-5-rohieb@rohieb.name>
+ <7988c528-53bf-2a39-d7e8-fce782bf3797@pengutronix.de>
 MIME-Version: 1.0
 From: Roland Hieber <rohieb@rohieb.name>
-Message-ID: <CD762322-CF25-4D34-9976-EE587189ED56@rohieb.name>
+Message-ID: <190E2E15-86BF-40B6-9AE0-A2E50E438D49@rohieb.name>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,62 +24,97 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 2/6] include: add SPDX GPL-2.0-or-later license tags
+Subject: Re: [PATCH v2 4/6] include: add SPDX LGPL-2.1-or-later license tags
  where applicable
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
 
 
 
-On 3 February 2020 08:45:37 CET, Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+On 3 February 2020 08:49:48 CET, Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+>Hello Roland,
+>
 >On 2/2/20 4:42 PM, Roland Hieber wrote:
 >> Signed-off-by: Roland Hieber <rohieb@rohieb.name>
 >> ---
->>  include/ata_drive.h    | 11 +----------
->>  include/command.h      | 12 +-----------
->>  include/common.h       | 12 +-----------
->>  include/console.h      | 12 +-----------
->>  include/debug_ll.h     | 11 +----------
->>  include/disks.h        | 11 +----------
->>  include/driver.h       | 12 +-----------
->>  include/environment.h  | 12 +-----------
->>  include/hab.h          | 11 +----------
->>  include/image-fit.h    | 14 +-------------
->>  include/image.h        | 12 +-----------
->>  include/int_sqrt.h     | 12 +-----------
->>  include/jtag.h         | 15 +--------------
->>  include/kfifo.h        | 11 +----------
->>  include/mci.h          | 12 +-----------
->>  include/of_gpio.h      |  6 +-----
->>  include/part.h         | 12 +-----------
->>  include/reset_source.h |  6 +-----
->>  include/rtc.h          | 12 +-----------
->>  include/s_record.h     | 12 +-----------
->>  include/scsi.h         | 13 +------------
->>  include/stmp-device.h  |  6 +-----
->>  include/watchdog.h     | 12 +-----------
->>  23 files changed, 23 insertions(+), 236 deletions(-)
+>>  include/fnmatch.h | 17 ++---------------
+>>  include/glob.h    | 17 ++---------------
+>>  2 files changed, 4 insertions(+), 30 deletions(-)
 >> 
->> diff --git a/include/ata_drive.h b/include/ata_drive.h
->> index d61c6f11d4d3..d98e410b30c3 100644
->> --- a/include/ata_drive.h
->> +++ b/include/ata_drive.h
->> @@ -1,16 +1,7 @@
->> +/* SPDX-License-Identifier: GPL-2.0-or-later */
->>  /*
->>   * See file CREDITS for list of people who contributed to this
->>   * project.
+>> diff --git a/include/fnmatch.h b/include/fnmatch.h
+>> index c0fd6a920710..c13beb9011fb 100644
+>> --- a/include/fnmatch.h
+>> +++ b/include/fnmatch.h
+>> @@ -1,20 +1,7 @@
+>> +/* SPDX-License-Identifier: LGPL-2.1-or-later */
 >
->In the previous patch you also removed referenced to the no-longer
->existing CREDITS file, but not here. Maybe do that throughout?
->
->(Or have one leading commit that just deleted all references to
->CREDITS.
+>There's no LGPL-2.1 file under LICENSES/. This should exist
+>before we delete the license statements.
 
-Hmm, this was not in my branch... anyway, I also thought about doing that, but it should be on a different commit and I can do that treewide too.
+Right. Thanks for catching this.
 
  - Roland
+
 >
+>With the file added,
 >Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>
+>>  /* Copyright (C) 1991,92,93,96,97,98,99,2001 Free Software
+>Foundation, Inc.
+>>     This file is part of the GNU C Library.
+>> -
+>> -   The GNU C Library is free software; you can redistribute it
+>and/or
+>> -   modify it under the terms of the GNU Lesser General Public
+>> -   License as published by the Free Software Foundation; either
+>> -   version 2.1 of the License, or (at your option) any later
+>version.
+>> -
+>> -   The GNU C Library is distributed in the hope that it will be
+>useful,
+>> -   but WITHOUT ANY WARRANTY; without even the implied warranty of
+>> -   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+>> -   Lesser General Public License for more details.
+>> -
+>> -   You should have received a copy of the GNU Lesser General Public
+>> -   License along with the GNU C Library; if not, write to the Free
+>> -   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+>> -   02111-1307 USA.  */
+>> +*/
+>>  
+>>  #ifndef	_FNMATCH_H
+>>  #define	_FNMATCH_H	1
+>> diff --git a/include/glob.h b/include/glob.h
+>> index 777815251312..5f532e6652c3 100644
+>> --- a/include/glob.h
+>> +++ b/include/glob.h
+>> @@ -1,20 +1,7 @@
+>> +/* SPDX-License-Identifier: LGPL-2.1-or-later */
+>>  /* Copyright (C) 1991,92,95,96,97,98,2000,2001 Free Software
+>Foundation, Inc.
+>>     This file is part of the GNU C Library.
+>> -
+>> -   The GNU C Library is free software; you can redistribute it
+>and/or
+>> -   modify it under the terms of the GNU Lesser General Public
+>> -   License as published by the Free Software Foundation; either
+>> -   version 2.1 of the License, or (at your option) any later
+>version.
+>> -
+>> -   The GNU C Library is distributed in the hope that it will be
+>useful,
+>> -   but WITHOUT ANY WARRANTY; without even the implied warranty of
+>> -   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+>> -   Lesser General Public License for more details.
+>> -
+>> -   You should have received a copy of the GNU Lesser General Public
+>> -   License along with the GNU C Library; if not, write to the Free
+>> -   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+>> -   02111-1307 USA.  */
+>> +*/
+>>  
+>>  #ifndef	_GLOB_H
+>>  #define	_GLOB_H	1
+>> 
 
 _______________________________________________
 barebox mailing list
