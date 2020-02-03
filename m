@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay8-d.mail.gandi.net ([217.70.183.201])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iyX5p-0006w4-MW
- for barebox@lists.infradead.org; Mon, 03 Feb 2020 08:28:30 +0000
-Received: from geraet.fritz.box (unknown [46.183.103.8])
- (Authenticated sender: ahmad@a3f.at)
- by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 9648E1BF20C
- for <barebox@lists.infradead.org>; Mon,  3 Feb 2020 08:28:25 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Mon,  3 Feb 2020 09:27:59 +0100
-Message-Id: <20200203082759.7014-2-ahmad@a3f.at>
-In-Reply-To: <20200203082759.7014-1-ahmad@a3f.at>
-References: <20200203082759.7014-1-ahmad@a3f.at>
+ id 1iyXR1-0008SK-88
+ for barebox@lists.infradead.org; Mon, 03 Feb 2020 08:50:24 +0000
+Date: Mon, 3 Feb 2020 09:50:17 +0100
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20200203085017.qjy422frw27w6ppm@pengutronix.de>
+References: <20200128130801.24890-1-u.kleine-koenig@pengutronix.de>
+ <20200128130801.24890-2-u.kleine-koenig@pengutronix.de>
+ <20200203075707.wc2q5f4isveehjuk@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200203075707.wc2q5f4isveehjuk@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,46 +20,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] sandbox: hostfile: fix UB-inducing shift
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/3] commands/test: Bail out on incomplete command line
+ options
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On 32-bit hosts, UBSan reports:
-
-====================================================================
-UBSAN: Undefined behaviour in ./arch/sandbox/board/hostfile.c:135:12
-shift exponent 32 is too large for 32-bit type 'long unsigned int'
-====================================================================
-
-Fix this by using a unsigned long long for base. The upper 32-bit
-won't be set, but device tree fixups can now read them.
-
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
----
- arch/sandbox/mach-sandbox/include/mach/hostfile.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/sandbox/mach-sandbox/include/mach/hostfile.h b/arch/sandbox/mach-sandbox/include/mach/hostfile.h
-index 627fe28e765b..54f690be5f7f 100644
---- a/arch/sandbox/mach-sandbox/include/mach/hostfile.h
-+++ b/arch/sandbox/mach-sandbox/include/mach/hostfile.h
-@@ -3,7 +3,7 @@
- 
- struct hf_info {
- 	int fd;
--	unsigned long base;
-+	unsigned long long base;
- 	size_t size;
- 	const char *devname;
- 	const char *filename;
--- 
-2.20.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gTW9uLCBGZWIgMDMsIDIwMjAgYXQgMDg6NTc6MDdBTSArMDEwMCwgU2FzY2hhIEhhdWVyIHdy
+b3RlOgo+IE9uIFR1ZSwgSmFuIDI4LCAyMDIwIGF0IDAyOjA3OjU5UE0gKzAxMDAsIFV3ZSBLbGVp
+bmUtS8O2bmlnIHdyb3RlOgo+ID4gVGhpcyBtYWtlcyB0ZXN0IGVtaXQgYW4gZXJyb3IgKGFuZCBm
+YWlsKSBvbiBlLmcuCj4gPiAKPiA+IAl0ZXN0IC1mCj4gCj4gdGVzdCAtZiBpbiBiYXNoIHJldHVy
+bnMgMCBhcyB3ZWxsIGFuZCBhbHNvIGRvZXNuJ3QgZW1pdCBhbiBlcnJvci4KCkFoLCB0aGF0J3Mg
+YmVjYXVzZSB0aGlzIGlzIGltcGxpY2l0bHkKCgl0ZXN0IC1uIC1mCgpUaGF0IHRoZSBzYW1lIGhh
+cHBlbnMgaW4gYmFyZWJveCBpcyBvbmx5IGFuIGFjY2lkZW50IEkgd291bGQgc2F5LiAoQW5kCm5v
+dGUgdGhhdCBjdXJyZW50bHkKCgl0ZXN0ICcnCgpyZXR1cm5zIHN1Y2Nlc3MsIHRvbywgd2hpY2gg
+aXMgZGlmZmVyZW50IGZyb20gYmFzaCdzIHRlc3QgYmVoYXZpb3VyLikKCj4gPiBhbmQgYWxzbyBv
+biB1bmltcGxlbWVudGVkIG9wdGlvbnMgbGlrZQo+ID4gCj4gPiAJdGVzdCAtYyAvZGV2L251bGwK
+PiAKPiB0ZXN0IC1IIC9mb28vYmFyIGluIGJhc2ggc2F5cyAiYmFzaDogdGVzdDogLUg6IHVuYXJ5
+IG9wZXJhdG9yIGV4cGVjdGVkIi4KClRoYXQgaXMgKGFnYWluKSBiZWNhdXNlICItSCIgIi9kZXYv
+bnVsbCIgaXMgaW1wbGljaXRseSAiLW4iICItSCIKIi9kZXYvbnVsbCIgYW5kIHRoZW4gdGhlcmUg
+aXMgbm8gc2FuZSBpbnRlcnByZXRhdGlvbiBvZiB0aGUgbGFzdAphcmd1bWVudC4KCgl0ZXN0IC1I
+IC1hIC1mCgpzdWNjZWVkcyBiZWNhdXNlIGJvdGggIi1IIiBhbmQgIi1mIiBhcmUgbm9uLXplcm8u
+IEknbSBub3Qgc3VyZSBpZiB0cnlpbmcKdG8gYmUgdGhhdCBjbGV2ZXIoPykgaXMgYSBnb29kIGlk
+ZWEuIChBbHNvIGJhc2gncyB0ZXN0IGlzbid0IHdpdGhvdXQKc2hvcnRhZ2VzLCBmb3IgZXhhbXBs
+ZQoKCSQgdGVzdCAtZiAtYSAtYSAtZgoJYmFzaDogdGVzdDogYXJndW1lbnQgZXhwZWN0ZWQKCndo
+aWxlIHRoaXMgaXMgYW4gb2J2aW91c2x5IGZpbmUgdGVzdCBpZiBhIGZpbGUgY2FsbGVkICItYSIg
+ZXhpc3RzIGFuZAoiLWYiIGlzIG5vdCB6ZXJvLWxlbmd0aC4gQWxzbyBub3RlIHRoYXQgY29yZXV0
+aWwncyB0ZXN0IGJlaGF2ZXMgZGlmZmVyZW50bHkKdGhhbiBiYXNoJ3Mgb24gZm9yIGV4YW1wbGUK
+Cgl0ZXN0IC1mIC1hIC1mCgkKLiAoYmFzaCByZXR1cm5zIHN1Y2Nlc3MsIGNvcmV1dGlsJ3MgdGVz
+dCB3YWlscyBhYm91dCAiZXh0cmEgYXJndW1lbnQK4oCYLWbigJkiLikpCgo+IEkgYW0gbm90IHN1
+cmUgaG93IHJlbGV2YW50IHRoaXMgaXMsIGJ1dCB0aGUgYmVoYXZpb3VyIHlvdSBpbnRyb2R1Y2Ug
+aXMKPiBub3QgY29uc2lzdGVudCB0byBiYXNoLgoKV2hpbGUgSSBhZG1pdCBJIHdhc24ndCBhd2Fy
+ZSBob3cgc3RyYW5nZSB0aGUgb3RoZXIgdGVzdCB2YXJpYW50cyBhcmUsIEkKdGhpbmsgdHJ5aW5n
+IHRvIGJlIGFzIHNtYXJ0IGFzIGJhc2gncyBhbmQgY29yZXV0aWwncyB0ZXN0IGlzbid0IHZlcnkK
+c2Vuc2libGUuIFNvIEkgdGhpbmsgcmVxdWVzdGluZyB0aGF0IHRoZSBjYWxsZXIgZXhwbGljaXRs
+eSB1c2VzICItbiIgZm9yCnRlc3RpbmcgYW4gYXJndW1lbnQgZm9yIGJlaW5nIG5vbi1lbXB0eSBp
+cyBhIHNhbmUgaWRlYS4gTm90IG9ubHkgYmVjYXVzZQppdCBjYXRjaGVzIChwcm9iYWJseSkgZXJy
+b3JzIGxpa2U6CgoJc29tZXN0cmluZz0iIgoJaWYgdGVzdCAtbiAkc29tZXN0cmluZzsgdGhlbiBl
+Y2hvIHNvbWUgc3RyaW5nIGlzIG5vbmVtcHR5OyBmaQoKYnV0IGFsc28gdG8ga2VlcCB0aGUgcGFy
+c2VyIHNpbXBsZXIgKGFuZCB0aGUgcmVzdWx0IGxlc3Mgc3VycHJpc2luZykuCgpCZXN0IHJlZ2Fy
+ZHMKVXdlCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwg
+VXdlIEtsZWluZS1Lw7ZuaWcgICAgICAgICAgICB8CkluZHVzdHJpYWwgTGludXggU29sdXRpb25z
+ICAgICAgICAgICAgICAgICB8IGh0dHBzOi8vd3d3LnBlbmd1dHJvbml4LmRlLyB8CgpfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcg
+bGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5v
+cmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
