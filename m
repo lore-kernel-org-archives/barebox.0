@@ -1,21 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iyfop-000436-Ay
- for barebox@lists.infradead.org; Mon, 03 Feb 2020 17:47:32 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>) id 1iyfon-0002mS-PR
- for barebox@lists.infradead.org; Mon, 03 Feb 2020 18:47:29 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-References: <12186927.ML1T7lbObL@n95hx1g2>
- <abe9cf07-d7b7-31fa-f881-14f179aa36ea@pengutronix.de>
-Message-ID: <07ba5178-786b-d4c2-16c7-68102ca41462@pengutronix.de>
-Date: Mon, 3 Feb 2020 18:47:29 +0100
+Received: from calrissian.rohieb.name ([81.20.132.56] helo=rohieb.name)
+ by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1iygkl-0006yR-1a
+ for barebox@lists.infradead.org; Mon, 03 Feb 2020 18:47:24 +0000
+Date: Mon, 03 Feb 2020 19:46:40 +0100
+In-Reply-To: <132a35ef-1521-ccdd-03ee-a06067b328fa@pengutronix.de>
+References: <20190207223906.24394-1-rohieb@rohieb.name>
+ <20200202154301.18383-1-rohieb@rohieb.name>
+ <20200202154301.18383-3-rohieb@rohieb.name>
+ <132a35ef-1521-ccdd-03ee-a06067b328fa@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <abe9cf07-d7b7-31fa-f881-14f179aa36ea@pengutronix.de>
-Content-Language: en-US
+From: Roland Hieber <rohieb@rohieb.name>
+Message-ID: <CD762322-CF25-4D34-9976-EE587189ED56@rohieb.name>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,76 +24,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: state framework, fixed-partitions, eeprom and linux
-To: barebox@lists.infradead.org
-
-On 2/3/20 6:17 PM, Ahmad Fatoum wrote:
-> Hello Christian,
->> Trying to use this with the at25 nvmem driver in Linux, I get the following 
->> error:
->>
->> nvmem spi0.00: nvmem: invalid reg on /soc/aips-bus@2000000/spba-bus@2000000/
->> spi@2008000/fram@0/partitions
->>
->> Looking into nvmem_add_cells_from_of() in the linux sources, the NVMEM code 
->> seems to differ from the MTD core. It only expects the partitions as direct 
->> subnodes (without "fixed-partitions").
->>
->> In Barebox, of_partition_fixup() can be configured using the 
->> global.of_partition_bindingof_partition_binding variable. But I couldn't find 
->> any user of this and this would probably affect both, NVMEM and MTD.
-> 
-> Use is usually in the environment which is patched in by the BSP.
-> 
->> From the barebox point of view it seems best to add "fixed-partitions" support 
->> to Linux NVMEM. Any other suggests?
-> 
-> A container node would be preferable yes, but for reasons of backwards-compatibility,
-> Kernel support for the old binding will likely continue, which clashes with our
-> EEPROM partitioning.
-
-Fortunately, I was mistaken. The upstream bindings says that only objects
-matching "^.*@[0-9a-f]+$" should be considered for nvmem cells. a partitions node
-doesn't match this. So I'd instead suggest this:
-
-    nvmem: core: don't consider subnodes not matching binding
-    
-    The nvmem cell binding applies to objects which match "^.*@[0-9a-f]+$",
-    but so far the driver has matched all objects and failed if they didn't
-    have the expected properties.
-    
-    The driver's behavior in this regard precludes future extension of
-    EEPROMs by child nodes other than nvmem and clashes with the barebox
-    bootloader binding that extends the fixed-partitions MTD binding to
-    EEPROMs.
-    
-    Solve this issue by checking whether the node name contains a @.
-    This still matches against node names like partitions@0,0, but this is
-    much less likely to cause future collisions.
-    
-    Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-
-diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
-index 9f1ee9c766ec..254ac1bb6066 100644
---- a/drivers/nvmem/core.c
-+++ b/drivers/nvmem/core.c
-@@ -269,6 +269,8 @@ static int nvmem_add_cells_from_of(struct nvmem_device *nvmem)
-        parent = dev->of_node;
- 
-        for_each_child_of_node(parent, child) {
-+               if (!strchr(child->name, '@'))
-+                       continue;
-                addr = of_get_property(child, "reg", &len);
-                if (!addr || (len < 2 * sizeof(u32))) {
-                        dev_err(dev, "nvmem: invalid reg on %pOF\n", child);
+Subject: Re: [PATCH v2 2/6] include: add SPDX GPL-2.0-or-later license tags
+ where applicable
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
 
 
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+On 3 February 2020 08:45:37 CET, Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+>On 2/2/20 4:42 PM, Roland Hieber wrote:
+>> Signed-off-by: Roland Hieber <rohieb@rohieb.name>
+>> ---
+>>  include/ata_drive.h    | 11 +----------
+>>  include/command.h      | 12 +-----------
+>>  include/common.h       | 12 +-----------
+>>  include/console.h      | 12 +-----------
+>>  include/debug_ll.h     | 11 +----------
+>>  include/disks.h        | 11 +----------
+>>  include/driver.h       | 12 +-----------
+>>  include/environment.h  | 12 +-----------
+>>  include/hab.h          | 11 +----------
+>>  include/image-fit.h    | 14 +-------------
+>>  include/image.h        | 12 +-----------
+>>  include/int_sqrt.h     | 12 +-----------
+>>  include/jtag.h         | 15 +--------------
+>>  include/kfifo.h        | 11 +----------
+>>  include/mci.h          | 12 +-----------
+>>  include/of_gpio.h      |  6 +-----
+>>  include/part.h         | 12 +-----------
+>>  include/reset_source.h |  6 +-----
+>>  include/rtc.h          | 12 +-----------
+>>  include/s_record.h     | 12 +-----------
+>>  include/scsi.h         | 13 +------------
+>>  include/stmp-device.h  |  6 +-----
+>>  include/watchdog.h     | 12 +-----------
+>>  23 files changed, 23 insertions(+), 236 deletions(-)
+>> 
+>> diff --git a/include/ata_drive.h b/include/ata_drive.h
+>> index d61c6f11d4d3..d98e410b30c3 100644
+>> --- a/include/ata_drive.h
+>> +++ b/include/ata_drive.h
+>> @@ -1,16 +1,7 @@
+>> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+>>  /*
+>>   * See file CREDITS for list of people who contributed to this
+>>   * project.
+>
+>In the previous patch you also removed referenced to the no-longer
+>existing CREDITS file, but not here. Maybe do that throughout?
+>
+>(Or have one leading commit that just deleted all references to
+>CREDITS.
+
+Hmm, this was not in my branch... anyway, I also thought about doing that, but it should be on a different commit and I can do that treewide too.
+
+ - Roland
+>
+>Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
 _______________________________________________
 barebox mailing list
