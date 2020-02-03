@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iyWVd-0003Av-Od
- for barebox@lists.infradead.org; Mon, 03 Feb 2020 07:51:07 +0000
-Date: Mon, 3 Feb 2020 08:51:02 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200203075102.352hymvnxcoiupfn@pengutronix.de>
-References: <20200127133043.8012-1-ceggers@arri.de>
+ id 1iyWN1-0008Ap-QU
+ for barebox@lists.infradead.org; Mon, 03 Feb 2020 07:42:13 +0000
+References: <20190207223906.24394-1-rohieb@rohieb.name>
+ <20200202154301.18383-1-rohieb@rohieb.name>
+ <20200202154301.18383-2-rohieb@rohieb.name>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <9d709f31-dbcc-9b8f-c9bb-47449db413ff@pengutronix.de>
+Date: Mon, 3 Feb 2020 08:42:04 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200127133043.8012-1-ceggers@arri.de>
+In-Reply-To: <20200202154301.18383-2-rohieb@rohieb.name>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,24 +24,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] images: Use separate LDFLAGS for PBL
-To: Christian Eggers <ceggers@arri.de>
-Cc: barebox@lists.infradead.org, ceggers@gmx.de
+Subject: Re: [PATCH v2 1/6] include: add SPDX GPL-2.0-only license tags where
+ applicable
+To: Roland Hieber <rohieb@rohieb.name>, barebox@lists.infradead.org
 
-On Mon, Jan 27, 2020 at 02:30:43PM +0100, Christian Eggers wrote:
-> When setting CONFIG_PBL_RELOCATABLE=y (selected by PBL_MULTI_IMAGES) and
-> CONFIG_RELOCATABLE=n (trying to reduce image size), the PBL is also
-> linked with "-static" instead of "-pie". The result is a non-working
-> PBL.
+Hello Roland,
+
+firstly thanks for working on this!
+
+On 2/2/20 4:42 PM, Roland Hieber wrote:
+> Interpret "GPLv2" as "GPLv2 only".
 > 
-> As a side effect, also get rid of erroneous "-Map barebox.map" when
-> linking the PBL.
+> Signed-off-by: Roland Hieber <rohieb@rohieb.name>
+> ---
+>  include/aimage.h            |  3 +--
+>  include/aiodev.h            | 13 +------------
+>  include/binfmt.h            |  3 +--
+>  include/bootstrap.h         |  3 +--
+>  include/bpkfs.h             |  3 +--
+>  include/dhcp.h              |  5 +----
+>  include/digest.h            | 12 +-----------
+>  include/dma.h               |  4 +---
+>  include/firmware.h          | 10 +---------
+>  include/getopt.h            | 11 +----------
+>  include/local_mac_address.h |  3 +--
+>  include/menu.h              | 12 +-----------
+>  include/of_graph.h          |  5 +----
+>  include/of_mtd.h            |  3 +--
+>  include/of_net.h            |  3 +--
+>  include/password.h          | 11 +----------
+>  include/pbl.h               |  3 +--
+>  include/poller.h            |  4 +---
+>  include/shell.h             |  3 +--
+>  include/uimagefs.h          |  3 +--
+>  include/w1_mac_address.h    |  3 +--
+>  include/xymodem.h           | 11 +----------
+>  22 files changed, 22 insertions(+), 109 deletions(-)
 > 
-> Only changed for ARM, are any other platforms affected?
 
-Yes, mips. FIxed up and applied, thanks
+> diff --git a/include/xymodem.h b/include/xymodem.h
+> index 917cecc003f7..7b8602b26573 100644
+> --- a/include/xymodem.h
+> +++ b/include/xymodem.h
+> @@ -1,17 +1,8 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+>  /*
+>   * Handles the X-Modem, Y-Modem and Y-Modem/G protocols
+>   *
+>   * Copyright (C) 2008 Robert Jarzmik
+> - *
+> - * This program is free software; you can redistribute it and/or modify
+> - * it under the terms of the GNU General Public License as published by
+> - * the Free Software Foundation; either version 2 of the License, or
+> - * (at your option) any later version.
 
-Sascha
+This one should be GPL-2.0-or-later.
+
+With this addressed,
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
 -- 
 Pengutronix e.K.                           |                             |
