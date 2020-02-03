@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iyWwk-0003GF-FD
- for barebox@lists.infradead.org; Mon, 03 Feb 2020 08:19:07 +0000
-Date: Mon, 3 Feb 2020 09:19:04 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200203081904.lbs2hvjvaosrmrvx@pengutronix.de>
-References: <20200203065341.25249-1-antonynpavlov@gmail.com>
+Received: from relay12.mail.gandi.net ([217.70.178.232])
+ by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1iyX0l-0007fM-Vu
+ for barebox@lists.infradead.org; Mon, 03 Feb 2020 08:23:17 +0000
+Received: from geraet.fritz.box (unknown [46.183.103.8])
+ (Authenticated sender: ahmad@a3f.at)
+ by relay12.mail.gandi.net (Postfix) with ESMTPSA id 9C3C8200008
+ for <barebox@lists.infradead.org>; Mon,  3 Feb 2020 08:22:23 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Mon,  3 Feb 2020 09:21:59 +0100
+Message-Id: <20200203082159.4455-1-ahmad@a3f.at>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200203065341.25249-1-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,36 +23,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] RISC-V: unbreak built-in dtb
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] acpi: include missing header in <acpi.h>
+To: barebox@lists.infradead.org
 
-On Mon, Feb 03, 2020 at 09:53:41AM +0300, Antony Pavlov wrote:
-> The commit c5d38e92010174 ("lds: Add and use RO_DATA_SECTION macro")
-> consolidates all RO sections link script declaration in the single
-> RO_DATA_SECTION macro. So all all individual RO section declarations
-> have to be removed from per-arch linker scripts.
-> 
-> Alas the BAREBOX_CLK_TABLE and the BAREBOX_DTB link script sections
-> were not removed from RISC-V linker script making these sections
-> declared twice. As a result incorrect __clk_of_table_start and
-> __dtb_start addresses are passed to the barebox code therefore
-> the RISC-V barebox is completely unusable.
-> 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  arch/riscv/lib/barebox.lds.S | 4 ----
->  1 file changed, 4 deletions(-)
+acpi_sigcmp defined in the header uses memcmp, but no included headers
+pull in memcmp, which can lead to compile errors in new code, depending
+on include order. Fix this.
 
-Applied, thanks
+Reported-by: @healytpk, https://github.com/saschahauer/barebox/issues/7
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ include/acpi.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-Sascha
-
+diff --git a/include/acpi.h b/include/acpi.h
+index 2d5fd3086a89..b8e73b35df99 100644
+--- a/include/acpi.h
++++ b/include/acpi.h
+@@ -6,6 +6,7 @@
+ #ifndef __ACPI_H_
+ #define __ACPI_H_
+ 
++#include <linux/string.h>
+ #include <linux/types.h>
+ #include <driver.h>
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
