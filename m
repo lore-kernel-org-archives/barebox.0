@@ -1,17 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mailout02.rmx.de ([62.245.148.41])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iyXR1-0008SK-88
- for barebox@lists.infradead.org; Mon, 03 Feb 2020 08:50:24 +0000
-Date: Mon, 3 Feb 2020 09:50:17 +0100
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20200203085017.qjy422frw27w6ppm@pengutronix.de>
-References: <20200128130801.24890-1-u.kleine-koenig@pengutronix.de>
- <20200128130801.24890-2-u.kleine-koenig@pengutronix.de>
- <20200203075707.wc2q5f4isveehjuk@pengutronix.de>
+ id 1iyab0-0001dY-OJ
+ for barebox@lists.infradead.org; Mon, 03 Feb 2020 12:12:56 +0000
+Received: from kdin01.retarus.com (unknown [172.19.17.48])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mailout02.rmx.de (Postfix) with ESMTPS id 48B6CR5B3szNmXC
+ for <barebox@lists.infradead.org>; Mon,  3 Feb 2020 13:12:35 +0100 (CET)
+Received: from ppmail.arri.de (unknown [217.111.95.7])
+ (using TLSv1 with cipher AES128-SHA (128/128 bits))
+ (No client certificate requested)
+ by kdin01.retarus.com (Postfix) with ESMTPS id 48B6CL6YCKz2xFY
+ for <barebox@lists.infradead.org>; Mon,  3 Feb 2020 13:12:30 +0100 (CET)
+From: Christian Eggers <ceggers@arri.de>
+Date: Mon, 3 Feb 2020 13:12:29 +0100
+Message-ID: <12186927.ML1T7lbObL@n95hx1g2>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200203075707.wc2q5f4isveehjuk@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,51 +25,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] commands/test: Bail out on incomplete command line
- options
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: state framework, fixed-partitions, eeprom and linux
+To: barebox@lists.infradead.org
 
-T24gTW9uLCBGZWIgMDMsIDIwMjAgYXQgMDg6NTc6MDdBTSArMDEwMCwgU2FzY2hhIEhhdWVyIHdy
-b3RlOgo+IE9uIFR1ZSwgSmFuIDI4LCAyMDIwIGF0IDAyOjA3OjU5UE0gKzAxMDAsIFV3ZSBLbGVp
-bmUtS8O2bmlnIHdyb3RlOgo+ID4gVGhpcyBtYWtlcyB0ZXN0IGVtaXQgYW4gZXJyb3IgKGFuZCBm
-YWlsKSBvbiBlLmcuCj4gPiAKPiA+IAl0ZXN0IC1mCj4gCj4gdGVzdCAtZiBpbiBiYXNoIHJldHVy
-bnMgMCBhcyB3ZWxsIGFuZCBhbHNvIGRvZXNuJ3QgZW1pdCBhbiBlcnJvci4KCkFoLCB0aGF0J3Mg
-YmVjYXVzZSB0aGlzIGlzIGltcGxpY2l0bHkKCgl0ZXN0IC1uIC1mCgpUaGF0IHRoZSBzYW1lIGhh
-cHBlbnMgaW4gYmFyZWJveCBpcyBvbmx5IGFuIGFjY2lkZW50IEkgd291bGQgc2F5LiAoQW5kCm5v
-dGUgdGhhdCBjdXJyZW50bHkKCgl0ZXN0ICcnCgpyZXR1cm5zIHN1Y2Nlc3MsIHRvbywgd2hpY2gg
-aXMgZGlmZmVyZW50IGZyb20gYmFzaCdzIHRlc3QgYmVoYXZpb3VyLikKCj4gPiBhbmQgYWxzbyBv
-biB1bmltcGxlbWVudGVkIG9wdGlvbnMgbGlrZQo+ID4gCj4gPiAJdGVzdCAtYyAvZGV2L251bGwK
-PiAKPiB0ZXN0IC1IIC9mb28vYmFyIGluIGJhc2ggc2F5cyAiYmFzaDogdGVzdDogLUg6IHVuYXJ5
-IG9wZXJhdG9yIGV4cGVjdGVkIi4KClRoYXQgaXMgKGFnYWluKSBiZWNhdXNlICItSCIgIi9kZXYv
-bnVsbCIgaXMgaW1wbGljaXRseSAiLW4iICItSCIKIi9kZXYvbnVsbCIgYW5kIHRoZW4gdGhlcmUg
-aXMgbm8gc2FuZSBpbnRlcnByZXRhdGlvbiBvZiB0aGUgbGFzdAphcmd1bWVudC4KCgl0ZXN0IC1I
-IC1hIC1mCgpzdWNjZWVkcyBiZWNhdXNlIGJvdGggIi1IIiBhbmQgIi1mIiBhcmUgbm9uLXplcm8u
-IEknbSBub3Qgc3VyZSBpZiB0cnlpbmcKdG8gYmUgdGhhdCBjbGV2ZXIoPykgaXMgYSBnb29kIGlk
-ZWEuIChBbHNvIGJhc2gncyB0ZXN0IGlzbid0IHdpdGhvdXQKc2hvcnRhZ2VzLCBmb3IgZXhhbXBs
-ZQoKCSQgdGVzdCAtZiAtYSAtYSAtZgoJYmFzaDogdGVzdDogYXJndW1lbnQgZXhwZWN0ZWQKCndo
-aWxlIHRoaXMgaXMgYW4gb2J2aW91c2x5IGZpbmUgdGVzdCBpZiBhIGZpbGUgY2FsbGVkICItYSIg
-ZXhpc3RzIGFuZAoiLWYiIGlzIG5vdCB6ZXJvLWxlbmd0aC4gQWxzbyBub3RlIHRoYXQgY29yZXV0
-aWwncyB0ZXN0IGJlaGF2ZXMgZGlmZmVyZW50bHkKdGhhbiBiYXNoJ3Mgb24gZm9yIGV4YW1wbGUK
-Cgl0ZXN0IC1mIC1hIC1mCgkKLiAoYmFzaCByZXR1cm5zIHN1Y2Nlc3MsIGNvcmV1dGlsJ3MgdGVz
-dCB3YWlscyBhYm91dCAiZXh0cmEgYXJndW1lbnQK4oCYLWbigJkiLikpCgo+IEkgYW0gbm90IHN1
-cmUgaG93IHJlbGV2YW50IHRoaXMgaXMsIGJ1dCB0aGUgYmVoYXZpb3VyIHlvdSBpbnRyb2R1Y2Ug
-aXMKPiBub3QgY29uc2lzdGVudCB0byBiYXNoLgoKV2hpbGUgSSBhZG1pdCBJIHdhc24ndCBhd2Fy
-ZSBob3cgc3RyYW5nZSB0aGUgb3RoZXIgdGVzdCB2YXJpYW50cyBhcmUsIEkKdGhpbmsgdHJ5aW5n
-IHRvIGJlIGFzIHNtYXJ0IGFzIGJhc2gncyBhbmQgY29yZXV0aWwncyB0ZXN0IGlzbid0IHZlcnkK
-c2Vuc2libGUuIFNvIEkgdGhpbmsgcmVxdWVzdGluZyB0aGF0IHRoZSBjYWxsZXIgZXhwbGljaXRs
-eSB1c2VzICItbiIgZm9yCnRlc3RpbmcgYW4gYXJndW1lbnQgZm9yIGJlaW5nIG5vbi1lbXB0eSBp
-cyBhIHNhbmUgaWRlYS4gTm90IG9ubHkgYmVjYXVzZQppdCBjYXRjaGVzIChwcm9iYWJseSkgZXJy
-b3JzIGxpa2U6CgoJc29tZXN0cmluZz0iIgoJaWYgdGVzdCAtbiAkc29tZXN0cmluZzsgdGhlbiBl
-Y2hvIHNvbWUgc3RyaW5nIGlzIG5vbmVtcHR5OyBmaQoKYnV0IGFsc28gdG8ga2VlcCB0aGUgcGFy
-c2VyIHNpbXBsZXIgKGFuZCB0aGUgcmVzdWx0IGxlc3Mgc3VycHJpc2luZykuCgpCZXN0IHJlZ2Fy
-ZHMKVXdlCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwg
-VXdlIEtsZWluZS1Lw7ZuaWcgICAgICAgICAgICB8CkluZHVzdHJpYWwgTGludXggU29sdXRpb25z
-ICAgICAgICAgICAgICAgICB8IGh0dHBzOi8vd3d3LnBlbmd1dHJvbml4LmRlLyB8CgpfX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcg
-bGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5v
-cmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+I've tried to use the state framework with an SPI eeprom as described here:
+https://www.barebox.org/doc/latest/user/state.html#eeprom
+
+The eeprom uses a "partition" for the state data:
+------------------------8<---------------------------
+eeprom@50 {
+        partitions {
+                compatible = "fixed-partitions";
+                #size-cells = <1>;
+                #address-cells = <1>;
+                backend_state_eeprom: eeprom_state_memory@400 {
+                        reg = <0x400 0x100>;
+                        label = "state-eeprom";
+                };
+        };
+};
+------------------------>8---------------------------
+
+
+It looks like there a 2 different concepts of having partitions in flashes:
+1. As direct subnodes to the eeprom/flash
+2. As subnodes within a "fixed-partition" subnode (as in the example above)
+
+From linux/Documentation/devicetree/bindings/mtd/partition.txt:
+"For backwards compatibility partitions as direct subnodes of the flash device 
+are supported. This use is discouraged."
+
+So using the 2nd approach is right, isn't it?
+
+Trying to use this with the at25 nvmem driver in Linux, I get the following 
+error:
+
+nvmem spi0.00: nvmem: invalid reg on /soc/aips-bus@2000000/spba-bus@2000000/
+spi@2008000/fram@0/partitions
+
+Looking into nvmem_add_cells_from_of() in the linux sources, the NVMEM code 
+seems to differ from the MTD core. It only expects the partitions as direct 
+subnodes (without "fixed-partitions").
+
+In Barebox, of_partition_fixup() can be configured using the 
+global.of_partition_bindingof_partition_binding variable. But I couldn't find 
+any user of this and this would probably affect both, NVMEM and MTD.
+
+From the barebox point of view it seems best to add "fixed-partitions" support 
+to Linux NVMEM. Any other suggests?
+
+regards
+Christian
+
+
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
