@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iyWpD-0001U1-FF
- for barebox@lists.infradead.org; Mon, 03 Feb 2020 08:11:20 +0000
-Date: Mon, 3 Feb 2020 09:11:17 +0100
+ id 1iyWuD-0002zb-No
+ for barebox@lists.infradead.org; Mon, 03 Feb 2020 08:16:31 +0000
+Date: Mon, 3 Feb 2020 09:16:27 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200203081117.kodexugwxzs5ai3a@pengutronix.de>
-References: <20200129112251.11515-1-u.kleine-koenig@pengutronix.de>
+Message-ID: <20200203081627.mlzg7j7q326dqoob@pengutronix.de>
+References: <20200130170449.9761-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200129112251.11515-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20200130170449.9761-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,78 +18,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ubsan: use a big if block in Kconfig
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org, Ahmad Fatoum <ahmad@a3f.at>
+Subject: Re: [PATCH 0/4] mci: stm32_sdmmc2: timeout and bus-width bug fixes
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Wed, Jan 29, 2020 at 12:22:51PM +0100, Uwe Kleine-K=F6nig wrote:
-> A side effect (which was the motivation for this change) is that the
-> config item CONFIG_UBSAN_ALIGNMENT doesn't appear in configurations that
-> have CONFIG_UBSAN disabled.
-> =
+On Thu, Jan 30, 2020 at 06:04:44PM +0100, Ahmad Fatoum wrote:
+> Hi,
+> 
+> would be great if the first 4 patches could go into master.
 
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> ---
->  lib/Kconfig.ubsan | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-
-Applied, thanks
+Did that, thanks
 
 Sascha
 
-> =
-
-> diff --git a/lib/Kconfig.ubsan b/lib/Kconfig.ubsan
-> index 09f4a0ab8ab8..22958f48011e 100644
-> --- a/lib/Kconfig.ubsan
-> +++ b/lib/Kconfig.ubsan
-> @@ -9,9 +9,10 @@ config UBSAN
->  	  Compile-time instrumentation is used to detect various undefined
->  	  behaviours in runtime.
->  =
-
-> +if UBSAN
-> +
->  config UBSAN_SANITIZE_ALL
->  	bool "Enable instrumentation for all of barebox"
-> -	depends on UBSAN
->  	depends on ARCH_HAS_UBSAN_SANITIZE_ALL
->  	default y
->  	help
-> @@ -23,7 +24,6 @@ config UBSAN_SANITIZE_ALL
->  =
-
->  config UBSAN_NO_ALIGNMENT
->  	bool "Disable checking of pointers alignment"
-> -	depends on UBSAN
->  	default y if HAVE_EFFICIENT_UNALIGNED_ACCESS
->  	help
->  	  This option disables the check of unaligned memory accesses.
-> @@ -33,3 +33,5 @@ config UBSAN_NO_ALIGNMENT
->  =
-
->  config UBSAN_ALIGNMENT
->  	def_bool !UBSAN_NO_ALIGNMENT
-> +
-> +endif
-> -- =
-
-> 2.24.0
-> =
-
-> =
-
+> 
+> Cheers,
+> Ahmad
+> 
+> Ahmad Fatoum (5):
+>   mci: stm32_sdmmc2: use correct card power cycle sequence
+>   mci: stm32_sdmmc2: don't reset before retrying failed operations
+>   mci: core: don't test 4-bit-buswidth support if MMC host lacks
+>     capability
+>   mci: stm32_sdmmc2: compare ios ->bus_width with correct constants
+>   mci: stm32_sdmmc2: fix typo in debug string
+> 
+>  drivers/mci/mci-core.c     |  3 +++
+>  drivers/mci/stm32_sdmmc2.c | 42 +++++++++++++++-----------------------
+>  2 files changed, 20 insertions(+), 25 deletions(-)
+> 
+> -- 
+> 2.25.0
+> 
+> 
 > _______________________________________________
 > barebox mailing list
 > barebox@lists.infradead.org
 > http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
