@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iyWqW-0001aw-VV
- for barebox@lists.infradead.org; Mon, 03 Feb 2020 08:12:42 +0000
-Date: Mon, 3 Feb 2020 09:12:39 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200203081239.vwo26e2fbgse5tkr@pengutronix.de>
-References: <20200129113823.8304-1-m.felsch@pengutronix.de>
+ id 1iyfLP-0002Yr-2T
+ for barebox@lists.infradead.org; Mon, 03 Feb 2020 17:17:08 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>) id 1iyfLN-00006c-5W
+ for barebox@lists.infradead.org; Mon, 03 Feb 2020 18:17:05 +0100
+References: <12186927.ML1T7lbObL@n95hx1g2>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <abe9cf07-d7b7-31fa-f881-14f179aa36ea@pengutronix.de>
+Date: Mon, 3 Feb 2020 18:17:05 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200129113823.8304-1-m.felsch@pengutronix.de>
+In-Reply-To: <12186927.ML1T7lbObL@n95hx1g2>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,35 +27,94 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] regulator: fixed: take regulator-boot-on into account
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: state framework, fixed-partitions, eeprom and linux
+To: barebox@lists.infradead.org
 
-On Wed, Jan 29, 2020 at 12:38:23PM +0100, Marco Felsch wrote:
-> There are regulators which are turned on by default (hw-design) and
-> shouldn't be disabled during the boot. Upstream uses the
-> regulator-boot-on dt-property for it:
+Hello Christian,
+
+On 2/3/20 1:12 PM, Christian Eggers wrote:
+> I've tried to use the state framework with an SPI eeprom as described here:
+> https://www.barebox.org/doc/latest/user/state.html#eeprom
 > 
-> 8<--------------------------------------------------
->   regulator-boot-on:
->     description: bootloader/firmware enabled regulator
->     type: boolean
-> 8<--------------------------------------------------
+> The eeprom uses a "partition" for the state data:
+> ------------------------8<---------------------------
+> eeprom@50 {
+>         partitions {
+>                 compatible = "fixed-partitions";
+>                 #size-cells = <1>;
+>                 #address-cells = <1>;
+>                 backend_state_eeprom: eeprom_state_memory@400 {
+>                         reg = <0x400 0x100>;
+>                         label = "state-eeprom";
+>                 };
+>         };
+> };
+> ------------------------>8---------------------------
 > 
-> The difference between boot-on and always-on is the linux suspend
-> handling. Regulators marked as boot-on can be disabled during suspend.
-> This case isn't interesting for barebox so we can mark those as
-> always-on too.
 > 
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> ---
->  drivers/regulator/fixed.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+> It looks like there a 2 different concepts of having partitions in flashes:
+> 1. As direct subnodes to the eeprom/flash
+> 2. As subnodes within a "fixed-partition" subnode (as in the example above)
+> 
+> From linux/Documentation/devicetree/bindings/mtd/partition.txt:
+> "For backwards compatibility partitions as direct subnodes of the flash device 
+> are supported. This use is discouraged."
+> 
+> So using the 2nd approach is right, isn't it?
+> 
+> Trying to use this with the at25 nvmem driver in Linux, I get the following 
+> error:
+> 
+> nvmem spi0.00: nvmem: invalid reg on /soc/aips-bus@2000000/spba-bus@2000000/
+> spi@2008000/fram@0/partitions
+> 
+> Looking into nvmem_add_cells_from_of() in the linux sources, the NVMEM code 
+> seems to differ from the MTD core. It only expects the partitions as direct 
+> subnodes (without "fixed-partitions").
+> 
+> In Barebox, of_partition_fixup() can be configured using the 
+> global.of_partition_bindingof_partition_binding variable. But I couldn't find 
+> any user of this and this would probably affect both, NVMEM and MTD.
 
-Applied, thanks
+Use is usually in the environment which is patched in by the BSP.
 
-Sascha
+> From the barebox point of view it seems best to add "fixed-partitions" support 
+> to Linux NVMEM. Any other suggests?
 
+A container node would be preferable yes, but for reasons of backwards-compatibility,
+Kernel support for the old binding will likely continue, which clashes with our
+EEPROM partitioning.
+
+So, either we adapt (always fix up eeprom nodes as old, so they pass as kernel nvmem)
+or the kernel binding changes.
+
+I would be in favor of:
+
+        for_each_child_of_node(parent, child) {
++               if (of_property_read_bool(child, "compatible"))
++                       continue;
+                addr = of_get_property(child, "reg", &len);
+
+in the NVMEM core. I don't have thought out the argument to back it yet though.
+
+Thoughts? 
+
+Ahmad
+
+
+
+> 
+> regards
+> Christian
+> 
+> 
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
