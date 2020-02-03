@@ -1,22 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mailout02.rmx.de ([62.245.148.41])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iyab0-0001dY-OJ
- for barebox@lists.infradead.org; Mon, 03 Feb 2020 12:12:56 +0000
-Received: from kdin01.retarus.com (unknown [172.19.17.48])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mailout02.rmx.de (Postfix) with ESMTPS id 48B6CR5B3szNmXC
- for <barebox@lists.infradead.org>; Mon,  3 Feb 2020 13:12:35 +0100 (CET)
-Received: from ppmail.arri.de (unknown [217.111.95.7])
- (using TLSv1 with cipher AES128-SHA (128/128 bits))
- (No client certificate requested)
- by kdin01.retarus.com (Postfix) with ESMTPS id 48B6CL6YCKz2xFY
- for <barebox@lists.infradead.org>; Mon,  3 Feb 2020 13:12:30 +0100 (CET)
-From: Christian Eggers <ceggers@arri.de>
-Date: Mon, 3 Feb 2020 13:12:29 +0100
-Message-ID: <12186927.ML1T7lbObL@n95hx1g2>
+ id 1iyWqW-0001aw-VV
+ for barebox@lists.infradead.org; Mon, 03 Feb 2020 08:12:42 +0000
+Date: Mon, 3 Feb 2020 09:12:39 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200203081239.vwo26e2fbgse5tkr@pengutronix.de>
+References: <20200129113823.8304-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200129113823.8304-1-m.felsch@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,60 +22,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: state framework, fixed-partitions, eeprom and linux
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] regulator: fixed: take regulator-boot-on into account
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-I've tried to use the state framework with an SPI eeprom as described here:
-https://www.barebox.org/doc/latest/user/state.html#eeprom
+On Wed, Jan 29, 2020 at 12:38:23PM +0100, Marco Felsch wrote:
+> There are regulators which are turned on by default (hw-design) and
+> shouldn't be disabled during the boot. Upstream uses the
+> regulator-boot-on dt-property for it:
+> 
+> 8<--------------------------------------------------
+>   regulator-boot-on:
+>     description: bootloader/firmware enabled regulator
+>     type: boolean
+> 8<--------------------------------------------------
+> 
+> The difference between boot-on and always-on is the linux suspend
+> handling. Regulators marked as boot-on can be disabled during suspend.
+> This case isn't interesting for barebox so we can mark those as
+> always-on too.
+> 
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> ---
+>  drivers/regulator/fixed.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 
-The eeprom uses a "partition" for the state data:
-------------------------8<---------------------------
-eeprom@50 {
-        partitions {
-                compatible = "fixed-partitions";
-                #size-cells = <1>;
-                #address-cells = <1>;
-                backend_state_eeprom: eeprom_state_memory@400 {
-                        reg = <0x400 0x100>;
-                        label = "state-eeprom";
-                };
-        };
-};
------------------------->8---------------------------
+Applied, thanks
 
-
-It looks like there a 2 different concepts of having partitions in flashes:
-1. As direct subnodes to the eeprom/flash
-2. As subnodes within a "fixed-partition" subnode (as in the example above)
-
-From linux/Documentation/devicetree/bindings/mtd/partition.txt:
-"For backwards compatibility partitions as direct subnodes of the flash device 
-are supported. This use is discouraged."
-
-So using the 2nd approach is right, isn't it?
-
-Trying to use this with the at25 nvmem driver in Linux, I get the following 
-error:
-
-nvmem spi0.00: nvmem: invalid reg on /soc/aips-bus@2000000/spba-bus@2000000/
-spi@2008000/fram@0/partitions
-
-Looking into nvmem_add_cells_from_of() in the linux sources, the NVMEM code 
-seems to differ from the MTD core. It only expects the partitions as direct 
-subnodes (without "fixed-partitions").
-
-In Barebox, of_partition_fixup() can be configured using the 
-global.of_partition_bindingof_partition_binding variable. But I couldn't find 
-any user of this and this would probably affect both, NVMEM and MTD.
-
-From the barebox point of view it seems best to add "fixed-partitions" support 
-to Linux NVMEM. Any other suggests?
-
-regards
-Christian
+Sascha
 
 
-
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
