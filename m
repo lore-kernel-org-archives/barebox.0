@@ -1,15 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mailout03.rmx.de ([94.199.88.101])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iysoh-0005QW-5x
- for barebox@lists.infradead.org; Tue, 04 Feb 2020 07:40:16 +0000
-Date: Tue, 4 Feb 2020 08:40:13 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200204074013.2pzg4y2okfcidpat@pengutronix.de>
-References: <20200128130801.24890-1-u.kleine-koenig@pengutronix.de>
+ id 1iyybx-0002cX-78
+ for barebox@lists.infradead.org; Tue, 04 Feb 2020 13:51:30 +0000
+Received: from kdin01.retarus.com (unknown [172.19.17.48])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mailout03.rmx.de (Postfix) with ESMTPS id 48BmM217bkzlc90
+ for <barebox@lists.infradead.org>; Tue,  4 Feb 2020 14:51:26 +0100 (CET)
+Received: from ppmail.arri.de (unknown [217.111.95.7])
+ (using TLSv1 with cipher AES128-SHA (128/128 bits))
+ (No client certificate requested)
+ by kdin01.retarus.com (Postfix) with ESMTPS id 48BmM133NCz2yy8
+ for <barebox@lists.infradead.org>; Tue,  4 Feb 2020 14:51:25 +0100 (CET)
+From: Christian Eggers <ceggers@arri.de>
+Date: Tue, 4 Feb 2020 14:50:42 +0100
+Message-ID: <20200204135042.16545-1-ceggers@arri.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200128130801.24890-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,71 +25,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/3] commands/test: some improvements
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] doc: bootchooser: Fix barebox-state example
+To: barebox@lists.infradead.org
+Cc: Christian Eggers <ceggers@arri.de>, ceggers@gmx.de
 
-On Tue, Jan 28, 2020 at 02:07:58PM +0100, Uwe Kleine-K=F6nig wrote:
-> Hello,
-> =
+- Fix prefix
+- attemps --> attempts
+- add missing equal sign
+- Add 2 examples
 
-> my main intention was to implement -b and -c, the other two patches just
-> fix some stuff I noticed while doing so.
-> =
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+---
+ Documentation/user/bootchooser.rst | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-> One thing I noticed is that the check for
-> =
+diff --git a/Documentation/user/bootchooser.rst b/Documentation/user/bootchooser.rst
+index 1680ea78ed..8456e11823 100644
+--- a/Documentation/user/bootchooser.rst
++++ b/Documentation/user/bootchooser.rst
+@@ -112,7 +112,9 @@ In case only the booted system itself knows when it is in a good state,
+ it can report this to the bootchooser from Linux userspace using the
+ *barebox-state* tool from the dt-utils_ package.::
+ 
+-  barebox-state -s bootstate.<target>.remaining_attemps <reset-value>
++  barebox-state [-n <state variable set>] -s [<prefix>.]<target>.remaining_attempts=<reset-value>
++  barebox-state -n system_state -s bootstate.system1.remaining_attempts=3
++  barebox-state -s system1.remaining_attempts=3
+ 
+ If instead the bootchooser can detect a failed boot itself using the
+ :ref:`reset reason <reset_reason>` (WDG), one can mark the boot successful
+-- 
+Christian Eggers
+Embedded software developer
 
-> 	strlen(ap[1])
-> =
+Arnold & Richter Cine Technik GmbH & Co. Betriebs KG
+Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRA 57918
+Persoenlich haftender Gesellschafter: Arnold & Richter Cine Technik GmbH
+Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRB 54477
+Geschaeftsfuehrer: Dr. Michael Neuhaeuser; Stephan Schenk; Walter Trauninger; Markus Zeiler
 
-> in the handling of -e and others is wrong.
-> =
-
-> This makes
-> =
-
-> 	test -e ''
-> =
-
-> return success, but
-> =
-
-> 	test -z something -o -e ''
-> =
-
-> fails. I don't know for sure how to fix this as the empty string might
-> mean "." sometimes?
-> =
-
-> Best regards
-> Uwe
-> =
-
-> Uwe Kleine-K=F6nig (3):
->   commands/test: Bail out on incomplete command line options
->   commands/test: Improve option parsing to handle "]" less special
->   commands/test: Implement -b and -c to test for character and block
->     devices
-> =
-
->  commands/test.c | 32 +++++++++++++++++++++++++++-----
->  1 file changed, 27 insertions(+), 5 deletions(-)
-
-Applied, thanks
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
