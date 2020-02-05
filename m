@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iyyo1-00062y-En
- for barebox@lists.infradead.org; Tue, 04 Feb 2020 14:03:59 +0000
-References: <20200109072855.14154-1-antonynpavlov@gmail.com>
- <20200109072855.14154-5-antonynpavlov@gmail.com>
+ id 1izECt-0004pp-KO
+ for barebox@lists.infradead.org; Wed, 05 Feb 2020 06:30:41 +0000
+References: <180b0932-d2ab-7142-d76a-8937eb76d99c@gmail.com>
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Message-ID: <f6e8e0b8-4f7c-e4ae-7317-09cc1500343b@pengutronix.de>
-Date: Tue, 4 Feb 2020 15:03:53 +0100
+Message-ID: <61ced18a-b23d-35f2-22f1-4364f83ee8f7@pengutronix.de>
+Date: Wed, 5 Feb 2020 07:30:37 +0100
 MIME-Version: 1.0
-In-Reply-To: <20200109072855.14154-5-antonynpavlov@gmail.com>
+In-Reply-To: <180b0932-d2ab-7142-d76a-8937eb76d99c@gmail.com>
 Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,103 +22,30 @@ Content-Transfer-Encoding: 7bit
 Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 4/5] net: rtl8169: make it work on big-endian system
-To: Antony Pavlov <antonynpavlov@gmail.com>, barebox@lists.infradead.org
-Cc: Peter Mamonov <pmamonov@gmail.com>
+Subject: Re: Uefi version with 'bare metal' drivers?
+To: "aanno.trash" <aanno.trash@gmail.com>, barebox@lists.infradead.org
 
-Hi Antony,
+Hi,
 
-do you wont to resent this patches as not RFC?
-
-On 09.01.20 08:28, Antony Pavlov wrote:
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->   drivers/net/rtl8169.c | 34 +++++++++++++++++-----------------
->   1 file changed, 17 insertions(+), 17 deletions(-)
+On 26.10.19 11:28, aanno.trash wrote:
+> Well,
 > 
-> diff --git a/drivers/net/rtl8169.c b/drivers/net/rtl8169.c
-> index 80997dc89f..3762cb6354 100644
-> --- a/drivers/net/rtl8169.c
-> +++ b/drivers/net/rtl8169.c
-> @@ -230,13 +230,13 @@ static void rtl8169_init_ring(struct rtl8169_priv *priv)
->   	for (i = 0; i < NUM_RX_DESC; i++) {
->   		if (i == (NUM_RX_DESC - 1))
->   			priv->rx_desc[i].status =
-> -				BD_STAT_OWN | BD_STAT_EOR | PKT_BUF_SIZE;
-> +				cpu_to_le32(BD_STAT_OWN | BD_STAT_EOR | PKT_BUF_SIZE);
->   		else
->   			priv->rx_desc[i].status =
-> -				BD_STAT_OWN | PKT_BUF_SIZE;
-> +				cpu_to_le32(BD_STAT_OWN | PKT_BUF_SIZE);
->   
->   		priv->rx_desc[i].buf_addr =
-> -				virt_to_phys(priv->rx_buf + i * PKT_BUF_SIZE);
-> +				cpu_to_le32(virt_to_phys(priv->rx_buf + i * PKT_BUF_SIZE));
->   	}
->   }
->   
-> @@ -358,21 +358,21 @@ static int rtl8169_eth_send(struct eth_device *edev, void *packet,
->   
->   	priv->tx_desc[entry].buf_Haddr = 0;
->   	priv->tx_desc[entry].buf_addr =
-> -		virt_to_phys(priv->tx_buf + entry * PKT_BUF_SIZE);
-> +		cpu_to_le32(virt_to_phys(priv->tx_buf + entry * PKT_BUF_SIZE));
->   
->   	if (entry != (NUM_TX_DESC - 1)) {
->   		priv->tx_desc[entry].status =
-> -			BD_STAT_OWN | BD_STAT_FS | BD_STAT_LS |
-> -			((packet_length > ETH_ZLEN) ? packet_length : ETH_ZLEN);
-> +			cpu_to_le32(BD_STAT_OWN | BD_STAT_FS | BD_STAT_LS |
-> +			((packet_length > ETH_ZLEN) ? packet_length : ETH_ZLEN));
->   	} else {
->   		priv->tx_desc[entry].status =
-> -			BD_STAT_OWN | BD_STAT_EOR | BD_STAT_FS | BD_STAT_LS |
-> -			((packet_length > ETH_ZLEN) ? packet_length : ETH_ZLEN);
-> +			cpu_to_le32(BD_STAT_OWN | BD_STAT_EOR | BD_STAT_FS | BD_STAT_LS |
-> +			((packet_length > ETH_ZLEN) ? packet_length : ETH_ZLEN));
->   	}
->   
->   	RTL_W8(priv, TxPoll, 0x40);
->   
-> -	while (priv->tx_desc[entry].status & BD_STAT_OWN)
-> +	while (le32_to_cpu(priv->tx_desc[entry].status) & BD_STAT_OWN)
->   		;
->   
->   	dma_sync_single_for_cpu((unsigned long)priv->tx_buf + entry *
-> @@ -391,9 +391,9 @@ static int rtl8169_eth_rx(struct eth_device *edev)
->   
->   	entry = priv->cur_rx % NUM_RX_DESC;
->   
-> -	if ((priv->rx_desc[entry].status & BD_STAT_OWN) == 0) {
-> -		if (!(priv->rx_desc[entry].status & BD_STAT_RX_RES)) {
-> -			pkt_size = (priv->rx_desc[entry].status & 0x1fff) - 4;
-> +	if ((le32_to_cpu(priv->rx_desc[entry].status) & BD_STAT_OWN) == 0) {
-> +		if (!(le32_to_cpu(priv->rx_desc[entry].status) & BD_STAT_RX_RES)) {
-> +			pkt_size = (le32_to_cpu(priv->rx_desc[entry].status) & 0x1fff) - 4;
->   
->   			dma_sync_single_for_cpu((unsigned long)priv->rx_buf
->   						+ entry * PKT_BUF_SIZE,
-> @@ -407,14 +407,14 @@ static int rtl8169_eth_rx(struct eth_device *edev)
->   						   pkt_size, DMA_FROM_DEVICE);
->   
->   			if (entry == NUM_RX_DESC - 1)
-> -				priv->rx_desc[entry].status = BD_STAT_OWN |
-> -					BD_STAT_EOR | PKT_BUF_SIZE;
-> +				priv->rx_desc[entry].status = cpu_to_le32(BD_STAT_OWN |
-> +					BD_STAT_EOR | PKT_BUF_SIZE);
->   			else
->   				priv->rx_desc[entry].status =
-> -					BD_STAT_OWN | PKT_BUF_SIZE;
-> +					cpu_to_le32(BD_STAT_OWN | PKT_BUF_SIZE);
->   			priv->rx_desc[entry].buf_addr =
-> -				virt_to_phys(priv->rx_buf +
-> -				             entry * PKT_BUF_SIZE);
-> +				cpu_to_le32(virt_to_phys(priv->rx_buf +
-> +				             entry * PKT_BUF_SIZE));
->   		} else {
->   			dev_err(&edev->dev, "rx error\n");
->   		}
+> I tried the uefi version of barebox on my lenovo miix 320. It is
+> working, but it has the same problem like all the boot loaders I tried
+> before: it does not recognize a SDCard that can be inserted into the
+> display. On a running linux, it is recognized as 2nd eMMC (**not** as a
+> USB device).
 > 
+> The uefi included with the device has the problem as well. So this is my
+> question: When using the uefi version of barebox, is it possible to to
+> include a 'bare metal' eMMC driver?
+
+yes
+
+> If it is, how to do that?
+
+port a linux driver or write a new one for barebox. Depending on the bus (PCI or USB) you 
+may need to add a bus driver.
 
 Kind regards,
 Oleksij Rempel
