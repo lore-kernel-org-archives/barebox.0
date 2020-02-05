@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j3fnA-0007sg-Td
- for barebox@lists.infradead.org; Mon, 17 Feb 2020 12:46:32 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 17 Feb 2020 13:45:55 +0100
-Message-Id: <20200217124623.14520-15-s.hauer@pengutronix.de>
-In-Reply-To: <20200217124623.14520-1-s.hauer@pengutronix.de>
-References: <20200217124623.14520-1-s.hauer@pengutronix.de>
+ id 1izKsG-0003Zm-2u
+ for barebox@lists.infradead.org; Wed, 05 Feb 2020 13:37:49 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed,  5 Feb 2020 14:37:29 +0100
+Message-Id: <20200205133729.32713-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,115 +19,220 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/42] ARM: i.MX8M: rename functions to be i.MX8M specific
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] hw_random: add support for STM32 RNG
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-imx8_esdhc_load_image() and friends can't be used on the big variants of
-the i.MX8, so rename to imx8m_esdhc_load_image()
+Port over the U-Boot v2020.01.0 state of the driver.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/boards/nxp-imx8mq-evk/lowlevel.c    |  2 +-
- arch/arm/boards/phytec-som-imx8mq/lowlevel.c |  2 +-
- arch/arm/boards/zii-imx8mq-dev/lowlevel.c    |  2 +-
- arch/arm/mach-imx/include/mach/xload.h       |  2 +-
- drivers/mci/imx-esdhc-pbl.c                  | 12 ++++++------
- 5 files changed, 10 insertions(+), 10 deletions(-)
+ drivers/hw_random/Kconfig     |   7 ++
+ drivers/hw_random/Makefile    |   1 +
+ drivers/hw_random/stm32-rng.c | 167 ++++++++++++++++++++++++++++++++++
+ 3 files changed, 175 insertions(+)
+ create mode 100644 drivers/hw_random/stm32-rng.c
 
-diff --git a/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
-index bf84189139..a501f03722 100644
---- a/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
-+++ b/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
-@@ -86,7 +86,7 @@ static __noreturn noinline void nxp_imx8mq_evk_start(void)
- 		 */
- 		imx8mq_get_boot_source(&src, &instance);
- 		if (src == BOOTSOURCE_MMC)
--			ret = imx8_esdhc_load_image(instance, false);
-+			ret = imx8m_esdhc_load_image(instance, false);
- 		BUG_ON(ret);
+diff --git a/drivers/hw_random/Kconfig b/drivers/hw_random/Kconfig
+index 242a7ef27828..492105456821 100644
+--- a/drivers/hw_random/Kconfig
++++ b/drivers/hw_random/Kconfig
+@@ -14,6 +14,13 @@ config HWRNG_MXC_RNGC
+ 	  This driver provides kernel-side support for the Random Number
+ 	  Generator hardware found on some Freescale i.MX processors.
  
- 		memcpy((void *)MX8MQ_ATF_BL33_BASE_ADDR,
-diff --git a/arch/arm/boards/phytec-som-imx8mq/lowlevel.c b/arch/arm/boards/phytec-som-imx8mq/lowlevel.c
-index 6983d44b95..f14366a27b 100644
---- a/arch/arm/boards/phytec-som-imx8mq/lowlevel.c
-+++ b/arch/arm/boards/phytec-som-imx8mq/lowlevel.c
-@@ -55,7 +55,7 @@ static void phytec_imx8mq_som_sram_setup(void)
- 	imx8mq_get_boot_source(&src, &instance);
- 
- 	if (src == BOOTSOURCE_MMC)
--		ret = imx8_esdhc_load_image(instance, true);
-+		ret = imx8m_esdhc_load_image(instance, true);
- 
- 	BUG_ON(ret);
- }
-diff --git a/arch/arm/boards/zii-imx8mq-dev/lowlevel.c b/arch/arm/boards/zii-imx8mq-dev/lowlevel.c
-index 232de71483..482d70cb01 100644
---- a/arch/arm/boards/zii-imx8mq-dev/lowlevel.c
-+++ b/arch/arm/boards/zii-imx8mq-dev/lowlevel.c
-@@ -77,7 +77,7 @@ static void zii_imx8mq_dev_sram_setup(void)
- 	imx8mq_get_boot_source(&src, &instance);
- 
- 	if (src == BOOTSOURCE_MMC)
--		ret = imx8_esdhc_load_image(instance, true);
-+		ret = imx8m_esdhc_load_image(instance, true);
- 
- 	BUG_ON(ret);
- }
-diff --git a/arch/arm/mach-imx/include/mach/xload.h b/arch/arm/mach-imx/include/mach/xload.h
-index 9709b13dfb..dca05aa5d4 100644
---- a/arch/arm/mach-imx/include/mach/xload.h
-+++ b/arch/arm/mach-imx/include/mach/xload.h
-@@ -5,7 +5,7 @@ int imx53_nand_start_image(void);
- int imx6_spi_load_image(int instance, unsigned int flash_offset, void *buf, int len);
- int imx6_spi_start_image(int instance);
- int imx6_esdhc_start_image(int instance);
--int imx8_esdhc_load_image(int instance, bool start);
-+int imx8m_esdhc_load_image(int instance, bool start);
- 
- int imx_image_size(void);
- int piggydata_size(void);
-diff --git a/drivers/mci/imx-esdhc-pbl.c b/drivers/mci/imx-esdhc-pbl.c
-index 2579cfd9d1..6610cee3b5 100644
---- a/drivers/mci/imx-esdhc-pbl.c
-+++ b/drivers/mci/imx-esdhc-pbl.c
-@@ -201,9 +201,9 @@ static void imx_esdhc_init(struct fsl_esdhc_host *host,
- 		      FIELD_PREP(WML_RD_WML_MASK, SECTOR_WML));
- }
- 
--static int imx8_esdhc_init(struct fsl_esdhc_host *host,
--			   struct esdhc_soc_data *data,
--			   int instance)
-+static int imx8m_esdhc_init(struct fsl_esdhc_host *host,
-+			    struct esdhc_soc_data *data,
-+			    int instance)
- {
- 	switch (instance) {
- 	case 0:
-@@ -261,7 +261,7 @@ int imx6_esdhc_start_image(int instance)
- }
- 
- /**
-- * imx8_esdhc_load_image - Load and optionally start an image from USDHC controller
-+ * imx8m_esdhc_load_image - Load and optionally start an image from USDHC controller
-  * @instance: The USDHC controller instance (0..2)
-  * @start: Whether to directly start the loaded image
-  *
-@@ -273,13 +273,13 @@ int imx6_esdhc_start_image(int instance)
-  * Return: If successful, this function does not return (if directly started)
-  * or 0. A negative error code is returned when this function fails.
-  */
--int imx8_esdhc_load_image(int instance, bool start)
-+int imx8m_esdhc_load_image(int instance, bool start)
- {
- 	struct esdhc_soc_data data;
- 	struct fsl_esdhc_host host;
- 	int ret;
- 
--	ret = imx8_esdhc_init(&host, &data, instance);
-+	ret = imx8m_esdhc_init(&host, &data, instance);
- 	if (ret)
- 		return ret;
- 
++config HWRNG_STM32
++	tristate "STM32 Random Number Generator"
++	depends on ARCH_STM32MP
++	help
++	  This driver provides barebox support for the Random Number
++	  Generator hardware found on the STM32 family of MPUs and MCUs.
++
+ config HWRNG_DEV_RANDOM
+ 	tristate "Linux /dev/urandom RNG"
+ 	depends on SANDBOX
+diff --git a/drivers/hw_random/Makefile b/drivers/hw_random/Makefile
+index 8be62f38b740..2e318be738c5 100644
+--- a/drivers/hw_random/Makefile
++++ b/drivers/hw_random/Makefile
+@@ -1,3 +1,4 @@
+ obj-$(CONFIG_HWRNG)		+= core.o
+ obj-$(CONFIG_HWRNG_MXC_RNGC) += mxc-rngc.o
++obj-$(CONFIG_HWRNG_STM32) += stm32-rng.o
+ obj-$(CONFIG_HWRNG_DEV_RANDOM) += dev-random.o
+diff --git a/drivers/hw_random/stm32-rng.c b/drivers/hw_random/stm32-rng.c
+new file mode 100644
+index 000000000000..13d60f1b0bd0
+--- /dev/null
++++ b/drivers/hw_random/stm32-rng.c
+@@ -0,0 +1,167 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Copyright (c) 2019, Linaro Limited
++ * Copyright (c) 2020 Ahmad Fatoum, Pengutronix
++ */
++
++#define pr_fmt(fmt) "stm32-rng: " fmt
++
++#include <common.h>
++#include <clock.h>
++#include <driver.h>
++#include <init.h>
++#include <io.h>
++#include <linux/clk.h>
++#include <linux/hw_random.h>
++#include <linux/iopoll.h>
++#include <linux/reset.h>
++
++#define RNG_CR 0x00
++#define RNG_CR_RNGEN BIT(2)
++#define RNG_CR_CED BIT(5)
++
++#define RNG_SR 0x04
++#define RNG_SR_SEIS BIT(6)
++#define RNG_SR_CEIS BIT(5)
++#define RNG_SR_SECS BIT(2)
++#define RNG_SR_DRDY BIT(0)
++
++#define RNG_DR 0x08
++
++struct stm32_rng {
++	struct clk	*clk;
++	void __iomem	*base;
++	struct hwrng	hwrng;
++};
++
++static inline struct stm32_rng *to_stm32_rng(struct hwrng *hwrng)
++{
++	return container_of(hwrng, struct stm32_rng, hwrng);
++}
++
++static int stm32_rng_read(struct hwrng *hwrng, void *data, size_t len, bool wait)
++{
++	int ret = 0;
++	u32 sr, count, reg;
++	size_t increment;
++	struct stm32_rng *rng = to_stm32_rng(hwrng);
++	size_t remaining = len;
++
++	while (remaining) {
++		ret = readl_poll_timeout(rng->base + RNG_SR, sr,
++					 sr & RNG_SR_DRDY, 10 * USEC_PER_MSEC);
++		if (ret)
++			goto out;
++
++		if (sr & (RNG_SR_SEIS | RNG_SR_SECS)) {
++			int i;
++			/* As per SoC TRM */
++			clrbits_le32(rng->base + RNG_SR, RNG_SR_SEIS);
++			for (i = 0; i < 12; i++)
++				readl(rng->base + RNG_DR);
++			if (readl(rng->base + RNG_SR) & RNG_SR_SEIS) {
++				pr_warn("RNG Noise");
++				ret = -EIO;
++				goto out;
++			}
++
++			/* start again */
++			continue;
++		}
++
++		/*
++		 * Once the DRDY bit is set, the RNG_DR register can
++		 * be read four consecutive times.
++		 */
++		count = 4;
++		while (remaining && count) {
++			reg = readl(rng->base + RNG_DR);
++			memcpy(data, &reg, min(remaining, sizeof(u32)));
++			increment = min(remaining, sizeof(u32));
++			data += increment;
++			remaining -= increment;
++			count--;
++		}
++	}
++
++out:
++	return len ?: ret;
++}
++
++static int stm32_rng_init(struct hwrng *hwrng)
++{
++	int err;
++	struct stm32_rng *rng = to_stm32_rng(hwrng);
++
++	err = clk_enable(rng->clk);
++	if (err)
++		return err;
++
++	/* Disable CED */
++	writel(RNG_CR_RNGEN | RNG_CR_CED, rng->base + RNG_CR);
++
++	/* clear error indicators */
++	writel(0, rng->base + RNG_SR);
++
++	return 0;
++}
++
++static int stm32_rng_probe(struct device_d *dev)
++{
++	struct stm32_rng *rng;
++	struct resource *res;
++	int ret;
++
++	rng = xzalloc(sizeof(*rng));
++	dev->priv = rng;
++
++	res = dev_request_mem_resource(dev, 0);
++	if (IS_ERR(res))
++		return PTR_ERR(res);
++
++	rng->base = IOMEM(res->start);
++
++	rng->clk = clk_get(dev, NULL);
++	if (IS_ERR(rng->clk)) {
++		dev_err(dev, "Can not get clock\n");
++		return PTR_ERR(rng->clk);
++	}
++
++	ret = device_reset_us(dev, 20);
++	if (ret)
++		return ret;
++
++	rng->hwrng.name = dev->name;
++	rng->hwrng.read = stm32_rng_read;
++	rng->hwrng.init = stm32_rng_init;
++
++	ret = hwrng_register(dev, &rng->hwrng);
++	if (ret) {
++		dev_err(dev, "failed to register: %s\n", strerror(-ret));
++		clk_disable(rng->clk);
++	}
++
++	return ret;
++}
++
++static void stm32_rng_remove(struct device_d *dev)
++{
++	struct stm32_rng *rng = dev->priv;
++
++	writel(0, rng->base + RNG_CR);
++	clk_disable(rng->clk);
++}
++
++
++static const struct of_device_id stm32_rng_dt_ids[] = {
++	{ .compatible = "st,stm32-rng" },
++	{ /* sentinel */},
++};
++
++static struct driver_d stm32_rng_driver = {
++	.name = "stm32-rng",
++	.probe = stm32_rng_probe,
++	.remove = stm32_rng_remove,
++	.of_compatible = stm32_rng_dt_ids,
++};
++device_platform_driver(stm32_rng_driver);
 -- 
 2.25.0
 
