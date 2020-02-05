@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iyziW-00030C-AK
- for barebox@lists.infradead.org; Tue, 04 Feb 2020 15:02:21 +0000
-Date: Tue, 4 Feb 2020 16:02:15 +0100
+ id 1izKpy-0002xn-Gs
+ for barebox@lists.infradead.org; Wed, 05 Feb 2020 13:35:27 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200204150215.fl7bplcbyxtgiwc7@pengutronix.de>
-References: <3901844.loAZRtzaGB@n95hx1g2>
+Date: Wed,  5 Feb 2020 14:35:21 +0100
+Message-Id: <20200205133521.29951-3-s.hauer@pengutronix.de>
+In-Reply-To: <20200205133521.29951-1-s.hauer@pengutronix.de>
+References: <20200205133521.29951-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <3901844.loAZRtzaGB@n95hx1g2>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,51 +17,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Updating barebox from Linux
-To: Christian Eggers <ceggers@arri.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 3/3] mtd: nand-imx: make sure the just created BBT is used
+To: Barebox List <barebox@lists.infradead.org>
+Cc: ukl@pengutronix.de
 
-T24gVHVlLCBGZWIgMDQsIDIwMjAgYXQgMDM6MDg6MThQTSArMDEwMCwgQ2hyaXN0aWFuIEVnZ2Vy
-cyB3cm90ZToKPiBQbGF0Zm9ybTogaS5NWDYgKGJvb3RpbmcgZnJvbSBOQU5EKQo+IAo+IEkgd291
-bGQgbGlrZSB0byBiZSBhYmxlIHRvIHVwZGF0ZSBCYXJlYm94IGZyb20gTGludXggdXNpbmcgYSBm
-cmFtZXdvcmsgbGlrZSAKPiBSQVVDIG9yIHN3dXBkYXRlLiBUaGUgUkFVQyBkb2N1bWVudGF0aW9u
-IHN0YXRlczoKPiAKPiBodHRwczovL3JhdWMucmVhZHRoZWRvY3MuaW8vZW4vbGF0ZXN0L2FkdmFu
-Y2VkLmh0bWwjYm9vdGxvYWRlci11cGRhdGUtaWRlYXMKPiA+IDcuNi4zLiBCb290bG9hZGVyIFVw
-ZGF0ZSBJZGVhcwo+ID4gCj4gPiBUaGUgTlhQIGkuTVg2IHN1cHBvcnRzIHVwIHRvIGZvdXIgYm9v
-dGxvYWRlciBjb3BpZXMgd2hlbiBib290aW5nIGZyb20gTkFORAo+ID4gZmxhc2guIFRoZSBST00g
-Y29kZSB3aWxsIHRyeSBlYWNoIGNvcHkgaW4gdHVybiB1bnRpbCBpdCBmaW5kcyBvbmUgd2hpY2gg
-aXMKPiA+IHJlYWRhYmxlIHdpdGhvdXQgdW5jb3JyZWN0YWJsZSBFQ0MgZXJyb3JzIGFuZCBoYXMg
-YSBjb3JyZWN0IGhlYWRlci4gQnkKPiA+IHVzaW5nIHRoZSB0cmFpdCBvZiBOQU5EIGZsYXNoIHRo
-YXQgaW50ZXJydXB0ZWQgd3JpdGVzIGNhdXNlIEVDQyBlcnJvcnMgYW5kCj4gPiB3cml0aW5nIHRo
-ZSBmaXJzdCBwYWdlIChjb250YWluaW5nIHRoZSBoZWFkZXIpIGxhc3QsIHRoZSBib290bG9hZGVy
-IGltYWdlcwo+ID4gY2FuIGJlIHJlcGxhY2VkIG9uZSBhZnRlciB0aGUgb3RoZXIsIHdoaWxlIGVu
-c3VyaW5nIHRoYXQgdGhlIHN5c3RlbSB3aWxsCj4gPiBib290IGV2ZW4gaW4gY2FzZSBvZiBhIGNy
-YXNoIG9yIHBvd2VyIGZhaWx1cmUuCj4gPiAKPiA+IFRoZSBzbG90IHR5cGUgY291bGQgYmUgY2Fs
-bGVkIOKAnGJvb3QtaW14Ni1uYW5k4oCdIGFuYWxvZ291cyB0byBlTU1DLgo+IAo+IEluIHRoZSBi
-YXJlYm94IGRvY3VtZW50YXRpb24gSSBvbmx5IGZvdW5kIGhvdyB0byB1cGRhdGUgYmFyZWJveCB2
-aWEgdGhlIAo+IGJhcmVib3hfdXBkYXRlIGNvbW1hbmQgd2l0aGluIGJhcmVib3ggaXRzZWxmLgo+
-IAo+IFVwZGF0aW5nIGJhcmVib3ggc2VlbXMgdG8gYmUgU29DIHNwZWNpZmljLiBJcyB0aGVyZSBh
-bHJlYWR5IGFueSBleGlzdGluZyBjb2RlIAo+IHRvIGRvIHRoaXMgZnJvbSBMaW51eD8KCkkgcmVt
-ZW1iZXIgdGhhdCBzb21lb25lIGFza2VkIGZvciB1cGRhdGluZyBpLk1YNiBOQU5EIGJvb3Rsb2Fk
-ZXIgZnJvbQpMaW51eCBhbmQgYWxzbyB0aGF0IGluIHRoZSBlbmQgaGUgcmVwb3J0ZWQgaGUgd2Fz
-IHN1Y2Nlc3NmdWwuClVuZm9ydHVuYXRlbHkgSSBjYW4ndCByZW1lbWJlciB3aG8gaXQgd2FzIDoo
-Cgo+IE9yIHdvdWxkIGl0IGJlIG1vcmUgd2lzZSB0byB3cml0ZSB0aGUgbmV3IGJhcmVib3ggaW1h
-Z2UgCj4gdG8gYSB0ZW1wb3JhcnkgVUJJIHBhcnRpdGlvbiBhbmQgbGV0IGJhcmVib3ggZG8gdGhl
-IHVwZGF0ZSBpdHNlbGYgb24gbmV4dCAKPiByZWJvb3Q/CgpBdCBsZWFzdCB0aGlzIGlzIHRoZSBl
-YXNpZXN0IHdheSBvdXQgaW4gdGhlIGN1cnJlbnQgc2l0dWF0aW9uLgoKSXQgd291bGQgYmUgZ3Jl
-YXQgdG8gaGF2ZSBjb2RlIHNpbWlsYXIgdG8gd2hhdCBiYXJlYm94IGhhcyBpbiB0aGUKYmFyZWJv
-eF91cGRhdGUgY29kZSB1bmRlciBMaW51eCwgZXNwZWNpYWxseSBmb3IgY2FzZXMgd2hlcmUgdXBk
-YXRpbmcKYmFyZWJveCBpcyBtb3JlIHRoYW4ganVzdCB3cml0aW5nIHBsYWluIHRvIGEgZGV2aWNl
-IG9yIGZpbGUsIGxpa2UgaXQKaXMgb24gaS5NWDYgTkFORC4KClNhc2NoYQoKLS0gClBlbmd1dHJv
-bml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICB8ClN0ZXVlcndhbGRlciBTdHIuIDIxICAgICAgICAgICAgICAgICAgICAgICB8IGh0
-dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8CjMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgICAg
-ICAgICAgICAgICAgICB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0
-IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTct
-NTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpi
-YXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xp
-c3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+When we create a new BBT we write it to the flash, but the currently
+running barebox doesn't use it yet, only after a reboot the BBT is
+actually used. Call nand_default_bbt() to make sure the current barebox
+also used the newly created BBT.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mtd/nand/nand_imx.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/mtd/nand/nand_imx.c b/drivers/mtd/nand/nand_imx.c
+index cb5b7ee151..d69a012f01 100644
+--- a/drivers/mtd/nand/nand_imx.c
++++ b/drivers/mtd/nand/nand_imx.c
+@@ -1205,6 +1205,10 @@ static int imxnd_create_bbt(struct mtd_info *mtd)
+ 	if (ret)
+ 		return ret;
+ 
++	ret = nand_default_bbt(mtd);
++	if (ret)
++		return ret;
++
+ 	ret = 0;
+ out:
+ 	free(bbt);
+-- 
+2.25.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
