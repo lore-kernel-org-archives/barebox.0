@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1izfGN-0005hD-RY
- for barebox@lists.infradead.org; Thu, 06 Feb 2020 11:24:06 +0000
+ id 1izfGW-0005pK-1i
+ for barebox@lists.infradead.org; Thu, 06 Feb 2020 11:24:14 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  6 Feb 2020 12:23:28 +0100
-Message-Id: <20200206112334.14314-3-a.fatoum@pengutronix.de>
+Date: Thu,  6 Feb 2020 12:23:31 +0100
+Message-Id: <20200206112334.14314-6-a.fatoum@pengutronix.de>
 In-Reply-To: <20200206112334.14314-1-a.fatoum@pengutronix.de>
 References: <20200206112334.14314-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,35 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/8] PWM: pxa: make MMIO writes always little endian
+Subject: [PATCH 5/8] led: pwm: don't test if pointer is smaller than zero
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Even when the processor runs in big-endian mode, the peripheral is
-little-endian and is used as such in Linux. Do here likewise.
+of_pwm_request returns either the valid or an error pointer.
+Revise the error check to reflect this.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/pwm/pxa_pwm.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/led/led-pwm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pwm/pxa_pwm.c b/drivers/pwm/pxa_pwm.c
-index 90899fd3c985..4575817e946c 100644
---- a/drivers/pwm/pxa_pwm.c
-+++ b/drivers/pwm/pxa_pwm.c
-@@ -73,9 +73,9 @@ static int pxa_pwm_config(struct pwm_chip *chip, int duty_ns, int period_ns)
- 	/* NOTE: the clock to PWM has to be enabled first
- 	 * before writing to the registers
- 	 */
--	__raw_writel(prescale, pxa_pwm->iobase + PWMCR);
--	__raw_writel(dc, pxa_pwm->iobase + PWMDCR);
--	__raw_writel(pv, pxa_pwm->iobase + PWMPCR);
-+	writel(prescale, pxa_pwm->iobase + PWMCR);
-+	writel(dc, pxa_pwm->iobase + PWMDCR);
-+	writel(pv, pxa_pwm->iobase + PWMPCR);
+diff --git a/drivers/led/led-pwm.c b/drivers/led/led-pwm.c
+index 16d22b55695e..2b53614ed388 100644
+--- a/drivers/led/led-pwm.c
++++ b/drivers/led/led-pwm.c
+@@ -54,7 +54,7 @@ static int led_pwm_of_probe(struct device_d *dev)
+ 		struct pwm_device *pwm;
  
- 	return 0;
- }
+ 		pwm = of_pwm_request(child, NULL);
+-		if (pwm < 0)
++		if (IS_ERR(pwm))
+ 			continue;
+ 
+ 		pwmled = xzalloc(sizeof(*pwmled));
 -- 
 2.25.0
 
