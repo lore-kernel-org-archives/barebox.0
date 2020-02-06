@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1izLKB-00077o-FV
- for barebox@lists.infradead.org; Wed, 05 Feb 2020 14:06:40 +0000
+ id 1izfG9-0005V1-Rn
+ for barebox@lists.infradead.org; Thu, 06 Feb 2020 11:23:51 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  5 Feb 2020 15:06:33 +0100
-Message-Id: <20200205140633.19599-1-a.fatoum@pengutronix.de>
-In-Reply-To: <20200205133729.32713-1-a.fatoum@pengutronix.de>
-References: <20200205133729.32713-1-a.fatoum@pengutronix.de>
+Date: Thu,  6 Feb 2020 12:23:32 +0100
+Message-Id: <20200206112334.14314-7-a.fatoum@pengutronix.de>
+In-Reply-To: <20200206112334.14314-1-a.fatoum@pengutronix.de>
+References: <20200206112334.14314-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,62 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! hw_random: add support for STM32 RNG
+Subject: [PATCH 6/8] led: pwm: fail if required max-brightness option is
+ missing
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-remove is only called when probe succeeds, but we want to undo what init
-did if it failed, thus call it explicitly in error case.
+If we leave max_value at the default value of zero led_pwm_set above
+will divide by zero in do_div. The binding makes max-brightness
+a mandatory property, so have the driver treat it as such as well.
 
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/hw_random/stm32-rng.c | 23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+ drivers/led/led-pwm.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hw_random/stm32-rng.c b/drivers/hw_random/stm32-rng.c
-index 13d60f1b0bd0..440b53684f71 100644
---- a/drivers/hw_random/stm32-rng.c
-+++ b/drivers/hw_random/stm32-rng.c
-@@ -106,6 +106,14 @@ static int stm32_rng_init(struct hwrng *hwrng)
- 	return 0;
- }
+diff --git a/drivers/led/led-pwm.c b/drivers/led/led-pwm.c
+index 2b53614ed388..419d96eed392 100644
+--- a/drivers/led/led-pwm.c
++++ b/drivers/led/led-pwm.c
+@@ -61,7 +61,9 @@ static int led_pwm_of_probe(struct device_d *dev)
+ 		pwmled->led.name = xstrdup(child->name);
+ 		pwmled->pwm = pwm;
  
-+static void stm32_rng_remove(struct device_d *dev)
-+{
-+	struct stm32_rng *rng = dev->priv;
-+
-+	writel(0, rng->base + RNG_CR);
-+	clk_disable(rng->clk);
-+}
-+
- static int stm32_rng_probe(struct device_d *dev)
- {
- 	struct stm32_rng *rng;
-@@ -136,23 +144,12 @@ static int stm32_rng_probe(struct device_d *dev)
- 	rng->hwrng.init = stm32_rng_init;
+-		of_property_read_u32(child, "max-brightness", &pwmled->led.max_value);
++		ret = of_property_read_u32(child, "max-brightness", &pwmled->led.max_value);
++		if (ret)
++			return ret;
  
- 	ret = hwrng_register(dev, &rng->hwrng);
--	if (ret) {
--		dev_err(dev, "failed to register: %s\n", strerror(-ret));
--		clk_disable(rng->clk);
--	}
-+	if (ret)
-+		stm32_rng_remove(dev);
+ 		pwmled->period = pwm_get_period(pwmled->pwm);
  
- 	return ret;
- }
- 
--static void stm32_rng_remove(struct device_d *dev)
--{
--	struct stm32_rng *rng = dev->priv;
--
--	writel(0, rng->base + RNG_CR);
--	clk_disable(rng->clk);
--}
--
--
- static const struct of_device_id stm32_rng_dt_ids[] = {
- 	{ .compatible = "st,stm32-rng" },
- 	{ /* sentinel */},
 -- 
 2.25.0
 
