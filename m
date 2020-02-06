@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1izfGF-0005XY-Hs
- for barebox@lists.infradead.org; Thu, 06 Feb 2020 11:23:56 +0000
+ id 1izfGN-0005hD-RY
+ for barebox@lists.infradead.org; Thu, 06 Feb 2020 11:24:06 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  6 Feb 2020 12:23:27 +0100
-Message-Id: <20200206112334.14314-2-a.fatoum@pengutronix.de>
+Date: Thu,  6 Feb 2020 12:23:28 +0100
+Message-Id: <20200206112334.14314-3-a.fatoum@pengutronix.de>
 In-Reply-To: <20200206112334.14314-1-a.fatoum@pengutronix.de>
 References: <20200206112334.14314-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,40 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/8] PWM: pxa: remove unused struct members
+Subject: [PATCH 2/8] PWM: pxa: make MMIO writes always little endian
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Both duty_ns and period_ns are stored to, but never read. Drop them.
+Even when the processor runs in big-endian mode, the peripheral is
+little-endian and is used as such in Linux. Do here likewise.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/pwm/pxa_pwm.c | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/pwm/pxa_pwm.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/pwm/pxa_pwm.c b/drivers/pwm/pxa_pwm.c
-index c7130c225ebe..90899fd3c985 100644
+index 90899fd3c985..4575817e946c 100644
 --- a/drivers/pwm/pxa_pwm.c
 +++ b/drivers/pwm/pxa_pwm.c
-@@ -34,8 +34,6 @@ struct pxa_pwm_chip {
- 	struct pwm_chip chip;
- 	void __iomem *iobase;
- 	int id;
--	int duty_ns;
--	int period_ns;
- };
- 
- static struct pxa_pwm_chip *to_pxa_pwm_chip(struct pwm_chip *chip)
-@@ -72,9 +70,6 @@ static int pxa_pwm_config(struct pwm_chip *chip, int duty_ns, int period_ns)
- 	else
- 		dc = (pv + 1) * duty_ns / period_ns;
- 
--	pxa_pwm->duty_ns = duty_ns;
--	pxa_pwm->period_ns = period_ns;
--
+@@ -73,9 +73,9 @@ static int pxa_pwm_config(struct pwm_chip *chip, int duty_ns, int period_ns)
  	/* NOTE: the clock to PWM has to be enabled first
  	 * before writing to the registers
  	 */
+-	__raw_writel(prescale, pxa_pwm->iobase + PWMCR);
+-	__raw_writel(dc, pxa_pwm->iobase + PWMDCR);
+-	__raw_writel(pv, pxa_pwm->iobase + PWMPCR);
++	writel(prescale, pxa_pwm->iobase + PWMCR);
++	writel(dc, pxa_pwm->iobase + PWMDCR);
++	writel(pv, pxa_pwm->iobase + PWMPCR);
+ 
+ 	return 0;
+ }
 -- 
 2.25.0
 
