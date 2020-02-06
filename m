@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1izfG9-0005V2-Ro
- for barebox@lists.infradead.org; Thu, 06 Feb 2020 11:23:51 +0000
+ id 1izfG9-0005V0-Rn
+ for barebox@lists.infradead.org; Thu, 06 Feb 2020 11:23:52 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  6 Feb 2020 12:23:33 +0100
-Message-Id: <20200206112334.14314-8-a.fatoum@pengutronix.de>
-In-Reply-To: <20200206112334.14314-1-a.fatoum@pengutronix.de>
-References: <20200206112334.14314-1-a.fatoum@pengutronix.de>
+Date: Thu,  6 Feb 2020 12:23:26 +0100
+Message-Id: <20200206112334.14314-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,40 +19,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/8] led: pwm: support active-low property
+Subject: [PATCH 0/8] PWM: misc fixes
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-active-low is an optional property to describe PWMs where the LED is wired
-to supply rather than ground. Add barebox support for it.
+Some stuff I ran into while refactoring barebox PWM to be more
+welcoming for porting kernel drivers using the kernel atomic
+PWM API. Driver will follow soon.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- drivers/led/led-pwm.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Cheers,
+Ahmad Fatoum (8):
+  PWM: pxa: remove unused struct members
+  PWM: pxa: make MMIO writes always little endian
+  regmap: forward declare structs used in header
+  video: backlight-pwm: remove duplicate assignment to object
+  led: pwm: don't test if pointer is smaller than zero
+  led: pwm: fail if required max-brightness option is missing
+  led: pwm: support active-low property
+  PWM: core: constify chip->ops pointer
 
-diff --git a/drivers/led/led-pwm.c b/drivers/led/led-pwm.c
-index 419d96eed392..8a358dde88b3 100644
---- a/drivers/led/led-pwm.c
-+++ b/drivers/led/led-pwm.c
-@@ -41,6 +41,9 @@ static void led_pwm_set(struct led *led, unsigned int brightness)
-         duty *= brightness;
-         do_div(duty, max);
- 
-+	if (pwmled->active_low)
-+		duty = pwmled->period - duty;
-+
- 	pwm_config(pwmled->pwm, duty, pwmled->period);
- }
- 
-@@ -66,6 +69,7 @@ static int led_pwm_of_probe(struct device_d *dev)
- 			return ret;
- 
- 		pwmled->period = pwm_get_period(pwmled->pwm);
-+		pwmled->active_low = of_property_read_bool(child, "active-low");
- 
- 		pwmled->led.set = led_pwm_set;
- 
+ drivers/led/led-pwm.c         | 10 ++++++++--
+ drivers/pwm/pxa_pwm.c         | 11 +++--------
+ drivers/video/backlight-pwm.c |  2 --
+ include/pwm.h                 |  2 +-
+ include/regmap.h              |  3 +++
+ 5 files changed, 15 insertions(+), 13 deletions(-)
+
 -- 
 2.25.0
 
