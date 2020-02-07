@@ -1,17 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j1n4q-0003H4-08
- for barebox@lists.infradead.org; Wed, 12 Feb 2020 08:08:57 +0000
-Date: Wed, 12 Feb 2020 09:08:45 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200212080845.o7j2pej3zg7m7ood@pengutronix.de>
-References: <BL0PR01MB52513F7AE42E4E6ED527380A8F1C0@BL0PR01MB5251.prod.exchangelabs.com>
- <566f7758-587f-e833-cee7-ee8e7133e3ac@pengutronix.de>
- <BL0PR01MB5251A7D93EE5446BFBF1F8778F180@BL0PR01MB5251.prod.exchangelabs.com>
+ id 1j01fU-0002AD-Hk
+ for barebox@lists.infradead.org; Fri, 07 Feb 2020 11:19:29 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <str@pengutronix.de>) id 1j01fR-0005l5-JG
+ for barebox@lists.infradead.org; Fri, 07 Feb 2020 12:19:25 +0100
+Received: from str by dude.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <str@pengutronix.de>) id 1j01fR-00019G-BH
+ for barebox@lists.infradead.org; Fri, 07 Feb 2020 12:19:25 +0100
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Fri,  7 Feb 2020 12:19:19 +0100
+Message-Id: <20200207111919.2153-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <BL0PR01MB5251A7D93EE5446BFBF1F8778F180@BL0PR01MB5251.prod.exchangelabs.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,48 +27,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: imx27 phycard update problems from barebox 2019.01.0 to 2020.01.0
-To: "Koelle, Holger" <Holger.Koelle@allegion.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: [PATCH] fixup! imd: add support for checksum generation/verification
+To: Barebox List <barebox@lists.infradead.org>
 
-Hi Holger,
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+---
+CRC32 is now needed for imd, but was selected by accident. In situations
+where barebox is stripped down (e.g. socfpga-xload, where there is no
+environment, globalvars or command_support), barebox won't compile anymore.
 
-On Tue, Feb 11, 2020 at 03:33:12PM +0000, Koelle, Holger wrote:
-> Hey,
-> 
-> today i followed yout recommends with git bisect.
-> 
-> I've found the offending commit. 
-> It is Commit :  [b0348d677bb47bdbd368983603b3e9604528d4ed] ARM: Compile with -fPIE
-> 
-> If I remove the Compilerflag (line 145) :
-> 
-> CPPFLAGS += -fPIE 
-> 
-> from arch/arm/Makefile , then every Barebox Version (include v2020.01.0) compile and run fine on phycard imx27.
-> 
-> Whats the impact if I remove this flag? Does imx27 not support this option?
+ common/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-The problem here is that the i.MX27 only loads 2k of memory from NAND
-initially from which we have to bootstrap ourselves. This code is
-cumbersome to write in assembly, so it is written in C. This requires
-us to run code from a location it is not linked at. the -fPIE flag
-influences the way how this code is compiled and apparently it doesn't
-cope well with this flag.
-
-The relevant code is in arch/arm/mach-imx/external-nand-boot.c.
-
-I can see if I can find some time to debug it. Which toolchain are you
-using?
-
-Regards,
- Sascha
-
+diff --git a/common/Kconfig b/common/Kconfig
+index f9ef9bd83bad..fcdeb5c30b58 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -693,6 +693,7 @@ config FLEXIBLE_BOOTARGS
+ 	  completely.
+ 
+ config IMD
++	select CRC32
+ 	bool "barebox metadata support"
+ 
+ config IMD_TARGET
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.25.0
+
 
 _______________________________________________
 barebox mailing list
