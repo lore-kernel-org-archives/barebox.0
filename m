@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j1DUH-0006DO-0U
- for barebox@lists.infradead.org; Mon, 10 Feb 2020 18:08:50 +0000
+ id 1j1DUI-0006DP-3H
+ for barebox@lists.infradead.org; Mon, 10 Feb 2020 18:08:51 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 10 Feb 2020 19:08:31 +0100
-Message-Id: <20200210180833.22153-2-a.fatoum@pengutronix.de>
+Date: Mon, 10 Feb 2020 19:08:32 +0100
+Message-Id: <20200210180833.22153-3-a.fatoum@pengutronix.de>
 In-Reply-To: <20200210180833.22153-1-a.fatoum@pengutronix.de>
 References: <20200210180833.22153-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,81 +21,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] net: designware: socfpga: fix possible invalid pointer
- deref
+Subject: [PATCH 3/5] watchdog: dw_wdt: inform user on missing reset control
+ line
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-In cases where the reset controller specification in the device tree is
-malformed, we get an error pointer back from reset_control_get. This
-compares unequal to NULL and would cause an access violation when passed
-to reset_control_(de)?assert.
+The driver has an error message on probe and one on each watchdog stop
+attempt that warns the user if the reset line is missing.
 
-Fix this by propagating the error. When the reset controller is missing,
-reset_control_(de)?assert will be passed NULL pointers, rendering them
-no-ops.
+Missing reset line (because the "reset"-property is missing) is
+indicated by a NULL pointer though, so these warnings were only
+triggered when the reset controller specification is malformed.
+
+Fix this by propagating malformed reset pointer specification and
+continuing only if it's either valid or completely missing.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/net/designware_socfpga.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ drivers/watchdog/dw_wdt.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/designware_socfpga.c b/drivers/net/designware_socfpga.c
-index ce3ac38ebe87..d6c28af45e65 100644
---- a/drivers/net/designware_socfpga.c
-+++ b/drivers/net/designware_socfpga.c
-@@ -77,8 +77,7 @@ static int socfpga_gen5_set_phy_mode(struct socfpga_dwc_dev *dwc_dev)
+diff --git a/drivers/watchdog/dw_wdt.c b/drivers/watchdog/dw_wdt.c
+index bedb2ddfe81f..2d1aa5e587ec 100644
+--- a/drivers/watchdog/dw_wdt.c
++++ b/drivers/watchdog/dw_wdt.c
+@@ -72,9 +72,9 @@ static int dw_wdt_stop(struct watchdog *wdd)
+ {
+ 	struct dw_wdt *dw_wdt = to_dw_wdt(wdd);
+ 
+-	if (IS_ERR(dw_wdt->rst)) {
++	if (!dw_wdt->rst) {
+ 		dev_warn(dw_wdt->wdd.hwdev, "No reset line. Will not stop.\n");
+-		return PTR_ERR(dw_wdt->rst);
++		return -ENOSYS;
  	}
  
- 	/* Assert reset to the enet controller before changing the phy mode */
--	if (eth_dev->rst)
--		reset_control_assert(eth_dev->rst);
-+	reset_control_assert(eth_dev->rst);
+ 	reset_control_assert(dw_wdt->rst);
+@@ -153,7 +153,7 @@ static int dw_wdt_drv_probe(struct device_d *dev)
  
- 	ctrl = readl(dwc_dev->sys_mgr_base + reg_offset);
- 	ctrl &= ~(SYSMGR_EMACGRP_CTRL_PHYSEL_MASK << reg_shift);
-@@ -104,8 +103,7 @@ static int socfpga_gen5_set_phy_mode(struct socfpga_dwc_dev *dwc_dev)
- 	/* Deassert reset for the phy configuration to be sampled by
- 	 * the enet controller, and operation to start in requested mode
- 	 */
--	if (eth_dev->rst)
--		reset_control_deassert(eth_dev->rst);
-+	reset_control_deassert(eth_dev->rst);
+ 	dw_wdt->rst = reset_control_get(dev, NULL);
+ 	if (IS_ERR(dw_wdt->rst))
+-		dev_warn(dev, "No reset lines. Will not be able to stop once started.\n");
++		return PTR_ERR(dw_wdt->rst);
  
- 	return 0;
- }
-@@ -124,8 +122,7 @@ static int socfpga_gen10_set_phy_mode(struct socfpga_dwc_dev *dwc_dev)
- 	}
+ 	wdd = &dw_wdt->wdd;
+ 	wdd->name = "dw_wdt";
+@@ -171,8 +171,10 @@ static int dw_wdt_drv_probe(struct device_d *dev)
+ 	if (ret)
+ 		dev_warn(dev, "cannot register restart handler\n");
  
- 	/* Assert reset to the enet controller before changing the phy mode */
--	if (eth_dev->rst)
--		reset_control_assert(eth_dev->rst);
-+	reset_control_assert(eth_dev->rst);
- 
- 	ctrl = readl(dwc_dev->sys_mgr_base + reg_offset);
- 	ctrl &= ~(SYSMGR_EMACGRP_CTRL_PHYSEL_MASK << reg_shift);
-@@ -151,8 +148,7 @@ static int socfpga_gen10_set_phy_mode(struct socfpga_dwc_dev *dwc_dev)
- 	/* Deassert reset for the phy configuration to be sampled by
- 	 * the enet controller, and operation to start in requested mode
- 	 */
--	if (eth_dev->rst)
--		reset_control_deassert(eth_dev->rst);
-+	reset_control_deassert(eth_dev->rst);
+-	if (!IS_ERR(dw_wdt->rst))
++	if (dw_wdt->rst)
+ 		reset_control_deassert(dw_wdt->rst);
++	else
++		dev_warn(dev, "No reset lines. Will not be able to stop once started.\n");
  
  	return 0;
- }
-@@ -212,8 +208,10 @@ static int socfpga_dwc_ether_probe(struct device_d *dev)
- 		return PTR_ERR(priv);
- 
- 	priv->rst = reset_control_get(dev, NULL);
--	if (IS_ERR(priv->rst))
--		dev_warn(dev, "No reset lines.\n");
-+	if (IS_ERR(priv->rst)) {
-+		dev_err(dev, "Invalid reset lines.\n");
-+		return PTR_ERR(priv->rst);
-+	}
- 
- 	dwc_dev->priv = priv;
  
 -- 
 2.25.0
