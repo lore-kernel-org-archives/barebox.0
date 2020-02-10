@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j1479-00075I-8s
- for barebox@lists.infradead.org; Mon, 10 Feb 2020 08:08:20 +0000
-Date: Mon, 10 Feb 2020 09:08:17 +0100
+ id 1j149E-00006J-9T
+ for barebox@lists.infradead.org; Mon, 10 Feb 2020 08:10:29 +0000
+Date: Mon, 10 Feb 2020 09:10:26 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200210080817.a7kxcl4ua6y2rd7m@pengutronix.de>
-References: <20200203082159.4455-1-ahmad@a3f.at>
+Message-ID: <20200210081026.2c36xijq7tdsm2ma@pengutronix.de>
+References: <20200204135042.16545-1-ceggers@arri.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200203082159.4455-1-ahmad@a3f.at>
+In-Reply-To: <20200204135042.16545-1-ceggers@arri.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,20 +22,20 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] acpi: include missing header in <acpi.h>
-To: Ahmad Fatoum <ahmad@a3f.at>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] doc: bootchooser: Fix barebox-state example
+To: Christian Eggers <ceggers@arri.de>
+Cc: barebox@lists.infradead.org, ceggers@gmx.de
 
-On Mon, Feb 03, 2020 at 09:21:59AM +0100, Ahmad Fatoum wrote:
-> acpi_sigcmp defined in the header uses memcmp, but no included headers
-> pull in memcmp, which can lead to compile errors in new code, depending
-> on include order. Fix this.
+On Tue, Feb 04, 2020 at 02:50:42PM +0100, Christian Eggers wrote:
+> - Fix prefix
+> - attemps --> attempts
+> - add missing equal sign
+> - Add 2 examples
 > 
-> Reported-by: @healytpk, https://github.com/saschahauer/barebox/issues/7
-> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+> Signed-off-by: Christian Eggers <ceggers@arri.de>
 > ---
->  include/acpi.h | 1 +
->  1 file changed, 1 insertion(+)
+>  Documentation/user/bootchooser.rst | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 
 Applied, thanks
 
