@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from relay9-d.mail.gandi.net ([217.70.183.199])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j14cD-0003Ms-1S
- for barebox@lists.infradead.org; Mon, 10 Feb 2020 08:40:26 +0000
-Date: Mon, 10 Feb 2020 09:40:23 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200210084023.fqwqzwge5nceaq6v@pengutronix.de>
-References: <20200205091201.15248-1-s.trumtrar@pengutronix.de>
+ id 1j18lI-0005Zy-0T
+ for barebox@lists.infradead.org; Mon, 10 Feb 2020 13:06:05 +0000
+Received: from geraet.pengutronix.de (hazel.nat.pengutronix.de [85.220.165.66])
+ (Authenticated sender: ahmad@a3f.at)
+ by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 52507FF80C
+ for <barebox@lists.infradead.org>; Mon, 10 Feb 2020 13:05:50 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Mon, 10 Feb 2020 14:05:45 +0100
+Message-Id: <20200210130545.6161-1-ahmad@a3f.at>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200205091201.15248-1-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,51 +23,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] fs: jffs2: add initial support for reading jffs2
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] ARM: stm32mp: dk2: barebox_set_model to shorter name
+To: barebox@lists.infradead.org
 
-On Wed, Feb 05, 2020 at 10:12:01AM +0100, Steffen Trumtrar wrote:
-> Import the jffs2 filesystem code from Linux v5.5-rc1 and convert it
-> to work with barebox.
-> 
-> Writing is *not* supported.
-> 
-> Testing was done with a n25q256a-compatible QuadSPI chip on a
-> SoCFPGA-based Socrates board.
-> 
-> Testing was done with a combination of:
-> 	user@somelinuxhost: mkfs.jffs2 --eraseblock=4 -d fs/jffs2/ -o jffs2.img
-> 	root@target:~ flash_erase -j /dev/mtd5 0 0
-> 	root@target:~ dd if=jffs2.img of=/dev/mtd5
-> 	barebox@EBV SOCrates:/ mount /dev/mtd0.data
-> 	(...)
-> 	mounted /dev/mtd0.data on /mnt/mtd0.data
-> 
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> ---
-> 
-> Notes:
->     Changes in v2:
->       - add some missing pr_fmt
->       - fix multiple mount/umount cycles by moving compressor_init and
->         create_slab_caches to jffs2_probe instead of init_jffs2_fs.
->         jffs2_remove calls compressor_exit and destroy_slab_caches which
->         in turn is called by umount. This lead to being unable to umount
->         twice.
->       - fix memory leaks
->       - fix jffs2_get_block function
+The full "STMicroelectronics STM32MP157C-DK2 Discovery Board" is a tad
+too long. Abbreviate it to STM32MP157C-DK2 instead.
 
-Applied, thanks
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ arch/arm/boards/stm32mp157c-dk2/board.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Sascha
-
-
+diff --git a/arch/arm/boards/stm32mp157c-dk2/board.c b/arch/arm/boards/stm32mp157c-dk2/board.c
+index 9cd5b4ee1ff4..6da99d9353ac 100644
+--- a/arch/arm/boards/stm32mp157c-dk2/board.c
++++ b/arch/arm/boards/stm32mp157c-dk2/board.c
+@@ -14,6 +14,8 @@ static int dk2_postcore_init(void)
+ 	stm32mp_bbu_mmc_register_handler("sd", "/dev/mmc0.ssbl",
+ 					 BBU_HANDLER_FLAG_DEFAULT);
+ 
++	barebox_set_model("STM32MP157C-DK2");
++
+ 	return 0;
+ }
+ postcore_initcall(dk2_postcore_init);
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
