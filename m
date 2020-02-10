@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j14FC-00027g-J0
- for barebox@lists.infradead.org; Mon, 10 Feb 2020 08:16:41 +0000
-Date: Mon, 10 Feb 2020 09:16:37 +0100
+ id 1j14H0-0002Zq-Ml
+ for barebox@lists.infradead.org; Mon, 10 Feb 2020 08:18:32 +0000
+Date: Mon, 10 Feb 2020 09:18:28 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200210081637.vr2glwurecfnf7jc@pengutronix.de>
-References: <20200206112334.14314-1-a.fatoum@pengutronix.de>
+Message-ID: <20200210081828.vyuqngqzfk72ongn@pengutronix.de>
+References: <20200207111919.2153-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200206112334.14314-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20200207111919.2153-1-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,32 +22,20 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/8] PWM: misc fixes
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] fixup! imd: add support for checksum
+ generation/verification
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Thu, Feb 06, 2020 at 12:23:26PM +0100, Ahmad Fatoum wrote:
-> Some stuff I ran into while refactoring barebox PWM to be more
-> welcoming for porting kernel drivers using the kernel atomic
-> PWM API. Driver will follow soon.
+On Fri, Feb 07, 2020 at 12:19:19PM +0100, Steffen Trumtrar wrote:
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> ---
+> CRC32 is now needed for imd, but was selected by accident. In situations
+> where barebox is stripped down (e.g. socfpga-xload, where there is no
+> environment, globalvars or command_support), barebox won't compile anymore.
 > 
-> Cheers,
-> Ahmad Fatoum (8):
->   PWM: pxa: remove unused struct members
->   PWM: pxa: make MMIO writes always little endian
->   regmap: forward declare structs used in header
->   video: backlight-pwm: remove duplicate assignment to object
->   led: pwm: don't test if pointer is smaller than zero
->   led: pwm: fail if required max-brightness option is missing
->   led: pwm: support active-low property
->   PWM: core: constify chip->ops pointer
-> 
->  drivers/led/led-pwm.c         | 10 ++++++++--
->  drivers/pwm/pxa_pwm.c         | 11 +++--------
->  drivers/video/backlight-pwm.c |  2 --
->  include/pwm.h                 |  2 +-
->  include/regmap.h              |  3 +++
->  5 files changed, 15 insertions(+), 13 deletions(-)
+>  common/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
 
 Applied, thanks
 
