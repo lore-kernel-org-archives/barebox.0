@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay9-d.mail.gandi.net ([217.70.183.199])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j18lI-0005Zy-0T
- for barebox@lists.infradead.org; Mon, 10 Feb 2020 13:06:05 +0000
-Received: from geraet.pengutronix.de (hazel.nat.pengutronix.de [85.220.165.66])
- (Authenticated sender: ahmad@a3f.at)
- by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 52507FF80C
- for <barebox@lists.infradead.org>; Mon, 10 Feb 2020 13:05:50 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Mon, 10 Feb 2020 14:05:45 +0100
-Message-Id: <20200210130545.6161-1-ahmad@a3f.at>
+ id 1j18p3-0005nc-LF
+ for barebox@lists.infradead.org; Mon, 10 Feb 2020 13:09:59 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 10 Feb 2020 14:09:49 +0100
+Message-Id: <20200210130952.19779-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,32 +19,79 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: stm32mp: dk2: barebox_set_model to shorter name
+Subject: [PATCH 1/4] reset_source: introduce reset_source_xlate to translate
+ specific type
 To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The full "STMicroelectronics STM32MP157C-DK2 Discovery Board" is a tad
-too long. Abbreviate it to STM32MP157C-DK2 instead.
+We have a few places where driver code prints reset_source_name() to
+console after setting the reset source.
 
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+This working is probe order dependent, because reset_source_name()
+prints the highest priority reset_source so far, which doesn't
+necessarily have to be the one that was just computed.
+
+Implement reset_source_xlate, so drivers can be migrated to use it.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/boards/stm32mp157c-dk2/board.c | 2 ++
- 1 file changed, 2 insertions(+)
+ common/reset_source.c  | 6 +++---
+ include/reset_source.h | 9 +++++++--
+ 2 files changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/boards/stm32mp157c-dk2/board.c b/arch/arm/boards/stm32mp157c-dk2/board.c
-index 9cd5b4ee1ff4..6da99d9353ac 100644
---- a/arch/arm/boards/stm32mp157c-dk2/board.c
-+++ b/arch/arm/boards/stm32mp157c-dk2/board.c
-@@ -14,6 +14,8 @@ static int dk2_postcore_init(void)
- 	stm32mp_bbu_mmc_register_handler("sd", "/dev/mmc0.ssbl",
- 					 BBU_HANDLER_FLAG_DEFAULT);
- 
-+	barebox_set_model("STM32MP157C-DK2");
-+
- 	return 0;
+diff --git a/common/reset_source.c b/common/reset_source.c
+index 8fdf05215753..e8da8da19aee 100644
+--- a/common/reset_source.c
++++ b/common/reset_source.c
+@@ -42,11 +42,11 @@ enum reset_src_type reset_source_get(void)
  }
- postcore_initcall(dk2_postcore_init);
+ EXPORT_SYMBOL(reset_source_get);
+ 
+-const char *reset_source_name(void)
++const char *reset_source_xlate(enum reset_src_type st)
+ {
+-	return reset_src_names[reset_source];
++	return reset_src_names[st];
+ }
+-EXPORT_SYMBOL(reset_source_name);
++EXPORT_SYMBOL(reset_source_xlate);
+ 
+ int reset_source_get_instance(void)
+ {
+diff --git a/include/reset_source.h b/include/reset_source.h
+index 305dde0102d5..914b9ef38458 100644
+--- a/include/reset_source.h
++++ b/include/reset_source.h
+@@ -28,7 +28,7 @@ enum reset_src_type {
+ #ifdef CONFIG_RESET_SOURCE
+ 
+ enum reset_src_type reset_source_get(void);
+-const char *reset_source_name(void);
++const char *reset_source_xlate(enum reset_src_type st);
+ int reset_source_get_instance(void);
+ struct device_d *reset_source_get_device(void);
+ 
+@@ -45,7 +45,7 @@ static inline enum reset_src_type reset_source_get(void)
+ 	return RESET_UKWN;
+ }
+ 
+-static inline const char *reset_source_name(void)
++static inline const char *reset_source_xlate(enum reset_src_type st)
+ {
+ 	return "unknown";
+ }
+@@ -93,4 +93,9 @@ static inline void reset_source_set(enum reset_src_type type)
+ 	reset_source_set_priority(type, RESET_SOURCE_DEFAULT_PRIORITY);
+ }
+ 
++static inline const char *reset_source_name(void)
++{
++	return reset_source_xlate(reset_source_get());
++}
++
+ #endif /* __INCLUDE_RESET_SOURCE_H */
 -- 
-2.20.1
+2.25.0
 
 
 _______________________________________________
