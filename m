@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j1DUJ-0006E7-BQ
- for barebox@lists.infradead.org; Mon, 10 Feb 2020 18:08:52 +0000
+ id 1j1DUK-0006Eh-Kp
+ for barebox@lists.infradead.org; Mon, 10 Feb 2020 18:08:54 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 10 Feb 2020 19:08:33 +0100
-Message-Id: <20200210180833.22153-4-a.fatoum@pengutronix.de>
+Date: Mon, 10 Feb 2020 19:08:34 +0100
+Message-Id: <20200210180833.22153-5-a.fatoum@pengutronix.de>
 In-Reply-To: <20200210180833.22153-1-a.fatoum@pengutronix.de>
 References: <20200210180833.22153-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,30 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] watchdog: dw_wdt: remove duplicated error message
+Subject: [PATCH 5/5] i2c: tegra: correct error message
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The wd command already warns that "Watchdog cannot be disabled",
-when the stop operation returns -ENOSYS. We do that now, so telling the
-user that it will not stop is superfluous. Remove it.
+reset_control_get returns NULL when the controller reset is missing.
+The error pointer is used for malformed reset controller specification.
+
+Correct the message accordingly.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/watchdog/dw_wdt.c | 2 +-
+ drivers/i2c/busses/i2c-tegra.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/watchdog/dw_wdt.c b/drivers/watchdog/dw_wdt.c
-index 2d1aa5e587ec..cb0d17e3610b 100644
---- a/drivers/watchdog/dw_wdt.c
-+++ b/drivers/watchdog/dw_wdt.c
-@@ -73,7 +73,7 @@ static int dw_wdt_stop(struct watchdog *wdd)
- 	struct dw_wdt *dw_wdt = to_dw_wdt(wdd);
+diff --git a/drivers/i2c/busses/i2c-tegra.c b/drivers/i2c/busses/i2c-tegra.c
+index d56c0def6528..94c982d5c2b7 100644
+--- a/drivers/i2c/busses/i2c-tegra.c
++++ b/drivers/i2c/busses/i2c-tegra.c
+@@ -632,7 +632,7 @@ static int tegra_i2c_probe(struct device_d *dev)
  
- 	if (!dw_wdt->rst) {
--		dev_warn(dw_wdt->wdd.hwdev, "No reset line. Will not stop.\n");
-+		dev_warn(dw_wdt->wdd.hwdev, "No reset line\n");
- 		return -ENOSYS;
+ 	i2c_dev->rst = reset_control_get(dev, "i2c");
+ 	if (IS_ERR(i2c_dev->rst)) {
+-		dev_err(dev, "missing controller reset");
++		dev_err(dev, "invalid controller reset");
+ 		return PTR_ERR(i2c_dev->rst);
  	}
  
 -- 
