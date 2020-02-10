@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j1mUA-00036L-Pm
- for barebox@lists.infradead.org; Wed, 12 Feb 2020 07:31:04 +0000
-Date: Wed, 12 Feb 2020 08:31:01 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200212073101.5jz7qeou4k2onvaz@pengutronix.de>
-References: <20200210163020.31008-1-a.fatoum@pengutronix.de>
+ id 1j1DTP-0005rH-3t
+ for barebox@lists.infradead.org; Mon, 10 Feb 2020 18:07:56 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 10 Feb 2020 19:07:51 +0100
+Message-Id: <20200210180751.31108-2-a.fatoum@pengutronix.de>
+In-Reply-To: <20200210180751.31108-1-a.fatoum@pengutronix.de>
+References: <20200210180751.31108-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200210163020.31008-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,128 +21,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] clocksource: rename driver for ARMv8 Timer to ARM
- architected timer
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/2] watchdog: dw_wdt: populate driver_d.name
+To: barebox@lists.infradead.org
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Mon, Feb 10, 2020 at 05:30:20PM +0100, Ahmad Fatoum wrote:
-> The driver matches against both "arm,armv7-timer" and "arm,armv8-timer"
-> compatibles, thus rename it to better reflect that it's not only ARMv8
-> specific.
-> 
-> Only functional change intended is name changes. The symbol is default
-> y, so the rename shouldn't cause it to get lost with olddefconfig.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  drivers/clocksource/Kconfig                   |  2 +-
->  drivers/clocksource/Makefile                  |  4 ++--
->  ...{armv8-timer.c => arm_architected_timer.c} | 19 +++++++++----------
->  3 files changed, 12 insertions(+), 13 deletions(-)
->  rename drivers/clocksource/{armv8-timer.c => arm_architected_timer.c} (70%)
+Apparently, somewhere between v2017.01.0 and v2020.01.0, barebox became
+dependent on drivers having a name as having this driver enabled in
+v2020.01.0 has barebox crash due to a null pointer dereference in the
+device_match's second strcmp.
 
-Applied, thanks
+A previous commit introduced a palatable warning for this case.
+Now in order to be able to use the driver again, give it a name.
 
-Sascha
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/watchdog/dw_wdt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-
-> 
-> diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-> index 43c5bfc9736a..39ddd159f9ad 100644
-> --- a/drivers/clocksource/Kconfig
-> +++ b/drivers/clocksource/Kconfig
-> @@ -70,7 +70,7 @@ config CLOCKSOURCE_ROCKCHIP
->  config CLOCKSOURCE_ATMEL_PIT
->         bool
->  
-> -config CLOCKSOURCE_ARMV8_TIMER
-> +config CLOCKSOURCE_ARM_ARCHITECTED_TIMER
->  	bool
->  	default y
->  	depends on ARM && (CPU_64v8 || CPU_V7)
-> diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
-> index 8dbf91f323f3..cba6344bbb77 100644
-> --- a/drivers/clocksource/Makefile
-> +++ b/drivers/clocksource/Makefile
-> @@ -11,9 +11,9 @@ obj-$(CONFIG_CLOCKSOURCE_ORION)   += orion.o
->  obj-$(CONFIG_CLOCKSOURCE_UEMD)    += uemd.o
->  obj-$(CONFIG_CLOCKSOURCE_ROCKCHIP)+= rk_timer.o
->  obj-$(CONFIG_CLOCKSOURCE_ATMEL_PIT) += timer-atmel-pit.o
-> -obj-$(CONFIG_CLOCKSOURCE_ARMV8_TIMER) += armv8-timer.o
-> +obj-$(CONFIG_CLOCKSOURCE_ARM_ARCHITECTED_TIMER) += arm_architected_timer.o
->  ifneq ($(CONFIG_CPU_V8),y)
-> -CFLAGS_armv8-timer.o := -march=armv7-a
-> +CFLAGS_arm_architected_timer.o := -march=armv7-a
->  endif
->  obj-$(CONFIG_CLOCKSOURCE_ARM_GLOBAL_TIMER) += arm_global_timer.o
->  obj-$(CONFIG_CLOCKSOURCE_IMX_GPT) += timer-imx-gpt.o
-> diff --git a/drivers/clocksource/armv8-timer.c b/drivers/clocksource/arm_architected_timer.c
-> similarity index 70%
-> rename from drivers/clocksource/armv8-timer.c
-> rename to drivers/clocksource/arm_architected_timer.c
-> index 3095f8cfc405..3ca7dfd17d62 100644
-> --- a/drivers/clocksource/armv8-timer.c
-> +++ b/drivers/clocksource/arm_architected_timer.c
-> @@ -20,34 +20,33 @@
->  #include <io.h>
->  #include <asm/system.h>
->  
-> -static uint64_t armv8_clocksource_read(void)
-> +static uint64_t arm_arch_clocksource_read(void)
->  {
->  	return get_cntpct();
->  }
->  
->  static struct clocksource cs = {
-> -	.read	= armv8_clocksource_read,
-> +	.read	= arm_arch_clocksource_read,
->  	.mask	= CLOCKSOURCE_MASK(64),
->  	.shift	= 0,
->  };
->  
-> -static int armv8_timer_probe(struct device_d *dev)
-> +static int arm_arch_timer_probe(struct device_d *dev)
->  {
->  	cs.mult = clocksource_hz2mult(get_cntfrq(), cs.shift);
->  
->  	return init_clock(&cs);
->  }
->  
-> -static struct of_device_id armv8_timer_dt_ids[] = {
-> +static struct of_device_id arm_arch_timer_dt_ids[] = {
->  	{ .compatible = "arm,armv7-timer", },
->  	{ .compatible = "arm,armv8-timer", },
->  	{ }
->  };
->  
-> -static struct driver_d armv8_timer_driver = {
-> -	.name = "armv8-timer",
-> -	.probe = armv8_timer_probe,
-> -	.of_compatible = DRV_OF_COMPAT(armv8_timer_dt_ids),
-> +static struct driver_d arm_arch_timer_driver = {
-> +	.name = "arm-architected-timer",
-> +	.probe = arm_arch_timer_probe,
-> +	.of_compatible = DRV_OF_COMPAT(arm_arch_timer_dt_ids),
->  };
-> -postcore_platform_driver(armv8_timer_driver);
-> -
-> +postcore_platform_driver(arm_arch_timer_driver);
-> -- 
-> 2.25.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/drivers/watchdog/dw_wdt.c b/drivers/watchdog/dw_wdt.c
+index a029da2b2f4a..cb0d17e3610b 100644
+--- a/drivers/watchdog/dw_wdt.c
++++ b/drivers/watchdog/dw_wdt.c
+@@ -189,6 +189,7 @@ static struct of_device_id dw_wdt_of_match[] = {
+ };
+ 
+ static struct driver_d dw_wdt_driver = {
++	.name		= "dw-wdt",
+ 	.probe		= dw_wdt_drv_probe,
+ 	.of_compatible	= DRV_OF_COMPAT(dw_wdt_of_match),
+ };
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.25.0
+
 
 _______________________________________________
 barebox mailing list
