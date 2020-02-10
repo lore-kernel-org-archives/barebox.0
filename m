@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j14Bj-0000KK-H7
- for barebox@lists.infradead.org; Mon, 10 Feb 2020 08:13:04 +0000
-Date: Mon, 10 Feb 2020 09:13:01 +0100
+ id 1j14FC-00027g-J0
+ for barebox@lists.infradead.org; Mon, 10 Feb 2020 08:16:41 +0000
+Date: Mon, 10 Feb 2020 09:16:37 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200210081301.k2yfgoqgzkerhtpq@pengutronix.de>
-References: <20200205133729.32713-1-a.fatoum@pengutronix.de>
+Message-ID: <20200210081637.vr2glwurecfnf7jc@pengutronix.de>
+References: <20200206112334.14314-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200205133729.32713-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20200206112334.14314-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,20 +22,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] hw_random: add support for STM32 RNG
+Subject: Re: [PATCH 0/8] PWM: misc fixes
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Feb 05, 2020 at 02:37:29PM +0100, Ahmad Fatoum wrote:
-> Port over the U-Boot v2020.01.0 state of the driver.
+On Thu, Feb 06, 2020 at 12:23:26PM +0100, Ahmad Fatoum wrote:
+> Some stuff I ran into while refactoring barebox PWM to be more
+> welcoming for porting kernel drivers using the kernel atomic
+> PWM API. Driver will follow soon.
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  drivers/hw_random/Kconfig     |   7 ++
->  drivers/hw_random/Makefile    |   1 +
->  drivers/hw_random/stm32-rng.c | 167 ++++++++++++++++++++++++++++++++++
->  3 files changed, 175 insertions(+)
->  create mode 100644 drivers/hw_random/stm32-rng.c
+> Cheers,
+> Ahmad Fatoum (8):
+>   PWM: pxa: remove unused struct members
+>   PWM: pxa: make MMIO writes always little endian
+>   regmap: forward declare structs used in header
+>   video: backlight-pwm: remove duplicate assignment to object
+>   led: pwm: don't test if pointer is smaller than zero
+>   led: pwm: fail if required max-brightness option is missing
+>   led: pwm: support active-low property
+>   PWM: core: constify chip->ops pointer
+> 
+>  drivers/led/led-pwm.c         | 10 ++++++++--
+>  drivers/pwm/pxa_pwm.c         | 11 +++--------
+>  drivers/video/backlight-pwm.c |  2 --
+>  include/pwm.h                 |  2 +-
+>  include/regmap.h              |  3 +++
+>  5 files changed, 15 insertions(+), 13 deletions(-)
 
 Applied, thanks
 
