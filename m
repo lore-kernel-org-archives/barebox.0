@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j0hmI-0005Hg-8N
- for barebox@lists.infradead.org; Sun, 09 Feb 2020 08:17:20 +0000
-Date: Sun, 9 Feb 2020 09:17:13 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Message-ID: <20200209081713.bkcqj2syfhjnog3g@pengutronix.de>
-References: <20200109072855.14154-1-antonynpavlov@gmail.com>
- <20200109072855.14154-5-antonynpavlov@gmail.com>
- <f6e8e0b8-4f7c-e4ae-7317-09cc1500343b@pengutronix.de>
- <20200209093013.be5535bdf036ab3e227912ba@gmail.com>
+ id 1j14cD-0003Ms-1S
+ for barebox@lists.infradead.org; Mon, 10 Feb 2020 08:40:26 +0000
+Date: Mon, 10 Feb 2020 09:40:23 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200210084023.fqwqzwge5nceaq6v@pengutronix.de>
+References: <20200205091201.15248-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200209093013.be5535bdf036ab3e227912ba@gmail.com>
+In-Reply-To: <20200205091201.15248-1-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,105 +18,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 4/5] net: rtl8169: make it work on big-endian system
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>
+Subject: Re: [PATCH v2] fs: jffs2: add initial support for reading jffs2
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-SGksCgpPbiBTdW4sIEZlYiAwOSwgMjAyMCBhdCAwOTozMDoxM0FNICswMzAwLCBBbnRvbnkgUGF2
-bG92IHdyb3RlOgo+IE9uIFR1ZSwgNCBGZWIgMjAyMCAxNTowMzo1MyArMDEwMAo+IE9sZWtzaWog
-UmVtcGVsIDxvLnJlbXBlbEBwZW5ndXRyb25peC5kZT4gd3JvdGU6Cj4gCj4gPiBIaSBBbnRvbnks
-Cj4gPiAKPiA+IGRvIHlvdSB3b250IHRvIHJlc2VudCB0aGlzIHBhdGNoZXMgYXMgbm90IFJGQz8K
-PiAKPiBIaSEKPiAKPiBJIHdhbnQgdG8gdGVzdCBQQ0ktcmVsYXRlZCBwYXRjaGVzIG9uIEFSTSBi
-ZWZvcmUgcmVzZW5kaW5nCj4gKGVzcGVjaWFsbHkgJ25ldDogZTEwMDA6IG1ha2UgaXQgd29yayBv
-biBNSVBTJykuCj4gCj4gSXMgdGhlcmUgYW55IHFlbXUgY29uZmlndXJhdGlvbiB0byB0ZXN0IEFS
-TSBiYXJlYm94IHdpdGggUENJIHN1cHBvcnQ/Cgp5ZXMuIHZleHByZXNzLgpIZXJlIGlzIGEgc2Ny
-aXB0IHRvIHJ1biB2ZXhwcmVzcyBvbiBxZW11IGJ1aWxkIGluIGRpc3Ryb2tpdDoKaHR0cHM6Ly9n
-aXQucGVuZ3V0cm9uaXguZGUvY2dpdC9EaXN0cm9LaXQvdHJlZS9jb25maWdzL3BsYXRmb3JtLXY3
-YS9ydW4KCj4gLS0gCj4gQmVzdCByZWdhcmRzLAo+IMKgIEFudG9ueSBQYXZsb3YKPiAKPiA+IAo+
-ID4gT24gMDkuMDEuMjAgMDg6MjgsIEFudG9ueSBQYXZsb3Ygd3JvdGU6Cj4gPiA+IFNpZ25lZC1v
-ZmYtYnk6IEFudG9ueSBQYXZsb3YgPGFudG9ueW5wYXZsb3ZAZ21haWwuY29tPgo+ID4gPiAtLS0K
-PiA+ID4gICBkcml2ZXJzL25ldC9ydGw4MTY5LmMgfCAzNCArKysrKysrKysrKysrKysrKy0tLS0t
-LS0tLS0tLS0tLS0tCj4gPiA+ICAgMSBmaWxlIGNoYW5nZWQsIDE3IGluc2VydGlvbnMoKyksIDE3
-IGRlbGV0aW9ucygtKQo+ID4gPiAKPiA+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3J0bDgx
-NjkuYyBiL2RyaXZlcnMvbmV0L3J0bDgxNjkuYwo+ID4gPiBpbmRleCA4MDk5N2RjODlmLi4zNzYy
-Y2I2MzU0IDEwMDY0NAo+ID4gPiAtLS0gYS9kcml2ZXJzL25ldC9ydGw4MTY5LmMKPiA+ID4gKysr
-IGIvZHJpdmVycy9uZXQvcnRsODE2OS5jCj4gPiA+IEBAIC0yMzAsMTMgKzIzMCwxMyBAQCBzdGF0
-aWMgdm9pZCBydGw4MTY5X2luaXRfcmluZyhzdHJ1Y3QgcnRsODE2OV9wcml2ICpwcml2KQo+ID4g
-PiAgIAlmb3IgKGkgPSAwOyBpIDwgTlVNX1JYX0RFU0M7IGkrKykgewo+ID4gPiAgIAkJaWYgKGkg
-PT0gKE5VTV9SWF9ERVNDIC0gMSkpCj4gPiA+ICAgCQkJcHJpdi0+cnhfZGVzY1tpXS5zdGF0dXMg
-PQo+ID4gPiAtCQkJCUJEX1NUQVRfT1dOIHwgQkRfU1RBVF9FT1IgfCBQS1RfQlVGX1NJWkU7Cj4g
-PiA+ICsJCQkJY3B1X3RvX2xlMzIoQkRfU1RBVF9PV04gfCBCRF9TVEFUX0VPUiB8IFBLVF9CVUZf
-U0laRSk7Cj4gPiA+ICAgCQllbHNlCj4gPiA+ICAgCQkJcHJpdi0+cnhfZGVzY1tpXS5zdGF0dXMg
-PQo+ID4gPiAtCQkJCUJEX1NUQVRfT1dOIHwgUEtUX0JVRl9TSVpFOwo+ID4gPiArCQkJCWNwdV90
-b19sZTMyKEJEX1NUQVRfT1dOIHwgUEtUX0JVRl9TSVpFKTsKPiA+ID4gICAKPiA+ID4gICAJCXBy
-aXYtPnJ4X2Rlc2NbaV0uYnVmX2FkZHIgPQo+ID4gPiAtCQkJCXZpcnRfdG9fcGh5cyhwcml2LT5y
-eF9idWYgKyBpICogUEtUX0JVRl9TSVpFKTsKPiA+ID4gKwkJCQljcHVfdG9fbGUzMih2aXJ0X3Rv
-X3BoeXMocHJpdi0+cnhfYnVmICsgaSAqIFBLVF9CVUZfU0laRSkpOwo+ID4gPiAgIAl9Cj4gPiA+
-ICAgfQo+ID4gPiAgIAo+ID4gPiBAQCAtMzU4LDIxICszNTgsMjEgQEAgc3RhdGljIGludCBydGw4
-MTY5X2V0aF9zZW5kKHN0cnVjdCBldGhfZGV2aWNlICplZGV2LCB2b2lkICpwYWNrZXQsCj4gPiA+
-ICAgCj4gPiA+ICAgCXByaXYtPnR4X2Rlc2NbZW50cnldLmJ1Zl9IYWRkciA9IDA7Cj4gPiA+ICAg
-CXByaXYtPnR4X2Rlc2NbZW50cnldLmJ1Zl9hZGRyID0KPiA+ID4gLQkJdmlydF90b19waHlzKHBy
-aXYtPnR4X2J1ZiArIGVudHJ5ICogUEtUX0JVRl9TSVpFKTsKPiA+ID4gKwkJY3B1X3RvX2xlMzIo
-dmlydF90b19waHlzKHByaXYtPnR4X2J1ZiArIGVudHJ5ICogUEtUX0JVRl9TSVpFKSk7Cj4gPiA+
-ICAgCj4gPiA+ICAgCWlmIChlbnRyeSAhPSAoTlVNX1RYX0RFU0MgLSAxKSkgewo+ID4gPiAgIAkJ
-cHJpdi0+dHhfZGVzY1tlbnRyeV0uc3RhdHVzID0KPiA+ID4gLQkJCUJEX1NUQVRfT1dOIHwgQkRf
-U1RBVF9GUyB8IEJEX1NUQVRfTFMgfAo+ID4gPiAtCQkJKChwYWNrZXRfbGVuZ3RoID4gRVRIX1pM
-RU4pID8gcGFja2V0X2xlbmd0aCA6IEVUSF9aTEVOKTsKPiA+ID4gKwkJCWNwdV90b19sZTMyKEJE
-X1NUQVRfT1dOIHwgQkRfU1RBVF9GUyB8IEJEX1NUQVRfTFMgfAo+ID4gPiArCQkJKChwYWNrZXRf
-bGVuZ3RoID4gRVRIX1pMRU4pID8gcGFja2V0X2xlbmd0aCA6IEVUSF9aTEVOKSk7Cj4gPiA+ICAg
-CX0gZWxzZSB7Cj4gPiA+ICAgCQlwcml2LT50eF9kZXNjW2VudHJ5XS5zdGF0dXMgPQo+ID4gPiAt
-CQkJQkRfU1RBVF9PV04gfCBCRF9TVEFUX0VPUiB8IEJEX1NUQVRfRlMgfCBCRF9TVEFUX0xTIHwK
-PiA+ID4gLQkJCSgocGFja2V0X2xlbmd0aCA+IEVUSF9aTEVOKSA/IHBhY2tldF9sZW5ndGggOiBF
-VEhfWkxFTik7Cj4gPiA+ICsJCQljcHVfdG9fbGUzMihCRF9TVEFUX09XTiB8IEJEX1NUQVRfRU9S
-IHwgQkRfU1RBVF9GUyB8IEJEX1NUQVRfTFMgfAo+ID4gPiArCQkJKChwYWNrZXRfbGVuZ3RoID4g
-RVRIX1pMRU4pID8gcGFja2V0X2xlbmd0aCA6IEVUSF9aTEVOKSk7Cj4gPiA+ICAgCX0KPiA+ID4g
-ICAKPiA+ID4gICAJUlRMX1c4KHByaXYsIFR4UG9sbCwgMHg0MCk7Cj4gPiA+ICAgCj4gPiA+IC0J
-d2hpbGUgKHByaXYtPnR4X2Rlc2NbZW50cnldLnN0YXR1cyAmIEJEX1NUQVRfT1dOKQo+ID4gPiAr
-CXdoaWxlIChsZTMyX3RvX2NwdShwcml2LT50eF9kZXNjW2VudHJ5XS5zdGF0dXMpICYgQkRfU1RB
-VF9PV04pCj4gPiA+ICAgCQk7Cj4gPiA+ICAgCj4gPiA+ICAgCWRtYV9zeW5jX3NpbmdsZV9mb3Jf
-Y3B1KCh1bnNpZ25lZCBsb25nKXByaXYtPnR4X2J1ZiArIGVudHJ5ICoKPiA+ID4gQEAgLTM5MSw5
-ICszOTEsOSBAQCBzdGF0aWMgaW50IHJ0bDgxNjlfZXRoX3J4KHN0cnVjdCBldGhfZGV2aWNlICpl
-ZGV2KQo+ID4gPiAgIAo+ID4gPiAgIAllbnRyeSA9IHByaXYtPmN1cl9yeCAlIE5VTV9SWF9ERVND
-Owo+ID4gPiAgIAo+ID4gPiAtCWlmICgocHJpdi0+cnhfZGVzY1tlbnRyeV0uc3RhdHVzICYgQkRf
-U1RBVF9PV04pID09IDApIHsKPiA+ID4gLQkJaWYgKCEocHJpdi0+cnhfZGVzY1tlbnRyeV0uc3Rh
-dHVzICYgQkRfU1RBVF9SWF9SRVMpKSB7Cj4gPiA+IC0JCQlwa3Rfc2l6ZSA9IChwcml2LT5yeF9k
-ZXNjW2VudHJ5XS5zdGF0dXMgJiAweDFmZmYpIC0gNDsKPiA+ID4gKwlpZiAoKGxlMzJfdG9fY3B1
-KHByaXYtPnJ4X2Rlc2NbZW50cnldLnN0YXR1cykgJiBCRF9TVEFUX09XTikgPT0gMCkgewo+ID4g
-PiArCQlpZiAoIShsZTMyX3RvX2NwdShwcml2LT5yeF9kZXNjW2VudHJ5XS5zdGF0dXMpICYgQkRf
-U1RBVF9SWF9SRVMpKSB7Cj4gPiA+ICsJCQlwa3Rfc2l6ZSA9IChsZTMyX3RvX2NwdShwcml2LT5y
-eF9kZXNjW2VudHJ5XS5zdGF0dXMpICYgMHgxZmZmKSAtIDQ7Cj4gPiA+ICAgCj4gPiA+ICAgCQkJ
-ZG1hX3N5bmNfc2luZ2xlX2Zvcl9jcHUoKHVuc2lnbmVkIGxvbmcpcHJpdi0+cnhfYnVmCj4gPiA+
-ICAgCQkJCQkJKyBlbnRyeSAqIFBLVF9CVUZfU0laRSwKPiA+ID4gQEAgLTQwNywxNCArNDA3LDE0
-IEBAIHN0YXRpYyBpbnQgcnRsODE2OV9ldGhfcngoc3RydWN0IGV0aF9kZXZpY2UgKmVkZXYpCj4g
-PiA+ICAgCQkJCQkJICAgcGt0X3NpemUsIERNQV9GUk9NX0RFVklDRSk7Cj4gPiA+ICAgCj4gPiA+
-ICAgCQkJaWYgKGVudHJ5ID09IE5VTV9SWF9ERVNDIC0gMSkKPiA+ID4gLQkJCQlwcml2LT5yeF9k
-ZXNjW2VudHJ5XS5zdGF0dXMgPSBCRF9TVEFUX09XTiB8Cj4gPiA+IC0JCQkJCUJEX1NUQVRfRU9S
-IHwgUEtUX0JVRl9TSVpFOwo+ID4gPiArCQkJCXByaXYtPnJ4X2Rlc2NbZW50cnldLnN0YXR1cyA9
-IGNwdV90b19sZTMyKEJEX1NUQVRfT1dOIHwKPiA+ID4gKwkJCQkJQkRfU1RBVF9FT1IgfCBQS1Rf
-QlVGX1NJWkUpOwo+ID4gPiAgIAkJCWVsc2UKPiA+ID4gICAJCQkJcHJpdi0+cnhfZGVzY1tlbnRy
-eV0uc3RhdHVzID0KPiA+ID4gLQkJCQkJQkRfU1RBVF9PV04gfCBQS1RfQlVGX1NJWkU7Cj4gPiA+
-ICsJCQkJCWNwdV90b19sZTMyKEJEX1NUQVRfT1dOIHwgUEtUX0JVRl9TSVpFKTsKPiA+ID4gICAJ
-CQlwcml2LT5yeF9kZXNjW2VudHJ5XS5idWZfYWRkciA9Cj4gPiA+IC0JCQkJdmlydF90b19waHlz
-KHByaXYtPnJ4X2J1ZiArCj4gPiA+IC0JCQkJICAgICAgICAgICAgIGVudHJ5ICogUEtUX0JVRl9T
-SVpFKTsKPiA+ID4gKwkJCQljcHVfdG9fbGUzMih2aXJ0X3RvX3BoeXMocHJpdi0+cnhfYnVmICsK
-PiA+ID4gKwkJCQkgICAgICAgICAgICAgZW50cnkgKiBQS1RfQlVGX1NJWkUpKTsKPiA+ID4gICAJ
-CX0gZWxzZSB7Cj4gPiA+ICAgCQkJZGV2X2VycigmZWRldi0+ZGV2LCAicnggZXJyb3JcbiIpOwo+
-ID4gPiAgIAkJfQo+ID4gPiAKPiA+IAo+ID4gS2luZCByZWdhcmRzLAo+ID4gT2xla3NpaiBSZW1w
-ZWwKPiA+IAo+ID4gLS0gCj4gPiBQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfAo+ID4gSW5kdXN0cmlhbCBMaW51
-eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8g
-IHwKPiA+IFBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25l
-OiArNDktNTEyMS0yMDY5MTctMCAgICB8Cj4gPiBBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEg
-MjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAo+IAo+IAo+IAoK
-LS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICB8ClN0ZXVlcndhbGRlciBTdHIuIDIxICAgICAgICAgICAgICAg
-ICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8CjMxMTM3IEhpbGRlc2hlaW0s
-IEdlcm1hbnkgICAgICAgICAgICAgICAgICB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8
-CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDkt
-NTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
-cmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Wed, Feb 05, 2020 at 10:12:01AM +0100, Steffen Trumtrar wrote:
+> Import the jffs2 filesystem code from Linux v5.5-rc1 and convert it
+> to work with barebox.
+> 
+> Writing is *not* supported.
+> 
+> Testing was done with a n25q256a-compatible QuadSPI chip on a
+> SoCFPGA-based Socrates board.
+> 
+> Testing was done with a combination of:
+> 	user@somelinuxhost: mkfs.jffs2 --eraseblock=4 -d fs/jffs2/ -o jffs2.img
+> 	root@target:~ flash_erase -j /dev/mtd5 0 0
+> 	root@target:~ dd if=jffs2.img of=/dev/mtd5
+> 	barebox@EBV SOCrates:/ mount /dev/mtd0.data
+> 	(...)
+> 	mounted /dev/mtd0.data on /mnt/mtd0.data
+> 
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> ---
+> 
+> Notes:
+>     Changes in v2:
+>       - add some missing pr_fmt
+>       - fix multiple mount/umount cycles by moving compressor_init and
+>         create_slab_caches to jffs2_probe instead of init_jffs2_fs.
+>         jffs2_remove calls compressor_exit and destroy_slab_caches which
+>         in turn is called by umount. This lead to being unable to umount
+>         twice.
+>       - fix memory leaks
+>       - fix jffs2_get_block function
+
+Applied, thanks
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
