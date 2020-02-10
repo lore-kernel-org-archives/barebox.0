@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j7Lgl-0004FN-T6
- for barebox@lists.infradead.org; Thu, 27 Feb 2020 16:07:05 +0000
-Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
- helo=dude02.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <l.stach@pengutronix.de>) id 1j7Lgi-0000Oc-Mb
- for barebox@lists.infradead.org; Thu, 27 Feb 2020 17:07:00 +0100
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Thu, 27 Feb 2020 17:07:00 +0100
-Message-Id: <20200227160700.28904-1-l.stach@pengutronix.de>
+ id 1j147u-0007CJ-4k
+ for barebox@lists.infradead.org; Mon, 10 Feb 2020 08:09:07 +0000
+Date: Mon, 10 Feb 2020 09:09:04 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200210080904.a45t4h6nppj3saai@pengutronix.de>
+References: <20200203082759.7014-1-ahmad@a3f.at>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200203082759.7014-1-ahmad@a3f.at>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,69 +22,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM64: add support for booting a FIT image
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] sandbox: fix signed integer overflow
+To: Ahmad Fatoum <ahmad@a3f.at>
+Cc: barebox@lists.infradead.org
 
-Add the image type handler to the ARM64 boot code. The only difference
-in the boot handling is that we need to look at the FIT loaded OS image
-header to get the image load and text offsets, as the os_header is the
-FIT header, not the kernel header.
+On Mon, Feb 03, 2020 at 09:27:58AM +0100, Ahmad Fatoum wrote:
+> On a 32-bit host system, UBSan reports:
+> 
+> ===============================================================
+> UBSAN: Undefined behaviour in ./arch/sandbox/os/common.c:115:32
+> signed integer overflow:
+> 83598 * 1000000000 cannot be represented in type 'long int'
+> ===============================================================
+> 
+> Fix this.
+> 
+> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+> ---
+>  arch/sandbox/os/common.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
----
- arch/arm/lib64/armlinux.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+Applied, thanks
 
-diff --git a/arch/arm/lib64/armlinux.c b/arch/arm/lib64/armlinux.c
-index 31bd987f10db..bcff770793e7 100644
---- a/arch/arm/lib64/armlinux.c
-+++ b/arch/arm/lib64/armlinux.c
-@@ -33,6 +33,8 @@
- 
- static int do_bootm_linux(struct image_data *data)
- {
-+	const void *kernel_header =
-+			data->os_fit ? data->fit_kernel : data->os_header;
- 	void (*fn)(unsigned long dtb, unsigned long x1, unsigned long x2,
- 		       unsigned long x3);
- 	resource_size_t start, end;
-@@ -41,8 +43,8 @@ static int do_bootm_linux(struct image_data *data)
- 	int ret;
- 	void *fdt;
- 
--	text_offset = le64_to_cpup(data->os_header + 8);
--	image_size = le64_to_cpup(data->os_header + 16);
-+	text_offset = le64_to_cpup(kernel_header + 8);
-+	image_size = le64_to_cpup(kernel_header+ 16);
- 
- 	ret = memory_bank_first_find_space(&start, &end);
- 	if (ret)
-@@ -101,6 +103,12 @@ static struct image_handler aarch64_linux_handler = {
-         .filetype = filetype_arm64_linux_image,
- };
- 
-+static struct image_handler aarch64_fit_handler = {
-+	.name = "FIT image",
-+	.bootm = do_bootm_linux,
-+	.filetype = filetype_oftree,
-+};
-+
- static int do_bootm_barebox(struct image_data *data)
- {
- 	void (*fn)(unsigned long x0, unsigned long x1, unsigned long x2,
-@@ -144,6 +152,9 @@ static int aarch64_register_image_handler(void)
- 	register_image_handler(&aarch64_linux_handler);
- 	register_image_handler(&aarch64_barebox_handler);
- 
-+	if (IS_ENABLED(CONFIG_FITIMAGE))
-+		register_image_handler(&aarch64_fit_handler);
-+
- 	return 0;
- }
- late_initcall(aarch64_register_image_handler);
+Sascha
+
+
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
