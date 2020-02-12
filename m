@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-mw2nam12on2139.outbound.protection.outlook.com
- ([40.107.244.139] helo=NAM12-MW2-obe.outbound.protection.outlook.com)
+Received: from relay9-d.mail.gandi.net ([217.70.183.199])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j1nCi-0006wl-8t
- for barebox@lists.infradead.org; Wed, 12 Feb 2020 08:17:06 +0000
-From: "Koelle, Holger" <Holger.Koelle@allegion.com>
-Date: Wed, 12 Feb 2020 08:17:00 +0000
-Message-ID: <BL0PR01MB52511725CB364F9BB3AAC1008F1B0@BL0PR01MB5251.prod.exchangelabs.com>
-Content-Language: de-DE
+ id 1j1oU4-0005KJ-Au
+ for barebox@lists.infradead.org; Wed, 12 Feb 2020 09:39:05 +0000
+Received: from geraet.pengutronix.de (hazel.nat.pengutronix.de [85.220.165.66])
+ (Authenticated sender: ahmad@a3f.at)
+ by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id B3E01FF813
+ for <barebox@lists.infradead.org>; Wed, 12 Feb 2020 09:38:50 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Wed, 12 Feb 2020 10:38:39 +0100
+Message-Id: <20200212093839.25968-1-ahmad@a3f.at>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -17,49 +19,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE:RE: imx27 phycard update problems from barebox 2019.01.0 to
- 2020.01.0
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: [PATCH] serial: ns16550_pci: fix possible read of uninitialized
+ variable
+To: barebox@lists.infradead.org
 
-SGkgU2FzY2hhLA0KDQpPayBzb3VuZHMgY29oZXJlbnQuIFRoYW5rIHlvdSBmb3IgdGhlIGV4cGxh
-bmF0aW9uLiBJJ20gdXNpbmcgdGhlIG9zZWxhcyAyMDE4LjEyLjAgVG9vbGNoYWluIGF0IHRoZSBt
-b21lbnQuDQoNClRoYW5rIHlvdSBmb3IgeW91ciB0aW1lLCBhIHBhdGNoIHdvdWxkIGJlIGF3ZXNv
-bWUg8J+Yig0KDQpSZWdhcmRzLA0KDQpIb2xnZXINCg0KLS0tLS1VcnNwcsO8bmdsaWNoZSBOYWNo
-cmljaHQtLS0tLQ0KVm9uOiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+IA0K
-R2VzZW5kZXQ6IE1pdHR3b2NoLCAxMi4gRmVicnVhciAyMDIwIDA5OjA5DQpBbjogS29lbGxlLCBI
-b2xnZXIgPEhvbGdlci5Lb2VsbGVAYWxsZWdpb24uY29tPg0KQ2M6IGJhcmVib3hAbGlzdHMuaW5m
-cmFkZWFkLm9yZzsgQWhtYWQgRmF0b3VtIDxhLmZhdG91bUBwZW5ndXRyb25peC5kZT4NCkJldHJl
-ZmY6IFJlOiBpbXgyNyBwaHljYXJkIHVwZGF0ZSBwcm9ibGVtcyBmcm9tIGJhcmVib3ggMjAxOS4w
-MS4wIHRvIDIwMjAuMDEuMA0KDQpIaSBIb2xnZXIsDQoNCk9uIFR1ZSwgRmViIDExLCAyMDIwIGF0
-IDAzOjMzOjEyUE0gKzAwMDAsIEtvZWxsZSwgSG9sZ2VyIHdyb3RlOg0KPiBIZXksDQo+IA0KPiB0
-b2RheSBpIGZvbGxvd2VkIHlvdXQgcmVjb21tZW5kcyB3aXRoIGdpdCBiaXNlY3QuDQo+IA0KPiBJ
-J3ZlIGZvdW5kIHRoZSBvZmZlbmRpbmcgY29tbWl0LiANCj4gSXQgaXMgQ29tbWl0IDogIFtiMDM0
-OGQ2NzdiYjQ3YmRiZDM2ODk4MzYwM2IzZTk2MDQ1MjhkNGVkXSBBUk06IA0KPiBDb21waWxlIHdp
-dGggLWZQSUUNCj4gDQo+IElmIEkgcmVtb3ZlIHRoZSBDb21waWxlcmZsYWcgKGxpbmUgMTQ1KSA6
-DQo+IA0KPiBDUFBGTEFHUyArPSAtZlBJRQ0KPiANCj4gZnJvbSBhcmNoL2FybS9NYWtlZmlsZSAs
-IHRoZW4gZXZlcnkgQmFyZWJveCBWZXJzaW9uIChpbmNsdWRlIHYyMDIwLjAxLjApIGNvbXBpbGUg
-YW5kIHJ1biBmaW5lIG9uIHBoeWNhcmQgaW14MjcuDQo+IA0KPiBXaGF0cyB0aGUgaW1wYWN0IGlm
-IEkgcmVtb3ZlIHRoaXMgZmxhZz8gRG9lcyBpbXgyNyBub3Qgc3VwcG9ydCB0aGlzIG9wdGlvbj8N
-Cg0KVGhlIHByb2JsZW0gaGVyZSBpcyB0aGF0IHRoZSBpLk1YMjcgb25seSBsb2FkcyAyayBvZiBt
-ZW1vcnkgZnJvbSBOQU5EIGluaXRpYWxseSBmcm9tIHdoaWNoIHdlIGhhdmUgdG8gYm9vdHN0cmFw
-IG91cnNlbHZlcy4gVGhpcyBjb2RlIGlzIGN1bWJlcnNvbWUgdG8gd3JpdGUgaW4gYXNzZW1ibHks
-IHNvIGl0IGlzIHdyaXR0ZW4gaW4gQy4gVGhpcyByZXF1aXJlcyB1cyB0byBydW4gY29kZSBmcm9t
-IGEgbG9jYXRpb24gaXQgaXMgbm90IGxpbmtlZCBhdC4gdGhlIC1mUElFIGZsYWcgaW5mbHVlbmNl
-cyB0aGUgd2F5IGhvdyB0aGlzIGNvZGUgaXMgY29tcGlsZWQgYW5kIGFwcGFyZW50bHkgaXQgZG9l
-c24ndCBjb3BlIHdlbGwgd2l0aCB0aGlzIGZsYWcuDQoNClRoZSByZWxldmFudCBjb2RlIGlzIGlu
-IGFyY2gvYXJtL21hY2gtaW14L2V4dGVybmFsLW5hbmQtYm9vdC5jLg0KDQpJIGNhbiBzZWUgaWYg
-SSBjYW4gZmluZCBzb21lIHRpbWUgdG8gZGVidWcgaXQuIFdoaWNoIHRvb2xjaGFpbiBhcmUgeW91
-IHVzaW5nPw0KDQpSZWdhcmRzLA0KIFNhc2NoYQ0KDQotLSANClBlbmd1dHJvbml4IGUuSy4gICAg
-ICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8DQpT
-dGV1ZXJ3YWxkZXIgU3RyLiAyMSAgICAgICAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBl
-bmd1dHJvbml4LmRlLyAgfA0KMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSAgICAgICAgICAgICAg
-ICAgIHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwNCkFtdHNnZXJpY2h0IEhpbGRlc2hl
-aW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8DQpf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
-aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
-ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+When quirk->init is NULL, we evaluate an uninitialized rc.
+Is we have already checked for rc < 0 at the point of assignment,
+this if clause isn't needed. Remove it.
+
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ drivers/serial/serial_ns16550_pci.c | 6 ------
+ 1 file changed, 6 deletions(-)
+
+diff --git a/drivers/serial/serial_ns16550_pci.c b/drivers/serial/serial_ns16550_pci.c
+index d4b5bd8898b7..392a2810d815 100644
+--- a/drivers/serial/serial_ns16550_pci.c
++++ b/drivers/serial/serial_ns16550_pci.c
+@@ -3655,12 +3655,6 @@ pciserial_init_ports(struct pci_dev *dev, const struct pciserial_board *board)
+ 	uart.pdata = xzalloc(sizeof(*uart.pdata));
+ 	uart.pdata->clock = board->base_baud * 16;
+ 
+-	if (rc < 0) {
+-		kfree(priv);
+-		priv = ERR_PTR(rc);
+-		goto err_deinit;
+-	}
+-
+ 	for (i = 0; i < nr_ports; i++) {
+ 		struct device_d *ns16550_dev;
+ 		struct resource *res;
+-- 
+2.20.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
