@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-co1nam11on2123.outbound.protection.outlook.com
- ([40.107.220.123] helo=NAM11-CO1-obe.outbound.protection.outlook.com)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j1XXK-0004xo-8A
- for barebox@lists.infradead.org; Tue, 11 Feb 2020 15:33:19 +0000
-From: "Koelle, Holger" <Holger.Koelle@allegion.com>
-Date: Tue, 11 Feb 2020 15:33:12 +0000
-Message-ID: <BL0PR01MB5251A7D93EE5446BFBF1F8778F180@BL0PR01MB5251.prod.exchangelabs.com>
-References: <BL0PR01MB52513F7AE42E4E6ED527380A8F1C0@BL0PR01MB5251.prod.exchangelabs.com>
- <566f7758-587f-e833-cee7-ee8e7133e3ac@pengutronix.de>
-In-Reply-To: <566f7758-587f-e833-cee7-ee8e7133e3ac@pengutronix.de>
-Content-Language: de-DE
+ id 1j1mm8-0002JC-Fi
+ for barebox@lists.infradead.org; Wed, 12 Feb 2020 07:49:37 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 12 Feb 2020 08:49:33 +0100
+Message-Id: <20200212074933.5228-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -20,48 +15,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: AW: imx27 phycard update problems from barebox 2019.01.0 to 2020.01.0
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: [PATCH] scripts: imx-usb-loader: Accept new header version
+To: Barebox List <barebox@lists.infradead.org>
 
-SGV5LA0KDQp0b2RheSBpIGZvbGxvd2VkIHlvdXQgcmVjb21tZW5kcyB3aXRoIGdpdCBiaXNlY3Qu
-DQoNCkkndmUgZm91bmQgdGhlIG9mZmVuZGluZyBjb21taXQuIA0KSXQgaXMgQ29tbWl0IDogIFti
-MDM0OGQ2NzdiYjQ3YmRiZDM2ODk4MzYwM2IzZTk2MDQ1MjhkNGVkXSBBUk06IENvbXBpbGUgd2l0
-aCAtZlBJRQ0KDQpJZiBJIHJlbW92ZSB0aGUgQ29tcGlsZXJmbGFnIChsaW5lIDE0NSkgOg0KDQpD
-UFBGTEFHUyArPSAtZlBJRSANCg0KZnJvbSBhcmNoL2FybS9NYWtlZmlsZSAsIHRoZW4gZXZlcnkg
-QmFyZWJveCBWZXJzaW9uIChpbmNsdWRlIHYyMDIwLjAxLjApIGNvbXBpbGUgYW5kIHJ1biBmaW5l
-IG9uIHBoeWNhcmQgaW14MjcuDQoNCldoYXRzIHRoZSBpbXBhY3QgaWYgSSByZW1vdmUgdGhpcyBm
-bGFnPyBEb2VzIGlteDI3IG5vdCBzdXBwb3J0IHRoaXMgb3B0aW9uPw0KDQoNClJlZ2FyZHMNCg0K
-SG9sZ2VyDQoNCiANCg0KLS0tLS1VcnNwcsO8bmdsaWNoZSBOYWNocmljaHQtLS0tLQ0KVm9uOiBB
-aG1hZCBGYXRvdW0gPGEuZmF0b3VtQHBlbmd1dHJvbml4LmRlPiANCkdlc2VuZGV0OiBGcmVpdGFn
-LCA3LiBGZWJydWFyIDIwMjAgMTE6MzMNCkFuOiBLb2VsbGUsIEhvbGdlciA8SG9sZ2VyLktvZWxs
-ZUBhbGxlZ2lvbi5jb20+OyBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcNCkJldHJlZmY6IFJl
-OiBpbXgyNyBwaHljYXJkIHVwZGF0ZSBwcm9ibGVtcyBmcm9tIGJhcmVib3ggMjAxOS4wMS4wIHRv
-IDIwMjAuMDEuMA0KDQpIZWxsbywNCg0KT24gMi83LzIwIDExOjE3IEFNLCBLb2VsbGUsIEhvbGdl
-ciB3cm90ZToNCj4gSGV5IHRoZXJlLA0KPiANCj4gdGhpcyB3ZWVrIGkgdXBkYXRlZCBzb21lIGlt
-eDI3IGJhc2VkIHBoeWNhcmQgZnJvbSBCYXJlYm94IDIwMTkuMDEgdG8gMjAyMC4wMS4gQWZ0ZXIg
-dGhlIHVwZGF0ZSBhdCBCb290IG5vdGhpbmcgaGFwcGVucy4uIG5vIG91dHB1dCBvbiBzZXJpYWwu
-DQo+IERldmljZXRyZWUgYW5kIENvbmZpZ3VyYXRpb24gKGJhcmVib3guY29uZmlnIGluIHB0eGRp
-c3QpIGxvb2tzIGZpbmUuLi5nb3QgYW55b25lIHN1Z2dlc3Rpb25zIGZvciBtZT8NCg0KVHJ5IGZp
-bmRpbmcgdGhlIG9mZmVuZGluZyBjb21taXQgd2l0aCBnaXQtYmlzZWN0Og0KDQpnaXQgYmlzZWN0
-IGdvb2QgdjIwMTkuMDEuMA0KZ2l0IGJpc2VjdCBiYWQgdjIwMjAuMDEuMA0KIyBidWlsZCwgZmxh
-c2gsIHJ1biBiYXJlYm94DQpnaXQgYmlzZWN0IGdvb2QgIyBpZiBpdCB3b3Jrcw0KZ2l0IGJpc2Vj
-dCBiYWQgIyBpZiBpdCBkb2Vzbid0IHdvcmsNCg0KVGhlcmUgaGF2ZSBiZWVuIDEwMDQgcmV2aXNp
-b25zIGJldHdlZW4gdGhlIHR3byB0YWdzLCB3aGljaCBtZWFucywgYSBiaW5hcnkgc2VhcmNoIHdp
-bGwgZmluZCB0aGUgb2ZmZW5kaW5nIGNvbW1pdCBpbiAxMCBpdGVyYXRpb25zLg0KDQpXaGVuIHlv
-dSd2ZSBmb3VuZCB0aGUgY29tbWl0IGFuZCBuZWVkIHRvIHRha2UgYSBtb3JlIHRob3JvdWdoIGxv
-b2sgKHByaW50Zi1kZWJ1Z2dpbmcpLCB5b3UgY2FuIGFkZCBsb3cgbGV2ZWwgVUFSVCBkZWJ1ZyBz
-dXBwb3J0IHRvIHlvdXIgYm9hcmQuDQoNCktlZXAgdXMgdXBkYXRlZCENCg0KQ2hlZXJzDQpBaG1h
-ZA0KDQotLSANClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICB8DQpTdGV1ZXJ3YWxkZXIgU3RyLiAyMSAgICAgICAg
-ICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfA0KMzExMzcgSGls
-ZGVzaGVpbSwgR2VybWFueSAgICAgICAgICAgICAgICAgIHwgUGhvbmU6ICs0OS01MTIxLTIwNjkx
-Ny0wICAgIHwNCkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZh
-eDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8DQpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmlu
-ZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9i
-YXJlYm94Cg==
+U-Boot generates images with the header version set to 0x41 instead of
+0x40. We can accept them as well.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ scripts/imx/imx-usb-loader.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
+index 70883bf883..8cc34b99eb 100644
+--- a/scripts/imx/imx-usb-loader.c
++++ b/scripts/imx/imx-usb-loader.c
+@@ -1228,7 +1228,8 @@ static int is_header(const unsigned char *p)
+ 			return 1;
+ 		break;
+ 	case HDR_MX53:
+-		if (hdr->header.tag == TAG_IVT_HEADER && hdr->header.version == IVT_VERSION)
++		if (hdr->header.tag == TAG_IVT_HEADER &&
++		    (hdr->header.version == IVT_VERSION || hdr->header.version == 0x41))
+ 			return 1;
+ 	}
+ 
+-- 
+2.25.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
