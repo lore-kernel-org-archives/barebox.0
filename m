@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-mw2nam12on2139.outbound.protection.outlook.com
+ ([40.107.244.139] helo=NAM12-MW2-obe.outbound.protection.outlook.com)
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j1mT9-0001jF-56
- for barebox@lists.infradead.org; Wed, 12 Feb 2020 07:30:00 +0000
-Date: Wed, 12 Feb 2020 08:29:55 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200212072955.xinxpw5hne4ekpk3@pengutronix.de>
-References: <20200210130545.6161-1-ahmad@a3f.at>
+ id 1j1nCi-0006wl-8t
+ for barebox@lists.infradead.org; Wed, 12 Feb 2020 08:17:06 +0000
+From: "Koelle, Holger" <Holger.Koelle@allegion.com>
+Date: Wed, 12 Feb 2020 08:17:00 +0000
+Message-ID: <BL0PR01MB52511725CB364F9BB3AAC1008F1B0@BL0PR01MB5251.prod.exchangelabs.com>
+Content-Language: de-DE
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200210130545.6161-1-ahmad@a3f.at>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,58 +17,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: stm32mp: dk2: barebox_set_model to shorter name
-To: Ahmad Fatoum <ahmad@a3f.at>
-Cc: barebox@lists.infradead.org
+Subject: RE:RE: imx27 phycard update problems from barebox 2019.01.0 to
+ 2020.01.0
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Mon, Feb 10, 2020 at 02:05:45PM +0100, Ahmad Fatoum wrote:
-> The full "STMicroelectronics STM32MP157C-DK2 Discovery Board" is a tad
-> too long. Abbreviate it to STM32MP157C-DK2 instead.
-> 
-> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
-> ---
->  arch/arm/boards/stm32mp157c-dk2/board.c | 2 ++
->  1 file changed, 2 insertions(+)
-
-Applied, thanks
-
-Sascha
-
-> 
-> diff --git a/arch/arm/boards/stm32mp157c-dk2/board.c b/arch/arm/boards/stm32mp157c-dk2/board.c
-> index 9cd5b4ee1ff4..6da99d9353ac 100644
-> --- a/arch/arm/boards/stm32mp157c-dk2/board.c
-> +++ b/arch/arm/boards/stm32mp157c-dk2/board.c
-> @@ -14,6 +14,8 @@ static int dk2_postcore_init(void)
->  	stm32mp_bbu_mmc_register_handler("sd", "/dev/mmc0.ssbl",
->  					 BBU_HANDLER_FLAG_DEFAULT);
->  
-> +	barebox_set_model("STM32MP157C-DK2");
-> +
->  	return 0;
->  }
->  postcore_initcall(dk2_postcore_init);
-> -- 
-> 2.20.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgU2FzY2hhLA0KDQpPayBzb3VuZHMgY29oZXJlbnQuIFRoYW5rIHlvdSBmb3IgdGhlIGV4cGxh
+bmF0aW9uLiBJJ20gdXNpbmcgdGhlIG9zZWxhcyAyMDE4LjEyLjAgVG9vbGNoYWluIGF0IHRoZSBt
+b21lbnQuDQoNClRoYW5rIHlvdSBmb3IgeW91ciB0aW1lLCBhIHBhdGNoIHdvdWxkIGJlIGF3ZXNv
+bWUg8J+Yig0KDQpSZWdhcmRzLA0KDQpIb2xnZXINCg0KLS0tLS1VcnNwcsO8bmdsaWNoZSBOYWNo
+cmljaHQtLS0tLQ0KVm9uOiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+IA0K
+R2VzZW5kZXQ6IE1pdHR3b2NoLCAxMi4gRmVicnVhciAyMDIwIDA5OjA5DQpBbjogS29lbGxlLCBI
+b2xnZXIgPEhvbGdlci5Lb2VsbGVAYWxsZWdpb24uY29tPg0KQ2M6IGJhcmVib3hAbGlzdHMuaW5m
+cmFkZWFkLm9yZzsgQWhtYWQgRmF0b3VtIDxhLmZhdG91bUBwZW5ndXRyb25peC5kZT4NCkJldHJl
+ZmY6IFJlOiBpbXgyNyBwaHljYXJkIHVwZGF0ZSBwcm9ibGVtcyBmcm9tIGJhcmVib3ggMjAxOS4w
+MS4wIHRvIDIwMjAuMDEuMA0KDQpIaSBIb2xnZXIsDQoNCk9uIFR1ZSwgRmViIDExLCAyMDIwIGF0
+IDAzOjMzOjEyUE0gKzAwMDAsIEtvZWxsZSwgSG9sZ2VyIHdyb3RlOg0KPiBIZXksDQo+IA0KPiB0
+b2RheSBpIGZvbGxvd2VkIHlvdXQgcmVjb21tZW5kcyB3aXRoIGdpdCBiaXNlY3QuDQo+IA0KPiBJ
+J3ZlIGZvdW5kIHRoZSBvZmZlbmRpbmcgY29tbWl0LiANCj4gSXQgaXMgQ29tbWl0IDogIFtiMDM0
+OGQ2NzdiYjQ3YmRiZDM2ODk4MzYwM2IzZTk2MDQ1MjhkNGVkXSBBUk06IA0KPiBDb21waWxlIHdp
+dGggLWZQSUUNCj4gDQo+IElmIEkgcmVtb3ZlIHRoZSBDb21waWxlcmZsYWcgKGxpbmUgMTQ1KSA6
+DQo+IA0KPiBDUFBGTEFHUyArPSAtZlBJRQ0KPiANCj4gZnJvbSBhcmNoL2FybS9NYWtlZmlsZSAs
+IHRoZW4gZXZlcnkgQmFyZWJveCBWZXJzaW9uIChpbmNsdWRlIHYyMDIwLjAxLjApIGNvbXBpbGUg
+YW5kIHJ1biBmaW5lIG9uIHBoeWNhcmQgaW14MjcuDQo+IA0KPiBXaGF0cyB0aGUgaW1wYWN0IGlm
+IEkgcmVtb3ZlIHRoaXMgZmxhZz8gRG9lcyBpbXgyNyBub3Qgc3VwcG9ydCB0aGlzIG9wdGlvbj8N
+Cg0KVGhlIHByb2JsZW0gaGVyZSBpcyB0aGF0IHRoZSBpLk1YMjcgb25seSBsb2FkcyAyayBvZiBt
+ZW1vcnkgZnJvbSBOQU5EIGluaXRpYWxseSBmcm9tIHdoaWNoIHdlIGhhdmUgdG8gYm9vdHN0cmFw
+IG91cnNlbHZlcy4gVGhpcyBjb2RlIGlzIGN1bWJlcnNvbWUgdG8gd3JpdGUgaW4gYXNzZW1ibHks
+IHNvIGl0IGlzIHdyaXR0ZW4gaW4gQy4gVGhpcyByZXF1aXJlcyB1cyB0byBydW4gY29kZSBmcm9t
+IGEgbG9jYXRpb24gaXQgaXMgbm90IGxpbmtlZCBhdC4gdGhlIC1mUElFIGZsYWcgaW5mbHVlbmNl
+cyB0aGUgd2F5IGhvdyB0aGlzIGNvZGUgaXMgY29tcGlsZWQgYW5kIGFwcGFyZW50bHkgaXQgZG9l
+c24ndCBjb3BlIHdlbGwgd2l0aCB0aGlzIGZsYWcuDQoNClRoZSByZWxldmFudCBjb2RlIGlzIGlu
+IGFyY2gvYXJtL21hY2gtaW14L2V4dGVybmFsLW5hbmQtYm9vdC5jLg0KDQpJIGNhbiBzZWUgaWYg
+SSBjYW4gZmluZCBzb21lIHRpbWUgdG8gZGVidWcgaXQuIFdoaWNoIHRvb2xjaGFpbiBhcmUgeW91
+IHVzaW5nPw0KDQpSZWdhcmRzLA0KIFNhc2NoYQ0KDQotLSANClBlbmd1dHJvbml4IGUuSy4gICAg
+ICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8DQpT
+dGV1ZXJ3YWxkZXIgU3RyLiAyMSAgICAgICAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBl
+bmd1dHJvbml4LmRlLyAgfA0KMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSAgICAgICAgICAgICAg
+ICAgIHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwNCkFtdHNnZXJpY2h0IEhpbGRlc2hl
+aW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8DQpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
+aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
+ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
