@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j18p3-0005nc-LF
- for barebox@lists.infradead.org; Mon, 10 Feb 2020 13:09:59 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 10 Feb 2020 14:09:49 +0100
-Message-Id: <20200210130952.19779-1-a.fatoum@pengutronix.de>
+ id 1j1mUA-00036L-Pm
+ for barebox@lists.infradead.org; Wed, 12 Feb 2020 07:31:04 +0000
+Date: Wed, 12 Feb 2020 08:31:01 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200212073101.5jz7qeou4k2onvaz@pengutronix.de>
+References: <20200210163020.31008-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200210163020.31008-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,80 +22,128 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] reset_source: introduce reset_source_xlate to translate
- specific type
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] clocksource: rename driver for ARMv8 Timer to ARM
+ architected timer
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-We have a few places where driver code prints reset_source_name() to
-console after setting the reset source.
+On Mon, Feb 10, 2020 at 05:30:20PM +0100, Ahmad Fatoum wrote:
+> The driver matches against both "arm,armv7-timer" and "arm,armv8-timer"
+> compatibles, thus rename it to better reflect that it's not only ARMv8
+> specific.
+> 
+> Only functional change intended is name changes. The symbol is default
+> y, so the rename shouldn't cause it to get lost with olddefconfig.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  drivers/clocksource/Kconfig                   |  2 +-
+>  drivers/clocksource/Makefile                  |  4 ++--
+>  ...{armv8-timer.c => arm_architected_timer.c} | 19 +++++++++----------
+>  3 files changed, 12 insertions(+), 13 deletions(-)
+>  rename drivers/clocksource/{armv8-timer.c => arm_architected_timer.c} (70%)
 
-This working is probe order dependent, because reset_source_name()
-prints the highest priority reset_source so far, which doesn't
-necessarily have to be the one that was just computed.
+Applied, thanks
 
-Implement reset_source_xlate, so drivers can be migrated to use it.
+Sascha
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- common/reset_source.c  | 6 +++---
- include/reset_source.h | 9 +++++++--
- 2 files changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/common/reset_source.c b/common/reset_source.c
-index 8fdf05215753..e8da8da19aee 100644
---- a/common/reset_source.c
-+++ b/common/reset_source.c
-@@ -42,11 +42,11 @@ enum reset_src_type reset_source_get(void)
- }
- EXPORT_SYMBOL(reset_source_get);
- 
--const char *reset_source_name(void)
-+const char *reset_source_xlate(enum reset_src_type st)
- {
--	return reset_src_names[reset_source];
-+	return reset_src_names[st];
- }
--EXPORT_SYMBOL(reset_source_name);
-+EXPORT_SYMBOL(reset_source_xlate);
- 
- int reset_source_get_instance(void)
- {
-diff --git a/include/reset_source.h b/include/reset_source.h
-index 305dde0102d5..914b9ef38458 100644
---- a/include/reset_source.h
-+++ b/include/reset_source.h
-@@ -28,7 +28,7 @@ enum reset_src_type {
- #ifdef CONFIG_RESET_SOURCE
- 
- enum reset_src_type reset_source_get(void);
--const char *reset_source_name(void);
-+const char *reset_source_xlate(enum reset_src_type st);
- int reset_source_get_instance(void);
- struct device_d *reset_source_get_device(void);
- 
-@@ -45,7 +45,7 @@ static inline enum reset_src_type reset_source_get(void)
- 	return RESET_UKWN;
- }
- 
--static inline const char *reset_source_name(void)
-+static inline const char *reset_source_xlate(enum reset_src_type st)
- {
- 	return "unknown";
- }
-@@ -93,4 +93,9 @@ static inline void reset_source_set(enum reset_src_type type)
- 	reset_source_set_priority(type, RESET_SOURCE_DEFAULT_PRIORITY);
- }
- 
-+static inline const char *reset_source_name(void)
-+{
-+	return reset_source_xlate(reset_source_get());
-+}
-+
- #endif /* __INCLUDE_RESET_SOURCE_H */
+> 
+> diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+> index 43c5bfc9736a..39ddd159f9ad 100644
+> --- a/drivers/clocksource/Kconfig
+> +++ b/drivers/clocksource/Kconfig
+> @@ -70,7 +70,7 @@ config CLOCKSOURCE_ROCKCHIP
+>  config CLOCKSOURCE_ATMEL_PIT
+>         bool
+>  
+> -config CLOCKSOURCE_ARMV8_TIMER
+> +config CLOCKSOURCE_ARM_ARCHITECTED_TIMER
+>  	bool
+>  	default y
+>  	depends on ARM && (CPU_64v8 || CPU_V7)
+> diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
+> index 8dbf91f323f3..cba6344bbb77 100644
+> --- a/drivers/clocksource/Makefile
+> +++ b/drivers/clocksource/Makefile
+> @@ -11,9 +11,9 @@ obj-$(CONFIG_CLOCKSOURCE_ORION)   += orion.o
+>  obj-$(CONFIG_CLOCKSOURCE_UEMD)    += uemd.o
+>  obj-$(CONFIG_CLOCKSOURCE_ROCKCHIP)+= rk_timer.o
+>  obj-$(CONFIG_CLOCKSOURCE_ATMEL_PIT) += timer-atmel-pit.o
+> -obj-$(CONFIG_CLOCKSOURCE_ARMV8_TIMER) += armv8-timer.o
+> +obj-$(CONFIG_CLOCKSOURCE_ARM_ARCHITECTED_TIMER) += arm_architected_timer.o
+>  ifneq ($(CONFIG_CPU_V8),y)
+> -CFLAGS_armv8-timer.o := -march=armv7-a
+> +CFLAGS_arm_architected_timer.o := -march=armv7-a
+>  endif
+>  obj-$(CONFIG_CLOCKSOURCE_ARM_GLOBAL_TIMER) += arm_global_timer.o
+>  obj-$(CONFIG_CLOCKSOURCE_IMX_GPT) += timer-imx-gpt.o
+> diff --git a/drivers/clocksource/armv8-timer.c b/drivers/clocksource/arm_architected_timer.c
+> similarity index 70%
+> rename from drivers/clocksource/armv8-timer.c
+> rename to drivers/clocksource/arm_architected_timer.c
+> index 3095f8cfc405..3ca7dfd17d62 100644
+> --- a/drivers/clocksource/armv8-timer.c
+> +++ b/drivers/clocksource/arm_architected_timer.c
+> @@ -20,34 +20,33 @@
+>  #include <io.h>
+>  #include <asm/system.h>
+>  
+> -static uint64_t armv8_clocksource_read(void)
+> +static uint64_t arm_arch_clocksource_read(void)
+>  {
+>  	return get_cntpct();
+>  }
+>  
+>  static struct clocksource cs = {
+> -	.read	= armv8_clocksource_read,
+> +	.read	= arm_arch_clocksource_read,
+>  	.mask	= CLOCKSOURCE_MASK(64),
+>  	.shift	= 0,
+>  };
+>  
+> -static int armv8_timer_probe(struct device_d *dev)
+> +static int arm_arch_timer_probe(struct device_d *dev)
+>  {
+>  	cs.mult = clocksource_hz2mult(get_cntfrq(), cs.shift);
+>  
+>  	return init_clock(&cs);
+>  }
+>  
+> -static struct of_device_id armv8_timer_dt_ids[] = {
+> +static struct of_device_id arm_arch_timer_dt_ids[] = {
+>  	{ .compatible = "arm,armv7-timer", },
+>  	{ .compatible = "arm,armv8-timer", },
+>  	{ }
+>  };
+>  
+> -static struct driver_d armv8_timer_driver = {
+> -	.name = "armv8-timer",
+> -	.probe = armv8_timer_probe,
+> -	.of_compatible = DRV_OF_COMPAT(armv8_timer_dt_ids),
+> +static struct driver_d arm_arch_timer_driver = {
+> +	.name = "arm-architected-timer",
+> +	.probe = arm_arch_timer_probe,
+> +	.of_compatible = DRV_OF_COMPAT(arm_arch_timer_dt_ids),
+>  };
+> -postcore_platform_driver(armv8_timer_driver);
+> -
+> +postcore_platform_driver(arm_arch_timer_driver);
+> -- 
+> 2.25.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.25.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
