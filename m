@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j2C8n-0003t4-SL
- for barebox@lists.infradead.org; Thu, 13 Feb 2020 10:54:44 +0000
+ id 1j2CC5-0005V9-MI
+ for barebox@lists.infradead.org; Thu, 13 Feb 2020 10:58:06 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 13 Feb 2020 11:54:39 +0100
-Message-Id: <20200213105439.29181-1-s.hauer@pengutronix.de>
+Date: Thu, 13 Feb 2020 11:58:01 +0100
+Message-Id: <20200213105803.32096-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,82 +19,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] usb: gadget: fsl_udc: remove unnessary argument
+Subject: [PATCH 1/3] clk-conf.h: Add missing re-inclusion protection
 To: Barebox List <barebox@lists.infradead.org>
-
-fsl_build_dtd() returns the length of the dTD, but it is never used.
-Remove the length argument from the function.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/gadget/fsl_udc.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ include/linux/clk/clk-conf.h | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/gadget/fsl_udc.c b/drivers/usb/gadget/fsl_udc.c
-index a44c7abc01..c7160cdbc7 100644
---- a/drivers/usb/gadget/fsl_udc.c
-+++ b/drivers/usb/gadget/fsl_udc.c
-@@ -1128,18 +1128,18 @@ out:
+diff --git a/include/linux/clk/clk-conf.h b/include/linux/clk/clk-conf.h
+index 8f4382e6c6..ac6cfdf711 100644
+--- a/include/linux/clk/clk-conf.h
++++ b/include/linux/clk/clk-conf.h
+@@ -6,12 +6,15 @@
+  * it under the terms of the GNU General Public License version 2 as
+  * published by the Free Software Foundation.
+  */
+-
+-#if defined(CONFIG_OFTREE) && defined(CONFIG_COMMON_CLK_OF_PROVIDER)
++#ifndef __CLK_CONF_H
++#define __CLK_CONF_H
  
- /* Fill in the dTD structure
-  * @req: request that the transfer belongs to
-- * @length: return actually data length of the dTD
-  * @dma: return dma address of the dTD
-  * @is_last: return flag if it is the last dTD of the request
-  * return: pointer to the built dTD */
--static struct ep_td_struct *fsl_build_dtd(struct fsl_req *req, unsigned *length,
-+static struct ep_td_struct *fsl_build_dtd(struct fsl_req *req,
- 		dma_addr_t *dma, int *is_last)
- {
-+	unsigned length;
- 	u32 swap_temp;
- 	struct ep_td_struct *dtd;
+ #include <linux/types.h>
  
- 	/* how big will this transfer be? */
--	*length = min(req->req.length - req->req.actual,
-+	length = min(req->req.length - req->req.actual,
- 			(unsigned)EP_MAX_LENGTH_TRANSFER);
++#if defined(CONFIG_OFTREE) && defined(CONFIG_COMMON_CLK_OF_PROVIDER)
++
+ struct device_node;
+ int of_clk_set_defaults(struct device_node *node, bool clk_supplier);
  
- 	dtd = dma_alloc_coherent(sizeof(struct ep_td_struct),
-@@ -1161,11 +1161,11 @@ static struct ep_td_struct *fsl_build_dtd(struct fsl_req *req, unsigned *length,
- 	dtd->buff_ptr3 = cpu_to_le32(swap_temp + 0x3000);
- 	dtd->buff_ptr4 = cpu_to_le32(swap_temp + 0x4000);
- 
--	req->req.actual += *length;
-+	req->req.actual += length;
- 
- 	/* zlp is needed if req->req.zero is set */
- 	if (req->req.zero) {
--		if (*length == 0 || (*length % req->ep->ep.maxpacket) != 0)
-+		if (length == 0 || (length % req->ep->ep.maxpacket) != 0)
- 			*is_last = 1;
- 		else
- 			*is_last = 0;
-@@ -1177,7 +1177,7 @@ static struct ep_td_struct *fsl_build_dtd(struct fsl_req *req, unsigned *length,
- 	if ((*is_last) == 0)
- 		VDBG("multi-dtd request!");
- 	/* Fill in the transfer size; set active bit */
--	swap_temp = ((*length << DTD_LENGTH_BIT_POS) | DTD_STATUS_ACTIVE);
-+	swap_temp = ((length << DTD_LENGTH_BIT_POS) | DTD_STATUS_ACTIVE);
- 
- 	/* Enable interrupt for the last dtd of a request */
- 	if (*is_last && !req->req.no_interrupt)
-@@ -1193,14 +1193,13 @@ static struct ep_td_struct *fsl_build_dtd(struct fsl_req *req, unsigned *length,
- /* Generate dtd chain for a request */
- static int fsl_req_to_dtd(struct fsl_req *req)
- {
--	unsigned	count;
- 	int		is_last;
- 	int		is_first =1;
- 	struct ep_td_struct	*last_dtd = NULL, *dtd;
- 	dma_addr_t dma;
- 
- 	do {
--		dtd = fsl_build_dtd(req, &count, &dma, &is_last);
-+		dtd = fsl_build_dtd(req, &dma, &is_last);
- 		if (dtd == NULL)
- 			return -ENOMEM;
- 
+ #endif
++#endif /* __CLK_CONF_H */
 -- 
 2.25.0
 
