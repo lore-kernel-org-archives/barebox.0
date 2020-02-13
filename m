@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j147u-0007CJ-4k
- for barebox@lists.infradead.org; Mon, 10 Feb 2020 08:09:07 +0000
-Date: Mon, 10 Feb 2020 09:09:04 +0100
+ id 1j2CC5-0005VA-M8
+ for barebox@lists.infradead.org; Thu, 13 Feb 2020 10:58:06 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200210080904.a45t4h6nppj3saai@pengutronix.de>
-References: <20200203082759.7014-1-ahmad@a3f.at>
+Date: Thu, 13 Feb 2020 11:58:03 +0100
+Message-Id: <20200213105803.32096-3-s.hauer@pengutronix.de>
+In-Reply-To: <20200213105803.32096-1-s.hauer@pengutronix.de>
+References: <20200213105803.32096-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200203082759.7014-1-ahmad@a3f.at>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,36 +21,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] sandbox: fix signed integer overflow
-To: Ahmad Fatoum <ahmad@a3f.at>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 3/3] driver: Call of_clk_set_defaults for each probed device
+To: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Feb 03, 2020 at 09:27:58AM +0100, Ahmad Fatoum wrote:
-> On a 32-bit host system, UBSan reports:
-> 
-> ===============================================================
-> UBSAN: Undefined behaviour in ./arch/sandbox/os/common.c:115:32
-> signed integer overflow:
-> 83598 * 1000000000 cannot be represented in type 'long int'
-> ===============================================================
-> 
-> Fix this.
-> 
-> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
-> ---
->  arch/sandbox/os/common.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+So far we only honour the assigned-clocks and assigned-clock-rates
+device tree properties for the clock controller nodes. With this patch
+we also honour the properties for each device which is done by Linux
+as well.
 
-Applied, thanks
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/base/driver.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Sascha
-
-
+diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+index eec2a2d8a2..247456a2c6 100644
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -36,6 +36,7 @@
+ #include <linux/err.h>
+ #include <complete.h>
+ #include <pinctrl.h>
++#include <linux/clk/clk-conf.h>
+ 
+ LIST_HEAD(device_list);
+ EXPORT_SYMBOL(device_list);
+@@ -86,6 +87,7 @@ int device_probe(struct device_d *dev)
+ 	int ret;
+ 
+ 	pinctrl_select_state_default(dev);
++	of_clk_set_defaults(dev->device_node, false);
+ 
+ 	list_add(&dev->active, &active);
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.25.0
+
 
 _______________________________________________
 barebox mailing list
