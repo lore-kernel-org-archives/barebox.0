@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j3foZ-0003xp-1d
- for barebox@lists.infradead.org; Mon, 17 Feb 2020 12:47:56 +0000
+ id 1j3foi-0003y3-55
+ for barebox@lists.infradead.org; Mon, 17 Feb 2020 12:48:06 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 17 Feb 2020 13:46:20 +0100
-Message-Id: <20200217124623.14520-40-s.hauer@pengutronix.de>
+Date: Mon, 17 Feb 2020 13:46:22 +0100
+Message-Id: <20200217124623.14520-42-s.hauer@pengutronix.de>
 In-Reply-To: <20200217124623.14520-1-s.hauer@pengutronix.de>
 References: <20200217124623.14520-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,514 +21,2516 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 39/42] ARM: i.MX8M: Add i.MX8MM support
+Subject: [PATCH 41/42] ARM: i.MX: Add i.MX8MM EVK board support
 To: Barebox List <barebox@lists.infradead.org>
-
-This adds support for the i.MX8MM.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/Kconfig                     |   4 +
- arch/arm/mach-imx/Makefile                    |   2 +-
- arch/arm/mach-imx/boot.c                      |  19 ++-
- arch/arm/mach-imx/cpu_init.c                  |  14 +-
- arch/arm/mach-imx/esdctl.c                    |   5 +
- arch/arm/mach-imx/imx-bbu-internal.c          |   4 +-
- arch/arm/mach-imx/imx.c                       |   4 +
- arch/arm/mach-imx/imx8m.c                     | 154 ++++++++++++++++--
- arch/arm/mach-imx/include/mach/esdctl.h       |   1 +
- arch/arm/mach-imx/include/mach/generic.h      |  18 ++
- .../mach-imx/include/mach/imx8m-ccm-regs.h    |   1 +
- arch/arm/mach-imx/include/mach/imx8mq.h       |  13 +-
- .../arm/mach-imx/include/mach/imx_cpu_types.h |   1 +
- 13 files changed, 215 insertions(+), 25 deletions(-)
+ Documentation/boards/imx/nxp-imx8mm-evk.rst   |   71 +
+ arch/arm/boards/Makefile                      |    1 +
+ arch/arm/boards/nxp-imx8mm-evk/Makefile       |    2 +
+ arch/arm/boards/nxp-imx8mm-evk/board.c        |   81 +
+ .../flash-header-imx8mm-evk.imxcfg            |    5 +
+ arch/arm/boards/nxp-imx8mm-evk/lowlevel.c     |  184 ++
+ .../arm/boards/nxp-imx8mm-evk/lpddr4-timing.c | 1976 +++++++++++++++++
+ arch/arm/dts/Makefile                         |    1 +
+ arch/arm/dts/imx8mm-evk.dts                   |   62 +
+ arch/arm/mach-imx/Kconfig                     |   10 +
+ images/Makefile.imx                           |    6 +
+ 11 files changed, 2399 insertions(+)
+ create mode 100644 Documentation/boards/imx/nxp-imx8mm-evk.rst
+ create mode 100644 arch/arm/boards/nxp-imx8mm-evk/Makefile
+ create mode 100644 arch/arm/boards/nxp-imx8mm-evk/board.c
+ create mode 100644 arch/arm/boards/nxp-imx8mm-evk/flash-header-imx8mm-evk.imxcfg
+ create mode 100644 arch/arm/boards/nxp-imx8mm-evk/lowlevel.c
+ create mode 100644 arch/arm/boards/nxp-imx8mm-evk/lpddr4-timing.c
+ create mode 100644 arch/arm/dts/imx8mm-evk.dts
 
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index 7b79d80748..9dad4ceae2 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -186,6 +186,10 @@ config ARCH_IMX8M
- 	select IMX8M_DRAM
- 	select PBL_VERIFY_PIGGY if HABV4
- 
-+config ARCH_IMX8MM
-+	select ARCH_IMX8M
-+	bool
+diff --git a/Documentation/boards/imx/nxp-imx8mm-evk.rst b/Documentation/boards/imx/nxp-imx8mm-evk.rst
+new file mode 100644
+index 0000000000..c3cd35ae38
+--- /dev/null
++++ b/Documentation/boards/imx/nxp-imx8mm-evk.rst
+@@ -0,0 +1,71 @@
++NXP i.MX8MM EVK Evaluation Board
++================================
 +
- config ARCH_IMX8MQ
- 	select ARCH_IMX8M
- 	bool
-diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
-index 30ced0e202..e45f758e9c 100644
---- a/arch/arm/mach-imx/Makefile
-+++ b/arch/arm/mach-imx/Makefile
-@@ -15,7 +15,7 @@ CFLAGS_imx6.o := -march=armv7-a
- lwl-$(CONFIG_ARCH_IMX6) += imx6-mmdc.o
- obj-$(CONFIG_ARCH_IMX7) += imx7.o
- obj-$(CONFIG_ARCH_VF610) += vf610.o
--obj-$(CONFIG_ARCH_IMX8M) += imx8m.o
-+obj-pbl-$(CONFIG_ARCH_IMX8M) += imx8m.o
- lwl-$(CONFIG_ARCH_IMX8M) += atf.o
- obj-$(CONFIG_IMX_IIM)	+= iim.o
- obj-$(CONFIG_NAND_IMX) += nand.o
-diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
-index 7d1af106d1..7bce1c710c 100644
---- a/arch/arm/mach-imx/boot.c
-+++ b/arch/arm/mach-imx/boot.c
-@@ -27,6 +27,7 @@
- #include <mach/imx53-regs.h>
- #include <mach/imx6-regs.h>
- #include <mach/imx7-regs.h>
-+#include <mach/imx8mm-regs.h>
- #include <mach/imx8mq-regs.h>
- #include <mach/vf610-regs.h>
- #include <mach/imx8mq.h>
-@@ -593,7 +594,7 @@ void vf610_boot_save_loc(void)
- void imx8mq_get_boot_source(enum bootsource *src, int *instance)
- {
- 	unsigned long addr;
--	void __iomem *src_base = IOMEM(MX8MQ_SRC_BASE_ADDR);
-+	void __iomem *src_base = IOMEM(MX8M_SRC_BASE_ADDR);
- 	uint32_t sbmr2 = readl(src_base + 0x70);
- 
- 	addr = (imx8mq_cpu_revision() == IMX_CHIP_REV_1_0) ?
-@@ -607,3 +608,19 @@ void imx8mq_boot_save_loc(void)
- {
- 	imx_boot_save_loc(imx8mq_get_boot_source);
- }
++Board comes with:
 +
-+void imx8mm_get_boot_source(enum bootsource *src, int *instance)
++* 2GiB of LPDDR4 RAM
++* 16GiB eMMC
++
++Not including booting via serial, the device can boot from either SD or eMMC.
++
++Downloading DDR PHY Firmware
++----------------------------
++
++As a part of DDR intialization routine NXP i.MX8MM EVK requires and
++uses several binary firmware blobs that are distributed under a
++separate EULA and cannot be included in Barebox. In order to obtain
++them do the following::
++
++ wget https://www.nxp.com/lgfiles/NMG/MAD/YOCTO/firmware-imx-8.0.bin
++ chmod +x firmware-imx-8.0.bin
++ ./firmware-imx-8.0.bin
++
++Executing that file should produce a EULA acceptance dialog as well as
++result in the following files:
++
++- lpddr4_pmu_train_1d_dmem.bin
++- lpddr4_pmu_train_1d_imem.bin
++- lpddr4_pmu_train_2d_dmem.bin
++- lpddr4_pmu_train_2d_imem.bin
++
++As a last step of this process those files need to be placed in
++"firmware/"::
++
++  for f in lpddr4_pmu_train_1d_dmem.bin  \
++           lpddr4_pmu_train_1d_imem.bin  \
++	   lpddr4_pmu_train_2d_dmem.bin  \
++	   lpddr4_pmu_train_2d_imem.bin; \
++  do \
++	   cp firmware-imx-8.0/firmware/ddr/synopsys/${f} \
++	      firmware/${f}; \
++  done
++
++DDR Configuration Code
++======================
++
++The following two files:
++
++  - arch/arm/boards/nxp-imx8mq-evk/ddr_init.c
++  - arch/arm/boards/nxp-imx8mq-evk/ddrphy_train.c
++
++were obtained by running i.MX 8M DDR Tool that can be found here:
++
++https://community.nxp.com/docs/DOC-340179
++
++Only minimal amount of necessary changes were made to those files.
++All of the "impedance matching" code is located in "ddr.h".
++
++Build barebox
++=============
++
++ make imx_v8_defconfig
++ make
++
++Start barebox
++=============
++
++The resulting image file is images/barebox-nxp-imx8mm-evk.img. Configure the
++board for serial download mode as printed on the PCB. You can start barebox with
++the imx-usb-loader tool that comes with barebox like this:
++
++./scripts/imx/imx-usb-loader images/barebox-nxp-imx8mm-evk.img
+diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+index 6cb40d084b..14538af53b 100644
+--- a/arch/arm/boards/Makefile
++++ b/arch/arm/boards/Makefile
+@@ -84,6 +84,7 @@ obj-$(CONFIG_MACH_NVIDIA_BEAVER)		+= nvidia-beaver/
+ obj-$(CONFIG_MACH_NVIDIA_JETSON)		+= nvidia-jetson-tk1/
+ obj-$(CONFIG_MACH_NXP_IMX6ULL_EVK)		+= nxp-imx6ull-evk/
+ obj-$(CONFIG_MACH_NXP_IMX8MQ_EVK)		+= nxp-imx8mq-evk/
++obj-$(CONFIG_MACH_NXP_IMX8MM_EVK)		+= nxp-imx8mm-evk/
+ obj-$(CONFIG_MACH_OMAP343xSDP)			+= omap343xdsp/
+ obj-$(CONFIG_MACH_OMAP3EVM)			+= omap3evm/
+ obj-$(CONFIG_MACH_PANDA)			+= panda/
+diff --git a/arch/arm/boards/nxp-imx8mm-evk/Makefile b/arch/arm/boards/nxp-imx8mm-evk/Makefile
+new file mode 100644
+index 0000000000..4d0d989015
+--- /dev/null
++++ b/arch/arm/boards/nxp-imx8mm-evk/Makefile
+@@ -0,0 +1,2 @@
++obj-y += board.o
++lwl-y += lowlevel.o lpddr4-timing.o
+diff --git a/arch/arm/boards/nxp-imx8mm-evk/board.c b/arch/arm/boards/nxp-imx8mm-evk/board.c
+new file mode 100644
+index 0000000000..59582276b2
+--- /dev/null
++++ b/arch/arm/boards/nxp-imx8mm-evk/board.c
+@@ -0,0 +1,81 @@
++/*
++ * Copyright (C) 2018 Sascha Hauer, Pengutronix
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation.
++ *
++ */
++
++#include <asm/memory.h>
++#include <bootsource.h>
++#include <common.h>
++#include <init.h>
++#include <linux/phy.h>
++#include <linux/sizes.h>
++#include <mach/bbu.h>
++
++#include <envfs.h>
++
++#define PHY_ID_AR8031	0x004dd074
++#define AR_PHY_ID_MASK	0xffffffff
++
++static int ar8031_phy_fixup(struct phy_device *phydev)
 +{
-+	unsigned long addr;
-+	void __iomem *src_base = IOMEM(MX8MM_SRC_BASE_ADDR);
-+	uint32_t sbmr2 = readl(src_base + 0x70);
-+
-+	addr = IMX8M_BOOT_SW_INFO_POINTER_ADDR_A0;
-+
-+	__imx7_get_boot_source(src, instance, addr, sbmr2);
-+}
-+
-+void imx8mm_boot_save_loc(void)
-+{
-+	imx_boot_save_loc(imx8mm_get_boot_source);
-+}
-diff --git a/arch/arm/mach-imx/cpu_init.c b/arch/arm/mach-imx/cpu_init.c
-index aa6e050e94..c6a0ac7c50 100644
---- a/arch/arm/mach-imx/cpu_init.c
-+++ b/arch/arm/mach-imx/cpu_init.c
-@@ -69,11 +69,21 @@ void vf610_cpu_lowlevel_init(void)
- 	arm_cpu_lowlevel_init();
- }
- #else
--void imx8mq_cpu_lowlevel_init(void)
-+static void imx8m_cpu_lowlevel_init(void)
- {
- 	arm_cpu_lowlevel_init();
- 
- 	if (current_el() == 3)
--		imx_cpu_timer_init(IOMEM(MX8MQ_SYSCNT_CTRL_BASE_ADDR));
-+		imx_cpu_timer_init(IOMEM(MX8M_SYSCNT_CTRL_BASE_ADDR));
-+}
-+
-+void imx8mm_cpu_lowlevel_init(void)
-+{
-+	imx8m_cpu_lowlevel_init();
-+}
-+
-+void imx8mq_cpu_lowlevel_init(void)
-+{
-+	imx8m_cpu_lowlevel_init();
- }
- #endif
-diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
-index 411836debd..25e7c83ad9 100644
---- a/arch/arm/mach-imx/esdctl.c
-+++ b/arch/arm/mach-imx/esdctl.c
-@@ -887,6 +887,11 @@ static void __noreturn imx8m_barebox_entry(void *boarddata)
- 	barebox_arm_entry(MX8M_DDR_CSD1_BASE_ADDR, size, boarddata);
- }
- 
-+void __noreturn imx8mm_barebox_entry(void *boarddata)
-+{
-+	imx8m_barebox_entry(boarddata);
-+}
-+
- void __noreturn imx8mq_barebox_entry(void *boarddata)
- {
- 	imx8m_barebox_entry(boarddata);
-diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
-index 946a3e9a77..f6f66364c0 100644
---- a/arch/arm/mach-imx/imx-bbu-internal.c
-+++ b/arch/arm/mach-imx/imx-bbu-internal.c
-@@ -375,7 +375,7 @@ out:
- 
- static enum filetype imx_bbu_expected_filetype(void)
- {
--	if (cpu_is_mx8mq() ||
-+	if (cpu_is_mx8m() ||
- 	    cpu_is_mx7()   ||
- 	    cpu_is_mx6()   ||
- 	    cpu_is_vf610() ||
-@@ -393,7 +393,7 @@ static unsigned long imx_bbu_flash_header_offset_mmc(void)
- 	 * i.MX8MQ moved the header by 32K to accomodate for GPT
- 	 * partition tables
- 	 */
--	if (cpu_is_mx8mq())
-+	if (cpu_is_mx8m())
- 		offset += SZ_32K;
- 
- 	return offset;
-diff --git a/arch/arm/mach-imx/imx.c b/arch/arm/mach-imx/imx.c
-index 0942d50695..ca2e77befe 100644
---- a/arch/arm/mach-imx/imx.c
-+++ b/arch/arm/mach-imx/imx.c
-@@ -80,6 +80,8 @@ static int imx_soc_from_dt(void)
- 		return IMX_CPU_IMX7;
- 	if (of_machine_is_compatible("fsl,imx8mq"))
- 		return IMX_CPU_IMX8MQ;
-+	if (of_machine_is_compatible("fsl,imx8mm"))
-+		return IMX_CPU_IMX8MM;
- 	if (of_machine_is_compatible("fsl,vf610"))
- 		return IMX_CPU_VF610;
- 
-@@ -120,6 +122,8 @@ static int imx_init(void)
- 		ret = imx6_init();
- 	else if (cpu_is_mx7())
- 		ret = imx7_init();
-+	else if (cpu_is_mx8mm())
-+		ret = imx8mm_init();
- 	else if (cpu_is_mx8mq())
- 		ret = imx8mq_init();
- 	else if (cpu_is_vf610())
-diff --git a/arch/arm/mach-imx/imx8m.c b/arch/arm/mach-imx/imx8m.c
-index d044531520..d2ed7d52a9 100644
---- a/arch/arm/mach-imx/imx8m.c
-+++ b/arch/arm/mach-imx/imx8m.c
-@@ -22,6 +22,9 @@
- #include <mach/imx8m-ccm-regs.h>
- #include <mach/reset-reason.h>
- #include <mach/ocotp.h>
-+#include <mach/imx8mq-regs.h>
-+#include <mach/imx8m-ccm-regs.h>
-+#include <soc/imx8m/clk-early.h>
- 
- #include <linux/iopoll.h>
- #include <linux/arm-smccc.h>
-@@ -52,18 +55,61 @@ void imx8m_ccgr_clock_disable(int index)
- 	       ccm + IMX8M_CCM_CCGRn_CLR(index));
- }
- 
--u64 imx8mq_uid(void)
-+u64 imx8m_uid(void)
- {
--	return imx_ocotp_read_uid(IOMEM(MX8MQ_OCOTP_BASE_ADDR));
-+	return imx_ocotp_read_uid(IOMEM(MX8M_OCOTP_BASE_ADDR));
-+}
-+
-+static int imx8m_init(const char *cputypestr)
-+{
-+	void __iomem *src = IOMEM(MX8M_SRC_BASE_ADDR);
-+	struct arm_smccc_res res;
-+
 +	/*
-+	 * Reset reasons seem to be identical to that of i.MX7
++	 * Enable 1.8V(SEL_1P5_1P8_POS_REG) on
++	 * Phy control debug reg 0
 +	 */
-+	imx_set_reset_reason(src + IMX7_SRC_SRSR, imx7_reset_reasons);
-+	pr_info("%s unique ID: %llx\n", cputypestr, imx8m_uid());
++	phy_write(phydev, 0x1d, 0x1f);
++	phy_write(phydev, 0x1e, 0x8);
 +
-+	if (IS_ENABLED(CONFIG_ARM_SMCCC) &&
-+	    IS_ENABLED(CONFIG_FIRMWARE_IMX8MQ_ATF)) {
-+		arm_smccc_smc(FSL_SIP_BUILDINFO,
-+			      FSL_SIP_BUILDINFO_GET_COMMITHASH,
-+			      0, 0, 0, 0, 0, 0, &res);
-+		pr_info("i.MX ARM Trusted Firmware: %s\n", (char *)&res.a0);
-+	}
++	/* rgmii tx clock delay enable */
++	phy_write(phydev, 0x1d, 0x05);
++	phy_write(phydev, 0x1e, 0x100);
 +
 +	return 0;
 +}
 +
-+int imx8mm_init(void)
++static int nxp_imx8mm_evk_init(void)
 +{
-+	void __iomem *anatop = IOMEM(MX8M_ANATOP_BASE_ADDR);
-+	uint32_t type = FIELD_GET(DIGPROG_MAJOR,
-+				  readl(anatop + MX8MM_ANATOP_DIGPROG));
-+	const char *cputypestr;
++	int emmc_bbu_flag = 0;
++	int emmc_sd_flag = 0;
 +
-+	imx8mm_boot_save_loc();
++	if (!of_machine_is_compatible("fsl,imx8mm-evk"))
++		return 0;
 +
-+	switch (type) {
-+	case IMX8M_CPUTYPE_IMX8MM:
-+		cputypestr = "i.MX8MM";
-+		break;
-+	default:
-+		cputypestr = "unknown i.MX8M";
-+		break;
++	barebox_set_hostname("imx8mm-evk");
++
++	if (bootsource_get() == BOOTSOURCE_MMC) {
++		if (bootsource_get_instance() == 2) {
++			of_device_enable_path("/chosen/environment-emmc");
++			emmc_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
++		} else {
++			of_device_enable_path("/chosen/environment-sd");
++			emmc_sd_flag = BBU_HANDLER_FLAG_DEFAULT;
++		}
++	} else {
++		of_device_enable_path("/chosen/environment-emmc");
++		emmc_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
++	}
++
++	imx8mq_bbu_internal_mmc_register_handler("SD", "/dev/mmc1.barebox",
++						 emmc_sd_flag);
++	imx8mq_bbu_internal_mmc_register_handler("eMMC", "/dev/mmc2",
++						     emmc_bbu_flag);
++
++	phy_register_fixup_for_uid(PHY_ID_AR8031, AR_PHY_ID_MASK,
++				   ar8031_phy_fixup);
++	return 0;
++}
++device_initcall(nxp_imx8mm_evk_init);
+diff --git a/arch/arm/boards/nxp-imx8mm-evk/flash-header-imx8mm-evk.imxcfg b/arch/arm/boards/nxp-imx8mm-evk/flash-header-imx8mm-evk.imxcfg
+new file mode 100644
+index 0000000000..727439db7c
+--- /dev/null
++++ b/arch/arm/boards/nxp-imx8mm-evk/flash-header-imx8mm-evk.imxcfg
+@@ -0,0 +1,5 @@
++soc imx8mm
++
++loadaddr 0x007e1000
++max_load_size 0x3f000
++dcdofs 0x400
+diff --git a/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c
+new file mode 100644
+index 0000000000..cd1f7d168b
+--- /dev/null
++++ b/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c
+@@ -0,0 +1,184 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <io.h>
++#include <common.h>
++#include <debug_ll.h>
++#include <firmware.h>
++#include <asm/mmu.h>
++#include <asm/cache.h>
++#include <asm/sections.h>
++#include <asm/barebox-arm.h>
++#include <asm/barebox-arm-head.h>
++#include <i2c/i2c-early.h>
++#include <linux/sizes.h>
++#include <mach/atf.h>
++#include <mach/xload.h>
++#include <mach/esdctl.h>
++#include <mach/generic.h>
++#include <mach/imx8mm-regs.h>
++#include <mach/iomux-mx8mm.h>
++#include <mach/imx8m-ccm-regs.h>
++#include <mfd/bd71837.h>
++#include <soc/imx8m/ddr.h>
++#include <soc/fsl/fsl_udc.h>
++
++extern char __dtb_imx8mm_evk_start[];
++
++#define UART_PAD_CTRL	MUX_PAD_CTRL(PAD_CTL_DSE_3P3V_45_OHM)
++
++static void setup_uart(void)
++{
++	imx8m_early_setup_uart_clock();
++
++	imx8mm_setup_pad(IMX8MM_PAD_UART2_TXD_UART2_TX | UART_PAD_CTRL);
++
++	imx8m_uart_setup_ll();
++
++	putc_ll('>');
++}
++
++static void pmic_reg_write(void *i2c, int reg, uint8_t val)
++{
++	int ret;
++	u8 buf[32];
++	struct i2c_msg msgs[] = {
++		{
++			.addr = 0x4b,
++			.buf = buf,
++		},
 +	};
 +
-+	imx_set_silicon_revision(cputypestr, imx8mm_cpu_revision());
++	buf[0] = reg;
++	buf[1] = val;
 +
-+	return imx8m_init(cputypestr);
- }
- 
- int imx8mq_init(void)
- {
--	void __iomem *anatop = IOMEM(MX8MQ_ANATOP_BASE_ADDR);
--	void __iomem *src = IOMEM(MX8MQ_SRC_BASE_ADDR);
-+	void __iomem *anatop = IOMEM(MX8M_ANATOP_BASE_ADDR);
- 	uint32_t type = FIELD_GET(DIGPROG_MAJOR,
- 				  readl(anatop + MX8MQ_ANATOP_DIGPROG));
--	struct arm_smccc_res res;
- 	const char *cputypestr;
- 
- 	imx8mq_boot_save_loc();
-@@ -78,21 +124,93 @@ int imx8mq_init(void)
- 	};
- 
- 	imx_set_silicon_revision(cputypestr, imx8mq_cpu_revision());
--	/*
--	 * Reset reasons seem to be identical to that of i.MX7
--	 */
--	imx_set_reset_reason(src + IMX7_SRC_SRSR, imx7_reset_reasons);
--	pr_info("%s unique ID: %llx\n", cputypestr, imx8mq_uid());
- 
--	if (IS_ENABLED(CONFIG_ARM_SMCCC) &&
--	    IS_ENABLED(CONFIG_FIRMWARE_IMX8MQ_ATF)) {
--		arm_smccc_smc(FSL_SIP_BUILDINFO,
--			      FSL_SIP_BUILDINFO_GET_COMMITHASH,
--			      0, 0, 0, 0, 0, 0, &res);
--		pr_info("i.MX ARM Trusted Firmware: %s\n", (char *)&res.a0);
--	}
-+	return imx8m_init(cputypestr);
++	msgs[0].len = 2;
++
++	ret = i2c_fsl_xfer(i2c, msgs, ARRAY_SIZE(msgs));
++	if (ret != 1)
++		pr_err("Failed to write to pmic\n");
 +}
- 
--	return 0;
-+#define INTPLL_DIV20_CLKE_MASK                  BIT(27)
-+#define INTPLL_DIV10_CLKE_MASK                  BIT(25)
-+#define INTPLL_DIV8_CLKE_MASK                   BIT(23)
-+#define INTPLL_DIV6_CLKE_MASK                   BIT(21)
-+#define INTPLL_DIV5_CLKE_MASK                   BIT(19)
-+#define INTPLL_DIV4_CLKE_MASK                   BIT(17)
-+#define INTPLL_DIV3_CLKE_MASK                   BIT(15)
-+#define INTPLL_DIV2_CLKE_MASK                   BIT(13)
-+#define INTPLL_CLKE_MASK                        BIT(11)
 +
-+#define CCM_TARGET_ROOT0_DIV  GENMASK(1, 0)
-+
-+#define IMX8MM_CCM_ANALOG_ARM_PLL_GEN_CTRL	0x84
-+#define IMX8MM_CCM_ANALOG_SYS_PLL1_GEN_CTRL	0x94
-+#define IMX8MM_CCM_ANALOG_SYS_PLL2_GEN_CTRL	0x104
-+#define IMX8MM_CCM_ANALOG_SYS_PLL3_GEN_CTRL	0x114
-+
-+void imx8mm_early_clock_init(void)
++static int power_init_board(void)
 +{
-+	void __iomem *ana = IOMEM(MX8M_ANATOP_BASE_ADDR);
++	void *i2c;
++
++	imx8mm_setup_pad(IMX8MM_PAD_I2C1_SCL_I2C1_SCL);
++	imx8mm_setup_pad(IMX8MM_PAD_I2C1_SDA_I2C1_SDA);
++
++	imx8mm_early_clock_init();
++	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_I2C1);
++
++	i2c = imx8m_i2c_early_init(IOMEM(MX8MQ_I2C1_BASE_ADDR));
++
++	/* decrease RESET key long push time from the default 10s to 10ms */
++	pmic_reg_write(i2c, BD718XX_PWRONCONFIG1, 0x0);
++
++	/* unlock the PMIC regs */
++	pmic_reg_write(i2c, BD718XX_REGLOCK, 0x1);
++
++	/* increase VDD_SOC to typical value 0.85v before first DRAM access */
++	pmic_reg_write(i2c, BD718XX_BUCK1_VOLT_RUN, 0x0f);
++
++	/* increase VDD_DRAM to 0.975v for 3Ghz DDR */
++	pmic_reg_write(i2c, BD718XX_1ST_NODVS_BUCK_VOLT, 0x83);
++
++	/* lock the PMIC regs */
++	pmic_reg_write(i2c, BD718XX_REGLOCK, 0x11);
++
++	return 0;
++}
++
++extern struct dram_timing_info imx8mm_evk_dram_timing;
++
++static void start_atf(void)
++{
++	size_t bl31_size;
++	const u8 *bl31;
++	enum bootsource src;
++	int instance;
++
++	/*
++	 * If we are in EL3 we are running for the first time and need to
++	 * initialize the DRAM and run TF-A (BL31). The TF-A will then jump
++	 * to DRAM in EL2.
++	 */
++	if (current_el() != 3)
++		return;
++
++	power_init_board();
++	imx8mm_ddr_init(&imx8mm_evk_dram_timing);
++
++	imx8mm_get_boot_source(&src, &instance);
++	switch (src) {
++	case BOOTSOURCE_MMC:
++		imx8m_esdhc_load_image(instance, false);
++		break;
++	case BOOTSOURCE_SERIAL:
++		imx8mm_barebox_load_usb((void *)MX8M_ATF_BL33_BASE_ADDR);
++	break;
++	default:
++		printf("Unhandled bootsource BOOTSOURCE_%d\n", src);
++		hang();
++	}
++
++	/*
++	 * On completion the TF-A will jump to MX8M_ATF_BL33_BASE_ADDR
++	 * in EL2. Copy the image there, but replace the PBL part of
++	 * that image with ourselves. On a high assurance boot only the
++	 * currently running code is validated and contains the checksum
++	 * for the piggy data, so we need to ensure that we are running
++	 * the same code in DRAM.
++	 */
++	memcpy((void *)MX8M_ATF_BL33_BASE_ADDR,
++	       __image_start, barebox_pbl_size);
++
++	get_builtin_firmware(imx8mm_bl31_bin, &bl31, &bl31_size);
++
++	imx8mm_atf_load_bl31(bl31, bl31_size);
++
++	/* not reached */
++}
++
++/*
++ * Power-on execution flow of start_nxp_imx8mm_evk() might not be
++ * obvious for a very first read, so here's, hopefully helpful,
++ * summary:
++ *
++ * 1. MaskROM uploads PBL into OCRAM and that's where this function is
++ *    executed for the first time. At entry the exception level is EL3.
++ *
++ * 2. DDR is initialized and the image is loaded from storage into DRAM. The PBL
++ *    part is copied from OCRAM to the TF-A return address in DRAM.
++ *
++ * 3. TF-A is executed and exits into the PBL code in DRAM. TF-A has taken us
++ *    from EL3 to EL2.
++ *
++ * 4. Standard barebox boot flow continues
++ */
++static __noreturn noinline void nxp_imx8mm_evk_start(void)
++{
++	if (IS_ENABLED(CONFIG_DEBUG_LL))
++		setup_uart();
++
++	start_atf();
++
++	/*
++	 * Standard entry we hit once we initialized both DDR and ATF
++	 */
++	imx8mm_barebox_entry(__dtb_imx8mm_evk_start);
++}
++
++ENTRY_FUNCTION(start_nxp_imx8mm_evk, r0, r1, r2)
++{
 +	void __iomem *ccm = IOMEM(MX8M_CCM_BASE_ADDR);
-+	u32 val;
 +
-+	imx8m_ccgr_clock_disable(IMX8M_CCM_CCGR_DDR1);
++	writel(IMX8M_CCM_CCGR_SETTINGn_NEEDED(0),
++	       ccm + IMX8M_CCM_CCGRn_SET(IMX8M_CCM_CCGR_SCTR));
 +
-+	imx8m_clock_set_target_val(IMX8M_DRAM_ALT_CLK_ROOT,
-+				   IMX8M_CCM_TARGET_ROOTn_ENABLE |
-+				   IMX8M_CCM_TARGET_ROOTn_MUX(1));
++	imx8mm_cpu_lowlevel_init();
 +
-+	/* change the clock source of dram_apb_clk_root: source 4 800MHz /4 = 200MHz */
-+	imx8m_clock_set_target_val(IMX8M_DRAM_APB_CLK_ROOT,
-+				   IMX8M_CCM_TARGET_ROOTn_ENABLE |
-+				   IMX8M_CCM_TARGET_ROOTn_MUX(4) |
-+				   IMX8M_CCM_TARGET_ROOTn_POST_DIV(4 - 1));
++	relocate_to_current_adr();
++	setup_c();
 +
-+	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_DDR1);
-+
-+	val = readl(ana + IMX8MM_CCM_ANALOG_SYS_PLL1_GEN_CTRL);
-+	val |= INTPLL_CLKE_MASK | INTPLL_DIV2_CLKE_MASK |
-+		INTPLL_DIV3_CLKE_MASK | INTPLL_DIV4_CLKE_MASK |
-+		INTPLL_DIV5_CLKE_MASK | INTPLL_DIV6_CLKE_MASK |
-+		INTPLL_DIV8_CLKE_MASK | INTPLL_DIV10_CLKE_MASK |
-+		INTPLL_DIV20_CLKE_MASK;
-+	writel(val, ana + IMX8MM_CCM_ANALOG_SYS_PLL1_GEN_CTRL);
-+
-+	val = readl(ana + IMX8MM_CCM_ANALOG_SYS_PLL2_GEN_CTRL);
-+	val |= INTPLL_CLKE_MASK | INTPLL_DIV2_CLKE_MASK |
-+		INTPLL_DIV3_CLKE_MASK | INTPLL_DIV4_CLKE_MASK |
-+		INTPLL_DIV5_CLKE_MASK | INTPLL_DIV6_CLKE_MASK |
-+		INTPLL_DIV8_CLKE_MASK | INTPLL_DIV10_CLKE_MASK |
-+		INTPLL_DIV20_CLKE_MASK;
-+	writel(val, ana + IMX8MM_CCM_ANALOG_SYS_PLL2_GEN_CTRL);
-+
-+	/* config GIC to sys_pll2_100m */
-+	imx8m_ccgr_clock_disable(IMX8M_CCM_CCGR_GIC);
-+	imx8m_clock_set_target_val(IMX8M_GIC_CLK_ROOT,
-+				   IMX8M_CCM_TARGET_ROOTn_ENABLE |
-+				   IMX8M_CCM_TARGET_ROOTn_MUX(3));
-+	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_GIC);
-+
-+	/* Configure SYS_PLL3 to 750MHz */
-+	clk_pll1416x_early_set_rate(ana + IMX8MM_CCM_ANALOG_SYS_PLL3_GEN_CTRL,
-+				    750000000UL, 25000000UL);
-+
-+	clrsetbits_le32(ccm + IMX8M_CCM_TARGET_ROOTn(IMX8M_ARM_A53_CLK_ROOT),
-+			IMX8M_CCM_TARGET_ROOTn_MUX(7),
-+			IMX8M_CCM_TARGET_ROOTn_MUX(2));
-+
-+	/* Configure ARM PLL to 1.2GHz */
-+	clk_pll1416x_early_set_rate(ana + IMX8MM_CCM_ANALOG_ARM_PLL_GEN_CTRL,
-+				    1200000000UL, 25000000UL);
-+
-+	clrsetbits_le32(ana + IMX8MM_CCM_ANALOG_ARM_PLL_GEN_CTRL, 0,
-+			INTPLL_CLKE_MASK);
-+
-+	clrsetbits_le32(ccm + IMX8M_CCM_TARGET_ROOTn(IMX8M_ARM_A53_CLK_ROOT),
-+			IMX8M_CCM_TARGET_ROOTn_MUX(7),
-+			IMX8M_CCM_TARGET_ROOTn_MUX(1));
-+
-+	/* Configure DIV to 1.2GHz */
-+	clrsetbits_le32(ccm + IMX8M_CCM_TARGET_ROOTn(IMX8M_ARM_A53_CLK_ROOT),
-+			CCM_TARGET_ROOT0_DIV,
-+			FIELD_PREP(CCM_TARGET_ROOT0_DIV, 0));
- }
- 
- #define KEEP_ALIVE			0x18
-diff --git a/arch/arm/mach-imx/include/mach/esdctl.h b/arch/arm/mach-imx/include/mach/esdctl.h
-index 18c4a28360..41eb9f6729 100644
---- a/arch/arm/mach-imx/include/mach/esdctl.h
-+++ b/arch/arm/mach-imx/include/mach/esdctl.h
-@@ -139,6 +139,7 @@ void __noreturn imx53_barebox_entry(void *boarddata);
- void __noreturn imx6q_barebox_entry(void *boarddata);
- void __noreturn imx6ul_barebox_entry(void *boarddata);
- void __noreturn vf610_barebox_entry(void *boarddata);
-+void __noreturn imx8mm_barebox_entry(void *boarddata);
- void __noreturn imx8mq_barebox_entry(void *boarddata);
- void __noreturn imx7d_barebox_entry(void *boarddata);
- #define imx6sx_barebox_entry(boarddata) imx6ul_barebox_entry(boarddata)
-diff --git a/arch/arm/mach-imx/include/mach/generic.h b/arch/arm/mach-imx/include/mach/generic.h
-index 3666fd4f8b..7742a002ce 100644
---- a/arch/arm/mach-imx/include/mach/generic.h
-+++ b/arch/arm/mach-imx/include/mach/generic.h
-@@ -16,6 +16,7 @@ void imx53_boot_save_loc(void);
- void imx6_boot_save_loc(void);
- void imx7_boot_save_loc(void);
- void vf610_boot_save_loc(void);
-+void imx8mm_boot_save_loc(void);
- void imx8mq_boot_save_loc(void);
- 
- void imx25_get_boot_source(enum bootsource *src, int *instance);
-@@ -26,6 +27,7 @@ void imx53_get_boot_source(enum bootsource *src, int *instance);
- void imx6_get_boot_source(enum bootsource *src, int *instance);
- void imx7_get_boot_source(enum bootsource *src, int *instance);
- void vf610_get_boot_source(enum bootsource *src, int *instance);
-+void imx8mm_get_boot_source(enum bootsource *src, int *instance);
- void imx8mq_get_boot_source(enum bootsource *src, int *instance);
- 
- int imx1_init(void);
-@@ -40,6 +42,7 @@ int imx53_init(void);
- int imx6_init(void);
- int imx7_init(void);
- int vf610_init(void);
-+int imx8mm_init(void);
- int imx8mq_init(void);
- 
- int imx1_devices_init(void);
-@@ -59,6 +62,7 @@ void imx6ul_cpu_lowlevel_init(void);
- void imx7_cpu_lowlevel_init(void);
- void vf610_cpu_lowlevel_init(void);
- void imx8mq_cpu_lowlevel_init(void);
-+void imx8mm_cpu_lowlevel_init(void);
- 
- /* There's a off-by-one betweem the gpio bank number and the gpiochip */
- /* range e.g. GPIO_1_5 is gpio 5 under linux */
-@@ -199,6 +203,18 @@ extern unsigned int __imx_cpu_type;
- # define cpu_is_mx7()		(0)
- #endif
- 
-+#ifdef CONFIG_ARCH_IMX8MM
-+# ifdef imx_cpu_type
-+#  undef imx_cpu_type
-+#  define imx_cpu_type __imx_cpu_type
-+# else
-+#  define imx_cpu_type IMX_CPU_IMX8MM
-+# endif
-+# define cpu_is_mx8mm()	(imx_cpu_type == IMX_CPU_IMX8MM)
-+#else
-+# define cpu_is_mx8mm()	(0)
-+#endif
-+
- #ifdef CONFIG_ARCH_IMX8MQ
- # ifdef imx_cpu_type
- #  undef imx_cpu_type
-@@ -235,4 +251,6 @@ extern unsigned int __imx_cpu_type;
- #define cpu_is_mx23()	(0)
- #define cpu_is_mx28()	(0)
- 
-+#define cpu_is_mx8m()	(cpu_is_mx8mq() || cpu_is_mx8mm())
-+
- #endif /* __MACH_GENERIC_H */
-diff --git a/arch/arm/mach-imx/include/mach/imx8m-ccm-regs.h b/arch/arm/mach-imx/include/mach/imx8m-ccm-regs.h
-index 70a7e4af9d..743ed6cda0 100644
---- a/arch/arm/mach-imx/include/mach/imx8m-ccm-regs.h
-+++ b/arch/arm/mach-imx/include/mach/imx8m-ccm-regs.h
-@@ -49,6 +49,7 @@
- #define IMX8M_CCM_CCGR_SETTINGn_NEEDED(n)		IMX8M_CCM_CCGR_SETTINGn(n, 0b11)
- 
- void imx8m_early_setup_uart_clock(void);
-+void imx8mm_early_clock_init(void);
- void imx8m_clock_set_target_val(int clock_id, u32 val);
- void imx8m_ccgr_clock_enable(int index);
- void imx8m_ccgr_clock_disable(int index);
-diff --git a/arch/arm/mach-imx/include/mach/imx8mq.h b/arch/arm/mach-imx/include/mach/imx8mq.h
-index c085894ef7..2ef2987188 100644
---- a/arch/arm/mach-imx/include/mach/imx8mq.h
-+++ b/arch/arm/mach-imx/include/mach/imx8mq.h
-@@ -4,6 +4,7 @@
- #include <io.h>
- #include <mach/generic.h>
- #include <mach/imx8mq-regs.h>
-+#include <mach/imx8mm-regs.h>
- #include <mach/revision.h>
- #include <linux/bitfield.h>
- 
-@@ -13,11 +14,21 @@
- #define IMX8MQ_OCOTP_VERSION_B1_MAGIC	0xff0055aa
- 
- #define MX8MQ_ANATOP_DIGPROG	0x6c
-+#define MX8MM_ANATOP_DIGPROG	0x800
- 
- #define DIGPROG_MAJOR	GENMASK(23, 8)
- #define DIGPROG_MINOR	GENMASK(7, 0)
- 
- #define IMX8M_CPUTYPE_IMX8MQ	0x8240
-+#define IMX8M_CPUTYPE_IMX8MM	0x8241
-+
-+static inline int imx8mm_cpu_revision(void)
-+{
-+	void __iomem *anatop = IOMEM(MX8MM_ANATOP_BASE_ADDR);
-+	uint32_t revision = FIELD_GET(DIGPROG_MINOR,
-+				      readl(anatop + MX8MM_ANATOP_DIGPROG));
-+	return revision;
++	nxp_imx8mm_evk_start();
 +}
+diff --git a/arch/arm/boards/nxp-imx8mm-evk/lpddr4-timing.c b/arch/arm/boards/nxp-imx8mm-evk/lpddr4-timing.c
+new file mode 100644
+index 0000000000..b164bdec07
+--- /dev/null
++++ b/arch/arm/boards/nxp-imx8mm-evk/lpddr4-timing.c
+@@ -0,0 +1,1976 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright 2019 NXP
++ */
++
++#include <common.h>
++#include <soc/imx8m/ddr.h>
++#include <soc/imx8m/lpddr4_define.h>
++
++static struct dram_cfg_param lpddr4_ddrc_cfg[] = {
++	/* Start to config, default 3200mbps */
++	{ DDRC_DBG1(0),	0x00000001 },
++	{ DDRC_PWRCTL(0), 0x00000001 },
++	{ DDRC_MSTR(0),	0xa1080020 },
++	{ DDRC_RFSHTMG(0), 0x005b00d2 },
++	{ DDRC_INIT0(0), 0xC003061B },
++	{ DDRC_INIT1(0), 0x009D0000 },
++	{ DDRC_INIT3(0), 0x00D4002D },
++	{ DDRC_INIT4(0), (LPDDR4_MR3 << 16) | 0x0000 },
++	{ DDRC_INIT6(0), 0x0066004a },
++	{ DDRC_INIT7(0), 0x0006004a },
++
++	{ DDRC_DRAMTMG0(0), 0x1A201B22 },
++	{ DDRC_DRAMTMG1(0), 0x00060633 },
++	{ DDRC_DRAMTMG3(0), 0x00C0C000 },
++	{ DDRC_DRAMTMG4(0), 0x0F04080F },
++	{ DDRC_DRAMTMG5(0), 0x02040C0C },
++	{ DDRC_DRAMTMG6(0), 0x01010007 },
++	{ DDRC_DRAMTMG7(0), 0x00000401 },
++	{ DDRC_DRAMTMG12(0), 0x00020600 },
++	{ DDRC_DRAMTMG13(0), 0x0C100002 },
++	{ DDRC_DRAMTMG14(0), 0x000000E6 },
++	{ DDRC_DRAMTMG17(0), 0x00A00050 },
++
++	{ DDRC_ZQCTL0(0), 0x03200018 },
++	{ DDRC_ZQCTL1(0), 0x028061A8 },
++	{ DDRC_ZQCTL2(0), 0x00000000 },
++
++	{ DDRC_DFITMG0(0), 0x0497820A },
++	{ DDRC_DFITMG2(0), 0x0000170A },
++	{ DDRC_DRAMTMG2(0), 0x070E171a },
++	{ DDRC_DBICTL(0), 0x00000001 },
++
++	{ DDRC_DFITMG1(0), 0x00080303 },
++	{ DDRC_DFIUPD0(0), 0xE0400018 },
++	{ DDRC_DFIUPD1(0), 0x00DF00E4 },
++	{ DDRC_DFIUPD2(0), 0x80000000 },
++	{ DDRC_DFIMISC(0), 0x00000011 },
++
++	{ DDRC_DFIPHYMSTR(0), 0x00000000 },
++	{ DDRC_RANKCTL(0), 0x00000c99 },
++
++	/* address mapping */
++	{ DDRC_ADDRMAP0(0), 0x0000001f },
++	{ DDRC_ADDRMAP1(0), 0x00080808 },
++	{ DDRC_ADDRMAP2(0), 0x00000000 },
++	{ DDRC_ADDRMAP3(0), 0x00000000 },
++	{ DDRC_ADDRMAP4(0), 0x00001f1f },
++	{ DDRC_ADDRMAP5(0), 0x07070707 },
++	{ DDRC_ADDRMAP6(0), 0x07070707 },
++	{ DDRC_ADDRMAP7(0), 0x00000f0f },
++
++	/* performance setting */
++	{ DDRC_SCHED(0), 0x29001701 },
++	{ DDRC_SCHED1(0), 0x0000002c },
++	{ DDRC_PERFHPR1(0), 0x04000030 },
++	{ DDRC_PERFLPR1(0), 0x900093e7 },
++	{ DDRC_PERFWR1(0), 0x20005574 },
++	{ DDRC_PCCFG(0), 0x00000111 },
++	{ DDRC_PCFGW_0(0), 0x000072ff },
++	{ DDRC_PCFGQOS0_0(0), 0x02100e07 },
++	{ DDRC_PCFGQOS1_0(0), 0x00620096 },
++	{ DDRC_PCFGWQOS0_0(0), 0x01100e07 },
++	{ DDRC_PCFGWQOS1_0(0), 0x00c8012c },
++
++	/* frequency P1&P2 */
++	/* Frequency 1: 400mbps */
++	{ DDRC_FREQ1_DRAMTMG0(0), 0x0d0b010c },
++	{ DDRC_FREQ1_DRAMTMG1(0), 0x00030410 },
++	{ DDRC_FREQ1_DRAMTMG2(0), 0x0203090c },
++	{ DDRC_FREQ1_DRAMTMG3(0), 0x00505006 },
++	{ DDRC_FREQ1_DRAMTMG4(0), 0x05040305 },
++	{ DDRC_FREQ1_DRAMTMG5(0), 0x0d0e0504 },
++	{ DDRC_FREQ1_DRAMTMG6(0), 0x0a060004 },
++	{ DDRC_FREQ1_DRAMTMG7(0), 0x0000090e },
++	{ DDRC_FREQ1_DRAMTMG14(0), 0x00000032 },
++	{ DDRC_FREQ1_DRAMTMG15(0), 0x00000000 },
++	{ DDRC_FREQ1_DRAMTMG17(0), 0x0036001b },
++	{ DDRC_FREQ1_DERATEINT(0), 0x7e9fbeb1 },
++	{ DDRC_FREQ1_DFITMG0(0), 0x03818200 },
++	{ DDRC_FREQ1_DFITMG2(0), 0x00000000 },
++	{ DDRC_FREQ1_RFSHTMG(0), 0x000C001c },
++	{ DDRC_FREQ1_INIT3(0), 0x00840000 },
++	{ DDRC_FREQ1_INIT4(0), 0x00310000 },
++	{ DDRC_FREQ1_INIT6(0), 0x0066004a },
++	{ DDRC_FREQ1_INIT7(0), 0x0006004a },
++
++	/* Frequency 2: 100mbps */
++	{ DDRC_FREQ2_DRAMTMG0(0), 0x0d0b010c },
++	{ DDRC_FREQ2_DRAMTMG1(0), 0x00030410 },
++	{ DDRC_FREQ2_DRAMTMG2(0), 0x0203090c },
++	{ DDRC_FREQ2_DRAMTMG3(0), 0x00505006 },
++	{ DDRC_FREQ2_DRAMTMG4(0), 0x05040305 },
++	{ DDRC_FREQ2_DRAMTMG5(0), 0x0d0e0504 },
++	{ DDRC_FREQ2_DRAMTMG6(0), 0x0a060004 },
++	{ DDRC_FREQ2_DRAMTMG7(0), 0x0000090e },
++	{ DDRC_FREQ2_DRAMTMG14(0), 0x00000032 },
++	{ DDRC_FREQ2_DRAMTMG17(0), 0x0036001b },
++	{ DDRC_FREQ2_DERATEINT(0), 0x7e9fbeb1 },
++	{ DDRC_FREQ2_DFITMG0(0), 0x03818200 },
++	{ DDRC_FREQ2_DFITMG2(0), 0x00000000 },
++	{ DDRC_FREQ2_RFSHTMG(0), 0x0003800c },
++	{ DDRC_FREQ2_RFSHTMG(0), 0x00030007 },
++	{ DDRC_FREQ2_INIT3(0), 0x00840000 },
++	{ DDRC_FREQ2_INIT4(0), 0x00310008 },
++	{ DDRC_FREQ2_INIT4(0), (LPDDR4_MR3 << 16) | 0x0000 },
++	{ DDRC_FREQ2_INIT6(0), 0x0066004a },
++	{ DDRC_FREQ2_INIT7(0), 0x0006004a },
++
++	/* boot start point */
++	{ DDRC_MSTR2(0), 0x2 }, //DDRC_MSTR2
++};
++
++/* PHY Initialize Configuration */
++static struct dram_cfg_param lpddr4_ddrphy_cfg[] = {
++	{ 0x1005f, 0x1ff },
++	{ 0x1015f, 0x1ff },
++	{ 0x1105f, 0x1ff },
++	{ 0x1115f, 0x1ff },
++	{ 0x1205f, 0x1ff },
++	{ 0x1215f, 0x1ff },
++	{ 0x1305f, 0x1ff },
++	{ 0x1315f, 0x1ff },
++
++	{ 0x11005f, 0x1ff },
++	{ 0x11015f, 0x1ff },
++	{ 0x11105f, 0x1ff },
++	{ 0x11115f, 0x1ff },
++	{ 0x11205f, 0x1ff },
++	{ 0x11215f, 0x1ff },
++	{ 0x11305f, 0x1ff },
++	{ 0x11315f, 0x1ff },
++
++	{ 0x21005f, 0x1ff },
++	{ 0x21015f, 0x1ff },
++	{ 0x21105f, 0x1ff },
++	{ 0x21115f, 0x1ff },
++	{ 0x21205f, 0x1ff },
++	{ 0x21215f, 0x1ff },
++	{ 0x21305f, 0x1ff },
++	{ 0x21315f, 0x1ff },
++
++	{ 0x55, 0x1ff },
++	{ 0x1055, 0x1ff },
++	{ 0x2055, 0x1ff },
++	{ 0x3055, 0x1ff },
++	{ 0x4055, 0x1ff },
++	{ 0x5055, 0x1ff },
++	{ 0x6055, 0x1ff },
++	{ 0x7055, 0x1ff },
++	{ 0x8055, 0x1ff },
++	{ 0x9055, 0x1ff },
++
++	{ 0x200c5, 0x19 },
++	{ 0x1200c5, 0x7 },
++	{ 0x2200c5, 0x7 },
++
++	{ 0x2002e, 0x2 },
++	{ 0x12002e, 0x2 },
++	{ 0x22002e, 0x2 },
++
++	{ 0x90204, 0x0 },
++	{ 0x190204, 0x0 },
++	{ 0x290204, 0x0 },
++
++	{ 0x20024, 0xab },
++	{ 0x2003a, 0x0 },
++
++	{ 0x120024, 0xab },
++	{ 0x2003a, 0x0 },
++
++	{ 0x220024, 0xab },
++	{ 0x2003a, 0x0 },
++
++	{ 0x20056, 0x3 },
++	{ 0x120056, 0xa },
++	{ 0x220056, 0xa },
++
++	{ 0x1004d, 0xe00 },
++	{ 0x1014d, 0xe00 },
++	{ 0x1104d, 0xe00 },
++	{ 0x1114d, 0xe00 },
++	{ 0x1204d, 0xe00 },
++	{ 0x1214d, 0xe00 },
++	{ 0x1304d, 0xe00 },
++	{ 0x1314d, 0xe00 },
++
++	{ 0x11004d, 0xe00 },
++	{ 0x11014d, 0xe00 },
++	{ 0x11104d, 0xe00 },
++	{ 0x11114d, 0xe00 },
++	{ 0x11204d, 0xe00 },
++	{ 0x11214d, 0xe00 },
++	{ 0x11304d, 0xe00 },
++	{ 0x11314d, 0xe00 },
++
++	{ 0x21004d, 0xe00 },
++	{ 0x21014d, 0xe00 },
++	{ 0x21104d, 0xe00 },
++	{ 0x21114d, 0xe00 },
++	{ 0x21204d, 0xe00 },
++	{ 0x21214d, 0xe00 },
++	{ 0x21304d, 0xe00 },
++	{ 0x21314d, 0xe00 },
++
++	{ 0x10049, 0xfbe },
++	{ 0x10149, 0xfbe },
++	{ 0x11049, 0xfbe },
++	{ 0x11149, 0xfbe },
++	{ 0x12049, 0xfbe },
++	{ 0x12149, 0xfbe },
++	{ 0x13049, 0xfbe },
++	{ 0x13149, 0xfbe },
++
++	{ 0x110049, 0xfbe },
++	{ 0x110149, 0xfbe },
++	{ 0x111049, 0xfbe },
++	{ 0x111149, 0xfbe },
++	{ 0x112049, 0xfbe },
++	{ 0x112149, 0xfbe },
++	{ 0x113049, 0xfbe },
++	{ 0x113149, 0xfbe },
++
++	{ 0x210049, 0xfbe },
++	{ 0x210149, 0xfbe },
++	{ 0x211049, 0xfbe },
++	{ 0x211149, 0xfbe },
++	{ 0x212049, 0xfbe },
++	{ 0x212149, 0xfbe },
++	{ 0x213049, 0xfbe },
++	{ 0x213149, 0xfbe },
++
++	{ 0x43, 0x63 },
++	{ 0x1043, 0x63 },
++	{ 0x2043, 0x63 },
++	{ 0x3043, 0x63 },
++	{ 0x4043, 0x63 },
++	{ 0x5043, 0x63 },
++	{ 0x6043, 0x63 },
++	{ 0x7043, 0x63 },
++	{ 0x8043, 0x63 },
++	{ 0x9043, 0x63 },
++
++	{ 0x20018, 0x3 },
++	{ 0x20075, 0x4 },
++	{ 0x20050, 0x0 },
++	{ 0x20008, 0x2ee },
++	{ 0x120008, 0x64 },
++	{ 0x220008, 0x19 },
++	{ 0x20088, 0x9 },
++
++	{ 0x200b2, 0x1d4 },
++	{ 0x10043, 0x5a1 },
++	{ 0x10143, 0x5a1 },
++	{ 0x11043, 0x5a1 },
++	{ 0x11143, 0x5a1 },
++	{ 0x12043, 0x5a1 },
++	{ 0x12143, 0x5a1 },
++	{ 0x13043, 0x5a1 },
++	{ 0x13143, 0x5a1 },
++
++	{ 0x1200b2, 0xdc },
++	{ 0x110043, 0x5a1 },
++	{ 0x110143, 0x5a1 },
++	{ 0x111043, 0x5a1 },
++	{ 0x111143, 0x5a1 },
++	{ 0x112043, 0x5a1 },
++	{ 0x112143, 0x5a1 },
++	{ 0x113043, 0x5a1 },
++	{ 0x113143, 0x5a1 },
++
++	{ 0x2200b2, 0xdc },
++	{ 0x210043, 0x5a1 },
++	{ 0x210143, 0x5a1 },
++	{ 0x211043, 0x5a1 },
++	{ 0x211143, 0x5a1 },
++	{ 0x212043, 0x5a1 },
++	{ 0x212143, 0x5a1 },
++	{ 0x213043, 0x5a1 },
++	{ 0x213143, 0x5a1 },
++
++	{ 0x200fa, 0x1 },
++	{ 0x1200fa, 0x1 },
++	{ 0x2200fa, 0x1 },
++
++	{ 0x20019, 0x1 },
++	{ 0x120019, 0x1 },
++	{ 0x220019, 0x1 },
++
++	{ 0x200f0, 0x660 },
++	{ 0x200f1, 0x0 },
++	{ 0x200f2, 0x4444 },
++	{ 0x200f3, 0x8888 },
++	{ 0x200f4, 0x5665 },
++	{ 0x200f5, 0x0 },
++	{ 0x200f6, 0x0 },
++	{ 0x200f7, 0xf000 },
++
++	{ 0x20025, 0x0 },
++	{ 0x2002d, LPDDR4_PHY_DMIPinPresent },
++	{ 0x12002d, LPDDR4_PHY_DMIPinPresent },
++	{ 0x22002d, LPDDR4_PHY_DMIPinPresent },
++	{ 0x200c7, 0x21 },
++	{ 0x200ca, 0x24 },
++	{ 0x1200c7, 0x21 },
++	{ 0x1200ca, 0x24 },
++	{ 0x2200c7, 0x21 },
++	{ 0x2200ca, 0x24 },
++};
++
++/* ddr phy trained csr */
++static struct dram_cfg_param lpddr4_ddrphy_trained_csr[] = {
++	{ 0x200b2, 0x0 },
++	{ 0x1200b2, 0x0 },
++	{ 0x2200b2, 0x0 },
++	{ 0x200cb, 0x0 },
++	{ 0x10043, 0x0 },
++	{ 0x110043, 0x0 },
++	{ 0x210043, 0x0 },
++	{ 0x10143, 0x0 },
++	{ 0x110143, 0x0 },
++	{ 0x210143, 0x0 },
++	{ 0x11043, 0x0 },
++	{ 0x111043, 0x0 },
++	{ 0x211043, 0x0 },
++	{ 0x11143, 0x0 },
++	{ 0x111143, 0x0 },
++	{ 0x211143, 0x0 },
++	{ 0x12043, 0x0 },
++	{ 0x112043, 0x0 },
++	{ 0x212043, 0x0 },
++	{ 0x12143, 0x0 },
++	{ 0x112143, 0x0 },
++	{ 0x212143, 0x0 },
++	{ 0x13043, 0x0 },
++	{ 0x113043, 0x0 },
++	{ 0x213043, 0x0 },
++	{ 0x13143, 0x0 },
++	{ 0x113143, 0x0 },
++	{ 0x213143, 0x0 },
++	{ 0x80, 0x0 },
++	{ 0x100080, 0x0 },
++	{ 0x200080, 0x0 },
++	{ 0x1080, 0x0 },
++	{ 0x101080, 0x0 },
++	{ 0x201080, 0x0 },
++	{ 0x2080, 0x0 },
++	{ 0x102080, 0x0 },
++	{ 0x202080, 0x0 },
++	{ 0x3080, 0x0 },
++	{ 0x103080, 0x0 },
++	{ 0x203080, 0x0 },
++	{ 0x4080, 0x0 },
++	{ 0x104080, 0x0 },
++	{ 0x204080, 0x0 },
++	{ 0x5080, 0x0 },
++	{ 0x105080, 0x0 },
++	{ 0x205080, 0x0 },
++	{ 0x6080, 0x0 },
++	{ 0x106080, 0x0 },
++	{ 0x206080, 0x0 },
++	{ 0x7080, 0x0 },
++	{ 0x107080, 0x0 },
++	{ 0x207080, 0x0 },
++	{ 0x8080, 0x0 },
++	{ 0x108080, 0x0 },
++	{ 0x208080, 0x0 },
++	{ 0x9080, 0x0 },
++	{ 0x109080, 0x0 },
++	{ 0x209080, 0x0 },
++	{ 0x10080, 0x0 },
++	{ 0x110080, 0x0 },
++	{ 0x210080, 0x0 },
++	{ 0x10180, 0x0 },
++	{ 0x110180, 0x0 },
++	{ 0x210180, 0x0 },
++	{ 0x11080, 0x0 },
++	{ 0x111080, 0x0 },
++	{ 0x211080, 0x0 },
++	{ 0x11180, 0x0 },
++	{ 0x111180, 0x0 },
++	{ 0x211180, 0x0 },
++	{ 0x12080, 0x0 },
++	{ 0x112080, 0x0 },
++	{ 0x212080, 0x0 },
++	{ 0x12180, 0x0 },
++	{ 0x112180, 0x0 },
++	{ 0x212180, 0x0 },
++	{ 0x13080, 0x0 },
++	{ 0x113080, 0x0 },
++	{ 0x213080, 0x0 },
++	{ 0x13180, 0x0 },
++	{ 0x113180, 0x0 },
++	{ 0x213180, 0x0 },
++	{ 0x10081, 0x0 },
++	{ 0x110081, 0x0 },
++	{ 0x210081, 0x0 },
++	{ 0x10181, 0x0 },
++	{ 0x110181, 0x0 },
++	{ 0x210181, 0x0 },
++	{ 0x11081, 0x0 },
++	{ 0x111081, 0x0 },
++	{ 0x211081, 0x0 },
++	{ 0x11181, 0x0 },
++	{ 0x111181, 0x0 },
++	{ 0x211181, 0x0 },
++	{ 0x12081, 0x0 },
++	{ 0x112081, 0x0 },
++	{ 0x212081, 0x0 },
++	{ 0x12181, 0x0 },
++	{ 0x112181, 0x0 },
++	{ 0x212181, 0x0 },
++	{ 0x13081, 0x0 },
++	{ 0x113081, 0x0 },
++	{ 0x213081, 0x0 },
++	{ 0x13181, 0x0 },
++	{ 0x113181, 0x0 },
++	{ 0x213181, 0x0 },
++	{ 0x100d0, 0x0 },
++	{ 0x1100d0, 0x0 },
++	{ 0x2100d0, 0x0 },
++	{ 0x101d0, 0x0 },
++	{ 0x1101d0, 0x0 },
++	{ 0x2101d0, 0x0 },
++	{ 0x110d0, 0x0 },
++	{ 0x1110d0, 0x0 },
++	{ 0x2110d0, 0x0 },
++	{ 0x111d0, 0x0 },
++	{ 0x1111d0, 0x0 },
++	{ 0x2111d0, 0x0 },
++	{ 0x120d0, 0x0 },
++	{ 0x1120d0, 0x0 },
++	{ 0x2120d0, 0x0 },
++	{ 0x121d0, 0x0 },
++	{ 0x1121d0, 0x0 },
++	{ 0x2121d0, 0x0 },
++	{ 0x130d0, 0x0 },
++	{ 0x1130d0, 0x0 },
++	{ 0x2130d0, 0x0 },
++	{ 0x131d0, 0x0 },
++	{ 0x1131d0, 0x0 },
++	{ 0x2131d0, 0x0 },
++	{ 0x100d1, 0x0 },
++	{ 0x1100d1, 0x0 },
++	{ 0x2100d1, 0x0 },
++	{ 0x101d1, 0x0 },
++	{ 0x1101d1, 0x0 },
++	{ 0x2101d1, 0x0 },
++	{ 0x110d1, 0x0 },
++	{ 0x1110d1, 0x0 },
++	{ 0x2110d1, 0x0 },
++	{ 0x111d1, 0x0 },
++	{ 0x1111d1, 0x0 },
++	{ 0x2111d1, 0x0 },
++	{ 0x120d1, 0x0 },
++	{ 0x1120d1, 0x0 },
++	{ 0x2120d1, 0x0 },
++	{ 0x121d1, 0x0 },
++	{ 0x1121d1, 0x0 },
++	{ 0x2121d1, 0x0 },
++	{ 0x130d1, 0x0 },
++	{ 0x1130d1, 0x0 },
++	{ 0x2130d1, 0x0 },
++	{ 0x131d1, 0x0 },
++	{ 0x1131d1, 0x0 },
++	{ 0x2131d1, 0x0 },
++	{ 0x10068, 0x0 },
++	{ 0x10168, 0x0 },
++	{ 0x10268, 0x0 },
++	{ 0x10368, 0x0 },
++	{ 0x10468, 0x0 },
++	{ 0x10568, 0x0 },
++	{ 0x10668, 0x0 },
++	{ 0x10768, 0x0 },
++	{ 0x10868, 0x0 },
++	{ 0x11068, 0x0 },
++	{ 0x11168, 0x0 },
++	{ 0x11268, 0x0 },
++	{ 0x11368, 0x0 },
++	{ 0x11468, 0x0 },
++	{ 0x11568, 0x0 },
++	{ 0x11668, 0x0 },
++	{ 0x11768, 0x0 },
++	{ 0x11868, 0x0 },
++	{ 0x12068, 0x0 },
++	{ 0x12168, 0x0 },
++	{ 0x12268, 0x0 },
++	{ 0x12368, 0x0 },
++	{ 0x12468, 0x0 },
++	{ 0x12568, 0x0 },
++	{ 0x12668, 0x0 },
++	{ 0x12768, 0x0 },
++	{ 0x12868, 0x0 },
++	{ 0x13068, 0x0 },
++	{ 0x13168, 0x0 },
++	{ 0x13268, 0x0 },
++	{ 0x13368, 0x0 },
++	{ 0x13468, 0x0 },
++	{ 0x13568, 0x0 },
++	{ 0x13668, 0x0 },
++	{ 0x13768, 0x0 },
++	{ 0x13868, 0x0 },
++	{ 0x10069, 0x0 },
++	{ 0x10169, 0x0 },
++	{ 0x10269, 0x0 },
++	{ 0x10369, 0x0 },
++	{ 0x10469, 0x0 },
++	{ 0x10569, 0x0 },
++	{ 0x10669, 0x0 },
++	{ 0x10769, 0x0 },
++	{ 0x10869, 0x0 },
++	{ 0x11069, 0x0 },
++	{ 0x11169, 0x0 },
++	{ 0x11269, 0x0 },
++	{ 0x11369, 0x0 },
++	{ 0x11469, 0x0 },
++	{ 0x11569, 0x0 },
++	{ 0x11669, 0x0 },
++	{ 0x11769, 0x0 },
++	{ 0x11869, 0x0 },
++	{ 0x12069, 0x0 },
++	{ 0x12169, 0x0 },
++	{ 0x12269, 0x0 },
++	{ 0x12369, 0x0 },
++	{ 0x12469, 0x0 },
++	{ 0x12569, 0x0 },
++	{ 0x12669, 0x0 },
++	{ 0x12769, 0x0 },
++	{ 0x12869, 0x0 },
++	{ 0x13069, 0x0 },
++	{ 0x13169, 0x0 },
++	{ 0x13269, 0x0 },
++	{ 0x13369, 0x0 },
++	{ 0x13469, 0x0 },
++	{ 0x13569, 0x0 },
++	{ 0x13669, 0x0 },
++	{ 0x13769, 0x0 },
++	{ 0x13869, 0x0 },
++	{ 0x1008c, 0x0 },
++	{ 0x11008c, 0x0 },
++	{ 0x21008c, 0x0 },
++	{ 0x1018c, 0x0 },
++	{ 0x11018c, 0x0 },
++	{ 0x21018c, 0x0 },
++	{ 0x1108c, 0x0 },
++	{ 0x11108c, 0x0 },
++	{ 0x21108c, 0x0 },
++	{ 0x1118c, 0x0 },
++	{ 0x11118c, 0x0 },
++	{ 0x21118c, 0x0 },
++	{ 0x1208c, 0x0 },
++	{ 0x11208c, 0x0 },
++	{ 0x21208c, 0x0 },
++	{ 0x1218c, 0x0 },
++	{ 0x11218c, 0x0 },
++	{ 0x21218c, 0x0 },
++	{ 0x1308c, 0x0 },
++	{ 0x11308c, 0x0 },
++	{ 0x21308c, 0x0 },
++	{ 0x1318c, 0x0 },
++	{ 0x11318c, 0x0 },
++	{ 0x21318c, 0x0 },
++	{ 0x1008d, 0x0 },
++	{ 0x11008d, 0x0 },
++	{ 0x21008d, 0x0 },
++	{ 0x1018d, 0x0 },
++	{ 0x11018d, 0x0 },
++	{ 0x21018d, 0x0 },
++	{ 0x1108d, 0x0 },
++	{ 0x11108d, 0x0 },
++	{ 0x21108d, 0x0 },
++	{ 0x1118d, 0x0 },
++	{ 0x11118d, 0x0 },
++	{ 0x21118d, 0x0 },
++	{ 0x1208d, 0x0 },
++	{ 0x11208d, 0x0 },
++	{ 0x21208d, 0x0 },
++	{ 0x1218d, 0x0 },
++	{ 0x11218d, 0x0 },
++	{ 0x21218d, 0x0 },
++	{ 0x1308d, 0x0 },
++	{ 0x11308d, 0x0 },
++	{ 0x21308d, 0x0 },
++	{ 0x1318d, 0x0 },
++	{ 0x11318d, 0x0 },
++	{ 0x21318d, 0x0 },
++	{ 0x100c0, 0x0 },
++	{ 0x1100c0, 0x0 },
++	{ 0x2100c0, 0x0 },
++	{ 0x101c0, 0x0 },
++	{ 0x1101c0, 0x0 },
++	{ 0x2101c0, 0x0 },
++	{ 0x102c0, 0x0 },
++	{ 0x1102c0, 0x0 },
++	{ 0x2102c0, 0x0 },
++	{ 0x103c0, 0x0 },
++	{ 0x1103c0, 0x0 },
++	{ 0x2103c0, 0x0 },
++	{ 0x104c0, 0x0 },
++	{ 0x1104c0, 0x0 },
++	{ 0x2104c0, 0x0 },
++	{ 0x105c0, 0x0 },
++	{ 0x1105c0, 0x0 },
++	{ 0x2105c0, 0x0 },
++	{ 0x106c0, 0x0 },
++	{ 0x1106c0, 0x0 },
++	{ 0x2106c0, 0x0 },
++	{ 0x107c0, 0x0 },
++	{ 0x1107c0, 0x0 },
++	{ 0x2107c0, 0x0 },
++	{ 0x108c0, 0x0 },
++	{ 0x1108c0, 0x0 },
++	{ 0x2108c0, 0x0 },
++	{ 0x110c0, 0x0 },
++	{ 0x1110c0, 0x0 },
++	{ 0x2110c0, 0x0 },
++	{ 0x111c0, 0x0 },
++	{ 0x1111c0, 0x0 },
++	{ 0x2111c0, 0x0 },
++	{ 0x112c0, 0x0 },
++	{ 0x1112c0, 0x0 },
++	{ 0x2112c0, 0x0 },
++	{ 0x113c0, 0x0 },
++	{ 0x1113c0, 0x0 },
++	{ 0x2113c0, 0x0 },
++	{ 0x114c0, 0x0 },
++	{ 0x1114c0, 0x0 },
++	{ 0x2114c0, 0x0 },
++	{ 0x115c0, 0x0 },
++	{ 0x1115c0, 0x0 },
++	{ 0x2115c0, 0x0 },
++	{ 0x116c0, 0x0 },
++	{ 0x1116c0, 0x0 },
++	{ 0x2116c0, 0x0 },
++	{ 0x117c0, 0x0 },
++	{ 0x1117c0, 0x0 },
++	{ 0x2117c0, 0x0 },
++	{ 0x118c0, 0x0 },
++	{ 0x1118c0, 0x0 },
++	{ 0x2118c0, 0x0 },
++	{ 0x120c0, 0x0 },
++	{ 0x1120c0, 0x0 },
++	{ 0x2120c0, 0x0 },
++	{ 0x121c0, 0x0 },
++	{ 0x1121c0, 0x0 },
++	{ 0x2121c0, 0x0 },
++	{ 0x122c0, 0x0 },
++	{ 0x1122c0, 0x0 },
++	{ 0x2122c0, 0x0 },
++	{ 0x123c0, 0x0 },
++	{ 0x1123c0, 0x0 },
++	{ 0x2123c0, 0x0 },
++	{ 0x124c0, 0x0 },
++	{ 0x1124c0, 0x0 },
++	{ 0x2124c0, 0x0 },
++	{ 0x125c0, 0x0 },
++	{ 0x1125c0, 0x0 },
++	{ 0x2125c0, 0x0 },
++	{ 0x126c0, 0x0 },
++	{ 0x1126c0, 0x0 },
++	{ 0x2126c0, 0x0 },
++	{ 0x127c0, 0x0 },
++	{ 0x1127c0, 0x0 },
++	{ 0x2127c0, 0x0 },
++	{ 0x128c0, 0x0 },
++	{ 0x1128c0, 0x0 },
++	{ 0x2128c0, 0x0 },
++	{ 0x130c0, 0x0 },
++	{ 0x1130c0, 0x0 },
++	{ 0x2130c0, 0x0 },
++	{ 0x131c0, 0x0 },
++	{ 0x1131c0, 0x0 },
++	{ 0x2131c0, 0x0 },
++	{ 0x132c0, 0x0 },
++	{ 0x1132c0, 0x0 },
++	{ 0x2132c0, 0x0 },
++	{ 0x133c0, 0x0 },
++	{ 0x1133c0, 0x0 },
++	{ 0x2133c0, 0x0 },
++	{ 0x134c0, 0x0 },
++	{ 0x1134c0, 0x0 },
++	{ 0x2134c0, 0x0 },
++	{ 0x135c0, 0x0 },
++	{ 0x1135c0, 0x0 },
++	{ 0x2135c0, 0x0 },
++	{ 0x136c0, 0x0 },
++	{ 0x1136c0, 0x0 },
++	{ 0x2136c0, 0x0 },
++	{ 0x137c0, 0x0 },
++	{ 0x1137c0, 0x0 },
++	{ 0x2137c0, 0x0 },
++	{ 0x138c0, 0x0 },
++	{ 0x1138c0, 0x0 },
++	{ 0x2138c0, 0x0 },
++	{ 0x100c1, 0x0 },
++	{ 0x1100c1, 0x0 },
++	{ 0x2100c1, 0x0 },
++	{ 0x101c1, 0x0 },
++	{ 0x1101c1, 0x0 },
++	{ 0x2101c1, 0x0 },
++	{ 0x102c1, 0x0 },
++	{ 0x1102c1, 0x0 },
++	{ 0x2102c1, 0x0 },
++	{ 0x103c1, 0x0 },
++	{ 0x1103c1, 0x0 },
++	{ 0x2103c1, 0x0 },
++	{ 0x104c1, 0x0 },
++	{ 0x1104c1, 0x0 },
++	{ 0x2104c1, 0x0 },
++	{ 0x105c1, 0x0 },
++	{ 0x1105c1, 0x0 },
++	{ 0x2105c1, 0x0 },
++	{ 0x106c1, 0x0 },
++	{ 0x1106c1, 0x0 },
++	{ 0x2106c1, 0x0 },
++	{ 0x107c1, 0x0 },
++	{ 0x1107c1, 0x0 },
++	{ 0x2107c1, 0x0 },
++	{ 0x108c1, 0x0 },
++	{ 0x1108c1, 0x0 },
++	{ 0x2108c1, 0x0 },
++	{ 0x110c1, 0x0 },
++	{ 0x1110c1, 0x0 },
++	{ 0x2110c1, 0x0 },
++	{ 0x111c1, 0x0 },
++	{ 0x1111c1, 0x0 },
++	{ 0x2111c1, 0x0 },
++	{ 0x112c1, 0x0 },
++	{ 0x1112c1, 0x0 },
++	{ 0x2112c1, 0x0 },
++	{ 0x113c1, 0x0 },
++	{ 0x1113c1, 0x0 },
++	{ 0x2113c1, 0x0 },
++	{ 0x114c1, 0x0 },
++	{ 0x1114c1, 0x0 },
++	{ 0x2114c1, 0x0 },
++	{ 0x115c1, 0x0 },
++	{ 0x1115c1, 0x0 },
++	{ 0x2115c1, 0x0 },
++	{ 0x116c1, 0x0 },
++	{ 0x1116c1, 0x0 },
++	{ 0x2116c1, 0x0 },
++	{ 0x117c1, 0x0 },
++	{ 0x1117c1, 0x0 },
++	{ 0x2117c1, 0x0 },
++	{ 0x118c1, 0x0 },
++	{ 0x1118c1, 0x0 },
++	{ 0x2118c1, 0x0 },
++	{ 0x120c1, 0x0 },
++	{ 0x1120c1, 0x0 },
++	{ 0x2120c1, 0x0 },
++	{ 0x121c1, 0x0 },
++	{ 0x1121c1, 0x0 },
++	{ 0x2121c1, 0x0 },
++	{ 0x122c1, 0x0 },
++	{ 0x1122c1, 0x0 },
++	{ 0x2122c1, 0x0 },
++	{ 0x123c1, 0x0 },
++	{ 0x1123c1, 0x0 },
++	{ 0x2123c1, 0x0 },
++	{ 0x124c1, 0x0 },
++	{ 0x1124c1, 0x0 },
++	{ 0x2124c1, 0x0 },
++	{ 0x125c1, 0x0 },
++	{ 0x1125c1, 0x0 },
++	{ 0x2125c1, 0x0 },
++	{ 0x126c1, 0x0 },
++	{ 0x1126c1, 0x0 },
++	{ 0x2126c1, 0x0 },
++	{ 0x127c1, 0x0 },
++	{ 0x1127c1, 0x0 },
++	{ 0x2127c1, 0x0 },
++	{ 0x128c1, 0x0 },
++	{ 0x1128c1, 0x0 },
++	{ 0x2128c1, 0x0 },
++	{ 0x130c1, 0x0 },
++	{ 0x1130c1, 0x0 },
++	{ 0x2130c1, 0x0 },
++	{ 0x131c1, 0x0 },
++	{ 0x1131c1, 0x0 },
++	{ 0x2131c1, 0x0 },
++	{ 0x132c1, 0x0 },
++	{ 0x1132c1, 0x0 },
++	{ 0x2132c1, 0x0 },
++	{ 0x133c1, 0x0 },
++	{ 0x1133c1, 0x0 },
++	{ 0x2133c1, 0x0 },
++	{ 0x134c1, 0x0 },
++	{ 0x1134c1, 0x0 },
++	{ 0x2134c1, 0x0 },
++	{ 0x135c1, 0x0 },
++	{ 0x1135c1, 0x0 },
++	{ 0x2135c1, 0x0 },
++	{ 0x136c1, 0x0 },
++	{ 0x1136c1, 0x0 },
++	{ 0x2136c1, 0x0 },
++	{ 0x137c1, 0x0 },
++	{ 0x1137c1, 0x0 },
++	{ 0x2137c1, 0x0 },
++	{ 0x138c1, 0x0 },
++	{ 0x1138c1, 0x0 },
++	{ 0x2138c1, 0x0 },
++	{ 0x10020, 0x0 },
++	{ 0x110020, 0x0 },
++	{ 0x210020, 0x0 },
++	{ 0x11020, 0x0 },
++	{ 0x111020, 0x0 },
++	{ 0x211020, 0x0 },
++	{ 0x12020, 0x0 },
++	{ 0x112020, 0x0 },
++	{ 0x212020, 0x0 },
++	{ 0x13020, 0x0 },
++	{ 0x113020, 0x0 },
++	{ 0x213020, 0x0 },
++	{ 0x20072, 0x0 },
++	{ 0x20073, 0x0 },
++	{ 0x20074, 0x0 },
++	{ 0x100aa, 0x0 },
++	{ 0x110aa, 0x0 },
++	{ 0x120aa, 0x0 },
++	{ 0x130aa, 0x0 },
++	{ 0x20010, 0x0 },
++	{ 0x120010, 0x0 },
++	{ 0x220010, 0x0 },
++	{ 0x20011, 0x0 },
++	{ 0x120011, 0x0 },
++	{ 0x220011, 0x0 },
++	{ 0x100ae, 0x0 },
++	{ 0x1100ae, 0x0 },
++	{ 0x2100ae, 0x0 },
++	{ 0x100af, 0x0 },
++	{ 0x1100af, 0x0 },
++	{ 0x2100af, 0x0 },
++	{ 0x110ae, 0x0 },
++	{ 0x1110ae, 0x0 },
++	{ 0x2110ae, 0x0 },
++	{ 0x110af, 0x0 },
++	{ 0x1110af, 0x0 },
++	{ 0x2110af, 0x0 },
++	{ 0x120ae, 0x0 },
++	{ 0x1120ae, 0x0 },
++	{ 0x2120ae, 0x0 },
++	{ 0x120af, 0x0 },
++	{ 0x1120af, 0x0 },
++	{ 0x2120af, 0x0 },
++	{ 0x130ae, 0x0 },
++	{ 0x1130ae, 0x0 },
++	{ 0x2130ae, 0x0 },
++	{ 0x130af, 0x0 },
++	{ 0x1130af, 0x0 },
++	{ 0x2130af, 0x0 },
++	{ 0x20020, 0x0 },
++	{ 0x120020, 0x0 },
++	{ 0x220020, 0x0 },
++	{ 0x100a0, 0x0 },
++	{ 0x100a1, 0x0 },
++	{ 0x100a2, 0x0 },
++	{ 0x100a3, 0x0 },
++	{ 0x100a4, 0x0 },
++	{ 0x100a5, 0x0 },
++	{ 0x100a6, 0x0 },
++	{ 0x100a7, 0x0 },
++	{ 0x110a0, 0x0 },
++	{ 0x110a1, 0x0 },
++	{ 0x110a2, 0x0 },
++	{ 0x110a3, 0x0 },
++	{ 0x110a4, 0x0 },
++	{ 0x110a5, 0x0 },
++	{ 0x110a6, 0x0 },
++	{ 0x110a7, 0x0 },
++	{ 0x120a0, 0x0 },
++	{ 0x120a1, 0x0 },
++	{ 0x120a2, 0x0 },
++	{ 0x120a3, 0x0 },
++	{ 0x120a4, 0x0 },
++	{ 0x120a5, 0x0 },
++	{ 0x120a6, 0x0 },
++	{ 0x120a7, 0x0 },
++	{ 0x130a0, 0x0 },
++	{ 0x130a1, 0x0 },
++	{ 0x130a2, 0x0 },
++	{ 0x130a3, 0x0 },
++	{ 0x130a4, 0x0 },
++	{ 0x130a5, 0x0 },
++	{ 0x130a6, 0x0 },
++	{ 0x130a7, 0x0 },
++	{ 0x2007c, 0x0 },
++	{ 0x12007c, 0x0 },
++	{ 0x22007c, 0x0 },
++	{ 0x2007d, 0x0 },
++	{ 0x12007d, 0x0 },
++	{ 0x22007d, 0x0 },
++	{ 0x400fd, 0x0 },
++	{ 0x400c0, 0x0 },
++	{ 0x90201, 0x0 },
++	{ 0x190201, 0x0 },
++	{ 0x290201, 0x0 },
++	{ 0x90202, 0x0 },
++	{ 0x190202, 0x0 },
++	{ 0x290202, 0x0 },
++	{ 0x90203, 0x0 },
++	{ 0x190203, 0x0 },
++	{ 0x290203, 0x0 },
++	{ 0x90204, 0x0 },
++	{ 0x190204, 0x0 },
++	{ 0x290204, 0x0 },
++	{ 0x90205, 0x0 },
++	{ 0x190205, 0x0 },
++	{ 0x290205, 0x0 },
++	{ 0x90206, 0x0 },
++	{ 0x190206, 0x0 },
++	{ 0x290206, 0x0 },
++	{ 0x90207, 0x0 },
++	{ 0x190207, 0x0 },
++	{ 0x290207, 0x0 },
++	{ 0x90208, 0x0 },
++	{ 0x190208, 0x0 },
++	{ 0x290208, 0x0 },
++	{ 0x10062, 0x0 },
++	{ 0x10162, 0x0 },
++	{ 0x10262, 0x0 },
++	{ 0x10362, 0x0 },
++	{ 0x10462, 0x0 },
++	{ 0x10562, 0x0 },
++	{ 0x10662, 0x0 },
++	{ 0x10762, 0x0 },
++	{ 0x10862, 0x0 },
++	{ 0x11062, 0x0 },
++	{ 0x11162, 0x0 },
++	{ 0x11262, 0x0 },
++	{ 0x11362, 0x0 },
++	{ 0x11462, 0x0 },
++	{ 0x11562, 0x0 },
++	{ 0x11662, 0x0 },
++	{ 0x11762, 0x0 },
++	{ 0x11862, 0x0 },
++	{ 0x12062, 0x0 },
++	{ 0x12162, 0x0 },
++	{ 0x12262, 0x0 },
++	{ 0x12362, 0x0 },
++	{ 0x12462, 0x0 },
++	{ 0x12562, 0x0 },
++	{ 0x12662, 0x0 },
++	{ 0x12762, 0x0 },
++	{ 0x12862, 0x0 },
++	{ 0x13062, 0x0 },
++	{ 0x13162, 0x0 },
++	{ 0x13262, 0x0 },
++	{ 0x13362, 0x0 },
++	{ 0x13462, 0x0 },
++	{ 0x13562, 0x0 },
++	{ 0x13662, 0x0 },
++	{ 0x13762, 0x0 },
++	{ 0x13862, 0x0 },
++	{ 0x20077, 0x0 },
++	{ 0x10001, 0x0 },
++	{ 0x11001, 0x0 },
++	{ 0x12001, 0x0 },
++	{ 0x13001, 0x0 },
++	{ 0x10040, 0x0 },
++	{ 0x10140, 0x0 },
++	{ 0x10240, 0x0 },
++	{ 0x10340, 0x0 },
++	{ 0x10440, 0x0 },
++	{ 0x10540, 0x0 },
++	{ 0x10640, 0x0 },
++	{ 0x10740, 0x0 },
++	{ 0x10840, 0x0 },
++	{ 0x10030, 0x0 },
++	{ 0x10130, 0x0 },
++	{ 0x10230, 0x0 },
++	{ 0x10330, 0x0 },
++	{ 0x10430, 0x0 },
++	{ 0x10530, 0x0 },
++	{ 0x10630, 0x0 },
++	{ 0x10730, 0x0 },
++	{ 0x10830, 0x0 },
++	{ 0x11040, 0x0 },
++	{ 0x11140, 0x0 },
++	{ 0x11240, 0x0 },
++	{ 0x11340, 0x0 },
++	{ 0x11440, 0x0 },
++	{ 0x11540, 0x0 },
++	{ 0x11640, 0x0 },
++	{ 0x11740, 0x0 },
++	{ 0x11840, 0x0 },
++	{ 0x11030, 0x0 },
++	{ 0x11130, 0x0 },
++	{ 0x11230, 0x0 },
++	{ 0x11330, 0x0 },
++	{ 0x11430, 0x0 },
++	{ 0x11530, 0x0 },
++	{ 0x11630, 0x0 },
++	{ 0x11730, 0x0 },
++	{ 0x11830, 0x0 },
++	{ 0x12040, 0x0 },
++	{ 0x12140, 0x0 },
++	{ 0x12240, 0x0 },
++	{ 0x12340, 0x0 },
++	{ 0x12440, 0x0 },
++	{ 0x12540, 0x0 },
++	{ 0x12640, 0x0 },
++	{ 0x12740, 0x0 },
++	{ 0x12840, 0x0 },
++	{ 0x12030, 0x0 },
++	{ 0x12130, 0x0 },
++	{ 0x12230, 0x0 },
++	{ 0x12330, 0x0 },
++	{ 0x12430, 0x0 },
++	{ 0x12530, 0x0 },
++	{ 0x12630, 0x0 },
++	{ 0x12730, 0x0 },
++	{ 0x12830, 0x0 },
++	{ 0x13040, 0x0 },
++	{ 0x13140, 0x0 },
++	{ 0x13240, 0x0 },
++	{ 0x13340, 0x0 },
++	{ 0x13440, 0x0 },
++	{ 0x13540, 0x0 },
++	{ 0x13640, 0x0 },
++	{ 0x13740, 0x0 },
++	{ 0x13840, 0x0 },
++	{ 0x13030, 0x0 },
++	{ 0x13130, 0x0 },
++	{ 0x13230, 0x0 },
++	{ 0x13330, 0x0 },
++	{ 0x13430, 0x0 },
++	{ 0x13530, 0x0 },
++	{ 0x13630, 0x0 },
++	{ 0x13730, 0x0 },
++	{ 0x13830, 0x0 },
++};
++
++/* P0 message block paremeter for training firmware */
++static struct dram_cfg_param lpddr4_fsp0_cfg[] = {
++	{ 0xd0000, 0x0 },
++	{ 0x54000, 0x0 },
++	{ 0x54001, 0x0 },
++	{ 0x54002, 0x0 },
++	{ 0x54003, 0xbb8 },
++	{ 0x54004, 0x2 },
++	{ 0x54005, ((LPDDR4_PHY_RON << 8) | LPDDR4_PHY_RTT) },//PHY Ron/Rtt
++	{ 0x54006, LPDDR4_PHY_VREF_VALUE },
++	{ 0x54007, 0x0 },
++	{ 0x54008, 0x131f },
++	{ 0x54009, 0xc8 },
++	{ 0x5400a, 0x0 },
++	{ 0x5400b, 0x2 },
++	{ 0x5400c, 0x0 },
++	{ 0x5400d, 0x0 },
++	{ 0x5400e, 0x0 },
++	{ 0x5400f, 0x0 },
++	{ 0x54010, 0x0 },
++	{ 0x54011, 0x0 },
++	{ 0x54012, (LPDDR4_CS << 8) | (0x110 & 0xff) },
++	{ 0x54013, 0x0 },
++	{ 0x54014, 0x0 },
++	{ 0x54015, 0x0 },
++	{ 0x54016, 0x0 },
++	{ 0x54017, 0x0 },
++	{ 0x54018, 0x0 },
++	{ 0x54019, 0x2dd4 },
++	{ 0x5401a, (0x31 & 0xff00) | LPDDR4_MR3 },
++	{ 0x5401b, 0x4d66 },
++	{ 0x5401c, 0x4d08 },
++	{ 0x5401d, 0x0 },
++	{ 0x5401e, LPDDR4_MR22_RANK0/*0x16*/ },
++	{ 0x5401f, 0x2dd4 },
++	{ 0x54020, (0x31 & 0xff00) | LPDDR4_MR3 },
++	{ 0x54021, 0x4d66 },
++	{ 0x54022, 0x4d08 },
++	{ 0x54023, 0x0 },
++	{ 0x54024, LPDDR4_MR22_RANK1/*0x16*/ },
++	{ 0x54025, 0x0 },
++	{ 0x54026, 0x0 },
++	{ 0x54027, 0x0 },
++	{ 0x54028, 0x0 },
++	{ 0x54029, 0x0 },
++	{ 0x5402a, 0x0 },
++	{ 0x5402b, 0x1000 },
++	{ 0x5402c, LPDDR4_CS },
++	{ 0x5402d, 0x0 },
++	{ 0x5402e, 0x0 },
++	{ 0x5402f, 0x0 },
++	{ 0x54030, 0x0 },
++	{ 0x54031, 0x0 },
++	{ 0x54032, 0xd400 },
++	{ 0x54033, (LPDDR4_MR3 << 8) | (0x312d & 0xff) },
++	{ 0x54034, 0x6600 },
++	{ 0x54035, 0x84d },
++	{ 0x54036, 0x4d },
++	{ 0x54037, (LPDDR4_MR22_RANK0 << 8)/*0x1600*/ },
++	{ 0x54038, 0xd400 },
++	{ 0x54039, (LPDDR4_MR3 << 8) | (0x312d & 0xff) },
++	{ 0x5403a, 0x6600 },
++	{ 0x5403b, 0x84d },
++	{ 0x5403c, 0x4d },
++	{ 0x5403d, (LPDDR4_MR22_RANK1 << 8)/*0x1600*/ },
++	{ 0x5403e, 0x0 },
++	{ 0x5403f, 0x0 },
++	{ 0x54040, 0x0 },
++	{ 0x54041, 0x0 },
++	{ 0x54042, 0x0 },
++	{ 0x54043, 0x0 },
++	{ 0x54044, 0x0 },
++	{ 0xd0000, 0x1 },
++};
++
++/* P1 message block paremeter for training firmware */
++static struct dram_cfg_param lpddr4_fsp1_cfg[] = {
++	{ 0xd0000, 0x0 },
++	{ 0x54000, 0x0 },
++	{ 0x54001, 0x0 },
++	{ 0x54002, 0x101 },
++	{ 0x54003, 0x190 },
++	{ 0x54004, 0x2 },
++	{ 0x54005, ((LPDDR4_PHY_RON << 8) | LPDDR4_PHY_RTT) },/* PHY Ron/Rtt */
++	{ 0x54006, LPDDR4_PHY_VREF_VALUE },
++	{ 0x54007, 0x0 },
++	{ 0x54008, 0x121f },
++	{ 0x54009, 0xc8 },
++	{ 0x5400a, 0x0 },
++	{ 0x5400b, 0x2 },
++	{ 0x5400c, 0x0 },
++	{ 0x5400d, 0x0 },
++	{ 0x5400e, 0x0 },
++	{ 0x5400f, 0x0 },
++	{ 0x54010, 0x0 },
++	{ 0x54011, 0x0 },
++	{ 0x54012, (LPDDR4_CS << 8) | (0x110 & 0xff) },
++	{ 0x54013, 0x0 },
++	{ 0x54014, 0x0 },
++	{ 0x54015, 0x0 },
++	{ 0x54016, 0x0 },
++	{ 0x54017, 0x0 },
++	{ 0x54018, 0x0 },
++	{ 0x54019, 0x84 },
++	{ 0x5401a, (0x31 & 0xff00) | LPDDR4_MR3 },
++	{ 0x5401b, 0x4d66 },
++	{ 0x5401c, 0x4d08 },
++	{ 0x5401d, 0x0 },
++	{ 0x5401e, LPDDR4_MR22_RANK0/*0x16*/ },
++	{ 0x5401f, 0x84 },
++	{ 0x54020, (0x31 & 0xff00) | LPDDR4_MR3 },
++	{ 0x54021, 0x4d66 },
++	{ 0x54022, 0x4d08 },
++	{ 0x54023, 0x0 },
++	{ 0x54024, LPDDR4_MR22_RANK1/*0x16*/ },
++	{ 0x54025, 0x0 },
++	{ 0x54026, 0x0 },
++	{ 0x54027, 0x0 },
++	{ 0x54028, 0x0 },
++	{ 0x54029, 0x0 },
++	{ 0x5402a, 0x0 },
++	{ 0x5402b, 0x1000 },
++	{ 0x5402c, LPDDR4_CS },
++	{ 0x5402d, 0x0 },
++	{ 0x5402e, 0x0 },
++	{ 0x5402f, 0x0 },
++	{ 0x54030, 0x0 },
++	{ 0x54031, 0x0 },
++	{ 0x54032, 0x8400 },
++	{ 0x54033, (LPDDR4_MR3 << 8) | (0x3100 & 0xff) },
++	{ 0x54034, 0x6600 },
++	{ 0x54035, 0x84d },
++	{ 0x54036, 0x4d },
++	{ 0x54037, (LPDDR4_MR22_RANK0 << 8)/*0x1600*/ },
++	{ 0x54038, 0x8400 },
++	{ 0x54039, (LPDDR4_MR3 << 8) | (0x3100 & 0xff) },
++	{ 0x5403a, 0x6600 },
++	{ 0x5403b, 0x84d },
++	{ 0x5403c, 0x4d },
++	{ 0x5403d, (LPDDR4_MR22_RANK1 << 8)/*0x1600*/ },
++	{ 0x5403e, 0x0 },
++	{ 0x5403f, 0x0 },
++	{ 0x54040, 0x0 },
++	{ 0x54041, 0x0 },
++	{ 0x54042, 0x0 },
++	{ 0x54043, 0x0 },
++	{ 0x54044, 0x0 },
++	{ 0xd0000, 0x1 },
++};
++
++/* P1 message block paremeter for training firmware */
++static struct dram_cfg_param lpddr4_fsp2_cfg[] = {
++	{ 0xd0000, 0x0 },
++	{ 0x54000, 0x0 },
++	{ 0x54001, 0x0 },
++	{ 0x54002, 0x102 },
++	{ 0x54003, 0x64 },
++	{ 0x54004, 0x2 },
++	{ 0x54005, ((LPDDR4_PHY_RON << 8) | LPDDR4_PHY_RTT) },//PHY Ron/Rtt
++	{ 0x54006, LPDDR4_PHY_VREF_VALUE },
++	{ 0x54007, 0x0 },
++	{ 0x54008, 0x121f },
++	{ 0x54009, 0xc8 },
++	{ 0x5400a, 0x0 },
++	{ 0x5400b, 0x2 },
++	{ 0x5400c, 0x0 },
++	{ 0x5400d, 0x0 },
++	{ 0x5400e, 0x0 },
++	{ 0x5400f, 0x0 },
++	{ 0x54010, 0x0 },
++	{ 0x54011, 0x0 },
++	{ 0x54012, (LPDDR4_CS << 8) | (0x110 & 0xff) },
++	{ 0x54013, 0x0 },
++	{ 0x54014, 0x0 },
++	{ 0x54015, 0x0 },
++	{ 0x54016, 0x0 },
++	{ 0x54017, 0x0 },
++	{ 0x54018, 0x0 },
++	{ 0x54019, 0x84 },
++	{ 0x5401a, (0x31 & 0xff00) | LPDDR4_MR3 },
++	{ 0x5401b, 0x4d66 },
++	{ 0x5401c, 0x4d08 },
++	{ 0x5401d, 0x0 },
++	{ 0x5401e, LPDDR4_MR22_RANK0/*0x16*/ },
++	{ 0x5401f, 0x84 },
++	{ 0x54020, (0x31 & 0xff00) | LPDDR4_MR3 },
++	{ 0x54021, 0x4d66 },
++	{ 0x54022, 0x4d08 },
++	{ 0x54023, 0x0 },
++	{ 0x54024, LPDDR4_MR22_RANK1/*0x16*/ },
++	{ 0x54025, 0x0 },
++	{ 0x54026, 0x0 },
++	{ 0x54027, 0x0 },
++	{ 0x54028, 0x0 },
++	{ 0x54029, 0x0 },
++	{ 0x5402a, 0x0 },
++	{ 0x5402b, 0x1000 },
++	{ 0x5402c, LPDDR4_CS },
++	{ 0x5402d, 0x0 },
++	{ 0x5402e, 0x0 },
++	{ 0x5402f, 0x0 },
++	{ 0x54030, 0x0 },
++	{ 0x54031, 0x0 },
++	{ 0x54032, 0x8400 },
++	{ 0x54033, (LPDDR4_MR3 << 8) | (0x3100 & 0xff) },
++	{ 0x54034, 0x6600 },
++	{ 0x54035, 0x84d },
++	{ 0x54036, 0x4d },
++	{ 0x54037, (LPDDR4_MR22_RANK0 << 8)/*0x1600*/ },
++	{ 0x54038, 0x8400 },
++	{ 0x54039, (LPDDR4_MR3 << 8) | (0x3100 & 0xff) },
++	{ 0x5403a, 0x6600 },
++	{ 0x5403b, 0x84d },
++	{ 0x5403c, 0x4d },
++	{ 0x5403d, (LPDDR4_MR22_RANK1 << 8)/*0x1600*/ },
++	{ 0x5403e, 0x0 },
++	{ 0x5403f, 0x0 },
++	{ 0x54040, 0x0 },
++	{ 0x54041, 0x0 },
++	{ 0x54042, 0x0 },
++	{ 0x54043, 0x0 },
++	{ 0x54044, 0x0 },
++	{ 0xd0000, 0x1 },
++};
++
++/* P0 2D message block paremeter for training firmware */
++static struct dram_cfg_param lpddr4_fsp0_2d_cfg[] = {
++	{ 0xd0000, 0x0 },
++	{ 0x54000, 0x0 },
++	{ 0x54001, 0x0 },
++	{ 0x54002, 0x0 },
++	{ 0x54003, 0xbb8 },
++	{ 0x54004, 0x2 },
++	{ 0x54005, ((LPDDR4_PHY_RON << 8) | LPDDR4_PHY_RTT) },//PHY Ron/Rtt
++	{ 0x54006, LPDDR4_PHY_VREF_VALUE },
++	{ 0x54007, 0x0 },
++	{ 0x54008, 0x61 },
++	{ 0x54009, 0xc8 },
++	{ 0x5400a, 0x0 },
++	{ 0x5400b, 0x2 },
++	{ 0x5400c, 0x0 },
++	{ 0x5400d, 0x0 },
++	{ 0x5400e, 0x0 },
++	{ 0x5400f, 0x100 },
++	{ 0x54010, 0x1f7f },
++	{ 0x54011, 0x0 },
++	{ 0x54012, (LPDDR4_CS << 8) | (0x110 & 0xff) },
++	{ 0x54013, 0x0 },
++	{ 0x54014, 0x0 },
++	{ 0x54015, 0x0 },
++	{ 0x54016, 0x0 },
++	{ 0x54017, 0x0 },
++	{ 0x54018, 0x0 },
++	{ 0x54019, 0x2dd4 },
++	{ 0x5401a, (0x31 & 0xff00) | LPDDR4_MR3 },
++	{ 0x5401b, 0x4d66 },
++	{ 0x5401c, 0x4d08 },
++	{ 0x5401d, 0x0 },
++	{ 0x5401e, LPDDR4_MR22_RANK0/*0x16*/ },
++	{ 0x5401f, 0x2dd4 },
++	{ 0x54020, (0x31 & 0xff00) | LPDDR4_MR3 },
++	{ 0x54021, 0x4d66 },
++	{ 0x54022, 0x4d08 },
++	{ 0x54023, 0x0 },
++	{ 0x54024, LPDDR4_MR22_RANK1/*0x16*/ },
++	{ 0x54025, 0x0 },
++	{ 0x54026, 0x0 },
++	{ 0x54027, 0x0 },
++	{ 0x54028, 0x0 },
++	{ 0x54029, 0x0 },
++	{ 0x5402a, 0x0 },
++	{ 0x5402b, 0x1000 },
++	{ 0x5402c, LPDDR4_CS },
++	{ 0x5402d, 0x0 },
++	{ 0x5402e, 0x0 },
++	{ 0x5402f, 0x0 },
++	{ 0x54030, 0x0 },
++	{ 0x54031, 0x0 },
++	{ 0x54032, 0xd400 },
++	{ 0x54033, (LPDDR4_MR3 << 8) | (0x312d & 0xff) },
++	{ 0x54034, 0x6600 },
++	{ 0x54035, 0x84d },
++	{ 0x54036, 0x4d },
++	{ 0x54037, (LPDDR4_MR22_RANK0 << 8)/*0x1600*/ },
++	{ 0x54038, 0xd400 },
++	{ 0x54039, (LPDDR4_MR3 << 8) | (0x312d & 0xff) },
++	{ 0x5403a, 0x6600 },
++	{ 0x5403b, 0x84d },
++	{ 0x5403c, 0x4d },
++	{ 0x5403d, (LPDDR4_MR22_RANK1 << 8)/*0x1600*/ },
++	{ 0x5403e, 0x0 },
++	{ 0x5403f, 0x0 },
++	{ 0x54040, 0x0 },
++	{ 0x54041, 0x0 },
++	{ 0x54042, 0x0 },
++	{ 0x54043, 0x0 },
++	{ 0x54044, 0x0 },
++	{ 0xd0000, 0x1 },
++};
++
++/* DRAM PHY init engine image */
++static struct dram_cfg_param lpddr4_phy_pie[] = {
++	{ 0xd0000, 0x0 },
++	{ 0x90000, 0x10 },
++	{ 0x90001, 0x400 },
++	{ 0x90002, 0x10e },
++	{ 0x90003, 0x0 },
++	{ 0x90004, 0x0 },
++	{ 0x90005, 0x8 },
++	{ 0x90029, 0xb },
++	{ 0x9002a, 0x480 },
++	{ 0x9002b, 0x109 },
++	{ 0x9002c, 0x8 },
++	{ 0x9002d, 0x448 },
++	{ 0x9002e, 0x139 },
++	{ 0x9002f, 0x8 },
++	{ 0x90030, 0x478 },
++	{ 0x90031, 0x109 },
++	{ 0x90032, 0x0 },
++	{ 0x90033, 0xe8 },
++	{ 0x90034, 0x109 },
++	{ 0x90035, 0x2 },
++	{ 0x90036, 0x10 },
++	{ 0x90037, 0x139 },
++	{ 0x90038, 0xf },
++	{ 0x90039, 0x7c0 },
++	{ 0x9003a, 0x139 },
++	{ 0x9003b, 0x44 },
++	{ 0x9003c, 0x630 },
++	{ 0x9003d, 0x159 },
++	{ 0x9003e, 0x14f },
++	{ 0x9003f, 0x630 },
++	{ 0x90040, 0x159 },
++	{ 0x90041, 0x47 },
++	{ 0x90042, 0x630 },
++	{ 0x90043, 0x149 },
++	{ 0x90044, 0x4f },
++	{ 0x90045, 0x630 },
++	{ 0x90046, 0x179 },
++	{ 0x90047, 0x8 },
++	{ 0x90048, 0xe0 },
++	{ 0x90049, 0x109 },
++	{ 0x9004a, 0x0 },
++	{ 0x9004b, 0x7c8 },
++	{ 0x9004c, 0x109 },
++	{ 0x9004d, 0x0 },
++	{ 0x9004e, 0x1 },
++	{ 0x9004f, 0x8 },
++	{ 0x90050, 0x0 },
++	{ 0x90051, 0x45a },
++	{ 0x90052, 0x9 },
++	{ 0x90053, 0x0 },
++	{ 0x90054, 0x448 },
++	{ 0x90055, 0x109 },
++	{ 0x90056, 0x40 },
++	{ 0x90057, 0x630 },
++	{ 0x90058, 0x179 },
++	{ 0x90059, 0x1 },
++	{ 0x9005a, 0x618 },
++	{ 0x9005b, 0x109 },
++	{ 0x9005c, 0x40c0 },
++	{ 0x9005d, 0x630 },
++	{ 0x9005e, 0x149 },
++	{ 0x9005f, 0x8 },
++	{ 0x90060, 0x4 },
++	{ 0x90061, 0x48 },
++	{ 0x90062, 0x4040 },
++	{ 0x90063, 0x630 },
++	{ 0x90064, 0x149 },
++	{ 0x90065, 0x0 },
++	{ 0x90066, 0x4 },
++	{ 0x90067, 0x48 },
++	{ 0x90068, 0x40 },
++	{ 0x90069, 0x630 },
++	{ 0x9006a, 0x149 },
++	{ 0x9006b, 0x10 },
++	{ 0x9006c, 0x4 },
++	{ 0x9006d, 0x18 },
++	{ 0x9006e, 0x0 },
++	{ 0x9006f, 0x4 },
++	{ 0x90070, 0x78 },
++	{ 0x90071, 0x549 },
++	{ 0x90072, 0x630 },
++	{ 0x90073, 0x159 },
++	{ 0x90074, 0xd49 },
++	{ 0x90075, 0x630 },
++	{ 0x90076, 0x159 },
++	{ 0x90077, 0x94a },
++	{ 0x90078, 0x630 },
++	{ 0x90079, 0x159 },
++	{ 0x9007a, 0x441 },
++	{ 0x9007b, 0x630 },
++	{ 0x9007c, 0x149 },
++	{ 0x9007d, 0x42 },
++	{ 0x9007e, 0x630 },
++	{ 0x9007f, 0x149 },
++	{ 0x90080, 0x1 },
++	{ 0x90081, 0x630 },
++	{ 0x90082, 0x149 },
++	{ 0x90083, 0x0 },
++	{ 0x90084, 0xe0 },
++	{ 0x90085, 0x109 },
++	{ 0x90086, 0xa },
++	{ 0x90087, 0x10 },
++	{ 0x90088, 0x109 },
++	{ 0x90089, 0x9 },
++	{ 0x9008a, 0x3c0 },
++	{ 0x9008b, 0x149 },
++	{ 0x9008c, 0x9 },
++	{ 0x9008d, 0x3c0 },
++	{ 0x9008e, 0x159 },
++	{ 0x9008f, 0x18 },
++	{ 0x90090, 0x10 },
++	{ 0x90091, 0x109 },
++	{ 0x90092, 0x0 },
++	{ 0x90093, 0x3c0 },
++	{ 0x90094, 0x109 },
++	{ 0x90095, 0x18 },
++	{ 0x90096, 0x4 },
++	{ 0x90097, 0x48 },
++	{ 0x90098, 0x18 },
++	{ 0x90099, 0x4 },
++	{ 0x9009a, 0x58 },
++	{ 0x9009b, 0xa },
++	{ 0x9009c, 0x10 },
++	{ 0x9009d, 0x109 },
++	{ 0x9009e, 0x2 },
++	{ 0x9009f, 0x10 },
++	{ 0x900a0, 0x109 },
++	{ 0x900a1, 0x5 },
++	{ 0x900a2, 0x7c0 },
++	{ 0x900a3, 0x109 },
++	{ 0x900a4, 0x10 },
++	{ 0x900a5, 0x10 },
++	{ 0x900a6, 0x109 },
++	{ 0x40000, 0x811 },
++	{ 0x40020, 0x880 },
++	{ 0x40040, 0x0 },
++	{ 0x40060, 0x0 },
++	{ 0x40001, 0x4008 },
++	{ 0x40021, 0x83 },
++	{ 0x40041, 0x4f },
++	{ 0x40061, 0x0 },
++	{ 0x40002, 0x4040 },
++	{ 0x40022, 0x83 },
++	{ 0x40042, 0x51 },
++	{ 0x40062, 0x0 },
++	{ 0x40003, 0x811 },
++	{ 0x40023, 0x880 },
++	{ 0x40043, 0x0 },
++	{ 0x40063, 0x0 },
++	{ 0x40004, 0x720 },
++	{ 0x40024, 0xf },
++	{ 0x40044, 0x1740 },
++	{ 0x40064, 0x0 },
++	{ 0x40005, 0x16 },
++	{ 0x40025, 0x83 },
++	{ 0x40045, 0x4b },
++	{ 0x40065, 0x0 },
++	{ 0x40006, 0x716 },
++	{ 0x40026, 0xf },
++	{ 0x40046, 0x2001 },
++	{ 0x40066, 0x0 },
++	{ 0x40007, 0x716 },
++	{ 0x40027, 0xf },
++	{ 0x40047, 0x2800 },
++	{ 0x40067, 0x0 },
++	{ 0x40008, 0x716 },
++	{ 0x40028, 0xf },
++	{ 0x40048, 0xf00 },
++	{ 0x40068, 0x0 },
++	{ 0x40009, 0x720 },
++	{ 0x40029, 0xf },
++	{ 0x40049, 0x1400 },
++	{ 0x40069, 0x0 },
++	{ 0x4000a, 0xe08 },
++	{ 0x4002a, 0xc15 },
++	{ 0x4004a, 0x0 },
++	{ 0x4006a, 0x0 },
++	{ 0x4000b, 0x623 },
++	{ 0x4002b, 0x15 },
++	{ 0x4004b, 0x0 },
++	{ 0x4006b, 0x0 },
++	{ 0x4000c, 0x4028 },
++	{ 0x4002c, 0x80 },
++	{ 0x4004c, 0x0 },
++	{ 0x4006c, 0x0 },
++	{ 0x4000d, 0xe08 },
++	{ 0x4002d, 0xc1a },
++	{ 0x4004d, 0x0 },
++	{ 0x4006d, 0x0 },
++	{ 0x4000e, 0x623 },
++	{ 0x4002e, 0x1a },
++	{ 0x4004e, 0x0 },
++	{ 0x4006e, 0x0 },
++	{ 0x4000f, 0x4040 },
++	{ 0x4002f, 0x80 },
++	{ 0x4004f, 0x0 },
++	{ 0x4006f, 0x0 },
++	{ 0x40010, 0x2604 },
++	{ 0x40030, 0x15 },
++	{ 0x40050, 0x0 },
++	{ 0x40070, 0x0 },
++	{ 0x40011, 0x708 },
++	{ 0x40031, 0x5 },
++	{ 0x40051, 0x0 },
++	{ 0x40071, 0x2002 },
++	{ 0x40012, 0x8 },
++	{ 0x40032, 0x80 },
++	{ 0x40052, 0x0 },
++	{ 0x40072, 0x0 },
++	{ 0x40013, 0x2604 },
++	{ 0x40033, 0x1a },
++	{ 0x40053, 0x0 },
++	{ 0x40073, 0x0 },
++	{ 0x40014, 0x708 },
++	{ 0x40034, 0xa },
++	{ 0x40054, 0x0 },
++	{ 0x40074, 0x2002 },
++	{ 0x40015, 0x4040 },
++	{ 0x40035, 0x80 },
++	{ 0x40055, 0x0 },
++	{ 0x40075, 0x0 },
++	{ 0x40016, 0x60a },
++	{ 0x40036, 0x15 },
++	{ 0x40056, 0x1200 },
++	{ 0x40076, 0x0 },
++	{ 0x40017, 0x61a },
++	{ 0x40037, 0x15 },
++	{ 0x40057, 0x1300 },
++	{ 0x40077, 0x0 },
++	{ 0x40018, 0x60a },
++	{ 0x40038, 0x1a },
++	{ 0x40058, 0x1200 },
++	{ 0x40078, 0x0 },
++	{ 0x40019, 0x642 },
++	{ 0x40039, 0x1a },
++	{ 0x40059, 0x1300 },
++	{ 0x40079, 0x0 },
++	{ 0x4001a, 0x4808 },
++	{ 0x4003a, 0x880 },
++	{ 0x4005a, 0x0 },
++	{ 0x4007a, 0x0 },
++	{ 0x900a7, 0x0 },
++	{ 0x900a8, 0x790 },
++	{ 0x900a9, 0x11a },
++	{ 0x900aa, 0x8 },
++	{ 0x900ab, 0x7aa },
++	{ 0x900ac, 0x2a },
++	{ 0x900ad, 0x10 },
++	{ 0x900ae, 0x7b2 },
++	{ 0x900af, 0x2a },
++	{ 0x900b0, 0x0 },
++	{ 0x900b1, 0x7c8 },
++	{ 0x900b2, 0x109 },
++	{ 0x900b3, 0x10 },
++	{ 0x900b4, 0x2a8 },
++	{ 0x900b5, 0x129 },
++	{ 0x900b6, 0x8 },
++	{ 0x900b7, 0x370 },
++	{ 0x900b8, 0x129 },
++	{ 0x900b9, 0xa },
++	{ 0x900ba, 0x3c8 },
++	{ 0x900bb, 0x1a9 },
++	{ 0x900bc, 0xc },
++	{ 0x900bd, 0x408 },
++	{ 0x900be, 0x199 },
++	{ 0x900bf, 0x14 },
++	{ 0x900c0, 0x790 },
++	{ 0x900c1, 0x11a },
++	{ 0x900c2, 0x8 },
++	{ 0x900c3, 0x4 },
++	{ 0x900c4, 0x18 },
++	{ 0x900c5, 0xe },
++	{ 0x900c6, 0x408 },
++	{ 0x900c7, 0x199 },
++	{ 0x900c8, 0x8 },
++	{ 0x900c9, 0x8568 },
++	{ 0x900ca, 0x108 },
++	{ 0x900cb, 0x18 },
++	{ 0x900cc, 0x790 },
++	{ 0x900cd, 0x16a },
++	{ 0x900ce, 0x8 },
++	{ 0x900cf, 0x1d8 },
++	{ 0x900d0, 0x169 },
++	{ 0x900d1, 0x10 },
++	{ 0x900d2, 0x8558 },
++	{ 0x900d3, 0x168 },
++	{ 0x900d4, 0x70 },
++	{ 0x900d5, 0x788 },
++	{ 0x900d6, 0x16a },
++	{ 0x900d7, 0x1ff8 },
++	{ 0x900d8, 0x85a8 },
++	{ 0x900d9, 0x1e8 },
++	{ 0x900da, 0x50 },
++	{ 0x900db, 0x798 },
++	{ 0x900dc, 0x16a },
++	{ 0x900dd, 0x60 },
++	{ 0x900de, 0x7a0 },
++	{ 0x900df, 0x16a },
++	{ 0x900e0, 0x8 },
++	{ 0x900e1, 0x8310 },
++	{ 0x900e2, 0x168 },
++	{ 0x900e3, 0x8 },
++	{ 0x900e4, 0xa310 },
++	{ 0x900e5, 0x168 },
++	{ 0x900e6, 0xa },
++	{ 0x900e7, 0x408 },
++	{ 0x900e8, 0x169 },
++	{ 0x900e9, 0x6e },
++	{ 0x900ea, 0x0 },
++	{ 0x900eb, 0x68 },
++	{ 0x900ec, 0x0 },
++	{ 0x900ed, 0x408 },
++	{ 0x900ee, 0x169 },
++	{ 0x900ef, 0x0 },
++	{ 0x900f0, 0x8310 },
++	{ 0x900f1, 0x168 },
++	{ 0x900f2, 0x0 },
++	{ 0x900f3, 0xa310 },
++	{ 0x900f4, 0x168 },
++	{ 0x900f5, 0x1ff8 },
++	{ 0x900f6, 0x85a8 },
++	{ 0x900f7, 0x1e8 },
++	{ 0x900f8, 0x68 },
++	{ 0x900f9, 0x798 },
++	{ 0x900fa, 0x16a },
++	{ 0x900fb, 0x78 },
++	{ 0x900fc, 0x7a0 },
++	{ 0x900fd, 0x16a },
++	{ 0x900fe, 0x68 },
++	{ 0x900ff, 0x790 },
++	{ 0x90100, 0x16a },
++	{ 0x90101, 0x8 },
++	{ 0x90102, 0x8b10 },
++	{ 0x90103, 0x168 },
++	{ 0x90104, 0x8 },
++	{ 0x90105, 0xab10 },
++	{ 0x90106, 0x168 },
++	{ 0x90107, 0xa },
++	{ 0x90108, 0x408 },
++	{ 0x90109, 0x169 },
++	{ 0x9010a, 0x58 },
++	{ 0x9010b, 0x0 },
++	{ 0x9010c, 0x68 },
++	{ 0x9010d, 0x0 },
++	{ 0x9010e, 0x408 },
++	{ 0x9010f, 0x169 },
++	{ 0x90110, 0x0 },
++	{ 0x90111, 0x8b10 },
++	{ 0x90112, 0x168 },
++	{ 0x90113, 0x0 },
++	{ 0x90114, 0xab10 },
++	{ 0x90115, 0x168 },
++	{ 0x90116, 0x0 },
++	{ 0x90117, 0x1d8 },
++	{ 0x90118, 0x169 },
++	{ 0x90119, 0x80 },
++	{ 0x9011a, 0x790 },
++	{ 0x9011b, 0x16a },
++	{ 0x9011c, 0x18 },
++	{ 0x9011d, 0x7aa },
++	{ 0x9011e, 0x6a },
++	{ 0x9011f, 0xa },
++	{ 0x90120, 0x0 },
++	{ 0x90121, 0x1e9 },
++	{ 0x90122, 0x8 },
++	{ 0x90123, 0x8080 },
++	{ 0x90124, 0x108 },
++	{ 0x90125, 0xf },
++	{ 0x90126, 0x408 },
++	{ 0x90127, 0x169 },
++	{ 0x90128, 0xc },
++	{ 0x90129, 0x0 },
++	{ 0x9012a, 0x68 },
++	{ 0x9012b, 0x9 },
++	{ 0x9012c, 0x0 },
++	{ 0x9012d, 0x1a9 },
++	{ 0x9012e, 0x0 },
++	{ 0x9012f, 0x408 },
++	{ 0x90130, 0x169 },
++	{ 0x90131, 0x0 },
++	{ 0x90132, 0x8080 },
++	{ 0x90133, 0x108 },
++	{ 0x90134, 0x8 },
++	{ 0x90135, 0x7aa },
++	{ 0x90136, 0x6a },
++	{ 0x90137, 0x0 },
++	{ 0x90138, 0x8568 },
++	{ 0x90139, 0x108 },
++	{ 0x9013a, 0xb7 },
++	{ 0x9013b, 0x790 },
++	{ 0x9013c, 0x16a },
++	{ 0x9013d, 0x1f },
++	{ 0x9013e, 0x0 },
++	{ 0x9013f, 0x68 },
++	{ 0x90140, 0x8 },
++	{ 0x90141, 0x8558 },
++	{ 0x90142, 0x168 },
++	{ 0x90143, 0xf },
++	{ 0x90144, 0x408 },
++	{ 0x90145, 0x169 },
++	{ 0x90146, 0xc },
++	{ 0x90147, 0x0 },
++	{ 0x90148, 0x68 },
++	{ 0x90149, 0x0 },
++	{ 0x9014a, 0x408 },
++	{ 0x9014b, 0x169 },
++	{ 0x9014c, 0x0 },
++	{ 0x9014d, 0x8558 },
++	{ 0x9014e, 0x168 },
++	{ 0x9014f, 0x8 },
++	{ 0x90150, 0x3c8 },
++	{ 0x90151, 0x1a9 },
++	{ 0x90152, 0x3 },
++	{ 0x90153, 0x370 },
++	{ 0x90154, 0x129 },
++	{ 0x90155, 0x20 },
++	{ 0x90156, 0x2aa },
++	{ 0x90157, 0x9 },
++	{ 0x90158, 0x0 },
++	{ 0x90159, 0x400 },
++	{ 0x9015a, 0x10e },
++	{ 0x9015b, 0x8 },
++	{ 0x9015c, 0xe8 },
++	{ 0x9015d, 0x109 },
++	{ 0x9015e, 0x0 },
++	{ 0x9015f, 0x8140 },
++	{ 0x90160, 0x10c },
++	{ 0x90161, 0x10 },
++	{ 0x90162, 0x8138 },
++	{ 0x90163, 0x10c },
++	{ 0x90164, 0x8 },
++	{ 0x90165, 0x7c8 },
++	{ 0x90166, 0x101 },
++	{ 0x90167, 0x8 },
++	{ 0x90168, 0x0 },
++	{ 0x90169, 0x8 },
++	{ 0x9016a, 0x8 },
++	{ 0x9016b, 0x448 },
++	{ 0x9016c, 0x109 },
++	{ 0x9016d, 0xf },
++	{ 0x9016e, 0x7c0 },
++	{ 0x9016f, 0x109 },
++	{ 0x90170, 0x0 },
++	{ 0x90171, 0xe8 },
++	{ 0x90172, 0x109 },
++	{ 0x90173, 0x47 },
++	{ 0x90174, 0x630 },
++	{ 0x90175, 0x109 },
++	{ 0x90176, 0x8 },
++	{ 0x90177, 0x618 },
++	{ 0x90178, 0x109 },
++	{ 0x90179, 0x8 },
++	{ 0x9017a, 0xe0 },
++	{ 0x9017b, 0x109 },
++	{ 0x9017c, 0x0 },
++	{ 0x9017d, 0x7c8 },
++	{ 0x9017e, 0x109 },
++	{ 0x9017f, 0x8 },
++	{ 0x90180, 0x8140 },
++	{ 0x90181, 0x10c },
++	{ 0x90182, 0x0 },
++	{ 0x90183, 0x1 },
++	{ 0x90184, 0x8 },
++	{ 0x90185, 0x8 },
++	{ 0x90186, 0x4 },
++	{ 0x90187, 0x8 },
++	{ 0x90188, 0x8 },
++	{ 0x90189, 0x7c8 },
++	{ 0x9018a, 0x101 },
++	{ 0x90006, 0x0 },
++	{ 0x90007, 0x0 },
++	{ 0x90008, 0x8 },
++	{ 0x90009, 0x0 },
++	{ 0x9000a, 0x0 },
++	{ 0x9000b, 0x0 },
++	{ 0xd00e7, 0x400 },
++	{ 0x90017, 0x0 },
++	{ 0x9001f, 0x2a },
++	{ 0x90026, 0x6a },
++	{ 0x400d0, 0x0 },
++	{ 0x400d1, 0x101 },
++	{ 0x400d2, 0x105 },
++	{ 0x400d3, 0x107 },
++	{ 0x400d4, 0x10f },
++	{ 0x400d5, 0x202 },
++	{ 0x400d6, 0x20a },
++	{ 0x400d7, 0x20b },
++	{ 0x2003a, 0x2 },
++	{ 0x2000b, 0x5d },
++	{ 0x2000c, 0xbb },
++	{ 0x2000d, 0x753 },
++	{ 0x2000e, 0x2c },
++	{ 0x12000b, 0xc },
++	{ 0x12000c, 0x19 },
++	{ 0x12000d, 0xfa },
++	{ 0x12000e, 0x10 },
++	{ 0x22000b, 0x3 },
++	{ 0x22000c, 0x6 },
++	{ 0x22000d, 0x3e },
++	{ 0x22000e, 0x10 },
++	{ 0x9000c, 0x0 },
++	{ 0x9000d, 0x173 },
++	{ 0x9000e, 0x60 },
++	{ 0x9000f, 0x6110 },
++	{ 0x90010, 0x2152 },
++	{ 0x90011, 0xdfbd },
++	{ 0x90012, 0x60 },
++	{ 0x90013, 0x6152 },
++	{ 0x20010, 0x5a },
++	{ 0x20011, 0x3 },
++	{ 0x40080, 0xe0 },
++	{ 0x40081, 0x12 },
++	{ 0x40082, 0xe0 },
++	{ 0x40083, 0x12 },
++	{ 0x40084, 0xe0 },
++	{ 0x40085, 0x12 },
++	{ 0x140080, 0xe0 },
++	{ 0x140081, 0x12 },
++	{ 0x140082, 0xe0 },
++	{ 0x140083, 0x12 },
++	{ 0x140084, 0xe0 },
++	{ 0x140085, 0x12 },
++	{ 0x240080, 0xe0 },
++	{ 0x240081, 0x12 },
++	{ 0x240082, 0xe0 },
++	{ 0x240083, 0x12 },
++	{ 0x240084, 0xe0 },
++	{ 0x240085, 0x12 },
++	{ 0x400fd, 0xf },
++	{ 0x10011, 0x1 },
++	{ 0x10012, 0x1 },
++	{ 0x10013, 0x180 },
++	{ 0x10018, 0x1 },
++	{ 0x10002, 0x6209 },
++	{ 0x100b2, 0x1 },
++	{ 0x101b4, 0x1 },
++	{ 0x102b4, 0x1 },
++	{ 0x103b4, 0x1 },
++	{ 0x104b4, 0x1 },
++	{ 0x105b4, 0x1 },
++	{ 0x106b4, 0x1 },
++	{ 0x107b4, 0x1 },
++	{ 0x108b4, 0x1 },
++	{ 0x11011, 0x1 },
++	{ 0x11012, 0x1 },
++	{ 0x11013, 0x180 },
++	{ 0x11018, 0x1 },
++	{ 0x11002, 0x6209 },
++	{ 0x110b2, 0x1 },
++	{ 0x111b4, 0x1 },
++	{ 0x112b4, 0x1 },
++	{ 0x113b4, 0x1 },
++	{ 0x114b4, 0x1 },
++	{ 0x115b4, 0x1 },
++	{ 0x116b4, 0x1 },
++	{ 0x117b4, 0x1 },
++	{ 0x118b4, 0x1 },
++	{ 0x12011, 0x1 },
++	{ 0x12012, 0x1 },
++	{ 0x12013, 0x180 },
++	{ 0x12018, 0x1 },
++	{ 0x12002, 0x6209 },
++	{ 0x120b2, 0x1 },
++	{ 0x121b4, 0x1 },
++	{ 0x122b4, 0x1 },
++	{ 0x123b4, 0x1 },
++	{ 0x124b4, 0x1 },
++	{ 0x125b4, 0x1 },
++	{ 0x126b4, 0x1 },
++	{ 0x127b4, 0x1 },
++	{ 0x128b4, 0x1 },
++	{ 0x13011, 0x1 },
++	{ 0x13012, 0x1 },
++	{ 0x13013, 0x180 },
++	{ 0x13018, 0x1 },
++	{ 0x13002, 0x6209 },
++	{ 0x130b2, 0x1 },
++	{ 0x131b4, 0x1 },
++	{ 0x132b4, 0x1 },
++	{ 0x133b4, 0x1 },
++	{ 0x134b4, 0x1 },
++	{ 0x135b4, 0x1 },
++	{ 0x136b4, 0x1 },
++	{ 0x137b4, 0x1 },
++	{ 0x138b4, 0x1 },
++	{ 0x2003a, 0x2 },
++	{ 0xc0080, 0x2 },
++	{ 0xd0000, 0x1 },
++};
++
++static struct dram_fsp_msg lpddr4_dram_fsp_msg[] = {
++	{
++		/* P0 3000mts 1D */
++		.drate = 3000,
++		.fw_type = FW_1D_IMAGE,
++		.fsp_cfg = lpddr4_fsp0_cfg,
++		.fsp_cfg_num = ARRAY_SIZE(lpddr4_fsp0_cfg),
++	}, {
++		/* P0 3000mts 2D */
++		.drate = 3000,
++		.fw_type = FW_2D_IMAGE,
++		.fsp_cfg = lpddr4_fsp0_2d_cfg,
++		.fsp_cfg_num = ARRAY_SIZE(lpddr4_fsp0_2d_cfg),
++	}, {
++		/* P1 400mts 1D */
++		.drate = 400,
++		.fw_type = FW_1D_IMAGE,
++		.fsp_cfg = lpddr4_fsp1_cfg,
++		.fsp_cfg_num = ARRAY_SIZE(lpddr4_fsp1_cfg),
++	}, {
++		/* P1 100mts 1D */
++		.drate = 100,
++		.fw_type = FW_1D_IMAGE,
++		.fsp_cfg = lpddr4_fsp2_cfg,
++		.fsp_cfg_num = ARRAY_SIZE(lpddr4_fsp2_cfg),
++	},
++};
++
++/* lpddr4 timing config params on EVK board */
++struct dram_timing_info imx8mm_evk_dram_timing = {
++	.ddrc_cfg = lpddr4_ddrc_cfg,
++	.ddrc_cfg_num = ARRAY_SIZE(lpddr4_ddrc_cfg),
++	.ddrphy_cfg = lpddr4_ddrphy_cfg,
++	.ddrphy_cfg_num = ARRAY_SIZE(lpddr4_ddrphy_cfg),
++	.fsp_msg = lpddr4_dram_fsp_msg,
++	.fsp_msg_num = ARRAY_SIZE(lpddr4_dram_fsp_msg),
++	.ddrphy_trained_csr = lpddr4_ddrphy_trained_csr,
++	.ddrphy_trained_csr_num = ARRAY_SIZE(lpddr4_ddrphy_trained_csr),
++	.ddrphy_pie = lpddr4_phy_pie,
++	.ddrphy_pie_num = ARRAY_SIZE(lpddr4_phy_pie),
++};
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index e8dca0b851..b1c9a2c790 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -98,6 +98,7 @@ lwl-dtb-$(CONFIG_MACH_SCB9328) += imx1-scb9328.dtb.o
+ lwl-dtb-$(CONFIG_MACH_TECHNEXION_WANDBOARD) += imx6q-wandboard.dtb.o imx6dl-wandboard.dtb.o
+ lwl-dtb-$(CONFIG_MACH_TECHNEXION_PICO_HOBBIT) += imx6ul-pico-hobbit.dtb.o
+ lwl-dtb-$(CONFIG_MACH_NXP_IMX6ULL_EVK) += imx6ull-14x14-evk.dtb.o
++lwl-dtb-$(CONFIG_MACH_NXP_IMX8MM_EVK) += imx8mm-evk.dtb.o
+ lwl-dtb-$(CONFIG_MACH_NXP_IMX8MQ_EVK) += imx8mq-evk.dtb.o
+ lwl-dtb-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += tegra20-colibri-iris.dtb.o
+ lwl-dtb-$(CONFIG_MACH_TOSHIBA_AC100) += tegra20-paz00.dtb.o
+diff --git a/arch/arm/dts/imx8mm-evk.dts b/arch/arm/dts/imx8mm-evk.dts
+new file mode 100644
+index 0000000000..1e8619ccf5
+--- /dev/null
++++ b/arch/arm/dts/imx8mm-evk.dts
+@@ -0,0 +1,62 @@
++// SPDX-License-Identifier: (GPL-2.0 OR MIT)
++/*
++ * Copyright 2017 NXP
++ * Copyright (C) 2017 Pengutronix, Lucas Stach <kernel@pengutronix.de>
++ */
++
++/dts-v1/;
++
++#include <arm64/freescale/imx8mm-evk.dts>
++
++/ {
++	chosen {
++		environment-sd {
++			compatible = "barebox,environment";
++			device-path = &usdhc2, "partname:barebox-environment";
++			status = "disabled";
++		};
++		environment-emmc {
++			compatible = "barebox,environment";
++			device-path = &usdhc3, "partname:barebox-environment";
++			status = "disabled";
++		};
++	};
++};
++
++&fec1 {
++	phy-reset-gpios = <&gpio4 22 GPIO_ACTIVE_LOW>;
++};
++
++&usdhc2 {
++	#address-cells = <1>;
++	#size-cells = <1>;
++
++	partition@0 {
++		label = "barebox";
++		reg = <0x0 0xe0000>;
++	};
++
++	partition@e0000 {
++		label = "barebox-environment";
++		reg = <0xe0000 0x20000>;
++	};
++};
++
++&usdhc3 {
++	#address-cells = <1>;
++	#size-cells = <1>;
++
++	partition@0 {
++		label = "barebox";
++		reg = <0x0 0xe0000>;
++	};
++
++	partition@e0000 {
++		label = "barebox-environment";
++		reg = <0xe0000 0x20000>;
++	};
++};
++
++&ocotp {
++	barebox,provide-mac-address = <&fec1 0x640>;
++};
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 9dad4ceae2..116761bdad 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -511,6 +511,16 @@ config MACH_NXP_IMX6ULL_EVK
+ 	bool "NXP i.MX6ull EVK Board"
+ 	select ARCH_IMX6UL
  
- static inline int imx8mq_cpu_revision(void)
- {
-@@ -49,6 +60,6 @@ static inline int imx8mq_cpu_revision(void)
- 	return revision;
- }
++config MACH_NXP_IMX8MM_EVK
++	bool "NXP i.MX8MM EVK Board"
++	select ARCH_IMX8MM
++	select FIRMWARE_IMX8MM_ATF
++	select ARM_SMCCC
++	select MCI_IMX_ESDHC_PBL
++	select IMX8M_DRAM
++	select I2C_IMX_EARLY
++	select USB_GADGET_DRIVER_ARC_PBL
++
+ config MACH_NXP_IMX8MQ_EVK
+ 	bool "NXP i.MX8MQ EVK Board"
+ 	select ARCH_IMX8MQ
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index 994fd951a0..e17e699bcd 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -362,6 +362,12 @@ CFG_start_zii_imx7d_dev.pblb.imximg = $(board)/zii-imx7d-dev/flash-header-zii-im
+ FILE_barebox-zii-imx7d-dev.img = start_zii_imx7d_dev.pblb.imximg
+ image-$(CONFIG_MACH_ZII_IMX7D_DEV) += barebox-zii-imx7d-dev.img
  
--u64 imx8mq_uid(void);
-+u64 imx8m_uid(void);
- 
- #endif /* __MACH_IMX8_H */
-\ No newline at end of file
-diff --git a/arch/arm/mach-imx/include/mach/imx_cpu_types.h b/arch/arm/mach-imx/include/mach/imx_cpu_types.h
-index 754fb9822b..b3fccfadb5 100644
---- a/arch/arm/mach-imx/include/mach/imx_cpu_types.h
-+++ b/arch/arm/mach-imx/include/mach/imx_cpu_types.h
-@@ -13,6 +13,7 @@
- #define IMX_CPU_IMX6	6
- #define IMX_CPU_IMX7	7
- #define IMX_CPU_IMX8MQ	8
-+#define IMX_CPU_IMX8MM  81
- #define IMX_CPU_VF610	610
- 
- #endif /* __MACH_IMX_CPU_TYPES_H */
++# ----------------------- i.MX8mm based boards --------------------------
++pblb-$(CONFIG_MACH_NXP_IMX8MM_EVK) += start_nxp_imx8mm_evk
++CFG_start_nxp_imx8mm_evk.pblb.imximg = $(board)/nxp-imx8mm-evk/flash-header-imx8mm-evk.imxcfg
++FILE_barebox-nxp-imx8mm-evk.img = start_nxp_imx8mm_evk.pblb.pimximg
++image-$(CONFIG_MACH_NXP_IMX8MM_EVK) += barebox-nxp-imx8mm-evk.img
++
+ # ----------------------- i.MX8mq based boards --------------------------
+ pblb-$(CONFIG_MACH_NXP_IMX8MQ_EVK) += start_nxp_imx8mq_evk
+ CFG_start_nxp_imx8mq_evk.pblb.imximg = $(board)/nxp-imx8mq-evk/flash-header-imx8mq-evk.imxcfg
 -- 
 2.25.0
 
