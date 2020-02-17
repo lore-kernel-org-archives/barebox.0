@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j3fni-0008RL-Ln
+ id 1j3fng-0008PF-Er
  for barebox@lists.infradead.org; Mon, 17 Feb 2020 12:47:16 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 17 Feb 2020 13:46:08 +0100
-Message-Id: <20200217124623.14520-28-s.hauer@pengutronix.de>
+Date: Mon, 17 Feb 2020 13:46:12 +0100
+Message-Id: <20200217124623.14520-32-s.hauer@pengutronix.de>
 In-Reply-To: <20200217124623.14520-1-s.hauer@pengutronix.de>
 References: <20200217124623.14520-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,69 +21,129 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 27/42] Add some CCM defines for i.MX8M
+Subject: [PATCH 31/42] ARM: i.MX8M: Add and use function for early UART clock
+ setup
 To: Barebox List <barebox@lists.infradead.org>
 
-This adds some clock slice indices and CCGR defines needed for the
-lowlevel i.MX8M code.
+The i.MX8M boards all have the same code for setting up the UART clock.
+Add a common helper for it. In the helper just setup the clocks for all
+UARTs as it's not worth it to have separate functions for each UART.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- .../arm/mach-imx/include/mach/imx8-ccm-regs.h | 25 +++++++++++++++++--
- 1 file changed, 23 insertions(+), 2 deletions(-)
+ arch/arm/boards/nxp-imx8mq-evk/lowlevel.c     |  9 +------
+ arch/arm/boards/phytec-som-imx8mq/lowlevel.c  |  9 +------
+ arch/arm/boards/zii-imx8mq-dev/lowlevel.c     |  9 +------
+ arch/arm/mach-imx/imx8m.c                     | 26 +++++++++++++++++++
+ .../mach-imx/include/mach/imx8m-ccm-regs.h    |  1 +
+ 5 files changed, 30 insertions(+), 24 deletions(-)
 
-diff --git a/arch/arm/mach-imx/include/mach/imx8-ccm-regs.h b/arch/arm/mach-imx/include/mach/imx8-ccm-regs.h
-index 59d25d797f..66ace0f1c4 100644
---- a/arch/arm/mach-imx/include/mach/imx8-ccm-regs.h
-+++ b/arch/arm/mach-imx/include/mach/imx8-ccm-regs.h
-@@ -1,13 +1,33 @@
- #ifndef __MACH_IMX8_CCM_REGS_H__
- #define __MACH_IMX8_CCM_REGS_H__
+diff --git a/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
+index ac97023631..ebf6203f3a 100644
+--- a/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
++++ b/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
+@@ -25,14 +25,7 @@ extern char __dtb_imx8mq_evk_start[];
  
--#define IMX8M_CCM_CCGR_UART1		73
-+#include <mach/imx8mq-regs.h>
-+
-+#define IMX8M_CCM_CCGR_DDR1	5
-+#define IMX8M_CCM_CCGR_I2C1	23
-+#define IMX8M_CCM_CCGR_I2C2	24
-+#define IMX8M_CCM_CCGR_I2C3	25
-+#define IMX8M_CCM_CCGR_I2C4	26
-+#define IMX8M_CCM_CCGR_SCTR	57
-+#define IMX8M_CCM_CCGR_UART1	73
-+#define IMX8M_CCM_CCGR_UART2 	74
-+#define IMX8M_CCM_CCGR_UART3	75
-+#define IMX8M_CCM_CCGR_UART4	76
-+#define IMX8M_CCM_CCGR_GIC	92
- 
- /*
-  * Taken from "Table 5-1. Clock Root Table" from i.MX8M Quad
-  * Applications Processor Reference Manual
-  */
-+#define IMX8M_ARM_A53_CLK_ROOT		0
-+#define IMX8M_DRAM_SEL_CFG		48
-+#define IMX8M_DRAM_ALT_CLK_ROOT		64
-+#define IMX8M_DRAM_APB_CLK_ROOT		65
- #define IMX8M_UART1_CLK_ROOT		94
-+#define IMX8M_UART2_CLK_ROOT		95
-+#define IMX8M_UART3_CLK_ROOT		96
-+#define IMX8M_UART4_CLK_ROOT		97
-+#define IMX8M_GIC_CLK_ROOT		100
- #define IMX8M_UART1_CLK_ROOT__25M_REF_CLK IMX8M_CCM_TARGET_ROOTn_MUX(0b000)
- 
- /* 0 <= n <= 190 */
-@@ -17,10 +37,11 @@
- /* 0 <= n <= 120 */
- #define IMX8M_CCM_TARGET_ROOTn(n)	(0x8000 + 128 * (n))
- 
-+#define IMX8M_CCM_TARGET_ROOTn_POST_DIV(n)	((n) & 0x0000003f)
-+#define IMX8M_CCM_TARGET_ROOTn_PRE_DIV(n)	(((n) << 16) & 0x00070000)
- #define IMX8M_CCM_TARGET_ROOTn_MUX(x)		((x) << 24)
- #define IMX8M_CCM_TARGET_ROOTn_ENABLE		BIT(28)
- 
+ static void setup_uart(void)
+ {
+-	void __iomem *ccm   = IOMEM(MX8MQ_CCM_BASE_ADDR);
 -
- #define IMX8M_CCM_CCGR_SETTINGn(n, s)  ((s) << ((n) * 4))
- #define IMX8M_CCM_CCGR_SETTINGn_NOT_NEEDED(n)		IMX8M_CCM_CCGR_SETTINGn(n, 0b00)
- #define IMX8M_CCM_CCGR_SETTINGn_NEEDED_RUN(n)		IMX8M_CCM_CCGR_SETTINGn(n, 0b01)
+-	writel(IMX8M_CCM_CCGR_SETTINGn_NEEDED(0),
+-	       ccm + IMX8M_CCM_CCGRn_CLR(IMX8M_CCM_CCGR_UART1));
+-	writel(IMX8M_CCM_TARGET_ROOTn_ENABLE | IMX8M_UART1_CLK_ROOT__25M_REF_CLK,
+-	       ccm + IMX8M_CCM_TARGET_ROOTn(IMX8M_UART1_CLK_ROOT));
+-	writel(IMX8M_CCM_CCGR_SETTINGn_NEEDED(0),
+-	       ccm + IMX8M_CCM_CCGRn_SET(IMX8M_CCM_CCGR_UART1));
++	imx8m_early_setup_uart_clock();
+ 
+ 	imx8mq_setup_pad(IMX8MQ_PAD_UART1_TXD__UART1_TX | UART_PAD_CTRL);
+ 
+diff --git a/arch/arm/boards/phytec-som-imx8mq/lowlevel.c b/arch/arm/boards/phytec-som-imx8mq/lowlevel.c
+index 08287a135f..9a48c1dded 100644
+--- a/arch/arm/boards/phytec-som-imx8mq/lowlevel.c
++++ b/arch/arm/boards/phytec-som-imx8mq/lowlevel.c
+@@ -28,14 +28,7 @@ extern char __dtb_imx8mq_phytec_phycore_som_start[];
+ 
+ static void setup_uart(void)
+ {
+-	void __iomem *ccm   = IOMEM(MX8MQ_CCM_BASE_ADDR);
+-
+-	writel(IMX8M_CCM_CCGR_SETTINGn_NEEDED(0),
+-	       ccm + IMX8M_CCM_CCGRn_CLR(IMX8M_CCM_CCGR_UART1));
+-	writel(IMX8M_CCM_TARGET_ROOTn_ENABLE | IMX8M_UART1_CLK_ROOT__25M_REF_CLK,
+-	       ccm + IMX8M_CCM_TARGET_ROOTn(IMX8M_UART1_CLK_ROOT));
+-	writel(IMX8M_CCM_CCGR_SETTINGn_NEEDED(0),
+-	       ccm + IMX8M_CCM_CCGRn_SET(IMX8M_CCM_CCGR_UART1));
++	imx8m_early_setup_uart_clock();
+ 
+ 	imx8mq_setup_pad(IMX8MQ_PAD_UART1_TXD__UART1_TX | UART_PAD_CTRL);
+ 
+diff --git a/arch/arm/boards/zii-imx8mq-dev/lowlevel.c b/arch/arm/boards/zii-imx8mq-dev/lowlevel.c
+index bc966589c3..c1ec827184 100644
+--- a/arch/arm/boards/zii-imx8mq-dev/lowlevel.c
++++ b/arch/arm/boards/zii-imx8mq-dev/lowlevel.c
+@@ -27,14 +27,7 @@
+ 
+ static void setup_uart(void)
+ {
+-	void __iomem *ccm   = IOMEM(MX8MQ_CCM_BASE_ADDR);
+-
+-	writel(IMX8M_CCM_CCGR_SETTINGn_NEEDED(0),
+-	       ccm + IMX8M_CCM_CCGRn_CLR(IMX8M_CCM_CCGR_UART1));
+-	writel(IMX8M_CCM_TARGET_ROOTn_ENABLE | IMX8M_UART1_CLK_ROOT__25M_REF_CLK,
+-	       ccm + IMX8M_CCM_TARGET_ROOTn(IMX8M_UART1_CLK_ROOT));
+-	writel(IMX8M_CCM_CCGR_SETTINGn_NEEDED(0),
+-	       ccm + IMX8M_CCM_CCGRn_SET(IMX8M_CCM_CCGR_UART1));
++	imx8m_early_setup_uart_clock();
+ 
+ 	imx8mq_setup_pad(IMX8MQ_PAD_UART1_TXD__UART1_TX | UART_PAD_CTRL);
+ 
+diff --git a/arch/arm/mach-imx/imx8m.c b/arch/arm/mach-imx/imx8m.c
+index 596c4140b3..d044531520 100644
+--- a/arch/arm/mach-imx/imx8m.c
++++ b/arch/arm/mach-imx/imx8m.c
+@@ -133,3 +133,29 @@ static int imx8mq_report_hdmi_firmware(void)
+ 	return 0;
+ }
+ console_initcall(imx8mq_report_hdmi_firmware);
++
++void imx8m_early_setup_uart_clock(void)
++{
++	imx8m_ccgr_clock_disable(IMX8M_CCM_CCGR_UART1);
++	imx8m_ccgr_clock_disable(IMX8M_CCM_CCGR_UART2);
++	imx8m_ccgr_clock_disable(IMX8M_CCM_CCGR_UART3);
++	imx8m_ccgr_clock_disable(IMX8M_CCM_CCGR_UART4);
++
++        imx8m_clock_set_target_val(IMX8M_UART1_CLK_ROOT,
++				   IMX8M_CCM_TARGET_ROOTn_ENABLE |
++				   IMX8M_UART1_CLK_ROOT__25M_REF_CLK);
++        imx8m_clock_set_target_val(IMX8M_UART2_CLK_ROOT,
++				   IMX8M_CCM_TARGET_ROOTn_ENABLE |
++				   IMX8M_UART1_CLK_ROOT__25M_REF_CLK);
++        imx8m_clock_set_target_val(IMX8M_UART3_CLK_ROOT,
++				   IMX8M_CCM_TARGET_ROOTn_ENABLE |
++				   IMX8M_UART1_CLK_ROOT__25M_REF_CLK);
++        imx8m_clock_set_target_val(IMX8M_UART4_CLK_ROOT,
++				   IMX8M_CCM_TARGET_ROOTn_ENABLE |
++				   IMX8M_UART1_CLK_ROOT__25M_REF_CLK);
++
++	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_UART1);
++	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_UART2);
++	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_UART3);
++	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_UART4);
++}
+diff --git a/arch/arm/mach-imx/include/mach/imx8m-ccm-regs.h b/arch/arm/mach-imx/include/mach/imx8m-ccm-regs.h
+index ff207b80f9..70a7e4af9d 100644
+--- a/arch/arm/mach-imx/include/mach/imx8m-ccm-regs.h
++++ b/arch/arm/mach-imx/include/mach/imx8m-ccm-regs.h
+@@ -48,6 +48,7 @@
+ #define IMX8M_CCM_CCGR_SETTINGn_NEEDED_RUN_WAIT(n)	IMX8M_CCM_CCGR_SETTINGn(n, 0b10)
+ #define IMX8M_CCM_CCGR_SETTINGn_NEEDED(n)		IMX8M_CCM_CCGR_SETTINGn(n, 0b11)
+ 
++void imx8m_early_setup_uart_clock(void);
+ void imx8m_clock_set_target_val(int clock_id, u32 val);
+ void imx8m_ccgr_clock_enable(int index);
+ void imx8m_ccgr_clock_disable(int index);
 -- 
 2.25.0
 
