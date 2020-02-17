@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j3fny-0003wV-Dc
+ by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1j3fnu-0000os-FJ
  for barebox@lists.infradead.org; Mon, 17 Feb 2020 12:47:18 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 17 Feb 2020 13:46:21 +0100
-Message-Id: <20200217124623.14520-41-s.hauer@pengutronix.de>
+Date: Mon, 17 Feb 2020 13:46:01 +0100
+Message-Id: <20200217124623.14520-21-s.hauer@pengutronix.de>
 In-Reply-To: <20200217124623.14520-1-s.hauer@pengutronix.de>
 References: <20200217124623.14520-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,26 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 40/42] scripts: imx-image: Add i.MX8MM support
+Subject: [PATCH 20/42] serial: imx: Add imx8mm compatible
 To: Barebox List <barebox@lists.infradead.org>
+
+Only add the compatible string to let the driver match.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- scripts/imx/imx.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/serial/serial_imx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
-index 980173950f..fd119e3e4f 100644
---- a/scripts/imx/imx.c
-+++ b/scripts/imx/imx.c
-@@ -243,6 +243,7 @@ static struct soc_type socs[] = {
- 	{ .name = "imx53",  .header_version = 2, .cpu_type = IMX_CPU_IMX53,  .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
- 	{ .name = "imx6",   .header_version = 2, .cpu_type = IMX_CPU_IMX6,   .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
- 	{ .name = "imx7",   .header_version = 2, .cpu_type = IMX_CPU_IMX7,   .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
-+	{ .name = "imx8mm", .header_version = 2, .cpu_type = IMX_CPU_IMX8MM, .header_gap = SZ_32K, .first_opcode = 0x14000000 /* b 0x0000 (offset computed) */},
- 	{ .name = "imx8mq", .header_version = 2, .cpu_type = IMX_CPU_IMX8MQ, .header_gap = SZ_32K, .first_opcode = 0x14000000 /* b 0x0000 (offset computed) */},
- 	{ .name = "vf610",  .header_version = 2, .cpu_type = IMX_CPU_VF610,  .header_gap = 0,      .first_opcode = 0xea0003fe /* b 0x1000 */},
- };
+diff --git a/drivers/serial/serial_imx.c b/drivers/serial/serial_imx.c
+index 09341af874..e5280ac3e9 100644
+--- a/drivers/serial/serial_imx.c
++++ b/drivers/serial/serial_imx.c
+@@ -287,6 +287,9 @@ static __maybe_unused struct of_device_id imx_serial_dt_ids[] = {
+ 	}, {
+ 		.compatible = "fsl,imx8mq-uart",
+ 		.data = &imx21_data,
++	}, {
++		.compatible = "fsl,imx8mm-uart",
++		.data = &imx21_data,
+ 	}, {
+ 		/* sentinel */
+ 	}
 -- 
 2.25.0
 
