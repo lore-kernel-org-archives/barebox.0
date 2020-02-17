@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j3fn9-0007r6-Et
+ id 1j3fn9-0007r5-Ev
  for barebox@lists.infradead.org; Mon, 17 Feb 2020 12:46:30 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 17 Feb 2020 13:45:45 +0100
-Message-Id: <20200217124623.14520-5-s.hauer@pengutronix.de>
+Date: Mon, 17 Feb 2020 13:45:44 +0100
+Message-Id: <20200217124623.14520-4-s.hauer@pengutronix.de>
 In-Reply-To: <20200217124623.14520-1-s.hauer@pengutronix.de>
 References: <20200217124623.14520-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,86 +21,110 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/42] ARM: i.MX: Drop iomux argument from mx7_setup_pad()
+Subject: [PATCH 03/42] ARM: i.MX8M: add and use imx8mq_setup_pad()
 To: Barebox List <barebox@lists.infradead.org>
 
-The name mx7_setup_pad already implies the SoC where it runs on, so we
-do not have to pass the iomux base address but can hardcode it in the
-function. While at it rename it to imx7_setup_pad() which is more
-consistent to other i.MX specific functions.
+We already have a mx8_setup_pad() function for early iomux setup, but it
+is unused. Add a i.MX8MQ specific wrapper for the function which passes
+the correct base address to mx8_setup_pad(). Let the boards use this
+function. While at it rename mx8_setup_pad() to imx8_setup_pad() which
+is more consistent to other i.MX specific functions.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/freescale-mx7-sabresd/lowlevel.c | 3 +--
- arch/arm/boards/zii-imx7d-dev/lowlevel.c         | 3 +--
- arch/arm/mach-imx/include/mach/iomux-mx7.h       | 4 +++-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ arch/arm/boards/nxp-imx8mq-evk/lowlevel.c    | 3 +--
+ arch/arm/boards/phytec-som-imx8mq/lowlevel.c | 3 +--
+ arch/arm/boards/zii-imx8mq-dev/lowlevel.c    | 3 +--
+ arch/arm/mach-imx/include/mach/iomux-mx8mq.h | 8 ++++++++
+ 4 files changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/boards/freescale-mx7-sabresd/lowlevel.c b/arch/arm/boards/freescale-mx7-sabresd/lowlevel.c
-index f718ea73b3..edd965e4ec 100644
---- a/arch/arm/boards/freescale-mx7-sabresd/lowlevel.c
-+++ b/arch/arm/boards/freescale-mx7-sabresd/lowlevel.c
-@@ -15,7 +15,6 @@ extern char __dtb_imx7d_sdb_start[];
+diff --git a/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
+index 4443c7d3b8..68464e330d 100644
+--- a/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
++++ b/arch/arm/boards/nxp-imx8mq-evk/lowlevel.c
+@@ -25,7 +25,6 @@ extern char __dtb_imx8mq_evk_start[];
  
- static inline void setup_uart(void)
+ static void setup_uart(void)
  {
--	void __iomem *iomux = IOMEM(MX7_IOMUXC_BASE_ADDR);
- 	void __iomem *ccm   = IOMEM(MX7_CCM_BASE_ADDR);
+-	void __iomem *iomux = IOMEM(MX8MQ_IOMUXC_BASE_ADDR);
+ 	void __iomem *ccm   = IOMEM(MX8MQ_CCM_BASE_ADDR);
  
  	writel(CCM_CCGR_SETTINGn_NEEDED(0),
-@@ -25,7 +24,7 @@ static inline void setup_uart(void)
+@@ -35,7 +34,7 @@ static void setup_uart(void)
  	writel(CCM_CCGR_SETTINGn_NEEDED(0),
  	       ccm + CCM_CCGRn_SET(CCM_CCGR_UART1));
  
--	mx7_setup_pad(iomux, MX7D_PAD_UART1_TX_DATA__UART1_DCE_TX);
-+	imx7_setup_pad(MX7D_PAD_UART1_TX_DATA__UART1_DCE_TX);
+-	imx_setup_pad(iomux, IMX8MQ_PAD_UART1_TXD__UART1_TX | UART_PAD_CTRL);
++	imx8mq_setup_pad(IMX8MQ_PAD_UART1_TXD__UART1_TX | UART_PAD_CTRL);
  
- 	imx7_uart_setup_ll();
+ 	imx8_uart_setup_ll();
  
-diff --git a/arch/arm/boards/zii-imx7d-dev/lowlevel.c b/arch/arm/boards/zii-imx7d-dev/lowlevel.c
-index 3bacfd0c7d..83d01446b9 100644
---- a/arch/arm/boards/zii-imx7d-dev/lowlevel.c
-+++ b/arch/arm/boards/zii-imx7d-dev/lowlevel.c
-@@ -23,7 +23,6 @@ extern char __dtb_z_imx7d_zii_rmu2_start[];
+diff --git a/arch/arm/boards/phytec-som-imx8mq/lowlevel.c b/arch/arm/boards/phytec-som-imx8mq/lowlevel.c
+index e327b8cdfb..4ce5c4ecde 100644
+--- a/arch/arm/boards/phytec-som-imx8mq/lowlevel.c
++++ b/arch/arm/boards/phytec-som-imx8mq/lowlevel.c
+@@ -28,7 +28,6 @@ extern char __dtb_imx8mq_phytec_phycore_som_start[];
  
- static inline void setup_uart(void)
+ static void setup_uart(void)
  {
--	void __iomem *iomux = IOMEM(MX7_IOMUXC_BASE_ADDR);
- 	void __iomem *ccm   = IOMEM(MX7_CCM_BASE_ADDR);
+-	void __iomem *iomux = IOMEM(MX8MQ_IOMUXC_BASE_ADDR);
+ 	void __iomem *ccm   = IOMEM(MX8MQ_CCM_BASE_ADDR);
  
  	writel(CCM_CCGR_SETTINGn_NEEDED(0),
-@@ -33,7 +32,7 @@ static inline void setup_uart(void)
+@@ -38,7 +37,7 @@ static void setup_uart(void)
  	writel(CCM_CCGR_SETTINGn_NEEDED(0),
- 	       ccm + CCM_CCGRn_SET(CCM_CCGR_UART2));
+ 	       ccm + CCM_CCGRn_SET(CCM_CCGR_UART1));
  
--	mx7_setup_pad(iomux, MX7D_PAD_UART2_TX_DATA__UART2_DCE_TX);
-+	imx7_setup_pad(MX7D_PAD_UART2_TX_DATA__UART2_DCE_TX);
+-	imx_setup_pad(iomux, IMX8MQ_PAD_UART1_TXD__UART1_TX | UART_PAD_CTRL);
++	imx8mq_setup_pad(IMX8MQ_PAD_UART1_TXD__UART1_TX | UART_PAD_CTRL);
  
- 	imx7_uart_setup_ll();
+ 	imx8_uart_setup_ll();
  
-diff --git a/arch/arm/mach-imx/include/mach/iomux-mx7.h b/arch/arm/mach-imx/include/mach/iomux-mx7.h
-index 2667dc3eb3..def9cf4d44 100644
---- a/arch/arm/mach-imx/include/mach/iomux-mx7.h
-+++ b/arch/arm/mach-imx/include/mach/iomux-mx7.h
-@@ -8,6 +8,7 @@
- #define __MACH_IOMUX_IMX7D_H__
+diff --git a/arch/arm/boards/zii-imx8mq-dev/lowlevel.c b/arch/arm/boards/zii-imx8mq-dev/lowlevel.c
+index a328699142..63f87eede0 100644
+--- a/arch/arm/boards/zii-imx8mq-dev/lowlevel.c
++++ b/arch/arm/boards/zii-imx8mq-dev/lowlevel.c
+@@ -27,7 +27,6 @@
+ 
+ static void setup_uart(void)
+ {
+-	void __iomem *iomux = IOMEM(MX8MQ_IOMUXC_BASE_ADDR);
+ 	void __iomem *ccm   = IOMEM(MX8MQ_CCM_BASE_ADDR);
+ 
+ 	writel(CCM_CCGR_SETTINGn_NEEDED(0),
+@@ -37,7 +36,7 @@ static void setup_uart(void)
+ 	writel(CCM_CCGR_SETTINGn_NEEDED(0),
+ 	       ccm + CCM_CCGRn_SET(CCM_CCGR_UART1));
+ 
+-	imx_setup_pad(iomux, IMX8MQ_PAD_UART1_TXD__UART1_TX | UART_PAD_CTRL);
++	imx8mq_setup_pad(IMX8MQ_PAD_UART1_TXD__UART1_TX | UART_PAD_CTRL);
+ 
+ 	imx8_uart_setup_ll();
+ 
+diff --git a/arch/arm/mach-imx/include/mach/iomux-mx8mq.h b/arch/arm/mach-imx/include/mach/iomux-mx8mq.h
+index 5c94731ea7..d397e975c0 100644
+--- a/arch/arm/mach-imx/include/mach/iomux-mx8mq.h
++++ b/arch/arm/mach-imx/include/mach/iomux-mx8mq.h
+@@ -9,6 +9,7 @@
  
  #include <mach/iomux-v3.h>
-+#include <mach/imx7-regs.h>
+ #include <mach/iomux-mx8m.h>
++#include <mach/imx8mq-regs.h>
  
  enum {
- 	MX7D_PAD_GPIO1_IO00__GPIO1_IO0                           = IOMUX_PAD(0x0030, 0x0000, IOMUX_CONFIG_LPSR | 0, 0x0000, 0, 0),
-@@ -1306,8 +1307,9 @@ enum {
- 	MX7D_PAD_ENET1_COL__CSU_INT_DEB                          = IOMUX_PAD(0x04D8, 0x0268, 7, 0x0000, 0, 0),
+ 	IMX8MQ_PAD_GPIO1_IO00__GPIO1_IO0			= IOMUX_PAD(0x0290, 0x0028, 0, 0x0000, 0, 0),
+@@ -622,4 +623,11 @@ enum {
+ 	IMX8MQ_PAD_UART4_TXD__GPIO5_IO29			= IOMUX_PAD(0x04B8, 0x0250, 5, 0x0000, 0, 0),
  };
  
--static inline void mx7_setup_pad(void __iomem *iomux, iomux_v3_cfg_t pad)
-+static inline void imx7_setup_pad(iomux_v3_cfg_t pad)
- {
-+	void __iomem *iomux = IOMEM(MX7_IOMUXC_BASE_ADDR);
- 	unsigned int flags = 0;
- 	uint32_t mode = IOMUX_MODE(pad);
- 
++static inline void imx8mq_setup_pad(iomux_v3_cfg_t pad)
++{
++	void __iomem *iomux = IOMEM(MX8MQ_IOMUXC_BASE_ADDR);
++
++	imx8m_setup_pad(iomux, pad);
++}
++
+ #endif
 -- 
 2.25.0
 
