@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j3fnP-00088j-8L
- for barebox@lists.infradead.org; Mon, 17 Feb 2020 12:46:47 +0000
+ id 1j3fnJ-00081A-6R
+ for barebox@lists.infradead.org; Mon, 17 Feb 2020 12:46:40 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 17 Feb 2020 13:45:53 +0100
-Message-Id: <20200217124623.14520-13-s.hauer@pengutronix.de>
+Date: Mon, 17 Feb 2020 13:45:49 +0100
+Message-Id: <20200217124623.14520-9-s.hauer@pengutronix.de>
 In-Reply-To: <20200217124623.14520-1-s.hauer@pengutronix.de>
 References: <20200217124623.14520-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,72 +21,93 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/42] HAB: i.MX8M: rename imx8_* functions to imx8m_*
+Subject: [PATCH 08/42] ARM: i.MX: esdctl: rename functions to imx8m_*
 To: Barebox List <barebox@lists.infradead.org>
 
-The big i.MX8 does HAB through the SCU which will be different. To avoid
-confusion rename the functions to imx8m_*
+The imx8mq_* functions can be reused for all i.MX8M SoCs, so rename
+them accordingly.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/hab/habv4.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ arch/arm/mach-imx/esdctl.c | 25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/hab/habv4.c b/drivers/hab/habv4.c
-index e3c1de1a4d..f0a087d1a8 100644
---- a/drivers/hab/habv4.c
-+++ b/drivers/hab/habv4.c
-@@ -213,7 +213,7 @@ static enum hab_status hab_sip_report_status(enum hab_config *config,
- 	return (enum hab_status)res.a0;
+diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
+index 074e3ac5a1..411836debd 100644
+--- a/arch/arm/mach-imx/esdctl.c
++++ b/arch/arm/mach-imx/esdctl.c
+@@ -39,7 +39,7 @@
+ #include <mach/imx53-regs.h>
+ #include <mach/imx6-regs.h>
+ #include <mach/vf610-ddrmc.h>
+-#include <mach/imx8mq-regs.h>
++#include <mach/imx8m-regs.h>
+ #include <mach/imx7-regs.h>
+ 
+ struct imx_esdctl_data {
+@@ -428,7 +428,7 @@ imx_ddrc_sdram_size(void __iomem *ddrc, const u32 addrmap[],
+ 	return reduced_adress_space ? size * 3 / 4 : size;
  }
  
--static enum hab_status imx8_read_sram_events(enum hab_status status,
-+static enum hab_status imx8m_read_sram_events(enum hab_status status,
- 					     uint32_t index, void *event,
- 					     uint32_t *bytes)
+-static resource_size_t imx8mq_ddrc_sdram_size(void __iomem *ddrc)
++static resource_size_t imx8m_ddrc_sdram_size(void __iomem *ddrc)
  {
-@@ -262,7 +262,7 @@ static enum hab_status imx8_read_sram_events(enum hab_status status,
+ 	const u32 addrmap[] = {
+ 		readl(ddrc + DDRC_ADDRMAP(0)),
+@@ -480,10 +480,10 @@ static resource_size_t imx8mq_ddrc_sdram_size(void __iomem *ddrc)
+ 				   reduced_adress_space);
+ }
  
- struct habv4_rvt hab_smc_ops = {
- 	.header = { .tag = 0xdd },
--	.report_event = imx8_read_sram_events,
-+	.report_event = imx8m_read_sram_events,
- 	.report_status = hab_sip_report_status,
+-static void imx8mq_ddrc_add_mem(void *mmdcbase, struct imx_esdctl_data *data)
++static void imx8m_ddrc_add_mem(void *mmdcbase, struct imx_esdctl_data *data)
+ {
+ 	arm_add_mem_device("ram0", data->base0,
+-			   imx8mq_ddrc_sdram_size(mmdcbase));
++			   imx8m_ddrc_sdram_size(mmdcbase));
+ }
+ 
+ static resource_size_t imx7d_ddrc_sdram_size(void __iomem *ddrc)
+@@ -615,8 +615,8 @@ static __maybe_unused struct imx_esdctl_data vf610_data = {
  };
  
-@@ -585,12 +585,12 @@ int imx6_hab_get_status(void)
- 	return -EINVAL;
+ static __maybe_unused struct imx_esdctl_data imx8mq_data = {
+-	.base0 = MX8MQ_DDR_CSD1_BASE_ADDR,
+-	.add_mem = imx8mq_ddrc_add_mem,
++	.base0 = MX8M_DDR_CSD1_BASE_ADDR,
++	.add_mem = imx8m_ddrc_add_mem,
+ };
+ 
+ static __maybe_unused struct imx_esdctl_data imx7d_data = {
+@@ -869,11 +869,11 @@ void __noreturn vf610_barebox_entry(void *boarddata)
+ 			  boarddata);
  }
  
--static int imx8_hab_get_status(void)
-+static int imx8m_hab_get_status(void)
+-void __noreturn imx8mq_barebox_entry(void *boarddata)
++static void __noreturn imx8m_barebox_entry(void *boarddata)
  {
- 	return habv4_get_status(&hab_smc_ops);
- }
+ 	resource_size_t size;
  
--static int init_imx8_hab_get_status(void)
-+static int init_imx8m_hab_get_status(void)
- {
- 	if (!cpu_is_mx8mq())
- 		/* can happen in multi-image builds and is not an error */
-@@ -600,7 +600,7 @@ static int init_imx8_hab_get_status(void)
- 	 * Nobody will check the return value if there were HAB errors, but the
- 	 * initcall will fail spectaculously with a strange error message.
+-	size = imx8mq_ddrc_sdram_size(IOMEM(MX8MQ_DDRC_CTL_BASE_ADDR));
++	size = imx8m_ddrc_sdram_size(IOMEM(MX8M_DDRC_CTL_BASE_ADDR));
+ 	/*
+ 	 * We artificially limit detected memory size to force malloc
+ 	 * pool placement to be within 4GiB address space, so as to
+@@ -883,8 +883,13 @@ void __noreturn imx8mq_barebox_entry(void *boarddata)
+ 	 * pool placement. The rest of the system should be able to
+ 	 * detect and utilize full amount of memory.
  	 */
--	imx8_hab_get_status();
-+	imx8m_hab_get_status();
- 
- 	return 0;
+-	size = min_t(resource_size_t, SZ_4G - MX8MQ_DDR_CSD1_BASE_ADDR, size);
+-	barebox_arm_entry(MX8MQ_DDR_CSD1_BASE_ADDR, size, boarddata);
++	size = min_t(resource_size_t, SZ_4G - MX8M_DDR_CSD1_BASE_ADDR, size);
++	barebox_arm_entry(MX8M_DDR_CSD1_BASE_ADDR, size, boarddata);
++}
++
++void __noreturn imx8mq_barebox_entry(void *boarddata)
++{
++	imx8m_barebox_entry(boarddata);
  }
-@@ -610,7 +610,7 @@ static int init_imx8_hab_get_status(void)
-  *
-  *
-  */
--postmmu_initcall(init_imx8_hab_get_status);
-+postmmu_initcall(init_imx8m_hab_get_status);
  
- static int init_imx6_hab_get_status(void)
- {
+ void __noreturn imx7d_barebox_entry(void *boarddata)
 -- 
 2.25.0
 
