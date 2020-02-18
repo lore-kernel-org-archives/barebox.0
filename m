@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j7JEF-00044k-Uy
- for barebox@lists.infradead.org; Thu, 27 Feb 2020 13:29:29 +0000
+ id 1j43g7-0000oa-Lr
+ for barebox@lists.infradead.org; Tue, 18 Feb 2020 14:16:48 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 27 Feb 2020 14:29:24 +0100
-Message-Id: <20200227132924.16558-1-a.fatoum@pengutronix.de>
+Date: Tue, 18 Feb 2020 15:16:36 +0100
+Message-Id: <20200218141636.6486-3-a.fatoum@pengutronix.de>
+In-Reply-To: <20200218141636.6486-1-a.fatoum@pengutronix.de>
+References: <20200218141636.6486-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,61 +21,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] Documentation: boards: stm32mp: document eMMC partition
- layout
+Subject: [PATCH 3/3] scripts: imd: remove duplicate macro definitions
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-For eMMC, the boot partitions are used for FSBL instead of having
-these two partitions in the user area, like with SD-Cards.
-Document this.
+include/scripts/linux/kernel.h included via #include <linux/kernel.h>
+later on already defines these three macros. Remove them here to avoid
+the warnings about the duplicate macro definition.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
-v1 -> v2:
-  - Fixed missing word in commit message
-  - Reworded last paragraph a little
----
- Documentation/boards/stm32mp.rst | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ scripts/bareboximd.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/Documentation/boards/stm32mp.rst b/Documentation/boards/stm32mp.rst
-index 6d97b0d6d4a2..de793ab3c96e 100644
---- a/Documentation/boards/stm32mp.rst
-+++ b/Documentation/boards/stm32mp.rst
-@@ -35,7 +35,7 @@ The resulting images will be placed under ``images/``:
- Flashing barebox
- ----------------
+diff --git a/scripts/bareboximd.c b/scripts/bareboximd.c
+index cf1b8f693ac0..e5000e0aea5b 100644
+--- a/scripts/bareboximd.c
++++ b/scripts/bareboximd.c
+@@ -16,10 +16,6 @@
+  *
+  */
  
--An appropriate image for the boot media can be generated with following
-+An appropriate image for a SD-Card can be generated with following
- ``genimage(1)`` config::
- 
-   image @STM32MP_BOARD@.img {
-@@ -61,7 +61,22 @@ An appropriate image for the boot media can be generated with following
-       }
-   }
- 
--Image can then be flashed on e.g. a SD-Card.
-+For eMMC, the boot partitions are used as the FSBL partitions and so the user
-+partitions may look like this:
-+
-+  image @STM32MP_BOARD@.img {
-+      partition ssbl {
-+          image = "barebox-@STM32MP_BOARD@.img"
-+          size = 1M
-+      }
-+      partition barebox-environment {
-+          image = "/dev/null"
-+          size = 1M
-+      }
-+  }
-+
-+The fsbl1 and fsbl2 can be flashed by writing to barebox ``/dev/mmcX.boot0`` and
-+``/dev/mmcX.boot1`` respectively or from a booted operating system.
- 
- Boot source selection
- ---------------------
+-#define __ALIGN_MASK(x, mask)	(((x) + (mask)) & ~(mask))
+-#define ALIGN(x, a)		__ALIGN_MASK(x, (typeof(x))(a) - 1)
+-#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
+-
+ #include <stdio.h>
+ #include <sys/types.h>
+ #include <stdint.h>
 -- 
 2.25.0
 
