@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vs1-xe43.google.com ([2607:f8b0:4864:20::e43])
+Received: from mail-vs1-xe36.google.com ([2607:f8b0:4864:20::e36])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j6B69-0007tZ-G1
- for barebox@lists.infradead.org; Mon, 24 Feb 2020 10:36:27 +0000
-Received: by mail-vs1-xe43.google.com with SMTP id x123so5380353vsc.2
- for <barebox@lists.infradead.org>; Mon, 24 Feb 2020 02:36:24 -0800 (PST)
+ id 1j3zes-0008Jw-Ao
+ for barebox@lists.infradead.org; Tue, 18 Feb 2020 09:59:15 +0000
+Received: by mail-vs1-xe36.google.com with SMTP id p14so12286756vsq.6
+ for <barebox@lists.infradead.org>; Tue, 18 Feb 2020 01:59:13 -0800 (PST)
 MIME-Version: 1.0
-References: <20200217143817.31360-1-yegorslists@googlemail.com>
- <20200219075241.i6lcrc5q4myhdbxz@pengutronix.de>
- <de1b6c7a-10ba-a206-4c10-263aef0d29ed@pengutronix.de>
-In-Reply-To: <de1b6c7a-10ba-a206-4c10-263aef0d29ed@pengutronix.de>
 From: Yegor Yefremov <yegorslists@googlemail.com>
-Date: Mon, 24 Feb 2020 11:35:50 +0100
-Message-ID: <CAGm1_ktrXnZLtrZN7RKZMuywD_+GsLxBvX+GOmr+nPKV2_qZ_Q@mail.gmail.com>
+Date: Tue, 18 Feb 2020 10:58:42 +0100
+Message-ID: <CAGm1_ku5kzBoxiRYks2uLYt1D6-QPB0vJm0DygF8a2WXTC6NoQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,62 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] arm: baltos: use compressed DTB images
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: musb is broken in master
+To: barebox <barebox@lists.infradead.org>
 
-On Wed, Feb 19, 2020 at 4:34 PM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
->
-> Hello Sascha,
->
-> On 2/19/20 8:52 AM, Sascha Hauer wrote:
-> > On Mon, Feb 17, 2020 at 03:38:17PM +0100, yegorslists@googlemail.com wrote:
-> >> From: Yegor Yefremov <yegorslists@googlemail.com>
-> >>
-> >> This reduces the size of MLO enough to fit into SRAM.
-> >>
-> >> Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
-> >> ---
-> >>  arch/arm/boards/vscom-baltos/lowlevel.c | 6 +++---
-> >>  1 file changed, 3 insertions(+), 3 deletions(-)
-> >>
-> >> diff --git a/arch/arm/boards/vscom-baltos/lowlevel.c b/arch/arm/boards/vscom-baltos/lowlevel.c
-> >> index 98bbbaae1..0a220f262 100644
-> >> --- a/arch/arm/boards/vscom-baltos/lowlevel.c
-> >> +++ b/arch/arm/boards/vscom-baltos/lowlevel.c
-> >> @@ -66,7 +66,7 @@ static const struct am33xx_emif_regs ddr3_regs_256mb = {
-> >>
-> >>  };
-> >>
-> >> -extern char __dtb_am335x_baltos_minimal_start[];
-> >> +extern char __dtb_z_am335x_baltos_minimal_start[];
-> >>
-> >>  /**
-> >>   * @brief The basic entry point for board initialization.
-> >> @@ -82,7 +82,7 @@ static noinline void baltos_sram_init(void)
-> >>      uint32_t sdram_size;
-> >>      void *fdt;
-> >>
-> >> -    fdt = __dtb_am335x_baltos_minimal_start;
-> >> +    fdt = __dtb_z_am335x_baltos_minimal_start;
-> >>
-> >>      /* WDT1 is already running when the bootloader gets control
-> >>       * Disable it to avoid "random" resets
-> >> @@ -132,7 +132,7 @@ ENTRY_FUNCTION(start_am33xx_baltos_sdram, r0, r1, r2)
-> >>       */
-> >>      __raw_writel(0x000010ff, AM33XX_PRM_RSTTIME);
-> >>
-> >> -    fdt = __dtb_am335x_baltos_minimal_start;
-> >> +    fdt = __dtb_z_am335x_baltos_minimal_start;
-> >
-> > You have to select ARM_USE_COMPRESSED_DTB from the boards Kconfig entry
-> > to make sure the uncompressing functions are available.
->
-> ARM_USE_COMPRESSED_DTB is enabled transitively because ARCH_AM33XX
-> selects it.
+I have bisected the musb driver on am335x (baltos system
+arch/arm/dts/am335x-baltos-minimal.dts) from v2019.11.0 and this is
+the result:
 
-So, no changes required then?
+574eed3f6fcf056aa4c9e46c4b5224e3f7844d8d is the first bad commit
+commit 574eed3f6fcf056aa4c9e46c4b5224e3f7844d8d
+Author: Sascha Hauer <s.hauer@pengutronix.de>
+Date:   Thu Dec 19 05:46:54 2019 +0100
 
+    dts: update to v5.5-rc1
+
+    Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+
+:040000 040000 4f6416a5af14d6328ef2c8ac46d9ac4a17a37404
+525e33dda1e735ef2f633f4d99c501ba938a7263 M      dts
+
+I need only the host functionality to mount a USB drive. My defconfig
+can be found here [1].
+
+Any idea what could have happened?
+
+[1] https://github.com/visionsystemsgmbh/onrisc_br_bsp/blob/master/board/vscom/baltos/barebox/am335x_baltos_defconfig
+
+Thanks.
+
+Cheers,
 Yegor
 
 _______________________________________________
