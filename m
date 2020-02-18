@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j4KKv-000875-9y
- for barebox@lists.infradead.org; Wed, 19 Feb 2020 08:04:02 +0000
-Date: Wed, 19 Feb 2020 09:03:59 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200219080359.m2ucgka3qrjr3avv@pengutronix.de>
+ id 1j43mG-0002ep-B8
+ for barebox@lists.infradead.org; Tue, 18 Feb 2020 14:23:11 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue, 18 Feb 2020 15:23:03 +0100
+Message-Id: <20200218142305.26992-5-a.fatoum@pengutronix.de>
+In-Reply-To: <20200218142305.26992-1-a.fatoum@pengutronix.de>
 References: <20200218142305.26992-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200218142305.26992-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,36 +21,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/6] ARM: stm32mp: fix Ethernet after dts/ update
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 4/6] mfd: syscon: use regmap-mmio as backend
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Tue, Feb 18, 2020 at 03:22:59PM +0100, Ahmad Fatoum wrote:
-> The upstream device tree no longer lists "syscfg-clk" as clock because
-> the syscon node had a clocks property, which the syscon driver is
-> supposed to attach to the regmap.
-> 
-> Teach the barebox syscon driver how to do so and do the necessary
-> things, so that network on the STM32MP works again.
-> 
-> Cheers,
-> Ahmad Fatoum (6):
->   ARM: dts: stm32mp: align barebox dtsi name with upstream
->   regmap: make internal.h a self-contained header
->   regmap: add support for regmap_init_mmio_clk
->   mfd: syscon: use regmap-mmio as backend
->   mfd: syscon: clock peripheral if specified in device tree
->   net: designware: eqos: stm32: drop no longer needed syscfg-clk
+Linux supports a clocks property in syscon nodes to indicate that access
+should only occur with the clock active. The new regmap-mmio supports
+this, thus port syscon over, so it can make use of it in a later commit.
 
-Applied, thanks
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/mfd/syscon.c | 27 ++-------------------------
+ 1 file changed, 2 insertions(+), 25 deletions(-)
 
-Sascha
-
+diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
+index 809941937857..adc263c6e6da 100644
+--- a/drivers/mfd/syscon.c
++++ b/drivers/mfd/syscon.c
+@@ -31,27 +31,6 @@ struct syscon {
+ 	struct regmap *regmap;
+ };
+ 
+-static int syscon_reg_write(void *context, unsigned int reg,
+-			    unsigned int val)
+-{
+-	struct syscon *syscon = context;
+-	writel(val, syscon->base + reg);
+-	return 0;
+-}
+-
+-static int syscon_reg_read(void *context, unsigned int reg,
+-			   unsigned int *val)
+-{
+-	struct syscon *syscon = context;
+-	*val = readl(syscon->base + reg);
+-	return 0;
+-}
+-
+-static const struct regmap_bus syscon_regmap_bus = {
+-	.reg_write = syscon_reg_write,
+-	.reg_read  = syscon_reg_read,
+-};
+-
+ static const struct regmap_config syscon_regmap_config = {
+ 	.reg_bits = 32,
+ 	.val_bits = 32,
+@@ -79,10 +58,8 @@ static struct syscon *of_syscon_register(struct device_node *np)
+ 
+ 	list_add_tail(&syscon->list, &syscon_list);
+ 
+-	syscon->regmap = regmap_init(NULL,
+-				     &syscon_regmap_bus,
+-				     syscon,
+-				     &syscon_regmap_config);
++	syscon->regmap = of_regmap_init_mmio_clk(np, NULL, syscon->base,
++					     &syscon_regmap_config);
+ 	return syscon;
+ 
+ err_map:
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.25.0
+
 
 _______________________________________________
 barebox mailing list
