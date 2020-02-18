@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j4NvT-0004uB-OV
- for barebox@lists.infradead.org; Wed, 19 Feb 2020 11:54:01 +0000
-Message-ID: <ea522b8d2edc79a5354bc8234aea66519603cc55.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Wed, 19 Feb 2020 12:53:56 +0100
-In-Reply-To: <20200219082730.jwvsp3cdsoomdhwd@pengutronix.de>
+ id 1j44wK-0004a7-QK
+ for barebox@lists.infradead.org; Tue, 18 Feb 2020 15:37:38 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 18 Feb 2020 16:37:28 +0100
+Message-Id: <20200218153732.14845-3-s.hauer@pengutronix.de>
+In-Reply-To: <20200218153732.14845-1-s.hauer@pengutronix.de>
 References: <20200218153732.14845-1-s.hauer@pengutronix.de>
- <20200218153732.14845-6-s.hauer@pengutronix.de>
- <843b47cf-272e-3800-df85-9a2f9dcbee23@gmx.net>
- <20200219082730.jwvsp3cdsoomdhwd@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,44 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/6] ARM: i.MX: external NAND boot: Leave icache disabled
-To: Sascha Hauer <s.hauer@pengutronix.de>, Oleksij Rempel <fishor@gmx.net>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 2/6] ARM: i.MX Phytec phycard i.MX27: replace __naked with
+ noinline
+To: Barebox List <barebox@lists.infradead.org>
 
-On Mi, 2020-02-19 at 09:27 +0100, Sascha Hauer wrote:
-> On Wed, Feb 19, 2020 at 07:23:09AM +0100, Oleksij Rempel wrote:
-> > Am 18.02.20 um 16:37 schrieb Sascha Hauer:
-> > > It seems running from the NFC SRAM doesn't work with the instruction
-> > > cache enabled, it leads to corruptions on the i.MX27. We stumbled upon
-> > > this earlier and the solution at that time was to disable the
-> > > instruction cache in the NAND boot code. It is, however, more reliable
-> > > to just not enable the instruction cache in the first place.
-> > > This is not particularly nice as we have to ifdef this in generic code,
-> > > duplicate arm_cpu_lowlevel_init(), or call arm_cpu_lowlevel_init() later
-> > > when we are out of NFC SRAM. From the different bad solutions I chose
-> > > to ifdef the instruction cache away. It will be enabled later in the
-> > > common cache functions.
-> > 
-> > Hm... is it possible that we have similar speculation issues as on i.MX6UL? The CPU was speculating
-> > in to IOMEM, caused cache poisoning/corruption and executed corrupted cache.
-> 
-> I don't know how much speculation an ARM9 processor does, but the end
-> result looks very similar. via JTAG I can see that the memory matches
-> my disassembly, just the CPU does something completely different.
+phytec_phycard_imx27_common_init() doesn't need to be __naked, because
+the stack has already been setup. What we want to have though is the
+noinline attribute to make sure phytec_phycard_imx27_common_init() is
+indeed a separate function which is called with initialized stack.
 
-Processors from this generation don't do much speculation at all. They
-have a simple branch predictor, but wrong predictions are resolved via
-a simple pipeline flush. I wouldn't expect a misspeculated instruction
-to reach the load/store units on those simple cores.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/phytec-phycard-imx27/lowlevel.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-It's much more likely that the I-cache simply issues AXI transactions
-(most likely WRAP ones to implement critical word first) which the NAND
-controller slave can't handle properly. In that case there is nothing
-much we can do besides keeping the I$ disabled while we are running
-from the NAND SRAM region.
-
-Regards,
-Lucas
+diff --git a/arch/arm/boards/phytec-phycard-imx27/lowlevel.c b/arch/arm/boards/phytec-phycard-imx27/lowlevel.c
+index ded85ee80f..894f560fa8 100644
+--- a/arch/arm/boards/phytec-phycard-imx27/lowlevel.c
++++ b/arch/arm/boards/phytec-phycard-imx27/lowlevel.c
+@@ -79,7 +79,7 @@ static void sdram_init(int sdram)
+ 
+ extern char __dtb_imx27_phytec_phycard_s_rdk_bb_start[];
+ 
+-static void __bare_init __naked phytec_phycard_imx27_common_init(int sdram)
++static noinline void __bare_init phytec_phycard_imx27_common_init(int sdram)
+ {
+ 	void *fdt;
+ 	unsigned long r;
+-- 
+2.25.0
 
 
 _______________________________________________
