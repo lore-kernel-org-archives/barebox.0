@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j43mG-0002ep-B8
- for barebox@lists.infradead.org; Tue, 18 Feb 2020 14:23:11 +0000
+ id 1j43mG-0002em-9r
+ for barebox@lists.infradead.org; Tue, 18 Feb 2020 14:23:09 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 18 Feb 2020 15:23:03 +0100
-Message-Id: <20200218142305.26992-5-a.fatoum@pengutronix.de>
+Date: Tue, 18 Feb 2020 15:23:00 +0100
+Message-Id: <20200218142305.26992-2-a.fatoum@pengutronix.de>
 In-Reply-To: <20200218142305.26992-1-a.fatoum@pengutronix.de>
 References: <20200218142305.26992-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,64 +21,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/6] mfd: syscon: use regmap-mmio as backend
+Subject: [PATCH 1/6] ARM: dts: stm32mp: align barebox dtsi name with upstream
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Linux supports a clocks property in syscon nodes to indicate that access
-should only occur with the clock active. The new regmap-mmio supports
-this, thus port syscon over, so it can make use of it in a later commit.
+Upstream has split stm32mp157c.dtsi into three files:
+
+- stm32mp157.dtsi: GPU, DSI and stm32mp153.dtsi
+- stm32mp153.dtsi: 2x CAN, 2nd Cortex-A7 and stm32mp151.dtsi
+- stm32mp151.dtsi: everything else
+
+Have our barebox specific fixup file follow the new naming scheme.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/mfd/syscon.c | 27 ++-------------------------
- 1 file changed, 2 insertions(+), 25 deletions(-)
+ arch/arm/dts/{stm32mp157c.dtsi => stm32mp151.dtsi} | 0
+ arch/arm/dts/stm32mp157a-dk1.dtsi                  | 2 +-
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+ rename arch/arm/dts/{stm32mp157c.dtsi => stm32mp151.dtsi} (100%)
 
-diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
-index 809941937857..adc263c6e6da 100644
---- a/drivers/mfd/syscon.c
-+++ b/drivers/mfd/syscon.c
-@@ -31,27 +31,6 @@ struct syscon {
- 	struct regmap *regmap;
- };
+diff --git a/arch/arm/dts/stm32mp157c.dtsi b/arch/arm/dts/stm32mp151.dtsi
+similarity index 100%
+rename from arch/arm/dts/stm32mp157c.dtsi
+rename to arch/arm/dts/stm32mp151.dtsi
+diff --git a/arch/arm/dts/stm32mp157a-dk1.dtsi b/arch/arm/dts/stm32mp157a-dk1.dtsi
+index 6be208f32ef2..baaf60b18fa8 100644
+--- a/arch/arm/dts/stm32mp157a-dk1.dtsi
++++ b/arch/arm/dts/stm32mp157a-dk1.dtsi
+@@ -4,7 +4,7 @@
+  * Author: Alexandre Torgue <alexandre.torgue@st.com>.
+  */
  
--static int syscon_reg_write(void *context, unsigned int reg,
--			    unsigned int val)
--{
--	struct syscon *syscon = context;
--	writel(val, syscon->base + reg);
--	return 0;
--}
--
--static int syscon_reg_read(void *context, unsigned int reg,
--			   unsigned int *val)
--{
--	struct syscon *syscon = context;
--	*val = readl(syscon->base + reg);
--	return 0;
--}
--
--static const struct regmap_bus syscon_regmap_bus = {
--	.reg_write = syscon_reg_write,
--	.reg_read  = syscon_reg_read,
--};
--
- static const struct regmap_config syscon_regmap_config = {
- 	.reg_bits = 32,
- 	.val_bits = 32,
-@@ -79,10 +58,8 @@ static struct syscon *of_syscon_register(struct device_node *np)
+-#include "stm32mp157c.dtsi"
++#include "stm32mp151.dtsi"
+ #include <dt-bindings/gpio/gpio.h>
  
- 	list_add_tail(&syscon->list, &syscon_list);
- 
--	syscon->regmap = regmap_init(NULL,
--				     &syscon_regmap_bus,
--				     syscon,
--				     &syscon_regmap_config);
-+	syscon->regmap = of_regmap_init_mmio_clk(np, NULL, syscon->base,
-+					     &syscon_regmap_config);
- 	return syscon;
- 
- err_map:
+ / {
 -- 
 2.25.0
 
