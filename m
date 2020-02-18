@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j44rW-000347-DR
- for barebox@lists.infradead.org; Tue, 18 Feb 2020 15:32:40 +0000
+ id 1j44wK-0004a5-QH
+ for barebox@lists.infradead.org; Tue, 18 Feb 2020 15:37:38 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 18 Feb 2020 16:32:35 +0100
-Message-Id: <20200218153235.12452-1-s.hauer@pengutronix.de>
+Date: Tue, 18 Feb 2020 16:37:26 +0100
+Message-Id: <20200218153732.14845-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,29 +19,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] clk: i.MX1: make locally used function static
+Subject: [PATCH 0/6] i.MX: Fix external NAND boot
 To: Barebox List <barebox@lists.infradead.org>
 
-mx1_clocks_init() is only used in one file, make it static.
+The external NAND boot on i.MX is broken since b0348d677b ("ARM: Compile
+with -fPIE"). This series fixes it.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/clk/imx/clk-imx1.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Sascha Hauer (6):
+  ARM: i.MX Phytec phycard i.MX27: get fdt in common init function
+  ARM: i.MX Phytec phycard i.MX27: replace __naked with noinline
+  ARM: i.MX Phytec phycore i.MX27: replace __naked with noinline
+  ARM: i.MX: external NAND boot: remove unnecessary arguments from
+    imx*_nand_load_image
+  ARM: i.MX: external NAND boot: Leave icache disabled
+  ARM: i.MX: external NAND boot: Fix passing boarddata
 
-diff --git a/drivers/clk/imx/clk-imx1.c b/drivers/clk/imx/clk-imx1.c
-index 5f600a9da3..9a817c36c0 100644
---- a/drivers/clk/imx/clk-imx1.c
-+++ b/drivers/clk/imx/clk-imx1.c
-@@ -53,7 +53,7 @@ static const char *clko_sel_clks[] = {
- 	"fclk",
- };
- 
--int __init mx1_clocks_init(void __iomem *regs, unsigned long fref)
-+static int __init mx1_clocks_init(void __iomem *regs, unsigned long fref)
- {
- 	clks[dummy] = clk_fixed("dummy", 0);
- 	clks[clk32] = clk_fixed("clk32", fref);
+ arch/arm/boards/eukrea_cpuimx25/lowlevel.c    |   2 +-
+ arch/arm/boards/eukrea_cpuimx35/lowlevel.c    |   2 +-
+ arch/arm/boards/guf-cupid/lowlevel.c          |   2 +-
+ arch/arm/boards/guf-neso/lowlevel.c           |   2 +-
+ arch/arm/boards/karo-tx25/lowlevel.c          |  34 ++-
+ .../boards/phytec-phycard-imx27/lowlevel.c    |  38 ++-
+ .../boards/phytec-phycore-imx27/lowlevel.c    |  36 ++-
+ .../boards/phytec-phycore-imx31/lowlevel.c    |   2 +-
+ .../boards/phytec-phycore-imx35/lowlevel.c    |   2 +-
+ arch/arm/cpu/lowlevel.S                       |   2 +
+ arch/arm/mach-imx/external-nand-boot.c        | 274 ++++++++++--------
+ arch/arm/mach-imx/include/mach/imx-nand.h     |  19 +-
+ 12 files changed, 248 insertions(+), 167 deletions(-)
+
 -- 
 2.25.0
 
