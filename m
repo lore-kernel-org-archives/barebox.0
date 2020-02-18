@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j43mG-0002em-9r
- for barebox@lists.infradead.org; Tue, 18 Feb 2020 14:23:09 +0000
+ id 1j43mG-0002el-9w
+ for barebox@lists.infradead.org; Tue, 18 Feb 2020 14:23:10 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 18 Feb 2020 15:23:00 +0100
-Message-Id: <20200218142305.26992-2-a.fatoum@pengutronix.de>
-In-Reply-To: <20200218142305.26992-1-a.fatoum@pengutronix.de>
-References: <20200218142305.26992-1-a.fatoum@pengutronix.de>
+Date: Tue, 18 Feb 2020 15:22:59 +0100
+Message-Id: <20200218142305.26992-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,42 +19,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/6] ARM: dts: stm32mp: align barebox dtsi name with upstream
+Subject: [PATCH 0/6] ARM: stm32mp: fix Ethernet after dts/ update
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Upstream has split stm32mp157c.dtsi into three files:
+The upstream device tree no longer lists "syscfg-clk" as clock because
+the syscon node had a clocks property, which the syscon driver is
+supposed to attach to the regmap.
 
-- stm32mp157.dtsi: GPU, DSI and stm32mp153.dtsi
-- stm32mp153.dtsi: 2x CAN, 2nd Cortex-A7 and stm32mp151.dtsi
-- stm32mp151.dtsi: everything else
+Teach the barebox syscon driver how to do so and do the necessary
+things, so that network on the STM32MP works again.
 
-Have our barebox specific fixup file follow the new naming scheme.
+Cheers,
+Ahmad Fatoum (6):
+  ARM: dts: stm32mp: align barebox dtsi name with upstream
+  regmap: make internal.h a self-contained header
+  regmap: add support for regmap_init_mmio_clk
+  mfd: syscon: use regmap-mmio as backend
+  mfd: syscon: clock peripheral if specified in device tree
+  net: designware: eqos: stm32: drop no longer needed syscfg-clk
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- arch/arm/dts/{stm32mp157c.dtsi => stm32mp151.dtsi} | 0
- arch/arm/dts/stm32mp157a-dk1.dtsi                  | 2 +-
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ .../dts/{stm32mp157c.dtsi => stm32mp151.dtsi} |   0
+ arch/arm/dts/stm32mp157a-dk1.dtsi             |   2 +-
+ drivers/base/regmap/Makefile                  |   3 +-
+ drivers/base/regmap/internal.h                |   9 +-
+ drivers/base/regmap/regmap-mmio.c             | 271 ++++++++++++++++++
+ drivers/mfd/syscon.c                          |  47 ++-
+ drivers/net/designware_stm32.c                |   3 +-
+ include/regmap.h                              |  50 ++++
+ 8 files changed, 353 insertions(+), 32 deletions(-)
  rename arch/arm/dts/{stm32mp157c.dtsi => stm32mp151.dtsi} (100%)
+ create mode 100644 drivers/base/regmap/regmap-mmio.c
 
-diff --git a/arch/arm/dts/stm32mp157c.dtsi b/arch/arm/dts/stm32mp151.dtsi
-similarity index 100%
-rename from arch/arm/dts/stm32mp157c.dtsi
-rename to arch/arm/dts/stm32mp151.dtsi
-diff --git a/arch/arm/dts/stm32mp157a-dk1.dtsi b/arch/arm/dts/stm32mp157a-dk1.dtsi
-index 6be208f32ef2..baaf60b18fa8 100644
---- a/arch/arm/dts/stm32mp157a-dk1.dtsi
-+++ b/arch/arm/dts/stm32mp157a-dk1.dtsi
-@@ -4,7 +4,7 @@
-  * Author: Alexandre Torgue <alexandre.torgue@st.com>.
-  */
- 
--#include "stm32mp157c.dtsi"
-+#include "stm32mp151.dtsi"
- #include <dt-bindings/gpio/gpio.h>
- 
- / {
 -- 
 2.25.0
 
