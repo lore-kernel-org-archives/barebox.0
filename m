@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ua1-x944.google.com ([2607:f8b0:4864:20::944])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j6r5f-00027e-B0
- for barebox@lists.infradead.org; Wed, 26 Feb 2020 07:26:46 +0000
-Received: by mail-ua1-x944.google.com with SMTP id k24so614214uaq.12
- for <barebox@lists.infradead.org>; Tue, 25 Feb 2020 23:26:42 -0800 (PST)
+ id 1j40Zh-0000s4-Ca
+ for barebox@lists.infradead.org; Tue, 18 Feb 2020 10:57:59 +0000
+References: <CAGm1_ku5kzBoxiRYks2uLYt1D6-QPB0vJm0DygF8a2WXTC6NoQ@mail.gmail.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <92a929cc-b9e6-db9b-352d-c7c271a29558@pengutronix.de>
+Date: Tue, 18 Feb 2020 11:57:52 +0100
 MIME-Version: 1.0
-References: <20200225165731.12419-1-a.fatoum@pengutronix.de>
- <20200225165731.12419-2-a.fatoum@pengutronix.de>
-In-Reply-To: <20200225165731.12419-2-a.fatoum@pengutronix.de>
-From: Yegor Yefremov <yegorslists@googlemail.com>
-Date: Wed, 26 Feb 2020 08:26:02 +0100
-Message-ID: <CAGm1_kvtBTTkMEmi+z4wu_y7V2bDTaXnnxFDe83dY2Ego0wayg@mail.gmail.com>
+In-Reply-To: <CAGm1_ku5kzBoxiRYks2uLYt1D6-QPB0vJm0DygF8a2WXTC6NoQ@mail.gmail.com>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,222 +22,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] USB: MUSB: defer driver probes where necessary
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: Re: musb is broken in master
+To: Yegor Yefremov <yegorslists@googlemail.com>, barebox <barebox@lists.infradead.org>
 
-On Tue, Feb 25, 2020 at 5:57 PM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
->
-> Kernel commit 0782e8572c ("ARM: dts: Probe am335x musb with ti-sysc")
-> which we pulled in during the v2020.02.0 dts/ sync moved the USB nodes
-> to be under a ti-sysc bus instead of ti,am33xx-usb.
->
-> This new probe order broke am335x USB under barebox, because the MUSB
-> drivers couldn't cope with the now different device probe order.
->
-> Pepper some -EPROBE_DEFER around to make USB work again.
->
-> Fixes: 574eed3f6f ("dts: update to v5.5-rc1")
-> Reported-by: Yegor Yefremov <yegorslists@googlemail.com>
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Hello Yegor,
 
-Tested against the next branch.
+On 2/18/20 10:58 AM, Yegor Yefremov wrote:
+> I have bisected the musb driver on am335x (baltos system
+> arch/arm/dts/am335x-baltos-minimal.dts) from v2019.11.0 and this is
+> the result:
+> 
+> 574eed3f6fcf056aa4c9e46c4b5224e3f7844d8d is the first bad commit
+> commit 574eed3f6fcf056aa4c9e46c4b5224e3f7844d8d
+> Author: Sascha Hauer <s.hauer@pengutronix.de>
+> Date:   Thu Dec 19 05:46:54 2019 +0100
+> 
+>     dts: update to v5.5-rc1
+> 
+>     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> 
+> :040000 040000 4f6416a5af14d6328ef2c8ac46d9ac4a17a37404
+> 525e33dda1e735ef2f633f4d99c501ba938a7263 M      dts
+> 
+> I need only the host functionality to mount a USB drive. My defconfig
+> can be found here [1].
+> 
+> Any idea what could have happened?
 
-Tested-by: Yegor Yefremov <yegorslists@googlemail.com>
+git log v5.4..v5.5-rc1 arch/arm/boot/dts/am335x*.dtsi
+gives me kernel commit 12afc0cf81 ("ARM: dts: Drop pointless status changing for am3 musb").
+Does reverting it fix the issue for you?
 
-Yegor
+> 
+> [1] https://github.com/visionsystemsgmbh/onrisc_br_bsp/blob/master/board/vscom/baltos/barebox/am335x_baltos_defconfig
+> 
+> Thanks.
+> 
+> Cheers,
+> Yegor
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-> ---
-> Fix for v2020.02.0. Please apply to master.
-> ---
->  drivers/usb/musb/musb_core.c          |  5 ++--
->  drivers/usb/musb/musb_dsps.c          | 39 +++++++++++++++++++--------
->  drivers/usb/musb/phy-am335x-control.c | 25 ++++++++++++-----
->  drivers/usb/musb/phy-am335x.c         | 12 ++++++---
->  4 files changed, 58 insertions(+), 23 deletions(-)
->
-> diff --git a/drivers/usb/musb/musb_core.c b/drivers/usb/musb/musb_core.c
-> index 4c11e6580c0f..b84da5516c4a 100644
-> --- a/drivers/usb/musb/musb_core.c
-> +++ b/drivers/usb/musb/musb_core.c
-> @@ -1136,8 +1136,9 @@ fail2:
->         musb_platform_exit(musb);
->
->  fail1:
-> -       dev_err(musb->controller,
-> -               "musb_init_controller failed with status %d\n", status);
-> +       if (status != -EPROBE_DEFER)
-> +               dev_err(musb->controller,
-> +                       "musb_init_controller failed with status %d\n", status);
->
->         musb_free(musb);
->
-> diff --git a/drivers/usb/musb/musb_dsps.c b/drivers/usb/musb/musb_dsps.c
-> index f30672914830..d54a663e9d8b 100644
-> --- a/drivers/usb/musb/musb_dsps.c
-> +++ b/drivers/usb/musb/musb_dsps.c
-> @@ -314,7 +314,7 @@ static int dsps_set_mode(void *ctx, enum usb_dr_mode mode)
->
->  static int dsps_probe(struct device_d *dev)
->  {
-> -       struct resource *iores;
-> +       struct resource *iores[2];
->         struct musb_hdrc_platform_data *pdata;
->         struct musb_hdrc_config *config;
->         struct device_node *dn = dev->device_node;
-> @@ -354,15 +354,19 @@ static int dsps_probe(struct device_d *dev)
->
->         pdata = &glue->pdata;
->
-> -       iores = dev_request_mem_resource(dev, 0);
-> -       if (IS_ERR(iores))
-> -               return PTR_ERR(iores);
-> -       glue->musb.mregs = IOMEM(iores->start);
-> +       iores[0] = dev_request_mem_resource(dev, 0);
-> +       if (IS_ERR(iores[0])) {
-> +               ret = PTR_ERR(iores[0]);
-> +               goto free_glue;
-> +       }
-> +       glue->musb.mregs = IOMEM(iores[0]->start);
->
-> -       iores = dev_request_mem_resource(dev, 1);
-> -       if (IS_ERR(iores))
-> -               return PTR_ERR(iores);
-> -       glue->musb.ctrl_base = IOMEM(iores->start);
-> +       iores[1] = dev_request_mem_resource(dev, 1);
-> +       if (IS_ERR(iores[1])) {
-> +               ret = PTR_ERR(iores[1]);
-> +               goto release_iores0;
-> +       }
-> +       glue->musb.ctrl_base = IOMEM(iores[1]->start);
->
->         glue->musb.controller = dev;
->         glue->musb.xceiv = phy_dev->priv;
-> @@ -383,11 +387,24 @@ static int dsps_probe(struct device_d *dev)
->         if (pdata->mode == MUSB_PORT_MODE_DUAL_ROLE) {
->                 ret = usb_register_otg_device(dev, dsps_set_mode, glue);
->                 if (ret)
-> -                       return ret;
-> +                       goto release_iores1;
->                 return 0;
->         }
->
-> -       return musb_init_controller(&glue->musb, pdata);
-> +       ret = musb_init_controller(&glue->musb, pdata);
-> +       if (ret)
-> +               goto release_iores1;
-> +
-> +       return 0;
-> +
-> +release_iores1:
-> +       release_region(iores[1]);
-> +release_iores0:
-> +       release_region(iores[0]);
-> +free_glue:
-> +       free(glue);
-> +
-> +       return ret;
->  }
->
->  static const struct dsps_musb_wrapper am33xx_driver_data = {
-> diff --git a/drivers/usb/musb/phy-am335x-control.c b/drivers/usb/musb/phy-am335x-control.c
-> index c84525ec7eb4..41a3689ed3f9 100644
-> --- a/drivers/usb/musb/phy-am335x-control.c
-> +++ b/drivers/usb/musb/phy-am335x-control.c
-> @@ -109,15 +109,15 @@ struct phy_control *am335x_get_phy_control(struct device_d *dev)
->
->         node = of_parse_phandle(dev->device_node, "ti,ctrl_mod", 0);
->         if (!node)
-> -               return NULL;
-> +               return ERR_PTR(-ENOENT);
->
->         dev = of_find_device_by_node(node);
->         if (!dev)
-> -               return NULL;
-> +               return ERR_PTR(-EPROBE_DEFER);
->
->         ctrl_usb = dev->priv;
->         if (!ctrl_usb)
-> -               return NULL;
-> +               return ERR_PTR(-EPROBE_DEFER);
->
->         return &ctrl_usb->phy_ctrl;
->  }
-> @@ -141,13 +141,17 @@ static int am335x_control_usb_probe(struct device_d *dev)
->         ctrl_usb->dev = dev;
->
->         iores = dev_request_mem_resource(dev, 0);
-> -       if (IS_ERR(iores))
-> -               return PTR_ERR(iores);
-> +       if (IS_ERR(iores)) {
-> +               ret = PTR_ERR(iores);
-> +               goto free_ctrl;
-> +       }
->         ctrl_usb->phy_reg = IOMEM(iores->start);
->
->         iores = dev_request_mem_resource(dev, 1);
-> -       if (IS_ERR(iores))
-> -               return PTR_ERR(iores);
-> +       if (IS_ERR(iores)) {
-> +               ret = PTR_ERR(iores);
-> +               goto release_resource;
-> +       }
->         ctrl_usb->wkup = IOMEM(iores->start);
->
->         spin_lock_init(&ctrl_usb->lock);
-> @@ -155,6 +159,13 @@ static int am335x_control_usb_probe(struct device_d *dev)
->
->         dev->priv = ctrl_usb;
->         return 0;
-> +
-> +release_resource:
-> +       release_region(iores);
-> +free_ctrl:
-> +       free(ctrl_usb);
-> +
-> +       return 0;
->  };
->
->  static struct driver_d am335x_control_driver = {
-> diff --git a/drivers/usb/musb/phy-am335x.c b/drivers/usb/musb/phy-am335x.c
-> index 6991f4402d3f..7dda8caf2a3c 100644
-> --- a/drivers/usb/musb/phy-am335x.c
-> +++ b/drivers/usb/musb/phy-am335x.c
-> @@ -37,13 +37,16 @@ static int am335x_phy_probe(struct device_d *dev)
->         am_usbphy->base = IOMEM(iores->start);
->
->         am_usbphy->phy_ctrl = am335x_get_phy_control(dev);
-> -       if (!am_usbphy->phy_ctrl)
-> -               return -ENODEV;
-> +       if (IS_ERR(am_usbphy->phy_ctrl)) {
-> +               ret = PTR_ERR(am_usbphy->phy_ctrl);
-> +               goto err_release;
-> +       }
->
->         am_usbphy->id = of_alias_get_id(dev->device_node, "phy");
->         if (am_usbphy->id < 0) {
->                 dev_err(dev, "Missing PHY id: %d\n", am_usbphy->id);
-> -               return am_usbphy->id;
-> +               ret = am_usbphy->id;
-> +               goto err_release;
->         }
->
->         am_usbphy->phy.init = am335x_init;
-> @@ -53,8 +56,11 @@ static int am335x_phy_probe(struct device_d *dev)
->
->         return 0;
->
-> +err_release:
-> +       release_region(iores);
->  err_free:
->         free(am_usbphy);
-> +       am_usbphy = NULL;
->
->         return ret;
->  };
-> --
-> 2.25.0
->
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
