@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j2W5C-0003YX-9f
- for barebox@lists.infradead.org; Fri, 14 Feb 2020 08:12:20 +0000
-References: <20200212141638.11114-1-a.fatoum@pengutronix.de>
- <20200214075652.hkn3hejb76wqgyom@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <1b6cd616-6d8e-3662-0062-97da486bca1a@pengutronix.de>
-Date: Fri, 14 Feb 2020 09:12:14 +0100
+ id 1j4NvT-0004uB-OV
+ for barebox@lists.infradead.org; Wed, 19 Feb 2020 11:54:01 +0000
+Message-ID: <ea522b8d2edc79a5354bc8234aea66519603cc55.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Wed, 19 Feb 2020 12:53:56 +0100
+In-Reply-To: <20200219082730.jwvsp3cdsoomdhwd@pengutronix.de>
+References: <20200218153732.14845-1-s.hauer@pengutronix.de>
+ <20200218153732.14845-6-s.hauer@pengutronix.de>
+ <843b47cf-272e-3800-df85-9a2f9dcbee23@gmx.net>
+ <20200219082730.jwvsp3cdsoomdhwd@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20200214075652.hkn3hejb76wqgyom@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,137 +24,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] commands: boot: refactor boot entry creation to use
- iterators
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 5/6] ARM: i.MX: external NAND boot: Leave icache disabled
+To: Sascha Hauer <s.hauer@pengutronix.de>, Oleksij Rempel <fishor@gmx.net>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-
-
-On 2/14/20 8:56 AM, Sascha Hauer wrote:
-> On Wed, Feb 12, 2020 at 03:16:37PM +0100, Ahmad Fatoum wrote:
->> We currently create all boot entries before attempting boot. This is
->> less than optimal, because this may involve probing devices that won't
->> be used for actual boot.
->>
->> In preparation for changing this, refactor the code, so we only have one
->> loop we need to touch.
->>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->> ---
->>  commands/boot.c | 44 ++++++++++++++++++++++++++++----------------
->>  1 file changed, 28 insertions(+), 16 deletions(-)
+On Mi, 2020-02-19 at 09:27 +0100, Sascha Hauer wrote:
+> On Wed, Feb 19, 2020 at 07:23:09AM +0100, Oleksij Rempel wrote:
+> > Am 18.02.20 um 16:37 schrieb Sascha Hauer:
+> > > It seems running from the NFC SRAM doesn't work with the instruction
+> > > cache enabled, it leads to corruptions on the i.MX27. We stumbled upon
+> > > this earlier and the solution at that time was to disable the
+> > > instruction cache in the NAND boot code. It is, however, more reliable
+> > > to just not enable the instruction cache in the first place.
+> > > This is not particularly nice as we have to ifdef this in generic code,
+> > > duplicate arm_cpu_lowlevel_init(), or call arm_cpu_lowlevel_init() later
+> > > when we are out of NFC SRAM. From the different bad solutions I chose
+> > > to ifdef the instruction cache away. It will be enabled later in the
+> > > common cache functions.
+> > 
+> > Hm... is it possible that we have similar speculation issues as on i.MX6UL? The CPU was speculating
+> > in to IOMEM, caused cache poisoning/corruption and executed corrupted cache.
 > 
-> Applied, thanks
+> I don't know how much speculation an ARM9 processor does, but the end
+> result looks very similar. via JTAG I can see that the memory matches
+> my disassembly, just the CPU does something completely different.
 
-Relooking at the diff, I spotted a small issue that would happen with
-dryrun boot. I sent a fixup.
+Processors from this generation don't do much speculation at all. They
+have a simple branch predictor, but wrong predictions are resolved via
+a simple pipeline flush. I wouldn't expect a misspeculated instruction
+to reach the load/store units on those simple cores.
 
-> 
-> Sascha
-> 
->>
->> diff --git a/commands/boot.c b/commands/boot.c
->> index 0257b3dd4f18..ce4eeac6534c 100644
->> --- a/commands/boot.c
->> +++ b/commands/boot.c
->> @@ -21,13 +21,29 @@
->>  
->>  #include <linux/stat.h>
->>  
->> +static char *next_argv(void *context)
->> +{
->> +	char ***argv = context;
->> +	char *next = **argv;
->> +	(*argv)++;
->> +	return next;
->> +}
->> +
->> +static char *next_word(void *context)
->> +{
->> +	return strsep(context, " ");
->> +}
->> +
->>  static int do_boot(int argc, char *argv[])
->>  {
->>  	char *freep = NULL;
->>  	int opt, ret = 0, do_list = 0, do_menu = 0;
->> -	int i, dryrun = 0, verbose = 0, timeout = -1;
->> +	int dryrun = 0, verbose = 0, timeout = -1;
->>  	struct bootentries *entries;
->>  	struct bootentry *entry;
->> +	void *handle;
->> +	const char *name;
->> +	char *(*next)(void *);
->>  
->>  	while ((opt = getopt(argc, argv, "vldmt:w:")) > 0) {
->>  		switch (opt) {
->> @@ -54,31 +70,26 @@ static int do_boot(int argc, char *argv[])
->>  		}
->>  	}
->>  
->> -	entries = bootentries_alloc();
->> -
->>  	if (optind < argc) {
->> -		for (i = optind; i < argc; i++) {
->> -			ret = bootentry_create_from_name(entries, argv[i]);
->> -			if (ret <= 0)
->> -				printf("Nothing bootable found on '%s'\n", argv[i]);
->> -	       }
->> +		handle = &argv[optind];
->> +		next = next_argv;
->>  	} else {
->>  		const char *def;
->> -		char *sep, *name;
->>  
->>  		def = getenv("global.boot.default");
->>  		if (!def)
->>  			return 0;
->>  
->> -		sep = freep = xstrdup(def);
->> +		handle = freep = xstrdup(def);
->> +		next = next_word;
->> +	}
->>  
->> -		while ((name = strsep(&sep, " ")) != NULL) {
->> -			ret = bootentry_create_from_name(entries, name);
->> -			if (ret <= 0)
->> -				printf("Nothing bootable found on '%s'\n", name);
->> -		}
->> +	entries = bootentries_alloc();
->>  
->> -		free(freep);
->> +	while ((name = next(&handle)) != NULL) {
->> +		ret = bootentry_create_from_name(entries, name);
->> +		if (ret <= 0)
->> +			printf("Nothing bootable found on '%s'\n", name);
->>  	}
->>  
->>  	if (list_empty(&entries->entries)) {
->> @@ -104,6 +115,7 @@ static int do_boot(int argc, char *argv[])
->>  
->>  out:
->>  	bootentries_free(entries);
->> +	free(freep);
->>  
->>  	return ret;
->>  }
->> -- 
->> 2.25.0
->>
->>
->> _______________________________________________
->> barebox mailing list
->> barebox@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/barebox
->>
-> 
+It's much more likely that the I-cache simply issues AXI transactions
+(most likely WRAP ones to implement critical word first) which the NAND
+controller slave can't handle properly. In that case there is nothing
+much we can do besides keeping the I$ disabled while we are running
+from the NAND SRAM region.
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Regards,
+Lucas
+
 
 _______________________________________________
 barebox mailing list
