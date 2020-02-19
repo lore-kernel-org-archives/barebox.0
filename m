@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vs1-xe36.google.com ([2607:f8b0:4864:20::e36])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j3zes-0008Jw-Ao
- for barebox@lists.infradead.org; Tue, 18 Feb 2020 09:59:15 +0000
-Received: by mail-vs1-xe36.google.com with SMTP id p14so12286756vsq.6
- for <barebox@lists.infradead.org>; Tue, 18 Feb 2020 01:59:13 -0800 (PST)
+ id 1j4KBs-0004fo-VI
+ for barebox@lists.infradead.org; Wed, 19 Feb 2020 07:54:42 +0000
+Date: Wed, 19 Feb 2020 08:54:39 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200219075439.zyhlnputwwjjnxyc@pengutronix.de>
+References: <20200218141636.6486-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-From: Yegor Yefremov <yegorslists@googlemail.com>
-Date: Tue, 18 Feb 2020 10:58:42 +0100
-Message-ID: <CAGm1_ku5kzBoxiRYks2uLYt1D6-QPB0vJm0DygF8a2WXTC6NoQ@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20200218141636.6486-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,36 +22,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: musb is broken in master
-To: barebox <barebox@lists.infradead.org>
+Subject: Re: [PATCH 1/3] gpiolib: use correct format specifier for ptrdiff_t
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-I have bisected the musb driver on am335x (baltos system
-arch/arm/dts/am335x-baltos-minimal.dts) from v2019.11.0 and this is
-the result:
+On Tue, Feb 18, 2020 at 03:16:34PM +0100, Ahmad Fatoum wrote:
+> C99 specifies the 't' length modifier type for pointer difference.
+> barebox vsnprintf supports it, thus use it.
+> 
+> We are guaranteed sizeof(long) == sizeof(void *) in barebox, so this
+> doesn't make a difference in practice except that it silences
+> following GCC warning:
+> 
+>   ./drivers/gpio/gpiolib.c: In function 'gpioinfo_request':
+>   ./include/printk.h:77:43: warning: format '%ld' expects argument of
+>      type 'long int', but argument 3 has type 'int' [-Wformat=]
+>   ...
+>   ./barebox-stm32/drivers/gpio/gpiolib.c:89:3: note: in expansion of macro 'pr_err'
+>      89 |   pr_err("_gpio_request: gpio-%ld (%s) status %d\n",
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  drivers/gpio/gpiolib.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-574eed3f6fcf056aa4c9e46c4b5224e3f7844d8d is the first bad commit
-commit 574eed3f6fcf056aa4c9e46c4b5224e3f7844d8d
-Author: Sascha Hauer <s.hauer@pengutronix.de>
-Date:   Thu Dec 19 05:46:54 2019 +0100
+Applied, thanks
 
-    dts: update to v5.5-rc1
+Sascha
 
-    Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
-:040000 040000 4f6416a5af14d6328ef2c8ac46d9ac4a17a37404
-525e33dda1e735ef2f633f4d99c501ba938a7263 M      dts
-
-I need only the host functionality to mount a USB drive. My defconfig
-can be found here [1].
-
-Any idea what could have happened?
-
-[1] https://github.com/visionsystemsgmbh/onrisc_br_bsp/blob/master/board/vscom/baltos/barebox/am335x_baltos_defconfig
-
-Thanks.
-
-Cheers,
-Yegor
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
