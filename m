@@ -1,17 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vs1-xe43.google.com ([2607:f8b0:4864:20::e43])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j7csA-00067w-BH
- for barebox@lists.infradead.org; Fri, 28 Feb 2020 10:27:59 +0000
-Received: by mail-vs1-xe43.google.com with SMTP id c18so1605720vsq.7
- for <barebox@lists.infradead.org>; Fri, 28 Feb 2020 02:27:57 -0800 (PST)
+ id 1j4if9-0004Kn-SP
+ for barebox@lists.infradead.org; Thu, 20 Feb 2020 10:02:33 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu, 20 Feb 2020 11:01:05 +0100
+Message-Id: <20200220100109.18147-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-References: <20200225165731.12419-2-a.fatoum@pengutronix.de>
- <20200226104806.9498-1-a.fatoum@pengutronix.de>
-In-Reply-To: <20200226104806.9498-1-a.fatoum@pengutronix.de>
-From: Yegor Yefremov <yegorslists@googlemail.com>
-Date: Fri, 28 Feb 2020 11:27:21 +0100
-Message-ID: <CAGm1_kspuhkcK7sa4uOT0rUjgf-UG1Of13ukSkKXiF0KkEt=wg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,39 +19,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fixup! USB: MUSB: defer driver probes where necessary
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: [PATCH 0/6] phy: usb: add support for STM32 usbphyc
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, mgr@pengutronix.de, rcz@pengutronix.de
 
-Hi Ahmad,
+This is only USB PHY support. Changes to the DWC2 (OTG) and/or OHCI
+(Host) are still needed to make USB on the MP1 work.
 
-On Wed, Feb 26, 2020 at 11:48 AM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
->
-> The NULL assignment is a left over from when it was a global variable.
-> am_usbphy is local now and is just going out of scope, so need to NULL
-> it.
->
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  drivers/usb/musb/phy-am335x.c | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/drivers/usb/musb/phy-am335x.c b/drivers/usb/musb/phy-am335x.c
-> index 7dda8caf2a3c..f2e870d7ee61 100644
-> --- a/drivers/usb/musb/phy-am335x.c
-> +++ b/drivers/usb/musb/phy-am335x.c
-> @@ -60,7 +60,6 @@ err_release:
->         release_region(iores);
->  err_free:
->         free(am_usbphy);
-> -       am_usbphy = NULL;
->
->         return ret;
->  };
+I haven't yet groked the relation between generic phy and usb phy
+frameworks, but the code is a straight port from Linux and it seems to
+work[1], so let's upstream it now to make collaboration easier.
 
-Do you want me to test this fixup as well or are you going to post v2?
+[1]: clock the EHCI and power on the PHY and 20% of the time, the bus
+     can be enumerated completely. Still needs further debugging,
+     but it's unlikely that the PHY driver is at fault.
 
-Yegor
+Cheers,
+Ahmad Fatoum (6):
+  regulator: import Linux regulator_bulk API
+  phy: remove unused init_data parameter
+  phy: populate existing ->pwr member with phy-supply
+  phy: introduce phy_get_by_index
+  regulator: port over Linux stm32 PWR regulator driver
+  phy: port over Linux stm32 usbphyc driver
+
+ drivers/phy/Kconfig                        |  13 +
+ drivers/phy/Makefile                       |   1 +
+ drivers/phy/freescale/phy-fsl-imx8mq-usb.c |   2 +-
+ drivers/phy/phy-core.c                     |  29 +-
+ drivers/phy/phy-stm32-usbphyc.c            | 434 +++++++++++++++++++++
+ drivers/phy/usb-nop-xceiv.c                |   2 +-
+ drivers/pinctrl/pinctrl-tegra-xusb.c       |   4 +-
+ drivers/regulator/Kconfig                  |   7 +
+ drivers/regulator/Makefile                 |   1 +
+ drivers/regulator/core.c                   | 139 +++++++
+ drivers/regulator/stm32-pwr.c              | 215 ++++++++++
+ drivers/usb/imx/imx-usb-phy.c              |   2 +-
+ include/linux/phy/phy.h                    |  14 +-
+ include/regulator.h                        |  49 +++
+ 14 files changed, 897 insertions(+), 15 deletions(-)
+ create mode 100644 drivers/phy/phy-stm32-usbphyc.c
+ create mode 100644 drivers/regulator/stm32-pwr.c
+
+-- 
+2.25.0
+
 
 _______________________________________________
 barebox mailing list
