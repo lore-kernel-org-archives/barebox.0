@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-vs1-xe43.google.com ([2607:f8b0:4864:20::e43])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j4SCR-0002td-9y
- for barebox@lists.infradead.org; Wed, 19 Feb 2020 16:27:49 +0000
-References: <f52c462f-8f88-f953-7383-18633de010ff@pengutronix.de>
- <21810.1581944282288454644@lists.yoctoproject.org>
- <8178103e-c35d-461d-c485-d6b64753641b@pengutronix.de>
- <AM0PR03MB3714AE8A8592D7A0E7853B83FE110@AM0PR03MB3714.eurprd03.prod.outlook.com>
-From: =?UTF-8?Q?Enrico_J=c3=b6rns?= <ejo@pengutronix.de>
-Message-ID: <3421bd79-37aa-8a4a-2e80-552a7c78e2ef@pengutronix.de>
-Date: Wed, 19 Feb 2020 17:27:43 +0100
+ id 1j6Bd2-0005Ha-Au
+ for barebox@lists.infradead.org; Mon, 24 Feb 2020 11:10:25 +0000
+Received: by mail-vs1-xe43.google.com with SMTP id p14so5412076vsq.6
+ for <barebox@lists.infradead.org>; Mon, 24 Feb 2020 03:10:24 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <AM0PR03MB3714AE8A8592D7A0E7853B83FE110@AM0PR03MB3714.eurprd03.prod.outlook.com>
-Content-Language: en-GB
+References: <CAGm1_ku5kzBoxiRYks2uLYt1D6-QPB0vJm0DygF8a2WXTC6NoQ@mail.gmail.com>
+ <92a929cc-b9e6-db9b-352d-c7c271a29558@pengutronix.de>
+ <CAGm1_ktTGx1MMY-jcbVrOwnwqHeHm8Qe2f2iRxEQxmY0y5HM4g@mail.gmail.com>
+ <43978130-6f7d-759c-ef63-a005cb6f0934@pengutronix.de>
+In-Reply-To: <43978130-6f7d-759c-ef63-a005cb6f0934@pengutronix.de>
+From: Yegor Yefremov <yegorslists@googlemail.com>
+Date: Mon, 24 Feb 2020 12:09:50 +0100
+Message-ID: <CAGm1_kt6wpsn_o4djfmycA=H3gcZEOPYoQLX=uL11jo8mb6cwQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,77 +22,86 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RAUC] Private: Re: [yocto] #yocto update the kernel with a rauc
- bundle
-To: Hans-Ulrich Schlieben <hu.schlieben@codewrights.de>
-Cc: "yocto@lists.yoctoproject.org" <yocto@lists.yoctoproject.org>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>, "rauc@pengutronix.de" <rauc@pengutronix.de>
+Subject: Re: musb is broken in master
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: t.remmet@phytec.de, barebox <barebox@lists.infradead.org>
 
-SGkgSGFucywKCkFtIDE4LjAyLjIwIHVtIDE1OjA2IHNjaHJpZWIgSGFucy1VbHJpY2ggU2NobGll
-YmVuOgo+IEhpIEVucmljbywKPiAKPiBJIGp1c3QgYW5zd2VyZWQgeW91ciBmaXJzdCBtYWlsIG9u
-IHRoZSB3ZWJzaXRlIGFuZCB0aG91Z2h0IHRoYXQgd2lsbCBhdXRvbWF0aWNhbGx5IHJlcGx5IHRv
-IGFsbC4gQWRkZWQgYWxsIGxpc3RzIG5vdywgaG9wZSB0aGVzZSBhcmUgY29ycmVjdC4KCmFoLCBJ
-IHdhc24ndCBldmVuIGF3YXJlIHRoYXQgdGhlcmUgaXMgYSB3ZWJzaXRlIGZvciB0aGlzIDspCgo+
-IFRoYW5rcyB0byB5b3UgSSBmb3VuZCB0aGUgY3VzdG9tIGF1dG9tb3VudCBpbiB0aGUgcHJvdmlk
-ZXJzIHJlY2lwZXMuIFRoaXMgbW91bnRzIC9kZXYvbW1jMC4wIHRvIC9tbnQvbW1jLgoKT2ssIGdv
-b2QgdGhhdCB3ZSBjbGFyaWZpZWQgdGhpcy4gVGhlIHNjcmlwdCBzaG91bGQgbm90IGJlIHJlcXVp
-cmVkIGluIGEKbW9kZXJuIGJhcmVib3ggYXMgaXQgaGFzIGEgbG90IG9mIGJ1aWx0LWluIGF1dG9t
-b3VudGluZyBtYWdpYyBvbiBib2FyZC4KCj4gQWZ0ZXIgdGhlIG1vdW50IGl0IHNlZW1zIHRoYXQg
-b25seSB3aGVuIEkgaW5zdGFsbCBhIG5ldyBpbWFnZSB0aGUgYmFyZWJveCBtb3VudCAvZGV2L21t
-YzAuMCB0byAvbW50L21tYzAuMCB3b3Jrcy4gCgpUaGlzIGlzIHRoZSBwb2ludCB0aGF0IHNvdW5k
-cyBhIGxpdHRsZSBzdHJhbmdlLCB5ZXMuCgo+IFJhdWMgLyBiYXJlYm94IHNlZW1zIHNvbWV0aGlu
-ZyB0byBjaGFuZ2UgYWZ0ZXIgYSBidW5kbGUgdXBkYXRlIHdoZXJlYXMgbW91bnQgL2Rldi9tbWMw
-LjAgdG8gL21udC9tbWMwLjAgZmFpbHMgYW5kIHRoZSBmaWxlcyBhcmUgb25seSB2aXNpYmxlIGlu
-IC9tbnQvbW1jLgo+IAo+IC9tbnQvbW1jIHdvcmtzIGluIGJvdGggY2FzZXMgc28gSSBoYXZlIG5v
-dyAKPiAvbW50L21tYy9ib290Li4uIGZvciBzeXN0ZW0wIGFuZAo+IC9tbnQvbW1jMC4xL2Jvb3Qu
-Li4gZm9yIHN5c3RlbTEKCldvdWxkIGJlIGdyZWF0IHRvIHNlZSBhIGxvZyBvZiBzdWNoIGEgZmFp
-bGVkIG1vdW50IHRvIGdldCBhIG1vcmUKY29uY3JldGUgaWRlYSB3aGF0ICdmYWlsZWQnIGFjdHVh
-bGx5IG1lYW5zLgoKQmVzdCByZWdhcmRzLCBFbnJpY28KCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdl
-LS0tLS0KPiBGcm9tOiBFbnJpY28gSsO2cm5zIDxlam9AcGVuZ3V0cm9uaXguZGU+IAo+IFNlbnQ6
-IFR1ZXNkYXksIDE4IEZlYnJ1YXJ5IDIwMjAgMDE6MTIKPiBUbzogSGFucy1VbHJpY2ggU2NobGll
-YmVuIDxodS5zY2hsaWViZW5AY29kZXdyaWdodHMuZGU+Cj4gU3ViamVjdDogUmU6IFByaXZhdGU6
-IFJlOiBbeW9jdG9dICN5b2N0byB1cGRhdGUgdGhlIGtlcm5lbCB3aXRoIGEgcmF1YyBidW5kbGUK
-PiAKPiBIaSBodSwKPiAKPiBwbGVhc2Uga2VlcCBhdCBsZWFzdCBhbnkgbGlzdCBpbiBDQyBzbyB0
-aGF0IG90aGVycyBjYW4gYmVuZWZpdCBmcm9tIHRoaXMgZGlzY3Vzc2lvbiwgdG9vIChCb3RoIFJB
-VUMgYW5kIGJhcmVib3ggTUwgd291bGQgZml0IGhlcmUpLiBJdCBhbHNvIGluY3JlYXNlcyB0aGUg
-cmFuZ2UgYW5kIHRodXMgcG90ZW50aWFsIHBlb3BsZSB0aGF0IG1heSBoZWxwIGhlcmUuCj4gCj4g
-QW0gMTcuMDIuMjAgdW0gMTM6NTggc2NocmllYiBIYW5zLVVscmljaCBTY2hsaWViZW46Cj4+IEhp
-IEVucmljbywKPj4KPj4gdGhhbmsgeW91IHZlcnkgbXVjaCBmb3IgeW91ciBoZWxwIHdpdGggSU1B
-R0VfSU5TVEFMTF9hcHBlbmQgPSAiIAo+PiBrZXJuZWwtaW1hZ2Uga2VybmVsLWRldmljZXRyZWUi
-Cj4+IHRoYXQgZGlkIHRoZSB0cmljay4KPj4KPj4gV2hhdCBpIGRvIG5vdCB1bmRlcnN0YW5kIGlz
-IGhvdyBiYXJlYm94IGhhbmRsZXMgdGhlIG1vdW50IG5hbWVzIGZvciBteSAKPj4gdHdvIGFsdGVy
-bmF0ZSBib290IHBhcnRpdGlvbnMuCj4+IFRoZSBib290IG9uIHRoZSBmaXJzdCBwYXJ0aXRpb24g
-d29ya3Mgb25seSB1bmRlciAvbW50L21tYy86Cj4+Cj4+IGdsb2JhbC5ib290bS5pbWFnZT0iL21u
-dC9tbWMvYm9vdC96SW1hZ2UiCj4+IGdsb2JhbC5ib290bS5vZnRyZWU9Ii9tbnQvbW1jL2Jvb3Qv
-aW14NnEtcGh5dGVjLWtzcDA2NjMuZHRiIgo+PiBnbG9iYWwubGludXguYm9vdGFyZ3MuZHluLnJv
-b3Q9InJvb3Q9L2Rldi9tbWNibGswcDEKPj4gcm9vdGZsYWdzPSdkYXRhPWpvdXJuYWwnIHdkPTYw
-IGlwdjYuZGlzYWJsZT0xIgo+Pgo+PiB3aGVyZWFzIHRoZSBzZWNvbmQgd29ya3Mgd2l0aCAvbW50
-L21tYzEvOgo+PiBnbG9iYWwuYm9vdG0uaW1hZ2U9Ii9tbnQvbW1jMC4xL2Jvb3QvekltYWdlIgo+
-PiBnbG9iYWwuYm9vdG0ub2Z0cmVlPSIvbW50L21tYzAuMS9ib290L2lteDZxLXBoeXRlYy1rc3Aw
-NjYzLmR0YiIKPj4gZ2xvYmFsLmxpbnV4LmJvb3RhcmdzLmR5bi5yb290PSJyb290PS9kZXYvbW1j
-YmxrMHAyCj4+IHJvb3RmbGFncz0nZGF0YT1qb3VybmFsJyB3ZD02MCBpcHY2LmRpc2FibGU9MSIK
-Pj4KPj4gSW4gYmFyZWJveCBpIHNlZSBib3RoIHJvb3QgZmlsZXN5c3RlbXMgdW5kZXIgL21udC9t
-bWMwLjAgYW5kIAo+PiAvbW50L21tYzAuMS8uCj4+Cj4+IFdoZW4gaSB0cnkgdG8gaGF2ZSBhIHN5
-bW1ldHJpY2FsIGNvbmZpZ3VyYXRpb24gYW5kIHJlbmFtZSAvbW1jLyBpbnRvIAo+PiAvbW1jMC4w
-LyBib290IG9uIG1tYzAuMCBkb2VzIG5vdCB3b3JrIGJlY2F1c2UgaXQgc3RpbGwgbW91bnRzIHRo
-ZSAKPj4gZmlyc3QgcGFydGl0aW9uIGFyIC9tbnQvbW1jLy4KPiAKPiBXaGljaCB2ZXJzaW9uIG9m
-IGJhcmVib3g/Cj4gCj4gSXQgc2hvdWxkIGJlIHN1ZmZpY2llbnQgdG8gZWl0aGVyIHNheQo+IAo+
-ICAgYm9vdCBtbWMwLjAKPiAKPiBvcgo+IAo+ICAgYm9vdCBtbWMwLjEKPiAKPiBhbmQgYmFyZWJv
-eCB3aWxsIGF1dG9tYXRpY2FsbHkgbW91bnQgdGhlIHBhcnRpdGlvbiwgbG9vayBmb3IgYSBib290
-c3BlYyBmaWxlIHVuZGVyIC9sb2FkZXIvZW50cmllcyBhbmQgYXNzZW1ibGUgdGhlIHJlcXVpcmVk
-IGJvb3Qgb3B0aW9ucyBhbmQga2VybmVsIGNvbW1hbmQgbGluZSBhdXRvbWF0aWNhbGx5Lgo+IAo+
-PiBXaGF0IHRlbGxzIGJhcmVib3ggdG8gbW91bnQgZHVyaW5nIGJvb3QgbW1jIGFuZCBtbWMwLjEg
-aW5zdGVhZCBvZiAKPj4gbW1jMC4wIGFuZCBtbWMwLjE/Cj4gCj4gSXMgdGhlcmUgYW55IGN1c3Rv
-bSBhdXRvbW91bnQgdW5pdCBsb2NhdGVkIGluIHlvdSBidWlsdC1pbiBlbnYgcHJvYmFibHk/Cj4g
-Cj4gCj4gQmVzdCByZWdhcmRzLCBFbnJpY28KPiAKCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAg
-ICAgICAgICAgICAgICAgICAgICAgIHwgRW5yaWNvIErDtnJucyAgICAgICAgICAgICAgICB8Cklu
-ZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVu
-Z3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFu
-eSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctNTA4MCB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0s
-IEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxp
-bmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVh
-ZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Hi Ahmad, all,
+
+On Tue, Feb 18, 2020 at 12:48 PM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+>
+> On 2/18/20 12:19 PM, Yegor Yefremov wrote:
+> > Hello Ahmad,
+> >
+> > On Tue, Feb 18, 2020 at 11:57 AM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+> >>
+> >> Hello Yegor,
+> >>
+> >> On 2/18/20 10:58 AM, Yegor Yefremov wrote:
+> >>> I have bisected the musb driver on am335x (baltos system
+> >>> arch/arm/dts/am335x-baltos-minimal.dts) from v2019.11.0 and this is
+> >>> the result:
+> >>>
+> >>> 574eed3f6fcf056aa4c9e46c4b5224e3f7844d8d is the first bad commit
+> >>> commit 574eed3f6fcf056aa4c9e46c4b5224e3f7844d8d
+> >>> Author: Sascha Hauer <s.hauer@pengutronix.de>
+> >>> Date:   Thu Dec 19 05:46:54 2019 +0100
+> >>>
+> >>>     dts: update to v5.5-rc1
+> >>>
+> >>>     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> >>>
+> >>> :040000 040000 4f6416a5af14d6328ef2c8ac46d9ac4a17a37404
+> >>> 525e33dda1e735ef2f633f4d99c501ba938a7263 M      dts
+> >>>
+> >>> I need only the host functionality to mount a USB drive. My defconfig
+> >>> can be found here [1].
+> >>>
+> >>> Any idea what could have happened?
+> >>
+> >> git log v5.4..v5.5-rc1 arch/arm/boot/dts/am335x*.dtsi
+> >> gives me kernel commit 12afc0cf81 ("ARM: dts: Drop pointless status changing for am3 musb").
+> >> Does reverting it fix the issue for you?
+> >
+> > Yes, it does. Though the revert result is a little bit ugly i.e. at
+> > least one conflict.
+>
+> yes, it's not meant as permanent solution.
+> Which status = "okay" is the one that 'fixes' it?
+>
+> > But when I start the kernel 5.6-rc2 that already incorporates these
+> > DTS changes, I have no problems with USB. So far only the barebox is
+> > affected by this change.
+>
+> Possibly a device driver in barebox for the now-disabled peripheral
+> turns on a clock, enables a regulator, toggles a reset or initializes
+> some register that also affects the USB working at all.
+>
+> Best course of action would be to check which driver it is, check whether
+> Linux uses it, comment out stuff to find what the magic sauce is that
+> the driver does and add that to the driver that misses it.
+>
+> (sometimes it's just that the device tree binding changed. In that case,
+> you can either patch in a missing property in arch/arm/dts or patch
+> barebox drivers to accept the new binding as well)
+
+Can it be that musb was broken because of this change in the mainline
+linux kernel [1]?
+
+The kernel uses ti-sysc mechanism to get/configure the related hw
+blocks. If I grep for ti-sysc in kernel, I get a lot of hits. But in
+barebox, it is only drivers/bus/ti-sysc.c that I find. Seems like a
+rather big update is required.
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/arch/arm/boot/dts/am33xx.dtsi?h=v5.6-rc3&id=0782e8572ce43f521ed6ff15e4a7ab9aa5acdc85
+
+Yegor
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
