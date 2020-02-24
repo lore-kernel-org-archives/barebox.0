@@ -1,19 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mslow2.mail.gandi.net ([217.70.178.242])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j68rA-0000jf-SP
- for barebox@lists.infradead.org; Mon, 24 Feb 2020 08:12:50 +0000
-Received: from relay5-d.mail.gandi.net (unknown [217.70.183.197])
- by mslow2.mail.gandi.net (Postfix) with ESMTP id 70939441365
- for <barebox@lists.infradead.org>; Mon, 24 Feb 2020 08:12:34 +0000 (UTC)
-Received: from geraet.fritz.box (muedsl-82-207-211-016.citykom.de
- [82.207.211.16]) (Authenticated sender: ahmad@a3f.at)
- by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 45CD71C0009
- for <barebox@lists.infradead.org>; Mon, 24 Feb 2020 08:12:22 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Mon, 24 Feb 2020 09:12:18 +0100
-Message-Id: <20200224081218.526309-1-ahmad@a3f.at>
+ id 1j69LD-0001p6-UK
+ for barebox@lists.infradead.org; Mon, 24 Feb 2020 08:43:53 +0000
+Date: Mon, 24 Feb 2020 09:43:47 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200224084347.GC3335@pengutronix.de>
+References: <c0e44a15-802d-b008-36b3-3b3d6007e587@data-modul.com>
+ <f67d5b7fec7c354a8d632dc8e20d15e5c273030f.camel@pengutronix.de>
+ <cfdb29ab-63b9-6d85-52b2-e76dd88839fd@data-modul.com>
+ <20191213075549.bsugsd4fjo6lqox5@pengutronix.de>
+ <94de90ba-583b-1181-c9b8-0375b3b3e834@data-modul.com>
+ <d617fe79-4942-d1c7-34d2-837f3c328cff@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <d617fe79-4942-d1c7-34d2-837f3c328cff@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,38 +27,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] images: i.MX: fix marsboard image file name
-To: barebox@lists.infradead.org
+Subject: Re: imx-usb-loader on imx8mq/mm
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, "Yazdani,
+ Reyhaneh" <RYazdani@data-modul.com>
 
-With 778bd9320b ("Makefile.imx: change image creation to
-build_imx_habv4img for i.MX6") the barebox image file name for the
-board became barebox-barebox-embest-imx6q-marsboard.img.
+On Fri, Feb 21, 2020 at 07:32:55PM +0100, Ahmad Fatoum wrote:
+> Hello,
+> 
+> On 12/13/19 3:24 PM, Yazdani, Reyhaneh wrote:
+> > Thanks Sascha,
+> > 
+> > I could finally program Barebox on eMMC from u-boot :)
+> 
+> with recent changes in upstream/next, you should be able to do it with imx-usb-loader
+> only now.
 
-Drop the extra barebox-.
+It seems there are some fixes missing, I'll come up with them later.
+Anyway, the recent additions only work on i.MX8MM, the i.MX8MQ has
+another USB controller. Also using imx-usb-loader on i.MX8M needs help
+from the board code which is currently only implemented on the i.MX8MM
+EVK.
 
-Fixes: 778bd9320b ("Makefile.imx: change image creation to
-       build_imx_habv4img for i.MX6")
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
----
- images/Makefile.imx | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Sascha
 
-diff --git a/images/Makefile.imx b/images/Makefile.imx
-index e17e699bcdf0..59e48bc125fc 100644
---- a/images/Makefile.imx
-+++ b/images/Makefile.imx
-@@ -269,7 +269,7 @@ $(call build_imx_habv4img, CONFIG_MACH_VARISCITE_MX6, start_variscite_custom, va
- 
- $(call build_imx_habv4img, CONFIG_MACH_EMBEDSKY_E9, start_imx6q_embedsky_e9, embedsky-e9/flash-header-e9, embedsky-imx6q-e9)
- 
--$(call build_imx_habv4img, CONFIG_MACH_EMBEST_MARSBOARD, start_imx6q_marsboard, embest-marsboard/flash-header-embest-marsboard, barebox-embest-imx6q-marsboard)
-+$(call build_imx_habv4img, CONFIG_MACH_EMBEST_MARSBOARD, start_imx6q_marsboard, embest-marsboard/flash-header-embest-marsboard, embest-imx6q-marsboard)
- 
- $(call build_imx_habv4img, CONFIG_MACH_EMBEST_RIOTBOARD, start_imx6s_riotboard, embest-riotboard/flash-header-embest-riotboard, embest-imx6s-riotboard)
- 
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
