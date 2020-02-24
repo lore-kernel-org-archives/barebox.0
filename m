@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mslow2.mail.gandi.net ([217.70.178.242])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j6VDH-00066B-6U
- for barebox@lists.infradead.org; Tue, 25 Feb 2020 08:05:08 +0000
-Date: Tue, 25 Feb 2020 09:05:05 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200225080505.GL3335@pengutronix.de>
-References: <20200224081154.526146-1-ahmad@a3f.at>
+ id 1j68rA-0000jf-SP
+ for barebox@lists.infradead.org; Mon, 24 Feb 2020 08:12:50 +0000
+Received: from relay5-d.mail.gandi.net (unknown [217.70.183.197])
+ by mslow2.mail.gandi.net (Postfix) with ESMTP id 70939441365
+ for <barebox@lists.infradead.org>; Mon, 24 Feb 2020 08:12:34 +0000 (UTC)
+Received: from geraet.fritz.box (muedsl-82-207-211-016.citykom.de
+ [82.207.211.16]) (Authenticated sender: ahmad@a3f.at)
+ by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 45CD71C0009
+ for <barebox@lists.infradead.org>; Mon, 24 Feb 2020 08:12:22 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Mon, 24 Feb 2020 09:12:18 +0100
+Message-Id: <20200224081218.526309-1-ahmad@a3f.at>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200224081154.526146-1-ahmad@a3f.at>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,28 +26,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM: stm32mp: dk2: delete unused includes
-To: Ahmad Fatoum <ahmad@a3f.at>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] images: i.MX: fix marsboard image file name
+To: barebox@lists.infradead.org
 
-On Mon, Feb 24, 2020 at 09:11:53AM +0100, Ahmad Fatoum wrote:
-> These includes are no longer needed because we don't need to hard code
-> memory size in board code anymore for the STM32MP. Drop them.
-> 
-> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
-> ---
->  arch/arm/boards/stm32mp157c-dk2/board.c | 3 ---
->  1 file changed, 3 deletions(-)
+With 778bd9320b ("Makefile.imx: change image creation to
+build_imx_habv4img for i.MX6") the barebox image file name for the
+board became barebox-barebox-embest-imx6q-marsboard.img.
 
-Applied, thanks
+Drop the extra barebox-.
 
-Sascha
+Fixes: 778bd9320b ("Makefile.imx: change image creation to
+       build_imx_habv4img for i.MX6")
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ images/Makefile.imx | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index e17e699bcdf0..59e48bc125fc 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -269,7 +269,7 @@ $(call build_imx_habv4img, CONFIG_MACH_VARISCITE_MX6, start_variscite_custom, va
+ 
+ $(call build_imx_habv4img, CONFIG_MACH_EMBEDSKY_E9, start_imx6q_embedsky_e9, embedsky-e9/flash-header-e9, embedsky-imx6q-e9)
+ 
+-$(call build_imx_habv4img, CONFIG_MACH_EMBEST_MARSBOARD, start_imx6q_marsboard, embest-marsboard/flash-header-embest-marsboard, barebox-embest-imx6q-marsboard)
++$(call build_imx_habv4img, CONFIG_MACH_EMBEST_MARSBOARD, start_imx6q_marsboard, embest-marsboard/flash-header-embest-marsboard, embest-imx6q-marsboard)
+ 
+ $(call build_imx_habv4img, CONFIG_MACH_EMBEST_RIOTBOARD, start_imx6s_riotboard, embest-riotboard/flash-header-embest-riotboard, embest-imx6s-riotboard)
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
