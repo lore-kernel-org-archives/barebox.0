@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j6VCT-00059N-Ug
- for barebox@lists.infradead.org; Tue, 25 Feb 2020 08:04:19 +0000
-Date: Tue, 25 Feb 2020 09:04:15 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200225080415.GK3335@pengutronix.de>
-References: <20200222075341.13407-1-o.rempel@pengutronix.de>
+Received: from relay3-d.mail.gandi.net ([217.70.183.195])
+ by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1j68qw-0006XZ-DD
+ for barebox@lists.infradead.org; Mon, 24 Feb 2020 08:12:37 +0000
+Received: from geraet.fritz.box (muedsl-82-207-211-016.citykom.de
+ [82.207.211.16]) (Authenticated sender: ahmad@a3f.at)
+ by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id 12B5B60012
+ for <barebox@lists.infradead.org>; Mon, 24 Feb 2020 08:11:59 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Mon, 24 Feb 2020 09:11:53 +0100
+Message-Id: <20200224081154.526146-1-ahmad@a3f.at>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200222075341.13407-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,35 +23,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] MIPS: ath79: add support for OpenEmbed SOM9331 board
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] ARM: stm32mp: dk2: delete unused includes
+To: barebox@lists.infradead.org
 
-On Sat, Feb 22, 2020 at 08:53:41AM +0100, Oleksij Rempel wrote:
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> ---
->  arch/mips/boards/Makefile                     |   1 +
->  arch/mips/boards/openembed-som9331/Makefile   |   1 +
->  arch/mips/boards/openembed-som9331/lowlevel.S |  23 ++++
->  arch/mips/configs/ath79_defconfig             |   1 +
->  arch/mips/dts/Makefile                        |   1 +
->  .../dts/ar9331-openembed-som9331-board.dts    | 113 ++++++++++++++++++
->  arch/mips/mach-ath79/Kconfig                  |   7 ++
->  images/Makefile.ath79                         |   4 +
->  8 files changed, 151 insertions(+)
->  create mode 100644 arch/mips/boards/openembed-som9331/Makefile
->  create mode 100644 arch/mips/boards/openembed-som9331/lowlevel.S
->  create mode 100644 arch/mips/dts/ar9331-openembed-som9331-board.dts
+These includes are no longer needed because we don't need to hard code
+memory size in board code anymore for the STM32MP. Drop them.
 
-Applied, thanks
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ arch/arm/boards/stm32mp157c-dk2/board.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-Sascha
-
+diff --git a/arch/arm/boards/stm32mp157c-dk2/board.c b/arch/arm/boards/stm32mp157c-dk2/board.c
+index 6da99d9353ac..46366031218d 100644
+--- a/arch/arm/boards/stm32mp157c-dk2/board.c
++++ b/arch/arm/boards/stm32mp157c-dk2/board.c
+@@ -1,9 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0+
+ #include <common.h>
+-#include <linux/sizes.h>
+ #include <init.h>
+-#include <asm/memory.h>
+-#include <mach/stm32.h>
+ #include <mach/bbu.h>
+ 
+ static int dk2_postcore_init(void)
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
