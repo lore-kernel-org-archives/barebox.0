@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-eopbgr20112.outbound.protection.outlook.com
- ([40.107.2.112] helo=EUR02-VE1-obe.outbound.protection.outlook.com)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j43Wa-0005AU-ON
- for barebox@lists.infradead.org; Tue, 18 Feb 2020 14:06:58 +0000
-From: Hans-Ulrich Schlieben <hu.schlieben@codewrights.de>
-Date: Tue, 18 Feb 2020 14:06:50 +0000
-Message-ID: <AM0PR03MB3714AE8A8592D7A0E7853B83FE110@AM0PR03MB3714.eurprd03.prod.outlook.com>
-References: <f52c462f-8f88-f953-7383-18633de010ff@pengutronix.de>
- <21810.1581944282288454644@lists.yoctoproject.org>
- <8178103e-c35d-461d-c485-d6b64753641b@pengutronix.de>
-In-Reply-To: <8178103e-c35d-461d-c485-d6b64753641b@pengutronix.de>
-Content-Language: en-US
+ id 1j6CFP-0002gy-Of
+ for barebox@lists.infradead.org; Mon, 24 Feb 2020 11:50:05 +0000
+References: <CAGm1_ku5kzBoxiRYks2uLYt1D6-QPB0vJm0DygF8a2WXTC6NoQ@mail.gmail.com>
+ <92a929cc-b9e6-db9b-352d-c7c271a29558@pengutronix.de>
+ <CAGm1_ktTGx1MMY-jcbVrOwnwqHeHm8Qe2f2iRxEQxmY0y5HM4g@mail.gmail.com>
+ <43978130-6f7d-759c-ef63-a005cb6f0934@pengutronix.de>
+ <CAGm1_kt6wpsn_o4djfmycA=H3gcZEOPYoQLX=uL11jo8mb6cwQ@mail.gmail.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <c58c0ce8-a2ad-8b34-debf-d120deb43df2@pengutronix.de>
+Date: Mon, 24 Feb 2020 12:50:00 +0100
 MIME-Version: 1.0
+In-Reply-To: <CAGm1_kt6wpsn_o4djfmycA=H3gcZEOPYoQLX=uL11jo8mb6cwQ@mail.gmail.com>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,72 +22,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: Private: Re: [yocto] #yocto update the kernel with a rauc bundle
-To: =?utf-8?B?RW5yaWNvIErDtnJucw==?= <ejo@pengutronix.de>
-Cc: "yocto@lists.yoctoproject.org" <yocto@lists.yoctoproject.org>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>, "rauc@pengutronix.de" <rauc@pengutronix.de>
+Subject: Re: musb is broken in master
+To: Yegor Yefremov <yegorslists@googlemail.com>
+Cc: t.remmet@phytec.de, barebox <barebox@lists.infradead.org>
 
-SGkgRW5yaWNvLA0KDQpJIGp1c3QgYW5zd2VyZWQgeW91ciBmaXJzdCBtYWlsIG9uIHRoZSB3ZWJz
-aXRlIGFuZCB0aG91Z2h0IHRoYXQgd2lsbCBhdXRvbWF0aWNhbGx5IHJlcGx5IHRvIGFsbC4gQWRk
-ZWQgYWxsIGxpc3RzIG5vdywgaG9wZSB0aGVzZSBhcmUgY29ycmVjdC4NCg0KVGhhbmtzIHRvIHlv
-dSBJIGZvdW5kIHRoZSBjdXN0b20gYXV0b21vdW50IGluIHRoZSBwcm92aWRlcnMgcmVjaXBlcy4g
-VGhpcyBtb3VudHMgL2Rldi9tbWMwLjAgdG8gL21udC9tbWMuDQpBZnRlciB0aGUgbW91bnQgaXQg
-c2VlbXMgdGhhdCBvbmx5IHdoZW4gSSBpbnN0YWxsIGEgbmV3IGltYWdlIHRoZSBiYXJlYm94IG1v
-dW50IC9kZXYvbW1jMC4wIHRvIC9tbnQvbW1jMC4wIHdvcmtzLiANClJhdWMgLyBiYXJlYm94IHNl
-ZW1zIHNvbWV0aGluZyB0byBjaGFuZ2UgYWZ0ZXIgYSBidW5kbGUgdXBkYXRlIHdoZXJlYXMgbW91
-bnQgL2Rldi9tbWMwLjAgdG8gL21udC9tbWMwLjAgZmFpbHMgYW5kIHRoZSBmaWxlcyBhcmUgb25s
-eSB2aXNpYmxlIGluIC9tbnQvbW1jLg0KDQovbW50L21tYyB3b3JrcyBpbiBib3RoIGNhc2VzIHNv
-IEkgaGF2ZSBub3cgDQovbW50L21tYy9ib290Li4uIGZvciBzeXN0ZW0wIGFuZA0KL21udC9tbWMw
-LjEvYm9vdC4uLiBmb3Igc3lzdGVtMQ0KDQpCZXN0IHJlZ2FyZHMNCg0KaHUNCg0KLS0tLS1Pcmln
-aW5hbCBNZXNzYWdlLS0tLS0NCkZyb206IEVucmljbyBKw7ZybnMgPGVqb0BwZW5ndXRyb25peC5k
-ZT4gDQpTZW50OiBUdWVzZGF5LCAxOCBGZWJydWFyeSAyMDIwIDAxOjEyDQpUbzogSGFucy1VbHJp
-Y2ggU2NobGllYmVuIDxodS5zY2hsaWViZW5AY29kZXdyaWdodHMuZGU+DQpTdWJqZWN0OiBSZTog
-UHJpdmF0ZTogUmU6IFt5b2N0b10gI3lvY3RvIHVwZGF0ZSB0aGUga2VybmVsIHdpdGggYSByYXVj
-IGJ1bmRsZQ0KDQpIaSBodSwNCg0KcGxlYXNlIGtlZXAgYXQgbGVhc3QgYW55IGxpc3QgaW4gQ0Mg
-c28gdGhhdCBvdGhlcnMgY2FuIGJlbmVmaXQgZnJvbSB0aGlzIGRpc2N1c3Npb24sIHRvbyAoQm90
-aCBSQVVDIGFuZCBiYXJlYm94IE1MIHdvdWxkIGZpdCBoZXJlKS4gSXQgYWxzbyBpbmNyZWFzZXMg
-dGhlIHJhbmdlIGFuZCB0aHVzIHBvdGVudGlhbCBwZW9wbGUgdGhhdCBtYXkgaGVscCBoZXJlLg0K
-DQpBbSAxNy4wMi4yMCB1bSAxMzo1OCBzY2hyaWViIEhhbnMtVWxyaWNoIFNjaGxpZWJlbjoNCj4g
-SGkgRW5yaWNvLA0KPiANCj4gdGhhbmsgeW91IHZlcnkgbXVjaCBmb3IgeW91ciBoZWxwIHdpdGgg
-SU1BR0VfSU5TVEFMTF9hcHBlbmQgPSAiIA0KPiBrZXJuZWwtaW1hZ2Uga2VybmVsLWRldmljZXRy
-ZWUiDQo+IHRoYXQgZGlkIHRoZSB0cmljay4NCj4gDQo+IFdoYXQgaSBkbyBub3QgdW5kZXJzdGFu
-ZCBpcyBob3cgYmFyZWJveCBoYW5kbGVzIHRoZSBtb3VudCBuYW1lcyBmb3IgbXkgDQo+IHR3byBh
-bHRlcm5hdGUgYm9vdCBwYXJ0aXRpb25zLg0KPiBUaGUgYm9vdCBvbiB0aGUgZmlyc3QgcGFydGl0
-aW9uIHdvcmtzIG9ubHkgdW5kZXIgL21udC9tbWMvOg0KPiANCj4gZ2xvYmFsLmJvb3RtLmltYWdl
-PSIvbW50L21tYy9ib290L3pJbWFnZSINCj4gZ2xvYmFsLmJvb3RtLm9mdHJlZT0iL21udC9tbWMv
-Ym9vdC9pbXg2cS1waHl0ZWMta3NwMDY2My5kdGIiDQo+IGdsb2JhbC5saW51eC5ib290YXJncy5k
-eW4ucm9vdD0icm9vdD0vZGV2L21tY2JsazBwMQ0KPiByb290ZmxhZ3M9J2RhdGE9am91cm5hbCcg
-d2Q9NjAgaXB2Ni5kaXNhYmxlPTEiDQo+IA0KPiB3aGVyZWFzIHRoZSBzZWNvbmQgd29ya3Mgd2l0
-aCAvbW50L21tYzEvOg0KPiBnbG9iYWwuYm9vdG0uaW1hZ2U9Ii9tbnQvbW1jMC4xL2Jvb3Qveklt
-YWdlIg0KPiBnbG9iYWwuYm9vdG0ub2Z0cmVlPSIvbW50L21tYzAuMS9ib290L2lteDZxLXBoeXRl
-Yy1rc3AwNjYzLmR0YiINCj4gZ2xvYmFsLmxpbnV4LmJvb3RhcmdzLmR5bi5yb290PSJyb290PS9k
-ZXYvbW1jYmxrMHAyDQo+IHJvb3RmbGFncz0nZGF0YT1qb3VybmFsJyB3ZD02MCBpcHY2LmRpc2Fi
-bGU9MSINCj4gDQo+IEluIGJhcmVib3ggaSBzZWUgYm90aCByb290IGZpbGVzeXN0ZW1zIHVuZGVy
-IC9tbnQvbW1jMC4wIGFuZCANCj4gL21udC9tbWMwLjEvLg0KPiANCj4gV2hlbiBpIHRyeSB0byBo
-YXZlIGEgc3ltbWV0cmljYWwgY29uZmlndXJhdGlvbiBhbmQgcmVuYW1lIC9tbWMvIGludG8gDQo+
-IC9tbWMwLjAvIGJvb3Qgb24gbW1jMC4wIGRvZXMgbm90IHdvcmsgYmVjYXVzZSBpdCBzdGlsbCBt
-b3VudHMgdGhlIA0KPiBmaXJzdCBwYXJ0aXRpb24gYXIgL21udC9tbWMvLg0KDQpXaGljaCB2ZXJz
-aW9uIG9mIGJhcmVib3g/DQoNCkl0IHNob3VsZCBiZSBzdWZmaWNpZW50IHRvIGVpdGhlciBzYXkN
-Cg0KICBib290IG1tYzAuMA0KDQpvcg0KDQogIGJvb3QgbW1jMC4xDQoNCmFuZCBiYXJlYm94IHdp
-bGwgYXV0b21hdGljYWxseSBtb3VudCB0aGUgcGFydGl0aW9uLCBsb29rIGZvciBhIGJvb3RzcGVj
-IGZpbGUgdW5kZXIgL2xvYWRlci9lbnRyaWVzIGFuZCBhc3NlbWJsZSB0aGUgcmVxdWlyZWQgYm9v
-dCBvcHRpb25zIGFuZCBrZXJuZWwgY29tbWFuZCBsaW5lIGF1dG9tYXRpY2FsbHkuDQoNCj4gV2hh
-dCB0ZWxscyBiYXJlYm94IHRvIG1vdW50IGR1cmluZyBib290IG1tYyBhbmQgbW1jMC4xIGluc3Rl
-YWQgb2YgDQo+IG1tYzAuMCBhbmQgbW1jMC4xPw0KDQpJcyB0aGVyZSBhbnkgY3VzdG9tIGF1dG9t
-b3VudCB1bml0IGxvY2F0ZWQgaW4geW91IGJ1aWx0LWluIGVudiBwcm9iYWJseT8NCg0KDQpCZXN0
-IHJlZ2FyZHMsIEVucmljbw0KDQotLSANClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAg
-ICAgICAgICAgICB8IEVucmljbyBKw7ZybnMgICAgICAgICAgICAgICAgfA0KSW5kdXN0cmlhbCBM
-aW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cHM6Ly9ldXIwNC5zYWZlbGlua3Mu
-cHJvdGVjdGlvbi5vdXRsb29rLmNvbS8/dXJsPWh0dHAlM0ElMkYlMkZ3d3cucGVuZ3V0cm9uaXgu
-ZGUlMkYmYW1wO2RhdGE9MDElN0MwMSU3Q2h1LnNjaGxpZWJlbiU0MGNvZGV3cmlnaHRzLmRlJTdD
-NjAyMGJjMDFlMDA0NDFkNjM0OTMwOGQ3YjQwNzI2ZDclN0MwOTc0YWY5YjM1MmI0MzdjYjYwNmU5
-ZjI0MmMwYzIyNyU3QzAmYW1wO3NkYXRhPWRjVHlkTDZkODlYM3RCRWVCYUZsek1xSjYlMkZwRmtH
-cnpOUlE2YXRrcExSayUzRCZhbXA7cmVzZXJ2ZWQ9MCAgfA0KUGVpbmVyIFN0ci4gNi04LCAzMTEz
-NyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy01MDgwIHwNCkFt
-dHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEy
-MS0yMDY5MTctNTU1NSB8DQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcK
-aHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Hi,
+
+On 2/24/20 12:09 PM, Yegor Yefremov wrote:
+> Can it be that musb was broken because of this change in the mainline
+> linux kernel [1]?
+
+But you said that it works when you readd status = "okay" to some
+of the USB device tree nodes? Which node was it in particular?
+
+> The kernel uses ti-sysc mechanism to get/configure the related hw
+> blocks. If I grep for ti-sysc in kernel, I get a lot of hits. But in
+> barebox, it is only drivers/bus/ti-sysc.c that I find. Seems like a
+> rather big update is required.
+> 
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/arch/arm/boot/dts/am33xx.dtsi?h=v5.6-rc3&id=0782e8572ce43f521ed6ff15e4a7ab9aa5acdc85
+
+I don't think that's the problem. Looks to me like it should work with
+barebox as well. Or did you revert this patch and got USB working again?
+
+Cheers
+Ahmad
+
+> 
+> Yegor
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
