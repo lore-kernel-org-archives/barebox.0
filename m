@@ -1,22 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mickerik.phytec.de ([195.145.39.210])
- by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j6wf4-0000TP-At
- for barebox@lists.infradead.org; Wed, 26 Feb 2020 13:23:40 +0000
-References: <f52c462f-8f88-f953-7383-18633de010ff@pengutronix.de>
- <21810.1581944282288454644@lists.yoctoproject.org>
- <8178103e-c35d-461d-c485-d6b64753641b@pengutronix.de>
- <AM0PR03MB3714AE8A8592D7A0E7853B83FE110@AM0PR03MB3714.eurprd03.prod.outlook.com>
- <3421bd79-37aa-8a4a-2e80-552a7c78e2ef@pengutronix.de>
- <AM0PR03MB371452D747C7024FF3484BDFFEEC0@AM0PR03MB3714.eurprd03.prod.outlook.com>
- <fd2b33d4-2373-3ef9-d30e-f227438dbf9b@phytec.de>
- <AM0PR03MB37140F2A9A81570334B93160FEEA0@AM0PR03MB3714.eurprd03.prod.outlook.com>
-From: =?UTF-8?Q?Stefan_Riedm=c3=bcller?= <s.riedmueller@phytec.de>
-Message-ID: <869ad351-df40-be78-67e8-d26d703ffffc@phytec.de>
-Date: Wed, 26 Feb 2020 14:23:34 +0100
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1j6dWc-00044c-FU
+ for barebox@lists.infradead.org; Tue, 25 Feb 2020 16:57:42 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue, 25 Feb 2020 17:57:31 +0100
+Message-Id: <20200225165731.12419-2-a.fatoum@pengutronix.de>
+In-Reply-To: <20200225165731.12419-1-a.fatoum@pengutronix.de>
+References: <20200225165731.12419-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <AM0PR03MB37140F2A9A81570334B93160FEEA0@AM0PR03MB3714.eurprd03.prod.outlook.com>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,159 +17,219 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RAUC] Private: Re: [yocto] #yocto update the kernel with a rauc
- bundle
-To: Hans-Ulrich Schlieben <hu.schlieben@codewrights.de>
-Cc: "yocto@lists.yoctoproject.org" <yocto@lists.yoctoproject.org>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>, "rauc@pengutronix.de" <rauc@pengutronix.de>, =?UTF-8?Q?Enrico_J=c3=b6rns?= <ejo@pengutronix.de>
+Subject: [PATCH 2/2] USB: MUSB: defer driver probes where necessary
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-SGkgSGFucy1VbHJpY2gsCgpPbiAyNi4wMi4yMCAxMzoxOSwgSGFucy1VbHJpY2ggU2NobGllYmVu
-IHdyb3RlOgo+IEhpIFN0ZWZhbiwKPiAKPiBzYW1lIHJlc3VsdCB3aXRob3V0IHRoZSBhdXRvbW91
-bnQgZmlsZXMuID4gSSdtIG5vdCByZWFsbHkgc2h1cmUgd2hldGhlciBJIGJ1aWx0IGJhcmVib3gg
-dGhlIGludGVuZGVkIHdheS4gV2hhdCBJIGRpZCAKd2FzIHRvIGFkZCBSTV9XT1JLX0VYQ0xVREUg
-Kz0gIiBiYXJlYm94IiB0byBsb2NhbC5jb25mLAo+IFJlYnVpbGQgYmFyZWJveCB3aXRoIGJpdGJh
-a2UgLWMgY2xlYW5zc3RhdGUgYmFyZWJveCwgcmVtb3ZlZCB0aGUgdGhyZWUgYXV0b21vdW50IGZp
-bGVzIGJlbG93IHRoZSBpbXg2IGZvbGRlcnMgYW5kIHJ1bgo+IGJpdGJha2UgLWYgLWMgY29tcGls
-ZSBiYXJlYm94Cj4gYW5kIGJ1aWx0IHRoZSBpbWFnZS4gRGlkIHRoaXMgZGlzYWJsZSB0aGUgYXV0
-b21vdW50PwoKTG9va3MgT0sgdG8gbWUuIERpZCB5b3UgY2hlY2sgdGhlIGNvbnRlbnQgb2YgdGhl
-IGF1dG9tb3VudCBmaWxlIGluIHRoZSAKYm9vdGVkIGVudmlyb25tZW50PwoKU3RlZmFuCgo+IAo+
-IEJlc3QgcmVnYXJkcwo+IAo+IGh1Cj4gCj4gCj4gCj4gCj4+IC0tLS0tT3JpZ2luYWwgTWVzc2Fn
-ZS0tLS0tCj4+IEZyb206IFN0ZWZhbiBSaWVkbcO8bGxlciA8cy5yaWVkbXVlbGxlckBwaHl0ZWMu
-ZGU+Cj4+IFNlbnQ6IFR1ZXNkYXksIDI1IEZlYnJ1YXJ5IDIwMjAgMTY6MTYKPj4gVG86IEhhbnMt
-VWxyaWNoIFNjaGxpZWJlbiA8aHUuc2NobGllYmVuQGNvZGV3cmlnaHRzLmRlPgo+PiBDYzogRW5y
-aWNvIErDtnJucyA8ZWpvQHBlbmd1dHJvbml4LmRlPjsgeW9jdG9AbGlzdHMueW9jdG9wcm9qZWN0
-Lm9yZzsgYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnOyByYXVjQHBlbmd1dHJvbml4LmRlCj4+
-IFN1YmplY3Q6IFJlOiBbUkFVQ10gUHJpdmF0ZTogUmU6IFt5b2N0b10gI3lvY3RvIHVwZGF0ZSB0
-aGUga2VybmVsIHdpdGggYSByYXVjIGJ1bmRsZQo+Pgo+PiBIaSBIYW5zLVVscmljaCwKPj4KPj4g
-T24gMjQuMDIuMjAgMTM6MTIsIEhhbnMtVWxyaWNoIFNjaGxpZWJlbiB3cm90ZToKPj4+IEhpIEVu
-cmljbywKPj4+Cj4+PiB0aGUgYm9vdCBsb2cgbG9va3MgbGlrZSB0aGlzOgo+Pj4KPj4+Cj4+PiBi
-YXJlYm94IDIwMTcuMTIuMCAjMSBUdWUgRmViIDE4IDA5OjQ5OjM2IFVUQyAyMDIwCj4+Pgo+Pj4K
-Pj4+IEJvYXJkOiBQaHl0ZWMgcGh5Q09SRS1pLk1YNiBRdWFkIHdpdGggTkFORCBkZXRlY3RlZCBp
-Lk1YNiBRdWFkCj4+PiByZXZpc2lvbiAxLjUKPj4+IGkuTVg2IHVuaXF1ZSBJRDogZWU4MDNjNTQw
-ZjIzNTlkNAo+Pj4gbWRpb19idXM6IG1paWJ1czA6IHByb2JlZAo+Pj4gZXRoMDogZ290IHByZXNl
-dCBNQUMgYWRkcmVzczogNTA6MmQ6ZjQ6MWI6YWY6YjEKPj4+IG5hbmQ6IE9ORkkgZmxhc2ggZGV0
-ZWN0ZWQKPj4+IG5hbmQ6IE5BTkQgZGV2aWNlOiBNYW51ZmFjdHVyZXIgSUQ6IDB4ZWYsIENoaXAg
-SUQ6IDB4ZDMgKFdpbmJvbmQKPj4+IFcyOU4wOEdWKSwgMTAyNE1pQiwgcGFnZSBzaXplOiAyMDQ4
-LCBPT0Igc2l6ZTogNjQgQmFkIGJsb2NrIHRhYmxlCj4+PiBmb3VuZCBhdCBwYWdlIDUyNDIyNCwg
-dmVyc2lvbiAweDAxIEJhZCBibG9jayB0YWJsZSBmb3VuZCBhdCBwYWdlCj4+PiA1MjQxNjAsIHZl
-cnNpb24gMHgwMQo+Pj4gbTI1cDgwIGZsYXNoQDAwOiBuMjVxMTI4YTEzICgxNjM4NCBLYnl0ZXMp
-IGlteC11c2IgMjE4NDIwMC51c2I6IFVTQgo+Pj4gRUhDSSAxLjAwIGlteC1lc2RoYyAyMTkwMDAw
-LnVzZGhjOiByZWdpc3RlcmVkIGFzIDIxOTAwMDAudXNkaGMKPj4+IGRhOTA2MyBkYTkwNjIwOiBk
-YTkwNjIgd2l0aCBpZCA2Mi4yMi5mZi4xYSBkZXRlY3RlZAo+Pj4gc3RhdGU6IE5ldyBzdGF0ZSBy
-ZWdpc3RlcmVkICdzdGF0ZScKPj4+IHN0YXRlOiBVc2luZyBidWNrZXQgMEAweDAwMDAwMDAwCj4+
-PiBuZXRjb25zb2xlOiByZWdpc3RlcmVkIGFzIG5ldGNvbnNvbGUtMQo+Pj4gcGh5U09NLWkuTVg2
-OiBVc2luZyBlbnZpcm9ubWVudCBpbiBNTUMgbWFsbG9jIHNwYWNlOiAweDJmZWZiNDgwIC0+Cj4+
-PiAweDRmZGY2OGZmIChzaXplIDUxMSBNaUIpCj4+PiBtbWMwOiBkZXRlY3RlZCBTRCBjYXJkIHZl
-cnNpb24gMi4wCj4+PiBtbWMwOiByZWdpc3RlcmVkIG1tYzAKPj4+IGVudmZzOiBubyBlbnZmcyAo
-bWFnaWMgbWlzbWF0Y2gpIC0gZW52ZnMgbmV2ZXIgd3JpdHRlbj8KPj4+IHJ1bm5pbmcgL2Vudi9i
-aW4vaW5pdC4uLgo+Pj4KPj4+IEhpdCBtIGZvciBtZW51IG9yIGFueSBvdGhlciBrZXkgdG8gc3Rv
-cCBhdXRvYm9vdDogICAgMAo+Pj4gZXh0NCBleHQ0MDogRVhUMiByZXYgMSwgaW5vZGVfc2l6ZSAy
-NTYsIGRlc2NyaXB0b3Igc2l6ZSA2NCB0ZXN0aW5nIGZvcgo+Pj4gdXBkYXRlCj4+PiB1YmkwOiBz
-Y2FubmluZyBpcyBmaW5pc2hlZAo+Pj4gdWJpMCBlcnJvcjogdWJpX3JlYWRfdm9sdW1lX3RhYmxl
-OiB0aGUgbGF5b3V0IHZvbHVtZSB3YXMgbm90IGZvdW5kCj4+PiB1YmkwIGVycm9yOiB1YmlfYXR0
-YWNoX210ZF9kZXY6IGZhaWxlZCB0byBhdHRhY2ggbXRkMCwgZXJyb3IgLTIyCj4+PiBmYWlsZWQg
-dG8gYXR0YWNoOiBJbnZhbGlkIGFyZ3VtZW50IGJvb3RpbmcgJ2Jvb3RjaG9vc2VyJwo+Pj4gYm9v
-dGluZyAnbW1jMC4wJwo+Pj4gbW91bnRlZCAvZGV2L21tYzAuMCBvbiAvbW50L21tYwo+Pj4gbW91
-bnRlZCAvZGV2L21tYzAuMCBvbiAvbW50L21tYwo+Pj4gbW91bnRlZCAvZGV2L21tYzAuMCBvbiAv
-bW50L21tYwo+Pj4gY291bGQgbm90IG9wZW4gL21udC9tbWMwLjAvYm9vdC96SW1hZ2U6IE5vIHN1
-Y2ggZmlsZSBvciBkaXJlY3RvcnkKPj4+IEJvb3RpbmcgJ21tYzAuMCcgZmFpbGVkOiBObyBzdWNo
-IGZpbGUgb3IgZGlyZWN0b3J5IGJvb3RpbmcgJ21tYzAuMCcKPj4+IGZhaWxlZDogTm8gc3VjaCBm
-aWxlIG9yIGRpcmVjdG9yeSBib290aW5nICdtbWMwLjAnCj4+PiBtb3VudGVkIC9kZXYvbW1jMC4w
-IG9uIC9tbnQvbW1jCj4+PiBtb3VudGVkIC9kZXYvbW1jMC4wIG9uIC9tbnQvbW1jCj4+PiBtb3Vu
-dGVkIC9kZXYvbW1jMC4wIG9uIC9tbnQvbW1jCj4+PiBjb3VsZCBub3Qgb3BlbiAvbW50L21tYzAu
-MC9ib290L3pJbWFnZTogTm8gc3VjaCBmaWxlIG9yIGRpcmVjdG9yeQo+Pj4gQm9vdGluZyAnbW1j
-MC4wJyBmYWlsZWQ6IE5vIHN1Y2ggZmlsZSBvciBkaXJlY3RvcnkgYm9vdGluZyAnbW1jMC4wJwo+
-Pj4gZmFpbGVkOiBObyBzdWNoIGZpbGUgb3IgZGlyZWN0b3J5IGJvb3RpbmcgJ21tYzAuMCcKPj4+
-IG1vdW50ZWQgL2Rldi9tbWMwLjAgb24gL21udC9tbWMKPj4+IG1vdW50ZWQgL2Rldi9tbWMwLjAg
-b24gL21udC9tbWMKPj4+IG1vdW50ZWQgL2Rldi9tbWMwLjAgb24gL21udC9tbWMKPj4+IGNvdWxk
-IG5vdCBvcGVuIC9tbnQvbW1jMC4wL2Jvb3QvekltYWdlOiBObyBzdWNoIGZpbGUgb3IgZGlyZWN0
-b3J5Cj4+PiBCb290aW5nICdtbWMwLjAnIGZhaWxlZDogTm8gc3VjaCBmaWxlIG9yIGRpcmVjdG9y
-eSBib290aW5nICdtbWMwLjAnCj4+PiBmYWlsZWQ6IE5vIHN1Y2ggZmlsZSBvciBkaXJlY3Rvcnkg
-Ym9vdGluZyAnbW1jMC4xJwo+Pj4KPj4+Cj4+PiAtPiBib290aW5nIG1tYzAuMSB3b3Jrcwo+Pj4K
-Pj4+IFNvIHRoZSBwcm9ibGVtIGlzIHRoYXQgYmFyZWJveCBtb3VudHMgL2Rldi9tbWMwLjAgb24g
-L21udC9tbWMgYW5kIG5vdAo+Pj4gb24gL21udC9tbWMwLjAuIEJ1dCB3aGF0IGNvbmZpZ3VyYXRp
-b24gdGVsbHMgYmFyZWJveCB0byBtb3VudAo+Pj4gL2Rldi9tbWMwLjAgb24gL21udC9tbWMKPj4+
-IGFuZAo+Pj4gL2Rldi9tbWMwLjEgb24gL21udC9tbWMwLjE/Cj4+Cj4+IFRoZXJlIGlzIGEgL2Vu
-di9pbml0L2F1dG9tb3VudCBmaWxlIGluc3RhbGxlZCBvbiBQSFlURUMgU09NcyB3aGljaCBjb21l
-cyBmcm9tIGFyY2gvYXJtL2JvYXJkcy9waHl0ZWMtc29tLWlteDYvZGVmYXVsdGVudi1waHlzb20t
-aW14Ni1waHljb3JlL2luaXQvYXV0b21vdW50Cj4+IGFuZCB0cmlnZ2VycyBhbiBhdXRvbW91bnQg
-ZnJvbSAvZGV2L21tYzAuMCBvbiAvbW50L21tYy4KPj4KPj4gSSdtIG5vdCBzdXJlIGlmIHRoaXMg
-Y29uZmxpY3RzIHdpdGggdGhlIGludGVybmFsIGF1dG9tb3VudCBvbiAvbW50L21tYzAuMCBidXQg
-cmVtb3Zpbmcgb3VyIGF1dG9tb3VudCBzY3JpcHQgY291bGQgYmUgd29ydGggYSB0cnkuCj4+Cj4+
-IFN0ZWZhbgo+Pgo+Pj4KPj4+IFRoZSBjb25maWd1cmF0aW9uIHBhcmFtZXRlcnMgYXJlIHRoaXM6
-Cj4+PiAqIGJvb3RjaG9vc2VyLnN5c3RlbTAuYm9vdDogbW1jMC4wCj4+PiAqIGJvb3RjaG9vc2Vy
-LnN5c3RlbTEuYm9vdDogbW1jMC4xCj4+PiAqIGJvb3RjaG9vc2VyLnRhcmdldHM6IHN5c3RlbTAg
-c3lzdGVtMQo+Pj4KPj4+IEJlc3QgcmVnYXJkcwo+Pj4KPj4+IGh1Cj4+Pgo+Pj4KPj4+IC0tLS0t
-T3JpZ2luYWwgTWVzc2FnZS0tLS0tCj4+PiBGcm9tOiBFbnJpY28gSsO2cm5zIDxlam9AcGVuZ3V0
-cm9uaXguZGU+Cj4+PiBTZW50OiBXZWRuZXNkYXksIDE5IEZlYnJ1YXJ5IDIwMjAgMTc6MjgKPj4+
-IFRvOiBIYW5zLVVscmljaCBTY2hsaWViZW4gPGh1LnNjaGxpZWJlbkBjb2Rld3JpZ2h0cy5kZT4K
-Pj4+IENjOiB5b2N0b0BsaXN0cy55b2N0b3Byb2plY3Qub3JnOyBiYXJlYm94QGxpc3RzLmluZnJh
-ZGVhZC5vcmc7Cj4+PiByYXVjQHBlbmd1dHJvbml4LmRlCj4+PiBTdWJqZWN0OiBSZTogW1JBVUNd
-IFByaXZhdGU6IFJlOiBbeW9jdG9dICN5b2N0byB1cGRhdGUgdGhlIGtlcm5lbCB3aXRoCj4+PiBh
-IHJhdWMgYnVuZGxlCj4+Pgo+Pj4gSGkgSGFucywKPj4+Cj4+PiBBbSAxOC4wMi4yMCB1bSAxNTow
-NiBzY2hyaWViIEhhbnMtVWxyaWNoIFNjaGxpZWJlbjoKPj4+PiBIaSBFbnJpY28sCj4+Pj4KPj4+
-PiBJIGp1c3QgYW5zd2VyZWQgeW91ciBmaXJzdCBtYWlsIG9uIHRoZSB3ZWJzaXRlIGFuZCB0aG91
-Z2h0IHRoYXQgd2lsbCBhdXRvbWF0aWNhbGx5IHJlcGx5IHRvIGFsbC4gQWRkZWQgYWxsIGxpc3Rz
-IG5vdywgaG9wZSB0aGVzZSBhcmUgY29ycmVjdC4KPj4+Cj4+PiBhaCwgSSB3YXNuJ3QgZXZlbiBh
-d2FyZSB0aGF0IHRoZXJlIGlzIGEgd2Vic2l0ZSBmb3IgdGhpcyA7KQo+Pj4KPj4+PiBUaGFua3Mg
-dG8geW91IEkgZm91bmQgdGhlIGN1c3RvbSBhdXRvbW91bnQgaW4gdGhlIHByb3ZpZGVycyByZWNp
-cGVzLiBUaGlzIG1vdW50cyAvZGV2L21tYzAuMCB0byAvbW50L21tYy4KPj4+Cj4+PiBPaywgZ29v
-ZCB0aGF0IHdlIGNsYXJpZmllZCB0aGlzLiBUaGUgc2NyaXB0IHNob3VsZCBub3QgYmUgcmVxdWly
-ZWQgaW4gYSBtb2Rlcm4gYmFyZWJveCBhcyBpdCBoYXMgYSBsb3Qgb2YgYnVpbHQtaW4gYXV0b21v
-dW50aW5nIG1hZ2ljIG9uIGJvYXJkLgo+Pj4KPj4+PiBBZnRlciB0aGUgbW91bnQgaXQgc2VlbXMg
-dGhhdCBvbmx5IHdoZW4gSSBpbnN0YWxsIGEgbmV3IGltYWdlIHRoZSBiYXJlYm94IG1vdW50IC9k
-ZXYvbW1jMC4wIHRvIC9tbnQvbW1jMC4wIHdvcmtzLgo+Pj4KPj4+IFRoaXMgaXMgdGhlIHBvaW50
-IHRoYXQgc291bmRzIGEgbGl0dGxlIHN0cmFuZ2UsIHllcy4KPj4+Cj4+Pj4gUmF1YyAvIGJhcmVi
-b3ggc2VlbXMgc29tZXRoaW5nIHRvIGNoYW5nZSBhZnRlciBhIGJ1bmRsZSB1cGRhdGUgd2hlcmVh
-cyBtb3VudCAvZGV2L21tYzAuMCB0byAvbW50L21tYzAuMCBmYWlscyBhbmQgdGhlIGZpbGVzIGFy
-ZSBvbmx5IHZpc2libGUgaW4gL21udC9tbWMuCj4+Pj4KPj4+PiAvbW50L21tYyB3b3JrcyBpbiBi
-b3RoIGNhc2VzIHNvIEkgaGF2ZSBub3cgL21udC9tbWMvYm9vdC4uLiBmb3IKPj4+PiBzeXN0ZW0w
-IGFuZCAvbW50L21tYzAuMS9ib290Li4uIGZvciBzeXN0ZW0xCj4+Pgo+Pj4gV291bGQgYmUgZ3Jl
-YXQgdG8gc2VlIGEgbG9nIG9mIHN1Y2ggYSBmYWlsZWQgbW91bnQgdG8gZ2V0IGEgbW9yZSBjb25j
-cmV0ZSBpZGVhIHdoYXQgJ2ZhaWxlZCcgYWN0dWFsbHkgbWVhbnMuCj4+Pgo+Pj4gQmVzdCByZWdh
-cmRzLCBFbnJpY28KPj4+Cj4+Pj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0KPj4+PiBGcm9t
-OiBFbnJpY28gSsO2cm5zIDxlam9AcGVuZ3V0cm9uaXguZGU+Cj4+Pj4gU2VudDogVHVlc2RheSwg
-MTggRmVicnVhcnkgMjAyMCAwMToxMgo+Pj4+IFRvOiBIYW5zLVVscmljaCBTY2hsaWViZW4gPGh1
-LnNjaGxpZWJlbkBjb2Rld3JpZ2h0cy5kZT4KPj4+PiBTdWJqZWN0OiBSZTogUHJpdmF0ZTogUmU6
-IFt5b2N0b10gI3lvY3RvIHVwZGF0ZSB0aGUga2VybmVsIHdpdGggYQo+Pj4+IHJhdWMgYnVuZGxl
-Cj4+Pj4KPj4+PiBIaSBodSwKPj4+Pgo+Pj4+IHBsZWFzZSBrZWVwIGF0IGxlYXN0IGFueSBsaXN0
-IGluIENDIHNvIHRoYXQgb3RoZXJzIGNhbiBiZW5lZml0IGZyb20gdGhpcyBkaXNjdXNzaW9uLCB0
-b28gKEJvdGggUkFVQyBhbmQgYmFyZWJveCBNTCB3b3VsZCBmaXQgaGVyZSkuIEl0IGFsc28gaW5j
-cmVhc2VzIHRoZSByYW5nZSBhbmQgdGh1cyBwb3RlbnRpYWwgcGVvcGxlIHRoYXQgbWF5ID4gaGVs
-cCBoZXJlLgo+Pj4+Cj4+Pj4gQW0gMTcuMDIuMjAgdW0gMTM6NTggc2NocmllYiBIYW5zLVVscmlj
-aCBTY2hsaWViZW46Cj4+Pj4+IEhpIEVucmljbywKPj4+Pj4KPj4+Pj4gdGhhbmsgeW91IHZlcnkg
-bXVjaCBmb3IgeW91ciBoZWxwIHdpdGggSU1BR0VfSU5TVEFMTF9hcHBlbmQgPSAiCj4+Pj4+IGtl
-cm5lbC1pbWFnZSBrZXJuZWwtZGV2aWNldHJlZSIKPj4+Pj4gdGhhdCBkaWQgdGhlIHRyaWNrLgo+
-Pj4+Pgo+Pj4+PiBXaGF0IGkgZG8gbm90IHVuZGVyc3RhbmQgaXMgaG93IGJhcmVib3ggaGFuZGxl
-cyB0aGUgbW91bnQgbmFtZXMgZm9yCj4+Pj4+IG15IHR3byBhbHRlcm5hdGUgYm9vdCBwYXJ0aXRp
-b25zLgo+Pj4+PiBUaGUgYm9vdCBvbiB0aGUgZmlyc3QgcGFydGl0aW9uIHdvcmtzIG9ubHkgdW5k
-ZXIgL21udC9tbWMvOgo+Pj4+Pgo+Pj4+PiBnbG9iYWwuYm9vdG0uaW1hZ2U9Ii9tbnQvbW1jL2Jv
-b3QvekltYWdlIgo+Pj4+PiBnbG9iYWwuYm9vdG0ub2Z0cmVlPSIvbW50L21tYy9ib290L2lteDZx
-LXBoeXRlYy1rc3AwNjYzLmR0YiIKPj4+Pj4gZ2xvYmFsLmxpbnV4LmJvb3RhcmdzLmR5bi5yb290
-PSJyb290PS9kZXYvbW1jYmxrMHAxCj4+Pj4+IHJvb3RmbGFncz0nZGF0YT1qb3VybmFsJyB3ZD02
-MCBpcHY2LmRpc2FibGU9MSIKPj4+Pj4KPj4+Pj4gd2hlcmVhcyB0aGUgc2Vjb25kIHdvcmtzIHdp
-dGggL21udC9tbWMxLzoKPj4+Pj4gZ2xvYmFsLmJvb3RtLmltYWdlPSIvbW50L21tYzAuMS9ib290
-L3pJbWFnZSIKPj4+Pj4gZ2xvYmFsLmJvb3RtLm9mdHJlZT0iL21udC9tbWMwLjEvYm9vdC9pbXg2
-cS1waHl0ZWMta3NwMDY2My5kdGIiCj4+Pj4+IGdsb2JhbC5saW51eC5ib290YXJncy5keW4ucm9v
-dD0icm9vdD0vZGV2L21tY2JsazBwMgo+Pj4+PiByb290ZmxhZ3M9J2RhdGE9am91cm5hbCcgd2Q9
-NjAgaXB2Ni5kaXNhYmxlPTEiCj4+Pj4+Cj4+Pj4+IEluIGJhcmVib3ggaSBzZWUgYm90aCByb290
-IGZpbGVzeXN0ZW1zIHVuZGVyIC9tbnQvbW1jMC4wIGFuZAo+Pj4+PiAvbW50L21tYzAuMS8uCj4+
-Pj4+Cj4+Pj4+IFdoZW4gaSB0cnkgdG8gaGF2ZSBhIHN5bW1ldHJpY2FsIGNvbmZpZ3VyYXRpb24g
-YW5kIHJlbmFtZSAvbW1jLyBpbnRvCj4+Pj4+IC9tbWMwLjAvIGJvb3Qgb24gbW1jMC4wIGRvZXMg
-bm90IHdvcmsgYmVjYXVzZSBpdCBzdGlsbCBtb3VudHMgdGhlCj4+Pj4+IGZpcnN0IHBhcnRpdGlv
-biBhciAvbW50L21tYy8uCj4+Pj4KPj4+PiBXaGljaCB2ZXJzaW9uIG9mIGJhcmVib3g/Cj4+Pj4K
-Pj4+PiBJdCBzaG91bGQgYmUgc3VmZmljaWVudCB0byBlaXRoZXIgc2F5Cj4+Pj4KPj4+PiAgICAg
-Ym9vdCBtbWMwLjAKPj4+Pgo+Pj4+IG9yCj4+Pj4KPj4+PiAgICAgYm9vdCBtbWMwLjEKPj4+Pgo+
-Pj4+IGFuZCBiYXJlYm94IHdpbGwgYXV0b21hdGljYWxseSBtb3VudCB0aGUgcGFydGl0aW9uLCBs
-b29rIGZvciBhIGJvb3RzcGVjIGZpbGUgdW5kZXIgL2xvYWRlci9lbnRyaWVzIGFuZCBhc3NlbWJs
-ZSB0aGUgcmVxdWlyZWQgYm9vdCBvcHRpb25zIGFuZCBrZXJuZWwgY29tbWFuZCBsaW5lIGF1dG9t
-YXRpY2FsbHkuCj4+Pj4KPj4+Pj4gV2hhdCB0ZWxscyBiYXJlYm94IHRvIG1vdW50IGR1cmluZyBi
-b290IG1tYyBhbmQgbW1jMC4xIGluc3RlYWQgb2YKPj4+Pj4gbW1jMC4wIGFuZCBtbWMwLjE/Cj4+
-Pj4KPj4+PiBJcyB0aGVyZSBhbnkgY3VzdG9tIGF1dG9tb3VudCB1bml0IGxvY2F0ZWQgaW4geW91
-IGJ1aWx0LWluIGVudiBwcm9iYWJseT8KPj4+Pgo+Pj4+Cj4+Pj4gQmVzdCByZWdhcmRzLCBFbnJp
-Y28KPj4+PgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-YmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9s
-aXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Kernel commit 0782e8572c ("ARM: dts: Probe am335x musb with ti-sysc")
+which we pulled in during the v2020.02.0 dts/ sync moved the USB nodes
+to be under a ti-sysc bus instead of ti,am33xx-usb.
+
+This new probe order broke am335x USB under barebox, because the MUSB
+drivers couldn't cope with the now different device probe order.
+
+Pepper some -EPROBE_DEFER around to make USB work again.
+
+Fixes: 574eed3f6f ("dts: update to v5.5-rc1")
+Reported-by: Yegor Yefremov <yegorslists@googlemail.com>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+Fix for v2020.02.0. Please apply to master.
+---
+ drivers/usb/musb/musb_core.c          |  5 ++--
+ drivers/usb/musb/musb_dsps.c          | 39 +++++++++++++++++++--------
+ drivers/usb/musb/phy-am335x-control.c | 25 ++++++++++++-----
+ drivers/usb/musb/phy-am335x.c         | 12 ++++++---
+ 4 files changed, 58 insertions(+), 23 deletions(-)
+
+diff --git a/drivers/usb/musb/musb_core.c b/drivers/usb/musb/musb_core.c
+index 4c11e6580c0f..b84da5516c4a 100644
+--- a/drivers/usb/musb/musb_core.c
++++ b/drivers/usb/musb/musb_core.c
+@@ -1136,8 +1136,9 @@ fail2:
+ 	musb_platform_exit(musb);
+ 
+ fail1:
+-	dev_err(musb->controller,
+-		"musb_init_controller failed with status %d\n", status);
++	if (status != -EPROBE_DEFER)
++		dev_err(musb->controller,
++			"musb_init_controller failed with status %d\n", status);
+ 
+ 	musb_free(musb);
+ 
+diff --git a/drivers/usb/musb/musb_dsps.c b/drivers/usb/musb/musb_dsps.c
+index f30672914830..d54a663e9d8b 100644
+--- a/drivers/usb/musb/musb_dsps.c
++++ b/drivers/usb/musb/musb_dsps.c
+@@ -314,7 +314,7 @@ static int dsps_set_mode(void *ctx, enum usb_dr_mode mode)
+ 
+ static int dsps_probe(struct device_d *dev)
+ {
+-	struct resource *iores;
++	struct resource *iores[2];
+ 	struct musb_hdrc_platform_data *pdata;
+ 	struct musb_hdrc_config	*config;
+ 	struct device_node *dn = dev->device_node;
+@@ -354,15 +354,19 @@ static int dsps_probe(struct device_d *dev)
+ 
+ 	pdata = &glue->pdata;
+ 
+-	iores = dev_request_mem_resource(dev, 0);
+-	if (IS_ERR(iores))
+-		return PTR_ERR(iores);
+-	glue->musb.mregs = IOMEM(iores->start);
++	iores[0] = dev_request_mem_resource(dev, 0);
++	if (IS_ERR(iores[0])) {
++		ret = PTR_ERR(iores[0]);
++		goto free_glue;
++	}
++	glue->musb.mregs = IOMEM(iores[0]->start);
+ 
+-	iores = dev_request_mem_resource(dev, 1);
+-	if (IS_ERR(iores))
+-		return PTR_ERR(iores);
+-	glue->musb.ctrl_base = IOMEM(iores->start);
++	iores[1] = dev_request_mem_resource(dev, 1);
++	if (IS_ERR(iores[1])) {
++		ret = PTR_ERR(iores[1]);
++		goto release_iores0;
++	}
++	glue->musb.ctrl_base = IOMEM(iores[1]->start);
+ 
+ 	glue->musb.controller = dev;
+ 	glue->musb.xceiv = phy_dev->priv;
+@@ -383,11 +387,24 @@ static int dsps_probe(struct device_d *dev)
+ 	if (pdata->mode == MUSB_PORT_MODE_DUAL_ROLE) {
+ 		ret = usb_register_otg_device(dev, dsps_set_mode, glue);
+ 		if (ret)
+-			return ret;
++			goto release_iores1;
+ 		return 0;
+ 	}
+ 
+-	return musb_init_controller(&glue->musb, pdata);
++	ret = musb_init_controller(&glue->musb, pdata);
++	if (ret)
++		goto release_iores1;
++
++	return 0;
++
++release_iores1:
++	release_region(iores[1]);
++release_iores0:
++	release_region(iores[0]);
++free_glue:
++	free(glue);
++
++	return ret;
+ }
+ 
+ static const struct dsps_musb_wrapper am33xx_driver_data = {
+diff --git a/drivers/usb/musb/phy-am335x-control.c b/drivers/usb/musb/phy-am335x-control.c
+index c84525ec7eb4..41a3689ed3f9 100644
+--- a/drivers/usb/musb/phy-am335x-control.c
++++ b/drivers/usb/musb/phy-am335x-control.c
+@@ -109,15 +109,15 @@ struct phy_control *am335x_get_phy_control(struct device_d *dev)
+ 
+ 	node = of_parse_phandle(dev->device_node, "ti,ctrl_mod", 0);
+ 	if (!node)
+-		return NULL;
++		return ERR_PTR(-ENOENT);
+ 
+ 	dev = of_find_device_by_node(node);
+ 	if (!dev)
+-		return NULL;
++		return ERR_PTR(-EPROBE_DEFER);
+ 
+ 	ctrl_usb = dev->priv;
+ 	if (!ctrl_usb)
+-		return NULL;
++		return ERR_PTR(-EPROBE_DEFER);
+ 
+ 	return &ctrl_usb->phy_ctrl;
+ }
+@@ -141,13 +141,17 @@ static int am335x_control_usb_probe(struct device_d *dev)
+ 	ctrl_usb->dev = dev;
+ 
+ 	iores = dev_request_mem_resource(dev, 0);
+-	if (IS_ERR(iores))
+-		return PTR_ERR(iores);
++	if (IS_ERR(iores)) {
++		ret = PTR_ERR(iores);
++		goto free_ctrl;
++	}
+ 	ctrl_usb->phy_reg = IOMEM(iores->start);
+ 
+ 	iores = dev_request_mem_resource(dev, 1);
+-	if (IS_ERR(iores))
+-		return PTR_ERR(iores);
++	if (IS_ERR(iores)) {
++		ret = PTR_ERR(iores);
++		goto release_resource;
++	}
+ 	ctrl_usb->wkup = IOMEM(iores->start);
+ 
+ 	spin_lock_init(&ctrl_usb->lock);
+@@ -155,6 +159,13 @@ static int am335x_control_usb_probe(struct device_d *dev)
+ 
+ 	dev->priv = ctrl_usb;
+ 	return 0;
++
++release_resource:
++	release_region(iores);
++free_ctrl:
++	free(ctrl_usb);
++
++	return 0;
+ };
+ 
+ static struct driver_d am335x_control_driver = {
+diff --git a/drivers/usb/musb/phy-am335x.c b/drivers/usb/musb/phy-am335x.c
+index 6991f4402d3f..7dda8caf2a3c 100644
+--- a/drivers/usb/musb/phy-am335x.c
++++ b/drivers/usb/musb/phy-am335x.c
+@@ -37,13 +37,16 @@ static int am335x_phy_probe(struct device_d *dev)
+ 	am_usbphy->base = IOMEM(iores->start);
+ 
+ 	am_usbphy->phy_ctrl = am335x_get_phy_control(dev);
+-	if (!am_usbphy->phy_ctrl)
+-		return -ENODEV;
++	if (IS_ERR(am_usbphy->phy_ctrl)) {
++		ret = PTR_ERR(am_usbphy->phy_ctrl);
++		goto err_release;
++	}
+ 
+ 	am_usbphy->id = of_alias_get_id(dev->device_node, "phy");
+ 	if (am_usbphy->id < 0) {
+ 		dev_err(dev, "Missing PHY id: %d\n", am_usbphy->id);
+-		return am_usbphy->id;
++		ret = am_usbphy->id;
++		goto err_release;
+ 	}
+ 
+ 	am_usbphy->phy.init = am335x_init;
+@@ -53,8 +56,11 @@ static int am335x_phy_probe(struct device_d *dev)
+ 
+ 	return 0;
+ 
++err_release:
++	release_region(iores);
+ err_free:
+ 	free(am_usbphy);
++	am_usbphy = NULL;
+ 
+ 	return ret;
+ };
+-- 
+2.25.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
