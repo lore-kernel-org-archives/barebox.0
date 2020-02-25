@@ -1,24 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vs1-xe43.google.com ([2607:f8b0:4864:20::e43])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j6EQ2-0004lC-Dk
- for barebox@lists.infradead.org; Mon, 24 Feb 2020 14:09:14 +0000
-Received: by mail-vs1-xe43.google.com with SMTP id t12so5716514vso.13
- for <barebox@lists.infradead.org>; Mon, 24 Feb 2020 06:09:10 -0800 (PST)
+ id 1j6dWY-0008Vv-OR
+ for barebox@lists.infradead.org; Tue, 25 Feb 2020 16:57:36 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue, 25 Feb 2020 17:57:30 +0100
+Message-Id: <20200225165731.12419-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-References: <CAGm1_ku5kzBoxiRYks2uLYt1D6-QPB0vJm0DygF8a2WXTC6NoQ@mail.gmail.com>
- <92a929cc-b9e6-db9b-352d-c7c271a29558@pengutronix.de>
- <CAGm1_ktTGx1MMY-jcbVrOwnwqHeHm8Qe2f2iRxEQxmY0y5HM4g@mail.gmail.com>
- <43978130-6f7d-759c-ef63-a005cb6f0934@pengutronix.de>
- <CAGm1_kt6wpsn_o4djfmycA=H3gcZEOPYoQLX=uL11jo8mb6cwQ@mail.gmail.com>
- <c58c0ce8-a2ad-8b34-debf-d120deb43df2@pengutronix.de>
- <CAGm1_kvKVzWL==J23ajf4d0YO89BXL6HuE+7RN_MdhSz5o9tfg@mail.gmail.com>
- <CAGm1_ks32TBwmARaBtE0F3RvopJ6x5-tdxETq=gC3jndEOtdYA@mail.gmail.com>
- <64cbefba-5ce4-919e-1de2-48e2247ca391@pengutronix.de>
-In-Reply-To: <64cbefba-5ce4-919e-1de2-48e2247ca391@pengutronix.de>
-From: Yegor Yefremov <yegorslists@googlemail.com>
-Date: Mon, 24 Feb 2020 15:08:36 +0100
-Message-ID: <CAGm1_kvpLeAgZyNiwZ1gJFCcRHCm2ijNo7JtzGZjuJx-V632rA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -31,100 +19,145 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: musb is broken in master
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: t.remmet@phytec.de, barebox <barebox@lists.infradead.org>
+Subject: [PATCH 1/2] USB: MUSB: PHY: scrap singleton am335x_get_usb_phy()
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Mon, Feb 24, 2020 at 1:02 PM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
->
-> On 2/24/20 12:55 PM, Yegor Yefremov wrote:
-> > On Mon, Feb 24, 2020 at 12:54 PM Yegor Yefremov
-> > <yegorslists@googlemail.com> wrote:
-> >>
-> >> On Mon, Feb 24, 2020 at 12:50 PM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
-> >>>
-> >>> Hi,
-> >>>
-> >>> On 2/24/20 12:09 PM, Yegor Yefremov wrote:
-> >>>> Can it be that musb was broken because of this change in the mainline
-> >>>> linux kernel [1]?
-> >>>
-> >>> But you said that it works when you readd status = "okay" to some
-> >>> of the USB device tree nodes? Which node was it in particular?
-> >>>
-> >>>> The kernel uses ti-sysc mechanism to get/configure the related hw
-> >>>> blocks. If I grep for ti-sysc in kernel, I get a lot of hits. But in
-> >>>> barebox, it is only drivers/bus/ti-sysc.c that I find. Seems like a
-> >>>> rather big update is required.
-> >>>>
-> >>>> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/arch/arm/boot/dts/am33xx.dtsi?h=v5.6-rc3&id=0782e8572ce43f521ed6ff15e4a7ab9aa5acdc85
-> >>>
-> >>> I don't think that's the problem. Looks to me like it should work with
-> >>> barebox as well. Or did you revert this patch and got USB working again?
-> >>
-> >> Yes, I just reverted the whole patch and got USB working again. It has
-> >> nothing to do with my dts file as it is hosted only in barebox
-> >> (arch/arm/dts/am335x-baltos-minimal.dts). It just includes the common
-> >> DTS files like am33xx.dtsi.
-> >
-> > I mean, I have reverted only this one 574eed3f6fcf056aa4c9e46c4b5224e3f7844d8d.
->
-> I meant that you revert the upstream device tree patch only. Either manually or by doing
-> some temporary hack like symlink $BAREBOX/dts/src/arm to $LINUX/arch/arm/boot/dts
-> and revert inside the kernel git tree.
+am335x_get_usb_phy() retrieves the last probed USB phy. On the BeagleBone
+with both PHYs enabled, this means that dependent on probe order, both
+MUSB instances could end up with the same PHY.
 
-I've checked out barebox master and then reverted
-574eed3f6fcf056aa4c9e46c4b5224e3f7844d8d (dts: update to v5.5-rc1).
-After examining the changes, I found out that am33xx.dtsi was changed.
-One of this changes is the following:
+Remove the global variable and have the MUSB driver parse the "phys"
+property instead.
 
--               usb: usb@47400000 {
--                       compatible = "ti,am33xx-usb";
--                       reg = <0x47400000 0x1000>;
--                       ranges;
-+               usb: target-module@47400000 {
-+                       compatible = "ti,sysc-omap4", "ti,sysc";
-+                       reg = <0x47400000 0x4>,
-+                             <0x47400010 0x4>;
-+                       reg-names = "rev", "sysc";
-+                       ti,sysc-mask = <(SYSC_OMAP4_FREEEMU |
-+                                        SYSC_OMAP2_SOFTRESET)>;
-+                       ti,sysc-midle = <SYSC_IDLE_FORCE>,
-+                                       <SYSC_IDLE_NO>,
-+                                       <SYSC_IDLE_SMART>;
-+                       ti,sysc-sidle = <SYSC_IDLE_FORCE>,
-+                                       <SYSC_IDLE_NO>,
-+                                       <SYSC_IDLE_SMART>,
-+                                       <SYSC_IDLE_SMART_WKUP>;
-+                       clocks = <&l3s_clkctrl AM3_L3S_USB_OTG_HS_CLKCTRL 0>;
-+                       clock-names = "fck";
+The cleaner way to achieve this would be to migrate phy-am335x.c
+and phy-am335x-control.c to the generic phy framework and have MUSB use
+of_phy_get, alas, even Linux hasn't done this so far and we need
+a short patch for master anyway, thus just do it the easy way.
 
-If I understand it correctly, drivers/usb/musb/musb_am335x.c still has
-the old .compatible string:
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+Prerequisite for fix in next commit. Please apply both to master.
+---
+ drivers/usb/musb/musb_dsps.c  | 16 +++++++++++-----
+ drivers/usb/musb/phy-am335x.c | 11 ++---------
+ drivers/usb/musb/phy-am335x.h |  6 ------
+ 3 files changed, 13 insertions(+), 20 deletions(-)
+ delete mode 100644 drivers/usb/musb/phy-am335x.h
 
-static __maybe_unused struct of_device_id am335x_child_dt_ids[] = {
-        {
-                .compatible = "ti,am33xx-usb",
-        }, {
-                /* sentinel */
-        },
-};
+diff --git a/drivers/usb/musb/musb_dsps.c b/drivers/usb/musb/musb_dsps.c
+index 3b76b6cc610d..f30672914830 100644
+--- a/drivers/usb/musb/musb_dsps.c
++++ b/drivers/usb/musb/musb_dsps.c
+@@ -39,7 +39,6 @@
+ #include <linux/barebox-wrapper.h>
+ 
+ #include "musb_core.h"
+-#include "phy-am335x.h"
+ 
+ static __maybe_unused struct of_device_id musb_dsps_dt_ids[];
+ 
+@@ -217,10 +216,6 @@ static int dsps_musb_init(struct musb *musb)
+ 	const struct dsps_musb_wrapper *wrp = glue->wrp;
+ 	u32 rev, val, mode;
+ 
+-	musb->xceiv = am335x_get_usb_phy();
+-	if (IS_ERR(musb->xceiv))
+-		return PTR_ERR(musb->xceiv);
+-
+ 	/* Returns zero if e.g. not clocked */
+ 	rev = dsps_readl(musb->ctrl_base, wrp->revision);
+ 	if (!rev)
+@@ -324,6 +319,8 @@ static int dsps_probe(struct device_d *dev)
+ 	struct musb_hdrc_config	*config;
+ 	struct device_node *dn = dev->device_node;
+ 	const struct dsps_musb_wrapper *wrp;
++	struct device_node *phy_node;
++	struct device_d *phy_dev;
+ 	struct dsps_glue *glue;
+ 	int ret;
+ 
+@@ -337,6 +334,14 @@ static int dsps_probe(struct device_d *dev)
+ 		return -ENODEV;
+ 	}
+ 
++	phy_node = of_parse_phandle(dn, "phys", 0);
++	if (!phy_node)
++		return -ENODEV;
++
++	phy_dev = of_find_device_by_node(phy_node);
++	if (!phy_dev || !phy_dev->priv)
++		return -EPROBE_DEFER;
++
+ 	/* allocate glue */
+ 	glue = kzalloc(sizeof(*glue), GFP_KERNEL);
+ 	if (!glue) {
+@@ -360,6 +365,7 @@ static int dsps_probe(struct device_d *dev)
+ 	glue->musb.ctrl_base = IOMEM(iores->start);
+ 
+ 	glue->musb.controller = dev;
++	glue->musb.xceiv = phy_dev->priv;
+ 
+ 	config = &glue->config;
+ 
+diff --git a/drivers/usb/musb/phy-am335x.c b/drivers/usb/musb/phy-am335x.c
+index df31255d891c..6991f4402d3f 100644
+--- a/drivers/usb/musb/phy-am335x.c
++++ b/drivers/usb/musb/phy-am335x.c
+@@ -5,7 +5,6 @@
+ #include <linux/err.h>
+ #include "am35x-phy-control.h"
+ #include "musb_core.h"
+-#include "phy-am335x.h"
+ 
+ struct am335x_usbphy {
+ 	void __iomem *base;
+@@ -14,13 +13,6 @@ struct am335x_usbphy {
+ 	struct usb_phy phy;
+ };
+ 
+-static struct am335x_usbphy *am_usbphy;
+-
+-struct usb_phy *am335x_get_usb_phy(void)
+-{
+-	return &am_usbphy->phy;
+-}
+-
+ static int am335x_init(struct usb_phy *phy)
+ {
+ 	struct am335x_usbphy *am_usbphy = container_of(phy, struct am335x_usbphy, phy);
+@@ -31,6 +23,7 @@ static int am335x_init(struct usb_phy *phy)
+ 
+ static int am335x_phy_probe(struct device_d *dev)
+ {
++	struct am335x_usbphy *am_usbphy;
+ 	struct resource *iores;
+ 	int ret;
+ 
+@@ -54,7 +47,7 @@ static int am335x_phy_probe(struct device_d *dev)
+ 	}
+ 
+ 	am_usbphy->phy.init = am335x_init;
+-	dev->priv = am_usbphy;
++	dev->priv = &am_usbphy->phy;
+ 
+ 	dev_info(dev, "am_usbphy %p enabled\n", &am_usbphy->phy);
+ 
+diff --git a/drivers/usb/musb/phy-am335x.h b/drivers/usb/musb/phy-am335x.h
+deleted file mode 100644
+index 27da2e3b1057..000000000000
+--- a/drivers/usb/musb/phy-am335x.h
++++ /dev/null
+@@ -1,6 +0,0 @@
+-#ifndef _PHY_AM335x_H_
+-#define _PHY_AM335x_H_
+-
+-struct usb_phy *am335x_get_usb_phy(void);
+-
+-#endif
+-- 
+2.25.0
 
-This node was removed:
-
--                       usb_ctrl_mod: control@44e10620 {
--                               compatible = "ti,am335x-usb-ctrl-module";
--                               reg = <0x44e10620 0x10
--                                       0x44e10648 0x4>;
--                               reg-names = "phy_ctrl", "wakeup";
--                               status = "disabled";
--                       };
-
-So there are many changes in device tree files that are not reflected
-in the drivers. I haven't debugged it but just examined the introduced
-changes.
-
-Yegor
 
 _______________________________________________
 barebox mailing list
