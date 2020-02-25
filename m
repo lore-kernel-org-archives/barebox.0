@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vs1-xe43.google.com ([2607:f8b0:4864:20::e43])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j6Bd2-0005Ha-Au
- for barebox@lists.infradead.org; Mon, 24 Feb 2020 11:10:25 +0000
-Received: by mail-vs1-xe43.google.com with SMTP id p14so5412076vsq.6
- for <barebox@lists.infradead.org>; Mon, 24 Feb 2020 03:10:24 -0800 (PST)
+ id 1j6Uzp-0006xD-8j
+ for barebox@lists.infradead.org; Tue, 25 Feb 2020 07:51:14 +0000
+Date: Tue, 25 Feb 2020 08:51:11 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200225075111.GG3335@pengutronix.de>
+References: <20200220065005.1387198-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
-References: <CAGm1_ku5kzBoxiRYks2uLYt1D6-QPB0vJm0DygF8a2WXTC6NoQ@mail.gmail.com>
- <92a929cc-b9e6-db9b-352d-c7c271a29558@pengutronix.de>
- <CAGm1_ktTGx1MMY-jcbVrOwnwqHeHm8Qe2f2iRxEQxmY0y5HM4g@mail.gmail.com>
- <43978130-6f7d-759c-ef63-a005cb6f0934@pengutronix.de>
-In-Reply-To: <43978130-6f7d-759c-ef63-a005cb6f0934@pengutronix.de>
-From: Yegor Yefremov <yegorslists@googlemail.com>
-Date: Mon, 24 Feb 2020 12:09:50 +0100
-Message-ID: <CAGm1_kt6wpsn_o4djfmycA=H3gcZEOPYoQLX=uL11jo8mb6cwQ@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20200220065005.1387198-1-r.czerwinski@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,80 +22,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: musb is broken in master
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: t.remmet@phytec.de, barebox <barebox@lists.infradead.org>
+Subject: Re: [PATCH 1/2] of: demote symbol copy error from warning to info
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi Ahmad, all,
+On Thu, Feb 20, 2020 at 07:50:05AM +0100, Rouven Czerwinski wrote:
+> An overlay might not contain a symbol node, in case it only adds new
+> nodes to the device tree. Reword the error message and switch it from
+> warning to info.
+> 
+> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+> ---
+>  drivers/of/overlay.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
+> index de79e05cbc..9c1d5b5bcb 100644
+> --- a/drivers/of/overlay.c
+> +++ b/drivers/of/overlay.c
+> @@ -173,7 +173,7 @@ int of_overlay_apply_tree(struct device_node *root,
+>  	/* Copy symbols from resolved overlay to base device tree */
+>  	err = of_overlay_apply_symbols(root, resolved);
+>  	if (err)
+> -		pr_warn("failed to copy symbols from overlay");
+> +		pr_info("could not copy symbols from overlay\n");
 
-On Tue, Feb 18, 2020 at 12:48 PM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
->
-> On 2/18/20 12:19 PM, Yegor Yefremov wrote:
-> > Hello Ahmad,
-> >
-> > On Tue, Feb 18, 2020 at 11:57 AM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
-> >>
-> >> Hello Yegor,
-> >>
-> >> On 2/18/20 10:58 AM, Yegor Yefremov wrote:
-> >>> I have bisected the musb driver on am335x (baltos system
-> >>> arch/arm/dts/am335x-baltos-minimal.dts) from v2019.11.0 and this is
-> >>> the result:
-> >>>
-> >>> 574eed3f6fcf056aa4c9e46c4b5224e3f7844d8d is the first bad commit
-> >>> commit 574eed3f6fcf056aa4c9e46c4b5224e3f7844d8d
-> >>> Author: Sascha Hauer <s.hauer@pengutronix.de>
-> >>> Date:   Thu Dec 19 05:46:54 2019 +0100
-> >>>
-> >>>     dts: update to v5.5-rc1
-> >>>
-> >>>     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> >>>
-> >>> :040000 040000 4f6416a5af14d6328ef2c8ac46d9ac4a17a37404
-> >>> 525e33dda1e735ef2f633f4d99c501ba938a7263 M      dts
-> >>>
-> >>> I need only the host functionality to mount a USB drive. My defconfig
-> >>> can be found here [1].
-> >>>
-> >>> Any idea what could have happened?
-> >>
-> >> git log v5.4..v5.5-rc1 arch/arm/boot/dts/am335x*.dtsi
-> >> gives me kernel commit 12afc0cf81 ("ARM: dts: Drop pointless status changing for am3 musb").
-> >> Does reverting it fix the issue for you?
-> >
-> > Yes, it does. Though the revert result is a little bit ugly i.e. at
-> > least one conflict.
->
-> yes, it's not meant as permanent solution.
-> Which status = "okay" is the one that 'fixes' it?
->
-> > But when I start the kernel 5.6-rc2 that already incorporates these
-> > DTS changes, I have no problems with USB. So far only the barebox is
-> > affected by this change.
->
-> Possibly a device driver in barebox for the now-disabled peripheral
-> turns on a clock, enables a regulator, toggles a reset or initializes
-> some register that also affects the USB working at all.
->
-> Best course of action would be to check which driver it is, check whether
-> Linux uses it, comment out stuff to find what the magic sauce is that
-> the driver does and add that to the driver that misses it.
->
-> (sometimes it's just that the device tree binding changed. In that case,
-> you can either patch in a missing property in arch/arm/dts or patch
-> barebox drivers to accept the new binding as well)
+This message would still raise my eyebrows. Maybe move this message into
+of_overlay_apply_symbols() and say something like "Overlay/root doesn't have
+a __symbols__ node"?
 
-Can it be that musb was broken because of this change in the mainline
-linux kernel [1]?
+Sascha
 
-The kernel uses ti-sysc mechanism to get/configure the related hw
-blocks. If I grep for ti-sysc in kernel, I get a lot of hits. But in
-barebox, it is only drivers/bus/ti-sysc.c that I find. Seems like a
-rather big update is required.
-
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/arch/arm/boot/dts/am33xx.dtsi?h=v5.6-rc3&id=0782e8572ce43f521ed6ff15e4a7ab9aa5acdc85
-
-Yegor
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
