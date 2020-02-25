@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay3-d.mail.gandi.net ([217.70.183.195])
- by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j68qw-0006XZ-DD
- for barebox@lists.infradead.org; Mon, 24 Feb 2020 08:12:37 +0000
-Received: from geraet.fritz.box (muedsl-82-207-211-016.citykom.de
- [82.207.211.16]) (Authenticated sender: ahmad@a3f.at)
- by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id 12B5B60012
- for <barebox@lists.infradead.org>; Mon, 24 Feb 2020 08:11:59 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Mon, 24 Feb 2020 09:11:53 +0100
-Message-Id: <20200224081154.526146-1-ahmad@a3f.at>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1j6VDH-00066B-6U
+ for barebox@lists.infradead.org; Tue, 25 Feb 2020 08:05:08 +0000
+Date: Tue, 25 Feb 2020 09:05:05 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200225080505.GL3335@pengutronix.de>
+References: <20200224081154.526146-1-ahmad@a3f.at>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200224081154.526146-1-ahmad@a3f.at>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,34 +22,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] ARM: stm32mp: dk2: delete unused includes
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] ARM: stm32mp: dk2: delete unused includes
+To: Ahmad Fatoum <ahmad@a3f.at>
+Cc: barebox@lists.infradead.org
 
-These includes are no longer needed because we don't need to hard code
-memory size in board code anymore for the STM32MP. Drop them.
+On Mon, Feb 24, 2020 at 09:11:53AM +0100, Ahmad Fatoum wrote:
+> These includes are no longer needed because we don't need to hard code
+> memory size in board code anymore for the STM32MP. Drop them.
+> 
+> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+> ---
+>  arch/arm/boards/stm32mp157c-dk2/board.c | 3 ---
+>  1 file changed, 3 deletions(-)
 
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
----
- arch/arm/boards/stm32mp157c-dk2/board.c | 3 ---
- 1 file changed, 3 deletions(-)
+Applied, thanks
 
-diff --git a/arch/arm/boards/stm32mp157c-dk2/board.c b/arch/arm/boards/stm32mp157c-dk2/board.c
-index 6da99d9353ac..46366031218d 100644
---- a/arch/arm/boards/stm32mp157c-dk2/board.c
-+++ b/arch/arm/boards/stm32mp157c-dk2/board.c
-@@ -1,9 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0+
- #include <common.h>
--#include <linux/sizes.h>
- #include <init.h>
--#include <asm/memory.h>
--#include <mach/stm32.h>
- #include <mach/bbu.h>
- 
- static int dk2_postcore_init(void)
+Sascha
+
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
