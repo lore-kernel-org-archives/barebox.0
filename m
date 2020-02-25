@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay3-d.mail.gandi.net ([217.70.183.195])
- by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j68rG-0006Xa-6E
- for barebox@lists.infradead.org; Mon, 24 Feb 2020 08:12:56 +0000
-Received: from geraet.fritz.box (muedsl-82-207-211-016.citykom.de
- [82.207.211.16]) (Authenticated sender: ahmad@a3f.at)
- by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id D622960016
- for <barebox@lists.infradead.org>; Mon, 24 Feb 2020 08:12:02 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Mon, 24 Feb 2020 09:11:54 +0100
-Message-Id: <20200224081154.526146-2-ahmad@a3f.at>
-In-Reply-To: <20200224081154.526146-1-ahmad@a3f.at>
-References: <20200224081154.526146-1-ahmad@a3f.at>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1j6VJ1-0000SM-0h
+ for barebox@lists.infradead.org; Tue, 25 Feb 2020 08:11:04 +0000
+Date: Tue, 25 Feb 2020 09:11:01 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200225081101.GN3335@pengutronix.de>
+References: <20200220100109.18147-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200220100109.18147-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,33 +22,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ARM: stm32mp: add aliases for mmc1 and mmc2
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/6] phy: usb: add support for STM32 usbphyc
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, mgr@pengutronix.de, rcz@pengutronix.de
 
-With the latest update, dts/src/arm/stm32mp151.dtsi now defines the two
-other sdmmc nodes as well. Have barebox set aliases for them.
+On Thu, Feb 20, 2020 at 11:01:05AM +0100, Ahmad Fatoum wrote:
+> This is only USB PHY support. Changes to the DWC2 (OTG) and/or OHCI
+> (Host) are still needed to make USB on the MP1 work.
+> 
+> I haven't yet groked the relation between generic phy and usb phy
+> frameworks, but the code is a straight port from Linux and it seems to
+> work[1], so let's upstream it now to make collaboration easier.
+> 
+> [1]: clock the EHCI and power on the PHY and 20% of the time, the bus
+>      can be enumerated completely. Still needs further debugging,
+>      but it's unlikely that the PHY driver is at fault.
+> 
+> Cheers,
+> Ahmad Fatoum (6):
+>   regulator: import Linux regulator_bulk API
+>   phy: remove unused init_data parameter
+>   phy: populate existing ->pwr member with phy-supply
+>   phy: introduce phy_get_by_index
+>   regulator: port over Linux stm32 PWR regulator driver
+>   phy: port over Linux stm32 usbphyc driver
 
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
----
- arch/arm/dts/stm32mp151.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+Applied, thanks
 
-diff --git a/arch/arm/dts/stm32mp151.dtsi b/arch/arm/dts/stm32mp151.dtsi
-index e416c89856a2..8f8249dbc479 100644
---- a/arch/arm/dts/stm32mp151.dtsi
-+++ b/arch/arm/dts/stm32mp151.dtsi
-@@ -19,6 +19,8 @@
- 		gpio10 = &gpiok;
- 		gpio25 = &gpioz;
- 		mmc0 = &sdmmc1;
-+		mmc1 = &sdmmc2;
-+		mmc2 = &sdmmc3;
- 	};
- 
- 	psci {
+Sascha
+
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
