@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j5D6j-0008Oi-4M
- for barebox@lists.infradead.org; Fri, 21 Feb 2020 18:33:02 +0000
-References: <c0e44a15-802d-b008-36b3-3b3d6007e587@data-modul.com>
- <f67d5b7fec7c354a8d632dc8e20d15e5c273030f.camel@pengutronix.de>
- <cfdb29ab-63b9-6d85-52b2-e76dd88839fd@data-modul.com>
- <20191213075549.bsugsd4fjo6lqox5@pengutronix.de>
- <94de90ba-583b-1181-c9b8-0375b3b3e834@data-modul.com>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <d617fe79-4942-d1c7-34d2-837f3c328cff@pengutronix.de>
-Date: Fri, 21 Feb 2020 19:32:55 +0100
+ id 1j6VCT-00059N-Ug
+ for barebox@lists.infradead.org; Tue, 25 Feb 2020 08:04:19 +0000
+Date: Tue, 25 Feb 2020 09:04:15 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200225080415.GK3335@pengutronix.de>
+References: <20200222075341.13407-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <94de90ba-583b-1181-c9b8-0375b3b3e834@data-modul.com>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20200222075341.13407-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,56 +18,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: imx-usb-loader on imx8mq/mm
-To: "Yazdani, Reyhaneh" <RYazdani@data-modul.com>, Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] MIPS: ath79: add support for OpenEmbed SOM9331 board
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-SGVsbG8sCgpPbiAxMi8xMy8xOSAzOjI0IFBNLCBZYXpkYW5pLCBSZXloYW5laCB3cm90ZToKPiBU
-aGFua3MgU2FzY2hhLAo+IAo+IEkgY291bGQgZmluYWxseSBwcm9ncmFtIEJhcmVib3ggb24gZU1N
-QyBmcm9tIHUtYm9vdCA6KQoKd2l0aCByZWNlbnQgY2hhbmdlcyBpbiB1cHN0cmVhbS9uZXh0LCB5
-b3Ugc2hvdWxkIGJlIGFibGUgdG8gZG8gaXQgd2l0aCBpbXgtdXNiLWxvYWRlcgpvbmx5IG5vdy4K
-CkNoZWVycwpBaG1hZAoKPiAKPiBCZXN0LAo+IFJleWhhbmVoCj4gCj4gT24gMTIvMTMvMTkgODo1
-NSBBTSwgU2FzY2hhIEhhdWVyIHdyb3RlOgo+PiBPbiBGcmksIERlYyAxMywgMjAxOSBhdCAwNzoy
-MDoxNUFNICswMDAwLCBZYXpkYW5pLCBSZXloYW5laCB3cm90ZToKPj4+IFRoYW5rcyBMdWNhcy4K
-Pj4+Cj4+PiBTbywgaWYgSSBoYXZlIGEgYm9hcmQgd2hpY2ggaGFzIG9ubHkgZU1NQyAobm8gU0Qg
-Y2FyZCkuIFdoYXQgd291bGQgYmUgeW91cgo+Pj4gcmVjb21tZW5kYXRpb24gYWJvdXQgcHJvZ3Jh
-bW1pbmcgaXQgd2l0aCBCYXJlYm94Pwo+Pj4KPj4+IEN1cnJlbnRseSwgSSBwcm9ncmFtIFUtQm9v
-dCB2aWEgdXV1IHV0aWxpdHkgYW5kIHRoZW4gZnJvbSBLZXJuZWwsIEkgcHJvZ3JhbQo+Pj4gQmFy
-ZWJveCBvbiBib290MSBwYXJ0aXRpb24gb2YgZU1NQyAoYm9vdDAgaXMgbm90IHBvc3NpYmxlKS4K
-Pj4+Cj4+PiBJIGFtIHRyeWluZyBhdCBsZWFzdCB0byBwcm9ncmFtIEJhcmVib3ggaW4gVS1ib290
-IHZpYSB1bXMsIG1tYyB3cml0ZSAsIC4uLiBidXQKPj4+IHVudGlsIG5vdyBJIGFtIG5vdCBzdWNj
-ZXNzZnVsLiBEbyB5b3UgaGF2ZSBhbnkgZXhwZXJpZW5jZSBvciBpZGVhPwo+Pgo+PiBUaGUgaW1h
-Z2UgYXMgaXQncyBmYWxsaW5nIG91dCBvZiB0aGUgYmFyZWJveCBidWlsZCBzaG91bGQgYmUgd3Jp
-dHRlbgo+PiBzdHJhaWdodCB0byB0aGUgZU1NQy4gVGhlIGVNTUMgaXRzZWxmIGhhcyBhIHNldHRp
-bmcgd2hpY2ggc3BlY2lmaWVzCj4+IHdoZXJlIHRoZSBpLk1YIHdpbGwgYm9vdCBmcm9tLCB2YWxp
-ZCBzZXR0aW5nIGFyZSB1c2VyIGFyZWEsIGJvb3QwIG9yCj4+IGJvb3QxLiBJdCBjYW4gYmUgdGhh
-dCB0aGlzIHNldHRpbmcgZG9lc24ndCBtYXRjaCB0aGUgYXJlYSB5b3UgYXJlCj4+IHdyaXRpbmcg
-dG8uCj4+Cj4+IEFub3RoZXIgd2F5IHdvdWxkIGJlIHRvIHN0YXJ0IGJhcmVib3ggZnJvbSBVLUJv
-b3QgYW5kIGxldCB0aGUKPj4gYmFyZWJveC11cGRhdGUgY29tbWFuZCBkbyB0aGUgam9iIG9mIHdy
-aXRpbmcgYmFyZWJveCB0byB0aGUgZU1NQy4KPj4KPj4gU2FzY2hhCj4+Cj4gCj4gLS0KPiBSZXlo
-YW5laCBZYXpkYW5pCj4gRGF0YSBNb2R1bCBBRyAgICAgICAgICAgICAgICAgICAgICAgICAgICBU
-RUw6ICAgICs0OS04OS01NjAxNy0xNTQKPiBFbWJlZGRlZCBkZXZlbG9wbWVudCAgICAgICAgICAg
-ICAgICAgRkFYOiAgICArNDktODktNTYwMTctMTE5Cj4gTGludXggLSBEZXZlbG9wbWVudCAgICAg
-ICAgICAgICAgICAgICAgICBSRzogSFItTXVlbmNoZW4gQi04NTU5MQo+IExhbmRzYmVyZ2VyIFN0
-ci4gMzIyIEQtODA2ODcgTXVlbmNoZW4gLSBodHRwOi8vd3d3LmRhdGEtbW9kdWwuY29tCj4gCj4g
-VmVydHJhdWxpY2hlIEUtTWFpbCB2b24gLyBDb25maWRlbnRpYWwgZS1tYWlsIGZyb206IERBVEEg
-TU9EVUwgQUcKPiBWb3JzdGFuZCAvIENFTzogRHIuIEZsb3JpYW4gUGVzYWhsCj4gVm9yc2l0emVu
-ZGUgZGVzIEF1ZnNpY2h0c3JhdGVzIC8gQ2hhaXJ3b21hbiBvZiB0aGUgU3VwZXJ2aXNvcnkgQm9h
-cmQ6IEtyaXN0aW4gRC4gUnVzc2VsbAo+IFNpdHogZGVyIEdlc2VsbHNjaGFmdCAvIFJlZ2lzdGVy
-ZWQgT2ZmaWNlOiBNw7xuY2hlbgo+IFJlZ2lzdGVyZ2VyaWNodCAvIFJlZ2lzdHJhdGlvbiBDb3Vy
-dDogTcO8bmNoZW4gSGFuZGVsc3JlZ2lzdGVyIEIgODUgNTkxCj4gCj4gCj4gCj4gX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiBiYXJlYm94IG1haWxpbmcg
-bGlzdAo+IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+IGh0dHA6Ly9saXN0cy5pbmZyYWRl
-YWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo+IAoKLS0gClBlbmd1dHJvbml4IGUuSy4g
-ICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8
-ClN0ZXVlcndhbGRlciBTdHIuIDIxICAgICAgICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cu
-cGVuZ3V0cm9uaXguZGUvICB8CjMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgICAgICAgICAgICAg
-ICAgICB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hl
-aW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8Cgpf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
-aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
-ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Sat, Feb 22, 2020 at 08:53:41AM +0100, Oleksij Rempel wrote:
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> ---
+>  arch/mips/boards/Makefile                     |   1 +
+>  arch/mips/boards/openembed-som9331/Makefile   |   1 +
+>  arch/mips/boards/openembed-som9331/lowlevel.S |  23 ++++
+>  arch/mips/configs/ath79_defconfig             |   1 +
+>  arch/mips/dts/Makefile                        |   1 +
+>  .../dts/ar9331-openembed-som9331-board.dts    | 113 ++++++++++++++++++
+>  arch/mips/mach-ath79/Kconfig                  |   7 ++
+>  images/Makefile.ath79                         |   4 +
+>  8 files changed, 151 insertions(+)
+>  create mode 100644 arch/mips/boards/openembed-som9331/Makefile
+>  create mode 100644 arch/mips/boards/openembed-som9331/lowlevel.S
+>  create mode 100644 arch/mips/dts/ar9331-openembed-som9331-board.dts
+
+Applied, thanks
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
