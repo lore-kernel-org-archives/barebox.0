@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j6vzC-0001D1-4M
- for barebox@lists.infradead.org; Wed, 26 Feb 2020 12:40:23 +0000
+ id 1j6xfg-00039I-Od
+ for barebox@lists.infradead.org; Wed, 26 Feb 2020 14:28:24 +0000
+References: <4f2b01e0-ad01-d130-5c8e-9c3acac58770@eurek.it>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 26 Feb 2020 13:40:16 +0100
-Message-Id: <20200226124017.24646-1-a.fatoum@pengutronix.de>
+Message-ID: <122509ae-f030-4f8a-0cae-eb2c2e31dbe9@pengutronix.de>
+Date: Wed, 26 Feb 2020 15:28:18 +0100
 MIME-Version: 1.0
+In-Reply-To: <4f2b01e0-ad01-d130-5c8e-9c3acac58770@eurek.it>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,44 +22,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] net: designware: eqos: remove left-over PHY quirk work
- around
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: Barebox as first and second stage bootloader
+To: gianluca <gianlucarenzi@eurek.it>, barebox@lists.infradead.org
 
-The dummy read was a left over from an abandoned merge with the existing
-support for the SoCFPGA variant of the Designware MAC. It doesn't exist
-in either the U-Boot or kernel drivers for the EQOS, thus drop it.
+Hello,
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- drivers/net/designware_eqos.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+On 2/26/20 12:57 PM, gianluca wrote:
+> Hello,
+> I was wondering if it possible to program Barebox (2020.01 or later) as first and second stage bootloader using the STM32 Programmer CLI tool.
 
-diff --git a/drivers/net/designware_eqos.c b/drivers/net/designware_eqos.c
-index 4ae07fe059ca..acb4b955464d 100644
---- a/drivers/net/designware_eqos.c
-+++ b/drivers/net/designware_eqos.c
-@@ -255,14 +255,10 @@ static int eqos_mdio_write(struct mii_bus *bus, int addr, int reg, u16 data)
- 	udelay(eqos->ops->mdio_wait_us);
- 
- 	ret = eqos_mdio_wait_idle(eqos);
--	if (ret) {
-+	if (ret)
- 		dev_err(&bus->dev, "MDIO read didn't complete\n");
--		return ret;
--	}
- 
--	/* Needed as a fix for ST-Phy */
--	eqos_mdio_read(bus, addr, reg);
--	return 0;
-+	return ret;
- }
- 
- 
+FSBL is not supported at the moment. We use TF-A for that.
+
+> I have the stm32mp157 evk-dk2 and I would like to have a working bootloader (running from SDRAM) via USB programming.
+> 
+> I do not know how the OTP Fuses are set for trusted boot or simple SPL.
+
+Not sure how this relates to booting over USB? You shouldn't need any
+fuses burnt (but you can probably burn some to stop fallback to DFU)
+
+> I suppose they are TF-A for first stage bootloader and SPL for the second one.
+> 
+> The images built by Barebox (start_stm32mp157c_dk2.pblb[.stm32] and barebox-stm32mp157c-dk2.img) are suitable to be used as first stage bootloader running from internal SRAM and the .img as the second stage bootloader running from external SDRAM DDR???
+
+No, they aren't. The current barebox implementation doesn't set up SDRAM and doesn't install
+a secure monitor.
+
+USB on the STM32MP1 is not yet complete. I posted some basic patches for the PHY, but we still
+need host USB driver adjustments and a gadget driver for the DWC2. 
+
+> Is there somebody who is working with STM32 Cube Programmer or DFU-Utils to obtain this boot??
+
+I don't think so. We will want to have a solution for this eventually though. Probably some
+wrapper script that uses DFU to talk to BootROM, then to vendor TF-A, then to barebox.
+
+As I understood, that's what the STM32CubeProgrammer is doing and it's shipped with
+a FSBL and SSBL already for bootstrapping a system. Have you tried using that to
+flash barebox?
+
+Cheers
+Ahmad
+
+> 
+> Regards,
+> Gianluca Renzi
+
+
 -- 
-2.25.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
