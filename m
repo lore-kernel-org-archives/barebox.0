@@ -1,16 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vs1-xe43.google.com ([2607:f8b0:4864:20::e43])
+Received: from submit-3.e-mind.com ([188.94.192.49])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j6r5y-0002DN-Ua
- for barebox@lists.infradead.org; Wed, 26 Feb 2020 07:27:04 +0000
-Received: by mail-vs1-xe43.google.com with SMTP id g15so1195558vsf.1
- for <barebox@lists.infradead.org>; Tue, 25 Feb 2020 23:27:02 -0800 (PST)
+ id 1j6vJy-0002cX-Tf
+ for barebox@lists.infradead.org; Wed, 26 Feb 2020 11:57:48 +0000
+Received: from localhost (unknown [127.0.0.1])
+ by submit-3.e-mind.com (Postfix) with ESMTP id 072A3843884
+ for <barebox@lists.infradead.org>; Wed, 26 Feb 2020 11:57:40 +0000 (UTC)
+Received: from submit-3.e-mind.com ([127.0.0.1])
+ by localhost (submit-3.e-mind.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id PHvKbm58L25N for <barebox@lists.infradead.org>;
+ Wed, 26 Feb 2020 12:57:39 +0100 (CET)
+Received: from qmail.e-mind.com (qmail34.e-mind.com [188.94.192.34])
+ by submit-3.e-mind.com (Postfix) with SMTP id 60F99843047
+ for <barebox@lists.infradead.org>; Wed, 26 Feb 2020 12:57:12 +0100 (CET)
+From: gianluca <gianlucarenzi@eurek.it>
+Message-ID: <4f2b01e0-ad01-d130-5c8e-9c3acac58770@eurek.it>
+Date: Wed, 26 Feb 2020 12:57:11 +0100
 MIME-Version: 1.0
-References: <20200225165731.12419-1-a.fatoum@pengutronix.de>
-In-Reply-To: <20200225165731.12419-1-a.fatoum@pengutronix.de>
-From: Yegor Yefremov <yegorslists@googlemail.com>
-Date: Wed, 26 Feb 2020 08:26:23 +0100
-Message-ID: <CAGm1_ktxVZZK=58yuvxfOTgqMcyTrniR1799=7h33RYYRNyLgQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,163 +25,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] USB: MUSB: PHY: scrap singleton am335x_get_usb_phy()
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: Barebox as first and second stage bootloader
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Tue, Feb 25, 2020 at 5:57 PM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
->
-> am335x_get_usb_phy() retrieves the last probed USB phy. On the BeagleBone
-> with both PHYs enabled, this means that dependent on probe order, both
-> MUSB instances could end up with the same PHY.
->
-> Remove the global variable and have the MUSB driver parse the "phys"
-> property instead.
->
-> The cleaner way to achieve this would be to migrate phy-am335x.c
-> and phy-am335x-control.c to the generic phy framework and have MUSB use
-> of_phy_get, alas, even Linux hasn't done this so far and we need
-> a short patch for master anyway, thus just do it the easy way.
->
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Hello,
+I was wondering if it possible to program Barebox (2020.01 or later) as 
+first and second stage bootloader using the STM32 Programmer CLI tool.
 
-Tested against the next branch.
+I have the stm32mp157 evk-dk2 and I would like to have a working 
+bootloader (running from SDRAM) via USB programming.
 
-Tested-by: Yegor Yefremov <yegorslists@googlemail.com>
+I do not know how the OTP Fuses are set for trusted boot or simple SPL.
+I suppose they are TF-A for first stage bootloader and SPL for the 
+second one.
 
-Yegor
+The images built by Barebox (start_stm32mp157c_dk2.pblb[.stm32] and 
+barebox-stm32mp157c-dk2.img) are suitable to be used as first stage 
+bootloader running from internal SRAM and the .img as the second stage 
+bootloader running from external SDRAM DDR???
 
-> ---
-> Prerequisite for fix in next commit. Please apply both to master.
-> ---
->  drivers/usb/musb/musb_dsps.c  | 16 +++++++++++-----
->  drivers/usb/musb/phy-am335x.c | 11 ++---------
->  drivers/usb/musb/phy-am335x.h |  6 ------
->  3 files changed, 13 insertions(+), 20 deletions(-)
->  delete mode 100644 drivers/usb/musb/phy-am335x.h
->
-> diff --git a/drivers/usb/musb/musb_dsps.c b/drivers/usb/musb/musb_dsps.c
-> index 3b76b6cc610d..f30672914830 100644
-> --- a/drivers/usb/musb/musb_dsps.c
-> +++ b/drivers/usb/musb/musb_dsps.c
-> @@ -39,7 +39,6 @@
->  #include <linux/barebox-wrapper.h>
->
->  #include "musb_core.h"
-> -#include "phy-am335x.h"
->
->  static __maybe_unused struct of_device_id musb_dsps_dt_ids[];
->
-> @@ -217,10 +216,6 @@ static int dsps_musb_init(struct musb *musb)
->         const struct dsps_musb_wrapper *wrp = glue->wrp;
->         u32 rev, val, mode;
->
-> -       musb->xceiv = am335x_get_usb_phy();
-> -       if (IS_ERR(musb->xceiv))
-> -               return PTR_ERR(musb->xceiv);
-> -
->         /* Returns zero if e.g. not clocked */
->         rev = dsps_readl(musb->ctrl_base, wrp->revision);
->         if (!rev)
-> @@ -324,6 +319,8 @@ static int dsps_probe(struct device_d *dev)
->         struct musb_hdrc_config *config;
->         struct device_node *dn = dev->device_node;
->         const struct dsps_musb_wrapper *wrp;
-> +       struct device_node *phy_node;
-> +       struct device_d *phy_dev;
->         struct dsps_glue *glue;
->         int ret;
->
-> @@ -337,6 +334,14 @@ static int dsps_probe(struct device_d *dev)
->                 return -ENODEV;
->         }
->
-> +       phy_node = of_parse_phandle(dn, "phys", 0);
-> +       if (!phy_node)
-> +               return -ENODEV;
-> +
-> +       phy_dev = of_find_device_by_node(phy_node);
-> +       if (!phy_dev || !phy_dev->priv)
-> +               return -EPROBE_DEFER;
-> +
->         /* allocate glue */
->         glue = kzalloc(sizeof(*glue), GFP_KERNEL);
->         if (!glue) {
-> @@ -360,6 +365,7 @@ static int dsps_probe(struct device_d *dev)
->         glue->musb.ctrl_base = IOMEM(iores->start);
->
->         glue->musb.controller = dev;
-> +       glue->musb.xceiv = phy_dev->priv;
->
->         config = &glue->config;
->
-> diff --git a/drivers/usb/musb/phy-am335x.c b/drivers/usb/musb/phy-am335x.c
-> index df31255d891c..6991f4402d3f 100644
-> --- a/drivers/usb/musb/phy-am335x.c
-> +++ b/drivers/usb/musb/phy-am335x.c
-> @@ -5,7 +5,6 @@
->  #include <linux/err.h>
->  #include "am35x-phy-control.h"
->  #include "musb_core.h"
-> -#include "phy-am335x.h"
->
->  struct am335x_usbphy {
->         void __iomem *base;
-> @@ -14,13 +13,6 @@ struct am335x_usbphy {
->         struct usb_phy phy;
->  };
->
-> -static struct am335x_usbphy *am_usbphy;
-> -
-> -struct usb_phy *am335x_get_usb_phy(void)
-> -{
-> -       return &am_usbphy->phy;
-> -}
-> -
->  static int am335x_init(struct usb_phy *phy)
->  {
->         struct am335x_usbphy *am_usbphy = container_of(phy, struct am335x_usbphy, phy);
-> @@ -31,6 +23,7 @@ static int am335x_init(struct usb_phy *phy)
->
->  static int am335x_phy_probe(struct device_d *dev)
->  {
-> +       struct am335x_usbphy *am_usbphy;
->         struct resource *iores;
->         int ret;
->
-> @@ -54,7 +47,7 @@ static int am335x_phy_probe(struct device_d *dev)
->         }
->
->         am_usbphy->phy.init = am335x_init;
-> -       dev->priv = am_usbphy;
-> +       dev->priv = &am_usbphy->phy;
->
->         dev_info(dev, "am_usbphy %p enabled\n", &am_usbphy->phy);
->
-> diff --git a/drivers/usb/musb/phy-am335x.h b/drivers/usb/musb/phy-am335x.h
-> deleted file mode 100644
-> index 27da2e3b1057..000000000000
-> --- a/drivers/usb/musb/phy-am335x.h
-> +++ /dev/null
-> @@ -1,6 +0,0 @@
-> -#ifndef _PHY_AM335x_H_
-> -#define _PHY_AM335x_H_
-> -
-> -struct usb_phy *am335x_get_usb_phy(void);
-> -
-> -#endif
-> --
-> 2.25.0
->
->
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+Is there somebody who is working with STM32 Cube Programmer or DFU-Utils 
+to obtain this boot??
+
+Regards,
+Gianluca Renzi
+-- 
+Eurek s.r.l.                          |
+Electronic Engineering                | http://www.eurek.it
+via Celletta 8/B, 40026 Imola, Italy  | Phone: +39-(0)542-609120
+p.iva 00690621206 - c.f. 04020030377  | Fax:   +39-(0)542-609212
 
 _______________________________________________
 barebox mailing list
