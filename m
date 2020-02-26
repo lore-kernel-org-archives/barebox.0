@@ -1,22 +1,35 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-eopbgr80113.outbound.protection.outlook.com
- ([40.107.8.113] helo=EUR04-VI1-obe.outbound.protection.outlook.com)
+Received: from submit-1.e-mind.com ([188.94.192.45])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j6veh-0001ny-4z
- for barebox@lists.infradead.org; Wed, 26 Feb 2020 12:19:13 +0000
-From: Hans-Ulrich Schlieben <hu.schlieben@codewrights.de>
-Date: Wed, 26 Feb 2020 12:19:02 +0000
-Message-ID: <AM0PR03MB37140F2A9A81570334B93160FEEA0@AM0PR03MB3714.eurprd03.prod.outlook.com>
-References: <f52c462f-8f88-f953-7383-18633de010ff@pengutronix.de>
- <21810.1581944282288454644@lists.yoctoproject.org>
- <8178103e-c35d-461d-c485-d6b64753641b@pengutronix.de>
- <AM0PR03MB3714AE8A8592D7A0E7853B83FE110@AM0PR03MB3714.eurprd03.prod.outlook.com>
- <3421bd79-37aa-8a4a-2e80-552a7c78e2ef@pengutronix.de>
- <AM0PR03MB371452D747C7024FF3484BDFFEEC0@AM0PR03MB3714.eurprd03.prod.outlook.com>
- <fd2b33d4-2373-3ef9-d30e-f227438dbf9b@phytec.de>
-In-Reply-To: <fd2b33d4-2373-3ef9-d30e-f227438dbf9b@phytec.de>
-Content-Language: en-US
+ id 1j6xxl-0003T9-QN
+ for barebox@lists.infradead.org; Wed, 26 Feb 2020 14:47:05 +0000
+Received: from localhost (unknown [127.0.0.1])
+ by submit-1.e-mind.com (Postfix) with ESMTP id E7109849403
+ for <barebox@lists.infradead.org>; Wed, 26 Feb 2020 14:46:58 +0000 (UTC)
+Received: from submit-1.e-mind.com ([127.0.0.1])
+ by localhost (submit-1.e-mind.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 7KOZCqT869oJ for <barebox@lists.infradead.org>;
+ Wed, 26 Feb 2020 15:46:58 +0100 (CET)
+Received: from submit-4.e-mind.com (submit-4.e-mind.com [188.94.192.50])
+ by submit-1.e-mind.com (Postfix) with ESMTPS id 96443842D75
+ for <barebox@lists.infradead.org>; Wed, 26 Feb 2020 15:46:58 +0100 (CET)
+Received: from localhost (unknown [127.0.0.1])
+ by submit-4.e-mind.com (Postfix) with ESMTP id 9376183FE05
+ for <barebox@lists.infradead.org>; Wed, 26 Feb 2020 14:46:58 +0000 (UTC)
+Received: from submit-4.e-mind.com ([127.0.0.1])
+ by localhost (submit-4.e-mind.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 8sCTPig9sn6w for <barebox@lists.infradead.org>;
+ Wed, 26 Feb 2020 15:46:58 +0100 (CET)
+Received: from qmail.e-mind.com (qmail34.e-mind.com [188.94.192.34])
+ by submit-4.e-mind.com (Postfix) with SMTP id 862D983FE02
+ for <barebox@lists.infradead.org>; Wed, 26 Feb 2020 15:46:58 +0100 (CET)
+References: <4f2b01e0-ad01-d130-5c8e-9c3acac58770@eurek.it>
+ <122509ae-f030-4f8a-0cae-eb2c2e31dbe9@pengutronix.de>
+From: gianluca <gianlucarenzi@eurek.it>
+Message-ID: <88405b89-494c-f510-ecb4-810f8b6e0b91@eurek.it>
+Date: Wed, 26 Feb 2020 15:46:54 +0100
 MIME-Version: 1.0
+In-Reply-To: <122509ae-f030-4f8a-0cae-eb2c2e31dbe9@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,160 +38,94 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: [RAUC] Private: Re: [yocto] #yocto update the kernel with a rauc
- bundle
-To: =?utf-8?B?U3RlZmFuIFJpZWRtw7xsbGVy?= <s.riedmueller@phytec.de>
-Cc: "yocto@lists.yoctoproject.org" <yocto@lists.yoctoproject.org>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>, "rauc@pengutronix.de" <rauc@pengutronix.de>, =?utf-8?B?RW5yaWNvIErDtnJucw==?= <ejo@pengutronix.de>
+Subject: Re: Barebox as first and second stage bootloader
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
 
-SGkgU3RlZmFuLA0KDQpzYW1lIHJlc3VsdCB3aXRob3V0IHRoZSBhdXRvbW91bnQgZmlsZXMuIA0K
-SSdtIG5vdCByZWFsbHkgc2h1cmUgd2hldGhlciBJIGJ1aWx0IGJhcmVib3ggdGhlIGludGVuZGVk
-IHdheS4gV2hhdCBJIGRpZCB3YXMgdG8gYWRkIFJNX1dPUktfRVhDTFVERSArPSAiIGJhcmVib3gi
-IHRvIGxvY2FsLmNvbmYsDQpSZWJ1aWxkIGJhcmVib3ggd2l0aCBiaXRiYWtlIC1jIGNsZWFuc3N0
-YXRlIGJhcmVib3gsIHJlbW92ZWQgdGhlIHRocmVlIGF1dG9tb3VudCBmaWxlcyBiZWxvdyB0aGUg
-aW14NiBmb2xkZXJzIGFuZCBydW4gDQpiaXRiYWtlIC1mIC1jIGNvbXBpbGUgYmFyZWJveA0KYW5k
-IGJ1aWx0IHRoZSBpbWFnZS4gRGlkIHRoaXMgZGlzYWJsZSB0aGUgYXV0b21vdW50Pw0KDQpCZXN0
-IHJlZ2FyZHMNCg0KaHUNCg0KDQoNCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBG
-cm9tOiBTdGVmYW4gUmllZG3DvGxsZXIgPHMucmllZG11ZWxsZXJAcGh5dGVjLmRlPiANCj4gU2Vu
-dDogVHVlc2RheSwgMjUgRmVicnVhcnkgMjAyMCAxNjoxNg0KPiBUbzogSGFucy1VbHJpY2ggU2No
-bGllYmVuIDxodS5zY2hsaWViZW5AY29kZXdyaWdodHMuZGU+DQo+IENjOiBFbnJpY28gSsO2cm5z
-IDxlam9AcGVuZ3V0cm9uaXguZGU+OyB5b2N0b0BsaXN0cy55b2N0b3Byb2plY3Qub3JnOyBiYXJl
-Ym94QGxpc3RzLmluZnJhZGVhZC5vcmc7IHJhdWNAcGVuZ3V0cm9uaXguZGUNCj4gU3ViamVjdDog
-UmU6IFtSQVVDXSBQcml2YXRlOiBSZTogW3lvY3RvXSAjeW9jdG8gdXBkYXRlIHRoZSBrZXJuZWwg
-d2l0aCBhIHJhdWMgYnVuZGxlDQo+IA0KPiBIaSBIYW5zLVVscmljaCwNCj4gDQo+IE9uIDI0LjAy
-LjIwIDEzOjEyLCBIYW5zLVVscmljaCBTY2hsaWViZW4gd3JvdGU6DQo+ID4gSGkgRW5yaWNvLA0K
-PiA+IA0KPiA+IHRoZSBib290IGxvZyBsb29rcyBsaWtlIHRoaXM6DQo+ID4gDQo+ID4gDQo+ID4g
-YmFyZWJveCAyMDE3LjEyLjAgIzEgVHVlIEZlYiAxOCAwOTo0OTozNiBVVEMgMjAyMA0KPiA+IA0K
-PiA+IA0KPiA+IEJvYXJkOiBQaHl0ZWMgcGh5Q09SRS1pLk1YNiBRdWFkIHdpdGggTkFORCBkZXRl
-Y3RlZCBpLk1YNiBRdWFkIA0KPiA+IHJldmlzaW9uIDEuNQ0KPiA+IGkuTVg2IHVuaXF1ZSBJRDog
-ZWU4MDNjNTQwZjIzNTlkNA0KPiA+IG1kaW9fYnVzOiBtaWlidXMwOiBwcm9iZWQNCj4gPiBldGgw
-OiBnb3QgcHJlc2V0IE1BQyBhZGRyZXNzOiA1MDoyZDpmNDoxYjphZjpiMQ0KPiA+IG5hbmQ6IE9O
-RkkgZmxhc2ggZGV0ZWN0ZWQNCj4gPiBuYW5kOiBOQU5EIGRldmljZTogTWFudWZhY3R1cmVyIElE
-OiAweGVmLCBDaGlwIElEOiAweGQzIChXaW5ib25kIA0KPiA+IFcyOU4wOEdWKSwgMTAyNE1pQiwg
-cGFnZSBzaXplOiAyMDQ4LCBPT0Igc2l6ZTogNjQgQmFkIGJsb2NrIHRhYmxlIA0KPiA+IGZvdW5k
-IGF0IHBhZ2UgNTI0MjI0LCB2ZXJzaW9uIDB4MDEgQmFkIGJsb2NrIHRhYmxlIGZvdW5kIGF0IHBh
-Z2UgDQo+ID4gNTI0MTYwLCB2ZXJzaW9uIDB4MDENCj4gPiBtMjVwODAgZmxhc2hAMDA6IG4yNXEx
-MjhhMTMgKDE2Mzg0IEtieXRlcykgaW14LXVzYiAyMTg0MjAwLnVzYjogVVNCIA0KPiA+IEVIQ0kg
-MS4wMCBpbXgtZXNkaGMgMjE5MDAwMC51c2RoYzogcmVnaXN0ZXJlZCBhcyAyMTkwMDAwLnVzZGhj
-DQo+ID4gZGE5MDYzIGRhOTA2MjA6IGRhOTA2MiB3aXRoIGlkIDYyLjIyLmZmLjFhIGRldGVjdGVk
-DQo+ID4gc3RhdGU6IE5ldyBzdGF0ZSByZWdpc3RlcmVkICdzdGF0ZScNCj4gPiBzdGF0ZTogVXNp
-bmcgYnVja2V0IDBAMHgwMDAwMDAwMA0KPiA+IG5ldGNvbnNvbGU6IHJlZ2lzdGVyZWQgYXMgbmV0
-Y29uc29sZS0xDQo+ID4gcGh5U09NLWkuTVg2OiBVc2luZyBlbnZpcm9ubWVudCBpbiBNTUMgbWFs
-bG9jIHNwYWNlOiAweDJmZWZiNDgwIC0+IA0KPiA+IDB4NGZkZjY4ZmYgKHNpemUgNTExIE1pQikN
-Cj4gPiBtbWMwOiBkZXRlY3RlZCBTRCBjYXJkIHZlcnNpb24gMi4wDQo+ID4gbW1jMDogcmVnaXN0
-ZXJlZCBtbWMwDQo+ID4gZW52ZnM6IG5vIGVudmZzIChtYWdpYyBtaXNtYXRjaCkgLSBlbnZmcyBu
-ZXZlciB3cml0dGVuPw0KPiA+IHJ1bm5pbmcgL2Vudi9iaW4vaW5pdC4uLg0KPiA+IA0KPiA+IEhp
-dCBtIGZvciBtZW51IG9yIGFueSBvdGhlciBrZXkgdG8gc3RvcCBhdXRvYm9vdDogICAgMA0KPiA+
-IGV4dDQgZXh0NDA6IEVYVDIgcmV2IDEsIGlub2RlX3NpemUgMjU2LCBkZXNjcmlwdG9yIHNpemUg
-NjQgdGVzdGluZyBmb3IgDQo+ID4gdXBkYXRlDQo+ID4gdWJpMDogc2Nhbm5pbmcgaXMgZmluaXNo
-ZWQNCj4gPiB1YmkwIGVycm9yOiB1YmlfcmVhZF92b2x1bWVfdGFibGU6IHRoZSBsYXlvdXQgdm9s
-dW1lIHdhcyBub3QgZm91bmQNCj4gPiB1YmkwIGVycm9yOiB1YmlfYXR0YWNoX210ZF9kZXY6IGZh
-aWxlZCB0byBhdHRhY2ggbXRkMCwgZXJyb3IgLTIyIA0KPiA+IGZhaWxlZCB0byBhdHRhY2g6IElu
-dmFsaWQgYXJndW1lbnQgYm9vdGluZyAnYm9vdGNob29zZXInDQo+ID4gYm9vdGluZyAnbW1jMC4w
-Jw0KPiA+IG1vdW50ZWQgL2Rldi9tbWMwLjAgb24gL21udC9tbWMNCj4gPiBtb3VudGVkIC9kZXYv
-bW1jMC4wIG9uIC9tbnQvbW1jDQo+ID4gbW91bnRlZCAvZGV2L21tYzAuMCBvbiAvbW50L21tYw0K
-PiA+IGNvdWxkIG5vdCBvcGVuIC9tbnQvbW1jMC4wL2Jvb3QvekltYWdlOiBObyBzdWNoIGZpbGUg
-b3IgZGlyZWN0b3J5IA0KPiA+IEJvb3RpbmcgJ21tYzAuMCcgZmFpbGVkOiBObyBzdWNoIGZpbGUg
-b3IgZGlyZWN0b3J5IGJvb3RpbmcgJ21tYzAuMCcgDQo+ID4gZmFpbGVkOiBObyBzdWNoIGZpbGUg
-b3IgZGlyZWN0b3J5IGJvb3RpbmcgJ21tYzAuMCcNCj4gPiBtb3VudGVkIC9kZXYvbW1jMC4wIG9u
-IC9tbnQvbW1jDQo+ID4gbW91bnRlZCAvZGV2L21tYzAuMCBvbiAvbW50L21tYw0KPiA+IG1vdW50
-ZWQgL2Rldi9tbWMwLjAgb24gL21udC9tbWMNCj4gPiBjb3VsZCBub3Qgb3BlbiAvbW50L21tYzAu
-MC9ib290L3pJbWFnZTogTm8gc3VjaCBmaWxlIG9yIGRpcmVjdG9yeSANCj4gPiBCb290aW5nICdt
-bWMwLjAnIGZhaWxlZDogTm8gc3VjaCBmaWxlIG9yIGRpcmVjdG9yeSBib290aW5nICdtbWMwLjAn
-IA0KPiA+IGZhaWxlZDogTm8gc3VjaCBmaWxlIG9yIGRpcmVjdG9yeSBib290aW5nICdtbWMwLjAn
-DQo+ID4gbW91bnRlZCAvZGV2L21tYzAuMCBvbiAvbW50L21tYw0KPiA+IG1vdW50ZWQgL2Rldi9t
-bWMwLjAgb24gL21udC9tbWMNCj4gPiBtb3VudGVkIC9kZXYvbW1jMC4wIG9uIC9tbnQvbW1jDQo+
-ID4gY291bGQgbm90IG9wZW4gL21udC9tbWMwLjAvYm9vdC96SW1hZ2U6IE5vIHN1Y2ggZmlsZSBv
-ciBkaXJlY3RvcnkgDQo+ID4gQm9vdGluZyAnbW1jMC4wJyBmYWlsZWQ6IE5vIHN1Y2ggZmlsZSBv
-ciBkaXJlY3RvcnkgYm9vdGluZyAnbW1jMC4wJyANCj4gPiBmYWlsZWQ6IE5vIHN1Y2ggZmlsZSBv
-ciBkaXJlY3RvcnkgYm9vdGluZyAnbW1jMC4xJw0KPiA+IA0KPiA+IA0KPiA+IC0+IGJvb3Rpbmcg
-bW1jMC4xIHdvcmtzDQo+ID4gDQo+ID4gU28gdGhlIHByb2JsZW0gaXMgdGhhdCBiYXJlYm94IG1v
-dW50cyAvZGV2L21tYzAuMCBvbiAvbW50L21tYyBhbmQgbm90IA0KPiA+IG9uIC9tbnQvbW1jMC4w
-LiBCdXQgd2hhdCBjb25maWd1cmF0aW9uIHRlbGxzIGJhcmVib3ggdG8gbW91bnQNCj4gPiAvZGV2
-L21tYzAuMCBvbiAvbW50L21tYw0KPiA+IGFuZA0KPiA+IC9kZXYvbW1jMC4xIG9uIC9tbnQvbW1j
-MC4xPw0KPiANCj4gVGhlcmUgaXMgYSAvZW52L2luaXQvYXV0b21vdW50IGZpbGUgaW5zdGFsbGVk
-IG9uIFBIWVRFQyBTT01zIHdoaWNoIGNvbWVzIGZyb20gYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1z
-b20taW14Ni9kZWZhdWx0ZW52LXBoeXNvbS1pbXg2LXBoeWNvcmUvaW5pdC9hdXRvbW91bnQNCj4g
-YW5kIHRyaWdnZXJzIGFuIGF1dG9tb3VudCBmcm9tIC9kZXYvbW1jMC4wIG9uIC9tbnQvbW1jLg0K
-PiANCj4gSSdtIG5vdCBzdXJlIGlmIHRoaXMgY29uZmxpY3RzIHdpdGggdGhlIGludGVybmFsIGF1
-dG9tb3VudCBvbiAvbW50L21tYzAuMCBidXQgcmVtb3Zpbmcgb3VyIGF1dG9tb3VudCBzY3JpcHQg
-Y291bGQgYmUgd29ydGggYSB0cnkuDQo+IA0KPiBTdGVmYW4NCj4gDQo+ID4gDQo+ID4gVGhlIGNv
-bmZpZ3VyYXRpb24gcGFyYW1ldGVycyBhcmUgdGhpczoNCj4gPiAqIGJvb3RjaG9vc2VyLnN5c3Rl
-bTAuYm9vdDogbW1jMC4wDQo+ID4gKiBib290Y2hvb3Nlci5zeXN0ZW0xLmJvb3Q6IG1tYzAuMQ0K
-PiA+ICogYm9vdGNob29zZXIudGFyZ2V0czogc3lzdGVtMCBzeXN0ZW0xDQo+ID4gDQo+ID4gQmVz
-dCByZWdhcmRzDQo+ID4gDQo+ID4gaHUNCj4gPiANCj4gPiANCj4gPiAtLS0tLU9yaWdpbmFsIE1l
-c3NhZ2UtLS0tLQ0KPiA+IEZyb206IEVucmljbyBKw7ZybnMgPGVqb0BwZW5ndXRyb25peC5kZT4N
-Cj4gPiBTZW50OiBXZWRuZXNkYXksIDE5IEZlYnJ1YXJ5IDIwMjAgMTc6MjgNCj4gPiBUbzogSGFu
-cy1VbHJpY2ggU2NobGllYmVuIDxodS5zY2hsaWViZW5AY29kZXdyaWdodHMuZGU+DQo+ID4gQ2M6
-IHlvY3RvQGxpc3RzLnlvY3RvcHJvamVjdC5vcmc7IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9y
-ZzsgDQo+ID4gcmF1Y0BwZW5ndXRyb25peC5kZQ0KPiA+IFN1YmplY3Q6IFJlOiBbUkFVQ10gUHJp
-dmF0ZTogUmU6IFt5b2N0b10gI3lvY3RvIHVwZGF0ZSB0aGUga2VybmVsIHdpdGggDQo+ID4gYSBy
-YXVjIGJ1bmRsZQ0KPiA+IA0KPiA+IEhpIEhhbnMsDQo+ID4gDQo+ID4gQW0gMTguMDIuMjAgdW0g
-MTU6MDYgc2NocmllYiBIYW5zLVVscmljaCBTY2hsaWViZW46DQo+ID4+IEhpIEVucmljbywNCj4g
-Pj4NCj4gPj4gSSBqdXN0IGFuc3dlcmVkIHlvdXIgZmlyc3QgbWFpbCBvbiB0aGUgd2Vic2l0ZSBh
-bmQgdGhvdWdodCB0aGF0IHdpbGwgYXV0b21hdGljYWxseSByZXBseSB0byBhbGwuIEFkZGVkIGFs
-bCBsaXN0cyBub3csIGhvcGUgdGhlc2UgYXJlIGNvcnJlY3QuDQo+ID4gDQo+ID4gYWgsIEkgd2Fz
-bid0IGV2ZW4gYXdhcmUgdGhhdCB0aGVyZSBpcyBhIHdlYnNpdGUgZm9yIHRoaXMgOykNCj4gPiAN
-Cj4gPj4gVGhhbmtzIHRvIHlvdSBJIGZvdW5kIHRoZSBjdXN0b20gYXV0b21vdW50IGluIHRoZSBw
-cm92aWRlcnMgcmVjaXBlcy4gVGhpcyBtb3VudHMgL2Rldi9tbWMwLjAgdG8gL21udC9tbWMuDQo+
-ID4gDQo+ID4gT2ssIGdvb2QgdGhhdCB3ZSBjbGFyaWZpZWQgdGhpcy4gVGhlIHNjcmlwdCBzaG91
-bGQgbm90IGJlIHJlcXVpcmVkIGluIGEgbW9kZXJuIGJhcmVib3ggYXMgaXQgaGFzIGEgbG90IG9m
-IGJ1aWx0LWluIGF1dG9tb3VudGluZyBtYWdpYyBvbiBib2FyZC4NCj4gPiANCj4gPj4gQWZ0ZXIg
-dGhlIG1vdW50IGl0IHNlZW1zIHRoYXQgb25seSB3aGVuIEkgaW5zdGFsbCBhIG5ldyBpbWFnZSB0
-aGUgYmFyZWJveCBtb3VudCAvZGV2L21tYzAuMCB0byAvbW50L21tYzAuMCB3b3Jrcy4NCj4gPiAN
-Cj4gPiBUaGlzIGlzIHRoZSBwb2ludCB0aGF0IHNvdW5kcyBhIGxpdHRsZSBzdHJhbmdlLCB5ZXMu
-DQo+ID4gDQo+ID4+IFJhdWMgLyBiYXJlYm94IHNlZW1zIHNvbWV0aGluZyB0byBjaGFuZ2UgYWZ0
-ZXIgYSBidW5kbGUgdXBkYXRlIHdoZXJlYXMgbW91bnQgL2Rldi9tbWMwLjAgdG8gL21udC9tbWMw
-LjAgZmFpbHMgYW5kIHRoZSBmaWxlcyBhcmUgb25seSB2aXNpYmxlIGluIC9tbnQvbW1jLg0KPiA+
-Pg0KPiA+PiAvbW50L21tYyB3b3JrcyBpbiBib3RoIGNhc2VzIHNvIEkgaGF2ZSBub3cgL21udC9t
-bWMvYm9vdC4uLiBmb3INCj4gPj4gc3lzdGVtMCBhbmQgL21udC9tbWMwLjEvYm9vdC4uLiBmb3Ig
-c3lzdGVtMQ0KPiA+IA0KPiA+IFdvdWxkIGJlIGdyZWF0IHRvIHNlZSBhIGxvZyBvZiBzdWNoIGEg
-ZmFpbGVkIG1vdW50IHRvIGdldCBhIG1vcmUgY29uY3JldGUgaWRlYSB3aGF0ICdmYWlsZWQnIGFj
-dHVhbGx5IG1lYW5zLg0KPiA+IA0KPiA+IEJlc3QgcmVnYXJkcywgRW5yaWNvDQo+ID4gDQo+ID4+
-IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+ID4+IEZyb206IEVucmljbyBKw7ZybnMgPGVq
-b0BwZW5ndXRyb25peC5kZT4NCj4gPj4gU2VudDogVHVlc2RheSwgMTggRmVicnVhcnkgMjAyMCAw
-MToxMg0KPiA+PiBUbzogSGFucy1VbHJpY2ggU2NobGllYmVuIDxodS5zY2hsaWViZW5AY29kZXdy
-aWdodHMuZGU+DQo+ID4+IFN1YmplY3Q6IFJlOiBQcml2YXRlOiBSZTogW3lvY3RvXSAjeW9jdG8g
-dXBkYXRlIHRoZSBrZXJuZWwgd2l0aCBhIA0KPiA+PiByYXVjIGJ1bmRsZQ0KPiA+Pg0KPiA+PiBI
-aSBodSwNCj4gPj4NCj4gPj4gcGxlYXNlIGtlZXAgYXQgbGVhc3QgYW55IGxpc3QgaW4gQ0Mgc28g
-dGhhdCBvdGhlcnMgY2FuIGJlbmVmaXQgZnJvbSB0aGlzIGRpc2N1c3Npb24sIHRvbyAoQm90aCBS
-QVVDIGFuZCBiYXJlYm94IE1MIHdvdWxkIGZpdCBoZXJlKS4gSXQgYWxzbyBpbmNyZWFzZXMgdGhl
-IHJhbmdlIGFuZCB0aHVzIHBvdGVudGlhbCBwZW9wbGUgdGhhdCBtYXkgPiBoZWxwIGhlcmUuDQo+
-ID4+DQo+ID4+IEFtIDE3LjAyLjIwIHVtIDEzOjU4IHNjaHJpZWIgSGFucy1VbHJpY2ggU2NobGll
-YmVuOg0KPiA+Pj4gSGkgRW5yaWNvLA0KPiA+Pj4NCj4gPj4+IHRoYW5rIHlvdSB2ZXJ5IG11Y2gg
-Zm9yIHlvdXIgaGVscCB3aXRoIElNQUdFX0lOU1RBTExfYXBwZW5kID0gIg0KPiA+Pj4ga2VybmVs
-LWltYWdlIGtlcm5lbC1kZXZpY2V0cmVlIg0KPiA+Pj4gdGhhdCBkaWQgdGhlIHRyaWNrLg0KPiA+
-Pj4NCj4gPj4+IFdoYXQgaSBkbyBub3QgdW5kZXJzdGFuZCBpcyBob3cgYmFyZWJveCBoYW5kbGVz
-IHRoZSBtb3VudCBuYW1lcyBmb3IgDQo+ID4+PiBteSB0d28gYWx0ZXJuYXRlIGJvb3QgcGFydGl0
-aW9ucy4NCj4gPj4+IFRoZSBib290IG9uIHRoZSBmaXJzdCBwYXJ0aXRpb24gd29ya3Mgb25seSB1
-bmRlciAvbW50L21tYy86DQo+ID4+Pg0KPiA+Pj4gZ2xvYmFsLmJvb3RtLmltYWdlPSIvbW50L21t
-Yy9ib290L3pJbWFnZSINCj4gPj4+IGdsb2JhbC5ib290bS5vZnRyZWU9Ii9tbnQvbW1jL2Jvb3Qv
-aW14NnEtcGh5dGVjLWtzcDA2NjMuZHRiIg0KPiA+Pj4gZ2xvYmFsLmxpbnV4LmJvb3RhcmdzLmR5
-bi5yb290PSJyb290PS9kZXYvbW1jYmxrMHAxDQo+ID4+PiByb290ZmxhZ3M9J2RhdGE9am91cm5h
-bCcgd2Q9NjAgaXB2Ni5kaXNhYmxlPTEiDQo+ID4+Pg0KPiA+Pj4gd2hlcmVhcyB0aGUgc2Vjb25k
-IHdvcmtzIHdpdGggL21udC9tbWMxLzoNCj4gPj4+IGdsb2JhbC5ib290bS5pbWFnZT0iL21udC9t
-bWMwLjEvYm9vdC96SW1hZ2UiDQo+ID4+PiBnbG9iYWwuYm9vdG0ub2Z0cmVlPSIvbW50L21tYzAu
-MS9ib290L2lteDZxLXBoeXRlYy1rc3AwNjYzLmR0YiINCj4gPj4+IGdsb2JhbC5saW51eC5ib290
-YXJncy5keW4ucm9vdD0icm9vdD0vZGV2L21tY2JsazBwMg0KPiA+Pj4gcm9vdGZsYWdzPSdkYXRh
-PWpvdXJuYWwnIHdkPTYwIGlwdjYuZGlzYWJsZT0xIg0KPiA+Pj4NCj4gPj4+IEluIGJhcmVib3gg
-aSBzZWUgYm90aCByb290IGZpbGVzeXN0ZW1zIHVuZGVyIC9tbnQvbW1jMC4wIGFuZCANCj4gPj4+
-IC9tbnQvbW1jMC4xLy4NCj4gPj4+DQo+ID4+PiBXaGVuIGkgdHJ5IHRvIGhhdmUgYSBzeW1tZXRy
-aWNhbCBjb25maWd1cmF0aW9uIGFuZCByZW5hbWUgL21tYy8gaW50byANCj4gPj4+IC9tbWMwLjAv
-IGJvb3Qgb24gbW1jMC4wIGRvZXMgbm90IHdvcmsgYmVjYXVzZSBpdCBzdGlsbCBtb3VudHMgdGhl
-IA0KPiA+Pj4gZmlyc3QgcGFydGl0aW9uIGFyIC9tbnQvbW1jLy4NCj4gPj4NCj4gPj4gV2hpY2gg
-dmVyc2lvbiBvZiBiYXJlYm94Pw0KPiA+Pg0KPiA+PiBJdCBzaG91bGQgYmUgc3VmZmljaWVudCB0
-byBlaXRoZXIgc2F5DQo+ID4+DQo+ID4+ICAgIGJvb3QgbW1jMC4wDQo+ID4+DQo+ID4+IG9yDQo+
-ID4+DQo+ID4+ICAgIGJvb3QgbW1jMC4xDQo+ID4+DQo+ID4+IGFuZCBiYXJlYm94IHdpbGwgYXV0
-b21hdGljYWxseSBtb3VudCB0aGUgcGFydGl0aW9uLCBsb29rIGZvciBhIGJvb3RzcGVjIGZpbGUg
-dW5kZXIgL2xvYWRlci9lbnRyaWVzIGFuZCBhc3NlbWJsZSB0aGUgcmVxdWlyZWQgYm9vdCBvcHRp
-b25zIGFuZCBrZXJuZWwgY29tbWFuZCBsaW5lIGF1dG9tYXRpY2FsbHkuDQo+ID4+DQo+ID4+PiBX
-aGF0IHRlbGxzIGJhcmVib3ggdG8gbW91bnQgZHVyaW5nIGJvb3QgbW1jIGFuZCBtbWMwLjEgaW5z
-dGVhZCBvZg0KPiA+Pj4gbW1jMC4wIGFuZCBtbWMwLjE/DQo+ID4+DQo+ID4+IElzIHRoZXJlIGFu
-eSBjdXN0b20gYXV0b21vdW50IHVuaXQgbG9jYXRlZCBpbiB5b3UgYnVpbHQtaW4gZW52IHByb2Jh
-Ymx5Pw0KPiA+Pg0KPiA+Pg0KPiA+PiBCZXN0IHJlZ2FyZHMsIEVucmljbw0KPiA+Pg0KX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5n
-IGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQu
-b3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On 02/26/2020 03:28 PM, Ahmad Fatoum wrote:
+> Hello,
+>
+> On 2/26/20 12:57 PM, gianluca wrote:
+>> Hello,
+>> I was wondering if it possible to program Barebox (2020.01 or later) as first and second stage bootloader using the STM32 Programmer CLI tool.
+>
+> FSBL is not supported at the moment. We use TF-A for that.
+
+OK, I suppose that.
+
+>
+>> I have the stm32mp157 evk-dk2 and I would like to have a working bootloader (running from SDRAM) via USB programming.
+>>
+>> I do not know how the OTP Fuses are set for trusted boot or simple SPL.
+>
+> Not sure how this relates to booting over USB? You shouldn't need any
+> fuses burnt (but you can probably burn some to stop fallback to DFU)
+>
+
+I was trying to say that I didn't know how the fallback is managed DFU 
+via serial, usb or whatever or it is managed by some OTP fuses.
+
+
+>> I suppose they are TF-A for first stage bootloader and SPL for the second one.
+>>
+>> The images built by Barebox (start_stm32mp157c_dk2.pblb[.stm32] and barebox-stm32mp157c-dk2.img) are suitable to be used as first stage bootloader running from internal SRAM and the .img as the second stage bootloader running from external SDRAM DDR???
+>
+> No, they aren't. The current barebox implementation doesn't set up SDRAM and doesn't install
+> a secure monitor.
+>
+
+So I need a simple implementation of a SDRAM setup, a secure monitor 
+(TF-A). What do you are using at the moment?
+
+My goals are to setup the SDRAM and the secure monitor via USB (with DFU 
+STM32 Cube Programmer), then loading via usb (using the same STM32 Cube 
+Programmer) the barebox-stm32mp157c-dk2.img in the external SDRAM addresses.
+
+When barebox is done, it will download from a TFTP server the production 
+stuff (SDRAM setup, secure monitor, 
+barebox-stm32mp157c-dk2-PRODUCTION.img) and write those stuff into eMMC 
+partitions.
+
+> USB on the STM32MP1 is not yet complete. I posted some basic patches for the PHY, but we still
+> need host USB driver adjustments and a gadget driver for the DWC2.
+>
+
+Using the above procedure the USB support is given only by ROM Code 
+written by ST, not by Barebox.
+
+>> Is there somebody who is working with STM32 Cube Programmer or DFU-Utils to obtain this boot??
+>
+> I don't think so. We will want to have a solution for this eventually though. Probably some
+> wrapper script that uses DFU to talk to BootROM, then to vendor TF-A, then to barebox.
+>
+
+Having this wrapper script will be great. I will be grateful for the 
+rest of my (working) life. ;-P
+
+
+> As I understood, that's what the STM32CubeProgrammer is doing and it's shipped with
+> a FSBL and SSBL already for bootstrapping a system. Have you tried using that to
+> flash barebox?
+>
+
+Not really. I will check asap. In that way I could run barebox from a 
+bootstrapped system using STM32CubeProgrammer FSBL and SSBL and hooking 
+at the procedure as explained above.
+
+
+Thanks a lot
+
+Gianluca Renzi
+-- 
+Eurek s.r.l.                          |
+Electronic Engineering                | http://www.eurek.it
+via Celletta 8/B, 40026 Imola, Italy  | Phone: +39-(0)542-609120
+p.iva 00690621206 - c.f. 04020030377  | Fax:   +39-(0)542-609212
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
