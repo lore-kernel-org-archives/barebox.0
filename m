@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j6qyt-0007EM-OS
- for barebox@lists.infradead.org; Wed, 26 Feb 2020 07:19:45 +0000
-Date: Wed, 26 Feb 2020 08:19:39 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200226071939.GV3335@pengutronix.de>
-References: <CACu-5+2Hndx7O390+W_hp4EMqeOYNb2TNUN_VLe3AgR56_cZzA@mail.gmail.com>
+ id 1j6uEo-00087J-IA
+ for barebox@lists.infradead.org; Wed, 26 Feb 2020 10:48:24 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 26 Feb 2020 11:48:06 +0100
+Message-Id: <20200226104806.9498-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20200225165731.12419-2-a.fatoum@pengutronix.de>
+References: <20200225165731.12419-2-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CACu-5+2Hndx7O390+W_hp4EMqeOYNb2TNUN_VLe3AgR56_cZzA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,40 +17,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Bareox mv88e6xxx switch driver not working properly
-To: =?utf-8?B?5pu554Wc?= <cao88yu@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] fixup! USB: MUSB: defer driver probes where necessary
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-SGksCgpPbiBNb24sIEZlYiAyNCwgMjAyMCBhdCAxMDozNzoxMlBNICswODAwLCDmm7nnhZwgd3Jv
-dGU6Cj4gSGVsbG8sCj4gICBJIGhhdmUgYW4gYXJtYWRhIDM3MCBib3gsIGFuZCBpdCdzIHVzaW5n
-IHRoZSBtYXJ2ZWxsIDg4ZTYxNzFyCj4gc3dpdGNoLCBJJ20gdHJ5aW5nICB0byBwb3J0IGJhcmVi
-b3ggdG8gdGhpcyBib3guCj4gICBCdXQgdGhlIG12ODhlNnh4eCBkcml2ZXIgbm90IHdvcmtpbmcg
-cHJvcGVybHkgb24gbXkgYm94LCBiZWxvdyBpcwo+IHRoZSBtaWl0b29sIG91dHB1dDoKPiAKPiAg
-ICAgYmFyZWJveEBNYXJ2ZWxsIEFybWFkYSAzNzAvWFA6LyBtaWl0b29sCj4gICAgIG1kaW8wLXBo
-eTE1OiBmMTA3MjAwNC5tZGlvQDcyMDA0Lm9mOiBwb3dlcmRvd24sIG5vIGxpbmsKPiAgICAgbWRp
-bzAtcGh5MTY6IGYxMDcyMDA0Lm1kaW9ANzIwMDQub2Y6IDEwIE1iaXQsIGhhbGYgZHVwbGV4LCBu
-byBsaW5rCj4gICAgIG1kaW8xLXBoeTAwOiBmMTA3MjAwNC5tZGlvQDcyMDA0OnN3aXRjaDBAMC5v
-ZjogcG93ZXJkb3duLCBubyBsaW5rCj4gICAgIG1kaW8xLXBoeTAxOiBmMTA3MjAwNC5tZGlvQDcy
-MDA0OnN3aXRjaDBAMC5vZjogcG93ZXJkb3duLCBubyBsaW5rCj4gICAgIG1kaW8xLXBoeTAyOiBm
-MTA3MjAwNC5tZGlvQDcyMDA0OnN3aXRjaDBAMC5vZjogcG93ZXJkb3duLCBubyBsaW5rCj4gICAg
-IG1kaW8xLXBoeTAzOiBmMTA3MjAwNC5tZGlvQDcyMDA0OnN3aXRjaDBAMC5vZjogcG93ZXJkb3du
-LCBubyBsaW5rCj4gICAgIG1kaW8xLXBoeTA0OiBmMTA3MjAwNC5tZGlvQDcyMDA0OnN3aXRjaDBA
-MC5vZjogcG93ZXJkb3duLCBubyBsaW5rCgpUcnkgYSBmZXcgbW9yZSAtdiBvcHRpb25zIHRvIG1p
-aXRvb2wsIGl0IHdpbGwgdGhlbiBwcmludCB0aGUgcmVnaXN0ZXIKZHVtcHMuIFlvdSBjb3VsZCBj
-b21wYXJlIHRoZW0gdG8gYSB3b3JraW5nIExpbnV4LiBPdGhlcndpc2UgaXQgYWxzbwptaWdodCBi
-ZSB0aGUgaW50ZXJhY3Rpb24gb2YgdGhlIGV0aGVybmV0IGRyaXZlciB3aXRoIHRoZSBzd2l0Y2gg
-ZHJpdmVyLgpUaGUgYmFyZWJveCB2ZXJzaW9uIG9mIHRoZSBzd2l0Y2ggZHJpdmVyIGlzIHZlcnkg
-YmFzaWMsIGl0IG1pZ2h0IHdlbGwgYmUKdGhhdCB0aGVyZSdzIHNvbWV0aGluZyBtaXNzaW5nLgpT
-b3JyeSwgaXQncyBoYXJkIHRvIGJlIG1vcmUgc3BlY2lmaWMgaGVyZS4uLgoKU2FzY2hhCgoKLS0g
-ClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICB8ClN0ZXVlcndhbGRlciBTdHIuIDIxICAgICAgICAgICAgICAgICAg
-ICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8CjMxMTM3IEhpbGRlc2hlaW0sIEdl
-cm1hbnkgICAgICAgICAgICAgICAgICB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFt
-dHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEy
-MS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcK
-aHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+The NULL assignment is a left over from when it was a global variable.
+am_usbphy is local now and is just going out of scope, so need to NULL
+it.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/usb/musb/phy-am335x.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/usb/musb/phy-am335x.c b/drivers/usb/musb/phy-am335x.c
+index 7dda8caf2a3c..f2e870d7ee61 100644
+--- a/drivers/usb/musb/phy-am335x.c
++++ b/drivers/usb/musb/phy-am335x.c
+@@ -60,7 +60,6 @@ err_release:
+ 	release_region(iores);
+ err_free:
+ 	free(am_usbphy);
+-	am_usbphy = NULL;
+ 
+ 	return ret;
+ };
+-- 
+2.25.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
