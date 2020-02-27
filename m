@@ -1,11 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mickerik.phytec.de ([195.145.39.210])
- by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j7F8H-0006dV-5C
- for barebox@lists.infradead.org; Thu, 27 Feb 2020 09:07:03 +0000
-From: Yunus Bas <y.bas@phytec.de>
-Date: Thu, 27 Feb 2020 10:06:55 +0100
-Message-Id: <1582794415-151399-1-git-send-email-y.bas@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1j7Lgl-0004FN-T6
+ for barebox@lists.infradead.org; Thu, 27 Feb 2020 16:07:05 +0000
+Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
+ helo=dude02.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <l.stach@pengutronix.de>) id 1j7Lgi-0000Oc-Mb
+ for barebox@lists.infradead.org; Thu, 27 Feb 2020 17:07:00 +0100
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Thu, 27 Feb 2020 17:07:00 +0100
+Message-Id: <20200227160700.28904-1-l.stach@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,71 +20,72 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: dts: phycore-imx6: change mtd-partition names for
- compatibility with kernel
+Subject: [PATCH] ARM64: add support for booting a FIT image
 To: barebox@lists.infradead.org
 
-The NVMEM-subsystem in newer kernels does not allow identical partition
-names on different subdevices. According to the recommendation, we have to
-rename the partition names to be compatible with actual kernel
-versions.
+Add the image type handler to the ARM64 boot code. The only difference
+in the boot handling is that we need to look at the FIT loaded OS image
+header to get the image load and text offsets, as the os_header is the
+FIT header, not the kernel header.
 
-To minimize the problems which could possibly arise, the nand device is
-not changed. For all other devices, we prepend the device name to the
-partitions.
-
-Signed-off-by: Yunus Bas <y.bas@phytec.de>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/arm/lib64/armlinux.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-index 69f252b..50cf852 100644
---- a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-+++ b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-@@ -29,7 +29,7 @@
+diff --git a/arch/arm/lib64/armlinux.c b/arch/arm/lib64/armlinux.c
+index 31bd987f10db..bcff770793e7 100644
+--- a/arch/arm/lib64/armlinux.c
++++ b/arch/arm/lib64/armlinux.c
+@@ -33,6 +33,8 @@
  
- 		environment-spinor {
- 			compatible = "barebox,environment";
--			device-path = &m25p80, "partname:barebox-environment";
-+			device-path = &m25p80, "partname:nor.barebox-environment";
- 			status = "disabled";
- 		};
- 	};
-@@ -86,22 +86,22 @@
- 		#size-cells = <1>;
+ static int do_bootm_linux(struct image_data *data)
+ {
++	const void *kernel_header =
++			data->os_fit ? data->fit_kernel : data->os_header;
+ 	void (*fn)(unsigned long dtb, unsigned long x1, unsigned long x2,
+ 		       unsigned long x3);
+ 	resource_size_t start, end;
+@@ -41,8 +43,8 @@ static int do_bootm_linux(struct image_data *data)
+ 	int ret;
+ 	void *fdt;
  
- 		partition@0 {
--			label = "barebox";
-+			label = "nor.barebox";
- 			reg = <0x0 0x100000>;
- 		};
+-	text_offset = le64_to_cpup(data->os_header + 8);
+-	image_size = le64_to_cpup(data->os_header + 16);
++	text_offset = le64_to_cpup(kernel_header + 8);
++	image_size = le64_to_cpup(kernel_header+ 16);
  
- 		partition@100000 {
--			label = "barebox-environment";
-+			label = "nor.barebox-environment";
- 			reg = <0x100000 0x20000>;
- 		};
+ 	ret = memory_bank_first_find_space(&start, &end);
+ 	if (ret)
+@@ -101,6 +103,12 @@ static struct image_handler aarch64_linux_handler = {
+         .filetype = filetype_arm64_linux_image,
+ };
  
- 		partition@120000 {
--			label = "oftree";
-+			label = "nor.oftree";
- 			reg = <0x120000 0x20000>;
- 		};
++static struct image_handler aarch64_fit_handler = {
++	.name = "FIT image",
++	.bootm = do_bootm_linux,
++	.filetype = filetype_oftree,
++};
++
+ static int do_bootm_barebox(struct image_data *data)
+ {
+ 	void (*fn)(unsigned long x0, unsigned long x1, unsigned long x2,
+@@ -144,6 +152,9 @@ static int aarch64_register_image_handler(void)
+ 	register_image_handler(&aarch64_linux_handler);
+ 	register_image_handler(&aarch64_barebox_handler);
  
- 		partition@140000 {
--			label = "kernel";
-+			label = "nor.kernel";
- 			reg = <0x140000 0x0>;
- 		};
- 	};
++	if (IS_ENABLED(CONFIG_FITIMAGE))
++		register_image_handler(&aarch64_fit_handler);
++
+ 	return 0;
+ }
+ late_initcall(aarch64_register_image_handler);
 -- 
-2.7.4
+2.20.1
 
 
 _______________________________________________
