@@ -1,21 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf1-x144.google.com ([2a00:1450:4864:20::144])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j7Hhq-0005RY-G5
- for barebox@lists.infradead.org; Thu, 27 Feb 2020 11:51:56 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-References: <4f2b01e0-ad01-d130-5c8e-9c3acac58770@eurek.it>
- <122509ae-f030-4f8a-0cae-eb2c2e31dbe9@pengutronix.de>
- <88405b89-494c-f510-ecb4-810f8b6e0b91@eurek.it>
- <5d328910-2009-b83f-014a-75a4847ea235@pengutronix.de>
- <76d54e08-0051-3069-015c-727a6bd9a38f@eurek.it>
- <4e386cf3-69f3-fd0a-dfae-2827cc2b1c5e@pengutronix.de>
- <2b5d2afe-c71e-34b9-efa5-57aaa5f28445@eurek.it>
-Message-ID: <8da838d3-ac20-adcb-74c0-e0f921c4a083@pengutronix.de>
-Date: Thu, 27 Feb 2020 12:51:50 +0100
-MIME-Version: 1.0
-In-Reply-To: <2b5d2afe-c71e-34b9-efa5-57aaa5f28445@eurek.it>
-Content-Language: en-US
+ id 1j7YLz-0005Yy-Po
+ for barebox@lists.infradead.org; Fri, 28 Feb 2020 05:38:29 +0000
+Received: by mail-lf1-x144.google.com with SMTP id b15so1188513lfc.4
+ for <barebox@lists.infradead.org>; Thu, 27 Feb 2020 21:38:25 -0800 (PST)
+Date: Fri, 28 Feb 2020 08:38:21 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20200228083821.8c11f920b8f763e711088223@gmail.com>
+In-Reply-To: <f6e8e0b8-4f7c-e4ae-7317-09cc1500343b@pengutronix.de>
+References: <20200109072855.14154-1-antonynpavlov@gmail.com>
+ <20200109072855.14154-5-antonynpavlov@gmail.com>
+ <f6e8e0b8-4f7c-e4ae-7317-09cc1500343b@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,91 +21,179 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Barebox as first and second stage bootloader
-To: gianluca <gianlucarenzi@eurek.it>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [RFC 4/5] net: rtl8169: make it work on big-endian system
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>
 
-SGVsbG8sCgpwbGVhc2Uga2VlcCB0aGUgYmFyZWJveCBtYWlsaW5nIGxpc3QgaW4gQ0MuCgpPbiAy
-LzI3LzIwIDEyOjQ0IFBNLCBnaWFubHVjYSB3cm90ZToKPj4gU1QncyBURi1BIGZvcmsgZG9lcy4g
-VXBzdHJlYW0gVEYtQSBkb2Vzbid0LiBUaGUgUHJvZ3JhbW1lciBzb2Z0d2FyZSB1c2VzIHZlbmRv
-ciBURi1BLgo+Pgo+IAo+IEkndmUgZm91bmQgdGhlIGZvcmtlZCBTVCdzIFRGLUEgcmVwbzoKPiAK
-PiBodHRwczovL2dpdGh1Yi5jb20vU1RNaWNyb2VsZWN0cm9uaWNzL2FybS10cnVzdGVkLWZpcm13
-YXJlCj4gCj4gaXMgaXQgcmlnaHQ/CgpZZXMuIEkgaGF2ZSBvbmx5IHRyaWVkIHVwc3RyZWFtIFRG
-LUEgdGhvdWdoLgoKPiBJIHRyaWVkIHRvIGNvbXBpbGUgZm9yIFNUTTMyTVAxIGJ1dCBpdCBnaXZl
-cyBtZSBhIGxvdCBvZiBpc3N1ZXMgcmVnYXJkaW5nIHRoZSBjb21waWxlciB0b29sY2hhaW4uCj4g
-Cj4gSSBoYXZlIHVzZWQ6Cj4gCj4+IFVzaW5nIGJ1aWx0LWluIHNwZWNzLgo+PiBDT0xMRUNUX0dD
-Qz1hcm0tbm9uZS1lYWJpLWdjYwo+PiBDT0xMRUNUX0xUT19XUkFQUEVSPS9ob21lL2dpYW5sdWNh
-L2djYy1hcm0tbm9uZS1lYWJpLTctMjAxOC1xMi11cGRhdGUvYmluLy4uL2xpYi9nY2MvYXJtLW5v
-bmUtZWFiaS83LjMuMS9sdG8td3JhcHBlcgo+PiBUYXJnZXQ6IGFybS1ub25lLWVhYmkKPj4gQ29u
-ZmlndXJlZCB3aXRoOiAvdG1wL2plbmtpbnMvamVua2lucy1HQ0MtNy1idWlsZF90b29sY2hhaW5f
-ZG9ja2VyLTc3NV8yMDE4MDYyMl8xNTI5Njg3NDU2L3NyYy9nY2MvY29uZmlndXJlIC0tdGFyZ2V0
-PWFybS1ub25lLWVhYmkgLS1wcmVmaXg9L3RtcC9qZW5raW5zL2plbmtpbnMtR0NDLTctYnVpbGRf
-dG9vbGNoYWluX2RvY2tlci03NzVfMjAxODA2MjJfMTUyOTY4NzQ1Ni9pbnN0YWxsLW5hdGl2ZSAt
-LWxpYmV4ZWNkaXI9L3RtcC9qZW5raW5zL2plbmtpbnMtR0NDLTctYnVpbGRfdG9vbGNoYWluX2Rv
-Y2tlci03NzVfMjAxODA2MjJfMTUyOTY4NzQ1Ni9pbnN0YWxsLW5hdGl2ZS9saWIgLS1pbmZvZGly
-PS90bXAvamVua2lucy9qZW5raW5zLUdDQy03LWJ1aWxkX3Rvb2xjaGFpbl9kb2NrZXItNzc1XzIw
-MTgwNjIyXzE1Mjk2ODc0NTYvaW5zdGFsbC1uYXRpdmUvc2hhcmUvZG9jL2djYy1hcm0tbm9uZS1l
-YWJpL2luZm8gLS1tYW5kaXI9L3RtcC9qZW5raW5zL2plbmtpbnMtR0NDLTctYnVpbGRfdG9vbGNo
-YWluX2RvY2tlci03NzVfMjAxODA2MjJfMTUyOTY4NzQ1Ni9pbnN0YWxsLW5hdGl2ZS9zaGFyZS9k
-b2MvZ2NjLWFybS1ub25lLWVhYmkvbWFuIC0taHRtbGRpcj0vdG1wL2plbmtpbnMvamVua2lucy1H
-Q0MtNy1idWlsZF90b29sY2hhaW5fZG9ja2VyLTc3NV8yMDE4MDYyMl8xNTI5Njg3NDU2L2luc3Rh
-bGwtbmF0aXZlL3NoYXJlL2RvYy9nY2MtYXJtLW5vbmUtZWFiaS9odG1sIC0tcGRmZGlyPS90bXAv
-amVua2lucy9qZW5raW5zLUdDQy03LWJ1aWxkX3Rvb2xjaGFpbl9kb2NrZXItNzc1XzIwMTgwNjIy
-XzE1Mjk2ODc0NTYvaW5zdGFsbC1uYXRpdmUvc2hhcmUvZG9jL2djYy1hcm0tbm9uZS1lYWJpL3Bk
-ZiAtLWVuYWJsZS1sYW5ndWFnZXM9YyxjKysgLS1lbmFibGUtcGx1Z2lucyAtLWRpc2FibGUtZGVj
-aW1hbC1mbG9hdCAtLWRpc2FibGUtbGliZmZpIC0tZGlzYWJsZS1saWJnb21wIC0tZGlzYWJsZS1s
-aWJtdWRmbGFwCj4+IC0tZGlzYWJsZS1saWJxdWFkbWF0aCAtLWRpc2FibGUtbGlic3NwIC0tZGlz
-YWJsZS1saWJzdGRjeHgtcGNoIC0tZGlzYWJsZS1ubHMgLS1kaXNhYmxlLXNoYXJlZCAtLWRpc2Fi
-bGUtdGhyZWFkcyAtLWRpc2FibGUtdGxzIC0td2l0aC1nbnUtYXMgLS13aXRoLWdudS1sZCAtLXdp
-dGgtbmV3bGliIC0td2l0aC1oZWFkZXJzPXllcyAtLXdpdGgtcHl0aG9uLWRpcj1zaGFyZS9nY2Mt
-YXJtLW5vbmUtZWFiaSAtLXdpdGgtc3lzcm9vdD0vdG1wL2plbmtpbnMvamVua2lucy1HQ0MtNy1i
-dWlsZF90b29sY2hhaW5fZG9ja2VyLTc3NV8yMDE4MDYyMl8xNTI5Njg3NDU2L2luc3RhbGwtbmF0
-aXZlL2FybS1ub25lLWVhYmkgLS1idWlsZD14ODZfNjQtbGludXgtZ251IC0taG9zdD14ODZfNjQt
-bGludXgtZ251IC0td2l0aC1nbXA9L3RtcC9qZW5raW5zL2plbmtpbnMtR0NDLTctYnVpbGRfdG9v
-bGNoYWluX2RvY2tlci03NzVfMjAxODA2MjJfMTUyOTY4NzQ1Ni9idWlsZC1uYXRpdmUvaG9zdC1s
-aWJzL3VzciAtLXdpdGgtbXBmcj0vdG1wL2plbmtpbnMvamVua2lucy1HQ0MtNy1idWlsZF90b29s
-Y2hhaW5fZG9ja2VyLTc3NV8yMDE4MDYyMl8xNTI5Njg3NDU2L2J1aWxkLW5hdGl2ZS9ob3N0LWxp
-YnMvdXNyIC0td2l0aC1tcGM9L3RtcC9qZW5raW5zL2plbmtpbnMtR0NDLTctYnVpbGRfdG9vbGNo
-YWluX2RvY2tlci03NzVfMjAxODA2MjJfMTUyOTY4NzQ1Ni9idWlsZC1uYXRpdmUvaG9zdC1saWJz
-L3VzciAtLXdpdGgtaXNsPS90bXAvamVua2lucy9qZW5raW5zLUdDQy03LWJ1aWxkX3Rvb2xjaGFp
-bl9kb2NrZXItNzc1XzIwMTgwNjIyXzE1Mjk2ODc0NTYvYnVpbGQtbmF0aXZlL2hvc3QtbGlicy91
-c3IgLS13aXRoLWxpYmVsZj0vdG1wL2plbmtpbnMvamVua2lucy1HQ0MtNy1idWlsZF90b29sY2hh
-aW5fZG9ja2VyLTc3NV8yMDE4MDYyMl8xNTI5Njg3NDU2L2J1aWxkLW5hdGl2ZS9ob3N0LWxpYnMv
-dXNyCj4+IC0td2l0aC1ob3N0LWxpYnN0ZGN4eD0nLXN0YXRpYy1saWJnY2MgLVdsLC1Cc3RhdGlj
-LC1sc3RkYysrLC1CZHluYW1pYyAtbG0nIC0td2l0aC1wa2d2ZXJzaW9uPSdHTlUgVG9vbHMgZm9y
-IEFybSBFbWJlZGRlZCBQcm9jZXNzb3JzIDctMjAxOC1xMi11cGRhdGUnIC0td2l0aC1tdWx0aWxp
-Yi1saXN0PXJtcHJvZmlsZQo+PiBUaHJlYWQgbW9kZWw6IHNpbmdsZQo+PiBnY2MgdmVyc2lvbiA3
-LjMuMSAyMDE4MDYyMiAocmVsZWFzZSkgW0FSTS9lbWJlZGRlZC03LWJyYW5jaCByZXZpc2lvbiAy
-NjE5MDddIChHTlUgVG9vbHMgZm9yIEFybSBFbWJlZGRlZCBQcm9jZXNzb3JzIDctMjAxOC1xMi11
-cGRhdGUpCj4gCj4gYnV0IHdoZW4gdHJ5aW5nIGNvbXBpbGluZyBpdCBnaXZlcyBtZSB0aGlzIGVy
-cm9yOgo+IAo+PiBTVE0zMk1QX0VNTUM9MSBDUk9TU19DT01QSUxFPWFybS1ub25lLWVhYmktIG1h
-a2UgUExBVD1zdG0zMm1wMQo+PiDCoCBDQ8KgwqDCoMKgwqAgbGliL2xpYmZkdC9mZHQuYwo+PiBh
-cm0tbm9uZS1lYWJpLWdjYzogZXJyb3I6IHVucmVjb2duaXplZCBjb21tYW5kIGxpbmUgb3B0aW9u
-ICctbWdlbmVyYWwtcmVncy1vbmx5Jwo+PiBhcm0tbm9uZS1lYWJpLWdjYzogZXJyb3I6IHVucmVj
-b2duaXplZCBjb21tYW5kIGxpbmUgb3B0aW9uICctbXN0cmljdC1hbGlnbic7IGRpZCB5b3UgbWVh
-biAnLVdzdHJpY3QtYWxpYXNpbmcnPwo+PiBsaWIvbGliZmR0L2xpYmZkdC5tazoxOTogcmVjaXBl
-IGZvciB0YXJnZXQgJ2J1aWxkL3N0bTMybXAxL3JlbGVhc2UvbGliZmR0L2ZkdC5vJyBmYWlsZWQK
-Pj4gbWFrZTogKioqIFtidWlsZC9zdG0zMm1wMS9yZWxlYXNlL2xpYmZkdC9mZHQub10gRXJyb3Ig
-MQo+IAo+IFdoYXQgY29tcGlsZXIgYXJlIHlvdSB1c2luZyB0byBjb21waWxlIFRGLUE/Pz8KCk9T
-RUxBUy5Ub29sY2hhaW4tMjAxOS4wOS4xCgpCdXQgSSB0aGluayB5b3UgYXJlIGNhbGxpbmcgaXQg
-d2l0aCB0aGUgd3JvbmcgcGFyYW1ldGVycywgeW91IG5lZWQ6CgptYWtlIEFSQ0g9YWFyY2gzMiBB
-Uk1fQVJDSF9NQUpPUj03IEFBUkNIMzJfU1A9c3BfbWluIERFQlVHPTEgU1RNMzJNUF9FTU1DPTEg
-XAogICAgICAgIERUQl9GSUxFX05BTUU9c3RtMzJtcDE1N2MtZGsyLmR0YiBcCiAgICAgICAgQ1JP
-U1NfQ09NUElMRT0ke0NST1NTX0NPTVBJTEV9IFwKICAgICAgICBQTEFUPXN0bTMybXAKCkl0J3Mg
-ZGVzY3JpYmVkIGluIHRoZSBURi1BIHBsYXRmb3JtIGRvY3VtZW50YXRpb24uCllvdSBjYW4gYWxz
-byBjaGVjayBvdXQgdGhlIHB0eGRpc3QgcnVsZSBmb3IgYnVpbGRpbmcgaXQ6Cmh0dHBzOi8vd3d3
-Lm1haWwtYXJjaGl2ZS5jb20vcHR4ZGlzdEBwZW5ndXRyb25peC5kZS9tc2cxNTc4Ny5odG1sCgpD
-aGVlcnMsCkFobWFkCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogCj4gUmVnYXJkcywKPiBHaWFubHVjYQoKCi0t
-IApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgfApTdGV1ZXJ3YWxkZXIgU3RyLiAyMSAgICAgICAgICAgICAgICAg
-ICAgICAgfCBodHRwczovL3d3dy5wZW5ndXRyb25peC5kZS8gfAozMTEzNyBIaWxkZXNoZWltLCBH
-ZXJtYW55ICAgICAgICAgICAgICAgICAgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApB
-bXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUx
-MjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
-Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Tue, 4 Feb 2020 15:03:53 +0100
+Oleksij Rempel <o.rempel@pengutronix.de> wrote:
+
+> Hi Antony,
+> =
+
+> do you wont to resent this patches as not RFC?
+
+It looks like some additional testing is necessary.
+
+There is an alignment issue on MIPS.
+We can't just pass cache line size unaligned address to dma_sync_single_for=
+_device().
+Some workaround is necessary, e.g.
+
+--- a/drivers/net/rtl8169.c
++++ b/drivers/net/rtl8169.c
+@@ -220,10 +220,10 @@ static void rtl8169_init_ring(struct rtl8169_priv *pr=
+iv)
+ =
+
+        priv->tx_desc =3D dma_alloc_coherent(NUM_TX_DESC *
+                                sizeof(struct bufdesc), &priv->tx_desc_phys=
+);
+-       priv->tx_buf =3D malloc(NUM_TX_DESC * PKT_BUF_SIZE);
++       priv->tx_buf =3D dma_alloc_coherent(NUM_TX_DESC * PKT_BUF_SIZE, DMA=
+_ADDRESS_BROKEN);
+        priv->rx_desc =3D dma_alloc_coherent(NUM_RX_DESC *
+                                sizeof(struct bufdesc), &priv->rx_desc_phys=
+);
+-       priv->rx_buf =3D malloc(NUM_RX_DESC * PKT_BUF_SIZE);
++       priv->rx_buf =3D dma_alloc_coherent(NUM_RX_DESC * PKT_BUF_SIZE, DMA=
+_ADDRESS_BROKEN);
+        dma_sync_single_for_device((unsigned long)priv->rx_buf,
+                                   NUM_RX_DESC * PKT_BUF_SIZE, DMA_FROM_DEV=
+ICE);
+
+> =
+
+> On 09.01.20 08:28, Antony Pavlov wrote:
+> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> > ---
+> >   drivers/net/rtl8169.c | 34 +++++++++++++++++-----------------
+> >   1 file changed, 17 insertions(+), 17 deletions(-)
+> > =
+
+> > diff --git a/drivers/net/rtl8169.c b/drivers/net/rtl8169.c
+> > index 80997dc89f..3762cb6354 100644
+> > --- a/drivers/net/rtl8169.c
+> > +++ b/drivers/net/rtl8169.c
+> > @@ -230,13 +230,13 @@ static void rtl8169_init_ring(struct rtl8169_priv=
+ *priv)
+> >   	for (i =3D 0; i < NUM_RX_DESC; i++) {
+> >   		if (i =3D=3D (NUM_RX_DESC - 1))
+> >   			priv->rx_desc[i].status =3D
+> > -				BD_STAT_OWN | BD_STAT_EOR | PKT_BUF_SIZE;
+> > +				cpu_to_le32(BD_STAT_OWN | BD_STAT_EOR | PKT_BUF_SIZE);
+> >   		else
+> >   			priv->rx_desc[i].status =3D
+> > -				BD_STAT_OWN | PKT_BUF_SIZE;
+> > +				cpu_to_le32(BD_STAT_OWN | PKT_BUF_SIZE);
+> >   =
+
+> >   		priv->rx_desc[i].buf_addr =3D
+> > -				virt_to_phys(priv->rx_buf + i * PKT_BUF_SIZE);
+> > +				cpu_to_le32(virt_to_phys(priv->rx_buf + i * PKT_BUF_SIZE));
+> >   	}
+> >   }
+> >   =
+
+> > @@ -358,21 +358,21 @@ static int rtl8169_eth_send(struct eth_device *ed=
+ev, void *packet,
+> >   =
+
+> >   	priv->tx_desc[entry].buf_Haddr =3D 0;
+> >   	priv->tx_desc[entry].buf_addr =3D
+> > -		virt_to_phys(priv->tx_buf + entry * PKT_BUF_SIZE);
+> > +		cpu_to_le32(virt_to_phys(priv->tx_buf + entry * PKT_BUF_SIZE));
+> >   =
+
+> >   	if (entry !=3D (NUM_TX_DESC - 1)) {
+> >   		priv->tx_desc[entry].status =3D
+> > -			BD_STAT_OWN | BD_STAT_FS | BD_STAT_LS |
+> > -			((packet_length > ETH_ZLEN) ? packet_length : ETH_ZLEN);
+> > +			cpu_to_le32(BD_STAT_OWN | BD_STAT_FS | BD_STAT_LS |
+> > +			((packet_length > ETH_ZLEN) ? packet_length : ETH_ZLEN));
+> >   	} else {
+> >   		priv->tx_desc[entry].status =3D
+> > -			BD_STAT_OWN | BD_STAT_EOR | BD_STAT_FS | BD_STAT_LS |
+> > -			((packet_length > ETH_ZLEN) ? packet_length : ETH_ZLEN);
+> > +			cpu_to_le32(BD_STAT_OWN | BD_STAT_EOR | BD_STAT_FS | BD_STAT_LS |
+> > +			((packet_length > ETH_ZLEN) ? packet_length : ETH_ZLEN));
+> >   	}
+> >   =
+
+> >   	RTL_W8(priv, TxPoll, 0x40);
+> >   =
+
+> > -	while (priv->tx_desc[entry].status & BD_STAT_OWN)
+> > +	while (le32_to_cpu(priv->tx_desc[entry].status) & BD_STAT_OWN)
+> >   		;
+> >   =
+
+> >   	dma_sync_single_for_cpu((unsigned long)priv->tx_buf + entry *
+> > @@ -391,9 +391,9 @@ static int rtl8169_eth_rx(struct eth_device *edev)
+> >   =
+
+> >   	entry =3D priv->cur_rx % NUM_RX_DESC;
+> >   =
+
+> > -	if ((priv->rx_desc[entry].status & BD_STAT_OWN) =3D=3D 0) {
+> > -		if (!(priv->rx_desc[entry].status & BD_STAT_RX_RES)) {
+> > -			pkt_size =3D (priv->rx_desc[entry].status & 0x1fff) - 4;
+> > +	if ((le32_to_cpu(priv->rx_desc[entry].status) & BD_STAT_OWN) =3D=3D 0=
+) {
+> > +		if (!(le32_to_cpu(priv->rx_desc[entry].status) & BD_STAT_RX_RES)) {
+> > +			pkt_size =3D (le32_to_cpu(priv->rx_desc[entry].status) & 0x1fff) - =
+4;
+> >   =
+
+> >   			dma_sync_single_for_cpu((unsigned long)priv->rx_buf
+> >   						+ entry * PKT_BUF_SIZE,
+> > @@ -407,14 +407,14 @@ static int rtl8169_eth_rx(struct eth_device *edev)
+> >   						   pkt_size, DMA_FROM_DEVICE);
+> >   =
+
+> >   			if (entry =3D=3D NUM_RX_DESC - 1)
+> > -				priv->rx_desc[entry].status =3D BD_STAT_OWN |
+> > -					BD_STAT_EOR | PKT_BUF_SIZE;
+> > +				priv->rx_desc[entry].status =3D cpu_to_le32(BD_STAT_OWN |
+> > +					BD_STAT_EOR | PKT_BUF_SIZE);
+> >   			else
+> >   				priv->rx_desc[entry].status =3D
+> > -					BD_STAT_OWN | PKT_BUF_SIZE;
+> > +					cpu_to_le32(BD_STAT_OWN | PKT_BUF_SIZE);
+> >   			priv->rx_desc[entry].buf_addr =3D
+> > -				virt_to_phys(priv->rx_buf +
+> > -				             entry * PKT_BUF_SIZE);
+> > +				cpu_to_le32(virt_to_phys(priv->rx_buf +
+> > +				             entry * PKT_BUF_SIZE));
+> >   		} else {
+> >   			dev_err(&edev->dev, "rx error\n");
+> >   		}
+> > =
+
+> =
+
+> Kind regards,
+> Oleksij Rempel
+> =
+
+> -- =
+
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+
+-- =
+
+Best regards,
+=A0 Antony Pavlov
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
