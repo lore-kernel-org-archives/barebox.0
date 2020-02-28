@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mx1.emlix.com ([188.40.240.192])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j7cui-0007XT-ST
- for barebox@lists.infradead.org; Fri, 28 Feb 2020 10:30:39 +0000
-References: <20200225165731.12419-2-a.fatoum@pengutronix.de>
- <20200226104806.9498-1-a.fatoum@pengutronix.de>
- <CAGm1_kspuhkcK7sa4uOT0rUjgf-UG1Of13ukSkKXiF0KkEt=wg@mail.gmail.com>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <8b5269a8-6645-3fb0-4e5a-0ee633fd700f@pengutronix.de>
-Date: Fri, 28 Feb 2020 11:30:34 +0100
+ id 1j7mYt-0007SM-A4
+ for barebox@lists.infradead.org; Fri, 28 Feb 2020 20:48:45 +0000
+Received: from mailer.emlix.com (unknown [81.20.119.6])
+ (using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mx1.emlix.com (Postfix) with ESMTPS id 1EE285FA9A
+ for <barebox@lists.infradead.org>; Fri, 28 Feb 2020 21:48:39 +0100 (CET)
+From: =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
+Date: Fri, 28 Feb 2020 21:48:20 +0100
+Message-Id: <20200228204823.28415-1-dg@emlix.com>
 MIME-Version: 1.0
-In-Reply-To: <CAGm1_kspuhkcK7sa4uOT0rUjgf-UG1Of13ukSkKXiF0KkEt=wg@mail.gmail.com>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,60 +20,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fixup! USB: MUSB: defer driver probes where necessary
-To: Yegor Yefremov <yegorslists@googlemail.com>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: [PATCH 0/3] Support for fastboot over UDP
+To: barebox@lists.infradead.org
+Cc: =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-Hello Yegor,
-
-On 2/28/20 11:27 AM, Yegor Yefremov wrote:
-> Hi Ahmad,
-> 
-> On Wed, Feb 26, 2020 at 11:48 AM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
->>
->> The NULL assignment is a left over from when it was a global variable.
->> am_usbphy is local now and is just going out of scope, so need to NULL
->> it.
->>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->> ---
->>  drivers/usb/musb/phy-am335x.c | 1 -
->>  1 file changed, 1 deletion(-)
->>
->> diff --git a/drivers/usb/musb/phy-am335x.c b/drivers/usb/musb/phy-am335x.c
->> index 7dda8caf2a3c..f2e870d7ee61 100644
->> --- a/drivers/usb/musb/phy-am335x.c
->> +++ b/drivers/usb/musb/phy-am335x.c
->> @@ -60,7 +60,6 @@ err_release:
->>         release_region(iores);
->>  err_free:
->>         free(am_usbphy);
->> -       am_usbphy = NULL;
->>
->>         return ret;
->>  };
-> 
-> Do you want me to test this fixup as well or are you going to post v2?
-
-You don't need to. It's a line that the compiler optimizes out anyway.
-
-Cheers
-Ahmad
-
-> 
-> Yegor> 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhpcyBwYXRjaCBzZXJpZXMgYWRkcyBzdXBwb3J0IHRoZSBVRFAgdmFyaWFudCBvZiB0aGUgZmFz
+dGJvb3QgcHJvdG9jb2wKdGhhdCB3YXMgYWxyZWFkeSBzdXBwb3J0ZWQgaW4gaXRzIFVTQiBmb3Jt
+IGJ5IEJhcmVib3guIFRoZXJlIGlzIGFsc28gYQpUQ1AgdmFyaWFudCwgYnV0IEJhcmVib3ggb2J2
+aW91c2x5IGNhbid0IHN1cHBvcnQgdGhhdCBvbmUgd2l0aCBpdHMKY3VycmVudCBuZXR3b3JrIHN0
+YWNrLgoKVGhlIGZpcnN0IHBhdGNoIHNlcGFyYXRlcyBhbGwgZnVuY3Rpb25zIHRoYXQgY2FuIGJl
+IHJldXNlZCBpbnRvIGEgZmlsZSBpbgpjb21tb24vLiBBbHRob3VnaCBnaXQgZGlkbid0IHBpY2sg
+dXAgdGhlIHNpbWlsYXJpdGllcywgY29tbW9uL2Zhc3Rib290LmMKY2FuIGJlIGVhc2lseSBkaWZm
+ZWQgYWdhaW5zdCB0aGUgb2xkIGRyaXZlcnMvdXNiL2dhZGdldC9mX2Zhc3Rib290LmMsCmVzcGVj
+aWFsbHkgYWZ0ZXIgcmVwbGFjaW5nIHN0cnVjdCBmX2ZiIHdpdGggZmIgYW5kIHN0cnVjdCBmX2Zh
+c3Rib290IHdpdGgKc3RydWN0IGZhc3Rib290LgoKVGhlIGdsb2JhbC51c2JnYWRnZXQuZmFzdGJv
+b3RfbWF4X2Rvd25sb2FkX3NpemUgdmFyaWFibGUgaGFzIG5vdCBiZWVuCnJlbmFtZWQgYmVjYXVz
+ZSBzb21lb25lIG1pZ2h0IGV4cGVjdCBpdCB0byBoYXZlIHRoYXQgbmFtZS4gQnV0IEknbGwKaGFw
+cGlseSBkcm9wIHRoZSB1c2JnYWRnZXQgcGFydCBmcm9tIHRoZSBuYW1lIGlmIHlvdSBwcmVmZXIu
+CgpUaGUgZ2VuZXJpYyBLY29uZmlnIG9wdGlvbnMgaGF2ZSBiZWVuIHJlbmFtZWQuIFdlIGNvdWxk
+IGFkZCBvcHRpb25zCndpdGggdGhlIG9sZCBuYW1lIHRoYXQgc2VsZWN0IHRoZSBuZXcgb3B0aW9u
+cyB0byBtYWtlIHRoZSB0cmFuc2l0aW9uCmVhc2llci4KClRoZSBzZWNvbmQgcGF0Y2ggY29udGFp
+bnMgdGhlIGltcGxlbWVudGF0aW9uLiBUaGUgY29kZSB3YXMgaW5pdGlhbGx5CnRha2VuIGZyb20g
+VS1Cb290LCBidXQgaGFkIHRvIGJlIHJld3JpdHRlbiBoZWF2aWx5IHRvIGZpdCB0aGUgd2F5IHRo
+ZQpleGlzdGluZyBCYXJlYm94IGZhc3Rib290IGNvZGUgZXhlY3V0ZXMgY29tbWFuZHMgYW5kIHBy
+aW50cyBtZXNzYWdlcy4KQ29udHJhcnkgdG8gVS1Cb290IGl0IGRvZXMgbm90IHNlbmQga2VlcCBh
+bGl2ZSBtZXNzYWdlcyBldmVyeSAzMApzZWNvbmRzIGJlY2F1c2UgZXZlcnl0aGluZyBpcyBleGVj
+dXRlZCBmcm9tIGEgcG9sbGVyLiBUaGUgdGltZW91dCBvZgpHb29nbGUncyBmYXN0Ym9vdCB0b29s
+IGlzIDYwIHNlY29uZHMuCgpUaGUgdGhpcmQgcGF0Y2ggd2FzIG5lY2Vzc2FyeSB0byBhbGxvdyBu
+ZXR3b3JrIGludGVyZmFjZXMgdG8gYmUgYWN0aXZhdGVkCndpdGhvdXQgc2VuZGluZyBwYWNrZXRz
+LiBUaGUgZmFzdGJvb3QgY29kZSBzZW5kcyBwYWNrZXRzIG9ubHkgaW4gcmVwbHkgdG8KcmVjZWl2
+ZWQgcGFja2V0cy4KCkRhbmllbCBHbMO2Y2tuZXIgKDEpOgogIGZhc3Rib290IG5ldDogd29ya2Fy
+b3VuZCBmb3IgcmVjZWl2aW5nIGJlZm9yZSBzZW5kaW5nCgpFZG11bmQgSGVubmlnZXMgKDIpOgog
+IGZhc3Rib290OiBzcGxpdCBnZW5lcmljIGNvZGUgZnJvbSBVU0IgZ2FkZ2V0CiAgZmFzdGJvb3Qg
+bmV0OiBpbXBsZW1lbnQgZmFzdGJvb3Qgb3ZlciBVRFAKCiBjb21tb24vS2NvbmZpZyAgICAgICAg
+ICAgICAgICAgIHwgIDM1ICsrCiBjb21tb24vTWFrZWZpbGUgICAgICAgICAgICAgICAgIHwgICAx
+ICsKIGNvbW1vbi9mYXN0Ym9vdC5jICAgICAgICAgICAgICAgfCA5NTggKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKwogZHJpdmVycy91c2IvZ2FkZ2V0L0tjb25maWcgICAgICB8ICAgMyAr
+LQogZHJpdmVycy91c2IvZ2FkZ2V0L2ZfZmFzdGJvb3QuYyB8IDk2OCArKy0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLQogZHJpdmVycy91c2IvZ2FkZ2V0L211bHRpLmMgICAgICB8ICAgNSAr
+LQogaW5jbHVkZS9mYXN0Ym9vdC5oICAgICAgICAgICAgICB8ICA2NyArKysKIGluY2x1ZGUvZmFz
+dGJvb3RfbmV0LmggICAgICAgICAgfCAgMTIgKwogaW5jbHVkZS9uZXQuaCAgICAgICAgICAgICAg
+ICAgICB8ICAgMSArCiBpbmNsdWRlL3VzYi9mYXN0Ym9vdC5oICAgICAgICAgIHwgIDM0ICstCiBp
+bmNsdWRlL3VzYi9nYWRnZXQtbXVsdGkuaCAgICAgIHwgICAyICstCiBuZXQvS2NvbmZpZyAgICAg
+ICAgICAgICAgICAgICAgIHwgIDE3ICsKIG5ldC9NYWtlZmlsZSAgICAgICAgICAgICAgICAgICAg
+fCAgIDEgKwogbmV0L2V0aC5jICAgICAgICAgICAgICAgICAgICAgICB8ICAgMiArLQogbmV0L2Zh
+c3Rib290LmMgICAgICAgICAgICAgICAgICB8IDQzOCArKysrKysrKysrKysrKysKIDE1IGZpbGVz
+IGNoYW5nZWQsIDE1NzkgaW5zZXJ0aW9ucygrKSwgOTY1IGRlbGV0aW9ucygtKQogY3JlYXRlIG1v
+ZGUgMTAwNjQ0IGNvbW1vbi9mYXN0Ym9vdC5jCiBjcmVhdGUgbW9kZSAxMDA2NDQgaW5jbHVkZS9m
+YXN0Ym9vdC5oCiBjcmVhdGUgbW9kZSAxMDA2NDQgaW5jbHVkZS9mYXN0Ym9vdF9uZXQuaAogY3Jl
+YXRlIG1vZGUgMTAwNjQ0IG5ldC9mYXN0Ym9vdC5jCgotLSAKMi4xNy4xCgoKX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QK
+YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
+aWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
