@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-vs1-xe43.google.com ([2607:f8b0:4864:20::e43])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j7MUW-0004LQ-Pd
- for barebox@lists.infradead.org; Thu, 27 Feb 2020 16:58:30 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 27 Feb 2020 17:58:25 +0100
-Message-Id: <20200227165825.1624-3-a.fatoum@pengutronix.de>
-In-Reply-To: <20200227165825.1624-1-a.fatoum@pengutronix.de>
-References: <20200227165825.1624-1-a.fatoum@pengutronix.de>
+ id 1j7csA-00067w-BH
+ for barebox@lists.infradead.org; Fri, 28 Feb 2020 10:27:59 +0000
+Received: by mail-vs1-xe43.google.com with SMTP id c18so1605720vsq.7
+ for <barebox@lists.infradead.org>; Fri, 28 Feb 2020 02:27:57 -0800 (PST)
 MIME-Version: 1.0
+References: <20200225165731.12419-2-a.fatoum@pengutronix.de>
+ <20200226104806.9498-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20200226104806.9498-1-a.fatoum@pengutronix.de>
+From: Yegor Yefremov <yegorslists@googlemail.com>
+Date: Fri, 28 Feb 2020 11:27:21 +0100
+Message-ID: <CAGm1_kspuhkcK7sa4uOT0rUjgf-UG1Of13ukSkKXiF0KkEt=wg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,57 +24,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] Revert "block: Adjust cache sizes"
-To: barebox@lists.infradead.org
-Cc: Hubert Feurstein <h.feurstein@gmail.com>, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] fixup! USB: MUSB: defer driver probes where necessary
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox <barebox@lists.infradead.org>
 
-On 12/13/19 2:12 PM, Sascha Hauer wrote:
-> On Tue, Dec 10, 2019 at 03:44:52PM +0100, Hubert Feurstein wrote:
->> With v2015.06.0 the indicated progress of the copy command is very
->> smooth. Calling "cp -v /dev/zero /dev/mmc3.root" takes about 80
->> seconds for 256MB. But with v2019.12.0 the progress is very bumpy and
->> the copy takes about 280 seconds.
->>
->> I've tracked this down to this commit which destroys the performance:
->> "block: Adjust cache sizes" (b6fef20c1215c6ef0004f6af4a9c4b77af51dc43)
+Hi Ahmad,
+
+On Wed, Feb 26, 2020 at 11:48 AM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
 >
-> We could just revert this patch. I can't find any workload that gets
-> faster with b6fef20c1215. It's rather the other way round.
+> The NULL assignment is a left over from when it was a global variable.
+> am_usbphy is local now and is just going out of scope, so need to NULL
+> it.
+>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  drivers/usb/musb/phy-am335x.c | 1 -
+>  1 file changed, 1 deletion(-)
+>
+> diff --git a/drivers/usb/musb/phy-am335x.c b/drivers/usb/musb/phy-am335x.c
+> index 7dda8caf2a3c..f2e870d7ee61 100644
+> --- a/drivers/usb/musb/phy-am335x.c
+> +++ b/drivers/usb/musb/phy-am335x.c
+> @@ -60,7 +60,6 @@ err_release:
+>         release_region(iores);
+>  err_free:
+>         free(am_usbphy);
+> -       am_usbphy = NULL;
+>
+>         return ret;
+>  };
 
-Do this by reverting commit b6fef20c1215c6ef0004f6af4a9c4b77af51dc43.
+Do you want me to test this fixup as well or are you going to post v2?
 
-Reported-by: Hubert Feurstein <h.feurstein@gmail.com>
-Suggested-by: Sascha Hauer <s.hauer@pengutronix.de>
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- common/block.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/common/block.c b/common/block.c
-index 8b43c3c83ae3..02be80d7ccf3 100644
---- a/common/block.c
-+++ b/common/block.c
-@@ -36,7 +36,7 @@ struct chunk {
- 	struct list_head list;
- };
- 
--#define BUFSIZE (PAGE_SIZE * 4)
-+#define BUFSIZE (PAGE_SIZE * 16)
- 
- static int writebuffer_io_len(struct block_device *blk, struct chunk *chunk)
- {
-@@ -391,7 +391,7 @@ int blockdevice_register(struct block_device *blk)
- 	dev_dbg(blk->dev, "rdbufsize: %d blockbits: %d blkmask: 0x%08x\n",
- 		blk->rdbufsize, blk->blockbits, blk->blkmask);
- 
--	for (i = 0; i < 32; i++) {
-+	for (i = 0; i < 8; i++) {
- 		struct chunk *chunk = xzalloc(sizeof(*chunk));
- 		chunk->data = dma_alloc(BUFSIZE);
- 		chunk->num = i;
--- 
-2.25.0
-
+Yegor
 
 _______________________________________________
 barebox mailing list
