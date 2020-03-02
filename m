@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j8gy3-0002nr-TS
- for barebox@lists.infradead.org; Mon, 02 Mar 2020 09:02:29 +0000
+ id 1j8gyB-0002ub-Uu
+ for barebox@lists.infradead.org; Mon, 02 Mar 2020 09:02:37 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  2 Mar 2020 10:02:24 +0100
-Message-Id: <20200302090225.8317-2-s.hauer@pengutronix.de>
+Date: Mon,  2 Mar 2020 10:02:25 +0100
+Message-Id: <20200302090225.8317-3-s.hauer@pengutronix.de>
 In-Reply-To: <20200302090225.8317-1-s.hauer@pengutronix.de>
 References: <20200302090225.8317-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,36 +21,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] arm: vf610-zii-scu4-aib: Remove non effective properties
+Subject: [PATCH 3/3] ARM: dts: Add missing #size/address-cells properties
 To: Barebox List <barebox@lists.infradead.org>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-The vf610-zii-scu4-aib dts contains a fixup for nodes which do not
-exist anymore, so instead of fixing up the nodes new ones are created
-which is surely not intentional.
+Some boards lack the #address-cells/#size-cells properties for the i.MX6
+GPMI nand controller. Add them.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/dts/vf610-zii-scu4-aib.dts | 8 --------
- 1 file changed, 8 deletions(-)
+ arch/arm/dts/imx6qdl-cm-fx6.dtsi | 2 ++
+ arch/arm/dts/imx6qdl-tx6x.dtsi   | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/arch/arm/dts/vf610-zii-scu4-aib.dts b/arch/arm/dts/vf610-zii-scu4-aib.dts
-index 1e6a54954a..43a13e243d 100644
---- a/arch/arm/dts/vf610-zii-scu4-aib.dts
-+++ b/arch/arm/dts/vf610-zii-scu4-aib.dts
-@@ -109,11 +109,3 @@
- 		label = "fiber9";
- 	};
+diff --git a/arch/arm/dts/imx6qdl-cm-fx6.dtsi b/arch/arm/dts/imx6qdl-cm-fx6.dtsi
+index 72d00f1b9e..3082acbe79 100644
+--- a/arch/arm/dts/imx6qdl-cm-fx6.dtsi
++++ b/arch/arm/dts/imx6qdl-cm-fx6.dtsi
+@@ -363,6 +363,8 @@
+ 
+ /* nand */
+ &gpmi {
++	#address-cells = <1>;
++	#size-cells = <1>;
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_gpmi_nand>;
+ 	status = "okay";
+diff --git a/arch/arm/dts/imx6qdl-tx6x.dtsi b/arch/arm/dts/imx6qdl-tx6x.dtsi
+index ef0f935370..13102168f7 100644
+--- a/arch/arm/dts/imx6qdl-tx6x.dtsi
++++ b/arch/arm/dts/imx6qdl-tx6x.dtsi
+@@ -25,6 +25,8 @@
  };
--
--/*
-- * FIXME: Remove once this code appears in kernel DTS
--*/
--&i2c2 {
--	tca9548@70 { i2c-mux-idle-disconnect; };
--	tca9548@71 { i2c-mux-idle-disconnect; };
--};
+ 
+ &gpmi {
++	#address-cells = <1>;
++	#size-cells = <1>;
+ 	status = "disabled";
+ 
+ 	partition@0 {
 -- 
 2.25.0
 
