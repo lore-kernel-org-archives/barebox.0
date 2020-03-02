@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j8fEJ-00008W-6u
- for barebox@lists.infradead.org; Mon, 02 Mar 2020 07:11:08 +0000
-Date: Mon, 2 Mar 2020 08:11:05 +0100
+ id 1j8g58-0002bv-E2
+ for barebox@lists.infradead.org; Mon, 02 Mar 2020 08:05:43 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200302071105.GD3335@pengutronix.de>
-References: <20200226124017.24646-1-a.fatoum@pengutronix.de>
+Date: Mon,  2 Mar 2020 09:05:39 +0100
+Message-Id: <20200302080539.12295-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200226124017.24646-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,30 +19,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] net: designware: eqos: remove left-over PHY quirk
- work around
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] firmware: Fix dependencies for firmware in PBL
+To: Barebox List <barebox@lists.infradead.org>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-On Wed, Feb 26, 2020 at 01:40:16PM +0100, Ahmad Fatoum wrote:
-> The dummy read was a left over from an abandoned merge with the existing
-> support for the SoCFPGA variant of the Designware MAC. It doesn't exist
-> in either the U-Boot or kernel drivers for the EQOS, thus drop it.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  drivers/net/designware_eqos.c | 8 ++------
->  1 file changed, 2 insertions(+), 6 deletions(-)
+The object files for the PBL are not regenerated when the firmware files
+are updated. The dependency from the pbl-*.gen.o to the firmware files
+are missing, add them.
 
-Applied, thanks
+Reported-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ firmware/Makefile | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Sascha
-
+diff --git a/firmware/Makefile b/firmware/Makefile
+index 9581ee6116..8e8ce83e06 100644
+--- a/firmware/Makefile
++++ b/firmware/Makefile
+@@ -50,6 +50,9 @@ $(patsubst %,$(obj)/%.gen.S, $(fw-external-y)): %: $(wordsize_deps) \
+ # The .o files depend on the binaries directly; the .S files don't.
+ $(patsubst %,$(obj)/%.gen.o, $(fw-external-y)): $(obj)/%.gen.o: $(fwdir)/%
+ 
++# The same for pbl:
++$(patsubst %,$(obj)/pbl-%.gen.o, $(fw-external-y)): $(obj)/pbl-%.gen.o: $(fwdir)/%
++
+ obj-pbl-y			 += $(patsubst %,%.gen.o, $(fw-external-y))
+ 
+ ifeq ($(KBUILD_SRC),)
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.25.0
+
 
 _______________________________________________
 barebox mailing list
