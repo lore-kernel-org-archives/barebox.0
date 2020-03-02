@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx1.emlix.com ([188.40.240.192])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jCB8o-00036Z-Rn
- for barebox@lists.infradead.org; Wed, 11 Mar 2020 23:52:00 +0000
-Date: Thu, 12 Mar 2020 00:51:54 +0100
-From: Daniel =?iso-8859-1?Q?Gl=F6ckner?= <dg@emlix.com>
-Message-ID: <20200311235154.GA28876@emlix.com>
-References: <20200311142757.25263-1-s.hauer@pengutronix.de>
- <20200311142757.25263-6-s.hauer@pengutronix.de>
+ id 1j8fB9-00072o-CA
+ for barebox@lists.infradead.org; Mon, 02 Mar 2020 07:07:53 +0000
+Date: Mon, 2 Mar 2020 08:07:47 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200302070747.GB3335@pengutronix.de>
+References: <20200227160700.28904-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200311142757.25263-6-s.hauer@pengutronix.de>
+In-Reply-To: <20200227160700.28904-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,66 +18,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 05/16] Introduce slices
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>, Edmund Henniges <eh@emlix.com>
+Subject: Re: [PATCH] ARM64: add support for booting a FIT image
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hello Sascha,
+On Thu, Feb 27, 2020 at 05:07:00PM +0100, Lucas Stach wrote:
+> Add the image type handler to the ARM64 boot code. The only difference
+> in the boot handling is that we need to look at the FIT loaded OS image
+> header to get the image load and text offsets, as the os_header is the
+> FIT header, not the kernel header.
+> 
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> ---
+>  arch/arm/lib64/armlinux.c | 15 +++++++++++++--
+>  1 file changed, 13 insertions(+), 2 deletions(-)
 
-On Wed, Mar 11, 2020 at 03:27:46PM +0100, Sascha Hauer wrote:
-> +/**
-> + * slice_acquired: test if a slice is acquired
-> + * @slice: The slice to test
-> + *
-> + * This tests if a slice is acquired. Returns true if it is, false other=
-wise
-> + */
-> +bool slice_acquired(struct slice *slice)
-> +{
-> +	struct slice_entry *se;
-> +	int acquired =3D slice->acquired;
-> +	bool ret =3D false;
-> +
-> +	if (acquired > 0)
-> +		return true;
-> +
-> +	if (acquired < 0) {
-> +		pr_err("Recursive dependency detected in slice %s\n",
-> +		       slice_name(slice));
-> +		panic("Cannot continue");
-> +	}
-> +
-> +	slice->acquired =3D -1;
-> +
-> +	list_for_each_entry(se, &slice->deps, list)
-> +		if (slice_acquired(se->slice)) {
-> +			ret =3D true;
-> +			break;
-> +		}
-> +
-> +	slice->acquired =3D acquired;
+Applied, thanks
 
-no need to restore slice->acquire from acquired since
-acquired must have been zero if we reach this line.
+Sascha
 
-Best regards,
-
-  Daniel
-
--- =
-
-Dipl.-Math. Daniel Gl=F6ckner, emlix GmbH, http://www.emlix.com
-Fon +49 551 30664-0, Fax +49 551 30664-11,
-Gothaer Platz 3, 37083 G=F6ttingen, Germany
-Sitz der Gesellschaft: G=F6ttingen, Amtsgericht G=F6ttingen HR B 3160
-Gesch=E4ftsf=FChrung: Heike Jordan, Dr. Uwe Kracke
-Ust-IdNr.: DE 205 198 055
-
-emlix - your embedded linux partner
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
