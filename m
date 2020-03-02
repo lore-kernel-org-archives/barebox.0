@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j8fCG-0007BC-RB
- for barebox@lists.infradead.org; Mon, 02 Mar 2020 07:09:02 +0000
-Date: Mon, 2 Mar 2020 08:08:59 +0100
+ id 1j8fEJ-00008W-6u
+ for barebox@lists.infradead.org; Mon, 02 Mar 2020 07:11:08 +0000
+Date: Mon, 2 Mar 2020 08:11:05 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200302070859.GC3335@pengutronix.de>
-References: <20200227132924.16558-1-a.fatoum@pengutronix.de>
+Message-ID: <20200302071105.GD3335@pengutronix.de>
+References: <20200226124017.24646-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200227132924.16558-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20200226124017.24646-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,27 +22,24 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] Documentation: boards: stm32mp: document eMMC
- partition layout
+Subject: Re: [PATCH 1/2] net: designware: eqos: remove left-over PHY quirk
+ work around
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Feb 27, 2020 at 02:29:24PM +0100, Ahmad Fatoum wrote:
-> For eMMC, the boot partitions are used for FSBL instead of having
-> these two partitions in the user area, like with SD-Cards.
-> Document this.
+On Wed, Feb 26, 2020 at 01:40:16PM +0100, Ahmad Fatoum wrote:
+> The dummy read was a left over from an abandoned merge with the existing
+> support for the SoCFPGA variant of the Designware MAC. It doesn't exist
+> in either the U-Boot or kernel drivers for the EQOS, thus drop it.
 > 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
-> v1 -> v2:
->   - Fixed missing word in commit message
->   - Reworded last paragraph a little
-> ---
+>  drivers/net/designware_eqos.c | 8 ++------
+>  1 file changed, 2 insertions(+), 6 deletions(-)
 
 Applied, thanks
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
