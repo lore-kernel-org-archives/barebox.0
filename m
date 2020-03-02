@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jBCsY-00047i-Gz
- for barebox@lists.infradead.org; Mon, 09 Mar 2020 07:31:12 +0000
-Date: Mon, 9 Mar 2020 08:31:06 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200309073106.GE3335@pengutronix.de>
-References: <20200302114955.13897-1-a.fatoum@pengutronix.de>
+ id 1j8jf7-0003Z3-Rp
+ for barebox@lists.infradead.org; Mon, 02 Mar 2020 11:55:07 +0000
+Message-ID: <12335f3455d4a57921904437c86aaa834a3320df.camel@pengutronix.de>
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Mon, 02 Mar 2020 12:55:01 +0100
+In-Reply-To: <20200302080539.12295-1-s.hauer@pengutronix.de>
+References: <20200302080539.12295-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200302114955.13897-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,72 +21,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] video/ssd1307fb: fix NULL pointer dereference in probe
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, bst@pengutronix.de
+Subject: Re: [PATCH] firmware: Fix dependencies for firmware in PBL
+To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Mon, Mar 02, 2020 at 12:49:53PM +0100, Ahmad Fatoum wrote:
-> info->priv is dereferenced before a valid value has been set leading to
-> a NULL pointer dereference in the probe function. Fix this.
+On Mon, 2020-03-02 at 09:05 +0100, Sascha Hauer wrote:
+> The object files for the PBL are not regenerated when the firmware
+> files
+> are updated. The dependency from the pbl-*.gen.o to the firmware
+> files
+> are missing, add them.
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
+> Reported-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
-Applied, thanks
+Tested-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Sascha
 
-> Cc: bst@pengutronix.de
-> Cc: str@pengutronix.de
-> 
-> Hi,
-> 
-> how did this ever work? Does the platform that you used this on not trap
-> on NULL-pointer dereference?
-> 
-> Cheers,
-> ---
->  drivers/video/ssd1307fb.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/video/ssd1307fb.c b/drivers/video/ssd1307fb.c
-> index 70077e43a879..83a561a3e1fc 100644
-> --- a/drivers/video/ssd1307fb.c
-> +++ b/drivers/video/ssd1307fb.c
-> @@ -405,8 +405,9 @@ static int ssd1307fb_probe(struct device_d *dev)
->  	}
->  
->  	info = xzalloc(sizeof(struct fb_info));
-> +	par = xzalloc(sizeof(*par));
->  
-> -	par = info->priv;
-> +	info->priv = par;
->  	par->info = info;
->  	par->client = client;
->  
-> @@ -574,6 +575,7 @@ reset_oled_error:
->  	free(vmem);
->  fb_alloc_error:
->  	regulator_disable(par->vbat);
-> +	free(par);
->  	free(info);
->  	return ret;
->  }
-> -- 
-> 2.25.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
