@@ -1,23 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j91Vj-0007Ke-1X
- for barebox@lists.infradead.org; Tue, 03 Mar 2020 06:58:36 +0000
+ id 1j91aa-0001JX-5M
+ for barebox@lists.infradead.org; Tue, 03 Mar 2020 07:03:37 +0000
 References: <4f2b01e0-ad01-d130-5c8e-9c3acac58770@eurek.it>
  <122509ae-f030-4f8a-0cae-eb2c2e31dbe9@pengutronix.de>
  <88405b89-494c-f510-ecb4-810f8b6e0b91@eurek.it>
  <5d328910-2009-b83f-014a-75a4847ea235@pengutronix.de>
  <76d54e08-0051-3069-015c-727a6bd9a38f@eurek.it>
  <4e386cf3-69f3-fd0a-dfae-2827cc2b1c5e@pengutronix.de>
- <2b5d2afe-c71e-34b9-efa5-57aaa5f28445@eurek.it>
- <8da838d3-ac20-adcb-74c0-e0f921c4a083@pengutronix.de>
- <701628bd-3198-a670-a3e7-13f137a99d2d@eurek.it>
- <eeab62fa-2049-42d8-f666-8c912e2a7e2d@eurek.it>
+ <fb81fdd3-b674-ce0b-e472-ec8e606e4131@eurek.it>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <f6caf17d-6f00-8a40-6859-d16d736b5a23@pengutronix.de>
-Date: Tue, 3 Mar 2020 07:58:32 +0100
+Message-ID: <ed3555cc-7c1d-7e0a-2b37-0bd356f79627@pengutronix.de>
+Date: Tue, 3 Mar 2020 08:03:34 +0100
 MIME-Version: 1.0
-In-Reply-To: <eeab62fa-2049-42d8-f666-8c912e2a7e2d@eurek.it>
+In-Reply-To: <fb81fdd3-b674-ce0b-e472-ec8e606e4131@eurek.it>
 Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -27,117 +24,80 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Barebox as first and second stage bootloader
-To: gianluca <gianlucarenzi@eurek.it>, barebox@lists.infradead.org
+To: gianluca <gianlucarenzi@eurek.it>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-SGksCgpPbiAyLzI4LzIwIDk6MjggQU0sIGdpYW5sdWNhIHdyb3RlOgo+PiBSVU5OSU5HIFByb2dy
-YW0gLi4uCj4+IMKgIFBhcnRJRDrCoMKgwqDCoMKgIDoweDAzCj4+Cj4+IHJlY29ubmVjdGluZyB0
-aGUgZGV2aWNlIC4uLgo+Pgo+PiBFcnJvcjogdW5hYmxlIHRvIHJlY29ubmVjdCB0aGUgdGFyZ2V0
-IGRldmljZTogdGltZSBvdXQgZXhwaXJlZAo+Pgo+Pgo+PiBFcnJvcjogU3RhcnQgb3BlcmF0aW9u
-IGZhaWxlZCBhdCBwYXJ0aXRpb24gMHgwMwo+PiBFcnJvcjogVFNWIGZsYXNoaW5nIHNlcnZpY2Ug
-ZmFpbGVkCj4gCj4gU28gaW4gdGhlIGNvbnNvbGUgZGVidWcgKHZpYSB0dHlBQ00gdXNiIGdhZGdl
-dCkgSSBoYXZlIHRoZXNlIG1lc3NhZ2VzOgo+IAo+PiBOT1RJQ0U6wqAgQ1BVOiBTVE0zMk1QMTU3
-Q0FDIFJldi5CCj4+IE5PVElDRTrCoCBNb2RlbDogU1RNaWNyb2VsZWN0cm9uaWNzIFNUTTMyTVAx
-NTdDLURLMiBEaXNjb3ZlcnkgQm9hcmQKPj4gTk9USUNFOsKgIEJvYXJkOiBNQjEyNzIgVmFyMiBS
-ZXYuQy0wMQo+PiBJTkZPOsKgwqDCoCBSZXNldCByZWFzb24gKDB4MTQpOgo+PiBJTkZPOsKgwqDC
-oMKgwqAgUGFkIFJlc2V0IGZyb20gTlJTVAo+PiBJTkZPOsKgwqDCoCBQTUlDIHZlcnNpb24gPSAw
-eDEwCj4+IElORk86wqDCoMKgIFVzaW5nIFVTQgo+PiBJTkZPOsKgwqDCoMKgwqAgSW5zdGFuY2Ug
-Mgo+PiBJTkZPOsKgwqDCoCBCb290IHVzZWQgcGFydGl0aW9uIGZzYmwxCj4+IE5PVElDRTrCoCBC
-TDI6IHYyLjAtcjMuMChkZWJ1Zyk6djIuMC1zdG0zMm1wLXIzCj4+IE5PVElDRTrCoCBCTDI6IEJ1
-aWx0IDogMDg6NDQ6MzYsIEZlYiAyOCAyMDIwCj4+IElORk86wqDCoMKgIEJMMjogRG9pbmcgcGxh
-dGZvcm0gc2V0dXAKPj4gSU5GTzrCoMKgwqAgUkFNOiBERFIzLTEwNjYvODg4IGJpbiBHIDF4NEdi
-IDUzM01IeiB2MS40NQo+PiBJTkZPOsKgwqDCoCBNZW1vcnkgc2l6ZSA9IDB4MjAwMDAwMDAgKDUx
-MiBNQikKPj4gSU5GTzrCoMKgwqAgQkwyIHJ1bnMgU1BfTUlOIHNldHVwCj4+IElORk86wqDCoMKg
-IEJMMjogTG9hZGluZyBpbWFnZSBpZCA0Cj4+IElORk86wqDCoMKgIExvYWRpbmcgaW1hZ2UgaWQ9
-NCBhdCBhZGRyZXNzIDB4MmZmZWYwMDAKPj4gSU5GTzrCoMKgwqAgSW1hZ2UgaWQ9NCBsb2FkZWQ6
-IDB4MmZmZWYwMDAgLSAweDMwMDAwMDAwCj4+IElORk86wqDCoMKgIEJMMjogTG9hZGluZyBpbWFn
-ZSBpZCA1Cj4+IElORk86wqDCoMKgIEdFVFNUQVRVUyA6Cj4+IElORk86wqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgIERGVV9TVEFURV9JRExFCj4+IElORk86wqDCoMKgIFVQTE9B
-RCA6Cj4+IElORk86wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIFBoYXNlIElE
-IDogMAo+PiBJTkZPOsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBhZGRyZXNz
-IDB4MmZmZWQ3OGMKPj4gSU5GTzrCoMKgwqAgR0VUU1RBVFVTIDoKPj4gSU5GTzrCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgREZVX1NUQVRFX0lETEUKPj4gSU5GTzrCoMKgwqAg
-R0VUU1RBVFVTIDoKPj4gSU5GTzrCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
-REZVX1NUQVRFX0lETEUKPj4gSU5GTzrCoMKgwqAgVVBMT0FEIDoKPj4gSU5GTzrCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgUGhhc2UgSUQgOiAwCj4+IElORk86wqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGFkZHJlc3MgMHgyZmZlZDc4Ywo+PiBJTkZPOsKg
-wqDCoCBHRVRTVEFUVVMgOgo+PiBJTkZPOsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoCBERlVfU1RBVEVfSURMRQo+PiBJTkZPOsKgwqDCoCBTdGFydCBEb3dubG9hZCBwYXJ0aXRp
-b24gMCB0byBhZGRyZXNzIDB4YzAwMDAwMDAgbGVuZ3RoIDAKPj4gSU5GTzrCoMKgwqAgVVNCIDog
-REZVIDogZW5kIG9mIGRvd25sb2FkIHBhcnRpdGlvbiA6IDAKPj4gSU5GTzrCoMKgwqAgTG9hZGlu
-ZyBpbWFnZSBpZD01IGF0IGFkZHJlc3MgMHhjMDEwMDAwMAo+PiBJTkZPOsKgwqDCoCBHRVRTVEFU
-VVMgOgo+PiBJTkZPOsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBERlVfU1RB
-VEVfSURMRQo+PiBJTkZPOsKgwqDCoCBVUExPQUQgOgo+PiBJTkZPOsKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoCBQaGFzZSBJRCA6IDMKPj4gSU5GTzrCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqAgYWRkcmVzcyAweDJmZmVkNzhjCj4+IElORk86wqDCoMKgIEdF
-VFNUQVRVUyA6Cj4+IElORk86wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIERG
-VV9TVEFURV9JRExFCj4+IElORk86wqDCoMKgIHJlY2VpdmUgcmVxdWVzdCA2Cj4+IElORk86wqDC
-oMKgIEdFVFNUQVRVUyA6Cj4+IElORk86wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgIERGVV9TVEFURV9JRExFCj4+IElORk86wqDCoMKgIFVQTE9BRCA6Cj4+IElORk86wqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIFBoYXNlIElEIDogMwo+PiBJTkZPOsKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBhZGRyZXNzIDB4MmZmZWQ3OGMKPj4gSU5G
-TzrCoMKgwqAgR0VUU1RBVFVTIDoKPj4gSU5GTzrCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqAgREZVX1NUQVRFX0lETEUKPj4gSU5GTzrCoMKgwqAgdXNiX3BhcnRpdGlvbl9zaXpl
-OiBwYXJ0aXRpb24gc2l6ZSA6IDB4NDU0YWEKPj4gSU5GTzrCoMKgwqAgU3RhcnQgRG93bmxvYWQg
-cGFydGl0aW9uIDMgdG8gYWRkcmVzcyAweGMwMTAwMDAwIGxlbmd0aCAyODM4MTgKPj4gSU5GTzrC
-oMKgwqAgVVNCIDogREZVIDogZW5kIG9mIGRvd25sb2FkIHBhcnRpdGlvbiA6IDMKPj4gV0FSTklO
-RzogU2tpcCBzaWduYXR1cmUgY2hlY2sgKGhlYWRlciBvcHRpb24pCj4+IElORk86wqDCoMKgIEdF
-VFNUQVRVUyA6Cj4+IElORk86wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIERG
-VV9TVEFURV9JRExFCj4+IElORk86wqDCoMKgIFVQTE9BRCA6Cj4+IElORk86wqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIFBoYXNlIElEIDogMAo+PiBJTkZPOsKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBhZGRyZXNzIDB4ZmZmZmZmZmYKPj4gSU5GTzrCoMKg
-wqAgU2VuZCBkZXRhY2ggcmVxdWVzdAo+PiBJTkZPOsKgwqDCoCBHRVRTVEFUVVMgOgo+PiBJTkZP
-OsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBERlVfU1RBVEVfSURMRQo+PiBJ
-TkZPOsKgwqDCoCBSZWNlaXZlIERldGFjaAo+PiBJTkZPOsKgwqDCoCBJbWFnZSBpZD01IGxvYWRl
-ZDogMHhjMDEwMDAwMCAtIDB4YzAxNDU0YWEKPj4gTk9USUNFOsKgIEJMMjogQm9vdGluZyBCTDMy
-Cj4+IElORk86wqDCoMKgIEVudHJ5IHBvaW50IGFkZHJlc3MgPSAweDJmZmVmMDAwCj4+IElORk86
-wqDCoMKgIFNQU1IgPSAweDFkMwo+PiBOT1RJQ0U6wqAgU1BfTUlOOiB2Mi4wLXIzLjAoZGVidWcp
-OnYyLjAtc3RtMzJtcC1yMwo+PiBOT1RJQ0U6wqAgU1BfTUlOOiBCdWlsdCA6IDA4OjQ0OjQ1LCBG
-ZWIgMjggMjAyMAo+PiBJTkZPOsKgwqDCoCBBUk0gR0lDdjIgZHJpdmVyIGluaXRpYWxpemVkCj4+
-IElORk86wqDCoMKgIHN0bTMybXAgSFNJICgxOCk6IFNlY3VyZSBvbmx5Cj4+IElORk86wqDCoMKg
-IHN0bTMybXAgSFNFICgyMCk6IFNlY3VyZSBvbmx5Cj4+IElORk86wqDCoMKgIHN0bTMybXAgUExM
-MiAoMjcpOiBTZWN1cmUgb25seQo+PiBJTkZPOsKgwqDCoCBzdG0zMm1wIFBMTDJfUiAoMzApOiBT
-ZWN1cmUgb25seQo+PiBJTkZPOsKgwqDCoCBTUF9NSU46IEluaXRpYWxpemluZyBydW50aW1lIHNl
-cnZpY2VzCj4+IElORk86wqDCoMKgIFNQX01JTjogUHJlcGFyaW5nIGV4aXQgdG8gbm9ybWFsIHdv
-cmxkCj4gCj4gU28gaXQgc2VlbXMgaXQgaGFuZ3Mgb24gcnVubmluZyBvciB0cmFuc2ZlcnJpbmcg
-QmFyZWJveCBhcyBTU0JMLi4uIE9yIHRoZSBCYXJlYm94IG91dHB1dCBpcyBub3QgdGhlIHNhbWUg
-YXMgVEYtQS4uLgoKYmFyZWJveCBvdXRwdXQgaXMgdWFydDQgKHR0eUFDTSBvZiBTVC1MaW5rKS4K
-Cj4gVGhlIEJhcmVib3ggaXMgMjAyMC4wMS4wLCB0aGUgc3RlcHMgdG8gYnVpbGQgaXQgYXJlOgo+
-IAo+IDEtIG1ha2UgQVJDSD1hcm0gc3RtMzJtcF9kZWZjb25maWcKPiAyLSBtYWtlIEFSQ0g9YXJt
-IGFsbAo+IAo+PiDCoCBDSEvCoMKgwqDCoCBpbmNsdWRlL2dlbmVyYXRlZC92ZXJzaW9uLmgKPj4g
-wqAgQ0hLwqDCoMKgwqAgaW5jbHVkZS9nZW5lcmF0ZWQvdXRzcmVsZWFzZS5oCj4+IMKgIENSRUFU
-RcKgIGluY2x1ZGUvY29uZmlnLmgKPj4gwqAgQ0hLwqDCoMKgwqAgaW5jbHVkZS9nZW5lcmF0ZWQv
-Y29tcGlsZS5oCj4+IMKgIEVOVsKgwqDCoMKgIGRlZmF1bHRlbnYvYmFyZWJveF9kZWZhdWx0X2Vu
-dgo+PiDCoCBFTlbCoMKgwqDCoCBkZWZhdWx0ZW52L2RlZmF1bHRlbnYtMi1iYXNlLmJiZW52Cj4+
-IMKgIEVOVsKgwqDCoMKgIGRlZmF1bHRlbnYvZGVmYXVsdGVudi0yLW1lbnUuYmJlbnYKPj4gwqAg
-Q0hLRklMRVNJWkUgaW1hZ2VzL3N0YXJ0X3N0bTMybXAxNTdjX2RrMi5wYmxiCj4+IMKgIExOwqDC
-oMKgwqDCoCBpbWFnZXMvLi4vYmFyZWJveC1mbGFzaC1pbWFnZQo+PiBpbWFnZXMgYnVpbHQ6Cj4+
-IGJhcmVib3gtc3RtMzJtcDE1N2MtZGsyLmltZwo+IAo+IFNvIHRoZSBTU0JMIHRoZSAudHN2IGZp
-bGUgaXMgcmVmZXJyaW5nIHRvIGlzIHRoZSBsYXN0IGJ1aWxkIG9mIEJhcmVib3guCj4gCj4gQW55
-IGhpbnQ/IENsdWU/IG9yIHdoYXRldmVyPwo+IAo+IElzIHRoZSBjb25zb2xlIG91dHB1dCBvZiBC
-YXJlYm94IGluIHRoZSBzdG0zMm1wX2RlZmNvbmZpZyByb3V0ZWQgdG8gdGhlIHNhbWUgUlggJiBU
-WCBwaW5zIGZvciB0aGUgdHR5QUNNIGFzIGZvciB0aGUgVEYtQSBjb21wb25lbnRzPwoKWWVzLiBU
-cnkgZW5hYmxpbmcgQ09ORklHX0RFQlVHX0xMIHRvIHNlZSBpZiB5b3UgZ2V0IHNvbWUgZWFybHkg
-b3V0cHV0IGZyb20gYmFyZWJveApiZWZvcmUgdGhlIFVBUlQgZHJpdmVyIHdhcyBwcm9iZWQuCgpi
-YXJlYm94IG1pZ2h0IG5vdCB3b3JrIHVuZGVyIGEgInRydXN0ZWQiIFRGLUEsIGJlY2F1c2UgaXQg
-aXNvbGF0ZXMgc29tZSBwZXJpcGhlcmFscyBiZWhpbmQKdmVuZG9yLXNwZWNpZmljIHNlY3VyZSBt
-b25pdG9yIGNhbGxzLiBJIGludGVuZCB0byBhZGQgc3VwcG9ydCBmb3IgdGhlc2UsIG9uY2UgdXBz
-dHJlYW0gVEYtQQpoYXMgU0NNSSBzdXBwb3J0LgoKRm9yIG5vdywgeW91IG1heSBiZSBiZXR0ZXIg
-b2ZmIHVzaW5nIHRoZSBmbGFzaCB0b29sIGxpa2UgaXQncyBpbnRlbmRlZCBhbmQgd3JpdGUgdmVu
-ZG9yClRGLUEgYW5kIHZlbmRvciBVLUJvb3QgdG8gUkFNIGFuZCB0aGVuIHVzZSB0aG9zZSB0byBm
-bGFzaCBiYXJlYm94IGFuZCBURi1BIHRvIGVNTUMuCgpTZWUgRmxhc2hMYXlvdXRfc2RjYXJkX3N0
-bTMybXAxNTdjLWV2MS1iYXNpYy50c3ZbMV0gZm9yIGFuIGV4YW1wbGUuCgpbMV06IGh0dHBzOi8v
-d2lraS5zdC5jb20vc3RtMzJtcHUvd2lraS9TVE0zMk1QMV9TdGFydGVyX1BhY2thZ2VfLV9pbWFn
-ZXMKCkNoZWVycwpBaG1hZAoKPiAKPiAKPiBHaWFubHVjYQoKLS0gClBlbmd1dHJvbml4IGUuSy4g
-ICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8
-ClN0ZXVlcndhbGRlciBTdHIuIDIxICAgICAgICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cu
-cGVuZ3V0cm9uaXguZGUvICB8CjMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgICAgICAgICAgICAg
-ICAgICB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hl
-aW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8Cgpf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
-aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
-ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Hi,
+
+On 2/26/20 5:37 PM, gianluca wrote:
+> On 02/26/2020 04:46 PM, Ahmad Fatoum wrote:
+> Ok. Now you know: there is NOTHING ABOUT FSBL or SSBL as well.
+
+How you mean?
+
+> So I suppose if I do not change the ethernet phy or anything else from evalboard everything from Ethernet will work as-is.
+
+Yes. The realtek PHY on the DK-2 works nicely. Make sure to check the SoC errata sheet,
+there's one about booting from eMMC that may be relevant to you.
+
+>>> For sure, but from a production point of view, the usb must be connected as little as possible. It is better to download everything from Ethernet and/or from NFS rootfilesystem to me.
+>>
+>> Why though? You need USB anyway to get at least FSBL and SSBL onto the board, why
+>> not use it to flash the rootfs as well? Or upload kernel and initramfs to barebox
+>> and have barebox boot them?
+>>
+>> I've so far used network boot only for development, so I am interested
+>> on how you're doing it.
+>>
+> 
+> Depends on how many board you are planning to produce. Actually we have a board version based on iMX28 and the procedure is the same:
+> 
+> 1- load via imx-usb-loader the bootlets and barebox (takes a couple of seconds)
+> 
+> 2- let barebox download uImage and device-tree blob from tftp server (takes 5/6 seconds)
+> 
+> 3- boot into linux. this very small (busybox based linux) write on eMMC the bootlets and the barebox as well then poweroff itself (boot and flash will take less than a minute)
+> 
+> 4- The operator take the board and put it in a rack with other 24 boards. It will powerup and load bootlets + barebox and download uImage and boot from a NFS Server.
+> 
+> 5- This NFS server will flash the eMMC with rootfs and application data. When done it will flash some leds (it takes less than 10 minutes)
+> 
+> 6- At this point when done, the operator will bring back the board to the programming place so it can complete the procedure. When rebooted the board will ask for a specific ethernet MAC Address given via USB BarCode Reader. At the end the MAC-HW sticker will be placed on the board. That's it.
+> 
+> In this way we did not use the microSD connector nor USB Host connector because the customer does not want that. It needs to cut down the cost as much as possible.
+> 
+> The same procedure should be used with the same board based on STM32MP1 SoC.
+
+I see. Thanks for the perspective. For the STM32MP, I think it would be better if you
+had the flashing tool directly write the SSBL and FSBL. Then you can disconnect
+and have barebox boot Linux from network as usual.
+
+>>>> If you manage to flash barebox with it, a Documentation patch about how to use the CLI version
+>>>> of the tool would be very much appreciated.
+>>>
+>>> Of course! Even the support for our new boards too! ;-)
+>>
+>> Great! Looking forward to it.
+>>
+> 
+> Sure.
+> 
+> Gianluca Renzi
+
+Cheers,
+Ahmad
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
