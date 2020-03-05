@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-oln040092254018.outbound.protection.outlook.com
- ([40.92.254.18] helo=APC01-PU1-obe.outbound.protection.outlook.com)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j9L8t-0003Ft-3n
- for barebox@lists.infradead.org; Wed, 04 Mar 2020 03:56:20 +0000
-From: zhou qi <atmgnd@outlook.com>
-Date: Wed, 4 Mar 2020 03:56:11 +0000
-Message-ID: <HK0PR02MB3716F6EF62B6B6542CBCA3DEC9E50@HK0PR02MB3716.apcprd02.prod.outlook.com>
-References: <HK0PR02MB3716EB73F0D1E1FE54E843FDC9E50@HK0PR02MB3716.apcprd02.prod.outlook.com>
-In-Reply-To: <HK0PR02MB3716EB73F0D1E1FE54E843FDC9E50@HK0PR02MB3716.apcprd02.prod.outlook.com>
-Content-Language: zh-CN
+ id 1j9ktO-00035u-Qt
+ for barebox@lists.infradead.org; Thu, 05 Mar 2020 07:26:05 +0000
+Date: Thu, 5 Mar 2020 08:25:55 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200305072554.GN3335@pengutronix.de>
+References: <20200228204823.28415-1-dg@emlix.com>
+ <20200228204823.28415-2-dg@emlix.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200228204823.28415-2-dg@emlix.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,33 +19,117 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?utf-8?B?5Zue5aSNOiBjYW4gbm90IGNvbXBpbGUgb24gdWJ1bnR1IDE4LjA0IGx0cyBm?=
- =?utf-8?Q?or_x86?=
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH 1/3] fastboot: split generic code from USB gadget
+To: Daniel =?iso-8859-15?Q?Gl=F6ckner?= <dg@emlix.com>
+Cc: barebox@lists.infradead.org, Edmund Henniges <eh@emlix.com>
 
-Ckl0IGNvbXBpbGVzIElmIEkgc3dpdGNoICJCcmluZyB1cCB0eXBlIiB0byAiRUZJIi4gSG93IHRv
-IGNvbXBpbGUgIjE2IGJpdCBCaW9zIiB0eXBlID8KCgp0aGFua3MuCgoK5Y+R5Lu25Lq6OiB6aG91
-IHFpIDxhdG1nbmRAb3V0bG9vay5jb20+Cgrlj5HpgIHml7bpl7Q6IDIwMjDlubQz5pyINOaXpSAx
-MTo1MQoK5pS25Lu25Lq6OiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcgPGJhcmVib3hAbGlz
-dHMuaW5mcmFkZWFkLm9yZz4KCuS4u+mimDogY2FuIG5vdCBjb21waWxlIG9uIHVidW50dSAxOC4w
-NCBsdHMgZm9yIHg4NgoKwqAKCgpJIGNvbXBpbGUgdGhlIGxhc3Rlc3QgY29kZSA6IApodHRwczov
-L2dpdGh1Yi5jb20vc2FzY2hhaGF1ZXIvYmFyZWJveC5naXQgdXNpbmcgdGhlIGZvbGxvd2luZyBj
-b21tYW5kczoKCgoKZXhwb3J0IEFSQ0g9eDg2CgptYWtlIG1lbnVjb25maWcgIyBjaGFuZ2UgdG8g
-YmlvcyBib290CgptYWtlCgoKCnRoZW4gZXJyb3JzOgoKCgrCoCBDSEvCoMKgwqDCoCBpbmNsdWRl
-L2dlbmVyYXRlZC92ZXJzaW9uLmgKCsKgIENIS8KgwqDCoMKgIGluY2x1ZGUvZ2VuZXJhdGVkL3V0
-c3JlbGVhc2UuaAoKwqAgQ1JFQVRFwqAgaW5jbHVkZS9jb25maWcuaAoKwqAgQ0hLwqDCoMKgwqAg
-aW5jbHVkZS9nZW5lcmF0ZWQvY29tcGlsZS5oCgrCoCBFTlbCoMKgwqDCoCBkZWZhdWx0ZW52L2Jh
-cmVib3hfZGVmYXVsdF9lbnYKCsKgIEdFTsKgwqDCoMKgIC52ZXJzaW9uCgrCoCBDSEvCoMKgwqDC
-oCBpbmNsdWRlL2dlbmVyYXRlZC9jb21waWxlLmgKCsKgIFVQRMKgwqDCoMKgIGluY2x1ZGUvZ2Vu
-ZXJhdGVkL2NvbXBpbGUuaAoKwqAgQ0PCoMKgwqDCoMKgIGNvbW1vbi92ZXJzaW9uLm8KCsKgIExE
-wqDCoMKgwqDCoCBjb21tb24vYnVpbHQtaW4ubwoKwqAgTETCoMKgwqDCoMKgIGJhcmVib3gKCmFy
-Y2gveDg2L2xpYi9iYXJlYm94LmxkczoxNDc6IG5vbmNvbnN0YW50IGV4cHJlc3Npb24gZm9yIGxv
-YWQgYmFzZQoKTWFrZWZpbGU6Nzg1OiByZWNpcGUgZm9yIHRhcmdldCAnYmFyZWJveCcgZmFpbGVk
-CgptYWtlOiAqKiogW2JhcmVib3hdIEVycm9yIDEKCgoKCgp0aGFua3MuCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
-cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Fri, Feb 28, 2020 at 09:48:21PM +0100, Daniel Gl=F6ckner wrote:
+> From: Edmund Henniges <eh@emlix.com>
+> =
+
+> The fastboot specification describes other protocols beyond USB. Allow
+> these to reuse the generic parts of the existing fastboot code when they
+> are implemented.
+> =
+
+> Most of the changes in common/fastboot.c are due to the renaming of struct
+> f_fastboot *f_fb to struct fastboot *fb.
+> =
+
+> Signed-off-by: Edmund Henniges <eh@emlix.com>
+> Signed-off-by: Daniel Gl=F6ckner <dg@emlix.com>
+> ---
+>  common/Kconfig                  |  35 ++
+>  common/Makefile                 |   1 +
+>  common/fastboot.c               | 955 +++++++++++++++++++++++++++++++
+>  drivers/usb/gadget/Kconfig      |   3 +-
+>  drivers/usb/gadget/f_fastboot.c | 968 ++------------------------------
+>  drivers/usb/gadget/multi.c      |   5 +-
+>  include/fastboot.h              |  66 +++
+>  include/usb/fastboot.h          |  34 +-
+>  include/usb/gadget-multi.h      |   2 +-
+>  9 files changed, 1105 insertions(+), 964 deletions(-)
+>  create mode 100644 common/fastboot.c
+>  create mode 100644 include/fastboot.h
+> =
+
+> diff --git a/common/Kconfig b/common/Kconfig
+> index 02ef3631e..bed7e49db 100644
+> --- a/common/Kconfig
+> +++ b/common/Kconfig
+> @@ -114,6 +114,9 @@ config USBGADGET_START
+>  config BOOT
+>  	bool
+>  =
+
+> +config FASTBOOT_BASE
+> +	bool
+> +
+>  menu "General Settings"
+>  =
+
+>  config LOCALVERSION
+> @@ -1013,6 +1016,38 @@ config PBL_OPTEE
+>  =
+
+>  endmenu
+>  =
+
+> +config FASTBOOT_SPARSE
+> +	bool
+> +	depends on FASTBOOT_BASE
+> +	select IMAGE_SPARSE
+> +	prompt "Enable Fastboot sparse image support"
+> +	help
+> +	  Sparse images are a way for the fastboot protocol to write
+> +	  images that are bigger than the available memory. If unsure,
+> +	  say yes here.
+> +
+> +config FASTBOOT_BUF
+> +	bool
+> +	depends on FASTBOOT_BASE
+> +	prompt "Download files to temporary buffer instead of file"
+> +	help
+> +	  With this option enabled the fastboot code will download files to a
+> +	  temporary buffer instead of a temporary file. Normally you want to
+> +	  use a file as this also works when your memory is fragmented. However,
+> +	  in some special cases, when the file consumer also better copes with
+> +	  a buffer, then using a buffer might be better.
+> +
+> +	  Say no here unless you know what you are doing.
+> +
+> +config FASTBOOT_CMD_OEM
+> +	bool
+> +	depends on FASTBOOT_BASE
+> +	prompt "Enable OEM commands"
+> +	help
+> +	  This option enables the fastboot "oem" group of commands. They allow =
+to
+> +	  executing arbitrary barebox commands and may be disabled in secure
+> +	  environments.
+
+I think these entries deserve an extra menu. Looking at the menu we now
+have entries like "Download files to temporary buffer instead of file"
+without giving any context that this is a fastboot option.
+
+Does it make sense to add the fastboot USB and fastboot net options to
+that menu as well? That way all fastboot options would be together and
+not split into three different areas in the menu hierarchy.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
