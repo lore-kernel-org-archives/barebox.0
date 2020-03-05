@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from vsmx012.vodafonemail.xion.oxcs.net ([153.92.174.90])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jAIja-0001Lt-Vp
- for barebox@lists.infradead.org; Fri, 06 Mar 2020 19:34:12 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  6 Mar 2020 20:34:03 +0100
-Message-Id: <20200306193406.20531-6-s.hauer@pengutronix.de>
-In-Reply-To: <20200306193406.20531-1-s.hauer@pengutronix.de>
-References: <20200306193406.20531-1-s.hauer@pengutronix.de>
+ id 1j9lpu-0007xx-T8
+ for barebox@lists.infradead.org; Thu, 05 Mar 2020 08:26:32 +0000
+Received: from vsmx004.vodafonemail.xion.oxcs.net (unknown [192.168.75.198])
+ by mta-8-out.mta.xion.oxcs.net (Postfix) with ESMTP id 9A8C0F34F4A
+ for <barebox@lists.infradead.org>; Thu,  5 Mar 2020 08:26:17 +0000 (UTC)
+Received: from app-48.app.xion.oxcs.net (app-48.app.xion.oxcs.net [10.10.1.48])
+ by mta-8-out.mta.xion.oxcs.net (Postfix) with ESMTPA id 8496419AF52
+ for <barebox@lists.infradead.org>; Thu,  5 Mar 2020 08:26:15 +0000 (UTC)
+Date: Thu, 5 Mar 2020 09:26:15 +0100 (CET)
+From: Giorgio Dal Molin <giorgio.nicole@arcor.de>
+Message-ID: <2105504494.1423.1583396775377@mail.vodafone.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,35 +25,24 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/8] usbnet: Add slice
-To: Barebox List <barebox@lists.infradead.org>
-Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
+Subject: barebox image for an spi flash (like m25p0) on an imx7 soc
+To: barebox@lists.infradead.org
 
-Both the ethernet device and the mdio bus of a USB network controller
-need the USB bus. Add dependencies to it.
+Hi,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/net/usb/usbnet.c | 3 +++
- 1 file changed, 3 insertions(+)
+does barebox support generating a bootloader image that's able to boot
+from an spi nor flash (m25p0) on an imx7 soc ?
 
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index 60e67ff1a2..f1a49a142c 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -213,6 +213,9 @@ int usbnet_probe(struct usb_device *usbdev, const struct usb_device_id *prod)
- 
- 	eth_register(edev);
- 
-+	slice_add(eth_device_slice(edev), usb_device_slice(usbdev));
-+	slice_add(mdiobus_slice(&undev->miibus), usb_device_slice(usbdev));
-+
- 	return 0;
- out1:
- 	dev_dbg(&edev->dev, "err: %d\n", status);
--- 
-2.25.1
+I'm currently able to read/write/erase the flash and I can also 'barebox_update'
+the image on the flash but the imx7 does not want to boot from it.
 
+After comparing a working u-boot image with what 'barebox_update' flashes I think
+the problem is the barebox image does not have the proper binary layout.
+
+Is this use case already implemented or is it still a TODO ?
+
+thank you,
+giorgio
 
 _______________________________________________
 barebox mailing list
