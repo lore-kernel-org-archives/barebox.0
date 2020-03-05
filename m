@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jAE6b-00023U-GO
- for barebox@lists.infradead.org; Fri, 06 Mar 2020 14:37:39 +0000
-From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Fri,  6 Mar 2020 15:37:31 +0100
-Message-Id: <20200306143732.24239-2-m.tretter@pengutronix.de>
-In-Reply-To: <20200306143732.24239-1-m.tretter@pengutronix.de>
-References: <20200306143732.24239-1-m.tretter@pengutronix.de>
+ id 1j9qWc-0007Yk-4r
+ for barebox@lists.infradead.org; Thu, 05 Mar 2020 13:26:55 +0000
+Date: Thu, 5 Mar 2020 14:26:52 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200305132652.GU3335@pengutronix.de>
+References: <1582794415-151399-1-git-send-email-y.bas@phytec.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1582794415-151399-1-git-send-email-y.bas@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,37 +22,86 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] Documentation: blspec: update link to Boot Loader
- Specification
-To: barebox@lists.infradead.org
-Cc: Michael Tretter <m.tretter@pengutronix.de>
+Subject: Re: [PATCH] ARM: dts: phycore-imx6: change mtd-partition names for
+ compatibility with kernel
+To: Yunus Bas <y.bas@phytec.de>
+Cc: barebox@lists.infradead.org
 
-There is a big warning on the linked page that the page is obsolete and
-a link to the current version of the Boot Loader Specification. The
-Barebox documentation shall directly link to the current version of the
-specification.
+On Thu, Feb 27, 2020 at 10:06:55AM +0100, Yunus Bas wrote:
+> The NVMEM-subsystem in newer kernels does not allow identical partition
+> names on different subdevices. According to the recommendation, we have to
+> rename the partition names to be compatible with actual kernel
+> versions.
+> 
+> To minimize the problems which could possibly arise, the nand device is
+> not changed. For all other devices, we prepend the device name to the
+> partitions.
+> 
+> Signed-off-by: Yunus Bas <y.bas@phytec.de>
+> ---
+>  arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
 
-Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
----
- Documentation/user/booting-linux.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Applied, thanks
 
-diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/booting-linux.rst
-index 12cd505e7170..4b0ead1db5a5 100644
---- a/Documentation/user/booting-linux.rst
-+++ b/Documentation/user/booting-linux.rst
-@@ -158,7 +158,7 @@ Bootloader Spec
- 
- barebox supports booting according to the bootloader spec:
- 
--http://www.freedesktop.org/wiki/Specifications/BootLoaderSpec/
-+https://systemd.io/BOOT_LOADER_SPECIFICATION/
- 
- It follows another philosophy than the :ref:`boot_entries`. With Boot Entries
- booting is completely configured in the bootloader. Bootloader Spec Entries
+Sascha
+
+> 
+> diff --git a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
+> index 69f252b..50cf852 100644
+> --- a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
+> +++ b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
+> @@ -29,7 +29,7 @@
+>  
+>  		environment-spinor {
+>  			compatible = "barebox,environment";
+> -			device-path = &m25p80, "partname:barebox-environment";
+> +			device-path = &m25p80, "partname:nor.barebox-environment";
+>  			status = "disabled";
+>  		};
+>  	};
+> @@ -86,22 +86,22 @@
+>  		#size-cells = <1>;
+>  
+>  		partition@0 {
+> -			label = "barebox";
+> +			label = "nor.barebox";
+>  			reg = <0x0 0x100000>;
+>  		};
+>  
+>  		partition@100000 {
+> -			label = "barebox-environment";
+> +			label = "nor.barebox-environment";
+>  			reg = <0x100000 0x20000>;
+>  		};
+>  
+>  		partition@120000 {
+> -			label = "oftree";
+> +			label = "nor.oftree";
+>  			reg = <0x120000 0x20000>;
+>  		};
+>  
+>  		partition@140000 {
+> -			label = "kernel";
+> +			label = "nor.kernel";
+>  			reg = <0x140000 0x0>;
+>  		};
+>  	};
+> -- 
+> 2.7.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
