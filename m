@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j9l7W-0000BM-4l
- for barebox@lists.infradead.org; Thu, 05 Mar 2020 07:40:41 +0000
+ id 1j9l7W-0000BN-2y
+ for barebox@lists.infradead.org; Thu, 05 Mar 2020 07:40:40 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  5 Mar 2020 08:40:32 +0100
-Message-Id: <20200305074032.29725-3-a.fatoum@pengutronix.de>
+Date: Thu,  5 Mar 2020 08:40:31 +0100
+Message-Id: <20200305074032.29725-2-a.fatoum@pengutronix.de>
 In-Reply-To: <20200305074032.29725-1-a.fatoum@pengutronix.de>
 References: <20200305074032.29725-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -17,87 +17,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] state: treat state with all-invalid buckets as dirty
+Subject: [PATCH 1/2] state: backend_storage: deal gracefully with runtime
+ bucket corruption
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: =?UTF-8?q?Enrico=20J=C3=B6rns?= <ejo@pengutronix.de>, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The state.dirty flag controls whether state_save will actually
-persist state. It is cleared when we successfully load or save
-state and set on writing a state parameter.
-
-When the state however becomes corrupt during barebox runtime and
-state.dirty == 0, reinitializing the state to defaults is quite
-cumbersome:
-
-1. We reset twice. After the first reset, the dirty flag is reset
-   and before the second, state_save will reinitialize to defaults
-2. We write any state variable and then run the state -s command
-
-Both workarounds are quite obscure, improve the user experience
-by having state -l set the dirty flag when it fails, so a subsequent
-state -s may persist the default values to state.
-
-Steps to reproduce:
-
-  barebox$ state -l
-  state: Using bucket 0@0x00000000
-  barebox$ memcpy -s /dev/zero -d /dev/eeprom0.state 0 0 0x400
-  barebox$ state -s
-  barebox$ state -l
-  ERROR: state: No meta data header found
-  ERROR: state: No meta data header found
-  ERROR: state: No meta data header found
-  ERROR: state: Failed to find any valid state copy in any bucket
-  ERROR: state: Failed to read state with format raw, -2
-  state: No such file or directory
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- common/state/state.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
-
-diff --git a/common/state/state.c b/common/state/state.c
-index b168387eef0b..1822f37f3e29 100644
---- a/common/state/state.c
-+++ b/common/state/state.c
-@@ -94,7 +94,7 @@ out:
-  */
- static int state_do_load(struct state *state, enum state_flags flags)
- {
--	void *buf;
-+	void *buf = NULL;
- 	ssize_t len;
- 	int ret;
- 
-@@ -103,7 +103,7 @@ static int state_do_load(struct state *state, enum state_flags flags)
- 	if (ret) {
- 		dev_err(&state->dev, "Failed to read state with format %s, %d\n",
- 			state->format->name, ret);
--		return ret;
-+		goto out;
- 	}
- 
- 	ret = state->format->unpack(state->format, state, buf, len);
-@@ -114,9 +114,8 @@ static int state_do_load(struct state *state, enum state_flags flags)
- 	}
- 
- 	state->init_from_defaults = 0;
--	state->dirty = 0;
--
- out:
-+	state->dirty = !!ret; /* mark dirty on error */
- 	free(buf);
- 	return ret;
- }
--- 
-2.25.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Q29ycnVwdGluZyBhbiBhbHJlYWR5IHNlbGVjdGVkIGJ1Y2tldCBhbmQgdGhlbiByZWFkaW5nIGl0
+IGFnYWluIHdpbGwKY3Jhc2ggYmFyZWJveCB3aGVuIGl0IGF0dGVtcHRzIHRoZSByZWZyZXNoOgoK
+ICBiYXJlYm94JCBzdGF0ZSAtbAogIGJhcmVib3gkIG13IC1kIC9kZXYvZWVwcm9tMC5zdGF0ZSAw
+IDB4NDIKICBiYXJlYm94JCBzdGF0ZSAtbAogIEVSUk9SOiBzdGF0ZTogTm8gbWV0YSBkYXRhIGhl
+YWRlciBmb3VuZAogIHN0YXRlOiBVc2luZyBidWNrZXQgMUAweDAwMDAwMDQwCiAgdW5hYmxlIHRv
+IGhhbmRsZSBOVUxMIHBvaW50ZXIgZGVyZWZlcmVuY2UgYXQgYWRkcmVzcyAweDAwMDAwMDAwCiAg
+cGMgOiBbPDRmZTRmMWVhPl0gICAgbHIgOiBbPDRmZTBiY2IxPl0KICBzcCA6IDRmZmVmZDVjICBp
+cCA6IDAwMDAwMDAwICBmcCA6IDJmZjY4ZjA0CiAgcjEwOiA0ZmZlZmRjOCAgcjkgOiA0YjQzNGQ2
+MyAgcjggOiAzMDE1NWY1MAogIHI3IDogMDAwMDAwMjQgIHI2IDogMmZmNjhiNjAgIHI1IDogMmZm
+NjhlOTAgIHI0IDogMDAwMDAwMDAKICByMyA6IDAwMDAwMDI0ICByMiA6IDAwMDAwMDI0ICByMSA6
+IDMwMTU1ZjUwICByMCA6IDAwMDAwMDAwCiAgRmxhZ3M6IE56Y3YgIElSUXMgb2ZmICBGSVFzIG9m
+ZiAgTW9kZSBTVkNfMzIKICBXQVJOSU5HOiBbPDRmZTRmMWVhPl0gKG1lbWNtcCsweDE0LzB4MWEp
+IGZyb20gWzw0ZmUwYmNiMT5dIChidWNrZXRfcmVmcmVzaC5pc3JhLjArMHg0ZC8weDc4KQogIFdB
+Uk5JTkc6IFs8NGZlMGJjYjE+XSAoYnVja2V0X3JlZnJlc2guaXNyYS4wKzB4NGQvMHg3OCkgZnJv
+bSBbPDRmZTBiZTFkPl0gKHN0YXRlX3N0b3JhZ2VfcmVhZCsweGQxLzB4MTA0KQogIFdBUk5JTkc6
+IFs8NGZlMGJlMWQ+XSAoc3RhdGVfc3RvcmFnZV9yZWFkKzB4ZDEvMHgxMDQpIGZyb20gWzw0ZmUw
+YTViZD5dIChzdGF0ZV9kb19sb2FkKzB4MWQvMHg3OCkKICBXQVJOSU5HOiBbPDRmZTBhNWJkPl0g
+KHN0YXRlX2RvX2xvYWQrMHgxZC8weDc4KSBmcm9tIFs8NGZlMDQxMzc+XSAoZXhlY3V0ZV9jb21t
+YW5kKzB4MjMvMHg0YykKClRoZSBtZW1jbXAgY2FsbGVkIGhlcmUgaXMgYW4gb3B0aW1pemF0aW9u
+IHRvIHNraXAgSS9PIGlmIHRoZSB1c2VkIGJ1Y2tldAphbmQgdGhlIG9uZSB0byBiZSByZWZyZXNo
+ZWQgY29tcGFyZSBlcXVhbC4gVW5mb3J0dW5hdGVseSwgaWYgdGhlIG5vdwpjb3JydXB0IGJ1Y2tl
+dCB3YXMgcHJldmlvdXNseSB0aGUgdXNlZCBvbmUsIGJ1Y2tldC0+bGVuIHdpbGwgaG9sZCB0aGUK
+b2xkIHZhbHVlIGFuZCB3ZSdsbCBydW4gaW50byBhIE5VTEwgcG9pbnRlciBkZXJlZmVyZW5jZS4K
+CldoaWxlIHRoaXMgaXMgcXVpdGUgaW5jb252ZW5pZW50LCBpdCBhcHBlYXJzIGl0IGRvZXNuJ3Qg
+YWZmZWN0CmNvcnJlY3RuZXNzOiBhZnRlciB0aGUgcmVzZXQsIHRoZSBjb3JydXB0IGJ1Y2tldCB3
+aWxsIGJlIHJlZnJlc2hlZAphcyBleHBlY3RlZC4KCkltcHJvdmUgdXBvbiB0aGlzIGJ5IHNldHRp
+bmcgdGhlIGxlbmd0aCB0byB6ZXJvIHdoZW4gd2UgYXJlIE5VTExpbmcgdGhlCmJ1ZmZlci4gVGhl
+IHplcm8gbGVuZ3RoIG9mIHRoZSBjb3JydXB0ZWQgYnVja2V0IHdpbGwgdGhlbiBjb21wYXJlIHVu
+ZXF1YWwKdG8gdXNlZF9idWNrZXQtPmxlbiBpbiBidWNrZXRfcmVmcmVzaCgpIGFuZCBlbnN1cmUg
+d2Ugd2lsbCBhbHdheXMgcmVmcmVzaAp0aGUgYnVmZmVyIGlmIGl0IGJlY29tZXMgY29ycnVwdGVk
+IHdpdGhvdXQgYW4gaW50ZXJtaXR0ZW50IHJlc2V0LgoKRml4ZXM6IDIzODAwOGI0YmQ4ZiAoInN0
+YXRlOiBEcm9wIGNhY2hlIGJ1Y2tldCIpCkNjOiBFbnJpY28gSsO2cm5zIDxlam9AcGVuZ3V0cm9u
+aXguZGU+ClNpZ25lZC1vZmYtYnk6IEFobWFkIEZhdG91bSA8YS5mYXRvdW1AcGVuZ3V0cm9uaXgu
+ZGU+Ci0tLQogY29tbW9uL3N0YXRlL2JhY2tlbmRfc3RvcmFnZS5jIHwgMiArKwogMSBmaWxlIGNo
+YW5nZWQsIDIgaW5zZXJ0aW9ucygrKQoKZGlmZiAtLWdpdCBhL2NvbW1vbi9zdGF0ZS9iYWNrZW5k
+X3N0b3JhZ2UuYyBiL2NvbW1vbi9zdGF0ZS9iYWNrZW5kX3N0b3JhZ2UuYwppbmRleCBmY2E4ODdl
+OTNmYTMuLmZlN2U4OWU4ZmIzOSAxMDA2NDQKLS0tIGEvY29tbW9uL3N0YXRlL2JhY2tlbmRfc3Rv
+cmFnZS5jCisrKyBiL2NvbW1vbi9zdGF0ZS9iYWNrZW5kX3N0b3JhZ2UuYwpAQCAtMTkyLDYgKzE5
+Miw3IEBAIGludCBzdGF0ZV9zdG9yYWdlX3JlYWQoc3RydWN0IHN0YXRlX2JhY2tlbmRfc3RvcmFn
+ZSAqc3RvcmFnZSwKIAkJLyogRnJlZSBidWZmZXIgZnJvbSB0aGUgdW51c2VkIGJ1Y2tldHMgKi8K
+IAkJZnJlZShidWNrZXQtPmJ1Zik7CiAJCWJ1Y2tldC0+YnVmID0gTlVMTDsKKwkJYnVja2V0LT5s
+ZW4gPSAwOwogCX0KIAogCS8qCkBAIC0yMDQsNiArMjA1LDcgQEAgaW50IHN0YXRlX3N0b3JhZ2Vf
+cmVhZChzdHJ1Y3Qgc3RhdGVfYmFja2VuZF9zdG9yYWdlICpzdG9yYWdlLAogCiAJLyogYnVmZmVy
+IGZyb20gdGhlIHVzZWQgYnVja2V0IGlzIHBhc3NlZCB0byB0aGUgY2FsbGVyLCBkbyBub3QgZnJl
+ZSAqLwogCWJ1Y2tldF91c2VkLT5idWYgPSBOVUxMOworCWJ1Y2tldF91c2VkLT5sZW4gPSAwOwog
+CiAJcmV0dXJuIDA7CiB9Ci0tIAoyLjI1LjEKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmlu
+ZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9i
+YXJlYm94Cg==
