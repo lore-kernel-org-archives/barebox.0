@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j8fB9-00072o-CA
- for barebox@lists.infradead.org; Mon, 02 Mar 2020 07:07:53 +0000
-Date: Mon, 2 Mar 2020 08:07:47 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200302070747.GB3335@pengutronix.de>
-References: <20200227160700.28904-1-l.stach@pengutronix.de>
+ id 1j9l7W-0000BL-43
+ for barebox@lists.infradead.org; Thu, 05 Mar 2020 07:40:40 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu,  5 Mar 2020 08:40:30 +0100
+Message-Id: <20200305074032.29725-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200227160700.28904-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,30 +19,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM64: add support for booting a FIT image
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/2] state: deal gracefully with runtime bucket corruption
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Thu, Feb 27, 2020 at 05:07:00PM +0100, Lucas Stach wrote:
-> Add the image type handler to the ARM64 boot code. The only difference
-> in the boot handling is that we need to look at the FIT loaded OS image
-> header to get the image load and text offsets, as the os_header is the
-> FIT header, not the kernel header.
-> 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> ---
->  arch/arm/lib64/armlinux.c | 15 +++++++++++++--
->  1 file changed, 13 insertions(+), 2 deletions(-)
+Series fixes two issues when buckets become corrupted during barebox
+execution. Both issues are currently sorted out after one more reset,
+so I'd suggest this goes into next despite being a fix.
 
-Applied, thanks
+Cheers,
+Ahmad Fatoum (2):
+  state: backend_storage: deal gracefully with runtime bucket corruption
+  state: treat state with all-invalid buckets as dirty
 
-Sascha
+ common/state/backend_storage.c | 2 ++
+ common/state/state.c           | 7 +++----
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.25.1
+
 
 _______________________________________________
 barebox mailing list
