@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j9qWc-0007Yk-4r
- for barebox@lists.infradead.org; Thu, 05 Mar 2020 13:26:55 +0000
-Date: Thu, 5 Mar 2020 14:26:52 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200305132652.GU3335@pengutronix.de>
-References: <1582794415-151399-1-git-send-email-y.bas@phytec.de>
+ id 1j9rMN-0005Ox-PK
+ for barebox@lists.infradead.org; Thu, 05 Mar 2020 14:20:25 +0000
+Message-ID: <fe1904011adc47b378e81b271c8e9881f1f097e9.camel@pengutronix.de>
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Thu, 05 Mar 2020 15:20:20 +0100
+In-Reply-To: <609291452.5069.1583416465036@mail.vodafone.de>
+References: <2105504494.1423.1583396775377@mail.vodafone.de>
+ <4b929efa-4d1b-5641-743d-96d94766c57d@pengutronix.de>
+ <1062353935.2358.1583401816499@mail.vodafone.de>
+ <20200305132415.GT3335@pengutronix.de>
+ <609291452.5069.1583416465036@mail.vodafone.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1582794415-151399-1-git-send-email-y.bas@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,86 +25,95 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: dts: phycore-imx6: change mtd-partition names for
- compatibility with kernel
-To: Yunus Bas <y.bas@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: barebox image for an spi flash (like m25p0) on an imx7 soc
+To: Giorgio Dal Molin <giorgio.nicole@arcor.de>, Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Thu, Feb 27, 2020 at 10:06:55AM +0100, Yunus Bas wrote:
-> The NVMEM-subsystem in newer kernels does not allow identical partition
-> names on different subdevices. According to the recommendation, we have to
-> rename the partition names to be compatible with actual kernel
-> versions.
+On Thu, 2020-03-05 at 14:54 +0100, Giorgio Dal Molin wrote:
+> Hi Sascha,
 > 
-> To minimize the problems which could possibly arise, the nand device is
-> not changed. For all other devices, we prepend the device name to the
-> partitions.
 > 
-> Signed-off-by: Yunus Bas <y.bas@phytec.de>
-> ---
->  arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
+> > On March 5, 2020 at 2:24 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> > 
+> > 
+> > On Thu, Mar 05, 2020 at 10:50:15AM +0100, Giorgio Dal Molin wrote:
+> > > Hi,
+> > > 
+> > > thank you for the quick reply.
+> > > 
+> > > here is how I register the bbu for the spi flash:
+> > > 
+> > > imx7_bbu_internal_spi_i2c_register_handler("SPI", "/dev/m25p0", BBU_HANDLER_FLAG_DEFAULT);
+> > > 
+> > > and here is a hex dump of the spi flash after bb-updating (I hacked the 'cat' command a bit):
+> > > 
+> > > imx7d: / cat -h -b 0x450 /dev/m25p0
+> > 
+> > There's the 'md' command for this purpose ;)
+> > 
+> > > 0000: 0xfe 0x03 0x00 0xea 0xfe 0xff 0xff 0xea 0xfe 0xff 0xff 0xea 0xfe 0xff 0xff 0xea 
+> > > 0010: 0xfe 0xff 0xff 0xea 0xfe 0xff 0xff 0xea 0xfe 0xff 0xff 0xea 0xfe 0xff 0xff 0xea 
+> > > 0020: 0x62 0x61 0x72 0x65 0x62 0x6f 0x78 0x00 0x00 0x00 0x00 0x00 0x00 0xf0 0x06 0x00 
+> > > 0030: 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 
+> > > 0040: 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 
+> > > 0050: 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 
+> > > ... < zeros > ...
+> > > 03f0: 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 
+> > > 0400: 0xd1 0x00 0x20 0x40 0x00 0x10 0x00 0x80 0x00 0x00 0x00 0x00 0x2c 0x04 0x00 0x80 
+> > > 0410: 0x20 0x04 0x00 0x80 0x00 0x04 0x00 0x80 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 
+> > > 0420: 0x00 0x00 0x00 0x80 0x00 0xf0 0x06 0x00 0x00 0x00 0x00 0x00 0xd2 0x01 0xbc 0x40 
+> > > 0430: 0xcc 0x01 0x6c 0x04 0x30 0x34 0x00 0x04 0x0f 0x40 0x00 0x05 0x30 0x39 0x10 0x00 
+> > > 0440: 0x00 0x00 0x00 0x02 0x30 0x7a 0x00 0x00 0x01 0x04 0x00 0x01 0x30 0x7a 0x01 0xa0 
+> > > 
+> > > It seems 'reasonable': there's a 0x400 bytes flash header and then the actual image
+> > > starts, but it does not boot.
+> > 
+> > ...
+> > 
+> > > 03f0: 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 
+> > > 0400: 0xd1 0x00 0x20 0x40 0x00 0x10 0x91 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 
+> > > 0410: 0x20 0x04 0x91 0x00 0x00 0x04 0x91 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 
+> > > 0420: 0x00 0x00 0x91 0x00 0x00 0xa0 0x00 0x00 0x00 0x00 0x00 0x00 0xd2 0x00 0x04 0x40 
+> > > 0430: 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 
+> > > 0440: 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 
+> > > 
+> > > 
+> > > The first 4 bites at offset 0x400 are the same but then the u-boot working image is
+> > > different.
+> > 
+> > Where do you have the SDRAM setup? The U-Boot snippet loads into
+> > internal SRAM which looks like the SDRAM setup is done in code. The
+> > barebox image above loads into SDRAM which of course requires that you
+> > have setup the SDRAM in the DCD table.
+> > 
+> 
+> Yes, this is right, u-boot does not have a DCD, they init the soc (ddr cntr)
+> in the bootloader self.
+> 
+> The DCD I use in barebox works when I upload the image with the imx-usb-loader:
+> 
+> root [ /tmp ]# /tmp/bbuild/arm32/scripts/imx/imx-usb-loader /tmp/bbuild/arm32/barebox-flash-image
+> found i.MX7S USB device [15a2:0076]
+> main dcd length 1bc
+> DCD write: sub dcd length: 0x016c, flags: 0x04
+> DCD check condition 3 on address 0x307900c4
+> DCD write: sub dcd length: 0x0034, flags: 0x04
+> DCD check condition 3 on address 0x307a0004
+> loading binary file(/tmp/bbuild/arm32/barebox-flash-image) to 0x80000000, skip=0x0, fsize=456157 type=170...
+> binary file successfully loaded
+> jumping to 0x80000400
+> 
+> 
+> The same barebox image on the spi flash does not work; unfortunately I have no debug
+> messages in that case, I just see that the u-boot image boots so the HW is OK.
 
-Applied, thanks
+At least on i.MX6 there is a list of valid dcd address ranges. imx-usb-
+loader is different, since the values are written by the tool and not
+by the ROM code. The ROM code will refuse to boot if values are outside
+of the valid ranges, maybe this is the case in your DCD table?
 
-Sascha
+- Rouven
 
-> 
-> diff --git a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-> index 69f252b..50cf852 100644
-> --- a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-> +++ b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-> @@ -29,7 +29,7 @@
->  
->  		environment-spinor {
->  			compatible = "barebox,environment";
-> -			device-path = &m25p80, "partname:barebox-environment";
-> +			device-path = &m25p80, "partname:nor.barebox-environment";
->  			status = "disabled";
->  		};
->  	};
-> @@ -86,22 +86,22 @@
->  		#size-cells = <1>;
->  
->  		partition@0 {
-> -			label = "barebox";
-> +			label = "nor.barebox";
->  			reg = <0x0 0x100000>;
->  		};
->  
->  		partition@100000 {
-> -			label = "barebox-environment";
-> +			label = "nor.barebox-environment";
->  			reg = <0x100000 0x20000>;
->  		};
->  
->  		partition@120000 {
-> -			label = "oftree";
-> +			label = "nor.oftree";
->  			reg = <0x120000 0x20000>;
->  		};
->  
->  		partition@140000 {
-> -			label = "kernel";
-> +			label = "nor.kernel";
->  			reg = <0x140000 0x0>;
->  		};
->  	};
-> -- 
-> 2.7.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
