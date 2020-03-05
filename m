@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mx009.vodafonemail.xion.oxcs.net ([153.92.174.39])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j9qbf-0001G6-3B
- for barebox@lists.infradead.org; Thu, 05 Mar 2020 13:32:08 +0000
-Date: Thu, 5 Mar 2020 14:32:05 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200305133205.GV3335@pengutronix.de>
-References: <20200227172646.31180-1-pmamonov@gmail.com>
+ id 1j9qxP-0002OE-2e
+ for barebox@lists.infradead.org; Thu, 05 Mar 2020 13:54:37 +0000
+Date: Thu, 5 Mar 2020 14:54:24 +0100 (CET)
+From: Giorgio Dal Molin <giorgio.nicole@arcor.de>
+Message-ID: <609291452.5069.1583416465036@mail.vodafone.de>
+In-Reply-To: <20200305132415.GT3335@pengutronix.de>
+References: <2105504494.1423.1583396775377@mail.vodafone.de>
+ <4b929efa-4d1b-5641-743d-96d94766c57d@pengutronix.de>
+ <1062353935.2358.1583401816499@mail.vodafone.de>
+ <20200305132415.GT3335@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200227172646.31180-1-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,43 +24,101 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] usb: host: ehci: distinguish DMA addresses
-To: Peter Mamonov <pmamonov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: barebox image for an spi flash (like m25p0) on an imx7 soc
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Thu, Feb 27, 2020 at 08:26:46PM +0300, Peter Mamonov wrote:
-> This patch adds translation from CPU to DMA addresses, which is required for
-> proper operation on certain architectures like MIPS.
+Hi Sascha,
+
+
+> On March 5, 2020 at 2:24 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
 > 
-> This patch also fixes the bug introduced by 4350744bf5 "usb: ehci-hcd: port
-> periodic transactions implementation from the u-boot", which is still present
-> in the original U-Boot code:
 > 
-> 	td->qt_buffer[0] =
-> 		cpu_to_hc32((unsigned long)buffer + i * elementsize);
-> 	td->qt_buffer[1] =
-> 		cpu_to_hc32((td->qt_buffer[0] + 0x1000) & ~0xfff);
-> 	...
+> On Thu, Mar 05, 2020 at 10:50:15AM +0100, Giorgio Dal Molin wrote:
+> > Hi,
+> > 
+> > thank you for the quick reply.
+> > 
+> > here is how I register the bbu for the spi flash:
+> > 
+> > imx7_bbu_internal_spi_i2c_register_handler("SPI", "/dev/m25p0", BBU_HANDLER_FLAG_DEFAULT);
+> > 
+> > and here is a hex dump of the spi flash after bb-updating (I hacked the 'cat' command a bit):
+> > 
+> > imx7d: / cat -h -b 0x450 /dev/m25p0
 > 
-> In case of a big-endian CPU 0x1000 is added to the byte-swapped value
-> `td->qt_buffer[0]`, the result is byte swapped once again and stored to
-> `td->qt_buffer[1]`. This results in erroneous values being stored in
-> `td->qt_buffer[1..4]`.
+> There's the 'md' command for this purpose ;)
 > 
-> N.B.: This patch needs some testing on architectures different from MIPS.
+> > 0000: 0xfe 0x03 0x00 0xea 0xfe 0xff 0xff 0xea 0xfe 0xff 0xff 0xea 0xfe 0xff 0xff 0xea 
+> > 0010: 0xfe 0xff 0xff 0xea 0xfe 0xff 0xff 0xea 0xfe 0xff 0xff 0xea 0xfe 0xff 0xff 0xea 
+> > 0020: 0x62 0x61 0x72 0x65 0x62 0x6f 0x78 0x00 0x00 0x00 0x00 0x00 0x00 0xf0 0x06 0x00 
+> > 0030: 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 
+> > 0040: 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 0x55 
+> > 0050: 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 
+> > ... < zeros > ...
+> > 03f0: 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 
+> > 0400: 0xd1 0x00 0x20 0x40 0x00 0x10 0x00 0x80 0x00 0x00 0x00 0x00 0x2c 0x04 0x00 0x80 
+> > 0410: 0x20 0x04 0x00 0x80 0x00 0x04 0x00 0x80 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 
+> > 0420: 0x00 0x00 0x00 0x80 0x00 0xf0 0x06 0x00 0x00 0x00 0x00 0x00 0xd2 0x01 0xbc 0x40 
+> > 0430: 0xcc 0x01 0x6c 0x04 0x30 0x34 0x00 0x04 0x0f 0x40 0x00 0x05 0x30 0x39 0x10 0x00 
+> > 0440: 0x00 0x00 0x00 0x02 0x30 0x7a 0x00 0x00 0x01 0x04 0x00 0x01 0x30 0x7a 0x01 0xa0 
+> > 
+> > It seems 'reasonable': there's a 0x400 bytes flash header and then the actual image
+> > starts, but it does not boot.
+> 
+> ...
+> 
+> > 03f0: 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 
+> > 0400: 0xd1 0x00 0x20 0x40 0x00 0x10 0x91 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 
+> > 0410: 0x20 0x04 0x91 0x00 0x00 0x04 0x91 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 
+> > 0420: 0x00 0x00 0x91 0x00 0x00 0xa0 0x00 0x00 0x00 0x00 0x00 0x00 0xd2 0x00 0x04 0x40 
+> > 0430: 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 
+> > 0440: 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 
+> > 
+> > 
+> > The first 4 bites at offset 0x400 are the same but then the u-boot working image is
+> > different.
+> 
+> Where do you have the SDRAM setup? The U-Boot snippet loads into
+> internal SRAM which looks like the SDRAM setup is done in code. The
+> barebox image above loads into SDRAM which of course requires that you
+> have setup the SDRAM in the DCD table.
+> 
 
-I tested it on ARM. Yup, it works.
+Yes, this is right, u-boot does not have a DCD, they init the soc (ddr cntr)
+in the bootloader self.
 
-Applied, thanks
+The DCD I use in barebox works when I upload the image with the imx-usb-loader:
 
-Sascha
+root [ /tmp ]# /tmp/bbuild/arm32/scripts/imx/imx-usb-loader /tmp/bbuild/arm32/barebox-flash-image
+found i.MX7S USB device [15a2:0076]
+main dcd length 1bc
+DCD write: sub dcd length: 0x016c, flags: 0x04
+DCD check condition 3 on address 0x307900c4
+DCD write: sub dcd length: 0x0034, flags: 0x04
+DCD check condition 3 on address 0x307a0004
+loading binary file(/tmp/bbuild/arm32/barebox-flash-image) to 0x80000000, skip=0x0, fsize=456157 type=170...
+binary file successfully loaded
+jumping to 0x80000400
 
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+The same barebox image on the spi flash does not work; unfortunately I have no debug
+messages in that case, I just see that the u-boot image boots so the HW is OK.
+
+giorgio
+
+> Sascha
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
