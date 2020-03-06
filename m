@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jAIjq-0001bk-CN
- for barebox@lists.infradead.org; Fri, 06 Mar 2020 19:34:29 +0000
+ id 1jAIjx-0001jX-QE
+ for barebox@lists.infradead.org; Fri, 06 Mar 2020 19:34:37 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  6 Mar 2020 20:34:05 +0100
-Message-Id: <20200306193406.20531-8-s.hauer@pengutronix.de>
+Date: Fri,  6 Mar 2020 20:34:06 +0100
+Message-Id: <20200306193406.20531-9-s.hauer@pengutronix.de>
 In-Reply-To: <20200306193406.20531-1-s.hauer@pengutronix.de>
 References: <20200306193406.20531-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,87 +21,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/8] net: reply to ping requests
+Subject: [PATCH 8/8] usbnet: Be more friendly in the receive path
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-Now that we have the network receive function running in a poller we
-can reasonably well answer to ping requests. Implement this feature.
+To recognize if we have a receive packet pending we must set up a USB
+bulk transfer. When there's no incoming packet we must wait until the
+transfer times out. We do this with every poller call which can
+considerably slow down the system. With this patch we do two things
+against this:
+
+- lower the timeout for the bulk transfer
+- When we haven't received a packet for longer then lower the frequency
+  of calling into the USB stack to once every 100ms
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- net/net.c | 46 ++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 44 insertions(+), 2 deletions(-)
+ drivers/net/usb/usbnet.c | 19 ++++++++++++++++++-
+ include/usb/usbnet.h     |  3 +++
+ 2 files changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/net/net.c b/net/net.c
-index a5c7fb5211..abb0a1e5e7 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -573,12 +573,54 @@ static int net_handle_udp(unsigned char *pkt, int len)
- 	return -EINVAL;
- }
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index f1a49a142c..38aa73047e 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -123,12 +123,29 @@ static int usbnet_recv(struct eth_device *edev)
  
--static int net_handle_icmp(unsigned char *pkt, int len)
-+static int ping_reply(struct eth_device *edev, unsigned char *pkt, int len)
-+{
-+	struct ethernet *et = (struct ethernet *)pkt;
-+	struct icmphdr *icmp;
-+	struct iphdr *ip = (struct iphdr *)(pkt + ETHER_HDR_SIZE);
-+	unsigned char *packet;
-+	int ret;
-+
-+	memcpy(et->et_dest, et->et_src, 6);
-+	memcpy(et->et_src, edev->ethaddr, 6);
-+	et->et_protlen = htons(PROT_IP);
-+
-+	icmp = net_eth_to_icmphdr(pkt);
-+
-+	icmp->type = ICMP_ECHO_REPLY;
-+	icmp->checksum = 0;
-+	icmp->checksum = ~net_checksum((unsigned char *)icmp,
-+				       len - sizeof(struct iphdr) - ETHER_HDR_SIZE);
-+	ip->check = 0;
-+	ip->frag_off = 0;
-+	net_copy_ip((void *)&ip->daddr, &ip->saddr);
-+	net_copy_ip((void *)&ip->saddr, &edev->ipaddr);
-+	ip->check = ~net_checksum((unsigned char *)ip, sizeof(struct iphdr));
-+
-+	packet = net_alloc_packet();
-+	if (!packet)
+ 	dev_dbg(&edev->dev, "%s\n",__func__);
+ 
++	/*
++	 * we must let the usb_bulk_msg below timeout before we realize
++	 * that we have no packet received. Since this function runs
++	 * inside a poller we considerably slow down barebox when we
++	 * wait for the timeout too often. To improve this we only poll
++	 * with full speed when we actually have received a packet in the
++	 * last 100ms.
++	 */
++	if (is_timeout(dev->last_pkt_received, 100 * MSECOND) &&
++	    !is_timeout(dev->last_recv_call, 100 * MSECOND)) {
 +		return 0;
++	}
 +
-+	memcpy(packet, pkt, ETHER_HDR_SIZE + len);
++	dev->last_recv_call = get_time_ns();
 +
-+	ret = eth_send(edev, packet, ETHER_HDR_SIZE + len);
-+
-+	free(packet);
-+
-+	return 0;
-+}
-+
-+static int net_handle_icmp(struct eth_device *edev, unsigned char *pkt, int len)
- {
- 	struct net_connection *con;
-+	struct icmphdr *icmp;
+ 	len = dev->rx_urb_size;
  
- 	pr_debug("%s\n", __func__);
+-	ret = usb_bulk_msg(dev->udev, dev->in, rx_buf, len, &alen, 100);
++	ret = usb_bulk_msg(dev->udev, dev->in, rx_buf, len, &alen, 2);
+ 	if (ret)
+ 		return ret;
  
-+	icmp = net_eth_to_icmphdr(pkt);
-+	if (icmp->type == ICMP_ECHO_REQUEST)
-+		ping_reply(edev, pkt, len);
++	dev->last_pkt_received = get_time_ns();
 +
- 	list_for_each_entry(con, &connection_list, list) {
- 		if (con->proto == IPPROTO_ICMP) {
- 			con->handler(con->priv, pkt, len);
-@@ -615,7 +657,7 @@ static int net_handle_ip(struct eth_device *edev, unsigned char *pkt, int len)
+ 	if (alen) {
+ 		if (info->rx_fixup)
+ 			return info->rx_fixup(dev, rx_buf, alen);
+diff --git a/include/usb/usbnet.h b/include/usb/usbnet.h
+index 386c2164bd..ee578b81ed 100644
+--- a/include/usb/usbnet.h
++++ b/include/usb/usbnet.h
+@@ -52,6 +52,9 @@ struct usbnet {
+ #		define EVENT_RX_MEMORY	2
+ #		define EVENT_STS_SPLIT	3
+ #		define EVENT_LINK_RESET	4
++
++	uint64_t last_pkt_received;
++	uint64_t last_recv_call;
+ };
  
- 	switch (ip->protocol) {
- 	case IPPROTO_ICMP:
--		return net_handle_icmp(pkt, len);
-+		return net_handle_icmp(edev, pkt, len);
- 	case IPPROTO_UDP:
- 		return net_handle_udp(pkt, len);
- 	}
+ #if 0
 -- 
 2.25.1
 
