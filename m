@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from stcim.de ([2a01:4f8:120:63a3::2])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jAFUF-0004oN-Tz
- for barebox@lists.infradead.org; Fri, 06 Mar 2020 16:06:10 +0000
-Date: Fri, 6 Mar 2020 17:06:03 +0100
-From: Stefan Lengfeld <contact@stefanchrist.eu>
-Message-ID: <20200306160603.7it2ljm22lge4jwe@porty>
-References: <20200303174616.4476-1-m.felsch@pengutronix.de>
- <20200303174616.4476-3-m.felsch@pengutronix.de>
+ id 1jAE6b-00023W-GJ
+ for barebox@lists.infradead.org; Fri, 06 Mar 2020 14:37:40 +0000
+From: Michael Tretter <m.tretter@pengutronix.de>
+Date: Fri,  6 Mar 2020 15:37:32 +0100
+Message-Id: <20200306143732.24239-3-m.tretter@pengutronix.de>
+In-Reply-To: <20200306143732.24239-1-m.tretter@pengutronix.de>
+References: <20200306143732.24239-1-m.tretter@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200303174616.4476-3-m.felsch@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,35 +21,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] ARM: nitrogen6: remove hard coded values
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/2] Documentation: blspec: drop documentation of
+ devicetree-overlay
+To: barebox@lists.infradead.org
+Cc: Michael Tretter <m.tretter@pengutronix.de>
 
-Hi Marco,
+The devicetree-overlay key is part of the official Boot Loader
+Specification. There is no need to document it in Barebox, again.
 
-my two cents:
+Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+---
+ Documentation/user/booting-linux.rst | 4 ----
+ 1 file changed, 4 deletions(-)
 
-On Tue, Mar 03, 2020 at 06:46:16PM +0100, Marco Felsch wrote:
-> Since commit c3f5ce7308 ("net: phy: micrel: Add support for specifying pad
-> skew values") and commit 2720a02e8a ("net: phy: micrel: backport finding
-> PHY properties") the phy driver can handle this taking the DT specified
+diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/booting-linux.rst
+index 4b0ead1db5a5..983b56deefb6 100644
+--- a/Documentation/user/booting-linux.rst
++++ b/Documentation/user/booting-linux.rst
+@@ -232,10 +232,6 @@ device where the entry is found on. This makes it possible to use the same rootf
+ image on different devices without having to specify a different root= option each
+ time.
+ 
+-Additionally to the options defined in the original spec, Barebox has the
+-``devicetree-overlay`` option. This is a string value that refer to overlays
+-that will be applied to the device tree before passing it to Linux.
+-
+ Network boot
+ ------------
+ 
+-- 
+2.20.1
 
-The first commit id 'c3f5ce7308' is a *stable* commit id, because
-Sascha's 'master' branch of the barebox already contains the
-patch/commit. It's safe to use it in commit messages and e.g. 'Fixes:'
-tags.
-
-The second commit id '2720a02e8a' is not stable, because the patch is
-part of your series and therefore not yet in Sascha's master branch.
-When Sascha applies the patch to his git tree, the patch will have a
-different commit id, because it will have a different parent, committer
-and date.
-
-If you want to reference a patch in your series from a commit message,
-you mostly just use something like 'and the previous patch (...)'.
-
-Kind regards,
-Stefan
 
 _______________________________________________
 barebox mailing list
