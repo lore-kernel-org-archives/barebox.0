@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jAE6b-00023W-GJ
- for barebox@lists.infradead.org; Fri, 06 Mar 2020 14:37:40 +0000
+ id 1jAE6b-00023V-G5
+ for barebox@lists.infradead.org; Fri, 06 Mar 2020 14:37:38 +0000
 From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Fri,  6 Mar 2020 15:37:32 +0100
-Message-Id: <20200306143732.24239-3-m.tretter@pengutronix.de>
-In-Reply-To: <20200306143732.24239-1-m.tretter@pengutronix.de>
-References: <20200306143732.24239-1-m.tretter@pengutronix.de>
+Date: Fri,  6 Mar 2020 15:37:30 +0100
+Message-Id: <20200306143732.24239-1-m.tretter@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,34 +19,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] Documentation: blspec: drop documentation of
- devicetree-overlay
+Subject: [PATCH 0/2] Documentation: blspec: update documentation
 To: barebox@lists.infradead.org
 Cc: Michael Tretter <m.tretter@pengutronix.de>
 
-The devicetree-overlay key is part of the official Boot Loader
-Specification. There is no need to document it in Barebox, again.
+Hello,
 
-Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
----
- Documentation/user/booting-linux.rst | 4 ----
- 1 file changed, 4 deletions(-)
+These are two minor patches to update the documentation of blspec-entries. The
+first patch updates the link to the specification and the second patch removed
+the documentation of the devicetree-overlay key, which is now part of the
+official spec.
 
-diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/booting-linux.rst
-index 4b0ead1db5a5..983b56deefb6 100644
---- a/Documentation/user/booting-linux.rst
-+++ b/Documentation/user/booting-linux.rst
-@@ -232,10 +232,6 @@ device where the entry is found on. This makes it possible to use the same rootf
- image on different devices without having to specify a different root= option each
- time.
- 
--Additionally to the options defined in the original spec, Barebox has the
--``devicetree-overlay`` option. This is a string value that refer to overlays
--that will be applied to the device tree before passing it to Linux.
--
- Network boot
- ------------
- 
+Michael
+
+Michael Tretter (2):
+  Documentation: blspec: update link to Boot Loader Specification
+  Documentation: blspec: drop documentation of devicetree-overlay
+
+ Documentation/user/booting-linux.rst | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
+
 -- 
 2.20.1
 
