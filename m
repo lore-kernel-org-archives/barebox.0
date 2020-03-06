@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jAIjh-0001S6-NO
- for barebox@lists.infradead.org; Fri, 06 Mar 2020 19:34:19 +0000
+ id 1jAIjp-0001bj-S1
+ for barebox@lists.infradead.org; Fri, 06 Mar 2020 19:34:27 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  6 Mar 2020 20:34:00 +0100
-Message-Id: <20200306193406.20531-3-s.hauer@pengutronix.de>
+Date: Fri,  6 Mar 2020 20:34:02 +0100
+Message-Id: <20200306193406.20531-5-s.hauer@pengutronix.de>
 In-Reply-To: <20200306193406.20531-1-s.hauer@pengutronix.de>
 References: <20200306193406.20531-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,115 +21,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/8] net: Add a slice to struct eth_device
+Subject: [PATCH 4/8] usb: Add a slice to usb host controllers
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-Add ethernet code safe for being called from a poller.
-
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/net.h |  8 ++++++++
- net/eth.c     | 26 ++++++++++++++++++++------
- 2 files changed, 28 insertions(+), 6 deletions(-)
+ drivers/usb/core/usb.c | 6 ++++++
+ include/usb/usb.h      | 7 +++++++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/include/net.h b/include/net.h
-index 6912a557b5..d7a1f4aaea 100644
---- a/include/net.h
-+++ b/include/net.h
-@@ -19,6 +19,7 @@
- #include <stdlib.h>
- #include <clock.h>
- #include <led.h>
-+#include <slice.h>
- #include <xfuncs.h>
- #include <linux/phy.h>
- #include <linux/string.h>	/* memcpy */
-@@ -63,6 +64,8 @@ struct eth_device {
- 	char *bootarg;
- 	char *linuxdevname;
- 
-+	struct slice slice;
+diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+index 1c3dcb79a8..da7afb5a32 100644
+--- a/drivers/usb/core/usb.c
++++ b/drivers/usb/core/usb.c
+@@ -83,11 +83,16 @@ static inline int usb_host_acquire(struct usb_host *host)
+ 	if (host->sem)
+ 		return -EAGAIN;
+ 	host->sem++;
 +
- 	bool ifup;
- #define ETH_MODE_DHCP 0
- #define ETH_MODE_STATIC 1
-@@ -72,6 +75,11 @@ struct eth_device {
++	slice_acquire(&host->slice);
++
+ 	return 0;
+ }
  
- #define dev_to_edev(d) container_of(d, struct eth_device, dev)
+ static inline void usb_host_release(struct usb_host *host)
+ {
++	slice_release(&host->slice);
++
+ 	if (host->sem > 0)
+ 		host->sem--;
+ }
+@@ -97,6 +102,7 @@ int usb_register_host(struct usb_host *host)
+ 	list_add_tail(&host->list, &host_list);
+ 	host->busnum = host_busnum++;
+ 	host->sem = 0;
++	slice_init(&host->slice, host->hw_dev);
+ 	return 0;
+ }
  
-+static inline struct slice *eth_device_slice(struct eth_device *edev)
+diff --git a/include/usb/usb.h b/include/usb/usb.h
+index 95dedfd5b7..d730578fd7 100644
+--- a/include/usb/usb.h
++++ b/include/usb/usb.h
+@@ -23,6 +23,7 @@
+ #define _USB_H_
+ 
+ #include <driver.h>
++#include <slice.h>
+ #include <usb/ch9.h>
+ #include <usb/ch11.h>
+ #include <usb/usb_defs.h>
+@@ -154,11 +155,17 @@ struct usb_host {
+ 	struct usb_device *root_dev;
+ 	int sem;
+ 	struct usb_phy *usbphy;
++	struct slice slice;
+ };
+ 
+ int usb_register_host(struct usb_host *);
+ void usb_unregister_host(struct usb_host *host);
+ 
++static inline struct slice *usb_device_slice(struct usb_device *udev)
 +{
-+	return &edev->slice;
++	return &udev->host->slice;
 +}
 +
- static inline const char *eth_name(struct eth_device *edev)
- {
- 	return edev->devname;
-diff --git a/net/eth.c b/net/eth.c
-index 53d24baa16..6d36d05a6f 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -235,32 +235,44 @@ int eth_send(struct eth_device *edev, void *packet, int length)
- {
- 	int ret;
+ int usb_host_detect(struct usb_host *host);
  
-+	slice_acquire(eth_device_slice(edev));
-+
- 	ret = eth_check_open(edev);
- 	if (ret)
--		return ret;
-+		goto out;
- 
- 	ret = eth_carrier_check(edev, 0);
- 	if (ret)
--		return ret;
-+		goto out;
- 
- 	led_trigger_network(LED_TRIGGER_NET_TX);
- 
--	return edev->send(edev, packet, length);
-+	ret = edev->send(edev, packet, length);
-+out:
-+	slice_release(eth_device_slice(edev));
-+
-+	return ret;
- }
- 
- static int __eth_rx(struct eth_device *edev)
- {
- 	int ret;
- 
-+	slice_acquire(eth_device_slice(edev));
-+
- 	ret = eth_check_open(edev);
- 	if (ret)
--		return ret;
-+		goto out;
- 
- 	ret = eth_carrier_check(edev, 0);
- 	if (ret)
--		return ret;
-+		goto out;
- 
--	return edev->recv(edev);
-+	ret = edev->recv(edev);
-+out:
-+	slice_release(eth_device_slice(edev));
-+
-+	return ret;
- }
- 
- int eth_rx(void)
-@@ -377,6 +389,8 @@ int eth_register(struct eth_device *edev)
- 		edev->dev.id = DEVICE_ID_DYNAMIC;
- 	}
- 
-+	slice_init(&edev->slice, dev);
-+
- 	ret = register_device(&edev->dev);
- 	if (ret)
- 		return ret;
+ int usb_set_protocol(struct usb_device *dev, int ifnum, int protocol);
 -- 
 2.25.1
 
