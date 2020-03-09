@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jBCpu-00028G-OK
- for barebox@lists.infradead.org; Mon, 09 Mar 2020 07:28:28 +0000
-Date: Mon, 9 Mar 2020 08:28:25 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200309072825.GD3335@pengutronix.de>
-References: <20200303174616.4476-1-m.felsch@pengutronix.de>
- <20200303174616.4476-2-m.felsch@pengutronix.de>
+ id 1jBNTl-0000iN-RC
+ for barebox@lists.infradead.org; Mon, 09 Mar 2020 18:50:20 +0000
+Received: by mail-wm1-x32b.google.com with SMTP id g134so666611wme.3
+ for <barebox@lists.infradead.org>; Mon, 09 Mar 2020 11:50:16 -0700 (PDT)
+Received: from ?IPv6:2a02:8070:bb9:bc00::fc? ([2a02:8070:bb9:bc00::fc])
+ by smtp.gmail.com with ESMTPSA id f15sm46360887wru.83.2020.03.09.11.50.13
+ for <barebox@lists.infradead.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 09 Mar 2020 11:50:13 -0700 (PDT)
+Message-ID: <b2db7e05d21f4e164862a52e2bee358ebf8a618b.camel@googlemail.com>
+From: Christoph Fritz <chf.fritz@googlemail.com>
+Date: Mon, 09 Mar 2020 19:50:12 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200303174616.4476-2-m.felsch@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,88 +22,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Reply-To: chf.fritz@googlemail.com
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] net: phy: micrel: backport finding PHY properties
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] ARM: dts: advantech-rom-7421: fix sd-card cd pin
+To: barebox@lists.infradead.org
 
-On Tue, Mar 03, 2020 at 06:46:15PM +0100, Marco Felsch wrote:
-> This backports linux commit 651df2183543 ("phy: micrel: Fix finding PHY
-> properties in MAC node."):
-> 
-> 8<---------------------------------------------------------------------
-> 
->     phy: micrel: Fix finding PHY properties in MAC node.
-> 
->     commit 8b63ec1837fa ("phylib: Make PHYs children of their MDIO bus,
->     not the bus' parent.")  changed the parenting of PHY devices, making
->     them a child of the MDIO bus, instead of the MAC device. This broken
->     the Micrel PHY driver which has a deprecated feature of allowing PHY
->     properties to be placed into the MAC node.
-> 
->     In order to find the MAC node, we need to walk up the tree of devices
->     until we find one with an OF node attached.
-> 
->     Reported-by: Dinh Nguyen <dinguyen@opensource.altera.com>
->     Suggested-by: David Daney <david.daney@cavium.com>
->     Acked-by: David Daney <david.daney@cavium.com>
->     Fixes: 8b63ec1837fa ("phylib: Make PHYs children of their MDIO bus, not the bus' parent.")
->     Signed-off-by: Andrew Lunn <andrew@lunn.ch>
->     Tested-by: Dinh Nguyen <dinguyen@opensource.altera.com>
->     Acked-by: Florian Fainelli <f.fainelli@gmail.com>
->     Signed-off-by: David S. Miller <davem@davemloft.net>
-> 
-> 8<---------------------------------------------------------------------
-> 
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> ---
->  drivers/net/phy/micrel.c | 12 ++++++++++--
->  1 file changed, 10 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-> index 8f0b81d8fa..b18db0a751 100644
-> --- a/drivers/net/phy/micrel.c
-> +++ b/drivers/net/phy/micrel.c
-> @@ -115,6 +115,7 @@ static int ksz9021_config_init(struct phy_device *phydev)
->  {
->  	const struct device_d *dev = &phydev->dev;
->  	const struct device_node *of_node = dev->device_node;
-> +	const struct device_d *dev_walker;
->  	const char *clk_pad_skew_names[] = {
->  		"txen-skew-ps", "txc-skew-ps",
->  		"rxdv-skew-ps", "rxc-skew-ps"
-> @@ -128,8 +129,15 @@ static int ksz9021_config_init(struct phy_device *phydev)
->  		"txd2-skew-ps", "txd3-skew-ps"
->  	};
->  
-> -	if (!of_node && dev->parent->device_node)
-> -		of_node = dev->parent->device_node;
-> +	/* The Micrel driver has a deprecated option to place phy OF
-> +	 * properties in the MAC node. Walk up the tree of devices to
-> +	 * find a device with an OF node.
-> +	 */
-> +	dev_walker = &phydev->dev;
-> +	do {
-> +		of_node = dev_walker->device_node;
-> +		dev_walker = dev_walker->parent;
-> +	} while (!of_node && dev_walker);
+Enable possibility to auto detect sd-card insertion on Advantech
+ROM-7421, this patch sets a necessary gpio to active-low.
 
-If that's deprecated that would be a good opportunity to fix it in the
-upstream device trees and also to be more noisy here.
+Signed-off-by: Christoph Fritz <chf.fritz@googlemail.com>
+---
+ arch/arm/dts/imx6dl-advantech-rom-7421.dts | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Unlike the Kernel we don't have to deal with deprecated device trees in
-barebox.
-
-Sascha
-
+diff --git a/arch/arm/dts/imx6dl-advantech-rom-7421.dts b/arch/arm/dts/imx6dl-advantech-rom-7421.dts
+index cdf378114a..22ce744307 100755
+--- a/arch/arm/dts/imx6dl-advantech-rom-7421.dts
++++ b/arch/arm/dts/imx6dl-advantech-rom-7421.dts
+@@ -100,7 +100,7 @@
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_usdhc2>;
+ 	bus-width = <8>;
+-	cd-gpios = <&gpio2 0 0>;
++	cd-gpios = <&gpio2 0 GPIO_ACTIVE_LOW>;
+ 	status = "okay";
+ 
+ 	#address-cells = <1>;
+@@ -121,9 +121,9 @@
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_usdhc3>;
+ 	bus-width = <4>;
+-	cd-gpios = <&gpio2 1 0>;
+-	en-gpios = <&gpio2 2 0>;
+-	wp-gpios = <&gpio2 3 0>;
++	cd-gpios = <&gpio2 1 GPIO_ACTIVE_LOW>;
++	en-gpios = <&gpio2 2 GPIO_ACTIVE_HIGH>;
++	wp-gpios = <&gpio2 3 GPIO_ACTIVE_HIGH>;
+ 	status = "okay";
+ };
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
+
 
 _______________________________________________
 barebox mailing list
