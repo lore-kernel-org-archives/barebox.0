@@ -1,25 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mailout04.rmx.de ([94.199.90.94])
+Received: from mx1.emlix.com ([188.40.240.192])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jBcBf-0006Dn-27
- for barebox@lists.infradead.org; Tue, 10 Mar 2020 10:32:36 +0000
-Received: from kdin02.retarus.com (kdin02.dmz1.retloc [172.19.17.49])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mailout04.rmx.de (Postfix) with ESMTPS id 48cBHJ4Mwlz3qwy8
- for <barebox@lists.infradead.org>; Tue, 10 Mar 2020 11:32:28 +0100 (CET)
-Received: from ppmail.arri.de (unknown [217.111.95.7])
- (using TLSv1 with cipher AES128-SHA (128/128 bits))
- (No client certificate requested)
- by kdin02.retarus.com (Postfix) with ESMTPS id 48cBH55fw8z2TTBH
- for <barebox@lists.infradead.org>; Tue, 10 Mar 2020 11:32:17 +0100 (CET)
-From: Christian Eggers <ceggers@arri.de>
-Date: Tue, 10 Mar 2020 11:32:16 +0100
-Message-ID: <5171121.mPVAPPOFPN@n95hx1g2>
-In-Reply-To: <20200310094225.qphvkdncc4zg3dfr@pengutronix.de>
-References: <20200309142026.26208-1-ceggers@arri.de>
- <20200310094225.qphvkdncc4zg3dfr@pengutronix.de>
+ id 1jBJjD-0007H0-ND
+ for barebox@lists.infradead.org; Mon, 09 Mar 2020 14:50:01 +0000
+References: <20200306193406.20531-1-s.hauer@pengutronix.de>
+ <20200306193406.20531-2-s.hauer@pengutronix.de>
+From: =?UTF-8?Q?Daniel_Gl=c3=b6ckner?= <dg@emlix.com>
+Message-ID: <96699dd6-b00b-79e2-943d-52892e91cebf@emlix.com>
+Date: Mon, 9 Mar 2020 15:49:53 +0100
 MIME-Version: 1.0
+In-Reply-To: <20200306193406.20531-2-s.hauer@pengutronix.de>
+Content-Language: de-DE
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,45 +19,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] usb: Add extra delay for device scan
-To: Roland Hieber <rhi@pengutronix.de>
-Cc: barebox@lists.infradead.org, Primoz Fiser <primoz.fiser@norik.com>
+Subject: Re: [PATCH 1/8] Introduce slices
+To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
+Cc: Edmund Henniges <eh@emlix.com>
 
-Hi Roland,
-
-Am Dienstag, 10. M=E4rz 2020, 10:42:25 CET schrieb Roland Hieber:
-> This should probably be:?
-> =
-
->   Fixes: b1d9837182 ("usb: Change power-on / scanning timeout handling")
-> =
-
->  - Roland
-> =
-
-
-I definitely isolated the regression to that particular commit. Additionall=
-y I =
-
-would like to note, that the scanning timeout is more than long enough. It =
-
-seems that if the USB hub is queried within a loop without any sleep in =
-
-between, it has no "resources" left to detecting new devices itself. The =
-
-scanning timeout itself should not be affected by the additional sleep.
-
-Regards
-Christian
-
-
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8gU2FzY2hhLAoKQW0gMDMvMDYvMjAgdW0gMjA6MzMgc2NocmllYiBTYXNjaGEgSGF1ZXI6
+Cj4gK3N0YXRpYyB2b2lkIF9fc2xpY2VfYWNxdWlyZShzdHJ1Y3Qgc2xpY2UgKnNsaWNlLCBpbnQg
+YWRkKQo+ICt7Cj4gKwlzdHJ1Y3Qgc2xpY2VfZW50cnkgKnNlOwo+ICsKPiArCXNsaWNlLT5hY3F1
+aXJlZCArPSBhZGQ7Cj4gKwo+ICsJaWYgKHNsaWNlLT5hY3F1aXJlZCA8IDApIHsKPiArCQlwcl9l
+cnIoIlNsaWNlICVzIGFjcXVpcmVkIGNvdW50IGRyb3BzIGJlbG93IHplcm9cbiIsCj4gKwkJCXNs
+aWNlX25hbWUoc2xpY2UpKTsKPiArCQlkdW1wX3N0YWNrKCk7Cj4gKwkJc2xpY2UtPmFjcXVpcmVk
+ID0gMDsKPiArCQlyZXR1cm47Cj4gKwl9Cj4gKwo+ICsJbGlzdF9mb3JfZWFjaF9lbnRyeShzZSwg
+JnNsaWNlLT5kZXBzLCBsaXN0KQo+ICsJCV9fc2xpY2VfYWNxdWlyZShzZS0+c2xpY2UsIGFkZCk7
+CgpJIGRvbid0IHRoaW5rIHdlIG5lZWQgdGhhdCBsb29wLiBzbGljZV9hY3F1aXJlZCB3aWxsIGFs
+cmVhZHkgcmVjdXJzZSBpbnRvCnRoZSBkZXBlbmRlbmN5IHRyZWUuIFRoYXQgbG9vcCB3b3VsZCBh
+bHNvIG1hcmsgcmVzb3VyY2VzIGFzIHVzZWQgd2hpY2gKYXJlIHN0aWxsIHVudXNlZC4gVGhlIG5l
+dHdvcmsgcGFja2V0IGhhbmRsZXJzIGNhbiBzYWZlbHkgZG8gTURJTyB0cmFuc2ZlcnMKYmVjYXVz
+ZSB0aGUgbmV0d29yayBzdGFjayBkb2VzIG5vdCB0YWxrIHRvIHRoZSBQSFkgd2hpbGUgY2hlY2tp
+bmcgZm9yCnJlY2VpdmVkIHBhY2tldHMuCgo+ICtib29sIHNsaWNlX2FjcXVpcmVkKHN0cnVjdCBz
+bGljZSAqc2xpY2UpCj4gK3sKPiArCXN0cnVjdCBzbGljZV9lbnRyeSAqc2U7Cj4gKwo+ICsJaWYg
+KHNsaWNlLT5hY3F1aXJlZCkKPiArCQlyZXR1cm4gdHJ1ZTsKPiArCj4gKwlsaXN0X2Zvcl9lYWNo
+X2VudHJ5KHNlLCAmc2xpY2UtPmRlcHMsIGxpc3QpCj4gKwkJaWYgKHNsaWNlX2FjcXVpcmVkKHNl
+LT5zbGljZSkpCj4gKwkJCXJldHVybiB0cnVlOwo+ICsKPiArCXJldHVybiBmYWxzZTsKPiArfQoK
+SXQgd291bGQgYmUgbmljZSBpZiB0aGlzIGZ1bmN0aW9uIHdhcyBhYmxlIHRvIGRldGVjdCBjeWNs
+aWMgZGVwZW5kZW5jaWVzCmlmIERFQlVHLiBUaGlzIGNhbiBiZSBkb25lIGJ5IHNldHRpbmcgc2xp
+Y2UtPmFjcXVpcmVkIHRvIElOVF9NSU4gd2hpbGUKcmVjdXJzaW5nIGFuZCBjaGVja2luZyBpZiBh
+bnkgb2YgdGhlIHZhbHVlcyBmb3VuZCBhcmUgbmVnYXRpdmUuCgpCZXN0IHJlZ2FyZHMsCgogIERh
+bmllbAoKLS0gCkRpcGwuLU1hdGguIERhbmllbCBHbMO2Y2tuZXIsIGVtbGl4IEdtYkgsIGh0dHA6
+Ly93d3cuZW1saXguY29tCkZvbiArNDkgNTUxIDMwNjY0LTAsIEZheCArNDkgNTUxIDMwNjY0LTEx
+LApHb3RoYWVyIFBsYXR6IDMsIDM3MDgzIEfDtnR0aW5nZW4sIEdlcm1hbnkKU2l0eiBkZXIgR2Vz
+ZWxsc2NoYWZ0OiBHw7Z0dGluZ2VuLCBBbXRzZ2VyaWNodCBHw7Z0dGluZ2VuIEhSIEIgMzE2MApH
+ZXNjaMOkZnRzZsO8aHJ1bmc6IEhlaWtlIEpvcmRhbiwgRHIuIFV3ZSBLcmFja2UKVXN0LUlkTnIu
+OiBERSAyMDUgMTk4IDA1NQoKZW1saXggLSB5b3VyIGVtYmVkZGVkIGxpbnV4IHBhcnRuZXIKCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFp
+bGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFk
+ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
