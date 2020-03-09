@@ -1,12 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j8jai-0002ht-Rk
- for barebox@lists.infradead.org; Mon, 02 Mar 2020 11:50:36 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  2 Mar 2020 12:49:53 +0100
-Message-Id: <20200302114955.13897-1-a.fatoum@pengutronix.de>
+ id 1jBCvm-0004bd-3x
+ for barebox@lists.infradead.org; Mon, 09 Mar 2020 07:34:31 +0000
+Date: Mon, 9 Mar 2020 08:34:28 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200309073428.GF3335@pengutronix.de>
+References: <HK0PR02MB3716EB73F0D1E1FE54E843FDC9E50@HK0PR02MB3716.apcprd02.prod.outlook.com>
+ <HK0PR02MB3716F6EF62B6B6542CBCA3DEC9E50@HK0PR02MB3716.apcprd02.prod.outlook.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <HK0PR02MB3716F6EF62B6B6542CBCA3DEC9E50@HK0PR02MB3716.apcprd02.prod.outlook.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,54 +23,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] video/ssd1307fb: fix NULL pointer dereference in probe
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, bst@pengutronix.de
-
-info->priv is dereferenced before a valid value has been set leading to
-a NULL pointer dereference in the probe function. Fix this.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-Cc: bst@pengutronix.de
-Cc: str@pengutronix.de
+Subject: Re: =?utf-8?B?5Zue5aSN?= =?utf-8?Q?=3A?= can not compile on ubuntu
+ 18.04 lts for x86
+To: zhou qi <atmgnd@outlook.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
 Hi,
 
-how did this ever work? Does the platform that you used this on not trap
-on NULL-pointer dereference?
+On Wed, Mar 04, 2020 at 03:56:11AM +0000, zhou qi wrote:
+> 
+> It compiles If I switch "Bring up type" to "EFI". How to compile "16 bit Bios" type ?
 
-Cheers,
----
- drivers/video/ssd1307fb.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+I'm afraid that when you pass this hurdle it will only be the tip of the
+iceberg. Booting from a X86 legacy BIOS never got to a point where it
+was really usable. Please don't do it unless you are willing to take a
+lot of pain ;)
 
-diff --git a/drivers/video/ssd1307fb.c b/drivers/video/ssd1307fb.c
-index 70077e43a879..83a561a3e1fc 100644
---- a/drivers/video/ssd1307fb.c
-+++ b/drivers/video/ssd1307fb.c
-@@ -405,8 +405,9 @@ static int ssd1307fb_probe(struct device_d *dev)
- 	}
- 
- 	info = xzalloc(sizeof(struct fb_info));
-+	par = xzalloc(sizeof(*par));
- 
--	par = info->priv;
-+	info->priv = par;
- 	par->info = info;
- 	par->client = client;
- 
-@@ -574,6 +575,7 @@ reset_oled_error:
- 	free(vmem);
- fb_alloc_error:
- 	regulator_disable(par->vbat);
-+	free(par);
- 	free(info);
- 	return ret;
- }
+Regards,
+  Sascha
+
 -- 
-2.25.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
