@@ -1,12 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([78.46.208.201])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jA8V1-0005UN-5m
- for barebox@lists.infradead.org; Fri, 06 Mar 2020 08:38:28 +0000
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Fri,  6 Mar 2020 09:38:11 +0100
-Message-Id: <20200306083810.8181-1-r.czerwinski@pengutronix.de>
+ id 1jBBy2-0006S3-TI
+ for barebox@lists.infradead.org; Mon, 09 Mar 2020 06:32:49 +0000
+Date: Mon, 9 Mar 2020 07:32:42 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+Message-ID: <20200309063242.c76wuxgdvkl6u77w@pengutronix.de>
+References: <20200303174616.4476-1-m.felsch@pengutronix.de>
+ <20200303174616.4476-3-m.felsch@pengutronix.de>
+ <20200306160603.7it2ljm22lge4jwe@porty>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200306160603.7it2ljm22lge4jwe@porty>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,74 +24,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] of: overlay: rework error message for symbols
-To: barebox@lists.infradead.org
-Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Subject: Re: [PATCH 3/3] ARM: nitrogen6: remove hard coded values
+To: Stefan Lengfeld <contact@stefanchrist.eu>
+Cc: barebox@lists.infradead.org
 
-Missing symbols for overlay or root tree are valid if the overlay only
-adds paths to the device tree. The code handles this correctly, however
-it still isues a WARNING for the missing symbols. Demote the warning to
-info and move into the of_overlay_apply_symbols() function.
+Hi Stefan,
 
-Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
----
- drivers/of/overlay.c | 18 +++++++-----------
- 1 file changed, 7 insertions(+), 11 deletions(-)
+On 20-03-06 17:06, Stefan Lengfeld wrote:
+> Hi Marco,
+> 
+> my two cents:
+> 
+> On Tue, Mar 03, 2020 at 06:46:16PM +0100, Marco Felsch wrote:
+> > Since commit c3f5ce7308 ("net: phy: micrel: Add support for specifying pad
+> > skew values") and commit 2720a02e8a ("net: phy: micrel: backport finding
+> > PHY properties") the phy driver can handle this taking the DT specified
+> 
+> The first commit id 'c3f5ce7308' is a *stable* commit id, because
+> Sascha's 'master' branch of the barebox already contains the
+> patch/commit. It's safe to use it in commit messages and e.g. 'Fixes:'
+> tags.
 
-diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
-index de79e05cbc..fadd072970 100644
---- a/drivers/of/overlay.c
-+++ b/drivers/of/overlay.c
-@@ -105,7 +105,7 @@ static char *of_overlay_fix_path(struct device_node *root,
- 	return basprintf("%s%s", target->full_name, path_tail);
- }
- 
--static int of_overlay_apply_symbols(struct device_node *root,
-+static void of_overlay_apply_symbols(struct device_node *root,
- 				    struct device_node *overlay)
- {
- 	const char *old_path;
-@@ -115,12 +115,12 @@ static int of_overlay_apply_symbols(struct device_node *root,
- 	struct device_node *overlay_symbols;
- 
- 	root_symbols = of_get_child_by_name(root, "__symbols__");
--	if (!root_symbols)
--		return -EINVAL;
--
- 	overlay_symbols = of_get_child_by_name(overlay, "__symbols__");
--	if (!overlay_symbols)
--		return -EINVAL;
-+
-+	if (!overlay_symbols || !root_symbols) {
-+		pr_info("overlay/root doesn't have a __symbols__ node\n");
-+		return;
-+	}
- 
- 	list_for_each_entry(prop, &overlay_symbols->properties, list) {
- 		if (of_prop_cmp(prop->name, "name") == 0)
-@@ -133,8 +133,6 @@ static int of_overlay_apply_symbols(struct device_node *root,
- 			 prop->name, new_path);
- 		of_property_write_string(root_symbols, prop->name, new_path);
- 	}
--
--	return 0;
- }
- 
- static int of_overlay_apply_fragment(struct device_node *root,
-@@ -171,9 +169,7 @@ int of_overlay_apply_tree(struct device_node *root,
- 		return -EINVAL;
- 
- 	/* Copy symbols from resolved overlay to base device tree */
--	err = of_overlay_apply_symbols(root, resolved);
--	if (err)
--		pr_warn("failed to copy symbols from overlay");
-+	of_overlay_apply_symbols(root, resolved);
- 
- 	/* Copy nodes and properties from resolved overlay to root */
- 	for_each_child_of_node(resolved, fragment) {
--- 
-2.25.1
+I don't add such tags for barebox because it doesn't make sense here.
 
+> The second commit id '2720a02e8a' is not stable, because the patch is
+> part of your series and therefore not yet in Sascha's master branch.
+> When Sascha applies the patch to his git tree, the patch will have a
+> different commit id, because it will have a different parent, committer
+> and date.
+
+You're right here, I imagined it after I send the patch series..
+@Sascha
+Pls, can you drop the commit-id or adapt it after you applied the patch?
+
+> If you want to reference a patch in your series from a commit message,
+> you mostly just use something like 'and the previous patch (...)'.
+
+I will keep that in mind, thanks :)
+
+Regards,
+  Marco
+
+> Kind regards,
+> Stefan
+> 
 
 _______________________________________________
 barebox mailing list
