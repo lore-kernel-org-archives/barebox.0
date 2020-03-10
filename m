@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-oi1-x242.google.com ([2607:f8b0:4864:20::242])
+Received: from conuserg-08.nifty.com ([210.131.2.75])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jC7Fk-0002Y0-2A
- for barebox@lists.infradead.org; Wed, 11 Mar 2020 19:42:53 +0000
-Received: by mail-oi1-x242.google.com with SMTP id w13so3105826oih.4
- for <barebox@lists.infradead.org>; Wed, 11 Mar 2020 12:42:51 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200310104348.29155-1-franck.jullien@gmail.com>
- <20200311150940.GF3335@pengutronix.de>
-In-Reply-To: <20200311150940.GF3335@pengutronix.de>
-From: Franck Jullien <franck.jullien@gmail.com>
-Date: Wed, 11 Mar 2020 20:42:40 +0100
-Message-ID: <CAJfOKBz_JHJ_0ABmfC9NoSGKARN96S7QJGpxcpusprzQQDgS1w@mail.gmail.com>
+ id 1jBd47-000228-4K
+ for barebox@lists.infradead.org; Tue, 10 Mar 2020 11:28:52 +0000
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Tue, 10 Mar 2020 20:28:13 +0900
+Message-Id: <20200310112816.7415-2-masahiroy@kernel.org>
+In-Reply-To: <20200310112816.7415-1-masahiroy@kernel.org>
+References: <20200310112816.7415-1-masahiroy@kernel.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,88 +16,75 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] scripts/bareboximd: add mode argument to open call
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: [PATCH 2/5] kbuild: remove dead code for modpost
+To: barebox@lists.infradead.org
+Cc: Masahiro Yamada <masahiroy@kernel.org>
 
-TGUgbWVyLiAxMSBtYXJzIDIwMjAgw6AgMTY6MDksIFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5n
-dXRyb25peC5kZT4gYSDDqWNyaXQgOgo+Cj4gSGkgRnJhbmNrLAo+Cj4gT24gVHVlLCBNYXIgMTAs
-IDIwMjAgYXQgMTE6NDM6NDhBTSArMDEwMCwgZnJhbmNrLmp1bGxpZW5AZ21haWwuY29tIHdyb3Rl
-Ogo+ID4gRnJvbTogRnJhbmNrIEp1bGxpZW4gPGZyYW5jay5qdWxsaWVuQGdtYWlsLmNvbT4KPiA+
-Cj4gPiBOZXdlciBnY2MgY29tcGxhaW4gYWJvdXQgbWlzc2luZyBtb2RlIGFyZ3VtZW50IHdoZW4g
-YSBuZXcgZmlsZSBpcwo+ID4gY3JlYXRlZC4gVGhpcyBpcyBhbiBleHRyYWN0IG9mIG1hbi1wYWdl
-czoKPiA+Cj4gPiAgIlRoZSBtb2RlIGFyZ3VtZW50IHNwZWNpZmllcyB0aGUgZmlsZSBtb2RlIGJp
-dHMgYmUgYXBwbGllZCB3aGVuCj4gPiAgYSBuZXcgZmlsZSBpcyBjcmVhdGVkLiAgVGhpcyBhcmd1
-bWVudCBtdXN0IGJlIHN1cHBsaWVkIHdoZW4KPiA+ICBPX0NSRUFUIG9yIE9fVE1QRklMRSBpcyBz
-cGVjaWZpZWQgaW4gZmxhZ3MiCj4KPiBEb2VzIHRoaXMgd2FybmluZyBvbmx5IHNob3cgdXAgd2hl
-biBjb21waWxpbmcgZm9yIHRoZSBob3N0IG9yIGFsc28gd2hlbgo+IGNvbXBpbGluZyBiYXJlYm94
-IGl0c2VsZj8KPgoKSXQgaGFwcGVucyB3aGVuIEkgY29tcGlsZSBiYXJlYm94IGl0c2VsZiAob3Ig
-c29tZXRoaW5nIGlzIG9idmlvdXNseSB3cm9uZyk6CgouLi4kIEFSQ0g9c2FuZGJveCBtYWtlIHNh
-bmRib3hfZGVmY29uZmlnCiMKIyBObyBjaGFuZ2UgdG8gLmNvbmZpZwojCgouLi4kIEFSQ0g9c2Fu
-ZGJveCBtYWtlCiAgQ0hLICAgICBpbmNsdWRlL2dlbmVyYXRlZC92ZXJzaW9uLmgKICBDSEsgICAg
-IGluY2x1ZGUvZ2VuZXJhdGVkL3V0c3JlbGVhc2UuaAogIENSRUFURSAgaW5jbHVkZS9jb25maWcu
-aAogIEhPU1RDQyAgc2NyaXB0cy9iYXJlYm94aW1kCkluIGZpbGUgaW5jbHVkZWQgZnJvbSAvdXNy
-L2luY2x1ZGUvZmNudGwuaDoyOTA6MCwKICAgICAgICAgICAgICAgICBmcm9tIHNjcmlwdHMvYmFy
-ZWJveGltZC5jOjI0OgpJbiBmdW5jdGlvbiDigJhvcGVu4oCZLAogICAgaW5saW5lZCBmcm9tIOKA
-mHdyaXRlX2ZpbGXigJkgYXQgc2NyaXB0cy9iYXJlYm94aW1kLmM6NjI6NSwKICAgIGlubGluZWQg
-ZnJvbSDigJhpbWRfd3JpdGVfY3JjMzLigJkgYXQgc2NyaXB0cy8uLi9jb21tb24vaW1kLmM6Mzgw
-OjQsCiAgICBpbmxpbmVkIGZyb20g4oCYaW1kX2NvbW1hbmTigJkgYXQgc2NyaXB0cy8uLi9jb21t
-b24vaW1kLmM6NDg3OjM6Ci91c3IvaW5jbHVkZS94ODZfNjQtbGludXgtZ251L2JpdHMvZmNudGwy
-Lmg6NTA6NDogZXJyb3I6IGNhbGwgdG8K4oCYX19vcGVuX21pc3NpbmdfbW9kZeKAmSBkZWNsYXJl
-ZCB3aXRoIGF0dHJpYnV0ZSBlcnJvcjogb3BlbiB3aXRoIE9fQ1JFQVQKb3IgT19UTVBGSUxFIGlu
-IHNlY29uZCBhcmd1bWVudCBuZWVkcyAzIGFyZ3VtZW50cwogICAgX19vcGVuX21pc3NpbmdfbW9k
-ZSAoKTsKICAgIF5+fn5+fn5+fn5+fn5+fn5+fn5+fn4Kc2NyaXB0cy9NYWtlZmlsZS5ob3N0Ojkx
-OiByZWNpcGUgZm9yIHRhcmdldCAnc2NyaXB0cy9iYXJlYm94aW1kJyBmYWlsZWQKbWFrZVsxXTog
-KioqIFtzY3JpcHRzL2JhcmVib3hpbWRdIEVycm9yIDEKTWFrZWZpbGU6NDM2OiByZWNpcGUgZm9y
-IHRhcmdldCAnc2NyaXB0cycgZmFpbGVkCm1ha2U6ICoqKiBbc2NyaXB0c10gRXJyb3IgMgoKLi4u
-JCBnY2MgLXYKVXNpbmcgYnVpbHQtaW4gc3BlY3MuCkNPTExFQ1RfR0NDPWdjYwpDT0xMRUNUX0xU
-T19XUkFQUEVSPS91c3IvbGliL2djYy94ODZfNjQtbGludXgtZ251LzcvbHRvLXdyYXBwZXIKT0ZG
-TE9BRF9UQVJHRVRfTkFNRVM9bnZwdHgtbm9uZQpPRkZMT0FEX1RBUkdFVF9ERUZBVUxUPTEKVGFy
-Z2V0OiB4ODZfNjQtbGludXgtZ251CkNvbmZpZ3VyZWQgd2l0aDogLi4vc3JjL2NvbmZpZ3VyZSAt
-diAtLXdpdGgtcGtndmVyc2lvbj0nVWJ1bnR1CjcuNS4wLTN1YnVudHUxfjE4LjA0JwotLXdpdGgt
-YnVndXJsPWZpbGU6Ly8vdXNyL3NoYXJlL2RvYy9nY2MtNy9SRUFETUUuQnVncwotLWVuYWJsZS1s
-YW5ndWFnZXM9YyxhZGEsYysrLGdvLGJyaWcsZCxmb3J0cmFuLG9iamMsb2JqLWMrKwotLXByZWZp
-eD0vdXNyIC0td2l0aC1nY2MtbWFqb3ItdmVyc2lvbi1vbmx5IC0tcHJvZ3JhbS1zdWZmaXg9LTcK
-LS1wcm9ncmFtLXByZWZpeD14ODZfNjQtbGludXgtZ251LSAtLWVuYWJsZS1zaGFyZWQKLS1lbmFi
-bGUtbGlua2VyLWJ1aWxkLWlkIC0tbGliZXhlY2Rpcj0vdXNyL2xpYgotLXdpdGhvdXQtaW5jbHVk
-ZWQtZ2V0dGV4dCAtLWVuYWJsZS10aHJlYWRzPXBvc2l4IC0tbGliZGlyPS91c3IvbGliCi0tZW5h
-YmxlLW5scyAtLWVuYWJsZS1ib290c3RyYXAgLS1lbmFibGUtY2xvY2FsZT1nbnUKLS1lbmFibGUt
-bGlic3RkY3h4LWRlYnVnIC0tZW5hYmxlLWxpYnN0ZGN4eC10aW1lPXllcwotLXdpdGgtZGVmYXVs
-dC1saWJzdGRjeHgtYWJpPW5ldyAtLWVuYWJsZS1nbnUtdW5pcXVlLW9iamVjdAotLWRpc2FibGUt
-dnRhYmxlLXZlcmlmeSAtLWVuYWJsZS1saWJtcHggLS1lbmFibGUtcGx1Z2luCi0tZW5hYmxlLWRl
-ZmF1bHQtcGllIC0td2l0aC1zeXN0ZW0temxpYiAtLXdpdGgtdGFyZ2V0LXN5c3RlbS16bGliCi0t
-ZW5hYmxlLW9iamMtZ2M9YXV0byAtLWVuYWJsZS1tdWx0aWFyY2ggLS1kaXNhYmxlLXdlcnJvcgot
-LXdpdGgtYXJjaC0zMj1pNjg2IC0td2l0aC1hYmk9bTY0IC0td2l0aC1tdWx0aWxpYi1saXN0PW0z
-MixtNjQsbXgzMgotLWVuYWJsZS1tdWx0aWxpYiAtLXdpdGgtdHVuZT1nZW5lcmljCi0tZW5hYmxl
-LW9mZmxvYWQtdGFyZ2V0cz1udnB0eC1ub25lIC0td2l0aG91dC1jdWRhLWRyaXZlcgotLWVuYWJs
-ZS1jaGVja2luZz1yZWxlYXNlIC0tYnVpbGQ9eDg2XzY0LWxpbnV4LWdudQotLWhvc3Q9eDg2XzY0
-LWxpbnV4LWdudSAtLXRhcmdldD14ODZfNjQtbGludXgtZ251ClRocmVhZCBtb2RlbDogcG9zaXgK
-Z2NjIHZlcnNpb24gNy41LjAgKFVidW50dSA3LjUuMC0zdWJ1bnR1MX4xOC4wNCkKCkZyYW5jawoK
-PiBTYXNjaGEKPgo+ID4KPiA+IFNpZ25lZC1vZmYtYnk6IEZyYW5jayBKdWxsaWVuIDxmcmFuY2su
-anVsbGllbkBnbWFpbC5jb20+Cj4gPiAtLS0KPiA+ICBzY3JpcHRzL2JhcmVib3hpbWQuYyB8IDIg
-Ky0KPiA+ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKPiA+
-Cj4gPiBkaWZmIC0tZ2l0IGEvc2NyaXB0cy9iYXJlYm94aW1kLmMgYi9zY3JpcHRzL2JhcmVib3hp
-bWQuYwo+ID4gaW5kZXggZTUwMDBlMGFlLi5iMzMyZDQzNWEgMTAwNjQ0Cj4gPiAtLS0gYS9zY3Jp
-cHRzL2JhcmVib3hpbWQuYwo+ID4gKysrIGIvc2NyaXB0cy9iYXJlYm94aW1kLmMKPiA+IEBAIC01
-OSw3ICs1OSw3IEBAIHN0YXRpYyBpbnQgd3JpdGVfZmlsZShjb25zdCBjaGFyICpmaWxlbmFtZSwg
-Y29uc3Qgdm9pZCAqYnVmLCBzaXplX3Qgc2l6ZSkKPiA+ICAgICAgIGludCBmZCwgcmV0Owo+ID4g
-ICAgICAgaW50IG5vdzsKPiA+Cj4gPiAtICAgICBmZCA9IG9wZW4oZmlsZW5hbWUsIE9fV1JPTkxZ
-IHwgT19UUlVOQyB8IE9fQ1JFQVQpOwo+ID4gKyAgICAgZmQgPSBvcGVuKGZpbGVuYW1lLCBPX1dS
-T05MWSB8IE9fVFJVTkMgfCBPX0NSRUFULCBTX0lSVVNSIHwgU19JV1VTUiB8IFNfSVJHUlAgfCBT
-X0lST1RIKTsKPiA+ICAgICAgIGlmIChmZCA8IDApCj4gPiAgICAgICAgICAgICAgIHJldHVybiBm
-ZDsKPiA+Cj4gPiAtLQo+ID4gMi4xNy4xCj4gPgo+ID4KPiA+IF9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCj4gPiBiYXJlYm94IG1haWxpbmcgbGlzdAo+ID4g
-YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCj4gPiBodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9y
-Zy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gKPiA+Cj4KPiAtLQo+IFBlbmd1dHJvbml4IGUuSy4g
-ICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8
-Cj4gU3RldWVyd2FsZGVyIFN0ci4gMjEgICAgICAgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3
-dy5wZW5ndXRyb25peC5kZS8gIHwKPiAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55ICAgICAgICAg
-ICAgICAgICAgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfAo+IEFtdHNnZXJpY2h0IEhp
-bGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1
-NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJl
-Ym94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3Rz
-LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+rule_barebox-modpost is dead code since it is not invoked by anyone.
+
+$(call barebox-modpost) is dead code too since there is no variable
+named 'barebox-modpost'.
+
+We could fix it to $(call rule_barebox-modpost) to invoke the rules,
+but I hesitate to enable the code that has never been tested.
+
+barebox-init, barebox-main are not set by anyone, so this code does
+not seem to work.
+
+The code is completely out of sync from the upstream Linux, so there
+is no good reason to keep this rotten code.
+
+If barebox needs modpost, this should be re-implemented correctly.
+(preferably, by re-syncing with the latest Linux)
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+---
+
+ Makefile | 14 --------------
+ 1 file changed, 14 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 1fa09b041360..e9e412af0815 100644
+--- a/Makefile
++++ b/Makefile
+@@ -716,19 +716,6 @@ debug_kallsyms: .tmp_map$(last_kallsyms)
+ 
+ endif # ifdef CONFIG_KALLSYMS
+ 
+-# Do modpost on a prelinked vmlinux. The finally linked vmlinux has
+-# relevant sections renamed as per the linker script.
+-quiet_cmd_barebox-modpost = LD      $@
+-      cmd_barebox-modpost = $(LD) $(LDFLAGS) -r -o $@                          \
+-	 $(vmlinux-init) --start-group $(barebox-main) --end-group             \
+-	 $(filter-out $(barebox-init) $(barebox-main) $(barebox-lds) FORCE ,$^)
+-define rule_barebox-modpost
+-	:
+-	+$(call cmd,barebox-modpost)
+-	$(Q)$(MAKE) -f $(srctree)/scripts/Makefile.modpost $@
+-	$(Q)echo 'cmd_$@ := $(cmd_barebox-modpost)' > $(dot-target).cmd
+-endef
+-
+ OBJCOPYFLAGS_barebox.bin = -O binary
+ 
+ barebox.bin: barebox FORCE
+@@ -782,7 +769,6 @@ endif
+ 
+ # barebox image
+ barebox: $(barebox-lds) $(barebox-common) $(kallsyms.o) FORCE
+-	$(call barebox-modpost)
+ 	$(call if_changed_rule,barebox__)
+ 	$(Q)rm -f .old_version
+ 
+-- 
+2.17.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
