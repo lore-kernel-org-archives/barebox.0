@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from conuserg-08.nifty.com ([210.131.2.75])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jC2zO-0008GG-N0
- for barebox@lists.infradead.org; Wed, 11 Mar 2020 15:09:44 +0000
-Date: Wed, 11 Mar 2020 16:09:40 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200311150940.GF3335@pengutronix.de>
-References: <20200310104348.29155-1-franck.jullien@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200310104348.29155-1-franck.jullien@gmail.com>
+ id 1jBd47-000226-4K
+ for barebox@lists.infradead.org; Tue, 10 Mar 2020 11:28:54 +0000
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Tue, 10 Mar 2020 20:28:16 +0900
+Message-Id: <20200310112816.7415-5-masahiroy@kernel.org>
+In-Reply-To: <20200310112816.7415-1-masahiroy@kernel.org>
+References: <20200310112816.7415-1-masahiroy@kernel.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,65 +16,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] scripts/bareboximd: add mode argument to open call
-To: franck.jullien@gmail.com
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 5/5] kbuild: replace barebox-all with BAREBOX_OBJS
+To: barebox@lists.infradead.org
+Cc: Masahiro Yamada <masahiroy@kernel.org>
 
-Hi Franck,
+Replace $(barebox-all) with $(BAREBOX_OBJS), then delete barebox-all.
 
-On Tue, Mar 10, 2020 at 11:43:48AM +0100, franck.jullien@gmail.com wrote:
-> From: Franck Jullien <franck.jullien@gmail.com>
-> 
-> Newer gcc complain about missing mode argument when a new file is
-> created. This is an extract of man-pages:
-> 
->  "The mode argument specifies the file mode bits be applied when
->  a new file is created.  This argument must be supplied when
->  O_CREAT or O_TMPFILE is specified in flags"
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+---
 
-Does this warning only show up when compiling for the host or also when
-compiling barebox itself?
+ Makefile | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-Sascha
-
-> 
-> Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
-> ---
->  scripts/bareboximd.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/scripts/bareboximd.c b/scripts/bareboximd.c
-> index e5000e0ae..b332d435a 100644
-> --- a/scripts/bareboximd.c
-> +++ b/scripts/bareboximd.c
-> @@ -59,7 +59,7 @@ static int write_file(const char *filename, const void *buf, size_t size)
->  	int fd, ret;
->  	int now;
->  
-> -	fd = open(filename, O_WRONLY | O_TRUNC | O_CREAT);
-> +	fd = open(filename, O_WRONLY | O_TRUNC | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
->  	if (fd < 0)
->  		return fd;
->  
-> -- 
-> 2.17.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/Makefile b/Makefile
+index 40d146e511ac..c18244e761f9 100644
+--- a/Makefile
++++ b/Makefile
+@@ -585,7 +585,6 @@ export DEFAULT_COMPRESSION_SUFFIX
+ 
+ BAREBOX_OBJS := $(common-y)
+ export BAREBOX_PBL_OBJS := $(pbl-common-y)
+-barebox-all    := $(BAREBOX_OBJS)
+ BAREBOX_LDS    := $(lds-y)
+ 
+ # Rule to link barebox
+@@ -691,13 +690,13 @@ quiet_cmd_kallsyms = KSYM    $@
+ 	$(call cmd,kallsyms)
+ 
+ # .tmp_barebox1 must be complete except kallsyms, so update barebox version
+-.tmp_barebox1: $(BAREBOX_LDS) $(barebox-all) FORCE
++.tmp_barebox1: $(BAREBOX_LDS) $(BAREBOX_OBJS) FORCE
+ 	$(call if_changed_rule,ksym_ld)
+ 
+-.tmp_barebox2: $(BAREBOX_LDS) $(barebox-all) .tmp_kallsyms1.o FORCE
++.tmp_barebox2: $(BAREBOX_LDS) $(BAREBOX_OBJS) .tmp_kallsyms1.o FORCE
+ 	$(call if_changed,barebox__)
+ 
+-.tmp_barebox3: $(BAREBOX_LDS) $(barebox-all) .tmp_kallsyms2.o FORCE
++.tmp_barebox3: $(BAREBOX_LDS) $(BAREBOX_OBJS) .tmp_kallsyms2.o FORCE
+ 	$(call if_changed,barebox__)
+ 
+ # Needs to visit scripts/ before $(KALLSYMS) can be used.
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.17.1
+
 
 _______________________________________________
 barebox mailing list
