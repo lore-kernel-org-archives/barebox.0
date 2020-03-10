@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jBZrO-0001R6-Vr
- for barebox@lists.infradead.org; Tue, 10 Mar 2020 08:03:32 +0000
+ id 1jBZrW-0001VV-2w
+ for barebox@lists.infradead.org; Tue, 10 Mar 2020 08:03:39 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 10 Mar 2020 09:03:25 +0100
-Message-Id: <20200310080326.21724-3-a.fatoum@pengutronix.de>
-In-Reply-To: <20200310080326.21724-1-a.fatoum@pengutronix.de>
-References: <20200310080326.21724-1-a.fatoum@pengutronix.de>
+Date: Tue, 10 Mar 2020 09:03:23 +0100
+Message-Id: <20200310080326.21724-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,58 +19,147 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/4] ARM: at91: sama5d27-som1: branch to noinline function
- after stack setup
+Subject: [PATCH v2 1/4] ARM: at91: add support for SAM9 SoC reset
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Sam Ravnborg <sam@ravnborg.org>, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-We need to branch out as soon as possible after setting up the stack.
-Do this and thereby avoid an access violation we now run into using
-OSELAS.Toolchain-2019.09.1.
+System reset wasn't supported on the sama5 so far.
+Add a driver to remedy this.
 
-Fixes: 8bfb1852cf6a ("ARM: at91: add basic sama5d2-som1-ek1 support")
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v1 -> v2:
-  * New patch. I observe a wrong value in the stack pointer when
-    ek_turn_led is inlined.
+  * s/_/-/ in reset name to be consistent with driver name (Sam)
+  * return restart_handler_register(...) in probe instead of separate
+    return 0 after the register
+  
 ---
- arch/arm/boards/sama5d27-som1/lowlevel.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ arch/arm/mach-at91/Kconfig    |  5 +++
+ arch/arm/mach-at91/Makefile   |  1 +
+ arch/arm/mach-at91/sam9_rst.c | 72 +++++++++++++++++++++++++++++++++++
+ 3 files changed, 78 insertions(+)
+ create mode 100644 arch/arm/mach-at91/sam9_rst.c
 
-diff --git a/arch/arm/boards/sama5d27-som1/lowlevel.c b/arch/arm/boards/sama5d27-som1/lowlevel.c
-index 6907dcf812b5..62d35be9123d 100644
---- a/arch/arm/boards/sama5d27-som1/lowlevel.c
-+++ b/arch/arm/boards/sama5d27-som1/lowlevel.c
-@@ -65,14 +65,10 @@ static void ek_dbgu_init(void)
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index 5267102bf94e..0eb5410664bb 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -41,12 +41,16 @@ config AT91SAM926X_BOARD_INIT
+ config AT91SAM9_SMC
+ 	bool
  
- extern char __dtb_z_at91_sama5d27_som1_ek_start[];
- 
--ENTRY_FUNCTION(start_sama5d27_som1_ek, r0, r1, r2)
-+static noinline void som1_entry(void)
- {
- 	void *fdt;
- 
--	arm_cpu_lowlevel_init();
--
--	arm_setup_stack(SAMA5D2_SRAM_BASE + SAMA5D2_SRAM_SIZE);
--
- 	if (IS_ENABLED(CONFIG_DEBUG_LL))
- 		ek_dbgu_init();
- 
-@@ -81,3 +77,12 @@ ENTRY_FUNCTION(start_sama5d27_som1_ek, r0, r1, r2)
- 	ek_turn_led(RGB_LED_GREEN);
- 	barebox_arm_entry(SAMA5_DDRCS, SZ_128M, fdt);
- }
++config HAVE_AT91SAM9_RST
++	bool
 +
-+ENTRY_FUNCTION(start_sama5d27_som1_ek, r0, r1, r2)
+ config SOC_AT91SAM9
+ 	bool
+ 	select CPU_ARM926T
+ 	select AT91SAM9_SMC
+ 	select CLOCKSOURCE_ATMEL_PIT
+ 	select PINCTRL
++	select HAVE_AT91SAM9_RST
+ 	select HAVE_AT91_SMD
+ 	select HAVE_AT91_USB_CLK
+ 	select HAVE_AT91_UTMI
+@@ -54,6 +58,7 @@ config SOC_AT91SAM9
+ 
+ config SOC_SAMA5
+ 	bool
++	select HAVE_AT91SAM9_RST
+ 	select CPU_V7
+ 
+ config SOC_SAMA5D2
+diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
+index 66d0b700f61e..89aff54b8af7 100644
+--- a/arch/arm/mach-at91/Makefile
++++ b/arch/arm/mach-at91/Makefile
+@@ -13,6 +13,7 @@ obj-y += at91sam9_reset.o
+ obj-y += at91sam9g45_reset.o
+ 
+ obj-$(CONFIG_AT91SAM9_SMC) += sam9_smc.o
++obj-$(CONFIG_HAVE_AT91SAM9_RST) += at91sam9_rst.o
+ 
+ # CPU-specific support
+ obj-$(CONFIG_SOC_AT91RM9200)	+= at91rm9200.o at91rm9200_time.o at91rm9200_devices.o
+diff --git a/arch/arm/mach-at91/sam9_rst.c b/arch/arm/mach-at91/sam9_rst.c
+new file mode 100644
+index 000000000000..8f03576e698f
+--- /dev/null
++++ b/arch/arm/mach-at91/sam9_rst.c
+@@ -0,0 +1,72 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2019 Pengutronix, Ahmad Fatoum <a.fatoum@pengutronix.de>
++ */
++
++#include <common.h>
++#include <init.h>
++#include <io.h>
++#include <restart.h>
++#include <linux/clk.h>
++#include <mach/at91_rstc.h>
++
++struct at91sam9x_rst {
++	struct restart_handler restart;
++	void __iomem *base;
++};
++
++static void __noreturn at91sam9x_restart_soc(struct restart_handler *rst)
 +{
-+	arm_cpu_lowlevel_init();
++	struct at91sam9x_rst *priv = container_of(rst, struct at91sam9x_rst, restart);
 +
-+	arm_setup_stack(SAMA5D2_SRAM_BASE + SAMA5D2_SRAM_SIZE);
++	writel(AT91_RSTC_PROCRST
++	       | AT91_RSTC_PERRST
++	       | AT91_RSTC_EXTRST
++	       | AT91_RSTC_KEY,
++	       priv->base + AT91_RSTC_CR);
 +
-+	som1_entry();
++	hang();
 +}
++
++static int at91sam9x_rst_probe(struct device_d *dev)
++{
++	struct at91sam9x_rst *priv;
++	struct resource *iores;
++	struct clk *clk;
++
++	iores = dev_request_mem_resource(dev, 0);
++	if (IS_ERR(iores)) {
++		dev_err(dev, "could not get reset memory region\n");
++		return PTR_ERR(iores);
++	}
++
++	priv = xzalloc(sizeof(*priv));
++	priv->base = IOMEM(iores->start);
++
++	clk = clk_get(dev, NULL);
++	if (IS_ERR(clk)) {
++		release_region(iores);
++		free(priv);
++		return PTR_ERR(clk);
++	}
++
++	clk_enable(clk);
++
++	priv->restart.name = "at91sam9x-rst";
++	priv->restart.restart = at91sam9x_restart_soc;
++
++	return restart_handler_register(&priv->restart);
++}
++
++static const __maybe_unused struct of_device_id at91sam9x_rst_dt_ids[] = {
++	{ .compatible = "atmel,at91sam9g45-rstc", },
++	{ .compatible = "atmel,sama5d3-rstc", },
++	{ /* sentinel */ },
++};
++
++static struct driver_d at91sam9x_rst_driver = {
++	.name		= "at91sam9x-rst",
++	.of_compatible	= DRV_OF_COMPAT(at91sam9x_rst_dt_ids),
++	.probe		= at91sam9x_rst_probe,
++};
++device_platform_driver(at91sam9x_rst_driver);
 -- 
 2.25.1
 
