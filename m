@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from conuserg-08.nifty.com ([210.131.2.75])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jBd47-000226-4K
- for barebox@lists.infradead.org; Tue, 10 Mar 2020 11:28:54 +0000
+ id 1jBd47-000229-4D
+ for barebox@lists.infradead.org; Tue, 10 Mar 2020 11:28:52 +0000
 From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Tue, 10 Mar 2020 20:28:16 +0900
-Message-Id: <20200310112816.7415-5-masahiroy@kernel.org>
-In-Reply-To: <20200310112816.7415-1-masahiroy@kernel.org>
-References: <20200310112816.7415-1-masahiroy@kernel.org>
+Date: Tue, 10 Mar 2020 20:28:12 +0900
+Message-Id: <20200310112816.7415-1-masahiroy@kernel.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,47 +19,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] kbuild: replace barebox-all with BAREBOX_OBJS
+Subject: [PATCH 1/5] kbuild: remove unused barebox-head
 To: barebox@lists.infradead.org
 Cc: Masahiro Yamada <masahiroy@kernel.org>
 
-Replace $(barebox-all) with $(BAREBOX_OBJS), then delete barebox-all.
+This is not set by anyone.
 
 Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 ---
 
- Makefile | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/Makefile b/Makefile
-index 40d146e511ac..c18244e761f9 100644
+index d923463ed5e3..1fa09b041360 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -585,7 +585,6 @@ export DEFAULT_COMPRESSION_SUFFIX
+@@ -781,7 +781,7 @@ barebox.S barebox.s: barebox FORCE
+ endif
  
- BAREBOX_OBJS := $(common-y)
- export BAREBOX_PBL_OBJS := $(pbl-common-y)
--barebox-all    := $(BAREBOX_OBJS)
- BAREBOX_LDS    := $(lds-y)
+ # barebox image
+-barebox: $(barebox-lds) $(barebox-head) $(barebox-common) $(kallsyms.o) FORCE
++barebox: $(barebox-lds) $(barebox-common) $(kallsyms.o) FORCE
+ 	$(call barebox-modpost)
+ 	$(call if_changed_rule,barebox__)
+ 	$(Q)rm -f .old_version
+@@ -791,7 +791,7 @@ barebox.srec: barebox
  
- # Rule to link barebox
-@@ -691,13 +690,13 @@ quiet_cmd_kallsyms = KSYM    $@
- 	$(call cmd,kallsyms)
+ # The actual objects are generated when descending,
+ # make sure no implicit rule kicks in
+-$(sort $(barebox-head) $(barebox-common) ) $(barebox-lds) $(barebox-pbl-common): $(barebox-dirs) ;
++$(sort $(barebox-common) ) $(barebox-lds) $(barebox-pbl-common): $(barebox-dirs) ;
  
- # .tmp_barebox1 must be complete except kallsyms, so update barebox version
--.tmp_barebox1: $(BAREBOX_LDS) $(barebox-all) FORCE
-+.tmp_barebox1: $(BAREBOX_LDS) $(BAREBOX_OBJS) FORCE
- 	$(call if_changed_rule,ksym_ld)
- 
--.tmp_barebox2: $(BAREBOX_LDS) $(barebox-all) .tmp_kallsyms1.o FORCE
-+.tmp_barebox2: $(BAREBOX_LDS) $(BAREBOX_OBJS) .tmp_kallsyms1.o FORCE
- 	$(call if_changed,barebox__)
- 
--.tmp_barebox3: $(BAREBOX_LDS) $(barebox-all) .tmp_kallsyms2.o FORCE
-+.tmp_barebox3: $(BAREBOX_LDS) $(BAREBOX_OBJS) .tmp_kallsyms2.o FORCE
- 	$(call if_changed,barebox__)
- 
- # Needs to visit scripts/ before $(KALLSYMS) can be used.
+ # Handle descending into subdirectories listed in $(barebox-dirs)
+ # Preset locale variables to speed up the build process. Limit locale
 -- 
 2.17.1
 
