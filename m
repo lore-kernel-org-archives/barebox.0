@@ -1,20 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr1-x441.google.com ([2a00:1450:4864:20::441])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jBNW3-0001vc-5W
- for barebox@lists.infradead.org; Mon, 09 Mar 2020 18:52:40 +0000
-Received: by mail-wr1-x441.google.com with SMTP id v4so12595352wrs.8
- for <barebox@lists.infradead.org>; Mon, 09 Mar 2020 11:52:38 -0700 (PDT)
-Received: from ?IPv6:2a02:8070:bb9:bc00::fc? ([2a02:8070:bb9:bc00::fc])
- by smtp.gmail.com with ESMTPSA id n24sm22801933wra.61.2020.03.09.11.52.32
- for <barebox@lists.infradead.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Mar 2020 11:52:32 -0700 (PDT)
-Message-ID: <724e1315ccc2cf7cfe0bf90c893b65b24f5310fc.camel@googlemail.com>
-From: Christoph Fritz <chf.fritz@googlemail.com>
-Date: Mon, 09 Mar 2020 19:52:31 +0100
-In-Reply-To: <b2db7e05d21f4e164862a52e2bee358ebf8a618b.camel@googlemail.com>
-References: <b2db7e05d21f4e164862a52e2bee358ebf8a618b.camel@googlemail.com>
+ id 1jBZrO-0001R5-VT
+ for barebox@lists.infradead.org; Tue, 10 Mar 2020 08:03:32 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue, 10 Mar 2020 09:03:24 +0100
+Message-Id: <20200310080326.21724-2-a.fatoum@pengutronix.de>
+In-Reply-To: <20200310080326.21724-1-a.fatoum@pengutronix.de>
+References: <20200310080326.21724-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,41 +17,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: chf.fritz@googlemail.com
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ARM: dts: advantech-rom-7421: Add ocotp node to provide
- mac address
+Subject: [PATCH v2 2/4] ARM: at91: sama5d27-som1: clean up lowlevel.c
 To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-This patch adds an ocotp node to provide barebox with a mac address
-for Advantech ROM-7421.
+In ARM, stack decrements before storing values, so decrementing a number
+from the stack base is unnecessary. Existing instances of this were
+removed in 6b3dc4abd8 ("ARM: Cleanup stack offset cargo cult"), but the
+sama5d27-som1 board was added later than that. Fix the cargo cult here
+as well and while at it, turn a macro that doesn't need to be one
+into a static inline function.
 
-Signed-off-by: Christoph Fritz <chf.fritz@googlemail.com>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/dts/imx6dl-advantech-rom-7421.dts | 4 ++++
- 1 file changed, 4 insertions(+)
+v1 -> v2:
+  * New patch for issues raised by Sam against the giant board
+    lowlevel.c
+---
+ arch/arm/boards/sama5d27-som1/lowlevel.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/dts/imx6dl-advantech-rom-7421.dts b/arch/arm/dts/imx6dl-advantech-rom-7421.dts
-index 22ce744307..f0e3f4aa1f 100755
---- a/arch/arm/dts/imx6dl-advantech-rom-7421.dts
-+++ b/arch/arm/dts/imx6dl-advantech-rom-7421.dts
-@@ -86,6 +86,10 @@
- 	status = "okay";
- };
+diff --git a/arch/arm/boards/sama5d27-som1/lowlevel.c b/arch/arm/boards/sama5d27-som1/lowlevel.c
+index 7df5a4772d0b..6907dcf812b5 100644
+--- a/arch/arm/boards/sama5d27-som1/lowlevel.c
++++ b/arch/arm/boards/sama5d27-som1/lowlevel.c
+@@ -22,8 +22,10 @@
+ /* PCK = 492MHz, MCK = 164MHz */
+ #define MASTER_CLOCK	164000000
  
-+&ocotp {
-+	barebox,provide-mac-address = <&fec 0x620>;
-+};
-+
- &uart1 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_uart1>;
+-#define sama5d2_pmc_enable_periph_clock(clk) \
+-	at91_pmc_sam9x5_enable_periph_clock(IOMEM(SAMA5D2_BASE_PMC), clk)
++static inline void sama5d2_pmc_enable_periph_clock(int clk)
++{
++	at91_pmc_sam9x5_enable_periph_clock(IOMEM(SAMA5D2_BASE_PMC), clk);
++}
+ 
+ static void ek_turn_led(unsigned color)
+ {
+@@ -69,7 +71,7 @@ ENTRY_FUNCTION(start_sama5d27_som1_ek, r0, r1, r2)
+ 
+ 	arm_cpu_lowlevel_init();
+ 
+-	arm_setup_stack(SAMA5D2_SRAM_BASE + SAMA5D2_SRAM_SIZE - 16);
++	arm_setup_stack(SAMA5D2_SRAM_BASE + SAMA5D2_SRAM_SIZE);
+ 
+ 	if (IS_ENABLED(CONFIG_DEBUG_LL))
+ 		ek_dbgu_init();
 -- 
-2.20.1
-
+2.25.1
 
 
 _______________________________________________
