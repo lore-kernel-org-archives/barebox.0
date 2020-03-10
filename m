@@ -1,16 +1,25 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx1.emlix.com ([188.40.240.192])
+Received: from mailout04.rmx.de ([94.199.90.94])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jBKTn-0000sX-Ej
- for barebox@lists.infradead.org; Mon, 09 Mar 2020 15:38:09 +0000
-References: <20200228204823.28415-1-dg@emlix.com>
- <20200309071451.GC3335@pengutronix.de>
-From: =?UTF-8?Q?Daniel_Gl=c3=b6ckner?= <dg@emlix.com>
-Message-ID: <4b033b70-43b8-0dc4-aee9-77612e3c236b@emlix.com>
-Date: Mon, 9 Mar 2020 16:38:05 +0100
+ id 1jBcBf-0006Dn-27
+ for barebox@lists.infradead.org; Tue, 10 Mar 2020 10:32:36 +0000
+Received: from kdin02.retarus.com (kdin02.dmz1.retloc [172.19.17.49])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mailout04.rmx.de (Postfix) with ESMTPS id 48cBHJ4Mwlz3qwy8
+ for <barebox@lists.infradead.org>; Tue, 10 Mar 2020 11:32:28 +0100 (CET)
+Received: from ppmail.arri.de (unknown [217.111.95.7])
+ (using TLSv1 with cipher AES128-SHA (128/128 bits))
+ (No client certificate requested)
+ by kdin02.retarus.com (Postfix) with ESMTPS id 48cBH55fw8z2TTBH
+ for <barebox@lists.infradead.org>; Tue, 10 Mar 2020 11:32:17 +0100 (CET)
+From: Christian Eggers <ceggers@arri.de>
+Date: Tue, 10 Mar 2020 11:32:16 +0100
+Message-ID: <5171121.mPVAPPOFPN@n95hx1g2>
+In-Reply-To: <20200310094225.qphvkdncc4zg3dfr@pengutronix.de>
+References: <20200309142026.26208-1-ceggers@arri.de>
+ <20200310094225.qphvkdncc4zg3dfr@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20200309071451.GC3335@pengutronix.de>
-Content-Language: de-DE
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,49 +28,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/3] Support for fastboot over UDP
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] usb: Add extra delay for device scan
+To: Roland Hieber <rhi@pengutronix.de>
+Cc: barebox@lists.infradead.org, Primoz Fiser <primoz.fiser@norik.com>
 
-Am 03/09/20 um 08:14 schrieb Sascha Hauer:
-> On Fri, Feb 28, 2020 at 09:48:20PM +0100, Daniel Gl=F6ckner wrote:
->> Contrary to U-Boot it does not send keep alive messages every 30
->> seconds because everything is executed from a poller.
+Hi Roland,
+
+Am Dienstag, 10. M=E4rz 2020, 10:42:25 CET schrieb Roland Hieber:
+> This should probably be:?
 > =
 
-> How does that prevent you from sending keep palive messages? Sending
-> packages from a poller should work.
+>   Fixes: b1d9837182 ("usb: Change power-on / scanning timeout handling")
+> =
 
-When long running functions like cb_erase and cb_flash are executed in a
-poller, we can't currently use another poller to check if it is time to
-send a keep alive message.
+>  - Roland
+> =
 
-If we add a slice to poller_struct that is checked and then acquired in
-poller_call, it would be possible. But as I wrote, we might then want to
-limit the number of pollers executed "in parallel" because of the
-limited stack space.
 
-Having a slice in poller_struct also allows pollers to list the
-resources necessary to run them.
+I definitely isolated the regression to that particular commit. Additionall=
+y I =
 
-Best regards
+would like to note, that the scanning timeout is more than long enough. It =
 
-  Daniel
+seems that if the USB hub is queried within a loop without any sleep in =
 
--- =
+between, it has no "resources" left to detecting new devices itself. The =
 
-Dipl.-Math. Daniel Gl=F6ckner, emlix GmbH, http://www.emlix.com
-Fon +49 551 30664-0, Fax +49 551 30664-11,
-Gothaer Platz 3, 37083 G=F6ttingen, Germany
-Sitz der Gesellschaft: G=F6ttingen, Amtsgericht G=F6ttingen HR B 3160
-Gesch=E4ftsf=FChrung: Heike Jordan, Dr. Uwe Kracke
-Ust-IdNr.: DE 205 198 055
+scanning timeout itself should not be affected by the additional sleep.
 
-emlix - your embedded linux partner
+Regards
+Christian
+
+
+
 
 _______________________________________________
 barebox mailing list
