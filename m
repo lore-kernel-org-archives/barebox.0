@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jC2xa-00083N-RT
- for barebox@lists.infradead.org; Wed, 11 Mar 2020 15:07:52 +0000
-Date: Wed, 11 Mar 2020 16:07:48 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200311150748.GE3335@pengutronix.de>
-References: <20200310080326.21724-1-a.fatoum@pengutronix.de>
+ id 1jBbPB-0003cY-3E
+ for barebox@lists.infradead.org; Tue, 10 Mar 2020 09:42:30 +0000
+Date: Tue, 10 Mar 2020 10:42:25 +0100
+From: Roland Hieber <rhi@pengutronix.de>
+Message-ID: <20200310094225.qphvkdncc4zg3dfr@pengutronix.de>
+References: <20200309142026.26208-1-ceggers@arri.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200310080326.21724-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20200309142026.26208-1-ceggers@arri.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,32 +22,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/4] ARM: at91: add support for SAM9 SoC reset
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, Sam Ravnborg <sam@ravnborg.org>
+Subject: Re: [PATCH] usb: Add extra delay for device scan
+To: Christian Eggers <ceggers@arri.de>
+Cc: barebox@lists.infradead.org, Primoz Fiser <primoz.fiser@norik.com>
 
-On Tue, Mar 10, 2020 at 09:03:23AM +0100, Ahmad Fatoum wrote:
-> System reset wasn't supported on the sama5 so far.
-> Add a driver to remedy this.
+On Mon, Mar 09, 2020 at 03:20:26PM +0100, Christian Eggers wrote:
+> Since b1d9837182, detection of various USB flash drives stopped working.
+> While the changes itself look correct, probably the HUB requires some
+> "recovery time" between the GET_STATUS commands in order to be able to
+> detect devices.
 > 
-> Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Our configuration: i.MX6ULL (USB-OTG) with only one port on the root
+> HUB. This port is connected to a Microchip USB4916 hub (permanently
+> attached). The USB4916 is configured with it's power on defaults which
+> means that bPwrOn2PwrGood is set to the maximum (0xFF = 510 ms).
+> 
+> Fixes: b1d9837182 ("b1d9837182d2b20232234adb36ada2129c3a8152")
+
+This should probably be:?
+
+  Fixes: b1d9837182 ("usb: Change power-on / scanning timeout handling")
+
+
+ - Roland
+
+> Signed-off-by: Christian Eggers <ceggers@arri.de>
 > ---
-> v1 -> v2:
->   * s/_/-/ in reset name to be consistent with driver name (Sam)
->   * return restart_handler_register(...) in probe instead of separate
->     return 0 after the register
->   
-
-Applied, thanks
-
-Sascha
+>  drivers/usb/core/hub.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+> index 8874775f17..466bbe527b 100644
+> --- a/drivers/usb/core/hub.c
+> +++ b/drivers/usb/core/hub.c
+> @@ -406,6 +406,9 @@ static int usb_device_list_scan(void)
+>  			if (ret)
+>  				goto out;
+>  		}
+> +
+> +		/* Avoid hammering the HUB with port scans */
+> +		mdelay(25);
+>  	}
+>  
+>  out:
+> -- 
+> Christian Eggers
+> Embedded software developer
+> 
+> Arnold & Richter Cine Technik GmbH & Co. Betriebs KG
+> Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRA 57918
+> Persoenlich haftender Gesellschafter: Arnold & Richter Cine Technik GmbH
+> Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRB 54477
+> Geschaeftsfuehrer: Dr. Michael Neuhaeuser; Stephan Schenk; Walter Trauninger; Markus Zeiler
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Roland Hieber, Pengutronix e.K.          | r.hieber@pengutronix.de     |
+Steuerwalder Str. 21                     | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686         | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
