@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm1-x343.google.com ([2a00:1450:4864:20::343])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jBcMm-0001lK-1r
- for barebox@lists.infradead.org; Tue, 10 Mar 2020 10:44:05 +0000
-Received: by mail-wm1-x343.google.com with SMTP id g62so759753wme.1
- for <barebox@lists.infradead.org>; Tue, 10 Mar 2020 03:44:03 -0700 (PDT)
-From: franck.jullien@gmail.com
-Date: Tue, 10 Mar 2020 11:43:48 +0100
-Message-Id: <20200310104348.29155-1-franck.jullien@gmail.com>
+ id 1jC2us-0006CY-Sx
+ for barebox@lists.infradead.org; Wed, 11 Mar 2020 15:05:05 +0000
+Date: Wed, 11 Mar 2020 16:05:00 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200311150500.GD3335@pengutronix.de>
+References: <b2db7e05d21f4e164862a52e2bee358ebf8a618b.camel@googlemail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <b2db7e05d21f4e164862a52e2bee358ebf8a618b.camel@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,44 +18,70 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] scripts/bareboximd: add mode argument to open call
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] ARM: dts: advantech-rom-7421: fix sd-card cd pin
+To: Christoph Fritz <chf.fritz@googlemail.com>
+Cc: barebox@lists.infradead.org
 
-From: Franck Jullien <franck.jullien@gmail.com>
+On Mon, Mar 09, 2020 at 07:50:12PM +0100, Christoph Fritz wrote:
+> Enable possibility to auto detect sd-card insertion on Advantech
+> ROM-7421, this patch sets a necessary gpio to active-low.
+> 
+> Signed-off-by: Christoph Fritz <chf.fritz@googlemail.com>
+> ---
+>  arch/arm/dts/imx6dl-advantech-rom-7421.dts | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 
-Newer gcc complain about missing mode argument when a new file is
-created. This is an extract of man-pages:
+Applied, thanks
 
- "The mode argument specifies the file mode bits be applied when
- a new file is created.  This argument must be supplied when
- O_CREAT or O_TMPFILE is specified in flags"
+Sascha
 
-Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
----
- scripts/bareboximd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/dts/imx6dl-advantech-rom-7421.dts b/arch/arm/dts/imx6dl-advantech-rom-7421.dts
+> index cdf378114a..22ce744307 100755
+> --- a/arch/arm/dts/imx6dl-advantech-rom-7421.dts
+> +++ b/arch/arm/dts/imx6dl-advantech-rom-7421.dts
+> @@ -100,7 +100,7 @@
+>  	pinctrl-names = "default";
+>  	pinctrl-0 = <&pinctrl_usdhc2>;
+>  	bus-width = <8>;
+> -	cd-gpios = <&gpio2 0 0>;
+> +	cd-gpios = <&gpio2 0 GPIO_ACTIVE_LOW>;
+>  	status = "okay";
+>  
+>  	#address-cells = <1>;
+> @@ -121,9 +121,9 @@
+>  	pinctrl-names = "default";
+>  	pinctrl-0 = <&pinctrl_usdhc3>;
+>  	bus-width = <4>;
+> -	cd-gpios = <&gpio2 1 0>;
+> -	en-gpios = <&gpio2 2 0>;
+> -	wp-gpios = <&gpio2 3 0>;
+> +	cd-gpios = <&gpio2 1 GPIO_ACTIVE_LOW>;
+> +	en-gpios = <&gpio2 2 GPIO_ACTIVE_HIGH>;
+> +	wp-gpios = <&gpio2 3 GPIO_ACTIVE_HIGH>;
+>  	status = "okay";
+>  };
+>  
+> -- 
+> 2.20.1
+> 
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-diff --git a/scripts/bareboximd.c b/scripts/bareboximd.c
-index e5000e0ae..b332d435a 100644
---- a/scripts/bareboximd.c
-+++ b/scripts/bareboximd.c
-@@ -59,7 +59,7 @@ static int write_file(const char *filename, const void *buf, size_t size)
- 	int fd, ret;
- 	int now;
- 
--	fd = open(filename, O_WRONLY | O_TRUNC | O_CREAT);
-+	fd = open(filename, O_WRONLY | O_TRUNC | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
- 	if (fd < 0)
- 		return fd;
- 
 -- 
-2.17.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
