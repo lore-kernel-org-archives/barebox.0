@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from conuserg-08.nifty.com ([210.131.2.75])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jBd47-000228-4K
- for barebox@lists.infradead.org; Tue, 10 Mar 2020 11:28:52 +0000
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Tue, 10 Mar 2020 20:28:13 +0900
-Message-Id: <20200310112816.7415-2-masahiroy@kernel.org>
-In-Reply-To: <20200310112816.7415-1-masahiroy@kernel.org>
+ id 1jC31W-0001Fp-3j
+ for barebox@lists.infradead.org; Wed, 11 Mar 2020 15:11:58 +0000
+Date: Wed, 11 Mar 2020 16:11:52 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200311151152.GG3335@pengutronix.de>
 References: <20200310112816.7415-1-masahiroy@kernel.org>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200310112816.7415-1-masahiroy@kernel.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,73 +18,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] kbuild: remove dead code for modpost
-To: barebox@lists.infradead.org
-Cc: Masahiro Yamada <masahiroy@kernel.org>
+Subject: Re: [PATCH 1/5] kbuild: remove unused barebox-head
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: barebox@lists.infradead.org
 
-rule_barebox-modpost is dead code since it is not invoked by anyone.
+On Tue, Mar 10, 2020 at 08:28:12PM +0900, Masahiro Yamada wrote:
+> This is not set by anyone.
+> 
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> ---
 
-$(call barebox-modpost) is dead code too since there is no variable
-named 'barebox-modpost'.
+Applied, thanks
 
-We could fix it to $(call rule_barebox-modpost) to invoke the rules,
-but I hesitate to enable the code that has never been tested.
+Sascha
 
-barebox-init, barebox-main are not set by anyone, so this code does
-not seem to work.
+> 
+>  Makefile | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Makefile b/Makefile
+> index d923463ed5e3..1fa09b041360 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -781,7 +781,7 @@ barebox.S barebox.s: barebox FORCE
+>  endif
+>  
+>  # barebox image
+> -barebox: $(barebox-lds) $(barebox-head) $(barebox-common) $(kallsyms.o) FORCE
+> +barebox: $(barebox-lds) $(barebox-common) $(kallsyms.o) FORCE
+>  	$(call barebox-modpost)
+>  	$(call if_changed_rule,barebox__)
+>  	$(Q)rm -f .old_version
+> @@ -791,7 +791,7 @@ barebox.srec: barebox
+>  
+>  # The actual objects are generated when descending,
+>  # make sure no implicit rule kicks in
+> -$(sort $(barebox-head) $(barebox-common) ) $(barebox-lds) $(barebox-pbl-common): $(barebox-dirs) ;
+> +$(sort $(barebox-common) ) $(barebox-lds) $(barebox-pbl-common): $(barebox-dirs) ;
+>  
+>  # Handle descending into subdirectories listed in $(barebox-dirs)
+>  # Preset locale variables to speed up the build process. Limit locale
+> -- 
+> 2.17.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-The code is completely out of sync from the upstream Linux, so there
-is no good reason to keep this rotten code.
-
-If barebox needs modpost, this should be re-implemented correctly.
-(preferably, by re-syncing with the latest Linux)
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
----
-
- Makefile | 14 --------------
- 1 file changed, 14 deletions(-)
-
-diff --git a/Makefile b/Makefile
-index 1fa09b041360..e9e412af0815 100644
---- a/Makefile
-+++ b/Makefile
-@@ -716,19 +716,6 @@ debug_kallsyms: .tmp_map$(last_kallsyms)
- 
- endif # ifdef CONFIG_KALLSYMS
- 
--# Do modpost on a prelinked vmlinux. The finally linked vmlinux has
--# relevant sections renamed as per the linker script.
--quiet_cmd_barebox-modpost = LD      $@
--      cmd_barebox-modpost = $(LD) $(LDFLAGS) -r -o $@                          \
--	 $(vmlinux-init) --start-group $(barebox-main) --end-group             \
--	 $(filter-out $(barebox-init) $(barebox-main) $(barebox-lds) FORCE ,$^)
--define rule_barebox-modpost
--	:
--	+$(call cmd,barebox-modpost)
--	$(Q)$(MAKE) -f $(srctree)/scripts/Makefile.modpost $@
--	$(Q)echo 'cmd_$@ := $(cmd_barebox-modpost)' > $(dot-target).cmd
--endef
--
- OBJCOPYFLAGS_barebox.bin = -O binary
- 
- barebox.bin: barebox FORCE
-@@ -782,7 +769,6 @@ endif
- 
- # barebox image
- barebox: $(barebox-lds) $(barebox-common) $(kallsyms.o) FORCE
--	$(call barebox-modpost)
- 	$(call if_changed_rule,barebox__)
- 	$(Q)rm -f .old_version
- 
 -- 
-2.17.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
