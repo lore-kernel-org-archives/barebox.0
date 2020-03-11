@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jC2L7-00049O-8A
+ id 1jC2L7-00049Q-7P
  for barebox@lists.infradead.org; Wed, 11 Mar 2020 14:28:08 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 11 Mar 2020 15:27:54 +0100
-Message-Id: <20200311142757.25263-14-s.hauer@pengutronix.de>
+Date: Wed, 11 Mar 2020 15:27:47 +0100
+Message-Id: <20200311142757.25263-7-s.hauer@pengutronix.de>
 In-Reply-To: <20200311142757.25263-1-s.hauer@pengutronix.de>
 References: <20200311142757.25263-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,48 +21,100 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/16] net: phy: Also print link down messages
+Subject: [PATCH 06/16] net: Add a slice to struct eth_device
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-Not only print when the link comes up, but also when it goes down.
+Add ethernet code safe for being called from a poller.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/phy/phy.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ include/net.h |  8 ++++++++
+ net/eth.c     | 20 +++++++++++++++++---
+ 2 files changed, 25 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index ccdc9f3716..a440edffd6 100644
---- a/drivers/net/phy/phy.c
-+++ b/drivers/net/phy/phy.c
-@@ -46,6 +46,7 @@ int phy_update_status(struct phy_device *phydev)
- 	struct eth_device *edev = phydev->attached_dev;
- 	int ret;
- 	int oldspeed = phydev->speed, oldduplex = phydev->duplex;
-+	int oldlink = phydev->link;
+diff --git a/include/net.h b/include/net.h
+index 509d1b38a1..70d3ce2849 100644
+--- a/include/net.h
++++ b/include/net.h
+@@ -19,6 +19,7 @@
+ #include <stdlib.h>
+ #include <clock.h>
+ #include <led.h>
++#include <slice.h>
+ #include <xfuncs.h>
+ #include <linux/phy.h>
+ #include <linux/string.h>	/* memcpy */
+@@ -63,6 +64,8 @@ struct eth_device {
+ 	char *bootarg;
+ 	char *linuxdevname;
  
- 	if (drv) {
- 		ret = drv->read_status(phydev);
-@@ -53,7 +54,8 @@ int phy_update_status(struct phy_device *phydev)
- 			return ret;
++	struct slice slice;
++
+ 	bool ifup;
+ #define ETH_MODE_DHCP 0
+ #define ETH_MODE_STATIC 1
+@@ -72,6 +75,11 @@ struct eth_device {
+ 
+ #define dev_to_edev(d) container_of(d, struct eth_device, dev)
+ 
++static inline struct slice *eth_device_slice(struct eth_device *edev)
++{
++	return &edev->slice;
++}
++
+ static inline const char *eth_name(struct eth_device *edev)
+ {
+ 	return edev->devname;
+diff --git a/net/eth.c b/net/eth.c
+index 4a8a7a8876..59972b8949 100644
+--- a/net/eth.c
++++ b/net/eth.c
+@@ -222,20 +222,32 @@ int eth_send(struct eth_device *edev, void *packet, int length)
+ 	if (ret)
+ 		return ret;
+ 
++	slice_acquire(eth_device_slice(edev));
++
+ 	led_trigger_network(LED_TRIGGER_NET_TX);
+ 
+-	return edev->send(edev, packet, length);
++	ret = edev->send(edev, packet, length);
++
++	slice_release(eth_device_slice(edev));
++
++	return ret;
+ }
+ 
+ static int __eth_rx(struct eth_device *edev)
+ {
+ 	int ret;
+ 
++	slice_acquire(eth_device_slice(edev));
++
+ 	ret = eth_carrier_check(edev, 0);
+ 	if (ret)
+-		return ret;
++		goto out;
++
++	ret = edev->recv(edev);
++out:
++	slice_release(eth_device_slice(edev));
+ 
+-	return edev->recv(edev);
++	return ret;
+ }
+ 
+ int eth_rx(void)
+@@ -352,6 +364,8 @@ int eth_register(struct eth_device *edev)
+ 		edev->dev.id = DEVICE_ID_DYNAMIC;
  	}
  
--	if (phydev->speed == oldspeed && phydev->duplex == oldduplex)
-+	if (phydev->speed == oldspeed && phydev->duplex == oldduplex &&
-+	    phydev->link == oldlink)
- 		return 0;
- 
- 	if (phydev->adjust_link)
-@@ -62,6 +64,8 @@ int phy_update_status(struct phy_device *phydev)
- 	if (phydev->link)
- 		dev_info(&edev->dev, "%dMbps %s duplex link detected\n",
- 				phydev->speed, phydev->duplex ? "full" : "half");
-+	else if (oldlink)
-+		dev_info(&edev->dev, "link down\n");
- 
- 	return 0;
- }
++	slice_init(&edev->slice, dev);
++
+ 	ret = register_device(&edev->dev);
+ 	if (ret)
+ 		return ret;
 -- 
 2.25.1
 
