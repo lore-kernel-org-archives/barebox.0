@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from conuserg-08.nifty.com ([210.131.2.75])
+Received: from mail-wm1-x343.google.com ([2a00:1450:4864:20::343])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jBd47-000227-4M
- for barebox@lists.infradead.org; Tue, 10 Mar 2020 11:28:54 +0000
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Tue, 10 Mar 2020 20:28:14 +0900
-Message-Id: <20200310112816.7415-3-masahiroy@kernel.org>
-In-Reply-To: <20200310112816.7415-1-masahiroy@kernel.org>
-References: <20200310112816.7415-1-masahiroy@kernel.org>
+ id 1jBzC8-0007rz-5q
+ for barebox@lists.infradead.org; Wed, 11 Mar 2020 11:06:37 +0000
+Received: by mail-wm1-x343.google.com with SMTP id a141so1612673wme.2
+ for <barebox@lists.infradead.org>; Wed, 11 Mar 2020 04:06:32 -0700 (PDT)
+Message-ID: <005a346999484e40b638effd93982d1e930c0445.camel@googlemail.com>
+From: Christoph Fritz <chf.fritz@googlemail.com>
+Date: Wed, 11 Mar 2020 12:06:29 +0100
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,102 +17,71 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: chf.fritz@googlemail.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] kbuild: rename barebox-pbl-common to BAREBOX_PBL_OBJS
+Subject: [PATCH] ARM: phytec-som-imx6: Add imx6dl with 512mb RAM
 To: barebox@lists.infradead.org
-Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Stefan =?ISO-8859-1?Q?Riedm=FCller?= <s.riedmueller@phytec.de>
 
-'export barebox-pbl-common' does not work reliably because hyphens
-are disallowed in shell variables.
-
-This caused a problem in Linux in the past. See Linux commit 2bfbe7881ee0
-("kbuild: Do not use hyphen in exported variable name").
-
-The same problem occurs when you build barebox with O= and the directory
-path to the source tree contains a shell special character like '~'.
-
-The maintainer of GNU Make stated that there is no consistent way to
-export variables that do not meet the shell's naming criteria.
-(https://savannah.gnu.org/bugs/?55719)
-
-Consequently, you cannot use hyphens in exported variables.
-
-Rename barebox-pbl-common to BAREBOX_PBL_OBJS.
-
-I named it after KBUILD_VMLINUX_OBJS in the Linux top Makefile.
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
----
-
- Makefile               | 5 ++---
- arch/mips/pbl/Makefile | 2 +-
- images/Makefile        | 4 ++--
- 3 files changed, 5 insertions(+), 6 deletions(-)
-
-diff --git a/Makefile b/Makefile
-index e9e412af0815..20fa85ed8be4 100644
---- a/Makefile
-+++ b/Makefile
-@@ -584,8 +584,7 @@ export DEFAULT_COMPRESSION_SUFFIX
- # System.map is generated to document addresses of all kernel symbols
- 
- barebox-common := $(common-y)
--barebox-pbl-common := $(pbl-common-y)
--export barebox-pbl-common
-+export BAREBOX_PBL_OBJS := $(pbl-common-y)
- barebox-all    := $(barebox-common)
- barebox-lds    := $(lds-y)
- 
-@@ -777,7 +776,7 @@ barebox.srec: barebox
- 
- # The actual objects are generated when descending,
- # make sure no implicit rule kicks in
--$(sort $(barebox-common) ) $(barebox-lds) $(barebox-pbl-common): $(barebox-dirs) ;
-+$(sort $(barebox-common) ) $(barebox-lds) $(BAREBOX_PBL_OBJS): $(barebox-dirs) ;
- 
- # Handle descending into subdirectories listed in $(barebox-dirs)
- # Preset locale variables to speed up the build process. Limit locale
-diff --git a/arch/mips/pbl/Makefile b/arch/mips/pbl/Makefile
-index 44ce3d1c922e..8f9e9fe5931c 100644
---- a/arch/mips/pbl/Makefile
-+++ b/arch/mips/pbl/Makefile
-@@ -25,7 +25,7 @@ $(obj)/zbarebox.S: $(obj)/zbarebox FORCE
- PBL_CPPFLAGS		+= -fdata-sections -ffunction-sections
- LDFLAGS_zbarebox	:= -Map $(obj)/zbarebox.map
- LDFLAGS_zbarebox	+= -static --gc-sections
--zbarebox-common := $(barebox-pbl-common) $(obj)/$(piggy_o)
-+zbarebox-common := $(BAREBOX_PBL_OBJS) $(obj)/$(piggy_o)
- zbarebox-lds := $(obj)/zbarebox.lds
- 
- quiet_cmd_zbarebox__ ?= LD      $@
-diff --git a/images/Makefile b/images/Makefile
-index 650baf170f1b..fe29c75e27b1 100644
---- a/images/Makefile
-+++ b/images/Makefile
-@@ -57,12 +57,12 @@ quiet_cmd_elf__ ?= LD      $@
-       cmd_elf__ ?= $(LD) $(LDFLAGS_pbl) --gc-sections		\
- 		-e $(2) -Map $@.map $(LDFLAGS_$(@F)) -o $@		\
- 		-T $(pbl-lds)						\
--		--start-group $(barebox-pbl-common) $(obj)/piggy.o	\
-+		--start-group $(BAREBOX_PBL_OBJS) $(obj)/piggy.o	\
- 		$(obj)/sha_sum.o --end-group
- 
- PBL_CPPFLAGS	+= -fdata-sections -ffunction-sections
- 
--$(obj)/%.pbl: $(pbl-lds) $(barebox-pbl-common) $(obj)/piggy.o $(obj)/sha_sum.o FORCE
-+$(obj)/%.pbl: $(pbl-lds) $(BAREBOX_PBL_OBJS) $(obj)/piggy.o $(obj)/sha_sum.o FORCE
- 	$(call if_changed,elf__,$(*F))
- 
- $(obj)/%.pblb: $(obj)/%.pbl FORCE
--- 
-2.17.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhpcyBwYXRjaCBhZGRzIHN1cHBvcnQgZm9yIGEgcGh5Q09SRS1pLk1YIDZTb2xvL0R1YWxMaWdo
+dCB2YXJpYW50IHdpdGgKNTEybWIgUkFNLgoKU2lnbmVkLW9mZi1ieTogQ2hyaXN0b3BoIEZyaXR6
+IDxjaGYuZnJpdHpAZ29vZ2xlbWFpbC5jb20+ClNpZ25lZC1vZmYtYnk6IFN0ZWZhbiBSaWVkbcO8
+bGxlciA8cy5yaWVkbXVlbGxlckBwaHl0ZWMuZGU+Ci0tLQogLi4uL2ZsYXNoLWhlYWRlci1waHl0
+ZWMtcGNtMDU4ZGwtNTEybWIuaW14Y2ZnICAgICAgICAgICAgfCA5ICsrKysrKysrKwogYXJjaC9h
+cm0vYm9hcmRzL3BoeXRlYy1zb20taW14Ni9sb3dsZXZlbC5jICAgICAgICAgICAgICAgfCAxICsK
+IGltYWdlcy9NYWtlZmlsZS5pbXggICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IHwgMiArKwogMyBmaWxlcyBjaGFuZ2VkLCAxMiBpbnNlcnRpb25zKCspCiBjcmVhdGUgbW9kZSAx
+MDA2NDQgYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1zb20taW14Ni9mbGFzaC1oZWFkZXItcGh5dGVj
+LXBjbTA1OGRsLTUxMm1iLmlteGNmZwoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9waHl0
+ZWMtc29tLWlteDYvZmxhc2gtaGVhZGVyLXBoeXRlYy1wY20wNThkbC01MTJtYi5pbXhjZmcgYi9h
+cmNoL2FybS9ib2FyZHMvcGh5dGVjLXNvbS1pbXg2L2ZsYXNoLWhlYWRlci1waHl0ZWMtcGNtMDU4
+ZGwtNTEybWIuaW14Y2ZnCm5ldyBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4IDAwMDAwMDAwMDAuLjVi
+OTJlNTgwOWMKLS0tIC9kZXYvbnVsbAorKysgYi9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXNvbS1p
+bXg2L2ZsYXNoLWhlYWRlci1waHl0ZWMtcGNtMDU4ZGwtNTEybWIuaW14Y2ZnCkBAIC0wLDAgKzEs
+OSBAQAorI2RlZmluZSBTRVRVUF9NRENGRzAJCQlcCisJd20gMzIgMHgwMjFiMDAwYyAweDNjNDA5
+Yjg1CisKKyNkZWZpbmUgU0VUVVBfTURBU1BfTURDVEwJCVwKKwl3bSAzMiAweDAyMWIwMDQwIDB4
+MDAwMDAwMTc7CVwKKwl3bSAzMiAweDAyMWIwMDAwIDB4ODMxOTAwMDAKKworI2luY2x1ZGUgImZs
+YXNoLWhlYWRlci1waHl0ZWMtcGNtMDU4ZGwuaCIKKyNpbmNsdWRlIDxtYWNoL2hhYnY0LWlteDYt
+Z2VuY3NmLmg+CmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXNvbS1pbXg2L2xv
+d2xldmVsLmMgYi9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXNvbS1pbXg2L2xvd2xldmVsLmMKaW5k
+ZXggOTAwYWExOWMxOS4uMmUzOGJhYTQ1ZCAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vYm9hcmRzL3Bo
+eXRlYy1zb20taW14Ni9sb3dsZXZlbC5jCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtc29t
+LWlteDYvbG93bGV2ZWwuYwpAQCAtMTExLDYgKzExMSw3IEBAIFBIWVRFQ19FTlRSWShzdGFydF9w
+aHl0ZWNfcGh5Ym9hcmRfc3VicmFfMWdpYl8xYmFuaywgaW14NnFfcGh5dGVjX3BoeWJvYXJkX3N1
+YnJhCiBQSFlURUNfRU5UUlkoc3RhcnRfcGh5dGVjX3BoeWNvcmVfaW14NmRsX3NvbV9uYW5kXzI1
+Nm1iLCBpbXg2ZGxfcGh5dGVjX3BoeWNvcmVfc29tX25hbmQsIFNaXzI1Nk0sIHRydWUpOwogUEhZ
+VEVDX0VOVFJZKHN0YXJ0X3BoeXRlY19waHljb3JlX2lteDZkbF9zb21fbGNfbmFuZF8yNTZtYiwg
+aW14NmRsX3BoeXRlY19waHljb3JlX3NvbV9sY19uYW5kLCBTWl8yNTZNLCB0cnVlKTsKIFBIWVRF
+Q19FTlRSWShzdGFydF9waHl0ZWNfcGh5Y29yZV9pbXg2ZGxfc29tX25hbmRfMWdpYiwgaW14NmRs
+X3BoeXRlY19waHljb3JlX3NvbV9uYW5kLCBTWl8xRywgdHJ1ZSk7CitQSFlURUNfRU5UUlkoc3Rh
+cnRfcGh5dGVjX3BoeWNvcmVfaW14NmRsX3NvbV9lbW1jXzUxMm1iLCBpbXg2ZGxfcGh5dGVjX3Bo
+eWNvcmVfc29tX2VtbWMsIFNaXzUxMk0sIHRydWUpOwogUEhZVEVDX0VOVFJZKHN0YXJ0X3BoeXRl
+Y19waHljb3JlX2lteDZkbF9zb21fZW1tY18xZ2liLCBpbXg2ZGxfcGh5dGVjX3BoeWNvcmVfc29t
+X2VtbWMsIFNaXzFHLCB0cnVlKTsKIFBIWVRFQ19FTlRSWShzdGFydF9waHl0ZWNfcGh5Y29yZV9p
+bXg2ZGxfc29tX2xjX2VtbWNfMWdpYiwgaW14NmRsX3BoeXRlY19waHljb3JlX3NvbV9sY19lbW1j
+LCBTWl8xRywgdHJ1ZSk7CiBQSFlURUNfRU5UUlkoc3RhcnRfcGh5dGVjX3BoeWNvcmVfaW14NnFf
+c29tX25hbmRfMWdpYiwgaW14NnFfcGh5dGVjX3BoeWNvcmVfc29tX25hbmQsIFNaXzFHLCB0cnVl
+KTsKZGlmZiAtLWdpdCBhL2ltYWdlcy9NYWtlZmlsZS5pbXggYi9pbWFnZXMvTWFrZWZpbGUuaW14
+CmluZGV4IDk5NGZkOTUxYTAuLjcwOGE5ZmJkMjQgMTAwNjQ0Ci0tLSBhL2ltYWdlcy9NYWtlZmls
+ZS5pbXgKKysrIGIvaW1hZ2VzL01ha2VmaWxlLmlteApAQCAtMjkzLDYgKzI5Myw4IEBAICQoY2Fs
+bCBidWlsZF9pbXhfaGFidjRpbWcsIENPTkZJR19NQUNIX1BIWVRFQ19TT01fSU1YNiwgc3RhcnRf
+cGh5dGVjX3BoeWNvcmVfaW14CiAKICQoY2FsbCBidWlsZF9pbXhfaGFidjRpbWcsIENPTkZJR19N
+QUNIX1BIWVRFQ19TT01fSU1YNiwgc3RhcnRfcGh5dGVjX3BoeWNvcmVfaW14NmRsX3NvbV9sY19u
+YW5kXzI1Nm1iLCBwaHl0ZWMtc29tLWlteDYvZmxhc2gtaGVhZGVyLXBoeXRlYy1wY20wNThkbC0y
+NTZtYiwgcGh5dGVjLXBoeWNvcmUtaW14NmRsLXNvbS1sYy1uYW5kLTI1Nm1iKQogCiskKGNhbGwg
+YnVpbGRfaW14X2hhYnY0aW1nLCBDT05GSUdfTUFDSF9QSFlURUNfU09NX0lNWDYsIHN0YXJ0X3Bo
+eXRlY19waHljb3JlX2lteDZkbF9zb21fZW1tY181MTJtYiwgcGh5dGVjLXNvbS1pbXg2L2ZsYXNo
+LWhlYWRlci1waHl0ZWMtcGNtMDU4ZGwtNTEybWIsIHBoeXRlYy1waHljb3JlLWlteDZkbC1zb20t
+ZW1tYy01MTJtYikKKwogJChjYWxsIGJ1aWxkX2lteF9oYWJ2NGltZywgQ09ORklHX01BQ0hfUEhZ
+VEVDX1NPTV9JTVg2LCBzdGFydF9waHl0ZWNfcGh5Y29yZV9pbXg2ZGxfc29tX2VtbWNfMWdpYiwg
+cGh5dGVjLXNvbS1pbXg2L2ZsYXNoLWhlYWRlci1waHl0ZWMtcGNtMDU4ZGwtMWdpYiwgcGh5dGVj
+LXBoeWNvcmUtaW14NmRsLXNvbS1lbW1jLTFnaWIpCiAKICQoY2FsbCBidWlsZF9pbXhfaGFidjRp
+bWcsIENPTkZJR19NQUNIX1BIWVRFQ19TT01fSU1YNiwgc3RhcnRfcGh5dGVjX3BoeWNvcmVfaW14
+NmRsX3NvbV9sY19lbW1jXzFnaWIsIHBoeXRlYy1zb20taW14Ni9mbGFzaC1oZWFkZXItcGh5dGVj
+LXBjbTA1OGRsLTFnaWIsIHBoeXRlYy1waHljb3JlLWlteDZkbC1zb20tbGMtZW1tYy0xZ2liKQot
+LSAKMi4yMC4xCgoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRw
+Oi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
