@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jC2L7-00049K-7V
- for barebox@lists.infradead.org; Wed, 11 Mar 2020 14:28:06 +0000
+ id 1jC2L7-00049O-8A
+ for barebox@lists.infradead.org; Wed, 11 Mar 2020 14:28:08 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 11 Mar 2020 15:27:43 +0100
-Message-Id: <20200311142757.25263-3-s.hauer@pengutronix.de>
+Date: Wed, 11 Mar 2020 15:27:54 +0100
+Message-Id: <20200311142757.25263-14-s.hauer@pengutronix.de>
 In-Reply-To: <20200311142757.25263-1-s.hauer@pengutronix.de>
 References: <20200311142757.25263-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,35 +21,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/16] miitool: Use mdiobus_read()
+Subject: [PATCH 13/16] net: phy: Also print link down messages
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-Use mdiobus_read() to read from the mii bus. Accessing the read hook
-directly bypasses the acquiring the slice.
+Not only print when the link comes up, but also when it goes down.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/miitool.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/phy/phy.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/commands/miitool.c b/commands/miitool.c
-index a87d567ace..07437d28a8 100644
---- a/commands/miitool.c
-+++ b/commands/miitool.c
-@@ -110,10 +110,10 @@ static int show_basic_mii(struct mii_bus *mii, struct phy_device *phydev,
+diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+index ccdc9f3716..a440edffd6 100644
+--- a/drivers/net/phy/phy.c
++++ b/drivers/net/phy/phy.c
+@@ -46,6 +46,7 @@ int phy_update_status(struct phy_device *phydev)
+ 	struct eth_device *edev = phydev->attached_dev;
+ 	int ret;
+ 	int oldspeed = phydev->speed, oldduplex = phydev->duplex;
++	int oldlink = phydev->link;
  
- 	/* Some bits in the BMSR are latched, but we can't rely on being
- 	   the only reader, so only the current values are meaningful */
--	mii->read(mii, phydev->addr, MII_BMSR);
-+	mdiobus_read(mii, phydev->addr, MII_BMSR);
+ 	if (drv) {
+ 		ret = drv->read_status(phydev);
+@@ -53,7 +54,8 @@ int phy_update_status(struct phy_device *phydev)
+ 			return ret;
+ 	}
  
- 	for (i = 0; i < 32; i++)
--		mii_val[i] = mii->read(mii, phydev->addr, i);
-+		mii_val[i] = mdiobus_read(mii, phydev->addr, i);
+-	if (phydev->speed == oldspeed && phydev->duplex == oldduplex)
++	if (phydev->speed == oldspeed && phydev->duplex == oldduplex &&
++	    phydev->link == oldlink)
+ 		return 0;
  
- 	printf((mii->parent->id) < 0 ? "%s: %s: " : "%s: %s%d: ",
- 	       phydev->cdev.name, mii->parent->name, mii->parent->id);
+ 	if (phydev->adjust_link)
+@@ -62,6 +64,8 @@ int phy_update_status(struct phy_device *phydev)
+ 	if (phydev->link)
+ 		dev_info(&edev->dev, "%dMbps %s duplex link detected\n",
+ 				phydev->speed, phydev->duplex ? "full" : "half");
++	else if (oldlink)
++		dev_info(&edev->dev, "link down\n");
+ 
+ 	return 0;
+ }
 -- 
 2.25.1
 
