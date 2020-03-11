@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jC2L7-00049R-B5
+ id 1jC2L7-00049M-AA
  for barebox@lists.infradead.org; Wed, 11 Mar 2020 14:28:08 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 11 Mar 2020 15:27:49 +0100
-Message-Id: <20200311142757.25263-9-s.hauer@pengutronix.de>
+Date: Wed, 11 Mar 2020 15:27:44 +0100
+Message-Id: <20200311142757.25263-4-s.hauer@pengutronix.de>
 In-Reply-To: <20200311142757.25263-1-s.hauer@pengutronix.de>
 References: <20200311142757.25263-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,75 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/16] usb: Add a slice to usb host controllers
+Subject: [PATCH 03/16] net: phy: mdio-mux: Use mdiobus_read/write()
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
+Using the callbacks directly bypasses acquiring the slice.
+
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/core/usb.c | 6 ++++++
- include/usb/usb.h      | 7 +++++++
- 2 files changed, 13 insertions(+)
+ drivers/net/phy/mdio-mux.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
-index 1c3dcb79a8..da7afb5a32 100644
---- a/drivers/usb/core/usb.c
-+++ b/drivers/usb/core/usb.c
-@@ -83,11 +83,16 @@ static inline int usb_host_acquire(struct usb_host *host)
- 	if (host->sem)
- 		return -EAGAIN;
- 	host->sem++;
-+
-+	slice_acquire(&host->slice);
-+
- 	return 0;
+diff --git a/drivers/net/phy/mdio-mux.c b/drivers/net/phy/mdio-mux.c
+index aa63cbde97..1e6278ef35 100644
+--- a/drivers/net/phy/mdio-mux.c
++++ b/drivers/net/phy/mdio-mux.c
+@@ -37,11 +37,10 @@ static int mdio_mux_read_or_write(struct mii_bus *bus, int phy_id,
+ 	if (!r) {
+ 		pb->current_child = cb->bus_number;
+ 		if (val)
+-			r = pb->mii_bus->write(pb->mii_bus, phy_id,
++			r = mdiobus_write (pb->mii_bus, phy_id,
+ 					       regnum, *val);
+ 		else
+-			r = pb->mii_bus->read(pb->mii_bus, phy_id,
+-					      regnum);
++			r = mdiobus_read(pb->mii_bus, phy_id, regnum);
+ 	}
+ 	return r;
  }
- 
- static inline void usb_host_release(struct usb_host *host)
- {
-+	slice_release(&host->slice);
-+
- 	if (host->sem > 0)
- 		host->sem--;
- }
-@@ -97,6 +102,7 @@ int usb_register_host(struct usb_host *host)
- 	list_add_tail(&host->list, &host_list);
- 	host->busnum = host_busnum++;
- 	host->sem = 0;
-+	slice_init(&host->slice, host->hw_dev);
- 	return 0;
- }
- 
-diff --git a/include/usb/usb.h b/include/usb/usb.h
-index 95dedfd5b7..d730578fd7 100644
---- a/include/usb/usb.h
-+++ b/include/usb/usb.h
-@@ -23,6 +23,7 @@
- #define _USB_H_
- 
- #include <driver.h>
-+#include <slice.h>
- #include <usb/ch9.h>
- #include <usb/ch11.h>
- #include <usb/usb_defs.h>
-@@ -154,11 +155,17 @@ struct usb_host {
- 	struct usb_device *root_dev;
- 	int sem;
- 	struct usb_phy *usbphy;
-+	struct slice slice;
- };
- 
- int usb_register_host(struct usb_host *);
- void usb_unregister_host(struct usb_host *host);
- 
-+static inline struct slice *usb_device_slice(struct usb_device *udev)
-+{
-+	return &udev->host->slice;
-+}
-+
- int usb_host_detect(struct usb_host *host);
- 
- int usb_set_protocol(struct usb_device *dev, int ifnum, int protocol);
 -- 
 2.25.1
 
