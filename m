@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jC2LJ-0004Mi-Px
- for barebox@lists.infradead.org; Wed, 11 Mar 2020 14:28:19 +0000
+ id 1jC2L7-00049K-7V
+ for barebox@lists.infradead.org; Wed, 11 Mar 2020 14:28:06 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 11 Mar 2020 15:27:55 +0100
-Message-Id: <20200311142757.25263-15-s.hauer@pengutronix.de>
+Date: Wed, 11 Mar 2020 15:27:43 +0100
+Message-Id: <20200311142757.25263-3-s.hauer@pengutronix.de>
 In-Reply-To: <20200311142757.25263-1-s.hauer@pengutronix.de>
 References: <20200311142757.25263-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,38 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/16] net: ifup command: add ethernet device completion
+Subject: [PATCH 02/16] miitool: Use mdiobus_read()
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-ifup usually takes an ethernet device, so use ethernet device completion
-for the command.
+Use mdiobus_read() to read from the mii bus. Accessing the read hook
+directly bypasses the acquiring the slice.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- net/ifup.c | 2 ++
- 1 file changed, 2 insertions(+)
+ commands/miitool.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/ifup.c b/net/ifup.c
-index e5e8ef2346..fa2c52ff8b 100644
---- a/net/ifup.c
-+++ b/net/ifup.c
-@@ -21,6 +21,7 @@
- #include <environment.h>
- #include <command.h>
- #include <common.h>
-+#include <complete.h>
- #include <getopt.h>
- #include <dhcp.h>
- #include <net.h>
-@@ -341,6 +342,7 @@ BAREBOX_CMD_START(ifup)
- 	BAREBOX_CMD_DESC("bring a network interface up")
- 	BAREBOX_CMD_OPTS("[-af] [INTF]")
- 	BAREBOX_CMD_GROUP(CMD_GRP_NET)
-+	BAREBOX_CMD_COMPLETE(eth_complete)
- 	BAREBOX_CMD_HELP(cmd_ifup_help)
- BAREBOX_CMD_END
+diff --git a/commands/miitool.c b/commands/miitool.c
+index a87d567ace..07437d28a8 100644
+--- a/commands/miitool.c
++++ b/commands/miitool.c
+@@ -110,10 +110,10 @@ static int show_basic_mii(struct mii_bus *mii, struct phy_device *phydev,
  
+ 	/* Some bits in the BMSR are latched, but we can't rely on being
+ 	   the only reader, so only the current values are meaningful */
+-	mii->read(mii, phydev->addr, MII_BMSR);
++	mdiobus_read(mii, phydev->addr, MII_BMSR);
+ 
+ 	for (i = 0; i < 32; i++)
+-		mii_val[i] = mii->read(mii, phydev->addr, i);
++		mii_val[i] = mdiobus_read(mii, phydev->addr, i);
+ 
+ 	printf((mii->parent->id) < 0 ? "%s: %s: " : "%s: %s%d: ",
+ 	       phydev->cdev.name, mii->parent->name, mii->parent->id);
 -- 
 2.25.1
 
