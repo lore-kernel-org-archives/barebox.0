@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jCJKk-0005Tc-F9
- for barebox@lists.infradead.org; Thu, 12 Mar 2020 08:36:51 +0000
+ id 1jCJKo-0005Tp-UG
+ for barebox@lists.infradead.org; Thu, 12 Mar 2020 08:36:55 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 12 Mar 2020 09:35:48 +0100
-Message-Id: <20200312083555.10793-13-s.hauer@pengutronix.de>
+Date: Thu, 12 Mar 2020 09:35:41 +0100
+Message-Id: <20200312083555.10793-6-s.hauer@pengutronix.de>
 In-Reply-To: <20200312083555.10793-1-s.hauer@pengutronix.de>
 References: <20200312083555.10793-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,224 +21,210 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/19] net: Call net_poll() in a poller
+Subject: [PATCH 05/19] poller: Give pollers a name
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-This patch moves the ethernet receive loop into a poller. With this
-network protocols no longer have to call net_loop() explicitly but
-can do it implicitly by calling is_timeout() when waiting for packets.
-
-Having the network receive loop running in a poller has the advantage
-that we have it running continuously and not only when we explicitly
-expect packets to come in. With this we can reasonably well answer to
-ping requests which is implemented in the next patch. This also helps
-protocols that run in the background like fastboot over UDP.
+It helps debugging when pollers have a name, so give them one.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/nfs.c         |  2 --
- fs/tftp.c        |  2 --
- include/net.h    |  3 ---
- net/dhcp.c       |  1 -
- net/dns.c        |  1 -
- net/eth.c        | 15 ++++++++++-----
- net/net.c        | 14 +++++++++++---
- net/netconsole.c |  4 +---
- net/nfs.c        |  1 -
- net/ping.c       |  2 --
- net/sntp.c       |  2 --
- 11 files changed, 22 insertions(+), 25 deletions(-)
+ common/poller.c                | 8 +++++---
+ common/ratp/ratp.c             | 2 +-
+ drivers/input/gpio_keys.c      | 2 +-
+ drivers/input/imx_keypad.c     | 2 +-
+ drivers/input/input.c          | 2 +-
+ drivers/input/qt1070.c         | 2 +-
+ drivers/input/twl6030_pwrbtn.c | 2 +-
+ drivers/led/core.c             | 2 +-
+ drivers/usb/gadget/udc-core.c  | 2 +-
+ drivers/watchdog/wd_core.c     | 2 +-
+ include/poller.h               | 5 +++--
+ 11 files changed, 17 insertions(+), 14 deletions(-)
 
-diff --git a/fs/nfs.c b/fs/nfs.c
-index 0ad07aa3f2..355202df45 100644
---- a/fs/nfs.c
-+++ b/fs/nfs.c
-@@ -459,8 +459,6 @@ again:
- 		if (ctrlc())
- 			return ERR_PTR(-EINTR);
+diff --git a/common/poller.c b/common/poller.c
+index 32795b641f..b1a2122f91 100644
+--- a/common/poller.c
++++ b/common/poller.c
+@@ -16,11 +16,12 @@
+ static LIST_HEAD(poller_list);
+ static int poller_active;
  
--		net_poll();
--
- 		if (is_timeout(nfs_timer_start, NFS_TIMEOUT)) {
- 			tries++;
- 			if (tries == NFS_MAX_RESEND)
-diff --git a/fs/tftp.c b/fs/tftp.c
-index 1f36c56511..11f289584d 100644
---- a/fs/tftp.c
-+++ b/fs/tftp.c
-@@ -210,8 +210,6 @@ static int tftp_poll(struct file_priv *priv)
- 		return -ETIMEDOUT;
- 	}
+-int poller_register(struct poller_struct *poller)
++int poller_register(struct poller_struct *poller, const char *name)
+ {
+ 	if (poller->registered)
+ 		return -EBUSY;
  
--	net_poll();
--
++	poller->name = xstrdup(name);
+ 	list_add_tail(&poller->list, &poller_list);
+ 	poller->registered = 1;
+ 
+@@ -35,6 +36,7 @@ int poller_unregister(struct poller_struct *poller)
+ 
+ 	list_del(&poller->list);
+ 	poller->registered = 0;
++	free(poller->name);
+ 
+ 	return 0;
+ }
+@@ -92,12 +94,12 @@ int poller_call_async(struct poller_async *pa, uint64_t delay_ns,
  	return 0;
  }
  
-diff --git a/include/net.h b/include/net.h
-index 70d3ce2849..23e3759905 100644
---- a/include/net.h
-+++ b/include/net.h
-@@ -244,9 +244,6 @@ IPaddr_t net_get_nameserver(void);
- const char *net_get_domainname(void);
- struct eth_device *net_route(IPaddr_t ip);
+-int poller_async_register(struct poller_async *pa)
++int poller_async_register(struct poller_async *pa, const char *name)
+ {
+ 	pa->poller.func = poller_async_callback;
+ 	pa->active = 0;
  
--/* Do the work */
--void net_poll(void);
--
- static inline struct iphdr *net_eth_to_iphdr(char *pkt)
+-	return poller_register(&pa->poller);
++	return poller_register(&pa->poller, name);
+ }
+ 
+ int poller_async_unregister(struct poller_async *pa)
+diff --git a/common/ratp/ratp.c b/common/ratp/ratp.c
+index e84ad22167..9625a31b18 100644
+--- a/common/ratp/ratp.c
++++ b/common/ratp/ratp.c
+@@ -454,7 +454,7 @@ int barebox_ratp(struct console_device *cdev)
+ 	if (ret < 0)
+ 		goto out;
+ 
+-	ret = poller_register(&ctx->poller);
++	ret = poller_register(&ctx->poller, "ratp");
+ 	if (ret)
+ 		goto out1;
+ 
+diff --git a/drivers/input/gpio_keys.c b/drivers/input/gpio_keys.c
+index 38c0f11535..11d598c402 100644
+--- a/drivers/input/gpio_keys.c
++++ b/drivers/input/gpio_keys.c
+@@ -166,7 +166,7 @@ static int __init gpio_keys_probe(struct device_d *dev)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = poller_register(&gk->poller);
++	ret = poller_register(&gk->poller, dev_name(dev));
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/drivers/input/imx_keypad.c b/drivers/input/imx_keypad.c
+index 44ff9b7856..6757fac72b 100644
+--- a/drivers/input/imx_keypad.c
++++ b/drivers/input/imx_keypad.c
+@@ -410,7 +410,7 @@ static int __init imx_keypad_probe(struct device_d *dev)
+ 
+ 	keypad->poller.func = imx_keypad_check_for_events;
+ 
+-	ret = poller_register(&keypad->poller);
++	ret = poller_register(&keypad->poller, dev_name(dev));
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/drivers/input/input.c b/drivers/input/input.c
+index 1e8f6e178e..bcc8667417 100644
+--- a/drivers/input/input.c
++++ b/drivers/input/input.c
+@@ -201,7 +201,7 @@ static int input_init(void)
+ 	ic->fifo = kfifo_alloc(32);
+ 	ic->notifier.notify = input_console_notify;
+ 	input_register_notfier(&ic->notifier);
+-	poller_async_register(&ic->poller);
++	poller_async_register(&ic->poller, "input");
+ 
+ 	return console_register(&ic->console);
+ }
+diff --git a/drivers/input/qt1070.c b/drivers/input/qt1070.c
+index 59acee5c39..9e1dcc57ee 100644
+--- a/drivers/input/qt1070.c
++++ b/drivers/input/qt1070.c
+@@ -269,7 +269,7 @@ static int qt1070_probe(struct device_d *dev)
+ 
+ 	console_register(&data->cdev);
+ 
+-	ret = poller_register(&data->poller);
++	ret = poller_register(&data->poller, dev_name(dev));
+ 	if (ret)
+ 		goto err;
+ 
+diff --git a/drivers/input/twl6030_pwrbtn.c b/drivers/input/twl6030_pwrbtn.c
+index fc4c728778..481688b4a9 100644
+--- a/drivers/input/twl6030_pwrbtn.c
++++ b/drivers/input/twl6030_pwrbtn.c
+@@ -97,7 +97,7 @@ static int __init twl6030_pwrbtn_probe(struct device_d *dev)
+ 	idata->cdev.getc = twl6030_pwrbtn_getc;
+ 	console_register(&idata->cdev);
+ 
+-	return poller_register(&idata->poller);
++	return poller_register(&idata->poller, dev_name(dev));
+ }
+ 
+ static struct driver_d twl6030_pwrbtn_driver = {
+diff --git a/drivers/led/core.c b/drivers/led/core.c
+index e727148a24..4cce5dfc97 100644
+--- a/drivers/led/core.c
++++ b/drivers/led/core.c
+@@ -212,7 +212,7 @@ static struct poller_struct led_poller = {
+ 
+ static int led_blink_init(void)
  {
- 	return (struct iphdr *)(pkt + ETHER_HDR_SIZE);
-diff --git a/net/dhcp.c b/net/dhcp.c
-index a27fa89996..ef22d2cef0 100644
---- a/net/dhcp.c
-+++ b/net/dhcp.c
-@@ -513,7 +513,6 @@ int dhcp_request(struct eth_device *edev, const struct dhcp_req_param *param,
- 			ret = -ETIMEDOUT;
- 			goto out1;
- 		}
--		net_poll();
- 		if (is_timeout(dhcp_start, 3 * SECOND)) {
- 			dhcp_start = get_time_ns();
- 			printf("T ");
-diff --git a/net/dns.c b/net/dns.c
-index ffe98ef9e3..851bf3722e 100644
---- a/net/dns.c
-+++ b/net/dns.c
-@@ -231,7 +231,6 @@ int resolv(const char *host, IPaddr_t *ip)
- 		if (ctrlc()) {
- 			break;
- 		}
--		net_poll();
- 		if (is_timeout(dns_timer_start, SECOND)) {
- 			dns_timer_start = get_time_ns();
- 			printf("T ");
-diff --git a/net/eth.c b/net/eth.c
-index 5cd1d703c4..d06daa1f8e 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -237,14 +237,19 @@ static int __eth_rx(struct eth_device *edev)
- {
+-	return poller_register(&led_poller);
++	return poller_register(&led_poller, "led");
+ }
+ late_initcall(led_blink_init);
+ 
+diff --git a/drivers/usb/gadget/udc-core.c b/drivers/usb/gadget/udc-core.c
+index 096f05ed48..126d76e8bb 100644
+--- a/drivers/usb/gadget/udc-core.c
++++ b/drivers/usb/gadget/udc-core.c
+@@ -319,7 +319,7 @@ static int udc_bind_to_driver(struct usb_udc *udc, struct usb_gadget_driver *dri
+ 
+ 	if (udc->gadget->ops->udc_poll) {
+ 		udc->poller.func = udc_poll_driver;
+-		ret = poller_register(&udc->poller);
++		ret = poller_register(&udc->poller, dev_name(&udc->dev));
+ 		if (ret)
+ 			return ret;
+ 	}
+diff --git a/drivers/watchdog/wd_core.c b/drivers/watchdog/wd_core.c
+index 34040408f7..a17234f4b6 100644
+--- a/drivers/watchdog/wd_core.c
++++ b/drivers/watchdog/wd_core.c
+@@ -116,7 +116,7 @@ static int watchdog_register_poller(struct watchdog *wd)
+ 	struct param_d *p;
  	int ret;
  
--	slice_acquire(eth_device_slice(edev));
-+	if (!phy_acquired(edev->phydev)) {
-+		ret = eth_carrier_check(edev, 0);
-+		if (ret)
-+			return ret;
-+	}
+-	ret = poller_async_register(&wd->poller);
++	ret = poller_async_register(&wd->poller, dev_name(&wd->dev));
+ 	if (ret)
+ 		return ret;
  
--	ret = eth_carrier_check(edev, 0);
--	if (ret)
--		goto out;
-+	if (slice_acquired(eth_device_slice(edev)))
-+		return 0;
-+
-+	slice_acquire(eth_device_slice(edev));
+diff --git a/include/poller.h b/include/poller.h
+index b22b8a1b89..886557252b 100644
+--- a/include/poller.h
++++ b/include/poller.h
+@@ -12,9 +12,10 @@ struct poller_struct {
+ 	void (*func)(struct poller_struct *poller);
+ 	int registered;
+ 	struct list_head list;
++	char *name;
+ };
  
- 	ret = edev->recv(edev);
--out:
-+
- 	slice_release(eth_device_slice(edev));
+-int poller_register(struct poller_struct *poller);
++int poller_register(struct poller_struct *poller, const char *name);
+ int poller_unregister(struct poller_struct *poller);
  
- 	return ret;
-diff --git a/net/net.c b/net/net.c
-index 0d889ddb52..6eb604e5dc 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -242,8 +242,6 @@ static int arp_request(struct eth_device *edev, IPaddr_t dest, unsigned char *et
+ struct poller_async;
+@@ -27,7 +28,7 @@ struct poller_async {
+ 	int active;
+ };
  
- 		if (retries > PKT_NUM_RETRIES)
- 			return -ETIMEDOUT;
--
--		net_poll();
- 	}
+-int poller_async_register(struct poller_async *pa);
++int poller_async_register(struct poller_async *pa, const char *name);
+ int poller_async_unregister(struct poller_async *pa);
  
- 	pr_debug("Got ARP REPLY for %pI4: %02x:%02x:%02x:%02x:%02x:%02x\n",
-@@ -252,11 +250,21 @@ static int arp_request(struct eth_device *edev, IPaddr_t dest, unsigned char *et
- 	return 0;
- }
- 
--void net_poll(void)
-+static void net_poll(struct poller_struct *poller)
- {
- 	eth_rx();
- }
- 
-+static struct poller_struct net_poller = {
-+	.func = net_poll,
-+};
-+
-+static int init_net_poll(void)
-+{
-+	return poller_register(&net_poller, "net");
-+}
-+device_initcall(init_net_poll);
-+
- static uint16_t net_udp_new_localport(void)
- {
- 	static uint16_t localport;
-diff --git a/net/netconsole.c b/net/netconsole.c
-index ef8b1856b6..457a3c2971 100644
---- a/net/netconsole.c
-+++ b/net/netconsole.c
-@@ -62,7 +62,7 @@ static int nc_getc(struct console_device *cdev)
- 		return 0;
- 
- 	while (!kfifo_len(priv->fifo))
--		net_poll();
-+		udelay(1);
- 
- 	kfifo_getc(priv->fifo, &c);
- 
-@@ -80,8 +80,6 @@ static int nc_tstc(struct console_device *cdev)
- 	if (priv->busy)
- 		return kfifo_len(priv->fifo) ? 1 : 0;
- 
--	net_poll();
--
- 	return kfifo_len(priv->fifo) ? 1 : 0;
- }
- 
-diff --git a/net/nfs.c b/net/nfs.c
-index 63573098d7..e0479ef692 100644
---- a/net/nfs.c
-+++ b/net/nfs.c
-@@ -708,7 +708,6 @@ static int do_nfs(int argc, char *argv[])
- 			nfs_err = -EINTR;
- 			break;
- 		}
--		net_poll();
- 		if (is_timeout(nfs_timer_start, NFS_TIMEOUT * SECOND)) {
- 			show_progress(-1);
- 			nfs_send();
-diff --git a/net/ping.c b/net/ping.c
-index a71f59a805..f3de0c27a4 100644
---- a/net/ping.c
-+++ b/net/ping.c
-@@ -89,8 +89,6 @@ static int do_ping(int argc, char *argv[])
- 			break;
- 		}
- 
--		net_poll();
--
- 		if (is_timeout(ping_start, SECOND)) {
- 			/* No answer, send another packet */
- 			ping_start = get_time_ns();
-diff --git a/net/sntp.c b/net/sntp.c
-index b4e6d6439c..f693a2e8af 100644
---- a/net/sntp.c
-+++ b/net/sntp.c
-@@ -145,8 +145,6 @@ s64 sntp(const char *server)
- 			break;
- 		}
- 
--		net_poll();
--
- 		if (is_timeout(sntp_start, 1 * SECOND)) {
- 			sntp_start = get_time_ns();
- 			ret = sntp_send();
+ int poller_call_async(struct poller_async *pa, uint64_t delay_ns,
 -- 
 2.25.1
 
