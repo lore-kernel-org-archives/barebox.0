@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jCJKJ-0005TT-Au
- for barebox@lists.infradead.org; Thu, 12 Mar 2020 08:36:25 +0000
+ id 1jCJKM-0005Vu-Gb
+ for barebox@lists.infradead.org; Thu, 12 Mar 2020 08:36:32 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 12 Mar 2020 09:35:54 +0100
-Message-Id: <20200312083555.10793-19-s.hauer@pengutronix.de>
+Date: Thu, 12 Mar 2020 09:35:46 +0100
+Message-Id: <20200312083555.10793-11-s.hauer@pengutronix.de>
 In-Reply-To: <20200312083555.10793-1-s.hauer@pengutronix.de>
 References: <20200312083555.10793-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,133 +21,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 18/19] net: Add ifdown support and command
+Subject: [PATCH 10/19] usb: Add a slice to usb host controllers
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-ifdown is the counterpart to ifup and disables one or all ethernet
-interfaces.
-
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/net.h |  4 +++
- net/ifup.c    | 69 +++++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 73 insertions(+)
+ drivers/usb/core/usb.c | 6 ++++++
+ include/usb/usb.h      | 7 +++++++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/include/net.h b/include/net.h
-index 23e3759905..583dc14ed5 100644
---- a/include/net.h
-+++ b/include/net.h
-@@ -488,6 +488,10 @@ int ifup_edev(struct eth_device *edev, unsigned flags);
- int ifup(const char *name, unsigned flags);
- int ifup_all(unsigned flags);
- 
-+void ifdown_edev(struct eth_device *edev);
-+int ifdown(const char *name);
-+void ifdown_all(void);
+diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+index 1c3dcb79a8..bc122f7d7a 100644
+--- a/drivers/usb/core/usb.c
++++ b/drivers/usb/core/usb.c
+@@ -83,11 +83,16 @@ static inline int usb_host_acquire(struct usb_host *host)
+ 	if (host->sem)
+ 		return -EAGAIN;
+ 	host->sem++;
 +
- extern struct list_head netdev_list;
- 
- #define for_each_netdev(netdev) list_for_each_entry(netdev, &netdev_list, list)
-diff --git a/net/ifup.c b/net/ifup.c
-index fa2c52ff8b..b76b4bc44c 100644
---- a/net/ifup.c
-+++ b/net/ifup.c
-@@ -237,6 +237,12 @@ int ifup_edev(struct eth_device *edev, unsigned flags)
++	slice_acquire(&host->slice);
++
  	return 0;
  }
  
-+void ifdown_edev(struct eth_device *edev)
-+{
-+	eth_close(edev);
-+	edev->ifup = false;
-+}
-+
- int ifup(const char *ethname, unsigned flags)
+ static inline void usb_host_release(struct usb_host *host)
  {
- 	struct eth_device *edev;
-@@ -253,6 +259,19 @@ int ifup(const char *ethname, unsigned flags)
- 	return ifup_edev(edev, flags);
++	slice_release(&host->slice);
++
+ 	if (host->sem > 0)
+ 		host->sem--;
  }
- 
-+int ifdown(const char *ethname)
-+{
-+	struct eth_device *edev;
-+
-+	edev = eth_get_byname(ethname);
-+	if (!edev)
-+		return -ENODEV;
-+
-+	ifdown_edev(edev);
-+
-+	return 0;
-+}
-+
- static int net_ifup_force_detect;
- 
- int ifup_all(unsigned flags)
-@@ -286,6 +305,14 @@ int ifup_all(unsigned flags)
+@@ -97,6 +102,7 @@ int usb_register_host(struct usb_host *host)
+ 	list_add_tail(&host->list, &host_list);
+ 	host->busnum = host_busnum++;
+ 	host->sem = 0;
++	slice_init(&host->slice, dev_name(host->hw_dev));
  	return 0;
  }
  
-+void ifdown_all(void)
-+{
-+	struct eth_device *edev;
-+
-+	for_each_netdev(edev)
-+		ifdown_edev(edev);
-+}
-+
- static int ifup_all_init(void)
- {
- 	globalvar_add_simple_bool("net.ifup_force_detect", &net_ifup_force_detect);
-@@ -346,4 +373,46 @@ BAREBOX_CMD_START(ifup)
- 	BAREBOX_CMD_HELP(cmd_ifup_help)
- BAREBOX_CMD_END
+diff --git a/include/usb/usb.h b/include/usb/usb.h
+index 95dedfd5b7..d730578fd7 100644
+--- a/include/usb/usb.h
++++ b/include/usb/usb.h
+@@ -23,6 +23,7 @@
+ #define _USB_H_
  
-+static int do_ifdown(int argc, char *argv[])
+ #include <driver.h>
++#include <slice.h>
+ #include <usb/ch9.h>
+ #include <usb/ch11.h>
+ #include <usb/usb_defs.h>
+@@ -154,11 +155,17 @@ struct usb_host {
+ 	struct usb_device *root_dev;
+ 	int sem;
+ 	struct usb_phy *usbphy;
++	struct slice slice;
+ };
+ 
+ int usb_register_host(struct usb_host *);
+ void usb_unregister_host(struct usb_host *host);
+ 
++static inline struct slice *usb_device_slice(struct usb_device *udev)
 +{
-+	int opt;
-+	int all = 0;
-+
-+	while ((opt = getopt(argc, argv, "a")) > 0) {
-+		switch (opt) {
-+		case 'a':
-+			all = 1;
-+			break;
-+		}
-+	}
-+
-+	if (all) {
-+		ifdown_all();
-+		return 0;
-+	}
-+
-+	if (argc == optind)
-+		return COMMAND_ERROR_USAGE;
-+
-+	return ifdown(argv[optind]);
++	return &udev->host->slice;
 +}
 +
-+
-+
-+BAREBOX_CMD_HELP_START(ifdown)
-+BAREBOX_CMD_HELP_TEXT("Disable a network interface")
-+BAREBOX_CMD_HELP_TEXT("")
-+BAREBOX_CMD_HELP_TEXT("Options:")
-+BAREBOX_CMD_HELP_OPT ("-a",  "disable all interfaces")
-+BAREBOX_CMD_HELP_END
-+
-+BAREBOX_CMD_START(ifdown)
-+	.cmd		= do_ifdown,
-+	BAREBOX_CMD_DESC("disable a network interface")
-+	BAREBOX_CMD_OPTS("[-a] [INTF]")
-+	BAREBOX_CMD_GROUP(CMD_GRP_NET)
-+	BAREBOX_CMD_COMPLETE(eth_complete)
-+	BAREBOX_CMD_HELP(cmd_ifdown_help)
-+BAREBOX_CMD_END
-+
- #endif
+ int usb_host_detect(struct usb_host *host);
+ 
+ int usb_set_protocol(struct usb_device *dev, int ifnum, int protocol);
 -- 
 2.25.1
 
