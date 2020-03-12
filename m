@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jBNTl-0000iN-RC
- for barebox@lists.infradead.org; Mon, 09 Mar 2020 18:50:20 +0000
-Received: by mail-wm1-x32b.google.com with SMTP id g134so666611wme.3
- for <barebox@lists.infradead.org>; Mon, 09 Mar 2020 11:50:16 -0700 (PDT)
-Received: from ?IPv6:2a02:8070:bb9:bc00::fc? ([2a02:8070:bb9:bc00::fc])
- by smtp.gmail.com with ESMTPSA id f15sm46360887wru.83.2020.03.09.11.50.13
- for <barebox@lists.infradead.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Mar 2020 11:50:13 -0700 (PDT)
-Message-ID: <b2db7e05d21f4e164862a52e2bee358ebf8a618b.camel@googlemail.com>
-From: Christoph Fritz <chf.fritz@googlemail.com>
-Date: Mon, 09 Mar 2020 19:50:12 +0100
+ id 1jCJK3-0005Eb-FI
+ for barebox@lists.infradead.org; Thu, 12 Mar 2020 08:36:08 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 12 Mar 2020 09:35:49 +0100
+Message-Id: <20200312083555.10793-14-s.hauer@pengutronix.de>
+In-Reply-To: <20200312083555.10793-1-s.hauer@pengutronix.de>
+References: <20200312083555.10793-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,51 +17,93 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: chf.fritz@googlemail.com
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] ARM: dts: advantech-rom-7421: fix sd-card cd pin
-To: barebox@lists.infradead.org
+Subject: [PATCH 13/19] net: reply to ping requests
+To: Barebox List <barebox@lists.infradead.org>
+Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-Enable possibility to auto detect sd-card insertion on Advantech
-ROM-7421, this patch sets a necessary gpio to active-low.
+Now that we have the network receive function running in a poller we
+can reasonably well answer to ping requests. Implement this feature.
 
-Signed-off-by: Christoph Fritz <chf.fritz@googlemail.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/dts/imx6dl-advantech-rom-7421.dts | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/net.c | 46 ++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 44 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/dts/imx6dl-advantech-rom-7421.dts b/arch/arm/dts/imx6dl-advantech-rom-7421.dts
-index cdf378114a..22ce744307 100755
---- a/arch/arm/dts/imx6dl-advantech-rom-7421.dts
-+++ b/arch/arm/dts/imx6dl-advantech-rom-7421.dts
-@@ -100,7 +100,7 @@
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_usdhc2>;
- 	bus-width = <8>;
--	cd-gpios = <&gpio2 0 0>;
-+	cd-gpios = <&gpio2 0 GPIO_ACTIVE_LOW>;
- 	status = "okay";
+diff --git a/net/net.c b/net/net.c
+index 6eb604e5dc..e0cded5783 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -573,12 +573,54 @@ static int net_handle_udp(unsigned char *pkt, int len)
+ 	return -EINVAL;
+ }
  
- 	#address-cells = <1>;
-@@ -121,9 +121,9 @@
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_usdhc3>;
- 	bus-width = <4>;
--	cd-gpios = <&gpio2 1 0>;
--	en-gpios = <&gpio2 2 0>;
--	wp-gpios = <&gpio2 3 0>;
-+	cd-gpios = <&gpio2 1 GPIO_ACTIVE_LOW>;
-+	en-gpios = <&gpio2 2 GPIO_ACTIVE_HIGH>;
-+	wp-gpios = <&gpio2 3 GPIO_ACTIVE_HIGH>;
- 	status = "okay";
- };
+-static int net_handle_icmp(unsigned char *pkt, int len)
++static int ping_reply(struct eth_device *edev, unsigned char *pkt, int len)
++{
++	struct ethernet *et = (struct ethernet *)pkt;
++	struct icmphdr *icmp;
++	struct iphdr *ip = (struct iphdr *)(pkt + ETHER_HDR_SIZE);
++	unsigned char *packet;
++	int ret;
++
++	memcpy(et->et_dest, et->et_src, 6);
++	memcpy(et->et_src, edev->ethaddr, 6);
++	et->et_protlen = htons(PROT_IP);
++
++	icmp = net_eth_to_icmphdr(pkt);
++
++	icmp->type = ICMP_ECHO_REPLY;
++	icmp->checksum = 0;
++	icmp->checksum = ~net_checksum((unsigned char *)icmp,
++				       len - sizeof(struct iphdr) - ETHER_HDR_SIZE);
++	ip->check = 0;
++	ip->frag_off = 0;
++	net_copy_ip((void *)&ip->daddr, &ip->saddr);
++	net_copy_ip((void *)&ip->saddr, &edev->ipaddr);
++	ip->check = ~net_checksum((unsigned char *)ip, sizeof(struct iphdr));
++
++	packet = net_alloc_packet();
++	if (!packet)
++		return 0;
++
++	memcpy(packet, pkt, ETHER_HDR_SIZE + len);
++
++	ret = eth_send(edev, packet, ETHER_HDR_SIZE + len);
++
++	free(packet);
++
++	return 0;
++}
++
++static int net_handle_icmp(struct eth_device *edev, unsigned char *pkt, int len)
+ {
+ 	struct net_connection *con;
++	struct icmphdr *icmp;
  
+ 	pr_debug("%s\n", __func__);
+ 
++	icmp = net_eth_to_icmphdr(pkt);
++	if (icmp->type == ICMP_ECHO_REQUEST)
++		ping_reply(edev, pkt, len);
++
+ 	list_for_each_entry(con, &connection_list, list) {
+ 		if (con->proto == IPPROTO_ICMP) {
+ 			con->handler(con->priv, pkt, len);
+@@ -615,7 +657,7 @@ static int net_handle_ip(struct eth_device *edev, unsigned char *pkt, int len)
+ 
+ 	switch (ip->protocol) {
+ 	case IPPROTO_ICMP:
+-		return net_handle_icmp(pkt, len);
++		return net_handle_icmp(edev, pkt, len);
+ 	case IPPROTO_UDP:
+ 		return net_handle_udp(pkt, len);
+ 	}
 -- 
-2.20.1
-
+2.25.1
 
 
 _______________________________________________
