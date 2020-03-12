@@ -1,19 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lj1-x243.google.com ([2a00:1450:4864:20::243])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jCL5O-00011N-V2
- for barebox@lists.infradead.org; Thu, 12 Mar 2020 10:29:10 +0000
-Date: Thu, 12 Mar 2020 11:29:04 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200312102904.GI3335@pengutronix.de>
-References: <20200311142757.25263-1-s.hauer@pengutronix.de>
- <20200311142757.25263-6-s.hauer@pengutronix.de>
- <20200311235154.GA28876@emlix.com>
- <20200312082459.GC4638@pengutronix.de>
- <20200312091809.GA13611@emlix.com>
+ id 1jCUct-0001li-Km
+ for barebox@lists.infradead.org; Thu, 12 Mar 2020 20:40:22 +0000
+Received: by mail-lj1-x243.google.com with SMTP id 19so8064741ljj.7
+ for <barebox@lists.infradead.org>; Thu, 12 Mar 2020 13:40:16 -0700 (PDT)
+From: Peter Mamonov <pmamonov@gmail.com>
+Date: Thu, 12 Mar 2020 23:39:57 +0300
+Message-Id: <20200312203957.22867-1-pmamonov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200312091809.GA13611@emlix.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,77 +17,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 05/16] Introduce slices
-To: Daniel =?iso-8859-15?Q?Gl=F6ckner?= <dg@emlix.com>
-Cc: Barebox List <barebox@lists.infradead.org>, Edmund Henniges <eh@emlix.com>
+Subject: [PATCH] pinctrl-single: fix parsing of `pinctrl-single, bits` property
+To: s.hauer@pengutronix.de
+Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>
 
-On Thu, Mar 12, 2020 at 10:18:10AM +0100, Daniel Gl=F6ckner wrote:
-> On Thu, Mar 12, 2020 at 09:24:59AM +0100, Sascha Hauer wrote:
-> > On Thu, Mar 12, 2020 at 12:51:54AM +0100, Daniel Gl=F6ckner wrote:
-> > > Hello Sascha,
-> > > =
+According to dts/Bindings/pinctrl/pinctrl-single.txt:113 the correct order of
+parameters is <offset, value, mask>.
 
-> > > On Wed, Mar 11, 2020 at 03:27:46PM +0100, Sascha Hauer wrote:
-> > > > +/**
-> > > > + * slice_acquired: test if a slice is acquired
-> > > > + * @slice: The slice to test
-> > > > + *
-> > > > + * This tests if a slice is acquired. Returns true if it is, false=
- otherwise
-> > > > + */
-> > > > +bool slice_acquired(struct slice *slice)
-> > > > +{
-> > > > +	struct slice_entry *se;
-> > > > +	int acquired =3D slice->acquired;
-> > > > +	bool ret =3D false;
-> > > > +
-> > > > +	if (acquired > 0)
-> > > > +		return true;
-> > > > +
-> > > > +	if (acquired < 0) {
-> > > > +		pr_err("Recursive dependency detected in slice %s\n",
-> > > > +		       slice_name(slice));
-> > > > +		panic("Cannot continue");
-> > > > +	}
-> > > > +
-> > > > +	slice->acquired =3D -1;
-> > > > +
-> > > > +	list_for_each_entry(se, &slice->deps, list)
-> > > > +		if (slice_acquired(se->slice)) {
-> > > > +			ret =3D true;
-> > > > +			break;
-> > > > +		}
-> > > > +
-> > > > +	slice->acquired =3D acquired;
-> > > =
+Fixes: f7e0cae43 ('pinctrl-single: Handle "pinctrl-single,function-mask" dt property')
+Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+---
+ drivers/pinctrl/pinctrl-single.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> > > no need to restore slice->acquire from acquired since
-> > > acquired must have been zero if we reach this line.
-> > =
+diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
+index d4f411b4a..2cd58df93 100644
+--- a/drivers/pinctrl/pinctrl-single.c
++++ b/drivers/pinctrl/pinctrl-single.c
+@@ -87,8 +87,8 @@ static int pcs_set_state(struct pinctrl_device *pdev, struct device_node *np)
+ 
+ 		for (i = 0; i < rows; i++) {
+ 			offset = be32_to_cpup(mux + index++);
+-			mask = be32_to_cpup(mux + index++);
+ 			val = be32_to_cpup(mux + index++);
++			mask = be32_to_cpup(mux + index++);
+ 			reg = pcs->read(pcs->base + offset);
+ 			reg &= ~mask;
+ 			reg |= val;
+-- 
+2.20.1
 
-> > Hm, no. Nothing changes slice->acquired in this function besides
-> > ourselves. It is still -1 how we have set it previously.
-> =
-
-> What I wanted to say is that you can simply use
-> 	slice->acquired =3D 0;
-> at the end.
-
-Yes, in the meantime a collegue explained that to me as well ;)
-Changed accordingly.
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
