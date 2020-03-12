@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jCJKR-0005aT-9W
- for barebox@lists.infradead.org; Thu, 12 Mar 2020 08:36:39 +0000
+ by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jCJKk-0005Tc-F9
+ for barebox@lists.infradead.org; Thu, 12 Mar 2020 08:36:51 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 12 Mar 2020 09:35:38 +0100
-Message-Id: <20200312083555.10793-3-s.hauer@pengutronix.de>
+Date: Thu, 12 Mar 2020 09:35:48 +0100
+Message-Id: <20200312083555.10793-13-s.hauer@pengutronix.de>
 In-Reply-To: <20200312083555.10793-1-s.hauer@pengutronix.de>
 References: <20200312083555.10793-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,35 +21,224 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/19] miitool: Use mdiobus_read()
+Subject: [PATCH 12/19] net: Call net_poll() in a poller
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-Use mdiobus_read() to read from the mii bus. Accessing the read hook
-directly bypasses the acquiring the slice.
+This patch moves the ethernet receive loop into a poller. With this
+network protocols no longer have to call net_loop() explicitly but
+can do it implicitly by calling is_timeout() when waiting for packets.
+
+Having the network receive loop running in a poller has the advantage
+that we have it running continuously and not only when we explicitly
+expect packets to come in. With this we can reasonably well answer to
+ping requests which is implemented in the next patch. This also helps
+protocols that run in the background like fastboot over UDP.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/miitool.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfs.c         |  2 --
+ fs/tftp.c        |  2 --
+ include/net.h    |  3 ---
+ net/dhcp.c       |  1 -
+ net/dns.c        |  1 -
+ net/eth.c        | 15 ++++++++++-----
+ net/net.c        | 14 +++++++++++---
+ net/netconsole.c |  4 +---
+ net/nfs.c        |  1 -
+ net/ping.c       |  2 --
+ net/sntp.c       |  2 --
+ 11 files changed, 22 insertions(+), 25 deletions(-)
 
-diff --git a/commands/miitool.c b/commands/miitool.c
-index a87d567ace..07437d28a8 100644
---- a/commands/miitool.c
-+++ b/commands/miitool.c
-@@ -110,10 +110,10 @@ static int show_basic_mii(struct mii_bus *mii, struct phy_device *phydev,
+diff --git a/fs/nfs.c b/fs/nfs.c
+index 0ad07aa3f2..355202df45 100644
+--- a/fs/nfs.c
++++ b/fs/nfs.c
+@@ -459,8 +459,6 @@ again:
+ 		if (ctrlc())
+ 			return ERR_PTR(-EINTR);
  
- 	/* Some bits in the BMSR are latched, but we can't rely on being
- 	   the only reader, so only the current values are meaningful */
--	mii->read(mii, phydev->addr, MII_BMSR);
-+	mdiobus_read(mii, phydev->addr, MII_BMSR);
+-		net_poll();
+-
+ 		if (is_timeout(nfs_timer_start, NFS_TIMEOUT)) {
+ 			tries++;
+ 			if (tries == NFS_MAX_RESEND)
+diff --git a/fs/tftp.c b/fs/tftp.c
+index 1f36c56511..11f289584d 100644
+--- a/fs/tftp.c
++++ b/fs/tftp.c
+@@ -210,8 +210,6 @@ static int tftp_poll(struct file_priv *priv)
+ 		return -ETIMEDOUT;
+ 	}
  
- 	for (i = 0; i < 32; i++)
--		mii_val[i] = mii->read(mii, phydev->addr, i);
-+		mii_val[i] = mdiobus_read(mii, phydev->addr, i);
+-	net_poll();
+-
+ 	return 0;
+ }
  
- 	printf((mii->parent->id) < 0 ? "%s: %s: " : "%s: %s%d: ",
- 	       phydev->cdev.name, mii->parent->name, mii->parent->id);
+diff --git a/include/net.h b/include/net.h
+index 70d3ce2849..23e3759905 100644
+--- a/include/net.h
++++ b/include/net.h
+@@ -244,9 +244,6 @@ IPaddr_t net_get_nameserver(void);
+ const char *net_get_domainname(void);
+ struct eth_device *net_route(IPaddr_t ip);
+ 
+-/* Do the work */
+-void net_poll(void);
+-
+ static inline struct iphdr *net_eth_to_iphdr(char *pkt)
+ {
+ 	return (struct iphdr *)(pkt + ETHER_HDR_SIZE);
+diff --git a/net/dhcp.c b/net/dhcp.c
+index a27fa89996..ef22d2cef0 100644
+--- a/net/dhcp.c
++++ b/net/dhcp.c
+@@ -513,7 +513,6 @@ int dhcp_request(struct eth_device *edev, const struct dhcp_req_param *param,
+ 			ret = -ETIMEDOUT;
+ 			goto out1;
+ 		}
+-		net_poll();
+ 		if (is_timeout(dhcp_start, 3 * SECOND)) {
+ 			dhcp_start = get_time_ns();
+ 			printf("T ");
+diff --git a/net/dns.c b/net/dns.c
+index ffe98ef9e3..851bf3722e 100644
+--- a/net/dns.c
++++ b/net/dns.c
+@@ -231,7 +231,6 @@ int resolv(const char *host, IPaddr_t *ip)
+ 		if (ctrlc()) {
+ 			break;
+ 		}
+-		net_poll();
+ 		if (is_timeout(dns_timer_start, SECOND)) {
+ 			dns_timer_start = get_time_ns();
+ 			printf("T ");
+diff --git a/net/eth.c b/net/eth.c
+index 5cd1d703c4..d06daa1f8e 100644
+--- a/net/eth.c
++++ b/net/eth.c
+@@ -237,14 +237,19 @@ static int __eth_rx(struct eth_device *edev)
+ {
+ 	int ret;
+ 
+-	slice_acquire(eth_device_slice(edev));
++	if (!phy_acquired(edev->phydev)) {
++		ret = eth_carrier_check(edev, 0);
++		if (ret)
++			return ret;
++	}
+ 
+-	ret = eth_carrier_check(edev, 0);
+-	if (ret)
+-		goto out;
++	if (slice_acquired(eth_device_slice(edev)))
++		return 0;
++
++	slice_acquire(eth_device_slice(edev));
+ 
+ 	ret = edev->recv(edev);
+-out:
++
+ 	slice_release(eth_device_slice(edev));
+ 
+ 	return ret;
+diff --git a/net/net.c b/net/net.c
+index 0d889ddb52..6eb604e5dc 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -242,8 +242,6 @@ static int arp_request(struct eth_device *edev, IPaddr_t dest, unsigned char *et
+ 
+ 		if (retries > PKT_NUM_RETRIES)
+ 			return -ETIMEDOUT;
+-
+-		net_poll();
+ 	}
+ 
+ 	pr_debug("Got ARP REPLY for %pI4: %02x:%02x:%02x:%02x:%02x:%02x\n",
+@@ -252,11 +250,21 @@ static int arp_request(struct eth_device *edev, IPaddr_t dest, unsigned char *et
+ 	return 0;
+ }
+ 
+-void net_poll(void)
++static void net_poll(struct poller_struct *poller)
+ {
+ 	eth_rx();
+ }
+ 
++static struct poller_struct net_poller = {
++	.func = net_poll,
++};
++
++static int init_net_poll(void)
++{
++	return poller_register(&net_poller, "net");
++}
++device_initcall(init_net_poll);
++
+ static uint16_t net_udp_new_localport(void)
+ {
+ 	static uint16_t localport;
+diff --git a/net/netconsole.c b/net/netconsole.c
+index ef8b1856b6..457a3c2971 100644
+--- a/net/netconsole.c
++++ b/net/netconsole.c
+@@ -62,7 +62,7 @@ static int nc_getc(struct console_device *cdev)
+ 		return 0;
+ 
+ 	while (!kfifo_len(priv->fifo))
+-		net_poll();
++		udelay(1);
+ 
+ 	kfifo_getc(priv->fifo, &c);
+ 
+@@ -80,8 +80,6 @@ static int nc_tstc(struct console_device *cdev)
+ 	if (priv->busy)
+ 		return kfifo_len(priv->fifo) ? 1 : 0;
+ 
+-	net_poll();
+-
+ 	return kfifo_len(priv->fifo) ? 1 : 0;
+ }
+ 
+diff --git a/net/nfs.c b/net/nfs.c
+index 63573098d7..e0479ef692 100644
+--- a/net/nfs.c
++++ b/net/nfs.c
+@@ -708,7 +708,6 @@ static int do_nfs(int argc, char *argv[])
+ 			nfs_err = -EINTR;
+ 			break;
+ 		}
+-		net_poll();
+ 		if (is_timeout(nfs_timer_start, NFS_TIMEOUT * SECOND)) {
+ 			show_progress(-1);
+ 			nfs_send();
+diff --git a/net/ping.c b/net/ping.c
+index a71f59a805..f3de0c27a4 100644
+--- a/net/ping.c
++++ b/net/ping.c
+@@ -89,8 +89,6 @@ static int do_ping(int argc, char *argv[])
+ 			break;
+ 		}
+ 
+-		net_poll();
+-
+ 		if (is_timeout(ping_start, SECOND)) {
+ 			/* No answer, send another packet */
+ 			ping_start = get_time_ns();
+diff --git a/net/sntp.c b/net/sntp.c
+index b4e6d6439c..f693a2e8af 100644
+--- a/net/sntp.c
++++ b/net/sntp.c
+@@ -145,8 +145,6 @@ s64 sntp(const char *server)
+ 			break;
+ 		}
+ 
+-		net_poll();
+-
+ 		if (is_timeout(sntp_start, 1 * SECOND)) {
+ 			sntp_start = get_time_ns();
+ 			ret = sntp_send();
 -- 
 2.25.1
 
