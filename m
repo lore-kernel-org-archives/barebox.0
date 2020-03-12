@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jCJKM-0005Vu-Gb
- for barebox@lists.infradead.org; Thu, 12 Mar 2020 08:36:32 +0000
+ id 1jCJKR-0005aT-9W
+ for barebox@lists.infradead.org; Thu, 12 Mar 2020 08:36:39 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 12 Mar 2020 09:35:46 +0100
-Message-Id: <20200312083555.10793-11-s.hauer@pengutronix.de>
+Date: Thu, 12 Mar 2020 09:35:38 +0100
+Message-Id: <20200312083555.10793-3-s.hauer@pengutronix.de>
 In-Reply-To: <20200312083555.10793-1-s.hauer@pengutronix.de>
 References: <20200312083555.10793-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,75 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/19] usb: Add a slice to usb host controllers
+Subject: [PATCH 02/19] miitool: Use mdiobus_read()
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
+Use mdiobus_read() to read from the mii bus. Accessing the read hook
+directly bypasses the acquiring the slice.
+
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/core/usb.c | 6 ++++++
- include/usb/usb.h      | 7 +++++++
- 2 files changed, 13 insertions(+)
+ commands/miitool.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
-index 1c3dcb79a8..bc122f7d7a 100644
---- a/drivers/usb/core/usb.c
-+++ b/drivers/usb/core/usb.c
-@@ -83,11 +83,16 @@ static inline int usb_host_acquire(struct usb_host *host)
- 	if (host->sem)
- 		return -EAGAIN;
- 	host->sem++;
-+
-+	slice_acquire(&host->slice);
-+
- 	return 0;
- }
+diff --git a/commands/miitool.c b/commands/miitool.c
+index a87d567ace..07437d28a8 100644
+--- a/commands/miitool.c
++++ b/commands/miitool.c
+@@ -110,10 +110,10 @@ static int show_basic_mii(struct mii_bus *mii, struct phy_device *phydev,
  
- static inline void usb_host_release(struct usb_host *host)
- {
-+	slice_release(&host->slice);
-+
- 	if (host->sem > 0)
- 		host->sem--;
- }
-@@ -97,6 +102,7 @@ int usb_register_host(struct usb_host *host)
- 	list_add_tail(&host->list, &host_list);
- 	host->busnum = host_busnum++;
- 	host->sem = 0;
-+	slice_init(&host->slice, dev_name(host->hw_dev));
- 	return 0;
- }
+ 	/* Some bits in the BMSR are latched, but we can't rely on being
+ 	   the only reader, so only the current values are meaningful */
+-	mii->read(mii, phydev->addr, MII_BMSR);
++	mdiobus_read(mii, phydev->addr, MII_BMSR);
  
-diff --git a/include/usb/usb.h b/include/usb/usb.h
-index 95dedfd5b7..d730578fd7 100644
---- a/include/usb/usb.h
-+++ b/include/usb/usb.h
-@@ -23,6 +23,7 @@
- #define _USB_H_
+ 	for (i = 0; i < 32; i++)
+-		mii_val[i] = mii->read(mii, phydev->addr, i);
++		mii_val[i] = mdiobus_read(mii, phydev->addr, i);
  
- #include <driver.h>
-+#include <slice.h>
- #include <usb/ch9.h>
- #include <usb/ch11.h>
- #include <usb/usb_defs.h>
-@@ -154,11 +155,17 @@ struct usb_host {
- 	struct usb_device *root_dev;
- 	int sem;
- 	struct usb_phy *usbphy;
-+	struct slice slice;
- };
- 
- int usb_register_host(struct usb_host *);
- void usb_unregister_host(struct usb_host *host);
- 
-+static inline struct slice *usb_device_slice(struct usb_device *udev)
-+{
-+	return &udev->host->slice;
-+}
-+
- int usb_host_detect(struct usb_host *host);
- 
- int usb_set_protocol(struct usb_device *dev, int ifnum, int protocol);
+ 	printf((mii->parent->id) < 0 ? "%s: %s: " : "%s: %s%d: ",
+ 	       phydev->cdev.name, mii->parent->name, mii->parent->id);
 -- 
 2.25.1
 
