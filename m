@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jCJKY-000827-F4
- for barebox@lists.infradead.org; Thu, 12 Mar 2020 08:36:40 +0000
+ id 1jCJKU-00081U-AS
+ for barebox@lists.infradead.org; Thu, 12 Mar 2020 08:36:36 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 12 Mar 2020 09:35:37 +0100
-Message-Id: <20200312083555.10793-2-s.hauer@pengutronix.de>
+Date: Thu, 12 Mar 2020 09:35:51 +0100
+Message-Id: <20200312083555.10793-16-s.hauer@pengutronix.de>
 In-Reply-To: <20200312083555.10793-1-s.hauer@pengutronix.de>
 References: <20200312083555.10793-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,31 +21,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/19] net: fec_imx: Do not clear MII interrupt during receive
+Subject: [PATCH 15/19] net: phy: Also print link down messages
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-fec_recv() can be triggered during a MDIO access. so we may not clear
-the FEC_IEVENT_MII interrupt the MDIO access is waiting for. Clearing
-it in that moment causes the MDIO access to timeout.
+Not only print when the link comes up, but also when it goes down.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/fec_imx.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/phy/phy.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-index 5ef1d4359e..f814b3b960 100644
---- a/drivers/net/fec_imx.c
-+++ b/drivers/net/fec_imx.c
-@@ -514,6 +514,7 @@ static int fec_recv(struct eth_device *dev)
- 	 * Check if any critical events have happened
- 	 */
- 	ievent = readl(fec->regs + FEC_IEVENT);
-+	ievent &= ~FEC_IEVENT_MII;
- 	writel(ievent, fec->regs + FEC_IEVENT);
+diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+index ccdc9f3716..a440edffd6 100644
+--- a/drivers/net/phy/phy.c
++++ b/drivers/net/phy/phy.c
+@@ -46,6 +46,7 @@ int phy_update_status(struct phy_device *phydev)
+ 	struct eth_device *edev = phydev->attached_dev;
+ 	int ret;
+ 	int oldspeed = phydev->speed, oldduplex = phydev->duplex;
++	int oldlink = phydev->link;
  
- 	if (ievent & FEC_IEVENT_BABT) {
+ 	if (drv) {
+ 		ret = drv->read_status(phydev);
+@@ -53,7 +54,8 @@ int phy_update_status(struct phy_device *phydev)
+ 			return ret;
+ 	}
+ 
+-	if (phydev->speed == oldspeed && phydev->duplex == oldduplex)
++	if (phydev->speed == oldspeed && phydev->duplex == oldduplex &&
++	    phydev->link == oldlink)
+ 		return 0;
+ 
+ 	if (phydev->adjust_link)
+@@ -62,6 +64,8 @@ int phy_update_status(struct phy_device *phydev)
+ 	if (phydev->link)
+ 		dev_info(&edev->dev, "%dMbps %s duplex link detected\n",
+ 				phydev->speed, phydev->duplex ? "full" : "half");
++	else if (oldlink)
++		dev_info(&edev->dev, "link down\n");
+ 
+ 	return 0;
+ }
 -- 
 2.25.1
 
