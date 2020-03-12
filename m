@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jCJKx-0005UH-4s
- for barebox@lists.infradead.org; Thu, 12 Mar 2020 08:37:03 +0000
+ id 1jCJLL-0005VF-3k
+ for barebox@lists.infradead.org; Thu, 12 Mar 2020 08:37:27 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 12 Mar 2020 09:35:44 +0100
-Message-Id: <20200312083555.10793-9-s.hauer@pengutronix.de>
+Date: Thu, 12 Mar 2020 09:35:52 +0100
+Message-Id: <20200312083555.10793-17-s.hauer@pengutronix.de>
 In-Reply-To: <20200312083555.10793-1-s.hauer@pengutronix.de>
 References: <20200312083555.10793-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,100 +21,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/19] net: Add a slice to struct eth_device
+Subject: [PATCH 16/19] net: ifup command: add ethernet device completion
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-Add ethernet code safe for being called from a poller.
+ifup usually takes an ethernet device, so use ethernet device completion
+for the command.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/net.h |  8 ++++++++
- net/eth.c     | 20 +++++++++++++++++---
- 2 files changed, 25 insertions(+), 3 deletions(-)
+ net/ifup.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/net.h b/include/net.h
-index 509d1b38a1..70d3ce2849 100644
---- a/include/net.h
-+++ b/include/net.h
-@@ -19,6 +19,7 @@
- #include <stdlib.h>
- #include <clock.h>
- #include <led.h>
-+#include <slice.h>
- #include <xfuncs.h>
- #include <linux/phy.h>
- #include <linux/string.h>	/* memcpy */
-@@ -63,6 +64,8 @@ struct eth_device {
- 	char *bootarg;
- 	char *linuxdevname;
+diff --git a/net/ifup.c b/net/ifup.c
+index e5e8ef2346..fa2c52ff8b 100644
+--- a/net/ifup.c
++++ b/net/ifup.c
+@@ -21,6 +21,7 @@
+ #include <environment.h>
+ #include <command.h>
+ #include <common.h>
++#include <complete.h>
+ #include <getopt.h>
+ #include <dhcp.h>
+ #include <net.h>
+@@ -341,6 +342,7 @@ BAREBOX_CMD_START(ifup)
+ 	BAREBOX_CMD_DESC("bring a network interface up")
+ 	BAREBOX_CMD_OPTS("[-af] [INTF]")
+ 	BAREBOX_CMD_GROUP(CMD_GRP_NET)
++	BAREBOX_CMD_COMPLETE(eth_complete)
+ 	BAREBOX_CMD_HELP(cmd_ifup_help)
+ BAREBOX_CMD_END
  
-+	struct slice slice;
-+
- 	bool ifup;
- #define ETH_MODE_DHCP 0
- #define ETH_MODE_STATIC 1
-@@ -72,6 +75,11 @@ struct eth_device {
- 
- #define dev_to_edev(d) container_of(d, struct eth_device, dev)
- 
-+static inline struct slice *eth_device_slice(struct eth_device *edev)
-+{
-+	return &edev->slice;
-+}
-+
- static inline const char *eth_name(struct eth_device *edev)
- {
- 	return edev->devname;
-diff --git a/net/eth.c b/net/eth.c
-index 4a8a7a8876..5cd1d703c4 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -222,20 +222,32 @@ int eth_send(struct eth_device *edev, void *packet, int length)
- 	if (ret)
- 		return ret;
- 
-+	slice_acquire(eth_device_slice(edev));
-+
- 	led_trigger_network(LED_TRIGGER_NET_TX);
- 
--	return edev->send(edev, packet, length);
-+	ret = edev->send(edev, packet, length);
-+
-+	slice_release(eth_device_slice(edev));
-+
-+	return ret;
- }
- 
- static int __eth_rx(struct eth_device *edev)
- {
- 	int ret;
- 
-+	slice_acquire(eth_device_slice(edev));
-+
- 	ret = eth_carrier_check(edev, 0);
- 	if (ret)
--		return ret;
-+		goto out;
-+
-+	ret = edev->recv(edev);
-+out:
-+	slice_release(eth_device_slice(edev));
- 
--	return edev->recv(edev);
-+	return ret;
- }
- 
- int eth_rx(void)
-@@ -356,6 +368,8 @@ int eth_register(struct eth_device *edev)
- 	if (ret)
- 		return ret;
- 
-+	slice_init(&edev->slice, dev_name(dev));
-+
- 	edev->devname = xstrdup(dev_name(&edev->dev));
- 
- 	dev_add_param_ip(dev, "ipaddr", NULL, NULL, &edev->ipaddr, edev);
 -- 
 2.25.1
 
