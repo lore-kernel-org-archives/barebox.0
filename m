@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jCJL4-00085B-Ko
- for barebox@lists.infradead.org; Thu, 12 Mar 2020 08:37:12 +0000
+ id 1jCJKw-000841-Gg
+ for barebox@lists.infradead.org; Thu, 12 Mar 2020 08:37:05 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 12 Mar 2020 09:35:42 +0100
-Message-Id: <20200312083555.10793-7-s.hauer@pengutronix.de>
+Date: Thu, 12 Mar 2020 09:35:55 +0100
+Message-Id: <20200312083555.10793-20-s.hauer@pengutronix.de>
 In-Reply-To: <20200312083555.10793-1-s.hauer@pengutronix.de>
 References: <20200312083555.10793-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,118 +21,79 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/19] poller: Add a poller command
+Subject: [PATCH 19/19] poller: Allow to run pollers inside of pollers
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-The poller command allows to print which pollers are registered and also
-how many times we can run the registered pollers in one second.
+This adds a slice to each poller which is acquired before the poller is
+executed. This allows us to run pollers inside of other pollers.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/Kconfig |  9 ++++++
- common/poller.c  | 71 ++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 80 insertions(+)
+ common/poller.c  | 15 +++++++--------
+ include/poller.h |  2 ++
+ 2 files changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 7784966282..665eb470b1 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -260,6 +260,15 @@ config CMD_MMC_EXTCSD
- 		  -y      don't request when writing to one time programmable fields
- 		  __CAUTION__: this could damage the device!
- 
-+config CMD_POLLER
-+	tristate
-+	prompt "poller"
-+	depends on POLLER
-+	help
-+	  Pollers are functions that are running in the background whenever code executes
-+	  is_timeout() or one of the various delay functions. The poller command prints
-+	  informations about registered pollers.
-+
- # end Information commands
- endmenu
- 
 diff --git a/common/poller.c b/common/poller.c
-index b1a2122f91..95f828b439 100644
+index 95f828b439..cccffcb88d 100644
 --- a/common/poller.c
 +++ b/common/poller.c
-@@ -121,3 +121,74 @@ void poller_call(void)
+@@ -14,7 +14,6 @@
+ #include <clock.h>
  
- 	poller_active = 0;
+ static LIST_HEAD(poller_list);
+-static int poller_active;
+ 
+ int poller_register(struct poller_struct *poller, const char *name)
+ {
+@@ -22,6 +21,7 @@ int poller_register(struct poller_struct *poller, const char *name)
+ 		return -EBUSY;
+ 
+ 	poller->name = xstrdup(name);
++	slice_init(&poller->slice, poller->name);
+ 	list_add_tail(&poller->list, &poller_list);
+ 	poller->registered = 1;
+ 
+@@ -111,15 +111,14 @@ void poller_call(void)
+ {
+ 	struct poller_struct *poller, *tmp;
+ 
+-	if (poller_active)
+-		return;
+-
+-	poller_active = 1;
++	list_for_each_entry_safe(poller, tmp, &poller_list, list) {
++		if (slice_acquired(&poller->slice))
++			continue;
+ 
+-	list_for_each_entry_safe(poller, tmp, &poller_list, list)
++		slice_acquire(&poller->slice);
+ 		poller->func(poller);
+-
+-	poller_active = 0;
++		slice_release(&poller->slice);
++	}
  }
-+
-+#if defined CONFIG_CMD_POLLER
-+
-+#include <command.h>
-+#include <getopt.h>
-+
-+static void poller_time(void)
-+{
-+	uint64_t start = get_time_ns();
-+	int i = 0;
-+
-+	/*
-+	 * How many times we can run the registered pollers in one second?
-+	 *
-+	 * A low number here may point to problems with pollers taking too
-+	 * much time.
-+	 */
-+	while (!is_timeout(start, SECOND))
-+		i++;
-+
-+	printf("%d poller calls in 1s\n", i);
-+}
-+
-+static void poller_info(void)
-+{
-+	struct poller_struct *poller;
-+
-+	printf("Registered pollers:\n");
-+
-+	if (list_empty(&poller_list)) {
-+		printf("<none>\n");
-+		return;
-+	}
-+
-+	list_for_each_entry(poller, &poller_list, list)
-+		printf("%s\n", poller->name);
-+}
-+
-+BAREBOX_CMD_HELP_START(poller)
-+BAREBOX_CMD_HELP_TEXT("print info about registered pollers")
-+BAREBOX_CMD_HELP_TEXT("")
-+BAREBOX_CMD_HELP_TEXT("Options:")
-+BAREBOX_CMD_HELP_OPT ("-i", "Print information about registered pollers")
-+BAREBOX_CMD_HELP_OPT ("-t", "measure how many pollers we run in 1s")
-+BAREBOX_CMD_HELP_END
-+
-+static int do_poller(int argc, char *argv[])
-+{
-+	int opt;
-+
-+	while ((opt = getopt(argc, argv, "it")) > 0) {
-+		switch (opt) {
-+		case 'i':
-+			poller_info();
-+			return 0;
-+		case 't':
-+			poller_time();
-+			return 0;
-+		}
-+	}
-+
-+	return COMMAND_ERROR_USAGE;
-+}
-+
-+BAREBOX_CMD_START(poller)
-+	.cmd = do_poller,
-+	BAREBOX_CMD_DESC("print info about registered pollers")
-+	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
-+	BAREBOX_CMD_HELP(cmd_poller_help)
-+BAREBOX_CMD_END
-+#endif
+ 
+ #if defined CONFIG_CMD_POLLER
+diff --git a/include/poller.h b/include/poller.h
+index 886557252b..c8b6829685 100644
+--- a/include/poller.h
++++ b/include/poller.h
+@@ -7,11 +7,13 @@
+ #define POLLER_H
+ 
+ #include <linux/list.h>
++#include <slice.h>
+ 
+ struct poller_struct {
+ 	void (*func)(struct poller_struct *poller);
+ 	int registered;
+ 	struct list_head list;
++	struct slice slice;
+ 	char *name;
+ };
+ 
 -- 
 2.25.1
 
