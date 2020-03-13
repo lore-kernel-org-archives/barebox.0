@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jCJKw-000842-HW
- for barebox@lists.infradead.org; Thu, 12 Mar 2020 08:37:04 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jCgE8-0000Or-6g
+ for barebox@lists.infradead.org; Fri, 13 Mar 2020 09:03:34 +0000
+Date: Fri, 13 Mar 2020 10:03:26 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 12 Mar 2020 09:35:53 +0100
-Message-Id: <20200312083555.10793-18-s.hauer@pengutronix.de>
-In-Reply-To: <20200312083555.10793-1-s.hauer@pengutronix.de>
-References: <20200312083555.10793-1-s.hauer@pengutronix.de>
+Message-ID: <20200313090326.GK3335@pengutronix.de>
+References: <20200312204607.24096-1-pmamonov@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200312204607.24096-1-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,33 +22,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 17/19] net: phy: Do not claim the link is up initially
-To: Barebox List <barebox@lists.infradead.org>
-Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
+Subject: Re: [RFC] serial: ns16550: select default pinctrl state
+To: Peter Mamonov <pmamonov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-A freshly created phy device doesn't have the link up, so drop setting
-phydev->link to one initially.
+On Thu, Mar 12, 2020 at 11:46:07PM +0300, Peter Mamonov wrote:
+> Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+> ---
+>  drivers/serial/serial_ns16550.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
+> index 3edeb0dcb..6b5e92c13 100644
+> --- a/drivers/serial/serial_ns16550.c
+> +++ b/drivers/serial/serial_ns16550.c
+> @@ -39,6 +39,7 @@
+>  #include <malloc.h>
+>  #include <io.h>
+>  #include <linux/clk.h>
+> +#include <pinctrl.h>
+>  
+>  #include "serial_ns16550.h"
+>  #include <platform_data/serial-ns16550.h>
+> @@ -347,6 +348,8 @@ static void ns16550_probe_dt(struct device_d *dev, struct ns16550_priv *priv)
+>  		dev_err(dev, "unsupported reg-io-width (%d)\n",
+>  			width);
+>  	}
+> +
+> +	of_pinctrl_select_state_default(np);
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/net/phy/phy.c | 1 -
- 1 file changed, 1 deletion(-)
+Why? This should have been done by the core already at this point.
 
-diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index a440edffd6..57c2f8044f 100644
---- a/drivers/net/phy/phy.c
-+++ b/drivers/net/phy/phy.c
-@@ -165,7 +165,6 @@ struct phy_device *phy_device_create(struct mii_bus *bus, int addr, int phy_id)
- 	phydev->speed = 0;
- 	phydev->duplex = -1;
- 	phydev->pause = phydev->asym_pause = 0;
--	phydev->link = 1;
- 	phydev->autoneg = AUTONEG_ENABLE;
- 
- 	phydev->addr = addr;
+Sascha
+
 -- 
-2.25.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
