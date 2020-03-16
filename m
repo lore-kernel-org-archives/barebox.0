@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jCgE8-0000Or-6g
- for barebox@lists.infradead.org; Fri, 13 Mar 2020 09:03:34 +0000
-Date: Fri, 13 Mar 2020 10:03:26 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200313090326.GK3335@pengutronix.de>
-References: <20200312204607.24096-1-pmamonov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200312204607.24096-1-pmamonov@gmail.com>
+ id 1jDnXB-0005YL-RX
+ for barebox@lists.infradead.org; Mon, 16 Mar 2020 11:03:51 +0000
+From: Clement Leger <cleger@kalray.eu>
+Date: Mon, 16 Mar 2020 12:00:06 +0100
+Message-Id: <20200316110008.2909-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,48 +14,33 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] serial: ns16550: select default pinctrl state
-To: Peter Mamonov <pmamonov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/2] Allow parsing more than one memory node
+To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
+Cc: Clement Leger <cleger@kalray.eu>
 
-On Thu, Mar 12, 2020 at 11:46:07PM +0300, Peter Mamonov wrote:
-> Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
-> ---
->  drivers/serial/serial_ns16550.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
-> index 3edeb0dcb..6b5e92c13 100644
-> --- a/drivers/serial/serial_ns16550.c
-> +++ b/drivers/serial/serial_ns16550.c
-> @@ -39,6 +39,7 @@
->  #include <malloc.h>
->  #include <io.h>
->  #include <linux/clk.h>
-> +#include <pinctrl.h>
->  
->  #include "serial_ns16550.h"
->  #include <platform_data/serial-ns16550.h>
-> @@ -347,6 +348,8 @@ static void ns16550_probe_dt(struct device_d *dev, struct ns16550_priv *priv)
->  		dev_err(dev, "unsupported reg-io-width (%d)\n",
->  			width);
->  	}
-> +
-> +	of_pinctrl_select_state_default(np);
+Currently, barebox can only parse one memory node. This means that
+all other memory nodes (with device_type == "memory") will be ignored
+while parsing memory.
+This patchset add a function of_probe_memory which will call
+of_add_memory for each found memory node. Additionally, of_add_memory
+has been modified to allow being called multiple times and correctly
+add all memory banks.
 
-Why? This should have been done by the core already at this point.
+Clement Leger (2):
+  of: base: parse all available memory nodes
+  of: base: allow of_add_memory to be called multiple times
 
-Sascha
+ drivers/of/base.c | 42 +++++++++++++++++++++++++++++++-----------
+ 1 file changed, 31 insertions(+), 11 deletions(-)
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.15.0.276.g89ea799
+
 
 _______________________________________________
 barebox mailing list
