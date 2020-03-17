@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from zimbra2.kalray.eu ([92.103.151.219])
+Received: from mail-lj1-x243.google.com ([2a00:1450:4864:20::243])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jE7Rl-00071a-Ne
- for barebox@lists.infradead.org; Tue, 17 Mar 2020 08:19:35 +0000
-Date: Tue, 17 Mar 2020 09:19:29 +0100 (CET)
-From: =?utf-8?Q?Cl=C3=A9ment?= Leger <cleger@kalrayinc.com>
-Message-ID: <645334065.10446584.1584433169193.JavaMail.zimbra@kalray.eu>
-In-Reply-To: <20200317073544.GA31188@ravnborg.org>
-References: <20200316110008.2909-1-cleger@kalray.eu>
- <20200317073544.GA31188@ravnborg.org>
+ id 1jEDxV-0003Sm-7X
+ for barebox@lists.infradead.org; Tue, 17 Mar 2020 15:16:46 +0000
+Received: by mail-lj1-x243.google.com with SMTP id o10so23306615ljc.8
+ for <barebox@lists.infradead.org>; Tue, 17 Mar 2020 08:16:44 -0700 (PDT)
+From: Peter Mamonov <pmamonov@gmail.com>
+Date: Tue, 17 Mar 2020 18:16:11 +0300
+Message-Id: <20200317151611.4313-1-pmamonov@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,40 +21,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] Allow parsing more than one memory node
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] reset: add missing stub for device_reset()
+To: s.hauer@pengutronix.de
+Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>
 
-Hi Sam,
+Fixes: 45b95b50cd0b (reset: add reset controller framework)
+Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+---
+ include/linux/reset.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
------ On 17 Mar, 2020, at 08:35, Sam Ravnborg sam@ravnborg.org wrote:
+diff --git a/include/linux/reset.h b/include/linux/reset.h
+index a22bcf9a5..0d4ff5d19 100644
+--- a/include/linux/reset.h
++++ b/include/linux/reset.h
+@@ -49,6 +49,12 @@ static inline void reset_control_put(struct reset_control *rstc)
+ 	WARN_ON(1);
+ }
+ 
++static inline int device_reset(struct device_d *dev)
++{
++	WARN_ON(1);
++	return 0;
++}
++
+ static inline int device_reset_us(struct device_d *dev, int us)
+ {
+ 	WARN_ON(1);
+-- 
+2.24.0
 
-> Hi Clement.
-> 
-> On Mon, Mar 16, 2020 at 12:00:06PM +0100, Clement Leger wrote:
->> Currently, barebox can only parse one memory node. This means that
->> all other memory nodes (with device_type == "memory") will be ignored
->> while parsing memory.
->> This patchset add a function of_probe_memory which will call
->> of_add_memory for each found memory node. Additionally, of_add_memory
->> has been modified to allow being called multiple times and correctly
->> add all memory banks.
->> 
->> Clement Leger (2):
->>   of: base: parse all available memory nodes
->>   of: base: allow of_add_memory to be called multiple times
-> 
-> With this order of the patches, after applying patch 1 the
-> code will then use the last and not the first memory node.
-> And only after the second patch it will work.
-> 
-> I think to improve bisectability the order of the two patches should be
-> reversed.
-
-Oh yes indeed ! I will send a V2 after others have commented it.
-
-> 
-> 	Sam
 
 _______________________________________________
 barebox mailing list
