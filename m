@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk4.altibox.net ([109.247.116.15])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jE6lS-00081g-Pq
- for barebox@lists.infradead.org; Tue, 17 Mar 2020 07:35:52 +0000
-Date: Tue, 17 Mar 2020 08:35:44 +0100
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20200317073544.GA31188@ravnborg.org>
-References: <20200316110008.2909-1-cleger@kalray.eu>
+ id 1jEFN3-0001T8-U7
+ for barebox@lists.infradead.org; Tue, 17 Mar 2020 16:47:15 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>) id 1jEFN0-0003kv-CI
+ for barebox@lists.infradead.org; Tue, 17 Mar 2020 17:47:10 +0100
+References: <20200317151611.4313-1-pmamonov@gmail.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <fb297aaa-6399-baa1-94e5-bc93167ed88f@pengutronix.de>
+Date: Tue, 17 Mar 2020 17:47:10 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200316110008.2909-1-cleger@kalray.eu>
+In-Reply-To: <20200317151611.4313-1-pmamonov@gmail.com>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,33 +27,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] Allow parsing more than one memory node
-To: Clement Leger <cleger@kalray.eu>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] reset: add missing stub for device_reset()
+To: barebox@lists.infradead.org
 
-Hi Clement.
+Hello Peter,
 
-On Mon, Mar 16, 2020 at 12:00:06PM +0100, Clement Leger wrote:
-> Currently, barebox can only parse one memory node. This means that
-> all other memory nodes (with device_type == "memory") will be ignored
-> while parsing memory.
-> This patchset add a function of_probe_memory which will call
-> of_add_memory for each found memory node. Additionally, of_add_memory
-> has been modified to allow being called multiple times and correctly
-> add all memory banks.
+On 3/17/20 4:16 PM, Peter Mamonov wrote:
+> Fixes: 45b95b50cd0b (reset: add reset controller framework)
+> Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+
+I've submitted ("reset: add stub for device_reset when CONFIG_RESET_CONTROLLER=n")
+for this, which is currently in the next branch.
+
+Cheers,
+Ahmad
+
+> ---
+>  include/linux/reset.h | 6 ++++++
+>  1 file changed, 6 insertions(+)
 > 
-> Clement Leger (2):
->   of: base: parse all available memory nodes
->   of: base: allow of_add_memory to be called multiple times
+> diff --git a/include/linux/reset.h b/include/linux/reset.h
+> index a22bcf9a5..0d4ff5d19 100644
+> --- a/include/linux/reset.h
+> +++ b/include/linux/reset.h
+> @@ -49,6 +49,12 @@ static inline void reset_control_put(struct reset_control *rstc)
+>  	WARN_ON(1);
+>  }
+>  
+> +static inline int device_reset(struct device_d *dev)
+> +{
+> +	WARN_ON(1);
+> +	return 0;
+> +}
+> +
+>  static inline int device_reset_us(struct device_d *dev, int us)
+>  {
+>  	WARN_ON(1);
+> 
 
-With this order of the patches, after applying patch 1 the
-code will then use the last and not the first memory node.
-And only after the second patch it will work.
-
-I think to improve bisectability the order of the two patches should be
-reversed.
-
-	Sam
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
