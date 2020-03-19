@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-oln040092075071.outbound.protection.outlook.com
+ ([40.92.75.71] helo=EUR04-VI1-obe.outbound.protection.outlook.com)
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jEdLe-0007MH-Bc
- for barebox@lists.infradead.org; Wed, 18 Mar 2020 18:23:23 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 18 Mar 2020 19:23:19 +0100
-Message-Id: <20200318182319.14185-1-s.hauer@pengutronix.de>
+ id 1jEsZY-0003SO-O5
+ for barebox@lists.infradead.org; Thu, 19 Mar 2020 10:38:46 +0000
+From: Michael Graichen <michael.graichen@hotmail.com>
+Date: Thu, 19 Mar 2020 10:38:41 +0000
+Message-ID: <DB7PR02MB43321CDF6386A16A725DC131ABF40@DB7PR02MB4332.eurprd02.prod.outlook.com>
+Content-Language: de-DE
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,30 +21,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] crypto: pbkdf2: Select HMAC
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Barebox for Zedboard
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-pbkdf2 needs HMAC support, select it.
+Hey,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- crypto/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+i have just started working on a Zedboard (http://zedboard.org/product/zedboard) with an Xilinx Zynq XC7Z020 SOC.
+I have seen that Barebox has an defconfig for the zynq
+so i tried
 
-diff --git a/crypto/Kconfig b/crypto/Kconfig
-index 7cc8aceacb..ff83a40f5b 100644
---- a/crypto/Kconfig
-+++ b/crypto/Kconfig
-@@ -89,6 +89,7 @@ endif
- config CRYPTO_PBKDF2
- 	select DIGEST
- 	select DIGEST_SHA1_GENERIC
-+	select DIGEST_HMAC_GENERIC
- 	bool
- 
- config CRYPTO_RSA
--- 
-2.25.1
+export ARCH=arm
+export CROSS_COMPILE=arm-cortexa9-linux-gnueabihf-
+export PATH=/opt/OSELAS.Toolchain/arm-cortexa9-linux-gnueabihf/bin:$PATH
+make zynq_defconfig
+make -j`nproc`
+
+which compiles me the image
+
+barebox-flash-image -> images/barebox-avnet-zedboard.img
+
+when using u-boot i had to generate a BOOT.bin file with Xilinx's ./bootgen tool
+
+dev$ bootgen -image bootimage.bif -o i BOOT.bin
+
+and .bif file was
+
+dev$ cat bootimage.bif
+//arch = zynq; split = false; format = BIN
+the_ROM_image:
+{
+     [bootloader]FSBL.elf
+     design_1_wrapper.bit
+     u-boot.elf
+}
+
+
+that i copied onto an SD-Card and powed up the board. 
+
+But since i want to use Barebox how do i produce the BOOT.bin file? 
+and how is the programming of the FPGA Logic done?
+
+Best Regards 
+Michael
 
 
 _______________________________________________
