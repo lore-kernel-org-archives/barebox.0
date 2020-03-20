@@ -1,14 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-oln040092075071.outbound.protection.outlook.com
- ([40.92.75.71] helo=EUR04-VI1-obe.outbound.protection.outlook.com)
+Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jEsZY-0003SO-O5
- for barebox@lists.infradead.org; Thu, 19 Mar 2020 10:38:46 +0000
-From: Michael Graichen <michael.graichen@hotmail.com>
-Date: Thu, 19 Mar 2020 10:38:41 +0000
-Message-ID: <DB7PR02MB43321CDF6386A16A725DC131ABF40@DB7PR02MB4332.eurprd02.prod.outlook.com>
-Content-Language: de-DE
-MIME-Version: 1.0
+ id 1jFKBM-0001DR-K5
+ for barebox@lists.infradead.org; Fri, 20 Mar 2020 16:07:38 +0000
+From: Clement Leger <cleger@kalray.eu>
+Date: Fri, 20 Mar 2020 17:07:20 +0100
+Message-Id: <20200320160720.27134-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,52 +14,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Barebox for Zedboard
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] common: oftree: trim leading spaces from bootargs
+To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
+Cc: Clement Leger <cleger@kalray.eu>
 
-Hey,
+When barebox concatenates all dynamic bootargs string for linux, if they
+are empty, the resulting string might be composed of only spaces.
+Currently, there is no check for such string and it leads to
+overwriting bootargs in the device tree by an empty string. To avoid
+this behavior, use skip_spaces to trim leading spaces and then check if
+the string is empty. If so, simply returns and don't patch device tree
+bootargs.
 
-i have just started working on a Zedboard (http://zedboard.org/product/zedboard) with an Xilinx Zynq XC7Z020 SOC.
-I have seen that Barebox has an defconfig for the zynq
-so i tried
+Signed-off-by: Clement Leger <cleger@kalray.eu>
+---
+ common/oftree.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-export ARCH=arm
-export CROSS_COMPILE=arm-cortexa9-linux-gnueabihf-
-export PATH=/opt/OSELAS.Toolchain/arm-cortexa9-linux-gnueabihf/bin:$PATH
-make zynq_defconfig
-make -j`nproc`
-
-which compiles me the image
-
-barebox-flash-image -> images/barebox-avnet-zedboard.img
-
-when using u-boot i had to generate a BOOT.bin file with Xilinx's ./bootgen tool
-
-dev$ bootgen -image bootimage.bif -o i BOOT.bin
-
-and .bif file was
-
-dev$ cat bootimage.bif
-//arch = zynq; split = false; format = BIN
-the_ROM_image:
-{
-     [bootloader]FSBL.elf
-     design_1_wrapper.bit
-     u-boot.elf
-}
-
-
-that i copied onto an SD-Card and powed up the board. 
-
-But since i want to use Barebox how do i produce the BOOT.bin file? 
-and how is the programming of the FPGA Logic done?
-
-Best Regards 
-Michael
+diff --git a/common/oftree.c b/common/oftree.c
+index 09cb66021..36906e86f 100644
+--- a/common/oftree.c
++++ b/common/oftree.c
+@@ -151,6 +151,10 @@ static int of_fixup_bootargs(struct device_node *root, void *unused)
+ 	if (!str)
+ 		return 0;
+ 
++	str = skip_spaces(str);
++	if (strlen(str) == 0)
++		return 0;
++
+ 	node = of_create_node(root, "/chosen");
+ 	if (!node)
+ 		return -ENOMEM;
+-- 
+2.15.0.276.g89ea799
 
 
 _______________________________________________
