@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from zimbra2.kalray.eu ([92.103.151.219])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jGKCo-0005F1-Ox
- for barebox@lists.infradead.org; Mon, 23 Mar 2020 10:21:16 +0000
-Date: Mon, 23 Mar 2020 11:21:09 +0100 (CET)
-From: =?utf-8?Q?Cl=C3=A9ment?= Leger <cleger@kalrayinc.com>
-Message-ID: <1211869674.11432033.1584958869528.JavaMail.zimbra@kalray.eu>
-In-Reply-To: <20200323101246.GQ3335@pengutronix.de>
+ id 1jGKMh-0000RX-UM
+ for barebox@lists.infradead.org; Mon, 23 Mar 2020 10:31:29 +0000
 References: <20200316110008.2909-1-cleger@kalray.eu>
  <20200316110008.2909-2-cleger@kalray.eu>
  <20200323101246.GQ3335@pengutronix.de>
+ <1211869674.11432033.1584958869528.JavaMail.zimbra@kalray.eu>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <cbeedaec-9e16-d0e1-c4f8-3017b86b7f35@pengutronix.de>
+Date: Mon, 23 Mar 2020 11:31:26 +0100
 MIME-Version: 1.0
+In-Reply-To: <1211869674.11432033.1584958869528.JavaMail.zimbra@kalray.eu>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,88 +21,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 1/2] of: base: parse all available memory nodes
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: =?UTF-8?Q?Cl=c3=a9ment_Leger?= <cleger@kalrayinc.com>, Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-Hi Sascha,
-
------ On 23 Mar, 2020, at 11:12, Sascha Hauer s.hauer@pengutronix.de wrote:
-
-> On Mon, Mar 16, 2020 at 12:00:07PM +0100, Clement Leger wrote:
->> Currently, barebox only parse one memory node which is either the
->> "/memory" node or the first node with device_type == "memory".
->> However, the use of multiple memory nodes with device_type = "memory"
->> property is allowed by the device tree specification and already
->> correctly parsed by Linux kernel.
->> In order to fix that, add of_probe_memory function which loop over all
->> available memory nodes. In order to try to keep existing legacy search
->> based on "memory" node name, try to find this node and add it. If the
->> memory node contains the device_type property, then it will only be
->> added once.
->> 
->> Signed-off-by: Clement Leger <cleger@kalray.eu>
->> ---
->>  drivers/of/base.c | 31 +++++++++++++++++++++++++------
->>  1 file changed, 25 insertions(+), 6 deletions(-)
->> 
->> diff --git a/drivers/of/base.c b/drivers/of/base.c
->> index 9ede05227..b1a96ee8f 100644
->> --- a/drivers/of/base.c
->> +++ b/drivers/of/base.c
->> @@ -2061,9 +2061,32 @@ const struct of_device_id of_default_bus_match_table[] =
->> {
->>  	}
->>  };
->>  
->> +static void of_probe_memory(void)
->> +{
->> +	struct device_node *memory = root_node, *legacy_memory;
->> +
->> +	/* Parse node based on name (for legacy dt) */
->> +	legacy_memory = of_find_node_by_path("/memory");
->> +	if (legacy_memory)
->> +		of_add_memory(legacy_memory, false);
->> +
->> +	/* Then, parse all available node with "memory" device_type */
->> +	while (1) {
->> +		memory = of_find_node_by_type(memory, "memory");
->> +		if (!memory)
->> +			break;
->> +
->> +		/* Skip potentially already added legacy memory node */
->> +		if (memory == legacy_memory)
->> +			continue;
->> +
->> +		of_add_memory(memory, false);
->> +	}
-> 
-> AFAIK the device_type = "memory" property was mandatory in the early
-> days as well, there shouldn't be any /memory nodes without this
-> property. Given that, is the add-legacy-node-first still necessary?
-
-Agreed, I did that after speaking with someone on IRC which stated
-(rightfully), that I should keep the legacy behavior if possible.
-However, I agree that since the device_type = "memory" property should
-have always been there, there is no reason to keep this behavior.
-
-If you are ok with that, I will remove this chunk of code.
-
-> 
-> Sascha
-> 
-> 
-> --
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGksCgpPbiAzLzIzLzIwIDExOjIxIEFNLCBDbMOpbWVudCBMZWdlciB3cm90ZToKPj4gQUZBSUsg
+dGhlIGRldmljZV90eXBlID0gIm1lbW9yeSIgcHJvcGVydHkgd2FzIG1hbmRhdG9yeSBpbiB0aGUg
+ZWFybHkKPj4gZGF5cyBhcyB3ZWxsLCB0aGVyZSBzaG91bGRuJ3QgYmUgYW55IC9tZW1vcnkgbm9k
+ZXMgd2l0aG91dCB0aGlzCj4+IHByb3BlcnR5LiBHaXZlbiB0aGF0LCBpcyB0aGUgYWRkLWxlZ2Fj
+eS1ub2RlLWZpcnN0IHN0aWxsIG5lY2Vzc2FyeT8KPiAKPiBBZ3JlZWQsIEkgZGlkIHRoYXQgYWZ0
+ZXIgc3BlYWtpbmcgd2l0aCBzb21lb25lIG9uIElSQyB3aGljaCBzdGF0ZWQKPiAocmlnaHRmdWxs
+eSksIHRoYXQgSSBzaG91bGQga2VlcCB0aGUgbGVnYWN5IGJlaGF2aW9yIGlmIHBvc3NpYmxlLgoK
+TXkgY29uY2VybiB3YXMgYWJvdXQgSFcgdGhhdCBwYXNzZXMgYSBkZXZpY2UgdHJlZSB0byBiYXJl
+Ym94IChQb3dlclBDCnBvc3NpYmx5PyksIHdoZXJlIGl0IG1pZ2h0IGhhdmUgd29ya2VkIGJlZm9y
+ZSBhbmQgbm93IHdvbid0IGFueW1vcmUuCgpJZiB0aGlzIGlzIG5vIHJlYWwgY29uY2VybiwgaXQg
+Y2FuIGJlIHJlbW92ZWQuCgpDaGVlcnMKQWhtYWQKCj4gSG93ZXZlciwgSSBhZ3JlZSB0aGF0IHNp
+bmNlIHRoZSBkZXZpY2VfdHlwZSA9ICJtZW1vcnkiIHByb3BlcnR5IHNob3VsZAo+IGhhdmUgYWx3
+YXlzIGJlZW4gdGhlcmUsIHRoZXJlIGlzIG5vIHJlYXNvbiB0byBrZWVwIHRoaXMgYmVoYXZpb3Iu
+Cj4gCj4gSWYgeW91IGFyZSBvayB3aXRoIHRoYXQsIEkgd2lsbCByZW1vdmUgdGhpcyBjaHVuayBv
+ZiBjb2RlLgo+IAo+Pgo+PiBTYXNjaGEKPj4KPj4KPj4gLS0KPj4gUGVuZ3V0cm9uaXggZS5LLiAg
+ICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwK
+Pj4gU3RldWVyd2FsZGVyIFN0ci4gMjEgICAgICAgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3
+dy5wZW5ndXRyb25peC5kZS8gIHwKPj4gMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSAgICAgICAg
+ICAgICAgICAgIHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKPj4gQW10c2dlcmljaHQg
+SGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01
+NTU1IHwKPiAKPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+Xwo+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4gYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCj4g
+aHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cj4gCgot
+LSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgIHwKU3RldWVyd2FsZGVyIFN0ci4gMjEgICAgICAgICAgICAgICAg
+ICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKMzExMzcgSGlsZGVzaGVpbSwg
+R2VybWFueSAgICAgICAgICAgICAgICAgIHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwK
+QW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01
+MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9y
+ZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
