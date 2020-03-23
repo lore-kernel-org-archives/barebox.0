@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from zimbra2.kalray.eu ([92.103.151.219])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jFKBM-0001DR-K5
- for barebox@lists.infradead.org; Fri, 20 Mar 2020 16:07:38 +0000
-From: Clement Leger <cleger@kalray.eu>
-Date: Fri, 20 Mar 2020 17:07:20 +0100
-Message-Id: <20200320160720.27134-1-cleger@kalray.eu>
+ id 1jGHMp-0005gR-Nj
+ for barebox@lists.infradead.org; Mon, 23 Mar 2020 07:19:25 +0000
+Date: Mon, 23 Mar 2020 08:19:18 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200323071918.GM3335@pengutronix.de>
+References: <20200320160720.27134-1-cleger@kalray.eu>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200320160720.27134-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,46 +18,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] common: oftree: trim leading spaces from bootargs
-To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
-Cc: Clement Leger <cleger@kalray.eu>
+Subject: Re: [PATCH] common: oftree: trim leading spaces from bootargs
+To: Clement Leger <cleger@kalray.eu>
+Cc: barebox@lists.infradead.org
 
-When barebox concatenates all dynamic bootargs string for linux, if they
-are empty, the resulting string might be composed of only spaces.
-Currently, there is no check for such string and it leads to
-overwriting bootargs in the device tree by an empty string. To avoid
-this behavior, use skip_spaces to trim leading spaces and then check if
-the string is empty. If so, simply returns and don't patch device tree
-bootargs.
+On Fri, Mar 20, 2020 at 05:07:20PM +0100, Clement Leger wrote:
+> When barebox concatenates all dynamic bootargs string for linux, if they
+> are empty, the resulting string might be composed of only spaces.
+> Currently, there is no check for such string and it leads to
+> overwriting bootargs in the device tree by an empty string. To avoid
+> this behavior, use skip_spaces to trim leading spaces and then check if
+> the string is empty. If so, simply returns and don't patch device tree
+> bootargs.
+> 
+> Signed-off-by: Clement Leger <cleger@kalray.eu>
+> ---
+>  common/oftree.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 
-Signed-off-by: Clement Leger <cleger@kalray.eu>
----
- common/oftree.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Applied, thanks
 
-diff --git a/common/oftree.c b/common/oftree.c
-index 09cb66021..36906e86f 100644
---- a/common/oftree.c
-+++ b/common/oftree.c
-@@ -151,6 +151,10 @@ static int of_fixup_bootargs(struct device_node *root, void *unused)
- 	if (!str)
- 		return 0;
- 
-+	str = skip_spaces(str);
-+	if (strlen(str) == 0)
-+		return 0;
-+
- 	node = of_create_node(root, "/chosen");
- 	if (!node)
- 		return -ENOMEM;
+Sascha
+
+
 -- 
-2.15.0.276.g89ea799
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
