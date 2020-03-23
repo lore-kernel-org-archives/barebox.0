@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-vs1-xe42.google.com ([2607:f8b0:4864:20::e42])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jGKMh-0000RX-UM
- for barebox@lists.infradead.org; Mon, 23 Mar 2020 10:31:29 +0000
-References: <20200316110008.2909-1-cleger@kalray.eu>
- <20200316110008.2909-2-cleger@kalray.eu>
- <20200323101246.GQ3335@pengutronix.de>
- <1211869674.11432033.1584958869528.JavaMail.zimbra@kalray.eu>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <cbeedaec-9e16-d0e1-c4f8-3017b86b7f35@pengutronix.de>
-Date: Mon, 23 Mar 2020 11:31:26 +0100
+ id 1jGM6z-0002Wi-P7
+ for barebox@lists.infradead.org; Mon, 23 Mar 2020 12:23:23 +0000
+Received: by mail-vs1-xe42.google.com with SMTP id d18so665523vso.7
+ for <barebox@lists.infradead.org>; Mon, 23 Mar 2020 05:23:21 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <1211869674.11432033.1584958869528.JavaMail.zimbra@kalray.eu>
-Content-Language: en-US
+References: <CAGm1_kssX7T6KHNp7pp2dbfSUXSH4_RtOB3jo+6Ldwi11rB5YA@mail.gmail.com>
+ <20200323083012.GP3335@pengutronix.de>
+In-Reply-To: <20200323083012.GP3335@pengutronix.de>
+From: Yegor Yefremov <yegorslists@googlemail.com>
+Date: Mon, 23 Mar 2020 13:22:33 +0100
+Message-ID: <CAGm1_kvEGeMhGMr32AMZapL52L7Ks0-zdRs4=p4Rj=JgOS6Y=Q@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,42 +20,122 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] of: base: parse all available memory nodes
-To: =?UTF-8?Q?Cl=c3=a9ment_Leger?= <cleger@kalrayinc.com>, Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: am335x: load a kernel with integrated initramfs
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox <barebox@lists.infradead.org>, Lucas Stach <lst@pengutronix.de>
 
-SGksCgpPbiAzLzIzLzIwIDExOjIxIEFNLCBDbMOpbWVudCBMZWdlciB3cm90ZToKPj4gQUZBSUsg
-dGhlIGRldmljZV90eXBlID0gIm1lbW9yeSIgcHJvcGVydHkgd2FzIG1hbmRhdG9yeSBpbiB0aGUg
-ZWFybHkKPj4gZGF5cyBhcyB3ZWxsLCB0aGVyZSBzaG91bGRuJ3QgYmUgYW55IC9tZW1vcnkgbm9k
-ZXMgd2l0aG91dCB0aGlzCj4+IHByb3BlcnR5LiBHaXZlbiB0aGF0LCBpcyB0aGUgYWRkLWxlZ2Fj
-eS1ub2RlLWZpcnN0IHN0aWxsIG5lY2Vzc2FyeT8KPiAKPiBBZ3JlZWQsIEkgZGlkIHRoYXQgYWZ0
-ZXIgc3BlYWtpbmcgd2l0aCBzb21lb25lIG9uIElSQyB3aGljaCBzdGF0ZWQKPiAocmlnaHRmdWxs
-eSksIHRoYXQgSSBzaG91bGQga2VlcCB0aGUgbGVnYWN5IGJlaGF2aW9yIGlmIHBvc3NpYmxlLgoK
-TXkgY29uY2VybiB3YXMgYWJvdXQgSFcgdGhhdCBwYXNzZXMgYSBkZXZpY2UgdHJlZSB0byBiYXJl
-Ym94IChQb3dlclBDCnBvc3NpYmx5PyksIHdoZXJlIGl0IG1pZ2h0IGhhdmUgd29ya2VkIGJlZm9y
-ZSBhbmQgbm93IHdvbid0IGFueW1vcmUuCgpJZiB0aGlzIGlzIG5vIHJlYWwgY29uY2VybiwgaXQg
-Y2FuIGJlIHJlbW92ZWQuCgpDaGVlcnMKQWhtYWQKCj4gSG93ZXZlciwgSSBhZ3JlZSB0aGF0IHNp
-bmNlIHRoZSBkZXZpY2VfdHlwZSA9ICJtZW1vcnkiIHByb3BlcnR5IHNob3VsZAo+IGhhdmUgYWx3
-YXlzIGJlZW4gdGhlcmUsIHRoZXJlIGlzIG5vIHJlYXNvbiB0byBrZWVwIHRoaXMgYmVoYXZpb3Iu
-Cj4gCj4gSWYgeW91IGFyZSBvayB3aXRoIHRoYXQsIEkgd2lsbCByZW1vdmUgdGhpcyBjaHVuayBv
-ZiBjb2RlLgo+IAo+Pgo+PiBTYXNjaGEKPj4KPj4KPj4gLS0KPj4gUGVuZ3V0cm9uaXggZS5LLiAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwK
-Pj4gU3RldWVyd2FsZGVyIFN0ci4gMjEgICAgICAgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3
-dy5wZW5ndXRyb25peC5kZS8gIHwKPj4gMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSAgICAgICAg
-ICAgICAgICAgIHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKPj4gQW10c2dlcmljaHQg
-SGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01
-NTU1IHwKPiAKPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-Xwo+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4gYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCj4g
-aHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cj4gCgot
-LSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgIHwKU3RldWVyd2FsZGVyIFN0ci4gMjEgICAgICAgICAgICAgICAg
-ICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKMzExMzcgSGlsZGVzaGVpbSwg
-R2VybWFueSAgICAgICAgICAgICAgICAgIHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwK
-QW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01
-MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9y
-ZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Hi Sascha,
+
+On Mon, Mar 23, 2020 at 9:30 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+>
+> Hi Yegor,
+>
+> On Fri, Mar 20, 2020 at 09:29:04AM +0100, Yegor Yefremov wrote:
+> > I get an "handler failed with: Out of memory" message when trying to
+> > load my 22MB large kernel-fit.itb. Below you can see the related log:
+> >
+> > mounted /dev/nand0.UBI.ubi.kernel on /mnt/nand0.UBI.ubi.kernel
+> > YY: bootm_boot
+> > YY: read file 0, size 22661672, PAGE_SIZE 4096
+> > YY: fit_open
+> > FIT: Opened FIT image: Simple image with single Linux kernel and FDT blob
+> > FIT: configuration 'conf221@1': Boot Linux kernel with FDT blob (221)
+> > FIT: image 'kernel@1': 'Vanilla Linux kernel'
+> > FIT: /images/kernel@1/hash@1: hash OK
+> >
+> > Loading open firmware Device Tree flattened Binary
+> > '/mnt/nand0.UBI.ubi.kernel/kernel-fit.itb'
+> > OS image not yet relocated
+> > Passing control to FIT image handler
+> > YY: do_bootm_linux
+> > YY: before bootm_load_os
+> > YY: bootm_load_os
+> > YY: kernel size 22484352
+> > YY: for each memory bank: size 22484352
+> > __request_region: 0x86b37000:0x880a857f conflicts with 0x87efe860:0x8fdfd0bf
+>
+> So your kernel has a size of 22484352 bytes. We want to places the
+> kernel at a place where we do not risk that it overwrites itself during
+> decompression. We assume that the kernel gets five times bigger during
+> decompression. So we put it at 0x80000000 + 22484352 * 5. Here the image
+> takes 22484352 bytes, so ends at 0x80000000 + 22484352 * (5 + 1) which
+> is already inside the malloc area.
+>
+> Try the attached patch, it should solve that issue.
+
+No, it doesn't. But reducing the malloc size helped. I have tried the
+reduced size with and without the fix.
+
+Yegor
+
+> Besides this obvious bug you can also adjust the sime of the malloc
+> area. By default roughly half of the available RAM is used for malloc,
+> but in Kconfig you can adjust it to a smaller size which gives you more
+> place for the kernel.
+>
+> Sascha
+>
+> --------------------------------------8<-------------------------------
+>
+> From ca440da09c3cdb83e17a6f0a99f24f69300c0ba3 Mon Sep 17 00:00:00 2001
+> From: Sascha Hauer <s.hauer@pengutronix.de>
+> Date: Mon, 23 Mar 2020 09:17:36 +0100
+> Subject: [PATCH] ARM: bootm: make sure we place the kernel in free memory
+>
+> When placing the kernel image in memory make sure we do not
+> place it too high, outside of the available memory, outside of the
+> available memory.
+>
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  arch/arm/lib32/bootm.c | 15 ++++++++++++++-
+>  1 file changed, 14 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/arm/lib32/bootm.c b/arch/arm/lib32/bootm.c
+> index d64e705c40..971ebee8ac 100644
+> --- a/arch/arm/lib32/bootm.c
+> +++ b/arch/arm/lib32/bootm.c
+> @@ -104,11 +104,24 @@ static int get_kernel_addresses(size_t image_size,
+>         spacing = SZ_1M;
+>
+>         if (*load_address == UIMAGE_INVALID_ADDRESS) {
+> +               unsigned long mem_end = mem_start + mem_size - 1;
+> +               unsigned long kaddr;
+> +
+>                 /*
+>                  * Place the kernel at an address where it does not need to
+>                  * relocate itself before decompression.
+>                  */
+> -               *load_address = mem_start + image_decomp_size;
+> +               kaddr = mem_start + image_decomp_size;
+> +
+> +               /*
+> +                * Make sure we do not place the image past the end of the
+> +                * available memory.
+> +                */
+> +               if (kaddr + image_size + spacing >= mem_end)
+> +                       kaddr = mem_end - image_size - spacing;
+> +
+> +               *load_address = PAGE_ALIGN_DOWN(kaddr);
+> +
+>                 if (verbose)
+>                         printf("no OS load address, defaulting to 0x%08lx\n",
+>                                 *load_address);
+> --
+> 2.25.1
+>
+>
+> --
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
