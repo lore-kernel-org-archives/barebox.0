@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jHM7k-0003ct-RN
- for barebox@lists.infradead.org; Thu, 26 Mar 2020 06:36:18 +0000
-Date: Thu, 26 Mar 2020 07:36:14 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200326063614.GO27288@pengutronix.de>
-References: <CAGm1_ktP_E_44J-CuM=Dy7JdLXXturWm9jC9MmYN9aq=ngNvxQ@mail.gmail.com>
+ id 1jGllf-0005AA-L9
+ for barebox@lists.infradead.org; Tue, 24 Mar 2020 15:47:05 +0000
+Received: from localhost (localhost [127.0.0.1])
+ by zimbra2.kalray.eu (Postfix) with ESMTP id E8E3E27E0C4F
+ for <barebox@lists.infradead.org>; Tue, 24 Mar 2020 16:46:58 +0100 (CET)
+From: Jules Maselbas <jmaselbas@kalray.eu>
+Date: Tue, 24 Mar 2020 16:46:47 +0100
+Message-Id: <20200324154647.17341-4-jmaselbas@kalray.eu>
+In-Reply-To: <20200324154647.17341-1-jmaselbas@kalray.eu>
+References: <20200324154647.17341-1-jmaselbas@kalray.eu>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAGm1_ktP_E_44J-CuM=Dy7JdLXXturWm9jC9MmYN9aq=ngNvxQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,47 +24,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Cross-compiling target tools
-To: Yegor Yefremov <yegorslists@googlemail.com>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: [PATCH 3/3] usb: gadget: dfu: Reset global variables on unbind
+To: barebox@lists.infradead.org
+Cc: Jules Maselbas <jmaselbas@kalray.eu>
 
-Hi Yegor,
+Global variables must be reset to their default value before a new
+dfu_bind is done. Otherwise things wont work and are likely to cause
+a system crash due to a use after free: the global dfu_files was still
+pointing deallocated structure after unbind.
 
-On Wed, Mar 25, 2020 at 11:13:03PM +0100, Yegor Yefremov wrote:
-> How should one compile the target tools like bareboxenv-target etc. I
-> get the following error:
-> 
->  ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- make -C debian/build
-> make: Entering directory
-> '/home/user/MyProjects/oss/bootloaders/barebox-upstream/debian/build'
-> make[3]: 'include/generated/mach-types.h' is up to date.
->   Using /home/user/MyProjects/oss/bootloaders/barebox-upstream as
-> source for kernel
->   GEN     /home/user/MyProjects/oss/bootloaders/barebox-upstream/debian/build/Makefile
->   CHK     include/generated/version.h
->   CHK     include/generated/utsrelease.h
->   CREATE  include/config.h
->   CC      scripts/bareboxenv-target
-> /tmp/cc0VGmDE.o: In function `file_action':
-> /home/user/MyProjects/oss/bootloaders/barebox-upstream/scripts/../common/environment.c:119:
-> undefined reference to `xzalloc'
-> /tmp/cc0VGmDE.o: In function `concat_path_file':
-> /home/user/MyProjects/oss/bootloaders/barebox-upstream/scripts/bareboxenv.c:79:
+Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
+---
+ drivers/usb/gadget/dfu.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-bareboxenv.c includes a compiler.h file which has static inline variants
-of xmalloc and xzalloc. I just gave it a test here and it still works as
-expected. Could you verify scripts/compiler.h is included by the
-compiler? If not, what else is included which provides prototypes for
-these functions? If scripts/compiler.h is not included then I would
-expect some undeclared function warnings.
-
-Sascha
-
+diff --git a/drivers/usb/gadget/dfu.c b/drivers/usb/gadget/dfu.c
+index 592586db1..5504f4933 100644
+--- a/drivers/usb/gadget/dfu.c
++++ b/drivers/usb/gadget/dfu.c
+@@ -277,6 +277,15 @@ dfu_unbind(struct usb_configuration *c, struct usb_function *f)
+ {
+ 	struct f_dfu		*dfu = func_to_dfu(f);
+ 
++	memset(&dfu_mtdinfo, 0, sizeof(dfu_mtdinfo));
++	dfu_files = NULL;
++	dfu_file_entry = NULL;
++	dfufd = -EINVAL;
++	dfudetach = 0;
++	dfu_written = 0;
++	dfu_erased = 0;
++	prog_erase = 0;
++
+ 	usb_free_all_descriptors(f);
+ 
+ 	dma_free(dfu->dnreq->buf);
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.21.0.196.g041f5ea
+
 
 _______________________________________________
 barebox mailing list
