@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jGe6U-00063P-34
- for barebox@lists.infradead.org; Tue, 24 Mar 2020 07:36:03 +0000
-Date: Tue, 24 Mar 2020 08:35:58 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200324073557.GS3335@pengutronix.de>
-References: <CAGm1_kssX7T6KHNp7pp2dbfSUXSH4_RtOB3jo+6Ldwi11rB5YA@mail.gmail.com>
- <20200323083012.GP3335@pengutronix.de>
- <CAGm1_kvEGeMhGMr32AMZapL52L7Ks0-zdRs4=p4Rj=JgOS6Y=Q@mail.gmail.com>
+ id 1jGllf-0005A9-LX
+ for barebox@lists.infradead.org; Tue, 24 Mar 2020 15:47:05 +0000
+Received: from localhost (localhost [127.0.0.1])
+ by zimbra2.kalray.eu (Postfix) with ESMTP id D2CBE27E0BA4
+ for <barebox@lists.infradead.org>; Tue, 24 Mar 2020 16:46:58 +0100 (CET)
+From: Jules Maselbas <jmaselbas@kalray.eu>
+Date: Tue, 24 Mar 2020 16:46:44 +0100
+Message-Id: <20200324154647.17341-1-jmaselbas@kalray.eu>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAGm1_kvEGeMhGMr32AMZapL52L7Ks0-zdRs4=p4Rj=JgOS6Y=Q@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,65 +22,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: am335x: load a kernel with integrated initramfs
-To: Yegor Yefremov <yegorslists@googlemail.com>
-Cc: barebox <barebox@lists.infradead.org>, Lucas Stach <lst@pengutronix.de>
+Subject: [PATCH 0/3] usb: gadget: dfu: Fix timeout on erase when using big
+ partition
+To: barebox@lists.infradead.org
+Cc: Jules Maselbas <jmaselbas@kalray.eu>
 
-On Mon, Mar 23, 2020 at 01:22:33PM +0100, Yegor Yefremov wrote:
-> Hi Sascha,
-> 
-> On Mon, Mar 23, 2020 at 9:30 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> >
-> > Hi Yegor,
-> >
-> > On Fri, Mar 20, 2020 at 09:29:04AM +0100, Yegor Yefremov wrote:
-> > > I get an "handler failed with: Out of memory" message when trying to
-> > > load my 22MB large kernel-fit.itb. Below you can see the related log:
-> > >
-> > > mounted /dev/nand0.UBI.ubi.kernel on /mnt/nand0.UBI.ubi.kernel
-> > > YY: bootm_boot
-> > > YY: read file 0, size 22661672, PAGE_SIZE 4096
-> > > YY: fit_open
-> > > FIT: Opened FIT image: Simple image with single Linux kernel and FDT blob
-> > > FIT: configuration 'conf221@1': Boot Linux kernel with FDT blob (221)
-> > > FIT: image 'kernel@1': 'Vanilla Linux kernel'
-> > > FIT: /images/kernel@1/hash@1: hash OK
-> > >
-> > > Loading open firmware Device Tree flattened Binary
-> > > '/mnt/nand0.UBI.ubi.kernel/kernel-fit.itb'
-> > > OS image not yet relocated
-> > > Passing control to FIT image handler
-> > > YY: do_bootm_linux
-> > > YY: before bootm_load_os
-> > > YY: bootm_load_os
-> > > YY: kernel size 22484352
-> > > YY: for each memory bank: size 22484352
-> > > __request_region: 0x86b37000:0x880a857f conflicts with 0x87efe860:0x8fdfd0bf
-> >
-> > So your kernel has a size of 22484352 bytes. We want to places the
-> > kernel at a place where we do not risk that it overwrites itself during
-> > decompression. We assume that the kernel gets five times bigger during
-> > decompression. So we put it at 0x80000000 + 22484352 * 5. Here the image
-> > takes 22484352 bytes, so ends at 0x80000000 + 22484352 * (5 + 1) which
-> > is already inside the malloc area.
-> >
-> > Try the attached patch, it should solve that issue.
-> 
-> No, it doesn't. But reducing the malloc size helped. I have tried the
-> reduced size with and without the fix.
+Hi,
 
-Nevertheless I would still be interested why the patch doesn't work.
-Care to have a look? Some printfs of the addresses would be enough to
-give me a clue.
+The two first patch are focused on two fixes for an issue I encountered
+when trying to use the DFU gadget on big flash partition (2MB).
 
-Sascha
+You can find more information in each patch, but here is a short summary
+of the issue:
 
+When downloading a firmware into a big flash partition the erase
+operation can take a long time to be complete from few seconds to
+minutes in extreme cases. During the erase the DFU gadget does not
+respond to any USB setup request, the host only see a stalled USB
+endpoint and cannot get responses from DFU_GETSTATE nor DFU_GETSTATUS.
+
+
+The last patch is a small fix that allow to use the dfu gadget after
+being unbind, such as:
+  barebox:/ usbgadget -D /foo(foo)
+  barebox:/ usbgadget -d
+  barebox:/ usbgadget -D /bar(bar)
+
+
+Best regards,
+Jules
+
+---
+
+Jules Maselbas (3):
+  usb: gadget: dfu: Add manifestation phase
+  usb: gadget: dfu: Progressive erase if file is a mtd
+  usb: gadget: dfu: Reset global variables on unbind
+
+ drivers/usb/gadget/dfu.c | 207 +++++++++++++++++++++++++++++----------
+ 1 file changed, 156 insertions(+), 51 deletions(-)
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.21.0.196.g041f5ea
+
 
 _______________________________________________
 barebox mailing list
