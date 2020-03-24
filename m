@@ -1,19 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vs1-xe44.google.com ([2607:f8b0:4864:20::e44])
+Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jGmJ0-0004wU-Vu
- for barebox@lists.infradead.org; Tue, 24 Mar 2020 16:21:32 +0000
-Received: by mail-vs1-xe44.google.com with SMTP id x82so11459550vsc.12
- for <barebox@lists.infradead.org>; Tue, 24 Mar 2020 09:21:30 -0700 (PDT)
+ id 1jGllf-0005A7-NN
+ for barebox@lists.infradead.org; Tue, 24 Mar 2020 15:47:06 +0000
+Received: from localhost (localhost [127.0.0.1])
+ by zimbra2.kalray.eu (Postfix) with ESMTP id F15D427E0CB1
+ for <barebox@lists.infradead.org>; Tue, 24 Mar 2020 16:46:58 +0100 (CET)
+From: Jules Maselbas <jmaselbas@kalray.eu>
+Date: Tue, 24 Mar 2020 16:46:46 +0100
+Message-Id: <20200324154647.17341-3-jmaselbas@kalray.eu>
+In-Reply-To: <20200324154647.17341-1-jmaselbas@kalray.eu>
+References: <20200324154647.17341-1-jmaselbas@kalray.eu>
 MIME-Version: 1.0
-References: <CAGm1_kssX7T6KHNp7pp2dbfSUXSH4_RtOB3jo+6Ldwi11rB5YA@mail.gmail.com>
- <20200323083012.GP3335@pengutronix.de>
- <CAGm1_kvEGeMhGMr32AMZapL52L7Ks0-zdRs4=p4Rj=JgOS6Y=Q@mail.gmail.com>
- <20200324073557.GS3335@pengutronix.de>
-In-Reply-To: <20200324073557.GS3335@pengutronix.de>
-From: Yegor Yefremov <yegorslists@googlemail.com>
-Date: Tue, 24 Mar 2020 17:21:16 +0100
-Message-ID: <CAGm1_kuqWnrg6M6FLtgQ9Lsq9h6a+SG7n-OOOmGbpHJ_d94jCQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,77 +24,91 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: am335x: load a kernel with integrated initramfs
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox <barebox@lists.infradead.org>, Lucas Stach <lst@pengutronix.de>
+Subject: [PATCH 2/3] usb: gadget: dfu: Progressive erase if file is a mtd
+To: barebox@lists.infradead.org
+Cc: Jules Maselbas <jmaselbas@kalray.eu>
 
-On Tue, Mar 24, 2020 at 8:35 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
->
-> On Mon, Mar 23, 2020 at 01:22:33PM +0100, Yegor Yefremov wrote:
-> > Hi Sascha,
-> >
-> > On Mon, Mar 23, 2020 at 9:30 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > >
-> > > Hi Yegor,
-> > >
-> > > On Fri, Mar 20, 2020 at 09:29:04AM +0100, Yegor Yefremov wrote:
-> > > > I get an "handler failed with: Out of memory" message when trying to
-> > > > load my 22MB large kernel-fit.itb. Below you can see the related log:
-> > > >
-> > > > mounted /dev/nand0.UBI.ubi.kernel on /mnt/nand0.UBI.ubi.kernel
-> > > > YY: bootm_boot
-> > > > YY: read file 0, size 22661672, PAGE_SIZE 4096
-> > > > YY: fit_open
-> > > > FIT: Opened FIT image: Simple image with single Linux kernel and FDT blob
-> > > > FIT: configuration 'conf221@1': Boot Linux kernel with FDT blob (221)
-> > > > FIT: image 'kernel@1': 'Vanilla Linux kernel'
-> > > > FIT: /images/kernel@1/hash@1: hash OK
-> > > >
-> > > > Loading open firmware Device Tree flattened Binary
-> > > > '/mnt/nand0.UBI.ubi.kernel/kernel-fit.itb'
-> > > > OS image not yet relocated
-> > > > Passing control to FIT image handler
-> > > > YY: do_bootm_linux
-> > > > YY: before bootm_load_os
-> > > > YY: bootm_load_os
-> > > > YY: kernel size 22484352
-> > > > YY: for each memory bank: size 22484352
-> > > > __request_region: 0x86b37000:0x880a857f conflicts with 0x87efe860:0x8fdfd0bf
-> > >
-> > > So your kernel has a size of 22484352 bytes. We want to places the
-> > > kernel at a place where we do not risk that it overwrites itself during
-> > > decompression. We assume that the kernel gets five times bigger during
-> > > decompression. So we put it at 0x80000000 + 22484352 * 5. Here the image
-> > > takes 22484352 bytes, so ends at 0x80000000 + 22484352 * (5 + 1) which
-> > > is already inside the malloc area.
-> > >
-> > > Try the attached patch, it should solve that issue.
-> >
-> > No, it doesn't. But reducing the malloc size helped. I have tried the
-> > reduced size with and without the fix.
->
-> Nevertheless I would still be interested why the patch doesn't work.
-> Care to have a look? Some printfs of the addresses would be enough to
-> give me a clue.
+When downloading a firmware into a big flash partition the erase
+operation can take a long time to be complete from few seconds to
+minutes in extreme cases. During the erase the DFU gadget does not
+respond to any USB setup request, the host only see a stalled USB
+endpoint and cannot get responses from DFU_GETSTATE nor DFU_GETSTATUS.
 
-Loading open firmware Device Tree flattened Binary
-'/mnt/nand0.UBI.ubi.kernel/kernel-fit.itb'
-YY: mem_start 80000000, mem_size 133163104
-YY: image_decomp_size 112422912
-YY: mem_end 87efe85f
-YY: kaddr initial 86b37000
-YY: kaddr final 8688d2df
-YY: load_address 8688d000
-YY: mem_free 87eff000
-FIT: image 'fdt220@1': 'Flattened Device Tree blob (220)'
-FIT: /images/fdt220@1/hash@1: hash OK
-handler failed with: Out of memory
+After 5 seconds without any updates the host will abort the DFU
+transfer and return an error (when using dfu-util).
 
-I hope this helps.
+For instance I have a 2MB partition that takes 25 seconds to erase,
+this erase cannot be done in one step as it takes too much time or it
+should be done in the manifestation phase, see previous patch.
 
-Thanks.
+This patch modify the erase behavior when downloading a new firmware.
+If the updated file is a mtd partition then the DFU gadget will do
+a progressive erase by erasing the least amount of required blocks
+before writing a new chunk into the mtd device.
 
-Yegor
+Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
+---
+ drivers/usb/gadget/dfu.c | 21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/usb/gadget/dfu.c b/drivers/usb/gadget/dfu.c
+index fef6f3e3a..592586db1 100644
+--- a/drivers/usb/gadget/dfu.c
++++ b/drivers/usb/gadget/dfu.c
+@@ -55,6 +55,8 @@
+ #include <libbb.h>
+ #include <init.h>
+ #include <fs.h>
++#include <ioctl.h>
++#include <linux/mtd/mtd-abi.h>
+ 
+ #define USB_DT_DFU			0x21
+ 
+@@ -132,6 +134,10 @@ struct file_list_entry *dfu_file_entry;
+ static int dfufd = -EINVAL;
+ static struct file_list *dfu_files;
+ static int dfudetach;
++static struct mtd_info_user dfu_mtdinfo;
++static loff_t dfu_written;
++static loff_t dfu_erased;
++static int prog_erase;
+ 
+ /* USB DFU functional descriptor */
+ static struct usb_dfu_func_descriptor usb_dfu_func = {
+@@ -327,8 +333,16 @@ static void dfu_cleanup(struct f_dfu *dfu)
+ static void dn_complete(struct usb_ep *ep, struct usb_request *req)
+ {
+ 	struct f_dfu		*dfu = req->context;
++	loff_t size;
+ 	int ret;
+ 
++	if (prog_erase && (dfu_written + req->length) > dfu_erased) {
++		size = roundup(req->length, dfu_mtdinfo.erasesize);
++		erase(dfufd, size, dfu_erased);
++		dfu_erased += size;
++	}
++
++	dfu_written += req->length;
+ 	ret = write(dfufd, req->buf, req->length);
+ 	if (ret < (int)req->length) {
+ 		perror("write");
+@@ -493,7 +507,12 @@ static int dfu_setup(struct usb_function *f, const struct usb_ctrlrequest *ctrl)
+ 			}
+ 
+ 			if (!(dfu_file_entry->flags & FILE_LIST_FLAG_SAFE)) {
+-				ret = erase(dfufd, ERASE_SIZE_ALL, 0);
++				ret = ioctl(dfufd, MEMGETINFO, &dfu_mtdinfo);
++				if (ret) /* not a mtd */
++					ret = erase(dfufd, ERASE_SIZE_ALL, 0);
++				else
++					prog_erase = 1;
++
+ 				if (ret && ret != -ENOSYS) {
+ 					dfu->dfu_status = DFU_STATUS_errERASE;
+ 					perror("erase");
+-- 
+2.21.0.196.g041f5ea
+
 
 _______________________________________________
 barebox mailing list
