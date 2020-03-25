@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jDnuV-00069J-KU
- for barebox@lists.infradead.org; Mon, 16 Mar 2020 11:27:57 +0000
-Date: Mon, 16 Mar 2020 12:27:53 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200316112752.GM3335@pengutronix.de>
-References: <20200312203957.22867-1-pmamonov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200312203957.22867-1-pmamonov@gmail.com>
+ id 1jH9or-0006zD-R4
+ for barebox@lists.infradead.org; Wed, 25 Mar 2020 17:28:00 +0000
+From: Clement Leger <cleger@kalray.eu>
+Date: Wed, 25 Mar 2020 18:27:36 +0100
+Message-Id: <20200325172737.8621-2-cleger@kalray.eu>
+In-Reply-To: <20200325172737.8621-1-cleger@kalray.eu>
+References: <20200316110008.2909-3-cleger@kalray.eu>
+ <20200325172737.8621-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,54 +17,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] pinctrl-single: fix parsing of `pinctrl-single,bits`
- property
-To: Peter Mamonov <pmamonov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 1/2] of: base: allow of_add_memory to be called multiple
+ times
+To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
+Cc: Clement Leger <cleger@kalray.eu>
 
-On Thu, Mar 12, 2020 at 11:39:57PM +0300, Peter Mamonov wrote:
-> According to dts/Bindings/pinctrl/pinctrl-single.txt:113 the correct order of
-> parameters is <offset, value, mask>.
-> 
-> Fixes: f7e0cae43 ('pinctrl-single: Handle "pinctrl-single,function-mask" dt property')
-> Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
-> ---
->  drivers/pinctrl/pinctrl-single.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+Currently, of_add_memory can't be called multiple times because it will
+always create memory banks by restarting at value 0. This means that, when
+adding a second memory bank by calling again of_add_memory, it will be
+named ram0 and overwrite the previous one. Fix that by using a static
+variable to store the current memory bank number in order to be preserved
+from one call to another.
 
-Applied, thanks
+Signed-off-by: Clement Leger <cleger@kalray.eu>
+---
+ drivers/of/base.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-Sascha
-
-> 
-> diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
-> index d4f411b4a..2cd58df93 100644
-> --- a/drivers/pinctrl/pinctrl-single.c
-> +++ b/drivers/pinctrl/pinctrl-single.c
-> @@ -87,8 +87,8 @@ static int pcs_set_state(struct pinctrl_device *pdev, struct device_node *np)
->  
->  		for (i = 0; i < rows; i++) {
->  			offset = be32_to_cpup(mux + index++);
-> -			mask = be32_to_cpup(mux + index++);
->  			val = be32_to_cpup(mux + index++);
-> +			mask = be32_to_cpup(mux + index++);
->  			reg = pcs->read(pcs->base + offset);
->  			reg &= ~mask;
->  			reg |= val;
-> -- 
-> 2.20.1
-> 
-> 
-
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 9ede05227..2ea8d7516 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -2019,6 +2019,8 @@ int of_set_property(struct device_node *np, const char *name, const void *val, i
+ 	return 0;
+ }
+ 
++static int mem_bank_num;
++
+ int of_add_memory(struct device_node *node, bool dump)
+ {
+ 	const char *device_type;
+@@ -2030,14 +2032,13 @@ int of_add_memory(struct device_node *node, bool dump)
+ 		return -ENXIO;
+ 
+ 	while (!of_address_to_resource(node, n, &res)) {
+-		if (!resource_size(&res)) {
+-			n++;
++		n++;
++		if (!resource_size(&res))
+ 			continue;
+-		}
+ 
+-		of_add_memory_bank(node, dump, n,
++		of_add_memory_bank(node, dump, mem_bank_num,
+ 				res.start, resource_size(&res));
+-		n++;
++		mem_bank_num++;
+ 	}
+ 
+ 	return 0;
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.17.1
+
 
 _______________________________________________
 barebox mailing list
