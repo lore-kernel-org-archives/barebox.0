@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jH5Bq-0004Ox-KX
- for barebox@lists.infradead.org; Wed, 25 Mar 2020 12:31:23 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jH5Bj-0005B0-UM
+ for barebox@lists.infradead.org; Wed, 25 Mar 2020 12:31:25 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 25 Mar 2020 13:30:52 +0100
-Message-Id: <20200325123111.9612-6-s.hauer@pengutronix.de>
+Date: Wed, 25 Mar 2020 13:31:04 +0100
+Message-Id: <20200325123111.9612-18-s.hauer@pengutronix.de>
 In-Reply-To: <20200325123111.9612-1-s.hauer@pengutronix.de>
 References: <20200325123111.9612-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,57 +21,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/24] usb: Pass portstatus/portchange to
- usb_hub_port_connect_change()
+Subject: [PATCH 17/24] net: usb: add hook for link changes
 To: Barebox List <barebox@lists.infradead.org>
-
-portstatus/portchange have just been read in usb_scan_port(), there
-shouldn't be any need to read them again in
-usb_hub_port_connect_change().
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/core/hub.c | 18 +++---------------
- 1 file changed, 3 insertions(+), 15 deletions(-)
+ drivers/net/usb/usbnet.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-index 0569d0f94b..59354895df 100644
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -203,22 +203,10 @@ static int hub_port_reset(struct usb_device *hub, int port,
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index 83e2c7a9e2..9ddbc50c0a 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -158,13 +158,22 @@ static int usbnet_init(struct eth_device *edev)
+ 	return 0;
  }
  
- 
--static void usb_hub_port_connect_change(struct usb_device *dev, int port)
-+static void usb_hub_port_connect_change(struct usb_device *dev, int port,
-+					uint16_t portstatus, uint16_t portchange)
++static void usbnet_adjust_link(struct eth_device *edev)
++{
++	struct usbnet		*dev = (struct usbnet*)edev->priv;
++	struct driver_info      *info = dev->driver_info;
++
++	if (info->link_reset)
++		info->link_reset(dev);
++}
++
+ static int usbnet_open(struct eth_device *edev)
  {
- 	struct usb_device *usb;
--	struct usb_port_status portsts;
--	unsigned short portstatus, portchange;
--
--	/* Check status */
--	if (usb_get_port_status(dev, port + 1, &portsts) < 0) {
--		dev_dbg(&dev->dev, "port%d: get_port_status failed\n", port + 1);
--		return;
--	}
--
--	portstatus = le16_to_cpu(portsts.wPortStatus);
--	portchange = le16_to_cpu(portsts.wPortChange);
--	dev_dbg(&dev->dev, "port%d: status 0x%04x, change 0x%04x, %s\n",
--			port + 1, portstatus, portchange, portspeed(portstatus));
+ 	struct usbnet		*dev = (struct usbnet*)edev->priv;
  
- 	/* Clear the connection change status */
- 	usb_clear_port_feature(dev, port + 1, USB_PORT_FEAT_C_CONNECTION);
-@@ -320,7 +308,7 @@ static void usb_scan_port(struct usb_device_scan *usb_scan)
- 	/* A new USB device is ready at this point */
- 	dev_dbg(&dev->dev, "port%d: USB dev found\n", port + 1);
+ 	dev_dbg(&edev->dev, "%s\n",__func__);
  
--	usb_hub_port_connect_change(dev, port);
-+	usb_hub_port_connect_change(dev, port, portstatus, portchange);
+-	return phy_device_connect(edev, &dev->miibus, dev->phy_addr, NULL,
++	return phy_device_connect(edev, &dev->miibus, dev->phy_addr, usbnet_adjust_link,
+ 				0, PHY_INTERFACE_MODE_NA);
+ }
  
- 	if (portchange & USB_PORT_STAT_C_ENABLE) {
- 		dev_dbg(&dev->dev, "port%d: enable change, status 0x%04x\n",
 -- 
 2.26.0.rc2
 
