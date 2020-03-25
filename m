@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jHLuG-0006YK-L8
- for barebox@lists.infradead.org; Thu, 26 Mar 2020 06:22:21 +0000
-Date: Thu, 26 Mar 2020 07:22:18 +0100
+ id 1jH5Bj-00053T-Fr
+ for barebox@lists.infradead.org; Wed, 25 Mar 2020 12:31:20 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200326062218.GN27288@pengutronix.de>
+Date: Wed, 25 Mar 2020 13:30:57 +0100
+Message-Id: <20200325123111.9612-11-s.hauer@pengutronix.de>
+In-Reply-To: <20200325123111.9612-1-s.hauer@pengutronix.de>
 References: <20200325123111.9612-1-s.hauer@pengutronix.de>
- <20200325123111.9612-16-s.hauer@pengutronix.de>
- <20200325141800.jxdjc2oj7auufv46@tellis.lin.mbt.kalray.eu>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200325141800.jxdjc2oj7auufv46@tellis.lin.mbt.kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,28 +21,136 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 15/24] usb: net: Allocate rx buffer dynamically
-To: Jules Maselbas <jmaselbas@kalray.eu>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 10/24] usb: hub: Parse and save TT details from device
+ descriptor
+To: Barebox List <barebox@lists.infradead.org>
 
-Hi Jules,
+Adoption of U-Boot commit 5624dfd5aa91c244519ec60b40b4a42b4d9a43ca:
 
-On Wed, Mar 25, 2020 at 03:18:00PM +0100, Jules Maselbas wrote:
-> Hi Sascha,
-> 
-> > +	undev->rx_buf = dma_alloc(undev->rx_urb_size);
-> Looks like this buffer is never free, same for tx_buf.
+| commit 5624dfd5aa91c244519ec60b40b4a42b4d9a43ca
+| Author: Bin Meng <bmeng.cn@gmail.com>
+| Date:   Wed Jul 19 21:51:16 2017 +0800
+|
+|     usb: hub: Parse and save TT details from device descriptor
+|
+|     A high speed hub has a special responsibility to handle full speed/
+|     low speed devices connected on downstream ports. In this case, the
+|     hub must isolate the high speed signaling environment from the full
+|     speed/low speed signaling environment with the help of Transaction
+|     Translator (TT). TT details are provided by hub descriptors and we
+|     parse and save it to hub uclass_priv for later use.
+|
+|     Signed-off-by: Bin Meng <bmeng.cn@gmail.com>
+|     Reviewed-by: Simon Glass <sjg@chromium.org>
 
-Right, thanks for noting. Fixed.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/usb/core/hub.c | 52 +++++++++++++++++++++++++++++++++++++++++-
+ include/usb/usb.h      | 11 +++++++++
+ 2 files changed, 62 insertions(+), 1 deletion(-)
 
-Regards
- Sascha
-
+diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+index 6d664e80bb..7c7a325291 100644
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -388,7 +388,7 @@ static int usb_hub_configure(struct usb_device *dev)
+ 	unsigned char buffer[USB_BUFSIZ], *bitmap;
+ 	struct usb_hub_descriptor *descriptor;
+ 	struct usb_hub_status *hubsts;
+-	int i;
++	int i, ret;
+ 	struct usb_hub_device *hub;
+ 
+ 	hub = xzalloc(sizeof (*hub));
+@@ -468,6 +468,56 @@ static int usb_hub_configure(struct usb_device *dev)
+ 		break;
+ 	}
+ 
++	switch (dev->descriptor->bDeviceProtocol) {
++	case USB_HUB_PR_FS:
++		break;
++	case USB_HUB_PR_HS_SINGLE_TT:
++		dev_dbg(&dev->dev, "Single TT\n");
++		break;
++	case USB_HUB_PR_HS_MULTI_TT:
++		ret = usb_set_interface(dev, 0, 1);
++		if (ret == 0) {
++			dev_dbg(&dev->dev, "TT per port\n");
++			hub->tt.multi = true;
++		} else {
++			dev_dbg(&dev->dev, "Using single TT (err %d)\n", ret);
++		}
++		break;
++	case USB_HUB_PR_SS:
++		/* USB 3.0 hubs don't have a TT */
++		break;
++	default:
++		dev_dbg(&dev->dev, "Unrecognized hub protocol %d\n",
++		      dev->descriptor->bDeviceProtocol);
++		break;
++	}
++
++	/* Note 8 FS bit times == (8 bits / 12000000 bps) ~= 666ns */
++	switch (hub->desc.wHubCharacteristics & HUB_CHAR_TTTT) {
++	case HUB_TTTT_8_BITS:
++		if (dev->descriptor->bDeviceProtocol != 0) {
++			hub->tt.think_time = 666;
++			dev_dbg(&dev->dev, "TT requires at most %d FS bit times (%d ns)\n",
++			      8, hub->tt.think_time);
++		}
++		break;
++	case HUB_TTTT_16_BITS:
++		hub->tt.think_time = 666 * 2;
++		dev_dbg(&dev->dev, "TT requires at most %d FS bit times (%d ns)\n",
++		      16, hub->tt.think_time);
++		break;
++	case HUB_TTTT_24_BITS:
++		hub->tt.think_time = 666 * 3;
++		dev_dbg(&dev->dev, "TT requires at most %d FS bit times (%d ns)\n",
++		      24, hub->tt.think_time);
++		break;
++	case HUB_TTTT_32_BITS:
++		hub->tt.think_time = 666 * 4;
++		dev_dbg(&dev->dev, "TT requires at most %d FS bit times (%d ns)\n",
++		      32, hub->tt.think_time);
++		break;
++	}
++
+ 	dev_dbg(&dev->dev, "power on to power good time: %dms\n",
+ 			descriptor->bPwrOn2PwrGood * 2);
+ 	dev_dbg(&dev->dev, "hub controller current requirement: %dmA\n",
+diff --git a/include/usb/usb.h b/include/usb/usb.h
+index a9c34cdde4..94506fa525 100644
+--- a/include/usb/usb.h
++++ b/include/usb/usb.h
+@@ -306,6 +306,16 @@ void usb_rescan(void);
+ #define usb_pipecontrol(pipe)	(usb_pipetype((pipe)) == PIPE_CONTROL)
+ #define usb_pipebulk(pipe)	(usb_pipetype((pipe)) == PIPE_BULK)
+ 
++/*
++ * As of USB 2.0, full/low speed devices are segregated into trees.
++ * One type grows from USB 1.1 host controllers (OHCI, UHCI etc).
++ * The other type grows from high speed hubs when they connect to
++ * full/low speed devices using "Transaction Translators" (TTs).
++ */
++struct usb_tt {
++	bool		multi;		/* true means one TT per port */
++	unsigned	think_time;	/* think time in ns */
++};
+ 
+ /*************************************************************************
+  * Hub Stuff
+@@ -316,6 +326,7 @@ struct usb_hub_device {
+ 	uint64_t connect_timeout; /* Device connection timeout in ns */
+ 	uint64_t query_delay; /* Device query delay in ns */
+ 	int overcurrent_count[USB_MAXCHILDREN]; /* Over-current counter */
++	struct usb_tt tt; /* Transaction Translator */
+ };
+ 
+ /**
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.26.0.rc2
+
 
 _______________________________________________
 barebox mailing list
