@@ -1,14 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-ua1-x943.google.com ([2607:f8b0:4864:20::943])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jH5Bj-000535-Fl
- for barebox@lists.infradead.org; Wed, 25 Mar 2020 12:31:23 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 25 Mar 2020 13:30:50 +0100
-Message-Id: <20200325123111.9612-4-s.hauer@pengutronix.de>
-In-Reply-To: <20200325123111.9612-1-s.hauer@pengutronix.de>
-References: <20200325123111.9612-1-s.hauer@pengutronix.de>
+ id 1jH84X-0006My-ET
+ for barebox@lists.infradead.org; Wed, 25 Mar 2020 15:36:03 +0000
+Received: by mail-ua1-x943.google.com with SMTP id v24so902032uak.0
+ for <barebox@lists.infradead.org>; Wed, 25 Mar 2020 08:36:00 -0700 (PDT)
 MIME-Version: 1.0
+References: <CAGm1_kssX7T6KHNp7pp2dbfSUXSH4_RtOB3jo+6Ldwi11rB5YA@mail.gmail.com>
+ <20200323083012.GP3335@pengutronix.de>
+ <CAGm1_kvEGeMhGMr32AMZapL52L7Ks0-zdRs4=p4Rj=JgOS6Y=Q@mail.gmail.com>
+ <20200324073557.GS3335@pengutronix.de>
+ <CAGm1_kuqWnrg6M6FLtgQ9Lsq9h6a+SG7n-OOOmGbpHJ_d94jCQ@mail.gmail.com>
+ <20200325095803.GD27288@pengutronix.de>
+In-Reply-To: <20200325095803.GD27288@pengutronix.de>
+From: Yegor Yefremov <yegorslists@googlemail.com>
+Date: Wed, 25 Mar 2020 16:35:47 +0100
+Message-ID: <CAGm1_kvzuhUKZUyT5BCyq=v99EpRhW79+FZxbsCtG74LTJUF_A@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,116 +28,89 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/24] usb: hub: let usb_scan_port() return void
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: am335x: load a kernel with integrated initramfs
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox <barebox@lists.infradead.org>, Lucas Stach <lst@pengutronix.de>
 
-usb_scan_port() never returns anything else but 0, so let it return
-void.
+On Wed, Mar 25, 2020 at 10:58 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+>
+> On Tue, Mar 24, 2020 at 05:21:16PM +0100, Yegor Yefremov wrote:
+> > On Tue, Mar 24, 2020 at 8:35 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> > >
+> > > On Mon, Mar 23, 2020 at 01:22:33PM +0100, Yegor Yefremov wrote:
+> > > > Hi Sascha,
+> > > >
+> > > > On Mon, Mar 23, 2020 at 9:30 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> > > > >
+> > > > > Hi Yegor,
+> > > > >
+> > > > > On Fri, Mar 20, 2020 at 09:29:04AM +0100, Yegor Yefremov wrote:
+> > > > > > I get an "handler failed with: Out of memory" message when trying to
+> > > > > > load my 22MB large kernel-fit.itb. Below you can see the related log:
+> > > > > >
+> > > > > > mounted /dev/nand0.UBI.ubi.kernel on /mnt/nand0.UBI.ubi.kernel
+> > > > > > YY: bootm_boot
+> > > > > > YY: read file 0, size 22661672, PAGE_SIZE 4096
+> > > > > > YY: fit_open
+> > > > > > FIT: Opened FIT image: Simple image with single Linux kernel and FDT blob
+> > > > > > FIT: configuration 'conf221@1': Boot Linux kernel with FDT blob (221)
+> > > > > > FIT: image 'kernel@1': 'Vanilla Linux kernel'
+> > > > > > FIT: /images/kernel@1/hash@1: hash OK
+> > > > > >
+> > > > > > Loading open firmware Device Tree flattened Binary
+> > > > > > '/mnt/nand0.UBI.ubi.kernel/kernel-fit.itb'
+> > > > > > OS image not yet relocated
+> > > > > > Passing control to FIT image handler
+> > > > > > YY: do_bootm_linux
+> > > > > > YY: before bootm_load_os
+> > > > > > YY: bootm_load_os
+> > > > > > YY: kernel size 22484352
+> > > > > > YY: for each memory bank: size 22484352
+> > > > > > __request_region: 0x86b37000:0x880a857f conflicts with 0x87efe860:0x8fdfd0bf
+> > > > >
+> > > > > So your kernel has a size of 22484352 bytes. We want to places the
+> > > > > kernel at a place where we do not risk that it overwrites itself during
+> > > > > decompression. We assume that the kernel gets five times bigger during
+> > > > > decompression. So we put it at 0x80000000 + 22484352 * 5. Here the image
+> > > > > takes 22484352 bytes, so ends at 0x80000000 + 22484352 * (5 + 1) which
+> > > > > is already inside the malloc area.
+> > > > >
+> > > > > Try the attached patch, it should solve that issue.
+> > > >
+> > > > No, it doesn't. But reducing the malloc size helped. I have tried the
+> > > > reduced size with and without the fix.
+> > >
+> > > Nevertheless I would still be interested why the patch doesn't work.
+> > > Care to have a look? Some printfs of the addresses would be enough to
+> > > give me a clue.
+> >
+> > Loading open firmware Device Tree flattened Binary
+> > '/mnt/nand0.UBI.ubi.kernel/kernel-fit.itb'
+> > YY: mem_start 80000000, mem_size 133163104
+> > YY: image_decomp_size 112422912
+> > YY: mem_end 87efe85f
+> > YY: kaddr initial 86b37000
+> > YY: kaddr final 8688d2df
+> > YY: load_address 8688d000
+> > YY: mem_free 87eff000
+> > FIT: image 'fdt220@1': 'Flattened Device Tree blob (220)'
+> > FIT: /images/fdt220@1/hash@1: hash OK
+> > handler failed with: Out of memory
+> >
+> > I hope this helps.
+>
+> Yes, that helps, thanks. It seems the kernel now fits into the available
+> memory, but now there's no space left above the kernel to place the
+> device tree, at least that's what I assume.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/usb/core/hub.c | 25 +++++++++----------------
- 1 file changed, 9 insertions(+), 16 deletions(-)
+So the solution with reduced malloc size still holds.
 
-diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-index 4c2e568066..cc0c4c04d5 100644
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -270,7 +270,7 @@ static void usb_hub_port_connect_change(struct usb_device *dev, int port)
- 	device_detect(&usb->dev);
- }
- 
--static int usb_scan_port(struct usb_device_scan *usb_scan)
-+static void usb_scan_port(struct usb_device_scan *usb_scan)
- {
- 	struct usb_port_status portsts;
- 	unsigned short portstatus, portchange;
-@@ -287,7 +287,7 @@ static int usb_scan_port(struct usb_device_scan *usb_scan)
- 	 * This is needed for voltages to stabilize.
- 	 */
- 	if (get_time_ns() < hub->query_delay)
--		return 0;
-+		return;
- 
- 	if (usb_get_port_status(dev, port + 1, &portsts) < 0) {
- 		dev_dbg(&dev->dev, "port%d: get_port_status failed\n", port + 1);
-@@ -296,7 +296,7 @@ static int usb_scan_port(struct usb_device_scan *usb_scan)
- 			/* Remove this device from scanning list */
- 			goto remove;
- 		}
--		return 0;
-+		return;
- 	}
- 
- 	portstatus = le16_to_cpu(portsts.wPortStatus);
-@@ -310,12 +310,12 @@ static int usb_scan_port(struct usb_device_scan *usb_scan)
- 			/* Remove this device from scanning list */
- 			goto remove;
- 		}
--		return 0;
-+		return;
- 	}
- 
- 	/* Test if the connection came up, and if not exit */
- 	if(!(portstatus & USB_PORT_STAT_CONNECTION))
--		return 0;
-+		return;
- 
- 	/* A new USB device is ready at this point */
- 	dev_dbg(&dev->dev, "port%d: USB dev found\n", port + 1);
-@@ -361,7 +361,7 @@ static int usb_scan_port(struct usb_device_scan *usb_scan)
- 		 */
- 		if (hub->overcurrent_count[port] <=
- 				PORT_OVERCURRENT_MAX_SCAN_COUNT)
--			return 0;
-+			return;
- 
- 		/* Otherwise the device will get removed */
- 		dev_dbg(&dev->dev,"port%d: over-current occurred %d times\n",
-@@ -381,8 +381,6 @@ remove:
- 	 */
- 	list_del(&usb_scan->list);
- 	free(usb_scan);
--
--	return 0;
- }
- 
- static int usb_device_list_scan(void)
-@@ -390,7 +388,6 @@ static int usb_device_list_scan(void)
- 	struct usb_device_scan *usb_scan;
- 	struct usb_device_scan *tmp;
- 	static int running;
--	int ret = 0;
- 
- 	/* Only run this loop once for each controller */
- 	if (running)
-@@ -403,12 +400,8 @@ static int usb_device_list_scan(void)
- 		if (list_empty(&usb_scan_list))
- 			goto out;
- 
--		list_for_each_entry_safe(usb_scan, tmp, &usb_scan_list, list) {
--			/* Scan this port */
--			ret = usb_scan_port(usb_scan);
--			if (ret)
--				goto out;
--		}
-+		list_for_each_entry_safe(usb_scan, tmp, &usb_scan_list, list)
-+			usb_scan_port(usb_scan);
- 
- 		/* Avoid hammering the HUB with port scans */
- 		mdelay(25);
-@@ -422,7 +415,7 @@ out:
- 	 */
- 	running = 0;
- 
--	return ret;
-+	return 0;
- }
- 
- static int usb_hub_configure(struct usb_device *dev)
--- 
-2.26.0.rc2
+While we are at it, could you add CONFIG_MALLOC_SIZE and other config
+options in the related Kconfig?
 
+Thanks.
+
+Yegor
 
 _______________________________________________
 barebox mailing list
