@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jH5Bm-0008Kv-Pj
- for barebox@lists.infradead.org; Wed, 25 Mar 2020 12:31:21 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jH5Bj-0005A3-QW
+ for barebox@lists.infradead.org; Wed, 25 Mar 2020 12:31:25 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 25 Mar 2020 13:31:09 +0100
-Message-Id: <20200325123111.9612-23-s.hauer@pengutronix.de>
+Date: Wed, 25 Mar 2020 13:31:02 +0100
+Message-Id: <20200325123111.9612-16-s.hauer@pengutronix.de>
 In-Reply-To: <20200325123111.9612-1-s.hauer@pengutronix.de>
 References: <20200325123111.9612-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,46 +21,83 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 22/24] usb: hub: When no connection came up remove from
- scanning list
+Subject: [PATCH 15/24] usb: net: Allocate rx buffer dynamically
 To: Barebox List <barebox@lists.infradead.org>
 
-When after a timeout no connection came up then we have not only bail
-out, but also remove the device from the scanning list. Otherwise it
-can happen that the list never becomes empty and we probe forever.
+Allocate an individual rx buffer per device in the size we need it
+instead of using one global buffer for all devices.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/core/hub.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ drivers/net/usb/usbnet.c | 15 ++++++++++-----
+ include/usb/usbnet.h     |  1 +
+ 2 files changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-index 9954c0568f..2ac4184969 100644
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -339,8 +339,9 @@ static void usb_scan_port(struct usb_device_scan *usb_scan)
- 	dev_dbg(&dev->dev, "port%d: Status 0x%04x Change 0x%04x\n",
- 			port + 1, portstatus, portchange);
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index 60e67ff1a2..943113adb0 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -5,6 +5,7 @@
+ #include <errno.h>
+ #include <malloc.h>
+ #include <linux/phy.h>
++#include <dma.h>
  
--	if (!(portchange & USB_PORT_STAT_C_CONNECTION)) {
--		if(get_time_ns() >= hub->connect_timeout) {
-+	if (!(portchange & USB_PORT_STAT_C_CONNECTION) ||
-+	    !(portstatus & USB_PORT_STAT_CONNECTION)) {
-+		if (get_time_ns() >= hub->connect_timeout) {
- 			dev_dbg(&dev->dev, "port%d: timeout\n", port + 1);
- 			/* Remove this device from scanning list */
- 			goto remove;
-@@ -348,10 +349,6 @@ static void usb_scan_port(struct usb_device_scan *usb_scan)
- 		return;
+ /* handles CDC Ethernet and many other network "bulk data" interfaces */
+ int usbnet_get_endpoints(struct usbnet *dev)
+@@ -113,8 +114,6 @@ static int usbnet_send(struct eth_device *edev, void *eth_data, int data_length)
+ 	return ret;
+ }
+ 
+-static char rx_buf[4096];
+-
+ static int usbnet_recv(struct eth_device *edev)
+ {
+ 	struct usbnet		*dev = (struct usbnet*) edev->priv;
+@@ -125,15 +124,15 @@ static int usbnet_recv(struct eth_device *edev)
+ 
+ 	len = dev->rx_urb_size;
+ 
+-	ret = usb_bulk_msg(dev->udev, dev->in, rx_buf, len, &alen, 100);
++	ret = usb_bulk_msg(dev->udev, dev->in, dev->rx_buf, len, &alen, 100);
+ 	if (ret)
+ 		return ret;
+ 
+ 	if (alen) {
+ 		if (info->rx_fixup)
+-			return info->rx_fixup(dev, rx_buf, alen);
++			return info->rx_fixup(dev, dev->rx_buf, alen);
+ 		else
+-			net_receive(edev, rx_buf, alen);
++			net_receive(edev, dev->rx_buf, alen);
  	}
  
--	/* Test if the connection came up, and if not exit */
--	if(!(portstatus & USB_PORT_STAT_CONNECTION))
--		return;
--
- 	if (portchange & USB_PORT_STAT_C_RESET) {
- 		dev_dbg(&dev->dev, "port%d: reset change\n", port + 1);
- 		usb_clear_port_feature(dev, port + 1,
+         return 0;
+@@ -211,6 +210,12 @@ int usbnet_probe(struct usb_device *usbdev, const struct usb_device_id *prod)
+ 		undev->rx_urb_size = 1514; /* FIXME: What to put here? */
+ 	undev->maxpacket = usb_maxpacket(undev->udev, undev->out);
+ 
++	undev->rx_buf = dma_alloc(undev->rx_urb_size);
++	if (!undev->rx_buf) {
++		status = -ENOMEM;
++		goto out1;
++	}
++
+ 	eth_register(edev);
+ 
+ 	return 0;
+diff --git a/include/usb/usbnet.h b/include/usb/usbnet.h
+index 386c2164bd..3edf49413a 100644
+--- a/include/usb/usbnet.h
++++ b/include/usb/usbnet.h
+@@ -45,6 +45,7 @@ struct usbnet {
+ 	u32			xid;
+ 	u32			hard_mtu;	/* count any extra framing */
+ 	size_t			rx_urb_size;	/* size for rx urbs */
++	void			*rx_buf;
+ 
+ 	unsigned long		flags;
+ #		define EVENT_TX_HALT	0
 -- 
 2.26.0.rc2
 
