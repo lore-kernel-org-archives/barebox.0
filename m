@@ -1,11 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from conuserg-12.nifty.com ([210.131.2.79])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jGzYk-00010O-1i
- for barebox@lists.infradead.org; Wed, 25 Mar 2020 06:30:39 +0000
-From: Masahiro Yamada <yamada.masahiro@socionext.com>
-Date: Wed, 25 Mar 2020 15:30:02 +0900
-Message-Id: <20200325063002.27306-1-yamada.masahiro@socionext.com>
+ id 1jH5Bj-000543-EJ
+ for barebox@lists.infradead.org; Wed, 25 Mar 2020 12:31:17 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 25 Mar 2020 13:30:58 +0100
+Message-Id: <20200325123111.9612-12-s.hauer@pengutronix.de>
+In-Reply-To: <20200325123111.9612-1-s.hauer@pengutronix.de>
+References: <20200325123111.9612-1-s.hauer@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,75 +17,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] kbuild: remove clean-dirs syntax
-To: barebox@lists.infradead.org
+Subject: [PATCH 11/24] usb: host: make init hook optional
+To: Barebox List <barebox@lists.infradead.org>
 
-[ Linux comit 1634f2bfdb846ed0a8b73131a9dff7c420fb3fe1 ]
+For controllers which do everything relevant during probe time
+make the init hook optional.
 
-The only the difference between clean-files and clean-dirs is the -r
-option passed to the 'rm' command.
-
-You can always pass -r, and then remove the clean-dirs syntax.
-
-Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- scripts/Makefile.clean   | 15 +--------------
- scripts/kconfig/Makefile |  2 +-
- 2 files changed, 2 insertions(+), 15 deletions(-)
+ drivers/usb/core/usb.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/scripts/Makefile.clean b/scripts/Makefile.clean
-index 41712f89751c..d1e4a7800ee7 100644
---- a/scripts/Makefile.clean
-+++ b/scripts/Makefile.clean
-@@ -46,27 +46,14 @@ __clean-files   := $(wildcard                                               \
-                    $(addprefix $(obj)/, $(filter-out /%, $(__clean-files))) \
- 		   $(filter /%, $(__clean-files)))
+diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+index 32b19135a5..06087d2df6 100644
+--- a/drivers/usb/core/usb.c
++++ b/drivers/usb/core/usb.c
+@@ -511,9 +511,11 @@ int usb_host_detect(struct usb_host *host)
+ 	int ret;
  
--# as clean-dirs is given relative to the current directory, this adds
--# a $(obj) prefix, except for absolute paths
--
--__clean-dirs    := $(wildcard                                               \
--                   $(addprefix $(obj)/, $(filter-out /%, $(clean-dirs)))    \
--		   $(filter /%, $(clean-dirs)))
--
- # ==========================================================================
+ 	if (!host->root_dev) {
+-		ret = host->init(host);
+-		if (ret)
+-			return ret;
++		if (host->init) {
++			ret = host->init(host);
++			if (ret)
++				return ret;
++		}
  
- quiet_cmd_clean    = CLEAN   $(obj)
--      cmd_clean    = rm -f $(__clean-files)
--quiet_cmd_cleandir = CLEAN   $(__clean-dirs)
--      cmd_cleandir = rm -rf $(__clean-dirs)
--
-+      cmd_clean    = rm -rf $(__clean-files)
- 
- __clean: $(subdir-ymn)
- ifneq ($(strip $(__clean-files)),)
- 	+$(call cmd,clean)
--endif
--ifneq ($(strip $(__clean-dirs)),)
--	+$(call cmd,cleandir)
- endif
- 	@:
- 
-diff --git a/scripts/kconfig/Makefile b/scripts/kconfig/Makefile
-index 7656e1137b6b..bed7a5a2fbe9 100644
---- a/scripts/kconfig/Makefile
-+++ b/scripts/kconfig/Makefile
-@@ -114,7 +114,7 @@ testconfig: $(obj)/conf
- 	$(PYTHON3) -B -m pytest $(srctree)/$(src)/tests \
- 	-o cache_dir=$(abspath $(obj)/tests/.cache) \
- 	$(if $(findstring 1,$(KBUILD_VERBOSE)),--capture=no)
--clean-dirs += tests/.cache
-+clean-files += tests/.cache
- 
- # Help text used by make help
- help:
+ 		host->root_dev = usb_alloc_new_device();
+ 		host->root_dev->dev.parent = host->hw_dev;
 -- 
-2.17.1
+2.26.0.rc2
 
 
 _______________________________________________
