@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from zimbra2.kalray.eu ([92.103.151.219])
+Received: from mail-ua1-x932.google.com ([2607:f8b0:4864:20::932])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jH9or-0006zE-RH
- for barebox@lists.infradead.org; Wed, 25 Mar 2020 17:28:01 +0000
-From: Clement Leger <cleger@kalray.eu>
-Date: Wed, 25 Mar 2020 18:27:35 +0100
-Message-Id: <20200325172737.8621-1-cleger@kalray.eu>
-In-Reply-To: <20200316110008.2909-3-cleger@kalray.eu>
-References: <20200316110008.2909-3-cleger@kalray.eu>
+ id 1jHEHZ-00057H-19
+ for barebox@lists.infradead.org; Wed, 25 Mar 2020 22:13:55 +0000
+Received: by mail-ua1-x932.google.com with SMTP id g24so1392083uan.10
+ for <barebox@lists.infradead.org>; Wed, 25 Mar 2020 15:13:52 -0700 (PDT)
+MIME-Version: 1.0
+From: Yegor Yefremov <yegorslists@googlemail.com>
+Date: Wed, 25 Mar 2020 23:13:03 +0100
+Message-ID: <CAGm1_ktP_E_44J-CuM=Dy7JdLXXturWm9jC9MmYN9aq=ngNvxQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,37 +17,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 0/2] Allow parsing more than one memory node
-To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
-Cc: Clement Leger <cleger@kalray.eu>
+Subject: Cross-compiling target tools
+To: barebox <barebox@lists.infradead.org>
 
-Currently, barebox can only parse one memory node. This means that
-all other memory nodes (with device_type == "memory") will be ignored
-while parsing memory.
-This patchset add a function of_probe_memory which will call
-of_add_memory for each found memory node. Additionally, of_add_memory
-has been modified to allow being called multiple times and correctly
-add all memory banks.
+How should one compile the target tools like bareboxenv-target etc. I
+get the following error:
 
-Changes v1 -> v2
- - Reorder patches
- - Remove legacy "memory" node handling
+ ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- make -C debian/build
+make: Entering directory
+'/home/user/MyProjects/oss/bootloaders/barebox-upstream/debian/build'
+make[3]: 'include/generated/mach-types.h' is up to date.
+  Using /home/user/MyProjects/oss/bootloaders/barebox-upstream as
+source for kernel
+  GEN     /home/user/MyProjects/oss/bootloaders/barebox-upstream/debian/build/Makefile
+  CHK     include/generated/version.h
+  CHK     include/generated/utsrelease.h
+  CREATE  include/config.h
+  CC      scripts/bareboxenv-target
+/tmp/cc0VGmDE.o: In function `file_action':
+/home/user/MyProjects/oss/bootloaders/barebox-upstream/scripts/../common/environment.c:119:
+undefined reference to `xzalloc'
+/tmp/cc0VGmDE.o: In function `concat_path_file':
+/home/user/MyProjects/oss/bootloaders/barebox-upstream/scripts/bareboxenv.c:79:
+undefined reference to `xmalloc'
+/tmp/cc0VGmDE.o: In function `envfs_save':
+/home/user/MyProjects/oss/bootloaders/barebox-upstream/scripts/../common/environment.c:291:
+undefined reference to `xzalloc'
+/tmp/cc0VGmDE.o: In function `envfs_load':
+/home/user/MyProjects/oss/bootloaders/barebox-upstream/scripts/../common/environment.c:594:
+undefined reference to `xmalloc'
+collect2: error: ld returned 1 exit status
+/home/user/MyProjects/oss/bootloaders/barebox-upstream/scripts/Makefile:58:
+recipe for target 'scripts/bareboxenv-target' failed
+make[3]: *** [scripts/bareboxenv-target] Error 1
+/home/user/MyProjects/oss/bootloaders/barebox-upstream/Makefile:426:
+recipe for target 'scripts' failed
+make[2]: *** [scripts] Error 2
+Makefile:123: recipe for target '_all' failed
+make[1]: *** [_all] Error 2
+Makefile:24: recipe for target '__sub-make' failed
+make: *** [__sub-make] Error 2
 
-Clement Leger (2):
-  of: base: allow of_add_memory to be called multiple times
-  of: base: parse all available memory nodes
-
- drivers/of/base.c | 33 ++++++++++++++++++++++-----------
- 1 file changed, 22 insertions(+), 11 deletions(-)
-
--- 
-2.17.1
-
+Yegor
 
 _______________________________________________
 barebox mailing list
