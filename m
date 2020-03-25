@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jH5Bj-000598-O5
- for barebox@lists.infradead.org; Wed, 25 Mar 2020 12:31:23 +0000
+ id 1jH5Bj-0005AP-RU
+ for barebox@lists.infradead.org; Wed, 25 Mar 2020 12:31:25 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 25 Mar 2020 13:31:03 +0100
-Message-Id: <20200325123111.9612-17-s.hauer@pengutronix.de>
+Date: Wed, 25 Mar 2020 13:31:07 +0100
+Message-Id: <20200325123111.9612-21-s.hauer@pengutronix.de>
 In-Reply-To: <20200325123111.9612-1-s.hauer@pengutronix.de>
 References: <20200325123111.9612-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,86 +21,79 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 16/24] usb: net: Allocate tx buffer dynamically
+Subject: [PATCH 20/24] usb: hub: Translate USB 3.0 hub port status into old
+ version
 To: Barebox List <barebox@lists.infradead.org>
 
-It's cleaner to have a tx buffer per device and not one for all.
+Adoption of U-Boot commit:
+
+| 1commit 74ffc7cbb1d2d1f218b1bd67d1bd3cc1cba8aa79
+| Author: Bin Meng <bmeng.cn@gmail.com>
+| Date:   Wed Jul 19 21:51:12 2017 +0800
+|
+|     usb: hub: Translate USB 3.0 hub port status into old version
+|
+|     USB 3.0 hub port status field has different bit positions from 2.0
+|     hubs. Since U-Boot only understands the old version, translate the
+|     new one into the old one.
+|
+|     Since we are going to add USB 3.0 hub support, this feature is only
+|     available with driver model USB.
+|
+|     Signed-off-by: Bin Meng <bmeng.cn@gmail.com>
+|     Reviewed-by: Simon Glass <sjg@chromium.org>
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/usb/usbnet.c | 20 +++++++++++++-------
- include/usb/usbnet.h     |  1 +
- 2 files changed, 14 insertions(+), 7 deletions(-)
+ drivers/usb/core/hub.c | 21 ++++++++++++++++++++-
+ include/usb/usb_defs.h |  2 ++
+ 2 files changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index 943113adb0..83e2c7a9e2 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -78,8 +78,6 @@ int usbnet_get_endpoints(struct usbnet *dev)
- }
- EXPORT_SYMBOL(usbnet_get_endpoints);
+diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+index 2e702e5954..805b6b9027 100644
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -100,9 +100,28 @@ static int usb_get_hub_status(struct usb_device *dev, void *data)
  
--char tx_buffer[4096];
--
- static int usbnet_send(struct eth_device *edev, void *eth_data, int data_length)
+ static int usb_get_port_status(struct usb_device *dev, int port, void *data)
  {
- 	struct usbnet		*dev = edev->priv;
-@@ -92,23 +90,25 @@ static int usbnet_send(struct eth_device *edev, void *eth_data, int data_length)
- 	 * win32 driver (usually) and/or hardware quirks
- 	 */
-         if(info->tx_fixup) {
--                if(info->tx_fixup(dev, eth_data, data_length, tx_buffer, &len)) {
-+                if(info->tx_fixup(dev, eth_data, data_length, dev->tx_buf, &len)) {
- 			dev_dbg(&edev->dev, "can't tx_fixup packet");
-                         return 0;
-                 }
-         } else {
-                 len = data_length;
--                memmove(tx_buffer, (void*) eth_data, len);
-+                memmove(dev->tx_buf, (void*) eth_data, len);
-         }
- 
- 	/* don't assume the hardware handles USB_ZERO_PACKET
- 	 * NOTE:  strictly conforming cdc-ether devices should expect
- 	 * the ZLP here, but ignore the one-byte packet.
- 	 */
--	if ((len % dev->maxpacket) == 0)
--		tx_buffer[len++] = 0;
-+	if ((len % dev->maxpacket) == 0) {
-+		*(unsigned char *)(dev->tx_buf + len) = 0;
-+		len++;
-+	}
- 
--	ret = usb_bulk_msg(dev->udev, dev->out, tx_buffer, len, &alen, 1000);
-+	ret = usb_bulk_msg(dev->udev, dev->out, dev->tx_buf, len, &alen, 1000);
- 	dev_dbg(&edev->dev, "%s: ret: %d len: %d alen: %d\n", __func__, ret, len, alen);
- 
- 	return ret;
-@@ -216,6 +216,12 @@ int usbnet_probe(struct usb_device *usbdev, const struct usb_device_id *prod)
- 		goto out1;
- 	}
- 
-+	undev->tx_buf = dma_alloc(4096);
-+	if (!undev->tx_buf) {
-+		status = -ENOMEM;
-+		goto out1;
+-	return usb_control_msg(dev, usb_rcvctrlpipe(dev, 0),
++	int ret;
++
++	ret = usb_control_msg(dev, usb_rcvctrlpipe(dev, 0),
+ 			USB_REQ_GET_STATUS, USB_DIR_IN | USB_RT_PORT, 0, port,
+ 			data, sizeof(struct usb_hub_status), USB_CNTL_TIMEOUT);
++	if (ret < 0)
++		return ret;
++
++	if (!usb_hub_is_root_hub(dev) && usb_hub_is_superspeed(dev)) {
++		struct usb_port_status *status = data;
++		u16 tmp = status->wPortStatus & USB_SS_PORT_STAT_MASK;
++
++		if (status->wPortStatus & USB_SS_PORT_STAT_POWER)
++			tmp |= USB_PORT_STAT_POWER;
++		if ((status->wPortStatus & USB_SS_PORT_STAT_SPEED) ==
++		    USB_PORT_STAT_SPEED_5GBPS)
++			tmp |= USB_PORT_STAT_SUPER_SPEED;
++
++		status->wPortStatus = tmp;
 +	}
 +
- 	eth_register(edev);
++	return ret;
+ }
  
- 	return 0;
-diff --git a/include/usb/usbnet.h b/include/usb/usbnet.h
-index 3edf49413a..450db47b40 100644
---- a/include/usb/usbnet.h
-+++ b/include/usb/usbnet.h
-@@ -46,6 +46,7 @@ struct usbnet {
- 	u32			hard_mtu;	/* count any extra framing */
- 	size_t			rx_urb_size;	/* size for rx urbs */
- 	void			*rx_buf;
-+	void			*tx_buf;
  
- 	unsigned long		flags;
- #		define EVENT_TX_HALT	0
+diff --git a/include/usb/usb_defs.h b/include/usb/usb_defs.h
+index 8e32379c63..dcc4c71ba1 100644
+--- a/include/usb/usb_defs.h
++++ b/include/usb/usb_defs.h
+@@ -147,4 +147,6 @@
+ #define SetHubFeature		(0x2000 | USB_REQ_SET_FEATURE)
+ #define SetPortFeature		(0x2300 | USB_REQ_SET_FEATURE)
+ 
++#define USB_PORT_STAT_SUPER_SPEED   0x0600       /* faking support to XHCI */
++
+ #endif /*_USB_DEFS_H_ */
 -- 
 2.26.0.rc2
 
