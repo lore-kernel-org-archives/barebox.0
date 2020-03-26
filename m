@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-vs1-xe41.google.com ([2607:f8b0:4864:20::e41])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jH1WW-0005Cl-7w
- for barebox@lists.infradead.org; Wed, 25 Mar 2020 08:36:30 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 25 Mar 2020 09:36:04 +0100
-Message-Id: <20200325083608.15676-2-s.hauer@pengutronix.de>
-In-Reply-To: <20200325083608.15676-1-s.hauer@pengutronix.de>
-References: <20200325083608.15676-1-s.hauer@pengutronix.de>
+ id 1jHUUn-0007aX-FK
+ for barebox@lists.infradead.org; Thu, 26 Mar 2020 15:32:39 +0000
+Received: by mail-vs1-xe41.google.com with SMTP id x206so4110037vsx.5
+ for <barebox@lists.infradead.org>; Thu, 26 Mar 2020 08:32:36 -0700 (PDT)
 MIME-Version: 1.0
+References: <CAGm1_ktP_E_44J-CuM=Dy7JdLXXturWm9jC9MmYN9aq=ngNvxQ@mail.gmail.com>
+ <20200326063614.GO27288@pengutronix.de>
+In-Reply-To: <20200326063614.GO27288@pengutronix.de>
+From: Yegor Yefremov <yegorslists@googlemail.com>
+Date: Thu, 26 Mar 2020 16:31:47 +0100
+Message-ID: <CAGm1_ksknAi_3Srwrzv96y16AQEbmW-7-LOdFFmAnecdwQSG0g@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,37 +24,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] regmap-mmio: Add missing pieces for 64bit support
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: Cross-compiling target tools
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox <barebox@lists.infradead.org>
 
-The 64bit accessor functions are present, but unused. Hook them up when
-needed.
+On Thu, Mar 26, 2020 at 7:36 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+>
+> Hi Yegor,
+>
+> On Wed, Mar 25, 2020 at 11:13:03PM +0100, Yegor Yefremov wrote:
+> > How should one compile the target tools like bareboxenv-target etc. I
+> > get the following error:
+> >
+> >  ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- make -C debian/build
+> > make: Entering directory
+> > '/home/user/MyProjects/oss/bootloaders/barebox-upstream/debian/build'
+> > make[3]: 'include/generated/mach-types.h' is up to date.
+> >   Using /home/user/MyProjects/oss/bootloaders/barebox-upstream as
+> > source for kernel
+> >   GEN     /home/user/MyProjects/oss/bootloaders/barebox-upstream/debian/build/Makefile
+> >   CHK     include/generated/version.h
+> >   CHK     include/generated/utsrelease.h
+> >   CREATE  include/config.h
+> >   CC      scripts/bareboxenv-target
+> > /tmp/cc0VGmDE.o: In function `file_action':
+> > /home/user/MyProjects/oss/bootloaders/barebox-upstream/scripts/../common/environment.c:119:
+> > undefined reference to `xzalloc'
+> > /tmp/cc0VGmDE.o: In function `concat_path_file':
+> > /home/user/MyProjects/oss/bootloaders/barebox-upstream/scripts/bareboxenv.c:79:
+>
+> bareboxenv.c includes a compiler.h file which has static inline variants
+> of xmalloc and xzalloc. I just gave it a test here and it still works as
+> expected. Could you verify scripts/compiler.h is included by the
+> compiler? If not, what else is included which provides prototypes for
+> these functions? If scripts/compiler.h is not included then I would
+> expect some undeclared function warnings.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/base/regmap/regmap-mmio.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+What compiler version do you use? I have gcc 7.4.0 and newer. The
+problem seems to be the inline keyword in compiler.h (C99 related).
 
-diff --git a/drivers/base/regmap/regmap-mmio.c b/drivers/base/regmap/regmap-mmio.c
-index f8d2cda843..ef6a7db6fd 100644
---- a/drivers/base/regmap/regmap-mmio.c
-+++ b/drivers/base/regmap/regmap-mmio.c
-@@ -197,6 +197,12 @@ static struct regmap_mmio_context *regmap_mmio_gen_context(void __iomem *regs,
- 		ctx->reg_read = regmap_mmio_read32le;
- 		ctx->reg_write = regmap_mmio_write32le;
- 		break;
-+#ifdef CONFIG_64BIT
-+	case 64:
-+		ctx->reg_read = regmap_mmio_read64le;
-+		ctx->reg_write = regmap_mmio_write64le;
-+		break;
-+#endif
- 	default:
- 		ret = -EINVAL;
- 		goto err_free;
--- 
-2.26.0.rc2
+With these changes I get the tools bareboxenv-target etc. cross-compiled:
 
+diff --git a/scripts/compiler.h b/scripts/compiler.h
+index 0891c3bfa..74cd98074 100644
+--- a/scripts/compiler.h
++++ b/scripts/compiler.h
+@@ -113,7 +113,7 @@ typedef uint32_t __u32;
+        (void) (&_min1 == &_min2);              \
+        _min1 < _min2 ? _min1 : _min2; })
+
+-inline void *xmalloc(size_t size)
++void *xmalloc(size_t size)
+ {
+        void *p = NULL;
+
+@@ -125,7 +125,7 @@ inline void *xmalloc(size_t size)
+        return p;
+ }
+
+-inline void *xzalloc(size_t size)
++void *xzalloc(size_t size)
+ {
+        void *p = xmalloc(size);
+        memset(p, 0, size);
+
+Yegor
 
 _______________________________________________
 barebox mailing list
