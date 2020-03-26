@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jH1WI-00050o-Ju
- for barebox@lists.infradead.org; Wed, 25 Mar 2020 08:36:16 +0000
+ id 1jHLuG-0006YK-L8
+ for barebox@lists.infradead.org; Thu, 26 Mar 2020 06:22:21 +0000
+Date: Thu, 26 Mar 2020 07:22:18 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 25 Mar 2020 09:36:08 +0100
-Message-Id: <20200325083608.15676-6-s.hauer@pengutronix.de>
-In-Reply-To: <20200325083608.15676-1-s.hauer@pengutronix.de>
-References: <20200325083608.15676-1-s.hauer@pengutronix.de>
+Message-ID: <20200326062218.GN27288@pengutronix.de>
+References: <20200325123111.9612-1-s.hauer@pengutronix.de>
+ <20200325123111.9612-16-s.hauer@pengutronix.de>
+ <20200325141800.jxdjc2oj7auufv46@tellis.lin.mbt.kalray.eu>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200325141800.jxdjc2oj7auufv46@tellis.lin.mbt.kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,34 +24,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] mtd: spi-nor: Add support for cy15x104q
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH 15/24] usb: net: Allocate rx buffer dynamically
+To: Jules Maselbas <jmaselbas@kalray.eu>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-The Cypress cy15b104q and cy15v104q are 4Mbit serial SPI F-RAM devices.
-Add support for them to the spi-nor driver.
+Hi Jules,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/mtd/spi-nor/spi-nor.c | 3 +++
- 1 file changed, 3 insertions(+)
+On Wed, Mar 25, 2020 at 03:18:00PM +0100, Jules Maselbas wrote:
+> Hi Sascha,
+> 
+> > +	undev->rx_buf = dma_alloc(undev->rx_urb_size);
+> Looks like this buffer is never free, same for tx_buf.
 
-diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index 038d7072aa..5cc4573178 100644
---- a/drivers/mtd/spi-nor/spi-nor.c
-+++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -640,6 +640,9 @@ static const struct spi_device_id spi_nor_ids[] = {
- 
- 	{ "at45db081d", INFO(0x1f2500, 0, 64 * 1024, 16, SECT_4K) },
- 
-+	/* Cypress */
-+	{ "cy15x104q",  INFO6(0x042cc2, 0x7f7f7f, 512 * 1024, 1, SPI_NOR_NO_ERASE) },
-+
- 	/* EON -- en25xxx */
- 	{ "en25f32",    INFO(0x1c3116, 0, 64 * 1024,   64, SECT_4K) },
- 	{ "en25p32",    INFO(0x1c2016, 0, 64 * 1024,   64, 0) },
+Right, thanks for noting. Fixed.
+
+Regards
+ Sascha
+
 -- 
-2.26.0.rc2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
