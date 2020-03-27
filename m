@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from vsmx012.vodafonemail.xion.oxcs.net ([153.92.174.90])
+Received: from mail-vi1eur05olkn2043.outbound.protection.outlook.com
+ ([40.92.90.43] helo=EUR05-VI1-obe.outbound.protection.outlook.com)
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jHkLQ-00055u-1s
- for barebox@lists.infradead.org; Fri, 27 Mar 2020 08:28:02 +0000
-References: <c013449a-b775-b805-df78-48a908d506fb@arcor.de>
- <d5949d44-9377-98f4-029c-ae1b0debf7d1@pengutronix.de>
-From: Giorgio <giorgio.nicole@arcor.de>
-Message-ID: <2179bad5-0ec6-a2ae-683f-f2f24e3aabfb@arcor.de>
-Date: Fri, 27 Mar 2020 09:27:49 +0100
+ id 1jHljm-0006bH-FT
+ for barebox@lists.infradead.org; Fri, 27 Mar 2020 09:57:16 +0000
+From: Michael Graichen <michael.graichen@hotmail.com>
+Date: Fri, 27 Mar 2020 09:57:11 +0000
+Message-ID: <DB7PR02MB43329F5FA85160DA28F68030ABCC0@DB7PR02MB4332.eurprd02.prod.outlook.com>
+Content-Language: de-DE
+Content-Type: multipart/mixed;
+ boundary="_002_DB7PR02MB43329F5FA85160DA28F68030ABCC0DB7PR02MB4332eurp_"
 MIME-Version: 1.0
-In-Reply-To: <d5949d44-9377-98f4-029c-ae1b0debf7d1@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,128 +19,147 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: imx7d dual core boot
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] some fixes for the zedboard build
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi,
+--_002_DB7PR02MB43329F5FA85160DA28F68030ABCC0DB7PR02MB4332eurp_
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-maybe 'crash' was not the best word to describe the effect I see;
+Hey, =0A=
+=0A=
+i've attached some fixes for the zedboard build that worked, at least, for =
+me.=0A=
+The MIO config in lowlevel.c seem to be very "hardware specific" but one ca=
+n compare this to what Xilinx Vivado says.=0A=
+=0A=
+When including the drivers for Networking, QSPI and SD one will run out of =
+OCRAM very quickly that's why i commended out so much in the defconfig.=0A=
+=0A=
+The changes to drivers/mci/Kconfig and drivers/mci/arasan-sdhci.c seem to b=
+e bug fixes.=0A=
+=0A=
+Best regards and have a nice weekend =0A=
+=0A=
+Michael=0A=
+=0A=
+=0A=
+=0A=
+=0A=
+=0A=
 
-the bootloader just stops running, never returns from the call
-to __mmu_cache_on(), there's no debug messages or stack dumps;
-in this case the kernel image is not started.
+--_002_DB7PR02MB43329F5FA85160DA28F68030ABCC0DB7PR02MB4332eurp_
+Content-Type: text/x-patch; name="fixes-for-the-zedboard.diff"
+Content-Description: fixes-for-the-zedboard.diff
+Content-Disposition: attachment; filename="fixes-for-the-zedboard.diff";
+	size=5193; creation-date="Fri, 27 Mar 2020 09:55:04 GMT";
+	modification-date="Fri, 27 Mar 2020 09:55:04 GMT"
+Content-Transfer-Encoding: base64
 
-I think on my arch / soc __mmu_cache_on() calls some asm coded function
-defined in arch/arm/cpu/cache-armv7.S (v7_mmu_cache_on) and one
-of the opcodes there crashes the cpu directly. Maybe I should try to
-dump the core state (registers, ...) on the console just before jumping
-to v7_mmu_cache_on.
+ZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9hdm5ldC16ZWRib2FyZC9sb3dsZXZlbC5jIGIv
+YXJjaC9hcm0vYm9hcmRzL2F2bmV0LXplZGJvYXJkL2xvd2xldmVsLmMKaW5kZXggOTEyZWIxMWZk
+Li5kZTM0MzRlMzggMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2JvYXJkcy9hdm5ldC16ZWRib2FyZC9s
+b3dsZXZlbC5jCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9hdm5ldC16ZWRib2FyZC9sb3dsZXZlbC5j
+CkBAIC0yNTgsNyArMjU4LDcgQEAgc3RhdGljIHZvaWQgYXZuZXRfemVkYm9hcmRfcHM3X2luaXQo
+dm9pZCkKIAogCS8qIEdFTTAgKi8KIAl3cml0ZWwoMHgwMDAwMDAwMSwgMHhmODAwMDEzOCk7Ci0J
+d3JpdGVsKDB4MDA1MDA4MDEsIDB4ZjgwMDAxNDApOworCXdyaXRlbCgweDAwMTAwODAxLCAweGY4
+MDAwMTQwKTsKIAl3cml0ZWwoMHgwMDAwMDMwMiwgMHhmODAwMDc0MCk7CiAJd3JpdGVsKDB4MDAw
+MDAzMDIsIDB4ZjgwMDA3NDQpOwogCXdyaXRlbCgweDAwMDAwMzAyLCAweGY4MDAwNzQ4KTsKQEAg
+LTI3MSw4ICsyNzEsOCBAQCBzdGF0aWMgdm9pZCBhdm5ldF96ZWRib2FyZF9wczdfaW5pdCh2b2lk
+KQogCXdyaXRlbCgweDAwMDAxMzAzLCAweGY4MDAwNzY0KTsKIAl3cml0ZWwoMHgwMDAwMTMwMywg
+MHhmODAwMDc2OCk7CiAJd3JpdGVsKDB4MDAwMDEzMDMsIDB4ZjgwMDA3NkMpOwotCXdyaXRlbCgw
+eDAwMDAxMjgwLCAweGY4MDAwN0QwKTsKLQl3cml0ZWwoMHgwMDAwMTI4MCwgMHhmODAwMDdENCk7
+CisJd3JpdGVsKDB4MDAwMDAyODAsIDB4ZjgwMDA3RDApOworCXdyaXRlbCgweDAwMDAwMjgwLCAw
+eGY4MDAwN0Q0KTsKIAogCXdyaXRlbCgweDAwMDAwMDAxLCAweGY4MDAwQjAwKTsKIApAQCAtMjk3
+LDYgKzI5NywxNiBAQCBFTlRSWV9GVU5DVElPTihzdGFydF9hdm5ldF96ZWRib2FyZCwgcjAsIHIx
+LCByMikKIAogCXZvaWQgKmZkdCA9IF9fZHRiX3p5bnFfemVkX3N0YXJ0ICsgZ2V0X3J1bnRpbWVf
+b2Zmc2V0KCk7CiAKKwkvKiBNSU9fMDcgaW4gR1BJTyBNb2RlIDMuM1YgVklPLCBjYW4gYmUgdW5j
+b21lbnRlZCBiZWNhdXNlIGl0IGlzIHRoZSBkZWZhdWx0IHZhbHVlICovCisJd3JpdGVsKDB4MDAw
+MERGMEQsIFpZTlFfU0xDUl9VTkxPQ0spOworCXdyaXRlbCgweDAwMDAwNjAwLCAweEY4MDAwNzFD
+ICk7CisJd3JpdGVsKDB4MDAwMDc2N0IsIFpZTlFfU0xDUl9MT0NLKTsKKworCS8qIHR1cm5zIG9u
+IHRoZSBMRUQgTUlPXzA3ICovCisJd3JpdGVsKCgxPDw3KSwgMHhlMDAwYTIwNCApOyAgICAvLyBE
+aXJlY3Rpb24KKwl3cml0ZWwoKDE8PDcpLCAweGUwMDBhMjA4ICk7ICAgIC8vIE91dHB1dCBlbmFi
+bGUKKwl3cml0ZWwoKDE8PDcpLCAweGUwMDBhMDQwICk7ICAgIC8vIERBVEEgUmVnaXN0ZXIKKwog
+CWFybV9jcHVfbG93bGV2ZWxfaW5pdCgpOwogCXp5bnFfY3B1X2xvd2xldmVsX2luaXQoKTsKIApk
+aWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL2F2bmV0LXplZGJvYXJkL3plZGJvYXJkLnp5bnFj
+ZmcgYi9hcmNoL2FybS9ib2FyZHMvYXZuZXQtemVkYm9hcmQvemVkYm9hcmQuenlucWNmZwppbmRl
+eCAzZjg4MDhkM2QuLjc2ZDVkODQ1MyAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vYm9hcmRzL2F2bmV0
+LXplZGJvYXJkL3plZGJvYXJkLnp5bnFjZmcKKysrIGIvYXJjaC9hcm0vYm9hcmRzL2F2bmV0LXpl
+ZGJvYXJkL3plZGJvYXJkLnp5bnFjZmcKQEAgLTEsMjQgKzEsMiBAQAotI2luY2x1ZGUgPG1hY2gv
+enlucTcwMDAtaGVhZGVyLXJlZ3MuaD4KLQotd20gMzIgWllOUV9TTENSX1VOTE9DSwkJMHgwMDAw
+REYwRAotd20gMzIgWllOUV9DTEtfNjIxX1RSVUUJCTB4MDAwMDAwMDEKLXdtIDMyIFpZTlFfQVBF
+Ul9DTEtfQ1RSTAkweDAxRkMwNDRECi0KLXdtIDMyIFpZTlFfQVJNX1BMTF9DVFJMCQkweDAwMDI4
+MDA4Ci13bSAzMiBaWU5RX0FSTV9QTExfQ0ZHCQkweDAwMEZBMjIwCi13bSAzMiBaWU5RX0FSTV9Q
+TExfQ1RSTAkJMHgwMDAyODAxMAotd20gMzIgWllOUV9BUk1fUExMX0NUUkwJCTB4MDAwMjgwMTEK
+LXdtIDMyIFpZTlFfQVJNX1BMTF9DVFJMCQkweDAwMDI4MDEwCi13bSAzMiBaWU5RX0FSTV9QTExf
+Q1RSTAkJMHgwMDAyODAwMAotCi13bSAzMiBaWU5RX0lPX1BMTF9DVFJMCQkweDAwMDFFMDA4Ci13
+bSAzMiBaWU5RX0lPX1BMTF9DRkcJCTB4MDAxNDUyQzAKLXdtIDMyIFpZTlFfSU9fUExMX0NUUkwJ
+CTB4MDAwMUUwMTAKLXdtIDMyIFpZTlFfSU9fUExMX0NUUkwJCTB4MDAwMUUwMTEKLXdtIDMyIFpZ
+TlFfSU9fUExMX0NUUkwJCTB4MDAwMUUwMTAKLXdtIDMyIFpZTlFfSU9fUExMX0NUUkwJCTB4MDAw
+MUUwMDAKLQotd20gMzIgWllOUV9TRElPX0NMS19DVFJMCTB4MDAwMDBhMDMKLQogLyogc3RvcCAq
+Lwotd20gMzIgMHhGRkZGRkZGRgkJCTB4MDAwMDAwMDAKXCBObyBuZXdsaW5lIGF0IGVuZCBvZiBm
+aWxlCit3bSAzMiAweEZGRkZGRkZGCQkJMHgwMDAwMDAwMApkaWZmIC0tZ2l0IGEvYXJjaC9hcm0v
+Y29uZmlncy96eW5xX2RlZmNvbmZpZyBiL2FyY2gvYXJtL2NvbmZpZ3MvenlucV9kZWZjb25maWcK
+aW5kZXggYTE2YzU3ZDVjLi5jYzgxZmQxMjAgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2NvbmZpZ3Mv
+enlucV9kZWZjb25maWcKKysrIGIvYXJjaC9hcm0vY29uZmlncy96eW5xX2RlZmNvbmZpZwpAQCAt
+Miw0NiArMiw0OSBAQCBDT05GSUdfQVJDSF9aWU5RPXkKIENPTkZJR19NQUNIX1pFREJPQVJEPXkK
+IENPTkZJR19BRUFCST15CiBDT05GSUdfQVJNX1VOV0lORD15CisjIENPTkZJR19NRU1JTkZPIGlz
+IG5vdCBzZXQKIENPTkZJR19NTVU9eQogQ09ORklHX1NUQUNLX1NJWkU9MHhmMDAwCiBDT05GSUdf
+TUFMTE9DX1NJWkU9MHg4MDAwMDAwCiBDT05GSUdfTUFMTE9DX1RMU0Y9eQogQ09ORklHX0tBTExT
+WU1TPXkKLUNPTkZJR19IVVNIX0ZBTkNZX1BST01QVD15CiBDT05GSUdfQ01ETElORV9FRElUSU5H
+PXkKLUNPTkZJR19BVVRPX0NPTVBMRVRFPXkKLUNPTkZJR19NRU5VPXkKIENPTkZJR19CT09UTV9T
+SE9XX1RZUEU9eQogQ09ORklHX0JPT1RNX1ZFUkJPU0U9eQogQ09ORklHX0JPT1RNX0lOSVRSRD15
+CiBDT05GSUdfQk9PVE1fT0ZUUkVFPXkKIENPTkZJR19ERUZBVUxUX0VOVklST05NRU5UX0dFTkVS
+SUNfTkVXPXkKIENPTkZJR19ERUZBVUxUX0VOVklST05NRU5UX1BBVEg9ImFyY2gvYXJtL2JvYXJk
+cy9hdm5ldC16ZWRib2FyZC9lbnYiCi1DT05GSUdfREVCVUdfTEw9eQotQ09ORklHX0xPTkdIRUxQ
+PXkKLUNPTkZJR19DTURfTUVNSU5GTz15Ci1DT05GSUdfQ01EX0FSTV9NTVVJTkZPPXkKKyMgQ09O
+RklHX0NNRF9ERVZJTkZPIGlzIG5vdCBzZXQKKyMgQ09ORklHX0NNRF9EUlZJTkZPIGlzIG5vdCBz
+ZXQKKyMgQ09ORklHX0NNRF9IRUxQIGlzIG5vdCBzZXQKKyMgQ09ORklHX0NNRF9CT09UVSBpcyBu
+b3Qgc2V0CiBDT05GSUdfQ01EX0dPPXkKIENPTkZJR19DTURfUkVTRVQ9eQotQ09ORklHX0NNRF9Q
+QVJUSVRJT049eQorIyBDT05GSUdfQ01EX1VNT1VOVCBpcyBub3Qgc2V0CiBDT05GSUdfQ01EX0VY
+UE9SVD15CiBDT05GSUdfQ01EX1BSSU5URU5WPXkKIENPTkZJR19DTURfU0FWRUVOVj15Ci1DT05G
+SUdfQ01EX0xOPXkKLUNPTkZJR19DTURfU0xFRVA9eQorIyBDT05GSUdfQ01EX0NQIGlzIG5vdCBz
+ZXQKKyMgQ09ORklHX0NNRF9QV0QgaXMgbm90IHNldAogQ09ORklHX0NNRF9ESENQPXkKLUNPTkZJ
+R19DTURfRURJVD15Ci1DT05GSUdfQ01EX01FTlU9eQotQ09ORklHX0NNRF9NRU5VX01BTkFHRU1F
+TlQ9eQotQ09ORklHX0NNRF9SRUFETElORT15Ci1DT05GSUdfQ01EX1RJTUVPVVQ9eQotQ09ORklH
+X0NNRF9DTEs9eQotQ09ORklHX0NNRF9PRlRSRUU9eQotQ09ORklHX0NNRF9USU1FPXkKK0NPTkZJ
+R19DTURfVEZUUD15CisjIENPTkZJR19DTURfQ0xFQVIgaXMgbm90IHNldAorIyBDT05GSUdfQ01E
+X0VDSE8gaXMgbm90IHNldAorIyBDT05GSUdfQ01EX01FTUNNUCBpcyBub3Qgc2V0CisjIENPTkZJ
+R19DTURfTUVNQ1BZIGlzIG5vdCBzZXQKKyMgQ09ORklHX0NNRF9NRU1TRVQgaXMgbm90IHNldAog
+Q09ORklHX05FVD15CiBDT05GSUdfRFJJVkVSX1NFUklBTF9DQURFTkNFPXkKIENPTkZJR19EUklW
+RVJfTkVUX01BQ0I9eQotIyBDT05GSUdfU1BJIGlzIG5vdCBzZXQKK0NPTkZJR19TUElfWllOUV9R
+U1BJPXkKK0NPTkZJR19NVEQ9eQorIyBDT05GSUdfTVREX09PQl9ERVZJQ0UgaXMgbm90IHNldAor
+Q09ORklHX01URF9NMjVQODA9eQorQ09ORklHX01DST15CitDT05GSUdfTUNJX0FSQVNBTj15CitD
+T05GSUdfRUVQUk9NX0FUMjU9eQogIyBDT05GSUdfUElOQ1RSTCBpcyBub3Qgc2V0CiBDT05GSUdf
+RlNfVEZUUD15Ci1DT05GSUdfRElHRVNUPXkKK0NPTkZJR19GU19GQVQ9eQorQ09ORklHX0ZTX0ZB
+VF9XUklURT15CmRpZmYgLS1naXQgYS9kcml2ZXJzL21jaS9LY29uZmlnIGIvZHJpdmVycy9tY2kv
+S2NvbmZpZwppbmRleCA4MGIzYTI2MDAuLjlmNTZiZWQzYSAxMDA2NDQKLS0tIGEvZHJpdmVycy9t
+Y2kvS2NvbmZpZworKysgYi9kcml2ZXJzL21jaS9LY29uZmlnCkBAIC0xNDEsNiArMTQxLDcgQEAg
+Y29uZmlnIE1DSV9URUdSQQogCiBjb25maWcgTUNJX0FSQVNBTgogCWJvb2wgIkFyYXNhbiBTREhD
+SSBDb250cm9sbGVyIgorCXNlbGVjdCBNQ0lfU0RIQ0kKIAloZWxwCiAJICBFbmFibGUgdGhpcyB0
+byBzdXBwb3J0IFNEIGFuZCBNTUMgY2FyZCByZWFkL3dyaXRlIG9uIHN5c3RlbXMgd2l0aAogCSAg
+dGhlIEFyYXNhbiBTRDMuMCAvIFNESU8zLjAgLyBlTU1DNC41MSBob3N0IGNvbnRyb2xsZXIuCmRp
+ZmYgLS1naXQgYS9kcml2ZXJzL21jaS9hcmFzYW4tc2RoY2kuYyBiL2RyaXZlcnMvbWNpL2FyYXNh
+bi1zZGhjaS5jCmluZGV4IGI0M2E0ZjhkZC4uMGRkOTM4MmFlIDEwMDY0NAotLS0gYS9kcml2ZXJz
+L21jaS9hcmFzYW4tc2RoY2kuYworKysgYi9kcml2ZXJzL21jaS9hcmFzYW4tc2RoY2kuYwpAQCAt
+Mjc4LDcgKzI3OCw3IEBAIHN0YXRpYyBpbnQgYXJhc2FuX3NkaGNpX3NlbmRfY21kKHN0cnVjdCBt
+Y2lfaG9zdCAqbWNpLCBzdHJ1Y3QgbWNpX2NtZCAqY21kLAogCiAJbWFzayA9IFNESENJX0lOVF9D
+TURfQ09NUExFVEU7CiAJaWYgKGRhdGEpCi0JCW1hc2sgfD0gU0RIQ0lfSU5UX1hGRVJfQ09NUExF
+VEU7CisJCW1hc2sgfD0gU0RIQ0lfSU5UX0RBVEFfQVZBSUw7ICAgCiAKIAlzZGhjaV9zZXRfY21k
+X3hmZXJfbW9kZSgmaG9zdC0+c2RoY2ksIGNtZCwgZGF0YSwgZmFsc2UsICZjb21tYW5kLCAmeGZl
+cik7CiAK
 
-giorgio
-
-On 3/27/20 6:56 AM, Ahmad Fatoum wrote:
-> Hello,
-> 
-> On 3/26/20 11:21 AM, Giorgio wrote:
->> Hi,
->>
->> I'm having problems booting a linux kernel image on an imx7d.
->>
->> What I want is to boot in nonsecure mode and that the kernel enables the
->> second core with the PSCI.
->>
->> What I see is that barebox crashes within the call to __mmu_cache_on()
->> in the file arch/arm/cpu/sm.c:
-> 
-> The kind of crash may be useful info. Can you copy the whole boot log?
-> 
->>
->> int armv7_secure_monitor_install(void)
->> {
->> ...
->> 	if (mmuon) {
->> 		/*
->> 		 * If the MMU was already turned on in secure mode, enable it in
->> 		 * non-secure mode aswell
->> 		 */
->> 		__mmu_cache_on();
->> 	}
->> ...
->>
->>
->> As a workaround, if I comment the call to __mmu_cache_on(), the system
->> boots properly with 2 cores:
->>
->> Loading ARM Linux zImage '/mnt/boot/kernel.img'
->> Loading devicetree from '/mnt/boot/devtree.dtb'
->> commandline: console=ttymxc5,115200n8 ip=::::gdm:eth0:off root=PARTUUID=37199a57-ec72-41f9-ab27-445329d1bd77 rootwait
->> Starting kernel in nonsecure mode
->> [    0.000000] 000: Booting Linux on physical CPU 0x0
->> [    0.000000] 000: Linux version 5.4.24-rt15-dirty (giorgio@BVblfs) (gcc version 9.2.1 20200110 (OSELAS.Toolchain 9.2.1)) #1 SMP PREEMPT_RT Fri Mar 13 17:25:51 CET 2020
->> [    0.000000] 000: CPU: ARMv7 Processor [410fc075] revision 5 (ARMv7), cr=10c5387d
->> [    0.000000] 000: CPU: div instructions available: patching division code
->> [    0.000000] 000: CPU: PIPT / VIPT nonaliasing data cache, VIPT aliasing instruction cache
->> t[    0.000000] 000: Memory policy: Data cache writealloc
->> [    0.000000] 000: cma: Reserved 64 MiB at 0xfa000000
->> [    0.000000] 000: psci: probing for conduit method from DT.
->> [    0.000000] 000: psci: PSCIv1.0 detected in firmware.
->> [    0.000000] 000: psci: Using standard PSCI v0.2 function IDs
->> [    0.000000] 000: psci: MIGRATE_INFO_TYPE not supported.
->> [    0.000000] 000: psci: SMC Calling Convention v1.0
->> [    0.000000] 000: percpu: Embedded 9 pages/cpu s15008 r0 d21856 u36864
->> [    0.000000] 000: Built 1 zonelists, mobility grouping on.  Total pages: 522751
->> [    0.000000] 000: Kernel command line: console=ttymxc5,115200n8 ip=::::gdm:eth0:off root=PARTUUID=37199a57-ec72-41f9-ab27-445329d1bd77 rootwait
->> [    0.000000] 000: Dentry cache hash table entries: 131072 (order: 8, 1048576 bytes, linear)
->> [    0.000000] 000: Inode-cache hash table entries: 65536 (order: 6, 262144 bytes, linear)
->> [    0.000000] 000: mem auto-init: stack:off, heap alloc:off, heap free:off
->> [    0.000000] 000: Memory: 1997464K/2097148K available (9216K kernel code, 430K rwdata, 3100K rodata, 1024K init, 733K bss, 34148K reserved, 65536K cma-reserved, 1244448K highmem)
->> [    0.000000] 000: SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=2, Nodes=1
->> [    0.000000] 000: rcu: Preemptible hierarchical RCU implementation.
->> [    0.000000] 000: rcu: 	RCU priority boosting: priority 1 delay 500 ms.
->> [    0.000000] 000: rcu: 	RCU_SOFTIRQ processing moved to rcuc kthreads.
->> [    0.000000] 000: 	No expedited grace period (rcu_normal_after_boot).
->> [    0.000000] 000: 	Tasks RCU enabled.
->> [    0.000000] 000: rcu: RCU calculated value of scheduler-enlistment delay is 10 jiffies.
->> [    0.000000] 000: NR_IRQS: 16, nr_irqs: 16, preallocated irqs: 16
->> [    0.000000] 000: rcu: 	Offload RCU callbacks from CPUs: (none).
->> [    0.000000] 000: arch_timer: cp15 timer(s) running at 8.00MHz (virt).
->> [    0.000000] 000: clocksource: arch_sys_counter: mask: 0xffffffffffffff max_cycles: 0x1d854df40, max_idle_ns: 440795202120 ns
->> [    0.000001] 000: sched_clock: 56 bits at 8MHz, resolution 125ns, wraps every 2199023255500ns
->> [    0.000013] 000: Switching to timer-based delay loop, resolution 125ns
->> [    0.000426] 000: Switching to timer-based delay loop, resolution 41ns
->> [    0.000438] 000: sched_clock: 32 bits at 24MHz, resolution 41ns, wraps every 89478484971ns
->> [    0.000450] 000: clocksource: mxc_timer1: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 79635851949 ns
->> [    0.001597] 000: Console: colour dummy device 80x30
->> [    0.001642] 000: Calibrating delay loop (skipped), value calculated using timer frequency.. 48.00 BogoMIPS (lpj=240000)
->> [    0.001650] 000: pid_max: default: 32768 minimum: 301
->> [    0.001788] 000: Mount-cache hash table entries: 2048 (order: 1, 8192 bytes, linear)
->> [    0.001807] 000: Mountpoint-cache hash table entries: 2048 (order: 1, 8192 bytes, linear)
->> [    0.002631] 000: CPU: Testing write buffer coherency: ok
->> [    0.059991] 000: Setting up static identity map for 0x80100000 - 0x80100060
->> [    0.079972] 000: rcu: Hierarchical SRCU implementation.
->> [    0.160105] 000: smp: Bringing up secondary CPUs ...
->> [    0.280687] 000: smp: Brought up 1 node, 2 CPUs
->> [    0.280697] 000: SMP: Total of 2 processors activated (96.00 BogoMIPS).
->> [    0.280705] 000: CPU: All CPU(s) started in SVC mode.
->> [    0.281170] 000: devtmpfs: initialized
->> [    0.290961] 000: random: get_random_u32 called from bucket_table_alloc+0x58/0x14c with crng_init=0
->>
->>
->> giorgio
->>
->> _______________________________________________
->> barebox mailing list
->> barebox@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/barebox
->>
-> 
+--_002_DB7PR02MB43329F5FA85160DA28F68030ABCC0DB7PR02MB4332eurp_
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--_002_DB7PR02MB43329F5FA85160DA28F68030ABCC0DB7PR02MB4332eurp_--
