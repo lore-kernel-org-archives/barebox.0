@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from relay2-d.mail.gandi.net ([217.70.183.194])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jJ9E6-0005ZR-QO
- for barebox@lists.infradead.org; Tue, 31 Mar 2020 05:14:16 +0000
-Date: Tue, 31 Mar 2020 07:14:12 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200331051411.GD27288@pengutronix.de>
-References: <20200330143259.651510-1-ahmad@a3f.at>
+ id 1jIvUJ-0006Eg-54
+ for barebox@lists.infradead.org; Mon, 30 Mar 2020 14:34:05 +0000
+Received: from geraet.fritz.box (i577B69AA.versanet.de [87.123.105.170])
+ (Authenticated sender: ahmad@a3f.at)
+ by relay2-d.mail.gandi.net (Postfix) with ESMTPSA id A298A40010
+ for <barebox@lists.infradead.org>; Mon, 30 Mar 2020 14:33:59 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Mon, 30 Mar 2020 16:33:55 +0200
+Message-Id: <20200330143355.652318-1-ahmad@a3f.at>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200330143259.651510-1-ahmad@a3f.at>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,29 +23,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] mci: core: use SECTOR_SIZE instead of direct 512
-To: Ahmad Fatoum <ahmad@a3f.at>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] commands: of_property: fix crashes on incorrect number of
+ arguments
+To: barebox@lists.infradead.org
 
-On Mon, Mar 30, 2020 at 04:32:58PM +0200, Ahmad Fatoum wrote:
-> Instead of hardcoding the 512 byte constant, use the symbolic
-> SECTOR_SIZE.
-> 
-> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
-> ---
->  drivers/mci/mci-core.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
+of_property needs at least two parameters, the path and the property
+name. If we supply less, we risk crashes, e.g. by running
+of_property -fs /test
 
-Applied, thanks
+Verify we got at least two parameters.
 
-Sascha
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ commands/of_property.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-
+diff --git a/commands/of_property.c b/commands/of_property.c
+index 31e9b71dd7d1..1d7ba181d5f0 100644
+--- a/commands/of_property.c
++++ b/commands/of_property.c
+@@ -315,7 +315,7 @@ static int do_of_property(int argc, char *argv[])
+ 	int delete = 0;
+ 	int set = 0;
+ 	int fixup = 0;
+-	char *path = NULL, *propname = NULL;
++	char *path, *propname;
+ 
+ 	while ((opt = getopt(argc, argv, "dsf")) > 0) {
+ 		switch (opt) {
+@@ -333,14 +333,11 @@ static int do_of_property(int argc, char *argv[])
+ 		}
+ 	}
+ 
+-	if (optind == argc)
++	if (argc - optind < 2)
+ 		return COMMAND_ERROR_USAGE;
+ 
+-	if (optind < argc)
+-		path = argv[optind];
+-
+-	if (optind + 1 < argc)
+-		propname = argv[optind + 1];
++	path = argv[optind];
++	propname = argv[optind + 1];
+ 
+ 	debug("path: %s propname: %s\n", path, propname);
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
