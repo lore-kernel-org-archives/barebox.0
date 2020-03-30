@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jIqSs-00061y-Gw
- for barebox@lists.infradead.org; Mon, 30 Mar 2020 09:12:15 +0000
+ id 1jIqSz-00067K-Nc
+ for barebox@lists.infradead.org; Mon, 30 Mar 2020 09:12:24 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 30 Mar 2020 11:12:09 +0200
-Message-Id: <20200330091210.18716-8-s.hauer@pengutronix.de>
+Date: Mon, 30 Mar 2020 11:12:05 +0200
+Message-Id: <20200330091210.18716-4-s.hauer@pengutronix.de>
 In-Reply-To: <20200330091210.18716-1-s.hauer@pengutronix.de>
 References: <20200330091210.18716-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,29 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/8] fs: nfs: don't maintain nfs dentries in dcache
+Subject: [PATCH 3/8] nfs: remove unnecessary check
 To: Barebox List <barebox@lists.infradead.org>
 
-nfs dentries may change underneath barebox, so do not maintain them in
-the dcache.
+In rpc_check_reply() pkt is never NULL, drop the unnecessary patch.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/nfs.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/nfs.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
 diff --git a/fs/nfs.c b/fs/nfs.c
-index 26ff354c37..a5fc6467fb 100644
+index eb316fe295..9956791820 100644
 --- a/fs/nfs.c
 +++ b/fs/nfs.c
-@@ -1396,6 +1396,7 @@ static int nfs_probe(struct device_d *dev)
- 	free(tmp);
+@@ -366,9 +366,6 @@ static int rpc_check_reply(struct packet *pkt, int rpc_prog,
  
- 	sb->s_op = &nfs_ops;
-+	sb->s_d_op = &no_revalidate_d_ops;
+ 	*nfserr = 0;
  
- 	inode = new_inode(sb);
- 	nfs_set_fh(inode, &npriv->rootfh);
+-	if (!pkt)
+-		return -EAGAIN;
+-
+ 	memcpy(&rpc, pkt->data, sizeof(rpc));
+ 
+ 	if (ntoh32(rpc.id) != rpc_id) {
 -- 
 2.26.0.rc2
 
