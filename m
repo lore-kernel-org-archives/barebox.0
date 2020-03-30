@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from relay2-d.mail.gandi.net ([217.70.183.194])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jIvqz-0000s9-7i
- for barebox@lists.infradead.org; Mon, 30 Mar 2020 14:57:30 +0000
+ id 1jIvqz-0000sZ-RA
+ for barebox@lists.infradead.org; Mon, 30 Mar 2020 14:57:31 +0000
 From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Mon, 30 Mar 2020 16:57:13 +0200
-Message-Id: <20200330145717.667403-9-ahmad@a3f.at>
+Date: Mon, 30 Mar 2020 16:57:14 +0200
+Message-Id: <20200330145717.667403-10-ahmad@a3f.at>
 In-Reply-To: <20200330145717.667403-1-ahmad@a3f.at>
 References: <20200330145717.667403-1-ahmad@a3f.at>
 MIME-Version: 1.0
@@ -21,73 +21,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/12] video: backlight-pwm: use new pwm_apply_state API
+Subject: [PATCH 09/12] led: pwm: use new pwm_apply_state API
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Use pwm_apply_state we can avoid having to store PWM state in the
-instance structure and in future we have an easy way to support new
-parameters like inverted duty cycle.
+To support PWM_POLARITY_INVERTED for PWM LEDs, we need to to use the
+apply API.  Do so.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/video/backlight-pwm.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/led/led-pwm.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/video/backlight-pwm.c b/drivers/video/backlight-pwm.c
-index 9111a42d7544..8b6494dac929 100644
---- a/drivers/video/backlight-pwm.c
-+++ b/drivers/video/backlight-pwm.c
-@@ -33,7 +33,6 @@ struct pwm_backlight {
- 	struct backlight_device backlight;
+diff --git a/drivers/led/led-pwm.c b/drivers/led/led-pwm.c
+index 4935572ec2d2..19d9d4d48a3d 100644
+--- a/drivers/led/led-pwm.c
++++ b/drivers/led/led-pwm.c
+@@ -29,22 +29,27 @@ struct pwmled {
+ 	bool active_low;
+ 	struct led led;
  	struct pwm_device *pwm;
- 	struct regulator *power;
 -	uint32_t period;
- 	unsigned int *levels;
- 	int enable_gpio;
- 	int enable_active_high;
-@@ -91,13 +90,16 @@ static int backlight_pwm_disable(struct pwm_backlight *pwm_backlight)
- static int compute_duty_cycle(struct pwm_backlight *pwm_backlight, int brightness)
+ };
+ 
+ static void led_pwm_set(struct led *led, unsigned int brightness)
  {
- 	int duty_cycle;
+ 	struct pwmled *pwmled = container_of(led, struct pwmled, led);
+-	unsigned long long duty =  pwmled->period;
++	unsigned long long duty;
 +	struct pwm_state state;
+ 	unsigned int max = pwmled->led.max_value;
+ 
+-        duty *= brightness;
++	pwm_get_state(pwmled->pwm, &state);
 +
-+	pwm_get_state(pwm_backlight->pwm, &state);
++	duty = state.period_ns * brightness;
+         do_div(duty, max);
  
- 	if (pwm_backlight->levels)
- 		duty_cycle = pwm_backlight->levels[brightness];
- 	else
- 		duty_cycle = brightness;
+ 	if (pwmled->active_low)
+-		duty = pwmled->period - duty;
++		duty = state.period_ns - duty;
++
++	state.p_enable = true;
++	state.duty_ns = duty;
  
--	return duty_cycle * pwm_backlight->period / pwm_backlight->scale;
-+	return duty_cycle * state.period_ns / pwm_backlight->scale;
+-	pwm_config(pwmled->pwm, duty, pwmled->period);
++	pwm_apply_state(pwmled->pwm, &state);
  }
  
- static int backlight_pwm_set(struct backlight_device *backlight,
-@@ -105,9 +107,11 @@ static int backlight_pwm_set(struct backlight_device *backlight,
- {
- 	struct pwm_backlight *pwm_backlight = container_of(backlight,
- 			struct pwm_backlight, backlight);
-+	struct pwm_state state;
+ static int led_pwm_of_probe(struct device_d *dev)
+@@ -68,13 +73,11 @@ static int led_pwm_of_probe(struct device_d *dev)
+ 		if (ret)
+ 			return ret;
  
--	pwm_config(pwm_backlight->pwm, compute_duty_cycle(pwm_backlight, brightness),
--		   pwm_backlight->period);
-+	pwm_get_state(pwm_backlight->pwm, &state);
-+	state.duty_ns = compute_duty_cycle(pwm_backlight, brightness);
-+	pwm_apply_state(pwm_backlight->pwm, &state);
+-		pwmled->period = pwm_get_period(pwmled->pwm);
+ 		pwmled->active_low = of_property_read_bool(child, "active-low");
  
- 	if (brightness)
- 		return backlight_pwm_enable(pwm_backlight);
-@@ -192,7 +196,6 @@ static int backlight_pwm_of_probe(struct device_d *dev)
+ 		pwmled->led.set = led_pwm_set;
  
- 	pwm_backlight = xzalloc(sizeof(*pwm_backlight));
- 	pwm_backlight->pwm = pwm;
--	pwm_backlight->period = pwm_get_period(pwm);
+ 		led_pwm_set(&pwmled->led, 0);
+-		pwm_enable(pwmled->pwm);
  
- 	ret = pwm_backlight_parse_dt(dev, pwm_backlight);
- 	if (ret)
+ 		ret = led_register(&pwmled->led);
+ 		if (ret)
 -- 
 2.20.1
 
