@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from relay4-d.mail.gandi.net ([217.70.183.196])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jJBGN-00034p-M6
- for barebox@lists.infradead.org; Tue, 31 Mar 2020 07:24:45 +0000
-References: <20200330184641.881248-1-ahmad@a3f.at>
- <20200330184641.881248-2-ahmad@a3f.at>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <d8859ddc-dc49-32f0-f145-fa5abdde66d3@pengutronix.de>
-Date: Tue, 31 Mar 2020 09:24:41 +0200
+ id 1jIvZf-0008QU-Pi
+ for barebox@lists.infradead.org; Mon, 30 Mar 2020 14:39:37 +0000
+Received: from geraet.fritz.box (i577B69AA.versanet.de [87.123.105.170])
+ (Authenticated sender: ahmad@a3f.at)
+ by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id D1F11E000D
+ for <barebox@lists.infradead.org>; Mon, 30 Mar 2020 14:39:32 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Mon, 30 Mar 2020 16:39:09 +0200
+Message-Id: <20200330143915.663705-2-ahmad@a3f.at>
+In-Reply-To: <20200330143915.663705-1-ahmad@a3f.at>
+References: <20200330143915.663705-1-ahmad@a3f.at>
 MIME-Version: 1.0
-In-Reply-To: <20200330184641.881248-2-ahmad@a3f.at>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,158 +25,146 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] fixup! regmap-mmio: Add big endian support
-To: Ahmad Fatoum <ahmad@a3f.at>, barebox@lists.infradead.org
+Subject: [PATCH 2/8] ARM: stm32mp: init: detect Revision Z and 800 MHz profiles
+To: barebox@lists.infradead.org
 
-On 3/30/20 8:46 PM, Ahmad Fatoum wrote:
-> of_regmap_init_mmio_clk was introduced as to avoid allocating new
-> devices for syscon nodes, a device tree node sufficed.
-> 
-> We already have an existing device node though, so let's use that.
-s/device node/device object/
-> Through this device node, we can access the big-endian and friends
-s/device node/device object/
-> properties.
+Revision A was 0x1000 and B was 0x2000, so I assumed the next would
+be revision C valued 0x3000. Alas, it's revision Z with 0x2001...
 
-(I assume this will be squashed anyway, but to make it a bit clearer)
+Change the code accordingly and add detection for the new 800Mhz
+profiles.
 
-> 
-> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
-> ---
-> Hello Sascha,
-> 
-> this is untested on the Layerscape. I just verified it now works on the
-> stm32mp and that adding a big-endian there breaks it again.
-> 
-> Feel free to adjust.
-> ---
->  drivers/base/regmap/regmap-mmio.c | 22 ----------------------
->  drivers/mfd/syscon.c              | 21 +++++++++++++++++----
->  include/regmap.h                  | 15 ---------------
->  3 files changed, 17 insertions(+), 41 deletions(-)
-> 
-> diff --git a/drivers/base/regmap/regmap-mmio.c b/drivers/base/regmap/regmap-mmio.c
-> index 9c5a2822a4fe..7ca95d6bea79 100644
-> --- a/drivers/base/regmap/regmap-mmio.c
-> +++ b/drivers/base/regmap/regmap-mmio.c
-> @@ -299,28 +299,6 @@ struct regmap *regmap_init_mmio_clk(struct device_d *dev,
->  	return regmap_init(dev, &regmap_mmio, ctx, config);
->  }
->  
-> -struct regmap *of_regmap_init_mmio_clk(struct device_node *np,
-> -				       const char *clk_id,
-> -				       void __iomem *regs,
-> -				       const struct regmap_config *config)
-> -{
-> -	struct regmap_mmio_context *ctx;
-> -
-> -	ctx = regmap_mmio_gen_context(NULL, regs, config);
-> -	if (IS_ERR(ctx))
-> -		return ERR_CAST(ctx);
-> -
-> -	if (clk_id) {
-> -		ctx->clk = of_clk_get_by_name(np, clk_id);
-> -		if (IS_ERR(ctx->clk)) {
-> -			kfree(ctx);
-> -			return ERR_CAST(ctx->clk);
-> -		}
-> -	}
-> -
-> -	return regmap_init(NULL, &regmap_mmio, ctx, config);
-> -}
-> -
->  int regmap_mmio_attach_clk(struct regmap *map, struct clk *clk)
->  {
->  	struct regmap_mmio_context *ctx = map->bus_context;
-> diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
-> index f1e6559d71fa..c9dfb151ee0a 100644
-> --- a/drivers/mfd/syscon.c
-> +++ b/drivers/mfd/syscon.c
-> @@ -27,6 +27,7 @@ static LIST_HEAD(syscon_list);
->  
->  struct syscon {
->  	struct device_node *np;
-> +	struct device_d *dev;
->  	void __iomem *base;
->  	struct list_head list;
->  	struct regmap *regmap;
-> @@ -42,6 +43,7 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_clk)
->  {
->  	int ret;
->  	struct syscon *syscon;
-> +	struct device_d *dev;
->  	struct resource res;
->  
->  	if (!of_device_is_compatible(np, "syscon"))
-> @@ -55,12 +57,23 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_clk)
->  	}
->  
->  	syscon->base = IOMEM(res.start);
-> -	syscon->np   = np;
-> +
-> +	for_each_device(dev) {
-> +		if (np == dev->device_node) {
-> +			syscon->dev = dev;
-> +			break;
-> +		}
-> +	}
-> +
-> +	if (!syscon->dev) {
-> +		ret = -ENODEV;
-> +		goto err_map;
-> +	}
->  
->  	list_add_tail(&syscon->list, &syscon_list);
->  
-> -	syscon->regmap = of_regmap_init_mmio_clk(np, NULL, syscon->base,
-> -					     &syscon_regmap_config);
-> +	syscon->regmap = regmap_init_mmio_clk(syscon->dev, NULL, syscon->base,
-> +					      &syscon_regmap_config);
->  
->  	if (check_clk) {
->  		struct clk *clk = of_clk_get(np, 0);
-> @@ -88,7 +101,7 @@ static struct syscon *node_to_syscon(struct device_node *np)
->  	struct syscon *entry, *syscon = NULL;
->  
->  	list_for_each_entry(entry, &syscon_list, list)
-> -		if (entry->np == np) {
-> +		if (entry->dev->device_node == np) {
->  			syscon = entry;
->  			break;
->  		}
-> diff --git a/include/regmap.h b/include/regmap.h
-> index 139ac33ec3e8..4172c00bd2da 100644
-> --- a/include/regmap.h
-> +++ b/include/regmap.h
-> @@ -61,21 +61,6 @@ struct regmap *regmap_init(struct device_d *dev,
->  
->  struct clk;
->  
-> -/**
-> - * of_regmap_init_mmio_clk() - Initialise register map with register clock
-> - *
-> - * @np: Device node that will be interacted with
-> - * @clk_id: register clock consumer ID
-> - * @regs: Pointer to memory-mapped IO region
-> - * @config: Configuration for register map
-> - *
-> - * The return value will be an ERR_PTR() on error or a valid pointer to
-> - * a struct regmap.
-> - */
-> -struct regmap *of_regmap_init_mmio_clk(struct device_node *np, const char *clk_id,
-> -				       void __iomem *regs,
-> -				       const struct regmap_config *config);
-> -
->  /**
->   * regmap_init_mmio_clk() - Initialise register map with register clock
->   *
-> 
+Code taken from U-Boot commit
+cf0818b477 ("stm32mp1: support of STM32MP15x Rev.Z") and
+Patch[1] "stm32mp1: add 800 MHz profile support".
 
+[1]: https://st-md-mailman.stormreply.com/pipermail/uboot-stm32/2020-February/002170.html
+
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ arch/arm/mach-stm32mp/include/mach/revision.h | 18 +++++++-
+ arch/arm/mach-stm32mp/init.c                  | 41 ++++++++++++++++---
+ 2 files changed, 53 insertions(+), 6 deletions(-)
+
+diff --git a/arch/arm/mach-stm32mp/include/mach/revision.h b/arch/arm/mach-stm32mp/include/mach/revision.h
+index 387201421de7..2eb4d44b3368 100644
+--- a/arch/arm/mach-stm32mp/include/mach/revision.h
++++ b/arch/arm/mach-stm32mp/include/mach/revision.h
+@@ -6,17 +6,33 @@
+ #ifndef __MACH_CPUTYPE_H__
+ #define __MACH_CPUTYPE_H__
+ 
+-/* ID = Device Version (bit31:16) + Device Part Number (RPN) (bit15:0)*/
++
++/* ID = Device Version (bit31:16) + Device Part Number (RPN) (bit7:0)
++ * 157X: 2x Cortex-A7, Cortex-M4, CAN FD, GPU, DSI
++ * 153X: 2x Cortex-A7, Cortex-M4, CAN FD
++ * 151X: 1x Cortex-A7, Cortex-M4
++ * XXXA: Cortex-A7 @ 650 MHz
++ * XXXC: Cortex-A7 @ 650 MHz + Secure Boot + HW Crypto
++ * XXXD: Cortex-A7 @ 800 MHz
++ * XXXF: Cortex-A7 @ 800 MHz + Secure Boot + HW Crypto
++ */
+ #define CPU_STM32MP157Cxx	0x05000000
+ #define CPU_STM32MP157Axx	0x05000001
+ #define CPU_STM32MP153Cxx	0x05000024
+ #define CPU_STM32MP153Axx	0x05000025
+ #define CPU_STM32MP151Cxx	0x0500002E
+ #define CPU_STM32MP151Axx	0x0500002F
++#define CPU_STM32MP157Fxx	0x05000080
++#define CPU_STM32MP157Dxx	0x05000081
++#define CPU_STM32MP153Fxx	0x050000A4
++#define CPU_STM32MP153Dxx	0x050000A5
++#define CPU_STM32MP151Fxx	0x050000AE
++#define CPU_STM32MP151Dxx	0x050000AF
+ 
+ /* silicon revisions */
+ #define CPU_REV_A	0x1000
+ #define CPU_REV_B	0x2000
++#define CPU_REV_Z	0x2001
+ 
+ int stm32mp_silicon_revision(void);
+ int stm32mp_cputype(void);
+diff --git a/arch/arm/mach-stm32mp/init.c b/arch/arm/mach-stm32mp/init.c
+index 6280d94da69f..8a50657664b1 100644
+--- a/arch/arm/mach-stm32mp/init.c
++++ b/arch/arm/mach-stm32mp/init.c
+@@ -194,17 +194,29 @@ static int get_cpu_package(u32 *pkg)
+ 
+ static int setup_cpu_type(void)
+ {
+-	const char *cputypestr;
+-	const char *cpupkgstr;
++	const char *cputypestr, *cpupkgstr, *cpurevstr;
++	u32 pkg;
+ 
+ 	get_cpu_type(&__stm32mp_cputype);
+ 	switch (__stm32mp_cputype) {
++	case CPU_STM32MP157Fxx:
++		cputypestr = "157F";
++		break;
++	case CPU_STM32MP157Dxx:
++		cputypestr = "157D";
++		break;
+ 	case CPU_STM32MP157Cxx:
+ 		cputypestr = "157C";
+ 		break;
+ 	case CPU_STM32MP157Axx:
+ 		cputypestr = "157A";
+ 		break;
++	case CPU_STM32MP153Fxx:
++		cputypestr = "153F";
++		break;
++	case CPU_STM32MP153Dxx:
++		cputypestr = "153D";
++		break;
+ 	case CPU_STM32MP153Cxx:
+ 		cputypestr = "153C";
+ 		break;
+@@ -217,6 +229,12 @@ static int setup_cpu_type(void)
+ 	case CPU_STM32MP151Axx:
+ 		cputypestr = "151A";
+ 		break;
++	case CPU_STM32MP151Fxx:
++		cputypestr = "151F";
++		break;
++	case CPU_STM32MP151Dxx:
++		cputypestr = "151D";
++		break;
+ 	default:
+ 		cputypestr = "????";
+ 		break;
+@@ -242,11 +260,24 @@ static int setup_cpu_type(void)
+ 	}
+ 
+ 	__stm32mp_silicon_revision = get_cpu_revision();
++	switch (__stm32mp_silicon_revision) {
++	case CPU_REV_A:
++		cpurevstr = "A";
++		break;
++	case CPU_REV_B:
++		cpurevstr = "B";
++		break;
++	case CPU_REV_Z:
++		cpurevstr = "Z";
++		break;
++	default:
++		cpurevstr = "?";
++	}
+ 
+ 	pr_debug("cputype = 0x%x, package = 0x%x, revision = 0x%x\n",
+-		 __stm32mp_cputype, __stm32mp_package, __stm32mp_silicon_revision);
+-	pr_info("detected STM32MP%s%s Rev.%c\n", cputypestr, cpupkgstr,
+-		(__stm32mp_silicon_revision >> 12) + 'A' - 1);
++		 __stm32mp_cputype, pkg, __stm32mp_silicon_revision);
++	pr_info("detected STM32MP%s%s Rev.%s\n", cputypestr, cpupkgstr, cpurevstr);
++
+ 	return 0;
+ }
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
