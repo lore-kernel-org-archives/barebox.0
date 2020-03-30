@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from relay2-d.mail.gandi.net ([217.70.183.194])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jJBem-0005T1-1v
- for barebox@lists.infradead.org; Tue, 31 Mar 2020 07:49:57 +0000
-Date: Tue, 31 Mar 2020 09:49:54 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200331074954.GK27288@pengutronix.de>
+ id 1jIvqy-0000rh-HW
+ for barebox@lists.infradead.org; Mon, 30 Mar 2020 14:57:30 +0000
+Received: from geraet.fritz.box (i577B69AA.versanet.de [87.123.105.170])
+ (Authenticated sender: ahmad@a3f.at)
+ by relay2-d.mail.gandi.net (Postfix) with ESMTPSA id 046C740011
+ for <barebox@lists.infradead.org>; Mon, 30 Mar 2020 14:57:26 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Mon, 30 Mar 2020 16:57:12 +0200
+Message-Id: <20200330145717.667403-8-ahmad@a3f.at>
+In-Reply-To: <20200330145717.667403-1-ahmad@a3f.at>
 References: <20200330145717.667403-1-ahmad@a3f.at>
- <20200330145717.667403-9-ahmad@a3f.at>
- <20200331061006.GG27288@pengutronix.de>
- <4c804252-b126-8555-dc8d-820b5a182b46@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <4c804252-b126-8555-dc8d-820b5a182b46@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,94 +25,159 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 08/12] video: backlight-pwm: use new pwm_apply_state API
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, Ahmad Fatoum <ahmad@a3f.at>
+Subject: [PATCH 07/12] PWM: core: apply initial state in of_pwm_request
+To: barebox@lists.infradead.org
 
-On Tue, Mar 31, 2020 at 08:54:00AM +0200, Ahmad Fatoum wrote:
-> Hi,
-> 
-> On 3/31/20 8:10 AM, Sascha Hauer wrote:
-> > On Mon, Mar 30, 2020 at 04:57:13PM +0200, Ahmad Fatoum wrote:
-> >> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> >>
-> >> Use pwm_apply_state we can avoid having to store PWM state in the
-> >> instance structure and in future we have an easy way to support new
-> >> parameters like inverted duty cycle.
-> >>
-> >> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> >> ---
-> >>  drivers/video/backlight-pwm.c | 13 ++++++++-----
-> >>  1 file changed, 8 insertions(+), 5 deletions(-)
-> >>
-> >> diff --git a/drivers/video/backlight-pwm.c b/drivers/video/backlight-pwm.c
-> >> index 9111a42d7544..8b6494dac929 100644
-> >> --- a/drivers/video/backlight-pwm.c
-> >> +++ b/drivers/video/backlight-pwm.c
-> >> @@ -33,7 +33,6 @@ struct pwm_backlight {
-> >>  	struct backlight_device backlight;
-> >>  	struct pwm_device *pwm;
-> >>  	struct regulator *power;
-> >> -	uint32_t period;
-> >>  	unsigned int *levels;
-> >>  	int enable_gpio;
-> >>  	int enable_active_high;
-> >> @@ -91,13 +90,16 @@ static int backlight_pwm_disable(struct pwm_backlight *pwm_backlight)
-> >>  static int compute_duty_cycle(struct pwm_backlight *pwm_backlight, int brightness)
-> >>  {
-> >>  	int duty_cycle;
-> >> +	struct pwm_state state;
-> >> +
-> >> +	pwm_get_state(pwm_backlight->pwm, &state);
-> >>  
-> >>  	if (pwm_backlight->levels)
-> >>  		duty_cycle = pwm_backlight->levels[brightness];
-> >>  	else
-> >>  		duty_cycle = brightness;
-> >>  
-> >> -	return duty_cycle * pwm_backlight->period / pwm_backlight->scale;
-> >> +	return duty_cycle * state.period_ns / pwm_backlight->scale;
-> >>  }
-> >>  
-> >>  static int backlight_pwm_set(struct backlight_device *backlight,
-> >> @@ -105,9 +107,11 @@ static int backlight_pwm_set(struct backlight_device *backlight,
-> >>  {
-> >>  	struct pwm_backlight *pwm_backlight = container_of(backlight,
-> >>  			struct pwm_backlight, backlight);
-> >> +	struct pwm_state state;
-> >>  
-> >> -	pwm_config(pwm_backlight->pwm, compute_duty_cycle(pwm_backlight, brightness),
-> >> -		   pwm_backlight->period);
-> >> +	pwm_get_state(pwm_backlight->pwm, &state);
-> > 
-> > You read the current pwm state here...
-> > 
-> >> +	state.duty_ns = compute_duty_cycle(pwm_backlight, brightness);
-> > 
-> > and once again in compute_duty_cycle(). I think it would be nicer to
-> > reorganize this a bit, maybe pass the state to compute_duty_cycle.
-> > 
-> >> +	pwm_apply_state(pwm_backlight->pwm, &state);
-> >>  
-> >>  	if (brightness)
-> >>  		return backlight_pwm_enable(pwm_backlight);
-> > 
-> > I would assume that if you switch to the pwm_apply_state API then you do
-> > it entirely. backlight_pwm_enable() still uses the old API to enable the
-> > PWM.
-> 
-> Ineed. Rest of patches should apply and build cleanly without this and the last one.
-> If they're ok, can you apply them and I respin only those two?
+This functions prepares a state that can later be tweaked and applied
+to the PWM device with pwm_apply_state(). This is a convenient function
+that first retrieves the current PWM state and the replaces the period
+with the reference values defined in pwm->args.
+Once the function returns, you can adjust the ->enabled and ->duty_cycle
+fields according to your needs before calling pwm_apply_state().
 
-Just did that.
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ drivers/pwm/core.c | 70 +++++++++++++++++++++++++++++++++++++++++++---
+ include/pwm.h      |  6 ++++
+ 2 files changed, 72 insertions(+), 4 deletions(-)
 
-Sascha
-
+diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
+index b42b3092a3f8..9206fc0b9eda 100644
+--- a/drivers/pwm/core.c
++++ b/drivers/pwm/core.c
+@@ -20,6 +20,23 @@
+ #include <linux/list.h>
+ #include <linux/err.h>
+ 
++/**
++ * struct pwm_args - board-dependent PWM arguments
++ * @period_ns: reference period
++ *
++ * This structure describes board-dependent arguments attached to a PWM
++ * device. These arguments are usually retrieved from the PWM lookup table or
++ * device tree.
++ *
++ * Do not confuse this with the PWM state: PWM arguments represent the initial
++ * configuration that users want to use on this PWM device rather than the
++ * current PWM hardware state.
++ */
++
++struct pwm_args {
++	unsigned int period_ns;
++};
++
+ struct pwm_device {
+ 	struct			pwm_chip *chip;
+ 	unsigned long		flags;
+@@ -29,6 +46,7 @@ struct pwm_device {
+ 	struct device_d		dev;
+ 
+ 	struct pwm_state	params;
++	struct pwm_args		args;
+ };
+ 
+ static LIST_HEAD(pwm_list);
+@@ -194,6 +212,7 @@ struct pwm_device *of_pwm_request(struct device_node *np, const char *con_id)
+ 	struct of_phandle_args args;
+ 	int index = 0;
+ 	struct pwm_device *pwm;
++	struct pwm_state state;
+ 	int ret;
+ 
+ 	if (con_id)
+@@ -213,11 +232,17 @@ struct pwm_device *of_pwm_request(struct device_node *np, const char *con_id)
+ 	}
+ 
+ 	if (args.args_count > 1)
+-		pwm->chip->state.period_ns = args.args[1];
++		pwm->args.period_ns = args.args[1];
+ 
+ 	ret = __pwm_request(pwm);
+ 	if (ret)
+-		return ERR_PTR(-ret);
++		return ERR_PTR(ret);
++
++	pwm_init_state(pwm, &state);
++
++	ret = pwm_apply_state(pwm, &state);
++	if (ret)
++		return ERR_PTR(ret);
+ 
+ 	return pwm;
+ }
+@@ -233,13 +258,50 @@ void pwm_free(struct pwm_device *pwm)
+ }
+ EXPORT_SYMBOL_GPL(pwm_free);
+ 
+-void pwm_get_state(const struct pwm_device *pwm,
+-		   struct pwm_state *state)
++void pwm_get_state(const struct pwm_device *pwm, struct pwm_state *state)
+ {
+ 	*state = pwm->chip->state;
+ }
+ EXPORT_SYMBOL_GPL(pwm_get_state);
+ 
++static void pwm_get_args(const struct pwm_device *pwm, struct pwm_args *args)
++{
++	*args = pwm->args;
++}
++
++/**
++ * pwm_init_state() - prepare a new state to be applied with pwm_apply_state()
++ * @pwm: PWM device
++ * @state: state to fill with the prepared PWM state
++ *
++ * This functions prepares a state that can later be tweaked and applied
++ * to the PWM device with pwm_apply_state(). This is a convenient function
++ * that first retrieves the current PWM state and the replaces the period
++ * with the reference values defined in pwm->args.
++ * Once the function returns, you can adjust the ->enabled and ->duty_cycle
++ * fields according to your needs before calling pwm_apply_state().
++ *
++ * ->duty_cycle is initially set to zero to avoid cases where the current
++ * ->duty_cycle value exceed the pwm_args->period one, which would trigger
++ * an error if the user calls pwm_apply_state() without adjusting ->duty_cycle
++ * first.
++ */
++void pwm_init_state(const struct pwm_device *pwm,
++		    struct pwm_state *state)
++{
++	struct pwm_args args;
++
++	/* First get the current state. */
++	pwm_get_state(pwm, state);
++
++	/* Then fill it with the reference config */
++	pwm_get_args(pwm, &args);
++
++	state->period_ns = args.period_ns;
++	state->duty_ns = 0;
++}
++EXPORT_SYMBOL_GPL(pwm_init_state);
++
+ int pwm_apply_state(struct pwm_device *pwm, const struct pwm_state *state)
+ {
+ 	struct pwm_chip *chip = pwm->chip;
+diff --git a/include/pwm.h b/include/pwm.h
+index 36b1eb8131fb..67ea0f9bcb05 100644
+--- a/include/pwm.h
++++ b/include/pwm.h
+@@ -29,6 +29,12 @@ struct pwm_device *of_pwm_request(struct device_node *np, const char *con_id);
+  */
+ void pwm_free(struct pwm_device *pwm);
+ 
++/*
++ * pwm_init_state - prepare a new state from device tree args
++ */
++void pwm_init_state(const struct pwm_device *pwm,
++		    struct pwm_state *state);
++
+ /*
+  * pwm_config - change a PWM device configuration
+  */
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
