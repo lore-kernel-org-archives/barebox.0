@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jIqSs-00061t-Gu
+ id 1jIqSs-00061w-Gq
  for barebox@lists.infradead.org; Mon, 30 Mar 2020 09:12:17 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 30 Mar 2020 11:12:04 +0200
-Message-Id: <20200330091210.18716-3-s.hauer@pengutronix.de>
+Date: Mon, 30 Mar 2020 11:12:10 +0200
+Message-Id: <20200330091210.18716-9-s.hauer@pengutronix.de>
 In-Reply-To: <20200330091210.18716-1-s.hauer@pengutronix.de>
 References: <20200330091210.18716-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,28 +21,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/8] nfs: Add missing free
+Subject: [PATCH 8/8] nfs: Do not allow to abort
 To: Barebox List <barebox@lists.infradead.org>
 
-Add forgotten packet free in error path.
+When ctrl-c is pressed then ctrlc() will return true until
+ctrlc_handled() is called. This means that once ctrl-c is pressed every
+NFS operation will fail until the upper layer calls ctrlc_handled().
+When for example we are doing a 'ls -l' on an NFS directory then after
+a ctrl-c press not the 'ls -l' aborts, but instead the retrieving of the
+directory entries which is not what we want.
+
+Simply do not call ctrlc() in the fs layer. the NFS timeout is 2 seconds
+which we have to wait until we have a chance to abort.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/nfs.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/nfs.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
 diff --git a/fs/nfs.c b/fs/nfs.c
-index 0d098f2a66..eb316fe295 100644
+index a5fc6467fb..227a4866d7 100644
 --- a/fs/nfs.c
 +++ b/fs/nfs.c
-@@ -773,6 +773,7 @@ static int nfs_lookup_req(struct nfs_priv *npriv, struct nfs_fh *fh,
+@@ -450,9 +450,6 @@ again:
+ 	nfs_timer_start = get_time_ns();
  
- 	ninode->fh.size = ntoh32(net_read_uint32(p++));
- 	if (ninode->fh.size > NFS3_FHSIZE) {
-+		nfs_free_packet(nfs_packet);
- 		debug("%s: file handle too big: %u\n", __func__,
- 		      ninode->fh.size);
- 		return -EIO;
+ 	while (1) {
+-		if (ctrlc())
+-			return ERR_PTR(-EINTR);
+-
+ 		net_poll();
+ 
+ 		if (is_timeout(nfs_timer_start, NFS_TIMEOUT)) {
 -- 
 2.26.0.rc2
 
