@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vi1eur05olkn2043.outbound.protection.outlook.com
- ([40.92.90.43] helo=EUR05-VI1-obe.outbound.protection.outlook.com)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jHljm-0006bH-FT
- for barebox@lists.infradead.org; Fri, 27 Mar 2020 09:57:16 +0000
-From: Michael Graichen <michael.graichen@hotmail.com>
-Date: Fri, 27 Mar 2020 09:57:11 +0000
-Message-ID: <DB7PR02MB43329F5FA85160DA28F68030ABCC0@DB7PR02MB4332.eurprd02.prod.outlook.com>
-Content-Language: de-DE
-Content-Type: multipart/mixed;
- boundary="_002_DB7PR02MB43329F5FA85160DA28F68030ABCC0DB7PR02MB4332eurp_"
+ id 1jImwT-0005VS-LU
+ for barebox@lists.infradead.org; Mon, 30 Mar 2020 05:26:35 +0000
+Date: Mon, 30 Mar 2020 07:26:30 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200330052629.GT27288@pengutronix.de>
+References: <20200326183304.16531-1-jmaselbas@kalray.eu>
+ <20200326183304.16531-5-jmaselbas@kalray.eu>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200326183304.16531-5-jmaselbas@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,147 +19,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] some fixes for the zedboard build
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH v2 4/4] usb: gadget: dfu: Fix DFU mode interface descriptor
+To: Jules Maselbas <jmaselbas@kalray.eu>
+Cc: barebox@lists.infradead.org
 
---_002_DB7PR02MB43329F5FA85160DA28F68030ABCC0DB7PR02MB4332eurp_
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Hi Jules,
 
-Hey, =0A=
-=0A=
-i've attached some fixes for the zedboard build that worked, at least, for =
-me.=0A=
-The MIO config in lowlevel.c seem to be very "hardware specific" but one ca=
-n compare this to what Xilinx Vivado says.=0A=
-=0A=
-When including the drivers for Networking, QSPI and SD one will run out of =
-OCRAM very quickly that's why i commended out so much in the defconfig.=0A=
-=0A=
-The changes to drivers/mci/Kconfig and drivers/mci/arasan-sdhci.c seem to b=
-e bug fixes.=0A=
-=0A=
-Best regards and have a nice weekend =0A=
-=0A=
-Michael=0A=
-=0A=
-=0A=
-=0A=
-=0A=
-=0A=
+On Thu, Mar 26, 2020 at 07:33:04PM +0100, Jules Maselbas wrote:
+> The gadget driver set the bInterfaceProtocol value to 1 in the DFU
+> interface descriptor. However this value is used to indicate that the
+> gadget is in run-time mode and not ready for DFU. When ready for DFU
+> operation the bInterfaceProtocol value must be set to 2 (DFU mode).
+> 
+> From the DFU 1.1 specification, the value of bInterfaceProtocol select:
+>  - 1: Runtime protocol  (see Table 4.1)
+>  - 2: DFU mode protocol (see Table 4.4)
+> 
+> This patch change the bInterfaceProtocol value from 1 to 2. As this
+> DFU gadget driver is always ready for DFU operation (DFU mode) and
+> doesn't require a USB reset.
+> 
+> Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
 
---_002_DB7PR02MB43329F5FA85160DA28F68030ABCC0DB7PR02MB4332eurp_
-Content-Type: text/x-patch; name="fixes-for-the-zedboard.diff"
-Content-Description: fixes-for-the-zedboard.diff
-Content-Disposition: attachment; filename="fixes-for-the-zedboard.diff";
-	size=5193; creation-date="Fri, 27 Mar 2020 09:55:04 GMT";
-	modification-date="Fri, 27 Mar 2020 09:55:04 GMT"
-Content-Transfer-Encoding: base64
+DFU stopped working for me quite a while ago and I tracked it down to
+this dfu-util commit:
 
-ZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9hdm5ldC16ZWRib2FyZC9sb3dsZXZlbC5jIGIv
-YXJjaC9hcm0vYm9hcmRzL2F2bmV0LXplZGJvYXJkL2xvd2xldmVsLmMKaW5kZXggOTEyZWIxMWZk
-Li5kZTM0MzRlMzggMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2JvYXJkcy9hdm5ldC16ZWRib2FyZC9s
-b3dsZXZlbC5jCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9hdm5ldC16ZWRib2FyZC9sb3dsZXZlbC5j
-CkBAIC0yNTgsNyArMjU4LDcgQEAgc3RhdGljIHZvaWQgYXZuZXRfemVkYm9hcmRfcHM3X2luaXQo
-dm9pZCkKIAogCS8qIEdFTTAgKi8KIAl3cml0ZWwoMHgwMDAwMDAwMSwgMHhmODAwMDEzOCk7Ci0J
-d3JpdGVsKDB4MDA1MDA4MDEsIDB4ZjgwMDAxNDApOworCXdyaXRlbCgweDAwMTAwODAxLCAweGY4
-MDAwMTQwKTsKIAl3cml0ZWwoMHgwMDAwMDMwMiwgMHhmODAwMDc0MCk7CiAJd3JpdGVsKDB4MDAw
-MDAzMDIsIDB4ZjgwMDA3NDQpOwogCXdyaXRlbCgweDAwMDAwMzAyLCAweGY4MDAwNzQ4KTsKQEAg
-LTI3MSw4ICsyNzEsOCBAQCBzdGF0aWMgdm9pZCBhdm5ldF96ZWRib2FyZF9wczdfaW5pdCh2b2lk
-KQogCXdyaXRlbCgweDAwMDAxMzAzLCAweGY4MDAwNzY0KTsKIAl3cml0ZWwoMHgwMDAwMTMwMywg
-MHhmODAwMDc2OCk7CiAJd3JpdGVsKDB4MDAwMDEzMDMsIDB4ZjgwMDA3NkMpOwotCXdyaXRlbCgw
-eDAwMDAxMjgwLCAweGY4MDAwN0QwKTsKLQl3cml0ZWwoMHgwMDAwMTI4MCwgMHhmODAwMDdENCk7
-CisJd3JpdGVsKDB4MDAwMDAyODAsIDB4ZjgwMDA3RDApOworCXdyaXRlbCgweDAwMDAwMjgwLCAw
-eGY4MDAwN0Q0KTsKIAogCXdyaXRlbCgweDAwMDAwMDAxLCAweGY4MDAwQjAwKTsKIApAQCAtMjk3
-LDYgKzI5NywxNiBAQCBFTlRSWV9GVU5DVElPTihzdGFydF9hdm5ldF96ZWRib2FyZCwgcjAsIHIx
-LCByMikKIAogCXZvaWQgKmZkdCA9IF9fZHRiX3p5bnFfemVkX3N0YXJ0ICsgZ2V0X3J1bnRpbWVf
-b2Zmc2V0KCk7CiAKKwkvKiBNSU9fMDcgaW4gR1BJTyBNb2RlIDMuM1YgVklPLCBjYW4gYmUgdW5j
-b21lbnRlZCBiZWNhdXNlIGl0IGlzIHRoZSBkZWZhdWx0IHZhbHVlICovCisJd3JpdGVsKDB4MDAw
-MERGMEQsIFpZTlFfU0xDUl9VTkxPQ0spOworCXdyaXRlbCgweDAwMDAwNjAwLCAweEY4MDAwNzFD
-ICk7CisJd3JpdGVsKDB4MDAwMDc2N0IsIFpZTlFfU0xDUl9MT0NLKTsKKworCS8qIHR1cm5zIG9u
-IHRoZSBMRUQgTUlPXzA3ICovCisJd3JpdGVsKCgxPDw3KSwgMHhlMDAwYTIwNCApOyAgICAvLyBE
-aXJlY3Rpb24KKwl3cml0ZWwoKDE8PDcpLCAweGUwMDBhMjA4ICk7ICAgIC8vIE91dHB1dCBlbmFi
-bGUKKwl3cml0ZWwoKDE8PDcpLCAweGUwMDBhMDQwICk7ICAgIC8vIERBVEEgUmVnaXN0ZXIKKwog
-CWFybV9jcHVfbG93bGV2ZWxfaW5pdCgpOwogCXp5bnFfY3B1X2xvd2xldmVsX2luaXQoKTsKIApk
-aWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL2F2bmV0LXplZGJvYXJkL3plZGJvYXJkLnp5bnFj
-ZmcgYi9hcmNoL2FybS9ib2FyZHMvYXZuZXQtemVkYm9hcmQvemVkYm9hcmQuenlucWNmZwppbmRl
-eCAzZjg4MDhkM2QuLjc2ZDVkODQ1MyAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vYm9hcmRzL2F2bmV0
-LXplZGJvYXJkL3plZGJvYXJkLnp5bnFjZmcKKysrIGIvYXJjaC9hcm0vYm9hcmRzL2F2bmV0LXpl
-ZGJvYXJkL3plZGJvYXJkLnp5bnFjZmcKQEAgLTEsMjQgKzEsMiBAQAotI2luY2x1ZGUgPG1hY2gv
-enlucTcwMDAtaGVhZGVyLXJlZ3MuaD4KLQotd20gMzIgWllOUV9TTENSX1VOTE9DSwkJMHgwMDAw
-REYwRAotd20gMzIgWllOUV9DTEtfNjIxX1RSVUUJCTB4MDAwMDAwMDEKLXdtIDMyIFpZTlFfQVBF
-Ul9DTEtfQ1RSTAkweDAxRkMwNDRECi0KLXdtIDMyIFpZTlFfQVJNX1BMTF9DVFJMCQkweDAwMDI4
-MDA4Ci13bSAzMiBaWU5RX0FSTV9QTExfQ0ZHCQkweDAwMEZBMjIwCi13bSAzMiBaWU5RX0FSTV9Q
-TExfQ1RSTAkJMHgwMDAyODAxMAotd20gMzIgWllOUV9BUk1fUExMX0NUUkwJCTB4MDAwMjgwMTEK
-LXdtIDMyIFpZTlFfQVJNX1BMTF9DVFJMCQkweDAwMDI4MDEwCi13bSAzMiBaWU5RX0FSTV9QTExf
-Q1RSTAkJMHgwMDAyODAwMAotCi13bSAzMiBaWU5RX0lPX1BMTF9DVFJMCQkweDAwMDFFMDA4Ci13
-bSAzMiBaWU5RX0lPX1BMTF9DRkcJCTB4MDAxNDUyQzAKLXdtIDMyIFpZTlFfSU9fUExMX0NUUkwJ
-CTB4MDAwMUUwMTAKLXdtIDMyIFpZTlFfSU9fUExMX0NUUkwJCTB4MDAwMUUwMTEKLXdtIDMyIFpZ
-TlFfSU9fUExMX0NUUkwJCTB4MDAwMUUwMTAKLXdtIDMyIFpZTlFfSU9fUExMX0NUUkwJCTB4MDAw
-MUUwMDAKLQotd20gMzIgWllOUV9TRElPX0NMS19DVFJMCTB4MDAwMDBhMDMKLQogLyogc3RvcCAq
-Lwotd20gMzIgMHhGRkZGRkZGRgkJCTB4MDAwMDAwMDAKXCBObyBuZXdsaW5lIGF0IGVuZCBvZiBm
-aWxlCit3bSAzMiAweEZGRkZGRkZGCQkJMHgwMDAwMDAwMApkaWZmIC0tZ2l0IGEvYXJjaC9hcm0v
-Y29uZmlncy96eW5xX2RlZmNvbmZpZyBiL2FyY2gvYXJtL2NvbmZpZ3MvenlucV9kZWZjb25maWcK
-aW5kZXggYTE2YzU3ZDVjLi5jYzgxZmQxMjAgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2NvbmZpZ3Mv
-enlucV9kZWZjb25maWcKKysrIGIvYXJjaC9hcm0vY29uZmlncy96eW5xX2RlZmNvbmZpZwpAQCAt
-Miw0NiArMiw0OSBAQCBDT05GSUdfQVJDSF9aWU5RPXkKIENPTkZJR19NQUNIX1pFREJPQVJEPXkK
-IENPTkZJR19BRUFCST15CiBDT05GSUdfQVJNX1VOV0lORD15CisjIENPTkZJR19NRU1JTkZPIGlz
-IG5vdCBzZXQKIENPTkZJR19NTVU9eQogQ09ORklHX1NUQUNLX1NJWkU9MHhmMDAwCiBDT05GSUdf
-TUFMTE9DX1NJWkU9MHg4MDAwMDAwCiBDT05GSUdfTUFMTE9DX1RMU0Y9eQogQ09ORklHX0tBTExT
-WU1TPXkKLUNPTkZJR19IVVNIX0ZBTkNZX1BST01QVD15CiBDT05GSUdfQ01ETElORV9FRElUSU5H
-PXkKLUNPTkZJR19BVVRPX0NPTVBMRVRFPXkKLUNPTkZJR19NRU5VPXkKIENPTkZJR19CT09UTV9T
-SE9XX1RZUEU9eQogQ09ORklHX0JPT1RNX1ZFUkJPU0U9eQogQ09ORklHX0JPT1RNX0lOSVRSRD15
-CiBDT05GSUdfQk9PVE1fT0ZUUkVFPXkKIENPTkZJR19ERUZBVUxUX0VOVklST05NRU5UX0dFTkVS
-SUNfTkVXPXkKIENPTkZJR19ERUZBVUxUX0VOVklST05NRU5UX1BBVEg9ImFyY2gvYXJtL2JvYXJk
-cy9hdm5ldC16ZWRib2FyZC9lbnYiCi1DT05GSUdfREVCVUdfTEw9eQotQ09ORklHX0xPTkdIRUxQ
-PXkKLUNPTkZJR19DTURfTUVNSU5GTz15Ci1DT05GSUdfQ01EX0FSTV9NTVVJTkZPPXkKKyMgQ09O
-RklHX0NNRF9ERVZJTkZPIGlzIG5vdCBzZXQKKyMgQ09ORklHX0NNRF9EUlZJTkZPIGlzIG5vdCBz
-ZXQKKyMgQ09ORklHX0NNRF9IRUxQIGlzIG5vdCBzZXQKKyMgQ09ORklHX0NNRF9CT09UVSBpcyBu
-b3Qgc2V0CiBDT05GSUdfQ01EX0dPPXkKIENPTkZJR19DTURfUkVTRVQ9eQotQ09ORklHX0NNRF9Q
-QVJUSVRJT049eQorIyBDT05GSUdfQ01EX1VNT1VOVCBpcyBub3Qgc2V0CiBDT05GSUdfQ01EX0VY
-UE9SVD15CiBDT05GSUdfQ01EX1BSSU5URU5WPXkKIENPTkZJR19DTURfU0FWRUVOVj15Ci1DT05G
-SUdfQ01EX0xOPXkKLUNPTkZJR19DTURfU0xFRVA9eQorIyBDT05GSUdfQ01EX0NQIGlzIG5vdCBz
-ZXQKKyMgQ09ORklHX0NNRF9QV0QgaXMgbm90IHNldAogQ09ORklHX0NNRF9ESENQPXkKLUNPTkZJ
-R19DTURfRURJVD15Ci1DT05GSUdfQ01EX01FTlU9eQotQ09ORklHX0NNRF9NRU5VX01BTkFHRU1F
-TlQ9eQotQ09ORklHX0NNRF9SRUFETElORT15Ci1DT05GSUdfQ01EX1RJTUVPVVQ9eQotQ09ORklH
-X0NNRF9DTEs9eQotQ09ORklHX0NNRF9PRlRSRUU9eQotQ09ORklHX0NNRF9USU1FPXkKK0NPTkZJ
-R19DTURfVEZUUD15CisjIENPTkZJR19DTURfQ0xFQVIgaXMgbm90IHNldAorIyBDT05GSUdfQ01E
-X0VDSE8gaXMgbm90IHNldAorIyBDT05GSUdfQ01EX01FTUNNUCBpcyBub3Qgc2V0CisjIENPTkZJ
-R19DTURfTUVNQ1BZIGlzIG5vdCBzZXQKKyMgQ09ORklHX0NNRF9NRU1TRVQgaXMgbm90IHNldAog
-Q09ORklHX05FVD15CiBDT05GSUdfRFJJVkVSX1NFUklBTF9DQURFTkNFPXkKIENPTkZJR19EUklW
-RVJfTkVUX01BQ0I9eQotIyBDT05GSUdfU1BJIGlzIG5vdCBzZXQKK0NPTkZJR19TUElfWllOUV9R
-U1BJPXkKK0NPTkZJR19NVEQ9eQorIyBDT05GSUdfTVREX09PQl9ERVZJQ0UgaXMgbm90IHNldAor
-Q09ORklHX01URF9NMjVQODA9eQorQ09ORklHX01DST15CitDT05GSUdfTUNJX0FSQVNBTj15CitD
-T05GSUdfRUVQUk9NX0FUMjU9eQogIyBDT05GSUdfUElOQ1RSTCBpcyBub3Qgc2V0CiBDT05GSUdf
-RlNfVEZUUD15Ci1DT05GSUdfRElHRVNUPXkKK0NPTkZJR19GU19GQVQ9eQorQ09ORklHX0ZTX0ZB
-VF9XUklURT15CmRpZmYgLS1naXQgYS9kcml2ZXJzL21jaS9LY29uZmlnIGIvZHJpdmVycy9tY2kv
-S2NvbmZpZwppbmRleCA4MGIzYTI2MDAuLjlmNTZiZWQzYSAxMDA2NDQKLS0tIGEvZHJpdmVycy9t
-Y2kvS2NvbmZpZworKysgYi9kcml2ZXJzL21jaS9LY29uZmlnCkBAIC0xNDEsNiArMTQxLDcgQEAg
-Y29uZmlnIE1DSV9URUdSQQogCiBjb25maWcgTUNJX0FSQVNBTgogCWJvb2wgIkFyYXNhbiBTREhD
-SSBDb250cm9sbGVyIgorCXNlbGVjdCBNQ0lfU0RIQ0kKIAloZWxwCiAJICBFbmFibGUgdGhpcyB0
-byBzdXBwb3J0IFNEIGFuZCBNTUMgY2FyZCByZWFkL3dyaXRlIG9uIHN5c3RlbXMgd2l0aAogCSAg
-dGhlIEFyYXNhbiBTRDMuMCAvIFNESU8zLjAgLyBlTU1DNC41MSBob3N0IGNvbnRyb2xsZXIuCmRp
-ZmYgLS1naXQgYS9kcml2ZXJzL21jaS9hcmFzYW4tc2RoY2kuYyBiL2RyaXZlcnMvbWNpL2FyYXNh
-bi1zZGhjaS5jCmluZGV4IGI0M2E0ZjhkZC4uMGRkOTM4MmFlIDEwMDY0NAotLS0gYS9kcml2ZXJz
-L21jaS9hcmFzYW4tc2RoY2kuYworKysgYi9kcml2ZXJzL21jaS9hcmFzYW4tc2RoY2kuYwpAQCAt
-Mjc4LDcgKzI3OCw3IEBAIHN0YXRpYyBpbnQgYXJhc2FuX3NkaGNpX3NlbmRfY21kKHN0cnVjdCBt
-Y2lfaG9zdCAqbWNpLCBzdHJ1Y3QgbWNpX2NtZCAqY21kLAogCiAJbWFzayA9IFNESENJX0lOVF9D
-TURfQ09NUExFVEU7CiAJaWYgKGRhdGEpCi0JCW1hc2sgfD0gU0RIQ0lfSU5UX1hGRVJfQ09NUExF
-VEU7CisJCW1hc2sgfD0gU0RIQ0lfSU5UX0RBVEFfQVZBSUw7ICAgCiAKIAlzZGhjaV9zZXRfY21k
-X3hmZXJfbW9kZSgmaG9zdC0+c2RoY2ksIGNtZCwgZGF0YSwgZmFsc2UsICZjb21tYW5kLCAmeGZl
-cik7CiAK
+| commit 377f6f136d3369529f44578acaeee82d7c7d7af9
+| Author: Paul Fertser <fercerpav@gmail.com>
+| Date:   Sun Aug 10 14:26:05 2014 +0400
+| 
+|     dfu_util: Ignore alt_index/alt_name specification in runtime mode
+|     
+|     When the device is in runtime mode it needs to be reset first into DFU
+|     mode for the list of alternate settings to appear, so unless it is
+|     already in the right mode, matching on alt setting number or name
+|     should be skipped.
+|     
+|     Fixes regression on OpenMoko Freerunner.
+|     
+|     Signed-off-by: Paul Fertser <fercerpav@gmail.com>
 
---_002_DB7PR02MB43329F5FA85160DA28F68030ABCC0DB7PR02MB4332eurp_
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Are you using a recent dfu-util version? Is your patch the fix for this
+commit?
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---_002_DB7PR02MB43329F5FA85160DA28F68030ABCC0DB7PR02MB4332eurp_--
