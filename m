@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from relay2-d.mail.gandi.net ([217.70.183.194])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jIvqv-0000pk-NV
- for barebox@lists.infradead.org; Mon, 30 Mar 2020 14:57:27 +0000
-Received: from geraet.fritz.box (i577B69AA.versanet.de [87.123.105.170])
- (Authenticated sender: ahmad@a3f.at)
- by relay2-d.mail.gandi.net (Postfix) with ESMTPSA id D580040003
- for <barebox@lists.infradead.org>; Mon, 30 Mar 2020 14:57:22 +0000 (UTC)
+ id 1jIvqw-0000pz-Fy
+ for barebox@lists.infradead.org; Mon, 30 Mar 2020 14:57:28 +0000
 From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Mon, 30 Mar 2020 16:57:05 +0200
-Message-Id: <20200330145717.667403-1-ahmad@a3f.at>
+Date: Mon, 30 Mar 2020 16:57:08 +0200
+Message-Id: <20200330145717.667403-4-ahmad@a3f.at>
+In-Reply-To: <20200330145717.667403-1-ahmad@a3f.at>
+References: <20200330145717.667403-1-ahmad@a3f.at>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,54 +21,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/12] PWM: add support for ->apply, polarity and STM32
+Subject: [PATCH 03/12] PWM: core: remove ineffectual pwm_{set,get}_duty_cycle
 To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Hi,
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-- Port Linux apply API to make porting future PWM drivers easier
-- Remove duplicated PWM state, so device variables can be used to query
-  and influence actual configuration
-- Add support for PWM polarity
-- Add support for STM32
+The setter sets a value unused anywhere, but in the getter.
+As the functions are unused, just drop them.
+There's pwm_config that can be used for this instead.
 
-Cheers,
-Ahmad Fatoum (12):
-  led: pwm: always initialize PWM LEDs as inactive
-  PWM: core: remove FLAG_ENABLED
-  PWM: core: remove ineffectual pwm_{set,get}_duty_cycle
-  PWM: core: group PWM state into new struct pwm_state
-  PWM: core: remove old PWM API in favor of Linux ->apply
-  PWM: core: retire pwm_set_period
-  PWM: core: apply initial state in of_pwm_request
-  video: backlight-pwm: use new pwm_apply_state API
-  led: pwm: use new pwm_apply_state API
-  PWM: core: add apply API support for polarity
-  of: introduce of_property_count_elems_of_size
-  PWM: add support for STM32
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/pwm/core.c | 10 ----------
+ include/pwm.h      |  2 --
+ 2 files changed, 12 deletions(-)
 
- arch/arm/dts/stm32mp151.dtsi     |  12 +
- drivers/led/led-pwm.c            |  19 +-
- drivers/mfd/Kconfig              |   7 +
- drivers/mfd/Makefile             |   1 +
- drivers/mfd/stm32-timers.c       |  74 ++++++
- drivers/of/base.c                |  32 +++
- drivers/pwm/Kconfig              |   6 +
- drivers/pwm/Makefile             |   1 +
- drivers/pwm/core.c               | 178 ++++++++++----
- drivers/pwm/pwm-imx.c            |  32 +--
- drivers/pwm/pwm-mxs.c            |  37 ++-
- drivers/pwm/pwm-stm32.c          | 400 +++++++++++++++++++++++++++++++
- drivers/pwm/pxa_pwm.c            |  93 +++----
- drivers/video/backlight-pwm.c    |  13 +-
- include/linux/mfd/stm32-timers.h |  97 ++++++++
- include/of.h                     |   8 +
- include/pwm.h                    |  62 +++--
- 17 files changed, 917 insertions(+), 155 deletions(-)
- create mode 100644 drivers/mfd/stm32-timers.c
- create mode 100644 drivers/pwm/pwm-stm32.c
- create mode 100644 include/linux/mfd/stm32-timers.h
-
+diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
+index cae23c98ee2d..eaf7de18295e 100644
+--- a/drivers/pwm/core.c
++++ b/drivers/pwm/core.c
+@@ -265,16 +265,6 @@ unsigned int pwm_get_period(struct pwm_device *pwm)
+ 	return pwm->period_ns;
+ }
+ 
+-void pwm_set_duty_cycle(struct pwm_device *pwm, unsigned int duty_ns)
+-{
+-	pwm->duty_ns = duty_ns;
+-}
+-
+-unsigned int pwm_get_duty_cycle(struct pwm_device *pwm)
+-{
+-	return pwm->duty_ns;
+-}
+-
+ /*
+  * pwm_enable - start a PWM output toggling
+  */
+diff --git a/include/pwm.h b/include/pwm.h
+index 98af1299748a..9897e86545c9 100644
+--- a/include/pwm.h
++++ b/include/pwm.h
+@@ -34,8 +34,6 @@ void pwm_disable(struct pwm_device *pwm);
+ 
+ void pwm_set_period(struct pwm_device *pwm, unsigned int period);
+ unsigned int pwm_get_period(struct pwm_device *pwm);
+-void pwm_set_duty_cycle(struct pwm_device *pwm, unsigned int duty);
+-unsigned int pwm_get_duty_cycle(struct pwm_device *pwm);
+ 
+ struct pwm_chip;
+ 
 -- 
 2.20.1
 
