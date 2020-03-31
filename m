@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jJAaQ-0004Sf-Rg
- for barebox@lists.infradead.org; Tue, 31 Mar 2020 06:41:24 +0000
-Date: Tue, 31 Mar 2020 08:41:20 +0200
+ id 1jJAo6-0001rY-Pm
+ for barebox@lists.infradead.org; Tue, 31 Mar 2020 06:55:32 +0000
+Date: Tue, 31 Mar 2020 08:55:29 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200331064120.GH27288@pengutronix.de>
-References: <20200330145717.667403-1-ahmad@a3f.at>
- <20200330145717.667403-13-ahmad@a3f.at>
+Message-ID: <20200331065529.GI27288@pengutronix.de>
+References: <20200330143915.663705-1-ahmad@a3f.at>
+ <20200330143915.663705-6-ahmad@a3f.at>
+ <20200331054526.GF27288@pengutronix.de>
+ <08a304f9-cfd3-706d-0c4e-7725c3f965f6@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200330145717.667403-13-ahmad@a3f.at>
+In-Reply-To: <08a304f9-cfd3-706d-0c4e-7725c3f965f6@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,56 +25,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 12/12] PWM: add support for STM32
-To: Ahmad Fatoum <ahmad@a3f.at>
-Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH 6/8] pinctrl: stm32: fix up st,package into stm32mp nodes
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, Ahmad Fatoum <ahmad@a3f.at>
 
-On Mon, Mar 30, 2020 at 04:57:17PM +0200, Ahmad Fatoum wrote:
-> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+On Tue, Mar 31, 2020 at 07:50:32AM +0200, Ahmad Fatoum wrote:
+> Hi,
 > 
-> This driver adds support for PWM driver on STM32 platform
-> based on the Linux v5.4 support.
+> On 3/31/20 7:45 AM, Sascha Hauer wrote:
+> > On Mon, Mar 30, 2020 at 04:39:13PM +0200, Ahmad Fatoum wrote:
+> >> Since Linux v5.1, the pinctrl driver can use the st,package property
+> >> if provided to validate whether the ball to be configured exists
+> >> on the package. Have barebox supply this property.
+> >>
+> >> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+> >> ---
+> >>  arch/arm/dts/stm32mp151.dtsi    | 16 ++++++++
+> >>  drivers/pinctrl/pinctrl-stm32.c | 67 +++++++++++++++++++++++++++++++++
+> >>  2 files changed, 83 insertions(+)
+> >>
+> >> diff --git a/arch/arm/dts/stm32mp151.dtsi b/arch/arm/dts/stm32mp151.dtsi
+> >> index 8f8249dbc479..2a70a747e76e 100644
+> >> --- a/arch/arm/dts/stm32mp151.dtsi
+> >> +++ b/arch/arm/dts/stm32mp151.dtsi
+> >> @@ -37,4 +37,20 @@
+> >>  
+> >>  &bsec {
+> >>  	barebox,provide-mac-address = <&ethernet0 0x39>;
+> >> +
+> >> +	soc_package: soc-package@43 {
+> >> +		reg = <0x43 1>;
+> >> +		bits = <3 3>;
+> >> +		read-only;
+> >> +	};
+> >> +};
+> >> +
+> >> +&pinctrl {
+> >> +	nvmem-cells = <&soc_package>;
+> >> +	nvmem-cell-names = "soc-package";
+> >> +};
+> >> +
+> >> +&pinctrl_z {
+> >> +	nvmem-cells = <&soc_package>;
+> >> +	nvmem-cell-names = "soc-package";
+> >>  };
+> > 
+> > Why this detour over device tree? We already have get_cpu_package() and
+> > could use it here.
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  arch/arm/dts/stm32mp151.dtsi     |  12 +
->  drivers/mfd/Kconfig              |   7 +
->  drivers/mfd/Makefile             |   1 +
->  drivers/mfd/stm32-timers.c       |  74 ++++++
->  drivers/pwm/Kconfig              |   6 +
->  drivers/pwm/Makefile             |   1 +
->  drivers/pwm/pwm-stm32.c          | 400 +++++++++++++++++++++++++++++++
->  include/linux/mfd/stm32-timers.h |  97 ++++++++
->  8 files changed, 598 insertions(+)
->  create mode 100644 drivers/mfd/stm32-timers.c
->  create mode 100644 drivers/pwm/pwm-stm32.c
->  create mode 100644 include/linux/mfd/stm32-timers.h
-> 
-> diff --git a/arch/arm/dts/stm32mp151.dtsi b/arch/arm/dts/stm32mp151.dtsi
-> index 2a70a747e76e..a0870c446f45 100644
-> --- a/arch/arm/dts/stm32mp151.dtsi
-> +++ b/arch/arm/dts/stm32mp151.dtsi
-> @@ -21,6 +21,18 @@
->  		mmc0 = &sdmmc1;
->  		mmc1 = &sdmmc2;
->  		mmc2 = &sdmmc3;
-> +		pwm1 = &{/soc/timer@44000000/pwm};
-> +		pwm2 = &{/soc/timer@40000000/pwm};
-> +		pwm3 = &{/soc/timer@40001000/pwm};
-> +		pwm4 = &{/soc/timer@40002000/pwm};
-> +		pwm5 = &{/soc/timer@40003000/pwm};
-> +		pwm8 = &{/soc/timer@44001000/pwm};
-> +		pwm12 = &{/soc/timer@40006000/pwm};
-> +		pwm13 = &{/soc/timer@40007000/pwm};
-> +		pwm14 = &{/soc/timer@40008000/pwm};
-> +		pwm15 = &{/soc/timer@44006000/pwm};
-> +		pwm16 = &{/soc/timer@44007000/pwm};
-> +		pwm17 = &{/soc/timer@44008000/pwm};
+> The pinctrl driver should also be compatible to the STM32 MCUs, which don't
+> have this property. I tried calling get_cpu_package at first, but the ifdefery
+> needed to keep the driver independent on CONFIG_ARCH_STM32MP looked ugly.
 
-The other aliases start counting at 0. Why not the PWMs?
+The fixup for the device tree nodes doesn't necessarily have to be in
+the pinctrl driver, it could be somewhere where you know get_cpu_package
+is present and valid.
+
+> 
+> Making it a device property solves this nicely IMO.
+
+I might agree if there wasn't the nvmem binding involved.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
