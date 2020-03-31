@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
+Received: from mail-pj1-x1041.google.com ([2607:f8b0:4864:20::1041])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jJLvF-0005th-4B
- for barebox@lists.infradead.org; Tue, 31 Mar 2020 18:47:38 +0000
-Received: by mail-pf1-x444.google.com with SMTP id 22so10733866pfa.9
- for <barebox@lists.infradead.org>; Tue, 31 Mar 2020 11:47:37 -0700 (PDT)
+ id 1jJLvG-0005ua-A9
+ for barebox@lists.infradead.org; Tue, 31 Mar 2020 18:47:39 +0000
+Received: by mail-pj1-x1041.google.com with SMTP id jz1so1224489pjb.0
+ for <barebox@lists.infradead.org>; Tue, 31 Mar 2020 11:47:38 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 31 Mar 2020 11:47:01 -0700
-Message-Id: <20200331184722.22707-3-andrew.smirnov@gmail.com>
+Date: Tue, 31 Mar 2020 11:47:02 -0700
+Message-Id: <20200331184722.22707-4-andrew.smirnov@gmail.com>
 In-Reply-To: <20200331184722.22707-1-andrew.smirnov@gmail.com>
 References: <20200331184722.22707-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,38 +23,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/23] ARM: imx7d-zii-rpu2: Drop redundant chosen node
+Subject: [PATCH 03/23] ARM: zii-imx7d-dev: Fix compatible name
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-This code is no longer necessary. Upstream DT code has all the
-necessary bits. Remove it.
+Fix compatible name use in zii_imx7d_rpu2_coredevices_init(). Upstream
+uses "zii,imx7d-rpu2" and so should we.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/dts/imx7d-zii-rpu2.dts | 9 ---------
- 1 file changed, 9 deletions(-)
+ arch/arm/boards/zii-imx7d-dev/board.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/dts/imx7d-zii-rpu2.dts b/arch/arm/dts/imx7d-zii-rpu2.dts
-index f8d6e8904..168f66c73 100644
---- a/arch/arm/dts/imx7d-zii-rpu2.dts
-+++ b/arch/arm/dts/imx7d-zii-rpu2.dts
-@@ -8,15 +8,6 @@
- #include "imx7d-ddrc.dtsi"
+diff --git a/arch/arm/boards/zii-imx7d-dev/board.c b/arch/arm/boards/zii-imx7d-dev/board.c
+index 89f051530..e46a4b181 100644
+--- a/arch/arm/boards/zii-imx7d-dev/board.c
++++ b/arch/arm/boards/zii-imx7d-dev/board.c
+@@ -33,7 +33,7 @@ static void zii_imx7d_rpu2_init_fec(void)
  
- / {
--	chosen {
--		/*
--		 * Kernel DTS incorrectly specifies stdout-path as
--                 * &uart1, this can be removed once the fix trickles
--                 * down
--		 */
--		stdout-path = &uart2;
--	};
--
- 	aliases {
- 		/*
- 		 * NVMEM device corresponding to EEPROM attached to
+ static int zii_imx7d_rpu2_coredevices_init(void)
+ {
+-	if (!of_machine_is_compatible("zii,imx7d-zii-rpu2") &&
++	if (!of_machine_is_compatible("zii,imx7d-rpu2") &&
+ 	    !of_machine_is_compatible("zii,imx7d-rmu2"))
+ 		return 0;
+ 
 -- 
 2.21.0
 
