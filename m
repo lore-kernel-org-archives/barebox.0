@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay4-d.mail.gandi.net ([217.70.183.196])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jIvZf-0008Qb-Pj
- for barebox@lists.infradead.org; Mon, 30 Mar 2020 14:39:39 +0000
-Received: from geraet.fritz.box (i577B69AA.versanet.de [87.123.105.170])
- (Authenticated sender: ahmad@a3f.at)
- by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id DE2F9E0003
- for <barebox@lists.infradead.org>; Mon, 30 Mar 2020 14:39:33 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Mon, 30 Mar 2020 16:39:11 +0200
-Message-Id: <20200330143915.663705-4-ahmad@a3f.at>
-In-Reply-To: <20200330143915.663705-1-ahmad@a3f.at>
-References: <20200330143915.663705-1-ahmad@a3f.at>
+ id 1jJA6C-0000Fe-Ji
+ for barebox@lists.infradead.org; Tue, 31 Mar 2020 06:10:10 +0000
+Date: Tue, 31 Mar 2020 08:10:06 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200331061006.GG27288@pengutronix.de>
+References: <20200330145717.667403-1-ahmad@a3f.at>
+ <20200330145717.667403-9-ahmad@a3f.at>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200330145717.667403-9-ahmad@a3f.at>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,89 +23,85 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/8] nvmem: bsec: allow reads at unaligned offsets
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 08/12] video: backlight-pwm: use new pwm_apply_state API
+To: Ahmad Fatoum <ahmad@a3f.at>
+Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Setting the NVMEM stride to 4 means we can't have nvmem cells pointing
-at odd addresses. Linux sets it to 1 instead and handles reads at
-unaligned addresses by splitting them up to aligned chunks. Copy over
-the code to do the same. Unaligned writes remain illegal.
+On Mon, Mar 30, 2020 at 04:57:13PM +0200, Ahmad Fatoum wrote:
+> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> 
+> Use pwm_apply_state we can avoid having to store PWM state in the
+> instance structure and in future we have an easy way to support new
+> parameters like inverted duty cycle.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  drivers/video/backlight-pwm.c | 13 ++++++++-----
+>  1 file changed, 8 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/video/backlight-pwm.c b/drivers/video/backlight-pwm.c
+> index 9111a42d7544..8b6494dac929 100644
+> --- a/drivers/video/backlight-pwm.c
+> +++ b/drivers/video/backlight-pwm.c
+> @@ -33,7 +33,6 @@ struct pwm_backlight {
+>  	struct backlight_device backlight;
+>  	struct pwm_device *pwm;
+>  	struct regulator *power;
+> -	uint32_t period;
+>  	unsigned int *levels;
+>  	int enable_gpio;
+>  	int enable_active_high;
+> @@ -91,13 +90,16 @@ static int backlight_pwm_disable(struct pwm_backlight *pwm_backlight)
+>  static int compute_duty_cycle(struct pwm_backlight *pwm_backlight, int brightness)
+>  {
+>  	int duty_cycle;
+> +	struct pwm_state state;
+> +
+> +	pwm_get_state(pwm_backlight->pwm, &state);
+>  
+>  	if (pwm_backlight->levels)
+>  		duty_cycle = pwm_backlight->levels[brightness];
+>  	else
+>  		duty_cycle = brightness;
+>  
+> -	return duty_cycle * pwm_backlight->period / pwm_backlight->scale;
+> +	return duty_cycle * state.period_ns / pwm_backlight->scale;
+>  }
+>  
+>  static int backlight_pwm_set(struct backlight_device *backlight,
+> @@ -105,9 +107,11 @@ static int backlight_pwm_set(struct backlight_device *backlight,
+>  {
+>  	struct pwm_backlight *pwm_backlight = container_of(backlight,
+>  			struct pwm_backlight, backlight);
+> +	struct pwm_state state;
+>  
+> -	pwm_config(pwm_backlight->pwm, compute_duty_cycle(pwm_backlight, brightness),
+> -		   pwm_backlight->period);
+> +	pwm_get_state(pwm_backlight->pwm, &state);
 
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
----
- drivers/nvmem/bsec.c | 42 ++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 38 insertions(+), 4 deletions(-)
+You read the current pwm state here...
 
-diff --git a/drivers/nvmem/bsec.c b/drivers/nvmem/bsec.c
-index d772d0b7af92..209c50dc7010 100644
---- a/drivers/nvmem/bsec.c
-+++ b/drivers/nvmem/bsec.c
-@@ -77,15 +77,49 @@ static int stm32_bsec_write(struct device_d *dev, int offset,
- {
- 	struct bsec_priv *priv = dev->parent->priv;
- 
-+	/* Allow only writing complete 32-bits aligned words */
-+	if ((bytes % 4) || (offset % 4))
-+		return -EINVAL;
-+
- 	return regmap_bulk_write(priv->map, offset, val, bytes);
- }
- 
- static int stm32_bsec_read(struct device_d *dev, int offset,
--			   void *val, int bytes)
-+			   void *buf, int bytes)
- {
- 	struct bsec_priv *priv = dev->parent->priv;
-+	u32 roffset, rbytes, val;
-+	u8 *buf8 = buf, *val8 = (u8 *)&val;
-+	int i, j = 0, ret, skip_bytes, size;
-+
-+	/* Round unaligned access to 32-bits */
-+	roffset = rounddown(offset, 4);
-+	skip_bytes = offset & 0x3;
-+	rbytes = roundup(bytes + skip_bytes, 4);
-+
-+	if (roffset + rbytes > priv->config.size)
-+		return -EINVAL;
-+
-+	for (i = roffset; i < roffset + rbytes; i += 4) {
-+		ret = regmap_bulk_read(priv->map, i, &val, 4);
-+		if (ret) {
-+			dev_err(dev, "Can't read data%d (%d)\n", i, ret);
-+			return ret;
-+		}
-+
-+		/* skip first bytes in case of unaligned read */
-+		if (skip_bytes)
-+			size = min(bytes, 4 - skip_bytes);
-+		else
-+			size = min(bytes, 4);
-+
-+		memcpy(&buf8[j], &val8[skip_bytes], size);
-+		bytes -= size;
-+		j += size;
-+		skip_bytes = 0;
-+	}
- 
--	return regmap_bulk_read(priv->map, offset, val, bytes);
-+	return 0;
- }
- 
- static const struct nvmem_bus stm32_bsec_nvmem_bus = {
-@@ -185,8 +219,8 @@ static int stm32_bsec_probe(struct device_d *dev)
- 
- 	priv->config.name = "stm32-bsec";
- 	priv->config.dev = dev;
--	priv->config.stride = 4;
--	priv->config.word_size = 4;
-+	priv->config.stride = 1;
-+	priv->config.word_size = 1;
- 	priv->config.size = data->num_regs;
- 	priv->config.bus = &stm32_bsec_nvmem_bus;
- 	dev->priv = priv;
+> +	state.duty_ns = compute_duty_cycle(pwm_backlight, brightness);
+
+and once again in compute_duty_cycle(). I think it would be nicer to
+reorganize this a bit, maybe pass the state to compute_duty_cycle.
+
+> +	pwm_apply_state(pwm_backlight->pwm, &state);
+>  
+>  	if (brightness)
+>  		return backlight_pwm_enable(pwm_backlight);
+
+I would assume that if you switch to the pwm_apply_state API then you do
+it entirely. backlight_pwm_enable() still uses the old API to enable the
+PWM.
+
+Sascha
+
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
