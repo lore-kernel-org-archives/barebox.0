@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x642.google.com ([2607:f8b0:4864:20::642])
+Received: from mail-pj1-x1044.google.com ([2607:f8b0:4864:20::1044])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jJLvJ-0005wy-2O
- for barebox@lists.infradead.org; Tue, 31 Mar 2020 18:47:42 +0000
-Received: by mail-pl1-x642.google.com with SMTP id a23so8464640plm.1
- for <barebox@lists.infradead.org>; Tue, 31 Mar 2020 11:47:40 -0700 (PDT)
+ id 1jJLvJ-0005yZ-TD
+ for barebox@lists.infradead.org; Tue, 31 Mar 2020 18:47:44 +0000
+Received: by mail-pj1-x1044.google.com with SMTP id fh8so1453086pjb.5
+ for <barebox@lists.infradead.org>; Tue, 31 Mar 2020 11:47:41 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 31 Mar 2020 11:47:04 -0700
-Message-Id: <20200331184722.22707-6-andrew.smirnov@gmail.com>
+Date: Tue, 31 Mar 2020 11:47:05 -0700
+Message-Id: <20200331184722.22707-7-andrew.smirnov@gmail.com>
 In-Reply-To: <20200331184722.22707-1-andrew.smirnov@gmail.com>
 References: <20200331184722.22707-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,39 +23,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/23] i2c: Port of_find_i2c_device_by_node() from Linux
+Subject: [PATCH 06/23] ARM: zii-common: Find switch watchdog via DT
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Port of_find_i2c_device_by_node() from Linux in order to allow looking
-i2c_client up by corresponding DT node. Useful for interacting with
-identical raw/driverless I2C devices that are not found on the same
-bus between board variants.
+Use of_find_i2c_device_by_node() in swith reset code in order to be
+able to support other devices that have this MCU on a different I2C
+busses.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- include/i2c/i2c.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/arm/boards/zii-common/switch-cmd.c | 25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/include/i2c/i2c.h b/include/i2c/i2c.h
-index a694e4ab2..7eaa97dde 100644
---- a/include/i2c/i2c.h
-+++ b/include/i2c/i2c.h
-@@ -281,6 +281,14 @@ static inline int i2c_register_board_info(int busnum,
- extern int i2c_add_numbered_adapter(struct i2c_adapter *adapter);
- struct i2c_adapter *i2c_get_adapter(int busnum);
- struct i2c_adapter *of_find_i2c_adapter_by_node(struct device_node *node);
-+static inline struct i2c_client *
-+of_find_i2c_device_by_node(struct device_node *node)
-+{
-+	struct device_d *dev = of_find_device_by_node(node);
-+
-+	return dev ? to_i2c_client(dev) : NULL;
-+}
-+
+diff --git a/arch/arm/boards/zii-common/switch-cmd.c b/arch/arm/boards/zii-common/switch-cmd.c
+index 5e39d8fc6..02802ff86 100644
+--- a/arch/arm/boards/zii-common/switch-cmd.c
++++ b/arch/arm/boards/zii-common/switch-cmd.c
+@@ -18,33 +18,40 @@
  
- void i2c_parse_fw_timings(struct device_d *dev, struct i2c_timings *t, bool use_defaults);
+ static int do_rdu2_switch_reset(void)
+ {
+-	struct i2c_client client;
++	struct device_node *np;
++	struct i2c_client *client;
+ 	int ret;
+ 	u8 reg;
  
+-	client.adapter = i2c_get_adapter(1);
+-	if (!client.adapter)
++	np = of_find_compatible_node(NULL, NULL, "zii,rave-wdt");
++	if (!np) {
++		pr_err("No switch watchdog node found\n");
+ 		return -ENODEV;
++	}
++
++	client = of_find_i2c_device_by_node(np);
++	if (!client) {
++		pr_err("No switch watchdog I2C device found\n");
++		return -ENODEV;
++	}
+ 
+-	/* address of the switch watchdog microcontroller */
+-	client.addr = 0x38;
+ 	reg = 0x78;
+-	/* set switch reset time to 100ms */
+ 
+-	ret = i2c_write_reg(&client, 0x0a, &reg, 1);
++	/* set switch reset time to 100ms */
++	ret = i2c_write_reg(client, 0x0a, &reg, 1);
+ 	if (ret < 0) {
+ 		pr_err("Failed to set switch reset time\n");
+ 		return ret;
+ 	}
+ 	/* reset the switch */
+ 	reg = 0x01;
+-	ret = i2c_write_reg(&client, 0x0d, &reg, 1);
++	ret = i2c_write_reg(client, 0x0d, &reg, 1);
+ 	if (ret < 0) {
+ 		pr_err("Failed to reset the switch\n");
+ 		return ret;
+ 	}
+ 	/* issue dummy command to work around firmware bug */
+-	ret = i2c_read_reg(&client, 0x01, &reg, 1);
++	ret = i2c_read_reg(client, 0x01, &reg, 1);
+ 	if (ret < 0) {
+ 		pr_err("Failed to issue a dummy command\n");
+ 		return ret;
 -- 
 2.21.0
 
