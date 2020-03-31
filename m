@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jJAw6-0003ec-7r
- for barebox@lists.infradead.org; Tue, 31 Mar 2020 07:03:47 +0000
-References: <20200330143915.663705-1-ahmad@a3f.at>
- <20200330143915.663705-6-ahmad@a3f.at>
- <20200331054526.GF27288@pengutronix.de>
- <08a304f9-cfd3-706d-0c4e-7725c3f965f6@pengutronix.de>
- <20200331065529.GI27288@pengutronix.de>
+ id 1jJBGN-00034p-M6
+ for barebox@lists.infradead.org; Tue, 31 Mar 2020 07:24:45 +0000
+References: <20200330184641.881248-1-ahmad@a3f.at>
+ <20200330184641.881248-2-ahmad@a3f.at>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <293d97e3-6c83-2fa6-fe55-4cb3606b09a7@pengutronix.de>
-Date: Tue, 31 Mar 2020 09:03:44 +0200
+Message-ID: <d8859ddc-dc49-32f0-f145-fa5abdde66d3@pengutronix.de>
+Date: Tue, 31 Mar 2020 09:24:41 +0200
 MIME-Version: 1.0
-In-Reply-To: <20200331065529.GI27288@pengutronix.de>
+In-Reply-To: <20200330184641.881248-2-ahmad@a3f.at>
 Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -26,83 +23,151 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/8] pinctrl: stm32: fix up st,package into stm32mp nodes
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Ahmad Fatoum <ahmad@a3f.at>
+Subject: Re: [PATCH 2/2] fixup! regmap-mmio: Add big endian support
+To: Ahmad Fatoum <ahmad@a3f.at>, barebox@lists.infradead.org
 
-Hi,
-
-On 3/31/20 8:55 AM, Sascha Hauer wrote:
-> On Tue, Mar 31, 2020 at 07:50:32AM +0200, Ahmad Fatoum wrote:
->> Hi,
->>
->> On 3/31/20 7:45 AM, Sascha Hauer wrote:
->>> On Mon, Mar 30, 2020 at 04:39:13PM +0200, Ahmad Fatoum wrote:
->>>> Since Linux v5.1, the pinctrl driver can use the st,package property
->>>> if provided to validate whether the ball to be configured exists
->>>> on the package. Have barebox supply this property.
->>>>
->>>> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
->>>> ---
->>>>  arch/arm/dts/stm32mp151.dtsi    | 16 ++++++++
->>>>  drivers/pinctrl/pinctrl-stm32.c | 67 +++++++++++++++++++++++++++++++++
->>>>  2 files changed, 83 insertions(+)
->>>>
->>>> diff --git a/arch/arm/dts/stm32mp151.dtsi b/arch/arm/dts/stm32mp151.dtsi
->>>> index 8f8249dbc479..2a70a747e76e 100644
->>>> --- a/arch/arm/dts/stm32mp151.dtsi
->>>> +++ b/arch/arm/dts/stm32mp151.dtsi
->>>> @@ -37,4 +37,20 @@
->>>>  
->>>>  &bsec {
->>>>  	barebox,provide-mac-address = <&ethernet0 0x39>;
->>>> +
->>>> +	soc_package: soc-package@43 {
->>>> +		reg = <0x43 1>;
->>>> +		bits = <3 3>;
->>>> +		read-only;
->>>> +	};
->>>> +};
->>>> +
->>>> +&pinctrl {
->>>> +	nvmem-cells = <&soc_package>;
->>>> +	nvmem-cell-names = "soc-package";
->>>> +};
->>>> +
->>>> +&pinctrl_z {
->>>> +	nvmem-cells = <&soc_package>;
->>>> +	nvmem-cell-names = "soc-package";
->>>>  };
->>>
->>> Why this detour over device tree? We already have get_cpu_package() and
->>> could use it here.
->>
->> The pinctrl driver should also be compatible to the STM32 MCUs, which don't
->> have this property. I tried calling get_cpu_package at first, but the ifdefery
->> needed to keep the driver independent on CONFIG_ARCH_STM32MP looked ugly.
+On 3/30/20 8:46 PM, Ahmad Fatoum wrote:
+> of_regmap_init_mmio_clk was introduced as to avoid allocating new
+> devices for syscon nodes, a device tree node sufficed.
 > 
-> The fixup for the device tree nodes doesn't necessarily have to be in
-> the pinctrl driver, it could be somewhere where you know get_cpu_package
-> is present and valid.
+> We already have an existing device node though, so let's use that.
+s/device node/device object/
+> Through this device node, we can access the big-endian and friends
+s/device node/device object/
+> properties.
 
-It's the most natural place though..
-
->> Making it a device property solves this nicely IMO.
-> 
-> I might agree if there wasn't the nvmem binding involved.
-
-The bsec driver is a nvmem driver anyway. How else I am supposed to access nvmem
-devices?
-
-The current code in arch/arm/mach-stm32mp/init.c issues direct secure monitor calls
-to read the bsec OTP. I'd prefer to get rid of this and have everything go
-through the bsec driver.
-
-Cheers
-Ahmad
+(I assume this will be squashed anyway, but to make it a bit clearer)
 
 > 
-> Sascha
+> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+> ---
+> Hello Sascha,
+> 
+> this is untested on the Layerscape. I just verified it now works on the
+> stm32mp and that adding a big-endian there breaks it again.
+> 
+> Feel free to adjust.
+> ---
+>  drivers/base/regmap/regmap-mmio.c | 22 ----------------------
+>  drivers/mfd/syscon.c              | 21 +++++++++++++++++----
+>  include/regmap.h                  | 15 ---------------
+>  3 files changed, 17 insertions(+), 41 deletions(-)
+> 
+> diff --git a/drivers/base/regmap/regmap-mmio.c b/drivers/base/regmap/regmap-mmio.c
+> index 9c5a2822a4fe..7ca95d6bea79 100644
+> --- a/drivers/base/regmap/regmap-mmio.c
+> +++ b/drivers/base/regmap/regmap-mmio.c
+> @@ -299,28 +299,6 @@ struct regmap *regmap_init_mmio_clk(struct device_d *dev,
+>  	return regmap_init(dev, &regmap_mmio, ctx, config);
+>  }
+>  
+> -struct regmap *of_regmap_init_mmio_clk(struct device_node *np,
+> -				       const char *clk_id,
+> -				       void __iomem *regs,
+> -				       const struct regmap_config *config)
+> -{
+> -	struct regmap_mmio_context *ctx;
+> -
+> -	ctx = regmap_mmio_gen_context(NULL, regs, config);
+> -	if (IS_ERR(ctx))
+> -		return ERR_CAST(ctx);
+> -
+> -	if (clk_id) {
+> -		ctx->clk = of_clk_get_by_name(np, clk_id);
+> -		if (IS_ERR(ctx->clk)) {
+> -			kfree(ctx);
+> -			return ERR_CAST(ctx->clk);
+> -		}
+> -	}
+> -
+> -	return regmap_init(NULL, &regmap_mmio, ctx, config);
+> -}
+> -
+>  int regmap_mmio_attach_clk(struct regmap *map, struct clk *clk)
+>  {
+>  	struct regmap_mmio_context *ctx = map->bus_context;
+> diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
+> index f1e6559d71fa..c9dfb151ee0a 100644
+> --- a/drivers/mfd/syscon.c
+> +++ b/drivers/mfd/syscon.c
+> @@ -27,6 +27,7 @@ static LIST_HEAD(syscon_list);
+>  
+>  struct syscon {
+>  	struct device_node *np;
+> +	struct device_d *dev;
+>  	void __iomem *base;
+>  	struct list_head list;
+>  	struct regmap *regmap;
+> @@ -42,6 +43,7 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_clk)
+>  {
+>  	int ret;
+>  	struct syscon *syscon;
+> +	struct device_d *dev;
+>  	struct resource res;
+>  
+>  	if (!of_device_is_compatible(np, "syscon"))
+> @@ -55,12 +57,23 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_clk)
+>  	}
+>  
+>  	syscon->base = IOMEM(res.start);
+> -	syscon->np   = np;
+> +
+> +	for_each_device(dev) {
+> +		if (np == dev->device_node) {
+> +			syscon->dev = dev;
+> +			break;
+> +		}
+> +	}
+> +
+> +	if (!syscon->dev) {
+> +		ret = -ENODEV;
+> +		goto err_map;
+> +	}
+>  
+>  	list_add_tail(&syscon->list, &syscon_list);
+>  
+> -	syscon->regmap = of_regmap_init_mmio_clk(np, NULL, syscon->base,
+> -					     &syscon_regmap_config);
+> +	syscon->regmap = regmap_init_mmio_clk(syscon->dev, NULL, syscon->base,
+> +					      &syscon_regmap_config);
+>  
+>  	if (check_clk) {
+>  		struct clk *clk = of_clk_get(np, 0);
+> @@ -88,7 +101,7 @@ static struct syscon *node_to_syscon(struct device_node *np)
+>  	struct syscon *entry, *syscon = NULL;
+>  
+>  	list_for_each_entry(entry, &syscon_list, list)
+> -		if (entry->np == np) {
+> +		if (entry->dev->device_node == np) {
+>  			syscon = entry;
+>  			break;
+>  		}
+> diff --git a/include/regmap.h b/include/regmap.h
+> index 139ac33ec3e8..4172c00bd2da 100644
+> --- a/include/regmap.h
+> +++ b/include/regmap.h
+> @@ -61,21 +61,6 @@ struct regmap *regmap_init(struct device_d *dev,
+>  
+>  struct clk;
+>  
+> -/**
+> - * of_regmap_init_mmio_clk() - Initialise register map with register clock
+> - *
+> - * @np: Device node that will be interacted with
+> - * @clk_id: register clock consumer ID
+> - * @regs: Pointer to memory-mapped IO region
+> - * @config: Configuration for register map
+> - *
+> - * The return value will be an ERR_PTR() on error or a valid pointer to
+> - * a struct regmap.
+> - */
+> -struct regmap *of_regmap_init_mmio_clk(struct device_node *np, const char *clk_id,
+> -				       void __iomem *regs,
+> -				       const struct regmap_config *config);
+> -
+>  /**
+>   * regmap_init_mmio_clk() - Initialise register map with register clock
+>   *
 > 
 
 -- 
