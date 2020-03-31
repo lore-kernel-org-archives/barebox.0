@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jHhyo-0001Cz-CH
- for barebox@lists.infradead.org; Fri, 27 Mar 2020 05:56:32 +0000
-References: <c013449a-b775-b805-df78-48a908d506fb@arcor.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <d5949d44-9377-98f4-029c-ae1b0debf7d1@pengutronix.de>
-Date: Fri, 27 Mar 2020 06:56:28 +0100
+ id 1jJKVN-0000lf-7g
+ for barebox@lists.infradead.org; Tue, 31 Mar 2020 17:16:50 +0000
+Received: by mail-pf1-x444.google.com with SMTP id f206so10601042pfa.10
+ for <barebox@lists.infradead.org>; Tue, 31 Mar 2020 10:16:48 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Tue, 31 Mar 2020 10:16:32 -0700
+Message-Id: <20200331171632.7031-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <c013449a-b775-b805-df78-48a908d506fb@arcor.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,109 +21,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: imx7d dual core boot
-To: Giorgio <giorgio.nicole@arcor.de>, barebox@lists.infradead.org
+Subject: [PATCH] ARM: Drop unused marcros in exceptions.S
+To: Barebox List <barebox@lists.infradead.org>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Hello,
+Those macrs looks like a leftover from the time Barebox had some code
+to deal with IRQs. That code is gone and there are no users for those
+marcros in the codebase anymore. Drop them.
 
-On 3/26/20 11:21 AM, Giorgio wrote:
-> Hi,
-> 
-> I'm having problems booting a linux kernel image on an imx7d.
-> 
-> What I want is to boot in nonsecure mode and that the kernel enables the
-> second core with the PSCI.
-> 
-> What I see is that barebox crashes within the call to __mmu_cache_on()
-> in the file arch/arm/cpu/sm.c:
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ arch/arm/cpu/exceptions.S | 28 ----------------------------
+ 1 file changed, 28 deletions(-)
 
-The kind of crash may be useful info. Can you copy the whole boot log?
+diff --git a/arch/arm/cpu/exceptions.S b/arch/arm/cpu/exceptions.S
+index eda0d6ab8..55014c8d4 100644
+--- a/arch/arm/cpu/exceptions.S
++++ b/arch/arm/cpu/exceptions.S
+@@ -55,26 +55,6 @@
+ 	mov	r0, sp
+ 	.endm
 
-> 
-> int armv7_secure_monitor_install(void)
-> {
-> ...
-> 	if (mmuon) {
-> 		/*
-> 		 * If the MMU was already turned on in secure mode, enable it in
-> 		 * non-secure mode aswell
-> 		 */
-> 		__mmu_cache_on();
-> 	}
-> ...
-> 
-> 
-> As a workaround, if I comment the call to __mmu_cache_on(), the system
-> boots properly with 2 cores:
-> 
-> Loading ARM Linux zImage '/mnt/boot/kernel.img'
-> Loading devicetree from '/mnt/boot/devtree.dtb'
-> commandline: console=ttymxc5,115200n8 ip=::::gdm:eth0:off root=PARTUUID=37199a57-ec72-41f9-ab27-445329d1bd77 rootwait
-> Starting kernel in nonsecure mode
-> [    0.000000] 000: Booting Linux on physical CPU 0x0
-> [    0.000000] 000: Linux version 5.4.24-rt15-dirty (giorgio@BVblfs) (gcc version 9.2.1 20200110 (OSELAS.Toolchain 9.2.1)) #1 SMP PREEMPT_RT Fri Mar 13 17:25:51 CET 2020
-> [    0.000000] 000: CPU: ARMv7 Processor [410fc075] revision 5 (ARMv7), cr=10c5387d
-> [    0.000000] 000: CPU: div instructions available: patching division code
-> [    0.000000] 000: CPU: PIPT / VIPT nonaliasing data cache, VIPT aliasing instruction cache
-> t[    0.000000] 000: Memory policy: Data cache writealloc
-> [    0.000000] 000: cma: Reserved 64 MiB at 0xfa000000
-> [    0.000000] 000: psci: probing for conduit method from DT.
-> [    0.000000] 000: psci: PSCIv1.0 detected in firmware.
-> [    0.000000] 000: psci: Using standard PSCI v0.2 function IDs
-> [    0.000000] 000: psci: MIGRATE_INFO_TYPE not supported.
-> [    0.000000] 000: psci: SMC Calling Convention v1.0
-> [    0.000000] 000: percpu: Embedded 9 pages/cpu s15008 r0 d21856 u36864
-> [    0.000000] 000: Built 1 zonelists, mobility grouping on.  Total pages: 522751
-> [    0.000000] 000: Kernel command line: console=ttymxc5,115200n8 ip=::::gdm:eth0:off root=PARTUUID=37199a57-ec72-41f9-ab27-445329d1bd77 rootwait
-> [    0.000000] 000: Dentry cache hash table entries: 131072 (order: 8, 1048576 bytes, linear)
-> [    0.000000] 000: Inode-cache hash table entries: 65536 (order: 6, 262144 bytes, linear)
-> [    0.000000] 000: mem auto-init: stack:off, heap alloc:off, heap free:off
-> [    0.000000] 000: Memory: 1997464K/2097148K available (9216K kernel code, 430K rwdata, 3100K rodata, 1024K init, 733K bss, 34148K reserved, 65536K cma-reserved, 1244448K highmem)
-> [    0.000000] 000: SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=2, Nodes=1
-> [    0.000000] 000: rcu: Preemptible hierarchical RCU implementation.
-> [    0.000000] 000: rcu: 	RCU priority boosting: priority 1 delay 500 ms.
-> [    0.000000] 000: rcu: 	RCU_SOFTIRQ processing moved to rcuc kthreads.
-> [    0.000000] 000: 	No expedited grace period (rcu_normal_after_boot).
-> [    0.000000] 000: 	Tasks RCU enabled.
-> [    0.000000] 000: rcu: RCU calculated value of scheduler-enlistment delay is 10 jiffies.
-> [    0.000000] 000: NR_IRQS: 16, nr_irqs: 16, preallocated irqs: 16
-> [    0.000000] 000: rcu: 	Offload RCU callbacks from CPUs: (none).
-> [    0.000000] 000: arch_timer: cp15 timer(s) running at 8.00MHz (virt).
-> [    0.000000] 000: clocksource: arch_sys_counter: mask: 0xffffffffffffff max_cycles: 0x1d854df40, max_idle_ns: 440795202120 ns
-> [    0.000001] 000: sched_clock: 56 bits at 8MHz, resolution 125ns, wraps every 2199023255500ns
-> [    0.000013] 000: Switching to timer-based delay loop, resolution 125ns
-> [    0.000426] 000: Switching to timer-based delay loop, resolution 41ns
-> [    0.000438] 000: sched_clock: 32 bits at 24MHz, resolution 41ns, wraps every 89478484971ns
-> [    0.000450] 000: clocksource: mxc_timer1: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 79635851949 ns
-> [    0.001597] 000: Console: colour dummy device 80x30
-> [    0.001642] 000: Calibrating delay loop (skipped), value calculated using timer frequency.. 48.00 BogoMIPS (lpj=240000)
-> [    0.001650] 000: pid_max: default: 32768 minimum: 301
-> [    0.001788] 000: Mount-cache hash table entries: 2048 (order: 1, 8192 bytes, linear)
-> [    0.001807] 000: Mountpoint-cache hash table entries: 2048 (order: 1, 8192 bytes, linear)
-> [    0.002631] 000: CPU: Testing write buffer coherency: ok
-> [    0.059991] 000: Setting up static identity map for 0x80100000 - 0x80100060
-> [    0.079972] 000: rcu: Hierarchical SRCU implementation.
-> [    0.160105] 000: smp: Bringing up secondary CPUs ...
-> [    0.280687] 000: smp: Brought up 1 node, 2 CPUs
-> [    0.280697] 000: SMP: Total of 2 processors activated (96.00 BogoMIPS).
-> [    0.280705] 000: CPU: All CPU(s) started in SVC mode.
-> [    0.281170] 000: devtmpfs: initialized
-> [    0.290961] 000: random: get_random_u32 called from bucket_table_alloc+0x58/0x14c with crng_init=0
-> 
-> 
-> giorgio
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+-	.macro	irq_save_user_regs
+-	sub	sp, sp, #S_FRAME_SIZE
+-	stmia	sp, {r0 - r12}			@ Calling r0-r12
+-	add     r8, sp, #S_PC
+-	stmdb   r8, {sp, lr}^                   @ Calling SP, LR
+-	str     lr, [r8, #0]                    @ Save calling PC
+-	mrs     r6, spsr
+-	str     r6, [r8, #4]                    @ Save CPSR
+-	str     r0, [r8, #8]                    @ Save OLD_R0
+-	mov	r0, sp
+-	.endm
+-
+-	.macro	irq_restore_user_regs
+-	ldmia	sp, {r0 - lr}^			@ Calling r0 - lr
+-	mov	r0, r0
+-	ldr	lr, [sp, #S_PC]			@ Get PC
+-	add	sp, sp, #S_FRAME_SIZE
+-	subs	pc, lr, #4			@ return & move spsr_svc into cpsr
+-	.endm
+-
+ 	.macro get_bad_stack
+ 	ldr	r13, =abort_stack
+ 	str	lr, [r13]			@ save caller lr / spsr
+@@ -103,14 +83,6 @@
+ do_abort_\@:
+ 	.endm
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+-	.macro get_irq_stack			@ setup IRQ stack
+-	ldr	sp, IRQ_STACK_START
+-	.endm
+-
+-	.macro get_fiq_stack			@ setup FIQ stack
+-	ldr	sp, FIQ_STACK_START
+-	.endm
+-
+ /*
+  * exception handlers
+  */
+--
+2.21.0
 
 _______________________________________________
 barebox mailing list
