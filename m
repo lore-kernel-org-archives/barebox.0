@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jJLvb-00068W-0t
+ id 1jJLvf-0006C8-HJ
  for barebox@lists.infradead.org; Tue, 31 Mar 2020 18:48:11 +0000
-Received: by mail-pg1-x542.google.com with SMTP id t24so10742064pgj.7
- for <barebox@lists.infradead.org>; Tue, 31 Mar 2020 11:47:58 -0700 (PDT)
+Received: by mail-pg1-x532.google.com with SMTP id l14so3618357pgb.1
+ for <barebox@lists.infradead.org>; Tue, 31 Mar 2020 11:48:02 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 31 Mar 2020 11:47:19 -0700
-Message-Id: <20200331184722.22707-21-andrew.smirnov@gmail.com>
+Date: Tue, 31 Mar 2020 11:47:22 -0700
+Message-Id: <20200331184722.22707-24-andrew.smirnov@gmail.com>
 In-Reply-To: <20200331184722.22707-1-andrew.smirnov@gmail.com>
 References: <20200331184722.22707-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,30 +23,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 20/23] ARM: zii-imx8mq-dev: Drop redundant "stdout-path"
+Subject: [PATCH 23/23] ARM: zii-imx7d-rmu2: Add boot source info
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Drop redundant "stdout-path" since it already present in upstream DT.
+Add boot source info so that RAVE SP driver could query it.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/dts/imx8mq-zii-ultra.dtsi | 2 --
- 1 file changed, 2 deletions(-)
+ arch/arm/dts/imx7d-zii-rmu2.dts | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/arch/arm/dts/imx8mq-zii-ultra.dtsi b/arch/arm/dts/imx8mq-zii-ultra.dtsi
-index 35cc21b57..896993a0e 100644
---- a/arch/arm/dts/imx8mq-zii-ultra.dtsi
-+++ b/arch/arm/dts/imx8mq-zii-ultra.dtsi
-@@ -8,8 +8,6 @@
- 
- / {
- 	chosen {
--		stdout-path = &uart1;
--
- 		environment-emmc {
- 			compatible = "barebox,environment";
- 			device-path = &usdhc1, "partname:barebox-environment";
+diff --git a/arch/arm/dts/imx7d-zii-rmu2.dts b/arch/arm/dts/imx7d-zii-rmu2.dts
+index 7bb0ab264..a4116308b 100644
+--- a/arch/arm/dts/imx7d-zii-rmu2.dts
++++ b/arch/arm/dts/imx7d-zii-rmu2.dts
+@@ -23,3 +23,21 @@
+ 		};
+ 	};
+ };
++
++&uart4 {
++	rave-sp {
++		#address-cells = <1>;
++		#size-cells = <1>;
++
++		watchdog {
++			nvmem-cells = <&boot_source>;
++			nvmem-cell-names = "boot-source";
++		};
++
++		eeprom@a3 {
++			boot_source: boot-source@83 {
++				reg = <0x83 1>;
++			};
++		};
++	};
++};
 -- 
 2.21.0
 
