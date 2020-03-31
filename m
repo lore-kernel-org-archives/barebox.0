@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pj1-x1041.google.com ([2607:f8b0:4864:20::1041])
+Received: from mail-pj1-x1044.google.com ([2607:f8b0:4864:20::1044])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jJLvG-0005ua-A9
- for barebox@lists.infradead.org; Tue, 31 Mar 2020 18:47:39 +0000
-Received: by mail-pj1-x1041.google.com with SMTP id jz1so1224489pjb.0
- for <barebox@lists.infradead.org>; Tue, 31 Mar 2020 11:47:38 -0700 (PDT)
+ id 1jJLvH-0005vU-DJ
+ for barebox@lists.infradead.org; Tue, 31 Mar 2020 18:47:40 +0000
+Received: by mail-pj1-x1044.google.com with SMTP id nu11so1458782pjb.1
+ for <barebox@lists.infradead.org>; Tue, 31 Mar 2020 11:47:39 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 31 Mar 2020 11:47:02 -0700
-Message-Id: <20200331184722.22707-4-andrew.smirnov@gmail.com>
+Date: Tue, 31 Mar 2020 11:47:03 -0700
+Message-Id: <20200331184722.22707-5-andrew.smirnov@gmail.com>
 In-Reply-To: <20200331184722.22707-1-andrew.smirnov@gmail.com>
 References: <20200331184722.22707-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,31 +23,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/23] ARM: zii-imx7d-dev: Fix compatible name
+Subject: [PATCH 04/23] ARM: zii-common: Check for I2C errors in
+ do_rdu2_switch_reset()
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Fix compatible name use in zii_imx7d_rpu2_coredevices_init(). Upstream
-uses "zii,imx7d-rpu2" and so should we.
-
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/boards/zii-imx7d-dev/board.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boards/zii-common/switch-cmd.c | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/boards/zii-imx7d-dev/board.c b/arch/arm/boards/zii-imx7d-dev/board.c
-index 89f051530..e46a4b181 100644
---- a/arch/arm/boards/zii-imx7d-dev/board.c
-+++ b/arch/arm/boards/zii-imx7d-dev/board.c
-@@ -33,7 +33,7 @@ static void zii_imx7d_rpu2_init_fec(void)
- 
- static int zii_imx7d_rpu2_coredevices_init(void)
+diff --git a/arch/arm/boards/zii-common/switch-cmd.c b/arch/arm/boards/zii-common/switch-cmd.c
+index 2b9c34bfa..5e39d8fc6 100644
+--- a/arch/arm/boards/zii-common/switch-cmd.c
++++ b/arch/arm/boards/zii-common/switch-cmd.c
+@@ -19,6 +19,7 @@
+ static int do_rdu2_switch_reset(void)
  {
--	if (!of_machine_is_compatible("zii,imx7d-zii-rpu2") &&
-+	if (!of_machine_is_compatible("zii,imx7d-rpu2") &&
- 	    !of_machine_is_compatible("zii,imx7d-rmu2"))
- 		return 0;
+ 	struct i2c_client client;
++	int ret;
+ 	u8 reg;
  
+ 	client.adapter = i2c_get_adapter(1);
+@@ -29,12 +30,25 @@ static int do_rdu2_switch_reset(void)
+ 	client.addr = 0x38;
+ 	reg = 0x78;
+ 	/* set switch reset time to 100ms */
+-	i2c_write_reg(&client, 0x0a, &reg, 1);
++
++	ret = i2c_write_reg(&client, 0x0a, &reg, 1);
++	if (ret < 0) {
++		pr_err("Failed to set switch reset time\n");
++		return ret;
++	}
+ 	/* reset the switch */
+ 	reg = 0x01;
+-	i2c_write_reg(&client, 0x0d, &reg, 1);
++	ret = i2c_write_reg(&client, 0x0d, &reg, 1);
++	if (ret < 0) {
++		pr_err("Failed to reset the switch\n");
++		return ret;
++	}
+ 	/* issue dummy command to work around firmware bug */
+-	i2c_read_reg(&client, 0x01, &reg, 1);
++	ret = i2c_read_reg(&client, 0x01, &reg, 1);
++	if (ret < 0) {
++		pr_err("Failed to issue a dummy command\n");
++		return ret;
++	}
+ 
+ 	return 0;
+ }
 -- 
 2.21.0
 
