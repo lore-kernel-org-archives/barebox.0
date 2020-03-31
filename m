@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from out203-205-221-242.mail.qq.com ([203.205.221.242] helo=qq.com)
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat
- Linux)) id 1jJJVA-0006Gm-Na
- for barebox@lists.infradead.org; Tue, 31 Mar 2020 16:12:40 +0000
-From: you xiaojie <84640926@qq.com>
-Date: Wed, 01 Apr 2020 00:12:12 +0800
-Message-ID: <1640881.QuR4u4vfdf@allan-home>
+Received: from m12-12.163.com ([220.181.12.12])
+ by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jJJmk-0004Dt-IH
+ for barebox@lists.infradead.org; Tue, 31 Mar 2020 16:30:46 +0000
+From: youxiaojie <yxj790222@163.com>
+Date: Wed, 01 Apr 2020 00:30:14 +0800
+Message-ID: <1833400.Y7EmvgfLYE@allan-home>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -479,6 +479,7 @@ a6/kwbimage.cfg
 start_plathome_openblocks_a6.pblb.kwbimg
 -- 
 2.26.0.rc2
+
 
 
 
