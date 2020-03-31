@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jJ9iM-0000MC-ME
- for barebox@lists.infradead.org; Tue, 31 Mar 2020 05:45:32 +0000
-Date: Tue, 31 Mar 2020 07:45:26 +0200
+ id 1jJ9D4-0005R8-1i
+ for barebox@lists.infradead.org; Tue, 31 Mar 2020 05:13:11 +0000
+Date: Tue, 31 Mar 2020 07:13:07 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200331054526.GF27288@pengutronix.de>
-References: <20200330143915.663705-1-ahmad@a3f.at>
- <20200330143915.663705-6-ahmad@a3f.at>
+Message-ID: <20200331051307.GC27288@pengutronix.de>
+References: <20200326183304.16531-1-jmaselbas@kalray.eu>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200330143915.663705-6-ahmad@a3f.at>
+In-Reply-To: <20200326183304.16531-1-jmaselbas@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,51 +22,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/8] pinctrl: stm32: fix up st,package into stm32mp nodes
-To: Ahmad Fatoum <ahmad@a3f.at>
+Subject: Re: [PATCH v2 0/4] usb: gadget: dfu: Fix timeout on erase when using
+ big partition
+To: Jules Maselbas <jmaselbas@kalray.eu>
 Cc: barebox@lists.infradead.org
 
-On Mon, Mar 30, 2020 at 04:39:13PM +0200, Ahmad Fatoum wrote:
-> Since Linux v5.1, the pinctrl driver can use the st,package property
-> if provided to validate whether the ball to be configured exists
-> on the package. Have barebox supply this property.
+On Thu, Mar 26, 2020 at 07:33:00PM +0100, Jules Maselbas wrote:
+> Hi,
 > 
-> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
-> ---
->  arch/arm/dts/stm32mp151.dtsi    | 16 ++++++++
->  drivers/pinctrl/pinctrl-stm32.c | 67 +++++++++++++++++++++++++++++++++
->  2 files changed, 83 insertions(+)
+> The two first patch are focused on two fixes for an issue I encountered
+> when trying to use the DFU gadget on big flash partition (2MB).
 > 
-> diff --git a/arch/arm/dts/stm32mp151.dtsi b/arch/arm/dts/stm32mp151.dtsi
-> index 8f8249dbc479..2a70a747e76e 100644
-> --- a/arch/arm/dts/stm32mp151.dtsi
-> +++ b/arch/arm/dts/stm32mp151.dtsi
-> @@ -37,4 +37,20 @@
->  
->  &bsec {
->  	barebox,provide-mac-address = <&ethernet0 0x39>;
-> +
-> +	soc_package: soc-package@43 {
-> +		reg = <0x43 1>;
-> +		bits = <3 3>;
-> +		read-only;
-> +	};
-> +};
-> +
-> +&pinctrl {
-> +	nvmem-cells = <&soc_package>;
-> +	nvmem-cell-names = "soc-package";
-> +};
-> +
-> +&pinctrl_z {
-> +	nvmem-cells = <&soc_package>;
-> +	nvmem-cell-names = "soc-package";
->  };
+> You can find more information in each patch, but here is a short summary
+> of the issue:
+> 
+> When downloading a firmware into a big flash partition the erase
+> operation can take a long time to be complete from few seconds to
+> minutes in extreme cases. During the erase the DFU gadget does not
+> respond to any USB setup request, the host only see a stalled USB
+> endpoint and cannot get responses from DFU_GETSTATE nor DFU_GETSTATUS.
+> 
+> 
+> The last patch is a small fix that allow to use the dfu gadget after
+> being unbind, such as:
+>   barebox:/ usbgadget -D /foo(foo)
+>   barebox:/ usbgadget -d
+>   barebox:/ usbgadget -D /bar(bar)
+> 
+> 
+> Best regards,
+> Jules
+> 
+> change in v2:
+>  - reorder commits
+>  - reset global variables for progressive erase in dfu_cleanup
+>    this is to allow multi partition update without restart
+>  - add missing error check on erase and remove erase on non mtd device
+>  - add a new commit that fix a bug when exposing multiple partitions at once
 
-Why this detour over device tree? We already have get_cpu_package() and
-could use it here.
+Applied, thanks
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
