@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay4-d.mail.gandi.net ([217.70.183.196])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jIzQx-0003ks-T8
- for barebox@lists.infradead.org; Mon, 30 Mar 2020 18:46:54 +0000
-Received: from geraet.fritz.box (i577B69AA.versanet.de [87.123.105.170])
- (Authenticated sender: ahmad@a3f.at)
- by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 6A68DE0004
- for <barebox@lists.infradead.org>; Mon, 30 Mar 2020 18:46:47 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Mon, 30 Mar 2020 20:46:40 +0200
-Message-Id: <20200330184641.881248-1-ahmad@a3f.at>
+ id 1jJBeN-0005ML-2g
+ for barebox@lists.infradead.org; Tue, 31 Mar 2020 07:49:32 +0000
+Date: Tue, 31 Mar 2020 09:49:29 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200331074929.GJ27288@pengutronix.de>
+References: <20200330145717.667403-1-ahmad@a3f.at>
+ <20200330145717.667403-13-ahmad@a3f.at>
+ <20200331064120.GH27288@pengutronix.de>
+ <ff09b3f5-55f3-6347-6789-7d7f23e89d55@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <ff09b3f5-55f3-6347-6789-7d7f23e89d55@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,35 +25,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] fixup! regmap-mmio: Add big endian support
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 12/12] PWM: add support for STM32
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, Ahmad Fatoum <ahmad@a3f.at>
 
-The Linux default for the regmap MMIO bus used for syscon is little endian,
-not big endian like for a general regmap bus.
+On Tue, Mar 31, 2020 at 08:49:33AM +0200, Ahmad Fatoum wrote:
+> Hello,
+> 
+> On 3/31/20 8:41 AM, Sascha Hauer wrote:
+> >> +		pwm1 = &{/soc/timer@44000000/pwm};
+> >> +		pwm2 = &{/soc/timer@40000000/pwm};
+> >> +		pwm3 = &{/soc/timer@40001000/pwm};
+> >> +		pwm4 = &{/soc/timer@40002000/pwm};
+> >> +		pwm5 = &{/soc/timer@40003000/pwm};
+> >> +		pwm8 = &{/soc/timer@44001000/pwm};
+> >> +		pwm12 = &{/soc/timer@40006000/pwm};
+> >> +		pwm13 = &{/soc/timer@40007000/pwm};
+> >> +		pwm14 = &{/soc/timer@40008000/pwm};
+> >> +		pwm15 = &{/soc/timer@44006000/pwm};
+> >> +		pwm16 = &{/soc/timer@44007000/pwm};
+> >> +		pwm17 = &{/soc/timer@44008000/pwm};
+> > 
+> > The other aliases start counting at 0. Why not the PWMs?
+> 
+> I named them to match the SoC data sheet,
+> 
+> The final device names are e.g. pwm12ch2, corresponding to TIM12_CH2
+> in the SoC datasheet. It's IMO the best user experience, because otherwise
+> you'll always have to look at the aliases in barebox to determine,
+> which PWM corresponds to what's printed in the schematics.
 
-This fixes network breakage on the STM32MP, which uses a syscon in
-link mode configuration.
+ok.
 
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
----
- drivers/base/regmap/regmap-mmio.c | 1 +
- 1 file changed, 1 insertion(+)
+Sascha
 
-diff --git a/drivers/base/regmap/regmap-mmio.c b/drivers/base/regmap/regmap-mmio.c
-index 492dd16ff52a..9c5a2822a4fe 100644
---- a/drivers/base/regmap/regmap-mmio.c
-+++ b/drivers/base/regmap/regmap-mmio.c
-@@ -182,6 +182,7 @@ static int regmap_mmio_read(void *context, unsigned int reg, unsigned int *val)
- static const struct regmap_bus regmap_mmio = {
- 	.reg_write = regmap_mmio_write,
- 	.reg_read = regmap_mmio_read,
-+	.val_format_endian_default = REGMAP_ENDIAN_LITTLE,
- };
- 
- static struct regmap_mmio_context *regmap_mmio_gen_context(struct device_d *dev,
+
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
