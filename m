@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jJAiN-00079m-2P
- for barebox@lists.infradead.org; Tue, 31 Mar 2020 06:49:36 +0000
+ id 1jJAmg-0000VH-Hf
+ for barebox@lists.infradead.org; Tue, 31 Mar 2020 06:54:04 +0000
 References: <20200330145717.667403-1-ahmad@a3f.at>
- <20200330145717.667403-13-ahmad@a3f.at>
- <20200331064120.GH27288@pengutronix.de>
+ <20200330145717.667403-9-ahmad@a3f.at>
+ <20200331061006.GG27288@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <ff09b3f5-55f3-6347-6789-7d7f23e89d55@pengutronix.de>
-Date: Tue, 31 Mar 2020 08:49:33 +0200
+Message-ID: <4c804252-b126-8555-dc8d-820b5a182b46@pengutronix.de>
+Date: Tue, 31 Mar 2020 08:54:00 +0200
 MIME-Version: 1.0
-In-Reply-To: <20200331064120.GH27288@pengutronix.de>
+In-Reply-To: <20200331061006.GG27288@pengutronix.de>
 Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,37 +24,91 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 12/12] PWM: add support for STM32
+Subject: Re: [PATCH 08/12] video: backlight-pwm: use new pwm_apply_state API
 To: Sascha Hauer <s.hauer@pengutronix.de>, Ahmad Fatoum <ahmad@a3f.at>
 Cc: barebox@lists.infradead.org
 
-Hello,
+Hi,
 
-On 3/31/20 8:41 AM, Sascha Hauer wrote:
->> +		pwm1 = &{/soc/timer@44000000/pwm};
->> +		pwm2 = &{/soc/timer@40000000/pwm};
->> +		pwm3 = &{/soc/timer@40001000/pwm};
->> +		pwm4 = &{/soc/timer@40002000/pwm};
->> +		pwm5 = &{/soc/timer@40003000/pwm};
->> +		pwm8 = &{/soc/timer@44001000/pwm};
->> +		pwm12 = &{/soc/timer@40006000/pwm};
->> +		pwm13 = &{/soc/timer@40007000/pwm};
->> +		pwm14 = &{/soc/timer@40008000/pwm};
->> +		pwm15 = &{/soc/timer@44006000/pwm};
->> +		pwm16 = &{/soc/timer@44007000/pwm};
->> +		pwm17 = &{/soc/timer@44008000/pwm};
+On 3/31/20 8:10 AM, Sascha Hauer wrote:
+> On Mon, Mar 30, 2020 at 04:57:13PM +0200, Ahmad Fatoum wrote:
+>> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>>
+>> Use pwm_apply_state we can avoid having to store PWM state in the
+>> instance structure and in future we have an easy way to support new
+>> parameters like inverted duty cycle.
+>>
+>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>> ---
+>>  drivers/video/backlight-pwm.c | 13 ++++++++-----
+>>  1 file changed, 8 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/drivers/video/backlight-pwm.c b/drivers/video/backlight-pwm.c
+>> index 9111a42d7544..8b6494dac929 100644
+>> --- a/drivers/video/backlight-pwm.c
+>> +++ b/drivers/video/backlight-pwm.c
+>> @@ -33,7 +33,6 @@ struct pwm_backlight {
+>>  	struct backlight_device backlight;
+>>  	struct pwm_device *pwm;
+>>  	struct regulator *power;
+>> -	uint32_t period;
+>>  	unsigned int *levels;
+>>  	int enable_gpio;
+>>  	int enable_active_high;
+>> @@ -91,13 +90,16 @@ static int backlight_pwm_disable(struct pwm_backlight *pwm_backlight)
+>>  static int compute_duty_cycle(struct pwm_backlight *pwm_backlight, int brightness)
+>>  {
+>>  	int duty_cycle;
+>> +	struct pwm_state state;
+>> +
+>> +	pwm_get_state(pwm_backlight->pwm, &state);
+>>  
+>>  	if (pwm_backlight->levels)
+>>  		duty_cycle = pwm_backlight->levels[brightness];
+>>  	else
+>>  		duty_cycle = brightness;
+>>  
+>> -	return duty_cycle * pwm_backlight->period / pwm_backlight->scale;
+>> +	return duty_cycle * state.period_ns / pwm_backlight->scale;
+>>  }
+>>  
+>>  static int backlight_pwm_set(struct backlight_device *backlight,
+>> @@ -105,9 +107,11 @@ static int backlight_pwm_set(struct backlight_device *backlight,
+>>  {
+>>  	struct pwm_backlight *pwm_backlight = container_of(backlight,
+>>  			struct pwm_backlight, backlight);
+>> +	struct pwm_state state;
+>>  
+>> -	pwm_config(pwm_backlight->pwm, compute_duty_cycle(pwm_backlight, brightness),
+>> -		   pwm_backlight->period);
+>> +	pwm_get_state(pwm_backlight->pwm, &state);
 > 
-> The other aliases start counting at 0. Why not the PWMs?
+> You read the current pwm state here...
+> 
+>> +	state.duty_ns = compute_duty_cycle(pwm_backlight, brightness);
+> 
+> and once again in compute_duty_cycle(). I think it would be nicer to
+> reorganize this a bit, maybe pass the state to compute_duty_cycle.
+> 
+>> +	pwm_apply_state(pwm_backlight->pwm, &state);
+>>  
+>>  	if (brightness)
+>>  		return backlight_pwm_enable(pwm_backlight);
+> 
+> I would assume that if you switch to the pwm_apply_state API then you do
+> it entirely. backlight_pwm_enable() still uses the old API to enable the
+> PWM.
 
-I named them to match the SoC data sheet,
-
-The final device names are e.g. pwm12ch2, corresponding to TIM12_CH2
-in the SoC datasheet. It's IMO the best user experience, because otherwise
-you'll always have to look at the aliases in barebox to determine,
-which PWM corresponds to what's printed in the schematics.
+Ineed. Rest of patches should apply and build cleanly without this and the last one.
+If they're ok, can you apply them and I respin only those two?
 
 Cheers
-Amad
+Ahmad
+
+> 
+> Sascha
+> 
+
 -- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
