@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
+Received: from mail-pj1-x1044.google.com ([2607:f8b0:4864:20::1044])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jJLvf-0006C8-HJ
- for barebox@lists.infradead.org; Tue, 31 Mar 2020 18:48:11 +0000
-Received: by mail-pg1-x532.google.com with SMTP id l14so3618357pgb.1
- for <barebox@lists.infradead.org>; Tue, 31 Mar 2020 11:48:02 -0700 (PDT)
+ id 1jJLvW-00066v-Hv
+ for barebox@lists.infradead.org; Tue, 31 Mar 2020 18:48:10 +0000
+Received: by mail-pj1-x1044.google.com with SMTP id v13so1463878pjb.0
+ for <barebox@lists.infradead.org>; Tue, 31 Mar 2020 11:47:54 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 31 Mar 2020 11:47:22 -0700
-Message-Id: <20200331184722.22707-24-andrew.smirnov@gmail.com>
+Date: Tue, 31 Mar 2020 11:47:15 -0700
+Message-Id: <20200331184722.22707-17-andrew.smirnov@gmail.com>
 In-Reply-To: <20200331184722.22707-1-andrew.smirnov@gmail.com>
 References: <20200331184722.22707-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,43 +23,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 23/23] ARM: zii-imx7d-rmu2: Add boot source info
+Subject: [PATCH 16/23] ARM: rdu2: Drop redundant USB GPIO hog nodes
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add boot source info so that RAVE SP driver could query it.
+All of those nodes are already present in upstream DT. Drop them.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/dts/imx7d-zii-rmu2.dts | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ arch/arm/dts/imx6qdl-zii-rdu2.dtsi | 36 ------------------------------
+ 1 file changed, 36 deletions(-)
 
-diff --git a/arch/arm/dts/imx7d-zii-rmu2.dts b/arch/arm/dts/imx7d-zii-rmu2.dts
-index 7bb0ab264..a4116308b 100644
---- a/arch/arm/dts/imx7d-zii-rmu2.dts
-+++ b/arch/arm/dts/imx7d-zii-rmu2.dts
-@@ -23,3 +23,21 @@
+diff --git a/arch/arm/dts/imx6qdl-zii-rdu2.dtsi b/arch/arm/dts/imx6qdl-zii-rdu2.dtsi
+index c31a27904..b593545ff 100644
+--- a/arch/arm/dts/imx6qdl-zii-rdu2.dtsi
++++ b/arch/arm/dts/imx6qdl-zii-rdu2.dtsi
+@@ -292,39 +292,3 @@
  		};
  	};
  };
-+
-+&uart4 {
-+	rave-sp {
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+
-+		watchdog {
-+			nvmem-cells = <&boot_source>;
-+			nvmem-cell-names = "boot-source";
-+		};
-+
-+		eeprom@a3 {
-+			boot_source: boot-source@83 {
-+				reg = <0x83 1>;
-+			};
-+		};
-+	};
-+};
+-
+-&gpio3 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_gpio3_hog>;
+-
+-	usb-emulation {
+-		gpio-hog;
+-		gpios = <19 GPIO_ACTIVE_HIGH>;
+-		output-low;
+-		line-name = "usb-emulation";
+-	};
+-
+-	usb-mode1 {
+-		gpio-hog;
+-		gpios = <20 GPIO_ACTIVE_HIGH>;
+-		output-high;
+-		line-name = "usb-mode1";
+-	};
+-
+-	usb-mode2 {
+-		gpio-hog;
+-		gpios = <23 GPIO_ACTIVE_HIGH>;
+-		output-high;
+-		line-name = "usb-mode2";
+-	};
+-};
+-
+-&iomuxc {
+-	pinctrl_gpio3_hog: gpio3hoggrp {
+-		fsl,pins = <
+-			MX6QDL_PAD_EIM_D19__GPIO3_IO19		0x40000038
+-			MX6QDL_PAD_EIM_D20__GPIO3_IO20		0x40000038
+-			MX6QDL_PAD_EIM_D23__GPIO3_IO23		0x40000038
+-		>;
+-	};
+-};
 -- 
 2.21.0
 
