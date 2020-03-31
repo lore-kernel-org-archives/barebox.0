@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
+Received: from mail-pj1-x1044.google.com ([2607:f8b0:4864:20::1044])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jJLvO-00061x-Le
- for barebox@lists.infradead.org; Tue, 31 Mar 2020 18:47:57 +0000
-Received: by mail-pg1-x543.google.com with SMTP id 142so10733730pgf.11
- for <barebox@lists.infradead.org>; Tue, 31 Mar 2020 11:47:46 -0700 (PDT)
+ id 1jJLvS-000627-39
+ for barebox@lists.infradead.org; Tue, 31 Mar 2020 18:47:58 +0000
+Received: by mail-pj1-x1044.google.com with SMTP id jz1so1224682pjb.0
+ for <barebox@lists.infradead.org>; Tue, 31 Mar 2020 11:47:50 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 31 Mar 2020 11:47:09 -0700
-Message-Id: <20200331184722.22707-11-andrew.smirnov@gmail.com>
+Date: Tue, 31 Mar 2020 11:47:11 -0700
+Message-Id: <20200331184722.22707-13-andrew.smirnov@gmail.com>
 In-Reply-To: <20200331184722.22707-1-andrew.smirnov@gmail.com>
 References: <20200331184722.22707-1-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
@@ -23,34 +23,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/23] ARM: zii-imx8mq-dev: Differentiate between Zest and RMB3
+Subject: [PATCH 12/23] ARM: zii-imx6q-rdu2: Register SD card slot with BBU
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add code to configure hostname so we could differentiate between the
-two in scripts.
+Register SD card slot with BBU. This is really useful for development
+since this allows to update the bootloader on SD card without having
+to take it out of the device.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/boards/zii-imx8mq-dev/board.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/arm/boards/zii-imx6q-rdu2/board.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/boards/zii-imx8mq-dev/board.c b/arch/arm/boards/zii-imx8mq-dev/board.c
-index 7591841fe..ddd15299c 100644
---- a/arch/arm/boards/zii-imx8mq-dev/board.c
-+++ b/arch/arm/boards/zii-imx8mq-dev/board.c
-@@ -26,7 +26,10 @@ static int zii_imx8mq_dev_init(void)
- 	if (!of_machine_is_compatible("zii,imx8mq-ultra"))
- 		return 0;
+diff --git a/arch/arm/boards/zii-imx6q-rdu2/board.c b/arch/arm/boards/zii-imx6q-rdu2/board.c
+index 6d6bc1caa..0f298d6a4 100644
+--- a/arch/arm/boards/zii-imx6q-rdu2/board.c
++++ b/arch/arm/boards/zii-imx6q-rdu2/board.c
+@@ -154,6 +154,7 @@ static int rdu2_devices_init(void)
+ 						   BBU_HANDLER_FLAG_DEFAULT);
  
--	barebox_set_hostname("imx8mq-zii-rdu3");
-+	if (of_machine_is_compatible("zii,imx8mq-ultra-zest"))
-+		barebox_set_hostname("zest");
-+	if (of_machine_is_compatible("zii,imx8mq-ultra-rmb3"))
-+		barebox_set_hostname("rmb3");
+ 	imx6_bbu_internal_mmcboot_register_handler("eMMC", "/dev/mmc3", 0);
++	imx6_bbu_internal_mmc_register_handler("SD", "/dev/mmc1", 0);
  
- 	imx8mq_bbu_internal_mmcboot_register_handler("eMMC", "/dev/mmc0",
- 						     BBU_HANDLER_FLAG_DEFAULT);
+ 	defaultenv_append_directory(defaultenv_zii_common);
+ 	defaultenv_append_directory(defaultenv_rdu2);
 -- 
 2.21.0
 
