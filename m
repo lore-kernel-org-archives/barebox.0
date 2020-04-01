@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay5-d.mail.gandi.net ([217.70.183.197])
+Received: from mail-wr1-x441.google.com ([2a00:1450:4864:20::441])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jJZiM-0001a0-7t
- for barebox@lists.infradead.org; Wed, 01 Apr 2020 09:31:15 +0000
-Received: from geraet.fritz.box (muedsl-82-207-203-222.citykom.de
- [82.207.203.222]) (Authenticated sender: ahmad@a3f.at)
- by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 63B7E1C0014
- for <barebox@lists.infradead.org>; Wed,  1 Apr 2020 09:31:08 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Wed,  1 Apr 2020 11:31:00 +0200
-Message-Id: <20200401093104.959691-1-ahmad@a3f.at>
+ id 1jJjKl-0004B1-FL
+ for barebox@lists.infradead.org; Wed, 01 Apr 2020 19:47:33 +0000
+Received: by mail-wr1-x441.google.com with SMTP id t7so1471014wrw.12
+ for <barebox@lists.infradead.org>; Wed, 01 Apr 2020 12:47:30 -0700 (PDT)
 MIME-Version: 1.0
+References: <20200331184722.22707-1-andrew.smirnov@gmail.com>
+ <20200331184722.22707-2-andrew.smirnov@gmail.com>
+ <20200401052034.GS27288@pengutronix.de>
+In-Reply-To: <20200401052034.GS27288@pengutronix.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Wed, 1 Apr 2020 12:47:18 -0700
+Message-ID: <CAHQ1cqGzUFW+Khwgkzb_OCasOKKv1CoqrQHa-Mf+PDX4NuZTYQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,82 +25,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC PATCH 0/4] ARM: introduce sjlj structured exception handling
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 01/23] ARM: zii-common: Gate rdu_i210_invm() call with
+ CONFIG_PCI_IMX6
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-We are already using data_abort_mask at a hand full of places to integrate
-Hardware exceptions with normal flow control mechanisms.
-While cumbersome to use, these few code blocks have a terrific track
-record in stability, having so far never crashed due to NULL pointer
-exceptions.
+On Tue, Mar 31, 2020 at 10:20 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+>
+> On Tue, Mar 31, 2020 at 11:47:00AM -0700, Andrey Smirnov wrote:
+> > There's no reason to have rdu_i210_invm() inicalli if CONFIG_PCI_IMX6
+> > is not selected. Add appropriate ifdef to handle that.
+>
+> Either this is the wrong way round...
+>
 
-Having something like this everywhere in barebox would have been great
-for software stability[1][2][3][4][5] in the past.
+Hmm, not sure I understand what you mean. I210 card and its INVM won't
+appear if PCIe is not enabled, that's why there's no reason to have
+rdu_i210_invm() initcall if CONFIG_PCI_IMX6 is _not_ selected. Did I
+miss something?
 
-This patch takes this idea a bit further, by introducing new TRY/CATCH
-primitives, inspired by Microsoft Visual C Structured Exception
-Handling (SEH), into barebox. These can now be wielded to beat any and all
-error conditions into total and utter submission:
-
-    u32 cycles;
-    TRY {
-        u32 div = readl(NULL);
-        cycles = ticks / div;
-        cycles = ((void (*)())cycles)();
-        if (cycles == 0)
-            THROW(RuntimeError);
-    } CATCH_3(DataAbortException, UndefinedInstructionException, RuntimerError) {
-        cycles = 42;
-    }
-    ENDTRY;
-
-As a first step, this patch series is introduced as a RFC for ARM.
-Other platforms can follow when setjmp/longjump (sjlj) is implemented for them.
-This will allow all barebox hackers to benefit from state-of-the-art tooling
-in building the same highly robust and crash resistant software that has been
-possible since SEH's introduction with Windows 95.
-
-This is of course not only limited to hardware faults, as the example above shows.
-
-By blurring the line between hardware fault handling and software error propagation,
-it also allows a more natural control flow than having to deal with arcane UNIX
-signals running in restricted contexts or *shudder* check against NULL
-before using a pointer.
-
-Hoping you are as hyped as I am.
-
-[1]: dc5100e6b ("state: backend_storage: deal
-     gracefully with runtime bucket corruption")
-[2]: 09d11c546 ("video/ssd1307fb: fix NULL pointer dereference in probe")
-[3]: 671a7d5df ("driver: bail out, don't crash, if drv->name is not set")
-[4]: 8a774977b ("mci: dove: fix dereference of nullable pointer")
-[5]: bb414a64b ("drivers: video: Fix parsing oftree timings")
-
-Cheers,
-Ahmad (4):
-  ARM: implement sjlj-based TRY/CATCH exception handling
-  startup: wrap barebox startup in TRY/CATCH
-  ARM: rethrow CPU exceptions as sjlj-exceptions
-  commands: implement except test command
-
- arch/arm/cpu/interrupts.c |  32 +--
- commands/Kconfig          |   5 +
- commands/Makefile         |   1 +
- commands/except.c         | 130 ++++++++++++
- common/Makefile           |   3 +
- common/except.c           | 282 +++++++++++++++++++++++++
- common/startup.c          |  70 +++++--
- include/except.h          | 156 ++++++++++++++
- include/exceptions.h      | 419 ++++++++++++++++++++++++++++++++++++++
- 9 files changed, 1058 insertions(+), 40 deletions(-)
- create mode 100644 commands/except.c
- create mode 100644 common/except.c
- create mode 100644 include/except.h
- create mode 100644 include/exceptions.h
-
--- 
-2.20.1
-
+> >
+> > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> > ---
+> >  arch/arm/boards/zii-common/board.c | 4 ++++
+> >  1 file changed, 4 insertions(+)
+> >
+> > diff --git a/arch/arm/boards/zii-common/board.c b/arch/arm/boards/zii-common/board.c
+> > index 7bd3a6cab..08e2f8b9b 100644
+> > --- a/arch/arm/boards/zii-common/board.c
+> > +++ b/arch/arm/boards/zii-common/board.c
+> > @@ -104,6 +104,8 @@ static int rdu_networkconfig(void)
+> >  }
+> >  late_initcall(rdu_networkconfig);
+> >
+> > +#ifdef CONFIG_PCI_IMX6
+>
+> ...or this should be #ifndef
+>
+> Sascha
+>
+> > +
+> >  #define I210_CFGWORD_PCIID_157B              0x157b1a11
+> >  static int rdu_i210_invm(void)
+> >  {
+> > @@ -136,3 +138,5 @@ static int rdu_i210_invm(void)
+> >       return 0;
+> >  }
+> >  late_initcall(rdu_i210_invm);
+> > +
+> > +#endif
+> > --
+> > 2.21.0
+> >
+> >
+> > _______________________________________________
+> > barebox mailing list
+> > barebox@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/barebox
+> >
+>
+> --
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
