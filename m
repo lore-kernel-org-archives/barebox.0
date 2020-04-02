@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wr1-x441.google.com ([2a00:1450:4864:20::441])
+Received: from mail-wr1-x443.google.com ([2a00:1450:4864:20::443])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jJjKl-0004B1-FL
- for barebox@lists.infradead.org; Wed, 01 Apr 2020 19:47:33 +0000
-Received: by mail-wr1-x441.google.com with SMTP id t7so1471014wrw.12
- for <barebox@lists.infradead.org>; Wed, 01 Apr 2020 12:47:30 -0700 (PDT)
+ id 1jK8Jp-0004AX-AE
+ for barebox@lists.infradead.org; Thu, 02 Apr 2020 22:28:14 +0000
+Received: by mail-wr1-x443.google.com with SMTP id m17so6137850wrw.11
+ for <barebox@lists.infradead.org>; Thu, 02 Apr 2020 15:28:12 -0700 (PDT)
 MIME-Version: 1.0
 References: <20200331184722.22707-1-andrew.smirnov@gmail.com>
- <20200331184722.22707-2-andrew.smirnov@gmail.com>
- <20200401052034.GS27288@pengutronix.de>
-In-Reply-To: <20200401052034.GS27288@pengutronix.de>
+ <20200331184722.22707-12-andrew.smirnov@gmail.com>
+ <20200402064953.GD29627@pengutronix.de>
+In-Reply-To: <20200402064953.GD29627@pengutronix.de>
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 1 Apr 2020 12:47:18 -0700
-Message-ID: <CAHQ1cqGzUFW+Khwgkzb_OCasOKKv1CoqrQHa-Mf+PDX4NuZTYQ@mail.gmail.com>
+Date: Thu, 2 Apr 2020 15:27:59 -0700
+Message-ID: <CAHQ1cqFUH=CbFaFbTAvyy82VsF2F+K=BfARSewYMYeTPt+UFQw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,70 +25,194 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 01/23] ARM: zii-common: Gate rdu_i210_invm() call with
- CONFIG_PCI_IMX6
+Subject: Re: [PATCH 11/23] ARM: zii-common: Add common environment directory
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-On Tue, Mar 31, 2020 at 10:20 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+On Wed, Apr 1, 2020 at 11:49 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
 >
-> On Tue, Mar 31, 2020 at 11:47:00AM -0700, Andrey Smirnov wrote:
-> > There's no reason to have rdu_i210_invm() inicalli if CONFIG_PCI_IMX6
-> > is not selected. Add appropriate ifdef to handle that.
->
-> Either this is the wrong way round...
->
-
-Hmm, not sure I understand what you mean. I210 card and its INVM won't
-appear if PCIe is not enabled, that's why there's no reason to have
-rdu_i210_invm() initcall if CONFIG_PCI_IMX6 is _not_ selected. Did I
-miss something?
-
+> On Tue, Mar 31, 2020 at 11:47:10AM -0700, Andrey Smirnov wrote:
+> > Establish a common environment directory between all ZII boards, so
+> > that we could share common bits and pieces. As a first step, get rid
+> > of board scecific net boot scripts and replace them with a single
+> > shared one.
 > >
 > > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 > > ---
-> >  arch/arm/boards/zii-common/board.c | 4 ++++
-> >  1 file changed, 4 insertions(+)
+> >  arch/arm/boards/zii-common/Makefile           |  1 +
+> >  .../defaultenv-zii-common}/boot/net           |  9 +++++--
+> >  arch/arm/boards/zii-imx51-rdu1/board.c        |  1 +
+> >  arch/arm/boards/zii-imx6q-rdu2/board.c        |  1 +
+> >  .../zii-imx6q-rdu2/defaultenv-rdu2/boot/net   | 24 -------------------
+> >  arch/arm/boards/zii-imx7d-dev/board.c         |  2 ++
+> >  arch/arm/boards/zii-imx8mq-dev/board.c        |  1 +
+> >  .../defaultenv-imx8mq-zii-dev/boot/net        | 24 -------------------
+> >  arch/arm/boards/zii-vf610-dev/board.c         |  1 +
+> >  9 files changed, 14 insertions(+), 50 deletions(-)
+> >  rename arch/arm/boards/{zii-imx51-rdu1/defaultenv-rdu1 => zii-common/defaultenv-zii-common}/boot/net (73%)
+> >  delete mode 100644 arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/boot/net
+> >  delete mode 100644 arch/arm/boards/zii-imx8mq-dev/defaultenv-imx8mq-zii-dev/boot/net
 > >
-> > diff --git a/arch/arm/boards/zii-common/board.c b/arch/arm/boards/zii-common/board.c
-> > index 7bd3a6cab..08e2f8b9b 100644
-> > --- a/arch/arm/boards/zii-common/board.c
-> > +++ b/arch/arm/boards/zii-common/board.c
-> > @@ -104,6 +104,8 @@ static int rdu_networkconfig(void)
-> >  }
-> >  late_initcall(rdu_networkconfig);
+> > diff --git a/arch/arm/boards/zii-common/Makefile b/arch/arm/boards/zii-common/Makefile
+> > index fcc5cdf97..90bdf21e7 100644
+> > --- a/arch/arm/boards/zii-common/Makefile
+> > +++ b/arch/arm/boards/zii-common/Makefile
+> > @@ -1 +1,2 @@
+> >  obj-y += board.o switch-cmd.o pn-fixup.o
+> > +bbenv-y += defaultenv-zii-common
+> > diff --git a/arch/arm/boards/zii-imx51-rdu1/defaultenv-rdu1/boot/net b/arch/arm/boards/zii-common/defaultenv-zii-common/boot/net
+> > similarity index 73%
+> > rename from arch/arm/boards/zii-imx51-rdu1/defaultenv-rdu1/boot/net
+> > rename to arch/arm/boards/zii-common/defaultenv-zii-common/boot/net
+> > index 4be8e1e2d..8b07cbbc9 100644
+> > --- a/arch/arm/boards/zii-imx51-rdu1/defaultenv-rdu1/boot/net
+> > +++ b/arch/arm/boards/zii-common/defaultenv-zii-common/boot/net
+> > @@ -2,8 +2,13 @@
 > >
-> > +#ifdef CONFIG_PCI_IMX6
->
-> ...or this should be #ifndef
->
-> Sascha
->
+> >  path="/mnt/tftp"
+> >
+> > -# clear seat network config
+> > -global.linux.bootargs.rdu_network=
+> > +#
+> > +# Clear seat network config. Some boards don't have that config, so
+> > +# check that it is set first
+> > +#
+> > +if [ -n ${global.linux.bootargs.rdu_network} ]; then
+> > +    global.linux.bootargs.rdu_network=
+> > +fi
+> >
+> >  global.bootm.image="${path}/${global.user}-linux-${global.hostname}"
+> >
+> > diff --git a/arch/arm/boards/zii-imx51-rdu1/board.c b/arch/arm/boards/zii-imx51-rdu1/board.c
+> > index 640bb0d1b..8fdcb7626 100644
+> > --- a/arch/arm/boards/zii-imx51-rdu1/board.c
+> > +++ b/arch/arm/boards/zii-imx51-rdu1/board.c
+> > @@ -50,6 +50,7 @@ static int zii_rdu1_init(void)
+> >               BBU_HANDLER_FLAG_DEFAULT |
+> >               IMX_BBU_FLAG_PARTITION_STARTS_AT_HEADER);
+> >
+> > +     defaultenv_append_directory(defaultenv_zii_common);
+> >       defaultenv_append_directory(defaultenv_rdu1);
+> >
+> >       return 0;
+> > diff --git a/arch/arm/boards/zii-imx6q-rdu2/board.c b/arch/arm/boards/zii-imx6q-rdu2/board.c
+> > index 0bb4700b6..6d6bc1caa 100644
+> > --- a/arch/arm/boards/zii-imx6q-rdu2/board.c
+> > +++ b/arch/arm/boards/zii-imx6q-rdu2/board.c
+> > @@ -155,6 +155,7 @@ static int rdu2_devices_init(void)
+> >
+> >       imx6_bbu_internal_mmcboot_register_handler("eMMC", "/dev/mmc3", 0);
+> >
+> > +     defaultenv_append_directory(defaultenv_zii_common);
+> >       defaultenv_append_directory(defaultenv_rdu2);
+> >
+> >       return 0;
+> > diff --git a/arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/boot/net b/arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/boot/net
+> > deleted file mode 100644
+> > index 4090c2f4a..000000000
+> > --- a/arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/boot/net
+> > +++ /dev/null
+> > @@ -1,24 +0,0 @@
+> > -#!/bin/sh
+> > -
+> > -path="/mnt/tftp"
+> > -
+> > -# clear seat network config
+> > -global.linux.bootargs.rdu_network=
+> > -
+> > -global.bootm.image="${path}/${global.user}-linux-${global.hostname}"
+> > -
+> > -oftree="${path}/${global.user}-oftree-${global.hostname}"
+> > -if [ -f "${oftree}" ]; then
+> > -     global.bootm.oftree="$oftree"
+> > -fi
+> > -
+> > -nfsroot="/home/${global.user}/nfsroot/${global.hostname}"
+> > -
+> > -ip_route_get -b ${global.net.server} global.linux.bootargs.dyn.ip
+> > -
+> > -initramfs="${path}/${global.user}-initramfs-${global.hostname}"
+> > -if [ -f "${initramfs}" ]; then
+> > -     global.bootm.initrd="$initramfs"
+> > -else
+> > -     global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,v3,tcp"
+> > -fi
+> > \ No newline at end of file
+> > diff --git a/arch/arm/boards/zii-imx7d-dev/board.c b/arch/arm/boards/zii-imx7d-dev/board.c
+> > index b53a6af49..6b409e23b 100644
+> > --- a/arch/arm/boards/zii-imx7d-dev/board.c
+> > +++ b/arch/arm/boards/zii-imx7d-dev/board.c
+> > @@ -55,6 +55,8 @@ static int zii_imx7d_dev_init(void)
+> >       else if (of_machine_is_compatible("zii,imx7d-rmu2"))
+> >               barebox_set_hostname("rmu2");
+> >
+> > +     defaultenv_append_directory(defaultenv_zii_common);
 > > +
-> >  #define I210_CFGWORD_PCIID_157B              0x157b1a11
-> >  static int rdu_i210_invm(void)
-> >  {
-> > @@ -136,3 +138,5 @@ static int rdu_i210_invm(void)
 > >       return 0;
 > >  }
-> >  late_initcall(rdu_i210_invm);
-> > +
-> > +#endif
-> > --
-> > 2.21.0
+> >  late_initcall(zii_imx7d_dev_init);
+> > diff --git a/arch/arm/boards/zii-imx8mq-dev/board.c b/arch/arm/boards/zii-imx8mq-dev/board.c
+> > index ddd15299c..285e889fe 100644
+> > --- a/arch/arm/boards/zii-imx8mq-dev/board.c
+> > +++ b/arch/arm/boards/zii-imx8mq-dev/board.c
+> > @@ -39,6 +39,7 @@ static int zii_imx8mq_dev_init(void)
+> >       else
+> >               of_device_enable_path("/chosen/environment-sd");
 > >
+> > +     defaultenv_append_directory(defaultenv_zii_common);
+> >       defaultenv_append_directory(defaultenv_imx8mq_zii_dev);
 > >
-> > _______________________________________________
-> > barebox mailing list
-> > barebox@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/barebox
+> >       return 0;
+> > diff --git a/arch/arm/boards/zii-imx8mq-dev/defaultenv-imx8mq-zii-dev/boot/net b/arch/arm/boards/zii-imx8mq-dev/defaultenv-imx8mq-zii-dev/boot/net
+> > deleted file mode 100644
+> > index 4090c2f4a..000000000
+> > --- a/arch/arm/boards/zii-imx8mq-dev/defaultenv-imx8mq-zii-dev/boot/net
+> > +++ /dev/null
+> > @@ -1,24 +0,0 @@
+> > -#!/bin/sh
+> > -
+> > -path="/mnt/tftp"
+> > -
+> > -# clear seat network config
+> > -global.linux.bootargs.rdu_network=
+> > -
+> > -global.bootm.image="${path}/${global.user}-linux-${global.hostname}"
+> > -
+> > -oftree="${path}/${global.user}-oftree-${global.hostname}"
+> > -if [ -f "${oftree}" ]; then
+> > -     global.bootm.oftree="$oftree"
+> > -fi
+> > -
+> > -nfsroot="/home/${global.user}/nfsroot/${global.hostname}"
+> > -
+> > -ip_route_get -b ${global.net.server} global.linux.bootargs.dyn.ip
+> > -
+> > -initramfs="${path}/${global.user}-initramfs-${global.hostname}"
+> > -if [ -f "${initramfs}" ]; then
+> > -     global.bootm.initrd="$initramfs"
+> > -else
+> > -     global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,v3,tcp"
+> > -fi
+> > \ No newline at end of file
+> > diff --git a/arch/arm/boards/zii-vf610-dev/board.c b/arch/arm/boards/zii-vf610-dev/board.c
+> > index 1d10f12f6..6b80ec428 100644
+> > --- a/arch/arm/boards/zii-vf610-dev/board.c
+> > +++ b/arch/arm/boards/zii-vf610-dev/board.c
+> > @@ -141,6 +141,7 @@ static int zii_vf610_dev_set_hostname(void)
+> >               }
+> >       }
 > >
+> > +     defaultenv_append_directory(defaultenv_zii_common);
 >
-> --
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> The zii-vf610 doesn't set CONFIG_MACH_ZII_COMMON, so the common env is not
+> compiled in which results in a linker error. What's the correct way to
+> fix that? Specify CONFIG_MACH_ZII_COMMON for the vf610 board?
+>
+
+Ugh, sorry about that. I always select all of those boards at the same
+time, so I missed that. Yes, I think CONFIG_MACH_ZII_COMMON for VF610
+would be the way to go. Let me know if you want me to re-spin this
+patch with that fix included.
 
 _______________________________________________
 barebox mailing list
