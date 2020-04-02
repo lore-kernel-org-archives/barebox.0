@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-am6eur05olkn2056.outbound.protection.outlook.com
- ([40.92.91.56] helo=EUR05-AM6-obe.outbound.protection.outlook.com)
+Received: from mail-vi1eur05olkn2090.outbound.protection.outlook.com
+ ([40.92.90.90] helo=EUR05-VI1-obe.outbound.protection.outlook.com)
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jJv6b-00005H-Ih
- for barebox@lists.infradead.org; Thu, 02 Apr 2020 08:21:43 +0000
+ id 1jJv7s-0000VD-Px
+ for barebox@lists.infradead.org; Thu, 02 Apr 2020 08:23:04 +0000
 From: Michael Graichen <michael.graichen@hotmail.com>
-Date: Thu, 2 Apr 2020 08:21:38 +0000
-Message-ID: <DB7PR02MB4332B4E518B456DF86F01A6DABC60@DB7PR02MB4332.eurprd02.prod.outlook.com>
+Date: Thu, 2 Apr 2020 08:22:55 +0000
+Message-ID: <DB7PR02MB433223DC2A79CECB7B3FBA35ABC60@DB7PR02MB4332.eurprd02.prod.outlook.com>
 Content-Language: de-DE
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
@@ -21,31 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/7] Zedboard added FPGA and PCAP clock control
+Subject: [PATCH 6/7] Zedboard turn on LED on startup
 To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Added the configuration for FPGA an PCAP clock control
+Turns on the LED on MIO7 on the Zedboard to have a signal
 
 diff --git a/arch/arm/boards/avnet-zedboard/lowlevel.c b/arch/arm/boards/avnet-zedboard/lowlevel.c
-index 6f05d934c..b8001fcf6 100644
+index b8001fcf6..eb85df507 100644
 --- a/arch/arm/boards/avnet-zedboard/lowlevel.c
 +++ b/arch/arm/boards/avnet-zedboard/lowlevel.c
-@@ -276,6 +276,15 @@ static void avnet_zedboard_ps7_init(void)
+@@ -306,6 +306,16 @@ ENTRY_FUNCTION(start_avnet_zedboard, r0, r1, r2)
  
- 	writel(0x00000001, 0xf8000B00);
+ 	void *fdt = __dtb_zynq_zed_start + get_runtime_offset();
  
-+	/* FPGA Clock Control */
-+	writel(0x00101400, 0xf8000170);
-+	writel(0x00101400, 0xf8000180);
-+	writel(0x00101400, 0xf8000190);
-+	writel(0x00101400, 0xf80001a0);
++	/* MIO_07 in GPIO Mode 3.3V VIO, can be uncomented because it is the default value */
++	writel(0x0000DF0D, ZYNQ_SLCR_UNLOCK);
++	writel(0x00000600, 0xF800071C );
++	writel(0x0000767B, ZYNQ_SLCR_LOCK);
 +
-+	/* PCAP Clock Control */
-+	writel(0x00000501, 0xf8000168);
++	/* turns on the LED MIO_07 */
++	writel((1<<7), 0xe000a204 );    // Direction
++	writel((1<<7), 0xe000a208 );    // Output enable
++	writel((1<<7), 0xe000a040 );    // DATA Register
 +
- 	/* lock up. secure, secure */
- 	writel(0x0000767B, ZYNQ_SLCR_LOCK);
- }
+ 	arm_cpu_lowlevel_init();
+ 	zynq_cpu_lowlevel_init();
+ 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
