@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jJtfm-0003Lx-UV
- for barebox@lists.infradead.org; Thu, 02 Apr 2020 06:49:56 +0000
-Date: Thu, 2 Apr 2020 08:49:53 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200402064953.GD29627@pengutronix.de>
-References: <20200331184722.22707-1-andrew.smirnov@gmail.com>
- <20200331184722.22707-12-andrew.smirnov@gmail.com>
+Received: from out203-205-221-149.mail.qq.com ([203.205.221.149] helo=qq.com)
+ by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat
+ Linux)) id 1jJttL-0003PR-JD
+ for barebox@lists.infradead.org; Thu, 02 Apr 2020 07:04:00 +0000
+From: you xiaojie <84640926@qq.com>
+Date: Thu, 02 Apr 2020 15:03:41 +0800
+Message-ID: <2790507.TRZ85U3XWg@allan-home>
+In-Reply-To: <1833400.Y7EmvgfLYE@allan-home>
+References: <1833400.Y7EmvgfLYE@allan-home>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200331184722.22707-12-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,194 +21,139 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 11/23] ARM: zii-common: Add common environment directory
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: bug report: fail to boot barebox in marvell 6281 board
+To: barebox@lists.infradead.org
 
-On Tue, Mar 31, 2020 at 11:47:10AM -0700, Andrey Smirnov wrote:
-> Establish a common environment directory between all ZII boards, so
-> that we could share common bits and pieces. As a first step, get rid
-> of board scecific net boot scripts and replace them with a single
-> shared one.
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  arch/arm/boards/zii-common/Makefile           |  1 +
->  .../defaultenv-zii-common}/boot/net           |  9 +++++--
->  arch/arm/boards/zii-imx51-rdu1/board.c        |  1 +
->  arch/arm/boards/zii-imx6q-rdu2/board.c        |  1 +
->  .../zii-imx6q-rdu2/defaultenv-rdu2/boot/net   | 24 -------------------
->  arch/arm/boards/zii-imx7d-dev/board.c         |  2 ++
->  arch/arm/boards/zii-imx8mq-dev/board.c        |  1 +
->  .../defaultenv-imx8mq-zii-dev/boot/net        | 24 -------------------
->  arch/arm/boards/zii-vf610-dev/board.c         |  1 +
->  9 files changed, 14 insertions(+), 50 deletions(-)
->  rename arch/arm/boards/{zii-imx51-rdu1/defaultenv-rdu1 => zii-common/defaultenv-zii-common}/boot/net (73%)
->  delete mode 100644 arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/boot/net
->  delete mode 100644 arch/arm/boards/zii-imx8mq-dev/defaultenv-imx8mq-zii-dev/boot/net
-> 
-> diff --git a/arch/arm/boards/zii-common/Makefile b/arch/arm/boards/zii-common/Makefile
-> index fcc5cdf97..90bdf21e7 100644
-> --- a/arch/arm/boards/zii-common/Makefile
-> +++ b/arch/arm/boards/zii-common/Makefile
-> @@ -1 +1,2 @@
->  obj-y += board.o switch-cmd.o pn-fixup.o
-> +bbenv-y += defaultenv-zii-common
-> diff --git a/arch/arm/boards/zii-imx51-rdu1/defaultenv-rdu1/boot/net b/arch/arm/boards/zii-common/defaultenv-zii-common/boot/net
-> similarity index 73%
-> rename from arch/arm/boards/zii-imx51-rdu1/defaultenv-rdu1/boot/net
-> rename to arch/arm/boards/zii-common/defaultenv-zii-common/boot/net
-> index 4be8e1e2d..8b07cbbc9 100644
-> --- a/arch/arm/boards/zii-imx51-rdu1/defaultenv-rdu1/boot/net
-> +++ b/arch/arm/boards/zii-common/defaultenv-zii-common/boot/net
-> @@ -2,8 +2,13 @@
->  
->  path="/mnt/tftp"
->  
-> -# clear seat network config
-> -global.linux.bootargs.rdu_network=
-> +#
-> +# Clear seat network config. Some boards don't have that config, so
-> +# check that it is set first
-> +#
-> +if [ -n ${global.linux.bootargs.rdu_network} ]; then
-> +    global.linux.bootargs.rdu_network=
-> +fi
->  
->  global.bootm.image="${path}/${global.user}-linux-${global.hostname}"
->  
-> diff --git a/arch/arm/boards/zii-imx51-rdu1/board.c b/arch/arm/boards/zii-imx51-rdu1/board.c
-> index 640bb0d1b..8fdcb7626 100644
-> --- a/arch/arm/boards/zii-imx51-rdu1/board.c
-> +++ b/arch/arm/boards/zii-imx51-rdu1/board.c
-> @@ -50,6 +50,7 @@ static int zii_rdu1_init(void)
->  		BBU_HANDLER_FLAG_DEFAULT |
->  		IMX_BBU_FLAG_PARTITION_STARTS_AT_HEADER);
->  
-> +	defaultenv_append_directory(defaultenv_zii_common);
->  	defaultenv_append_directory(defaultenv_rdu1);
->  
->  	return 0;
-> diff --git a/arch/arm/boards/zii-imx6q-rdu2/board.c b/arch/arm/boards/zii-imx6q-rdu2/board.c
-> index 0bb4700b6..6d6bc1caa 100644
-> --- a/arch/arm/boards/zii-imx6q-rdu2/board.c
-> +++ b/arch/arm/boards/zii-imx6q-rdu2/board.c
-> @@ -155,6 +155,7 @@ static int rdu2_devices_init(void)
->  
->  	imx6_bbu_internal_mmcboot_register_handler("eMMC", "/dev/mmc3", 0);
->  
-> +	defaultenv_append_directory(defaultenv_zii_common);
->  	defaultenv_append_directory(defaultenv_rdu2);
->  
->  	return 0;
-> diff --git a/arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/boot/net b/arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/boot/net
-> deleted file mode 100644
-> index 4090c2f4a..000000000
-> --- a/arch/arm/boards/zii-imx6q-rdu2/defaultenv-rdu2/boot/net
-> +++ /dev/null
-> @@ -1,24 +0,0 @@
-> -#!/bin/sh
-> -
-> -path="/mnt/tftp"
-> -
-> -# clear seat network config
-> -global.linux.bootargs.rdu_network=
-> -
-> -global.bootm.image="${path}/${global.user}-linux-${global.hostname}"
-> -
-> -oftree="${path}/${global.user}-oftree-${global.hostname}"
-> -if [ -f "${oftree}" ]; then
-> -	global.bootm.oftree="$oftree"
-> -fi
-> -
-> -nfsroot="/home/${global.user}/nfsroot/${global.hostname}"
-> -
-> -ip_route_get -b ${global.net.server} global.linux.bootargs.dyn.ip
-> -
-> -initramfs="${path}/${global.user}-initramfs-${global.hostname}"
-> -if [ -f "${initramfs}" ]; then
-> -	global.bootm.initrd="$initramfs"
-> -else
-> -	global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,v3,tcp"
-> -fi
-> \ No newline at end of file
-> diff --git a/arch/arm/boards/zii-imx7d-dev/board.c b/arch/arm/boards/zii-imx7d-dev/board.c
-> index b53a6af49..6b409e23b 100644
-> --- a/arch/arm/boards/zii-imx7d-dev/board.c
-> +++ b/arch/arm/boards/zii-imx7d-dev/board.c
-> @@ -55,6 +55,8 @@ static int zii_imx7d_dev_init(void)
->  	else if (of_machine_is_compatible("zii,imx7d-rmu2"))
->  		barebox_set_hostname("rmu2");
->  
-> +	defaultenv_append_directory(defaultenv_zii_common);
-> +
->  	return 0;
->  }
->  late_initcall(zii_imx7d_dev_init);
-> diff --git a/arch/arm/boards/zii-imx8mq-dev/board.c b/arch/arm/boards/zii-imx8mq-dev/board.c
-> index ddd15299c..285e889fe 100644
-> --- a/arch/arm/boards/zii-imx8mq-dev/board.c
-> +++ b/arch/arm/boards/zii-imx8mq-dev/board.c
-> @@ -39,6 +39,7 @@ static int zii_imx8mq_dev_init(void)
->  	else
->  		of_device_enable_path("/chosen/environment-sd");
->  
-> +	defaultenv_append_directory(defaultenv_zii_common);
->  	defaultenv_append_directory(defaultenv_imx8mq_zii_dev);
->  
->  	return 0;
-> diff --git a/arch/arm/boards/zii-imx8mq-dev/defaultenv-imx8mq-zii-dev/boot/net b/arch/arm/boards/zii-imx8mq-dev/defaultenv-imx8mq-zii-dev/boot/net
-> deleted file mode 100644
-> index 4090c2f4a..000000000
-> --- a/arch/arm/boards/zii-imx8mq-dev/defaultenv-imx8mq-zii-dev/boot/net
-> +++ /dev/null
-> @@ -1,24 +0,0 @@
-> -#!/bin/sh
-> -
-> -path="/mnt/tftp"
-> -
-> -# clear seat network config
-> -global.linux.bootargs.rdu_network=
-> -
-> -global.bootm.image="${path}/${global.user}-linux-${global.hostname}"
-> -
-> -oftree="${path}/${global.user}-oftree-${global.hostname}"
-> -if [ -f "${oftree}" ]; then
-> -	global.bootm.oftree="$oftree"
-> -fi
-> -
-> -nfsroot="/home/${global.user}/nfsroot/${global.hostname}"
-> -
-> -ip_route_get -b ${global.net.server} global.linux.bootargs.dyn.ip
-> -
-> -initramfs="${path}/${global.user}-initramfs-${global.hostname}"
-> -if [ -f "${initramfs}" ]; then
-> -	global.bootm.initrd="$initramfs"
-> -else
-> -	global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,v3,tcp"
-> -fi
-> \ No newline at end of file
-> diff --git a/arch/arm/boards/zii-vf610-dev/board.c b/arch/arm/boards/zii-vf610-dev/board.c
-> index 1d10f12f6..6b80ec428 100644
-> --- a/arch/arm/boards/zii-vf610-dev/board.c
-> +++ b/arch/arm/boards/zii-vf610-dev/board.c
-> @@ -141,6 +141,7 @@ static int zii_vf610_dev_set_hostname(void)
->  		}
->  	}
->  
-> +	defaultenv_append_directory(defaultenv_zii_common);
+the debugging message.
 
-The zii-vf610 doesn't set CONFIG_MACH_ZII_COMMON, so the common env is not
-compiled in which results in a linker error. What's the correct way to
-fix that? Specify CONFIG_MACH_ZII_COMMON for the vf610 board?
+allan@allan-home:/media/allan/c6293bbf-6fa1-49ca-9b01-24855a810e0e/barebox-
+test/barebox$ ./scripts/kwboot -b ./images/barebox-huanshuo-hs50a.img -n 15 -B 
+115200 -t /dev/ttyUSB0 
+Sending boot message. Please reboot the target...
+Got expected NAKs
+Sending boot image...
+  0 % [S.....................................................................]
+  2 % [......................................................................]
+  4 % [......................................................................]
+  7 % [......................................................................]
+  9 % [......................................................................]
+ 11 % [......................................................................]
+ 14 % [......................................................................]
+ 16 % [......................................................................]
+ 18 % [......................................................................]
+ 21 % [......................................................................]
+ 23 % [......................................................................]
+ 25 % [......................................................................]
+ 28 % [......................................................................]
+ 30 % [......................................................................]
+ 32 % [......................................................................]
+ 35 % [......................................................................]
+ 37 % [......................................................................]
+ 39 % [......................................................................]
+ 42 % [......................................................................]
+ 44 % [......................................................................]
+ 46 % [......................................................................]
+ 49 % [......................................................................]
+ 51 % [......................................................................]
+ 53 % [......................................................................]
+ 56 % [......................................................................]
+ 58 % [......................................................................]
+ 60 % [......................................................................]
+ 63 % [......................................................................]
+ 65 % [......................................................................]
+ 68 % [......................................................................]
+ 70 % [......................................................................]
+ 72 % [......................................................................]
+ 75 % [......................................................................]
+ 77 % [......................................................................]
+ 79 % [......................................................................]
+ 82 % [......................................................................]
+ 84 % [......................................................................]
+ 86 % [......................................................................]
+ 89 % [......................................................................]
+ 91 % [......................................................................]
+ 93 % [......................................................................]
+ 96 % [......................................................................]
+ 98 % [.............................................]
+[Type Ctrl-\ + c to quit]
+uncompress.c: memory at 0x00000000, size 0x20000000
+uncompress.c: enabling MMU, ttb @ 0x1ffe4000
+uncompress.c: uncompressing barebox binary at 0x010053e0 (size 0x00057dfe) to 
+0x1fe00000 (uncompressed size: 0x000a4ee0)
+uncompress.c: jumping to uncompressed image at 0x1fe00000
+start.c: memory at 0x00000000, size 0x20000000
+start.c: found DTB in boarddata, copying to 0x1fdfcc40
+start.c: initializing malloc pool at 0x0fefe620 (size 0x0fefe620)
+start.c: starting barebox...
+initcall-> globalvar_init+0x0/0x48
+allan@allan-home:/media/allan/c6293bbf-6fa1-49ca-9b01-24855a810e0e/barebox-
+test/barebox$ scripts/kwboot -b images/barebox-globalscale-guruplug.img -n 15 
+-B 115200 -t /dev/ttyUSB0 
+Sending boot message. Please reboot the 
+target...w\xbb\xbbw\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbbU\xbb\xddww\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddw\xdd\xbb\xdd\xbb\xbbU\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddww\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddww\xbb\xbb\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xddw\xdd\xbb\xbbU\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xddw\xdd\xbb\xbbU\xbb\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbbU\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xddw\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xddww\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbbU\xbb\xddww\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbbw\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddww\xbb\xbb\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddww\xbb\xbb\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddw\xdd\xbb\xdd\xbb\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xddww\xbb\xbb\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbbUww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xddww\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xddw\xdd\xbb\xbbU\xbb\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xddw\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbbw\xbb\xbbU\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddw\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbbU\xddU\xbb\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xddww\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddww\xbb\xbb\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xddw\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbbwU\xbb\xddw\xbb\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xddwU\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xdd\xbbU\xbb\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xddw\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xddww\xbb\xbb\xbb\xbbU\xbb\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddww\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xdd^C
+allan@allan-home:/media/allan/c6293bbf-6fa1-49ca-9b01-24855a810e0e/barebox-
+test/barebox$ scripts/kwboot -b images/barebox-globalscale-guruplug.img -n 15 
+-B 115200 -t /dev/ttyUSB0 
+Sending boot message. Please reboot the target...
+Got expected NAKs
+Sending boot image...
+  0 % [S.....................................................................]
+  2 % [......................................................................]
+  4 % [......................................................................]
+  7 % [......................................................................]
+  9 % [......................................................................]
+ 11 % [......................................................................]
+ 14 % [......................................................................]
+ 16 % [......................................................................]
+ 18 % [......................................................................]
+ 21 % [......................................................................]
+ 23 % [......................................................................]
+ 26 % [......................................................................]
+ 28 % [......................................................................]
+ 30 % [......................................................................]
+ 33 % [......................................................................]
+ 35 % [......................................................................]
+ 37 % [......................................................................]
+ 40 % [......................................................................]
+ 42 % [......................................................................]
+ 44 % [......................................................................]
+ 47 % [......................................................................]
+ 49 % [......................................................................]
+ 52 % [......................................................................]
+ 54 % [......................................................................]
+ 56 % [......................................................................]
+ 59 % [......................................................................]
+ 61 % [......................................................................]
+ 63 % [......................................................................]
+ 66 % [......................................................................]
+ 68 % [......................................................................]
+ 70 % [......................................................................]
+ 73 % [......................................................................]
+ 75 % [......................................................................]
+ 78 % [......................................................................]
+ 80 % [......................................................................]
+ 82 % [......................................................................]
+ 85 % [......................................................................]
+ 87 % [......................................................................]
+ 89 % [......................................................................]
+ 92 % [......................................................................]
+ 94 % [......................................................................]
+ 96 % [......................................................................]
+ 99 % [......................]
+[Type Ctrl-\ + c to quit]
+uncompress.c: memory at 0x00000000, size 0x20000000
+uncompress.c: enabling MMU, ttb @ 0x1ffe4000
+uncompress.c: uncompressing barebox binary at 0x01004820 (size 0x00057dfe) to 
+0x1fe00000 (uncompressed size: 0x000a4ee0)
+uncompress.c: jumping to uncompressed image at 0x1fe00000
+start.c: memory at 0x00000000, size 0x20000000
+start.c: found DTB in boarddata, copying to 0x1fdfd800
+start.c: initializing malloc pool at 0x0fefec00 (size 0x0fefec00)
+start.c: starting barebox...
+initcall-> globalvar_init+0x0/0x48
 
-Sascha
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 
 _______________________________________________
 barebox mailing list
