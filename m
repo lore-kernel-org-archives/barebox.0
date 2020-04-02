@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vi1eur05olkn2034.outbound.protection.outlook.com
- ([40.92.90.34] helo=EUR05-VI1-obe.outbound.protection.outlook.com)
+Received: from mail-am6eur05olkn2056.outbound.protection.outlook.com
+ ([40.92.91.56] helo=EUR05-AM6-obe.outbound.protection.outlook.com)
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jJv5i-0008P4-KS
- for barebox@lists.infradead.org; Thu, 02 Apr 2020 08:20:47 +0000
+ id 1jJv6b-00005H-Ih
+ for barebox@lists.infradead.org; Thu, 02 Apr 2020 08:21:43 +0000
 From: Michael Graichen <michael.graichen@hotmail.com>
-Date: Thu, 2 Apr 2020 08:20:44 +0000
-Message-ID: <DB7PR02MB4332068A12A06E6B1C4485BEABC60@DB7PR02MB4332.eurprd02.prod.outlook.com>
+Date: Thu, 2 Apr 2020 08:21:38 +0000
+Message-ID: <DB7PR02MB4332B4E518B456DF86F01A6DABC60@DB7PR02MB4332.eurprd02.prod.outlook.com>
 Content-Language: de-DE
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
@@ -21,35 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/7] Zedboard fix GEM0 MIO Settings
+Subject: [PATCH 5/7] Zedboard added FPGA and PCAP clock control
 To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-fixed GEM0 MIO Settings according to what Vivado says
+Added the configuration for FPGA an PCAP clock control
 
 diff --git a/arch/arm/boards/avnet-zedboard/lowlevel.c b/arch/arm/boards/avnet-zedboard/lowlevel.c
-index 912eb11fd..6f05d934c 100644
+index 6f05d934c..b8001fcf6 100644
 --- a/arch/arm/boards/avnet-zedboard/lowlevel.c
 +++ b/arch/arm/boards/avnet-zedboard/lowlevel.c
-@@ -258,7 +258,7 @@ static void avnet_zedboard_ps7_init(void)
- 
- 	/* GEM0 */
- 	writel(0x00000001, 0xf8000138);
--	writel(0x00500801, 0xf8000140);
-+	writel(0x00100801, 0xf8000140);
- 	writel(0x00000302, 0xf8000740);
- 	writel(0x00000302, 0xf8000744);
- 	writel(0x00000302, 0xf8000748);
-@@ -271,8 +271,8 @@ static void avnet_zedboard_ps7_init(void)
- 	writel(0x00001303, 0xf8000764);
- 	writel(0x00001303, 0xf8000768);
- 	writel(0x00001303, 0xf800076C);
--	writel(0x00001280, 0xf80007D0);
--	writel(0x00001280, 0xf80007D4);
-+	writel(0x00000280, 0xf80007D0);
-+	writel(0x00000280, 0xf80007D4);
+@@ -276,6 +276,15 @@ static void avnet_zedboard_ps7_init(void)
  
  	writel(0x00000001, 0xf8000B00);
  
++	/* FPGA Clock Control */
++	writel(0x00101400, 0xf8000170);
++	writel(0x00101400, 0xf8000180);
++	writel(0x00101400, 0xf8000190);
++	writel(0x00101400, 0xf80001a0);
++
++	/* PCAP Clock Control */
++	writel(0x00000501, 0xf8000168);
++
+ 	/* lock up. secure, secure */
+ 	writel(0x0000767B, ZYNQ_SLCR_LOCK);
+ }
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
