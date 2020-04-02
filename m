@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from out203-205-221-155.mail.qq.com ([203.205.221.155] helo=qq.com)
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat
- Linux)) id 1jJxYB-0006ZW-TM
- for barebox@lists.infradead.org; Thu, 02 Apr 2020 10:58:24 +0000
-From: you xiaojie <84640926@qq.com>
-Date: Thu, 02 Apr 2020 18:58:06 +0800
-Message-ID: <1731375.H2GoEzf6xr@allan-home>
-In-Reply-To: <20200402092510.GH27288@pengutronix.de>
-References: <1833400.Y7EmvgfLYE@allan-home> <52873740.qfR1zLsytf@allan-home>
- <20200402092510.GH27288@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jK5sL-0000kM-L7
+ for barebox@lists.infradead.org; Thu, 02 Apr 2020 19:51:43 +0000
+Date: Thu, 2 Apr 2020 21:51:36 +0200
+From: Roland Hieber <rhi@pengutronix.de>
+Message-ID: <20200402195136.iwkuaeu54y6idbrl@pengutronix.de>
+References: <20200401093104.959691-1-ahmad@a3f.at>
+ <20200401093104.959691-2-ahmad@a3f.at>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200401093104.959691-2-ahmad@a3f.at>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,151 +19,27 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: bug report: fail to boot barebox in marvell 6281 board
-To: barebox@lists.infradead.org
+Subject: Re: [RFC PATCH 1/4] ARM: implement sjlj-based TRY/CATCH exception
+ handling
+To: Ahmad Fatoum <ahmad@a3f.at>
+Cc: barebox@lists.infradead.org
 
-On Thursday, April 2, 2020 5:25:10 PM CST Sascha Hauer wrote:
-> +Cc Marvell expert <ukl@pengutronix.de>
-> 
-> On Thu, Apr 02, 2020 at 04:02:57PM +0800, you xiaojie wrote:
-> > On Thursday, April 2, 2020 3:41:54 PM CST Sascha Hauer wrote:
-> > > On Thu, Apr 02, 2020 at 03:03:41PM +0800, you xiaojie wrote:
-> > > > the debugging message.
-> > > > 
-> > > > allan@allan-home:/media/allan/c6293bbf-6fa1-49ca-9b01-24855a810e0e/bar
-> > > > ebox
-> > > > -
-> > > > test/barebox$ ./scripts/kwboot -b ./images/barebox-huanshuo-hs50a.img
-> > > > -n
-> > > > 15 -B 115200 -t /dev/ttyUSB0
-> > > > Sending boot message. Please reboot the target...
-> > > > Got expected NAKs
-> > > > Sending boot image...
-> > > > 
-> > > >  86 %
-> > > >  [....................................................................
-> > > >  ..]
-> > > >  89 %
-> > > >  [....................................................................
-> > > >  ..]
-> > > >  91 %
-> > > >  [....................................................................
-> > > >  ..]
-> > > >  93 %
-> > > >  [....................................................................
-> > > >  ..]
-> > > >  96 %
-> > > >  [....................................................................
-> > > >  ..]
-> > > >  98 % [.............................................]
-> > > > 
-> > > > [Type Ctrl-\ + c to quit]
-> > > > uncompress.c: memory at 0x00000000, size 0x20000000
-> > > > uncompress.c: enabling MMU, ttb @ 0x1ffe4000
-> > > > uncompress.c: uncompressing barebox binary at 0x010053e0 (size
-> > > > 0x00057dfe)
-> > > > to 0x1fe00000 (uncompressed size: 0x000a4ee0)
-> > > > uncompress.c: jumping to uncompressed image at 0x1fe00000
-> > > > start.c: memory at 0x00000000, size 0x20000000
-> > > > start.c: found DTB in boarddata, copying to 0x1fdfcc40
-> > > > start.c: initializing malloc pool at 0x0fefe620 (size 0x0fefe620)
-> > > > start.c: starting barebox...
-> > > > initcall-> globalvar_init+0x0/0x48
-> > > 
-> > > This looks all perfectly fine until here. I have no idea what goes wrong
-> > > here. You need a binary.0 file for this board, right? Are you sure that
-> > > works? Did you extract it from some working U-Boot?
-> > > It might also be a toolchain related issue. Which toolchain are you
-> > > using?
-> > > 
-> > > Sascha
-> > 
-> > binary.0? no I don't think so.for armada 370, need. for
-> > kirkwood,kwbimage.cfg complete such memory initialisation work. so there
-> > is no need binary.0 file. that is to see in images/Makefile.
-> > this is kwbimage from uboot setting registry  for mem init. also in 6281
-> > datasheet (publicly available on internet)
-> 
-> Ok, I am not very familiar with these SoCs. I thought there generally is
-> a binary.0 file necessary.
-> 
-> > DATA 0xFFD01514 0x00000000	# CS[2]n Size, window disabled
-> > DATA 0xFFD0151C 0x00000000	# CS[3]n Size, window disabled
-> > 
-> > DATA 0xFFD01494 0x00030000	#  DDR ODT Control (Low)
-> > DATA 0xFFD01498 0x00000000	#  DDR ODT Control (High)
-> > # bit1-0:  00, ODT0 controlled by ODT Control (low) register above
-> > # bit3-2:  01, ODT1 active NEVER!
-> > # bit31-4: zero, required
-> > 
-> > DATA 0xFFD0149C 0x0000E803	# CPU ODT Control
-> > DATA 0xFFD01480 0x00000001	# DDR Initialization Control
-> > #bit0=1, enable DDR init upon this register write
-> > 
-> > 
-> > what is the register's base mem address for uboot or barebox?
-> > where to define 0xffd00000 base address?
-> 
-> I am a bit confused. In arch/arm/mach-mvebu/common.c we have:
-> 
-> /*
->  * All MVEBU SoCs start with internal registers at 0xd0000000.
->  * To get more contiguous address space and as Linux expects them
->  * there, we remap them early to 0xf1000000.
->  */
-> 
-> It seems this is not true for Kirkwood??
-> 
-> Sascha
-
-I also noticed: barebox/arch/arm/mach-mvebu/include/mach/common.h
-
-#ifndef __MACH_COMMON_H__
-#define __MACH_COMMON_H__
-
-#include <asm/sections.h>
-#include <asm/unaligned.h>
-
-#define MVEBU_BOOTUP_INT_REG_BASE	0xd0000000
-#define MVEBU_REMAP_INT_REG_BASE	0xf1000000
-
-/* #including <asm/barebox-arm.h> yields a circle, so we need a forward decl 
-*/
-unsigned long get_runtime_offset(void);
-
-static inline void __iomem *mvebu_get_initial_int_reg_base(void)
-{
-#ifdef __PBL__
-	u32 base = __get_unaligned_le32(_text + get_runtime_offset() + 
-0x30);
-	return (void __force __iomem *)base;
-#else
-	return (void __force __iomem *)MVEBU_REMAP_INT_REG_BASE;
-#endif
-}
-
-#endif
-
-take this as example DATA 0xFFD0149C 0x0000E803,
-in datasheet,
-Table 189:DDR Controller ODT Control Register
-Offset: 0x0149C
-.......(omitted)
-
-so what is 0xffd00000? in uboot could not find barbox is also not find .
-strange value. 
-
-however this file should work in uboot. I try again for sure.
-
-
-
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gV2VkLCBBcHIgMDEsIDIwMjAgYXQgMTE6MzE6MDFBTSArMDIwMCwgQWhtYWQgRmF0b3VtIHdy
+b3RlOgo+IE5vdyB3aXRoIHNldGptcCBzdXBwb3J0ZWQgaW4gYmFyZWJveCwgd2UgZG9uJ3QgbmVl
+ZCB0byBsaW1pdCBvdXJzZWx2ZXMKPiB0byBvdXRkYXRlZCBvZiByZXR1cm4tdmFsdWUtYmFzZWQg
+ZXJyb3IgcHJvcGFnYXRpb24uCj4gSW5zdGVhZCwgZW1icmFjZSB0aGUgc3RhdGUtb2YtdGhlLWFy
+dCBhbmQgcG9ydCBrYXpsaWIncyBBTlNJIEMgZXhjZXB0aW9ucwo+IHRvIGJhcmVib3guCj4gCj4g
+UmV2aWV3ZWQtYnk6IEFobWFkIEZhdG91bSA8YWhtYWRAYTNmLmF0PgoKU2VsZi1yZXZpZXcg4oCm
+PyBPciBzdXBwb3NlZCB0byBiZSBhIFMtby1iPwoKICAtIFJvbGFuZAoKLS0gClJvbGFuZCBIaWVi
+ZXIsIFBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgfCByLmhpZWJlckBwZW5ndXRyb25peC5kZSAg
+ICAgfApTdGV1ZXJ3YWxkZXIgU3RyLiAyMSAgICAgICAgICAgICAgICAgICAgIHwgaHR0cHM6Ly93
+d3cucGVuZ3V0cm9uaXguZGUvIHwKMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSAgICAgICAgICAg
+ICAgICB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hl
+aW0sIEhSQSAyNjg2ICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWls
+aW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRl
+YWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
