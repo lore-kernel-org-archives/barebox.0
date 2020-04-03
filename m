@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vi1eur05olkn2094.outbound.protection.outlook.com
- ([40.92.90.94] helo=EUR05-VI1-obe.outbound.protection.outlook.com)
+Received: from mail-lf1-x142.google.com ([2a00:1450:4864:20::142])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jJvFy-0006RZ-Ts
- for barebox@lists.infradead.org; Thu, 02 Apr 2020 08:31:24 +0000
-From: Michael Graichen <michael.graichen@hotmail.com>
-Date: Thu, 2 Apr 2020 08:17:13 +0000
-Message-ID: <DB7PR02MB4332F07BA9744FEC9468F90EABC60@DB7PR02MB4332.eurprd02.prod.outlook.com>
-Content-Language: de-DE
+ id 1jKLPt-0001ox-ML
+ for barebox@lists.infradead.org; Fri, 03 Apr 2020 12:27:24 +0000
+Received: by mail-lf1-x142.google.com with SMTP id s13so5602287lfb.9
+ for <barebox@lists.infradead.org>; Fri, 03 Apr 2020 05:27:20 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Fri,  3 Apr 2020 15:26:59 +0300
+Message-Id: <20200403122659.32298-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,27 +21,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/7] Zedboard: Arasan MMC driver 
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] startup: introduce global.endianity variable
+To: barebox@lists.infradead.org
 
-The Arasan driver depends on the SDHCI driver, without it we will see 
-undefined references while linking
-arasan-sdhci.c:283: undefined reference to `sdhci_set_cmd_xfer_mode'
-arasan-sdhci.c:299: undefined reference to `sdhci_read_response'
-arasan-sdhci.c:303: undefined reference to `sdhci_transfer_data'
+The global.endianity variable make it possible
+to determine current endian mode from command
+line or from script on bi-endian capable system.
 
-diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
-index 80b3a2600..9f56bed3a 100644
---- a/drivers/mci/Kconfig
-+++ b/drivers/mci/Kconfig
-@@ -141,6 +141,7 @@ config MCI_TEGRA
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ common/globalvar.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/common/globalvar.c b/common/globalvar.c
+index c87f2c9339..7632cb6418 100644
+--- a/common/globalvar.c
++++ b/common/globalvar.c
+@@ -591,6 +591,8 @@ int globalvar_add_simple_ip(const char *name, IPaddr_t *ip)
  
- config MCI_ARASAN
- 	bool "Arasan SDHCI Controller"
-+	select MCI_SDHCI
- 	help
- 	  Enable this to support SD and MMC card read/write on systems with
- 	  the Arasan SD3.0 / SDIO3.0 / eMMC4.51 host controller.
+ static int globalvar_init(void)
+ {
++	const char *endianity;
++
+ 	register_device(&global_device);
+ 
+ 	if (IS_ENABLED(CONFIG_NVVAR))
+@@ -598,11 +600,19 @@ static int globalvar_init(void)
+ 
+ 	globalvar_add_simple("version", UTS_RELEASE);
+ 
++	if (IS_ENABLED(CONFIG_CPU_BIG_ENDIAN))
++		endianity = "big";
++	else
++		endianity = "little";
++
++	globalvar_add_simple("endianity", endianity);
++
+ 	return 0;
+ }
+ pure_initcall(globalvar_init);
+ 
+ BAREBOX_MAGICVAR_NAMED(global_version, global.version, "The barebox version");
++BAREBOX_MAGICVAR_NAMED(global_endianity, global.endianity, "The barebox endianity");
+ 
+ /**
+  * nvvar_save - save NV variables to persistent environment
+-- 
+2.25.0
+
+
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
