@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from out203-205-221-149.mail.qq.com ([203.205.221.149] helo=qq.com)
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat
- Linux)) id 1jJttL-0003PR-JD
- for barebox@lists.infradead.org; Thu, 02 Apr 2020 07:04:00 +0000
-From: you xiaojie <84640926@qq.com>
-Date: Thu, 02 Apr 2020 15:03:41 +0800
-Message-ID: <2790507.TRZ85U3XWg@allan-home>
-In-Reply-To: <1833400.Y7EmvgfLYE@allan-home>
-References: <1833400.Y7EmvgfLYE@allan-home>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jKFVp-0004HB-1f
+ for barebox@lists.infradead.org; Fri, 03 Apr 2020 06:09:06 +0000
+References: <20200401093104.959691-1-ahmad@a3f.at>
+ <20200401093104.959691-2-ahmad@a3f.at>
+ <20200402195136.iwkuaeu54y6idbrl@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <91afd3e3-9863-8ee1-4150-f0c8cb415607@pengutronix.de>
+Date: Fri, 3 Apr 2020 08:09:00 +0200
 MIME-Version: 1.0
+In-Reply-To: <20200402195136.iwkuaeu54y6idbrl@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,145 +20,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: bug report: fail to boot barebox in marvell 6281 board
-To: barebox@lists.infradead.org
+Subject: Re: [RFC PATCH 1/4] ARM: implement sjlj-based TRY/CATCH exception
+ handling
+To: Roland Hieber <rhi@pengutronix.de>, Ahmad Fatoum <ahmad@a3f.at>
+Cc: barebox@lists.infradead.org
 
-the debugging message.
-
-allan@allan-home:/media/allan/c6293bbf-6fa1-49ca-9b01-24855a810e0e/barebox-
-test/barebox$ ./scripts/kwboot -b ./images/barebox-huanshuo-hs50a.img -n 15 -B 
-115200 -t /dev/ttyUSB0 
-Sending boot message. Please reboot the target...
-Got expected NAKs
-Sending boot image...
-  0 % [S.....................................................................]
-  2 % [......................................................................]
-  4 % [......................................................................]
-  7 % [......................................................................]
-  9 % [......................................................................]
- 11 % [......................................................................]
- 14 % [......................................................................]
- 16 % [......................................................................]
- 18 % [......................................................................]
- 21 % [......................................................................]
- 23 % [......................................................................]
- 25 % [......................................................................]
- 28 % [......................................................................]
- 30 % [......................................................................]
- 32 % [......................................................................]
- 35 % [......................................................................]
- 37 % [......................................................................]
- 39 % [......................................................................]
- 42 % [......................................................................]
- 44 % [......................................................................]
- 46 % [......................................................................]
- 49 % [......................................................................]
- 51 % [......................................................................]
- 53 % [......................................................................]
- 56 % [......................................................................]
- 58 % [......................................................................]
- 60 % [......................................................................]
- 63 % [......................................................................]
- 65 % [......................................................................]
- 68 % [......................................................................]
- 70 % [......................................................................]
- 72 % [......................................................................]
- 75 % [......................................................................]
- 77 % [......................................................................]
- 79 % [......................................................................]
- 82 % [......................................................................]
- 84 % [......................................................................]
- 86 % [......................................................................]
- 89 % [......................................................................]
- 91 % [......................................................................]
- 93 % [......................................................................]
- 96 % [......................................................................]
- 98 % [.............................................]
-[Type Ctrl-\ + c to quit]
-uncompress.c: memory at 0x00000000, size 0x20000000
-uncompress.c: enabling MMU, ttb @ 0x1ffe4000
-uncompress.c: uncompressing barebox binary at 0x010053e0 (size 0x00057dfe) to 
-0x1fe00000 (uncompressed size: 0x000a4ee0)
-uncompress.c: jumping to uncompressed image at 0x1fe00000
-start.c: memory at 0x00000000, size 0x20000000
-start.c: found DTB in boarddata, copying to 0x1fdfcc40
-start.c: initializing malloc pool at 0x0fefe620 (size 0x0fefe620)
-start.c: starting barebox...
-initcall-> globalvar_init+0x0/0x48
-allan@allan-home:/media/allan/c6293bbf-6fa1-49ca-9b01-24855a810e0e/barebox-
-test/barebox$ scripts/kwboot -b images/barebox-globalscale-guruplug.img -n 15 
--B 115200 -t /dev/ttyUSB0 
-Sending boot message. Please reboot the 
-target...w\xbb\xbbw\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbbU\xbb\xddww\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddw\xdd\xbb\xdd\xbb\xbbU\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddww\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddww\xbb\xbb\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xddw\xdd\xbb\xbbU\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xddw\xdd\xbb\xbbU\xbb\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbbU\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xddw\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xddww\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbbU\xbb\xddww\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbbw\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddww\xbb\xbb\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddww\xbb\xbb\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddw\xdd\xbb\xdd\xbb\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xddww\xbb\xbb\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbbUww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xddww\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xddw\xdd\xbb\xbbU\xbb\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xddw\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbbw\xbb\xbbU\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddw\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbbU\xddU\xbb\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xddww\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddww\xbb\xbb\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xddw\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbbwU\xbb\xddw\xbb\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xddwU\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xdd\xbbU\xbb\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xddw\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xddww\xbb\xbb\xbb\xbbU\xbb\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddww\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xddww\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xbb\xddw\xdd\xbb\xdd\xbb\xdd\xbb\xdd\xbb\xbbU\xbb\xdd^C
-allan@allan-home:/media/allan/c6293bbf-6fa1-49ca-9b01-24855a810e0e/barebox-
-test/barebox$ scripts/kwboot -b images/barebox-globalscale-guruplug.img -n 15 
--B 115200 -t /dev/ttyUSB0 
-Sending boot message. Please reboot the target...
-Got expected NAKs
-Sending boot image...
-  0 % [S.....................................................................]
-  2 % [......................................................................]
-  4 % [......................................................................]
-  7 % [......................................................................]
-  9 % [......................................................................]
- 11 % [......................................................................]
- 14 % [......................................................................]
- 16 % [......................................................................]
- 18 % [......................................................................]
- 21 % [......................................................................]
- 23 % [......................................................................]
- 26 % [......................................................................]
- 28 % [......................................................................]
- 30 % [......................................................................]
- 33 % [......................................................................]
- 35 % [......................................................................]
- 37 % [......................................................................]
- 40 % [......................................................................]
- 42 % [......................................................................]
- 44 % [......................................................................]
- 47 % [......................................................................]
- 49 % [......................................................................]
- 52 % [......................................................................]
- 54 % [......................................................................]
- 56 % [......................................................................]
- 59 % [......................................................................]
- 61 % [......................................................................]
- 63 % [......................................................................]
- 66 % [......................................................................]
- 68 % [......................................................................]
- 70 % [......................................................................]
- 73 % [......................................................................]
- 75 % [......................................................................]
- 78 % [......................................................................]
- 80 % [......................................................................]
- 82 % [......................................................................]
- 85 % [......................................................................]
- 87 % [......................................................................]
- 89 % [......................................................................]
- 92 % [......................................................................]
- 94 % [......................................................................]
- 96 % [......................................................................]
- 99 % [......................]
-[Type Ctrl-\ + c to quit]
-uncompress.c: memory at 0x00000000, size 0x20000000
-uncompress.c: enabling MMU, ttb @ 0x1ffe4000
-uncompress.c: uncompressing barebox binary at 0x01004820 (size 0x00057dfe) to 
-0x1fe00000 (uncompressed size: 0x000a4ee0)
-uncompress.c: jumping to uncompressed image at 0x1fe00000
-start.c: memory at 0x00000000, size 0x20000000
-start.c: found DTB in boarddata, copying to 0x1fdfd800
-start.c: initializing malloc pool at 0x0fefec00 (size 0x0fefec00)
-start.c: starting barebox...
-initcall-> globalvar_init+0x0/0x48
-
-
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gNC8yLzIwIDk6NTEgUE0sIFJvbGFuZCBIaWViZXIgd3JvdGU6Cj4gT24gV2VkLCBBcHIgMDEs
+IDIwMjAgYXQgMTE6MzE6MDFBTSArMDIwMCwgQWhtYWQgRmF0b3VtIHdyb3RlOgo+PiBOb3cgd2l0
+aCBzZXRqbXAgc3VwcG9ydGVkIGluIGJhcmVib3gsIHdlIGRvbid0IG5lZWQgdG8gbGltaXQgb3Vy
+c2VsdmVzCj4+IHRvIG91dGRhdGVkIG9mIHJldHVybi12YWx1ZS1iYXNlZCBlcnJvciBwcm9wYWdh
+dGlvbi4KPj4gSW5zdGVhZCwgZW1icmFjZSB0aGUgc3RhdGUtb2YtdGhlLWFydCBhbmQgcG9ydCBr
+YXpsaWIncyBBTlNJIEMgZXhjZXB0aW9ucwo+PiB0byBiYXJlYm94Lgo+Pgo+PiBSZXZpZXdlZC1i
+eTogQWhtYWQgRmF0b3VtIDxhaG1hZEBhM2YuYXQ+Cj4gCj4gU2VsZi1yZXZpZXcg4oCmPyBPciBz
+dXBwb3NlZCB0byBiZSBhIFMtby1iPwoKVG9vIGh1bWJsZWQgdG8gY2xhaW0gY28tYXV0aG9yc2hp
+cCBvZiBzdWNoIGludHJpY2F0ZSBiZWF1dHkuClRoaXMgaXMgbm90IG1hZGUsIGJ1dCBkaXNjb3Zl
+cmVkLCBhbmQgYXMgc3VjaCB0cmFuc2NlbmRzIHRoZSBEQ08uLi4KCkNoZWVycwpBaG1hZAoKPiAK
+PiAgIC0gUm9sYW5kCj4gCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAg
+ICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKU3RldWVyd2FsZGVyIFN0ci4g
+MjEgICAgICAgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwK
+MzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSAgICAgICAgICAgICAgICAgIHwgUGhvbmU6ICs0OS01
+MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAg
+ICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hA
+bGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xp
+c3RpbmZvL2JhcmVib3gK
