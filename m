@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jKpQA-0002bQ-Hq
- for barebox@lists.infradead.org; Sat, 04 Apr 2020 20:29:40 +0000
+ id 1jKpQC-0002cq-BC
+ for barebox@lists.infradead.org; Sat, 04 Apr 2020 20:29:42 +0000
 From: Clement Leger <cleger@kalray.eu>
-Date: Sat,  4 Apr 2020 22:29:08 +0200
-Message-Id: <20200404202910.12524-5-cleger@kalray.eu>
+Date: Sat,  4 Apr 2020 22:29:10 +0200
+Message-Id: <20200404202910.12524-7-cleger@kalray.eu>
 In-Reply-To: <20200404202910.12524-1-cleger@kalray.eu>
 References: <20200404202910.12524-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
@@ -21,166 +21,164 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 4/6] kvx: Implement reset source and reset
+Subject: [PATCH v2 6/6] watchdog: kvx: Add kvx watchdog support
 To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
 Cc: Clement Leger <cleger@kalray.eu>
 
-Implement reset and reset source handling using ftu. This support uses
-regmap to access the ftu easily using "kalray,kvx-syscon" compatible.
+Add a watchdog for kvx architecture based on core watchdog.
 
 Signed-off-by: Clement Leger <cleger@kalray.eu>
 ---
- arch/kvx/Kconfig                   |  2 +
- arch/kvx/configs/generic_defconfig |  1 +
- arch/kvx/cpu/Makefile              |  2 +-
- arch/kvx/cpu/reset.c               | 67 ++++++++++++++++++++++++++++++
- arch/kvx/include/asm/ftu.h         | 24 +++++++++++
- 5 files changed, 95 insertions(+), 1 deletion(-)
- create mode 100644 arch/kvx/cpu/reset.c
- create mode 100644 arch/kvx/include/asm/ftu.h
+ arch/kvx/configs/generic_defconfig |  3 +
+ drivers/watchdog/Kconfig           |  6 ++
+ drivers/watchdog/Makefile          |  1 +
+ drivers/watchdog/kvx_wdt.c         | 94 ++++++++++++++++++++++++++++++
+ 4 files changed, 104 insertions(+)
+ create mode 100644 drivers/watchdog/kvx_wdt.c
 
-diff --git a/arch/kvx/Kconfig b/arch/kvx/Kconfig
-index 5af94cca7..5463bb4f1 100644
---- a/arch/kvx/Kconfig
-+++ b/arch/kvx/Kconfig
-@@ -7,9 +7,11 @@ config KVX
- 	select FLEXIBLE_BOOTARGS
- 	select GENERIC_FIND_NEXT_BIT
- 	select LIBFDT
-+	select MFD_SYSCON
- 	select OF_BAREBOX_DRIVERS
- 	select OFDEVICE
- 	select PARTITION
-+	select RESET_SOURCE
- 	default y
- 
- config PHYS_ADDR_T_64BIT
 diff --git a/arch/kvx/configs/generic_defconfig b/arch/kvx/configs/generic_defconfig
-index 535f1cf8b..3f7bb0f19 100644
+index d0c2252bf..f9ff773a0 100644
 --- a/arch/kvx/configs/generic_defconfig
 +++ b/arch/kvx/configs/generic_defconfig
-@@ -4,6 +4,7 @@ CONFIG_BAUDRATE=115200
- CONFIG_CMD_CMP=y
+@@ -6,6 +6,9 @@ CONFIG_CMD_CMP=y
  CONFIG_CMD_OF_DUMP=y
  CONFIG_CMD_POWEROFF=y
-+CONFIG_CMD_RESET=y
+ CONFIG_CMD_RESET=y
++CONFIG_CMD_WD=y
  CONFIG_CONSOLE_RATP=y
  CONFIG_DRIVER_SERIAL_NS16550=y
  CONFIG_PINCTRL_SINGLE=y
-diff --git a/arch/kvx/cpu/Makefile b/arch/kvx/cpu/Makefile
-index 1d0635206..4a140ffd1 100644
---- a/arch/kvx/cpu/Makefile
-+++ b/arch/kvx/cpu/Makefile
-@@ -3,5 +3,5 @@
- # Copyright (C) 2019 Kalray Inc.
- #
++CONFIG_WATCHDOG=y
++CONFIG_WATCHDOG_KVX=y
+diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+index 45dd41a2a..fe979d930 100644
+--- a/drivers/watchdog/Kconfig
++++ b/drivers/watchdog/Kconfig
+@@ -70,6 +70,12 @@ config WATCHDOG_ORION
+ 	help
+ 	  Add support for watchdog on the Marvall Armada XP
  
--obj-y 		+= start.o cpu.o exception.o
-+obj-y 		+= start.o cpu.o exception.o reset.o
- extra-y 	+= barebox.lds
-diff --git a/arch/kvx/cpu/reset.c b/arch/kvx/cpu/reset.c
++config WATCHDOG_KVX
++	bool "KVX Core watchdog"
++	depends on KVX
++	help
++	  Add support for the KVX core watchdog.
++
+ config WATCHDOG_BCM2835
+ 	bool "Watchdog for BCM283x SoCs"
+ 	depends on ARCH_BCM283X
+diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
+index 63efc2a87..3af64db3f 100644
+--- a/drivers/watchdog/Makefile
++++ b/drivers/watchdog/Makefile
+@@ -8,6 +8,7 @@ obj-$(CONFIG_WATCHDOG_DW) += dw_wdt.o
+ obj-$(CONFIG_WATCHDOG_JZ4740) += jz4740.o
+ obj-$(CONFIG_WATCHDOG_IMX_RESET_SOURCE) += imxwd.o
+ obj-$(CONFIG_WATCHDOG_IMX) += imxwd.o
++obj-$(CONFIG_WATCHDOG_KVX) += kvx_wdt.o
+ obj-$(CONFIG_WATCHDOG_ORION) += orion_wdt.o
+ obj-$(CONFIG_ARCH_BCM283X) += bcm2835_wdt.o
+ obj-$(CONFIG_RAVE_SP_WATCHDOG) += rave-sp-wdt.o
+diff --git a/drivers/watchdog/kvx_wdt.c b/drivers/watchdog/kvx_wdt.c
 new file mode 100644
-index 000000000..c7f2018e0
+index 000000000..da19136fd
 --- /dev/null
-+++ b/arch/kvx/cpu/reset.c
-@@ -0,0 +1,67 @@
++++ b/drivers/watchdog/kvx_wdt.c
+@@ -0,0 +1,94 @@
 +// SPDX-License-Identifier: GPL-2.0-or-later
 +/*
-+ * Copyright (C) 2020 Kalray Inc.
++ * Copyright (C) 2018 Kalray Inc.
 + */
 +
 +#include <common.h>
-+#include <reset_source.h>
-+#include <mfd/syscon.h>
-+#include <restart.h>
-+#include <regmap.h>
 +#include <init.h>
++#include <io.h>
++#include <of.h>
++#include <watchdog.h>
 +
-+#include <asm/ftu.h>
++#include <linux/clk.h>
++#include <linux/err.h>
 +
-+static struct regmap *ftu_regmap;
++#include <asm/sfr.h>
 +
-+static void __noreturn kvx_restart_soc(struct restart_handler *rst)
++struct kvx_wdt {
++	uint64_t clk_rate;
++	struct watchdog wdd;
++};
++
++static void kvx_watchdog_disable(void)
 +{
-+	regmap_write(ftu_regmap, KVX_FTU_SW_RESET_OFFSET, 0x1);
-+
-+	/* Not reached */
-+	hang();
++	kvx_sfr_set_field(TCR, WUI, 0);
++	kvx_sfr_set_field(TCR, WCE, 0);
 +}
 +
-+
-+static int kvx_reset_init(void)
++static int kvx_wdt_set_timeout(struct watchdog *wdd, unsigned int timeout)
 +{
-+	int ret;
-+	u32 rst_cause;
++	struct kvx_wdt *wdt = container_of(wdd, struct kvx_wdt, wdd);
++	uint64_t cycle_timeout = wdt->clk_rate * timeout;
 +
-+	ftu_regmap = syscon_regmap_lookup_by_compatible("kalray,kvx-syscon");
-+	if (IS_ERR(ftu_regmap))
-+		return PTR_ERR(ftu_regmap);
-+
-+	ret = regmap_read(ftu_regmap, KVX_FTU_RESET_CAUSE_OFFSET, &rst_cause);
-+	if (ret < 0) {
-+		reset_source_set(RESET_UKWN);
-+		return ret;
++	/* Disable watchdog */
++	if (timeout == 0) {
++		kvx_watchdog_disable();
++		return 0;
 +	}
 +
-+	switch (rst_cause) {
-+	case KVX_FTU_RESET_CAUSE_CODE_DSU:
-+		reset_source_set(RESET_JTAG);
-+		break;
-+	case KVX_FTU_RESET_CAUSE_CODE_SW:
-+		reset_source_set(RESET_RST);
-+		break;
-+	case KVX_FTU_RESET_CAUSE_CODE_MPPA:
-+		reset_source_set(RESET_POR);
-+		break;
-+	case KVX_FTU_RESET_CAUSE_CODE_PCIE:
-+		reset_source_set(RESET_EXT);
-+		break;
-+	case KVX_FTU_RESET_CAUSE_CODE_WDOG_0:
-+	case KVX_FTU_RESET_CAUSE_CODE_WDOG_1:
-+	case KVX_FTU_RESET_CAUSE_CODE_WDOG_2:
-+	case KVX_FTU_RESET_CAUSE_CODE_WDOG_3:
-+	case KVX_FTU_RESET_CAUSE_CODE_WDOG_4:
-+		reset_source_set(RESET_WDG);
-+		break;
-+	}
++	kvx_sfr_set(WDV, cycle_timeout);
++	kvx_sfr_set(WDR, 0);
 +
-+	restart_handler_register_fn(kvx_restart_soc);
++	/* Start watchdog counting */
++	kvx_sfr_set_field(TCR, WUI, 1);
++	kvx_sfr_set_field(TCR, WCE, 1);
 +
 +	return 0;
 +}
-+device_initcall(kvx_reset_init);
-diff --git a/arch/kvx/include/asm/ftu.h b/arch/kvx/include/asm/ftu.h
-new file mode 100644
-index 000000000..4bc935721
---- /dev/null
-+++ b/arch/kvx/include/asm/ftu.h
-@@ -0,0 +1,24 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Copyright (C) 2019 Kalray Inc.
-+ */
 +
-+#ifndef _ASM_KVX_FTU_H
-+#define _ASM_KVX_FTU_H
++static int count;
 +
-+/* FTU reset cause register definitions */
-+#define KVX_FTU_RESET_CAUSE_OFFSET                 0x48
-+#define KVX_FTU_RESET_CAUSE_CODE_MPPA              0x0
-+#define KVX_FTU_RESET_CAUSE_CODE_DSU               0x1
-+#define KVX_FTU_RESET_CAUSE_CODE_SW                0x2
-+#define KVX_FTU_RESET_CAUSE_CODE_PCIE              0x3
-+#define KVX_FTU_RESET_CAUSE_CODE_WDOG_0            0x8
-+#define KVX_FTU_RESET_CAUSE_CODE_WDOG_1            0x9
-+#define KVX_FTU_RESET_CAUSE_CODE_WDOG_2            0xA
-+#define KVX_FTU_RESET_CAUSE_CODE_WDOG_3            0xB
-+#define KVX_FTU_RESET_CAUSE_CODE_WDOG_4            0xC
++static int kvx_wdt_drv_probe(struct device_d *dev)
++{
++	struct watchdog *wdd;
++	struct clk *clk;
++	struct kvx_wdt *kvx_wdt;
 +
-+/* FTU reset register definitions */
-+#define KVX_FTU_SW_RESET_OFFSET                    0x50
++	if (count != 0) {
++		dev_warn(dev, "Tried to register core watchdog twice\n");
++		return -EINVAL;
++	}
++	count++;
 +
-+#endif /* _ASM_KVX_FTU_H */
++	kvx_wdt = xzalloc(sizeof(*kvx_wdt));
++	clk = clk_get(dev, NULL);
++	if (IS_ERR(clk))
++		return PTR_ERR(clk);
++
++	kvx_wdt->clk_rate = clk_get_rate(clk);
++	clk_put(clk);
++
++	wdd = &kvx_wdt->wdd;
++	wdd->name = "kvx_wdt";
++	wdd->hwdev = dev;
++	wdd->set_timeout = kvx_wdt_set_timeout;
++
++	/* Be sure that interrupt are disable */
++	kvx_sfr_set_field(TCR, WIE, 0);
++
++	kvx_watchdog_disable();
++
++	return watchdog_register(wdd);
++}
++
++static struct of_device_id kvx_wdt_of_match[] = {
++	{ .compatible = "kalray,kvx-core-watchdog", },
++	{ /* sentinel */ }
++};
++
++static struct driver_d kvx_wdt_driver = {
++	.name		= "kvx-wdt",
++	.probe		= kvx_wdt_drv_probe,
++	.of_compatible	= DRV_OF_COMPAT(kvx_wdt_of_match),
++};
++device_platform_driver(kvx_wdt_driver);
 -- 
 2.17.1
 
