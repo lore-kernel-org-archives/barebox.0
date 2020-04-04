@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from vsmx012.vodafonemail.xion.oxcs.net ([153.92.174.90])
+Received: from mail-wr1-x444.google.com ([2a00:1450:4864:20::444])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jKMfN-0002QX-Ml
- for barebox@lists.infradead.org; Fri, 03 Apr 2020 13:47:28 +0000
-References: <c013449a-b775-b805-df78-48a908d506fb@arcor.de>
- <d5949d44-9377-98f4-029c-ae1b0debf7d1@pengutronix.de>
- <2179bad5-0ec6-a2ae-683f-f2f24e3aabfb@arcor.de>
- <56816c6f-86ac-e350-3d23-bf0ff1fe87d2@pengutronix.de>
- <6679e805-8f1e-0c02-cc73-e2d2ab4911c1@arcor.de>
- <63e3eb58-9f5b-54d6-e8cf-b7672fe55a4a@pengutronix.de>
-From: Giorgio <giorgio.nicole@arcor.de>
-Message-ID: <9bd7f507-8f59-98ee-18af-48be3dba9372@arcor.de>
-Date: Fri, 3 Apr 2020 15:47:10 +0200
+ id 1jKoFj-0005op-OH
+ for barebox@lists.infradead.org; Sat, 04 Apr 2020 19:14:50 +0000
+Received: by mail-wr1-x444.google.com with SMTP id h15so12601027wrx.9
+ for <barebox@lists.infradead.org>; Sat, 04 Apr 2020 12:14:46 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <63e3eb58-9f5b-54d6-e8cf-b7672fe55a4a@pengutronix.de>
-Content-Language: en-US
+References: <20200325083608.15676-1-s.hauer@pengutronix.de>
+ <20200325083608.15676-5-s.hauer@pengutronix.de>
+In-Reply-To: <20200325083608.15676-5-s.hauer@pengutronix.de>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Sat, 4 Apr 2020 12:14:33 -0700
+Message-ID: <CAHQ1cqHYd47QGKGg9NvTQZpa1bYz1bZaFyoSSa5JJ+diuMA=iA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,217 +24,732 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: imx7d dual core boot
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 4/5] spi: Add fsl-dspi driver
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-Hi Ahmad,
+On Wed, Mar 25, 2020 at 1:36 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+>
+> The fsl-dspi is found on Freescale Vybrid, Coldfire and Layerscape SoCs.
+> This adds the driver based on the Linux driver as of v5.5. Coldfire
+> support has been dropped as it's rather obsolete. Vybrid support has
+> been dropped because it needs the DMA engine support we do not have in
+> barebox. What's left is support for Layerscape where this driver has
+> been tested on.
+>
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  drivers/spi/Kconfig        |   7 +
+>  drivers/spi/Makefile       |   1 +
+>  drivers/spi/spi-fsl-dspi.c | 655 +++++++++++++++++++++++++++++++++++++
+>  3 files changed, 663 insertions(+)
+>  create mode 100644 drivers/spi/spi-fsl-dspi.c
+>
+> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+> index 3758a0fad9..96235a1be2 100644
+> --- a/drivers/spi/Kconfig
+> +++ b/drivers/spi/Kconfig
+> @@ -44,6 +44,13 @@ config DRIVER_SPI_FSL_QUADSPI
+>            This controller does not support generic SPI messages. It only
+>            supports the high-level SPI memory interface.
+>
+> +config SPI_FSL_DSPI
+> +       bool "Freescale DSPI controller"
+> +       depends on ARCH_LAYERSCAPE
+> +       help
+> +         This enables support for the Freescale DSPI controller in master
+> +         mode. VF610, LS1021A and ColdFire platforms uses the controller.
 
-thank you for the detailed explanations, I'll have a look
-at the armv7 ref. manual for more background.
-
-I wanted just to note, the problem is specifically linked
-to enabling the MMU:
-
-in arch/arm/cpu/cache-armv7.S:
+Sorry I didn't notice this patch earlier. Maybe we should drop the
+wording about VF610 here since there a separate DSPI driver for Vybrid
+as well:  https://git.pengutronix.de/cgit/barebox/tree/drivers/spi/Kconfig?h=next#n90
 
 
-		orrne	r0, r0, #1		@ MMU enabled
-...
-		mcr	p15, 0, r0, c1, c0, 0	@ load control register
-
-without the 'orrne ...' the imx7 does not hang.
-
-giorgio
-
-
-On 4/3/20 3:01 PM, Ahmad Fatoum wrote:
-> Hello Giorgio,
-> 
-> On 3/30/20 4:33 PM, Giorgio wrote:
->> Hi Ahmad,
->>
->> I think I've found the problem with my imx7d:
->> in your commit id ae0a375ba71ba9b9a70cb7eda177445fcfbf586d:
->>
->> ARM: cache-armv7: remove duplicate domain initialization
->> ...
->>
->> you removed the two asm lines:
->>
->> 		movne	r1, #-1
->> 		mcrne	p15, 0, r1, c3, c0, 0	@ load domain access control
->>
->> from arch/arm/cpu/cache-armv7.S
-> 
-> Thanks for bisecting this.
-> The patch you ended up at is stopping barebox from runnning in manager domain.
-> This is necessary to avoid speculative execution on memory mapped IO regions.
-> With manager domain, you can access/execute everything.
-> Without, you will have to clear the eXecute Never bit for regions you need to execute.
-> It's cleared by default for the SDRAM banks and for the barebox text section.
-> SRAM or BootROM that's jumped into after MMU setup need to be explicitly marked
-> as executable.
-> 
-> That said, I am not sure why it breaks..
-> 
-> I've got myself an i.MX7D and will take a look the coming days
-> where it goes wrong. If you have new info/patches to share in the
-> meanwhile, please do. :)
-> 
->> If I add them back then the imx7d does not hang anymore and
->> the kernel is able to boot and power up the second core as
->> expected.
->>
->> I have just one last question: what is the reason for the
->> 'mov r12, lr' at the beginning of v7_mmu_cache_on ?
-> 
-> It looks like a left-over.
-> 837795895801e6c3 ("ARM __mmu_cache_*: Do not clobber registers")
-> made it obsolete.
-> 
-> Cheers
-> Ahmad
-> 
->>
->> giorgio
->>
->> On 3/27/20 11:01 AM, Ahmad Fatoum wrote:
->>> Hello,
->>>
->>> On 3/27/20 9:27 AM, Giorgio wrote:
->>>> Hi,
->>>>
->>>> maybe 'crash' was not the best word to describe the effect I see;
->>>>
->>>> the bootloader just stops running, never returns from the call
->>>> to __mmu_cache_on(), there's no debug messages or stack dumps;
->>>> in this case the kernel image is not started.
->>>>
->>>> I think on my arch / soc __mmu_cache_on() calls some asm coded function
->>>> defined in arch/arm/cpu/cache-armv7.S (v7_mmu_cache_on) and one
->>>> of the opcodes there crashes the cpu directly. Maybe I should try to
->>>> dump the core state (registers, ...) on the console just before jumping
->>>> to v7_mmu_cache_on.
->>>
->>> AFAIU, non-secure barebox keeps reusing the secure monitor barebox till
->>> it boots the kernel. The secure monitor already had translation tables
->>> set up and active and non-secure barebox reuses those.
->>>
->>> Given that this should've worked once, could you run a git-bisect and
->>> see when it broke?
->>>
->>> If you make bnet the default target, only board interaction you need
->>> for bisecting should be the power cycle when you do a git bisect bad.
->>>
->>> This is most likely the fastest way to find what broke it.
->>>
->>> Cheers
->>> Ahmad
->>>
->>>>
->>>> giorgio
->>>>
->>>> On 3/27/20 6:56 AM, Ahmad Fatoum wrote:
->>>>> Hello,
->>>>>
->>>>> On 3/26/20 11:21 AM, Giorgio wrote:
->>>>>> Hi,
->>>>>>
->>>>>> I'm having problems booting a linux kernel image on an imx7d.
->>>>>>
->>>>>> What I want is to boot in nonsecure mode and that the kernel enables the
->>>>>> second core with the PSCI.
->>>>>>
->>>>>> What I see is that barebox crashes within the call to __mmu_cache_on()
->>>>>> in the file arch/arm/cpu/sm.c:
->>>>>
->>>>> The kind of crash may be useful info. Can you copy the whole boot log?
->>>>>
->>>>>>
->>>>>> int armv7_secure_monitor_install(void)
->>>>>> {
->>>>>> ...
->>>>>> 	if (mmuon) {
->>>>>> 		/*
->>>>>> 		 * If the MMU was already turned on in secure mode, enable it in
->>>>>> 		 * non-secure mode aswell
->>>>>> 		 */
->>>>>> 		__mmu_cache_on();
->>>>>> 	}
->>>>>> ...
->>>>>>
->>>>>>
->>>>>> As a workaround, if I comment the call to __mmu_cache_on(), the system
->>>>>> boots properly with 2 cores:
->>>>>>
->>>>>> Loading ARM Linux zImage '/mnt/boot/kernel.img'
->>>>>> Loading devicetree from '/mnt/boot/devtree.dtb'
->>>>>> commandline: console=ttymxc5,115200n8 ip=::::gdm:eth0:off root=PARTUUID=37199a57-ec72-41f9-ab27-445329d1bd77 rootwait
->>>>>> Starting kernel in nonsecure mode
->>>>>> [    0.000000] 000: Booting Linux on physical CPU 0x0
->>>>>> [    0.000000] 000: Linux version 5.4.24-rt15-dirty (giorgio@BVblfs) (gcc version 9.2.1 20200110 (OSELAS.Toolchain 9.2.1)) #1 SMP PREEMPT_RT Fri Mar 13 17:25:51 CET 2020
->>>>>> [    0.000000] 000: CPU: ARMv7 Processor [410fc075] revision 5 (ARMv7), cr=10c5387d
->>>>>> [    0.000000] 000: CPU: div instructions available: patching division code
->>>>>> [    0.000000] 000: CPU: PIPT / VIPT nonaliasing data cache, VIPT aliasing instruction cache
->>>>>> t[    0.000000] 000: Memory policy: Data cache writealloc
->>>>>> [    0.000000] 000: cma: Reserved 64 MiB at 0xfa000000
->>>>>> [    0.000000] 000: psci: probing for conduit method from DT.
->>>>>> [    0.000000] 000: psci: PSCIv1.0 detected in firmware.
->>>>>> [    0.000000] 000: psci: Using standard PSCI v0.2 function IDs
->>>>>> [    0.000000] 000: psci: MIGRATE_INFO_TYPE not supported.
->>>>>> [    0.000000] 000: psci: SMC Calling Convention v1.0
->>>>>> [    0.000000] 000: percpu: Embedded 9 pages/cpu s15008 r0 d21856 u36864
->>>>>> [    0.000000] 000: Built 1 zonelists, mobility grouping on.  Total pages: 522751
->>>>>> [    0.000000] 000: Kernel command line: console=ttymxc5,115200n8 ip=::::gdm:eth0:off root=PARTUUID=37199a57-ec72-41f9-ab27-445329d1bd77 rootwait
->>>>>> [    0.000000] 000: Dentry cache hash table entries: 131072 (order: 8, 1048576 bytes, linear)
->>>>>> [    0.000000] 000: Inode-cache hash table entries: 65536 (order: 6, 262144 bytes, linear)
->>>>>> [    0.000000] 000: mem auto-init: stack:off, heap alloc:off, heap free:off
->>>>>> [    0.000000] 000: Memory: 1997464K/2097148K available (9216K kernel code, 430K rwdata, 3100K rodata, 1024K init, 733K bss, 34148K reserved, 65536K cma-reserved, 1244448K highmem)
->>>>>> [    0.000000] 000: SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=2, Nodes=1
->>>>>> [    0.000000] 000: rcu: Preemptible hierarchical RCU implementation.
->>>>>> [    0.000000] 000: rcu: 	RCU priority boosting: priority 1 delay 500 ms.
->>>>>> [    0.000000] 000: rcu: 	RCU_SOFTIRQ processing moved to rcuc kthreads.
->>>>>> [    0.000000] 000: 	No expedited grace period (rcu_normal_after_boot).
->>>>>> [    0.000000] 000: 	Tasks RCU enabled.
->>>>>> [    0.000000] 000: rcu: RCU calculated value of scheduler-enlistment delay is 10 jiffies.
->>>>>> [    0.000000] 000: NR_IRQS: 16, nr_irqs: 16, preallocated irqs: 16
->>>>>> [    0.000000] 000: rcu: 	Offload RCU callbacks from CPUs: (none).
->>>>>> [    0.000000] 000: arch_timer: cp15 timer(s) running at 8.00MHz (virt).
->>>>>> [    0.000000] 000: clocksource: arch_sys_counter: mask: 0xffffffffffffff max_cycles: 0x1d854df40, max_idle_ns: 440795202120 ns
->>>>>> [    0.000001] 000: sched_clock: 56 bits at 8MHz, resolution 125ns, wraps every 2199023255500ns
->>>>>> [    0.000013] 000: Switching to timer-based delay loop, resolution 125ns
->>>>>> [    0.000426] 000: Switching to timer-based delay loop, resolution 41ns
->>>>>> [    0.000438] 000: sched_clock: 32 bits at 24MHz, resolution 41ns, wraps every 89478484971ns
->>>>>> [    0.000450] 000: clocksource: mxc_timer1: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 79635851949 ns
->>>>>> [    0.001597] 000: Console: colour dummy device 80x30
->>>>>> [    0.001642] 000: Calibrating delay loop (skipped), value calculated using timer frequency.. 48.00 BogoMIPS (lpj=240000)
->>>>>> [    0.001650] 000: pid_max: default: 32768 minimum: 301
->>>>>> [    0.001788] 000: Mount-cache hash table entries: 2048 (order: 1, 8192 bytes, linear)
->>>>>> [    0.001807] 000: Mountpoint-cache hash table entries: 2048 (order: 1, 8192 bytes, linear)
->>>>>> [    0.002631] 000: CPU: Testing write buffer coherency: ok
->>>>>> [    0.059991] 000: Setting up static identity map for 0x80100000 - 0x80100060
->>>>>> [    0.079972] 000: rcu: Hierarchical SRCU implementation.
->>>>>> [    0.160105] 000: smp: Bringing up secondary CPUs ...
->>>>>> [    0.280687] 000: smp: Brought up 1 node, 2 CPUs
->>>>>> [    0.280697] 000: SMP: Total of 2 processors activated (96.00 BogoMIPS).
->>>>>> [    0.280705] 000: CPU: All CPU(s) started in SVC mode.
->>>>>> [    0.281170] 000: devtmpfs: initialized
->>>>>> [    0.290961] 000: random: get_random_u32 called from bucket_table_alloc+0x58/0x14c with crng_init=0
->>>>>>
->>>>>>
->>>>>> giorgio
->>>>>>
->>>>>> _______________________________________________
->>>>>> barebox mailing list
->>>>>> barebox@lists.infradead.org
->>>>>> http://lists.infradead.org/mailman/listinfo/barebox
->>>>>>
->>>>>
->>>>
->>>
->>
-> 
+> +
+>  config DRIVER_SPI_GPIO
+>         bool "GPIO SPI Master driver"
+>         depends on GPIOLIB
+> diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+> index 75a89ef38e..908d514a01 100644
+> --- a/drivers/spi/Makefile
+> +++ b/drivers/spi/Makefile
+> @@ -8,6 +8,7 @@ obj-$(CONFIG_DRIVER_SPI_MVEBU) += mvebu_spi.o
+>  obj-$(CONFIG_DRIVER_SPI_MXS) += mxs_spi.o
+>  obj-$(CONFIG_DRIVER_SPI_ALTERA) += altera_spi.o
+>  obj-$(CONFIG_DRIVER_SPI_ATMEL) += atmel_spi.o
+> +obj-$(CONFIG_SPI_FSL_DSPI) += spi-fsl-dspi.o
+>  obj-$(CONFIG_SPI_ATMEL_QUADSPI) += atmel-quadspi.o
+>  obj-$(CONFIG_DRIVER_SPI_OMAP3) += omap3_spi.o
+>  obj-$(CONFIG_DRIVER_SPI_DSPI) += dspi_spi.o
+> diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+> new file mode 100644
+> index 0000000000..a7ceb854e9
+> --- /dev/null
+> +++ b/drivers/spi/spi-fsl-dspi.c
+> @@ -0,0 +1,655 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +//
+> +// Copyright 2013 Freescale Semiconductor, Inc.
+> +//
+> +// Freescale DSPI driver
+> +// This file contains a driver for the Freescale DSPI
+> +
+> +#include <common.h>
+> +#include <driver.h>
+> +#include <errno.h>
+> +#include <init.h>
+> +#include <io.h>
+> +#include <regmap.h>
+> +#include <spi/spi.h>
+> +#include <linux/clk.h>
+> +#include <linux/math64.h>
+> +
+> +#define DRIVER_NAME                    "fsl-dspi"
+> +
+> +#define DSPI_FIFO_SIZE                 4
+> +#define DSPI_DMA_BUFSIZE               (DSPI_FIFO_SIZE * 1024)
+> +
+> +#define SPI_MCR                                0x00
+> +#define SPI_MCR_MASTER                 BIT(31)
+> +#define SPI_MCR_PCSIS                  (0x3F << 16)
+> +#define SPI_MCR_CLR_TXF                        BIT(11)
+> +#define SPI_MCR_CLR_RXF                        BIT(10)
+> +#define SPI_MCR_XSPI                   BIT(3)
+> +
+> +#define SPI_TCR                                0x08
+> +#define SPI_TCR_GET_TCNT(x)            (((x) & GENMASK(31, 16)) >> 16)
+> +
+> +#define SPI_CTAR(x)                    (0x0c + (((x) & GENMASK(1, 0)) * 4))
+> +#define SPI_CTAR_FMSZ(x)               (((x) << 27) & GENMASK(30, 27))
+> +#define SPI_CTAR_CPOL                  BIT(26)
+> +#define SPI_CTAR_CPHA                  BIT(25)
+> +#define SPI_CTAR_LSBFE                 BIT(24)
+> +#define SPI_CTAR_PCSSCK(x)             (((x) << 22) & GENMASK(23, 22))
+> +#define SPI_CTAR_PASC(x)               (((x) << 20) & GENMASK(21, 20))
+> +#define SPI_CTAR_PDT(x)                        (((x) << 18) & GENMASK(19, 18))
+> +#define SPI_CTAR_PBR(x)                        (((x) << 16) & GENMASK(17, 16))
+> +#define SPI_CTAR_CSSCK(x)              (((x) << 12) & GENMASK(15, 12))
+> +#define SPI_CTAR_ASC(x)                        (((x) << 8) & GENMASK(11, 8))
+> +#define SPI_CTAR_DT(x)                 (((x) << 4) & GENMASK(7, 4))
+> +#define SPI_CTAR_BR(x)                 ((x) & GENMASK(3, 0))
+> +#define SPI_CTAR_SCALE_BITS            0xf
+> +
+> +#define SPI_CTAR0_SLAVE                        0x0c
+> +
+> +#define SPI_SR                         0x2c
+> +#define SPI_SR_TCFQF                   BIT(31)
+> +#define SPI_SR_EOQF                    BIT(28)
+> +#define SPI_SR_TFUF                    BIT(27)
+> +#define SPI_SR_TFFF                    BIT(25)
+> +#define SPI_SR_CMDTCF                  BIT(23)
+> +#define SPI_SR_SPEF                    BIT(21)
+> +#define SPI_SR_RFOF                    BIT(19)
+> +#define SPI_SR_TFIWF                   BIT(18)
+> +#define SPI_SR_RFDF                    BIT(17)
+> +#define SPI_SR_CMDFFF                  BIT(16)
+> +#define SPI_SR_CLEAR                   (SPI_SR_TCFQF | SPI_SR_EOQF | \
+> +                                       SPI_SR_TFUF | SPI_SR_TFFF | \
+> +                                       SPI_SR_CMDTCF | SPI_SR_SPEF | \
+> +                                       SPI_SR_RFOF | SPI_SR_TFIWF | \
+> +                                       SPI_SR_RFDF | SPI_SR_CMDFFF)
+> +
+> +#define SPI_RSER_TFFFE                 BIT(25)
+> +#define SPI_RSER_TFFFD                 BIT(24)
+> +#define SPI_RSER_RFDFE                 BIT(17)
+> +#define SPI_RSER_RFDFD                 BIT(16)
+> +
+> +#define SPI_RSER                       0x30
+> +#define SPI_RSER_TCFQE                 BIT(31)
+> +#define SPI_RSER_EOQFE                 BIT(28)
+> +
+> +#define SPI_PUSHR                      0x34
+> +#define SPI_PUSHR_CMD_CONT             BIT(15)
+> +#define SPI_PUSHR_CMD_CTAS(x)          (((x) << 12 & GENMASK(14, 12)))
+> +#define SPI_PUSHR_CMD_EOQ              BIT(11)
+> +#define SPI_PUSHR_CMD_CTCNT            BIT(10)
+> +#define SPI_PUSHR_CMD_PCS(x)           (BIT(x) & GENMASK(5, 0))
+> +
+> +#define SPI_PUSHR_SLAVE                        0x34
+> +
+> +#define SPI_POPR                       0x38
+> +
+> +#define SPI_TXFR0                      0x3c
+> +#define SPI_TXFR1                      0x40
+> +#define SPI_TXFR2                      0x44
+> +#define SPI_TXFR3                      0x48
+> +#define SPI_RXFR0                      0x7c
+> +#define SPI_RXFR1                      0x80
+> +#define SPI_RXFR2                      0x84
+> +#define SPI_RXFR3                      0x88
+> +
+> +#define SPI_CTARE(x)                   (0x11c + (((x) & GENMASK(1, 0)) * 4))
+> +#define SPI_CTARE_FMSZE(x)             (((x) & 0x1) << 16)
+> +#define SPI_CTARE_DTCP(x)              ((x) & 0x7ff)
+> +
+> +#define SPI_SREX                       0x13c
+> +
+> +#define SPI_FRAME_BITS(bits)           SPI_CTAR_FMSZ((bits) - 1)
+> +#define SPI_FRAME_EBITS(bits)          SPI_CTARE_FMSZE(((bits) - 1) >> 4)
+> +
+> +/* Register offsets for regmap_pushr */
+> +#define PUSHR_CMD                      0x0
+> +#define PUSHR_TX                       0x2
+> +
+> +#define DMA_COMPLETION_TIMEOUT         msecs_to_jiffies(3000)
+> +
+> +struct chip_data {
+> +       u32                     ctar_val;
+> +       u16                     void_write_data;
+> +};
+> +
+> +struct fsl_dspi_devtype_data {
+> +       u8                      max_clock_factor;
+> +       bool                    ptp_sts_supported;
+> +       bool                    xspi_mode;
+> +};
+> +
+> +static const struct fsl_dspi_devtype_data ls1021a_v1_data = {
+> +       .max_clock_factor       = 8,
+> +       .ptp_sts_supported      = true,
+> +       .xspi_mode              = true,
+> +};
+> +
+> +static const struct fsl_dspi_devtype_data ls2085a_data = {
+> +       .max_clock_factor       = 8,
+> +       .ptp_sts_supported      = true,
+> +};
+> +
+> +struct fsl_dspi {
+> +       struct spi_controller                   ctlr;
+> +       struct device_d                         *dev;
+> +
+> +       struct regmap                           *regmap;
+> +       struct regmap                           *regmap_pushr;
+> +       int                                     irq;
+> +       struct clk                              *clk;
+> +
+> +       struct spi_transfer                     *cur_transfer;
+> +       struct spi_message                      *cur_msg;
+> +       struct chip_data                        *cur_chip;
+> +       size_t                                  progress;
+> +       size_t                                  len;
+> +       const void                              *tx;
+> +       void                                    *rx;
+> +       void                                    *rx_end;
+> +       u16                                     void_write_data;
+> +       u16                                     tx_cmd;
+> +       u8                                      bits_per_word;
+> +       u8                                      bytes_per_word;
+> +       const struct fsl_dspi_devtype_data      *devtype_data;
+> +};
+> +
+> +static u32 dspi_pop_tx(struct fsl_dspi *dspi)
+> +{
+> +       u32 txdata = 0;
+> +
+> +       if (dspi->tx) {
+> +               if (dspi->bytes_per_word == 1)
+> +                       txdata = *(u8 *)dspi->tx;
+> +               else if (dspi->bytes_per_word == 2)
+> +                       txdata = *(u16 *)dspi->tx;
+> +               else  /* dspi->bytes_per_word == 4 */
+> +                       txdata = *(u32 *)dspi->tx;
+> +               dspi->tx += dspi->bytes_per_word;
+> +       }
+> +       dspi->len -= dspi->bytes_per_word;
+> +       return txdata;
+> +}
+> +
+> +static u32 dspi_pop_tx_pushr(struct fsl_dspi *dspi)
+> +{
+> +       u16 cmd = dspi->tx_cmd, data = dspi_pop_tx(dspi);
+> +
+> +       if (dspi->len > 0)
+> +               cmd |= SPI_PUSHR_CMD_CONT;
+> +       return cmd << 16 | data;
+> +}
+> +
+> +static void dspi_push_rx(struct fsl_dspi *dspi, u32 rxdata)
+> +{
+> +       if (!dspi->rx)
+> +               return;
+> +
+> +       /* Mask off undefined bits */
+> +       rxdata &= (1 << dspi->bits_per_word) - 1;
+> +
+> +       if (dspi->bytes_per_word == 1)
+> +               *(u8 *)dspi->rx = rxdata;
+> +       else if (dspi->bytes_per_word == 2)
+> +               *(u16 *)dspi->rx = rxdata;
+> +       else /* dspi->bytes_per_word == 4 */
+> +               *(u32 *)dspi->rx = rxdata;
+> +       dspi->rx += dspi->bytes_per_word;
+> +}
+> +
+> +static void hz_to_spi_baud(char *pbr, char *br, int speed_hz,
+> +                          unsigned long clkrate)
+> +{
+> +       /* Valid baud rate pre-scaler values */
+> +       int pbr_tbl[4] = {2, 3, 5, 7};
+> +       int brs[16] = { 2,      4,      6,      8,
+> +                       16,     32,     64,     128,
+> +                       256,    512,    1024,   2048,
+> +                       4096,   8192,   16384,  32768 };
+> +       int scale_needed, scale, minscale = INT_MAX;
+> +       int i, j;
+> +
+> +       scale_needed = clkrate / speed_hz;
+> +       if (clkrate % speed_hz)
+> +               scale_needed++;
+> +
+> +       for (i = 0; i < ARRAY_SIZE(brs); i++)
+> +               for (j = 0; j < ARRAY_SIZE(pbr_tbl); j++) {
+> +                       scale = brs[i] * pbr_tbl[j];
+> +                       if (scale >= scale_needed) {
+> +                               if (scale < minscale) {
+> +                                       minscale = scale;
+> +                                       *br = i;
+> +                                       *pbr = j;
+> +                               }
+> +                               break;
+> +                       }
+> +               }
+> +
+> +       if (minscale == INT_MAX) {
+> +               pr_warn("Can not find valid baud rate,speed_hz is %d,clkrate is %ld, we use the max prescaler value.\n",
+> +                       speed_hz, clkrate);
+> +               *pbr = ARRAY_SIZE(pbr_tbl) - 1;
+> +               *br =  ARRAY_SIZE(brs) - 1;
+> +       }
+> +}
+> +
+> +static void ns_delay_scale(char *psc, char *sc, int delay_ns,
+> +                          unsigned long clkrate)
+> +{
+> +       int scale_needed, scale, minscale = INT_MAX;
+> +       int pscale_tbl[4] = {1, 3, 5, 7};
+> +       u32 remainder;
+> +       int i, j;
+> +
+> +       scale_needed = div_u64_rem((u64)delay_ns * clkrate, NSEC_PER_SEC,
+> +                                  &remainder);
+> +       if (remainder)
+> +               scale_needed++;
+> +
+> +       for (i = 0; i < ARRAY_SIZE(pscale_tbl); i++)
+> +               for (j = 0; j <= SPI_CTAR_SCALE_BITS; j++) {
+> +                       scale = pscale_tbl[i] * (2 << j);
+> +                       if (scale >= scale_needed) {
+> +                               if (scale < minscale) {
+> +                                       minscale = scale;
+> +                                       *psc = i;
+> +                                       *sc = j;
+> +                               }
+> +                               break;
+> +                       }
+> +               }
+> +
+> +       if (minscale == INT_MAX) {
+> +               pr_warn("Cannot find correct scale values for %dns delay at clkrate %ld, using max prescaler value",
+> +                       delay_ns, clkrate);
+> +               *psc = ARRAY_SIZE(pscale_tbl) - 1;
+> +               *sc = SPI_CTAR_SCALE_BITS;
+> +       }
+> +}
+> +
+> +static void fifo_write(struct fsl_dspi *dspi)
+> +{
+> +       regmap_write(dspi->regmap, SPI_PUSHR, dspi_pop_tx_pushr(dspi));
+> +}
+> +
+> +static void cmd_fifo_write(struct fsl_dspi *dspi)
+> +{
+> +       u16 cmd = dspi->tx_cmd;
+> +
+> +       if (dspi->len > 0)
+> +               cmd |= SPI_PUSHR_CMD_CONT;
+> +       regmap_write(dspi->regmap_pushr, PUSHR_CMD, cmd);
+> +}
+> +
+> +static void tx_fifo_write(struct fsl_dspi *dspi, u16 txdata)
+> +{
+> +       regmap_write(dspi->regmap_pushr, PUSHR_TX, txdata);
+> +}
+> +
+> +static void dspi_tcfq_write(struct fsl_dspi *dspi)
+> +{
+> +       /* Clear transfer count */
+> +       dspi->tx_cmd |= SPI_PUSHR_CMD_CTCNT;
+> +
+> +       if (dspi->devtype_data->xspi_mode && dspi->bits_per_word > 16) {
+> +               /* Write the CMD FIFO entry first, and then the two
+> +                * corresponding TX FIFO entries.
+> +                */
+> +               u32 data = dspi_pop_tx(dspi);
+> +
+> +               cmd_fifo_write(dspi);
+> +               tx_fifo_write(dspi, data & 0xFFFF);
+> +               tx_fifo_write(dspi, data >> 16);
+> +       } else {
+> +               /* Write one entry to both TX FIFO and CMD FIFO
+> +                * simultaneously.
+> +                */
+> +               fifo_write(dspi);
+> +       }
+> +}
+> +
+> +static u32 fifo_read(struct fsl_dspi *dspi)
+> +{
+> +       u32 rxdata = 0;
+> +
+> +       regmap_read(dspi->regmap, SPI_POPR, &rxdata);
+> +       return rxdata;
+> +}
+> +
+> +static void dspi_tcfq_read(struct fsl_dspi *dspi)
+> +{
+> +       dspi_push_rx(dspi, fifo_read(dspi));
+> +}
+> +
+> +static int dspi_rxtx(struct fsl_dspi *dspi)
+> +{
+> +       struct spi_message *msg = dspi->cur_msg;
+> +       u16 spi_tcnt;
+> +       u32 spi_tcr;
+> +
+> +       /* Get transfer counter (in number of SPI transfers). It was
+> +        * reset to 0 when transfer(s) were started.
+> +        */
+> +       regmap_read(dspi->regmap, SPI_TCR, &spi_tcr);
+> +       spi_tcnt = SPI_TCR_GET_TCNT(spi_tcr);
+> +       /* Update total number of bytes that were transferred */
+> +       msg->actual_length += spi_tcnt * dspi->bytes_per_word;
+> +       dspi->progress += spi_tcnt;
+> +
+> +       dspi_tcfq_read(dspi);
+> +       if (!dspi->len)
+> +               /* Success! */
+> +               return 0;
+> +
+> +       dspi_tcfq_write(dspi);
+> +
+> +       return -EINPROGRESS;
+> +}
+> +
+> +static int dspi_poll(struct fsl_dspi *dspi)
+> +{
+> +       int tries = 1000;
+> +       u32 spi_sr;
+> +
+> +       do {
+> +               regmap_read(dspi->regmap, SPI_SR, &spi_sr);
+> +               regmap_write(dspi->regmap, SPI_SR, spi_sr);
+> +
+> +               if (spi_sr & (SPI_SR_EOQF | SPI_SR_TCFQF))
+> +                       break;
+> +               udelay(1);
+> +       } while (--tries);
+> +
+> +       if (!tries)
+> +               return -ETIMEDOUT;
+> +
+> +       return dspi_rxtx(dspi);
+> +}
+> +
+> +static int dspi_transfer_one_message(struct spi_device *spi,
+> +                                    struct spi_message *message)
+> +{
+> +       struct fsl_dspi *dspi = container_of(spi->master, struct fsl_dspi, ctlr);
+> +       struct spi_transfer *transfer;
+> +       int status = 0;
+> +
+> +       message->actual_length = 0;
+> +
+> +       list_for_each_entry(transfer, &message->transfers, transfer_list) {
+> +               dspi->cur_transfer = transfer;
+> +               dspi->cur_msg = message;
+> +               dspi->cur_chip = spi->controller_data;
+> +               /* Prepare command word for CMD FIFO */
+> +               dspi->tx_cmd = SPI_PUSHR_CMD_CTAS(0) |
+> +                              SPI_PUSHR_CMD_PCS(spi->chip_select);
+> +               if (list_is_last(&dspi->cur_transfer->transfer_list,
+> +                                &dspi->cur_msg->transfers)) {
+> +                       /* Leave PCS activated after last transfer when
+> +                        * cs_change is set.
+> +                        */
+> +                       if (transfer->cs_change)
+> +                               dspi->tx_cmd |= SPI_PUSHR_CMD_CONT;
+> +               } else {
+> +                       /* Keep PCS active between transfers in same message
+> +                        * when cs_change is not set, and de-activate PCS
+> +                        * between transfers in the same message when
+> +                        * cs_change is set.
+> +                        */
+> +                       if (!transfer->cs_change)
+> +                               dspi->tx_cmd |= SPI_PUSHR_CMD_CONT;
+> +               }
+> +
+> +               dspi->void_write_data = dspi->cur_chip->void_write_data;
+> +
+> +               dspi->tx = transfer->tx_buf;
+> +               dspi->rx = transfer->rx_buf;
+> +               dspi->rx_end = dspi->rx + transfer->len;
+> +               dspi->len = transfer->len;
+> +               dspi->progress = 0;
+> +               /* Validated transfer specific frame size (defaults applied) */
+> +               dspi->bits_per_word = transfer->bits_per_word;
+> +
+> +               if (transfer->bits_per_word <= 8)
+> +                       dspi->bytes_per_word = 1;
+> +               else if (transfer->bits_per_word <= 16)
+> +                       dspi->bytes_per_word = 2;
+> +               else
+> +                       dspi->bytes_per_word = 4;
+> +
+> +               regmap_update_bits(dspi->regmap, SPI_MCR,
+> +                                  SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF,
+> +                                  SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF);
+> +               regmap_write(dspi->regmap, SPI_CTAR(0),
+> +                            dspi->cur_chip->ctar_val |
+> +                            SPI_FRAME_BITS(transfer->bits_per_word));
+> +               if (dspi->devtype_data->xspi_mode)
+> +                       regmap_write(dspi->regmap, SPI_CTARE(0),
+> +                                    SPI_FRAME_EBITS(transfer->bits_per_word) |
+> +                                    SPI_CTARE_DTCP(1));
+> +
+> +               regmap_write(dspi->regmap, SPI_RSER, SPI_RSER_TCFQE);
+> +               dspi_tcfq_write(dspi);
+> +
+> +               do {
+> +                       status = dspi_poll(dspi);
+> +               } while (status == -EINPROGRESS);
+> +
+> +               if (status)
+> +                       dev_err(dspi->dev,
+> +                               "Waiting for transfer to complete failed!\n");
+> +       }
+> +
+> +       message->status = status;
+> +
+> +       return status;
+> +}
+> +
+> +static int dspi_setup(struct spi_device *spi)
+> +{
+> +       struct fsl_dspi *dspi = container_of(spi->master, struct fsl_dspi, ctlr);
+> +       unsigned char br = 0, pbr = 0, pcssck = 0, cssck = 0;
+> +       u32 cs_sck_delay = 0, sck_cs_delay = 0;
+> +       unsigned char pasc = 0, asc = 0;
+> +       struct chip_data *chip;
+> +       unsigned long clkrate;
+> +
+> +       /* Only alloc on first setup */
+> +       chip = spi->controller_data;
+> +       if (chip == NULL) {
+> +               chip = kzalloc(sizeof(struct chip_data), GFP_KERNEL);
+> +               if (!chip)
+> +                       return -ENOMEM;
+> +       }
+> +
+> +       of_property_read_u32(spi->dev.device_node, "fsl,spi-cs-sck-delay",
+> +                            &cs_sck_delay);
+> +
+> +       of_property_read_u32(spi->dev.device_node, "fsl,spi-sck-cs-delay",
+> +                            &sck_cs_delay);
+> +
+> +       chip->void_write_data = 0;
+> +
+> +       clkrate = clk_get_rate(dspi->clk);
+> +       hz_to_spi_baud(&pbr, &br, spi->max_speed_hz, clkrate);
+> +
+> +       /* Set PCS to SCK delay scale values */
+> +       ns_delay_scale(&pcssck, &cssck, cs_sck_delay, clkrate);
+> +
+> +       /* Set After SCK delay scale values */
+> +       ns_delay_scale(&pasc, &asc, sck_cs_delay, clkrate);
+> +
+> +       chip->ctar_val = 0;
+> +       if (spi->mode & SPI_CPOL)
+> +               chip->ctar_val |= SPI_CTAR_CPOL;
+> +       if (spi->mode & SPI_CPHA)
+> +               chip->ctar_val |= SPI_CTAR_CPHA;
+> +
+> +       chip->ctar_val |= SPI_CTAR_PCSSCK(pcssck) |
+> +                         SPI_CTAR_CSSCK(cssck) |
+> +                         SPI_CTAR_PASC(pasc) |
+> +                         SPI_CTAR_ASC(asc) |
+> +                         SPI_CTAR_PBR(pbr) |
+> +                         SPI_CTAR_BR(br);
+> +
+> +       if (spi->mode & SPI_LSB_FIRST)
+> +               chip->ctar_val |= SPI_CTAR_LSBFE;
+> +
+> +       spi->controller_data = chip;
+> +
+> +       return 0;
+> +}
+> +
+> +static void dspi_cleanup(struct spi_device *spi)
+> +{
+> +       struct chip_data *chip = spi->controller_data;
+> +
+> +       dev_dbg(&spi->dev, "spi_device %u.%u cleanup\n",
+> +               spi->controller->bus_num, spi->chip_select);
+> +
+> +       kfree(chip);
+> +}
+> +
+> +static const struct of_device_id fsl_dspi_dt_ids[] = {
+> +       { .compatible = "fsl,ls1021a-v1.0-dspi", .data = &ls1021a_v1_data, },
+> +       { .compatible = "fsl,ls2085a-dspi", .data = &ls2085a_data, },
+> +       { /* sentinel */ }
+> +};
+> +
+> +static const struct regmap_config dspi_regmap_config = {
+> +       .reg_bits       = 32,
+> +       .val_bits       = 32,
+> +       .reg_stride     = 4,
+> +       .max_register   = 0x88,
+> +};
+> +
+> +static const struct regmap_config dspi_xspi_regmap_config[] = {
+> +       {
+> +               .reg_bits       = 32,
+> +               .val_bits       = 32,
+> +               .reg_stride     = 4,
+> +               .max_register   = 0x13c,
+> +       }, {
+> +               .name           = "pushr",
+> +               .reg_bits       = 16,
+> +               .val_bits       = 16,
+> +               .reg_stride     = 2,
+> +               .max_register   = 0x2,
+> +       },
+> +};
+> +
+> +static void dspi_init(struct fsl_dspi *dspi)
+> +{
+> +       unsigned int mcr = SPI_MCR_PCSIS;
+> +
+> +       if (dspi->devtype_data->xspi_mode)
+> +               mcr |= SPI_MCR_XSPI;
+> +       mcr |= SPI_MCR_MASTER;
+> +
+> +       regmap_write(dspi->regmap, SPI_MCR, mcr);
+> +       regmap_write(dspi->regmap, SPI_SR, SPI_SR_CLEAR);
+> +       if (dspi->devtype_data->xspi_mode)
+> +               regmap_write(dspi->regmap, SPI_CTARE(0),
+> +                            SPI_CTARE_FMSZE(0) | SPI_CTARE_DTCP(1));
+> +}
+> +
+> +static int dspi_probe(struct device_d *dev)
+> +{
+> +       struct device_node *np = dev->device_node;
+> +       const struct regmap_config *regmap_config;
+> +       struct spi_master *master;
+> +       int ret, cs_num, bus_num = -1;
+> +       struct fsl_dspi *dspi;
+> +       struct resource *res;
+> +       void __iomem *base;
+> +
+> +       dspi = xzalloc(sizeof(*dspi));
+> +
+> +       dspi->dev = dev;
+> +       master = &dspi->ctlr;
+> +
+> +       master->dev = dev;
+> +       master->setup = dspi_setup;
+> +       master->transfer = dspi_transfer_one_message;
+> +
+> +       master->cleanup = dspi_cleanup;
+> +
+> +       ret = of_property_read_u32(np, "spi-num-chipselects", &cs_num);
+> +       if (ret < 0) {
+> +               dev_err(dev, "can't get spi-num-chipselects\n");
+> +               goto out_ctlr_put;
+> +       }
+> +       master->num_chipselect = cs_num;
+> +
+> +       of_property_read_u32(np, "bus-num", &bus_num);
+> +       master->bus_num = bus_num;
+> +
+> +       ret = dev_get_drvdata(dev, (const void **)&dspi->devtype_data);
+> +       if (ret)
+> +               return -ENODEV;
+> +
+> +       res = dev_request_mem_resource(dev, 0);
+> +       if (IS_ERR(res))
+> +               return PTR_ERR(res);
+> +
+> +       base = IOMEM(res->start);
+> +
+> +       if (dspi->devtype_data->xspi_mode)
+> +               regmap_config = &dspi_xspi_regmap_config[0];
+> +       else
+> +               regmap_config = &dspi_regmap_config;
+> +
+> +       dspi->regmap = regmap_init_mmio(dev, base, regmap_config);
+> +       if (IS_ERR(dspi->regmap)) {
+> +               dev_err(dev, "failed to init regmap: %ld\n",
+> +                               PTR_ERR(dspi->regmap));
+> +               ret = PTR_ERR(dspi->regmap);
+> +               goto out_ctlr_put;
+> +       }
+> +
+> +       if (dspi->devtype_data->xspi_mode) {
+> +               dspi->regmap_pushr = regmap_init_mmio(
+> +                       dev, base + SPI_PUSHR,
+> +                       &dspi_xspi_regmap_config[1]);
+> +               if (IS_ERR(dspi->regmap_pushr)) {
+> +                       dev_err(dev,
+> +                               "failed to init pushr regmap: %ld\n",
+> +                               PTR_ERR(dspi->regmap_pushr));
+> +                       ret = PTR_ERR(dspi->regmap_pushr);
+> +                       goto out_ctlr_put;
+> +               }
+> +       }
+> +
+> +       dspi->clk = clk_get(dev, "dspi");
+> +       if (IS_ERR(dspi->clk)) {
+> +               ret = PTR_ERR(dspi->clk);
+> +               dev_err(dev, "unable to get clock\n");
+> +               goto out_ctlr_put;
+> +       }
+> +       ret = clk_enable(dspi->clk);
+> +       if (ret)
+> +               goto out_ctlr_put;
+> +
+> +       dspi_init(dspi);
+> +
+> +       ret = spi_register_master(master);
+> +       if (ret != 0) {
+> +               dev_err(dev, "Problem registering DSPI ctlr\n");
+> +               goto out_clk_put;
+> +       }
+> +
+> +       return ret;
+> +
+> +out_clk_put:
+> +       clk_disable(dspi->clk);
+> +out_ctlr_put:
+> +
+> +       return ret;
+> +}
+> +
+> +static struct driver_d fsl_dspi_driver = {
+> +       .name  = "fsl-dspi",
+> +       .probe = dspi_probe,
+> +       .of_compatible = DRV_OF_COMPAT(fsl_dspi_dt_ids),
+> +};
+> +coredevice_platform_driver(fsl_dspi_driver);
+> --
+> 2.26.0.rc2
+>
+>
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
