@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lj1-x244.google.com ([2a00:1450:4864:20::244])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jOHz8-00021b-Jy
- for barebox@lists.infradead.org; Tue, 14 Apr 2020 09:36:03 +0000
-Date: Tue, 14 Apr 2020 11:36:00 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200414093600.GE27288@pengutronix.de>
-References: <20200406121325.1364-1-antonynpavlov@gmail.com>
- <20200406154404.6bbdb6564dc7db9c4e076e5f@gmail.com>
+ id 1jLQmr-0002bC-2e
+ for barebox@lists.infradead.org; Mon, 06 Apr 2020 12:23:34 +0000
+Received: by mail-lj1-x244.google.com with SMTP id p10so14471027ljn.1
+ for <barebox@lists.infradead.org>; Mon, 06 Apr 2020 05:23:32 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Mon,  6 Apr 2020 15:23:13 +0300
+Message-Id: <20200406122313.1476-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200406154404.6bbdb6564dc7db9c4e076e5f@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,36 +21,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH V2] startup: introduce global.endianness variable
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] uimage: add define for RISC-V architecture
+To: barebox@lists.infradead.org
 
-On Mon, Apr 06, 2020 at 03:44:04PM +0300, Antony Pavlov wrote:
-> On Mon,  6 Apr 2020 15:13:25 +0300
-> Antony Pavlov <antonynpavlov@gmail.com> wrote:
-> 
-> Hi Sascha,
-> 
-> The global.version (and global.endianness) variable can
-> be easely modified by user.
-> Can we make it immutable?
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ common/image.c  | 1 +
+ include/image.h | 3 +++
+ 2 files changed, 4 insertions(+)
 
-There's currently no way to make variables registered with
-globalvar_add_* readonly. What you can do is:
-
-	dev_add_param_fixed(&global_device, "version", UTS_RELEASE);
-
-It would be nice to have a little globalvar_add_fixed() function which
-does that. Besides the endianess it would be good to use it for the
-version string as well.
-
-Sascha
-
+diff --git a/common/image.c b/common/image.c
+index 04cd86bf9a..15bef96826 100644
+--- a/common/image.c
++++ b/common/image.c
+@@ -60,6 +60,7 @@ static table_entry_t arch_name[] = {
+ 	{ IH_ARCH_NDS32,	"nds32",	"NDS32",	},
+ 	{ IH_ARCH_OPENRISC,	"or1k",		"OpenRISC 1000",},
+ 	{ IH_ARCH_ARM64,	"arm64",	"AArch64",	},
++	{ IH_ARCH_RISCV,	"riscv",	"RISC-V",	},
+ 	{ -1,			"",		"",		},
+ };
+ 
+diff --git a/include/image.h b/include/image.h
+index 18344dfef9..7da871e8cb 100644
+--- a/include/image.h
++++ b/include/image.h
+@@ -75,6 +75,7 @@
+ #define IH_ARCH_NDS32		20	/* ANDES Technology - NDS32  */
+ #define IH_ARCH_OPENRISC	21	/* OpenRISC 1000  */
+ #define IH_ARCH_ARM64		22	/* ARM64	*/
++#define IH_ARCH_RISCV		23	/* RISC-V	*/
+ 
+ #if defined(__PPC__)
+ #define IH_ARCH IH_ARCH_PPC
+@@ -104,6 +105,8 @@
+ #define IH_ARCH IH_ARCH_AVR32
+ #elif defined(CONFIG_LINUX)
+ #define IH_ARCH IH_ARCH_LINUX
++#elif defined(__riscv)
++#define IH_ARCH IH_ARCH_RISCV
+ #endif
+ 
+ /*
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.25.0
+
 
 _______________________________________________
 barebox mailing list
