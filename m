@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf1-x142.google.com ([2a00:1450:4864:20::142])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jKLPt-0001ox-ML
- for barebox@lists.infradead.org; Fri, 03 Apr 2020 12:27:24 +0000
-Received: by mail-lf1-x142.google.com with SMTP id s13so5602287lfb.9
- for <barebox@lists.infradead.org>; Fri, 03 Apr 2020 05:27:20 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri,  3 Apr 2020 15:26:59 +0300
-Message-Id: <20200403122659.32298-1-antonynpavlov@gmail.com>
+ id 1jLKiY-00017m-JG
+ for barebox@lists.infradead.org; Mon, 06 Apr 2020 05:54:44 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon,  6 Apr 2020 07:54:35 +0200
+Message-Id: <20200406055435.2330-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,53 +19,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] startup: introduce global.endianity variable
+Subject: [PATCH] commands: remove CONFIG_ prefix from Kconfig symbol
 To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The global.endianity variable make it possible
-to determine current endian mode from command
-line or from script on bi-endian capable system.
+Kconfig symbols, unlike their preprocessor counterparts, don't have this
+prefix. Drop it.
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/globalvar.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ commands/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/common/globalvar.c b/common/globalvar.c
-index c87f2c9339..7632cb6418 100644
---- a/common/globalvar.c
-+++ b/common/globalvar.c
-@@ -591,6 +591,8 @@ int globalvar_add_simple_ip(const char *name, IPaddr_t *ip)
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 7784966282ac..a0c28289834b 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -1871,7 +1871,7 @@ config CMD_SMC
+ 	bool
+ 	depends on ARM_SMCCC
+ 	prompt "PSCI test command"
+-	default CONFIG_ARM_PSCI_DEBUG
++	default ARM_PSCI_DEBUG
+ 	help
+ 	  Secure monitor code test command
  
- static int globalvar_init(void)
- {
-+	const char *endianity;
-+
- 	register_device(&global_device);
- 
- 	if (IS_ENABLED(CONFIG_NVVAR))
-@@ -598,11 +600,19 @@ static int globalvar_init(void)
- 
- 	globalvar_add_simple("version", UTS_RELEASE);
- 
-+	if (IS_ENABLED(CONFIG_CPU_BIG_ENDIAN))
-+		endianity = "big";
-+	else
-+		endianity = "little";
-+
-+	globalvar_add_simple("endianity", endianity);
-+
- 	return 0;
- }
- pure_initcall(globalvar_init);
- 
- BAREBOX_MAGICVAR_NAMED(global_version, global.version, "The barebox version");
-+BAREBOX_MAGICVAR_NAMED(global_endianity, global.endianity, "The barebox endianity");
- 
- /**
-  * nvvar_save - save NV variables to persistent environment
 -- 
-2.25.0
+2.26.0.rc2
 
 
 _______________________________________________
