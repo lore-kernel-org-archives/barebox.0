@@ -1,17 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from vsmx011.vodafonemail.xion.oxcs.net ([153.92.174.89])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jOIOH-0005R9-N8
- for barebox@lists.infradead.org; Tue, 14 Apr 2020 10:02:03 +0000
-Date: Tue, 14 Apr 2020 12:02:00 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200414100200.GG27288@pengutronix.de>
-References: <20200213105803.32096-1-s.hauer@pengutronix.de>
- <20200213105803.32096-3-s.hauer@pengutronix.de>
- <0755ee61-3cd4-3e42-8d9c-cd57eb615ce6@pengutronix.de>
+ id 1jLqDJ-0003MW-Ul
+ for barebox@lists.infradead.org; Tue, 07 Apr 2020 15:32:35 +0000
+From: Giorgio Dal Molin <giorgio.nicole@arcor.de>
+Date: Tue,  7 Apr 2020 17:32:17 +0200
+Message-Id: <20200407153217.6568-1-giorgio.nicole@arcor.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <0755ee61-3cd4-3e42-8d9c-cd57eb615ce6@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,41 +19,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] driver: Call of_clk_set_defaults for each probed
- device
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 2/2] ARM: sm.c: add the attribute 'volatile' to some asm()
+ statements.
+To: barebox@lists.infradead.org
+Cc: Giorgio Dal Molin <giorgio.nicole@arcor.de>
 
-On Mon, Apr 06, 2020 at 08:01:19AM +0200, Ahmad Fatoum wrote:
-> Hello Sascha,
-> 
-> On 2/13/20 11:58 AM, Sascha Hauer wrote:
-> > So far we only honour the assigned-clocks and assigned-clock-rates
-> > device tree properties for the clock controller nodes. With this patch
-> > we also honour the properties for each device which is done by Linux
-> > as well.
-> 
-> This breaks the default barebox console on the i.MX7 sabresd.
-> The default UART, uart1, specifies assigned-clock-parents, which is now applied
-> and causes garbage to be output on the serial port.
-> 
-> &uart1 {
->        /delete-property/ assigned-clocks;
->        /delete-property/ assigned-clock-parents;
-> };
-> 
-> Fixes it, but I didn't dig deeper than that.
+Prevent the compiler to eventually cache register values read/written
+to/from CP15.
 
-Care to send this as a patch so that we at least have a stop gap
-solution?
+Signed-off-by: Giorgio Dal Molin <giorgio.nicole@arcor.de>
+---
+ arch/arm/cpu/sm.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Sascha
-
+diff --git a/arch/arm/cpu/sm.c b/arch/arm/cpu/sm.c
+index cb33d9625..f5a1edbd4 100644
+--- a/arch/arm/cpu/sm.c
++++ b/arch/arm/cpu/sm.c
+@@ -26,7 +26,7 @@ static unsigned int read_id_pfr1(void)
+ {
+ 	unsigned int reg;
+ 
+-	asm("mrc p15, 0, %0, c0, c1, 1\n" : "=r"(reg));
++	asm volatile ("mrc p15, 0, %0, c0, c1, 1\n" : "=r"(reg));
+ 	return reg;
+ }
+ 
+@@ -34,18 +34,18 @@ static u32 read_nsacr(void)
+ {
+ 	unsigned int reg;
+ 
+-	asm("mrc p15, 0, %0, c1, c1, 2\n" : "=r"(reg));
++	asm volatile ("mrc p15, 0, %0, c1, c1, 2\n" : "=r"(reg));
+ 	return reg;
+ }
+ 
+ static void write_nsacr(u32 val)
+ {
+-	asm("mcr p15, 0, %0, c1, c1, 2" : : "r"(val));
++	asm volatile ("mcr p15, 0, %0, c1, c1, 2" : : "r"(val));
+ }
+ 
+ static void write_mvbar(u32 val)
+ {
+-	asm("mcr p15, 0, %0, c12, c0, 1" : : "r"(val));
++	asm volatile ("mcr p15, 0, %0, c12, c0, 1" : : "r"(val));
+ }
+ 
+ static int cpu_is_virt_capable(void)
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.26.0
+
 
 _______________________________________________
 barebox mailing list
