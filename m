@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf1-x142.google.com ([2a00:1450:4864:20::142])
+Received: from relay6-d.mail.gandi.net ([217.70.183.198])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jLQdK-0003ss-Sn
- for barebox@lists.infradead.org; Mon, 06 Apr 2020 12:13:44 +0000
-Received: by mail-lf1-x142.google.com with SMTP id n20so11572180lfl.10
- for <barebox@lists.infradead.org>; Mon, 06 Apr 2020 05:13:42 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon,  6 Apr 2020 15:13:25 +0300
-Message-Id: <20200406121325.1364-1-antonynpavlov@gmail.com>
+ id 1jLtIL-0000NV-Tb
+ for barebox@lists.infradead.org; Tue, 07 Apr 2020 18:49:59 +0000
+Received: from geraet.fritz.box (muedsl-82-207-223-115.citykom.de
+ [82.207.223.115]) (Authenticated sender: ahmad@a3f.at)
+ by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 6EF20C0003
+ for <barebox@lists.infradead.org>; Tue,  7 Apr 2020 18:49:46 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Tue,  7 Apr 2020 20:49:41 +0200
+Message-Id: <20200407184941.155842-1-ahmad@a3f.at>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,53 +23,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH V2] startup: introduce global.endianness variable
+Subject: [PATCH] of: overlay: fix uninitialized read of variable
 To: barebox@lists.infradead.org
 
-The global.endianness variable make it possible
-to determine current endian mode from command
-line or from script on bi-endian capable system.
+When there are no fragments, we return an uninitialized err.
+Initialize err as zero, so it's returned in that case.
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- common/globalvar.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/of/overlay.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/common/globalvar.c b/common/globalvar.c
-index c87f2c9339..264833f88c 100644
---- a/common/globalvar.c
-+++ b/common/globalvar.c
-@@ -591,6 +591,8 @@ int globalvar_add_simple_ip(const char *name, IPaddr_t *ip)
- 
- static int globalvar_init(void)
+diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
+index a35eddfa084e..b79dbff94dbf 100644
+--- a/drivers/of/overlay.c
++++ b/drivers/of/overlay.c
+@@ -162,7 +162,7 @@ int of_overlay_apply_tree(struct device_node *root,
  {
-+	const char *endianness;
-+
- 	register_device(&global_device);
+ 	struct device_node *resolved;
+ 	struct device_node *fragment;
+-	int err;
++	int err = 0;
  
- 	if (IS_ENABLED(CONFIG_NVVAR))
-@@ -598,11 +600,19 @@ static int globalvar_init(void)
- 
- 	globalvar_add_simple("version", UTS_RELEASE);
- 
-+	if (IS_ENABLED(CONFIG_CPU_BIG_ENDIAN))
-+		endianness = "big";
-+	else
-+		endianness = "little";
-+
-+	globalvar_add_simple("endianness", endianness);
-+
- 	return 0;
- }
- pure_initcall(globalvar_init);
- 
- BAREBOX_MAGICVAR_NAMED(global_version, global.version, "The barebox version");
-+BAREBOX_MAGICVAR_NAMED(global_endianness, global.endianness, "The barebox endianness");
- 
- /**
-  * nvvar_save - save NV variables to persistent environment
+ 	resolved = of_resolve_phandles(root, overlay);
+ 	if (!resolved)
 -- 
-2.25.0
+2.20.1
 
 
 _______________________________________________
