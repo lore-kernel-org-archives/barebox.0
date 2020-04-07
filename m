@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from vsmx011.vodafonemail.xion.oxcs.net ([153.92.174.89])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jOIT1-0000XD-DA
- for barebox@lists.infradead.org; Tue, 14 Apr 2020 10:06:56 +0000
-Date: Tue, 14 Apr 2020 12:06:53 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200414100653.GI27288@pengutronix.de>
-References: <20200407153217.6568-1-giorgio.nicole@arcor.de>
+ id 1jLqGa-0007lz-LH
+ for barebox@lists.infradead.org; Tue, 07 Apr 2020 15:35:58 +0000
+From: Giorgio Dal Molin <giorgio.nicole@arcor.de>
+Date: Tue,  7 Apr 2020 17:35:45 +0200
+Message-Id: <20200407153546.6726-1-giorgio.nicole@arcor.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200407153217.6568-1-giorgio.nicole@arcor.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,75 +19,84 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] ARM: sm.c: add the attribute 'volatile' to some
- asm() statements.
-To: Giorgio Dal Molin <giorgio.nicole@arcor.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] ARM: i.MX: fixed enabling the MMU after switching in non
+ secure mode.
+To: barebox@lists.infradead.org
+Cc: Giorgio Dal Molin <giorgio.nicole@arcor.de>
 
-On Tue, Apr 07, 2020 at 05:32:17PM +0200, Giorgio Dal Molin wrote:
-> Prevent the compiler to eventually cache register values read/written
-> to/from CP15.
-> 
-> Signed-off-by: Giorgio Dal Molin <giorgio.nicole@arcor.de>
-> ---
->  arch/arm/cpu/sm.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+The Domain Access Control Register (DACR) in CP15 is banked between
+secure and non secure mode: there a copy of the reg. in secure mode and a
+second copy in non secure mode.
+As barebox boots on the imx7 SOC it runs in secure mode and initializes
+the secure-mode copy of DACR (with 0x00000001).
+After switching to non secure mode, for example with the command 'smc -n'
+or while booting a kernel image with global.bootm.secure_state=nonsecure,
+the active value of DACR is the copy in non-secure mode and that copy
+was still uninitialized and in an UNKNOWN state.
 
-Applied, thanks
+This caused the cpu to hang as soon as the MMU was enabled in non-secure
+mode.
 
-Sascha
+We fix this by reading the DACR value in secure mode just before switching
+to non secure and then initializing it again with the same value.
 
-> 
-> diff --git a/arch/arm/cpu/sm.c b/arch/arm/cpu/sm.c
-> index cb33d9625..f5a1edbd4 100644
-> --- a/arch/arm/cpu/sm.c
-> +++ b/arch/arm/cpu/sm.c
-> @@ -26,7 +26,7 @@ static unsigned int read_id_pfr1(void)
->  {
->  	unsigned int reg;
->  
-> -	asm("mrc p15, 0, %0, c0, c1, 1\n" : "=r"(reg));
-> +	asm volatile ("mrc p15, 0, %0, c0, c1, 1\n" : "=r"(reg));
->  	return reg;
->  }
->  
-> @@ -34,18 +34,18 @@ static u32 read_nsacr(void)
->  {
->  	unsigned int reg;
->  
-> -	asm("mrc p15, 0, %0, c1, c1, 2\n" : "=r"(reg));
-> +	asm volatile ("mrc p15, 0, %0, c1, c1, 2\n" : "=r"(reg));
->  	return reg;
->  }
->  
->  static void write_nsacr(u32 val)
->  {
-> -	asm("mcr p15, 0, %0, c1, c1, 2" : : "r"(val));
-> +	asm volatile ("mcr p15, 0, %0, c1, c1, 2" : : "r"(val));
->  }
->  
->  static void write_mvbar(u32 val)
->  {
-> -	asm("mcr p15, 0, %0, c12, c0, 1" : : "r"(val));
-> +	asm volatile ("mcr p15, 0, %0, c12, c0, 1" : : "r"(val));
->  }
->  
->  static int cpu_is_virt_capable(void)
-> -- 
-> 2.26.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+Signed-off-by: Giorgio Dal Molin <giorgio.nicole@arcor.de>
+---
+ arch/arm/cpu/mmu.h | 9 +++++++++
+ arch/arm/cpu/sm.c  | 4 +++-
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
+diff --git a/arch/arm/cpu/mmu.h b/arch/arm/cpu/mmu.h
+index 6e7a4c035..c85e0ea05 100644
+--- a/arch/arm/cpu/mmu.h
++++ b/arch/arm/cpu/mmu.h
+@@ -39,6 +39,15 @@ static inline void set_ttbr(void *ttb)
+ #define DOMAIN_CLIENT	1
+ #define DOMAIN_MANAGER	3
+ 
++static inline unsigned long get_domain(void)
++{
++	unsigned long dacr;
++
++	asm volatile ("mrc p15, 0, %0, c3, c0, 0" : "=r"(dacr));
++
++	return dacr;
++}
++
+ static inline void set_domain(unsigned val)
+ {
+ 	/* Set the Domain Access Control Register */
+diff --git a/arch/arm/cpu/sm.c b/arch/arm/cpu/sm.c
+index 1f2c236d5..cb33d9625 100644
+--- a/arch/arm/cpu/sm.c
++++ b/arch/arm/cpu/sm.c
+@@ -150,7 +150,7 @@ static bool armv7_have_security_extensions(void)
+ int armv7_secure_monitor_install(void)
+ {
+ 	int mmuon;
+-	unsigned long ttb, vbar;
++	unsigned long ttb, vbar, dacr;
+ 
+ 	if (!armv7_have_security_extensions()) {
+ 		pr_err("Security extensions not implemented.\n");
+@@ -164,12 +164,14 @@ int armv7_secure_monitor_install(void)
+ 
+ 	vbar = get_vbar();
+ 	ttb = get_ttbr();
++	dacr = get_domain();
+ 
+ 	armv7_init_nonsec();
+ 	__armv7_secure_monitor_install();
+ 
+ 	set_ttbr((void *)ttb);
+ 	set_vbar(vbar);
++	set_domain(dacr);
+ 
+ 	if (mmuon) {
+ 		/*
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.26.0
+
 
 _______________________________________________
 barebox mailing list
