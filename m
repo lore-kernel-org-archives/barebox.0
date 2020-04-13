@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jNttL-0005dr-4M
+ id 1jNttK-0005by-PM
  for barebox@lists.infradead.org; Mon, 13 Apr 2020 07:52:30 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <afa@pengutronix.de>) id 1jNttJ-0003TF-KH
- for barebox@lists.infradead.org; Mon, 13 Apr 2020 09:52:25 +0200
+ (envelope-from <afa@pengutronix.de>) id 1jNttI-0003SZ-FS
+ for barebox@lists.infradead.org; Mon, 13 Apr 2020 09:52:24 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <afa@pengutronix.de>) id 1jNttJ-0005Em-4g
- for barebox@lists.infradead.org; Mon, 13 Apr 2020 09:52:25 +0200
+ (envelope-from <afa@pengutronix.de>) id 1jNttH-0005Ee-VR
+ for barebox@lists.infradead.org; Mon, 13 Apr 2020 09:52:23 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 13 Apr 2020 09:51:53 +0200
-Message-Id: <20200413075204.17544-11-a.fatoum@pengutronix.de>
+Date: Mon, 13 Apr 2020 09:51:52 +0200
+Message-Id: <20200413075204.17544-10-a.fatoum@pengutronix.de>
 In-Reply-To: <20200413075204.17544-1-a.fatoum@pengutronix.de>
 References: <20200413075204.17544-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -29,49 +29,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/21] include: linux/kernel.h: port DIV_ROUND_CLOSEST_ULL
- definition
+Subject: [PATCH 09/21] clk: add clk_unregister stub
 To: barebox@lists.infradead.org
 
-We already have DIV_ROUND_CLOSEST, but no DIV_ROUND_CLOSEST_ULL.
-Import the latter for use by later commits.
+Make kernel clk driver import a tiny bit more convenient by allowing
+clk_unregister calls and control flow to remain as is.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/linux/kernel.h | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ include/linux/clk.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/linux/kernel.h b/include/linux/kernel.h
-index b320f7e902f0..23c23a73f588 100644
---- a/include/linux/kernel.h
-+++ b/include/linux/kernel.h
-@@ -6,6 +6,7 @@
- #include <linux/bug.h>
- #include <linux/barebox-wrapper.h>
- #include <linux/limits.h>
-+#include <asm-generic/div64.h>
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index efb0fe4415aa..a005e7233de8 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -558,4 +558,8 @@ int clk_name_complete(struct string_list *sl, char *instr);
  
- #define ALIGN(x, a)		__ALIGN_MASK(x, (typeof(x))(a) - 1)
- #define ALIGN_DOWN(x, a)	ALIGN((x) - ((a) - 1), (a))
-@@ -41,6 +42,18 @@
- 	(((x) + ((__divisor) / 2)) / (__divisor));	\
- }							\
- )
-+/*
-+ * Same as above but for u64 dividends. divisor must be a 32-bit
-+ * number.
-+ */
-+#define DIV_ROUND_CLOSEST_ULL(x, divisor)(		\
-+{							\
-+	typeof(divisor) __d = divisor;			\
-+	unsigned long long _tmp = (x) + (__d) / 2;	\
-+	do_div(_tmp, __d);				\
-+	_tmp;						\
-+}							\
-+)
+ char *of_clk_get_parent_name(struct device_node *np, unsigned int index);
  
- /**
-  * upper_32_bits - return bits 32-63 of a number
++static inline void clk_unregister(struct clk *clk)
++{
++}
++
+ #endif
 -- 
 2.26.0.rc2
 
