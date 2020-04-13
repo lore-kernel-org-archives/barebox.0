@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jNttT-0005oF-Gw
+ id 1jNttU-0005og-3d
  for barebox@lists.infradead.org; Mon, 13 Apr 2020 07:52:50 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <afa@pengutronix.de>) id 1jNttS-0003ZC-3k
+ (envelope-from <afa@pengutronix.de>) id 1jNttS-0003Zb-Pt
  for barebox@lists.infradead.org; Mon, 13 Apr 2020 09:52:34 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <afa@pengutronix.de>) id 1jNttR-0005Fp-86
+ (envelope-from <afa@pengutronix.de>) id 1jNttR-0005Fx-V0
  for barebox@lists.infradead.org; Mon, 13 Apr 2020 09:52:33 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 13 Apr 2020 09:52:00 +0200
-Message-Id: <20200413075204.17544-18-a.fatoum@pengutronix.de>
+Date: Mon, 13 Apr 2020 09:52:01 +0200
+Message-Id: <20200413075204.17544-19-a.fatoum@pengutronix.de>
 In-Reply-To: <20200413075204.17544-1-a.fatoum@pengutronix.de>
 References: <20200413075204.17544-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -29,159 +29,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 17/21] clk: at91: Mark struct clk_range as const
+Subject: [PATCH 18/21] clk: at91: allow 24 Mhz clock as input for PLL
 To: barebox@lists.infradead.org
 
-From: Stephen Boyd <sboyd@kernel.org>
+From: Eugen Hristev <eugen.hristev@microchip.com>
 
-It's just some static data that doesn't get changed after being used.
-Mark it const everywhere.
+The PLL input range needs to be able to allow 24 Mhz crystal as input
+Update the range accordingly in plla characteristics struct
 
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Eugen Hristev <eugen.hristev@microchip.com>
+Link: https://lkml.kernel.org/r/1568183622-7858-1-git-send-email-eugen.hristev@microchip.com
+Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Fixes: c561e41ce4d2 ("clk: at91: add sama5d2 PMC driver")
 Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-[afa: ported to barebox from Linux commit 7b4c162e03d47e0]
+[afa: ported to barebox from Linux commit 81a6b601f9f49]
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/clk/at91/at91sam9260.c | 14 +++++++-------
- drivers/clk/at91/at91sam9rl.c  |  2 +-
- drivers/clk/at91/at91sam9x5.c  |  2 +-
- drivers/clk/at91/pmc.h         |  2 +-
- drivers/clk/at91/sama5d2.c     |  2 +-
- drivers/clk/at91/sama5d4.c     |  2 +-
- 6 files changed, 12 insertions(+), 12 deletions(-)
+ drivers/clk/at91/sama5d2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/at91/at91sam9260.c b/drivers/clk/at91/at91sam9260.c
-index 39135b6c9711..066dedf2a146 100644
---- a/drivers/clk/at91/at91sam9260.c
-+++ b/drivers/clk/at91/at91sam9260.c
-@@ -47,7 +47,7 @@ static u8 sam9260_plla_out[] = { 0, 2 };
- 
- static u16 sam9260_plla_icpll[] = { 1, 1 };
- 
--static struct clk_range sam9260_plla_outputs[] = {
-+static const struct clk_range sam9260_plla_outputs[] = {
- 	{ .min = 80000000, .max = 160000000 },
- 	{ .min = 150000000, .max = 240000000 },
- };
-@@ -64,7 +64,7 @@ static u8 sam9260_pllb_out[] = { 1 };
- 
- static u16 sam9260_pllb_icpll[] = { 1 };
- 
--static struct clk_range sam9260_pllb_outputs[] = {
-+static const struct clk_range sam9260_pllb_outputs[] = {
- 	{ .min = 70000000, .max = 130000000 },
- };
- 
-@@ -134,7 +134,7 @@ static u8 sam9g20_plla_out[] = { 0, 1, 2, 3, 0, 1, 2, 3 };
- 
- static u16 sam9g20_plla_icpll[] = { 0, 0, 0, 0, 1, 1, 1, 1 };
- 
--static struct clk_range sam9g20_plla_outputs[] = {
-+static const struct clk_range sam9g20_plla_outputs[] = {
- 	{ .min = 745000000, .max = 800000000 },
- 	{ .min = 695000000, .max = 750000000 },
- 	{ .min = 645000000, .max = 700000000 },
-@@ -157,7 +157,7 @@ static u8 sam9g20_pllb_out[] = { 0 };
- 
- static u16 sam9g20_pllb_icpll[] = { 0 };
- 
--static struct clk_range sam9g20_pllb_outputs[] = {
-+static const struct clk_range sam9g20_pllb_outputs[] = {
- 	{ .min = 30000000, .max = 100000000 },
- };
- 
-@@ -188,7 +188,7 @@ static const struct clk_master_characteristics sam9261_mck_characteristics = {
- 	.divisors = { 1, 2, 4, 0 },
- };
- 
--static struct clk_range sam9261_plla_outputs[] = {
-+static const struct clk_range sam9261_plla_outputs[] = {
- 	{ .min = 80000000, .max = 200000000 },
- 	{ .min = 190000000, .max = 240000000 },
- };
-@@ -205,7 +205,7 @@ static u8 sam9261_pllb_out[] = { 1 };
- 
- static u16 sam9261_pllb_icpll[] = { 1 };
- 
--static struct clk_range sam9261_pllb_outputs[] = {
-+static const struct clk_range sam9261_pllb_outputs[] = {
- 	{ .min = 70000000, .max = 130000000 },
- };
- 
-@@ -268,7 +268,7 @@ static const struct clk_master_characteristics sam9263_mck_characteristics = {
- 	.divisors = { 1, 2, 4, 0 },
- };
- 
--static struct clk_range sam9263_pll_outputs[] = {
-+static const struct clk_range sam9263_pll_outputs[] = {
- 	{ .min = 80000000, .max = 200000000 },
- 	{ .min = 190000000, .max = 240000000 },
- };
-diff --git a/drivers/clk/at91/at91sam9rl.c b/drivers/clk/at91/at91sam9rl.c
-index 9be162d63bfe..ff47f94a8df0 100644
---- a/drivers/clk/at91/at91sam9rl.c
-+++ b/drivers/clk/at91/at91sam9rl.c
-@@ -20,7 +20,7 @@ static const struct clk_master_characteristics sam9rl_mck_characteristics = {
- 
- static u8 sam9rl_plla_out[] = { 0, 2 };
- 
--static struct clk_range sam9rl_plla_outputs[] = {
-+static const struct clk_range sam9rl_plla_outputs[] = {
- 	{ .min = 80000000, .max = 200000000 },
- 	{ .min = 190000000, .max = 240000000 },
- };
-diff --git a/drivers/clk/at91/at91sam9x5.c b/drivers/clk/at91/at91sam9x5.c
-index db3076967753..87b0fd2e1cad 100644
---- a/drivers/clk/at91/at91sam9x5.c
-+++ b/drivers/clk/at91/at91sam9x5.c
-@@ -23,7 +23,7 @@ static u8 plla_out[] = { 0, 1, 2, 3, 0, 1, 2, 3 };
- 
- static u16 plla_icpll[] = { 0, 0, 0, 0, 1, 1, 1, 1 };
- 
--static struct clk_range plla_outputs[] = {
-+static const struct clk_range plla_outputs[] = {
- 	{ .min = 745000000, .max = 800000000 },
- 	{ .min = 695000000, .max = 750000000 },
- 	{ .min = 645000000, .max = 700000000 },
-diff --git a/drivers/clk/at91/pmc.h b/drivers/clk/at91/pmc.h
-index 67890300c750..705486a1f440 100644
---- a/drivers/clk/at91/pmc.h
-+++ b/drivers/clk/at91/pmc.h
-@@ -58,7 +58,7 @@ extern const struct clk_pll_layout sama5d3_pll_layout;
- struct clk_pll_characteristics {
- 	struct clk_range input;
- 	int num_output;
--	struct clk_range *output;
-+	const struct clk_range *output;
- 	u16 *icpll;
- 	u8 *out;
- };
 diff --git a/drivers/clk/at91/sama5d2.c b/drivers/clk/at91/sama5d2.c
-index 65c4f701bdd9..3daff89f5958 100644
+index 3daff89f5958..61fdf256c036 100644
 --- a/drivers/clk/at91/sama5d2.c
 +++ b/drivers/clk/at91/sama5d2.c
-@@ -22,7 +22,7 @@ static u8 plla_out[] = { 0 };
- 
- static u16 plla_icpll[] = { 0 };
- 
--static struct clk_range plla_outputs[] = {
-+static const struct clk_range plla_outputs[] = {
- 	{ .min = 600000000, .max = 1200000000 },
+@@ -27,7 +27,7 @@ static const struct clk_range plla_outputs[] = {
  };
  
-diff --git a/drivers/clk/at91/sama5d4.c b/drivers/clk/at91/sama5d4.c
-index 174bc341c905..de14640f91d2 100644
---- a/drivers/clk/at91/sama5d4.c
-+++ b/drivers/clk/at91/sama5d4.c
-@@ -22,7 +22,7 @@ static u8 plla_out[] = { 0 };
- 
- static u16 plla_icpll[] = { 0 };
- 
--static struct clk_range plla_outputs[] = {
-+static const struct clk_range plla_outputs[] = {
- 	{ .min = 600000000, .max = 1200000000 },
- };
- 
+ static const struct clk_pll_characteristics plla_characteristics = {
+-	.input = { .min = 12000000, .max = 12000000 },
++	.input = { .min = 12000000, .max = 24000000 },
+ 	.num_output = ARRAY_SIZE(plla_outputs),
+ 	.output = plla_outputs,
+ 	.icpll = plla_icpll,
 -- 
 2.26.0.rc2
 
