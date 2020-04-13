@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jNttA-0005R8-D4
- for barebox@lists.infradead.org; Mon, 13 Apr 2020 07:52:18 +0000
+ id 1jNtt8-0005Qs-WA
+ for barebox@lists.infradead.org; Mon, 13 Apr 2020 07:52:16 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <afa@pengutronix.de>) id 1jNtt9-0003Qt-8x
- for barebox@lists.infradead.org; Mon, 13 Apr 2020 09:52:15 +0200
+ (envelope-from <afa@pengutronix.de>) id 1jNtt7-0003Qj-T4
+ for barebox@lists.infradead.org; Mon, 13 Apr 2020 09:52:13 +0200
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <afa@pengutronix.de>) id 1jNtt9-0005DV-0G
- for barebox@lists.infradead.org; Mon, 13 Apr 2020 09:52:15 +0200
+ (envelope-from <afa@pengutronix.de>) id 1jNtt7-0005DF-KR
+ for barebox@lists.infradead.org; Mon, 13 Apr 2020 09:52:13 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 13 Apr 2020 09:51:46 +0200
-Message-Id: <20200413075204.17544-4-a.fatoum@pengutronix.de>
+Date: Mon, 13 Apr 2020 09:51:44 +0200
+Message-Id: <20200413075204.17544-2-a.fatoum@pengutronix.de>
 In-Reply-To: <20200413075204.17544-1-a.fatoum@pengutronix.de>
 References: <20200413075204.17544-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -29,103 +29,88 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/21] mfd: syscon: implement device_node_to_regmap
+Subject: [PATCH 01/21] mfd: syscon: enable specified clocks on
+ syscon_base_lookup_by_phandle
 To: barebox@lists.infradead.org
 
-Extend our syscon API with a device_node_to_regmap function that has the
-same semantics as upstream:
+Since commit b36b7b72 ("mfd: syscon: clock peripheral if specified in
+device tree"), we now clock syscons during access if the device tree nodes
+indicate a clocks property. We haven't been doing this for
+syscon_base_lookup_by_phandle though, because we did this as part of the
+regmap access functions.
 
- __________________________________________________________________________
-| Linux commit 39233b7c611248c0d05209b4854bc63e26485655
-| CommitDate: Thu Aug 8 15:30:07 2019 -0700
-|
-| mfd/syscon: Add device_node_to_regmap()
-|
-| device_node_to_regmap() is exactly like syscon_node_to_regmap(), but it
-| does not check that the node is compatible with "syscon", and won't
-| attach the first clock it finds to the regmap.
-|
-| The rationale behind this, is that one device node with a standard
-| compatible string "foo,bar" can be covered by multiple drivers sharing a
-| regmap, or by a single driver doing all the job without a regmap, but
-| these are implementation details which shouldn't reflect on the
-| devicetree.
-|
-| Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-| Acked-by: Arnd Bergmann <arnd@arndb.de>
-| Signed-off-by: Paul Burton <paul.burton@mips.com>
-|__________________________________________________________________________
+The best way forward is probably dropping the syscon_base API altogether
+and change users to the regmap API instead, but for now, make the behavior
+consistent, by detaching the clock and enabling it permanently, so:
+
+- We are safe from breakage that results from upstream device trees moving
+  a clocks property from the consumer to the syscon provider (like in [1])
+- Another syscon consumer can't disable the clock for a syscon that's
+  also shared via a syscon_base_lookup_by_phandle
+
+I've reviewed the current driver code users of syscon_base_lookup_by_phandle
+and all upstream device trees that match against the drivers lack
+a clocks property, so this shouldn't alter behavior (for now).
+
+[1]: c9322d4fe ("net: designware: eqos: stm32: drop no longer needed syscfg-clk")
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/mfd/syscon.c | 21 ++++++++++++++++-----
- include/mfd/syscon.h |  5 +++++
- 2 files changed, 21 insertions(+), 5 deletions(-)
+ drivers/base/regmap/regmap-mmio.c | 5 ++++-
+ drivers/mfd/syscon.c              | 4 ++++
+ include/regmap.h                  | 2 +-
+ 3 files changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
-index 5f391dc08b10..2d7a31095b31 100644
---- a/drivers/mfd/syscon.c
-+++ b/drivers/mfd/syscon.c
-@@ -171,20 +171,31 @@ void __iomem *syscon_base_lookup_by_phandle(struct device_node *np,
- 	return syscon_node_to_base(syscon_np);
+diff --git a/drivers/base/regmap/regmap-mmio.c b/drivers/base/regmap/regmap-mmio.c
+index 7ca95d6bea79..626c6fa3f387 100644
+--- a/drivers/base/regmap/regmap-mmio.c
++++ b/drivers/base/regmap/regmap-mmio.c
+@@ -308,9 +308,12 @@ int regmap_mmio_attach_clk(struct regmap *map, struct clk *clk)
+ 	return 0;
  }
  
--struct regmap *syscon_node_to_regmap(struct device_node *np)
-+static struct regmap *__device_node_to_regmap(struct device_node *np,
-+					      bool check_clk)
+-void regmap_mmio_detach_clk(struct regmap *map)
++struct clk *regmap_mmio_detach_clk(struct regmap *map)
  {
- 	struct syscon *syscon;
+ 	struct regmap_mmio_context *ctx = map->bus_context;
++	struct clk *clk = ctx->clk;
  
--	if (!of_device_is_compatible(np, "syscon"))
--		return ERR_PTR(-EINVAL);
--
--	syscon = node_to_syscon(np, true);
-+	syscon = node_to_syscon(np, check_clk);
+ 	ctx->clk = NULL;
++
++	return clk;
+ }
+diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
+index 67e2ebb6c2f5..ba0489bf95a8 100644
+--- a/drivers/mfd/syscon.c
++++ b/drivers/mfd/syscon.c
+@@ -128,10 +128,14 @@ static struct syscon *node_to_syscon(struct device_node *np)
+ static void __iomem *syscon_node_to_base(struct device_node *np)
+ {
+ 	struct syscon *syscon = node_to_syscon(np);
++	struct clk *clk;
+ 
  	if (IS_ERR(syscon))
  		return ERR_CAST(syscon);
  
- 	return syscon->regmap;
++	clk = regmap_mmio_detach_clk(syscon->regmap);
++	clk_enable(clk);
++
+ 	return syscon->base;
  }
  
-+struct regmap *device_node_to_regmap(struct device_node *np)
-+{
-+	return __device_node_to_regmap(np, false);
-+}
-+
-+struct regmap *syscon_node_to_regmap(struct device_node *np)
-+{
-+	if (!of_device_is_compatible(np, "syscon"))
-+		return ERR_PTR(-EINVAL);
-+
-+	return __device_node_to_regmap(np, true);
-+}
-+
- struct regmap *syscon_regmap_lookup_by_compatible(const char *s)
- {
- 	struct device_node *syscon_np;
-diff --git a/include/mfd/syscon.h b/include/mfd/syscon.h
-index ac33f2d34747..b47aa1e160e6 100644
---- a/include/mfd/syscon.h
-+++ b/include/mfd/syscon.h
-@@ -21,6 +21,7 @@ void __iomem *syscon_base_lookup_by_pdevname(const char *s);
- void __iomem *syscon_base_lookup_by_phandle
- 	(struct device_node *np, const char *property);
- struct regmap *syscon_node_to_regmap(struct device_node *np);
-+struct regmap *device_node_to_regmap(struct device_node *np);
- struct regmap *syscon_regmap_lookup_by_compatible(const char *s);
- extern struct regmap *syscon_regmap_lookup_by_phandle(
- 					struct device_node *np,
-@@ -41,6 +42,10 @@ static inline struct regmap *syscon_node_to_regmap(struct device_node *np)
- {
- 	return ERR_PTR(-ENOSYS);
- }
-+static inline struct regmap *device_node_to_regmap(struct device_node *np)
-+{
-+	return ERR_PTR(-ENOSYS);
-+}
- static inline struct regmap *syscon_regmap_lookup_by_compatible(const char *s)
- {
- 	return ERR_PTR(-ENOSYS);
+diff --git a/include/regmap.h b/include/regmap.h
+index 4172c00bd2da..d950971b7d48 100644
+--- a/include/regmap.h
++++ b/include/regmap.h
+@@ -91,7 +91,7 @@ struct regmap *regmap_init_mmio_clk(struct device_d *dev, const char *clk_id,
+ 
+ 
+ int regmap_mmio_attach_clk(struct regmap *map, struct clk *clk);
+-void regmap_mmio_detach_clk(struct regmap *map);
++struct clk *regmap_mmio_detach_clk(struct regmap *map);
+ 
+ void regmap_exit(struct regmap *map);
+ 
 -- 
 2.26.0.rc2
 
