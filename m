@@ -1,22 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jNtt9-0005Qt-NT
- for barebox@lists.infradead.org; Mon, 13 Apr 2020 07:52:16 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <afa@pengutronix.de>) id 1jNtt8-0003Qo-Jo
- for barebox@lists.infradead.org; Mon, 13 Apr 2020 09:52:14 +0200
-Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <afa@pengutronix.de>) id 1jNtt8-0005DN-BG
- for barebox@lists.infradead.org; Mon, 13 Apr 2020 09:52:14 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 13 Apr 2020 09:51:45 +0200
-Message-Id: <20200413075204.17544-3-a.fatoum@pengutronix.de>
-In-Reply-To: <20200413075204.17544-1-a.fatoum@pengutronix.de>
+ id 1jOG0q-0005ca-7o
+ for barebox@lists.infradead.org; Tue, 14 Apr 2020 07:29:41 +0000
 References: <20200413075204.17544-1-a.fatoum@pengutronix.de>
+ <20200413075204.17544-8-a.fatoum@pengutronix.de>
+ <20200414064609.GV27288@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <6f20f4e0-24bd-b6f5-43a5-6ba62334c6ce@pengutronix.de>
+Date: Tue, 14 Apr 2020 09:29:36 +0200
 MIME-Version: 1.0
+In-Reply-To: <20200414064609.GV27288@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,89 +24,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/21] mfd: syscon: refactor of_syscon_register compatible
- check
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 07/21] of: port Linux of_get_compatible_child helper
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, Michael Tretter <m.tretter@pengutronix.de>
 
-Linux also provides a device_node_to_regmap function that doesn't do a
-compatible = "syscon" check. In preparation for having it in barebox,
-factor out the compatible check into the callers.
+Hello Sascha,
 
-While at it make the clock checking explicit, so the diff clearly
-indicates, we touched all instances and to prepare for follow-up
-commits.
+On 4/14/20 8:46 AM, Sascha Hauer wrote:
+> for_each_child_of_node() goes down to list_for_each_entry(). On an empty
+> list child will point to the list head after leaving the loop. Return
+> child explicitly when it's compatible and NULL when leaving the loop
+> which is better readable as well.
 
-No functional change.
+argh, it looked fishy to me as well, but I didn't think about comparing
+Linux and barebox implementation. I just reviewed the 70 instances
+of for_each_child_of_node we have and it seems only one other instance
+in the overlay code has made the same assumption as I did:
+ - drivers/of/resolver.c: of_resolve_phandles (grep for /if (!overlay_child)/)
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- drivers/mfd/syscon.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+I can send a fixup to make it more readable but I'd want to change
+for_each_child_of_node to align it with Linux behavior as well.
 
-diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
-index ba0489bf95a8..5f391dc08b10 100644
---- a/drivers/mfd/syscon.c
-+++ b/drivers/mfd/syscon.c
-@@ -46,9 +46,6 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_clk)
- 	int ret;
- 	struct resource res;
- 
--	if (!of_device_is_compatible(np, "syscon"))
--		return ERR_PTR(-EINVAL);
--
- 	syscon = xzalloc(sizeof(*syscon));
- 
- 	if (of_address_to_resource(np, 0, &res)) {
-@@ -106,7 +103,7 @@ err_map:
- 	return ERR_PTR(ret);
- }
- 
--static struct syscon *node_to_syscon(struct device_node *np)
-+static struct syscon *node_to_syscon(struct device_node *np, bool check_clk)
- {
- 	struct syscon *entry, *syscon = NULL;
- 
-@@ -117,7 +114,7 @@ static struct syscon *node_to_syscon(struct device_node *np)
- 		}
- 
- 	if (!syscon)
--		syscon = of_syscon_register(np, true);
-+		syscon = of_syscon_register(np, check_clk);
- 
- 	if (IS_ERR(syscon))
- 		return ERR_CAST(syscon);
-@@ -127,9 +124,13 @@ static struct syscon *node_to_syscon(struct device_node *np)
- 
- static void __iomem *syscon_node_to_base(struct device_node *np)
- {
--	struct syscon *syscon = node_to_syscon(np);
-+	struct syscon *syscon;
- 	struct clk *clk;
- 
-+	if (!of_device_is_compatible(np, "syscon"))
-+		return ERR_PTR(-EINVAL);
-+
-+	syscon = node_to_syscon(np, true);
- 	if (IS_ERR(syscon))
- 		return ERR_CAST(syscon);
- 
-@@ -172,8 +173,12 @@ void __iomem *syscon_base_lookup_by_phandle(struct device_node *np,
- 
- struct regmap *syscon_node_to_regmap(struct device_node *np)
- {
--	struct syscon *syscon = node_to_syscon(np);
-+	struct syscon *syscon;
-+
-+	if (!of_device_is_compatible(np, "syscon"))
-+		return ERR_PTR(-EINVAL);
- 
-+	syscon = node_to_syscon(np, true);
- 	if (IS_ERR(syscon))
- 		return ERR_CAST(syscon);
- 
+Cheers
+Ahmad
+
 -- 
-2.26.0.rc2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
