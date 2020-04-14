@@ -1,20 +1,25 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from vsmx011.vodafonemail.xion.oxcs.net ([153.92.174.89])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jNtt6-0005QP-6X
- for barebox@lists.infradead.org; Mon, 13 Apr 2020 07:52:13 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <afa@pengutronix.de>) id 1jNtt4-0003Qa-ND
- for barebox@lists.infradead.org; Mon, 13 Apr 2020 09:52:10 +0200
-Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <afa@pengutronix.de>) id 1jNtt4-0005Cv-Cu
- for barebox@lists.infradead.org; Mon, 13 Apr 2020 09:52:10 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 13 Apr 2020 09:51:43 +0200
-Message-Id: <20200413075204.17544-1-a.fatoum@pengutronix.de>
+ id 1jOLGE-000190-Gd
+ for barebox@lists.infradead.org; Tue, 14 Apr 2020 13:05:58 +0000
+References: <63e3eb58-9f5b-54d6-e8cf-b7672fe55a4a@pengutronix.de>
+ <9bd7f507-8f59-98ee-18af-48be3dba9372@arcor.de>
+ <f075fcf2-5703-37ee-b197-84afe0585560@pengutronix.de>
+ <3c69c3fb-d8bd-b39d-a0ea-704c8ad99dfc@arcor.de>
+ <612deb15-d03a-e393-3e37-efed52c9c3ed@pengutronix.de>
+ <facff2a6-0014-2858-25bd-de8190b5df0d@arcor.de>
+ <621b0466-1176-b067-5bb1-9606bd695c8d@pengutronix.de>
+ <f4cb5943-b968-90ee-f55e-7e705fae0d86@arcor.de>
+ <956f428b-e2a7-fb8a-c073-ec90966af808@pengutronix.de>
+ <ebc7ff56-cb0e-58b7-6a33-52068c78e90b@arcor.de>
+ <20200414075911.GX27288@pengutronix.de>
+From: Giorgio <giorgio.nicole@arcor.de>
+Message-ID: <d0889bc2-60ff-93f0-2948-81ef8a71306a@arcor.de>
+Date: Tue, 14 Apr 2020 15:05:36 +0200
 MIME-Version: 1.0
+In-Reply-To: <20200414075911.GX27288@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,193 +32,102 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/21] clk: at91: sync with Linux v5.6
-To: barebox@lists.infradead.org
+Subject: Re: imx7d dual core boot
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-During a bug hunt that ultimately turned out unrelated to the state
-of the barebox at91 clk driver, I synchronized its state with Linux v5.6.
+Hi Sascha,
 
-This imports it, after cleanup. It refactors other code a bit to reduce
-the diff for the final port and future ones. What we gain from this:
+thank you for your help, your last suggestion was the last missing
+bit in my qspi setup.
+I had the following wrong parameter in my flash header file:
 
-- bug fixes that have been posted upstream in the meanwhile
-- sam9x60 (new Microchip ARM926EJ-S) clock support
-- sama5d2 audio PLL
-- Some more helpers to make code porting slightly easier
-- SPDX-License-Identifiers, not only for at91 clks, but for all of
-  drivers/clk
+loadaddr 0x80000000
 
-Cheers,
-Ahmad Fatoum (17):
-  mfd: syscon: enable specified clocks on syscon_base_lookup_by_phandle
-  mfd: syscon: refactor of_syscon_register compatible check
-  mfd: syscon: implement device_node_to_regmap
-  regmap: retire of_node_to_regmap in favor of device_node_to_regmap
-  ARM: include: remove unused <asm/processor.h>
-  treewide: use cpu_relax() where appropriate
-  of: port Linux of_get_compatible_child helper
-  clk: implement clk_register_fixed_rate
-  clk: add clk_unregister stub
-  include: linux/kernel.h: port DIV_ROUND_CLOSEST_ULL definition
-  clk: migrate to SPDX-License-Identifier use
-  clk: at91: delete no-longer required DT compat code
-  clk: at91: compile dt-compat for all platforms that require it
-  clk: at91: add __init marker where appropriate
-  clk: at91: add sama5d2 audio PLL support
-  clk: at91: port Linux v5.6 SAM9X60 (new ARM926EJ-S) clock support
-  clk: at91: sckc: fix off-by-1000 in udelay()
+following your hint I changed it to:
 
-Alexandre Belloni (2):
-  clk: at91: fix masterck name
-  clk: at91: fix possible deadlock
+loadaddr 0x80001000
 
-Eugen Hristev (1):
-  clk: at91: allow 24 Mhz clock as input for PLL
+and now I don't need my evil hack with the branch opcode anymore,
+I just replace the first 512 bytes with the QuadSPI Configuration Parameters
+and the resulting modified image just works.
 
-Stephen Boyd (1):
-  clk: at91: Mark struct clk_range as const
+If you are interested I can have a look at the imx-image tool to see how this last
+special step could also be properly implemented, as Ahmad suggested.
 
- arch/arm/include/asm/processor.h        | 131 ------
- arch/arm/mach-at91/Kconfig              |  19 +
- arch/arm/mach-omap/omap4_rom_usb.c      |   6 +-
- drivers/base/regmap/regmap-mmio.c       |   5 +-
- drivers/base/regmap/regmap.c            |  20 -
- drivers/clk/Kconfig                     |   1 +
- drivers/clk/Makefile                    |   1 +
- drivers/clk/at91/Makefile               |  15 +-
- drivers/clk/at91/at91sam9260.c          |  16 +-
- drivers/clk/at91/at91sam9rl.c           |   4 +-
- drivers/clk/at91/at91sam9x5.c           |  18 +-
- drivers/clk/at91/clk-audio-pll.c        | 512 ++++++++++++++++++++++++
- drivers/clk/at91/clk-generated.c        |  68 ++--
- drivers/clk/at91/clk-h32mx.c            |   9 +-
- drivers/clk/at91/clk-i2s-mux.c          |  87 ++++
- drivers/clk/at91/clk-main.c             |  25 +-
- drivers/clk/at91/clk-master.c           |  16 +-
- drivers/clk/at91/clk-peripheral.c       |  54 +--
- drivers/clk/at91/clk-pll.c              |  21 +-
- drivers/clk/at91/clk-plldiv.c           |   9 +-
- drivers/clk/at91/clk-programmable.c     |  53 ++-
- drivers/clk/at91/clk-sam9x60-pll.c      | 322 +++++++++++++++
- drivers/clk/at91/clk-slow.c             |   7 +-
- drivers/clk/at91/clk-smd.c              |   9 +-
- drivers/clk/at91/clk-system.c           |   9 +-
- drivers/clk/at91/clk-usb.c              |  44 +-
- drivers/clk/at91/clk-utmi.c             |   7 +-
- drivers/clk/at91/dt-compat.c            | 140 +------
- drivers/clk/at91/pmc.c                  |  19 +-
- drivers/clk/at91/pmc.h                  |  91 +++--
- drivers/clk/at91/sam9x60.c              | 313 +++++++++++++++
- drivers/clk/at91/sama5d2.c              |  79 +++-
- drivers/clk/at91/sama5d4.c              |  14 +-
- drivers/clk/at91/sckc.c                 | 387 +++++++++++-------
- drivers/clk/clk-ar933x.c                |  13 +-
- drivers/clk/clk-ar9344.c                |  10 +-
- drivers/clk/clk-composite.c             |  13 +-
- drivers/clk/clk-conf.c                  |   5 +-
- drivers/clk/clk-divider.c               |  12 +-
- drivers/clk/clk-fixed-factor.c          |  12 +-
- drivers/clk/clk-fixed.c                 |  28 +-
- drivers/clk/clk-fractional-divider.c    |   5 +-
- drivers/clk/clk-gate-shared.c           |  12 +-
- drivers/clk/clk-gate.c                  |  12 +-
- drivers/clk/clk-gpio.c                  |  12 +-
- drivers/clk/clk-mux.c                   |  12 +-
- drivers/clk/clk-qoric.c                 |   5 +-
- drivers/clk/clk.c                       |  12 +-
- drivers/clk/clkdev.c                    |   5 +-
- drivers/clk/imx/Makefile                |   1 +
- drivers/clk/imx/clk-cpu.c               |   8 +-
- drivers/clk/imx/clk-frac-pll.c          |   8 +-
- drivers/clk/imx/clk-gate-exclusive.c    |   5 +-
- drivers/clk/imx/clk-gate2.c             |  12 +-
- drivers/clk/imx/clk-imx1.c              |  14 +-
- drivers/clk/imx/clk-imx21.c             |  15 +-
- drivers/clk/imx/clk-imx25.c             |  15 +-
- drivers/clk/imx/clk-imx27.c             |   1 +
- drivers/clk/imx/clk-imx31.c             |  14 +-
- drivers/clk/imx/clk-imx35.c             |   6 +-
- drivers/clk/imx/clk-imx5.c              |   6 +-
- drivers/clk/imx/clk-imx6.c              |   8 +-
- drivers/clk/imx/clk-imx6sl.c            |   8 +-
- drivers/clk/imx/clk-imx6sx.c            |   8 +-
- drivers/clk/imx/clk-imx6ul.c            |   8 +-
- drivers/clk/imx/clk-imx7.c              |  10 +-
- drivers/clk/imx/clk-pfd.c               |   8 +-
- drivers/clk/imx/clk-pllv1.c             |  14 +-
- drivers/clk/imx/clk-pllv2.c             |  14 +-
- drivers/clk/imx/clk-pllv3.c             |  14 +-
- drivers/clk/imx/clk-sccg-pll.c          |   8 +-
- drivers/clk/imx/clk-vf610.c             |   7 +-
- drivers/clk/imx/clk.c                   |   1 +
- drivers/clk/imx/clk.h                   |   1 +
- drivers/clk/mvebu/Makefile              |   1 +
- drivers/clk/mvebu/armada-370.c          |   5 +-
- drivers/clk/mvebu/armada-38x.c          |   5 +-
- drivers/clk/mvebu/armada-xp.c           |   5 +-
- drivers/clk/mvebu/common.c              |   5 +-
- drivers/clk/mvebu/common.h              |   5 +-
- drivers/clk/mvebu/corediv.c             |   5 +-
- drivers/clk/mvebu/dove.c                |   5 +-
- drivers/clk/mvebu/kirkwood.c            |   5 +-
- drivers/clk/mxs/Makefile                |   1 +
- drivers/clk/mxs/clk-div.c               |   8 +-
- drivers/clk/mxs/clk-frac.c              |   8 +-
- drivers/clk/mxs/clk-imx23.c             |  14 +-
- drivers/clk/mxs/clk-imx28.c             |  14 +-
- drivers/clk/mxs/clk-lcdif.c             |   1 +
- drivers/clk/mxs/clk-pll.c               |   8 +-
- drivers/clk/mxs/clk-ref.c               |   8 +-
- drivers/clk/mxs/clk.h                   |   1 +
- drivers/clk/rockchip/Makefile           |   1 +
- drivers/clk/rockchip/clk-cpu.c          |   5 +-
- drivers/clk/rockchip/clk-pll.c          |  11 +-
- drivers/clk/rockchip/clk-rk3188.c       |  11 +-
- drivers/clk/rockchip/clk-rk3288.c       |  11 +-
- drivers/clk/rockchip/clk.c              |  11 +-
- drivers/clk/rockchip/clk.h              |  11 +-
- drivers/clk/socfpga/Makefile            |   1 +
- drivers/clk/socfpga/clk-gate-a10.c      |  13 +-
- drivers/clk/socfpga/clk-periph-a10.c    |  13 +-
- drivers/clk/socfpga/clk-pll-a10.c       |  13 +-
- drivers/clk/socfpga/clk.c               |  10 +-
- drivers/clk/socfpga/clk.h               |  11 +-
- drivers/clk/tegra/Makefile              |   1 +
- drivers/clk/tegra/clk-divider.c         |  13 +-
- drivers/clk/tegra/clk-periph.c          |  13 +-
- drivers/clk/tegra/clk-pll-out.c         |  13 +-
- drivers/clk/tegra/clk-pll.c             |  13 +-
- drivers/clk/tegra/clk-tegra124.c        |  13 +-
- drivers/clk/tegra/clk-tegra20.c         |  13 +-
- drivers/clk/tegra/clk-tegra30.c         |  13 +-
- drivers/clk/tegra/clk.c                 |  13 +-
- drivers/clk/tegra/clk.h                 |  13 +-
- drivers/clk/vexpress/Makefile           |   1 +
- drivers/clk/vexpress/clk-sp810.c        |  10 +-
- drivers/clk/vexpress/clk-vexpress-osc.c |  11 +-
- drivers/clk/zynq/Makefile               |   1 +
- drivers/clk/zynq/clkc.c                 |  13 +-
- drivers/clk/zynqmp/Makefile             |   1 +
- drivers/mfd/syscon.c                    |  36 +-
- drivers/mtd/nand/nand_denali.c          |   8 +-
- drivers/of/base.c                       |  25 ++
- include/linux/barebox-wrapper.h         |   2 +
- include/linux/clk.h                     |  13 +-
- include/linux/clk/at91_pmc.h            |  59 ++-
- include/linux/kernel.h                  |  13 +
- include/mfd/syscon.h                    |   5 +
- include/of.h                            |   8 +
- include/regmap.h                        |   3 +-
- 131 files changed, 2110 insertions(+), 1356 deletions(-)
- delete mode 100644 arch/arm/include/asm/processor.h
- create mode 100644 drivers/clk/at91/clk-audio-pll.c
- create mode 100644 drivers/clk/at91/clk-i2s-mux.c
- create mode 100644 drivers/clk/at91/clk-sam9x60-pll.c
- create mode 100644 drivers/clk/at91/sam9x60.c
+giorgio
 
--- 
-2.26.0.rc2
-
+On 2020-04-14 09:59, Sascha Hauer wrote:
+> On Tue, Apr 14, 2020 at 12:30:40AM +0200, Giorgio wrote:
+>> Hi Ahmad,
+>>
+>> On 4/7/20 3:43 PM, Ahmad Fatoum wrote:
+>>> Hello,
+>>>
+>>> On 4/7/20 2:28 PM, Giorgio wrote:
+>>>>> Great. Even better than hardcoding the CLIENT_DOMAIN.
+>>>>>
+>>>> OK.
+>>>>
+>>>> To read the current value of DACR, in secure mode, we need a
+>>>> get_domain(). I would add it to mmu.h, beside the set_domain().
+>>>
+>>> sounds good.
+>>>
+>>>>>> What do you mean with the 'other i.MX7 patches' ?
+>>>>>
+>>>>> Didn't you add support for some i.MX7 spi flash image format?
+>>>>>
+>>>>
+>>>> That was an evil hack actually, just to verify why the normal barebox image
+>>>> didn't worked. To really support booting barebox from the qspi flash
+>>>> I think we need more *structural* changes to the way barebox starts.
+>>>> For this I need *at least* some suggestions from someone that really knows
+>>>> in detail how barebox works and how an image is built, like you or Sascha...
+>>>
+>>> scripts/imx/imx-image.c is what's building the i.MX images. It receives
+>>> the imxcfg specific to a board as argument. If you have extra configuration
+>>> for the QSPI, you'll probably need to extend that, either with a new option
+>>> or maybe by adding new directives to the existing imxcfg format.
+>>>
+>>
+>> thank you for the suggestions, I already knew about the imx-image tool even
+>> if not in detail; to add support for the QSPI boot we must for sure extend
+>> the code there somehow.
+>>
+>>> What other changes do you think will be necessary?
+>>>
+>> I have currently have a qspi-patched barebox image on my QSPI flash that the imx7d
+>> is able to boot, but only due to an evil hack I only made to see if it was
+>> the last problem I had.
+>> According to the imx7d ref. manual (Rev. 1, 01/2018), at page 1233, the boot ROM
+>> reads out the content of the QSPI flash and expects, at offset 0x00 (watch out here,
+>> the ref. manual says actually offset 0x400 but it's an error), the QuadSPI Configuration
+>> Parameters, a 512 bytes long binary table with HW parameters describing the flash.
+>> Without this table the soc won't boot.
+>> The problem is here that barebox already uses this offset range with other informations,
+>> in particular the first 32bits (at offset 0x00) contain the asm opcode of a branch:
+> 
+> This branch shouldn't be necessary to boot from ROM. Normally we set the
+> entry point of the image to the image start + 0x1000 which is the
+> address of the first instruction of the binary.
+> 
+> The branch instruction at offset 0x0 in the image is only meant for
+> starting the image second stage: You can jump directly to the start of
+> the image without caring where the real start is.
+> 
+> I don't know why the instruction at 0x0 is necessary in your case. I
+> also don't know how booting with QSPI works. Other boot devices are
+> actively read from by the CPU, the QSPI controller probably has a
+> feature to map QSPI NOR contents into the physical address space of the
+> CPU. Maybe the ROM uses this feature and maybe this causes differences
+> to the boot flow from other devices.
+> 
+> What have you specified as loadaddr and dcdofs in you flash header
+> configuration file?
+> 
+> Sascha
+> 
 
 _______________________________________________
 barebox mailing list
