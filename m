@@ -1,12 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from vsmx011.vodafonemail.xion.oxcs.net ([153.92.174.89])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jLqCR-0002pX-RB
- for barebox@lists.infradead.org; Tue, 07 Apr 2020 15:31:41 +0000
-From: Giorgio Dal Molin <giorgio.nicole@arcor.de>
-Date: Tue,  7 Apr 2020 17:31:11 +0200
-Message-Id: <20200407153112.6513-1-giorgio.nicole@arcor.de>
+ id 1jOFKn-0005G0-Kn
+ for barebox@lists.infradead.org; Tue, 14 Apr 2020 06:46:15 +0000
+Date: Tue, 14 Apr 2020 08:46:09 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200414064609.GV27288@pengutronix.de>
+References: <20200413075204.17544-1-a.fatoum@pengutronix.de>
+ <20200413075204.17544-8-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200413075204.17544-8-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,84 +23,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] ARM: i.MX: fixed enabling the MMU after switching in non
- secure mode.
-To: barebox@lists.infradead.org
-Cc: Giorgio Dal Molin <giorgio.nicole@arcor.de>
+Subject: Re: [PATCH 07/21] of: port Linux of_get_compatible_child helper
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-The Domain Access Control Register (DACR) in CP15 is banked between
-secure and non secure mode: there a copy of the reg. in secure mode and a
-second copy in non secure mode.
-As barebox boots on the imx7 SOC it runs in secure mode and initializes
-the secure-mode copy of DACR (with 0x00000001).
-After switching to non secure mode, for example with the command 'smc -n'
-or while booting a kernel image with global.bootm.secure_state=nonsecure,
-the active value of DACR is the copy in non-secure mode and that copy
-was still uninitialized and in an UNKNOWN state.
+On Mon, Apr 13, 2020 at 09:51:50AM +0200, Ahmad Fatoum wrote:
+> Incoming Linux code port makes use of the helper. Add it now instead of
+> having to open-code it later.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  drivers/of/base.c | 25 +++++++++++++++++++++++++
+>  include/of.h      |  8 ++++++++
+>  2 files changed, 33 insertions(+)
+> 
+> diff --git a/drivers/of/base.c b/drivers/of/base.c
+> index 346d72e1e09e..5a0374a82c5c 100644
+> --- a/drivers/of/base.c
+> +++ b/drivers/of/base.c
+> @@ -1712,6 +1712,31 @@ int of_get_available_child_count(const struct device_node *parent)
+>  }
+>  EXPORT_SYMBOL(of_get_available_child_count);
+>  
+> +/**
+> + * of_get_compatible_child - Find compatible child node
+> + * @parent:	parent node
+> + * @compatible:	compatible string
+> + *
+> + * Lookup child node whose compatible property contains the given compatible
+> + * string.
+> + *
+> + * Returns a node pointer with refcount incremented, use of_node_put() on it
+> + * when done; or NULL if not found.
+> + */
+> +struct device_node *of_get_compatible_child(const struct device_node *parent,
+> +				const char *compatible)
+> +{
+> +	struct device_node *child;
+> +
+> +	for_each_child_of_node(parent, child) {
+> +		if (of_device_is_compatible(child, compatible))
+> +			break;
+> +	}
 
-This caused the cpu to hang as soon as the MMU was enabled in non-secure
-mode.
+for_each_child_of_node() goes down to list_for_each_entry(). On an empty
+list child will point to the list head after leaving the loop. Return
+child explicitly when it's compatible and NULL when leaving the loop
+which is better readable as well.
 
-We fix this by reading the DACR value in secure mode just before switching
-to non secure and then initializing it again with the same value.
+Sascha
 
-Signed-off-by: Giorgio Dal Molin <giorgio.nicole@arcor.de>
----
- arch/arm/cpu/mmu.h | 9 +++++++++
- arch/arm/cpu/sm.c  | 4 +++-
- 2 files changed, 12 insertions(+), 1 deletion(-)
-
-diff --git a/arch/arm/cpu/mmu.h b/arch/arm/cpu/mmu.h
-index 6e7a4c035..c85e0ea05 100644
---- a/arch/arm/cpu/mmu.h
-+++ b/arch/arm/cpu/mmu.h
-@@ -39,6 +39,15 @@ static inline void set_ttbr(void *ttb)
- #define DOMAIN_CLIENT	1
- #define DOMAIN_MANAGER	3
- 
-+static inline unsigned long get_domain(void)
-+{
-+	unsigned long dacr;
-+
-+	asm volatile ("mrc p15, 0, %0, c3, c0, 0" : "=r"(dacr));
-+
-+	return dacr;
-+}
-+
- static inline void set_domain(unsigned val)
- {
- 	/* Set the Domain Access Control Register */
-diff --git a/arch/arm/cpu/sm.c b/arch/arm/cpu/sm.c
-index 1f2c236d5..cb33d9625 100644
---- a/arch/arm/cpu/sm.c
-+++ b/arch/arm/cpu/sm.c
-@@ -150,7 +150,7 @@ static bool armv7_have_security_extensions(void)
- int armv7_secure_monitor_install(void)
- {
- 	int mmuon;
--	unsigned long ttb, vbar;
-+	unsigned long ttb, vbar, dacr;
- 
- 	if (!armv7_have_security_extensions()) {
- 		pr_err("Security extensions not implemented.\n");
-@@ -164,12 +164,14 @@ int armv7_secure_monitor_install(void)
- 
- 	vbar = get_vbar();
- 	ttb = get_ttbr();
-+	dacr = get_domain();
- 
- 	armv7_init_nonsec();
- 	__armv7_secure_monitor_install();
- 
- 	set_ttbr((void *)ttb);
- 	set_vbar(vbar);
-+	set_domain(dacr);
- 
- 	if (mmuon) {
- 		/*
 -- 
-2.26.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
