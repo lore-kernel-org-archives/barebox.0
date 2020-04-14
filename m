@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from relay4-d.mail.gandi.net ([217.70.183.196])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jOGjZ-0008OA-Sb
- for barebox@lists.infradead.org; Tue, 14 Apr 2020 08:15:55 +0000
-Date: Tue, 14 Apr 2020 10:15:51 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200414081551.GY27288@pengutronix.de>
-References: <DB7PR02MB4332C0654DCD03489FFE9575ABC10@DB7PR02MB4332.eurprd02.prod.outlook.com>
+ id 1jONhP-0000Ws-Jx
+ for barebox@lists.infradead.org; Tue, 14 Apr 2020 15:42:09 +0000
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Tue, 14 Apr 2020 17:41:51 +0200
+Message-Id: <20200414154151.1528591-1-ahmad@a3f.at>
+In-Reply-To: <20200414064609.GV27288@pengutronix.de>
+References: <20200414064609.GV27288@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <DB7PR02MB4332C0654DCD03489FFE9575ABC10@DB7PR02MB4332.eurprd02.prod.outlook.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,32 +21,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/7] add-MCI_SDHCI-dependency-to-Arasan-driver
-To: Michael Graichen <michael.graichen@hotmail.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] fixup! of: port Linux of_get_compatible_child helper
+To: barebox@lists.infradead.org
+Cc: Sascha Hauer <sha@pengutronix.de>
 
-On Thu, Apr 09, 2020 at 02:36:55PM +0000, Michael Graichen wrote:
-> The Arasan driver depends on the SDHCI driver, without it we
-> will see undefined references while linking arasan-sdhci.c:283: undefined
-> reference to `sdhci_set_cmd_xfer_mode' arasan-sdhci.c:299: undefined
-> reference to `sdhci_read_response' arasan-sdhci.c:303: undefined reference to
-> `sdhci_transfer_data'
-> 
-> Signed-off-by: Michael Graichen <michael.graichen@hotmail.com>
-> ---
->  drivers/mci/Kconfig | 1 +
->  1 file changed, 1 insertion(+)
+The barebox implementation of for_each_child_of_node doesn't set the
+iterator to NULL, when the list of children is empty.
 
-Series applied, thanks
+Fix of_get_compatible_child to deal with this.
 
-Sascha
+Suggested-by: Sascha Hauer <sha@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/of/base.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 5a0374a82c5c..1223e0ab558f 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -1730,10 +1730,10 @@ struct device_node *of_get_compatible_child(const struct device_node *parent,
+ 
+ 	for_each_child_of_node(parent, child) {
+ 		if (of_device_is_compatible(child, compatible))
+-			break;
++			return child;
+ 	}
+ 
+-	return child;
++	return NULL;
+ }
+ EXPORT_SYMBOL(of_get_compatible_child);
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
