@@ -1,12 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jNtFX-0007xS-ID
- for barebox@lists.infradead.org; Mon, 13 Apr 2020 07:11:21 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 13 Apr 2020 09:11:11 +0200
-Message-Id: <20200413071111.20443-1-a.fatoum@pengutronix.de>
+ id 1jOLAN-0002h7-Pn
+ for barebox@lists.infradead.org; Tue, 14 Apr 2020 12:59:53 +0000
+Date: Tue, 14 Apr 2020 14:59:49 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200414125949.GO27288@pengutronix.de>
+References: <20200404202910.12524-1-cleger@kalray.eu>
+ <20200404202910.12524-6-cleger@kalray.eu>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200404202910.12524-6-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,130 +23,124 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! regmap-mmio: Add big endian support
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH v2 5/6] clocksource: kvx: Add kvx clocksource support
+To: Clement Leger <cleger@kalray.eu>
+Cc: barebox@lists.infradead.org
 
-("regmap-mmio: Add big endian support") required syscons to have a device_d
-instantiated for them. This doesn't work for clock drivers though,
-like the sama5d2's, because of_clk_init is called before
-of_platform_populate allocates the devices.
+On Sat, Apr 04, 2020 at 10:29:09PM +0200, Clement Leger wrote:
+> Add a clocksource for kvx architecture based on core performance
+> counter. This performance counter is configured to count cycles and as
+> such can be used to be a clocksource.
+> 
+> Signed-off-by: Clement Leger <cleger@kalray.eu>
+> ---
+>  arch/kvx/configs/generic_defconfig |  1 +
+>  drivers/clocksource/Kconfig        |  4 ++
+>  drivers/clocksource/Makefile       |  1 +
+>  drivers/clocksource/kvx_timer.c    | 59 ++++++++++++++++++++++++++++++
+>  4 files changed, 65 insertions(+)
+>  create mode 100644 drivers/clocksource/kvx_timer.c
+> 
+> diff --git a/arch/kvx/configs/generic_defconfig b/arch/kvx/configs/generic_defconfig
+> index 3f7bb0f19..d0c2252bf 100644
+> --- a/arch/kvx/configs/generic_defconfig
+> +++ b/arch/kvx/configs/generic_defconfig
+> @@ -1,6 +1,7 @@
+>  CONFIG_AUTO_COMPLETE=y
+>  CONFIG_BAUDRATE=115200
+>  # CONFIG_BOOTM is not set
+> +CONFIG_CLOCKSOURCE_KVX=y
+>  CONFIG_CMD_CMP=y
+>  CONFIG_CMD_OF_DUMP=y
+>  CONFIG_CMD_POWEROFF=y
+> diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+> index 39ddd159f..8805cda39 100644
+> --- a/drivers/clocksource/Kconfig
+> +++ b/drivers/clocksource/Kconfig
+> @@ -47,6 +47,10 @@ config CLOCKSOURCE_EFI_X86
+>  	bool "EFI X86 HW driver"
+>  	depends on EFI_BOOTUP && X86
+>  
+> +config CLOCKSOURCE_KVX
+> +	bool "KVX core timer clocksource"
+> +	depends on KVX
+> +
+>  config CLOCKSOURCE_MVEBU
+>  	bool
+>  	depends on ARCH_MVEBU
+> diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
+> index cba6344bb..b4607f787 100644
+> --- a/drivers/clocksource/Makefile
+> +++ b/drivers/clocksource/Makefile
+> @@ -5,6 +5,7 @@ obj-$(CONFIG_CLOCKSOURCE_CLPS711X) += clps711x.o
+>  obj-$(CONFIG_CLOCKSOURCE_DIGIC)   += digic.o
+>  obj-$(CONFIG_CLOCKSOURCE_EFI) += efi.o
+>  obj-$(CONFIG_CLOCKSOURCE_EFI_X86) += efi_x86.o
+> +obj-$(CONFIG_CLOCKSOURCE_KVX)     += kvx_timer.o
+>  obj-$(CONFIG_CLOCKSOURCE_MVEBU)   += mvebu.o
+>  obj-$(CONFIG_CLOCKSOURCE_NOMADIK) += nomadik.o
+>  obj-$(CONFIG_CLOCKSOURCE_ORION)   += orion.o
+> diff --git a/drivers/clocksource/kvx_timer.c b/drivers/clocksource/kvx_timer.c
+> new file mode 100644
+> index 000000000..be2545ed0
+> --- /dev/null
+> +++ b/drivers/clocksource/kvx_timer.c
+> @@ -0,0 +1,59 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * Copyright (C) 2018 Kalray Inc.
+> + */
+> +
+> +#include <common.h>
+> +#include <clock.h>
+> +#include <init.h>
+> +
+> +#include <linux/clk.h>
+> +#include <linux/err.h>
+> +
+> +#include <asm/sfr.h>
+> +
+> +static uint64_t kvx_pm_read(void)
+> +{
+> +	return kvx_sfr_get(PM0);
+> +}
+> +
+> +static struct clocksource kvx_clksrc = {
+> +	.read	= kvx_pm_read,
+> +	.mask	= CLOCKSOURCE_MASK(64),
+> +	.shift	= 0,
+> +};
+> +
+> +static int kvx_timer_probe(struct device_d *dev)
+> +{
+> +	struct clk *clk;
+> +	uint32_t clk_freq;
+> +	struct device_node *np = dev->device_node;
+> +
+> +	/* Get clock frequency */
+> +	clk = of_clk_get(np, 0);
+> +	if (IS_ERR(clk)) {
+> +		pr_err("Failed to get CPU clock: %ld\n", PTR_ERR(clk));
+> +		return PTR_ERR(clk);
+> +	}
 
-Restore the old behavior by passing NULL to regmap_init_mmio_clk again.
-Because we want syscons to be endianness aware, do as Linux does and
-duplicate the device tree endianness retrieval in the syscon driver.
+You have a struct device_d pointer, in that case you should use clk_get
+rather than of_clk_get and dev_err rather than pr_err.
 
-[Note: Clock drivers wishing to make use of this should take care to not
-call syscon_node_to_regmap on a node with a clocks property as this
-will probably fail. This is the Linux behavior. A safer
-device_node_to_regmap will be introduced in a separate series that
-ignores clocks. ]
----
-Hopefully my last fixup for this, I think I got it right now.
-This should be squashed into the original, because otherwise we have
-an intermittent breakage for booting sama5d2 SoCs
---
- drivers/base/regmap/regmap.c |  2 +-
- drivers/mfd/syscon.c         | 45 ++++++++++++++++++++++--------------
- 2 files changed, 29 insertions(+), 18 deletions(-)
+> +
+> +	clk_freq = clk_get_rate(clk);
+> +	clk_put(clk);
 
-diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
-index 374d3ea3d6e1..ee5120fd7465 100644
---- a/drivers/base/regmap/regmap.c
-+++ b/drivers/base/regmap/regmap.c
-@@ -145,7 +145,7 @@ struct regmap *of_node_to_regmap(struct device_node *node)
- 	struct regmap *map;
- 
- 	list_for_each_entry(map, &regmaps, list) {
--		if (map->dev->device_node == node)
-+		if (map->dev && map->dev->device_node == node)
- 			return map;
- 	}
- 
-diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
-index 252d91120b53..67e2ebb6c2f5 100644
---- a/drivers/mfd/syscon.c
-+++ b/drivers/mfd/syscon.c
-@@ -26,7 +26,7 @@
- static LIST_HEAD(syscon_list);
- 
- struct syscon {
--	struct device_d *dev;
-+	struct device_node *np;
- 	void __iomem *base;
- 	struct list_head list;
- 	struct regmap *regmap;
-@@ -40,9 +40,10 @@ static const struct regmap_config syscon_regmap_config = {
- 
- static struct syscon *of_syscon_register(struct device_node *np, bool check_clk)
- {
--	int ret;
-+	struct regmap_config syscon_config = syscon_regmap_config;
- 	struct syscon *syscon;
--	struct device_d *dev;
-+	u32 reg_io_width;
-+	int ret;
- 	struct resource res;
- 
- 	if (!of_device_is_compatible(np, "syscon"))
-@@ -57,22 +58,32 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_clk)
- 
- 	syscon->base = IOMEM(res.start);
- 
--	for_each_device(dev) {
--		if (np == dev->device_node) {
--			syscon->dev = dev;
--			break;
--		}
--	}
--
--	if (!syscon->dev) {
--		ret = -ENODEV;
--		goto err_map;
--	}
-+	/* Parse the device's DT node for an endianness specification */
-+	if (of_property_read_bool(np, "big-endian"))
-+		syscon_config.val_format_endian = REGMAP_ENDIAN_BIG;
-+	else if (of_property_read_bool(np, "little-endian"))
-+		syscon_config.val_format_endian = REGMAP_ENDIAN_LITTLE;
-+	else if (of_property_read_bool(np, "native-endian"))
-+		syscon_config.val_format_endian = REGMAP_ENDIAN_NATIVE;
-+
-+	/*
-+	 * search for reg-io-width property in DT. If it is not provided,
-+	 * default to 4 bytes. regmap_init_mmio will return an error if values
-+	 * are invalid so there is no need to check them here.
-+	 */
-+	ret = of_property_read_u32(np, "reg-io-width", &reg_io_width);
-+	if (ret)
-+		reg_io_width = 4;
-+
-+	syscon_config.name = np->full_name;
-+	syscon_config.reg_stride = reg_io_width;
-+	syscon_config.val_bits = reg_io_width * 8;
-+	syscon_config.max_register = resource_size(&res) - reg_io_width;
- 
- 	list_add_tail(&syscon->list, &syscon_list);
- 
--	syscon->regmap = regmap_init_mmio_clk(syscon->dev, NULL, syscon->base,
--					      &syscon_regmap_config);
-+	syscon->regmap = regmap_init_mmio_clk(NULL, NULL, syscon->base,
-+					      &syscon_config);
- 
- 	if (check_clk) {
- 		struct clk *clk = of_clk_get(np, 0);
-@@ -100,7 +111,7 @@ static struct syscon *node_to_syscon(struct device_node *np)
- 	struct syscon *entry, *syscon = NULL;
- 
- 	list_for_each_entry(entry, &syscon_list, list)
--		if (entry->dev->device_node == np) {
-+		if (entry->np == np) {
- 			syscon = entry;
- 			break;
- 		}
+clk_put looks wrong here. Better just keep the ownership of the clock,
+although it doesn't make much difference here of course.
+
+Sascha
+
 -- 
-2.26.0.rc2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
