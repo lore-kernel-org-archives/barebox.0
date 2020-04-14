@@ -1,22 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx009.vodafonemail.xion.oxcs.net ([153.92.174.39])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jLTTg-0006LT-RE
- for barebox@lists.infradead.org; Mon, 06 Apr 2020 15:15:58 +0000
-References: <c013449a-b775-b805-df78-48a908d506fb@arcor.de>
- <d5949d44-9377-98f4-029c-ae1b0debf7d1@pengutronix.de>
- <2179bad5-0ec6-a2ae-683f-f2f24e3aabfb@arcor.de>
- <56816c6f-86ac-e350-3d23-bf0ff1fe87d2@pengutronix.de>
- <6679e805-8f1e-0c02-cc73-e2d2ab4911c1@arcor.de>
- <63e3eb58-9f5b-54d6-e8cf-b7672fe55a4a@pengutronix.de>
- <9bd7f507-8f59-98ee-18af-48be3dba9372@arcor.de>
- <f075fcf2-5703-37ee-b197-84afe0585560@pengutronix.de>
-From: Giorgio <giorgio.nicole@arcor.de>
-Message-ID: <3c69c3fb-d8bd-b39d-a0ea-704c8ad99dfc@arcor.de>
-Date: Mon, 6 Apr 2020 17:15:37 +0200
+ id 1jOI7c-000636-R1
+ for barebox@lists.infradead.org; Tue, 14 Apr 2020 09:44:50 +0000
+Date: Tue, 14 Apr 2020 11:44:47 +0200
+From: Michael Tretter <m.tretter@pengutronix.de>
+Message-ID: <20200414094447.GA4598@pengutronix.de>
+References: <20200413075204.17544-1-a.fatoum@pengutronix.de>
+ <20200413075204.17544-8-a.fatoum@pengutronix.de>
+ <20200414064609.GV27288@pengutronix.de>
+ <6f20f4e0-24bd-b6f5-43a5-6ba62334c6ce@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <f075fcf2-5703-37ee-b197-84afe0585560@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <6f20f4e0-24bd-b6f5-43a5-6ba62334c6ce@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,104 +25,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: imx7d dual core boot
+Subject: Re: [PATCH 07/21] of: port Linux of_get_compatible_child helper
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Ahmad,
+Hello Ahmad,
 
-I've also tried the arm_v7_defconfig + my board specific code but it does not
-solve the problem.
-
-The setup I'm using to build barebox just include support for my board; in my
-board code, under arch/arm/boards/kontron-samx7, I've nothing special, just
-a custom init script in the environment.
-
-To trigger the code that makes barebox hang I use now the command
-'smc -n': it calls armv7_secure_monitor_install() and then __mmu_cache_on()
-that finally jumps to 'v7_mmu_cache_on'.
-
-Searching in the Armv7-A ref. man. here:
-
-https://static.docs.arm.com/ddi0406/cd/DDI0406C_d_armv7ar_arm.pdf
-
-at B4.1.43 (page B4 - 1554) I found that the reset value of this cp15 reg.
-is UNKNOWN and I can also verify this. Moreover the reg. must also be
-banked: there is a copy in secure mode and one in nonsecure mode.
-My test consists in reading the register just before and just after
-the call to arm_smccc_smc(0, 0, 0, 0, 0, 0, 0, 0, &res):
-
-static u32 read_dacr(void)
-{
-	unsigned int reg;
-
-	asm volatile ("mrc p15, 0, %0, c3, c0, 0\n" : "=r"(reg));
-	return reg;
-}
-
-...
-
-int __armv7_secure_monitor_install(void)
-{
-...
-	printf("%s: 1) dacr: 0x%08x\n",__func__,read_dacr());
-
-	/* Initialize the secure monitor */
-	arm_smccc_smc(0, 0, 0, 0, 0, 0, 0, 0, &res);
-
-	/* We're in nonsecure mode now */
-
-	printf("%s: 2) dacr: 0x%08x\n",__func__,read_dacr());
-	
-	return 0;
-}
-
-and here is what I get:
-
-samx7: / smc -n
-__armv7_secure_monitor_install: 1) dacr: 0x00000001
-__armv7_secure_monitor_install: 2) dacr: 0xdbf7afaa
-
-If I write a 0x1 or a 0x3 to DACR just before enabling the MMU in
-nonsecure mode then barebox does not hang.
-
-giorgio
-
-On 2020-04-06 08:16, Ahmad Fatoum wrote:
-> Hello Giorgio,
+On Tue, Apr 14, 2020 at 09:29:36AM +0200, Ahmad Fatoum wrote:
+> Hello Sascha,
 > 
-> On 4/3/20 3:47 PM, Giorgio wrote:
->> Hi Ahmad,
->>
->> thank you for the detailed explanations, I'll have a look
->> at the armv7 ref. manual for more background.
->>
->> I wanted just to note, the problem is specifically linked
->> to enabling the MMU:
->>
->> in arch/arm/cpu/cache-armv7.S:
->>
->>
->> 		orrne	r0, r0, #1		@ MMU enabled
->> ...
->> 		mcr	p15, 0, r0, c1, c0, 0	@ load control register
->>
->> without the 'orrne ...' the imx7 does not hang.
+> On 4/14/20 8:46 AM, Sascha Hauer wrote:
+> > for_each_child_of_node() goes down to list_for_each_entry(). On an empty
+> > list child will point to the list head after leaving the loop. Return
+> > child explicitly when it's compatible and NULL when leaving the loop
+> > which is better readable as well.
 > 
-> I can't reproduce this exact problem. My setup:
+> argh, it looked fishy to me as well, but I didn't think about comparing
+> Linux and barebox implementation. I just reviewed the 70 instances
+> of for_each_child_of_node we have and it seems only one other instance
+> in the overlay code has made the same assumption as I did:
+>  - drivers/of/resolver.c: of_resolve_phandles (grep for /if (!overlay_child)/)
+
+Thanks for reporting. I sent a patch.
+
+Michael
+
 > 
-> - i.MX7D sabresd board,
-> - imx_v7_defconfig
-> - check out of upstream/next, commit 5931fe40 ("Merge branch 'for-next/zii' into next")
-> - revert of commit 8b2104d ("driver: Call of_clk_set_defaults for each probed device")
-> - nv bootm.secure_state=nonsecure
+> I can send a fixup to make it more readable but I'd want to change
+> for_each_child_of_node to align it with Linux behavior as well.
 > 
-> With this, I didn't observe any barebox hangs[1] while preparing a Linux net boot.
-> What's your setup?
-> 
-> [1]: Linux still hangs due to what I assume to be a psci issue, kernel log says
->      "unsupported enable-method property: psci" before getting stuck durcing SDHCI probe
-> 
+> Cheers
+> Ahmad
 
 _______________________________________________
 barebox mailing list
