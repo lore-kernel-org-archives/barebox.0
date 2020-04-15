@@ -1,14 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay4-d.mail.gandi.net ([217.70.183.196])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jONhP-0000Ws-Jx
- for barebox@lists.infradead.org; Tue, 14 Apr 2020 15:42:09 +0000
-From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Tue, 14 Apr 2020 17:41:51 +0200
-Message-Id: <20200414154151.1528591-1-ahmad@a3f.at>
-In-Reply-To: <20200414064609.GV27288@pengutronix.de>
-References: <20200414064609.GV27288@pengutronix.de>
+ id 1jOe93-0000Rf-2r
+ for barebox@lists.infradead.org; Wed, 15 Apr 2020 09:15:46 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>) id 1jOe8y-0007ws-HU
+ for barebox@lists.infradead.org; Wed, 15 Apr 2020 11:15:40 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+References: <20200413075204.17544-1-a.fatoum@pengutronix.de>
+ <20200413075204.17544-2-a.fatoum@pengutronix.de>
+Message-ID: <40e68fe0-52eb-49d5-e373-e0e16445e19b@pengutronix.de>
+Date: Wed, 15 Apr 2020 11:15:40 +0200
 MIME-Version: 1.0
+In-Reply-To: <20200413075204.17544-2-a.fatoum@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,41 +28,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! of: port Linux of_get_compatible_child helper
+Subject: Re: [PATCH 01/21] mfd: syscon: enable specified clocks on
+ syscon_base_lookup_by_phandle
 To: barebox@lists.infradead.org
-Cc: Sascha Hauer <sha@pengutronix.de>
 
-The barebox implementation of for_each_child_of_node doesn't set the
-iterator to NULL, when the list of children is empty.
+Hello Sascha,
 
-Fix of_get_compatible_child to deal with this.
+On 4/13/20 9:51 AM, Ahmad Fatoum wrote:
+> Since commit b36b7b72 ("mfd: syscon: clock peripheral if specified in
+> device tree"), we now clock syscons during access if the device tree nodes
+> indicate a clocks property. We haven't been doing this for
+> syscon_base_lookup_by_phandle though, because we did this as part of the
+> regmap access functions.
 
-Suggested-by: Sascha Hauer <sha@pengutronix.de>
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- drivers/of/base.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+I've sent a v2 of only this patch here. Please consider taking the other one
+and applying the rest of the series on top.
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 5a0374a82c5c..1223e0ab558f 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -1730,10 +1730,10 @@ struct device_node *of_get_compatible_child(const struct device_node *parent,
- 
- 	for_each_child_of_node(parent, child) {
- 		if (of_device_is_compatible(child, compatible))
--			break;
-+			return child;
- 	}
- 
--	return child;
-+	return NULL;
- }
- EXPORT_SYMBOL(of_get_compatible_child);
- 
+Cheers
+Ahmad
+
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
