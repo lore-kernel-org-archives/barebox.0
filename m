@@ -1,21 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from conuserg-07.nifty.com ([210.131.2.74])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jOe93-0000Rf-2r
- for barebox@lists.infradead.org; Wed, 15 Apr 2020 09:15:46 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>) id 1jOe8y-0007ws-HU
- for barebox@lists.infradead.org; Wed, 15 Apr 2020 11:15:40 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-References: <20200413075204.17544-1-a.fatoum@pengutronix.de>
- <20200413075204.17544-2-a.fatoum@pengutronix.de>
-Message-ID: <40e68fe0-52eb-49d5-e373-e0e16445e19b@pengutronix.de>
-Date: Wed, 15 Apr 2020 11:15:40 +0200
+ id 1jObnc-0003no-W4
+ for barebox@lists.infradead.org; Wed, 15 Apr 2020 06:45:30 +0000
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Wed, 15 Apr 2020 15:45:01 +0900
+Message-Id: <20200415064501.47293-1-masahiroy@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20200413075204.17544-2-a.fatoum@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,30 +19,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 01/21] mfd: syscon: enable specified clocks on
- syscon_base_lookup_by_phandle
+Subject: [PATCH] ppc,riscv: set something to KBUILD_DEFCONFIG
 To: barebox@lists.infradead.org
+Cc: Masahiro Yamada <masahiroy@kernel.org>
 
-Hello Sascha,
+'make ARCH=riscv defconfig' ends up with endless recursion.
+Users may get upset with it.
 
-On 4/13/20 9:51 AM, Ahmad Fatoum wrote:
-> Since commit b36b7b72 ("mfd: syscon: clock peripheral if specified in
-> device tree"), we now clock syscons during access if the device tree nodes
-> indicate a clocks property. We haven't been doing this for
-> syscon_base_lookup_by_phandle though, because we did this as part of the
-> regmap access functions.
+In Linux, every architecture does something for 'make defconfig'.
+Set something to KBUILD_DEFCONFIG to make it work for riscv and ppc.
 
-I've sent a v2 of only this patch here. Please consider taking the other one
-and applying the rest of the series on top.
+There is only one file in arch/riscv/configs/, so there is no choice
+but erizo_generic_defconfig for riscv.
 
-Cheers
-Ahmad
+There are some choices for ppc, but I am not sure what is appropriate.
+I just picked something.
 
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+---
+
+ arch/ppc/Makefile   | 1 +
+ arch/riscv/Makefile | 2 ++
+ 2 files changed, 3 insertions(+)
+
+diff --git a/arch/ppc/Makefile b/arch/ppc/Makefile
+index 2fb9b1442..ebf60eded 100644
+--- a/arch/ppc/Makefile
++++ b/arch/ppc/Makefile
+@@ -1,3 +1,4 @@
++KBUILD_DEFCONFIG := p2020rdb_defconfig
+ 
+ CPPFLAGS += -ffixed-r14 -m32 	\
+ 	-meabi -D __PPC__ -D CONFIG_PPC \
+diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
+index 643c0bc8e..fa8a173d8 100644
+--- a/arch/riscv/Makefile
++++ b/arch/riscv/Makefile
+@@ -1,3 +1,5 @@
++KBUILD_DEFCONFIG := erizo_generic_defconfig
++
+ CPPFLAGS += -fno-strict-aliasing
+ 
+ ifeq ($(CONFIG_ARCH_RV32I),y)
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.25.1
+
 
 _______________________________________________
 barebox mailing list
