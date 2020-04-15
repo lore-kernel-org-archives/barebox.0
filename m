@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from zimbra2.kalray.eu ([92.103.151.219])
+Received: from relay10.mail.gandi.net ([217.70.178.230])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jOeQ4-0003o5-3J
- for barebox@lists.infradead.org; Wed, 15 Apr 2020 09:33:21 +0000
-Date: Wed, 15 Apr 2020 11:33:16 +0200 (CEST)
-From: =?utf-8?Q?Cl=C3=A9ment?= Leger <cleger@kalrayinc.com>
-Message-ID: <263361615.15494471.1586943196981.JavaMail.zimbra@kalray.eu>
-In-Reply-To: <187139593.15433138.1586934185883.JavaMail.zimbra@kalray.eu>
-References: <20200404202910.12524-1-cleger@kalray.eu>
- <20200415065539.GD1694@pengutronix.de>
- <187139593.15433138.1586934185883.JavaMail.zimbra@kalray.eu>
+ id 1jOeSm-0007VI-Ts
+ for barebox@lists.infradead.org; Wed, 15 Apr 2020 09:36:10 +0000
+Received: from geraet.fritz.box (muedsl-82-207-215-039.citykom.de
+ [82.207.215.39]) (Authenticated sender: ahmad@a3f.at)
+ by relay10.mail.gandi.net (Postfix) with ESMTPSA id B4138240010
+ for <barebox@lists.infradead.org>; Wed, 15 Apr 2020 09:36:05 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Wed, 15 Apr 2020 11:36:00 +0200
+Message-Id: <20200415093600.1662643-1-ahmad@a3f.at>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,61 +19,75 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 0/6] Add support for Kalray VLIW family (kvx)
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] startup: add $global.autoboot to make behavior configurable
+To: barebox@lists.infradead.org
 
-SGkgU2FzY2hhLAoKV2UgdXBkYXRlZCB0aGUgZ2NjLCBiaW51dGlscyBhbmQgbmV3bGliIGVhcmxp
-ZXIgdG8gYWxsb3cgYnVpbGRpbmcgYSBrdngKdG9vbGNoYWluLiBBbiBvZmZpY2lhbCByZWxlYXNl
-IHdpdGggcHJlLWJ1aWx0IHRvb2xjaGFpbiB3aWxsIGJlIGF2YWlsYWJsZQppbiBhIGZldyBkYXlz
-IFsxXS4gSW4gdGhlIG1lYW50aW1lLCB5b3UgY2FuIHVzZSB0aGUgZm9sbG93aW5nIGNvbW1hbmQg
-dG8KYnVpbGQgdGhlIHRvb2xjaGFpbjoKCmV4cG9ydCBTSEExX0dDQz1mNmYyNzg1YmE2NmFmYjVi
-ODBlMTdlNTQwOTA2MDA2MTc4MWQ3ZWU0CmV4cG9ydCBTSEExX0dEQj0zYWFjZmEwNThhMGZlNDE3
-MDVmNjdmMThhNTRiOGRhMzczM2JlNGFkCmV4cG9ydCBTSEExX05FV0xJQj1iZjczN2Q0ZDBlMGVi
-MGRmNTBhYjZlY2RhN2I0OGJkZTFkYzFhZWE2Ci4vYnVpbGQtazEteGdjYy5zaCA8cHJlZml4X2Rp
-cj4KCkJlIHN1cmUgdG8gcHVsbCB0aGUgbGF0ZXN0IG1hc3RlciBmcm9tIGJ1aWxkLXNjcmlwdCB0
-byBhbGxvdyBidWlsZGluZyBhIGt2eAp0b29sY2hhaW4gKHBsdXMgc29tZSBmaXhlcykuCgpTb3Jy
-eSBmb3IgdGhlIGluY29udmVuaWVuY2UsCgpDbMOpbWVudAoKWzFdIGh0dHBzOi8vZ2l0aHViLmNv
-bS9rYWxyYXkvYnVpbGQtc2NyaXB0cy9yZWxlYXNlcwoKLS0tLS0gT24gMTUgQXByLCAyMDIwLCBh
-dCAwOTowMywgQ2zDqW1lbnQgTGVnZXIgY2xlZ2VyQGthbHJheWluYy5jb20gd3JvdGU6Cgo+IEhp
-IFNhc2NoYSwKPiAKPiBTaW5jZSB3ZSBkaWQgYSBtYXNzaXZlIHJlbmFtaW5nIHRvIGNoYW5nZSBm
-cm9tIGsxLT5rdngsIHRoZSB0b29scyBoYXZlIG5vdAo+IHlldCBiZWVuIHB1c2hlZCBvbiBnaXRo
-dWIgKHdlIG9ubHkgcHVzaCByZWxlYXNlcyB5ZXQpLiBXZSB3aWxsIHVwZGF0ZSBpdAo+IHNvb24g
-YW5kIEkgd2lsbCBrZWVwIHlvdSB1cGRhdGVkLgo+IAo+IFNvcnJ5IGZvciB0aGUgZG9jdW1lbnRh
-dGlvbiwgSSBmb3Jnb3QgdG8gYWRkcmVzc2VkIEFobWFkIGNvbW1lbnQuIEkgd2lsbCBkbyBpdC4K
-PiAKPiBUaGFua3MsCj4gCj4gQ2zDqW1lbnQKPiAKPiAtLS0tLSBPbiAxNSBBcHIsIDIwMjAsIGF0
-IDA4OjU1LCBTYXNjaGEgSGF1ZXIgcy5oYXVlckBwZW5ndXRyb25peC5kZSB3cm90ZToKPiAKPj4g
-SGkgQ2xlbWVudCwKPj4gCj4+IE9uIFNhdCwgQXByIDA0LCAyMDIwIGF0IDEwOjI5OjA0UE0gKzAy
-MDAsIENsZW1lbnQgTGVnZXIgd3JvdGU6Cj4+PiBLYWxyYXkga3YzIGNvcmUgaXMgZW1iZWRkZWQg
-aW4gS2FscmF5IENvb2xpZGdlIFNvQy4gVGhpcyBjb3JlIHdoaWNoIGlzIHRoZQo+Pj4gdGhpcmQg
-b2YgdGhlIEtWIGZhbWlseSBoYXMgdGhlIGZvbGxvd2luZyBmZWF0dXJlczoKPj4+ICAtIDMyLzY0
-IGJpdHMgZXhlY3V0aW9uIG1vZGUKPj4+ICAtIDYtaXNzdWUgVkxJVyBhcmNoaXRlY3R1cmUKPj4+
-ICAtIDY0IHggNjRiaXRzIGdlbmVyYWwgcHVycG9zZSByZWdpc3RlcnMKPj4+ICAtIFNJTUQgaW5z
-dHJ1Y3Rpb25zCj4+PiAgLSBsaXR0bGUtZW5kaWFuCj4+PiAKPj4+IFRoaXMgcG9ydCBpcyBhIDY0
-IGJpdHMgb25lIGFuZCBhbGxvd3MgdG8gYm9vdCB1cCB0byBhIGJhcmVib3ggcHJvbXB0IG9uIGEg
-azIwMAo+Pj4gYm9hcmQuIGt2MyBzdXBwb3J0IGZvciBjbG9ja3NvdXJjZSBhbmQgd2F0Y2hkb2cg
-aXMgYWxzbyBwYXJ0IG9mIHRoaXMgcG9ydC4KPj4+IAo+Pj4gSW4gb3JkZXIgdG8gYnVpbGQgYSB1
-c2FibGUgdG9vbGNoYWluLCBidWlsZCBzY3JpcHRzIGFyZSBwcm92aWRlZCBhdCB0aGUKPj4+IGZv
-bGxvd2luZyBhZGRyZXNzOiBodHRwczovL2dpdGh1Yi5jb20va2FscmF5L2J1aWxkLXNjcmlwdHMu
-Cj4+IAo+PiBJIG1lcmdlZCB0aGUgc2VyaWVzIHdpdGggdGhlIGNvbW1lbnRzIEkgbWFkZSB0byB0
-aGUgdGltZXIgZHJpdmVyLiBJIGFtCj4+IGN1cnJlbnRseSBvbiBteSB3YXkgdHJ5aW5nIHRoZSB0
-b29sY2hhaW4gYnVpbGQgc2NyaXB0cy4gSWYgdGhpcwo+PiBzdWNjZWVkcyBJIGNhbiBhZGQgdGhl
-IGNvb2xpZGdlIHN1cHBvcnQgdG8gbXkgZGVmY29uZmlnIGJ1aWxkcy4KPj4gCj4+IEl0IHdvdWxk
-IGJlIG5pY2UgaWYgeW91IGNvdWxkIGFkZCBhIGZldyB3b3JkcyB0bwo+PiBEb2N1bWVudGF0aW9u
-L2JvYXJkcy9jb29saWRnZS5yc3QgdG8gbGV0IHRoZSB1c2VyIGtub3cgd2hhdCB0aGlzIGlzIGFs
-bAo+PiBhYm91dC4KPj4gCj4+IFNhc2NoYQo+PiAKPj4gLS0KPj4gUGVuZ3V0cm9uaXggZS5LLiAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwK
-Pj4gU3RldWVyd2FsZGVyIFN0ci4gMjEgICAgICAgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3
-dy5wZW5ndXRyb25peC5kZS8gIHwKPj4gMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSAgICAgICAg
-ICAgICAgICAgIHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKPj4gQW10c2dlcmljaHQg
-SGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01
-NTU1IHwKPiAKPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-Xwo+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4gYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCj4g
-aHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94CgpfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxp
-bmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVh
-ZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+We already have a autoboot_state variable that controls barebox init
+behavior on startup:
+
+* ABORT:  abort and fall into shell
+* MENU:   display boot menu
+* BOOT:   boot directly without delay
+* UNKNOWN: default; count down and then boot
+
+Exporting this as a device parameter allows us to support some
+different boot scenarios:
+
+* ABORT boot always while debugging
+* display MENU by default (e.g. for graphical boots)
+
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ common/startup.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/common/startup.c b/common/startup.c
+index c417a4d0781a..ff890fa744ab 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -163,6 +163,13 @@ static const char * const global_autoboot_abort_keys[] = {
+ };
+ static int global_autoboot_timeout = 3;
+ 
++static const char * const autoboot_states[] = {
++	[AUTOBOOT_UNKNOWN] = "unknown",
++	[AUTOBOOT_ABORT] = "abort",
++	[AUTOBOOT_MENU] = "menu",
++	[AUTOBOOT_BOOT] = "boot",
++};
++
+ static bool test_abort(void)
+ {
+ 	bool do_abort = false;
+@@ -194,7 +201,7 @@ static bool test_abort(void)
+ #define INITFILE "/env/bin/init"
+ #define MENUFILE "/env/menu/mainmenu"
+ 
+-static enum autoboot_state autoboot_state = AUTOBOOT_UNKNOWN;
++static int autoboot_state = AUTOBOOT_UNKNOWN;
+ 
+ /**
+  * set_autoboot_state - set the autoboot state
+@@ -285,6 +292,10 @@ static int run_init(void)
+ 				  ARRAY_SIZE(global_autoboot_abort_keys));
+ 	globalvar_add_simple_int("autoboot_timeout",
+ 				 &global_autoboot_timeout, "%u");
++	globalvar_add_simple_enum("autoboot",
++				  &autoboot_state,
++				  autoboot_states,
++				  ARRAY_SIZE(autoboot_states));
+ 
+ 	setenv("PATH", "/env/bin");
+ 
+-- 
+2.20.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
