@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jOeAd-00010r-Ux
- for barebox@lists.infradead.org; Wed, 15 Apr 2020 09:17:25 +0000
-Date: Wed, 15 Apr 2020 11:17:22 +0200
+ id 1jObxZ-0002E1-KW
+ for barebox@lists.infradead.org; Wed, 15 Apr 2020 06:55:47 +0000
+Date: Wed, 15 Apr 2020 08:55:39 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200415091722.GI1694@pengutronix.de>
-References: <20200415064501.47293-1-masahiroy@kernel.org>
+Message-ID: <20200415065539.GD1694@pengutronix.de>
+References: <20200404202910.12524-1-cleger@kalray.eu>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200415064501.47293-1-masahiroy@kernel.org>
+In-Reply-To: <20200404202910.12524-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,35 +22,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ppc,riscv: set something to KBUILD_DEFCONFIG
-To: Masahiro Yamada <masahiroy@kernel.org>
+Subject: Re: [PATCH v2 0/6] Add support for Kalray VLIW family (kvx)
+To: Clement Leger <cleger@kalray.eu>
 Cc: barebox@lists.infradead.org
 
-On Wed, Apr 15, 2020 at 03:45:01PM +0900, Masahiro Yamada wrote:
-> 'make ARCH=riscv defconfig' ends up with endless recursion.
-> Users may get upset with it.
-> 
-> In Linux, every architecture does something for 'make defconfig'.
-> Set something to KBUILD_DEFCONFIG to make it work for riscv and ppc.
-> 
-> There is only one file in arch/riscv/configs/, so there is no choice
-> but erizo_generic_defconfig for riscv.
-> 
-> There are some choices for ppc, but I am not sure what is appropriate.
-> I just picked something.
-> 
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> ---
-> 
->  arch/ppc/Makefile   | 1 +
->  arch/riscv/Makefile | 2 ++
->  2 files changed, 3 insertions(+)
+Hi Clement,
 
-Applied, thanks
+On Sat, Apr 04, 2020 at 10:29:04PM +0200, Clement Leger wrote:
+> Kalray kv3 core is embedded in Kalray Coolidge SoC. This core which is the 
+> third of the KV family has the following features:
+>  - 32/64 bits execution mode
+>  - 6-issue VLIW architecture
+>  - 64 x 64bits general purpose registers
+>  - SIMD instructions
+>  - little-endian
+> 
+> This port is a 64 bits one and allows to boot up to a barebox prompt on a k200
+> board. kv3 support for clocksource and watchdog is also part of this port.
+> 
+> In order to build a usable toolchain, build scripts are provided at the
+> following address: https://github.com/kalray/build-scripts.
+
+I merged the series with the comments I made to the timer driver. I am
+currently on my way trying the toolchain build scripts. If this
+succeeds I can add the coolidge support to my defconfig builds.
+
+It would be nice if you could add a few words to
+Documentation/boards/coolidge.rst to let the user know what this is all
+about.
 
 Sascha
-
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
