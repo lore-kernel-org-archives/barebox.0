@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jQPsC-0005jm-UN
- for barebox@lists.infradead.org; Mon, 20 Apr 2020 06:25:42 +0000
-References: <20200415092916.21285-1-a.fatoum@pengutronix.de>
- <20200420062232.GB1694@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <1890d7dd-db55-8237-059a-be522b5c0d17@pengutronix.de>
-Date: Mon, 20 Apr 2020 08:25:37 +0200
+ id 1jOe9a-0000rT-ON
+ for barebox@lists.infradead.org; Wed, 15 Apr 2020 09:16:20 +0000
+Date: Wed, 15 Apr 2020 11:16:17 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200415091617.GH1694@pengutronix.de>
+References: <20200415062344.44971-1-masahiroy@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20200420062232.GB1694@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20200415062344.44971-1-masahiroy@kernel.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,24 +22,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] mci: sdhci: provide sdhci_readx_poll_timeout helpers
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH] mfd: double-quote the menu prompt of MFD
+To: Masahiro Yamada <masahiroy@kernel.org>
 Cc: barebox@lists.infradead.org
 
-On 4/20/20 8:22 AM, Sascha Hauer wrote:
-> On Wed, Apr 15, 2020 at 11:29:13AM +0200, Ahmad Fatoum wrote:
->> The sdhci_readN accessors don't lend themselves for clean use with
->> readx_poll_timeout because they accept two arguments. Add
->> a sdhci-specific helper, so the sdhci drivers can cut down on the
->> timeout loop boilerplate.
+On Wed, Apr 15, 2020 at 03:23:44PM +0900, Masahiro Yamada wrote:
+> Linux commit 801b27db4638 ("kconfig: drop T_WORD from the RHS of
+> 'prompt' symbol") requires every prompt to be quoted even if it is
+> a single word.
+> 
+> This is the only place with no quoting. It must be surrounded by
+> double-quotes in order to sync Kconfig to Linux 5.6-rc1 or later.
+> 
+> While I was here, I reworded "MFD" to "Multifunction device drivers"
+> to be consistent with Linux.
+> 
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> ---
+> 
+>  drivers/mfd/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-> Is this really an improvement? How many variants of these helpers will we get?
+Applied, thanks
 
-It's used 6 times within this series. Other SDHCI drivers can make use of it too.
-Would you prefer extending <linux/iopoll.h> with a two arg accessor variant
-instead?
-
-Cheers,
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
