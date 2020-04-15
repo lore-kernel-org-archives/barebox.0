@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jOeVJ-00082w-Rz
- for barebox@lists.infradead.org; Wed, 15 Apr 2020 09:38:47 +0000
-References: <20200330143915.663705-1-ahmad@a3f.at>
- <20200330143915.663705-6-ahmad@a3f.at>
- <20200331054526.GF27288@pengutronix.de>
+ id 1jOen2-0006nG-39
+ for barebox@lists.infradead.org; Wed, 15 Apr 2020 09:57:05 +0000
+References: <20200213105803.32096-1-s.hauer@pengutronix.de>
+ <20200213105803.32096-3-s.hauer@pengutronix.de>
+ <0755ee61-3cd4-3e42-8d9c-cd57eb615ce6@pengutronix.de>
+ <20200414100200.GG27288@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <8409b14a-0219-24b7-d2fd-cbf6de7f5414@pengutronix.de>
-Date: Wed, 15 Apr 2020 11:38:43 +0200
+Message-ID: <5a82e9dd-efe0-01d9-0570-9ccd113c5308@pengutronix.de>
+Date: Wed, 15 Apr 2020 11:57:01 +0200
 MIME-Version: 1.0
-In-Reply-To: <20200331054526.GF27288@pengutronix.de>
+In-Reply-To: <20200414100200.GG27288@pengutronix.de>
 Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,21 +25,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/8] pinctrl: stm32: fix up st,package into stm32mp nodes
-To: Sascha Hauer <s.hauer@pengutronix.de>, Ahmad Fatoum <ahmad@a3f.at>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 3/3] driver: Call of_clk_set_defaults for each probed
+ device
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
 Hello Sascha,
 
-On 3/31/20 7:45 AM, Sascha Hauer wrote:
-> Why this detour over device tree? We already have get_cpu_package() and
-> could use it here.
+On 4/14/20 12:02 PM, Sascha Hauer wrote:
+> On Mon, Apr 06, 2020 at 08:01:19AM +0200, Ahmad Fatoum wrote:
+>> Hello Sascha,
+>>
+>> On 2/13/20 11:58 AM, Sascha Hauer wrote:
+>>> So far we only honour the assigned-clocks and assigned-clock-rates
+>>> device tree properties for the clock controller nodes. With this patch
+>>> we also honour the properties for each device which is done by Linux
+>>> as well.
+>>
+>> This breaks the default barebox console on the i.MX7 sabresd.
+>> The default UART, uart1, specifies assigned-clock-parents, which is now applied
+>> and causes garbage to be output on the serial port.
+>>
+>> &uart1 {
+>>        /delete-property/ assigned-clocks;
+>>        /delete-property/ assigned-clock-parents;
+>> };
+>>
+>> Fixes it, but I didn't dig deeper than that.
+> 
+> Care to send this as a patch so that we at least have a stop gap
+> solution?
 
-The first 5 patches could be applied independently of the rest, which
-I'll rework. Can you do so?
+Sure. Working on it now. Don't tag the new release just yet :D
 
-Thanks
-Ahmad
+> 
+> Sascha
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
