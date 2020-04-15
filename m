@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jOeM1-0000TD-Gg
- for barebox@lists.infradead.org; Wed, 15 Apr 2020 09:29:10 +0000
-Date: Wed, 15 Apr 2020 11:29:07 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200415092907.GK1694@pengutronix.de>
-References: <20200415075705.54683-1-masahiroy@kernel.org>
+ id 1jOeMC-0000ZY-Kc
+ for barebox@lists.infradead.org; Wed, 15 Apr 2020 09:29:22 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 15 Apr 2020 11:29:13 +0200
+Message-Id: <20200415092916.21285-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200415075705.54683-1-masahiroy@kernel.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,52 +19,90 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] kbuild: rename hostprogs-y/always to
- hostprogs/always-y
-To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/4] mci: sdhci: provide sdhci_readx_poll_timeout helpers
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Wed, Apr 15, 2020 at 04:57:03PM +0900, Masahiro Yamada wrote:
-> [ Linux commit 5f2fb52fac15a8a8e10ce020dd532504a8abfc4e ]
-> 
-> In old days, the "host-progs" syntax was used for specifying host
-> programs. It was renamed to the current "hostprogs-y" in 2004.
-> 
-> It is typically useful in scripts/Makefile because it allows Kbuild to
-> selectively compile host programs based on the kernel configuration.
-> 
-> This commit renames like follows:
-> 
->   always       ->  always-y
->   hostprogs-y  ->  hostprogs
-> 
-> So, scripts/Makefile will look like this:
-> 
->   always-$(CONFIG_BUILD_BIN2C) += ...
->   always-$(CONFIG_KALLSYMS)    += ...
->       ...
->   hostprogs := $(always-y) $(always-m)
-> 
-> I think this makes more sense because a host program is always a host
-> program, irrespective of the kernel configuration. We want to specify
-> which ones to compile by CONFIG options, so always-y will be handier.
-> 
-> The "always", "hostprogs-y", "hostprogs-m" will be kept for backward
-> compatibility for a while.
-> 
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> ---
+The sdhci_readN accessors don't lend themselves for clean use with
+readx_poll_timeout because they accept two arguments. Add
+a sdhci-specific helper, so the sdhci drivers can cut down on the
+timeout loop boilerplate.
 
-Series applied, thanks
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/mci/sdhci.h | 51 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 51 insertions(+)
 
-Sascha
-
-
+diff --git a/drivers/mci/sdhci.h b/drivers/mci/sdhci.h
+index a307dc97cd9a..7ac32f1541b8 100644
+--- a/drivers/mci/sdhci.h
++++ b/drivers/mci/sdhci.h
+@@ -1,6 +1,8 @@
+ #ifndef __MCI_SDHCI_H
+ #define __MCI_SDHCI_H
+ 
++#include <pbl.h>
++
+ #define SDHCI_DMA_ADDRESS					0x00
+ #define SDHCI_BLOCK_SIZE__BLOCK_COUNT				0x04
+ #define SDHCI_BLOCK_SIZE					0x04
+@@ -144,4 +146,53 @@ void sdhci_set_cmd_xfer_mode(struct sdhci *host, struct mci_cmd *cmd,
+ 			     u32 *xfer);
+ int sdhci_transfer_data(struct sdhci *sdhci, struct mci_data *data);
+ 
++/**
++ * sdhci_readx_poll_timeout -	Periodically poll an sdhci register until
++ *				a condition is met or a timeout occurs
++ * @bits: access width
++ * @sdhci: sdhci instance
++ * @reg: Register to poll
++ * @val: Variable to read the value into
++ * @cond: Break condition (usually involving @val)
++ * @timeout_us: Timeout in us, 0 means never timeout
++ *
++ * Returns 0 on success and -ETIMEDOUT upon a timeout. In either
++ * case, the last read value at @reg is stored in @val.
++ *
++ * When available, you'll probably want to use one of the specialized
++ * macros defined below rather than this macro directly.
++ *
++ * We do not have timing functions in the PBL, so ignore the timeout value and
++ * loop infinitely here.
++ *
++ * Based on readx_poll_timeout from <linux/iopoll.h>
++ */
++#define sdhci_readx_poll_timeout(bits, sdhci, reg, val, cond, timeout_us)	\
++({ \
++	uint64_t start; \
++	if (!IN_PBL && timeout_us) \
++		start = get_time_ns(); \
++	for (;;) { \
++		(val) = sdhci_read##bits(sdhci, reg); \
++		if (cond) \
++			break; \
++		if (!IN_PBL && timeout_us && \
++		    is_timeout(start, ((timeout_us) * USECOND))) { \
++			(val) = sdhci_read##bits(sdhci, reg); \
++			break; \
++		} \
++	} \
++	(cond) ? 0 : -ETIMEDOUT; \
++})
++
++
++#define sdhci_read8_poll_timeout(sdhci, reg, val, cond, timeout_us) \
++	sdhci_readx_poll_timeout(8, sdhci, reg, val, cond, timeout_us)
++
++#define sdhci_read16_poll_timeout(sdhci, reg, val, cond, timeout_us) \
++	sdhci_readx_poll_timeout(16, sdhci, reg, val, cond, timeout_us)
++
++#define sdhci_read32_poll_timeout(sdhci, reg, val, cond, timeout_us) \
++	sdhci_readx_poll_timeout(32, sdhci, reg, val, cond, timeout_us)
++
+ #endif /* __MCI_SDHCI_H */
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.26.0.rc2
+
 
 _______________________________________________
 barebox mailing list
