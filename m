@@ -1,11 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from conuserg-12.nifty.com ([210.131.2.79])
+Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jObSv-0004RE-Pv
- for barebox@lists.infradead.org; Wed, 15 Apr 2020 06:24:07 +0000
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Wed, 15 Apr 2020 15:23:44 +0900
-Message-Id: <20200415062344.44971-1-masahiroy@kernel.org>
+ id 1jOc4l-0005ZC-JY
+ for barebox@lists.infradead.org; Wed, 15 Apr 2020 07:03:13 +0000
+Date: Wed, 15 Apr 2020 09:03:05 +0200 (CEST)
+From: =?utf-8?Q?Cl=C3=A9ment?= Leger <cleger@kalrayinc.com>
+Message-ID: <187139593.15433138.1586934185883.JavaMail.zimbra@kalray.eu>
+In-Reply-To: <20200415065539.GD1694@pengutronix.de>
+References: <20200404202910.12524-1-cleger@kalray.eu>
+ <20200415065539.GD1694@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -15,45 +18,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mfd: double-quote the menu prompt of MFD
-To: barebox@lists.infradead.org
-Cc: Masahiro Yamada <masahiroy@kernel.org>
+Subject: Re: [PATCH v2 0/6] Add support for Kalray VLIW family (kvx)
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-Linux commit 801b27db4638 ("kconfig: drop T_WORD from the RHS of
-'prompt' symbol") requires every prompt to be quoted even if it is
-a single word.
-
-This is the only place with no quoting. It must be surrounded by
-double-quotes in order to sync Kconfig to Linux 5.6-rc1 or later.
-
-While I was here, I reworded "MFD" to "Multifunction device drivers"
-to be consistent with Linux.
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
----
-
- drivers/mfd/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-index ddf117712..32a2c661f 100644
---- a/drivers/mfd/Kconfig
-+++ b/drivers/mfd/Kconfig
-@@ -1,4 +1,4 @@
--menu MFD
-+menu "Multifunction device drivers"
- 
- config MFD_ACT8846
- 	depends on I2C
--- 
-2.25.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgU2FzY2hhLAoKU2luY2Ugd2UgZGlkIGEgbWFzc2l2ZSByZW5hbWluZyB0byBjaGFuZ2UgZnJv
+bSBrMS0+a3Z4LCB0aGUgdG9vbHMgaGF2ZSBub3QKeWV0IGJlZW4gcHVzaGVkIG9uIGdpdGh1YiAo
+d2Ugb25seSBwdXNoIHJlbGVhc2VzIHlldCkuIFdlIHdpbGwgdXBkYXRlIGl0CnNvb24gYW5kIEkg
+d2lsbCBrZWVwIHlvdSB1cGRhdGVkLgoKU29ycnkgZm9yIHRoZSBkb2MsIEkgZm9yZ290IHRvIGFk
+ZHJlc3NlZCBBaG1hZCBjb21tZW50LiBJIHdpbGwgZG8gaXQuCgpUaGFua3MsCgpDbMOpbWVudAoK
+LS0tLS0gT24gMTUgQXByLCAyMDIwLCBhdCAwODo1NSwgU2FzY2hhIEhhdWVyIHMuaGF1ZXJAcGVu
+Z3V0cm9uaXguZGUgd3JvdGU6Cgo+IEhpIENsZW1lbnQsCj4gCj4gT24gU2F0LCBBcHIgMDQsIDIw
+MjAgYXQgMTA6Mjk6MDRQTSArMDIwMCwgQ2xlbWVudCBMZWdlciB3cm90ZToKPj4gS2FscmF5IGt2
+MyBjb3JlIGlzIGVtYmVkZGVkIGluIEthbHJheSBDb29saWRnZSBTb0MuIFRoaXMgY29yZSB3aGlj
+aCBpcyB0aGUKPj4gdGhpcmQgb2YgdGhlIEtWIGZhbWlseSBoYXMgdGhlIGZvbGxvd2luZyBmZWF0
+dXJlczoKPj4gIC0gMzIvNjQgYml0cyBleGVjdXRpb24gbW9kZQo+PiAgLSA2LWlzc3VlIFZMSVcg
+YXJjaGl0ZWN0dXJlCj4+ICAtIDY0IHggNjRiaXRzIGdlbmVyYWwgcHVycG9zZSByZWdpc3RlcnMK
+Pj4gIC0gU0lNRCBpbnN0cnVjdGlvbnMKPj4gIC0gbGl0dGxlLWVuZGlhbgo+PiAKPj4gVGhpcyBw
+b3J0IGlzIGEgNjQgYml0cyBvbmUgYW5kIGFsbG93cyB0byBib290IHVwIHRvIGEgYmFyZWJveCBw
+cm9tcHQgb24gYSBrMjAwCj4+IGJvYXJkLiBrdjMgc3VwcG9ydCBmb3IgY2xvY2tzb3VyY2UgYW5k
+IHdhdGNoZG9nIGlzIGFsc28gcGFydCBvZiB0aGlzIHBvcnQuCj4+IAo+PiBJbiBvcmRlciB0byBi
+dWlsZCBhIHVzYWJsZSB0b29sY2hhaW4sIGJ1aWxkIHNjcmlwdHMgYXJlIHByb3ZpZGVkIGF0IHRo
+ZQo+PiBmb2xsb3dpbmcgYWRkcmVzczogaHR0cHM6Ly9naXRodWIuY29tL2thbHJheS9idWlsZC1z
+Y3JpcHRzLgo+IAo+IEkgbWVyZ2VkIHRoZSBzZXJpZXMgd2l0aCB0aGUgY29tbWVudHMgSSBtYWRl
+IHRvIHRoZSB0aW1lciBkcml2ZXIuIEkgYW0KPiBjdXJyZW50bHkgb24gbXkgd2F5IHRyeWluZyB0
+aGUgdG9vbGNoYWluIGJ1aWxkIHNjcmlwdHMuIElmIHRoaXMKPiBzdWNjZWVkcyBJIGNhbiBhZGQg
+dGhlIGNvb2xpZGdlIHN1cHBvcnQgdG8gbXkgZGVmY29uZmlnIGJ1aWxkcy4KPiAKPiBJdCB3b3Vs
+ZCBiZSBuaWNlIGlmIHlvdSBjb3VsZCBhZGQgYSBmZXcgd29yZHMgdG8KPiBEb2N1bWVudGF0aW9u
+L2JvYXJkcy9jb29saWRnZS5yc3QgdG8gbGV0IHRoZSB1c2VyIGtub3cgd2hhdCB0aGlzIGlzIGFs
+bAo+IGFib3V0Lgo+IAo+IFNhc2NoYQo+IAo+IC0tCj4gUGVuZ3V0cm9uaXggZS5LLiAgICAgICAg
+ICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKPiBTdGV1
+ZXJ3YWxkZXIgU3RyLiAyMSAgICAgICAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1
+dHJvbml4LmRlLyAgfAo+IDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgICAgICAgICAgICAgICAg
+ICB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8Cj4gQW10c2dlcmljaHQgSGlsZGVzaGVp
+bSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFp
+bGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFk
+ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
