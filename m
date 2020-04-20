@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jQWBi-0003ZF-59
- for barebox@lists.infradead.org; Mon, 20 Apr 2020 13:10:16 +0000
-Date: Mon, 20 Apr 2020 15:10:12 +0200
+ id 1jQWnH-0004UZ-HV
+ for barebox@lists.infradead.org; Mon, 20 Apr 2020 13:49:05 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200420131012.GD1694@pengutronix.de>
-References: <20200415101422.14405-1-a.fatoum@pengutronix.de>
+Date: Mon, 20 Apr 2020 15:49:01 +0200
+Message-Id: <20200420134901.28710-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200415101422.14405-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,46 +19,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: dts. i.MX7: add stopgap solution for barebox UART
- clock breakage
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org, Juergen Borleis <jbe@pengutronix.de>
+Subject: [PATCH] Add magicvar description for autoboot variables
+To: Barebox List <barebox@lists.infradead.org>
 
-On Wed, Apr 15, 2020 at 12:14:22PM +0200, Ahmad Fatoum wrote:
-> Commit 8b2104d740 ("driver: Call of_clk_set_defaults for each probed device")
-> made barebox act on the assigned-clock-parents property everywhere, not
-> only for clock provider nodes. This breaks at least the serial console on
-> the i.MX7 SabreSD board; only garbage is output if the patch is not
-> reverted. As stopgap measure, override these properties for all enabled
-> uart nodes in the barebox i.MX7 device tree. This reverts the behavior
-> to what it was like before the offending commit.
-> 
-> This is of course no real solution, as obviously Linux was fine dealing
-> with these properties before. But this hack should at least fix the
-> serial console for the boards that were broken in v2020.03.0.
-> 
-> When a proper fix follows, this patch can be reverted.
-> 
-> Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
-> Cc: Lucas Stach <l.stach@pengutronix.de>
-> Cc: Juergen Borleis <jbe@pengutronix.de>
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
-> Hello Sascha,
-> 
-> please apply to master, so the boards broken in v2020.03.0
-> aren't broken in v2020.04.0 as well.
+global.autoboot_abort_key and global.autoboot_timeout lack a magicvar
+description. Add one.
 
-Applied, thanks
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/startup.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Sascha
-
-
+diff --git a/common/startup.c b/common/startup.c
+index c417a4d078..e251142fca 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -39,6 +39,7 @@
+ #include <errno.h>
+ #include <linux/stat.h>
+ #include <envfs.h>
++#include <magicvar.h>
+ #include <asm/sections.h>
+ #include <uncompress.h>
+ #include <globalvar.h>
+@@ -391,3 +392,10 @@ void shutdown_barebox(void)
+ 		(*exitcall)();
+ 	}
+ }
++
++BAREBOX_MAGICVAR_NAMED(global_autoboot_abort_key,
++                       global.autoboot_abort_key,
++                       "Which key allows to interrupt autoboot. Possible values: any, ctrl-c");
++BAREBOX_MAGICVAR_NAMED(global_autoboot_timeout,
++                       global.autoboot_timeout,
++                       "Timeout before autoboot starts in seconds");
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.26.1
+
 
 _______________________________________________
 barebox mailing list
