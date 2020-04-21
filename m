@@ -1,11 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from zimbra2.kalray.eu ([92.103.151.219])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jQnV1-00071h-F1
- for barebox@lists.infradead.org; Tue, 21 Apr 2020 07:39:21 +0000
-From: Clement Leger <cleger@kalray.eu>
-Date: Tue, 21 Apr 2020 09:38:59 +0200
-Message-Id: <20200421073859.25942-1-cleger@kalray.eu>
+ id 1jR0FC-0006ae-BE
+ for barebox@lists.infradead.org; Tue, 21 Apr 2020 21:15:52 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Tue, 21 Apr 2020 23:15:44 +0200
+Message-Id: <20200421211545.32353-1-u.kleine-koenig@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,151 +15,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Documentation: kvx: add first documentation
-To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Clement Leger <cleger@kalray.eu>
+Subject: [PATCH v2 1/2] LICENSES: Add MIT license
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, Roland Hieber <rhi@pengutronix.de>
 
-Add documentation on kvx architecture and kalray k200 board.
-
-Signed-off-by: Clement Leger <cleger@kalray.eu>
----
- Documentation/boards/kvx.rst             | 98 ++++++++++++++++++++++++
- Documentation/boards/kvx/kalray-k200.rst | 11 +++
- 2 files changed, 109 insertions(+)
- create mode 100644 Documentation/boards/kvx.rst
- create mode 100644 Documentation/boards/kvx/kalray-k200.rst
-
-diff --git a/Documentation/boards/kvx.rst b/Documentation/boards/kvx.rst
-new file mode 100644
-index 000000000..2641b002a
---- /dev/null
-+++ b/Documentation/boards/kvx.rst
-@@ -0,0 +1,98 @@
-+KVX
-+===
-+
-+The Kalray VLIW processor family (KVX) has the following features:
-+ - 32/64 bits execution mode
-+ - 6-issue VLIW architecture
-+ - 64 x 64bits general purpose registers
-+ - SIMD instructions
-+ - little-endian
-+ - deep learning co-processor
-+
-+Kalray kv3 core which is the third of the KVX family is embedded in Kalray
-+MPPA3-80 SoC currently used on K200 boards.
-+
-+This SoC contains 5 clusters which are each made of:
-+ - 4MiB of on-chip memory
-+ - 1 dedicated safety/security core (kv3 core).
-+ - 16 PEs (Processing Elements) (kv3 cores).
-+ - 16 Co-processors (one per PE)
-+ - 2 x Crypto accelerators
-+
-+MPPA3-80 SoC contains the following features:
-+ - 5 x Clusters
-+ - 2 x 100G Ethernet controllers
-+ - 8 x PCIe GEN4 controllers (Root Complex and Endpoint capable)
-+ - 2 x USB 2.0 controllers
-+ - 1 x Octal SPI-NOR flash controller
-+ - 1 x eMMC controller
-+ - 3 x Quad SPI controllers
-+ - 6 x UART
-+ - 5 x I2C controllers (3 x SMBus capable)
-+ - 4 x CAN controller
-+ - 1 x OTP memory
-+
-+The Kalray VLIW architecture barebox port allows to boot it as a second stage
-+bootloader (SSBL). It is loaded after the FSBL which initialize DDR and needed
-+peripherals. FSBL always start on the Security Core of Cluster 0
-+
-+The FSBL can load elf files and pass them a device tree loaded from SPI NOR
-+flash. As such, barebox should be flashed as an elf file into the SSBL
-+partition.
-+
-+KVX boards
-+----------
-+
-+.. toctree::
-+  :glob:
-+  :maxdepth: 1
-+
-+  kvx/*
-+
-+Getting a toolchain
-+-------------------
-+
-+Pre-built toolchain are available from github ([#f1]_). In order to build one
-+from scratch, build scripts are available on github too ([#f2]_).
-+Once built or downloaded, a ``kvx-elf-`` toolchain will be available and should
-+be added to your ``PATH``.
-+
-+Building barebox
-+----------------
-+
-+Currently, kvx port is provided with a defconfig named ``generic_defconfig``.
-+To build it, first generate the config and then run the build:
-+
-+.. code-block:: sh
-+
-+  make ARCH=kvx O=$PWD/build defconfig
-+  make ARCH=kvx O=$PWD/build all
-+
-+This will generate a ``barebox`` elf file. By default barebox for kvx is
-+compiled to be run at address 0x110000000.
-+
-+Booting barebox
-+---------------
-+
-+``barebox`` elf file can be loaded using ``kvx-jtag-runner`` to execute the
-+image via JTAG on an existing board.
-+
-+Depending on your board and barebox version, you should see the following
-+message appearing on the serial console.
-+
-+.. code-block:: console
-+
-+  barebox 2020.03.0-00126-ga74988bf5 #3 Wed Apr 15 11:31:28 CEST 2020
-+
-+  Board: KONIC 200 (K200)
-+  malloc space: 0x110050fe0 -> 0x200000000 (size 3.7 GiB)
-+
-+  Hit any to stop autoboot:    3
-+  barebox:/
-+
-+
-+.. rubric:: References
-+
-+.. [#f1] `Toolchain releases <https://github.com/build-scripts/releases>`_
-+.. [#f2] `Build scripts <https://github.com/kalray/build-scripts/>`_
-+
-diff --git a/Documentation/boards/kvx/kalray-k200.rst b/Documentation/boards/kvx/kalray-k200.rst
-new file mode 100644
-index 000000000..9d97fa255
---- /dev/null
-+++ b/Documentation/boards/kvx/kalray-k200.rst
-@@ -0,0 +1,11 @@
-+Kalray K200
-+===========
-+
-+This board is based on a MPPA3-80 SoC. The board is shipped with:
-+
-+  - 128MiB NOR flash Memory
-+  - 8GiB DDR4 SDRAM
-+  - 2 x 100G Ethernet controllers supporting 8 x 1G, 10 and 25G
-+  - PCIe GEN4 X16 port
-+
-+See https://www.kalrayinc.com/portfolio/boards/ for more information.
--- 
-2.17.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhpcyBsaWNlbnNlIGlzIHJlbGV2YW50IGZvciBjb21tYW5kcy8yMDQ4LmMgKGF0IGxlYXN0KS4K
+ClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0
+cm9uaXguZGU+Ci0tLQogTElDRU5TRVMvcHJlZmVycmVkL01JVCB8IDMwICsrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKwogMSBmaWxlIGNoYW5nZWQsIDMwIGluc2VydGlvbnMoKykKIGNyZWF0
+ZSBtb2RlIDEwMDY0NCBMSUNFTlNFUy9wcmVmZXJyZWQvTUlUCgpkaWZmIC0tZ2l0IGEvTElDRU5T
+RVMvcHJlZmVycmVkL01JVCBiL0xJQ0VOU0VTL3ByZWZlcnJlZC9NSVQKbmV3IGZpbGUgbW9kZSAx
+MDA2NDQKaW5kZXggMDAwMDAwMDAwMDAwLi5mMzNhNjhjZWIzZWEKLS0tIC9kZXYvbnVsbAorKysg
+Yi9MSUNFTlNFUy9wcmVmZXJyZWQvTUlUCkBAIC0wLDAgKzEsMzAgQEAKK1ZhbGlkLUxpY2Vuc2Ut
+SWRlbnRpZmllcjogTUlUCitTUERYLVVSTDogaHR0cHM6Ly9zcGR4Lm9yZy9saWNlbnNlcy9NSVQu
+aHRtbAorVXNhZ2UtR3VpZGU6CisgIFRvIHVzZSB0aGUgTUlUIExpY2Vuc2UgcHV0IHRoZSBmb2xs
+b3dpbmcgU1BEWCB0YWcvdmFsdWUgcGFpciBpbnRvIGEKKyAgY29tbWVudCBhY2NvcmRpbmcgdG8g
+dGhlIHBsYWNlbWVudCBndWlkZWxpbmVzIGluIHRoZSBsaWNlbnNpbmcgcnVsZXMKKyAgZG9jdW1l
+bnRhdGlvbjoKKyAgICBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogTUlUCitMaWNlbnNlLVRleHQ6
+CisKK01JVCBMaWNlbnNlCisKK0NvcHlyaWdodCAoYykgPHllYXI+IDxjb3B5cmlnaHQgaG9sZGVy
+cz4KKworUGVybWlzc2lvbiBpcyBoZXJlYnkgZ3JhbnRlZCwgZnJlZSBvZiBjaGFyZ2UsIHRvIGFu
+eSBwZXJzb24gb2J0YWluaW5nIGEKK2NvcHkgb2YgdGhpcyBzb2Z0d2FyZSBhbmQgYXNzb2NpYXRl
+ZCBkb2N1bWVudGF0aW9uIGZpbGVzICh0aGUgIlNvZnR3YXJlIiksCit0byBkZWFsIGluIHRoZSBT
+b2Z0d2FyZSB3aXRob3V0IHJlc3RyaWN0aW9uLCBpbmNsdWRpbmcgd2l0aG91dCBsaW1pdGF0aW9u
+Cit0aGUgcmlnaHRzIHRvIHVzZSwgY29weSwgbW9kaWZ5LCBtZXJnZSwgcHVibGlzaCwgZGlzdHJp
+YnV0ZSwgc3VibGljZW5zZSwKK2FuZC9vciBzZWxsIGNvcGllcyBvZiB0aGUgU29mdHdhcmUsIGFu
+ZCB0byBwZXJtaXQgcGVyc29ucyB0byB3aG9tIHRoZQorU29mdHdhcmUgaXMgZnVybmlzaGVkIHRv
+IGRvIHNvLCBzdWJqZWN0IHRvIHRoZSBmb2xsb3dpbmcgY29uZGl0aW9uczoKKworVGhlIGFib3Zl
+IGNvcHlyaWdodCBub3RpY2UgYW5kIHRoaXMgcGVybWlzc2lvbiBub3RpY2Ugc2hhbGwgYmUgaW5j
+bHVkZWQgaW4KK2FsbCBjb3BpZXMgb3Igc3Vic3RhbnRpYWwgcG9ydGlvbnMgb2YgdGhlIFNvZnR3
+YXJlLgorCitUSEUgU09GVFdBUkUgSVMgUFJPVklERUQgIkFTIElTIiwgV0lUSE9VVCBXQVJSQU5U
+WSBPRiBBTlkgS0lORCwgRVhQUkVTUyBPUgorSU1QTElFRCwgSU5DTFVESU5HIEJVVCBOT1QgTElN
+SVRFRCBUTyBUSEUgV0FSUkFOVElFUyBPRiBNRVJDSEFOVEFCSUxJVFksCitGSVRORVNTIEZPUiBB
+IFBBUlRJQ1VMQVIgUFVSUE9TRSBBTkQgTk9OSU5GUklOR0VNRU5ULiBJTiBOTyBFVkVOVCBTSEFM
+TCBUSEUKK0FVVEhPUlMgT1IgQ09QWVJJR0hUIEhPTERFUlMgQkUgTElBQkxFIEZPUiBBTlkgQ0xB
+SU0sIERBTUFHRVMgT1IgT1RIRVIKK0xJQUJJTElUWSwgV0hFVEhFUiBJTiBBTiBBQ1RJT04gT0Yg
+Q09OVFJBQ1QsIFRPUlQgT1IgT1RIRVJXSVNFLCBBUklTSU5HCitGUk9NLCBPVVQgT0YgT1IgSU4g
+Q09OTkVDVElPTiBXSVRIIFRIRSBTT0ZUV0FSRSBPUiBUSEUgVVNFIE9SIE9USEVSCitERUFMSU5H
+UyBJTiBUSEUgU09GVFdBUkUuCgpiYXNlLWNvbW1pdDogNGI5MTk4MzJhZDNjZDMzZmE2ZmJkMmEx
+ZWVmZDg1Yjk5Y2Y0MmIzMQotLSAKMi4yNi4wLnJjMgoKCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
+dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
+bmZvL2JhcmVib3gK
