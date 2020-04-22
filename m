@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jRADf-0003F6-Pc
+ id 1jRADf-0003F9-RN
  for barebox@lists.infradead.org; Wed, 22 Apr 2020 07:54:58 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 22 Apr 2020 09:54:47 +0200
-Message-Id: <20200422075452.25226-7-s.hauer@pengutronix.de>
+Date: Wed, 22 Apr 2020 09:54:48 +0200
+Message-Id: <20200422075452.25226-8-s.hauer@pengutronix.de>
 In-Reply-To: <20200422075452.25226-1-s.hauer@pengutronix.de>
 References: <20200422075452.25226-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,75 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/11] usb: Add a slice to usb host controllers
+Subject: [PATCH 07/11] usbnet: Add slice
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
+Both the ethernet device and the mdio bus of a USB network controller
+need the USB bus. Add dependencies to it.
+
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/core/usb.c | 6 ++++++
- include/usb/usb.h      | 7 +++++++
- 2 files changed, 13 insertions(+)
+ drivers/net/usb/usbnet.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
-index d0a91b9e9f..db86ab4d19 100644
---- a/drivers/usb/core/usb.c
-+++ b/drivers/usb/core/usb.c
-@@ -81,11 +81,16 @@ static inline int usb_host_acquire(struct usb_host *host)
- 	if (host->sem)
- 		return -EAGAIN;
- 	host->sem++;
-+
-+	slice_acquire(&host->slice);
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index 406b8c964f..d43b75591a 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -233,6 +233,9 @@ int usbnet_probe(struct usb_device *usbdev, const struct usb_device_id *prod)
+ 
+ 	eth_register(edev);
+ 
++	slice_add(eth_device_slice(edev), usb_device_slice(usbdev));
++	slice_add(mdiobus_slice(&undev->miibus), usb_device_slice(usbdev));
 +
  	return 0;
- }
- 
- static inline void usb_host_release(struct usb_host *host)
- {
-+	slice_release(&host->slice);
-+
- 	if (host->sem > 0)
- 		host->sem--;
- }
-@@ -95,6 +100,7 @@ int usb_register_host(struct usb_host *host)
- 	list_add_tail(&host->list, &host_list);
- 	host->busnum = host_busnum++;
- 	host->sem = 0;
-+	slice_init(&host->slice, dev_name(host->hw_dev));
- 	return 0;
- }
- 
-diff --git a/include/usb/usb.h b/include/usb/usb.h
-index 82a4736445..b3b6cb3178 100644
---- a/include/usb/usb.h
-+++ b/include/usb/usb.h
-@@ -23,6 +23,7 @@
- #define _USB_H_
- 
- #include <driver.h>
-+#include <slice.h>
- #include <usb/ch9.h>
- #include <usb/ch11.h>
- #include <usb/usb_defs.h>
-@@ -168,11 +169,17 @@ struct usb_host {
- 	struct usb_device *root_dev;
- 	int sem;
- 	struct usb_phy *usbphy;
-+	struct slice slice;
- };
- 
- int usb_register_host(struct usb_host *);
- void usb_unregister_host(struct usb_host *host);
- 
-+static inline struct slice *usb_device_slice(struct usb_device *udev)
-+{
-+	return &udev->host->slice;
-+}
-+
- int usb_host_detect(struct usb_host *host);
- 
- int usb_set_protocol(struct usb_device *dev, int ifnum, int protocol);
+ out1:
+ 	dev_dbg(&edev->dev, "err: %d\n", status);
 -- 
 2.26.1
 
