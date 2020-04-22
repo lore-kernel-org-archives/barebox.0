@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jRADg-0003FC-1y
+ id 1jRADf-0003FB-Se
  for barebox@lists.infradead.org; Wed, 22 Apr 2020 07:55:00 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 22 Apr 2020 09:54:52 +0200
-Message-Id: <20200422075452.25226-12-s.hauer@pengutronix.de>
+Date: Wed, 22 Apr 2020 09:54:49 +0200
+Message-Id: <20200422075452.25226-9-s.hauer@pengutronix.de>
 In-Reply-To: <20200422075452.25226-1-s.hauer@pengutronix.de>
 References: <20200422075452.25226-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,79 +21,227 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/11] poller: Allow to run pollers inside of pollers
+Subject: [PATCH 08/11] net: Call net_poll() in a poller
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-This adds a slice to each poller which is acquired before the poller is
-executed. This allows us to run pollers inside of other pollers.
+This patch moves the ethernet receive loop into a poller. With this
+network protocols no longer have to call net_loop() explicitly but
+can do it implicitly by calling is_timeout() when waiting for packets.
+
+Having the network receive loop running in a poller has the advantage
+that we have it running continuously and not only when we explicitly
+expect packets to come in. With this we can reasonably well answer to
+ping requests which is implemented in the next patch. This also helps
+protocols that run in the background like fastboot over UDP.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/poller.c  | 15 +++++++--------
- include/poller.h |  2 ++
- 2 files changed, 9 insertions(+), 8 deletions(-)
+ fs/nfs.c         |  4 ++--
+ fs/tftp.c        |  2 --
+ include/net.h    |  3 ---
+ net/dhcp.c       |  1 -
+ net/dns.c        |  1 -
+ net/eth.c        | 15 ++++++++++-----
+ net/net.c        | 14 +++++++++++---
+ net/netconsole.c |  4 +---
+ net/nfs.c        |  1 -
+ net/ping.c       |  2 --
+ net/sntp.c       |  2 --
+ 11 files changed, 24 insertions(+), 25 deletions(-)
 
-diff --git a/common/poller.c b/common/poller.c
-index 95f828b439..cccffcb88d 100644
---- a/common/poller.c
-+++ b/common/poller.c
-@@ -14,7 +14,6 @@
- #include <clock.h>
+diff --git a/fs/nfs.c b/fs/nfs.c
+index 227a4866d7..b28d94a2ba 100644
+--- a/fs/nfs.c
++++ b/fs/nfs.c
+@@ -449,9 +449,9 @@ again:
  
- static LIST_HEAD(poller_list);
--static int poller_active;
+ 	nfs_timer_start = get_time_ns();
  
- int poller_register(struct poller_struct *poller, const char *name)
- {
-@@ -22,6 +21,7 @@ int poller_register(struct poller_struct *poller, const char *name)
- 		return -EBUSY;
+-	while (1) {
+-		net_poll();
++	nfs_state = STATE_START;
  
- 	poller->name = xstrdup(name);
-+	slice_init(&poller->slice, poller->name);
- 	list_add_tail(&poller->list, &poller_list);
- 	poller->registered = 1;
++	while (nfs_state != STATE_DONE) {
+ 		if (is_timeout(nfs_timer_start, NFS_TIMEOUT)) {
+ 			tries++;
+ 			if (tries == NFS_MAX_RESEND)
+diff --git a/fs/tftp.c b/fs/tftp.c
+index 1f36c56511..11f289584d 100644
+--- a/fs/tftp.c
++++ b/fs/tftp.c
+@@ -210,8 +210,6 @@ static int tftp_poll(struct file_priv *priv)
+ 		return -ETIMEDOUT;
+ 	}
  
-@@ -111,15 +111,14 @@ void poller_call(void)
- {
- 	struct poller_struct *poller, *tmp;
- 
--	if (poller_active)
--		return;
+-	net_poll();
 -
--	poller_active = 1;
-+	list_for_each_entry_safe(poller, tmp, &poller_list, list) {
-+		if (slice_acquired(&poller->slice))
-+			continue;
- 
--	list_for_each_entry_safe(poller, tmp, &poller_list, list)
-+		slice_acquire(&poller->slice);
- 		poller->func(poller);
--
--	poller_active = 0;
-+		slice_release(&poller->slice);
-+	}
+ 	return 0;
  }
  
- #if defined CONFIG_CMD_POLLER
-diff --git a/include/poller.h b/include/poller.h
-index 886557252b..c8b6829685 100644
---- a/include/poller.h
-+++ b/include/poller.h
-@@ -7,11 +7,13 @@
- #define POLLER_H
+diff --git a/include/net.h b/include/net.h
+index 8d2b4923de..583dc14ed5 100644
+--- a/include/net.h
++++ b/include/net.h
+@@ -244,9 +244,6 @@ IPaddr_t net_get_nameserver(void);
+ const char *net_get_domainname(void);
+ struct eth_device *net_route(IPaddr_t ip);
  
- #include <linux/list.h>
-+#include <slice.h>
+-/* Do the work */
+-void net_poll(void);
+-
+ static inline struct iphdr *net_eth_to_iphdr(char *pkt)
+ {
+ 	return (struct iphdr *)(pkt + ETHER_HDR_SIZE);
+diff --git a/net/dhcp.c b/net/dhcp.c
+index a27fa89996..ef22d2cef0 100644
+--- a/net/dhcp.c
++++ b/net/dhcp.c
+@@ -513,7 +513,6 @@ int dhcp_request(struct eth_device *edev, const struct dhcp_req_param *param,
+ 			ret = -ETIMEDOUT;
+ 			goto out1;
+ 		}
+-		net_poll();
+ 		if (is_timeout(dhcp_start, 3 * SECOND)) {
+ 			dhcp_start = get_time_ns();
+ 			printf("T ");
+diff --git a/net/dns.c b/net/dns.c
+index ffe98ef9e3..851bf3722e 100644
+--- a/net/dns.c
++++ b/net/dns.c
+@@ -231,7 +231,6 @@ int resolv(const char *host, IPaddr_t *ip)
+ 		if (ctrlc()) {
+ 			break;
+ 		}
+-		net_poll();
+ 		if (is_timeout(dns_timer_start, SECOND)) {
+ 			dns_timer_start = get_time_ns();
+ 			printf("T ");
+diff --git a/net/eth.c b/net/eth.c
+index 5cd1d703c4..d06daa1f8e 100644
+--- a/net/eth.c
++++ b/net/eth.c
+@@ -237,14 +237,19 @@ static int __eth_rx(struct eth_device *edev)
+ {
+ 	int ret;
  
- struct poller_struct {
- 	void (*func)(struct poller_struct *poller);
- 	int registered;
- 	struct list_head list;
-+	struct slice slice;
- 	char *name;
- };
+-	slice_acquire(eth_device_slice(edev));
++	if (!phy_acquired(edev->phydev)) {
++		ret = eth_carrier_check(edev, 0);
++		if (ret)
++			return ret;
++	}
  
+-	ret = eth_carrier_check(edev, 0);
+-	if (ret)
+-		goto out;
++	if (slice_acquired(eth_device_slice(edev)))
++		return 0;
++
++	slice_acquire(eth_device_slice(edev));
+ 
+ 	ret = edev->recv(edev);
+-out:
++
+ 	slice_release(eth_device_slice(edev));
+ 
+ 	return ret;
+diff --git a/net/net.c b/net/net.c
+index 0d889ddb52..6eb604e5dc 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -242,8 +242,6 @@ static int arp_request(struct eth_device *edev, IPaddr_t dest, unsigned char *et
+ 
+ 		if (retries > PKT_NUM_RETRIES)
+ 			return -ETIMEDOUT;
+-
+-		net_poll();
+ 	}
+ 
+ 	pr_debug("Got ARP REPLY for %pI4: %02x:%02x:%02x:%02x:%02x:%02x\n",
+@@ -252,11 +250,21 @@ static int arp_request(struct eth_device *edev, IPaddr_t dest, unsigned char *et
+ 	return 0;
+ }
+ 
+-void net_poll(void)
++static void net_poll(struct poller_struct *poller)
+ {
+ 	eth_rx();
+ }
+ 
++static struct poller_struct net_poller = {
++	.func = net_poll,
++};
++
++static int init_net_poll(void)
++{
++	return poller_register(&net_poller, "net");
++}
++device_initcall(init_net_poll);
++
+ static uint16_t net_udp_new_localport(void)
+ {
+ 	static uint16_t localport;
+diff --git a/net/netconsole.c b/net/netconsole.c
+index ef8b1856b6..457a3c2971 100644
+--- a/net/netconsole.c
++++ b/net/netconsole.c
+@@ -62,7 +62,7 @@ static int nc_getc(struct console_device *cdev)
+ 		return 0;
+ 
+ 	while (!kfifo_len(priv->fifo))
+-		net_poll();
++		udelay(1);
+ 
+ 	kfifo_getc(priv->fifo, &c);
+ 
+@@ -80,8 +80,6 @@ static int nc_tstc(struct console_device *cdev)
+ 	if (priv->busy)
+ 		return kfifo_len(priv->fifo) ? 1 : 0;
+ 
+-	net_poll();
+-
+ 	return kfifo_len(priv->fifo) ? 1 : 0;
+ }
+ 
+diff --git a/net/nfs.c b/net/nfs.c
+index 63573098d7..e0479ef692 100644
+--- a/net/nfs.c
++++ b/net/nfs.c
+@@ -708,7 +708,6 @@ static int do_nfs(int argc, char *argv[])
+ 			nfs_err = -EINTR;
+ 			break;
+ 		}
+-		net_poll();
+ 		if (is_timeout(nfs_timer_start, NFS_TIMEOUT * SECOND)) {
+ 			show_progress(-1);
+ 			nfs_send();
+diff --git a/net/ping.c b/net/ping.c
+index a71f59a805..f3de0c27a4 100644
+--- a/net/ping.c
++++ b/net/ping.c
+@@ -89,8 +89,6 @@ static int do_ping(int argc, char *argv[])
+ 			break;
+ 		}
+ 
+-		net_poll();
+-
+ 		if (is_timeout(ping_start, SECOND)) {
+ 			/* No answer, send another packet */
+ 			ping_start = get_time_ns();
+diff --git a/net/sntp.c b/net/sntp.c
+index b4e6d6439c..f693a2e8af 100644
+--- a/net/sntp.c
++++ b/net/sntp.c
+@@ -145,8 +145,6 @@ s64 sntp(const char *server)
+ 			break;
+ 		}
+ 
+-		net_poll();
+-
+ 		if (is_timeout(sntp_start, 1 * SECOND)) {
+ 			sntp_start = get_time_ns();
+ 			ret = sntp_send();
 -- 
 2.26.1
 
