@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay1-d.mail.gandi.net ([217.70.183.193])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jR9uv-0007UM-EW
- for barebox@lists.infradead.org; Wed, 22 Apr 2020 07:35:35 +0000
-Received: from geraet.fritz.box (i577B626B.versanet.de [87.123.98.107])
- (Authenticated sender: ahmad@a3f.at)
- by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id EA7D0240015
- for <barebox@lists.infradead.org>; Wed, 22 Apr 2020 07:35:28 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Wed, 22 Apr 2020 09:35:17 +0200
-Message-Id: <20200422073517.64477-3-ahmad@a3f.at>
-In-Reply-To: <20200422073517.64477-1-ahmad@a3f.at>
-References: <20200422073517.64477-1-ahmad@a3f.at>
+ id 1jRADf-0003F1-DN
+ for barebox@lists.infradead.org; Wed, 22 Apr 2020 07:54:56 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 22 Apr 2020 09:54:41 +0200
+Message-Id: <20200422075452.25226-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,88 +19,84 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/3] startup: add $global.autoboot to make behavior
- configurable
-To: barebox@lists.infradead.org
+Subject: [PATCH v4 00/11] Protect code from pollers
+To: Barebox List <barebox@lists.infradead.org>
+Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-We already have a global_autoboot_state variable that controls barebox
-init behavior on startup:
+Changes since v3:
 
-* ABORT      abort and fall into shell
-* MENU       display boot menu
-* BOOT       boot immediately, only abortable via ctrl+c
-             during init
-* COUNTDOWN  regular boot after count down
+- Rebased on current master (v2020.04.0+)
 
-Exporting this as a device parameter allows us to support some
-different boot scenarios:
+Changes since v2:
 
-* COUNTDOWN is the default
-* ABORT boot always while debugging
-* display MENU by default (e.g. for graphical boots)
-* BOOT while ignoring external code calling console_countdown_abort()
+- Use a const char * as name argument and not a struct device_d. A name is
+  more universally available
+- Also give pollers names for better debugability
+- Add a poller command to show information about registered pollers
+- Add Kconfig entries for both poller and slice commands
+- Lock pollers with slices against themselves to allow running pollers
+  inside of other pollers
 
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
----
-v1 -> v2:
-  * Add magic var description (Sascha)
-  * Rebased on the other patches as well as Sascha magicvar commit
-  * Reworded commit message to address aborting on autoboot=boot
----
- common/startup.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+Changes since v1:
 
-diff --git a/common/startup.c b/common/startup.c
-index bda782317697..796cd6cc7e3b 100644
---- a/common/startup.c
-+++ b/common/startup.c
-@@ -164,6 +164,14 @@ static const char * const global_autoboot_abort_keys[] = {
- };
- static int global_autoboot_timeout = 3;
- 
-+static const char * const global_autoboot_states[] = {
-+	[AUTOBOOT_COUNTDOWN] = "countdown",
-+	[AUTOBOOT_ABORT] = "abort",
-+	[AUTOBOOT_MENU] = "menu",
-+	[AUTOBOOT_BOOT] = "boot",
-+};
-+static int global_autoboot_state = AUTOBOOT_COUNTDOWN;
-+
- static bool test_abort(void)
- {
- 	bool do_abort = false;
-@@ -195,8 +203,6 @@ static bool test_abort(void)
- #define INITFILE "/env/bin/init"
- #define MENUFILE "/env/menu/mainmenu"
- 
--static enum autoboot_state global_autoboot_state = AUTOBOOT_COUNTDOWN;
--
- /**
-  * set_autoboot_state - set the autoboot state
-  * @autoboot: the state to set
-@@ -287,6 +293,10 @@ static int run_init(void)
- 				  ARRAY_SIZE(global_autoboot_abort_keys));
- 	globalvar_add_simple_int("autoboot_timeout",
- 				 &global_autoboot_timeout, "%u");
-+	globalvar_add_simple_enum("autoboot",
-+				  &global_autoboot_state,
-+				  global_autoboot_states,
-+				  ARRAY_SIZE(global_autoboot_states));
- 
- 	setenv("PATH", "/env/bin");
- 
-@@ -394,6 +404,9 @@ void shutdown_barebox(void)
- 	}
- }
- 
-+BAREBOX_MAGICVAR_NAMED(autoboot_state,
-+                       global.autoboot,
-+                       "Autoboot state. Possible values: countdown (default), abort, menu, boot");
- BAREBOX_MAGICVAR_NAMED(global_autoboot_abort_key,
-                        global.autoboot_abort_key,
-                        "Which key allows to interrupt autoboot. Possible values: any, ctrl-c");
+- Do not recurse into dependencies during slice_acquire
+- detect recursice dependencies
+- Do not add the phy device as dependency to the ethernet device but
+  instead lock them individually
+- Add some more patches created during debugging this series
+
+Sascha Hauer (11):
+  poller: Give pollers a name
+  poller: Add a poller command
+  Introduce slices
+  net: Add a slice to struct eth_device
+  net: mdiobus: Add slice
+  usb: Add a slice to usb host controllers
+  usbnet: Add slice
+  net: Call net_poll() in a poller
+  net: reply to ping requests
+  usbnet: Be more friendly in the receive path
+  poller: Allow to run pollers inside of pollers
+
+ commands/Kconfig               |  18 ++
+ common/Kconfig                 |   4 +
+ common/Makefile                |   1 +
+ common/poller.c                |  90 +++++++++-
+ common/ratp/ratp.c             |   2 +-
+ common/slice.c                 | 294 +++++++++++++++++++++++++++++++++
+ drivers/input/gpio_keys.c      |   2 +-
+ drivers/input/imx_keypad.c     |   2 +-
+ drivers/input/input.c          |   2 +-
+ drivers/input/qt1070.c         |   2 +-
+ drivers/input/twl6030_pwrbtn.c |   2 +-
+ drivers/led/core.c             |   2 +-
+ drivers/net/phy/mdio_bus.c     |  41 +++++
+ drivers/net/usb/usbnet.c       |  22 ++-
+ drivers/usb/core/usb.c         |   6 +
+ drivers/usb/gadget/udc-core.c  |   2 +-
+ drivers/watchdog/wd_core.c     |   2 +-
+ fs/nfs.c                       |   4 +-
+ fs/tftp.c                      |   2 -
+ include/linux/phy.h            |  38 ++---
+ include/net.h                  |  11 +-
+ include/poller.h               |   7 +-
+ include/slice.h                |  31 ++++
+ include/usb/usb.h              |   7 +
+ include/usb/usbnet.h           |   3 +
+ net/dhcp.c                     |   1 -
+ net/dns.c                      |   1 -
+ net/eth.c                      |  29 +++-
+ net/net.c                      |  60 ++++++-
+ net/netconsole.c               |   4 +-
+ net/nfs.c                      |   1 -
+ net/ping.c                     |   2 -
+ net/sntp.c                     |   2 -
+ 33 files changed, 626 insertions(+), 71 deletions(-)
+ create mode 100644 common/slice.c
+ create mode 100644 include/slice.h
+
 -- 
-2.20.1
+2.26.1
 
 
 _______________________________________________
