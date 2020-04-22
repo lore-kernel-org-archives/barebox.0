@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jRADf-0003FA-RL
+ id 1jRADf-0003F3-Fk
  for barebox@lists.infradead.org; Wed, 22 Apr 2020 07:54:58 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 22 Apr 2020 09:54:50 +0200
-Message-Id: <20200422075452.25226-10-s.hauer@pengutronix.de>
+Date: Wed, 22 Apr 2020 09:54:43 +0200
+Message-Id: <20200422075452.25226-3-s.hauer@pengutronix.de>
 In-Reply-To: <20200422075452.25226-1-s.hauer@pengutronix.de>
 References: <20200422075452.25226-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,87 +21,118 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/11] net: reply to ping requests
+Subject: [PATCH 02/11] poller: Add a poller command
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-Now that we have the network receive function running in a poller we
-can reasonably well answer to ping requests. Implement this feature.
+The poller command allows to print which pollers are registered and also
+how many times we can run the registered pollers in one second.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- net/net.c | 46 ++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 44 insertions(+), 2 deletions(-)
+ commands/Kconfig |  9 ++++++
+ common/poller.c  | 71 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 80 insertions(+)
 
-diff --git a/net/net.c b/net/net.c
-index 6eb604e5dc..e0cded5783 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -573,12 +573,54 @@ static int net_handle_udp(unsigned char *pkt, int len)
- 	return -EINVAL;
- }
+diff --git a/commands/Kconfig b/commands/Kconfig
+index a0c2828983..7fb47b8fb5 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -260,6 +260,15 @@ config CMD_MMC_EXTCSD
+ 		  -y      don't request when writing to one time programmable fields
+ 		  __CAUTION__: this could damage the device!
  
--static int net_handle_icmp(unsigned char *pkt, int len)
-+static int ping_reply(struct eth_device *edev, unsigned char *pkt, int len)
++config CMD_POLLER
++	tristate
++	prompt "poller"
++	depends on POLLER
++	help
++	  Pollers are functions that are running in the background whenever code executes
++	  is_timeout() or one of the various delay functions. The poller command prints
++	  informations about registered pollers.
++
+ # end Information commands
+ endmenu
+ 
+diff --git a/common/poller.c b/common/poller.c
+index b1a2122f91..95f828b439 100644
+--- a/common/poller.c
++++ b/common/poller.c
+@@ -121,3 +121,74 @@ void poller_call(void)
+ 
+ 	poller_active = 0;
+ }
++
++#if defined CONFIG_CMD_POLLER
++
++#include <command.h>
++#include <getopt.h>
++
++static void poller_time(void)
 +{
-+	struct ethernet *et = (struct ethernet *)pkt;
-+	struct icmphdr *icmp;
-+	struct iphdr *ip = (struct iphdr *)(pkt + ETHER_HDR_SIZE);
-+	unsigned char *packet;
-+	int ret;
++	uint64_t start = get_time_ns();
++	int i = 0;
 +
-+	memcpy(et->et_dest, et->et_src, 6);
-+	memcpy(et->et_src, edev->ethaddr, 6);
-+	et->et_protlen = htons(PROT_IP);
++	/*
++	 * How many times we can run the registered pollers in one second?
++	 *
++	 * A low number here may point to problems with pollers taking too
++	 * much time.
++	 */
++	while (!is_timeout(start, SECOND))
++		i++;
 +
-+	icmp = net_eth_to_icmphdr(pkt);
-+
-+	icmp->type = ICMP_ECHO_REPLY;
-+	icmp->checksum = 0;
-+	icmp->checksum = ~net_checksum((unsigned char *)icmp,
-+				       len - sizeof(struct iphdr) - ETHER_HDR_SIZE);
-+	ip->check = 0;
-+	ip->frag_off = 0;
-+	net_copy_ip((void *)&ip->daddr, &ip->saddr);
-+	net_copy_ip((void *)&ip->saddr, &edev->ipaddr);
-+	ip->check = ~net_checksum((unsigned char *)ip, sizeof(struct iphdr));
-+
-+	packet = net_alloc_packet();
-+	if (!packet)
-+		return 0;
-+
-+	memcpy(packet, pkt, ETHER_HDR_SIZE + len);
-+
-+	ret = eth_send(edev, packet, ETHER_HDR_SIZE + len);
-+
-+	free(packet);
-+
-+	return 0;
++	printf("%d poller calls in 1s\n", i);
 +}
 +
-+static int net_handle_icmp(struct eth_device *edev, unsigned char *pkt, int len)
- {
- 	struct net_connection *con;
-+	struct icmphdr *icmp;
- 
- 	pr_debug("%s\n", __func__);
- 
-+	icmp = net_eth_to_icmphdr(pkt);
-+	if (icmp->type == ICMP_ECHO_REQUEST)
-+		ping_reply(edev, pkt, len);
++static void poller_info(void)
++{
++	struct poller_struct *poller;
 +
- 	list_for_each_entry(con, &connection_list, list) {
- 		if (con->proto == IPPROTO_ICMP) {
- 			con->handler(con->priv, pkt, len);
-@@ -615,7 +657,7 @@ static int net_handle_ip(struct eth_device *edev, unsigned char *pkt, int len)
- 
- 	switch (ip->protocol) {
- 	case IPPROTO_ICMP:
--		return net_handle_icmp(pkt, len);
-+		return net_handle_icmp(edev, pkt, len);
- 	case IPPROTO_UDP:
- 		return net_handle_udp(pkt, len);
- 	}
++	printf("Registered pollers:\n");
++
++	if (list_empty(&poller_list)) {
++		printf("<none>\n");
++		return;
++	}
++
++	list_for_each_entry(poller, &poller_list, list)
++		printf("%s\n", poller->name);
++}
++
++BAREBOX_CMD_HELP_START(poller)
++BAREBOX_CMD_HELP_TEXT("print info about registered pollers")
++BAREBOX_CMD_HELP_TEXT("")
++BAREBOX_CMD_HELP_TEXT("Options:")
++BAREBOX_CMD_HELP_OPT ("-i", "Print information about registered pollers")
++BAREBOX_CMD_HELP_OPT ("-t", "measure how many pollers we run in 1s")
++BAREBOX_CMD_HELP_END
++
++static int do_poller(int argc, char *argv[])
++{
++	int opt;
++
++	while ((opt = getopt(argc, argv, "it")) > 0) {
++		switch (opt) {
++		case 'i':
++			poller_info();
++			return 0;
++		case 't':
++			poller_time();
++			return 0;
++		}
++	}
++
++	return COMMAND_ERROR_USAGE;
++}
++
++BAREBOX_CMD_START(poller)
++	.cmd = do_poller,
++	BAREBOX_CMD_DESC("print info about registered pollers")
++	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
++	BAREBOX_CMD_HELP(cmd_poller_help)
++BAREBOX_CMD_END
++#endif
 -- 
 2.26.1
 
