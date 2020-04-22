@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jRADf-0003F9-RN
- for barebox@lists.infradead.org; Wed, 22 Apr 2020 07:54:58 +0000
+ id 1jRADg-0003FC-1y
+ for barebox@lists.infradead.org; Wed, 22 Apr 2020 07:55:00 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 22 Apr 2020 09:54:48 +0200
-Message-Id: <20200422075452.25226-8-s.hauer@pengutronix.de>
+Date: Wed, 22 Apr 2020 09:54:52 +0200
+Message-Id: <20200422075452.25226-12-s.hauer@pengutronix.de>
 In-Reply-To: <20200422075452.25226-1-s.hauer@pengutronix.de>
 References: <20200422075452.25226-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,32 +21,79 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/11] usbnet: Add slice
+Subject: [PATCH 11/11] poller: Allow to run pollers inside of pollers
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-Both the ethernet device and the mdio bus of a USB network controller
-need the USB bus. Add dependencies to it.
+This adds a slice to each poller which is acquired before the poller is
+executed. This allows us to run pollers inside of other pollers.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/usb/usbnet.c | 3 +++
- 1 file changed, 3 insertions(+)
+ common/poller.c  | 15 +++++++--------
+ include/poller.h |  2 ++
+ 2 files changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index 406b8c964f..d43b75591a 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -233,6 +233,9 @@ int usbnet_probe(struct usb_device *usbdev, const struct usb_device_id *prod)
+diff --git a/common/poller.c b/common/poller.c
+index 95f828b439..cccffcb88d 100644
+--- a/common/poller.c
++++ b/common/poller.c
+@@ -14,7 +14,6 @@
+ #include <clock.h>
  
- 	eth_register(edev);
+ static LIST_HEAD(poller_list);
+-static int poller_active;
  
-+	slice_add(eth_device_slice(edev), usb_device_slice(usbdev));
-+	slice_add(mdiobus_slice(&undev->miibus), usb_device_slice(usbdev));
-+
- 	return 0;
- out1:
- 	dev_dbg(&edev->dev, "err: %d\n", status);
+ int poller_register(struct poller_struct *poller, const char *name)
+ {
+@@ -22,6 +21,7 @@ int poller_register(struct poller_struct *poller, const char *name)
+ 		return -EBUSY;
+ 
+ 	poller->name = xstrdup(name);
++	slice_init(&poller->slice, poller->name);
+ 	list_add_tail(&poller->list, &poller_list);
+ 	poller->registered = 1;
+ 
+@@ -111,15 +111,14 @@ void poller_call(void)
+ {
+ 	struct poller_struct *poller, *tmp;
+ 
+-	if (poller_active)
+-		return;
+-
+-	poller_active = 1;
++	list_for_each_entry_safe(poller, tmp, &poller_list, list) {
++		if (slice_acquired(&poller->slice))
++			continue;
+ 
+-	list_for_each_entry_safe(poller, tmp, &poller_list, list)
++		slice_acquire(&poller->slice);
+ 		poller->func(poller);
+-
+-	poller_active = 0;
++		slice_release(&poller->slice);
++	}
+ }
+ 
+ #if defined CONFIG_CMD_POLLER
+diff --git a/include/poller.h b/include/poller.h
+index 886557252b..c8b6829685 100644
+--- a/include/poller.h
++++ b/include/poller.h
+@@ -7,11 +7,13 @@
+ #define POLLER_H
+ 
+ #include <linux/list.h>
++#include <slice.h>
+ 
+ struct poller_struct {
+ 	void (*func)(struct poller_struct *poller);
+ 	int registered;
+ 	struct list_head list;
++	struct slice slice;
+ 	char *name;
+ };
+ 
 -- 
 2.26.1
 
