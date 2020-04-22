@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jRDRd-0007G5-9R
+ id 1jRDRc-0007F1-An
  for barebox@lists.infradead.org; Wed, 22 Apr 2020 11:21:36 +0000
 From: Clement Leger <cleger@kalray.eu>
-Date: Wed, 22 Apr 2020 13:21:15 +0200
-Message-Id: <20200422112119.23181-3-cleger@kalray.eu>
-In-Reply-To: <20200422112119.23181-1-cleger@kalray.eu>
-References: <20200422112119.23181-1-cleger@kalray.eu>
+Date: Wed, 22 Apr 2020 13:21:13 +0200
+Message-Id: <20200422112119.23181-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,33 +19,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/6] common: elf: fix warning on 32 bits architectures
+Subject: [PATCH 0/6] elf: add better bootm support
 To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
 Cc: Clement Leger <cleger@kalray.eu>
 
-When pointers are 32 bits wide and we cast a potentially 64 bits
-value in it, the compiler will yield an error. Cast that value first
-into a phys_addr_t to match the architecture pointer size and then
-in a void *.
+Currently, when booting an elf file using bootm /dev/mtdx, bootm will
+simply pass the file to the bootm and the read done on it will read the
+entire flash partition. This series starts by some cleanup and then add an
+elf_open function to load the elf size only based on the elf header.
+A special handling for the elf file is also added in bootm data to allow
+using directly the elf file structure. Finally the mips bootm is modified
+to use this new elf member.
 
-Signed-off-by: Clement Leger <cleger@kalray.eu>
----
- common/elf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Clement Leger (6):
+  common: elf: add computation of elf boundaries
+  common: elf: fix warning on 32 bits architectures
+  common: elf: split init to be reused from other function
+  common: elf: add elf_open and elf_close
+  common: bootm: add support for elf file loading
+  mips: lib: bootm: use new data->elf member
 
-diff --git a/common/elf.c b/common/elf.c
-index d64de401c..55f5bc645 100644
---- a/common/elf.c
-+++ b/common/elf.c
-@@ -47,7 +47,7 @@ static void elf_release_regions(struct elf_image *elf)
- static int load_elf_phdr_segment(struct elf_image *elf, void *src,
- 				 void *phdr)
- {
--	void *dst = (void *) elf_phdr_p_paddr(elf, phdr);
-+	void *dst = (void *) (phys_addr_t) elf_phdr_p_paddr(elf, phdr);
- 	int ret;
- 	u64 p_filesz = elf_phdr_p_filesz(elf, phdr);
- 	u64 p_memsz = elf_phdr_p_memsz(elf, phdr);
+ arch/mips/lib/bootm.c |  13 +-----
+ common/bootm.c        |  27 +++++++++++
+ common/elf.c          | 105 ++++++++++++++++++++++++++++++++++++++++--
+ include/bootm.h       |   3 ++
+ include/elf.h         |   9 ++++
+ 5 files changed, 141 insertions(+), 16 deletions(-)
+
 -- 
 2.17.1
 
