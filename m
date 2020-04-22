@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jRADp-0003PZ-8C
- for barebox@lists.infradead.org; Wed, 22 Apr 2020 07:55:07 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 22 Apr 2020 09:54:45 +0200
-Message-Id: <20200422075452.25226-5-s.hauer@pengutronix.de>
-In-Reply-To: <20200422075452.25226-1-s.hauer@pengutronix.de>
-References: <20200422075452.25226-1-s.hauer@pengutronix.de>
-MIME-Version: 1.0
+ id 1jRDRe-0007Gf-0W
+ for barebox@lists.infradead.org; Wed, 22 Apr 2020 11:21:36 +0000
+From: Clement Leger <cleger@kalray.eu>
+Date: Wed, 22 Apr 2020 13:21:16 +0200
+Message-Id: <20200422112119.23181-4-cleger@kalray.eu>
+In-Reply-To: <20200422112119.23181-1-cleger@kalray.eu>
+References: <20200422112119.23181-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,106 +16,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/11] net: Add a slice to struct eth_device
-To: Barebox List <barebox@lists.infradead.org>
-Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
+Subject: [PATCH 3/6] common: elf: split init to be reused from other function
+To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
+Cc: Clement Leger <cleger@kalray.eu>
 
-Add ethernet code safe for being called from a poller.
+New elf_open function will also need to initialize an elf file. Split
+this to avoid missing members initialization.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Clement Leger <cleger@kalray.eu>
 ---
- include/net.h |  8 ++++++++
- net/eth.c     | 20 +++++++++++++++++---
- 2 files changed, 25 insertions(+), 3 deletions(-)
+ common/elf.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/include/net.h b/include/net.h
-index 54db8a179a..8d2b4923de 100644
---- a/include/net.h
-+++ b/include/net.h
-@@ -19,6 +19,7 @@
- #include <stdlib.h>
- #include <clock.h>
- #include <led.h>
-+#include <slice.h>
- #include <xfuncs.h>
- #include <linux/phy.h>
- #include <linux/string.h>	/* memcpy */
-@@ -63,6 +64,8 @@ struct eth_device {
- 	char *bootarg;
- 	char *linuxdevname;
+diff --git a/common/elf.c b/common/elf.c
+index 55f5bc645..5534632b2 100644
+--- a/common/elf.c
++++ b/common/elf.c
+@@ -119,6 +119,15 @@ static int elf_check_image(struct elf_image *elf)
+ 	return 0;
+ }
  
-+	struct slice slice;
-+
- 	bool ifup;
- #define ETH_MODE_DHCP 0
- #define ETH_MODE_STATIC 1
-@@ -72,6 +75,11 @@ struct eth_device {
- 
- #define dev_to_edev(d) container_of(d, struct eth_device, dev)
- 
-+static inline struct slice *eth_device_slice(struct eth_device *edev)
++static int elf_check_init(struct elf_image *elf, void *buf)
 +{
-+	return &edev->slice;
++	elf->buf = buf;
++	elf->low_addr = (void *) (unsigned long) -1;
++	elf->high_addr = 0;
++
++	return elf_check_image(elf);
 +}
 +
- static inline const char *eth_name(struct eth_device *edev)
+ struct elf_image *elf_load_image(void *buf)
  {
- 	return edev->devname;
-diff --git a/net/eth.c b/net/eth.c
-index 4a8a7a8876..5cd1d703c4 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -222,20 +222,32 @@ int eth_send(struct eth_device *edev, void *packet, int length)
- 	if (ret)
- 		return ret;
+ 	struct elf_image *elf;
+@@ -128,13 +137,11 @@ struct elf_image *elf_load_image(void *buf)
  
-+	slice_acquire(eth_device_slice(edev));
-+
- 	led_trigger_network(LED_TRIGGER_NET_TX);
+ 	INIT_LIST_HEAD(&elf->list);
  
--	return edev->send(edev, packet, length);
-+	ret = edev->send(edev, packet, length);
-+
-+	slice_release(eth_device_slice(edev));
-+
-+	return ret;
- }
+-	elf->buf = buf;
+-	elf->low_addr = (void *) (unsigned long) -1;
+-	elf->high_addr = 0;
+-
+-	ret = elf_check_image(elf);
+-	if (ret)
++	ret = elf_check_init(elf, buf);
++	if (ret) {
++		free(elf);
+ 		return ERR_PTR(ret);
++	}
  
- static int __eth_rx(struct eth_device *edev)
- {
- 	int ret;
- 
-+	slice_acquire(eth_device_slice(edev));
-+
- 	ret = eth_carrier_check(edev, 0);
- 	if (ret)
--		return ret;
-+		goto out;
-+
-+	ret = edev->recv(edev);
-+out:
-+	slice_release(eth_device_slice(edev));
- 
--	return edev->recv(edev);
-+	return ret;
- }
- 
- int eth_rx(void)
-@@ -356,6 +368,8 @@ int eth_register(struct eth_device *edev)
- 	if (ret)
- 		return ret;
- 
-+	slice_init(&edev->slice, dev_name(dev));
-+
- 	edev->devname = xstrdup(dev_name(&edev->dev));
- 
- 	dev_add_param_ip(dev, "ipaddr", NULL, NULL, &edev->ipaddr, edev);
+ 	ret = load_elf_image_phdr(elf);
+ 	if (ret) {
 -- 
-2.26.1
+2.17.1
 
 
 _______________________________________________
