@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jRADf-0003FB-Se
+ id 1jRADg-0003FD-1e
  for barebox@lists.infradead.org; Wed, 22 Apr 2020 07:55:00 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 22 Apr 2020 09:54:49 +0200
-Message-Id: <20200422075452.25226-9-s.hauer@pengutronix.de>
+Date: Wed, 22 Apr 2020 09:54:51 +0200
+Message-Id: <20200422075452.25226-11-s.hauer@pengutronix.de>
 In-Reply-To: <20200422075452.25226-1-s.hauer@pengutronix.de>
 References: <20200422075452.25226-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,227 +21,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/11] net: Call net_poll() in a poller
+Subject: [PATCH 10/11] usbnet: Be more friendly in the receive path
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-This patch moves the ethernet receive loop into a poller. With this
-network protocols no longer have to call net_loop() explicitly but
-can do it implicitly by calling is_timeout() when waiting for packets.
+To recognize if we have a receive packet pending we must set up a USB
+bulk transfer. When there's no incoming packet we must wait until the
+transfer times out. We do this with every poller call which can
+considerably slow down the system. With this patch we do two things
+against this:
 
-Having the network receive loop running in a poller has the advantage
-that we have it running continuously and not only when we explicitly
-expect packets to come in. With this we can reasonably well answer to
-ping requests which is implemented in the next patch. This also helps
-protocols that run in the background like fastboot over UDP.
+- lower the timeout for the bulk transfer
+- When we haven't received a packet for longer then lower the frequency
+  of calling into the USB stack to once every 100ms
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/nfs.c         |  4 ++--
- fs/tftp.c        |  2 --
- include/net.h    |  3 ---
- net/dhcp.c       |  1 -
- net/dns.c        |  1 -
- net/eth.c        | 15 ++++++++++-----
- net/net.c        | 14 +++++++++++---
- net/netconsole.c |  4 +---
- net/nfs.c        |  1 -
- net/ping.c       |  2 --
- net/sntp.c       |  2 --
- 11 files changed, 24 insertions(+), 25 deletions(-)
+ drivers/net/usb/usbnet.c | 19 ++++++++++++++++++-
+ include/usb/usbnet.h     |  3 +++
+ 2 files changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs.c b/fs/nfs.c
-index 227a4866d7..b28d94a2ba 100644
---- a/fs/nfs.c
-+++ b/fs/nfs.c
-@@ -449,9 +449,9 @@ again:
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index d43b75591a..c3ae94b727 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -122,12 +122,29 @@ static int usbnet_recv(struct eth_device *edev)
  
- 	nfs_timer_start = get_time_ns();
+ 	dev_dbg(&edev->dev, "%s\n",__func__);
  
--	while (1) {
--		net_poll();
-+	nfs_state = STATE_START;
- 
-+	while (nfs_state != STATE_DONE) {
- 		if (is_timeout(nfs_timer_start, NFS_TIMEOUT)) {
- 			tries++;
- 			if (tries == NFS_MAX_RESEND)
-diff --git a/fs/tftp.c b/fs/tftp.c
-index 1f36c56511..11f289584d 100644
---- a/fs/tftp.c
-+++ b/fs/tftp.c
-@@ -210,8 +210,6 @@ static int tftp_poll(struct file_priv *priv)
- 		return -ETIMEDOUT;
- 	}
- 
--	net_poll();
--
- 	return 0;
- }
- 
-diff --git a/include/net.h b/include/net.h
-index 8d2b4923de..583dc14ed5 100644
---- a/include/net.h
-+++ b/include/net.h
-@@ -244,9 +244,6 @@ IPaddr_t net_get_nameserver(void);
- const char *net_get_domainname(void);
- struct eth_device *net_route(IPaddr_t ip);
- 
--/* Do the work */
--void net_poll(void);
--
- static inline struct iphdr *net_eth_to_iphdr(char *pkt)
- {
- 	return (struct iphdr *)(pkt + ETHER_HDR_SIZE);
-diff --git a/net/dhcp.c b/net/dhcp.c
-index a27fa89996..ef22d2cef0 100644
---- a/net/dhcp.c
-+++ b/net/dhcp.c
-@@ -513,7 +513,6 @@ int dhcp_request(struct eth_device *edev, const struct dhcp_req_param *param,
- 			ret = -ETIMEDOUT;
- 			goto out1;
- 		}
--		net_poll();
- 		if (is_timeout(dhcp_start, 3 * SECOND)) {
- 			dhcp_start = get_time_ns();
- 			printf("T ");
-diff --git a/net/dns.c b/net/dns.c
-index ffe98ef9e3..851bf3722e 100644
---- a/net/dns.c
-+++ b/net/dns.c
-@@ -231,7 +231,6 @@ int resolv(const char *host, IPaddr_t *ip)
- 		if (ctrlc()) {
- 			break;
- 		}
--		net_poll();
- 		if (is_timeout(dns_timer_start, SECOND)) {
- 			dns_timer_start = get_time_ns();
- 			printf("T ");
-diff --git a/net/eth.c b/net/eth.c
-index 5cd1d703c4..d06daa1f8e 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -237,14 +237,19 @@ static int __eth_rx(struct eth_device *edev)
- {
- 	int ret;
- 
--	slice_acquire(eth_device_slice(edev));
-+	if (!phy_acquired(edev->phydev)) {
-+		ret = eth_carrier_check(edev, 0);
-+		if (ret)
-+			return ret;
-+	}
- 
--	ret = eth_carrier_check(edev, 0);
--	if (ret)
--		goto out;
-+	if (slice_acquired(eth_device_slice(edev)))
++	/*
++	 * we must let the usb_bulk_msg below timeout before we realize
++	 * that we have no packet received. Since this function runs
++	 * inside a poller we considerably slow down barebox when we
++	 * wait for the timeout too often. To improve this we only poll
++	 * with full speed when we actually have received a packet in the
++	 * last 100ms.
++	 */
++	if (is_timeout(dev->last_pkt_received, 100 * MSECOND) &&
++	    !is_timeout(dev->last_recv_call, 100 * MSECOND)) {
 +		return 0;
++	}
 +
-+	slice_acquire(eth_device_slice(edev));
- 
- 	ret = edev->recv(edev);
--out:
++	dev->last_recv_call = get_time_ns();
 +
- 	slice_release(eth_device_slice(edev));
+ 	len = dev->rx_urb_size;
  
- 	return ret;
-diff --git a/net/net.c b/net/net.c
-index 0d889ddb52..6eb604e5dc 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -242,8 +242,6 @@ static int arp_request(struct eth_device *edev, IPaddr_t dest, unsigned char *et
+-	ret = usb_bulk_msg(dev->udev, dev->in, dev->rx_buf, len, &alen, 100);
++	ret = usb_bulk_msg(dev->udev, dev->in, dev->rx_buf, len, &alen, 2);
+ 	if (ret)
+ 		return ret;
  
- 		if (retries > PKT_NUM_RETRIES)
- 			return -ETIMEDOUT;
--
--		net_poll();
- 	}
- 
- 	pr_debug("Got ARP REPLY for %pI4: %02x:%02x:%02x:%02x:%02x:%02x\n",
-@@ -252,11 +250,21 @@ static int arp_request(struct eth_device *edev, IPaddr_t dest, unsigned char *et
- 	return 0;
- }
- 
--void net_poll(void)
-+static void net_poll(struct poller_struct *poller)
- {
- 	eth_rx();
- }
- 
-+static struct poller_struct net_poller = {
-+	.func = net_poll,
-+};
++	dev->last_pkt_received = get_time_ns();
 +
-+static int init_net_poll(void)
-+{
-+	return poller_register(&net_poller, "net");
-+}
-+device_initcall(init_net_poll);
+ 	if (alen) {
+ 		if (info->rx_fixup)
+ 			return info->rx_fixup(dev, dev->rx_buf, alen);
+diff --git a/include/usb/usbnet.h b/include/usb/usbnet.h
+index 450db47b40..7ff32f280a 100644
+--- a/include/usb/usbnet.h
++++ b/include/usb/usbnet.h
+@@ -54,6 +54,9 @@ struct usbnet {
+ #		define EVENT_RX_MEMORY	2
+ #		define EVENT_STS_SPLIT	3
+ #		define EVENT_LINK_RESET	4
 +
- static uint16_t net_udp_new_localport(void)
- {
- 	static uint16_t localport;
-diff --git a/net/netconsole.c b/net/netconsole.c
-index ef8b1856b6..457a3c2971 100644
---- a/net/netconsole.c
-+++ b/net/netconsole.c
-@@ -62,7 +62,7 @@ static int nc_getc(struct console_device *cdev)
- 		return 0;
++	uint64_t last_pkt_received;
++	uint64_t last_recv_call;
+ };
  
- 	while (!kfifo_len(priv->fifo))
--		net_poll();
-+		udelay(1);
- 
- 	kfifo_getc(priv->fifo, &c);
- 
-@@ -80,8 +80,6 @@ static int nc_tstc(struct console_device *cdev)
- 	if (priv->busy)
- 		return kfifo_len(priv->fifo) ? 1 : 0;
- 
--	net_poll();
--
- 	return kfifo_len(priv->fifo) ? 1 : 0;
- }
- 
-diff --git a/net/nfs.c b/net/nfs.c
-index 63573098d7..e0479ef692 100644
---- a/net/nfs.c
-+++ b/net/nfs.c
-@@ -708,7 +708,6 @@ static int do_nfs(int argc, char *argv[])
- 			nfs_err = -EINTR;
- 			break;
- 		}
--		net_poll();
- 		if (is_timeout(nfs_timer_start, NFS_TIMEOUT * SECOND)) {
- 			show_progress(-1);
- 			nfs_send();
-diff --git a/net/ping.c b/net/ping.c
-index a71f59a805..f3de0c27a4 100644
---- a/net/ping.c
-+++ b/net/ping.c
-@@ -89,8 +89,6 @@ static int do_ping(int argc, char *argv[])
- 			break;
- 		}
- 
--		net_poll();
--
- 		if (is_timeout(ping_start, SECOND)) {
- 			/* No answer, send another packet */
- 			ping_start = get_time_ns();
-diff --git a/net/sntp.c b/net/sntp.c
-index b4e6d6439c..f693a2e8af 100644
---- a/net/sntp.c
-+++ b/net/sntp.c
-@@ -145,8 +145,6 @@ s64 sntp(const char *server)
- 			break;
- 		}
- 
--		net_poll();
--
- 		if (is_timeout(sntp_start, 1 * SECOND)) {
- 			sntp_start = get_time_ns();
- 			ret = sntp_send();
+ #if 0
 -- 
 2.26.1
 
