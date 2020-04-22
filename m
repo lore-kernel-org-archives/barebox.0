@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jRADf-0003F3-Fk
+ id 1jRADf-0003F5-Ov
  for barebox@lists.infradead.org; Wed, 22 Apr 2020 07:54:58 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 22 Apr 2020 09:54:43 +0200
-Message-Id: <20200422075452.25226-3-s.hauer@pengutronix.de>
+Date: Wed, 22 Apr 2020 09:54:46 +0200
+Message-Id: <20200422075452.25226-6-s.hauer@pengutronix.de>
 In-Reply-To: <20200422075452.25226-1-s.hauer@pengutronix.de>
 References: <20200422075452.25226-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,118 +21,155 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/11] poller: Add a poller command
+Subject: [PATCH 05/11] net: mdiobus: Add slice
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-The poller command allows to print which pollers are registered and also
-how many times we can run the registered pollers in one second.
+By adding a slice to the mdio bus we make the mdio code safe for being
+called in a poller.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/Kconfig |  9 ++++++
- common/poller.c  | 71 ++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 80 insertions(+)
+ drivers/net/phy/mdio_bus.c | 41 ++++++++++++++++++++++++++++++++++++++
+ include/linux/phy.h        | 38 ++++++++++++++---------------------
+ 2 files changed, 56 insertions(+), 23 deletions(-)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index a0c2828983..7fb47b8fb5 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -260,6 +260,15 @@ config CMD_MMC_EXTCSD
- 		  -y      don't request when writing to one time programmable fields
- 		  __CAUTION__: this could damage the device!
+diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+index 3480e2ffb4..9a76db6ad4 100644
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -239,6 +239,8 @@ int mdiobus_register(struct mii_bus *bus)
+ 		return -EINVAL;
+ 	}
  
-+config CMD_POLLER
-+	tristate
-+	prompt "poller"
-+	depends on POLLER
-+	help
-+	  Pollers are functions that are running in the background whenever code executes
-+	  is_timeout() or one of the various delay functions. The poller command prints
-+	  informations about registered pollers.
++	slice_init(&bus->slice, dev_name(&bus->dev));
 +
- # end Information commands
- endmenu
+ 	if (bus->reset)
+ 		bus->reset(bus);
  
-diff --git a/common/poller.c b/common/poller.c
-index b1a2122f91..95f828b439 100644
---- a/common/poller.c
-+++ b/common/poller.c
-@@ -121,3 +121,74 @@ void poller_call(void)
- 
- 	poller_active = 0;
+@@ -357,6 +359,45 @@ static int mdio_bus_match(struct device_d *dev, struct driver_d *drv)
+ 	return 1;
  }
-+
-+#if defined CONFIG_CMD_POLLER
-+
-+#include <command.h>
-+#include <getopt.h>
-+
-+static void poller_time(void)
+ 
++/**
++ * mdiobus_read - Convenience function for reading a given MII mgmt register
++ * @bus: the mii_bus struct
++ * @addr: the phy address
++ * @regnum: register number to read
++ */
++int mdiobus_read(struct mii_bus *bus, int addr, u32 regnum)
 +{
-+	uint64_t start = get_time_ns();
-+	int i = 0;
++	int ret;
 +
-+	/*
-+	 * How many times we can run the registered pollers in one second?
-+	 *
-+	 * A low number here may point to problems with pollers taking too
-+	 * much time.
-+	 */
-+	while (!is_timeout(start, SECOND))
-+		i++;
++	slice_acquire(&bus->slice);
 +
-+	printf("%d poller calls in 1s\n", i);
++	ret = bus->read(bus, addr, regnum);
++
++	slice_release(&bus->slice);
++
++	return ret;
 +}
 +
-+static void poller_info(void)
++/**
++ * mdiobus_write - Convenience function for writing a given MII mgmt register
++ * @bus: the mii_bus struct
++ * @addr: the phy address
++ * @regnum: register number to write
++ * @val: value to write to @regnum
++ */
++int mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val)
 +{
-+	struct poller_struct *poller;
++	int ret;
 +
-+	printf("Registered pollers:\n");
++	slice_acquire(&bus->slice);
 +
-+	if (list_empty(&poller_list)) {
-+		printf("<none>\n");
-+		return;
-+	}
++	ret = bus->write(bus, addr, regnum, val);
 +
-+	list_for_each_entry(poller, &poller_list, list)
-+		printf("%s\n", poller->name);
++	slice_release(&bus->slice);
++
++	return ret;
 +}
 +
-+BAREBOX_CMD_HELP_START(poller)
-+BAREBOX_CMD_HELP_TEXT("print info about registered pollers")
-+BAREBOX_CMD_HELP_TEXT("")
-+BAREBOX_CMD_HELP_TEXT("Options:")
-+BAREBOX_CMD_HELP_OPT ("-i", "Print information about registered pollers")
-+BAREBOX_CMD_HELP_OPT ("-t", "measure how many pollers we run in 1s")
-+BAREBOX_CMD_HELP_END
+ static ssize_t phydev_read(struct cdev *cdev, void *_buf, size_t count, loff_t offset, ulong flags)
+ {
+ 	int i = count;
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index a9fdf44f1a..e93f6a01ff 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -16,6 +16,7 @@
+ #define __PHY_H
+ 
+ #include <driver.h>
++#include <slice.h>
+ #include <linux/list.h>
+ #include <linux/ethtool.h>
+ #include <linux/mii.h>
+@@ -116,9 +117,16 @@ struct mii_bus {
+ 	struct list_head list;
+ 
+ 	bool is_multiplexed;
 +
-+static int do_poller(int argc, char *argv[])
++	struct slice slice;
+ };
+ #define to_mii_bus(d) container_of(d, struct mii_bus, dev)
+ 
++static inline struct slice *mdiobus_slice(struct mii_bus *bus)
 +{
-+	int opt;
-+
-+	while ((opt = getopt(argc, argv, "it")) > 0) {
-+		switch (opt) {
-+		case 'i':
-+			poller_info();
-+			return 0;
-+		case 't':
-+			poller_time();
-+			return 0;
-+		}
-+	}
-+
-+	return COMMAND_ERROR_USAGE;
++	return &bus->slice;
 +}
 +
-+BAREBOX_CMD_START(poller)
-+	.cmd = do_poller,
-+	BAREBOX_CMD_DESC("print info about registered pollers")
-+	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
-+	BAREBOX_CMD_HELP(cmd_poller_help)
-+BAREBOX_CMD_END
-+#endif
+ int mdiobus_register(struct mii_bus *bus);
+ void mdiobus_unregister(struct mii_bus *bus);
+ struct phy_device *mdiobus_scan(struct mii_bus *bus, int addr);
+@@ -134,28 +142,8 @@ struct mii_bus *mdiobus_get_bus(int busnum);
+ 
+ struct mii_bus *of_mdio_find_bus(struct device_node *mdio_bus_np);
+ 
+-/**
+- * mdiobus_read - Convenience function for reading a given MII mgmt register
+- * @bus: the mii_bus struct
+- * @addr: the phy address
+- * @regnum: register number to read
+- */
+-static inline int mdiobus_read(struct mii_bus *bus, int addr, u32 regnum)
+-{
+-	return bus->read(bus, addr, regnum);
+-}
+-
+-/**
+- * mdiobus_write - Convenience function for writing a given MII mgmt register
+- * @bus: the mii_bus struct
+- * @addr: the phy address
+- * @regnum: register number to write
+- * @val: value to write to @regnum
+- */
+-static inline int mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val)
+-{
+-	return bus->write(bus, addr, regnum, val);
+-}
++int mdiobus_read(struct mii_bus *bus, int addr, u32 regnum);
++int mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val);
+ 
+ /* phy_device: An instance of a PHY
+  *
+@@ -376,11 +364,15 @@ int phy_register_fixup(const char *bus_id, u32 phy_uid, u32 phy_uid_mask,
+ int phy_register_fixup_for_id(const char *bus_id,
+ 		int (*run)(struct phy_device *));
+ int phy_scan_fixups(struct phy_device *phydev);
+-
+ int phy_read_mmd_indirect(struct phy_device *phydev, int prtad, int devad);
+ void phy_write_mmd_indirect(struct phy_device *phydev, int prtad, int devad,
+ 				   u16 data);
+ 
++static inline bool phy_acquired(struct phy_device *phydev)
++{
++	return phydev && slice_acquired(&phydev->bus->slice);
++}
++
+ #ifdef CONFIG_PHYLIB
+ int phy_register_fixup_for_uid(u32 phy_uid, u32 phy_uid_mask,
+ 		int (*run)(struct phy_device *));
 -- 
 2.26.1
 
