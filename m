@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jRVh8-0007xY-Sz
- for barebox@lists.infradead.org; Thu, 23 Apr 2020 06:50:50 +0000
-Date: Thu, 23 Apr 2020 08:50:41 +0200 (CEST)
-From: =?utf-8?Q?Cl=C3=A9ment?= Leger <cleger@kalray.eu>
-Message-ID: <1950785373.16920857.1587624641555.JavaMail.zimbra@kalray.eu>
-In-Reply-To: <20200422112119.23181-6-cleger@kalray.eu>
+ id 1jRDRc-0007FT-MY
+ for barebox@lists.infradead.org; Wed, 22 Apr 2020 11:21:36 +0000
+From: Clement Leger <cleger@kalray.eu>
+Date: Wed, 22 Apr 2020 13:21:14 +0200
+Message-Id: <20200422112119.23181-2-cleger@kalray.eu>
+In-Reply-To: <20200422112119.23181-1-cleger@kalray.eu>
 References: <20200422112119.23181-1-cleger@kalray.eu>
- <20200422112119.23181-6-cleger@kalray.eu>
-MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,59 +16,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/6] common: bootm: add support for elf file loading
-To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 1/6] common: elf: add computation of elf boundaries
+To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
+Cc: Clement Leger <cleger@kalray.eu>
 
-CgotLS0tLSBPbiAyMiBBcHIsIDIwMjAsIGF0IDEzOjIxLCBDbMOpbWVudCBMZWdlciBjbGVnZXJA
-a2FscmF5LmV1IHdyb3RlOgoKPiBUaGlzIHdpbGwgYWxsb3dzIGVsZiBsb2FkZXIgdG8gZGlyZWN0
-bHkgaGF2ZSBhbiBlbGYgZmlsZSBhdmFpbGFibGUuIFRodXMKPiBmaWxldHlwZV9lbGYgYm9vdG0g
-aGFuZGxlcnMgd2lsbCBiZSBhYmxlIHRvIHVzZSB0aGlzIGVsZiBmaWxlIGRpcmVjdGx5Lgo+IAo+
-IFNpZ25lZC1vZmYtYnk6IENsZW1lbnQgTGVnZXIgPGNsZWdlckBrYWxyYXkuZXU+Cj4gLS0tCj4g
-Y29tbW9uL2Jvb3RtLmMgIHwgMjcgKysrKysrKysrKysrKysrKysrKysrKysrKysrCj4gaW5jbHVk
-ZS9ib290bS5oIHwgIDMgKysrCj4gMiBmaWxlcyBjaGFuZ2VkLCAzMCBpbnNlcnRpb25zKCspCj4g
-Cj4gZGlmZiAtLWdpdCBhL2NvbW1vbi9ib290bS5jIGIvY29tbW9uL2Jvb3RtLmMKPiBpbmRleCAz
-NjZmMzE0NTUuLjAxNWQ5MGYzYyAxMDA2NDQKPiAtLS0gYS9jb21tb24vYm9vdG0uYwo+ICsrKyBi
-L2NvbW1vbi9ib290bS5jCj4gQEAgLTQ1NSw2ICs0NTUsOCBAQCBpbnQgYm9vdG1fZ2V0X29zX3Np
-emUoc3RydWN0IGltYWdlX2RhdGEgKmRhdGEpCj4gewo+IAlpbnQgcmV0Owo+IAo+ICsJaWYgKGRh
-dGEtPmVsZikKPiArCQlyZXR1cm4gZGF0YS0+ZWxmLT5oaWdoX2FkZHIgLSBkYXRhLT5lbGYtPmxv
-d19hZGRyOwo+IAlpZiAoZGF0YS0+b3MpCj4gCQlyZXR1cm4gdWltYWdlX2dldF9zaXplKGRhdGEt
-Pm9zLCB1aW1hZ2VfcGFydF9udW0oZGF0YS0+b3NfcGFydCkpOwo+IAlpZiAoZGF0YS0+b3NfZml0
-KQo+IEBAIC01MDIsNiArNTA0LDIwIEBAIHN0YXRpYyBpbnQgYm9vdG1fb3Blbl9vc191aW1hZ2Uo
-c3RydWN0IGltYWdlX2RhdGEgKmRhdGEpCj4gCXJldHVybiAwOwo+IH0KPiAKPiArc3RhdGljIGlu
-dCBib290bV9vcGVuX2VsZihzdHJ1Y3QgaW1hZ2VfZGF0YSAqZGF0YSkKPiArewo+ICsKPiArCWRh
-dGEtPmVsZiA9IGVsZl9vcGVuKGRhdGEtPm9zX2ZpbGUpOwo+ICsJaWYgKElTX0VSUihkYXRhLT5l
-bGYpKQo+ICsJCXJldHVybiBQVFJfRVJSKGRhdGEtPmVsZik7CgpJIGp1c3Qgbm90aWNlZCB0aGF0
-IGRhdGEtPmVsZiBzaG91bGQgYmUgc2V0IHRvIE5VTEwgaGVyZSBvbiBlcnJvciBiZWNhdXNlIG9u
-CmVycm9yLCB0aGUgZnJlZSBpcyBkb25lIGlmIGRhdGEtPmVsZiAhPSBOVUxMLiBBRkFJSywgYm9v
-dG1fb3Blbl9vc191aW1hZ2UKc3VmZmVycyBvZiB0aGUgc2FtZSBmbGF3LiBNYXliZSB0aGUgYmVz
-dCBwbGFjZSB0byByZXNldCB0aGUgZWxmL29zIG1lbWJlcnMKaXMgaW4gdGhlIGJvb3RtX2Jvb3Qg
-Y29tbWFuZCBpbiBjYXNlIG9mIGVycm9yLgoKPiArCj4gKwlwcmludGYoIkVudHJ5IFBvaW50OiAg
-JTA4bGx4XG4iLCBkYXRhLT5lbGYtPmVudHJ5KTsKPiArCj4gKwlkYXRhLT5vc19hZGRyZXNzID0g
-ZGF0YS0+ZWxmLT5lbnRyeTsKPiArCj4gKwlyZXR1cm4gMDsKPiArfQo+ICsKPiBzdGF0aWMgdm9p
-ZCBib290bV9wcmludF9pbmZvKHN0cnVjdCBpbWFnZV9kYXRhICpkYXRhKQo+IHsKPiAJaWYgKGRh
-dGEtPm9zX3JlcykKPiBAQCAtNjM2LDYgKzY1MiwxNSBAQCBpbnQgYm9vdG1fYm9vdChzdHJ1Y3Qg
-Ym9vdG1fZGF0YSAqYm9vdG1fZGF0YSkKPiAJCX0KPiAJfQo+IAo+ICsJaWYgKG9zX3R5cGUgPT0g
-ZmlsZXR5cGVfZWxmKSB7Cj4gKwkJcmV0ID0gYm9vdG1fb3Blbl9lbGYoZGF0YSk7Cj4gKwkJaWYg
-KHJldCkgewo+ICsJCQlwcmludGYoIkxvYWRpbmcgRUxGIGltYWdlIGZhaWxlZCB3aXRoOiAlc1xu
-IiwKPiArCQkJCQlzdHJlcnJvcigtcmV0KSk7Cj4gKwkJCWdvdG8gZXJyX291dDsKPiArCQl9Cj4g
-Kwl9Cj4gKwo+IAlpZiAoYm9vdG1fZGF0YS0+YXBwZW5kcm9vdCkgewo+IAkJY2hhciAqcm9vdGFy
-ZzsKPiAKPiBAQCAtNzA1LDYgKzczMCw4IEBAIGVycl9vdXQ6Cj4gCQl1aW1hZ2VfY2xvc2UoZGF0
-YS0+aW5pdHJkKTsKPiAJaWYgKGRhdGEtPm9zKQo+IAkJdWltYWdlX2Nsb3NlKGRhdGEtPm9zKTsK
-PiArCWlmIChkYXRhLT5lbGYpCj4gKwkJZWxmX2Nsb3NlKGRhdGEtPmVsZik7Cj4gCWlmIChJU19F
-TkFCTEVEKENPTkZJR19GSVRJTUFHRSkgJiYgZGF0YS0+b3NfZml0KQo+IAkJZml0X2Nsb3NlKGRh
-dGEtPm9zX2ZpdCk7Cj4gCWlmIChkYXRhLT5vZl9yb290X25vZGUgJiYgZGF0YS0+b2Zfcm9vdF9u
-b2RlICE9IG9mX2dldF9yb290X25vZGUoKSkKPiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9ib290bS5o
-IGIvaW5jbHVkZS9ib290bS5oCj4gaW5kZXggNzc4MmRlN2E0Li5lZjUxNDhmMzEgMTAwNjQ0Cj4g
-LS0tIGEvaW5jbHVkZS9ib290bS5oCj4gKysrIGIvaW5jbHVkZS9ib290bS5oCj4gQEAgLTQ2LDYg
-KzQ2LDkgQEAgc3RydWN0IGltYWdlX2RhdGEgewo+IAkvKiBpZiBvcyBpcyBhbiB1SW1hZ2UgdGhp
-cyB3aWxsIGJlIHByb3ZpZGVkICovCj4gCXN0cnVjdCB1aW1hZ2VfaGFuZGxlICpvczsKPiAKPiAr
-CS8qIGlmIG9zIGlzIGFuIGVsZiBmaWxlIHRoaXMgd2lsbCBiZSBwcm92aWRlZCAqLwo+ICsJc3Ry
-dWN0IGVsZl9pbWFnZSAqZWxmOwo+ICsKPiAJLyogaWYgb3MgaXMgYSBGSVQgaW1hZ2UgdGhpcyB3
-aWxsIGJlIHByb3ZpZGVkICovCj4gCXN0cnVjdCBmaXRfaGFuZGxlICpvc19maXQ7Cj4gCj4gLS0K
-PiAyLjE3LjEKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8v
-bGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+In order to correctly load an initrd or a device tree after an elf file,
+we need to know its boundaries. This commit adds support for that and
+allow the bootm implementations to use it for memory loading.
+
+Signed-off-by: Clement Leger <cleger@kalray.eu>
+---
+ common/elf.c  | 7 +++++++
+ include/elf.h | 2 ++
+ 2 files changed, 9 insertions(+)
+
+diff --git a/common/elf.c b/common/elf.c
+index 4733accb0..d64de401c 100644
+--- a/common/elf.c
++++ b/common/elf.c
+@@ -59,6 +59,11 @@ static int load_elf_phdr_segment(struct elf_image *elf, void *src,
+ 	if (!p_filesz)
+ 		return 0;
+ 
++	if (dst < elf->low_addr)
++		elf->low_addr = dst;
++	if (dst + p_memsz > elf->high_addr)
++		elf->high_addr = dst + p_memsz;
++
+ 	pr_debug("Loading phdr to 0x%p (%llu bytes)\n", dst, p_filesz);
+ 
+ 	ret = elf_request_region(elf, (resource_size_t)dst, p_filesz);
+@@ -124,6 +129,8 @@ struct elf_image *elf_load_image(void *buf)
+ 	INIT_LIST_HEAD(&elf->list);
+ 
+ 	elf->buf = buf;
++	elf->low_addr = (void *) (unsigned long) -1;
++	elf->high_addr = 0;
+ 
+ 	ret = elf_check_image(elf);
+ 	if (ret)
+diff --git a/include/elf.h b/include/elf.h
+index 113728f08..e4577f63c 100644
+--- a/include/elf.h
++++ b/include/elf.h
+@@ -403,6 +403,8 @@ struct elf_image {
+ 	struct list_head list;
+ 	u8 class;
+ 	u64 entry;
++	void *low_addr;
++	void *high_addr;
+ 	void *buf;
+ };
+ 
+-- 
+2.17.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
