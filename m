@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from zimbra2.kalray.eu ([92.103.151.219])
+Received: from conuserg-12.nifty.com ([210.131.2.79])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jRDRe-0007Gf-0W
- for barebox@lists.infradead.org; Wed, 22 Apr 2020 11:21:36 +0000
-From: Clement Leger <cleger@kalray.eu>
-Date: Wed, 22 Apr 2020 13:21:16 +0200
-Message-Id: <20200422112119.23181-4-cleger@kalray.eu>
-In-Reply-To: <20200422112119.23181-1-cleger@kalray.eu>
-References: <20200422112119.23181-1-cleger@kalray.eu>
+ id 1jR91J-0000Tx-5X
+ for barebox@lists.infradead.org; Wed, 22 Apr 2020 06:38:07 +0000
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Wed, 22 Apr 2020 15:37:30 +0900
+Message-Id: <20200422063732.1584550-2-masahiroy@kernel.org>
+In-Reply-To: <20200422063732.1584550-1-masahiroy@kernel.org>
+References: <20200422063732.1584550-1-masahiroy@kernel.org>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,63 +17,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/6] common: elf: split init to be reused from other function
-To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
-Cc: Clement Leger <cleger@kalray.eu>
+Subject: [PATCH v2 2/4] mips: rename ldflags-y to mips-ldflags-y
+To: barebox@lists.infradead.org
+Cc: Masahiro Yamada <masahiroy@kernel.org>
 
-New elf_open function will also need to initialize an elf file. Split
-this to avoid missing members initialization.
+The next commit will add ldflags-y to scripts/Makefile.lib like Linux,
+but barebox includes scripts/Makefile.lib from the top Makefile.
 
-Signed-off-by: Clement Leger <cleger@kalray.eu>
+arch/mips/Makefile uses ldflags-y for a different meaning.
+
+To avoid unpleasant side-effect, this commit rename it.
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 ---
- common/elf.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/common/elf.c b/common/elf.c
-index 55f5bc645..5534632b2 100644
---- a/common/elf.c
-+++ b/common/elf.c
-@@ -119,6 +119,15 @@ static int elf_check_image(struct elf_image *elf)
- 	return 0;
- }
+Changes in v2:
+  - new patch
+
+ arch/mips/Makefile | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index ee3364d27..932fdab0a 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -34,17 +34,17 @@ predef-le += -DMIPSEL -D_MIPSEL -D__MIPSEL -D__MIPSEL__
  
-+static int elf_check_init(struct elf_image *elf, void *buf)
-+{
-+	elf->buf = buf;
-+	elf->low_addr = (void *) (unsigned long) -1;
-+	elf->high_addr = 0;
-+
-+	return elf_check_image(elf);
-+}
-+
- struct elf_image *elf_load_image(void *buf)
- {
- 	struct elf_image *elf;
-@@ -128,13 +137,11 @@ struct elf_image *elf_load_image(void *buf)
+ ifdef CONFIG_CPU_BIG_ENDIAN
+ cflags-y += $(shell $(CC) -dumpmachine |grep -q 'mips.*el-.*' && echo -EB $(undef-all) $(predef-be))
+-ldflags-y += $(shell $(CC) -dumpmachine |grep -q 'mips.*el-.*' && echo -EB )
++mips-ldflags-y += $(shell $(CC) -dumpmachine |grep -q 'mips.*el-.*' && echo -EB )
+ endif
  
- 	INIT_LIST_HEAD(&elf->list);
+ ifdef CONFIG_CPU_LITTLE_ENDIAN
+ cflags-y += $(shell $(CC) -dumpmachine |grep -q 'mips.*el-.*' || echo -EL $(undef-all) $(predef-le))
+-ldflags-y += $(shell $(CC) -dumpmachine |grep -q 'mips.*el-.*' || echo -EL )
++mips-ldflags-y += $(shell $(CC) -dumpmachine |grep -q 'mips.*el-.*' || echo -EL )
+ endif
  
--	elf->buf = buf;
--	elf->low_addr = (void *) (unsigned long) -1;
--	elf->high_addr = 0;
--
--	ret = elf_check_image(elf);
--	if (ret)
-+	ret = elf_check_init(elf, buf);
-+	if (ret) {
-+		free(elf);
- 		return ERR_PTR(ret);
-+	}
+-LDFLAGS += $(ldflags-y) -m $(ld-emul)
+-LDFLAGS_barebox += $(ldflags-y)
+-LDFLAGS_pbl += $(ldflags-y)
++LDFLAGS += $(mips-ldflags-y) -m $(ld-emul)
++LDFLAGS_barebox += $(mips-ldflags-y)
++LDFLAGS_pbl += $(mips-ldflags-y)
  
- 	ret = load_elf_image_phdr(elf);
- 	if (ret) {
+ #
+ # CPU-dependent compiler/assembler options for optimization.
 -- 
-2.17.1
+2.25.1
 
 
 _______________________________________________
