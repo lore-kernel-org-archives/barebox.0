@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from conuserg-12.nifty.com ([210.131.2.79])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jR8UI-00018j-FX
- for barebox@lists.infradead.org; Wed, 22 Apr 2020 06:03:59 +0000
-Date: Wed, 22 Apr 2020 08:03:56 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200422060356.GJ1694@pengutronix.de>
-References: <20200421073859.25942-1-cleger@kalray.eu>
+ id 1jR91J-0000Tw-5U
+ for barebox@lists.infradead.org; Wed, 22 Apr 2020 06:38:06 +0000
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Wed, 22 Apr 2020 15:37:29 +0900
+Message-Id: <20200422063732.1584550-1-masahiroy@kernel.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200421073859.25942-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,25 +19,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Documentation: kvx: add first documentation
-To: Clement Leger <cleger@kalray.eu>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 1/4] riscv: remove meaningless LDFLAGS addition
+To: barebox@lists.infradead.org
+Cc: Masahiro Yamada <masahiroy@kernel.org>
 
-On Tue, Apr 21, 2020 at 09:38:59AM +0200, Clement Leger wrote:
-> Add documentation on kvx architecture and kalray k200 board.
-> 
-> Signed-off-by: Clement Leger <cleger@kalray.eu>
-> ---
+No one sets ldflags-y. This line is meaningless.
 
-Very nice, thanks. Applied to master.
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+---
 
-Sascha
+Changes in v2:
+ - new patch
 
+ arch/riscv/Makefile | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
+index fa8a173d8..b71a52ad1 100644
+--- a/arch/riscv/Makefile
++++ b/arch/riscv/Makefile
+@@ -10,7 +10,6 @@ cflags-y += -fno-pic -pipe
+ cflags-y += -Wall -Wstrict-prototypes \
+ 	-Wno-uninitialized -Wno-format -Wno-main -mcmodel=medany
+ 
+-LDFLAGS += $(ldflags-y)
+ LDFLAGS_barebox += -nostdlib
+ 
+ machine-$(CONFIG_MACH_ERIZO)	:= erizo
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.25.1
+
 
 _______________________________________________
 barebox mailing list
