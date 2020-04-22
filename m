@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mickerik.phytec.de ([195.145.39.210])
- by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jRDnU-0006Zw-NY
- for barebox@lists.infradead.org; Wed, 22 Apr 2020 11:44:10 +0000
-From: Albert Schwarzkopf <a.schwarzkopf@phytec.de>
-Date: Wed, 22 Apr 2020 13:44:07 +0200
-Message-Id: <20200422114407.10351-1-a.schwarzkopf@phytec.de>
+Received: from zimbra2.kalray.eu ([92.103.151.219])
+ by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jRDRh-0007Hw-UX
+ for barebox@lists.infradead.org; Wed, 22 Apr 2020 11:21:39 +0000
+From: Clement Leger <cleger@kalray.eu>
+Date: Wed, 22 Apr 2020 13:21:19 +0200
+Message-Id: <20200422112119.23181-7-cleger@kalray.eu>
+In-Reply-To: <20200422112119.23181-1-cleger@kalray.eu>
+References: <20200422112119.23181-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,43 +21,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mach-imx: hab: Unlock CAAM MID for OP-TEE
-To: barebox@lists.infradead.org
+Subject: [PATCH 6/6] mips: lib: bootm: use new data->elf member
+To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
+Cc: Clement Leger <cleger@kalray.eu>
 
-The current CSF config used by barebox does not allow a successful
-bootup of OP-TEE within a closed HAB configuration. As specified
-in section 2.1 of the application notes [1], OP-TEE requires that
-the "UNLOCK MID" HAB command is present in the CSF file for
-this case.
+Now that the elf file is loaded by the bootm core, use this field
+directly instead of manually loading the elf file.
 
-This patch adds the mentioned command if support for OP-TEE is
-enabled in the configuration. It's based on the discussion
-in [2].
-
-[1] https://www.nxp.com/docs/en/application-note/AN12056.pdf
-[2] https://github.com/OP-TEE/optee_os/issues/3609
-
-Signed-off-by: Albert Schwarzkopf <a.schwarzkopf@phytec.de>
+Signed-off-by: Clement Leger <cleger@kalray.eu>
 ---
- arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/mips/lib/bootm.c | 13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h b/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
-index 581887960..0e6c7e2dd 100644
---- a/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
-+++ b/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
-@@ -29,7 +29,11 @@ hab [Authenticate CSF]
+diff --git a/arch/mips/lib/bootm.c b/arch/mips/lib/bootm.c
+index 5bb09cc2d..1e5fdd4ae 100644
+--- a/arch/mips/lib/bootm.c
++++ b/arch/mips/lib/bootm.c
+@@ -46,18 +46,10 @@ static struct binfmt_hook binfmt_barebox_hook = {
+ static int do_bootm_elf(struct image_data *data)
+ {
+ 	void (*entry)(int, void *);
+-	struct elf_image *elf;
+-	void *fdt, *buf;
++	struct elf_image *elf = data->elf;
++	void *fdt;
+ 	int ret = 0;
  
- hab [Unlock]
- hab Engine = CAAM
-+#if defined(CONFIG_BOOTM_OPTEE) || defined(CONFIG_PBL_OPTEE)
-+hab Features = MID,RNG
-+#else
- hab Features = RNG
-+#endif
+-	buf = read_file(data->os_file, NULL);
+-	if (!buf)
+-		return -EINVAL;
+-
+-	elf = elf_load_image(buf);
+-	if (IS_ERR(elf))
+-		return PTR_ERR(elf);
+-
+ 	fdt = bootm_get_devicetree(data);
+ 	if (IS_ERR(fdt)) {
+ 		ret = PTR_ERR(fdt);
+@@ -82,7 +74,6 @@ static int do_bootm_elf(struct image_data *data)
+ bootm_elf_done:
+ 	elf_release_image(elf);
+ 	free(fdt);
+-	free(buf);
  
- hab [Install Key]
- /* verification key index in key store (0, 2...4) */
+ 	return ret;
+ }
 -- 
 2.17.1
 
