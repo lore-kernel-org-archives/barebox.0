@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from conuserg-12.nifty.com ([210.131.2.79])
+Received: from conuserg-10.nifty.com ([210.131.2.77])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jR91J-0000Tv-5W
- for barebox@lists.infradead.org; Wed, 22 Apr 2020 06:38:09 +0000
+ id 1jR98u-0007Mv-Jb
+ for barebox@lists.infradead.org; Wed, 22 Apr 2020 06:46:00 +0000
 From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Wed, 22 Apr 2020 15:37:32 +0900
-Message-Id: <20200422063732.1584550-4-masahiroy@kernel.org>
-In-Reply-To: <20200422063732.1584550-1-masahiroy@kernel.org>
-References: <20200422063732.1584550-1-masahiroy@kernel.org>
+Date: Wed, 22 Apr 2020 15:45:18 +0900
+Message-Id: <20200422064519.1586324-1-masahiroy@kernel.org>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,872 +19,1175 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 4/4] kbuild: prefix compiler flag variables with KBUILD_
+Subject: [PATCH] kconfig: update to Linux 5.7-rc2
 To: barebox@lists.infradead.org
 Cc: Masahiro Yamada <masahiroy@kernel.org>
 
-In old days, Linux also used to use well-known variables such CFLAGS,
-CPPFLAGS, etc.
+The previous sync was Linux 5.5. This updates Kconfig to Linux 5.7-rc2.
 
-They were prefixed with KBUILD_ presumably for preventing users from
-overriding them accidentally.
+Highlights:
 
-Rename as follows:
-  CFLAGS          ->  KBUILD_CFLAGS
-  AFLAGS          ->  KBUILD_AFLAGS
-  CPPFLAGS        ->  KBUILD_CPPFLAGS
-  LDFLAGS         ->  KBUILD_LDFLAGS
-  HOSTCFLAGS      ->  KBUILD_HOSTCFLAGS
-  HOSTCXXFLAGS    ->  KBUILD_HOSTCXXFLAGS
-  HOSTLDFLAGS     ->  KBUILD_HOSTLDFLAGS
-  HOST_LOADLIBES  ->  KBUILD_HOSTLDLIBS
+ - add yes2modconfig and mod2yesconfig, which are useful for coping with
+   syzbot configs in Linux
 
-HOSTCFLAGS, HOSTCXXFLAGS, HOSTLDFLAGS, HOSTLDLIBS are re-used to allow
-users to pass-in additional flags to the host compiler.
+ - remove include/config/tristate.conf
+
+ - show more precise help
+
+ - fix various issues of 'make xconfig'
 
 Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 ---
 
-Changes in v2: None
-
- Makefile                 | 51 +++++++++++++++++++++-------------------
- arch/arm/Makefile        | 34 +++++++++++++--------------
- arch/kvx/Makefile        | 12 +++++-----
- arch/mips/Makefile       | 22 ++++++++---------
- arch/mips/pbl/Makefile   |  2 +-
- arch/nios2/Makefile      |  2 +-
- arch/openrisc/Makefile   |  2 +-
- arch/ppc/Makefile        | 14 +++++------
- arch/riscv/Makefile      | 14 +++++------
- arch/sandbox/Makefile    | 10 ++++----
- arch/sandbox/os/Makefile |  8 +++----
- arch/x86/Makefile        | 32 ++++++++++++-------------
- arch/x86/boot/Makefile   |  2 +-
- scripts/Kbuild.include   | 10 ++++----
- scripts/Makefile         |  4 ++--
- scripts/Makefile.build   |  2 +-
- scripts/Makefile.host    | 12 +++++-----
- scripts/Makefile.lib     | 14 +++++------
- scripts/Makefile.modpost |  2 +-
- 19 files changed, 126 insertions(+), 123 deletions(-)
+ Makefile                             |   6 +-
+ scripts/kconfig/.gitignore           |   4 +-
+ scripts/kconfig/Makefile             |  38 +++---
+ scripts/kconfig/conf.c               |  16 +++
+ scripts/kconfig/confdata.c           |  62 +++------
+ scripts/kconfig/expr.c               |   3 +-
+ scripts/kconfig/expr.h               |   2 +-
+ scripts/kconfig/gconf.c              |   1 +
+ scripts/kconfig/lkc.h                |   4 +-
+ scripts/kconfig/mconf.c              |   1 +
+ scripts/kconfig/menu.c               | 185 ++++++++++++++++-----------
+ scripts/kconfig/nconf.c              |   1 +
+ scripts/kconfig/parser.y             |  21 ++-
+ scripts/kconfig/qconf.cc             |  92 +++++++++----
+ scripts/kconfig/qconf.h              |   2 +
+ scripts/kconfig/streamline_config.pl |   4 +-
+ scripts/kconfig/symbol.c             |  31 +----
+ 17 files changed, 253 insertions(+), 220 deletions(-)
 
 diff --git a/Makefile b/Makefile
-index aa9b9806e..6fc822da4 100644
+index 6fc822da4..626318624 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -187,10 +187,12 @@ HOST_LFS_LIBS := $(shell getconf LFS_LIBS 2>/dev/null)
+@@ -176,6 +176,9 @@ SRCARCH 	:= $(ARCH)
  
- HOSTCC       = gcc
- HOSTCXX      = g++
--HOSTCFLAGS   = -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer $(HOST_LFS_CFLAGS)
--HOSTCXXFLAGS = -O2 $(HOST_LFS_CFLAGS)
--HOSTLDFLAGS = $(HOST_LFS_LDFLAGS)
--HOST_LOADLIBES = $(HOST_LFS_LIBS)
-+KBUILD_HOSTCFLAGS   := -Wall -Wstrict-prototypes -O2 \
-+		-fomit-frame-pointer $(HOST_LFS_CFLAGS) \
-+		$(HOSTCFLAGS)
-+KBUILD_HOSTCXXFLAGS := -O2 $(HOST_LFS_CFLAGS) $(HOSTCXXFLAGS)
-+KBUILD_HOSTLDFLAGS  := $(HOST_LFS_LDFLAGS) $(HOSTLDFLAGS)
-+KBUILD_HOSTLDLIBS   := $(HOST_LFS_LIBS) $(HOSTLDLIBS)
+ KCONFIG_CONFIG	?= .config
  
- # Decide whether to build built-in, modular, or both.
- # Normally, just do built-in.
-@@ -306,12 +308,12 @@ LINUXINCLUDE    := -Iinclude -I$(srctree)/dts/include \
- 		   -I$(objtree)/arch/$(ARCH)/include \
-                    -include $(srctree)/include/linux/kconfig.h
++# Default file for 'make defconfig'. This may be overridden by arch-Makefile.
++export KBUILD_DEFCONFIG := defconfig
++
+ # SHELL used by kbuild
+ CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
+ 	  else if [ -x /bin/bash ]; then echo /bin/bash; \
+@@ -468,7 +471,8 @@ $(KCONFIG_CONFIG):
+ #
+ # This exploits the 'multi-target pattern rule' trick.
+ # The syncconfig should be executed only once to make all the targets.
+-%/auto.conf %/auto.conf.cmd %/tristate.conf: $(KCONFIG_CONFIG)
++# (Note: use the grouped target '&:' when we bump to GNU Make 4.3)
++%/auto.conf %/auto.conf.cmd: $(KCONFIG_CONFIG)
+ 	$(Q)$(MAKE) -f $(srctree)/Makefile syncconfig
+ endif # $(dot-config)
  
--CPPFLAGS        := -D__KERNEL__ -D__BAREBOX__ $(LINUXINCLUDE) -fno-builtin -ffreestanding
-+KBUILD_CPPFLAGS        := -D__KERNEL__ -D__BAREBOX__ $(LINUXINCLUDE) -fno-builtin -ffreestanding
+diff --git a/scripts/kconfig/.gitignore b/scripts/kconfig/.gitignore
+index b5bf92f66..12a67fdab 100644
+--- a/scripts/kconfig/.gitignore
++++ b/scripts/kconfig/.gitignore
+@@ -1,6 +1,4 @@
+-#
+-# Generated files
+-#
++# SPDX-License-Identifier: GPL-2.0-only
+ *.moc
+ *conf-cfg
  
--CFLAGS          := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
-+KBUILD_CFLAGS          := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
-                    -Werror-implicit-function-declaration \
-                    -fno-strict-aliasing -fno-common -Os -pipe -Wmissing-prototypes
--AFLAGS          := -D__ASSEMBLY__
-+KBUILD_AFLAGS          := -D__ASSEMBLY__
- 
- LDFLAGS_barebox	:= -Map barebox.map
- 
-@@ -324,14 +326,15 @@ KERNELRELEASE = $(shell cat include/config/kernel.release 2> /dev/null)
- KERNELVERSION = $(VERSION).$(PATCHLEVEL).$(SUBLEVEL)$(EXTRAVERSION)
- 
- export VERSION PATCHLEVEL SUBLEVEL KERNELRELEASE KERNELVERSION
--export ARCH SRCARCH CONFIG_SHELL HOSTCC HOSTCFLAGS CROSS_COMPILE AS LD CC
-+export ARCH SRCARCH CONFIG_SHELL HOSTCC KBUILD_HOSTCFLAGS CROSS_COMPILE AS LD CC
- export CPP AR NM STRIP OBJCOPY OBJDUMP MAKE AWK GENKSYMS PERL PYTHON3 UTS_MACHINE
- export LEX YACC
--export HOSTCXX HOSTCXXFLAGS HOSTLDFLAGS HOST_LOADLIBES LDFLAGS_MODULE CHECK CHECKFLAGS
-+export HOSTCXX CHECK CHECKFLAGS
-+export KBUILD_HOSTCXXFLAGS KBUILD_HOSTLDFLAGS KBUILD_HOSTLDLIBS LDFLAGS_MODULE
- 
--export CPPFLAGS NOSTDINC_FLAGS LINUXINCLUDE OBJCOPYFLAGS LDFLAGS
--export CFLAGS CFLAGS_KERNEL
--export AFLAGS AFLAGS_KERNEL
-+export KBUILD_CPPFLAGS NOSTDINC_FLAGS LINUXINCLUDE OBJCOPYFLAGS KBUILD_LDFLAGS
-+export KBUILD_CFLAGS CFLAGS_KERNEL
-+export KBUILD_AFLAGS AFLAGS_KERNEL
- export LDFLAGS_barebox
- export LDFLAGS_pbl
- 
-@@ -471,33 +474,33 @@ endif # $(dot-config)
- 
- include $(srctree)/arch/$(ARCH)/Makefile
- 
--CFLAGS		+= -ggdb3
-+KBUILD_CFLAGS		+= -ggdb3
- 
- # Force gcc to behave correct even for buggy distributions
--CFLAGS          += $(call cc-option, -fno-stack-protector)
-+KBUILD_CFLAGS          += $(call cc-option, -fno-stack-protector)
- 
- # This warning generated too much noise in a regular build.
- # Use make W=1 to enable this warning (see scripts/Makefile.build)
--CFLAGS += $(call cc-disable-warning, unused-but-set-variable)
-+KBUILD_CFLAGS += $(call cc-disable-warning, unused-but-set-variable)
- 
--CFLAGS += $(call cc-disable-warning, trampolines)
-+KBUILD_CFLAGS += $(call cc-disable-warning, trampolines)
- 
--CFLAGS += $(call cc-option, -fno-delete-null-pointer-checks,)
-+KBUILD_CFLAGS += $(call cc-option, -fno-delete-null-pointer-checks,)
- 
--CFLAGS   += $(call cc-disable-warning, address-of-packed-member)
-+KBUILD_CFLAGS   += $(call cc-disable-warning, address-of-packed-member)
- 
- # arch Makefile may override CC so keep this after arch Makefile is included
- NOSTDINC_FLAGS += -nostdinc -isystem $(shell $(CC) -print-file-name=include)
- CHECKFLAGS     += $(NOSTDINC_FLAGS)
- 
- # warn about C99 declaration after statement
--CFLAGS += $(call cc-option,-Wdeclaration-after-statement,)
-+KBUILD_CFLAGS += $(call cc-option,-Wdeclaration-after-statement,)
- 
- # disable pointer signed / unsigned warnings in gcc 4.0
--CFLAGS += $(call cc-option,-Wno-pointer-sign,)
-+KBUILD_CFLAGS += $(call cc-option,-Wno-pointer-sign,)
- 
- # change __FILE__ to the relative path from the srctree
--CFLAGS += $(call cc-option,-fmacro-prefix-map=$(srctree)/=)
-+KBUILD_CFLAGS += $(call cc-option,-fmacro-prefix-map=$(srctree)/=)
- 
- include $(srctree)/scripts/Makefile.ubsan
- 
-@@ -594,7 +597,7 @@ BAREBOX_LDS    := $(lds-y)
- # Rule to link barebox
- # May be overridden by arch/$(ARCH)/Makefile
- quiet_cmd_barebox__ ?= LD      $@
--      cmd_barebox__ ?= $(LD) $(LDFLAGS) $(LDFLAGS_barebox) -o $@ \
-+      cmd_barebox__ ?= $(LD) $(KBUILD_LDFLAGS) $(LDFLAGS_barebox) -o $@ \
-       -T $(BAREBOX_LDS)                         \
-       --start-group $(BAREBOX_OBJS) --end-group                  \
-       $(filter-out $(BAREBOX_LDS) $(BAREBOX_OBJS) FORCE ,$^)
-@@ -1158,8 +1161,8 @@ quiet_cmd_rmfiles = $(if $(wildcard $(rm-files)),CLEAN   $(wildcard $(rm-files))
-       cmd_rmfiles = rm -f $(rm-files)
- 
- 
--a_flags = -Wp,-MD,$(depfile) $(AFLAGS) $(AFLAGS_KERNEL) \
--	  $(NOSTDINC_FLAGS) $(CPPFLAGS) \
-+a_flags = -Wp,-MD,$(depfile) $(KBUILD_AFLAGS) $(AFLAGS_KERNEL) \
-+	  $(NOSTDINC_FLAGS) $(KBUILD_CPPFLAGS) \
- 	  $(modkern_aflags) $(EXTRA_AFLAGS) $(AFLAGS_$(basetarget).o)
- 
- quiet_cmd_as_o_S = AS      $@
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 29fd8e276..62b397a73 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -1,19 +1,19 @@
- KBUILD_DEFCONFIG := qemu_virt64_defconfig
- 
--CPPFLAGS	+= -D__ARM__ -fno-strict-aliasing
-+KBUILD_CPPFLAGS	+= -D__ARM__ -fno-strict-aliasing
- # Explicitly specifiy 32-bit ARM ISA since toolchain default can be -mthumb:
- ifeq ($(CONFIG_CPU_V8),y)
--CPPFLAGS	+=$(call cc-option,-maarch64,)
-+KBUILD_CPPFLAGS	+=$(call cc-option,-maarch64,)
- else
--CPPFLAGS	+=$(call cc-option,-marm,)
-+KBUILD_CPPFLAGS	+=$(call cc-option,-marm,)
+diff --git a/scripts/kconfig/Makefile b/scripts/kconfig/Makefile
+index 2f1a59fa5..c9d0a4a8e 100644
+--- a/scripts/kconfig/Makefile
++++ b/scripts/kconfig/Makefile
+@@ -12,10 +12,6 @@ else
+ Kconfig := Kconfig
  endif
  
- ifeq ($(CONFIG_CPU_BIG_ENDIAN),y)
--CPPFLAGS	+= -mbig-endian
-+KBUILD_CPPFLAGS	+= -mbig-endian
- AS		+= -EB
- LD		+= -EB
- else
--CPPFLAGS	+= -mlittle-endian
-+KBUILD_CPPFLAGS	+= -mlittle-endian
- AS		+= -EL
- LD		+= -EL
+-ifndef KBUILD_DEFCONFIG
+-KBUILD_DEFCONFIG := defconfig
+-endif
+-
+ ifeq ($(quiet),silent_)
+ silent := -s
  endif
-@@ -23,14 +23,14 @@ endif
- # conservative and instruct the compiler not to generate any unaligned
- # accesses
- ifneq ($(CONFIG_CPU_V8),y)
--CFLAGS += -mno-unaligned-access
-+KBUILD_CFLAGS += -mno-unaligned-access
- else
--CFLAGS += -mstrict-align
-+KBUILD_CFLAGS += -mstrict-align
- endif
- 
- # Prevent use of floating point and Advanced SIMD registers.
- ifeq ($(CONFIG_CPU_V8),y)
--CFLAGS += -mgeneral-regs-only
-+KBUILD_CFLAGS += -mgeneral-regs-only
- endif
- 
- # This selects which instruction set is used.
-@@ -70,12 +70,12 @@ AFLAGS_THUMB2	:=$(CFLAGS_THUMB2) -Wa$(comma)-mthumb
- endif
- 
- ifeq ($(CONFIG_CPU_V8), y)
--CPPFLAGS += $(CFLAGS_ABI) $(arch-y) $(tune-y)
--AFLAGS   += -include asm/unified.h
-+KBUILD_CPPFLAGS += $(CFLAGS_ABI) $(arch-y) $(tune-y)
-+KBUILD_AFLAGS   += -include asm/unified.h
- export S64 = _64
- else
--CPPFLAGS += $(CFLAGS_ABI) $(arch-y) $(tune-y) -msoft-float $(CFLAGS_THUMB2)
--AFLAGS   += -include asm/unified.h -msoft-float $(AFLAGS_THUMB2)
-+KBUILD_CPPFLAGS += $(CFLAGS_ABI) $(arch-y) $(tune-y) -msoft-float $(CFLAGS_THUMB2)
-+KBUILD_AFLAGS   += -include asm/unified.h -msoft-float $(AFLAGS_THUMB2)
- endif
- 
- # Machine directory name.  This list is sorted alphanumerically
-@@ -128,22 +128,22 @@ board-$(CONFIG_MACH_TINY6410)			+= friendlyarm-tiny6410
- machdirs := $(patsubst %,arch/arm/mach-%/,$(machine-y))
- 
- ifeq ($(KBUILD_SRC),)
--CPPFLAGS += $(patsubst %,-I%include,$(machdirs))
-+KBUILD_CPPFLAGS += $(patsubst %,-I%include,$(machdirs))
- else
--CPPFLAGS += $(patsubst %,-I$(srctree)/%include,$(machdirs))
-+KBUILD_CPPFLAGS += $(patsubst %,-I$(srctree)/%include,$(machdirs))
- endif
- 
- TEXT_BASE = $(CONFIG_TEXT_BASE)
- 
--CPPFLAGS += -DTEXT_BASE=$(TEXT_BASE)
-+KBUILD_CPPFLAGS += -DTEXT_BASE=$(TEXT_BASE)
- 
- # Add cleanup flags
--CPPFLAGS += -fdata-sections -ffunction-sections
-+KBUILD_CPPFLAGS += -fdata-sections -ffunction-sections
- LDFLAGS_barebox += --gc-sections
- LDFLAGS_pbl += --gc-sections
- 
- # early code often runs at addresses we are not linked at
--CPPFLAGS += -fPIE
-+KBUILD_CPPFLAGS += -fPIE
- 
- ifdef CONFIG_RELOCATABLE
- LDFLAGS_barebox += -pie
-diff --git a/arch/kvx/Makefile b/arch/kvx/Makefile
-index 81040f4e6..c97cff345 100644
---- a/arch/kvx/Makefile
-+++ b/arch/kvx/Makefile
-@@ -1,6 +1,6 @@
- KBUILD_DEFCONFIG := generic_defconfig
- 
--CPPFLAGS += -fno-strict-aliasing
-+KBUILD_CPPFLAGS += -fno-strict-aliasing
- 
- board-$(CONFIG_GENERIC) := generic
- 
-@@ -13,12 +13,12 @@ endif
- DEFAULT_CFLAGS := -nostdlib -fno-builtin -fstrict-align -g
- DEFAULT_CFLAGS += -DTEXT_BASE=$(CONFIG_TEXT_BASE)
- 
--LIBGCC_PATH = $(dir $(shell $(CC) $(CFLAGS) --print-libgcc-file-name))
-+LIBGCC_PATH = $(dir $(shell $(CC) $(KBUILD_CFLAGS) --print-libgcc-file-name))
- 
--CFLAGS += $(DEFAULT_CFLAGS)
--AFLAGS += $(DEFAULT_CFLAGS)
-+KBUILD_CFLAGS += $(DEFAULT_CFLAGS)
-+KBUILD_AFLAGS += $(DEFAULT_CFLAGS)
- 
--LDFLAGS += -m elf64kvx
-+KBUILD_LDFLAGS += -m elf64kvx
- 
- archprepare: maketools
- 
-@@ -30,7 +30,7 @@ common-$(CONFIG_OFTREE) += arch/kvx/dts/
- 
- lds-y += arch/kvx/cpu/barebox.lds
- 
--cmd_barebox__ ?= $(LD) $(LDFLAGS) $(LDFLAGS_barebox) -o $@ \
-+cmd_barebox__ ?= $(LD) $(KBUILD_LDFLAGS) $(LDFLAGS_barebox) -o $@ \
-       -T $(BAREBOX_LDS) \
-       --start-group $(BAREBOX_OBJS) --end-group \
-       -L$(LIBGCC_PATH) -lgcc \
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 932fdab0a..4717f49a4 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -11,7 +11,7 @@ else
- 64bit-emul		= elf64btsmip
- endif
- 
--CPPFLAGS += -D__MIPS__ -fno-strict-aliasing -fno-merge-constants
-+KBUILD_CPPFLAGS += -D__MIPS__ -fno-strict-aliasing -fno-merge-constants
- 
- cflags-y += -G 0 -mno-abicalls -fno-pic -pipe
- cflags-y += -Wall -Wstrict-prototypes \
-@@ -42,7 +42,7 @@ cflags-y += $(shell $(CC) -dumpmachine |grep -q 'mips.*el-.*' || echo -EL $(unde
- mips-ldflags-y += $(shell $(CC) -dumpmachine |grep -q 'mips.*el-.*' || echo -EL )
- endif
- 
--LDFLAGS += $(mips-ldflags-y) -m $(ld-emul)
-+KBUILD_LDFLAGS += $(mips-ldflags-y) -m $(ld-emul)
- LDFLAGS_barebox += $(mips-ldflags-y)
- LDFLAGS_pbl += $(mips-ldflags-y)
- 
-@@ -55,11 +55,11 @@ cflags-$(CONFIG_CPU_MIPS64_R1) += $(call cc-option,-march=mips64,-mips64 -U_MIPS
- cflags-$(CONFIG_CPU_MIPS64_R2) += $(call cc-option,-march=mips64r2,-mips64r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64) -Wa,-mips64r2 -Wa,--trap
- cflags-$(CONFIG_CPU_GS232)     += $(call cc-option,-march=mips32r2,-mips32r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS32) -Wa,-mips32r2 -Wa,--trap
- 
--CPPFLAGS += -DTEXT_BASE=$(CONFIG_TEXT_BASE)
-+KBUILD_CPPFLAGS += -DTEXT_BASE=$(CONFIG_TEXT_BASE)
- 
- ifndef CONFIG_MODULES
- # Add cleanup flags
--CPPFLAGS += -fdata-sections -ffunction-sections
-+KBUILD_CPPFLAGS += -fdata-sections -ffunction-sections
- LDFLAGS_barebox += -static --gc-sections --emit-relocs
- endif
- 
-@@ -83,9 +83,9 @@ machine-$(CONFIG_MACH_MIPS_XBURST)	:= xburst
- machdirs := $(patsubst %,arch/mips/mach-%/,$(machine-y))
- 
- ifeq ($(KBUILD_SRC),)
--CPPFLAGS += $(patsubst %,-I%include,$(machdirs))
-+KBUILD_CPPFLAGS += $(patsubst %,-I%include,$(machdirs))
- else
--CPPFLAGS += $(patsubst %,-I$(srctree)/%include,$(machdirs))
-+KBUILD_CPPFLAGS += $(patsubst %,-I$(srctree)/%include,$(machdirs))
- endif
- 
- ifeq ($(incdir-y),)
-@@ -94,9 +94,9 @@ endif
- INCDIR   := arch-$(incdir-y)
- 
- ifeq ($(KBUILD_SRC),)
--CPPFLAGS += -I$(BOARD)/include
-+KBUILD_CPPFLAGS += -I$(BOARD)/include
- else
--CPPFLAGS += -I$(srctree)/$(BOARD)/include
-+KBUILD_CPPFLAGS += -I$(srctree)/$(BOARD)/include
- endif
- 
- ifneq ($(machine-y),)
-@@ -112,12 +112,12 @@ common-y += arch/mips/lib/
- common-y += arch/mips/boot/
- common-y += arch/mips/boards/
- 
--CPPFLAGS += $(cflags-y)
--CFLAGS += $(cflags-y)
-+KBUILD_CPPFLAGS += $(cflags-y)
-+KBUILD_CFLAGS += $(cflags-y)
- 
- lds-$(CONFIG_GENERIC_LINKER_SCRIPT)   := arch/mips/lib/barebox.lds
- 
--cmd_barebox__ ?= $(LD) $(LDFLAGS) $(LDFLAGS_barebox) -o $@ \
-+cmd_barebox__ ?= $(LD) $(KBUILD_LDFLAGS) $(LDFLAGS_barebox) -o $@ \
-       -T $(BAREBOX_LDS)                         \
-       --start-group $(BAREBOX_OBJS) --end-group                  \
-       $(filter-out $(BAREBOX_LDS) $(BAREBOX_OBJS) FORCE ,$^);	\
-diff --git a/arch/mips/pbl/Makefile b/arch/mips/pbl/Makefile
-index 8f9e9fe59..535bb4bf5 100644
---- a/arch/mips/pbl/Makefile
-+++ b/arch/mips/pbl/Makefile
-@@ -29,7 +29,7 @@ zbarebox-common := $(BAREBOX_PBL_OBJS) $(obj)/$(piggy_o)
- zbarebox-lds := $(obj)/zbarebox.lds
- 
- quiet_cmd_zbarebox__ ?= LD      $@
--      cmd_zbarebox__ ?= $(LD) $(LDFLAGS) $(LDFLAGS_zbarebox) -o $@ \
-+      cmd_zbarebox__ ?= $(LD) $(KBUILD_LDFLAGS) $(LDFLAGS_zbarebox) -o $@ \
-       -T $(zbarebox-lds)                                           \
-       --start-group $(zbarebox-common) --end-group                 \
-       $(filter-out $(zbarebox-lds) $(zbarebox-common) FORCE ,$^)
-diff --git a/arch/nios2/Makefile b/arch/nios2/Makefile
-index 0dff0bed3..ef283f414 100644
---- a/arch/nios2/Makefile
-+++ b/arch/nios2/Makefile
-@@ -1,6 +1,6 @@
- KBUILD_DEFCONFIG := generic_defconfig
- 
--CPPFLAGS += -fno-strict-aliasing -mno-hw-mul
-+KBUILD_CPPFLAGS += -fno-strict-aliasing -mno-hw-mul
- 
- board-$(CONFIG_GENERIC) := generic
- 
-diff --git a/arch/openrisc/Makefile b/arch/openrisc/Makefile
-index 5394afb7f..72d7fa3d5 100644
---- a/arch/openrisc/Makefile
-+++ b/arch/openrisc/Makefile
-@@ -1,6 +1,6 @@
- KBUILD_DEFCONFIG := generic_defconfig
- 
--CPPFLAGS += -D__OR1K__ -ffixed-r10 -mhard-mul -mhard-div
-+KBUILD_CPPFLAGS += -D__OR1K__ -ffixed-r10 -mhard-mul -mhard-div
- 
- board-$(CONFIG_GENERIC) := generic
- 
-diff --git a/arch/ppc/Makefile b/arch/ppc/Makefile
-index ebf60eded..10f8ae3fe 100644
---- a/arch/ppc/Makefile
-+++ b/arch/ppc/Makefile
-@@ -1,15 +1,15 @@
- KBUILD_DEFCONFIG := p2020rdb_defconfig
- 
--CPPFLAGS += -ffixed-r14 -m32 	\
-+KBUILD_CPPFLAGS += -ffixed-r14 -m32 	\
- 	-meabi -D __PPC__ -D CONFIG_PPC \
- 	-fno-strict-aliasing -mno-spe -mspe=no
- 
- ifdef CONFIG_RELOCATABLE
--CPPFLAGS += -fPIC -mrelocatable
-+KBUILD_CPPFLAGS += -fPIC -mrelocatable
- endif
- 
- ifdef CONFIG_MPC85xx
--CPPFLAGS += -Wa,-me500x2 -msoft-float -mno-string
-+KBUILD_CPPFLAGS += -Wa,-me500x2 -msoft-float -mno-string
- endif
- 
- board-$(CONFIG_MACH_PHYCORE_MPC5200B_TINY)	:= pcm030
-@@ -25,20 +25,20 @@ cpu-$(CONFIG_ARCH_MPC85XX)			:= 85xx
- 
- TEXT_BASE = $(CONFIG_TEXT_BASE)
- 
--CPPFLAGS += -DTEXT_BASE=$(TEXT_BASE)
-+KBUILD_CPPFLAGS += -DTEXT_BASE=$(TEXT_BASE)
- 
- # Add cleanup flags
- ifndef CONFIG_MODULES
--CPPFLAGS += -fdata-sections -ffunction-sections
-+KBUILD_CPPFLAGS += -fdata-sections -ffunction-sections
- LDFLAGS_barebox += --gc-sections
- endif
- 
- machdirs := $(patsubst %,arch/ppc/mach-%/,$(machine-y))
- 
- ifeq ($(KBUILD_SRC),)
--CPPFLAGS += $(patsubst %,-I%include,$(machdirs))
-+KBUILD_CPPFLAGS += $(patsubst %,-I%include,$(machdirs))
- else
--CPPFLAGS += $(patsubst %,-I$(srctree)/%include,$(machdirs))
-+KBUILD_CPPFLAGS += $(patsubst %,-I$(srctree)/%include,$(machdirs))
- endif
- 
- archprepare: maketools
-diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
-index b71a52ad1..5096bde0d 100644
---- a/arch/riscv/Makefile
-+++ b/arch/riscv/Makefile
-@@ -1,6 +1,6 @@
- KBUILD_DEFCONFIG := erizo_generic_defconfig
- 
--CPPFLAGS += -fno-strict-aliasing
-+KBUILD_CPPFLAGS += -fno-strict-aliasing
- 
- ifeq ($(CONFIG_ARCH_RV32I),y)
- 	cflags-y += -march=rv32im
-@@ -15,11 +15,11 @@ LDFLAGS_barebox += -nostdlib
- machine-$(CONFIG_MACH_ERIZO)	:= erizo
- 
- TEXT_BASE = $(CONFIG_TEXT_BASE)
--CPPFLAGS += -DTEXT_BASE=$(CONFIG_TEXT_BASE)
-+KBUILD_CPPFLAGS += -DTEXT_BASE=$(CONFIG_TEXT_BASE)
- 
- ifndef CONFIG_MODULES
- # Add cleanup flags
--CPPFLAGS += -fdata-sections -ffunction-sections
-+KBUILD_CPPFLAGS += -fdata-sections -ffunction-sections
- LDFLAGS_barebox += -static --gc-sections
- endif
- 
-@@ -28,9 +28,9 @@ KBUILD_BINARY := barebox.bin
- machdirs := $(patsubst %,arch/riscv/mach-%/,$(machine-y))
- 
- ifeq ($(KBUILD_SRC),)
--CPPFLAGS += $(patsubst %,-I%include,$(machdirs))
-+KBUILD_CPPFLAGS += $(patsubst %,-I%include,$(machdirs))
- else
--CPPFLAGS += $(patsubst %,-I$(srctree)/%include,$(machdirs))
-+KBUILD_CPPFLAGS += $(patsubst %,-I$(srctree)/%include,$(machdirs))
- endif
- 
- archprepare: maketools
-@@ -49,8 +49,8 @@ common-y += arch/riscv/lib/
- 
- common-$(CONFIG_OFTREE) += arch/riscv/dts/
- 
--CPPFLAGS += $(cflags-y)
--CFLAGS += $(cflags-y)
-+KBUILD_CPPFLAGS += $(cflags-y)
-+KBUILD_CFLAGS += $(cflags-y)
- 
- lds-y	:= arch/riscv/lib/barebox.lds
- 
-diff --git a/arch/sandbox/Makefile b/arch/sandbox/Makefile
-index b7470c333..c205f47ff 100644
---- a/arch/sandbox/Makefile
-+++ b/arch/sandbox/Makefile
-@@ -1,6 +1,6 @@
- KBUILD_DEFCONFIG := sandbox_defconfig
- 
--CPPFLAGS += -D__SANDBOX__ -fno-strict-aliasing -fvisibility=hidden
-+KBUILD_CPPFLAGS += -D__SANDBOX__ -fno-strict-aliasing -fvisibility=hidden
- 
- 
- machine-y := sandbox
-@@ -11,7 +11,7 @@ lds-y   := $(BOARD)/barebox.lds
- 
- 
- TEXT_BASE = $(CONFIG_TEXT_BASE)
--CFLAGS += -Dmalloc=barebox_malloc -Dcalloc=barebox_calloc \
-+KBUILD_CFLAGS += -Dmalloc=barebox_malloc -Dcalloc=barebox_calloc \
- 		-Dfree=barebox_free -Drealloc=barebox_realloc \
- 		-Dread=barebox_read -Dwrite=barebox_write \
- 		-Dopen=barebox_open -Dclose=barebox_close \
-@@ -30,9 +30,9 @@ CFLAGS += -Dmalloc=barebox_malloc -Dcalloc=barebox_calloc \
- machdirs := $(patsubst %,arch/sandbox/mach-%/,$(machine-y))
- 
- ifeq ($(KBUILD_SRC),)
--CPPFLAGS += $(patsubst %,-I%include,$(machdirs))
-+KBUILD_CPPFLAGS += $(patsubst %,-I%include,$(machdirs))
- else
--CPPFLAGS += $(patsubst %,-I$(srctree)/%include,$(machdirs))
-+KBUILD_CPPFLAGS += $(patsubst %,-I$(srctree)/%include,$(machdirs))
- endif
- 
- archprepare: maketools
-@@ -48,7 +48,7 @@ FTDI1_LIBS := $(shell pkg-config libftdi1 --libs)
- endif
- 
- ifeq ($(CONFIG_KASAN),y)
--CPPFLAGS += -fsanitize=address
-+KBUILD_CPPFLAGS += -fsanitize=address
- SANITIZER_LIBS += -fsanitize=address
- endif
- 
-diff --git a/arch/sandbox/os/Makefile b/arch/sandbox/os/Makefile
-index 75baa34a8..40306b5ff 100644
---- a/arch/sandbox/os/Makefile
-+++ b/arch/sandbox/os/Makefile
-@@ -3,14 +3,14 @@ machine-y := sandbox
- machdirs := $(patsubst %,arch/sandbox/mach-%/,$(machine-y))
- 
- ifeq ($(KBUILD_SRC),)
--CPPFLAGS := $(patsubst %,-I%include,$(machdirs))
-+KBUILD_CPPFLAGS := $(patsubst %,-I%include,$(machdirs))
- else
--CPPFLAGS = $(patsubst %,-I$(srctree)/%include,$(machdirs))
-+KBUILD_CPPFLAGS = $(patsubst %,-I$(srctree)/%include,$(machdirs))
- endif
- 
--CPPFLAGS += -DCONFIG_MALLOC_SIZE=$(CONFIG_MALLOC_SIZE)
-+KBUILD_CPPFLAGS += -DCONFIG_MALLOC_SIZE=$(CONFIG_MALLOC_SIZE)
- 
--CFLAGS := -Wall
-+KBUILD_CFLAGS := -Wall
- NOSTDINC_FLAGS :=
- 
- obj-y = common.o tap.o
-diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-index 4d471c2f8..c93a680e4 100644
---- a/arch/x86/Makefile
-+++ b/arch/x86/Makefile
-@@ -1,6 +1,6 @@
- KBUILD_DEFCONFIG := generic_defconfig
- 
--CPPFLAGS += -D__X86__
-+KBUILD_CPPFLAGS += -D__X86__
- 
- board-$(CONFIG_MACH_X86_GENERIC) := x86_generic
- 
-@@ -8,15 +8,15 @@ TEXT_BASE = $(CONFIG_TEXT_BASE)
- 
- ifeq ($(CONFIG_X86_EFI),y)
- machine-y := efi
--CFLAGS += -fpic -fshort-wchar -mno-sse -mno-mmx
-+KBUILD_CFLAGS += -fpic -fshort-wchar -mno-sse -mno-mmx
- ifeq ($(CONFIG_X86_32),y)
- 	TARGET = efi-app-ia32
- else
- 	TARGET = efi-app-x86_64
- endif
- else
--CPPFLAGS += -fno-strict-aliasing
--CPPFLAGS += -march=i386 -DTEXT_BASE=$(TEXT_BASE) \
-+KBUILD_CPPFLAGS += -fno-strict-aliasing
-+KBUILD_CPPFLAGS += -march=i386 -DTEXT_BASE=$(TEXT_BASE) \
- 	-fno-unwind-tables -fno-asynchronous-unwind-tables
- 
- machine-y := i386
-@@ -25,21 +25,21 @@ endif
- ifeq ($(CONFIG_X86_32),y)
- 	UTS_MACHINE := i386
- 	biarch := $(call cc-option,-m32)
--	AFLAGS += $(biarch)
--	CFLAGS += $(biarch)
--	CPPFLAGS += $(biarch)
-+	KBUILD_AFLAGS += $(biarch)
-+	KBUILD_CFLAGS += $(biarch)
-+	KBUILD_CPPFLAGS += $(biarch)
- else
- 	UTS_MACHINE := x86_64
--	AFLAGS += -m64
--	CFLAGS += -m64 -mno-red-zone
--	CPPFLAGS += -m64
-+	KBUILD_AFLAGS += -m64
-+	KBUILD_CFLAGS += -m64 -mno-red-zone
-+	KBUILD_CPPFLAGS += -m64
- endif
- 
- 
- ifndef CONFIG_MODULES
- # Add cleanup flags
- ifneq ($(CONFIG_X86_EFI),y)
--CPPFLAGS += -fdata-sections -ffunction-sections
-+KBUILD_CPPFLAGS += -fdata-sections -ffunction-sections
- LDFLAGS_barebox += -static --gc-sections
- endif
- endif
-@@ -47,9 +47,9 @@ endif
- machdirs := $(patsubst %,arch/x86/mach-%/,$(machine-y))
- 
- ifeq ($(KBUILD_SRC),)
--CPPFLAGS += $(patsubst %,-I%include,$(machdirs))
-+KBUILD_CPPFLAGS += $(patsubst %,-I%include,$(machdirs))
- else
--CPPFLAGS += $(patsubst %,-I$(srctree)/%include,$(machdirs))
-+KBUILD_CPPFLAGS += $(patsubst %,-I$(srctree)/%include,$(machdirs))
- endif
- 
- ifneq ($(board-y),)
-@@ -74,7 +74,7 @@ ifeq ($(CONFIG_X86_EFI),y)
- lds-$(CONFIG_X86_32)   := arch/x86/mach-efi/elf_ia32_efi.lds
- lds-$(CONFIG_X86_64)   := arch/x86/mach-efi/elf_x86_64_efi.lds
- 
--cmd_barebox__ ?= $(LD) $(LDFLAGS) $(LDFLAGS_barebox) -o $@	\
-+cmd_barebox__ ?= $(LD) $(KBUILD_LDFLAGS) $(LDFLAGS_barebox) -o $@	\
- 		-T $(lds-y)					\
- 		-shared -Bsymbolic -nostdlib -znocombreloc	\
- 		--start-group $(BAREBOX_OBJS)			\
-@@ -89,7 +89,7 @@ quiet_cmd_efi_image = EFI-IMG $@
- 
- KBUILD_BINARY := barebox
- 
--LDFLAGS := --no-undefined
-+KBUILD_LDFLAGS := --no-undefined
- 
- barebox.efi: $(KBUILD_BINARY) FORCE
- 	$(call if_changed,efi_image)
-@@ -104,7 +104,7 @@ lds-$(CONFIG_BOARD_LINKER_SCRIPT)     := $(BOARD)/barebox.lds
- 
- endif
- 
--LDFLAGS += -m elf_$(UTS_MACHINE)
-+KBUILD_LDFLAGS += -m elf_$(UTS_MACHINE)
- 
- CLEAN_FILES += $(lds-y)
- CLEAN_FILES    += arch/x86/lib/barebox.lds barebox.map barebox.S
-diff --git a/arch/x86/boot/Makefile b/arch/x86/boot/Makefile
-index b92b4750f..4a520a2a8 100644
---- a/arch/x86/boot/Makefile
-+++ b/arch/x86/boot/Makefile
-@@ -1,5 +1,5 @@
- 
--CPPFLAGS += -D__I386__ -fno-strict-aliasing -m32 -g -Os -march=i386 \
-+KBUILD_CPPFLAGS += -D__I386__ -fno-strict-aliasing -m32 -g -Os -march=i386 \
- 	-mregparm=3 -fno-strict-aliasing -fomit-frame-pointer -ffreestanding \
- 	-fno-toplevel-reorder -fno-unit-at-a-time -fno-stack-protector \
- 	-mpreferred-stack-boundary=2
-diff --git a/scripts/Kbuild.include b/scripts/Kbuild.include
-index 919f28616..227a022b4 100644
---- a/scripts/Kbuild.include
-+++ b/scripts/Kbuild.include
-@@ -97,7 +97,7 @@ try-run = $(shell set -e;		\
- # Usage: cflags-y += $(call as-option,-Wa$(comma)-isa=foo,)
- 
- as-option = $(call try-run,\
--	$(CC) $(CFLAGS) $(1) -c -xassembler /dev/null -o "$$TMP",$(1),$(2))
-+	$(CC) $(KBUILD_CFLAGS) $(1) -c -xassembler /dev/null -o "$$TMP",$(1),$(2))
- 
- # as-instr
- # Usage: cflags-y += $(call as-instr,instr,option1,option2)
-@@ -109,17 +109,17 @@ as-instr = $(call try-run,\
- # Usage: cflags-y += $(call cc-option,-march=winchip-c6,-march=i586)
- 
- cc-option = $(call try-run,\
--	$(CC) -Werror $(KBUILD_CPPFLAGS) $(CFLAGS) $(1) -c -xc /dev/null -o "$$TMP",$(1),$(2))
-+	$(CC) -Werror $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) $(1) -c -xc /dev/null -o "$$TMP",$(1),$(2))
- 
- # cc-option-yn
- # Usage: flag := $(call cc-option-yn,-march=winchip-c6)
- cc-option-yn = $(call try-run,\
--	$(CC) -Werror $(KBUILD_CPPFLAGS) $(CFLAGS) $(1) -c -xc /dev/null -o "$$TMP",y,n)
-+	$(CC) -Werror $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) $(1) -c -xc /dev/null -o "$$TMP",y,n)
- 
- # cc-disable-warning
- # Usage: cflags-y += $(call cc-disable-warning,unused-but-set-variable)
- cc-disable-warning = $(call try-run,\
--	$(CC) -Werror $(KBUILD_CPPFLAGS) $(CFLAGS) -W$(strip $(1)) -c -xc /dev/null -o "$$TMP",-Wno-$(strip $(1)))
-+	$(CC) -Werror $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) -W$(strip $(1)) -c -xc /dev/null -o "$$TMP",-Wno-$(strip $(1)))
- 
- # cc-version
- # Usage gcc-ver := $(call cc-version)
-@@ -130,7 +130,7 @@ cc-version = $(shell $(CONFIG_SHELL) $(srctree)/scripts/gcc-version.sh $(CC))
- cc-ifversion = $(shell [ $(call cc-version, $(CC)) $(1) $(2) ] && echo $(3))
- 
- # ld-option
--# Usage: LDFLAGS += $(call ld-option, -X)
-+# Usage: KBUILD_LDFLAGS += $(call ld-option, -X)
- ld-option = $(call try-run,\
- 	$(CC) -x c /dev/null -c -o "$$TMPO" ; $(LD) $(1) "$$TMPO" -o "$$TMP",$(1),$(2))
- 
-diff --git a/scripts/Makefile b/scripts/Makefile
-index eb6718fad..f3b9aece9 100644
---- a/scripts/Makefile
-+++ b/scripts/Makefile
-@@ -26,7 +26,7 @@ hostprogs-$(CONFIG_ARCH_SOCFPGA) += socfpga_mkimage
- hostprogs-$(CONFIG_MXS_HOSTTOOLS)+= mxsimage mxsboot
- hostprogs-$(CONFIG_ARCH_LAYERSCAPE) += pblimage
- hostprogs-$(CONFIG_ARCH_STM32MP) += stm32image
--HOSTCFLAGS += -I$(srctree)/scripts/include/
-+KBUILD_HOSTCFLAGS += -I$(srctree)/scripts/include/
- HOSTLDLIBS_mxsimage  = `pkg-config --libs openssl`
- HOSTCFLAGS_omap3-usb-loader.o = `pkg-config --cflags libusb-1.0`
- HOSTLDLIBS_omap3-usb-loader  = `pkg-config --libs libusb-1.0`
-@@ -50,7 +50,7 @@ targetprogs-$(CONFIG_IMD_TARGET) += bareboximd-target
- subdir-	+= basic kconfig setupmbr
- 
- quiet_cmd_csingle	= CC      $@
--      cmd_csingle	= $(CC) -Wp,-MD,$(depfile) $(TARGETCFLAGS) $(CFLAGS) -o $@ $<
-+      cmd_csingle	= $(CC) -Wp,-MD,$(depfile) $(TARGETCFLAGS) $(KBUILD_CFLAGS) -o $@ $<
- 
- __targetprogs	:= $(sort $(targetprogs-y) $(targetprogs-m))
- target-csingle	:= $(foreach m,$(__targetprogs),$(if $($(m)-objs),,$(m)))
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index a6ed83e6d..601a4d9cd 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -178,7 +178,7 @@ cmd_modversions =							\
- 			      -T $(@D)/$(@F:.o=.symtypes)) -a $(ARCH)	\
- 		> $(@D)/.tmp_$(@F:.o=.ver);				\
- 									\
--		$(LD) $(LDFLAGS) -r -o $@ $(@D)/.tmp_$(@F) 		\
-+		$(LD) $(KBUILD_LDFLAGS) -r -o $@ $(@D)/.tmp_$(@F) 		\
- 			-T $(@D)/.tmp_$(@F:.o=.ver);			\
- 		rm -f $(@D)/.tmp_$(@F) $(@D)/.tmp_$(@F:.o=.ver);	\
- 	else								\
-diff --git a/scripts/Makefile.host b/scripts/Makefile.host
-index 8f4d62f22..9740f3106 100644
---- a/scripts/Makefile.host
-+++ b/scripts/Makefile.host
-@@ -81,9 +81,9 @@ obj-dirs += $(host-objdirs)
- #####
- # Handle options to gcc. Support building with separate output directory
- 
--_hostc_flags   = $(HOSTCFLAGS)   $(HOST_EXTRACFLAGS)   \
-+_hostc_flags   = $(KBUILD_HOSTCFLAGS)   $(HOST_EXTRACFLAGS)   \
-                  $(HOSTCFLAGS_$(target-stem).o)
--_hostcxx_flags = $(HOSTCXXFLAGS) $(HOST_EXTRACXXFLAGS) \
-+_hostcxx_flags = $(KBUILD_HOSTCXXFLAGS) $(HOST_EXTRACXXFLAGS) \
-                  $(HOSTCXXFLAGS_$(target-stem).o)
- 
- ifeq ($(KBUILD_SRC),)
-@@ -103,15 +103,15 @@ hostcxx_flags  = -Wp,-MD,$(depfile) $(__hostcxx_flags)
- # Create executable from a single .c file
- # host-csingle -> Executable
- quiet_cmd_host-csingle 	= HOSTCC  $@
--      cmd_host-csingle	= $(HOSTCC) $(hostc_flags) $(HOSTLDFLAGS) -o $@ $< \
--		$(HOST_LOADLIBES) $(HOSTLDLIBS_$(target-stem))
-+      cmd_host-csingle	= $(HOSTCC) $(hostc_flags) $(KBUILD_HOSTLDFLAGS) -o $@ $< \
-+		$(KBUILD_HOSTLDLIBS) $(HOSTLDLIBS_$(target-stem))
- $(host-csingle): $(obj)/%: $(src)/%.c FORCE
- 	$(call if_changed_dep,host-csingle)
- 
- # Link an executable based on list of .o files, all plain c
- # host-cmulti -> executable
- quiet_cmd_host-cmulti	= HOSTLD  $@
--      cmd_host-cmulti	= $(HOSTCC) $(HOSTLDFLAGS) -o $@ \
-+      cmd_host-cmulti	= $(HOSTCC) $(KBUILD_HOSTLDFLAGS) -o $@ \
- 			  $(addprefix $(obj)/, $($(target-stem)-objs)) \
- 			  $(KBUILD_HOSTLDLIBS) $(HOSTLDLIBS_$(target-stem))
- $(host-cmulti): FORCE
-@@ -128,7 +128,7 @@ $(host-cobjs): $(obj)/%.o: $(src)/%.c FORCE
- # Link an executable based on list of .o files, a mixture of .c and .cc
- # host-cxxmulti -> executable
- quiet_cmd_host-cxxmulti	= HOSTLD  $@
--      cmd_host-cxxmulti	= $(HOSTCXX) $(HOSTLDFLAGS) -o $@ \
-+      cmd_host-cxxmulti	= $(HOSTCXX) $(KBUILD_HOSTLDFLAGS) -o $@ \
- 			  $(foreach o,objs cxxobjs,\
- 			  $(addprefix $(obj)/, $($(target-stem)-$(o)))) \
- 			  $(KBUILD_HOSTLDLIBS) $(HOSTLDLIBS_$(target-stem))
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index 5a5d6a3a6..985fc1303 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -132,9 +132,9 @@ basename_flags = -D"KBUILD_BASENAME=KBUILD_STR($(call name-fix,$(basetarget)))"
- modname_flags  = $(if $(filter 1,$(words $(modname))),\
-                  -D"KBUILD_MODNAME=KBUILD_STR($(call name-fix,$(modname)))")
- 
--_c_flags       = $(CFLAGS) $(ccflags-y) $(CFLAGS_$(target-stem).o)
--_a_flags       = $(AFLAGS) $(asflags-y) $(AFLAGS_$(target-stem).o)
--_cpp_flags     = $(CPPFLAGS) $(cppflags-y) $(CPPFLAGS_$(target-stem).lds)
-+_c_flags       = $(KBUILD_CFLAGS) $(ccflags-y) $(CFLAGS_$(target-stem).o)
-+_a_flags       = $(KBUILD_AFLAGS) $(asflags-y) $(AFLAGS_$(target-stem).o)
-+_cpp_flags     = $(KBUILD_CPPFLAGS) $(cppflags-y) $(CPPFLAGS_$(target-stem).lds)
- 
- ifeq ($(CONFIG_UBSAN),y)
- _CFLAGS_UBSAN   = $(eval _CFLAGS_UBSAN := $(CFLAGS_UBSAN))$(_CFLAGS_UBSAN)
-@@ -162,16 +162,16 @@ __a_flags	=                          $(call flags,_a_flags)
- __cpp_flags     =                          $(call flags,_cpp_flags)
- endif
- 
--c_flags        = -Wp,-MD,$(depfile) $(NOSTDINC_FLAGS) $(CPPFLAGS) \
-+c_flags        = -Wp,-MD,$(depfile) $(NOSTDINC_FLAGS) $(KBUILD_CPPFLAGS) \
- 		 $(__c_flags) $(modkern_cflags) \
- 		 -D"KBUILD_STR(s)=\#s" $(basename_flags) $(modname_flags)
- 
--a_flags        = -Wp,-MD,$(depfile) $(NOSTDINC_FLAGS) $(CPPFLAGS) \
-+a_flags        = -Wp,-MD,$(depfile) $(NOSTDINC_FLAGS) $(KBUILD_CPPFLAGS) \
- 		 $(__a_flags) $(modkern_aflags)
- 
- cpp_flags      = -Wp,-MD,$(depfile) $(NOSTDINC_FLAGS) $(__cpp_flags)
- 
--ld_flags       = $(LDFLAGS) $(ldflags-y)
-+ld_flags       = $(KBUILD_LDFLAGS) $(ldflags-y)
- 
- dtc_cpp_flags  = -Wp,-MD,$(depfile).pre -nostdinc                        \
- 		 -I$(srctree)/arch/$(SRCARCH)/dts/include		 \
-@@ -223,7 +223,7 @@ $(obj)/%:: $(src)/%_shipped
- # ---------------------------------------------------------------------------
- 
- quiet_cmd_ld = LD      $@
--cmd_ld = $(LD) $(LDFLAGS) $(EXTRA_LDFLAGS) $(LDFLAGS_$(@F)) \
-+cmd_ld = $(LD) $(KBUILD_LDFLAGS) $(EXTRA_LDFLAGS) $(LDFLAGS_$(@F)) \
- 	       $(filter-out FORCE,$^) -o $@
- 
- # Objcopy
-diff --git a/scripts/Makefile.modpost b/scripts/Makefile.modpost
-index 78e6edd92..78e4ed718 100644
---- a/scripts/Makefile.modpost
-+++ b/scripts/Makefile.modpost
-@@ -97,7 +97,7 @@ targets += $(modules:.ko=.mod.o)
- 
- # Step 6), final link of the modules
- quiet_cmd_ld_ko_o = LD [M]  $@
--      cmd_ld_ko_o = $(LD) -r $(LDFLAGS) $(LDFLAGS_MODULE) -o $@		\
-+      cmd_ld_ko_o = $(LD) -r $(KBUILD_LDFLAGS) $(LDFLAGS_MODULE) -o $@		\
- 			  $(filter-out FORCE,$^)
- 
- $(modules): %.ko :%.o %.mod.o FORCE
+@@ -47,16 +43,16 @@ build_gconfig: $(obj)/gconf
+ build_xconfig: $(obj)/qconf
+ 
+ localyesconfig localmodconfig: $(obj)/conf
+-	$(Q)perl $(srctree)/$(src)/streamline_config.pl --$@ $(srctree) $(Kconfig) > .tmp.config
+-	$(Q)if [ -f .config ]; then 					\
+-			cmp -s .tmp.config .config ||			\
+-			(mv -f .config .config.old.1;			\
+-			 mv -f .tmp.config .config;			\
+-			 $< $(silent) --oldconfig $(Kconfig);		\
+-			 mv -f .config.old.1 .config.old)		\
+-	else								\
+-			mv -f .tmp.config .config;			\
+-			$< $(silent) --oldconfig $(Kconfig);		\
++	$(Q)$(PERL) $(srctree)/$(src)/streamline_config.pl --$@ $(srctree) $(Kconfig) > .tmp.config
++	$(Q)if [ -f .config ]; then 				\
++		cmp -s .tmp.config .config ||			\
++		(mv -f .config .config.old.1;			\
++		 mv -f .tmp.config .config;			\
++		 $< $(silent) --oldconfig $(Kconfig);		\
++		 mv -f .config.old.1 .config.old)		\
++	else							\
++		mv -f .tmp.config .config;			\
++		$< $(silent) --oldconfig $(Kconfig);		\
+ 	fi
+ 	$(Q)rm -f .tmp.config
+ 
+@@ -67,7 +63,7 @@ localyesconfig localmodconfig: $(obj)/conf
+ #  deprecated for external use
+ simple-targets := oldconfig allnoconfig allyesconfig allmodconfig \
+ 	alldefconfig randconfig listnewconfig olddefconfig syncconfig \
+-	helpnewconfig
++	helpnewconfig yes2modconfig mod2yesconfig
+ 
+ PHONY += $(simple-targets)
+ 
+@@ -135,6 +131,8 @@ help:
+ 	@echo  '  allmodconfig	  - New config selecting modules when possible'
+ 	@echo  '  alldefconfig    - New config with all symbols set to default'
+ 	@echo  '  randconfig	  - New config with random answer to all options'
++	@echo  '  yes2modconfig	  - Change answers from yes to mod if possible'
++	@echo  '  mod2yesconfig	  - Change answers from mod to yes if possible'
+ 	@echo  '  listnewconfig   - List new options'
+ 	@echo  '  helpnewconfig   - List new options and help text'
+ 	@echo  '  olddefconfig	  - Same as oldconfig but sets new symbols to their'
+@@ -155,11 +153,11 @@ HOSTCFLAGS_lexer.lex.o	:= -I $(srctree)/$(src)
+ HOSTCFLAGS_parser.tab.o	:= -I $(srctree)/$(src)
+ 
+ # conf: Used for defconfig, oldconfig and related targets
+-hostprogs-y	+= conf
++hostprogs	+= conf
+ conf-objs	:= conf.o $(common-objs)
+ 
+ # nconf: Used for the nconfig target based on ncurses
+-hostprogs-y	+= nconf
++hostprogs	+= nconf
+ nconf-objs	:= nconf.o nconf.gui.o $(common-objs)
+ 
+ HOSTLDLIBS_nconf	= $(shell . $(obj)/nconf-cfg && echo $$libs)
+@@ -169,7 +167,7 @@ HOSTCFLAGS_nconf.gui.o	= $(shell . $(obj)/nconf-cfg && echo $$cflags)
+ $(obj)/nconf.o $(obj)/nconf.gui.o: $(obj)/nconf-cfg
+ 
+ # mconf: Used for the menuconfig target based on lxdialog
+-hostprogs-y	+= mconf
++hostprogs	+= mconf
+ lxdialog	:= $(addprefix lxdialog/, \
+ 		     checklist.o inputbox.o menubox.o textbox.o util.o yesno.o)
+ mconf-objs	:= mconf.o $(lxdialog) $(common-objs)
+@@ -181,7 +179,7 @@ $(foreach f, mconf.o $(lxdialog), \
+ $(addprefix $(obj)/, mconf.o $(lxdialog)): $(obj)/mconf-cfg
+ 
+ # qconf: Used for the xconfig target based on Qt
+-hostprogs-y	+= qconf
++hostprogs	+= qconf
+ qconf-cxxobjs	:= qconf.o
+ qconf-objs	:= images.o $(common-objs)
+ 
+@@ -197,7 +195,7 @@ $(obj)/%.moc: $(src)/%.h $(obj)/qconf-cfg
+ 	$(call cmd,moc)
+ 
+ # gconf: Used for the gconfig target based on GTK+
+-hostprogs-y	+= gconf
++hostprogs	+= gconf
+ gconf-objs	:= gconf.o images.o $(common-objs)
+ 
+ HOSTLDLIBS_gconf    = $(shell . $(obj)/gconf-cfg && echo $$libs)
+diff --git a/scripts/kconfig/conf.c b/scripts/kconfig/conf.c
+index 1f89bf155..f6e548b8f 100644
+--- a/scripts/kconfig/conf.c
++++ b/scripts/kconfig/conf.c
+@@ -34,6 +34,8 @@ enum input_mode {
+ 	listnewconfig,
+ 	helpnewconfig,
+ 	olddefconfig,
++	yes2modconfig,
++	mod2yesconfig,
+ };
+ static enum input_mode input_mode = oldaskconfig;
+ 
+@@ -467,6 +469,8 @@ static struct option long_opts[] = {
+ 	{"listnewconfig",   no_argument,       NULL, listnewconfig},
+ 	{"helpnewconfig",   no_argument,       NULL, helpnewconfig},
+ 	{"olddefconfig",    no_argument,       NULL, olddefconfig},
++	{"yes2modconfig",   no_argument,       NULL, yes2modconfig},
++	{"mod2yesconfig",   no_argument,       NULL, mod2yesconfig},
+ 	{NULL, 0, NULL, 0}
+ };
+ 
+@@ -489,6 +493,8 @@ static void conf_usage(const char *progname)
+ 	printf("  --allmodconfig          New config where all options are answered with mod\n");
+ 	printf("  --alldefconfig          New config with all symbols set to default\n");
+ 	printf("  --randconfig            New config with random answer to all options\n");
++	printf("  --yes2modconfig         Change answers from yes to mod if possible\n");
++	printf("  --mod2yesconfig         Change answers from mod to yes if possible\n");
+ }
+ 
+ int main(int ac, char **av)
+@@ -553,6 +559,8 @@ int main(int ac, char **av)
+ 		case listnewconfig:
+ 		case helpnewconfig:
+ 		case olddefconfig:
++		case yes2modconfig:
++		case mod2yesconfig:
+ 			break;
+ 		case '?':
+ 			conf_usage(progname);
+@@ -587,6 +595,8 @@ int main(int ac, char **av)
+ 	case listnewconfig:
+ 	case helpnewconfig:
+ 	case olddefconfig:
++	case yes2modconfig:
++	case mod2yesconfig:
+ 		conf_read(NULL);
+ 		break;
+ 	case allnoconfig:
+@@ -660,6 +670,12 @@ int main(int ac, char **av)
+ 		break;
+ 	case savedefconfig:
+ 		break;
++	case yes2modconfig:
++		conf_rewrite_mod_or_yes(def_y2m);
++		break;
++	case mod2yesconfig:
++		conf_rewrite_mod_or_yes(def_m2y);
++		break;
+ 	case oldaskconfig:
+ 		rootEntry = &rootmenu;
+ 		conf(&rootmenu);
+diff --git a/scripts/kconfig/confdata.c b/scripts/kconfig/confdata.c
+index 3569d2dec..a39d93e3c 100644
+--- a/scripts/kconfig/confdata.c
++++ b/scripts/kconfig/confdata.c
+@@ -710,25 +710,6 @@ static struct conf_printer header_printer_cb =
+ 	.print_comment = header_print_comment,
+ };
+ 
+-/*
+- * Tristate printer
+- *
+- * This printer is used when generating the `include/config/tristate.conf' file.
+- */
+-static void
+-tristate_print_symbol(FILE *fp, struct symbol *sym, const char *value, void *arg)
+-{
+-
+-	if (sym->type == S_TRISTATE && *value != 'n')
+-		fprintf(fp, "%s%s=%c\n", CONFIG_, sym->name, (char)toupper(*value));
+-}
+-
+-static struct conf_printer tristate_printer_cb =
+-{
+-	.print_symbol = tristate_print_symbol,
+-	.print_comment = kconfig_print_comment,
+-};
+-
+ static void conf_write_symbol(FILE *fp, struct symbol *sym,
+ 			      struct conf_printer *printer, void *printer_arg)
+ {
+@@ -1062,7 +1043,7 @@ int conf_write_autoconf(int overwrite)
+ 	struct symbol *sym;
+ 	const char *name;
+ 	const char *autoconf_name = conf_get_autoconfig_name();
+-	FILE *out, *tristate, *out_h;
++	FILE *out, *out_h;
+ 	int i;
+ 
+ 	if (!overwrite && is_present(autoconf_name))
+@@ -1077,23 +1058,13 @@ int conf_write_autoconf(int overwrite)
+ 	if (!out)
+ 		return 1;
+ 
+-	tristate = fopen(".tmpconfig_tristate", "w");
+-	if (!tristate) {
+-		fclose(out);
+-		return 1;
+-	}
+-
+ 	out_h = fopen(".tmpconfig.h", "w");
+ 	if (!out_h) {
+ 		fclose(out);
+-		fclose(tristate);
+ 		return 1;
+ 	}
+ 
+ 	conf_write_heading(out, &kconfig_printer_cb, NULL);
+-
+-	conf_write_heading(tristate, &tristate_printer_cb, NULL);
+-
+ 	conf_write_heading(out_h, &header_printer_cb, NULL);
+ 
+ 	for_all_symbols(i, sym) {
+@@ -1101,15 +1072,11 @@ int conf_write_autoconf(int overwrite)
+ 		if (!(sym->flags & SYMBOL_WRITE) || !sym->name)
+ 			continue;
+ 
+-		/* write symbol to auto.conf, tristate and header files */
++		/* write symbols to auto.conf and autoconf.h */
+ 		conf_write_symbol(out, sym, &kconfig_printer_cb, (void *)1);
+-
+-		conf_write_symbol(tristate, sym, &tristate_printer_cb, (void *)1);
+-
+ 		conf_write_symbol(out_h, sym, &header_printer_cb, NULL);
+ 	}
+ 	fclose(out);
+-	fclose(tristate);
+ 	fclose(out_h);
+ 
+ 	name = getenv("KCONFIG_AUTOHEADER");
+@@ -1120,14 +1087,6 @@ int conf_write_autoconf(int overwrite)
+ 	if (rename(".tmpconfig.h", name))
+ 		return 1;
+ 
+-	name = getenv("KCONFIG_TRISTATE");
+-	if (!name)
+-		name = "include/config/tristate.conf";
+-	if (make_parent_dir(name))
+-		return 1;
+-	if (rename(".tmpconfig_tristate", name))
+-		return 1;
+-
+ 	if (make_parent_dir(autoconf_name))
+ 		return 1;
+ 	/*
+@@ -1353,7 +1312,7 @@ bool conf_set_all_new_symbols(enum conf_def_mode mode)
+ 
+ 		sym_calc_value(csym);
+ 		if (mode == def_random)
+-			has_changed = randomize_choice_values(csym);
++			has_changed |= randomize_choice_values(csym);
+ 		else {
+ 			set_all_choice_values(csym);
+ 			has_changed = true;
+@@ -1362,3 +1321,18 @@ bool conf_set_all_new_symbols(enum conf_def_mode mode)
+ 
+ 	return has_changed;
+ }
++
++void conf_rewrite_mod_or_yes(enum conf_def_mode mode)
++{
++	struct symbol *sym;
++	int i;
++	tristate old_val = (mode == def_y2m) ? yes : mod;
++	tristate new_val = (mode == def_y2m) ? mod : yes;
++
++	for_all_symbols(i, sym) {
++		if (sym_get_type(sym) == S_TRISTATE &&
++		    sym->def[S_DEF_USER].tri == old_val)
++			sym->def[S_DEF_USER].tri = new_val;
++	}
++	sym_clear_all_valid();
++}
+diff --git a/scripts/kconfig/expr.c b/scripts/kconfig/expr.c
+index 9f1de58e9..81ebf8108 100644
+--- a/scripts/kconfig/expr.c
++++ b/scripts/kconfig/expr.c
+@@ -13,7 +13,6 @@
+ 
+ #define DEBUG_EXPR	0
+ 
+-static int expr_eq(struct expr *e1, struct expr *e2);
+ static struct expr *expr_eliminate_yn(struct expr *e);
+ 
+ struct expr *expr_alloc_symbol(struct symbol *sym)
+@@ -250,7 +249,7 @@ void expr_eliminate_eq(struct expr **ep1, struct expr **ep2)
+  * equals some operand in the other (operands do not need to appear in the same
+  * order), recursively.
+  */
+-static int expr_eq(struct expr *e1, struct expr *e2)
++int expr_eq(struct expr *e1, struct expr *e2)
+ {
+ 	int res, old_count;
+ 
+diff --git a/scripts/kconfig/expr.h b/scripts/kconfig/expr.h
+index 017843c9a..5c3443692 100644
+--- a/scripts/kconfig/expr.h
++++ b/scripts/kconfig/expr.h
+@@ -191,7 +191,6 @@ enum prop_type {
+ 
+ struct property {
+ 	struct property *next;     /* next property - null if last */
+-	struct symbol *sym;        /* the symbol for which the property is associated */
+ 	enum prop_type type;       /* type of property */
+ 	const char *text;          /* the prompt value - P_PROMPT, P_MENU, P_COMMENT */
+ 	struct expr_value visible;
+@@ -301,6 +300,7 @@ struct expr *expr_alloc_or(struct expr *e1, struct expr *e2);
+ struct expr *expr_copy(const struct expr *org);
+ void expr_free(struct expr *e);
+ void expr_eliminate_eq(struct expr **ep1, struct expr **ep2);
++int expr_eq(struct expr *e1, struct expr *e2);
+ tristate expr_calc_value(struct expr *e);
+ struct expr *expr_trans_bool(struct expr *e);
+ struct expr *expr_eliminate_dups(struct expr *e);
+diff --git a/scripts/kconfig/gconf.c b/scripts/kconfig/gconf.c
+index e36b342f1..5527482c3 100644
+--- a/scripts/kconfig/gconf.c
++++ b/scripts/kconfig/gconf.c
+@@ -18,6 +18,7 @@
+ 
+ #include <stdio.h>
+ #include <string.h>
++#include <strings.h>
+ #include <unistd.h>
+ #include <time.h>
+ 
+diff --git a/scripts/kconfig/lkc.h b/scripts/kconfig/lkc.h
+index 4fb16f316..d4ca82973 100644
+--- a/scripts/kconfig/lkc.h
++++ b/scripts/kconfig/lkc.h
+@@ -34,6 +34,8 @@ enum conf_def_mode {
+ 	def_default,
+ 	def_yes,
+ 	def_mod,
++	def_y2m,
++	def_m2y,
+ 	def_no,
+ 	def_random
+ };
+@@ -52,6 +54,7 @@ const char *conf_get_configname(void);
+ void sym_set_change_count(int count);
+ void sym_add_change_count(int count);
+ bool conf_set_all_new_symbols(enum conf_def_mode mode);
++void conf_rewrite_mod_or_yes(enum conf_def_mode mode);
+ void set_all_choice_values(struct symbol *csym);
+ 
+ /* confdata.c and expr.c */
+@@ -112,7 +115,6 @@ struct symbol *sym_choice_default(struct symbol *sym);
+ struct property *sym_get_range_prop(struct symbol *sym);
+ const char *sym_get_string_default(struct symbol *sym);
+ struct symbol *sym_check_deps(struct symbol *sym);
+-struct property *prop_alloc(enum prop_type type, struct symbol *sym);
+ struct symbol *prop_get_symbol(struct property *prop);
+ 
+ static inline tristate sym_get_tristate_value(struct symbol *sym)
+diff --git a/scripts/kconfig/mconf.c b/scripts/kconfig/mconf.c
+index 49c26ea9d..4063dbc1b 100644
+--- a/scripts/kconfig/mconf.c
++++ b/scripts/kconfig/mconf.c
+@@ -15,6 +15,7 @@
+ #include <stdarg.h>
+ #include <stdlib.h>
+ #include <string.h>
++#include <strings.h>
+ #include <signal.h>
+ #include <unistd.h>
+ 
+diff --git a/scripts/kconfig/menu.c b/scripts/kconfig/menu.c
+index d9d164698..e436ba44c 100644
+--- a/scripts/kconfig/menu.c
++++ b/scripts/kconfig/menu.c
+@@ -124,61 +124,76 @@ void menu_set_type(int type)
+ 		sym_type_name(sym->type), sym_type_name(type));
+ }
+ 
+-static struct property *menu_add_prop(enum prop_type type, char *prompt, struct expr *expr, struct expr *dep)
++static struct property *menu_add_prop(enum prop_type type, struct expr *expr,
++				      struct expr *dep)
+ {
+-	struct property *prop = prop_alloc(type, current_entry->sym);
++	struct property *prop;
+ 
++	prop = xmalloc(sizeof(*prop));
++	memset(prop, 0, sizeof(*prop));
++	prop->type = type;
++	prop->file = current_file;
++	prop->lineno = zconf_lineno();
+ 	prop->menu = current_entry;
+ 	prop->expr = expr;
+ 	prop->visible.expr = dep;
+ 
+-	if (prompt) {
+-		if (isspace(*prompt)) {
+-			prop_warn(prop, "leading whitespace ignored");
+-			while (isspace(*prompt))
+-				prompt++;
+-		}
+-		if (current_entry->prompt && current_entry != &rootmenu)
+-			prop_warn(prop, "prompt redefined");
++	/* append property to the prop list of symbol */
++	if (current_entry->sym) {
++		struct property **propp;
+ 
+-		/* Apply all upper menus' visibilities to actual prompts. */
+-		if(type == P_PROMPT) {
+-			struct menu *menu = current_entry;
++		for (propp = &current_entry->sym->prop;
++		     *propp;
++		     propp = &(*propp)->next)
++			;
++		*propp = prop;
++	}
+ 
+-			while ((menu = menu->parent) != NULL) {
+-				struct expr *dup_expr;
++	return prop;
++}
+ 
+-				if (!menu->visibility)
+-					continue;
+-				/*
+-				 * Do not add a reference to the
+-				 * menu's visibility expression but
+-				 * use a copy of it.  Otherwise the
+-				 * expression reduction functions
+-				 * will modify expressions that have
+-				 * multiple references which can
+-				 * cause unwanted side effects.
+-				 */
+-				dup_expr = expr_copy(menu->visibility);
++struct property *menu_add_prompt(enum prop_type type, char *prompt,
++				 struct expr *dep)
++{
++	struct property *prop = menu_add_prop(type, NULL, dep);
+ 
+-				prop->visible.expr
+-					= expr_alloc_and(prop->visible.expr,
+-							 dup_expr);
+-			}
+-		}
++	if (isspace(*prompt)) {
++		prop_warn(prop, "leading whitespace ignored");
++		while (isspace(*prompt))
++			prompt++;
++	}
++	if (current_entry->prompt)
++		prop_warn(prop, "prompt redefined");
+ 
+-		current_entry->prompt = prop;
++	/* Apply all upper menus' visibilities to actual prompts. */
++	if (type == P_PROMPT) {
++		struct menu *menu = current_entry;
++
++		while ((menu = menu->parent) != NULL) {
++			struct expr *dup_expr;
++
++			if (!menu->visibility)
++				continue;
++			/*
++			 * Do not add a reference to the menu's visibility
++			 * expression but use a copy of it. Otherwise the
++			 * expression reduction functions will modify
++			 * expressions that have multiple references which
++			 * can cause unwanted side effects.
++			 */
++			dup_expr = expr_copy(menu->visibility);
++
++			prop->visible.expr = expr_alloc_and(prop->visible.expr,
++							    dup_expr);
++		}
+ 	}
++
++	current_entry->prompt = prop;
+ 	prop->text = prompt;
+ 
+ 	return prop;
+ }
+ 
+-struct property *menu_add_prompt(enum prop_type type, char *prompt, struct expr *dep)
+-{
+-	return menu_add_prop(type, prompt, NULL, dep);
+-}
+-
+ void menu_add_visibility(struct expr *expr)
+ {
+ 	current_entry->visibility = expr_alloc_and(current_entry->visibility,
+@@ -187,12 +202,12 @@ void menu_add_visibility(struct expr *expr)
+ 
+ void menu_add_expr(enum prop_type type, struct expr *expr, struct expr *dep)
+ {
+-	menu_add_prop(type, NULL, expr, dep);
++	menu_add_prop(type, expr, dep);
+ }
+ 
+ void menu_add_symbol(enum prop_type type, struct symbol *sym, struct expr *dep)
+ {
+-	menu_add_prop(type, NULL, expr_alloc_symbol(sym), dep);
++	menu_add_prop(type, expr_alloc_symbol(sym), dep);
+ }
+ 
+ void menu_add_option_modules(void)
+@@ -326,12 +341,10 @@ void menu_finalize(struct menu *parent)
+ 			 * choice value symbols.
+ 			 */
+ 			parentdep = expr_alloc_symbol(sym);
+-		} else if (parent->prompt)
+-			/* Menu node for 'menu' */
+-			parentdep = parent->prompt->visible.expr;
+-		else
+-			/* Menu node for 'if' */
++		} else {
++			/* Menu node for 'menu', 'if' */
+ 			parentdep = parent->dep;
++		}
+ 
+ 		/* For each child menu node... */
+ 		for (menu = parent->list; menu; menu = menu->next) {
+@@ -698,6 +711,21 @@ const char *menu_get_help(struct menu *menu)
+ 		return "";
+ }
+ 
++static void get_def_str(struct gstr *r, struct menu *menu)
++{
++	str_printf(r, "Defined at %s:%d\n",
++		   menu->file->name, menu->lineno);
++}
++
++static void get_dep_str(struct gstr *r, struct expr *expr, const char *prefix)
++{
++	if (!expr_is_yes(expr)) {
++		str_append(r, prefix);
++		expr_gstr_print(expr, r);
++		str_append(r, "\n");
++	}
++}
++
+ static void get_prompt_str(struct gstr *r, struct property *prop,
+ 			   struct list_head *head)
+ {
+@@ -705,7 +733,20 @@ static void get_prompt_str(struct gstr *r, struct property *prop,
+ 	struct menu *submenu[8], *menu, *location = NULL;
+ 	struct jump_key *jump = NULL;
+ 
+-	str_printf(r, "Prompt: %s\n", prop->text);
++	str_printf(r, "  Prompt: %s\n", prop->text);
++
++	get_dep_str(r, prop->menu->dep, "  Depends on: ");
++	/*
++	 * Most prompts in Linux have visibility that exactly matches their
++	 * dependencies. For these, we print only the dependencies to improve
++	 * readability. However, prompts with inline "if" expressions and
++	 * prompts with a parent that has a "visible if" expression have
++	 * differing dependencies and visibility. In these rare cases, we
++	 * print both.
++	 */
++	if (!expr_eq(prop->menu->dep, prop->visible.expr))
++		get_dep_str(r, prop->visible.expr, "  Visible if: ");
++
+ 	menu = prop->menu->parent;
+ 	for (i = 0; menu != &rootmenu && i < 8; menu = menu->parent) {
+ 		bool accessible = menu_is_visible(menu);
+@@ -755,18 +796,6 @@ static void get_prompt_str(struct gstr *r, struct property *prop,
+ 	}
+ }
+ 
+-/*
+- * get property of type P_SYMBOL
+- */
+-static struct property *get_symbol_prop(struct symbol *sym)
+-{
+-	struct property *prop = NULL;
+-
+-	for_all_properties(sym, prop, P_SYMBOL)
+-		break;
+-	return prop;
+-}
+-
+ static void get_symbol_props_str(struct gstr *r, struct symbol *sym,
+ 				 enum prop_type tok, const char *prefix)
+ {
+@@ -806,32 +835,34 @@ static void get_symbol_str(struct gstr *r, struct symbol *sym,
+ 			}
+ 		}
+ 	}
+-	for_all_prompts(sym, prop)
+-		get_prompt_str(r, prop, head);
+-
+-	prop = get_symbol_prop(sym);
+-	if (prop) {
+-		str_printf(r, "  Defined at %s:%d\n", prop->menu->file->name,
+-			prop->menu->lineno);
+-		if (!expr_is_yes(prop->visible.expr)) {
+-			str_append(r, "  Depends on: ");
+-			expr_gstr_print(prop->visible.expr, r);
+-			str_append(r, "\n");
++
++	/* Print the definitions with prompts before the ones without */
++	for_all_properties(sym, prop, P_SYMBOL) {
++		if (prop->menu->prompt) {
++			get_def_str(r, prop->menu);
++			get_prompt_str(r, prop->menu->prompt, head);
++		}
++	}
++
++	for_all_properties(sym, prop, P_SYMBOL) {
++		if (!prop->menu->prompt) {
++			get_def_str(r, prop->menu);
++			get_dep_str(r, prop->menu->dep, "  Depends on: ");
+ 		}
+ 	}
+ 
+-	get_symbol_props_str(r, sym, P_SELECT, "  Selects: ");
++	get_symbol_props_str(r, sym, P_SELECT, "Selects: ");
+ 	if (sym->rev_dep.expr) {
+-		expr_gstr_print_revdep(sym->rev_dep.expr, r, yes, "  Selected by [y]:\n");
+-		expr_gstr_print_revdep(sym->rev_dep.expr, r, mod, "  Selected by [m]:\n");
+-		expr_gstr_print_revdep(sym->rev_dep.expr, r, no, "  Selected by [n]:\n");
++		expr_gstr_print_revdep(sym->rev_dep.expr, r, yes, "Selected by [y]:\n");
++		expr_gstr_print_revdep(sym->rev_dep.expr, r, mod, "Selected by [m]:\n");
++		expr_gstr_print_revdep(sym->rev_dep.expr, r, no, "Selected by [n]:\n");
+ 	}
+ 
+-	get_symbol_props_str(r, sym, P_IMPLY, "  Implies: ");
++	get_symbol_props_str(r, sym, P_IMPLY, "Implies: ");
+ 	if (sym->implied.expr) {
+-		expr_gstr_print_revdep(sym->implied.expr, r, yes, "  Implied by [y]:\n");
+-		expr_gstr_print_revdep(sym->implied.expr, r, mod, "  Implied by [m]:\n");
+-		expr_gstr_print_revdep(sym->implied.expr, r, no, "  Implied by [n]:\n");
++		expr_gstr_print_revdep(sym->implied.expr, r, yes, "Implied by [y]:\n");
++		expr_gstr_print_revdep(sym->implied.expr, r, mod, "Implied by [m]:\n");
++		expr_gstr_print_revdep(sym->implied.expr, r, no, "Implied by [n]:\n");
+ 	}
+ 
+ 	str_append(r, "\n\n");
+diff --git a/scripts/kconfig/nconf.c b/scripts/kconfig/nconf.c
+index b7c1ef757..daf1c1506 100644
+--- a/scripts/kconfig/nconf.c
++++ b/scripts/kconfig/nconf.c
+@@ -8,6 +8,7 @@
+ #define _GNU_SOURCE
+ #endif
+ #include <string.h>
++#include <strings.h>
+ #include <stdlib.h>
+ 
+ #include "lkc.h"
+diff --git a/scripts/kconfig/parser.y b/scripts/kconfig/parser.y
+index b3eff9613..708b6c4b1 100644
+--- a/scripts/kconfig/parser.y
++++ b/scripts/kconfig/parser.y
+@@ -90,7 +90,6 @@ static struct menu *current_menu, *current_entry;
+ %left T_LESS T_LESS_EQUAL T_GREATER T_GREATER_EQUAL
+ %nonassoc T_NOT
+ 
+-%type <string> prompt
+ %type <symbol> nonconst_symbol
+ %type <symbol> symbol
+ %type <type> type logic_type default
+@@ -113,7 +112,7 @@ input: mainmenu_stmt stmt_list | stmt_list;
+ 
+ /* mainmenu entry */
+ 
+-mainmenu_stmt: T_MAINMENU prompt T_EOL
++mainmenu_stmt: T_MAINMENU T_WORD_QUOTE T_EOL
+ {
+ 	menu_add_prompt(P_MENU, $2, NULL);
+ };
+@@ -181,7 +180,7 @@ config_option: type prompt_stmt_opt T_EOL
+ 		$1);
+ };
+ 
+-config_option: T_PROMPT prompt if_expr T_EOL
++config_option: T_PROMPT T_WORD_QUOTE if_expr T_EOL
+ {
+ 	menu_add_prompt(P_PROMPT, $2, $3);
+ 	printd(DEBUG_PARSE, "%s:%d:prompt\n", zconf_curname(), zconf_lineno());
+@@ -265,7 +264,7 @@ choice_option_list:
+ 	| choice_option_list help
+ ;
+ 
+-choice_option: T_PROMPT prompt if_expr T_EOL
++choice_option: T_PROMPT T_WORD_QUOTE if_expr T_EOL
+ {
+ 	menu_add_prompt(P_PROMPT, $2, $3);
+ 	printd(DEBUG_PARSE, "%s:%d:prompt\n", zconf_curname(), zconf_lineno());
+@@ -334,7 +333,7 @@ if_stmt: if_entry stmt_list if_end
+ 
+ /* menu entry */
+ 
+-menu: T_MENU prompt T_EOL
++menu: T_MENU T_WORD_QUOTE T_EOL
+ {
+ 	menu_add_entry(NULL);
+ 	menu_add_prompt(P_MENU, $2, NULL);
+@@ -363,7 +362,7 @@ menu_option_list:
+ 	| menu_option_list depends
+ ;
+ 
+-source_stmt: T_SOURCE prompt T_EOL
++source_stmt: T_SOURCE T_WORD_QUOTE T_EOL
+ {
+ 	printd(DEBUG_PARSE, "%s:%d:source %s\n", zconf_curname(), zconf_lineno(), $2);
+ 	zconf_nextfile($2);
+@@ -372,7 +371,7 @@ source_stmt: T_SOURCE prompt T_EOL
+ 
+ /* comment entry */
+ 
+-comment: T_COMMENT prompt T_EOL
++comment: T_COMMENT T_WORD_QUOTE T_EOL
+ {
+ 	menu_add_entry(NULL);
+ 	menu_add_prompt(P_COMMENT, $2, NULL);
+@@ -429,15 +428,11 @@ visible: T_VISIBLE if_expr T_EOL
+ 
+ prompt_stmt_opt:
+ 	  /* empty */
+-	| prompt if_expr
++	| T_WORD_QUOTE if_expr
+ {
+ 	menu_add_prompt(P_PROMPT, $1, $2);
+ };
+ 
+-prompt:	  T_WORD
+-	| T_WORD_QUOTE
+-;
+-
+ end:	  T_ENDMENU T_EOL	{ $$ = "menu"; }
+ 	| T_ENDCHOICE T_EOL	{ $$ = "choice"; }
+ 	| T_ENDIF T_EOL		{ $$ = "if"; }
+@@ -665,7 +660,7 @@ static void print_symbol(FILE *out, struct menu *menu)
+ 			break;
+ 		case P_SYMBOL:
+ 			fputs( "  symbol ", out);
+-			fprintf(out, "%s\n", prop->sym->name);
++			fprintf(out, "%s\n", prop->menu->sym->name);
+ 			break;
+ 		default:
+ 			fprintf(out, "  unknown prop %d!\n", prop->type);
+diff --git a/scripts/kconfig/qconf.cc b/scripts/kconfig/qconf.cc
+index 82773cc35..c0ac8f7b5 100644
+--- a/scripts/kconfig/qconf.cc
++++ b/scripts/kconfig/qconf.cc
+@@ -154,9 +154,9 @@ void ConfigItem::updateMenu(void)
+ 
+ 		if (!sym_is_changeable(sym) && list->optMode == normalOpt) {
+ 			setPixmap(promptColIdx, QIcon());
+-			setText(noColIdx, QString::null);
+-			setText(modColIdx, QString::null);
+-			setText(yesColIdx, QString::null);
++			setText(noColIdx, QString());
++			setText(modColIdx, QString());
++			setText(yesColIdx, QString());
+ 			break;
+ 		}
+ 		expr = sym_get_tristate_value(sym);
+@@ -276,7 +276,7 @@ void ConfigLineEdit::show(ConfigItem* i)
+ 	if (sym_get_string_value(item->menu->sym))
+ 		setText(QString::fromLocal8Bit(sym_get_string_value(item->menu->sym)));
+ 	else
+-		setText(QString::null);
++		setText(QString());
+ 	Parent::show();
+ 	setFocus();
+ }
+@@ -309,8 +309,6 @@ ConfigList::ConfigList(ConfigView* p, const char *name)
+ 	  showName(false), showRange(false), showData(false), mode(singleMode), optMode(normalOpt),
+ 	  rootEntry(0), headerPopup(0)
+ {
+-	int i;
+-
+ 	setObjectName(name);
+ 	setSortingEnabled(false);
+ 	setRootIsDecorated(true);
+@@ -318,7 +316,10 @@ ConfigList::ConfigList(ConfigView* p, const char *name)
+ 	setVerticalScrollMode(ScrollPerPixel);
+ 	setHorizontalScrollMode(ScrollPerPixel);
+ 
+-	setHeaderLabels(QStringList() << "Option" << "Name" << "N" << "M" << "Y" << "Value");
++	if (mode == symbolMode)
++		setHeaderLabels(QStringList() << "Item" << "Name" << "N" << "M" << "Y" << "Value");
++	else
++		setHeaderLabels(QStringList() << "Option" << "Name" << "N" << "M" << "Y" << "Value");
+ 
+ 	connect(this, SIGNAL(itemSelectionChanged(void)),
+ 		SLOT(updateSelection(void)));
+@@ -399,6 +400,11 @@ void ConfigList::updateSelection(void)
+ 	struct menu *menu;
+ 	enum prop_type type;
+ 
++	if (mode == symbolMode)
++		setHeaderLabels(QStringList() << "Item" << "Name" << "N" << "M" << "Y" << "Value");
++	else
++		setHeaderLabels(QStringList() << "Option" << "Name" << "N" << "M" << "Y" << "Value");
++
+ 	if (selectedItems().count() == 0)
+ 		return;
+ 
+@@ -627,7 +633,7 @@ void ConfigList::updateMenuList(ConfigItem *parent, struct menu* menu)
+ 			last = item;
+ 			continue;
+ 		}
+-	hide:
++hide:
+ 		if (item && item->menu == child) {
+ 			last = parent->firstChild();
+ 			if (last == item)
+@@ -692,7 +698,7 @@ void ConfigList::updateMenuList(ConfigList *parent, struct menu* menu)
+ 			last = item;
+ 			continue;
+ 		}
+-	hide:
++hide:
+ 		if (item && item->menu == child) {
+ 			last = (ConfigItem*)parent->topLevelItem(0);
+ 			if (last == item)
+@@ -736,7 +742,10 @@ void ConfigList::keyPressEvent(QKeyEvent* ev)
+ 		type = menu->prompt ? menu->prompt->type : P_UNKNOWN;
+ 		if (type == P_MENU && rootEntry != menu &&
+ 		    mode != fullMode && mode != menuMode) {
+-			emit menuSelected(menu);
++			if (mode == menuMode)
++				emit menuSelected(menu);
++			else
++				emit itemSelected(menu);
+ 			break;
+ 		}
+ 	case Qt::Key_Space:
+@@ -828,7 +837,7 @@ void ConfigList::mouseMoveEvent(QMouseEvent* e)
+ 
+ void ConfigList::mouseDoubleClickEvent(QMouseEvent* e)
+ {
+-	QPoint p = e->pos(); // TODO: Check if this works(was contentsToViewport).
++	QPoint p = e->pos();
+ 	ConfigItem* item = (ConfigItem*)itemAt(p);
+ 	struct menu *menu;
+ 	enum prop_type ptype;
+@@ -843,9 +852,12 @@ void ConfigList::mouseDoubleClickEvent(QMouseEvent* e)
+ 	if (!menu)
+ 		goto skip;
+ 	ptype = menu->prompt ? menu->prompt->type : P_UNKNOWN;
+-	if (ptype == P_MENU && (mode == singleMode || mode == symbolMode))
+-		emit menuSelected(menu);
+-	else if (menu->sym)
++	if (ptype == P_MENU) {
++		if (mode == singleMode)
++			emit itemSelected(menu);
++		else if (mode == symbolMode)
++			emit menuSelected(menu);
++	} else if (menu->sym)
+ 		changeValue(item);
+ 
+ skip:
+@@ -1225,10 +1237,11 @@ QMenu* ConfigInfoView::createStandardContextMenu(const QPoint & pos)
+ {
+ 	QMenu* popup = Parent::createStandardContextMenu(pos);
+ 	QAction* action = new QAction("Show Debug Info", popup);
+-	  action->setCheckable(true);
+-	  connect(action, SIGNAL(toggled(bool)), SLOT(setShowDebug(bool)));
+-	  connect(this, SIGNAL(showDebugChanged(bool)), action, SLOT(setOn(bool)));
+-	  action->setChecked(showDebug());
++
++	action->setCheckable(true);
++	connect(action, SIGNAL(toggled(bool)), SLOT(setShowDebug(bool)));
++	connect(this, SIGNAL(showDebugChanged(bool)), action, SLOT(setOn(bool)));
++	action->setChecked(showDebug());
+ 	popup->addSeparator();
+ 	popup->addAction(action);
+ 	return popup;
+@@ -1354,21 +1367,32 @@ ConfigMainWindow::ConfigMainWindow(void)
+ 	if ((x.isValid())&&(y.isValid()))
+ 		move(x.toInt(), y.toInt());
+ 
+-	split1 = new QSplitter(this);
++	QWidget *widget = new QWidget(this);
++	QVBoxLayout *layout = new QVBoxLayout(widget);
++	setCentralWidget(widget);
++
++	split1 = new QSplitter(widget);
+ 	split1->setOrientation(Qt::Horizontal);
+-	setCentralWidget(split1);
++	split1->setChildrenCollapsible(false);
+ 
+-	menuView = new ConfigView(split1, "menu");
++	menuView = new ConfigView(widget, "menu");
+ 	menuList = menuView->list;
+ 
+-	split2 = new QSplitter(split1);
++	split2 = new QSplitter(widget);
++	split2->setChildrenCollapsible(false);
+ 	split2->setOrientation(Qt::Vertical);
+ 
+ 	// create config tree
+-	configView = new ConfigView(split2, "config");
++	configView = new ConfigView(widget, "config");
+ 	configList = configView->list;
+ 
+-	helpText = new ConfigInfoView(split2, "help");
++	helpText = new ConfigInfoView(widget, "help");
++
++	layout->addWidget(split2);
++	split2->addWidget(split1);
++	split1->addWidget(configView);
++	split1->addWidget(menuView);
++	split2->addWidget(helpText);
+ 
+ 	setTabOrder(configList, helpText);
+ 	configList->setFocus();
+@@ -1486,6 +1510,8 @@ ConfigMainWindow::ConfigMainWindow(void)
+ 		helpText, SLOT(setInfo(struct menu *)));
+ 	connect(configList, SIGNAL(menuSelected(struct menu *)),
+ 		SLOT(changeMenu(struct menu *)));
++	connect(configList, SIGNAL(itemSelected(struct menu *)),
++		SLOT(changeItens(struct menu *)));
+ 	connect(configList, SIGNAL(parentSelected()),
+ 		SLOT(goBack()));
+ 	connect(menuList, SIGNAL(menuChanged(struct menu *)),
+@@ -1582,15 +1608,26 @@ void ConfigMainWindow::searchConfig(void)
+ 	searchWindow->show();
+ }
+ 
+-void ConfigMainWindow::changeMenu(struct menu *menu)
++void ConfigMainWindow::changeItens(struct menu *menu)
+ {
+ 	configList->setRootMenu(menu);
++
+ 	if (configList->rootEntry->parent == &rootmenu)
+ 		backAction->setEnabled(false);
+ 	else
+ 		backAction->setEnabled(true);
+ }
+ 
++void ConfigMainWindow::changeMenu(struct menu *menu)
++{
++	menuList->setRootMenu(menu);
++
++	if (menuList->rootEntry->parent == &rootmenu)
++		backAction->setEnabled(false);
++	else
++		backAction->setEnabled(true);
++}
++
+ void ConfigMainWindow::setMenuLink(struct menu *menu)
+ {
+ 	struct menu *parent;
+@@ -1700,14 +1737,14 @@ void ConfigMainWindow::showSplitView(void)
+ 	fullViewAction->setEnabled(true);
+ 	fullViewAction->setChecked(false);
+ 
+-	configList->mode = symbolMode;
++	configList->mode = menuMode;
+ 	if (configList->rootEntry == &rootmenu)
+ 		configList->updateListAll();
+ 	else
+ 		configList->setRootMenu(&rootmenu);
+ 	configList->setAllOpen(true);
+ 	configApp->processEvents();
+-	menuList->mode = menuMode;
++	menuList->mode = symbolMode;
+ 	menuList->setRootMenu(&rootmenu);
+ 	menuList->setAllOpen(true);
+ 	menuView->show();
+@@ -1735,7 +1772,6 @@ void ConfigMainWindow::showFullView(void)
+ 
+ /*
+  * ask for saving configuration before quitting
+- * TODO ask only when something changed
+  */
+ void ConfigMainWindow::closeEvent(QCloseEvent* e)
+ {
+diff --git a/scripts/kconfig/qconf.h b/scripts/kconfig/qconf.h
+index 45bfe9b2b..c879d79ce 100644
+--- a/scripts/kconfig/qconf.h
++++ b/scripts/kconfig/qconf.h
+@@ -71,6 +71,7 @@ public slots:
+ signals:
+ 	void menuChanged(struct menu *menu);
+ 	void menuSelected(struct menu *menu);
++	void itemSelected(struct menu *menu);
+ 	void parentSelected(void);
+ 	void gotFocus(struct menu *);
+ 
+@@ -298,6 +299,7 @@ public:
+ 	ConfigMainWindow(void);
+ public slots:
+ 	void changeMenu(struct menu *);
++	void changeItens(struct menu *);
+ 	void setMenuLink(struct menu *);
+ 	void listFocusChanged(void);
+ 	void goBack(void);
+diff --git a/scripts/kconfig/streamline_config.pl b/scripts/kconfig/streamline_config.pl
+index 08d76d7b3..e2f8504f5 100755
+--- a/scripts/kconfig/streamline_config.pl
++++ b/scripts/kconfig/streamline_config.pl
+@@ -56,8 +56,6 @@ sub dprint {
+     print STDERR @_;
+ }
+ 
+-my $config = ".config";
+-
+ my $uname = `uname -r`;
+ chomp $uname;
+ 
+@@ -374,7 +372,7 @@ if (defined($lsmod_file)) {
+ 	    $lsmod = "$dir/lsmod";
+ 	    last;
+ 	}
+-}
++    }
+     if (!defined($lsmod)) {
+ 	# try just the path
+ 	$lsmod = "lsmod";
+diff --git a/scripts/kconfig/symbol.c b/scripts/kconfig/symbol.c
+index f56eec5ea..3dc81397d 100644
+--- a/scripts/kconfig/symbol.c
++++ b/scripts/kconfig/symbol.c
+@@ -221,7 +221,7 @@ static void sym_calc_visibility(struct symbol *sym)
+ 		sym_set_changed(sym);
+ 	}
+ 	tri = no;
+-	if (sym->implied.expr && sym->dir_dep.tri != no)
++	if (sym->implied.expr)
+ 		tri = expr_calc_value(sym->implied.expr);
+ 	if (tri == mod && sym_get_type(sym) == S_BOOLEAN)
+ 		tri = yes;
+@@ -394,6 +394,8 @@ void sym_calc_value(struct symbol *sym)
+ 				if (sym->implied.tri != no) {
+ 					sym->flags |= SYMBOL_WRITE;
+ 					newval.tri = EXPR_OR(newval.tri, sym->implied.tri);
++					newval.tri = EXPR_AND(newval.tri,
++							      sym->dir_dep.tri);
+ 				}
+ 			}
+ 		calc_newval:
+@@ -401,8 +403,7 @@ void sym_calc_value(struct symbol *sym)
+ 				sym_warn_unmet_dep(sym);
+ 			newval.tri = EXPR_OR(newval.tri, sym->rev_dep.tri);
+ 		}
+-		if (newval.tri == mod &&
+-		    (sym_get_type(sym) == S_BOOLEAN || sym->implied.tri == yes))
++		if (newval.tri == mod && sym_get_type(sym) == S_BOOLEAN)
+ 			newval.tri = yes;
+ 		break;
+ 	case S_STRING:
+@@ -484,8 +485,6 @@ bool sym_tristate_within_range(struct symbol *sym, tristate val)
+ 		return false;
+ 	if (sym->visible <= sym->rev_dep.tri)
+ 		return false;
+-	if (sym->implied.tri == yes && val == mod)
+-		return false;
+ 	if (sym_is_choice_value(sym) && sym->visible == yes)
+ 		return val == yes;
+ 	return val >= sym->rev_dep.tri && val <= sym->visible;
+@@ -1273,28 +1272,6 @@ struct symbol *sym_check_deps(struct symbol *sym)
+ 	return sym2;
+ }
+ 
+-struct property *prop_alloc(enum prop_type type, struct symbol *sym)
+-{
+-	struct property *prop;
+-	struct property **propp;
+-
+-	prop = xmalloc(sizeof(*prop));
+-	memset(prop, 0, sizeof(*prop));
+-	prop->type = type;
+-	prop->sym = sym;
+-	prop->file = current_file;
+-	prop->lineno = zconf_lineno();
+-
+-	/* append property to the prop list of symbol */
+-	if (sym) {
+-		for (propp = &sym->prop; *propp; propp = &(*propp)->next)
+-			;
+-		*propp = prop;
+-	}
+-
+-	return prop;
+-}
+-
+ struct symbol *prop_get_symbol(struct property *prop)
+ {
+ 	if (prop->expr && (prop->expr->type == E_SYMBOL ||
 -- 
 2.25.1
 
