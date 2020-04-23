@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jR9pM-0000vv-W3
- for barebox@lists.infradead.org; Wed, 22 Apr 2020 07:29:50 +0000
-References: <20200415093600.1662643-1-ahmad@a3f.at>
- <20200420140824.GE1694@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <65f0737a-3853-c266-26fd-3d14c3e1bbf0@pengutronix.de>
-Date: Wed, 22 Apr 2020 09:29:47 +0200
+ id 1jRVNn-00083t-L1
+ for barebox@lists.infradead.org; Thu, 23 Apr 2020 06:30:50 +0000
+Date: Thu, 23 Apr 2020 08:30:45 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200423063045.GV1694@pengutronix.de>
+References: <20200422073517.64477-1-ahmad@a3f.at>
 MIME-Version: 1.0
-In-Reply-To: <20200420140824.GE1694@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20200422073517.64477-1-ahmad@a3f.at>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,32 +22,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] startup: add $global.autoboot to make behavior
- configurable
-To: Sascha Hauer <s.hauer@pengutronix.de>, Ahmad Fatoum <ahmad@a3f.at>
+Subject: Re: [PATCH v2 1/3] startup: rename AUTOBOOT_UNKNOWN to more
+ descriptive AUTOBOOT_COUNTDOWN
+To: Ahmad Fatoum <ahmad@a3f.at>
 Cc: barebox@lists.infradead.org
 
-Hi,
-
-On 4/20/20 4:08 PM, Sascha Hauer wrote:
->> +	globalvar_add_simple_enum("autoboot",
->> +				  &autoboot_state,
->> +				  autoboot_states,
->> +				  ARRAY_SIZE(autoboot_states));
+On Wed, Apr 22, 2020 at 09:35:15AM +0200, Ahmad Fatoum wrote:
+> If we export the autoboot state variable for customization, having
+> unknown as default is not so helpful. Rename it to what actually happens
+> (abortable countdown).
 > 
-> Please add a MAGICVAR description for this.
+> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+> ---
+> v1 -> v2:
+>   * New commit
+> ---
+>  common/startup.c | 4 ++--
+>  include/common.h | 2 +-
+>  2 files changed, 3 insertions(+), 3 deletions(-)
 
-Will do.
+Applied, thanks
 
-> Setting it to AUTOBOOT_BOOT seems a bit dangerous, there's no way back
-> if booting goes wrong.
+Sascha
 
-You can still abort init itself with ctrl+c, not much different than when
-using normal countdown.
-
-> 
-> Sascha
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
