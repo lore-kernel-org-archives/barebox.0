@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x241.google.com ([2a00:1450:4864:20::241])
+Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jRYyc-0007SF-K1
- for barebox@lists.infradead.org; Thu, 23 Apr 2020 10:21:04 +0000
-Received: by mail-lj1-x241.google.com with SMTP id n6so5593533ljg.12
- for <barebox@lists.infradead.org>; Thu, 23 Apr 2020 03:20:59 -0700 (PDT)
-Date: Thu, 23 Apr 2020 13:20:55 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20200423132055.eb6f2d1918b736c92c026d69@gmail.com>
-In-Reply-To: <20200423081712.4022-1-cleger@kalray.eu>
+ id 1jRZgS-0000Xv-LH
+ for barebox@lists.infradead.org; Thu, 23 Apr 2020 11:06:22 +0000
+Date: Thu, 23 Apr 2020 13:06:17 +0200 (CEST)
+From: =?utf-8?Q?Cl=C3=A9ment?= Leger <cleger@kalray.eu>
+Message-ID: <422912487.17009323.1587639977653.JavaMail.zimbra@kalray.eu>
+In-Reply-To: <20200423132055.eb6f2d1918b736c92c026d69@gmail.com>
 References: <20200423081712.4022-1-cleger@kalray.eu>
-Mime-Version: 1.0
+ <20200423132055.eb6f2d1918b736c92c026d69@gmail.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,86 +18,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v2 0/6] elf: add better bootm support
-To: Clement Leger <cleger@kalray.eu>
-Cc: barebox@lists.infradead.org
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Thu, 23 Apr 2020 10:17:05 +0200
-Clement Leger <cleger@kalray.eu> wrote:
-
-Hi, Clement
-
-Just FYI. On MIPS barebox I use out-of-tree kexec-based ELF loader.
-
-This efforts started in 2012 (sic!):
-http://lists.infradead.org/pipermail/barebox/2012-December/011771.html
-
-Alas! kexec patches are not mainlined still.
-
-public kexec patches are available in my github repo, e.g.
-https://github.com/frantony/barebox/commits/20170319.mips-malta-elf-linux
-
-If your are interested in using kexec-style ELF loading I can prepare
-patches on top of latest barebox master.
-
-> Currently, when booting an elf file using "bootm /dev/mtdx", bootm will
-> simply pass the file to the bootm and the read done on it will read the
-> entire flash partition. This series starts by some cleanup and then add an
-> elf_open function to load the elf file size only based on the elf header.
-> A special handling for the elf file is also added in bootm data to allow
-> using directly the elf file structure. Finally the mips bootm is modified
-> to use bootm elf loading capability.
-> =
-
-> Changes v1 -> v2
->  - Add BOOTM_ELF config to select elf support and add checks in code
->  - Add an elf_get_mem_size function to avoid computing elf size in bootm.c
->  - Use xmalloc and read_full in elf_open instead of xzalloc/read
->  - Fix data->elf NULL reset
->  - Remove elf struct entirely from mips bootm code
-> =
-
-> Clement Leger (6):
->   common: elf: add computation of elf boundaries
->   common: elf: fix warning on 32 bits architectures
->   common: elf: split init to be reused from other function
->   common: elf: add elf_open and elf_close
->   common: bootm: add support for elf file loading
->   mips: lib: bootm: use bootm elf loading capabilities
-> =
-
->  arch/mips/lib/bootm.c |  27 +++--------
->  common/Kconfig        |   8 ++++
->  common/bootm.c        |  30 ++++++++++++
->  common/elf.c          | 107 ++++++++++++++++++++++++++++++++++++++++--
->  include/bootm.h       |   3 ++
->  include/elf.h         |  14 ++++++
->  6 files changed, 164 insertions(+), 25 deletions(-)
-> =
-
-> -- =
-
-> 2.17.1
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
-
--- =
-
-Best regards,
-=A0 Antony Pavlov
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgQW50b255LAoKLS0tLS0gT24gMjMgQXByLCAyMDIwLCBhdCAxMjoyMCwgQW50b255IFBhdmxv
+diBhbnRvbnlucGF2bG92QGdtYWlsLmNvbSB3cm90ZToKCj4gT24gVGh1LCAyMyBBcHIgMjAyMCAx
+MDoxNzowNSArMDIwMAo+IENsZW1lbnQgTGVnZXIgPGNsZWdlckBrYWxyYXkuZXU+IHdyb3RlOgo+
+IAo+IEhpLCBDbGVtZW50Cj4gCj4gSnVzdCBGWUkuIE9uIE1JUFMgYmFyZWJveCBJIHVzZSBvdXQt
+b2YtdHJlZSBrZXhlYy1iYXNlZCBFTEYgbG9hZGVyLgo+IAo+IFRoaXMgZWZmb3J0cyBzdGFydGVk
+IGluIDIwMTIgKHNpYyEpOgo+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL3BpcGVybWFpbC9i
+YXJlYm94LzIwMTItRGVjZW1iZXIvMDExNzcxLmh0bWwKPiAKPiBBbGFzISBrZXhlYyBwYXRjaGVz
+IGFyZSBub3QgbWFpbmxpbmVkIHN0aWxsLgo+IAo+IHB1YmxpYyBrZXhlYyBwYXRjaGVzIGFyZSBh
+dmFpbGFibGUgaW4gbXkgZ2l0aHViIHJlcG8sIGUuZy4KPiBodHRwczovL2dpdGh1Yi5jb20vZnJh
+bnRvbnkvYmFyZWJveC9jb21taXRzLzIwMTcwMzE5Lm1pcHMtbWFsdGEtZWxmLWxpbnV4Cj4gCj4g
+SWYgeW91ciBhcmUgaW50ZXJlc3RlZCBpbiB1c2luZyBrZXhlYy1zdHlsZSBFTEYgbG9hZGluZyBJ
+IGNhbiBwcmVwYXJlCj4gcGF0Y2hlcyBvbiB0b3Agb2YgbGF0ZXN0IGJhcmVib3ggbWFzdGVyLgoK
+SWYgSSB1bmRlcnN0YW5kIGNvcnJlY3RseSwgdGhlIG1haW4gYWR2YW50YWdlIGlzIHRvIGJlIGFi
+bGUgdG8gbG9hZCBzb21lIGNvZGUKb3ZlciB0aGUgY3VycmVudGx5IHJ1bm5pbmcgY29kZSBieSB1
+c2luZyBzb21lIHNvcnQgb2YgInJlbG9jYXRpb24iIHJpZ2h0ID8KQ3VycmVudGx5LCBvbiBLVlgs
+IHdlIGxvYWQgTGludXggaW4gdGhlIGJlZ2lubmluZyBvZiB0aGUgRERSIGFuZCBiYXJlYm94IGlz
+CmF0IEREUiBiYXNlICsgMjU2TW8gc28gd2UgZG9uJ3QgaGF2ZSBvdmVybGFwcGluZy4gQnV0IEkg
+YmV0IHRoYXQgaWYgd2UKaGFkIHRoYXQgaXQgd291bGQgYmUgdXNlZnVsLgoKQW55d2F5LCBldmVu
+IGlmIHdlIGRvbid0IG5lZWQgaXQgcmlnaHQgbm93LCB0aGF0J3MgYSByZWFsbHkgbmljZSBmZWF0
+dXJlICEKCkZyb20gd2hhdCBJIHNlZSBmcm9tIHlvdXIgY29tbWl0LCBJIHRoaW5rIGEgcGFydCBv
+ZiBpdCBjb3VsZCBiZSBpbnRlZ3JhdGVkIGluCnRoZSBleGlzdGluZyAgZWxmIHBhcnNlciAoaW4g
+ZWxmX3JlcXVlc3RfcmVnaW9uKSBhbmQgYWRkIHRoZSBzZWdtZW50CmluZm9ybWF0aW9uIGluIGVs
+Zl9zZWN0aW9uIHN0cnVjdCAodGhlIG5hbWUgaXMgbm90IHJlYWxseSBtZWFuaW5nZnVsCnNpbmNl
+IGl0IHN0b3JlcyB0aGUgZWxmIHNlZ21lbnRzIDpEKS4gQW5kIHRoZW4gYSBib290bSBvcHRpb24g
+d291bGQgYWxsb3cKc2V0dGluZyBhbiAib2Zmc2V0IiBhdCB3aGljaCB3aWxsIGJlIGxvYWRlZCB0
+aGUgZWxmIHdhaXRpbmcgdG8gYmUgcmVsb2NhdGVkCmFuZCB0aGVuIGNhbGwgdGhlIGFyY2ggYXNz
+ZW1ibHkgY29kZSB0byBkbyB0aGUgcmVsb2NhdGlvbiBhbmQgYm9vdCA/CgpCVFcsIGl0IG1ha2Vz
+IG1lIHJlYWxpemUgdGhhdCBjdXJyZW50bHksIHRoZSBlbGYgaXMgbG9hZGVkIHdoZW4gZG9pbmcg
+dGhlCmVsZl9vcGVuIGFuZCBub3QgaXQgd291bGQgcHJvYmFibHkgYmUgYmV0dGVyIHRvIGRvIGl0
+IGluIGJvb3RtX2xvYWRfb3MgYXMKZm9yIG90aGVyIGZpbGUgZm9ybWF0LiBUaGlzIHdvdWxkIGFs
+bG93IHRvIG9wZW4gdGhlIGVsZiBmaWxlIG9ubHkgaW4gdGhlCmZpcnN0IHRpbWUgYW5kIGxvYWQg
+aXQgbGF0ZXIgYW5kIGNvdWxkIHByb2JhYmx5IGhlbHAgeW91IHRvIGludGVncmF0ZQprZXhlYyAo
+aWUgbG9hZCBlbGYgZmlsZSBvbmx5KSBhbmQgdGhlbiBkbyBzb21lIGtleGVjIG1hZ2ljIHdpdGgg
+dGhlIGVsZgpzdHJ1Y3QuClRlbGwgbWUgaWYgeW91IHRoaW5rIG90aGVyIGltcHJvdmVtZW50cyBj
+YW4gYmUgbWFkZS4KClJlZ2FyZHMsCgpDbMOpbWVudAoKPiAKPj4gQ3VycmVudGx5LCB3aGVuIGJv
+b3RpbmcgYW4gZWxmIGZpbGUgdXNpbmcgImJvb3RtIC9kZXYvbXRkeCIsIGJvb3RtIHdpbGwKPj4g
+c2ltcGx5IHBhc3MgdGhlIGZpbGUgdG8gdGhlIGJvb3RtIGFuZCB0aGUgcmVhZCBkb25lIG9uIGl0
+IHdpbGwgcmVhZCB0aGUKPj4gZW50aXJlIGZsYXNoIHBhcnRpdGlvbi4gVGhpcyBzZXJpZXMgc3Rh
+cnRzIGJ5IHNvbWUgY2xlYW51cCBhbmQgdGhlbiBhZGQgYW4KPj4gZWxmX29wZW4gZnVuY3Rpb24g
+dG8gbG9hZCB0aGUgZWxmIGZpbGUgc2l6ZSBvbmx5IGJhc2VkIG9uIHRoZSBlbGYgaGVhZGVyLgo+
+PiBBIHNwZWNpYWwgaGFuZGxpbmcgZm9yIHRoZSBlbGYgZmlsZSBpcyBhbHNvIGFkZGVkIGluIGJv
+b3RtIGRhdGEgdG8gYWxsb3cKPj4gdXNpbmcgZGlyZWN0bHkgdGhlIGVsZiBmaWxlIHN0cnVjdHVy
+ZS4gRmluYWxseSB0aGUgbWlwcyBib290bSBpcyBtb2RpZmllZAo+PiB0byB1c2UgYm9vdG0gZWxm
+IGxvYWRpbmcgY2FwYWJpbGl0eS4KPj4gCj4+IENoYW5nZXMgdjEgLT4gdjIKPj4gIC0gQWRkIEJP
+T1RNX0VMRiBjb25maWcgdG8gc2VsZWN0IGVsZiBzdXBwb3J0IGFuZCBhZGQgY2hlY2tzIGluIGNv
+ZGUKPj4gIC0gQWRkIGFuIGVsZl9nZXRfbWVtX3NpemUgZnVuY3Rpb24gdG8gYXZvaWQgY29tcHV0
+aW5nIGVsZiBzaXplIGluIGJvb3RtLmMKPj4gIC0gVXNlIHhtYWxsb2MgYW5kIHJlYWRfZnVsbCBp
+biBlbGZfb3BlbiBpbnN0ZWFkIG9mIHh6YWxsb2MvcmVhZAo+PiAgLSBGaXggZGF0YS0+ZWxmIE5V
+TEwgcmVzZXQKPj4gIC0gUmVtb3ZlIGVsZiBzdHJ1Y3QgZW50aXJlbHkgZnJvbSBtaXBzIGJvb3Rt
+IGNvZGUKPj4gCj4+IENsZW1lbnQgTGVnZXIgKDYpOgo+PiAgIGNvbW1vbjogZWxmOiBhZGQgY29t
+cHV0YXRpb24gb2YgZWxmIGJvdW5kYXJpZXMKPj4gICBjb21tb246IGVsZjogZml4IHdhcm5pbmcg
+b24gMzIgYml0cyBhcmNoaXRlY3R1cmVzCj4+ICAgY29tbW9uOiBlbGY6IHNwbGl0IGluaXQgdG8g
+YmUgcmV1c2VkIGZyb20gb3RoZXIgZnVuY3Rpb24KPj4gICBjb21tb246IGVsZjogYWRkIGVsZl9v
+cGVuIGFuZCBlbGZfY2xvc2UKPj4gICBjb21tb246IGJvb3RtOiBhZGQgc3VwcG9ydCBmb3IgZWxm
+IGZpbGUgbG9hZGluZwo+PiAgIG1pcHM6IGxpYjogYm9vdG06IHVzZSBib290bSBlbGYgbG9hZGlu
+ZyBjYXBhYmlsaXRpZXMKPj4gCj4+ICBhcmNoL21pcHMvbGliL2Jvb3RtLmMgfCAgMjcgKysrLS0t
+LS0tLS0KPj4gIGNvbW1vbi9LY29uZmlnICAgICAgICB8ICAgOCArKysrCj4+ICBjb21tb24vYm9v
+dG0uYyAgICAgICAgfCAgMzAgKysrKysrKysrKysrCj4+ICBjb21tb24vZWxmLmMgICAgICAgICAg
+fCAxMDcgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKy0tCj4+ICBpbmNs
+dWRlL2Jvb3RtLmggICAgICAgfCAgIDMgKysKPj4gIGluY2x1ZGUvZWxmLmggICAgICAgICB8ICAx
+NCArKysrKysKPj4gIDYgZmlsZXMgY2hhbmdlZCwgMTY0IGluc2VydGlvbnMoKyksIDI1IGRlbGV0
+aW9ucygtKQo+PiAKPj4gLS0KPj4gMi4xNy4xCj4+IAo+PiAKPj4gX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPj4gYmFyZWJveCBtYWlsaW5nIGxpc3QKPj4g
+YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCj4+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
+L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo+IAo+IAo+IC0tCj4gQmVzdCByZWdhcmRzLAo+IMKg
+IEFudG9ueSBQYXZsb3YKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpo
+dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
