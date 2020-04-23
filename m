@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from zimbra2.kalray.eu ([92.103.151.219])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jRDRh-0007Hw-UX
- for barebox@lists.infradead.org; Wed, 22 Apr 2020 11:21:39 +0000
-From: Clement Leger <cleger@kalray.eu>
-Date: Wed, 22 Apr 2020 13:21:19 +0200
-Message-Id: <20200422112119.23181-7-cleger@kalray.eu>
-In-Reply-To: <20200422112119.23181-1-cleger@kalray.eu>
-References: <20200422112119.23181-1-cleger@kalray.eu>
+ id 1jRVwd-0003ER-S1
+ for barebox@lists.infradead.org; Thu, 23 Apr 2020 07:06:49 +0000
+Date: Thu, 23 Apr 2020 09:06:45 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200423070645.GY1694@pengutronix.de>
+References: <20200422113952.9900-1-a.schwarzkopf@phytec.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200422113952.9900-1-a.schwarzkopf@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,59 +18,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/6] mips: lib: bootm: use new data->elf member
-To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
-Cc: Clement Leger <cleger@kalray.eu>
+Subject: Re: [PATCH] common: bootm: Enforce CONFIG_BOOTM_FORCE_SIGNED_IMAGES
+ for TEE bins
+To: Albert Schwarzkopf <a.schwarzkopf@phytec.de>
+Cc: barebox@lists.infradead.org
 
-Now that the elf file is loaded by the bootm core, use this field
-directly instead of manually loading the elf file.
+On Wed, Apr 22, 2020 at 01:39:52PM +0200, Albert Schwarzkopf wrote:
+> Currently, unsigned TEE binaries can be booted. This patch ensures
+> that CONFIG_BOOTM_FORCE_SIGNED_IMAGES is also enforced for TEE
+> binaries.
+> 
+> Signed-off-by: Albert Schwarzkopf <a.schwarzkopf@phytec.de>
+> ---
+>  common/bootm.c | 1 +
+>  1 file changed, 1 insertion(+)
 
-Signed-off-by: Clement Leger <cleger@kalray.eu>
----
- arch/mips/lib/bootm.c | 13 ++-----------
- 1 file changed, 2 insertions(+), 11 deletions(-)
+Applied, thanks
 
-diff --git a/arch/mips/lib/bootm.c b/arch/mips/lib/bootm.c
-index 5bb09cc2d..1e5fdd4ae 100644
---- a/arch/mips/lib/bootm.c
-+++ b/arch/mips/lib/bootm.c
-@@ -46,18 +46,10 @@ static struct binfmt_hook binfmt_barebox_hook = {
- static int do_bootm_elf(struct image_data *data)
- {
- 	void (*entry)(int, void *);
--	struct elf_image *elf;
--	void *fdt, *buf;
-+	struct elf_image *elf = data->elf;
-+	void *fdt;
- 	int ret = 0;
- 
--	buf = read_file(data->os_file, NULL);
--	if (!buf)
--		return -EINVAL;
--
--	elf = elf_load_image(buf);
--	if (IS_ERR(elf))
--		return PTR_ERR(elf);
--
- 	fdt = bootm_get_devicetree(data);
- 	if (IS_ERR(fdt)) {
- 		ret = PTR_ERR(fdt);
-@@ -82,7 +74,6 @@ static int do_bootm_elf(struct image_data *data)
- bootm_elf_done:
- 	elf_release_image(elf);
- 	free(fdt);
--	free(buf);
- 
- 	return ret;
- }
+Sascha
+
 -- 
-2.17.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
