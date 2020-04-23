@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from zimbra2.kalray.eu ([92.103.151.219])
+Received: from mail-lj1-x241.google.com ([2a00:1450:4864:20::241])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jRX5a-00027K-2I
- for barebox@lists.infradead.org; Thu, 23 Apr 2020 08:20:07 +0000
-Date: Thu, 23 Apr 2020 10:20:04 +0200 (CEST)
-From: =?utf-8?Q?Cl=C3=A9ment?= Leger <cleger@kalray.eu>
-Message-ID: <2053652965.16952554.1587630004198.JavaMail.zimbra@kalray.eu>
-In-Reply-To: <20200423081712.4022-8-cleger@kalray.eu>
+ id 1jRYyc-0007SF-K1
+ for barebox@lists.infradead.org; Thu, 23 Apr 2020 10:21:04 +0000
+Received: by mail-lj1-x241.google.com with SMTP id n6so5593533ljg.12
+ for <barebox@lists.infradead.org>; Thu, 23 Apr 2020 03:20:59 -0700 (PDT)
+Date: Thu, 23 Apr 2020 13:20:55 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20200423132055.eb6f2d1918b736c92c026d69@gmail.com>
+In-Reply-To: <20200423081712.4022-1-cleger@kalray.eu>
 References: <20200423081712.4022-1-cleger@kalray.eu>
- <20200423081712.4022-8-cleger@kalray.eu>
-MIME-Version: 1.0
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,37 +19,86 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 6/6] mips: lib: bootm: use new data->elf member
-To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH v2 0/6] elf: add better bootm support
+To: Clement Leger <cleger@kalray.eu>
+Cc: barebox@lists.infradead.org
 
-SGksCgotLS0tLSBPbiAyMyBBcHIsIDIwMjAsIGF0IDEwOjE3LCBDbMOpbWVudCBMZWdlciBjbGVn
-ZXJAa2FscmF5LmV1IHdyb3RlOgoKPiBOb3cgdGhhdCB0aGUgZWxmIGZpbGUgaXMgbG9hZGVkIGJ5
-IHRoZSBib290bSBjb3JlLCB1c2UgdGhpcyBmaWVsZAo+IGRpcmVjdGx5IGluc3RlYWQgb2YgbWFu
-dWFsbHkgbG9hZGluZyB0aGUgZWxmIGZpbGUuCj4gCj4gU2lnbmVkLW9mZi1ieTogQ2xlbWVudCBM
-ZWdlciA8Y2xlZ2VyQGthbHJheS5ldT4KPiAtLS0KPiBhcmNoL21pcHMvbGliL2Jvb3RtLmMgfCAx
-MyArKy0tLS0tLS0tLS0tCj4gMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMTEgZGVs
-ZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBhL2FyY2gvbWlwcy9saWIvYm9vdG0uYyBiL2FyY2gv
-bWlwcy9saWIvYm9vdG0uYwo+IGluZGV4IDViYjA5Y2MyZC4uMWU1ZmRkNGFlIDEwMDY0NAo+IC0t
-LSBhL2FyY2gvbWlwcy9saWIvYm9vdG0uYwo+ICsrKyBiL2FyY2gvbWlwcy9saWIvYm9vdG0uYwo+
-IEBAIC00NiwxOCArNDYsMTAgQEAgc3RhdGljIHN0cnVjdCBiaW5mbXRfaG9vayBiaW5mbXRfYmFy
-ZWJveF9ob29rID0gewo+IHN0YXRpYyBpbnQgZG9fYm9vdG1fZWxmKHN0cnVjdCBpbWFnZV9kYXRh
-ICpkYXRhKQo+IHsKPiAJdm9pZCAoKmVudHJ5KShpbnQsIHZvaWQgKik7Cj4gLQlzdHJ1Y3QgZWxm
-X2ltYWdlICplbGY7Cj4gLQl2b2lkICpmZHQsICpidWY7Cj4gKwlzdHJ1Y3QgZWxmX2ltYWdlICpl
-bGYgPSBkYXRhLT5lbGY7Cj4gKwl2b2lkICpmZHQ7Cj4gCWludCByZXQgPSAwOwo+IAo+IC0JYnVm
-ID0gcmVhZF9maWxlKGRhdGEtPm9zX2ZpbGUsIE5VTEwpOwo+IC0JaWYgKCFidWYpCj4gLQkJcmV0
-dXJuIC1FSU5WQUw7Cj4gLQo+IC0JZWxmID0gZWxmX2xvYWRfaW1hZ2UoYnVmKTsKPiAtCWlmIChJ
-U19FUlIoZWxmKSkKPiAtCQlyZXR1cm4gUFRSX0VSUihlbGYpOwo+IC0KPiAJZmR0ID0gYm9vdG1f
-Z2V0X2RldmljZXRyZWUoZGF0YSk7Cj4gCWlmIChJU19FUlIoZmR0KSkgewo+IAkJcmV0ID0gUFRS
-X0VSUihmZHQpOwo+IEBAIC04Miw3ICs3NCw2IEBAIHN0YXRpYyBpbnQgZG9fYm9vdG1fZWxmKHN0
-cnVjdCBpbWFnZV9kYXRhICpkYXRhKQo+IGJvb3RtX2VsZl9kb25lOgo+IAllbGZfcmVsZWFzZV9p
-bWFnZShlbGYpOwo+IAlmcmVlKGZkdCk7Cj4gLQlmcmVlKGJ1Zik7Cj4gCj4gCXJldHVybiByZXQ7
-Cj4gfQoKSSdtIHNvcnJ5LCBUaGlzIHBhdGNoIGlzIGEgbGVmdG92ZXIgZnJvbSBteSBwcmV2aW91
-cyBzZXJpZSBhbmQgYXMgc3VjaCBzaG91bGQgYmUgZHJvcHBlZC4KVGhlIG90aGVyIG1pcHMgcGF0
-Y2ggY2xlYW5zIHRoZSBNSVBTIGVsZiBsb2FkaW5nIGNvZGUgbW9yZSB0aG9yb3VnaGx5LgoKPiAt
-LQo+IDIuMTcuMQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
-Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Thu, 23 Apr 2020 10:17:05 +0200
+Clement Leger <cleger@kalray.eu> wrote:
+
+Hi, Clement
+
+Just FYI. On MIPS barebox I use out-of-tree kexec-based ELF loader.
+
+This efforts started in 2012 (sic!):
+http://lists.infradead.org/pipermail/barebox/2012-December/011771.html
+
+Alas! kexec patches are not mainlined still.
+
+public kexec patches are available in my github repo, e.g.
+https://github.com/frantony/barebox/commits/20170319.mips-malta-elf-linux
+
+If your are interested in using kexec-style ELF loading I can prepare
+patches on top of latest barebox master.
+
+> Currently, when booting an elf file using "bootm /dev/mtdx", bootm will
+> simply pass the file to the bootm and the read done on it will read the
+> entire flash partition. This series starts by some cleanup and then add an
+> elf_open function to load the elf file size only based on the elf header.
+> A special handling for the elf file is also added in bootm data to allow
+> using directly the elf file structure. Finally the mips bootm is modified
+> to use bootm elf loading capability.
+> =
+
+> Changes v1 -> v2
+>  - Add BOOTM_ELF config to select elf support and add checks in code
+>  - Add an elf_get_mem_size function to avoid computing elf size in bootm.c
+>  - Use xmalloc and read_full in elf_open instead of xzalloc/read
+>  - Fix data->elf NULL reset
+>  - Remove elf struct entirely from mips bootm code
+> =
+
+> Clement Leger (6):
+>   common: elf: add computation of elf boundaries
+>   common: elf: fix warning on 32 bits architectures
+>   common: elf: split init to be reused from other function
+>   common: elf: add elf_open and elf_close
+>   common: bootm: add support for elf file loading
+>   mips: lib: bootm: use bootm elf loading capabilities
+> =
+
+>  arch/mips/lib/bootm.c |  27 +++--------
+>  common/Kconfig        |   8 ++++
+>  common/bootm.c        |  30 ++++++++++++
+>  common/elf.c          | 107 ++++++++++++++++++++++++++++++++++++++++--
+>  include/bootm.h       |   3 ++
+>  include/elf.h         |  14 ++++++
+>  6 files changed, 164 insertions(+), 25 deletions(-)
+> =
+
+> -- =
+
+> 2.17.1
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+
+-- =
+
+Best regards,
+=A0 Antony Pavlov
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
