@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from zimbra2.kalray.eu ([92.103.151.219])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jRX30-0001Dz-2V
- for barebox@lists.infradead.org; Thu, 23 Apr 2020 08:17:27 +0000
-From: Clement Leger <cleger@kalray.eu>
-Date: Thu, 23 Apr 2020 10:17:06 +0200
-Message-Id: <20200423081712.4022-2-cleger@kalray.eu>
-In-Reply-To: <20200423081712.4022-1-cleger@kalray.eu>
-References: <20200423081712.4022-1-cleger@kalray.eu>
+ id 1jRYuJ-0001UA-VJ
+ for barebox@lists.infradead.org; Thu, 23 Apr 2020 10:16:38 +0000
+Date: Thu, 23 Apr 2020 12:16:31 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20200423101631.rwqopetiy52nr77r@pengutronix.de>
+References: <20200421211545.32353-1-u.kleine-koenig@pengutronix.de>
+ <20200421211545.32353-2-u.kleine-koenig@pengutronix.de>
+ <20200423081324.tzfe67tx4ah7krnm@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200423081324.tzfe67tx4ah7krnm@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,74 +20,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/6] common: elf: add computation of elf boundaries
-To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
-Cc: Clement Leger <cleger@kalray.eu>
+Subject: Re: [PATCH v2 2/2] commands/*: Replace license and copyright
+ boilerplate by SPDX identfiers
+To: Roland Hieber <rhi@pengutronix.de>
+Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-In order to correctly load an initrd or a device tree after an elf file,
-we need to know its boundaries. This commit adds support for that and
-allow the bootm implementations to use it for memory loading.
+Hello Roland,
 
-Signed-off-by: Clement Leger <cleger@kalray.eu>
----
- common/elf.c  | 7 +++++++
- include/elf.h | 7 +++++++
- 2 files changed, 14 insertions(+)
+On Thu, Apr 23, 2020 at 10:13:24AM +0200, Roland Hieber wrote:
+> It's already applied now, but for the future, such large patches are
+> really easier to review when they do only one thing at a time (replacing
+> the boilerplate with license identifiers, changing copyright tags,
+> changing old to new identifiers, adding new identifiers etc.).
+> =
 
-diff --git a/common/elf.c b/common/elf.c
-index 4733accb0..d64de401c 100644
---- a/common/elf.c
-+++ b/common/elf.c
-@@ -59,6 +59,11 @@ static int load_elf_phdr_segment(struct elf_image *elf, void *src,
- 	if (!p_filesz)
- 		return 0;
- 
-+	if (dst < elf->low_addr)
-+		elf->low_addr = dst;
-+	if (dst + p_memsz > elf->high_addr)
-+		elf->high_addr = dst + p_memsz;
-+
- 	pr_debug("Loading phdr to 0x%p (%llu bytes)\n", dst, p_filesz);
- 
- 	ret = elf_request_region(elf, (resource_size_t)dst, p_filesz);
-@@ -124,6 +129,8 @@ struct elf_image *elf_load_image(void *buf)
- 	INIT_LIST_HEAD(&elf->list);
- 
- 	elf->buf = buf;
-+	elf->low_addr = (void *) (unsigned long) -1;
-+	elf->high_addr = 0;
- 
- 	ret = elf_check_image(elf);
- 	if (ret)
-diff --git a/include/elf.h b/include/elf.h
-index 113728f08..403412f3f 100644
---- a/include/elf.h
-+++ b/include/elf.h
-@@ -403,9 +403,16 @@ struct elf_image {
- 	struct list_head list;
- 	u8 class;
- 	u64 entry;
-+	void *low_addr;
-+	void *high_addr;
- 	void *buf;
- };
- 
-+static inline size_t elf_get_mem_size(struct elf_image *elf)
-+{
-+	return elf->high_addr - elf->low_addr;
-+}
-+
- struct elf_image *elf_load_image(void *buf);
- void elf_release_image(struct elf_image *elf);
- 
--- 
-2.17.1
+> That that, I couldn't find any errors, but that doesn't mean there
+> aren't any. :)
 
+That's one side of the coin. The other is that several patches touching
+all the same area result in more work to create the patches and make
+patch and commit handling more complicated. While I agree in general
+that one-patch-does-one-thing is a good concept I think for
+rearrangements like this fixing all files in a directory in one go is
+fine. Otherwise the result are patches that just add empty lines before
+comments which IMHO doens't justify a patch. Doing this en passant is
+fine however.
+
+Sascha, what's your position here?
+
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
 _______________________________________________
 barebox mailing list
