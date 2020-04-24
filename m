@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from conuserg-07.nifty.com ([210.131.2.74])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jSxtv-00073x-73
- for barebox@lists.infradead.org; Mon, 27 Apr 2020 07:10:03 +0000
-Date: Mon, 27 Apr 2020 09:09:56 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200427070956.GK5877@pengutronix.de>
-References: <20200421211545.32353-1-u.kleine-koenig@pengutronix.de>
- <20200421211545.32353-2-u.kleine-koenig@pengutronix.de>
- <20200423081324.tzfe67tx4ah7krnm@pengutronix.de>
- <20200423101631.rwqopetiy52nr77r@pengutronix.de>
+ id 1jS3YZ-0000kl-0o
+ for barebox@lists.infradead.org; Fri, 24 Apr 2020 19:00:22 +0000
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Sat, 25 Apr 2020 03:59:23 +0900
+Message-Id: <20200424185924.705754-5-masahiroy@kernel.org>
+In-Reply-To: <20200424185924.705754-1-masahiroy@kernel.org>
+References: <20200424185924.705754-1-masahiroy@kernel.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200423101631.rwqopetiy52nr77r@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,54 +17,194 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 2/2] commands/*: Replace license and copyright
- boilerplate by SPDX identfiers
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>, Roland Hieber <rhi@pengutronix.de>
+Subject: [PATCH 5/6] kbuild: use $(SRCARCH) to point to the arch directory
+To: barebox@lists.infradead.org
+Cc: Masahiro Yamada <masahiroy@kernel.org>
 
-On Thu, Apr 23, 2020 at 12:16:31PM +0200, Uwe Kleine-K=F6nig wrote:
-> Hello Roland,
-> =
+A couple of arch directories in Linux are biarch, that is, a single
+arch/*/ directory supports both 32-bit and 64-bit.
 
-> On Thu, Apr 23, 2020 at 10:13:24AM +0200, Roland Hieber wrote:
-> > It's already applied now, but for the future, such large patches are
-> > really easier to review when they do only one thing at a time (replacing
-> > the boilerplate with license identifiers, changing copyright tags,
-> > changing old to new identifiers, adding new identifiers etc.).
-> > =
+In old days of Linux, they started as separated directories.
+arm/arm64 is the exceptional case, but the other architectures were
+unified.
 
-> > That that, I couldn't find any errors, but that doesn't mean there
-> > aren't any. :)
-> =
+e.g.)
 
-> That's one side of the coin. The other is that several patches touching
-> all the same area result in more work to create the patches and make
-> patch and commit handling more complicated. While I agree in general
-> that one-patch-does-one-thing is a good concept I think for
-> rearrangements like this fixing all files in a directory in one go is
-> fine. Otherwise the result are patches that just add empty lines before
-> comments which IMHO doens't justify a patch. Doing this en passant is
-> fine however.
-> =
+  arch/i386, arch/x86_64    ->  arch/x86
+  arch/sh, arch/sh64        ->  arch/sh
+  arch/sparc, arch/sparc64  ->  arch/sparc
 
-> Sascha, what's your position here?
+Linux commit 6752ed90da03 ("Kbuild: allow arch/xxx to use a different
+source path") introduced SRCARCH to point to the arch directory, still
+allowing to pass in the former ARCH=i386 or ARCH=x86_64.
 
-Well one-patch-does-one-thing is nice and important for me when doing
-code changes, but in this case I think reviewing the patch is
-sufficiently easy, splitting it up is unnecessary work.
+The top Makefile in Linux converts ARCH to SRCARCH as follows:
 
-Sascha
+  # Additional ARCH settings for x86
+  ifeq ($(ARCH),i386)
+          SRCARCH := x86
+  endif
+  ifeq ($(ARCH),x86_64)
+          SRCARCH := x86
+  endif
 
--- =
+So, if you follow the upstream Kbuild convention, using arch/$(SRCARCH)
+is the correct way to point to the arch directory.
 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+---
+
+ Makefile               | 26 +++++++++++++-------------
+ images/Makefile        |  6 +++---
+ scripts/Makefile.build |  2 +-
+ 3 files changed, 17 insertions(+), 17 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index e01a7491a..477741a72 100644
+--- a/Makefile
++++ b/Makefile
+@@ -307,8 +307,8 @@ export MODVERDIR := $(if $(KBUILD_EXTMOD),$(firstword $(KBUILD_EXTMOD))/).tmp_ve
+ # Needed to be compatible with the O= option
+ LINUXINCLUDE    := -Iinclude -I$(srctree)/dts/include \
+                    $(if $(KBUILD_SRC), -I$(srctree)/include) \
+-		   -I$(srctree)/arch/$(ARCH)/include \
+-		   -I$(objtree)/arch/$(ARCH)/include \
++		   -I$(srctree)/arch/$(SRCARCH)/include \
++		   -I$(objtree)/arch/$(SRCARCH)/include \
+                    -include $(srctree)/include/linux/kconfig.h
+ 
+ KBUILD_CPPFLAGS        := -D__KERNEL__ -D__BAREBOX__ $(LINUXINCLUDE) -fno-builtin -ffreestanding
+@@ -424,7 +424,7 @@ ifeq ($(config-targets),1)
+ # Read arch specific Makefile to set KBUILD_DEFCONFIG as needed.
+ # KBUILD_DEFCONFIG may point out an alternative default configuration
+ # used for 'make defconfig'
+-include $(srctree)/arch/$(ARCH)/Makefile
++include $(srctree)/arch/$(SRCARCH)/Makefile
+ export KBUILD_DEFCONFIG
+ 
+ config: scripts_basic outputmakefile FORCE
+@@ -452,7 +452,7 @@ endif
+ # Objects we will link into barebox / subdirs we need to visit
+ common-y		:= common/ drivers/ commands/ lib/ crypto/ net/ fs/ firmware/
+ 
+-include $(srctree)/arch/$(ARCH)/Makefile
++include $(srctree)/arch/$(SRCARCH)/Makefile
+ 
+ ifeq ($(dot-config),1)
+ # Read in dependencies to all Kconfig* files, make sure to run syncconfig if
+@@ -520,7 +520,7 @@ export KBUILD_IMAGE ?= barebox.bin
+ export KBUILD_BINARY ?= barebox.bin
+ # KBUILD_IMAGE and _BINARY may be overruled on the command line or
+ # set in the environment.
+-# Also any assignments in arch/$(ARCH)/Makefile take precedence over
++# Also any assignments in arch/$(SRCARCH)/Makefile take precedence over
+ # the default value.
+ 
+ barebox-flash-image: $(KBUILD_IMAGE) FORCE
+@@ -574,7 +574,7 @@ export DEFAULT_COMPRESSION_SUFFIX
+ # ---------------------------------------------------------------------------
+ # barebox is built from the objects selected by $(barebox-init) and
+ # $(barebox-main). Most are built-in.o files from top-level directories
+-# in the kernel tree, others are specified in arch/$(ARCH)Makefile.
++# in the kernel tree, others are specified in arch/$(SRCARCH)/Makefile.
+ # Ordering when linking is important, and $(barebox-init) must be first.
+ #
+ # FIXME: This picture is wrong for barebox. We have no init, driver, mm
+@@ -601,7 +601,7 @@ export BAREBOX_PBL_OBJS := $(pbl-common-y)
+ BAREBOX_LDS    := $(lds-y)
+ 
+ # Rule to link barebox
+-# May be overridden by arch/$(ARCH)/Makefile
++# May be overridden by arch/$(SRCARCH)/Makefile
+ quiet_cmd_barebox__ ?= LD      $@
+       cmd_barebox__ ?= $(LD) $(KBUILD_LDFLAGS) $(LDFLAGS_barebox) -o $@ \
+       -T $(BAREBOX_LDS)                         \
+@@ -742,7 +742,7 @@ UIMAGE_BASE ?= $(shell printf "0x%08x" $$(($(CONFIG_TEXT_BASE) - 0x200000)))
+ # For development provide a target which makes barebox loadable by an
+ # unmodified u-boot
+ quiet_cmd_barebox_mkimage = MKIMAGE $@
+-      cmd_barebox_mkimage = $(srctree)/scripts/mkimage -A $(ARCH) -T firmware -C none \
++      cmd_barebox_mkimage = $(srctree)/scripts/mkimage -A $(SRCARCH) -T firmware -C none \
+        -O barebox -a $(UIMAGE_BASE) -e $(UIMAGE_BASE) \
+        -n "barebox $(KERNELRELEASE)" -d $< $@
+ 
+@@ -851,9 +851,9 @@ prepare0: archprepare FORCE
+ prepare prepare-all: prepare0
+ 
+ # Leave this as default for preprocessing barebox.lds.S, which is now
+-# done in arch/$(ARCH)/kernel/Makefile
++# done in arch/$(SRCARCH)/kernel/Makefile
+ 
+-export CPPFLAGS_barebox.lds += -C -U$(ARCH)
++export CPPFLAGS_barebox.lds += -C -U$(SRCARCH)
+ 
+ define symlink-config-h
+ 	if [ -f $(srctree)/$(BOARD)/config.h ]; then		\
+@@ -1052,7 +1052,7 @@ rpm: include/config/kernel.release FORCE
+ # Brief documentation of the typical targets used
+ # ---------------------------------------------------------------------------
+ 
+-boards := $(wildcard $(srctree)/arch/$(ARCH)/configs/*_defconfig)
++boards := $(wildcard $(srctree)/arch/$(SRCARCH)/configs/*_defconfig)
+ boards := $(sort $(notdir $(boards)))
+ 
+ help:
+@@ -1080,9 +1080,9 @@ help:
+ 	@echo  '  checkstack      - Generate a list of stack hogs'
+ 	@echo  '  namespacecheck  - Name space analysis on compiled kernel'
+ 	@echo  ''
+-	@echo  'Architecture specific targets ($(ARCH)):'
++	@echo  'Architecture specific targets ($(SRCARCH)):'
+ 	@$(if $(archhelp),$(archhelp),\
+-		echo '  No architecture specific help defined for $(ARCH)')
++		echo '  No architecture specific help defined for $(SRCARCH)')
+ 	@echo  ''
+ 	@$(if $(boards), \
+ 		$(foreach b, $(boards), \
+diff --git a/images/Makefile b/images/Makefile
+index fe29c75e2..0aa4676ae 100644
+--- a/images/Makefile
++++ b/images/Makefile
+@@ -50,7 +50,7 @@ quiet_cmd_objcopy_bin = OBJCOPYB $@
+ pbl-lds := $(obj)/pbl.lds
+ extra-y += $(pbl-lds)
+ 
+-$(pbl-lds): $(obj)/../arch/$(ARCH)/lib/pbl.lds.S FORCE
++$(pbl-lds): $(obj)/../arch/$(SRCARCH)/lib/pbl.lds.S FORCE
+ 	$(call if_changed_dep,cpp_lds_S)
+ 
+ quiet_cmd_elf__ ?= LD      $@
+@@ -139,8 +139,8 @@ $(obj)/%.img: $(obj)/$$(FILE_$$(@F))
+ 	$(Q)if [ -z $(FILE_$(@F)) ]; then echo "FILE_$(@F) empty!"; false; fi
+ 	$(call if_changed,shipped)
+ 
+-board = $(srctree)/arch/$(ARCH)/boards
+-objboard = $(objtree)/arch/$(ARCH)/boards
++board = $(srctree)/arch/$(SRCARCH)/boards
++objboard = $(objtree)/arch/$(SRCARCH)/boards
+ 
+ include $(srctree)/images/Makefile.am33xx
+ include $(srctree)/images/Makefile.am35xx
+diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+index 601a4d9cd..57c946769 100644
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -175,7 +175,7 @@ cmd_modversions =							\
+ 	if $(OBJDUMP) -h $(@D)/.tmp_$(@F) | grep -q __ksymtab; then	\
+ 		$(CPP) -D__GENKSYMS__ $(c_flags) $<			\
+ 		| $(GENKSYMS) $(if $(KBUILD_SYMTYPES),			\
+-			      -T $(@D)/$(@F:.o=.symtypes)) -a $(ARCH)	\
++			      -T $(@D)/$(@F:.o=.symtypes)) 		\
+ 		> $(@D)/.tmp_$(@F:.o=.ver);				\
+ 									\
+ 		$(LD) $(KBUILD_LDFLAGS) -r -o $@ $(@D)/.tmp_$(@F) 		\
+-- 
+2.25.1
+
 
 _______________________________________________
 barebox mailing list
