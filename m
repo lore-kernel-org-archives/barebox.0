@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from conuserg-07.nifty.com ([210.131.2.74])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jS3Y8-0007mD-9L
- for barebox@lists.infradead.org; Fri, 24 Apr 2020 18:59:45 +0000
+ id 1jS3Y8-0007mE-9K
+ for barebox@lists.infradead.org; Fri, 24 Apr 2020 18:59:47 +0000
 From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Sat, 25 Apr 2020 03:59:22 +0900
-Message-Id: <20200424185924.705754-4-masahiroy@kernel.org>
+Date: Sat, 25 Apr 2020 03:59:21 +0900
+Message-Id: <20200424185924.705754-3-masahiroy@kernel.org>
 In-Reply-To: <20200424185924.705754-1-masahiroy@kernel.org>
 References: <20200424185924.705754-1-masahiroy@kernel.org>
 MIME-Version: 1.0
@@ -21,41 +21,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/6] kbuild: make DEFCONFIG_LIST work
+Subject: [PATCH 3/6] kbuild: swap the include order of arch Makefile and
+ auto.conf.cmd
 To: barebox@lists.infradead.org
 Cc: Masahiro Yamada <masahiroy@kernel.org>
 
-Most of the Kconfig commands (except defconfig and all*config) read
-the .config file as a base set of CONFIG options.
+Include
 
-When it does not exist, the files in DEFCONFIG_LIST are searched in
-this order and loaded if found.
+  include/config/auto.conf
+  arch/$(ARCH)/Makefile
+  include/config/auto.conf.cmd
 
-This is not working for barebox because ARCH_DEFCONFIG is not set by
-anyone, nor arch/$(ARCH)/defconfig exists.
+in this order, which is the same as the current Linux does.
 
-Fix this.
+auto.conf.cmd contains the environment variables that were referenced
+from Kconfig files. If an environment variable defined in arch Makefile
+is referenced from Kconfig files, Kbuild would end up with eternal
+synconfig loop.
 
 Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 ---
 
- common/Kconfig | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ Makefile | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/common/Kconfig b/common/Kconfig
-index 400c0553c..893bdeaff 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -1,8 +1,7 @@
- config DEFCONFIG_LIST
- 	string
- 	option defconfig_list
--	default ARCH_DEFCONFIG
--	default "arch/$(ARCH)/defconfig"
-+	default "arch/$(SRCARCH)/configs/$(KBUILD_DEFCONFIG)"
+diff --git a/Makefile b/Makefile
+index 797ed214a..e01a7491a 100644
+--- a/Makefile
++++ b/Makefile
+@@ -445,12 +445,16 @@ PHONY += scripts
+ scripts: scripts_basic
+ 	$(Q)$(MAKE) $(build)=$(@)
  
- config GREGORIAN_CALENDER
- 	bool
++ifeq ($(dot-config),1)
++include include/config/auto.conf
++endif
++
+ # Objects we will link into barebox / subdirs we need to visit
+ common-y		:= common/ drivers/ commands/ lib/ crypto/ net/ fs/ firmware/
+ 
+-ifeq ($(dot-config),1)
+-include include/config/auto.conf
++include $(srctree)/arch/$(ARCH)/Makefile
+ 
++ifeq ($(dot-config),1)
+ # Read in dependencies to all Kconfig* files, make sure to run syncconfig if
+ # changes are detected. This should be included after arch/$(SRCARCH)/Makefile
+ # because some architectures define CROSS_COMPILE there.
+@@ -476,8 +480,6 @@ $(KCONFIG_CONFIG):
+ 	$(Q)$(MAKE) -f $(srctree)/Makefile syncconfig
+ endif # $(dot-config)
+ 
+-include $(srctree)/arch/$(ARCH)/Makefile
+-
+ KBUILD_CFLAGS		+= -ggdb3
+ 
+ # Force gcc to behave correct even for buggy distributions
 -- 
 2.25.1
 
