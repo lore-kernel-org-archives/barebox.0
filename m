@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from relay5-d.mail.gandi.net ([217.70.183.197])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jSz88-0006zn-BG
- for barebox@lists.infradead.org; Mon, 27 Apr 2020 08:28:48 +0000
+ id 1jSxxr-0001cS-Of
+ for barebox@lists.infradead.org; Mon, 27 Apr 2020 07:14:05 +0000
+Received: from geraet.fritz.box (muedsl-82-207-202-020.citykom.de
+ [82.207.202.20]) (Authenticated sender: ahmad@a3f.at)
+ by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 6C4821C0005
+ for <barebox@lists.infradead.org>; Mon, 27 Apr 2020 07:13:59 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Mon, 27 Apr 2020 09:13:51 +0200
+Message-Id: <20200427071351.467859-3-ahmad@a3f.at>
+In-Reply-To: <20200427071351.467859-1-ahmad@a3f.at>
 References: <20200427071351.467859-1-ahmad@a3f.at>
- <20200427080727.GO5877@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <ccef9a1d-0887-7573-966d-fee2eba57907@pengutronix.de>
-Date: Mon, 27 Apr 2020 10:28:42 +0200
 MIME-Version: 1.0
-In-Reply-To: <20200427080727.GO5877@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,55 +25,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] ARM: i.MX: boot: correctly handle SRC_SBMR1 override
- via SRC_GPR9
-To: Sascha Hauer <s.hauer@pengutronix.de>, Ahmad Fatoum <ahmad@a3f.at>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 3/3] ARM: i.MX6: boot: handle i.MX6UL differences
+To: barebox@lists.infradead.org
 
-Hello,
+The i.MX6UL differs from the i.MX6Q in the interpretation of the first
+two values for BOOT_CFG(7, 4):
 
-On 4/27/20 10:07 AM, Sascha Hauer wrote:
-> On Mon, Apr 27, 2020 at 09:13:49AM +0200, Ahmad Fatoum wrote:
->> `mw 0x20d8040 0x08000030; mw 0x20d8044 0x10000000; reset` issued on an
->> i.MX6Q forces boot from the ecspi1. This is because the BootROM reads
->> the boot mode out of SRC_GPR9 instead of SRC_SBMR1 whenever SRC_GPR10
->> has its 28th bit set.
-> 
-> Is this documented somewhere? The reference Manual marks SRC_GPR9 and
-> SRC_GPR10 as
-> 
-> | This register is used by the ROM code and should not be used
-> | by application software.
++--------------+----------+----------+
+|BOOT_CFG1(7,4)|   0x01   |   0x02   |
+|==============+==========+==========|
+| MX6Q         | reserved |   SATA   |
+|--------------+----------+----------|
+| MX6UL        |   QSPI   | reserved |
++--------------+----------+----------+
 
-Not documented anywhere, except for U-Boot's bmode command and boot
-source determination code:
+The reserved (forced serial) values are handled in the previous commit.
+Add QSPI boot source detection now.
 
-https://github.com/trini/u-boot/blob/v2020.04/arch/arm/mach-imx/mx6/soc.c#L560
-https://github.com/trini/u-boot/blob/v2020.04/arch/arm/mach-imx/init.c#L104
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ arch/arm/mach-imx/boot.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-> And why do you depend on this behaviour?
-
-It's a useful debugging aid, when strap pins aren't easily accessible,
-because then your only other option is then to fuse to affect the boot
-(or short your SPI I/O pins).
-
-I am preparing code to provide a generic reboot mode functionality
-in barebox. This would among others cover the functionality of
-the U-Boot bmode command and these patches here are prerequisites,
-so the boot source detection remains accurate.
-
-Cheers
-
-
-> 
-> Sascha
-> 
-
+diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
+index f8d4f8cfa27f..dcca3a5c4a97 100644
+--- a/arch/arm/mach-imx/boot.c
++++ b/arch/arm/mach-imx/boot.c
+@@ -427,6 +427,9 @@ void imx6_get_boot_source(enum bootsource *src, int *instance)
+ 	}
+ 
+ 	switch (bootsrc) {
++	case 1: /* only reachable for i.MX6UL(L) */
++		*src = BOOTSOURCE_SPI; /* Really: qspi */
++		return;
+ 	case 2: /* unreachable for i.MX6UL(L) */
+ 		*src = BOOTSOURCE_HD;
+ 		break;
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
