@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from relay5-d.mail.gandi.net ([217.70.183.197])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jS0lX-0008P6-En
- for barebox@lists.infradead.org; Fri, 24 Apr 2020 16:01:25 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 24 Apr 2020 18:01:11 +0200
-Message-Id: <20200424160111.10532-3-a.fatoum@pengutronix.de>
-In-Reply-To: <20200424160111.10532-1-a.fatoum@pengutronix.de>
-References: <20200424160111.10532-1-a.fatoum@pengutronix.de>
+ id 1jSxxr-0001cO-PY
+ for barebox@lists.infradead.org; Mon, 27 Apr 2020 07:14:06 +0000
+Received: from geraet.fritz.box (muedsl-82-207-202-020.citykom.de
+ [82.207.202.20]) (Authenticated sender: ahmad@a3f.at)
+ by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 889401C0003
+ for <barebox@lists.infradead.org>; Mon, 27 Apr 2020 07:13:57 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Mon, 27 Apr 2020 09:13:49 +0200
+Message-Id: <20200427071351.467859-1-ahmad@a3f.at>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,131 +23,95 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] ARM: stm32mp: expand stm32mp_defconfig for new drivers
- and board
+Subject: [PATCH 1/3] ARM: i.MX: boot: correctly handle SRC_SBMR1 override via
+ SRC_GPR9
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-While some support is still missing (USB, LCD), we already have some
-prerequisites in place like USB PHY and PWM (for backlight). We also have
-gained one new board and some other new drivers since the last time the
-defconfig was touched, so enable them all, as well as some possibly useful
-commands.
+`mw 0x20d8040 0x08000030; mw 0x20d8044 0x10000000; reset` issued on an
+i.MX6Q forces boot from the ecspi1. This is because the BootROM reads
+the boot mode out of SRC_GPR9 instead of SRC_SBMR1 whenever SRC_GPR10
+has its 28th bit set.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Teach barebox about this, so we don't end up with a wrong $bootsource
+when putting SRC_GPR9 into use.
+
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- Documentation/boards/stm32mp.rst   |  1 +
- arch/arm/configs/stm32mp_defconfig | 28 +++++++++++++++++++++++-----
- 2 files changed, 24 insertions(+), 5 deletions(-)
+ arch/arm/mach-imx/boot.c | 25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/boards/stm32mp.rst b/Documentation/boards/stm32mp.rst
-index de793ab3c96e..607c59fd0757 100644
---- a/Documentation/boards/stm32mp.rst
-+++ b/Documentation/boards/stm32mp.rst
-@@ -30,6 +30,7 @@ The resulting images will be placed under ``images/``:
- ::
+diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
+index 7bce1c710c57..3ff297d46e47 100644
+--- a/arch/arm/mach-imx/boot.c
++++ b/arch/arm/mach-imx/boot.c
+@@ -320,10 +320,13 @@ void imx53_boot_save_loc(void)
  
-   barebox-stm32mp157c-dk2.img
-+  barebox-stm32mp157c-lxa-mc1.img
+ #define IMX6_SRC_SBMR1	0x04
+ #define IMX6_SRC_SBMR2	0x1c
++#define IMX6_SRC_GPR9	0x40
++#define IMX6_SRC_GPR10	0x44
+ #define IMX6_BMOD_SERIAL	0b01
+ #define IMX6_BMOD_RESERVED	0b11
+ #define IMX6_BMOD_FUSES		0b00
+ #define BT_FUSE_SEL		BIT(4)
++#define GPR10_BOOT_FROM_GPR9	BIT(28)
  
+ static bool imx6_bootsource_reserved(uint32_t sbmr2)
+ {
+@@ -388,11 +391,21 @@ static int imx6_boot_instance_mmc(uint32_t r)
+ 	return FIELD_GET(BOOT_CFG2(4, 3), r);
+ }
  
- Flashing barebox
-diff --git a/arch/arm/configs/stm32mp_defconfig b/arch/arm/configs/stm32mp_defconfig
-index f69f9f966a2d..4b902e174113 100644
---- a/arch/arm/configs/stm32mp_defconfig
-+++ b/arch/arm/configs/stm32mp_defconfig
-@@ -1,5 +1,6 @@
- CONFIG_ARCH_STM32MP=y
- CONFIG_MACH_STM32MP157C_DK2=y
-+CONFIG_MACH_LXA_MC1=y
- CONFIG_THUMB2_BAREBOX=y
- CONFIG_ARM_BOARD_APPEND_ATAG=y
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-@@ -27,13 +28,14 @@ CONFIG_PARTITION_DISK_EFI=y
- # CONFIG_PARTITION_DISK_EFI_GPT_COMPARE is not set
- CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
- CONFIG_RESET_SOURCE=y
--CONFIG_MACHINE_ID=y
- CONFIG_CMD_DMESG=y
- CONFIG_LONGHELP=y
- CONFIG_CMD_IOMEM=y
- CONFIG_CMD_IMD=y
- CONFIG_CMD_MEMINFO=y
- CONFIG_CMD_ARM_MMUINFO=y
-+CONFIG_CMD_REGULATOR=y
-+CONFIG_CMD_MMC=y
- # CONFIG_CMD_BOOTU is not set
- CONFIG_CMD_GO=y
- CONFIG_CMD_RESET=y
-@@ -73,8 +75,10 @@ CONFIG_CMD_DETECT=y
- CONFIG_CMD_FLASH=y
- CONFIG_CMD_GPIO=y
- CONFIG_CMD_LED=y
-+CONFIG_CMD_POWEROFF=y
- CONFIG_CMD_WD=y
- CONFIG_CMD_BAREBOX_UPDATE=y
-+CONFIG_CMD_OF_DIFF=y
- CONFIG_CMD_OF_NODE=y
- CONFIG_CMD_OF_PROPERTY=y
- CONFIG_CMD_OFTREE=y
-@@ -84,8 +88,6 @@ CONFIG_NET_NETCONSOLE=y
- CONFIG_OFDEVICE=y
- CONFIG_OF_BAREBOX_DRIVERS=y
- CONFIG_DRIVER_SERIAL_STM32=y
--CONFIG_DRIVER_NET_DESIGNWARE=y
--CONFIG_DRIVER_NET_DESIGNWARE_GENERIC=y
- CONFIG_DRIVER_NET_DESIGNWARE_EQOS=y
- CONFIG_DRIVER_NET_DESIGNWARE_STM32=y
- CONFIG_AT803X_PHY=y
-@@ -94,23 +96,40 @@ CONFIG_REALTEK_PHY=y
- # CONFIG_SPI is not set
- CONFIG_I2C=y
- CONFIG_I2C_STM32=y
-+CONFIG_VIDEO=y
-+CONFIG_DRIVER_VIDEO_BACKLIGHT=y
-+CONFIG_DRIVER_VIDEO_SIMPLE_PANEL=y
- CONFIG_MCI=y
- CONFIG_MCI_STARTUP=y
-+CONFIG_MCI_MMC_BOOT_PARTITIONS=y
- CONFIG_MCI_STM32_SDMMC2=y
- CONFIG_MFD_STPMIC1=y
-+CONFIG_MFD_STM32_TIMERS=y
- CONFIG_LED=y
- CONFIG_LED_GPIO=y
-+CONFIG_LED_PWM=y
- CONFIG_LED_GPIO_OF=y
-+CONFIG_EEPROM_AT24=y
-+CONFIG_KEYBOARD_GPIO=y
-+CONFIG_INPUT_SPECIALKEYS=y
- CONFIG_WATCHDOG=y
- CONFIG_WATCHDOG_POLLER=y
- CONFIG_STM32_IWDG_WATCHDOG=y
- CONFIG_STPMIC1_WATCHDOG=y
--CONFIG_NVMEM=y
-+CONFIG_PWM=y
-+CONFIG_PWM_STM32=y
-+CONFIG_HWRNG=y
-+CONFIG_HWRNG_STM32=y
- CONFIG_STM32_BSEC=y
- CONFIG_REGULATOR=y
- CONFIG_REGULATOR_FIXED=y
-+CONFIG_REGULATOR_STM32_PWR=y
- CONFIG_REGULATOR_STPMIC1=y
-+CONFIG_REMOTEPROC=y
-+CONFIG_STM32_REMOTEPROC=y
- CONFIG_RESET_STM32=y
-+CONFIG_GENERIC_PHY=y
-+CONFIG_PHY_STM32_USBPHYC=y
- CONFIG_FS_EXT4=y
- CONFIG_FS_TFTP=y
- CONFIG_FS_NFS=y
-@@ -119,4 +138,3 @@ CONFIG_FS_FAT_WRITE=y
- CONFIG_FS_FAT_LFN=y
- CONFIG_ZLIB=y
- CONFIG_CRC8=y
--CONFIG_DIGEST_SHA1_ARM=y
++static u32 imx6_get_src_boot_mode(void __iomem *src_base)
++{
++	if (readl(src_base + IMX6_SRC_GPR10) & GPR10_BOOT_FROM_GPR9)
++		return readl(src_base + IMX6_SRC_GPR9);
++
++	return readl(src_base + IMX6_SRC_SBMR1);
++}
++
+ void imx6_get_boot_source(enum bootsource *src, int *instance)
+ {
+ 	void __iomem *src_base = IOMEM(MX6_SRC_BASE_ADDR);
+-	uint32_t sbmr1 = readl(src_base + IMX6_SRC_SBMR1);
+ 	uint32_t sbmr2 = readl(src_base + IMX6_SRC_SBMR2);
++	uint32_t bootmode;
++
++	bootmode = imx6_get_src_boot_mode(src_base);
+ 
+ 	if (imx6_bootsource_reserved(sbmr2))
+ 		return;
+@@ -402,23 +415,23 @@ void imx6_get_boot_source(enum bootsource *src, int *instance)
+ 		return;
+ 	}
+ 
+-	switch (imx53_bootsource_internal(sbmr1)) {
++	switch (imx53_bootsource_internal(bootmode)) {
+ 	case 2:
+ 		*src = BOOTSOURCE_HD;
+ 		break;
+ 	case 3:
+-		*src = imx6_bootsource_serial_rom(sbmr1);
+-		*instance = imx6_boot_instance_serial_rom(sbmr1);
++		*src = imx6_bootsource_serial_rom(bootmode);
++		*instance = imx6_boot_instance_serial_rom(bootmode);
+ 		break;
+ 	case 4:
+ 	case 5:
+ 	case 6:
+ 	case 7:
+ 		*src = BOOTSOURCE_MMC;
+-		*instance = imx6_boot_instance_mmc(sbmr1);
++		*instance = imx6_boot_instance_mmc(bootmode);
+ 		break;
+ 	default:
+-		if (imx53_bootsource_nand(sbmr1))
++		if (imx53_bootsource_nand(bootmode))
+ 			*src = BOOTSOURCE_NAND;
+ 		break;
+ 	}
 -- 
-2.26.1
+2.20.1
 
 
 _______________________________________________
