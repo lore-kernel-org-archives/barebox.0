@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from conuserg-07.nifty.com ([210.131.2.74])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jS3YY-0000kg-UO
- for barebox@lists.infradead.org; Fri, 24 Apr 2020 19:00:20 +0000
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Sat, 25 Apr 2020 03:59:24 +0900
-Message-Id: <20200424185924.705754-6-masahiroy@kernel.org>
-In-Reply-To: <20200424185924.705754-1-masahiroy@kernel.org>
-References: <20200424185924.705754-1-masahiroy@kernel.org>
+ id 1jSxgX-0007gt-6J
+ for barebox@lists.infradead.org; Mon, 27 Apr 2020 06:56:10 +0000
+Date: Mon, 27 Apr 2020 08:56:05 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200427065605.GI5877@pengutronix.de>
+References: <20200424153129.129366-1-dev@lynxeye.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200424153129.129366-1-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,52 +22,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/6] kbuild: set SRCARCH=arm when ARCH=arm64
-To: barebox@lists.infradead.org
-Cc: Masahiro Yamada <masahiroy@kernel.org>
+Subject: Re: [PATCH] dtc: remove redundant YYLOC global declaration
+To: Lucas Stach <dev@lynxeye.de>
+Cc: barebox@lists.infradead.org
 
-In Linux, ARCH can be passed from the command line or the environment.
-In barebox, "ARCH=arm64 make" works, but "make ARCH=arm64" does not.
+On Fri, Apr 24, 2020 at 05:31:29PM +0200, Lucas Stach wrote:
+> Same as the upstream fix for building dtc with gcc 10.
+> 
+> Signed-off-by: Lucas Stach <dev@lynxeye.de>
+> ---
+>  scripts/dtc/dtc-lexer.l | 1 -
+>  1 file changed, 1 deletion(-)
 
-Instead of overriding ARCH, use SRCARCH properly.
+Applied, thanks
 
-This is what Linux does for biarch directories (x86, sh, sparc).
+Sascha
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
----
-
- Makefile | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/Makefile b/Makefile
-index 477741a72..16b23c107 100644
---- a/Makefile
-+++ b/Makefile
-@@ -163,10 +163,6 @@ export srctree objtree VPATH
- # Alternatively CROSS_COMPILE can be set in the environment.
- # Default value for CROSS_COMPILE is not to prefix executables
- 
--ifeq ($(ARCH),arm64)
--ARCH = arm
--endif
--
- ARCH            ?= sandbox
- CROSS_COMPILE   ?=
- 
-@@ -174,6 +170,10 @@ CROSS_COMPILE   ?=
- UTS_MACHINE := $(ARCH)
- SRCARCH 	:= $(ARCH)
- 
-+ifeq ($(ARCH),arm64)
-+       SRCARCH := arm
-+endif
-+
- KCONFIG_CONFIG	?= .config
- 
- # Default file for 'make defconfig'. This may be overridden by arch-Makefile.
 -- 
-2.25.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
