@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jTKiF-0004B8-E1
- for barebox@lists.infradead.org; Tue, 28 Apr 2020 07:31:29 +0000
-References: <20200423204458.27237-1-u.kleine-koenig@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <96b74c98-191f-d485-a531-1decab805dfc@pengutronix.de>
-Date: Tue, 28 Apr 2020 09:31:25 +0200
+ id 1jTKxh-0003M8-4Z
+ for barebox@lists.infradead.org; Tue, 28 Apr 2020 07:47:26 +0000
+Date: Tue, 28 Apr 2020 09:47:23 +0200
+From: Sascha Hauer <sha@pengutronix.de>
+Message-ID: <20200428074723.GX5877@pengutronix.de>
+References: <20200424160111.10532-2-a.fatoum@pengutronix.de>
+ <20200427074534.25259-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20200423204458.27237-1-u.kleine-koenig@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20200427074534.25259-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,45 +19,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] treewide: remove references to CREDITS
-To: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>, barebox@lists.infradead.org
-Cc: Roland Hieber <rhi@pengutronix.de>
+Subject: Re: [PATCH] fixup! ARM: stm32mp: add Linux Automation MC-1 support
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-SGksCgpPbiA0LzIzLzIwIDEwOjQ0IFBNLCBVd2UgS2xlaW5lLUvDtm5pZyB3cm90ZToKPiBUaGUg
-Q1JFRElUUyBmaWxlIHdhcyByZW1vdmVkIGZyb20gYmFyZWJveCBpbiAyMDE1IGJ5IGNvbW1pdCA2
-NTcwMjg4ZjJkOTcKPiAoIlJlbW92ZSB0aGUgQ1JFRElUUyBmaWxlIikuIFJlbW92ZSByZWZlcmVu
-Y2VzIHRvIGl0IGZyb20gc2V2ZXJhbCBmaWxlcy4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBVd2UgS2xl
-aW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgoKCj4gZGlmZiAtLWdp
-dCBhL2luY2x1ZGUvbWVudS5oIGIvaW5jbHVkZS9tZW51LmgKPiBpbmRleCA3N2M0OTZjNjVjMTcu
-LjUyNTc1Zjc0NTRiMSAxMDA2NDQKPiAtLS0gYS9pbmNsdWRlL21lbnUuaAo+ICsrKyBiL2luY2x1
-ZGUvbWVudS5oCj4gQEAgLTIsOSArMiw2IEBACj4gIC8qCj4gICAqIChDKSBDb3B5cmlnaHQgMjAw
-OS0yMDEwIEplYW4tQ2hyaXN0b3BoZSBQTEFHTklPTC1WSUxMQVJEIDxwbGFnbmlvakBqY3Jvc29m
-dC5jb20+Cj4gICAqCj4gLSAqIFNlZSBmaWxlIENSRURJVFMgZm9yIGxpc3Qgb2YgcGVvcGxlIHdo
-byBjb250cmlidXRlZCB0byB0aGlzCj4gLSAqIHByb2plY3QuCj4gLSAqLwoKWW91IGJyZWFrIHRo
-ZSBjb21tZW50IGhlcmUsCgo+IGRpZmYgLS1naXQgYS9pbmNsdWRlL3BhcnQuaCBiL2luY2x1ZGUv
-cGFydC5oCj4gaW5kZXggNjZjYzkzYWU5NmUyLi4wNzQ2NDdhYmZmOTYgMTAwNjQ0Cj4gLS0tIGEv
-aW5jbHVkZS9wYXJ0LmgKPiArKysgYi9pbmNsdWRlL3BhcnQuaAo+IEBAIC0zLDkgKzMsNiBAQAo+
-ICAgKiAoQykgQ29weXJpZ2h0IDIwMDAtMjAwNAo+ICAgKiBXb2xmZ2FuZyBEZW5rLCBERU5YIFNv
-ZnR3YXJlIEVuZ2luZWVyaW5nLCB3ZEBkZW54LmRlLgo+ICAgKgo+IC0gKiBTZWUgZmlsZSBDUkVE
-SVRTIGZvciBsaXN0IG9mIHBlb3BsZSB3aG8gY29udHJpYnV0ZWQgdG8gdGhpcwo+IC0gKiBwcm9q
-ZWN0Lgo+IC0gKi8KCmhlcmUsCgo+ICAjaWZuZGVmIF9QQVJUX0gKPiAgI2RlZmluZSBfUEFSVF9I
-Cj4gICNpbmNsdWRlIDxpZGUuaD4KPiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9wYXNzd29yZC5oIGIv
-aW5jbHVkZS9wYXNzd29yZC5oCj4gaW5kZXggZTI1OWE4N2RhMWFjLi40MzRhNDUxMWFmNGUgMTAw
-NjQ0Cj4gLS0tIGEvaW5jbHVkZS9wYXNzd29yZC5oCj4gKysrIGIvaW5jbHVkZS9wYXNzd29yZC5o
-Cj4gQEAgLTIsOSArMiw2IEBACj4gIC8qCj4gICAqIENvcHlyaWdodCAoYykgMjAwOC0yMDEwIEpl
-YW4tQ2hyaXN0b3BoZSBQTEFHTklPTC1WSUxMQVJEIDxwbGFnbmlvakBqY3Jvc29mdC5jb20+Cj4g
-ICAqCj4gLSAqIFNlZSBmaWxlIENSRURJVFMgZm9yIGxpc3Qgb2YgcGVvcGxlIHdobyBjb250cmli
-dXRlZCB0byB0aGlzCj4gLSAqIHByb2plY3QuCj4gLSAqLwoKaGVyZSBhbmQgcHJvYmFibHkgZWxz
-ZXdoZXJlIGFzIHdlbGwuIFBsZWFzZSByZXNwaW4uCgpDaGVlcnMsCkFobWFkCgoKLS0gClBlbmd1
-dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICB8ClN0ZXVlcndhbGRlciBTdHIuIDIxICAgICAgICAgICAgICAgICAgICAgICB8
-IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8CjMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkg
-ICAgICAgICAgICAgICAgICB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJp
-Y2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5
-MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDov
-L2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Mon, Apr 27, 2020 at 09:45:34AM +0200, Ahmad Fatoum wrote:
+> Board code uses of_device_enable_path to enable the correct node,
+> so make them disabled-by-default.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  arch/arm/dts/stm32mp157c-lxa-mc1.dts | 2 ++
+>  1 file changed, 2 insertions(+)
+
+Applied the series with this fixup.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
