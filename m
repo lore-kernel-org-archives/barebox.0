@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from relay9-d.mail.gandi.net ([217.70.183.199])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jTKrZ-00079f-7R
- for barebox@lists.infradead.org; Tue, 28 Apr 2020 07:41:06 +0000
-Date: Tue, 28 Apr 2020 09:41:01 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200428074101.GV5877@pengutronix.de>
-References: <20200423204458.27237-1-u.kleine-koenig@pengutronix.de>
- <96b74c98-191f-d485-a531-1decab805dfc@pengutronix.de>
+ id 1jTKoE-0001aZ-RA
+ for barebox@lists.infradead.org; Tue, 28 Apr 2020 07:37:41 +0000
+Received: from geraet.fritz.box (i53875677.versanet.de [83.135.86.119])
+ (Authenticated sender: ahmad@a3f.at)
+ by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id D7E2EFF80E
+ for <barebox@lists.infradead.org>; Tue, 28 Apr 2020 07:37:35 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Tue, 28 Apr 2020 09:37:22 +0200
+Message-Id: <20200428073730.34579-3-ahmad@a3f.at>
+In-Reply-To: <20200428073730.34579-1-ahmad@a3f.at>
+References: <20200428073730.34579-1-ahmad@a3f.at>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <96b74c98-191f-d485-a531-1decab805dfc@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,54 +21,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] treewide: remove references to CREDITS
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, Roland Hieber <rhi@pengutronix.de>, Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: [PATCH 03/11] commands: fix misindented help text
+To: barebox@lists.infradead.org
 
-On Tue, Apr 28, 2020 at 09:31:25AM +0200, Ahmad Fatoum wrote:
-> Hi,
-> =
+Kconfiglib used by scripts/kconfig-lint.py chokes on this
+misindentation. Fix it
 
-> On 4/23/20 10:44 PM, Uwe Kleine-K=F6nig wrote:
-> > The CREDITS file was removed from barebox in 2015 by commit 6570288f2d97
-> > ("Remove the CREDITS file"). Remove references to it from several files.
-> > =
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ commands/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> =
+diff --git a/commands/Kconfig b/commands/Kconfig
+index a0c28289834b..77637f916c16 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -809,7 +809,7 @@ config CMD_FILETYPE
+ 	select FILETYPE
+ 	prompt "filetype"
+ 	help
+-Detect file type
++	  Detect file type
+ 
+ 	  Usage: filetype [-vsl] FILE
+ 
+-- 
+2.20.1
 
-> =
-
-> > diff --git a/include/menu.h b/include/menu.h
-> > index 77c496c65c17..52575f7454b1 100644
-> > --- a/include/menu.h
-> > +++ b/include/menu.h
-> > @@ -2,9 +2,6 @@
-> >  /*
-> >   * (C) Copyright 2009-2010 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@=
-jcrosoft.com>
-> >   *
-> > - * See file CREDITS for list of people who contributed to this
-> > - * project.
-> > - */
-> =
-
-> You break the comment here,
-
-My compile test found that as well, I already fixed it up.
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
