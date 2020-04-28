@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay8-d.mail.gandi.net ([217.70.183.201])
+Received: from relay9-d.mail.gandi.net ([217.70.183.199])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jTfRM-0002cP-Bd
- for barebox@lists.infradead.org; Wed, 29 Apr 2020 05:39:25 +0000
-Received: from geraet.fritz.box (i5387567C.versanet.de [83.135.86.124])
+ id 1jTKFv-0000CC-D8
+ for barebox@lists.infradead.org; Tue, 28 Apr 2020 07:02:12 +0000
+Received: from geraet.fritz.box (i53875677.versanet.de [83.135.86.119])
  (Authenticated sender: ahmad@a3f.at)
- by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id CC0771BF208
- for <barebox@lists.infradead.org>; Wed, 29 Apr 2020 05:39:21 +0000 (UTC)
+ by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id E9D67FF80F
+ for <barebox@lists.infradead.org>; Tue, 28 Apr 2020 07:02:06 +0000 (UTC)
 From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Wed, 29 Apr 2020 07:39:12 +0200
-Message-Id: <20200429053914.4775-3-ahmad@a3f.at>
-In-Reply-To: <20200429053914.4775-1-ahmad@a3f.at>
-References: <20200429053914.4775-1-ahmad@a3f.at>
+Date: Tue, 28 Apr 2020 09:02:01 +0200
+Message-Id: <20200428070201.8075-1-ahmad@a3f.at>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,51 +23,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] net: remove unused Kconfig options
+Subject: [PATCH] x86: delete X86_NATIVE_BRINGUP in choice
 To: barebox@lists.infradead.org
 
-Both options are used nowhere and can be dropped:
-
-- OF_NET code is compiled always and code is discarded at link-time if
-  unreferenced
-- Designware Ethernet can be enabled in Kconfig and no arch code
-  selects the symbol
+12769b3b7871 ("Add the whole x86 architecture to the build system")
+added the configuration option 10 years ago, but no backing code
+has been contributed meanwhile. Drop the option.
 
 Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- drivers/net/Kconfig | 3 ---
- drivers/of/Kconfig  | 4 ----
- 2 files changed, 7 deletions(-)
+ arch/x86/Kconfig | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-index 5823320b03f1..efa16b30e40e 100644
---- a/drivers/net/Kconfig
-+++ b/drivers/net/Kconfig
-@@ -7,9 +7,6 @@ config HAS_AT91_ETHER
- config HAS_CS8900
- 	bool
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 1793055ae0b7..19009442a4d7 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -86,13 +86,6 @@ choice
+ 		  some 16 bit real mode code and some restrictions everyone knows
+ 		  from BIOS based systems.
  
--config HAS_DESIGNWARE_ETH
--	bool
+-	config X86_NATIVE_BRINGUP
+-		bool "native"
+-		help
+-		  Barebox will act as a native bootloader. This includes all the
+-		  required initialization needed to bring up a piece of hardware.
+-		  Note: Not implemented yet
 -
- config HAS_DM9000
- 	bool
+ endchoice
  
-diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
-index 9ed86afd748c..23be25d85d09 100644
---- a/drivers/of/Kconfig
-+++ b/drivers/of/Kconfig
-@@ -18,10 +18,6 @@ config OFDEVICE
- config OF_ADDRESS_PCI
- 	bool
- 
--config OF_NET
--	depends on NET
--	def_bool y
--
- config OF_GPIO
- 	depends on GPIOLIB
- 	depends on OFDEVICE
+ source "arch/x86/boot/Kconfig"
 -- 
 2.20.1
 
