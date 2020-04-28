@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay9-d.mail.gandi.net ([217.70.183.199])
+Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jTKoE-0001aY-Kv
- for barebox@lists.infradead.org; Tue, 28 Apr 2020 07:37:40 +0000
-Received: from geraet.fritz.box (i53875677.versanet.de [83.135.86.119])
- (Authenticated sender: ahmad@a3f.at)
- by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 669B0FF813
- for <barebox@lists.infradead.org>; Tue, 28 Apr 2020 07:37:35 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Tue, 28 Apr 2020 09:37:21 +0200
-Message-Id: <20200428073730.34579-2-ahmad@a3f.at>
-In-Reply-To: <20200428073730.34579-1-ahmad@a3f.at>
-References: <20200428073730.34579-1-ahmad@a3f.at>
-MIME-Version: 1.0
+ id 1jTL1U-0006mN-DU
+ for barebox@lists.infradead.org; Tue, 28 Apr 2020 07:51:21 +0000
+From: Clement Leger <cleger@kalray.eu>
+Date: Tue, 28 Apr 2020 09:50:53 +0200
+Message-Id: <20200428075100.17565-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,83 +14,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/11] scripts: kconfig-lint.py: extend for undefined symbol
- detection
-To: barebox@lists.infradead.org
+Subject: [PATCH v3 0/7] elf: add better bootm support
+To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
+Cc: Clement Leger <cleger@kalray.eu>
 
-Extend the script by some code from the official list_undefined.py example[1]
-to further detect symbols we are using, but haven't defined anywhere.
+Currently, when booting an elf file using "bootm /dev/mtdx", bootm will
+simply pass the file to the bootm and the read done on it will read the
+entire flash partition. This series starts by some cleanup and then add an
+elf_open function to load the elf file size only based on the elf header.
+A special handling for the elf file is also added in bootm data to allow
+using directly the elf file structure. Finally the mips bootm is modified
+to use bootm_load_os directly instead of manual elf loading.
 
-[1]: https://github.com/ulfalizer/Kconfiglib/blob/35a60b7/examples/list_undefined.py
+Changes v2 -> v3
+ - Integrate elf loading in bootm_load_os
+ - Add patch to remove now unused elf_load_image/elf_release_image
+ - Use malloc instead of xmalloc and check return value
 
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
----
- scripts/kconfig-lint.py | 25 ++++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
+Changes v1 -> v2
+ - Add BOOTM_ELF config to select elf support and add checks in code
+ - Add an elf_get_mem_size function to avoid computing elf size in bootm.c
+ - Use xmalloc and read_full in elf_open instead of xzalloc/read
+ - Fix data->elf NULL reset
+ - Remove elf struct entirely from mips bootm code
 
-diff --git a/scripts/kconfig-lint.py b/scripts/kconfig-lint.py
-index 308c82dfd8de..a154e9cccacc 100755
---- a/scripts/kconfig-lint.py
-+++ b/scripts/kconfig-lint.py
-@@ -1,7 +1,7 @@
- #!/usr/bin/env python3
- 
- # Copyright (c) 2019 Nordic Semiconductor ASA
--# SPDX-License-Identifier: Apache-2.0
-+# SPDX-License-Identifier: Apache-2.0 AND ISC
- 
- """
- Linter for the Zephyr Kconfig files. Pass --help to see
-@@ -35,6 +35,7 @@ def main():
-         # Run all checks if no checks were specified
-         checks = (check_always_n,
-                   check_unused,
-+                  check_undefined,
-                   check_pointless_menuconfigs,
-                   check_missing_config_prefix)
- 
-@@ -78,6 +79,13 @@ Heuristic:
- 
- C preprocessor magic can trip up this check.""")
- 
-+    parser.add_argument(
-+        "-U", "--check-undefined",
-+        action="append_const", dest="checks", const=check_undefined,
-+        help="""\
-+List symbols that are used in a Kconfig file but are undefined
-+""")
-+
-     parser.add_argument(
-         "-m", "--check-pointless-menuconfigs",
-         action="append_const", dest="checks", const=check_pointless_menuconfigs,
-@@ -121,6 +129,21 @@ def check_unused():
-            sym.name not in referenced:
-             print(name_and_locs(sym))
- 
-+def check_undefined():
-+    print_header("Symbols that are used, but undefined")
-+    for name, sym in kconf.syms.items():
-+        if not sym.nodes:
-+            # Undefined symbol. We skip some of the uninteresting ones.
-+
-+            # Due to how Kconfig works, integer literals show up as symbols
-+            # (from e.g. 'default 1'). Skip those.
-+            try:
-+                int(name, 0)
-+                continue
-+            except ValueError:
-+                # Interesting undefined symbol
-+                print(name)
-+
- 
- def check_pointless_menuconfigs():
-     print_header("menuconfig symbols with empty menus")
+Clement Leger (7):
+  common: elf: add computation of elf boundaries
+  common: elf: fix warning on 32 bits architectures
+  common: elf: split init to be reused from other function
+  common: elf: add elf_open, elf_close and elf_load
+  common: bootm: add support for elf file loading
+  mips: lib: bootm: use bootm elf loading capabilities
+  common: elf: remove elf_load_image/elf_release_image
+
+ arch/mips/lib/bootm.c |  31 +++++-------
+ common/Kconfig        |   8 ++++
+ common/bootm.c        |  33 +++++++++++++
+ common/elf.c          | 107 ++++++++++++++++++++++++++++++++++++------
+ include/bootm.h       |   3 ++
+ include/elf.h         |  16 ++++++-
+ 6 files changed, 161 insertions(+), 37 deletions(-)
+
 -- 
-2.20.1
+2.17.1
 
 
 _______________________________________________
