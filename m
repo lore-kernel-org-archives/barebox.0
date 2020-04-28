@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jTL1b-0006tB-TE
- for barebox@lists.infradead.org; Tue, 28 Apr 2020 07:51:29 +0000
+ id 1jTL1a-0006qz-9V
+ for barebox@lists.infradead.org; Tue, 28 Apr 2020 07:51:28 +0000
 From: Clement Leger <cleger@kalray.eu>
-Date: Tue, 28 Apr 2020 09:50:59 +0200
-Message-Id: <20200428075100.17565-7-cleger@kalray.eu>
+Date: Tue, 28 Apr 2020 09:50:57 +0200
+Message-Id: <20200428075100.17565-5-cleger@kalray.eu>
 In-Reply-To: <20200428075100.17565-1-cleger@kalray.eu>
 References: <20200428075100.17565-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
@@ -21,78 +21,156 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 6/7] mips: lib: bootm: use bootm elf loading capabilities
+Subject: [PATCH v3 4/7] common: elf: add elf_open, elf_close and elf_load
 To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
 Cc: Clement Leger <cleger@kalray.eu>
 
-Now that the elf file is loaded by the bootm core, there is no need for
-elf pointer anymore. Thus all elf related fields can be removed and
-bootm_load_os can be used.
+When loading an elf file from a mtd device, this allows to parse the
+header and load only the needed data according to the elf size. Without
+that support, loading a elf file from a /dev/mtd would try to read the
+entire partition. Finally, split elf open and segment loading to allow
+loading segment separately when using bootm_load_os.
 
 Signed-off-by: Clement Leger <cleger@kalray.eu>
 ---
- arch/mips/lib/bootm.c | 31 +++++++++++--------------------
- 1 file changed, 11 insertions(+), 20 deletions(-)
+ common/elf.c  | 92 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/elf.h |  8 +++++
+ 2 files changed, 100 insertions(+)
 
-diff --git a/arch/mips/lib/bootm.c b/arch/mips/lib/bootm.c
-index 5bb09cc2d..48f0d83cf 100644
---- a/arch/mips/lib/bootm.c
-+++ b/arch/mips/lib/bootm.c
-@@ -46,43 +46,34 @@ static struct binfmt_hook binfmt_barebox_hook = {
- static int do_bootm_elf(struct image_data *data)
- {
- 	void (*entry)(int, void *);
--	struct elf_image *elf;
--	void *fdt, *buf;
--	int ret = 0;
-+	void *fdt;
-+	int ret;
+diff --git a/common/elf.c b/common/elf.c
+index 5534632b2..9edd2742f 100644
+--- a/common/elf.c
++++ b/common/elf.c
+@@ -5,7 +5,12 @@
  
--	buf = read_file(data->os_file, NULL);
--	if (!buf)
--		return -EINVAL;
--
--	elf = elf_load_image(buf);
--	if (IS_ERR(elf))
--		return PTR_ERR(elf);
-+	ret = bootm_load_os(data, data->os_address);
-+	if (ret)
-+		return ret;
+ #include <common.h>
+ #include <elf.h>
++#include <errno.h>
++#include <fcntl.h>
++#include <libfile.h>
+ #include <memory.h>
++#include <unistd.h>
++#include <linux/fs.h>
  
- 	fdt = bootm_get_devicetree(data);
--	if (IS_ERR(fdt)) {
--		ret = PTR_ERR(fdt);
--		goto bootm_elf_done;
--	}
-+	if (IS_ERR(fdt))
-+		return PTR_ERR(fdt);
+ struct elf_section {
+ 	struct list_head list;
+@@ -158,3 +163,90 @@ void elf_release_image(struct elf_image *elf)
  
- 	pr_info("Starting application at 0x%08lx, dts 0x%08lx...\n",
--		phys_to_virt(elf->entry), data->of_root_node);
-+		phys_to_virt(data->os_address), data->of_root_node);
- 
- 	if (data->dryrun)
--		goto bootm_elf_done;
-+		goto bootm_free_fdt;
- 
- 	shutdown_barebox();
- 
--	entry = (void *) (unsigned long) elf->entry;
-+	entry = (void *) (unsigned long) data->os_address;
- 
- 	entry(-2, phys_to_virt((unsigned long)fdt));
- 
- 	pr_err("ELF application terminated\n");
- 	ret = -EINVAL;
- 
--bootm_elf_done:
--	elf_release_image(elf);
-+bootm_free_fdt:
- 	free(fdt);
--	free(buf);
- 
- 	return ret;
+ 	free(elf);
  }
++
++int elf_load(struct elf_image *elf)
++{
++	int ret;
++
++	ret = load_elf_image_phdr(elf);
++	if (ret)
++		elf_release_regions(elf);
++
++	return ret;
++}
++
++static u64 elf_get_size(struct elf_image *elf)
++{
++	u64 sh_size = elf_hdr_e_shentsize(elf, elf->buf) *
++		      elf_hdr_e_shnum(elf, elf->buf);
++
++	/*
++	 * The section header table is located at the end of the elf file thus
++	 * we can take the offset and add the size of this table to obtain the
++	 * file size.
++	 */
++	return elf_hdr_e_shoff(elf, elf->buf) + sh_size;
++}
++
++struct elf_image *elf_open(const char *filename)
++{
++	int fd, ret;
++	u64 size;
++	struct elf64_hdr hdr;
++	struct elf_image *elf;
++	ssize_t read_ret;
++
++	fd = open(filename, O_RDONLY);
++	if (fd < 0) {
++		printf("could not open: %s\n", errno_str());
++		return ERR_PTR(-errno);
++	}
++
++	if (read(fd, &hdr, sizeof(hdr)) < 0) {
++		printf("could not read elf header: %s\n", errno_str());
++		ret = -errno;
++		goto err_close_fd;
++	}
++
++	elf = xzalloc(sizeof(*elf));
++
++	ret = elf_check_init(elf, &hdr);
++	if (ret) {
++		ret = -errno;
++		goto err_free_elf;
++	}
++
++	size = elf_get_size(elf);
++
++	elf->buf = malloc(size);
++	if (!elf->buf) {
++		ret = -ENOMEM;
++		goto err_free_elf;
++	}
++
++	lseek(fd, 0, SEEK_SET);
++
++	read_ret = read_full(fd, elf->buf, size);
++	if (read_ret < 0) {
++		printf("could not read elf file: %s\n", errno_str());
++		ret = -errno;
++		goto err_free_buf;
++	}
++
++	return elf;
++
++err_free_buf:
++	free(elf->buf);
++err_free_elf:
++	free(elf);
++err_close_fd:
++	close(fd);
++
++	return ERR_PTR(ret);
++}
++
++void elf_close(struct elf_image *elf)
++{
++	free(elf->buf);
++	elf_release_image(elf);
++}
+diff --git a/include/elf.h b/include/elf.h
+index 403412f3f..b36b917e5 100644
+--- a/include/elf.h
++++ b/include/elf.h
+@@ -416,6 +416,10 @@ static inline size_t elf_get_mem_size(struct elf_image *elf)
+ struct elf_image *elf_load_image(void *buf);
+ void elf_release_image(struct elf_image *elf);
+ 
++struct elf_image *elf_open(const char *filename);
++void elf_close(struct elf_image *elf);
++int elf_load(struct elf_image *elf);
++
+ #define ELF_GET_FIELD(__s, __field, __type) \
+ static inline __type elf_##__s##_##__field(struct elf_image *elf, void *arg) { \
+ 	if (elf->class == ELFCLASS32) \
+@@ -427,6 +431,10 @@ static inline __type elf_##__s##_##__field(struct elf_image *elf, void *arg) { \
+ ELF_GET_FIELD(hdr, e_entry, u64)
+ ELF_GET_FIELD(hdr, e_phnum, u16)
+ ELF_GET_FIELD(hdr, e_phoff, u64)
++ELF_GET_FIELD(hdr, e_shoff, u64)
++ELF_GET_FIELD(hdr, e_shentsize, u16)
++ELF_GET_FIELD(hdr, e_machine, u16)
++ELF_GET_FIELD(hdr, e_shnum, u16)
+ ELF_GET_FIELD(hdr, e_type, u16)
+ ELF_GET_FIELD(phdr, p_paddr, u64)
+ ELF_GET_FIELD(phdr, p_filesz, u64)
 -- 
 2.17.1
 
