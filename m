@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jTL1a-0006qz-9V
+ id 1jTL1b-0006s4-1b
  for barebox@lists.infradead.org; Tue, 28 Apr 2020 07:51:28 +0000
 From: Clement Leger <cleger@kalray.eu>
-Date: Tue, 28 Apr 2020 09:50:57 +0200
-Message-Id: <20200428075100.17565-5-cleger@kalray.eu>
+Date: Tue, 28 Apr 2020 09:50:58 +0200
+Message-Id: <20200428075100.17565-6-cleger@kalray.eu>
 In-Reply-To: <20200428075100.17565-1-cleger@kalray.eu>
 References: <20200428075100.17565-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
@@ -21,156 +21,125 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 4/7] common: elf: add elf_open, elf_close and elf_load
+Subject: [PATCH v3 5/7] common: bootm: add support for elf file loading
 To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
 Cc: Clement Leger <cleger@kalray.eu>
 
-When loading an elf file from a mtd device, this allows to parse the
-header and load only the needed data according to the elf size. Without
-that support, loading a elf file from a /dev/mtd would try to read the
-entire partition. Finally, split elf open and segment loading to allow
-loading segment separately when using bootm_load_os.
+This will allows elf loader to directly have an elf file available. Thus
+filetype_elf bootm handlers will be able to use this elf file directly.
 
 Signed-off-by: Clement Leger <cleger@kalray.eu>
 ---
- common/elf.c  | 92 +++++++++++++++++++++++++++++++++++++++++++++++++++
- include/elf.h |  8 +++++
- 2 files changed, 100 insertions(+)
+ common/Kconfig  |  8 ++++++++
+ common/bootm.c  | 33 +++++++++++++++++++++++++++++++++
+ include/bootm.h |  3 +++
+ 3 files changed, 44 insertions(+)
 
-diff --git a/common/elf.c b/common/elf.c
-index 5534632b2..9edd2742f 100644
---- a/common/elf.c
-+++ b/common/elf.c
-@@ -5,7 +5,12 @@
+diff --git a/common/Kconfig b/common/Kconfig
+index 400c0553c..b28791060 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -597,6 +597,14 @@ config BOOTM_AIMAGE
+ 	help
+ 	  Support using Android Images.
  
- #include <common.h>
- #include <elf.h>
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <libfile.h>
- #include <memory.h>
-+#include <unistd.h>
-+#include <linux/fs.h>
++config BOOTM_ELF
++	bool
++	depends on BOOTM
++	select ELF
++	prompt "elf loading support"
++	help
++	  Add support to load elf file with bootm.
++
+ config BOOTM_FITIMAGE
+ 	bool
+ 	prompt "FIT image support"
+diff --git a/common/bootm.c b/common/bootm.c
+index 299985678..488adcb22 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -143,6 +143,9 @@ int bootm_load_os(struct image_data *data, unsigned long load_address)
+ 		return 0;
+ 	}
  
- struct elf_section {
- 	struct list_head list;
-@@ -158,3 +163,90 @@ void elf_release_image(struct elf_image *elf)
++	if (IS_ENABLED(CONFIG_ELF) && data->elf)
++		return elf_load(data->elf);
++
+ 	if (data->os_file) {
+ 		data->os_res = file_to_sdram(data->os_file, load_address);
+ 		if (!data->os_res)
+@@ -470,6 +473,8 @@ int bootm_get_os_size(struct image_data *data)
+ {
+ 	int ret;
  
- 	free(elf);
++	if (data->elf)
++		return elf_get_mem_size(data->elf);
+ 	if (data->os)
+ 		return uimage_get_size(data->os, uimage_part_num(data->os_part));
+ 	if (data->os_fit)
+@@ -517,6 +522,22 @@ static int bootm_open_os_uimage(struct image_data *data)
+ 	return 0;
  }
-+
-+int elf_load(struct elf_image *elf)
-+{
-+	int ret;
-+
-+	ret = load_elf_image_phdr(elf);
-+	if (ret)
-+		elf_release_regions(elf);
-+
-+	return ret;
-+}
-+
-+static u64 elf_get_size(struct elf_image *elf)
-+{
-+	u64 sh_size = elf_hdr_e_shentsize(elf, elf->buf) *
-+		      elf_hdr_e_shnum(elf, elf->buf);
-+
-+	/*
-+	 * The section header table is located at the end of the elf file thus
-+	 * we can take the offset and add the size of this table to obtain the
-+	 * file size.
-+	 */
-+	return elf_hdr_e_shoff(elf, elf->buf) + sh_size;
-+}
-+
-+struct elf_image *elf_open(const char *filename)
-+{
-+	int fd, ret;
-+	u64 size;
-+	struct elf64_hdr hdr;
-+	struct elf_image *elf;
-+	ssize_t read_ret;
-+
-+	fd = open(filename, O_RDONLY);
-+	if (fd < 0) {
-+		printf("could not open: %s\n", errno_str());
-+		return ERR_PTR(-errno);
-+	}
-+
-+	if (read(fd, &hdr, sizeof(hdr)) < 0) {
-+		printf("could not read elf header: %s\n", errno_str());
-+		ret = -errno;
-+		goto err_close_fd;
-+	}
-+
-+	elf = xzalloc(sizeof(*elf));
-+
-+	ret = elf_check_init(elf, &hdr);
-+	if (ret) {
-+		ret = -errno;
-+		goto err_free_elf;
-+	}
-+
-+	size = elf_get_size(elf);
-+
-+	elf->buf = malloc(size);
-+	if (!elf->buf) {
-+		ret = -ENOMEM;
-+		goto err_free_elf;
-+	}
-+
-+	lseek(fd, 0, SEEK_SET);
-+
-+	read_ret = read_full(fd, elf->buf, size);
-+	if (read_ret < 0) {
-+		printf("could not read elf file: %s\n", errno_str());
-+		ret = -errno;
-+		goto err_free_buf;
-+	}
-+
-+	return elf;
-+
-+err_free_buf:
-+	free(elf->buf);
-+err_free_elf:
-+	free(elf);
-+err_close_fd:
-+	close(fd);
-+
-+	return ERR_PTR(ret);
-+}
-+
-+void elf_close(struct elf_image *elf)
-+{
-+	free(elf->buf);
-+	elf_release_image(elf);
-+}
-diff --git a/include/elf.h b/include/elf.h
-index 403412f3f..b36b917e5 100644
---- a/include/elf.h
-+++ b/include/elf.h
-@@ -416,6 +416,10 @@ static inline size_t elf_get_mem_size(struct elf_image *elf)
- struct elf_image *elf_load_image(void *buf);
- void elf_release_image(struct elf_image *elf);
  
-+struct elf_image *elf_open(const char *filename);
-+void elf_close(struct elf_image *elf);
-+int elf_load(struct elf_image *elf);
++static int bootm_open_elf(struct image_data *data)
++{
++	if (!IS_ENABLED(CONFIG_ELF))
++		return -ENOSYS;
 +
- #define ELF_GET_FIELD(__s, __field, __type) \
- static inline __type elf_##__s##_##__field(struct elf_image *elf, void *arg) { \
- 	if (elf->class == ELFCLASS32) \
-@@ -427,6 +431,10 @@ static inline __type elf_##__s##_##__field(struct elf_image *elf, void *arg) { \
- ELF_GET_FIELD(hdr, e_entry, u64)
- ELF_GET_FIELD(hdr, e_phnum, u16)
- ELF_GET_FIELD(hdr, e_phoff, u64)
-+ELF_GET_FIELD(hdr, e_shoff, u64)
-+ELF_GET_FIELD(hdr, e_shentsize, u16)
-+ELF_GET_FIELD(hdr, e_machine, u16)
-+ELF_GET_FIELD(hdr, e_shnum, u16)
- ELF_GET_FIELD(hdr, e_type, u16)
- ELF_GET_FIELD(phdr, p_paddr, u64)
- ELF_GET_FIELD(phdr, p_filesz, u64)
++	data->elf = elf_open(data->os_file);
++	if (IS_ERR(data->elf))
++		return PTR_ERR(data->elf);
++
++	printf("Entry Point:  %08llx\n", data->elf->entry);
++
++	data->os_address = data->elf->entry;
++
++	return 0;
++}
++
+ static void bootm_print_info(struct image_data *data)
+ {
+ 	if (data->os_res)
+@@ -651,6 +672,16 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 		}
+ 	}
+ 
++	if (os_type == filetype_elf) {
++		ret = bootm_open_elf(data);
++		if (ret) {
++			printf("Loading ELF image failed with: %s\n",
++					strerror(-ret));
++			data->elf = NULL;
++			goto err_out;
++		}
++	}
++
+ 	if (bootm_data->appendroot) {
+ 		char *rootarg;
+ 
+@@ -720,6 +751,8 @@ err_out:
+ 		uimage_close(data->initrd);
+ 	if (data->os)
+ 		uimage_close(data->os);
++	if (IS_ENABLED(CONFIG_ELF) && data->elf)
++		elf_close(data->elf);
+ 	if (IS_ENABLED(CONFIG_FITIMAGE) && data->os_fit)
+ 		fit_close(data->os_fit);
+ 	if (data->of_root_node && data->of_root_node != of_get_root_node())
+diff --git a/include/bootm.h b/include/bootm.h
+index 7782de7a4..ef5148f31 100644
+--- a/include/bootm.h
++++ b/include/bootm.h
+@@ -46,6 +46,9 @@ struct image_data {
+ 	/* if os is an uImage this will be provided */
+ 	struct uimage_handle *os;
+ 
++	/* if os is an elf file this will be provided */
++	struct elf_image *elf;
++
+ 	/* if os is a FIT image this will be provided */
+ 	struct fit_handle *os_fit;
+ 
 -- 
 2.17.1
 
