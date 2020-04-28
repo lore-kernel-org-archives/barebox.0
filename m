@@ -1,11 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from zimbra2.kalray.eu ([92.103.151.219])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jTL1U-0006mN-DU
- for barebox@lists.infradead.org; Tue, 28 Apr 2020 07:51:21 +0000
-From: Clement Leger <cleger@kalray.eu>
-Date: Tue, 28 Apr 2020 09:50:53 +0200
-Message-Id: <20200428075100.17565-1-cleger@kalray.eu>
+ id 1jTJwD-0004na-7c
+ for barebox@lists.infradead.org; Tue, 28 Apr 2020 06:41:50 +0000
+Date: Tue, 28 Apr 2020 08:41:47 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200428064147.GQ5877@pengutronix.de>
+References: <20200423081712.4022-1-cleger@kalray.eu>
+ <20200423081712.4022-7-cleger@kalray.eu>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200423081712.4022-7-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,55 +19,95 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 0/7] elf: add better bootm support
-To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
-Cc: Clement Leger <cleger@kalray.eu>
+Subject: Re: [PATCH v2 6/6] mips: lib: bootm: use bootm elf loading
+ capabilities
+To: Clement Leger <cleger@kalray.eu>
+Cc: barebox@lists.infradead.org, Oleksij Rempel <ore@pengutronix.de>
 
-Currently, when booting an elf file using "bootm /dev/mtdx", bootm will
-simply pass the file to the bootm and the read done on it will read the
-entire flash partition. This series starts by some cleanup and then add an
-elf_open function to load the elf file size only based on the elf header.
-A special handling for the elf file is also added in bootm data to allow
-using directly the elf file structure. Finally the mips bootm is modified
-to use bootm_load_os directly instead of manual elf loading.
+Antony, Oleksij,
 
-Changes v2 -> v3
- - Integrate elf loading in bootm_load_os
- - Add patch to remove now unused elf_load_image/elf_release_image
- - Use malloc instead of xmalloc and check return value
+Are you able to test this?
 
-Changes v1 -> v2
- - Add BOOTM_ELF config to select elf support and add checks in code
- - Add an elf_get_mem_size function to avoid computing elf size in bootm.c
- - Use xmalloc and read_full in elf_open instead of xzalloc/read
- - Fix data->elf NULL reset
- - Remove elf struct entirely from mips bootm code
+Sascha
 
-Clement Leger (7):
-  common: elf: add computation of elf boundaries
-  common: elf: fix warning on 32 bits architectures
-  common: elf: split init to be reused from other function
-  common: elf: add elf_open, elf_close and elf_load
-  common: bootm: add support for elf file loading
-  mips: lib: bootm: use bootm elf loading capabilities
-  common: elf: remove elf_load_image/elf_release_image
-
- arch/mips/lib/bootm.c |  31 +++++-------
- common/Kconfig        |   8 ++++
- common/bootm.c        |  33 +++++++++++++
- common/elf.c          | 107 ++++++++++++++++++++++++++++++++++++------
- include/bootm.h       |   3 ++
- include/elf.h         |  16 ++++++-
- 6 files changed, 161 insertions(+), 37 deletions(-)
+On Thu, Apr 23, 2020 at 10:17:11AM +0200, Clement Leger wrote:
+> Now that the elf file is loaded by the bootm core, there is no need for
+> elf pointer anymore. Thus all elf related fields can be removed.
+> 
+> Signed-off-by: Clement Leger <cleger@kalray.eu>
+> ---
+>  arch/mips/lib/bootm.c | 27 +++++++--------------------
+>  1 file changed, 7 insertions(+), 20 deletions(-)
+> 
+> diff --git a/arch/mips/lib/bootm.c b/arch/mips/lib/bootm.c
+> index 5bb09cc2d..c53a679c5 100644
+> --- a/arch/mips/lib/bootm.c
+> +++ b/arch/mips/lib/bootm.c
+> @@ -46,43 +46,30 @@ static struct binfmt_hook binfmt_barebox_hook = {
+>  static int do_bootm_elf(struct image_data *data)
+>  {
+>  	void (*entry)(int, void *);
+> -	struct elf_image *elf;
+> -	void *fdt, *buf;
+> +	void *fdt;
+>  	int ret = 0;
+>  
+> -	buf = read_file(data->os_file, NULL);
+> -	if (!buf)
+> -		return -EINVAL;
+> -
+> -	elf = elf_load_image(buf);
+> -	if (IS_ERR(elf))
+> -		return PTR_ERR(elf);
+> -
+>  	fdt = bootm_get_devicetree(data);
+> -	if (IS_ERR(fdt)) {
+> -		ret = PTR_ERR(fdt);
+> -		goto bootm_elf_done;
+> -	}
+> +	if (IS_ERR(fdt))
+> +		return PTR_ERR(fdt);
+>  
+>  	pr_info("Starting application at 0x%08lx, dts 0x%08lx...\n",
+> -		phys_to_virt(elf->entry), data->of_root_node);
+> +		phys_to_virt(data->os_address), data->of_root_node);
+>  
+>  	if (data->dryrun)
+> -		goto bootm_elf_done;
+> +		goto bootm_free_fdt;
+>  
+>  	shutdown_barebox();
+>  
+> -	entry = (void *) (unsigned long) elf->entry;
+> +	entry = (void *) (unsigned long) data->os_address;
+>  
+>  	entry(-2, phys_to_virt((unsigned long)fdt));
+>  
+>  	pr_err("ELF application terminated\n");
+>  	ret = -EINVAL;
+>  
+> -bootm_elf_done:
+> -	elf_release_image(elf);
+> +bootm_free_fdt:
+>  	free(fdt);
+> -	free(buf);
+>  
+>  	return ret;
+>  }
+> -- 
+> 2.17.1
+> 
+> 
 
 -- 
-2.17.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
