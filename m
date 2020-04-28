@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from zimbra2.kalray.eu ([92.103.151.219])
+Received: from relay9-d.mail.gandi.net ([217.70.183.199])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jTL1X-0006nD-7X
- for barebox@lists.infradead.org; Tue, 28 Apr 2020 07:51:24 +0000
-From: Clement Leger <cleger@kalray.eu>
-Date: Tue, 28 Apr 2020 09:50:54 +0200
-Message-Id: <20200428075100.17565-2-cleger@kalray.eu>
-In-Reply-To: <20200428075100.17565-1-cleger@kalray.eu>
-References: <20200428075100.17565-1-cleger@kalray.eu>
+ id 1jTKoE-0001aY-Kv
+ for barebox@lists.infradead.org; Tue, 28 Apr 2020 07:37:40 +0000
+Received: from geraet.fritz.box (i53875677.versanet.de [83.135.86.119])
+ (Authenticated sender: ahmad@a3f.at)
+ by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 669B0FF813
+ for <barebox@lists.infradead.org>; Tue, 28 Apr 2020 07:37:35 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Tue, 28 Apr 2020 09:37:21 +0200
+Message-Id: <20200428073730.34579-2-ahmad@a3f.at>
+In-Reply-To: <20200428073730.34579-1-ahmad@a3f.at>
+References: <20200428073730.34579-1-ahmad@a3f.at>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,73 +21,83 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 1/7] common: elf: add computation of elf boundaries
-To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
-Cc: Clement Leger <cleger@kalray.eu>
+Subject: [PATCH 02/11] scripts: kconfig-lint.py: extend for undefined symbol
+ detection
+To: barebox@lists.infradead.org
 
-In order to correctly load an initrd or a device tree after an elf file,
-we need to know its boundaries. This commit adds support for that and
-allow the bootm implementations to use it for memory loading.
+Extend the script by some code from the official list_undefined.py example[1]
+to further detect symbols we are using, but haven't defined anywhere.
 
-Signed-off-by: Clement Leger <cleger@kalray.eu>
+[1]: https://github.com/ulfalizer/Kconfiglib/blob/35a60b7/examples/list_undefined.py
+
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- common/elf.c  | 7 +++++++
- include/elf.h | 7 +++++++
- 2 files changed, 14 insertions(+)
+ scripts/kconfig-lint.py | 25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/common/elf.c b/common/elf.c
-index 4733accb0..d64de401c 100644
---- a/common/elf.c
-+++ b/common/elf.c
-@@ -59,6 +59,11 @@ static int load_elf_phdr_segment(struct elf_image *elf, void *src,
- 	if (!p_filesz)
- 		return 0;
+diff --git a/scripts/kconfig-lint.py b/scripts/kconfig-lint.py
+index 308c82dfd8de..a154e9cccacc 100755
+--- a/scripts/kconfig-lint.py
++++ b/scripts/kconfig-lint.py
+@@ -1,7 +1,7 @@
+ #!/usr/bin/env python3
  
-+	if (dst < elf->low_addr)
-+		elf->low_addr = dst;
-+	if (dst + p_memsz > elf->high_addr)
-+		elf->high_addr = dst + p_memsz;
+ # Copyright (c) 2019 Nordic Semiconductor ASA
+-# SPDX-License-Identifier: Apache-2.0
++# SPDX-License-Identifier: Apache-2.0 AND ISC
+ 
+ """
+ Linter for the Zephyr Kconfig files. Pass --help to see
+@@ -35,6 +35,7 @@ def main():
+         # Run all checks if no checks were specified
+         checks = (check_always_n,
+                   check_unused,
++                  check_undefined,
+                   check_pointless_menuconfigs,
+                   check_missing_config_prefix)
+ 
+@@ -78,6 +79,13 @@ Heuristic:
+ 
+ C preprocessor magic can trip up this check.""")
+ 
++    parser.add_argument(
++        "-U", "--check-undefined",
++        action="append_const", dest="checks", const=check_undefined,
++        help="""\
++List symbols that are used in a Kconfig file but are undefined
++""")
 +
- 	pr_debug("Loading phdr to 0x%p (%llu bytes)\n", dst, p_filesz);
+     parser.add_argument(
+         "-m", "--check-pointless-menuconfigs",
+         action="append_const", dest="checks", const=check_pointless_menuconfigs,
+@@ -121,6 +129,21 @@ def check_unused():
+            sym.name not in referenced:
+             print(name_and_locs(sym))
  
- 	ret = elf_request_region(elf, (resource_size_t)dst, p_filesz);
-@@ -124,6 +129,8 @@ struct elf_image *elf_load_image(void *buf)
- 	INIT_LIST_HEAD(&elf->list);
- 
- 	elf->buf = buf;
-+	elf->low_addr = (void *) (unsigned long) -1;
-+	elf->high_addr = 0;
- 
- 	ret = elf_check_image(elf);
- 	if (ret)
-diff --git a/include/elf.h b/include/elf.h
-index 113728f08..403412f3f 100644
---- a/include/elf.h
-+++ b/include/elf.h
-@@ -403,9 +403,16 @@ struct elf_image {
- 	struct list_head list;
- 	u8 class;
- 	u64 entry;
-+	void *low_addr;
-+	void *high_addr;
- 	void *buf;
- };
- 
-+static inline size_t elf_get_mem_size(struct elf_image *elf)
-+{
-+	return elf->high_addr - elf->low_addr;
-+}
++def check_undefined():
++    print_header("Symbols that are used, but undefined")
++    for name, sym in kconf.syms.items():
++        if not sym.nodes:
++            # Undefined symbol. We skip some of the uninteresting ones.
 +
- struct elf_image *elf_load_image(void *buf);
- void elf_release_image(struct elf_image *elf);
++            # Due to how Kconfig works, integer literals show up as symbols
++            # (from e.g. 'default 1'). Skip those.
++            try:
++                int(name, 0)
++                continue
++            except ValueError:
++                # Interesting undefined symbol
++                print(name)
++
  
+ def check_pointless_menuconfigs():
+     print_header("menuconfig symbols with empty menus")
 -- 
-2.17.1
+2.20.1
 
 
 _______________________________________________
