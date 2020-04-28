@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from relay9-d.mail.gandi.net ([217.70.183.199])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jTKoG-0001cN-Tg
- for barebox@lists.infradead.org; Tue, 28 Apr 2020 07:37:43 +0000
-Received: from geraet.fritz.box (i53875677.versanet.de [83.135.86.119])
- (Authenticated sender: ahmad@a3f.at)
- by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 5F732FF811
- for <barebox@lists.infradead.org>; Tue, 28 Apr 2020 07:37:39 +0000 (UTC)
+ id 1jTKoF-0001bG-Vh
+ for barebox@lists.infradead.org; Tue, 28 Apr 2020 07:37:42 +0000
 From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Tue, 28 Apr 2020 09:37:29 +0200
-Message-Id: <20200428073730.34579-10-ahmad@a3f.at>
+Date: Tue, 28 Apr 2020 09:37:27 +0200
+Message-Id: <20200428073730.34579-8-ahmad@a3f.at>
 In-Reply-To: <20200428073730.34579-1-ahmad@a3f.at>
 References: <20200428073730.34579-1-ahmad@a3f.at>
 MIME-Version: 1.0
@@ -25,29 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/11] reset: fix typo in Kconfig default
+Subject: [PATCH 08/11] MIPS: ath79: define used, but undefined, Kconfig option
 To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-We don't have a config SOC_IMX7D, but have an ARCH_IMX7. Fix this.
+SOC_QCA_QCA4531 is selected, but defined no where. fix this.
 
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- drivers/reset/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/mach-ath79/Kconfig | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
-index 048f2081f82a..9befc5e55f32 100644
---- a/drivers/reset/Kconfig
-+++ b/drivers/reset/Kconfig
-@@ -16,7 +16,7 @@ if RESET_CONTROLLER
+diff --git a/arch/mips/mach-ath79/Kconfig b/arch/mips/mach-ath79/Kconfig
+index 97eea6a2a245..9dab5fc92aac 100644
+--- a/arch/mips/mach-ath79/Kconfig
++++ b/arch/mips/mach-ath79/Kconfig
+@@ -6,6 +6,9 @@ config SOC_QCA_AR9331
+ config SOC_QCA_AR9344
+ 	bool
  
- config RESET_IMX7
- 	bool "i.MX7 Reset Driver"
--	default SOC_IMX7D
-+	default ARCH_IMX7
- 	select MFD_SYSCON
- 	help
- 	  This enables the reset controller driver for i.MX7 SoCs.
++config SOC_QCA_QCA4531
++	bool
++
+ if DEBUG_LL
+ choice
+ 	prompt "DEBUG_LL driver"
 -- 
 2.20.1
 
