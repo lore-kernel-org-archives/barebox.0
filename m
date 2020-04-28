@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay9-d.mail.gandi.net ([217.70.183.199])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jTKoE-0001al-Om
- for barebox@lists.infradead.org; Tue, 28 Apr 2020 07:37:40 +0000
-Received: from geraet.fritz.box (i53875677.versanet.de [83.135.86.119])
- (Authenticated sender: ahmad@a3f.at)
- by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 472F0FF812
- for <barebox@lists.infradead.org>; Tue, 28 Apr 2020 07:37:37 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Tue, 28 Apr 2020 09:37:25 +0200
-Message-Id: <20200428073730.34579-6-ahmad@a3f.at>
-In-Reply-To: <20200428073730.34579-1-ahmad@a3f.at>
-References: <20200428073730.34579-1-ahmad@a3f.at>
+ id 1jTKyU-0003Zi-LP
+ for barebox@lists.infradead.org; Tue, 28 Apr 2020 07:48:15 +0000
+Date: Tue, 28 Apr 2020 09:48:13 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200428074813.GY5877@pengutronix.de>
+References: <20200428070201.8075-1-ahmad@a3f.at>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200428070201.8075-1-ahmad@a3f.at>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,33 +22,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/11] crypto: drop select on non-existing Kconfig options
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] x86: delete X86_NATIVE_BRINGUP in choice
+To: Ahmad Fatoum <ahmad@a3f.at>
+Cc: barebox@lists.infradead.org
 
-We define neither CRYPTO_BLKCIPHER nor CRYPTO_DES in barebox. Drop the
-select on them.
+On Tue, Apr 28, 2020 at 09:02:01AM +0200, Ahmad Fatoum wrote:
+> 12769b3b7871 ("Add the whole x86 architecture to the build system")
+> added the configuration option 10 years ago, but no backing code
+> has been contributed meanwhile. Drop the option.
+> 
+> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+> ---
+>  arch/x86/Kconfig | 7 -------
+>  1 file changed, 7 deletions(-)
 
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
----
- drivers/crypto/imx-scc/Kconfig | 2 --
- 1 file changed, 2 deletions(-)
+Applied, thanks
 
-diff --git a/drivers/crypto/imx-scc/Kconfig b/drivers/crypto/imx-scc/Kconfig
-index 531304f43218..bc4676a10af7 100644
---- a/drivers/crypto/imx-scc/Kconfig
-+++ b/drivers/crypto/imx-scc/Kconfig
-@@ -1,8 +1,6 @@
- config CRYPTO_DEV_MXC_SCC
- 	tristate "Support for Freescale Security Controller (SCC)"
- 	depends on ARCH_IMX25 && OFTREE
--	select CRYPTO_BLKCIPHER
--	select CRYPTO_DES
- 	help
- 	  This option enables support for the Security Controller (SCC)
- 	  found in Freescale i.MX25 chips.
+Sascha
+
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
