@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from relay9-d.mail.gandi.net ([217.70.183.199])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jTKoH-0001cz-LD
+ id 1jTKoE-0001aX-H7
  for barebox@lists.infradead.org; Tue, 28 Apr 2020 07:37:44 +0000
 Received: from geraet.fritz.box (i53875677.versanet.de [83.135.86.119])
  (Authenticated sender: ahmad@a3f.at)
- by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id CE90AFF817
- for <barebox@lists.infradead.org>; Tue, 28 Apr 2020 07:37:39 +0000 (UTC)
+ by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id EE5E6FF803
+ for <barebox@lists.infradead.org>; Tue, 28 Apr 2020 07:37:34 +0000 (UTC)
 From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Tue, 28 Apr 2020 09:37:30 +0200
-Message-Id: <20200428073730.34579-11-ahmad@a3f.at>
-In-Reply-To: <20200428073730.34579-1-ahmad@a3f.at>
-References: <20200428073730.34579-1-ahmad@a3f.at>
+Date: Tue, 28 Apr 2020 09:37:20 +0200
+Message-Id: <20200428073730.34579-1-ahmad@a3f.at>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,113 +23,335 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/11] treewide: Kconfig: remove some unused symbols
+Subject: [PATCH 01/11] scripts: import Zephyr scripts/kconfig/lint.py into
+ barebox
 To: barebox@lists.infradead.org
 
-All these symbols are defined, but unused anywhere in the barebox tree.
-Remove them.
+This kconfig linter can do some useful analysis to find problems
+in our Kconfig files. Import it into barebox source tree with the
+changes necessary to be usable.
+
+The results of running it should be taken with a grain of salt and
+verified with grep.
 
 Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- arch/arm/mach-at91/Kconfig    |  3 ---
- arch/arm/mach-omap/Kconfig    |  3 ---
- arch/arm/mach-tegra/Kconfig   |  3 ---
- common/Kconfig                |  3 ---
- drivers/pinctrl/Kconfig       |  2 --
- drivers/pinctrl/mvebu/Kconfig | 15 ---------------
- 6 files changed, 29 deletions(-)
- delete mode 100644 drivers/pinctrl/mvebu/Kconfig
+ scripts/kconfig-lint.py | 306 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 306 insertions(+)
+ create mode 100755 scripts/kconfig-lint.py
 
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 121cca2acf11..54fa9b8aa28c 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -6,9 +6,6 @@ config HAVE_AT91_UTMI
- config HAVE_AT91_USB_CLK
- 	bool
- 
--config HAVE_AT91_PIO4
--	bool
--
- config COMMON_CLK_AT91
- 	bool
- 	select COMMON_CLK
-diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
-index e9228809f067..220b6351679c 100644
---- a/arch/arm/mach-omap/Kconfig
-+++ b/arch/arm/mach-omap/Kconfig
-@@ -19,9 +19,6 @@
- menu "OMAP Features"
- 	depends on ARCH_OMAP
- 
--config MACH_OMAP
--	bool
--
- config ARCH_OMAP3
- 	bool
- 	select CPU_V7
-diff --git a/arch/arm/mach-tegra/Kconfig b/arch/arm/mach-tegra/Kconfig
-index 160732fbefdb..f144d346b4c5 100644
---- a/arch/arm/mach-tegra/Kconfig
-+++ b/arch/arm/mach-tegra/Kconfig
-@@ -4,9 +4,6 @@ config ARCH_TEXT_BASE
- 	hex
- 	default 0x0
- 
--config BOARDINFO
--	default ""
--
- # ---------------------------------------------------------
- 
- config ARCH_TEGRA_2x_SOC
-diff --git a/common/Kconfig b/common/Kconfig
-index 893bdeaffc9c..97f609d84b0f 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -144,9 +144,6 @@ config LOCALVERSION_AUTO
- 
- 	  which is done within the script "scripts/setlocalversion".)
- 
--config BOARDINFO
--	string
--
- config BANNER
- 	bool "display banner"
- 	default y
-diff --git a/drivers/pinctrl/Kconfig b/drivers/pinctrl/Kconfig
-index fd75ea6a4f43..4f05f5d49458 100644
---- a/drivers/pinctrl/Kconfig
-+++ b/drivers/pinctrl/Kconfig
-@@ -93,8 +93,6 @@ config PINCTRL_TEGRA_XUSB
- 	  The pinmux controller found on the Tegra 124 line of SoCs used for
- 	  the SerDes lanes.
- 
--source "drivers/pinctrl/mvebu/Kconfig"
--
- config PINCTRL_VF610
- 	bool
- 	default y if ARCH_VF610
-diff --git a/drivers/pinctrl/mvebu/Kconfig b/drivers/pinctrl/mvebu/Kconfig
-deleted file mode 100644
-index af20cad43915..000000000000
---- a/drivers/pinctrl/mvebu/Kconfig
-+++ /dev/null
-@@ -1,15 +0,0 @@
--config PINCTRL_ARMADA_370
--	default y if ARCH_ARMADA_370
--	bool
--
--config PINCTRL_ARMADA_XP
--	bool
--	default y if ARCH_ARMADA_XP
--
--config PINCTRL_DOVE
--	bool
--	default y if ARCH_DOVE
--
--config PINCTRL_KIRKWOOD
--	bool
--	default y if ARCH_KIRKWOOD
+diff --git a/scripts/kconfig-lint.py b/scripts/kconfig-lint.py
+new file mode 100755
+index 000000000000..308c82dfd8de
+--- /dev/null
++++ b/scripts/kconfig-lint.py
+@@ -0,0 +1,306 @@
++#!/usr/bin/env python3
++
++# Copyright (c) 2019 Nordic Semiconductor ASA
++# SPDX-License-Identifier: Apache-2.0
++
++"""
++Linter for the Zephyr Kconfig files. Pass --help to see
++available checks. By default, all checks are enabled.
++
++Some of the checks rely on heuristics and can get tripped up
++by things like preprocessor magic, so manual checking is
++still needed. 'git grep' is handy.
++"""
++
++import argparse
++import os
++import re
++import shlex
++import subprocess
++import sys
++import tempfile
++
++TOP_DIR = os.path.join(os.path.dirname(__file__), "..")
++
++import kconfiglib
++
++
++def main():
++    init_kconfig()
++
++    args = parse_args()
++    if args.checks:
++        checks = args.checks
++    else:
++        # Run all checks if no checks were specified
++        checks = (check_always_n,
++                  check_unused,
++                  check_pointless_menuconfigs,
++                  check_missing_config_prefix)
++
++    first = True
++    for check in checks:
++        if not first:
++            print()
++        first = False
++        check()
++
++
++def parse_args():
++    # args.checks is set to a list of check functions to run
++
++    parser = argparse.ArgumentParser(
++        formatter_class=argparse.RawTextHelpFormatter,
++        description=__doc__)
++
++    parser.add_argument(
++        "-n", "--check-always-n",
++        action="append_const", dest="checks", const=check_always_n,
++        help="""\
++List symbols that can never be anything but n/empty. These
++are detected as symbols with no prompt or defaults that
++aren't selected or implied.
++""")
++
++    parser.add_argument(
++        "-u", "--check-unused",
++        action="append_const", dest="checks", const=check_unused,
++        help="""\
++List symbols that might be unused.
++
++Heuristic:
++
++ - Isn't referenced in Kconfig
++ - Isn't referenced as CONFIG_<NAME> outside Kconfig
++   (besides possibly as CONFIG_<NAME>=<VALUE>)
++ - Isn't selecting/implying other symbols
++ - Isn't a choice symbol
++
++C preprocessor magic can trip up this check.""")
++
++    parser.add_argument(
++        "-m", "--check-pointless-menuconfigs",
++        action="append_const", dest="checks", const=check_pointless_menuconfigs,
++        help="""\
++List symbols defined with 'menuconfig' where the menu is
++empty due to the symbol not being followed by stuff that
++depends on it""")
++
++    parser.add_argument(
++        "-p", "--check-missing-config-prefix",
++        action="append_const", dest="checks", const=check_missing_config_prefix,
++        help="""\
++Look for references like
++
++    #if MACRO
++    #if(n)def MACRO
++    defined(MACRO)
++    IS_ENABLED(MACRO)
++
++where MACRO is the name of a defined Kconfig symbol but
++doesn't have a CONFIG_ prefix. Could be a typo.
++
++Macros that are #define'd somewhere are not flagged.""")
++
++    return parser.parse_args()
++
++
++def check_always_n():
++    print_header("Symbols that can't be anything but n/empty")
++    for sym in kconf.unique_defined_syms:
++        if not has_prompt(sym) and not is_selected_or_implied(sym) and \
++           not has_defaults(sym):
++            print(name_and_locs(sym))
++
++
++def check_unused():
++    print_header("Symbols that look unused")
++    referenced = referenced_sym_names()
++    for sym in kconf.unique_defined_syms:
++        if not is_selecting_or_implying(sym) and not sym.choice and \
++           sym.name not in referenced:
++            print(name_and_locs(sym))
++
++
++def check_pointless_menuconfigs():
++    print_header("menuconfig symbols with empty menus")
++    for node in kconf.node_iter():
++        if node.is_menuconfig and not node.list and \
++           isinstance(node.item, kconfiglib.Symbol):
++            print("{0.item.name:40} {0.filename}:{0.linenr}".format(node))
++
++
++def check_missing_config_prefix():
++    print_header("Symbol references that might be missing a CONFIG_ prefix")
++
++    # Paths to modules
++    modpaths = [TOP_DIR]
++
++    # Gather #define'd macros that might overlap with symbol names, so that
++    # they don't trigger false positives
++    defined = set()
++    for modpath in modpaths:
++        regex = r"#\s*define\s+([A-Z0-9_]+)\b"
++        defines = run(("git", "grep", "--extended-regexp", regex),
++                      cwd=modpath, check=False)
++        # Could pass --only-matching to git grep as well, but it was added
++        # pretty recently (2018)
++        defined.update(re.findall(regex, defines))
++
++    # Filter out symbols whose names are #define'd too. Preserve definition
++    # order to make the output consistent.
++    syms = [sym for sym in kconf.unique_defined_syms
++            if sym.name not in defined]
++
++    # grep for symbol references in #ifdef/defined() that are missing a CONFIG_
++    # prefix. Work around an "argument list too long" error from 'git grep' by
++    # checking symbols in batches.
++    for batch in split_list(syms, 200):
++        # grep for '#if((n)def) <symbol>', 'defined(<symbol>', and
++        # 'IS_ENABLED(<symbol>', with a missing CONFIG_ prefix
++        regex = r"(?:#\s*if(?:n?def)\s+|\bdefined\s*\(\s*|IS_ENABLED\(\s*)(?:" + \
++                "|".join(sym.name for sym in batch) + r")\b"
++        cmd = ("git", "grep", "--line-number", "-I", "--perl-regexp", regex)
++
++        for modpath in modpaths:
++            print(run(cmd, cwd=modpath, check=False), end="")
++
++
++def split_list(lst, batch_size):
++    # check_missing_config_prefix() helper generator that splits a list into
++    # equal-sized batches (possibly with a shorter batch at the end)
++
++    for i in range(0, len(lst), batch_size):
++        yield lst[i:i + batch_size]
++
++
++def print_header(s):
++    print(s + "\n" + len(s)*"=")
++
++
++def init_kconfig():
++    global kconf
++
++    os.environ.update(
++        srctree=TOP_DIR,
++        KCONFIG_DOC_MODE="1",
++        ARCH_DIR="arch",
++        SRCARCH="*")
++
++    kconf = kconfiglib.Kconfig(suppress_traceback=True)
++
++
++def referenced_sym_names():
++    # Returns the names of all symbols referenced inside and outside the
++    # Kconfig files (that we can detect), without any "CONFIG_" prefix
++
++    return referenced_in_kconfig() | referenced_outside_kconfig()
++
++
++def referenced_in_kconfig():
++    # Returns the names of all symbols referenced inside the Kconfig files
++
++    return {ref.name
++            for node in kconf.node_iter()
++                for ref in node.referenced
++                    if isinstance(ref, kconfiglib.Symbol)}
++
++
++def referenced_outside_kconfig():
++    # Returns the names of all symbols referenced outside the Kconfig files
++
++    regex = r"\bCONFIG_[A-Z0-9_]+\b"
++
++    res = set()
++
++    # 'git grep' all modules
++    for modpath in [TOP_DIR]:
++        for line in run(("git", "grep", "-h", "-I", "--extended-regexp", regex),
++                        cwd=modpath).splitlines():
++            # Don't record lines starting with "CONFIG_FOO=" or "# CONFIG_FOO="
++            # as references, so that symbols that are only assigned in .config
++            # files are not included
++            if re.match(r"[\s#]*CONFIG_[A-Z0-9_]+=.*", line):
++                continue
++
++            # Could pass --only-matching to git grep as well, but it was added
++            # pretty recently (2018)
++            for match in re.findall(regex, line):
++                res.add(match[7:])  # Strip "CONFIG_"
++
++    return res
++
++
++def has_prompt(sym):
++    return any(node.prompt for node in sym.nodes)
++
++
++def is_selected_or_implied(sym):
++    return sym.rev_dep is not kconf.n or sym.weak_rev_dep is not kconf.n
++
++
++def has_defaults(sym):
++    return bool(sym.defaults)
++
++
++def is_selecting_or_implying(sym):
++    return sym.selects or sym.implies
++
++
++def name_and_locs(sym):
++    # Returns a string with the name and definition location(s) for 'sym'
++
++    return "{:40} {}".format(
++        sym.name,
++        ", ".join("{0.filename}:{0.linenr}".format(node) for node in sym.nodes))
++
++
++def run(cmd, cwd=TOP_DIR, check=True):
++    # Runs 'cmd' with subprocess, returning the decoded stdout output. 'cwd' is
++    # the working directory. It defaults to the top-level Zephyr directory.
++    # Exits with an error if the command exits with a non-zero return code if
++    # 'check' is True.
++
++    cmd_s = " ".join(shlex.quote(word) for word in cmd)
++
++    try:
++        process = subprocess.Popen(
++            cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=cwd)
++    except OSError as e:
++        err("Failed to run '{}': {}".format(cmd_s, e))
++
++    stdout, stderr = process.communicate()
++    # errors="ignore" temporarily works around
++    # https://github.com/zephyrproject-rtos/esp-idf/pull/2
++    stdout = stdout.decode("utf-8", errors="ignore")
++    stderr = stderr.decode("utf-8")
++    if check and process.returncode:
++        err("""\
++'{}' exited with status {}.
++
++===stdout===
++{}
++===stderr===
++{}""".format(cmd_s, process.returncode, stdout, stderr))
++
++    if stderr:
++        warn("'{}' wrote to stderr:\n{}".format(cmd_s, stderr))
++
++    return stdout
++
++
++def err(msg):
++    sys.exit(executable() + "error: " + msg)
++
++
++def warn(msg):
++    print(executable() + "warning: " + msg, file=sys.stderr)
++
++
++def executable():
++    cmd = sys.argv[0]  # Empty string if missing
++    return cmd + ": " if cmd else ""
++
++
++if __name__ == "__main__":
++    main()
 -- 
 2.20.1
 
