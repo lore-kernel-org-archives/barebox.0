@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from relay9-d.mail.gandi.net ([217.70.183.199])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jTKoF-0001ag-Bx
+ id 1jTKoF-0001ah-R5
  for barebox@lists.infradead.org; Tue, 28 Apr 2020 07:37:41 +0000
 Received: from geraet.fritz.box (i53875677.versanet.de [83.135.86.119])
  (Authenticated sender: ahmad@a3f.at)
- by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 50ABEFF815
+ by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id CC75AFF810
  for <barebox@lists.infradead.org>; Tue, 28 Apr 2020 07:37:36 +0000 (UTC)
 From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Tue, 28 Apr 2020 09:37:23 +0200
-Message-Id: <20200428073730.34579-4-ahmad@a3f.at>
+Date: Tue, 28 Apr 2020 09:37:24 +0200
+Message-Id: <20200428073730.34579-5-ahmad@a3f.at>
 In-Reply-To: <20200428073730.34579-1-ahmad@a3f.at>
 References: <20200428073730.34579-1-ahmad@a3f.at>
 MIME-Version: 1.0
@@ -25,29 +25,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/11] ARM: at91: remove undefined Kconfig symbol
+Subject: [PATCH 05/11] ARM: socfpga: remove duplicate ARCH_TEXT_BASE
 To: barebox@lists.infradead.org
 
-Symbol used to exist, but was replaced by DEBUG_AT91_UART_BASE in
-common/Kconfig. Remove last trace of it.
+We already have one ARCH_TEXT_BASE in the file, which sets a value of
+zero.  MACH_SOCFPGA_CYCLONE5 and MACH_SOCFPGA_ARRIA10 aren't defined
+anywhere and are listed in no defconfigs, thus drop the duplicate
+option.
 
 Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- arch/arm/mach-at91/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm/mach-socfpga/Kconfig | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 77b3e9db64c8..121cca2acf11 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -142,7 +142,6 @@ config SOC_AT91RM9200
+diff --git a/arch/arm/mach-socfpga/Kconfig b/arch/arm/mach-socfpga/Kconfig
+index 3d8fc8ba42a9..2da875cef0c3 100644
+--- a/arch/arm/mach-socfpga/Kconfig
++++ b/arch/arm/mach-socfpga/Kconfig
+@@ -8,11 +8,6 @@ config ARCH_SOCFPGA_XLOAD
  	bool
- 	select CPU_ARM920T
- 	select HAS_AT91_ETHER
--	select HAVE_AT91_DBGU0
- 	select HAVE_AT91_USB_CLK
- 	select PINCTRL_AT91
+ 	prompt "Build preloader image"
  
+-config ARCH_TEXT_BASE
+-	hex
+-	default 0x00100000 if MACH_SOCFPGA_CYCLONE5
+-	default 0xffe00000 if MACH_SOCFPGA_ARRIA10
+-
+ comment "Altera SoCFPGA System-on-Chip"
+ 
+ config ARCH_SOCFPGA_CYCLONE5
 -- 
 2.20.1
 
