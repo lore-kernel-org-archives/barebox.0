@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from relay8-d.mail.gandi.net ([217.70.183.201])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jTKxh-0003M8-4Z
- for barebox@lists.infradead.org; Tue, 28 Apr 2020 07:47:26 +0000
-Date: Tue, 28 Apr 2020 09:47:23 +0200
-From: Sascha Hauer <sha@pengutronix.de>
-Message-ID: <20200428074723.GX5877@pengutronix.de>
-References: <20200424160111.10532-2-a.fatoum@pengutronix.de>
- <20200427074534.25259-1-a.fatoum@pengutronix.de>
+ id 1jTfRM-0002cO-Be
+ for barebox@lists.infradead.org; Wed, 29 Apr 2020 05:39:26 +0000
+Received: from geraet.fritz.box (i5387567C.versanet.de [83.135.86.124])
+ (Authenticated sender: ahmad@a3f.at)
+ by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 578A51BF20D
+ for <barebox@lists.infradead.org>; Wed, 29 Apr 2020 05:39:21 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Wed, 29 Apr 2020 07:39:11 +0200
+Message-Id: <20200429053914.4775-2-ahmad@a3f.at>
+In-Reply-To: <20200429053914.4775-1-ahmad@a3f.at>
+References: <20200429053914.4775-1-ahmad@a3f.at>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200427074534.25259-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,28 +25,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fixup! ARM: stm32mp: add Linux Automation MC-1 support
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/5] x86: mach-i386: remove unused X86_GENERIC_HAS_{ISA, PCI,
+ USB} options
+To: barebox@lists.infradead.org
 
-On Mon, Apr 27, 2020 at 09:45:34AM +0200, Ahmad Fatoum wrote:
-> Board code uses of_device_enable_path to enable the correct node,
-> so make them disabled-by-default.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  arch/arm/dts/stm32mp157c-lxa-mc1.dts | 2 ++
->  1 file changed, 2 insertions(+)
+Out of the four options in the file, only X86_GENERIC_HAS_VIDEO is used.
+The others have been without backing code for 10 years, so drop them.
 
-Applied the series with this fixup.
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ arch/x86/mach-i386/Kconfig | 15 ---------------
+ 1 file changed, 15 deletions(-)
 
-Sascha
-
+diff --git a/arch/x86/mach-i386/Kconfig b/arch/x86/mach-i386/Kconfig
+index b64d21fd9aa3..2d0bfb475947 100644
+--- a/arch/x86/mach-i386/Kconfig
++++ b/arch/x86/mach-i386/Kconfig
+@@ -3,26 +3,11 @@ menu "Board specific settings"
+ 
+ if X86_BOOTLOADER
+ 
+-config X86_GENERIC_HAS_ISA
+-	bool "ISA support"
+-	help
+-	  Say Y here if the target supports a ISA bus
+-
+-config X86_GENERIC_HAS_PCI
+-	bool "PCI support"
+-	help
+-	  Say Y here if the target supports a PCI bus
+-
+ config X86_GENERIC_HAS_VIDEO
+ 	bool "video support"
+ 	help
+ 	  Say Y here if the target supports a video output
+ 
+-config X86_GENERIC_HAS_USB
+-	bool "USB support"
+-	help
+-	  Say Y here if the target supports a USB interface
+-
+ endif
+ 
+ endmenu
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
