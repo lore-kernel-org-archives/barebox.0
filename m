@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from zimbra2.kalray.eu ([92.103.151.219])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jTKpP-0002Za-VD
- for barebox@lists.infradead.org; Tue, 28 Apr 2020 07:39:07 +0000
-Date: Tue, 28 Apr 2020 09:38:46 +0200 (CEST)
-From: =?utf-8?Q?Cl=C3=A9ment?= Leger <cleger@kalray.eu>
-Message-ID: <1169677112.17884601.1588059526665.JavaMail.zimbra@kalray.eu>
-In-Reply-To: <20200428063907.GP5877@pengutronix.de>
-References: <20200423081712.4022-1-cleger@kalray.eu>
- <20200423081712.4022-5-cleger@kalray.eu>
- <20200428063907.GP5877@pengutronix.de>
+ id 1jTgo6-0003n8-3i
+ for barebox@lists.infradead.org; Wed, 29 Apr 2020 07:06:59 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 29 Apr 2020 09:06:53 +0200
+Message-Id: <20200429070653.24762-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,66 +15,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 4/6] common: elf: add elf_open and elf_close
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] video: ssd1307fb: fix null pointer dereference on error
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-SGkgU2FzY2hhLAoKLS0tLS0gT24gMjggQXByLCAyMDIwLCBhdCAwODozOSwgU2FzY2hhIEhhdWVy
-IHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGUgd3JvdGU6Cgo+IE9uIFRodSwgQXByIDIzLCAyMDIwIGF0
-IDEwOjE3OjA5QU0gKzAyMDAsIENsZW1lbnQgTGVnZXIgd3JvdGU6Cj4+IFdoZW4gbG9hZGluZyBh
-biBlbGYgZmlsZSBmcm9tIGEgbXRkIGRldmljZSwgdGhpcyBhbGxvd3MgdG8gcGFyc2UgdGhlCj4+
-IGhlYWRlciBhbmQgbG9hZCBvbmx5IHRoZSBuZWVkZWQgZGF0YSBhY2NvcmRpbmcgdG8gdGhlIGVs
-ZiBzaXplLiBXaXRob3V0Cj4+IHRoYXQgc3VwcG9ydCwgbG9hZGluZyBhIGVsZiBmaWxlIGZyb20g
-YSAvZGV2L210ZCB3b3VsZCB0cnkgdG8gcmVhZCB0aGUKPj4gZW50aXJlIHBhcnRpdGlvbi4KPj4g
-Cj4+IFNpZ25lZC1vZmYtYnk6IENsZW1lbnQgTGVnZXIgPGNsZWdlckBrYWxyYXkuZXU+Cj4+IC0t
-LQo+PiAgY29tbW9uL2VsZi5jICB8IDgzICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKwo+PiAgaW5jbHVkZS9lbGYuaCB8ICA3ICsrKysrCj4+ICAyIGZp
-bGVzIGNoYW5nZWQsIDkwIGluc2VydGlvbnMoKykKPj4gCj4+IGRpZmYgLS1naXQgYS9jb21tb24v
-ZWxmLmMgYi9jb21tb24vZWxmLmMKPj4gaW5kZXggNTUzNDYzMmIyLi4yOTFmODgzY2IgMTAwNjQ0
-Cj4+IC0tLSBhL2NvbW1vbi9lbGYuYwo+PiArKysgYi9jb21tb24vZWxmLmMKPj4gQEAgLTUsNyAr
-NSwxMiBAQAo+PiAgCj4+ICAjaW5jbHVkZSA8Y29tbW9uLmg+Cj4+ICAjaW5jbHVkZSA8ZWxmLmg+
-Cj4+ICsjaW5jbHVkZSA8ZXJybm8uaD4KPj4gKyNpbmNsdWRlIDxmY250bC5oPgo+PiArI2luY2x1
-ZGUgPGxpYmZpbGUuaD4KPj4gICNpbmNsdWRlIDxtZW1vcnkuaD4KPj4gKyNpbmNsdWRlIDx1bmlz
-dGQuaD4KPj4gKyNpbmNsdWRlIDxsaW51eC9mcy5oPgo+PiAgCj4+ICBzdHJ1Y3QgZWxmX3NlY3Rp
-b24gewo+PiAgCXN0cnVjdCBsaXN0X2hlYWQgbGlzdDsKPj4gQEAgLTE1OCwzICsxNjMsODEgQEAg
-dm9pZCBlbGZfcmVsZWFzZV9pbWFnZShzdHJ1Y3QgZWxmX2ltYWdlICplbGYpCj4+ICAKPj4gIAlm
-cmVlKGVsZik7Cj4+ICB9Cj4+ICsKPj4gK3N0YXRpYyB1NjQgZWxmX2dldF9zaXplKHN0cnVjdCBl
-bGZfaW1hZ2UgKmVsZikKPj4gK3sKPj4gKwl1NjQgc2hfc2l6ZSA9IGVsZl9oZHJfZV9zaGVudHNp
-emUoZWxmLCBlbGYtPmJ1ZikgKgo+PiArCQkgICAgICBlbGZfaGRyX2Vfc2hudW0oZWxmLCBlbGYt
-PmJ1Zik7Cj4+ICsKPj4gKwkvKgo+PiArCSAqIFRoZSBzZWN0aW9uIGhlYWRlciB0YWJsZSBpcyBs
-b2NhdGVkIGF0IHRoZSBlbmQgb2YgdGhlIGVsZiBmaWxlIHRodXMKPj4gKwkgKiB3ZSBjYW4gdGFr
-ZSB0aGUgb2Zmc2V0IGFuZCBhZGQgdGhlIHNpemUgb2YgdGhpcyB0YWJsZSB0byBvYnRhaW4gdGhl
-Cj4+ICsJICogZmlsZSBzaXplLgo+PiArCSAqLwo+PiArCXJldHVybiBlbGZfaGRyX2Vfc2hvZmYo
-ZWxmLCBlbGYtPmJ1ZikgKyBzaF9zaXplOwo+PiArfQo+PiArCj4+ICtzdHJ1Y3QgZWxmX2ltYWdl
-ICplbGZfb3Blbihjb25zdCBjaGFyICpmaWxlbmFtZSkKPj4gK3sKPj4gKwlpbnQgZmQsIHJldDsK
-Pj4gKwl1NjQgc2l6ZTsKPj4gKwlzdHJ1Y3QgZWxmNjRfaGRyIGhkcjsKPj4gKwlzdHJ1Y3QgZWxm
-X2ltYWdlICplbGY7Cj4+ICsJc3NpemVfdCByZWFkX3JldDsKPj4gKwo+PiArCWZkID0gb3Blbihm
-aWxlbmFtZSwgT19SRE9OTFkpOwo+PiArCWlmIChmZCA8IDApIHsKPj4gKwkJcHJpbnRmKCJjb3Vs
-ZCBub3Qgb3BlbjogJXNcbiIsIGVycm5vX3N0cigpKTsKPj4gKwkJcmV0dXJuIEVSUl9QVFIoLWVy
-cm5vKTsKPj4gKwl9Cj4+ICsKPj4gKwlpZiAocmVhZChmZCwgJmhkciwgc2l6ZW9mKGhkcikpIDwg
-MCkgewo+PiArCQlwcmludGYoImNvdWxkIG5vdCByZWFkIGVsZiBoZWFkZXI6ICVzXG4iLCBlcnJu
-b19zdHIoKSk7Cj4+ICsJCXJldCA9IC1lcnJubzsKPj4gKwkJZ290byBlcnJfY2xvc2VfZmQ7Cj4+
-ICsJfQo+PiArCj4+ICsJZWxmID0geHphbGxvYyhzaXplb2YoKmVsZikpOwo+PiArCj4+ICsJcmV0
-ID0gZWxmX2NoZWNrX2luaXQoZWxmLCAmaGRyKTsKPj4gKwlpZiAocmV0KSB7Cj4+ICsJCXJldCA9
-IC1lcnJubzsKPj4gKwkJZ290byBlcnJfZnJlZV9lbGY7Cj4+ICsJfQo+PiArCj4+ICsJc2l6ZSA9
-IGVsZl9nZXRfc2l6ZShlbGYpOwo+PiArCj4+ICsJZWxmLT5idWYgPSB4bWFsbG9jKHNpemUpOwo+
-IAo+IEFzIHNhaWQgYmVmb3JlLCBwbGVhc2UgdXNlIG1hbGxvYyByYXRoZXIgdGhhbiBvbmUgb2Yg
-dGhlIHgtZnVuY3Rpb25zLgo+IFRoZSByZWd1bGFyIG1hbGxvYyBjYW4gZmFpbCB3aGVuIHdlIGFy
-ZSBvdXQgb2YgbWVtb3J5IGFuZCB0aGVuIHlvdSBoYXZlCj4gYSBjaGFuY2UgdG8gZmFpbCBncmFj
-ZWZ1bGx5LgoKU29ycnksIEkgdW5kZXJzdG9vZCB0aGF0IGFmdGVyIGFuZCBJIGhhdmUgYSB2MyB3
-aXRoIHRoaXMgZml4IGFtb25nc3Qgb3RoZXIuCkkgYWxzbyBmaXhlZCBib290bV9sb2FkX29zIHRv
-IGxvYWQgdGhlIGV4aXN0aW5nIGVsZiBmaWxlIGlmIGFueSBhbmQgbW9kaWZpZWQKbWlwcyBib290
-bSBhY2NvcmRpbmdseS4gSSB3aWxsIHNlbmQgaXQgdG9kYXkuCgpDbMOpbWVudAoKPiAKPiBTYXNj
-aGEKPiAKPiAtLQo+IFBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8Cj4gU3RldWVyd2FsZGVyIFN0ci4gMjEgICAg
-ICAgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKPiAzMTEz
-NyBIaWxkZXNoZWltLCBHZXJtYW55ICAgICAgICAgICAgICAgICAgfCBQaG9uZTogKzQ5LTUxMjEt
-MjA2OTE3LTAgICAgfAo+IEFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAg
-ICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxp
-c3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0
-aW5mby9iYXJlYm94Cg==
+On error, a goto may jump over the initialization of vmem and free the
+uninitialized value during clean up. Fix this.
+
+Found by compiling the code with clang.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/video/ssd1307fb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/video/ssd1307fb.c b/drivers/video/ssd1307fb.c
+index 835814bf5306..45f479b0efdc 100644
+--- a/drivers/video/ssd1307fb.c
++++ b/drivers/video/ssd1307fb.c
+@@ -395,7 +395,7 @@ static int ssd1307fb_probe(struct device_d *dev)
+ 	u32 vmem_size;
+ 	struct ssd1307fb_par *par;
+ 	struct ssd1307fb_array *array;
+-	u8 *vmem;
++	u8 *vmem = NULL;
+ 	int ret;
+ 	int i, j;
+ 
+-- 
+2.26.2
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
