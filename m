@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jTmyN-0004sF-Hd
- for barebox@lists.infradead.org; Wed, 29 Apr 2020 13:42:01 +0000
-Date: Wed, 29 Apr 2020 15:41:56 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20200429134156.heqow7sqyilgwgwp@pengutronix.de>
+ id 1jTp0j-0000pO-09
+ for barebox@lists.infradead.org; Wed, 29 Apr 2020 15:52:34 +0000
+Date: Wed, 29 Apr 2020 17:52:31 +0200
+From: Roland Hieber <rhi@pengutronix.de>
+Message-ID: <20200429155231.k5cikwjxek6tozr3@pengutronix.de>
 References: <20200428132405.3624-1-u.kleine-koenig@pengutronix.de>
  <20200429105044.pyc5gj343e2v4hgy@pengutronix.de>
+ <20200429134156.heqow7sqyilgwgwp@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200429105044.pyc5gj343e2v4hgy@pengutronix.de>
+In-Reply-To: <20200429134156.heqow7sqyilgwgwp@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,198 +20,87 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] arch/arm/boards: Replace license and copyright
  boilerplate by SPDX identfiers
-To: Roland Hieber <rhi@pengutronix.de>
+To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Hallo Roland,
-
-first of all thanks for your feedback.
-
-On Wed, Apr 29, 2020 at 12:50:45PM +0200, Roland Hieber wrote:
-> On Tue, Apr 28, 2020 at 03:24:05PM +0200, Uwe Kleine-K=F6nig wrote:
-> > diff --git a/arch/arm/boards/beaglebone/board.c b/arch/arm/boards/beagl=
-ebone/board.c
-> > index 819bdfae465a..661af7dbe0a1 100644
-> > --- a/arch/arm/boards/beaglebone/board.c
-> > +++ b/arch/arm/boards/beaglebone/board.c
-> > @@ -1,20 +1,5 @@
-> > -/*
-> > - * (C) Copyright 2008
-> > - * Texas Instruments, <www.ti.com>
-> > - * Raghavendra KH <r-khandenahally@ti.com>
-> > - *
-> > - * Copyright (C) 2012 Jan Luebbe <j.luebbe@pengutronix.de>
-> > - *
-> > - * This program is free software; you can redistribute it and/or
-> > - * modify it under the terms of the GNU General Public License as
-> > - * published by the Free Software Foundation; either version 2 of
-> > - * the License, or (at your option) any later version.
-> > - *
-> > - * This program is distributed in the hope that it will be useful,
-> > - * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> > - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> > - * GNU General Public License for more details.
-> > - */
-> > +// SPDX-License-Identifier: GPL-2.0-or-later
-> > +// SPDX-FileCopyrightText: =A9 2008 Raghavendra KH <r-khandenahally@ti=
-.com>, Texas Instruments (http://www.ti.com/)
-> =
-
-> SPDX-FileCopyrightText: =A9 2012 Jan Luebbe <j.luebbe@pengutronix.de>
-> is missing
-
-right, good catch.
-
-> > diff --git a/arch/arm/boards/embedsky-e9/board.c b/arch/arm/boards/embe=
-dsky-e9/board.c
-> > index e5f92636fbc3..e86d1700376b 100644
-> > --- a/arch/arm/boards/embedsky-e9/board.c
-> > +++ b/arch/arm/boards/embedsky-e9/board.c
-> > @@ -1,21 +1,12 @@
-> > +// SPDX-License-Identifier: GPL-2.0-or-later
-> > +// SPDX-FileCopyrightText: =A9 2014 Andrey Panov <rockford@yandex.ru>
-> > +
-> >  /*
-> > - * Copyright (C) 2014 Andrey Panov <rockford@yandex.ru>
-> > - *
-> >   * based on arch/arm/boards/freescale-mx6-sabresd/board.c
-> >   * Copyright (C) 2013 Hubert Feurstein <h.feurstein@gmail.com>
-> >   *
-> >   * based on arch/arm/boards/freescale-mx6-sabrelite/board.c
-> >   * Copyright (C) 2012 Steffen Trumtrar, Pengutronix
-> =
-
-> This looks like SPDX-FileCopyrightText to me too?
-
-I'm unsure (and didn't add SPDX-FileCopyrightText consistently for these
-(I hope)). Is the copyright "infecting" in this way? What is your
-suggestion?
-
-	// SPDX-License-Identifier: GPL-2.0-or-later
-	// SPDX-FileCopyrightText: =A9 2014 Andrey Panov <rockford@yandex.ru>
-	// SPDX-FileCopyrightText: =A9 2013 Hubert Feurstein <h.feurstein@gmail.co=
-m>
-	// SPDX-FileCopyrightText: =A9 2012 Steffen Trumtrar, Pengutronix
-
-	/*
-	 * based on arch/arm/boards/freescale-mx6-sabresd/board.c
-	 * and arch/arm/boards/freescale-mx6-sabrelite/board.c
-	 */
-
-?
-
-> > diff --git a/arch/arm/boards/karo-tx6x/board.c b/arch/arm/boards/karo-t=
-x6x/board.c
-> > index 54b1e248f43d..f9d790b0f189 100644
-> > --- a/arch/arm/boards/karo-tx6x/board.c
-> > +++ b/arch/arm/boards/karo-tx6x/board.c
-> > @@ -1,23 +1,13 @@
-> > +// SPDX-License-Identifier: GPL-2.0-or-later
-> > +// SPDX-FileCopyrightText: =A9 2014 Steffen Trumtrar, Pengutronix
-> > +
-> > +#define pr_fmt(fmt) "Karo-tx6: " fmt
-> > +
-> >  /*
-> > - * Copyright (C) 2014 Steffen Trumtrar, Pengutronix
-> > - *
-> > - *
-> >   * with the PMIC init code taken from u-boot
-> >   * Copyright (C) 2012,2013 Lothar Wa=DFmann <LW@KARO-electronics.de>
-> =
-
-> [..]
-> =
-
-> > - *
-> > - * This program is free software; you can redistribute it and/or
-> > - * modify it under the terms of the GNU General Public License as
-> > - * published by the Free Software Foundation; either version 2 of
-> > - * the License, or (at your option) any later version.
-> > - *
-> > - * This program is distributed in the hope that it will be useful,
-> > - * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> > - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> > - * GNU General Public License for more details.
-> >   */
-> >  =
-
-> > -#define pr_fmt(fmt) "Karo-tx6: " fmt
-> > -
-> =
-
-> Why does this line move to the top...?
-
-huch, I guess I first removed the comment about u-boot and then readded
-it during my own review at the wrong place. Will fix.
-
-> > diff --git a/arch/arm/boards/phytec-phycard-omap3/pca-a-l1.h b/arch/arm=
-/boards/phytec-phycard-omap3/pca-a-l1.h
-> > index f6f89966970c..2a9477b8aa25 100644
-> > --- a/arch/arm/boards/phytec-phycard-omap3/pca-a-l1.h
-> > +++ b/arch/arm/boards/phytec-phycard-omap3/pca-a-l1.h
-> > @@ -1,22 +1,11 @@
-> > +// SPDX-License-Identifier: GPL-2.0-or-later
-> > +// SPDX-FileCopyrightText: =A9 2008 Raghavendra KH <r-khandenahally@ti=
-.com>,Texas Instruments (<www.ti.com>)
-> =
-
-> You might want to add an additional space after the comma.
-
-indeed. And also remove the < >.
-
-> > diff --git a/arch/arm/boards/phytec-phycore-pxa270/config.h b/arch/arm/=
-boards/phytec-phycore-pxa270/config.h
-> > index ca02b1140b27..325c40191329 100644
-> > --- a/arch/arm/boards/phytec-phycore-pxa270/config.h
-> > +++ b/arch/arm/boards/phytec-phycore-pxa270/config.h
-> > @@ -1,23 +1,7 @@
-> > -/*
-> > - * Copyright (C) 2005 Phytec Messtechnik GmbH
-> > - * Juergen Kilb, H. Klaholz <armlinux@phytec.de>
-> > - *
-> > - * Copyright (C) 2006 Pengutronix
-> > - * Sascha Hauer <s.hauer@pengutronix.de>
-> > - * Robert Schwebel <r.schwebel@pengutronix.de>
-> > - *
-> > - * This program is free software; you can redistribute it and/or
-> > - * modify it under the terms of the GNU General Public License as
-> > - * published by the Free Software Foundation; either version 2 of
-> > - * the License, or (at your option) any later version.
-> > - *
-> > - * This program is distributed in the hope that it will be useful,
-> > - * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> > - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> > - * GNU General Public License for more details.
-> > - *
-> > - *
-> > - */
-> > +// SPDX-License-Identifier: GPL-2.0-or-later
-> > +// SPDX-FileCopyrightText: =A9 2005 Juergen Kilb & H. Klaholz <armlinu=
-x@phytec.de>, Phytec Messtechnik GmbH
-> =
-
-> Nitpick: an '&' might have a slightly different semantics as a ','.
-
-Right, I didn't use a , as the email address looked as if it covered
-both persons. An alternative I considered is to use two lines for the
-two developpers and duplicate the email address. I don't like s/&/,/ as
-after a name and a comma in all other locations a company only follows.
-
-Best regards
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gV2VkLCBBcHIgMjksIDIwMjAgYXQgMDM6NDE6NTZQTSArMDIwMCwgVXdlIEtsZWluZS1Lw7Zu
+aWcgd3JvdGU6Cj4gSGFsbG8gUm9sYW5kLAo+IAo+IGZpcnN0IG9mIGFsbCB0aGFua3MgZm9yIHlv
+dXIgZmVlZGJhY2suCj4gCj4gT24gV2VkLCBBcHIgMjksIDIwMjAgYXQgMTI6NTA6NDVQTSArMDIw
+MCwgUm9sYW5kIEhpZWJlciB3cm90ZToKPiA+IE9uIFR1ZSwgQXByIDI4LCAyMDIwIGF0IDAzOjI0
+OjA1UE0gKzAyMDAsIFV3ZSBLbGVpbmUtS8O2bmlnIHdyb3RlOgo+ID4gPiBkaWZmIC0tZ2l0IGEv
+YXJjaC9hcm0vYm9hcmRzL2VtYmVkc2t5LWU5L2JvYXJkLmMgYi9hcmNoL2FybS9ib2FyZHMvZW1i
+ZWRza3ktZTkvYm9hcmQuYwo+ID4gPiBpbmRleCBlNWY5MjYzNmZiYzMuLmU4NmQxNzAwMzc2YiAx
+MDA2NDQKPiA+ID4gLS0tIGEvYXJjaC9hcm0vYm9hcmRzL2VtYmVkc2t5LWU5L2JvYXJkLmMKPiA+
+ID4gKysrIGIvYXJjaC9hcm0vYm9hcmRzL2VtYmVkc2t5LWU5L2JvYXJkLmMKPiA+ID4gQEAgLTEs
+MjEgKzEsMTIgQEAKPiA+ID4gKy8vIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9y
+LWxhdGVyCj4gPiA+ICsvLyBTUERYLUZpbGVDb3B5cmlnaHRUZXh0OiDCqSAyMDE0IEFuZHJleSBQ
+YW5vdiA8cm9ja2ZvcmRAeWFuZGV4LnJ1Pgo+ID4gPiArCj4gPiA+ICAvKgo+ID4gPiAtICogQ29w
+eXJpZ2h0IChDKSAyMDE0IEFuZHJleSBQYW5vdiA8cm9ja2ZvcmRAeWFuZGV4LnJ1Pgo+ID4gPiAt
+ICoKPiA+ID4gICAqIGJhc2VkIG9uIGFyY2gvYXJtL2JvYXJkcy9mcmVlc2NhbGUtbXg2LXNhYnJl
+c2QvYm9hcmQuYwo+ID4gPiAgICogQ29weXJpZ2h0IChDKSAyMDEzIEh1YmVydCBGZXVyc3RlaW4g
+PGguZmV1cnN0ZWluQGdtYWlsLmNvbT4KPiA+ID4gICAqCj4gPiA+ICAgKiBiYXNlZCBvbiBhcmNo
+L2FybS9ib2FyZHMvZnJlZXNjYWxlLW14Ni1zYWJyZWxpdGUvYm9hcmQuYwo+ID4gPiAgICogQ29w
+eXJpZ2h0IChDKSAyMDEyIFN0ZWZmZW4gVHJ1bXRyYXIsIFBlbmd1dHJvbml4Cj4gPiAKPiA+IFRo
+aXMgbG9va3MgbGlrZSBTUERYLUZpbGVDb3B5cmlnaHRUZXh0IHRvIG1lIHRvbz8KPiAKPiBJJ20g
+dW5zdXJlIChhbmQgZGlkbid0IGFkZCBTUERYLUZpbGVDb3B5cmlnaHRUZXh0IGNvbnNpc3RlbnRs
+eSBmb3IgdGhlc2UKPiAoSSBob3BlKSkuIElzIHRoZSBjb3B5cmlnaHQgImluZmVjdGluZyIgaW4g
+dGhpcyB3YXk/IFdoYXQgaXMgeW91cgo+IHN1Z2dlc3Rpb24/Cj4gCj4gCS8vIFNQRFgtTGljZW5z
+ZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9yLWxhdGVyCj4gCS8vIFNQRFgtRmlsZUNvcHlyaWdodFRl
+eHQ6IMKpIDIwMTQgQW5kcmV5IFBhbm92IDxyb2NrZm9yZEB5YW5kZXgucnU+Cj4gCS8vIFNQRFgt
+RmlsZUNvcHlyaWdodFRleHQ6IMKpIDIwMTMgSHViZXJ0IEZldXJzdGVpbiA8aC5mZXVyc3RlaW5A
+Z21haWwuY29tPgo+IAkvLyBTUERYLUZpbGVDb3B5cmlnaHRUZXh0OiDCqSAyMDEyIFN0ZWZmZW4g
+VHJ1bXRyYXIsIFBlbmd1dHJvbml4Cj4gCj4gCS8qCj4gCSAqIGJhc2VkIG9uIGFyY2gvYXJtL2Jv
+YXJkcy9mcmVlc2NhbGUtbXg2LXNhYnJlc2QvYm9hcmQuYwo+IAkgKiBhbmQgYXJjaC9hcm0vYm9h
+cmRzL2ZyZWVzY2FsZS1teDYtc2FicmVsaXRlL2JvYXJkLmMKPiAJICovCj4gCj4gPwoKWWVzLiAi
+YmFzZWQgb24iIHN1Z2dlc3RzIHRvIG1lICJJIGNvcGllZCB0aGUgZmlsZSBhbmQgYWRhcHRlZCBp
+dCIsIHNvCnRoZSBjb3B5cmlnaHQgbGluZXMgZnJvbSB0aGUgY29waWVkIGZpbGUgcHJvYmFibHkg
+c3RpbGwgYXBwbHkg4oCTIGF0IGxlYXN0Ckkgd291bGQgY291bnQgb24gaXQgdW50aWwgd2UgY2Fu
+IGRpc3Byb3ZlIGl0ICh3aGljaCB3ZSBwcm9iYWJseSB3b24ndCkuCkZ1cnRoZXIgZG93biBpbiB5
+b3VyIHBhdGNoIHdlIGFsc28gaGFkIGFuICJpbnNwaXJlZCBieSIsIGJ1dCBJIGRvbid0CnRoaW5r
+IHRoYXQgbGFuZ3VhZ2UgaXMgc3Ryb25nIGVub3VnaCB0byB3YXJyYW50IGEgY29weXJpZ2h0IGxp
+bmUuCgo+ID4gPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1waHljb3JlLXB4
+YTI3MC9jb25maWcuaCBiL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtcGh5Y29yZS1weGEyNzAvY29u
+ZmlnLmgKPiA+ID4gaW5kZXggY2EwMmIxMTQwYjI3Li4zMjVjNDAxOTEzMjkgMTAwNjQ0Cj4gPiA+
+IC0tLSBhL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtcGh5Y29yZS1weGEyNzAvY29uZmlnLmgKPiA+
+ID4gKysrIGIvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1waHljb3JlLXB4YTI3MC9jb25maWcuaAo+
+ID4gPiBAQCAtMSwyMyArMSw3IEBACj4gPiA+IC0vKgo+ID4gPiAtICogQ29weXJpZ2h0IChDKSAy
+MDA1IFBoeXRlYyBNZXNzdGVjaG5payBHbWJICj4gPiA+IC0gKiBKdWVyZ2VuIEtpbGIsIEguIEts
+YWhvbHogPGFybWxpbnV4QHBoeXRlYy5kZT4KPiA+ID4gLSAqCj4gPiA+IC0gKiBDb3B5cmlnaHQg
+KEMpIDIwMDYgUGVuZ3V0cm9uaXgKPiA+ID4gLSAqIFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5n
+dXRyb25peC5kZT4KPiA+ID4gLSAqIFJvYmVydCBTY2h3ZWJlbCA8ci5zY2h3ZWJlbEBwZW5ndXRy
+b25peC5kZT4KPiA+ID4gLSAqCj4gPiA+IC0gKiBUaGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2Fy
+ZTsgeW91IGNhbiByZWRpc3RyaWJ1dGUgaXQgYW5kL29yCj4gPiA+IC0gKiBtb2RpZnkgaXQgdW5k
+ZXIgdGhlIHRlcm1zIG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBhcwo+ID4gPiAt
+ICogcHVibGlzaGVkIGJ5IHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5kYXRpb247IGVpdGhlciB2ZXJz
+aW9uIDIgb2YKPiA+ID4gLSAqIHRoZSBMaWNlbnNlLCBvciAoYXQgeW91ciBvcHRpb24pIGFueSBs
+YXRlciB2ZXJzaW9uLgo+ID4gPiAtICoKPiA+ID4gLSAqIFRoaXMgcHJvZ3JhbSBpcyBkaXN0cmli
+dXRlZCBpbiB0aGUgaG9wZSB0aGF0IGl0IHdpbGwgYmUgdXNlZnVsLAo+ID4gPiAtICogYnV0IFdJ
+VEhPVVQgQU5ZIFdBUlJBTlRZOyB3aXRob3V0IGV2ZW4gdGhlIGltcGxpZWQgd2FycmFudHkgb2YK
+PiA+ID4gLSAqIE1FUkNIQU5UQUJJTElUWSBvciBGSVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVS
+UE9TRS4gIFNlZSB0aGUKPiA+ID4gLSAqIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGZvciBt
+b3JlIGRldGFpbHMuCj4gPiA+IC0gKgo+ID4gPiAtICoKPiA+ID4gLSAqLwo+ID4gPiArLy8gU1BE
+WC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjAtb3ItbGF0ZXIKPiA+ID4gKy8vIFNQRFgtRmls
+ZUNvcHlyaWdodFRleHQ6IMKpIDIwMDUgSnVlcmdlbiBLaWxiICYgSC4gS2xhaG9seiA8YXJtbGlu
+dXhAcGh5dGVjLmRlPiwgUGh5dGVjIE1lc3N0ZWNobmlrIEdtYkgKPiA+IAo+ID4gTml0cGljazog
+YW4gJyYnIG1pZ2h0IGhhdmUgYSBzbGlnaHRseSBkaWZmZXJlbnQgc2VtYW50aWNzIGFzIGEgJywn
+Lgo+IAo+IFJpZ2h0LCBJIGRpZG4ndCB1c2UgYSAsIGFzIHRoZSBlbWFpbCBhZGRyZXNzIGxvb2tl
+ZCBhcyBpZiBpdCBjb3ZlcmVkCj4gYm90aCBwZXJzb25zLiBBbiBhbHRlcm5hdGl2ZSBJIGNvbnNp
+ZGVyZWQgaXMgdG8gdXNlIHR3byBsaW5lcyBmb3IgdGhlCj4gdHdvIGRldmVsb3BwZXJzIGFuZCBk
+dXBsaWNhdGUgdGhlIGVtYWlsIGFkZHJlc3MuIEkgZG9uJ3QgbGlrZSBzLyYvLC8gYXMKPiBhZnRl
+ciBhIG5hbWUgYW5kIGEgY29tbWEgaW4gYWxsIG90aGVyIGxvY2F0aW9ucyBhIGNvbXBhbnkgb25s
+eSBmb2xsb3dzLgoKWWVhaCwgSSBkb24ndCBoYXZlIGEgZmF2b3VyaXRlIGhlcmUgZWl0aGVyLgoK
+IC0gUm9sYW5kCgotLSAKUm9sYW5kIEhpZWJlciwgUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICB8
+IHIuaGllYmVyQHBlbmd1dHJvbml4LmRlICAgICB8ClN0ZXVlcndhbGRlciBTdHIuIDIxICAgICAg
+ICAgICAgICAgICAgICAgfCBodHRwczovL3d3dy5wZW5ndXRyb25peC5kZS8gfAozMTEzNyBIaWxk
+ZXNoZWltLCBHZXJtYW55ICAgICAgICAgICAgICAgIHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0w
+ICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICB8IEZheDogICAr
+NDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVh
+ZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94
+Cg==
