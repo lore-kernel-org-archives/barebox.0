@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from relay8-d.mail.gandi.net ([217.70.183.201])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jTfRM-0002cN-Bb
- for barebox@lists.infradead.org; Wed, 29 Apr 2020 05:39:25 +0000
+ id 1jTfRM-0002cb-Bf
+ for barebox@lists.infradead.org; Wed, 29 Apr 2020 05:39:26 +0000
 Received: from geraet.fritz.box (i5387567C.versanet.de [83.135.86.124])
  (Authenticated sender: ahmad@a3f.at)
- by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 8B8D71BF20C
- for <barebox@lists.infradead.org>; Wed, 29 Apr 2020 05:39:20 +0000 (UTC)
+ by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 9FCE71BF212
+ for <barebox@lists.infradead.org>; Wed, 29 Apr 2020 05:39:22 +0000 (UTC)
 From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Wed, 29 Apr 2020 07:39:10 +0200
-Message-Id: <20200429053914.4775-1-ahmad@a3f.at>
+Date: Wed, 29 Apr 2020 07:39:14 +0200
+Message-Id: <20200429053914.4775-5-ahmad@a3f.at>
+In-Reply-To: <20200429053914.4775-1-ahmad@a3f.at>
+References: <20200429053914.4775-1-ahmad@a3f.at>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,45 +25,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] commands: remove left-over CMD_AT91MUX Kconfig option
+Subject: [PATCH 5/5] PPC: remove unused left-over Kconfig option
 To: barebox@lists.infradead.org
 
-71ff9bfebd ("pinctrl: at91: add pinctrl driver") removed the
-implementation of the command, but left the now useless config option.
-Remove it.
+5e50ab4f ("pcm030: cleanup config.h") removed the last reference to
+MACH_PHYCORE_MPC5200B_TINY_REV_1 (The current name is a typo), so the
+Kconfig option hasn't been serving a purpose for 7 years.  Drop it.
 
 Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- commands/Kconfig | 16 ----------------
- 1 file changed, 16 deletions(-)
+ arch/ppc/mach-mpc5xxx/Kconfig | 13 -------------
+ 1 file changed, 13 deletions(-)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 77637f916c16..8de98ef3ee8e 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -28,22 +28,6 @@ config CMD_AT91CLK
- 	help
- 	  List clock configuration.
- 
--config CMD_AT91MUX
--	bool "at91mux"
--	default y
--	depends on ARCH_AT91
--	help
--	  List MUX configuration
--
--	  Usage: at91mux [-pb]
--
--	  Dump current MUX configuration. If a BANK or PIN has been
--	  specified dump pin details.
--
--	  Options:
--	  -p PIN   pin number
--	  -b BANK  bank number
--
- config CMD_ARM_CPUINFO
- 	bool "cpuinfo command"
+diff --git a/arch/ppc/mach-mpc5xxx/Kconfig b/arch/ppc/mach-mpc5xxx/Kconfig
+index 180aa32ad12e..4da947dc6cfc 100644
+--- a/arch/ppc/mach-mpc5xxx/Kconfig
++++ b/arch/ppc/mach-mpc5xxx/Kconfig
+@@ -34,17 +34,4 @@ config MPC5xxx
+ 	depends on MACH_PHYCORE_MPC5200B_TINY
  	default y
+ 
+-menu "Board specific settings"
+-
+-config MACH_PHYCORE_MPC5200B_TINY_REV
+-	int "Board Revision"
+-	default 1
+-	depends on MACH_PHYCORE_MPC5200B_TINY
+-	help
+-	  Revision 0 and revision 1 of the tiny board have
+-	  incompatible flash settings. Unless you have a very
+-	  old board you should set this option to 1
+-
+-endmenu
+-
+ endif
 -- 
 2.20.1
 
