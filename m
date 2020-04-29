@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from relay4-d.mail.gandi.net ([217.70.183.196])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jTiHt-000895-4O
- for barebox@lists.infradead.org; Wed, 29 Apr 2020 08:41:50 +0000
-Date: Wed, 29 Apr 2020 10:41:47 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200429084147.GG5877@pengutronix.de>
-References: <20200429064040.5845-1-a.fatoum@pengutronix.de>
- <20200429064040.5845-2-a.fatoum@pengutronix.de>
- <20200429080021.GF5877@pengutronix.de>
- <54196041-b8c0-6ba0-9122-19168a183e0d@pengutronix.de>
+ id 1jTiXq-0002bj-Bf
+ for barebox@lists.infradead.org; Wed, 29 Apr 2020 08:58:19 +0000
+Received: from geraet.fritz.box (i5387567C.versanet.de [83.135.86.124])
+ (Authenticated sender: ahmad@a3f.at)
+ by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 199ABE0003
+ for <barebox@lists.infradead.org>; Wed, 29 Apr 2020 08:58:12 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Wed, 29 Apr 2020 10:58:08 +0200
+Message-Id: <20200429085808.56307-1-ahmad@a3f.at>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <54196041-b8c0-6ba0-9122-19168a183e0d@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,50 +23,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] of: fix side effect in macro expansion
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2] of: refactor of_read_number for clarity.
+To: barebox@lists.infradead.org
 
-On Wed, Apr 29, 2020 at 10:26:27AM +0200, Ahmad Fatoum wrote:
-> On 4/29/20 10:00 AM, Sascha Hauer wrote:
-> > On Wed, Apr 29, 2020 at 08:40:40AM +0200, Ahmad Fatoum wrote:
-> >> On little endian platforms that don't define __arch_swab32p, be32_to_cpu
-> >> ultimately expands to an expression that evaluates its argument multiple
-> >> times. Because of the increment, this is wrong (and UB because of
-> >> unsequenced modification).
-> >> Hoist the side effect out of the macro argument.
-> > 
-> > I'm not sure if the reasoning is correct. That would mean that
-> > of_read_number() doesn't work on ARM, but I can assure it actually does.
-> 
-> Typo, sorry. arch needs to define __arch_swab32 (no p at the end).
-> 
-> of_read_number -> be32_to_cpu -> __be32_to_cpu -> __swab32 -> __fswab32
-> 
-> then
-> 
-> static inline __attribute_const__ __u32 __fswab32(__u32 val)
-> {
-> #ifdef __arch_swab32
->         return __arch_swab32(val);
-> #else
->         return ___constant_swab32(val);
-> #endif
-> }
-> 
-> where ___constant_swab32 is the macro that evaluates the argument
-> multiple times.
+While the code is correct, less sophisticated static analyzers (and
+users operating them..) trip over it, because they don't see that
+the be32_to_cpu argument is evaluated multiple times only if it's
+constant. Moving the side effect out:
 
-__fswab32 is a function, for the caller it doesn't matter how often
-___constant_swab32 evaluates its argument.
+- Lets us avoid the false positive
+- Aligns us with what Linux does
+- Makes the code IMO a bit clearer
 
-Sascha
+Do so.
 
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ include/of.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/include/of.h b/include/of.h
+index 85d55f9b57dc..08bbeaf4d21b 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -79,8 +79,8 @@ struct fdt_header *of_get_fixed_tree(struct device_node *node);
+ static inline u64 of_read_number(const __be32 *cell, int size)
+ {
+ 	u64 r = 0;
+-	while (size--)
+-		r = (r << 32) | be32_to_cpu(*(cell++));
++	for (; size--; cell++)
++		r = (r << 32) | be32_to_cpu(*cell);
+ 	return r;
+ }
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
