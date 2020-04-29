@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jU53K-0001R4-Ou
- for barebox@lists.infradead.org; Thu, 30 Apr 2020 09:00:20 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Thu, 30 Apr 2020 11:00:11 +0200
-Message-Id: <20200430090011.14078-1-u.kleine-koenig@pengutronix.de>
+ id 1jTgQx-0003h4-Nj
+ for barebox@lists.infradead.org; Wed, 29 Apr 2020 06:43:05 +0000
+Date: Wed, 29 Apr 2020 08:43:01 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200429064301.GB5877@pengutronix.de>
+References: <20200428073730.34579-1-ahmad@a3f.at>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200428073730.34579-1-ahmad@a3f.at>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,41 +18,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] arm: zylonite: drop empty header
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 01/11] scripts: import Zephyr scripts/kconfig/lint.py
+ into barebox
+To: Ahmad Fatoum <ahmad@a3f.at>
+Cc: barebox@lists.infradead.org
 
-U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
-b25peC5kZT4KLS0tCiBhcmNoL2FybS9ib2FyZHMvenlsb25pdGUvYm9hcmQuYyAgICB8ICAyIC0t
-CiBhcmNoL2FybS9ib2FyZHMvenlsb25pdGUvenlsb25pdGUuaCB8IDE5IC0tLS0tLS0tLS0tLS0t
-LS0tLS0KIDIgZmlsZXMgY2hhbmdlZCwgMjEgZGVsZXRpb25zKC0pCiBkZWxldGUgbW9kZSAxMDA2
-NDQgYXJjaC9hcm0vYm9hcmRzL3p5bG9uaXRlL3p5bG9uaXRlLmgKCmRpZmYgLS1naXQgYS9hcmNo
-L2FybS9ib2FyZHMvenlsb25pdGUvYm9hcmQuYyBiL2FyY2gvYXJtL2JvYXJkcy96eWxvbml0ZS9i
-b2FyZC5jCmluZGV4IDJmMjYyNzA1NzE0Ni4uZTkwZTdkZmRiODM4IDEwMDY0NAotLS0gYS9hcmNo
-L2FybS9ib2FyZHMvenlsb25pdGUvYm9hcmQuYworKysgYi9hcmNoL2FybS9ib2FyZHMvenlsb25p
-dGUvYm9hcmQuYwpAQCAtMzgsOCArMzgsNiBAQAogI2luY2x1ZGUgPGFzbS9tbXUuaD4KICNpbmNs
-dWRlIDxnZW5lcmF0ZWQvbWFjaC10eXBlcy5oPgogCi0jaW5jbHVkZSAienlsb25pdGUuaCIKLQog
-c3RhdGljIHN0cnVjdCBzbWM5MWMxMTFfcGRhdGEgc21zYzkxeF9wZGF0YTsKIHN0YXRpYyBzdHJ1
-Y3QgbXJ2bF9uYW5kX3BsYXRmb3JtX2RhdGEgbmFuZF9wZGF0YSA9IHsKIAkua2VlcF9jb25maWcg
-PSAwLApkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL3p5bG9uaXRlL3p5bG9uaXRlLmggYi9h
-cmNoL2FybS9ib2FyZHMvenlsb25pdGUvenlsb25pdGUuaApkZWxldGVkIGZpbGUgbW9kZSAxMDA2
-NDQKaW5kZXggNGEwZmI5MGZlOWNhLi4wMDAwMDAwMDAwMDAKLS0tIGEvYXJjaC9hcm0vYm9hcmRz
-L3p5bG9uaXRlL3p5bG9uaXRlLmgKKysrIC9kZXYvbnVsbApAQCAtMSwxOSArMCwwIEBACi0vKgot
-ICogKEMpIDIwMTEgUm9iZXJ0IEphcnptaWsgPHJvYmVydC5qYXJ6bWlrQGZyZWUuZnI+Ci0gKgot
-ICogVGhpcyBwcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmlidXRlIGl0
-IGFuZC9vcgotICogbW9kaWZ5IGl0IHVuZGVyIHRoZSB0ZXJtcyBvZiB0aGUgR05VIEdlbmVyYWwg
-UHVibGljIExpY2Vuc2UgYXMKLSAqIHB1Ymxpc2hlZCBieSB0aGUgRnJlZSBTb2Z0d2FyZSBGb3Vu
-ZGF0aW9uOyBlaXRoZXIgdmVyc2lvbiAyIG9mCi0gKiB0aGUgTGljZW5zZSwgb3IgKGF0IHlvdXIg
-b3B0aW9uKSBhbnkgbGF0ZXIgdmVyc2lvbi4KLSAqCi0gKiBUaGlzIHByb2dyYW0gaXMgZGlzdHJp
-YnV0ZWQgaW4gdGhlIGhvcGUgdGhhdCBpdCB3aWxsIGJlIHVzZWZ1bCwKLSAqIGJ1dCBXSVRIT1VU
-IEFOWSBXQVJSQU5UWTsgd2l0aG91dCBldmVuIHRoZSBpbXBsaWVkIHdhcnJhbnR5IG9mCi0gKiBN
-RVJDSEFOVEFCSUxJVFkgb3IgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UuICBTZWUg
-dGhlCi0gKiBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLgotICoK
-LSAqLwotI2lmbmRlZiBfWllMT05JVEVfSF8KLSNkZWZpbmUgX1pZTE9OSVRFX0hfCi0KLQotI2Vu
-ZGlmIC8qIF9aWUxPTklURV9IICovCi0tIAoyLjI2LjIKCgpfX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxp
-c3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0
-aW5mby9iYXJlYm94Cg==
+On Tue, Apr 28, 2020 at 09:37:20AM +0200, Ahmad Fatoum wrote:
+> This kconfig linter can do some useful analysis to find problems
+> in our Kconfig files. Import it into barebox source tree with the
+> changes necessary to be usable.
+> 
+> The results of running it should be taken with a grain of salt and
+> verified with grep.
+> 
+> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+> ---
+>  scripts/kconfig-lint.py | 306 ++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 306 insertions(+)
+>  create mode 100755 scripts/kconfig-lint.py
+
+Applied, thanks
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
