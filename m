@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from conuserg-07.nifty.com ([210.131.2.74])
+Received: from conuserg-11.nifty.com ([210.131.2.78])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jU14V-0002DY-LA
- for barebox@lists.infradead.org; Thu, 30 Apr 2020 04:45:18 +0000
+ id 1jTqbm-0000Ve-8J
+ for barebox@lists.infradead.org; Wed, 29 Apr 2020 17:34:55 +0000
 From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Thu, 30 Apr 2020 13:44:48 +0900
-Message-Id: <20200430044449.762595-1-masahiroy@kernel.org>
+Date: Thu, 30 Apr 2020 02:34:15 +0900
+Message-Id: <20200429173419.681074-2-masahiroy@kernel.org>
+In-Reply-To: <20200429173419.681074-1-masahiroy@kernel.org>
+References: <20200429173419.681074-1-masahiroy@kernel.org>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,50 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] mips: remove unused INCDIR and BOARD variables in Makefile
+Subject: [PATCH 1/5] ppc: remove unneeded -D CONFIG_PPC
 To: barebox@lists.infradead.org
 Cc: Masahiro Yamada <masahiroy@kernel.org>
 
-The variable INCDIR is not used by anyone.
+CONFIG_PPC is defined by arch/ppc/Kconfig.
 
-The variable BOARD is not set by anyone, so $(BOARD) is always empty.
+There is no need to define it explicitly.
 
 Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 ---
 
- arch/mips/Makefile | 13 -------------
- 1 file changed, 13 deletions(-)
+ arch/ppc/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 4717f49a4..abfa82504 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -88,25 +88,12 @@ else
- KBUILD_CPPFLAGS += $(patsubst %,-I$(srctree)/%include,$(machdirs))
- endif
+diff --git a/arch/ppc/Makefile b/arch/ppc/Makefile
+index 10f8ae3fe..276b1f6bf 100644
+--- a/arch/ppc/Makefile
++++ b/arch/ppc/Makefile
+@@ -1,7 +1,7 @@
+ KBUILD_DEFCONFIG := p2020rdb_defconfig
  
--ifeq ($(incdir-y),)
--incdir-y := $(machine-y)
--endif
--INCDIR   := arch-$(incdir-y)
--
--ifeq ($(KBUILD_SRC),)
--KBUILD_CPPFLAGS += -I$(BOARD)/include
--else
--KBUILD_CPPFLAGS += -I$(srctree)/$(BOARD)/include
--endif
--
- ifneq ($(machine-y),)
- MACH  := arch/mips/mach-$(machine-y)/
- else
- MACH  :=
- endif
+ KBUILD_CPPFLAGS += -ffixed-r14 -m32 	\
+-	-meabi -D __PPC__ -D CONFIG_PPC \
++	-meabi -D __PPC__ \
+ 	-fno-strict-aliasing -mno-spe -mspe=no
  
--common-y += $(BOARD)
--
- common-y += $(MACH)
- common-y += arch/mips/lib/
- common-y += arch/mips/boot/
+ ifdef CONFIG_RELOCATABLE
 -- 
 2.25.1
 
