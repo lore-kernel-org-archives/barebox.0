@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jTgQx-0003h4-Nj
- for barebox@lists.infradead.org; Wed, 29 Apr 2020 06:43:05 +0000
-Date: Wed, 29 Apr 2020 08:43:01 +0200
+ id 1jTgqT-00049C-W6
+ for barebox@lists.infradead.org; Wed, 29 Apr 2020 07:09:27 +0000
+Date: Wed, 29 Apr 2020 09:09:24 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200429064301.GB5877@pengutronix.de>
-References: <20200428073730.34579-1-ahmad@a3f.at>
+Message-ID: <20200429070924.GC5877@pengutronix.de>
+References: <20200429053914.4775-1-ahmad@a3f.at>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200428073730.34579-1-ahmad@a3f.at>
+In-Reply-To: <20200429053914.4775-1-ahmad@a3f.at>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,28 +22,24 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 01/11] scripts: import Zephyr scripts/kconfig/lint.py
- into barebox
+Subject: Re: [PATCH 1/5] commands: remove left-over CMD_AT91MUX Kconfig option
 To: Ahmad Fatoum <ahmad@a3f.at>
 Cc: barebox@lists.infradead.org
 
-On Tue, Apr 28, 2020 at 09:37:20AM +0200, Ahmad Fatoum wrote:
-> This kconfig linter can do some useful analysis to find problems
-> in our Kconfig files. Import it into barebox source tree with the
-> changes necessary to be usable.
-> 
-> The results of running it should be taken with a grain of salt and
-> verified with grep.
+On Wed, Apr 29, 2020 at 07:39:10AM +0200, Ahmad Fatoum wrote:
+> 71ff9bfebd ("pinctrl: at91: add pinctrl driver") removed the
+> implementation of the command, but left the now useless config option.
+> Remove it.
 > 
 > Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 > ---
->  scripts/kconfig-lint.py | 306 ++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 306 insertions(+)
->  create mode 100755 scripts/kconfig-lint.py
+>  commands/Kconfig | 16 ----------------
+>  1 file changed, 16 deletions(-)
 
 Applied, thanks
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
