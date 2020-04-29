@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay8-d.mail.gandi.net ([217.70.183.201])
+Received: from conuserg-11.nifty.com ([210.131.2.78])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jTkQH-0003Lt-Gc
- for barebox@lists.infradead.org; Wed, 29 Apr 2020 10:58:44 +0000
-Received: from geraet.fritz.box (i5387567C.versanet.de [83.135.86.124])
- (Authenticated sender: ahmad@a3f.at)
- by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 02DF31BF205
- for <barebox@lists.infradead.org>; Wed, 29 Apr 2020 10:58:33 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Wed, 29 Apr 2020 12:58:04 +0200
-Message-Id: <20200429105803.57863-1-ahmad@a3f.at>
+ id 1jTqbm-0000Vd-89
+ for barebox@lists.infradead.org; Wed, 29 Apr 2020 17:34:55 +0000
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Thu, 30 Apr 2020 02:34:18 +0900
+Message-Id: <20200429173419.681074-5-masahiroy@kernel.org>
+In-Reply-To: <20200429173419.681074-1-masahiroy@kernel.org>
+References: <20200429173419.681074-1-masahiroy@kernel.org>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,47 +21,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3] of: refactor of_read_number for clarity
+Subject: [PATCH 4/5] image: support 'powerpc' for mkimage architecture
 To: barebox@lists.infradead.org
+Cc: Masahiro Yamada <masahiroy@kernel.org>
 
-While the code is correct, less sophisticated static analyzers (and
-users operating them..) trip over it, because they don't see that
-the be32_to_cpu argument is evaluated multiple times only if it's
-constant. Moving the side effect out:
+Currently, the -A option of mkimage is determined based on $(SRCARCH).
 
-- Lets us avoid the false positive
-- Aligns us with what Linux does
-- Makes the code IMO a bit clearer
+I want to rename arch/ppc/ to arch/powerpc/.
 
-Do so.
+Support 'powerpc' for the -A option of mkimage beforehand, otherwise
+the barebox.uimage build would be broken.
 
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+common/image.c in U-Boot supports both 'powerpc' and 'ppc' for the
+name of IH_ARCH_PPC. Let's do likewise in barebox.
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 ---
-v2 -> v3:
-  fix full stop at end of commit subject (Roland)
-v1 -> v2:
-  fix inaccurate commit message (Sascha)
----
- include/of.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/of.h b/include/of.h
-index 85d55f9b57dc..08bbeaf4d21b 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -79,8 +79,8 @@ struct fdt_header *of_get_fixed_tree(struct device_node *node);
- static inline u64 of_read_number(const __be32 *cell, int size)
- {
- 	u64 r = 0;
--	while (size--)
--		r = (r << 32) | be32_to_cpu(*(cell++));
-+	for (; size--; cell++)
-+		r = (r << 32) | be32_to_cpu(*cell);
- 	return r;
- }
- 
+ common/image.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/common/image.c b/common/image.c
+index 39732c57d..8199e2df1 100644
+--- a/common/image.c
++++ b/common/image.c
+@@ -47,6 +47,7 @@ static table_entry_t arch_name[] = {
+ 	{ IH_ARCH_MIPS64,	"mips64",	"MIPS 64 Bit",	},
+ 	{ IH_ARCH_NIOS,		"nios",		"NIOS",		},
+ 	{ IH_ARCH_NIOS2,	"nios2",	"NIOS II",	},
++	{ IH_ARCH_PPC,		"powerpc",	"PowerPC",	},
+ 	{ IH_ARCH_PPC,		"ppc",		"PowerPC",	},
+ 	{ IH_ARCH_S390,		"s390",		"IBM S390",	},
+ 	{ IH_ARCH_SH,		"sh",		"SuperH",	},
 -- 
-2.20.1
+2.25.1
 
 
 _______________________________________________
