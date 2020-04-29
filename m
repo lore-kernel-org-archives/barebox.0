@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jThdp-0002RE-0L
- for barebox@lists.infradead.org; Wed, 29 Apr 2020 08:00:26 +0000
-Date: Wed, 29 Apr 2020 10:00:21 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200429080021.GF5877@pengutronix.de>
-References: <20200429064040.5845-1-a.fatoum@pengutronix.de>
- <20200429064040.5845-2-a.fatoum@pengutronix.de>
+Received: from mickerik.phytec.de ([195.145.39.210])
+ by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jTlOd-0008CK-TY
+ for barebox@lists.infradead.org; Wed, 29 Apr 2020 12:01:02 +0000
+References: <20200429112914.5751-1-s.hauer@pengutronix.de>
+From: =?UTF-8?Q?Stefan_Riedm=c3=bcller?= <s.riedmueller@phytec.de>
+Message-ID: <72aafb2f-d612-23b4-f1b3-d42c5b5ce503@phytec.de>
+Date: Wed, 29 Apr 2020 14:00:55 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200429064040.5845-2-a.fatoum@pengutronix.de>
+In-Reply-To: <20200429112914.5751-1-s.hauer@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,53 +18,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] of: fix side effect in macro expansion
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] ARM: Phytec phyCORE i.MX6: delete wrong memory node
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>, Christian Hemp <christian.hemp@gmail.com>
 
-On Wed, Apr 29, 2020 at 08:40:40AM +0200, Ahmad Fatoum wrote:
-> On little endian platforms that don't define __arch_swab32p, be32_to_cpu
-> ultimately expands to an expression that evaluates its argument multiple
-> times. Because of the increment, this is wrong (and UB because of
-> unsequenced modification).
-> Hoist the side effect out of the macro argument.
+Hi Sascha,
 
-I'm not sure if the reasoning is correct. That would mean that
-of_read_number() doesn't work on ARM, but I can assure it actually does.
+On 29.04.20 13:29, Sascha Hauer wrote:
+> The phyCORE i.MX6 has two memory nodes in the device tree. /memory comes
 
+Here and in the subject line you mention the phyCORE-i.MX 6 but it is 
+actually the phyFLEX which you change.
+
+Besides that,
+Reviewed-by: Stefan Riedmueller <s.riedmueller@phytec.de>
+
+> from the barebox dtsi file and contains dummy values. This is
+> unnecessary, barebox will create a memory node when booting the kernel.
+> The other one comes from the Kernel dtsi and causes more harm. The
+> memory in the node has a size of 2GiB. Not all boards have so much
+> memory, since 8226f7f909 ("of: base: parse all available memory nodes")
+> this node is no longer ignored and now all boards are assumed to have
+> 2GiB of memory. Remove the node using /delete-node/
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > ---
->  include/of.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>   arch/arm/dts/imx6qdl-phytec-pfla02.dtsi | 5 +----
+>   1 file changed, 1 insertion(+), 4 deletions(-)
 > 
-> diff --git a/include/of.h b/include/of.h
-> index 85d55f9b57dc..08bbeaf4d21b 100644
-> --- a/include/of.h
-> +++ b/include/of.h
-> @@ -79,8 +79,8 @@ struct fdt_header *of_get_fixed_tree(struct device_node *node);
->  static inline u64 of_read_number(const __be32 *cell, int size)
->  {
->  	u64 r = 0;
-> -	while (size--)
-> -		r = (r << 32) | be32_to_cpu(*(cell++));
-> +	for (; size--; cell++)
-> +		r = (r << 32) | be32_to_cpu(*cell);
-
-That said, the implementation looks way better with this patch.
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> diff --git a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+> index 841ad653b2..3cb8b3782a 100644
+> --- a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+> +++ b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+> @@ -12,10 +12,7 @@
+>   #include <arm/imx6qdl-phytec-pfla02.dtsi>
+>   
+>   / {
+> -	memory {
+> -		/* let barebox fill the memory node */
+> -		reg = <0 0>;
+> -	};
+> +	/delete-node/ memory@10000000;
+>   
+>   	chosen {
+>   		environment-nand {
+> 
 
 _______________________________________________
 barebox mailing list
