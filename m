@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from conuserg-11.nifty.com ([210.131.2.78])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jTokn-0005re-TE
- for barebox@lists.infradead.org; Wed, 29 Apr 2020 15:36:07 +0000
-From: Roland Hieber <rhi@pengutronix.de>
-Date: Wed, 29 Apr 2020 17:35:59 +0200
-Message-Id: <20200429153559.15086-1-rhi@pengutronix.de>
+ id 1jTqbm-0000Vg-8M
+ for barebox@lists.infradead.org; Wed, 29 Apr 2020 17:34:57 +0000
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Thu, 30 Apr 2020 02:34:16 +0900
+Message-Id: <20200429173419.681074-3-masahiroy@kernel.org>
+In-Reply-To: <20200429173419.681074-1-masahiroy@kernel.org>
+References: <20200429173419.681074-1-masahiroy@kernel.org>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,69 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: dts: vexpress-v2p-ca9: adapt fixed NOR flash partition
- setup
-To: Barebox Mailing List <barebox@lists.infradead.org>
-Cc: Roland Hieber <rhi@pengutronix.de>
+Subject: [PATCH 2/5] ppc: pass -mno-spe and -mspe=no to cc-option
+To: barebox@lists.infradead.org
+Cc: Masahiro Yamada <masahiroy@kernel.org>
 
-Upstream DTS commit 62a5017bf825c9e4d317 ("ARM: dts: vexpress: specify
-AFS partition") [1] introduced an empty node at /smb@4000000
-/motherboard/flash@0,00000000/partitions, which is preferred by the OF
-partitions parser over the single partition nodes. In the same commit,
-upstream set the compatible to "arm,arm-firmware-suite", which barebox
-does not know about. Adapt our fixed partition setup accordingly by
-wrapping all partitions in an extra "partitions" node with the correct
-compatible.
+My compiler does not understand -mno-spe or -msped=n.
 
-[1]: https://git.kernel.org/linus/62a5017bf825c9e4d3176eb975a01c329a9f36
+powerpc-linux-gcc: error: unrecognized command line option '-mno-spe'; did you mean '-fno-see'?
+powerpc-linux-gcc: error: unrecognized command line option '-mspe=no'
 
-Fixes: 6940ba22c66ac1c71350 ("dts: update to v5.3-rc1")
-Signed-off-by: Roland Hieber <rhi@pengutronix.de>
+Pass them to cc-option becasue this is what Linux does.
+
+Also, assign the compiler flags to CFLAGS, AFLAGS, and CPPFLAGS properly.
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 ---
- arch/arm/dts/vexpress-v2p-ca9.dts | 26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
 
-diff --git a/arch/arm/dts/vexpress-v2p-ca9.dts b/arch/arm/dts/vexpress-v2p-ca9.dts
-index d0975330f205..b13c114f0cb0 100644
---- a/arch/arm/dts/vexpress-v2p-ca9.dts
-+++ b/arch/arm/dts/vexpress-v2p-ca9.dts
-@@ -16,19 +16,23 @@ 			flash@0,00000000 {
- 				#address-cells = <1>;
- 				#size-cells = <1>;
+ arch/ppc/Makefile | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/arch/ppc/Makefile b/arch/ppc/Makefile
+index 276b1f6bf..3d8ddf377 100644
+--- a/arch/ppc/Makefile
++++ b/arch/ppc/Makefile
+@@ -1,8 +1,10 @@
+ KBUILD_DEFCONFIG := p2020rdb_defconfig
  
--				partition@0 {
--					label = "barebox";
--					reg = <0x0 0x80000>;
--				};
-+				partitions {
-+					compatible = "fixed-partitions";
+-KBUILD_CPPFLAGS += -ffixed-r14 -m32 	\
+-	-meabi -D __PPC__ \
+-	-fno-strict-aliasing -mno-spe -mspe=no
++KBUILD_CFLAGS += -ffixed-r14 -m32 -meabi -fno-strict-aliasing
++KBUILD_CFLAGS += $(call cc-option,-mno-spe)
++KBUILD_CFLAGS += $(call cc-option,-mspe=no)
++KBUILD_AFLAGS += -m32
++KBUILD_CPPFLAGS += -D __PPC__
  
--				barebox_env: partition@80000 {
--					label = "barebox-environment";
--					reg = <0x80000 0x80000>;
--				};
-+					partition@0 {
-+						label = "barebox";
-+						reg = <0x0 0x80000>;
-+					};
-+
-+					barebox_env: partition@80000 {
-+						label = "barebox-environment";
-+						reg = <0x80000 0x80000>;
-+					};
- 
--				state_storage: partition@100000 {
--					label = "barebox-state";
--					reg = <0x100000 0x100000>;
-+					state_storage: partition@100000 {
-+						label = "barebox-state";
-+						reg = <0x100000 0x100000>;
-+					};
- 				};
- 			};
- 		};
+ ifdef CONFIG_RELOCATABLE
+ KBUILD_CPPFLAGS += -fPIC -mrelocatable
 -- 
-2.26.2
+2.25.1
 
 
 _______________________________________________
