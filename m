@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay4-d.mail.gandi.net ([217.70.183.196])
+Received: from relay8-d.mail.gandi.net ([217.70.183.201])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jTiXq-0002bj-Bf
- for barebox@lists.infradead.org; Wed, 29 Apr 2020 08:58:19 +0000
+ id 1jTkQH-0003Lt-Gc
+ for barebox@lists.infradead.org; Wed, 29 Apr 2020 10:58:44 +0000
 Received: from geraet.fritz.box (i5387567C.versanet.de [83.135.86.124])
  (Authenticated sender: ahmad@a3f.at)
- by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 199ABE0003
- for <barebox@lists.infradead.org>; Wed, 29 Apr 2020 08:58:12 +0000 (UTC)
+ by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 02DF31BF205
+ for <barebox@lists.infradead.org>; Wed, 29 Apr 2020 10:58:33 +0000 (UTC)
 From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Wed, 29 Apr 2020 10:58:08 +0200
-Message-Id: <20200429085808.56307-1-ahmad@a3f.at>
+Date: Wed, 29 Apr 2020 12:58:04 +0200
+Message-Id: <20200429105803.57863-1-ahmad@a3f.at>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,7 +23,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] of: refactor of_read_number for clarity.
+Subject: [PATCH v3] of: refactor of_read_number for clarity
 To: barebox@lists.infradead.org
 
 While the code is correct, less sophisticated static analyzers (and
@@ -38,6 +38,11 @@ constant. Moving the side effect out:
 Do so.
 
 Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+v2 -> v3:
+  fix full stop at end of commit subject (Roland)
+v1 -> v2:
+  fix inaccurate commit message (Sascha)
 ---
  include/of.h | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
