@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from conuserg-08.nifty.com ([210.131.2.75])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jU13Y-00083q-BZ
- for barebox@lists.infradead.org; Thu, 30 Apr 2020 04:44:17 +0000
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Thu, 30 Apr 2020 13:43:57 +0900
-Message-Id: <20200430044357.762290-1-masahiroy@kernel.org>
+ id 1jTokn-0005re-TE
+ for barebox@lists.infradead.org; Wed, 29 Apr 2020 15:36:07 +0000
+From: Roland Hieber <rhi@pengutronix.de>
+Date: Wed, 29 Apr 2020 17:35:59 +0200
+Message-Id: <20200429153559.15086-1-rhi@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,99 +19,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] arm: remove empty config.h
-To: barebox@lists.infradead.org
-Cc: Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH] ARM: dts: vexpress-v2p-ca9: adapt fixed NOR flash partition
+ setup
+To: Barebox Mailing List <barebox@lists.infradead.org>
+Cc: Roland Hieber <rhi@pengutronix.de>
 
-These are not included by anyone because these boards are not added
-to board-y. The top Makefile creates the empty include/config.h if
-a board-specific config.h deos not exist.
+Upstream DTS commit 62a5017bf825c9e4d317 ("ARM: dts: vexpress: specify
+AFS partition") [1] introduced an empty node at /smb@4000000
+/motherboard/flash@0,00000000/partitions, which is preferred by the OF
+partitions parser over the single partition nodes. In the same commit,
+upstream set the compatible to "arm,arm-firmware-suite", which barebox
+does not know about. Adapt our fixed partition setup accordingly by
+wrapping all partitions in an extra "partitions" node with the correct
+compatible.
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+[1]: https://git.kernel.org/linus/62a5017bf825c9e4d3176eb975a01c329a9f36
+
+Fixes: 6940ba22c66ac1c71350 ("dts: update to v5.3-rc1")
+Signed-off-by: Roland Hieber <rhi@pengutronix.de>
 ---
+ arch/arm/dts/vexpress-v2p-ca9.dts | 26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
- arch/arm/boards/afi-gf/config.h               | 22 -------------------
- arch/arm/boards/altera-socdk/config.h         |  1 -
- arch/arm/boards/ebv-socrates/config.h         |  1 -
- arch/arm/boards/solidrun-cubox/config.h       |  4 ----
- arch/arm/boards/terasic-de0-nano-soc/config.h |  1 -
- arch/arm/boards/terasic-sockit/config.h       |  1 -
- 6 files changed, 30 deletions(-)
- delete mode 100644 arch/arm/boards/afi-gf/config.h
- delete mode 100644 arch/arm/boards/altera-socdk/config.h
- delete mode 100644 arch/arm/boards/ebv-socrates/config.h
- delete mode 100644 arch/arm/boards/solidrun-cubox/config.h
- delete mode 100644 arch/arm/boards/terasic-de0-nano-soc/config.h
- delete mode 100644 arch/arm/boards/terasic-sockit/config.h
-
-diff --git a/arch/arm/boards/afi-gf/config.h b/arch/arm/boards/afi-gf/config.h
-deleted file mode 100644
-index aeeda3695..000000000
---- a/arch/arm/boards/afi-gf/config.h
-+++ /dev/null
-@@ -1,22 +0,0 @@
--/*
-- * Copyright (C) 2012 Jan Luebbe <j.luebbe@pengutronix.de>
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License as published by
-- * the Free Software Foundation; either version 2 of the License, or
-- * (at your option) any later version.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- * You should have received a copy of the GNU General Public License along
-- * with this program; if not, write to the Free Software Foundation, Inc.,
-- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-- */
--
--#ifndef __CONFIG_H
--#define __CONFIG_H
--
--#endif	/* __CONFIG_H */
-diff --git a/arch/arm/boards/altera-socdk/config.h b/arch/arm/boards/altera-socdk/config.h
-deleted file mode 100644
-index da84fa5f6..000000000
---- a/arch/arm/boards/altera-socdk/config.h
-+++ /dev/null
-@@ -1 +0,0 @@
--/* nothing */
-diff --git a/arch/arm/boards/ebv-socrates/config.h b/arch/arm/boards/ebv-socrates/config.h
-deleted file mode 100644
-index da84fa5f6..000000000
---- a/arch/arm/boards/ebv-socrates/config.h
-+++ /dev/null
-@@ -1 +0,0 @@
--/* nothing */
-diff --git a/arch/arm/boards/solidrun-cubox/config.h b/arch/arm/boards/solidrun-cubox/config.h
-deleted file mode 100644
-index ca1513681..000000000
---- a/arch/arm/boards/solidrun-cubox/config.h
-+++ /dev/null
-@@ -1,4 +0,0 @@
--#ifndef __CONFIG_H
--#define __CONFIG_H
--
--#endif	/* __CONFIG_H */
-diff --git a/arch/arm/boards/terasic-de0-nano-soc/config.h b/arch/arm/boards/terasic-de0-nano-soc/config.h
-deleted file mode 100644
-index da84fa5f6..000000000
---- a/arch/arm/boards/terasic-de0-nano-soc/config.h
-+++ /dev/null
-@@ -1 +0,0 @@
--/* nothing */
-diff --git a/arch/arm/boards/terasic-sockit/config.h b/arch/arm/boards/terasic-sockit/config.h
-deleted file mode 100644
-index da84fa5f6..000000000
---- a/arch/arm/boards/terasic-sockit/config.h
-+++ /dev/null
-@@ -1 +0,0 @@
--/* nothing */
+diff --git a/arch/arm/dts/vexpress-v2p-ca9.dts b/arch/arm/dts/vexpress-v2p-ca9.dts
+index d0975330f205..b13c114f0cb0 100644
+--- a/arch/arm/dts/vexpress-v2p-ca9.dts
++++ b/arch/arm/dts/vexpress-v2p-ca9.dts
+@@ -16,19 +16,23 @@ 			flash@0,00000000 {
+ 				#address-cells = <1>;
+ 				#size-cells = <1>;
+ 
+-				partition@0 {
+-					label = "barebox";
+-					reg = <0x0 0x80000>;
+-				};
++				partitions {
++					compatible = "fixed-partitions";
+ 
+-				barebox_env: partition@80000 {
+-					label = "barebox-environment";
+-					reg = <0x80000 0x80000>;
+-				};
++					partition@0 {
++						label = "barebox";
++						reg = <0x0 0x80000>;
++					};
++
++					barebox_env: partition@80000 {
++						label = "barebox-environment";
++						reg = <0x80000 0x80000>;
++					};
+ 
+-				state_storage: partition@100000 {
+-					label = "barebox-state";
+-					reg = <0x100000 0x100000>;
++					state_storage: partition@100000 {
++						label = "barebox-state";
++						reg = <0x100000 0x100000>;
++					};
+ 				};
+ 			};
+ 		};
 -- 
-2.25.1
+2.26.2
 
 
 _______________________________________________
