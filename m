@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay8-d.mail.gandi.net ([217.70.183.201])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jTfRM-0002cb-Bf
- for barebox@lists.infradead.org; Wed, 29 Apr 2020 05:39:26 +0000
-Received: from geraet.fritz.box (i5387567C.versanet.de [83.135.86.124])
- (Authenticated sender: ahmad@a3f.at)
- by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 9FCE71BF212
- for <barebox@lists.infradead.org>; Wed, 29 Apr 2020 05:39:22 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Wed, 29 Apr 2020 07:39:14 +0200
-Message-Id: <20200429053914.4775-5-ahmad@a3f.at>
-In-Reply-To: <20200429053914.4775-1-ahmad@a3f.at>
-References: <20200429053914.4775-1-ahmad@a3f.at>
+ id 1jTgOJ-0002kp-De
+ for barebox@lists.infradead.org; Wed, 29 Apr 2020 06:40:20 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 29 Apr 2020 08:40:14 +0200
+Message-Id: <20200429064014.26584-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,42 +19,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] PPC: remove unused left-over Kconfig option
+Subject: [RFC PATCH] ddr: fsl: fix null pointer dereference handling DDR4
+ memories
 To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-5e50ab4f ("pcm030: cleanup config.h") removed the last reference to
-MACH_PHYCORE_MPC5200B_TINY_REV_1 (The current name is a typo), so the
-Kconfig option hasn't been serving a purpose for 7 years.  Drop it.
+cppcheck reports:
 
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+  drivers/ddr/fsl/util.c:42:27: error: Null pointer dereference:
+	  c [ctunullpointer]
+   unsigned int data_rate = c->ddr_freq;
+                            ^
+  drivers/ddr/fsl/ctrl_regs.c:1114:55: note: Calling function
+      get_memory_clk_period_ps, 1st argument is null
+   const unsigned int mclk_ps = get_memory_clk_period_ps(0);
+
+Because get_memory_clk_period_ps expects a valid pointer, but is instead
+passed NULL. Fix this by passing along the DDR controller handle like all
+other calls to the function do. This is untested.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/ppc/mach-mpc5xxx/Kconfig | 13 -------------
- 1 file changed, 13 deletions(-)
+ drivers/ddr/fsl/ctrl_regs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/ppc/mach-mpc5xxx/Kconfig b/arch/ppc/mach-mpc5xxx/Kconfig
-index 180aa32ad12e..4da947dc6cfc 100644
---- a/arch/ppc/mach-mpc5xxx/Kconfig
-+++ b/arch/ppc/mach-mpc5xxx/Kconfig
-@@ -34,17 +34,4 @@ config MPC5xxx
- 	depends on MACH_PHYCORE_MPC5200B_TINY
- 	default y
+diff --git a/drivers/ddr/fsl/ctrl_regs.c b/drivers/ddr/fsl/ctrl_regs.c
+index 4957320d600c..eb99e0ea21e7 100644
+--- a/drivers/ddr/fsl/ctrl_regs.c
++++ b/drivers/ddr/fsl/ctrl_regs.c
+@@ -1111,7 +1111,7 @@ static void set_ddr_sdram_mode_9(struct fsl_ddr_controller *c,
+ 	unsigned short esdmode5;	/* Extended SDRAM mode 5 */
+ 	int rtt_park = 0;
+ 	bool four_cs = false;
+-	const unsigned int mclk_ps = get_memory_clk_period_ps(0);
++	const unsigned int mclk_ps = get_memory_clk_period_ps(c);
  
--menu "Board specific settings"
--
--config MACH_PHYCORE_MPC5200B_TINY_REV
--	int "Board Revision"
--	default 1
--	depends on MACH_PHYCORE_MPC5200B_TINY
--	help
--	  Revision 0 and revision 1 of the tiny board have
--	  incompatible flash settings. Unless you have a very
--	  old board you should set this option to 1
--
--endmenu
--
- endif
+ 	if ((ddr->cs[0].config & SDRAM_CS_CONFIG_EN) &&
+ 	    (ddr->cs[1].config & SDRAM_CS_CONFIG_EN) &&
 -- 
-2.20.1
+2.26.2
 
 
 _______________________________________________
