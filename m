@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jU1zv-0004qm-C9
- for barebox@lists.infradead.org; Thu, 30 Apr 2020 05:44:37 +0000
-Date: Thu, 30 Apr 2020 07:44:32 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200430054432.GH5877@pengutronix.de>
-References: <20200429112914.5751-1-s.hauer@pengutronix.de>
- <72aafb2f-d612-23b4-f1b3-d42c5b5ce503@phytec.de>
+ id 1jU53K-0001R4-Ou
+ for barebox@lists.infradead.org; Thu, 30 Apr 2020 09:00:20 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Thu, 30 Apr 2020 11:00:11 +0200
+Message-Id: <20200430090011.14078-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <72aafb2f-d612-23b4-f1b3-d42c5b5ce503@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,47 +15,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: Phytec phyCORE i.MX6: delete wrong memory node
-To: Stefan =?iso-8859-15?Q?Riedm=FCller?= <s.riedmueller@phytec.de>
-Cc: Barebox List <barebox@lists.infradead.org>, Christian Hemp <christian.hemp@gmail.com>
+Subject: [PATCH] arm: zylonite: drop empty header
+To: barebox@lists.infradead.org
 
-Hi Stefan,
-
-On Wed, Apr 29, 2020 at 02:00:55PM +0200, Stefan Riedm=FCller wrote:
-> Hi Sascha,
-> =
-
-> On 29.04.20 13:29, Sascha Hauer wrote:
-> > The phyCORE i.MX6 has two memory nodes in the device tree. /memory comes
-> =
-
-> Here and in the subject line you mention the phyCORE-i.MX 6 but it is
-> actually the phyFLEX which you change.
-
-Yes, I mistakenly thought they use the same base device tree. Changed to
-phyFLEX.
-
-> =
-
-> Besides that,
-> Reviewed-by: Stefan Riedmueller <s.riedmueller@phytec.de>
-
-Thanks
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
+b25peC5kZT4KLS0tCiBhcmNoL2FybS9ib2FyZHMvenlsb25pdGUvYm9hcmQuYyAgICB8ICAyIC0t
+CiBhcmNoL2FybS9ib2FyZHMvenlsb25pdGUvenlsb25pdGUuaCB8IDE5IC0tLS0tLS0tLS0tLS0t
+LS0tLS0KIDIgZmlsZXMgY2hhbmdlZCwgMjEgZGVsZXRpb25zKC0pCiBkZWxldGUgbW9kZSAxMDA2
+NDQgYXJjaC9hcm0vYm9hcmRzL3p5bG9uaXRlL3p5bG9uaXRlLmgKCmRpZmYgLS1naXQgYS9hcmNo
+L2FybS9ib2FyZHMvenlsb25pdGUvYm9hcmQuYyBiL2FyY2gvYXJtL2JvYXJkcy96eWxvbml0ZS9i
+b2FyZC5jCmluZGV4IDJmMjYyNzA1NzE0Ni4uZTkwZTdkZmRiODM4IDEwMDY0NAotLS0gYS9hcmNo
+L2FybS9ib2FyZHMvenlsb25pdGUvYm9hcmQuYworKysgYi9hcmNoL2FybS9ib2FyZHMvenlsb25p
+dGUvYm9hcmQuYwpAQCAtMzgsOCArMzgsNiBAQAogI2luY2x1ZGUgPGFzbS9tbXUuaD4KICNpbmNs
+dWRlIDxnZW5lcmF0ZWQvbWFjaC10eXBlcy5oPgogCi0jaW5jbHVkZSAienlsb25pdGUuaCIKLQog
+c3RhdGljIHN0cnVjdCBzbWM5MWMxMTFfcGRhdGEgc21zYzkxeF9wZGF0YTsKIHN0YXRpYyBzdHJ1
+Y3QgbXJ2bF9uYW5kX3BsYXRmb3JtX2RhdGEgbmFuZF9wZGF0YSA9IHsKIAkua2VlcF9jb25maWcg
+PSAwLApkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL3p5bG9uaXRlL3p5bG9uaXRlLmggYi9h
+cmNoL2FybS9ib2FyZHMvenlsb25pdGUvenlsb25pdGUuaApkZWxldGVkIGZpbGUgbW9kZSAxMDA2
+NDQKaW5kZXggNGEwZmI5MGZlOWNhLi4wMDAwMDAwMDAwMDAKLS0tIGEvYXJjaC9hcm0vYm9hcmRz
+L3p5bG9uaXRlL3p5bG9uaXRlLmgKKysrIC9kZXYvbnVsbApAQCAtMSwxOSArMCwwIEBACi0vKgot
+ICogKEMpIDIwMTEgUm9iZXJ0IEphcnptaWsgPHJvYmVydC5qYXJ6bWlrQGZyZWUuZnI+Ci0gKgot
+ICogVGhpcyBwcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmlidXRlIGl0
+IGFuZC9vcgotICogbW9kaWZ5IGl0IHVuZGVyIHRoZSB0ZXJtcyBvZiB0aGUgR05VIEdlbmVyYWwg
+UHVibGljIExpY2Vuc2UgYXMKLSAqIHB1Ymxpc2hlZCBieSB0aGUgRnJlZSBTb2Z0d2FyZSBGb3Vu
+ZGF0aW9uOyBlaXRoZXIgdmVyc2lvbiAyIG9mCi0gKiB0aGUgTGljZW5zZSwgb3IgKGF0IHlvdXIg
+b3B0aW9uKSBhbnkgbGF0ZXIgdmVyc2lvbi4KLSAqCi0gKiBUaGlzIHByb2dyYW0gaXMgZGlzdHJp
+YnV0ZWQgaW4gdGhlIGhvcGUgdGhhdCBpdCB3aWxsIGJlIHVzZWZ1bCwKLSAqIGJ1dCBXSVRIT1VU
+IEFOWSBXQVJSQU5UWTsgd2l0aG91dCBldmVuIHRoZSBpbXBsaWVkIHdhcnJhbnR5IG9mCi0gKiBN
+RVJDSEFOVEFCSUxJVFkgb3IgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UuICBTZWUg
+dGhlCi0gKiBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLgotICoK
+LSAqLwotI2lmbmRlZiBfWllMT05JVEVfSF8KLSNkZWZpbmUgX1pZTE9OSVRFX0hfCi0KLQotI2Vu
+ZGlmIC8qIF9aWUxPTklURV9IICovCi0tIAoyLjI2LjIKCgpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxp
+c3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0
+aW5mby9iYXJlYm94Cg==
