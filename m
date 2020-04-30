@@ -1,17 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from conuserg-08.nifty.com ([210.131.2.75])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jTp0j-0000pO-09
- for barebox@lists.infradead.org; Wed, 29 Apr 2020 15:52:34 +0000
-Date: Wed, 29 Apr 2020 17:52:31 +0200
-From: Roland Hieber <rhi@pengutronix.de>
-Message-ID: <20200429155231.k5cikwjxek6tozr3@pengutronix.de>
-References: <20200428132405.3624-1-u.kleine-koenig@pengutronix.de>
- <20200429105044.pyc5gj343e2v4hgy@pengutronix.de>
- <20200429134156.heqow7sqyilgwgwp@pengutronix.de>
+ id 1jU13Y-00083q-BZ
+ for barebox@lists.infradead.org; Thu, 30 Apr 2020 04:44:17 +0000
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Thu, 30 Apr 2020 13:43:57 +0900
+Message-Id: <20200430044357.762290-1-masahiroy@kernel.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200429134156.heqow7sqyilgwgwp@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,87 +15,106 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] arch/arm/boards: Replace license and copyright
- boilerplate by SPDX identfiers
-To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: [PATCH] arm: remove empty config.h
+To: barebox@lists.infradead.org
+Cc: Masahiro Yamada <masahiroy@kernel.org>
 
-T24gV2VkLCBBcHIgMjksIDIwMjAgYXQgMDM6NDE6NTZQTSArMDIwMCwgVXdlIEtsZWluZS1Lw7Zu
-aWcgd3JvdGU6Cj4gSGFsbG8gUm9sYW5kLAo+IAo+IGZpcnN0IG9mIGFsbCB0aGFua3MgZm9yIHlv
-dXIgZmVlZGJhY2suCj4gCj4gT24gV2VkLCBBcHIgMjksIDIwMjAgYXQgMTI6NTA6NDVQTSArMDIw
-MCwgUm9sYW5kIEhpZWJlciB3cm90ZToKPiA+IE9uIFR1ZSwgQXByIDI4LCAyMDIwIGF0IDAzOjI0
-OjA1UE0gKzAyMDAsIFV3ZSBLbGVpbmUtS8O2bmlnIHdyb3RlOgo+ID4gPiBkaWZmIC0tZ2l0IGEv
-YXJjaC9hcm0vYm9hcmRzL2VtYmVkc2t5LWU5L2JvYXJkLmMgYi9hcmNoL2FybS9ib2FyZHMvZW1i
-ZWRza3ktZTkvYm9hcmQuYwo+ID4gPiBpbmRleCBlNWY5MjYzNmZiYzMuLmU4NmQxNzAwMzc2YiAx
-MDA2NDQKPiA+ID4gLS0tIGEvYXJjaC9hcm0vYm9hcmRzL2VtYmVkc2t5LWU5L2JvYXJkLmMKPiA+
-ID4gKysrIGIvYXJjaC9hcm0vYm9hcmRzL2VtYmVkc2t5LWU5L2JvYXJkLmMKPiA+ID4gQEAgLTEs
-MjEgKzEsMTIgQEAKPiA+ID4gKy8vIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9y
-LWxhdGVyCj4gPiA+ICsvLyBTUERYLUZpbGVDb3B5cmlnaHRUZXh0OiDCqSAyMDE0IEFuZHJleSBQ
-YW5vdiA8cm9ja2ZvcmRAeWFuZGV4LnJ1Pgo+ID4gPiArCj4gPiA+ICAvKgo+ID4gPiAtICogQ29w
-eXJpZ2h0IChDKSAyMDE0IEFuZHJleSBQYW5vdiA8cm9ja2ZvcmRAeWFuZGV4LnJ1Pgo+ID4gPiAt
-ICoKPiA+ID4gICAqIGJhc2VkIG9uIGFyY2gvYXJtL2JvYXJkcy9mcmVlc2NhbGUtbXg2LXNhYnJl
-c2QvYm9hcmQuYwo+ID4gPiAgICogQ29weXJpZ2h0IChDKSAyMDEzIEh1YmVydCBGZXVyc3RlaW4g
-PGguZmV1cnN0ZWluQGdtYWlsLmNvbT4KPiA+ID4gICAqCj4gPiA+ICAgKiBiYXNlZCBvbiBhcmNo
-L2FybS9ib2FyZHMvZnJlZXNjYWxlLW14Ni1zYWJyZWxpdGUvYm9hcmQuYwo+ID4gPiAgICogQ29w
-eXJpZ2h0IChDKSAyMDEyIFN0ZWZmZW4gVHJ1bXRyYXIsIFBlbmd1dHJvbml4Cj4gPiAKPiA+IFRo
-aXMgbG9va3MgbGlrZSBTUERYLUZpbGVDb3B5cmlnaHRUZXh0IHRvIG1lIHRvbz8KPiAKPiBJJ20g
-dW5zdXJlIChhbmQgZGlkbid0IGFkZCBTUERYLUZpbGVDb3B5cmlnaHRUZXh0IGNvbnNpc3RlbnRs
-eSBmb3IgdGhlc2UKPiAoSSBob3BlKSkuIElzIHRoZSBjb3B5cmlnaHQgImluZmVjdGluZyIgaW4g
-dGhpcyB3YXk/IFdoYXQgaXMgeW91cgo+IHN1Z2dlc3Rpb24/Cj4gCj4gCS8vIFNQRFgtTGljZW5z
-ZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9yLWxhdGVyCj4gCS8vIFNQRFgtRmlsZUNvcHlyaWdodFRl
-eHQ6IMKpIDIwMTQgQW5kcmV5IFBhbm92IDxyb2NrZm9yZEB5YW5kZXgucnU+Cj4gCS8vIFNQRFgt
-RmlsZUNvcHlyaWdodFRleHQ6IMKpIDIwMTMgSHViZXJ0IEZldXJzdGVpbiA8aC5mZXVyc3RlaW5A
-Z21haWwuY29tPgo+IAkvLyBTUERYLUZpbGVDb3B5cmlnaHRUZXh0OiDCqSAyMDEyIFN0ZWZmZW4g
-VHJ1bXRyYXIsIFBlbmd1dHJvbml4Cj4gCj4gCS8qCj4gCSAqIGJhc2VkIG9uIGFyY2gvYXJtL2Jv
-YXJkcy9mcmVlc2NhbGUtbXg2LXNhYnJlc2QvYm9hcmQuYwo+IAkgKiBhbmQgYXJjaC9hcm0vYm9h
-cmRzL2ZyZWVzY2FsZS1teDYtc2FicmVsaXRlL2JvYXJkLmMKPiAJICovCj4gCj4gPwoKWWVzLiAi
-YmFzZWQgb24iIHN1Z2dlc3RzIHRvIG1lICJJIGNvcGllZCB0aGUgZmlsZSBhbmQgYWRhcHRlZCBp
-dCIsIHNvCnRoZSBjb3B5cmlnaHQgbGluZXMgZnJvbSB0aGUgY29waWVkIGZpbGUgcHJvYmFibHkg
-c3RpbGwgYXBwbHkg4oCTIGF0IGxlYXN0Ckkgd291bGQgY291bnQgb24gaXQgdW50aWwgd2UgY2Fu
-IGRpc3Byb3ZlIGl0ICh3aGljaCB3ZSBwcm9iYWJseSB3b24ndCkuCkZ1cnRoZXIgZG93biBpbiB5
-b3VyIHBhdGNoIHdlIGFsc28gaGFkIGFuICJpbnNwaXJlZCBieSIsIGJ1dCBJIGRvbid0CnRoaW5r
-IHRoYXQgbGFuZ3VhZ2UgaXMgc3Ryb25nIGVub3VnaCB0byB3YXJyYW50IGEgY29weXJpZ2h0IGxp
-bmUuCgo+ID4gPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1waHljb3JlLXB4
-YTI3MC9jb25maWcuaCBiL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtcGh5Y29yZS1weGEyNzAvY29u
-ZmlnLmgKPiA+ID4gaW5kZXggY2EwMmIxMTQwYjI3Li4zMjVjNDAxOTEzMjkgMTAwNjQ0Cj4gPiA+
-IC0tLSBhL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtcGh5Y29yZS1weGEyNzAvY29uZmlnLmgKPiA+
-ID4gKysrIGIvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1waHljb3JlLXB4YTI3MC9jb25maWcuaAo+
-ID4gPiBAQCAtMSwyMyArMSw3IEBACj4gPiA+IC0vKgo+ID4gPiAtICogQ29weXJpZ2h0IChDKSAy
-MDA1IFBoeXRlYyBNZXNzdGVjaG5payBHbWJICj4gPiA+IC0gKiBKdWVyZ2VuIEtpbGIsIEguIEts
-YWhvbHogPGFybWxpbnV4QHBoeXRlYy5kZT4KPiA+ID4gLSAqCj4gPiA+IC0gKiBDb3B5cmlnaHQg
-KEMpIDIwMDYgUGVuZ3V0cm9uaXgKPiA+ID4gLSAqIFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5n
-dXRyb25peC5kZT4KPiA+ID4gLSAqIFJvYmVydCBTY2h3ZWJlbCA8ci5zY2h3ZWJlbEBwZW5ndXRy
-b25peC5kZT4KPiA+ID4gLSAqCj4gPiA+IC0gKiBUaGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2Fy
-ZTsgeW91IGNhbiByZWRpc3RyaWJ1dGUgaXQgYW5kL29yCj4gPiA+IC0gKiBtb2RpZnkgaXQgdW5k
-ZXIgdGhlIHRlcm1zIG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBhcwo+ID4gPiAt
-ICogcHVibGlzaGVkIGJ5IHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5kYXRpb247IGVpdGhlciB2ZXJz
-aW9uIDIgb2YKPiA+ID4gLSAqIHRoZSBMaWNlbnNlLCBvciAoYXQgeW91ciBvcHRpb24pIGFueSBs
-YXRlciB2ZXJzaW9uLgo+ID4gPiAtICoKPiA+ID4gLSAqIFRoaXMgcHJvZ3JhbSBpcyBkaXN0cmli
-dXRlZCBpbiB0aGUgaG9wZSB0aGF0IGl0IHdpbGwgYmUgdXNlZnVsLAo+ID4gPiAtICogYnV0IFdJ
-VEhPVVQgQU5ZIFdBUlJBTlRZOyB3aXRob3V0IGV2ZW4gdGhlIGltcGxpZWQgd2FycmFudHkgb2YK
-PiA+ID4gLSAqIE1FUkNIQU5UQUJJTElUWSBvciBGSVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVS
-UE9TRS4gIFNlZSB0aGUKPiA+ID4gLSAqIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGZvciBt
-b3JlIGRldGFpbHMuCj4gPiA+IC0gKgo+ID4gPiAtICoKPiA+ID4gLSAqLwo+ID4gPiArLy8gU1BE
-WC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjAtb3ItbGF0ZXIKPiA+ID4gKy8vIFNQRFgtRmls
-ZUNvcHlyaWdodFRleHQ6IMKpIDIwMDUgSnVlcmdlbiBLaWxiICYgSC4gS2xhaG9seiA8YXJtbGlu
-dXhAcGh5dGVjLmRlPiwgUGh5dGVjIE1lc3N0ZWNobmlrIEdtYkgKPiA+IAo+ID4gTml0cGljazog
-YW4gJyYnIG1pZ2h0IGhhdmUgYSBzbGlnaHRseSBkaWZmZXJlbnQgc2VtYW50aWNzIGFzIGEgJywn
-Lgo+IAo+IFJpZ2h0LCBJIGRpZG4ndCB1c2UgYSAsIGFzIHRoZSBlbWFpbCBhZGRyZXNzIGxvb2tl
-ZCBhcyBpZiBpdCBjb3ZlcmVkCj4gYm90aCBwZXJzb25zLiBBbiBhbHRlcm5hdGl2ZSBJIGNvbnNp
-ZGVyZWQgaXMgdG8gdXNlIHR3byBsaW5lcyBmb3IgdGhlCj4gdHdvIGRldmVsb3BwZXJzIGFuZCBk
-dXBsaWNhdGUgdGhlIGVtYWlsIGFkZHJlc3MuIEkgZG9uJ3QgbGlrZSBzLyYvLC8gYXMKPiBhZnRl
-ciBhIG5hbWUgYW5kIGEgY29tbWEgaW4gYWxsIG90aGVyIGxvY2F0aW9ucyBhIGNvbXBhbnkgb25s
-eSBmb2xsb3dzLgoKWWVhaCwgSSBkb24ndCBoYXZlIGEgZmF2b3VyaXRlIGhlcmUgZWl0aGVyLgoK
-IC0gUm9sYW5kCgotLSAKUm9sYW5kIEhpZWJlciwgUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICB8
-IHIuaGllYmVyQHBlbmd1dHJvbml4LmRlICAgICB8ClN0ZXVlcndhbGRlciBTdHIuIDIxICAgICAg
-ICAgICAgICAgICAgICAgfCBodHRwczovL3d3dy5wZW5ndXRyb25peC5kZS8gfAozMTEzNyBIaWxk
-ZXNoZWltLCBHZXJtYW55ICAgICAgICAgICAgICAgIHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0w
-ICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICB8IEZheDogICAr
-NDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVh
-ZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94
-Cg==
+These are not included by anyone because these boards are not added
+to board-y. The top Makefile creates the empty include/config.h if
+a board-specific config.h deos not exist.
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+---
+
+ arch/arm/boards/afi-gf/config.h               | 22 -------------------
+ arch/arm/boards/altera-socdk/config.h         |  1 -
+ arch/arm/boards/ebv-socrates/config.h         |  1 -
+ arch/arm/boards/solidrun-cubox/config.h       |  4 ----
+ arch/arm/boards/terasic-de0-nano-soc/config.h |  1 -
+ arch/arm/boards/terasic-sockit/config.h       |  1 -
+ 6 files changed, 30 deletions(-)
+ delete mode 100644 arch/arm/boards/afi-gf/config.h
+ delete mode 100644 arch/arm/boards/altera-socdk/config.h
+ delete mode 100644 arch/arm/boards/ebv-socrates/config.h
+ delete mode 100644 arch/arm/boards/solidrun-cubox/config.h
+ delete mode 100644 arch/arm/boards/terasic-de0-nano-soc/config.h
+ delete mode 100644 arch/arm/boards/terasic-sockit/config.h
+
+diff --git a/arch/arm/boards/afi-gf/config.h b/arch/arm/boards/afi-gf/config.h
+deleted file mode 100644
+index aeeda3695..000000000
+--- a/arch/arm/boards/afi-gf/config.h
++++ /dev/null
+@@ -1,22 +0,0 @@
+-/*
+- * Copyright (C) 2012 Jan Luebbe <j.luebbe@pengutronix.de>
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License along
+- * with this program; if not, write to the Free Software Foundation, Inc.,
+- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+- */
+-
+-#ifndef __CONFIG_H
+-#define __CONFIG_H
+-
+-#endif	/* __CONFIG_H */
+diff --git a/arch/arm/boards/altera-socdk/config.h b/arch/arm/boards/altera-socdk/config.h
+deleted file mode 100644
+index da84fa5f6..000000000
+--- a/arch/arm/boards/altera-socdk/config.h
++++ /dev/null
+@@ -1 +0,0 @@
+-/* nothing */
+diff --git a/arch/arm/boards/ebv-socrates/config.h b/arch/arm/boards/ebv-socrates/config.h
+deleted file mode 100644
+index da84fa5f6..000000000
+--- a/arch/arm/boards/ebv-socrates/config.h
++++ /dev/null
+@@ -1 +0,0 @@
+-/* nothing */
+diff --git a/arch/arm/boards/solidrun-cubox/config.h b/arch/arm/boards/solidrun-cubox/config.h
+deleted file mode 100644
+index ca1513681..000000000
+--- a/arch/arm/boards/solidrun-cubox/config.h
++++ /dev/null
+@@ -1,4 +0,0 @@
+-#ifndef __CONFIG_H
+-#define __CONFIG_H
+-
+-#endif	/* __CONFIG_H */
+diff --git a/arch/arm/boards/terasic-de0-nano-soc/config.h b/arch/arm/boards/terasic-de0-nano-soc/config.h
+deleted file mode 100644
+index da84fa5f6..000000000
+--- a/arch/arm/boards/terasic-de0-nano-soc/config.h
++++ /dev/null
+@@ -1 +0,0 @@
+-/* nothing */
+diff --git a/arch/arm/boards/terasic-sockit/config.h b/arch/arm/boards/terasic-sockit/config.h
+deleted file mode 100644
+index da84fa5f6..000000000
+--- a/arch/arm/boards/terasic-sockit/config.h
++++ /dev/null
+@@ -1 +0,0 @@
+-/* nothing */
+-- 
+2.25.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
