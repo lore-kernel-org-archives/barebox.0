@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from conuserg-07.nifty.com ([210.131.2.74])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jTi36-0004Xf-7J
- for barebox@lists.infradead.org; Wed, 29 Apr 2020 08:26:33 +0000
-References: <20200429064040.5845-1-a.fatoum@pengutronix.de>
- <20200429064040.5845-2-a.fatoum@pengutronix.de>
- <20200429080021.GF5877@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <54196041-b8c0-6ba0-9122-19168a183e0d@pengutronix.de>
-Date: Wed, 29 Apr 2020 10:26:27 +0200
+ id 1jU14V-0002DT-L9
+ for barebox@lists.infradead.org; Thu, 30 Apr 2020 04:45:17 +0000
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Thu, 30 Apr 2020 13:44:49 +0900
+Message-Id: <20200430044449.762595-2-masahiroy@kernel.org>
+In-Reply-To: <20200430044449.762595-1-masahiroy@kernel.org>
+References: <20200430044449.762595-1-masahiroy@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20200429080021.GF5877@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,53 +21,106 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] of: fix side effect in macro expansion
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/2] mips: remove unused board/debug_ll.h
+To: barebox@lists.infradead.org
+Cc: Masahiro Yamada <masahiroy@kernel.org>
 
-On 4/29/20 10:00 AM, Sascha Hauer wrote:
-> On Wed, Apr 29, 2020 at 08:40:40AM +0200, Ahmad Fatoum wrote:
->> On little endian platforms that don't define __arch_swab32p, be32_to_cpu
->> ultimately expands to an expression that evaluates its argument multiple
->> times. Because of the increment, this is wrong (and UB because of
->> unsequenced modification).
->> Hoist the side effect out of the macro argument.
-> 
-> I'm not sure if the reasoning is correct. That would mean that
-> of_read_number() doesn't work on ARM, but I can assure it actually does.
+There is no way to include <board/debug_ll.h>. These three files
+are dead code.
 
-Typo, sorry. arch needs to define __arch_swab32 (no p at the end).
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+---
 
-of_read_number -> be32_to_cpu -> __be32_to_cpu -> __swab32 -> __fswab32
+ .../loongson-ls1b/include/board/debug_ll.h    | 22 -------------------
+ .../netgear-wg102/include/board/debug_ll.h    | 21 ------------------
+ .../qemu-malta/include/board/debug_ll.h       | 18 ---------------
+ 3 files changed, 61 deletions(-)
+ delete mode 100644 arch/mips/boards/loongson-ls1b/include/board/debug_ll.h
+ delete mode 100644 arch/mips/boards/netgear-wg102/include/board/debug_ll.h
+ delete mode 100644 arch/mips/boards/qemu-malta/include/board/debug_ll.h
 
-then
-
-static inline __attribute_const__ __u32 __fswab32(__u32 val)
-{
-#ifdef __arch_swab32
-        return __arch_swab32(val);
-#else
-        return ___constant_swab32(val);
-#endif
-}
-
-where ___constant_swab32 is the macro that evaluates the argument
-multiple times.
-
-grep shows '#define __arch_swab32' matches for mips, arm, ppc and x86.
-
-
-> That said, the implementation looks way better with this patch.
-Could you amend the commit message when applying?
-
-Thanks
-Ahmad
-
+diff --git a/arch/mips/boards/loongson-ls1b/include/board/debug_ll.h b/arch/mips/boards/loongson-ls1b/include/board/debug_ll.h
+deleted file mode 100644
+index 05420f73a..000000000
+--- a/arch/mips/boards/loongson-ls1b/include/board/debug_ll.h
++++ /dev/null
+@@ -1,22 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-only */
+-/*
+- * Copyright (C) 2014 Antony Pavlov <antonynpavlov@gmail.com>
+- */
+-
+-/** @file
+- *  This File contains declaration for early output support
+- */
+-#ifndef __LOONGSON_TECH_LS1B_DEBUG_LL_H__
+-#define __LOONGSON_TECH_LS1B_DEBUG_LL_H__
+-
+-#include <asm/addrspace.h>
+-#include <mach/loongson1.h>
+-
+-#define DEBUG_LL_UART_ADDR	KSEG1ADDR(LS1X_UART2_BASE)
+-#define DEBUG_LL_UART_SHIFT	0
+-
+-#define DEBUG_LL_UART_CLK   (83000000 / 16)
+-#define DEBUG_LL_UART_BPS   CONFIG_BAUDRATE
+-#define DEBUG_LL_UART_DIVISOR   (DEBUG_LL_UART_CLK / DEBUG_LL_UART_BPS)
+-
+-#endif /* __LOONGSON_TECH_LS1B_DEBUG_LL_H__ */
+diff --git a/arch/mips/boards/netgear-wg102/include/board/debug_ll.h b/arch/mips/boards/netgear-wg102/include/board/debug_ll.h
+deleted file mode 100644
+index cc3b1d74b..000000000
+--- a/arch/mips/boards/netgear-wg102/include/board/debug_ll.h
++++ /dev/null
+@@ -1,21 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-or-later */
+-/*
+- * Copyright (C) 2013 Oleksij Rempel <linux@rempel-privat.de>
+- */
+-
+-/** @file
+- *  This File contains declaration for early output support
+- */
+-#ifndef __NETGEAR_WG102_DEBUG_LL_H__
+-#define __NETGEAR_WG102_DEBUG_LL_H__
+-
+-#include <mach/ar2312_regs.h>
+-
+-#define DEBUG_LL_UART_ADDR	KSEG1ADDR(AR2312_UART0)
+-#define DEBUG_LL_UART_SHIFT	AR2312_UART_SHIFT
+-
+-#define DEBUG_LL_UART_CLK   (45000000 / 16)
+-#define DEBUG_LL_UART_BPS   CONFIG_BAUDRATE
+-#define DEBUG_LL_UART_DIVISOR   (DEBUG_LL_UART_CLK / DEBUG_LL_UART_BPS)
+-
+-#endif /* __NETGEAR_WG102_DEBUG_LL_H__ */
+diff --git a/arch/mips/boards/qemu-malta/include/board/debug_ll.h b/arch/mips/boards/qemu-malta/include/board/debug_ll.h
+deleted file mode 100644
+index 5b112b8ae..000000000
+--- a/arch/mips/boards/qemu-malta/include/board/debug_ll.h
++++ /dev/null
+@@ -1,18 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-only */
+-/*
+- * Copyright (C) 2013 Antony Pavlov <antonynpavlov@gmail.com>
+- */
+-
+-#ifndef __INCLUDE_BOARD_DEBUG_LL_QEMU_MALTA_H__
+-#define __INCLUDE_BOARD_DEBUG_LL_QEMU_MALTA_H__
+-
+-#include <mach/hardware.h>
+-
+-#define DEBUG_LL_UART_ADDR	MALTA_PIIX4_UART0
+-#define DEBUG_LL_UART_SHIFT	0
+-
+-#define DEBUG_LL_UART_CLK       1843200
+-#define DEBUG_LL_UART_BPS       CONFIG_BAUDRATE
+-#define DEBUG_LL_UART_DIVISOR   (DEBUG_LL_UART_CLK / DEBUG_LL_UART_BPS)
+-
+-#endif /* __INCLUDE_BOARD_DEBUG_LL_QEMU_MALTA_H__ */
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.25.1
+
 
 _______________________________________________
 barebox mailing list
