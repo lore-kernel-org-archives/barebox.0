@@ -1,20 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from conssluserg-03.nifty.com ([210.131.2.82])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jVZHM-0007qA-6G
- for barebox@lists.infradead.org; Mon, 04 May 2020 11:28:59 +0000
-Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com
- [209.85.222.46]) (authenticated)
- by conssluserg-03.nifty.com with ESMTP id 044BSKCt026679
- for <barebox@lists.infradead.org>; Mon, 4 May 2020 20:28:20 +0900
-Received: by mail-ua1-f46.google.com with SMTP id s5so6434691uad.4
- for <barebox@lists.infradead.org>; Mon, 04 May 2020 04:28:20 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200430044252.762041-1-masahiroy@kernel.org>
-In-Reply-To: <20200430044252.762041-1-masahiroy@kernel.org>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Mon, 4 May 2020 20:27:43 +0900
-Message-ID: <CAK7LNATNtaynZmZ4bo6AJS4sRvXqmz8KOEiWXDmyxUTFZ+xJPg@mail.gmail.com>
+Received: from mickerik.phytec.de ([195.145.39.210])
+ by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jVb2d-0005Fl-Q8
+ for barebox@lists.infradead.org; Mon, 04 May 2020 13:21:53 +0000
+From: Yunus Bas <y.bas@phytec.de>
+Date: Mon, 4 May 2020 15:21:48 +0200
+Message-Id: <1588598508-448914-1-git-send-email-y.bas@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,62 +14,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] kbuild: add $(always-y) to 'targets'
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] mtd: mtdraw: Fix cdev size calculation for large NANDs
+To: barebox@lists.infradead.org
 
-On Thu, Apr 30, 2020 at 1:43 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
->
-> I missed to sync this line in commit 421108c51da4 ("kbuild: rename
-> hostprogs-y/always to hostprogs/always-y").
->
-> Since then, the files in always(-y) are needlessly rebuilt.
+From: Stefan Riedmueller <s.riedmueller@phytec.de>
 
-This line is not precise because the files in $(always) are fine.
-If it is not too late, could you please reword this line as follows ?
+Raw size for large NAND devices (> 4 GB) can exceed 32 bits, so we need
+64 bit types as factors. Both factors are of 32 bit types, as such is
+the return value. At least one factor needs to be 64 bit type when
+calculating the size.
 
+Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
+Signed-off-by: Christian Hemp <c.hemp@phytec.de>
+Signed-off-by: Yunus Bas <y.bas@phytec.de>
+---
+ drivers/mtd/mtdraw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Since then, the files in $(always-y) are needlessly rebuilt.
-
-
-
-
-
-
-
-
->
-> Fixes: 421108c51da4 ("kbuild: rename hostprogs-y/always to hostprogs/always-y")
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> ---
->
->  scripts/Makefile.build | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-> index 8c28ccb8e..acb0d68b8 100644
-> --- a/scripts/Makefile.build
-> +++ b/scripts/Makefile.build
-> @@ -243,7 +243,7 @@ pbl-%.o: %.S FORCE
->         $(call if_changed_dep,as_o_S)
->
->  targets += $(real-objs-y) $(real-objs-m) $(lib-y) $(pbl-y)
-> -targets += $(extra-y) $(MAKECMDGOALS) $(always)
-> +targets += $(extra-y) $(always-y) $(MAKECMDGOALS)
->
->  # Linker scripts preprocessor (.lds.S -> .lds)
->  # ---------------------------------------------------------------------------
-> --
-> 2.25.1
->
-
-
+diff --git a/drivers/mtd/mtdraw.c b/drivers/mtd/mtdraw.c
+index f63da7b..b716192 100644
+--- a/drivers/mtd/mtdraw.c
++++ b/drivers/mtd/mtdraw.c
+@@ -306,7 +306,7 @@ static int add_mtdraw_device(struct mtd_info *mtd, const char *devname, void **p
+ 	mtdraw->mtd = mtd;
+ 
+ 	mtdraw->cdev.ops = (struct cdev_operations *)&mtd_raw_fops;
+-	mtdraw->cdev.size = mtd_div_by_wb(mtd->size, mtd) * mtdraw->rps;
++	mtdraw->cdev.size = (loff_t)mtd_div_by_wb(mtd->size, mtd) * mtdraw->rps;
+ 	mtdraw->cdev.name = basprintf("%s.raw", mtd->cdev.name);
+ 	mtdraw->cdev.priv = mtdraw;
+ 	mtdraw->cdev.dev = &mtd->class_dev;
 -- 
-Best Regards
-Masahiro Yamada
+2.7.4
+
 
 _______________________________________________
 barebox mailing list
