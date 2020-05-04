@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jVTsz-0002Tb-Oy
- for barebox@lists.infradead.org; Mon, 04 May 2020 05:43:27 +0000
-Date: Mon, 4 May 2020 07:43:19 +0200
+ id 1jVUib-0002cy-Nb
+ for barebox@lists.infradead.org; Mon, 04 May 2020 06:36:47 +0000
+Date: Mon, 4 May 2020 08:36:43 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200504054319.GI5877@pengutronix.de>
-References: <20200429070653.24762-1-a.fatoum@pengutronix.de>
+Message-ID: <20200504063643.GK5877@pengutronix.de>
+References: <20200429173419.681074-1-masahiroy@kernel.org>
+ <20200429173419.681074-3-masahiroy@kernel.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200429070653.24762-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20200429173419.681074-3-masahiroy@kernel.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,41 +23,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] video: ssd1307fb: fix null pointer dereference on error
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH 2/5] ppc: pass -mno-spe and -mspe=no to cc-option
+To: Masahiro Yamada <masahiroy@kernel.org>
 Cc: barebox@lists.infradead.org
 
-On Wed, Apr 29, 2020 at 09:06:53AM +0200, Ahmad Fatoum wrote:
-> On error, a goto may jump over the initialization of vmem and free the
-> uninitialized value during clean up. Fix this.
+On Thu, Apr 30, 2020 at 02:34:16AM +0900, Masahiro Yamada wrote:
+> My compiler does not understand -mno-spe or -msped=n.
 > 
-> Found by compiling the code with clang.
+> powerpc-linux-gcc: error: unrecognized command line option '-mno-spe'; did you mean '-fno-see'?
+> powerpc-linux-gcc: error: unrecognized command line option '-mspe=no'
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Pass them to cc-option becasue this is what Linux does.
+> 
+> Also, assign the compiler flags to CFLAGS, AFLAGS, and CPPFLAGS properly.
+> 
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 > ---
->  drivers/video/ssd1307fb.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Applied, thanks
+I skipped this one as I have a similar patch in the tree already. We
+might need a fixup patch to move -m32 to KBUILD_AFLAGS.
 
 Sascha
 
 > 
-> diff --git a/drivers/video/ssd1307fb.c b/drivers/video/ssd1307fb.c
-> index 835814bf5306..45f479b0efdc 100644
-> --- a/drivers/video/ssd1307fb.c
-> +++ b/drivers/video/ssd1307fb.c
-> @@ -395,7 +395,7 @@ static int ssd1307fb_probe(struct device_d *dev)
->  	u32 vmem_size;
->  	struct ssd1307fb_par *par;
->  	struct ssd1307fb_array *array;
-> -	u8 *vmem;
-> +	u8 *vmem = NULL;
->  	int ret;
->  	int i, j;
+>  arch/ppc/Makefile | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/ppc/Makefile b/arch/ppc/Makefile
+> index 276b1f6bf..3d8ddf377 100644
+> --- a/arch/ppc/Makefile
+> +++ b/arch/ppc/Makefile
+> @@ -1,8 +1,10 @@
+>  KBUILD_DEFCONFIG := p2020rdb_defconfig
 >  
+> -KBUILD_CPPFLAGS += -ffixed-r14 -m32 	\
+> -	-meabi -D __PPC__ \
+> -	-fno-strict-aliasing -mno-spe -mspe=no
+> +KBUILD_CFLAGS += -ffixed-r14 -m32 -meabi -fno-strict-aliasing
+> +KBUILD_CFLAGS += $(call cc-option,-mno-spe)
+> +KBUILD_CFLAGS += $(call cc-option,-mspe=no)
+> +KBUILD_AFLAGS += -m32
+> +KBUILD_CPPFLAGS += -D __PPC__
+>  
+>  ifdef CONFIG_RELOCATABLE
+>  KBUILD_CPPFLAGS += -fPIC -mrelocatable
 > -- 
-> 2.26.2
+> 2.25.1
 > 
 > 
 > _______________________________________________
