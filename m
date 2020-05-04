@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jVUp8-0006KL-G1
- for barebox@lists.infradead.org; Mon, 04 May 2020 06:43:36 +0000
-Date: Mon, 4 May 2020 08:43:28 +0200
+ id 1jVUuW-00025M-Sn
+ for barebox@lists.infradead.org; Mon, 04 May 2020 06:49:06 +0000
+Date: Mon, 4 May 2020 08:49:03 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200504064328.GM5877@pengutronix.de>
-References: <20200430044252.762041-1-masahiroy@kernel.org>
+Message-ID: <20200504064903.GO5877@pengutronix.de>
+References: <20200430044449.762595-1-masahiroy@kernel.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200430044252.762041-1-masahiroy@kernel.org>
+In-Reply-To: <20200430044449.762595-1-masahiroy@kernel.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,17 +22,16 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] kbuild: add $(always-y) to 'targets'
+Subject: Re: [PATCH 1/2] mips: remove unused INCDIR and BOARD variables in
+ Makefile
 To: Masahiro Yamada <masahiroy@kernel.org>
 Cc: barebox@lists.infradead.org
 
-On Thu, Apr 30, 2020 at 01:42:51PM +0900, Masahiro Yamada wrote:
-> I missed to sync this line in commit 421108c51da4 ("kbuild: rename
-> hostprogs-y/always to hostprogs/always-y").
+On Thu, Apr 30, 2020 at 01:44:48PM +0900, Masahiro Yamada wrote:
+> The variable INCDIR is not used by anyone.
 > 
-> Since then, the files in always(-y) are needlessly rebuilt.
+> The variable BOARD is not set by anyone, so $(BOARD) is always empty.
 > 
-> Fixes: 421108c51da4 ("kbuild: rename hostprogs-y/always to hostprogs/always-y")
 > Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 > ---
 
@@ -41,22 +40,39 @@ Applied, thanks
 Sascha
 
 > 
->  scripts/Makefile.build | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  arch/mips/Makefile | 13 -------------
+>  1 file changed, 13 deletions(-)
 > 
-> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-> index 8c28ccb8e..acb0d68b8 100644
-> --- a/scripts/Makefile.build
-> +++ b/scripts/Makefile.build
-> @@ -243,7 +243,7 @@ pbl-%.o: %.S FORCE
->  	$(call if_changed_dep,as_o_S)
+> diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+> index 4717f49a4..abfa82504 100644
+> --- a/arch/mips/Makefile
+> +++ b/arch/mips/Makefile
+> @@ -88,25 +88,12 @@ else
+>  KBUILD_CPPFLAGS += $(patsubst %,-I$(srctree)/%include,$(machdirs))
+>  endif
 >  
->  targets += $(real-objs-y) $(real-objs-m) $(lib-y) $(pbl-y)
-> -targets += $(extra-y) $(MAKECMDGOALS) $(always)
-> +targets += $(extra-y) $(always-y) $(MAKECMDGOALS)
+> -ifeq ($(incdir-y),)
+> -incdir-y := $(machine-y)
+> -endif
+> -INCDIR   := arch-$(incdir-y)
+> -
+> -ifeq ($(KBUILD_SRC),)
+> -KBUILD_CPPFLAGS += -I$(BOARD)/include
+> -else
+> -KBUILD_CPPFLAGS += -I$(srctree)/$(BOARD)/include
+> -endif
+> -
+>  ifneq ($(machine-y),)
+>  MACH  := arch/mips/mach-$(machine-y)/
+>  else
+>  MACH  :=
+>  endif
 >  
->  # Linker scripts preprocessor (.lds.S -> .lds)
->  # ---------------------------------------------------------------------------
+> -common-y += $(BOARD)
+> -
+>  common-y += $(MACH)
+>  common-y += arch/mips/lib/
+>  common-y += arch/mips/boot/
 > -- 
 > 2.25.1
 > 
