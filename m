@@ -1,13 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf1-x142.google.com ([2a00:1450:4864:20::142])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jVwo8-0003Yv-6Z
- for barebox@lists.infradead.org; Tue, 05 May 2020 12:36:21 +0000
-Received: by mail-lf1-x142.google.com with SMTP id b26so1218280lfa.5
- for <barebox@lists.infradead.org>; Tue, 05 May 2020 05:36:18 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue,  5 May 2020 15:36:10 +0300
-Message-Id: <20200505123610.11307-1-antonynpavlov@gmail.com>
+ id 1jVVry-0003ra-2z
+ for barebox@lists.infradead.org; Mon, 04 May 2020 07:50:32 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <mgr@pengutronix.de>) id 1jVVrt-0005g7-OC
+ for barebox@lists.infradead.org; Mon, 04 May 2020 09:50:25 +0200
+Received: from mgr by dude.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <mgr@pengutronix.de>) id 1jVVrt-0007d3-CB
+ for barebox@lists.infradead.org; Mon, 04 May 2020 09:50:25 +0200
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Date: Mon,  4 May 2020 09:50:17 +0200
+Message-Id: <20200504075022.28234-1-m.grzeschik@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,49 +27,25 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] MIPS: dlink-dir-320: remove useless board file
+Subject: [PATCH 0/5] net: cpsw: dual_emac mode
 To: barebox@lists.infradead.org
 
-The board file calls only barebox_set_hostname().
-Since we can extract host name from devicetree,
-we can drop board file.
+This series enables the dual_emac mode for cpsw controller.
+It enables both ports to be used individually.
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/boards/dlink-dir-320/Makefile |  1 -
- arch/mips/boards/dlink-dir-320/board.c  | 15 ---------------
- 2 files changed, 16 deletions(-)
+Michael Grzeschik (5):
+  net: cpsw: fix cpsw_slave_regs register offsets
+  net: cpsw: move generic setup code to probe
+  net: cpsw: cpsw_process should only handle rx channels for its own
+    port
+  net: cpsw: add vlan handling for dual_emac mode
+  net: cpsw: make cpsw_send directional
 
-diff --git a/arch/mips/boards/dlink-dir-320/Makefile b/arch/mips/boards/dlink-dir-320/Makefile
-index 01c7a259e9..b08c4a93ca 100644
---- a/arch/mips/boards/dlink-dir-320/Makefile
-+++ b/arch/mips/boards/dlink-dir-320/Makefile
-@@ -1,2 +1 @@
--obj-y += board.o
- lwl-y += lowlevel.o
-diff --git a/arch/mips/boards/dlink-dir-320/board.c b/arch/mips/boards/dlink-dir-320/board.c
-deleted file mode 100644
-index b75812cefe..0000000000
---- a/arch/mips/boards/dlink-dir-320/board.c
-+++ /dev/null
-@@ -1,15 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--/*
-- * Copyright (C) 2011, 2014 Antony Pavlov <antonynpavlov@gmail.com>
-- */
--
--#include <common.h>
--#include <init.h>
--
--static int dir320_console_init(void)
--{
--	barebox_set_hostname("dir320");
--
--	return 0;
--}
--console_initcall(dir320_console_init);
+ drivers/net/cpsw.c | 154 ++++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 130 insertions(+), 24 deletions(-)
+
 -- 
-2.25.0
+2.26.2
 
 
 _______________________________________________
