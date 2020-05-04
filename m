@@ -1,21 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from conuserg-07.nifty.com ([210.131.2.74])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jVVry-0003rb-2I
- for barebox@lists.infradead.org; Mon, 04 May 2020 07:50:31 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <mgr@pengutronix.de>) id 1jVVrt-0005g8-Pi
- for barebox@lists.infradead.org; Mon, 04 May 2020 09:50:25 +0200
-Received: from mgr by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <mgr@pengutronix.de>) id 1jVVrt-0007d5-G9
- for barebox@lists.infradead.org; Mon, 04 May 2020 09:50:25 +0200
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Date: Mon,  4 May 2020 09:50:18 +0200
-Message-Id: <20200504075022.28234-2-m.grzeschik@pengutronix.de>
-In-Reply-To: <20200504075022.28234-1-m.grzeschik@pengutronix.de>
-References: <20200504075022.28234-1-m.grzeschik@pengutronix.de>
+ id 1jVc2N-0003Lh-Ou
+ for barebox@lists.infradead.org; Mon, 04 May 2020 14:25:48 +0000
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Mon,  4 May 2020 23:24:53 +0900
+Message-Id: <20200504142455.404658-2-masahiroy@kernel.org>
+In-Reply-To: <20200504142455.404658-1-masahiroy@kernel.org>
+References: <20200504142455.404658-1-masahiroy@kernel.org>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -29,39 +21,81 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] net: cpsw: fix cpsw_slave_regs register offsets
+Subject: [PATCH 2/4] common.h: move and rename lregion_overlap()
 To: barebox@lists.infradead.org
+Cc: Masahiro Yamada <masahiroy@kernel.org>
 
-The cpsw_slave_regs struct also start with max_blks register, so here we
-also have to skip the first two bytes like for .host_port_reg_ofs
+lregion_overlap() is only used by common/startup.c
+
+There is no need to define it in include/common.h
+
+While I was here, I also renamed it to region_overlap(), and got rid
+of the 'inline' keyword.
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 ---
- drivers/net/cpsw.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/cpsw.c b/drivers/net/cpsw.c
-index c3cc43cc5b..d745737aa3 100644
---- a/drivers/net/cpsw.c
-+++ b/drivers/net/cpsw.c
-@@ -1015,7 +1015,7 @@ static struct cpsw_data cpsw1_data = {
- 	.cpdma_reg_ofs		= 0x100,
- 	.state_ram_ofs		= 0x200,
- 	.ale_reg_ofs		= 0x600,
--	.slave_ofs		= 0x050,
-+	.slave_ofs		= 0x058,
- 	.slave_size		= 0x040,
- 	.sliver_ofs		= 0x700,
- 	/* FIXME: mdio_reg_ofs and cppi_ram_ofs missing */
-@@ -1026,7 +1026,7 @@ static struct cpsw_data cpsw2_data = {
- 	.cpdma_reg_ofs		= 0x800,
- 	.state_ram_ofs		= 0xa00,
- 	.ale_reg_ofs		= 0xd00,
--	.slave_ofs		= 0x200,
-+	.slave_ofs		= 0x208,
- 	.slave_size		= 0x100,
- 	.sliver_ofs		= 0xd80,
- 	.mdio_reg_ofs		= 0x1000,
+ common/startup.c | 14 ++++++++++++--
+ include/common.h | 14 --------------
+ 2 files changed, 12 insertions(+), 16 deletions(-)
+
+diff --git a/common/startup.c b/common/startup.c
+index 2c3a999e1..511675ed5 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -74,6 +74,16 @@ fs_initcall(mount_root);
+ #endif
+ 
+ #ifdef CONFIG_ENV_HANDLING
++static bool region_overlap(loff_t starta, loff_t lena,
++			   loff_t startb, loff_t lenb)
++{
++	if (starta + lena <= startb)
++		return 0;
++	if (startb + lenb <= starta)
++		return 0;
++	return 1;
++}
++
+ static int check_overlap(const char *path)
+ {
+ 	struct cdev *cenv, *cdisk, *cpart;
+@@ -104,8 +114,8 @@ static int check_overlap(const char *path)
+ 		if (cpart == cenv)
+ 			continue;
+ 
+-		if (lregion_overlap(cpart->offset, cpart->size,
+-				    cenv->offset, cenv->size))
++		if (region_overlap(cpart->offset, cpart->size,
++				   cenv->offset, cenv->size))
+ 			goto conflict;
+ 	}
+ 
+diff --git a/include/common.h b/include/common.h
+index 3570e6aba..0bf819a6f 100644
+--- a/include/common.h
++++ b/include/common.h
+@@ -139,18 +139,4 @@ void barebox_set_hostname_no_overwrite(const char *);
+ #define IOMEM(addr)	((void __force __iomem *)(addr))
+ #endif
+ 
+-/*
+- * Check if two regions overlap. returns true if they do, false otherwise
+- */
+-
+-static inline bool lregion_overlap(loff_t starta, loff_t lena,
+-				   loff_t startb, loff_t lenb)
+-{
+-	if (starta + lena <= startb)
+-		return 0;
+-	if (startb + lenb <= starta)
+-		return 0;
+-	return 1;
+-}
+-
+ #endif	/* __COMMON_H_ */
 -- 
-2.26.2
+2.25.1
 
 
 _______________________________________________
