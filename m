@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jVqad-0003c9-Fu
- for barebox@lists.infradead.org; Tue, 05 May 2020 05:58:00 +0000
-Date: Tue, 5 May 2020 07:57:57 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200505055757.GZ5877@pengutronix.de>
-References: <20200504201217.18010-1-u.kleine-koenig@pengutronix.de>
+Received: from mickerik.phytec.de ([195.145.39.210])
+ by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jVc7A-0007Ib-Ad
+ for barebox@lists.infradead.org; Mon, 04 May 2020 14:30:37 +0000
+References: <1588599895-368145-1-git-send-email-y.bas@phytec.de>
+From: Yunus Bas <y.bas@phytec.de>
+Message-ID: <96d54d41-390c-02dc-6b91-d59ad3d363d2@phytec.de>
+Date: Mon, 4 May 2020 16:30:33 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200504201217.18010-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <1588599895-368145-1-git-send-email-y.bas@phytec.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,54 +18,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] arm/boards: drop various empty board files
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] mtd: nand_bbt: Skip bad blocks when searching for the BBT
+ in NAND
+To: barebox@lists.infradead.org
 
-On Mon, May 04, 2020 at 10:12:17PM +0200, Uwe Kleine-K=F6nig wrote:
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+Please skip this patch, there seems to be a problem here.
+
+Regards
+
+Y. Bas
+
+Am 04.05.20 um 15:44 schrieb Yunus Bas:
+> From: Stefan Riedmueller <s.riedmueller@phytec.de>
+>
+> The blocks containing the bad block table can become bad as well. So
+> make sure to skip any blocks that are marked bad when searching for the
+> bad block table.
+>
+> Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
+> Signed-off-by: Christian Hemp <c.hemp@phytec.de>
+> Signed-off-by: Yunus Bas <y.bas@phytec.de>
 > ---
->  arch/arm/boards/globalscale-guruplug/Makefile   |  1 -
->  arch/arm/boards/globalscale-guruplug/board.c    | 17 -----------------
->  arch/arm/boards/globalscale-mirabox/Makefile    |  1 -
->  arch/arm/boards/globalscale-mirabox/board.c     | 17 -----------------
->  arch/arm/boards/marvell-armada-xp-gp/Makefile   |  1 -
->  arch/arm/boards/marvell-armada-xp-gp/board.c    | 17 -----------------
->  arch/arm/boards/netgear-rn104/Makefile          |  1 -
->  arch/arm/boards/netgear-rn104/board.c           |  1 -
->  arch/arm/boards/plathome-openblocks-a6/Makefile |  1 -
->  arch/arm/boards/plathome-openblocks-a6/board.c  |  1 -
->  .../arm/boards/plathome-openblocks-ax3/Makefile |  1 -
->  arch/arm/boards/plathome-openblocks-ax3/board.c | 17 -----------------
->  arch/arm/boards/turris-omnia/Makefile           |  1 -
->  arch/arm/boards/turris-omnia/board.c            |  1 -
->  arch/arm/boards/usi-topkick/Makefile            |  1 -
->  arch/arm/boards/usi-topkick/board.c             | 17 -----------------
->  16 files changed, 96 deletions(-)
->  delete mode 100644 arch/arm/boards/globalscale-guruplug/board.c
->  delete mode 100644 arch/arm/boards/globalscale-mirabox/board.c
->  delete mode 100644 arch/arm/boards/marvell-armada-xp-gp/board.c
->  delete mode 100644 arch/arm/boards/netgear-rn104/board.c
->  delete mode 100644 arch/arm/boards/plathome-openblocks-a6/board.c
->  delete mode 100644 arch/arm/boards/plathome-openblocks-ax3/board.c
->  delete mode 100644 arch/arm/boards/turris-omnia/board.c
->  delete mode 100644 arch/arm/boards/usi-topkick/board.c
-
-Applied, thanks
-
-Sascha
-
-
--- =
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+>   drivers/mtd/nand/nand_bbt.c | 10 ++++++++--
+>   1 file changed, 8 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/mtd/nand/nand_bbt.c b/drivers/mtd/nand/nand_bbt.c
+> index 435a06f..403c0ae 100644
+> --- a/drivers/mtd/nand/nand_bbt.c
+> +++ b/drivers/mtd/nand/nand_bbt.c
+> @@ -560,8 +560,14 @@ static int search_bbt(struct mtd_info *mtd, uint8_t *buf, struct nand_bbt_descr
+>   			int actblock = startblock + dir * block;
+>   			loff_t offs = (loff_t)actblock << this->bbt_erase_shift;
+>   
+> -			/* Read first page */
+> -			scan_read(mtd, buf, offs, mtd->writesize, td);
+> +			/* Read first page including oob */
+> +			scan_read_oob(mtd, buf, offs, scanlen);
+> +
+> +			/* Skip blocks which are marked bad */
+> +			if (buf[mtd->writesize] == 0x00) {
+> +				continue;
+> +			}
+> +
+>   			if (!check_pattern(buf, scanlen, mtd->writesize, td)) {
+>   				td->pages[i] = actblock << blocktopage;
+>   				if (td->options & NAND_BBT_VERSION) {
 
 _______________________________________________
 barebox mailing list
