@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from magratgarlick.emantor.de ([78.46.208.201])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jVx9L-0002cG-LL
- for barebox@lists.infradead.org; Tue, 05 May 2020 12:58:16 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  5 May 2020 14:58:12 +0200
-Message-Id: <20200505125812.25419-1-s.hauer@pengutronix.de>
+ id 1jVx9l-0002sj-Tv
+ for barebox@lists.infradead.org; Tue, 05 May 2020 12:58:43 +0000
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Tue,  5 May 2020 14:58:36 +0200
+Message-Id: <20200505125836.18081-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,32 +19,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fs: Fix inode size setting in ftruncate
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] ARM: i.MX: configurable Super Root Key index
+To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-When changing a file size the size of the corresponding inode has to be
-changed as well.
+Allow the configuration of the Super Root Key Index, to let the user
+select another key if a previous key has been revoked.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- fs/fs.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/mach-imx/Kconfig                          | 10 ++++++++++
+ arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h |  2 +-
+ arch/arm/mach-imx/include/mach/habv4-imx8-gencsf.h |  2 +-
+ 3 files changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index e00bbcd223..77e8f3a1e3 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -223,6 +223,7 @@ int ftruncate(int fd, loff_t length)
- 	}
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 072c659008..6dd5cb2aca 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -845,6 +845,16 @@ config HAB_CERTS_ENV
+ 	  CONFIG_HABV4_CSF_CRT_PEM
+ 	  CONFIG_HABV4_IMG_CRT_PEM
  
- 	f->size = length;
-+	f->f_inode->i_size = f->size;
++config HABV4_SRK_INDEX
++	depends on HABV4
++	int "SRK index"
++	default 0
++	help
++	  Select the Super Root Key used in the Command Sequence File to sign
++	  the CSF binary. This should only be changed if a previous key was
++	  revoked and another key needs to be used. For HABV4 the Index is in
++	  the range from 0 to 3.
++
+ if HABV4 && !HAB_CERTS_ENV
  
- 	return 0;
- }
+ config HABV4_TABLE_BIN
+diff --git a/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h b/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
+index 5818879609..2961b97b79 100644
+--- a/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
++++ b/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
+@@ -19,7 +19,7 @@ hab Engine = CAAM
+ hab [Install SRK]
+ hab File = CONFIG_HABV4_TABLE_BIN
+ hab # SRK index within SRK-Table 0..3
+-hab Source index = 0
++hab Source index = CONFIG_HABV4_SRK_INDEX
+ 
+ hab [Install CSFK]
+ /* target key index in keystore 1 */
+diff --git a/arch/arm/mach-imx/include/mach/habv4-imx8-gencsf.h b/arch/arm/mach-imx/include/mach/habv4-imx8-gencsf.h
+index 34039ee590..9ed6893988 100644
+--- a/arch/arm/mach-imx/include/mach/habv4-imx8-gencsf.h
++++ b/arch/arm/mach-imx/include/mach/habv4-imx8-gencsf.h
+@@ -19,7 +19,7 @@ hab Engine = CAAM
+ hab [Install SRK]
+ hab File = CONFIG_HABV4_TABLE_BIN
+ hab # SRK index within SRK-Table 0..3
+-hab Source index = 0
++hab Source index = CONFIG_HABV4_SRK_INDEX
+ 
+ hab [Install CSFK]
+ /* target key index in keystore 1 */
 -- 
-2.26.2
+2.26.1
 
 
 _______________________________________________
