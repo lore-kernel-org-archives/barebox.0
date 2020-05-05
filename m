@@ -1,21 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lj1-x241.google.com ([2a00:1450:4864:20::241])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jVVrx-0003rf-Sw
- for barebox@lists.infradead.org; Mon, 04 May 2020 07:50:31 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <mgr@pengutronix.de>) id 1jVVrt-0005gB-W1
- for barebox@lists.infradead.org; Mon, 04 May 2020 09:50:25 +0200
-Received: from mgr by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <mgr@pengutronix.de>) id 1jVVrt-0007dB-JL
- for barebox@lists.infradead.org; Mon, 04 May 2020 09:50:25 +0200
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Date: Mon,  4 May 2020 09:50:20 +0200
-Message-Id: <20200504075022.28234-4-m.grzeschik@pengutronix.de>
-In-Reply-To: <20200504075022.28234-1-m.grzeschik@pengutronix.de>
-References: <20200504075022.28234-1-m.grzeschik@pengutronix.de>
+ id 1jVx6M-0000at-A4
+ for barebox@lists.infradead.org; Tue, 05 May 2020 12:55:11 +0000
+Received: by mail-lj1-x241.google.com with SMTP id a21so1465784ljj.11
+ for <barebox@lists.infradead.org>; Tue, 05 May 2020 05:55:09 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Tue,  5 May 2020 15:55:06 +0300
+Message-Id: <20200505125506.12843-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -29,84 +21,116 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] net: cpsw: cpsw_process should only handle rx channels
- for its own port
+Subject: [RFC] drivers: fix dev_request_mem_resource() usage
 To: barebox@lists.infradead.org
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-The driver is currently processing the whole channel list, so it is
-possible that it handles a channel of the wrong interface. We limit the
-rx_chan handling for its desired port.
+Here is the code from drivers/reset/reset-socfpga.c
 
-The cpsw_send is removing finished tx_chan transfers on each send, so this
-has no directional limitation.
+> res = dev_request_mem_resource(dev, 0);
+> data->membase = IOMEM(res->start);
+> if (IS_ERR(data->membase))
+>     return PTR_ERR(data->membase);
 
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+dev_request_mem_resource(dev, 0) returns res or ERR_CASE(res)
+so we can't use IOMEM(res->start) just after
+res = dev_request_mem_resource(dev, 0) call.
+
+Code should look like this
+
+> res = dev_request_mem_resource(dev, 0);
+> if (IS_ERR(res))
+>     return PTR_ERR(res);
+> data->membase = IOMEM(res->start);
+
+but if res isn't used in after that we can
+use dev_request_mem_region() instead of
+dev_request_mem_resource(), e.g.
+
+> data->membase = dev_request_mem_region(dev, 0);
+> if (IS_ERR(data->membase))
+>     return PTR_ERR(data->membase);
+
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- drivers/net/cpsw.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ drivers/reset/reset-socfpga.c |  4 +---
+ drivers/spi/spi-fsl-qspi.c    | 13 ++++++-------
+ drivers/watchdog/dw_wdt.c     |  4 +---
+ 3 files changed, 8 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/cpsw.c b/drivers/net/cpsw.c
-index 55d7ad5f5b..aabfc76ad6 100644
---- a/drivers/net/cpsw.c
-+++ b/drivers/net/cpsw.c
-@@ -52,6 +52,9 @@
- #define CPDMA_DESC_EOP		BIT(30)
- #define CPDMA_DESC_OWNER	BIT(29)
- #define CPDMA_DESC_EOQ		BIT(28)
-+#define CPDMA_FROM_TO_PORT_SHIFT	16
-+#define CPDMA_RX_SOURCE_PORT(__status__)	\
-+	(((__status__) >> CPDMA_FROM_TO_PORT_SHIFT) & 0x7)
- 
- #define SLIVER_SIZE		0x40
- 
-@@ -758,10 +761,11 @@ done:
- 	return 0;
- }
- 
--static int cpdma_process(struct cpsw_priv *priv, struct cpdma_chan *chan,
-+static int cpdma_process(struct cpsw_slave *slave, struct cpdma_chan *chan,
- 			 void **buffer, int *len)
+diff --git a/drivers/reset/reset-socfpga.c b/drivers/reset/reset-socfpga.c
+index 9b499f23c5..3781f12acc 100644
+--- a/drivers/reset/reset-socfpga.c
++++ b/drivers/reset/reset-socfpga.c
+@@ -81,14 +81,12 @@ static const struct reset_control_ops socfpga_reset_ops = {
+ static int socfpga_reset_probe(struct device_d *dev)
  {
- 	struct cpdma_desc *desc = chan->head;
-+	struct cpsw_priv *priv = slave->cpsw;
- 	u32 status;
+ 	struct socfpga_reset_data *data;
+-	struct resource *res;
+ 	struct device_node *np = dev->device_node;
+ 	u32 modrst_offset;
  
- 	if (!desc)
-@@ -783,6 +787,14 @@ static int cpdma_process(struct cpsw_priv *priv, struct cpdma_chan *chan,
- 		return -EBUSY;
+ 	data = xzalloc(sizeof(*data));
+ 
+-	res = dev_request_mem_resource(dev, 0);
+-	data->membase = IOMEM(res->start);
++	data->membase = dev_request_mem_region(dev, 0);
+ 	if (IS_ERR(data->membase))
+ 		return PTR_ERR(data->membase);
+ 
+diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c
+index e22c3099fe..f35f9871dd 100644
+--- a/drivers/spi/spi-fsl-qspi.c
++++ b/drivers/spi/spi-fsl-qspi.c
+@@ -800,20 +800,19 @@ static int fsl_qspi_probe(struct device_d *dev)
+ 	spi_controller_set_devdata(ctlr, q);
+ 
+ 	/* find the resources */
+-	res = dev_request_mem_resource(dev, 0);
+-	q->iobase = IOMEM(res->start);
++	q->iobase = dev_request_mem_region(dev, 0);
+ 	if (IS_ERR(q->iobase)) {
+ 		ret = PTR_ERR(q->iobase);
+ 		goto err_put_ctrl;
  	}
  
-+	/* cpsw_send is cleaning finished descriptors on next send
-+	 * so we only have to check for rx channel here
-+	 */
-+	if (CPDMA_RX_SOURCE_PORT(status) != BIT(slave->slave_num) &&
-+	    chan == &priv->rx_chan) {
-+		return -ENOMSG;
+ 	res = dev_request_mem_resource(dev, 1);
++	if (IS_ERR(res)) {
++		ret = PTR_ERR(res);
++		goto err_put_ctrl;
 +	}
 +
- 	chan->head = (void *)readl(&desc->hw_next);
+ 	q->ahb_addr = IOMEM(res->start);
+-	if (IS_ERR(q->ahb_addr)) {
+-		ret = PTR_ERR(q->ahb_addr);
+-		goto err_put_ctrl;
+-	}
+-
+ 	q->memmap_phy = res->start;
  
- 	writel((u32)desc, chan->cp);
-@@ -917,7 +929,7 @@ static int cpsw_send(struct eth_device *edev, void *packet, int length)
- 	dev_dbg(&slave->dev, "* %s slave %d\n", __func__, slave->slave_num);
+ 	/* find the clocks */
+diff --git a/drivers/watchdog/dw_wdt.c b/drivers/watchdog/dw_wdt.c
+index cb0d17e361..d7fa074e08 100644
+--- a/drivers/watchdog/dw_wdt.c
++++ b/drivers/watchdog/dw_wdt.c
+@@ -133,13 +133,11 @@ static int dw_wdt_drv_probe(struct device_d *dev)
+ {
+ 	struct watchdog *wdd;
+ 	struct dw_wdt *dw_wdt;
+-	struct resource *mem;
+ 	int ret;
  
- 	/* first reap completed packets */
--	while (cpdma_process(priv, &priv->tx_chan, &buffer, &len) >= 0);
-+	while (cpdma_process(slave, &priv->tx_chan, &buffer, &len) >= 0);
+ 	dw_wdt = xzalloc(sizeof(*dw_wdt));
  
- 	dev_dbg(&slave->dev, "%s: %i bytes @ 0x%p\n", __func__, length, packet);
+-	mem = dev_request_mem_resource(dev, 0);
+-	dw_wdt->regs = IOMEM(mem->start);
++	dw_wdt->regs = dev_request_mem_region(dev, 0);
+ 	if (IS_ERR(dw_wdt->regs))
+ 		return PTR_ERR(dw_wdt->regs);
  
-@@ -935,7 +947,7 @@ static int cpsw_recv(struct eth_device *edev)
- 	void *buffer;
- 	int len;
- 
--	while (cpdma_process(priv, &priv->rx_chan, &buffer, &len) >= 0) {
-+	while (cpdma_process(slave, &priv->rx_chan, &buffer, &len) >= 0) {
- 		dma_sync_single_for_cpu((unsigned long)buffer, len,
- 				DMA_FROM_DEVICE);
- 		net_receive(edev, buffer, len);
 -- 
-2.26.2
+2.25.0
 
 
 _______________________________________________
