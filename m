@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf1-x142.google.com ([2a00:1450:4864:20::142])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jVqMT-00005i-24
- for barebox@lists.infradead.org; Tue, 05 May 2020 05:43:22 +0000
-Date: Tue, 5 May 2020 07:43:19 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200505054319.GW5877@pengutronix.de>
-References: <1588598508-448914-1-git-send-email-y.bas@phytec.de>
+ id 1jVwo8-0003Yv-6Z
+ for barebox@lists.infradead.org; Tue, 05 May 2020 12:36:21 +0000
+Received: by mail-lf1-x142.google.com with SMTP id b26so1218280lfa.5
+ for <barebox@lists.infradead.org>; Tue, 05 May 2020 05:36:18 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Tue,  5 May 2020 15:36:10 +0300
+Message-Id: <20200505123610.11307-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1588598508-448914-1-git-send-email-y.bas@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,58 +21,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mtd: mtdraw: Fix cdev size calculation for large NANDs
-To: Yunus Bas <y.bas@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] MIPS: dlink-dir-320: remove useless board file
+To: barebox@lists.infradead.org
 
-On Mon, May 04, 2020 at 03:21:48PM +0200, Yunus Bas wrote:
-> From: Stefan Riedmueller <s.riedmueller@phytec.de>
-> 
-> Raw size for large NAND devices (> 4 GB) can exceed 32 bits, so we need
-> 64 bit types as factors. Both factors are of 32 bit types, as such is
-> the return value. At least one factor needs to be 64 bit type when
-> calculating the size.
-> 
-> Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
-> Signed-off-by: Christian Hemp <c.hemp@phytec.de>
-> Signed-off-by: Yunus Bas <y.bas@phytec.de>
-> ---
->  drivers/mtd/mtdraw.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+The board file calls only barebox_set_hostname().
+Since we can extract host name from devicetree,
+we can drop board file.
 
-Applied, thanks
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/mips/boards/dlink-dir-320/Makefile |  1 -
+ arch/mips/boards/dlink-dir-320/board.c  | 15 ---------------
+ 2 files changed, 16 deletions(-)
 
-Sascha
-
-> 
-> diff --git a/drivers/mtd/mtdraw.c b/drivers/mtd/mtdraw.c
-> index f63da7b..b716192 100644
-> --- a/drivers/mtd/mtdraw.c
-> +++ b/drivers/mtd/mtdraw.c
-> @@ -306,7 +306,7 @@ static int add_mtdraw_device(struct mtd_info *mtd, const char *devname, void **p
->  	mtdraw->mtd = mtd;
->  
->  	mtdraw->cdev.ops = (struct cdev_operations *)&mtd_raw_fops;
-> -	mtdraw->cdev.size = mtd_div_by_wb(mtd->size, mtd) * mtdraw->rps;
-> +	mtdraw->cdev.size = (loff_t)mtd_div_by_wb(mtd->size, mtd) * mtdraw->rps;
->  	mtdraw->cdev.name = basprintf("%s.raw", mtd->cdev.name);
->  	mtdraw->cdev.priv = mtdraw;
->  	mtdraw->cdev.dev = &mtd->class_dev;
-> -- 
-> 2.7.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/arch/mips/boards/dlink-dir-320/Makefile b/arch/mips/boards/dlink-dir-320/Makefile
+index 01c7a259e9..b08c4a93ca 100644
+--- a/arch/mips/boards/dlink-dir-320/Makefile
++++ b/arch/mips/boards/dlink-dir-320/Makefile
+@@ -1,2 +1 @@
+-obj-y += board.o
+ lwl-y += lowlevel.o
+diff --git a/arch/mips/boards/dlink-dir-320/board.c b/arch/mips/boards/dlink-dir-320/board.c
+deleted file mode 100644
+index b75812cefe..0000000000
+--- a/arch/mips/boards/dlink-dir-320/board.c
++++ /dev/null
+@@ -1,15 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-/*
+- * Copyright (C) 2011, 2014 Antony Pavlov <antonynpavlov@gmail.com>
+- */
+-
+-#include <common.h>
+-#include <init.h>
+-
+-static int dir320_console_init(void)
+-{
+-	barebox_set_hostname("dir320");
+-
+-	return 0;
+-}
+-console_initcall(dir320_console_init);
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.25.0
+
 
 _______________________________________________
 barebox mailing list
