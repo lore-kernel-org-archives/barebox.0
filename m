@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from conuserg-07.nifty.com ([210.131.2.74])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jVc2N-0003Lh-Ou
- for barebox@lists.infradead.org; Mon, 04 May 2020 14:25:48 +0000
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Mon,  4 May 2020 23:24:53 +0900
-Message-Id: <20200504142455.404658-2-masahiroy@kernel.org>
-In-Reply-To: <20200504142455.404658-1-masahiroy@kernel.org>
-References: <20200504142455.404658-1-masahiroy@kernel.org>
+ id 1jVqLH-0008IG-3W
+ for barebox@lists.infradead.org; Tue, 05 May 2020 05:42:08 +0000
+Date: Tue, 5 May 2020 07:42:05 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200505054205.GV5877@pengutronix.de>
+References: <20200430044252.762041-1-masahiroy@kernel.org>
+ <CAK7LNATNtaynZmZ4bo6AJS4sRvXqmz8KOEiWXDmyxUTFZ+xJPg@mail.gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAK7LNATNtaynZmZ4bo6AJS4sRvXqmz8KOEiWXDmyxUTFZ+xJPg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,82 +23,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] common.h: move and rename lregion_overlap()
-To: barebox@lists.infradead.org
-Cc: Masahiro Yamada <masahiroy@kernel.org>
+Subject: Re: [PATCH] kbuild: add $(always-y) to 'targets'
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-lregion_overlap() is only used by common/startup.c
+On Mon, May 04, 2020 at 08:27:43PM +0900, Masahiro Yamada wrote:
+> On Thu, Apr 30, 2020 at 1:43 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
+> >
+> > I missed to sync this line in commit 421108c51da4 ("kbuild: rename
+> > hostprogs-y/always to hostprogs/always-y").
+> >
+> > Since then, the files in always(-y) are needlessly rebuilt.
+> 
+> This line is not precise because the files in $(always) are fine.
+> If it is not too late, could you please reword this line as follows ?
+> 
+> 
+> Since then, the files in $(always-y) are needlessly rebuilt.
 
-There is no need to define it in include/common.h
+Sorry, it's too late. I merged this as a fix to master.
 
-While I was here, I also renamed it to region_overlap(), and got rid
-of the 'inline' keyword.
+Sascha
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
----
 
- common/startup.c | 14 ++++++++++++--
- include/common.h | 14 --------------
- 2 files changed, 12 insertions(+), 16 deletions(-)
-
-diff --git a/common/startup.c b/common/startup.c
-index 2c3a999e1..511675ed5 100644
---- a/common/startup.c
-+++ b/common/startup.c
-@@ -74,6 +74,16 @@ fs_initcall(mount_root);
- #endif
- 
- #ifdef CONFIG_ENV_HANDLING
-+static bool region_overlap(loff_t starta, loff_t lena,
-+			   loff_t startb, loff_t lenb)
-+{
-+	if (starta + lena <= startb)
-+		return 0;
-+	if (startb + lenb <= starta)
-+		return 0;
-+	return 1;
-+}
-+
- static int check_overlap(const char *path)
- {
- 	struct cdev *cenv, *cdisk, *cpart;
-@@ -104,8 +114,8 @@ static int check_overlap(const char *path)
- 		if (cpart == cenv)
- 			continue;
- 
--		if (lregion_overlap(cpart->offset, cpart->size,
--				    cenv->offset, cenv->size))
-+		if (region_overlap(cpart->offset, cpart->size,
-+				   cenv->offset, cenv->size))
- 			goto conflict;
- 	}
- 
-diff --git a/include/common.h b/include/common.h
-index 3570e6aba..0bf819a6f 100644
---- a/include/common.h
-+++ b/include/common.h
-@@ -139,18 +139,4 @@ void barebox_set_hostname_no_overwrite(const char *);
- #define IOMEM(addr)	((void __force __iomem *)(addr))
- #endif
- 
--/*
-- * Check if two regions overlap. returns true if they do, false otherwise
-- */
--
--static inline bool lregion_overlap(loff_t starta, loff_t lena,
--				   loff_t startb, loff_t lenb)
--{
--	if (starta + lena <= startb)
--		return 0;
--	if (startb + lenb <= starta)
--		return 0;
--	return 1;
--}
--
- #endif	/* __COMMON_H_ */
 -- 
-2.25.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
