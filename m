@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jWFF4-0005w4-22
+ id 1jWFF3-0005wJ-Qp
  for barebox@lists.infradead.org; Wed, 06 May 2020 08:17:25 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed,  6 May 2020 10:17:09 +0200
-Message-Id: <20200506081716.20143-6-s.hauer@pengutronix.de>
+Date: Wed,  6 May 2020 10:17:11 +0200
+Message-Id: <20200506081716.20143-8-s.hauer@pengutronix.de>
 In-Reply-To: <20200506081716.20143-1-s.hauer@pengutronix.de>
 References: <20200506081716.20143-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,62 +21,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/13] clk imx28: Add USB clocks
+Subject: [PATCH 08/13] ARM: mxs: Increase VDDD voltage to match specification
 To: Barebox List <barebox@lists.infradead.org>
 
-The USB clocks are missing, add them to make USB work as part of the
-i.MX chipidea driver.
+Adoption of U-Boot commit:
+
+| commit b4a2cdc13ed886b981e8fcd3087293ba9296f17f
+| Author: Marek Vasut <marex@denx.de>
+| Date:   Tue Oct 15 18:26:57 2019 +0200
+|
+|     arm: mxs: Increase VDDD voltage to match specification
+|
+|     According to IMX28CEC rev. 4, 10/2018, Table 15. Recommended Operating
+|     Conditions, page 16, the VDDD should be set to 1.55V when the CPU is
+|     operating at 454MHz. This is the case in U-Boot, hence increase the
+|     VDDD voltage. This fixes instability when performing TFTP transfers.
+|     Increase the brownout threshold to 1.4V. The documentation recommends
+|     1.45V setting for the brownout, however, this triggers failure during
+|     power block init, so keep the brownout slightly lower.
+|
+|     Signed-off-by: Marek Vasut <marex@denx.de>
+|     Cc: Stefano Babic <sbabic@denx.de>
+|     Reviewed-by: Fabio Estevam <festevam@gmail.com>
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/clk/mxs/clk-imx28.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ arch/arm/mach-mxs/power-init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/mxs/clk-imx28.c b/drivers/clk/mxs/clk-imx28.c
-index 241b26c9a2..aa528e109a 100644
---- a/drivers/clk/mxs/clk-imx28.c
-+++ b/drivers/clk/mxs/clk-imx28.c
-@@ -11,6 +11,7 @@
- #include <linux/clkdev.h>
- #include <linux/err.h>
- #include <mach/imx28-regs.h>
-+#include <of_address.h>
+diff --git a/arch/arm/mach-mxs/power-init.c b/arch/arm/mach-mxs/power-init.c
+index ca7c349d7f..c89f1f5f5d 100644
+--- a/arch/arm/mach-mxs/power-init.c
++++ b/arch/arm/mach-mxs/power-init.c
+@@ -1172,7 +1172,7 @@ static void mx23_ungate_power(void)
+ 	writel(MX23_POWER_CTRL_CLKGATE, &power_regs->hw_power_ctrl_clr);
+ }
  
- #include "clk.h"
- 
-@@ -38,6 +39,9 @@
- #define FRAC1			(regs + 0x01c0)
- #define CLKSEQ			(regs + 0x01d0)
- 
-+static void __iomem *digctrl;
-+#define DIGCTRL digctrl
-+
- static const char *sel_cpu[]  = { "ref_cpu", "ref_xtal", };
- static const char *sel_io0[]  = { "ref_io0", "ref_xtal", };
- static const char *sel_io1[]  = { "ref_io1", "ref_xtal", };
-@@ -64,6 +68,8 @@ static struct clk *clks[clk_max];
- 
- static int __init mx28_clocks_init(void __iomem *regs)
- {
-+	struct device_node *dcnp;
-+
- 	clks[ref_xtal] = clk_fixed("ref_xtal", 24000000);
- 	clks[pll0] = mxs_clk_pll("pll0", "ref_xtal", PLL0CTRL0, 17, 480000000);
- 	clks[pll1] = mxs_clk_pll("pll1", "ref_xtal", PLL1CTRL0, 17, 480000000);
-@@ -120,6 +126,13 @@ static int __init mx28_clocks_init(void __iomem *regs)
- 	clks[lcdif_comp] = mxs_clk_lcdif("lcdif_comp", clks[ref_pix],
- 			clks[lcdif_div], clks[lcdif]);
- 
-+	dcnp = of_find_compatible_node(NULL, NULL, "fsl,imx28-digctl");
-+	if (dcnp) {
-+		digctrl = of_iomap(dcnp, 0);
-+		clks[usb0] = mxs_clk_gate("usb0", "usb0_phy", DIGCTRL, 2);
-+		clks[usb1] = mxs_clk_gate("usb1", "usb1_phy", DIGCTRL, 16);
-+	}
-+
- 	clk_set_rate(clks[ref_io0], 480000000);
- 	clk_set_rate(clks[ref_io1], 480000000);
- 	clk_set_parent(clks[ssp0_sel], clks[ref_io0]);
+-struct mxs_power_ctrl mxs_vddd_default    = { .target = 1500, .brownout = 1325 };
++struct mxs_power_ctrl mxs_vddd_default    = { .target = 1550, .brownout = 1400 };
+ struct mxs_power_ctrl mxs_vdda_default    = { .target = 1800, .brownout = 1650 };
+ struct mxs_power_ctrl mxs_vddio_default   = { .target = 3300, .brownout = 3150 };
+ struct mxs_power_ctrl mx23_vddmem_default = { .target = 2500, .brownout = 1700 };
 -- 
 2.26.2
 
