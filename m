@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jWFF3-0005vo-Uv
- for barebox@lists.infradead.org; Wed, 06 May 2020 08:17:25 +0000
+ id 1jWFF4-0005wC-2l
+ for barebox@lists.infradead.org; Wed, 06 May 2020 08:17:27 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed,  6 May 2020 10:17:06 +0200
-Message-Id: <20200506081716.20143-3-s.hauer@pengutronix.de>
+Date: Wed,  6 May 2020 10:17:10 +0200
+Message-Id: <20200506081716.20143-7-s.hauer@pengutronix.de>
 In-Reply-To: <20200506081716.20143-1-s.hauer@pengutronix.de>
 References: <20200506081716.20143-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,36 +21,102 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/13] clk: mxs: Do not enable enet_out clock
+Subject: [PATCH 07/13] clk: mxs: Use device tree provided clock lookups
 To: Barebox List <barebox@lists.infradead.org>
 
-The enet_out clock gate is wrongly abstracted. The bit it is controlling
-is not just a bit to enable the clock, it also controls the direction of
-the ethernet reference clock. When the bit is cleared, the ethernet
-reference clock must be fed into the SoC from an external oscillator;
-when it's set then the ethernet reference clock is generated internally.
-The correct setting depends on the board, so we must not set the bit
-unconditionally during probe of the clock driver. Whether or not the
-clock is enabled can be selected by the board by removing the clock from
-the FEC in its dts.
+When probing from the device tree use the device tree provided clock
+lookups. So far we only used the clock lookups based on the physical
+base address of the device, but these should go sooner or later.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/clk/mxs/clk-imx28.c | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm/mach-mxs/Kconfig   |  1 +
+ drivers/clk/mxs/clk-imx28.c | 45 +++++++++++++++++++++----------------
+ 2 files changed, 27 insertions(+), 19 deletions(-)
 
+diff --git a/arch/arm/mach-mxs/Kconfig b/arch/arm/mach-mxs/Kconfig
+index f7d13569ea..f4a9d3d422 100644
+--- a/arch/arm/mach-mxs/Kconfig
++++ b/arch/arm/mach-mxs/Kconfig
+@@ -11,6 +11,7 @@ config ARCH_TEXT_BASE
+ 
+ config ARCH_MXS_OF_SUPPORT
+ 	bool
++	select COMMON_CLK_OF_PROVIDER
+ 	select OFTREE
+ 	select OFDEVICE
+ 
 diff --git a/drivers/clk/mxs/clk-imx28.c b/drivers/clk/mxs/clk-imx28.c
-index 4adb1c6866..aedd8d4a7c 100644
+index aa528e109a..bf65a4a3b8 100644
 --- a/drivers/clk/mxs/clk-imx28.c
 +++ b/drivers/clk/mxs/clk-imx28.c
-@@ -131,7 +131,6 @@ static int __init mx28_clocks_init(void __iomem *regs)
- 	clk_set_rate(clks[ssp2], 96000000);
+@@ -65,8 +65,9 @@ enum imx28_clk {
+ };
+ 
+ static struct clk *clks[clk_max];
++static struct clk_onecell_data clk_data;
+ 
+-static int __init mx28_clocks_init(void __iomem *regs)
++static int __init mx28_clocks_init(struct device_d *dev, void __iomem *regs)
+ {
+ 	struct device_node *dcnp;
+ 
+@@ -145,23 +146,29 @@ static int __init mx28_clocks_init(void __iomem *regs)
  	clk_set_rate(clks[ssp3], 96000000);
  	clk_set_parent(clks[lcdif_sel], clks[ref_pix]);
--	clk_enable(clks[enet_out]);
  
- 	clkdev_add_physbase(clks[ssp0], IMX_SSP0_BASE, NULL);
- 	clkdev_add_physbase(clks[ssp1], IMX_SSP1_BASE, NULL);
+-	clkdev_add_physbase(clks[ssp0], IMX_SSP0_BASE, NULL);
+-	clkdev_add_physbase(clks[ssp1], IMX_SSP1_BASE, NULL);
+-	clkdev_add_physbase(clks[ssp2], IMX_SSP2_BASE, NULL);
+-	clkdev_add_physbase(clks[ssp3], IMX_SSP3_BASE, NULL);
+-	clkdev_add_physbase(clks[fec], IMX_FEC0_BASE, NULL);
+-	clkdev_add_physbase(clks[xbus], IMX_DBGUART_BASE, NULL);
+-	clkdev_add_physbase(clks[hbus], IMX_OCOTP_BASE, NULL);
+-	clkdev_add_physbase(clks[hbus], MXS_APBH_BASE, NULL);
+-	clkdev_add_physbase(clks[uart], IMX_UART0_BASE, NULL);
+-	clkdev_add_physbase(clks[uart], IMX_UART1_BASE, NULL);
+-	clkdev_add_physbase(clks[uart], IMX_UART2_BASE, NULL);
+-	clkdev_add_physbase(clks[uart], IMX_UART3_BASE, NULL);
+-	clkdev_add_physbase(clks[uart], IMX_UART4_BASE, NULL);
+-	clkdev_add_physbase(clks[gpmi], MXS_GPMI_BASE, NULL);
+-	clkdev_add_physbase(clks[pwm], IMX_PWM_BASE, NULL);
+-	if (IS_ENABLED(CONFIG_DRIVER_VIDEO_STM))
+-		clkdev_add_physbase(clks[lcdif_comp], IMX_FB_BASE, NULL);
++	if (dev->device_node) {
++		clk_data.clks = clks;
++		clk_data.clk_num = clk_max;
++		of_clk_add_provider(dev->device_node, of_clk_src_onecell_get, &clk_data);
++	} else {
++		clkdev_add_physbase(clks[ssp0], IMX_SSP0_BASE, NULL);
++		clkdev_add_physbase(clks[ssp1], IMX_SSP1_BASE, NULL);
++		clkdev_add_physbase(clks[ssp2], IMX_SSP2_BASE, NULL);
++		clkdev_add_physbase(clks[ssp3], IMX_SSP3_BASE, NULL);
++		clkdev_add_physbase(clks[fec], IMX_FEC0_BASE, NULL);
++		clkdev_add_physbase(clks[xbus], IMX_DBGUART_BASE, NULL);
++		clkdev_add_physbase(clks[hbus], IMX_OCOTP_BASE, NULL);
++		clkdev_add_physbase(clks[hbus], MXS_APBH_BASE, NULL);
++		clkdev_add_physbase(clks[uart], IMX_UART0_BASE, NULL);
++		clkdev_add_physbase(clks[uart], IMX_UART1_BASE, NULL);
++		clkdev_add_physbase(clks[uart], IMX_UART2_BASE, NULL);
++		clkdev_add_physbase(clks[uart], IMX_UART3_BASE, NULL);
++		clkdev_add_physbase(clks[uart], IMX_UART4_BASE, NULL);
++		clkdev_add_physbase(clks[gpmi], MXS_GPMI_BASE, NULL);
++		clkdev_add_physbase(clks[pwm], IMX_PWM_BASE, NULL);
++		if (IS_ENABLED(CONFIG_DRIVER_VIDEO_STM))
++			clkdev_add_physbase(clks[lcdif_comp], IMX_FB_BASE, NULL);
++	}
+ 
+ 	return 0;
+ }
+@@ -176,7 +183,7 @@ static int imx28_ccm_probe(struct device_d *dev)
+ 		return PTR_ERR(iores);
+ 	regs = IOMEM(iores->start);
+ 
+-	mx28_clocks_init(regs);
++	mx28_clocks_init(dev, regs);
+ 
+ 	return 0;
+ }
 -- 
 2.26.2
 
