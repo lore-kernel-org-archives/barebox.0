@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jWwit-00026p-QX
- for barebox@lists.infradead.org; Fri, 08 May 2020 06:43:07 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-References: <20200330143915.663705-1-ahmad@a3f.at>
- <20200330143915.663705-6-ahmad@a3f.at>
- <20200331054526.GF27288@pengutronix.de>
- <8409b14a-0219-24b7-d2fd-cbf6de7f5414@pengutronix.de>
-Message-ID: <bbc8fc41-e461-f327-a600-e0e63fca3c59@pengutronix.de>
-Date: Fri, 8 May 2020 08:43:01 +0200
+ id 1jX2D3-0001YE-77
+ for barebox@lists.infradead.org; Fri, 08 May 2020 12:34:34 +0000
+Date: Fri, 8 May 2020 14:34:31 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200508123431.GM5877@pengutronix.de>
+References: <20200508062530.23241-1-a.fatoum@pengutronix.de>
+ <20200508062530.23241-4-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <8409b14a-0219-24b7-d2fd-cbf6de7f5414@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20200508062530.23241-4-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,26 +23,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/8] pinctrl: stm32: fix up st,package into stm32mp nodes
-To: Sascha Hauer <s.hauer@pengutronix.de>, Ahmad Fatoum <ahmad@a3f.at>
+Subject: Re: [PATCH 4/5] drivers: add COMPILE_TEST prompts to some
+ on-by-default drivers
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 4/15/20 11:38 AM, Ahmad Fatoum wrote:
-> Hello Sascha,
+On Fri, May 08, 2020 at 08:25:29AM +0200, Ahmad Fatoum wrote:
+> Many clock source and GPIO controller drivers don't have a prompt, but
+> are instead default y if their respective platform is enabled. Maintain
+> this behavior, but add a prompt for when COMPILE_TEST is enabled, so
+> they can be included in test builds.
 > 
-> On 3/31/20 7:45 AM, Sascha Hauer wrote:
->> Why this detour over device tree? We already have get_cpu_package() and
->> could use it here.
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  drivers/clocksource/Kconfig | 16 +++++++++-------
+>  drivers/gpio/Kconfig        | 12 ++++++++----
+>  drivers/pinctrl/Kconfig     |  8 ++++----
+>  3 files changed, 21 insertions(+), 15 deletions(-)
 > 
-> The first 5 patches could be applied independently of the rest, which
-> I'll rework. Can you do so?
+> diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+> index 8805cda39e02..bc2aae7ad723 100644
+> --- a/drivers/clocksource/Kconfig
+> +++ b/drivers/clocksource/Kconfig
+> @@ -75,16 +75,18 @@ config CLOCKSOURCE_ATMEL_PIT
+>         bool
+>  
+>  config CLOCKSOURCE_ARM_ARCHITECTED_TIMER
+> -	bool
+> -	default y
+> -	depends on ARM && (CPU_64v8 || CPU_V7)
+> +	bool "ARM architected timer clock source" if COMPILE_TEST
+> +	default y if ARM && (CPU_64v8 || CPU_V7)
+> +	depends on (ARM && (CPU_64v8 || CPU_V7)) || COMPILE_TEST
 
-Gentle ping.
+This driver compiles only on ARM. It uses get_cntpct() which is a
+contains inline assembly.
 
-> 
-> Thanks
-> Ahmad
-> 
+Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
