@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jX6Qe-0007vt-Kq
- for barebox@lists.infradead.org; Fri, 08 May 2020 17:04:54 +0000
+ id 1jX6Qg-0007ww-Lp
+ for barebox@lists.infradead.org; Fri, 08 May 2020 17:04:56 +0000
 From: Clement Leger <cleger@kalray.eu>
-Date: Fri,  8 May 2020 19:04:07 +0200
-Message-Id: <20200508170411.26841-4-cleger@kalray.eu>
+Date: Fri,  8 May 2020 19:04:10 +0200
+Message-Id: <20200508170411.26841-7-cleger@kalray.eu>
 In-Reply-To: <20200508170411.26841-1-cleger@kalray.eu>
 References: <20200508170411.26841-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
@@ -21,57 +21,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 3/7] common: elf: split init to be reused from other
- function
+Subject: [PATCH v4 6/7] mips: lib: bootm: use bootm elf loading capabilities
 To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
 Cc: Clement Leger <cleger@kalray.eu>, Oleksij Rempel <o.rempel@pengutronix.de>
 
-New elf_open function will also need to initialize an elf file. Split
-this to avoid missing members initialization.
+Now that the elf file is loaded by the bootm core, there is no need for
+elf pointer anymore. Thus all elf related fields can be removed and
+bootm_load_os can be used.
 
 Signed-off-by: Clement Leger <cleger@kalray.eu>
 ---
- common/elf.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ arch/mips/lib/bootm.c | 31 +++++++++++--------------------
+ 1 file changed, 11 insertions(+), 20 deletions(-)
 
-diff --git a/common/elf.c b/common/elf.c
-index 55f5bc645..5534632b2 100644
---- a/common/elf.c
-+++ b/common/elf.c
-@@ -119,6 +119,15 @@ static int elf_check_image(struct elf_image *elf)
- 	return 0;
- }
- 
-+static int elf_check_init(struct elf_image *elf, void *buf)
-+{
-+	elf->buf = buf;
-+	elf->low_addr = (void *) (unsigned long) -1;
-+	elf->high_addr = 0;
-+
-+	return elf_check_image(elf);
-+}
-+
- struct elf_image *elf_load_image(void *buf)
+diff --git a/arch/mips/lib/bootm.c b/arch/mips/lib/bootm.c
+index 5bb09cc2d..48f0d83cf 100644
+--- a/arch/mips/lib/bootm.c
++++ b/arch/mips/lib/bootm.c
+@@ -46,43 +46,34 @@ static struct binfmt_hook binfmt_barebox_hook = {
+ static int do_bootm_elf(struct image_data *data)
  {
- 	struct elf_image *elf;
-@@ -128,13 +137,11 @@ struct elf_image *elf_load_image(void *buf)
+ 	void (*entry)(int, void *);
+-	struct elf_image *elf;
+-	void *fdt, *buf;
+-	int ret = 0;
++	void *fdt;
++	int ret;
  
- 	INIT_LIST_HEAD(&elf->list);
- 
--	elf->buf = buf;
--	elf->low_addr = (void *) (unsigned long) -1;
--	elf->high_addr = 0;
+-	buf = read_file(data->os_file, NULL);
+-	if (!buf)
+-		return -EINVAL;
 -
--	ret = elf_check_image(elf);
--	if (ret)
-+	ret = elf_check_init(elf, buf);
-+	if (ret) {
-+		free(elf);
- 		return ERR_PTR(ret);
-+	}
+-	elf = elf_load_image(buf);
+-	if (IS_ERR(elf))
+-		return PTR_ERR(elf);
++	ret = bootm_load_os(data, data->os_address);
++	if (ret)
++		return ret;
  
- 	ret = load_elf_image_phdr(elf);
- 	if (ret) {
+ 	fdt = bootm_get_devicetree(data);
+-	if (IS_ERR(fdt)) {
+-		ret = PTR_ERR(fdt);
+-		goto bootm_elf_done;
+-	}
++	if (IS_ERR(fdt))
++		return PTR_ERR(fdt);
+ 
+ 	pr_info("Starting application at 0x%08lx, dts 0x%08lx...\n",
+-		phys_to_virt(elf->entry), data->of_root_node);
++		phys_to_virt(data->os_address), data->of_root_node);
+ 
+ 	if (data->dryrun)
+-		goto bootm_elf_done;
++		goto bootm_free_fdt;
+ 
+ 	shutdown_barebox();
+ 
+-	entry = (void *) (unsigned long) elf->entry;
++	entry = (void *) (unsigned long) data->os_address;
+ 
+ 	entry(-2, phys_to_virt((unsigned long)fdt));
+ 
+ 	pr_err("ELF application terminated\n");
+ 	ret = -EINVAL;
+ 
+-bootm_elf_done:
+-	elf_release_image(elf);
++bootm_free_fdt:
+ 	free(fdt);
+-	free(buf);
+ 
+ 	return ret;
+ }
 -- 
 2.17.1
 
