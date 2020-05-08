@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jX6Qd-0007vn-Pg
- for barebox@lists.infradead.org; Fri, 08 May 2020 17:04:53 +0000
+ id 1jX6Qe-0007vt-Kq
+ for barebox@lists.infradead.org; Fri, 08 May 2020 17:04:54 +0000
 From: Clement Leger <cleger@kalray.eu>
-Date: Fri,  8 May 2020 19:04:04 +0200
-Message-Id: <20200508170411.26841-1-cleger@kalray.eu>
+Date: Fri,  8 May 2020 19:04:07 +0200
+Message-Id: <20200508170411.26841-4-cleger@kalray.eu>
+In-Reply-To: <20200508170411.26841-1-cleger@kalray.eu>
+References: <20200508170411.26841-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,55 +21,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 0/7] elf: add better bootm support
+Subject: [PATCH v4 3/7] common: elf: split init to be reused from other
+ function
 To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
 Cc: Clement Leger <cleger@kalray.eu>, Oleksij Rempel <o.rempel@pengutronix.de>
 
-Currently, when booting an elf file using "bootm /dev/mtdx", bootm will
-simply pass the file to the bootm and the read done on it will read the
-entire flash partition. This series starts by some cleanup and then add an
-elf_open function to load the elf file size only based on the elf header.
-A special handling for the elf file is also added in bootm data to allow
-using directly the elf file structure. Finally the mips bootm is modified
-to use bootm_load_os directly instead of manual elf loading.
+New elf_open function will also need to initialize an elf file. Split
+this to avoid missing members initialization.
 
-Compilation for both mips and arm has been tested but run on qemu-malta was not
-possible. Changing the MALLOC_SIZE to allow loading a kernel always lead to a 
-non-bootable system. Changes have been tested on kvx architecture for which
-bootm support has been added and will be submitted.
+Signed-off-by: Clement Leger <cleger@kalray.eu>
+---
+ common/elf.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-Changes v3 -> v4
- - Fix init of elf entry address to be used by bootm_load_elf
-
-Changes v2 -> v3
- - Integrate elf loading in bootm_load_os
- - Add patch to remove now unused elf_load_image/elf_release_image
- - Use malloc instead of xmalloc and check return value
-
-Changes v1 -> v2
- - Add BOOTM_ELF config to select elf support and add checks in code
- - Add an elf_get_mem_size function to avoid computing elf size in bootm.c
- - Use xmalloc and read_full in elf_open instead of xzalloc/read
- - Fix data->elf NULL reset
- - Remove elf struct entirely from mips bootm code
-
-Clement Leger (7):
-  common: elf: add computation of elf boundaries
-  common: elf: fix warning on 32 bits architectures
-  common: elf: split init to be reused from other function
-  common: elf: add elf_open, elf_close and elf_load
-  common: bootm: add support for elf file loading
-  mips: lib: bootm: use bootm elf loading capabilities
-  common: elf: remove elf_load_image/elf_release_image
-
- arch/mips/lib/bootm.c |  31 +++++-------
- common/Kconfig        |   8 +++
- common/bootm.c        |  33 +++++++++++++
- common/elf.c          | 111 +++++++++++++++++++++++++++++++++++-------
- include/bootm.h       |   3 ++
- include/elf.h         |  16 +++++-
- 6 files changed, 163 insertions(+), 39 deletions(-)
-
+diff --git a/common/elf.c b/common/elf.c
+index 55f5bc645..5534632b2 100644
+--- a/common/elf.c
++++ b/common/elf.c
+@@ -119,6 +119,15 @@ static int elf_check_image(struct elf_image *elf)
+ 	return 0;
+ }
+ 
++static int elf_check_init(struct elf_image *elf, void *buf)
++{
++	elf->buf = buf;
++	elf->low_addr = (void *) (unsigned long) -1;
++	elf->high_addr = 0;
++
++	return elf_check_image(elf);
++}
++
+ struct elf_image *elf_load_image(void *buf)
+ {
+ 	struct elf_image *elf;
+@@ -128,13 +137,11 @@ struct elf_image *elf_load_image(void *buf)
+ 
+ 	INIT_LIST_HEAD(&elf->list);
+ 
+-	elf->buf = buf;
+-	elf->low_addr = (void *) (unsigned long) -1;
+-	elf->high_addr = 0;
+-
+-	ret = elf_check_image(elf);
+-	if (ret)
++	ret = elf_check_init(elf, buf);
++	if (ret) {
++		free(elf);
+ 		return ERR_PTR(ret);
++	}
+ 
+ 	ret = load_elf_image_phdr(elf);
+ 	if (ret) {
 -- 
 2.17.1
 
