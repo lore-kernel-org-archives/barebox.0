@@ -1,14 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jWwOQ-00052b-3c
- for barebox@lists.infradead.org; Fri, 08 May 2020 06:21:55 +0000
+ id 1jWwit-00026p-QX
+ for barebox@lists.infradead.org; Fri, 08 May 2020 06:43:07 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri,  8 May 2020 08:21:49 +0200
-Message-Id: <20200508062149.30753-3-a.fatoum@pengutronix.de>
-In-Reply-To: <20200508062149.30753-1-a.fatoum@pengutronix.de>
-References: <20200508062149.30753-1-a.fatoum@pengutronix.de>
+References: <20200330143915.663705-1-ahmad@a3f.at>
+ <20200330143915.663705-6-ahmad@a3f.at>
+ <20200331054526.GF27288@pengutronix.de>
+ <8409b14a-0219-24b7-d2fd-cbf6de7f5414@pengutronix.de>
+Message-ID: <bbc8fc41-e461-f327-a600-e0e63fca3c59@pengutronix.de>
+Date: Fri, 8 May 2020 08:43:01 +0200
 MIME-Version: 1.0
+In-Reply-To: <8409b14a-0219-24b7-d2fd-cbf6de7f5414@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,69 +25,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] LICENSES: add Linux-syscall-note exception text
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH 6/8] pinctrl: stm32: fix up st,package into stm32mp nodes
+To: Sascha Hauer <s.hauer@pengutronix.de>, Ahmad Fatoum <ahmad@a3f.at>
+Cc: barebox@lists.infradead.org
 
-We include Linux headers in barebox, which are licensed under GPL with
-this exception.
+On 4/15/20 11:38 AM, Ahmad Fatoum wrote:
+> Hello Sascha,
+> 
+> On 3/31/20 7:45 AM, Sascha Hauer wrote:
+>> Why this detour over device tree? We already have get_cpu_package() and
+>> could use it here.
+> 
+> The first 5 patches could be applied independently of the rest, which
+> I'll rework. Can you do so?
 
-While we are GPL-2.0 as well and don't require the exception, we should
-always provide license texts to the License-Identifiers we are using.
+Gentle ping.
 
-At the time of this writing these are:
-  * BSD-1-Clause
-  * BSD-2-Clause
-  * BSD-3-Clause
-  * GPL-2.0-only, -or-later and WITH Linux-syscall-note
-  * LGPL-2.1 and -or-later
-  * MIT
-  * X11
-  * ISC
+> 
+> Thanks
+> Ahmad
+> 
 
-With this commit, our LICENSES directory now contains licenses for all
-of them.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- LICENSES/exceptions/Linux-syscall-note | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
- create mode 100644 LICENSES/exceptions/Linux-syscall-note
-
-diff --git a/LICENSES/exceptions/Linux-syscall-note b/LICENSES/exceptions/Linux-syscall-note
-new file mode 100644
-index 000000000000..9abdad71fafd
---- /dev/null
-+++ b/LICENSES/exceptions/Linux-syscall-note
-@@ -0,0 +1,25 @@
-+SPDX-Exception-Identifier: Linux-syscall-note
-+SPDX-URL: https://spdx.org/licenses/Linux-syscall-note.html
-+SPDX-Licenses: GPL-2.0, GPL-2.0+, GPL-1.0+, LGPL-2.0, LGPL-2.0+, LGPL-2.1, LGPL-2.1+, GPL-2.0-only, GPL-2.0-or-later
-+Usage-Guide:
-+  This exception is used together with one of the above SPDX-Licenses
-+  to mark user space API (uapi) header files so they can be included
-+  into non GPL compliant user space application code.
-+  To use this exception add it with the keyword WITH to one of the
-+  identifiers in the SPDX-Licenses tag:
-+    SPDX-License-Identifier: <SPDX-License> WITH Linux-syscall-note
-+License-Text:
-+
-+   NOTE! This copyright does *not* cover user programs that use kernel
-+ services by normal system calls - this is merely considered normal use
-+ of the kernel, and does *not* fall under the heading of "derived work".
-+ Also note that the GPL below is copyrighted by the Free Software
-+ Foundation, but the instance of code that it refers to (the Linux
-+ kernel) is copyrighted by me and others who actually wrote it.
-+
-+ Also note that the only valid version of the GPL as far as the kernel
-+ is concerned is _this_ particular version of the license (ie v2, not
-+ v2.2 or v3.x or whatever), unless explicitly otherwise stated.
-+
-+			Linus Torvalds
-+
 -- 
-2.26.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
