@@ -1,14 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jWwS8-0007vr-Jo
- for barebox@lists.infradead.org; Fri, 08 May 2020 06:25:45 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri,  8 May 2020 08:25:27 +0200
-Message-Id: <20200508062530.23241-2-a.fatoum@pengutronix.de>
-In-Reply-To: <20200508062530.23241-1-a.fatoum@pengutronix.de>
-References: <20200508062530.23241-1-a.fatoum@pengutronix.de>
+ id 1jX1mz-0000wy-Vo
+ for barebox@lists.infradead.org; Fri, 08 May 2020 12:07:39 +0000
+Date: Fri, 8 May 2020 14:07:31 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200508120731.GL5877@pengutronix.de>
+References: <20200427071351.467859-1-ahmad@a3f.at>
+ <20200427080727.GO5877@pengutronix.de>
+ <ccef9a1d-0887-7573-966d-fee2eba57907@pengutronix.de>
+ <b7a02590-a63b-9681-c5f5-8475dd85886d@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <b7a02590-a63b-9681-c5f5-8475dd85886d@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,51 +25,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] common: introduce COMPILE_TEST option for build-testing
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH 1/3] ARM: i.MX: boot: correctly handle SRC_SBMR1 override
+ via SRC_GPR9
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, Ahmad Fatoum <ahmad@a3f.at>
 
-Compile-time analysis may help us catch latent bugs in barebox. For this
-to be most effective, we need an easy way to compile as much of barebox
-as possible. Giving all driver options prompts would do this, but at the
-cost of making user experience worse, by asking them about drivers for HW
-that's clearly not relevant to the platform they selected.
+On Fri, May 08, 2020 at 08:41:41AM +0200, Ahmad Fatoum wrote:
+> Hello,
+> 
+> On 4/27/20 10:28 AM, Ahmad Fatoum wrote:
+> > Hello,
+> > 
+> > On 4/27/20 10:07 AM, Sascha Hauer wrote:
+> >> On Mon, Apr 27, 2020 at 09:13:49AM +0200, Ahmad Fatoum wrote:
+> >>> `mw 0x20d8040 0x08000030; mw 0x20d8044 0x10000000; reset` issued on an
+> >>> i.MX6Q forces boot from the ecspi1. This is because the BootROM reads
+> >>> the boot mode out of SRC_GPR9 instead of SRC_SBMR1 whenever SRC_GPR10
+> >>> has its 28th bit set.
+> >>
+> >> Is this documented somewhere? The reference Manual marks SRC_GPR9 and
+> >> SRC_GPR10 as
+> >>
+> >> | This register is used by the ROM code and should not be used
+> >> | by application software.
+> 
+> Seems it's indeed documented in the IMX6ULRM (Rev.2 03/27).
+> See Table 8-6. Persistent bits.
+> 
+> Can the patches be applied or do you need me to change something?
 
-Do as Linux does and provide a default-off COMPILE_TEST option, which we
-can use to make extra drivers selectable.
+I just merged them
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- common/Kconfig | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+Sascha
 
-diff --git a/common/Kconfig b/common/Kconfig
-index 97f609d84b0f..4bb0b80ebd58 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -1332,6 +1332,19 @@ config KASAN
- 	  Enables KASAN (KernelAddressSANitizer) - runtime memory debugger,
- 	  designed to find out-of-bounds accesses and use-after-free bugs.
- 
-+config COMPILE_TEST
-+	bool "compile-test drivers of other platforms"
-+	default n
-+	help
-+	  Some drivers can be compiled on a different platform than they are
-+	  intended to be run on. Despite they cannot be used there due to
-+	  missing HW support, developers still, opposing to users, might want
-+	  to build such drivers to compile-test them.
-+
-+	  If you are a developer and want to build as much as currently possible,
-+	  say Y here. If you are a user, say N here to avoid being prompted for
-+	  inclusion of unrelated drivers.
-+
- endmenu
- 
- config HAS_DEBUG_LL
+
 -- 
-2.26.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
