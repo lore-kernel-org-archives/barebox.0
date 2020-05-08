@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jXoir-0002Pt-Nb
- for barebox@lists.infradead.org; Sun, 10 May 2020 16:22:39 +0000
-Date: Sun, 10 May 2020 18:22:36 +0200
-From: Roland Hieber <rhi@pengutronix.de>
-Message-ID: <20200510162236.odqx3sohvf5mouz4@pengutronix.de>
-References: <20200508062149.30753-1-a.fatoum@pengutronix.de>
- <20200508062149.30753-3-a.fatoum@pengutronix.de>
+ id 1jWwS0-0007sA-JK
+ for barebox@lists.infradead.org; Fri, 08 May 2020 06:25:37 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri,  8 May 2020 08:25:30 +0200
+Message-Id: <20200508062530.23241-5-a.fatoum@pengutronix.de>
+In-Reply-To: <20200508062530.23241-1-a.fatoum@pengutronix.de>
+References: <20200508062530.23241-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200508062149.30753-3-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,85 +21,135 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] LICENSES: add Linux-syscall-note exception text
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 5/5] drivers: add COMPILE_TEST prompts for some off-by-default
+ options
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Fri, May 08, 2020 at 08:21:49AM +0200, Ahmad Fatoum wrote:
-> We include Linux headers in barebox, which are licensed under GPL with
-> this exception.
-> 
-> While we are GPL-2.0 as well and don't require the exception, we should
-> always provide license texts to the License-Identifiers we are using.
-> 
-> At the time of this writing these are:
->   * BSD-1-Clause
->   * BSD-2-Clause
->   * BSD-3-Clause
->   * GPL-2.0-only, -or-later and WITH Linux-syscall-note
->   * LGPL-2.1 and -or-later
->   * MIT
->   * X11
->   * ISC
-> 
-> With this commit, our LICENSES directory now contains licenses for all
-> of them.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  LICENSES/exceptions/Linux-syscall-note | 25 +++++++++++++++++++++++++
->  1 file changed, 25 insertions(+)
->  create mode 100644 LICENSES/exceptions/Linux-syscall-note
+Some Kconfig options we have are promptless and off-by-default and
+instead can only be enabled by being selected from platform options.
 
-Reviewed-by: Roland Hieber <rhi@pengutronix.de>
+For some of those that aren't compile testable, add a new
+COMPILE_TEST-only prompt.
 
-> 
-> diff --git a/LICENSES/exceptions/Linux-syscall-note b/LICENSES/exceptions/Linux-syscall-note
-> new file mode 100644
-> index 000000000000..9abdad71fafd
-> --- /dev/null
-> +++ b/LICENSES/exceptions/Linux-syscall-note
-> @@ -0,0 +1,25 @@
-> +SPDX-Exception-Identifier: Linux-syscall-note
-> +SPDX-URL: https://spdx.org/licenses/Linux-syscall-note.html
-> +SPDX-Licenses: GPL-2.0, GPL-2.0+, GPL-1.0+, LGPL-2.0, LGPL-2.0+, LGPL-2.1, LGPL-2.1+, GPL-2.0-only, GPL-2.0-or-later
-> +Usage-Guide:
-> +  This exception is used together with one of the above SPDX-Licenses
-> +  to mark user space API (uapi) header files so they can be included
-> +  into non GPL compliant user space application code.
-> +  To use this exception add it with the keyword WITH to one of the
-> +  identifiers in the SPDX-Licenses tag:
-> +    SPDX-License-Identifier: <SPDX-License> WITH Linux-syscall-note
-> +License-Text:
-> +
-> +   NOTE! This copyright does *not* cover user programs that use kernel
-> + services by normal system calls - this is merely considered normal use
-> + of the kernel, and does *not* fall under the heading of "derived work".
-> + Also note that the GPL below is copyrighted by the Free Software
-> + Foundation, but the instance of code that it refers to (the Linux
-> + kernel) is copyrighted by me and others who actually wrote it.
-> +
-> + Also note that the only valid version of the GPL as far as the kernel
-> + is concerned is _this_ particular version of the license (ie v2, not
-> + v2.2 or v3.x or whatever), unless explicitly otherwise stated.
-> +
-> +			Linus Torvalds
-> +
-> -- 
-> 2.26.2
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ common/Kconfig              |  4 ++--
+ drivers/clocksource/Kconfig | 28 ++++++++++++++--------------
+ drivers/ddr/fsl/Kconfig     |  2 +-
+ drivers/pci/Kconfig         |  2 +-
+ lib/Kconfig                 |  2 +-
+ 5 files changed, 19 insertions(+), 19 deletions(-)
 
+diff --git a/common/Kconfig b/common/Kconfig
+index 4bb0b80ebd58..460ac487cb05 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -38,8 +38,8 @@ config BLOCK_WRITE
+ 	bool
+ 
+ config ELF
+-	bool
+-	depends on MIPS
++	bool "ELF Support" if COMPILE_TEST
++	depends on MIPS || COMPILE_TEST
+ 
+ config FILETYPE
+ 	bool
+diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+index bc2aae7ad723..92d83f7e7d2b 100644
+--- a/drivers/clocksource/Kconfig
++++ b/drivers/clocksource/Kconfig
+@@ -12,16 +12,16 @@ config ARM_SMP_TWD
+ 	depends on ARM && CPU_V7
+ 
+ config CLOCKSOURCE_BCM283X
+-	bool
+-	depends on ARCH_BCM283X
++	bool "BCM283x clock source" if COMPILE_TEST
++	depends on ARCH_BCM283X || COMPILE_TEST
+ 
+ config CLOCKSOURCE_CLPS711X
+-	bool
+-	depends on ARCH_CLPS711X
++	bool "CLPS711x clock source" if COMPILE_TEST
++	depends on ARCH_CLPS711X || COMPILE_TEST
+ 
+ config CLOCKSOURCE_DIGIC
+-	bool
+-	depends on ARCH_DIGIC
++	bool "DIGIC clock source" if COMPILE_TEST
++	depends on ARCH_DIGIC || COMPILE_TEST
+ 
+ config CLOCKSOURCE_DUMMY_RATE
+ 	int
+@@ -52,20 +52,20 @@ config CLOCKSOURCE_KVX
+ 	depends on KVX
+ 
+ config CLOCKSOURCE_MVEBU
+-	bool
+-	depends on ARCH_MVEBU
++	bool "MVEBU clock source" if COMPILE_TEST
++	depends on ARCH_MVEBU || COMPILE_TEST
+ 
+ config CLOCKSOURCE_NOMADIK
+-	bool
+-	depends on ARM
++	bool "Nomadik clock source" if COMPILE_TEST
++	depends on ARM || COMPILE_TEST
+ 
+ config CLOCKSOURCE_ORION
+-	bool
+-	depends on ARCH_MVEBU
++	bool "ORION clock source" if COMPILE_TEST
++	depends on ARCH_MVEBU || COMPILE_TEST
+ 
+ config CLOCKSOURCE_UEMD
+-	bool
+-	depends on ARCH_UEMD
++	bool "UEMD clock source" if COMPILE_TEST
++	depends on ARCH_UEMD || COMPILE_TEST
+ 
+ config CLOCKSOURCE_ROCKCHIP
+ 	bool
+diff --git a/drivers/ddr/fsl/Kconfig b/drivers/ddr/fsl/Kconfig
+index 9cae9028a2f5..09920bb8632e 100644
+--- a/drivers/ddr/fsl/Kconfig
++++ b/drivers/ddr/fsl/Kconfig
+@@ -1,5 +1,5 @@
+ config DDR_FSL
+-	bool
++	bool "Freescale DDR support" if COMPILE_TEST
+ 
+ if DDR_FSL
+ 
+diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
+index 542d734c3c8e..058546097621 100644
+--- a/drivers/pci/Kconfig
++++ b/drivers/pci/Kconfig
+@@ -1,5 +1,5 @@
+ config HW_HAS_PCI
+-	bool
++	bool "Compile in PCI core" if COMPILE_TEST
+ 
+ if HW_HAS_PCI
+ 
+diff --git a/lib/Kconfig b/lib/Kconfig
+index e4b347375971..b4a80797009c 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -97,7 +97,7 @@ config IMAGE_SPARSE
+ 	bool
+ 
+ config STMP_DEVICE
+-	bool
++	bool "STMP device support" if COMPILE_TEST
+ 
+ config FSL_QE_FIRMWARE
+ 	select CRC32
 -- 
-Roland Hieber, Pengutronix e.K.          | r.hieber@pengutronix.de     |
-Steuerwalder Str. 21                     | https://www.pengutronix.de/ |
-31137 Hildesheim, Germany                | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686         | Fax:   +49-5121-206917-5555 |
+2.26.2
+
 
 _______________________________________________
 barebox mailing list
