@@ -1,16 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jX2D3-0001YE-77
- for barebox@lists.infradead.org; Fri, 08 May 2020 12:34:34 +0000
-Date: Fri, 8 May 2020 14:34:31 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200508123431.GM5877@pengutronix.de>
+ id 1jWxhf-0006vV-BR
+ for barebox@lists.infradead.org; Fri, 08 May 2020 07:45:52 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>) id 1jWxhd-0004L0-OQ
+ for barebox@lists.infradead.org; Fri, 08 May 2020 09:45:49 +0200
 References: <20200508062530.23241-1-a.fatoum@pengutronix.de>
- <20200508062530.23241-4-a.fatoum@pengutronix.de>
+ <20200508062530.23241-5-a.fatoum@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <03c8bd41-d157-fc66-c6d7-fdae0f34efeb@pengutronix.de>
+Date: Fri, 8 May 2020 09:45:49 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200508062530.23241-4-a.fatoum@pengutronix.de>
+In-Reply-To: <20200508062530.23241-5-a.fatoum@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,44 +28,138 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/5] drivers: add COMPILE_TEST prompts to some
- on-by-default drivers
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 5/5] drivers: add COMPILE_TEST prompts for some
+ off-by-default options
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Fri, May 08, 2020 at 08:25:29AM +0200, Ahmad Fatoum wrote:
-> Many clock source and GPIO controller drivers don't have a prompt, but
-> are instead default y if their respective platform is enabled. Maintain
-> this behavior, but add a prompt for when COMPILE_TEST is enabled, so
-> they can be included in test builds.
+On 5/8/20 8:25 AM, Ahmad Fatoum wrote:
+> Some Kconfig options we have are promptless and off-by-default and
+> instead can only be enabled by being selected from platform options.
+> 
+> For some of those that aren't compile testable, add a new
+
+s/aren't/are/
+
+I can send a v2 if needed.
+
+> COMPILE_TEST-only prompt.
 > 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  drivers/clocksource/Kconfig | 16 +++++++++-------
->  drivers/gpio/Kconfig        | 12 ++++++++----
->  drivers/pinctrl/Kconfig     |  8 ++++----
->  3 files changed, 21 insertions(+), 15 deletions(-)
+>  common/Kconfig              |  4 ++--
+>  drivers/clocksource/Kconfig | 28 ++++++++++++++--------------
+>  drivers/ddr/fsl/Kconfig     |  2 +-
+>  drivers/pci/Kconfig         |  2 +-
+>  lib/Kconfig                 |  2 +-
+>  5 files changed, 19 insertions(+), 19 deletions(-)
 > 
+> diff --git a/common/Kconfig b/common/Kconfig
+> index 4bb0b80ebd58..460ac487cb05 100644
+> --- a/common/Kconfig
+> +++ b/common/Kconfig
+> @@ -38,8 +38,8 @@ config BLOCK_WRITE
+>  	bool
+>  
+>  config ELF
+> -	bool
+> -	depends on MIPS
+> +	bool "ELF Support" if COMPILE_TEST
+> +	depends on MIPS || COMPILE_TEST
+>  
+>  config FILETYPE
+>  	bool
 > diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-> index 8805cda39e02..bc2aae7ad723 100644
+> index bc2aae7ad723..92d83f7e7d2b 100644
 > --- a/drivers/clocksource/Kconfig
 > +++ b/drivers/clocksource/Kconfig
-> @@ -75,16 +75,18 @@ config CLOCKSOURCE_ATMEL_PIT
->         bool
+> @@ -12,16 +12,16 @@ config ARM_SMP_TWD
+>  	depends on ARM && CPU_V7
 >  
->  config CLOCKSOURCE_ARM_ARCHITECTED_TIMER
+>  config CLOCKSOURCE_BCM283X
 > -	bool
-> -	default y
-> -	depends on ARM && (CPU_64v8 || CPU_V7)
-> +	bool "ARM architected timer clock source" if COMPILE_TEST
-> +	default y if ARM && (CPU_64v8 || CPU_V7)
-> +	depends on (ARM && (CPU_64v8 || CPU_V7)) || COMPILE_TEST
-
-This driver compiles only on ARM. It uses get_cntpct() which is a
-contains inline assembly.
-
-Sascha
-
+> -	depends on ARCH_BCM283X
+> +	bool "BCM283x clock source" if COMPILE_TEST
+> +	depends on ARCH_BCM283X || COMPILE_TEST
+>  
+>  config CLOCKSOURCE_CLPS711X
+> -	bool
+> -	depends on ARCH_CLPS711X
+> +	bool "CLPS711x clock source" if COMPILE_TEST
+> +	depends on ARCH_CLPS711X || COMPILE_TEST
+>  
+>  config CLOCKSOURCE_DIGIC
+> -	bool
+> -	depends on ARCH_DIGIC
+> +	bool "DIGIC clock source" if COMPILE_TEST
+> +	depends on ARCH_DIGIC || COMPILE_TEST
+>  
+>  config CLOCKSOURCE_DUMMY_RATE
+>  	int
+> @@ -52,20 +52,20 @@ config CLOCKSOURCE_KVX
+>  	depends on KVX
+>  
+>  config CLOCKSOURCE_MVEBU
+> -	bool
+> -	depends on ARCH_MVEBU
+> +	bool "MVEBU clock source" if COMPILE_TEST
+> +	depends on ARCH_MVEBU || COMPILE_TEST
+>  
+>  config CLOCKSOURCE_NOMADIK
+> -	bool
+> -	depends on ARM
+> +	bool "Nomadik clock source" if COMPILE_TEST
+> +	depends on ARM || COMPILE_TEST
+>  
+>  config CLOCKSOURCE_ORION
+> -	bool
+> -	depends on ARCH_MVEBU
+> +	bool "ORION clock source" if COMPILE_TEST
+> +	depends on ARCH_MVEBU || COMPILE_TEST
+>  
+>  config CLOCKSOURCE_UEMD
+> -	bool
+> -	depends on ARCH_UEMD
+> +	bool "UEMD clock source" if COMPILE_TEST
+> +	depends on ARCH_UEMD || COMPILE_TEST
+>  
+>  config CLOCKSOURCE_ROCKCHIP
+>  	bool
+> diff --git a/drivers/ddr/fsl/Kconfig b/drivers/ddr/fsl/Kconfig
+> index 9cae9028a2f5..09920bb8632e 100644
+> --- a/drivers/ddr/fsl/Kconfig
+> +++ b/drivers/ddr/fsl/Kconfig
+> @@ -1,5 +1,5 @@
+>  config DDR_FSL
+> -	bool
+> +	bool "Freescale DDR support" if COMPILE_TEST
+>  
+>  if DDR_FSL
+>  
+> diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
+> index 542d734c3c8e..058546097621 100644
+> --- a/drivers/pci/Kconfig
+> +++ b/drivers/pci/Kconfig
+> @@ -1,5 +1,5 @@
+>  config HW_HAS_PCI
+> -	bool
+> +	bool "Compile in PCI core" if COMPILE_TEST
+>  
+>  if HW_HAS_PCI
+>  
+> diff --git a/lib/Kconfig b/lib/Kconfig
+> index e4b347375971..b4a80797009c 100644
+> --- a/lib/Kconfig
+> +++ b/lib/Kconfig
+> @@ -97,7 +97,7 @@ config IMAGE_SPARSE
+>  	bool
+>  
+>  config STMP_DEVICE
+> -	bool
+> +	bool "STMP device support" if COMPILE_TEST
+>  
+>  config FSL_QE_FIRMWARE
+>  	select CRC32
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
