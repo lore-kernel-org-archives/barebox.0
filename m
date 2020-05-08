@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mx1.emlix.com ([188.40.240.192])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jX70l-0003Bh-FL
- for barebox@lists.infradead.org; Fri, 08 May 2020 17:42:13 +0000
-References: <20200312083555.10793-1-s.hauer@pengutronix.de>
- <20200312083555.10793-20-s.hauer@pengutronix.de>
- <20200312223615.GA11963@emlix.com> <20200316080427.GL3335@pengutronix.de>
- <2e7c11ab-a83f-ba67-50f5-9e6b88b7595d@emlix.com>
- <20200422074059.GK1694@pengutronix.de>
+ id 1jX7J0-0006ki-Jc
+ for barebox@lists.infradead.org; Fri, 08 May 2020 18:01:04 +0000
+References: <20200422075452.25226-1-s.hauer@pengutronix.de>
+ <20200422075452.25226-4-s.hauer@pengutronix.de>
 From: =?UTF-8?Q?Daniel_Gl=c3=b6ckner?= <dg@emlix.com>
-Message-ID: <a7be606e-4d45-5480-5b9b-bdad5b020302@emlix.com>
-Date: Fri, 8 May 2020 19:42:06 +0200
+Message-ID: <aca473b4-a4ef-1c8e-958f-dcec8044049d@emlix.com>
+Date: Fri, 8 May 2020 20:01:00 +0200
 MIME-Version: 1.0
-In-Reply-To: <20200422074059.GK1694@pengutronix.de>
+In-Reply-To: <20200422075452.25226-4-s.hauer@pengutronix.de>
 Content-Language: de-DE
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,40 +19,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 19/19] poller: Allow to run pollers inside of pollers
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>, Edmund Henniges <eh@emlix.com>
+Subject: Re: [PATCH 03/11] Introduce slices
+To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
+Cc: Edmund Henniges <eh@emlix.com>
 
-Hello Sascha,
-
-Am 22.04.20 um 09:40 schrieb Sascha Hauer:
-> Before I merge this series want to have the idle slice issue solved. I
-> don't want to risk merging something that we have to completely
-> restructure soon.
-> Do you have any resources to look into the idle slice?
-
-I didn't have time back then, but I'm looking into it right now.
-
-Best regards,
-
-  Daniel
-
--- =
-
-Dipl.-Math. Daniel Gl=F6ckner, emlix GmbH, http://www.emlix.com
-Fon +49 551 30664-0, Fax +49 551 30664-11,
-Gothaer Platz 3, 37083 G=F6ttingen, Germany
-Sitz der Gesellschaft: G=F6ttingen, Amtsgericht G=F6ttingen HR B 3160
-Gesch=E4ftsf=FChrung: Heike Jordan, Dr. Uwe Kracke
-Ust-IdNr.: DE 205 198 055
-
-emlix - your embedded linux partner
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8gU2FzY2hhLAoKQW0gMjIuMDQuMjAgdW0gMDk6NTQgc2NocmllYiBTYXNjaGEgSGF1ZXI6
+Cj4gZGlmZiAtLWdpdCBhL2NvbW1hbmRzL0tjb25maWcgYi9jb21tYW5kcy9LY29uZmlnCj4gaW5k
+ZXggN2ZiNDdiOGZiNS4uNWZmNjQ1NDQyNyAxMDA2NDQKPiAtLS0gYS9jb21tYW5kcy9LY29uZmln
+Cj4gKysrIGIvY29tbWFuZHMvS2NvbmZpZwo+IEBAIC0yNjksNiArMjY5LDE1IEBAIGNvbmZpZyBD
+TURfUE9MTEVSCj4gIAkgIGlzX3RpbWVvdXQoKSBvciBvbmUgb2YgdGhlIHZhcmlvdXMgZGVsYXkg
+ZnVuY3Rpb25zLiBUaGUgcG9sbGVyIGNvbW1hbmQgcHJpbnRzCj4gIAkgIGluZm9ybWF0aW9ucyBh
+Ym91dCByZWdpc3RlcmVkIHBvbGxlcnMuCj4gIAo+ICtjb25maWcgQ01EX1NMSUNFCj4gKwl0cmlz
+dGF0ZQo+ICsJcHJvbXB0ICJzbGljZSIKPiArCWRlcGVuZHMgb24gU0xJQ0UKPiArCWhlbHAKPiAr
+CSAgc2xpY2VzIGFyZSBhIHdheSB0byBwcm90ZWN0IHJlc291cmNlcyBmcm9tIGJlaW5nIGFjY2Vz
+c2VkIGJ5IHBvbGxlcnMuIFRoZSBzbGljZQo+ICsJICBjb21tYW5kIGNhbiBiZSB1c2VkIHRvIHBy
+aW50IGluZm9ybWF0aW9ucyBhYm91dCBzbGljZXMgYW5kIGFsc28gdG8gbWFuaXB1bGF0ZQo+ICsJ
+ICB0aGVtIG9uIHRoZSBjb21tYW5kIGxpbmUgZm9yIGRlYnVnZ2luZyBwdXJwb3Nlcy4KPiArCj4g
+ICMgZW5kIEluZm9ybWF0aW9uIGNvbW1hbmRzCj4gIGVuZG1lbnUKPiAgCj4gZGlmZiAtLWdpdCBh
+L2NvbW1vbi9LY29uZmlnIGIvY29tbW9uL0tjb25maWcKPiBpbmRleCA0MDBjMDU1M2NmLi5iZDJh
+ZWJhYzc1IDEwMDY0NAo+IC0tLSBhL2NvbW1vbi9LY29uZmlnCj4gKysrIGIvY29tbW9uL0tjb25m
+aWcKPiBAQCAtOTEzLDYgKzkxMywxMCBAQCBjb25maWcgQkFSRUJPWENSQzMyX1RBUkdFVAo+ICBj
+b25maWcgUE9MTEVSCj4gIAlib29sICJnZW5lcmljIHBvbGxpbmcgaW5mcmFzdHJ1Y3R1cmUiCj4g
+IAo+ICtjb25maWcgU0xJQ0UKPiArCWRlcGVuZHMgb24gUE9MTEVSCj4gKwlkZWZhdWx0IHkKPiAr
+Cj4gIGNvbmZpZyBTVEFURQo+ICAJYm9vbCAiZ2VuZXJpYyBzdGF0ZSBpbmZyYXN0cnVjdHVyZSIK
+PiAgCXNlbGVjdCBDUkMzMgo+IGRpZmYgLS1naXQgYS9jb21tb24vTWFrZWZpbGUgYi9jb21tb24v
+TWFrZWZpbGUKPiBpbmRleCA4NDQ2M2I0ZDQ4Li4xNmYxNGRiNDFjIDEwMDY0NAo+IC0tLSBhL2Nv
+bW1vbi9NYWtlZmlsZQo+ICsrKyBiL2NvbW1vbi9NYWtlZmlsZQo+IEBAIC0xMSw2ICsxMSw3IEBA
+IG9iai15CQkJCSs9IGJvb3Rzb3VyY2Uubwo+ICBvYmotJChDT05GSUdfRUxGKQkJKz0gZWxmLm8K
+PiAgb2JqLXkJCQkJKz0gcmVzdGFydC5vCj4gIG9iai15CQkJCSs9IHBvd2Vyb2ZmLm8KPiArb2Jq
+LXkJCQkJKz0gc2xpY2Uubwo+ICBvYmotJChDT05GSUdfTUFDSElORV9JRCkJKz0gbWFjaGluZV9p
+ZC5vCj4gIG9iai0kKENPTkZJR19BVVRPX0NPTVBMRVRFKQkrPSBjb21wbGV0ZS5vCj4gIG9iai15
+CQkJCSs9IHZlcnNpb24ubwoKdGhlIEtjb25maWcgbG9naWMgZG9lc24ndCBtYWtlIHNlbnNlIHRv
+IG1lLiBzbGljZS5vIGdldHMgYnVpbHQgcmVnYXJkbGVzcyBvZgpDT05GSUdfU0xJQ0UgYW5kIGl0
+IHdpbGwgc3RpbGwgY29tcGlsZSBhbmQgbGluayB3aGVuIENPTkZJR19QT0xMRVIgaXMgZGlzYWJs
+ZWQuCk9uIHRoZSBvdGhlciBoYW5kIHBvbGxlci5vIHdpbGwgZmFpbCB0byBsaW5rIHdoZW4gc2xp
+Y2UubyBpcyBvbWl0dGVkLgoKSSBzdWdnZXN0IHdlIGRyb3AgQ09ORklHX1NMSUNFLgoKQmVzdCBy
+ZWdhcmRzLAoKICBEYW5pZWwKCgotLSAKRGlwbC4tTWF0aC4gRGFuaWVsIEdsw7Zja25lciwgZW1s
+aXggR21iSCwgaHR0cDovL3d3dy5lbWxpeC5jb20KRm9uICs0OSA1NTEgMzA2NjQtMCwgRmF4ICs0
+OSA1NTEgMzA2NjQtMTEsCkdvdGhhZXIgUGxhdHogMywgMzcwODMgR8O2dHRpbmdlbiwgR2VybWFu
+eQpTaXR6IGRlciBHZXNlbGxzY2hhZnQ6IEfDtnR0aW5nZW4sIEFtdHNnZXJpY2h0IEfDtnR0aW5n
+ZW4gSFIgQiAzMTYwCkdlc2Now6RmdHNmw7xocnVuZzogSGVpa2UgSm9yZGFuLCBEci4gVXdlIEty
+YWNrZQpVc3QtSWROci46IERFIDIwNSAxOTggMDU1CgplbWxpeCAtIHlvdXIgZW1iZWRkZWQgbGlu
+dXggcGFydG5lcgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
+Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
