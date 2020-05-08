@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jWv04-0007fS-W8
- for barebox@lists.infradead.org; Fri, 08 May 2020 04:52:42 +0000
-Date: Fri, 8 May 2020 06:52:35 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200508045235.GH5877@pengutronix.de>
-References: <20200505125836.18081-1-r.czerwinski@pengutronix.de>
+ id 1jWwOQ-00052b-3c
+ for barebox@lists.infradead.org; Fri, 08 May 2020 06:21:55 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri,  8 May 2020 08:21:49 +0200
+Message-Id: <20200508062149.30753-3-a.fatoum@pengutronix.de>
+In-Reply-To: <20200508062149.30753-1-a.fatoum@pengutronix.de>
+References: <20200508062149.30753-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200505125836.18081-1-r.czerwinski@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,50 +21,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: i.MX: configurable Super Root Key index
-To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 3/3] LICENSES: add Linux-syscall-note exception text
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Tue, May 05, 2020 at 02:58:36PM +0200, Rouven Czerwinski wrote:
-> Allow the configuration of the Super Root Key Index, to let the user
-> select another key if a previous key has been revoked.
-> 
-> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-> ---
->  arch/arm/mach-imx/Kconfig                          | 10 ++++++++++
->  arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h |  2 +-
->  arch/arm/mach-imx/include/mach/habv4-imx8-gencsf.h |  2 +-
->  3 files changed, 12 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-> index 072c659008..6dd5cb2aca 100644
-> --- a/arch/arm/mach-imx/Kconfig
-> +++ b/arch/arm/mach-imx/Kconfig
-> @@ -845,6 +845,16 @@ config HAB_CERTS_ENV
->  	  CONFIG_HABV4_CSF_CRT_PEM
->  	  CONFIG_HABV4_IMG_CRT_PEM
->  
-> +config HABV4_SRK_INDEX
-> +	depends on HABV4
-> +	int "SRK index"
-> +	default 0
-> +	help
-> +	  Select the Super Root Key used in the Command Sequence File to sign
-> +	  the CSF binary. This should only be changed if a previous key was
-> +	  revoked and another key needs to be used. For HABV4 the Index is in
-> +	  the range from 0 to 3.
+We include Linux headers in barebox, which are licensed under GPL with
+this exception.
 
-Applied this time, but I hope that we won't get many more of these
-policy encoding defines in habv4-imx6-gencsf.h.
+While we are GPL-2.0 as well and don't require the exception, we should
+always provide license texts to the License-Identifiers we are using.
 
-Sascha
+At the time of this writing these are:
+  * BSD-1-Clause
+  * BSD-2-Clause
+  * BSD-3-Clause
+  * GPL-2.0-only, -or-later and WITH Linux-syscall-note
+  * LGPL-2.1 and -or-later
+  * MIT
+  * X11
+  * ISC
 
+With this commit, our LICENSES directory now contains licenses for all
+of them.
 
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ LICENSES/exceptions/Linux-syscall-note | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
+ create mode 100644 LICENSES/exceptions/Linux-syscall-note
+
+diff --git a/LICENSES/exceptions/Linux-syscall-note b/LICENSES/exceptions/Linux-syscall-note
+new file mode 100644
+index 000000000000..9abdad71fafd
+--- /dev/null
++++ b/LICENSES/exceptions/Linux-syscall-note
+@@ -0,0 +1,25 @@
++SPDX-Exception-Identifier: Linux-syscall-note
++SPDX-URL: https://spdx.org/licenses/Linux-syscall-note.html
++SPDX-Licenses: GPL-2.0, GPL-2.0+, GPL-1.0+, LGPL-2.0, LGPL-2.0+, LGPL-2.1, LGPL-2.1+, GPL-2.0-only, GPL-2.0-or-later
++Usage-Guide:
++  This exception is used together with one of the above SPDX-Licenses
++  to mark user space API (uapi) header files so they can be included
++  into non GPL compliant user space application code.
++  To use this exception add it with the keyword WITH to one of the
++  identifiers in the SPDX-Licenses tag:
++    SPDX-License-Identifier: <SPDX-License> WITH Linux-syscall-note
++License-Text:
++
++   NOTE! This copyright does *not* cover user programs that use kernel
++ services by normal system calls - this is merely considered normal use
++ of the kernel, and does *not* fall under the heading of "derived work".
++ Also note that the GPL below is copyrighted by the Free Software
++ Foundation, but the instance of code that it refers to (the Linux
++ kernel) is copyrighted by me and others who actually wrote it.
++
++ Also note that the only valid version of the GPL as far as the kernel
++ is concerned is _this_ particular version of the license (ie v2, not
++ v2.2 or v3.x or whatever), unless explicitly otherwise stated.
++
++			Linus Torvalds
++
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.26.2
+
 
 _______________________________________________
 barebox mailing list
