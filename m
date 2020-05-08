@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jWgFY-0004aC-7L
- for barebox@lists.infradead.org; Thu, 07 May 2020 13:07:44 +0000
-Date: Thu, 7 May 2020 15:07:37 +0200
+ id 1jWv04-0007fS-W8
+ for barebox@lists.infradead.org; Fri, 08 May 2020 04:52:42 +0000
+Date: Fri, 8 May 2020 06:52:35 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200507130737.GD5877@pengutronix.de>
-References: <20200505123610.11307-1-antonynpavlov@gmail.com>
+Message-ID: <20200508045235.GH5877@pengutronix.de>
+References: <20200505125836.18081-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200505123610.11307-1-antonynpavlov@gmail.com>
+In-Reply-To: <20200505125836.18081-1-r.czerwinski@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,58 +22,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] MIPS: dlink-dir-320: remove useless board file
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH] ARM: i.MX: configurable Super Root Key index
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, May 05, 2020 at 03:36:10PM +0300, Antony Pavlov wrote:
-> The board file calls only barebox_set_hostname().
-> Since we can extract host name from devicetree,
-> we can drop board file.
+On Tue, May 05, 2020 at 02:58:36PM +0200, Rouven Czerwinski wrote:
+> Allow the configuration of the Super Root Key Index, to let the user
+> select another key if a previous key has been revoked.
 > 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 > ---
->  arch/mips/boards/dlink-dir-320/Makefile |  1 -
->  arch/mips/boards/dlink-dir-320/board.c  | 15 ---------------
->  2 files changed, 16 deletions(-)
+>  arch/arm/mach-imx/Kconfig                          | 10 ++++++++++
+>  arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h |  2 +-
+>  arch/arm/mach-imx/include/mach/habv4-imx8-gencsf.h |  2 +-
+>  3 files changed, 12 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+> index 072c659008..6dd5cb2aca 100644
+> --- a/arch/arm/mach-imx/Kconfig
+> +++ b/arch/arm/mach-imx/Kconfig
+> @@ -845,6 +845,16 @@ config HAB_CERTS_ENV
+>  	  CONFIG_HABV4_CSF_CRT_PEM
+>  	  CONFIG_HABV4_IMG_CRT_PEM
+>  
+> +config HABV4_SRK_INDEX
+> +	depends on HABV4
+> +	int "SRK index"
+> +	default 0
+> +	help
+> +	  Select the Super Root Key used in the Command Sequence File to sign
+> +	  the CSF binary. This should only be changed if a previous key was
+> +	  revoked and another key needs to be used. For HABV4 the Index is in
+> +	  the range from 0 to 3.
 
-Applied, thanks
+Applied this time, but I hope that we won't get many more of these
+policy encoding defines in habv4-imx6-gencsf.h.
 
 Sascha
 
-> 
-> diff --git a/arch/mips/boards/dlink-dir-320/Makefile b/arch/mips/boards/dlink-dir-320/Makefile
-> index 01c7a259e9..b08c4a93ca 100644
-> --- a/arch/mips/boards/dlink-dir-320/Makefile
-> +++ b/arch/mips/boards/dlink-dir-320/Makefile
-> @@ -1,2 +1 @@
-> -obj-y += board.o
->  lwl-y += lowlevel.o
-> diff --git a/arch/mips/boards/dlink-dir-320/board.c b/arch/mips/boards/dlink-dir-320/board.c
-> deleted file mode 100644
-> index b75812cefe..0000000000
-> --- a/arch/mips/boards/dlink-dir-320/board.c
-> +++ /dev/null
-> @@ -1,15 +0,0 @@
-> -// SPDX-License-Identifier: GPL-2.0-only
-> -/*
-> - * Copyright (C) 2011, 2014 Antony Pavlov <antonynpavlov@gmail.com>
-> - */
-> -
-> -#include <common.h>
-> -#include <init.h>
-> -
-> -static int dir320_console_init(void)
-> -{
-> -	barebox_set_hostname("dir320");
-> -
-> -	return 0;
-> -}
-> -console_initcall(dir320_console_init);
-> -- 
-> 2.25.0
-> 
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
