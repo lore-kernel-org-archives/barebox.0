@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from zimbra2.kalray.eu ([92.103.151.219])
+Received: from conuserg-12.nifty.com ([210.131.2.79])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jX6Qd-0007vr-P6
- for barebox@lists.infradead.org; Fri, 08 May 2020 17:04:53 +0000
-From: Clement Leger <cleger@kalray.eu>
-Date: Fri,  8 May 2020 19:04:05 +0200
-Message-Id: <20200508170411.26841-2-cleger@kalray.eu>
-In-Reply-To: <20200508170411.26841-1-cleger@kalray.eu>
-References: <20200508170411.26841-1-cleger@kalray.eu>
+ id 1jXFlc-0001VG-Eu
+ for barebox@lists.infradead.org; Sat, 09 May 2020 03:03:10 +0000
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Sat,  9 May 2020 12:02:39 +0900
+Message-Id: <20200509030239.835689-2-masahiroy@kernel.org>
+In-Reply-To: <20200509030239.835689-1-masahiroy@kernel.org>
+References: <20200509030239.835689-1-masahiroy@kernel.org>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,73 +17,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 1/7] common: elf: add computation of elf boundaries
-To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
-Cc: Clement Leger <cleger@kalray.eu>, Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: [PATCH 2/2] kbuild: add -Wall to KBUILD_HOSTCXXFLAGS
+To: barebox@lists.infradead.org
+Cc: Masahiro Yamada <masahiroy@kernel.org>
 
-In order to correctly load an initrd or a device tree after an elf file,
-we need to know its boundaries. This commit adds support for that and
-allow the bootm implementations to use it for memory loading.
+[ Linux commit 735aab1e008b6d9ba8057caa647b6619bf73460f ]
 
-Signed-off-by: Clement Leger <cleger@kalray.eu>
+Add -Wall to catch more warnings for C++ host programs.
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 ---
- common/elf.c  | 7 +++++++
- include/elf.h | 7 +++++++
- 2 files changed, 14 insertions(+)
 
-diff --git a/common/elf.c b/common/elf.c
-index 4733accb0..d64de401c 100644
---- a/common/elf.c
-+++ b/common/elf.c
-@@ -59,6 +59,11 @@ static int load_elf_phdr_segment(struct elf_image *elf, void *src,
- 	if (!p_filesz)
- 		return 0;
- 
-+	if (dst < elf->low_addr)
-+		elf->low_addr = dst;
-+	if (dst + p_memsz > elf->high_addr)
-+		elf->high_addr = dst + p_memsz;
-+
- 	pr_debug("Loading phdr to 0x%p (%llu bytes)\n", dst, p_filesz);
- 
- 	ret = elf_request_region(elf, (resource_size_t)dst, p_filesz);
-@@ -124,6 +129,8 @@ struct elf_image *elf_load_image(void *buf)
- 	INIT_LIST_HEAD(&elf->list);
- 
- 	elf->buf = buf;
-+	elf->low_addr = (void *) (unsigned long) -1;
-+	elf->high_addr = 0;
- 
- 	ret = elf_check_image(elf);
- 	if (ret)
-diff --git a/include/elf.h b/include/elf.h
-index 113728f08..403412f3f 100644
---- a/include/elf.h
-+++ b/include/elf.h
-@@ -403,9 +403,16 @@ struct elf_image {
- 	struct list_head list;
- 	u8 class;
- 	u64 entry;
-+	void *low_addr;
-+	void *high_addr;
- 	void *buf;
- };
- 
-+static inline size_t elf_get_mem_size(struct elf_image *elf)
-+{
-+	return elf->high_addr - elf->low_addr;
-+}
-+
- struct elf_image *elf_load_image(void *buf);
- void elf_release_image(struct elf_image *elf);
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index a732e24d3..be9f2a211 100644
+--- a/Makefile
++++ b/Makefile
+@@ -198,7 +198,7 @@ HOSTCXX      = g++
+ KBUILD_HOSTCFLAGS   := -Wall -Wstrict-prototypes -O2 \
+ 		-fomit-frame-pointer $(HOST_LFS_CFLAGS) \
+ 		$(HOSTCFLAGS)
+-KBUILD_HOSTCXXFLAGS := -O2 $(HOST_LFS_CFLAGS) $(HOSTCXXFLAGS)
++KBUILD_HOSTCXXFLAGS := -Wall -O2 $(HOST_LFS_CFLAGS) $(HOSTCXXFLAGS)
+ KBUILD_HOSTLDFLAGS  := $(HOST_LFS_LDFLAGS) $(HOSTLDFLAGS)
+ KBUILD_HOSTLDLIBS   := $(HOST_LFS_LIBS) $(HOSTLDLIBS)
  
 -- 
-2.17.1
+2.25.1
 
 
 _______________________________________________
