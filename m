@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from conuserg-07.nifty.com ([210.131.2.74])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jXFtI-0007AS-V5
- for barebox@lists.infradead.org; Sat, 09 May 2020 03:11:06 +0000
+ id 1jXFuF-0007P1-OT
+ for barebox@lists.infradead.org; Sat, 09 May 2020 03:12:05 +0000
 From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Sat,  9 May 2020 12:10:34 +0900
-Message-Id: <20200509031034.836438-1-masahiroy@kernel.org>
+Date: Sat,  9 May 2020 12:11:33 +0900
+Message-Id: <20200509031133.836743-1-masahiroy@kernel.org>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,7 +19,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] module.h: split out the EXPORT_SYMBOL into export.h
+Subject: [PATCH v2] module.h: split out the EXPORT_SYMBOL into export.h
 To: barebox@lists.infradead.org
 Cc: Masahiro Yamada <masahiroy@kernel.org>
 
@@ -28,20 +28,25 @@ Do as Linux commit f50169324df4ad942e544386d136216c8617636a
 Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 ---
 
- include/linux/export.h | 37 +++++++++++++++++++++++++++++++++++++
+Changes in v2:
+  - move THIS_MODULE
+
+ include/linux/export.h | 39 +++++++++++++++++++++++++++++++++++++++
  include/module.h       | 28 +---------------------------
- 2 files changed, 38 insertions(+), 27 deletions(-)
+ 2 files changed, 40 insertions(+), 27 deletions(-)
  create mode 100644 include/linux/export.h
 
 diff --git a/include/linux/export.h b/include/linux/export.h
 new file mode 100644
-index 000000000..55640a2c6
+index 000000000..88d318bd8
 --- /dev/null
 +++ b/include/linux/export.h
-@@ -0,0 +1,37 @@
+@@ -0,0 +1,39 @@
 +/* SPDX-License-Identifier: GPL-2.0-only */
 +#ifndef _LINUX_EXPORT_H
 +#define _LINUX_EXPORT_H
++
++#define THIS_MODULE	0
 +
 +#ifdef CONFIG_MODULES
 +
