@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jYNiN-0006rP-Cu
- for barebox@lists.infradead.org; Tue, 12 May 2020 05:44:28 +0000
-References: <20200511165038.22358-1-l.stach@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <b32681af-54e2-6b97-2d89-69d3402f125c@pengutronix.de>
-Date: Tue, 12 May 2020 07:44:25 +0200
+ id 1jXSgy-0008V1-Bh
+ for barebox@lists.infradead.org; Sat, 09 May 2020 16:51:13 +0000
+Date: Sat, 9 May 2020 18:51:10 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Message-ID: <20200509165110.bl5xsqcpqckvqay6@pengutronix.de>
+References: <20200508170411.26841-1-cleger@kalray.eu>
+ <20200509145142.roleuli4nuccngfz@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20200511165038.22358-1-l.stach@pengutronix.de>
-Content-Language: en-US
+In-Reply-To: <20200509145142.roleuli4nuccngfz@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,63 +18,151 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============2452711013496826182=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net: designware: eqos: attach PHY earlier
-To: Lucas Stach <l.stach@pengutronix.de>, barebox@lists.infradead.org
+Subject: Re: [PATCH v4 0/7] elf: add better bootm support
+To: Clement Leger <cleger@kalray.eu>
+Cc: barebox@lists.infradead.org
 
-On 5/11/20 6:50 PM, Lucas Stach wrote:
-> If the PHY isn't driving the refclock, the software reset of the
-> controller will time out. Some PHYs need some board specific
-> configuration to properly drive the reflock. Attach the PHY before
-> attempting the software reset, so PHY fixups have a chance to run.
-Tested-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-> 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> ---
->  drivers/net/designware_eqos.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/net/designware_eqos.c b/drivers/net/designware_eqos.c
-> index cb52f3942d86..d2baaeaf6372 100644
-> --- a/drivers/net/designware_eqos.c
-> +++ b/drivers/net/designware_eqos.c
-> @@ -360,6 +360,11 @@ static int eqos_start(struct eth_device *edev)
->  	int ret;
->  	int i;
->  
-> +	ret = phy_device_connect(edev, &eqos->miibus, eqos->phy_addr,
-> +				 eqos->ops->adjust_link, 0, eqos->interface);
-> +	if (ret)
-> +		return ret;
-> +
->  	setbits_le32(&eqos->dma_regs->mode, EQOS_DMA_MODE_SWR);
->  
->  	ret = readl_poll_timeout(&eqos->dma_regs->mode, mode_set,
-> @@ -379,11 +384,6 @@ static int eqos_start(struct eth_device *edev)
->  	val = (rate / USEC_PER_SEC) - 1; /* -1 because the data sheet says so */
->  	writel(val, &eqos->mac_regs->us_tic_counter);
->  
-> -	ret = phy_device_connect(edev, &eqos->miibus, eqos->phy_addr,
-> -				 eqos->ops->adjust_link, 0, eqos->interface);
-> -	if (ret)
-> -		return ret;
-> -
->  	/* Before we reset the mac, we must insure the PHY is not powered down
->  	 * as the dw controller needs all clock domains to be running, including
->  	 * the PHY clock, to come out of a mac reset.  */
-> 
+--===============2452711013496826182==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="tfb3bnwjvow4yg26"
+Content-Disposition: inline
 
--- 
+
+--tfb3bnwjvow4yg26
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Sat, May 09, 2020 at 04:51:42PM +0200, Oleksij Rempel wrote:
+> Hi Clement,
+>=20
+> suddenly it is still exploding. I'll try to investigate the reason.
+
+common/elf.c:
+  load_elf_image_phdr()
+    elf_hdr_e_phnum() <-- returns 0
+    for (i =3D 0; i < elf_hdr_e_phnum(elf, buf) ; ++i) {
+      ... so we will never get here.
+
+Probably we should add a sanity check here and be more verbose in this
+case.
+
+here is my elf image:
+https://github.com/olerem/barebox/blob/new-elf/ore-linux-dpt-module
+
+> On Fri, May 08, 2020 at 07:04:04PM +0200, Clement Leger wrote:
+> > Currently, when booting an elf file using "bootm /dev/mtdx", bootm will
+> > simply pass the file to the bootm and the read done on it will read the
+> > entire flash partition. This series starts by some cleanup and then add=
+ an
+> > elf_open function to load the elf file size only based on the elf heade=
+r.
+> > A special handling for the elf file is also added in bootm data to allow
+> > using directly the elf file structure. Finally the mips bootm is modifi=
+ed
+> > to use bootm_load_os directly instead of manual elf loading.
+> >=20
+> > Compilation for both mips and arm has been tested but run on qemu-malta=
+ was not
+> > possible. Changing the MALLOC_SIZE to allow loading a kernel always lea=
+d to a=20
+> > non-bootable system. Changes have been tested on kvx architecture for w=
+hich
+> > bootm support has been added and will be submitted.
+> >=20
+> > Changes v3 -> v4
+> >  - Fix init of elf entry address to be used by bootm_load_elf
+> >=20
+> > Changes v2 -> v3
+> >  - Integrate elf loading in bootm_load_os
+> >  - Add patch to remove now unused elf_load_image/elf_release_image
+> >  - Use malloc instead of xmalloc and check return value
+> >=20
+> > Changes v1 -> v2
+> >  - Add BOOTM_ELF config to select elf support and add checks in code
+> >  - Add an elf_get_mem_size function to avoid computing elf size in boot=
+m.c
+> >  - Use xmalloc and read_full in elf_open instead of xzalloc/read
+> >  - Fix data->elf NULL reset
+> >  - Remove elf struct entirely from mips bootm code
+> >=20
+> > Clement Leger (7):
+> >   common: elf: add computation of elf boundaries
+> >   common: elf: fix warning on 32 bits architectures
+> >   common: elf: split init to be reused from other function
+> >   common: elf: add elf_open, elf_close and elf_load
+> >   common: bootm: add support for elf file loading
+> >   mips: lib: bootm: use bootm elf loading capabilities
+> >   common: elf: remove elf_load_image/elf_release_image
+> >=20
+> >  arch/mips/lib/bootm.c |  31 +++++-------
+> >  common/Kconfig        |   8 +++
+> >  common/bootm.c        |  33 +++++++++++++
+> >  common/elf.c          | 111 +++++++++++++++++++++++++++++++++++-------
+> >  include/bootm.h       |   3 ++
+> >  include/elf.h         |  16 +++++-
+> >  6 files changed, 163 insertions(+), 39 deletions(-)
+> >=20
+> > --=20
+> > 2.17.1
+> >=20
+> >=20
+> > _______________________________________________
+> > barebox mailing list
+> > barebox@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/barebox
+> >=20
+>=20
+> --=20
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+
+
+--=20
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
+--tfb3bnwjvow4yg26
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEERBNZvwSgvmcMY/T74omh9DUaUbMFAl6233kACgkQ4omh9DUa
+UbMwUxAAkDsHifk580GEEcAS523pvZT/AY4weWIxPljj/1go5X0gbK1kCDgwXKWV
+PvMyYQAsIzXjciJyH2e5zNrzDOJKx+LJGy8McxM9w/NcVcIxnYiCy3QR/9B3rkAO
+SyHLJXD2WQcBn9eXcIHnh8MzY3PUJzv3Xh669E6Ks/o0YyYbBgrx9QP8E2pN8ZmI
+W+7eM+vCqukoDph7H1drxxp/ipOpL4bqat+rqjzkz4H/UXrhVrL8zyAYuZTbKbRt
+XDCLS42fLSmkPfS+mgZ1RNWdgQokHc5mYFYqus1aQKYCWgy3oquqoJXqnyr/ZlJT
+8mTxCpfSnIlcnn/iShaHuxFZRCsijdyBbmq41TqNBFlUqV313riC1bKwxQVvYJRY
+GwuLJTt1JBMl7EnxYzQutsBRvthVTNCXUSS5hRdp1/aIVcWI/5zsFrQHWmWX2zoy
+iCIw6KXhaohBbVxS+QwqkHz4dpCYGEIcQpXTVzWRzWYnMKyebuKoXmC47fZRlUBH
+LJQEXKetllgmJPbpOnPgXZxOyDJlAK9N15aXYSrLbt+MMQc7eSCiovBjB3gAeFQ5
+LW7xD1i78jplyJKZYGVNZ8NmGPiNIeIg/AhZquSFvl19ahesJpufK6pYvHAMhLDj
+NoE0YhRqiHnr0SUH/iKqiuRbV/Mtt6Xj8X3wlfwQPXI1t79QgeQ=
+=l3kr
+-----END PGP SIGNATURE-----
+
+--tfb3bnwjvow4yg26--
+
+
+--===============2452711013496826182==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============2452711013496826182==--
