@@ -1,25 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from dedi548.your-server.de ([85.10.215.148])
+Received: from conuserg-07.nifty.com ([210.131.2.74])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jYARa-0007CH-Da
- for barebox@lists.infradead.org; Mon, 11 May 2020 15:34:15 +0000
-Received: from sslproxy02.your-server.de ([78.47.166.47])
- by dedi548.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
- (Exim 4.89_1) (envelope-from <christian.mauderer@embedded-brains.de>)
- id 1jYARU-0006JV-Vy
- for barebox@lists.infradead.org; Mon, 11 May 2020 17:34:08 +0200
-Received: from [82.100.198.138] (helo=mail.embedded-brains.de)
- by sslproxy02.your-server.de with esmtpsa
- (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256) (Exim 4.92)
- (envelope-from <christian.mauderer@embedded-brains.de>)
- id 1jYARU-000AGx-T9
- for barebox@lists.infradead.org; Mon, 11 May 2020 17:34:08 +0200
-Received: from localhost (localhost.localhost [127.0.0.1])
- by mail.embedded-brains.de (Postfix) with ESMTP id 014A12A1682
- for <barebox@lists.infradead.org>; Mon, 11 May 2020 17:34:13 +0200 (CEST)
-From: Christian Mauderer <christian.mauderer@embedded-brains.de>
-Date: Mon, 11 May 2020 17:33:52 +0200
-Message-Id: <20200511153352.7121-1-christian.mauderer@embedded-brains.de>
+ id 1jXFtI-0007AS-V5
+ for barebox@lists.infradead.org; Sat, 09 May 2020 03:11:06 +0000
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Sat,  9 May 2020 12:10:34 +0900
+Message-Id: <20200509031034.836438-1-masahiroy@kernel.org>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -33,37 +19,124 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] scripts: imd: Fix missing argument for open
+Subject: [PATCH] module.h: split out the EXPORT_SYMBOL into export.h
 To: barebox@lists.infradead.org
+Cc: Masahiro Yamada <masahiroy@kernel.org>
 
-According to POSIX open needs a third argument if O_CREAT is specified:
+Do as Linux commit f50169324df4ad942e544386d136216c8617636a
 
->  O_CREAT  If  the  file exists, this flag has no effect.
->           Otherwise, the file shall be created; [...] and the access
->           permission bits (see <sys/stat.h>) of the file  mode shall
->           be set to the value of the argument following the oflag
->           argument taken as type mode_t modified as follows [...]
-
-Signed-off-by: Christian Mauderer <christian.mauderer@embedded-brains.de>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 ---
- scripts/bareboximd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/bareboximd.c b/scripts/bareboximd.c
-index e5000e0ae..b332d435a 100644
---- a/scripts/bareboximd.c
-+++ b/scripts/bareboximd.c
-@@ -59,7 +59,7 @@ static int write_file(const char *filename, const void *buf, size_t size)
- 	int fd, ret;
- 	int now;
+ include/linux/export.h | 37 +++++++++++++++++++++++++++++++++++++
+ include/module.h       | 28 +---------------------------
+ 2 files changed, 38 insertions(+), 27 deletions(-)
+ create mode 100644 include/linux/export.h
+
+diff --git a/include/linux/export.h b/include/linux/export.h
+new file mode 100644
+index 000000000..55640a2c6
+--- /dev/null
++++ b/include/linux/export.h
+@@ -0,0 +1,37 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef _LINUX_EXPORT_H
++#define _LINUX_EXPORT_H
++
++#ifdef CONFIG_MODULES
++
++struct kernel_symbol
++{
++	unsigned long value;
++	const char *name;
++};
++
++/* For every exported symbol, place a struct in the __ksymtab section */
++#define __EXPORT_SYMBOL(sym, sec)				\
++	extern typeof(sym) sym;					\
++	static const char __ustrtab_##sym[]			\
++	__attribute__((section("__usymtab_strings")))		\
++	= MODULE_SYMBOL_PREFIX #sym;                    	\
++	static const struct kernel_symbol __usymtab_##sym	\
++	__used \
++	__attribute__((section("__usymtab" sec), unused))	\
++	= { (unsigned long)&sym, __ustrtab_##sym }
++
++#define EXPORT_SYMBOL(sym)					\
++	__EXPORT_SYMBOL(sym, "")
++
++#define EXPORT_SYMBOL_GPL(sym)					\
++	__EXPORT_SYMBOL(sym, "")
++
++#else
++
++#define EXPORT_SYMBOL(sym)
++#define EXPORT_SYMBOL_GPL(sym)
++
++#endif /* CONFIG_MODULES */
++
++#endif /* _LINUX_EXPORT_H */
+diff --git a/include/module.h b/include/module.h
+index abf740a78..cea8c2e18 100644
+--- a/include/module.h
++++ b/include/module.h
+@@ -4,6 +4,7 @@
  
--	fd = open(filename, O_WRONLY | O_TRUNC | O_CREAT);
-+	fd = open(filename, O_WRONLY | O_TRUNC | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
- 	if (fd < 0)
- 		return fd;
+ #include <elf.h>
+ #include <linux/compiler.h>
++#include <linux/export.h>
+ #include <linux/list.h>
  
+ #ifndef MODULE_SYMBOL_PREFIX
+@@ -11,36 +12,12 @@
+ #endif
+ 
+ #define MODULE_NAME_LEN (64 - sizeof(unsigned long))
+-#define THIS_MODULE	0
+ 
+ #ifdef CONFIG_MODULES
+ #include <asm/module.h>
+ 
+-struct kernel_symbol
+-{
+-	unsigned long value;
+-	const char *name;
+-};
+-
+ struct module * load_module(void *mod_image, unsigned long len);
+ 
+-/* For every exported symbol, place a struct in the __ksymtab section */
+-#define __EXPORT_SYMBOL(sym, sec)				\
+-	extern typeof(sym) sym;					\
+-	static const char __ustrtab_##sym[]			\
+-	__attribute__((section("__usymtab_strings")))		\
+-	= MODULE_SYMBOL_PREFIX #sym;                    	\
+-	static const struct kernel_symbol __usymtab_##sym	\
+-	__used \
+-	__attribute__((section("__usymtab" sec), unused))	\
+-	= { (unsigned long)&sym, __ustrtab_##sym }
+-
+-#define EXPORT_SYMBOL(sym)					\
+-	__EXPORT_SYMBOL(sym, "")
+-
+-#define EXPORT_SYMBOL_GPL(sym)					\
+-	__EXPORT_SYMBOL(sym, "")
+-
+ struct module {
+ 	/* Unique handle for this module */
+ 	char name[MODULE_NAME_LEN];
+@@ -74,9 +51,6 @@ int apply_relocate_add(Elf_Shdr *sechdrs,
+ 		       unsigned int symindex,
+ 		       unsigned int relsec,
+ 		       struct module *mod);
+-#else
+-#define EXPORT_SYMBOL(sym)
+-#define EXPORT_SYMBOL_GPL(sym)
+ #endif /* CONFIG_MODULES */
+ 
+ extern struct list_head module_list;
 -- 
-2.26.1
+2.25.1
 
 
 _______________________________________________
