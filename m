@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jXdcu-0003uS-J5
- for barebox@lists.infradead.org; Sun, 10 May 2020 04:31:46 +0000
-Date: Sun, 10 May 2020 06:31:41 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Message-ID: <20200510043141.377gvmlruxwsggrm@pengutronix.de>
+ id 1jXkBF-0007xa-6d
+ for barebox@lists.infradead.org; Sun, 10 May 2020 11:31:39 +0000
+Date: Sun, 10 May 2020 13:31:31 +0200 (CEST)
+From: =?utf-8?Q?Cl=C3=A9ment?= Leger <cleger@kalray.eu>
+Message-ID: <479337908.1774429.1589110291429.JavaMail.zimbra@kalray.eu>
+In-Reply-To: <20200510043141.377gvmlruxwsggrm@pengutronix.de>
 References: <20200508170411.26841-1-cleger@kalray.eu>
  <20200509145142.roleuli4nuccngfz@pengutronix.de>
  <20200509165110.bl5xsqcpqckvqay6@pengutronix.de>
  <773934153.1746354.1589052295027.JavaMail.zimbra@kalray.eu>
+ <20200510043141.377gvmlruxwsggrm@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <773934153.1746354.1589052295027.JavaMail.zimbra@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,213 +21,133 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1574288216884462571=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v4 0/7] elf: add better bootm support
-To: =?utf-8?Q?Cl=C3=A9ment?= Leger <cleger@kalray.eu>
+To: Oleksij Rempel <o.rempel@pengutronix.de>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-
---===============1574288216884462571==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="vjgo6pie42or6nyw"
-Content-Disposition: inline
-
-
---vjgo6pie42or6nyw
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi Clement,
-
-just in case it makes a difference. I load this file over tftp (boot
-net)
-
-On Sat, May 09, 2020 at 09:24:55PM +0200, Cl=C3=A9ment Leger wrote:
-> Hi Oleksij,
->=20
-> ----- On 9 May, 2020, at 18:51, Oleksij Rempel o.rempel@pengutronix.de wr=
-ote:
->=20
-> > On Sat, May 09, 2020 at 04:51:42PM +0200, Oleksij Rempel wrote:
-> >> Hi Clement,
-> >>=20
-> >> suddenly it is still exploding. I'll try to investigate the reason.
-> >=20
-> > common/elf.c:
-> >  load_elf_image_phdr()
-> >    elf_hdr_e_phnum() <-- returns 0
-> >    for (i =3D 0; i < elf_hdr_e_phnum(elf, buf) ; ++i) {
-> >      ... so we will never get here.
-> >=20
-> > Probably we should add a sanity check here and be more verbose in this
-> > case.
->=20
-> There is something odd because your elf is correct and has 2 program
-> headers. So this should not be a problem (but a sanity check makes
-> sense !).
->=20
-> I suspect that the elf size computation is wrong with your elf file
-> and leads to incompletely loaded elf file but I tried to compute
-> it using the sequence of code used in barebox and everything seems ok.
-> Maybe there is something with the endianess/elfclass going wrong.
-> I tried again on kvx to be sure I did not made a mistake but it works
-> and the elf entry address is correctly used.
-> I'll try to add handling for different endianess and load your elf
-> file on kvx to debug that.
->=20
-> >=20
-> > here is my elf image:
-> > https://github.com/olerem/barebox/blob/new-elf/ore-linux-dpt-module
->=20
-> I succeeded in building Distrokit images but I can't get it under barebox.
-> There is only 4M oof RAM and each time I tries to modify it, it won't boot
-> anymore.
-> I tried integrating the kernel (and your eore-linux-dpt-module elf) in
-> the environment but it also won't boot. Do you have any idea on how to
-> do it ?
-> Even if the kernel won't start under qemu , at least I'll be able to
-> understand what is wrong.
->=20
-> Thanks for testing,
->=20
-> Cl=C3=A9ment
->=20
-> >=20
-> >> On Fri, May 08, 2020 at 07:04:04PM +0200, Clement Leger wrote:
-> >> > Currently, when booting an elf file using "bootm /dev/mtdx", bootm w=
-ill
-> >> > simply pass the file to the bootm and the read done on it will read =
-the
-> >> > entire flash partition. This series starts by some cleanup and then =
-add an
-> >> > elf_open function to load the elf file size only based on the elf he=
-ader.
-> >> > A special handling for the elf file is also added in bootm data to a=
-llow
-> >> > using directly the elf file structure. Finally the mips bootm is mod=
-ified
-> >> > to use bootm_load_os directly instead of manual elf loading.
-> >> >=20
-> >> > Compilation for both mips and arm has been tested but run on qemu-ma=
-lta was not
-> >> > possible. Changing the MALLOC_SIZE to allow loading a kernel always =
-lead to a
-> >> > non-bootable system. Changes have been tested on kvx architecture fo=
-r which
-> >> > bootm support has been added and will be submitted.
-> >> >=20
-> >> > Changes v3 -> v4
-> >> >  - Fix init of elf entry address to be used by bootm_load_elf
-> >> >=20
-> >> > Changes v2 -> v3
-> >> >  - Integrate elf loading in bootm_load_os
-> >> >  - Add patch to remove now unused elf_load_image/elf_release_image
-> >> >  - Use malloc instead of xmalloc and check return value
-> >> >=20
-> >> > Changes v1 -> v2
-> >> >  - Add BOOTM_ELF config to select elf support and add checks in code
-> >> >  - Add an elf_get_mem_size function to avoid computing elf size in b=
-ootm.c
-> >> >  - Use xmalloc and read_full in elf_open instead of xzalloc/read
-> >> >  - Fix data->elf NULL reset
-> >> >  - Remove elf struct entirely from mips bootm code
-> >> >=20
-> >> > Clement Leger (7):
-> >> >   common: elf: add computation of elf boundaries
-> >> >   common: elf: fix warning on 32 bits architectures
-> >> >   common: elf: split init to be reused from other function
-> >> >   common: elf: add elf_open, elf_close and elf_load
-> >> >   common: bootm: add support for elf file loading
-> >> >   mips: lib: bootm: use bootm elf loading capabilities
-> >> >   common: elf: remove elf_load_image/elf_release_image
-> >> >=20
-> >> >  arch/mips/lib/bootm.c |  31 +++++-------
-> >> >  common/Kconfig        |   8 +++
-> >> >  common/bootm.c        |  33 +++++++++++++
-> >> >  common/elf.c          | 111 +++++++++++++++++++++++++++++++++++----=
----
-> >> >  include/bootm.h       |   3 ++
-> >> >  include/elf.h         |  16 +++++-
-> >> >  6 files changed, 163 insertions(+), 39 deletions(-)
-> >> >=20
-> >> > --
-> >> > 2.17.1
-> >> >=20
-> >> >=20
-> >> > _______________________________________________
-> >> > barebox mailing list
-> >> > barebox@lists.infradead.org
-> >> > http://lists.infradead.org/mailman/listinfo/barebox
-> >> >=20
-> >>=20
-> >> --
-> >> Pengutronix e.K.                           |                          =
-   |
-> >> Steuerwalder Str. 21                       | http://www.pengutronix.de=
-/  |
-> >> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0 =
-   |
-> >> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-55=
-55 |
-> >=20
-> >=20
-> >=20
-> > --
-> > Pengutronix e.K.                           |                           =
-  |
-> > Steuerwalder Str. 21                       | http://www.pengutronix.de/=
-  |
-> > 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0  =
-  |
-> > Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-555=
-5 |
->=20
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
---=20
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
---vjgo6pie42or6nyw
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEERBNZvwSgvmcMY/T74omh9DUaUbMFAl63g6kACgkQ4omh9DUa
-UbP7Eg//XipmtBhEN/ilKMBWaxaiiITVUaGUcLIjB3xcWDTaSfITC1ne6luV31tI
-kCZrHXxz9CmbDjOqPIa+rcO2Ks5ViEhazhV5RD/Ra0LyHEkw1JrNxa+4itjv/aNS
-h1kxOi1cPNAlEGjFqwil0XQILSVwZflwwKkO8Cb+M2aiGL5GcTS4r2eAd1qCDdeB
-0z/QlP5/KmHjKoY8nMQY7OXnYU6bbpbRg15Y+dw8uSULVMU+zf/SSxdKQYeldPeK
-pEIWvayENVTcRvTrbmniD7AEsjd7zQuwKSR0NkYCEZnP/Xv+9Nf2RZtJBsNRezHy
-R7T56U4yeHrm+GTGNsUta6ZETcwNTz4gXmzLnrrPKJMGzSKo/BfSD3a8lCkB37Pn
-03YBuKgzwk/P32p7t7nHmLBVXvl5GweAQo4jBasGV9RnKSTFLQWFyl2geB4A5kFc
-6jvLZ1A5vC2Cps4PWA3gJy3qfpZDkYAAFQexO3vcSp0/qM3AXgKdWfbuUC5IjPTN
-KdRgrIBuOaojGD+vFOV+miAS73kq5iwptsXJoI4dEMX9eUp6KwthRUcChqigScP+
-qA9+dfqd4Ecao+trkwIT1j625xbiM+Poo9PuDmvUxibo7NgbbqA3J19DNOzVwtIP
-x8x9PaEytGBGrKKBdFaqxsHoEaKjKBT42brWVh1ZXJBDRLx8x7g=
-=idC9
------END PGP SIGNATURE-----
-
---vjgo6pie42or6nyw--
-
-
---===============1574288216884462571==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
-
---===============1574288216884462571==--
+SGkgT2xla3NpaiwKCi0tLS0tIE9uIDEwIE1heSwgMjAyMCwgYXQgMDY6MzEsIE9sZWtzaWogUmVt
+cGVsIG8ucmVtcGVsQHBlbmd1dHJvbml4LmRlIHdyb3RlOgoKPiBIaSBDbGVtZW50LAo+IAo+IGp1
+c3QgaW4gY2FzZSBpdCBtYWtlcyBhIGRpZmZlcmVuY2UuIEkgbG9hZCB0aGlzIGZpbGUgb3ZlciB0
+ZnRwIChib290Cj4gbmV0KQoKSSBtYW5hZ2UgdG8gbG9hZCB5b3VyIGVsZiBmaWxlIG9uIGt2eCB1
+c2luZyBib290bSAoSSBkbyBub3QgaGF2ZSBuZXQgYm9vdCkKYW5kIGhlcmUgaXMgd2hhdCBJIGdl
+dDoKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkJvYXJkOiBL
+T05JQyAyMDAgKEsyMDApCm1hbGxvYyBzcGFjZTogMHgxMTAzMDYwNTAgLT4gMHgyMDAwMDAwMDAg
+KHNpemUgMy43IEdpQikKZXhwb3J0OiBObyBzdWNoIGZpbGUgb3IgZGlyZWN0b3J5CgpIaXQgYW55
+IHRvIHN0b3AgYXV0b2Jvb3Q6ICAgIDMKYmFyZWJveDovIGJvb3RtIGVudi9vcmUtbGludXgtZHB0
+LW1vZHVsZSAKRW50cnkgUG9pbnQ6ICA4MDk4MDAwMAoKTG9hZGluZyBFTEYgJ2Vudi9vcmUtbGlu
+dXgtZHB0LW1vZHVsZScKTG9hZGluZyBwaGRyIHRvIDB4MDAwMDAwMDA4MDk4MDAwMCAoMjc0MDQx
+NiBieXRlcykKLi4uCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+CgpTbyBvbmUgc2VnbWVudCBpcyBsb2FkZWQgd2hpY2ggaXMgY29ycmVjdCBhY2NvcmRpbmcgdG8g
+cmVhZGVsZi4KZWxmIGZpbGUgaXMgY29ycmVjdCBhbmQgY2FuIGJlIGxvYWRlZCB1c2luZyBib290
+bS4KCkNvdWxkIHlvdSB0cnkgbG9hZGluZyBpdCB1c2luZyBib290bSBkaXJlY3RseSA/ClRoaXMg
+d2lsbCBjb25maXJtIGlmIGl0J3MgcmVsYXRlZCB0byBuZXQgYm9vdCBvciBub3QgKGFsdGhvdWdo
+IEkgZG9uJ3QKa25vdyB3aGF0IGFyZSB0aGUgdW5kZXJseWluZyBkaWZmZXJlbmNlcykuCgpUaGFu
+a3MsCgpDbMOpbWVudAoKPiAKPiBPbiBTYXQsIE1heSAwOSwgMjAyMCBhdCAwOToyNDo1NVBNICsw
+MjAwLCBDbMOpbWVudCBMZWdlciB3cm90ZToKPj4gSGkgT2xla3NpaiwKPj4gCj4+IC0tLS0tIE9u
+IDkgTWF5LCAyMDIwLCBhdCAxODo1MSwgT2xla3NpaiBSZW1wZWwgby5yZW1wZWxAcGVuZ3V0cm9u
+aXguZGUgd3JvdGU6Cj4+IAo+PiA+IE9uIFNhdCwgTWF5IDA5LCAyMDIwIGF0IDA0OjUxOjQyUE0g
+KzAyMDAsIE9sZWtzaWogUmVtcGVsIHdyb3RlOgo+PiA+PiBIaSBDbGVtZW50LAo+PiA+PiAKPj4g
+Pj4gc3VkZGVubHkgaXQgaXMgc3RpbGwgZXhwbG9kaW5nLiBJJ2xsIHRyeSB0byBpbnZlc3RpZ2F0
+ZSB0aGUgcmVhc29uLgo+PiA+IAo+PiA+IGNvbW1vbi9lbGYuYzoKPj4gPiAgbG9hZF9lbGZfaW1h
+Z2VfcGhkcigpCj4+ID4gICAgZWxmX2hkcl9lX3BobnVtKCkgPC0tIHJldHVybnMgMAo+PiA+ICAg
+IGZvciAoaSA9IDA7IGkgPCBlbGZfaGRyX2VfcGhudW0oZWxmLCBidWYpIDsgKytpKSB7Cj4+ID4g
+ICAgICAuLi4gc28gd2Ugd2lsbCBuZXZlciBnZXQgaGVyZS4KPj4gPiAKPj4gPiBQcm9iYWJseSB3
+ZSBzaG91bGQgYWRkIGEgc2FuaXR5IGNoZWNrIGhlcmUgYW5kIGJlIG1vcmUgdmVyYm9zZSBpbiB0
+aGlzCj4+ID4gY2FzZS4KPj4gCj4+IFRoZXJlIGlzIHNvbWV0aGluZyBvZGQgYmVjYXVzZSB5b3Vy
+IGVsZiBpcyBjb3JyZWN0IGFuZCBoYXMgMiBwcm9ncmFtCj4+IGhlYWRlcnMuIFNvIHRoaXMgc2hv
+dWxkIG5vdCBiZSBhIHByb2JsZW0gKGJ1dCBhIHNhbml0eSBjaGVjayBtYWtlcwo+PiBzZW5zZSAh
+KS4KPj4gCj4+IEkgc3VzcGVjdCB0aGF0IHRoZSBlbGYgc2l6ZSBjb21wdXRhdGlvbiBpcyB3cm9u
+ZyB3aXRoIHlvdXIgZWxmIGZpbGUKPj4gYW5kIGxlYWRzIHRvIGluY29tcGxldGVseSBsb2FkZWQg
+ZWxmIGZpbGUgYnV0IEkgdHJpZWQgdG8gY29tcHV0ZQo+PiBpdCB1c2luZyB0aGUgc2VxdWVuY2Ug
+b2YgY29kZSB1c2VkIGluIGJhcmVib3ggYW5kIGV2ZXJ5dGhpbmcgc2VlbXMgb2suCj4+IE1heWJl
+IHRoZXJlIGlzIHNvbWV0aGluZyB3aXRoIHRoZSBlbmRpYW5lc3MvZWxmY2xhc3MgZ29pbmcgd3Jv
+bmcuCj4+IEkgdHJpZWQgYWdhaW4gb24ga3Z4IHRvIGJlIHN1cmUgSSBkaWQgbm90IG1hZGUgYSBt
+aXN0YWtlIGJ1dCBpdCB3b3Jrcwo+PiBhbmQgdGhlIGVsZiBlbnRyeSBhZGRyZXNzIGlzIGNvcnJl
+Y3RseSB1c2VkLgo+PiBJJ2xsIHRyeSB0byBhZGQgaGFuZGxpbmcgZm9yIGRpZmZlcmVudCBlbmRp
+YW5lc3MgYW5kIGxvYWQgeW91ciBlbGYKPj4gZmlsZSBvbiBrdnggdG8gZGVidWcgdGhhdC4KPj4g
+Cj4+ID4gCj4+ID4gaGVyZSBpcyBteSBlbGYgaW1hZ2U6Cj4+ID4gaHR0cHM6Ly9naXRodWIuY29t
+L29sZXJlbS9iYXJlYm94L2Jsb2IvbmV3LWVsZi9vcmUtbGludXgtZHB0LW1vZHVsZQo+PiAKPj4g
+SSBzdWNjZWVkZWQgaW4gYnVpbGRpbmcgRGlzdHJva2l0IGltYWdlcyBidXQgSSBjYW4ndCBnZXQg
+aXQgdW5kZXIgYmFyZWJveC4KPj4gVGhlcmUgaXMgb25seSA0TSBvb2YgUkFNIGFuZCBlYWNoIHRp
+bWUgSSB0cmllcyB0byBtb2RpZnkgaXQsIGl0IHdvbid0IGJvb3QKPj4gYW55bW9yZS4KPj4gSSB0
+cmllZCBpbnRlZ3JhdGluZyB0aGUga2VybmVsIChhbmQgeW91ciBlb3JlLWxpbnV4LWRwdC1tb2R1
+bGUgZWxmKSBpbgo+PiB0aGUgZW52aXJvbm1lbnQgYnV0IGl0IGFsc28gd29uJ3QgYm9vdC4gRG8g
+eW91IGhhdmUgYW55IGlkZWEgb24gaG93IHRvCj4+IGRvIGl0ID8KPj4gRXZlbiBpZiB0aGUga2Vy
+bmVsIHdvbid0IHN0YXJ0IHVuZGVyIHFlbXUgLCBhdCBsZWFzdCBJJ2xsIGJlIGFibGUgdG8KPj4g
+dW5kZXJzdGFuZCB3aGF0IGlzIHdyb25nLgo+PiAKPj4gVGhhbmtzIGZvciB0ZXN0aW5nLAo+PiAK
+Pj4gQ2zDqW1lbnQKPj4gCj4+ID4gCj4+ID4+IE9uIEZyaSwgTWF5IDA4LCAyMDIwIGF0IDA3OjA0
+OjA0UE0gKzAyMDAsIENsZW1lbnQgTGVnZXIgd3JvdGU6Cj4+ID4+ID4gQ3VycmVudGx5LCB3aGVu
+IGJvb3RpbmcgYW4gZWxmIGZpbGUgdXNpbmcgImJvb3RtIC9kZXYvbXRkeCIsIGJvb3RtIHdpbGwK
+Pj4gPj4gPiBzaW1wbHkgcGFzcyB0aGUgZmlsZSB0byB0aGUgYm9vdG0gYW5kIHRoZSByZWFkIGRv
+bmUgb24gaXQgd2lsbCByZWFkIHRoZQo+PiA+PiA+IGVudGlyZSBmbGFzaCBwYXJ0aXRpb24uIFRo
+aXMgc2VyaWVzIHN0YXJ0cyBieSBzb21lIGNsZWFudXAgYW5kIHRoZW4gYWRkIGFuCj4+ID4+ID4g
+ZWxmX29wZW4gZnVuY3Rpb24gdG8gbG9hZCB0aGUgZWxmIGZpbGUgc2l6ZSBvbmx5IGJhc2VkIG9u
+IHRoZSBlbGYgaGVhZGVyLgo+PiA+PiA+IEEgc3BlY2lhbCBoYW5kbGluZyBmb3IgdGhlIGVsZiBm
+aWxlIGlzIGFsc28gYWRkZWQgaW4gYm9vdG0gZGF0YSB0byBhbGxvdwo+PiA+PiA+IHVzaW5nIGRp
+cmVjdGx5IHRoZSBlbGYgZmlsZSBzdHJ1Y3R1cmUuIEZpbmFsbHkgdGhlIG1pcHMgYm9vdG0gaXMg
+bW9kaWZpZWQKPj4gPj4gPiB0byB1c2UgYm9vdG1fbG9hZF9vcyBkaXJlY3RseSBpbnN0ZWFkIG9m
+IG1hbnVhbCBlbGYgbG9hZGluZy4KPj4gPj4gPiAKPj4gPj4gPiBDb21waWxhdGlvbiBmb3IgYm90
+aCBtaXBzIGFuZCBhcm0gaGFzIGJlZW4gdGVzdGVkIGJ1dCBydW4gb24gcWVtdS1tYWx0YSB3YXMg
+bm90Cj4+ID4+ID4gcG9zc2libGUuIENoYW5naW5nIHRoZSBNQUxMT0NfU0laRSB0byBhbGxvdyBs
+b2FkaW5nIGEga2VybmVsIGFsd2F5cyBsZWFkIHRvIGEKPj4gPj4gPiBub24tYm9vdGFibGUgc3lz
+dGVtLiBDaGFuZ2VzIGhhdmUgYmVlbiB0ZXN0ZWQgb24ga3Z4IGFyY2hpdGVjdHVyZSBmb3Igd2hp
+Y2gKPj4gPj4gPiBib290bSBzdXBwb3J0IGhhcyBiZWVuIGFkZGVkIGFuZCB3aWxsIGJlIHN1Ym1p
+dHRlZC4KPj4gPj4gPiAKPj4gPj4gPiBDaGFuZ2VzIHYzIC0+IHY0Cj4+ID4+ID4gIC0gRml4IGlu
+aXQgb2YgZWxmIGVudHJ5IGFkZHJlc3MgdG8gYmUgdXNlZCBieSBib290bV9sb2FkX2VsZgo+PiA+
+PiA+IAo+PiA+PiA+IENoYW5nZXMgdjIgLT4gdjMKPj4gPj4gPiAgLSBJbnRlZ3JhdGUgZWxmIGxv
+YWRpbmcgaW4gYm9vdG1fbG9hZF9vcwo+PiA+PiA+ICAtIEFkZCBwYXRjaCB0byByZW1vdmUgbm93
+IHVudXNlZCBlbGZfbG9hZF9pbWFnZS9lbGZfcmVsZWFzZV9pbWFnZQo+PiA+PiA+ICAtIFVzZSBt
+YWxsb2MgaW5zdGVhZCBvZiB4bWFsbG9jIGFuZCBjaGVjayByZXR1cm4gdmFsdWUKPj4gPj4gPiAK
+Pj4gPj4gPiBDaGFuZ2VzIHYxIC0+IHYyCj4+ID4+ID4gIC0gQWRkIEJPT1RNX0VMRiBjb25maWcg
+dG8gc2VsZWN0IGVsZiBzdXBwb3J0IGFuZCBhZGQgY2hlY2tzIGluIGNvZGUKPj4gPj4gPiAgLSBB
+ZGQgYW4gZWxmX2dldF9tZW1fc2l6ZSBmdW5jdGlvbiB0byBhdm9pZCBjb21wdXRpbmcgZWxmIHNp
+emUgaW4gYm9vdG0uYwo+PiA+PiA+ICAtIFVzZSB4bWFsbG9jIGFuZCByZWFkX2Z1bGwgaW4gZWxm
+X29wZW4gaW5zdGVhZCBvZiB4emFsbG9jL3JlYWQKPj4gPj4gPiAgLSBGaXggZGF0YS0+ZWxmIE5V
+TEwgcmVzZXQKPj4gPj4gPiAgLSBSZW1vdmUgZWxmIHN0cnVjdCBlbnRpcmVseSBmcm9tIG1pcHMg
+Ym9vdG0gY29kZQo+PiA+PiA+IAo+PiA+PiA+IENsZW1lbnQgTGVnZXIgKDcpOgo+PiA+PiA+ICAg
+Y29tbW9uOiBlbGY6IGFkZCBjb21wdXRhdGlvbiBvZiBlbGYgYm91bmRhcmllcwo+PiA+PiA+ICAg
+Y29tbW9uOiBlbGY6IGZpeCB3YXJuaW5nIG9uIDMyIGJpdHMgYXJjaGl0ZWN0dXJlcwo+PiA+PiA+
+ICAgY29tbW9uOiBlbGY6IHNwbGl0IGluaXQgdG8gYmUgcmV1c2VkIGZyb20gb3RoZXIgZnVuY3Rp
+b24KPj4gPj4gPiAgIGNvbW1vbjogZWxmOiBhZGQgZWxmX29wZW4sIGVsZl9jbG9zZSBhbmQgZWxm
+X2xvYWQKPj4gPj4gPiAgIGNvbW1vbjogYm9vdG06IGFkZCBzdXBwb3J0IGZvciBlbGYgZmlsZSBs
+b2FkaW5nCj4+ID4+ID4gICBtaXBzOiBsaWI6IGJvb3RtOiB1c2UgYm9vdG0gZWxmIGxvYWRpbmcg
+Y2FwYWJpbGl0aWVzCj4+ID4+ID4gICBjb21tb246IGVsZjogcmVtb3ZlIGVsZl9sb2FkX2ltYWdl
+L2VsZl9yZWxlYXNlX2ltYWdlCj4+ID4+ID4gCj4+ID4+ID4gIGFyY2gvbWlwcy9saWIvYm9vdG0u
+YyB8ICAzMSArKysrKy0tLS0tLS0KPj4gPj4gPiAgY29tbW9uL0tjb25maWcgICAgICAgIHwgICA4
+ICsrKwo+PiA+PiA+ICBjb21tb24vYm9vdG0uYyAgICAgICAgfCAgMzMgKysrKysrKysrKysrKwo+
+PiA+PiA+ICBjb21tb24vZWxmLmMgICAgICAgICAgfCAxMTEgKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKystLS0tLS0tCj4+ID4+ID4gIGluY2x1ZGUvYm9vdG0uaCAgICAgICB8ICAg
+MyArKwo+PiA+PiA+ICBpbmNsdWRlL2VsZi5oICAgICAgICAgfCAgMTYgKysrKystCj4+ID4+ID4g
+IDYgZmlsZXMgY2hhbmdlZCwgMTYzIGluc2VydGlvbnMoKyksIDM5IGRlbGV0aW9ucygtKQo+PiA+
+PiA+IAo+PiA+PiA+IC0tCj4+ID4+ID4gMi4xNy4xCj4+ID4+ID4gCj4+ID4+ID4gCj4+ID4+ID4g
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPj4gPj4gPiBi
+YXJlYm94IG1haWxpbmcgbGlzdAo+PiA+PiA+IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+
+PiA+PiA+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJv
+eAo+PiA+PiA+IAo+PiA+PiAKPj4gPj4gLS0KPj4gPj4gUGVuZ3V0cm9uaXggZS5LLiAgICAgICAg
+ICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKPj4gPj4g
+U3RldWVyd2FsZGVyIFN0ci4gMjEgICAgICAgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5w
+ZW5ndXRyb25peC5kZS8gIHwKPj4gPj4gMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSAgICAgICAg
+ICAgICAgICAgIHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKPj4gPj4gQW10c2dlcmlj
+aHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkx
+Ny01NTU1IHwKPj4gPiAKPj4gPiAKPj4gPiAKPj4gPiAtLQo+PiA+IFBlbmd1dHJvbml4IGUuSy4g
+ICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8
+Cj4+ID4gU3RldWVyd2FsZGVyIFN0ci4gMjEgICAgICAgICAgICAgICAgICAgICAgIHwgaHR0cDov
+L3d3dy5wZW5ndXRyb25peC5kZS8gIHwKPj4gPiAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55ICAg
+ICAgICAgICAgICAgICAgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfAo+PiA+IEFtdHNn
+ZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0y
+MDY5MTctNTU1NSB8Cj4+IAo+PiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fXwo+PiBiYXJlYm94IG1haWxpbmcgbGlzdAo+PiBiYXJlYm94QGxpc3RzLmluZnJh
+ZGVhZC5vcmcKPj4gaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9i
+YXJlYm94Cj4gCj4gLS0KPiBQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfAo+IFN0ZXVlcndhbGRlciBTdHIuIDIx
+ICAgICAgICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8Cj4g
+MzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSAgICAgICAgICAgICAgICAgIHwgUGhvbmU6ICs0OS01
+MTIxLTIwNjkxNy0wICAgIHwKPiBBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAg
+ICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJv
+eEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4v
+bGlzdGluZm8vYmFyZWJveAo=
