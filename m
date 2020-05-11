@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from relay5-d.mail.gandi.net ([217.70.183.197])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jYPIt-0000LB-1L
- for barebox@lists.infradead.org; Tue, 12 May 2020 07:26:16 +0000
-Date: Tue, 12 May 2020 09:26:13 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200512072613.GY5877@pengutronix.de>
-References: <20200511072140.29610-1-a.fatoum@pengutronix.de>
- <20200511072140.29610-16-a.fatoum@pengutronix.de>
+ id 1jY353-00073w-Ep
+ for barebox@lists.infradead.org; Mon, 11 May 2020 07:42:30 +0000
+Received: from geraet.fritz.box (muedsl-82-207-194-018.citykom.de
+ [82.207.194.18]) (Authenticated sender: ahmad@a3f.at)
+ by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id ED84E1C001E
+ for <barebox@lists.infradead.org>; Mon, 11 May 2020 07:42:27 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Mon, 11 May 2020 09:42:20 +0200
+Message-Id: <20200511074220.980266-2-ahmad@a3f.at>
+In-Reply-To: <20200511074220.980266-1-ahmad@a3f.at>
+References: <20200511074220.980266-1-ahmad@a3f.at>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200511072140.29610-16-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,71 +25,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 15/23] sandbox: asm: implement <asm/atomic.h>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/2] video: backlight-pwm: set backlight dev.parent to
+ hardware dev
+To: barebox@lists.infradead.org
 
-On Mon, May 11, 2020 at 09:21:32AM +0200, Ahmad Fatoum wrote:
-> For easier code-sharing, the UBIFS code still uses the Kernel's
-> atomic accessors. Provide a sandbox <asm/atomic.h> header, so we
-> can compile-test UBI under sandbox.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  arch/sandbox/include/asm/atomic.h | 11 +++++++++++
->  arch/sandbox/include/asm/system.h | 14 ++++++++++++++
->  2 files changed, 25 insertions(+)
->  create mode 100644 arch/sandbox/include/asm/atomic.h
->  create mode 100644 arch/sandbox/include/asm/system.h
-> 
-> diff --git a/arch/sandbox/include/asm/atomic.h b/arch/sandbox/include/asm/atomic.h
-> new file mode 100644
-> index 000000000000..ef1043493b8f
-> --- /dev/null
-> +++ b/arch/sandbox/include/asm/atomic.h
-> @@ -0,0 +1,11 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + *  Copyright (c) 2020 Ahmad Fatoum
-> + */
-> +#ifndef __ASM_SANDBOX_ATOMIC_H
-> +#define __ASM_SANDBOX_ATOMIC_H
-> +
-> +#include <asm/system.h>
-> +#include <asm-generic/atomic.h>
-> +
-> +#endif
-> diff --git a/arch/sandbox/include/asm/system.h b/arch/sandbox/include/asm/system.h
-> new file mode 100644
-> index 000000000000..a9b99b07b9a6
-> --- /dev/null
-> +++ b/arch/sandbox/include/asm/system.h
-> @@ -0,0 +1,14 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + *  Copyright (c) 2020 Ahmad Fatoum
-> + */
-> +#ifndef __ASM_SANDBOX_SYSTEM_H
-> +#define __ASM_SANDBOX_SYSTEM_H
-> +
-> +#define local_irq_enable() do { } while (0)
-> +#define local_irq_disable() do { } while (0)
-> +#define local_save_flags(x) do { (void)x; } while (0)
-> +#define local_irq_save(x) do { (void)x; } while (0)
-> +#define local_irq_restore(x) do { (void)x; } while (0)
+backlight_register allocates a new backlight device. Populating the
+device's parent field with the hardware device gives us more
+informational devinfo output.
 
-Now we have generic atomic_* functions, but they are only usable on
-architectures providing local_irq_* functions, which on barebox are by
-definition empty. Why not simply drop the local_irq_* functions
-entirely?
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ drivers/video/backlight-pwm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Sascha
-
+diff --git a/drivers/video/backlight-pwm.c b/drivers/video/backlight-pwm.c
+index fda23b8243f6..cae016be8f3d 100644
+--- a/drivers/video/backlight-pwm.c
++++ b/drivers/video/backlight-pwm.c
+@@ -202,6 +202,7 @@ static int backlight_pwm_of_probe(struct device_d *dev)
+ 
+ 	pwm_backlight->backlight.slew_time_ms = 100;
+ 	pwm_backlight->backlight.brightness_set = backlight_pwm_set;
++	pwm_backlight->backlight.dev.parent = dev;
+ 	pwm_backlight->backlight.node = dev->device_node;
+ 
+ 	ret = backlight_register(&pwm_backlight->backlight);
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
