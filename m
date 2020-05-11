@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jYPcn-0001K3-Vq
- for barebox@lists.infradead.org; Tue, 12 May 2020 07:46:51 +0000
-Date: Tue, 12 May 2020 09:46:48 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200512074648.GC5877@pengutronix.de>
-References: <20200511164927.21864-1-l.stach@pengutronix.de>
+ id 1jY2l6-000072-Sl
+ for barebox@lists.infradead.org; Mon, 11 May 2020 07:21:55 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 11 May 2020 09:21:32 +0200
+Message-Id: <20200511072140.29610-16-a.fatoum@pengutronix.de>
+In-Reply-To: <20200511072140.29610-1-a.fatoum@pengutronix.de>
+References: <20200511072140.29610-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200511164927.21864-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,45 +21,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] scripts: add stm32image to .gitignore
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 15/23] sandbox: asm: implement <asm/atomic.h>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Mon, May 11, 2020 at 06:49:26PM +0200, Lucas Stach wrote:
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> ---
->  scripts/.gitignore | 1 +
->  1 file changed, 1 insertion(+)
+For easier code-sharing, the UBIFS code still uses the Kernel's
+atomic accessors. Provide a sandbox <asm/atomic.h> header, so we
+can compile-test UBI under sandbox.
 
-Applied, thanks
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/sandbox/include/asm/atomic.h | 11 +++++++++++
+ arch/sandbox/include/asm/system.h | 14 ++++++++++++++
+ 2 files changed, 25 insertions(+)
+ create mode 100644 arch/sandbox/include/asm/atomic.h
+ create mode 100644 arch/sandbox/include/asm/system.h
 
-Sascha
-
-> 
-> diff --git a/scripts/.gitignore b/scripts/.gitignore
-> index 76ea271abbf5..c3ac0b570283 100644
-> --- a/scripts/.gitignore
-> +++ b/scripts/.gitignore
-> @@ -30,3 +30,4 @@ omap4_usbboot
->  omap3-usb-loader
->  mips-relocs
->  rsatoc
-> +stm32image
-> -- 
-> 2.20.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/arch/sandbox/include/asm/atomic.h b/arch/sandbox/include/asm/atomic.h
+new file mode 100644
+index 000000000000..ef1043493b8f
+--- /dev/null
++++ b/arch/sandbox/include/asm/atomic.h
+@@ -0,0 +1,11 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ *  Copyright (c) 2020 Ahmad Fatoum
++ */
++#ifndef __ASM_SANDBOX_ATOMIC_H
++#define __ASM_SANDBOX_ATOMIC_H
++
++#include <asm/system.h>
++#include <asm-generic/atomic.h>
++
++#endif
+diff --git a/arch/sandbox/include/asm/system.h b/arch/sandbox/include/asm/system.h
+new file mode 100644
+index 000000000000..a9b99b07b9a6
+--- /dev/null
++++ b/arch/sandbox/include/asm/system.h
+@@ -0,0 +1,14 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ *  Copyright (c) 2020 Ahmad Fatoum
++ */
++#ifndef __ASM_SANDBOX_SYSTEM_H
++#define __ASM_SANDBOX_SYSTEM_H
++
++#define local_irq_enable() do { } while (0)
++#define local_irq_disable() do { } while (0)
++#define local_save_flags(x) do { (void)x; } while (0)
++#define local_irq_save(x) do { (void)x; } while (0)
++#define local_irq_restore(x) do { (void)x; } while (0)
++
++#endif
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.26.2
+
 
 _______________________________________________
 barebox mailing list
