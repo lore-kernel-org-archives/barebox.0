@@ -1,13 +1,25 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from dedi548.your-server.de ([85.10.215.148])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jY2kz-0008R5-7e
- for barebox@lists.infradead.org; Mon, 11 May 2020 07:21:47 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 11 May 2020 09:21:23 +0200
-Message-Id: <20200511072140.29610-7-a.fatoum@pengutronix.de>
-In-Reply-To: <20200511072140.29610-1-a.fatoum@pengutronix.de>
-References: <20200511072140.29610-1-a.fatoum@pengutronix.de>
+ id 1jYARa-0007CH-Da
+ for barebox@lists.infradead.org; Mon, 11 May 2020 15:34:15 +0000
+Received: from sslproxy02.your-server.de ([78.47.166.47])
+ by dedi548.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
+ (Exim 4.89_1) (envelope-from <christian.mauderer@embedded-brains.de>)
+ id 1jYARU-0006JV-Vy
+ for barebox@lists.infradead.org; Mon, 11 May 2020 17:34:08 +0200
+Received: from [82.100.198.138] (helo=mail.embedded-brains.de)
+ by sslproxy02.your-server.de with esmtpsa
+ (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256) (Exim 4.92)
+ (envelope-from <christian.mauderer@embedded-brains.de>)
+ id 1jYARU-000AGx-T9
+ for barebox@lists.infradead.org; Mon, 11 May 2020 17:34:08 +0200
+Received: from localhost (localhost.localhost [127.0.0.1])
+ by mail.embedded-brains.de (Postfix) with ESMTP id 014A12A1682
+ for <barebox@lists.infradead.org>; Mon, 11 May 2020 17:34:13 +0200 (CEST)
+From: Christian Mauderer <christian.mauderer@embedded-brains.de>
+Date: Mon, 11 May 2020 17:33:52 +0200
+Message-Id: <20200511153352.7121-1-christian.mauderer@embedded-brains.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,33 +33,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/23] clocksource: arm_global_timer.c: remove unused asm/
- header
+Subject: [PATCH] scripts: imd: Fix missing argument for open
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-We don't use the header and dropping it allows us to compile-test the
-driver under non-ARM architectures. Do so.
+According to POSIX open needs a third argument if O_CREAT is specified:
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>  O_CREAT  If  the  file exists, this flag has no effect.
+>           Otherwise, the file shall be created; [...] and the access
+>           permission bits (see <sys/stat.h>) of the file  mode shall
+>           be set to the value of the argument following the oflag
+>           argument taken as type mode_t modified as follows [...]
+
+Signed-off-by: Christian Mauderer <christian.mauderer@embedded-brains.de>
 ---
- drivers/clocksource/arm_global_timer.c | 1 -
- 1 file changed, 1 deletion(-)
+ scripts/bareboximd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clocksource/arm_global_timer.c b/drivers/clocksource/arm_global_timer.c
-index 44e3a3c762fb..78cd72d3eb45 100644
---- a/drivers/clocksource/arm_global_timer.c
-+++ b/drivers/clocksource/arm_global_timer.c
-@@ -20,7 +20,6 @@
- #include <clock.h>
- #include <linux/clk.h>
- #include <io.h>
--#include <asm/system.h>
+diff --git a/scripts/bareboximd.c b/scripts/bareboximd.c
+index e5000e0ae..b332d435a 100644
+--- a/scripts/bareboximd.c
++++ b/scripts/bareboximd.c
+@@ -59,7 +59,7 @@ static int write_file(const char *filename, const void *buf, size_t size)
+ 	int fd, ret;
+ 	int now;
  
- #define GT_COUNTER0	0x00
- #define GT_COUNTER1	0x04
+-	fd = open(filename, O_WRONLY | O_TRUNC | O_CREAT);
++	fd = open(filename, O_WRONLY | O_TRUNC | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+ 	if (fd < 0)
+ 		return fd;
+ 
 -- 
-2.26.2
+2.26.1
 
 
 _______________________________________________
