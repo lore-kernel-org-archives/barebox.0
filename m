@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from conuserg-12.nifty.com ([210.131.2.79])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jXFlc-0001VH-FB
- for barebox@lists.infradead.org; Sat, 09 May 2020 03:03:10 +0000
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Sat,  9 May 2020 12:02:38 +0900
-Message-Id: <20200509030239.835689-1-masahiroy@kernel.org>
+ id 1jY28N-0008My-Lp
+ for barebox@lists.infradead.org; Mon, 11 May 2020 06:41:54 +0000
+Date: Mon, 11 May 2020 08:41:48 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200511064148.GQ5877@pengutronix.de>
+References: <20200511061703.593030-1-ahmad@a3f.at>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200511061703.593030-1-ahmad@a3f.at>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,50 +22,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] kbuild: add -Werror={strict-prototypes,
- implicit-int} to KBUILD_CFLAGS
-To: barebox@lists.infradead.org
-Cc: Masahiro Yamada <masahiroy@kernel.org>
+Subject: Re: [PATCH] fixup! ARM: i.MX: boot: interpret reserved boot as
+ forced serial
+To: Ahmad Fatoum <ahmad@a3f.at>
+Cc: barebox@lists.infradead.org
 
-- Turn Wstrict-prototypes into an error
-- Add -Werror=implicit-int
-- Use the standard form -Werror=... for implicit-function-declaration
+On Mon, May 11, 2020 at 08:17:03AM +0200, Ahmad Fatoum wrote:
+> imx6_get_boot_source is used by the zii-imx6q-rdu2 board in PBL,
+> but cpu_is_mx6ul accesses a global variable that's not linked
+> into PBL. Fix this by using cpu_mx6_is_mx6ul instead.
+> 
+> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 
-This commit imports the following Linux commits. They should work for
-barebox too.
+Yeah, thanks, I was about to complain because my compile test failed ;)
 
-80970472179a Makefile: enable -Werror=implicit-int and -Werror=strict-prototypes by default
-eeb5687a7139 kbuild: add -Werror=strict-prototypes flag unconditionally
-61a0902a06d6 kbuild: add -Werror=implicit-int flag unconditionally
-b89f25ea7892 kbuild: use -Werror=implicit-... instead of -Werror-implicit-...
+Sascha
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
----
-
- Makefile | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/Makefile b/Makefile
-index 9485f5551..a732e24d3 100644
---- a/Makefile
-+++ b/Makefile
-@@ -318,9 +318,10 @@ LINUXINCLUDE    := -Iinclude -I$(srctree)/dts/include \
- 
- KBUILD_CPPFLAGS        := -D__KERNEL__ -D__BAREBOX__ $(LINUXINCLUDE) -fno-builtin -ffreestanding
- 
--KBUILD_CFLAGS          := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
--                   -Werror-implicit-function-declaration \
--                   -fno-strict-aliasing -fno-common -Os -pipe -Wmissing-prototypes
-+KBUILD_CFLAGS   := -Wall -Wundef -Werror=strict-prototypes -Wno-trigraphs \
-+		   -fno-strict-aliasing -fno-common \
-+                   -Werror=implicit-function-declaration -Werror=implicit-int \
-+                   -Os -pipe -Wmissing-prototypes
- KBUILD_AFLAGS          := -D__ASSEMBLY__
- 
- LDFLAGS_barebox	:= -Map barebox.map
 -- 
-2.25.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
