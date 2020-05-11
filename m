@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jY2l0-0008RF-4i
+ id 1jY2l0-0008RG-6Z
  for barebox@lists.infradead.org; Mon, 11 May 2020 07:21:49 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 11 May 2020 09:21:38 +0200
-Message-Id: <20200511072140.29610-22-a.fatoum@pengutronix.de>
+Date: Mon, 11 May 2020 09:21:39 +0200
+Message-Id: <20200511072140.29610-23-a.fatoum@pengutronix.de>
 In-Reply-To: <20200511072140.29610-1-a.fatoum@pengutronix.de>
 References: <20200511072140.29610-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,30 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 21/23] commands: test: drop dead assignment
+Subject: [PATCH 22/23] sandbox: os: add_image: fix memory leak
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-last_expr is set to a different value few lines later. Drop the dead
-assignment.
+devname is strdup'd few lines later, so remove the earlier strdup.
+The pointer isn't stored anywhere persistent in between.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- commands/test.c | 1 -
- 1 file changed, 1 deletion(-)
+ arch/sandbox/os/common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/commands/test.c b/commands/test.c
-index 505b7c56b1a4..c845cec01789 100644
---- a/commands/test.c
-+++ b/commands/test.c
-@@ -86,7 +86,6 @@ static int do_test(int argc, char *argv[])
- 	if (argc < 2)
- 		return 1;
+diff --git a/arch/sandbox/os/common.c b/arch/sandbox/os/common.c
+index e67ea14138c0..382a92304020 100644
+--- a/arch/sandbox/os/common.c
++++ b/arch/sandbox/os/common.c
+@@ -236,7 +236,7 @@ static int add_image(char *str, char *devname_template, int *devname_number)
+ 		filename = devname;
+ 		snprintf(tmp, sizeof(tmp),
+ 			 devname_template, (*devname_number)++);
+-		devname = strdup(tmp);
++		devname = tmp;
+ 	}
  
--	last_expr = 0;
- 	left = argc - 1;
- 	ap = argv + 1;
- 
+ 	printf("add %s backed by file %s%s\n", devname,
 -- 
 2.26.2
 
