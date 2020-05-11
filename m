@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jY2l7-000077-0n
- for barebox@lists.infradead.org; Mon, 11 May 2020 07:21:55 +0000
+ by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jY2lC-0001Ot-SW
+ for barebox@lists.infradead.org; Mon, 11 May 2020 07:22:01 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 11 May 2020 09:21:35 +0200
-Message-Id: <20200511072140.29610-19-a.fatoum@pengutronix.de>
+Date: Mon, 11 May 2020 09:21:19 +0200
+Message-Id: <20200511072140.29610-3-a.fatoum@pengutronix.de>
 In-Reply-To: <20200511072140.29610-1-a.fatoum@pengutronix.de>
 References: <20200511072140.29610-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,64 +21,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 18/23] usb: xhci-hcd: replace opencoded non-atomic 64-bit MMIO
- with lo_hi helper
+Subject: [PATCH 02/23] sandbox: define CONFIG_64BIT as appropriate
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <ahmad@a3f.at>, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Commit 3c5317e9046 ("usb: xhci-hcd: Make use of lo_hi_readq/writeq()")
-had made use of lo_hi_readq/writeq() to implement xhci_read/write_64(),
-like Linux does, but this was removed in commit fddd1c7c51a8
-("usb: host: remove xhci driver"). Reinstate it to make code clearer.
+From: Ahmad Fatoum <ahmad@a3f.at>
 
-No functional change.
-
-[Note: Linux doesn't use any readq/writeq, but does two 32-bit access
- always, even on 64-bit systems]
+All 64-bit architectures are supposed to define CONFIG_64BIT to support
+the relevant 64-bit MMIO accessors. The sandbox architecture is a bit
+of a special case, because barebox uses the toolchain default and
+doesn't force a bitness. Add 64BIT as promptless symbol, which reflects
+the pointer size of the target platform.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/usb/host/xhci.h | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+ arch/sandbox/Kconfig    | 9 +++++++++
+ scripts/gcc-64bitptr.sh | 9 +++++++++
+ 2 files changed, 18 insertions(+)
+ create mode 100755 scripts/gcc-64bitptr.sh
 
-diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
-index 1a3f7e7642bc..9ffbb103d562 100644
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -18,6 +18,7 @@
- 
- #include <asm/types.h>
- #include <io.h>
-+#include <io-64-nonatomic-lo-hi.h>
- #include <linux/list.h>
- 
- #define MAX_EP_CTX_NUM		31
-@@ -1112,10 +1113,7 @@ static inline u64 xhci_readq(__le64 volatile *regs)
- #if BITS_PER_LONG == 64
- 	return readq(regs);
- #else
--	__u32 *ptr = (__u32 *)regs;
--	u64 val_lo = readl(ptr);
--	u64 val_hi = readl(ptr + 1);
--	return val_lo + (val_hi << 32);
-+	return lo_hi_readq(regs);
- #endif
- }
- 
-@@ -1124,12 +1122,7 @@ static inline void xhci_writeq(__le64 volatile *regs, const u64 val)
- #if BITS_PER_LONG == 64
- 	writeq(val, regs);
- #else
--	__u32 *ptr = (__u32 *)regs;
--	u32 val_lo = lower_32_bits(val);
--	/* FIXME */
--	u32 val_hi = upper_32_bits(val);
--	writel(val_lo, ptr);
--	writel(val_hi, ptr + 1);
-+	lo_hi_writeq(val, regs);
- #endif
- }
- 
+diff --git a/arch/sandbox/Kconfig b/arch/sandbox/Kconfig
+index 6ec71a99e53f..46cfe8b4b1c8 100644
+--- a/arch/sandbox/Kconfig
++++ b/arch/sandbox/Kconfig
+@@ -1,3 +1,5 @@
++source "scripts/Kconfig.include"
++
+ config SANDBOX
+ 	bool
+ 	select OFTREE
+@@ -20,3 +22,10 @@ config SANDBOX_UNWIND
+ 	default y
+ 	select ARCH_HAS_STACK_DUMP
+ 	depends on UBSAN || KASAN
++
++config CC_IS_64BIT
++	def_bool $(success,$(srctree)/scripts/gcc-64bitptr.sh $(CC))
++
++config 64BIT
++	bool
++	default CC_IS_64BIT
+diff --git a/scripts/gcc-64bitptr.sh b/scripts/gcc-64bitptr.sh
+new file mode 100755
+index 000000000000..7fb05703b813
+--- /dev/null
++++ b/scripts/gcc-64bitptr.sh
+@@ -0,0 +1,9 @@
++#!/bin/sh
++# SPDX-License-Identifier: GPL-2.0-only
++
++cat << "END" | $@ -x c - -c -o /dev/null
++int main(void)
++{
++	return sizeof(struct { int:-!(sizeof(void *) == 8); });
++}
++END
 -- 
 2.26.2
 
