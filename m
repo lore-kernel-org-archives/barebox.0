@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jYP4Q-00072L-4n
- for barebox@lists.infradead.org; Tue, 12 May 2020 07:11:19 +0000
-Date: Tue, 12 May 2020 09:11:14 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200512071114.GX5877@pengutronix.de>
-References: <20200511072140.29610-1-a.fatoum@pengutronix.de>
- <20200511072140.29610-5-a.fatoum@pengutronix.de>
+ id 1jYBcQ-0008DD-Oh
+ for barebox@lists.infradead.org; Mon, 11 May 2020 16:49:32 +0000
+Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
+ helo=dude02.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <l.stach@pengutronix.de>) id 1jYBcN-0004gc-N4
+ for barebox@lists.infradead.org; Mon, 11 May 2020 18:49:27 +0200
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Mon, 11 May 2020 18:49:26 +0200
+Message-Id: <20200511164927.21864-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200511072140.29610-5-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,51 +24,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 04/23] include: io.h: provide (in|out)_(le|be)(16|32)
- helpers for all archs
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] scripts: add stm32image to .gitignore
+To: barebox@lists.infradead.org
 
-On Mon, May 11, 2020 at 09:21:21AM +0200, Ahmad Fatoum wrote:
-> These U-Boot style bitwise operations macros will be needed for
-> COMPILE_TEST-compiled drivers on platforms except for ARM. Add fallback
-> definitions there, based on the ARM ones.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  include/asm-generic/io.h | 138 +++++++++++++++++++++++++++++++++++++++
->  1 file changed, 138 insertions(+)
-> 
-> diff --git a/include/asm-generic/io.h b/include/asm-generic/io.h
-> index 76e6d0dc1112..84bf0064d8b8 100644
-> --- a/include/asm-generic/io.h
-> +++ b/include/asm-generic/io.h
-> @@ -424,4 +424,142 @@ static inline void iowrite64be(u64 value, volatile void __iomem *addr)
->  #define IOMEM(addr)	((void __force __iomem *)(addr))
->  #endif
->  
-> +/*
-> + * Clear and set bits in one shot. These macros can be used to clear and
-> + * set multiple bits in a register using a single call. These macros can
-> + * also be used to set a multiple-bit bit pattern using a mask, by
-> + * specifying the mask in the 'clear' parameter and the new bit pattern
-> + * in the 'set' parameter.
-> + */
-> +
-> +#ifndef out_arch
-> +#define out_arch(type,endian,a,v)	__raw_write##type(cpu_to_##endian(v),a)
-> +#endif
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+ scripts/.gitignore | 1 +
+ 1 file changed, 1 insertion(+)
 
-Better add these to a separate file in case we want to sync io.h with
-Linux?
-
-Sascha
-
+diff --git a/scripts/.gitignore b/scripts/.gitignore
+index 76ea271abbf5..c3ac0b570283 100644
+--- a/scripts/.gitignore
++++ b/scripts/.gitignore
+@@ -30,3 +30,4 @@ omap4_usbboot
+ omap3-usb-loader
+ mips-relocs
+ rsatoc
++stm32image
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
