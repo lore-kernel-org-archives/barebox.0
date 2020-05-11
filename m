@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jY2l6-000063-6S
- for barebox@lists.infradead.org; Mon, 11 May 2020 07:21:55 +0000
+ id 1jY2l5-00005a-MT
+ for barebox@lists.infradead.org; Mon, 11 May 2020 07:21:53 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 11 May 2020 09:21:26 +0200
-Message-Id: <20200511072140.29610-10-a.fatoum@pengutronix.de>
+Date: Mon, 11 May 2020 09:21:20 +0200
+Message-Id: <20200511072140.29610-4-a.fatoum@pengutronix.de>
 In-Reply-To: <20200511072140.29610-1-a.fatoum@pengutronix.de>
 References: <20200511072140.29610-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,30 +21,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/23] net: fec_imx: depend on HAS_DMA
+Subject: [PATCH 03/23] sandbox: asm: bitsperlong.h: detect bitness according
+ to 64BIT symbol
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <ahmad@a3f.at>, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The driver makes use of dma_alloc_coherent and brethren. Depend on
-HAS_DMA to be sure, we don't run into link errors when compile-testing.
+From: Ahmad Fatoum <ahmad@a3f.at>
+
+Now that we have an accurate CONFIG_64BIT describing sandbox bitness,
+we don't need to assume everything except __x86_64__ as 32-bit.
+
+This assumes that sizeof(long) == sizeof(void *), which is assumed
+anyway throughout the code base.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/net/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/sandbox/include/asm/bitsperlong.h | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-index 9bb498527557..ee8a716d9a3d 100644
---- a/drivers/net/Kconfig
-+++ b/drivers/net/Kconfig
-@@ -155,6 +155,7 @@ config DRIVER_NET_ETHOC
- config DRIVER_NET_FEC_IMX
- 	bool "i.MX FEC Ethernet driver"
- 	depends on ARCH_HAS_FEC_IMX || COMPILE_TEST
-+	depends on HAS_DMA
- 	select PHYLIB
- 
- config DRIVER_NET_FSL_FMAN
+diff --git a/arch/sandbox/include/asm/bitsperlong.h b/arch/sandbox/include/asm/bitsperlong.h
+index 00c1fc2625b2..6dc0bb0c13b2 100644
+--- a/arch/sandbox/include/asm/bitsperlong.h
++++ b/arch/sandbox/include/asm/bitsperlong.h
+@@ -1,10 +1 @@
+-#ifndef __ASM_BITSPERLONG_H
+-#define __ASM_BITSPERLONG_H
+-
+-#ifdef __x86_64__
+-#define BITS_PER_LONG 64
+-#else
+-#define BITS_PER_LONG 32
+-#endif
+-
+-#endif /* __ASM_BITSPERLONG_H */
++#include <asm-generic/bitsperlong.h>
 -- 
 2.26.2
 
