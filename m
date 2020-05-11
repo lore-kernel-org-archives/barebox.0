@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jY2l0-0008RE-4G
+ id 1jY2l0-0008RF-4i
  for barebox@lists.infradead.org; Mon, 11 May 2020 07:21:49 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 11 May 2020 09:21:36 +0200
-Message-Id: <20200511072140.29610-20-a.fatoum@pengutronix.de>
+Date: Mon, 11 May 2020 09:21:38 +0200
+Message-Id: <20200511072140.29610-22-a.fatoum@pengutronix.de>
 In-Reply-To: <20200511072140.29610-1-a.fatoum@pengutronix.de>
 References: <20200511072140.29610-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,45 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 19/23] include: bitops: fix dead increment in fls() and ffs()
+Subject: [PATCH 21/23] commands: test: drop dead assignment
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Static analyzers trip over this and a comment is as descriptive,
-thus replace the dead code.
+last_expr is set to a different value few lines later. Drop the dead
+assignment.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/asm-generic/bitops/ffs.h | 2 +-
- include/asm-generic/bitops/fls.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ commands/test.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/include/asm-generic/bitops/ffs.h b/include/asm-generic/bitops/ffs.h
-index fbbb43af7dc0..afc2d7b2d19f 100644
---- a/include/asm-generic/bitops/ffs.h
-+++ b/include/asm-generic/bitops/ffs.h
-@@ -32,7 +32,7 @@ static inline int ffs(int x)
- 		r += 2;
- 	}
- 	if (!(x & 1)) {
--		x >>= 1;
-+		/* x >>= 1; */
- 		r += 1;
- 	}
- 	return r;
-diff --git a/include/asm-generic/bitops/fls.h b/include/asm-generic/bitops/fls.h
-index 850859bc5069..9d5d26a3bbdf 100644
---- a/include/asm-generic/bitops/fls.h
-+++ b/include/asm-generic/bitops/fls.h
-@@ -32,7 +32,7 @@ static inline int fls(int x)
- 		r -= 2;
- 	}
- 	if (!(x & 0x80000000u)) {
--		x <<= 1;
-+		/* x <<= 1; */
- 		r -= 1;
- 	}
- 	return r;
+diff --git a/commands/test.c b/commands/test.c
+index 505b7c56b1a4..c845cec01789 100644
+--- a/commands/test.c
++++ b/commands/test.c
+@@ -86,7 +86,6 @@ static int do_test(int argc, char *argv[])
+ 	if (argc < 2)
+ 		return 1;
+ 
+-	last_expr = 0;
+ 	left = argc - 1;
+ 	ap = argv + 1;
+ 
 -- 
 2.26.2
 
