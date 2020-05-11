@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay5-d.mail.gandi.net ([217.70.183.197])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jY353-00073w-Ep
- for barebox@lists.infradead.org; Mon, 11 May 2020 07:42:30 +0000
-Received: from geraet.fritz.box (muedsl-82-207-194-018.citykom.de
- [82.207.194.18]) (Authenticated sender: ahmad@a3f.at)
- by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id ED84E1C001E
- for <barebox@lists.infradead.org>; Mon, 11 May 2020 07:42:27 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Mon, 11 May 2020 09:42:20 +0200
-Message-Id: <20200511074220.980266-2-ahmad@a3f.at>
-In-Reply-To: <20200511074220.980266-1-ahmad@a3f.at>
-References: <20200511074220.980266-1-ahmad@a3f.at>
+ id 1jYBcQ-0008DE-OS
+ for barebox@lists.infradead.org; Mon, 11 May 2020 16:49:32 +0000
+Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
+ helo=dude02.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <l.stach@pengutronix.de>) id 1jYBcN-0004gc-Nc
+ for barebox@lists.infradead.org; Mon, 11 May 2020 18:49:27 +0200
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Mon, 11 May 2020 18:49:27 +0200
+Message-Id: <20200511164927.21864-2-l.stach@pengutronix.de>
+In-Reply-To: <20200511164927.21864-1-l.stach@pengutronix.de>
+References: <20200511164927.21864-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,31 +26,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] video: backlight-pwm: set backlight dev.parent to
- hardware dev
+Subject: [PATCH 2/2] image: add stm32 images to gitignore
 To: barebox@lists.infradead.org
 
-backlight_register allocates a new backlight device. Populating the
-device's parent field with the hardware device gives us more
-informational devinfo output.
-
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- drivers/video/backlight-pwm.c | 1 +
+ images/.gitignore | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/video/backlight-pwm.c b/drivers/video/backlight-pwm.c
-index fda23b8243f6..cae016be8f3d 100644
---- a/drivers/video/backlight-pwm.c
-+++ b/drivers/video/backlight-pwm.c
-@@ -202,6 +202,7 @@ static int backlight_pwm_of_probe(struct device_d *dev)
- 
- 	pwm_backlight->backlight.slew_time_ms = 100;
- 	pwm_backlight->backlight.brightness_set = backlight_pwm_set;
-+	pwm_backlight->backlight.dev.parent = dev;
- 	pwm_backlight->backlight.node = dev->device_node;
- 
- 	ret = backlight_register(&pwm_backlight->backlight);
+diff --git a/images/.gitignore b/images/.gitignore
+index 2f8b87dcbd5a..377c14ceb384 100644
+--- a/images/.gitignore
++++ b/images/.gitignore
+@@ -30,3 +30,4 @@ barebox.sum
+ *.zynqimg
+ *.image
+ *.mvebu1img
++*.stm32
 -- 
 2.20.1
 
