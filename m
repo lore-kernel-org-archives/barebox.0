@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from dedi548.your-server.de ([85.10.215.148])
+Received: from mail-lf1-x143.google.com ([2a00:1450:4864:20::143])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jYOTC-0004RN-SJ
- for barebox@lists.infradead.org; Tue, 12 May 2020 06:32:52 +0000
-References: <20200511153352.7121-1-christian.mauderer@embedded-brains.de>
- <44092c04-2060-1b08-4687-441288d826a0@pengutronix.de>
-From: Christian Mauderer <christian.mauderer@embedded-brains.de>
-Message-ID: <9556523b-419a-b64d-6d8a-66c429d02beb@embedded-brains.de>
-Date: Tue, 12 May 2020 08:32:46 +0200
+ id 1jYYy0-0005MT-TP
+ for barebox@lists.infradead.org; Tue, 12 May 2020 17:45:22 +0000
+Received: by mail-lf1-x143.google.com with SMTP id u4so11291597lfm.7
+ for <barebox@lists.infradead.org>; Tue, 12 May 2020 10:45:19 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Tue, 12 May 2020 20:45:11 +0300
+Message-Id: <20200512174511.9702-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <44092c04-2060-1b08-4687-441288d826a0@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,47 +17,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] scripts: imd: Fix missing argument for open
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
+Subject: [PATCH] phy: drop of_phy_simple_xlate() stub
+To: barebox@lists.infradead.org
 
-SGVsbG8gQWhtYWQsCgpPbiAxMi8wNS8yMDIwIDA3OjMxLCBBaG1hZCBGYXRvdW0gd3JvdGU6Cj4g
-SGVsbG8gQ2hyaXN0aWFuLAo+IAo+IE9uIDUvMTEvMjAgNTozMyBQTSwgQ2hyaXN0aWFuIE1hdWRl
-cmVyIHdyb3RlOgo+PiBBY2NvcmRpbmcgdG8gUE9TSVggb3BlbiBuZWVkcyBhIHRoaXJkIGFyZ3Vt
-ZW50IGlmIE9fQ1JFQVQgaXMgc3BlY2lmaWVkOgo+Pgo+Pj4gIE9fQ1JFQVQgIElmICB0aGUgIGZp
-bGUgZXhpc3RzLCB0aGlzIGZsYWcgaGFzIG5vIGVmZmVjdC4KPj4+ICAgICAgICAgICBPdGhlcndp
-c2UsIHRoZSBmaWxlIHNoYWxsIGJlIGNyZWF0ZWQ7IFsuLi5dIGFuZCB0aGUgYWNjZXNzCj4+PiAg
-ICAgICAgICAgcGVybWlzc2lvbiBiaXRzIChzZWUgPHN5cy9zdGF0Lmg+KSBvZiB0aGUgZmlsZSAg
-bW9kZSBzaGFsbAo+Pj4gICAgICAgICAgIGJlIHNldCB0byB0aGUgdmFsdWUgb2YgdGhlIGFyZ3Vt
-ZW50IGZvbGxvd2luZyB0aGUgb2ZsYWcKPj4+ICAgICAgICAgICBhcmd1bWVudCB0YWtlbiBhcyB0
-eXBlIG1vZGVfdCBtb2RpZmllZCBhcyBmb2xsb3dzIFsuLi5dCj4gCj4gVGhhbmtzIGZvciB0aGUg
-cGF0Y2guIFRoZSBpc3N1ZSBoYXMgYmVlbiBhbHJlYWR5IGFkZHJlc3NlZCB0aG91Z2gKPiBieSA2
-ZjBlMmY2NWIzICgic2NyaXB0cy9iYXJlYm94aW1kOiBhZGQgbW9kZSBhcmd1bWVudCB0byBvcGVu
-IGNhbGwiKSwKPiB3aGljaCBpcyBwYXJ0IG9mIHYyMDIwLjA0LjAuCgpJIGhhZCBwcm9ibGVtcyBi
-dWlsZGluZyB2MjAyMC4wMy4wIGFuZCBtaXNzZWQgdG8gdXBkYXRlIGZyb20gdXBzdHJlYW0KYmVm
-b3JlIGNoZWNraW5nIHdoZXRoZXIgdGhlcmUgaXMgYSBwYXRjaCBvbiBtYXN0ZXIuIFNvcnJ5IGZv
-ciB0aGUgbm9pc2UuCgpCZXN0IHJlZ2FyZHMKCkNocmlzdGlhbgoKPiAKPiBDaGVlcnMKPiBBaG1h
-ZAo+IAo+Pgo+PiBTaWduZWQtb2ZmLWJ5OiBDaHJpc3RpYW4gTWF1ZGVyZXIgPGNocmlzdGlhbi5t
-YXVkZXJlckBlbWJlZGRlZC1icmFpbnMuZGU+Cj4+IC0tLQo+PiAgc2NyaXB0cy9iYXJlYm94aW1k
-LmMgfCAyICstCj4+ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24o
-LSkKPj4KPj4gZGlmZiAtLWdpdCBhL3NjcmlwdHMvYmFyZWJveGltZC5jIGIvc2NyaXB0cy9iYXJl
-Ym94aW1kLmMKPj4gaW5kZXggZTUwMDBlMGFlLi5iMzMyZDQzNWEgMTAwNjQ0Cj4+IC0tLSBhL3Nj
-cmlwdHMvYmFyZWJveGltZC5jCj4+ICsrKyBiL3NjcmlwdHMvYmFyZWJveGltZC5jCj4+IEBAIC01
-OSw3ICs1OSw3IEBAIHN0YXRpYyBpbnQgd3JpdGVfZmlsZShjb25zdCBjaGFyICpmaWxlbmFtZSwg
-Y29uc3Qgdm9pZCAqYnVmLCBzaXplX3Qgc2l6ZSkKPj4gIAlpbnQgZmQsIHJldDsKPj4gIAlpbnQg
-bm93Owo+PiAgCj4+IC0JZmQgPSBvcGVuKGZpbGVuYW1lLCBPX1dST05MWSB8IE9fVFJVTkMgfCBP
-X0NSRUFUKTsKPj4gKwlmZCA9IG9wZW4oZmlsZW5hbWUsIE9fV1JPTkxZIHwgT19UUlVOQyB8IE9f
-Q1JFQVQsIFNfSVJVU1IgfCBTX0lXVVNSIHwgU19JUkdSUCB8IFNfSVJPVEgpOwo+PiAgCWlmIChm
-ZCA8IDApCj4+ICAJCXJldHVybiBmZDsKPj4gIAo+Pgo+IAoKLS0gCi0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCmVtYmVkZGVkIGJyYWlucyBHbWJICkhlcnIgQ2hy
-aXN0aWFuIE1hdWRlcmVyCkRvcm5pZXJzdHIuIDQKRC04MjE3OCBQdWNoaGVpbQpHZXJtYW55CmVt
-YWlsOiBjaHJpc3RpYW4ubWF1ZGVyZXJAZW1iZWRkZWQtYnJhaW5zLmRlClBob25lOiArNDktODkt
-MTggOTQgNzQxIC0gMTgKRmF4OiAgICs0OS04OS0xOCA5NCA3NDEgLSAwOApQR1A6IFB1YmxpYyBr
-ZXkgYXZhaWxhYmxlIG9uIHJlcXVlc3QuCgpEaWVzZSBOYWNocmljaHQgaXN0IGtlaW5lIGdlc2No
-w6RmdGxpY2hlIE1pdHRlaWx1bmcgaW0gU2lubmUgZGVzIEVIVUcuCgpfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJl
-Ym94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9iYXJlYm94Cg==
+The function of_phy_simple_xlate() is not used.
+
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ include/linux/phy/phy.h | 8 --------
+ 1 file changed, 8 deletions(-)
+
+diff --git a/include/linux/phy/phy.h b/include/linux/phy/phy.h
+index e2fe42d90e..679ce6e420 100644
+--- a/include/linux/phy/phy.h
++++ b/include/linux/phy/phy.h
+@@ -139,8 +139,6 @@ struct phy *of_phy_get_by_phandle(struct device_d *dev, const char *phandle,
+ 				  u8 index);
+ void phy_put(struct phy *phy);
+ struct phy *of_phy_get(struct device_node *np, const char *con_id);
+-struct phy *of_phy_simple_xlate(struct device_d *dev,
+-	struct of_phandle_args *args);
+ struct phy *phy_create(struct device_d *dev, struct device_node *node,
+ 		       const struct phy_ops *ops);
+ void phy_destroy(struct phy *phy);
+@@ -215,12 +213,6 @@ static inline struct phy *of_phy_get(struct device_node *np, const char *con_id)
+ 	return ERR_PTR(-ENOSYS);
+ }
+ 
+-static inline struct phy *of_phy_simple_xlate(struct device_d *dev,
+-	struct of_phandle_args *args)
+-{
+-	return ERR_PTR(-ENOSYS);
+-}
+-
+ static inline struct phy *phy_create(struct device_d *dev,
+ 				     struct device_node *node,
+ 				     const struct phy_ops *ops)
+-- 
+2.26.2
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
