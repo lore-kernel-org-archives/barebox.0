@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jYP7C-000879-9G
- for barebox@lists.infradead.org; Tue, 12 May 2020 07:14:11 +0000
+ id 1jYPIt-0000LB-1L
+ for barebox@lists.infradead.org; Tue, 12 May 2020 07:26:16 +0000
+Date: Tue, 12 May 2020 09:26:13 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200512072613.GY5877@pengutronix.de>
 References: <20200511072140.29610-1-a.fatoum@pengutronix.de>
- <20200511072140.29610-3-a.fatoum@pengutronix.de>
- <20200511100021.jtgei4uav4xbzd57@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <af851812-cd1e-24f1-1fff-2a7a21cec179@pengutronix.de>
-Date: Tue, 12 May 2020 09:14:07 +0200
+ <20200511072140.29610-16-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20200511100021.jtgei4uav4xbzd57@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20200511072140.29610-16-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,87 +23,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 02/23] sandbox: define CONFIG_64BIT as appropriate
-To: Roland Hieber <rhi@pengutronix.de>
-Cc: barebox@lists.infradead.org, Ahmad Fatoum <ahmad@a3f.at>
+Subject: Re: [PATCH 15/23] sandbox: asm: implement <asm/atomic.h>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi,
-
-On 5/11/20 12:00 PM, Roland Hieber wrote:
-> On Mon, May 11, 2020 at 09:21:19AM +0200, Ahmad Fatoum wrote:
->> From: Ahmad Fatoum <ahmad@a3f.at>
->>
->> All 64-bit architectures are supposed to define CONFIG_64BIT to support
->> the relevant 64-bit MMIO accessors. The sandbox architecture is a bit
->> of a special case, because barebox uses the toolchain default and
->> doesn't force a bitness. Add 64BIT as promptless symbol, which reflects
->> the pointer size of the target platform.
->>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+On Mon, May 11, 2020 at 09:21:32AM +0200, Ahmad Fatoum wrote:
+> For easier code-sharing, the UBIFS code still uses the Kernel's
+> atomic accessors. Provide a sandbox <asm/atomic.h> header, so we
+> can compile-test UBI under sandbox.
 > 
-> Nitpick: S-o-b address is different from the author address.
-> Same on the next patch.
-
-Ah, missed those. I can fix this in v2.
-
-Thanks
-Ahmad
-
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  arch/sandbox/include/asm/atomic.h | 11 +++++++++++
+>  arch/sandbox/include/asm/system.h | 14 ++++++++++++++
+>  2 files changed, 25 insertions(+)
+>  create mode 100644 arch/sandbox/include/asm/atomic.h
+>  create mode 100644 arch/sandbox/include/asm/system.h
 > 
->  - Roland
-> 
->> ---
->>  arch/sandbox/Kconfig    | 9 +++++++++
->>  scripts/gcc-64bitptr.sh | 9 +++++++++
->>  2 files changed, 18 insertions(+)
->>  create mode 100755 scripts/gcc-64bitptr.sh
->>
->> diff --git a/arch/sandbox/Kconfig b/arch/sandbox/Kconfig
->> index 6ec71a99e53f..46cfe8b4b1c8 100644
->> --- a/arch/sandbox/Kconfig
->> +++ b/arch/sandbox/Kconfig
->> @@ -1,3 +1,5 @@
->> +source "scripts/Kconfig.include"
->> +
->>  config SANDBOX
->>  	bool
->>  	select OFTREE
->> @@ -20,3 +22,10 @@ config SANDBOX_UNWIND
->>  	default y
->>  	select ARCH_HAS_STACK_DUMP
->>  	depends on UBSAN || KASAN
->> +
->> +config CC_IS_64BIT
->> +	def_bool $(success,$(srctree)/scripts/gcc-64bitptr.sh $(CC))
->> +
->> +config 64BIT
->> +	bool
->> +	default CC_IS_64BIT
->> diff --git a/scripts/gcc-64bitptr.sh b/scripts/gcc-64bitptr.sh
->> new file mode 100755
->> index 000000000000..7fb05703b813
->> --- /dev/null
->> +++ b/scripts/gcc-64bitptr.sh
->> @@ -0,0 +1,9 @@
->> +#!/bin/sh
->> +# SPDX-License-Identifier: GPL-2.0-only
->> +
->> +cat << "END" | $@ -x c - -c -o /dev/null
->> +int main(void)
->> +{
->> +	return sizeof(struct { int:-!(sizeof(void *) == 8); });
->> +}
->> +END
->> -- 
->> 2.26.2
->>
->>
->> _______________________________________________
->> barebox mailing list
->> barebox@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/barebox
->>
-> 
+> diff --git a/arch/sandbox/include/asm/atomic.h b/arch/sandbox/include/asm/atomic.h
+> new file mode 100644
+> index 000000000000..ef1043493b8f
+> --- /dev/null
+> +++ b/arch/sandbox/include/asm/atomic.h
+> @@ -0,0 +1,11 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + *  Copyright (c) 2020 Ahmad Fatoum
+> + */
+> +#ifndef __ASM_SANDBOX_ATOMIC_H
+> +#define __ASM_SANDBOX_ATOMIC_H
+> +
+> +#include <asm/system.h>
+> +#include <asm-generic/atomic.h>
+> +
+> +#endif
+> diff --git a/arch/sandbox/include/asm/system.h b/arch/sandbox/include/asm/system.h
+> new file mode 100644
+> index 000000000000..a9b99b07b9a6
+> --- /dev/null
+> +++ b/arch/sandbox/include/asm/system.h
+> @@ -0,0 +1,14 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + *  Copyright (c) 2020 Ahmad Fatoum
+> + */
+> +#ifndef __ASM_SANDBOX_SYSTEM_H
+> +#define __ASM_SANDBOX_SYSTEM_H
+> +
+> +#define local_irq_enable() do { } while (0)
+> +#define local_irq_disable() do { } while (0)
+> +#define local_save_flags(x) do { (void)x; } while (0)
+> +#define local_irq_save(x) do { (void)x; } while (0)
+> +#define local_irq_restore(x) do { (void)x; } while (0)
+
+Now we have generic atomic_* functions, but they are only usable on
+architectures providing local_irq_* functions, which on barebox are by
+definition empty. Why not simply drop the local_irq_* functions
+entirely?
+
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
