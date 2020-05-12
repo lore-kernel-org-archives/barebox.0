@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jYBcQ-0008DD-Oh
- for barebox@lists.infradead.org; Mon, 11 May 2020 16:49:32 +0000
-Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
- helo=dude02.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <l.stach@pengutronix.de>) id 1jYBcN-0004gc-N4
- for barebox@lists.infradead.org; Mon, 11 May 2020 18:49:27 +0200
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 11 May 2020 18:49:26 +0200
-Message-Id: <20200511164927.21864-1-l.stach@pengutronix.de>
+ id 1jYNdx-00048D-Pt
+ for barebox@lists.infradead.org; Tue, 12 May 2020 05:39:55 +0000
+Date: Tue, 12 May 2020 07:39:52 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200512053952.GV5877@pengutronix.de>
+References: <20200509031133.836743-1-masahiroy@kernel.org>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200509031133.836743-1-masahiroy@kernel.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,26 +22,148 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] scripts: add stm32image to .gitignore
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2] module.h: split out the EXPORT_SYMBOL into export.h
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
----
- scripts/.gitignore | 1 +
- 1 file changed, 1 insertion(+)
+On Sat, May 09, 2020 at 12:11:33PM +0900, Masahiro Yamada wrote:
+> Do as Linux commit f50169324df4ad942e544386d136216c8617636a
+> 
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> ---
+> 
+> Changes in v2:
+>   - move THIS_MODULE
 
-diff --git a/scripts/.gitignore b/scripts/.gitignore
-index 76ea271abbf5..c3ac0b570283 100644
---- a/scripts/.gitignore
-+++ b/scripts/.gitignore
-@@ -30,3 +30,4 @@ omap4_usbboot
- omap3-usb-loader
- mips-relocs
- rsatoc
-+stm32image
+Applied, thanks
+
+Sascha
+
+> 
+>  include/linux/export.h | 39 +++++++++++++++++++++++++++++++++++++++
+>  include/module.h       | 28 +---------------------------
+>  2 files changed, 40 insertions(+), 27 deletions(-)
+>  create mode 100644 include/linux/export.h
+> 
+> diff --git a/include/linux/export.h b/include/linux/export.h
+> new file mode 100644
+> index 000000000..88d318bd8
+> --- /dev/null
+> +++ b/include/linux/export.h
+> @@ -0,0 +1,39 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +#ifndef _LINUX_EXPORT_H
+> +#define _LINUX_EXPORT_H
+> +
+> +#define THIS_MODULE	0
+> +
+> +#ifdef CONFIG_MODULES
+> +
+> +struct kernel_symbol
+> +{
+> +	unsigned long value;
+> +	const char *name;
+> +};
+> +
+> +/* For every exported symbol, place a struct in the __ksymtab section */
+> +#define __EXPORT_SYMBOL(sym, sec)				\
+> +	extern typeof(sym) sym;					\
+> +	static const char __ustrtab_##sym[]			\
+> +	__attribute__((section("__usymtab_strings")))		\
+> +	= MODULE_SYMBOL_PREFIX #sym;                    	\
+> +	static const struct kernel_symbol __usymtab_##sym	\
+> +	__used \
+> +	__attribute__((section("__usymtab" sec), unused))	\
+> +	= { (unsigned long)&sym, __ustrtab_##sym }
+> +
+> +#define EXPORT_SYMBOL(sym)					\
+> +	__EXPORT_SYMBOL(sym, "")
+> +
+> +#define EXPORT_SYMBOL_GPL(sym)					\
+> +	__EXPORT_SYMBOL(sym, "")
+> +
+> +#else
+> +
+> +#define EXPORT_SYMBOL(sym)
+> +#define EXPORT_SYMBOL_GPL(sym)
+> +
+> +#endif /* CONFIG_MODULES */
+> +
+> +#endif /* _LINUX_EXPORT_H */
+> diff --git a/include/module.h b/include/module.h
+> index abf740a78..cea8c2e18 100644
+> --- a/include/module.h
+> +++ b/include/module.h
+> @@ -4,6 +4,7 @@
+>  
+>  #include <elf.h>
+>  #include <linux/compiler.h>
+> +#include <linux/export.h>
+>  #include <linux/list.h>
+>  
+>  #ifndef MODULE_SYMBOL_PREFIX
+> @@ -11,36 +12,12 @@
+>  #endif
+>  
+>  #define MODULE_NAME_LEN (64 - sizeof(unsigned long))
+> -#define THIS_MODULE	0
+>  
+>  #ifdef CONFIG_MODULES
+>  #include <asm/module.h>
+>  
+> -struct kernel_symbol
+> -{
+> -	unsigned long value;
+> -	const char *name;
+> -};
+> -
+>  struct module * load_module(void *mod_image, unsigned long len);
+>  
+> -/* For every exported symbol, place a struct in the __ksymtab section */
+> -#define __EXPORT_SYMBOL(sym, sec)				\
+> -	extern typeof(sym) sym;					\
+> -	static const char __ustrtab_##sym[]			\
+> -	__attribute__((section("__usymtab_strings")))		\
+> -	= MODULE_SYMBOL_PREFIX #sym;                    	\
+> -	static const struct kernel_symbol __usymtab_##sym	\
+> -	__used \
+> -	__attribute__((section("__usymtab" sec), unused))	\
+> -	= { (unsigned long)&sym, __ustrtab_##sym }
+> -
+> -#define EXPORT_SYMBOL(sym)					\
+> -	__EXPORT_SYMBOL(sym, "")
+> -
+> -#define EXPORT_SYMBOL_GPL(sym)					\
+> -	__EXPORT_SYMBOL(sym, "")
+> -
+>  struct module {
+>  	/* Unique handle for this module */
+>  	char name[MODULE_NAME_LEN];
+> @@ -74,9 +51,6 @@ int apply_relocate_add(Elf_Shdr *sechdrs,
+>  		       unsigned int symindex,
+>  		       unsigned int relsec,
+>  		       struct module *mod);
+> -#else
+> -#define EXPORT_SYMBOL(sym)
+> -#define EXPORT_SYMBOL_GPL(sym)
+>  #endif /* CONFIG_MODULES */
+>  
+>  extern struct list_head module_list;
+> -- 
+> 2.25.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
