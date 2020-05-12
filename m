@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from dedi548.your-server.de ([85.10.215.148])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jYBdX-00035f-NG
- for barebox@lists.infradead.org; Mon, 11 May 2020 16:50:41 +0000
-Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
- helo=dude02.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <l.stach@pengutronix.de>) id 1jYBdW-0005Ey-HJ
- for barebox@lists.infradead.org; Mon, 11 May 2020 18:50:38 +0200
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 11 May 2020 18:50:38 +0200
-Message-Id: <20200511165038.22358-1-l.stach@pengutronix.de>
+ id 1jYOTC-0004RN-SJ
+ for barebox@lists.infradead.org; Tue, 12 May 2020 06:32:52 +0000
+References: <20200511153352.7121-1-christian.mauderer@embedded-brains.de>
+ <44092c04-2060-1b08-4687-441288d826a0@pengutronix.de>
+From: Christian Mauderer <christian.mauderer@embedded-brains.de>
+Message-ID: <9556523b-419a-b64d-6d8a-66c429d02beb@embedded-brains.de>
+Date: Tue, 12 May 2020 08:32:46 +0200
 MIME-Version: 1.0
+In-Reply-To: <44092c04-2060-1b08-4687-441288d826a0@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,56 +19,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] net: designware: eqos: attach PHY earlier
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] scripts: imd: Fix missing argument for open
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
 
-If the PHY isn't driving the refclock, the software reset of the
-controller will time out. Some PHYs need some board specific
-configuration to properly drive the reflock. Attach the PHY before
-attempting the software reset, so PHY fixups have a chance to run.
-
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
----
- drivers/net/designware_eqos.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/designware_eqos.c b/drivers/net/designware_eqos.c
-index cb52f3942d86..d2baaeaf6372 100644
---- a/drivers/net/designware_eqos.c
-+++ b/drivers/net/designware_eqos.c
-@@ -360,6 +360,11 @@ static int eqos_start(struct eth_device *edev)
- 	int ret;
- 	int i;
- 
-+	ret = phy_device_connect(edev, &eqos->miibus, eqos->phy_addr,
-+				 eqos->ops->adjust_link, 0, eqos->interface);
-+	if (ret)
-+		return ret;
-+
- 	setbits_le32(&eqos->dma_regs->mode, EQOS_DMA_MODE_SWR);
- 
- 	ret = readl_poll_timeout(&eqos->dma_regs->mode, mode_set,
-@@ -379,11 +384,6 @@ static int eqos_start(struct eth_device *edev)
- 	val = (rate / USEC_PER_SEC) - 1; /* -1 because the data sheet says so */
- 	writel(val, &eqos->mac_regs->us_tic_counter);
- 
--	ret = phy_device_connect(edev, &eqos->miibus, eqos->phy_addr,
--				 eqos->ops->adjust_link, 0, eqos->interface);
--	if (ret)
--		return ret;
--
- 	/* Before we reset the mac, we must insure the PHY is not powered down
- 	 * as the dw controller needs all clock domains to be running, including
- 	 * the PHY clock, to come out of a mac reset.  */
--- 
-2.20.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8gQWhtYWQsCgpPbiAxMi8wNS8yMDIwIDA3OjMxLCBBaG1hZCBGYXRvdW0gd3JvdGU6Cj4g
+SGVsbG8gQ2hyaXN0aWFuLAo+IAo+IE9uIDUvMTEvMjAgNTozMyBQTSwgQ2hyaXN0aWFuIE1hdWRl
+cmVyIHdyb3RlOgo+PiBBY2NvcmRpbmcgdG8gUE9TSVggb3BlbiBuZWVkcyBhIHRoaXJkIGFyZ3Vt
+ZW50IGlmIE9fQ1JFQVQgaXMgc3BlY2lmaWVkOgo+Pgo+Pj4gIE9fQ1JFQVQgIElmICB0aGUgIGZp
+bGUgZXhpc3RzLCB0aGlzIGZsYWcgaGFzIG5vIGVmZmVjdC4KPj4+ICAgICAgICAgICBPdGhlcndp
+c2UsIHRoZSBmaWxlIHNoYWxsIGJlIGNyZWF0ZWQ7IFsuLi5dIGFuZCB0aGUgYWNjZXNzCj4+PiAg
+ICAgICAgICAgcGVybWlzc2lvbiBiaXRzIChzZWUgPHN5cy9zdGF0Lmg+KSBvZiB0aGUgZmlsZSAg
+bW9kZSBzaGFsbAo+Pj4gICAgICAgICAgIGJlIHNldCB0byB0aGUgdmFsdWUgb2YgdGhlIGFyZ3Vt
+ZW50IGZvbGxvd2luZyB0aGUgb2ZsYWcKPj4+ICAgICAgICAgICBhcmd1bWVudCB0YWtlbiBhcyB0
+eXBlIG1vZGVfdCBtb2RpZmllZCBhcyBmb2xsb3dzIFsuLi5dCj4gCj4gVGhhbmtzIGZvciB0aGUg
+cGF0Y2guIFRoZSBpc3N1ZSBoYXMgYmVlbiBhbHJlYWR5IGFkZHJlc3NlZCB0aG91Z2gKPiBieSA2
+ZjBlMmY2NWIzICgic2NyaXB0cy9iYXJlYm94aW1kOiBhZGQgbW9kZSBhcmd1bWVudCB0byBvcGVu
+IGNhbGwiKSwKPiB3aGljaCBpcyBwYXJ0IG9mIHYyMDIwLjA0LjAuCgpJIGhhZCBwcm9ibGVtcyBi
+dWlsZGluZyB2MjAyMC4wMy4wIGFuZCBtaXNzZWQgdG8gdXBkYXRlIGZyb20gdXBzdHJlYW0KYmVm
+b3JlIGNoZWNraW5nIHdoZXRoZXIgdGhlcmUgaXMgYSBwYXRjaCBvbiBtYXN0ZXIuIFNvcnJ5IGZv
+ciB0aGUgbm9pc2UuCgpCZXN0IHJlZ2FyZHMKCkNocmlzdGlhbgoKPiAKPiBDaGVlcnMKPiBBaG1h
+ZAo+IAo+Pgo+PiBTaWduZWQtb2ZmLWJ5OiBDaHJpc3RpYW4gTWF1ZGVyZXIgPGNocmlzdGlhbi5t
+YXVkZXJlckBlbWJlZGRlZC1icmFpbnMuZGU+Cj4+IC0tLQo+PiAgc2NyaXB0cy9iYXJlYm94aW1k
+LmMgfCAyICstCj4+ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24o
+LSkKPj4KPj4gZGlmZiAtLWdpdCBhL3NjcmlwdHMvYmFyZWJveGltZC5jIGIvc2NyaXB0cy9iYXJl
+Ym94aW1kLmMKPj4gaW5kZXggZTUwMDBlMGFlLi5iMzMyZDQzNWEgMTAwNjQ0Cj4+IC0tLSBhL3Nj
+cmlwdHMvYmFyZWJveGltZC5jCj4+ICsrKyBiL3NjcmlwdHMvYmFyZWJveGltZC5jCj4+IEBAIC01
+OSw3ICs1OSw3IEBAIHN0YXRpYyBpbnQgd3JpdGVfZmlsZShjb25zdCBjaGFyICpmaWxlbmFtZSwg
+Y29uc3Qgdm9pZCAqYnVmLCBzaXplX3Qgc2l6ZSkKPj4gIAlpbnQgZmQsIHJldDsKPj4gIAlpbnQg
+bm93Owo+PiAgCj4+IC0JZmQgPSBvcGVuKGZpbGVuYW1lLCBPX1dST05MWSB8IE9fVFJVTkMgfCBP
+X0NSRUFUKTsKPj4gKwlmZCA9IG9wZW4oZmlsZW5hbWUsIE9fV1JPTkxZIHwgT19UUlVOQyB8IE9f
+Q1JFQVQsIFNfSVJVU1IgfCBTX0lXVVNSIHwgU19JUkdSUCB8IFNfSVJPVEgpOwo+PiAgCWlmIChm
+ZCA8IDApCj4+ICAJCXJldHVybiBmZDsKPj4gIAo+Pgo+IAoKLS0gCi0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCmVtYmVkZGVkIGJyYWlucyBHbWJICkhlcnIgQ2hy
+aXN0aWFuIE1hdWRlcmVyCkRvcm5pZXJzdHIuIDQKRC04MjE3OCBQdWNoaGVpbQpHZXJtYW55CmVt
+YWlsOiBjaHJpc3RpYW4ubWF1ZGVyZXJAZW1iZWRkZWQtYnJhaW5zLmRlClBob25lOiArNDktODkt
+MTggOTQgNzQxIC0gMTgKRmF4OiAgICs0OS04OS0xOCA5NCA3NDEgLSAwOApQR1A6IFB1YmxpYyBr
+ZXkgYXZhaWxhYmxlIG9uIHJlcXVlc3QuCgpEaWVzZSBOYWNocmljaHQgaXN0IGtlaW5lIGdlc2No
+w6RmdGxpY2hlIE1pdHRlaWx1bmcgaW0gU2lubmUgZGVzIEVIVUcuCgpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJl
+Ym94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
+bi9saXN0aW5mby9iYXJlYm94Cg==
