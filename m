@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from conuserg-07.nifty.com ([210.131.2.74])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jXFuF-0007P1-OT
- for barebox@lists.infradead.org; Sat, 09 May 2020 03:12:05 +0000
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Sat,  9 May 2020 12:11:33 +0900
-Message-Id: <20200509031133.836743-1-masahiroy@kernel.org>
+ id 1jYNiN-0006rP-Cu
+ for barebox@lists.infradead.org; Tue, 12 May 2020 05:44:28 +0000
+References: <20200511165038.22358-1-l.stach@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <b32681af-54e2-6b97-2d89-69d3402f125c@pengutronix.de>
+Date: Tue, 12 May 2020 07:44:25 +0200
 MIME-Version: 1.0
+In-Reply-To: <20200511165038.22358-1-l.stach@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,130 +22,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] module.h: split out the EXPORT_SYMBOL into export.h
-To: barebox@lists.infradead.org
-Cc: Masahiro Yamada <masahiroy@kernel.org>
+Subject: Re: [PATCH] net: designware: eqos: attach PHY earlier
+To: Lucas Stach <l.stach@pengutronix.de>, barebox@lists.infradead.org
 
-Do as Linux commit f50169324df4ad942e544386d136216c8617636a
+On 5/11/20 6:50 PM, Lucas Stach wrote:
+> If the PHY isn't driving the refclock, the software reset of the
+> controller will time out. Some PHYs need some board specific
+> configuration to properly drive the reflock. Attach the PHY before
+> attempting the software reset, so PHY fixups have a chance to run.
+Tested-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
----
+> 
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> ---
+>  drivers/net/designware_eqos.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/net/designware_eqos.c b/drivers/net/designware_eqos.c
+> index cb52f3942d86..d2baaeaf6372 100644
+> --- a/drivers/net/designware_eqos.c
+> +++ b/drivers/net/designware_eqos.c
+> @@ -360,6 +360,11 @@ static int eqos_start(struct eth_device *edev)
+>  	int ret;
+>  	int i;
+>  
+> +	ret = phy_device_connect(edev, &eqos->miibus, eqos->phy_addr,
+> +				 eqos->ops->adjust_link, 0, eqos->interface);
+> +	if (ret)
+> +		return ret;
+> +
+>  	setbits_le32(&eqos->dma_regs->mode, EQOS_DMA_MODE_SWR);
+>  
+>  	ret = readl_poll_timeout(&eqos->dma_regs->mode, mode_set,
+> @@ -379,11 +384,6 @@ static int eqos_start(struct eth_device *edev)
+>  	val = (rate / USEC_PER_SEC) - 1; /* -1 because the data sheet says so */
+>  	writel(val, &eqos->mac_regs->us_tic_counter);
+>  
+> -	ret = phy_device_connect(edev, &eqos->miibus, eqos->phy_addr,
+> -				 eqos->ops->adjust_link, 0, eqos->interface);
+> -	if (ret)
+> -		return ret;
+> -
+>  	/* Before we reset the mac, we must insure the PHY is not powered down
+>  	 * as the dw controller needs all clock domains to be running, including
+>  	 * the PHY clock, to come out of a mac reset.  */
+> 
 
-Changes in v2:
-  - move THIS_MODULE
-
- include/linux/export.h | 39 +++++++++++++++++++++++++++++++++++++++
- include/module.h       | 28 +---------------------------
- 2 files changed, 40 insertions(+), 27 deletions(-)
- create mode 100644 include/linux/export.h
-
-diff --git a/include/linux/export.h b/include/linux/export.h
-new file mode 100644
-index 000000000..88d318bd8
---- /dev/null
-+++ b/include/linux/export.h
-@@ -0,0 +1,39 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+#ifndef _LINUX_EXPORT_H
-+#define _LINUX_EXPORT_H
-+
-+#define THIS_MODULE	0
-+
-+#ifdef CONFIG_MODULES
-+
-+struct kernel_symbol
-+{
-+	unsigned long value;
-+	const char *name;
-+};
-+
-+/* For every exported symbol, place a struct in the __ksymtab section */
-+#define __EXPORT_SYMBOL(sym, sec)				\
-+	extern typeof(sym) sym;					\
-+	static const char __ustrtab_##sym[]			\
-+	__attribute__((section("__usymtab_strings")))		\
-+	= MODULE_SYMBOL_PREFIX #sym;                    	\
-+	static const struct kernel_symbol __usymtab_##sym	\
-+	__used \
-+	__attribute__((section("__usymtab" sec), unused))	\
-+	= { (unsigned long)&sym, __ustrtab_##sym }
-+
-+#define EXPORT_SYMBOL(sym)					\
-+	__EXPORT_SYMBOL(sym, "")
-+
-+#define EXPORT_SYMBOL_GPL(sym)					\
-+	__EXPORT_SYMBOL(sym, "")
-+
-+#else
-+
-+#define EXPORT_SYMBOL(sym)
-+#define EXPORT_SYMBOL_GPL(sym)
-+
-+#endif /* CONFIG_MODULES */
-+
-+#endif /* _LINUX_EXPORT_H */
-diff --git a/include/module.h b/include/module.h
-index abf740a78..cea8c2e18 100644
---- a/include/module.h
-+++ b/include/module.h
-@@ -4,6 +4,7 @@
- 
- #include <elf.h>
- #include <linux/compiler.h>
-+#include <linux/export.h>
- #include <linux/list.h>
- 
- #ifndef MODULE_SYMBOL_PREFIX
-@@ -11,36 +12,12 @@
- #endif
- 
- #define MODULE_NAME_LEN (64 - sizeof(unsigned long))
--#define THIS_MODULE	0
- 
- #ifdef CONFIG_MODULES
- #include <asm/module.h>
- 
--struct kernel_symbol
--{
--	unsigned long value;
--	const char *name;
--};
--
- struct module * load_module(void *mod_image, unsigned long len);
- 
--/* For every exported symbol, place a struct in the __ksymtab section */
--#define __EXPORT_SYMBOL(sym, sec)				\
--	extern typeof(sym) sym;					\
--	static const char __ustrtab_##sym[]			\
--	__attribute__((section("__usymtab_strings")))		\
--	= MODULE_SYMBOL_PREFIX #sym;                    	\
--	static const struct kernel_symbol __usymtab_##sym	\
--	__used \
--	__attribute__((section("__usymtab" sec), unused))	\
--	= { (unsigned long)&sym, __ustrtab_##sym }
--
--#define EXPORT_SYMBOL(sym)					\
--	__EXPORT_SYMBOL(sym, "")
--
--#define EXPORT_SYMBOL_GPL(sym)					\
--	__EXPORT_SYMBOL(sym, "")
--
- struct module {
- 	/* Unique handle for this module */
- 	char name[MODULE_NAME_LEN];
-@@ -74,9 +51,6 @@ int apply_relocate_add(Elf_Shdr *sechdrs,
- 		       unsigned int symindex,
- 		       unsigned int relsec,
- 		       struct module *mod);
--#else
--#define EXPORT_SYMBOL(sym)
--#define EXPORT_SYMBOL_GPL(sym)
- #endif /* CONFIG_MODULES */
- 
- extern struct list_head module_list;
 -- 
-2.25.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
