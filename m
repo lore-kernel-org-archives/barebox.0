@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jaZ75-0004Za-P5
- for barebox@lists.infradead.org; Mon, 18 May 2020 06:19:01 +0000
-Date: Mon, 18 May 2020 08:18:58 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200518061858.GJ11869@pengutronix.de>
+ id 1jZcO0-0006hO-Ta
+ for barebox@lists.infradead.org; Fri, 15 May 2020 15:36:37 +0000
+Date: Fri, 15 May 2020 17:36:26 +0200 (CEST)
+From: =?utf-8?Q?Cl=C3=A9ment?= Leger <cleger@kalray.eu>
+Message-ID: <1973581334.3088460.1589556986486.JavaMail.zimbra@kalray.eu>
+In-Reply-To: <20200515152215.146833-1-masahiroy@kernel.org>
 References: <20200515152215.146833-1-masahiroy@kernel.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200515152215.146833-1-masahiroy@kernel.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,91 +17,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] kvx: do not include empty <config.h>
 To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: barebox@lists.infradead.org
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Sat, May 16, 2020 at 12:22:15AM +0900, Masahiro Yamada wrote:
-> <config.h> is per-board config file, which is only allowed for old
-> boards.
-> 
-> For new boards, the top Makefile creates an empty include/config.h
-> 
-> kvx does not have config.h, so #include <config.h> is useless.
-> 
-> Also, remove meaningless board-$(CONFIG_GENERIC).
-> 
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> ---
-
-Applied, thanks
-
-Sascha
-
-> 
->  arch/kvx/Makefile          | 2 --
->  arch/kvx/cpu/barebox.lds.S | 1 -
->  arch/kvx/cpu/start.S       | 1 -
->  3 files changed, 4 deletions(-)
-> 
-> diff --git a/arch/kvx/Makefile b/arch/kvx/Makefile
-> index c97cff345..7abaed651 100644
-> --- a/arch/kvx/Makefile
-> +++ b/arch/kvx/Makefile
-> @@ -2,8 +2,6 @@ KBUILD_DEFCONFIG := generic_defconfig
->  
->  KBUILD_CPPFLAGS += -fno-strict-aliasing
->  
-> -board-$(CONFIG_GENERIC) := generic
-> -
->  KALLSYMS += --symbol-prefix=_
->  
->  ifeq ($(CROSS_COMPILE),)
-> diff --git a/arch/kvx/cpu/barebox.lds.S b/arch/kvx/cpu/barebox.lds.S
-> index 8d1944afb..bf92564cf 100644
-> --- a/arch/kvx/cpu/barebox.lds.S
-> +++ b/arch/kvx/cpu/barebox.lds.S
-> @@ -3,7 +3,6 @@
->   * Copyright (C) 2019 Kalray Inc.
->   */
->  
-> -#include <config.h>
->  #include <asm/common.h>
->  #include <asm/sys_arch.h>
->  #include <asm-generic/barebox.lds.h>
-> diff --git a/arch/kvx/cpu/start.S b/arch/kvx/cpu/start.S
-> index a02900fb9..d90272c71 100644
-> --- a/arch/kvx/cpu/start.S
-> +++ b/arch/kvx/cpu/start.S
-> @@ -3,7 +3,6 @@
->   * Copyright (C) 2019 Kalray Inc.
->   */
->  
-> -#include <config.h>
->  #include <linux/linkage.h>
->  #include <asm/privilege.h>
->  #include <asm/sys_arch.h>
-> -- 
-> 2.25.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+LS0tLS0gT24gMTUgTWF5LCAyMDIwLCBhdCAxNzoyMiwgTWFzYWhpcm8gWWFtYWRhIG1hc2FoaXJv
+eUBrZXJuZWwub3JnIHdyb3RlOgoKPiA8Y29uZmlnLmg+IGlzIHBlci1ib2FyZCBjb25maWcgZmls
+ZSwgd2hpY2ggaXMgb25seSBhbGxvd2VkIGZvciBvbGQKPiBib2FyZHMuCj4gCj4gRm9yIG5ldyBi
+b2FyZHMsIHRoZSB0b3AgTWFrZWZpbGUgY3JlYXRlcyBhbiBlbXB0eSBpbmNsdWRlL2NvbmZpZy5o
+Cj4gCj4ga3Z4IGRvZXMgbm90IGhhdmUgY29uZmlnLmgsIHNvICNpbmNsdWRlIDxjb25maWcuaD4g
+aXMgdXNlbGVzcy4KPiAKPiBBbHNvLCByZW1vdmUgbWVhbmluZ2xlc3MgYm9hcmQtJChDT05GSUdf
+R0VORVJJQykuCgpIaSBNYXNhaGlybywKClRoYW5rcyBmb3Igc3BvdHRpbmcgdGhhdC4KCkZXSVc6
+CkFja2VkLUJ5OiBDbGVtZW50IExlZ2VyIDxjbGVnZXJAa2FscmF5LmV1PiAKCkNsw6ltZW50Cgo+
+IAo+IFNpZ25lZC1vZmYtYnk6IE1hc2FoaXJvIFlhbWFkYSA8bWFzYWhpcm95QGtlcm5lbC5vcmc+
+Cj4gLS0tCj4gCj4gYXJjaC9rdngvTWFrZWZpbGUgICAgICAgICAgfCAyIC0tCj4gYXJjaC9rdngv
+Y3B1L2JhcmVib3gubGRzLlMgfCAxIC0KPiBhcmNoL2t2eC9jcHUvc3RhcnQuUyAgICAgICB8IDEg
+LQo+IDMgZmlsZXMgY2hhbmdlZCwgNCBkZWxldGlvbnMoLSkKPiAKPiBkaWZmIC0tZ2l0IGEvYXJj
+aC9rdngvTWFrZWZpbGUgYi9hcmNoL2t2eC9NYWtlZmlsZQo+IGluZGV4IGM5N2NmZjM0NS4uN2Fi
+YWVkNjUxIDEwMDY0NAo+IC0tLSBhL2FyY2gva3Z4L01ha2VmaWxlCj4gKysrIGIvYXJjaC9rdngv
+TWFrZWZpbGUKPiBAQCAtMiw4ICsyLDYgQEAgS0JVSUxEX0RFRkNPTkZJRyA6PSBnZW5lcmljX2Rl
+ZmNvbmZpZwo+IAo+IEtCVUlMRF9DUFBGTEFHUyArPSAtZm5vLXN0cmljdC1hbGlhc2luZwo+IAo+
+IC1ib2FyZC0kKENPTkZJR19HRU5FUklDKSA6PSBnZW5lcmljCj4gLQo+IEtBTExTWU1TICs9IC0t
+c3ltYm9sLXByZWZpeD1fCj4gCj4gaWZlcSAoJChDUk9TU19DT01QSUxFKSwpCj4gZGlmZiAtLWdp
+dCBhL2FyY2gva3Z4L2NwdS9iYXJlYm94Lmxkcy5TIGIvYXJjaC9rdngvY3B1L2JhcmVib3gubGRz
+LlMKPiBpbmRleCA4ZDE5NDRhZmIuLmJmOTI1NjRjZiAxMDA2NDQKPiAtLS0gYS9hcmNoL2t2eC9j
+cHUvYmFyZWJveC5sZHMuUwo+ICsrKyBiL2FyY2gva3Z4L2NwdS9iYXJlYm94Lmxkcy5TCj4gQEAg
+LTMsNyArMyw2IEBACj4gICogQ29weXJpZ2h0IChDKSAyMDE5IEthbHJheSBJbmMuCj4gICovCj4g
+Cj4gLSNpbmNsdWRlIDxjb25maWcuaD4KPiAjaW5jbHVkZSA8YXNtL2NvbW1vbi5oPgo+ICNpbmNs
+dWRlIDxhc20vc3lzX2FyY2guaD4KPiAjaW5jbHVkZSA8YXNtLWdlbmVyaWMvYmFyZWJveC5sZHMu
+aD4KPiBkaWZmIC0tZ2l0IGEvYXJjaC9rdngvY3B1L3N0YXJ0LlMgYi9hcmNoL2t2eC9jcHUvc3Rh
+cnQuUwo+IGluZGV4IGEwMjkwMGZiOS4uZDkwMjcyYzcxIDEwMDY0NAo+IC0tLSBhL2FyY2gva3Z4
+L2NwdS9zdGFydC5TCj4gKysrIGIvYXJjaC9rdngvY3B1L3N0YXJ0LlMKPiBAQCAtMyw3ICszLDYg
+QEAKPiAgKiBDb3B5cmlnaHQgKEMpIDIwMTkgS2FscmF5IEluYy4KPiAgKi8KPiAKPiAtI2luY2x1
+ZGUgPGNvbmZpZy5oPgo+ICNpbmNsdWRlIDxsaW51eC9saW5rYWdlLmg+Cj4gI2luY2x1ZGUgPGFz
+bS9wcml2aWxlZ2UuaD4KPiAjaW5jbHVkZSA8YXNtL3N5c19hcmNoLmg+Cj4gLS0KPiAyLjI1LjEK
+PiAKPiAKPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwo+
+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4gYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCj4gaHR0
+cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94CgpfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcg
+bGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5v
+cmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
