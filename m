@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jaZJs-00061X-NX
- for barebox@lists.infradead.org; Mon, 18 May 2020 06:32:15 +0000
-Date: Mon, 18 May 2020 08:32:10 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200518063210.GM11869@pengutronix.de>
-References: <1589461461-59875-1-git-send-email-r.karszniewicz@phytec.de>
+ id 1jaNtJ-0006sn-Q7
+ for barebox@lists.infradead.org; Sun, 17 May 2020 18:20:03 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Sun, 17 May 2020 20:19:41 +0200
+Message-Id: <20200517181941.6982-3-a.fatoum@pengutronix.de>
+In-Reply-To: <20200517181941.6982-1-a.fatoum@pengutronix.de>
+References: <20200517181941.6982-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1589461461-59875-1-git-send-email-r.karszniewicz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,52 +21,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: dts: imx6: phycard: remove baseboard compatible
-To: Robert Karszniewicz <r.karszniewicz@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 3/3] mci: reword MCI_STARTUP text
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Thu, May 14, 2020 at 03:04:21PM +0200, Robert Karszniewicz wrote:
-> This devicetree isn't baseboard-specific, so keep it compatible at
-> SOM-level.
-> 
-> Signed-off-by: Robert Karszniewicz <r.karszniewicz@phytec.de>
-> ---
->  arch/arm/dts/imx6q-phytec-phycard.dts | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+With the recent addition of a generic device_detect for MCI devices,
+the MCI_STARTUP help text is no longer accurate. Reword it, but leave
+the option as-is as some boards may be broken if we drop the option
+(e.g. because they still depend on a probe order or call
+default_environment_path_set, but don't explicitly detect the device).
 
-Applied, thanks
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/mci/Kconfig | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-Sascha
-
-> 
-> diff --git a/arch/arm/dts/imx6q-phytec-phycard.dts b/arch/arm/dts/imx6q-phytec-phycard.dts
-> index c06461c..b0e47e9 100644
-> --- a/arch/arm/dts/imx6q-phytec-phycard.dts
-> +++ b/arch/arm/dts/imx6q-phytec-phycard.dts
-> @@ -16,7 +16,7 @@
->  
->  / {
->  	model = "PHYTEC phyCARD-i.MX6 Quad";
-> -	compatible = "phytec,imx6q-pbaa03", "phytec,imx6q-pcaaxl3", "fsl,imx6q";
-> +	compatible = "phytec,imx6q-pcaaxl3", "fsl,imx6q";
->  
->  	chosen {
->  		stdout-path = &uart3;
-> -- 
-> 2.7.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
+index 60c60ceaa527..6ae1e812528c 100644
+--- a/drivers/mci/Kconfig
++++ b/drivers/mci/Kconfig
+@@ -12,12 +12,12 @@ if MCI
+ comment "--- Feature list ---"
+ 
+ config MCI_STARTUP
+-	bool "Probe on system start"
++	bool "Force probe on system start"
+ 	help
+-	  Say 'y' here if the MCI framework should probe for attached MCI cards
+-	  on system start up. This is required if the card carries barebox's
+-	  environment (for example on systems where the MCI card is the sole
+-	  bootmedia). Otherwise probing run on demand with "mci*.probe=1"
++	  Say 'y' here if the MCI framework should always probe for all attached
++	  MCI cards on system start up. This may required for some legacy boards.
++	  When this is 'n', probing happens on demand either with "mci*.probe=1"
++	  or with driver/board code calling device_detect.
+ 
+ config MCI_INFO
+ 	bool "MCI Info"
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.26.2
+
 
 _______________________________________________
 barebox mailing list
