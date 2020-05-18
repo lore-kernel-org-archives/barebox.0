@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from conuserg-10.nifty.com ([210.131.2.77])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jZcAT-0002cQ-TR
- for barebox@lists.infradead.org; Fri, 15 May 2020 15:22:38 +0000
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Sat, 16 May 2020 00:22:15 +0900
-Message-Id: <20200515152215.146833-1-masahiroy@kernel.org>
+ id 1jaZ5y-000474-V9
+ for barebox@lists.infradead.org; Mon, 18 May 2020 06:17:53 +0000
+Date: Mon, 18 May 2020 08:17:44 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200518061744.GH11869@pengutronix.de>
+References: <20200517181941.6982-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200517181941.6982-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,67 +22,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] kvx: do not include empty <config.h>
-To: barebox@lists.infradead.org
-Cc: Masahiro Yamada <masahiroy@kernel.org>
+Subject: Re: [PATCH 1/3] mci: define fall-back hw_dev->detect for all MCIs
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, Lucas Stach <lst@pengutronix.de>
 
-<config.h> is per-board config file, which is only allowed for old
-boards.
+On Sun, May 17, 2020 at 08:19:39PM +0200, Ahmad Fatoum wrote:
+> A barebox environment oftree node may reference its storage by a phandle
+> to a partition node under a MCI node. barebox will then call the
+> device's detect method to detect the card if this hasn't happened
+> before. Out of 17 MCI drivers, 8 host drivers already implement
+> a detect method, which just calls mci_detect_card.
+> 
+> Provide a generic implementation that does the same.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+> Cc: Lucas Stach <lst@pengutronix.de>
+> ---
+>  drivers/mci/mci-core.c | 19 ++++++++++++++-----
+>  1 file changed, 14 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+> index e8844a3c0007..ab80c4d5ba5c 100644
+> --- a/drivers/mci/mci-core.c
+> +++ b/drivers/mci/mci-core.c
+> @@ -1806,9 +1806,14 @@ int mci_detect_card(struct mci_host *host)
+>  
+>  static int mci_detect(struct device_d *dev)
+>  {
+> -	struct mci *mci = container_of(dev, struct mci, dev);
+> +	struct mci *mci;
+> +
+> +	list_for_each_entry(mci, &mci_list, list) {
+> +		if (dev == &mci->dev || dev == mci->host->hw_dev)
+> +			return mci_detect_card(mci->host);
+> +	}
 
-For new boards, the top Makefile creates an empty include/config.h
+I think it would look better to keep the existing mci_detect function
+and add a new mci_hw_detect which does the loop for the hw device only.
 
-kvx does not have config.h, so #include <config.h> is useless.
+Otherwise I'm happy with this approach.
 
-Also, remove meaningless board-$(CONFIG_GENERIC).
+Sascha
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
----
-
- arch/kvx/Makefile          | 2 --
- arch/kvx/cpu/barebox.lds.S | 1 -
- arch/kvx/cpu/start.S       | 1 -
- 3 files changed, 4 deletions(-)
-
-diff --git a/arch/kvx/Makefile b/arch/kvx/Makefile
-index c97cff345..7abaed651 100644
---- a/arch/kvx/Makefile
-+++ b/arch/kvx/Makefile
-@@ -2,8 +2,6 @@ KBUILD_DEFCONFIG := generic_defconfig
- 
- KBUILD_CPPFLAGS += -fno-strict-aliasing
- 
--board-$(CONFIG_GENERIC) := generic
--
- KALLSYMS += --symbol-prefix=_
- 
- ifeq ($(CROSS_COMPILE),)
-diff --git a/arch/kvx/cpu/barebox.lds.S b/arch/kvx/cpu/barebox.lds.S
-index 8d1944afb..bf92564cf 100644
---- a/arch/kvx/cpu/barebox.lds.S
-+++ b/arch/kvx/cpu/barebox.lds.S
-@@ -3,7 +3,6 @@
-  * Copyright (C) 2019 Kalray Inc.
-  */
- 
--#include <config.h>
- #include <asm/common.h>
- #include <asm/sys_arch.h>
- #include <asm-generic/barebox.lds.h>
-diff --git a/arch/kvx/cpu/start.S b/arch/kvx/cpu/start.S
-index a02900fb9..d90272c71 100644
---- a/arch/kvx/cpu/start.S
-+++ b/arch/kvx/cpu/start.S
-@@ -3,7 +3,6 @@
-  * Copyright (C) 2019 Kalray Inc.
-  */
- 
--#include <config.h>
- #include <linux/linkage.h>
- #include <asm/privilege.h>
- #include <asm/sys_arch.h>
 -- 
-2.25.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
