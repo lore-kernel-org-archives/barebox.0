@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jaNtJ-0006sn-Q7
- for barebox@lists.infradead.org; Sun, 17 May 2020 18:20:03 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Sun, 17 May 2020 20:19:41 +0200
-Message-Id: <20200517181941.6982-3-a.fatoum@pengutronix.de>
-In-Reply-To: <20200517181941.6982-1-a.fatoum@pengutronix.de>
-References: <20200517181941.6982-1-a.fatoum@pengutronix.de>
+ id 1jaZNa-0000Ur-Qo
+ for barebox@lists.infradead.org; Mon, 18 May 2020 06:36:04 +0000
+Date: Mon, 18 May 2020 08:36:01 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200518063601.GN11869@pengutronix.de>
+References: <20200517182039.9259-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200517182039.9259-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,46 +22,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] mci: reword MCI_STARTUP text
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] treewide: replace commas with semicolons where appropriate
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-With the recent addition of a generic device_detect for MCI devices,
-the MCI_STARTUP help text is no longer accurate. Reword it, but leave
-the option as-is as some boards may be broken if we drop the option
-(e.g. because they still depend on a probe order or call
-default_environment_path_set, but don't explicitly detect the device).
+On Sun, May 17, 2020 at 08:20:39PM +0200, Ahmad Fatoum wrote:
+> Found by searching drivers/ arch/ common/ and lib/ for
+> 
+>  /^\s+[^."/\*\[\s\{\(A-Z][^\[\{\(]*=[^\{\(]+,$/
+> 
+> Because the comma has the lowest precedence in C,
+> this shouldn't result in any functional change.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  .../boards/eukrea_cpuimx35/eukrea_cpuimx35.c  |  2 +-
+>  arch/arm/mach-imx/iim.c                       |  6 +++---
+>  arch/nios2/lib/libgcc.c                       | 21 ++++++++++---------
+>  drivers/i2c/busses/i2c-imx-early.c            |  2 +-
+>  drivers/i2c/busses/i2c-imx.c                  |  2 +-
+>  drivers/i2c/busses/i2c-omap.c                 |  2 +-
+>  drivers/mci/stm32_sdmmc2.c                    |  4 ++--
+>  drivers/net/usb/usbnet.c                      | 10 ++++-----
+>  8 files changed, 25 insertions(+), 24 deletions(-)
+> 
+> diff --git a/arch/nios2/lib/libgcc.c b/arch/nios2/lib/libgcc.c
+> index abf93fdd71d4..814df7331058 100644
+> --- a/arch/nios2/lib/libgcc.c
+> +++ b/arch/nios2/lib/libgcc.c
+> @@ -319,15 +319,15 @@ DWtype __divdi3(DWtype u, DWtype v)
+>  	DWunion vv = {.ll = v};
+>  	DWtype w;
+>  
+> -	if (uu.s.high < 0)
+> -		c = ~c,
+> -
+> -	uu.ll = -uu.ll;
+> -
+> -	if (vv.s.high < 0)
+> -		c = ~c,
+> +	if (uu.s.high < 0) {
+> +		c = ~c;
+> +		uu.ll = -uu.ll;
+> +	}
+>  
+> -	vv.ll = -vv.ll;
+> +	if (vv.s.high < 0) {
+> +		c = ~c;
+> +		vv.ll = -vv.ll;
+> +	}
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- drivers/mci/Kconfig | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Indeed it looks like the code is correct, not the indention.
 
-diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
-index 60c60ceaa527..6ae1e812528c 100644
---- a/drivers/mci/Kconfig
-+++ b/drivers/mci/Kconfig
-@@ -12,12 +12,12 @@ if MCI
- comment "--- Feature list ---"
- 
- config MCI_STARTUP
--	bool "Probe on system start"
-+	bool "Force probe on system start"
- 	help
--	  Say 'y' here if the MCI framework should probe for attached MCI cards
--	  on system start up. This is required if the card carries barebox's
--	  environment (for example on systems where the MCI card is the sole
--	  bootmedia). Otherwise probing run on demand with "mci*.probe=1"
-+	  Say 'y' here if the MCI framework should always probe for all attached
-+	  MCI cards on system start up. This may required for some legacy boards.
-+	  When this is 'n', probing happens on demand either with "mci*.probe=1"
-+	  or with driver/board code calling device_detect.
- 
- config MCI_INFO
- 	bool "MCI Info"
+Applied, thanks
+
+Sascha
+
 -- 
-2.26.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
