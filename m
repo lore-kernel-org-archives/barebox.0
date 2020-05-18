@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jaZtK-0002av-Jq
- for barebox@lists.infradead.org; Mon, 18 May 2020 07:08:52 +0000
-Date: Mon, 18 May 2020 09:08:48 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200518070848.GP11869@pengutronix.de>
-References: <20200513114636.811-1-l.stach@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200513114636.811-1-l.stach@pengutronix.de>
+Received: from mickerik.phytec.de ([195.145.39.210])
+ by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jad9Q-0004A2-N1
+ for barebox@lists.infradead.org; Mon, 18 May 2020 10:37:42 +0000
+From: Robert Karszniewicz <r.karszniewicz@phytec.de>
+Date: Mon, 18 May 2020 12:37:35 +0200
+Message-Id: <1589798255-359359-1-git-send-email-r.karszniewicz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,70 +14,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mci: core: add device parameter for eMMC boot ack
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] blspec: Allow the "options" key to be given multiple times
+To: barebox@lists.infradead.org
 
-On Wed, May 13, 2020 at 01:46:36PM +0200, Lucas Stach wrote:
-> This adds an easy way to enable the boot acknowledge function of
-> a eMMC device, without the need to frob the EXT_CSD setting via
-> the mmc_extcsd command.
-> A boot ack is required whenever the boot partitions are read via
-> the fast initialization boot protocol.
-> 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> ---
->  drivers/mci/mci-core.c | 33 +++++++++++++++++++++++++++------
->  include/mci.h          |  2 ++
->  2 files changed, 29 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-> index f3718327f18d..d33bc0c1a41e 100644
-> --- a/drivers/mci/mci-core.c
-> +++ b/drivers/mci/mci-core.c
-> @@ -516,6 +516,7 @@ static int mmc_change_freq(struct mci *mci)
->  
->  		mci->ext_csd_part_config = mci->ext_csd[EXT_CSD_PARTITION_CONFIG];
->  		mci->bootpart = (mci->ext_csd_part_config >> 3) & 0x7;
-> +		mci->boot_ack_enable = (mci->ext_csd_part_config >> 6) & 0x1;
->  	}
->  
->  	return 0;
-> @@ -1592,6 +1593,17 @@ static int mci_set_boot(struct param_d *param, void *priv)
->  			  EXT_CSD_PARTITION_CONFIG, mci->ext_csd_part_config);
->  }
->  
-> +static int mci_set_boot_ack(struct param_d *param, void *priv)
-> +{
-> +	struct mci *mci = priv;
-> +
-> +	mci->ext_csd_part_config &= ~(0x1 << 6);
-> +	mci->ext_csd_part_config |= mci->boot_ack_enable << 6;
-> +
-> +	return mci_switch(mci,
-> +			  EXT_CSD_PARTITION_CONFIG, mci->ext_csd_part_config);
-> +}
+The Boot Loader Spec says:
+"This key is optional and may appear more than once in which case all
+specified parameters are used in the order they are listed."
 
-There's only one correct setting for each board or SoC. Instead of
-letting the user choose between right and wrong, can't we add a hook to
-be called from the board/SoC code? A device tree property might be an
-option as well, something like barebox,enable-boot-ack.
+Signed-off-by: Robert Karszniewicz <r.karszniewicz@phytec.de>
+---
+ common/blspec.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-There are also bits to change the bus width after power up which might
-need adjustments which would mean another parameter with the current
-approach.
-
-Sascha
-
+diff --git a/common/blspec.c b/common/blspec.c
+index 1a6d581..3be26d0 100644
+--- a/common/blspec.c
++++ b/common/blspec.c
+@@ -298,6 +298,18 @@ static struct blspec_entry *blspec_entry_open(struct bootentries *bootentries,
+ 
+ 		val = end;
+ 
++		if (!strcmp(name, "options")) {
++			/* If there was a previous "options" key given, prepend its value
++			 * (as per spec). */
++			char *prev_val = blspec_entry_var_get(entry, name);
++			if (prev_val) {
++				char *opts = xasprintf("%s %s", prev_val, val);
++				blspec_entry_var_set(entry, name, opts);
++				free(opts);
++				continue;
++			}
++		}
++
+ 		blspec_entry_var_set(entry, name, val);
+ 	}
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.7.4
+
 
 _______________________________________________
 barebox mailing list
