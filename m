@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jaZ6c-0004RR-2w
- for barebox@lists.infradead.org; Mon, 18 May 2020 06:18:31 +0000
-Date: Mon, 18 May 2020 08:18:28 +0200
+ id 1jaZtK-0002av-Jq
+ for barebox@lists.infradead.org; Mon, 18 May 2020 07:08:52 +0000
+Date: Mon, 18 May 2020 09:08:48 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200518061828.GI11869@pengutronix.de>
-References: <20200515145825.145665-1-masahiroy@kernel.org>
+Message-ID: <20200518070848.GP11869@pengutronix.de>
+References: <20200513114636.811-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200515145825.145665-1-masahiroy@kernel.org>
+In-Reply-To: <20200513114636.811-1-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,44 +22,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] .gitignore: drop stale ignore pattern include/asm
-To: Masahiro Yamada <masahiroy@kernel.org>
+Subject: Re: [PATCH] mci: core: add device parameter for eMMC boot ack
+To: Lucas Stach <l.stach@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, May 15, 2020 at 11:58:25PM +0900, Masahiro Yamada wrote:
-> In old days, Linux created a symlink include/asm -> include/asm-*,
-> but all the asm headers were moved to arch/*/include/asm, which
-> is the same for Barebox too.
+On Wed, May 13, 2020 at 01:46:36PM +0200, Lucas Stach wrote:
+> This adds an easy way to enable the boot acknowledge function of
+> a eMMC device, without the need to frob the EXT_CSD setting via
+> the mmc_extcsd command.
+> A boot ack is required whenever the boot partitions are read via
+> the fast initialization boot protocol.
 > 
-> Remove the bitrotten ignore pattern.
-> 
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 > ---
+>  drivers/mci/mci-core.c | 33 +++++++++++++++++++++++++++------
+>  include/mci.h          |  2 ++
+>  2 files changed, 29 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+> index f3718327f18d..d33bc0c1a41e 100644
+> --- a/drivers/mci/mci-core.c
+> +++ b/drivers/mci/mci-core.c
+> @@ -516,6 +516,7 @@ static int mmc_change_freq(struct mci *mci)
+>  
+>  		mci->ext_csd_part_config = mci->ext_csd[EXT_CSD_PARTITION_CONFIG];
+>  		mci->bootpart = (mci->ext_csd_part_config >> 3) & 0x7;
+> +		mci->boot_ack_enable = (mci->ext_csd_part_config >> 6) & 0x1;
+>  	}
+>  
+>  	return 0;
+> @@ -1592,6 +1593,17 @@ static int mci_set_boot(struct param_d *param, void *priv)
+>  			  EXT_CSD_PARTITION_CONFIG, mci->ext_csd_part_config);
+>  }
+>  
+> +static int mci_set_boot_ack(struct param_d *param, void *priv)
+> +{
+> +	struct mci *mci = priv;
+> +
+> +	mci->ext_csd_part_config &= ~(0x1 << 6);
+> +	mci->ext_csd_part_config |= mci->boot_ack_enable << 6;
+> +
+> +	return mci_switch(mci,
+> +			  EXT_CSD_PARTITION_CONFIG, mci->ext_csd_part_config);
+> +}
 
-Applied, thanks
+There's only one correct setting for each board or SoC. Instead of
+letting the user choose between right and wrong, can't we add a hook to
+be called from the board/SoC code? A device tree property might be an
+option as well, something like barebox,enable-boot-ack.
+
+There are also bits to change the bus width after power up which might
+need adjustments which would mean another parameter with the current
+approach.
 
 Sascha
-
-> 
->  include/.gitignore | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/include/.gitignore b/include/.gitignore
-> index f28372a3d..18e58a752 100644
-> --- a/include/.gitignore
-> +++ b/include/.gitignore
-> @@ -1,2 +1 @@
-> -asm
->  /config.h
-> -- 
-> 2.25.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
