@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from zimbra2.kalray.eu ([92.103.151.219])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jZcO0-0006hO-Ta
- for barebox@lists.infradead.org; Fri, 15 May 2020 15:36:37 +0000
-Date: Fri, 15 May 2020 17:36:26 +0200 (CEST)
-From: =?utf-8?Q?Cl=C3=A9ment?= Leger <cleger@kalray.eu>
-Message-ID: <1973581334.3088460.1589556986486.JavaMail.zimbra@kalray.eu>
-In-Reply-To: <20200515152215.146833-1-masahiroy@kernel.org>
-References: <20200515152215.146833-1-masahiroy@kernel.org>
+ id 1jaZ9e-0007CG-HD
+ for barebox@lists.infradead.org; Mon, 18 May 2020 06:21:40 +0000
+Date: Mon, 18 May 2020 08:21:36 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200518062136.GK11869@pengutronix.de>
+References: <20200515153947.31109-1-cleger@kalray.eu>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200515153947.31109-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,47 +18,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] kvx: do not include empty <config.h>
-To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] clocksource: kvx: remove unused variable np.
+To: Clement Leger <cleger@kalray.eu>
+Cc: barebox@lists.infradead.org
 
-LS0tLS0gT24gMTUgTWF5LCAyMDIwLCBhdCAxNzoyMiwgTWFzYWhpcm8gWWFtYWRhIG1hc2FoaXJv
-eUBrZXJuZWwub3JnIHdyb3RlOgoKPiA8Y29uZmlnLmg+IGlzIHBlci1ib2FyZCBjb25maWcgZmls
-ZSwgd2hpY2ggaXMgb25seSBhbGxvd2VkIGZvciBvbGQKPiBib2FyZHMuCj4gCj4gRm9yIG5ldyBi
-b2FyZHMsIHRoZSB0b3AgTWFrZWZpbGUgY3JlYXRlcyBhbiBlbXB0eSBpbmNsdWRlL2NvbmZpZy5o
-Cj4gCj4ga3Z4IGRvZXMgbm90IGhhdmUgY29uZmlnLmgsIHNvICNpbmNsdWRlIDxjb25maWcuaD4g
-aXMgdXNlbGVzcy4KPiAKPiBBbHNvLCByZW1vdmUgbWVhbmluZ2xlc3MgYm9hcmQtJChDT05GSUdf
-R0VORVJJQykuCgpIaSBNYXNhaGlybywKClRoYW5rcyBmb3Igc3BvdHRpbmcgdGhhdC4KCkZXSVc6
-CkFja2VkLUJ5OiBDbGVtZW50IExlZ2VyIDxjbGVnZXJAa2FscmF5LmV1PiAKCkNsw6ltZW50Cgo+
-IAo+IFNpZ25lZC1vZmYtYnk6IE1hc2FoaXJvIFlhbWFkYSA8bWFzYWhpcm95QGtlcm5lbC5vcmc+
-Cj4gLS0tCj4gCj4gYXJjaC9rdngvTWFrZWZpbGUgICAgICAgICAgfCAyIC0tCj4gYXJjaC9rdngv
-Y3B1L2JhcmVib3gubGRzLlMgfCAxIC0KPiBhcmNoL2t2eC9jcHUvc3RhcnQuUyAgICAgICB8IDEg
-LQo+IDMgZmlsZXMgY2hhbmdlZCwgNCBkZWxldGlvbnMoLSkKPiAKPiBkaWZmIC0tZ2l0IGEvYXJj
-aC9rdngvTWFrZWZpbGUgYi9hcmNoL2t2eC9NYWtlZmlsZQo+IGluZGV4IGM5N2NmZjM0NS4uN2Fi
-YWVkNjUxIDEwMDY0NAo+IC0tLSBhL2FyY2gva3Z4L01ha2VmaWxlCj4gKysrIGIvYXJjaC9rdngv
-TWFrZWZpbGUKPiBAQCAtMiw4ICsyLDYgQEAgS0JVSUxEX0RFRkNPTkZJRyA6PSBnZW5lcmljX2Rl
-ZmNvbmZpZwo+IAo+IEtCVUlMRF9DUFBGTEFHUyArPSAtZm5vLXN0cmljdC1hbGlhc2luZwo+IAo+
-IC1ib2FyZC0kKENPTkZJR19HRU5FUklDKSA6PSBnZW5lcmljCj4gLQo+IEtBTExTWU1TICs9IC0t
-c3ltYm9sLXByZWZpeD1fCj4gCj4gaWZlcSAoJChDUk9TU19DT01QSUxFKSwpCj4gZGlmZiAtLWdp
-dCBhL2FyY2gva3Z4L2NwdS9iYXJlYm94Lmxkcy5TIGIvYXJjaC9rdngvY3B1L2JhcmVib3gubGRz
-LlMKPiBpbmRleCA4ZDE5NDRhZmIuLmJmOTI1NjRjZiAxMDA2NDQKPiAtLS0gYS9hcmNoL2t2eC9j
-cHUvYmFyZWJveC5sZHMuUwo+ICsrKyBiL2FyY2gva3Z4L2NwdS9iYXJlYm94Lmxkcy5TCj4gQEAg
-LTMsNyArMyw2IEBACj4gICogQ29weXJpZ2h0IChDKSAyMDE5IEthbHJheSBJbmMuCj4gICovCj4g
-Cj4gLSNpbmNsdWRlIDxjb25maWcuaD4KPiAjaW5jbHVkZSA8YXNtL2NvbW1vbi5oPgo+ICNpbmNs
-dWRlIDxhc20vc3lzX2FyY2guaD4KPiAjaW5jbHVkZSA8YXNtLWdlbmVyaWMvYmFyZWJveC5sZHMu
-aD4KPiBkaWZmIC0tZ2l0IGEvYXJjaC9rdngvY3B1L3N0YXJ0LlMgYi9hcmNoL2t2eC9jcHUvc3Rh
-cnQuUwo+IGluZGV4IGEwMjkwMGZiOS4uZDkwMjcyYzcxIDEwMDY0NAo+IC0tLSBhL2FyY2gva3Z4
-L2NwdS9zdGFydC5TCj4gKysrIGIvYXJjaC9rdngvY3B1L3N0YXJ0LlMKPiBAQCAtMyw3ICszLDYg
-QEAKPiAgKiBDb3B5cmlnaHQgKEMpIDIwMTkgS2FscmF5IEluYy4KPiAgKi8KPiAKPiAtI2luY2x1
-ZGUgPGNvbmZpZy5oPgo+ICNpbmNsdWRlIDxsaW51eC9saW5rYWdlLmg+Cj4gI2luY2x1ZGUgPGFz
-bS9wcml2aWxlZ2UuaD4KPiAjaW5jbHVkZSA8YXNtL3N5c19hcmNoLmg+Cj4gLS0KPiAyLjI1LjEK
-PiAKPiAKPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwo+
-IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4gYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCj4gaHR0
-cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94CgpfX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcg
-bGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5v
-cmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Fri, May 15, 2020 at 05:39:47PM +0200, Clement Leger wrote:
+> Remove unused variable np from probe function.
+> 
+> Signed-off-by: Clement Leger <cleger@kalray.eu>
+> ---
+>  drivers/clocksource/kvx_timer.c | 1 -
+>  1 file changed, 1 deletion(-)
+
+Applied with the period from the subject removed, thanks
+
+Sascha
+
+> 
+> diff --git a/drivers/clocksource/kvx_timer.c b/drivers/clocksource/kvx_timer.c
+> index f16d77b9d..4125ddbee 100644
+> --- a/drivers/clocksource/kvx_timer.c
+> +++ b/drivers/clocksource/kvx_timer.c
+> @@ -27,7 +27,6 @@ static int kvx_timer_probe(struct device_d *dev)
+>  {
+>  	struct clk *clk;
+>  	uint32_t clk_freq;
+> -	struct device_node *np = dev->device_node;
+>  
+>  	/* Get clock frequency */
+>  	clk = clk_get(dev, NULL);
+> -- 
+> 2.17.1
+> 
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
