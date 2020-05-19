@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from conuserg-08.nifty.com ([210.131.2.75])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jawSP-0008LF-4f
- for barebox@lists.infradead.org; Tue, 19 May 2020 07:14:34 +0000
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Tue, 19 May 2020 16:13:49 +0900
-Message-Id: <20200519071353.395493-5-masahiroy@kernel.org>
-In-Reply-To: <20200519071353.395493-1-masahiroy@kernel.org>
-References: <20200519071353.395493-1-masahiroy@kernel.org>
+ id 1jb5XR-0001RM-3I
+ for barebox@lists.infradead.org; Tue, 19 May 2020 16:56:22 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Tue, 19 May 2020 18:56:18 +0200
+Message-Id: <20200519165618.3858-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -17,129 +15,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/8] kbuild: resync modkern_{c,
- a}flags and quiet_modtag with Linux 5.7-rc6
+Subject: [PATCH] aiodev: Replace license and copyright boilerplate by SPDX
+ identfiers
 To: barebox@lists.infradead.org
-Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, Roland Hieber <rhi@pengutronix.de>
 
-The latest Linux calculates them more simply; part-of-module is set
-when the target is being built for a module.
-
-Also, rename real-objs-{y,m} to real-obj-{y,m}.
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
----
-
- scripts/Makefile.build | 24 ++----------------------
- scripts/Makefile.lib   | 23 ++++++++++++++++++-----
- 2 files changed, 20 insertions(+), 27 deletions(-)
-
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index d94ad488d..f575a07fd 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -88,22 +88,6 @@ endif
- # Compile C sources (.c)
- # ---------------------------------------------------------------------------
- 
--# Default is built-in, unless we know otherwise
--modkern_cflags := $(CFLAGS_KERNEL)
--quiet_modtag := $(empty)   $(empty)
--
--$(real-objs-m)        : modkern_cflags := $(CFLAGS_MODULE)
--$(real-objs-m:.o=.i)  : modkern_cflags := $(CFLAGS_MODULE)
--$(real-objs-m:.o=.s)  : modkern_cflags := $(CFLAGS_MODULE)
--$(real-objs-m:.o=.lst): modkern_cflags := $(CFLAGS_MODULE)
--
--$(real-objs-m)        : quiet_modtag := [M]
--$(real-objs-m:.o=.i)  : quiet_modtag := [M]
--$(real-objs-m:.o=.s)  : quiet_modtag := [M]
--$(real-objs-m:.o=.lst): quiet_modtag := [M]
--
--$(obj-m)              : quiet_modtag := [M]
--
- # Default for not multi-part modules
- modname = $(basetarget)
- 
-@@ -175,11 +159,6 @@ quiet_cmd_cc_lst_c = MKLST   $@
- # Compile assembler sources (.S)
- # ---------------------------------------------------------------------------
- 
--modkern_aflags := $(AFLAGS_KERNEL)
--
--$(real-objs-m)      : modkern_aflags := $(AFLAGS_MODULE)
--$(real-objs-m:.o=.s): modkern_aflags := $(AFLAGS_MODULE)
--
- quiet_cmd_as_s_S = CPP $(quiet_modtag) $@
- cmd_as_s_S       = $(CPP) $(a_flags)   -o $@ $<
- 
-@@ -198,7 +177,8 @@ cmd_pbl_as_o_S       = $(CC) -D__PBL__ $(a_flags) $(PBL_CPPFLAGS) -c -o $@ $<
- %.o: %.S FORCE
- 	$(call if_changed_dep,as_o_S)
- 
--targets += $(real-objs-y) $(real-objs-m) $(lib-y) $(pbl-y)
-+targets += $(filter-out $(subdir-obj-y), $(real-obj-y)) $(real-obj-m) $(lib-y)
-+targets += $(pbl-y)
- targets += $(extra-y) $(always-y) $(MAKECMDGOALS)
- 
- # Linker scripts preprocessor (.lds.S -> .lds)
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index ef723c0ca..a6cba747f 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -82,9 +82,10 @@ extra-y += $(patsubst %,%.bbenv$(DEFAULT_COMPRESSION_SUFFIX),$(bbenv-y))
- extra-y += $(patsubst %,%.bbenv$(DEFAULT_COMPRESSION_SUFFIX).S,$(bbenv-y))
- extra-y += $(patsubst %,%.bbenv$(DEFAULT_COMPRESSION_SUFFIX).o,$(bbenv-y))
- 
--# Replace multi-part objects by their individual parts, look at local dir only
--real-objs-y := $(foreach m, $(filter-out $(subdir-obj-y), $(obj-y)), $(if $(strip $($(m:.o=-objs)) $($(m:.o=-y))),$($(m:.o=-objs)) $($(m:.o=-y)),$(m))) $(extra-y)
--real-objs-m := $(foreach m, $(obj-m), $(if $(strip $($(m:.o=-objs)) $($(m:.o=-y))),$($(m:.o=-objs)) $($(m:.o=-y)),$(m)))
-+# Replace multi-part objects by their individual parts,
-+# including built-in.a from subdirectories
-+real-obj-y := $(foreach m, $(obj-y), $(if $(strip $($(m:.o=-objs)) $($(m:.o=-y)) $($(m:.o=-))),$($(m:.o=-objs)) $($(m:.o=-y)),$(m)))
-+real-obj-m := $(foreach m, $(obj-m), $(if $(strip $($(m:.o=-objs)) $($(m:.o=-y)) $($(m:.o=-m)) $($(m:.o=-))),$($(m:.o=-objs)) $($(m:.o=-y)) $($(m:.o=-m)),$(m)))
- 
- always-y += $(always-m)
- 
-@@ -98,8 +99,8 @@ obj-m		:= $(addprefix $(obj)/,$(obj-m))
- lib-y		:= $(addprefix $(obj)/,$(lib-y))
- pbl-y		:= $(addprefix $(obj)/,$(pbl-y))
- subdir-obj-y	:= $(addprefix $(obj)/,$(subdir-obj-y))
--real-objs-y	:= $(addprefix $(obj)/,$(real-objs-y))
--real-objs-m	:= $(addprefix $(obj)/,$(real-objs-m))
-+real-obj-y	:= $(addprefix $(obj)/,$(real-obj-y))
-+real-obj-m	:= $(addprefix $(obj)/,$(real-obj-m))
- single-used-m	:= $(addprefix $(obj)/,$(single-used-m))
- multi-used-y	:= $(addprefix $(obj)/,$(multi-used-y))
- multi-used-m	:= $(addprefix $(obj)/,$(multi-used-m))
-@@ -152,6 +153,18 @@ __a_flags	=                          $(call flags,_a_flags)
- __cpp_flags     =                          $(call flags,_cpp_flags)
- endif
- 
-+part-of-module = $(if $(filter $(basename $@).o, $(real-obj-m)),y)
-+quiet_modtag = $(if $(part-of-module),[M],   )
-+
-+modkern_cflags =                                          \
-+	$(if $(part-of-module),                           \
-+		$(KBUILD_CFLAGS_MODULE) $(CFLAGS_MODULE), \
-+		$(KBUILD_CFLAGS_KERNEL) $(CFLAGS_KERNEL) $(modfile_flags))
-+
-+modkern_aflags = $(if $(part-of-module),				\
-+			$(KBUILD_AFLAGS_MODULE) $(AFLAGS_MODULE),	\
-+			$(KBUILD_AFLAGS_KERNEL) $(AFLAGS_KERNEL))
-+
- c_flags        = -Wp,-MD,$(depfile) $(NOSTDINC_FLAGS) $(KBUILD_CPPFLAGS) \
- 		 $(__c_flags) $(modkern_cflags) \
- 		 -D"KBUILD_STR(s)=\#s" $(basename_flags) $(modname_flags)
--- 
-2.25.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhpcyBhZGFwdHMgYWxsIGZpbGVzIHRoYXQgd2VyZSBpZGVudGlmZWQgYnkgbGljZW5zZWNoZWNr
+CihodHRwczovL3NhbHNhLmRlYmlhbi5vcmcvYnVpbGQtY29tbW9uLXRlYW0vbGljZW5zZWNoZWNr
+LmdpdCkgYXMKbGljZW5zZWQgdW5kZXIgdGhlIEdQTCBhbmQgdGhhdCBoYXZlIGEgKElNSE8pIGNs
+ZWFyIGNvcHlyaWdodCBzdGF0ZW1lbnQuCgpUaGUgYWR2YW50YWdlIGlzIHRoYXQgdGhlc2Ugc3Bl
+Y2lmaWVycyBhcmUgbWFjaGluZS1wYXJzZWFibGUgd2hpY2ggaGVscHMKbGljZW5zZSBjb25mb3Jt
+YW5jZSwgZS5nLiBmb3IgcGFja2FnaW5nIGJhcmVib3ggaW4gRGViaWFuLgoKU2lnbmVkLW9mZi1i
+eTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0t
+CiBkcml2ZXJzL2Fpb2Rldi9sbTc1LmMgICAgICAgICAgfCAxOCArKystLS0tLS0tLS0tLS0tLS0K
+IGRyaXZlcnMvYWlvZGV2L3FvcmlxX3RoZXJtYWwuYyB8IDE3ICsrKy0tLS0tLS0tLS0tLS0tCiAy
+IGZpbGVzIGNoYW5nZWQsIDYgaW5zZXJ0aW9ucygrKSwgMjkgZGVsZXRpb25zKC0pCgpkaWZmIC0t
+Z2l0IGEvZHJpdmVycy9haW9kZXYvbG03NS5jIGIvZHJpdmVycy9haW9kZXYvbG03NS5jCmluZGV4
+IGFmNTQyMjdlNDAzZC4uODE4NmZkMmMyYjk3IDEwMDY0NAotLS0gYS9kcml2ZXJzL2Fpb2Rldi9s
+bTc1LmMKKysrIGIvZHJpdmVycy9haW9kZXYvbG03NS5jCkBAIC0xLDIxICsxLDkgQEAKKy8vIFNQ
+RFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9yLWxhdGVyCisvLyBTUERYLUZpbGVDb3B5
+cmlnaHRUZXh0OiAxOTk4LCAxOTk5IEZyb2RvIExvb2lqYWFyZCA8ZnJvZG9sQGRkcy5ubD4KKwog
+LyoKICAqIGxtNzUuYyAtIFBhcnQgb2YgbG1fc2Vuc29ycywgTGludXgga2VybmVsIG1vZHVsZXMg
+Zm9yIGhhcmR3YXJlCiAgKgkgbW9uaXRvcmluZwotICogQ29weXJpZ2h0IChjKSAxOTk4LCAxOTk5
+ICBGcm9kbyBMb29pamFhcmQgPGZyb2RvbEBkZHMubmw+Ci0gKgotICogVGhpcyBwcm9ncmFtIGlz
+IGZyZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmlidXRlIGl0IGFuZC9vciBtb2RpZnkKLSAq
+IGl0IHVuZGVyIHRoZSB0ZXJtcyBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgYXMg
+cHVibGlzaGVkIGJ5Ci0gKiB0aGUgRnJlZSBTb2Z0d2FyZSBGb3VuZGF0aW9uOyBlaXRoZXIgdmVy
+c2lvbiAyIG9mIHRoZSBMaWNlbnNlLCBvcgotICogKGF0IHlvdXIgb3B0aW9uKSBhbnkgbGF0ZXIg
+dmVyc2lvbi4KLSAqCi0gKiBUaGlzIHByb2dyYW0gaXMgZGlzdHJpYnV0ZWQgaW4gdGhlIGhvcGUg
+dGhhdCBpdCB3aWxsIGJlIHVzZWZ1bCwKLSAqIGJ1dCBXSVRIT1VUIEFOWSBXQVJSQU5UWTsgd2l0
+aG91dCBldmVuIHRoZSBpbXBsaWVkIHdhcnJhbnR5IG9mCi0gKiBNRVJDSEFOVEFCSUxJVFkgb3Ig
+RklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UuICBTZWUgdGhlCi0gKiBHTlUgR2VuZXJh
+bCBQdWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLgotICoKLSAqIFlvdSBzaG91bGQgaGF2
+ZSByZWNlaXZlZCBhIGNvcHkgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlCi0gKiBh
+bG9uZyB3aXRoIHRoaXMgcHJvZ3JhbTsgaWYgbm90LCB3cml0ZSB0byB0aGUgRnJlZSBTb2Z0d2Fy
+ZQotICogRm91bmRhdGlvbiwgSW5jLiwgNjc1IE1hc3MgQXZlLCBDYW1icmlkZ2UsIE1BIDAyMTM5
+LCBVU0EuCiAgKi8KIAogI2luY2x1ZGUgPGNvbW1vbi5oPgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9h
+aW9kZXYvcW9yaXFfdGhlcm1hbC5jIGIvZHJpdmVycy9haW9kZXYvcW9yaXFfdGhlcm1hbC5jCmlu
+ZGV4IDc1NTZmZWYwMjU4Ni4uZDYyMDQ4ZWYxM2Q2IDEwMDY0NAotLS0gYS9kcml2ZXJzL2Fpb2Rl
+di9xb3JpcV90aGVybWFsLmMKKysrIGIvZHJpdmVycy9haW9kZXYvcW9yaXFfdGhlcm1hbC5jCkBA
+IC0xLDE3ICsxLDYgQEAKLS8qCi0gKiBDb3B5cmlnaHQgMjAxNiBGcmVlc2NhbGUgU2VtaWNvbmR1
+Y3RvciwgSW5jLgotICogQ29weXJpZ2h0IDIwMTcgTlhQLgotICoKLSAqIFRoaXMgcHJvZ3JhbSBp
+cyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3IgbW9kaWZ5IGl0
+Ci0gKiB1bmRlciB0aGUgdGVybXMgYW5kIGNvbmRpdGlvbnMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1
+YmxpYyBMaWNlbnNlLAotICogdmVyc2lvbiAyLCBhcyBwdWJsaXNoZWQgYnkgdGhlIEZyZWUgU29m
+dHdhcmUgRm91bmRhdGlvbi4KLSAqCi0gKiBUaGlzIHByb2dyYW0gaXMgZGlzdHJpYnV0ZWQgaW4g
+dGhlIGhvcGUgaXQgd2lsbCBiZSB1c2VmdWwsIGJ1dCBXSVRIT1VUCi0gKiBBTlkgV0FSUkFOVFk7
+IHdpdGhvdXQgZXZlbiB0aGUgaW1wbGllZCB3YXJyYW50eSBvZiBNRVJDSEFOVEFCSUxJVFkgb3IK
+LSAqIEZJVE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFLiAgU2VlIHRoZSBHTlUgR2VuZXJh
+bCBQdWJsaWMgTGljZW5zZSBmb3IKLSAqIG1vcmUgZGV0YWlscy4KLSAqCi0gKi8KKy8vIFNQRFgt
+TGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9ubHkKKy8vIFNQRFgtRmlsZUNvcHlyaWdodFRl
+eHQ6IDIwMTYgRnJlZXNjYWxlIFNlbWljb25kdWN0b3IsIEluYy4KKy8vIFNQRFgtRmlsZUNvcHly
+aWdodFRleHQ6IDIwMTcgTlhQCiAKICNpbmNsdWRlIDxjb21tb24uaD4KICNpbmNsdWRlIDxpbml0
+Lmg+Ci0tIAoyLjI2LjIKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcK
+aHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
