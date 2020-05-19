@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from conuserg-08.nifty.com ([210.131.2.75])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jb5XR-0001RM-3I
- for barebox@lists.infradead.org; Tue, 19 May 2020 16:56:22 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Tue, 19 May 2020 18:56:18 +0200
-Message-Id: <20200519165618.3858-1-u.kleine-koenig@pengutronix.de>
+ id 1jawSP-0008LG-5g
+ for barebox@lists.infradead.org; Tue, 19 May 2020 07:14:36 +0000
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Tue, 19 May 2020 16:13:50 +0900
+Message-Id: <20200519071353.395493-6-masahiroy@kernel.org>
+In-Reply-To: <20200519071353.395493-1-masahiroy@kernel.org>
+References: <20200519071353.395493-1-masahiroy@kernel.org>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -15,62 +17,177 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] aiodev: Replace license and copyright boilerplate by SPDX
- identfiers
+Subject: [PATCH 6/8] kbuild: unify barebox and pbl build commands
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, Roland Hieber <rhi@pengutronix.de>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
 
-VGhpcyBhZGFwdHMgYWxsIGZpbGVzIHRoYXQgd2VyZSBpZGVudGlmZWQgYnkgbGljZW5zZWNoZWNr
-CihodHRwczovL3NhbHNhLmRlYmlhbi5vcmcvYnVpbGQtY29tbW9uLXRlYW0vbGljZW5zZWNoZWNr
-LmdpdCkgYXMKbGljZW5zZWQgdW5kZXIgdGhlIEdQTCBhbmQgdGhhdCBoYXZlIGEgKElNSE8pIGNs
-ZWFyIGNvcHlyaWdodCBzdGF0ZW1lbnQuCgpUaGUgYWR2YW50YWdlIGlzIHRoYXQgdGhlc2Ugc3Bl
-Y2lmaWVycyBhcmUgbWFjaGluZS1wYXJzZWFibGUgd2hpY2ggaGVscHMKbGljZW5zZSBjb25mb3Jt
-YW5jZSwgZS5nLiBmb3IgcGFja2FnaW5nIGJhcmVib3ggaW4gRGViaWFuLgoKU2lnbmVkLW9mZi1i
-eTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0t
-CiBkcml2ZXJzL2Fpb2Rldi9sbTc1LmMgICAgICAgICAgfCAxOCArKystLS0tLS0tLS0tLS0tLS0K
-IGRyaXZlcnMvYWlvZGV2L3FvcmlxX3RoZXJtYWwuYyB8IDE3ICsrKy0tLS0tLS0tLS0tLS0tCiAy
-IGZpbGVzIGNoYW5nZWQsIDYgaW5zZXJ0aW9ucygrKSwgMjkgZGVsZXRpb25zKC0pCgpkaWZmIC0t
-Z2l0IGEvZHJpdmVycy9haW9kZXYvbG03NS5jIGIvZHJpdmVycy9haW9kZXYvbG03NS5jCmluZGV4
-IGFmNTQyMjdlNDAzZC4uODE4NmZkMmMyYjk3IDEwMDY0NAotLS0gYS9kcml2ZXJzL2Fpb2Rldi9s
-bTc1LmMKKysrIGIvZHJpdmVycy9haW9kZXYvbG03NS5jCkBAIC0xLDIxICsxLDkgQEAKKy8vIFNQ
-RFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9yLWxhdGVyCisvLyBTUERYLUZpbGVDb3B5
-cmlnaHRUZXh0OiAxOTk4LCAxOTk5IEZyb2RvIExvb2lqYWFyZCA8ZnJvZG9sQGRkcy5ubD4KKwog
-LyoKICAqIGxtNzUuYyAtIFBhcnQgb2YgbG1fc2Vuc29ycywgTGludXgga2VybmVsIG1vZHVsZXMg
-Zm9yIGhhcmR3YXJlCiAgKgkgbW9uaXRvcmluZwotICogQ29weXJpZ2h0IChjKSAxOTk4LCAxOTk5
-ICBGcm9kbyBMb29pamFhcmQgPGZyb2RvbEBkZHMubmw+Ci0gKgotICogVGhpcyBwcm9ncmFtIGlz
-IGZyZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmlidXRlIGl0IGFuZC9vciBtb2RpZnkKLSAq
-IGl0IHVuZGVyIHRoZSB0ZXJtcyBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgYXMg
-cHVibGlzaGVkIGJ5Ci0gKiB0aGUgRnJlZSBTb2Z0d2FyZSBGb3VuZGF0aW9uOyBlaXRoZXIgdmVy
-c2lvbiAyIG9mIHRoZSBMaWNlbnNlLCBvcgotICogKGF0IHlvdXIgb3B0aW9uKSBhbnkgbGF0ZXIg
-dmVyc2lvbi4KLSAqCi0gKiBUaGlzIHByb2dyYW0gaXMgZGlzdHJpYnV0ZWQgaW4gdGhlIGhvcGUg
-dGhhdCBpdCB3aWxsIGJlIHVzZWZ1bCwKLSAqIGJ1dCBXSVRIT1VUIEFOWSBXQVJSQU5UWTsgd2l0
-aG91dCBldmVuIHRoZSBpbXBsaWVkIHdhcnJhbnR5IG9mCi0gKiBNRVJDSEFOVEFCSUxJVFkgb3Ig
-RklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UuICBTZWUgdGhlCi0gKiBHTlUgR2VuZXJh
-bCBQdWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLgotICoKLSAqIFlvdSBzaG91bGQgaGF2
-ZSByZWNlaXZlZCBhIGNvcHkgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlCi0gKiBh
-bG9uZyB3aXRoIHRoaXMgcHJvZ3JhbTsgaWYgbm90LCB3cml0ZSB0byB0aGUgRnJlZSBTb2Z0d2Fy
-ZQotICogRm91bmRhdGlvbiwgSW5jLiwgNjc1IE1hc3MgQXZlLCBDYW1icmlkZ2UsIE1BIDAyMTM5
-LCBVU0EuCiAgKi8KIAogI2luY2x1ZGUgPGNvbW1vbi5oPgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9h
-aW9kZXYvcW9yaXFfdGhlcm1hbC5jIGIvZHJpdmVycy9haW9kZXYvcW9yaXFfdGhlcm1hbC5jCmlu
-ZGV4IDc1NTZmZWYwMjU4Ni4uZDYyMDQ4ZWYxM2Q2IDEwMDY0NAotLS0gYS9kcml2ZXJzL2Fpb2Rl
-di9xb3JpcV90aGVybWFsLmMKKysrIGIvZHJpdmVycy9haW9kZXYvcW9yaXFfdGhlcm1hbC5jCkBA
-IC0xLDE3ICsxLDYgQEAKLS8qCi0gKiBDb3B5cmlnaHQgMjAxNiBGcmVlc2NhbGUgU2VtaWNvbmR1
-Y3RvciwgSW5jLgotICogQ29weXJpZ2h0IDIwMTcgTlhQLgotICoKLSAqIFRoaXMgcHJvZ3JhbSBp
-cyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3IgbW9kaWZ5IGl0
-Ci0gKiB1bmRlciB0aGUgdGVybXMgYW5kIGNvbmRpdGlvbnMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1
-YmxpYyBMaWNlbnNlLAotICogdmVyc2lvbiAyLCBhcyBwdWJsaXNoZWQgYnkgdGhlIEZyZWUgU29m
-dHdhcmUgRm91bmRhdGlvbi4KLSAqCi0gKiBUaGlzIHByb2dyYW0gaXMgZGlzdHJpYnV0ZWQgaW4g
-dGhlIGhvcGUgaXQgd2lsbCBiZSB1c2VmdWwsIGJ1dCBXSVRIT1VUCi0gKiBBTlkgV0FSUkFOVFk7
-IHdpdGhvdXQgZXZlbiB0aGUgaW1wbGllZCB3YXJyYW50eSBvZiBNRVJDSEFOVEFCSUxJVFkgb3IK
-LSAqIEZJVE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFLiAgU2VlIHRoZSBHTlUgR2VuZXJh
-bCBQdWJsaWMgTGljZW5zZSBmb3IKLSAqIG1vcmUgZGV0YWlscy4KLSAqCi0gKi8KKy8vIFNQRFgt
-TGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9ubHkKKy8vIFNQRFgtRmlsZUNvcHlyaWdodFRl
-eHQ6IDIwMTYgRnJlZXNjYWxlIFNlbWljb25kdWN0b3IsIEluYy4KKy8vIFNQRFgtRmlsZUNvcHly
-aWdodFRleHQ6IDIwMTcgTlhQCiAKICNpbmNsdWRlIDxjb21tb24uaD4KICNpbmNsdWRlIDxpbml0
-Lmg+Ci0tIAoyLjI2LjIKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcK
-aHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+The current Linux uses the unified build command for built-in objects
+and module objects. This is possible because part-of-module is set to
+y when the target is being built for a module. If so, quiet_modtag is
+set to [M], and modkern_cflags is set to KBUILD_CFLAGS_MODULE instead
+of KBUILD_CFLAGS_KERNEL.
+
+Currently, barebox uses a separate build command for pbl, but the
+difference between cmd_cc_o_c and cmd_pbl_cc_o_c is just
+"-D__PBL__ $(PBL_CPPFLAGS)".
+
+By using the same approach as Linux, it can be unified.
+
+Set pbl-of-pbl flag to y when the target is being built for pbl.
+Merge cmd_as_o_S and cmd_link_o_target as well.
+
+This also changes the shortlog style as follows:
+
+  PBLCC  ->  CC [P]
+  PBLAS  ->  AS [P]
+  PBLLD  ->  LD [P]
+
+This is more consistent with the policy in the Linux build system.
+
+In Linux, a capital letter enclosed square blackets indicates which
+target the object is being built for.
+
+  CC      object built for built-in
+  CC [M]  object built for modules
+  CC [U]  object built for userspace (proposed for Linux 5.8-rc1)
+
+The idea behind this is we use the same compiler $(CC) for them.
+Only the difference is the compiler flags. On the other hand, host
+programs are compiled by a different tool, $(HOSTCC), hence the
+shortlog is 'HOSTCC'.
+
+Barebox supports module builds (it seems), but the [P] notation does
+not conflict with [M] because pbl has a limited memory footprint.
+We never expect pbl can support the module feature.
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+---
+
+ scripts/Makefile.build | 35 ++++++++---------------------------
+ scripts/Makefile.lib   |  9 ++++++---
+ 2 files changed, 14 insertions(+), 30 deletions(-)
+
+diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+index f575a07fd..31341d23c 100644
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -117,25 +117,18 @@ cmd_cc_i_c       = $(CPP) $(c_flags)   -o $@ $<
+ # (See cmd_cc_o_c + relevant part of rule_cc_o_c)
+ 
+ quiet_cmd_cc_o_c = CC $(quiet_modtag)  $@
+-      cmd_cc_o_c = $(CC) $(c_flags) -c -o $@ $<
+-quiet_cmd_pbl_cc_o_c = PBLCC   $@
+-      cmd_pbl_cc_o_c = $(CC) -D__PBL__ $(c_flags) $(PBL_CPPFLAGS) -c -o $@ $<
++      cmd_cc_o_c = $(CC) $(c_flags) $(if $(part-of-pbl),-D__PBL__ $(PBL_CPPFLAGS)) -c -o $@ $<
+ 
+ define rule_cc_o_c
+ 	$(call cmd,checksrc)
+ 	$(call cmd_and_fixdep,cc_o_c)
+ endef
+ 
+-define rule_pbl_cc_o_c
+-	$(call cmd,checksrc)
+-	$(call cmd_and_fixdep,pbl_cc_o_c)
+-endef
+-
+ # Built-in and composite module parts
+ 
+ %.pbl.o: %.c FORCE
+ 	$(call cmd,force_checksrc)
+-	$(call if_changed_rule,pbl_cc_o_c)
++	$(call if_changed_rule,cc_o_c)
+ 
+ %.o: %.c FORCE
+ 	$(call cmd,force_checksrc)
+@@ -168,11 +161,8 @@ cmd_as_s_S       = $(CPP) $(a_flags)   -o $@ $<
+ quiet_cmd_as_o_S = AS $(quiet_modtag)  $@
+ cmd_as_o_S       = $(CC) $(a_flags) -c -o $@ $<
+ 
+-quiet_cmd_pbl_as_o_S = PBLAS   $@
+-cmd_pbl_as_o_S       = $(CC) -D__PBL__ $(a_flags) $(PBL_CPPFLAGS) -c -o $@ $<
+-
+ %.pbl.o: %.S FORCE
+-	$(call if_changed_dep,pbl_as_o_S)
++	$(call if_changed_dep,as_o_S)
+ 
+ %.o: %.S FORCE
+ 	$(call if_changed_dep,as_o_S)
+@@ -198,31 +188,22 @@ $(sort $(subdir-obj-y)): $(subdir-ym) ;
+ #
+ # Rule to compile a set of .o files into one .o file
+ #
+-ifdef builtin-target
+-quiet_cmd_link_o_target = LD      $@
++
+ # If the list of objects to link is empty, just create an empty built-in.o
+-cmd_link_o_target = $(if $(strip $(obj-y)),\
+-		      $(LD) $(ld_flags) -r -o $@ $(filter $(obj-y), $^),\
++quiet_cmd_link_o_target = LD $(quiet_modtag)  $@
++cmd_link_o_target = $(if $(strip $(real-prereqs)),\
++		      $(LD) $(ld_flags) -r -o $@ $(real-prereqs),\
+ 		      rm -f $@; $(AR) rcs $@)
+ 
+ $(builtin-target): $(obj-y) FORCE
+ 	$(call if_changed,link_o_target)
+ 
+ targets += $(builtin-target)
+-endif # builtin-target
+-
+-ifdef pbl-target
+-quiet_cmd_pbl_link_o_target = PBLLD   $@
+-# If the list of objects to link is empty, just create an empty built-in-pbl.o
+-cmd_pbl_link_o_target = $(if $(strip $(pbl-y)),\
+-		      $(LD) $(ld_flags) -r -o $@ $(filter $(pbl-y), $^),\
+-		      rm -f $@; $(AR) rcs $@)
+ 
+ $(pbl-target): $(pbl-y) FORCE
+-	$(call if_changed,pbl_link_o_target)
++	$(call if_changed,link_o_target)
+ 
+ targets += $(pbl-target)
+-endif # pbl-target
+ 
+ #
+ # Rule to compile a set of .o files into one .a file
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index a6cba747f..55d251844 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -154,7 +154,10 @@ __cpp_flags     =                          $(call flags,_cpp_flags)
+ endif
+ 
+ part-of-module = $(if $(filter $(basename $@).o, $(real-obj-m)),y)
+-quiet_modtag = $(if $(part-of-module),[M],   )
++part-of-pbl    = $(if $(filter $(basename $@).o, $(pbl-y) $(pbl-target)),y)
++quiet_modtag = $(if $(part-of-pbl),[P],$(if $(part-of-module),[M],   ))
++
++pbl_cppflags = $(if $(part-of-pbl), -D__PBL__ $(PBL_CPPFLAGS))
+ 
+ modkern_cflags =                                          \
+ 	$(if $(part-of-module),                           \
+@@ -166,11 +169,11 @@ modkern_aflags = $(if $(part-of-module),				\
+ 			$(KBUILD_AFLAGS_KERNEL) $(AFLAGS_KERNEL))
+ 
+ c_flags        = -Wp,-MD,$(depfile) $(NOSTDINC_FLAGS) $(KBUILD_CPPFLAGS) \
+-		 $(__c_flags) $(modkern_cflags) \
++		 $(__c_flags) $(modkern_cflags) $(pbl_cppflags) \
+ 		 -D"KBUILD_STR(s)=\#s" $(basename_flags) $(modname_flags)
+ 
+ a_flags        = -Wp,-MD,$(depfile) $(NOSTDINC_FLAGS) $(KBUILD_CPPFLAGS) \
+-		 $(__a_flags) $(modkern_aflags)
++		 $(__a_flags) $(modkern_aflags) $(pbl_cppflags)
+ 
+ cpp_flags      = -Wp,-MD,$(depfile) $(NOSTDINC_FLAGS) $(__cpp_flags)
+ 
+-- 
+2.25.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
