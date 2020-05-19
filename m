@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from vsmx012.vodafonemail.xion.oxcs.net ([153.92.174.90])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jcpFv-0006hq-BS
- for barebox@lists.infradead.org; Sun, 24 May 2020 11:57:29 +0000
-Received: from vsmx004.vodafonemail.xion.oxcs.net (unknown [192.168.75.198])
- by mta-8-out.mta.xion.oxcs.net (Postfix) with ESMTP id 00944F3511A
- for <barebox@lists.infradead.org>; Sun, 24 May 2020 11:57:14 +0000 (UTC)
-Received: from [192.168.178.23] (unknown [95.156.214.119])
- by mta-8-out.mta.xion.oxcs.net (Postfix) with ESMTPA id B69C619AE72
- for <barebox@lists.infradead.org>; Sun, 24 May 2020 11:57:10 +0000 (UTC)
-From: Giorgio <giorgio.nicole@arcor.de>
-Message-ID: <69ca4999-4cf0-f20a-5d7a-93e470338bf4@arcor.de>
-Date: Sun, 24 May 2020 13:57:08 +0200
+ id 1jb8F8-0004T4-SG
+ for barebox@lists.infradead.org; Tue, 19 May 2020 19:49:40 +0000
+Date: Tue, 19 May 2020 21:49:36 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20200519194936.n3ttkn3s7j7ksrm6@pengutronix.de>
+References: <20200519163733.2836-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20200519163733.2836-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,26 +18,85 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: configure the mac address of an eth device
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] arch/arm/boards: Replace license and copyright
+ boilerplate by SPDX identfiers
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hi,
+Hello Andrey,
 
-I'm working with an arm som with an imx7d soc on it.
-The som also has an eeprom with some module specific manufacturer parameters
-like two MAC address, for eth0 and eth1, a module description string or a module
-serial number.
-I've now added some code to my board.c to extract the strings from the eeprom and now
-I need to actually configure the MAC addresses from them, to avoid barebox choose
-random ones when it needs the eth's.
+On Tue, May 19, 2020 at 06:37:33PM +0200, Uwe Kleine-K=F6nig wrote:
+> This adapts all files that were identifed by licensecheck
+> (https://salsa.debian.org/build-common-team/licensecheck.git) as
+> licensed under the GPL.
+> =
 
-What is the proper way to do this ?
+> The advantage is that these specifiers are machine-parseable which helps
+> license conformance, e.g. for packaging barebox in Debian.
+> =
 
-giorgio
+> While touching these files also do some minor comment reformatting to
+> get some uniform layout.
+
+While going once more through this patch I noticed that there are a few
+hunks that might be questionable and it would be great if you could
+comment:
+
+> diff --git a/arch/arm/boards/freescale-mx7-sabresd/board.c b/arch/arm/boa=
+rds/freescale-mx7-sabresd/board.c
+> index 37941efdbeb4..e41d67017fe5 100644
+> --- a/arch/arm/boards/freescale-mx7-sabresd/board.c
+> +++ b/arch/arm/boards/freescale-mx7-sabresd/board.c
+> @@ -1,17 +1,7 @@
+> -/*
+> - * Copyright (C) 2017 Zodiac Inflight Innovation
+> - * Author: Andrey Smirnov <andrew.smirnov@gmail.com>
+> - *
+> - * This program is free software; you can redistribute it and/or
+> - * modify it under the terms of the GNU General Public License as
+> - * published by the Free Software Foundation; either version 2 of
+> - * the License, or (at your option) any later version.
+> - *
+> - * This program is distributed in the hope that it will be useful,
+> - * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> - * GNU General Public License for more details.
+> - */
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +// SPDX-FileCopyrightText: 2017 Zodiac Inflight Innovation
+> +
+> +/* Author: Andrey Smirnov <andrew.smirnov@gmail.com> */
+>  =
+
+>  #include <common.h>
+>  #include <init.h>
+
+Is this right? I.e does Zodiac hold the copyright and you are "only" the
+author? Or would
+
+	// SPDX-FileCopyrightText: 2017 Andrey Smirnov <andrew.smirnov@gmail.com>,=
+ Zodiac Inflight Innovation
+
+be more appropriate?
+
+Same question for
+
+	arch/arm/boards/zii-imx6q-rdu2/board.c
+	arch/arm/boards/zii-imx6q-rdu2/lowlevel.c
+	arch/arm/boards/zii-vf610-dev/board.c
+	arch/arm/boards/zii-vf610-dev/lowlevel.c
+
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
 _______________________________________________
 barebox mailing list
