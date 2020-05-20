@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx1.emlix.com ([188.40.240.192])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jc6I2-0005dx-JX
- for barebox@lists.infradead.org; Fri, 22 May 2020 11:56:40 +0000
+ id 1jbLGh-0007xx-6B
+ for barebox@lists.infradead.org; Wed, 20 May 2020 09:44:10 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 20 May 2020 11:43:52 +0200
+Message-Id: <20200520094403.12651-9-s.hauer@pengutronix.de>
+In-Reply-To: <20200520094403.12651-1-s.hauer@pengutronix.de>
 References: <20200520094403.12651-1-s.hauer@pengutronix.de>
- <20200520094403.12651-8-s.hauer@pengutronix.de>
-From: =?UTF-8?Q?Daniel_Gl=c3=b6ckner?= <dg@emlix.com>
-Message-ID: <901a205b-1e1e-bd23-0e35-88d9b9d88351@emlix.com>
-Date: Fri, 22 May 2020 13:56:33 +0200
 MIME-Version: 1.0
-In-Reply-To: <20200520094403.12651-8-s.hauer@pengutronix.de>
-Content-Language: de-DE
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,64 +17,109 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 07/19] Introduce idle slice
-To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
-Cc: Edmund Henniges <eh@emlix.com>
+Subject: [PATCH 08/19] net: Add a slice to struct eth_device
+To: Barebox List <barebox@lists.infradead.org>
+Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-SGVsbG8gU2FzY2hhLAoKQW0gMjAuMDUuMjAgdW0gMTE6NDMgc2NocmllYiBTYXNjaGEgSGF1ZXI6
-Cj4gZGlmZiAtLWdpdCBhL2NvbW1vbi9jb25zb2xlX2NvdW50ZG93bi5jIGIvY29tbW9uL2NvbnNv
-bGVfY291bnRkb3duLmMKPiBpbmRleCA3NGRjMzgyNzk1Li5jNjkwMjlkYzBlIDEwMDY0NAo+IC0t
-LSBhL2NvbW1vbi9jb25zb2xlX2NvdW50ZG93bi5jCj4gKysrIGIvY29tbW9uL2NvbnNvbGVfY291
-bnRkb3duLmMKPiBAQCAtMTksNiArMTksNyBAQAo+ICAjaW5jbHVkZSA8ZXJybm8uaD4KPiAgI2lu
-Y2x1ZGUgPGNvbnNvbGVfY291bnRkb3duLmg+Cj4gICNpbmNsdWRlIDxzdGRpby5oPgo+ICsjaW5j
-bHVkZSA8c2xpY2UuaD4KPiAgCj4gIHN0YXRpYyBib29sIGNvbnNvbGVfY291bnRkb3duX3RpbWVv
-dXRfYWJvcnQ7Cj4gIAoKd2l0aCB5b3VyIGNoYW5nZXMgd2Ugbm8gbG9uZ2VyIG5lZWQgdGhhdCBp
-bmNsdWRlIGluIGhlcmUuCgo+IGRpZmYgLS1naXQgYS9jb21tb24vaHVzaC5jIGIvY29tbW9uL2h1
-c2guYwo+IGluZGV4IGMyNGIyYzdjZDIuLjYxNDI0ZDk4ZTcgMTAwNjQ0Cj4gLS0tIGEvY29tbW9u
-L2h1c2guYwo+ICsrKyBiL2NvbW1vbi9odXNoLmMKPiBAQCAtNDYwLDcgKzQ2MCwxMiBAQCBzdGF0
-aWMgdm9pZCBnZXRfdXNlcl9pbnB1dChzdHJ1Y3QgaW5fc3RyICppKQo+ICAJZWxzZQo+ICAJCXBy
-b21wdCA9IENPTkZJR19QUk9NUFRfSFVTSF9QUzI7Cj4gIAo+ICsJaWRsZV9zbGljZV9yZWxlYXNl
-KCk7Cj4gKwo+ICAJbiA9IHJlYWRsaW5lKHByb21wdCwgY29uc29sZV9idWZmZXIsIENPTkZJR19D
-QlNJWkUpOwo+ICsKPiArCWlkbGVfc2xpY2VfYWNxdWlyZSgpOwo+ICsKPiAgCWlmIChuID09IC0x
-ICkgewo+ICAJCWktPmludGVycnVwdCA9IDE7Cj4gIAkJbiA9IDA7CgpPaywgeW91IG1vdmVkIHRo
-ZSByZWxlYXNlL2FjcXVpcmUgZnJvbSByZWFkbGluZSBhbmQgY29uc29sZV9jb3VudGRvd24gdG8K
-Z2V0X3VzZXJfaW5wdXQgYW5kIGRvX2F1dG9ib290X2NvdW50ZG93bi4gVGhhdCBpcyBhY3R1YWxs
-eSBtb3JlIHN0cmljdAp0aGFuIHdoYXQgSSBoYWQgaW4gbWluZCBhbmQgYXZvaWRzIGhhdmluZyB0
-byBhY3F1aXJlL3JlbGVhc2UgaW4gYmluZm10X3J1bgphbmQgZXhlY3V0ZV9jb21tYW5kLgoKQnV0
-IEknbSBub3Qgc28gaGFwcHkgYWJvdXQgdGhlIHJlbW92YWwgb2YgdGhlIGFjcXVpcmUvcmVsZWFz
-ZSBpbiBwb2xsZXIuYy4KTm93IHRoZSBmYXN0Ym9vdCBwb2xsZXIgbWlnaHQgYmUgcnVuIGZyb20g
-d2l0aGluIGFub3RoZXIgcG9sbGVyIGFuZCBuZWl0aGVyCmRvIHdlIGtub3cgd2hpY2ggcmVzb3Vy
-Y2VzIHRoYXQgb3RoZXIgcG9sbGVyIHVzZXMgbm9yIGRvIHdlIGtub3cgd2hpY2gKcmVzb3VyY2Vz
-IHRoZSBjb21tYW5kcyBuZWVkIHRoYXQgd2UgYXJlIHRvbGQgb3ZlciB0byBleGVjdXRlIGluIG91
-ciBwb2xsZXIuCgo+IEBAIC0zNjksNiArMzcyLDggQEAgc3RhdGljIHZvaWQgcmF0cF9wb2xsZXIo
-c3RydWN0IHBvbGxlcl9zdHJ1Y3QgKnBvbGxlcikKPiAgCj4gIAlmcmVlKGJ1Zik7Cj4gIAo+ICsJ
-YmFyZWJveF9yYXRwX2NvbW1hbmRfcnVuKCk7Cj4gKwo+ICAJcmV0dXJuOwo+ICAKPiAgb3V0OgoK
-T2ssIHlvdSByZXVzZWQgdGhlIGV4aXN0aW5nIFJBVFAgcG9sbGVyIGluc3RlYWQgb2YgYWRkaW5n
-IGEgc2Vjb25kIG9uZS4KU2hvdWxkIHdvcmsuCgo+IGRpZmYgLS1naXQgYS9saWIvS2NvbmZpZyBi
-L2xpYi9LY29uZmlnCj4gaW5kZXggYjRhODA3OTcwMC4uMDUzYWMxNWNmYyAxMDA2NDQKPiAtLS0g
-YS9saWIvS2NvbmZpZwo+ICsrKyBiL2xpYi9LY29uZmlnCj4gQEAgLTExMSw2ICsxMTEsNyBAQCBj
-b25maWcgUkFUUAo+ICAJc2VsZWN0IENPTVBJTEVfTUVNT1JZCj4gIAlzZWxlY3QgQ09NTUFORF9T
-VVBQT1JUCj4gIAlzZWxlY3QgUE9MTEVSCj4gKwlzZWxlY3QgSURMRV9TTElDRQo+ICAJZGVwZW5k
-cyBvbiBDT05TT0xFX0ZVTEwKPiAgCWRlcGVuZHMgb24gIVNIRUxMX05PTkUKPiAgCWJvb2wgIlJB
-VFAgcHJvdG9jb2wgc3VwcG9ydCIKClRoaXMgaGFzIG5vIGVmZmVjdC4gWW91IHJlbW92ZWQgQ09O
-RklHX0lETEVfU0xJQ0UuCgo+IGRpZmYgLS1naXQgYS9saWIvcmVhZGxpbmUuYyBiL2xpYi9yZWFk
-bGluZS5jCj4gaW5kZXggM2QxNmMxODM4Yy4uY2FmZGM1OGIxYiAxMDA2NDQKPiAtLS0gYS9saWIv
-cmVhZGxpbmUuYwo+ICsrKyBiL2xpYi9yZWFkbGluZS5jCj4gQEAgLTMsNyArMyw3IEBACj4gICNp
-bmNsdWRlIDxpbml0Lmg+Cj4gICNpbmNsdWRlIDxsaWJiYi5oPgo+ICAjaW5jbHVkZSA8cG9sbGVy
-Lmg+Cj4gLSNpbmNsdWRlIDxyYXRwX2JiLmg+Cj4gKyNpbmNsdWRlIDxzbGljZS5oPgo+ICAjaW5j
-bHVkZSA8eGZ1bmNzLmg+Cj4gICNpbmNsdWRlIDxjb21wbGV0ZS5oPgo+ICAjaW5jbHVkZSA8bGlu
-dXgvY3R5cGUuaD4KCkFnYWluLCB3aXRoIHlvdXIgY2hhbmdlcyBubyBpbmNsdWRlIGZvciBzbGlj
-ZS5oIG5lZWRlZC4KCkJlc3QgcmVnYXJkcywKCiAgRGFuaWVsCgotLSAKRGlwbC4tTWF0aC4gRGFu
-aWVsIEdsw7Zja25lciwgZW1saXggR21iSCwgaHR0cDovL3d3dy5lbWxpeC5jb20KRm9uICs0OSA1
-NTEgMzA2NjQtMCwgRmF4ICs0OSA1NTEgMzA2NjQtMTEsCkdvdGhhZXIgUGxhdHogMywgMzcwODMg
-R8O2dHRpbmdlbiwgR2VybWFueQpTaXR6IGRlciBHZXNlbGxzY2hhZnQ6IEfDtnR0aW5nZW4sIEFt
-dHNnZXJpY2h0IEfDtnR0aW5nZW4gSFIgQiAzMTYwCkdlc2Now6RmdHNmw7xocnVuZzogSGVpa2Ug
-Sm9yZGFuLCBEci4gVXdlIEtyYWNrZQpVc3QtSWROci46IERFIDIwNSAxOTggMDU1CgplbWxpeCAt
-IHlvdXIgZW1iZWRkZWQgbGludXggcGFydG5lcgoKX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5p
-bmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8v
-YmFyZWJveAo=
+Add ethernet code safe for being called from a poller.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ include/net.h |  8 ++++++++
+ net/eth.c     | 20 +++++++++++++++++---
+ 2 files changed, 25 insertions(+), 3 deletions(-)
+
+diff --git a/include/net.h b/include/net.h
+index 54db8a179a..8d2b4923de 100644
+--- a/include/net.h
++++ b/include/net.h
+@@ -19,6 +19,7 @@
+ #include <stdlib.h>
+ #include <clock.h>
+ #include <led.h>
++#include <slice.h>
+ #include <xfuncs.h>
+ #include <linux/phy.h>
+ #include <linux/string.h>	/* memcpy */
+@@ -63,6 +64,8 @@ struct eth_device {
+ 	char *bootarg;
+ 	char *linuxdevname;
+ 
++	struct slice slice;
++
+ 	bool ifup;
+ #define ETH_MODE_DHCP 0
+ #define ETH_MODE_STATIC 1
+@@ -72,6 +75,11 @@ struct eth_device {
+ 
+ #define dev_to_edev(d) container_of(d, struct eth_device, dev)
+ 
++static inline struct slice *eth_device_slice(struct eth_device *edev)
++{
++	return &edev->slice;
++}
++
+ static inline const char *eth_name(struct eth_device *edev)
+ {
+ 	return edev->devname;
+diff --git a/net/eth.c b/net/eth.c
+index e3d0d06efe..888075da61 100644
+--- a/net/eth.c
++++ b/net/eth.c
+@@ -219,20 +219,32 @@ int eth_send(struct eth_device *edev, void *packet, int length)
+ 	if (ret)
+ 		return ret;
+ 
++	slice_acquire(eth_device_slice(edev));
++
+ 	led_trigger_network(LED_TRIGGER_NET_TX);
+ 
+-	return edev->send(edev, packet, length);
++	ret = edev->send(edev, packet, length);
++
++	slice_release(eth_device_slice(edev));
++
++	return ret;
+ }
+ 
+ static int __eth_rx(struct eth_device *edev)
+ {
+ 	int ret;
+ 
++	slice_acquire(eth_device_slice(edev));
++
+ 	ret = eth_carrier_check(edev, 0);
+ 	if (ret)
+-		return ret;
++		goto out;
++
++	ret = edev->recv(edev);
++out:
++	slice_release(eth_device_slice(edev));
+ 
+-	return edev->recv(edev);
++	return ret;
+ }
+ 
+ int eth_rx(void)
+@@ -353,6 +365,8 @@ int eth_register(struct eth_device *edev)
+ 	if (ret)
+ 		return ret;
+ 
++	slice_init(&edev->slice, dev_name(dev));
++
+ 	edev->devname = xstrdup(dev_name(&edev->dev));
+ 
+ 	dev_add_param_ip(dev, "ipaddr", NULL, NULL, &edev->ipaddr, edev);
+-- 
+2.26.2
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
