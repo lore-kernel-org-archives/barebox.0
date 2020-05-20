@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jbLGh-0007y0-Bw
- for barebox@lists.infradead.org; Wed, 20 May 2020 09:44:10 +0000
+ id 1jbLGh-0007y3-EL
+ for barebox@lists.infradead.org; Wed, 20 May 2020 09:44:12 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 20 May 2020 11:44:01 +0200
-Message-Id: <20200520094403.12651-18-s.hauer@pengutronix.de>
+Date: Wed, 20 May 2020 11:43:54 +0200
+Message-Id: <20200520094403.12651-11-s.hauer@pengutronix.de>
 In-Reply-To: <20200520094403.12651-1-s.hauer@pengutronix.de>
 References: <20200520094403.12651-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -17,119 +17,84 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 17/19] fastboot: rename usbgadget.fastboot_* variables to
- fastboot.*
+Subject: [PATCH 10/19] usb: Add a slice to usb host controllers
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-RnJvbTogRGFuaWVsIEdsw7Zja25lciA8ZGdAZW1saXguY29tPgoKVGhlcmUgaXMgbm90aGluZyBV
-U0Itc3BlY2lmaWMgaW4gdGhlIGRlZmluZWQgdXNiZ2FkZ2V0LmZhc3Rib290XyoKdmFyaWFibGVz
-LiBSZW5hbWUgdGhlbSB0byBiZSB1c2FibGUgYWxzbyBmb3IgdGhlIFVEUCBmYXN0Ym9vdCB0cmFu
-c3BvcnQuCgpUaGUgdXNiZ2FkZ2V0LmZhc3Rib290X2Z1bmN0aW9uIHZhcmlhYmxlIGlzIHVzZWQg
-dG8gZGVmaW5lIHRoZSBmaWxlcyBhbmQKZGV2aWNlcyBhY2Nlc3NpYmxlIHdpdGggdGhlIGVyYXNl
-IGFuZCBmbGFzaCBjb21tYW5kcy4gU2luY2UgImZ1bmN0aW9uIiBpcwphIHRlcm0gZnJvbSB0aGUg
-VVNCIHNwZWNpZmljYXRpb24gYW5kIHRoZSBGYXN0Ym9vdCBzcGVjaWZpY2F0aW9uIHVzZXMgdGhl
-CnRlcm0gInBhcnRpdGlvbiIsIHdlIHJlbmFtZSB0aGF0IHZhcmlhYmxlIHRvICJmYXN0Ym9vdC5w
-YXJ0aXRpb25zIi4KClNpZ25lZC1vZmYtYnk6IERhbmllbCBHbMO2Y2tuZXIgPGRnQGVtbGl4LmNv
-bT4KU2lnbmVkLW9mZi1ieTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgot
-LS0KIERvY3VtZW50YXRpb24vdXNlci91c2IucnN0IHwgIDQgKystLQogY29tbWFuZHMvdXNiZ2Fk
-Z2V0LmMgICAgICAgfCAgMiArLQogY29tbW9uL2Zhc3Rib290LmMgICAgICAgICAgfCAxNyArKysr
-KysrKysrKysrKy0tLQogY29tbW9uL3VzYmdhZGdldC5jICAgICAgICAgfCAxNiArKy0tLS0tLS0t
-LS0tLS0tCiBpbmNsdWRlL2Zhc3Rib290LmggICAgICAgICB8ICAzICsrKwogNSBmaWxlcyBjaGFu
-Z2VkLCAyMiBpbnNlcnRpb25zKCspLCAyMCBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9Eb2N1
-bWVudGF0aW9uL3VzZXIvdXNiLnJzdCBiL0RvY3VtZW50YXRpb24vdXNlci91c2IucnN0CmluZGV4
-IDRjMWIyOTI1ZjIuLmNhNWY4MTM4ZGUgMTAwNjQ0Ci0tLSBhL0RvY3VtZW50YXRpb24vdXNlci91
-c2IucnN0CisrKyBiL0RvY3VtZW50YXRpb24vdXNlci91c2IucnN0CkBAIC0yNjYsNyArMjY2LDcg
-QEAgVVNCIEdhZGdldCBhdXRvc3RhcnQgT3B0aW9ucwogICBTZWUgOnJlZjpgY29tbWFuZF91c2Jn
-YWRnZXRgIC1hLiAoRGVmYXVsdCAwKS4KIGBgZ2xvYmFsLnVzYmdhZGdldC5kZnVfZnVuY3Rpb25g
-YAogICBGdW5jdGlvbiBkZXNjcmlwdGlvbiBmb3IgREZVLiBTZWUgOnJlZjpgY29tbWFuZF91c2Jn
-YWRnZXRgIC1EIFtkZXNjXS4KLWBgZ2xvYmFsLnVzYmdhZGdldC5mYXN0Ym9vdF9mdW5jdGlvbmBg
-CitgYGdsb2JhbC5mYXN0Ym9vdC5wYXJ0aXRpb25zYGAKICAgRnVuY3Rpb24gZGVzY3JpcHRpb24g
-Zm9yIGZhc3Rib290LiBTZWUgOnJlZjpgY29tbWFuZF91c2JnYWRnZXRgIC1BIFtkZXNjXS4KLWBg
-Z2xvYmFsLnVzYmdhZGdldC5mYXN0Ym9vdF9iYnVgYAorYGBnbG9iYWwuZmFzdGJvb3QuYmJ1YGAK
-ICAgRXhwb3J0IGJhcmVib3ggdXBkYXRlIGhhbmRsZXJzLiBTZWUgOnJlZjpgY29tbWFuZF91c2Jn
-YWRnZXRgIC1iLiAoRGVmYXVsdCAwKS4KZGlmZiAtLWdpdCBhL2NvbW1hbmRzL3VzYmdhZGdldC5j
-IGIvY29tbWFuZHMvdXNiZ2FkZ2V0LmMKaW5kZXggMTkzZGE4NmRlZS4uOTEzMzQwMmY1MiAxMDA2
-NDQKLS0tIGEvY29tbWFuZHMvdXNiZ2FkZ2V0LmMKKysrIGIvY29tbWFuZHMvdXNiZ2FkZ2V0LmMK
-QEAgLTU3LDcgKzU3LDcgQEAgQkFSRUJPWF9DTURfSEVMUF9URVhUKCIiKQogQkFSRUJPWF9DTURf
-SEVMUF9URVhUKCJPcHRpb25zOiIpCiBCQVJFQk9YX0NNRF9IRUxQX09QVCAoIi1hXHQiLCAiQ3Jl
-YXRlIENEQyBBQ00gZnVuY3Rpb24iKQogQkFSRUJPWF9DTURfSEVMUF9PUFQgKCItQSA8ZGVzYz4i
-LCAiQ3JlYXRlIEFuZHJvaWQgRmFzdGJvb3QgZnVuY3Rpb24uIElmICdkZXNjJyBpcyBub3QgcHJv
-dmlkZWQsICIKLQkJCQkgICAidHJ5IHRvIHVzZSAnZ2xvYmFsLnVzYmdhZGdldC5mYXN0Ym9vdF9m
-dW5jdGlvbicgdmFyaWFibGUuIikKKwkJCQkgICAidHJ5IHRvIHVzZSAnZ2xvYmFsLmZhc3Rib290
-LnBhcnRpdGlvbnMnIHZhcmlhYmxlLiIpCiBCQVJFQk9YX0NNRF9IRUxQX09QVCAoIi1iXHQiLCAi
-aW5jbHVkZSByZWdpc3RlcmVkIGJhcmVib3ggdXBkYXRlIGhhbmRsZXJzIChmYXN0Ym9vdCBzcGVj
-aWZpYykiKQogQkFSRUJPWF9DTURfSEVMUF9PUFQgKCItRCA8ZGVzYz4iLCAiQ3JlYXRlIERGVSBm
-dW5jdGlvbi4gSWYgJ2Rlc2MnIGlzIG5vdCBwcm92aWRlZCwgIgogCQkJCSAgICJ0cnkgdG8gdXNl
-ICdnbG9iYWwudXNiZ2FkZ2V0LmRmdV9mdW5jdGlvbicgdmFyaWFibGUuIikKZGlmZiAtLWdpdCBh
-L2NvbW1vbi9mYXN0Ym9vdC5jIGIvY29tbW9uL2Zhc3Rib290LmMKaW5kZXggNmY1NGU5MzllNy4u
-N2EyZjMxYTNlMiAxMDA2NDQKLS0tIGEvY29tbW9uL2Zhc3Rib290LmMKKysrIGIvY29tbW9uL2Zh
-c3Rib290LmMKQEAgLTQ2LDYgKzQ2LDggQEAKICNkZWZpbmUgRkFTVEJPT1RfVkVSU0lPTgkJIjAu
-NCIKIAogc3RhdGljIHVuc2lnbmVkIGludCBmYXN0Ym9vdF9tYXhfZG93bmxvYWRfc2l6ZSA9IFNa
-XzhNOworaW50IGZhc3Rib290X2JidTsKK2NoYXIgKmZhc3Rib290X3BhcnRpdGlvbnM7CiAKIHN0
-cnVjdCBmYl92YXJpYWJsZSB7CiAJY2hhciAqbmFtZTsKQEAgLTk0OCwxNCArOTUwLDIzIEBAIHZv
-aWQgZmFzdGJvb3RfZXhlY19jbWQoc3RydWN0IGZhc3Rib290ICpmYiwgY29uc3QgY2hhciAqY21k
-YnVmKQogc3RhdGljIGludCBmYXN0Ym9vdF9nbG9iYWx2YXJzX2luaXQodm9pZCkKIHsKIAlpZiAo
-SVNfRU5BQkxFRChDT05GSUdfRkFTVEJPT1RfU1BBUlNFKSkKLQkJZ2xvYmFsdmFyX2FkZF9zaW1w
-bGVfaW50KCJ1c2JnYWRnZXQuZmFzdGJvb3RfbWF4X2Rvd25sb2FkX3NpemUiLAorCQlnbG9iYWx2
-YXJfYWRkX3NpbXBsZV9pbnQoImZhc3Rib290Lm1heF9kb3dubG9hZF9zaXplIiwKIAkJCQkgJmZh
-c3Rib290X21heF9kb3dubG9hZF9zaXplLCAiJXUiKTsKKwlnbG9iYWx2YXJfYWRkX3NpbXBsZV9i
-b29sKCJmYXN0Ym9vdC5iYnUiLCAmZmFzdGJvb3RfYmJ1KTsKKwlnbG9iYWx2YXJfYWRkX3NpbXBs
-ZV9zdHJpbmcoImZhc3Rib290LnBhcnRpdGlvbnMiLAorCQkJCSAgICAmZmFzdGJvb3RfcGFydGl0
-aW9ucyk7CiAKIAlyZXR1cm4gMDsKIH0KIAogZGV2aWNlX2luaXRjYWxsKGZhc3Rib290X2dsb2Jh
-bHZhcnNfaW5pdCk7CiAKLUJBUkVCT1hfTUFHSUNWQVJfTkFNRUQoZ2xvYmFsX3VzYmdhZGdldF9m
-YXN0Ym9vdF9tYXhfZG93bmxvYWRfc2l6ZSwKLQkJICAgICAgIGdsb2JhbC51c2JnYWRnZXQuZmFz
-dGJvb3RfbWF4X2Rvd25sb2FkX3NpemUsCitCQVJFQk9YX01BR0lDVkFSX05BTUVEKGdsb2JhbF9m
-YXN0Ym9vdF9tYXhfZG93bmxvYWRfc2l6ZSwKKwkJICAgICAgIGdsb2JhbC5mYXN0Ym9vdC5tYXhf
-ZG93bmxvYWRfc2l6ZSwKIAkJICAgICAgICJGYXN0Ym9vdCBtYXhpbXVtIGRvd25sb2FkIHNpemUi
-KTsKK0JBUkVCT1hfTUFHSUNWQVJfTkFNRUQoZ2xvYmFsX2Zhc3Rib290X3BhcnRpdGlvbnMsCisJ
-CSAgICAgICBnbG9iYWwuZmFzdGJvb3QucGFydGl0aW9ucywKKwkJICAgICAgICJQYXJ0aXRpb25z
-IGV4cG9ydGVkIGZvciB1cGRhdGUgdmlhIGZhc3Rib290Iik7CitCQVJFQk9YX01BR0lDVkFSX05B
-TUVEKGdsb2JhbF9mYXN0Ym9vdF9iYnUsCisJCSAgICAgICBnbG9iYWwuZmFzdGJvb3QuYmJ1LAor
-CQkgICAgICAgIkV4cG9ydCBiYXJlYm94IHVwZGF0ZSBoYW5kbGVycyB2aWEgZmFzdGJvb3QiKTsK
-ZGlmZiAtLWdpdCBhL2NvbW1vbi91c2JnYWRnZXQuYyBiL2NvbW1vbi91c2JnYWRnZXQuYwppbmRl
-eCBhOGYxMDRjZjFjLi4yNWZkOTk0OTMwIDEwMDY0NAotLS0gYS9jb21tb24vdXNiZ2FkZ2V0LmMK
-KysrIGIvY29tbW9uL3VzYmdhZGdldC5jCkBAIC0zMCw4ICszMCw2IEBACiBzdGF0aWMgaW50IGF1
-dG9zdGFydDsKIHN0YXRpYyBpbnQgYWNtOwogc3RhdGljIGNoYXIgKmRmdV9mdW5jdGlvbjsKLXN0
-YXRpYyBjaGFyICpmYXN0Ym9vdF9mdW5jdGlvbjsKLXN0YXRpYyBpbnQgZmFzdGJvb3RfYmJ1Owog
-CiBzdGF0aWMgc3RydWN0IGZpbGVfbGlzdCAqcGFyc2UoY29uc3QgY2hhciAqZmlsZXMpCiB7CkBA
-IC01Niw4ICs1NCw4IEBAIGludCB1c2JnYWRnZXRfcmVnaXN0ZXIoYm9vbCBkZnUsIGNvbnN0IGNo
-YXIgKmRmdV9vcHRzLAogCQlkZnVfb3B0cyA9IGRmdV9mdW5jdGlvbjsKIAogCWlmIChmYXN0Ym9v
-dCAmJiAhZmFzdGJvb3Rfb3B0cyAmJgotCSAgICBmYXN0Ym9vdF9mdW5jdGlvbiAmJiAqZmFzdGJv
-b3RfZnVuY3Rpb24pCi0JCWZhc3Rib290X29wdHMgPSBmYXN0Ym9vdF9mdW5jdGlvbjsKKwkgICAg
-ZmFzdGJvb3RfcGFydGl0aW9ucyAmJiAqZmFzdGJvb3RfcGFydGl0aW9ucykKKwkJZmFzdGJvb3Rf
-b3B0cyA9IGZhc3Rib290X3BhcnRpdGlvbnM7CiAKIAlpZiAoIWRmdV9vcHRzICYmICFmYXN0Ym9v
-dF9vcHRzICYmICFhY20pCiAJCXJldHVybiBDT01NQU5EX0VSUk9SX1VTQUdFOwpAQCAtMTE2LDEy
-ICsxMTQsOCBAQCBzdGF0aWMgaW50IHVzYmdhZGdldF9nbG9iYWx2YXJzX2luaXQodm9pZCkKIAlp
-ZiAoSVNfRU5BQkxFRChDT05GSUdfVVNCX0dBREdFVF9BVVRPU1RBUlQpKSB7CiAJCWdsb2JhbHZh
-cl9hZGRfc2ltcGxlX2Jvb2woInVzYmdhZGdldC5hdXRvc3RhcnQiLCAmYXV0b3N0YXJ0KTsKIAkJ
-Z2xvYmFsdmFyX2FkZF9zaW1wbGVfYm9vbCgidXNiZ2FkZ2V0LmFjbSIsICZhY20pOwotCQlnbG9i
-YWx2YXJfYWRkX3NpbXBsZV9ib29sKCJ1c2JnYWRnZXQuZmFzdGJvb3RfYmJ1IiwKLQkJCQkJICAm
-ZmFzdGJvb3RfYmJ1KTsKIAl9CiAJZ2xvYmFsdmFyX2FkZF9zaW1wbGVfc3RyaW5nKCJ1c2JnYWRn
-ZXQuZGZ1X2Z1bmN0aW9uIiwgJmRmdV9mdW5jdGlvbik7Ci0JZ2xvYmFsdmFyX2FkZF9zaW1wbGVf
-c3RyaW5nKCJ1c2JnYWRnZXQuZmFzdGJvb3RfZnVuY3Rpb24iLAotCQkJCSAgICAmZmFzdGJvb3Rf
-ZnVuY3Rpb24pOwogCiAJcmV0dXJuIDA7CiB9CkBAIC0xMzYsOSArMTMwLDMgQEAgQkFSRUJPWF9N
-QUdJQ1ZBUl9OQU1FRChnbG9iYWxfdXNiZ2FkZ2V0X2FjbSwKIEJBUkVCT1hfTUFHSUNWQVJfTkFN
-RUQoZ2xvYmFsX3VzYmdhZGdldF9kZnVfZnVuY3Rpb24sCiAJCSAgICAgICBnbG9iYWwudXNiZ2Fk
-Z2V0LmRmdV9mdW5jdGlvbiwKIAkJICAgICAgICJ1c2JnYWRnZXQ6IENyZWF0ZSBERlUgZnVuY3Rp
-b24iKTsKLUJBUkVCT1hfTUFHSUNWQVJfTkFNRUQoZ2xvYmFsX3VzYmdhZGdldF9mYXN0Ym9vdF9m
-dW5jdGlvbiwKLQkJICAgICAgIGdsb2JhbC51c2JnYWRnZXQuZmFzdGJvb3RfZnVuY3Rpb24sCi0J
-CSAgICAgICAidXNiZ2FkZ2V0OiBDcmVhdGUgQW5kcm9pZCBGYXN0Ym9vdCBmdW5jdGlvbiIpOwot
-QkFSRUJPWF9NQUdJQ1ZBUl9OQU1FRChnbG9iYWxfdXNiZ2FkZ2V0X2Zhc3Rib290X2JidSwKLQkJ
-ICAgICAgIGdsb2JhbC51c2JnYWRnZXQuZmFzdGJvb3RfYmJ1LAotCQkgICAgICAgInVzYmdhZGdl
-dDogZXhwb3J0IGJhcmVib3ggdXBkYXRlIGhhbmRsZXJzIHZpYSBmYXN0Ym9vdCIpOwpkaWZmIC0t
-Z2l0IGEvaW5jbHVkZS9mYXN0Ym9vdC5oIGIvaW5jbHVkZS9mYXN0Ym9vdC5oCmluZGV4IGIzZTcx
-NTVlZmEuLjg4ZWM0Nzg0OTkgMTAwNjQ0Ci0tLSBhL2luY2x1ZGUvZmFzdGJvb3QuaAorKysgYi9p
-bmNsdWRlL2Zhc3Rib290LmgKQEAgLTU0LDYgKzU0LDkgQEAgZW51bSBmYXN0Ym9vdF9tc2dfdHlw
-ZSB7CiAJRkFTVEJPT1RfTVNHX0RBVEEsCiB9OwogCitleHRlcm4gaW50IGZhc3Rib290X2JidTsK
-K2V4dGVybiBjaGFyICpmYXN0Ym9vdF9wYXJ0aXRpb25zOworCiBpbnQgZmFzdGJvb3RfZ2VuZXJp
-Y19pbml0KHN0cnVjdCBmYXN0Ym9vdCAqZmIsIGJvb2wgZXhwb3J0X2JidSk7CiB2b2lkIGZhc3Ri
-b290X2dlbmVyaWNfY2xvc2Uoc3RydWN0IGZhc3Rib290ICpmYik7CiB2b2lkIGZhc3Rib290X2dl
-bmVyaWNfZnJlZShzdHJ1Y3QgZmFzdGJvb3QgKmZiKTsKLS0gCjIuMjYuMgoKCl9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0
-CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9t
-YWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/usb/core/usb.c | 6 ++++++
+ include/usb/usb.h      | 7 +++++++
+ 2 files changed, 13 insertions(+)
+
+diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+index 30c251f405..f25e350f15 100644
+--- a/drivers/usb/core/usb.c
++++ b/drivers/usb/core/usb.c
+@@ -78,11 +78,16 @@ static inline int usb_host_acquire(struct usb_host *host)
+ 	if (host->sem)
+ 		return -EAGAIN;
+ 	host->sem++;
++
++	slice_acquire(&host->slice);
++
+ 	return 0;
+ }
+ 
+ static inline void usb_host_release(struct usb_host *host)
+ {
++	slice_release(&host->slice);
++
+ 	if (host->sem > 0)
+ 		host->sem--;
+ }
+@@ -92,6 +97,7 @@ int usb_register_host(struct usb_host *host)
+ 	list_add_tail(&host->list, &host_list);
+ 	host->busnum = host_busnum++;
+ 	host->sem = 0;
++	slice_init(&host->slice, dev_name(host->hw_dev));
+ 	return 0;
+ }
+ 
+diff --git a/include/usb/usb.h b/include/usb/usb.h
+index c2085eae87..1b51a00ddc 100644
+--- a/include/usb/usb.h
++++ b/include/usb/usb.h
+@@ -20,6 +20,7 @@
+ #define _USB_H_
+ 
+ #include <driver.h>
++#include <slice.h>
+ #include <usb/ch9.h>
+ #include <usb/ch11.h>
+ #include <usb/usb_defs.h>
+@@ -165,11 +166,17 @@ struct usb_host {
+ 	struct usb_device *root_dev;
+ 	int sem;
+ 	struct usb_phy *usbphy;
++	struct slice slice;
+ };
+ 
+ int usb_register_host(struct usb_host *);
+ void usb_unregister_host(struct usb_host *host);
+ 
++static inline struct slice *usb_device_slice(struct usb_device *udev)
++{
++	return &udev->host->slice;
++}
++
+ int usb_host_detect(struct usb_host *host);
+ 
+ int usb_set_protocol(struct usb_device *dev, int ifnum, int protocol);
+-- 
+2.26.2
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
