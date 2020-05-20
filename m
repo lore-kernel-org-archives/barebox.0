@@ -1,12 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jb5TQ-0005gE-Fr
- for barebox@lists.infradead.org; Tue, 19 May 2020 16:52:13 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Tue, 19 May 2020 18:52:07 +0200
-Message-Id: <20200519165208.3546-1-u.kleine-koenig@pengutronix.de>
+ id 1jbGlB-0000pi-M9
+ for barebox@lists.infradead.org; Wed, 20 May 2020 04:55:19 +0000
+Date: Wed, 20 May 2020 06:55:13 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200520045513.GQ11869@pengutronix.de>
+References: <cover.1589477005.git.dg@emlix.com>
+ <24116d80272b13dc1e38eaf0bb3beb7b2f4a5f79.1589477005.git.dg@emlix.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <24116d80272b13dc1e38eaf0bb3beb7b2f4a5f79.1589477005.git.dg@emlix.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,64 +19,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] pwm: Replace license and copyright boilerplate by SPDX
- identfiers
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, Roland Hieber <rhi@pengutronix.de>
+Subject: Re: [PATCH v2 08/10] fastboot: rename usbgadget.fastboot_* variables
+ to fastboot.*
+To: Daniel =?iso-8859-15?Q?Gl=F6ckner?= <dg@emlix.com>
+Cc: barebox@lists.infradead.org
 
-VGhpcyBhZGFwdHMgYWxsIGZpbGVzIHRoYXQgd2VyZSBpZGVudGlmZWQgYnkgbGljZW5zZWNoZWNr
-CihodHRwczovL3NhbHNhLmRlYmlhbi5vcmcvYnVpbGQtY29tbW9uLXRlYW0vbGljZW5zZWNoZWNr
-LmdpdCkgYXMKbGljZW5zZWQgdW5kZXIgdGhlIEdQTCBhbmQgdGhhdCBoYXZlIGEgKElNSE8pIGNs
-ZWFyIGNvcHlyaWdodCBzdGF0ZW1lbnQuCgpUaGUgYWR2YW50YWdlIGlzIHRoYXQgdGhlc2Ugc3Bl
-Y2lmaWVycyBhcmUgbWFjaGluZS1wYXJzZWFibGUgd2hpY2ggaGVscHMKbGljZW5zZSBjb25mb3Jt
-YW5jZSwgZS5nLiBmb3IgcGFja2FnaW5nIGJhcmVib3ggaW4gRGViaWFuLgoKU2lnbmVkLW9mZi1i
-eTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0t
-CiBkcml2ZXJzL3B3bS9jb3JlLmMgICAgfCAxNSArKystLS0tLS0tLS0tLS0KIGRyaXZlcnMvcHdt
-L3B3bS1teHMuYyB8IDEyICsrLS0tLS0tLS0tLQogZHJpdmVycy9wd20vcHhhX3B3bS5jIHwgIDYg
-KystLS0tCiAzIGZpbGVzIGNoYW5nZWQsIDcgaW5zZXJ0aW9ucygrKSwgMjYgZGVsZXRpb25zKC0p
-CgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9wd20vY29yZS5jIGIvZHJpdmVycy9wd20vY29yZS5jCmlu
-ZGV4IDA1ZGFkOTNlNWNlMy4uODc4ZjRkNzJiYmY1IDEwMDY0NAotLS0gYS9kcml2ZXJzL3B3bS9j
-b3JlLmMKKysrIGIvZHJpdmVycy9wd20vY29yZS5jCkBAIC0xLDE3ICsxLDggQEAKKy8vIFNQRFgt
-TGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9yLWxhdGVyCisvLyBTUERYLUZpbGVDb3B5cmln
-aHRUZXh0OiAyMDExIFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4KKwogLyoK
-ICAqIEdlbmVyaWMgcHdtbGliIGltcGxlbWVudGF0aW9uCi0gKgotICogQ29weXJpZ2h0IChDKSAy
-MDExIFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4KLSAqCi0gKiAgVGhpcyBw
-cm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmlidXRlIGl0IGFuZC9vciBt
-b2RpZnkKLSAqICBpdCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBM
-aWNlbnNlIGFzIHB1Ymxpc2hlZCBieQotICogIHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5kYXRpb247
-IGVpdGhlciB2ZXJzaW9uIDIsIG9yIChhdCB5b3VyIG9wdGlvbikKLSAqICBhbnkgbGF0ZXIgdmVy
-c2lvbi4KLSAqCi0gKiAgVGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVkIGluIHRoZSBob3BlIHRo
-YXQgaXQgd2lsbCBiZSB1c2VmdWwsCi0gKiAgYnV0IFdJVEhPVVQgQU5ZIFdBUlJBTlRZOyB3aXRo
-b3V0IGV2ZW4gdGhlIGltcGxpZWQgd2FycmFudHkgb2YKLSAqICBNRVJDSEFOVEFCSUxJVFkgb3Ig
-RklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UuICBTZWUgdGhlCi0gKiAgR05VIEdlbmVy
-YWwgUHVibGljIExpY2Vuc2UgZm9yIG1vcmUgZGV0YWlscy4KICAqLwogI2luY2x1ZGUgPGNvbW1v
-bi5oPgogI2luY2x1ZGUgPGVycm5vLmg+CmRpZmYgLS1naXQgYS9kcml2ZXJzL3B3bS9wd20tbXhz
-LmMgYi9kcml2ZXJzL3B3bS9wd20tbXhzLmMKaW5kZXggYTA2MDQwYWMzMjY4Li4xZTJkYjM5ZGVm
-MjIgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvcHdtL3B3bS1teHMuYworKysgYi9kcml2ZXJzL3B3bS9w
-d20tbXhzLmMKQEAgLTEsMTMgKzEsNSBAQAotLyoKLSAqIENvcHlyaWdodCAyMDEyIEZyZWVzY2Fs
-ZSBTZW1pY29uZHVjdG9yLCBJbmMuCi0gKgotICogVGhlIGNvZGUgY29udGFpbmVkIGhlcmVpbiBp
-cyBsaWNlbnNlZCB1bmRlciB0aGUgR05VIEdlbmVyYWwgUHVibGljCi0gKiBMaWNlbnNlLiBZb3Ug
-bWF5IG9idGFpbiBhIGNvcHkgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlCi0gKiBW
-ZXJzaW9uIDIgb3IgbGF0ZXIgYXQgdGhlIGZvbGxvd2luZyBsb2NhdGlvbnM6Ci0gKgotICogaHR0
-cDovL3d3dy5vcGVuc291cmNlLm9yZy9saWNlbnNlcy9ncGwtbGljZW5zZS5odG1sCi0gKiBodHRw
-Oi8vd3d3LmdudS5vcmcvY29weWxlZnQvZ3BsLmh0bWwKLSAqLworLy8gU1BEWC1MaWNlbnNlLUlk
-ZW50aWZpZXI6IEdQTC0yLjAtb25seQorLy8gU1BEWC1GaWxlQ29weXJpZ2h0VGV4dDogMjAxMiBG
-cmVlc2NhbGUgU2VtaWNvbmR1Y3RvciwgSW5jLgogCiAjaW5jbHVkZSA8Y29tbW9uLmg+CiAjaW5j
-bHVkZSA8aW5pdC5oPgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9wd20vcHhhX3B3bS5jIGIvZHJpdmVy
-cy9wd20vcHhhX3B3bS5jCmluZGV4IDc4ZDE0ODlkNTcwZi4uZGM4ZTQxNDY0YjAxIDEwMDY0NAot
-LS0gYS9kcml2ZXJzL3B3bS9weGFfcHdtLmMKKysrIGIvZHJpdmVycy9wd20vcHhhX3B3bS5jCkBA
-IC0xLDEwICsxLDggQEAKKy8vIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9ubHkK
-KwogLyoKICAqIHNpbXBsZSBkcml2ZXIgZm9yIFBXTSAoUHVsc2UgV2lkdGggTW9kdWxhdG9yKSBj
-b250cm9sbGVyCiAgKgotICogVGhpcyBwcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4g
-cmVkaXN0cmlidXRlIGl0IGFuZC9vciBtb2RpZnkKLSAqIGl0IHVuZGVyIHRoZSB0ZXJtcyBvZiB0
-aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgdmVyc2lvbiAyIGFzCi0gKiBwdWJsaXNoZWQg
-YnkgdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbi4KLSAqCiAgKiAyMDA4LTAyLTEzCWluaXRp
-YWwgdmVyc2lvbiBlcmljIG1pYW8gPGVyaWMubWlhb0BtYXJ2ZWxsLmNvbT4KICAqIDIwMTIgICAg
-ICAgICBSb2JlcnQgSmFyem1payA8cm9iZXJ0LmphcnptaWtAZnJlZS5mcj4KICAqLwotLSAKMi4y
-Ni4yCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFy
-ZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0
-cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Thu, May 14, 2020 at 08:21:56PM +0200, Daniel Gl=F6ckner wrote:
+> There is nothing USB-specific in the defined usbgadget.fastboot_*
+> variables. Rename them to be usable also for the UDP fastboot transport.
+> =
+
+> The usbgadget.fastboot_function variable is used to define the files and
+> devices accessible with the erase and flash commands. Since "function" is
+> a term from the USB specification and the Fastboot specification uses the
+> term "partition", we rename that variable to "fastboot.partitions".
+> =
+
+> Signed-off-by: Daniel Gl=F6ckner <dg@emlix.com>
+> ---
+>  Documentation/user/usb.rst |  4 ++--
+>  commands/usbgadget.c       |  2 +-
+>  common/fastboot.c          | 15 +++++++++++++--
+>  common/usbgadget.c         | 16 ++--------------
+>  include/fastboot.h         |  3 +++
+>  5 files changed, 21 insertions(+), 19 deletions(-)
+> =
+
+> diff --git a/Documentation/user/usb.rst b/Documentation/user/usb.rst
+>  device_initcall(fastboot_globalvars_init);
+>  =
+
+> -BAREBOX_MAGICVAR_NAMED(global_usbgadget_fastboot_max_download_size,
+> -		       global.usbgadget.fastboot_max_download_size,
+> +BAREBOX_MAGICVAR_NAMED(global_fastboot_max_download_size,
+> +		       global.fastboot.max_download_size,
+>  		       "Fastboot maximum download size");
+
+This renames the magicvar description for this variable, but not the
+variable itself.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
