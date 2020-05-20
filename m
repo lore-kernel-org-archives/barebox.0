@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jbIBW-0006VC-Ft
- for barebox@lists.infradead.org; Wed, 20 May 2020 06:26:35 +0000
-Date: Wed, 20 May 2020 08:26:32 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20200520062632.hfbmedgtofv6y665@pengutronix.de>
-References: <20200520035555.84422-1-dgienda125@gmail.com>
+ id 1jbIV9-00036p-FA
+ for barebox@lists.infradead.org; Wed, 20 May 2020 06:46:52 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Wed, 20 May 2020 08:46:44 +0200
+Message-Id: <20200520064644.22838-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200520035555.84422-1-dgienda125@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,54 +15,23 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] password: Fix warning with empty default password
-To: David Dgien <dgienda125@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] password: don't export read_default_passwd()
+To: barebox@lists.infradead.org
 
-On Tue, May 19, 2020 at 11:55:55PM -0400, David Dgien wrote:
-> When CONFIG_PASSWORD_DEFAULT is unset, the default_passwd buffer is set
-
-I assume you mean "If CONFIG_PASSWORD_DEFAULT is set to an empty
-string".
-
-> to the empty string. The read_default_passwd() function wants to read at
-> least two characters from that buffer, causing GCC to generate an array
-> bounds warning.
-
-I cannot reproduce that warning. Which gcc version do you use and on
-which platform? Mentioning the exact warning in the commit log helps
-finding the resulting commit when searching for a fix.
-
-> Make the default_passwd buffer have at least 2 bytes so
-> this warning is not generated.
-> =
-
-> Since the read_default_passwd() function is only called when
-> default_passwd is not the empty string, this is not a functional change.
-
-I don't understand the problem for the empty password. With
-default_passwd =3D "" we have strlen(default_passwd) =3D 0 so the for loop
-doesn't run at all.
-
-As I understand the code (at commit c10b20dc83ac) for uneven lengths of
-default_passwd the last accessed byte is the trailing '\0' and for even
-length it's the byte before the trailing '\0'. This should be ok?!
-
-Am I missing something?
-
-Best regards
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhpcyBmdW5jdGlvbiBpcyB1c2VkIG9ubHkgaW4gY29tbW9uL3Bhc3N3b3JkLmMgaXRzZWxmLCBz
+byBpdCBkb2Vzbid0Cm5lZWQgdG8gYmUgZXhwb3J0ZWQuCgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xl
+aW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgotLS0KIGNvbW1vbi9w
+YXNzd29yZC5jIHwgMSAtCiAxIGZpbGUgY2hhbmdlZCwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdp
+dCBhL2NvbW1vbi9wYXNzd29yZC5jIGIvY29tbW9uL3Bhc3N3b3JkLmMKaW5kZXggYTJhOWM0Y2Q2
+Y2FmLi5lNWEzMzNkOWIxOWUgMTAwNjQ0Ci0tLSBhL2NvbW1vbi9wYXNzd29yZC5jCisrKyBiL2Nv
+bW1vbi9wYXNzd29yZC5jCkBAIC0xNzksNyArMTc5LDYgQEAgc3RhdGljIGludCByZWFkX2RlZmF1
+bHRfcGFzc3dkKHVuc2lnbmVkIGNoYXIgKnN1bSwgc2l6ZV90IGxlbmd0aCkKIAogCXJldHVybiAw
+OwogfQotRVhQT1JUX1NZTUJPTChyZWFkX2RlZmF1bHRfcGFzc3dkKTsKIAogc3RhdGljIGludCBy
+ZWFkX2Vudl9wYXNzd2QodW5zaWduZWQgY2hhciAqc3VtLCBzaXplX3QgbGVuZ3RoKQogewotLSAK
+Mi4yNi4yCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
+YmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9s
+aXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
