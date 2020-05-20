@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jbLGh-0007y5-HU
- for barebox@lists.infradead.org; Wed, 20 May 2020 09:44:12 +0000
+ id 1jbLGp-00085Y-Hx
+ for barebox@lists.infradead.org; Wed, 20 May 2020 09:44:16 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 20 May 2020 11:43:55 +0200
-Message-Id: <20200520094403.12651-12-s.hauer@pengutronix.de>
+Date: Wed, 20 May 2020 11:43:48 +0200
+Message-Id: <20200520094403.12651-5-s.hauer@pengutronix.de>
 In-Reply-To: <20200520094403.12651-1-s.hauer@pengutronix.de>
 References: <20200520094403.12651-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -17,41 +17,28 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/19] usbnet: Add slice
+Subject: [PATCH 04/19] fastboot: don't close fd 0 when downloading to ram
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-Both the ethernet device and the mdio bus of a USB network controller
-need the USB bus. Add dependencies to it.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/net/usb/usbnet.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index 406b8c964f..d2518c6e4a 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -233,6 +233,9 @@ int usbnet_probe(struct usb_device *usbdev, const struct usb_device_id *prod)
- 
- 	eth_register(edev);
- 
-+	slice_depends_on(eth_device_slice(edev), usb_device_slice(usbdev));
-+	slice_depends_on(mdiobus_slice(&undev->miibus), usb_device_slice(usbdev));
-+
- 	return 0;
- out1:
- 	dev_dbg(&edev->dev, "err: %d\n", status);
--- 
-2.26.2
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RnJvbTogRGFuaWVsIEdsw7Zja25lciA8ZGdAZW1saXguY29tPgoKV2hlbiBkb3dubG9hZGluZyB0
+byBhIGJ1ZmZlciwgZG93bmxvYWRfZmQgaXMgbmV2ZXIgYXNzaWduZWQgYSB2YWxpZCBmaWxlCmRl
+c2NyaXB0b3IuIFdlIHNob3VsZCB0aGVyZWZvcmUgYXZvaWQgY2FsbGluZyBjbG9zZSBvbiB0aGUg
+dmFsdWUgZm91bmQKaW4gdGhhdCB2YXJpYWJsZS4KClNpZ25lZC1vZmYtYnk6IERhbmllbCBHbMO2
+Y2tuZXIgPGRnQGVtbGl4LmNvbT4KU2lnbmVkLW9mZi1ieTogU2FzY2hhIEhhdWVyIDxzLmhhdWVy
+QHBlbmd1dHJvbml4LmRlPgotLS0KIGNvbW1vbi9mYXN0Ym9vdC5jIHwgMyArKy0KIDEgZmlsZSBj
+aGFuZ2VkLCAyIGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9jb21t
+b24vZmFzdGJvb3QuYyBiL2NvbW1vbi9mYXN0Ym9vdC5jCmluZGV4IGQ1OGY2OGYxYmIuLjFlMTJm
+OTk5MTUgMTAwNjQ0Ci0tLSBhL2NvbW1vbi9mYXN0Ym9vdC5jCisrKyBiL2NvbW1vbi9mYXN0Ym9v
+dC5jCkBAIC0zNDIsNyArMzQyLDggQEAgaW50IGZhc3Rib290X2hhbmRsZV9kb3dubG9hZF9kYXRh
+KHN0cnVjdCBmYXN0Ym9vdCAqZmIsIGNvbnN0IHZvaWQgKmJ1ZmZlciwKIAogdm9pZCBmYXN0Ym9v
+dF9kb3dubG9hZF9maW5pc2hlZChzdHJ1Y3QgZmFzdGJvb3QgKmZiKQogewotCWNsb3NlKGZiLT5k
+b3dubG9hZF9mZCk7CisJaWYgKCFmYXN0Ym9vdF9kb3dubG9hZF90b19idWYoZmIpKQorCQljbG9z
+ZShmYi0+ZG93bmxvYWRfZmQpOwogCiAJcHJpbnRmKCJcbiIpOwogCi0tIAoyLjI2LjIKCgpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxp
+bmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVh
+ZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
