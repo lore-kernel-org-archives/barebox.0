@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jbMmQ-0003gj-8T
- for barebox@lists.infradead.org; Wed, 20 May 2020 11:20:59 +0000
-Date: Wed, 20 May 2020 13:20:56 +0200
+ id 1jbMni-0003uB-8M
+ for barebox@lists.infradead.org; Wed, 20 May 2020 11:22:23 +0000
+Date: Wed, 20 May 2020 13:22:16 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200520112056.GC11869@pengutronix.de>
-References: <20200520035536.84368-1-dgienda125@gmail.com>
+Message-ID: <20200520112216.GD11869@pengutronix.de>
+References: <20200520064644.22838-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200520035536.84368-1-dgienda125@gmail.com>
+In-Reply-To: <20200520064644.22838-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,69 +18,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] serial: Add flush function to NS16550 driver
-To: David Dgien <dgienda125@gmail.com>
+Subject: Re: [PATCH] password: don't export read_default_passwd()
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, May 19, 2020 at 11:55:36PM -0400, David Dgien wrote:
-> Add flush function to NS16550 to remove bad characters being printed
-> during reset
-> 
-> Signed-off-by: David Dgien <dgienda125@gmail.com>
+On Wed, May 20, 2020 at 08:46:44AM +0200, Uwe Kleine-K=F6nig wrote:
+> This function is used only in common/password.c itself, so it doesn't
+> need to be exported.
+> =
+
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
 > ---
->  drivers/serial/serial_ns16550.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
+>  common/password.c | 1 -
+>  1 file changed, 1 deletion(-)
 
 Applied, thanks
 
 Sascha
 
-> 
-> diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
-> index 5d6cec82a..f117ab9dc 100644
-> --- a/drivers/serial/serial_ns16550.c
-> +++ b/drivers/serial/serial_ns16550.c
-> @@ -308,6 +308,17 @@ static int ns16550_tstc(struct console_device *cdev)
->  	return ((ns16550_read(cdev, lsr) & LSR_DR) != 0);
+> =
+
+> diff --git a/common/password.c b/common/password.c
+> index a2a9c4cd6caf..e5a333d9b19e 100644
+> --- a/common/password.c
+> +++ b/common/password.c
+> @@ -179,7 +179,6 @@ static int read_default_passwd(unsigned char *sum, si=
+ze_t length)
+>  =
+
+>  	return 0;
 >  }
->  
-> +/**
-> + * @brief Flush remaining characters in serial device
-> + *
-> + * @param[in] cdev pointer to console device
-> + */
-> +static void ns16550_flush(struct console_device *cdev)
-> +{
-> +	/* Loop Doing Nothing */
-> +	while ((ns16550_read(cdev, lsr) & LSR_TEMT) == 0) ;
-> +}
-> +
->  static void ns16550_probe_dt(struct device_d *dev, struct ns16550_priv *priv)
+> -EXPORT_SYMBOL(read_default_passwd);
+>  =
+
+>  static int read_env_passwd(unsigned char *sum, size_t length)
 >  {
->  	struct device_node *np = dev->device_node;
-> @@ -501,6 +512,7 @@ static int ns16550_probe(struct device_d *dev)
->  	cdev->putc = ns16550_putc;
->  	cdev->getc = ns16550_getc;
->  	cdev->setbrg = ns16550_setbaudrate;
-> +	cdev->flush = ns16550_flush;
->  	cdev->linux_console_name = devtype->linux_console_name;
->  
->  	priv->fcrval = FCRVAL;
-> -- 
+> -- =
+
 > 2.26.2
-> 
-> 
+> =
+
+> =
+
 > _______________________________________________
 > barebox mailing list
 > barebox@lists.infradead.org
 > http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
--- 
+-- =
+
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
