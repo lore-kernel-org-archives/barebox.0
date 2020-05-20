@@ -1,21 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from conssluserg-05.nifty.com ([210.131.2.90])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jax0p-000235-Nn
- for barebox@lists.infradead.org; Tue, 19 May 2020 07:50:10 +0000
-Received: from mail-vs1-f44.google.com (mail-vs1-f44.google.com
- [209.85.217.44]) (authenticated)
- by conssluserg-05.nifty.com with ESMTP id 04J7neLa004846
- for <barebox@lists.infradead.org>; Tue, 19 May 2020 16:49:41 +0900
-Received: by mail-vs1-f44.google.com with SMTP id e10so7220005vsp.12
- for <barebox@lists.infradead.org>; Tue, 19 May 2020 00:49:41 -0700 (PDT)
+ id 1jbLGg-0007xk-UZ
+ for barebox@lists.infradead.org; Wed, 20 May 2020 09:44:10 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 20 May 2020 11:43:45 +0200
+Message-Id: <20200520094403.12651-2-s.hauer@pengutronix.de>
+In-Reply-To: <20200520094403.12651-1-s.hauer@pengutronix.de>
+References: <20200520094403.12651-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-References: <20200519071353.395493-1-masahiroy@kernel.org>
- <20200519071353.395493-6-masahiroy@kernel.org>
-In-Reply-To: <20200519071353.395493-6-masahiroy@kernel.org>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Tue, 19 May 2020 16:49:04 +0900
-Message-ID: <CAK7LNARk8aNg3NigHxytmHcEAOdk76kKyu5dWc+pU3LO+=+n8Q@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,191 +21,255 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/8] kbuild: unify barebox and pbl build commands
+Subject: [PATCH 01/19] poller: Give pollers a name
 To: Barebox List <barebox@lists.infradead.org>
+Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-Just some typos.
+It helps debugging when pollers have a name, so give them one.
 
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/mioa701/gpio0_poweroff.c | 2 +-
+ arch/arm/boards/sama5d3xek/init.c        | 2 +-
+ common/poller.c                          | 8 +++++---
+ common/ratp/ratp.c                       | 2 +-
+ drivers/input/gpio_keys.c                | 2 +-
+ drivers/input/imx_keypad.c               | 2 +-
+ drivers/input/input.c                    | 2 +-
+ drivers/input/qt1070.c                   | 2 +-
+ drivers/input/twl6030_pwrbtn.c           | 2 +-
+ drivers/led/core.c                       | 2 +-
+ drivers/net/usb/ax88179_178a.c           | 2 +-
+ drivers/usb/gadget/udc-core.c            | 2 +-
+ drivers/watchdog/wd_core.c               | 2 +-
+ include/poller.h                         | 5 +++--
+ 14 files changed, 20 insertions(+), 17 deletions(-)
 
-On Tue, May 19, 2020 at 4:14 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
->
-> The current Linux uses the unified build command for built-in objects
-> and module objects. This is possible because part-of-module is set to
-> y when the target is being built for a module. If so, quiet_modtag is
-> set to [M], and modkern_cflags is set to KBUILD_CFLAGS_MODULE instead
-> of KBUILD_CFLAGS_KERNEL.
->
-> Currently, barebox uses a separate build command for pbl, but the
-> difference between cmd_cc_o_c and cmd_pbl_cc_o_c is just
-> "-D__PBL__ $(PBL_CPPFLAGS)".
->
-> By using the same approach as Linux, it can be unified.
-
-it can be unified  -> they can be unified
-
-
->
-> Set pbl-of-pbl flag to y when the target is being built for pbl.
-
-
-pbl-of-pbl  ->  part-of-pbl
-
-
-
-
-> Merge cmd_as_o_S and cmd_link_o_target as well.
->
-> This also changes the shortlog style as follows:
->
->   PBLCC  ->  CC [P]
->   PBLAS  ->  AS [P]
->   PBLLD  ->  LD [P]
->
-> This is more consistent with the policy in the Linux build system.
->
-> In Linux, a capital letter enclosed square blackets indicates which
-> target the object is being built for.
->
->   CC      object built for built-in
->   CC [M]  object built for modules
->   CC [U]  object built for userspace (proposed for Linux 5.8-rc1)
->
-> The idea behind this is we use the same compiler $(CC) for them.
-> Only the difference is the compiler flags. On the other hand, host
-> programs are compiled by a different tool, $(HOSTCC), hence the
-> shortlog is 'HOSTCC'.
->
-> Barebox supports module builds (it seems), but the [P] notation does
-> not conflict with [M] because pbl has a limited memory footprint.
-> We never expect pbl can support the module feature.
->
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> ---
->
->  scripts/Makefile.build | 35 ++++++++---------------------------
->  scripts/Makefile.lib   |  9 ++++++---
->  2 files changed, 14 insertions(+), 30 deletions(-)
->
-> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-> index f575a07fd..31341d23c 100644
-> --- a/scripts/Makefile.build
-> +++ b/scripts/Makefile.build
-> @@ -117,25 +117,18 @@ cmd_cc_i_c       = $(CPP) $(c_flags)   -o $@ $<
->  # (See cmd_cc_o_c + relevant part of rule_cc_o_c)
->
->  quiet_cmd_cc_o_c = CC $(quiet_modtag)  $@
-> -      cmd_cc_o_c = $(CC) $(c_flags) -c -o $@ $<
-> -quiet_cmd_pbl_cc_o_c = PBLCC   $@
-> -      cmd_pbl_cc_o_c = $(CC) -D__PBL__ $(c_flags) $(PBL_CPPFLAGS) -c -o $@ $<
-> +      cmd_cc_o_c = $(CC) $(c_flags) $(if $(part-of-pbl),-D__PBL__ $(PBL_CPPFLAGS)) -c -o $@ $<
->
->  define rule_cc_o_c
->         $(call cmd,checksrc)
->         $(call cmd_and_fixdep,cc_o_c)
->  endef
->
-> -define rule_pbl_cc_o_c
-> -       $(call cmd,checksrc)
-> -       $(call cmd_and_fixdep,pbl_cc_o_c)
-> -endef
-> -
->  # Built-in and composite module parts
->
->  %.pbl.o: %.c FORCE
->         $(call cmd,force_checksrc)
-> -       $(call if_changed_rule,pbl_cc_o_c)
-> +       $(call if_changed_rule,cc_o_c)
->
->  %.o: %.c FORCE
->         $(call cmd,force_checksrc)
-> @@ -168,11 +161,8 @@ cmd_as_s_S       = $(CPP) $(a_flags)   -o $@ $<
->  quiet_cmd_as_o_S = AS $(quiet_modtag)  $@
->  cmd_as_o_S       = $(CC) $(a_flags) -c -o $@ $<
->
-> -quiet_cmd_pbl_as_o_S = PBLAS   $@
-> -cmd_pbl_as_o_S       = $(CC) -D__PBL__ $(a_flags) $(PBL_CPPFLAGS) -c -o $@ $<
-> -
->  %.pbl.o: %.S FORCE
-> -       $(call if_changed_dep,pbl_as_o_S)
-> +       $(call if_changed_dep,as_o_S)
->
->  %.o: %.S FORCE
->         $(call if_changed_dep,as_o_S)
-> @@ -198,31 +188,22 @@ $(sort $(subdir-obj-y)): $(subdir-ym) ;
->  #
->  # Rule to compile a set of .o files into one .o file
->  #
-> -ifdef builtin-target
-> -quiet_cmd_link_o_target = LD      $@
-> +
->  # If the list of objects to link is empty, just create an empty built-in.o
-> -cmd_link_o_target = $(if $(strip $(obj-y)),\
-> -                     $(LD) $(ld_flags) -r -o $@ $(filter $(obj-y), $^),\
-> +quiet_cmd_link_o_target = LD $(quiet_modtag)  $@
-> +cmd_link_o_target = $(if $(strip $(real-prereqs)),\
-> +                     $(LD) $(ld_flags) -r -o $@ $(real-prereqs),\
->                       rm -f $@; $(AR) rcs $@)
->
->  $(builtin-target): $(obj-y) FORCE
->         $(call if_changed,link_o_target)
->
->  targets += $(builtin-target)
-> -endif # builtin-target
-> -
-> -ifdef pbl-target
-> -quiet_cmd_pbl_link_o_target = PBLLD   $@
-> -# If the list of objects to link is empty, just create an empty built-in-pbl.o
-> -cmd_pbl_link_o_target = $(if $(strip $(pbl-y)),\
-> -                     $(LD) $(ld_flags) -r -o $@ $(filter $(pbl-y), $^),\
-> -                     rm -f $@; $(AR) rcs $@)
->
->  $(pbl-target): $(pbl-y) FORCE
-> -       $(call if_changed,pbl_link_o_target)
-> +       $(call if_changed,link_o_target)
->
->  targets += $(pbl-target)
-> -endif # pbl-target
->
->  #
->  # Rule to compile a set of .o files into one .a file
-> diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-> index a6cba747f..55d251844 100644
-> --- a/scripts/Makefile.lib
-> +++ b/scripts/Makefile.lib
-> @@ -154,7 +154,10 @@ __cpp_flags     =                          $(call flags,_cpp_flags)
->  endif
->
->  part-of-module = $(if $(filter $(basename $@).o, $(real-obj-m)),y)
-> -quiet_modtag = $(if $(part-of-module),[M],   )
-> +part-of-pbl    = $(if $(filter $(basename $@).o, $(pbl-y) $(pbl-target)),y)
-> +quiet_modtag = $(if $(part-of-pbl),[P],$(if $(part-of-module),[M],   ))
-> +
-> +pbl_cppflags = $(if $(part-of-pbl), -D__PBL__ $(PBL_CPPFLAGS))
->
->  modkern_cflags =                                          \
->         $(if $(part-of-module),                           \
-> @@ -166,11 +169,11 @@ modkern_aflags = $(if $(part-of-module),                          \
->                         $(KBUILD_AFLAGS_KERNEL) $(AFLAGS_KERNEL))
->
->  c_flags        = -Wp,-MD,$(depfile) $(NOSTDINC_FLAGS) $(KBUILD_CPPFLAGS) \
-> -                $(__c_flags) $(modkern_cflags) \
-> +                $(__c_flags) $(modkern_cflags) $(pbl_cppflags) \
->                  -D"KBUILD_STR(s)=\#s" $(basename_flags) $(modname_flags)
->
->  a_flags        = -Wp,-MD,$(depfile) $(NOSTDINC_FLAGS) $(KBUILD_CPPFLAGS) \
-> -                $(__a_flags) $(modkern_aflags)
-> +                $(__a_flags) $(modkern_aflags) $(pbl_cppflags)
->
->  cpp_flags      = -Wp,-MD,$(depfile) $(NOSTDINC_FLAGS) $(__cpp_flags)
->
-> --
-> 2.25.1
->
-
-
+diff --git a/arch/arm/boards/mioa701/gpio0_poweroff.c b/arch/arm/boards/mioa701/gpio0_poweroff.c
+index 4b34922507..8caccebeab 100644
+--- a/arch/arm/boards/mioa701/gpio0_poweroff.c
++++ b/arch/arm/boards/mioa701/gpio0_poweroff.c
+@@ -73,7 +73,7 @@ static struct poller_struct gpio0_poller = {
+ 
+ static int gpio0_poweroff_probe(void)
+ {
+-	return poller_register(&gpio0_poller);
++	return poller_register(&gpio0_poller, "power-button");
+ }
+ 
+ device_initcall(gpio0_poweroff_probe);
+diff --git a/arch/arm/boards/sama5d3xek/init.c b/arch/arm/boards/sama5d3xek/init.c
+index c768e98d26..d9be4c5f9d 100644
+--- a/arch/arm/boards/sama5d3xek/init.c
++++ b/arch/arm/boards/sama5d3xek/init.c
+@@ -408,7 +408,7 @@ static void ek_add_device_hdmi(void)
+ 	hdmi_reset_start = get_time_ns();
+ 	hdmi_poller.func = hdmi_off_poller;
+ 
+-	poller_register(&hdmi_poller);
++	poller_register(&hdmi_poller, "hdmi-reset");
+ }
+ #else
+ static void ek_add_device_hdmi(void)
+diff --git a/common/poller.c b/common/poller.c
+index 32795b641f..b1a2122f91 100644
+--- a/common/poller.c
++++ b/common/poller.c
+@@ -16,11 +16,12 @@
+ static LIST_HEAD(poller_list);
+ static int poller_active;
+ 
+-int poller_register(struct poller_struct *poller)
++int poller_register(struct poller_struct *poller, const char *name)
+ {
+ 	if (poller->registered)
+ 		return -EBUSY;
+ 
++	poller->name = xstrdup(name);
+ 	list_add_tail(&poller->list, &poller_list);
+ 	poller->registered = 1;
+ 
+@@ -35,6 +36,7 @@ int poller_unregister(struct poller_struct *poller)
+ 
+ 	list_del(&poller->list);
+ 	poller->registered = 0;
++	free(poller->name);
+ 
+ 	return 0;
+ }
+@@ -92,12 +94,12 @@ int poller_call_async(struct poller_async *pa, uint64_t delay_ns,
+ 	return 0;
+ }
+ 
+-int poller_async_register(struct poller_async *pa)
++int poller_async_register(struct poller_async *pa, const char *name)
+ {
+ 	pa->poller.func = poller_async_callback;
+ 	pa->active = 0;
+ 
+-	return poller_register(&pa->poller);
++	return poller_register(&pa->poller, name);
+ }
+ 
+ int poller_async_unregister(struct poller_async *pa)
+diff --git a/common/ratp/ratp.c b/common/ratp/ratp.c
+index ca751a30eb..556dc638d8 100644
+--- a/common/ratp/ratp.c
++++ b/common/ratp/ratp.c
+@@ -451,7 +451,7 @@ int barebox_ratp(struct console_device *cdev)
+ 	if (ret < 0)
+ 		goto out;
+ 
+-	ret = poller_register(&ctx->poller);
++	ret = poller_register(&ctx->poller, "ratp");
+ 	if (ret)
+ 		goto out1;
+ 
+diff --git a/drivers/input/gpio_keys.c b/drivers/input/gpio_keys.c
+index 38c0f11535..11d598c402 100644
+--- a/drivers/input/gpio_keys.c
++++ b/drivers/input/gpio_keys.c
+@@ -166,7 +166,7 @@ static int __init gpio_keys_probe(struct device_d *dev)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = poller_register(&gk->poller);
++	ret = poller_register(&gk->poller, dev_name(dev));
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/drivers/input/imx_keypad.c b/drivers/input/imx_keypad.c
+index 44ff9b7856..6757fac72b 100644
+--- a/drivers/input/imx_keypad.c
++++ b/drivers/input/imx_keypad.c
+@@ -410,7 +410,7 @@ static int __init imx_keypad_probe(struct device_d *dev)
+ 
+ 	keypad->poller.func = imx_keypad_check_for_events;
+ 
+-	ret = poller_register(&keypad->poller);
++	ret = poller_register(&keypad->poller, dev_name(dev));
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/drivers/input/input.c b/drivers/input/input.c
+index 1e8f6e178e..bcc8667417 100644
+--- a/drivers/input/input.c
++++ b/drivers/input/input.c
+@@ -201,7 +201,7 @@ static int input_init(void)
+ 	ic->fifo = kfifo_alloc(32);
+ 	ic->notifier.notify = input_console_notify;
+ 	input_register_notfier(&ic->notifier);
+-	poller_async_register(&ic->poller);
++	poller_async_register(&ic->poller, "input");
+ 
+ 	return console_register(&ic->console);
+ }
+diff --git a/drivers/input/qt1070.c b/drivers/input/qt1070.c
+index 59acee5c39..9e1dcc57ee 100644
+--- a/drivers/input/qt1070.c
++++ b/drivers/input/qt1070.c
+@@ -269,7 +269,7 @@ static int qt1070_probe(struct device_d *dev)
+ 
+ 	console_register(&data->cdev);
+ 
+-	ret = poller_register(&data->poller);
++	ret = poller_register(&data->poller, dev_name(dev));
+ 	if (ret)
+ 		goto err;
+ 
+diff --git a/drivers/input/twl6030_pwrbtn.c b/drivers/input/twl6030_pwrbtn.c
+index fc4c728778..481688b4a9 100644
+--- a/drivers/input/twl6030_pwrbtn.c
++++ b/drivers/input/twl6030_pwrbtn.c
+@@ -97,7 +97,7 @@ static int __init twl6030_pwrbtn_probe(struct device_d *dev)
+ 	idata->cdev.getc = twl6030_pwrbtn_getc;
+ 	console_register(&idata->cdev);
+ 
+-	return poller_register(&idata->poller);
++	return poller_register(&idata->poller, dev_name(dev));
+ }
+ 
+ static struct driver_d twl6030_pwrbtn_driver = {
+diff --git a/drivers/led/core.c b/drivers/led/core.c
+index eeeeaa0ff3..ab171c6184 100644
+--- a/drivers/led/core.c
++++ b/drivers/led/core.c
+@@ -209,7 +209,7 @@ static struct poller_struct led_poller = {
+ 
+ static int led_blink_init(void)
+ {
+-	return poller_register(&led_poller);
++	return poller_register(&led_poller, "led");
+ }
+ late_initcall(led_blink_init);
+ 
+diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
+index 6fea5a7b1d..fddb187144 100644
+--- a/drivers/net/usb/ax88179_178a.c
++++ b/drivers/net/usb/ax88179_178a.c
+@@ -409,7 +409,7 @@ static int ax88179_bind(struct usbnet *dev)
+ 
+ 	priv->last = get_time_ns();
+ 	priv->poller.func = ax88179_poller;
+-	poller_register(&priv->poller);
++	poller_register(&priv->poller, dev_name(&dev->udev->dev));
+ 
+ 	return 0;
+ }
+diff --git a/drivers/usb/gadget/udc-core.c b/drivers/usb/gadget/udc-core.c
+index 096f05ed48..126d76e8bb 100644
+--- a/drivers/usb/gadget/udc-core.c
++++ b/drivers/usb/gadget/udc-core.c
+@@ -319,7 +319,7 @@ static int udc_bind_to_driver(struct usb_udc *udc, struct usb_gadget_driver *dri
+ 
+ 	if (udc->gadget->ops->udc_poll) {
+ 		udc->poller.func = udc_poll_driver;
+-		ret = poller_register(&udc->poller);
++		ret = poller_register(&udc->poller, dev_name(&udc->dev));
+ 		if (ret)
+ 			return ret;
+ 	}
+diff --git a/drivers/watchdog/wd_core.c b/drivers/watchdog/wd_core.c
+index 34040408f7..a17234f4b6 100644
+--- a/drivers/watchdog/wd_core.c
++++ b/drivers/watchdog/wd_core.c
+@@ -116,7 +116,7 @@ static int watchdog_register_poller(struct watchdog *wd)
+ 	struct param_d *p;
+ 	int ret;
+ 
+-	ret = poller_async_register(&wd->poller);
++	ret = poller_async_register(&wd->poller, dev_name(&wd->dev));
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/include/poller.h b/include/poller.h
+index b22b8a1b89..886557252b 100644
+--- a/include/poller.h
++++ b/include/poller.h
+@@ -12,9 +12,10 @@ struct poller_struct {
+ 	void (*func)(struct poller_struct *poller);
+ 	int registered;
+ 	struct list_head list;
++	char *name;
+ };
+ 
+-int poller_register(struct poller_struct *poller);
++int poller_register(struct poller_struct *poller, const char *name);
+ int poller_unregister(struct poller_struct *poller);
+ 
+ struct poller_async;
+@@ -27,7 +28,7 @@ struct poller_async {
+ 	int active;
+ };
+ 
+-int poller_async_register(struct poller_async *pa);
++int poller_async_register(struct poller_async *pa, const char *name);
+ int poller_async_unregister(struct poller_async *pa);
+ 
+ int poller_call_async(struct poller_async *pa, uint64_t delay_ns,
 -- 
-Best Regards
-Masahiro Yamada
+2.26.2
+
 
 _______________________________________________
 barebox mailing list
