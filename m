@@ -1,12 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jbLGg-0007xo-Ut
- for barebox@lists.infradead.org; Wed, 20 May 2020 09:44:08 +0000
+ id 1jbJvL-00045E-GS
+ for barebox@lists.infradead.org; Wed, 20 May 2020 08:18:00 +0000
+Date: Wed, 20 May 2020 10:17:57 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 20 May 2020 11:43:44 +0200
-Message-Id: <20200520094403.12651-1-s.hauer@pengutronix.de>
+Message-ID: <20200520081757.GU11869@pengutronix.de>
+References: <cover.1589477005.git.dg@emlix.com>
+ <a5f6a082fd56438a26117d206920aebb5aa16051.1589477005.git.dg@emlix.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <a5f6a082fd56438a26117d206920aebb5aa16051.1589477005.git.dg@emlix.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,121 +19,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/19] Slices and fastboot over UDP
-To: Barebox List <barebox@lists.infradead.org>
-Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
+Subject: Re: [PATCH v2 09/10] fastboot net: implement fastboot over UDP
+To: Daniel =?iso-8859-15?Q?Gl=F6ckner?= <dg@emlix.com>
+Cc: barebox@lists.infradead.org, Edmund Henniges <eh@emlix.com>
 
-VGhpcyBpcyBhIGNvbWJpbmF0aW9uIG9mIHRoZSBzbGljZXMgc2VyaWVzIEkgcG9zdGVkIGVhcmxp
-ZXIgYW5kCnRoZSBmYXN0Ym9vdCBvdmVyIGV0aGVybmV0IHNlcmllcyBmcm9tIERhbmllbCBHbMO2
-Y2tuZXIuIFRoaXMgd29ya3MKcXVpdGUgd2VsbCBmb3IgbWUgbm93IGFuZCBJIGFtIGltcHJlc3Nl
-ZCB0aGF0IHdpdGggYSBzbWFsbCBmaXggYm90aApmYXN0Ym9vdCBvdmVyIFVTQiBhbmQgb3ZlciBV
-RFAgbm93IG5vdCBvbmx5IHdvcmsgYWZ0ZXIgZWFjaCBvdGhlciwKYnV0IGFsc28gdHJ1ZWx5IHNp
-bXVsdGFub3VzbHkuIFdlbGwsIEkgZGlkbid0IHRyeSB0byB3cml0ZSB0aGUgc2FtZQpmaWxlIGZy
-b20gYm90aCBpbnN0YW5jZXMsIHRoYXQgd29uJ3Qgd29yayBmb3Igc3VyZSA7KQoKVGhpcyBzZXJp
-ZXMgY3VycmVudGx5IGhhcyB0aHJlZSBrbm93biBpc3N1ZXMgd2hpY2ggc2hvdWxkIGJlIGZpeGVk
-CmJlZm9yZSBtZXJnaW5nOgoKLSBUaGUgZmFzdGJvb3QgVURQIGtlZXBhbGl2ZSBoYW5kbGVyIGhh
-cyBubyBpZGVhIGlmIHdlIGFyZSBpbnNpZGUgYQogIGZhc3Rib290IHNlc3Npb24gb3Igbm90LiBJ
-dCB3aWxsIGp1c3QgYmxpbmRseSBzZW5kIGtlZXBhbGl2ZSBwYWNrZXRzCi0gVGhlIG9ubHkgcG9z
-c2liaWxpdHkgdG8gc3RhcnQgZmFzdGJvb3Qgb3ZlciBVRFAgY3VycmVudGx5IGlzIGEKICBLY29u
-ZmlnIG9wdGlvbiB3aGljaCBpZiBlbmFibGVkIHN0YXJ0cyBmYXN0Ym9vdCBvdmVyIFVEUCB1bmNv
-bmRpdGlvbmFsbHkKICBIZXJlIHdlIG5lZWQgYXQgbGVhc3QgYSBudiB2YXJpYWJsZSB0byBjb250
-cm9sIHN0YXJ0aW5nCi0gSXQncyBub3QgeWV0IGNsZWFyIGlmIGNvbXBsZXRlbHkgcmVtb3Zpbmcg
-dGhlIG1heV9zZW5kIG1lY2hhbmlzbSBpcyB0aGUKICByaWdodCB0aGluZy4KCkNoYW5nZXMgc2lu
-Y2UgdGhlIHNsaWNlcyB2NCBzZXJpZXM6CgotIHJlbmFtZSBzbGljZV9hZGQoKSB0byBzbGljZV9k
-ZXBlbmRzX29uKCkgd2hpY2ggbWFrZXMgdGhlIGludGVudGlvbiBvZgogIHRoZSBmdW5jdGlvbiBt
-b3JlIGNsZWFyCi0gc2xpY2VfZGVsKCkgaXMgbm8gbG9uZ2VyIG5lY2Vzc2FyeSBhbmQgcmVtb3Zl
-ZAotIHNsaWNlX2V4aXQoKSBpbnRyb2R1Y2VkIHRvIHJlbW92ZSBhIHNsaWNlLiBUaGlzIHJlbW92
-ZXMgdGhlIHNsaWNlLCBpdCdzCiAgZGVwZW5kZW5jaWVzIGFuZCBhbHNvIHJlbW92ZXMgdGhlIHNs
-aWNlIGZyb20gb3RoZXIgc2xpY2VzIGRlcGVuZGVuY2llcwoKQ2hhbmdlcyBzaW5jZSBmYXN0Ym9v
-dCBvdmVyIFVEUCB2MjoKCi0gc3F1YXNoZWQgMDEvMTAgLSAwMy8xMCBpbnRvIHBhdGNoZXMgb2Yg
-dGhlIHNsaWNlcyBzZXJpZXMKLSBNb3ZlIHJlbGVhc2luZyBvZiB0aGUgaWRsZSBzbGljZSB0byB0
-aGUgc2hlbGwgYW5kIHRoZSBzdGFydHVwIGNvZGUKICBjYWxsaW5nIHRoZSBhdXRvYm9vdCB0aW1l
-b3V0IGNvdW50ZXIKLSBhZGQgZm9yZ290dGVuIHJlbmFtZSBvZiBnbG9iYWwudXNiZ2FkZ2V0LmZh
-c3Rib290X21heF9kb3dubG9hZF9zaXplIHRvCiAgZ2xvYmFsLmZhc3Rib290Lm1heF9kb3dubG9h
-ZF9zaXplCi0gQWRkIHBhdGNoIHRvIHVzZSBkaWZmZXJlbnQgdGVtcG9yYXJ5IGZpbGVuYW1lcyBm
-b3IgZWFjaCBmYXN0Ym9vdCBpbnN0YW5jZS4KICBXaXRoIHRoaXMgZmFzdGJvb3Qgb3ZlciBVRFAg
-YW5kIGZhc3Rib290IG92ZXIgVVNCIGNhbiB3b3JrIGluIHBhcmFsbGVsCi0gcmVtb3ZlIG1heV9z
-ZW5kIG1lY2hhbmlzbSBmcm9tIGZhc3Rib290IG92ZXIgVURQCi0gZml4IHdyb25nIHRlc3QgaW4g
-ZmFzdGJvb3RfbmV0X2V4aXQoKQoKRGFuaWVsIEdsw7Zja25lciAoNCk6CiAgZmFzdGJvb3Q6IGRv
-bid0IGNsb3NlIGZkIDAgd2hlbiBkb3dubG9hZGluZyB0byByYW0KICBJbnRyb2R1Y2UgaWRsZSBz
-bGljZQogIGRlZmNvbmZpZ3M6IHVwZGF0ZSByZW5hbWVkIGZhc3Rib290IG9wdGlvbnMKICBmYXN0
-Ym9vdDogcmVuYW1lIHVzYmdhZGdldC5mYXN0Ym9vdF8qIHZhcmlhYmxlcyB0byBmYXN0Ym9vdC4q
-CgpFZG11bmQgSGVubmlnZXMgKDIpOgogIGZhc3Rib290OiBzcGxpdCBnZW5lcmljIGNvZGUgZnJv
-bSBVU0IgZ2FkZ2V0CiAgZmFzdGJvb3QgbmV0OiBpbXBsZW1lbnQgZmFzdGJvb3Qgb3ZlciBVRFAK
-ClNhc2NoYSBIYXVlciAoMTMpOgogIHBvbGxlcjogR2l2ZSBwb2xsZXJzIGEgbmFtZQogIHBvbGxl
-cjogQWRkIGEgcG9sbGVyIGNvbW1hbmQKICBmYXN0Ym9vdDogVXNlIHVuaXF1ZSB0ZW1wZmlsZSBu
-YW1lCiAgSW50cm9kdWNlIHNsaWNlcwogIG5ldDogQWRkIGEgc2xpY2UgdG8gc3RydWN0IGV0aF9k
-ZXZpY2UKICBuZXQ6IG1kaW9idXM6IEFkZCBzbGljZQogIHVzYjogQWRkIGEgc2xpY2UgdG8gdXNi
-IGhvc3QgY29udHJvbGxlcnMKICB1c2JuZXQ6IEFkZCBzbGljZQogIG5ldDogQ2FsbCBuZXRfcG9s
-bCgpIGluIGEgcG9sbGVyCiAgbmV0OiByZXBseSB0byBwaW5nIHJlcXVlc3RzCiAgdXNibmV0OiBC
-ZSBtb3JlIGZyaWVuZGx5IGluIHRoZSByZWNlaXZlIHBhdGgKICBwb2xsZXI6IEFsbG93IHRvIHJ1
-biBwb2xsZXJzIGluc2lkZSBvZiBwb2xsZXJzCiAgZmFzdGJvb3QgbmV0OiByZW1vdmUgbWF5X3Nl
-bmQKCiBEb2N1bWVudGF0aW9uL3VzZXIvdXNiLnJzdCAgICAgICAgICAgICAgIHwgICA0ICstCiBh
-cmNoL2FybS9ib2FyZHMvbWlvYTcwMS9ncGlvMF9wb3dlcm9mZi5jIHwgICAyICstCiBhcmNoL2Fy
-bS9ib2FyZHMvc2FtYTVkM3hlay9pbml0LmMgICAgICAgIHwgICAyICstCiBhcmNoL2FybS9jb25m
-aWdzL2lteDIzX2RlZmNvbmZpZyAgICAgICAgIHwgICAyICstCiBhcmNoL2FybS9jb25maWdzL2lt
-eDI4X2RlZmNvbmZpZyAgICAgICAgIHwgICAyICstCiBhcmNoL2FybS9jb25maWdzL2lteF92N19k
-ZWZjb25maWcgICAgICAgIHwgICAyICstCiBhcmNoL2FybS9jb25maWdzL2lteF92OF9kZWZjb25m
-aWcgICAgICAgIHwgICAyICstCiBhcmNoL2FybS9jb25maWdzL2tpbmRsZS1teDUwX2RlZmNvbmZp
-ZyAgIHwgICAyICstCiBhcmNoL2FybS9jb25maWdzL29tYXBfZGVmY29uZmlnICAgICAgICAgIHwg
-ICAyICstCiBhcmNoL2FybS9jb25maWdzL3ppaV92ZjYxMF9kZXZfZGVmY29uZmlnIHwgICAyICst
-CiBjb21tYW5kcy9LY29uZmlnICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDE3ICsKIGNvbW1h
-bmRzL3VzYmdhZGdldC5jICAgICAgICAgICAgICAgICAgICAgfCAgIDIgKy0KIGNvbW1vbi9LY29u
-ZmlnICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgNDAgKwogY29tbW9uL01ha2VmaWxlICAg
-ICAgICAgICAgICAgICAgICAgICAgICB8ICAgMiArCiBjb21tb24vY29uc29sZV9jb3VudGRvd24u
-YyAgICAgICAgICAgICAgIHwgICAxICsKIGNvbW1vbi9mYXN0Ym9vdC5jICAgICAgICAgICAgICAg
-ICAgICAgICAgfCA5NzUgKysrKysrKysrKysrKysrKysrKysrKysKIGNvbW1vbi9odXNoLmMgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDUgKwogY29tbW9uL3BvbGxlci5jICAgICAgICAg
-ICAgICAgICAgICAgICAgICB8ICA5MiArKy0KIGNvbW1vbi9yYXRwL3JhdHAuYyAgICAgICAgICAg
-ICAgICAgICAgICAgfCAgIDkgKy0KIGNvbW1vbi9zbGljZS5jICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgfCAzMjUgKysrKysrKysKIGNvbW1vbi9zdGFydHVwLmMgICAgICAgICAgICAgICAgICAg
-ICAgICAgfCAgIDIgKwogY29tbW9uL3VzYmdhZGdldC5jICAgICAgICAgICAgICAgICAgICAgICB8
-ICAxNiArLQogZHJpdmVycy9pbnB1dC9ncGlvX2tleXMuYyAgICAgICAgICAgICAgICB8ICAgMiAr
-LQogZHJpdmVycy9pbnB1dC9pbXhfa2V5cGFkLmMgICAgICAgICAgICAgICB8ICAgMiArLQogZHJp
-dmVycy9pbnB1dC9pbnB1dC5jICAgICAgICAgICAgICAgICAgICB8ICAgMiArLQogZHJpdmVycy9p
-bnB1dC9xdDEwNzAuYyAgICAgICAgICAgICAgICAgICB8ICAgMiArLQogZHJpdmVycy9pbnB1dC90
-d2w2MDMwX3B3cmJ0bi5jICAgICAgICAgICB8ICAgMiArLQogZHJpdmVycy9sZWQvY29yZS5jICAg
-ICAgICAgICAgICAgICAgICAgICB8ICAgMiArLQogZHJpdmVycy9uZXQvcGh5L21kaW9fYnVzLmMg
-ICAgICAgICAgICAgICB8ICA0MSArCiBkcml2ZXJzL25ldC91c2IvYXg4ODE3OV8xNzhhLmMgICAg
-ICAgICAgIHwgICAyICstCiBkcml2ZXJzL25ldC91c2IvdXNibmV0LmMgICAgICAgICAgICAgICAg
-IHwgIDIyICstCiBkcml2ZXJzL3VzYi9jb3JlL3VzYi5jICAgICAgICAgICAgICAgICAgIHwgICA2
-ICsKIGRyaXZlcnMvdXNiL2dhZGdldC9LY29uZmlnICAgICAgICAgICAgICAgfCAgMzYgKy0KIGRy
-aXZlcnMvdXNiL2dhZGdldC9mX2Zhc3Rib290LmMgICAgICAgICAgfCA5NzAgKy0tLS0tLS0tLS0t
-LS0tLS0tLS0tLQogZHJpdmVycy91c2IvZ2FkZ2V0L211bHRpLmMgICAgICAgICAgICAgICB8ICAg
-NSArLQogZHJpdmVycy91c2IvZ2FkZ2V0L3VkYy1jb3JlLmMgICAgICAgICAgICB8ICAgMiArLQog
-ZHJpdmVycy93YXRjaGRvZy93ZF9jb3JlLmMgICAgICAgICAgICAgICB8ICAgMiArLQogZnMvbmZz
-LmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMiAtCiBmcy90ZnRwLmMgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAyIC0KIGluY2x1ZGUvZmFzdGJvb3QuaCAg
-ICAgICAgICAgICAgICAgICAgICAgfCAgNzEgKysKIGluY2x1ZGUvZmFzdGJvb3RfbmV0LmggICAg
-ICAgICAgICAgICAgICAgfCAgMTIgKwogaW5jbHVkZS9saW51eC9waHkuaCAgICAgICAgICAgICAg
-ICAgICAgICB8ICAzOCArLQogaW5jbHVkZS9uZXQuaCAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICB8ICAxMSArLQogaW5jbHVkZS9wb2xsZXIuaCAgICAgICAgICAgICAgICAgICAgICAgICB8ICAg
-NyArLQogaW5jbHVkZS9yYXRwX2JiLmggICAgICAgICAgICAgICAgICAgICAgICB8ICAgMSAtCiBp
-bmNsdWRlL3NsaWNlLmggICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDM2ICsKIGluY2x1ZGUv
-dXNiL2Zhc3Rib290LmggICAgICAgICAgICAgICAgICAgfCAgMzQgKy0KIGluY2x1ZGUvdXNiL2dh
-ZGdldC1tdWx0aS5oICAgICAgICAgICAgICAgfCAgIDIgKy0KIGluY2x1ZGUvdXNiL3VzYi5oICAg
-ICAgICAgICAgICAgICAgICAgICAgfCAgIDcgKwogaW5jbHVkZS91c2IvdXNibmV0LmggICAgICAg
-ICAgICAgICAgICAgICB8ICAgMyArCiBsaWIvS2NvbmZpZyAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgIHwgICAxICsKIGxpYi9yZWFkbGluZS5jICAgICAgICAgICAgICAgICAgICAgICAgICAg
-fCAgIDcgKy0KIG5ldC9LY29uZmlnICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgMTgg
-KwogbmV0L01ha2VmaWxlICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMSArCiBuZXQv
-ZGhjcC5jICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAxIC0KIG5ldC9kbnMuYyAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDEgLQogbmV0L2V0aC5jICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICB8ICAyOSArLQogbmV0L2Zhc3Rib290LmMgICAgICAgICAg
-ICAgICAgICAgICAgICAgICB8IDQ3NiArKysrKysrKysrKwogbmV0L25ldC5jICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICB8ICA2MCArLQogbmV0L25ldGNvbnNvbGUuYyAgICAgICAgICAg
-ICAgICAgICAgICAgICB8ICAgNCArLQogbmV0L25mcy5jICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICB8ICAgMSAtCiBuZXQvcGluZy5jICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-IHwgICAyIC0KIG5ldC9zbnRwLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDIg
-LQogNjMgZmlsZXMgY2hhbmdlZCwgMjMzMCBpbnNlcnRpb25zKCspLCAxMTA1IGRlbGV0aW9ucygt
-KQogY3JlYXRlIG1vZGUgMTAwNjQ0IGNvbW1vbi9mYXN0Ym9vdC5jCiBjcmVhdGUgbW9kZSAxMDA2
-NDQgY29tbW9uL3NsaWNlLmMKIGNyZWF0ZSBtb2RlIDEwMDY0NCBpbmNsdWRlL2Zhc3Rib290LmgK
-IGNyZWF0ZSBtb2RlIDEwMDY0NCBpbmNsdWRlL2Zhc3Rib290X25ldC5oCiBjcmVhdGUgbW9kZSAx
-MDA2NDQgaW5jbHVkZS9zbGljZS5oCiBjcmVhdGUgbW9kZSAxMDA2NDQgbmV0L2Zhc3Rib290LmMK
-Ci0tIAoyLjI2LjIKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0
-cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Thu, May 14, 2020 at 08:21:57PM +0200, Daniel Gl=F6ckner wrote:
+> From: Edmund Henniges <eh@emlix.com>
+> =
+
+> This implements the UDP variant of the fastboot protocol. The only way to
+> start the service for now is to compile with CONFIG_FASTBOOT_NET_ON_BOOT.
+> The service will bind to the network interface that provides the IPv4
+> gateway.
+> =
+
+> Sending an OKAY packet before performing a restart is necessary since
+> contrary to USB the host will not notice when a UDP server disappears.
+> =
+
+> Signed-off-by: Edmund Henniges <eh@emlix.com>
+> Signed-off-by: Daniel Gl=F6ckner <dg@emlix.com>
+> ---
+> +
+> +#ifdef CONFIG_FASTBOOT_NET_ON_BOOT
+> +static struct fastboot_net *fastboot_net_obj;
+> +
+> +static int fastboot_on_boot(void)
+> +{
+> +	struct fastboot_net *fbn;
+> +
+> +	ifup_all(0);
+> +	fbn =3D fastboot_net_init(NULL);
+> +
+> +	if (IS_ERR(fbn))
+> +		return PTR_ERR(fbn);
+> +
+> +	fastboot_net_obj =3D fbn;
+> +	return 0;
+> +}
+> +
+> +static void fastboot_net_exit(void)
+> +{
+> +	if (fastboot_net_obj)
+> +		fastboot_net_free(fastboot_net_obj);
+> +}
+
+fastboot_net_obj won't be NULL here, the check should be if(!IS_ERR())
+instead.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
