@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jbLGh-0007xy-AE
+ id 1jbLGh-0007xv-72
  for barebox@lists.infradead.org; Wed, 20 May 2020 09:44:10 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 20 May 2020 11:43:53 +0200
-Message-Id: <20200520094403.12651-10-s.hauer@pengutronix.de>
+Date: Wed, 20 May 2020 11:43:49 +0200
+Message-Id: <20200520094403.12651-6-s.hauer@pengutronix.de>
 In-Reply-To: <20200520094403.12651-1-s.hauer@pengutronix.de>
 References: <20200520094403.12651-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,155 +21,127 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/19] net: mdiobus: Add slice
+Subject: [PATCH 05/19] fastboot: Use unique tempfile name
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-By adding a slice to the mdio bus we make the mdio code safe for being
-called in a poller.
+With fastboot over ethernet we now can have two instances of fastboot
+running in parallel. Make sure that both instances use a different
+temporary file to store data so that they do not influence each other.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/phy/mdio_bus.c | 41 ++++++++++++++++++++++++++++++++++++++
- include/linux/phy.h        | 38 ++++++++++++++---------------------
- 2 files changed, 56 insertions(+), 23 deletions(-)
+ common/fastboot.c  | 21 ++++++++++++---------
+ include/fastboot.h |  1 +
+ 2 files changed, 13 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-index 3480e2ffb4..9a76db6ad4 100644
---- a/drivers/net/phy/mdio_bus.c
-+++ b/drivers/net/phy/mdio_bus.c
-@@ -239,6 +239,8 @@ int mdiobus_register(struct mii_bus *bus)
- 		return -EINVAL;
+diff --git a/common/fastboot.c b/common/fastboot.c
+index 1e12f99915..6f54e939e7 100644
+--- a/common/fastboot.c
++++ b/common/fastboot.c
+@@ -45,8 +45,6 @@
+ 
+ #define FASTBOOT_VERSION		"0.4"
+ 
+-#define FASTBOOT_TMPFILE		"/.fastboot.img"
+-
+ static unsigned int fastboot_max_download_size = SZ_8M;
+ 
+ struct fb_variable {
+@@ -178,6 +176,7 @@ int fastboot_generic_init(struct fastboot *fb, bool export_bbu)
+ 	int ret;
+ 	struct file_list_entry *fentry;
+ 	struct fb_variable *var;
++	static int instance;
+ 
+ 	var = fb_addvar(fb, "version");
+ 	fb_setvar(var, "0.4");
+@@ -188,6 +187,8 @@ int fastboot_generic_init(struct fastboot *fb, bool export_bbu)
+ 		fb_setvar(var, "%u", fastboot_max_download_size);
  	}
  
-+	slice_init(&bus->slice, dev_name(&bus->dev));
++	fb->tempname = basprintf(".fastboot.%d.img", instance++);
 +
- 	if (bus->reset)
- 		bus->reset(bus);
+ 	if (IS_ENABLED(CONFIG_BAREBOX_UPDATE) && export_bbu)
+ 		bbu_handlers_iterate(fastboot_add_bbu_variables, fb);
  
-@@ -357,6 +359,45 @@ static int mdio_bus_match(struct device_d *dev, struct driver_d *drv)
- 	return 1;
+@@ -211,6 +212,8 @@ void fastboot_generic_free(struct fastboot *fb)
+ 		free(var);
+ 	}
+ 
++	free(fb->tempname);
++
+ 	fb->active = false;
  }
  
-+/**
-+ * mdiobus_read - Convenience function for reading a given MII mgmt register
-+ * @bus: the mii_bus struct
-+ * @addr: the phy address
-+ * @regnum: register number to read
-+ */
-+int mdiobus_read(struct mii_bus *bus, int addr, u32 regnum)
-+{
-+	int ret;
-+
-+	slice_acquire(&bus->slice);
-+
-+	ret = bus->read(bus, addr, regnum);
-+
-+	slice_release(&bus->slice);
-+
-+	return ret;
-+}
-+
-+/**
-+ * mdiobus_write - Convenience function for writing a given MII mgmt register
-+ * @bus: the mii_bus struct
-+ * @addr: the phy address
-+ * @regnum: register number to write
-+ * @val: value to write to @regnum
-+ */
-+int mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val)
-+{
-+	int ret;
-+
-+	slice_acquire(&bus->slice);
-+
-+	ret = bus->write(bus, addr, regnum, val);
-+
-+	slice_release(&bus->slice);
-+
-+	return ret;
-+}
-+
- static ssize_t phydev_read(struct cdev *cdev, void *_buf, size_t count, loff_t offset, ulong flags)
- {
- 	int i = count;
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index a9fdf44f1a..3f0f31b35c 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -16,6 +16,7 @@
- #define __PHY_H
+@@ -372,7 +375,7 @@ static void cb_download(struct fastboot *fb, const char *cmd)
+ 			return;
+ 		}
+ 	} else {
+-		fb->download_fd = open(FASTBOOT_TMPFILE, O_WRONLY | O_CREAT | O_TRUNC);
++		fb->download_fd = open(fb->tempname, O_WRONLY | O_CREAT | O_TRUNC);
+ 		if (fb->download_fd < 0) {
+ 			fastboot_tx_print(fb, FASTBOOT_MSG_FAIL,
+ 					  "internal error");
+@@ -405,7 +408,7 @@ static void __maybe_unused cb_boot(struct fastboot *fb, const char *opt)
+ 	globalvar_set_match("linux.bootargs.dyn.", "");
+ 	globalvar_set_match("bootm.image", "");
  
- #include <driver.h>
-+#include <slice.h>
- #include <linux/list.h>
- #include <linux/ethtool.h>
- #include <linux/mii.h>
-@@ -116,9 +117,16 @@ struct mii_bus {
- 	struct list_head list;
+-	data.os_file = FASTBOOT_TMPFILE;
++	data.os_file = fb->tempname;
  
- 	bool is_multiplexed;
-+
-+	struct slice slice;
- };
- #define to_mii_bus(d) container_of(d, struct mii_bus, dev)
+ 	ret = bootm_boot(&data);
  
-+static inline struct slice *mdiobus_slice(struct mii_bus *bus)
-+{
-+	return &bus->slice;
-+}
-+
- int mdiobus_register(struct mii_bus *bus);
- void mdiobus_unregister(struct mii_bus *bus);
- struct phy_device *mdiobus_scan(struct mii_bus *bus, int addr);
-@@ -134,28 +142,8 @@ struct mii_bus *mdiobus_get_bus(int busnum);
+@@ -534,7 +537,7 @@ static int fastboot_handle_sparse(struct fastboot *fb,
+ 	if (ret)
+ 		goto out_close_fd;
  
- struct mii_bus *of_mdio_find_bus(struct device_node *mdio_bus_np);
+-	sparse = sparse_image_open(FASTBOOT_TMPFILE);
++	sparse = sparse_image_open(fb->tempname);
+ 	if (IS_ERR(sparse)) {
+ 		pr_err("Cannot open sparse image\n");
+ 		ret = PTR_ERR(sparse);
+@@ -629,8 +632,8 @@ static void cb_flash(struct fastboot *fb, const char *cmd)
+ 		sourcefile = NULL;
+ 		filetype = file_detect_type(fb->buf, fb->download_bytes);
+ 	} else {
+-		sourcefile = FASTBOOT_TMPFILE;
+-		filetype = file_name_detect_type(FASTBOOT_TMPFILE);
++		sourcefile = fb->tempname;
++		filetype = file_name_detect_type(fb->tempname);
+ 	}
  
--/**
-- * mdiobus_read - Convenience function for reading a given MII mgmt register
-- * @bus: the mii_bus struct
-- * @addr: the phy address
-- * @regnum: register number to read
-- */
--static inline int mdiobus_read(struct mii_bus *bus, int addr, u32 regnum)
--{
--	return bus->read(bus, addr, regnum);
--}
--
--/**
-- * mdiobus_write - Convenience function for writing a given MII mgmt register
-- * @bus: the mii_bus struct
-- * @addr: the phy address
-- * @regnum: register number to write
-- * @val: value to write to @regnum
-- */
--static inline int mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val)
--{
--	return bus->write(bus, addr, regnum, val);
--}
-+int mdiobus_read(struct mii_bus *bus, int addr, u32 regnum);
-+int mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val);
+ 	fastboot_tx_print(fb, FASTBOOT_MSG_INFO, "Copying file to %s...",
+@@ -735,7 +738,7 @@ copy:
+ 	if (fastboot_download_to_buf(fb))
+ 		ret = write_file(filename, fb->buf, fb->download_size);
+ 	else
+-		ret = copy_file(FASTBOOT_TMPFILE, filename, 1);
++		ret = copy_file(fb->tempname, filename, 1);
  
- /* phy_device: An instance of a PHY
-  *
-@@ -376,11 +364,15 @@ int phy_register_fixup(const char *bus_id, u32 phy_uid, u32 phy_uid_mask,
- int phy_register_fixup_for_id(const char *bus_id,
- 		int (*run)(struct phy_device *));
- int phy_scan_fixups(struct phy_device *phydev);
--
- int phy_read_mmd_indirect(struct phy_device *phydev, int prtad, int devad);
- void phy_write_mmd_indirect(struct phy_device *phydev, int prtad, int devad,
- 				   u16 data);
+ 	if (ret)
+ 		fastboot_tx_print(fb, FASTBOOT_MSG_FAIL,
+@@ -749,7 +752,7 @@ out:
+ 	fb->buf = NULL;
  
-+static inline bool phy_acquired(struct phy_device *phydev)
-+{
-+	return phydev && phydev->bus && slice_acquired(&phydev->bus->slice);
-+}
-+
- #ifdef CONFIG_PHYLIB
- int phy_register_fixup_for_uid(u32 phy_uid, u32 phy_uid_mask,
- 		int (*run)(struct phy_device *));
+ 	if (!fastboot_download_to_buf(fb))
+-		unlink(FASTBOOT_TMPFILE);
++		unlink(fb->tempname);
+ }
+ 
+ static void cb_erase(struct fastboot *fb, const char *cmd)
+diff --git a/include/fastboot.h b/include/fastboot.h
+index 3b6cae8a58..b3e7155efa 100644
+--- a/include/fastboot.h
++++ b/include/fastboot.h
+@@ -25,6 +25,7 @@ struct fastboot {
+ 			 const char *filename, const void *buf, size_t len);
+ 	int download_fd;
+ 	void *buf;
++	char *tempname;
+ 
+ 	bool active;
+ 
 -- 
 2.26.2
 
