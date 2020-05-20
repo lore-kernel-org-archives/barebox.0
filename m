@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jbLGh-0007y1-C8
- for barebox@lists.infradead.org; Wed, 20 May 2020 09:44:13 +0000
+ id 1jbLGq-00085l-1A
+ for barebox@lists.infradead.org; Wed, 20 May 2020 09:44:18 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 20 May 2020 11:43:51 +0200
-Message-Id: <20200520094403.12651-8-s.hauer@pengutronix.de>
+Date: Wed, 20 May 2020 11:44:03 +0200
+Message-Id: <20200520094403.12651-20-s.hauer@pengutronix.de>
 In-Reply-To: <20200520094403.12651-1-s.hauer@pengutronix.de>
 References: <20200520094403.12651-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -17,102 +17,103 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/19] Introduce idle slice
+Subject: [PATCH 19/19] fastboot net: remove may_send
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-RnJvbTogRGFuaWVsIEdsw7Zja25lciA8ZGdAZW1saXguY29tPgoKU29tZSBjb2RlIGNhbid0IGZv
-cmVzZWUgd2hpY2ggcmVzb3VyY2VzIHdpbGwgYmUgdXNlZCBieSBpdHMgcG9sbGVyLiBUaGlzCmlz
-IHRoZSBjYXNlIGVzcGVjaWFsbHkgaW4gcG9sbGVycyB0aGF0IHdpbGwgZXhlY3V0ZSBhcmJpdHJh
-cnkgY29tbWFuZHMKaW5wdXQgYnkgdGhlIHVzZXIuIFdpdGggdGhpcyBjb21taXQgYSBzcGVjaWFs
-IHNsaWNlIGlzIGludHJvZHVjZWQgdGhhdCBpcwpyZWxlYXNlZCBvbmx5IHdoZW4gQmFyZWJveCBp
-cyB3YWl0aW5nIGZvciBjb25zb2xlIGlucHV0IGFuZCBvbmx5IHdoZW4gaXQKaXMgZG9pbmcgdGhh
-dCBvdXRzaWRlIG9mIGFueSBjb21tYW5kLiBDb2RlIHRoYXQgd2FudHMgdG8gZGVwZW5kIG9uIHRo
-ZQppZGxlIHNsaWNlIG11c3Qgc2VsZWN0IENPTkZJR19JRExFX1NMSUNFIHRvIG1ha2UgaXQgYXZh
-aWxhYmxlLgoKU2lnbmVkLW9mZi1ieTogRGFuaWVsIEdsw7Zja25lciA8ZGdAZW1saXguY29tPgpT
-aWduZWQtb2ZmLWJ5OiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Ci0tLQog
-Y29tbW9uL2NvbnNvbGVfY291bnRkb3duLmMgfCAgMSArCiBjb21tb24vaHVzaC5jICAgICAgICAg
-ICAgICB8ICA1ICsrKysrCiBjb21tb24vcmF0cC9yYXRwLmMgICAgICAgICB8ICA3ICsrKysrKy0K
-IGNvbW1vbi9zbGljZS5jICAgICAgICAgICAgIHwgMjIgKysrKysrKysrKysrKysrKysrKysrKwog
-Y29tbW9uL3N0YXJ0dXAuYyAgICAgICAgICAgfCAgMiArKwogaW5jbHVkZS9yYXRwX2JiLmggICAg
-ICAgICAgfCAgMSAtCiBpbmNsdWRlL3NsaWNlLmggICAgICAgICAgICB8ICA1ICsrKysrCiBsaWIv
-S2NvbmZpZyAgICAgICAgICAgICAgICB8ICAxICsKIGxpYi9yZWFkbGluZS5jICAgICAgICAgICAg
-IHwgIDcgKystLS0tLQogOSBmaWxlcyBjaGFuZ2VkLCA0NCBpbnNlcnRpb25zKCspLCA3IGRlbGV0
-aW9ucygtKQoKZGlmZiAtLWdpdCBhL2NvbW1vbi9jb25zb2xlX2NvdW50ZG93bi5jIGIvY29tbW9u
-L2NvbnNvbGVfY291bnRkb3duLmMKaW5kZXggNzRkYzM4Mjc5NS4uYzY5MDI5ZGMwZSAxMDA2NDQK
-LS0tIGEvY29tbW9uL2NvbnNvbGVfY291bnRkb3duLmMKKysrIGIvY29tbW9uL2NvbnNvbGVfY291
-bnRkb3duLmMKQEAgLTE5LDYgKzE5LDcgQEAKICNpbmNsdWRlIDxlcnJuby5oPgogI2luY2x1ZGUg
-PGNvbnNvbGVfY291bnRkb3duLmg+CiAjaW5jbHVkZSA8c3RkaW8uaD4KKyNpbmNsdWRlIDxzbGlj
-ZS5oPgogCiBzdGF0aWMgYm9vbCBjb25zb2xlX2NvdW50ZG93bl90aW1lb3V0X2Fib3J0OwogCmRp
-ZmYgLS1naXQgYS9jb21tb24vaHVzaC5jIGIvY29tbW9uL2h1c2guYwppbmRleCBjMjRiMmM3Y2Qy
-Li42MTQyNGQ5OGU3IDEwMDY0NAotLS0gYS9jb21tb24vaHVzaC5jCisrKyBiL2NvbW1vbi9odXNo
-LmMKQEAgLTQ2MCw3ICs0NjAsMTIgQEAgc3RhdGljIHZvaWQgZ2V0X3VzZXJfaW5wdXQoc3RydWN0
-IGluX3N0ciAqaSkKIAllbHNlCiAJCXByb21wdCA9IENPTkZJR19QUk9NUFRfSFVTSF9QUzI7CiAK
-KwlpZGxlX3NsaWNlX3JlbGVhc2UoKTsKKwogCW4gPSByZWFkbGluZShwcm9tcHQsIGNvbnNvbGVf
-YnVmZmVyLCBDT05GSUdfQ0JTSVpFKTsKKworCWlkbGVfc2xpY2VfYWNxdWlyZSgpOworCiAJaWYg
-KG4gPT0gLTEgKSB7CiAJCWktPmludGVycnVwdCA9IDE7CiAJCW4gPSAwOwpkaWZmIC0tZ2l0IGEv
-Y29tbW9uL3JhdHAvcmF0cC5jIGIvY29tbW9uL3JhdHAvcmF0cC5jCmluZGV4IDU1NmRjNjM4ZDgu
-LmVjNjY1ODAzYmIgMTAwNjQ0Ci0tLSBhL2NvbW1vbi9yYXRwL3JhdHAuYworKysgYi9jb21tb24v
-cmF0cC9yYXRwLmMKQEAgLTI5OSwxMCArMjk5LDEzIEBAIHN0YXRpYyBpbnQgcmF0cF9jb25zb2xl
-X3JlZ2lzdGVyKHN0cnVjdCByYXRwX2N0eCAqY3R4KQogCXJldHVybiAwOwogfQogCi12b2lkIGJh
-cmVib3hfcmF0cF9jb21tYW5kX3J1bih2b2lkKQorc3RhdGljIHZvaWQgYmFyZWJveF9yYXRwX2Nv
-bW1hbmRfcnVuKHZvaWQpCiB7CiAJaW50IHJldDsKIAorCWlmIChzbGljZV9hY3F1aXJlZCgmaWRs
-ZV9zbGljZSkpCisJCXJldHVybjsKKwogCWlmICghcmF0cF9jb21tYW5kKQogCQlyZXR1cm47CiAK
-QEAgLTM2OSw2ICszNzIsOCBAQCBzdGF0aWMgdm9pZCByYXRwX3BvbGxlcihzdHJ1Y3QgcG9sbGVy
-X3N0cnVjdCAqcG9sbGVyKQogCiAJZnJlZShidWYpOwogCisJYmFyZWJveF9yYXRwX2NvbW1hbmRf
-cnVuKCk7CisKIAlyZXR1cm47CiAKIG91dDoKZGlmZiAtLWdpdCBhL2NvbW1vbi9zbGljZS5jIGIv
-Y29tbW9uL3NsaWNlLmMKaW5kZXggMDg1ZDY3NjA0Zi4uYjY0YjgyMmVjMSAxMDA2NDQKLS0tIGEv
-Y29tbW9uL3NsaWNlLmMKKysrIGIvY29tbW9uL3NsaWNlLmMKQEAgLTMsNiArMyw3IEBACiAjZGVm
-aW5lIHByX2ZtdChmbXQpICJzbGljZTogIiBmbXQKIAogI2luY2x1ZGUgPGNvbW1vbi5oPgorI2lu
-Y2x1ZGUgPGluaXQuaD4KICNpbmNsdWRlIDxzbGljZS5oPgogCiAvKgpAQCAtMjMxLDYgKzIzMiwy
-NyBAQCB2b2lkIHNsaWNlX2V4aXQoc3RydWN0IHNsaWNlICpzbGljZSkKIAlmcmVlKHNsaWNlLT5u
-YW1lKTsKIH0KIAorc3RydWN0IHNsaWNlIGlkbGVfc2xpY2U7CisKK3ZvaWQgaWRsZV9zbGljZV9h
-Y3F1aXJlKHZvaWQpCit7CisJc2xpY2VfYWNxdWlyZSgmaWRsZV9zbGljZSk7Cit9CisKK3ZvaWQg
-aWRsZV9zbGljZV9yZWxlYXNlKHZvaWQpCit7CisJc2xpY2VfcmVsZWFzZSgmaWRsZV9zbGljZSk7
-Cit9CisKK3N0YXRpYyBpbnQgaWRsZV9zbGljZV9pbml0KHZvaWQpCit7CisJc2xpY2VfaW5pdCgm
-aWRsZV9zbGljZSwgImlkbGUiKTsKKwlzbGljZV9hY3F1aXJlKCZpZGxlX3NsaWNlKTsKKwlyZXR1
-cm4gMDsKK30KKworcHVyZV9pbml0Y2FsbChpZGxlX3NsaWNlX2luaXQpOworCiAjaWYgZGVmaW5l
-ZCBDT05GSUdfQ01EX1NMSUNFCiAKICNpbmNsdWRlIDxjb21tYW5kLmg+CmRpZmYgLS1naXQgYS9j
-b21tb24vc3RhcnR1cC5jIGIvY29tbW9uL3N0YXJ0dXAuYwppbmRleCA1MTE2NzVlZDU1Li5hZWNi
-MDQ1ZjQ1IDEwMDY0NAotLS0gYS9jb21tb24vc3RhcnR1cC5jCisrKyBiL2NvbW1vbi9zdGFydHVw
-LmMKQEAgLTI2OCw4ICsyNjgsMTAgQEAgZW51bSBhdXRvYm9vdF9zdGF0ZSBkb19hdXRvYm9vdF9j
-b3VudGRvd24odm9pZCkKIAkJYnJlYWs7CiAJfQogCisJaWRsZV9zbGljZV9yZWxlYXNlKCk7CiAJ
-cmV0ID0gY29uc29sZV9jb3VudGRvd24oZ2xvYmFsX2F1dG9ib290X3RpbWVvdXQsIGZsYWdzLCBh
-Ym9ydGtleXMsCiAJCQkJJm91dGtleSk7CisJaWRsZV9zbGljZV9hY3F1aXJlKCk7CiAKIAlpZiAo
-cmV0ID09IDApCiAJCWF1dG9ib290X3N0YXRlID0gQVVUT0JPT1RfQk9PVDsKZGlmZiAtLWdpdCBh
-L2luY2x1ZGUvcmF0cF9iYi5oIGIvaW5jbHVkZS9yYXRwX2JiLmgKaW5kZXggYTRmMjhjNjQyYy4u
-YjcxMGY5OWJmOSAxMDA2NDQKLS0tIGEvaW5jbHVkZS9yYXRwX2JiLmgKKysrIGIvaW5jbHVkZS9y
-YXRwX2JiLmgKQEAgLTQxLDcgKzQxLDYgQEAgc3RydWN0IHJhdHBfYmJfcGt0IHsKIH07CiAKIGlu
-dCAgYmFyZWJveF9yYXRwKHN0cnVjdCBjb25zb2xlX2RldmljZSAqY2Rldik7Ci12b2lkIGJhcmVi
-b3hfcmF0cF9jb21tYW5kX3J1bih2b2lkKTsKIGludCAgYmFyZWJveF9yYXRwX2ZzX2NhbGwoc3Ry
-dWN0IHJhdHBfYmJfcGt0ICp0eCwgc3RydWN0IHJhdHBfYmJfcGt0ICoqcngpOwogaW50ICBiYXJl
-Ym94X3JhdHBfZnNfbW91bnQoY29uc3QgY2hhciAqcGF0aCk7CiAKZGlmZiAtLWdpdCBhL2luY2x1
-ZGUvc2xpY2UuaCBiL2luY2x1ZGUvc2xpY2UuaAppbmRleCA1NTM4ZmM0MzRhLi4zN2Q1MzUwZWJl
-IDEwMDY0NAotLS0gYS9pbmNsdWRlL3NsaWNlLmgKKysrIGIvaW5jbHVkZS9zbGljZS5oCkBAIC0y
-OCw0ICsyOCw5IEBAIHZvaWQgc2xpY2VfZXhpdChzdHJ1Y3Qgc2xpY2UgKnNsaWNlKTsKIAogdm9p
-ZCBzbGljZV9kZWJ1Z19hY3F1aXJlZChzdHJ1Y3Qgc2xpY2UgKnNsaWNlKTsKIAorZXh0ZXJuIHN0
-cnVjdCBzbGljZSBpZGxlX3NsaWNlOworCit2b2lkIGlkbGVfc2xpY2VfYWNxdWlyZSh2b2lkKTsK
-K3ZvaWQgaWRsZV9zbGljZV9yZWxlYXNlKHZvaWQpOworCiAjZW5kaWYgLyogX19TTElDRV9IICov
-CmRpZmYgLS1naXQgYS9saWIvS2NvbmZpZyBiL2xpYi9LY29uZmlnCmluZGV4IGI0YTgwNzk3MDAu
-LjA1M2FjMTVjZmMgMTAwNjQ0Ci0tLSBhL2xpYi9LY29uZmlnCisrKyBiL2xpYi9LY29uZmlnCkBA
-IC0xMTEsNiArMTExLDcgQEAgY29uZmlnIFJBVFAKIAlzZWxlY3QgQ09NUElMRV9NRU1PUlkKIAlz
-ZWxlY3QgQ09NTUFORF9TVVBQT1JUCiAJc2VsZWN0IFBPTExFUgorCXNlbGVjdCBJRExFX1NMSUNF
-CiAJZGVwZW5kcyBvbiBDT05TT0xFX0ZVTEwKIAlkZXBlbmRzIG9uICFTSEVMTF9OT05FCiAJYm9v
-bCAiUkFUUCBwcm90b2NvbCBzdXBwb3J0IgpkaWZmIC0tZ2l0IGEvbGliL3JlYWRsaW5lLmMgYi9s
-aWIvcmVhZGxpbmUuYwppbmRleCAzZDE2YzE4MzhjLi5jYWZkYzU4YjFiIDEwMDY0NAotLS0gYS9s
-aWIvcmVhZGxpbmUuYworKysgYi9saWIvcmVhZGxpbmUuYwpAQCAtMyw3ICszLDcgQEAKICNpbmNs
-dWRlIDxpbml0Lmg+CiAjaW5jbHVkZSA8bGliYmIuaD4KICNpbmNsdWRlIDxwb2xsZXIuaD4KLSNp
-bmNsdWRlIDxyYXRwX2JiLmg+CisjaW5jbHVkZSA8c2xpY2UuaD4KICNpbmNsdWRlIDx4ZnVuY3Mu
-aD4KICNpbmNsdWRlIDxjb21wbGV0ZS5oPgogI2luY2x1ZGUgPGxpbnV4L2N0eXBlLmg+CkBAIC0y
-MDAsMTEgKzIwMCw4IEBAIGludCByZWFkbGluZShjb25zdCBjaGFyICpwcm9tcHQsIGNoYXIgKmJ1
-ZiwgaW50IGxlbikKIAlwdXRzIChwcm9tcHQpOwogCiAJd2hpbGUgKDEpIHsKLQkJd2hpbGUgKCF0
-c3RjKCkpIHsKKwkJd2hpbGUgKCF0c3RjKCkpCiAJCQlwb2xsZXJfY2FsbCgpOwotCQkJaWYgKElT
-X0VOQUJMRUQoQ09ORklHX0NPTlNPTEVfUkFUUCkpCi0JCQkJYmFyZWJveF9yYXRwX2NvbW1hbmRf
-cnVuKCk7Ci0JCX0KIAogCQlpY2hhciA9IHJlYWRfa2V5KCk7CiAKLS0gCjIuMjYuMgoKCl9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGlu
-ZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFk
-Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+This removes the may_send mechanism from fastboot over UDP. Without this
+fastboot transfers get stuck when on the command line something like
+"sleep 10" is executed before or during a fastboot session. In this case
+while (fbn->may_send == MAY_NOT_SEND) will never become false and
+barebox is cought in that loop.
+
+It is not yet clear if this is the right approach, so this is an extra
+patch currently.
+
+FIXME: This patch has the effect that the keepalive poller doesn't know
+if we are inside a fastboot session or not, it will just blindly send a
+keepalive every 30s, no matter what. This must be fixed before merging.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ net/fastboot.c | 28 +++++-----------------------
+ 1 file changed, 5 insertions(+), 23 deletions(-)
+
+diff --git a/net/fastboot.c b/net/fastboot.c
+index 9ea1a8c5b4..c4ea481c19 100644
+--- a/net/fastboot.c
++++ b/net/fastboot.c
+@@ -54,7 +54,6 @@ struct fastboot_net {
+ 	bool active_download;
+ 	bool download_needs_cleanup;
+ 	bool reinit;
+-	u8 may_send;
+ 	char command[65];
+ 
+ 	IPaddr_t host_addr;
+@@ -146,28 +145,11 @@ static int fastboot_write_net(struct fastboot *fb, const char *buf,
+ 	if (fbn->reinit)
+ 		return 0;
+ 
+-	while (fbn->may_send == MAY_NOT_SEND) {
+-		poller_call();
+-		if (fbn->reinit)
+-			return 0;
+-	}
+-
+-	if (n && fbn->may_send == MAY_SEND_ACK) {
+-		fastboot_send(fbn, fbn->response_header,
+-			      "Have message but only ACK allowed");
+-		return -EPROTO;
+-	} else if (!n && fbn->may_send == MAY_SEND_MESSAGE) {
+-		fastboot_send(fbn, fbn->response_header,
+-			      "Want to send ACK but message expected");
+-		return -EPROTO;
+-	}
+-
+ 	response_header = fbn->response_header;
+ 	response_header.flags = 0;
+ 	response_header.seq = htons(fbn->sequence_number);
+ 	++fbn->sequence_number;
+ 	fbn->sequence_number_seen = false;
+-	fbn->may_send = MAY_NOT_SEND;
+ 
+ 	packet = net_udp_get_payload(fbn->net_con);
+ 	packet_base = packet;
+@@ -232,7 +214,6 @@ static void fastboot_handle_type_fastboot(struct fastboot_net *fbn,
+ {
+ 	fbn->response_header = header;
+ 	fbn->host_waits_since = get_time_ns();
+-	fbn->may_send = fastboot_data_len ? MAY_SEND_ACK : MAY_SEND_MESSAGE;
+ 	if (fbn->active_download) {
+ 		if (!fastboot_data_len && fbn->fastboot.download_bytes
+ 					   == fbn->fastboot.download_size) {
+@@ -389,11 +370,12 @@ static void fastboot_send_keep_alive(struct poller_struct *poller)
+ 	 * Sending the message will reset may_send to MAY_NOT_SEND and the
+ 	 * ACK from the host will reset host_waits_since to the current time.
+ 	 */
+-	if (fbn->may_send == MAY_SEND_MESSAGE &&
+-	    is_timeout_non_interruptible(fbn->host_waits_since,
++	if (!is_timeout_non_interruptible(fbn->host_waits_since,
+ 					 30ULL * NSEC_PER_SEC))
+-		fastboot_tx_print(&fbn->fastboot, FASTBOOT_MSG_INFO,
+-				  "still busy");
++		return;
++
++	fastboot_tx_print(&fbn->fastboot, FASTBOOT_MSG_INFO, "still busy");
++	fbn->host_waits_since = get_time_ns();
+ }
+ 
+ void fastboot_net_free(struct fastboot_net *fbn)
+-- 
+2.26.2
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
