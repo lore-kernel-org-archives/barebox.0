@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-qk1-x742.google.com ([2607:f8b0:4864:20::742])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jbHec-0008Lk-60
- for barebox@lists.infradead.org; Wed, 20 May 2020 05:52:36 +0000
-Date: Wed, 20 May 2020 07:52:32 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200520055231.GR11869@pengutronix.de>
-References: <cover.1589477005.git.dg@emlix.com>
- <a5f6a082fd56438a26117d206920aebb5aa16051.1589477005.git.dg@emlix.com>
+ id 1jbFnv-0000VU-FV
+ for barebox@lists.infradead.org; Wed, 20 May 2020 03:54:05 +0000
+Received: by mail-qk1-x742.google.com with SMTP id f13so2328325qkh.2
+ for <barebox@lists.infradead.org>; Tue, 19 May 2020 20:54:02 -0700 (PDT)
+From: David Dgien <dgienda125@gmail.com>
+Date: Tue, 19 May 2020 23:55:36 -0400
+Message-Id: <20200520035536.84368-1-dgienda125@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <a5f6a082fd56438a26117d206920aebb5aa16051.1589477005.git.dg@emlix.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,89 +17,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 09/10] fastboot net: implement fastboot over UDP
-To: Daniel =?iso-8859-15?Q?Gl=F6ckner?= <dg@emlix.com>
-Cc: barebox@lists.infradead.org, Edmund Henniges <eh@emlix.com>
+Subject: [PATCH] serial: Add flush function to NS16550 driver
+To: barebox@lists.infradead.org
+Cc: David Dgien <dgienda125@gmail.com>
 
-On Thu, May 14, 2020 at 08:21:57PM +0200, Daniel Gl=F6ckner wrote:
-> From: Edmund Henniges <eh@emlix.com>
-> =
+Add flush function to NS16550 to remove bad characters being printed
+during reset
 
-> This implements the UDP variant of the fastboot protocol. The only way to
-> start the service for now is to compile with CONFIG_FASTBOOT_NET_ON_BOOT.
-> The service will bind to the network interface that provides the IPv4
-> gateway.
-> =
+Signed-off-by: David Dgien <dgienda125@gmail.com>
+---
+ drivers/serial/serial_ns16550.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-> Sending an OKAY packet before performing a restart is necessary since
-> contrary to USB the host will not notice when a UDP server disappears.
-> =
+diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
+index 5d6cec82a..f117ab9dc 100644
+--- a/drivers/serial/serial_ns16550.c
++++ b/drivers/serial/serial_ns16550.c
+@@ -308,6 +308,17 @@ static int ns16550_tstc(struct console_device *cdev)
+ 	return ((ns16550_read(cdev, lsr) & LSR_DR) != 0);
+ }
+ 
++/**
++ * @brief Flush remaining characters in serial device
++ *
++ * @param[in] cdev pointer to console device
++ */
++static void ns16550_flush(struct console_device *cdev)
++{
++	/* Loop Doing Nothing */
++	while ((ns16550_read(cdev, lsr) & LSR_TEMT) == 0) ;
++}
++
+ static void ns16550_probe_dt(struct device_d *dev, struct ns16550_priv *priv)
+ {
+ 	struct device_node *np = dev->device_node;
+@@ -501,6 +512,7 @@ static int ns16550_probe(struct device_d *dev)
+ 	cdev->putc = ns16550_putc;
+ 	cdev->getc = ns16550_getc;
+ 	cdev->setbrg = ns16550_setbaudrate;
++	cdev->flush = ns16550_flush;
+ 	cdev->linux_console_name = devtype->linux_console_name;
+ 
+ 	priv->fcrval = FCRVAL;
+-- 
+2.26.2
 
-> Signed-off-by: Edmund Henniges <eh@emlix.com>
-> Signed-off-by: Daniel Gl=F6ckner <dg@emlix.com>
-> ---
->  common/fastboot.c      |   3 +
->  include/fastboot.h     |   1 +
->  include/fastboot_net.h |  12 +
->  net/Kconfig            |  18 ++
->  net/Makefile           |   1 +
->  net/fastboot.c         | 496 +++++++++++++++++++++++++++++++++++++++++
->  6 files changed, 531 insertions(+)
->  create mode 100644 include/fastboot_net.h
->  create mode 100644 net/fastboot.c
-> =
-
-> diff --git a/common/fastboot.c b/common/fastboot.c
-> index d50f61ff2..706547309 100644
-> --- a/common/fastboot.c
-> +++ b/common/fastboot.c
-> +static int fastboot_write_net(struct fastboot *fb, const char *buf,
-> +			      unsigned int n)
-> +{
-> +	struct fastboot_net *fbn =3D container_of(fb, struct fastboot_net,
-> +						fastboot);
-> +	struct fastboot_header response_header;
-> +	uchar *packet;
-> +	uchar *packet_base;
-> +
-> +	if (fbn->reinit)
-> +		return 0;
-> +
-> +	while (fbn->may_send =3D=3D MAY_NOT_SEND) {
-> +		poller_call();
-> +		if (fbn->reinit)
-> +			return 0;
-> +	}
-
-This is a potentially endless loop I can reproducibly hit here. When I
-do a "sleep 10" on the command line and at the same time start a
-fastboot transfer then there's no progress. This is expected because
-fastboot depends on the idle slice. However, when the "sleep 10" is over
-then I get a prompt and then we are stuck in this loop.
-
-I replaced this loop with a one second timeout loop. With this we are no
-longer stuck in the loop, but the current transfer doesn't continue
-anymore.
-
-Afterwards I dropped everything around fbn->may_send completely and now
-everything works fluently.
-
-Removing these send restrictions seems the right thing to me. In the end
-it's UDP, so the remote host shouldn't make any assumptions of how fast
-and if at all packets arrive there.
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
