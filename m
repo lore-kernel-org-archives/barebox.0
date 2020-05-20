@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-qt1-x842.google.com ([2607:f8b0:4864:20::842])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jbHpX-0007A8-NB
- for barebox@lists.infradead.org; Wed, 20 May 2020 06:03:56 +0000
-Date: Wed, 20 May 2020 08:03:49 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200520060349.GS11869@pengutronix.de>
-References: <cover.1589477005.git.dg@emlix.com>
- <76fd510b47399354e06406a6bb82f562d350d4cf.1589477005.git.dg@emlix.com>
+ id 1jbFoC-0000kG-1o
+ for barebox@lists.infradead.org; Wed, 20 May 2020 03:54:22 +0000
+Received: by mail-qt1-x842.google.com with SMTP id a23so1584164qto.1
+ for <barebox@lists.infradead.org>; Tue, 19 May 2020 20:54:19 -0700 (PDT)
+From: David Dgien <dgienda125@gmail.com>
+Date: Tue, 19 May 2020 23:55:55 -0400
+Message-Id: <20200520035555.84422-1-dgienda125@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <76fd510b47399354e06406a6bb82f562d350d4cf.1589477005.git.dg@emlix.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,138 +17,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 04/10] Introduce idle slice
-To: Daniel =?iso-8859-15?Q?Gl=F6ckner?= <dg@emlix.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] password: Fix warning with empty default password
+To: barebox@lists.infradead.org
+Cc: David Dgien <dgienda125@gmail.com>
 
-On Thu, May 14, 2020 at 08:21:52PM +0200, Daniel Gl=F6ckner wrote:
-> Some code can't foresee which resources will be used by its poller. This
-> is the case especially in pollers that will execute arbitrary commands
-> input by the user. With this commit a special slice is introduced that is
-> released only when Barebox is waiting for console input and only when it
-> is doing that outside of any command. Code that wants to depend on the
-> idle slice must select CONFIG_IDLE_SLICE to make it available.
-> =
+When CONFIG_PASSWORD_DEFAULT is unset, the default_passwd buffer is set
+to the empty string. The read_default_passwd() function wants to read at
+least two characters from that buffer, causing GCC to generate an array
+bounds warning. Make the default_passwd buffer have at least 2 bytes so
+this warning is not generated.
 
-> Signed-off-by: Daniel Gl=F6ckner <dg@emlix.com>
-> ---
->  common/Kconfig             |  4 ++++
->  common/binfmt.c            |  3 +++
->  common/command.c           |  3 +++
->  common/console_countdown.c |  3 +++
->  common/poller.c            |  2 ++
->  common/slice.c             | 24 ++++++++++++++++++++++++
->  include/slice.h            | 10 ++++++++++
->  lib/readline.c             |  8 +++++++-
->  8 files changed, 56 insertions(+), 1 deletion(-)
-> =
+Since the read_default_passwd() function is only called when
+default_passwd is not the empty string, this is not a functional change.
 
-> diff --git a/common/Kconfig b/common/Kconfig
-> index 400c0553c..2fa9140de 100644
-> --- a/common/Kconfig
-> +++ b/common/Kconfig
-> @@ -913,6 +913,10 @@ config BAREBOXCRC32_TARGET
->  config POLLER
->  	bool "generic polling infrastructure"
->  =
+Signed-off-by: David Dgien <dgienda125@gmail.com>
+---
+ common/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> +config IDLE_SLICE
-> +	bool
-> +	default n
+diff --git a/common/Makefile b/common/Makefile
+index c14af692f..3b63e89ed 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -74,7 +74,7 @@ ifdef CONFIG_PASSWORD
+ 
+ ifeq ($(CONFIG_PASSWORD_DEFAULT),"")
+ define filechk_passwd
+-	echo "static const char default_passwd[] = \"\";"
++	echo "static const char default_passwd[] = \"\\0\";"
+ endef
+ else
+ define filechk_passwd
+-- 
+2.26.2
 
-We discussed config SLICE away, is there a reason to introduce config
-IDLE_SLICE?
-
-> +
->  config STATE
->  	bool "generic state infrastructure"
->  	select CRC32
-> diff --git a/common/binfmt.c b/common/binfmt.c
-> index f2ff62458..899f270d4 100644
-> --- a/common/binfmt.c
-> +++ b/common/binfmt.c
-> @@ -10,6 +10,7 @@
->  #include <malloc.h>
->  #include <command.h>
->  #include <errno.h>
-> +#include <slice.h>
->  =
-
->  static LIST_HEAD(binfmt_hooks);
->  =
-
-> @@ -23,7 +24,9 @@ static int binfmt_run(char *file, int argc, char **argv)
->  		if (b->type !=3D type)
->  			continue;
->  =
-
-> +		idle_slice_acquire();
->  		ret =3D b->hook(b, file, argc, argv);
-> +		idle_slice_release();
->  		if (ret !=3D -ERESTARTNOHAND)
->  			return ret;
->  	}
-> diff --git a/common/command.c b/common/command.c
-> index 49845938a..2b10248f5 100644
-> --- a/common/command.c
-> +++ b/common/command.c
-> @@ -30,6 +30,7 @@
->  #include <init.h>
->  #include <complete.h>
->  #include <getopt.h>
-> +#include <slice.h>
->  =
-
->  LIST_HEAD(command_list);
->  EXPORT_SYMBOL(command_list);
-> @@ -72,7 +73,9 @@ int execute_command(int argc, char **argv)
->  	/* Look up command in command table */
->  	if ((cmdtp =3D find_cmd(argv[0]))) {
->  		/* OK - call function to do the command */
-> +		idle_slice_acquire();
->  		ret =3D cmdtp->cmd(argc, argv);
-> +		idle_slice_release();
-
-The command could be a shell in which case we would never be able to
-release the idle slice as long this shell is running.
-
-> @@ -200,11 +201,16 @@ int readline(const char *prompt, char *buf, int len)
->  	puts (prompt);
->  =
-
->  	while (1) {
-> +		idle_slice_release();
->  		while (!tstc()) {
->  			poller_call();
-> -			if (IS_ENABLED(CONFIG_CONSOLE_RATP))
-> +			if (IS_ENABLED(CONFIG_CONSOLE_RATP)) {
-> +				idle_slice_acquire();
->  				barebox_ratp_command_run();
-> +				idle_slice_release();
-> +			}
->  		}
-> +		idle_slice_acquire();
-
-I am not sure this is the right place to release the idle slice, I would
-rather do it in the caller. readline() may be called from different
-places, not all of them seem to be appropriate for releasing the idle
-slice.
-
-I think the idle slice should be released right before the shell calls
-into readline and acquired again right afterwards.
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
