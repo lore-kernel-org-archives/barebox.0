@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jbMYE-0007su-KI
- for barebox@lists.infradead.org; Wed, 20 May 2020 11:06:20 +0000
-Date: Wed, 20 May 2020 13:06:09 +0200
+ id 1jbMYv-00084u-FJ
+ for barebox@lists.infradead.org; Wed, 20 May 2020 11:07:03 +0000
+Date: Wed, 20 May 2020 13:06:59 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200520110608.GY11869@pengutronix.de>
-References: <1589798255-359359-1-git-send-email-r.karszniewicz@phytec.de>
+Message-ID: <20200520110659.GZ11869@pengutronix.de>
+References: <20200518145600.119548-1-masahiroy@kernel.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1589798255-359359-1-git-send-email-r.karszniewicz@phytec.de>
+In-Reply-To: <20200518145600.119548-1-masahiroy@kernel.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,50 +22,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] blspec: Allow the "options" key to be given multiple times
-To: Robert Karszniewicz <r.karszniewicz@phytec.de>
+Subject: Re: [PATCH] kbuild: add -std=gnu89 to KBUILD_CFLAGS
+To: Masahiro Yamada <masahiroy@kernel.org>
 Cc: barebox@lists.infradead.org
 
-On Mon, May 18, 2020 at 12:37:35PM +0200, Robert Karszniewicz wrote:
-> The Boot Loader Spec says:
-> "This key is optional and may appear more than once in which case all
-> specified parameters are used in the order they are listed."
+On Mon, May 18, 2020 at 11:56:00PM +0900, Masahiro Yamada wrote:
+> Barebox imports lots of code from Linux, so should use the same
+> language standard as Linux.
 > 
-> Signed-off-by: Robert Karszniewicz <r.karszniewicz@phytec.de>
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 > ---
->  common/blspec.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
+> 
+>  Makefile | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/common/blspec.c b/common/blspec.c
-> index 1a6d581..3be26d0 100644
-> --- a/common/blspec.c
-> +++ b/common/blspec.c
-> @@ -298,6 +298,18 @@ static struct blspec_entry *blspec_entry_open(struct bootentries *bootentries,
+> diff --git a/Makefile b/Makefile
+> index 7a620b504..d477494d6 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -416,7 +416,7 @@ KBUILD_CPPFLAGS        := -D__KERNEL__ -D__BAREBOX__ $(LINUXINCLUDE) -fno-builti
+>  KBUILD_CFLAGS   := -Wall -Wundef -Werror=strict-prototypes -Wno-trigraphs \
+>  		   -fno-strict-aliasing -fno-common \
+>                     -Werror=implicit-function-declaration -Werror=implicit-int \
+> -                   -Os -pipe -Wmissing-prototypes
+> +                   -Os -pipe -Wmissing-prototypes -std=gnu89
+>  KBUILD_AFLAGS          := -D__ASSEMBLY__
 >  
->  		val = end;
->  
-> +		if (!strcmp(name, "options")) {
-> +			/* If there was a previous "options" key given, prepend its value
-> +			 * (as per spec). */
-> +			char *prev_val = blspec_entry_var_get(entry, name);
-> +			if (prev_val) {
-> +				char *opts = xasprintf("%s %s", prev_val, val);
-> +				blspec_entry_var_set(entry, name, opts);
-> +				free(opts);
-> +				continue;
-> +			}
-> +		}
-> +
->  		blspec_entry_var_set(entry, name, val);
->  	}
->  
+>  LDFLAGS_barebox	:= -Map barebox.map
 > -- 
-> 2.7.4
+> 2.25.1
 > 
 > 
 > _______________________________________________
