@@ -1,19 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-qk1-x743.google.com ([2607:f8b0:4864:20::743])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jbSKj-0004ZH-TG
- for barebox@lists.infradead.org; Wed, 20 May 2020 17:16:47 +0000
-References: <20200519165208.3546-1-u.kleine-koenig@pengutronix.de>
- <96a9cba1-26d1-b51c-f8c1-f3ab2fde5c0b@pengutronix.de>
- <20200520135920.34sbvrdafx4evwqj@pengutronix.de>
- <081cb31b-fc5d-91f4-689a-5593325a5d7c@pengutronix.de>
- <20200520171116.uy25i2thzmwkn6ik@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <8664618e-36ac-1105-4b52-862cda3ee912@pengutronix.de>
-Date: Wed, 20 May 2020 19:16:44 +0200
+ id 1jbbUL-0008Tz-VH
+ for barebox@lists.infradead.org; Thu, 21 May 2020 03:03:20 +0000
+Received: by mail-qk1-x743.google.com with SMTP id m11so5959677qka.4
+ for <barebox@lists.infradead.org>; Wed, 20 May 2020 20:03:17 -0700 (PDT)
+Date: Wed, 20 May 2020 23:04:56 -0400
+From: David Dgien <dgienda125@gmail.com>
+Message-ID: <20200521030456.GB111592@fizzbox.localdomain>
+References: <20200520035555.84422-1-dgienda125@gmail.com>
+ <20200520062632.hfbmedgtofv6y665@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20200520171116.uy25i2thzmwkn6ik@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20200520062632.hfbmedgtofv6y665@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,38 +21,112 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] pwm: Replace license and copyright boilerplate by SPDX
- identfiers
-To: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org, Roland Hieber <rhi@pengutronix.de>
+Subject: Re: [PATCH] password: Fix warning with empty default password
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-SGVsbG8gVXdlLAoKT24gNS8yMC8yMCA3OjExIFBNLCBVd2UgS2xlaW5lLUvDtm5pZyB3cm90ZToK
-Pj4gWW91IGNvdWxkIHZlcmlmeSB5b3VyIGNoYW5nZXMgYnkgY2hlY2tpbmcgd2hldGhlciAvbGF0
-ZXIvIGFwcGVhcnMKPj4gaW4gcGFpcnMgZm9yIGVhY2ggaHVuazoKPj4KPj4gcGVybCAtMDc3NyAt
-RicvXkAvZ20nIC1uZSAnZm9yIChARikgeyBAbSA9IC9sYXRlci9nOyBwcmludCBpZiBAbSAmIDEg
-fScgc3BkeC5wYXRjaAo+IAo+IEkgaGFkIHRvIHJlYWQgcXVpdGUgc29tZSBwZXJsIGRvY3MgdG8g
-dW5kZXJzdGFuZCB0aGF0LiAqaW1wcmVzc2VkKgoKUGVybCBvbmUtbGluZXJzIGFyZSBhIGJlYXV0
-aWZ1bCB0aGluZywgYXJlbid0IHRoZXk/IDotKQoKPj4+IEkganVzdCByZWNoZWNrZWQgdGhlIG90
-aGVyIHBhdGNoZXMgSSBjcmVhdGVkIGFuZCB0aGlzIGlzIHRoZSBvbmx5Cj4+PiBwcm9ibGVtYXRp
-YyBjaGFuZ2UuCj4gCj4gQXBwbGllZCBvbiBhbGwgbXkgcGF0Y2hlcyB0aGlzIG9ubHkgZmluZHMg
-dGhlIGFib3ZlIGlzc3VlIGlmIEkgdXNlCj4gLS1pbnRlci1odW5rLWNvbnRleHQ9MyAoZS5nLjoK
-PiAKPiAJZ2l0IHNob3cgLS1mb3JtYXQ9ZnVsbGVyIC0taW50ZXItaHVuay1jb250ZXh0PTMgMWE1
-NDZlMjgzNDFiIHwgcGVybCAtMDc3NyAtRicvXkAvZ20nIC1uZSAnZm9yIChARikgeyBAbSA9IC9s
-YXRlci9nOyBwcmludCBpZiBAbSAmIDEgfQo+IAo+ICkuIFdpdGhvdXQgLS1pbnRlci1odW5rLWNv
-bnRleHQ9MiBzb21lIGZpbGVzIGhhdmUgbW9yZSB0aGFuIG9uZSBodW5rIGFuZAo+IHNvIHRyaWdn
-ZXIgeW91ciB0ZXN0LgoKQWx0ZXJuYXRpdmVseSwgeW91IGNhbiBhc3N1bWUgb25seSBvbmUgbGlj
-ZW5zZSBzdGF0ZW1lbnQgcGVyIGZpbGUgYW5kCmF1dG9zcGxpdCBvbiB0aGUgZGlmZiAtLWdpdCBs
-aW5lLCBpLmUuIC1GJy9eZGlmZi8nCgpDaGVlcnMKQWhtYWQKCj4gCj4gQmVzdCByZWdhcmRzCj4g
-VXdlCj4gCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKU3RldWVyd2FsZGVyIFN0ci4gMjEgICAgICAg
-ICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKMzExMzcgSGls
-ZGVzaGVpbSwgR2VybWFueSAgICAgICAgICAgICAgICAgIHwgUGhvbmU6ICs0OS01MTIxLTIwNjkx
-Ny0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4
-OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5m
-cmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2Jh
-cmVib3gK
+Hello
+
+On Wed, May 20, 2020 at 08:26:32AM +0200, Uwe Kleine-K=F6nig wrote:
+> On Tue, May 19, 2020 at 11:55:55PM -0400, David Dgien wrote:
+> > When CONFIG_PASSWORD_DEFAULT is unset, the default_passwd buffer is set
+> =
+
+> I assume you mean "If CONFIG_PASSWORD_DEFAULT is set to an empty
+> string".
+
+Yes.
+
+> =
+
+> > to the empty string. The read_default_passwd() function wants to read at
+> > least two characters from that buffer, causing GCC to generate an array
+> > bounds warning.
+> =
+
+> I cannot reproduce that warning. Which gcc version do you use and on
+> which platform? Mentioning the exact warning in the commit log helps
+> finding the resulting commit when searching for a fix.
+
+arm-none-eabi-gcc --version prints "arm-none-eabi-gcc (Arch Repository)
+10.1.0"
+I found the issue when building for rpi_defconfig and
+vexpress_defconfig.
+
+The warning I get when building from master (commit c10b20dc83ac):
+
+barebox/common/password.c: In function 'login':
+barebox/common/password.c:173:5: warning: array subscript [1, 2147483647] i=
+s outside array bounds of 'const char[1]' [-Warray-bounds]
+  173 |   c =3D buf[i];
+      |   ~~^~~~~~~~
+In file included from barebox/common/password.c:30:
+include/generated/passwd.h:1:19: note: while referencing 'default_passwd'
+    1 | static const char default_passwd[] =3D "";
+      |                   ^~~~~~~~~~~~~~
+
+I guess the compiler doesn't know that strlen(default_passwd) =3D 0, just
+that length > 0 so the most it can assume is that the loop has to
+consume at least two chars, and the empty string only contains one.
+
+> =
+
+> > Make the default_passwd buffer have at least 2 bytes so
+> > this warning is not generated.
+> > =
+
+> > Since the read_default_passwd() function is only called when
+> > default_passwd is not the empty string, this is not a functional change.
+> =
+
+> I don't understand the problem for the empty password. With
+> default_passwd =3D "" we have strlen(default_passwd) =3D 0 so the for loop
+> doesn't run at all.
+
+Yes, that's correct, which is one reason why this is not functionally
+different. But the compiler doesn't seem to be smart enough to know
+that.
+
+> =
+
+> As I understand the code (at commit c10b20dc83ac) for uneven lengths of
+> default_passwd the last accessed byte is the trailing '\0' and for even
+> length it's the byte before the trailing '\0'. This should be ok?!
+> =
+
+> Am I missing something?
+
+When working on this reply, I realized there was another solution I
+missed when I was trying to find ways to short-circut the compiler
+previously. If I add:
+
+if (ARRAY_SIZE(default_passwd) =3D=3D 1)
+	return -ENOSYS;
+
+in the read_default_passwd() function, that would short-circut the
+compiler preventing the warning message, and is less hacky. I can
+resubmit with that change instead.
+
+> =
+
+> Best regards
+> Uwe
+> =
+
+> -- =
+
+> Pengutronix e.K.                           | Uwe Kleine-K=F6nig          =
+  |
+> Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+Thanks,
+David Dgien
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
