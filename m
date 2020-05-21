@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from conuserg-11.nifty.com ([210.131.2.78])
+Received: from conuserg-10.nifty.com ([210.131.2.77])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jbnoJ-0004nA-EN
- for barebox@lists.infradead.org; Thu, 21 May 2020 16:12:45 +0000
+ id 1jboX2-0006GI-A8
+ for barebox@lists.infradead.org; Thu, 21 May 2020 16:58:57 +0000
 From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Fri, 22 May 2020 01:12:11 +0900
-Message-Id: <20200521161211.349792-1-masahiroy@kernel.org>
+Date: Fri, 22 May 2020 01:58:36 +0900
+Message-Id: <20200521165836.363263-1-masahiroy@kernel.org>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,37 +19,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! kbuild: unify barebox and pbl build commands
+Subject: [PATCH] powerpc: move ddr-8xxx/ to the relevant Makefile
 To: barebox@lists.infradead.org
 Cc: Masahiro Yamada <masahiroy@kernel.org>
+
+Directory descending upward is ugly. Move it to the correct Makefile.
+
+No functional change is intended because FSL_DDR{2,3} depend on
+ARCH_MPC85XX.
 
 Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 ---
 
-Sascha,
+ arch/powerpc/Kbuild                | 2 ++
+ arch/powerpc/mach-mpc85xx/Makefile | 2 --
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Some redundant code slipped in.
-
-Could you please squash this into the preivous
-"kbuild: unify barebox and pbl build commands" ?
-
-
- scripts/Makefile.build | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index 31341d23c..ed2bb28c5 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -117,7 +117,7 @@ cmd_cc_i_c       = $(CPP) $(c_flags)   -o $@ $<
- # (See cmd_cc_o_c + relevant part of rule_cc_o_c)
- 
- quiet_cmd_cc_o_c = CC $(quiet_modtag)  $@
--      cmd_cc_o_c = $(CC) $(c_flags) $(if $(part-of-pbl),-D__PBL__ $(PBL_CPPFLAGS)) -c -o $@ $<
-+      cmd_cc_o_c = $(CC) $(c_flags) -c -o $@ $<
- 
- define rule_cc_o_c
- 	$(call cmd,checksrc)
+diff --git a/arch/powerpc/Kbuild b/arch/powerpc/Kbuild
+index 503ce631c..65e249338 100644
+--- a/arch/powerpc/Kbuild
++++ b/arch/powerpc/Kbuild
+@@ -1,2 +1,4 @@
+ obj-$(CONFIG_ARCH_MPC85XX) += cpu-85xx/
+ obj-y += lib/
++obj-$(CONFIG_FSL_DDR2) += ddr-8xxx/
++obj-$(CONFIG_FSL_DDR3) += ddr-8xxx/
+diff --git a/arch/powerpc/mach-mpc85xx/Makefile b/arch/powerpc/mach-mpc85xx/Makefile
+index de4f5efde..9886c7da4 100644
+--- a/arch/powerpc/mach-mpc85xx/Makefile
++++ b/arch/powerpc/mach-mpc85xx/Makefile
+@@ -9,6 +9,4 @@ obj-y			+= fsl_i2c.o
+ obj-$(CONFIG_MP)	+= mp.o
+ obj-$(CONFIG_OFTREE)	+= fdt.o
+ obj-$(CONFIG_DRIVER_NET_GIANFAR) += eth-devices.o
+-obj-$(CONFIG_FSL_DDR2) += ../ddr-8xxx/
+-obj-$(CONFIG_FSL_DDR3) += ../ddr-8xxx/
+ extra-y += barebox.lds
 -- 
 2.25.1
 
