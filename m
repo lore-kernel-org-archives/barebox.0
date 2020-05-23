@@ -1,14 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qt1-x841.google.com ([2607:f8b0:4864:20::841])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jcIMy-0003F7-MO
- for barebox@lists.infradead.org; Sat, 23 May 2020 00:50:34 +0000
-Received: by mail-qt1-x841.google.com with SMTP id d7so9750111qtn.11
- for <barebox@lists.infradead.org>; Fri, 22 May 2020 17:50:31 -0700 (PDT)
-From: David Dgien <dgienda125@gmail.com>
-Date: Fri, 22 May 2020 20:51:56 -0400
-Message-Id: <20200523005156.148504-1-dgienda125@gmail.com>
+ id 1jcVdb-0001ou-SE
+ for barebox@lists.infradead.org; Sat, 23 May 2020 15:00:37 +0000
+Date: Sat, 23 May 2020 17:00:32 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20200523150032.5lopw2n3c7onpqxe@pengutronix.de>
+References: <20200519165208.3546-1-u.kleine-koenig@pengutronix.de>
+ <96a9cba1-26d1-b51c-f8c1-f3ab2fde5c0b@pengutronix.de>
+ <20200522125556.pisjtt6pe5jtfkyq@pengutronix.de>
+ <20200522131759.dnof3ixb4idqemcv@pengutronix.de>
+ <20200523141612.3xjmugzalvokwubv@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200523141612.3xjmugzalvokwubv@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,55 +22,106 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] password: Fix warning with empty default password
-To: barebox@lists.infradead.org
-Cc: David Dgien <dgienda125@gmail.com>
+Subject: Re: [PATCH] pwm: Replace license and copyright boilerplate by SPDX
+ identfiers
+To: Sascha Hauer <s.hauer@pengutronix.de>, Roland Hieber <rhi@pengutronix.de>
+Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-When CONFIG_PASSWORD_DEFAULT is unset, the default_passwd buffer is set
-to the empty string. The read_default_passwd() function wants to read at
-least two characters from that buffer, causing GCC to generate an array
-bounds warning:
+Hello Sascha, hello Roland,
 
-barebox/common/password.c: In function 'login':
-barebox/common/password.c:173:5: warning: array subscript [1, 2147483647] is outside array bounds of 'const char[1]' [-Warray-bounds]
-In file included from barebox/common/password.c:30:
-include/generated/passwd.h:1:19: note: while referencing 'default_passwd'
+On Sat, May 23, 2020 at 04:16:12PM +0200, Roland Hieber wrote:
+> On Fri, May 22, 2020 at 03:17:59PM +0200, Uwe Kleine-K=F6nig wrote:
+> > Hello Roland,
+> > =
 
-Add an ARRAY_SIZE check to default_passwd so that the loop is optimized
-away and the warning is no longer generated. Since the
-read_default_passwd() function is only called when default_passwd is not
-the empty string, this is not a functional change.
+> > On Fri, May 22, 2020 at 02:55:56PM +0200, Roland Hieber wrote:
+> > > On Wed, May 20, 2020 at 02:10:47PM +0200, Ahmad Fatoum wrote:
+> > > > On 5/19/20 6:52 PM, Uwe Kleine-K=F6nig wrote:
+> > > > > diff --git a/drivers/pwm/pwm-mxs.c b/drivers/pwm/pwm-mxs.c
+> > > > > index a06040ac3268..1e2db39def22 100644
+> > > > > --- a/drivers/pwm/pwm-mxs.c
+> > > > > +++ b/drivers/pwm/pwm-mxs.c
+> > > > > @@ -1,13 +1,5 @@
+> > > > > -/*
+> > > > > - * Copyright 2012 Freescale Semiconductor, Inc.
+> > > > > - *
+> > > > > - * The code contained herein is licensed under the GNU General P=
+ublic
+> > > > > - * License. You may obtain a copy of the GNU General Public Lice=
+nse
+> > > > > - * Version 2 or later at the following locations:
+> > > > > - *
+> > > > > - * http://www.opensource.org/licenses/gpl-license.html
+> > > > > - * http://www.gnu.org/copyleft/gpl.html
+> > > > > - */
+> > > > > +// SPDX-License-Identifier: GPL-2.0-only
+> > > > =
 
-Signed-off-by: David Dgien <dgienda125@gmail.com>
----
-Changes since v1:
-  - Added warning output to commit message
-  - Rework fix in read_default_passwd() instead of hacking with the makefile
+> > > > The deleted text says "or later"
+> > > =
 
- common/password.c | 3 +++
- 1 file changed, 3 insertions(+)
+> > > Ah, I stumbled over this too. The deleted text says:
+> > > =
 
-diff --git a/common/password.c b/common/password.c
-index a2a9c4cd6..3a0547b9a 100644
---- a/common/password.c
-+++ b/common/password.c
-@@ -161,6 +161,9 @@ static int read_default_passwd(unsigned char *sum, size_t length)
- 	unsigned char *buf = (unsigned char *)default_passwd;
- 	unsigned char c;
- 
-+	if (ARRAY_SIZE(default_passwd) == 1)
-+		return -ENOSYS;
-+
- 	if (!sum || length < 1)
- 		return -EINVAL;
- 
--- 
-2.26.2
+> > >     "The code contained herein is licensed under the GNU General Publ=
+ic
+> > >     License."
+> > > =
 
+> > > which in itself reads like "you can use any version of the GPL" (i.e.,
+> > > GPL-1.0-or-later). Later then the text says:
+> > > =
+
+> > >     "You may obtain a copy of the GNU General Public License
+> > >     Version 2 or later at the following locations:"
+> > > =
+
+> > > which in my opinion does not say anything about which version of the =
+GPL
+> > > the code is licensed under.
+> > =
+
+> > This seems to be a problem in the Freescale template. I think I pointed
+> > that out once, but nothing changed.
+> > =
+
+> > For practical reasons I'd interpret that as "GPL-2.0-or-later".
+> =
+
+> Yeah, I guess that's alright.
+> =
+
+> Reviewed-by: Roland Hieber <rhi@pengutronix.de>
+
+I assume this Reviewed-by: applies only if we squash
+
+diff --git a/drivers/pwm/pwm-mxs.c b/drivers/pwm/pwm-mxs.c
+index 1e2db39def22..08819b43bc1d 100644
+--- a/drivers/pwm/pwm-mxs.c
++++ b/drivers/pwm/pwm-mxs.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: GPL-2.0-only
++// SPDX-License-Identifier: GPL-2.0-or-later
+ // SPDX-FileCopyrightText: 2012 Freescale Semiconductor, Inc.
+ =
+
+ #include <common.h>
+
+into the patch Sascha applied.
+
+Sascha, can you care for this?
+
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
 _______________________________________________
 barebox mailing list
