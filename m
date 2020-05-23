@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jb8F8-0004T4-SG
- for barebox@lists.infradead.org; Tue, 19 May 2020 19:49:40 +0000
-Date: Tue, 19 May 2020 21:49:36 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20200519194936.n3ttkn3s7j7ksrm6@pengutronix.de>
-References: <20200519163733.2836-1-u.kleine-koenig@pengutronix.de>
+ id 1jcVjW-0004nI-Mg
+ for barebox@lists.infradead.org; Sat, 23 May 2020 15:06:44 +0000
+Date: Sat, 23 May 2020 17:06:40 +0200
+From: Roland Hieber <rhi@pengutronix.de>
+Message-ID: <20200523150640.jvuctfcne2lwuomw@pengutronix.de>
+References: <20200428132405.3624-1-u.kleine-koenig@pengutronix.de>
+ <20200523150007.erjwm3azjdyaywx4@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200519163733.2836-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20200523150007.erjwm3azjdyaywx4@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,87 +19,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] arch/arm/boards: Replace license and copyright
  boilerplate by SPDX identfiers
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Hello Andrey,
-
-On Tue, May 19, 2020 at 06:37:33PM +0200, Uwe Kleine-K=F6nig wrote:
-> This adapts all files that were identifed by licensecheck
-> (https://salsa.debian.org/build-common-team/licensecheck.git) as
-> licensed under the GPL.
-> =
-
-> The advantage is that these specifiers are machine-parseable which helps
-> license conformance, e.g. for packaging barebox in Debian.
-> =
-
-> While touching these files also do some minor comment reformatting to
-> get some uniform layout.
-
-While going once more through this patch I noticed that there are a few
-hunks that might be questionable and it would be great if you could
-comment:
-
-> diff --git a/arch/arm/boards/freescale-mx7-sabresd/board.c b/arch/arm/boa=
-rds/freescale-mx7-sabresd/board.c
-> index 37941efdbeb4..e41d67017fe5 100644
-> --- a/arch/arm/boards/freescale-mx7-sabresd/board.c
-> +++ b/arch/arm/boards/freescale-mx7-sabresd/board.c
-> @@ -1,17 +1,7 @@
-> -/*
-> - * Copyright (C) 2017 Zodiac Inflight Innovation
-> - * Author: Andrey Smirnov <andrew.smirnov@gmail.com>
-> - *
-> - * This program is free software; you can redistribute it and/or
-> - * modify it under the terms of the GNU General Public License as
-> - * published by the Free Software Foundation; either version 2 of
-> - * the License, or (at your option) any later version.
-> - *
-> - * This program is distributed in the hope that it will be useful,
-> - * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> - * GNU General Public License for more details.
-> - */
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +// SPDX-FileCopyrightText: 2017 Zodiac Inflight Innovation
-> +
-> +/* Author: Andrey Smirnov <andrew.smirnov@gmail.com> */
->  =
-
->  #include <common.h>
->  #include <init.h>
-
-Is this right? I.e does Zodiac hold the copyright and you are "only" the
-author? Or would
-
-	// SPDX-FileCopyrightText: 2017 Andrey Smirnov <andrew.smirnov@gmail.com>,=
- Zodiac Inflight Innovation
-
-be more appropriate?
-
-Same question for
-
-	arch/arm/boards/zii-imx6q-rdu2/board.c
-	arch/arm/boards/zii-imx6q-rdu2/lowlevel.c
-	arch/arm/boards/zii-vf610-dev/board.c
-	arch/arm/boards/zii-vf610-dev/lowlevel.c
-
-Best regards
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gU2F0LCBNYXkgMjMsIDIwMjAgYXQgMDU6MDA6MDdQTSArMDIwMCwgUm9sYW5kIEhpZWJlciB3
+cm90ZToKPiBPbiBUdWUsIEFwciAyOCwgMjAyMCBhdCAwMzoyNDowNVBNICswMjAwLCBVd2UgS2xl
+aW5lLUvDtm5pZyB3cm90ZToKPiA+IFRoaXMgYWRhcHRzIGFsbCBmaWxlcyB0aGF0IHdlcmUgaWRl
+bnRpZmVkIGJ5IGxpY2Vuc2VjaGVjawo+ID4gKGh0dHBzOi8vc2Fsc2EuZGViaWFuLm9yZy9idWls
+ZC1jb21tb24tdGVhbS9saWNlbnNlY2hlY2suZ2l0KSBhcwo+ID4gbGljZW5zZWQgdW5kZXIgdGhl
+IEdQTC4KPiA+IAo+ID4gVGhlIGFkdmFudGFnZSBpcyB0aGF0IHRoZXNlIHNwZWNpZmllcnMgYXJl
+IG1hY2hpbmUtcGFyc2VhYmxlIHdoaWNoIGhlbHBzCj4gPiBsaWNlbnNlIGNvbmZvcm1hbmNlLCBl
+LmcuIGZvciBwYWNrYWdpbmcgYmFyZWJveCBpbiBEZWJpYW4uCj4gPiAKPiA+IFdoaWxlIHRvdWNo
+aW5nIHRoZXNlIGZpbGVzIGFsc28gZG8gc29tZSBtaW5vciBjb21tZW50IHJlZm9ybWF0dGluZyB0
+bwo+ID4gZ2V0IHNvbWUgdW5pZm9ybSBsYXlvdXQuCj4gPiAKPiA+IFNpZ25lZC1vZmYtYnk6IFV3
+ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Cj4gCj4gSG1t
+bSwgSSBkb24ndCBzZWUgd2h5IHlvdSBkcm9wcGVkIHRoZSBmb2xsb3dpbmcgZmlsZXMgZnJvbSB5
+b3VyCj4gKGltcGxpY2l0KSB2MjoKPiAKPiBhcmNoL2FybS9ib2FyZHMvZW1iZWRza3ktZTkvYm9h
+cmQuYwo+IGFyY2gvYXJtL2JvYXJkcy9ldWtyZWFfY3B1aW14MjcvZXVrcmVhX2NwdWlteDI3LmMK
+PiBhcmNoL2FybS9ib2FyZHMvZXVrcmVhX2NwdWlteDM1L2V1a3JlYV9jcHVpbXgzNS5jCj4gYXJj
+aC9hcm0vYm9hcmRzL2ZyZWVzY2FsZS1teDIxLWFkcy9pbXgyMWFkcy5jCj4gYXJjaC9hcm0vYm9h
+cmRzL2ZyZWVzY2FsZS1teDM1LTNkcy8zc3RhY2suYwo+IGFyY2gvYXJtL2JvYXJkcy9mcmVlc2Nh
+bGUtbXg2LXNhYnJlc2QvYm9hcmQuYwo+IGFyY2gvYXJtL2JvYXJkcy9mcmllbmRseWFybS1taW5p
+MjQ0MC9taW5pMjQ0MC5jCj4gYXJjaC9hcm0vYm9hcmRzL2ZyaWVuZGx5YXJtLXRpbnkyMTAvdGlu
+eTIxMC5jCj4gYXJjaC9hcm0vYm9hcmRzL2dsb2JhbHNjYWxlLWd1cnVwbHVnL2JvYXJkLmMgCj4g
+YXJjaC9hcm0vYm9hcmRzL2dsb2JhbHNjYWxlLW1pcmFib3gvYm9hcmQuYwo+IGFyY2gvYXJtL2Jv
+YXJkcy9pbXgyMzMtb2xpbnV4aW5vL2lteDIzLW9saW51eGluby5jCj4gYXJjaC9hcm0vYm9hcmRz
+L2thcm8tdHg2eC9ib2FyZC5jCj4gYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1waHljYXJkLW9tYXAz
+L3BjYS1hLWwxLmMKPiBhcmNoL2FybS9ib2FyZHMvcGh5dGVjLXBoeWNvcmUtcHhhMjcwL2NvbmZp
+Zy5oCj4gYXJjaC9hcm0vYm9hcmRzL3ZhcmlzY2l0ZS1teDYvYm9hcmQuYwo+IGFyY2gvYXJtL2Jv
+YXJkcy92YXJpc2NpdGUtbXg2L2xvd2xldmVsLmMKPiBhcmNoL2FybS9ib2FyZHMvdmVyc2F0aWxl
+L3ZlcnNhdGlsZXBiLmMKPiBhcmNoL2FybS9ib2FyZHMvenlsb25pdGUvenlsb25pdGUuaAo+IAo+
+IE90aGVyIHRoYW4gdGhhdCwgd2hhdCdzIHRoZXJlIGlzIGNvcnJlY3QsIHNvCj4gUmV2aWV3ZWQt
+Ynk6IFJvbGFuZCBIaWViZXIgPHJoaUBwZW5ndXRyb25peC5kZT4KClVobSwgdGhpcyB3YXMgbWVh
+bnQgZm9yIHYyLCBidXQgSSByZXBsaWVkIHRvIHRoZSB3cm9uZyB0aHJlYWQsIGJ1dCB5b3VyCnYy
+IGFsc28gZGlkbid0IGhhdmUgInYyIiBpbiB0aGUgc3ViamVjdCwgc28gSSBnb3QgY29uZnVzZWQg
+OlAKCiAtIFJvbGFuZAoKLS0gClJvbGFuZCBIaWViZXIsIFBlbmd1dHJvbml4IGUuSy4gICAgICAg
+ICAgfCByLmhpZWJlckBwZW5ndXRyb25peC5kZSAgICAgfApTdGV1ZXJ3YWxkZXIgU3RyLiAyMSAg
+ICAgICAgICAgICAgICAgICAgIHwgaHR0cHM6Ly93d3cucGVuZ3V0cm9uaXguZGUvIHwKMzExMzcg
+SGlsZGVzaGVpbSwgR2VybWFueSAgICAgICAgICAgICAgICB8IFBob25lOiArNDktNTEyMS0yMDY5
+MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgfCBGYXg6
+ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZy
+YWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
+ZWJveAo=
