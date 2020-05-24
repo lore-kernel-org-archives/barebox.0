@@ -1,20 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from vsmx012.vodafonemail.xion.oxcs.net ([153.92.174.90])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jcVhe-00029q-Tk
- for barebox@lists.infradead.org; Sat, 23 May 2020 15:04:48 +0000
-Date: Sat, 23 May 2020 17:04:45 +0200
-From: Roland Hieber <rhi@pengutronix.de>
-Message-ID: <20200523150445.renppyxrqjop7o7x@pengutronix.de>
-References: <20200519165208.3546-1-u.kleine-koenig@pengutronix.de>
- <96a9cba1-26d1-b51c-f8c1-f3ab2fde5c0b@pengutronix.de>
- <20200522125556.pisjtt6pe5jtfkyq@pengutronix.de>
- <20200522131759.dnof3ixb4idqemcv@pengutronix.de>
- <20200523141612.3xjmugzalvokwubv@pengutronix.de>
- <20200523150032.5lopw2n3c7onpqxe@pengutronix.de>
+ id 1jcpFv-0006hq-BS
+ for barebox@lists.infradead.org; Sun, 24 May 2020 11:57:29 +0000
+Received: from vsmx004.vodafonemail.xion.oxcs.net (unknown [192.168.75.198])
+ by mta-8-out.mta.xion.oxcs.net (Postfix) with ESMTP id 00944F3511A
+ for <barebox@lists.infradead.org>; Sun, 24 May 2020 11:57:14 +0000 (UTC)
+Received: from [192.168.178.23] (unknown [95.156.214.119])
+ by mta-8-out.mta.xion.oxcs.net (Postfix) with ESMTPA id B69C619AE72
+ for <barebox@lists.infradead.org>; Sun, 24 May 2020 11:57:10 +0000 (UTC)
+From: Giorgio <giorgio.nicole@arcor.de>
+Message-ID: <69ca4999-4cf0-f20a-5d7a-93e470338bf4@arcor.de>
+Date: Sun, 24 May 2020 13:57:08 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200523150032.5lopw2n3c7onpqxe@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,67 +22,28 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] pwm: Replace license and copyright boilerplate by SPDX
- identfiers
-To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: configure the mac address of an eth device
+To: Barebox List <barebox@lists.infradead.org>
 
-T24gU2F0LCBNYXkgMjMsIDIwMjAgYXQgMDU6MDA6MzJQTSArMDIwMCwgVXdlIEtsZWluZS1Lw7Zu
-aWcgd3JvdGU6Cj4gSGVsbG8gU2FzY2hhLCBoZWxsbyBSb2xhbmQsCj4gCj4gT24gU2F0LCBNYXkg
-MjMsIDIwMjAgYXQgMDQ6MTY6MTJQTSArMDIwMCwgUm9sYW5kIEhpZWJlciB3cm90ZToKPiA+IE9u
-IEZyaSwgTWF5IDIyLCAyMDIwIGF0IDAzOjE3OjU5UE0gKzAyMDAsIFV3ZSBLbGVpbmUtS8O2bmln
-IHdyb3RlOgo+ID4gPiBIZWxsbyBSb2xhbmQsCj4gPiA+IAo+ID4gPiBPbiBGcmksIE1heSAyMiwg
-MjAyMCBhdCAwMjo1NTo1NlBNICswMjAwLCBSb2xhbmQgSGllYmVyIHdyb3RlOgo+ID4gPiA+IE9u
-IFdlZCwgTWF5IDIwLCAyMDIwIGF0IDAyOjEwOjQ3UE0gKzAyMDAsIEFobWFkIEZhdG91bSB3cm90
-ZToKPiA+ID4gPiA+IE9uIDUvMTkvMjAgNjo1MiBQTSwgVXdlIEtsZWluZS1Lw7ZuaWcgd3JvdGU6
-Cj4gPiA+ID4gPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3B3bS9wd20tbXhzLmMgYi9kcml2ZXJz
-L3B3bS9wd20tbXhzLmMKPiA+ID4gPiA+ID4gaW5kZXggYTA2MDQwYWMzMjY4Li4xZTJkYjM5ZGVm
-MjIgMTAwNjQ0Cj4gPiA+ID4gPiA+IC0tLSBhL2RyaXZlcnMvcHdtL3B3bS1teHMuYwo+ID4gPiA+
-ID4gPiArKysgYi9kcml2ZXJzL3B3bS9wd20tbXhzLmMKPiA+ID4gPiA+ID4gQEAgLTEsMTMgKzEs
-NSBAQAo+ID4gPiA+ID4gPiAtLyoKPiA+ID4gPiA+ID4gLSAqIENvcHlyaWdodCAyMDEyIEZyZWVz
-Y2FsZSBTZW1pY29uZHVjdG9yLCBJbmMuCj4gPiA+ID4gPiA+IC0gKgo+ID4gPiA+ID4gPiAtICog
-VGhlIGNvZGUgY29udGFpbmVkIGhlcmVpbiBpcyBsaWNlbnNlZCB1bmRlciB0aGUgR05VIEdlbmVy
-YWwgUHVibGljCj4gPiA+ID4gPiA+IC0gKiBMaWNlbnNlLiBZb3UgbWF5IG9idGFpbiBhIGNvcHkg
-b2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlCj4gPiA+ID4gPiA+IC0gKiBWZXJzaW9u
-IDIgb3IgbGF0ZXIgYXQgdGhlIGZvbGxvd2luZyBsb2NhdGlvbnM6Cj4gPiA+ID4gPiA+IC0gKgo+
-ID4gPiA+ID4gPiAtICogaHR0cDovL3d3dy5vcGVuc291cmNlLm9yZy9saWNlbnNlcy9ncGwtbGlj
-ZW5zZS5odG1sCj4gPiA+ID4gPiA+IC0gKiBodHRwOi8vd3d3LmdudS5vcmcvY29weWxlZnQvZ3Bs
-Lmh0bWwKPiA+ID4gPiA+ID4gLSAqLwo+ID4gPiA+ID4gPiArLy8gU1BEWC1MaWNlbnNlLUlkZW50
-aWZpZXI6IEdQTC0yLjAtb25seQo+ID4gPiA+ID4gCj4gPiA+ID4gPiBUaGUgZGVsZXRlZCB0ZXh0
-IHNheXMgIm9yIGxhdGVyIgo+ID4gPiA+IAo+ID4gPiA+IEFoLCBJIHN0dW1ibGVkIG92ZXIgdGhp
-cyB0b28uIFRoZSBkZWxldGVkIHRleHQgc2F5czoKPiA+ID4gPiAKPiA+ID4gPiAgICAgIlRoZSBj
-b2RlIGNvbnRhaW5lZCBoZXJlaW4gaXMgbGljZW5zZWQgdW5kZXIgdGhlIEdOVSBHZW5lcmFsIFB1
-YmxpYwo+ID4gPiA+ICAgICBMaWNlbnNlLiIKPiA+ID4gPiAKPiA+ID4gPiB3aGljaCBpbiBpdHNl
-bGYgcmVhZHMgbGlrZSAieW91IGNhbiB1c2UgYW55IHZlcnNpb24gb2YgdGhlIEdQTCIgKGkuZS4s
-Cj4gPiA+ID4gR1BMLTEuMC1vci1sYXRlcikuIExhdGVyIHRoZW4gdGhlIHRleHQgc2F5czoKPiA+
-ID4gPiAKPiA+ID4gPiAgICAgIllvdSBtYXkgb2J0YWluIGEgY29weSBvZiB0aGUgR05VIEdlbmVy
-YWwgUHVibGljIExpY2Vuc2UKPiA+ID4gPiAgICAgVmVyc2lvbiAyIG9yIGxhdGVyIGF0IHRoZSBm
-b2xsb3dpbmcgbG9jYXRpb25zOiIKPiA+ID4gPiAKPiA+ID4gPiB3aGljaCBpbiBteSBvcGluaW9u
-IGRvZXMgbm90IHNheSBhbnl0aGluZyBhYm91dCB3aGljaCB2ZXJzaW9uIG9mIHRoZSBHUEwKPiA+
-ID4gPiB0aGUgY29kZSBpcyBsaWNlbnNlZCB1bmRlci4KPiA+ID4gCj4gPiA+IFRoaXMgc2VlbXMg
-dG8gYmUgYSBwcm9ibGVtIGluIHRoZSBGcmVlc2NhbGUgdGVtcGxhdGUuIEkgdGhpbmsgSSBwb2lu
-dGVkCj4gPiA+IHRoYXQgb3V0IG9uY2UsIGJ1dCBub3RoaW5nIGNoYW5nZWQuCj4gPiA+IAo+ID4g
-PiBGb3IgcHJhY3RpY2FsIHJlYXNvbnMgSSdkIGludGVycHJldCB0aGF0IGFzICJHUEwtMi4wLW9y
-LWxhdGVyIi4KPiA+IAo+ID4gWWVhaCwgSSBndWVzcyB0aGF0J3MgYWxyaWdodC4KPiA+IAo+ID4g
-UmV2aWV3ZWQtYnk6IFJvbGFuZCBIaWViZXIgPHJoaUBwZW5ndXRyb25peC5kZT4KPiAKPiBJIGFz
-c3VtZSB0aGlzIFJldmlld2VkLWJ5OiBhcHBsaWVzIG9ubHkgaWYgd2Ugc3F1YXNoCj4gCj4gZGlm
-ZiAtLWdpdCBhL2RyaXZlcnMvcHdtL3B3bS1teHMuYyBiL2RyaXZlcnMvcHdtL3B3bS1teHMuYwo+
-IGluZGV4IDFlMmRiMzlkZWYyMi4uMDg4MTliNDNiYzFkIDEwMDY0NAo+IC0tLSBhL2RyaXZlcnMv
-cHdtL3B3bS1teHMuYwo+ICsrKyBiL2RyaXZlcnMvcHdtL3B3bS1teHMuYwo+IEBAIC0xLDQgKzEs
-NCBAQAo+IC0vLyBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMC1vbmx5Cj4gKy8vIFNQ
-RFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9yLWxhdGVyCj4gIC8vIFNQRFgtRmlsZUNv
-cHlyaWdodFRleHQ6IDIwMTIgRnJlZXNjYWxlIFNlbWljb25kdWN0b3IsIEluYy4KPiAgCj4gICNp
-bmNsdWRlIDxjb21tb24uaD4KPiAKPiBpbnRvIHRoZSBwYXRjaCBTYXNjaGEgYXBwbGllZC4KClll
-cywgdGhhdCdzIHdoYXQgSSBtZWFudCB0b28gXl4KCi0tIApSb2xhbmQgSGllYmVyLCBQZW5ndXRy
-b25peCBlLksuICAgICAgICAgIHwgci5oaWViZXJAcGVuZ3V0cm9uaXguZGUgICAgIHwKU3RldWVy
-d2FsZGVyIFN0ci4gMjEgICAgICAgICAgICAgICAgICAgICB8IGh0dHBzOi8vd3d3LnBlbmd1dHJv
-bml4LmRlLyB8CjMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgICAgICAgICAgICAgICAgfCBQaG9u
-ZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4
-NiAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
-cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2JhcmVib3gK
+Hi,
+
+I'm working with an arm som with an imx7d soc on it.
+The som also has an eeprom with some module specific manufacturer parameters
+like two MAC address, for eth0 and eth1, a module description string or a module
+serial number.
+I've now added some code to my board.c to extract the strings from the eeprom and now
+I need to actually configure the MAC addresses from them, to avoid barebox choose
+random ones when it needs the eth's.
+
+What is the proper way to do this ?
+
+giorgio
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
