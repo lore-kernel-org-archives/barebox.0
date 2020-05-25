@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jdAQb-0001qr-5W
- for barebox@lists.infradead.org; Mon, 25 May 2020 10:33:54 +0000
+ id 1jdAQb-0001qv-6P
+ for barebox@lists.infradead.org; Mon, 25 May 2020 10:33:56 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 25 May 2020 12:33:34 +0200
-Message-Id: <20200525103349.19449-6-s.hauer@pengutronix.de>
+Date: Mon, 25 May 2020 12:33:42 +0200
+Message-Id: <20200525103349.19449-14-s.hauer@pengutronix.de>
 In-Reply-To: <20200525103349.19449-1-s.hauer@pengutronix.de>
 References: <20200525103349.19449-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,127 +21,87 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/20] fastboot: Use unique tempfile name
+Subject: [PATCH 13/20] net: reply to ping requests
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-With fastboot over ethernet we now can have two instances of fastboot
-running in parallel. Make sure that both instances use a different
-temporary file to store data so that they do not influence each other.
+Now that we have the network receive function running in a poller we
+can reasonably well answer to ping requests. Implement this feature.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/fastboot.c  | 21 ++++++++++++---------
- include/fastboot.h |  1 +
- 2 files changed, 13 insertions(+), 9 deletions(-)
+ net/net.c | 46 ++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 44 insertions(+), 2 deletions(-)
 
-diff --git a/common/fastboot.c b/common/fastboot.c
-index 1e12f99915..6f54e939e7 100644
---- a/common/fastboot.c
-+++ b/common/fastboot.c
-@@ -45,8 +45,6 @@
- 
- #define FASTBOOT_VERSION		"0.4"
- 
--#define FASTBOOT_TMPFILE		"/.fastboot.img"
--
- static unsigned int fastboot_max_download_size = SZ_8M;
- 
- struct fb_variable {
-@@ -178,6 +176,7 @@ int fastboot_generic_init(struct fastboot *fb, bool export_bbu)
- 	int ret;
- 	struct file_list_entry *fentry;
- 	struct fb_variable *var;
-+	static int instance;
- 
- 	var = fb_addvar(fb, "version");
- 	fb_setvar(var, "0.4");
-@@ -188,6 +187,8 @@ int fastboot_generic_init(struct fastboot *fb, bool export_bbu)
- 		fb_setvar(var, "%u", fastboot_max_download_size);
- 	}
- 
-+	fb->tempname = basprintf(".fastboot.%d.img", instance++);
-+
- 	if (IS_ENABLED(CONFIG_BAREBOX_UPDATE) && export_bbu)
- 		bbu_handlers_iterate(fastboot_add_bbu_variables, fb);
- 
-@@ -211,6 +212,8 @@ void fastboot_generic_free(struct fastboot *fb)
- 		free(var);
- 	}
- 
-+	free(fb->tempname);
-+
- 	fb->active = false;
+diff --git a/net/net.c b/net/net.c
+index 197b551e72..cb0013519c 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -570,12 +570,54 @@ static int net_handle_udp(unsigned char *pkt, int len)
+ 	return -EINVAL;
  }
  
-@@ -372,7 +375,7 @@ static void cb_download(struct fastboot *fb, const char *cmd)
- 			return;
- 		}
- 	} else {
--		fb->download_fd = open(FASTBOOT_TMPFILE, O_WRONLY | O_CREAT | O_TRUNC);
-+		fb->download_fd = open(fb->tempname, O_WRONLY | O_CREAT | O_TRUNC);
- 		if (fb->download_fd < 0) {
- 			fastboot_tx_print(fb, FASTBOOT_MSG_FAIL,
- 					  "internal error");
-@@ -405,7 +408,7 @@ static void __maybe_unused cb_boot(struct fastboot *fb, const char *opt)
- 	globalvar_set_match("linux.bootargs.dyn.", "");
- 	globalvar_set_match("bootm.image", "");
+-static int net_handle_icmp(unsigned char *pkt, int len)
++static int ping_reply(struct eth_device *edev, unsigned char *pkt, int len)
++{
++	struct ethernet *et = (struct ethernet *)pkt;
++	struct icmphdr *icmp;
++	struct iphdr *ip = (struct iphdr *)(pkt + ETHER_HDR_SIZE);
++	unsigned char *packet;
++	int ret;
++
++	memcpy(et->et_dest, et->et_src, 6);
++	memcpy(et->et_src, edev->ethaddr, 6);
++	et->et_protlen = htons(PROT_IP);
++
++	icmp = net_eth_to_icmphdr(pkt);
++
++	icmp->type = ICMP_ECHO_REPLY;
++	icmp->checksum = 0;
++	icmp->checksum = ~net_checksum((unsigned char *)icmp,
++				       len - sizeof(struct iphdr) - ETHER_HDR_SIZE);
++	ip->check = 0;
++	ip->frag_off = 0;
++	net_copy_ip((void *)&ip->daddr, &ip->saddr);
++	net_copy_ip((void *)&ip->saddr, &edev->ipaddr);
++	ip->check = ~net_checksum((unsigned char *)ip, sizeof(struct iphdr));
++
++	packet = net_alloc_packet();
++	if (!packet)
++		return 0;
++
++	memcpy(packet, pkt, ETHER_HDR_SIZE + len);
++
++	ret = eth_send(edev, packet, ETHER_HDR_SIZE + len);
++
++	free(packet);
++
++	return 0;
++}
++
++static int net_handle_icmp(struct eth_device *edev, unsigned char *pkt, int len)
+ {
+ 	struct net_connection *con;
++	struct icmphdr *icmp;
  
--	data.os_file = FASTBOOT_TMPFILE;
-+	data.os_file = fb->tempname;
+ 	pr_debug("%s\n", __func__);
  
- 	ret = bootm_boot(&data);
++	icmp = net_eth_to_icmphdr(pkt);
++	if (icmp->type == ICMP_ECHO_REQUEST)
++		ping_reply(edev, pkt, len);
++
+ 	list_for_each_entry(con, &connection_list, list) {
+ 		if (con->proto == IPPROTO_ICMP) {
+ 			con->handler(con->priv, pkt, len);
+@@ -612,7 +654,7 @@ static int net_handle_ip(struct eth_device *edev, unsigned char *pkt, int len)
  
-@@ -534,7 +537,7 @@ static int fastboot_handle_sparse(struct fastboot *fb,
- 	if (ret)
- 		goto out_close_fd;
- 
--	sparse = sparse_image_open(FASTBOOT_TMPFILE);
-+	sparse = sparse_image_open(fb->tempname);
- 	if (IS_ERR(sparse)) {
- 		pr_err("Cannot open sparse image\n");
- 		ret = PTR_ERR(sparse);
-@@ -629,8 +632,8 @@ static void cb_flash(struct fastboot *fb, const char *cmd)
- 		sourcefile = NULL;
- 		filetype = file_detect_type(fb->buf, fb->download_bytes);
- 	} else {
--		sourcefile = FASTBOOT_TMPFILE;
--		filetype = file_name_detect_type(FASTBOOT_TMPFILE);
-+		sourcefile = fb->tempname;
-+		filetype = file_name_detect_type(fb->tempname);
+ 	switch (ip->protocol) {
+ 	case IPPROTO_ICMP:
+-		return net_handle_icmp(pkt, len);
++		return net_handle_icmp(edev, pkt, len);
+ 	case IPPROTO_UDP:
+ 		return net_handle_udp(pkt, len);
  	}
- 
- 	fastboot_tx_print(fb, FASTBOOT_MSG_INFO, "Copying file to %s...",
-@@ -735,7 +738,7 @@ copy:
- 	if (fastboot_download_to_buf(fb))
- 		ret = write_file(filename, fb->buf, fb->download_size);
- 	else
--		ret = copy_file(FASTBOOT_TMPFILE, filename, 1);
-+		ret = copy_file(fb->tempname, filename, 1);
- 
- 	if (ret)
- 		fastboot_tx_print(fb, FASTBOOT_MSG_FAIL,
-@@ -749,7 +752,7 @@ out:
- 	fb->buf = NULL;
- 
- 	if (!fastboot_download_to_buf(fb))
--		unlink(FASTBOOT_TMPFILE);
-+		unlink(fb->tempname);
- }
- 
- static void cb_erase(struct fastboot *fb, const char *cmd)
-diff --git a/include/fastboot.h b/include/fastboot.h
-index 3b6cae8a58..b3e7155efa 100644
---- a/include/fastboot.h
-+++ b/include/fastboot.h
-@@ -25,6 +25,7 @@ struct fastboot {
- 			 const char *filename, const void *buf, size_t len);
- 	int download_fd;
- 	void *buf;
-+	char *tempname;
- 
- 	bool active;
- 
 -- 
 2.26.2
 
