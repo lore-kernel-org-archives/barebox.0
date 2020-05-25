@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jdAQb-0001qx-6R
- for barebox@lists.infradead.org; Mon, 25 May 2020 10:33:56 +0000
+ id 1jdAQf-0001qz-Rp
+ for barebox@lists.infradead.org; Mon, 25 May 2020 10:33:59 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 25 May 2020 12:33:44 +0200
-Message-Id: <20200525103349.19449-16-s.hauer@pengutronix.de>
+Date: Mon, 25 May 2020 12:33:39 +0200
+Message-Id: <20200525103349.19449-11-s.hauer@pengutronix.de>
 In-Reply-To: <20200525103349.19449-1-s.hauer@pengutronix.de>
 References: <20200525103349.19449-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,90 +21,81 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 15/20] poller: Allow to run pollers inside of pollers
+Subject: [PATCH 10/20] usb: Add a slice to usb host controllers
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-This adds a slice to each poller which is acquired before the poller is
-executed. This allows us to run pollers inside of other pollers.
-
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/poller.c  | 19 ++++++++++---------
- include/poller.h |  2 ++
- 2 files changed, 12 insertions(+), 9 deletions(-)
+ drivers/usb/core/usb.c | 7 +++++++
+ include/usb/usb.h      | 7 +++++++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/common/poller.c b/common/poller.c
-index 95f828b439..2525034bba 100644
---- a/common/poller.c
-+++ b/common/poller.c
-@@ -14,7 +14,6 @@
- #include <clock.h>
- 
- static LIST_HEAD(poller_list);
--static int poller_active;
- 
- int poller_register(struct poller_struct *poller, const char *name)
- {
-@@ -22,6 +21,7 @@ int poller_register(struct poller_struct *poller, const char *name)
- 		return -EBUSY;
- 
- 	poller->name = xstrdup(name);
-+	slice_init(&poller->slice, poller->name);
- 	list_add_tail(&poller->list, &poller_list);
- 	poller->registered = 1;
- 
-@@ -33,7 +33,7 @@ int poller_unregister(struct poller_struct *poller)
- 	if (!poller->registered)
- 		return -ENODEV;
- 
--
-+	slice_exit(&poller->slice);
- 	list_del(&poller->list);
- 	poller->registered = 0;
- 	free(poller->name);
-@@ -111,15 +111,16 @@ void poller_call(void)
- {
- 	struct poller_struct *poller, *tmp;
- 
--	if (poller_active)
--		return;
--
--	poller_active = 1;
-+	list_for_each_entry_safe(poller, tmp, &poller_list, list) {
-+		if (slice_acquired(&poller->slice))
-+			continue;
- 
--	list_for_each_entry_safe(poller, tmp, &poller_list, list)
-+		slice_acquire(&poller->slice);
-+		idle_slice_acquire();
- 		poller->func(poller);
--
--	poller_active = 0;
-+		idle_slice_release();
-+		slice_release(&poller->slice);
-+	}
+diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+index 30c251f405..8475295266 100644
+--- a/drivers/usb/core/usb.c
++++ b/drivers/usb/core/usb.c
+@@ -78,11 +78,16 @@ static inline int usb_host_acquire(struct usb_host *host)
+ 	if (host->sem)
+ 		return -EAGAIN;
+ 	host->sem++;
++
++	slice_acquire(&host->slice);
++
+ 	return 0;
  }
  
- #if defined CONFIG_CMD_POLLER
-diff --git a/include/poller.h b/include/poller.h
-index 886557252b..c8b6829685 100644
---- a/include/poller.h
-+++ b/include/poller.h
-@@ -7,11 +7,13 @@
- #define POLLER_H
+ static inline void usb_host_release(struct usb_host *host)
+ {
++	slice_release(&host->slice);
++
+ 	if (host->sem > 0)
+ 		host->sem--;
+ }
+@@ -92,11 +97,13 @@ int usb_register_host(struct usb_host *host)
+ 	list_add_tail(&host->list, &host_list);
+ 	host->busnum = host_busnum++;
+ 	host->sem = 0;
++	slice_init(&host->slice, dev_name(host->hw_dev));
+ 	return 0;
+ }
  
- #include <linux/list.h>
+ void usb_unregister_host(struct usb_host *host)
+ {
++	slice_exit(&host->slice);
+ 	list_del(&host->list);
+ }
+ 
+diff --git a/include/usb/usb.h b/include/usb/usb.h
+index c2085eae87..1b51a00ddc 100644
+--- a/include/usb/usb.h
++++ b/include/usb/usb.h
+@@ -20,6 +20,7 @@
+ #define _USB_H_
+ 
+ #include <driver.h>
 +#include <slice.h>
- 
- struct poller_struct {
- 	void (*func)(struct poller_struct *poller);
- 	int registered;
- 	struct list_head list;
+ #include <usb/ch9.h>
+ #include <usb/ch11.h>
+ #include <usb/usb_defs.h>
+@@ -165,11 +166,17 @@ struct usb_host {
+ 	struct usb_device *root_dev;
+ 	int sem;
+ 	struct usb_phy *usbphy;
 +	struct slice slice;
- 	char *name;
  };
  
+ int usb_register_host(struct usb_host *);
+ void usb_unregister_host(struct usb_host *host);
+ 
++static inline struct slice *usb_device_slice(struct usb_device *udev)
++{
++	return &udev->host->slice;
++}
++
+ int usb_host_detect(struct usb_host *host);
+ 
+ int usb_set_protocol(struct usb_device *dev, int ifnum, int protocol);
 -- 
 2.26.2
 
