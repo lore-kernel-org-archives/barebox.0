@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jdAQb-0001qw-5Z
+ id 1jdAQb-0001qr-5W
  for barebox@lists.infradead.org; Mon, 25 May 2020 10:33:54 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 25 May 2020 12:33:40 +0200
-Message-Id: <20200525103349.19449-12-s.hauer@pengutronix.de>
+Date: Mon, 25 May 2020 12:33:34 +0200
+Message-Id: <20200525103349.19449-6-s.hauer@pengutronix.de>
 In-Reply-To: <20200525103349.19449-1-s.hauer@pengutronix.de>
 References: <20200525103349.19449-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,32 +21,127 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/20] usbnet: Add slice
+Subject: [PATCH 05/20] fastboot: Use unique tempfile name
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-Both the ethernet device and the mdio bus of a USB network controller
-need the USB bus. Add dependencies to it.
+With fastboot over ethernet we now can have two instances of fastboot
+running in parallel. Make sure that both instances use a different
+temporary file to store data so that they do not influence each other.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/usb/usbnet.c | 3 +++
- 1 file changed, 3 insertions(+)
+ common/fastboot.c  | 21 ++++++++++++---------
+ include/fastboot.h |  1 +
+ 2 files changed, 13 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index 406b8c964f..d2518c6e4a 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -233,6 +233,9 @@ int usbnet_probe(struct usb_device *usbdev, const struct usb_device_id *prod)
+diff --git a/common/fastboot.c b/common/fastboot.c
+index 1e12f99915..6f54e939e7 100644
+--- a/common/fastboot.c
++++ b/common/fastboot.c
+@@ -45,8 +45,6 @@
  
- 	eth_register(edev);
+ #define FASTBOOT_VERSION		"0.4"
  
-+	slice_depends_on(eth_device_slice(edev), usb_device_slice(usbdev));
-+	slice_depends_on(mdiobus_slice(&undev->miibus), usb_device_slice(usbdev));
+-#define FASTBOOT_TMPFILE		"/.fastboot.img"
+-
+ static unsigned int fastboot_max_download_size = SZ_8M;
+ 
+ struct fb_variable {
+@@ -178,6 +176,7 @@ int fastboot_generic_init(struct fastboot *fb, bool export_bbu)
+ 	int ret;
+ 	struct file_list_entry *fentry;
+ 	struct fb_variable *var;
++	static int instance;
+ 
+ 	var = fb_addvar(fb, "version");
+ 	fb_setvar(var, "0.4");
+@@ -188,6 +187,8 @@ int fastboot_generic_init(struct fastboot *fb, bool export_bbu)
+ 		fb_setvar(var, "%u", fastboot_max_download_size);
+ 	}
+ 
++	fb->tempname = basprintf(".fastboot.%d.img", instance++);
 +
- 	return 0;
- out1:
- 	dev_dbg(&edev->dev, "err: %d\n", status);
+ 	if (IS_ENABLED(CONFIG_BAREBOX_UPDATE) && export_bbu)
+ 		bbu_handlers_iterate(fastboot_add_bbu_variables, fb);
+ 
+@@ -211,6 +212,8 @@ void fastboot_generic_free(struct fastboot *fb)
+ 		free(var);
+ 	}
+ 
++	free(fb->tempname);
++
+ 	fb->active = false;
+ }
+ 
+@@ -372,7 +375,7 @@ static void cb_download(struct fastboot *fb, const char *cmd)
+ 			return;
+ 		}
+ 	} else {
+-		fb->download_fd = open(FASTBOOT_TMPFILE, O_WRONLY | O_CREAT | O_TRUNC);
++		fb->download_fd = open(fb->tempname, O_WRONLY | O_CREAT | O_TRUNC);
+ 		if (fb->download_fd < 0) {
+ 			fastboot_tx_print(fb, FASTBOOT_MSG_FAIL,
+ 					  "internal error");
+@@ -405,7 +408,7 @@ static void __maybe_unused cb_boot(struct fastboot *fb, const char *opt)
+ 	globalvar_set_match("linux.bootargs.dyn.", "");
+ 	globalvar_set_match("bootm.image", "");
+ 
+-	data.os_file = FASTBOOT_TMPFILE;
++	data.os_file = fb->tempname;
+ 
+ 	ret = bootm_boot(&data);
+ 
+@@ -534,7 +537,7 @@ static int fastboot_handle_sparse(struct fastboot *fb,
+ 	if (ret)
+ 		goto out_close_fd;
+ 
+-	sparse = sparse_image_open(FASTBOOT_TMPFILE);
++	sparse = sparse_image_open(fb->tempname);
+ 	if (IS_ERR(sparse)) {
+ 		pr_err("Cannot open sparse image\n");
+ 		ret = PTR_ERR(sparse);
+@@ -629,8 +632,8 @@ static void cb_flash(struct fastboot *fb, const char *cmd)
+ 		sourcefile = NULL;
+ 		filetype = file_detect_type(fb->buf, fb->download_bytes);
+ 	} else {
+-		sourcefile = FASTBOOT_TMPFILE;
+-		filetype = file_name_detect_type(FASTBOOT_TMPFILE);
++		sourcefile = fb->tempname;
++		filetype = file_name_detect_type(fb->tempname);
+ 	}
+ 
+ 	fastboot_tx_print(fb, FASTBOOT_MSG_INFO, "Copying file to %s...",
+@@ -735,7 +738,7 @@ copy:
+ 	if (fastboot_download_to_buf(fb))
+ 		ret = write_file(filename, fb->buf, fb->download_size);
+ 	else
+-		ret = copy_file(FASTBOOT_TMPFILE, filename, 1);
++		ret = copy_file(fb->tempname, filename, 1);
+ 
+ 	if (ret)
+ 		fastboot_tx_print(fb, FASTBOOT_MSG_FAIL,
+@@ -749,7 +752,7 @@ out:
+ 	fb->buf = NULL;
+ 
+ 	if (!fastboot_download_to_buf(fb))
+-		unlink(FASTBOOT_TMPFILE);
++		unlink(fb->tempname);
+ }
+ 
+ static void cb_erase(struct fastboot *fb, const char *cmd)
+diff --git a/include/fastboot.h b/include/fastboot.h
+index 3b6cae8a58..b3e7155efa 100644
+--- a/include/fastboot.h
++++ b/include/fastboot.h
+@@ -25,6 +25,7 @@ struct fastboot {
+ 			 const char *filename, const void *buf, size_t len);
+ 	int download_fd;
+ 	void *buf;
++	char *tempname;
+ 
+ 	bool active;
+ 
 -- 
 2.26.2
 
