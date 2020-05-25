@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jdB0R-0005GP-UD
- for barebox@lists.infradead.org; Mon, 25 May 2020 11:10:57 +0000
-Date: Mon, 25 May 2020 13:10:53 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200525111053.GR11869@pengutronix.de>
-References: <20200523005156.148504-1-dgienda125@gmail.com>
+ id 1jdGt1-0002Yi-9J
+ for barebox@lists.infradead.org; Mon, 25 May 2020 17:27:41 +0000
+References: <20200525103349.19449-1-s.hauer@pengutronix.de>
+ <20200525103349.19449-18-s.hauer@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <3e394f61-359f-3b90-2568-d98c3b40be2f@pengutronix.de>
+Date: Mon, 25 May 2020 19:27:34 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200523005156.148504-1-dgienda125@gmail.com>
+In-Reply-To: <20200525103349.19449-18-s.hauer@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,39 +23,120 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] password: Fix warning with empty default password
-To: David Dgien <dgienda125@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 17/20] globalvar: Add helper for deprecated variable names
+To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
+Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?Q?Daniel_Gl=c3=b6ckner?= <dg@emlix.com>
 
-On Fri, May 22, 2020 at 08:51:56PM -0400, David Dgien wrote:
-> When CONFIG_PASSWORD_DEFAULT is unset, the default_passwd buffer is set
-> to the empty string. The read_default_passwd() function wants to read at
-> least two characters from that buffer, causing GCC to generate an array
-> bounds warning:
-> 
-> barebox/common/password.c: In function 'login':
-> barebox/common/password.c:173:5: warning: array subscript [1, 2147483647] is outside array bounds of 'const char[1]' [-Warray-bounds]
-> In file included from barebox/common/password.c:30:
-> include/generated/passwd.h:1:19: note: while referencing 'default_passwd'
-> 
-> Add an ARRAY_SIZE check to default_passwd so that the loop is optimized
-> away and the warning is no longer generated. Since the
-> read_default_passwd() function is only called when default_passwd is not
-> the empty string, this is not a functional change.
-> 
-> Signed-off-by: David Dgien <dgienda125@gmail.com>
+On 5/25/20 12:33 PM, Sascha Hauer wrote:
+> When globalvars are renamed across releases it's not nice when variables
+> in the persistent environment loose their meaning. This adds a helper
+> function which adds an alias for the old names. When the persistent
+> variables still use the old names then their values are automatically
+> written to variables with the new names.
+This still breaks scripts in env that reference an alias_deprecated
+variable, but I guess that's an ok trade-off as the user gets a warning
+on boot, even if the script doesn't run.
+
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > ---
-> Changes since v1:
->   - Added warning output to commit message
->   - Rework fix in read_default_passwd() instead of hacking with the makefile
+>  common/globalvar.c  | 41 +++++++++++++++++++++++++++++++++++++++--
+>  include/globalvar.h |  5 +++++
+>  2 files changed, 44 insertions(+), 2 deletions(-)
 > 
->  common/password.c | 3 +++
->  1 file changed, 3 insertions(+)
-
-Applied, thanks
-
-Sascha
-
+> diff --git a/common/globalvar.c b/common/globalvar.c
+> index c87f2c9339..5e91cc815f 100644
+> --- a/common/globalvar.c
+> +++ b/common/globalvar.c
+> @@ -293,6 +293,40 @@ int nvvar_remove(const char *name)
+>  	return ret;
+>  }
+>  
+> +struct globalvar_deprecated {
+> +	char *newname;
+> +	char *oldname;
+> +	struct list_head list;
+> +};
+> +
+> +static LIST_HEAD(globalvar_deprecated_list);
+> +
+> +void globalvar_alias_deprecated(const char *oldname, const char *newname)
+> +{
+> +	struct globalvar_deprecated *gd;
+> +
+> +	gd = xzalloc(sizeof(*gd));
+> +	gd->newname = xstrdup(newname);
+> +	gd->oldname = xstrdup(oldname);
+> +	list_add_tail(&gd->list, &globalvar_deprecated_list);
+> +}
+> +
+> +static const char *globalvar_new_name(const char *oldname)
+> +{
+> +	struct globalvar_deprecated *gd;
+> +
+> +	list_for_each_entry(gd, &globalvar_deprecated_list, list) {
+> +		if (!strcmp(oldname, gd->oldname)) {
+> +			pr_warn("nv.%s is deprecated, converting to nv.%s\n", oldname,
+> +				gd->newname);
+> +			nv_dirty = 1;
+> +			return gd->newname;
+> +		}
+> +	}
+> +
+> +	return oldname;
+> +}
+> +
+>  int nvvar_load(void)
+>  {
+>  	char *val;
+> @@ -308,6 +342,8 @@ int nvvar_load(void)
+>  		return -ENOENT;
+>  
+>  	while ((d = readdir(dir))) {
+> +		const char *n;
+> +
+>  		if (!strcmp(d->d_name, ".") || !strcmp(d->d_name, ".."))
+>  			continue;
+>  
+> @@ -316,10 +352,11 @@ int nvvar_load(void)
+>  		pr_debug("%s: Setting \"%s\" to \"%s\"\n",
+>  				__func__, d->d_name, val);
+>  
+> -		ret = __nvvar_add(d->d_name, val);
+> +		n = globalvar_new_name(d->d_name);
+> +		ret = __nvvar_add(n, val);
+>  		if (ret)
+>  			pr_err("failed to create nv variable %s: %s\n",
+> -					d->d_name, strerror(-ret));
+> +					n, strerror(-ret));
+>  	}
+>  
+>  	closedir(dir);
+> diff --git a/include/globalvar.h b/include/globalvar.h
+> index fc85e93e14..db229e239c 100644
+> --- a/include/globalvar.h
+> +++ b/include/globalvar.h
+> @@ -33,6 +33,7 @@ int nvvar_remove(const char *name);
+>  void globalvar_print(void);
+>  
+>  void dev_param_init_from_nv(struct device_d *dev, const char *name);
+> +void globalvar_alias_deprecated(const char *newname, const char *oldname);
+>  
+>  #else
+>  static inline int globalvar_add_simple(const char *name, const char *value)
+> @@ -114,6 +115,10 @@ static inline void dev_param_init_from_nv(struct device_d *dev, const char *name
+>  {
+>  }
+>  
+> +static inline void globalvar_alias_deprecated(const char *newname, const char *oldname)
+> +{
+> +}
+> +
+>  #endif
+>  
+>  void nv_var_set_clean(void);
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
