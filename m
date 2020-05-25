@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jdAQf-0001r0-Ri
- for barebox@lists.infradead.org; Mon, 25 May 2020 10:34:01 +0000
+ id 1jdAQj-0001xG-8f
+ for barebox@lists.infradead.org; Mon, 25 May 2020 10:34:03 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 25 May 2020 12:33:38 +0200
-Message-Id: <20200525103349.19449-10-s.hauer@pengutronix.de>
+Date: Mon, 25 May 2020 12:33:46 +0200
+Message-Id: <20200525103349.19449-18-s.hauer@pengutronix.de>
 In-Reply-To: <20200525103349.19449-1-s.hauer@pengutronix.de>
 References: <20200525103349.19449-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,164 +21,113 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/20] net: mdiobus: Add slice
+Subject: [PATCH 17/20] globalvar: Add helper for deprecated variable names
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-By adding a slice to the mdio bus we make the mdio code safe for being
-called in a poller.
+When globalvars are renamed across releases it's not nice when variables
+in the persistent environment loose their meaning. This adds a helper
+function which adds an alias for the old names. When the persistent
+variables still use the old names then their values are automatically
+written to variables with the new names.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/phy/mdio_bus.c | 43 ++++++++++++++++++++++++++++++++++++++
- include/linux/phy.h        | 38 +++++++++++++--------------------
- 2 files changed, 58 insertions(+), 23 deletions(-)
+ common/globalvar.c  | 41 +++++++++++++++++++++++++++++++++++++++--
+ include/globalvar.h |  5 +++++
+ 2 files changed, 44 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-index 3480e2ffb4..99d23ffedf 100644
---- a/drivers/net/phy/mdio_bus.c
-+++ b/drivers/net/phy/mdio_bus.c
-@@ -239,6 +239,8 @@ int mdiobus_register(struct mii_bus *bus)
- 		return -EINVAL;
- 	}
- 
-+	slice_init(&bus->slice, dev_name(&bus->dev));
-+
- 	if (bus->reset)
- 		bus->reset(bus);
- 
-@@ -272,6 +274,8 @@ void mdiobus_unregister(struct mii_bus *bus)
- 		bus->phy_map[i] = NULL;
- 	}
- 
-+	slice_exit(&bus->slice);
-+
- 	list_del(&bus->list);
- }
- EXPORT_SYMBOL(mdiobus_unregister);
-@@ -357,6 +361,45 @@ static int mdio_bus_match(struct device_d *dev, struct driver_d *drv)
- 	return 1;
+diff --git a/common/globalvar.c b/common/globalvar.c
+index c87f2c9339..5e91cc815f 100644
+--- a/common/globalvar.c
++++ b/common/globalvar.c
+@@ -293,6 +293,40 @@ int nvvar_remove(const char *name)
+ 	return ret;
  }
  
-+/**
-+ * mdiobus_read - Convenience function for reading a given MII mgmt register
-+ * @bus: the mii_bus struct
-+ * @addr: the phy address
-+ * @regnum: register number to read
-+ */
-+int mdiobus_read(struct mii_bus *bus, int addr, u32 regnum)
++struct globalvar_deprecated {
++	char *newname;
++	char *oldname;
++	struct list_head list;
++};
++
++static LIST_HEAD(globalvar_deprecated_list);
++
++void globalvar_alias_deprecated(const char *oldname, const char *newname)
 +{
-+	int ret;
++	struct globalvar_deprecated *gd;
 +
-+	slice_acquire(&bus->slice);
-+
-+	ret = bus->read(bus, addr, regnum);
-+
-+	slice_release(&bus->slice);
-+
-+	return ret;
++	gd = xzalloc(sizeof(*gd));
++	gd->newname = xstrdup(newname);
++	gd->oldname = xstrdup(oldname);
++	list_add_tail(&gd->list, &globalvar_deprecated_list);
 +}
 +
-+/**
-+ * mdiobus_write - Convenience function for writing a given MII mgmt register
-+ * @bus: the mii_bus struct
-+ * @addr: the phy address
-+ * @regnum: register number to write
-+ * @val: value to write to @regnum
-+ */
-+int mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val)
++static const char *globalvar_new_name(const char *oldname)
 +{
-+	int ret;
++	struct globalvar_deprecated *gd;
 +
-+	slice_acquire(&bus->slice);
++	list_for_each_entry(gd, &globalvar_deprecated_list, list) {
++		if (!strcmp(oldname, gd->oldname)) {
++			pr_warn("nv.%s is deprecated, converting to nv.%s\n", oldname,
++				gd->newname);
++			nv_dirty = 1;
++			return gd->newname;
++		}
++	}
 +
-+	ret = bus->write(bus, addr, regnum, val);
-+
-+	slice_release(&bus->slice);
-+
-+	return ret;
++	return oldname;
 +}
 +
- static ssize_t phydev_read(struct cdev *cdev, void *_buf, size_t count, loff_t offset, ulong flags)
+ int nvvar_load(void)
  {
- 	int i = count;
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index a9fdf44f1a..3f0f31b35c 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -16,6 +16,7 @@
- #define __PHY_H
+ 	char *val;
+@@ -308,6 +342,8 @@ int nvvar_load(void)
+ 		return -ENOENT;
  
- #include <driver.h>
-+#include <slice.h>
- #include <linux/list.h>
- #include <linux/ethtool.h>
- #include <linux/mii.h>
-@@ -116,9 +117,16 @@ struct mii_bus {
- 	struct list_head list;
- 
- 	bool is_multiplexed;
+ 	while ((d = readdir(dir))) {
++		const char *n;
 +
-+	struct slice slice;
- };
- #define to_mii_bus(d) container_of(d, struct mii_bus, dev)
+ 		if (!strcmp(d->d_name, ".") || !strcmp(d->d_name, ".."))
+ 			continue;
  
-+static inline struct slice *mdiobus_slice(struct mii_bus *bus)
+@@ -316,10 +352,11 @@ int nvvar_load(void)
+ 		pr_debug("%s: Setting \"%s\" to \"%s\"\n",
+ 				__func__, d->d_name, val);
+ 
+-		ret = __nvvar_add(d->d_name, val);
++		n = globalvar_new_name(d->d_name);
++		ret = __nvvar_add(n, val);
+ 		if (ret)
+ 			pr_err("failed to create nv variable %s: %s\n",
+-					d->d_name, strerror(-ret));
++					n, strerror(-ret));
+ 	}
+ 
+ 	closedir(dir);
+diff --git a/include/globalvar.h b/include/globalvar.h
+index fc85e93e14..db229e239c 100644
+--- a/include/globalvar.h
++++ b/include/globalvar.h
+@@ -33,6 +33,7 @@ int nvvar_remove(const char *name);
+ void globalvar_print(void);
+ 
+ void dev_param_init_from_nv(struct device_d *dev, const char *name);
++void globalvar_alias_deprecated(const char *newname, const char *oldname);
+ 
+ #else
+ static inline int globalvar_add_simple(const char *name, const char *value)
+@@ -114,6 +115,10 @@ static inline void dev_param_init_from_nv(struct device_d *dev, const char *name
+ {
+ }
+ 
++static inline void globalvar_alias_deprecated(const char *newname, const char *oldname)
 +{
-+	return &bus->slice;
 +}
 +
- int mdiobus_register(struct mii_bus *bus);
- void mdiobus_unregister(struct mii_bus *bus);
- struct phy_device *mdiobus_scan(struct mii_bus *bus, int addr);
-@@ -134,28 +142,8 @@ struct mii_bus *mdiobus_get_bus(int busnum);
+ #endif
  
- struct mii_bus *of_mdio_find_bus(struct device_node *mdio_bus_np);
- 
--/**
-- * mdiobus_read - Convenience function for reading a given MII mgmt register
-- * @bus: the mii_bus struct
-- * @addr: the phy address
-- * @regnum: register number to read
-- */
--static inline int mdiobus_read(struct mii_bus *bus, int addr, u32 regnum)
--{
--	return bus->read(bus, addr, regnum);
--}
--
--/**
-- * mdiobus_write - Convenience function for writing a given MII mgmt register
-- * @bus: the mii_bus struct
-- * @addr: the phy address
-- * @regnum: register number to write
-- * @val: value to write to @regnum
-- */
--static inline int mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val)
--{
--	return bus->write(bus, addr, regnum, val);
--}
-+int mdiobus_read(struct mii_bus *bus, int addr, u32 regnum);
-+int mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val);
- 
- /* phy_device: An instance of a PHY
-  *
-@@ -376,11 +364,15 @@ int phy_register_fixup(const char *bus_id, u32 phy_uid, u32 phy_uid_mask,
- int phy_register_fixup_for_id(const char *bus_id,
- 		int (*run)(struct phy_device *));
- int phy_scan_fixups(struct phy_device *phydev);
--
- int phy_read_mmd_indirect(struct phy_device *phydev, int prtad, int devad);
- void phy_write_mmd_indirect(struct phy_device *phydev, int prtad, int devad,
- 				   u16 data);
- 
-+static inline bool phy_acquired(struct phy_device *phydev)
-+{
-+	return phydev && phydev->bus && slice_acquired(&phydev->bus->slice);
-+}
-+
- #ifdef CONFIG_PHYLIB
- int phy_register_fixup_for_uid(u32 phy_uid, u32 phy_uid_mask,
- 		int (*run)(struct phy_device *));
+ void nv_var_set_clean(void);
 -- 
 2.26.2
 
