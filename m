@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mx1.emlix.com ([188.40.240.192])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jdGt1-0002Yi-9J
- for barebox@lists.infradead.org; Mon, 25 May 2020 17:27:41 +0000
+ id 1jdJ2n-0005LE-H0
+ for barebox@lists.infradead.org; Mon, 25 May 2020 19:45:55 +0000
 References: <20200525103349.19449-1-s.hauer@pengutronix.de>
- <20200525103349.19449-18-s.hauer@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <3e394f61-359f-3b90-2568-d98c3b40be2f@pengutronix.de>
-Date: Mon, 25 May 2020 19:27:34 +0200
+ <20200525103349.19449-21-s.hauer@pengutronix.de>
+From: =?UTF-8?Q?Daniel_Gl=c3=b6ckner?= <dg@emlix.com>
+Message-ID: <15f6548d-e48c-5202-1cf6-d806846b2ba7@emlix.com>
+Date: Mon, 25 May 2020 21:45:49 +0200
 MIME-Version: 1.0
-In-Reply-To: <20200525103349.19449-18-s.hauer@pengutronix.de>
-Content-Language: en-US
+In-Reply-To: <20200525103349.19449-21-s.hauer@pengutronix.de>
+Content-Language: de-DE
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,132 +19,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 17/20] globalvar: Add helper for deprecated variable names
+Subject: Re: [PATCH 20/20] fastboot net: remove may_send
 To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
-Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?Q?Daniel_Gl=c3=b6ckner?= <dg@emlix.com>
+Cc: Edmund Henniges <eh@emlix.com>
 
-On 5/25/20 12:33 PM, Sascha Hauer wrote:
-> When globalvars are renamed across releases it's not nice when variables
-> in the persistent environment loose their meaning. This adds a helper
-> function which adds an alias for the old names. When the persistent
-> variables still use the old names then their values are automatically
-> written to variables with the new names.
-This still breaks scripts in env that reference an alias_deprecated
-variable, but I guess that's an ok trade-off as the user gets a warning
-on boot, even if the script doesn't run.
-
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  common/globalvar.c  | 41 +++++++++++++++++++++++++++++++++++++++--
->  include/globalvar.h |  5 +++++
->  2 files changed, 44 insertions(+), 2 deletions(-)
-> 
-> diff --git a/common/globalvar.c b/common/globalvar.c
-> index c87f2c9339..5e91cc815f 100644
-> --- a/common/globalvar.c
-> +++ b/common/globalvar.c
-> @@ -293,6 +293,40 @@ int nvvar_remove(const char *name)
->  	return ret;
->  }
->  
-> +struct globalvar_deprecated {
-> +	char *newname;
-> +	char *oldname;
-> +	struct list_head list;
-> +};
-> +
-> +static LIST_HEAD(globalvar_deprecated_list);
-> +
-> +void globalvar_alias_deprecated(const char *oldname, const char *newname)
-> +{
-> +	struct globalvar_deprecated *gd;
-> +
-> +	gd = xzalloc(sizeof(*gd));
-> +	gd->newname = xstrdup(newname);
-> +	gd->oldname = xstrdup(oldname);
-> +	list_add_tail(&gd->list, &globalvar_deprecated_list);
-> +}
-> +
-> +static const char *globalvar_new_name(const char *oldname)
-> +{
-> +	struct globalvar_deprecated *gd;
-> +
-> +	list_for_each_entry(gd, &globalvar_deprecated_list, list) {
-> +		if (!strcmp(oldname, gd->oldname)) {
-> +			pr_warn("nv.%s is deprecated, converting to nv.%s\n", oldname,
-> +				gd->newname);
-> +			nv_dirty = 1;
-> +			return gd->newname;
-> +		}
-> +	}
-> +
-> +	return oldname;
-> +}
-> +
->  int nvvar_load(void)
->  {
->  	char *val;
-> @@ -308,6 +342,8 @@ int nvvar_load(void)
->  		return -ENOENT;
->  
->  	while ((d = readdir(dir))) {
-> +		const char *n;
-> +
->  		if (!strcmp(d->d_name, ".") || !strcmp(d->d_name, ".."))
->  			continue;
->  
-> @@ -316,10 +352,11 @@ int nvvar_load(void)
->  		pr_debug("%s: Setting \"%s\" to \"%s\"\n",
->  				__func__, d->d_name, val);
->  
-> -		ret = __nvvar_add(d->d_name, val);
-> +		n = globalvar_new_name(d->d_name);
-> +		ret = __nvvar_add(n, val);
->  		if (ret)
->  			pr_err("failed to create nv variable %s: %s\n",
-> -					d->d_name, strerror(-ret));
-> +					n, strerror(-ret));
->  	}
->  
->  	closedir(dir);
-> diff --git a/include/globalvar.h b/include/globalvar.h
-> index fc85e93e14..db229e239c 100644
-> --- a/include/globalvar.h
-> +++ b/include/globalvar.h
-> @@ -33,6 +33,7 @@ int nvvar_remove(const char *name);
->  void globalvar_print(void);
->  
->  void dev_param_init_from_nv(struct device_d *dev, const char *name);
-> +void globalvar_alias_deprecated(const char *newname, const char *oldname);
->  
->  #else
->  static inline int globalvar_add_simple(const char *name, const char *value)
-> @@ -114,6 +115,10 @@ static inline void dev_param_init_from_nv(struct device_d *dev, const char *name
->  {
->  }
->  
-> +static inline void globalvar_alias_deprecated(const char *newname, const char *oldname)
-> +{
-> +}
-> +
->  #endif
->  
->  void nv_var_set_clean(void);
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8gU2FzY2hhLAoKQW0gMjUuMDUuMjAgdW0gMTI6MzMgc2NocmllYiBTYXNjaGEgSGF1ZXI6
+Cj4gVGhpcyByZW1vdmVzIHRoZSBtYXlfc2VuZCBtZWNoYW5pc20gZnJvbSBmYXN0Ym9vdCBvdmVy
+IFVEUC4gV2l0aG91dCB0aGlzCj4gZmFzdGJvb3QgdHJhbnNmZXJzIGdldCBzdHVjayB3aGVuIG9u
+IHRoZSBjb21tYW5kIGxpbmUgc29tZXRoaW5nIGxpa2UKPiAic2xlZXAgMTAiIGlzIGV4ZWN1dGVk
+IGJlZm9yZSBvciBkdXJpbmcgYSBmYXN0Ym9vdCBzZXNzaW9uLiBJbiB0aGlzIGNhc2UKPiB3aGls
+ZSAoZmJuLT5tYXlfc2VuZCA9PSBNQVlfTk9UX1NFTkQpIHdpbGwgbmV2ZXIgYmVjb21lIGZhbHNl
+IGFuZAo+IGJhcmVib3ggaXMgY291Z2h0IGluIHRoYXQgbG9vcC4KCkkgYW0gbm90IGFibGUgdG8g
+cmVwcm9kdWNlIHRoZSBwcm9ibGVtIHlvdSBoYXZlIHdpdGhvdXQgdGhpcyBwYXRjaC4KSWYgSSBz
+dGFydCAic2xlZXAgMTAiIG9uIHRoZSBzZXJpYWwgY29uc29sZSBhbmQgdGhlbiB1c2UgZmFzdGJv
+b3QgdG8KZXhlY3V0ZSBzb21ldGhpbmcgZWxzZSwgdGhlIGhvc3Qgd2lsbCByZXBlYXQgdGhlIFVE
+UCBwYWNrZXQgd2l0aCB0aGUKY29tbWFuZCB1bnRpbCB0aGUgc2xlZXAgaXMgb3Zlci4gQXQgdGhh
+dCBwb2ludCB0aGUgYm9hcmQgc2VuZHMgYW4gQUNLCnBhY2tldCBhbmQgc3RhcnRzIHRvIGV4ZWN1
+dGUgdGhlIGNvbW1hbmQuCgpTdGFydGluZyBhIGJpZyBkb3dubG9hZCBhbmQgdGhlbiBleGVjdXRp
+bmcgc2xlZXAgMTAgb24gdGhlIGNvbnNvbGUKYWxzbyB3b3Jrcy4gVGhlIGRvd25sb2FkIGNvbnRp
+bnVlcyB3aGlsZSBzbGVlcCBpcyBleGVjdXRpbmcuIE9ubHkgdGhlCiJEb3dubG9hZGluZyBYWFhY
+IGJ5dGVzIGZpbmlzaGVkIiBpbmZvIG1lc3NhZ2UgYW5kIHRoZSBmaW5hbCAiT0tBWSIKcGFja2V0
+IGFyZSBkZWxheWVkIGJ5IHRoZSBzbGVlcCBzaW5jZSB0aGF0IGlzIGRvbmUgZnJvbSBpbnNpZGUg
+dGhlCnBvbGxlci4KCldoYXQgd2VyZSB0aGUgZXhhY3QgY29tbWFuZHMgeW91IHVzZWQgdG8gdHJp
+Z2dlciB0aGUgcHJvYmxlbT8KV2hhdCBraW5kIG9mIG5ldHdvcmsgY29ubmVjdGlvbiBkbyB5b3Ug
+dXNlPwoKSSBrbm93IHRoYXQgQmFyZWJveCB3aWxsIGdldCBzdHVjayB3aGVuIHRoZSBob3N0IHN0
+b3BzIHRhbGtpbmcgdG8gdXMKYmVmb3JlIHdlIGhhZCB0aGUgb3Bwb3J0dW5pdHkgdG8gc2VuZCB0
+aGUgZmluYWwgT0tBWSwgYnV0IHRoYXQgaXMgbm90CndoYXQgeW91IGRlc2NyaWJlLiBJZiB5b3Ug
+dXNlIGEgc2xlZXAgMTAwLCB0aGUgaG9zdCB3aWxsIHRpbWUgb3V0CmJlZm9yZSB0aGUgc2xlZXAg
+aXMgZG9uZS4gQWZ0ZXIgdGhlIHNsZWVwIHRoZSBjb21tYW5kIGlzIHN0aWxsIGluCmZibi0+Y29t
+bWFuZCwgc28gaXQgd2lsbCBiZSBhY2tlZCBhbmQgZXhlY3V0ZWQuIFNpbmNlIHRoZSBob3N0IG5v
+CmxvbmdlciB0YWxrcyB0byB1cywgaXQgd2lsbCBub3Qgc2VuZCB1cyBhbiBlbXB0eSBwYWNrZXQg
+d2l0aCB0aGUgbmV4dApzZXF1ZW5jZSBudW1iZXIsIHNvIHRoZSBsb29wIGluIGZhc3Rib290X3dy
+aXRlX25ldCB3aWxsIG5ldmVyIHRlcm1pbmF0ZS4KClRoZSBvbmx5IHdheSB0byBnZXQgb3V0IG9m
+IHRoaXMgc2l0dWF0aW9uIHdpdGggdGhlIGN1cnJlbnQgY29kZQoob21pdHRpbmcgcGF0Y2ggMjAp
+IGlzIHRvIHN0YXJ0IGEgbmV3IGZhc3Rib290IHNlc3Npb24uIFRoZSBJTklUIHBhY2tldApvZiB0
+aGUgbmV3IHNlc3Npb24gd2lsbCBzZXQgcmVpbml0IHRvIHRydWUsIHdoaWNoIGRpc2NhcmRzIGFs
+bCBtZXNzYWdlcwp0aGUgb2xkIHNlc3Npb24gd2FudHMgdG8gc2VuZC4gSWYgdGhpcyBpcyBub3Qg
+YWNjZXB0YWJsZSwgSSBzdWdnZXN0CmFkZGluZyBhIHRpbWVvdXQgPj0gNjAgc2Vjb25kcyB0byB0
+aGF0IGxvb3AgaW4gZmFzdGJvb3Rfd3JpdGVfbmV0IGFuZApzZXR0aW5nIHJlaW5pdCB3aGVuIGl0
+IGV4cGlyZXMuIFdlIGNhbiBtYWtlIHRoZSB0aW1lb3V0IGEga2NvbmZpZyBvcHRpb24Kd2hpY2gg
+ZGVmYXVsdHMgdG8gNjAgaWYgeW91IHByZWZlci4KCkJlc3QgcmVnYXJkcywKCiAgRGFuaWVsCgot
+LSAKRGlwbC4tTWF0aC4gRGFuaWVsIEdsw7Zja25lciwgZW1saXggR21iSCwgaHR0cDovL3d3dy5l
+bWxpeC5jb20KRm9uICs0OSA1NTEgMzA2NjQtMCwgRmF4ICs0OSA1NTEgMzA2NjQtMTEsCkdvdGhh
+ZXIgUGxhdHogMywgMzcwODMgR8O2dHRpbmdlbiwgR2VybWFueQpTaXR6IGRlciBHZXNlbGxzY2hh
+ZnQ6IEfDtnR0aW5nZW4sIEFtdHNnZXJpY2h0IEfDtnR0aW5nZW4gSFIgQiAzMTYwCkdlc2Now6Rm
+dHNmw7xocnVuZzogSGVpa2UgSm9yZGFuLCBEci4gVXdlIEtyYWNrZQpVc3QtSWROci46IERFIDIw
+NSAxOTggMDU1CgplbWxpeCAtIHlvdXIgZW1iZWRkZWQgbGludXggcGFydG5lcgoKX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxp
+c3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
+L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
