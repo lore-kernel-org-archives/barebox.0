@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jdAQb-0001qn-5U
- for barebox@lists.infradead.org; Mon, 25 May 2020 10:33:58 +0000
+ id 1jdAQf-0001r1-Sk
+ for barebox@lists.infradead.org; Mon, 25 May 2020 10:34:01 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 25 May 2020 12:33:30 +0200
-Message-Id: <20200525103349.19449-2-s.hauer@pengutronix.de>
+Date: Mon, 25 May 2020 12:33:45 +0200
+Message-Id: <20200525103349.19449-17-s.hauer@pengutronix.de>
 In-Reply-To: <20200525103349.19449-1-s.hauer@pengutronix.de>
 References: <20200525103349.19449-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -17,261 +17,107 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/20] poller: Give pollers a name
+Subject: [PATCH 16/20] defconfigs: update renamed fastboot options
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-It helps debugging when pollers have a name, so give them one.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/boards/mioa701/gpio0_poweroff.c | 2 +-
- arch/arm/boards/sama5d3xek/init.c        | 2 +-
- common/poller.c                          | 8 +++++---
- common/ratp/ratp.c                       | 2 +-
- drivers/input/gpio_keys.c                | 2 +-
- drivers/input/imx_keypad.c               | 2 +-
- drivers/input/input.c                    | 2 +-
- drivers/input/qt1070.c                   | 2 +-
- drivers/input/twl6030_pwrbtn.c           | 2 +-
- drivers/led/core.c                       | 2 +-
- drivers/net/usb/ax88179_178a.c           | 2 +-
- drivers/usb/gadget/udc-core.c            | 2 +-
- drivers/watchdog/wd_core.c               | 2 +-
- include/poller.h                         | 5 +++--
- 14 files changed, 20 insertions(+), 17 deletions(-)
-
-diff --git a/arch/arm/boards/mioa701/gpio0_poweroff.c b/arch/arm/boards/mioa701/gpio0_poweroff.c
-index 4b34922507..8caccebeab 100644
---- a/arch/arm/boards/mioa701/gpio0_poweroff.c
-+++ b/arch/arm/boards/mioa701/gpio0_poweroff.c
-@@ -73,7 +73,7 @@ static struct poller_struct gpio0_poller = {
- 
- static int gpio0_poweroff_probe(void)
- {
--	return poller_register(&gpio0_poller);
-+	return poller_register(&gpio0_poller, "power-button");
- }
- 
- device_initcall(gpio0_poweroff_probe);
-diff --git a/arch/arm/boards/sama5d3xek/init.c b/arch/arm/boards/sama5d3xek/init.c
-index c768e98d26..d9be4c5f9d 100644
---- a/arch/arm/boards/sama5d3xek/init.c
-+++ b/arch/arm/boards/sama5d3xek/init.c
-@@ -408,7 +408,7 @@ static void ek_add_device_hdmi(void)
- 	hdmi_reset_start = get_time_ns();
- 	hdmi_poller.func = hdmi_off_poller;
- 
--	poller_register(&hdmi_poller);
-+	poller_register(&hdmi_poller, "hdmi-reset");
- }
- #else
- static void ek_add_device_hdmi(void)
-diff --git a/common/poller.c b/common/poller.c
-index 32795b641f..b1a2122f91 100644
---- a/common/poller.c
-+++ b/common/poller.c
-@@ -16,11 +16,12 @@
- static LIST_HEAD(poller_list);
- static int poller_active;
- 
--int poller_register(struct poller_struct *poller)
-+int poller_register(struct poller_struct *poller, const char *name)
- {
- 	if (poller->registered)
- 		return -EBUSY;
- 
-+	poller->name = xstrdup(name);
- 	list_add_tail(&poller->list, &poller_list);
- 	poller->registered = 1;
- 
-@@ -35,6 +36,7 @@ int poller_unregister(struct poller_struct *poller)
- 
- 	list_del(&poller->list);
- 	poller->registered = 0;
-+	free(poller->name);
- 
- 	return 0;
- }
-@@ -92,12 +94,12 @@ int poller_call_async(struct poller_async *pa, uint64_t delay_ns,
- 	return 0;
- }
- 
--int poller_async_register(struct poller_async *pa)
-+int poller_async_register(struct poller_async *pa, const char *name)
- {
- 	pa->poller.func = poller_async_callback;
- 	pa->active = 0;
- 
--	return poller_register(&pa->poller);
-+	return poller_register(&pa->poller, name);
- }
- 
- int poller_async_unregister(struct poller_async *pa)
-diff --git a/common/ratp/ratp.c b/common/ratp/ratp.c
-index ca751a30eb..556dc638d8 100644
---- a/common/ratp/ratp.c
-+++ b/common/ratp/ratp.c
-@@ -451,7 +451,7 @@ int barebox_ratp(struct console_device *cdev)
- 	if (ret < 0)
- 		goto out;
- 
--	ret = poller_register(&ctx->poller);
-+	ret = poller_register(&ctx->poller, "ratp");
- 	if (ret)
- 		goto out1;
- 
-diff --git a/drivers/input/gpio_keys.c b/drivers/input/gpio_keys.c
-index 38c0f11535..11d598c402 100644
---- a/drivers/input/gpio_keys.c
-+++ b/drivers/input/gpio_keys.c
-@@ -166,7 +166,7 @@ static int __init gpio_keys_probe(struct device_d *dev)
- 	if (ret)
- 		return ret;
- 
--	ret = poller_register(&gk->poller);
-+	ret = poller_register(&gk->poller, dev_name(dev));
- 	if (ret)
- 		return ret;
- 
-diff --git a/drivers/input/imx_keypad.c b/drivers/input/imx_keypad.c
-index 44ff9b7856..6757fac72b 100644
---- a/drivers/input/imx_keypad.c
-+++ b/drivers/input/imx_keypad.c
-@@ -410,7 +410,7 @@ static int __init imx_keypad_probe(struct device_d *dev)
- 
- 	keypad->poller.func = imx_keypad_check_for_events;
- 
--	ret = poller_register(&keypad->poller);
-+	ret = poller_register(&keypad->poller, dev_name(dev));
- 	if (ret)
- 		return ret;
- 
-diff --git a/drivers/input/input.c b/drivers/input/input.c
-index 1e8f6e178e..bcc8667417 100644
---- a/drivers/input/input.c
-+++ b/drivers/input/input.c
-@@ -201,7 +201,7 @@ static int input_init(void)
- 	ic->fifo = kfifo_alloc(32);
- 	ic->notifier.notify = input_console_notify;
- 	input_register_notfier(&ic->notifier);
--	poller_async_register(&ic->poller);
-+	poller_async_register(&ic->poller, "input");
- 
- 	return console_register(&ic->console);
- }
-diff --git a/drivers/input/qt1070.c b/drivers/input/qt1070.c
-index 59acee5c39..9e1dcc57ee 100644
---- a/drivers/input/qt1070.c
-+++ b/drivers/input/qt1070.c
-@@ -269,7 +269,7 @@ static int qt1070_probe(struct device_d *dev)
- 
- 	console_register(&data->cdev);
- 
--	ret = poller_register(&data->poller);
-+	ret = poller_register(&data->poller, dev_name(dev));
- 	if (ret)
- 		goto err;
- 
-diff --git a/drivers/input/twl6030_pwrbtn.c b/drivers/input/twl6030_pwrbtn.c
-index fc4c728778..481688b4a9 100644
---- a/drivers/input/twl6030_pwrbtn.c
-+++ b/drivers/input/twl6030_pwrbtn.c
-@@ -97,7 +97,7 @@ static int __init twl6030_pwrbtn_probe(struct device_d *dev)
- 	idata->cdev.getc = twl6030_pwrbtn_getc;
- 	console_register(&idata->cdev);
- 
--	return poller_register(&idata->poller);
-+	return poller_register(&idata->poller, dev_name(dev));
- }
- 
- static struct driver_d twl6030_pwrbtn_driver = {
-diff --git a/drivers/led/core.c b/drivers/led/core.c
-index eeeeaa0ff3..ab171c6184 100644
---- a/drivers/led/core.c
-+++ b/drivers/led/core.c
-@@ -209,7 +209,7 @@ static struct poller_struct led_poller = {
- 
- static int led_blink_init(void)
- {
--	return poller_register(&led_poller);
-+	return poller_register(&led_poller, "led");
- }
- late_initcall(led_blink_init);
- 
-diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
-index 6fea5a7b1d..fddb187144 100644
---- a/drivers/net/usb/ax88179_178a.c
-+++ b/drivers/net/usb/ax88179_178a.c
-@@ -409,7 +409,7 @@ static int ax88179_bind(struct usbnet *dev)
- 
- 	priv->last = get_time_ns();
- 	priv->poller.func = ax88179_poller;
--	poller_register(&priv->poller);
-+	poller_register(&priv->poller, dev_name(&dev->udev->dev));
- 
- 	return 0;
- }
-diff --git a/drivers/usb/gadget/udc-core.c b/drivers/usb/gadget/udc-core.c
-index 096f05ed48..126d76e8bb 100644
---- a/drivers/usb/gadget/udc-core.c
-+++ b/drivers/usb/gadget/udc-core.c
-@@ -319,7 +319,7 @@ static int udc_bind_to_driver(struct usb_udc *udc, struct usb_gadget_driver *dri
- 
- 	if (udc->gadget->ops->udc_poll) {
- 		udc->poller.func = udc_poll_driver;
--		ret = poller_register(&udc->poller);
-+		ret = poller_register(&udc->poller, dev_name(&udc->dev));
- 		if (ret)
- 			return ret;
- 	}
-diff --git a/drivers/watchdog/wd_core.c b/drivers/watchdog/wd_core.c
-index 34040408f7..a17234f4b6 100644
---- a/drivers/watchdog/wd_core.c
-+++ b/drivers/watchdog/wd_core.c
-@@ -116,7 +116,7 @@ static int watchdog_register_poller(struct watchdog *wd)
- 	struct param_d *p;
- 	int ret;
- 
--	ret = poller_async_register(&wd->poller);
-+	ret = poller_async_register(&wd->poller, dev_name(&wd->dev));
- 	if (ret)
- 		return ret;
- 
-diff --git a/include/poller.h b/include/poller.h
-index b22b8a1b89..886557252b 100644
---- a/include/poller.h
-+++ b/include/poller.h
-@@ -12,9 +12,10 @@ struct poller_struct {
- 	void (*func)(struct poller_struct *poller);
- 	int registered;
- 	struct list_head list;
-+	char *name;
- };
- 
--int poller_register(struct poller_struct *poller);
-+int poller_register(struct poller_struct *poller, const char *name);
- int poller_unregister(struct poller_struct *poller);
- 
- struct poller_async;
-@@ -27,7 +28,7 @@ struct poller_async {
- 	int active;
- };
- 
--int poller_async_register(struct poller_async *pa);
-+int poller_async_register(struct poller_async *pa, const char *name);
- int poller_async_unregister(struct poller_async *pa);
- 
- int poller_call_async(struct poller_async *pa, uint64_t delay_ns,
--- 
-2.26.2
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RnJvbTogRGFuaWVsIEdsw7Zja25lciA8ZGdAZW1saXguY29tPgoKVGhlIHNwbGl0IG9mIHRoZSBn
+ZW5lcmljIEZhc3Rib290IGNvZGUgZnJvbSB0aGUgRmFzdGJvb3QgVVNCIGdhZGdldAppbmNsdWRl
+ZCByZW5hbWluZyB0aGUgQ09ORklHX1VTQl9HQURHRVRfRkFTVEJPT1RfKiBvcHRpb25zIHRvCkNP
+TkZJR19GQVNUQk9PVF8qLiBVcGRhdGUgYWxsIGRlZmNvbmZpZ3MgdG8gdXNlIHRoZSBuZXcgbmFt
+ZXMuCgpTaWduZWQtb2ZmLWJ5OiBEYW5pZWwgR2zDtmNrbmVyIDxkZ0BlbWxpeC5jb20+ClNpZ25l
+ZC1vZmYtYnk6IFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4KLS0tCiBhcmNo
+L2FybS9jb25maWdzL2lteDIzX2RlZmNvbmZpZyAgICAgICAgIHwgMiArLQogYXJjaC9hcm0vY29u
+Zmlncy9pbXgyOF9kZWZjb25maWcgICAgICAgICB8IDIgKy0KIGFyY2gvYXJtL2NvbmZpZ3MvaW14
+X3Y3X2RlZmNvbmZpZyAgICAgICAgfCAyICstCiBhcmNoL2FybS9jb25maWdzL2lteF92OF9kZWZj
+b25maWcgICAgICAgIHwgMiArLQogYXJjaC9hcm0vY29uZmlncy9raW5kbGUtbXg1MF9kZWZjb25m
+aWcgICB8IDIgKy0KIGFyY2gvYXJtL2NvbmZpZ3Mvb21hcF9kZWZjb25maWcgICAgICAgICAgfCAy
+ICstCiBhcmNoL2FybS9jb25maWdzL3ppaV92ZjYxMF9kZXZfZGVmY29uZmlnIHwgMiArLQogNyBm
+aWxlcyBjaGFuZ2VkLCA3IGluc2VydGlvbnMoKyksIDcgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0
+IGEvYXJjaC9hcm0vY29uZmlncy9pbXgyM19kZWZjb25maWcgYi9hcmNoL2FybS9jb25maWdzL2lt
+eDIzX2RlZmNvbmZpZwppbmRleCBiZmY5YzA4YzQwLi40OGJmMTRhMzkwIDEwMDY0NAotLS0gYS9h
+cmNoL2FybS9jb25maWdzL2lteDIzX2RlZmNvbmZpZworKysgYi9hcmNoL2FybS9jb25maWdzL2lt
+eDIzX2RlZmNvbmZpZwpAQCAtMjIsNiArMjIsNyBAQCBDT05GSUdfQkxTUEVDPXkKIENPTkZJR19D
+T05TT0xFX0FMTE9XX0NPTE9SPXkKIENPTkZJR19ERUZBVUxUX0VOVklST05NRU5UX0dFTkVSSUNf
+TkVXPXkKIENPTkZJR19SRVNFVF9TT1VSQ0U9eQorQ09ORklHX0ZBU1RCT09UX0NNRF9PRU09eQog
+Q09ORklHX0NNRF9ETUVTRz15CiBDT05GSUdfTE9OR0hFTFA9eQogQ09ORklHX0NNRF9JT01FTT15
+CkBAIC05MCw3ICs5MSw2IEBAIENPTkZJR19VU0JfR0FER0VUPXkKIENPTkZJR19VU0JfR0FER0VU
+X0RGVT15CiBDT05GSUdfVVNCX0dBREdFVF9TRVJJQUw9eQogQ09ORklHX1VTQl9HQURHRVRfRkFT
+VEJPT1Q9eQotQ09ORklHX1VTQl9HQURHRVRfRkFTVEJPT1RfQ01EX09FTT15CiBDT05GSUdfVklE
+RU89eQogQ09ORklHX0RSSVZFUl9WSURFT19TVE09eQogQ09ORklHX01DST15CmRpZmYgLS1naXQg
+YS9hcmNoL2FybS9jb25maWdzL2lteDI4X2RlZmNvbmZpZyBiL2FyY2gvYXJtL2NvbmZpZ3MvaW14
+MjhfZGVmY29uZmlnCmluZGV4IDQ0NDJjNzljYzQuLmJlYjBiYzJmNzYgMTAwNjQ0Ci0tLSBhL2Fy
+Y2gvYXJtL2NvbmZpZ3MvaW14MjhfZGVmY29uZmlnCisrKyBiL2FyY2gvYXJtL2NvbmZpZ3MvaW14
+MjhfZGVmY29uZmlnCkBAIC0yNSw2ICsyNSw3IEBAIENPTkZJR19DT05TT0xFX0FMTE9XX0NPTE9S
+PXkKIENPTkZJR19QQkxfQ09OU09MRT15CiBDT05GSUdfREVGQVVMVF9FTlZJUk9OTUVOVF9HRU5F
+UklDX05FVz15CiBDT05GSUdfUkVTRVRfU09VUkNFPXkKK0NPTkZJR19GQVNUQk9PVF9DTURfT0VN
+PXkKIENPTkZJR19DTURfRE1FU0c9eQogQ09ORklHX0xPTkdIRUxQPXkKIENPTkZJR19DTURfSU9N
+RU09eQpAQCAtMTA1LDcgKzEwNiw2IEBAIENPTkZJR19VU0JfR0FER0VUPXkKIENPTkZJR19VU0Jf
+R0FER0VUX0RGVT15CiBDT05GSUdfVVNCX0dBREdFVF9TRVJJQUw9eQogQ09ORklHX1VTQl9HQURH
+RVRfRkFTVEJPT1Q9eQotQ09ORklHX1VTQl9HQURHRVRfRkFTVEJPT1RfQ01EX09FTT15CiBDT05G
+SUdfVklERU89eQogQ09ORklHX0RSSVZFUl9WSURFT19TVE09eQogQ09ORklHX01DST15CmRpZmYg
+LS1naXQgYS9hcmNoL2FybS9jb25maWdzL2lteF92N19kZWZjb25maWcgYi9hcmNoL2FybS9jb25m
+aWdzL2lteF92N19kZWZjb25maWcKaW5kZXggNWJmOTA4ZWU4NS4uZmI3ODcyNDM0ZSAxMDA2NDQK
+LS0tIGEvYXJjaC9hcm0vY29uZmlncy9pbXhfdjdfZGVmY29uZmlnCisrKyBiL2FyY2gvYXJtL2Nv
+bmZpZ3MvaW14X3Y3X2RlZmNvbmZpZwpAQCAtNjYsNiArNjYsNyBAQCBDT05GSUdfQ09OU09MRV9B
+Q1RJVkFURV9OT05FPXkKIENPTkZJR19QQVJUSVRJT05fRElTS19FRkk9eQogQ09ORklHX0RFRkFV
+TFRfRU5WSVJPTk1FTlRfR0VORVJJQ19ORVc9eQogQ09ORklHX1JFU0VUX1NPVVJDRT15CitDT05G
+SUdfRkFTVEJPT1RfQ01EX09FTT15CiBDT05GSUdfQ01EX0RNRVNHPXkKIENPTkZJR19MT05HSEVM
+UD15CiBDT05GSUdfQ01EX0lPTUVNPXkKQEAgLTE2MCw3ICsxNjEsNiBAQCBDT05GSUdfVVNCX0dB
+REdFVD15CiBDT05GSUdfVVNCX0dBREdFVF9ERlU9eQogQ09ORklHX1VTQl9HQURHRVRfU0VSSUFM
+PXkKIENPTkZJR19VU0JfR0FER0VUX0ZBU1RCT09UPXkKLUNPTkZJR19VU0JfR0FER0VUX0ZBU1RC
+T09UX0NNRF9PRU09eQogQ09ORklHX1ZJREVPPXkKIENPTkZJR19EUklWRVJfVklERU9fSU1YX0lQ
+VVYzPXkKIENPTkZJR19EUklWRVJfVklERU9fSU1YX0lQVVYzX0xWRFM9eQpkaWZmIC0tZ2l0IGEv
+YXJjaC9hcm0vY29uZmlncy9pbXhfdjhfZGVmY29uZmlnIGIvYXJjaC9hcm0vY29uZmlncy9pbXhf
+djhfZGVmY29uZmlnCmluZGV4IDA2ZmI0MDYwODQuLmI5Njg2N2FkMGMgMTAwNjQ0Ci0tLSBhL2Fy
+Y2gvYXJtL2NvbmZpZ3MvaW14X3Y4X2RlZmNvbmZpZworKysgYi9hcmNoL2FybS9jb25maWdzL2lt
+eF92OF9kZWZjb25maWcKQEAgLTI1LDYgKzI1LDcgQEAgQ09ORklHX0NPTlNPTEVfUkFUUD15CiBD
+T05GSUdfUEFSVElUSU9OX0RJU0tfRUZJPXkKIENPTkZJR19ERUZBVUxUX0VOVklST05NRU5UX0dF
+TkVSSUNfTkVXPXkKIENPTkZJR19SRVNFVF9TT1VSQ0U9eQorQ09ORklHX0ZBU1RCT09UX1NQQVJT
+RT15CiBDT05GSUdfQ01EX0RNRVNHPXkKIENPTkZJR19MT05HSEVMUD15CiBDT05GSUdfQ01EX0lP
+TUVNPXkKQEAgLTEwNiw3ICsxMDcsNiBAQCBDT05GSUdfVVNCX1NUT1JBR0U9eQogQ09ORklHX1VT
+Ql9HQURHRVQ9eQogQ09ORklHX1VTQl9HQURHRVRfU0VSSUFMPXkKIENPTkZJR19VU0JfR0FER0VU
+X0ZBU1RCT09UPXkKLUNPTkZJR19VU0JfR0FER0VUX0ZBU1RCT09UX1NQQVJTRT15CiBDT05GSUdf
+TUNJPXkKIENPTkZJR19NQ0lfTU1DX0JPT1RfUEFSVElUSU9OUz15CiBDT05GSUdfTUNJX0lNWF9F
+U0RIQz15CmRpZmYgLS1naXQgYS9hcmNoL2FybS9jb25maWdzL2tpbmRsZS1teDUwX2RlZmNvbmZp
+ZyBiL2FyY2gvYXJtL2NvbmZpZ3Mva2luZGxlLW14NTBfZGVmY29uZmlnCmluZGV4IDg1NWRhZWY3
+MWEuLjU1MmIyZDZkMzMgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2NvbmZpZ3Mva2luZGxlLW14NTBf
+ZGVmY29uZmlnCisrKyBiL2FyY2gvYXJtL2NvbmZpZ3Mva2luZGxlLW14NTBfZGVmY29uZmlnCkBA
+IC0yMCw2ICsyMCw3IEBAIENPTkZJR19CT09UTV9PRlRSRUU9eQogQ09ORklHX0NPTlNPTEVfQUNU
+SVZBVEVfQUxMPXkKIENPTkZJR19DT05TT0xFX0FMTE9XX0NPTE9SPXkKIENPTkZJR19ERUZBVUxU
+X0VOVklST05NRU5UX0dFTkVSSUNfTkVXPXkKK0NPTkZJR19GQVNUQk9PVF9DTURfT0VNPXkKIENP
+TkZJR19DTURfRE1FU0c9eQogQ09ORklHX0xPTkdIRUxQPXkKIENPTkZJR19DTURfTUVNSU5GTz15
+CkBAIC01MCw3ICs1MSw2IEBAIENPTkZJR19VU0JfRUhDST15CiBDT05GSUdfVVNCX0dBREdFVD15
+CiBDT05GSUdfVVNCX0dBREdFVF9TRVJJQUw9eQogQ09ORklHX1VTQl9HQURHRVRfRkFTVEJPT1Q9
+eQotQ09ORklHX1VTQl9HQURHRVRfRkFTVEJPT1RfQ01EX09FTT15CiBDT05GSUdfTUNJPXkKIENP
+TkZJR19NQ0lfU1RBUlRVUD15CiBDT05GSUdfTUNJX01NQ19CT09UX1BBUlRJVElPTlM9eQpkaWZm
+IC0tZ2l0IGEvYXJjaC9hcm0vY29uZmlncy9vbWFwX2RlZmNvbmZpZyBiL2FyY2gvYXJtL2NvbmZp
+Z3Mvb21hcF9kZWZjb25maWcKaW5kZXggOWQ3MWQwMjc0NC4uNTk4OTJjYjIzMSAxMDA2NDQKLS0t
+IGEvYXJjaC9hcm0vY29uZmlncy9vbWFwX2RlZmNvbmZpZworKysgYi9hcmNoL2FybS9jb25maWdz
+L29tYXBfZGVmY29uZmlnCkBAIC0zNCw2ICszNCw3IEBAIENPTkZJR19ERUZBVUxUX0VOVklST05N
+RU5UX0dFTkVSSUNfTkVXPXkKIENPTkZJR19TVEFURT15CiBDT05GSUdfQk9PVENIT09TRVI9eQog
+Q09ORklHX1JFU0VUX1NPVVJDRT15CitDT05GSUdfRkFTVEJPT1RfQ01EX09FTT15CiBDT05GSUdf
+TE9OR0hFTFA9eQogQ09ORklHX0NNRF9JT01FTT15CiBDT05GSUdfQ01EX01FTUlORk89eQpAQCAt
+MTIxLDcgKzEyMiw2IEBAIENPTkZJR19VU0JfR0FER0VUPXkKIENPTkZJR19VU0JfR0FER0VUX0RG
+VT15CiBDT05GSUdfVVNCX0dBREdFVF9TRVJJQUw9eQogQ09ORklHX1VTQl9HQURHRVRfRkFTVEJP
+T1Q9eQotQ09ORklHX1VTQl9HQURHRVRfRkFTVEJPT1RfQ01EX09FTT15CiBDT05GSUdfVVNCX01V
+U0I9eQogQ09ORklHX1VTQl9NVVNCX0FNMzM1WD15CiBDT05GSUdfVVNCX01VU0JfSE9TVD15CmRp
+ZmYgLS1naXQgYS9hcmNoL2FybS9jb25maWdzL3ppaV92ZjYxMF9kZXZfZGVmY29uZmlnIGIvYXJj
+aC9hcm0vY29uZmlncy96aWlfdmY2MTBfZGV2X2RlZmNvbmZpZwppbmRleCA3MTYxZDc0MGFjLi40
+NWMyNGQ2ZGY0IDEwMDY0NAotLS0gYS9hcmNoL2FybS9jb25maWdzL3ppaV92ZjYxMF9kZXZfZGVm
+Y29uZmlnCisrKyBiL2FyY2gvYXJtL2NvbmZpZ3MvemlpX3ZmNjEwX2Rldl9kZWZjb25maWcKQEAg
+LTIyLDYgKzIyLDcgQEAgQ09ORklHX0NPTlNPTEVfUkFUUD15CiBDT05GSUdfUEFSVElUSU9OX0RJ
+U0tfRUZJPXkKIENPTkZJR19ERUZBVUxUX0VOVklST05NRU5UX0dFTkVSSUNfTkVXPXkKIENPTkZJ
+R19SRVNFVF9TT1VSQ0U9eQorQ09ORklHX0ZBU1RCT09UX0NNRF9PRU09eQogQ09ORklHX0NNRF9E
+TUVTRz15CiBDT05GSUdfTE9OR0hFTFA9eQogQ09ORklHX0NNRF9JT01FTT15CkBAIC0xMTMsNyAr
+MTE0LDYgQEAgQ09ORklHX1VTQl9HQURHRVQ9eQogQ09ORklHX1VTQl9HQURHRVRfREZVPXkKIENP
+TkZJR19VU0JfR0FER0VUX1NFUklBTD15CiBDT05GSUdfVVNCX0dBREdFVF9GQVNUQk9PVD15Ci1D
+T05GSUdfVVNCX0dBREdFVF9GQVNUQk9PVF9DTURfT0VNPXkKIENPTkZJR19NQ0k9eQogQ09ORklH
+X01DSV9NTUNfQk9PVF9QQVJUSVRJT05TPXkKIENPTkZJR19NQ0lfSU1YX0VTREhDPXkKLS0gCjIu
+MjYuMgoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJh
+cmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlz
+dHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
