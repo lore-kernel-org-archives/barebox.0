@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jdAQb-0001qu-5Y
+ id 1jdAQb-0001qx-6R
  for barebox@lists.infradead.org; Mon, 25 May 2020 10:33:56 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 25 May 2020 12:33:43 +0200
-Message-Id: <20200525103349.19449-15-s.hauer@pengutronix.de>
+Date: Mon, 25 May 2020 12:33:44 +0200
+Message-Id: <20200525103349.19449-16-s.hauer@pengutronix.de>
 In-Reply-To: <20200525103349.19449-1-s.hauer@pengutronix.de>
 References: <20200525103349.19449-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,75 +21,90 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/20] usbnet: Be more friendly in the receive path
+Subject: [PATCH 15/20] poller: Allow to run pollers inside of pollers
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-To recognize if we have a receive packet pending we must set up a USB
-bulk transfer. When there's no incoming packet we must wait until the
-transfer times out. We do this with every poller call which can
-considerably slow down the system. With this patch we do two things
-against this:
-
-- lower the timeout for the bulk transfer
-- When we haven't received a packet for longer then lower the frequency
-  of calling into the USB stack to once every 100ms
+This adds a slice to each poller which is acquired before the poller is
+executed. This allows us to run pollers inside of other pollers.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/usb/usbnet.c | 19 ++++++++++++++++++-
- include/usb/usbnet.h     |  3 +++
- 2 files changed, 21 insertions(+), 1 deletion(-)
+ common/poller.c  | 19 ++++++++++---------
+ include/poller.h |  2 ++
+ 2 files changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index d2518c6e4a..25252fbcc2 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -122,12 +122,29 @@ static int usbnet_recv(struct eth_device *edev)
+diff --git a/common/poller.c b/common/poller.c
+index 95f828b439..2525034bba 100644
+--- a/common/poller.c
++++ b/common/poller.c
+@@ -14,7 +14,6 @@
+ #include <clock.h>
  
- 	dev_dbg(&edev->dev, "%s\n",__func__);
+ static LIST_HEAD(poller_list);
+-static int poller_active;
  
-+	/*
-+	 * we must let the usb_bulk_msg below timeout before we realize
-+	 * that we have no packet received. Since this function runs
-+	 * inside a poller we considerably slow down barebox when we
-+	 * wait for the timeout too often. To improve this we only poll
-+	 * with full speed when we actually have received a packet in the
-+	 * last 100ms.
-+	 */
-+	if (is_timeout(dev->last_pkt_received, 100 * MSECOND) &&
-+	    !is_timeout(dev->last_recv_call, 100 * MSECOND)) {
-+		return 0;
+ int poller_register(struct poller_struct *poller, const char *name)
+ {
+@@ -22,6 +21,7 @@ int poller_register(struct poller_struct *poller, const char *name)
+ 		return -EBUSY;
+ 
+ 	poller->name = xstrdup(name);
++	slice_init(&poller->slice, poller->name);
+ 	list_add_tail(&poller->list, &poller_list);
+ 	poller->registered = 1;
+ 
+@@ -33,7 +33,7 @@ int poller_unregister(struct poller_struct *poller)
+ 	if (!poller->registered)
+ 		return -ENODEV;
+ 
+-
++	slice_exit(&poller->slice);
+ 	list_del(&poller->list);
+ 	poller->registered = 0;
+ 	free(poller->name);
+@@ -111,15 +111,16 @@ void poller_call(void)
+ {
+ 	struct poller_struct *poller, *tmp;
+ 
+-	if (poller_active)
+-		return;
+-
+-	poller_active = 1;
++	list_for_each_entry_safe(poller, tmp, &poller_list, list) {
++		if (slice_acquired(&poller->slice))
++			continue;
+ 
+-	list_for_each_entry_safe(poller, tmp, &poller_list, list)
++		slice_acquire(&poller->slice);
++		idle_slice_acquire();
+ 		poller->func(poller);
+-
+-	poller_active = 0;
++		idle_slice_release();
++		slice_release(&poller->slice);
 +	}
-+
-+	dev->last_recv_call = get_time_ns();
-+
- 	len = dev->rx_urb_size;
+ }
  
--	ret = usb_bulk_msg(dev->udev, dev->in, dev->rx_buf, len, &alen, 100);
-+	ret = usb_bulk_msg(dev->udev, dev->in, dev->rx_buf, len, &alen, 2);
- 	if (ret)
- 		return ret;
+ #if defined CONFIG_CMD_POLLER
+diff --git a/include/poller.h b/include/poller.h
+index 886557252b..c8b6829685 100644
+--- a/include/poller.h
++++ b/include/poller.h
+@@ -7,11 +7,13 @@
+ #define POLLER_H
  
-+	dev->last_pkt_received = get_time_ns();
-+
- 	if (alen) {
- 		if (info->rx_fixup)
- 			return info->rx_fixup(dev, dev->rx_buf, alen);
-diff --git a/include/usb/usbnet.h b/include/usb/usbnet.h
-index 450db47b40..7ff32f280a 100644
---- a/include/usb/usbnet.h
-+++ b/include/usb/usbnet.h
-@@ -54,6 +54,9 @@ struct usbnet {
- #		define EVENT_RX_MEMORY	2
- #		define EVENT_STS_SPLIT	3
- #		define EVENT_LINK_RESET	4
-+
-+	uint64_t last_pkt_received;
-+	uint64_t last_recv_call;
+ #include <linux/list.h>
++#include <slice.h>
+ 
+ struct poller_struct {
+ 	void (*func)(struct poller_struct *poller);
+ 	int registered;
+ 	struct list_head list;
++	struct slice slice;
+ 	char *name;
  };
  
- #if 0
 -- 
 2.26.2
 
