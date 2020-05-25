@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jdAQf-0001qy-RJ
- for barebox@lists.infradead.org; Mon, 25 May 2020 10:34:00 +0000
+ id 1jdAQf-0001r0-Ri
+ for barebox@lists.infradead.org; Mon, 25 May 2020 10:34:01 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 25 May 2020 12:33:41 +0200
-Message-Id: <20200525103349.19449-13-s.hauer@pengutronix.de>
+Date: Mon, 25 May 2020 12:33:38 +0200
+Message-Id: <20200525103349.19449-10-s.hauer@pengutronix.de>
 In-Reply-To: <20200525103349.19449-1-s.hauer@pengutronix.de>
 References: <20200525103349.19449-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,224 +21,164 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/20] net: Call net_poll() in a poller
+Subject: [PATCH 09/20] net: mdiobus: Add slice
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-This patch moves the ethernet receive loop into a poller. With this
-network protocols no longer have to call net_loop() explicitly but
-can do it implicitly by calling is_timeout() when waiting for packets.
-
-Having the network receive loop running in a poller has the advantage
-that we have it running continuously and not only when we explicitly
-expect packets to come in. With this we can reasonably well answer to
-ping requests which is implemented in the next patch. This also helps
-protocols that run in the background like fastboot over UDP.
+By adding a slice to the mdio bus we make the mdio code safe for being
+called in a poller.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/nfs.c         |  2 --
- fs/tftp.c        |  2 --
- include/net.h    |  3 ---
- net/dhcp.c       |  1 -
- net/dns.c        |  1 -
- net/eth.c        | 15 ++++++++++-----
- net/net.c        | 14 +++++++++++---
- net/netconsole.c |  4 +---
- net/nfs.c        |  1 -
- net/ping.c       |  2 --
- net/sntp.c       |  2 --
- 11 files changed, 22 insertions(+), 25 deletions(-)
+ drivers/net/phy/mdio_bus.c | 43 ++++++++++++++++++++++++++++++++++++++
+ include/linux/phy.h        | 38 +++++++++++++--------------------
+ 2 files changed, 58 insertions(+), 23 deletions(-)
 
-diff --git a/fs/nfs.c b/fs/nfs.c
-index 15ddab7915..ebf851f656 100644
---- a/fs/nfs.c
-+++ b/fs/nfs.c
-@@ -447,8 +447,6 @@ again:
- 	nfs_timer_start = get_time_ns();
- 
- 	while (1) {
--		net_poll();
--
- 		if (is_timeout(nfs_timer_start, NFS_TIMEOUT)) {
- 			tries++;
- 			if (tries == NFS_MAX_RESEND)
-diff --git a/fs/tftp.c b/fs/tftp.c
-index d186e7983a..e5a58a4dae 100644
---- a/fs/tftp.c
-+++ b/fs/tftp.c
-@@ -207,8 +207,6 @@ static int tftp_poll(struct file_priv *priv)
- 		return -ETIMEDOUT;
+diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+index 3480e2ffb4..99d23ffedf 100644
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -239,6 +239,8 @@ int mdiobus_register(struct mii_bus *bus)
+ 		return -EINVAL;
  	}
  
--	net_poll();
--
- 	return 0;
- }
- 
-diff --git a/include/net.h b/include/net.h
-index 8d2b4923de..583dc14ed5 100644
---- a/include/net.h
-+++ b/include/net.h
-@@ -244,9 +244,6 @@ IPaddr_t net_get_nameserver(void);
- const char *net_get_domainname(void);
- struct eth_device *net_route(IPaddr_t ip);
- 
--/* Do the work */
--void net_poll(void);
--
- static inline struct iphdr *net_eth_to_iphdr(char *pkt)
- {
- 	return (struct iphdr *)(pkt + ETHER_HDR_SIZE);
-diff --git a/net/dhcp.c b/net/dhcp.c
-index a27fa89996..ef22d2cef0 100644
---- a/net/dhcp.c
-+++ b/net/dhcp.c
-@@ -513,7 +513,6 @@ int dhcp_request(struct eth_device *edev, const struct dhcp_req_param *param,
- 			ret = -ETIMEDOUT;
- 			goto out1;
- 		}
--		net_poll();
- 		if (is_timeout(dhcp_start, 3 * SECOND)) {
- 			dhcp_start = get_time_ns();
- 			printf("T ");
-diff --git a/net/dns.c b/net/dns.c
-index ffe98ef9e3..851bf3722e 100644
---- a/net/dns.c
-+++ b/net/dns.c
-@@ -231,7 +231,6 @@ int resolv(const char *host, IPaddr_t *ip)
- 		if (ctrlc()) {
- 			break;
- 		}
--		net_poll();
- 		if (is_timeout(dns_timer_start, SECOND)) {
- 			dns_timer_start = get_time_ns();
- 			printf("T ");
-diff --git a/net/eth.c b/net/eth.c
-index 2df0a74a5b..6c8f31f6b5 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -234,14 +234,19 @@ static int __eth_rx(struct eth_device *edev)
- {
- 	int ret;
- 
--	slice_acquire(eth_device_slice(edev));
-+	if (!phy_acquired(edev->phydev)) {
-+		ret = eth_carrier_check(edev, 0);
-+		if (ret)
-+			return ret;
-+	}
- 
--	ret = eth_carrier_check(edev, 0);
--	if (ret)
--		goto out;
-+	if (slice_acquired(eth_device_slice(edev)))
-+		return 0;
++	slice_init(&bus->slice, dev_name(&bus->dev));
 +
-+	slice_acquire(eth_device_slice(edev));
+ 	if (bus->reset)
+ 		bus->reset(bus);
  
- 	ret = edev->recv(edev);
--out:
-+
- 	slice_release(eth_device_slice(edev));
- 
- 	return ret;
-diff --git a/net/net.c b/net/net.c
-index 5fd6246ab2..197b551e72 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -239,8 +239,6 @@ static int arp_request(struct eth_device *edev, IPaddr_t dest, unsigned char *et
- 
- 		if (retries > PKT_NUM_RETRIES)
- 			return -ETIMEDOUT;
--
--		net_poll();
+@@ -272,6 +274,8 @@ void mdiobus_unregister(struct mii_bus *bus)
+ 		bus->phy_map[i] = NULL;
  	}
  
- 	pr_debug("Got ARP REPLY for %pI4: %02x:%02x:%02x:%02x:%02x:%02x\n",
-@@ -249,11 +247,21 @@ static int arp_request(struct eth_device *edev, IPaddr_t dest, unsigned char *et
- 	return 0;
- }
- 
--void net_poll(void)
-+static void net_poll(struct poller_struct *poller)
- {
- 	eth_rx();
- }
- 
-+static struct poller_struct net_poller = {
-+	.func = net_poll,
-+};
++	slice_exit(&bus->slice);
 +
-+static int init_net_poll(void)
+ 	list_del(&bus->list);
+ }
+ EXPORT_SYMBOL(mdiobus_unregister);
+@@ -357,6 +361,45 @@ static int mdio_bus_match(struct device_d *dev, struct driver_d *drv)
+ 	return 1;
+ }
+ 
++/**
++ * mdiobus_read - Convenience function for reading a given MII mgmt register
++ * @bus: the mii_bus struct
++ * @addr: the phy address
++ * @regnum: register number to read
++ */
++int mdiobus_read(struct mii_bus *bus, int addr, u32 regnum)
 +{
-+	return poller_register(&net_poller, "net");
-+}
-+device_initcall(init_net_poll);
++	int ret;
 +
- static uint16_t net_udp_new_localport(void)
++	slice_acquire(&bus->slice);
++
++	ret = bus->read(bus, addr, regnum);
++
++	slice_release(&bus->slice);
++
++	return ret;
++}
++
++/**
++ * mdiobus_write - Convenience function for writing a given MII mgmt register
++ * @bus: the mii_bus struct
++ * @addr: the phy address
++ * @regnum: register number to write
++ * @val: value to write to @regnum
++ */
++int mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val)
++{
++	int ret;
++
++	slice_acquire(&bus->slice);
++
++	ret = bus->write(bus, addr, regnum, val);
++
++	slice_release(&bus->slice);
++
++	return ret;
++}
++
+ static ssize_t phydev_read(struct cdev *cdev, void *_buf, size_t count, loff_t offset, ulong flags)
  {
- 	static uint16_t localport;
-diff --git a/net/netconsole.c b/net/netconsole.c
-index 0fece65a23..c692db942f 100644
---- a/net/netconsole.c
-+++ b/net/netconsole.c
-@@ -59,7 +59,7 @@ static int nc_getc(struct console_device *cdev)
- 		return 0;
+ 	int i = count;
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index a9fdf44f1a..3f0f31b35c 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -16,6 +16,7 @@
+ #define __PHY_H
  
- 	while (!kfifo_len(priv->fifo))
--		net_poll();
-+		udelay(1);
+ #include <driver.h>
++#include <slice.h>
+ #include <linux/list.h>
+ #include <linux/ethtool.h>
+ #include <linux/mii.h>
+@@ -116,9 +117,16 @@ struct mii_bus {
+ 	struct list_head list;
  
- 	kfifo_getc(priv->fifo, &c);
+ 	bool is_multiplexed;
++
++	struct slice slice;
+ };
+ #define to_mii_bus(d) container_of(d, struct mii_bus, dev)
  
-@@ -77,8 +77,6 @@ static int nc_tstc(struct console_device *cdev)
- 	if (priv->busy)
- 		return kfifo_len(priv->fifo) ? 1 : 0;
++static inline struct slice *mdiobus_slice(struct mii_bus *bus)
++{
++	return &bus->slice;
++}
++
+ int mdiobus_register(struct mii_bus *bus);
+ void mdiobus_unregister(struct mii_bus *bus);
+ struct phy_device *mdiobus_scan(struct mii_bus *bus, int addr);
+@@ -134,28 +142,8 @@ struct mii_bus *mdiobus_get_bus(int busnum);
  
--	net_poll();
+ struct mii_bus *of_mdio_find_bus(struct device_node *mdio_bus_np);
+ 
+-/**
+- * mdiobus_read - Convenience function for reading a given MII mgmt register
+- * @bus: the mii_bus struct
+- * @addr: the phy address
+- * @regnum: register number to read
+- */
+-static inline int mdiobus_read(struct mii_bus *bus, int addr, u32 regnum)
+-{
+-	return bus->read(bus, addr, regnum);
+-}
 -
- 	return kfifo_len(priv->fifo) ? 1 : 0;
- }
+-/**
+- * mdiobus_write - Convenience function for writing a given MII mgmt register
+- * @bus: the mii_bus struct
+- * @addr: the phy address
+- * @regnum: register number to write
+- * @val: value to write to @regnum
+- */
+-static inline int mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val)
+-{
+-	return bus->write(bus, addr, regnum, val);
+-}
++int mdiobus_read(struct mii_bus *bus, int addr, u32 regnum);
++int mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val);
  
-diff --git a/net/nfs.c b/net/nfs.c
-index 63573098d7..e0479ef692 100644
---- a/net/nfs.c
-+++ b/net/nfs.c
-@@ -708,7 +708,6 @@ static int do_nfs(int argc, char *argv[])
- 			nfs_err = -EINTR;
- 			break;
- 		}
--		net_poll();
- 		if (is_timeout(nfs_timer_start, NFS_TIMEOUT * SECOND)) {
- 			show_progress(-1);
- 			nfs_send();
-diff --git a/net/ping.c b/net/ping.c
-index a71f59a805..f3de0c27a4 100644
---- a/net/ping.c
-+++ b/net/ping.c
-@@ -89,8 +89,6 @@ static int do_ping(int argc, char *argv[])
- 			break;
- 		}
- 
--		net_poll();
+ /* phy_device: An instance of a PHY
+  *
+@@ -376,11 +364,15 @@ int phy_register_fixup(const char *bus_id, u32 phy_uid, u32 phy_uid_mask,
+ int phy_register_fixup_for_id(const char *bus_id,
+ 		int (*run)(struct phy_device *));
+ int phy_scan_fixups(struct phy_device *phydev);
 -
- 		if (is_timeout(ping_start, SECOND)) {
- 			/* No answer, send another packet */
- 			ping_start = get_time_ns();
-diff --git a/net/sntp.c b/net/sntp.c
-index b4e6d6439c..f693a2e8af 100644
---- a/net/sntp.c
-+++ b/net/sntp.c
-@@ -145,8 +145,6 @@ s64 sntp(const char *server)
- 			break;
- 		}
+ int phy_read_mmd_indirect(struct phy_device *phydev, int prtad, int devad);
+ void phy_write_mmd_indirect(struct phy_device *phydev, int prtad, int devad,
+ 				   u16 data);
  
--		net_poll();
--
- 		if (is_timeout(sntp_start, 1 * SECOND)) {
- 			sntp_start = get_time_ns();
- 			ret = sntp_send();
++static inline bool phy_acquired(struct phy_device *phydev)
++{
++	return phydev && phydev->bus && slice_acquired(&phydev->bus->slice);
++}
++
+ #ifdef CONFIG_PHYLIB
+ int phy_register_fixup_for_uid(u32 phy_uid, u32 phy_uid_mask,
+ 		int (*run)(struct phy_device *));
 -- 
 2.26.2
 
