@@ -1,12 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([78.46.208.201])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jeI5C-0004Qa-KJ
- for barebox@lists.infradead.org; Thu, 28 May 2020 12:56:27 +0000
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Thu, 28 May 2020 14:56:11 +0200
-Message-Id: <20200528125611.11888-1-r.czerwinski@pengutronix.de>
+ id 1jd5z7-000340-7X
+ for barebox@lists.infradead.org; Mon, 25 May 2020 05:49:14 +0000
+Date: Mon, 25 May 2020 07:49:08 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200525054907.GK11869@pengutronix.de>
+References: <20200519165208.3546-1-u.kleine-koenig@pengutronix.de>
+ <96a9cba1-26d1-b51c-f8c1-f3ab2fde5c0b@pengutronix.de>
+ <20200522125556.pisjtt6pe5jtfkyq@pengutronix.de>
+ <20200522131759.dnof3ixb4idqemcv@pengutronix.de>
+ <20200523141612.3xjmugzalvokwubv@pengutronix.de>
+ <20200523150032.5lopw2n3c7onpqxe@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200523150032.5lopw2n3c7onpqxe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,58 +23,117 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: i.MX: enable Master Identifier Unlock
-To: barebox@lists.infradead.org
-Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Subject: Re: [PATCH] pwm: Replace license and copyright boilerplate by SPDX
+ identfiers
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>, Roland Hieber <rhi@pengutronix.de>
 
-By default the HAB locks the Master Identifier (MID) to preconfigured
-values. This is not a problem if Linux is running in the secure world,
-however when running a secure world operating system such as OP-TEE, the
-MID configuration should be done by the secure world operating system.
+On Sat, May 23, 2020 at 05:00:32PM +0200, Uwe Kleine-K=F6nig wrote:
+> Hello Sascha, hello Roland,
+> =
 
-This causes no regressions for systems using no secure world operating
-systems, since no MID value indicates that all normal/secure world
-entities can access the peripherals supporting the MID.
+> On Sat, May 23, 2020 at 04:16:12PM +0200, Roland Hieber wrote:
+> > On Fri, May 22, 2020 at 03:17:59PM +0200, Uwe Kleine-K=F6nig wrote:
+> > > Hello Roland,
+> > > =
 
-Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
----
- arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h | 2 +-
- arch/arm/mach-imx/include/mach/habv4-imx8-gencsf.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+> > > On Fri, May 22, 2020 at 02:55:56PM +0200, Roland Hieber wrote:
+> > > > On Wed, May 20, 2020 at 02:10:47PM +0200, Ahmad Fatoum wrote:
+> > > > > On 5/19/20 6:52 PM, Uwe Kleine-K=F6nig wrote:
+> > > > > > diff --git a/drivers/pwm/pwm-mxs.c b/drivers/pwm/pwm-mxs.c
+> > > > > > index a06040ac3268..1e2db39def22 100644
+> > > > > > --- a/drivers/pwm/pwm-mxs.c
+> > > > > > +++ b/drivers/pwm/pwm-mxs.c
+> > > > > > @@ -1,13 +1,5 @@
+> > > > > > -/*
+> > > > > > - * Copyright 2012 Freescale Semiconductor, Inc.
+> > > > > > - *
+> > > > > > - * The code contained herein is licensed under the GNU General=
+ Public
+> > > > > > - * License. You may obtain a copy of the GNU General Public Li=
+cense
+> > > > > > - * Version 2 or later at the following locations:
+> > > > > > - *
+> > > > > > - * http://www.opensource.org/licenses/gpl-license.html
+> > > > > > - * http://www.gnu.org/copyleft/gpl.html
+> > > > > > - */
+> > > > > > +// SPDX-License-Identifier: GPL-2.0-only
+> > > > > =
 
-diff --git a/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h b/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
-index 2961b97b79..17c4d79567 100644
---- a/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
-+++ b/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
-@@ -29,7 +29,7 @@ hab [Authenticate CSF]
- 
- hab [Unlock]
- hab Engine = CAAM
--hab Features = RNG
-+hab Features = RNG, MID
- 
- hab [Install Key]
- /* verification key index in key store (0, 2...4) */
-diff --git a/arch/arm/mach-imx/include/mach/habv4-imx8-gencsf.h b/arch/arm/mach-imx/include/mach/habv4-imx8-gencsf.h
-index 9ed6893988..a3917cc74f 100644
---- a/arch/arm/mach-imx/include/mach/habv4-imx8-gencsf.h
-+++ b/arch/arm/mach-imx/include/mach/habv4-imx8-gencsf.h
-@@ -29,7 +29,7 @@ hab [Authenticate CSF]
- 
- hab [Unlock]
- hab Engine = CAAM
--hab Features = RNG
-+hab Features = RNG, MID
- 
- hab [Install Key]
- /* verification key index in key store (0, 2...4) */
--- 
-2.26.2
+> > > > > The deleted text says "or later"
+> > > > =
 
+> > > > Ah, I stumbled over this too. The deleted text says:
+> > > > =
+
+> > > >     "The code contained herein is licensed under the GNU General Pu=
+blic
+> > > >     License."
+> > > > =
+
+> > > > which in itself reads like "you can use any version of the GPL" (i.=
+e.,
+> > > > GPL-1.0-or-later). Later then the text says:
+> > > > =
+
+> > > >     "You may obtain a copy of the GNU General Public License
+> > > >     Version 2 or later at the following locations:"
+> > > > =
+
+> > > > which in my opinion does not say anything about which version of th=
+e GPL
+> > > > the code is licensed under.
+> > > =
+
+> > > This seems to be a problem in the Freescale template. I think I point=
+ed
+> > > that out once, but nothing changed.
+> > > =
+
+> > > For practical reasons I'd interpret that as "GPL-2.0-or-later".
+> > =
+
+> > Yeah, I guess that's alright.
+> > =
+
+> > Reviewed-by: Roland Hieber <rhi@pengutronix.de>
+> =
+
+> I assume this Reviewed-by: applies only if we squash
+> =
+
+> diff --git a/drivers/pwm/pwm-mxs.c b/drivers/pwm/pwm-mxs.c
+> index 1e2db39def22..08819b43bc1d 100644
+> --- a/drivers/pwm/pwm-mxs.c
+> +++ b/drivers/pwm/pwm-mxs.c
+> @@ -1,4 +1,4 @@
+> -// SPDX-License-Identifier: GPL-2.0-only
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+>  // SPDX-FileCopyrightText: 2012 Freescale Semiconductor, Inc.
+>  =
+
+>  #include <common.h>
+> =
+
+> into the patch Sascha applied.
+> =
+
+> Sascha, can you care for this?
+
+Just did that.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
