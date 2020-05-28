@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from magratgarlick.emantor.de ([78.46.208.201])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jcVdB-0008Oy-Dg
- for barebox@lists.infradead.org; Sat, 23 May 2020 15:00:11 +0000
-Date: Sat, 23 May 2020 17:00:07 +0200
-From: Roland Hieber <rhi@pengutronix.de>
-Message-ID: <20200523150007.erjwm3azjdyaywx4@pengutronix.de>
-References: <20200428132405.3624-1-u.kleine-koenig@pengutronix.de>
+ id 1jeI5C-0004Qa-KJ
+ for barebox@lists.infradead.org; Thu, 28 May 2020 12:56:27 +0000
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Thu, 28 May 2020 14:56:11 +0200
+Message-Id: <20200528125611.11888-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200428132405.3624-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,47 +15,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] arch/arm/boards: Replace license and copyright
- boilerplate by SPDX identfiers
-To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: [PATCH] ARM: i.MX: enable Master Identifier Unlock
+To: barebox@lists.infradead.org
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-T24gVHVlLCBBcHIgMjgsIDIwMjAgYXQgMDM6MjQ6MDVQTSArMDIwMCwgVXdlIEtsZWluZS1Lw7Zu
-aWcgd3JvdGU6Cj4gVGhpcyBhZGFwdHMgYWxsIGZpbGVzIHRoYXQgd2VyZSBpZGVudGlmZWQgYnkg
-bGljZW5zZWNoZWNrCj4gKGh0dHBzOi8vc2Fsc2EuZGViaWFuLm9yZy9idWlsZC1jb21tb24tdGVh
-bS9saWNlbnNlY2hlY2suZ2l0KSBhcwo+IGxpY2Vuc2VkIHVuZGVyIHRoZSBHUEwuCj4gCj4gVGhl
-IGFkdmFudGFnZSBpcyB0aGF0IHRoZXNlIHNwZWNpZmllcnMgYXJlIG1hY2hpbmUtcGFyc2VhYmxl
-IHdoaWNoIGhlbHBzCj4gbGljZW5zZSBjb25mb3JtYW5jZSwgZS5nLiBmb3IgcGFja2FnaW5nIGJh
-cmVib3ggaW4gRGViaWFuLgo+IAo+IFdoaWxlIHRvdWNoaW5nIHRoZXNlIGZpbGVzIGFsc28gZG8g
-c29tZSBtaW5vciBjb21tZW50IHJlZm9ybWF0dGluZyB0bwo+IGdldCBzb21lIHVuaWZvcm0gbGF5
-b3V0Lgo+IAo+IFNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2Vu
-aWdAcGVuZ3V0cm9uaXguZGU+CgpIbW1tLCBJIGRvbid0IHNlZSB3aHkgeW91IGRyb3BwZWQgdGhl
-IGZvbGxvd2luZyBmaWxlcyBmcm9tIHlvdXIKKGltcGxpY2l0KSB2MjoKCmFyY2gvYXJtL2JvYXJk
-cy9lbWJlZHNreS1lOS9ib2FyZC5jCmFyY2gvYXJtL2JvYXJkcy9ldWtyZWFfY3B1aW14MjcvZXVr
-cmVhX2NwdWlteDI3LmMKYXJjaC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgzNS9ldWtyZWFfY3B1
-aW14MzUuYwphcmNoL2FybS9ib2FyZHMvZnJlZXNjYWxlLW14MjEtYWRzL2lteDIxYWRzLmMKYXJj
-aC9hcm0vYm9hcmRzL2ZyZWVzY2FsZS1teDM1LTNkcy8zc3RhY2suYwphcmNoL2FybS9ib2FyZHMv
-ZnJlZXNjYWxlLW14Ni1zYWJyZXNkL2JvYXJkLmMKYXJjaC9hcm0vYm9hcmRzL2ZyaWVuZGx5YXJt
-LW1pbmkyNDQwL21pbmkyNDQwLmMKYXJjaC9hcm0vYm9hcmRzL2ZyaWVuZGx5YXJtLXRpbnkyMTAv
-dGlueTIxMC5jCmFyY2gvYXJtL2JvYXJkcy9nbG9iYWxzY2FsZS1ndXJ1cGx1Zy9ib2FyZC5jIAph
-cmNoL2FybS9ib2FyZHMvZ2xvYmFsc2NhbGUtbWlyYWJveC9ib2FyZC5jCmFyY2gvYXJtL2JvYXJk
-cy9pbXgyMzMtb2xpbnV4aW5vL2lteDIzLW9saW51eGluby5jCmFyY2gvYXJtL2JvYXJkcy9rYXJv
-LXR4NngvYm9hcmQuYwphcmNoL2FybS9ib2FyZHMvcGh5dGVjLXBoeWNhcmQtb21hcDMvcGNhLWEt
-bDEuYwphcmNoL2FybS9ib2FyZHMvcGh5dGVjLXBoeWNvcmUtcHhhMjcwL2NvbmZpZy5oCmFyY2gv
-YXJtL2JvYXJkcy92YXJpc2NpdGUtbXg2L2JvYXJkLmMKYXJjaC9hcm0vYm9hcmRzL3ZhcmlzY2l0
-ZS1teDYvbG93bGV2ZWwuYwphcmNoL2FybS9ib2FyZHMvdmVyc2F0aWxlL3ZlcnNhdGlsZXBiLmMK
-YXJjaC9hcm0vYm9hcmRzL3p5bG9uaXRlL3p5bG9uaXRlLmgKCk90aGVyIHRoYW4gdGhhdCwgd2hh
-dCdzIHRoZXJlIGlzIGNvcnJlY3QsIHNvClJldmlld2VkLWJ5OiBSb2xhbmQgSGllYmVyIDxyaGlA
-cGVuZ3V0cm9uaXguZGU+CgotLSAKUm9sYW5kIEhpZWJlciwgUGVuZ3V0cm9uaXggZS5LLiAgICAg
-ICAgICB8IHIuaGllYmVyQHBlbmd1dHJvbml4LmRlICAgICB8ClN0ZXVlcndhbGRlciBTdHIuIDIx
-ICAgICAgICAgICAgICAgICAgICAgfCBodHRwczovL3d3dy5wZW5ndXRyb25peC5kZS8gfAozMTEz
-NyBIaWxkZXNoZWltLCBHZXJtYW55ICAgICAgICAgICAgICAgIHwgUGhvbmU6ICs0OS01MTIxLTIw
-NjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICB8IEZh
-eDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmlu
-ZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9i
-YXJlYm94Cg==
+By default the HAB locks the Master Identifier (MID) to preconfigured
+values. This is not a problem if Linux is running in the secure world,
+however when running a secure world operating system such as OP-TEE, the
+MID configuration should be done by the secure world operating system.
+
+This causes no regressions for systems using no secure world operating
+systems, since no MID value indicates that all normal/secure world
+entities can access the peripherals supporting the MID.
+
+Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+---
+ arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h | 2 +-
+ arch/arm/mach-imx/include/mach/habv4-imx8-gencsf.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h b/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
+index 2961b97b79..17c4d79567 100644
+--- a/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
++++ b/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
+@@ -29,7 +29,7 @@ hab [Authenticate CSF]
+ 
+ hab [Unlock]
+ hab Engine = CAAM
+-hab Features = RNG
++hab Features = RNG, MID
+ 
+ hab [Install Key]
+ /* verification key index in key store (0, 2...4) */
+diff --git a/arch/arm/mach-imx/include/mach/habv4-imx8-gencsf.h b/arch/arm/mach-imx/include/mach/habv4-imx8-gencsf.h
+index 9ed6893988..a3917cc74f 100644
+--- a/arch/arm/mach-imx/include/mach/habv4-imx8-gencsf.h
++++ b/arch/arm/mach-imx/include/mach/habv4-imx8-gencsf.h
+@@ -29,7 +29,7 @@ hab [Authenticate CSF]
+ 
+ hab [Unlock]
+ hab Engine = CAAM
+-hab Features = RNG
++hab Features = RNG, MID
+ 
+ hab [Install Key]
+ /* verification key index in key store (0, 2...4) */
+-- 
+2.26.2
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
