@@ -1,20 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from eddie.linux-mips.org ([148.251.95.138] helo=cvs.linux-mips.org)
- by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jcvLw-0004my-NQ
- for barebox@lists.infradead.org; Sun, 24 May 2020 18:28:06 +0000
-Received: (from localhost user: 'ladis' uid#1021 fake: STDIN
- (ladis@eddie.linux-mips.org)) by eddie.linux-mips.org
- id S23992512AbgEXS16oQxNc (ORCPT
- <rfc822;barebox@lists.infradead.org>);
- Sun, 24 May 2020 20:27:58 +0200
-Date: Sun, 24 May 2020 20:27:54 +0200
-From: Ladislav Michl <ladis@linux-mips.org>
-Message-ID: <20200524182754.GA9740@lenoch>
-References: <69ca4999-4cf0-f20a-5d7a-93e470338bf4@arcor.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jeeTi-0000x4-Ks
+ for barebox@lists.infradead.org; Fri, 29 May 2020 12:51:16 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <mgr@pengutronix.de>) id 1jeeTf-0000M9-6k
+ for barebox@lists.infradead.org; Fri, 29 May 2020 14:51:11 +0200
+Received: from mgr by dude.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <mgr@pengutronix.de>) id 1jeeTe-0002Ae-Ul
+ for barebox@lists.infradead.org; Fri, 29 May 2020 14:51:10 +0200
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Date: Fri, 29 May 2020 14:51:02 +0200
+Message-Id: <20200529125102.8070-1-m.grzeschik@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <69ca4999-4cf0-f20a-5d7a-93e470338bf4@arcor.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,24 +27,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: configure the mac address of an eth device
-To: Giorgio <giorgio.nicole@arcor.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] serial: amba-pl011: set linux_console_name
+To: barebox@lists.infradead.org
 
-On Sun, May 24, 2020 at 01:57:08PM +0200, Giorgio wrote:
-> Hi,
-> 
-> I'm working with an arm som with an imx7d soc on it.
-> The som also has an eeprom with some module specific manufacturer parameters
-> like two MAC address, for eth0 and eth1, a module description string or a module
-> serial number.
-> I've now added some code to my board.c to extract the strings from the eeprom and now
-> I need to actually configure the MAC addresses from them, to avoid barebox choose
-> random ones when it needs the eth's.
-> 
-> What is the proper way to do this ?
+We set the linux_console_name so for this uart the
+linux.bootargs.console will be properly set.
 
-Device tree... See nvmem-cells property of ethernet-controller node.
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+---
+ drivers/serial/amba-pl011.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/serial/amba-pl011.c b/drivers/serial/amba-pl011.c
+index 0751c52513..865ecdddb2 100644
+--- a/drivers/serial/amba-pl011.c
++++ b/drivers/serial/amba-pl011.c
+@@ -204,6 +204,7 @@ static int pl011_probe(struct amba_device *dev, const struct amba_id *id)
+ 	cdev->putc = pl011_putc;
+ 	cdev->getc = pl011_getc;
+ 	cdev->setbrg = pl011_setbaudrate;
++	cdev->linux_console_name = "ttyAMA";
+ 
+ 	pl011_init_port(cdev);
+ 
+-- 
+2.26.2
+
 
 _______________________________________________
 barebox mailing list
