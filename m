@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jefVu-0003qd-6O
- for barebox@lists.infradead.org; Fri, 29 May 2020 13:57:35 +0000
-References: <20200529125112.8360-1-m.grzeschik@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <48c08116-532d-56b6-40f5-558507c71eed@pengutronix.de>
-Date: Fri, 29 May 2020 15:57:30 +0200
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+ by bombadil.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jefVr-0003qP-Te
+ for barebox@lists.infradead.org; Fri, 29 May 2020 13:57:33 +0000
+Message-ID: <81baec3b23d148e9085bb73b28c52dd1f9ba818f.camel@lynxeye.de>
+From: Lucas Stach <dev@lynxeye.de>
+Date: Fri, 29 May 2020 15:56:53 +0200
+In-Reply-To: <20200529125122.8561-1-m.grzeschik@pengutronix.de>
+References: <20200529125122.8561-1-m.grzeschik@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20200529125112.8360-1-m.grzeschik@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,43 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] serial: stm: set linux_console_name
+Subject: Re: [PATCH] ARM: MXS: duckbill: set duart to serial0
 To: Michael Grzeschik <m.grzeschik@pengutronix.de>, barebox@lists.infradead.org
 
-Hello Michael,
+Am Freitag, den 29.05.2020, 14:51 +0200 schrieb Michael Grzeschik:
+> In the imx28.dtsi the serial0 is set to auart0 which is not the one
+> used on the duckbill. We set duart to serial0 so the console will be
+> properly set.
 
-On 5/29/20 2:51 PM, Michael Grzeschik wrote:
-> We set the linux_console_name so for this uart the
-> linux.bootargs.console will be properly set.
-> 
+If the aliases are the same in the Barebox and Linux DTs there should
+be no need to override the alias numbering in the individual board DTs.
+
+Is the Linux driver ignoring the alias, or what is the issue being
+fixed here?
+
+Regards,
+Lucas
+
 > Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 > ---
->  drivers/serial/stm-serial.c | 1 +
->  1 file changed, 1 insertion(+)
+>  arch/arm/dts/imx28-duckbill.dts | 4 ++++
+>  1 file changed, 4 insertions(+)
 > 
-> diff --git a/drivers/serial/stm-serial.c b/drivers/serial/stm-serial.c
-> index ea482415ce..a2c3dcf56e 100644
-> --- a/drivers/serial/stm-serial.c
-> +++ b/drivers/serial/stm-serial.c
-> @@ -159,6 +159,7 @@ static int stm_serial_probe(struct device_d *dev)
->  	cdev->flush = stm_serial_flush;
->  	cdev->setbrg = stm_serial_setbaudrate;
->  	cdev->dev = dev;
-> +	cdev->linux_console_name = "ttyAMA";
-
-Couldn't we just combine the two drivers? On a cursory look, only
-difference is how they're probed?
-
+> diff --git a/arch/arm/dts/imx28-duckbill.dts b/arch/arm/dts/imx28-
+> duckbill.dts
+> index 2a995a7938..299c33e270 100644
+> --- a/arch/arm/dts/imx28-duckbill.dts
+> +++ b/arch/arm/dts/imx28-duckbill.dts
+> @@ -4,6 +4,10 @@
+>  	chosen {
+>  		stdout-path = &duart;
+>  	};
+> +
+> +	aliases {
+> +		serial0 = &duart;
+> +	};
+>  };
 >  
->  	dev->priv = priv;
->  	iores = dev_request_mem_resource(dev, 0);
-> 
+>  &duart {
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
