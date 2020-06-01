@@ -1,20 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jgjGi-000571-Fm
- for barebox@lists.infradead.org; Thu, 04 Jun 2020 06:22:26 +0000
-References: <00a601d638be$2f10f330$8d32d990$@mobius-embedded-systems.co.uk>
- <cf5280fe-d0e8-5fc9-bada-e95667ead7f9@pengutronix.de>
- <c52611ab-77d3-540c-2bd4-8959dc811510@pengutronix.de>
- <00e501d638c4$438feea0$caafcbe0$@mobius-embedded-systems.co.uk>
- <ea436d8b-7cc5-9d75-9df4-5d2dee312927@pengutronix.de>
- <02a701d639f4$4bedafc0$e3c90f40$@mobius-embedded-systems.co.uk>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <b0c1b5bc-1012-517f-f0a4-8be4a343bdfd@pengutronix.de>
-Date: Thu, 4 Jun 2020 08:22:22 +0200
-MIME-Version: 1.0
-In-Reply-To: <02a701d639f4$4bedafc0$e3c90f40$@mobius-embedded-systems.co.uk>
-Content-Language: en-US
+ id 1jfsnU-00077e-W1
+ for barebox@lists.infradead.org; Mon, 01 Jun 2020 22:20:46 +0000
+Received: by mail-lj1-x235.google.com with SMTP id q2so10121458ljm.10
+ for <barebox@lists.infradead.org>; Mon, 01 Jun 2020 15:20:44 -0700 (PDT)
+Date: Tue, 2 Jun 2020 01:20:35 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20200602012035.2b476de768013dc5793cdea0@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,87 +17,99 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Mini UART support for Raspberry Pi CM3 ?
-To: "john@mobius-embedded-systems.co.uk" <andrew@mobius-embedded-systems.co.uk>, barebox@lists.infradead.org
+Subject: [RFC] inkscape 1.0 issue
+To: barebox@lists.infradead.org
 
-SGVsbG8sCgpPbiA2LzQvMjAgMTI6MTQgQU0sIGpvaG5AbW9iaXVzLWVtYmVkZGVkLXN5c3RlbXMu
-Y28udWsgd3JvdGU6Cj4gSGkgQWhtYWQKPiAKPiBJIGdvdCBhIGxpdHRsZSBmdXJ0aGVyIGFuZCBh
-bHRob3VnaCB0aGVyZSdzIHN0aWxsIG5vIHNlcmlhbCBvdXRwdXQgb24gVUFSVDEsIEkgYXQgbGVh
-c3Qgbm93IHNlZSBhbiBlcnJvciBtZXNzYWdlIGFib3V0IGl0IChvbiBVQVJUMCBzdGlsbCkuICAK
-PiAKPiBuczE2NTUwX3NlcmlhbCAzZjIxNTA0MC5zZXJpYWxAN2UyMTUwNDAub2Y6IHByb2JlIGZh
-aWxlZDogRGV2aWNlIG9yIHJlc291cmNlIGJ1c3kKRHJpdmVycyByZXF1ZXN0IHRoZSBNTUlPIHJl
-Z2lvbiB0aGV5IHdhbnQgdG8gd29yayB3aXRoLiBUcnkgdGhlIGlvbWVtIGNvbW1hbmQgdG8gc2Vl
-CmlmIHRoZSBFQlVTWSBpcyBkdWUgdG8gYSByZXNvdXJjZSBjbGFzaCBvbiAweDdlMjE1MDQwLiBB
-bHRob3VnaCBJIHdvbmRlciBob3cgdGhhdApjYW1lIGFib3V0LiBOb3JtYWxseSwgd2l0aCBkZXZp
-Y2UgdHJlZSwgdGhpcyBzaG91bGRuJ3QgaGFwcGVuIHVubGVzcyB0aGUgZGV2aWNlCnRyZWUgaXMg
-ZmF1bHR5Lgo+IFNvIHlvdXIgcG9pbnQgYWJvdXQgc2V0dGluZyBDT05TT0xFX0FDVElWQVRFX05P
-TkUgd2FzIGNvcnJlY3Qg8J+Yii4gIE1heWJlIEkndmUgbWlzc2VkIHNvbWV0aGluZyBpbiB0aGUg
-ZGV2aWNlIHRyZWVzLCBidXQgYW0gYXQgbGVhc3QgaGVhcnRlbmVkIHRvIHNlZSBzb21ldGhpbmcg
-cHJpbnRlZC4gIAoKQ2FuJ3QgdGFrZSBjcmVkaXQsIGJlY2F1c2UgSSBkb24ndCBrbm93IHdoeSB0
-aGlzIHdvdWxkIGNhdXNlIGFuIGVycm9yIG1lc3NhZ2UgdG8gYmUKcHJpbnRlZCwgd2hlbiBub25l
-IHdhcyBwcmludGVkIGJlZm9yZS4KCktlZXAgdXMgcG9zdGVkLgoKQ2hlZXJzCkFobWFkCgo+IAo+
-IFRoYW5rcwo+IAo+IEpvaG4KPiAKPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQo+IEZyb206
-IGJhcmVib3ggPGJhcmVib3gtYm91bmNlc0BsaXN0cy5pbmZyYWRlYWQub3JnPiBPbiBCZWhhbGYg
-T2YgQWhtYWQgRmF0b3VtCj4gU2VudDogMDIgSnVuZSAyMDIwIDExOjEyCj4gVG86IGpvaG5AbW9i
-aXVzLWVtYmVkZGVkLXN5c3RlbXMuY28udWsgPGFuZHJld0Btb2JpdXMtZW1iZWRkZWQtc3lzdGVt
-cy5jby51az47IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+IFN1YmplY3Q6IFJlOiBNaW5p
-IFVBUlQgc3VwcG9ydCBmb3IgUmFzcGJlcnJ5IFBpIENNMyA/Cj4gCj4gT24gNi8yLzIwIDExOjU3
-IEFNLCBqb2huQG1vYml1cy1lbWJlZGRlZC1zeXN0ZW1zLmNvLnVrIHdyb3RlOgo+PiBIaSBBaG1h
-ZAo+Pgo+PiBJIGhhdmUgYmVlbiB1c2luZyB2MjAyMC4wNSBidXQgSSBiZWxpZXZlIEkgaGFkIGVu
-YWJsZWQgYWxsIGNvbnNvbGVzIHNvIAo+PiBJJ2xsIHRyeSBzZXR0aW5nIGl0IHRvIG5vbmUgYW5k
-IHNlZSBob3cgdGhhdCBnb2VzLgo+IAo+IFRoaXMgd2lsbCBvbmx5IGZpeCB0aGUgdXNlIG9mIFVB
-UlQwIGFzIG91dHB1dC4gVG8gdXNlIFVBUlQxLCB5b3UnbGwgbmVlZCB0byBzZXQgc3Rkb3V0LXBh
-dGggPSAmdWFydDEgbGlrZSBhYjc2ZjlkMDlkM2IgKCJBUk06IHJwaTogY2hvb3NlIG1pbml1YXJ0
-IGFzCj4gc3Rkb3V0IikgZG9lcy4KPiAKPiBDaGVlcnMKPiBBaG1hZAo+IAo+Pgo+PiBUaGFua3MK
-Pj4KPj4gSm9obgo+Pgo+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQo+PiBGcm9tOiBiYXJl
-Ym94IDxiYXJlYm94LWJvdW5jZXNAbGlzdHMuaW5mcmFkZWFkLm9yZz4gT24gQmVoYWxmIE9mIEFo
-bWFkIAo+PiBGYXRvdW0KPj4gU2VudDogMDIgSnVuZSAyMDIwIDEwOjU1Cj4+IFRvOiBqb2huQG1v
-Yml1cy1lbWJlZGRlZC1zeXN0ZW1zLmNvLnVrCj4+IDxhbmRyZXdAbW9iaXVzLWVtYmVkZGVkLXN5
-c3RlbXMuY28udWs+OyBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKPj4gU3ViamVjdDogUmU6
-IE1pbmkgVUFSVCBzdXBwb3J0IGZvciBSYXNwYmVycnkgUGkgQ00zID8KPj4KPj4gT24gNi8yLzIw
-IDExOjQzIEFNLCBBaG1hZCBGYXRvdW0gd3JvdGU6Cj4+PiBPbiA2LzIvMjAgMTE6MTQgQU0sIGpv
-aG5AbW9iaXVzLWVtYmVkZGVkLXN5c3RlbXMuY28udWsgd3JvdGU6Cj4+Pj4gSGkKPj4+Pgo+Pj4+
-IEkgaGF2ZSBiZWVuIHRyeWluZyB0byBnZXQgdGhlIG1pbmkgVUFSVCAoVUFSVDEpIHRvIHdvcmsg
-aW4gQmFyZWJveCAKPj4+PiBvbiB0aGUgUlBJIENvbXB1dGUgTW9kdWxlIDMrLiAgSSBhbHJlYWR5
-IGhhdmUgdGhlIGNoYW5nZXMgbWFkZSBpbiAKPj4+PiBjb25maWcudHh0IGFuZCB0aGlzIHdvcmtz
-IGZpbmUgd2hlbiBJIGJvb3QgaW50byB0aGUgbWFpbiBMaW51eCBjb2RlLgo+Pj4+IEhvd2V2ZXIs
-IGluIEJhcmVib3gsIHRoZSBvdXRwdXQgYWx3YXlzIGNvbWVzIG91dCBvbiB0aGUgbWFpbiBVQVJU
-Cj4+Pj4gKFVBUlQwKSBhbmQgdGhhdCBpcyB3aXJlZCB0byB0aGUgQmx1ZXRvb3RoIG1vZHVsZSBv
-biBteSBwbGF0Zm9ybS4gIEkgCj4+Pj4gaGF2ZQo+PiB0cmllZCBtb2RpZnlpbmcgdGhlIGRldmlj
-ZQo+Pj4+IHRyZWVzIGFuZCBjYW5ub3Qgc2VlbSB0byBnZXQgYW55IG91dHB1dC4gICBJIGFsc28g
-ZW5zdXJlZCB0aGF0IEkgYWRkZWQKPj4gdGhlCj4+Pj4gUlBJIENNMyBvdXRwdXQgdGFyZ2V0IGFz
-IGEgY29uZmlnIGluIHJwaV9kZWZjb25maWcuICAgCj4+Pj4KPj4+PiBJJ3ZlIHRyaWVkIHR1cm5p
-bmcgb2ZmIHRoZSBQTDAxMSBjb25maWcgb3B0aW9uIGFuZCBhbHNvIGNoYW5naW5nIHRoZSAKPj4+
-PiBkZXZpY2UgdHJlZSB0byByZWZlcmVuY2UgVUFSVDEgYW5kIHNldCB0aGUgY2hvc2VuIHN0ZG91
-dC1wYXRoIHRvIAo+Pj4+IHBvaW50IHRvIHRoaXMgVUFSVCwgYnV0IHdoZW4gSSBkbyB0aGlzIEkg
-anVzdCBnZXQgYSBsYWNrIG9mIGFueSAKPj4+PiBzZXJpYWwKPj4gb3V0cHV0Lgo+Pj4+Cj4+Pj4g
-SSBhbSBhbHNvIHdhbnRpbmcgdG8gdXNlIHRoZSBhbHRlcm5hdGUgcGlucyAoMzIgJiAzMykgZm9y
-IFVBUlQxLCBzbyAKPj4+PiBJIGFtIHRoaW5raW5nIHRoYXQgc29tZXRoaW5nIGVsc2UgbmVlZHMg
-dG8gYmUgY2hhbmdlZC4gIEhhcyBhbnlvbmUgCj4+Pj4gbWFuYWdlZCB0byBnZXQgdGhpcyB0byB3
-b3JrPwo+Pj4KPj4+IFdoaWNoIGJhcmVib3ggdmVyc2lvbiBhcmUgeW91IG9uPyB2MjAyMC4wMy4w
-IGNvbnRhaW5zIGEgc2VyaWVzIGZvciAKPj4+IG1pbmkgVUFSVCBzdXBwb3J0IGN1bG1pbmF0aW5n
-IGluIGFiNzZmOWQwOWQzYiAoIkFSTTogcnBpOiBjaG9vc2UgCj4+PiBtaW5pdWFydCBhcyBzdGRv
-dXQiKSwgd2hpY2ggc291bmRzIGxpa2Ugc29tZXRoaW5nIHlvdSB3aWxsIHdhbnQgdG8gaGF2ZS4K
-Pj4KPj4gT2gsIEkgc2VlIG5vdyB0aGF0IHRoaXMgaXMgaW4gc2luY2UgdjIwMTkuMDMuMC4gSSBh
-c3N1bWUgeW91IGFyZSAKPj4gYWxyZWFkeSBvbiBhIG5ld2VyIHZlcnNpb24/Cj4+Cj4+PiBBbHNv
-IHdoYXQncyB5b3UgIkNvbnNvbGUgYWN0aXZhdGlvbiBzdHJhdGVneSI/IChLY29uZmlnIHN5bWJv
-bHMKPj4+IENPTlNPTEVfQUNUSVZBVEVfLiopIFlvdSdsbCB3YW50IHRvIGhhdmUgQ09OU09MRV9B
-Q1RJVkFURV9OT05FLCBzbyAKPj4+IG9ubHkgdGhlIHN0ZG91dC1wYXRoIGZyb20gdGhlIGRldmlj
-ZSB0cmVlIGlzIGFjdGl2YXRlZCBieSBkZWZhdWx0Lgo+Pj4KPj4+IENoZWVycwo+Pj4gQWhtYWQK
-Pj4+Cj4+Pj4KPj4+PiBSZWdhcmRzCj4+Pj4KPj4+PiBKb2huCj4+Pj4KPj4+Pgo+Pj4+IF9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4+Pj4gYmFyZWJveCBt
-YWlsaW5nIGxpc3QKPj4+PiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKPj4+PiBodHRwOi8v
-bGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gKPj4+Pgo+Pj4KPj4K
-PiAKCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgfApTdGV1ZXJ3YWxkZXIgU3RyLiAyMSAgICAgICAgICAg
-ICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfAozMTEzNyBIaWxkZXNo
-ZWltLCBHZXJtYW55ICAgICAgICAgICAgICAgICAgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAg
-ICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAg
-KzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRl
-YWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJv
-eAo=
+Hi All!
+
+I can't build barebox with inkscape-1.0 anymore.
+Some command line options were changed, e.g.
+
+make V=3D1
+...
+  ( inkscape -z "-w 64" -e lib/logo/barebox-logo-w64.bblogo /home/builduser=
+/barebox/Documentation/barebox.svg > /dev/null; )
+Unable to init server: Could not connect: Connection refused
+Unknown option -z
+
+make V=3D1
+...
+  ( DISPLAY=3D"" inkscape "-w 64" -e lib/logo/barebox-logo-w64.bblogo /home=
+/builduser/barebox/Documentation/barebox.svg > /dev/null; )
+Unable to init server: Could not connect: Connection refused
+Cannot parse integer value ?-e? for -w
+
+make V=3D1
+...
+  ( DISPLAY=3D"" inkscape --export-width=3D64 -e lib/logo/barebox-logo-w64.=
+bblogo /home/builduser/barebox/Documentation/barebox.svg > /dev/null; )
+Unable to init server: Could not connect: Connection refused
+Unknown option -e
+
+I have succeded with compiling barebox with inkscape-1.0, see patch below.
+Alas! My patch makes it impossible to use pre-1.0 inkscape (e.g. Inkscape 0=
+.92.4
+I used before).
+
+Any suggestion?
+
+
+diff --git a/lib/logo/Makefile b/lib/logo/Makefile
+index eb7aee080e..8c81447df7 100644
+--- a/lib/logo/Makefile
++++ b/lib/logo/Makefile
+@@ -1,17 +1,17 @@
+ =
+
+-OPTS_barebox-logo-w64.bblogo=3D"-w 64"
++OPTS_barebox-logo-w64.bblogo =3D --export-width=3D64
+ bblogo-$(CONFIG_BAREBOX_LOGO_64) +=3D barebox-logo-w64
+ =
+
+-OPTS_barebox-logo-w240.bblogo=3D"-w 240"
++OPTS_barebox-logo-w240.bblogo =3D --export-width=3D240
+ bblogo-$(CONFIG_BAREBOX_LOGO_240) +=3D barebox-logo-w240
+ =
+
+-OPTS_barebox-logo-w320.bblogo=3D"-w 320"
++OPTS_barebox-logo-w320.bblogo =3D --export-width=3D320
+ bblogo-$(CONFIG_BAREBOX_LOGO_320) +=3D barebox-logo-w320
+ =
+
+-OPTS_barebox-logo-w400.bblogo=3D"-w 400"
++OPTS_barebox-logo-w400.bblogo =3D --export-width=3D400
+ bblogo-$(CONFIG_BAREBOX_LOGO_400) +=3D barebox-logo-w400
+ =
+
+-OPTS_barebox-logo-w640.bblogo=3D"-w 640"
++OPTS_barebox-logo-w640.bblogo =3D --export-width=3D640
+ bblogo-$(CONFIG_BAREBOX_LOGO_640) +=3D barebox-logo-w640
+ =
+
+ obj-y +=3D $(patsubst %,%.bblogo.o,$(bblogo-y))
+@@ -41,7 +41,8 @@ cmd_logo_S =3D							\
+ quiet_cmd_logo =3D LOGO.S   $@
+ cmd_logo =3D							\
+ (								\
+-	inkscape -z $(OPTS_$(@F)) -e $@ $< > /dev/null;		\
++	DISPLAY=3D"" inkscape $(OPTS_$(@F)) --export-type=3Dpng $< > /dev/null; \
++	mv $(patsubst %.svg,%.png,$<) $@; \
+ )
+ =
+
+ %.bblogo: $(srctree)/Documentation/barebox.svg FORCE
+
+
+-- =
+
+Best regards,
+=A0 Antony Pavlov
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
