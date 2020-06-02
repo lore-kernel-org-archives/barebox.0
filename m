@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jg2gY-0006qU-NB
- for barebox@lists.infradead.org; Tue, 02 Jun 2020 08:54:16 +0000
+ id 1jg2gY-0006qc-R8
+ for barebox@lists.infradead.org; Tue, 02 Jun 2020 08:54:17 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue,  2 Jun 2020 10:53:48 +0200
-Message-Id: <20200602085412.16554-2-a.fatoum@pengutronix.de>
+Date: Tue,  2 Jun 2020 10:53:50 +0200
+Message-Id: <20200602085412.16554-4-a.fatoum@pengutronix.de>
 In-Reply-To: <20200602085412.16554-1-a.fatoum@pengutronix.de>
 References: <20200602085412.16554-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,110 +21,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 01/25] scripts: import Linux Kconfig.include
+Subject: [PATCH v2 03/25] sandbox: asm: bitsperlong.h: detect bitness
+ according to 64BIT symbol
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-With this include, we can have goodies like $(cc-option ...) and
-$(success ...) inside our Kconfig files.
+Now that we have an accurate CONFIG_64BIT describing sandbox bitness,
+we don't need to assume everything except __x86_64__ as 32-bit.
 
-gcc-version also now becomes available. While unused for now, it can
-allow us to selectively turn on warnings on new GCC versions, which
-were previously disabled because of their too high false positive rate.
+This assumes that sizeof(long) == sizeof(void *), which is assumed
+anyway throughout the code base.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- scripts/Kconfig.include | 53 +++++++++++++++++++++++++++++++++++++++++
- scripts/gcc-version.sh  | 20 ++++++++++++++++
- 2 files changed, 73 insertions(+)
- create mode 100644 scripts/Kconfig.include
- create mode 100755 scripts/gcc-version.sh
+ arch/sandbox/include/asm/bitsperlong.h | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/scripts/Kconfig.include b/scripts/Kconfig.include
-new file mode 100644
-index 000000000000..496d11c92c97
---- /dev/null
-+++ b/scripts/Kconfig.include
-@@ -0,0 +1,53 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+# Kconfig helper macros
-+
-+# Convenient variables
-+comma       := ,
-+quote       := "
-+squote      := '
-+empty       :=
-+space       := $(empty) $(empty)
-+dollar      := $
-+right_paren := )
-+left_paren  := (
-+
-+# $(if-success,<command>,<then>,<else>)
-+# Return <then> if <command> exits with 0, <else> otherwise.
-+if-success = $(shell,{ $(1); } >/dev/null 2>&1 && echo "$(2)" || echo "$(3)")
-+
-+# $(success,<command>)
-+# Return y if <command> exits with 0, n otherwise
-+success = $(if-success,$(1),y,n)
-+
-+# $(failure,<command>)
-+# Return n if <command> exits with 0, y otherwise
-+failure = $(if-success,$(1),n,y)
-+
-+# $(cc-option,<flag>)
-+# Return y if the compiler supports <flag>, n otherwise
-+cc-option = $(success,$(CC) -Werror $(CLANG_FLAGS) $(1) -S -x c /dev/null -o /dev/null)
-+
-+# $(ld-option,<flag>)
-+# Return y if the linker supports <flag>, n otherwise
-+ld-option = $(success,$(LD) -v $(1))
-+
-+# $(as-instr,<instr>)
-+# Return y if the assembler supports <instr>, n otherwise
-+as-instr = $(success,printf "%b\n" "$(1)" | $(CC) $(CLANG_FLAGS) -c -x assembler -o /dev/null -)
-+
-+# check if $(CC) and $(LD) exist
-+$(error-if,$(failure,command -v $(CC)),compiler '$(CC)' not found)
-+$(error-if,$(failure,command -v $(LD)),linker '$(LD)' not found)
-+
-+# Fail if the linker is gold as it's not capable of linking the kernel proper
-+$(error-if,$(success, $(LD) -v | grep -q gold), gold linker '$(LD)' not supported)
-+
-+# gcc version including patch level
-+gcc-version := $(shell,$(srctree)/scripts/gcc-version.sh $(CC))
-+
-+# machine bit flags
-+#  $(m32-flag): -m32 if the compiler supports it, or an empty string otherwise.
-+#  $(m64-flag): -m64 if the compiler supports it, or an empty string otherwise.
-+cc-option-bit = $(if-success,$(CC) -Werror $(1) -E -x c /dev/null -o /dev/null,$(1))
-+m32-flag := $(cc-option-bit,-m32)
-+m64-flag := $(cc-option-bit,-m64)
-diff --git a/scripts/gcc-version.sh b/scripts/gcc-version.sh
-new file mode 100755
-index 000000000000..ae353432539b
---- /dev/null
-+++ b/scripts/gcc-version.sh
-@@ -0,0 +1,20 @@
-+#!/bin/sh
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# gcc-version gcc-command
-+#
-+# Print the gcc version of `gcc-command' in a 5 or 6-digit form
-+# such as `29503' for gcc-2.95.3, `30301' for gcc-3.3.1, etc.
-+
-+compiler="$*"
-+
-+if [ ${#compiler} -eq 0 ]; then
-+	echo "Error: No compiler specified." >&2
-+	printf "Usage:\n\t$0 <gcc-command>\n" >&2
-+	exit 1
-+fi
-+
-+MAJOR=$(echo __GNUC__ | $compiler -E -x c - | tail -n 1)
-+MINOR=$(echo __GNUC_MINOR__ | $compiler -E -x c - | tail -n 1)
-+PATCHLEVEL=$(echo __GNUC_PATCHLEVEL__ | $compiler -E -x c - | tail -n 1)
-+printf "%d%02d%02d\\n" $MAJOR $MINOR $PATCHLEVEL
+diff --git a/arch/sandbox/include/asm/bitsperlong.h b/arch/sandbox/include/asm/bitsperlong.h
+index 00c1fc2625b2..6dc0bb0c13b2 100644
+--- a/arch/sandbox/include/asm/bitsperlong.h
++++ b/arch/sandbox/include/asm/bitsperlong.h
+@@ -1,10 +1 @@
+-#ifndef __ASM_BITSPERLONG_H
+-#define __ASM_BITSPERLONG_H
+-
+-#ifdef __x86_64__
+-#define BITS_PER_LONG 64
+-#else
+-#define BITS_PER_LONG 32
+-#endif
+-
+-#endif /* __ASM_BITSPERLONG_H */
++#include <asm-generic/bitsperlong.h>
 -- 
 2.27.0
 
