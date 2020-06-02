@@ -1,14 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mailex.mailcore.me ([94.136.40.146])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jg2gq-00078j-7B
- for barebox@lists.infradead.org; Tue, 02 Jun 2020 08:54:33 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue,  2 Jun 2020 10:54:07 +0200
-Message-Id: <20200602085412.16554-21-a.fatoum@pengutronix.de>
-In-Reply-To: <20200602085412.16554-1-a.fatoum@pengutronix.de>
-References: <20200602085412.16554-1-a.fatoum@pengutronix.de>
+ id 1jg2zx-0005U1-AB
+ for barebox@lists.infradead.org; Tue, 02 Jun 2020 09:14:18 +0000
+Received: from [87.75.44.8] (helo=DELL7710)
+ by smtp04.mailcore.me with esmtpa (Exim 4.92.3)
+ (envelope-from <andrew@mobius-embedded-systems.co.uk>)
+ id 1jg2zt-0002pd-W6
+ for barebox@lists.infradead.org; Tue, 02 Jun 2020 10:14:15 +0100
+From: "john@mobius-embedded-systems.co.uk"
+ <andrew@mobius-embedded-systems.co.uk>
+Date: Tue, 2 Jun 2020 10:14:12 +0100
+Message-ID: <00a601d638be$2f10f330$8d32d990$@mobius-embedded-systems.co.uk>
 MIME-Version: 1.0
+Content-Language: en-gb
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,66 +26,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 20/25] usb: xhci-hcd: replace opencoded non-atomic 64-bit
- MMIO with lo_hi helper
+Subject: Mini UART support for Raspberry Pi CM3 ?
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Commit 3c5317e9046 ("usb: xhci-hcd: Make use of lo_hi_readq/writeq()")
-had made use of lo_hi_readq/writeq() to implement xhci_read/write_64(),
-like Linux does, but this was removed in commit fddd1c7c51a8
-("usb: host: remove xhci driver"). Reinstate it to make code clearer.
+Hi
 
-No functional change.
+I have been trying to get the mini UART (UART1) to work in Barebox on the
+RPI Compute Module 3+.  I already have the changes made in config.txt and
+this works fine when I boot into the main Linux code.  However, in Barebox,
+the output always comes out on the main UART (UART0) and that is wired to
+the Bluetooth module on my platform.  I have tried modifying the device
+trees and cannot seem to get any output.   I also ensured that I added the
+RPI CM3 output target as a config in rpi_defconfig.   
 
-[Note: Linux doesn't use any readq/writeq, but does two 32-bit access
- always, even on 64-bit systems]
+I've tried turning off the PL011 config option and also changing the device
+tree to reference UART1 and set the chosen stdout-path to point to this
+UART, but when I do this I just get a lack of any serial output.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- drivers/usb/host/xhci.h | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+I am also wanting to use the alternate pins (32 & 33) for UART1, so I am
+thinking that something else needs to be changed.  Has anyone managed to get
+this to work?
 
-diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
-index 1a3f7e7642bc..9ffbb103d562 100644
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -18,6 +18,7 @@
- 
- #include <asm/types.h>
- #include <io.h>
-+#include <io-64-nonatomic-lo-hi.h>
- #include <linux/list.h>
- 
- #define MAX_EP_CTX_NUM		31
-@@ -1112,10 +1113,7 @@ static inline u64 xhci_readq(__le64 volatile *regs)
- #if BITS_PER_LONG == 64
- 	return readq(regs);
- #else
--	__u32 *ptr = (__u32 *)regs;
--	u64 val_lo = readl(ptr);
--	u64 val_hi = readl(ptr + 1);
--	return val_lo + (val_hi << 32);
-+	return lo_hi_readq(regs);
- #endif
- }
- 
-@@ -1124,12 +1122,7 @@ static inline void xhci_writeq(__le64 volatile *regs, const u64 val)
- #if BITS_PER_LONG == 64
- 	writeq(val, regs);
- #else
--	__u32 *ptr = (__u32 *)regs;
--	u32 val_lo = lower_32_bits(val);
--	/* FIXME */
--	u32 val_hi = upper_32_bits(val);
--	writel(val_lo, ptr);
--	writel(val_hi, ptr + 1);
-+	lo_hi_writeq(val, regs);
- #endif
- }
- 
--- 
-2.27.0
+Regards
+
+John
 
 
 _______________________________________________
