@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jg1r1-0004ff-Vc
- for barebox@lists.infradead.org; Tue, 02 Jun 2020 08:01:01 +0000
+ id 1jg2dP-0006Up-P0
+ for barebox@lists.infradead.org; Tue, 02 Jun 2020 08:51:01 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue,  2 Jun 2020 10:00:49 +0200
-Message-Id: <20200602080049.8451-3-a.fatoum@pengutronix.de>
-In-Reply-To: <20200602080049.8451-1-a.fatoum@pengutronix.de>
-References: <20200602080049.8451-1-a.fatoum@pengutronix.de>
+Date: Tue,  2 Jun 2020 10:50:52 +0200
+Message-Id: <20200602085052.15626-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,43 +19,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] mci: reword MCI_STARTUP text
+Subject: [PATCH] scripts: .gitignore: ignore mvebuimg binary
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-With the recent addition of a generic device_detect for MCI devices,
-the MCI_STARTUP help text is no longer accurate. Reword it, but leave
-the option as-is as some boards may be broken if we drop the option
-(e.g. because they still depend on a probe order or call
-default_environment_path_set, but don't explicitly detect the device).
+If selected, we generate a mvebuimg binary that should be ignored by
+version control. Add .gitignore entry to do so.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/mci/Kconfig | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ scripts/.gitignore | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
-index 60c60ceaa527..6ae1e812528c 100644
---- a/drivers/mci/Kconfig
-+++ b/drivers/mci/Kconfig
-@@ -12,12 +12,12 @@ if MCI
- comment "--- Feature list ---"
- 
- config MCI_STARTUP
--	bool "Probe on system start"
-+	bool "Force probe on system start"
- 	help
--	  Say 'y' here if the MCI framework should probe for attached MCI cards
--	  on system start up. This is required if the card carries barebox's
--	  environment (for example on systems where the MCI card is the sole
--	  bootmedia). Otherwise probing run on demand with "mci*.probe=1"
-+	  Say 'y' here if the MCI framework should always probe for all attached
-+	  MCI cards on system start up. This may required for some legacy boards.
-+	  When this is 'n', probing happens on demand either with "mci*.probe=1"
-+	  or with driver/board code calling device_detect.
- 
- config MCI_INFO
- 	bool "MCI Info"
+diff --git a/scripts/.gitignore b/scripts/.gitignore
+index c3ac0b570283..7c9a3f55715f 100644
+--- a/scripts/.gitignore
++++ b/scripts/.gitignore
+@@ -31,3 +31,4 @@ omap3-usb-loader
+ mips-relocs
+ rsatoc
+ stm32image
++mvebuimg
 -- 
 2.27.0
 
