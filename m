@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jg2gi-0006zi-4Z
+ id 1jg2gi-000701-AO
  for barebox@lists.infradead.org; Tue, 02 Jun 2020 08:54:28 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue,  2 Jun 2020 10:54:06 +0200
-Message-Id: <20200602085412.16554-20-a.fatoum@pengutronix.de>
+Date: Tue,  2 Jun 2020 10:54:10 +0200
+Message-Id: <20200602085412.16554-24-a.fatoum@pengutronix.de>
 In-Reply-To: <20200602085412.16554-1-a.fatoum@pengutronix.de>
 References: <20200602085412.16554-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,28 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 19/25] usb: xhci-hcd: remove unused #include <asm/cache.h>
+Subject: [PATCH v2 23/25] commands: test: drop dead assignment
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-We don't use anything defined within, so drop it.
+last_expr is set to a different value few lines later. Drop the dead
+assignment.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/usb/host/xhci.h | 1 -
+ commands/test.c | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
-index 886cbef14c3a..1a3f7e7642bc 100644
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -17,7 +17,6 @@
- #define HOST_XHCI_H_
+diff --git a/commands/test.c b/commands/test.c
+index 505b7c56b1a4..c845cec01789 100644
+--- a/commands/test.c
++++ b/commands/test.c
+@@ -86,7 +86,6 @@ static int do_test(int argc, char *argv[])
+ 	if (argc < 2)
+ 		return 1;
  
- #include <asm/types.h>
--#include <asm/cache.h>
- #include <io.h>
- #include <linux/list.h>
+-	last_expr = 0;
+ 	left = argc - 1;
+ 	ap = argv + 1;
  
 -- 
 2.27.0
