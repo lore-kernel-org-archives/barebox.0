@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx1.emlix.com ([188.40.240.192])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jksnD-00072L-U1
- for barebox@lists.infradead.org; Mon, 15 Jun 2020 17:21:15 +0000
-From: =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
-Date: Mon, 15 Jun 2020 19:20:47 +0200
-Message-Id: <03e16900dd984355d4da055473f635df819b851b.1592241105.git.dg@emlix.com>
-In-Reply-To: <cover.1592241105.git.dg@emlix.com>
-References: <cover.1592241105.git.dg@emlix.com>
-In-Reply-To: <cover.1592241105.git.dg@emlix.com>
-References: <cover.1592241105.git.dg@emlix.com>
+ id 1jg1o7-0001jC-OD
+ for barebox@lists.infradead.org; Tue, 02 Jun 2020 07:58:04 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue,  2 Jun 2020 09:57:56 +0200
+Message-Id: <20200602075757.4734-2-a.fatoum@pengutronix.de>
+In-Reply-To: <20200602075757.4734-1-a.fatoum@pengutronix.de>
+References: <20200602075757.4734-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,336 +17,677 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 14/14] fastboot net: implement fastboot over UDP
-To: Barebox List <barebox@lists.infradead.org>
-Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
+Subject: [PATCH 2/3] restart: give all restart handlers a descriptive name
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-RnJvbTogRWRtdW5kIEhlbm5pZ2VzIDxlaEBlbWxpeC5jb20+CgpUaGlzIGltcGxlbWVudHMgdGhl
-IFVEUCB2YXJpYW50IG9mIHRoZSBmYXN0Ym9vdCBwcm90b2NvbC4gVGhlIG9ubHkgd2F5IHRvCnN0
-YXJ0IHRoZSBzZXJ2aWNlIGZvciBub3cgaXMgdG8gY29tcGlsZSB3aXRoIENPTkZJR19GQVNUQk9P
-VF9ORVRfT05fQk9PVC4KVGhlIHNlcnZpY2Ugd2lsbCBiaW5kIHRvIHRoZSBuZXR3b3JrIGludGVy
-ZmFjZSB0aGF0IHByb3ZpZGVzIHRoZSBJUHY0CmdhdGV3YXkuCgpTZW5kaW5nIGFuIE9LQVkgcGFj
-a2V0IGJlZm9yZSBwZXJmb3JtaW5nIGEgcmVzdGFydCBpcyBuZWNlc3Nhcnkgc2luY2UKY29udHJh
-cnkgdG8gVVNCIHRoZSBob3N0IHdpbGwgbm90IG5vdGljZSB3aGVuIGEgVURQIHNlcnZlciBkaXNh
-cHBlYXJzLgoKU2lnbmVkLW9mZi1ieTogRWRtdW5kIEhlbm5pZ2VzIDxlaEBlbWxpeC5jb20+ClNp
-Z25lZC1vZmYtYnk6IERhbmllbCBHbMO2Y2tuZXIgPGRnQGVtbGl4LmNvbT4KU2lnbmVkLW9mZi1i
-eTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgotLS0KIGNvbW1vbi9mYXN0
-Ym9vdC5jICAgICAgfCAgIDMgKwogaW5jbHVkZS9mYXN0Ym9vdC5oICAgICB8ICAgMSArCiBpbmNs
-dWRlL2Zhc3Rib290X25ldC5oIHwgIDEyICsKIG5ldC9LY29uZmlnICAgICAgICAgICAgfCAgMTAg
-KwogbmV0L01ha2VmaWxlICAgICAgICAgICB8ICAgMSArCiBuZXQvZmFzdGJvb3QuYyAgICAgICAg
-IHwgNTUwICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrCiA2IGZpbGVz
-IGNoYW5nZWQsIDU3NyBpbnNlcnRpb25zKCspCiBjcmVhdGUgbW9kZSAxMDA2NDQgaW5jbHVkZS9m
-YXN0Ym9vdF9uZXQuaAogY3JlYXRlIG1vZGUgMTAwNjQ0IG5ldC9mYXN0Ym9vdC5jCgpkaWZmIC0t
-Z2l0IGEvY29tbW9uL2Zhc3Rib290LmMgYi9jb21tb24vZmFzdGJvb3QuYwppbmRleCAyZGI4MTY1
-Y2UuLjEzMGRjNDZlMSAxMDA2NDQKLS0tIGEvY29tbW9uL2Zhc3Rib290LmMKKysrIGIvY29tbW9u
-L2Zhc3Rib290LmMKQEAgLTI1MCw2ICsyNTAsNyBAQCBzdGF0aWMgY2hhciAqZmFzdGJvb3RfbXNn
-W10gPSB7CiAJW0ZBU1RCT09UX01TR19GQUlMXSA9ICJGQUlMIiwKIAlbRkFTVEJPT1RfTVNHX0lO
-Rk9dID0gIklORk8iLAogCVtGQVNUQk9PVF9NU0dfREFUQV0gPSAiREFUQSIsCisJW0ZBU1RCT09U
-X01TR19OT05FXSA9ICIiLAogfTsKIAogaW50IGZhc3Rib290X3R4X3ByaW50KHN0cnVjdCBmYXN0
-Ym9vdCAqZmIsIGVudW0gZmFzdGJvb3RfbXNnX3R5cGUgdHlwZSwKQEAgLTI3OCw2ICsyNzksNyBA
-QCBpbnQgZmFzdGJvb3RfdHhfcHJpbnQoc3RydWN0IGZhc3Rib290ICpmYiwgZW51bSBmYXN0Ym9v
-dF9tc2dfdHlwZSB0eXBlLAogCWNhc2UgRkFTVEJPT1RfTVNHX0lORk86CiAJCXByX2luZm8oIiVw
-VlxuIiwgJnZhZik7CiAJCWJyZWFrOworCWNhc2UgRkFTVEJPT1RfTVNHX05PTkU6CiAJY2FzZSBG
-QVNUQk9PVF9NU0dfREFUQToKIAkJYnJlYWs7CiAJfQpAQCAtMjkyLDYgKzI5NCw3IEBAIGludCBm
-YXN0Ym9vdF90eF9wcmludChzdHJ1Y3QgZmFzdGJvb3QgKmZiLCBlbnVtIGZhc3Rib290X21zZ190
-eXBlIHR5cGUsCiAKIHN0YXRpYyB2b2lkIGNiX3JlYm9vdChzdHJ1Y3QgZmFzdGJvb3QgKmZiLCBj
-b25zdCBjaGFyICpjbWQpCiB7CisJZmFzdGJvb3RfdHhfcHJpbnQoZmIsIEZBU1RCT09UX01TR19P
-S0FZLCAiIik7CiAJcmVzdGFydF9tYWNoaW5lKCk7CiB9CiAKZGlmZiAtLWdpdCBhL2luY2x1ZGUv
-ZmFzdGJvb3QuaCBiL2luY2x1ZGUvZmFzdGJvb3QuaAppbmRleCA4OGVjNDc4NDkuLjVjM2UyODk0
-ZCAxMDA2NDQKLS0tIGEvaW5jbHVkZS9mYXN0Ym9vdC5oCisrKyBiL2luY2x1ZGUvZmFzdGJvb3Qu
-aApAQCAtNTIsNiArNTIsNyBAQCBlbnVtIGZhc3Rib290X21zZ190eXBlIHsKIAlGQVNUQk9PVF9N
-U0dfRkFJTCwKIAlGQVNUQk9PVF9NU0dfSU5GTywKIAlGQVNUQk9PVF9NU0dfREFUQSwKKwlGQVNU
-Qk9PVF9NU0dfTk9ORSwKIH07CiAKIGV4dGVybiBpbnQgZmFzdGJvb3RfYmJ1OwpkaWZmIC0tZ2l0
-IGEvaW5jbHVkZS9mYXN0Ym9vdF9uZXQuaCBiL2luY2x1ZGUvZmFzdGJvb3RfbmV0LmgKbmV3IGZp
-bGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMDAwLi5lNGI5ZDk4MDkKLS0tIC9kZXYvbnVsbAor
-KysgYi9pbmNsdWRlL2Zhc3Rib290X25ldC5oCkBAIC0wLDAgKzEsMTIgQEAKKy8qIFNQRFgtTGlj
-ZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wKyAqLworI2lmbmRlZiBfX0ZBU1RCT09UX05FVF9fCisj
-ZGVmaW5lIF9fRkFTVEJPT1RfTkVUX18KKworI2luY2x1ZGUgPGZhc3Rib290Lmg+CisKK3N0cnVj
-dCBmYXN0Ym9vdF9uZXQ7CisKK3N0cnVjdCBmYXN0Ym9vdF9uZXQgKmZhc3Rib290X25ldF9pbml0
-KHN0cnVjdCBmYXN0Ym9vdF9vcHRzICpvcHRzKTsKK3ZvaWQgZmFzdGJvb3RfbmV0X2ZyZWUoc3Ry
-dWN0IGZhc3Rib290X25ldCAqZmJuKTsKKworI2VuZGlmCmRpZmYgLS1naXQgYS9uZXQvS2NvbmZp
-ZyBiL25ldC9LY29uZmlnCmluZGV4IDEyYjZiZGI1Ni4uYTNjOGMxMGYzIDEwMDY0NAotLS0gYS9u
-ZXQvS2NvbmZpZworKysgYi9uZXQvS2NvbmZpZwpAQCAtMzEsNCArMzEsMTQgQEAgY29uZmlnIE5F
-VF9TTlRQCiAJYm9vbAogCXByb21wdCAic250cCBzdXBwb3J0IgogCitjb25maWcgTkVUX0ZBU1RC
-T09UCisJYm9vbAorCXNlbGVjdCBCQU5ORVIKKwlzZWxlY3QgRklMRV9MSVNUCisJc2VsZWN0IEZB
-U1RCT09UX0JBU0UKKwlwcm9tcHQgIkFuZHJvaWQgRmFzdGJvb3Qgc3VwcG9ydCIKKwloZWxwCisJ
-ICBUaGlzIG9wdGlvbiBhZGRzIHN1cHBvcnQgZm9yIHRoZSBVRFAgdmFyaWFudCBvZiB0aGUgRmFz
-dGJvb3QKKwkgIHByb3RvY29sLgorCiBlbmRpZgpkaWZmIC0tZ2l0IGEvbmV0L01ha2VmaWxlIGIv
-bmV0L01ha2VmaWxlCmluZGV4IGViOGQ0MzkxNS4uOTYyYjJkZWM1IDEwMDY0NAotLS0gYS9uZXQv
-TWFrZWZpbGUKKysrIGIvbmV0L01ha2VmaWxlCkBAIC04LDMgKzgsNCBAQCBvYmotJChDT05GSUdf
-Q01EX1BJTkcpCSs9IHBpbmcubwogb2JqLSQoQ09ORklHX05FVF9SRVNPTFYpKz0gZG5zLm8KIG9i
-ai0kKENPTkZJR19ORVRfTkVUQ09OU09MRSkgKz0gbmV0Y29uc29sZS5vCiBvYmotJChDT05GSUdf
-TkVUX0lGVVApCSs9IGlmdXAubworb2JqLSQoQ09ORklHX05FVF9GQVNUQk9PVCkgKz0gZmFzdGJv
-b3QubwpkaWZmIC0tZ2l0IGEvbmV0L2Zhc3Rib290LmMgYi9uZXQvZmFzdGJvb3QuYwpuZXcgZmls
-ZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwMDAuLjI3YTc1OGIwNQotLS0gL2Rldi9udWxsCisr
-KyBiL25ldC9mYXN0Ym9vdC5jCkBAIC0wLDAgKzEsNTUwIEBACisvLyBTUERYLUxpY2Vuc2UtSWRl
-bnRpZmllcjogQlNELTItQ2xhdXNlCisvKgorICogQ29weXJpZ2h0IChDKSAyMDE2IFRoZSBBbmRy
-b2lkIE9wZW4gU291cmNlIFByb2plY3QKKyAqCisgKiBDb3B5cmlnaHQgMjAyMCBFZG11bmQgSGVu
-bmlnZXMgPGVoQGVtbGl4LmNvbT4KKyAqIENvcHlyaWdodCAyMDIwIERhbmllbCBHbMO2Y2tuZXIg
-PGRnQGVtbGl4LmNvbT4KKyAqIFBvcnRlZCBmcm9tIFUtQm9vdCB0byBCYXJlYm94CisgKi8KKwor
-I2RlZmluZSBwcl9mbXQoZm10KSAibmV0IGZhc3Rib290OiAiIGZtdAorCisjaW5jbHVkZSA8Y29t
-bW9uLmg+CisjaW5jbHVkZSA8bmV0Lmg+CisjaW5jbHVkZSA8ZmFzdGJvb3QuaD4KKyNpbmNsdWRl
-IDxmYXN0Ym9vdF9uZXQuaD4KKyNpbmNsdWRlIDxlbnZpcm9ubWVudC5oPgorI2luY2x1ZGUgPHBy
-b2dyZXNzLmg+CisjaW5jbHVkZSA8dW5pc3RkLmg+CisjaW5jbHVkZSA8aW5pdC5oPgorI2luY2x1
-ZGUgPGdsb2JhbHZhci5oPgorI2luY2x1ZGUgPG1hZ2ljdmFyLmg+CisKKyNkZWZpbmUgRkFTVEJP
-T1RfUE9SVCA1NTU0CisjZGVmaW5lIE1BWF9NVFUgMTUwMAorI2RlZmluZSBQQUNLRVRfU0laRSAo
-bWluKFBLVFNJWkUsIE1BWF9NVFUgKyBFVEhFUl9IRFJfU0laRSkgXAorCQkgICAgICAtIChuZXRf
-ZXRoX3RvX3VkcF9wYXlsb2FkKDApIC0gKGNoYXIgKikwKSkKKworZW51bSB7CisJRkFTVEJPT1Rf
-RVJST1IgPSAwLAorCUZBU1RCT09UX1FVRVJZID0gMSwKKwlGQVNUQk9PVF9JTklUID0gMiwKKwlG
-QVNUQk9PVF9GQVNUQk9PVCA9IDMsCit9OworCitlbnVtIHsKKwlNQVlfTk9UX1NFTkQsCisJTUFZ
-X1NFTkRfTUVTU0FHRSwKKwlNQVlfU0VORF9BQ0ssCit9OworCitzdHJ1Y3QgX19wYWNrZWQgZmFz
-dGJvb3RfaGVhZGVyIHsKKwl1OCBpZDsKKwl1OCBmbGFnczsKKwl1MTYgc2VxOworfTsKKworc3Ry
-dWN0IGZhc3Rib290X25ldCB7CisJc3RydWN0IGZhc3Rib290IGZhc3Rib290OworCisJc3RydWN0
-IG5ldF9jb25uZWN0aW9uICpuZXRfY29uOworCXN0cnVjdCBmYXN0Ym9vdF9oZWFkZXIgcmVzcG9u
-c2VfaGVhZGVyOworCXN0cnVjdCBwb2xsZXJfc3RydWN0IHBvbGxlcjsKKwlzdHJ1Y3QgcG9sbGVy
-X3N0cnVjdCBrZWVwX2FsaXZlX3BvbGxlcjsKKwl1NjQgaG9zdF93YWl0c19zaW5jZTsKKwlib29s
-IHNlcXVlbmNlX251bWJlcl9zZWVuOworCWJvb2wgYWN0aXZlX2Rvd25sb2FkOworCWJvb2wgZG93
-bmxvYWRfbmVlZHNfY2xlYW51cDsKKwlib29sIHJlaW5pdDsKKwl1OCBtYXlfc2VuZDsKKwljaGFy
-IGNvbW1hbmRbNjVdOworCisJSVBhZGRyX3QgaG9zdF9hZGRyOworCXUxNiBob3N0X3BvcnQ7CisJ
-dTggaG9zdF9tYWNbRVRIX0FMRU5dOworCXUxNiBzZXF1ZW5jZV9udW1iZXI7CisJdTE2IGxhc3Rf
-cGF5bG9hZF9sZW47CisJdWNoYXIgbGFzdF9wYXlsb2FkWzY0ICsgc2l6ZW9mKHN0cnVjdCBmYXN0
-Ym9vdF9oZWFkZXIpXTsKK307CisKK3N0YXRpYyBjb25zdCB1c2hvcnQgdWRwX3ZlcnNpb24gPSAx
-OworCitzdGF0aWMgYm9vbCBpc19jdXJyZW50X2Nvbm5lY3Rpb24oc3RydWN0IGZhc3Rib290X25l
-dCAqZmJuKQoreworCXJldHVybiBmYm4tPmhvc3RfYWRkciA9PSBuZXRfcmVhZF9pcCgmZmJuLT5u
-ZXRfY29uLT5pcC0+ZGFkZHIpICYmCisJICAgICAgIGZibi0+aG9zdF9wb3J0ID09IGZibi0+bmV0
-X2Nvbi0+dWRwLT51aF9kcG9ydDsKK30KKworc3RhdGljIHZvaWQgZmFzdGJvb3RfYWJvcnQoc3Ry
-dWN0IGZhc3Rib290X25ldCAqZmJuKQoreworCWZibi0+cmVpbml0ID0gdHJ1ZTsKKwlpZiAoZmJu
-LT5hY3RpdmVfZG93bmxvYWQpIHsKKwkJLyoKKwkJICogSXQgaXMgc2FmZSB0byBjYWxsIGZhc3Ri
-b290X2Rvd25sb2FkX2ZpbmlzaGVkIGhlcmUgYmVjYXVzZQorCQkgKiByZWluaXQgaXMgdHJ1ZS4K
-KwkJICovCisJCWZhc3Rib290X2Rvd25sb2FkX2ZpbmlzaGVkKCZmYm4tPmZhc3Rib290KTsKKwkJ
-ZmJuLT5hY3RpdmVfZG93bmxvYWQgPSBmYWxzZTsKKwl9CisJZmJuLT5mYXN0Ym9vdC5hY3RpdmUg
-PSBmYWxzZTsKKwkvKgorCSAqIElmIHRoZSBob3N0IHNlbmRzIGEgZGF0YSBwYWNrZXQgYXQgYSB0
-aW1lIHdoZW4gYW4gZW1wdHkgcGFja2V0IHdhcworCSAqIGV4cGVjdGVkLCBmYXN0Ym9vdF9hYm9y
-dCBpcyBjYWxsZWQgYW5kIGFuIGVycm9yIG1lc3NhZ2UgaXMgc2VudC4KKwkgKiBXZSBkb24ndCB3
-YW50IHRvIGV4ZWN1dGUgdGhlIGNvbnRlbnRzIG9mIHRoZSBiYWQgcGFja2V0IGFmdGVyd2FyZHMu
-CisJICogQ2xlYXJpbmcgY29tbWFuZCBhbHNvIHRlbGxzIG91ciBrZWVwLWFsaXZlIHBvbGxlciB0
-byBzdG9wIHNlbmRpbmcKKwkgKiBtZXNzYWdlcy4KKwkgKi8KKwlmYm4tPmNvbW1hbmRbMF0gPSAw
-OworfQorCitzdGF0aWMgdm9pZCBmYXN0Ym9vdF9zZW5kKHN0cnVjdCBmYXN0Ym9vdF9uZXQgKmZi
-biwKKwkJCSAgc3RydWN0IGZhc3Rib290X2hlYWRlciBoZWFkZXIsCisJCQkgIGNvbnN0IGNoYXIg
-KmVycm9yX21zZykKK3sKKwlzaG9ydCB0bXA7CisJdWNoYXIgKnBhY2tldCA9IG5ldF91ZHBfZ2V0
-X3BheWxvYWQoZmJuLT5uZXRfY29uKTsKKwl1Y2hhciAqcGFja2V0X2Jhc2UgPSBwYWNrZXQ7CisJ
-Ym9vbCBjdXJyZW50X3Nlc3Npb24gPSBmYWxzZTsKKworCWlmIChmYm4tPnNlcXVlbmNlX251bWJl
-ciA9PSBudG9ocyhoZWFkZXIuc2VxKSAmJgorCSAgICBpc19jdXJyZW50X2Nvbm5lY3Rpb24oZmJu
-KSkKKwkJY3VycmVudF9zZXNzaW9uID0gdHJ1ZTsKKworCWlmIChlcnJvcl9tc2cpCisJCWhlYWRl
-ci5pZCA9IEZBU1RCT09UX0VSUk9SOworCisJLyogc2VuZCBoZWFkZXIgKi8KKwltZW1jcHkocGFj
-a2V0LCAmaGVhZGVyLCBzaXplb2YoaGVhZGVyKSk7CisJcGFja2V0ICs9IHNpemVvZihoZWFkZXIp
-OworCisJc3dpdGNoIChoZWFkZXIuaWQpIHsKKwljYXNlIEZBU1RCT09UX1FVRVJZOgorCQkvKiBz
-ZW5kIHNlcXVlbmNlIG51bWJlciAqLworCQl0bXAgPSBodG9ucyhmYm4tPnNlcXVlbmNlX251bWJl
-cik7CisJCW1lbWNweShwYWNrZXQsICZ0bXAsIHNpemVvZih0bXApKTsKKwkJcGFja2V0ICs9IHNp
-emVvZih0bXApOworCQlicmVhazsKKwljYXNlIEZBU1RCT09UX0lOSVQ6CisJCS8qIHNlbmQgdWRw
-IHZlcnNpb24gYW5kIHBhY2tldCBzaXplICovCisJCXRtcCA9IGh0b25zKHVkcF92ZXJzaW9uKTsK
-KwkJbWVtY3B5KHBhY2tldCwgJnRtcCwgc2l6ZW9mKHRtcCkpOworCQlwYWNrZXQgKz0gc2l6ZW9m
-KHRtcCk7CisJCXRtcCA9IGh0b25zKFBBQ0tFVF9TSVpFKTsKKwkJbWVtY3B5KHBhY2tldCwgJnRt
-cCwgc2l6ZW9mKHRtcCkpOworCQlwYWNrZXQgKz0gc2l6ZW9mKHRtcCk7CisJCWJyZWFrOworCWNh
-c2UgRkFTVEJPT1RfRVJST1I6CisJCXByX2VycigiJXNcbiIsIGVycm9yX21zZyk7CisKKwkJLyog
-c2VuZCBlcnJvciBtZXNzYWdlICovCisJCXRtcCA9IHN0cmxlbihlcnJvcl9tc2cpOworCQltZW1j
-cHkocGFja2V0LCBlcnJvcl9tc2csIHRtcCk7CisJCXBhY2tldCArPSB0bXA7CisKKwkJaWYgKGN1
-cnJlbnRfc2Vzc2lvbikKKwkJCWZhc3Rib290X2Fib3J0KGZibik7CisJCWJyZWFrOworCX0KKwor
-CWlmIChjdXJyZW50X3Nlc3Npb24gJiYgaGVhZGVyLmlkICE9IEZBU1RCT09UX1FVRVJZKSB7CisJ
-CWZibi0+c2VxdWVuY2VfbnVtYmVyKys7CisJCWZibi0+c2VxdWVuY2VfbnVtYmVyX3NlZW4gPSBm
-YWxzZTsKKwkJZmJuLT5sYXN0X3BheWxvYWRfbGVuID0gcGFja2V0IC0gcGFja2V0X2Jhc2U7CisJ
-CW1lbWNweShmYm4tPmxhc3RfcGF5bG9hZCwgcGFja2V0X2Jhc2UsIGZibi0+bGFzdF9wYXlsb2Fk
-X2xlbik7CisJfQorCW5ldF91ZHBfc2VuZChmYm4tPm5ldF9jb24sIHBhY2tldCAtIHBhY2tldF9i
-YXNlKTsKK30KKworc3RhdGljIGludCBmYXN0Ym9vdF93cml0ZV9uZXQoc3RydWN0IGZhc3Rib290
-ICpmYiwgY29uc3QgY2hhciAqYnVmLAorCQkJICAgICAgdW5zaWduZWQgaW50IG4pCit7CisJc3Ry
-dWN0IGZhc3Rib290X25ldCAqZmJuID0gY29udGFpbmVyX29mKGZiLCBzdHJ1Y3QgZmFzdGJvb3Rf
-bmV0LAorCQkJCQkJZmFzdGJvb3QpOworCXN0cnVjdCBmYXN0Ym9vdF9oZWFkZXIgcmVzcG9uc2Vf
-aGVhZGVyOworCXVjaGFyICpwYWNrZXQ7CisJdWNoYXIgKnBhY2tldF9iYXNlOworCXU2NCBzdGFy
-dDsKKwlpbnQgc2VsYXBzZWQ7CisKKwlpZiAoZmJuLT5yZWluaXQpCisJCXJldHVybiAwOworCisJ
-aWYgKGZibi0+bWF5X3NlbmQgPT0gTUFZX05PVF9TRU5EKSB7CisJCXN0YXJ0ID0gZ2V0X3RpbWVf
-bnMoKTsKKwkJc2VsYXBzZWQgPSA1OworCQlkbyB7CisJCQlpZiAoaXNfdGltZW91dChzdGFydCwg
-c2VsYXBzZWQgKiBTRUNPTkQpKSB7CisJCQkJcHJfZXJyKCJObyBmYXN0Ym9vdCBwYWNrZXQgZnJv
-bSBob3N0IGZvciAlZCBzZWNvbmRzXG4iLAorCQkJCSAgICAgICBzZWxhcHNlZCk7CisKKwkJCQlp
-ZiAoc2VsYXBzZWQgPiA2MCkgeworCQkJCQlwcl9lcnIoIkdpdmluZyB1cFxuIik7CisJCQkJCWZh
-c3Rib290X2Fib3J0KGZibik7CisJCQkJCS8qCisJCQkJCSAqIERvbid0IGNvbnRpbnVlIHRoaXMg
-c2Vzc2lvbiBpZiB0aGUKKwkJCQkJICogcGFja2V0IHdlIGhhdmUgZ2l2ZW4gdXAgd2FpdGluZyBm
-b3IKKwkJCQkJICogYXJyaXZlcy4gQW5kIGRvbid0IHJldHJhbnNtaXQgYW4gb2xkCisJCQkJCSAq
-IHBhY2tldCBzaW5jZSB0aGF0IG1pZ2h0IGNhdXNlIHRoZQorCQkJCQkgKiBob3N0IHRvIGNvbnRp
-bnVlIHdpdGggdGhlIG5leHQKKwkJCQkJICogc2VxdWVuY2UgbnVtYmVyLgorCQkJCQkgKi8KKwkJ
-CQkJZmJuLT5zZXF1ZW5jZV9udW1iZXIgKz0gMTA7CisJCQkJCWZibi0+c2VxdWVuY2VfbnVtYmVy
-X3NlZW4gPSBmYWxzZTsKKwkJCQl9IGVsc2UgeworCQkJCQlzZWxhcHNlZCArPSA1OworCQkJCX0K
-KwkJCX0KKwkJCWlmIChmYm4tPnJlaW5pdCkKKwkJCQlyZXR1cm4gMDsKKwkJfSB3aGlsZSAoZmJu
-LT5tYXlfc2VuZCA9PSBNQVlfTk9UX1NFTkQpOworCX0KKworCWlmIChuICYmIGZibi0+bWF5X3Nl
-bmQgPT0gTUFZX1NFTkRfQUNLKSB7CisJCWZhc3Rib290X3NlbmQoZmJuLCBmYm4tPnJlc3BvbnNl
-X2hlYWRlciwKKwkJCSAgICAgICJIYXZlIG1lc3NhZ2UgYnV0IG9ubHkgQUNLIGFsbG93ZWQiKTsK
-KwkJcmV0dXJuIC1FUFJPVE87CisJfSBlbHNlIGlmICghbiAmJiBmYm4tPm1heV9zZW5kID09IE1B
-WV9TRU5EX01FU1NBR0UpIHsKKwkJZmFzdGJvb3Rfc2VuZChmYm4sIGZibi0+cmVzcG9uc2VfaGVh
-ZGVyLAorCQkJICAgICAgIldhbnQgdG8gc2VuZCBBQ0sgYnV0IG1lc3NhZ2UgZXhwZWN0ZWQiKTsK
-KwkJcmV0dXJuIC1FUFJPVE87CisJfQorCisJcmVzcG9uc2VfaGVhZGVyID0gZmJuLT5yZXNwb25z
-ZV9oZWFkZXI7CisJcmVzcG9uc2VfaGVhZGVyLmZsYWdzID0gMDsKKwlyZXNwb25zZV9oZWFkZXIu
-c2VxID0gaHRvbnMoZmJuLT5zZXF1ZW5jZV9udW1iZXIpOworCSsrZmJuLT5zZXF1ZW5jZV9udW1i
-ZXI7CisJZmJuLT5zZXF1ZW5jZV9udW1iZXJfc2VlbiA9IGZhbHNlOworCWZibi0+bWF5X3NlbmQg
-PSBNQVlfTk9UX1NFTkQ7CisKKwlwYWNrZXQgPSBuZXRfdWRwX2dldF9wYXlsb2FkKGZibi0+bmV0
-X2Nvbik7CisJcGFja2V0X2Jhc2UgPSBwYWNrZXQ7CisKKwkvKiBXcml0ZSBoZWFkZXJzICovCisJ
-bWVtY3B5KHBhY2tldCwgJnJlc3BvbnNlX2hlYWRlciwgc2l6ZW9mKHJlc3BvbnNlX2hlYWRlcikp
-OworCXBhY2tldCArPSBzaXplb2YocmVzcG9uc2VfaGVhZGVyKTsKKwkvKiBXcml0ZSByZXNwb25z
-ZSAqLworCW1lbWNweShwYWNrZXQsIGJ1Ziwgbik7CisJcGFja2V0ICs9IG47CisKKwkvKiBTYXZl
-IHBhY2tldCBmb3IgcmV0cmFuc21pdHRpbmcgKi8KKwlmYm4tPmxhc3RfcGF5bG9hZF9sZW4gPSBw
-YWNrZXQgLSBwYWNrZXRfYmFzZTsKKwltZW1jcHkoZmJuLT5sYXN0X3BheWxvYWQsIHBhY2tldF9i
-YXNlLCBmYm4tPmxhc3RfcGF5bG9hZF9sZW4pOworCisJbWVtY3B5KGZibi0+bmV0X2Nvbi0+ZXQt
-PmV0X2Rlc3QsIGZibi0+aG9zdF9tYWMsIEVUSF9BTEVOKTsKKwluZXRfd3JpdGVfaXAoJmZibi0+
-bmV0X2Nvbi0+aXAtPmRhZGRyLCBmYm4tPmhvc3RfYWRkcik7CisJZmJuLT5uZXRfY29uLT51ZHAt
-PnVoX2Rwb3J0ID0gZmJuLT5ob3N0X3BvcnQ7CisJbmV0X3VkcF9zZW5kKGZibi0+bmV0X2Nvbiwg
-ZmJuLT5sYXN0X3BheWxvYWRfbGVuKTsKKworCXJldHVybiAwOworfQorCitzdGF0aWMgdm9pZCBm
-YXN0Ym9vdF9zdGFydF9kb3dubG9hZF9uZXQoc3RydWN0IGZhc3Rib290ICpmYikKK3sKKwlzdHJ1
-Y3QgZmFzdGJvb3RfbmV0ICpmYm4gPSBjb250YWluZXJfb2YoZmIsIHN0cnVjdCBmYXN0Ym9vdF9u
-ZXQsCisJCQkJCQlmYXN0Ym9vdCk7CisKKwlmYXN0Ym9vdF9zdGFydF9kb3dubG9hZF9nZW5lcmlj
-KGZiKTsKKworCS8qIHdlIG1pZ2h0IGFscmVhZHkgaGF2ZSBsb3N0IHRoZSBjb25uZWN0aW9uICov
-CisJaWYgKGZibi0+cmVpbml0KQorCQlmYXN0Ym9vdF9kb3dubG9hZF9maW5pc2hlZChmYik7CisJ
-ZWxzZQorCQlmYm4tPmFjdGl2ZV9kb3dubG9hZCA9IHRydWU7Cit9CisKKy8qIG11c3Qgc2VuZCBl
-eGFjdGx5IG9uZSBwYWNrZXQgb24gYWxsIGNvZGUgcGF0aHMgKi8KK3N0YXRpYyB2b2lkIGZhc3Ri
-b290X2RhdGFfZG93bmxvYWQoc3RydWN0IGZhc3Rib290X25ldCAqZmJuLAorCQkJCSAgIGNvbnN0
-IHZvaWQgKmZhc3Rib290X2RhdGEsCisJCQkJICAgdW5zaWduZWQgaW50IGZhc3Rib290X2RhdGFf
-bGVuKQoreworCWludCByZXQ7CisKKwlpZiAoZmFzdGJvb3RfZGF0YV9sZW4gPT0gMCB8fAorCSAg
-ICAoZmJuLT5mYXN0Ym9vdC5kb3dubG9hZF9ieXRlcyArIGZhc3Rib290X2RhdGFfbGVuKSA+CisJ
-ICAgIGZibi0+ZmFzdGJvb3QuZG93bmxvYWRfc2l6ZSkgeworCQlmYXN0Ym9vdF9zZW5kKGZibiwg
-ZmJuLT5yZXNwb25zZV9oZWFkZXIsCisJCQkgICAgICAiUmVjZWl2ZWQgaW52YWxpZCBkYXRhIGxl
-bmd0aCIpOworCQlyZXR1cm47CisJfQorCisJcmV0ID0gZmFzdGJvb3RfaGFuZGxlX2Rvd25sb2Fk
-X2RhdGEoJmZibi0+ZmFzdGJvb3QsIGZhc3Rib290X2RhdGEsCisJCQkJCSAgICBmYXN0Ym9vdF9k
-YXRhX2xlbik7CisJaWYgKHJldCA8IDApIHsKKwkJZmFzdGJvb3Rfc2VuZChmYm4sIGZibi0+cmVz
-cG9uc2VfaGVhZGVyLCBzdHJlcnJvcigtcmV0KSk7CisJCXJldHVybjsKKwl9CisKKwlmYXN0Ym9v
-dF90eF9wcmludCgmZmJuLT5mYXN0Ym9vdCwgRkFTVEJPT1RfTVNHX05PTkUsICIiKTsKK30KKwor
-c3RhdGljIHZvaWQgZmFzdGJvb3RfaGFuZGxlX3R5cGVfZmFzdGJvb3Qoc3RydWN0IGZhc3Rib290
-X25ldCAqZmJuLAorCQkJCQkgIHN0cnVjdCBmYXN0Ym9vdF9oZWFkZXIgaGVhZGVyLAorCQkJCQkg
-IGNoYXIgKmZhc3Rib290X2RhdGEsCisJCQkJCSAgdW5zaWduZWQgaW50IGZhc3Rib290X2RhdGFf
-bGVuKQoreworCWZibi0+cmVzcG9uc2VfaGVhZGVyID0gaGVhZGVyOworCWZibi0+aG9zdF93YWl0
-c19zaW5jZSA9IGdldF90aW1lX25zKCk7CisJZmJuLT5tYXlfc2VuZCA9IGZhc3Rib290X2RhdGFf
-bGVuID8gTUFZX1NFTkRfQUNLIDogTUFZX1NFTkRfTUVTU0FHRTsKKwlpZiAoZmJuLT5hY3RpdmVf
-ZG93bmxvYWQpIHsKKwkJaWYgKCFmYXN0Ym9vdF9kYXRhX2xlbiAmJiBmYm4tPmZhc3Rib290LmRv
-d25sb2FkX2J5dGVzCisJCQkJCSAgID09IGZibi0+ZmFzdGJvb3QuZG93bmxvYWRfc2l6ZSkgewor
-CQkJLyoKKwkJCSAqIENhbid0IGNhbGwgZmFzdGJvb3RfZG93bmxvYWRfZmluaXNoZWQgaGVyZQor
-CQkJICogYmVjYXVzZSBpdCB3aWxsIGNhbGwgZmFzdGJvb3RfdHhfcHJpbnQKKwkJCSAqIG11bHRp
-cGxlIHRpbWVzLgorCQkJICovCisJCQlmYm4tPmFjdGl2ZV9kb3dubG9hZCA9IGZhbHNlOworCQl9
-IGVsc2UgeworCQkJZmFzdGJvb3RfZGF0YV9kb3dubG9hZChmYm4sIGZhc3Rib290X2RhdGEsCisJ
-CQkJCSAgICAgICBmYXN0Ym9vdF9kYXRhX2xlbik7CisJCX0KKwl9IGVsc2UgaWYgKCFmYm4tPmNv
-bW1hbmRbMF0pIHsKKwkJaWYgKGZhc3Rib290X2RhdGFfbGVuID49IHNpemVvZihmYm4tPmNvbW1h
-bmQpKSB7CisJCQlmYXN0Ym9vdF9zZW5kKGZibiwgaGVhZGVyLCAiY29tbWFuZCB0b28gbG9uZyIp
-OworCQl9IGVsc2UgeworCQkJbWVtY3B5KGZibi0+Y29tbWFuZCwgZmFzdGJvb3RfZGF0YSwgZmFz
-dGJvb3RfZGF0YV9sZW4pOworCQkJZmJuLT5jb21tYW5kW2Zhc3Rib290X2RhdGFfbGVuXSA9IDA7
-CisJCX0KKwl9Cit9CisKK3N0YXRpYyB2b2lkIGZhc3Rib290X2NoZWNrX3JldHJhbnNtaXQoc3Ry
-dWN0IGZhc3Rib290X25ldCAqZmJuLAorCQkJCSAgICAgIHN0cnVjdCBmYXN0Ym9vdF9oZWFkZXIg
-aGVhZGVyKQoreworCWlmIChudG9ocyhoZWFkZXIuc2VxKSA9PSBmYm4tPnNlcXVlbmNlX251bWJl
-ciAtIDEgJiYKKwkgICAgaXNfY3VycmVudF9jb25uZWN0aW9uKGZibikpIHsKKwkJLyogUmV0cmFu
-c21pdCBsYXN0IHNlbnQgcGFja2V0ICovCisJCW1lbWNweShuZXRfdWRwX2dldF9wYXlsb2FkKGZi
-bi0+bmV0X2NvbiksCisJCSAgICAgICBmYm4tPmxhc3RfcGF5bG9hZCwgZmJuLT5sYXN0X3BheWxv
-YWRfbGVuKTsKKwkJbmV0X3VkcF9zZW5kKGZibi0+bmV0X2NvbiwgZmJuLT5sYXN0X3BheWxvYWRf
-bGVuKTsKKwl9Cit9CisKK3N0YXRpYyB2b2lkIGZhc3Rib290X2hhbmRsZXIodm9pZCAqY3R4LCBj
-aGFyICpwYWNrZXQsIHVuc2lnbmVkIGludCByYXdfbGVuKQoreworCXVuc2lnbmVkIGludCBsZW4g
-PSBuZXRfZXRoX3RvX3VkcGxlbihwYWNrZXQpOworCXN0cnVjdCBldGhlcm5ldCAqZXRoX2hlYWRl
-ciA9IChzdHJ1Y3QgZXRoZXJuZXQgKilwYWNrZXQ7CisJc3RydWN0IGlwaGRyICppcF9oZWFkZXIg
-PSBuZXRfZXRoX3RvX2lwaGRyKHBhY2tldCk7CisJc3RydWN0IHVkcGhkciAqdWRwX2hlYWRlciA9
-IG5ldF9ldGhfdG9fdWRwaGRyKHBhY2tldCk7CisJY2hhciAqcGF5bG9hZCA9IG5ldF9ldGhfdG9f
-dWRwX3BheWxvYWQocGFja2V0KTsKKwlzdHJ1Y3QgZmFzdGJvb3RfbmV0ICpmYm4gPSBjdHg7CisJ
-c3RydWN0IGZhc3Rib290X2hlYWRlciBoZWFkZXI7CisJY2hhciAqZmFzdGJvb3RfZGF0YSA9IHBh
-eWxvYWQgKyBzaXplb2YoaGVhZGVyKTsKKwl1MTYgdG90X2xlbiA9IG50b2hzKGlwX2hlYWRlci0+
-dG90X2xlbik7CisKKwkvKiBjYXRjaCBib2d1cyB0b3RfbGVuIHZhbHVlcyAqLworCWlmICgoY2hh
-ciAqKWlwX2hlYWRlciAtIHBhY2tldCArIHRvdF9sZW4gPiByYXdfbGVuKQorCQlyZXR1cm47CisK
-KwkvKiBjYXRjaCBwYWNrZXRzIHNwbGl0IGludG8gZnJhZ21lbnRzIHRoYXQgYXJlIHRvbyBzbWFs
-bCB0byByZXBseSAqLworCWlmIChmYXN0Ym9vdF9kYXRhIC0gKGNoYXIgKilpcF9oZWFkZXIgPiB0
-b3RfbGVuKQorCQlyZXR1cm47CisKKwkvKiBjYXRjaCBwYWNrZXRzIHRvbyBzbWFsbCB0byBiZSB2
-YWxpZCAqLworCWlmIChsZW4gPCBzaXplb2Yoc3RydWN0IGZhc3Rib290X2hlYWRlcikpCisJCXJl
-dHVybjsKKworCW1lbWNweSgmaGVhZGVyLCBwYXlsb2FkLCBzaXplb2YoaGVhZGVyKSk7CisJaGVh
-ZGVyLmZsYWdzID0gMDsKKwlsZW4gLT0gc2l6ZW9mKGhlYWRlcik7CisKKwkvKiBjYXRjaCByZW1h
-aW5pbmcgZnJhZ21lbnRlZCBwYWNrZXRzICovCisJaWYgKGZhc3Rib290X2RhdGEgLSAoY2hhciAq
-KWlwX2hlYWRlciArIGxlbiA+IHRvdF9sZW4pIHsKKwkJZmFzdGJvb3Rfc2VuZChmYm4sIGhlYWRl
-ciwKKwkJCSAgICAgICJjYW4ndCByZWFzc2VtYmxlIGZyYWdtZW50ZWQgZnJhbWVzIik7CisJCXJl
-dHVybjsKKwl9CisJLyogY2F0Y2ggdG9vIGxhcmdlIHBhY2tldHMgKi8KKwlpZiAobGVuID4gUEFD
-S0VUX1NJWkUpIHsKKwkJZmFzdGJvb3Rfc2VuZChmYm4sIGhlYWRlciwgInBhY2tldCB0b28gbGFy
-Z2UiKTsKKwkJcmV0dXJuOworCX0KKworCW1lbWNweShmYm4tPm5ldF9jb24tPmV0LT5ldF9kZXN0
-LCBldGhfaGVhZGVyLT5ldF9zcmMsIEVUSF9BTEVOKTsKKwluZXRfY29weV9pcCgmZmJuLT5uZXRf
-Y29uLT5pcC0+ZGFkZHIsICZpcF9oZWFkZXItPnNhZGRyKTsKKwlmYm4tPm5ldF9jb24tPnVkcC0+
-dWhfZHBvcnQgPSB1ZHBfaGVhZGVyLT51aF9zcG9ydDsKKworCXN3aXRjaCAoaGVhZGVyLmlkKSB7
-CisJY2FzZSBGQVNUQk9PVF9RVUVSWToKKwkJZmFzdGJvb3Rfc2VuZChmYm4sIGhlYWRlciwgTlVM
-TCk7CisJCWJyZWFrOworCWNhc2UgRkFTVEJPT1RfSU5JVDoKKwkJaWYgKG50b2hzKGhlYWRlci5z
-ZXEpICE9IGZibi0+c2VxdWVuY2VfbnVtYmVyKSB7CisJCQlmYXN0Ym9vdF9jaGVja19yZXRyYW5z
-bWl0KGZibiwgaGVhZGVyKTsKKwkJCWJyZWFrOworCQl9CisJCWZibi0+aG9zdF9hZGRyID0gbmV0
-X3JlYWRfaXAoJmlwX2hlYWRlci0+c2FkZHIpOworCQlmYm4tPmhvc3RfcG9ydCA9IHVkcF9oZWFk
-ZXItPnVoX3Nwb3J0OworCQltZW1jcHkoZmJuLT5ob3N0X21hYywgZXRoX2hlYWRlci0+ZXRfc3Jj
-LCBFVEhfQUxFTik7CisJCWZhc3Rib290X2Fib3J0KGZibik7CisJCWZhc3Rib290X3NlbmQoZmJu
-LCBoZWFkZXIsIE5VTEwpOworCQlicmVhazsKKwljYXNlIEZBU1RCT09UX0ZBU1RCT09UOgorCQlp
-ZiAoIWlzX2N1cnJlbnRfY29ubmVjdGlvbihmYm4pKQorCQkJYnJlYWs7CisJCW1lbWNweShmYm4t
-Pmhvc3RfbWFjLCBldGhfaGVhZGVyLT5ldF9zcmMsIEVUSF9BTEVOKTsKKwkJaWYgKG50b2hzKGhl
-YWRlci5zZXEpICE9IGZibi0+c2VxdWVuY2VfbnVtYmVyKSB7CisJCQlmYXN0Ym9vdF9jaGVja19y
-ZXRyYW5zbWl0KGZibiwgaGVhZGVyKTsKKwkJfSBlbHNlIGlmICghZmJuLT5zZXF1ZW5jZV9udW1i
-ZXJfc2VlbikgeworCQkJZmJuLT5zZXF1ZW5jZV9udW1iZXJfc2VlbiA9IHRydWU7CisJCQlmYXN0
-Ym9vdF9oYW5kbGVfdHlwZV9mYXN0Ym9vdChmYm4sIGhlYWRlciwKKwkJCQkJCSAgICAgIGZhc3Ri
-b290X2RhdGEsIGxlbik7CisJCX0KKwkJYnJlYWs7CisJZGVmYXVsdDoKKwkJZmFzdGJvb3Rfc2Vu
-ZChmYm4sIGhlYWRlciwgInVua25vd24gcGFja2V0IHR5cGUiKTsKKwkJYnJlYWs7CisJfQorfQor
-CitzdGF0aWMgdm9pZCBmYXN0Ym9vdF9wb2xsKHN0cnVjdCBwb2xsZXJfc3RydWN0ICpwb2xsZXIp
-Cit7CisJc3RydWN0IGZhc3Rib290X25ldCAqZmJuID0gY29udGFpbmVyX29mKHBvbGxlciwgc3Ry
-dWN0IGZhc3Rib290X25ldCwKKwkJCQkJICAgICAgIHBvbGxlcik7CisKKwlpZiAoZmJuLT5kb3du
-bG9hZF9uZWVkc19jbGVhbnVwKSB7CisJCWlmIChmYm4tPmFjdGl2ZV9kb3dubG9hZCkKKwkJCXJl
-dHVybjsKKwkJLyoKKwkJICogZmFzdGJvb3RfZG93bmxvYWRfZmluaXNoZWQgaGFzIGFscmVhZHkg
-YmVlbiBjYWxsZWQgd2hlbgorCQkgKiByZWluaXQgd2FzIHNldAorCQkgKi8KKwkJaWYgKCFmYm4t
-PnJlaW5pdCkKKwkJCWZhc3Rib290X2Rvd25sb2FkX2ZpbmlzaGVkKCZmYm4tPmZhc3Rib290KTsK
-KwkJZmJuLT5kb3dubG9hZF9uZWVkc19jbGVhbnVwID0gMDsKKwl9CisKKwlpZiAoIWZibi0+Y29t
-bWFuZFswXSkKKwkJcmV0dXJuOworCisJZmJuLT5yZWluaXQgPSBmYWxzZTsKKwlmYXN0Ym9vdF90
-eF9wcmludCgmZmJuLT5mYXN0Ym9vdCwgRkFTVEJPT1RfTVNHX05PTkUsICIiKTsKKwlmYXN0Ym9v
-dF9leGVjX2NtZCgmZmJuLT5mYXN0Ym9vdCwgZmJuLT5jb21tYW5kKTsKKwlmYm4tPmNvbW1hbmRb
-MF0gPSAwOworCWZibi0+ZG93bmxvYWRfbmVlZHNfY2xlYW51cCA9IGZibi0+YWN0aXZlX2Rvd25s
-b2FkOworfQorCitzdGF0aWMgdm9pZCBmYXN0Ym9vdF9zZW5kX2tlZXBfYWxpdmUoc3RydWN0IHBv
-bGxlcl9zdHJ1Y3QgKnBvbGxlcikKK3sKKwlzdHJ1Y3QgZmFzdGJvb3RfbmV0ICpmYm4gPSBjb250
-YWluZXJfb2YocG9sbGVyLCBzdHJ1Y3QgZmFzdGJvb3RfbmV0LAorCQkJCQkgICAgICAga2VlcF9h
-bGl2ZV9wb2xsZXIpOworCisJaWYgKCFmYm4tPmNvbW1hbmRbMF0pCisJCXJldHVybjsKKworCS8q
-CisJICogU2VuZGluZyB0aGUgbWVzc2FnZSB3aWxsIHJlc2V0IG1heV9zZW5kIHRvIE1BWV9OT1Rf
-U0VORCBhbmQgdGhlCisJICogQUNLIGZyb20gdGhlIGhvc3Qgd2lsbCByZXNldCBob3N0X3dhaXRz
-X3NpbmNlIHRvIHRoZSBjdXJyZW50IHRpbWUuCisJICovCisJaWYgKGZibi0+bWF5X3NlbmQgPT0g
-TUFZX1NFTkRfTUVTU0FHRSAmJgorCSAgICBpc190aW1lb3V0X25vbl9pbnRlcnJ1cHRpYmxlKGZi
-bi0+aG9zdF93YWl0c19zaW5jZSwKKwkJCQkJIDMwVUxMICogTlNFQ19QRVJfU0VDKSkKKwkJZmFz
-dGJvb3RfdHhfcHJpbnQoJmZibi0+ZmFzdGJvb3QsIEZBU1RCT09UX01TR19JTkZPLAorCQkJCSAg
-InN0aWxsIGJ1c3kiKTsKK30KKwordm9pZCBmYXN0Ym9vdF9uZXRfZnJlZShzdHJ1Y3QgZmFzdGJv
-b3RfbmV0ICpmYm4pCit7CisJZmFzdGJvb3RfZ2VuZXJpY19jbG9zZSgmZmJuLT5mYXN0Ym9vdCk7
-CisJcG9sbGVyX3VucmVnaXN0ZXIoJmZibi0+a2VlcF9hbGl2ZV9wb2xsZXIpOworCXBvbGxlcl91
-bnJlZ2lzdGVyKCZmYm4tPnBvbGxlcik7CisJbmV0X3VucmVnaXN0ZXIoZmJuLT5uZXRfY29uKTsK
-KwlmYXN0Ym9vdF9nZW5lcmljX2ZyZWUoJmZibi0+ZmFzdGJvb3QpOworCWZyZWUoZmJuKTsKK30K
-Kworc3RydWN0IGZhc3Rib290X25ldCAqZmFzdGJvb3RfbmV0X2luaXQoc3RydWN0IGZhc3Rib290
-X29wdHMgKm9wdHMpCit7CisJc3RydWN0IGZhc3Rib290X25ldCAqZmJuOworCWludCByZXQ7CisK
-KwlmYm4gPSB4emFsbG9jKHNpemVvZigqZmJuKSk7CisJSU5JVF9MSVNUX0hFQUQoJmZibi0+ZmFz
-dGJvb3QudmFyaWFibGVzKTsKKwlmYm4tPmZhc3Rib290LndyaXRlID0gZmFzdGJvb3Rfd3JpdGVf
-bmV0OworCWZibi0+ZmFzdGJvb3Quc3RhcnRfZG93bmxvYWQgPSBmYXN0Ym9vdF9zdGFydF9kb3du
-bG9hZF9uZXQ7CisKKwlpZiAob3B0cykgeworCQlmYm4tPmZhc3Rib290LmZpbGVzID0gb3B0cy0+
-ZmlsZXM7CisJCWZibi0+ZmFzdGJvb3QuY21kX2V4ZWMgPSBvcHRzLT5jbWRfZXhlYzsKKwkJZmJu
-LT5mYXN0Ym9vdC5jbWRfZmxhc2ggPSBvcHRzLT5jbWRfZmxhc2g7CisJCXJldCA9IGZhc3Rib290
-X2dlbmVyaWNfaW5pdCgmZmJuLT5mYXN0Ym9vdCwgb3B0cy0+ZXhwb3J0X2JidSk7CisJfSBlbHNl
-IHsKKwkJZmJuLT5mYXN0Ym9vdC5maWxlcyA9IGZpbGVfbGlzdF9wYXJzZShmYXN0Ym9vdF9wYXJ0
-aXRpb25zCisJCQkJCQkgICAgICA/IGZhc3Rib290X3BhcnRpdGlvbnMKKwkJCQkJCSAgICAgIDog
-IiIpOworCQlyZXQgPSBmYXN0Ym9vdF9nZW5lcmljX2luaXQoJmZibi0+ZmFzdGJvb3QsIGZhc3Ri
-b290X2JidSk7CisJfQorCWlmIChyZXQpCisJCWdvdG8gZmFpbF9nZW5lcmljX2luaXQ7CisKKwlm
-Ym4tPm5ldF9jb24gPSBuZXRfdWRwX25ldyhJUF9CUk9BRENBU1QsIEZBU1RCT09UX1BPUlQsCisJ
-CQkJICAgZmFzdGJvb3RfaGFuZGxlciwgZmJuKTsKKwlpZiAoSVNfRVJSKGZibi0+bmV0X2Nvbikp
-IHsKKwkJcmV0ID0gUFRSX0VSUihmYm4tPm5ldF9jb24pOworCQlnb3RvIGZhaWxfbmV0X2NvbjsK
-Kwl9CisJbmV0X3VkcF9iaW5kKGZibi0+bmV0X2NvbiwgRkFTVEJPT1RfUE9SVCk7CisKKwlldGhf
-b3BlbihmYm4tPm5ldF9jb24tPmVkZXYpOworCWZibi0+cG9sbGVyLmZ1bmMgPSBmYXN0Ym9vdF9w
-b2xsOworCXJldCA9IHBvbGxlcl9yZWdpc3RlcigmZmJuLT5wb2xsZXIsICJmYXN0Ym9vdC1uZXQi
-KTsKKwlpZiAocmV0KQorCQlnb3RvIGZhaWxfcG9sbGVyOworCisJZmJuLT5rZWVwX2FsaXZlX3Bv
-bGxlci5mdW5jID0gZmFzdGJvb3Rfc2VuZF9rZWVwX2FsaXZlOworCXJldCA9IHBvbGxlcl9yZWdp
-c3RlcigmZmJuLT5rZWVwX2FsaXZlX3BvbGxlciwKKwkJCSAgICAgICJmYXN0Ym9vdC1uZXQta2Vl
-cC1hbGl2ZSIpOworCWlmIChyZXQpCisJCWdvdG8gZmFpbF9wb2xsZXIyOworCisJc2xpY2VfZGVw
-ZW5kc19vbigmZmJuLT5wb2xsZXIuc2xpY2UsICZpZGxlX3NsaWNlKTsKKwlzbGljZV9kZXBlbmRz
-X29uKCZmYm4tPmtlZXBfYWxpdmVfcG9sbGVyLnNsaWNlLCAmZmJuLT5uZXRfY29uLT5lZGV2LT5z
-bGljZSk7CisKKwlyZXR1cm4gZmJuOworCitmYWlsX3BvbGxlcjI6CisJcG9sbGVyX3VucmVnaXN0
-ZXIoJmZibi0+cG9sbGVyKTsKK2ZhaWxfcG9sbGVyOgorCW5ldF91bnJlZ2lzdGVyKGZibi0+bmV0
-X2Nvbik7CitmYWlsX25ldF9jb246CisJZmFzdGJvb3RfZ2VuZXJpY19mcmVlKCZmYm4tPmZhc3Ri
-b290KTsKK2ZhaWxfZ2VuZXJpY19pbml0OgorCWZyZWUoZmJuKTsKKwlyZXR1cm4gRVJSX1BUUihy
-ZXQpOworfQorCitzdGF0aWMgc3RydWN0IGZhc3Rib290X25ldCAqZmFzdGJvb3RfbmV0X29iajsK
-K3N0YXRpYyBpbnQgZmFzdGJvb3RfbmV0X2F1dG9zdGFydDsKKworc3RhdGljIGludCBmYXN0Ym9v
-dF9vbl9ib290KHZvaWQpCit7CisJc3RydWN0IGZhc3Rib290X25ldCAqZmJuOworCisJZ2xvYmFs
-dmFyX2FkZF9zaW1wbGVfYm9vbCgiZmFzdGJvb3QubmV0LmF1dG9zdGFydCIsCisJCQkJICAmZmFz
-dGJvb3RfbmV0X2F1dG9zdGFydCk7CisKKwlpZiAoIWZhc3Rib290X25ldF9hdXRvc3RhcnQpCisJ
-CXJldHVybiAwOworCisJaWZ1cF9hbGwoMCk7CisJZmJuID0gZmFzdGJvb3RfbmV0X2luaXQoTlVM
-TCk7CisKKwlpZiAoSVNfRVJSKGZibikpCisJCXJldHVybiBQVFJfRVJSKGZibik7CisKKwlmYXN0
-Ym9vdF9uZXRfb2JqID0gZmJuOworCXJldHVybiAwOworfQorCitzdGF0aWMgdm9pZCBmYXN0Ym9v
-dF9uZXRfZXhpdCh2b2lkKQoreworCWlmIChmYXN0Ym9vdF9uZXRfb2JqKQorCQlmYXN0Ym9vdF9u
-ZXRfZnJlZShmYXN0Ym9vdF9uZXRfb2JqKTsKK30KKworcG9zdGVudmlyb25tZW50X2luaXRjYWxs
-KGZhc3Rib290X29uX2Jvb3QpOworcHJlZGV2c2h1dGRvd25fZXhpdGNhbGwoZmFzdGJvb3RfbmV0
-X2V4aXQpOworCitCQVJFQk9YX01BR0lDVkFSX05BTUVEKGdsb2JhbF9mYXN0Ym9vdF9uZXRfYXV0
-b3N0YXJ0LAorCQkgICAgICAgZ2xvYmFsLmZhc3Rib290Lm5ldC5hdXRvc3RhcnQsCisJCSAgICAg
-ICAiSWYgdHJ1ZSwgYXV0b21hdGljYWxseSBzdGFydCBmYXN0Ym9vdCBvdmVyIFVEUCBkdXJpbmcg
-c3RhcnR1cCIpOwotLSAKMi4xNy4xCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRl
-YWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJv
-eAo=
+With incoming changes to choose a specific reset method, give all
+currently unnamed "default" reset handlers a name:
+
+  - soc     reset via SoC-specific means
+  - soc-wdt reset via SoC watchdog timer
+  - vector  reset via jump to reset vector
+  - efi     reset via EFI firmware
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/arm/mach-at91/at91rm9200_time.c           | 2 +-
+ arch/arm/mach-at91/at91sam9260.c               | 2 +-
+ arch/arm/mach-at91/at91sam9261.c               | 2 +-
+ arch/arm/mach-at91/at91sam9263.c               | 2 +-
+ arch/arm/mach-at91/at91sam9g45.c               | 2 +-
+ arch/arm/mach-at91/at91sam9n12.c               | 2 +-
+ arch/arm/mach-at91/at91sam9x5.c                | 2 +-
+ arch/arm/mach-at91/sama5d3.c                   | 2 +-
+ arch/arm/mach-at91/sama5d4.c                   | 2 +-
+ arch/arm/mach-clps711x/reset.c                 | 2 +-
+ arch/arm/mach-davinci/time.c                   | 2 +-
+ arch/arm/mach-ep93xx/clocksource.c             | 2 +-
+ arch/arm/mach-highbank/reset.c                 | 2 +-
+ arch/arm/mach-mvebu/armada-370-xp.c            | 2 +-
+ arch/arm/mach-mvebu/dove.c                     | 2 +-
+ arch/arm/mach-mvebu/kirkwood.c                 | 2 +-
+ arch/arm/mach-mxs/soc-imx23.c                  | 2 +-
+ arch/arm/mach-mxs/soc-imx28.c                  | 2 +-
+ arch/arm/mach-nomadik/reset.c                  | 2 +-
+ arch/arm/mach-omap/am33xx_generic.c            | 2 +-
+ arch/arm/mach-omap/omap3_generic.c             | 2 +-
+ arch/arm/mach-omap/omap4_generic.c             | 2 +-
+ arch/arm/mach-pxa/common.c                     | 2 +-
+ arch/arm/mach-rockchip/rk3188.c                | 2 +-
+ arch/arm/mach-rockchip/rk3288.c                | 2 +-
+ arch/arm/mach-samsung/generic.c                | 2 +-
+ arch/arm/mach-socfpga/arria10-generic.c        | 2 +-
+ arch/arm/mach-socfpga/cyclone5-reset-manager.c | 2 +-
+ arch/arm/mach-tegra/tegra20-pmc.c              | 2 +-
+ arch/arm/mach-versatile/core.c                 | 2 +-
+ arch/arm/mach-vexpress/reset.c                 | 2 +-
+ arch/arm/mach-zynq/zynq.c                      | 2 +-
+ arch/kvx/cpu/reset.c                           | 2 +-
+ arch/mips/mach-ar231x/ar231x_reset.c           | 2 +-
+ arch/mips/mach-ath79/reset.c                   | 2 +-
+ arch/mips/mach-bcm47xx/reset.c                 | 2 +-
+ arch/mips/mach-loongson/loongson1_reset.c      | 2 +-
+ arch/mips/mach-malta/reset.c                   | 2 +-
+ arch/nios2/cpu/cpu.c                           | 2 +-
+ arch/openrisc/cpu/cpu.c                        | 2 +-
+ arch/powerpc/mach-mpc5xxx/cpu.c                | 2 +-
+ arch/powerpc/mach-mpc85xx/cpu.c                | 2 +-
+ common/efi/efi.c                               | 2 +-
+ common/restart.c                               | 5 ++++-
+ include/restart.h                              | 3 ++-
+ 45 files changed, 49 insertions(+), 45 deletions(-)
+
+diff --git a/arch/arm/mach-at91/at91rm9200_time.c b/arch/arm/mach-at91/at91rm9200_time.c
+index 975cd956c986..f89983fe63c6 100644
+--- a/arch/arm/mach-at91/at91rm9200_time.c
++++ b/arch/arm/mach-at91/at91rm9200_time.c
+@@ -88,7 +88,7 @@ static void __noreturn at91rm9200_restart_soc(struct restart_handler *rst)
+ 
+ static int restart_register_feature(void)
+ {
+-	restart_handler_register_fn(at91rm9200_restart_soc);
++	restart_handler_register_fn("soc-wdt", at91rm9200_restart_soc);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-at91/at91sam9260.c b/arch/arm/mach-at91/at91sam9260.c
+index 56327a2c4710..fdd8ea014e9d 100644
+--- a/arch/arm/mach-at91/at91sam9260.c
++++ b/arch/arm/mach-at91/at91sam9260.c
+@@ -243,7 +243,7 @@ static void at91sam9260_initialize(void)
+ 	at91_add_pit(AT91SAM9260_BASE_PIT);
+ 	at91_add_sam9_smc(DEVICE_ID_SINGLE, AT91SAM9260_BASE_SMC, 0x200);
+ 
+-	restart_handler_register_fn(at91sam9260_restart);
++	restart_handler_register_fn("soc", at91sam9260_restart);
+ }
+ 
+ static int at91sam9260_setup(void)
+diff --git a/arch/arm/mach-at91/at91sam9261.c b/arch/arm/mach-at91/at91sam9261.c
+index 4abc55635413..0465ed9524df 100644
+--- a/arch/arm/mach-at91/at91sam9261.c
++++ b/arch/arm/mach-at91/at91sam9261.c
+@@ -235,7 +235,7 @@ static void at91sam9261_initialize(void)
+ 	at91_add_pit(AT91SAM9261_BASE_PIT);
+ 	at91_add_sam9_smc(DEVICE_ID_SINGLE, AT91SAM9261_BASE_SMC, 0x200);
+ 
+-	restart_handler_register_fn(at91sam9261_restart);
++	restart_handler_register_fn("soc", at91sam9261_restart);
+ }
+ 
+ static int at91sam9261_setup(void)
+diff --git a/arch/arm/mach-at91/at91sam9263.c b/arch/arm/mach-at91/at91sam9263.c
+index 690f8e06bb12..dc5dddfb646a 100644
+--- a/arch/arm/mach-at91/at91sam9263.c
++++ b/arch/arm/mach-at91/at91sam9263.c
+@@ -256,7 +256,7 @@ static void at91sam9263_initialize(void)
+ 	at91_add_sam9_smc(0, AT91SAM9263_BASE_SMC0, 0x200);
+ 	at91_add_sam9_smc(1, AT91SAM9263_BASE_SMC1, 0x200);
+ 
+-	restart_handler_register_fn(at91sam9263_restart);
++	restart_handler_register_fn("soc", at91sam9263_restart);
+ }
+ 
+ static int at91sam9263_setup(void)
+diff --git a/arch/arm/mach-at91/at91sam9g45.c b/arch/arm/mach-at91/at91sam9g45.c
+index 569aa274fc14..affc624b1d36 100644
+--- a/arch/arm/mach-at91/at91sam9g45.c
++++ b/arch/arm/mach-at91/at91sam9g45.c
+@@ -270,7 +270,7 @@ static void at91sam9g45_initialize(void)
+ 	at91_add_pit(AT91SAM9G45_BASE_PIT);
+ 	at91_add_sam9_smc(DEVICE_ID_SINGLE, AT91SAM9G45_BASE_SMC, 0x200);
+ 
+-	restart_handler_register_fn(at91sam9g45_restart);
++	restart_handler_register_fn("soc", at91sam9g45_restart);
+ }
+ 
+ static int at91sam9g45_setup(void)
+diff --git a/arch/arm/mach-at91/at91sam9n12.c b/arch/arm/mach-at91/at91sam9n12.c
+index 365bded56e40..850d34604a2c 100644
+--- a/arch/arm/mach-at91/at91sam9n12.c
++++ b/arch/arm/mach-at91/at91sam9n12.c
+@@ -226,7 +226,7 @@ static void at91sam9n12_initialize(void)
+ 	at91_add_pit(AT91SAM9N12_BASE_PIT);
+ 	at91_add_sam9_smc(DEVICE_ID_SINGLE, AT91SAM9N12_BASE_SMC, 0x200);
+ 
+-	restart_handler_register_fn(at91sam9n12_restart);
++	restart_handler_register_fn("soc", at91sam9n12_restart);
+ }
+ 
+ static int at91sam9n12_setup(void)
+diff --git a/arch/arm/mach-at91/at91sam9x5.c b/arch/arm/mach-at91/at91sam9x5.c
+index 40ba9ed56e8a..086e27a79f51 100644
+--- a/arch/arm/mach-at91/at91sam9x5.c
++++ b/arch/arm/mach-at91/at91sam9x5.c
+@@ -13,7 +13,7 @@ static void at91sam9x5_restart(struct restart_handler *rst)
+ 
+ static int at91sam9x5_initialize(void)
+ {
+-	restart_handler_register_fn(at91sam9x5_restart);
++	restart_handler_register_fn("soc", at91sam9x5_restart);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-at91/sama5d3.c b/arch/arm/mach-at91/sama5d3.c
+index a5d464eca05f..b1e7b2c565fc 100644
+--- a/arch/arm/mach-at91/sama5d3.c
++++ b/arch/arm/mach-at91/sama5d3.c
+@@ -397,7 +397,7 @@ static void sama5d3_initialize(void)
+ 	at91_add_pit(SAMA5D3_BASE_PIT);
+ 	at91_add_sam9_smc(DEVICE_ID_SINGLE, SAMA5D3_BASE_HSMC + 0x600, 0xa0);
+ 
+-	restart_handler_register_fn(sama5d3_restart);
++	restart_handler_register_fn("soc", sama5d3_restart);
+ }
+ 
+ static int sama5d3_setup(void)
+diff --git a/arch/arm/mach-at91/sama5d4.c b/arch/arm/mach-at91/sama5d4.c
+index ca09dfe425d5..62e466fe5168 100644
+--- a/arch/arm/mach-at91/sama5d4.c
++++ b/arch/arm/mach-at91/sama5d4.c
+@@ -305,7 +305,7 @@ static void sama5d4_initialize(void)
+ 	at91_add_pit(SAMA5D4_BASE_PIT);
+ 	at91_add_sam9_smc(DEVICE_ID_SINGLE, SAMA5D4_BASE_HSMC + 0x600, 0xa0);
+ 
+-	restart_handler_register_fn(sama5d4_restart);
++	restart_handler_register_fn("soc", sama5d4_restart);
+ }
+ 
+ static int sama5d4_setup(void)
+diff --git a/arch/arm/mach-clps711x/reset.c b/arch/arm/mach-clps711x/reset.c
+index 03f40b73fabf..90ddb8f5d2f5 100644
+--- a/arch/arm/mach-clps711x/reset.c
++++ b/arch/arm/mach-clps711x/reset.c
+@@ -22,7 +22,7 @@ static void __noreturn clps711x_restart_soc(struct restart_handler *rst)
+ 
+ static int restart_register_feature(void)
+ {
+-	restart_handler_register_fn(clps711x_restart_soc);
++	restart_handler_register_fn("vector", clps711x_restart_soc);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-davinci/time.c b/arch/arm/mach-davinci/time.c
+index 4d1b570aa0d4..5b57fe61929b 100644
+--- a/arch/arm/mach-davinci/time.c
++++ b/arch/arm/mach-davinci/time.c
+@@ -210,7 +210,7 @@ static void __noreturn davinci_restart_soc(struct restart_handler *rst)
+ 
+ static int restart_register_feature(void)
+ {
+-	restart_handler_register_fn(davinci_restart_soc);
++	restart_handler_register_fn("soc-wdt", davinci_restart_soc);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-ep93xx/clocksource.c b/arch/arm/mach-ep93xx/clocksource.c
+index 4fdcc36b1c81..1f3ff7f8f20a 100644
+--- a/arch/arm/mach-ep93xx/clocksource.c
++++ b/arch/arm/mach-ep93xx/clocksource.c
+@@ -85,7 +85,7 @@ static void __noreturn ep92xx_restart_soc(struct restart_handler *rst)
+ 
+ static int restart_register_feature(void)
+ {
+-	restart_handler_register_fn(ep92xx_restart_soc);
++	restart_handler_register_fn("soc", ep92xx_restart_soc);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-highbank/reset.c b/arch/arm/mach-highbank/reset.c
+index d73a0a76a5fe..ea3908ec2b59 100644
+--- a/arch/arm/mach-highbank/reset.c
++++ b/arch/arm/mach-highbank/reset.c
+@@ -33,7 +33,7 @@ static void __noreturn highbank_poweroff(struct poweroff_handler *handler)
+ 
+ static int highbank_init(void)
+ {
+-	restart_handler_register_fn(highbank_restart_soc);
++	restart_handler_register_fn("soc", highbank_restart_soc);
+ 	poweroff_handler_register_fn(highbank_poweroff);
+ 
+ 	return 0;
+diff --git a/arch/arm/mach-mvebu/armada-370-xp.c b/arch/arm/mach-mvebu/armada-370-xp.c
+index 2589f4fe72c3..9a35c51985eb 100644
+--- a/arch/arm/mach-mvebu/armada-370-xp.c
++++ b/arch/arm/mach-mvebu/armada-370-xp.c
+@@ -132,7 +132,7 @@ static int armada_370_xp_init_soc(void)
+ 	if (!of_machine_is_compatible("marvell,armada-370-xp"))
+ 		return 0;
+ 
+-	restart_handler_register_fn(armada_370_xp_restart_soc);
++	restart_handler_register_fn("soc", armada_370_xp_restart_soc);
+ 
+ 	barebox_set_model("Marvell Armada 370/XP");
+ 	barebox_set_hostname("armada");
+diff --git a/arch/arm/mach-mvebu/dove.c b/arch/arm/mach-mvebu/dove.c
+index 37fde63f18de..3c6302dd2d12 100644
+--- a/arch/arm/mach-mvebu/dove.c
++++ b/arch/arm/mach-mvebu/dove.c
+@@ -36,7 +36,7 @@ static int dove_init_soc(void)
+ 	if (!of_machine_is_compatible("marvell,dove"))
+ 		return 0;
+ 
+-	restart_handler_register_fn(dove_restart_soc);
++	restart_handler_register_fn("soc", dove_restart_soc);
+ 
+ 	barebox_set_model("Marvell Dove");
+ 	barebox_set_hostname("dove");
+diff --git a/arch/arm/mach-mvebu/kirkwood.c b/arch/arm/mach-mvebu/kirkwood.c
+index 59fb95ff4adf..e50d7501c82d 100644
+--- a/arch/arm/mach-mvebu/kirkwood.c
++++ b/arch/arm/mach-mvebu/kirkwood.c
+@@ -34,7 +34,7 @@ static int kirkwood_init_soc(void)
+ 	if (!of_machine_is_compatible("marvell,kirkwood"))
+ 		return 0;
+ 
+-	restart_handler_register_fn(kirkwood_restart_soc);
++	restart_handler_register_fn("soc", kirkwood_restart_soc);
+ 
+ 	barebox_set_model("Marvell Kirkwood");
+ 	barebox_set_hostname("kirkwood");
+diff --git a/arch/arm/mach-mxs/soc-imx23.c b/arch/arm/mach-mxs/soc-imx23.c
+index f25fff18c310..8c47c766cc2b 100644
+--- a/arch/arm/mach-mxs/soc-imx23.c
++++ b/arch/arm/mach-mxs/soc-imx23.c
+@@ -49,7 +49,7 @@ static int imx23_devices_init(void)
+ 	add_generic_device("imx23-gpio", 0, NULL, IMX_IOMUXC_BASE, 0x2000, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx23-gpio", 1, NULL, IMX_IOMUXC_BASE, 0x2000, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx23-gpio", 2, NULL, IMX_IOMUXC_BASE, 0x2000, IORESOURCE_MEM, NULL);
+-	restart_handler_register_fn(imx23_restart_soc);
++	restart_handler_register_fn("soc", imx23_restart_soc);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-mxs/soc-imx28.c b/arch/arm/mach-mxs/soc-imx28.c
+index 49f870b5bf2a..a214e2b7a6d9 100644
+--- a/arch/arm/mach-mxs/soc-imx28.c
++++ b/arch/arm/mach-mxs/soc-imx28.c
+@@ -51,7 +51,7 @@ static int imx28_init(void)
+ 		HW_CLKCTRL_WDOG_POR_DISABLE;
+ 	writel(reg, IMX_CCM_BASE + HW_CLKCTRL_RESET);
+ 
+-	restart_handler_register_fn(imx28_restart_soc);
++	restart_handler_register_fn("soc", imx28_restart_soc);
+ 
+ 	arm_add_mem_device("ram0", IMX_MEMORY_BASE, imx28_get_memsize());
+ 
+diff --git a/arch/arm/mach-nomadik/reset.c b/arch/arm/mach-nomadik/reset.c
+index 8bdaada8a1a5..d5266068e293 100644
+--- a/arch/arm/mach-nomadik/reset.c
++++ b/arch/arm/mach-nomadik/reset.c
+@@ -35,7 +35,7 @@ static void __noreturn nomadik_restart_soc(struct restart_handler *rst)
+ 
+ static int restart_register_feature(void)
+ {
+-	restart_handler_register_fn(nomadik_restart_soc);
++	restart_handler_register_fn("soc", nomadik_restart_soc);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-omap/am33xx_generic.c b/arch/arm/mach-omap/am33xx_generic.c
+index 7577df761cb7..3c5cdf065c84 100644
+--- a/arch/arm/mach-omap/am33xx_generic.c
++++ b/arch/arm/mach-omap/am33xx_generic.c
+@@ -244,7 +244,7 @@ int am33xx_init(void)
+ {
+ 	omap_gpmc_base = (void *)AM33XX_GPMC_BASE;
+ 
+-	restart_handler_register_fn(am33xx_restart_soc);
++	restart_handler_register_fn("soc", am33xx_restart_soc);
+ 
+ 	am33xx_enable_per_clocks();
+ 
+diff --git a/arch/arm/mach-omap/omap3_generic.c b/arch/arm/mach-omap/omap3_generic.c
+index cff4a4fb119f..3f6a3462779d 100644
+--- a/arch/arm/mach-omap/omap3_generic.c
++++ b/arch/arm/mach-omap/omap3_generic.c
+@@ -540,7 +540,7 @@ int omap3_init(void)
+ {
+ 	omap_gpmc_base = (void *)OMAP3_GPMC_BASE;
+ 
+-	restart_handler_register_fn(omap3_restart_soc);
++	restart_handler_register_fn("soc", omap3_restart_soc);
+ 
+ 	if (IS_ENABLED(CONFIG_RESET_SOURCE))
+ 		omap3_detect_reset_reason();
+diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
+index 1f711538487c..848a664064f5 100644
+--- a/arch/arm/mach-omap/omap4_generic.c
++++ b/arch/arm/mach-omap/omap4_generic.c
+@@ -535,7 +535,7 @@ int omap4_init(void)
+ {
+ 	omap_gpmc_base = (void *)OMAP44XX_GPMC_BASE;
+ 
+-	restart_handler_register_fn(omap4_restart_soc);
++	restart_handler_register_fn("soc", omap4_restart_soc);
+ 
+ 	return omap4_bootsource();
+ }
+diff --git a/arch/arm/mach-pxa/common.c b/arch/arm/mach-pxa/common.c
+index 106ca3020eff..5b980cb81bab 100644
+--- a/arch/arm/mach-pxa/common.c
++++ b/arch/arm/mach-pxa/common.c
+@@ -41,7 +41,7 @@ static void __noreturn pxa_restart_soc(struct restart_handler *rst)
+ 
+ static int restart_register_feature(void)
+ {
+-	restart_handler_register_fn(pxa_restart_soc);
++	restart_handler_register_fn("soc-wdt", pxa_restart_soc);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-rockchip/rk3188.c b/arch/arm/mach-rockchip/rk3188.c
+index e7cbf364573c..572e9dc58f96 100644
+--- a/arch/arm/mach-rockchip/rk3188.c
++++ b/arch/arm/mach-rockchip/rk3188.c
+@@ -29,7 +29,7 @@ static void __noreturn rockchip_restart_soc(struct restart_handler *rst)
+ 
+ static int restart_register_feature(void)
+ {
+-	restart_handler_register_fn(rockchip_restart_soc);
++	restart_handler_register_fn("soc", rockchip_restart_soc);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-rockchip/rk3288.c b/arch/arm/mach-rockchip/rk3288.c
+index 4e8fb4a123ac..9076fd9227cc 100644
+--- a/arch/arm/mach-rockchip/rk3288.c
++++ b/arch/arm/mach-rockchip/rk3288.c
+@@ -60,7 +60,7 @@ static void rk3288_detect_reset_reason(void)
+ 
+ static int rk3288_init(void)
+ {
+-	restart_handler_register_fn(rockchip_restart_soc);
++	restart_handler_register_fn("soc", rockchip_restart_soc);
+ 
+ 	if (IS_ENABLED(CONFIG_RESET_SOURCE))
+ 		rk3288_detect_reset_reason();
+diff --git a/arch/arm/mach-samsung/generic.c b/arch/arm/mach-samsung/generic.c
+index de38d47e21cb..ed3d30d9954c 100644
+--- a/arch/arm/mach-samsung/generic.c
++++ b/arch/arm/mach-samsung/generic.c
+@@ -44,7 +44,7 @@ static void __noreturn samsung_restart_soc(struct restart_handler *rst)
+ 
+ static int restart_register_feature(void)
+ {
+-	restart_handler_register_fn(samsung_restart_soc);
++	restart_handler_register_fn("soc-wdt", samsung_restart_soc);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-socfpga/arria10-generic.c b/arch/arm/mach-socfpga/arria10-generic.c
+index 53ec278739cc..38558309f860 100644
+--- a/arch/arm/mach-socfpga/arria10-generic.c
++++ b/arch/arm/mach-socfpga/arria10-generic.c
+@@ -70,7 +70,7 @@ static int arria10_generic_init(void)
+ 	arria10_init_emac();
+ 
+ 	pr_debug("Register restart handler\n");
+-	restart_handler_register_fn(arria10_restart_soc);
++	restart_handler_register_fn("soc", arria10_restart_soc);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-socfpga/cyclone5-reset-manager.c b/arch/arm/mach-socfpga/cyclone5-reset-manager.c
+index 86358068461d..4ee90b1bb0c7 100644
+--- a/arch/arm/mach-socfpga/cyclone5-reset-manager.c
++++ b/arch/arm/mach-socfpga/cyclone5-reset-manager.c
+@@ -37,7 +37,7 @@ static void __noreturn socfpga_restart_soc(struct restart_handler *rst)
+ 
+ static int restart_register_feature(void)
+ {
+-	restart_handler_register_fn(socfpga_restart_soc);
++	restart_handler_register_fn("soc", socfpga_restart_soc);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-tegra/tegra20-pmc.c b/arch/arm/mach-tegra/tegra20-pmc.c
+index f7c7ac918f98..a252c995ea02 100644
+--- a/arch/arm/mach-tegra/tegra20-pmc.c
++++ b/arch/arm/mach-tegra/tegra20-pmc.c
+@@ -246,7 +246,7 @@ static struct driver_d tegra20_pmc_driver = {
+ 
+ static int tegra20_pmc_init(void)
+ {
+-	restart_handler_register_fn(tegra20_restart_soc);
++	restart_handler_register_fn("soc", tegra20_restart_soc);
+ 	return platform_driver_register(&tegra20_pmc_driver);
+ }
+ coredevice_initcall(tegra20_pmc_init);
+diff --git a/arch/arm/mach-versatile/core.c b/arch/arm/mach-versatile/core.c
+index 7c6e9523a24a..001d6712545f 100644
+--- a/arch/arm/mach-versatile/core.c
++++ b/arch/arm/mach-versatile/core.c
+@@ -205,7 +205,7 @@ static int versatile_init(void)
+ 	amba_apb_device_add(NULL, "pl061_gpio", 1, 0x101e5000, 4096, NULL, 0);
+ 	amba_apb_device_add(NULL, "pl061_gpio", 2, 0x101e6000, 4096, NULL, 0);
+ 	amba_apb_device_add(NULL, "pl061_gpio", 3, 0x101e7000, 4096, NULL, 0);
+-	restart_handler_register_fn(versatile_reset_soc);
++	restart_handler_register_fn("soc", versatile_reset_soc);
+ 	return 0;
+ }
+ coredevice_initcall(versatile_init);
+diff --git a/arch/arm/mach-vexpress/reset.c b/arch/arm/mach-vexpress/reset.c
+index 3164ae3079c6..78e452936d2c 100644
+--- a/arch/arm/mach-vexpress/reset.c
++++ b/arch/arm/mach-vexpress/reset.c
+@@ -24,7 +24,7 @@ static void vexpress_reset_soc(struct restart_handler *rst)
+ 
+ static int restart_register_feature(void)
+ {
+-	restart_handler_register_fn(vexpress_reset_soc);
++	restart_handler_register_fn("soc-wdt", vexpress_reset_soc);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-zynq/zynq.c b/arch/arm/mach-zynq/zynq.c
+index 79a6b908e000..806aeb913055 100644
+--- a/arch/arm/mach-zynq/zynq.c
++++ b/arch/arm/mach-zynq/zynq.c
+@@ -69,7 +69,7 @@ static int zynq_init(void)
+ 	writel(val, 0xf8f00000);
+ 	dmb();
+ 
+-	restart_handler_register_fn(zynq_restart_soc);
++	restart_handler_register_fn("soc", zynq_restart_soc);
+ 
+ 	bootsource_set(zynq_bootsource_get());
+ 
+diff --git a/arch/kvx/cpu/reset.c b/arch/kvx/cpu/reset.c
+index c7f2018e0033..df36764cb66b 100644
+--- a/arch/kvx/cpu/reset.c
++++ b/arch/kvx/cpu/reset.c
+@@ -60,7 +60,7 @@ static int kvx_reset_init(void)
+ 		break;
+ 	}
+ 
+-	restart_handler_register_fn(kvx_restart_soc);
++	restart_handler_register_fn("soc", kvx_restart_soc);
+ 
+ 	return 0;
+ }
+diff --git a/arch/mips/mach-ar231x/ar231x_reset.c b/arch/mips/mach-ar231x/ar231x_reset.c
+index f88167ba4cba..91414edd269f 100644
+--- a/arch/mips/mach-ar231x/ar231x_reset.c
++++ b/arch/mips/mach-ar231x/ar231x_reset.c
+@@ -68,7 +68,7 @@ static struct driver_d ar231x_reset_driver = {
+ 
+ static int ar231x_reset_init(void)
+ {
+-	restart_handler_register_fn(ar2312x_restart_soc);
++	restart_handler_register_fn("soc-wdt", ar2312x_restart_soc);
+ 	return platform_driver_register(&ar231x_reset_driver);
+ }
+ coredevice_initcall(ar231x_reset_init);
+diff --git a/arch/mips/mach-ath79/reset.c b/arch/mips/mach-ath79/reset.c
+index b756c859d8d0..393ca00b0829 100644
+--- a/arch/mips/mach-ath79/reset.c
++++ b/arch/mips/mach-ath79/reset.c
+@@ -22,7 +22,7 @@ static void __noreturn ath79_restart_soc(struct restart_handler *rst)
+ 
+ static int restart_register_feature(void)
+ {
+-	restart_handler_register_fn(ath79_restart_soc);
++	restart_handler_register_fn("soc", ath79_restart_soc);
+ 
+ 	return 0;
+ }
+diff --git a/arch/mips/mach-bcm47xx/reset.c b/arch/mips/mach-bcm47xx/reset.c
+index 33dfb7b3b53f..3ab9b0ce4b53 100644
+--- a/arch/mips/mach-bcm47xx/reset.c
++++ b/arch/mips/mach-bcm47xx/reset.c
+@@ -19,7 +19,7 @@ static void __noreturn bcm47xx_restart_soc(struct restart_handler *rst)
+ 
+ static int restart_register_feature(void)
+ {
+-	restart_handler_register_fn(bcm47xx_restart_soc);
++	restart_handler_register_fn("soc", bcm47xx_restart_soc);
+ 
+ 	return 0;
+ }
+diff --git a/arch/mips/mach-loongson/loongson1_reset.c b/arch/mips/mach-loongson/loongson1_reset.c
+index a6c05905deac..85752f4ab825 100644
+--- a/arch/mips/mach-loongson/loongson1_reset.c
++++ b/arch/mips/mach-loongson/loongson1_reset.c
+@@ -20,7 +20,7 @@ static void __noreturn longhorn_restart_soc(struct restart_handler *rst)
+ 
+ static int restart_register_feature(void)
+ {
+-	restart_handler_register_fn(longhorn_restart_soc);
++	restart_handler_register_fn("soc-wdt", longhorn_restart_soc);
+ 
+ 	return 0;
+ }
+diff --git a/arch/mips/mach-malta/reset.c b/arch/mips/mach-malta/reset.c
+index df7be0ae555f..ad0de2741b05 100644
+--- a/arch/mips/mach-malta/reset.c
++++ b/arch/mips/mach-malta/reset.c
+@@ -24,7 +24,7 @@ static void __noreturn malta_restart_soc(struct restart_handler *rst)
+ 
+ static int restart_register_feature(void)
+ {
+-	restart_handler_register_fn(malta_restart_soc);
++	restart_handler_register_fn("soc", malta_restart_soc);
+ 
+ 	return 0;
+ }
+diff --git a/arch/nios2/cpu/cpu.c b/arch/nios2/cpu/cpu.c
+index 62bcf40f636b..9f86c911cc41 100644
+--- a/arch/nios2/cpu/cpu.c
++++ b/arch/nios2/cpu/cpu.c
+@@ -30,7 +30,7 @@ static void __noreturn nios2_restart_soc(struct restart_handler *rst)
+ 
+ static int restart_register_feature(void)
+ {
+-	return restart_handler_register_fn(nios2_restart_soc);
++	return restart_handler_register_fn("vector", nios2_restart_soc);
+ }
+ coredevice_initcall(restart_register_feature);
+ 
+diff --git a/arch/openrisc/cpu/cpu.c b/arch/openrisc/cpu/cpu.c
+index 8afd22bdea29..47d8ab428845 100644
+--- a/arch/openrisc/cpu/cpu.c
++++ b/arch/openrisc/cpu/cpu.c
+@@ -33,6 +33,6 @@ static void __noreturn openrisc_restart_cpu(struct restart_handler *rst)
+ 
+ static int restart_register_feature(void)
+ {
+-	return restart_handler_register_fn(openrisc_restart_cpu);
++	return restart_handler_register_fn("vector", openrisc_restart_cpu);
+ }
+ coredevice_initcall(restart_register_feature);
+diff --git a/arch/powerpc/mach-mpc5xxx/cpu.c b/arch/powerpc/mach-mpc5xxx/cpu.c
+index a85e1667bcb5..5cf5194aa28e 100644
+--- a/arch/powerpc/mach-mpc5xxx/cpu.c
++++ b/arch/powerpc/mach-mpc5xxx/cpu.c
+@@ -92,7 +92,7 @@ static void __noreturn mpc5xxx_restart_soc(struct restart_handler *rst)
+ 
+ static int restart_register_feature(void)
+ {
+-	return restart_handler_register_fn(mpc5xxx_restart_soc);
++	return restart_handler_register_fn("soc-wdt", mpc5xxx_restart_soc);
+ }
+ coredevice_initcall(restart_register_feature);
+ 
+diff --git a/arch/powerpc/mach-mpc85xx/cpu.c b/arch/powerpc/mach-mpc85xx/cpu.c
+index 7c8a59edc9c1..efdff24e6db3 100644
+--- a/arch/powerpc/mach-mpc85xx/cpu.c
++++ b/arch/powerpc/mach-mpc85xx/cpu.c
+@@ -42,7 +42,7 @@ static void __noreturn mpc85xx_restart_soc(struct restart_handler *rst)
+ 
+ static int restart_register_feature(void)
+ {
+-	restart_handler_register_fn(mpc85xx_restart_soc);
++	restart_handler_register_fn("soc", mpc85xx_restart_soc);
+ 
+ 	return 0;
+ }
+diff --git a/common/efi/efi.c b/common/efi/efi.c
+index 6f55e3970ed0..01003dc00f88 100644
+--- a/common/efi/efi.c
++++ b/common/efi/efi.c
+@@ -292,7 +292,7 @@ static void __noreturn efi_poweroff_system(struct poweroff_handler *handler)
+ 
+ static int restart_register_feature(void)
+ {
+-	restart_handler_register_fn(efi_restart_system);
++	restart_handler_register_fn("efi", efi_restart_system);
+ 	poweroff_handler_register_fn(efi_poweroff_system);
+ 
+ 	return 0;
+diff --git a/common/restart.c b/common/restart.c
+index dd15c8d5c362..66131c262938 100644
+--- a/common/restart.c
++++ b/common/restart.c
+@@ -47,6 +47,7 @@ int restart_handler_register(struct restart_handler *rst)
+ 
+ /**
+  * restart_handler_register_fn() - register a handler function
++ * @name:	restart method name or NULL if name should be auto-generated
+  * @restart_fn:	The restart function
+  *
+  * convenience wrapper for restart_handler_register() to register a handler
+@@ -54,13 +55,15 @@ int restart_handler_register(struct restart_handler *rst)
+  *
+  * return: 0 for success or negative error code
+  */
+-int restart_handler_register_fn(void (*restart_fn)(struct restart_handler *))
++int restart_handler_register_fn(const char *name,
++				void (*restart_fn)(struct restart_handler *))
+ {
+ 	struct restart_handler *rst;
+ 	int ret;
+ 
+ 	rst = xzalloc(sizeof(*rst));
+ 
++	rst->name = name;
+ 	rst->restart = restart_fn;
+ 
+ 	ret = restart_handler_register(rst);
+diff --git a/include/restart.h b/include/restart.h
+index 6880b03b936f..e7dd1bd2b79c 100644
+--- a/include/restart.h
++++ b/include/restart.h
+@@ -12,7 +12,8 @@ struct restart_handler {
+ };
+ 
+ int restart_handler_register(struct restart_handler *);
+-int restart_handler_register_fn(void (*restart_fn)(struct restart_handler *));
++int restart_handler_register_fn(const char *name,
++				void (*restart_fn)(struct restart_handler *));
+ 
+ #define RESTART_DEFAULT_PRIORITY 100
+ 
+-- 
+2.27.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
