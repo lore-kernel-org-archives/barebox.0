@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jg5cZ-0004RG-M8
- for barebox@lists.infradead.org; Tue, 02 Jun 2020 12:02:22 +0000
-Date: Tue, 2 Jun 2020 14:02:15 +0200
-From: Michael Grzeschik <mgr@pengutronix.de>
-Message-ID: <20200602120215.GZ31450@pengutronix.de>
-References: <20200529125122.8561-1-m.grzeschik@pengutronix.de>
- <81baec3b23d148e9085bb73b28c52dd1f9ba818f.camel@lynxeye.de>
-MIME-Version: 1.0
-In-Reply-To: <81baec3b23d148e9085bb73b28c52dd1f9ba818f.camel@lynxeye.de>
+ id 1jg6Lm-0000uI-Bd
+ for barebox@lists.infradead.org; Tue, 02 Jun 2020 12:49:03 +0000
+Received: by mail-lj1-x229.google.com with SMTP id s1so12435185ljo.0
+ for <barebox@lists.infradead.org>; Tue, 02 Jun 2020 05:49:01 -0700 (PDT)
+Date: Tue, 2 Jun 2020 15:48:58 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20200602154858.2159a78191d32e5c0d2dd6af@gmail.com>
+In-Reply-To: <20200602075128.GI11869@pengutronix.de>
+References: <20200602012035.2b476de768013dc5793cdea0@gmail.com>
+ <20200602075128.GI11869@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,105 +20,74 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0368262078697815382=="
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: MXS: duckbill: set duart to serial0
-To: Lucas Stach <dev@lynxeye.de>
+Subject: Re: [RFC] inkscape 1.0 issue
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
+On Tue, 2 Jun 2020 09:51:28 +0200
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
---===============0368262078697815382==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ggEtdcIX3XIOBw6T"
-Content-Disposition: inline
+> Hi Antony,
+> =
 
+> On Tue, Jun 02, 2020 at 01:20:35AM +0300, Antony Pavlov wrote:
+> > =
 
---ggEtdcIX3XIOBw6T
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> > diff --git a/lib/logo/Makefile b/lib/logo/Makefile
+> > index eb7aee080e..8c81447df7 100644
+> > --- a/lib/logo/Makefile
+> > +++ b/lib/logo/Makefile
+> > @@ -1,17 +1,17 @@
+> >  =
 
-On Fri, May 29, 2020 at 03:56:53PM +0200, Lucas Stach wrote:
->Am Freitag, den 29.05.2020, 14:51 +0200 schrieb Michael Grzeschik:
->> In the imx28.dtsi the serial0 is set to auart0 which is not the one
->> used on the duckbill. We set duart to serial0 so the console will be
->> properly set.
->
->If the aliases are the same in the Barebox and Linux DTs there should
->be no need to override the alias numbering in the individual board DTs.
->
->Is the Linux driver ignoring the alias, or what is the issue being
->fixed here?
+> > -OPTS_barebox-logo-w64.bblogo=3D"-w 64"
+> > +OPTS_barebox-logo-w64.bblogo =3D --export-width=3D64
+> >  bblogo-$(CONFIG_BAREBOX_LOGO_64) +=3D barebox-logo-w64
+> =
 
-The duart (debugging uart) is completely missing in the aliases list.
-The first set serial alias in dts/src/arm/imx28.dtsi is auart0, which
-are the application uarts.
+> according to the man page --export-width=3D64 is supported by 0.92.4 as
+> well, so we could change this part unconditionally.
+> =
 
-mgr
+> > @@ -41,7 +41,8 @@ cmd_logo_S =3D							\
+> >  quiet_cmd_logo =3D LOGO.S   $@
+> >  cmd_logo =3D							\
+> >  (								\
+> > -	inkscape -z $(OPTS_$(@F)) -e $@ $< > /dev/null;		\
+> > +	DISPLAY=3D"" inkscape $(OPTS_$(@F)) --export-type=3Dpng $< > /dev/nul=
+l; \
+> > +	mv $(patsubst %.svg,%.png,$<) $@; \
+> =
 
->> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
->> ---
->>  arch/arm/dts/imx28-duckbill.dts | 4 ++++
->>  1 file changed, 4 insertions(+)
->>
->> diff --git a/arch/arm/dts/imx28-duckbill.dts b/arch/arm/dts/imx28-
->> duckbill.dts
->> index 2a995a7938..299c33e270 100644
->> --- a/arch/arm/dts/imx28-duckbill.dts
->> +++ b/arch/arm/dts/imx28-duckbill.dts
->> @@ -4,6 +4,10 @@
->>  	chosen {
->>  		stdout-path =3D &duart;
->>  	};
->> +
->> +	aliases {
->> +		serial0 =3D &duart;
->> +	};
->>  };
->>
->>  &duart {
->
->
+> Inkscape-1.0 supports "-o -" and pre Inkscape-1.0 supports "-e -", we
+> could use this to do without the mv in both cases.
+> =
 
---=20
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> DISPLAY=3D"" shouldn't hurt on pre Inkscape-1.0. as well.
+> =
 
---ggEtdcIX3XIOBw6T
-Content-Type: application/pgp-signature; name="signature.asc"
+> This leaves '-z' and -e vs. --export-type=3Dpng. Something like this shou=
+ld work:
+> =
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEElXvEUs6VPX6mDPT8C+njFXoeLGQFAl7WP8MACgkQC+njFXoe
-LGTM4RAAvTms6Iv/ap8txYWOOvLtOYWqHh1Upnbpp5WRGQ9gGPeQoOdPYh/vl7n3
-HoQHT1CncZFaRYhzp61cFjtuJFiMZSAFP4+tvtOlPlr7T9c9eLPBf71iRy0Fmxbf
-spgwVWRppDq03l33dVhblJzQ5Q/xxCS4+QwkDlfbx+3iwhaRqpzi/ZJaXRLKs10X
-B7vuFJqyCP0MhoJAYLlGFeKRqY1tXU2ObRpJZPxgB09c0m3e0zHN/JVH82u3Glqp
-6Si6wL4MMYofkHUVjO1xpCOnWzr/JtvdYa37wQF1/aB/adyktOujpPiKvsIDsynY
-bR/GqPK+RGWyZ2LzBn96DGFfEjH+RMCCh4ZYrodnlMFTR7K1IuYsc3/6D39jeqtJ
-/IxWGsEAWmH5v+IEVUt734wf4zKaqRkRdWBjG3waw9rPwk44q/YRoAlLgRq7zoEP
-HSLxXxj32mBbjJd53bpeBW0LVURntC5dNRhPSCBgTLAd1dCq+KJW8WyH+La2L4jo
-eJcRU0UaF8sThWOMnF3N0fg9HEDqBWSNn23t//h5yTfi7bjyHDl9N0OoahgcPWlP
-w6vwdGrxx99teAZBeep5LKneW5qGQjkP/xtyILydjhRJ3aLY/KFjZ00AZRHx1spC
-YpH9dEYM1rR9eqa+eYDFbZm0CdXlMVk6BmV8TVCop+VJdBDQHD0=
-=PgKp
------END PGP SIGNATURE-----
-
---ggEtdcIX3XIOBw6T--
+> INKSCAPEOPTS +=3D $(call try-run, inkscape -z,-z,)
+> INKSCAPEOPTS +=3D $(call try-run, inkscape -e,-e,--export_type=3Dpng)
+> =
 
 
---===============0368262078697815382==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Can we move all inkscape-related stuff into separate svg2bblogo.sh script
+and just call script from makefile?
+
+-- =
+
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============0368262078697815382==--
