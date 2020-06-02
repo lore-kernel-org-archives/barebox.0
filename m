@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jg2gY-0006qV-NG
- for barebox@lists.infradead.org; Tue, 02 Jun 2020 08:54:16 +0000
+ id 1jg2gY-0006qR-Nf
+ for barebox@lists.infradead.org; Tue, 02 Jun 2020 08:54:18 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue,  2 Jun 2020 10:53:49 +0200
-Message-Id: <20200602085412.16554-3-a.fatoum@pengutronix.de>
-In-Reply-To: <20200602085412.16554-1-a.fatoum@pengutronix.de>
-References: <20200602085412.16554-1-a.fatoum@pengutronix.de>
+Date: Tue,  2 Jun 2020 10:53:47 +0200
+Message-Id: <20200602085412.16554-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,59 +19,87 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 02/25] sandbox: define CONFIG_64BIT as appropriate
+Subject: [PATCH v2 00/25] sandbox: support COMPILE_TESTing drivers
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-All 64-bit architectures are supposed to define CONFIG_64BIT to support
-the relevant 64-bit MMIO accessors. The sandbox architecture is a bit
-of a special case, because barebox uses the toolchain default and
-doesn't force a bitness. Add 64BIT as promptless symbol, which reflects
-the pointer size of the target platform.
+This series adds the last few bells and whistles to COMPILE_TEST
+these drivers under sandbox as well.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- arch/sandbox/Kconfig    | 9 +++++++++
- scripts/gcc-64bitptr.sh | 9 +++++++++
- 2 files changed, 18 insertions(+)
+The five last patches address the first few issues found by
+clang-analyzer. There are still hundreds more in need of triage:
+http://a3f.at/up/barebox-clang-analyzer/
+
+(Check it out; control flow visualization is pretty! j/k to navigate)
+
+v1 -> v2:
+  - Patch stack rebased
+  - Added separate <asm-generic/bitio.h> (Sascha)
+  - fixed Author/Signed-off-by mismatch (Roland)
+  - Drop local_irq_ stubs (Sascha)
+
+Ahmad Fatoum (25):
+  scripts: import Linux Kconfig.include
+  sandbox: define CONFIG_64BIT as appropriate
+  sandbox: asm: bitsperlong.h: detect bitness according to 64BIT symbol
+  sandbox: support forcing 32-bit x86
+  include: asm-generic: provide (in|out)_(le|be)(16|32) helpers for all
+    archs
+  ARM: asm/io.h: fall back to <asm-generic/bitio.h> out_be32 and friends
+  sandbox: <asm/io.h>: include bitio accessors
+  clocksource: arm_global_timer.c: remove unused asm/ header
+  mtd: nand: orion: depend on ARM
+  ddr: fsl: depend on ARM
+  net: fec_imx: depend on HAS_DMA
+  net: macb: depend on HAS_DMA
+  sandbox: implement stub physical virtual translation
+  sandbox: asm: implement stub DMA functions
+  sandbox: select HAS_DMA
+  ARM: atomic.h: move generic implementation to asm-generic
+  include: <asm-generic/atomic.h>: remove stub IRQ save/restore
+  sandbox: asm: implement <asm/atomic.h>
+  usb: xhci-hcd: remove unused #include <asm/cache.h>
+  usb: xhci-hcd: replace opencoded non-atomic 64-bit MMIO with lo_hi
+    helper
+  include: bitops: fix dead increment in fls() and ffs()
+  commands: tftp: drop unused variable
+  commands: test: drop dead assignment
+  sandbox: os: add_image: fix memory leak
+  mtd: nand: base: fix use of uninitialized struct member
+
+ arch/arm/include/asm/atomic.h          | 108 +-----------------
+ arch/arm/include/asm/io.h              |  58 +---------
+ arch/sandbox/Kconfig                   |  17 +++
+ arch/sandbox/Makefile                  |  12 +-
+ arch/sandbox/include/asm/atomic.h      |   2 +
+ arch/sandbox/include/asm/bitsperlong.h |  11 +-
+ arch/sandbox/include/asm/dma.h         |  53 ++++++++-
+ arch/sandbox/include/asm/io.h          |  11 ++
+ arch/sandbox/os/Makefile               |   2 +-
+ arch/sandbox/os/common.c               |   2 +-
+ commands/test.c                        |   1 -
+ commands/tftp.c                        |   8 +-
+ drivers/clocksource/arm_global_timer.c |   1 -
+ drivers/ddr/fsl/Kconfig                |   1 +
+ drivers/mtd/nand/Kconfig               |   2 +-
+ drivers/mtd/nand/nand_base.c           |   1 +
+ drivers/net/Kconfig                    |   2 +
+ drivers/usb/host/xhci.h                |  14 +--
+ include/asm-generic/atomic.h           |  73 +++++++++++++
+ include/asm-generic/bitio.h            | 145 +++++++++++++++++++++++++
+ include/asm-generic/bitops/ffs.h       |   4 +-
+ include/asm-generic/bitops/fls.h       |   4 +-
+ scripts/Kconfig.include                |  53 +++++++++
+ scripts/gcc-64bitptr.sh                |   9 ++
+ scripts/gcc-version.sh                 |  20 ++++
+ 25 files changed, 412 insertions(+), 202 deletions(-)
+ create mode 100644 arch/sandbox/include/asm/atomic.h
+ create mode 100644 include/asm-generic/atomic.h
+ create mode 100644 include/asm-generic/bitio.h
+ create mode 100644 scripts/Kconfig.include
  create mode 100755 scripts/gcc-64bitptr.sh
+ create mode 100755 scripts/gcc-version.sh
 
-diff --git a/arch/sandbox/Kconfig b/arch/sandbox/Kconfig
-index 6ec71a99e53f..46cfe8b4b1c8 100644
---- a/arch/sandbox/Kconfig
-+++ b/arch/sandbox/Kconfig
-@@ -1,3 +1,5 @@
-+source "scripts/Kconfig.include"
-+
- config SANDBOX
- 	bool
- 	select OFTREE
-@@ -20,3 +22,10 @@ config SANDBOX_UNWIND
- 	default y
- 	select ARCH_HAS_STACK_DUMP
- 	depends on UBSAN || KASAN
-+
-+config CC_IS_64BIT
-+	def_bool $(success,$(srctree)/scripts/gcc-64bitptr.sh $(CC))
-+
-+config 64BIT
-+	bool
-+	default CC_IS_64BIT
-diff --git a/scripts/gcc-64bitptr.sh b/scripts/gcc-64bitptr.sh
-new file mode 100755
-index 000000000000..7fb05703b813
---- /dev/null
-+++ b/scripts/gcc-64bitptr.sh
-@@ -0,0 +1,9 @@
-+#!/bin/sh
-+# SPDX-License-Identifier: GPL-2.0-only
-+
-+cat << "END" | $@ -x c - -c -o /dev/null
-+int main(void)
-+{
-+	return sizeof(struct { int:-!(sizeof(void *) == 8); });
-+}
-+END
 -- 
 2.27.0
 
