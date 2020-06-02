@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jg2gY-0006qc-R8
+ id 1jg2gZ-0006qi-7M
  for barebox@lists.infradead.org; Tue, 02 Jun 2020 08:54:17 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue,  2 Jun 2020 10:53:50 +0200
-Message-Id: <20200602085412.16554-4-a.fatoum@pengutronix.de>
+Date: Tue,  2 Jun 2020 10:53:54 +0200
+Message-Id: <20200602085412.16554-8-a.fatoum@pengutronix.de>
 In-Reply-To: <20200602085412.16554-1-a.fatoum@pengutronix.de>
 References: <20200602085412.16554-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,38 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 03/25] sandbox: asm: bitsperlong.h: detect bitness
- according to 64BIT symbol
+Subject: [PATCH v2 07/25] sandbox: <asm/io.h>: include bitio accessors
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Now that we have an accurate CONFIG_64BIT describing sandbox bitness,
-we don't need to assume everything except __x86_64__ as 32-bit.
-
-This assumes that sizeof(long) == sizeof(void *), which is assumed
-anyway throughout the code base.
+ARM <asm/io.h> defines the U-Boot style setbits/clrbits helpers.
+Have sandbox follow suit to allow more drivers to be compile tested
+there.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/sandbox/include/asm/bitsperlong.h | 11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
+ arch/sandbox/include/asm/io.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/sandbox/include/asm/bitsperlong.h b/arch/sandbox/include/asm/bitsperlong.h
-index 00c1fc2625b2..6dc0bb0c13b2 100644
---- a/arch/sandbox/include/asm/bitsperlong.h
-+++ b/arch/sandbox/include/asm/bitsperlong.h
-@@ -1,10 +1 @@
--#ifndef __ASM_BITSPERLONG_H
--#define __ASM_BITSPERLONG_H
--
--#ifdef __x86_64__
--#define BITS_PER_LONG 64
--#else
--#define BITS_PER_LONG 32
--#endif
--
--#endif /* __ASM_BITSPERLONG_H */
-+#include <asm-generic/bitsperlong.h>
+diff --git a/arch/sandbox/include/asm/io.h b/arch/sandbox/include/asm/io.h
+index cb891df5c8c8..0a07627a893d 100644
+--- a/arch/sandbox/include/asm/io.h
++++ b/arch/sandbox/include/asm/io.h
+@@ -4,5 +4,6 @@
+ #define	IO_SPACE_LIMIT 0
+ 
+ #include <asm-generic/io.h>
++#include <asm-generic/bitio.h>
+ 
+ #endif /* __ASM_SANDBOX_IO_H */
 -- 
 2.27.0
 
