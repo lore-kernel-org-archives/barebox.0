@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jg3tj-0002dX-OJ
- for barebox@lists.infradead.org; Tue, 02 Jun 2020 10:11:57 +0000
-References: <00a601d638be$2f10f330$8d32d990$@mobius-embedded-systems.co.uk>
- <cf5280fe-d0e8-5fc9-bada-e95667ead7f9@pengutronix.de>
- <c52611ab-77d3-540c-2bd4-8959dc811510@pengutronix.de>
- <00e501d638c4$438feea0$caafcbe0$@mobius-embedded-systems.co.uk>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <ea436d8b-7cc5-9d75-9df4-5d2dee312927@pengutronix.de>
-Date: Tue, 2 Jun 2020 12:11:53 +0200
+ id 1jg5cZ-0004RG-M8
+ for barebox@lists.infradead.org; Tue, 02 Jun 2020 12:02:22 +0000
+Date: Tue, 2 Jun 2020 14:02:15 +0200
+From: Michael Grzeschik <mgr@pengutronix.de>
+Message-ID: <20200602120215.GZ31450@pengutronix.de>
+References: <20200529125122.8561-1-m.grzeschik@pengutronix.de>
+ <81baec3b23d148e9085bb73b28c52dd1f9ba818f.camel@lynxeye.de>
 MIME-Version: 1.0
-In-Reply-To: <00e501d638c4$438feea0$caafcbe0$@mobius-embedded-systems.co.uk>
-Content-Language: en-US
+In-Reply-To: <81baec3b23d148e9085bb73b28c52dd1f9ba818f.camel@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,97 +18,105 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============0368262078697815382=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Mini UART support for Raspberry Pi CM3 ?
-To: "john@mobius-embedded-systems.co.uk" <andrew@mobius-embedded-systems.co.uk>, barebox@lists.infradead.org
+Subject: Re: [PATCH] ARM: MXS: duckbill: set duart to serial0
+To: Lucas Stach <dev@lynxeye.de>
+Cc: barebox@lists.infradead.org
 
-On 6/2/20 11:57 AM, john@mobius-embedded-systems.co.uk wrote:
-> Hi Ahmad
-> 
-> I have been using v2020.05 but I believe I had enabled all consoles so I'll
-> try setting it to none and see how that goes.
 
-This will only fix the use of UART0 as output. To use UART1, you'll need
-to set stdout-path = &uart1 like ab76f9d09d3b ("ARM: rpi: choose miniuart as
-stdout") does.
+--===============0368262078697815382==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ggEtdcIX3XIOBw6T"
+Content-Disposition: inline
 
-Cheers
-Ahmad
 
-> 
-> Thanks
-> 
-> John
-> 
-> -----Original Message-----
-> From: barebox <barebox-bounces@lists.infradead.org> On Behalf Of Ahmad
-> Fatoum
-> Sent: 02 June 2020 10:55
-> To: john@mobius-embedded-systems.co.uk
-> <andrew@mobius-embedded-systems.co.uk>; barebox@lists.infradead.org
-> Subject: Re: Mini UART support for Raspberry Pi CM3 ?
-> 
-> On 6/2/20 11:43 AM, Ahmad Fatoum wrote:
->> On 6/2/20 11:14 AM, john@mobius-embedded-systems.co.uk wrote:
->>> Hi
->>>
->>> I have been trying to get the mini UART (UART1) to work in Barebox on 
->>> the RPI Compute Module 3+.  I already have the changes made in 
->>> config.txt and this works fine when I boot into the main Linux code.  
->>> However, in Barebox, the output always comes out on the main UART 
->>> (UART0) and that is wired to the Bluetooth module on my platform.  I have
-> tried modifying the device
->>> trees and cannot seem to get any output.   I also ensured that I added
-> the
->>> RPI CM3 output target as a config in rpi_defconfig.   
->>>
->>> I've tried turning off the PL011 config option and also changing the 
->>> device tree to reference UART1 and set the chosen stdout-path to 
->>> point to this UART, but when I do this I just get a lack of any serial
-> output.
->>>
->>> I am also wanting to use the alternate pins (32 & 33) for UART1, so I 
->>> am thinking that something else needs to be changed.  Has anyone 
->>> managed to get this to work?
+--ggEtdcIX3XIOBw6T
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, May 29, 2020 at 03:56:53PM +0200, Lucas Stach wrote:
+>Am Freitag, den 29.05.2020, 14:51 +0200 schrieb Michael Grzeschik:
+>> In the imx28.dtsi the serial0 is set to auart0 which is not the one
+>> used on the duckbill. We set duart to serial0 so the console will be
+>> properly set.
+>
+>If the aliases are the same in the Barebox and Linux DTs there should
+>be no need to override the alias numbering in the individual board DTs.
+>
+>Is the Linux driver ignoring the alias, or what is the issue being
+>fixed here?
+
+The duart (debugging uart) is completely missing in the aliases list.
+The first set serial alias in dts/src/arm/imx28.dtsi is auart0, which
+are the application uarts.
+
+mgr
+
+>> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+>> ---
+>>  arch/arm/dts/imx28-duckbill.dts | 4 ++++
+>>  1 file changed, 4 insertions(+)
 >>
->> Which barebox version are you on? v2020.03.0 contains a series for 
->> mini UART support culminating in ab76f9d09d3b ("ARM: rpi: choose 
->> miniuart as stdout"), which sounds like something you will want to have.
-> 
-> Oh, I see now that this is in since v2019.03.0. I assume you are already on
-> a newer version?
-> 
->> Also what's you "Console activation strategy"? (Kconfig symbols
->> CONSOLE_ACTIVATE_.*) You'll want to have CONSOLE_ACTIVATE_NONE, so 
->> only the stdout-path from the device tree is activated by default.
+>> diff --git a/arch/arm/dts/imx28-duckbill.dts b/arch/arm/dts/imx28-
+>> duckbill.dts
+>> index 2a995a7938..299c33e270 100644
+>> --- a/arch/arm/dts/imx28-duckbill.dts
+>> +++ b/arch/arm/dts/imx28-duckbill.dts
+>> @@ -4,6 +4,10 @@
+>>  	chosen {
+>>  		stdout-path =3D &duart;
+>>  	};
+>> +
+>> +	aliases {
+>> +		serial0 =3D &duart;
+>> +	};
+>>  };
 >>
->> Cheers
->> Ahmad
->>
->>>
->>> Regards
->>>
->>> John
->>>
->>>
->>> _______________________________________________
->>> barebox mailing list
->>> barebox@lists.infradead.org
->>> http://lists.infradead.org/mailman/listinfo/barebox
->>>
->>
-> 
+>>  &duart {
+>
+>
 
--- 
+--=20
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
+--ggEtdcIX3XIOBw6T
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEElXvEUs6VPX6mDPT8C+njFXoeLGQFAl7WP8MACgkQC+njFXoe
+LGTM4RAAvTms6Iv/ap8txYWOOvLtOYWqHh1Upnbpp5WRGQ9gGPeQoOdPYh/vl7n3
+HoQHT1CncZFaRYhzp61cFjtuJFiMZSAFP4+tvtOlPlr7T9c9eLPBf71iRy0Fmxbf
+spgwVWRppDq03l33dVhblJzQ5Q/xxCS4+QwkDlfbx+3iwhaRqpzi/ZJaXRLKs10X
+B7vuFJqyCP0MhoJAYLlGFeKRqY1tXU2ObRpJZPxgB09c0m3e0zHN/JVH82u3Glqp
+6Si6wL4MMYofkHUVjO1xpCOnWzr/JtvdYa37wQF1/aB/adyktOujpPiKvsIDsynY
+bR/GqPK+RGWyZ2LzBn96DGFfEjH+RMCCh4ZYrodnlMFTR7K1IuYsc3/6D39jeqtJ
+/IxWGsEAWmH5v+IEVUt734wf4zKaqRkRdWBjG3waw9rPwk44q/YRoAlLgRq7zoEP
+HSLxXxj32mBbjJd53bpeBW0LVURntC5dNRhPSCBgTLAd1dCq+KJW8WyH+La2L4jo
+eJcRU0UaF8sThWOMnF3N0fg9HEDqBWSNn23t//h5yTfi7bjyHDl9N0OoahgcPWlP
+w6vwdGrxx99teAZBeep5LKneW5qGQjkP/xtyILydjhRJ3aLY/KFjZ00AZRHx1spC
+YpH9dEYM1rR9eqa+eYDFbZm0CdXlMVk6BmV8TVCop+VJdBDQHD0=
+=PgKp
+-----END PGP SIGNATURE-----
+
+--ggEtdcIX3XIOBw6T--
+
+
+--===============0368262078697815382==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============0368262078697815382==--
