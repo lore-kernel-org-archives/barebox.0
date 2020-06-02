@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jg2ga-0006s3-0X
- for barebox@lists.infradead.org; Tue, 02 Jun 2020 08:54:21 +0000
+ id 1jg2gZ-0006qj-Bi
+ for barebox@lists.infradead.org; Tue, 02 Jun 2020 08:54:19 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue,  2 Jun 2020 10:54:05 +0200
-Message-Id: <20200602085412.16554-19-a.fatoum@pengutronix.de>
+Date: Tue,  2 Jun 2020 10:53:55 +0200
+Message-Id: <20200602085412.16554-9-a.fatoum@pengutronix.de>
 In-Reply-To: <20200602085412.16554-1-a.fatoum@pengutronix.de>
 References: <20200602085412.16554-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,28 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 18/25] sandbox: asm: implement <asm/atomic.h>
+Subject: [PATCH v2 08/25] clocksource: arm_global_timer.c: remove unused asm/
+ header
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-For easier code-sharing, the UBIFS code still uses the Kernel's
-atomic accessors. Provide a sandbox <asm/atomic.h> header, so we
-can compile-test UBI under sandbox.
+We don't use the header and dropping it allows us to compile-test the
+driver under non-ARM architectures. Do so.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/sandbox/include/asm/atomic.h | 2 ++
- 1 file changed, 2 insertions(+)
- create mode 100644 arch/sandbox/include/asm/atomic.h
+ drivers/clocksource/arm_global_timer.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/sandbox/include/asm/atomic.h b/arch/sandbox/include/asm/atomic.h
-new file mode 100644
-index 000000000000..af12dee13089
---- /dev/null
-+++ b/arch/sandbox/include/asm/atomic.h
-@@ -0,0 +1,2 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#include <asm-generic/atomic.h>
+diff --git a/drivers/clocksource/arm_global_timer.c b/drivers/clocksource/arm_global_timer.c
+index 44e3a3c762fb..78cd72d3eb45 100644
+--- a/drivers/clocksource/arm_global_timer.c
++++ b/drivers/clocksource/arm_global_timer.c
+@@ -20,7 +20,6 @@
+ #include <clock.h>
+ #include <linux/clk.h>
+ #include <io.h>
+-#include <asm/system.h>
+ 
+ #define GT_COUNTER0	0x00
+ #define GT_COUNTER1	0x04
 -- 
 2.27.0
 
