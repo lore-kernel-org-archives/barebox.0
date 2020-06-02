@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jg0LB-0007l8-TV
- for barebox@lists.infradead.org; Tue, 02 Jun 2020 06:24:03 +0000
-Date: Tue, 2 Jun 2020 08:24:00 +0200
+ id 1jg1hq-0006Zh-TN
+ for barebox@lists.infradead.org; Tue, 02 Jun 2020 07:51:35 +0000
+Date: Tue, 2 Jun 2020 09:51:28 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200602062400.GH11869@pengutronix.de>
-References: <20200528125611.11888-1-r.czerwinski@pengutronix.de>
+Message-ID: <20200602075128.GI11869@pengutronix.de>
+References: <20200602012035.2b476de768013dc5793cdea0@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200528125611.11888-1-r.czerwinski@pengutronix.de>
+In-Reply-To: <20200602012035.2b476de768013dc5793cdea0@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,29 +22,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: i.MX: enable Master Identifier Unlock
-To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Subject: Re: [RFC] inkscape 1.0 issue
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, May 28, 2020 at 02:56:11PM +0200, Rouven Czerwinski wrote:
-> By default the HAB locks the Master Identifier (MID) to preconfigured
-> values. This is not a problem if Linux is running in the secure world,
-> however when running a secure world operating system such as OP-TEE, the
-> MID configuration should be done by the secure world operating system.
-> 
-> This causes no regressions for systems using no secure world operating
-> systems, since no MID value indicates that all normal/secure world
-> entities can access the peripherals supporting the MID.
-> 
-> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-> ---
->  arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h | 2 +-
->  arch/arm/mach-imx/include/mach/habv4-imx8-gencsf.h | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
+Hi Antony,
 
-Applied, thanks
+On Tue, Jun 02, 2020 at 01:20:35AM +0300, Antony Pavlov wrote:
+> 
+> diff --git a/lib/logo/Makefile b/lib/logo/Makefile
+> index eb7aee080e..8c81447df7 100644
+> --- a/lib/logo/Makefile
+> +++ b/lib/logo/Makefile
+> @@ -1,17 +1,17 @@
+>  
+> -OPTS_barebox-logo-w64.bblogo="-w 64"
+> +OPTS_barebox-logo-w64.bblogo = --export-width=64
+>  bblogo-$(CONFIG_BAREBOX_LOGO_64) += barebox-logo-w64
 
-Sascha
+according to the man page --export-width=64 is supported by 0.92.4 as
+well, so we could change this part unconditionally.
+
+> @@ -41,7 +41,8 @@ cmd_logo_S =							\
+>  quiet_cmd_logo = LOGO.S   $@
+>  cmd_logo =							\
+>  (								\
+> -	inkscape -z $(OPTS_$(@F)) -e $@ $< > /dev/null;		\
+> +	DISPLAY="" inkscape $(OPTS_$(@F)) --export-type=png $< > /dev/null; \
+> +	mv $(patsubst %.svg,%.png,$<) $@; \
+
+Inkscape-1.0 supports "-o -" and pre Inkscape-1.0 supports "-e -", we
+could use this to do without the mv in both cases.
+
+DISPLAY="" shouldn't hurt on pre Inkscape-1.0. as well.
+
+This leaves '-z' and -e vs. --export-type=png. Something like this should work:
+
+INKSCAPEOPTS += $(call try-run, inkscape -z,-z,)
+INKSCAPEOPTS += $(call try-run, inkscape -e,-e,--export_type=png)
+
+Regards,
+ Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
