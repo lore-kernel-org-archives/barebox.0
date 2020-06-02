@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jg2ga-0006sD-5F
- for barebox@lists.infradead.org; Tue, 02 Jun 2020 08:54:22 +0000
+ id 1jg2gh-0006zI-Sa
+ for barebox@lists.infradead.org; Tue, 02 Jun 2020 08:54:27 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue,  2 Jun 2020 10:54:12 +0200
-Message-Id: <20200602085412.16554-26-a.fatoum@pengutronix.de>
+Date: Tue,  2 Jun 2020 10:53:57 +0200
+Message-Id: <20200602085412.16554-11-a.fatoum@pengutronix.de>
 In-Reply-To: <20200602085412.16554-1-a.fatoum@pengutronix.de>
 References: <20200602085412.16554-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,34 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 25/25] mtd: nand: base: fix use of uninitialized struct
- member
+Subject: [PATCH v2 10/25] ddr: fsl: depend on ARM
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-ooblen is read in nand_do_read_ops, despite never having been assigned a
-value. Because ooblen is used to indicate how many bytes of oobbuf are
-usable and oobbuf is NULL, use 0 as initial value.
-
-Found on ARCH=sandbox using clang-analyzer.
+We have inline assembly in the driver, so we can't compile-test it
+unmodified on non-ARM. Indicate so in the Kconfig.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/mtd/nand/nand_base.c | 1 +
+ drivers/ddr/fsl/Kconfig | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
-index 00f0f7588434..3f4c787f49da 100644
---- a/drivers/mtd/nand/nand_base.c
-+++ b/drivers/mtd/nand/nand_base.c
-@@ -1688,6 +1688,7 @@ static int nand_read(struct mtd_info *mtd, loff_t from, size_t len,
- 	nand_get_device(mtd, FL_READING);
- 	ops.len = len;
- 	ops.datbuf = buf;
-+	ops.ooblen = 0;
- 	ops.oobbuf = NULL;
- 	ops.mode = MTD_OPS_PLACE_OOB;
- 	ret = nand_do_read_ops(mtd, from, &ops);
+diff --git a/drivers/ddr/fsl/Kconfig b/drivers/ddr/fsl/Kconfig
+index 09920bb8632e..b12bf8f7776f 100644
+--- a/drivers/ddr/fsl/Kconfig
++++ b/drivers/ddr/fsl/Kconfig
+@@ -1,5 +1,6 @@
+ config DDR_FSL
+ 	bool "Freescale DDR support" if COMPILE_TEST
++	depends on ARM
+ 
+ if DDR_FSL
+ 
 -- 
 2.27.0
 
