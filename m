@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jg2gi-0006zo-4e
- for barebox@lists.infradead.org; Tue, 02 Jun 2020 08:54:28 +0000
+ id 1jg2gh-0006zH-Gl
+ for barebox@lists.infradead.org; Tue, 02 Jun 2020 08:54:25 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue,  2 Jun 2020 10:54:08 +0200
-Message-Id: <20200602085412.16554-22-a.fatoum@pengutronix.de>
+Date: Tue,  2 Jun 2020 10:53:58 +0200
+Message-Id: <20200602085412.16554-12-a.fatoum@pengutronix.de>
 In-Reply-To: <20200602085412.16554-1-a.fatoum@pengutronix.de>
 References: <20200602085412.16554-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,52 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 21/25] include: bitops: fix dead increment in fls() and
- ffs()
+Subject: [PATCH v2 11/25] net: fec_imx: depend on HAS_DMA
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Static analyzers trip over this dead increment. It arguably
-doesn't improve readability, so just drop the dead code.
+The driver makes use of dma_alloc_coherent and brethren. Depend on
+HAS_DMA to be sure, we don't run into link errors when compile-testing.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/asm-generic/bitops/ffs.h | 4 +---
- include/asm-generic/bitops/fls.h | 4 +---
- 2 files changed, 2 insertions(+), 6 deletions(-)
+ drivers/net/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/asm-generic/bitops/ffs.h b/include/asm-generic/bitops/ffs.h
-index fbbb43af7dc0..0ff1b8b7c79a 100644
---- a/include/asm-generic/bitops/ffs.h
-+++ b/include/asm-generic/bitops/ffs.h
-@@ -31,10 +31,8 @@ static inline int ffs(int x)
- 		x >>= 2;
- 		r += 2;
- 	}
--	if (!(x & 1)) {
--		x >>= 1;
-+	if (!(x & 1))
- 		r += 1;
--	}
- 	return r;
- }
+diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+index 9bb498527557..ee8a716d9a3d 100644
+--- a/drivers/net/Kconfig
++++ b/drivers/net/Kconfig
+@@ -155,6 +155,7 @@ config DRIVER_NET_ETHOC
+ config DRIVER_NET_FEC_IMX
+ 	bool "i.MX FEC Ethernet driver"
+ 	depends on ARCH_HAS_FEC_IMX || COMPILE_TEST
++	depends on HAS_DMA
+ 	select PHYLIB
  
-diff --git a/include/asm-generic/bitops/fls.h b/include/asm-generic/bitops/fls.h
-index 850859bc5069..cc0d3ca95aaa 100644
---- a/include/asm-generic/bitops/fls.h
-+++ b/include/asm-generic/bitops/fls.h
-@@ -31,10 +31,8 @@ static inline int fls(int x)
- 		x <<= 2;
- 		r -= 2;
- 	}
--	if (!(x & 0x80000000u)) {
--		x <<= 1;
-+	if (!(x & 0x80000000u))
- 		r -= 1;
--	}
- 	return r;
- }
- 
+ config DRIVER_NET_FSL_FMAN
 -- 
 2.27.0
 
