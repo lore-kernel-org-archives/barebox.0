@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jg1hq-0006Zh-TN
- for barebox@lists.infradead.org; Tue, 02 Jun 2020 07:51:35 +0000
-Date: Tue, 2 Jun 2020 09:51:28 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200602075128.GI11869@pengutronix.de>
-References: <20200602012035.2b476de768013dc5793cdea0@gmail.com>
+ id 1jg1o7-0001jB-N1
+ for barebox@lists.infradead.org; Tue, 02 Jun 2020 07:58:03 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue,  2 Jun 2020 09:57:55 +0200
+Message-Id: <20200602075757.4734-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200602012035.2b476de768013dc5793cdea0@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,53 +19,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] inkscape 1.0 issue
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/3] common: restart: number unnamed restart handlers
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Hi Antony,
+Follow-up commit allows referencing specific restart handler by name.
+Restart handlers default to "default" as name when none is given.
+Number them sequentially instead.
 
-On Tue, Jun 02, 2020 at 01:20:35AM +0300, Antony Pavlov wrote:
-> 
-> diff --git a/lib/logo/Makefile b/lib/logo/Makefile
-> index eb7aee080e..8c81447df7 100644
-> --- a/lib/logo/Makefile
-> +++ b/lib/logo/Makefile
-> @@ -1,17 +1,17 @@
->  
-> -OPTS_barebox-logo-w64.bblogo="-w 64"
-> +OPTS_barebox-logo-w64.bblogo = --export-width=64
->  bblogo-$(CONFIG_BAREBOX_LOGO_64) += barebox-logo-w64
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ common/restart.c  | 4 +++-
+ include/restart.h | 1 -
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-according to the man page --export-width=64 is supported by 0.92.4 as
-well, so we could change this part unconditionally.
-
-> @@ -41,7 +41,8 @@ cmd_logo_S =							\
->  quiet_cmd_logo = LOGO.S   $@
->  cmd_logo =							\
->  (								\
-> -	inkscape -z $(OPTS_$(@F)) -e $@ $< > /dev/null;		\
-> +	DISPLAY="" inkscape $(OPTS_$(@F)) --export-type=png $< > /dev/null; \
-> +	mv $(patsubst %.svg,%.png,$<) $@; \
-
-Inkscape-1.0 supports "-o -" and pre Inkscape-1.0 supports "-e -", we
-could use this to do without the mv in both cases.
-
-DISPLAY="" shouldn't hurt on pre Inkscape-1.0. as well.
-
-This leaves '-z' and -e vs. --export-type=png. Something like this should work:
-
-INKSCAPEOPTS += $(call try-run, inkscape -z,-z,)
-INKSCAPEOPTS += $(call try-run, inkscape -e,-e,--export_type=png)
-
-Regards,
- Sascha
-
+diff --git a/common/restart.c b/common/restart.c
+index b19ae54657c0..dd15c8d5c362 100644
+--- a/common/restart.c
++++ b/common/restart.c
+@@ -19,6 +19,7 @@
+ #include <of.h>
+ 
+ static LIST_HEAD(restart_handler_list);
++static unsigned resetidx;
+ 
+ /**
+  * restart_handler_register() - register a handler for restarting the system
+@@ -31,7 +32,7 @@ static LIST_HEAD(restart_handler_list);
+ int restart_handler_register(struct restart_handler *rst)
+ {
+ 	if (!rst->name)
+-		rst->name = RESTART_DEFAULT_NAME;
++		rst->name = basprintf("reset%u", resetidx);
+ 	if (!rst->priority)
+ 		rst->priority = RESTART_DEFAULT_PRIORITY;
+ 
+@@ -40,6 +41,7 @@ int restart_handler_register(struct restart_handler *rst)
+ 	pr_debug("registering restart handler \"%s\" with priority %d\n",
+ 			rst->name, rst->priority);
+ 
++	resetidx++;
+ 	return 0;
+ }
+ 
+diff --git a/include/restart.h b/include/restart.h
+index 7ec0910e9404..6880b03b936f 100644
+--- a/include/restart.h
++++ b/include/restart.h
+@@ -15,7 +15,6 @@ int restart_handler_register(struct restart_handler *);
+ int restart_handler_register_fn(void (*restart_fn)(struct restart_handler *));
+ 
+ #define RESTART_DEFAULT_PRIORITY 100
+-#define RESTART_DEFAULT_NAME "default"
+ 
+ unsigned int of_get_restart_priority(struct device_node *node);
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.27.0
+
 
 _______________________________________________
 barebox mailing list
