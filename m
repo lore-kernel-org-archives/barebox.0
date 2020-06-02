@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jg2gh-0006zH-Gl
- for barebox@lists.infradead.org; Tue, 02 Jun 2020 08:54:25 +0000
+ id 1jg2gi-0006zi-4Z
+ for barebox@lists.infradead.org; Tue, 02 Jun 2020 08:54:28 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue,  2 Jun 2020 10:53:58 +0200
-Message-Id: <20200602085412.16554-12-a.fatoum@pengutronix.de>
+Date: Tue,  2 Jun 2020 10:54:06 +0200
+Message-Id: <20200602085412.16554-20-a.fatoum@pengutronix.de>
 In-Reply-To: <20200602085412.16554-1-a.fatoum@pengutronix.de>
 References: <20200602085412.16554-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,30 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 11/25] net: fec_imx: depend on HAS_DMA
+Subject: [PATCH v2 19/25] usb: xhci-hcd: remove unused #include <asm/cache.h>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The driver makes use of dma_alloc_coherent and brethren. Depend on
-HAS_DMA to be sure, we don't run into link errors when compile-testing.
+We don't use anything defined within, so drop it.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/net/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/host/xhci.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-index 9bb498527557..ee8a716d9a3d 100644
---- a/drivers/net/Kconfig
-+++ b/drivers/net/Kconfig
-@@ -155,6 +155,7 @@ config DRIVER_NET_ETHOC
- config DRIVER_NET_FEC_IMX
- 	bool "i.MX FEC Ethernet driver"
- 	depends on ARCH_HAS_FEC_IMX || COMPILE_TEST
-+	depends on HAS_DMA
- 	select PHYLIB
+diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
+index 886cbef14c3a..1a3f7e7642bc 100644
+--- a/drivers/usb/host/xhci.h
++++ b/drivers/usb/host/xhci.h
+@@ -17,7 +17,6 @@
+ #define HOST_XHCI_H_
  
- config DRIVER_NET_FSL_FMAN
+ #include <asm/types.h>
+-#include <asm/cache.h>
+ #include <io.h>
+ #include <linux/list.h>
+ 
 -- 
 2.27.0
 
