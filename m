@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jg0Hk-0006xm-4Z
- for barebox@lists.infradead.org; Tue, 02 Jun 2020 06:20:29 +0000
-Date: Tue, 2 Jun 2020 08:20:24 +0200
+ id 1jg0LB-0007l8-TV
+ for barebox@lists.infradead.org; Tue, 02 Jun 2020 06:24:03 +0000
+Date: Tue, 2 Jun 2020 08:24:00 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200602062024.GG11869@pengutronix.de>
-References: <69ca4999-4cf0-f20a-5d7a-93e470338bf4@arcor.de>
- <20200525060129.GM11869@pengutronix.de>
- <2035082672.75503.1590508494270@mail.vodafone.de>
+Message-ID: <20200602062400.GH11869@pengutronix.de>
+References: <20200528125611.11888-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <2035082672.75503.1590508494270@mail.vodafone.de>
+In-Reply-To: <20200528125611.11888-1-r.czerwinski@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,34 +22,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: configure the mac address of an eth device
-To: Giorgio Dal Molin <giorgio.nicole@arcor.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] ARM: i.MX: enable Master Identifier Unlock
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Tue, May 26, 2020 at 05:54:53PM +0200, Giorgio Dal Molin wrote:
-> Hi Sascha,
+On Thu, May 28, 2020 at 02:56:11PM +0200, Rouven Czerwinski wrote:
+> By default the HAB locks the Master Identifier (MID) to preconfigured
+> values. This is not a problem if Linux is running in the secure world,
+> however when running a secure world operating system such as OP-TEE, the
+> MID configuration should be done by the secure world operating system.
 > 
-> thank you for your suggestion about the MAC, the code works now as expected.
+> This causes no regressions for systems using no secure world operating
+> systems, since no MID value indicates that all normal/secure world
+> entities can access the peripherals supporting the MID.
 > 
-> Just another quick question: is there a function like of_eth_register_ethaddr()
-> also for a 'serial-number' value ?
-> 
-> I also have a 'serial number' value from the eeprom and I would like to pass to the kernel.
-> Just calling something like:
-> 
-> of_set_property(of_get_root_node(), "serial-number", s, strlen(s) + 1, 1);
-> 
-> does not work because it changes only the device tree for barebox but not that
-> for the kernel. So I registered an of fixup:
-> 
-> of_register_fixup(samx7_board_fixup, s);
-> 
-> for it and it works then but it is a bit more complex.
+> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+> ---
+>  arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h | 2 +-
+>  arch/arm/mach-imx/include/mach/habv4-imx8-gencsf.h | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
 
-Yes, you have to do it like that, there is no shortcut for it.
+Applied, thanks
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
