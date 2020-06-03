@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jgMoQ-0005cz-Ms
- for barebox@lists.infradead.org; Wed, 03 Jun 2020 06:23:44 +0000
-Date: Wed, 3 Jun 2020 08:23:36 +0200
+ id 1jgNKp-0002Q2-Ls
+ for barebox@lists.infradead.org; Wed, 03 Jun 2020 06:57:13 +0000
+Date: Wed, 3 Jun 2020 08:57:10 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200603062336.GO11869@pengutronix.de>
-References: <20200602012035.2b476de768013dc5793cdea0@gmail.com>
- <20200602075128.GI11869@pengutronix.de>
- <20200602154858.2159a78191d32e5c0d2dd6af@gmail.com>
+Message-ID: <20200603065709.GP11869@pengutronix.de>
+References: <20200602075725.3979-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200602154858.2159a78191d32e5c0d2dd6af@gmail.com>
+In-Reply-To: <20200602075725.3979-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,59 +22,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] inkscape 1.0 issue
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH] fixup! blspec: Allow the "options" key to be given
+ multiple times
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jun 02, 2020 at 03:48:58PM +0300, Antony Pavlov wrote:
-> On Tue, 2 Jun 2020 09:51:28 +0200
-> Sascha Hauer <s.hauer@pengutronix.de> wrote:
+On Tue, Jun 02, 2020 at 09:57:25AM +0200, Ahmad Fatoum wrote:
+> constness was erroneously cast away. Reinstate const safety.
 > 
-> > Hi Antony,
-> > 
-> > On Tue, Jun 02, 2020 at 01:20:35AM +0300, Antony Pavlov wrote:
-> > > 
-> > > diff --git a/lib/logo/Makefile b/lib/logo/Makefile
-> > > index eb7aee080e..8c81447df7 100644
-> > > --- a/lib/logo/Makefile
-> > > +++ b/lib/logo/Makefile
-> > > @@ -1,17 +1,17 @@
-> > >  
-> > > -OPTS_barebox-logo-w64.bblogo="-w 64"
-> > > +OPTS_barebox-logo-w64.bblogo = --export-width=64
-> > >  bblogo-$(CONFIG_BAREBOX_LOGO_64) += barebox-logo-w64
-> > 
-> > according to the man page --export-width=64 is supported by 0.92.4 as
-> > well, so we could change this part unconditionally.
-> > 
-> > > @@ -41,7 +41,8 @@ cmd_logo_S =							\
-> > >  quiet_cmd_logo = LOGO.S   $@
-> > >  cmd_logo =							\
-> > >  (								\
-> > > -	inkscape -z $(OPTS_$(@F)) -e $@ $< > /dev/null;		\
-> > > +	DISPLAY="" inkscape $(OPTS_$(@F)) --export-type=png $< > /dev/null; \
-> > > +	mv $(patsubst %.svg,%.png,$<) $@; \
-> > 
-> > Inkscape-1.0 supports "-o -" and pre Inkscape-1.0 supports "-e -", we
-> > could use this to do without the mv in both cases.
-> > 
-> > DISPLAY="" shouldn't hurt on pre Inkscape-1.0. as well.
-> > 
-> > This leaves '-z' and -e vs. --export-type=png. Something like this should work:
-> > 
-> > INKSCAPEOPTS += $(call try-run, inkscape -z,-z,)
-> > INKSCAPEOPTS += $(call try-run, inkscape -e,-e,--export_type=png)
-> > 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  common/blspec.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+
+Applied, thanks
+
+Sascha
+
 > 
-> Can we move all inkscape-related stuff into separate svg2bblogo.sh script
-> and just call script from makefile?
-
-We probably could, but what would be the advantage? Embedding too much
-shell in Makefile makes things harder to understand, but I don't think
-this case already falls into that category.
-
-Regards,
-  Sascha
+> diff --git a/common/blspec.c b/common/blspec.c
+> index 3be26d0a7a14..9e1036c8342c 100644
+> --- a/common/blspec.c
+> +++ b/common/blspec.c
+> @@ -301,7 +301,7 @@ static struct blspec_entry *blspec_entry_open(struct bootentries *bootentries,
+>  		if (!strcmp(name, "options")) {
+>  			/* If there was a previous "options" key given, prepend its value
+>  			 * (as per spec). */
+> -			char *prev_val = blspec_entry_var_get(entry, name);
+> +			const char *prev_val = blspec_entry_var_get(entry, name);
+>  			if (prev_val) {
+>  				char *opts = xasprintf("%s %s", prev_val, val);
+>  				blspec_entry_var_set(entry, name, opts);
+> -- 
+> 2.27.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
