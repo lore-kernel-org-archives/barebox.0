@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jgNMP-0002ZZ-5P
- for barebox@lists.infradead.org; Wed, 03 Jun 2020 06:58:50 +0000
-Received: by mail-lj1-x22f.google.com with SMTP id z18so1282536lji.12
- for <barebox@lists.infradead.org>; Tue, 02 Jun 2020 23:58:48 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed,  3 Jun 2020 09:58:45 +0300
-Message-Id: <20200603065845.30099-1-antonynpavlov@gmail.com>
+ id 1jgNYm-0002ih-Dg
+ for barebox@lists.infradead.org; Wed, 03 Jun 2020 07:11:37 +0000
+Date: Wed, 3 Jun 2020 09:11:34 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200603071134.GQ11869@pengutronix.de>
+References: <20200602075757.4734-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200602075757.4734-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,63 +22,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] logo: Makefile: make it possible to use inkscape 1.0
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/3] common: restart: number unnamed restart handlers
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- lib/logo/Makefile | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+On Tue, Jun 02, 2020 at 09:57:55AM +0200, Ahmad Fatoum wrote:
+> Follow-up commit allows referencing specific restart handler by name.
+> Restart handlers default to "default" as name when none is given.
+> Number them sequentially instead.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  common/restart.c  | 4 +++-
+>  include/restart.h | 1 -
+>  2 files changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/common/restart.c b/common/restart.c
+> index b19ae54657c0..dd15c8d5c362 100644
+> --- a/common/restart.c
+> +++ b/common/restart.c
+> @@ -19,6 +19,7 @@
+>  #include <of.h>
+>  
+>  static LIST_HEAD(restart_handler_list);
+> +static unsigned resetidx;
+>  
+>  /**
+>   * restart_handler_register() - register a handler for restarting the system
+> @@ -31,7 +32,7 @@ static LIST_HEAD(restart_handler_list);
+>  int restart_handler_register(struct restart_handler *rst)
+>  {
+>  	if (!rst->name)
+> -		rst->name = RESTART_DEFAULT_NAME;
+> +		rst->name = basprintf("reset%u", resetidx);
 
-diff --git a/lib/logo/Makefile b/lib/logo/Makefile
-index eb7aee080e..bf700da89b 100644
---- a/lib/logo/Makefile
-+++ b/lib/logo/Makefile
-@@ -1,17 +1,17 @@
- 
--OPTS_barebox-logo-w64.bblogo="-w 64"
-+OPTS_barebox-logo-w64.bblogo = --export-width=64
- bblogo-$(CONFIG_BAREBOX_LOGO_64) += barebox-logo-w64
- 
--OPTS_barebox-logo-w240.bblogo="-w 240"
-+OPTS_barebox-logo-w240.bblogo = --export-width=240
- bblogo-$(CONFIG_BAREBOX_LOGO_240) += barebox-logo-w240
- 
--OPTS_barebox-logo-w320.bblogo="-w 320"
-+OPTS_barebox-logo-w320.bblogo = --export-width=320
- bblogo-$(CONFIG_BAREBOX_LOGO_320) += barebox-logo-w320
- 
--OPTS_barebox-logo-w400.bblogo="-w 400"
-+OPTS_barebox-logo-w400.bblogo = --export-width=400
- bblogo-$(CONFIG_BAREBOX_LOGO_400) += barebox-logo-w400
- 
--OPTS_barebox-logo-w640.bblogo="-w 640"
-+OPTS_barebox-logo-w640.bblogo = --export-width=640
- bblogo-$(CONFIG_BAREBOX_LOGO_640) += barebox-logo-w640
- 
- obj-y += $(patsubst %,%.bblogo.o,$(bblogo-y))
-@@ -38,10 +38,17 @@ cmd_logo_S =							\
- %.bblogo.S: %.bblogo FORCE
- 	$(call if_changed,logo_S)
- 
-+# Inkscape 0.92.4 supports -z but Inkscape 1.0 doesn't
-+INKSCAPEOPTS += $(call try-run, inkscape -z,-z,)
-+# Inkscape 0.92.4 uses -e but Inkscape 1.0 uses --export-type=png
-+INKSCAPEOPTS += $(call try-run, inkscape -e -,-e -,--export-type=png)
-+# Inkscape 1.0 supports -o -
-+INKSCAPEOPTS += $(call try-run, inkscape -o -,-o -,)
-+
- quiet_cmd_logo = LOGO.S   $@
- cmd_logo =							\
- (								\
--	inkscape -z $(OPTS_$(@F)) -e $@ $< > /dev/null;		\
-+	DISPLAY="" inkscape $(OPTS_$(@F)) $(INKSCAPEOPTS) $< > $@; \
- )
- 
- %.bblogo: $(srctree)/Documentation/barebox.svg FORCE
+With this most existing restart handlers get a unique name, but in the
+next patch you give most of them the same name. I am not sure where this
+is aiming at.
+With the next patch every restart handler has a name, so why is the name
+still optional?
+
+Sascha
+
 -- 
-2.26.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
