@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jgNvN-0007bW-Fd
- for barebox@lists.infradead.org; Wed, 03 Jun 2020 07:34:58 +0000
-Date: Wed, 3 Jun 2020 09:34:55 +0200
+ id 1jgONg-0000DS-8c
+ for barebox@lists.infradead.org; Wed, 03 Jun 2020 08:04:13 +0000
+Date: Wed, 3 Jun 2020 10:04:10 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200603073455.GU11869@pengutronix.de>
-References: <20200603065845.30099-1-antonynpavlov@gmail.com>
+Message-ID: <20200603080410.GV11869@pengutronix.de>
+References: <20200602085412.16554-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200603065845.30099-1-antonynpavlov@gmail.com>
+In-Reply-To: <20200602085412.16554-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,16 +22,25 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] logo: Makefile: make it possible to use inkscape 1.0
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH v2 00/25] sandbox: support COMPILE_TESTing drivers
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Jun 03, 2020 at 09:58:45AM +0300, Antony Pavlov wrote:
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  lib/logo/Makefile | 19 +++++++++++++------
->  1 file changed, 13 insertions(+), 6 deletions(-)
+On Tue, Jun 02, 2020 at 10:53:47AM +0200, Ahmad Fatoum wrote:
+> This series adds the last few bells and whistles to COMPILE_TEST
+> these drivers under sandbox as well.
 > 
+> The five last patches address the first few issues found by
+> clang-analyzer. There are still hundreds more in need of triage:
+> http://a3f.at/up/barebox-clang-analyzer/
+> 
+> (Check it out; control flow visualization is pretty! j/k to navigate)
+> 
+> v1 -> v2:
+>   - Patch stack rebased
+>   - Added separate <asm-generic/bitio.h> (Sascha)
+>   - fixed Author/Signed-off-by mismatch (Roland)
+>   - Drop local_irq_ stubs (Sascha)
 
 Applied, thanks
 
