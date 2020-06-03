@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x241.google.com ([2a00:1450:4864:20::241])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jgMlX-0005N5-LU
- for barebox@lists.infradead.org; Wed, 03 Jun 2020 06:20:44 +0000
-Received: by mail-lj1-x241.google.com with SMTP id c17so1183223lji.11
- for <barebox@lists.infradead.org>; Tue, 02 Jun 2020 23:20:42 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed,  3 Jun 2020 09:20:32 +0300
-Message-Id: <20200603062032.15288-1-antonynpavlov@gmail.com>
+ id 1jgMoQ-0005cz-Ms
+ for barebox@lists.infradead.org; Wed, 03 Jun 2020 06:23:44 +0000
+Date: Wed, 3 Jun 2020 08:23:36 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200603062336.GO11869@pengutronix.de>
+References: <20200602012035.2b476de768013dc5793cdea0@gmail.com>
+ <20200602075128.GI11869@pengutronix.de>
+ <20200602154858.2159a78191d32e5c0d2dd6af@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200602154858.2159a78191d32e5c0d2dd6af@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,62 +24,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] MIPS: correctly work with disabled CONFIG_MMU
-To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: Re: [RFC] inkscape 1.0 issue
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-There are some issues with CONFIG_MMU=n in MIPS configuration
-(e.g. qemu-malta_defconfig):
+On Tue, Jun 02, 2020 at 03:48:58PM +0300, Antony Pavlov wrote:
+> On Tue, 2 Jun 2020 09:51:28 +0200
+> Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> 
+> > Hi Antony,
+> > 
+> > On Tue, Jun 02, 2020 at 01:20:35AM +0300, Antony Pavlov wrote:
+> > > 
+> > > diff --git a/lib/logo/Makefile b/lib/logo/Makefile
+> > > index eb7aee080e..8c81447df7 100644
+> > > --- a/lib/logo/Makefile
+> > > +++ b/lib/logo/Makefile
+> > > @@ -1,17 +1,17 @@
+> > >  
+> > > -OPTS_barebox-logo-w64.bblogo="-w 64"
+> > > +OPTS_barebox-logo-w64.bblogo = --export-width=64
+> > >  bblogo-$(CONFIG_BAREBOX_LOGO_64) += barebox-logo-w64
+> > 
+> > according to the man page --export-width=64 is supported by 0.92.4 as
+> > well, so we could change this part unconditionally.
+> > 
+> > > @@ -41,7 +41,8 @@ cmd_logo_S =							\
+> > >  quiet_cmd_logo = LOGO.S   $@
+> > >  cmd_logo =							\
+> > >  (								\
+> > > -	inkscape -z $(OPTS_$(@F)) -e $@ $< > /dev/null;		\
+> > > +	DISPLAY="" inkscape $(OPTS_$(@F)) --export-type=png $< > /dev/null; \
+> > > +	mv $(patsubst %.svg,%.png,$<) $@; \
+> > 
+> > Inkscape-1.0 supports "-o -" and pre Inkscape-1.0 supports "-e -", we
+> > could use this to do without the mv in both cases.
+> > 
+> > DISPLAY="" shouldn't hurt on pre Inkscape-1.0. as well.
+> > 
+> > This leaves '-z' and -e vs. --export-type=png. Something like this should work:
+> > 
+> > INKSCAPEOPTS += $(call try-run, inkscape -z,-z,)
+> > INKSCAPEOPTS += $(call try-run, inkscape -e,-e,--export_type=png)
+> > 
+> 
+> Can we move all inkscape-related stuff into separate svg2bblogo.sh script
+> and just call script from makefile?
 
-  * "Cannot request SDRAM region for stack" error message on start;
-  * empty kseg1_ram0 region in the iomem command output.
+We probably could, but what would be the advantage? Embedding too much
+shell in Makefile makes things harder to understand, but I don't think
+this case already falls into that category.
 
-The patch fixes the problems by forcing KSEG1 memory region usage
-for CONFIG_MMU=n MIPS configurations.
+Regards,
+  Sascha
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/include/asm/io.h | 6 +++++-
- arch/mips/lib/reloc.c      | 6 +++++-
- 2 files changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-index c155199430..4df9853680 100644
---- a/arch/mips/include/asm/io.h
-+++ b/arch/mips/include/asm/io.h
-@@ -39,7 +39,11 @@ static inline unsigned long virt_to_phys(const void *address)
-  */
- static inline void *phys_to_virt(unsigned long address)
- {
--	return (void *)CKSEG0ADDR(address);
-+	if (IS_ENABLED(CONFIG_MMU)) {
-+		return (void *)CKSEG0ADDR(address);
-+	}
-+
-+	return (void *)CKSEG1ADDR(address);
- }
- 
- #define	IO_SPACE_LIMIT	0
-diff --git a/arch/mips/lib/reloc.c b/arch/mips/lib/reloc.c
-index 4b0e252352..b084a88be7 100644
---- a/arch/mips/lib/reloc.c
-+++ b/arch/mips/lib/reloc.c
-@@ -120,7 +120,11 @@ void relocate_code(void *fdt, u32 fdt_size, u32 ram_size)
- 
- 	length = __bss_stop - __image_start;
- 	relocaddr = ALIGN_DOWN(ram_size - length, SZ_64K);
--	relocaddr = KSEG0ADDR(relocaddr);
-+	if (IS_ENABLED(CONFIG_MMU)) {
-+		relocaddr = KSEG0ADDR(relocaddr);
-+	} else {
-+		relocaddr = KSEG1ADDR(relocaddr);
-+	}
- 	new_stack = relocaddr - MALLOC_SIZE - 16;
- 
- 	/*
 -- 
-2.26.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
