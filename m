@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jg6Lm-0000uI-Bd
- for barebox@lists.infradead.org; Tue, 02 Jun 2020 12:49:03 +0000
-Received: by mail-lj1-x229.google.com with SMTP id s1so12435185ljo.0
- for <barebox@lists.infradead.org>; Tue, 02 Jun 2020 05:49:01 -0700 (PDT)
-Date: Tue, 2 Jun 2020 15:48:58 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20200602154858.2159a78191d32e5c0d2dd6af@gmail.com>
-In-Reply-To: <20200602075128.GI11869@pengutronix.de>
-References: <20200602012035.2b476de768013dc5793cdea0@gmail.com>
- <20200602075128.GI11869@pengutronix.de>
-Mime-Version: 1.0
+ id 1jgMiR-0002ff-51
+ for barebox@lists.infradead.org; Wed, 03 Jun 2020 06:17:32 +0000
+Date: Wed, 3 Jun 2020 08:17:28 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200603061728.GM11869@pengutronix.de>
+References: <20200529125102.8070-1-m.grzeschik@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200529125102.8070-1-m.grzeschik@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,72 +18,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] inkscape 1.0 issue
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH] serial: amba-pl011: set linux_console_name
+To: Michael Grzeschik <m.grzeschik@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, 2 Jun 2020 09:51:28 +0200
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+On Fri, May 29, 2020 at 02:51:02PM +0200, Michael Grzeschik wrote:
+> We set the linux_console_name so for this uart the
+> linux.bootargs.console will be properly set.
+> 
+> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+> ---
+>  drivers/serial/amba-pl011.c | 1 +
+>  1 file changed, 1 insertion(+)
 
-> Hi Antony,
-> =
+Applied, thanks
 
-> On Tue, Jun 02, 2020 at 01:20:35AM +0300, Antony Pavlov wrote:
-> > =
+Sascha
 
-> > diff --git a/lib/logo/Makefile b/lib/logo/Makefile
-> > index eb7aee080e..8c81447df7 100644
-> > --- a/lib/logo/Makefile
-> > +++ b/lib/logo/Makefile
-> > @@ -1,17 +1,17 @@
-> >  =
+> 
+> diff --git a/drivers/serial/amba-pl011.c b/drivers/serial/amba-pl011.c
+> index 0751c52513..865ecdddb2 100644
+> --- a/drivers/serial/amba-pl011.c
+> +++ b/drivers/serial/amba-pl011.c
+> @@ -204,6 +204,7 @@ static int pl011_probe(struct amba_device *dev, const struct amba_id *id)
+>  	cdev->putc = pl011_putc;
+>  	cdev->getc = pl011_getc;
+>  	cdev->setbrg = pl011_setbaudrate;
+> +	cdev->linux_console_name = "ttyAMA";
+>  
+>  	pl011_init_port(cdev);
+>  
+> -- 
+> 2.26.2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-> > -OPTS_barebox-logo-w64.bblogo=3D"-w 64"
-> > +OPTS_barebox-logo-w64.bblogo =3D --export-width=3D64
-> >  bblogo-$(CONFIG_BAREBOX_LOGO_64) +=3D barebox-logo-w64
-> =
-
-> according to the man page --export-width=3D64 is supported by 0.92.4 as
-> well, so we could change this part unconditionally.
-> =
-
-> > @@ -41,7 +41,8 @@ cmd_logo_S =3D							\
-> >  quiet_cmd_logo =3D LOGO.S   $@
-> >  cmd_logo =3D							\
-> >  (								\
-> > -	inkscape -z $(OPTS_$(@F)) -e $@ $< > /dev/null;		\
-> > +	DISPLAY=3D"" inkscape $(OPTS_$(@F)) --export-type=3Dpng $< > /dev/nul=
-l; \
-> > +	mv $(patsubst %.svg,%.png,$<) $@; \
-> =
-
-> Inkscape-1.0 supports "-o -" and pre Inkscape-1.0 supports "-e -", we
-> could use this to do without the mv in both cases.
-> =
-
-> DISPLAY=3D"" shouldn't hurt on pre Inkscape-1.0. as well.
-> =
-
-> This leaves '-z' and -e vs. --export-type=3Dpng. Something like this shou=
-ld work:
-> =
-
-> INKSCAPEOPTS +=3D $(call try-run, inkscape -z,-z,)
-> INKSCAPEOPTS +=3D $(call try-run, inkscape -e,-e,--export_type=3Dpng)
-> =
-
-
-Can we move all inkscape-related stuff into separate svg2bblogo.sh script
-and just call script from makefile?
-
--- =
-
-Best regards,
-=A0 Antony Pavlov
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
