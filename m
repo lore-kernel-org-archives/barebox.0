@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lj1-x241.google.com ([2a00:1450:4864:20::241])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jgMj7-0002mg-AS
- for barebox@lists.infradead.org; Wed, 03 Jun 2020 06:18:14 +0000
-Date: Wed, 3 Jun 2020 08:18:11 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200603061811.GN11869@pengutronix.de>
-References: <20200529125112.8360-1-m.grzeschik@pengutronix.de>
- <48c08116-532d-56b6-40f5-558507c71eed@pengutronix.de>
+ id 1jgMlX-0005N5-LU
+ for barebox@lists.infradead.org; Wed, 03 Jun 2020 06:20:44 +0000
+Received: by mail-lj1-x241.google.com with SMTP id c17so1183223lji.11
+ for <barebox@lists.infradead.org>; Tue, 02 Jun 2020 23:20:42 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Wed,  3 Jun 2020 09:20:32 +0300
+Message-Id: <20200603062032.15288-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <48c08116-532d-56b6-40f5-558507c71eed@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,44 +21,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] serial: stm: set linux_console_name
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] MIPS: correctly work with disabled CONFIG_MMU
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-On Fri, May 29, 2020 at 03:57:30PM +0200, Ahmad Fatoum wrote:
-> Hello Michael,
-> 
-> On 5/29/20 2:51 PM, Michael Grzeschik wrote:
-> > We set the linux_console_name so for this uart the
-> > linux.bootargs.console will be properly set.
-> > 
-> > Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-> > ---
-> >  drivers/serial/stm-serial.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> > 
-> > diff --git a/drivers/serial/stm-serial.c b/drivers/serial/stm-serial.c
-> > index ea482415ce..a2c3dcf56e 100644
-> > --- a/drivers/serial/stm-serial.c
-> > +++ b/drivers/serial/stm-serial.c
-> > @@ -159,6 +159,7 @@ static int stm_serial_probe(struct device_d *dev)
-> >  	cdev->flush = stm_serial_flush;
-> >  	cdev->setbrg = stm_serial_setbaudrate;
-> >  	cdev->dev = dev;
-> > +	cdev->linux_console_name = "ttyAMA";
-> 
-> Couldn't we just combine the two drivers? On a cursory look, only
-> difference is how they're probed?
+There are some issues with CONFIG_MMU=n in MIPS configuration
+(e.g. qemu-malta_defconfig):
 
-Yes, that sounds good. Until this is done I applied this patch.
+  * "Cannot request SDRAM region for stack" error message on start;
+  * empty kseg1_ram0 region in the iomem command output.
 
-Sascha
+The patch fixes the problems by forcing KSEG1 memory region usage
+for CONFIG_MMU=n MIPS configurations.
 
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/mips/include/asm/io.h | 6 +++++-
+ arch/mips/lib/reloc.c      | 6 +++++-
+ 2 files changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
+index c155199430..4df9853680 100644
+--- a/arch/mips/include/asm/io.h
++++ b/arch/mips/include/asm/io.h
+@@ -39,7 +39,11 @@ static inline unsigned long virt_to_phys(const void *address)
+  */
+ static inline void *phys_to_virt(unsigned long address)
+ {
+-	return (void *)CKSEG0ADDR(address);
++	if (IS_ENABLED(CONFIG_MMU)) {
++		return (void *)CKSEG0ADDR(address);
++	}
++
++	return (void *)CKSEG1ADDR(address);
+ }
+ 
+ #define	IO_SPACE_LIMIT	0
+diff --git a/arch/mips/lib/reloc.c b/arch/mips/lib/reloc.c
+index 4b0e252352..b084a88be7 100644
+--- a/arch/mips/lib/reloc.c
++++ b/arch/mips/lib/reloc.c
+@@ -120,7 +120,11 @@ void relocate_code(void *fdt, u32 fdt_size, u32 ram_size)
+ 
+ 	length = __bss_stop - __image_start;
+ 	relocaddr = ALIGN_DOWN(ram_size - length, SZ_64K);
+-	relocaddr = KSEG0ADDR(relocaddr);
++	if (IS_ENABLED(CONFIG_MMU)) {
++		relocaddr = KSEG0ADDR(relocaddr);
++	} else {
++		relocaddr = KSEG1ADDR(relocaddr);
++	}
+ 	new_stack = relocaddr - MALLOC_SIZE - 16;
+ 
+ 	/*
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.26.2
+
 
 _______________________________________________
 barebox mailing list
