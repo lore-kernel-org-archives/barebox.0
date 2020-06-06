@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jnJ9S-0007x4-RN
- for barebox@lists.infradead.org; Mon, 22 Jun 2020 09:54:07 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 22 Jun 2020 11:53:52 +0200
-Message-Id: <20200622095352.22991-2-a.fatoum@pengutronix.de>
-In-Reply-To: <20200622095352.22991-1-a.fatoum@pengutronix.de>
-References: <20200622095352.22991-1-a.fatoum@pengutronix.de>
+ by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jhR8o-0004vX-Gm
+ for barebox@lists.infradead.org; Sat, 06 Jun 2020 05:13:11 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Sat,  6 Jun 2020 07:13:04 +0200
+Message-Id: <20200606051304.14547-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,39 +19,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ARM: at91: choose proper parent for both MCI clocks
+Subject: [PATCH v1] startup: allow to abort dryrun just before starting the OS
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-When booting from SDMMC0, Use of SDMMC1 fails with:
-ERROR: clk: couldn't set sdmmc1_gclk clk rate to 480000000 (-22), current rate: 32768
+The dryrun in this function is used two times:
+- with "Would run %s\n" and return
+- to store dryrun for later use
 
-This is because the first stage bootloader only reparents the boot SDMMC
-instance and barebox does no automatic reparenting for the other one.
+The second one makes no sense since the first one will abort execution.
+Since it is needed for debugging any way, it is better to allow to abort
+later, just before starting the OS.
 
-Force both clocks to have a suitable parent.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- arch/arm/dts/sama5d2.dtsi | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ common/boot.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/dts/sama5d2.dtsi b/arch/arm/dts/sama5d2.dtsi
-index 2064fd1ad28f..c9af5f2f7ad4 100644
---- a/arch/arm/dts/sama5d2.dtsi
-+++ b/arch/arm/dts/sama5d2.dtsi
-@@ -8,3 +8,11 @@
- };
+diff --git a/common/boot.c b/common/boot.c
+index f546fce62c..8969ca51ad 100644
+--- a/common/boot.c
++++ b/common/boot.c
+@@ -87,10 +87,8 @@ static int bootscript_boot(struct bootentry *entry, int verbose, int dryrun)
  
- /delete-node/ &{/memory};
-+
-+&sdmmc0 {
-+	assigned-clock-parents = <&pmc PMC_TYPE_CORE PMC_UTMI>;
-+};
-+
-+&sdmmc1 {
-+	assigned-clock-parents = <&pmc PMC_TYPE_CORE PMC_UTMI>;
-+};
+ 	struct bootm_data data = {};
+ 
+-	if (dryrun) {
+-		printf("Would run %s\n", bs->scriptpath);
+-		return 0;
+-	}
++	if (verbose)
++		printf("Run %s\n", bs->scriptpath);
+ 
+ 	globalvar_add_simple("linux.bootargs.dyn.ip", NULL);
+ 	globalvar_add_simple("linux.bootargs.dyn.root", NULL);
 -- 
 2.27.0
 
