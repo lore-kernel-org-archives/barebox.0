@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ji9pd-0003rn-2F
- for barebox@lists.infradead.org; Mon, 08 Jun 2020 04:56:22 +0000
-Date: Mon, 8 Jun 2020 06:56:16 +0200
+ id 1ji9zv-0002Pi-Db
+ for barebox@lists.infradead.org; Mon, 08 Jun 2020 05:07:00 +0000
+Date: Mon, 8 Jun 2020 07:06:57 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200608045616.GG11869@pengutronix.de>
-References: <20200603062032.15288-1-antonynpavlov@gmail.com>
+Message-ID: <20200608050657.GH11869@pengutronix.de>
+References: <20200606051304.14547-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200603062032.15288-1-antonynpavlov@gmail.com>
+In-Reply-To: <20200606051304.14547-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,30 +22,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] MIPS: correctly work with disabled CONFIG_MMU
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org, Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: Re: [PATCH v1] startup: allow to abort dryrun just before starting
+ the OS
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Wed, Jun 03, 2020 at 09:20:32AM +0300, Antony Pavlov wrote:
-> There are some issues with CONFIG_MMU=n in MIPS configuration
-> (e.g. qemu-malta_defconfig):
+On Sat, Jun 06, 2020 at 07:13:04AM +0200, Oleksij Rempel wrote:
+> The dryrun in this function is used two times:
+> - with "Would run %s\n" and return
+> - to store dryrun for later use
 > 
->   * "Cannot request SDRAM region for stack" error message on start;
->   * empty kseg1_ram0 region in the iomem command output.
-> 
-> The patch fixes the problems by forcing KSEG1 memory region usage
-> for CONFIG_MMU=n MIPS configurations.
-> 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  arch/mips/include/asm/io.h | 6 +++++-
->  arch/mips/lib/reloc.c      | 6 +++++-
->  2 files changed, 10 insertions(+), 2 deletions(-)
+> The second one makes no sense since the first one will abort execution.
+> Since it is needed for debugging any way, it is better to allow to abort
+> later, just before starting the OS.
 
-Applied, thanks
+I think that we must abort before running the command, not afterwards.
+Originally it was thought that the bootscripts only configure the setup
+for a following bootm. Many bootscripts failed to do so and just
+start something right away, for these we indeed have to abort before
+running the command.
+You are right, this makes the second if(dryrun) pointless of course.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
