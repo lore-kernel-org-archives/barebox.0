@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jjICX-0002rF-M0
- for barebox@lists.infradead.org; Thu, 11 Jun 2020 08:04:43 +0000
+ id 1jjICa-0002sr-EC
+ for barebox@lists.infradead.org; Thu, 11 Jun 2020 08:04:46 +0000
 From: Clement Leger <cleger@kalray.eu>
-Date: Thu, 11 Jun 2020 10:02:02 +0200
-Message-Id: <20200611080207.6482-3-cleger@kalray.eu>
+Date: Thu, 11 Jun 2020 10:02:05 +0200
+Message-Id: <20200611080207.6482-6-cleger@kalray.eu>
 In-Reply-To: <20200611080207.6482-1-cleger@kalray.eu>
 References: <20200611080207.6482-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
@@ -21,33 +21,100 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 2/7] common: elf: use calloc instead of xzalloc
+Subject: [PATCH v5 5/7] common: elf: add elf_open, elf_close and elf_load
 To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
 Cc: Clement Leger <cleger@kalray.eu>, Oleksij Rempel <linux@rempel-privat.de>
 
-This failure can be handled grecefully, use standard calloc.
+In order to integrate elf loading into bootm command, split elf opening
+from elf loading.
 
 Signed-off-by: Clement Leger <cleger@kalray.eu>
 ---
- common/elf.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/mips/lib/bootm.c |  8 ++++++--
+ common/elf.c          | 20 +++++++-------------
+ include/elf.h         |  5 +++--
+ 3 files changed, 16 insertions(+), 17 deletions(-)
 
+diff --git a/arch/mips/lib/bootm.c b/arch/mips/lib/bootm.c
+index b07884ae0..8e16994b6 100644
+--- a/arch/mips/lib/bootm.c
++++ b/arch/mips/lib/bootm.c
+@@ -50,10 +50,14 @@ static int do_bootm_elf(struct image_data *data)
+ 	void *fdt;
+ 	int ret = 0;
+ 
+-	elf = elf_load_image(data->os_file);
++	elf = elf_open(data->os_file);
+ 	if (IS_ERR(elf))
+ 		return PTR_ERR(elf);
+ 
++	ret = elf_load(elf);
++	if (ret)
++		goto bootm_elf_done;
++
+ 	fdt = bootm_get_devicetree(data);
+ 	if (IS_ERR(fdt)) {
+ 		ret = PTR_ERR(fdt);
+@@ -76,7 +80,7 @@ static int do_bootm_elf(struct image_data *data)
+ 	ret = -EINVAL;
+ 
+ bootm_elf_done:
+-	elf_release_image(elf);
++	elf_close(elf);
+ 	free(fdt);
+ 
+ 	return ret;
 diff --git a/common/elf.c b/common/elf.c
-index 55f5bc645..0e92661e1 100644
+index ad0db13ec..a00fc8f0d 100644
 --- a/common/elf.c
 +++ b/common/elf.c
-@@ -19,7 +19,10 @@ static int elf_request_region(struct elf_image *elf, resource_size_t start,
- 	struct resource *r_new;
- 	struct elf_section *r;
+@@ -285,23 +285,17 @@ err_free_elf:
+ 	return ERR_PTR(ret);
+ }
  
--	r = xzalloc(sizeof(*r));
-+	r = calloc(1, sizeof(*r));
-+	if (!r)
-+		return -ENOMEM;
-+
- 	r_new = request_sdram_region("elf_section", start, size);
- 	if (!r_new) {
- 		pr_err("Failed to request region: %pa %pa\n", &start, &size);
+-struct elf_image *elf_load_image(const char *filename)
++struct elf_image *elf_open(const char *filename)
+ {
+-	int ret;
+-	struct elf_image *elf;
+-
+-	elf = elf_check_init(filename);
+-	if (IS_ERR(elf))
+-		return elf;
+-
+-	ret = load_elf_image_segments(elf);
+-	if (ret)
+-		return ERR_PTR(ret);
++	return elf_check_init(filename);
++}
+ 
+-	return elf;
++int elf_load(struct elf_image *elf)
++{
++	return load_elf_image_segments(elf);
+ }
+ 
+-void elf_release_image(struct elf_image *elf)
++void elf_close(struct elf_image *elf)
+ {
+ 	elf_release_regions(elf);
+ 
+diff --git a/include/elf.h b/include/elf.h
+index f1a80a20a..7970fd2c9 100644
+--- a/include/elf.h
++++ b/include/elf.h
+@@ -414,8 +414,9 @@ static inline size_t elf_get_mem_size(struct elf_image *elf)
+ 	return elf->high_addr - elf->low_addr;
+ }
+ 
+-struct elf_image *elf_load_image(const char *filename);
+-void elf_release_image(struct elf_image *elf);
++struct elf_image *elf_open(const char *filename);
++void elf_close(struct elf_image *elf);
++int elf_load(struct elf_image *elf);
+ 
+ #define ELF_GET_FIELD(__s, __field, __type) \
+ static inline __type elf_##__s##_##__field(struct elf_image *elf, void *arg) { \
 -- 
 2.17.1
 
