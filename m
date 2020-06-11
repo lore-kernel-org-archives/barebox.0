@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jjICa-0002sr-EC
- for barebox@lists.infradead.org; Thu, 11 Jun 2020 08:04:46 +0000
+ id 1jjICb-0002t8-22
+ for barebox@lists.infradead.org; Thu, 11 Jun 2020 08:04:47 +0000
 From: Clement Leger <cleger@kalray.eu>
-Date: Thu, 11 Jun 2020 10:02:05 +0200
-Message-Id: <20200611080207.6482-6-cleger@kalray.eu>
+Date: Thu, 11 Jun 2020 10:02:07 +0200
+Message-Id: <20200611080207.6482-8-cleger@kalray.eu>
 In-Reply-To: <20200611080207.6482-1-cleger@kalray.eu>
 References: <20200611080207.6482-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
@@ -21,100 +21,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 5/7] common: elf: add elf_open, elf_close and elf_load
+Subject: [PATCH v5 7/7] mips: lib: bootm: use bootm elf loading capabilities
 To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
 Cc: Clement Leger <cleger@kalray.eu>, Oleksij Rempel <linux@rempel-privat.de>
 
-In order to integrate elf loading into bootm command, split elf opening
-from elf loading.
+Now that the elf file is loaded by the bootm core, there is no need for
+elf pointer anymore. Thus all elf related fields can be removed and
+bootm_load_os can be used.
 
 Signed-off-by: Clement Leger <cleger@kalray.eu>
 ---
- arch/mips/lib/bootm.c |  8 ++++++--
- common/elf.c          | 20 +++++++-------------
- include/elf.h         |  5 +++--
- 3 files changed, 16 insertions(+), 17 deletions(-)
+ arch/mips/lib/bootm.c | 20 +++++++-------------
+ 1 file changed, 7 insertions(+), 13 deletions(-)
 
 diff --git a/arch/mips/lib/bootm.c b/arch/mips/lib/bootm.c
-index b07884ae0..8e16994b6 100644
+index 8e16994b6..6c56202ea 100644
 --- a/arch/mips/lib/bootm.c
 +++ b/arch/mips/lib/bootm.c
-@@ -50,10 +50,14 @@ static int do_bootm_elf(struct image_data *data)
+@@ -46,41 +46,35 @@ static struct binfmt_hook binfmt_barebox_hook = {
+ static int do_bootm_elf(struct image_data *data)
+ {
+ 	void (*entry)(int, void *);
+-	struct elf_image *elf;
  	void *fdt;
  	int ret = 0;
  
--	elf = elf_load_image(data->os_file);
-+	elf = elf_open(data->os_file);
- 	if (IS_ERR(elf))
- 		return PTR_ERR(elf);
+-	elf = elf_open(data->os_file);
+-	if (IS_ERR(elf))
+-		return PTR_ERR(elf);
+-
+-	ret = elf_load(elf);
++	ret = bootm_load_os(data, data->os_address);
+ 	if (ret)
+-		goto bootm_elf_done;
++		return ret;
  
-+	ret = elf_load(elf);
-+	if (ret)
-+		goto bootm_elf_done;
-+
  	fdt = bootm_get_devicetree(data);
  	if (IS_ERR(fdt)) {
  		ret = PTR_ERR(fdt);
-@@ -76,7 +80,7 @@ static int do_bootm_elf(struct image_data *data)
+-		goto bootm_elf_done;
++		goto bootm_free_fdt;
+ 	}
+ 
+ 	pr_info("Starting application at 0x%08lx, dts 0x%08lx...\n",
+-		phys_to_virt(elf->entry), data->of_root_node);
++		phys_to_virt(data->os_address), data->of_root_node);
+ 
+ 	if (data->dryrun)
+-		goto bootm_elf_done;
++		goto bootm_free_fdt;
+ 
+ 	shutdown_barebox();
+ 
+-	entry = (void *) (unsigned long) elf->entry;
++	entry = (void *) (unsigned long) data->os_address;
+ 
+ 	entry(-2, phys_to_virt((unsigned long)fdt));
+ 
+ 	pr_err("ELF application terminated\n");
  	ret = -EINVAL;
  
- bootm_elf_done:
--	elf_release_image(elf);
-+	elf_close(elf);
+-bootm_elf_done:
+-	elf_close(elf);
++bootm_free_fdt:
  	free(fdt);
  
  	return ret;
-diff --git a/common/elf.c b/common/elf.c
-index ad0db13ec..a00fc8f0d 100644
---- a/common/elf.c
-+++ b/common/elf.c
-@@ -285,23 +285,17 @@ err_free_elf:
- 	return ERR_PTR(ret);
- }
- 
--struct elf_image *elf_load_image(const char *filename)
-+struct elf_image *elf_open(const char *filename)
- {
--	int ret;
--	struct elf_image *elf;
--
--	elf = elf_check_init(filename);
--	if (IS_ERR(elf))
--		return elf;
--
--	ret = load_elf_image_segments(elf);
--	if (ret)
--		return ERR_PTR(ret);
-+	return elf_check_init(filename);
-+}
- 
--	return elf;
-+int elf_load(struct elf_image *elf)
-+{
-+	return load_elf_image_segments(elf);
- }
- 
--void elf_release_image(struct elf_image *elf)
-+void elf_close(struct elf_image *elf)
- {
- 	elf_release_regions(elf);
- 
-diff --git a/include/elf.h b/include/elf.h
-index f1a80a20a..7970fd2c9 100644
---- a/include/elf.h
-+++ b/include/elf.h
-@@ -414,8 +414,9 @@ static inline size_t elf_get_mem_size(struct elf_image *elf)
- 	return elf->high_addr - elf->low_addr;
- }
- 
--struct elf_image *elf_load_image(const char *filename);
--void elf_release_image(struct elf_image *elf);
-+struct elf_image *elf_open(const char *filename);
-+void elf_close(struct elf_image *elf);
-+int elf_load(struct elf_image *elf);
- 
- #define ELF_GET_FIELD(__s, __field, __type) \
- static inline __type elf_##__s##_##__field(struct elf_image *elf, void *arg) { \
 -- 
 2.17.1
 
