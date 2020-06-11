@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jjICX-0002rC-JK
+ id 1jjICX-0002rF-M0
  for barebox@lists.infradead.org; Thu, 11 Jun 2020 08:04:43 +0000
 From: Clement Leger <cleger@kalray.eu>
-Date: Thu, 11 Jun 2020 10:02:01 +0200
-Message-Id: <20200611080207.6482-2-cleger@kalray.eu>
+Date: Thu, 11 Jun 2020 10:02:02 +0200
+Message-Id: <20200611080207.6482-3-cleger@kalray.eu>
 In-Reply-To: <20200611080207.6482-1-cleger@kalray.eu>
 References: <20200611080207.6482-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
@@ -21,33 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 1/7] common: elf: fix warning on 32 bits architectures
+Subject: [PATCH v5 2/7] common: elf: use calloc instead of xzalloc
 To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
 Cc: Clement Leger <cleger@kalray.eu>, Oleksij Rempel <linux@rempel-privat.de>
 
-When pointers are 32 bits wide and we cast a potentially 64 bits
-value in it, the compiler will yield an error. Cast that value first
-into a phys_addr_t to match the architecture pointer size and then
-in a void *.
+This failure can be handled grecefully, use standard calloc.
 
 Signed-off-by: Clement Leger <cleger@kalray.eu>
 ---
- common/elf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ common/elf.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/common/elf.c b/common/elf.c
-index d64de401c..55f5bc645 100644
+index 55f5bc645..0e92661e1 100644
 --- a/common/elf.c
 +++ b/common/elf.c
-@@ -47,7 +47,7 @@ static void elf_release_regions(struct elf_image *elf)
- static int load_elf_phdr_segment(struct elf_image *elf, void *src,
- 				 void *phdr)
- {
--	void *dst = (void *) elf_phdr_p_paddr(elf, phdr);
-+	void *dst = (void *) (phys_addr_t) elf_phdr_p_paddr(elf, phdr);
- 	int ret;
- 	u64 p_filesz = elf_phdr_p_filesz(elf, phdr);
- 	u64 p_memsz = elf_phdr_p_memsz(elf, phdr);
+@@ -19,7 +19,10 @@ static int elf_request_region(struct elf_image *elf, resource_size_t start,
+ 	struct resource *r_new;
+ 	struct elf_section *r;
+ 
+-	r = xzalloc(sizeof(*r));
++	r = calloc(1, sizeof(*r));
++	if (!r)
++		return -ENOMEM;
++
+ 	r_new = request_sdram_region("elf_section", start, size);
+ 	if (!r_new) {
+ 		pr_err("Failed to request region: %pa %pa\n", &start, &size);
 -- 
 2.17.1
 
