@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jjK0c-0000pu-7K
- for barebox@lists.infradead.org; Thu, 11 Jun 2020 10:00:36 +0000
-Date: Thu, 11 Jun 2020 12:00:28 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Message-ID: <20200611100028.xlqglxyijzf6rtwc@pengutronix.de>
+ id 1jjLlF-0003pM-1l
+ for barebox@lists.infradead.org; Thu, 11 Jun 2020 11:52:50 +0000
 References: <20200611095521.2293-1-o.rempel@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <0df4debb-e45f-1a99-bfa7-d7969a364c56@pengutronix.de>
+Date: Thu, 11 Jun 2020 13:52:38 +0200
 MIME-Version: 1.0
 In-Reply-To: <20200611095521.2293-1-o.rempel@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,37 +18,18 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============2991746340540482830=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v1] ARM: add imx6 based Protonic boads
-To: barebox@lists.infradead.org, david@protonic.nl
+To: Oleksij Rempel <o.rempel@pengutronix.de>, barebox@lists.infradead.org, david@protonic.nl
 
+Hello Oleksij,
 
---===============2991746340540482830==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="hacavgclbweybqgq"
-Content-Disposition: inline
-
-
---hacavgclbweybqgq
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Dear reviewers,
-
-please do not spend time on reviewing devicetrees in this patch. They
-will be replaced by the better version as soon as hardly reworked
-version of them will be accepted to the linux kernel.
-
-For every thing else, a merciless reviewing is welcome :)
-
-Thank you!
-
-On Thu, Jun 11, 2020 at 11:55:20AM +0200, Oleksij Rempel wrote:
+On 6/11/20 11:55 AM, Oleksij Rempel wrote:
 > Add initial support for 15 i.MX6 based Protonic boards.
->=20
+> 
 > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 > ---
 >  arch/arm/boards/Makefile                      |   1 +
@@ -97,36 +79,21 @@ On Thu, Jun 11, 2020 at 11:55:20AM +0200, Oleksij Rempel wrote:
 >  44 files changed, 7658 insertions(+)
 >  create mode 100644 arch/arm/boards/protonic-imx6/Makefile
 >  create mode 100644 arch/arm/boards/protonic-imx6/ddr3-defines.imxcfg
->  create mode 100644 arch/arm/boards/protonic-imx6/flash-header-alti6p.imx=
-cfg
->  create mode 100644 arch/arm/boards/protonic-imx6/flash-header-lanmcu.imx=
-cfg
->  create mode 100644 arch/arm/boards/protonic-imx6/flash-header-plybas.imx=
-cfg
->  create mode 100644 arch/arm/boards/protonic-imx6/flash-header-plym2m.imx=
-cfg
->  create mode 100644 arch/arm/boards/protonic-imx6/flash-header-prti6g.imx=
-cfg
->  create mode 100644 arch/arm/boards/protonic-imx6/flash-header-prti6q.imx=
-cfg
->  create mode 100644 arch/arm/boards/protonic-imx6/flash-header-prtmvt.imx=
-cfg
->  create mode 100644 arch/arm/boards/protonic-imx6/flash-header-prtrvt.imx=
-cfg
->  create mode 100644 arch/arm/boards/protonic-imx6/flash-header-prtvt7.imx=
-cfg
->  create mode 100644 arch/arm/boards/protonic-imx6/flash-header-prtwd2.imx=
-cfg
->  create mode 100644 arch/arm/boards/protonic-imx6/flash-header-prtwd3.imx=
-cfg
->  create mode 100644 arch/arm/boards/protonic-imx6/flash-header-victgo.imx=
-cfg
->  create mode 100644 arch/arm/boards/protonic-imx6/flash-header-vicut1.imx=
-cfg
->  create mode 100644 arch/arm/boards/protonic-imx6/flash-header-vicut1q.im=
-xcfg
->  create mode 100644 arch/arm/boards/protonic-imx6/flash-header-vicutp.imx=
-cfg
+>  create mode 100644 arch/arm/boards/protonic-imx6/flash-header-alti6p.imxcfg
+>  create mode 100644 arch/arm/boards/protonic-imx6/flash-header-lanmcu.imxcfg
+>  create mode 100644 arch/arm/boards/protonic-imx6/flash-header-plybas.imxcfg
+>  create mode 100644 arch/arm/boards/protonic-imx6/flash-header-plym2m.imxcfg
+>  create mode 100644 arch/arm/boards/protonic-imx6/flash-header-prti6g.imxcfg
+>  create mode 100644 arch/arm/boards/protonic-imx6/flash-header-prti6q.imxcfg
+>  create mode 100644 arch/arm/boards/protonic-imx6/flash-header-prtmvt.imxcfg
+>  create mode 100644 arch/arm/boards/protonic-imx6/flash-header-prtrvt.imxcfg
+>  create mode 100644 arch/arm/boards/protonic-imx6/flash-header-prtvt7.imxcfg
+>  create mode 100644 arch/arm/boards/protonic-imx6/flash-header-prtwd2.imxcfg
+>  create mode 100644 arch/arm/boards/protonic-imx6/flash-header-prtwd3.imxcfg
+>  create mode 100644 arch/arm/boards/protonic-imx6/flash-header-victgo.imxcfg
+>  create mode 100644 arch/arm/boards/protonic-imx6/flash-header-vicut1.imxcfg
+>  create mode 100644 arch/arm/boards/protonic-imx6/flash-header-vicut1q.imxcfg
+>  create mode 100644 arch/arm/boards/protonic-imx6/flash-header-vicutp.imxcfg
 >  create mode 100644 arch/arm/boards/protonic-imx6/lowlevel.c
 >  create mode 100644 arch/arm/boards/protonic-imx6/lpddr2-defines.imxcfg
 >  create mode 100644 arch/arm/boards/protonic-imx6/padsetup-dl.imxcfg
@@ -150,30 +117,27 @@ cfg
 >  create mode 100644 arch/arm/dts/imx6qp-vicutp.dts
 >  create mode 100644 arch/arm/dts/imx6ul-prti6g.dts
 >  create mode 100644 arch/arm/dts/imx6ul-prti6g.dtsi
->=20
+> 
 > diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
 > index e9e9163d58..48fac356c4 100644
 > --- a/arch/arm/boards/Makefile
 > +++ b/arch/arm/boards/Makefile
-> @@ -104,6 +104,7 @@ obj-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_A6)	+=3D platho=
-me-openblocks-a6/
->  obj-$(CONFIG_MACH_PM9261)			+=3D pm9261/
->  obj-$(CONFIG_MACH_PM9263)			+=3D pm9263/
->  obj-$(CONFIG_MACH_PM9G45)			+=3D pm9g45/
-> +obj-$(CONFIG_MACH_PROTONIC_IMX6)		+=3D protonic-imx6/
->  obj-$(CONFIG_MACH_QIL_A9260)			+=3D qil-a926x/
->  obj-$(CONFIG_MACH_QIL_A9G20)			+=3D qil-a926x/
->  obj-$(CONFIG_MACH_RADXA_ROCK)			+=3D radxa-rock/
-> diff --git a/arch/arm/boards/protonic-imx6/Makefile b/arch/arm/boards/pro=
-tonic-imx6/Makefile
+> @@ -104,6 +104,7 @@ obj-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_A6)	+= plathome-openblocks-a6/
+>  obj-$(CONFIG_MACH_PM9261)			+= pm9261/
+>  obj-$(CONFIG_MACH_PM9263)			+= pm9263/
+>  obj-$(CONFIG_MACH_PM9G45)			+= pm9g45/
+> +obj-$(CONFIG_MACH_PROTONIC_IMX6)		+= protonic-imx6/
+>  obj-$(CONFIG_MACH_QIL_A9260)			+= qil-a926x/
+>  obj-$(CONFIG_MACH_QIL_A9G20)			+= qil-a926x/
+>  obj-$(CONFIG_MACH_RADXA_ROCK)			+= radxa-rock/
+> diff --git a/arch/arm/boards/protonic-imx6/Makefile b/arch/arm/boards/protonic-imx6/Makefile
 > new file mode 100644
 > index 0000000000..b08c4a93ca
 > --- /dev/null
 > +++ b/arch/arm/boards/protonic-imx6/Makefile
 > @@ -0,0 +1 @@
-> +lwl-y +=3D lowlevel.o
-> diff --git a/arch/arm/boards/protonic-imx6/ddr3-defines.imxcfg b/arch/arm=
-/boards/protonic-imx6/ddr3-defines.imxcfg
+> +lwl-y += lowlevel.o
+> diff --git a/arch/arm/boards/protonic-imx6/ddr3-defines.imxcfg b/arch/arm/boards/protonic-imx6/ddr3-defines.imxcfg
 > new file mode 100644
 > index 0000000000..65bd1bc3c6
 > --- /dev/null
@@ -325,7 +289,7 @@ tonic-imx6/Makefile
 > +
 > +/*
 > + * MDCTL:
-> + * 2Gb: CS0 enable, 14bit ROW, 10bit COL, BL=3D8, 64bit data
+> + * 2Gb: CS0 enable, 14bit ROW, 10bit COL, BL=8, 64bit data
 > + *
 > + * Par. 	Chip		VALUE		SHIFT	Reg. field
 > + * ----------------------------------------------------------------
@@ -378,11 +342,10 @@ tonic-imx6/Makefile
 > +
 > +/*
 > + * Initialize DDR3 chips
-> + * MDSCR: Value =3D 0xvvvv803n, with 0xvvvv =3D value, n =3D Reg. number=
- (BA)
+> + * MDSCR: Value = 0xvvvv803n, with 0xvvvv = value, n = Reg. number (BA)
 > + */
 > +/*
-> + * DDR3 chip MR2, n =3D 2:
+> + * DDR3 chip MR2, n = 2:
 > + *
 > + * Par. 	Chip		VALUE		BITS	  vvvv
 > + * ----------------------------------------------------------------
@@ -399,7 +362,7 @@ tonic-imx6/Makefile
 > +#define DDR3_MR2_533MHZ_RTT_120				0x04888032
 > +
 > +/*
-> + * DDR3 chip MR1, n =3D 1:
+> + * DDR3 chip MR1, n = 1:
 > + *
 > + * Par. 		Chip	VALUE		BITS	  vvvv
 > + * ----------------------------------------------------------------
@@ -407,7 +370,7 @@ tonic-imx6/Makefile
 > + * TDQS			*	0x0 (disabled)	11	0x0000
 > + * Rtt			*	0x0 (disabled)	9, 6, 2	0x0000
 > + * Write-levelling	*	0x0 (disable)	7	0x0000
-> + * ODS			*	0x0 (RZQ/6=3D40)	5, 1	0x0000
+> + * ODS			*	0x0 (RZQ/6=40)	5, 1	0x0000
 > + * DLL			*	0x0 (enable)	0	0x0000
 > + * ----------------------------------------------------------------
 > + */
@@ -419,7 +382,7 @@ tonic-imx6/Makefile
 > +#define DDR3_MR1_RTT_60_ODS_34				0x00068031
 > +
 > +/*
-> + * DDR3 chip MR0, n =3D 0:
+> + * DDR3 chip MR0, n = 0:
 > + *
 > + * Par. 		Chip	VALUE		BITS	  vvvv
 > + * ----------------------------------------------------------------
@@ -530,8 +493,7 @@ tonic-imx6/Makefile
 > + */
 > +#define MPDGCTRL1_CH1_400MHZ				0x021a0218
 > +#define MPDGCTRL1_CH1_533MHZ				0x03650348
-> diff --git a/arch/arm/boards/protonic-imx6/flash-header-alti6p.imxcfg b/a=
-rch/arm/boards/protonic-imx6/flash-header-alti6p.imxcfg
+> diff --git a/arch/arm/boards/protonic-imx6/flash-header-alti6p.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-alti6p.imxcfg
 > new file mode 100644
 > index 0000000000..63eae0281e
 > --- /dev/null
@@ -584,8 +546,7 @@ rch/arm/boards/protonic-imx6/flash-header-alti6p.imxcfg
 > +wm 32 0x021b001c DDR3_MR2_400MHZ_RTT_120
 > +
 > +/*
-> + * DDR3 chip MR3, n =3D 3, vvvv =3D 0 (no configurable function of inter=
-est).
+> + * DDR3 chip MR3, n = 3, vvvv = 0 (no configurable function of interest).
 > + */
 > +wm 32 0x021b001c 0x00008033
 > +
@@ -593,14 +554,14 @@ est).
 > +wm 32 0x021b001c DDR3_MR0_400MHZ
 > +
 > +/*
-> + * ZQ calibration, n =3D 0x10 (Precharge all):
-> + * Bit 10 =3D 1:  Start ZQ calibration
+> + * ZQ calibration, n = 0x10 (Precharge all):
+> + * Bit 10 = 1:  Start ZQ calibration
 > + * REGISTER: 0x04008040
 > + */
 > +wm 32 0x021b001c 0x04008040
 > +
 > +/* MPZQHWCTRL */
-> +wm 32 0x021b0800 0xa1390003 /* ZQ mode =3D 3  force calibration */
+> +wm 32 0x021b0800 0xa1390003 /* ZQ mode = 3  force calibration */
 > +wm 32 0x021b4800 0xa1390003
 > +
 > +wm 32 0x021b0020 MDREF_64KHZ
@@ -634,8 +595,7 @@ est).
 > +wm 32 0x021b001c 0x00000000 /* Disable configuration req */
 > +
 > +/* MAPSR */
-> +wm 32 0x021b0404 0x00011007 /* 0x0001...? FIXME: Disable powersaving for=
- now  */
+> +wm 32 0x021b0404 0x00011007 /* 0x0001...? FIXME: Disable powersaving for now  */
 > +
 > +/* Clock configuration (CCM) */
 > +/* CCGR0..6 */
@@ -649,10 +609,18 @@ est).
 > +
 > +/* enable AXI cache for VDOA/PCIe/VPU/IPU */
 > +wm 32 0x020e0010 0xff0000cf
-> +/* set IPU AXI-id0 Qos=3D0xf(bypass AXI-id1 Qos=3D0x7) */
+> +/* set IPU AXI-id0 Qos=0xf(bypass AXI-id1 Qos=0x7) */
 > +wm 32 0x020e0018 0x007f007f
 > +wm 32 0x020e001c 0x007f007f
-> +
+
+This is likely without effect since 09821fba06e4
+("ARM i.MX6q: Mark VPU and IPU AXI transfers as cacheable,
+increase IPU priority").
+
+You might want to check that barebox doesn't set values different
+from the presumably tried-and-true ones you've been setting.
+If they're the same, you could drop this dead code.
+
 > +/* RGMII config: ALTI6P doesn't have GRMII, disable! */
 > +wm 32 0x020e0768 0x000c0000 /* 1V5 DDR IO */
 > +wm 32 0x020e0788 0x00000000 /* disable ODT */
@@ -664,7 +632,10 @@ est).
 > +wm 32 0x020e06d0 0x0001f0f9
 > +wm 32 0x020e06d4 0x0001f0f9
 > +wm 32 0x020e06d8 0x0001f0f9
-> +
+
+Out of curiousity, why configure this here instead having the
+pinctrl core do it?
+
 > +/* HDMI to IPU1-ch1, LVDS to IPU1-ch0 */
 > +wm 32 0x020e0008 0x00000004
 > +wm 32 0x020e000c 0x01e00004
@@ -674,8 +645,7 @@ est).
 > +wm 32 0x020e0240 0x00000005
 > +wm 32 0x020e060c 0x000130b0
 > +wm 32 0x020e0610 0x000130b0
-> diff --git a/arch/arm/boards/protonic-imx6/flash-header-lanmcu.imxcfg b/a=
-rch/arm/boards/protonic-imx6/flash-header-lanmcu.imxcfg
+> diff --git a/arch/arm/boards/protonic-imx6/flash-header-lanmcu.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-lanmcu.imxcfg
 > new file mode 100644
 > index 0000000000..62846845fb
 > --- /dev/null
@@ -726,8 +696,7 @@ rch/arm/boards/protonic-imx6/flash-header-lanmcu.imxcfg
 > +wm 32 0x021b001c DDR3_MR2_400MHZ_RTT_120
 > +
 > +/*
-> + * DDR3 chip MR3, n =3D 3, vvvv =3D 0 (no configurable function of inter=
-est).
+> + * DDR3 chip MR3, n = 3, vvvv = 0 (no configurable function of interest).
 > + */
 > +wm 32 0x021b001c 0x00008033
 > +
@@ -735,15 +704,15 @@ est).
 > +wm 32 0x021b001c DDR3_MR0_400MHZ
 > +
 > +/*
-> + * ZQ calibration, n =3D 0x10 (Precharge all):
-> + * Bit 10 =3D 1:  Start ZQ calibration
+> + * ZQ calibration, n = 0x10 (Precharge all):
+> + * Bit 10 = 1:  Start ZQ calibration
 > + * REGISTER: 0x04008040
 > + */
 > +wm 32 0x021b001c 0x04008040
 > +
 > +/* MPZQHWCTRL */
-> +wm 32 0x021b0800 0xa1390003 /* ZQ mode =3D 3  force calibration */
-> +wm 32 0x021b4800 0xa1390003=20
+> +wm 32 0x021b0800 0xa1390003 /* ZQ mode = 3  force calibration */
+> +wm 32 0x021b4800 0xa1390003 
 > +
 > +wm 32 0x021b0020 MDREF_64KHZ
 > +
@@ -765,8 +734,7 @@ est).
 > +/* MPWLDECTRL0,1 */
 > +wm 32 0x021b080c 0x001f001f /* TODO. Write level delay control */
 > +wm 32 0x021b0810 0x001f001f
-> +wm 32 0x021b480c 0x00440044 /* FIXME: Why these seeminly arbitrary value=
-s? */
+> +wm 32 0x021b480c 0x00440044 /* FIXME: Why these seeminly arbitrary values? */
 > +wm 32 0x021b4810 0x00440044
 > +
 > +/* MPMUR0 */
@@ -777,8 +745,7 @@ s? */
 > +wm 32 0x021b001c 0x00000000 /* Disable configuration req */
 > +
 > +/* MAPSR */
-> +wm 32 0x021b0404 0x00011007 /* 0x0001...? FIXME: Disable powersaving for=
- now  */
+> +wm 32 0x021b0404 0x00011007 /* 0x0001...? FIXME: Disable powersaving for now  */
 > +
 > +/* Clock configuration (CCM) */
 > +/* CCGR0..6 */
@@ -792,7 +759,7 @@ s? */
 > +
 > +/* enable AXI cache for VDOA/PCIe/VPU/IPU */
 > +wm 32 0x020e0010 0xff0000cf
-> +/* set IPU AXI-id0 Qos=3D0xf(bypass AXI-id1 Qos=3D0x7) */
+> +/* set IPU AXI-id0 Qos=0xf(bypass AXI-id1 Qos=0x7) */
 > +wm 32 0x020e0018 0x007f007f
 > +wm 32 0x020e001c 0x007f007f
 > +
@@ -811,8 +778,7 @@ s? */
 > +/* HDMI to IPU1-ch1, LVDS to IPU1-ch0 */
 > +wm 32 0x020e0008 0x00000004
 > +wm 32 0x020e000c 0x01e00004
-> diff --git a/arch/arm/boards/protonic-imx6/flash-header-plybas.imxcfg b/a=
-rch/arm/boards/protonic-imx6/flash-header-plybas.imxcfg
+> diff --git a/arch/arm/boards/protonic-imx6/flash-header-plybas.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-plybas.imxcfg
 > new file mode 100644
 > index 0000000000..a734096aeb
 > --- /dev/null
@@ -865,8 +831,7 @@ rch/arm/boards/protonic-imx6/flash-header-plybas.imxcfg
 > +wm 32 0x021b001c DDR3_MR2_400MHZ_RTT_120
 > +
 > +/*
-> + * DDR3 chip MR3, n =3D 3, vvvv =3D 0 (no configurable function of inter=
-est).
+> + * DDR3 chip MR3, n = 3, vvvv = 0 (no configurable function of interest).
 > + */
 > +wm 32 0x021b001c 0x00008033
 > +
@@ -874,15 +839,15 @@ est).
 > +wm 32 0x021b001c DDR3_MR0_400MHZ
 > +
 > +/*
-> + * ZQ calibration, n =3D 0x10 (Precharge all):
-> + * Bit 10 =3D 1:  Start ZQ calibration
+> + * ZQ calibration, n = 0x10 (Precharge all):
+> + * Bit 10 = 1:  Start ZQ calibration
 > + * REGISTER: 0x04008040
 > + */
 > +wm 32 0x021b001c 0x04008040
 > +
 > +/* MPZQHWCTRL */
-> +wm 32 0x021b0800 0xa1390003 /* ZQ mode =3D 3  force calibration */
-> +wm 32 0x021b4800 0xa1390003=20
+> +wm 32 0x021b0800 0xa1390003 /* ZQ mode = 3  force calibration */
+> +wm 32 0x021b4800 0xa1390003 
 > +
 > +wm 32 0x021b0020 MDREF_64KHZ
 > +
@@ -904,8 +869,7 @@ est).
 > +/* MPWLDECTRL0,1 */
 > +wm 32 0x021b080c 0x001f001f /* TODO. Write level delay control */
 > +wm 32 0x021b0810 0x001f001f
-> +wm 32 0x021b480c 0x00440044 /* FIXME: Why these seeminly arbitrary value=
-s? */
+> +wm 32 0x021b480c 0x00440044 /* FIXME: Why these seeminly arbitrary values? */
 > +wm 32 0x021b4810 0x00440044
 > +
 > +/* MPMUR0 */
@@ -916,8 +880,7 @@ s? */
 > +wm 32 0x021b001c 0x00000000 /* Disable configuration req */
 > +
 > +/* MAPSR */
-> +wm 32 0x021b0404 0x00011007 /* 0x0001...? FIXME: Disable powersaving for=
- now  */
+> +wm 32 0x021b0404 0x00011007 /* 0x0001...? FIXME: Disable powersaving for now  */
 > +
 > +/* Clock configuration (CCM) */
 > +/* CCGR0..6 */
@@ -931,7 +894,7 @@ s? */
 > +
 > +/* enable AXI cache for VDOA/PCIe/VPU/IPU */
 > +wm 32 0x020e0010 0xff0000cf
-> +/* set IPU AXI-id0 Qos=3D0xf(bypass AXI-id1 Qos=3D0x7) */
+> +/* set IPU AXI-id0 Qos=0xf(bypass AXI-id1 Qos=0x7) */
 > +wm 32 0x020e0018 0x007f007f
 > +wm 32 0x020e001c 0x007f007f
 > +
@@ -956,8 +919,7 @@ s? */
 > +wm 32 0x020e0240 0x00000005
 > +wm 32 0x020e060c 0x000130b0
 > +wm 32 0x020e0610 0x000130b0
-> diff --git a/arch/arm/boards/protonic-imx6/flash-header-plym2m.imxcfg b/a=
-rch/arm/boards/protonic-imx6/flash-header-plym2m.imxcfg
+> diff --git a/arch/arm/boards/protonic-imx6/flash-header-plym2m.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-plym2m.imxcfg
 > new file mode 100644
 > index 0000000000..a734096aeb
 > --- /dev/null
@@ -1010,8 +972,7 @@ rch/arm/boards/protonic-imx6/flash-header-plym2m.imxcfg
 > +wm 32 0x021b001c DDR3_MR2_400MHZ_RTT_120
 > +
 > +/*
-> + * DDR3 chip MR3, n =3D 3, vvvv =3D 0 (no configurable function of inter=
-est).
+> + * DDR3 chip MR3, n = 3, vvvv = 0 (no configurable function of interest).
 > + */
 > +wm 32 0x021b001c 0x00008033
 > +
@@ -1019,15 +980,15 @@ est).
 > +wm 32 0x021b001c DDR3_MR0_400MHZ
 > +
 > +/*
-> + * ZQ calibration, n =3D 0x10 (Precharge all):
-> + * Bit 10 =3D 1:  Start ZQ calibration
+> + * ZQ calibration, n = 0x10 (Precharge all):
+> + * Bit 10 = 1:  Start ZQ calibration
 > + * REGISTER: 0x04008040
 > + */
 > +wm 32 0x021b001c 0x04008040
 > +
 > +/* MPZQHWCTRL */
-> +wm 32 0x021b0800 0xa1390003 /* ZQ mode =3D 3  force calibration */
-> +wm 32 0x021b4800 0xa1390003=20
+> +wm 32 0x021b0800 0xa1390003 /* ZQ mode = 3  force calibration */
+> +wm 32 0x021b4800 0xa1390003 
 > +
 > +wm 32 0x021b0020 MDREF_64KHZ
 > +
@@ -1049,8 +1010,7 @@ est).
 > +/* MPWLDECTRL0,1 */
 > +wm 32 0x021b080c 0x001f001f /* TODO. Write level delay control */
 > +wm 32 0x021b0810 0x001f001f
-> +wm 32 0x021b480c 0x00440044 /* FIXME: Why these seeminly arbitrary value=
-s? */
+> +wm 32 0x021b480c 0x00440044 /* FIXME: Why these seeminly arbitrary values? */
 > +wm 32 0x021b4810 0x00440044
 > +
 > +/* MPMUR0 */
@@ -1061,8 +1021,7 @@ s? */
 > +wm 32 0x021b001c 0x00000000 /* Disable configuration req */
 > +
 > +/* MAPSR */
-> +wm 32 0x021b0404 0x00011007 /* 0x0001...? FIXME: Disable powersaving for=
- now  */
+> +wm 32 0x021b0404 0x00011007 /* 0x0001...? FIXME: Disable powersaving for now  */
 > +
 > +/* Clock configuration (CCM) */
 > +/* CCGR0..6 */
@@ -1076,7 +1035,7 @@ s? */
 > +
 > +/* enable AXI cache for VDOA/PCIe/VPU/IPU */
 > +wm 32 0x020e0010 0xff0000cf
-> +/* set IPU AXI-id0 Qos=3D0xf(bypass AXI-id1 Qos=3D0x7) */
+> +/* set IPU AXI-id0 Qos=0xf(bypass AXI-id1 Qos=0x7) */
 > +wm 32 0x020e0018 0x007f007f
 > +wm 32 0x020e001c 0x007f007f
 > +
@@ -1101,8 +1060,7 @@ s? */
 > +wm 32 0x020e0240 0x00000005
 > +wm 32 0x020e060c 0x000130b0
 > +wm 32 0x020e0610 0x000130b0
-> diff --git a/arch/arm/boards/protonic-imx6/flash-header-prti6g.imxcfg b/a=
-rch/arm/boards/protonic-imx6/flash-header-prti6g.imxcfg
+> diff --git a/arch/arm/boards/protonic-imx6/flash-header-prti6g.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-prti6g.imxcfg
 > new file mode 100644
 > index 0000000000..b42bb1cd9f
 > --- /dev/null
@@ -1142,8 +1100,7 @@ rch/arm/boards/protonic-imx6/flash-header-prti6g.imxcfg
 > +wm 32 0x021b001c DDR3_MR2_400MHZ_RTT_120
 > +
 > +/*
-> + * DDR3 chip MR3, n =3D 3, vvvv =3D 0 (no configurable function of inter=
-est).
+> + * DDR3 chip MR3, n = 3, vvvv = 0 (no configurable function of interest).
 > + */
 > +wm 32 0x021b001c 0x00008033
 > +
@@ -1151,14 +1108,14 @@ est).
 > +wm 32 0x021b001c DDR3_MR0_400MHZ
 > +
 > +/*
-> + * ZQ calibration, n =3D 0x10 (Precharge all):
-> + * Bit 10 =3D 1:  Start ZQ calibration
+> + * ZQ calibration, n = 0x10 (Precharge all):
+> + * Bit 10 = 1:  Start ZQ calibration
 > + * REGISTER: 0x04008040
 > + */
 > +wm 32 0x021b001c 0x04008040
 > +
 > +/* MPZQHWCTRL */
-> +wm 32 0x021b0800 0xa1390003 /* ZQ mode =3D 3  force calibration */
+> +wm 32 0x021b0800 0xa1390003 /* ZQ mode = 3  force calibration */
 > +
 > +wm 32 0x021b0020 MDREF_64KHZ
 > +
@@ -1180,8 +1137,7 @@ est).
 > +wm 32 0x021b001c 0x00000000 /* Disable configuration req */
 > +
 > +/* MAPSR */
-> +wm 32 0x021b0404 0x00011007 /* 0x0001...? FIXME: Disable powersaving for=
- now  */
+> +wm 32 0x021b0404 0x00011007 /* 0x0001...? FIXME: Disable powersaving for now  */
 > +
 > +/* Enable all clocks */
 > +wm 32 0x020c4068 0xffffffff
@@ -1199,8 +1155,7 @@ est).
 > +wm 32 0x020e0454 0x0001f0f9
 > +wm 32 0x020e0458 0x0001f0f9
 > +wm 32 0x020e045c 0x0001f0f9
-> diff --git a/arch/arm/boards/protonic-imx6/flash-header-prti6q.imxcfg b/a=
-rch/arm/boards/protonic-imx6/flash-header-prti6q.imxcfg
+> diff --git a/arch/arm/boards/protonic-imx6/flash-header-prti6q.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-prti6q.imxcfg
 > new file mode 100644
 > index 0000000000..1b2807fac4
 > --- /dev/null
@@ -1255,8 +1210,7 @@ rch/arm/boards/protonic-imx6/flash-header-prti6q.imxcfg
 > +wm 32 0x021b001c DDR3_MR2_533MHZ_RTT_120
 > +
 > +/*
-> + * DDR3 chip MR3, n =3D 3, vvvv =3D 0 (no configurable function of inter=
-est).
+> + * DDR3 chip MR3, n = 3, vvvv = 0 (no configurable function of interest).
 > + */
 > +wm 32 0x021b001c 0x00008033
 > +
@@ -1264,15 +1218,15 @@ est).
 > +wm 32 0x021b001c DDR3_MR0_533MHZ_CL7
 > +
 > +/*
-> + * ZQ calibration, n =3D 0x10 (Precharge all):
-> + * Bit 10 =3D 1:  Start ZQ calibration
+> + * ZQ calibration, n = 0x10 (Precharge all):
+> + * Bit 10 = 1:  Start ZQ calibration
 > + * REGISTER: 0x04008040
 > + */
 > +wm 32 0x021b001c 0x04008040
 > +
 > +/* MPZQHWCTRL */
-> +wm 32 0x021b0800 0xa1390003 /* ZQ mode =3D 3  force calibration */
-> +wm 32 0x021b4800 0xa1390003=20
+> +wm 32 0x021b0800 0xa1390003 /* ZQ mode = 3  force calibration */
+> +wm 32 0x021b4800 0xa1390003 
 > +
 > +wm 32 0x021b0020 MDREF_64KHZ
 > +
@@ -1319,7 +1273,7 @@ est).
 > +
 > +/* enable AXI cache for VDOA/PCIe/VPU/IPU */
 > +wm 32 0x020e0010 0xff0000cf
-> +/* set IPU AXI-id0 Qos=3D0xf(bypass AXI-id1 Qos=3D0x7) */
+> +/* set IPU AXI-id0 Qos=0xf(bypass AXI-id1 Qos=0x7) */
 > +wm 32 0x020e0018 0x007f007f
 > +wm 32 0x020e001c 0x007f007f
 > +
@@ -1342,8 +1296,7 @@ est).
 > +/* HDMI to IPU1-ch1, LVDS to IPU1-ch0 */
 > +wm 32 0x020e0008 0x00000004
 > +wm 32 0x020e000c 0x01e00004
-> diff --git a/arch/arm/boards/protonic-imx6/flash-header-prtmvt.imxcfg b/a=
-rch/arm/boards/protonic-imx6/flash-header-prtmvt.imxcfg
+> diff --git a/arch/arm/boards/protonic-imx6/flash-header-prtmvt.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-prtmvt.imxcfg
 > new file mode 100644
 > index 0000000000..091ad0ae80
 > --- /dev/null
@@ -1396,8 +1349,7 @@ rch/arm/boards/protonic-imx6/flash-header-prtmvt.imxcfg
 > +wm 32 0x021b001c DDR3_MR2_400MHZ_RTT_120
 > +
 > +/*
-> + * DDR3 chip MR3, n =3D 3, vvvv =3D 0 (no configurable function of inter=
-est).
+> + * DDR3 chip MR3, n = 3, vvvv = 0 (no configurable function of interest).
 > + */
 > +wm 32 0x021b001c 0x00008033
 > +
@@ -1405,15 +1357,15 @@ est).
 > +wm 32 0x021b001c DDR3_MR0_400MHZ
 > +
 > +/*
-> + * ZQ calibration, n =3D 0x10 (Precharge all):
-> + * Bit 10 =3D 1:  Start ZQ calibration
+> + * ZQ calibration, n = 0x10 (Precharge all):
+> + * Bit 10 = 1:  Start ZQ calibration
 > + * REGISTER: 0x04008040
 > + */
 > +wm 32 0x021b001c 0x04008040
 > +
 > +/* MPZQHWCTRL */
-> +wm 32 0x021b0800 0xa1390003 /* ZQ mode =3D 3  force calibration */
-> +wm 32 0x021b4800 0xa1390003=20
+> +wm 32 0x021b0800 0xa1390003 /* ZQ mode = 3  force calibration */
+> +wm 32 0x021b4800 0xa1390003 
 > +
 > +wm 32 0x021b0020 MDREF_64KHZ
 > +
@@ -1435,8 +1387,7 @@ est).
 > +/* MPWLDECTRL0,1 */
 > +wm 32 0x021b080c 0x001f001f /* TODO. Write level delay control */
 > +wm 32 0x021b0810 0x001f001f
-> +wm 32 0x021b480c 0x00440044 /* FIXME: Why these seeminly arbitrary value=
-s? */
+> +wm 32 0x021b480c 0x00440044 /* FIXME: Why these seeminly arbitrary values? */
 > +wm 32 0x021b4810 0x00440044
 > +
 > +/* MPMUR0 */
@@ -1447,8 +1398,7 @@ s? */
 > +wm 32 0x021b001c 0x00000000 /* Disable configuration req */
 > +
 > +/* MAPSR */
-> +wm 32 0x021b0404 0x00011007 /* 0x0001...? FIXME: Disable powersaving for=
- now  */
+> +wm 32 0x021b0404 0x00011007 /* 0x0001...? FIXME: Disable powersaving for now  */
 > +
 > +/* Clock configuration (CCM) */
 > +/* CCGR0..6 */
@@ -1462,7 +1412,7 @@ s? */
 > +
 > +/* enable AXI cache for VDOA/PCIe/VPU/IPU */
 > +wm 32 0x020e0010 0xff0000cf
-> +/* set IPU AXI-id0 Qos=3D0xf(bypass AXI-id1 Qos=3D0x7) */
+> +/* set IPU AXI-id0 Qos=0xf(bypass AXI-id1 Qos=0x7) */
 > +wm 32 0x020e0018 0x007f007f
 > +wm 32 0x020e001c 0x007f007f
 > +
@@ -1487,8 +1437,7 @@ s? */
 > +wm 32 0x020e0240 0x00000005
 > +wm 32 0x020e060c 0x000130b0
 > +wm 32 0x020e0610 0x000130b0
-> diff --git a/arch/arm/boards/protonic-imx6/flash-header-prtrvt.imxcfg b/a=
-rch/arm/boards/protonic-imx6/flash-header-prtrvt.imxcfg
+> diff --git a/arch/arm/boards/protonic-imx6/flash-header-prtrvt.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-prtrvt.imxcfg
 > new file mode 100644
 > index 0000000000..a734096aeb
 > --- /dev/null
@@ -1541,8 +1490,7 @@ rch/arm/boards/protonic-imx6/flash-header-prtrvt.imxcfg
 > +wm 32 0x021b001c DDR3_MR2_400MHZ_RTT_120
 > +
 > +/*
-> + * DDR3 chip MR3, n =3D 3, vvvv =3D 0 (no configurable function of inter=
-est).
+> + * DDR3 chip MR3, n = 3, vvvv = 0 (no configurable function of interest).
 > + */
 > +wm 32 0x021b001c 0x00008033
 > +
@@ -1550,15 +1498,15 @@ est).
 > +wm 32 0x021b001c DDR3_MR0_400MHZ
 > +
 > +/*
-> + * ZQ calibration, n =3D 0x10 (Precharge all):
-> + * Bit 10 =3D 1:  Start ZQ calibration
+> + * ZQ calibration, n = 0x10 (Precharge all):
+> + * Bit 10 = 1:  Start ZQ calibration
 > + * REGISTER: 0x04008040
 > + */
 > +wm 32 0x021b001c 0x04008040
 > +
 > +/* MPZQHWCTRL */
-> +wm 32 0x021b0800 0xa1390003 /* ZQ mode =3D 3  force calibration */
-> +wm 32 0x021b4800 0xa1390003=20
+> +wm 32 0x021b0800 0xa1390003 /* ZQ mode = 3  force calibration */
+> +wm 32 0x021b4800 0xa1390003 
 > +
 > +wm 32 0x021b0020 MDREF_64KHZ
 > +
@@ -1580,8 +1528,7 @@ est).
 > +/* MPWLDECTRL0,1 */
 > +wm 32 0x021b080c 0x001f001f /* TODO. Write level delay control */
 > +wm 32 0x021b0810 0x001f001f
-> +wm 32 0x021b480c 0x00440044 /* FIXME: Why these seeminly arbitrary value=
-s? */
+> +wm 32 0x021b480c 0x00440044 /* FIXME: Why these seeminly arbitrary values? */
 > +wm 32 0x021b4810 0x00440044
 > +
 > +/* MPMUR0 */
@@ -1592,8 +1539,7 @@ s? */
 > +wm 32 0x021b001c 0x00000000 /* Disable configuration req */
 > +
 > +/* MAPSR */
-> +wm 32 0x021b0404 0x00011007 /* 0x0001...? FIXME: Disable powersaving for=
- now  */
+> +wm 32 0x021b0404 0x00011007 /* 0x0001...? FIXME: Disable powersaving for now  */
 > +
 > +/* Clock configuration (CCM) */
 > +/* CCGR0..6 */
@@ -1607,7 +1553,7 @@ s? */
 > +
 > +/* enable AXI cache for VDOA/PCIe/VPU/IPU */
 > +wm 32 0x020e0010 0xff0000cf
-> +/* set IPU AXI-id0 Qos=3D0xf(bypass AXI-id1 Qos=3D0x7) */
+> +/* set IPU AXI-id0 Qos=0xf(bypass AXI-id1 Qos=0x7) */
 > +wm 32 0x020e0018 0x007f007f
 > +wm 32 0x020e001c 0x007f007f
 > +
@@ -1632,8 +1578,7 @@ s? */
 > +wm 32 0x020e0240 0x00000005
 > +wm 32 0x020e060c 0x000130b0
 > +wm 32 0x020e0610 0x000130b0
-> diff --git a/arch/arm/boards/protonic-imx6/flash-header-prtvt7.imxcfg b/a=
-rch/arm/boards/protonic-imx6/flash-header-prtvt7.imxcfg
+> diff --git a/arch/arm/boards/protonic-imx6/flash-header-prtvt7.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-prtvt7.imxcfg
 > new file mode 100644
 > index 0000000000..63d6e61133
 > --- /dev/null
@@ -1684,8 +1629,7 @@ rch/arm/boards/protonic-imx6/flash-header-prtvt7.imxcfg
 > +wm 32 0x021b001c DDR3_MR2_400MHZ_RTT_120
 > +
 > +/*
-> + * DDR3 chip MR3, n =3D 3, vvvv =3D 0 (no configurable function of inter=
-est).
+> + * DDR3 chip MR3, n = 3, vvvv = 0 (no configurable function of interest).
 > + */
 > +wm 32 0x021b001c 0x00008033
 > +
@@ -1693,15 +1637,15 @@ est).
 > +wm 32 0x021b001c DDR3_MR0_400MHZ
 > +
 > +/*
-> + * ZQ calibration, n =3D 0x10 (Precharge all):
-> + * Bit 10 =3D 1:  Start ZQ calibration
+> + * ZQ calibration, n = 0x10 (Precharge all):
+> + * Bit 10 = 1:  Start ZQ calibration
 > + * REGISTER: 0x04008040
 > + */
 > +wm 32 0x021b001c 0x04008040
 > +
 > +/* MPZQHWCTRL */
-> +wm 32 0x021b0800 0xa1390003 /* ZQ mode =3D 3  force calibration */
-> +wm 32 0x021b4800 0xa1390003=20
+> +wm 32 0x021b0800 0xa1390003 /* ZQ mode = 3  force calibration */
+> +wm 32 0x021b4800 0xa1390003 
 > +
 > +wm 32 0x021b0020 MDREF_64KHZ
 > +
@@ -1723,8 +1667,7 @@ est).
 > +/* MPWLDECTRL0,1 */
 > +wm 32 0x021b080c 0x001f001f /* TODO. Write level delay control */
 > +wm 32 0x021b0810 0x001f001f
-> +wm 32 0x021b480c 0x00440044 /* FIXME: Why these seeminly arbitrary value=
-s? */
+> +wm 32 0x021b480c 0x00440044 /* FIXME: Why these seeminly arbitrary values? */
 > +wm 32 0x021b4810 0x00440044
 > +
 > +/* MPMUR0 */
@@ -1735,8 +1678,7 @@ s? */
 > +wm 32 0x021b001c 0x00000000 /* Disable configuration req */
 > +
 > +/* MAPSR */
-> +wm 32 0x021b0404 0x00011007 /* 0x0001...? FIXME: Disable powersaving for=
- now  */
+> +wm 32 0x021b0404 0x00011007 /* 0x0001...? FIXME: Disable powersaving for now  */
 > +
 > +/* Clock configuration (CCM) */
 > +/* CCGR0..6 */
@@ -1750,7 +1692,7 @@ s? */
 > +
 > +/* enable AXI cache for VDOA/PCIe/VPU/IPU */
 > +wm 32 0x020e0010 0xff0000cf
-> +/* set IPU AXI-id0 Qos=3D0xf(bypass AXI-id1 Qos=3D0x7) */
+> +/* set IPU AXI-id0 Qos=0xf(bypass AXI-id1 Qos=0x7) */
 > +wm 32 0x020e0018 0x007f007f
 > +wm 32 0x020e001c 0x007f007f
 > +
@@ -1769,8 +1711,7 @@ s? */
 > +/* HDMI to IPU1-ch1, LVDS to IPU1-ch0 */
 > +wm 32 0x020e0008 0x00000004
 > +wm 32 0x020e000c 0x01e00004
-> diff --git a/arch/arm/boards/protonic-imx6/flash-header-prtwd2.imxcfg b/a=
-rch/arm/boards/protonic-imx6/flash-header-prtwd2.imxcfg
+> diff --git a/arch/arm/boards/protonic-imx6/flash-header-prtwd2.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-prtwd2.imxcfg
 > new file mode 100644
 > index 0000000000..b675751e60
 > --- /dev/null
@@ -1854,7 +1795,7 @@ rch/arm/boards/protonic-imx6/flash-header-prtwd2.imxcfg
 > +wm 32 0x021b485c 0x1b4700c7
 > +
 > +/* MPZQHWCTRL */
-> +wm 32 0x021b0800 0xa1390003 /* ZQ mode =3D 3  force calibration */
+> +wm 32 0x021b0800 0xa1390003 /* ZQ mode = 3  force calibration */
 > +wm 32 0x021b4800 0xa1380003 /* FIXME: Why different? */
 > +
 > +wm 32 0x021b0890 0x00400000
@@ -1952,9 +1893,9 @@ rch/arm/boards/protonic-imx6/flash-header-prtwd2.imxcfg
 > +/* Channel 0 */
 > +wm 32 0x021b001c 0x003f8030 /* Reset */
 > +wm 32 0x021b001c 0xff0a8030 /* Calibrate */
-> +wm 32 0x021b001c 0x82018030 /* MR1: nWR=3D6, WC=3D0, BT=3D0, BL=3DBL4 */
+> +wm 32 0x021b001c 0x82018030 /* MR1: nWR=6, WC=0, BT=0, BL=BL4 */
 > +wm 32 0x021b001c 0x04028030 /* MR2: RL6/WL3 */
-> +wm 32 0x021b001c 0x02038030 /* MR3: DS =3D 40 Ohm */
+> +wm 32 0x021b001c 0x02038030 /* MR3: DS = 40 Ohm */
 > +
 > +/* Channel 1 */
 > +wm 32 0x021b401c 0x003f8030
@@ -1972,7 +1913,7 @@ rch/arm/boards/protonic-imx6/flash-header-prtwd2.imxcfg
 > +check 32 until_all_bits_clear 0x021b483c 0x80000000
 > +
 > +/* MPZQHWCTRL */
-> +wm 32 0x021b0800 0xa1390003 /* ZQ mode =3D 3  force calibration */
+> +wm 32 0x021b0800 0xa1390003 /* ZQ mode = 3  force calibration */
 > +wm 32 0x021b4800 0xa1380003 /* FIXME: Why different? */
 > +
 > +wm 32 0x021b0020 MDREF_64KHZ
@@ -1995,7 +1936,7 @@ rch/arm/boards/protonic-imx6/flash-header-prtwd2.imxcfg
 > +
 > +/* enable AXI cache for VDOA/PCIe/VPU/IPU */
 > +wm 32 0x020e0010 0xff0000cf
-> +/* set IPU AXI-id0 Qos=3D0xf(bypass AXI-id1 Qos=3D0x7) */
+> +/* set IPU AXI-id0 Qos=0xf(bypass AXI-id1 Qos=0x7) */
 > +wm 32 0x020e0018 0x007f007f
 > +wm 32 0x020e001c 0x007f007f
 > +
@@ -2017,8 +1958,7 @@ rch/arm/boards/protonic-imx6/flash-header-prtwd2.imxcfg
 > +
 > +wm 32 0x020e06cc 0x000130f9
 > +
-> diff --git a/arch/arm/boards/protonic-imx6/flash-header-prtwd3.imxcfg b/a=
-rch/arm/boards/protonic-imx6/flash-header-prtwd3.imxcfg
+> diff --git a/arch/arm/boards/protonic-imx6/flash-header-prtwd3.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-prtwd3.imxcfg
 > new file mode 100644
 > index 0000000000..a6b2baaa36
 > --- /dev/null
@@ -2102,7 +2042,7 @@ rch/arm/boards/protonic-imx6/flash-header-prtwd3.imxcfg
 > +wm 32 0x021b485c 0x1b4700c7
 > +
 > +/* MPZQHWCTRL */
-> +wm 32 0x021b0800 0xa1390003 /* ZQ mode =3D 3  force calibration */
+> +wm 32 0x021b0800 0xa1390003 /* ZQ mode = 3  force calibration */
 > +wm 32 0x021b4800 0xa1380003 /* FIXME: Why different? */
 > +
 > +wm 32 0x021b0890 0x00400000
@@ -2255,9 +2195,9 @@ rch/arm/boards/protonic-imx6/flash-header-prtwd3.imxcfg
 > +/* Channel 0 */
 > +wm 32 0x021b001c 0x003f8030 /* Reset */
 > +wm 32 0x021b001c 0xff0a8030 /* Calibrate */
-> +wm 32 0x021b001c 0x82018030 /* MR1: nWR=3D6, WC=3D0, BT=3D0, BL=3DBL4 */
+> +wm 32 0x021b001c 0x82018030 /* MR1: nWR=6, WC=0, BT=0, BL=BL4 */
 > +wm 32 0x021b001c 0x04028030 /* MR2: RL6/WL3 */
-> +wm 32 0x021b001c 0x02038030 /* MR3: DS =3D 40 Ohm */
+> +wm 32 0x021b001c 0x02038030 /* MR3: DS = 40 Ohm */
 > +
 > +/* Channel 1 */
 > +wm 32 0x021b401c 0x003f8030
@@ -2275,7 +2215,7 @@ rch/arm/boards/protonic-imx6/flash-header-prtwd3.imxcfg
 > +check 32 until_all_bits_clear 0x021b483c 0x80000000
 > +
 > +/* MPZQHWCTRL */
-> +wm 32 0x021b0800 0xa1390003 /* ZQ mode =3D 3  force calibration */
+> +wm 32 0x021b0800 0xa1390003 /* ZQ mode = 3  force calibration */
 > +wm 32 0x021b4800 0xa1380003 /* FIXME: Why different? */
 > +
 > +wm 32 0x021b0020 MDREF_64KHZ
@@ -2298,7 +2238,7 @@ rch/arm/boards/protonic-imx6/flash-header-prtwd3.imxcfg
 > +
 > +/* enable AXI cache for VDOA/PCIe/VPU/IPU */
 > +wm 32 0x020e0010 0xff0000cf
-> +/* set IPU AXI-id0 Qos=3D0xf(bypass AXI-id1 Qos=3D0x7) */
+> +/* set IPU AXI-id0 Qos=0xf(bypass AXI-id1 Qos=0x7) */
 > +wm 32 0x020e0018 0x007f007f
 > +wm 32 0x020e001c 0x007f007f
 > +
@@ -2315,8 +2255,7 @@ rch/arm/boards/protonic-imx6/flash-header-prtwd3.imxcfg
 > +wm 32 0x020e000c 0x01e00004
 > +
 > +wm 32 0x020e06cc 0x000130f9
-> diff --git a/arch/arm/boards/protonic-imx6/flash-header-victgo.imxcfg b/a=
-rch/arm/boards/protonic-imx6/flash-header-victgo.imxcfg
+> diff --git a/arch/arm/boards/protonic-imx6/flash-header-victgo.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-victgo.imxcfg
 > new file mode 100644
 > index 0000000000..58d5183ca0
 > --- /dev/null
@@ -2369,8 +2308,7 @@ rch/arm/boards/protonic-imx6/flash-header-victgo.imxcfg
 > +wm 32 0x021b001c DDR3_MR2_400MHZ_RTT_120
 > +
 > +/*
-> + * DDR3 chip MR3, n =3D 3, vvvv =3D 0 (no configurable function of inter=
-est).
+> + * DDR3 chip MR3, n = 3, vvvv = 0 (no configurable function of interest).
 > + */
 > +wm 32 0x021b001c 0x00008033
 > +
@@ -2378,14 +2316,14 @@ est).
 > +wm 32 0x021b001c DDR3_MR0_400MHZ
 > +
 > +/*
-> + * ZQ calibration, n =3D 0x10 (Precharge all):
-> + * Bit 10 =3D 1:  Start ZQ calibration
+> + * ZQ calibration, n = 0x10 (Precharge all):
+> + * Bit 10 = 1:  Start ZQ calibration
 > + * REGISTER: 0x04008040
 > + */
 > +wm 32 0x021b001c 0x04008040
 > +
 > +/* MPZQHWCTRL */
-> +wm 32 0x021b0800 0xa1390003 /* ZQ mode =3D 3  force calibration */
+> +wm 32 0x021b0800 0xa1390003 /* ZQ mode = 3  force calibration */
 > +wm 32 0x021b4800 0xa1390003
 > +
 > +wm 32 0x021b0020 MDREF_64KHZ
@@ -2419,8 +2357,7 @@ est).
 > +wm 32 0x021b001c 0x00000000 /* Disable configuration req */
 > +
 > +/* MAPSR */
-> +wm 32 0x021b0404 0x00011007 /* 0x0001...? FIXME: Disable powersaving for=
- now  */
+> +wm 32 0x021b0404 0x00011007 /* 0x0001...? FIXME: Disable powersaving for now  */
 > +
 > +/* Clock configuration (CCM) */
 > +/* CCGR0..6 */
@@ -2434,7 +2371,7 @@ est).
 > +
 > +/* enable AXI cache for VDOA/PCIe/VPU/IPU */
 > +wm 32 0x020e0010 0xff0000cf
-> +/* set IPU AXI-id0 Qos=3D0xf(bypass AXI-id1 Qos=3D0x7) */
+> +/* set IPU AXI-id0 Qos=0xf(bypass AXI-id1 Qos=0x7) */
 > +wm 32 0x020e0018 0x007f007f
 > +wm 32 0x020e001c 0x007f007f
 > +
@@ -2459,8 +2396,7 @@ est).
 > +wm 32 0x020e0240 0x00000005
 > +wm 32 0x020e060c 0x000130b0
 > +wm 32 0x020e0610 0x000130b0
-> diff --git a/arch/arm/boards/protonic-imx6/flash-header-vicut1.imxcfg b/a=
-rch/arm/boards/protonic-imx6/flash-header-vicut1.imxcfg
+> diff --git a/arch/arm/boards/protonic-imx6/flash-header-vicut1.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-vicut1.imxcfg
 > new file mode 100644
 > index 0000000000..0612801ee8
 > --- /dev/null
@@ -2513,8 +2449,7 @@ rch/arm/boards/protonic-imx6/flash-header-vicut1.imxcfg
 > +wm 32 0x021b001c DDR3_MR2_400MHZ_RTT_120
 > +
 > +/*
-> + * DDR3 chip MR3, n =3D 3, vvvv =3D 0 (no configurable function of inter=
-est).
+> + * DDR3 chip MR3, n = 3, vvvv = 0 (no configurable function of interest).
 > + */
 > +wm 32 0x021b001c 0x00008033
 > +
@@ -2522,15 +2457,15 @@ est).
 > +wm 32 0x021b001c DDR3_MR0_400MHZ
 > +
 > +/*
-> + * ZQ calibration, n =3D 0x10 (Precharge all):
-> + * Bit 10 =3D 1:  Start ZQ calibration
+> + * ZQ calibration, n = 0x10 (Precharge all):
+> + * Bit 10 = 1:  Start ZQ calibration
 > + * REGISTER: 0x04008040
 > + */
 > +wm 32 0x021b001c 0x04008040
 > +
 > +/* MPZQHWCTRL */
-> +wm 32 0x021b0800 0xa1390003 /* ZQ mode =3D 3  force calibration */
-> +wm 32 0x021b4800 0xa1390003=20
+> +wm 32 0x021b0800 0xa1390003 /* ZQ mode = 3  force calibration */
+> +wm 32 0x021b4800 0xa1390003 
 > +
 > +wm 32 0x021b0020 MDREF_64KHZ
 > +
@@ -2552,8 +2487,7 @@ est).
 > +/* MPWLDECTRL0,1 */
 > +wm 32 0x021b080c 0x001f001f /* TODO. Write level delay control */
 > +wm 32 0x021b0810 0x001f001f
-> +wm 32 0x021b480c 0x00440044 /* FIXME: Why these seeminly arbitrary value=
-s? */
+> +wm 32 0x021b480c 0x00440044 /* FIXME: Why these seeminly arbitrary values? */
 > +wm 32 0x021b4810 0x00440044
 > +
 > +/* MPMUR0 */
@@ -2564,8 +2498,7 @@ s? */
 > +wm 32 0x021b001c 0x00000000 /* Disable configuration req */
 > +
 > +/* MAPSR */
-> +wm 32 0x021b0404 0x00011007 /* 0x0001...? FIXME: Disable powersaving for=
- now  */
+> +wm 32 0x021b0404 0x00011007 /* 0x0001...? FIXME: Disable powersaving for now  */
 > +
 > +/* Clock configuration (CCM) */
 > +/* CCGR0..6 */
@@ -2579,7 +2512,7 @@ s? */
 > +
 > +/* enable AXI cache for VDOA/PCIe/VPU/IPU */
 > +wm 32 0x020e0010 0xff0000cf
-> +/* set IPU AXI-id0 Qos=3D0xf(bypass AXI-id1 Qos=3D0x7) */
+> +/* set IPU AXI-id0 Qos=0xf(bypass AXI-id1 Qos=0x7) */
 > +wm 32 0x020e0018 0x007f007f
 > +wm 32 0x020e001c 0x007f007f
 > +
@@ -2604,8 +2537,7 @@ s? */
 > +wm 32 0x020e0240 0x00000005
 > +wm 32 0x020e060c 0x0001f0b0
 > +wm 32 0x020e0610 0x000130b0
-> diff --git a/arch/arm/boards/protonic-imx6/flash-header-vicut1q.imxcfg b/=
-arch/arm/boards/protonic-imx6/flash-header-vicut1q.imxcfg
+> diff --git a/arch/arm/boards/protonic-imx6/flash-header-vicut1q.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-vicut1q.imxcfg
 > new file mode 100644
 > index 0000000000..096bfa717f
 > --- /dev/null
@@ -2661,8 +2593,7 @@ arch/arm/boards/protonic-imx6/flash-header-vicut1q.imxcfg
 > +wm 32 0x021b001c DDR3_MR2_533MHZ_RTT_120
 > +
 > +/*
-> + * DDR3 chip MR3, n =3D 3, vvvv =3D 0 (no configurable function of inter=
-est).
+> + * DDR3 chip MR3, n = 3, vvvv = 0 (no configurable function of interest).
 > + */
 > +wm 32 0x021b001c 0x00008033
 > +
@@ -2670,15 +2601,15 @@ est).
 > +wm 32 0x021b001c DDR3_MR0_533MHZ_CL7
 > +
 > +/*
-> + * ZQ calibration, n =3D 0x10 (Precharge all):
-> + * Bit 10 =3D 1:  Start ZQ calibration
+> + * ZQ calibration, n = 0x10 (Precharge all):
+> + * Bit 10 = 1:  Start ZQ calibration
 > + * REGISTER: 0x04008040
 > + */
 > +wm 32 0x021b001c 0x04008040
 > +
 > +/* MPZQHWCTRL */
-> +wm 32 0x021b0800 0xa1390003 /* ZQ mode =3D 3  force calibration */
-> +wm 32 0x021b4800 0xa1390003=20
+> +wm 32 0x021b0800 0xa1390003 /* ZQ mode = 3  force calibration */
+> +wm 32 0x021b4800 0xa1390003 
 > +
 > +wm 32 0x021b0020 MDREF_64KHZ
 > +
@@ -2728,7 +2659,7 @@ est).
 > +
 > +/* enable AXI cache for VDOA/PCIe/VPU/IPU */
 > +wm 32 0x020e0010 0xff0000cf
-> +/* set IPU AXI-id0 Qos=3D0xf(bypass AXI-id1 Qos=3D0x7) */
+> +/* set IPU AXI-id0 Qos=0xf(bypass AXI-id1 Qos=0x7) */
 > +wm 32 0x020e0018 0x007f007f
 > +wm 32 0x020e001c 0x007f007f
 > +
@@ -2752,8 +2683,7 @@ est).
 > +wm 32 0x020e0008 0x00000004
 > +wm 32 0x020e000c 0x01e00004
 > +
-> diff --git a/arch/arm/boards/protonic-imx6/flash-header-vicutp.imxcfg b/a=
-rch/arm/boards/protonic-imx6/flash-header-vicutp.imxcfg
+> diff --git a/arch/arm/boards/protonic-imx6/flash-header-vicutp.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-vicutp.imxcfg
 > new file mode 100644
 > index 0000000000..e19c9eb87e
 > --- /dev/null
@@ -2869,8 +2799,7 @@ rch/arm/boards/protonic-imx6/flash-header-vicutp.imxcfg
 > +wm 32 0x021b001c DDR3_MR2_533MHZ_RTT_120
 > +
 > +/*
-> + * DDR3 chip MR3, n =3D 3, vvvv =3D 0 (no configurable function of inter=
-est).
+> + * DDR3 chip MR3, n = 3, vvvv = 0 (no configurable function of interest).
 > + */
 > +wm 32 0x021b001c 0x00008033
 > +
@@ -2878,15 +2807,15 @@ est).
 > +wm 32 0x021b001c DDR3_MR0_533MHZ_CL7
 > +
 > +/*
-> + * ZQ calibration, n =3D 0x10 (Precharge all):
-> + * Bit 10 =3D 1:  Start ZQ calibration
+> + * ZQ calibration, n = 0x10 (Precharge all):
+> + * Bit 10 = 1:  Start ZQ calibration
 > + * REGISTER: 0x04008040
 > + */
 > +wm 32 0x021b001c 0x04008040
 > +
 > +/* MPZQHWCTRL */
-> +wm 32 0x021b0800 0xa1390003 /* ZQ mode =3D 3  force calibration */
-> +wm 32 0x021b4800 0xa1390003=20
+> +wm 32 0x021b0800 0xa1390003 /* ZQ mode = 3  force calibration */
+> +wm 32 0x021b4800 0xa1390003 
 > +
 > +wm 32 0x021b0020 MDREF_64KHZ
 > +
@@ -2923,7 +2852,7 @@ est).
 > +
 > +/* enable AXI cache for VDOA/PCIe/VPU/IPU */
 > +wm 32 0x020e0010 0xff0000cf
-> +/* set IPU AXI-id0 Qos=3D0xf(bypass AXI-id1 Qos=3D0x7) */
+> +/* set IPU AXI-id0 Qos=0xf(bypass AXI-id1 Qos=0x7) */
 > +wm 32 0x020e0018 0x007f007f
 > +wm 32 0x020e001c 0x007f007f
 > +
@@ -2947,8 +2876,7 @@ est).
 > +wm 32 0x020e0008 0x00000004
 > +wm 32 0x020e000c 0x01e00004
 > +
-> diff --git a/arch/arm/boards/protonic-imx6/lowlevel.c b/arch/arm/boards/p=
-rotonic-imx6/lowlevel.c
+> diff --git a/arch/arm/boards/protonic-imx6/lowlevel.c b/arch/arm/boards/protonic-imx6/lowlevel.c
 > new file mode 100644
 > index 0000000000..60d809c3aa
 > --- /dev/null
@@ -2985,7 +2913,7 @@ rotonic-imx6/lowlevel.c
 > +
 > +static inline void setup_uart(void)
 > +{
-> +	void __iomem *iomuxbase =3D IOMEM(MX6_IOMUXC_BASE_ADDR);
+> +	void __iomem *iomuxbase = IOMEM(MX6_IOMUXC_BASE_ADDR);
 > +
 > +	imx_setup_pad(iomuxbase, MX6Q_PAD_KEY_COL0__UART4_TXD);
 > +
@@ -3005,7 +2933,7 @@ rotonic-imx6/lowlevel.c
 > +	if (IS_ENABLED(CONFIG_DEBUG_LL))
 > +		setup_uart();
 > +
-> +	fdt =3D __dtb_z_imx6q_prti6q_start + get_runtime_offset();
+> +	fdt = __dtb_z_imx6q_prti6q_start + get_runtime_offset();
 > +
 > +	barebox_arm_entry(0x10000000, SZ_1G, fdt);
 > +}
@@ -3016,7 +2944,7 @@ rotonic-imx6/lowlevel.c
 > +
 > +	arm_cpu_lowlevel_init();
 > +
-> +	fdt =3D __dtb_z_imx6q_prtwd2_start + get_runtime_offset();
+> +	fdt = __dtb_z_imx6q_prtwd2_start + get_runtime_offset();
 > +
 > +	barebox_arm_entry(0x10000000, SZ_512M, fdt);
 > +}
@@ -3027,7 +2955,7 @@ rotonic-imx6/lowlevel.c
 > +
 > +	arm_cpu_lowlevel_init();
 > +
-> +	fdt =3D __dtb_z_imx6q_vicut1_start + get_runtime_offset();
+> +	fdt = __dtb_z_imx6q_vicut1_start + get_runtime_offset();
 > +
 > +	barebox_arm_entry(0x10000000, SZ_2G, fdt);
 > +}
@@ -3038,7 +2966,7 @@ rotonic-imx6/lowlevel.c
 > +
 > +	arm_cpu_lowlevel_init();
 > +
-> +	fdt =3D __dtb_z_imx6dl_alti6p_start + get_runtime_offset();
+> +	fdt = __dtb_z_imx6dl_alti6p_start + get_runtime_offset();
 > +
 > +	barebox_arm_entry(0x10000000, SZ_1G, fdt);
 > +}
@@ -3049,7 +2977,7 @@ rotonic-imx6/lowlevel.c
 > +
 > +	arm_cpu_lowlevel_init();
 > +
-> +	fdt =3D __dtb_z_imx6dl_lanmcu_start + get_runtime_offset();
+> +	fdt = __dtb_z_imx6dl_lanmcu_start + get_runtime_offset();
 > +
 > +	barebox_arm_entry(0x10000000, SZ_256M, fdt);
 > +}
@@ -3060,7 +2988,7 @@ rotonic-imx6/lowlevel.c
 > +
 > +	arm_cpu_lowlevel_init();
 > +
-> +	fdt =3D __dtb_z_imx6dl_plybas_start + get_runtime_offset();
+> +	fdt = __dtb_z_imx6dl_plybas_start + get_runtime_offset();
 > +
 > +	barebox_arm_entry(0x10000000, SZ_256M, fdt);
 > +}
@@ -3071,7 +2999,7 @@ rotonic-imx6/lowlevel.c
 > +
 > +	arm_cpu_lowlevel_init();
 > +
-> +	fdt =3D __dtb_z_imx6dl_plym2m_start + get_runtime_offset();
+> +	fdt = __dtb_z_imx6dl_plym2m_start + get_runtime_offset();
 > +
 > +	barebox_arm_entry(0x10000000, SZ_256M, fdt);
 > +}
@@ -3082,7 +3010,7 @@ rotonic-imx6/lowlevel.c
 > +
 > +	arm_cpu_lowlevel_init();
 > +
-> +	fdt =3D __dtb_z_imx6dl_prtmvt_start + get_runtime_offset();
+> +	fdt = __dtb_z_imx6dl_prtmvt_start + get_runtime_offset();
 > +
 > +	barebox_arm_entry(0x10000000, SZ_512M, fdt);
 > +}
@@ -3093,7 +3021,7 @@ rotonic-imx6/lowlevel.c
 > +
 > +	arm_cpu_lowlevel_init();
 > +
-> +	fdt =3D __dtb_z_imx6dl_prtrvt_start + get_runtime_offset();
+> +	fdt = __dtb_z_imx6dl_prtrvt_start + get_runtime_offset();
 > +
 > +	barebox_arm_entry(0x10000000, SZ_256M, fdt);
 > +}
@@ -3104,7 +3032,7 @@ rotonic-imx6/lowlevel.c
 > +
 > +	arm_cpu_lowlevel_init();
 > +
-> +	fdt =3D __dtb_z_imx6dl_prtvt7_start + get_runtime_offset();
+> +	fdt = __dtb_z_imx6dl_prtvt7_start + get_runtime_offset();
 > +
 > +	barebox_arm_entry(0x10000000, SZ_512M, fdt);
 > +}
@@ -3115,7 +3043,7 @@ rotonic-imx6/lowlevel.c
 > +
 > +	arm_cpu_lowlevel_init();
 > +
-> +	fdt =3D __dtb_z_imx6dl_victgo_start + get_runtime_offset();
+> +	fdt = __dtb_z_imx6dl_victgo_start + get_runtime_offset();
 > +
 > +	barebox_arm_entry(0x10000000, SZ_512M, fdt);
 > +}
@@ -3126,7 +3054,7 @@ rotonic-imx6/lowlevel.c
 > +
 > +	arm_cpu_lowlevel_init();
 > +
-> +	fdt =3D __dtb_z_imx6dl_vicut1_start + get_runtime_offset();
+> +	fdt = __dtb_z_imx6dl_vicut1_start + get_runtime_offset();
 > +
 > +	barebox_arm_entry(0x10000000, SZ_2G, fdt);
 > +}
@@ -3137,7 +3065,7 @@ rotonic-imx6/lowlevel.c
 > +
 > +	arm_cpu_lowlevel_init();
 > +
-> +	fdt =3D __dtb_z_imx6qp_prtwd3_start + get_runtime_offset();
+> +	fdt = __dtb_z_imx6qp_prtwd3_start + get_runtime_offset();
 > +
 > +	barebox_arm_entry(0x10000000, SZ_512M, fdt);
 > +}
@@ -3148,7 +3076,7 @@ rotonic-imx6/lowlevel.c
 > +
 > +	arm_cpu_lowlevel_init();
 > +
-> +	fdt =3D __dtb_z_imx6qp_vicutp_start + get_runtime_offset();
+> +	fdt = __dtb_z_imx6qp_vicutp_start + get_runtime_offset();
 > +
 > +	barebox_arm_entry(0x10000000, SZ_2G, fdt);
 > +}
@@ -3159,12 +3087,11 @@ rotonic-imx6/lowlevel.c
 > +
 > +	arm_cpu_lowlevel_init();
 > +
-> +	fdt =3D __dtb_z_imx6ul_prti6g_start + get_runtime_offset();
+> +	fdt = __dtb_z_imx6ul_prti6g_start + get_runtime_offset();
 > +
 > +	barebox_arm_entry(0x80000000, SZ_256M, fdt);
 > +}
-> diff --git a/arch/arm/boards/protonic-imx6/lpddr2-defines.imxcfg b/arch/a=
-rm/boards/protonic-imx6/lpddr2-defines.imxcfg
+> diff --git a/arch/arm/boards/protonic-imx6/lpddr2-defines.imxcfg b/arch/arm/boards/protonic-imx6/lpddr2-defines.imxcfg
 > new file mode 100644
 > index 0000000000..29c42cc697
 > --- /dev/null
@@ -3345,7 +3272,7 @@ rm/boards/protonic-imx6/lpddr2-defines.imxcfg
 > +
 > +/*
 > + * MDCTL:
-> + * 2Gb: CS0 enable, 14bit ROW, 10bit COL, BL=3D8, 64bit data
+> + * 2Gb: CS0 enable, 14bit ROW, 10bit COL, BL=8, 64bit data
 > + *
 > + * Par. 	Chip		VALUE		SHIFT	Reg. field
 > + * ----------------------------------------------------------------
@@ -3403,11 +3330,10 @@ rm/boards/protonic-imx6/lpddr2-defines.imxcfg
 > +
 > +/*
 > + * Initialize DDR3 chips
-> + * MDSCR: Value =3D 0xvvvv803n, with 0xvvvv =3D value, n =3D Reg. number=
- (BA)
+> + * MDSCR: Value = 0xvvvv803n, with 0xvvvv = value, n = Reg. number (BA)
 > + */
 > +/*
-> + * DDR3 chip MR2, n =3D 2:
+> + * DDR3 chip MR2, n = 2:
 > + *
 > + * Par. 	Chip		VALUE		BITS	  vvvv
 > + * ----------------------------------------------------------------
@@ -3424,7 +3350,7 @@ rm/boards/protonic-imx6/lpddr2-defines.imxcfg
 > +#define DDR3_MR2_533MHZ_RTT_120				0x04888032
 > +
 > +/*
-> + * DDR3 chip MR1, n =3D 1:
+> + * DDR3 chip MR1, n = 1:
 > + *
 > + * Par. 		Chip	VALUE		BITS	  vvvv
 > + * ----------------------------------------------------------------
@@ -3432,7 +3358,7 @@ rm/boards/protonic-imx6/lpddr2-defines.imxcfg
 > + * TDQS			*	0x0 (disabled)	11	0x0000
 > + * Rtt			*	0x0 (disabled)	9, 6, 2	0x0000
 > + * Write-levelling	*	0x0 (disable)	7	0x0000
-> + * ODS			*	0x0 (RZQ/6=3D40)	5, 1	0x0000
+> + * ODS			*	0x0 (RZQ/6=40)	5, 1	0x0000
 > + * DLL			*	0x0 (enable)	0	0x0000
 > + * ----------------------------------------------------------------
 > + */
@@ -3444,7 +3370,7 @@ rm/boards/protonic-imx6/lpddr2-defines.imxcfg
 > +#define DDR3_MR1_RTT_60_ODS_34				0x00068031
 > +
 > +/*
-> + * DDR3 chip MR0, n =3D 0:
+> + * DDR3 chip MR0, n = 0:
 > + *
 > + * Par. 		Chip	VALUE		BITS	  vvvv
 > + * ----------------------------------------------------------------
@@ -3555,8 +3481,7 @@ rm/boards/protonic-imx6/lpddr2-defines.imxcfg
 > + */
 > +#define MPDGCTRL1_CH1_400MHZ				0x021a0218
 > +#define MPDGCTRL1_CH1_533MHZ				0x03650348
-> diff --git a/arch/arm/boards/protonic-imx6/padsetup-dl.imxcfg b/arch/arm/=
-boards/protonic-imx6/padsetup-dl.imxcfg
+> diff --git a/arch/arm/boards/protonic-imx6/padsetup-dl.imxcfg b/arch/arm/boards/protonic-imx6/padsetup-dl.imxcfg
 > new file mode 100644
 > index 0000000000..f60d37f63e
 > --- /dev/null
@@ -3604,12 +3529,12 @@ boards/protonic-imx6/padsetup-dl.imxcfg
 > +wm 32 0x020e04b0 PAD_SDCLK /* SDCLK1_P */
 > +wm 32 0x020e0494 PAD_DQM_CTRL /* RESET */
 > +
-> +/* 0x00003000 =3D 100k PU */
+> +/* 0x00003000 = 100k PU */
 > +wm 32 0x020e04a4 0x00003000 /* SDCKE0 */
 > +wm 32 0x020e04a8 0x00003000 /* SDCKE1 */
 > +wm 32 0x020e04a0 0x00000000 /* SDBA2: disable PU */
 > +
-> +/* 0x00003030 =3D PU + 40 Ohm drive */
+> +/* 0x00003030 = PU + 40 Ohm drive */
 > +wm 32 0x020e04b4 0x00003030 /* ODT0 */
 > +wm 32 0x020e04b8 0x00003030 /* ODT1 */
 > +
@@ -3632,8 +3557,7 @@ boards/protonic-imx6/padsetup-dl.imxcfg
 > +
 > +wm 32 0x020e0774 0x000c0000 /* DDR_TYPE DDR3 */
 > +
-> diff --git a/arch/arm/boards/protonic-imx6/padsetup-q.imxcfg b/arch/arm/b=
-oards/protonic-imx6/padsetup-q.imxcfg
+> diff --git a/arch/arm/boards/protonic-imx6/padsetup-q.imxcfg b/arch/arm/boards/protonic-imx6/padsetup-q.imxcfg
 > new file mode 100644
 > index 0000000000..f5fa3e8d28
 > --- /dev/null
@@ -3681,12 +3605,12 @@ oards/protonic-imx6/padsetup-q.imxcfg
 > +wm 32 0x020e0594 PAD_SDCLK /* SDCLK1_P */
 > +wm 32 0x020e057c PAD_DQM_CTRL /* RESET */
 > +
-> +/* 0x00003000 =3D 100k PU */
+> +/* 0x00003000 = 100k PU */
 > +wm 32 0x020e0590 0x00003000 /* SDCKE0 */
 > +wm 32 0x020e0598 0x00003000 /* SDCKE1 */
 > +wm 32 0x020e058c 0x00000000 /* SDBA2: disable PU */
 > +
-> +/* 0x00003030 =3D PU + 40 Ohm drive */
+> +/* 0x00003030 = PU + 40 Ohm drive */
 > +wm 32 0x020e059c 0x00003030 /* ODT0 */
 > +wm 32 0x020e05a0 0x00003030 /* ODT1 */
 > +
@@ -3708,8 +3632,7 @@ oards/protonic-imx6/padsetup-q.imxcfg
 > +wm 32 0x020e078c 0x00000030 /* CTLDS 40 Ohm */
 > +
 > +wm 32 0x020e0798 0x000c0000 /* DDR_TYPE DDR3 */
-> diff --git a/arch/arm/boards/protonic-imx6/padsetup-ul.imxcfg b/arch/arm/=
-boards/protonic-imx6/padsetup-ul.imxcfg
+> diff --git a/arch/arm/boards/protonic-imx6/padsetup-ul.imxcfg b/arch/arm/boards/protonic-imx6/padsetup-ul.imxcfg
 > new file mode 100644
 > index 0000000000..e36601942d
 > --- /dev/null
@@ -3761,15 +3684,11 @@ boards/protonic-imx6/padsetup-ul.imxcfg
 > index 1aeaa61e01..8afeb45016 100644
 > --- a/arch/arm/dts/Makefile
 > +++ b/arch/arm/dts/Makefile
-> @@ -74,6 +74,22 @@ lwl-dtb-$(CONFIG_MACH_PHYTEC_PHYCORE_IMX7) +=3D imx7d-=
-phyboard-zeta.dtb.o
->  lwl-dtb-$(CONFIG_MACH_PHYTEC_SOM_IMX8MQ) +=3D imx8mq-phytec-phycore-som.=
-dtb.o
->  lwl-dtb-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) +=3D armada-xp-openblocks=
--ax3-4-bb.dtb.o
->  lwl-dtb-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_A6) +=3D kirkwood-openblocks_a=
-6-bb.dtb.o
-> +lwl-dtb-$(CONFIG_MACH_PROTONIC_IMX6) +=3D \
+> @@ -74,6 +74,22 @@ lwl-dtb-$(CONFIG_MACH_PHYTEC_PHYCORE_IMX7) += imx7d-phyboard-zeta.dtb.o
+>  lwl-dtb-$(CONFIG_MACH_PHYTEC_SOM_IMX8MQ) += imx8mq-phytec-phycore-som.dtb.o
+>  lwl-dtb-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += armada-xp-openblocks-ax3-4-bb.dtb.o
+>  lwl-dtb-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_A6) += kirkwood-openblocks_a6-bb.dtb.o
+> +lwl-dtb-$(CONFIG_MACH_PROTONIC_IMX6) += \
 > +	imx6q-prti6q.dtb.o \
 > +	imx6q-prtwd2.dtb.o \
 > +	imx6q-vicut1.dtb.o \
@@ -3785,11 +3704,10 @@ dtb.o
 > +	imx6qp-prtwd3.dtb.o \
 > +	imx6qp-vicutp.dtb.o \
 > +	imx6ul-prti6g.dtb.o
->  lwl-dtb-$(CONFIG_MACH_RADXA_ROCK) +=3D rk3188-radxarock.dtb.o
->  lwl-dtb-$(CONFIG_MACH_PHYTEC_SOM_RK3288) +=3D rk3288-phycore-som.dtb.o
->  lwl-dtb-$(CONFIG_MACH_REALQ7) +=3D imx6q-dmo-edmqmx6.dtb.o
-> diff --git a/arch/arm/dts/imx6dl-alti6p.dts b/arch/arm/dts/imx6dl-alti6p.=
-dts
+>  lwl-dtb-$(CONFIG_MACH_RADXA_ROCK) += rk3188-radxarock.dtb.o
+>  lwl-dtb-$(CONFIG_MACH_PHYTEC_SOM_RK3288) += rk3288-phycore-som.dtb.o
+>  lwl-dtb-$(CONFIG_MACH_REALQ7) += imx6q-dmo-edmqmx6.dtb.o
+> diff --git a/arch/arm/dts/imx6dl-alti6p.dts b/arch/arm/dts/imx6dl-alti6p.dts
 > new file mode 100644
 > index 0000000000..8d53100bea
 > --- /dev/null
@@ -3805,65 +3723,65 @@ dts
 > +#include "imx6qdl-prti6q.dtsi"
 > +
 > +/ {
-> +	model =3D "Altesco I6P Board";
-> +	compatible =3D "alt,alti6p", "fsl,imx6dl";
+> +	model = "Altesco I6P Board";
+> +	compatible = "alt,alti6p", "fsl,imx6dl";
 > +
 > +	memory@10000000 {
-> +		device_type =3D "memory";
-> +		reg =3D <0x10000000 0x40000000>;
+> +		device_type = "memory";
+> +		reg = <0x10000000 0x40000000>;
 > +	};
 > +};
 > +
 > +&hdmi {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_hdmi>;
-> +	ddc-i2c-bus =3D <&i2c1>;
-> +	status =3D "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_hdmi>;
+> +	ddc-i2c-bus = <&i2c1>;
+> +	status = "okay";
 > +};
 > +
 > +/* DDC */
 > +&i2c1 {
-> +	clock-frequency =3D <100000>;
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_i2c1>;
-> +	status =3D "okay";
+> +	clock-frequency = <100000>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_i2c1>;
+> +	status = "okay";
 > +};
 > +
 > +&i2c3 {
 > +	rtc: pcf8563@51 {
-> +		compatible =3D "nxp,pcf8563";
-> +		reg =3D <0x51>;
+> +		compatible = "nxp,pcf8563";
+> +		reg = <0x51>;
 > +	};
 > +};
 > +
 > +&fec {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_enet>;
-> +	phy-mode =3D "rmii";
-> +	phy-reset-gpios =3D <&gpio5 22 GPIO_ACTIVE_LOW>;
-> +	clocks =3D <&clks IMX6QDL_CLK_ENET>,
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_enet>;
+> +	phy-mode = "rmii";
+> +	phy-reset-gpios = <&gpio5 22 GPIO_ACTIVE_LOW>;
+> +	clocks = <&clks IMX6QDL_CLK_ENET>,
 > +		 <&clks IMX6QDL_CLK_ENET>;
-> +	clock-names =3D "ipg", "ahb";
-> +	status =3D "okay";
+> +	clock-names = "ipg", "ahb";
+> +	status = "okay";
 > +};
 > +
 > +&i2c2 {
-> +	clock-frequency =3D <50000>;
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_i2c2>;
-> +	status =3D "okay";
+> +	clock-frequency = <50000>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_i2c2>;
+> +	status = "okay";
 > +};
 > +
 > +&i2c4 {
-> +	clock-frequency =3D <50000>;
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_i2c4>;
-> +	status =3D "okay";
+> +	clock-frequency = <50000>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_i2c4>;
+> +	status = "okay";
 > +};
 > +
 > +&iomuxc {
 > +	pinctrl_usbotg: usbotggrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_ENET_RX_ER__USB_OTG_ID	0x1f058
 > +			MX6QDL_PAD_EIM_D21__USB_OTG_OC		0x1b0b0
 > +			/* power enable, high active */
@@ -3872,29 +3790,28 @@ dts
 > +	};
 > +
 > +	pinctrl_hdmi: hdmigrp {
-> +		fsl,pins =3D <
-> +			/* NOTE: DDC is done via I2C2, so DON'T configure DDC pins for HDMI! =
-*/
+> +		fsl,pins = <
+> +			/* NOTE: DDC is done via I2C2, so DON'T configure DDC pins for HDMI! */
 > +			MX6QDL_PAD_EIM_A25__HDMI_TX_CEC_LINE	0x1f8b0
 > +		>;
 > +	};
 > +
 > +	pinctrl_i2c2: i2c2grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_KEY_COL3__I2C2_SCL		0x4001b8b1
 > +			MX6QDL_PAD_KEY_ROW3__I2C2_SDA		0x4001b8b1
 > +		>;
 > +	};
 > +
 > +	pinctrl_i2c4: i2c4grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_NANDF_CS3__I2C4_SDA		0x4001f8b1
 > +			MX6QDL_PAD_NANDF_WP_B__I2C4_SCL		0x4001f8b1
 > +		>;
 > +	};
 > +
 > +	pinctrl_enet: enetgrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			/* MX6QDL_ENET_PINGRP4 */
 > +			MX6QDL_PAD_ENET_MDC__ENET_MDC           0x1b0b0
 > +			MX6QDL_PAD_ENET_MDIO__ENET_MDIO         0x1b0b0
@@ -3914,8 +3831,7 @@ dts
 > +		>;
 > +	};
 > +};
-> diff --git a/arch/arm/dts/imx6dl-lanmcu.dts b/arch/arm/dts/imx6dl-lanmcu.=
-dts
+> diff --git a/arch/arm/dts/imx6dl-lanmcu.dts b/arch/arm/dts/imx6dl-lanmcu.dts
 > new file mode 100644
 > index 0000000000..b05ed9c3ba
 > --- /dev/null
@@ -3931,99 +3847,99 @@ dts
 > +#include <dt-bindings/gpio/gpio.h>
 > +
 > +/ {
-> +	model =3D "LANMCU";
-> +	compatible =3D "lan,lanmcu", "fsl,imx6dl";
+> +	model = "LANMCU";
+> +	compatible = "lan,lanmcu", "fsl,imx6dl";
 > +
 > +	chosen {
-> +		stdout-path =3D &uart4;
+> +		stdout-path = &uart4;
 > +	};
 > +
 > +	memory {
-> +		reg =3D <0x10000000 0x10000000>;
+> +		reg = <0x10000000 0x10000000>;
 > +	};
 > +
 > +	reg_usb_otg_vbus: otg-vbus-regulator {
-> +		compatible =3D "regulator-fixed";
-> +		regulator-name =3D "regulator-OTG-VBUS";
-> +		regulator-min-microvolt =3D <5000000>;
-> +		regulator-max-microvolt =3D <5000000>;
-> +		gpio =3D <&gpio3 22 0>;
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "regulator-OTG-VBUS";
+> +		regulator-min-microvolt = <5000000>;
+> +		regulator-max-microvolt = <5000000>;
+> +		gpio = <&gpio3 22 0>;
 > +		enable-active-high;
 > +	};
 > +
 > +	usdhc2_pwrseq: usdhc2_pwrseq {
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_wlan_npd>;
-> +		compatible =3D "mmc-pwrseq-simple";
-> +		reset-gpios =3D <&gpio6 10 GPIO_ACTIVE_LOW>;
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_wlan_npd>;
+> +		compatible = "mmc-pwrseq-simple";
+> +		reset-gpios = <&gpio6 10 GPIO_ACTIVE_LOW>;
 > +	};
 > +
 > +	display: display0 {
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_ipu1_disp>;
-> +		compatible =3D "fsl,imx-parallel-display";
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <0>;
-> +		interface-pix-fmt =3D "bgr666";
-> +		status =3D "okay";
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_ipu1_disp>;
+> +		compatible = "fsl,imx-parallel-display";
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +		interface-pix-fmt = "bgr666";
+> +		status = "okay";
 > +
 > +		port@0 {
-> +			reg =3D <0>;
+> +			reg = <0>;
 > +
 > +			display_in: endpoint {
-> +				remote-endpoint =3D <&ipu1_di0_disp0>;
+> +				remote-endpoint = <&ipu1_di0_disp0>;
 > +			};
 > +		};
 > +
 > +		port@1 {
-> +			reg =3D <1>;
+> +			reg = <1>;
 > +
 > +			display_out: endpoint {
-> +				remote-endpoint =3D <&panel_in>;
+> +				remote-endpoint = <&panel_in>;
 > +			};
 > +		};
 > +	};
 > +
 > +	panel {
-> +		compatible =3D "edt,etm0700g0bdh6";
-> +		backlight =3D <&backlight_lcd>;
+> +		compatible = "edt,etm0700g0bdh6";
+> +		backlight = <&backlight_lcd>;
 > +
 > +		port {
 > +			panel_in: endpoint {
-> +				remote-endpoint =3D <&display_out>;
+> +				remote-endpoint = <&display_out>;
 > +			};
 > +		};
 > +	};
 > +
 > +	backlight_lcd: backlight_lcd {
-> +		compatible =3D "pwm-backlight";
-> +		pwms =3D <&pwm1 0 5000000>;
-> +		brightness-levels =3D <0 5 7 9 12 15 20 27 35 47 62 81 107 142 188 248
+> +		compatible = "pwm-backlight";
+> +		pwms = <&pwm1 0 5000000>;
+> +		brightness-levels = <0 5 7 9 12 15 20 27 35 47 62 81 107 142 188 248
 > +			     328 433 573 757 1000>;
-> +		default-brightness-level =3D <20>;
-> +		status =3D "okay";
+> +		default-brightness-level = <20>;
+> +		status = "okay";
 > +	};
 > +
 > +	leds: leds {
-> +		compatible =3D "gpio-leds";
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_leds>;
+> +		compatible = "gpio-leds";
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_leds>;
 > +
 > +		debug0 {
-> +			label =3D "debug0";
-> +			gpios =3D <&gpio1 8 0>;
-> +			linux,default-trigger =3D "heartbeat";
+> +			label = "debug0";
+> +			gpios = <&gpio1 8 0>;
+> +			linux,default-trigger = "heartbeat";
 > +		};
 > +	};
 > +};
 > +
 > +&iomuxc {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_hog>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_hog>;
 > +
 > +	prti6q {
 > +		pinctrl_hog: hoggrp {
-> +			fsl,pins =3D <
+> +			fsl,pins = <
 > +				/* HW revision detect */
 > +				MX6QDL_PAD_SD4_DAT0__GPIO2_IO08 0x1b0b0 /* REV_ID0 */
 > +				MX6QDL_PAD_SD4_DAT1__GPIO2_IO09 0x1b0b0 /* REV_ID1 */
@@ -4034,7 +3950,7 @@ dts
 > +		};
 > +
 > +		pinctrl_usbotg: usbotggrp {
-> +			fsl,pins =3D <
+> +			fsl,pins = <
 > +				MX6QDL_PAD_EIM_D21__USB_OTG_OC  0x1b0b0
 > +				/* power enable, high active */
 > +				MX6QDL_PAD_EIM_D22__GPIO3_IO22  0x1b0b0
@@ -4042,8 +3958,8 @@ dts
 > +		};
 > +
 > +		pinctrl_ipu1_disp: ipudisp1grp {
-> +			fsl,pins =3D <
-> +				/* DSE 0x30 =3D> 25 Ohm, 0x20 =3D> 37 Ohm, 0x10 =3D> 75 Ohm */
+> +			fsl,pins = <
+> +				/* DSE 0x30 => 25 Ohm, 0x20 => 37 Ohm, 0x10 => 75 Ohm */
 > +				MX6QDL_PAD_DI0_DISP_CLK__IPU1_DI0_DISP_CLK 0x30
 > +				MX6QDL_PAD_DI0_PIN2__IPU1_DI0_PIN02        0x30
 > +				MX6QDL_PAD_DI0_PIN3__IPU1_DI0_PIN03        0x30
@@ -4070,7 +3986,7 @@ dts
 > +		};
 > +
 > +		pinctrl_enet: enetgrp {
-> +			fsl,pins =3D <
+> +			fsl,pins = <
 > +				/* MX6QDL_ENET_PINGRP4 */
 > +				MX6QDL_PAD_ENET_MDC__ENET_MDC           0x1b0b0
 > +				MX6QDL_PAD_ENET_MDIO__ENET_MDIO         0x1b0b0
@@ -4091,26 +4007,26 @@ dts
 > +		};
 > +
 > +		pinctrl_pwm1: pwm1grp {
-> +			fsl,pins =3D <
+> +			fsl,pins = <
 > +				MX6QDL_PAD_GPIO_9__PWM1_OUT             0x1b0b0
 > +			>;
 > +		};
 > +
 > +		pinctrl_leds: ledsgrp {
-> +			fsl,pins =3D <
+> +			fsl,pins = <
 > +				MX6QDL_PAD_GPIO_8__GPIO1_IO08           0x1b0b0
 > +			>;
 > +		};
 > +
 > +		pinctrl_wlan_npd: wlan_npd {
-> +			fsl,pins =3D <
+> +			fsl,pins = <
 > +				/* WL_REG_ON */
 > +				MX6QDL_PAD_NANDF_RB0__GPIO6_IO10        0x13069
 > +			>;
 > +		};
 > +
 > +		pinctrl_uart2: uart2grp {
-> +			fsl,pins =3D <
+> +			fsl,pins = <
 > +				MX6QDL_PAD_EIM_D26__UART2_RX_DATA	0x1b0b1
 > +				MX6QDL_PAD_EIM_D27__UART2_TX_DATA	0x1b0b1
 > +				MX6QDL_PAD_EIM_D28__GPIO3_IO28		0x130b1
@@ -4118,7 +4034,7 @@ dts
 > +		};
 > +
 > +		pinctrl_uart3: uart3grp {
-> +			fsl,pins =3D <
+> +			fsl,pins = <
 > +				MX6QDL_PAD_EIM_D24__UART3_TX_DATA	0x1b0b1
 > +				MX6QDL_PAD_EIM_D25__UART3_RX_DATA	0x1b0b1
 > +				MX6QDL_PAD_EIM_D30__GPIO3_IO30		0x130b1
@@ -4126,28 +4042,28 @@ dts
 > +		};
 > +
 > +		pinctrl_uart4: uart4grp {
-> +			fsl,pins =3D <
+> +			fsl,pins = <
 > +				MX6QDL_PAD_KEY_COL0__UART4_TX_DATA      0x1b0b1
 > +				MX6QDL_PAD_KEY_ROW0__UART4_RX_DATA      0x1b0b1
 > +			>;
 > +		};
 > +
 > +		pinctrl_i2c1: i2c1grp {
-> +			fsl,pins =3D <
+> +			fsl,pins = <
 > +				MX6QDL_PAD_CSI0_DAT8__I2C1_SDA	0x4001f8b1
 > +				MX6QDL_PAD_CSI0_DAT9__I2C1_SCL	0x4001f8b1
 > +			>;
 > +		};
 > +
 > +		pinctrl_i2c3: i2c3grp {
-> +			fsl,pins =3D <
+> +			fsl,pins = <
 > +				MX6QDL_PAD_GPIO_5__I2C3_SCL             0x4001b8b1
 > +				MX6QDL_PAD_GPIO_6__I2C3_SDA             0x4001b8b1
 > +			>;
 > +		};
 > +
 > +		pinctrl_usdhc1: usdhc1grp {
-> +			fsl,pins =3D <
+> +			fsl,pins = <
 > +				MX6QDL_PAD_SD1_CMD__SD1_CMD		0x170f9
 > +				MX6QDL_PAD_SD1_CLK__SD1_CLK		0x100f9
 > +				MX6QDL_PAD_SD1_DAT0__SD1_DATA0		0x170f9
@@ -4159,7 +4075,7 @@ dts
 > +		};
 > +
 > +		pinctrl_usdhc2: usdhc2grp {
-> +			fsl,pins =3D <
+> +			fsl,pins = <
 > +				MX6QDL_PAD_SD2_CMD__SD2_CMD		0x170b9
 > +				MX6QDL_PAD_SD2_CLK__SD2_CLK		0x100b9
 > +				MX6QDL_PAD_SD2_DAT0__SD2_DATA0		0x170b9
@@ -4170,7 +4086,7 @@ dts
 > +		};
 > +
 > +		pinctrl_usdhc3: usdhc3grp {
-> +			fsl,pins =3D <
+> +			fsl,pins = <
 > +				MX6QDL_PAD_SD3_CMD__SD3_CMD		0x17099
 > +				MX6QDL_PAD_SD3_CLK__SD3_CLK		0x10099
 > +				MX6QDL_PAD_SD3_DAT0__SD3_DATA0		0x17099
@@ -4185,21 +4101,21 @@ dts
 > +		};
 > +
 > +		pinctrl_can1: can1grp {
-> +			fsl,pins =3D <
+> +			fsl,pins = <
 > +				MX6QDL_PAD_KEY_ROW2__FLEXCAN1_RX	0x80000000
 > +				MX6QDL_PAD_KEY_COL2__FLEXCAN1_TX	0x80000000
 > +			>;
 > +		};
 > +
 > +		pinctrl_can2: can2grp {
-> +			fsl,pins =3D <
+> +			fsl,pins = <
 > +				MX6QDL_PAD_KEY_COL4__FLEXCAN2_TX	0x80000000
 > +				MX6QDL_PAD_KEY_ROW4__FLEXCAN2_RX	0x80000000
 > +			>;
 > +		};
 > +
 > +		pinctrl_ts_edt: ts1grp {
-> +			fsl,pins =3D <
+> +			fsl,pins = <
 > +				MX6QDL_PAD_EIM_D20__GPIO3_IO20          0x1b0b0
 > +			>;
 > +		};
@@ -4207,156 +4123,155 @@ dts
 > +};
 > +
 > +&ipu1_di0_disp0 {
-> +	remote-endpoint =3D <&display_in>;
+> +	remote-endpoint = <&display_in>;
 > +};
 > +
 > +&pwm1 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_pwm1>;
-> +	status =3D "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_pwm1>;
+> +	status = "okay";
 > +};
 > +
 > +&fec {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_enet>;
-> +	phy-mode =3D "rmii";
-> +	phy-reset-gpios =3D <&gpio5 22 GPIO_ACTIVE_LOW>;
-> +	clocks =3D <&clks IMX6QDL_CLK_ENET>,
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_enet>;
+> +	phy-mode = "rmii";
+> +	phy-reset-gpios = <&gpio5 22 GPIO_ACTIVE_LOW>;
+> +	clocks = <&clks IMX6QDL_CLK_ENET>,
 > +		 <&clks IMX6QDL_CLK_ENET>;
-> +	clock-names =3D "ipg", "ahb";
-> +	status =3D "okay";
+> +	clock-names = "ipg", "ahb";
+> +	status = "okay";
 > +};
 > +
 > +&uart2 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_uart2>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_uart2>;
 > +	linux,rs485-enabled-at-boot-time;
-> +	rts-gpios =3D <&gpio3 28 GPIO_ACTIVE_HIGH>;
-> +	status =3D "okay";
+> +	rts-gpios = <&gpio3 28 GPIO_ACTIVE_HIGH>;
+> +	status = "okay";
 > +};
 > +
 > +&uart3 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_uart3>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_uart3>;
 > +	linux,rs485-enabled-at-boot-time;
-> +	rts-gpios =3D <&gpio3 30 GPIO_ACTIVE_HIGH>;
-> +	status =3D "okay";
+> +	rts-gpios = <&gpio3 30 GPIO_ACTIVE_HIGH>;
+> +	status = "okay";
 > +};
 > +
 > +&uart4 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_uart4>;
-> +	status =3D "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_uart4>;
+> +	status = "okay";
 > +};
 > +
 > +&usbotg {
-> +	vbus-supply =3D <&reg_usb_otg_vbus>;
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_usbotg>;
-> +	phy_type =3D "utmi";
-> +	dr_mode =3D "host";
-> +	status =3D "okay";
+> +	vbus-supply = <&reg_usb_otg_vbus>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_usbotg>;
+> +	phy_type = "utmi";
+> +	dr_mode = "host";
+> +	status = "okay";
 > +};
 > +
 > +&i2c1 {
-> +	clock-frequency =3D <100000>;
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_i2c1>;
-> +	status =3D "okay";
+> +	clock-frequency = <100000>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_i2c1>;
+> +	status = "okay";
 > +};
 > +
 > +&i2c3 {
-> +	clock-frequency =3D <100000>;
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_i2c3>;
-> +	status =3D "okay";
+> +	clock-frequency = <100000>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_i2c3>;
+> +	status = "okay";
 > +
 > +	rtc: pcf8563@51 {
-> +		compatible =3D "nxp,pcf8563";
-> +		reg =3D <0x51>;
+> +		compatible = "nxp,pcf8563";
+> +		reg = <0x51>;
 > +	};
 > +
 > +	touchscreen: edt_ft5406@38 {
-> +		compatible =3D "edt,edt-ft5406";
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_ts_edt>;
-> +		reg =3D <0x38>;
-> +		interrupt-parent =3D <&gpio3>;
-> +		interrupts =3D <20 IRQ_TYPE_EDGE_FALLING>;
+> +		compatible = "edt,edt-ft5406";
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_ts_edt>;
+> +		reg = <0x38>;
+> +		interrupt-parent = <&gpio3>;
+> +		interrupts = <20 IRQ_TYPE_EDGE_FALLING>;
 > +
-> +		touchscreen-size-x =3D <1792>;
-> +		touchscreen-size-y =3D <1024>;
+> +		touchscreen-size-x = <1792>;
+> +		touchscreen-size-y = <1024>;
 > +
-> +		touchscreen-fuzz-x =3D <0>;
-> +		touchscreen-fuzz-y =3D <0>;
+> +		touchscreen-fuzz-x = <0>;
+> +		touchscreen-fuzz-y = <0>;
 > +
 > +		/* Touch screen calibration */
-> +		threshold =3D <50>;
-> +		gain =3D <5>;
-> +		offset =3D <10>;
+> +		threshold = <50>;
+> +		gain = <5>;
+> +		offset = <10>;
 > +	};
 > +};
 > +
 > +&usdhc1 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_usdhc1>;
-> +	cd-gpios =3D <&gpio1 1 GPIO_ACTIVE_LOW>;
-> +	status =3D "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_usdhc1>;
+> +	cd-gpios = <&gpio1 1 GPIO_ACTIVE_LOW>;
+> +	status = "okay";
 > +};
 > +
 > +&usdhc2 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_usdhc2>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_usdhc2>;
 > +	no-1-8-v;
 > +	non-removable;
-> +	mmc-pwrseq =3D <&usdhc2_pwrseq>;
+> +	mmc-pwrseq = <&usdhc2_pwrseq>;
 > +	pm-ignore-notify;
-> +	status =3D "okay";
-> +	#address-cells =3D <1>;
-> +	#size-cells =3D <0>;
+> +	status = "okay";
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
 > +
 > +	brcmf: bcrmf@1 {
-> +		reg =3D <1>;
-> +		compatible =3D "brcm,bcm4329-fmac";
+> +		reg = <1>;
+> +		compatible = "brcm,bcm4329-fmac";
 > +	};
 > +};
 > +
 > +&usdhc3 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_usdhc3>;
-> +	bus-width =3D <8>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_usdhc3>;
+> +	bus-width = <8>;
 > +	non-removable;
-> +	status =3D "okay";
+> +	status = "okay";
 > +
 > +	partitions {
 > +		/*
 > +		 * Map a partition at the last 64k of the area available for
 > +		 * the second stage bootloader.
 > +		 */
-> +		compatible =3D "fixed-partitions";
-> +		#size-cells =3D <1>;
-> +		#address-cells =3D <1>;
+> +		compatible = "fixed-partitions";
+> +		#size-cells = <1>;
+> +		#address-cells = <1>;
 > +
 > +		bootstate_backend: bootstate_backend@f0000 {
-> +			reg =3D <0xf0000 0x10000>;
-> +			label =3D "bootstate";
+> +			reg = <0xf0000 0x10000>;
+> +			label = "bootstate";
 > +		};
 > +	};
 > +};
 > +
 > +&can1 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_can1>;
-> +	status =3D "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_can1>;
+> +	status = "okay";
 > +};
 > +
 > +&can2 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_can2>;
-> +	status =3D "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_can2>;
+> +	status = "okay";
 > +};
-> diff --git a/arch/arm/dts/imx6dl-plybas.dts b/arch/arm/dts/imx6dl-plybas.=
-dts
+> diff --git a/arch/arm/dts/imx6dl-plybas.dts b/arch/arm/dts/imx6dl-plybas.dts
 > new file mode 100644
 > index 0000000000..de0ba05e13
 > --- /dev/null
@@ -4372,95 +4287,95 @@ dts
 > +#include "imx6qdl-vicut1.dtsi"
 > +
 > +/ {
-> +	model =3D "Plymovent BAS board";
-> +	compatible =3D "ply,plybas", "fsl,imx6dl";
+> +	model = "Plymovent BAS board";
+> +	compatible = "ply,plybas", "fsl,imx6dl";
 > +
 > +	memory {
-> +		reg =3D <0x10000000 0x10000000>;
+> +		reg = <0x10000000 0x10000000>;
 > +	};
 > +
 > +	backlight_lcd {
-> +		status =3D "disabled";
+> +		status = "disabled";
 > +	};
 > +
 > +	gpio_keys {
-> +		compatible =3D "gpio-keys";
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <0>;
+> +		compatible = "gpio-keys";
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
 > +		autorepeat;
 > +		button@20 {
-> +			label =3D "START";
-> +			linux,code =3D <31>;
-> +			gpios =3D <&gpio5 8 1>;
+> +			label = "START";
+> +			linux,code = <31>;
+> +			gpios = <&gpio5 8 1>;
 > +		};
 > +		button@21 {
-> +			label =3D "CLEAN";
-> +			linux,code =3D <46>;
-> +			gpios =3D <&gpio5 9 1>;
+> +			label = "CLEAN";
+> +			linux,code = <46>;
+> +			gpios = <&gpio5 9 1>;
 > +		};
 > +	};
 > +
 > +	leds: leds {
-> +		compatible =3D "gpio-leds";
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_leds>;
+> +		compatible = "gpio-leds";
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_leds>;
 > +
 > +		debug0 {
-> +			label =3D "debug0";
-> +			gpios =3D <&gpio1 8 0>;
+> +			label = "debug0";
+> +			gpios = <&gpio1 8 0>;
 > +		};
 > +
 > +		debug1 {
-> +			label =3D "debug1";
-> +			gpios =3D <&gpio1 9 0>;
+> +			label = "debug1";
+> +			gpios = <&gpio1 9 0>;
 > +		};
 > +
 > +		light_tower1 {
-> +			label =3D "light_tower1";
-> +			gpios =3D <&gpio4 22 0>;
-> +			linux,default-trigger =3D "heartbeat";
+> +			label = "light_tower1";
+> +			gpios = <&gpio4 22 0>;
+> +			linux,default-trigger = "heartbeat";
 > +		};
 > +
 > +		light_tower2 {
-> +			label =3D "light_tower2";
-> +			gpios =3D <&gpio4 23 0>;
+> +			label = "light_tower2";
+> +			gpios = <&gpio4 23 0>;
 > +		};
 > +
 > +		light_tower3 {
-> +			label =3D "light_tower3";
-> +			gpios =3D <&gpio4 24 0>;
+> +			label = "light_tower3";
+> +			gpios = <&gpio4 24 0>;
 > +		};
 > +
 > +		light_tower4 {
-> +			label =3D "light_tower4";
-> +			gpios =3D <&gpio4 25 0>;
+> +			label = "light_tower4";
+> +			gpios = <&gpio4 25 0>;
 > +		};
 > +	};
 > +};
 > +
 > +&fec {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_enet>;
-> +	phy-mode =3D "rmii";
-> +	phy-reset-gpios =3D <&gpio4 26 GPIO_ACTIVE_LOW>;
-> +	clocks =3D <&clks IMX6QDL_CLK_ENET>,
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_enet>;
+> +	phy-mode = "rmii";
+> +	phy-reset-gpios = <&gpio4 26 GPIO_ACTIVE_LOW>;
+> +	clocks = <&clks IMX6QDL_CLK_ENET>,
 > +		 <&clks IMX6QDL_CLK_ENET>;
-> +	clock-names =3D "ipg", "ahb";
-> +	status =3D "okay";
+> +	clock-names = "ipg", "ahb";
+> +	status = "okay";
 > +};
 > +
 > +&uart2 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_uart2>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_uart2>;
 > +	fsl,uart-has-rtscts;
 > +	linux,rs485-enabled-at-boot-time;
-> +	rs485-rts-delay =3D <0 20>;
-> +	status =3D "okay";
+> +	rs485-rts-delay = <0 20>;
+> +	status = "okay";
 > +};
 > +
 > +&iomuxc {
 > +	pinctrl_hog: hoggrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			/* CAN1_SR + CAN2_SR GPIO outputs */
 > +			MX6QDL_PAD_KEY_COL3__GPIO4_IO12	0x13070
 > +			MX6QDL_PAD_KEY_ROW3__GPIO4_IO13	0x13070
@@ -4501,7 +4416,7 @@ dts
 > +	};
 > +
 > +	pinctrl_leds: ledsgrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_GPIO_8__GPIO1_IO08	0x1b0b0 /* DEBUG0 */
 > +			MX6QDL_PAD_GPIO_9__GPIO1_IO09	0x1b0b0 /* DEBUG1 */
 > +
@@ -4514,7 +4429,7 @@ dts
 > +
 > +	/* RS485 UART */
 > +	pinctrl_uart2: uart2grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_EIM_D26__UART2_TX_DATA	0x1b0b1
 > +			MX6QDL_PAD_EIM_D27__UART2_RX_DATA	0x1b0b1
 > +			MX6QDL_PAD_EIM_D28__UART2_DTE_CTS_B	0x130b1
@@ -4522,13 +4437,13 @@ dts
 > +	};
 > +
 > +	pinctrl_pwm1: pwm1grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_DISP0_DAT8__PWM1_OUT		0x1b0b0
 > +		>;
 > +	};
 > +
 > +	pinctrl_enet: enetgrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			/* MX6QDL_ENET_PINGRP4 */
 > +			MX6QDL_PAD_ENET_MDC__ENET_MDC           0x1b0b0
 > +			MX6QDL_PAD_ENET_MDIO__ENET_MDIO         0x1b0b0
@@ -4548,8 +4463,7 @@ dts
 > +		>;
 > +	};
 > +};
-> diff --git a/arch/arm/dts/imx6dl-plym2m.dts b/arch/arm/dts/imx6dl-plym2m.=
-dts
+> diff --git a/arch/arm/dts/imx6dl-plym2m.dts b/arch/arm/dts/imx6dl-plym2m.dts
 > new file mode 100644
 > index 0000000000..b66321fb46
 > --- /dev/null
@@ -4565,41 +4479,41 @@ dts
 > +#include "imx6qdl-prti6q.dtsi"
 > +
 > +/ {
-> +	model =3D "Plymovent M2M board";
-> +	compatible =3D "ply,plym2m", "fsl,imx6dl";
+> +	model = "Plymovent M2M board";
+> +	compatible = "ply,plym2m", "fsl,imx6dl";
 > +
 > +	memory {
-> +		reg =3D <0x10000000 0x10000000>;
+> +		reg = <0x10000000 0x10000000>;
 > +	};
 > +
 > +	leds: leds {
-> +		compatible =3D "gpio-leds";
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_leds>;
+> +		compatible = "gpio-leds";
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_leds>;
 > +
 > +		debug0 {
-> +			label =3D "debug0";
-> +			gpios =3D <&gpio1 8 0>;
-> +			linux,default-trigger =3D "heartbeat";
+> +			label = "debug0";
+> +			gpios = <&gpio1 8 0>;
+> +			linux,default-trigger = "heartbeat";
 > +		};
 > +	};
 > +};
 > +
 > +
 > +&fec {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_enet>;
-> +	phy-mode =3D "rmii";
-> +	phy-reset-gpios =3D <&gpio5 22 GPIO_ACTIVE_LOW>;
-> +	clocks =3D <&clks IMX6QDL_CLK_ENET>,
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_enet>;
+> +	phy-mode = "rmii";
+> +	phy-reset-gpios = <&gpio5 22 GPIO_ACTIVE_LOW>;
+> +	clocks = <&clks IMX6QDL_CLK_ENET>,
 > +		 <&clks IMX6QDL_CLK_ENET>;
-> +	clock-names =3D "ipg", "ahb";
-> +	status =3D "okay";
+> +	clock-names = "ipg", "ahb";
+> +	status = "okay";
 > +};
 > +
 > +&iomuxc {
 > +	pinctrl_hog: hoggrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			/* CAN1_SR GPIO output */
 > +			MX6QDL_PAD_KEY_COL3__GPIO4_IO12	0x13070
 > +
@@ -4616,7 +4530,7 @@ dts
 > +	};
 > +
 > +	pinctrl_usbotg: usbotggrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_EIM_D21__USB_OTG_OC	0x1b0b0
 > +			/* power enable, high active */
 > +			MX6QDL_PAD_EIM_D22__GPIO3_IO22	0x1b0b0
@@ -4624,8 +4538,8 @@ dts
 > +	};
 > +
 > +	pinctrl_ipu1_disp: ipudisp1grp {
-> +		fsl,pins =3D <
-> +			/* DSE 0x30 =3D> 25 Ohm, 0x20 =3D> 37 Ohm, 0x10 =3D> 75 Ohm */
+> +		fsl,pins = <
+> +			/* DSE 0x30 => 25 Ohm, 0x20 => 37 Ohm, 0x10 => 75 Ohm */
 > +			MX6QDL_PAD_DI0_DISP_CLK__IPU1_DI0_DISP_CLK	0x30
 > +			MX6QDL_PAD_DI0_PIN15__IPU1_DI0_PIN15		0x30
 > +			MX6QDL_PAD_DI0_PIN2__IPU1_DI0_PIN02		0x30
@@ -4652,7 +4566,7 @@ dts
 > +	};
 > +
 > +	pinctrl_enet: enetgrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			/* MX6QDL_ENET_PINGRP4 */
 > +			MX6QDL_PAD_ENET_MDC__ENET_MDC           0x1b0b0
 > +			MX6QDL_PAD_ENET_MDIO__ENET_MDIO         0x1b0b0
@@ -4673,7 +4587,7 @@ dts
 > +	};
 > +
 > +	pinctrl_pwm1: pwm1grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_GPIO_9__PWM1_OUT	0x1b0b0
 > +		>;
 > +	};
@@ -4682,13 +4596,12 @@ dts
 > +	};
 > +
 > +	pinctrl_leds: ledsgrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_GPIO_8__GPIO1_IO08	0x1b0b0
 > +		>;
 > +	};
 > +};
-> diff --git a/arch/arm/dts/imx6dl-prtmvt.dts b/arch/arm/dts/imx6dl-prtmvt.=
-dts
+> diff --git a/arch/arm/dts/imx6dl-prtmvt.dts b/arch/arm/dts/imx6dl-prtmvt.dts
 > new file mode 100644
 > index 0000000000..05fce7178f
 > --- /dev/null
@@ -4704,135 +4617,135 @@ dts
 > +#include "imx6qdl-vicut1.dtsi"
 > +
 > +/ {
-> +	model =3D "Protonic MVT board";
-> +	compatible =3D "prt,prtmvt", "fsl,imx6dl";
+> +	model = "Protonic MVT board";
+> +	compatible = "prt,prtmvt", "fsl,imx6dl";
 > +
 > +	memory {
-> +		reg =3D <0x10000000 0x20000000>;
+> +		reg = <0x10000000 0x20000000>;
 > +	};
 > +
 > +	gpio_keys {
-> +		compatible =3D "gpio-keys";
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <0>;
+> +		compatible = "gpio-keys";
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
 > +		autorepeat;
 > +
 > +		button@20 {
-> +			label =3D "GPIO Key F1";
-> +			linux,code =3D <59>;
-> +			gpios =3D <&pca_gpio 0 GPIO_ACTIVE_LOW>;
+> +			label = "GPIO Key F1";
+> +			linux,code = <59>;
+> +			gpios = <&pca_gpio 0 GPIO_ACTIVE_LOW>;
 > +		};
 > +		button@21 {
-> +			label =3D "GPIO Key F2";
-> +			linux,code =3D <60>;
-> +			gpios =3D <&pca_gpio 1 GPIO_ACTIVE_LOW>;
+> +			label = "GPIO Key F2";
+> +			linux,code = <60>;
+> +			gpios = <&pca_gpio 1 GPIO_ACTIVE_LOW>;
 > +		};
 > +		button@22 {
-> +			label =3D "GPIO Key F3";
-> +			linux,code =3D <61>;
-> +			gpios =3D <&pca_gpio 2 GPIO_ACTIVE_LOW>;
+> +			label = "GPIO Key F3";
+> +			linux,code = <61>;
+> +			gpios = <&pca_gpio 2 GPIO_ACTIVE_LOW>;
 > +		};
 > +		button@23 {
-> +			label =3D "GPIO Key F4";
-> +			linux,code =3D <62>;
-> +			gpios =3D <&pca_gpio 3 GPIO_ACTIVE_LOW>;
+> +			label = "GPIO Key F4";
+> +			linux,code = <62>;
+> +			gpios = <&pca_gpio 3 GPIO_ACTIVE_LOW>;
 > +		};
 > +		button@24 {
-> +			label =3D "GPIO Key F5";
-> +			linux,code =3D <63>;
-> +			gpios =3D <&pca_gpio 4 GPIO_ACTIVE_LOW>;
+> +			label = "GPIO Key F5";
+> +			linux,code = <63>;
+> +			gpios = <&pca_gpio 4 GPIO_ACTIVE_LOW>;
 > +		};
 > +
 > +		// Center
 > +		button@25 {
-> +			label =3D "GPIO Key CYCLE";
-> +			linux,code =3D <154>;
-> +			gpios =3D <&pca_gpio 5 GPIO_ACTIVE_LOW>;
+> +			label = "GPIO Key CYCLE";
+> +			linux,code = <154>;
+> +			gpios = <&pca_gpio 5 GPIO_ACTIVE_LOW>;
 > +		};
 > +		button@26 {
-> +			label =3D "GPIO Key ESC";
-> +			linux,code =3D <1>;
-> +			gpios =3D <&pca_gpio 6 GPIO_ACTIVE_LOW>;
+> +			label = "GPIO Key ESC";
+> +			linux,code = <1>;
+> +			gpios = <&pca_gpio 6 GPIO_ACTIVE_LOW>;
 > +		};
 > +		button@27 {
-> +			label =3D "GPIO Key UP";
-> +			linux,code =3D <103>;
-> +			gpios =3D <&pca_gpio 7 GPIO_ACTIVE_LOW>;
+> +			label = "GPIO Key UP";
+> +			linux,code = <103>;
+> +			gpios = <&pca_gpio 7 GPIO_ACTIVE_LOW>;
 > +		};
 > +		button@28 {
-> +			label =3D "GPIO Key DOWN";
-> +			linux,code =3D <108>;
-> +			gpios =3D <&pca_gpio 8 GPIO_ACTIVE_LOW>;
+> +			label = "GPIO Key DOWN";
+> +			linux,code = <108>;
+> +			gpios = <&pca_gpio 8 GPIO_ACTIVE_LOW>;
 > +		};
 > +		button@29 {
-> +			label =3D "GPIO Key OK";
-> +			linux,code =3D <0x160>;
-> +			gpios =3D <&pca_gpio 9 GPIO_ACTIVE_LOW>;
+> +			label = "GPIO Key OK";
+> +			linux,code = <0x160>;
+> +			gpios = <&pca_gpio 9 GPIO_ACTIVE_LOW>;
 > +		};
 > +
 > +		button@2a {
-> +			label =3D "GPIO Key F6";
-> +			linux,code =3D <64>;
-> +			gpios =3D <&pca_gpio 10 GPIO_ACTIVE_LOW>;
+> +			label = "GPIO Key F6";
+> +			linux,code = <64>;
+> +			gpios = <&pca_gpio 10 GPIO_ACTIVE_LOW>;
 > +		};
 > +		button@2b {
-> +			label =3D "GPIO Key F7";
-> +			linux,code =3D <65>;
-> +			gpios =3D <&pca_gpio 11 GPIO_ACTIVE_LOW>;
+> +			label = "GPIO Key F7";
+> +			linux,code = <65>;
+> +			gpios = <&pca_gpio 11 GPIO_ACTIVE_LOW>;
 > +		};
 > +		button@2c {
-> +			label =3D "GPIO Key F8";
-> +			linux,code =3D <66>;
-> +			gpios =3D <&pca_gpio 12 GPIO_ACTIVE_LOW>;
+> +			label = "GPIO Key F8";
+> +			linux,code = <66>;
+> +			gpios = <&pca_gpio 12 GPIO_ACTIVE_LOW>;
 > +		};
 > +		button@2d {
-> +			label =3D "GPIO Key F9";
-> +			linux,code =3D <67>;
-> +			gpios =3D <&pca_gpio 13 GPIO_ACTIVE_LOW>;
+> +			label = "GPIO Key F9";
+> +			linux,code = <67>;
+> +			gpios = <&pca_gpio 13 GPIO_ACTIVE_LOW>;
 > +		};
 > +		button@2e {
-> +			label =3D "GPIO Key F10";
-> +			linux,code =3D <68>;
-> +			gpios =3D <&pca_gpio 14 GPIO_ACTIVE_LOW>;
+> +			label = "GPIO Key F10";
+> +			linux,code = <68>;
+> +			gpios = <&pca_gpio 14 GPIO_ACTIVE_LOW>;
 > +		};
 > +	};
 > +};
 > +
 > +&fec {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_enet>;
-> +	phy-mode =3D "rmii";
-> +	phy-reset-gpios =3D <&gpio4 26 GPIO_ACTIVE_LOW>;
-> +	clocks =3D <&clks IMX6QDL_CLK_ENET>,
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_enet>;
+> +	phy-mode = "rmii";
+> +	phy-reset-gpios = <&gpio4 26 GPIO_ACTIVE_LOW>;
+> +	clocks = <&clks IMX6QDL_CLK_ENET>,
 > +		 <&clks IMX6QDL_CLK_ENET>;
-> +	clock-names =3D "ipg", "ahb";
-> +	status =3D "okay";
+> +	clock-names = "ipg", "ahb";
+> +	status = "okay";
 > +};
 > +
 > +&pwm2 {
-> +	status =3D "disabled";
+> +	status = "disabled";
 > +};
 > +
 > +&pcie {
-> +	status =3D "disabled";
+> +	status = "disabled";
 > +};
 > +
 > +&i2c1 {
 > +	pca_gpio: gpio@74 {
-> +		#gpio-cells =3D <2>;
-> +		compatible =3D "nxp,pca9539";
-> +		reg =3D <0x74>;
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_pca9539>;
-> +		interrupt-parent =3D <&gpio4>;
-> +		interrupts =3D <5 IRQ_TYPE_LEVEL_LOW>;
+> +		#gpio-cells = <2>;
+> +		compatible = "nxp,pca9539";
+> +		reg = <0x74>;
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_pca9539>;
+> +		interrupt-parent = <&gpio4>;
+> +		interrupts = <5 IRQ_TYPE_LEVEL_LOW>;
 > +		gpio-controller;
 > +	};
 > +};
 > +
 > +&iomuxc {
 > +	pinctrl_enet: enetgrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			/* MX6QDL_ENET_PINGRP4 */
 > +			MX6QDL_PAD_ENET_MDC__ENET_MDC           0x1b0b0
 > +			MX6QDL_PAD_ENET_MDIO__ENET_MDIO         0x1b0b0
@@ -4853,13 +4766,12 @@ dts
 > +	};
 > +
 > +	pinctrl_pca9539: pca9539 {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_GPIO_19__GPIO4_IO05		0x1b0b0
 > +		>;
 > +	};
 > +};
-> diff --git a/arch/arm/dts/imx6dl-prtrvt.dts b/arch/arm/dts/imx6dl-prtrvt.=
-dts
+> diff --git a/arch/arm/dts/imx6dl-prtrvt.dts b/arch/arm/dts/imx6dl-prtrvt.dts
 > new file mode 100644
 > index 0000000000..802bd50ae6
 > --- /dev/null
@@ -4876,128 +4788,128 @@ dts
 > +#include <dt-bindings/leds/common.h>
 > +
 > +/ {
-> +	model =3D "Protonic RVT board";
-> +	compatible =3D "prt,prtrvt", "fsl,imx6dl";
+> +	model = "Protonic RVT board";
+> +	compatible = "prt,prtrvt", "fsl,imx6dl";
 > +
 > +	memory@10000000 {
-> +		device_type =3D "memory";
-> +		reg =3D <0x10000000 0x10000000>;
+> +		device_type = "memory";
+> +		reg = <0x10000000 0x10000000>;
 > +	};
 > +
 > +	leds {
-> +		compatible =3D "gpio-leds";
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_leds>;
+> +		compatible = "gpio-leds";
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_leds>;
 > +
 > +		led-debug0 {
-> +			function =3D LED_FUNCTION_STATUS;
-> +			gpios =3D <&gpio1 8 GPIO_ACTIVE_HIGH>;
-> +			linux,default-trigger =3D "heartbeat";
+> +			function = LED_FUNCTION_STATUS;
+> +			gpios = <&gpio1 8 GPIO_ACTIVE_HIGH>;
+> +			linux,default-trigger = "heartbeat";
 > +		};
 > +	};
 > +};
 > +
 > +&can1 {
-> +	pinctrl-0 =3D <&pinctrl_can1 &pinctrl_can1phy>;
+> +	pinctrl-0 = <&pinctrl_can1 &pinctrl_can1phy>;
 > +};
 > +
 > +&ecspi1 {
-> +	cs-gpios =3D <&gpio3 19 GPIO_ACTIVE_HIGH>;
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_ecspi1>;
-> +	status =3D "okay";
+> +	cs-gpios = <&gpio3 19 GPIO_ACTIVE_HIGH>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_ecspi1>;
+> +	status = "okay";
 > +
 > +	flash@0 {
-> +		compatible =3D "jedec,spi-nor";
-> +		reg =3D <0>;
-> +		spi-max-frequency =3D <20000000>;
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <1>;
+> +		compatible = "jedec,spi-nor";
+> +		reg = <0>;
+> +		spi-max-frequency = <20000000>;
+> +		#address-cells = <1>;
+> +		#size-cells = <1>;
 > +	};
 > +};
 > +
 > +&ecspi3 {
-> +	cs-gpios =3D <&gpio4 24 GPIO_ACTIVE_HIGH>;
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_ecspi3>;
-> +	status =3D "okay";
+> +	cs-gpios = <&gpio4 24 GPIO_ACTIVE_HIGH>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_ecspi3>;
+> +	status = "okay";
 > +
 > +	nfc@0 {
-> +		compatible =3D "ti,trf7970a";
-> +		reg =3D <0>;
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_nfc>;
-> +		spi-max-frequency =3D <2000000>;
-> +		interrupts-extended =3D <&gpio5 14 IRQ_TYPE_LEVEL_LOW>;
-> +		ti,enable-gpios =3D <&gpio5 12 GPIO_ACTIVE_LOW>,
+> +		compatible = "ti,trf7970a";
+> +		reg = <0>;
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_nfc>;
+> +		spi-max-frequency = <2000000>;
+> +		interrupts-extended = <&gpio5 14 IRQ_TYPE_LEVEL_LOW>;
+> +		ti,enable-gpios = <&gpio5 12 GPIO_ACTIVE_LOW>,
 > +				  <&gpio5 11 GPIO_ACTIVE_LOW>;
-> +		vin-supply =3D <&reg_3v3>;
-> +		vin-voltage-override =3D <3100000>;
-> +		autosuspend-delay =3D <30000>;
+> +		vin-supply = <&reg_3v3>;
+> +		vin-voltage-override = <3100000>;
+> +		autosuspend-delay = <30000>;
 > +		irq-status-read-quirk;
 > +		en2-rf-quirk;
 > +		t5t-rmb-extra-byte-quirk;
-> +		status =3D "okay";
+> +		status = "okay";
 > +	};
 > +};
 > +
 > +&i2c3 {
 > +	adc@49 {
-> +		compatible =3D "ti,ads1015";
-> +		reg =3D <0x49>;
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <0>;
+> +		compatible = "ti,ads1015";
+> +		reg = <0x49>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
 > +
 > +		/* nc */
 > +		channel@4 {
-> +			reg =3D <4>;
-> +			ti,gain =3D <3>;
-> +			ti,datarate =3D <3>;
+> +			reg = <4>;
+> +			ti,gain = <3>;
+> +			ti,datarate = <3>;
 > +		};
 > +
 > +		/* nc */
 > +		channel@5 {
-> +			reg =3D <5>;
-> +			ti,gain =3D <3>;
-> +			ti,datarate =3D <3>;
+> +			reg = <5>;
+> +			ti,gain = <3>;
+> +			ti,datarate = <3>;
 > +		};
 > +
 > +		/* can1_l */
 > +		channel@6 {
-> +			reg =3D <6>;
-> +			ti,gain =3D <3>;
-> +			ti,datarate =3D <3>;
+> +			reg = <6>;
+> +			ti,gain = <3>;
+> +			ti,datarate = <3>;
 > +		};
 > +
 > +		/* can1_h */
 > +		channel@7 {
-> +			reg =3D <7>;
-> +			ti,gain =3D <3>;
-> +			ti,datarate =3D <3>;
+> +			reg = <7>;
+> +			ti,gain = <3>;
+> +			ti,datarate = <3>;
 > +		};
 > +	};
 > +
 > +	rtc@51 {
-> +		compatible =3D "nxp,pcf8563";
-> +		reg =3D <0x51>;
+> +		compatible = "nxp,pcf8563";
+> +		reg = <0x51>;
 > +	};
 > +};
 > +
 > +&pcie {
-> +	status =3D "okay";
+> +	status = "okay";
 > +};
 > +
 > +&usbh1 {
-> +	status =3D "disabled";
+> +	status = "disabled";
 > +};
 > +
 > +&vpu {
-> +	status =3D "disabled";
+> +	status = "disabled";
 > +};
 > +
 > +&iomuxc {
 > +	pinctrl_can1phy: can1phy {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			/* CAN1_SR */
 > +			MX6QDL_PAD_KEY_COL3__GPIO4_IO12	0x13070
 > +			/* CAN1_TERM */
@@ -5006,7 +4918,7 @@ dts
 > +	};
 > +
 > +	pinctrl_ecspi1: ecspi1grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_EIM_D17__ECSPI1_MISO		0x100b1
 > +			MX6QDL_PAD_EIM_D18__ECSPI1_MOSI		0x100b1
 > +			MX6QDL_PAD_EIM_D16__ECSPI1_SCLK		0x100b1
@@ -5016,7 +4928,7 @@ dts
 > +	};
 > +
 > +	pinctrl_ecspi3: ecspi3grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_DISP0_DAT0__ECSPI3_SCLK	0x100b1
 > +			MX6QDL_PAD_DISP0_DAT1__ECSPI3_MOSI	0x100b1
 > +			MX6QDL_PAD_DISP0_DAT2__ECSPI3_MISO	0x100b1
@@ -5025,13 +4937,13 @@ dts
 > +	};
 > +
 > +	pinctrl_leds: ledsgrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_GPIO_8__GPIO1_IO08		0x1b0b0
 > +		>;
 > +	};
 > +
 > +	pinctrl_nfc: nfcgrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			/* NFC_ASK_OOK */
 > +			MX6QDL_PAD_DISP0_DAT15__GPIO5_IO09	0x100b1
 > +			/* NFC_PWR_EN */
@@ -5047,8 +4959,7 @@ dts
 > +		>;
 > +	};
 > +};
-> diff --git a/arch/arm/dts/imx6dl-prtvt7.dts b/arch/arm/dts/imx6dl-prtvt7.=
-dts
+> diff --git a/arch/arm/dts/imx6dl-prtvt7.dts b/arch/arm/dts/imx6dl-prtvt7.dts
 > new file mode 100644
 > index 0000000000..c202e6786d
 > --- /dev/null
@@ -5067,209 +4978,209 @@ dts
 > +#include <dt-bindings/sound/fsl-imx-audmux.h>
 > +
 > +/ {
-> +	model =3D "Protonic VT7";
-> +	compatible =3D "prt,prtvt7", "fsl,imx6dl";
+> +	model = "Protonic VT7";
+> +	compatible = "prt,prtvt7", "fsl,imx6dl";
 > +
 > +	memory@10000000 {
-> +		device_type =3D "memory";
-> +		reg =3D <0x10000000 0x20000000>;
+> +		device_type = "memory";
+> +		reg = <0x10000000 0x20000000>;
 > +	};
 > +
 > +	backlight_lcd: backlight-lcd {
-> +		compatible =3D "pwm-backlight";
-> +		pwms =3D <&pwm1 0 500000>;
-> +		brightness-levels =3D <0 20 81 248 1000>;
-> +		default-brightness-level =3D <20>;
-> +		num-interpolated-steps =3D <21>;
-> +		power-supply =3D <&reg_12v_bl>;
-> +		enable-gpios =3D <&gpio4 28 GPIO_ACTIVE_HIGH>;
+> +		compatible = "pwm-backlight";
+> +		pwms = <&pwm1 0 500000>;
+> +		brightness-levels = <0 20 81 248 1000>;
+> +		default-brightness-level = <20>;
+> +		num-interpolated-steps = <21>;
+> +		power-supply = <&reg_12v_bl>;
+> +		enable-gpios = <&gpio4 28 GPIO_ACTIVE_HIGH>;
 > +	};
 > +
 > +	display {
-> +		compatible =3D "fsl,imx-parallel-display";
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_ipu1_disp>;
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <0>;
-> +		interface-pix-fmt =3D "rgb24";
-> +		status =3D "okay";
+> +		compatible = "fsl,imx-parallel-display";
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_ipu1_disp>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +		interface-pix-fmt = "rgb24";
+> +		status = "okay";
 > +
 > +		port@0 {
-> +			reg =3D <0>;
+> +			reg = <0>;
 > +
 > +			display_in: endpoint {
-> +				remote-endpoint =3D <&ipu1_di0_disp0>;
+> +				remote-endpoint = <&ipu1_di0_disp0>;
 > +			};
 > +		};
 > +
 > +		port@1 {
-> +			reg =3D <1>;
+> +			reg = <1>;
 > +
 > +			display_out: endpoint {
-> +				remote-endpoint =3D <&panel_in>;
+> +				remote-endpoint = <&panel_in>;
 > +			};
 > +		};
 > +	};
 > +
 > +	keys {
-> +		compatible =3D "gpio-keys";
+> +		compatible = "gpio-keys";
 > +		autorepeat;
 > +
 > +		esc {
-> +			label =3D "GPIO Key ESC";
-> +			linux,code =3D <KEY_ESC>;
-> +			gpios =3D <&gpio_pca 0 GPIO_ACTIVE_LOW>;
+> +			label = "GPIO Key ESC";
+> +			linux,code = <KEY_ESC>;
+> +			gpios = <&gpio_pca 0 GPIO_ACTIVE_LOW>;
 > +		};
 > +
 > +		up {
-> +			label =3D "GPIO Key UP";
-> +			linux,code =3D <KEY_UP>;
-> +			gpios =3D <&gpio_pca 1 GPIO_ACTIVE_LOW>;
+> +			label = "GPIO Key UP";
+> +			linux,code = <KEY_UP>;
+> +			gpios = <&gpio_pca 1 GPIO_ACTIVE_LOW>;
 > +		};
 > +
 > +		down {
-> +			label =3D "GPIO Key DOWN";
-> +			linux,code =3D <KEY_DOWN>;
-> +			gpios =3D <&gpio_pca 4 GPIO_ACTIVE_LOW>;
+> +			label = "GPIO Key DOWN";
+> +			linux,code = <KEY_DOWN>;
+> +			gpios = <&gpio_pca 4 GPIO_ACTIVE_LOW>;
 > +		};
 > +
 > +		enter {
-> +			label =3D "GPIO Key Enter";
-> +			linux,code =3D <KEY_ENTER>;
-> +			gpios =3D <&gpio_pca 3 GPIO_ACTIVE_LOW>;
+> +			label = "GPIO Key Enter";
+> +			linux,code = <KEY_ENTER>;
+> +			gpios = <&gpio_pca 3 GPIO_ACTIVE_LOW>;
 > +		};
 > +
 > +		cycle {
-> +			label =3D "GPIO Key CYCLE";
-> +			linux,code =3D <KEY_CYCLEWINDOWS>;
-> +			gpios =3D <&gpio_pca 2 GPIO_ACTIVE_LOW>;
+> +			label = "GPIO Key CYCLE";
+> +			linux,code = <KEY_CYCLEWINDOWS>;
+> +			gpios = <&gpio_pca 2 GPIO_ACTIVE_LOW>;
 > +		};
 > +
 > +		f1 {
-> +			label =3D "GPIO Key F1";
-> +			linux,code =3D <KEY_F1>;
-> +			gpios =3D <&gpio_pca 14 GPIO_ACTIVE_LOW>;
+> +			label = "GPIO Key F1";
+> +			linux,code = <KEY_F1>;
+> +			gpios = <&gpio_pca 14 GPIO_ACTIVE_LOW>;
 > +		};
 > +
 > +		f2 {
-> +			label =3D "GPIO Key F2";
-> +			linux,code =3D <KEY_F2>;
-> +			gpios =3D <&gpio_pca 13 GPIO_ACTIVE_LOW>;
+> +			label = "GPIO Key F2";
+> +			linux,code = <KEY_F2>;
+> +			gpios = <&gpio_pca 13 GPIO_ACTIVE_LOW>;
 > +		};
 > +
 > +		f3 {
-> +			label =3D "GPIO Key F3";
-> +			linux,code =3D <KEY_F3>;
-> +			gpios =3D <&gpio_pca 12 GPIO_ACTIVE_LOW>;
+> +			label = "GPIO Key F3";
+> +			linux,code = <KEY_F3>;
+> +			gpios = <&gpio_pca 12 GPIO_ACTIVE_LOW>;
 > +		};
 > +
 > +		f4 {
-> +			label =3D "GPIO Key F4";
-> +			linux,code =3D <KEY_F4>;
-> +			gpios =3D <&gpio_pca 11 GPIO_ACTIVE_LOW>;
+> +			label = "GPIO Key F4";
+> +			linux,code = <KEY_F4>;
+> +			gpios = <&gpio_pca 11 GPIO_ACTIVE_LOW>;
 > +		};
 > +
 > +		f5 {
-> +			label =3D "GPIO Key F5";
-> +			linux,code =3D <KEY_F5>;
-> +			gpios =3D <&gpio_pca 10 GPIO_ACTIVE_LOW>;
+> +			label = "GPIO Key F5";
+> +			linux,code = <KEY_F5>;
+> +			gpios = <&gpio_pca 10 GPIO_ACTIVE_LOW>;
 > +		};
 > +
 > +		f6 {
-> +			label =3D "GPIO Key F6";
-> +			linux,code =3D <KEY_F6>;
-> +			gpios =3D <&gpio_pca 5 GPIO_ACTIVE_LOW>;
+> +			label = "GPIO Key F6";
+> +			linux,code = <KEY_F6>;
+> +			gpios = <&gpio_pca 5 GPIO_ACTIVE_LOW>;
 > +		};
 > +
 > +		f7 {
-> +			label =3D "GPIO Key F7";
-> +			linux,code =3D <KEY_F7>;
-> +			gpios =3D <&gpio_pca 6 GPIO_ACTIVE_LOW>;
+> +			label = "GPIO Key F7";
+> +			linux,code = <KEY_F7>;
+> +			gpios = <&gpio_pca 6 GPIO_ACTIVE_LOW>;
 > +		};
 > +
 > +		f8 {
-> +			label =3D "GPIO Key F8";
-> +			linux,code =3D <KEY_F8>;
-> +			gpios =3D <&gpio_pca 7 GPIO_ACTIVE_LOW>;
+> +			label = "GPIO Key F8";
+> +			linux,code = <KEY_F8>;
+> +			gpios = <&gpio_pca 7 GPIO_ACTIVE_LOW>;
 > +		};
 > +
 > +		f9 {
-> +			label =3D "GPIO Key F9";
-> +			linux,code =3D <KEY_F9>;
-> +			gpios =3D <&gpio_pca 8 GPIO_ACTIVE_LOW>;
+> +			label = "GPIO Key F9";
+> +			linux,code = <KEY_F9>;
+> +			gpios = <&gpio_pca 8 GPIO_ACTIVE_LOW>;
 > +		};
 > +
 > +		f10 {
-> +			label =3D "GPIO Key F10";
-> +			linux,code =3D <KEY_F10>;
-> +			gpios =3D <&gpio_pca 9 GPIO_ACTIVE_LOW>;
+> +			label = "GPIO Key F10";
+> +			linux,code = <KEY_F10>;
+> +			gpios = <&gpio_pca 9 GPIO_ACTIVE_LOW>;
 > +		};
 > +	};
 > +
 > +	leds {
-> +		compatible =3D "gpio-leds";
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_leds>;
+> +		compatible = "gpio-leds";
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_leds>;
 > +
 > +		led-debug0 {
-> +			function =3D LED_FUNCTION_STATUS;
-> +			gpios =3D <&gpio1 8 GPIO_ACTIVE_HIGH>;
-> +			linux,default-trigger =3D "heartbeat";
+> +			function = LED_FUNCTION_STATUS;
+> +			gpios = <&gpio1 8 GPIO_ACTIVE_HIGH>;
+> +			linux,default-trigger = "heartbeat";
 > +		};
 > +	};
 > +
 > +	panel {
-> +		compatible =3D "innolux,g070y2t0ec";
-> +		backlight =3D <&backlight_lcd>;
+> +		compatible = "innolux,g070y2t0ec";
+> +		backlight = <&backlight_lcd>;
 > +
 > +		port {
 > +			panel_in: endpoint {
-> +				remote-endpoint =3D <&display_out>;
+> +				remote-endpoint = <&display_out>;
 > +			};
 > +		};
 > +	};
 > +
 > +	reg_12v_bl: regulator-bl-12v {
-> +		compatible =3D "regulator-fixed";
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_reg_12v_bl>;
-> +		regulator-name =3D "12v-bl";
-> +		regulator-min-microvolt =3D <12000000>;
-> +		regulator-max-microvolt =3D <12000000>;
-> +		gpio =3D <&gpio1 7 GPIO_ACTIVE_HIGH>;
+> +		compatible = "regulator-fixed";
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_reg_12v_bl>;
+> +		regulator-name = "12v-bl";
+> +		regulator-min-microvolt = <12000000>;
+> +		regulator-max-microvolt = <12000000>;
+> +		gpio = <&gpio1 7 GPIO_ACTIVE_HIGH>;
 > +		enable-active-high;
 > +	};
 > +
 > +	reg_1v8: regulator-1v8 {
-> +		compatible =3D "regulator-fixed";
-> +		regulator-name =3D "1v8";
-> +		regulator-min-microvolt =3D <1800000>;
-> +		regulator-max-microvolt =3D <1800000>;
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "1v8";
+> +		regulator-min-microvolt = <1800000>;
+> +		regulator-max-microvolt = <1800000>;
 > +		regulator-always-on;
 > +	};
 > +
 > +	sound {
-> +		compatible =3D "simple-audio-card";
-> +		simple-audio-card,name =3D "prti6q-sgtl5000";
-> +		simple-audio-card,format =3D "i2s";
-> +		simple-audio-card,widgets =3D
+> +		compatible = "simple-audio-card";
+> +		simple-audio-card,name = "prti6q-sgtl5000";
+> +		simple-audio-card,format = "i2s";
+> +		simple-audio-card,widgets =
 > +			"Microphone", "Microphone Jack",
 > +			"Line", "Line In Jack",
 > +			"Headphone", "Headphone Jack",
 > +			"Speaker", "External Speaker";
-> +		simple-audio-card,routing =3D
+> +		simple-audio-card,routing =
 > +			"MIC_IN", "Microphone Jack",
 > +			"LINE_IN", "Line In Jack",
 > +			"Headphone Jack", "HP_OUT",
 > +			"External Speaker", "LINE_OUT";
 > +
 > +		simple-audio-card,cpu {
-> +			sound-dai =3D <&ssi1>;
-> +			system-clock-frequency =3D <0>;
+> +			sound-dai = <&ssi1>;
+> +			system-clock-frequency = <0>;
 > +		};
 > +
 > +		simple-audio-card,codec {
-> +			sound-dai =3D <&sgtl5000>;
+> +			sound-dai = <&sgtl5000>;
 > +			bitclock-master;
 > +			frame-master;
 > +		};
@@ -5277,53 +5188,53 @@ dts
 > +};
 > +
 > +&clks {
-> +	assigned-clocks =3D <&clks IMX6QDL_CLK_LDB_DI0_SEL>;
-> +	assigned-clock-parents =3D <&clks IMX6QDL_CLK_PLL5_VIDEO_DIV>;
+> +	assigned-clocks = <&clks IMX6QDL_CLK_LDB_DI0_SEL>;
+> +	assigned-clock-parents = <&clks IMX6QDL_CLK_PLL5_VIDEO_DIV>;
 > +};
 > +
 > +&ecspi2 {
-> +	cs-gpios =3D <&gpio2 26 GPIO_ACTIVE_HIGH>;
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_ecspi2>;
-> +	status =3D "okay";
+> +	cs-gpios = <&gpio2 26 GPIO_ACTIVE_HIGH>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_ecspi2>;
+> +	status = "okay";
 > +
 > +	tsc@0 {
-> +		compatible =3D "ti,tsc2046";
-> +		reg =3D <0>;
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_tsc>;
-> +		spi-max-frequency =3D <100000>;
-> +		interrupts-extended =3D <&gpio3 20 IRQ_TYPE_EDGE_FALLING>;
-> +		pendown-gpio =3D <&gpio3 20 GPIO_ACTIVE_HIGH>;
-> +		vcc-supply =3D <&reg_3v3>;
+> +		compatible = "ti,tsc2046";
+> +		reg = <0>;
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_tsc>;
+> +		spi-max-frequency = <100000>;
+> +		interrupts-extended = <&gpio3 20 IRQ_TYPE_EDGE_FALLING>;
+> +		pendown-gpio = <&gpio3 20 GPIO_ACTIVE_HIGH>;
+> +		vcc-supply = <&reg_3v3>;
 > +
-> +		ti,vref-delay-usecs =3D /bits/ 16 <100>;
+> +		ti,vref-delay-usecs = /bits/ 16 <100>;
 > +
-> +		ti,x-min =3D /bits/ 16 <0>;
-> +		ti,x-max =3D /bits/ 16 <8000>;
-> +		ti,y-min =3D /bits/ 16 <0>;
-> +		ti,y-max =3D /bits/ 16 <4800>;
-> +		ti,x-plate-ohms =3D /bits/ 16 <800>;
-> +		ti,y-plate-ohms =3D /bits/ 16 <300>;
-> +		ti,pressure-max =3D /bits/ 16 <4095>;
+> +		ti,x-min = /bits/ 16 <0>;
+> +		ti,x-max = /bits/ 16 <8000>;
+> +		ti,y-min = /bits/ 16 <0>;
+> +		ti,y-max = /bits/ 16 <4800>;
+> +		ti,x-plate-ohms = /bits/ 16 <800>;
+> +		ti,y-plate-ohms = /bits/ 16 <300>;
+> +		ti,pressure-max = /bits/ 16 <4095>;
 > +
-> +		ti,skip-samples =3D <2>;
-> +		ti,sample-period-msecs =3D <10>;
-> +		ti,report-period-msecs =3D <30>;
+> +		ti,skip-samples = <2>;
+> +		ti,sample-period-msecs = <10>;
+> +		ti,report-period-msecs = <30>;
 > +
-> +		ti,filter-tolerance =3D <80>;
-> +		ti,touch-resistance-threshold =3D <3500>;
+> +		ti,filter-tolerance = <80>;
+> +		ti,touch-resistance-threshold = <3500>;
 > +	};
 > +};
 > +
 > +&audmux {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_audmux>;
-> +	status =3D "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_audmux>;
+> +	status = "okay";
 > +
 > +	mux_ssi1 {
-> +		fsl,audmux-port =3D <0>;
-> +		fsl,port-config =3D <
+> +		fsl,audmux-port = <0>;
+> +		fsl,port-config = <
 > +			IMX_AUDMUX_V2_PTCR_SYN		0
 > +			IMX_AUDMUX_V2_PTCR_TFSEL(2)	0
 > +			IMX_AUDMUX_V2_PTCR_TCSEL(2)	0
@@ -5333,8 +5244,8 @@ dts
 > +	};
 > +
 > +	mux_pins3 {
-> +		fsl,audmux-port =3D <2>;
-> +		fsl,port-config =3D <
+> +		fsl,audmux-port = <2>;
+> +		fsl,port-config = <
 > +			IMX_AUDMUX_V2_PTCR_SYN IMX_AUDMUX_V2_PDCR_RXDSEL(0)
 > +			0		       IMX_AUDMUX_V2_PDCR_TXRXEN
 > +		>;
@@ -5342,79 +5253,79 @@ dts
 > +};
 > +
 > +&can1 {
-> +	pinctrl-0 =3D <&pinctrl_can1 &pinctrl_can1phy>;
+> +	pinctrl-0 = <&pinctrl_can1 &pinctrl_can1phy>;
 > +};
 > +
 > +&i2c1 {
 > +	sgtl5000: codec@a {
-> +		compatible =3D "fsl,sgtl5000";
-> +		reg =3D <0xa>;
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_codec>;
-> +		#sound-dai-cells =3D <0>;
-> +		clocks =3D <&clks 201>;
-> +		VDDA-supply =3D <&reg_3v3>;
-> +		VDDIO-supply =3D <&reg_3v3>;
-> +		VDDD-supply =3D <&reg_1v8>;
+> +		compatible = "fsl,sgtl5000";
+> +		reg = <0xa>;
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_codec>;
+> +		#sound-dai-cells = <0>;
+> +		clocks = <&clks 201>;
+> +		VDDA-supply = <&reg_3v3>;
+> +		VDDIO-supply = <&reg_3v3>;
+> +		VDDD-supply = <&reg_1v8>;
 > +	};
 > +};
 > +
 > +&i2c3 {
 > +	rtc@51 {
-> +		compatible =3D "nxp,pcf8563";
-> +		reg =3D <0x51>;
+> +		compatible = "nxp,pcf8563";
+> +		reg = <0x51>;
 > +	};
 > +
 > +	gpio_pca: gpio@74 {
-> +		compatible =3D "nxp,pca9539";
-> +		reg =3D <0x74>;
-> +		interrupts-extended =3D <&gpio4 5 IRQ_TYPE_LEVEL_LOW>;
-> +		#gpio-cells =3D <2>;
+> +		compatible = "nxp,pca9539";
+> +		reg = <0x74>;
+> +		interrupts-extended = <&gpio4 5 IRQ_TYPE_LEVEL_LOW>;
+> +		#gpio-cells = <2>;
 > +		gpio-controller;
 > +	};
 > +};
 > +
 > +&ipu1 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_ipu1_csi0>;
-> +	status =3D "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_ipu1_csi0>;
+> +	status = "okay";
 > +};
 > +
 > +&ipu1_di0_disp0 {
-> +	remote-endpoint =3D <&display_in>;
+> +	remote-endpoint = <&display_in>;
 > +};
 > +
 > +&pwm1 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_pwm1>;
-> +	status =3D "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_pwm1>;
+> +	status = "okay";
 > +};
 > +
 > +&snvs_poweroff {
-> +	status =3D "okay";
+> +	status = "okay";
 > +};
 > +
 > +&snvs_pwrkey {
-> +	status =3D "okay";
+> +	status = "okay";
 > +};
 > +
 > +&ssi1 {
-> +	#sound-dai-cells =3D <0>;
-> +	fsl,mode =3D "i2s-slave";
-> +	status =3D "okay";
+> +	#sound-dai-cells = <0>;
+> +	fsl,mode = "i2s-slave";
+> +	status = "okay";
 > +};
 > +
 > +&usbh1 {
-> +	status =3D "disabled";
+> +	status = "disabled";
 > +};
 > +
 > +&vpu {
-> +	status =3D "disabled";
+> +	status = "disabled";
 > +};
 > +
 > +&iomuxc {
 > +	pinctrl_audmux: audmuxgrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_CSI0_MCLK__CCM_CLKO1		0x030b0
 > +			MX6QDL_PAD_CSI0_DAT7__AUD3_RXD		0x130b0
 > +			MX6QDL_PAD_CSI0_DAT4__AUD3_TXC		0x130b0
@@ -5424,7 +5335,7 @@ dts
 > +	};
 > +
 > +	pinctrl_can1phy: can1phy {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			/* CAN1_SR */
 > +			MX6QDL_PAD_KEY_COL3__GPIO4_IO12		0x13070
 > +			/* CAN1_TERM */
@@ -5433,14 +5344,14 @@ dts
 > +	};
 > +
 > +	pinctrl_codec: codecgrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			/* AUDIO_nRESET */
 > +			MX6QDL_PAD_CSI0_VSYNC__GPIO5_IO21	0x1f0b0
 > +		>;
 > +	};
 > +
 > +	pinctrl_ecspi2: ecspi2grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_EIM_OE__ECSPI2_MISO		0x100b1
 > +			MX6QDL_PAD_EIM_CS0__ECSPI2_SCLK		0x100b1
 > +			MX6QDL_PAD_EIM_CS1__ECSPI2_MOSI		0x100b1
@@ -5449,7 +5360,7 @@ dts
 > +	};
 > +
 > +	pinctrl_ipu1_csi0: ipu1csi0grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_CSI0_DAT12__IPU1_CSI0_DATA12	0x1b0b0
 > +			MX6QDL_PAD_CSI0_DAT13__IPU1_CSI0_DATA13	0x1b0b0
 > +			MX6QDL_PAD_CSI0_DAT14__IPU1_CSI0_DATA14	0x1b0b0
@@ -5467,7 +5378,7 @@ dts
 > +	};
 > +
 > +	pinctrl_ipu1_disp: ipudisp1grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_DI0_DISP_CLK__IPU1_DI0_DISP_CLK 0xb0
 > +			MX6QDL_PAD_DI0_PIN15__IPU1_DI0_PIN15	   0xb0
 > +
@@ -5501,33 +5412,32 @@ dts
 > +	};
 > +
 > +	pinctrl_leds: ledsgrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_GPIO_8__GPIO1_IO08		0x1b0b0
 > +		>;
 > +	};
 > +
 > +	pinctrl_pwm1: pwm1grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_GPIO_9__PWM1_OUT		0x1b0b0
 > +		>;
 > +	};
 > +
 > +	pinctrl_reg_12v_bl: 12blgrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_GPIO_7__GPIO1_IO07		0x1b0b0
 > +		>;
 > +	};
 > +
 > +	pinctrl_tsc: tscgrp {
 > +
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_EIM_D20__GPIO3_IO20		0x1b0b0
 > +			MX6QDL_PAD_EIM_EB2__GPIO2_IO30		0x1b0b0
 > +		>;
 > +	};
 > +};
-> diff --git a/arch/arm/dts/imx6dl-victgo.dts b/arch/arm/dts/imx6dl-victgo.=
-dts
+> diff --git a/arch/arm/dts/imx6dl-victgo.dts b/arch/arm/dts/imx6dl-victgo.dts
 > new file mode 100644
 > index 0000000000..55bc4c8d41
 > --- /dev/null
@@ -5544,66 +5454,66 @@ dts
 > +#include <dt-bindings/input/input.h>
 > +
 > +/ {
-> +	model =3D "Kverneland Tellus GO";
-> +	compatible =3D "kvg,victgo", "fsl,imx6dl";
+> +	model = "Kverneland Tellus GO";
+> +	compatible = "kvg,victgo", "fsl,imx6dl";
 > +
 > +	memory {
-> +		reg =3D <0x10000000 0x20000000>;
+> +		reg = <0x10000000 0x20000000>;
 > +	};
 > +
 > +	rotary-encoder {
-> +		compatible =3D "rotary-encoder";
-> +		pinctrl-0 =3D <&pinctrl_rotary_ch>;
-> +		gpios =3D <&gpio2 3 0>, <&gpio2 4 0>;
-> +		linux,axis =3D <8>; /* REL_WHEEL */
-> +		rotary-encoder,steps-per-period =3D <4>;
+> +		compatible = "rotary-encoder";
+> +		pinctrl-0 = <&pinctrl_rotary_ch>;
+> +		gpios = <&gpio2 3 0>, <&gpio2 4 0>;
+> +		linux,axis = <8>; /* REL_WHEEL */
+> +		rotary-encoder,steps-per-period = <4>;
 > +		rotary-encoder,relative-axis;
 > +		rotary-encoder,rollover;
 > +		wakeup-source;
 > +	};
 > +
 > +	rotary-button {
-> +		compatible =3D "gpio-keys";
-> +		pinctrl-0 =3D <&pinctrl_rotary_btn>;
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <0>;
+> +		compatible = "gpio-keys";
+> +		pinctrl-0 = <&pinctrl_rotary_btn>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
 > +		autorepeat;
 > +		button@0 {
-> +			label =3D "Rotary Key";
-> +			gpios =3D <&gpio2 05 1>;
-> +			linux,code =3D <KEY_ENTER>;
+> +			label = "Rotary Key";
+> +			gpios = <&gpio2 05 1>;
+> +			linux,code = <KEY_ENTER>;
 > +			gpio-key,wakeup;
 > +		};
 > +	};
 > +};
 > +
 > +&fec {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_enet>;
-> +	phy-mode =3D "rmii";
-> +	phy-reset-gpios =3D <&gpio4 26 GPIO_ACTIVE_LOW>;
-> +	clocks =3D <&clks IMX6QDL_CLK_ENET>,
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_enet>;
+> +	phy-mode = "rmii";
+> +	phy-reset-gpios = <&gpio4 26 GPIO_ACTIVE_LOW>;
+> +	clocks = <&clks IMX6QDL_CLK_ENET>,
 > +		 <&clks IMX6QDL_CLK_ENET>;
-> +	clock-names =3D "ipg", "ahb";
-> +	status =3D "okay";
+> +	clock-names = "ipg", "ahb";
+> +	status = "okay";
 > +};
 > +
 > +&uart2 {
-> +	status =3D "disabled";
+> +	status = "disabled";
 > +};
 > +
 > +&i2c1 {
 > +	ht16k33: ht16k33@70 {
-> +		compatible =3D "holtek,ht16k33";
-> +		pinctrl-0 =3D <&pinctrl_ht16k33>;
-> +		reg =3D <0x70>;
-> +		refresh-rate-hz =3D <20>;
-> +		debounce-delay-ms =3D <50>;
-> +		interrupt-parent =3D <&gpio4>;
-> +		interrupts =3D <5 (IRQ_TYPE_LEVEL_HIGH | IRQ_TYPE_EDGE_RISING)>;
-> +		keypad,num-rows =3D <12>;
-> +		keypad,num-columns =3D <3>;
-> +		linux,keymap =3D <
+> +		compatible = "holtek,ht16k33";
+> +		pinctrl-0 = <&pinctrl_ht16k33>;
+> +		reg = <0x70>;
+> +		refresh-rate-hz = <20>;
+> +		debounce-delay-ms = <50>;
+> +		interrupt-parent = <&gpio4>;
+> +		interrupts = <5 (IRQ_TYPE_LEVEL_HIGH | IRQ_TYPE_EDGE_RISING)>;
+> +		keypad,num-rows = <12>;
+> +		keypad,num-columns = <3>;
+> +		linux,keymap = <
 > +			MATRIX_KEY(2, 0, KEY_F6)
 > +			MATRIX_KEY(3, 0, KEY_F8)
 > +			MATRIX_KEY(4, 0, KEY_F10)
@@ -5619,12 +5529,12 @@ dts
 > +};
 > +
 > +&pwm2 {
-> +	status =3D "disabled";
+> +	status = "disabled";
 > +};
 > +
 > +&iomuxc {
 > +	pinctrl_enet: enetgrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			/* MX6QDL_ENET_PINGRP4 */
 > +			MX6QDL_PAD_ENET_MDC__ENET_MDC           0x1b0b0
 > +			MX6QDL_PAD_ENET_MDIO__ENET_MDIO         0x1b0b0
@@ -5644,7 +5554,7 @@ dts
 > +	};
 > +
 > +	pinctrl_ecspi2: ecspi2grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_DISP0_DAT16__ECSPI2_MOSI	0x100b1
 > +			MX6QDL_PAD_DISP0_DAT17__ECSPI2_MISO	0x100b1
 > +			MX6QDL_PAD_DISP0_DAT18__GPIO5_IO12	0x100b1
@@ -5653,33 +5563,32 @@ dts
 > +	};
 > +
 > +	pinctrl_rotary_ch: rotarygrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_NANDF_D3__GPIO2_IO03	0x1b0b0 /* ROTARY_A */
 > +			MX6QDL_PAD_NANDF_D4__GPIO2_IO04	0x1b0b0	/* ROTARY_B */
 > +		>;
 > +	};
 > +
 > +	pinctrl_rotary_btn: rotarygrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_NANDF_D5__GPIO2_IO05	0x1b0b0	/* ROTARY_BTN */
 > +		>;
 > +	};
 > +
 > +	pinctrl_ht16k33: ht16k33grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_GPIO_19__GPIO4_IO05	0x1b0b0 /* IRQ */
 > +		>;
 > +	};
 > +
 > +	pinctrl_tsc2046e: tsc2046egrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_DISP0_DAT14__GPIO5_IO08      0x1b0b0
 > +			MX6QDL_PAD_DISP0_DAT15__GPIO5_IO09      0x1b0b0
 > +		>;
 > +	};
 > +};
-> diff --git a/arch/arm/dts/imx6dl-vicut1.dts b/arch/arm/dts/imx6dl-vicut1.=
-dts
+> diff --git a/arch/arm/dts/imx6dl-vicut1.dts b/arch/arm/dts/imx6dl-vicut1.dts
 > new file mode 100644
 > index 0000000000..725acbefc5
 > --- /dev/null
@@ -5695,24 +5604,24 @@ dts
 > +#include "imx6qdl-vicut1.dtsi"
 > +
 > +/ {
-> +	model =3D "Kverneland UT1 Board";
-> +	compatible =3D "kvg,vicut1", "fsl,imx6dl";
+> +	model = "Kverneland UT1 Board";
+> +	compatible = "kvg,vicut1", "fsl,imx6dl";
 > +
 > +	memory {
-> +		reg =3D <0x10000000 0x80000000>;
+> +		reg = <0x10000000 0x80000000>;
 > +	};
 > +};
 > +
 > +&fec {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_enet>;
-> +	phy-mode =3D "rgmii";
-> +	status =3D "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_enet>;
+> +	phy-mode = "rgmii";
+> +	status = "okay";
 > +};
 > +
 > +&iomuxc {
 > +	pinctrl_enet: enetgrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			/* MX6QDL_ENET_PINGRP_RGMII_MD(0x1b030, 0x10030) */
 > +			MX6QDL_PAD_RGMII_RXC__RGMII_RXC         0x1b030
 > +			MX6QDL_PAD_RGMII_RD0__RGMII_RD0         0x1b030
@@ -5754,124 +5663,124 @@ dts
 > +#include <dt-bindings/sound/fsl-imx-audmux.h>
 > +
 > +/ {
-> +	model =3D "Protonic PRTI6Q board";
-> +	compatible =3D "prt,prti6q", "fsl,imx6q";
+> +	model = "Protonic PRTI6Q board";
+> +	compatible = "prt,prti6q", "fsl,imx6q";
 > +
 > +	chosen {
 > +		environment {
-> +			compatible =3D "barebox,environment";
-> +			device-path =3D &ecspi1, "partname:env";
+> +			compatible = "barebox,environment";
+> +			device-path = &ecspi1, "partname:env";
 > +		};
 > +	};
 > +
 > +	memory@10000000 {
-> +		device_type =3D "memory";
-> +		reg =3D <0x10000000 0xf0000000>;
+> +		device_type = "memory";
+> +		reg = <0x10000000 0xf0000000>;
 > +	};
 > +
 > +	backlight_lcd: backlight-lcd {
-> +		compatible =3D "pwm-backlight";
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_backlight>;
-> +		pwms =3D <&pwm1 0 5000000>;
-> +		brightness-levels =3D <0 16 64 255>;
-> +		num-interpolated-steps =3D <16>;
-> +		default-brightness-level =3D <16>;
-> +		power-supply =3D <&reg_3v3>;
-> +		enable-gpios =3D <&gpio4 28 GPIO_ACTIVE_HIGH>;
+> +		compatible = "pwm-backlight";
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_backlight>;
+> +		pwms = <&pwm1 0 5000000>;
+> +		brightness-levels = <0 16 64 255>;
+> +		num-interpolated-steps = <16>;
+> +		default-brightness-level = <16>;
+> +		power-supply = <&reg_3v3>;
+> +		enable-gpios = <&gpio4 28 GPIO_ACTIVE_HIGH>;
 > +	};
 > +
 > +	can3_25m_osc: can3-25m-osc {
-> +		compatible =3D "fixed-clock";
-> +		#clock-cells =3D <0>;
-> +		clock-frequency =3D <25000000>;
+> +		compatible = "fixed-clock";
+> +		#clock-cells = <0>;
+> +		clock-frequency = <25000000>;
 > +	};
 > +
 > +	leds {
-> +		compatible =3D "gpio-leds";
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_leds>;
+> +		compatible = "gpio-leds";
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_leds>;
 > +
 > +		led-debug0 {
-> +			function =3D LED_FUNCTION_STATUS;
-> +			gpios =3D <&gpio1 8 GPIO_ACTIVE_HIGH>;
-> +			linux,default-trigger =3D "heartbeat";
+> +			function = LED_FUNCTION_STATUS;
+> +			gpios = <&gpio1 8 GPIO_ACTIVE_HIGH>;
+> +			linux,default-trigger = "heartbeat";
 > +		};
 > +
 > +		led-debug1 {
-> +			function =3D LED_FUNCTION_SD;
-> +			gpios =3D <&gpio1 9 GPIO_ACTIVE_HIGH>;
-> +			linux,default-trigger =3D "disk-activity";
+> +			function = LED_FUNCTION_SD;
+> +			gpios = <&gpio1 9 GPIO_ACTIVE_HIGH>;
+> +			linux,default-trigger = "disk-activity";
 > +		};
 > +	};
 > +
 > +	panel {
-> +		compatible =3D "kyo,tcg121xglp";
-> +		backlight =3D <&backlight_lcd>;
+> +		compatible = "kyo,tcg121xglp";
+> +		backlight = <&backlight_lcd>;
 > +
 > +		port {
 > +			panel_in: endpoint {
-> +				remote-endpoint =3D <&lvds0_out>;
+> +				remote-endpoint = <&lvds0_out>;
 > +			};
 > +		};
 > +	};
 > +
 > +	reg_wifi: regulator-wifi {
-> +		compatible =3D "regulator-fixed";
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_wifi_npd>;
+> +		compatible = "regulator-fixed";
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_wifi_npd>;
 > +		enable-active-high;
-> +		gpio =3D <&gpio1 26 GPIO_ACTIVE_HIGH>;
-> +		regulator-max-microvolt =3D <1800000>;
-> +		regulator-min-microvolt =3D <1800000>;
-> +		regulator-name =3D "regulator-WL12xx";
-> +		startup-delay-us =3D <70000>;
+> +		gpio = <&gpio1 26 GPIO_ACTIVE_HIGH>;
+> +		regulator-max-microvolt = <1800000>;
+> +		regulator-min-microvolt = <1800000>;
+> +		regulator-name = "regulator-WL12xx";
+> +		startup-delay-us = <70000>;
 > +	};
 > +
 > +	sound {
-> +		compatible =3D "simple-audio-card";
-> +		simple-audio-card,name =3D "prti6q-sgtl5000";
-> +		simple-audio-card,format =3D "i2s";
-> +		simple-audio-card,widgets =3D
+> +		compatible = "simple-audio-card";
+> +		simple-audio-card,name = "prti6q-sgtl5000";
+> +		simple-audio-card,format = "i2s";
+> +		simple-audio-card,widgets =
 > +			"Microphone", "Microphone Jack",
 > +			"Line", "Line In Jack",
 > +			"Headphone", "Headphone Jack",
 > +			"Speaker", "External Speaker";
-> +		simple-audio-card,routing =3D
+> +		simple-audio-card,routing =
 > +			"MIC_IN", "Microphone Jack",
 > +			"LINE_IN", "Line In Jack",
 > +			"Headphone Jack", "HP_OUT",
 > +			"External Speaker", "LINE_OUT";
 > +
 > +		simple-audio-card,cpu {
-> +			sound-dai =3D <&ssi1>;
-> +			system-clock-frequency =3D <0>;
+> +			sound-dai = <&ssi1>;
+> +			system-clock-frequency = <0>;
 > +		};
 > +
 > +		simple-audio-card,codec {
-> +			sound-dai =3D <&sgtl5000>;
+> +			sound-dai = <&sgtl5000>;
 > +			bitclock-master;
 > +			frame-master;
 > +		};
 > +	};
 > +
 > +	sound-spdif {
-> +		compatible =3D "fsl,imx-audio-spdif";
-> +		model =3D "imx-spdif";
-> +		spdif-controller =3D <&spdif>;
+> +		compatible = "fsl,imx-audio-spdif";
+> +		model = "imx-spdif";
+> +		spdif-controller = <&spdif>;
 > +		spdif-in;
 > +		spdif-out;
 > +	};
 > +};
 > +
 > +&audmux {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_audmux>;
-> +	status =3D "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_audmux>;
+> +	status = "okay";
 > +
 > +	mux_ssi1 {
-> +		fsl,audmux-port =3D <0>;
-> +		fsl,port-config =3D <
+> +		fsl,audmux-port = <0>;
+> +		fsl,port-config = <
 > +			IMX_AUDMUX_V2_PTCR_SYN		0
 > +			IMX_AUDMUX_V2_PTCR_TFSEL(2)	0
 > +			IMX_AUDMUX_V2_PTCR_TCSEL(2)	0
@@ -5881,8 +5790,8 @@ dts
 > +	};
 > +
 > +	mux_pins3 {
-> +		fsl,audmux-port =3D <2>;
-> +		fsl,port-config =3D <
+> +		fsl,audmux-port = <2>;
+> +		fsl,port-config = <
 > +			IMX_AUDMUX_V2_PTCR_SYN IMX_AUDMUX_V2_PDCR_RXDSEL(0)
 > +			0		       IMX_AUDMUX_V2_PDCR_TXRXEN
 > +		>;
@@ -5890,243 +5799,243 @@ dts
 > +};
 > +
 > +&can2 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_can2>;
-> +	status =3D "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_can2>;
+> +	status = "okay";
 > +};
 > +
 > +&ecspi1 {
-> +	cs-gpios =3D <&gpio3 19 GPIO_ACTIVE_HIGH>;
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_ecspi1>;
-> +	status =3D "okay";
+> +	cs-gpios = <&gpio3 19 GPIO_ACTIVE_HIGH>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_ecspi1>;
+> +	status = "okay";
 > +
 > +	flash@0 {
-> +		compatible =3D "jedec,spi-nor";
-> +		reg =3D <0>;
-> +		spi-max-frequency =3D <20000000>;
+> +		compatible = "jedec,spi-nor";
+> +		reg = <0>;
+> +		spi-max-frequency = <20000000>;
 > +
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <1>;
+> +		#address-cells = <1>;
+> +		#size-cells = <1>;
 > +
 > +		partition@0 {
-> +			label =3D "boot";
-> +			reg =3D <0x0 0x100000>;
+> +			label = "boot";
+> +			reg = <0x0 0x100000>;
 > +		};
 > +
 > +		partition@100000 {
-> +			label =3D "env";
-> +			reg =3D <0x100000 0x10000>;
+> +			label = "env";
+> +			reg = <0x100000 0x10000>;
 > +		};
 > +
 > +		partition@110000 {
-> +			label =3D "spare";
-> +			reg =3D <0x110000 0x2f0000>;
+> +			label = "spare";
+> +			reg = <0x110000 0x2f0000>;
 > +		};
 > +	};
 > +};
 > +
 > +&ecspi2 {
-> +	cs-gpios =3D <&gpio2 26 GPIO_ACTIVE_HIGH>, <&gpio4 25 GPIO_ACTIVE_HIGH>;
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_ecspi2 &pinctrl_ecspi2_cs>;
-> +	status =3D "okay";
+> +	cs-gpios = <&gpio2 26 GPIO_ACTIVE_HIGH>, <&gpio4 25 GPIO_ACTIVE_HIGH>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_ecspi2 &pinctrl_ecspi2_cs>;
+> +	status = "okay";
 > +
 > +	can@0 {
-> +		compatible =3D "microchip,mcp2515";
-> +		reg =3D <0>;
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_can3>;
-> +		clocks =3D <&can3_25m_osc>;
-> +		interrupts-extended =3D <&gpio3 20 IRQ_TYPE_LEVEL_LOW>;
-> +		spi-max-frequency =3D <5000000>;
+> +		compatible = "microchip,mcp2515";
+> +		reg = <0>;
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_can3>;
+> +		clocks = <&can3_25m_osc>;
+> +		interrupts-extended = <&gpio3 20 IRQ_TYPE_LEVEL_LOW>;
+> +		spi-max-frequency = <5000000>;
 > +	};
 > +
 > +	adc@1 {
-> +		compatible =3D "ti,adc128s052";
-> +		reg =3D <1>;
-> +		spi-max-frequency =3D <2000000>;
-> +		vref-supply =3D <&reg_3v3>;
+> +		compatible = "ti,adc128s052";
+> +		reg = <1>;
+> +		spi-max-frequency = <2000000>;
+> +		vref-supply = <&reg_3v3>;
 > +	};
 > +};
 > +
 > +&ecspi3 {
-> +	cs-gpios =3D <&gpio4 24 GPIO_ACTIVE_HIGH>;
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_ecspi3>;
-> +	status =3D "okay";
+> +	cs-gpios = <&gpio4 24 GPIO_ACTIVE_HIGH>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_ecspi3>;
+> +	status = "okay";
 > +};
 > +
 > +&fec {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_enet>;
-> +	phy-mode =3D "rgmii-id";
-> +	phy-handle =3D <&rgmii_phy>;
-> +	status =3D "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_enet>;
+> +	phy-mode = "rgmii-id";
+> +	phy-handle = <&rgmii_phy>;
+> +	status = "okay";
 > +
 > +	mdio {
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <0>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
 > +
 > +		/* Microchip KSZ9031RNX PHY */
 > +		rgmii_phy: ethernet-phy@0 {
-> +			reg =3D <0>;
-> +			interrupts-extended =3D <&gpio1 28 IRQ_TYPE_LEVEL_LOW>;
-> +			reset-gpios =3D <&gpio1 25 GPIO_ACTIVE_LOW>;
-> +			reset-assert-us =3D <10000>;
-> +			reset-deassert-us =3D <300>;
+> +			reg = <0>;
+> +			interrupts-extended = <&gpio1 28 IRQ_TYPE_LEVEL_LOW>;
+> +			reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>;
+> +			reset-assert-us = <10000>;
+> +			reset-deassert-us = <300>;
 > +		};
 > +	};
 > +};
 > +
 > +&hdmi {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_hdmi>;
-> +	ddc-i2c-bus =3D <&i2c2>;
-> +	status =3D "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_hdmi>;
+> +	ddc-i2c-bus = <&i2c2>;
+> +	status = "okay";
 > +};
 > +
 > +&i2c1 {
 > +	sgtl5000: audio-codec@a {
-> +		compatible =3D "fsl,sgtl5000";
-> +		reg =3D <0xa>;
-> +		#sound-dai-cells =3D <0>;
-> +		clocks =3D <&clks 201>;
-> +		VDDA-supply =3D <&reg_3v3>;
-> +		VDDIO-supply =3D <&reg_3v3>;
-> +		VDDD-supply =3D <&reg_1v8>;
+> +		compatible = "fsl,sgtl5000";
+> +		reg = <0xa>;
+> +		#sound-dai-cells = <0>;
+> +		clocks = <&clks 201>;
+> +		VDDA-supply = <&reg_3v3>;
+> +		VDDIO-supply = <&reg_3v3>;
+> +		VDDD-supply = <&reg_1v8>;
 > +	};
 > +};
 > +
 > +/* DDC */
 > +&i2c2 {
-> +	clock-frequency =3D <100000>;
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_i2c2>;
-> +	status =3D "okay";
+> +	clock-frequency = <100000>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_i2c2>;
+> +	status = "okay";
 > +};
 > +
 > +&i2c3 {
 > +	adc@49 {
-> +		compatible =3D "ti,ads1015";
-> +		reg =3D <0x49>;
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <0>;
+> +		compatible = "ti,ads1015";
+> +		reg = <0x49>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
 > +
 > +		/* can2_l */
 > +		channel@4 {
-> +			reg =3D <4>;
-> +			ti,gain =3D <3>;
-> +			ti,datarate =3D <3>;
+> +			reg = <4>;
+> +			ti,gain = <3>;
+> +			ti,datarate = <3>;
 > +		};
 > +
 > +		/* can2_h */
 > +		channel@5 {
-> +			reg =3D <5>;
-> +			ti,gain =3D <3>;
-> +			ti,datarate =3D <3>;
+> +			reg = <5>;
+> +			ti,gain = <3>;
+> +			ti,datarate = <3>;
 > +		};
 > +
 > +		/* can1_l */
 > +		channel@6 {
-> +			reg =3D <6>;
-> +			ti,gain =3D <3>;
-> +			ti,datarate =3D <3>;
+> +			reg = <6>;
+> +			ti,gain = <3>;
+> +			ti,datarate = <3>;
 > +		};
 > +
 > +		/* can1_h */
 > +		channel@7 {
-> +			reg =3D <7>;
-> +			ti,gain =3D <3>;
-> +			ti,datarate =3D <3>;
+> +			reg = <7>;
+> +			ti,gain = <3>;
+> +			ti,datarate = <3>;
 > +		};
 > +	};
 > +};
 > +
 > +&pcie {
-> +	status =3D "okay";
+> +	status = "okay";
 > +};
 > +
 > +&pwm1 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_pwm1>;
-> +	status =3D "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_pwm1>;
+> +	status = "okay";
 > +};
 > +
 > +&ldb {
-> +	status =3D "okay";
+> +	status = "okay";
 > +
 > +	lvds-channel@0 {
-> +		status =3D "okay";
+> +		status = "okay";
 > +
 > +		port@4 {
-> +			reg =3D <4>;
+> +			reg = <4>;
 > +
 > +			lvds0_out: endpoint {
-> +				remote-endpoint =3D <&panel_in>;
+> +				remote-endpoint = <&panel_in>;
 > +			};
 > +		};
 > +	};
 > +};
 > +
 > +&sata {
-> +	status =3D "okay";
+> +	status = "okay";
 > +};
 > +
 > +&snvs_poweroff {
-> +	status =3D "okay";
+> +	status = "okay";
 > +};
 > +
 > +&spdif {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_spdif>;
-> +	status =3D "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_spdif>;
+> +	status = "okay";
 > +};
 > +
 > +&ssi1 {
-> +	#sound-dai-cells =3D <0>;
-> +	fsl,mode =3D "ac97-slave";
-> +	status =3D "okay";
+> +	#sound-dai-cells = <0>;
+> +	fsl,mode = "ac97-slave";
+> +	status = "okay";
 > +};
 > +
 > +&uart2 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_uart2>;
-> +	status =3D "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_uart2>;
+> +	status = "okay";
 > +};
 > +
 > +&uart5 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_uart5>;
-> +	status =3D "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_uart5>;
+> +	status = "okay";
 > +};
 > +
 > +&usbotg {
-> +	pinctrl-0 =3D <&pinctrl_usbotg &pinctrl_usbotg_id>;
+> +	pinctrl-0 = <&pinctrl_usbotg &pinctrl_usbotg_id>;
 > +};
 > +
 > +&usdhc2 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_usdhc2>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_usdhc2>;
 > +	non-removable;
-> +	vmmc-supply =3D <&reg_wifi>;
+> +	vmmc-supply = <&reg_wifi>;
 > +	cap-power-off-card;
 > +	keep-power-in-suspend;
-> +	status =3D "okay";
+> +	status = "okay";
 > +
 > +	wifi {
-> +		compatible =3D "ti,wl1271";
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_wifi>;
-> +		interrupts-extended =3D <&gpio1 30 IRQ_TYPE_LEVEL_HIGH>;
-> +		ref-clock-frequency =3D "38400000";
-> +		tcxo-clock-frequency =3D "19200000";
+> +		compatible = "ti,wl1271";
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_wifi>;
+> +		interrupts-extended = <&gpio1 30 IRQ_TYPE_LEVEL_HIGH>;
+> +		ref-clock-frequency = "38400000";
+> +		tcxo-clock-frequency = "19200000";
 > +	};
 > +};
 > +
 > +&iomuxc {
 > +	pinctrl_audmux: audmuxgrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_CSI0_MCLK__CCM_CLKO1		0x030b0
 > +			MX6QDL_PAD_CSI0_DAT7__AUD3_RXD		0x130b0
 > +			MX6QDL_PAD_CSI0_DAT4__AUD3_TXC		0x130b0
@@ -6136,26 +6045,26 @@ dts
 > +	};
 > +
 > +	pinctrl_backlight: backlightgrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_DISP0_DAT7__GPIO4_IO28	0x1b0b0
 > +		>;
 > +	};
 > +
 > +	pinctrl_can2: can2grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_KEY_COL4__FLEXCAN2_TX 0x80000000
 > +			MX6QDL_PAD_KEY_ROW4__FLEXCAN2_RX 0x80000000
 > +		>;
 > +	};
 > +
 > +	pinctrl_can3: can3grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_EIM_D20__GPIO3_IO20		0x1b0b1
 > +		>;
 > +	};
 > +
 > +	pinctrl_ecspi1: ecspi1grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_EIM_D17__ECSPI1_MISO		0x100b1
 > +			MX6QDL_PAD_EIM_D18__ECSPI1_MOSI		0x100b1
 > +			MX6QDL_PAD_EIM_D16__ECSPI1_SCLK		0x100b1
@@ -6165,7 +6074,7 @@ dts
 > +	};
 > +
 > +	pinctrl_ecspi2: ecspi2grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_EIM_OE__ECSPI2_MISO		0x100b1
 > +			MX6QDL_PAD_EIM_CS0__ECSPI2_SCLK		0x100b1
 > +			MX6QDL_PAD_EIM_CS1__ECSPI2_MOSI		0x100b1
@@ -6174,14 +6083,14 @@ dts
 > +	};
 > +
 > +	pinctrl_ecspi2_cs: ecspi2csgrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			/* ADC128S022 CS */
 > +			MX6QDL_PAD_DISP0_DAT4__GPIO4_IO25	0x1b0b1
 > +		>;
 > +	};
 > +
 > +	pinctrl_ecspi3: ecspi3grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_DISP0_DAT0__ECSPI3_SCLK	0x100b1
 > +			MX6QDL_PAD_DISP0_DAT1__ECSPI3_MOSI	0x100b1
 > +			MX6QDL_PAD_DISP0_DAT2__ECSPI3_MISO	0x100b1
@@ -6190,7 +6099,7 @@ dts
 > +	};
 > +
 > +	pinctrl_enet: enetgrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_RGMII_RXC__RGMII_RXC		0x1b030
 > +			MX6QDL_PAD_RGMII_RD0__RGMII_RD0		0x1b030
 > +			MX6QDL_PAD_RGMII_RD1__RGMII_RD1		0x1b030
@@ -6214,7 +6123,7 @@ dts
 > +	};
 > +
 > +	pinctrl_hdmi: hdmigrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			/* NOTE: DDC is done via I2C2, so DON'T
 > +			 * configure DDC pins for HDMI!
 > +			 */
@@ -6224,34 +6133,34 @@ dts
 > +
 > +	/* DDC */
 > +	pinctrl_i2c2: i2c2grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_KEY_COL3__I2C2_SCL	0x4001b8b1
 > +			MX6QDL_PAD_KEY_ROW3__I2C2_SDA	0x4001b8b1
 > +		>;
 > +	};
 > +
 > +	pinctrl_leds: ledsgrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_GPIO_8__GPIO1_IO08		0x1b0b0
 > +			MX6QDL_PAD_GPIO_9__GPIO1_IO09		0x1b0b0
 > +		>;
 > +	};
 > +
 > +	pinctrl_pwm1: pwm1grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_DISP0_DAT8__PWM1_OUT		0x1b0b0
 > +		>;
 > +	};
 > +
 > +	pinctrl_spdif: spdifgrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_GPIO_16__SPDIF_IN		0x1b0b0
 > +			MX6QDL_PAD_GPIO_19__SPDIF_OUT		0x1b0b0
 > +		>;
 > +	};
 > +
 > +	pinctrl_uart2: uart2grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_EIM_D26__UART2_RX_DATA	0x1b0b1
 > +			MX6QDL_PAD_EIM_D27__UART2_TX_DATA	0x1b0b1
 > +			MX6QDL_PAD_EIM_D28__UART2_DTE_CTS_B	0x1b0b1
@@ -6260,20 +6169,20 @@ dts
 > +	};
 > +
 > +	pinctrl_uart5: uart5grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_KEY_COL1__UART5_TX_DATA	0x1b0b1
 > +			MX6QDL_PAD_KEY_ROW1__UART5_RX_DATA	0x1b0b1
 > +		>;
 > +	};
 > +
 > +	pinctrl_usbotg_id: usbotgidgrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_ENET_RX_ER__USB_OTG_ID	0x1f058
 > +		>;
 > +	};
 > +
 > +	pinctrl_usdhc2: usdhc2grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_SD2_CMD__SD2_CMD		0x170b9
 > +			MX6QDL_PAD_SD2_CLK__SD2_CLK		0x100b9
 > +			MX6QDL_PAD_SD2_DAT0__SD2_DATA0		0x170b9
@@ -6284,14 +6193,14 @@ dts
 > +	};
 > +
 > +	pinctrl_wifi: wifigrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			/* WL12xx IRQ */
 > +			MX6QDL_PAD_ENET_TXD0__GPIO1_IO30	0x10880
 > +		>;
 > +	};
 > +
 > +	pinctrl_wifi_npd: wifinpd {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_ENET_RXD1__GPIO1_IO26	0x1b8b0
 > +		>;
 > +	};
@@ -6313,55 +6222,55 @@ dts
 > +#include <dt-bindings/leds/common.h>
 > +
 > +/ {
-> +	model =3D "Protonic WD2 board";
-> +	compatible =3D "prt,prtwd2", "fsl,imx6q";
+> +	model = "Protonic WD2 board";
+> +	compatible = "prt,prtwd2", "fsl,imx6q";
 > +
 > +	memory@10000000 {
-> +		device_type =3D "memory";
-> +		reg =3D <0x10000000 0x20000000>;
+> +		device_type = "memory";
+> +		reg = <0x10000000 0x20000000>;
 > +	};
 > +
 > +	memory@80000000 {
-> +		device_type =3D "memory";
-> +		reg =3D <0x80000000 0x20000000>;
+> +		device_type = "memory";
+> +		reg = <0x80000000 0x20000000>;
 > +	};
 > +
 > +	usdhc2_wifi_pwrseq: usdhc2_wifi_pwrseq {
-> +		compatible =3D "mmc-pwrseq-simple";
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_wifi_npd>;
-> +		reset-gpios =3D <&gpio6 10 GPIO_ACTIVE_LOW>;
+> +		compatible = "mmc-pwrseq-simple";
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_wifi_npd>;
+> +		reset-gpios = <&gpio6 10 GPIO_ACTIVE_LOW>;
 > +	};
 > +
 > +	/* PRTWD2 rev 1 bitbang I2C for Ethernet Switch */
 > +	i2c@4 {
-> +		compatible =3D "i2c-gpio";
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_i2c4>;
-> +		sda-gpios =3D <&gpio1 22 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-> +		scl-gpios =3D <&gpio1 31 GPIO_ACTIVE_HIGH>;
-> +		i2c-gpio,delay-us =3D <20>;	/* ~10 kHz */
+> +		compatible = "i2c-gpio";
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_i2c4>;
+> +		sda-gpios = <&gpio1 22 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+> +		scl-gpios = <&gpio1 31 GPIO_ACTIVE_HIGH>;
+> +		i2c-gpio,delay-us = <20>;	/* ~10 kHz */
 > +		i2c-gpio,scl-output-only;
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <0>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
 > +	};
 > +};
 > +
 > +&can1 {
-> +	pinctrl-0 =3D <&pinctrl_can1 &pinctrl_can1phy>;
+> +	pinctrl-0 = <&pinctrl_can1 &pinctrl_can1phy>;
 > +};
 > +
 > +&fec {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_enet>;
-> +	phy-mode =3D "rmii";
-> +	clocks =3D <&clks IMX6QDL_CLK_ENET>,
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_enet>;
+> +	phy-mode = "rmii";
+> +	clocks = <&clks IMX6QDL_CLK_ENET>,
 > +		 <&clks IMX6QDL_CLK_ENET>;
-> +	clock-names =3D "ipg", "ahb";
-> +	status =3D "okay";
+> +	clock-names = "ipg", "ahb";
+> +	status = "okay";
 > +
 > +	fixed-link {
-> +		speed =3D <100>;
+> +		speed = <100>;
 > +		pause;
 > +		full-duplex;
 > +	};
@@ -6369,72 +6278,72 @@ dts
 > +
 > +&i2c3 {
 > +	adc@49 {
-> +		compatible =3D "ti,ads1015";
-> +		reg =3D <0x49>;
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <0>;
+> +		compatible = "ti,ads1015";
+> +		reg = <0x49>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
 > +
 > +		/* V in */
 > +		channel@4 {
-> +			reg =3D <4>;
-> +			ti,gain =3D <1>;
-> +			ti,datarate =3D <3>;
+> +			reg = <4>;
+> +			ti,gain = <1>;
+> +			ti,datarate = <3>;
 > +		};
 > +
 > +		/* I charge */
 > +		channel@5 {
-> +			reg =3D <5>;
-> +			ti,gain =3D <1>;
-> +			ti,datarate =3D <3>;
+> +			reg = <5>;
+> +			ti,gain = <1>;
+> +			ti,datarate = <3>;
 > +		};
 > +
 > +		/* V bus  */
 > +		channel@6 {
-> +			reg =3D <6>;
-> +			ti,gain =3D <1>;
-> +			ti,datarate =3D <3>;
+> +			reg = <6>;
+> +			ti,gain = <1>;
+> +			ti,datarate = <3>;
 > +		};
 > +
 > +		/* nc */
 > +		channel@7 {
-> +			reg =3D <7>;
-> +			ti,gain =3D <1>;
-> +			ti,datarate =3D <3>;
+> +			reg = <7>;
+> +			ti,gain = <1>;
+> +			ti,datarate = <3>;
 > +		};
 > +	};
 > +};
 > +
 > +&usdhc2 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_usdhc2>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_usdhc2>;
 > +	non-removable;
 > +	no-1-8-v;
 > +	non-removable;
-> +	mmc-pwrseq =3D <&usdhc2_wifi_pwrseq>;
+> +	mmc-pwrseq = <&usdhc2_wifi_pwrseq>;
 > +	pm-ignore-notify;
-> +	#address-cells =3D <1>;
-> +	#size-cells =3D <0>;
-> +	status =3D "okay";
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+> +	status = "okay";
 > +
 > +	wifi@1 {
-> +		compatible =3D "brcm,bcm4329-fmac";
-> +		reg =3D <1>;
+> +		compatible = "brcm,bcm4329-fmac";
+> +		reg = <1>;
 > +	};
 > +};
 > +
 > +&iomuxc {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_usb_eth_chg>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_usb_eth_chg>;
 > +
 > +	pinctrl_can1phy: can1phy {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			/* CAN1_SR */
 > +			MX6QDL_PAD_KEY_COL3__GPIO4_IO12	0x13070
 > +		>;
 > +	};
 > +
 > +	pinctrl_enet: enetgrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			/* MX6QDL_ENET_PINGRP4 */
 > +			MX6QDL_PAD_ENET_RXD0__ENET_RX_DATA0	0x1b0b0
 > +			MX6QDL_PAD_ENET_RXD1__ENET_RX_DATA1	0x1b0b0
@@ -6456,14 +6365,14 @@ dts
 > +	};
 > +
 > +	pinctrl_i2c4: i2c4grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_ENET_MDIO__GPIO1_IO22	0x1f8b0
 > +			MX6QDL_PAD_ENET_MDC__GPIO1_IO31		0x1f8b0
 > +		>;
 > +	};
 > +
 > +	pinctrl_usb_eth_chg: usbethchggrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			/* USB charging control */
 > +			MX6QDL_PAD_NANDF_CS0__GPIO6_IO11	0x130b0
 > +			MX6QDL_PAD_NANDF_CS1__GPIO6_IO14	0x130b0
@@ -6473,7 +6382,7 @@ dts
 > +	};
 > +
 > +	pinctrl_usdhc2: usdhc2grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_SD2_CMD__SD2_CMD		0x170b9
 > +			MX6QDL_PAD_SD2_CLK__SD2_CLK		0x100b9
 > +			MX6QDL_PAD_SD2_DAT0__SD2_DATA0		0x170b9
@@ -6484,7 +6393,7 @@ dts
 > +	};
 > +
 > +	pinctrl_wifi_npd: wifinpd {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			/* WL_REG_ON */
 > +			MX6QDL_PAD_NANDF_RB0__GPIO6_IO10	0x13069
 > +		>;
@@ -6506,25 +6415,25 @@ dts
 > +#include "imx6qdl-vicut1.dtsi"
 > +
 > +/ {
-> +	model =3D "Kverneland UT1Q Board";
-> +	compatible =3D "kvg,vicut1q", "fsl,imx6q";
+> +	model = "Kverneland UT1Q Board";
+> +	compatible = "kvg,vicut1q", "fsl,imx6q";
 > +
 > +	memory {
-> +		reg =3D <0x10000000 0xf0000000>;
+> +		reg = <0x10000000 0xf0000000>;
 > +	};
 > +};
 > +
 > +&fec {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_enet>;
-> +	phy-mode =3D "rgmii";
-> +	/* phy-reset-gpios =3D <&gpio1 25 GPIO_ACTIVE_LOW>; */
-> +	status =3D "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_enet>;
+> +	phy-mode = "rgmii";
+> +	/* phy-reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>; */
+> +	status = "okay";
 > +};
 > +
 > +&iomuxc {
 > +	pinctrl_enet: enetgrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			/* MX6QDL_ENET_PINGRP_RGMII_MD(0x1b030, 0x10030) */
 > +			MX6QDL_PAD_RGMII_RXC__RGMII_RXC         0x1b030
 > +			MX6QDL_PAD_RGMII_RD0__RGMII_RD0         0x1b030
@@ -6548,8 +6457,7 @@ dts
 > +		>;
 > +	};
 > +};
-> diff --git a/arch/arm/dts/imx6qdl-prti6q.dtsi b/arch/arm/dts/imx6qdl-prti=
-6q.dtsi
+> diff --git a/arch/arm/dts/imx6qdl-prti6q.dtsi b/arch/arm/dts/imx6qdl-prti6q.dtsi
 > new file mode 100644
 > index 0000000000..ed526d185f
 > --- /dev/null
@@ -6565,137 +6473,137 @@ dts
 > +
 > +/ {
 > +	chosen {
-> +		stdout-path =3D &uart4;
+> +		stdout-path = &uart4;
 > +	};
 > +
 > +	reg_1v8: regulator-1v8 {
-> +		compatible =3D "regulator-fixed";
-> +		regulator-name =3D "1v8";
-> +		regulator-min-microvolt =3D <1800000>;
-> +		regulator-max-microvolt =3D <1800000>;
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "1v8";
+> +		regulator-min-microvolt = <1800000>;
+> +		regulator-max-microvolt = <1800000>;
 > +		regulator-always-on;
 > +	};
 > +
 > +	reg_3v3: regulator-3v3 {
-> +		compatible =3D "regulator-fixed";
-> +		regulator-name =3D "3v3";
-> +		regulator-min-microvolt =3D <3300000>;
-> +		regulator-max-microvolt =3D <3300000>;
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "3v3";
+> +		regulator-min-microvolt = <3300000>;
+> +		regulator-max-microvolt = <3300000>;
 > +		regulator-always-on;
 > +	};
 > +
 > +	reg_usb_h1_vbus: regulator-h1-vbus {
-> +		compatible =3D "regulator-fixed";
-> +		regulator-name =3D "h1-vbus";
-> +		regulator-min-microvolt =3D <5000000>;
-> +		regulator-max-microvolt =3D <5000000>;
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "h1-vbus";
+> +		regulator-min-microvolt = <5000000>;
+> +		regulator-max-microvolt = <5000000>;
 > +		regulator-always-on;
 > +	};
 > +
 > +	reg_usb_otg_vbus: regulator-otg-vbus {
-> +		compatible =3D "regulator-fixed";
-> +		regulator-name =3D "otg-vbus";
-> +		regulator-min-microvolt =3D <5000000>;
-> +		regulator-max-microvolt =3D <5000000>;
-> +		gpio =3D <&gpio3 22 GPIO_ACTIVE_HIGH>;
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "otg-vbus";
+> +		regulator-min-microvolt = <5000000>;
+> +		regulator-max-microvolt = <5000000>;
+> +		gpio = <&gpio3 22 GPIO_ACTIVE_HIGH>;
 > +		enable-active-high;
 > +	};
 > +};
 > +
 > +&can1 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_can1>;
-> +	status =3D "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_can1>;
+> +	status = "okay";
 > +};
 > +
 > +&i2c1 {
-> +	clock-frequency =3D <100000>;
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_i2c1>;
-> +	status =3D "okay";
+> +	clock-frequency = <100000>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_i2c1>;
+> +	status = "okay";
 > +};
 > +
 > +&i2c3 {
-> +	clock-frequency =3D <100000>;
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_i2c3>;
-> +	status =3D "okay";
+> +	clock-frequency = <100000>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_i2c3>;
+> +	status = "okay";
 > +
 > +	temperature-sensor@70 {
-> +		compatible =3D "ti,tmp103";
-> +		reg =3D <0x70>;
+> +		compatible = "ti,tmp103";
+> +		reg = <0x70>;
 > +	};
 > +};
 > +
 > +&uart4 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_uart4>;
-> +	status =3D "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_uart4>;
+> +	status = "okay";
 > +};
 > +
 > +&usbh1 {
-> +	vbus-supply =3D <&reg_usb_h1_vbus>;
-> +	phy_type =3D "utmi";
-> +	dr_mode =3D "host";
-> +	status =3D "okay";
+> +	vbus-supply = <&reg_usb_h1_vbus>;
+> +	phy_type = "utmi";
+> +	dr_mode = "host";
+> +	status = "okay";
 > +};
 > +
 > +&usbotg {
-> +	vbus-supply =3D <&reg_usb_otg_vbus>;
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_usbotg>;
-> +	phy_type =3D "utmi";
-> +	dr_mode =3D "host";
+> +	vbus-supply = <&reg_usb_otg_vbus>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_usbotg>;
+> +	phy_type = "utmi";
+> +	dr_mode = "host";
 > +	disable-over-current;
-> +	status =3D "okay";
+> +	status = "okay";
 > +};
 > +
 > +&usdhc1 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_usdhc1>;
-> +	cd-gpios =3D <&gpio1 1 GPIO_ACTIVE_LOW>;
-> +	status =3D "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_usdhc1>;
+> +	cd-gpios = <&gpio1 1 GPIO_ACTIVE_LOW>;
+> +	status = "okay";
 > +};
 > +
 > +&usdhc3 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_usdhc3>;
-> +	bus-width =3D <8>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_usdhc3>;
+> +	bus-width = <8>;
 > +	non-removable;
-> +	status =3D "okay";
+> +	status = "okay";
 > +};
 > +
 > +&iomuxc {
 > +	pinctrl_can1: can1grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_KEY_ROW2__FLEXCAN1_RX	0x80000000
 > +			MX6QDL_PAD_KEY_COL2__FLEXCAN1_TX	0x80000000
 > +		>;
 > +	};
 > +
 > +	pinctrl_i2c1: i2c1grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_CSI0_DAT8__I2C1_SDA		0x4001f8b1
 > +			MX6QDL_PAD_CSI0_DAT9__I2C1_SCL		0x4001f8b1
 > +		>;
 > +	};
 > +
 > +	pinctrl_i2c3: i2c3grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_GPIO_5__I2C3_SCL		0x4001b8b1
 > +			MX6QDL_PAD_GPIO_6__I2C3_SDA		0x4001b8b1
 > +		>;
 > +	};
 > +
 > +	pinctrl_uart4: uart4grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_KEY_COL0__UART4_TX_DATA	0x1b0b1
 > +			MX6QDL_PAD_KEY_ROW0__UART4_RX_DATA	0x1b0b1
 > +		>;
 > +	};
 > +
 > +	pinctrl_usdhc1: usdhc1grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_SD1_CMD__SD1_CMD		0x170f9
 > +			MX6QDL_PAD_SD1_CLK__SD1_CLK		0x100f9
 > +			MX6QDL_PAD_SD1_DAT0__SD1_DATA0		0x170f9
@@ -6707,7 +6615,7 @@ dts
 > +	};
 > +
 > +	pinctrl_usdhc3: usdhc3grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x17099
 > +			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x10099
 > +			MX6QDL_PAD_SD3_DAT0__SD3_DATA0		0x17099
@@ -6723,14 +6631,13 @@ dts
 > +	};
 > +
 > +	pinctrl_usbotg: usbotggrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_EIM_D21__USB_OTG_OC	0x1b0b0
 > +			MX6QDL_PAD_EIM_D22__GPIO3_IO22	0x1b0b0
 > +		>;
 > +	};
 > +};
-> diff --git a/arch/arm/dts/imx6qdl-vicut1.dtsi b/arch/arm/dts/imx6qdl-vicu=
-t1.dtsi
+> diff --git a/arch/arm/dts/imx6qdl-vicut1.dtsi b/arch/arm/dts/imx6qdl-vicut1.dtsi
 > new file mode 100644
 > index 0000000000..dc18614f89
 > --- /dev/null
@@ -6746,75 +6653,75 @@ t1.dtsi
 > +
 > +/ {
 > +	gpio_key_pwr: gpio_keys {
-> +		compatible =3D "gpio-keys";
+> +		compatible = "gpio-keys";
 > +		autorepeat;
 > +
 > +		power {
-> +			label =3D "GPIO Key Power";
-> +			gpios =3D <&gpio2 23 GPIO_ACTIVE_LOW>;
-> +			linux,code =3D <KEY_POWER>;
+> +			label = "GPIO Key Power";
+> +			gpios = <&gpio2 23 GPIO_ACTIVE_LOW>;
+> +			linux,code = <KEY_POWER>;
 > +			gpio-key,wakeup;
 > +		};
 > +	};
 > +
 > +	leds {
-> +		compatible =3D "gpio-leds";
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_leds>;
+> +		compatible = "gpio-leds";
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_leds>;
 > +
 > +		debug0 {
-> +			label =3D "debug0";
-> +			gpios =3D <&gpio1 8 0>;
-> +			linux,default-trigger =3D "heartbeat";
+> +			label = "debug0";
+> +			gpios = <&gpio1 8 0>;
+> +			linux,default-trigger = "heartbeat";
 > +		};
 > +
 > +		debug1 {
-> +			label =3D "debug1";
-> +			gpios =3D <&gpio1 9 0>;
-> +			linux,default-trigger =3D "mmc";
+> +			label = "debug1";
+> +			gpios = <&gpio1 9 0>;
+> +			linux,default-trigger = "mmc";
 > +		};
 > +
 > +		power_led {
-> +			label =3D "power_led";
-> +			gpios =3D <&gpio2 24 0>;
-> +			default-state =3D "on";
+> +			label = "power_led";
+> +			gpios = <&gpio2 24 0>;
+> +			default-state = "on";
 > +		};
 > +
 > +		isb_led {
-> +			label =3D "isb_led";
-> +			gpios =3D <&gpio4 31 0>;
-> +			default-state =3D "off";
+> +			label = "isb_led";
+> +			gpios = <&gpio4 31 0>;
+> +			default-state = "off";
 > +		};
 > +	};
 > +};
 > +
 > +&clks {
-> +	assigned-clocks =3D <&clks IMX6QDL_CLK_LDB_DI0_SEL>;
-> +	assigned-clock-parents =3D <&clks IMX6QDL_CLK_PLL5_VIDEO_DIV>;
+> +	assigned-clocks = <&clks IMX6QDL_CLK_LDB_DI0_SEL>;
+> +	assigned-clock-parents = <&clks IMX6QDL_CLK_PLL5_VIDEO_DIV>;
 > +};
 > +
 > +&uart1 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_uart1>;
-> +	status =3D "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_uart1>;
+> +	status = "okay";
 > +};
 > +
 > +&uart3 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_uart3>;
-> +	status =3D "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_uart3>;
+> +	status = "okay";
 > +};
 > +
 > +&i2c3 {
 > +	rtc: pcf8563@51 {
-> +		compatible =3D "nxp,pcf8563";
-> +		reg =3D <0x51>;
+> +		compatible = "nxp,pcf8563";
+> +		reg = <0x51>;
 > +	};
 > +};
 > +
 > +&iomuxc {
 > +	pinctrl_hog: hoggrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			/* SGTL5000 sys_mclk */
 > +			MX6QDL_PAD_CSI0_MCLK__CCM_CLKO1		0x030b0
 > +			/* CAN1_SR + CAN2_SR GPIO outputs */
@@ -6856,7 +6763,7 @@ t1.dtsi
 > +			/* HW revision detect */
 > +			/* REV_ID0 */
 > +			MX6QDL_PAD_SD4_DAT0__GPIO2_IO08 0x1b0b0
-> +			/* REV_ID1 =3D PWM output LED_PWM (SION) */
+> +			/* REV_ID1 = PWM output LED_PWM (SION) */
 > +			/* defined in &pinctrl_pwm3 */
 > +			/* REV_ID2 */
 > +			MX6QDL_PAD_SD4_DAT2__GPIO2_IO10 0x1b0b0
@@ -6890,7 +6797,7 @@ t1.dtsi
 > +	};
 > +
 > +	pinctrl_usbotg: usbotggrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_EIM_D21__USB_OTG_OC	0x1b0b0
 > +			/* power enable, high active */
 > +			MX6QDL_PAD_EIM_D22__GPIO3_IO22	0x1b0b0
@@ -6899,7 +6806,7 @@ t1.dtsi
 > +
 > +	/* YaCO AUX Uart */
 > +	pinctrl_uart1: uart1grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_CSI0_DAT10__UART1_TX_DATA	0x1b0b1
 > +			MX6QDL_PAD_CSI0_DAT11__UART1_RX_DATA	0x1b0b1
 > +		>;
@@ -6907,14 +6814,14 @@ t1.dtsi
 > +
 > +	/* YaCO Touchscreen UART */
 > +	pinctrl_uart3: uart3grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_EIM_D24__UART3_TX_DATA	0x1b0b1
 > +			MX6QDL_PAD_EIM_D25__UART3_RX_DATA	0x1b0b1
 > +		>;
 > +	};
 > +
 > +	pinctrl_leds: ledsgrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			/* DEBUG0A */
 > +			MX6QDL_PAD_DI0_DISP_CLK__GPIO4_IO16	0x1b0b0
 > +			/* DEBUG1A */
@@ -6931,21 +6838,20 @@ t1.dtsi
 > +	};
 > +
 > +	pinctrl_pwm2: pwm2grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			/* ISB LED (not in TGO or UTC version 1+) */
 > +			MX6QDL_PAD_DISP0_DAT9__PWM2_OUT		0x1b0b0
 > +		>;
 > +	};
 > +
 > +	pinctrl_pwm3: pwm3grp {
-> +		fsl,pins =3D <
-> +			/* REV_ID1 =3D PWM output LED_PWM (SION for ID) */
+> +		fsl,pins = <
+> +			/* REV_ID1 = PWM output LED_PWM (SION for ID) */
 > +			MX6QDL_PAD_SD4_DAT1__PWM3_OUT   0x4001b0b0
 > +		>;
 > +	};
 > +};
-> diff --git a/arch/arm/dts/imx6qp-prtwd3.dts b/arch/arm/dts/imx6qp-prtwd3.=
-dts
+> diff --git a/arch/arm/dts/imx6qp-prtwd3.dts b/arch/arm/dts/imx6qp-prtwd3.dts
 > new file mode 100644
 > index 0000000000..0ef0bae036
 > --- /dev/null
@@ -6967,214 +6873,213 @@ dts
 > +#include "imx6qdl-prti6q.dtsi"
 > +
 > +/ {
-> +	model =3D "Protonic WD3 board";
-> +	compatible =3D "prt,prtwd3", "fsl,imx6qp";
+> +	model = "Protonic WD3 board";
+> +	compatible = "prt,prtwd3", "fsl,imx6qp";
 > +
 > +	memory@10000000 {
-> +		device_type =3D "memory";
-> +		reg =3D <0x10000000 0x20000000>;
+> +		device_type = "memory";
+> +		reg = <0x10000000 0x20000000>;
 > +	};
 > +
 > +	memory@80000000 {
-> +		device_type =3D "memory";
-> +		reg =3D <0x80000000 0x20000000>;
+> +		device_type = "memory";
+> +		reg = <0x80000000 0x20000000>;
 > +	};
 > +
 > +	aliases {
-> +		mdio-gpio0 =3D &mdio0;
+> +		mdio-gpio0 = &mdio0;
 > +	};
 > +
 > +	usdhc2_wifi_pwrseq: usdhc2_wifi_pwrseq {
-> +		compatible =3D "mmc-pwrseq-simple";
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_wifi_npd>;
-> +		reset-gpios =3D <&gpio6 10 GPIO_ACTIVE_LOW>;
+> +		compatible = "mmc-pwrseq-simple";
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_wifi_npd>;
+> +		reset-gpios = <&gpio6 10 GPIO_ACTIVE_LOW>;
 > +	};
 > +
 > +	clk20m_can: fdcan_clock {
-> +		compatible =3D "fixed-clock";
-> +		#clock-cells =3D <0>;
-> +		clock-frequency =3D <20000000>;
+> +		compatible = "fixed-clock";
+> +		#clock-cells = <0>;
+> +		clock-frequency = <20000000>;
 > +	};
 > +
 > +	clk25m_switch: switch_clock {
-> +		compatible =3D "fixed-clock";
-> +		#clock-cells =3D <0>;
-> +		clock-frequency =3D <25000000>;
+> +		compatible = "fixed-clock";
+> +		#clock-cells = <0>;
+> +		clock-frequency = <25000000>;
 > +	};
 > +
 > +	clk25m_phy3: phy3_clock {
-> +		compatible =3D "fixed-clock";
-> +		#clock-cells =3D <0>;
-> +		clock-frequency =3D <25000000>;
+> +		compatible = "fixed-clock";
+> +		#clock-cells = <0>;
+> +		clock-frequency = <25000000>;
 > +	};
 > +
 > +	clk50m_phy: phy_clock {
-> +		compatible =3D "fixed-clock";
-> +		#clock-cells =3D <0>;
-> +		clock-frequency =3D <50000000>;
+> +		compatible = "fixed-clock";
+> +		#clock-cells = <0>;
+> +		clock-frequency = <50000000>;
 > +	};
 > +
 > +	mdio0: mdio {
-> +		compatible =3D "virtual,mdio-gpio";
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_mdio0>;
+> +		compatible = "virtual,mdio-gpio";
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_mdio0>;
 > +
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <0>;
-> +		gpios =3D <&gpio5 6 GPIO_ACTIVE_HIGH
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +		gpios = <&gpio5 6 GPIO_ACTIVE_HIGH
 > +			 &gpio5 7 GPIO_ACTIVE_HIGH>;
 > +	};
 > +
 > +	display_panel0 {
-> +		compatible =3D "kyo,tcg121xglp";
-> +		backlight =3D <&backlight_lcd>;
+> +		compatible = "kyo,tcg121xglp";
+> +		backlight = <&backlight_lcd>;
 > +
 > +		port {
 > +			display_panel0_in: endpoint {
-> +				remote-endpoint =3D <&serializer0_out>;
+> +				remote-endpoint = <&serializer0_out>;
 > +			};
 > +		};
 > +	};
 > +
 > +	display_panel1 {
-> +		compatible =3D "kyo,tcg121xglp";
-> +		backlight =3D <&backlight_panel1>;
+> +		compatible = "kyo,tcg121xglp";
+> +		backlight = <&backlight_panel1>;
 > +
 > +		port {
 > +			display_panel1_in: endpoint {
-> +				remote-endpoint =3D <&serializer1_out>;
+> +				remote-endpoint = <&serializer1_out>;
 > +			};
 > +		};
 > +	};
 > +
 > +	backlight_lcd: backlight_lcd {
-> +		compatible =3D "pwm-backlight";
-> +		pwms =3D <&pwm1 0 5000000>;
-> +		brightness-levels =3D <0 1 2 4 6 8 12 16 24 32 48 64 96 128 192 255>;
-> +		default-brightness-level =3D <15>;
-> +		power-supply =3D <&reg_3v3>;
+> +		compatible = "pwm-backlight";
+> +		pwms = <&pwm1 0 5000000>;
+> +		brightness-levels = <0 1 2 4 6 8 12 16 24 32 48 64 96 128 192 255>;
+> +		default-brightness-level = <15>;
+> +		power-supply = <&reg_3v3>;
 > +	};
 > +
 > +	backlight_panel1: backlight_panel1 {
-> +		compatible =3D "pwm-backlight";
-> +		pwms =3D <&pwm2 0 5000000>;
-> +		brightness-levels =3D <0 1 2 4 6 8 12 16 24 32 48 64 96 128 192 255>;
-> +		default-brightness-level =3D <0>;
-> +		power-supply =3D <&reg_3v3>;
+> +		compatible = "pwm-backlight";
+> +		pwms = <&pwm2 0 5000000>;
+> +		brightness-levels = <0 1 2 4 6 8 12 16 24 32 48 64 96 128 192 255>;
+> +		default-brightness-level = <0>;
+> +		power-supply = <&reg_3v3>;
 > +	};
 > +};
 > +
 > +&fec {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_enet>;
-> +	status =3D "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_enet>;
+> +	status = "okay";
 > +
-> +	clocks =3D <&clks IMX6QDL_CLK_ENET>,
+> +	clocks = <&clks IMX6QDL_CLK_ENET>,
 > +		 <&clks IMX6QDL_CLK_ENET>,
 > +		 <&clks IMX6QDL_CLK_ENET_REF>,
 > +		 <&clks IMX6QDL_CLK_ENET_REF>;
-> +	clock-names =3D "ipg", "ahb", "ptp", "enet_clk_ref";
-> +	assigned-clocks =3D <&clks IMX6QDL_CLK_ENET_REF>;
-> +	assigned-clock-rates =3D <125000000>;
+> +	clock-names = "ipg", "ahb", "ptp", "enet_clk_ref";
+> +	assigned-clocks = <&clks IMX6QDL_CLK_ENET_REF>;
+> +	assigned-clock-rates = <125000000>;
 > +
-> +	phy-mode =3D "rgmii";
+> +	phy-mode = "rgmii";
 > +	fixed-link {
-> +		speed =3D <100>;
+> +		speed = <100>;
 > +		full-duplex;
 > +	};
 > +
 > +	mdio1: mdio {
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <0>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
 > +		/* Microchip KSZ9031 */
 > +		rgmii_phy: ethernet-phy@2 {
-> +			compatible =3D "ethernet-phy-ieee802.3-c22";
-> +			reg =3D <2>;
+> +			compatible = "ethernet-phy-ieee802.3-c22";
+> +			reg = <2>;
 > +
-> +			interrupts-extended =3D <&gpio1 28 IRQ_TYPE_EDGE_FALLING>;
+> +			interrupts-extended = <&gpio1 28 IRQ_TYPE_EDGE_FALLING>;
 > +
 > +			/* FIXME: tx/rx clk skew are currently set by imx
-> +                         * platform driver. Write own walues here to not=
- depend
+> +                         * platform driver. Write own walues here to not depend
 > +                         * fixup of horror.
 > +                         */
 > +
-> +			reset-gpios =3D <&gpio1 25 GPIO_ACTIVE_LOW>;
+> +			reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>;
 > +			/* reset assert time is provided by documentation */
-> +			reset-assert-us =3D <10000>;
+> +			reset-assert-us = <10000>;
 > +			/* documented reset deassert time (100us) is not enough
 > +                         * use test value of 300us.
 > +			 */
-> +			reset-deassert-us =3D <1000>;
+> +			reset-deassert-us = <1000>;
 > +
-> +			clocks =3D <&clk25m_phy3>;
+> +			clocks = <&clk25m_phy3>;
 > +		};
 > +	};
 > +};
 > +
 > +&ecspi2 {
-> +	fsl,spi-num-chipselects =3D <1>;
-> +	cs-gpios =3D <&gpio2 26 GPIO_ACTIVE_HIGH>;
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_ecspi2>;
-> +	status =3D "okay";
+> +	fsl,spi-num-chipselects = <1>;
+> +	cs-gpios = <&gpio2 26 GPIO_ACTIVE_HIGH>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_ecspi2>;
+> +	status = "okay";
 > +	sja1105_switch: sja1105@0 {
-> +		reg =3D <0>;
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <0>;
-> +		compatible =3D "nxp,sja1105q";
-> +		spi-max-frequency =3D <4000000>;
+> +		reg = <0>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +		compatible = "nxp,sja1105q";
+> +		spi-max-frequency = <4000000>;
 > +		spi-cpha;
-> +		spi-rx-delay-us =3D <1>;
-> +		spi-tx-delay-us =3D <1>;
+> +		spi-rx-delay-us = <1>;
+> +		spi-tx-delay-us = <1>;
 > +
-> +		reset-gpios =3D <&gpio5 5 GPIO_ACTIVE_LOW>;
+> +		reset-gpios = <&gpio5 5 GPIO_ACTIVE_LOW>;
 > +
-> +		clocks =3D <&clk25m_switch>;
-> +		#clock-cells =3D <1>;
+> +		clocks = <&clk25m_switch>;
+> +		#clock-cells = <1>;
 > +
 > +		ports {
-> +			#address-cells =3D <1>;
-> +			#size-cells =3D <0>;
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
 > +
 > +			port@0 {
-> +				reg =3D <0>;
-> +				label =3D "usb";
-> +				phy-handle =3D <&usbeth_phy>;
-> +				phy-mode =3D "rmii";
+> +				reg = <0>;
+> +				label = "usb";
+> +				phy-handle = <&usbeth_phy>;
+> +				phy-mode = "rmii";
 > +			};
 > +
 > +			port@1 {
-> +				reg =3D <1>;
-> +				label =3D "t1slave";
-> +				phy-handle =3D <&tja1102_phy1>;
-> +				phy-mode =3D "rmii";
+> +				reg = <1>;
+> +				label = "t1slave";
+> +				phy-handle = <&tja1102_phy1>;
+> +				phy-mode = "rmii";
 > +			};
 > +
 > +			port@2 {
-> +				reg =3D <2>;
-> +				label =3D "t1master";
-> +				phy-handle =3D <&tja1102_phy0>;
-> +				phy-mode =3D "rmii";
+> +				reg = <2>;
+> +				label = "t1master";
+> +				phy-handle = <&tja1102_phy0>;
+> +				phy-mode = "rmii";
 > +
 > +			};
 > +
 > +			port@3 {
-> +				reg =3D <3>;
-> +				label =3D "rj45";
-> +				phy-handle =3D <&rgmii_phy>;
-> +				phy-mode =3D "rgmii-id";
+> +				reg = <3>;
+> +				label = "rj45";
+> +				phy-handle = <&rgmii_phy>;
+> +				phy-mode = "rgmii-id";
 > +			};
 > +
 > +			port@4 {
-> +				reg =3D <4>;
-> +				label =3D "cpu";
-> +				ethernet =3D <&fec>;
-> +				phy-mode =3D "rgmii-id";
+> +				reg = <4>;
+> +				label = "cpu";
+> +				ethernet = <&fec>;
+> +				phy-mode = "rgmii-id";
 > +
 > +				fixed-link {
-> +					speed =3D <100>;
+> +					speed = <100>;
 > +					full-duplex;
 > +				};
 > +			};
@@ -7184,15 +7089,15 @@ dts
 > +
 > +&mdio0 {
 > +	usbeth_phy: ethernet-phy@3 {
-> +		compatible =3D "ethernet-phy-ieee802.3-c22";
-> +		reg =3D <0x3>;
+> +		compatible = "ethernet-phy-ieee802.3-c22";
+> +		reg = <0x3>;
 > +
-> +		interrupts-extended =3D <&gpio5 12 IRQ_TYPE_LEVEL_LOW>;
-> +		micrel,led-mode =3D <0>;
+> +		interrupts-extended = <&gpio5 12 IRQ_TYPE_LEVEL_LOW>;
+> +		micrel,led-mode = <0>;
 > +
-> +		reset-gpios =3D <&gpio5 11 GPIO_ACTIVE_LOW>;
-> +		reset-assert-us =3D <500>;
-> +		reset-deassert-us =3D <1000>;
+> +		reset-gpios = <&gpio5 11 GPIO_ACTIVE_LOW>;
+> +		reset-assert-us = <500>;
+> +		reset-deassert-us = <1000>;
 > +
 > +		/* FIXME: the clock is provided by switch and we should know
 > +		 * and we should request it only after switch have done clock
@@ -7202,209 +7107,209 @@ dts
 > +		 * for evil bugs. Switch may reconfigure, stop or change clk
 > +		 * freq without letting PHY to know about it.
 > +		 */
-> +		clocks =3D <&clk50m_phy>;
-> +		clock-names =3D "rmii-ref";
+> +		clocks = <&clk50m_phy>;
+> +		clock-names = "rmii-ref";
 > +	};
 > +
 > +	tja1102_phy0: ethernet-phy@4 {
-> +		compatible =3D "ethernet-phy-id0180.dc80";
-> +		reg =3D <0x4>;
+> +		compatible = "ethernet-phy-id0180.dc80";
+> +		reg = <0x4>;
 > +
-> +		interrupts-extended =3D <&gpio5 8 IRQ_TYPE_LEVEL_LOW>;
+> +		interrupts-extended = <&gpio5 8 IRQ_TYPE_LEVEL_LOW>;
 > +
-> +		reset-gpios =3D <&gpio5 9 GPIO_ACTIVE_LOW>;
+> +		reset-gpios = <&gpio5 9 GPIO_ACTIVE_LOW>;
 > +		/* reset detection time is 20 usec.  */
-> +		reset-assert-us =3D <20>;
+> +		reset-assert-us = <20>;
 > +		/* reset to standby 2 msec.  */
-> +		reset-deassert-us =3D <2000>;
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <0>;
+> +		reset-deassert-us = <2000>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
 > +
 > +		tja1102_phy1: ethernet-phy@5 {
-> +			reg =3D <0x5>;
+> +			reg = <0x5>;
 > +
-> +			interrupts-extended =3D <&gpio5 8 IRQ_TYPE_LEVEL_LOW>;
+> +			interrupts-extended = <&gpio5 8 IRQ_TYPE_LEVEL_LOW>;
 > +		};
 > +	};
 > +};
 > +
 > +&ecspi3 {
-> +	fsl,spi-num-chipselects =3D <1>;
-> +	cs-gpios =3D <&gpio4 24 GPIO_ACTIVE_HIGH>;
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_ecspi3>;
-> +	status =3D "okay";
+> +	fsl,spi-num-chipselects = <1>;
+> +	cs-gpios = <&gpio4 24 GPIO_ACTIVE_HIGH>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_ecspi3>;
+> +	status = "okay";
 > +	can3: can@0 {
-> +		compatible =3D "microchip,mcp2518fd";
-> +		spi-max-frequency =3D <5000000>;
-> +		reg =3D <0>;
-> +		clocks =3D <&clk20m_can>;
-> +		interrupt-parent =3D <&gpio4>;
-> +		interrupts =3D <25 0x2>;
+> +		compatible = "microchip,mcp2518fd";
+> +		spi-max-frequency = <5000000>;
+> +		reg = <0>;
+> +		clocks = <&clk20m_can>;
+> +		interrupt-parent = <&gpio4>;
+> +		interrupts = <25 0x2>;
 > +	};
 > +};
 > +
 > +&i2c1 {
-> +	clock-frequency =3D <100000>;
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_i2c1>;
-> +	status =3D "okay";
+> +	clock-frequency = <100000>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_i2c1>;
+> +	status = "okay";
 > +
 > +	serializer0: ds90ub927@c {
-> +		compatible =3D "ti,ds90ub927";
-> +		reg =3D <0x0c>;
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <0>;
+> +		compatible = "ti,ds90ub927";
+> +		reg = <0x0c>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
 > +		port@0 {
-> +			reg =3D <0>;
+> +			reg = <0>;
 > +			serializer0_in: endpoint {
-> +				remote-endpoint =3D <&lvds0_out>;
+> +				remote-endpoint = <&lvds0_out>;
 > +			};
 > +		};
 > +		/* port@1 {
-> +			reg =3D <1>;
+> +			reg = <1>;
 > +			serializer0_audio_in: endpoint {
-> +				remote-endpoint =3D <&audio_i2s0_out>;
+> +				remote-endpoint = <&audio_i2s0_out>;
 > +			};
 > +		}; */
 > +		port@2 {
-> +			reg =3D <2>;
+> +			reg = <2>;
 > +			serializer0_out: endpoint {
-> +				remote-endpoint =3D <&display_panel0_in>;
+> +				remote-endpoint = <&display_panel0_in>;
 > +			};
 > +		};
 > +	};
 > +};
 > +
 > +&i2c2 {
-> +	clock-frequency =3D <100000>;
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_i2c2>;
-> +	status =3D "okay";
+> +	clock-frequency = <100000>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_i2c2>;
+> +	status = "okay";
 > +
 > +	serializer1: ds90ub927@c {
-> +		compatible =3D "ti,ds90ub927";
-> +		reg =3D <0x0c>;
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <0>;
+> +		compatible = "ti,ds90ub927";
+> +		reg = <0x0c>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
 > +		port@0 {
-> +			reg =3D <0>;
+> +			reg = <0>;
 > +			serializer1_in: endpoint {
-> +				remote-endpoint =3D <&lvds1_out>;
+> +				remote-endpoint = <&lvds1_out>;
 > +			};
 > +		};
 > +		port@2 {
-> +			reg =3D <2>;
+> +			reg = <2>;
 > +			serializer1_out: endpoint {
-> +				remote-endpoint =3D <&display_panel1_in>;
+> +				remote-endpoint = <&display_panel1_in>;
 > +			};
 > +		};
 > +	};
 > +
 > +	camdeser: ds90ub954@30 {
-> +		compatible =3D "ti,ds90ub954";
-> +		reg =3D <0x30>;
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <0>;
+> +		compatible = "ti,ds90ub954";
+> +		reg = <0x30>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
 > +		port@0 {
-> +			reg =3D <0>;
+> +			reg = <0>;
 > +			camdeser_fpd_link_in: endpoint {
 > +			};
 > +		};
 > +		port@1 {
-> +			reg =3D <1>;
+> +			reg = <1>;
 > +			camdeser_mipi_out: endpoint {
-> +				remote-endpoint =3D <&mipi_csi_in>;
+> +				remote-endpoint = <&mipi_csi_in>;
 > +			};
 > +		};
 > +	};
 > +};
 > +
 > +&usdhc2 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_usdhc2>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_usdhc2>;
 > +	no-1-8-v;	/* force 3.3V VIO */
 > +	non-removable;
-> +	mmc-pwrseq =3D <&usdhc2_wifi_pwrseq>;
+> +	mmc-pwrseq = <&usdhc2_wifi_pwrseq>;
 > +	pm-ignore-notify;
-> +	status =3D "okay";
-> +	#address-cells =3D <1>;
-> +	#size-cells =3D <0>;
+> +	status = "okay";
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
 > +
 > +	brcmf: bcrmf@1 {
-> +		reg =3D <1>;
-> +		compatible =3D "brcm,bcm4329-fmac";
+> +		reg = <1>;
+> +		compatible = "brcm,bcm4329-fmac";
 > +	};
 > +};
 > +
 > +&i2c3 {
 > +	adc@49 {
-> +		compatible =3D "ti,ads1015";
-> +		reg =3D <0x49>;
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <0>;
+> +		compatible = "ti,ads1015";
+> +		reg = <0x49>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
 > +
 > +		channel@4 {
-> +			reg =3D <4>;
-> +			ti,gain =3D <1>;
-> +			ti,datarate =3D <3>;
+> +			reg = <4>;
+> +			ti,gain = <1>;
+> +			ti,datarate = <3>;
 > +		};
 > +
 > +		channel@5 {
-> +			reg =3D <5>;
-> +			ti,gain =3D <1>;
-> +			ti,datarate =3D <3>;
+> +			reg = <5>;
+> +			ti,gain = <1>;
+> +			ti,datarate = <3>;
 > +		};
 > +
 > +		channel@6 {
-> +			reg =3D <6>;
-> +			ti,gain =3D <1>;
-> +			ti,datarate =3D <3>;
+> +			reg = <6>;
+> +			ti,gain = <1>;
+> +			ti,datarate = <3>;
 > +		};
 > +
 > +		channel@7 {
-> +			reg =3D <7>;
-> +			ti,gain =3D <1>;
-> +			ti,datarate =3D <3>;
+> +			reg = <7>;
+> +			ti,gain = <1>;
+> +			ti,datarate = <3>;
 > +		};
 > +	};
 > +};
 > +
 > +&ldb {
-> +	status =3D "okay";
+> +	status = "okay";
 > +
 > +	lvds-channel@0 {
-> +		status =3D "okay";
+> +		status = "okay";
 > +
 > +		port@4 {
-> +			reg =3D <4>;
+> +			reg = <4>;
 > +
 > +			lvds0_out: endpoint {
-> +				remote-endpoint =3D <&serializer0_in>;
+> +				remote-endpoint = <&serializer0_in>;
 > +			};
 > +		};
 > +	};
 > +
 > +	lvds-channel@1 {
-> +		status =3D "okay";
+> +		status = "okay";
 > +
 > +		port@4 {
-> +			reg =3D <4>;
+> +			reg = <4>;
 > +
 > +			lvds1_out: endpoint {
-> +				remote-endpoint =3D <&serializer1_in>;
+> +				remote-endpoint = <&serializer1_in>;
 > +			};
 > +		};
 > +	};
 > +};
 > +
 > +&mipi_csi {
-> +	status =3D "okay";
+> +	status = "okay";
 > +	port@0 {
-> +		reg =3D <0>;
+> +		reg = <0>;
 > +
 > +		mipi_csi_in: endpoint {
-> +			remote-endpoint =3D <&camdeser_mipi_out>;
+> +			remote-endpoint = <&camdeser_mipi_out>;
 > +		};
 > +	};
 > +};
@@ -7414,20 +7319,20 @@ dts
 > +};
 > +
 > +&pwm1 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_pwm1>;
-> +	status =3D "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_pwm1>;
+> +	status = "okay";
 > +};
 > +
 > +&pwm2 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_pwm2>;
-> +	status =3D "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_pwm2>;
+> +	status = "okay";
 > +};
 > +
 > +&iomuxc {
 > +	pinctrl_enet: enetgrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_RGMII_RXC__RGMII_RXC		    0x1b030
 > +			MX6QDL_PAD_RGMII_RD0__RGMII_RD0		0x1b030
 > +			MX6QDL_PAD_RGMII_RD1__RGMII_RD1		0x1b030
@@ -7460,7 +7365,7 @@ dts
 > +	};
 > +
 > +	pinctrl_mdio0: mdio0grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			/* phy0/usbeth_phy reset */
 > +			MX6QDL_PAD_DISP0_DAT17__GPIO5_IO11	0x10030
 > +			/* phy0/usbeth_phy int */
@@ -7476,7 +7381,7 @@ dts
 > +	};
 > +
 > +	pinctrl_ecspi2: ecspi2grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_EIM_OE__ECSPI2_MISO		0x100b1
 > +			MX6QDL_PAD_EIM_CS0__ECSPI2_SCLK		0x100b1
 > +			MX6QDL_PAD_EIM_CS1__ECSPI2_MOSI		0x100b1
@@ -7487,7 +7392,7 @@ dts
 > +
 > +
 > +	pinctrl_hog: hoggrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			/* SGTL5000 sys_mclk */
 > +			MX6QDL_PAD_CSI0_MCLK__CCM_CLKO1		0x030b0
 > +			/* CAN1_SR + CAN2_SR GPIO outputs */
@@ -7566,14 +7471,14 @@ dts
 > +	};
 > +
 > +	pinctrl_wifi_npd: wifinpd {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			/* WL_REG_ON */
 > +			MX6QDL_PAD_NANDF_RB0__GPIO6_IO10	0x13069
 > +		>;
 > +	};
 > +
 > +	pinctrl_usdhc2: usdhc2grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_SD2_CMD__SD2_CMD		0x170b9
 > +			MX6QDL_PAD_SD2_CLK__SD2_CLK		0x100b9
 > +			MX6QDL_PAD_SD2_DAT0__SD2_DATA0		0x170b9
@@ -7584,7 +7489,7 @@ dts
 > +	};
 > +
 > +	pinctrl_audmux: audmuxgrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_CSI0_DAT4__AUD3_TXC		0x130b0
 > +			MX6QDL_PAD_CSI0_DAT5__AUD3_TXD		0x110b0
 > +			MX6QDL_PAD_CSI0_DAT6__AUD3_TXFS		0x130b0
@@ -7592,7 +7497,7 @@ dts
 > +	};
 > +
 > +	pinctrl_i2c2: i2c2grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_EIM_EB2__I2C2_SCL		0x4001f8b1
 > +			MX6QDL_PAD_EIM_D16__I2C2_SDA		0x4001f8b1
 > +		>;
@@ -7600,11 +7505,11 @@ dts
 > +
 > +	pinctrl_leds: ledsgrp {
 > +		/* No leds */
-> +		fsl,pins =3D <>;
+> +		fsl,pins = <>;
 > +	};
 > +
 > +	pinctrl_ecspi3: ecspi3grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_DISP0_DAT0__ECSPI3_SCLK	0x100b1
 > +			MX6QDL_PAD_DISP0_DAT1__ECSPI3_MOSI	0x100b1
 > +			MX6QDL_PAD_DISP0_DAT2__ECSPI3_MISO	0x100b1
@@ -7616,19 +7521,18 @@ dts
 > +	};
 > +
 > +	pinctrl_pwm1: pwm1grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_DISP0_DAT8__PWM1_OUT		0x1b0b0
 > +		>;
 > +	};
 > +
 > +	pinctrl_pwm2: pwm2grp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			MX6QDL_PAD_DISP0_DAT9__PWM2_OUT		0x1b0b0
 > +		>;
 > +	};
 > +};
-> diff --git a/arch/arm/dts/imx6qp-vicutp.dts b/arch/arm/dts/imx6qp-vicutp.=
-dts
+> diff --git a/arch/arm/dts/imx6qp-vicutp.dts b/arch/arm/dts/imx6qp-vicutp.dts
 > new file mode 100644
 > index 0000000000..44cfe68867
 > --- /dev/null
@@ -7644,25 +7548,25 @@ dts
 > +#include "imx6qdl-vicut1.dtsi"
 > +
 > +/ {
-> +	model =3D "Kverneland UT1P Board";
-> +	compatible =3D "kvg,vicutp", "fsl,imx6qp";
+> +	model = "Kverneland UT1P Board";
+> +	compatible = "kvg,vicutp", "fsl,imx6qp";
 > +
 > +	memory {
-> +		reg =3D <0x10000000 0x80000000>;
+> +		reg = <0x10000000 0x80000000>;
 > +	};
 > +};
 > +
 > +&fec {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_enet>;
-> +	phy-mode =3D "rgmii";
-> +	/* phy-reset-gpios =3D <&gpio1 25 GPIO_ACTIVE_LOW>; */
-> +	status =3D "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_enet>;
+> +	phy-mode = "rgmii";
+> +	/* phy-reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>; */
+> +	status = "okay";
 > +};
 > +
 > +&iomuxc {
 > +	pinctrl_enet: enetgrp {
-> +		fsl,pins =3D <
+> +		fsl,pins = <
 > +			/* MX6QDL_ENET_PINGRP_RGMII_MD(0x1b030, 0x10030) */
 > +			MX6QDL_PAD_RGMII_RXC__RGMII_RXC         0x1b030
 > +			MX6QDL_PAD_RGMII_RD0__RGMII_RD0         0x1b030
@@ -7686,8 +7590,7 @@ dts
 > +		>;
 > +	};
 > +};
-> diff --git a/arch/arm/dts/imx6ul-prti6g.dts b/arch/arm/dts/imx6ul-prti6g.=
-dts
+> diff --git a/arch/arm/dts/imx6ul-prti6g.dts b/arch/arm/dts/imx6ul-prti6g.dts
 > new file mode 100644
 > index 0000000000..e65198bab2
 > --- /dev/null
@@ -7712,12 +7615,12 @@ dts
 > +#include "imx6ul-prti6g.dtsi"
 > +
 > +/ {
-> +	model =3D "Protonic PRTI6G Board";
-> +	compatible =3D "prt,prti6g", "fsl,imx6ul";
+> +	model = "Protonic PRTI6G Board";
+> +	compatible = "prt,prti6g", "fsl,imx6ul";
 > +};
 > +
 > +&pinctrl_hog {
-> +	fsl,pins =3D <
+> +	fsl,pins = <
 > +		/* HW revision detect */
 > +		MX6UL_PAD_ENET2_RX_DATA0__GPIO2_IO08	0x1b0b0	/* REV_ID0 */
 > +		MX6UL_PAD_ENET2_RX_DATA1__GPIO2_IO09	0x1b0b0	/* REV_ID1 */
@@ -7735,47 +7638,46 @@ dts
 > +};
 > +
 > +&ecspi2 {
-> +	status =3D "okay";
+> +	status = "okay";
 > +};
 > +
 > +&can2 {
-> +	status =3D "okay";
+> +	status = "okay";
 > +};
 > +
 > +&i2c2 {
 > +	can_adc: ads1015@49 {
-> +		compatible =3D "ti,ads1015";
-> +		reg =3D <0x49>;
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <0>;
+> +		compatible = "ti,ads1015";
+> +		reg = <0x49>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
 > +
 > +		channel@4 {
-> +			reg =3D <4>;
-> +			ti,gain =3D <3>;
-> +			ti,datarate =3D <3>;
+> +			reg = <4>;
+> +			ti,gain = <3>;
+> +			ti,datarate = <3>;
 > +		};
 > +
 > +		channel@5 {
-> +			reg =3D <5>;
-> +			ti,gain =3D <3>;
-> +			ti,datarate =3D <3>;
+> +			reg = <5>;
+> +			ti,gain = <3>;
+> +			ti,datarate = <3>;
 > +		};
 > +
 > +		channel@6 {
-> +			reg =3D <6>;
-> +			ti,gain =3D <3>;
-> +			ti,datarate =3D <3>;
+> +			reg = <6>;
+> +			ti,gain = <3>;
+> +			ti,datarate = <3>;
 > +		};
 > +
 > +		channel@7 {
-> +			reg =3D <7>;
-> +			ti,gain =3D <3>;
-> +			ti,datarate =3D <3>;
+> +			reg = <7>;
+> +			ti,gain = <3>;
+> +			ti,datarate = <3>;
 > +		};
 > +	};
 > +};
-> diff --git a/arch/arm/dts/imx6ul-prti6g.dtsi b/arch/arm/dts/imx6ul-prti6g=
-=2Edtsi
+> diff --git a/arch/arm/dts/imx6ul-prti6g.dtsi b/arch/arm/dts/imx6ul-prti6g.dtsi
 > new file mode 100644
 > index 0000000000..c20bbd5bc2
 > --- /dev/null
@@ -7800,189 +7702,189 @@ dts
 > +
 > +/ {
 > +	chosen {
-> +		stdout-path =3D &uart1;
+> +		stdout-path = &uart1;
 > +		environment@0 {
-> +			compatible =3D "barebox,environment";
-> +			device-path =3D &flash, "partname:env";
+> +			compatible = "barebox,environment";
+> +			device-path = &flash, "partname:env";
 > +		};
 > +	};
 > +
 > +	memory {
-> +		reg =3D <0x80000000 0x10000000>;
+> +		reg = <0x80000000 0x10000000>;
 > +	};
 > +
 > +	regulators {
-> +		compatible =3D "simple-bus";
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <0>;
+> +		compatible = "simple-bus";
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
 > +
 > +		reg_3p2v: 3p2-regulator {
-> +			compatible =3D "regulator-fixed";
-> +			regulator-name =3D "regulator-3P2V";
-> +			regulator-min-microvolt =3D <3200000>;
-> +			regulator-max-microvolt =3D <3200000>;
+> +			compatible = "regulator-fixed";
+> +			regulator-name = "regulator-3P2V";
+> +			regulator-min-microvolt = <3200000>;
+> +			regulator-max-microvolt = <3200000>;
 > +			regulator-always-on;
 > +		};
 > +
 > +		reg_1p35v: 1p35-regulator {
-> +			compatible =3D "regulator-fixed";
-> +			regulator-name =3D "regulator-1P35V";
-> +			regulator-min-microvolt =3D <1350000>;
-> +			regulator-max-microvolt =3D <1350000>;
+> +			compatible = "regulator-fixed";
+> +			regulator-name = "regulator-1P35V";
+> +			regulator-min-microvolt = <1350000>;
+> +			regulator-max-microvolt = <1350000>;
 > +			regulator-always-on;
 > +		};
 > +	};
 > +
 > +	leds: leds {
-> +		compatible =3D "gpio-leds";
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_leds>;
+> +		compatible = "gpio-leds";
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_leds>;
 > +
 > +		debug {
-> +			label =3D "debug0";
-> +			gpios =3D <&gpio4 16 0>;
-> +			linux,default-trigger =3D "heartbeat";
+> +			label = "debug0";
+> +			gpios = <&gpio4 16 0>;
+> +			linux,default-trigger = "heartbeat";
 > +		};
 > +	};
 > +};
 > +
 > +&usbotg1 {
-> +	dr_mode =3D "host";
-> +	status =3D "okay";
+> +	dr_mode = "host";
+> +	status = "okay";
 > +};
 > +
 > +&uart1 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_uart1>;
-> +	status =3D "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_uart1>;
+> +	status = "okay";
 > +};
 > +
 > +&usdhc1 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_usdhc1>;
-> +	cd-gpios =3D <&gpio4 12 GPIO_ACTIVE_LOW>;
-> +	vmmc-supply =3D <&reg_3p2v>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_usdhc1>;
+> +	cd-gpios = <&gpio4 12 GPIO_ACTIVE_LOW>;
+> +	vmmc-supply = <&reg_3p2v>;
 > +	wakeup-source;
-> +	status =3D "okay";
+> +	status = "okay";
 > +};
 > +
 > +&usdhc2 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_usdhc2>;
-> +	bus-width =3D <8>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_usdhc2>;
+> +	bus-width = <8>;
 > +	non-removable;
-> +	status =3D "okay";
+> +	status = "okay";
 > +};
 > +
 > +&ecspi1 {
-> +	fsl,spi-num-chipselects =3D <1>;
-> +	cs-gpios =3D <&gpio4 26 GPIO_ACTIVE_LOW>;
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_ecspi1>;
-> +	status =3D "okay";
+> +	fsl,spi-num-chipselects = <1>;
+> +	cs-gpios = <&gpio4 26 GPIO_ACTIVE_LOW>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_ecspi1>;
+> +	status = "okay";
 > +
 > +	flash: w25q64fv@0 {
-> +		compatible =3D "winbond,w25q64", "jedec,spi-nor";
-> +		spi-max-frequency =3D <20000000>;
+> +		compatible = "winbond,w25q64", "jedec,spi-nor";
+> +		spi-max-frequency = <20000000>;
 > +		m25p,fast-read;
-> +		reg =3D <0>;
+> +		reg = <0>;
 > +
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <1>;
+> +		#address-cells = <1>;
+> +		#size-cells = <1>;
 > +
 > +		partition@0 {
-> +			label =3D "boot";
-> +			reg =3D <0x0 0x60000>;		/* 384 Kb */
+> +			label = "boot";
+> +			reg = <0x0 0x60000>;		/* 384 Kb */
 > +		};
 > +
 > +		partition@60000 {
-> +			label =3D "env";
-> +			reg =3D <0x60000 0x10000>;	/* 64 Kb */
+> +			label = "env";
+> +			reg = <0x60000 0x10000>;	/* 64 Kb */
 > +		};
 > +
 > +		partition@70000 {
-> +			label =3D "dtb";
-> +			reg =3D <0x70000 0x10000>;	/* 64 Kb */
+> +			label = "dtb";
+> +			reg = <0x70000 0x10000>;	/* 64 Kb */
 > +		};
 > +
 > +		partition@80000 {
-> +			label =3D "kernel";
-> +			reg =3D <0x80000 0x780000>;	/* 7680 Kb */
+> +			label = "kernel";
+> +			reg = <0x80000 0x780000>;	/* 7680 Kb */
 > +		};
 > +	};
 > +};
 > +
 > +&ecspi2 {
-> +	fsl,spi-num-chipselects =3D <1>;
-> +	cs-gpios =3D <&gpio4 22 GPIO_ACTIVE_LOW>;
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_ecspi2>;
+> +	fsl,spi-num-chipselects = <1>;
+> +	cs-gpios = <&gpio4 22 GPIO_ACTIVE_LOW>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_ecspi2>;
 > +};
 > +
 > +&i2c1 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_i2c1>;
-> +	clock-frequency =3D <100000>;
-> +	status =3D "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_i2c1>;
+> +	clock-frequency = <100000>;
+> +	status = "okay";
 > +
 > +	/* RFID chip */
 > +};
 > +
 > +&i2c2 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_i2c2>;
-> +	clock-frequency =3D <100000>;
-> +	status =3D "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_i2c2>;
+> +	clock-frequency = <100000>;
+> +	status = "okay";
 > +
 > +	rtc: pcf8563@51 {
-> +		compatible =3D "nxp,pcf8563";
-> +		reg =3D <0x51>;
+> +		compatible = "nxp,pcf8563";
+> +		reg = <0x51>;
 > +	};
 > +
 > +	tmp103: tmp103@70 {
-> +		compatible =3D "ti,tmp103", "tmp103";
-> +		reg =3D <0x70>;
+> +		compatible = "ti,tmp103", "tmp103";
+> +		reg = <0x70>;
 > +	};
 > +};
 > +
 > +&fec1 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_fec1 &pinctrl_ethphy0_rst>;
-> +	phy-mode =3D "rmii";
-> +	phy-handle =3D <&ethphy0>;
-> +	phy-reset-gpios =3D <&gpio5 0 GPIO_ACTIVE_LOW>;
-> +	phy-reset-duration =3D <11>;
-> +	status =3D "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_fec1 &pinctrl_ethphy0_rst>;
+> +	phy-mode = "rmii";
+> +	phy-handle = <&ethphy0>;
+> +	phy-reset-gpios = <&gpio5 0 GPIO_ACTIVE_LOW>;
+> +	phy-reset-duration = <11>;
+> +	status = "okay";
 > +
 > +	mdio {
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <0>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
 > +
 > +		ethphy0: ethernet-phy@0 {
-> +			reg =3D <0>;
+> +			reg = <0>;
 > +		};
 > +	};
 > +};
 > +
 > +
 > +&can1 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_flexcan1>;
-> +	status =3D "okay";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_flexcan1>;
+> +	status = "okay";
 > +};
 > +
 > +&can2 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_flexcan2>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_flexcan2>;
 > +};
 > +
 > +&iomuxc {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_hog>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_hog>;
 > +
 > +	prti6g {
 > +		pinctrl_hog: hoggrp {
-> +			fsl,pins =3D <
+> +			fsl,pins = <
 > +				/* HW revision detect */
 > +				MX6UL_PAD_ENET2_RX_DATA0__GPIO2_IO08	0x1b0b0	/* REV_ID0 */
 > +				MX6UL_PAD_ENET2_RX_DATA1__GPIO2_IO09	0x1b0b0	/* REV_ID1 */
@@ -7999,20 +7901,20 @@ dts
 > +		};
 > +
 > +		pinctrl_leds: ledsgrp {
-> +			fsl,pins =3D <
+> +			fsl,pins = <
 > +				MX6UL_PAD_NAND_DQS__GPIO4_IO16		0x1b0b0
 > +			>;
 > +		};
 > +
 > +		pinctrl_uart1: uart1grp {
-> +			fsl,pins =3D <
+> +			fsl,pins = <
 > +				MX6UL_PAD_UART1_TX_DATA__UART1_DCE_TX	0x1b0b1
 > +				MX6UL_PAD_UART1_RX_DATA__UART1_DCE_RX	0x1b0b1
 > +			>;
 > +		};
 > +
 > +		pinctrl_usdhc1: usdhc1grp {
-> +			fsl,pins =3D <
+> +			fsl,pins = <
 > +				MX6UL_PAD_SD1_CMD__USDHC1_CMD		0x070b1
 > +				MX6UL_PAD_SD1_CLK__USDHC1_CLK		0x07099
 > +				MX6UL_PAD_SD1_DATA0__USDHC1_DATA0	0x070b1
@@ -8024,7 +7926,7 @@ dts
 > +		};
 > +
 > +		pinctrl_usdhc2: usdhc2grp {
-> +			fsl,pins =3D <
+> +			fsl,pins = <
 > +				MX6UL_PAD_NAND_WE_B__USDHC2_CMD		0x170f9
 > +				MX6UL_PAD_NAND_RE_B__USDHC2_CLK		0x100f9
 > +				MX6UL_PAD_NAND_DATA00__USDHC2_DATA0	0x170f9
@@ -8040,7 +7942,7 @@ dts
 > +		};
 > +
 > +		pinctrl_ecspi1: ecspi1grp {
-> +			fsl,pins =3D <
+> +			fsl,pins = <
 > +				MX6UL_PAD_CSI_DATA04__ECSPI1_SCLK 	0x0b0b0
 > +				MX6UL_PAD_CSI_DATA05__GPIO4_IO26	0x000b1
 > +				MX6UL_PAD_CSI_DATA06__ECSPI1_MOSI	0x0b0b0
@@ -8049,7 +7951,7 @@ dts
 > +		};
 > +
 > +		pinctrl_ecspi2: ecspi2grp {
-> +			fsl,pins =3D <
+> +			fsl,pins = <
 > +				MX6UL_PAD_CSI_DATA00__ECSPI2_SCLK 	0x0b0b0
 > +				MX6UL_PAD_CSI_DATA01__GPIO4_IO22	0x000b1
 > +				MX6UL_PAD_CSI_DATA02__ECSPI2_MOSI	0x0b0b0
@@ -8058,21 +7960,21 @@ dts
 > +		};
 > +
 > +		pinctrl_i2c1: i2c1grp {
-> +			fsl,pins =3D <
+> +			fsl,pins = <
 > +				MX6UL_PAD_CSI_MCLK__I2C1_SDA		0x4001b8b0
 > +				MX6UL_PAD_CSI_PIXCLK__I2C1_SCL		0x4001b8b0
 > +			>;
 > +		};
 > +
 > +		pinctrl_i2c2: i2c2grp {
-> +			fsl,pins =3D <
+> +			fsl,pins = <
 > +				MX6UL_PAD_CSI_VSYNC__I2C2_SDA		0x4001b8b0
 > +				MX6UL_PAD_CSI_HSYNC__I2C2_SCL		0x4001b8b0
 > +			>;
 > +		};
 > +
 > +		pinctrl_fec1: fec1grp {
-> +			fsl,pins =3D <
+> +			fsl,pins = <
 > +				MX6UL_PAD_GPIO1_IO07__ENET1_MDC		0x1b0b0
 > +				MX6UL_PAD_GPIO1_IO06__ENET1_MDIO	0x100b0
 > +				MX6UL_PAD_ENET1_RX_DATA0__ENET1_RDATA00	0x1b0b0
@@ -8087,13 +7989,13 @@ dts
 > +		};
 > +
 > +		pinctrl_ethphy0_rst: ethphy-rstgrp-0 {
-> +			fsl,pins =3D <
+> +			fsl,pins = <
 > +				MX6UL_PAD_SNVS_TAMPER0__GPIO5_IO00	0x00880 /* PHY RESET */
 > +			>;
 > +		};
 > +
 > +		pinctrl_flexcan1: flexcan1grp {
-> +			fsl,pins =3D <
+> +			fsl,pins = <
 > +				MX6UL_PAD_UART3_CTS_B__FLEXCAN1_TX	0x0b0b0
 > +				MX6UL_PAD_UART3_RTS_B__FLEXCAN1_RX	0x0b0b0
 > +				MX6UL_PAD_SNVS_TAMPER3__GPIO5_IO03	0x0b0b0	/* SR */
@@ -8103,7 +8005,7 @@ dts
 > +		};
 > +
 > +		pinctrl_flexcan2: flexcan2grp {
-> +			fsl,pins =3D <
+> +			fsl,pins = <
 > +				MX6UL_PAD_UART2_CTS_B__FLEXCAN2_TX	0x0b0b0
 > +				MX6UL_PAD_UART2_RTS_B__FLEXCAN2_RX	0x0b0b0
 > +				MX6UL_PAD_SNVS_TAMPER5__GPIO5_IO05	0x0b0b0	/* SR */
@@ -8118,7 +8020,7 @@ dts
 > @@ -336,6 +336,12 @@ config MACH_PHYTEC_SOM_IMX6
 >          select ARCH_IMX6
 >  	select ARCH_IMX6UL
-> =20
+>  
 > +config MACH_PROTONIC_IMX6
 > +        bool "Protonic-Holland i.MX6 based boards"
 > +        select ARCH_IMX6
@@ -8132,120 +8034,59 @@ dts
 > index 765702f26d..d8879e314f 100644
 > --- a/images/Makefile.imx
 > +++ b/images/Makefile.imx
-> @@ -299,6 +299,34 @@ $(call build_imx_habv4img, CONFIG_MACH_PHYTEC_SOM_IM=
-X6, start_phytec_phycore_imx
-> =20
->  $(call build_imx_habv4img, CONFIG_MACH_PHYTEC_SOM_IMX6, start_phytec_phy=
-core_imx6dl_som_lc_emmc_1gib, phytec-som-imx6/flash-header-phytec-pcm058dl-=
-1gib, phytec-phycore-imx6dl-som-lc-emmc-1gib)
-> =20
-> +$(call build_imx_habv4img, CONFIG_MACH_PROTONIC_IMX6, start_imx6q_prti6q=
-, protonic-imx6/flash-header-prti6q, protonic-prti6q)
+> @@ -299,6 +299,34 @@ $(call build_imx_habv4img, CONFIG_MACH_PHYTEC_SOM_IMX6, start_phytec_phycore_imx
+>  
+>  $(call build_imx_habv4img, CONFIG_MACH_PHYTEC_SOM_IMX6, start_phytec_phycore_imx6dl_som_lc_emmc_1gib, phytec-som-imx6/flash-header-phytec-pcm058dl-1gib, phytec-phycore-imx6dl-som-lc-emmc-1gib)
+>  
+> +$(call build_imx_habv4img, CONFIG_MACH_PROTONIC_IMX6, start_imx6q_prti6q, protonic-imx6/flash-header-prti6q, protonic-prti6q)
 > +
-> +$(call build_imx_habv4img, CONFIG_MACH_PROTONIC_IMX6, start_imx6q_prtwd2=
-, protonic-imx6/flash-header-prtwd2, protonic-prtwd2)
+> +$(call build_imx_habv4img, CONFIG_MACH_PROTONIC_IMX6, start_imx6q_prtwd2, protonic-imx6/flash-header-prtwd2, protonic-prtwd2)
 > +
-> +$(call build_imx_habv4img, CONFIG_MACH_PROTONIC_IMX6, start_imx6q_vicut1=
-, protonic-imx6/flash-header-vicut1q, protonic-vicut1q)
+> +$(call build_imx_habv4img, CONFIG_MACH_PROTONIC_IMX6, start_imx6q_vicut1, protonic-imx6/flash-header-vicut1q, protonic-vicut1q)
 > +
-> +$(call build_imx_habv4img, CONFIG_MACH_PROTONIC_IMX6, start_imx6dl_alti6=
-p, protonic-imx6/flash-header-alti6p, protonic-alti6p)
+> +$(call build_imx_habv4img, CONFIG_MACH_PROTONIC_IMX6, start_imx6dl_alti6p, protonic-imx6/flash-header-alti6p, protonic-alti6p)
 > +
-> +$(call build_imx_habv4img, CONFIG_MACH_PROTONIC_IMX6, start_imx6dl_lanmc=
-u, protonic-imx6/flash-header-lanmcu, protonic-lanmcu)
+> +$(call build_imx_habv4img, CONFIG_MACH_PROTONIC_IMX6, start_imx6dl_lanmcu, protonic-imx6/flash-header-lanmcu, protonic-lanmcu)
 > +
-> +$(call build_imx_habv4img, CONFIG_MACH_PROTONIC_IMX6, start_imx6dl_plyba=
-s, protonic-imx6/flash-header-plybas, protonic-plybas)
+> +$(call build_imx_habv4img, CONFIG_MACH_PROTONIC_IMX6, start_imx6dl_plybas, protonic-imx6/flash-header-plybas, protonic-plybas)
 > +
-> +$(call build_imx_habv4img, CONFIG_MACH_PROTONIC_IMX6, start_imx6dl_plym2=
-m, protonic-imx6/flash-header-plym2m, protonic-plym2m)
+> +$(call build_imx_habv4img, CONFIG_MACH_PROTONIC_IMX6, start_imx6dl_plym2m, protonic-imx6/flash-header-plym2m, protonic-plym2m)
 > +
-> +$(call build_imx_habv4img, CONFIG_MACH_PROTONIC_IMX6, start_imx6dl_prtmv=
-t, protonic-imx6/flash-header-prtmvt, protonic-prtmvt)
+> +$(call build_imx_habv4img, CONFIG_MACH_PROTONIC_IMX6, start_imx6dl_prtmvt, protonic-imx6/flash-header-prtmvt, protonic-prtmvt)
 > +
-> +$(call build_imx_habv4img, CONFIG_MACH_PROTONIC_IMX6, start_imx6dl_prtrv=
-t, protonic-imx6/flash-header-prtrvt, protonic-prtrvt)
+> +$(call build_imx_habv4img, CONFIG_MACH_PROTONIC_IMX6, start_imx6dl_prtrvt, protonic-imx6/flash-header-prtrvt, protonic-prtrvt)
 > +
-> +$(call build_imx_habv4img, CONFIG_MACH_PROTONIC_IMX6, start_imx6dl_prtvt=
-7, protonic-imx6/flash-header-prtvt7, protonic-prtvt7)
+> +$(call build_imx_habv4img, CONFIG_MACH_PROTONIC_IMX6, start_imx6dl_prtvt7, protonic-imx6/flash-header-prtvt7, protonic-prtvt7)
 > +
-> +$(call build_imx_habv4img, CONFIG_MACH_PROTONIC_IMX6, start_imx6dl_victg=
-o, protonic-imx6/flash-header-victgo, protonic-victgo)
+> +$(call build_imx_habv4img, CONFIG_MACH_PROTONIC_IMX6, start_imx6dl_victgo, protonic-imx6/flash-header-victgo, protonic-victgo)
 > +
-> +$(call build_imx_habv4img, CONFIG_MACH_PROTONIC_IMX6, start_imx6dl_vicut=
-1, protonic-imx6/flash-header-vicut1, protonic-vicut1)
+> +$(call build_imx_habv4img, CONFIG_MACH_PROTONIC_IMX6, start_imx6dl_vicut1, protonic-imx6/flash-header-vicut1, protonic-vicut1)
 > +
-> +$(call build_imx_habv4img, CONFIG_MACH_PROTONIC_IMX6, start_imx6qp_prtwd=
-3, protonic-imx6/flash-header-prtwd3, protonic-prtwd3)
+> +$(call build_imx_habv4img, CONFIG_MACH_PROTONIC_IMX6, start_imx6qp_prtwd3, protonic-imx6/flash-header-prtwd3, protonic-prtwd3)
 > +
-> +$(call build_imx_habv4img, CONFIG_MACH_PROTONIC_IMX6, start_imx6qp_vicut=
-p, protonic-imx6/flash-header-vicutp, protonic-vicutp)
+> +$(call build_imx_habv4img, CONFIG_MACH_PROTONIC_IMX6, start_imx6qp_vicutp, protonic-imx6/flash-header-vicutp, protonic-vicutp)
 > +
->  $(call build_imx_habv4img, CONFIG_MACH_KONTRON_SAMX6I, start_imx6q_samx6=
-i, kontron-samx6i/flash-header-samx6i-quad, imx6q-samx6i)
-> =20
->  $(call build_imx_habv4img, CONFIG_MACH_KONTRON_SAMX6I, start_imx6dl_samx=
-6i, kontron-samx6i/flash-header-samx6i-duallite, imx6dl-samx6i)
-> @@ -326,6 +354,8 @@ $(call build_imx_habv4img, CONFIG_MACH_PHYTEC_SOM_IMX=
-6, start_phytec_phycore_imx
-> =20
->  $(call build_imx_habv4img, CONFIG_MACH_PHYTEC_SOM_IMX6, start_phytec_phy=
-core_imx6ull_som_emmc_512mb, phytec-som-imx6/flash-header-phytec-pcl063-512=
-mb, phytec-phycore-imx6ull-emmc-512mb)
-> =20
-> +$(call build_imx_habv4img, CONFIG_MACH_PROTONIC_IMX6, start_imx6ul_prti6=
-g, protonic-imx6/flash-header-prti6g, protonic-prti6g)
+>  $(call build_imx_habv4img, CONFIG_MACH_KONTRON_SAMX6I, start_imx6q_samx6i, kontron-samx6i/flash-header-samx6i-quad, imx6q-samx6i)
+>  
+>  $(call build_imx_habv4img, CONFIG_MACH_KONTRON_SAMX6I, start_imx6dl_samx6i, kontron-samx6i/flash-header-samx6i-duallite, imx6dl-samx6i)
+> @@ -326,6 +354,8 @@ $(call build_imx_habv4img, CONFIG_MACH_PHYTEC_SOM_IMX6, start_phytec_phycore_imx
+>  
+>  $(call build_imx_habv4img, CONFIG_MACH_PHYTEC_SOM_IMX6, start_phytec_phycore_imx6ull_som_emmc_512mb, phytec-som-imx6/flash-header-phytec-pcl063-512mb, phytec-phycore-imx6ull-emmc-512mb)
+>  
+> +$(call build_imx_habv4img, CONFIG_MACH_PROTONIC_IMX6, start_imx6ul_prti6g, protonic-imx6/flash-header-prti6g, protonic-prti6g)
 > +
->  $(call build_imx_habv4img, CONFIG_MACH_TECHNEXION_PICO_HOBBIT, start_imx=
-6ul_pico_hobbit_256mb, technexion-pico-hobbit/flash-header-imx6ul-pico-hobb=
-it-256, imx6ul-pico-hobbit-256mb)
-> =20
->  $(call build_imx_habv4img, CONFIG_MACH_TECHNEXION_PICO_HOBBIT, start_imx=
-6ul_pico_hobbit_512mb, technexion-pico-hobbit/flash-header-imx6ul-pico-hobb=
-it-512, imx6ul-pico-hobbit-512mb)
-> --=20
-> 2.27.0
->=20
->=20
+>  $(call build_imx_habv4img, CONFIG_MACH_TECHNEXION_PICO_HOBBIT, start_imx6ul_pico_hobbit_256mb, technexion-pico-hobbit/flash-header-imx6ul-pico-hobbit-256, imx6ul-pico-hobbit-256mb)
+>  
+>  $(call build_imx_habv4img, CONFIG_MACH_TECHNEXION_PICO_HOBBIT, start_imx6ul_pico_hobbit_512mb, technexion-pico-hobbit/flash-header-imx6ul-pico-hobbit-512, imx6ul-pico-hobbit-512mb)
+> 
 
---=20
+-- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
---hacavgclbweybqgq
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEERBNZvwSgvmcMY/T74omh9DUaUbMFAl7iALgACgkQ4omh9DUa
-UbM5rw//e1aXnxZGZDNjQeblbeC8y7a/vzO7SqNTnLy22N6zWDhKDy+BXCT2YgfD
-rBemJfTYf7x8MU2Z8mYujka7uIuf75FeWbao5aqFpHuXAajgS5ApbzyPDYGwidq2
-RVoWJqUlxykkukfBT7dud607qMs40t0FyR/uuZ3f7Yu7aaO5UFg6e65nlHR1vEJQ
-NE6uVZFi2iCm6gSUZSUtUbOC4snyg0jVa0RsDltFmXrGtNuj8OpUfSxyp/11Z3tM
-2DCJnPUgjpIKRGQZ15OxaTxG+Gkbq0olJSFxgEFKAaJb3mpcE8HXVy225onRKgub
-AA3Ku2/dwidt/Jal8C03EQ9x8PFnPKeRZSKb8pEsyEJs41PdLr8TF8nBkDyqjoJK
-KZn6cWrwO20lXDZA2OwipZ0SVCtXajPt+Q6nhdIuHBa1ZcheztzYBrAmzZJN3dCs
-PQsjPoyakQH2hhk7cLzvAUP5tlqqyxqx/8IEP2Ev5N0f7HPNVqeHPW52E/D1KjBV
-B2RNmdWXorvyl22UTY+nDLBZhC1QYwC4/a3OicSAMyAZu0RCUyMTopGqBtkMeiiw
-T/ZfMwHm8EEbBs8NM7D3Kw8riN68i2jcPnMamObSVbfo03b40AsR7vRe3jS68E6W
-aQr6MgTPqK1EL+cuKD5gun5hzi5sX7F4WyRMPjbhKAJztH6+V2A=
-=rTrp
------END PGP SIGNATURE-----
-
---hacavgclbweybqgq--
-
-
---===============2991746340540482830==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============2991746340540482830==--
