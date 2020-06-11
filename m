@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jjICY-0002rH-KX
- for barebox@lists.infradead.org; Thu, 11 Jun 2020 08:04:44 +0000
+ id 1jjICa-0002sq-Dx
+ for barebox@lists.infradead.org; Thu, 11 Jun 2020 08:04:46 +0000
 From: Clement Leger <cleger@kalray.eu>
-Date: Thu, 11 Jun 2020 10:02:03 +0200
-Message-Id: <20200611080207.6482-4-cleger@kalray.eu>
+Date: Thu, 11 Jun 2020 10:02:06 +0200
+Message-Id: <20200611080207.6482-7-cleger@kalray.eu>
 In-Reply-To: <20200611080207.6482-1-cleger@kalray.eu>
 References: <20200611080207.6482-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
@@ -21,33 +21,125 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 3/7] common: elf: check number of elf program headers
+Subject: [PATCH v5 6/7] common: bootm: add support for elf file loading
 To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
 Cc: Clement Leger <cleger@kalray.eu>, Oleksij Rempel <linux@rempel-privat.de>
 
-An elf file without program headers should not be loaded. Add a check
-for such cases.
+This will allows elf loader to directly have an elf file available. Thus
+filetype_elf bootm handlers will be able to use standard bootm functions
+and data.
 
 Signed-off-by: Clement Leger <cleger@kalray.eu>
 ---
- common/elf.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ common/Kconfig  |  8 ++++++++
+ common/bootm.c  | 33 +++++++++++++++++++++++++++++++++
+ include/bootm.h |  3 +++
+ 3 files changed, 44 insertions(+)
 
-diff --git a/common/elf.c b/common/elf.c
-index 0e92661e1..bd97858c8 100644
---- a/common/elf.c
-+++ b/common/elf.c
-@@ -119,6 +119,11 @@ static int elf_check_image(struct elf_image *elf)
- 		return -ENOEXEC;
+diff --git a/common/Kconfig b/common/Kconfig
+index 460ac487c..21e79982e 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -593,6 +593,14 @@ config BOOTM_AIMAGE
+ 	help
+ 	  Support using Android Images.
+ 
++config BOOTM_ELF
++	bool
++	depends on BOOTM
++	select ELF
++	prompt "elf loading support"
++	help
++	  Add support to load elf file with bootm.
++
+ config BOOTM_FITIMAGE
+ 	bool
+ 	prompt "FIT image support"
+diff --git a/common/bootm.c b/common/bootm.c
+index 8fec1ee34..4110d8d6e 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -143,6 +143,9 @@ int bootm_load_os(struct image_data *data, unsigned long load_address)
+ 		return 0;
  	}
  
-+	if (!elf_hdr_e_phnum(elf, elf->buf)) {
-+		pr_err("No phdr found.\n");
-+		return -ENOEXEC;
-+	}
++	if (IS_ENABLED(CONFIG_ELF) && data->elf)
++		return elf_load(data->elf);
 +
+ 	if (data->os_file) {
+ 		data->os_res = file_to_sdram(data->os_file, load_address);
+ 		if (!data->os_res)
+@@ -470,6 +473,8 @@ int bootm_get_os_size(struct image_data *data)
+ {
+ 	int ret;
+ 
++	if (data->elf)
++		return elf_get_mem_size(data->elf);
+ 	if (data->os)
+ 		return uimage_get_size(data->os, uimage_part_num(data->os_part));
+ 	if (data->os_fit)
+@@ -517,6 +522,22 @@ static int bootm_open_os_uimage(struct image_data *data)
  	return 0;
  }
+ 
++static int bootm_open_elf(struct image_data *data)
++{
++	if (!IS_ENABLED(CONFIG_ELF))
++		return -ENOSYS;
++
++	data->elf = elf_open(data->os_file);
++	if (IS_ERR(data->elf))
++		return PTR_ERR(data->elf);
++
++	printf("Entry Point:  %08llx\n", data->elf->entry);
++
++	data->os_address = data->elf->entry;
++
++	return 0;
++}
++
+ static void bootm_print_info(struct image_data *data)
+ {
+ 	if (data->os_res)
+@@ -652,6 +673,16 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 		}
+ 	}
+ 
++	if (os_type == filetype_elf) {
++		ret = bootm_open_elf(data);
++		if (ret) {
++			printf("Loading ELF image failed with: %s\n",
++					strerror(-ret));
++			data->elf = NULL;
++			goto err_out;
++		}
++	}
++
+ 	if (bootm_data->appendroot) {
+ 		char *rootarg;
+ 
+@@ -721,6 +752,8 @@ err_out:
+ 		uimage_close(data->initrd);
+ 	if (data->os)
+ 		uimage_close(data->os);
++	if (IS_ENABLED(CONFIG_ELF) && data->elf)
++		elf_close(data->elf);
+ 	if (IS_ENABLED(CONFIG_FITIMAGE) && data->os_fit)
+ 		fit_close(data->os_fit);
+ 	if (data->of_root_node && data->of_root_node != of_get_root_node())
+diff --git a/include/bootm.h b/include/bootm.h
+index 7782de7a4..ef5148f31 100644
+--- a/include/bootm.h
++++ b/include/bootm.h
+@@ -46,6 +46,9 @@ struct image_data {
+ 	/* if os is an uImage this will be provided */
+ 	struct uimage_handle *os;
+ 
++	/* if os is an elf file this will be provided */
++	struct elf_image *elf;
++
+ 	/* if os is a FIT image this will be provided */
+ 	struct fit_handle *os_fit;
  
 -- 
 2.17.1
