@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jjdqr-00066b-LS
- for barebox@lists.infradead.org; Fri, 12 Jun 2020 07:11:47 +0000
+ id 1jjdqu-00066u-GM
+ for barebox@lists.infradead.org; Fri, 12 Jun 2020 07:11:50 +0000
 From: Clement Leger <cleger@kalray.eu>
-Date: Fri, 12 Jun 2020 09:10:28 +0200
-Message-Id: <20200612071036.27864-1-cleger@kalray.eu>
+Date: Fri, 12 Jun 2020 09:10:29 +0200
+Message-Id: <20200612071036.27864-2-cleger@kalray.eu>
+In-Reply-To: <20200612071036.27864-1-cleger@kalray.eu>
+References: <20200612071036.27864-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,67 +21,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v6 0/8] elf: add better bootm support
+Subject: [PATCH v6 1/8] common: elf: add computation of elf boundaries
 To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
 Cc: Clement Leger <cleger@kalray.eu>, Oleksij Rempel <linux@rempel-privat.de>
 
-Currently, when booting an elf file using "bootm /dev/mtdx", bootm will
-simply pass the file to the bootm handler and the read done on it will
-read the entire flash partition. This series starts by some cleanup and
-then modify the elf loader to load the elf file without copying the whole
-elf file to an intermediate buffer. Only the elf header is copied in
-order to parse the elf file into a list of segment and then, the segments
-are loaded directly from the file.
+In order to correctly load an initrd or a device tree after an elf file,
+we need to know its boundaries. This commit adds support for that and
+allow the bootm implementations to use it for memory loading.
 
-A special handling for the elf file is also added in bootm data to allow
-using directly the elf file structure. Finally the mips bootm handler is
-modified to use bootm_load_os directly instead of manual elf loading.
+Signed-off-by: Clement Leger <cleger@kalray.eu>
+---
+ common/elf.c  | 7 +++++++
+ include/elf.h | 7 +++++++
+ 2 files changed, 14 insertions(+)
 
-Compilation for both mips and arm has been tested but run on qemu-malta was not
-possible. Changes have been tested on kvx architecture for which bootm support
-has been added and will be submitted.
-
-Changes v5 -> v6
- - Add missing elf boundaries computation patch
-
-Changes v4 -> v5
- - Rework elf loading to load from file rather than a buffer
- - Use calloc instead of xzalloc in elf file loading
- - Add check of program headers in elf check
-
-Changes v3 -> v4
- - Fix init of elf entry address to be used by bootm_load_elf
-
-Changes v2 -> v3
- - Integrate elf loading in bootm_load_os
- - Add patch to remove now unused elf_load_image/elf_release_image
- - Use malloc instead of xmalloc and check return value
-
-Changes v1 -> v2
- - Add BOOTM_ELF config to select elf support and add checks in code
- - Add an elf_get_mem_size function to avoid computing elf size in bootm.c
- - Use xmalloc and read_full in elf_open instead of xzalloc/read
- - Fix data->elf NULL reset
- - Remove elf struct entirely from mips bootm code
-
-Clement Leger (8):
-  common: elf: add computation of elf boundaries
-  common: elf: fix warning on 32 bits architectures
-  common: elf: use calloc instead of xzalloc
-  common: elf: check number of elf program headers
-  common: elf: load elf directly from file
-  common: elf: add elf_open, elf_close and elf_load
-  common: bootm: add support for elf file loading
-  mips: lib: bootm: use bootm elf loading capabilities
-
- arch/mips/lib/bootm.c |  25 ++---
- common/Kconfig        |   8 ++
- common/bootm.c        |  33 ++++++
- common/elf.c          | 231 +++++++++++++++++++++++++++++++++++-------
- include/bootm.h       |   3 +
- include/elf.h         |  16 ++-
- 6 files changed, 261 insertions(+), 55 deletions(-)
-
+diff --git a/common/elf.c b/common/elf.c
+index 4733accb0..d64de401c 100644
+--- a/common/elf.c
++++ b/common/elf.c
+@@ -59,6 +59,11 @@ static int load_elf_phdr_segment(struct elf_image *elf, void *src,
+ 	if (!p_filesz)
+ 		return 0;
+ 
++	if (dst < elf->low_addr)
++		elf->low_addr = dst;
++	if (dst + p_memsz > elf->high_addr)
++		elf->high_addr = dst + p_memsz;
++
+ 	pr_debug("Loading phdr to 0x%p (%llu bytes)\n", dst, p_filesz);
+ 
+ 	ret = elf_request_region(elf, (resource_size_t)dst, p_filesz);
+@@ -124,6 +129,8 @@ struct elf_image *elf_load_image(void *buf)
+ 	INIT_LIST_HEAD(&elf->list);
+ 
+ 	elf->buf = buf;
++	elf->low_addr = (void *) (unsigned long) -1;
++	elf->high_addr = 0;
+ 
+ 	ret = elf_check_image(elf);
+ 	if (ret)
+diff --git a/include/elf.h b/include/elf.h
+index 113728f08..403412f3f 100644
+--- a/include/elf.h
++++ b/include/elf.h
+@@ -403,9 +403,16 @@ struct elf_image {
+ 	struct list_head list;
+ 	u8 class;
+ 	u64 entry;
++	void *low_addr;
++	void *high_addr;
+ 	void *buf;
+ };
+ 
++static inline size_t elf_get_mem_size(struct elf_image *elf)
++{
++	return elf->high_addr - elf->low_addr;
++}
++
+ struct elf_image *elf_load_image(void *buf);
+ void elf_release_image(struct elf_image *elf);
+ 
 -- 
 2.17.1
 
