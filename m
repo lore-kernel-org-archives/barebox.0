@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jjdqx-000694-Lm
+ id 1jjdqy-00069c-EE
  for barebox@lists.infradead.org; Fri, 12 Jun 2020 07:11:53 +0000
 From: Clement Leger <cleger@kalray.eu>
-Date: Fri, 12 Jun 2020 09:10:31 +0200
-Message-Id: <20200612071036.27864-4-cleger@kalray.eu>
+Date: Fri, 12 Jun 2020 09:10:32 +0200
+Message-Id: <20200612071036.27864-5-cleger@kalray.eu>
 In-Reply-To: <20200612071036.27864-1-cleger@kalray.eu>
 References: <20200612071036.27864-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
@@ -21,33 +21,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v6 3/8] common: elf: use calloc instead of xzalloc
+Subject: [PATCH v6 4/8] common: elf: check number of elf program headers
 To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
 Cc: Clement Leger <cleger@kalray.eu>, Oleksij Rempel <linux@rempel-privat.de>
 
-This failure can be handled grecefully, use standard calloc.
+An elf file without program headers should not be loaded. Add a check
+for such cases.
 
 Signed-off-by: Clement Leger <cleger@kalray.eu>
 ---
- common/elf.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ common/elf.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/common/elf.c b/common/elf.c
-index 55f5bc645..0e92661e1 100644
+index 0e92661e1..bd97858c8 100644
 --- a/common/elf.c
 +++ b/common/elf.c
-@@ -19,7 +19,10 @@ static int elf_request_region(struct elf_image *elf, resource_size_t start,
- 	struct resource *r_new;
- 	struct elf_section *r;
+@@ -119,6 +119,11 @@ static int elf_check_image(struct elf_image *elf)
+ 		return -ENOEXEC;
+ 	}
  
--	r = xzalloc(sizeof(*r));
-+	r = calloc(1, sizeof(*r));
-+	if (!r)
-+		return -ENOMEM;
++	if (!elf_hdr_e_phnum(elf, elf->buf)) {
++		pr_err("No phdr found.\n");
++		return -ENOEXEC;
++	}
 +
- 	r_new = request_sdram_region("elf_section", start, size);
- 	if (!r_new) {
- 		pr_err("Failed to request region: %pa %pa\n", &start, &size);
+ 	return 0;
+ }
+ 
 -- 
 2.17.1
 
