@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from zimbra2.kalray.eu ([92.103.151.219])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jjdr0-0006Bv-62
- for barebox@lists.infradead.org; Fri, 12 Jun 2020 07:11:56 +0000
+ id 1jjdr1-0006Cq-1o
+ for barebox@lists.infradead.org; Fri, 12 Jun 2020 07:11:57 +0000
 From: Clement Leger <cleger@kalray.eu>
-Date: Fri, 12 Jun 2020 09:10:34 +0200
-Message-Id: <20200612071036.27864-7-cleger@kalray.eu>
+Date: Fri, 12 Jun 2020 09:10:35 +0200
+Message-Id: <20200612071036.27864-8-cleger@kalray.eu>
 In-Reply-To: <20200612071036.27864-1-cleger@kalray.eu>
 References: <20200612071036.27864-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
@@ -21,100 +21,126 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v6 6/8] common: elf: add elf_open, elf_close and elf_load
+Subject: [PATCH v6 7/8] common: bootm: add support for elf file loading
 To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
 Cc: Clement Leger <cleger@kalray.eu>, Oleksij Rempel <linux@rempel-privat.de>
 
-In order to integrate elf loading into bootm command, split elf opening
-from elf loading.
+This will allows elf loader to directly have an elf file available. Thus
+filetype_elf bootm handlers will be able to use standard bootm functions
+and data.
 
 Signed-off-by: Clement Leger <cleger@kalray.eu>
 ---
- arch/mips/lib/bootm.c |  8 ++++++--
- common/elf.c          | 20 +++++++-------------
- include/elf.h         |  5 +++--
- 3 files changed, 16 insertions(+), 17 deletions(-)
+ common/Kconfig  |  8 ++++++++
+ common/bootm.c  | 33 +++++++++++++++++++++++++++++++++
+ include/bootm.h |  3 +++
+ 3 files changed, 44 insertions(+)
 
-diff --git a/arch/mips/lib/bootm.c b/arch/mips/lib/bootm.c
-index b07884ae0..8e16994b6 100644
---- a/arch/mips/lib/bootm.c
-+++ b/arch/mips/lib/bootm.c
-@@ -50,10 +50,14 @@ static int do_bootm_elf(struct image_data *data)
- 	void *fdt;
- 	int ret = 0;
+diff --git a/common/Kconfig b/common/Kconfig
+index ac282d895..d75b43dfc 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -597,6 +597,14 @@ config BOOTM_AIMAGE
+ 	help
+ 	  Support using Android Images.
  
--	elf = elf_load_image(data->os_file);
-+	elf = elf_open(data->os_file);
- 	if (IS_ERR(elf))
- 		return PTR_ERR(elf);
- 
-+	ret = elf_load(elf);
-+	if (ret)
-+		goto bootm_elf_done;
++config BOOTM_ELF
++	bool
++	depends on BOOTM
++	select ELF
++	prompt "elf loading support"
++	help
++	  Add support to load elf file with bootm.
 +
- 	fdt = bootm_get_devicetree(data);
- 	if (IS_ERR(fdt)) {
- 		ret = PTR_ERR(fdt);
-@@ -76,7 +80,7 @@ static int do_bootm_elf(struct image_data *data)
- 	ret = -EINVAL;
+ config BOOTM_FITIMAGE
+ 	bool
+ 	prompt "FIT image support"
+diff --git a/common/bootm.c b/common/bootm.c
+index 8fec1ee34..4110d8d6e 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -143,6 +143,9 @@ int bootm_load_os(struct image_data *data, unsigned long load_address)
+ 		return 0;
+ 	}
  
- bootm_elf_done:
--	elf_release_image(elf);
-+	elf_close(elf);
- 	free(fdt);
++	if (IS_ENABLED(CONFIG_ELF) && data->elf)
++		return elf_load(data->elf);
++
+ 	if (data->os_file) {
+ 		data->os_res = file_to_sdram(data->os_file, load_address);
+ 		if (!data->os_res)
+@@ -470,6 +473,8 @@ int bootm_get_os_size(struct image_data *data)
+ {
+ 	int ret;
  
- 	return ret;
-diff --git a/common/elf.c b/common/elf.c
-index 1bcaafea7..af22be37e 100644
---- a/common/elf.c
-+++ b/common/elf.c
-@@ -285,23 +285,17 @@ err_free_elf:
- 	return ERR_PTR(ret);
++	if (data->elf)
++		return elf_get_mem_size(data->elf);
+ 	if (data->os)
+ 		return uimage_get_size(data->os, uimage_part_num(data->os_part));
+ 	if (data->os_fit)
+@@ -517,6 +522,22 @@ static int bootm_open_os_uimage(struct image_data *data)
+ 	return 0;
  }
  
--struct elf_image *elf_load_image(const char *filename)
-+struct elf_image *elf_open(const char *filename)
- {
--	int ret;
--	struct elf_image *elf;
--
--	elf = elf_check_init(filename);
--	if (IS_ERR(elf))
--		return elf;
--
--	ret = load_elf_image_segments(elf);
--	if (ret)
--		return ERR_PTR(ret);
-+	return elf_check_init(filename);
-+}
- 
--	return elf;
-+int elf_load(struct elf_image *elf)
++static int bootm_open_elf(struct image_data *data)
 +{
-+	return load_elf_image_segments(elf);
- }
- 
--void elf_release_image(struct elf_image *elf)
-+void elf_close(struct elf_image *elf)
++	if (!IS_ENABLED(CONFIG_ELF))
++		return -ENOSYS;
++
++	data->elf = elf_open(data->os_file);
++	if (IS_ERR(data->elf))
++		return PTR_ERR(data->elf);
++
++	printf("Entry Point:  %08llx\n", data->elf->entry);
++
++	data->os_address = data->elf->entry;
++
++	return 0;
++}
++
+ static void bootm_print_info(struct image_data *data)
  {
- 	elf_release_regions(elf);
+ 	if (data->os_res)
+@@ -652,6 +673,16 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 		}
+ 	}
  
-diff --git a/include/elf.h b/include/elf.h
-index f1a80a20a..7970fd2c9 100644
---- a/include/elf.h
-+++ b/include/elf.h
-@@ -414,8 +414,9 @@ static inline size_t elf_get_mem_size(struct elf_image *elf)
- 	return elf->high_addr - elf->low_addr;
- }
++	if (os_type == filetype_elf) {
++		ret = bootm_open_elf(data);
++		if (ret) {
++			printf("Loading ELF image failed with: %s\n",
++					strerror(-ret));
++			data->elf = NULL;
++			goto err_out;
++		}
++	}
++
+ 	if (bootm_data->appendroot) {
+ 		char *rootarg;
  
--struct elf_image *elf_load_image(const char *filename);
--void elf_release_image(struct elf_image *elf);
-+struct elf_image *elf_open(const char *filename);
-+void elf_close(struct elf_image *elf);
-+int elf_load(struct elf_image *elf);
+@@ -721,6 +752,8 @@ err_out:
+ 		uimage_close(data->initrd);
+ 	if (data->os)
+ 		uimage_close(data->os);
++	if (IS_ENABLED(CONFIG_ELF) && data->elf)
++		elf_close(data->elf);
+ 	if (IS_ENABLED(CONFIG_FITIMAGE) && data->os_fit)
+ 		fit_close(data->os_fit);
+ 	if (data->of_root_node && data->of_root_node != of_get_root_node())
+diff --git a/include/bootm.h b/include/bootm.h
+index 7782de7a4..ef5148f31 100644
+--- a/include/bootm.h
++++ b/include/bootm.h
+@@ -46,6 +46,9 @@ struct image_data {
+ 	/* if os is an uImage this will be provided */
+ 	struct uimage_handle *os;
  
- #define ELF_GET_FIELD(__s, __field, __type) \
- static inline __type elf_##__s##_##__field(struct elf_image *elf, void *arg) { \
++	/* if os is an elf file this will be provided */
++	struct elf_image *elf;
++
+ 	/* if os is a FIT image this will be provided */
+ 	struct fit_handle *os_fit;
+ 
 -- 
 2.17.1
 
