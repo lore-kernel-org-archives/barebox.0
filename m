@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mx1.emlix.com ([188.40.240.192])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jksnB-0006wz-Ag
- for barebox@lists.infradead.org; Mon, 15 Jun 2020 17:21:07 +0000
+ id 1jksnB-0006wv-7Y
+ for barebox@lists.infradead.org; Mon, 15 Jun 2020 17:21:08 +0000
 From: =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
-Date: Mon, 15 Jun 2020 19:20:42 +0200
-Message-Id: <cdd7a0abcff1fac807fed778693a1c29f18f7d5a.1592241105.git.dg@emlix.com>
+Date: Mon, 15 Jun 2020 19:20:37 +0200
+Message-Id: <a1fa1a50bcde6954e7634ed73fc3a592c70f647c.1592241105.git.dg@emlix.com>
 In-Reply-To: <cover.1592241105.git.dg@emlix.com>
 References: <cover.1592241105.git.dg@emlix.com>
 In-Reply-To: <cover.1592241105.git.dg@emlix.com>
@@ -23,76 +23,165 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 09/14] usbnet: Be more friendly in the receive path
+Subject: [PATCH v3 04/14] net: mdiobus: Add slice
 To: Barebox List <barebox@lists.infradead.org>
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
-To recognize if we have a receive packet pending we must set up a USB
-bulk transfer. When there's no incoming packet we must wait until the
-transfer times out. We do this with every poller call which can
-considerably slow down the system. With this patch we do two things
-against this:
-
-- lower the timeout for the bulk transfer
-- When we haven't received a packet for longer then lower the frequency
-  of calling into the USB stack to once every 100ms
+By adding a slice to the mdio bus we make the mdio code safe for being
+called in a poller.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/usb/usbnet.c | 19 ++++++++++++++++++-
- include/usb/usbnet.h     |  3 +++
- 2 files changed, 21 insertions(+), 1 deletion(-)
+ drivers/net/phy/mdio_bus.c | 43 ++++++++++++++++++++++++++++++++++++++
+ include/linux/phy.h        | 38 +++++++++++++--------------------
+ 2 files changed, 58 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index 46ea73247..aa48678f8 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -122,12 +122,29 @@ static int usbnet_recv(struct eth_device *edev)
+diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+index 3480e2ffb..99d23ffed 100644
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -239,6 +239,8 @@ int mdiobus_register(struct mii_bus *bus)
+ 		return -EINVAL;
+ 	}
  
- 	dev_dbg(&edev->dev, "%s\n",__func__);
++	slice_init(&bus->slice, dev_name(&bus->dev));
++
+ 	if (bus->reset)
+ 		bus->reset(bus);
  
-+	/*
-+	 * we must let the usb_bulk_msg below timeout before we realize
-+	 * that we have no packet received. Since this function runs
-+	 * inside a poller we considerably slow down barebox when we
-+	 * wait for the timeout too often. To improve this we only poll
-+	 * with full speed when we actually have received a packet in the
-+	 * last 100ms.
-+	 */
-+	if (is_timeout(dev->last_pkt_received, 100 * MSECOND) &&
-+	    !is_timeout(dev->last_recv_call, 100 * MSECOND)) {
-+		return 0;
-+	}
-+
-+	dev->last_recv_call = get_time_ns();
-+
- 	len = dev->rx_urb_size;
+@@ -272,6 +274,8 @@ void mdiobus_unregister(struct mii_bus *bus)
+ 		bus->phy_map[i] = NULL;
+ 	}
  
--	ret = usb_bulk_msg(dev->udev, dev->in, dev->rx_buf, len, &alen, 100);
-+	ret = usb_bulk_msg(dev->udev, dev->in, dev->rx_buf, len, &alen, 2);
- 	if (ret)
- 		return ret;
++	slice_exit(&bus->slice);
++
+ 	list_del(&bus->list);
+ }
+ EXPORT_SYMBOL(mdiobus_unregister);
+@@ -357,6 +361,45 @@ static int mdio_bus_match(struct device_d *dev, struct driver_d *drv)
+ 	return 1;
+ }
  
-+	dev->last_pkt_received = get_time_ns();
++/**
++ * mdiobus_read - Convenience function for reading a given MII mgmt register
++ * @bus: the mii_bus struct
++ * @addr: the phy address
++ * @regnum: register number to read
++ */
++int mdiobus_read(struct mii_bus *bus, int addr, u32 regnum)
++{
++	int ret;
 +
- 	if (alen) {
- 		if (info->rx_fixup)
- 			return info->rx_fixup(dev, dev->rx_buf, alen);
-diff --git a/include/usb/usbnet.h b/include/usb/usbnet.h
-index 450db47b4..7ff32f280 100644
---- a/include/usb/usbnet.h
-+++ b/include/usb/usbnet.h
-@@ -54,6 +54,9 @@ struct usbnet {
- #		define EVENT_RX_MEMORY	2
- #		define EVENT_STS_SPLIT	3
- #		define EVENT_LINK_RESET	4
++	slice_acquire(&bus->slice);
 +
-+	uint64_t last_pkt_received;
-+	uint64_t last_recv_call;
++	ret = bus->read(bus, addr, regnum);
++
++	slice_release(&bus->slice);
++
++	return ret;
++}
++
++/**
++ * mdiobus_write - Convenience function for writing a given MII mgmt register
++ * @bus: the mii_bus struct
++ * @addr: the phy address
++ * @regnum: register number to write
++ * @val: value to write to @regnum
++ */
++int mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val)
++{
++	int ret;
++
++	slice_acquire(&bus->slice);
++
++	ret = bus->write(bus, addr, regnum, val);
++
++	slice_release(&bus->slice);
++
++	return ret;
++}
++
+ static ssize_t phydev_read(struct cdev *cdev, void *_buf, size_t count, loff_t offset, ulong flags)
+ {
+ 	int i = count;
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index a9fdf44f1..3f0f31b35 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -16,6 +16,7 @@
+ #define __PHY_H
+ 
+ #include <driver.h>
++#include <slice.h>
+ #include <linux/list.h>
+ #include <linux/ethtool.h>
+ #include <linux/mii.h>
+@@ -116,9 +117,16 @@ struct mii_bus {
+ 	struct list_head list;
+ 
+ 	bool is_multiplexed;
++
++	struct slice slice;
  };
+ #define to_mii_bus(d) container_of(d, struct mii_bus, dev)
  
- #if 0
++static inline struct slice *mdiobus_slice(struct mii_bus *bus)
++{
++	return &bus->slice;
++}
++
+ int mdiobus_register(struct mii_bus *bus);
+ void mdiobus_unregister(struct mii_bus *bus);
+ struct phy_device *mdiobus_scan(struct mii_bus *bus, int addr);
+@@ -134,28 +142,8 @@ struct mii_bus *mdiobus_get_bus(int busnum);
+ 
+ struct mii_bus *of_mdio_find_bus(struct device_node *mdio_bus_np);
+ 
+-/**
+- * mdiobus_read - Convenience function for reading a given MII mgmt register
+- * @bus: the mii_bus struct
+- * @addr: the phy address
+- * @regnum: register number to read
+- */
+-static inline int mdiobus_read(struct mii_bus *bus, int addr, u32 regnum)
+-{
+-	return bus->read(bus, addr, regnum);
+-}
+-
+-/**
+- * mdiobus_write - Convenience function for writing a given MII mgmt register
+- * @bus: the mii_bus struct
+- * @addr: the phy address
+- * @regnum: register number to write
+- * @val: value to write to @regnum
+- */
+-static inline int mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val)
+-{
+-	return bus->write(bus, addr, regnum, val);
+-}
++int mdiobus_read(struct mii_bus *bus, int addr, u32 regnum);
++int mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val);
+ 
+ /* phy_device: An instance of a PHY
+  *
+@@ -376,11 +364,15 @@ int phy_register_fixup(const char *bus_id, u32 phy_uid, u32 phy_uid_mask,
+ int phy_register_fixup_for_id(const char *bus_id,
+ 		int (*run)(struct phy_device *));
+ int phy_scan_fixups(struct phy_device *phydev);
+-
+ int phy_read_mmd_indirect(struct phy_device *phydev, int prtad, int devad);
+ void phy_write_mmd_indirect(struct phy_device *phydev, int prtad, int devad,
+ 				   u16 data);
+ 
++static inline bool phy_acquired(struct phy_device *phydev)
++{
++	return phydev && phydev->bus && slice_acquired(&phydev->bus->slice);
++}
++
+ #ifdef CONFIG_PHYLIB
+ int phy_register_fixup_for_uid(u32 phy_uid, u32 phy_uid_mask,
+ 		int (*run)(struct phy_device *));
 -- 
 2.17.1
 
