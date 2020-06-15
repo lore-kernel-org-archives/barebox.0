@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mx1.emlix.com ([188.40.240.192])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jksn8-0006l7-6z
- for barebox@lists.infradead.org; Mon, 15 Jun 2020 17:21:06 +0000
+ id 1jksn8-0006lA-6z
+ for barebox@lists.infradead.org; Mon, 15 Jun 2020 17:21:05 +0000
 From: =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
-Date: Mon, 15 Jun 2020 19:20:34 +0200
-Message-Id: <488379d8d4e9a79be7a2417d4d39f62372c0a2a3.1592241105.git.dg@emlix.com>
+Date: Mon, 15 Jun 2020 19:20:35 +0200
+Message-Id: <af6e2213e7d0e6fe62108b118dba8e7c3a985342.1592241105.git.dg@emlix.com>
 In-Reply-To: <cover.1592241105.git.dg@emlix.com>
 References: <cover.1592241105.git.dg@emlix.com>
 In-Reply-To: <cover.1592241105.git.dg@emlix.com>
 References: <cover.1592241105.git.dg@emlix.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,458 +19,87 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 01/14] Introduce slices
+Subject: [PATCH v3 02/14] Introduce idle slice
 To: Barebox List <barebox@lists.infradead.org>
+Cc: =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
-
-slices, the barebox idea of locking
-
-barebox has pollers which execute code in the background whenever one of the
-delay functions (udelay, mdelay, ...) or is_timeout() are called. This
-introduces resource problems when some device triggers a poller by calling
-a delay function and then the poller code calls into the same device again.
-
-As an example consider a I2C GPIO expander which drives a LED which shall
-be used as a heartbeat LED:
-
-poller -> LED on/off -> GPIO high/low -> I2C transfer
-
-The I2C controller has a timeout loop using is_timeout() and thus can trigger
-a poller run. With this the following can happen during an unrelated I2C
-transfer:
-
-I2C transfer -> is_timeout() -> poller -> LED on/off -> GPIO high/low -> I2C transfer
-
-We end up with issuing an I2C transfer during another I2C transfer and
-things go downhill.
-
-Due to the lack of interrupts we can't do real locking in barebox. We use
-a mechanism called slices instead. A slice describes a resource to which
-other slices can be attached. Whenever a slice is needed it must be acquired.
-Acquiring a slice never fails, it just increases the acquired counter of
-the slice and its dependent slices. when a slice shall be used inside a
-poller it must first be tested if the slice is already in use. If it is,
-we can't do the operation on the slice now and must return and hope that
-we have more luck in the next poller call.
-
-slices can be attached other slices as dependencies. In the example above
-LED driver would add a dependency to the GPIO controller and the GPIO driver
-would add a dependency to the I2C bus:
-
-GPIO driver probe:
-
-slice_add(&gpio->slice, i2c_device_slice(i2cdev));
-
-LED driver probe:
-
-slice_add(&led->slice, gpio_slice(gpio));
-
-The GPIO code would call slice_acquire(&gpio->slice) before doing any
-operation on the GPIO chip providing this GPIO, likewise the I2C core
-would call slice_acquire(&i2cbus->slice) before doing an operation on
-this I2C bus.
-
-The heartbeat poller code would call slice_acquired(led_slice(led)) and
-only continue when the slice is not acquired.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- commands/Kconfig |   8 ++
- common/Makefile  |   1 +
- common/slice.c   | 303 +++++++++++++++++++++++++++++++++++++++++++++++
- include/slice.h  |  31 +++++
- 4 files changed, 343 insertions(+)
- create mode 100644 common/slice.c
- create mode 100644 include/slice.h
-
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 3789f33c3..608643fce 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -253,6 +253,14 @@ config CMD_POLLER
- 	  is_timeout() or one of the various delay functions. The poller command prints
- 	  informations about registered pollers.
- 
-+config CMD_SLICE
-+	tristate
-+	prompt "slice"
-+	help
-+	  slices are a way to protect resources from being accessed by pollers. The slice
-+	  command can be used to print informations about slices and also to manipulate
-+	  them on the command line for debugging purposes.
-+
- # end Information commands
- endmenu
- 
-diff --git a/common/Makefile b/common/Makefile
-index 53859d8d1..141109b23 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -11,6 +11,7 @@ obj-y				+= bootsource.o
- obj-$(CONFIG_ELF)		+= elf.o
- obj-y				+= restart.o
- obj-y				+= poweroff.o
-+obj-y				+= slice.o
- obj-$(CONFIG_MACHINE_ID)	+= machine_id.o
- obj-$(CONFIG_AUTO_COMPLETE)	+= complete.o
- obj-y				+= version.o
-diff --git a/common/slice.c b/common/slice.c
-new file mode 100644
-index 000000000..085d67604
---- /dev/null
-+++ b/common/slice.c
-@@ -0,0 +1,303 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#define pr_fmt(fmt) "slice: " fmt
-+
-+#include <common.h>
-+#include <slice.h>
-+
-+/*
-+ * slices, the barebox idea of locking
-+ *
-+ * barebox has pollers which execute code in the background whenever one of the
-+ * delay functions (udelay, mdelay, ...) or is_timeout() are called. This
-+ * introduces resource problems when some device triggers a poller by calling
-+ * a delay function and then the poller code calls into the same device again.
-+ *
-+ * As an example consider a I2C GPIO expander which drives a LED which shall
-+ * be used as a heartbeat LED:
-+ *
-+ * poller -> LED on/off -> GPIO high/low -> I2C transfer
-+ *
-+ * The I2C controller has a timeout loop using is_timeout() and thus can trigger
-+ * a poller run. With this the following can happen during an unrelated I2C
-+ * transfer:
-+ *
-+ * I2C transfer -> is_timeout() -> poller -> LED on/off -> GPIO high/low -> I2C transfer
-+ *
-+ * We end up with issuing an I2C transfer during another I2C transfer and
-+ * things go downhill.
-+ *
-+ * Due to the lack of interrupts we can't do real locking in barebox. We use
-+ * a mechanism called slices instead. A slice describes a resource to which
-+ * other slices can be attached. Whenever a slice is needed it must be acquired.
-+ * Acquiring a slice never fails, it just increases the acquired counter of
-+ * the slice and its dependent slices. when a slice shall be used inside a
-+ * poller it must first be tested if the slice is already in use. If it is,
-+ * we can't do the operation on the slice now and must return and hope that
-+ * we have more luck in the next poller call.
-+ *
-+ * slices can be attached other slices as dependencies. In the example above
-+ * LED driver would add a dependency to the GPIO controller and the GPIO driver
-+ * would add a dependency to the I2C bus:
-+ *
-+ * GPIO driver probe:
-+ *
-+ * slice_depends_on(&gpio->slice, i2c_device_slice(i2cdev));
-+ *
-+ * LED driver probe:
-+ *
-+ * slice_depends_on(&led->slice, gpio_slice(gpio));
-+ *
-+ * The GPIO code would call slice_acquire(&gpio->slice) before doing any
-+ * operation on the GPIO chip providing this GPIO, likewise the I2C core
-+ * would call slice_acquire(&i2cbus->slice) before doing an operation on
-+ * this I2C bus.
-+ *
-+ * The heartbeat poller code would call slice_acquired(led_slice(led)) and
-+ * only continue when the slice is not acquired.
-+ */
-+
-+/*
-+ * slices are not required to have a device and thus a name, but it really
-+ * helps debugging when it has one.
-+ */
-+static const char *slice_name(struct slice *slice)
-+{
-+	return slice->name;
-+}
-+
-+static void __slice_acquire(struct slice *slice, int add)
-+{
-+	slice->acquired += add;
-+
-+	if (slice->acquired < 0) {
-+		pr_err("Slice %s acquired count drops below zero\n",
-+			slice_name(slice));
-+		dump_stack();
-+		slice->acquired = 0;
-+		return;
-+	}
-+}
-+
-+/**
-+ * slice_acquire: acquire a slice
-+ * @slice: The slice to acquire
-+ *
-+ * This acquires a slice and its dependencies
-+ */
-+void slice_acquire(struct slice *slice)
-+{
-+	__slice_acquire(slice, 1);
-+}
-+
-+/**
-+ * slice_release: release a slice
-+ * @slice: The slice to release
-+ *
-+ * This releases a slice and its dependencies
-+ */
-+void slice_release(struct slice *slice)
-+{
-+	__slice_acquire(slice, -1);
-+}
-+
-+/**
-+ * slice_acquired: test if a slice is acquired
-+ * @slice: The slice to test
-+ *
-+ * This tests if a slice is acquired. Returns true if it is, false otherwise
-+ */
-+bool slice_acquired(struct slice *slice)
-+{
-+	struct slice_entry *se;
-+	bool ret = false;
-+
-+	if (slice->acquired > 0)
-+		return true;
-+
-+	if (slice->acquired < 0) {
-+		pr_err("Recursive dependency detected in slice %s\n",
-+		       slice_name(slice));
-+		panic("Cannot continue");
-+	}
-+
-+	slice->acquired = -1;
-+
-+	list_for_each_entry(se, &slice->deps, list)
-+		if (slice_acquired(se->slice)) {
-+			ret = true;
-+			break;
-+		}
-+
-+	slice->acquired = 0;
-+
-+	return ret;
-+}
-+
-+static void __slice_debug_acquired(struct slice *slice, int level)
-+{
-+	struct slice_entry *se;
-+
-+	pr_debug("%*s%s: %d\n", level * 4, "",
-+		 slice_name(slice),
-+		 slice->acquired);
-+
-+	list_for_each_entry(se, &slice->deps, list)
-+		__slice_debug_acquired(se->slice, level + 1);
-+}
-+
-+/**
-+ * slice_debug_acquired: print the acquired state of a slice
-+ *
-+ * @slice: The slice to print
-+ *
-+ * This prints the acquired state of a slice and its dependencies.
-+ */
-+void slice_debug_acquired(struct slice *slice)
-+{
-+	if (!slice_acquired(slice))
-+		return;
-+
-+	__slice_debug_acquired(slice, 0);
-+}
-+
-+/**
-+ * slice_depends_on: Add a dependency to a slice
-+ *
-+ * @slice: The slice to add the dependency to
-+ * @dep:   The slice @slice depends on
-+ *
-+ * This makes @slice dependent on @dep. In other words, acquiring @slice
-+ * will lead to also acquiring @dep.
-+ */
-+void slice_depends_on(struct slice *slice, struct slice *dep)
-+{
-+	struct slice_entry *se = xzalloc(sizeof(*se));
-+
-+	pr_debug("Adding dependency %s (%d) to slice %s (%d)\n",
-+		 slice_name(dep), dep->acquired,
-+		 slice_name(slice), slice->acquired);
-+
-+	se->slice = dep;
-+
-+	list_add_tail(&se->list, &slice->deps);
-+}
-+
-+static LIST_HEAD(slices);
-+
-+/**
-+ * slice_init - initialize a slice before usage
-+ * @slice: The slice to initialize
-+ * @name:  The name of the slice
-+ *
-+ * This initializes a slice before usage. @name should be a meaningful name, when
-+ * a device context is available to the caller it is recommended to pass its
-+ * dev_name() as name argument.
-+ */
-+void slice_init(struct slice *slice, const char *name)
-+{
-+	INIT_LIST_HEAD(&slice->deps);
-+	slice->name = xstrdup(name);
-+	list_add_tail(&slice->list, &slices);
-+}
-+
-+/**
-+ * slice_exit: Remove a slice
-+ * @slice: The slice to remove the dependency from
-+ */
-+void slice_exit(struct slice *slice)
-+{
-+	struct slice *s;
-+	struct slice_entry *se, *tmp;
-+
-+	list_del(&slice->list);
-+
-+	/* remove our dependencies */
-+	list_for_each_entry_safe(se, tmp, &slice->deps, list) {
-+		list_del(&se->list);
-+		free(se);
-+	}
-+
-+	/* remove this slice from other slices dependencies */
-+	list_for_each_entry(s, &slices, list) {
-+		list_for_each_entry_safe(se, tmp, &s->deps, list) {
-+			if (se->slice == slice) {
-+				list_del(&se->list);
-+				free(se);
-+			}
-+		}
-+	}
-+
-+	free(slice->name);
-+}
-+
-+#if defined CONFIG_CMD_SLICE
-+
-+#include <command.h>
-+#include <getopt.h>
-+
-+static void slice_info(void)
-+{
-+	struct slice *slice;
-+	struct slice_entry *se;
-+
-+	list_for_each_entry(slice, &slices, list) {
-+		printf("slice %s: acquired=%d\n",
-+		       slice_name(slice), slice->acquired);
-+		list_for_each_entry(se, &slice->deps, list)
-+			printf("    dep: %s\n", slice_name(se->slice));
-+	}
-+}
-+
-+static int __slice_acquire_name(const char *name, int add)
-+{
-+	struct slice *slice;
-+
-+	list_for_each_entry(slice, &slices, list) {
-+		if (!strcmp(slice->name, name)) {
-+			__slice_acquire(slice, add);
-+			return 0;
-+		}
-+	}
-+
-+	printf("No such slice: %s\n", name);
-+
-+	return 1;
-+}
-+
-+BAREBOX_CMD_HELP_START(slice)
-+BAREBOX_CMD_HELP_TEXT("slice debugging command")
-+BAREBOX_CMD_HELP_TEXT("")
-+BAREBOX_CMD_HELP_TEXT("Options:")
-+BAREBOX_CMD_HELP_OPT ("-i", "Print information about slices")
-+BAREBOX_CMD_HELP_OPT ("-a <devname>", "acquire a slice")
-+BAREBOX_CMD_HELP_OPT ("-r <devname>", "release a slice")
-+BAREBOX_CMD_HELP_END
-+
-+static int do_slice(int argc, char *argv[])
-+{
-+	int opt;
-+
-+	while ((opt = getopt(argc, argv, "a:r:i")) > 0) {
-+		switch (opt) {
-+		case 'a':
-+			return __slice_acquire_name(optarg, 1);
-+		case 'r':
-+			return __slice_acquire_name(optarg, -1);
-+		case 'i':
-+			slice_info();
-+			return 0;
-+		}
-+	}
-+
-+	return COMMAND_ERROR_USAGE;
-+}
-+
-+BAREBOX_CMD_START(slice)
-+	.cmd = do_slice,
-+	BAREBOX_CMD_DESC("debug slices")
-+	BAREBOX_CMD_OPTS("[-ari]")
-+	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
-+	BAREBOX_CMD_HELP(cmd_slice_help)
-+BAREBOX_CMD_END
-+#endif
-diff --git a/include/slice.h b/include/slice.h
-new file mode 100644
-index 000000000..5538fc434
---- /dev/null
-+++ b/include/slice.h
-@@ -0,0 +1,31 @@
-+#ifndef __SLICE_H
-+#define __SLICE_H
-+
-+enum slice_action {
-+	SLICE_ACQUIRE = 1,
-+	SLICE_RELEASE = -1,
-+	SLICE_TEST = 0,
-+};
-+
-+struct slice {
-+	int acquired;
-+	struct list_head deps;
-+	char *name;
-+	struct list_head list;
-+};
-+
-+struct slice_entry {
-+	struct slice *slice;
-+	struct list_head list;
-+};
-+
-+void slice_acquire(struct slice *slice);
-+void slice_release(struct slice *slice);
-+bool slice_acquired(struct slice *slice);
-+void slice_depends_on(struct slice *slice, struct slice *dep);
-+void slice_init(struct slice *slice, const char *name);
-+void slice_exit(struct slice *slice);
-+
-+void slice_debug_acquired(struct slice *slice);
-+
-+#endif /* __SLICE_H */
--- 
-2.17.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U29tZSBjb2RlIGNhbid0IGZvcmVzZWUgd2hpY2ggcmVzb3VyY2VzIHdpbGwgYmUgdXNlZCBieSBp
+dHMgcG9sbGVyLiBUaGlzCmlzIHRoZSBjYXNlIGVzcGVjaWFsbHkgaW4gcG9sbGVycyB0aGF0IHdp
+bGwgZXhlY3V0ZSBhcmJpdHJhcnkgY29tbWFuZHMKaW5wdXQgYnkgdGhlIHVzZXIuIFdpdGggdGhp
+cyBjb21taXQgYSBzcGVjaWFsIHNsaWNlIGlzIGludHJvZHVjZWQgdGhhdCBpcwpyZWxlYXNlZCBv
+bmx5IHdoZW4gQmFyZWJveCBpcyB3YWl0aW5nIGZvciBjb25zb2xlIGlucHV0IGFuZCBvbmx5IHdo
+ZW4gaXQKaXMgZG9pbmcgdGhhdCBvdXRzaWRlIG9mIGFueSBjb21tYW5kLiBDb2RlIHRoYXQgd2Fu
+dHMgdG8gZGVwZW5kIG9uIHRoZQppZGxlIHNsaWNlIG11c3Qgc2VsZWN0IENPTkZJR19JRExFX1NM
+SUNFIHRvIG1ha2UgaXQgYXZhaWxhYmxlLgoKU2lnbmVkLW9mZi1ieTogRGFuaWVsIEdsw7Zja25l
+ciA8ZGdAZW1saXguY29tPgpTaWduZWQtb2ZmLWJ5OiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVu
+Z3V0cm9uaXguZGU+Ci0tLQogY29tbW9uL2h1c2guYyAgICAgIHwgIDUgKysrKysKIGNvbW1vbi9y
+YXRwL3JhdHAuYyB8ICA3ICsrKysrKy0KIGNvbW1vbi9zbGljZS5jICAgICB8IDIyICsrKysrKysr
+KysrKysrKysrKysrKysKIGNvbW1vbi9zdGFydHVwLmMgICB8ICAyICsrCiBpbmNsdWRlL3JhdHBf
+YmIuaCAgfCAgMSAtCiBpbmNsdWRlL3NsaWNlLmggICAgfCAgNSArKysrKwogbGliL3JlYWRsaW5l
+LmMgICAgIHwgIDYgKy0tLS0tCiA3IGZpbGVzIGNoYW5nZWQsIDQxIGluc2VydGlvbnMoKyksIDcg
+ZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvY29tbW9uL2h1c2guYyBiL2NvbW1vbi9odXNoLmMK
+aW5kZXggYzI0YjJjN2NkLi42MTQyNGQ5OGUgMTAwNjQ0Ci0tLSBhL2NvbW1vbi9odXNoLmMKKysr
+IGIvY29tbW9uL2h1c2guYwpAQCAtNDYwLDcgKzQ2MCwxMiBAQCBzdGF0aWMgdm9pZCBnZXRfdXNl
+cl9pbnB1dChzdHJ1Y3QgaW5fc3RyICppKQogCWVsc2UKIAkJcHJvbXB0ID0gQ09ORklHX1BST01Q
+VF9IVVNIX1BTMjsKIAorCWlkbGVfc2xpY2VfcmVsZWFzZSgpOworCiAJbiA9IHJlYWRsaW5lKHBy
+b21wdCwgY29uc29sZV9idWZmZXIsIENPTkZJR19DQlNJWkUpOworCisJaWRsZV9zbGljZV9hY3F1
+aXJlKCk7CisKIAlpZiAobiA9PSAtMSApIHsKIAkJaS0+aW50ZXJydXB0ID0gMTsKIAkJbiA9IDA7
+CmRpZmYgLS1naXQgYS9jb21tb24vcmF0cC9yYXRwLmMgYi9jb21tb24vcmF0cC9yYXRwLmMKaW5k
+ZXggZDJmZGI2MzFiLi5hNTdlNjkzNTAgMTAwNjQ0Ci0tLSBhL2NvbW1vbi9yYXRwL3JhdHAuYwor
+KysgYi9jb21tb24vcmF0cC9yYXRwLmMKQEAgLTMxNSwxMCArMzE1LDEzIEBAIHN0YXRpYyBpbnQg
+cmF0cF9jb25zb2xlX3JlZ2lzdGVyKHN0cnVjdCByYXRwX2N0eCAqY3R4KQogCXJldHVybiAwOwog
+fQogCi12b2lkIGJhcmVib3hfcmF0cF9jb21tYW5kX3J1bih2b2lkKQorc3RhdGljIHZvaWQgYmFy
+ZWJveF9yYXRwX2NvbW1hbmRfcnVuKHZvaWQpCiB7CiAJaW50IHJldDsKIAorCWlmIChzbGljZV9h
+Y3F1aXJlZCgmaWRsZV9zbGljZSkpCisJCXJldHVybjsKKwogCWlmICghcmF0cF9jb21tYW5kKQog
+CQlyZXR1cm47CiAKQEAgLTM4NSw2ICszODgsOCBAQCBzdGF0aWMgdm9pZCByYXRwX3BvbGxlcihz
+dHJ1Y3QgcG9sbGVyX3N0cnVjdCAqcG9sbGVyKQogCiAJZnJlZShidWYpOwogCisJYmFyZWJveF9y
+YXRwX2NvbW1hbmRfcnVuKCk7CisKIAlyZXR1cm47CiAKIG91dDoKZGlmZiAtLWdpdCBhL2NvbW1v
+bi9zbGljZS5jIGIvY29tbW9uL3NsaWNlLmMKaW5kZXggMDg1ZDY3NjA0Li5iNjRiODIyZWMgMTAw
+NjQ0Ci0tLSBhL2NvbW1vbi9zbGljZS5jCisrKyBiL2NvbW1vbi9zbGljZS5jCkBAIC0zLDYgKzMs
+NyBAQAogI2RlZmluZSBwcl9mbXQoZm10KSAic2xpY2U6ICIgZm10CiAKICNpbmNsdWRlIDxjb21t
+b24uaD4KKyNpbmNsdWRlIDxpbml0Lmg+CiAjaW5jbHVkZSA8c2xpY2UuaD4KIAogLyoKQEAgLTIz
+MSw2ICsyMzIsMjcgQEAgdm9pZCBzbGljZV9leGl0KHN0cnVjdCBzbGljZSAqc2xpY2UpCiAJZnJl
+ZShzbGljZS0+bmFtZSk7CiB9CiAKK3N0cnVjdCBzbGljZSBpZGxlX3NsaWNlOworCit2b2lkIGlk
+bGVfc2xpY2VfYWNxdWlyZSh2b2lkKQoreworCXNsaWNlX2FjcXVpcmUoJmlkbGVfc2xpY2UpOwor
+fQorCit2b2lkIGlkbGVfc2xpY2VfcmVsZWFzZSh2b2lkKQoreworCXNsaWNlX3JlbGVhc2UoJmlk
+bGVfc2xpY2UpOworfQorCitzdGF0aWMgaW50IGlkbGVfc2xpY2VfaW5pdCh2b2lkKQoreworCXNs
+aWNlX2luaXQoJmlkbGVfc2xpY2UsICJpZGxlIik7CisJc2xpY2VfYWNxdWlyZSgmaWRsZV9zbGlj
+ZSk7CisJcmV0dXJuIDA7Cit9CisKK3B1cmVfaW5pdGNhbGwoaWRsZV9zbGljZV9pbml0KTsKKwog
+I2lmIGRlZmluZWQgQ09ORklHX0NNRF9TTElDRQogCiAjaW5jbHVkZSA8Y29tbWFuZC5oPgpkaWZm
+IC0tZ2l0IGEvY29tbW9uL3N0YXJ0dXAuYyBiL2NvbW1vbi9zdGFydHVwLmMKaW5kZXggNTExNjc1
+ZWQ1Li5hZWNiMDQ1ZjQgMTAwNjQ0Ci0tLSBhL2NvbW1vbi9zdGFydHVwLmMKKysrIGIvY29tbW9u
+L3N0YXJ0dXAuYwpAQCAtMjY4LDggKzI2OCwxMCBAQCBlbnVtIGF1dG9ib290X3N0YXRlIGRvX2F1
+dG9ib290X2NvdW50ZG93bih2b2lkKQogCQlicmVhazsKIAl9CiAKKwlpZGxlX3NsaWNlX3JlbGVh
+c2UoKTsKIAlyZXQgPSBjb25zb2xlX2NvdW50ZG93bihnbG9iYWxfYXV0b2Jvb3RfdGltZW91dCwg
+ZmxhZ3MsIGFib3J0a2V5cywKIAkJCQkmb3V0a2V5KTsKKwlpZGxlX3NsaWNlX2FjcXVpcmUoKTsK
+IAogCWlmIChyZXQgPT0gMCkKIAkJYXV0b2Jvb3Rfc3RhdGUgPSBBVVRPQk9PVF9CT09UOwpkaWZm
+IC0tZ2l0IGEvaW5jbHVkZS9yYXRwX2JiLmggYi9pbmNsdWRlL3JhdHBfYmIuaAppbmRleCBhNGYy
+OGM2NDIuLmI3MTBmOTliZiAxMDA2NDQKLS0tIGEvaW5jbHVkZS9yYXRwX2JiLmgKKysrIGIvaW5j
+bHVkZS9yYXRwX2JiLmgKQEAgLTQxLDcgKzQxLDYgQEAgc3RydWN0IHJhdHBfYmJfcGt0IHsKIH07
+CiAKIGludCAgYmFyZWJveF9yYXRwKHN0cnVjdCBjb25zb2xlX2RldmljZSAqY2Rldik7Ci12b2lk
+IGJhcmVib3hfcmF0cF9jb21tYW5kX3J1bih2b2lkKTsKIGludCAgYmFyZWJveF9yYXRwX2ZzX2Nh
+bGwoc3RydWN0IHJhdHBfYmJfcGt0ICp0eCwgc3RydWN0IHJhdHBfYmJfcGt0ICoqcngpOwogaW50
+ICBiYXJlYm94X3JhdHBfZnNfbW91bnQoY29uc3QgY2hhciAqcGF0aCk7CiAKZGlmZiAtLWdpdCBh
+L2luY2x1ZGUvc2xpY2UuaCBiL2luY2x1ZGUvc2xpY2UuaAppbmRleCA1NTM4ZmM0MzQuLjM3ZDUz
+NTBlYiAxMDA2NDQKLS0tIGEvaW5jbHVkZS9zbGljZS5oCisrKyBiL2luY2x1ZGUvc2xpY2UuaApA
+QCAtMjgsNCArMjgsOSBAQCB2b2lkIHNsaWNlX2V4aXQoc3RydWN0IHNsaWNlICpzbGljZSk7CiAK
+IHZvaWQgc2xpY2VfZGVidWdfYWNxdWlyZWQoc3RydWN0IHNsaWNlICpzbGljZSk7CiAKK2V4dGVy
+biBzdHJ1Y3Qgc2xpY2UgaWRsZV9zbGljZTsKKwordm9pZCBpZGxlX3NsaWNlX2FjcXVpcmUodm9p
+ZCk7Cit2b2lkIGlkbGVfc2xpY2VfcmVsZWFzZSh2b2lkKTsKKwogI2VuZGlmIC8qIF9fU0xJQ0Vf
+SCAqLwpkaWZmIC0tZ2l0IGEvbGliL3JlYWRsaW5lLmMgYi9saWIvcmVhZGxpbmUuYwppbmRleCAz
+ZDE2YzE4MzguLmU1MzcwZjljNyAxMDA2NDQKLS0tIGEvbGliL3JlYWRsaW5lLmMKKysrIGIvbGli
+L3JlYWRsaW5lLmMKQEAgLTMsNyArMyw2IEBACiAjaW5jbHVkZSA8aW5pdC5oPgogI2luY2x1ZGUg
+PGxpYmJiLmg+CiAjaW5jbHVkZSA8cG9sbGVyLmg+Ci0jaW5jbHVkZSA8cmF0cF9iYi5oPgogI2lu
+Y2x1ZGUgPHhmdW5jcy5oPgogI2luY2x1ZGUgPGNvbXBsZXRlLmg+CiAjaW5jbHVkZSA8bGludXgv
+Y3R5cGUuaD4KQEAgLTIwMCwxMSArMTk5LDggQEAgaW50IHJlYWRsaW5lKGNvbnN0IGNoYXIgKnBy
+b21wdCwgY2hhciAqYnVmLCBpbnQgbGVuKQogCXB1dHMgKHByb21wdCk7CiAKIAl3aGlsZSAoMSkg
+ewotCQl3aGlsZSAoIXRzdGMoKSkgeworCQl3aGlsZSAoIXRzdGMoKSkKIAkJCXBvbGxlcl9jYWxs
+KCk7Ci0JCQlpZiAoSVNfRU5BQkxFRChDT05GSUdfQ09OU09MRV9SQVRQKSkKLQkJCQliYXJlYm94
+X3JhdHBfY29tbWFuZF9ydW4oKTsKLQkJfQogCiAJCWljaGFyID0gcmVhZF9rZXkoKTsKIAotLSAK
+Mi4xNy4xCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
+YmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9s
+aXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
