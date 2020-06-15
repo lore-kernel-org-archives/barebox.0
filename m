@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mx1.emlix.com ([188.40.240.192])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jksnC-000708-VB
- for barebox@lists.infradead.org; Mon, 15 Jun 2020 17:21:09 +0000
+ id 1jksnD-00072M-U0
+ for barebox@lists.infradead.org; Mon, 15 Jun 2020 17:21:11 +0000
 From: =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
-Date: Mon, 15 Jun 2020 19:20:40 +0200
-Message-Id: <9af968da84c9a54c1806e8193695b27207d3ef6e.1592241105.git.dg@emlix.com>
+Date: Mon, 15 Jun 2020 19:20:46 +0200
+Message-Id: <50373d4c6635dd9ab2ee248306cce79fb2cb209f.1592241105.git.dg@emlix.com>
 In-Reply-To: <cover.1592241105.git.dg@emlix.com>
 References: <cover.1592241105.git.dg@emlix.com>
 In-Reply-To: <cover.1592241105.git.dg@emlix.com>
 References: <cover.1592241105.git.dg@emlix.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,235 +19,123 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 07/14] net: Call net_poll() in a poller
+Subject: [PATCH v3 13/14] fastboot: rename usbgadget.fastboot_* variables to
+ fastboot.*
 To: Barebox List <barebox@lists.infradead.org>
+Cc: =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
-
-This patch moves the ethernet receive loop into a poller. With this
-network protocols no longer have to call net_loop() explicitly but
-can do it implicitly by calling is_timeout() when waiting for packets.
-
-Having the network receive loop running in a poller has the advantage
-that we have it running continuously and not only when we explicitly
-expect packets to come in. With this we can reasonably well answer to
-ping requests which is implemented in the next patch. This also helps
-protocols that run in the background like fastboot over UDP.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- fs/nfs.c         |  2 --
- fs/tftp.c        |  2 --
- include/net.h    |  3 ---
- net/dhcp.c       |  1 -
- net/dns.c        |  1 -
- net/eth.c        | 15 ++++++++++-----
- net/net.c        | 14 +++++++++++---
- net/netconsole.c |  4 +---
- net/nfs.c        |  1 -
- net/ping.c       |  2 --
- net/sntp.c       |  2 --
- 11 files changed, 22 insertions(+), 25 deletions(-)
-
-diff --git a/fs/nfs.c b/fs/nfs.c
-index 15ddab791..ebf851f65 100644
---- a/fs/nfs.c
-+++ b/fs/nfs.c
-@@ -447,8 +447,6 @@ again:
- 	nfs_timer_start = get_time_ns();
- 
- 	while (1) {
--		net_poll();
--
- 		if (is_timeout(nfs_timer_start, NFS_TIMEOUT)) {
- 			tries++;
- 			if (tries == NFS_MAX_RESEND)
-diff --git a/fs/tftp.c b/fs/tftp.c
-index d186e7983..e5a58a4da 100644
---- a/fs/tftp.c
-+++ b/fs/tftp.c
-@@ -207,8 +207,6 @@ static int tftp_poll(struct file_priv *priv)
- 		return -ETIMEDOUT;
- 	}
- 
--	net_poll();
--
- 	return 0;
- }
- 
-diff --git a/include/net.h b/include/net.h
-index 8d2b4923d..583dc14ed 100644
---- a/include/net.h
-+++ b/include/net.h
-@@ -244,9 +244,6 @@ IPaddr_t net_get_nameserver(void);
- const char *net_get_domainname(void);
- struct eth_device *net_route(IPaddr_t ip);
- 
--/* Do the work */
--void net_poll(void);
--
- static inline struct iphdr *net_eth_to_iphdr(char *pkt)
- {
- 	return (struct iphdr *)(pkt + ETHER_HDR_SIZE);
-diff --git a/net/dhcp.c b/net/dhcp.c
-index a27fa8999..ef22d2cef 100644
---- a/net/dhcp.c
-+++ b/net/dhcp.c
-@@ -513,7 +513,6 @@ int dhcp_request(struct eth_device *edev, const struct dhcp_req_param *param,
- 			ret = -ETIMEDOUT;
- 			goto out1;
- 		}
--		net_poll();
- 		if (is_timeout(dhcp_start, 3 * SECOND)) {
- 			dhcp_start = get_time_ns();
- 			printf("T ");
-diff --git a/net/dns.c b/net/dns.c
-index ffe98ef9e..851bf3722 100644
---- a/net/dns.c
-+++ b/net/dns.c
-@@ -231,7 +231,6 @@ int resolv(const char *host, IPaddr_t *ip)
- 		if (ctrlc()) {
- 			break;
- 		}
--		net_poll();
- 		if (is_timeout(dns_timer_start, SECOND)) {
- 			dns_timer_start = get_time_ns();
- 			printf("T ");
-diff --git a/net/eth.c b/net/eth.c
-index 2df0a74a5..6c8f31f6b 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -234,14 +234,19 @@ static int __eth_rx(struct eth_device *edev)
- {
- 	int ret;
- 
--	slice_acquire(eth_device_slice(edev));
-+	if (!phy_acquired(edev->phydev)) {
-+		ret = eth_carrier_check(edev, 0);
-+		if (ret)
-+			return ret;
-+	}
- 
--	ret = eth_carrier_check(edev, 0);
--	if (ret)
--		goto out;
-+	if (slice_acquired(eth_device_slice(edev)))
-+		return 0;
-+
-+	slice_acquire(eth_device_slice(edev));
- 
- 	ret = edev->recv(edev);
--out:
-+
- 	slice_release(eth_device_slice(edev));
- 
- 	return ret;
-diff --git a/net/net.c b/net/net.c
-index 5fd6246ab..197b551e7 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -239,8 +239,6 @@ static int arp_request(struct eth_device *edev, IPaddr_t dest, unsigned char *et
- 
- 		if (retries > PKT_NUM_RETRIES)
- 			return -ETIMEDOUT;
--
--		net_poll();
- 	}
- 
- 	pr_debug("Got ARP REPLY for %pI4: %02x:%02x:%02x:%02x:%02x:%02x\n",
-@@ -249,11 +247,21 @@ static int arp_request(struct eth_device *edev, IPaddr_t dest, unsigned char *et
- 	return 0;
- }
- 
--void net_poll(void)
-+static void net_poll(struct poller_struct *poller)
- {
- 	eth_rx();
- }
- 
-+static struct poller_struct net_poller = {
-+	.func = net_poll,
-+};
-+
-+static int init_net_poll(void)
-+{
-+	return poller_register(&net_poller, "net");
-+}
-+device_initcall(init_net_poll);
-+
- static uint16_t net_udp_new_localport(void)
- {
- 	static uint16_t localport;
-diff --git a/net/netconsole.c b/net/netconsole.c
-index 0fece65a2..c692db942 100644
---- a/net/netconsole.c
-+++ b/net/netconsole.c
-@@ -59,7 +59,7 @@ static int nc_getc(struct console_device *cdev)
- 		return 0;
- 
- 	while (!kfifo_len(priv->fifo))
--		net_poll();
-+		udelay(1);
- 
- 	kfifo_getc(priv->fifo, &c);
- 
-@@ -77,8 +77,6 @@ static int nc_tstc(struct console_device *cdev)
- 	if (priv->busy)
- 		return kfifo_len(priv->fifo) ? 1 : 0;
- 
--	net_poll();
--
- 	return kfifo_len(priv->fifo) ? 1 : 0;
- }
- 
-diff --git a/net/nfs.c b/net/nfs.c
-index 591417e0d..266351da0 100644
---- a/net/nfs.c
-+++ b/net/nfs.c
-@@ -710,7 +710,6 @@ static int do_nfs(int argc, char *argv[])
- 			nfs_err = -EINTR;
- 			break;
- 		}
--		net_poll();
- 		if (is_timeout(nfs_timer_start, NFS_TIMEOUT * SECOND)) {
- 			show_progress(-1);
- 			nfs_send();
-diff --git a/net/ping.c b/net/ping.c
-index a71f59a80..f3de0c27a 100644
---- a/net/ping.c
-+++ b/net/ping.c
-@@ -89,8 +89,6 @@ static int do_ping(int argc, char *argv[])
- 			break;
- 		}
- 
--		net_poll();
--
- 		if (is_timeout(ping_start, SECOND)) {
- 			/* No answer, send another packet */
- 			ping_start = get_time_ns();
-diff --git a/net/sntp.c b/net/sntp.c
-index b4e6d6439..f693a2e8a 100644
---- a/net/sntp.c
-+++ b/net/sntp.c
-@@ -145,8 +145,6 @@ s64 sntp(const char *server)
- 			break;
- 		}
- 
--		net_poll();
--
- 		if (is_timeout(sntp_start, 1 * SECOND)) {
- 			sntp_start = get_time_ns();
- 			ret = sntp_send();
--- 
-2.17.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhlcmUgaXMgbm90aGluZyBVU0Itc3BlY2lmaWMgaW4gdGhlIGRlZmluZWQgdXNiZ2FkZ2V0LmZh
+c3Rib290XyoKdmFyaWFibGVzLiBSZW5hbWUgdGhlbSB0byBiZSB1c2FibGUgYWxzbyBmb3IgdGhl
+IFVEUCBmYXN0Ym9vdCB0cmFuc3BvcnQuCgpUaGUgdXNiZ2FkZ2V0LmZhc3Rib290X2Z1bmN0aW9u
+IHZhcmlhYmxlIGlzIHVzZWQgdG8gZGVmaW5lIHRoZSBmaWxlcyBhbmQKZGV2aWNlcyBhY2Nlc3Np
+YmxlIHdpdGggdGhlIGVyYXNlIGFuZCBmbGFzaCBjb21tYW5kcy4gU2luY2UgImZ1bmN0aW9uIiBp
+cwphIHRlcm0gZnJvbSB0aGUgVVNCIHNwZWNpZmljYXRpb24gYW5kIHRoZSBGYXN0Ym9vdCBzcGVj
+aWZpY2F0aW9uIHVzZXMgdGhlCnRlcm0gInBhcnRpdGlvbiIsIHdlIHJlbmFtZSB0aGF0IHZhcmlh
+YmxlIHRvICJmYXN0Ym9vdC5wYXJ0aXRpb25zIi4KClNpZ25lZC1vZmYtYnk6IERhbmllbCBHbMO2
+Y2tuZXIgPGRnQGVtbGl4LmNvbT4KU2lnbmVkLW9mZi1ieTogU2FzY2hhIEhhdWVyIDxzLmhhdWVy
+QHBlbmd1dHJvbml4LmRlPgotLS0KIERvY3VtZW50YXRpb24vdXNlci91c2IucnN0IHwgIDQgKyst
+LQogY29tbWFuZHMvdXNiZ2FkZ2V0LmMgICAgICAgfCAgMiArLQogY29tbW9uL2Zhc3Rib290LmMg
+ICAgICAgICAgfCAyNCArKysrKysrKysrKysrKysrKysrKystLS0KIGNvbW1vbi91c2JnYWRnZXQu
+YyAgICAgICAgIHwgMTYgKystLS0tLS0tLS0tLS0tLQogaW5jbHVkZS9mYXN0Ym9vdC5oICAgICAg
+ICAgfCAgMyArKysKIDUgZmlsZXMgY2hhbmdlZCwgMjkgaW5zZXJ0aW9ucygrKSwgMjAgZGVsZXRp
+b25zKC0pCgpkaWZmIC0tZ2l0IGEvRG9jdW1lbnRhdGlvbi91c2VyL3VzYi5yc3QgYi9Eb2N1bWVu
+dGF0aW9uL3VzZXIvdXNiLnJzdAppbmRleCA0YzFiMjkyNWYuLmNhNWY4MTM4ZCAxMDA2NDQKLS0t
+IGEvRG9jdW1lbnRhdGlvbi91c2VyL3VzYi5yc3QKKysrIGIvRG9jdW1lbnRhdGlvbi91c2VyL3Vz
+Yi5yc3QKQEAgLTI2Niw3ICsyNjYsNyBAQCBVU0IgR2FkZ2V0IGF1dG9zdGFydCBPcHRpb25zCiAg
+IFNlZSA6cmVmOmBjb21tYW5kX3VzYmdhZGdldGAgLWEuIChEZWZhdWx0IDApLgogYGBnbG9iYWwu
+dXNiZ2FkZ2V0LmRmdV9mdW5jdGlvbmBgCiAgIEZ1bmN0aW9uIGRlc2NyaXB0aW9uIGZvciBERlUu
+IFNlZSA6cmVmOmBjb21tYW5kX3VzYmdhZGdldGAgLUQgW2Rlc2NdLgotYGBnbG9iYWwudXNiZ2Fk
+Z2V0LmZhc3Rib290X2Z1bmN0aW9uYGAKK2BgZ2xvYmFsLmZhc3Rib290LnBhcnRpdGlvbnNgYAog
+ICBGdW5jdGlvbiBkZXNjcmlwdGlvbiBmb3IgZmFzdGJvb3QuIFNlZSA6cmVmOmBjb21tYW5kX3Vz
+YmdhZGdldGAgLUEgW2Rlc2NdLgotYGBnbG9iYWwudXNiZ2FkZ2V0LmZhc3Rib290X2JidWBgCitg
+YGdsb2JhbC5mYXN0Ym9vdC5iYnVgYAogICBFeHBvcnQgYmFyZWJveCB1cGRhdGUgaGFuZGxlcnMu
+IFNlZSA6cmVmOmBjb21tYW5kX3VzYmdhZGdldGAgLWIuIChEZWZhdWx0IDApLgpkaWZmIC0tZ2l0
+IGEvY29tbWFuZHMvdXNiZ2FkZ2V0LmMgYi9jb21tYW5kcy91c2JnYWRnZXQuYwppbmRleCAxOTNk
+YTg2ZGUuLjkxMzM0MDJmNSAxMDA2NDQKLS0tIGEvY29tbWFuZHMvdXNiZ2FkZ2V0LmMKKysrIGIv
+Y29tbWFuZHMvdXNiZ2FkZ2V0LmMKQEAgLTU3LDcgKzU3LDcgQEAgQkFSRUJPWF9DTURfSEVMUF9U
+RVhUKCIiKQogQkFSRUJPWF9DTURfSEVMUF9URVhUKCJPcHRpb25zOiIpCiBCQVJFQk9YX0NNRF9I
+RUxQX09QVCAoIi1hXHQiLCAiQ3JlYXRlIENEQyBBQ00gZnVuY3Rpb24iKQogQkFSRUJPWF9DTURf
+SEVMUF9PUFQgKCItQSA8ZGVzYz4iLCAiQ3JlYXRlIEFuZHJvaWQgRmFzdGJvb3QgZnVuY3Rpb24u
+IElmICdkZXNjJyBpcyBub3QgcHJvdmlkZWQsICIKLQkJCQkgICAidHJ5IHRvIHVzZSAnZ2xvYmFs
+LnVzYmdhZGdldC5mYXN0Ym9vdF9mdW5jdGlvbicgdmFyaWFibGUuIikKKwkJCQkgICAidHJ5IHRv
+IHVzZSAnZ2xvYmFsLmZhc3Rib290LnBhcnRpdGlvbnMnIHZhcmlhYmxlLiIpCiBCQVJFQk9YX0NN
+RF9IRUxQX09QVCAoIi1iXHQiLCAiaW5jbHVkZSByZWdpc3RlcmVkIGJhcmVib3ggdXBkYXRlIGhh
+bmRsZXJzIChmYXN0Ym9vdCBzcGVjaWZpYykiKQogQkFSRUJPWF9DTURfSEVMUF9PUFQgKCItRCA8
+ZGVzYz4iLCAiQ3JlYXRlIERGVSBmdW5jdGlvbi4gSWYgJ2Rlc2MnIGlzIG5vdCBwcm92aWRlZCwg
+IgogCQkJCSAgICJ0cnkgdG8gdXNlICdnbG9iYWwudXNiZ2FkZ2V0LmRmdV9mdW5jdGlvbicgdmFy
+aWFibGUuIikKZGlmZiAtLWdpdCBhL2NvbW1vbi9mYXN0Ym9vdC5jIGIvY29tbW9uL2Zhc3Rib290
+LmMKaW5kZXggNmY1NGU5MzllLi4yZGI4MTY1Y2UgMTAwNjQ0Ci0tLSBhL2NvbW1vbi9mYXN0Ym9v
+dC5jCisrKyBiL2NvbW1vbi9mYXN0Ym9vdC5jCkBAIC00Niw2ICs0Niw4IEBACiAjZGVmaW5lIEZB
+U1RCT09UX1ZFUlNJT04JCSIwLjQiCiAKIHN0YXRpYyB1bnNpZ25lZCBpbnQgZmFzdGJvb3RfbWF4
+X2Rvd25sb2FkX3NpemUgPSBTWl84TTsKK2ludCBmYXN0Ym9vdF9iYnU7CitjaGFyICpmYXN0Ym9v
+dF9wYXJ0aXRpb25zOwogCiBzdHJ1Y3QgZmJfdmFyaWFibGUgewogCWNoYXIgKm5hbWU7CkBAIC05
+NDgsMTQgKzk1MCwzMCBAQCB2b2lkIGZhc3Rib290X2V4ZWNfY21kKHN0cnVjdCBmYXN0Ym9vdCAq
+ZmIsIGNvbnN0IGNoYXIgKmNtZGJ1ZikKIHN0YXRpYyBpbnQgZmFzdGJvb3RfZ2xvYmFsdmFyc19p
+bml0KHZvaWQpCiB7CiAJaWYgKElTX0VOQUJMRUQoQ09ORklHX0ZBU1RCT09UX1NQQVJTRSkpCi0J
+CWdsb2JhbHZhcl9hZGRfc2ltcGxlX2ludCgidXNiZ2FkZ2V0LmZhc3Rib290X21heF9kb3dubG9h
+ZF9zaXplIiwKKwkJZ2xvYmFsdmFyX2FkZF9zaW1wbGVfaW50KCJmYXN0Ym9vdC5tYXhfZG93bmxv
+YWRfc2l6ZSIsCiAJCQkJICZmYXN0Ym9vdF9tYXhfZG93bmxvYWRfc2l6ZSwgIiV1Iik7CisJZ2xv
+YmFsdmFyX2FkZF9zaW1wbGVfYm9vbCgiZmFzdGJvb3QuYmJ1IiwgJmZhc3Rib290X2JidSk7CisJ
+Z2xvYmFsdmFyX2FkZF9zaW1wbGVfc3RyaW5nKCJmYXN0Ym9vdC5wYXJ0aXRpb25zIiwKKwkJCQkg
+ICAgJmZhc3Rib290X3BhcnRpdGlvbnMpOworCisJZ2xvYmFsdmFyX2FsaWFzX2RlcHJlY2F0ZWQo
+InVzYmdhZGdldC5mYXN0Ym9vdF9mdW5jdGlvbiIsCisJCQkJICAgImZhc3Rib290LnBhcnRpdGlv
+bnMiKTsKKwlnbG9iYWx2YXJfYWxpYXNfZGVwcmVjYXRlZCgidXNiZ2FkZ2V0LmZhc3Rib290X2Ji
+dSIsCisJCQkJICAgImZhc3Rib290LmJidSIpOworCWdsb2JhbHZhcl9hbGlhc19kZXByZWNhdGVk
+KCJ1c2JnYWRnZXQuZmFzdGJvb3RfbWF4X2Rvd25sb2FkX3NpemUiLAorCQkJCSAgICJmYXN0Ym9v
+dC5tYXhfZG93bmxvYWRfc2l6ZSIpOwogCiAJcmV0dXJuIDA7CiB9CiAKIGRldmljZV9pbml0Y2Fs
+bChmYXN0Ym9vdF9nbG9iYWx2YXJzX2luaXQpOwogCi1CQVJFQk9YX01BR0lDVkFSX05BTUVEKGds
+b2JhbF91c2JnYWRnZXRfZmFzdGJvb3RfbWF4X2Rvd25sb2FkX3NpemUsCi0JCSAgICAgICBnbG9i
+YWwudXNiZ2FkZ2V0LmZhc3Rib290X21heF9kb3dubG9hZF9zaXplLAorQkFSRUJPWF9NQUdJQ1ZB
+Ul9OQU1FRChnbG9iYWxfZmFzdGJvb3RfbWF4X2Rvd25sb2FkX3NpemUsCisJCSAgICAgICBnbG9i
+YWwuZmFzdGJvb3QubWF4X2Rvd25sb2FkX3NpemUsCiAJCSAgICAgICAiRmFzdGJvb3QgbWF4aW11
+bSBkb3dubG9hZCBzaXplIik7CitCQVJFQk9YX01BR0lDVkFSX05BTUVEKGdsb2JhbF9mYXN0Ym9v
+dF9wYXJ0aXRpb25zLAorCQkgICAgICAgZ2xvYmFsLmZhc3Rib290LnBhcnRpdGlvbnMsCisJCSAg
+ICAgICAiUGFydGl0aW9ucyBleHBvcnRlZCBmb3IgdXBkYXRlIHZpYSBmYXN0Ym9vdCIpOworQkFS
+RUJPWF9NQUdJQ1ZBUl9OQU1FRChnbG9iYWxfZmFzdGJvb3RfYmJ1LAorCQkgICAgICAgZ2xvYmFs
+LmZhc3Rib290LmJidSwKKwkJICAgICAgICJFeHBvcnQgYmFyZWJveCB1cGRhdGUgaGFuZGxlcnMg
+dmlhIGZhc3Rib290Iik7CmRpZmYgLS1naXQgYS9jb21tb24vdXNiZ2FkZ2V0LmMgYi9jb21tb24v
+dXNiZ2FkZ2V0LmMKaW5kZXggYThmMTA0Y2YxLi4yNWZkOTk0OTMgMTAwNjQ0Ci0tLSBhL2NvbW1v
+bi91c2JnYWRnZXQuYworKysgYi9jb21tb24vdXNiZ2FkZ2V0LmMKQEAgLTMwLDggKzMwLDYgQEAK
+IHN0YXRpYyBpbnQgYXV0b3N0YXJ0Owogc3RhdGljIGludCBhY207CiBzdGF0aWMgY2hhciAqZGZ1
+X2Z1bmN0aW9uOwotc3RhdGljIGNoYXIgKmZhc3Rib290X2Z1bmN0aW9uOwotc3RhdGljIGludCBm
+YXN0Ym9vdF9iYnU7CiAKIHN0YXRpYyBzdHJ1Y3QgZmlsZV9saXN0ICpwYXJzZShjb25zdCBjaGFy
+ICpmaWxlcykKIHsKQEAgLTU2LDggKzU0LDggQEAgaW50IHVzYmdhZGdldF9yZWdpc3Rlcihib29s
+IGRmdSwgY29uc3QgY2hhciAqZGZ1X29wdHMsCiAJCWRmdV9vcHRzID0gZGZ1X2Z1bmN0aW9uOwog
+CiAJaWYgKGZhc3Rib290ICYmICFmYXN0Ym9vdF9vcHRzICYmCi0JICAgIGZhc3Rib290X2Z1bmN0
+aW9uICYmICpmYXN0Ym9vdF9mdW5jdGlvbikKLQkJZmFzdGJvb3Rfb3B0cyA9IGZhc3Rib290X2Z1
+bmN0aW9uOworCSAgICBmYXN0Ym9vdF9wYXJ0aXRpb25zICYmICpmYXN0Ym9vdF9wYXJ0aXRpb25z
+KQorCQlmYXN0Ym9vdF9vcHRzID0gZmFzdGJvb3RfcGFydGl0aW9uczsKIAogCWlmICghZGZ1X29w
+dHMgJiYgIWZhc3Rib290X29wdHMgJiYgIWFjbSkKIAkJcmV0dXJuIENPTU1BTkRfRVJST1JfVVNB
+R0U7CkBAIC0xMTYsMTIgKzExNCw4IEBAIHN0YXRpYyBpbnQgdXNiZ2FkZ2V0X2dsb2JhbHZhcnNf
+aW5pdCh2b2lkKQogCWlmIChJU19FTkFCTEVEKENPTkZJR19VU0JfR0FER0VUX0FVVE9TVEFSVCkp
+IHsKIAkJZ2xvYmFsdmFyX2FkZF9zaW1wbGVfYm9vbCgidXNiZ2FkZ2V0LmF1dG9zdGFydCIsICZh
+dXRvc3RhcnQpOwogCQlnbG9iYWx2YXJfYWRkX3NpbXBsZV9ib29sKCJ1c2JnYWRnZXQuYWNtIiwg
+JmFjbSk7Ci0JCWdsb2JhbHZhcl9hZGRfc2ltcGxlX2Jvb2woInVzYmdhZGdldC5mYXN0Ym9vdF9i
+YnUiLAotCQkJCQkgICZmYXN0Ym9vdF9iYnUpOwogCX0KIAlnbG9iYWx2YXJfYWRkX3NpbXBsZV9z
+dHJpbmcoInVzYmdhZGdldC5kZnVfZnVuY3Rpb24iLCAmZGZ1X2Z1bmN0aW9uKTsKLQlnbG9iYWx2
+YXJfYWRkX3NpbXBsZV9zdHJpbmcoInVzYmdhZGdldC5mYXN0Ym9vdF9mdW5jdGlvbiIsCi0JCQkJ
+ICAgICZmYXN0Ym9vdF9mdW5jdGlvbik7CiAKIAlyZXR1cm4gMDsKIH0KQEAgLTEzNiw5ICsxMzAs
+MyBAQCBCQVJFQk9YX01BR0lDVkFSX05BTUVEKGdsb2JhbF91c2JnYWRnZXRfYWNtLAogQkFSRUJP
+WF9NQUdJQ1ZBUl9OQU1FRChnbG9iYWxfdXNiZ2FkZ2V0X2RmdV9mdW5jdGlvbiwKIAkJICAgICAg
+IGdsb2JhbC51c2JnYWRnZXQuZGZ1X2Z1bmN0aW9uLAogCQkgICAgICAgInVzYmdhZGdldDogQ3Jl
+YXRlIERGVSBmdW5jdGlvbiIpOwotQkFSRUJPWF9NQUdJQ1ZBUl9OQU1FRChnbG9iYWxfdXNiZ2Fk
+Z2V0X2Zhc3Rib290X2Z1bmN0aW9uLAotCQkgICAgICAgZ2xvYmFsLnVzYmdhZGdldC5mYXN0Ym9v
+dF9mdW5jdGlvbiwKLQkJICAgICAgICJ1c2JnYWRnZXQ6IENyZWF0ZSBBbmRyb2lkIEZhc3Rib290
+IGZ1bmN0aW9uIik7Ci1CQVJFQk9YX01BR0lDVkFSX05BTUVEKGdsb2JhbF91c2JnYWRnZXRfZmFz
+dGJvb3RfYmJ1LAotCQkgICAgICAgZ2xvYmFsLnVzYmdhZGdldC5mYXN0Ym9vdF9iYnUsCi0JCSAg
+ICAgICAidXNiZ2FkZ2V0OiBleHBvcnQgYmFyZWJveCB1cGRhdGUgaGFuZGxlcnMgdmlhIGZhc3Ri
+b290Iik7CmRpZmYgLS1naXQgYS9pbmNsdWRlL2Zhc3Rib290LmggYi9pbmNsdWRlL2Zhc3Rib290
+LmgKaW5kZXggYjNlNzE1NWVmLi44OGVjNDc4NDkgMTAwNjQ0Ci0tLSBhL2luY2x1ZGUvZmFzdGJv
+b3QuaAorKysgYi9pbmNsdWRlL2Zhc3Rib290LmgKQEAgLTU0LDYgKzU0LDkgQEAgZW51bSBmYXN0
+Ym9vdF9tc2dfdHlwZSB7CiAJRkFTVEJPT1RfTVNHX0RBVEEsCiB9OwogCitleHRlcm4gaW50IGZh
+c3Rib290X2JidTsKK2V4dGVybiBjaGFyICpmYXN0Ym9vdF9wYXJ0aXRpb25zOworCiBpbnQgZmFz
+dGJvb3RfZ2VuZXJpY19pbml0KHN0cnVjdCBmYXN0Ym9vdCAqZmIsIGJvb2wgZXhwb3J0X2JidSk7
+CiB2b2lkIGZhc3Rib290X2dlbmVyaWNfY2xvc2Uoc3RydWN0IGZhc3Rib290ICpmYik7CiB2b2lk
+IGZhc3Rib290X2dlbmVyaWNfZnJlZShzdHJ1Y3QgZmFzdGJvb3QgKmZiKTsKLS0gCjIuMTcuMQoK
+Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3gg
+bWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5m
+cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
