@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mx1.emlix.com ([188.40.240.192])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jksnD-00070O-5F
- for barebox@lists.infradead.org; Mon, 15 Jun 2020 17:21:10 +0000
+ id 1jksnB-0006wy-9y
+ for barebox@lists.infradead.org; Mon, 15 Jun 2020 17:21:07 +0000
 From: =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
-Date: Mon, 15 Jun 2020 19:20:43 +0200
-Message-Id: <ffa4bbca43e0cb290710535f13b657fbda2b9801.1592241105.git.dg@emlix.com>
+Date: Mon, 15 Jun 2020 19:20:41 +0200
+Message-Id: <af19083f2e3f47344220207682ac141e518d7398.1592241105.git.dg@emlix.com>
 In-Reply-To: <cover.1592241105.git.dg@emlix.com>
 References: <cover.1592241105.git.dg@emlix.com>
 In-Reply-To: <cover.1592241105.git.dg@emlix.com>
@@ -23,91 +23,88 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 10/14] poller: Allow to run pollers inside of pollers
+Subject: [PATCH v3 08/14] net: reply to ping requests
 To: Barebox List <barebox@lists.infradead.org>
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
-This adds a slice to each poller which is acquired before the poller is
-executed. This allows us to run pollers inside of other pollers.
+Now that we have the network receive function running in a poller we
+can reasonably well answer to ping requests. Implement this feature.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/poller.c  | 19 ++++++++++---------
- include/poller.h |  2 ++
- 2 files changed, 12 insertions(+), 9 deletions(-)
+ net/net.c | 46 ++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 44 insertions(+), 2 deletions(-)
 
-diff --git a/common/poller.c b/common/poller.c
-index 95f828b43..2525034bb 100644
---- a/common/poller.c
-+++ b/common/poller.c
-@@ -14,7 +14,6 @@
- #include <clock.h>
- 
- static LIST_HEAD(poller_list);
--static int poller_active;
- 
- int poller_register(struct poller_struct *poller, const char *name)
- {
-@@ -22,6 +21,7 @@ int poller_register(struct poller_struct *poller, const char *name)
- 		return -EBUSY;
- 
- 	poller->name = xstrdup(name);
-+	slice_init(&poller->slice, poller->name);
- 	list_add_tail(&poller->list, &poller_list);
- 	poller->registered = 1;
- 
-@@ -33,7 +33,7 @@ int poller_unregister(struct poller_struct *poller)
- 	if (!poller->registered)
- 		return -ENODEV;
- 
--
-+	slice_exit(&poller->slice);
- 	list_del(&poller->list);
- 	poller->registered = 0;
- 	free(poller->name);
-@@ -111,15 +111,16 @@ void poller_call(void)
- {
- 	struct poller_struct *poller, *tmp;
- 
--	if (poller_active)
--		return;
--
--	poller_active = 1;
-+	list_for_each_entry_safe(poller, tmp, &poller_list, list) {
-+		if (slice_acquired(&poller->slice))
-+			continue;
- 
--	list_for_each_entry_safe(poller, tmp, &poller_list, list)
-+		slice_acquire(&poller->slice);
-+		idle_slice_acquire();
- 		poller->func(poller);
--
--	poller_active = 0;
-+		idle_slice_release();
-+		slice_release(&poller->slice);
-+	}
+diff --git a/net/net.c b/net/net.c
+index 197b551e7..cb0013519 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -570,12 +570,54 @@ static int net_handle_udp(unsigned char *pkt, int len)
+ 	return -EINVAL;
  }
  
- #if defined CONFIG_CMD_POLLER
-diff --git a/include/poller.h b/include/poller.h
-index 886557252..c8b682968 100644
---- a/include/poller.h
-+++ b/include/poller.h
-@@ -7,11 +7,13 @@
- #define POLLER_H
+-static int net_handle_icmp(unsigned char *pkt, int len)
++static int ping_reply(struct eth_device *edev, unsigned char *pkt, int len)
++{
++	struct ethernet *et = (struct ethernet *)pkt;
++	struct icmphdr *icmp;
++	struct iphdr *ip = (struct iphdr *)(pkt + ETHER_HDR_SIZE);
++	unsigned char *packet;
++	int ret;
++
++	memcpy(et->et_dest, et->et_src, 6);
++	memcpy(et->et_src, edev->ethaddr, 6);
++	et->et_protlen = htons(PROT_IP);
++
++	icmp = net_eth_to_icmphdr(pkt);
++
++	icmp->type = ICMP_ECHO_REPLY;
++	icmp->checksum = 0;
++	icmp->checksum = ~net_checksum((unsigned char *)icmp,
++				       len - sizeof(struct iphdr) - ETHER_HDR_SIZE);
++	ip->check = 0;
++	ip->frag_off = 0;
++	net_copy_ip((void *)&ip->daddr, &ip->saddr);
++	net_copy_ip((void *)&ip->saddr, &edev->ipaddr);
++	ip->check = ~net_checksum((unsigned char *)ip, sizeof(struct iphdr));
++
++	packet = net_alloc_packet();
++	if (!packet)
++		return 0;
++
++	memcpy(packet, pkt, ETHER_HDR_SIZE + len);
++
++	ret = eth_send(edev, packet, ETHER_HDR_SIZE + len);
++
++	free(packet);
++
++	return 0;
++}
++
++static int net_handle_icmp(struct eth_device *edev, unsigned char *pkt, int len)
+ {
+ 	struct net_connection *con;
++	struct icmphdr *icmp;
  
- #include <linux/list.h>
-+#include <slice.h>
+ 	pr_debug("%s\n", __func__);
  
- struct poller_struct {
- 	void (*func)(struct poller_struct *poller);
- 	int registered;
- 	struct list_head list;
-+	struct slice slice;
- 	char *name;
- };
++	icmp = net_eth_to_icmphdr(pkt);
++	if (icmp->type == ICMP_ECHO_REQUEST)
++		ping_reply(edev, pkt, len);
++
+ 	list_for_each_entry(con, &connection_list, list) {
+ 		if (con->proto == IPPROTO_ICMP) {
+ 			con->handler(con->priv, pkt, len);
+@@ -612,7 +654,7 @@ static int net_handle_ip(struct eth_device *edev, unsigned char *pkt, int len)
  
+ 	switch (ip->protocol) {
+ 	case IPPROTO_ICMP:
+-		return net_handle_icmp(pkt, len);
++		return net_handle_icmp(edev, pkt, len);
+ 	case IPPROTO_UDP:
+ 		return net_handle_udp(pkt, len);
+ 	}
 -- 
 2.17.1
 
