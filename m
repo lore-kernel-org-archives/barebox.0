@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jkiCf-0007NC-Hb
- for barebox@lists.infradead.org; Mon, 15 Jun 2020 06:02:44 +0000
+ id 1jkiCw-0007fx-6L
+ for barebox@lists.infradead.org; Mon, 15 Jun 2020 06:03:01 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 15 Jun 2020 08:02:24 +0200
-Message-Id: <20200615060229.7533-7-s.hauer@pengutronix.de>
+Date: Mon, 15 Jun 2020 08:02:22 +0200
+Message-Id: <20200615060229.7533-5-s.hauer@pengutronix.de>
 In-Reply-To: <20200615060229.7533-1-s.hauer@pengutronix.de>
 References: <20200615060229.7533-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,39 +21,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/11] fs: ramfs: Return -ENOSPC
+Subject: [PATCH 04/11] fs: free inodes we no longer need
 To: Barebox List <barebox@lists.infradead.org>
 
-When ramfs fails to allocate more memory then returning -ENOSPC is
-more appropriate then -ENOMEM.
+So far we freed the no longer needed inodes only at unmount time.
+Let's trust our reference counting a bit more and free them once
+the reference counter hits zero.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/ramfs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/fs.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ramfs.c b/fs/ramfs.c
-index 341b6130de..800b03af29 100644
---- a/fs/ramfs.c
-+++ b/fs/ramfs.c
-@@ -367,7 +367,7 @@ static int ramfs_truncate(struct device_d *dev, FILE *f, loff_t size)
- 		} else {
- 			node->data = ramfs_get_chunk();
- 			if (!node->data)
--				return -ENOMEM;
-+				return -ENOSPC;
- 			data = node->data;
- 			oldchunks = 1;
- 		}
-@@ -378,7 +378,7 @@ static int ramfs_truncate(struct device_d *dev, FILE *f, loff_t size)
- 		while (newchunks > oldchunks) {
- 			data->next = ramfs_get_chunk();
- 			if (!data->next)
--				return -ENOMEM;
-+				return -ENOSPC;
- 			data = data->next;
- 			oldchunks++;
- 		}
+diff --git a/fs/fs.c b/fs/fs.c
+index cecb3d70e0..e04cadfe5d 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -1090,10 +1090,12 @@ void iput(struct inode *inode)
+ 	if (!inode)
+ 		return;
+ 
+-	if (!inode->i_count)
+-		return;
+-
+ 	inode->i_count--;
++
++	if (!inode->i_count) {
++		list_del(&inode->i_sb_list);
++		destroy_inode(inode);
++	}
+ }
+ 
+ struct inode *iget(struct inode *inode)
 -- 
 2.27.0
 
