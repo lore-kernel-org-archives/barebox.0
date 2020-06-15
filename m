@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jkiCw-0007fx-6L
- for barebox@lists.infradead.org; Mon, 15 Jun 2020 06:03:01 +0000
+ id 1jkiCn-0007XR-FO
+ for barebox@lists.infradead.org; Mon, 15 Jun 2020 06:02:51 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 15 Jun 2020 08:02:22 +0200
-Message-Id: <20200615060229.7533-5-s.hauer@pengutronix.de>
+Date: Mon, 15 Jun 2020 08:02:27 +0200
+Message-Id: <20200615060229.7533-10-s.hauer@pengutronix.de>
 In-Reply-To: <20200615060229.7533-1-s.hauer@pengutronix.de>
 References: <20200615060229.7533-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,38 +21,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/11] fs: free inodes we no longer need
+Subject: [PATCH 09/11] fs: ramfs: Implement memmap
 To: Barebox List <barebox@lists.infradead.org>
 
-So far we freed the no longer needed inodes only at unmount time.
-Let's trust our reference counting a bit more and free them once
-the reference counter hits zero.
+When an inode only has a single chunk then we can support memmap for
+it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/fs.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ fs/ramfs.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index cecb3d70e0..e04cadfe5d 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -1090,10 +1090,12 @@ void iput(struct inode *inode)
- 	if (!inode)
- 		return;
- 
--	if (!inode->i_count)
--		return;
--
- 	inode->i_count--;
-+
-+	if (!inode->i_count) {
-+		list_del(&inode->i_sb_list);
-+		destroy_inode(inode);
-+	}
+diff --git a/fs/ramfs.c b/fs/ramfs.c
+index ebe03de736..84aa56f83e 100644
+--- a/fs/ramfs.c
++++ b/fs/ramfs.c
+@@ -387,6 +387,25 @@ static int ramfs_truncate(struct device_d *dev, FILE *f, loff_t size)
+ 	return 0;
  }
  
- struct inode *iget(struct inode *inode)
++static int ramfs_memmap(struct device_d *_dev, FILE *f, void **map, int flags)
++{
++	struct inode *inode = f->f_inode;
++	struct ramfs_inode *node = to_ramfs_inode(inode);
++	struct ramfs_chunk *data;
++
++	if (list_empty(&node->data))
++		return -EINVAL;
++
++	if (!list_is_singular(&node->data))
++		return -EINVAL;
++
++	data = list_first_entry(&node->data, struct ramfs_chunk, list);
++
++	*map = data->data;
++
++	return 0;
++}
++
+ static struct inode *ramfs_alloc_inode(struct super_block *sb)
+ {
+ 	struct ramfs_inode *node;
+@@ -434,6 +453,7 @@ static void ramfs_remove(struct device_d *dev)
+ static struct fs_driver_d ramfs_driver = {
+ 	.read      = ramfs_read,
+ 	.write     = ramfs_write,
++	.memmap    = ramfs_memmap,
+ 	.truncate  = ramfs_truncate,
+ 	.flags     = FS_DRIVER_NO_DEV,
+ 	.drv = {
 -- 
 2.27.0
 
