@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jkiCa-0007Jz-3R
- for barebox@lists.infradead.org; Mon, 15 Jun 2020 06:02:39 +0000
+ id 1jkiCa-0007K0-0Q
+ for barebox@lists.infradead.org; Mon, 15 Jun 2020 06:02:37 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 15 Jun 2020 08:02:25 +0200
-Message-Id: <20200615060229.7533-8-s.hauer@pengutronix.de>
+Date: Mon, 15 Jun 2020 08:02:28 +0200
+Message-Id: <20200615060229.7533-11-s.hauer@pengutronix.de>
 In-Reply-To: <20200615060229.7533-1-s.hauer@pengutronix.de>
 References: <20200615060229.7533-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,56 +21,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/11] fs: ramfs: Drop dead code
+Subject: [PATCH 10/11] libfile: copy_file: Fix calling discard_range
 To: Barebox List <barebox@lists.infradead.org>
+
+discard range is called with unitialized size argument. Call it after
+stat() on the source filedescriptor. Also there's no point in continuing
+when stat() on the source filedescriptor fails, so bail out in this
+case.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/ramfs.c | 14 --------------
- 1 file changed, 14 deletions(-)
+ lib/libfile.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/fs/ramfs.c b/fs/ramfs.c
-index 800b03af29..2b6df07996 100644
---- a/fs/ramfs.c
-+++ b/fs/ramfs.c
-@@ -34,9 +34,6 @@ struct ramfs_chunk {
- struct ramfs_inode {
- 	struct inode inode;
- 	char *name;
--	struct ramfs_inode *parent;
--	struct ramfs_inode *next;
--	struct ramfs_inode *child;
- 	char *symlink;
- 	ulong mode;
+diff --git a/lib/libfile.c b/lib/libfile.c
+index b4d87b624a..9de938b2d3 100644
+--- a/lib/libfile.c
++++ b/lib/libfile.c
+@@ -364,14 +364,15 @@ int copy_file(const char *src, const char *dst, int verbose)
+ 		goto out;
+ 	}
  
-@@ -53,10 +50,6 @@ static inline struct ramfs_inode *to_ramfs_inode(struct inode *inode)
- 	return container_of(inode, struct ramfs_inode, inode);
- }
+-	discard_range(dstfd, srcstat.st_size, 0);
++	ret = stat(src, &srcstat);
++	if (ret)
++		goto out;
  
--struct ramfs_priv {
--	struct ramfs_inode root;
--};
--
- /* ---------------------------------------------------------------*/
+-	if (verbose) {
+-		if (stat(src, &srcstat) < 0)
+-			srcstat.st_size = 0;
++	if (srcstat.st_size != FILESIZE_MAX)
++		discard_range(dstfd, srcstat.st_size, 0);
  
- static const struct super_operations ramfs_ops;
-@@ -411,16 +404,9 @@ static const struct super_operations ramfs_ops = {
- static int ramfs_probe(struct device_d *dev)
- {
- 	struct inode *inode;
--	struct ramfs_priv *priv = xzalloc(sizeof(struct ramfs_priv));
- 	struct fs_device_d *fsdev = dev_to_fs_device(dev);
- 	struct super_block *sb = &fsdev->sb;
++	if (verbose)
+ 		init_progression_bar(srcstat.st_size);
+-	}
  
--	dev->priv = priv;
--
--	priv->root.name = "/";
--	priv->root.mode = S_IFDIR | S_IRWXU | S_IRWXG | S_IRWXO;
--	priv->root.parent = &priv->root;
--
- 	sb->s_op = &ramfs_ops;
- 
- 	inode = ramfs_get_inode(sb, NULL, S_IFDIR);
+ 	while (1) {
+ 		r = read(srcfd, rw_buf, RW_BUF_SIZE);
 -- 
 2.27.0
 
