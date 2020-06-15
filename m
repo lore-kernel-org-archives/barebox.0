@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jkiCa-0007Jy-27
+ id 1jkiCa-0007Jz-3R
  for barebox@lists.infradead.org; Mon, 15 Jun 2020 06:02:39 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 15 Jun 2020 08:02:23 +0200
-Message-Id: <20200615060229.7533-6-s.hauer@pengutronix.de>
+Date: Mon, 15 Jun 2020 08:02:25 +0200
+Message-Id: <20200615060229.7533-8-s.hauer@pengutronix.de>
 In-Reply-To: <20200615060229.7533-1-s.hauer@pengutronix.de>
 References: <20200615060229.7533-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,78 +21,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/11] digest: Drop usage of memmap
+Subject: [PATCH 07/11] fs: ramfs: Drop dead code
 To: Barebox List <barebox@lists.infradead.org>
-
-digest_file_window() first tries to memmap the file before it falls back
-to reading it. This is quite unnecessary, we can just always read.
-
-Moreover, memmapping a file has problems with the current code. A
-"md5sum foo" result in the filesize argument being MAX_LFS_FILESIZE.
-This is fine for files where the file is just read up to the end in
-this case, but for memmapped buffers this results in digesting
-MAX_LFS_FILESIZE bytes which is wrong. This problem is not apparent
-at the moment as there are only a few files which are memmappable,
-and on these (/dev/mem, /dev/ram0) digest commands are normally
-called with an explicit size argument. This changes once ramfs starts
-supporting memmap, so better drop memmapping in the digest code now.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- crypto/digest.c | 27 +--------------------------
- 1 file changed, 1 insertion(+), 26 deletions(-)
+ fs/ramfs.c | 14 --------------
+ 1 file changed, 14 deletions(-)
 
-diff --git a/crypto/digest.c b/crypto/digest.c
-index e67e8fba0d..d23245e15f 100644
---- a/crypto/digest.c
-+++ b/crypto/digest.c
-@@ -253,32 +253,12 @@ out_free:
- 	return ret;
+diff --git a/fs/ramfs.c b/fs/ramfs.c
+index 800b03af29..2b6df07996 100644
+--- a/fs/ramfs.c
++++ b/fs/ramfs.c
+@@ -34,9 +34,6 @@ struct ramfs_chunk {
+ struct ramfs_inode {
+ 	struct inode inode;
+ 	char *name;
+-	struct ramfs_inode *parent;
+-	struct ramfs_inode *next;
+-	struct ramfs_inode *child;
+ 	char *symlink;
+ 	ulong mode;
+ 
+@@ -53,10 +50,6 @@ static inline struct ramfs_inode *to_ramfs_inode(struct inode *inode)
+ 	return container_of(inode, struct ramfs_inode, inode);
  }
  
--static int digest_update_from_memory(struct digest *d,
--				     const unsigned char *buf,
--				     loff_t size)
--{
--	while (size) {
--		unsigned long now = min_t(typeof(size), PAGE_SIZE, size);
--		int ret;
+-struct ramfs_priv {
+-	struct ramfs_inode root;
+-};
 -
--		ret = digest_update_interruptible(d, buf, now);
--		if (ret)
--			return ret;
--
--		size -= now;
--		buf  += now;
--	}
--
--	return 0;
--}
--
- int digest_file_window(struct digest *d, const char *filename,
- 		       unsigned char *hash,
- 		       const unsigned char *sig,
- 		       loff_t start, loff_t size)
+ /* ---------------------------------------------------------------*/
+ 
+ static const struct super_operations ramfs_ops;
+@@ -411,16 +404,9 @@ static const struct super_operations ramfs_ops = {
+ static int ramfs_probe(struct device_d *dev)
  {
- 	int fd, ret;
--	unsigned char *buf;
+ 	struct inode *inode;
+-	struct ramfs_priv *priv = xzalloc(sizeof(struct ramfs_priv));
+ 	struct fs_device_d *fsdev = dev_to_fs_device(dev);
+ 	struct super_block *sb = &fsdev->sb;
  
- 	ret = digest_init(d);
- 	if (ret)
-@@ -290,12 +270,7 @@ int digest_file_window(struct digest *d, const char *filename,
- 		return -errno;
- 	}
- 
--	buf = memmap(fd, PROT_READ);
--	if (buf == MAP_FAILED)
--		ret = digest_update_from_fd(d, fd, start, size);
--	else
--		ret = digest_update_from_memory(d, buf + start, size);
+-	dev->priv = priv;
 -
-+	ret = digest_update_from_fd(d, fd, start, size);
- 	if (ret)
- 		goto out;
+-	priv->root.name = "/";
+-	priv->root.mode = S_IFDIR | S_IRWXU | S_IRWXG | S_IRWXO;
+-	priv->root.parent = &priv->root;
+-
+ 	sb->s_op = &ramfs_ops;
  
+ 	inode = ramfs_get_inode(sb, NULL, S_IFDIR);
 -- 
 2.27.0
 
