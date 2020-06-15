@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mx1.emlix.com ([188.40.240.192])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jksn8-0006lA-6z
- for barebox@lists.infradead.org; Mon, 15 Jun 2020 17:21:05 +0000
+ id 1jksnB-0006wu-7Z
+ for barebox@lists.infradead.org; Mon, 15 Jun 2020 17:21:07 +0000
 From: =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
-Date: Mon, 15 Jun 2020 19:20:35 +0200
-Message-Id: <af6e2213e7d0e6fe62108b118dba8e7c3a985342.1592241105.git.dg@emlix.com>
+Date: Mon, 15 Jun 2020 19:20:39 +0200
+Message-Id: <4f2a11e29f26d89e9d9b7e380334129dc4730885.1592241105.git.dg@emlix.com>
 In-Reply-To: <cover.1592241105.git.dg@emlix.com>
 References: <cover.1592241105.git.dg@emlix.com>
 In-Reply-To: <cover.1592241105.git.dg@emlix.com>
 References: <cover.1592241105.git.dg@emlix.com>
-MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,87 +18,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 02/14] Introduce idle slice
+Subject: [PATCH v3 06/14] usbnet: Add slice
 To: Barebox List <barebox@lists.infradead.org>
-Cc: =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-U29tZSBjb2RlIGNhbid0IGZvcmVzZWUgd2hpY2ggcmVzb3VyY2VzIHdpbGwgYmUgdXNlZCBieSBp
-dHMgcG9sbGVyLiBUaGlzCmlzIHRoZSBjYXNlIGVzcGVjaWFsbHkgaW4gcG9sbGVycyB0aGF0IHdp
-bGwgZXhlY3V0ZSBhcmJpdHJhcnkgY29tbWFuZHMKaW5wdXQgYnkgdGhlIHVzZXIuIFdpdGggdGhp
-cyBjb21taXQgYSBzcGVjaWFsIHNsaWNlIGlzIGludHJvZHVjZWQgdGhhdCBpcwpyZWxlYXNlZCBv
-bmx5IHdoZW4gQmFyZWJveCBpcyB3YWl0aW5nIGZvciBjb25zb2xlIGlucHV0IGFuZCBvbmx5IHdo
-ZW4gaXQKaXMgZG9pbmcgdGhhdCBvdXRzaWRlIG9mIGFueSBjb21tYW5kLiBDb2RlIHRoYXQgd2Fu
-dHMgdG8gZGVwZW5kIG9uIHRoZQppZGxlIHNsaWNlIG11c3Qgc2VsZWN0IENPTkZJR19JRExFX1NM
-SUNFIHRvIG1ha2UgaXQgYXZhaWxhYmxlLgoKU2lnbmVkLW9mZi1ieTogRGFuaWVsIEdsw7Zja25l
-ciA8ZGdAZW1saXguY29tPgpTaWduZWQtb2ZmLWJ5OiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVu
-Z3V0cm9uaXguZGU+Ci0tLQogY29tbW9uL2h1c2guYyAgICAgIHwgIDUgKysrKysKIGNvbW1vbi9y
-YXRwL3JhdHAuYyB8ICA3ICsrKysrKy0KIGNvbW1vbi9zbGljZS5jICAgICB8IDIyICsrKysrKysr
-KysrKysrKysrKysrKysKIGNvbW1vbi9zdGFydHVwLmMgICB8ICAyICsrCiBpbmNsdWRlL3JhdHBf
-YmIuaCAgfCAgMSAtCiBpbmNsdWRlL3NsaWNlLmggICAgfCAgNSArKysrKwogbGliL3JlYWRsaW5l
-LmMgICAgIHwgIDYgKy0tLS0tCiA3IGZpbGVzIGNoYW5nZWQsIDQxIGluc2VydGlvbnMoKyksIDcg
-ZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvY29tbW9uL2h1c2guYyBiL2NvbW1vbi9odXNoLmMK
-aW5kZXggYzI0YjJjN2NkLi42MTQyNGQ5OGUgMTAwNjQ0Ci0tLSBhL2NvbW1vbi9odXNoLmMKKysr
-IGIvY29tbW9uL2h1c2guYwpAQCAtNDYwLDcgKzQ2MCwxMiBAQCBzdGF0aWMgdm9pZCBnZXRfdXNl
-cl9pbnB1dChzdHJ1Y3QgaW5fc3RyICppKQogCWVsc2UKIAkJcHJvbXB0ID0gQ09ORklHX1BST01Q
-VF9IVVNIX1BTMjsKIAorCWlkbGVfc2xpY2VfcmVsZWFzZSgpOworCiAJbiA9IHJlYWRsaW5lKHBy
-b21wdCwgY29uc29sZV9idWZmZXIsIENPTkZJR19DQlNJWkUpOworCisJaWRsZV9zbGljZV9hY3F1
-aXJlKCk7CisKIAlpZiAobiA9PSAtMSApIHsKIAkJaS0+aW50ZXJydXB0ID0gMTsKIAkJbiA9IDA7
-CmRpZmYgLS1naXQgYS9jb21tb24vcmF0cC9yYXRwLmMgYi9jb21tb24vcmF0cC9yYXRwLmMKaW5k
-ZXggZDJmZGI2MzFiLi5hNTdlNjkzNTAgMTAwNjQ0Ci0tLSBhL2NvbW1vbi9yYXRwL3JhdHAuYwor
-KysgYi9jb21tb24vcmF0cC9yYXRwLmMKQEAgLTMxNSwxMCArMzE1LDEzIEBAIHN0YXRpYyBpbnQg
-cmF0cF9jb25zb2xlX3JlZ2lzdGVyKHN0cnVjdCByYXRwX2N0eCAqY3R4KQogCXJldHVybiAwOwog
-fQogCi12b2lkIGJhcmVib3hfcmF0cF9jb21tYW5kX3J1bih2b2lkKQorc3RhdGljIHZvaWQgYmFy
-ZWJveF9yYXRwX2NvbW1hbmRfcnVuKHZvaWQpCiB7CiAJaW50IHJldDsKIAorCWlmIChzbGljZV9h
-Y3F1aXJlZCgmaWRsZV9zbGljZSkpCisJCXJldHVybjsKKwogCWlmICghcmF0cF9jb21tYW5kKQog
-CQlyZXR1cm47CiAKQEAgLTM4NSw2ICszODgsOCBAQCBzdGF0aWMgdm9pZCByYXRwX3BvbGxlcihz
-dHJ1Y3QgcG9sbGVyX3N0cnVjdCAqcG9sbGVyKQogCiAJZnJlZShidWYpOwogCisJYmFyZWJveF9y
-YXRwX2NvbW1hbmRfcnVuKCk7CisKIAlyZXR1cm47CiAKIG91dDoKZGlmZiAtLWdpdCBhL2NvbW1v
-bi9zbGljZS5jIGIvY29tbW9uL3NsaWNlLmMKaW5kZXggMDg1ZDY3NjA0Li5iNjRiODIyZWMgMTAw
-NjQ0Ci0tLSBhL2NvbW1vbi9zbGljZS5jCisrKyBiL2NvbW1vbi9zbGljZS5jCkBAIC0zLDYgKzMs
-NyBAQAogI2RlZmluZSBwcl9mbXQoZm10KSAic2xpY2U6ICIgZm10CiAKICNpbmNsdWRlIDxjb21t
-b24uaD4KKyNpbmNsdWRlIDxpbml0Lmg+CiAjaW5jbHVkZSA8c2xpY2UuaD4KIAogLyoKQEAgLTIz
-MSw2ICsyMzIsMjcgQEAgdm9pZCBzbGljZV9leGl0KHN0cnVjdCBzbGljZSAqc2xpY2UpCiAJZnJl
-ZShzbGljZS0+bmFtZSk7CiB9CiAKK3N0cnVjdCBzbGljZSBpZGxlX3NsaWNlOworCit2b2lkIGlk
-bGVfc2xpY2VfYWNxdWlyZSh2b2lkKQoreworCXNsaWNlX2FjcXVpcmUoJmlkbGVfc2xpY2UpOwor
-fQorCit2b2lkIGlkbGVfc2xpY2VfcmVsZWFzZSh2b2lkKQoreworCXNsaWNlX3JlbGVhc2UoJmlk
-bGVfc2xpY2UpOworfQorCitzdGF0aWMgaW50IGlkbGVfc2xpY2VfaW5pdCh2b2lkKQoreworCXNs
-aWNlX2luaXQoJmlkbGVfc2xpY2UsICJpZGxlIik7CisJc2xpY2VfYWNxdWlyZSgmaWRsZV9zbGlj
-ZSk7CisJcmV0dXJuIDA7Cit9CisKK3B1cmVfaW5pdGNhbGwoaWRsZV9zbGljZV9pbml0KTsKKwog
-I2lmIGRlZmluZWQgQ09ORklHX0NNRF9TTElDRQogCiAjaW5jbHVkZSA8Y29tbWFuZC5oPgpkaWZm
-IC0tZ2l0IGEvY29tbW9uL3N0YXJ0dXAuYyBiL2NvbW1vbi9zdGFydHVwLmMKaW5kZXggNTExNjc1
-ZWQ1Li5hZWNiMDQ1ZjQgMTAwNjQ0Ci0tLSBhL2NvbW1vbi9zdGFydHVwLmMKKysrIGIvY29tbW9u
-L3N0YXJ0dXAuYwpAQCAtMjY4LDggKzI2OCwxMCBAQCBlbnVtIGF1dG9ib290X3N0YXRlIGRvX2F1
-dG9ib290X2NvdW50ZG93bih2b2lkKQogCQlicmVhazsKIAl9CiAKKwlpZGxlX3NsaWNlX3JlbGVh
-c2UoKTsKIAlyZXQgPSBjb25zb2xlX2NvdW50ZG93bihnbG9iYWxfYXV0b2Jvb3RfdGltZW91dCwg
-ZmxhZ3MsIGFib3J0a2V5cywKIAkJCQkmb3V0a2V5KTsKKwlpZGxlX3NsaWNlX2FjcXVpcmUoKTsK
-IAogCWlmIChyZXQgPT0gMCkKIAkJYXV0b2Jvb3Rfc3RhdGUgPSBBVVRPQk9PVF9CT09UOwpkaWZm
-IC0tZ2l0IGEvaW5jbHVkZS9yYXRwX2JiLmggYi9pbmNsdWRlL3JhdHBfYmIuaAppbmRleCBhNGYy
-OGM2NDIuLmI3MTBmOTliZiAxMDA2NDQKLS0tIGEvaW5jbHVkZS9yYXRwX2JiLmgKKysrIGIvaW5j
-bHVkZS9yYXRwX2JiLmgKQEAgLTQxLDcgKzQxLDYgQEAgc3RydWN0IHJhdHBfYmJfcGt0IHsKIH07
-CiAKIGludCAgYmFyZWJveF9yYXRwKHN0cnVjdCBjb25zb2xlX2RldmljZSAqY2Rldik7Ci12b2lk
-IGJhcmVib3hfcmF0cF9jb21tYW5kX3J1bih2b2lkKTsKIGludCAgYmFyZWJveF9yYXRwX2ZzX2Nh
-bGwoc3RydWN0IHJhdHBfYmJfcGt0ICp0eCwgc3RydWN0IHJhdHBfYmJfcGt0ICoqcngpOwogaW50
-ICBiYXJlYm94X3JhdHBfZnNfbW91bnQoY29uc3QgY2hhciAqcGF0aCk7CiAKZGlmZiAtLWdpdCBh
-L2luY2x1ZGUvc2xpY2UuaCBiL2luY2x1ZGUvc2xpY2UuaAppbmRleCA1NTM4ZmM0MzQuLjM3ZDUz
-NTBlYiAxMDA2NDQKLS0tIGEvaW5jbHVkZS9zbGljZS5oCisrKyBiL2luY2x1ZGUvc2xpY2UuaApA
-QCAtMjgsNCArMjgsOSBAQCB2b2lkIHNsaWNlX2V4aXQoc3RydWN0IHNsaWNlICpzbGljZSk7CiAK
-IHZvaWQgc2xpY2VfZGVidWdfYWNxdWlyZWQoc3RydWN0IHNsaWNlICpzbGljZSk7CiAKK2V4dGVy
-biBzdHJ1Y3Qgc2xpY2UgaWRsZV9zbGljZTsKKwordm9pZCBpZGxlX3NsaWNlX2FjcXVpcmUodm9p
-ZCk7Cit2b2lkIGlkbGVfc2xpY2VfcmVsZWFzZSh2b2lkKTsKKwogI2VuZGlmIC8qIF9fU0xJQ0Vf
-SCAqLwpkaWZmIC0tZ2l0IGEvbGliL3JlYWRsaW5lLmMgYi9saWIvcmVhZGxpbmUuYwppbmRleCAz
-ZDE2YzE4MzguLmU1MzcwZjljNyAxMDA2NDQKLS0tIGEvbGliL3JlYWRsaW5lLmMKKysrIGIvbGli
-L3JlYWRsaW5lLmMKQEAgLTMsNyArMyw2IEBACiAjaW5jbHVkZSA8aW5pdC5oPgogI2luY2x1ZGUg
-PGxpYmJiLmg+CiAjaW5jbHVkZSA8cG9sbGVyLmg+Ci0jaW5jbHVkZSA8cmF0cF9iYi5oPgogI2lu
-Y2x1ZGUgPHhmdW5jcy5oPgogI2luY2x1ZGUgPGNvbXBsZXRlLmg+CiAjaW5jbHVkZSA8bGludXgv
-Y3R5cGUuaD4KQEAgLTIwMCwxMSArMTk5LDggQEAgaW50IHJlYWRsaW5lKGNvbnN0IGNoYXIgKnBy
-b21wdCwgY2hhciAqYnVmLCBpbnQgbGVuKQogCXB1dHMgKHByb21wdCk7CiAKIAl3aGlsZSAoMSkg
-ewotCQl3aGlsZSAoIXRzdGMoKSkgeworCQl3aGlsZSAoIXRzdGMoKSkKIAkJCXBvbGxlcl9jYWxs
-KCk7Ci0JCQlpZiAoSVNfRU5BQkxFRChDT05GSUdfQ09OU09MRV9SQVRQKSkKLQkJCQliYXJlYm94
-X3JhdHBfY29tbWFuZF9ydW4oKTsKLQkJfQogCiAJCWljaGFyID0gcmVhZF9rZXkoKTsKIAotLSAK
-Mi4xNy4xCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-YmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9s
-aXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+From: Sascha Hauer <s.hauer@pengutronix.de>
+
+Both the ethernet device and the mdio bus of a USB network controller
+need the USB bus. Add dependencies to it.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/net/usb/usbnet.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index 739703458..46ea73247 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -233,6 +233,9 @@ int usbnet_probe(struct usb_device *usbdev, const struct usb_device_id *prod)
+ 
+ 	eth_register(edev);
+ 
++	slice_depends_on(eth_device_slice(edev), usb_device_slice(usbdev));
++	slice_depends_on(mdiobus_slice(&undev->miibus), usb_device_slice(usbdev));
++
+ 	return 0;
+ out1:
+ 	dev_dbg(&edev->dev, "err: %d\n", status);
+-- 
+2.17.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
