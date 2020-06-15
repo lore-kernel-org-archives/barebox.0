@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mx1.emlix.com ([188.40.240.192])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jksnB-0006wy-9y
- for barebox@lists.infradead.org; Mon, 15 Jun 2020 17:21:07 +0000
+ id 1jksnD-00070N-34
+ for barebox@lists.infradead.org; Mon, 15 Jun 2020 17:21:09 +0000
 From: =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
-Date: Mon, 15 Jun 2020 19:20:41 +0200
-Message-Id: <af19083f2e3f47344220207682ac141e518d7398.1592241105.git.dg@emlix.com>
+Date: Mon, 15 Jun 2020 19:20:45 +0200
+Message-Id: <396a023759153b4e9fd04e1ac64601356faff653.1592241105.git.dg@emlix.com>
 In-Reply-To: <cover.1592241105.git.dg@emlix.com>
 References: <cover.1592241105.git.dg@emlix.com>
 In-Reply-To: <cover.1592241105.git.dg@emlix.com>
@@ -23,88 +23,114 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 08/14] net: reply to ping requests
+Subject: [PATCH v3 12/14] globalvar: Add helper for deprecated variable names
 To: Barebox List <barebox@lists.infradead.org>
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
-Now that we have the network receive function running in a poller we
-can reasonably well answer to ping requests. Implement this feature.
+When globalvars are renamed across releases it's not nice when variables
+in the persistent environment loose their meaning. This adds a helper
+function which adds an alias for the old names. When the persistent
+variables still use the old names then their values are automatically
+written to variables with the new names.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- net/net.c | 46 ++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 44 insertions(+), 2 deletions(-)
+ common/globalvar.c  | 41 +++++++++++++++++++++++++++++++++++++++--
+ include/globalvar.h |  5 +++++
+ 2 files changed, 44 insertions(+), 2 deletions(-)
 
-diff --git a/net/net.c b/net/net.c
-index 197b551e7..cb0013519 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -570,12 +570,54 @@ static int net_handle_udp(unsigned char *pkt, int len)
- 	return -EINVAL;
+diff --git a/common/globalvar.c b/common/globalvar.c
+index c87f2c933..5e91cc815 100644
+--- a/common/globalvar.c
++++ b/common/globalvar.c
+@@ -293,6 +293,40 @@ int nvvar_remove(const char *name)
+ 	return ret;
  }
  
--static int net_handle_icmp(unsigned char *pkt, int len)
-+static int ping_reply(struct eth_device *edev, unsigned char *pkt, int len)
++struct globalvar_deprecated {
++	char *newname;
++	char *oldname;
++	struct list_head list;
++};
++
++static LIST_HEAD(globalvar_deprecated_list);
++
++void globalvar_alias_deprecated(const char *oldname, const char *newname)
 +{
-+	struct ethernet *et = (struct ethernet *)pkt;
-+	struct icmphdr *icmp;
-+	struct iphdr *ip = (struct iphdr *)(pkt + ETHER_HDR_SIZE);
-+	unsigned char *packet;
-+	int ret;
++	struct globalvar_deprecated *gd;
 +
-+	memcpy(et->et_dest, et->et_src, 6);
-+	memcpy(et->et_src, edev->ethaddr, 6);
-+	et->et_protlen = htons(PROT_IP);
-+
-+	icmp = net_eth_to_icmphdr(pkt);
-+
-+	icmp->type = ICMP_ECHO_REPLY;
-+	icmp->checksum = 0;
-+	icmp->checksum = ~net_checksum((unsigned char *)icmp,
-+				       len - sizeof(struct iphdr) - ETHER_HDR_SIZE);
-+	ip->check = 0;
-+	ip->frag_off = 0;
-+	net_copy_ip((void *)&ip->daddr, &ip->saddr);
-+	net_copy_ip((void *)&ip->saddr, &edev->ipaddr);
-+	ip->check = ~net_checksum((unsigned char *)ip, sizeof(struct iphdr));
-+
-+	packet = net_alloc_packet();
-+	if (!packet)
-+		return 0;
-+
-+	memcpy(packet, pkt, ETHER_HDR_SIZE + len);
-+
-+	ret = eth_send(edev, packet, ETHER_HDR_SIZE + len);
-+
-+	free(packet);
-+
-+	return 0;
++	gd = xzalloc(sizeof(*gd));
++	gd->newname = xstrdup(newname);
++	gd->oldname = xstrdup(oldname);
++	list_add_tail(&gd->list, &globalvar_deprecated_list);
 +}
 +
-+static int net_handle_icmp(struct eth_device *edev, unsigned char *pkt, int len)
- {
- 	struct net_connection *con;
-+	struct icmphdr *icmp;
- 
- 	pr_debug("%s\n", __func__);
- 
-+	icmp = net_eth_to_icmphdr(pkt);
-+	if (icmp->type == ICMP_ECHO_REQUEST)
-+		ping_reply(edev, pkt, len);
++static const char *globalvar_new_name(const char *oldname)
++{
++	struct globalvar_deprecated *gd;
 +
- 	list_for_each_entry(con, &connection_list, list) {
- 		if (con->proto == IPPROTO_ICMP) {
- 			con->handler(con->priv, pkt, len);
-@@ -612,7 +654,7 @@ static int net_handle_ip(struct eth_device *edev, unsigned char *pkt, int len)
++	list_for_each_entry(gd, &globalvar_deprecated_list, list) {
++		if (!strcmp(oldname, gd->oldname)) {
++			pr_warn("nv.%s is deprecated, converting to nv.%s\n", oldname,
++				gd->newname);
++			nv_dirty = 1;
++			return gd->newname;
++		}
++	}
++
++	return oldname;
++}
++
+ int nvvar_load(void)
+ {
+ 	char *val;
+@@ -308,6 +342,8 @@ int nvvar_load(void)
+ 		return -ENOENT;
  
- 	switch (ip->protocol) {
- 	case IPPROTO_ICMP:
--		return net_handle_icmp(pkt, len);
-+		return net_handle_icmp(edev, pkt, len);
- 	case IPPROTO_UDP:
- 		return net_handle_udp(pkt, len);
+ 	while ((d = readdir(dir))) {
++		const char *n;
++
+ 		if (!strcmp(d->d_name, ".") || !strcmp(d->d_name, ".."))
+ 			continue;
+ 
+@@ -316,10 +352,11 @@ int nvvar_load(void)
+ 		pr_debug("%s: Setting \"%s\" to \"%s\"\n",
+ 				__func__, d->d_name, val);
+ 
+-		ret = __nvvar_add(d->d_name, val);
++		n = globalvar_new_name(d->d_name);
++		ret = __nvvar_add(n, val);
+ 		if (ret)
+ 			pr_err("failed to create nv variable %s: %s\n",
+-					d->d_name, strerror(-ret));
++					n, strerror(-ret));
  	}
+ 
+ 	closedir(dir);
+diff --git a/include/globalvar.h b/include/globalvar.h
+index fc85e93e1..db229e239 100644
+--- a/include/globalvar.h
++++ b/include/globalvar.h
+@@ -33,6 +33,7 @@ int nvvar_remove(const char *name);
+ void globalvar_print(void);
+ 
+ void dev_param_init_from_nv(struct device_d *dev, const char *name);
++void globalvar_alias_deprecated(const char *newname, const char *oldname);
+ 
+ #else
+ static inline int globalvar_add_simple(const char *name, const char *value)
+@@ -114,6 +115,10 @@ static inline void dev_param_init_from_nv(struct device_d *dev, const char *name
+ {
+ }
+ 
++static inline void globalvar_alias_deprecated(const char *newname, const char *oldname)
++{
++}
++
+ #endif
+ 
+ void nv_var_set_clean(void);
 -- 
 2.17.1
 
