@@ -1,18 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx1.emlix.com ([188.40.240.192])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jks6D-00015R-Cm
- for barebox@lists.infradead.org; Mon, 15 Jun 2020 16:36:48 +0000
-References: <20200525103349.19449-1-s.hauer@pengutronix.de>
- <20200525103349.19449-21-s.hauer@pengutronix.de>
- <15f6548d-e48c-5202-1cf6-d806846b2ba7@emlix.com>
- <20200526060235.GT11869@pengutronix.de>
-From: =?UTF-8?Q?Daniel_Gl=c3=b6ckner?= <dg@emlix.com>
-Message-ID: <bbfa7ccc-8a6d-5bed-c610-ce34d9611d33@emlix.com>
-Date: Mon, 15 Jun 2020 18:36:36 +0200
+ id 1jl4W0-0006ot-57
+ for barebox@lists.infradead.org; Tue, 16 Jun 2020 05:52:09 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Tue, 16 Jun 2020 07:52:00 +0200
+Message-Id: <20200616055202.9308-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20200526060235.GT11869@pengutronix.de>
-Content-Language: de-DE
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,64 +15,118 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 20/20] fastboot net: remove may_send
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>, Edmund Henniges <eh@emlix.com>
+Subject: [PATCH v2 0/2] transfer Protonic barebox development to the mainline 
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>, David Jander <david@protonic.nl>
 
-Hello Sascha,
+This is initial patch set to transfer Protonic barebox development to the mainline.
+Most important changes of this patches are in
+arch/arm/boards/protonic-imx6 folder. The devicetrees are mostly
+unchanged, since they will be replaced by kernel version soon. 
 
-Am 26.05.20 um 08:02 schrieb Sascha Hauer:
-> On Mon, May 25, 2020 at 09:45:49PM +0200, Daniel Gl=F6ckner wrote:
->> I know that Barebox will get stuck when the host stops talking to us
->> before we had the opportunity to send the final OKAY, but that is not
->> what you describe. If you use a sleep 100, the host will time out
->> before the sleep is done. After the sleep the command is still in
->> fbn->command, so it will be acked and executed. Since the host no
->> longer talks to us, it will not send us an empty packet with the next
->> sequence number, so the loop in fastboot_write_net will never terminate.
->>
->> The only way to get out of this situation with the current code
->> (omitting patch 20) is to start a new fastboot session. The INIT packet
->> of the new session will set reinit to true, which discards all messages
->> the old session wants to send. If this is not acceptable, I suggest
->> adding a timeout >=3D 60 seconds to that loop in fastboot_write_net and
->> setting reinit when it expires. We can make the timeout a kconfig option
->> which defaults to 60 if you prefer.
-> =
+changes v2:
+- use imx6_cpu_lowlevel_init instead of arm_cpu_lowlevel_init
+- use imx6q_barebox_entry instead of barebox_arm_entry
+- remove debug_ll. Currently it is not needed
+- remove part of pinmuxing from DCD files
 
-> Yes, we should add a timeout to this loop. Being stuck in an endless
-> loop never is a good user experience. How about this?
+Oleksij Rempel (2):
+  ARM: dts: imx6: add Protonic boards
+  ARM: add imx6 based Protonic boads
 
-In this special case setting reinit might have been enough (because
-active_download must be false when we want to send a message while
-may_send =3D=3D MAY_NOT_SEND, fastboot.active doesn't really matter, and
-command[0] will be cleared once we exit from fastboot_exec_cmd), but
-there were other situations that didn't correctly handle connection
-timeout/abort. That's why I reworked and unified these parts.
+ arch/arm/boards/Makefile                      |   1 +
+ arch/arm/boards/protonic-imx6/Makefile        |   1 +
+ .../boards/protonic-imx6/ddr3-defines.imxcfg  | 350 +++++++++
+ .../protonic-imx6/flash-header-alti6p.imxcfg  | 123 ++++
+ .../protonic-imx6/flash-header-lanmcu.imxcfg  | 115 +++
+ .../protonic-imx6/flash-header-plybas.imxcfg  | 123 ++++
+ .../protonic-imx6/flash-header-plym2m.imxcfg  | 123 ++++
+ .../protonic-imx6/flash-header-prti6g.imxcfg  |  81 +++
+ .../protonic-imx6/flash-header-prti6q.imxcfg  | 123 ++++
+ .../protonic-imx6/flash-header-prtmvt.imxcfg  | 123 ++++
+ .../protonic-imx6/flash-header-prtrvt.imxcfg  | 123 ++++
+ .../protonic-imx6/flash-header-prtvt7.imxcfg  | 115 +++
+ .../protonic-imx6/flash-header-prtwd2.imxcfg  | 229 ++++++
+ .../protonic-imx6/flash-header-prtwd3.imxcfg  | 280 ++++++++
+ .../protonic-imx6/flash-header-victgo.imxcfg  | 123 ++++
+ .../protonic-imx6/flash-header-vicut1.imxcfg  | 123 ++++
+ .../protonic-imx6/flash-header-vicut1q.imxcfg | 127 ++++
+ .../protonic-imx6/flash-header-vicutp.imxcfg  | 174 +++++
+ arch/arm/boards/protonic-imx6/lowlevel.c      | 191 +++++
+ .../protonic-imx6/lpddr2-defines.imxcfg       | 384 ++++++++++
+ .../boards/protonic-imx6/padsetup-dl.imxcfg   |  70 ++
+ .../boards/protonic-imx6/padsetup-q.imxcfg    |  69 ++
+ .../boards/protonic-imx6/padsetup-ul.imxcfg   |  42 ++
+ arch/arm/dts/Makefile                         |  16 +
+ arch/arm/dts/imx6dl-alti6p.dts                | 118 +++
+ arch/arm/dts/imx6dl-lanmcu.dts                | 434 +++++++++++
+ arch/arm/dts/imx6dl-plybas.dts                | 186 +++++
+ arch/arm/dts/imx6dl-plym2m.dts                | 132 ++++
+ arch/arm/dts/imx6dl-prtmvt.dts                | 164 +++++
+ arch/arm/dts/imx6dl-prtrvt.dts                | 182 +++++
+ arch/arm/dts/imx6dl-prtvt7.dts                | 472 ++++++++++++
+ arch/arm/dts/imx6dl-victgo.dts                | 145 ++++
+ arch/arm/dts/imx6dl-vicut1.dts                |  51 ++
+ arch/arm/dts/imx6q-prti6q.dts                 | 554 ++++++++++++++
+ arch/arm/dts/imx6q-prtwd2.dts                 | 188 +++++
+ arch/arm/dts/imx6q-vicut1.dts                 |  52 ++
+ arch/arm/dts/imx6qdl-prti6q.dtsi              | 174 +++++
+ arch/arm/dts/imx6qdl-vicut1.dtsi              | 208 ++++++
+ arch/arm/dts/imx6qp-prtwd3.dts                | 675 ++++++++++++++++++
+ arch/arm/dts/imx6qp-vicutp.dts                |  52 ++
+ arch/arm/dts/imx6ul-prti6g.dts                |  81 +++
+ arch/arm/dts/imx6ul-prti6g.dtsi               | 330 +++++++++
+ arch/arm/mach-imx/Kconfig                     |   6 +
+ images/Makefile.imx                           |  30 +
+ 44 files changed, 7463 insertions(+)
+ create mode 100644 arch/arm/boards/protonic-imx6/Makefile
+ create mode 100644 arch/arm/boards/protonic-imx6/ddr3-defines.imxcfg
+ create mode 100644 arch/arm/boards/protonic-imx6/flash-header-alti6p.imxcfg
+ create mode 100644 arch/arm/boards/protonic-imx6/flash-header-lanmcu.imxcfg
+ create mode 100644 arch/arm/boards/protonic-imx6/flash-header-plybas.imxcfg
+ create mode 100644 arch/arm/boards/protonic-imx6/flash-header-plym2m.imxcfg
+ create mode 100644 arch/arm/boards/protonic-imx6/flash-header-prti6g.imxcfg
+ create mode 100644 arch/arm/boards/protonic-imx6/flash-header-prti6q.imxcfg
+ create mode 100644 arch/arm/boards/protonic-imx6/flash-header-prtmvt.imxcfg
+ create mode 100644 arch/arm/boards/protonic-imx6/flash-header-prtrvt.imxcfg
+ create mode 100644 arch/arm/boards/protonic-imx6/flash-header-prtvt7.imxcfg
+ create mode 100644 arch/arm/boards/protonic-imx6/flash-header-prtwd2.imxcfg
+ create mode 100644 arch/arm/boards/protonic-imx6/flash-header-prtwd3.imxcfg
+ create mode 100644 arch/arm/boards/protonic-imx6/flash-header-victgo.imxcfg
+ create mode 100644 arch/arm/boards/protonic-imx6/flash-header-vicut1.imxcfg
+ create mode 100644 arch/arm/boards/protonic-imx6/flash-header-vicut1q.imxcfg
+ create mode 100644 arch/arm/boards/protonic-imx6/flash-header-vicutp.imxcfg
+ create mode 100644 arch/arm/boards/protonic-imx6/lowlevel.c
+ create mode 100644 arch/arm/boards/protonic-imx6/lpddr2-defines.imxcfg
+ create mode 100644 arch/arm/boards/protonic-imx6/padsetup-dl.imxcfg
+ create mode 100644 arch/arm/boards/protonic-imx6/padsetup-q.imxcfg
+ create mode 100644 arch/arm/boards/protonic-imx6/padsetup-ul.imxcfg
+ create mode 100644 arch/arm/dts/imx6dl-alti6p.dts
+ create mode 100644 arch/arm/dts/imx6dl-lanmcu.dts
+ create mode 100644 arch/arm/dts/imx6dl-plybas.dts
+ create mode 100644 arch/arm/dts/imx6dl-plym2m.dts
+ create mode 100644 arch/arm/dts/imx6dl-prtmvt.dts
+ create mode 100644 arch/arm/dts/imx6dl-prtrvt.dts
+ create mode 100644 arch/arm/dts/imx6dl-prtvt7.dts
+ create mode 100644 arch/arm/dts/imx6dl-victgo.dts
+ create mode 100644 arch/arm/dts/imx6dl-vicut1.dts
+ create mode 100644 arch/arm/dts/imx6q-prti6q.dts
+ create mode 100644 arch/arm/dts/imx6q-prtwd2.dts
+ create mode 100644 arch/arm/dts/imx6q-vicut1.dts
+ create mode 100644 arch/arm/dts/imx6qdl-prti6q.dtsi
+ create mode 100644 arch/arm/dts/imx6qdl-vicut1.dtsi
+ create mode 100644 arch/arm/dts/imx6qp-prtwd3.dts
+ create mode 100644 arch/arm/dts/imx6qp-vicutp.dts
+ create mode 100644 arch/arm/dts/imx6ul-prti6g.dts
+ create mode 100644 arch/arm/dts/imx6ul-prti6g.dtsi
 
-I liked your idea of printing a message every 5 seconds and integrated
-it almost unchanged.
+-- 
+2.27.0
 
-Patch series follows in a moment.
-
-Best regards,
-
-  Daniel
-
--- =
-
-Dipl.-Math. Daniel Gl=F6ckner, emlix GmbH, http://www.emlix.com
-Fon +49 551 30664-0, Fax +49 551 30664-11,
-Gothaer Platz 3, 37083 G=F6ttingen, Germany
-Sitz der Gesellschaft: G=F6ttingen, Amtsgericht G=F6ttingen HR B 3160
-Gesch=E4ftsf=FChrung: Heike Jordan, Dr. Uwe Kracke
-Ust-IdNr.: DE 205 198 055
-
-emlix - your embedded linux partner
 
 _______________________________________________
 barebox mailing list
