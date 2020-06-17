@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jlTAR-0000al-3L
+ id 1jlTAR-0000ak-3R
  for barebox@lists.infradead.org; Wed, 17 Jun 2020 08:11:34 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 17 Jun 2020 10:11:14 +0200
-Message-Id: <20200617081126.5683-8-s.hauer@pengutronix.de>
+Date: Wed, 17 Jun 2020 10:11:12 +0200
+Message-Id: <20200617081126.5683-6-s.hauer@pengutronix.de>
 In-Reply-To: <20200617081126.5683-1-s.hauer@pengutronix.de>
 References: <20200617081126.5683-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,32 +21,164 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/19] usbnet: Add slice
+Subject: [PATCH 05/19] net: mdiobus: Add slice
 To: Barebox List <barebox@lists.infradead.org>
 Cc: =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-Both the ethernet device and the mdio bus of a USB network controller
-need the USB bus. Add dependencies to it.
+By adding a slice to the mdio bus we make the mdio code safe for being
+called in a poller.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/usb/usbnet.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/phy/mdio_bus.c | 43 ++++++++++++++++++++++++++++++++++++++
+ include/linux/phy.h        | 38 +++++++++++++--------------------
+ 2 files changed, 58 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index 7397034586..46ea73247f 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -233,6 +233,9 @@ int usbnet_probe(struct usb_device *usbdev, const struct usb_device_id *prod)
+diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+index 3480e2ffb4..99d23ffedf 100644
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -239,6 +239,8 @@ int mdiobus_register(struct mii_bus *bus)
+ 		return -EINVAL;
+ 	}
  
- 	eth_register(edev);
- 
-+	slice_depends_on(eth_device_slice(edev), usb_device_slice(usbdev));
-+	slice_depends_on(mdiobus_slice(&undev->miibus), usb_device_slice(usbdev));
++	slice_init(&bus->slice, dev_name(&bus->dev));
 +
- 	return 0;
- out1:
- 	dev_dbg(&edev->dev, "err: %d\n", status);
+ 	if (bus->reset)
+ 		bus->reset(bus);
+ 
+@@ -272,6 +274,8 @@ void mdiobus_unregister(struct mii_bus *bus)
+ 		bus->phy_map[i] = NULL;
+ 	}
+ 
++	slice_exit(&bus->slice);
++
+ 	list_del(&bus->list);
+ }
+ EXPORT_SYMBOL(mdiobus_unregister);
+@@ -357,6 +361,45 @@ static int mdio_bus_match(struct device_d *dev, struct driver_d *drv)
+ 	return 1;
+ }
+ 
++/**
++ * mdiobus_read - Convenience function for reading a given MII mgmt register
++ * @bus: the mii_bus struct
++ * @addr: the phy address
++ * @regnum: register number to read
++ */
++int mdiobus_read(struct mii_bus *bus, int addr, u32 regnum)
++{
++	int ret;
++
++	slice_acquire(&bus->slice);
++
++	ret = bus->read(bus, addr, regnum);
++
++	slice_release(&bus->slice);
++
++	return ret;
++}
++
++/**
++ * mdiobus_write - Convenience function for writing a given MII mgmt register
++ * @bus: the mii_bus struct
++ * @addr: the phy address
++ * @regnum: register number to write
++ * @val: value to write to @regnum
++ */
++int mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val)
++{
++	int ret;
++
++	slice_acquire(&bus->slice);
++
++	ret = bus->write(bus, addr, regnum, val);
++
++	slice_release(&bus->slice);
++
++	return ret;
++}
++
+ static ssize_t phydev_read(struct cdev *cdev, void *_buf, size_t count, loff_t offset, ulong flags)
+ {
+ 	int i = count;
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index a9fdf44f1a..3f0f31b35c 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -16,6 +16,7 @@
+ #define __PHY_H
+ 
+ #include <driver.h>
++#include <slice.h>
+ #include <linux/list.h>
+ #include <linux/ethtool.h>
+ #include <linux/mii.h>
+@@ -116,9 +117,16 @@ struct mii_bus {
+ 	struct list_head list;
+ 
+ 	bool is_multiplexed;
++
++	struct slice slice;
+ };
+ #define to_mii_bus(d) container_of(d, struct mii_bus, dev)
+ 
++static inline struct slice *mdiobus_slice(struct mii_bus *bus)
++{
++	return &bus->slice;
++}
++
+ int mdiobus_register(struct mii_bus *bus);
+ void mdiobus_unregister(struct mii_bus *bus);
+ struct phy_device *mdiobus_scan(struct mii_bus *bus, int addr);
+@@ -134,28 +142,8 @@ struct mii_bus *mdiobus_get_bus(int busnum);
+ 
+ struct mii_bus *of_mdio_find_bus(struct device_node *mdio_bus_np);
+ 
+-/**
+- * mdiobus_read - Convenience function for reading a given MII mgmt register
+- * @bus: the mii_bus struct
+- * @addr: the phy address
+- * @regnum: register number to read
+- */
+-static inline int mdiobus_read(struct mii_bus *bus, int addr, u32 regnum)
+-{
+-	return bus->read(bus, addr, regnum);
+-}
+-
+-/**
+- * mdiobus_write - Convenience function for writing a given MII mgmt register
+- * @bus: the mii_bus struct
+- * @addr: the phy address
+- * @regnum: register number to write
+- * @val: value to write to @regnum
+- */
+-static inline int mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val)
+-{
+-	return bus->write(bus, addr, regnum, val);
+-}
++int mdiobus_read(struct mii_bus *bus, int addr, u32 regnum);
++int mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val);
+ 
+ /* phy_device: An instance of a PHY
+  *
+@@ -376,11 +364,15 @@ int phy_register_fixup(const char *bus_id, u32 phy_uid, u32 phy_uid_mask,
+ int phy_register_fixup_for_id(const char *bus_id,
+ 		int (*run)(struct phy_device *));
+ int phy_scan_fixups(struct phy_device *phydev);
+-
+ int phy_read_mmd_indirect(struct phy_device *phydev, int prtad, int devad);
+ void phy_write_mmd_indirect(struct phy_device *phydev, int prtad, int devad,
+ 				   u16 data);
+ 
++static inline bool phy_acquired(struct phy_device *phydev)
++{
++	return phydev && phydev->bus && slice_acquired(&phydev->bus->slice);
++}
++
+ #ifdef CONFIG_PHYLIB
+ int phy_register_fixup_for_uid(u32 phy_uid, u32 phy_uid_mask,
+ 		int (*run)(struct phy_device *));
 -- 
 2.27.0
 
