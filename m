@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jlTSJ-0003iu-Jp
- for barebox@lists.infradead.org; Wed, 17 Jun 2020 08:30:01 +0000
-Date: Wed, 17 Jun 2020 10:29:58 +0200
+ id 1jlTSc-0006Dp-Sr
+ for barebox@lists.infradead.org; Wed, 17 Jun 2020 08:30:20 +0000
+Date: Wed, 17 Jun 2020 10:30:17 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200617082958.GZ11869@pengutronix.de>
-References: <20200617025736.33666-1-masahiroy@kernel.org>
+Message-ID: <20200617083017.GA11869@pengutronix.de>
+References: <20200617025816.33834-1-masahiroy@kernel.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200617025736.33666-1-masahiroy@kernel.org>
+In-Reply-To: <20200617025816.33834-1-masahiroy@kernel.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,28 +22,21 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] kbuild: remove AS variable
+Subject: Re: [PATCH] kbuild: remove package targets
 To: Masahiro Yamada <masahiroy@kernel.org>
 Cc: barebox@lists.infradead.org
 
-On Wed, Jun 17, 2020 at 11:57:36AM +0900, Masahiro Yamada wrote:
-> The assembler files in the barebox are *.S instead of *.s, so they must
-> be preprocessed. Since 'as' of GNU binutils is not able to preprocess,
-> we always use $(CC) as an assembler driver.
+On Wed, Jun 17, 2020 at 11:58:16AM +0900, Masahiro Yamada wrote:
+> This hunk is already out of sync from upstream Linux.
 > 
-> Remove AS variable.
-> 
-> Linux also removed AS. See Linux commits:
-> 
->  aa824e0c962b ("kbuild: remove AS variable")
->  1ca0c2f61211 ("kbuild: remove unused AS assignment")
+> Barebox does not support package targets, so let's delete this
+> rotten code.
 > 
 > Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 > ---
 > 
->  Makefile          | 3 +--
->  arch/arm/Makefile | 2 --
->  2 files changed, 1 insertion(+), 4 deletions(-)
+>  Makefile | 12 ------------
+>  1 file changed, 12 deletions(-)
 
 Applied, thanks
 
