@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jlTAR-0000ag-3H
+ id 1jlTAR-0000aj-3N
  for barebox@lists.infradead.org; Wed, 17 Jun 2020 08:11:32 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 17 Jun 2020 10:11:07 +0200
-Message-Id: <20200617081126.5683-1-s.hauer@pengutronix.de>
+Date: Wed, 17 Jun 2020 10:11:09 +0200
+Message-Id: <20200617081126.5683-3-s.hauer@pengutronix.de>
+In-Reply-To: <20200617081126.5683-1-s.hauer@pengutronix.de>
+References: <20200617081126.5683-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -15,106 +17,300 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 00/19] Slices and fastboot over UDP
+Subject: [PATCH 02/19] Add workqueues
 To: Barebox List <barebox@lists.infradead.org>
 Cc: =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-VGhpcyBpcyBhIG5ldyByb3VuZCBvZiB0aGUgc2VyaWVzIGFkZGluZyBmYXN0Ym9vdCBvdmVyIGV0
-aGVybmV0IHRvCmJhcmVib3guIENvbXBhcmVkIHRvIHRoZSBsYXN0IHZlcnNpb24gdGhpcyBjb250
-YWlucyBzb21lIGNvbmNlcHR1YWwKY2hhbmdlcy4gRmlyc3Qgb2YgYWxsIHdlIG5vIGxvbmdlciBu
-ZWVkIGV4ZWN1dGluZyBwb2xsZXJzIGluc2lkZSBvZgpwb2xsZXJzLiBIb3BlZnVsbHkgdGhpcyBt
-YWtlcyBpdCBlYXNpZXIgdG8gZm9sbG93IHRoZSBleGVjdXRpb24gZmxvdy4KSW5zdGVhZCB3b3Jr
-cXVldWVzIGhlbHAgdG8gZXhlY3V0ZSBwb3NzaWJseSBsb25nZXIgbGl2aW5nIGNvZGUgd2l0aApk
-ZXBlbmRlbmNpZXMgdG8gb3RoZXIgZGV2aWNlcy4gV29ya3F1ZXVlcyBhcmUgdXNlZCB0byB0cmln
-Z2VyIHdvcmsKZnJvbSBwb2xsZXJzLiBUaGlzIGlzIHRoZW4gZXhlY3V0ZWQgd2hlbiB0aGUgY29t
-bWFuZCBzbGljZSwgcHJldmlvdXNseQprbm93biBhcyBpZGxlIHNsaWNlLCBpcyByZWxlYXNlZC4g
-VG8gbWFrZSBzdXJlIHBvbGxlcnMgZG9uJ3QgZG8gdGhpbmdzCnRoZXkgYXJlIG5vdCBhbGxvd2Vk
-IHRvIHdlIG5vdyBoYXZlIGEgYXNzZXJ0X2NvbW1hbmRfY29udGV4dCgpIG1hY3JvCndoaWNoIHdh
-cm5zIHdoZW4gaXQgaXMgY2FsbGVkIGZyb20gYSBwb2xsZXIuIFRoaXMgaXMgYWRkZWQgdG8gbW9z
-dApmaWxlc3lzdGVtIG9wZXJhdGlvbnMgYXMgdGhlc2UgZGVmaW5pdGVseSBzaG91bGRuJ3QgYmUg
-Y2FsbGVkIGZyb20KcG9sbGVycy4gQmVzaWRlcyBmYXN0Ym9vdCBvdmVyIFVEUCBhbHNvIGZhc3Ri
-b290IG92ZXIgVVNCIGFuZCBSQVRQCmFyZSBjb252ZXJ0ZWQgdG8gdXNlIHdvcmtxdWV1ZXMsIHNv
-IHRoZXNlIGFsc28gbm8gbG9uZ2VyIGNhbGwgdGhlCmNvbW1hbmRzIHRoZXkgZXhlY3V0ZSBmcm9t
-IHBvbGxlcnMuCgpUbyBnaXZlIGFuIG92ZXJ2aWV3IGhvdyBiYXJlYm94IG5vdyBoYW5kbGVzIHBz
-ZXVkbyBwYXJhbGxlbCBleGVjdXRpb24KSSB3cm90ZSBzb21lIGRvY3VtZW50YXRpb24sIHNlZSB0
-aGUgbGFzdCBwYXRjaC4KCkNoYW5nZXMgc2luY2UgbGFzdCB2ZXJzaW9uOgoKLSBhZGQgd29ya3F1
-ZXVlIGludGVyZmFjZQotIGNvbnZlcnQgZmFzdGJvb3QgVVNCIGFuZCBSQVRQIHRvIG5vIGxvbmdl
-ciBjYWxsIGNvbW1hbmRzIGZyb20gcG9sbGVycwotIGFkZCBEb2N1bWVudGF0aW9uCgoKRGFuaWVs
-IEdsw7Zja25lciAoMik6CiAgZGVmY29uZmlnczogdXBkYXRlIHJlbmFtZWQgZmFzdGJvb3Qgb3B0
-aW9ucwogIGZhc3Rib290OiByZW5hbWUgdXNiZ2FkZ2V0LmZhc3Rib290XyogdmFyaWFibGVzIHRv
-IGZhc3Rib290LioKCkVkbXVuZCBIZW5uaWdlcyAoMSk6CiAgZmFzdGJvb3QgbmV0OiBpbXBsZW1l
-bnQgZmFzdGJvb3Qgb3ZlciBVRFAKClNhc2NoYSBIYXVlciAoMTYpOgogIEludHJvZHVjZSBzbGlj
-ZXMKICBBZGQgd29ya3F1ZXVlcwogIHJhdHA6IFN3aXRjaCB0byB3b3JrcXVldWVzCiAgbmV0OiBB
-ZGQgYSBzbGljZSB0byBzdHJ1Y3QgZXRoX2RldmljZQogIG5ldDogbWRpb2J1czogQWRkIHNsaWNl
-CiAgdXNiOiBBZGQgYSBzbGljZSB0byB1c2IgaG9zdCBjb250cm9sbGVycwogIHVzYm5ldDogQWRk
-IHNsaWNlCiAgbmV0OiBDYWxsIG5ldF9wb2xsKCkgaW4gYSBwb2xsZXIKICBuZXQ6IHJlcGx5IHRv
-IHBpbmcgcmVxdWVzdHMKICB1c2JuZXQ6IEJlIG1vcmUgZnJpZW5kbHkgaW4gdGhlIHJlY2VpdmUg
-cGF0aAogIGdsb2JhbHZhcjogQWRkIGhlbHBlciBmb3IgZGVwcmVjYXRlZCB2YXJpYWJsZSBuYW1l
-cwogIGZhc3Rib290OiByZW1vdmUgZG91YmxlIHByaW50CiAgdXNiOiBmYXN0Ym9vdDogZXhlY3V0
-ZSBjb21tYW5kcyBpbiBjb21tYW5kIGNvbnRleHQKICBBZGQgV0FSTl9PTkNFKCkgbWFjcm8KICBm
-czogV2FybiB3aGVuIGZpbGVzeXN0ZW0gb3BlcmF0aW9ucyBhcmUgY2FsbGVkIGZyb20gYSBwb2xs
-ZXIKICBEb2N1bWVudGF0aW9uOiBBZGQgZG9jdW1lbnQgZm9yIHBhcmFsbGVsIGV4ZWN1dGlvbiBp
-biBiYXJlYm94CgogRG9jdW1lbnRhdGlvbi9kZXZlbC9kZXZlbC5yc3QgICAgICAgICAgICAgIHwg
-IDE0ICsKIERvY3VtZW50YXRpb24vZGV2ZWwvcGFyYWxsZWwtZXhlY3V0aW9uLnJzdCB8ICA5MiAr
-KysrCiBEb2N1bWVudGF0aW9uL2luZGV4LnJzdCAgICAgICAgICAgICAgICAgICAgfCAgIDEgKwog
-RG9jdW1lbnRhdGlvbi91c2VyL3VzYi5yc3QgICAgICAgICAgICAgICAgIHwgICA0ICstCiBhcmNo
-L2FybS9jb25maWdzL2lteDIzX2RlZmNvbmZpZyAgICAgICAgICAgfCAgIDIgKy0KIGFyY2gvYXJt
-L2NvbmZpZ3MvaW14MjhfZGVmY29uZmlnICAgICAgICAgICB8ICAgMiArLQogYXJjaC9hcm0vY29u
-Zmlncy9pbXhfdjdfZGVmY29uZmlnICAgICAgICAgIHwgICAyICstCiBhcmNoL2FybS9jb25maWdz
-L2lteF92OF9kZWZjb25maWcgICAgICAgICAgfCAgIDIgKy0KIGFyY2gvYXJtL2NvbmZpZ3Mva2lu
-ZGxlLW14NTBfZGVmY29uZmlnICAgICB8ICAgMiArLQogYXJjaC9hcm0vY29uZmlncy9vbWFwX2Rl
-ZmNvbmZpZyAgICAgICAgICAgIHwgICAyICstCiBhcmNoL2FybS9jb25maWdzL3ppaV92ZjYxMF9k
-ZXZfZGVmY29uZmlnICAgfCAgIDIgKy0KIGNvbW1hbmRzL0tjb25maWcgICAgICAgICAgICAgICAg
-ICAgICAgICAgICB8ICAgOCArCiBjb21tYW5kcy91c2JnYWRnZXQuYyAgICAgICAgICAgICAgICAg
-ICAgICAgfCAgIDIgKy0KIGNvbW1vbi9NYWtlZmlsZSAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICB8ICAgMiArCiBjb21tb24vZmFzdGJvb3QuYyAgICAgICAgICAgICAgICAgICAgICAgICAgfCAg
-MzAgKy0KIGNvbW1vbi9nbG9iYWx2YXIuYyAgICAgICAgICAgICAgICAgICAgICAgICB8ICA1NCAr
-Ky0KIGNvbW1vbi9odXNoLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgNiArCiBj
-b21tb24vcG9sbGVyLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDkgKy0KIGNvbW1v
-bi9yYXRwL3JhdHAuYyAgICAgICAgICAgICAgICAgICAgICAgICB8ICA1NyArKy0KIGNvbW1vbi9z
-bGljZS5jICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8IDMzNSArKysrKysrKysrKysrKwog
-Y29tbW9uL3N0YXJ0dXAuYyAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAzICsKIGNvbW1v
-bi91c2JnYWRnZXQuYyAgICAgICAgICAgICAgICAgICAgICAgICB8ICAxNiArLQogY29tbW9uL3dv
-cmtxdWV1ZS5jICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDQ4ICsrCiBkcml2ZXJzL25ldC9w
-aHkvbWRpb19idXMuYyAgICAgICAgICAgICAgICAgfCAgNDMgKysKIGRyaXZlcnMvbmV0L3VzYi91
-c2JuZXQuYyAgICAgICAgICAgICAgICAgICB8ICAyMiArLQogZHJpdmVycy91c2IvY29yZS91c2Iu
-YyAgICAgICAgICAgICAgICAgICAgIHwgIDEyICstCiBkcml2ZXJzL3VzYi9nYWRnZXQvZl9mYXN0
-Ym9vdC5jICAgICAgICAgICAgfCAgNDkgKy0KIGZzL2ZzLmMgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICB8ICAzNSArKwogZnMvbmZzLmMgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgIHwgICAyIC0KIGZzL3RmdHAuYyAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICB8ICAgMiAtCiBpbmNsdWRlL2FzbS1nZW5lcmljL2J1Zy5oICAgICAgICAgICAgICAgICAg
-fCAgMTMgKwogaW5jbHVkZS9mYXN0Ym9vdC5oICAgICAgICAgICAgICAgICAgICAgICAgIHwgICA2
-ICsKIGluY2x1ZGUvZmFzdGJvb3RfbmV0LmggICAgICAgICAgICAgICAgICAgICB8ICAxMiArCiBp
-bmNsdWRlL2dsb2JhbHZhci5oICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDUgKwogaW5jbHVk
-ZS9saW51eC9waHkuaCAgICAgICAgICAgICAgICAgICAgICAgIHwgIDM4ICstCiBpbmNsdWRlL25l
-dC5oICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgMTEgKy0KIGluY2x1ZGUvcmF0cF9i
-Yi5oICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMSAtCiBpbmNsdWRlL3NsaWNlLmggICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgfCAgNDIgKysKIGluY2x1ZGUvdXNiL3VzYi5oICAgICAg
-ICAgICAgICAgICAgICAgICAgICB8ICAgOCArLQogaW5jbHVkZS91c2IvdXNibmV0LmggICAgICAg
-ICAgICAgICAgICAgICAgIHwgICAzICsKIGluY2x1ZGUvd29yay5oICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICB8ICAzOCArKwogbGliL3JlYWRsaW5lLmMgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgIHwgICA2ICstCiBuZXQvS2NvbmZpZyAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgfCAgMTAgKwogbmV0L01ha2VmaWxlICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwg
-ICAxICsKIG5ldC9kaGNwLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMSAt
-CiBuZXQvZG5zLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDEgLQogbmV0
-L2V0aC5jICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDg0ICsrKy0KIG5ldC9m
-YXN0Ym9vdC5jICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8IDUxNSArKysrKysrKysrKysr
-KysrKysrKysKIG5ldC9uZXQuYyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICA2
-MCArKy0KIG5ldC9uZXRjb25zb2xlLmMgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgNCAr
-LQogbmV0L25mcy5jICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAxIC0KIG5l
-dC9waW5nLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMiAtCiBuZXQvc250
-cC5jICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDIgLQogNTMgZmlsZXMgY2hh
-bmdlZCwgMTYwNyBpbnNlcnRpb25zKCspLCAxMTcgZGVsZXRpb25zKC0pCiBjcmVhdGUgbW9kZSAx
-MDA2NDQgRG9jdW1lbnRhdGlvbi9kZXZlbC9kZXZlbC5yc3QKIGNyZWF0ZSBtb2RlIDEwMDY0NCBE
-b2N1bWVudGF0aW9uL2RldmVsL3BhcmFsbGVsLWV4ZWN1dGlvbi5yc3QKIGNyZWF0ZSBtb2RlIDEw
-MDY0NCBjb21tb24vc2xpY2UuYwogY3JlYXRlIG1vZGUgMTAwNjQ0IGNvbW1vbi93b3JrcXVldWUu
-YwogY3JlYXRlIG1vZGUgMTAwNjQ0IGluY2x1ZGUvZmFzdGJvb3RfbmV0LmgKIGNyZWF0ZSBtb2Rl
-IDEwMDY0NCBpbmNsdWRlL3NsaWNlLmgKIGNyZWF0ZSBtb2RlIDEwMDY0NCBpbmNsdWRlL3dvcmsu
-aAogY3JlYXRlIG1vZGUgMTAwNjQ0IG5ldC9mYXN0Ym9vdC5jCgotLSAKMi4yNy4wCgoKX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5n
-IGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQu
-b3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Some code wants to run arbitrary code in the background, examples are
+fastboot and ratp. Currently this is implemented in pollers. The problem
+with this is that pollers are executed whenever is_timeout() is called
+which may happen anywhere in the code. With this we can never tell which
+resources are currently in use when the poller is executed.
+
+This adds a work queue interface which is specifically designed to
+trigger doing work in a context where it's safe to run arbitrary commands.
+
+Code in pollers can attach work to a work queue which is at that time
+only queued up. A new slice, the command slice, is added which by
+default is acquired. It is only released at places where the shell waits
+for input. When during this time pollers are executed the queued up
+works are done before running the registered pollers.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/Makefile    |  1 +
+ common/hush.c      |  6 ++++++
+ common/poller.c    |  7 +++++++
+ common/slice.c     | 32 +++++++++++++++++++++++++++++++
+ common/startup.c   |  3 +++
+ common/workqueue.c | 48 ++++++++++++++++++++++++++++++++++++++++++++++
+ include/slice.h    |  5 +++++
+ include/work.h     | 38 ++++++++++++++++++++++++++++++++++++
+ 8 files changed, 140 insertions(+)
+ create mode 100644 common/workqueue.c
+ create mode 100644 include/work.h
+
+diff --git a/common/Makefile b/common/Makefile
+index 141109b23a..603edd4f52 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -12,6 +12,7 @@ obj-$(CONFIG_ELF)		+= elf.o
+ obj-y				+= restart.o
+ obj-y				+= poweroff.o
+ obj-y				+= slice.o
++obj-y				+= workqueue.o
+ obj-$(CONFIG_MACHINE_ID)	+= machine_id.o
+ obj-$(CONFIG_AUTO_COMPLETE)	+= complete.o
+ obj-y				+= version.o
+diff --git a/common/hush.c b/common/hush.c
+index c24b2c7cd2..ec0d5129b7 100644
+--- a/common/hush.c
++++ b/common/hush.c
+@@ -121,6 +121,7 @@
+ #include <libbb.h>
+ #include <password.h>
+ #include <glob.h>
++#include <slice.h>
+ #include <getopt.h>
+ #include <libfile.h>
+ #include <libbb.h>
+@@ -460,7 +461,12 @@ static void get_user_input(struct in_str *i)
+ 	else
+ 		prompt = CONFIG_PROMPT_HUSH_PS2;
+ 
++	command_slice_release();
++
+ 	n = readline(prompt, console_buffer, CONFIG_CBSIZE);
++
++	command_slice_acquire();
++
+ 	if (n == -1 ) {
+ 		i->interrupt = 1;
+ 		n = 0;
+diff --git a/common/poller.c b/common/poller.c
+index 95f828b439..7e8fb50122 100644
+--- a/common/poller.c
++++ b/common/poller.c
+@@ -12,6 +12,8 @@
+ #include <param.h>
+ #include <poller.h>
+ #include <clock.h>
++#include <work.h>
++#include <slice.h>
+ 
+ static LIST_HEAD(poller_list);
+ static int poller_active;
+@@ -114,11 +116,16 @@ void poller_call(void)
+ 	if (poller_active)
+ 		return;
+ 
++	if (!slice_acquired(&command_slice))
++		wq_do_all_works();
++
++	command_slice_acquire();
+ 	poller_active = 1;
+ 
+ 	list_for_each_entry_safe(poller, tmp, &poller_list, list)
+ 		poller->func(poller);
+ 
++	command_slice_release();
+ 	poller_active = 0;
+ }
+ 
+diff --git a/common/slice.c b/common/slice.c
+index 085d67604f..62e5d56d89 100644
+--- a/common/slice.c
++++ b/common/slice.c
+@@ -3,6 +3,7 @@
+ #define pr_fmt(fmt) "slice: " fmt
+ 
+ #include <common.h>
++#include <init.h>
+ #include <slice.h>
+ 
+ /*
+@@ -231,6 +232,37 @@ void slice_exit(struct slice *slice)
+ 	free(slice->name);
+ }
+ 
++struct slice command_slice;
++
++/**
++ * command_slice_acquire - acquire the command slice
++ *
++ * The command slice is acquired by default. It is only released
++ * at certain points we know it's safe to execute code in the
++ * background, like when the shell is waiting for input.
++ */
++void command_slice_acquire(void)
++{
++	slice_acquire(&command_slice);
++}
++
++/**
++ * command_slice_release - release the command slice
++ */
++void command_slice_release(void)
++{
++	slice_release(&command_slice);
++}
++
++static int command_slice_init(void)
++{
++	slice_init(&command_slice, "idle");
++	slice_acquire(&command_slice);
++	return 0;
++}
++
++pure_initcall(command_slice_init);
++
+ #if defined CONFIG_CMD_SLICE
+ 
+ #include <command.h>
+diff --git a/common/startup.c b/common/startup.c
+index 511675ed55..7425e31882 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -34,6 +34,7 @@
+ #include <debug_ll.h>
+ #include <fs.h>
+ #include <errno.h>
++#include <slice.h>
+ #include <linux/stat.h>
+ #include <envfs.h>
+ #include <magicvar.h>
+@@ -268,8 +269,10 @@ enum autoboot_state do_autoboot_countdown(void)
+ 		break;
+ 	}
+ 
++	command_slice_release();
+ 	ret = console_countdown(global_autoboot_timeout, flags, abortkeys,
+ 				&outkey);
++	command_slice_acquire();
+ 
+ 	if (ret == 0)
+ 		autoboot_state = AUTOBOOT_BOOT;
+diff --git a/common/workqueue.c b/common/workqueue.c
+new file mode 100644
+index 0000000000..5fb241e5ce
+--- /dev/null
++++ b/common/workqueue.c
+@@ -0,0 +1,48 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include <common.h>
++#include <work.h>
++
++static void wq_do_pending_work(struct work_queue *wq)
++{
++	struct work_struct *work, *tmp;
++
++	list_for_each_entry_safe(work, tmp, &wq->work, list) {
++		list_del(&work->list);
++		wq->fn(work);
++	}
++}
++
++static LIST_HEAD(work_queues);
++
++/**
++ * wq_do_all_works - do all pending work
++ *
++ * This calls all pending work functions
++ */
++void wq_do_all_works(void)
++{
++	struct work_queue *wq;
++
++	list_for_each_entry(wq, &work_queues, list)
++		wq_do_pending_work(wq);
++}
++
++/**
++ * wq_register - register a new work queue
++ * @wq:    The work queue
++ */
++void wq_register(struct work_queue *wq)
++{
++	INIT_LIST_HEAD(&wq->work);
++	list_add_tail(&wq->list, &work_queues);
++}
++
++/**
++ * wq_unregister - unregister a work queue
++ * @wq:    The work queue
++ */
++void wq_unregister(struct work_queue *wq)
++{
++	wq_cancel_work(wq);
++	list_del(&wq->list);
++}
+diff --git a/include/slice.h b/include/slice.h
+index 5538fc434a..fd753e194b 100644
+--- a/include/slice.h
++++ b/include/slice.h
+@@ -28,4 +28,9 @@ void slice_exit(struct slice *slice);
+ 
+ void slice_debug_acquired(struct slice *slice);
+ 
++extern struct slice command_slice;
++
++void command_slice_acquire(void);
++void command_slice_release(void);
++
+ #endif /* __SLICE_H */
+diff --git a/include/work.h b/include/work.h
+new file mode 100644
+index 0000000000..81bbcb7683
+--- /dev/null
++++ b/include/work.h
+@@ -0,0 +1,38 @@
++#ifndef __WORK_H
++#define __WORK_H
++
++#include <linux/list.h>
++
++struct work_struct {
++	struct list_head list;
++};
++
++struct work_queue {
++	void (*fn)(struct work_struct *work);
++	void (*cancel)(struct work_struct *work);
++
++	struct list_head list;
++	struct list_head work;
++};
++
++static inline void wq_queue_work(struct work_queue *wq, struct work_struct *work)
++{
++	list_add_tail(&work->list, &wq->work);
++}
++
++static inline void wq_cancel_work(struct work_queue *wq)
++{
++	struct work_struct *work, *tmp;
++
++	list_for_each_entry_safe(work, tmp, &wq->work, list) {
++		list_del(&work->list);
++		wq->cancel(work);
++	}
++}
++
++void wq_register(struct work_queue *wq);
++void wq_unregister(struct work_queue *wq);
++
++void wq_do_all_works(void);
++
++#endif /* __WORK_H */
+-- 
+2.27.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
