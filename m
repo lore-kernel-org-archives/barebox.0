@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from conuserg-08.nifty.com ([210.131.2.75])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jl7u1-0002Nz-Mo
- for barebox@lists.infradead.org; Tue, 16 Jun 2020 09:29:11 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 16 Jun 2020 11:29:06 +0200
-Message-Id: <20200616092906.2626-2-s.hauer@pengutronix.de>
-In-Reply-To: <20200616092906.2626-1-s.hauer@pengutronix.de>
-References: <20200616092906.2626-1-s.hauer@pengutronix.de>
+ id 1jlOH8-0006uN-6s
+ for barebox@lists.infradead.org; Wed, 17 Jun 2020 02:58:07 +0000
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Wed, 17 Jun 2020 11:57:36 +0900
+Message-Id: <20200617025736.33666-1-masahiroy@kernel.org>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,197 +19,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ratp: Straighten ratp deregistration
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] kbuild: remove AS variable
+To: barebox@lists.infradead.org
+Cc: Masahiro Yamada <masahiroy@kernel.org>
 
-There are some bugs in the error path when ratp initialization fails
-half way through. Reusing the global ratp context which might be half
-initialized makes the code hard to follow and hard to fix, so the
-strategy is changed to always allocating a fresh ratp context and
-returning -EBUSY when one exists already. We store in the context what
-has been done in the initialization path and add a ratp_unregister()
-which uses this information to tear down everything that has been
-initialized.
+The assembler files in the barebox are *.S instead of *.s, so they must
+be preprocessed. Since 'as' of GNU binutils is not able to preprocess,
+we always use $(CC) as an assembler driver.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Remove AS variable.
+
+Linux also removed AS. See Linux commits:
+
+ aa824e0c962b ("kbuild: remove AS variable")
+ 1ca0c2f61211 ("kbuild: remove unused AS assignment")
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 ---
- common/ratp/ratp.c | 98 +++++++++++++++++++++++-----------------------
- 1 file changed, 49 insertions(+), 49 deletions(-)
 
-diff --git a/common/ratp/ratp.c b/common/ratp/ratp.c
-index d2fdb631b3..b9856b2095 100644
---- a/common/ratp/ratp.c
-+++ b/common/ratp/ratp.c
-@@ -50,6 +50,9 @@ struct ratp_ctx {
- 	struct ratp_bb_pkt *fs_rx;
+ Makefile          | 3 +--
+ arch/arm/Makefile | 2 --
+ 2 files changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index d483302fe..efb5fc9ee 100644
+--- a/Makefile
++++ b/Makefile
+@@ -372,7 +372,6 @@ KBUILD_HOSTLDLIBS   := $(HOST_LFS_LIBS) $(HOSTLDLIBS)
  
- 	struct poller_struct poller;
-+
-+	bool console_registered;
-+	bool poller_registered;
- };
+ # Make variables (CC, etc...)
  
- static int compare_ratp_command(struct list_head *a, struct list_head *b)
-@@ -295,26 +298,6 @@ static void ratp_console_putc(struct console_device *cdev, char c)
- 	kfifo_putc(ctx->console_transmit_fifo, c);
- }
+-AS		= $(CROSS_COMPILE)as
+ LD		= $(CROSS_COMPILE)ld
+ CC		= $(CROSS_COMPILE)gcc
+ CPP		= $(CC) -E
+@@ -425,7 +424,7 @@ LDFLAGS_barebox	:= -Map barebox.map
+ LDFLAGS_barebox += $(call ld-option, --no-dynamic-linker)
+ LDFLAGS_pbl += $(call ld-option, --no-dynamic-linker)
  
--static int ratp_console_register(struct ratp_ctx *ctx)
--{
--	int ret;
--
--	ctx->ratp_console.tstc = ratp_console_tstc;
--	ctx->ratp_console.puts = ratp_console_puts;
--	ctx->ratp_console.putc = ratp_console_putc;
--	ctx->ratp_console.getc = ratp_console_getc;
--	ctx->ratp_console.devname = "ratpconsole";
--	ctx->ratp_console.devid = DEVICE_ID_SINGLE;
--
--	ret = console_register(&ctx->ratp_console);
--	if (ret) {
--		pr_err("registering failed with %s\n", strerror(-ret));
--		return ret;
--	}
--
--	return 0;
--}
--
- void barebox_ratp_command_run(void)
- {
- 	int ret;
-@@ -344,15 +327,27 @@ int barebox_ratp_fs_mount(const char *path)
- 	return 0;
- }
+-export ARCH SRCARCH CONFIG_SHELL BASH HOSTCC KBUILD_HOSTCFLAGS CROSS_COMPILE AS LD CC
++export ARCH SRCARCH CONFIG_SHELL BASH HOSTCC KBUILD_HOSTCFLAGS CROSS_COMPILE LD CC
+ export CPP AR NM STRIP OBJCOPY OBJDUMP MAKE AWK GENKSYMS PERL PYTHON3 UTS_MACHINE
+ export LEX YACC
+ export HOSTCXX CHECK CHECKFLAGS
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 6c7373c20..46dfe1f62 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -10,11 +10,9 @@ endif
  
--static void ratp_console_unregister(struct ratp_ctx *ctx)
-+static void ratp_unregister(struct ratp_ctx *ctx)
- {
- 	int ret;
+ ifeq ($(CONFIG_CPU_BIG_ENDIAN),y)
+ KBUILD_CPPFLAGS	+= -mbig-endian
+-AS		+= -EB
+ LD		+= -EB
+ else
+ KBUILD_CPPFLAGS	+= -mlittle-endian
+-AS		+= -EL
+ LD		+= -EL
+ endif
  
--	console_set_active(&ctx->ratp_console, 0);
--	poller_unregister(&ctx->poller);
-+	if (ctx->console_registered)
-+		console_unregister(&ctx->ratp_console);
-+
-+	if (ctx->console_registered)
-+		poller_unregister(&ctx->poller);
-+
- 	ratp_close(&ctx->ratp);
- 	console_set_active(ctx->cdev, ctx->old_active);
--	ctx->cdev = NULL;
-+
-+	if (ctx->console_recv_fifo)
-+		kfifo_free(ctx->console_recv_fifo);
-+
-+	if (ctx->console_transmit_fifo)
-+		kfifo_free(ctx->console_transmit_fifo);
-+
-+	free(ctx);
-+	ratp_ctx = NULL;
- 
- 	if (ratpfs_mount_path) {
- 		ret = umount(ratpfs_mount_path);
-@@ -388,7 +383,7 @@ static void ratp_poller(struct poller_struct *poller)
- 	return;
- 
- out:
--	ratp_console_unregister(ctx);
-+	ratp_unregister(ctx);
- }
- 
- int barebox_ratp_fs_call(struct ratp_bb_pkt *tx, struct ratp_bb_pkt **rx)
-@@ -433,28 +428,34 @@ int barebox_ratp(struct console_device *cdev)
- {
- 	int ret;
- 	struct ratp_ctx *ctx;
--	struct ratp *ratp;
- 
- 	if (!cdev->getc || !cdev->putc)
- 		return -EINVAL;
- 
--	if (ratp_ctx) {
--		ctx = ratp_ctx;
--	} else {
--		ctx = xzalloc(sizeof(*ctx));
--		ratp_ctx = ctx;
--		ctx->ratp.send = console_send;
--		ctx->ratp.recv = console_recv;
--		ctx->console_recv_fifo = kfifo_alloc(512);
--		ctx->console_transmit_fifo = kfifo_alloc(SZ_128K);
--		ctx->poller.func = ratp_poller;
--		ratp_console_register(ctx);
--	}
--
--	if (ctx->cdev)
-+	if (ratp_ctx)
- 		return -EBUSY;
- 
--	ratp = &ctx->ratp;
-+	ctx = xzalloc(sizeof(*ctx));
-+	ratp_ctx = ctx;
-+	ctx->ratp.send = console_send;
-+	ctx->ratp.recv = console_recv;
-+	ctx->console_recv_fifo = kfifo_alloc(512);
-+	ctx->console_transmit_fifo = kfifo_alloc(SZ_128K);
-+	ctx->poller.func = ratp_poller;
-+	ctx->ratp_console.tstc = ratp_console_tstc;
-+	ctx->ratp_console.puts = ratp_console_puts;
-+	ctx->ratp_console.putc = ratp_console_putc;
-+	ctx->ratp_console.getc = ratp_console_getc;
-+	ctx->ratp_console.devname = "ratpconsole";
-+	ctx->ratp_console.devid = DEVICE_ID_SINGLE;
-+
-+	ret = console_register(&ctx->ratp_console);
-+	if (ret) {
-+		pr_err("registering console failed with %s\n", strerror(-ret));
-+		return ret;
-+	}
-+
-+	ctx->console_registered = true;
- 
- 	ctx->old_active = console_get_active(cdev);
- 	console_set_active(cdev, 0);
-@@ -462,31 +463,30 @@ int barebox_ratp(struct console_device *cdev)
- 	ctx->cdev = cdev;
- 	ctx->have_synch = 1;
- 
--	ret = ratp_establish(ratp, false, 100);
-+	ret = ratp_establish(&ctx->ratp, false, 100);
- 	if (ret < 0)
- 		goto out;
- 
- 	ret = poller_register(&ctx->poller, "ratp");
- 	if (ret)
--		goto out1;
-+		goto out;
-+
-+	ctx->poller_registered = true;
- 
- 	console_set_active(&ctx->ratp_console, CONSOLE_STDOUT | CONSOLE_STDERR |
- 			CONSOLE_STDIN);
- 
- 	return 0;
- 
--out1:
--	ratp_close(ratp);
- out:
--	console_set_active(ctx->cdev, ctx->old_active);
--	ctx->cdev = NULL;
-+	ratp_unregister(ctx);
- 
- 	return ret;
- }
- 
- static void barebox_ratp_close(void)
- {
--	if (ratp_ctx && ratp_ctx->cdev)
--		ratp_console_unregister(ratp_ctx);
-+	if (ratp_ctx)
-+		ratp_unregister(ratp_ctx);
- }
- predevshutdown_exitcall(barebox_ratp_close);
 -- 
-2.27.0
+2.25.1
 
 
 _______________________________________________
