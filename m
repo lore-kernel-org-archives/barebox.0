@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jlTAR-0000ao-61
+ id 1jlTAR-0000an-4Q
  for barebox@lists.infradead.org; Wed, 17 Jun 2020 08:11:34 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 17 Jun 2020 10:11:17 +0200
-Message-Id: <20200617081126.5683-11-s.hauer@pengutronix.de>
+Date: Wed, 17 Jun 2020 10:11:19 +0200
+Message-Id: <20200617081126.5683-13-s.hauer@pengutronix.de>
 In-Reply-To: <20200617081126.5683-1-s.hauer@pengutronix.de>
 References: <20200617081126.5683-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,75 +21,126 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/19] usbnet: Be more friendly in the receive path
+Subject: [PATCH 12/19] globalvar: Add helper for deprecated variable names
 To: Barebox List <barebox@lists.infradead.org>
 Cc: =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-To recognize if we have a receive packet pending we must set up a USB
-bulk transfer. When there's no incoming packet we must wait until the
-transfer times out. We do this with every poller call which can
-considerably slow down the system. With this patch we do two things
-against this:
-
-- lower the timeout for the bulk transfer
-- When we haven't received a packet for longer then lower the frequency
-  of calling into the USB stack to once every 100ms
+When globalvars are renamed across releases it's not nice when variables
+in the persistent environment loose their meaning. This adds a helper
+function which adds an alias for the old names. When the persistent
+variables still use the old names then their values are automatically
+written to variables with the new names.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/usb/usbnet.c | 19 ++++++++++++++++++-
- include/usb/usbnet.h     |  3 +++
- 2 files changed, 21 insertions(+), 1 deletion(-)
+ common/globalvar.c  | 54 +++++++++++++++++++++++++++++++++++++++++++--
+ include/globalvar.h |  5 +++++
+ 2 files changed, 57 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index 46ea73247f..aa48678f87 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -122,12 +122,29 @@ static int usbnet_recv(struct eth_device *edev)
+diff --git a/common/globalvar.c b/common/globalvar.c
+index c87f2c9339..51d93ad385 100644
+--- a/common/globalvar.c
++++ b/common/globalvar.c
+@@ -293,6 +293,53 @@ int nvvar_remove(const char *name)
+ 	return ret;
+ }
  
- 	dev_dbg(&edev->dev, "%s\n",__func__);
- 
-+	/*
-+	 * we must let the usb_bulk_msg below timeout before we realize
-+	 * that we have no packet received. Since this function runs
-+	 * inside a poller we considerably slow down barebox when we
-+	 * wait for the timeout too often. To improve this we only poll
-+	 * with full speed when we actually have received a packet in the
-+	 * last 100ms.
-+	 */
-+	if (is_timeout(dev->last_pkt_received, 100 * MSECOND) &&
-+	    !is_timeout(dev->last_recv_call, 100 * MSECOND)) {
-+		return 0;
++struct globalvar_deprecated {
++	char *newname;
++	char *oldname;
++	struct list_head list;
++};
++
++static LIST_HEAD(globalvar_deprecated_list);
++
++/*
++ * globalvar_alias_deprecated - add an alias
++ *
++ * @oldname: The old name for the variable
++ * @newname: The new name for the variable
++ *
++ * This function is a helper for globalvars that are renamed from one
++ * release to another. when a variable @oldname is found in the persistent
++ * environment a warning is issued and its value is written to @newname.
++ *
++ * Note that when both @oldname and @newname contain values then the values
++ * existing in @newname are overwritten.
++ */
++void globalvar_alias_deprecated(const char *oldname, const char *newname)
++{
++	struct globalvar_deprecated *gd;
++
++	gd = xzalloc(sizeof(*gd));
++	gd->newname = xstrdup(newname);
++	gd->oldname = xstrdup(oldname);
++	list_add_tail(&gd->list, &globalvar_deprecated_list);
++}
++
++static const char *globalvar_new_name(const char *oldname)
++{
++	struct globalvar_deprecated *gd;
++
++	list_for_each_entry(gd, &globalvar_deprecated_list, list) {
++		if (!strcmp(oldname, gd->oldname)) {
++			pr_warn("nv.%s is deprecated, converting to nv.%s\n", oldname,
++				gd->newname);
++			nv_dirty = 1;
++			return gd->newname;
++		}
 +	}
 +
-+	dev->last_recv_call = get_time_ns();
++	return oldname;
++}
 +
- 	len = dev->rx_urb_size;
+ int nvvar_load(void)
+ {
+ 	char *val;
+@@ -308,6 +355,8 @@ int nvvar_load(void)
+ 		return -ENOENT;
  
--	ret = usb_bulk_msg(dev->udev, dev->in, dev->rx_buf, len, &alen, 100);
-+	ret = usb_bulk_msg(dev->udev, dev->in, dev->rx_buf, len, &alen, 2);
- 	if (ret)
- 		return ret;
- 
-+	dev->last_pkt_received = get_time_ns();
+ 	while ((d = readdir(dir))) {
++		const char *n;
 +
- 	if (alen) {
- 		if (info->rx_fixup)
- 			return info->rx_fixup(dev, dev->rx_buf, alen);
-diff --git a/include/usb/usbnet.h b/include/usb/usbnet.h
-index 450db47b40..7ff32f280a 100644
---- a/include/usb/usbnet.h
-+++ b/include/usb/usbnet.h
-@@ -54,6 +54,9 @@ struct usbnet {
- #		define EVENT_RX_MEMORY	2
- #		define EVENT_STS_SPLIT	3
- #		define EVENT_LINK_RESET	4
-+
-+	uint64_t last_pkt_received;
-+	uint64_t last_recv_call;
- };
+ 		if (!strcmp(d->d_name, ".") || !strcmp(d->d_name, ".."))
+ 			continue;
  
- #if 0
+@@ -316,10 +365,11 @@ int nvvar_load(void)
+ 		pr_debug("%s: Setting \"%s\" to \"%s\"\n",
+ 				__func__, d->d_name, val);
+ 
+-		ret = __nvvar_add(d->d_name, val);
++		n = globalvar_new_name(d->d_name);
++		ret = __nvvar_add(n, val);
+ 		if (ret)
+ 			pr_err("failed to create nv variable %s: %s\n",
+-					d->d_name, strerror(-ret));
++					n, strerror(-ret));
+ 	}
+ 
+ 	closedir(dir);
+diff --git a/include/globalvar.h b/include/globalvar.h
+index fc85e93e14..db229e239c 100644
+--- a/include/globalvar.h
++++ b/include/globalvar.h
+@@ -33,6 +33,7 @@ int nvvar_remove(const char *name);
+ void globalvar_print(void);
+ 
+ void dev_param_init_from_nv(struct device_d *dev, const char *name);
++void globalvar_alias_deprecated(const char *newname, const char *oldname);
+ 
+ #else
+ static inline int globalvar_add_simple(const char *name, const char *value)
+@@ -114,6 +115,10 @@ static inline void dev_param_init_from_nv(struct device_d *dev, const char *name
+ {
+ }
+ 
++static inline void globalvar_alias_deprecated(const char *newname, const char *oldname)
++{
++}
++
+ #endif
+ 
+ void nv_var_set_clean(void);
 -- 
 2.27.0
 
