@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jlTAR-0000aq-7W
+ id 1jlTAR-0000ap-6L
  for barebox@lists.infradead.org; Wed, 17 Jun 2020 08:11:36 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 17 Jun 2020 10:11:18 +0200
-Message-Id: <20200617081126.5683-12-s.hauer@pengutronix.de>
+Date: Wed, 17 Jun 2020 10:11:15 +0200
+Message-Id: <20200617081126.5683-9-s.hauer@pengutronix.de>
 In-Reply-To: <20200617081126.5683-1-s.hauer@pengutronix.de>
 References: <20200617081126.5683-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -17,107 +17,233 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/19] defconfigs: update renamed fastboot options
+Subject: [PATCH 08/19] net: Call net_poll() in a poller
 To: Barebox List <barebox@lists.infradead.org>
 Cc: =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-RnJvbTogRGFuaWVsIEdsw7Zja25lciA8ZGdAZW1saXguY29tPgoKVGhlIHNwbGl0IG9mIHRoZSBn
-ZW5lcmljIEZhc3Rib290IGNvZGUgZnJvbSB0aGUgRmFzdGJvb3QgVVNCIGdhZGdldAppbmNsdWRl
-ZCByZW5hbWluZyB0aGUgQ09ORklHX1VTQl9HQURHRVRfRkFTVEJPT1RfKiBvcHRpb25zIHRvCkNP
-TkZJR19GQVNUQk9PVF8qLiBVcGRhdGUgYWxsIGRlZmNvbmZpZ3MgdG8gdXNlIHRoZSBuZXcgbmFt
-ZXMuCgpTaWduZWQtb2ZmLWJ5OiBEYW5pZWwgR2zDtmNrbmVyIDxkZ0BlbWxpeC5jb20+ClNpZ25l
-ZC1vZmYtYnk6IFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4KLS0tCiBhcmNo
-L2FybS9jb25maWdzL2lteDIzX2RlZmNvbmZpZyAgICAgICAgIHwgMiArLQogYXJjaC9hcm0vY29u
-Zmlncy9pbXgyOF9kZWZjb25maWcgICAgICAgICB8IDIgKy0KIGFyY2gvYXJtL2NvbmZpZ3MvaW14
-X3Y3X2RlZmNvbmZpZyAgICAgICAgfCAyICstCiBhcmNoL2FybS9jb25maWdzL2lteF92OF9kZWZj
-b25maWcgICAgICAgIHwgMiArLQogYXJjaC9hcm0vY29uZmlncy9raW5kbGUtbXg1MF9kZWZjb25m
-aWcgICB8IDIgKy0KIGFyY2gvYXJtL2NvbmZpZ3Mvb21hcF9kZWZjb25maWcgICAgICAgICAgfCAy
-ICstCiBhcmNoL2FybS9jb25maWdzL3ppaV92ZjYxMF9kZXZfZGVmY29uZmlnIHwgMiArLQogNyBm
-aWxlcyBjaGFuZ2VkLCA3IGluc2VydGlvbnMoKyksIDcgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0
-IGEvYXJjaC9hcm0vY29uZmlncy9pbXgyM19kZWZjb25maWcgYi9hcmNoL2FybS9jb25maWdzL2lt
-eDIzX2RlZmNvbmZpZwppbmRleCBiZmY5YzA4YzQwLi40OGJmMTRhMzkwIDEwMDY0NAotLS0gYS9h
-cmNoL2FybS9jb25maWdzL2lteDIzX2RlZmNvbmZpZworKysgYi9hcmNoL2FybS9jb25maWdzL2lt
-eDIzX2RlZmNvbmZpZwpAQCAtMjIsNiArMjIsNyBAQCBDT05GSUdfQkxTUEVDPXkKIENPTkZJR19D
-T05TT0xFX0FMTE9XX0NPTE9SPXkKIENPTkZJR19ERUZBVUxUX0VOVklST05NRU5UX0dFTkVSSUNf
-TkVXPXkKIENPTkZJR19SRVNFVF9TT1VSQ0U9eQorQ09ORklHX0ZBU1RCT09UX0NNRF9PRU09eQog
-Q09ORklHX0NNRF9ETUVTRz15CiBDT05GSUdfTE9OR0hFTFA9eQogQ09ORklHX0NNRF9JT01FTT15
-CkBAIC05MCw3ICs5MSw2IEBAIENPTkZJR19VU0JfR0FER0VUPXkKIENPTkZJR19VU0JfR0FER0VU
-X0RGVT15CiBDT05GSUdfVVNCX0dBREdFVF9TRVJJQUw9eQogQ09ORklHX1VTQl9HQURHRVRfRkFT
-VEJPT1Q9eQotQ09ORklHX1VTQl9HQURHRVRfRkFTVEJPT1RfQ01EX09FTT15CiBDT05GSUdfVklE
-RU89eQogQ09ORklHX0RSSVZFUl9WSURFT19TVE09eQogQ09ORklHX01DST15CmRpZmYgLS1naXQg
-YS9hcmNoL2FybS9jb25maWdzL2lteDI4X2RlZmNvbmZpZyBiL2FyY2gvYXJtL2NvbmZpZ3MvaW14
-MjhfZGVmY29uZmlnCmluZGV4IDQ0NDJjNzljYzQuLmJlYjBiYzJmNzYgMTAwNjQ0Ci0tLSBhL2Fy
-Y2gvYXJtL2NvbmZpZ3MvaW14MjhfZGVmY29uZmlnCisrKyBiL2FyY2gvYXJtL2NvbmZpZ3MvaW14
-MjhfZGVmY29uZmlnCkBAIC0yNSw2ICsyNSw3IEBAIENPTkZJR19DT05TT0xFX0FMTE9XX0NPTE9S
-PXkKIENPTkZJR19QQkxfQ09OU09MRT15CiBDT05GSUdfREVGQVVMVF9FTlZJUk9OTUVOVF9HRU5F
-UklDX05FVz15CiBDT05GSUdfUkVTRVRfU09VUkNFPXkKK0NPTkZJR19GQVNUQk9PVF9DTURfT0VN
-PXkKIENPTkZJR19DTURfRE1FU0c9eQogQ09ORklHX0xPTkdIRUxQPXkKIENPTkZJR19DTURfSU9N
-RU09eQpAQCAtMTA1LDcgKzEwNiw2IEBAIENPTkZJR19VU0JfR0FER0VUPXkKIENPTkZJR19VU0Jf
-R0FER0VUX0RGVT15CiBDT05GSUdfVVNCX0dBREdFVF9TRVJJQUw9eQogQ09ORklHX1VTQl9HQURH
-RVRfRkFTVEJPT1Q9eQotQ09ORklHX1VTQl9HQURHRVRfRkFTVEJPT1RfQ01EX09FTT15CiBDT05G
-SUdfVklERU89eQogQ09ORklHX0RSSVZFUl9WSURFT19TVE09eQogQ09ORklHX01DST15CmRpZmYg
-LS1naXQgYS9hcmNoL2FybS9jb25maWdzL2lteF92N19kZWZjb25maWcgYi9hcmNoL2FybS9jb25m
-aWdzL2lteF92N19kZWZjb25maWcKaW5kZXggNWJmOTA4ZWU4NS4uZmI3ODcyNDM0ZSAxMDA2NDQK
-LS0tIGEvYXJjaC9hcm0vY29uZmlncy9pbXhfdjdfZGVmY29uZmlnCisrKyBiL2FyY2gvYXJtL2Nv
-bmZpZ3MvaW14X3Y3X2RlZmNvbmZpZwpAQCAtNjYsNiArNjYsNyBAQCBDT05GSUdfQ09OU09MRV9B
-Q1RJVkFURV9OT05FPXkKIENPTkZJR19QQVJUSVRJT05fRElTS19FRkk9eQogQ09ORklHX0RFRkFV
-TFRfRU5WSVJPTk1FTlRfR0VORVJJQ19ORVc9eQogQ09ORklHX1JFU0VUX1NPVVJDRT15CitDT05G
-SUdfRkFTVEJPT1RfQ01EX09FTT15CiBDT05GSUdfQ01EX0RNRVNHPXkKIENPTkZJR19MT05HSEVM
-UD15CiBDT05GSUdfQ01EX0lPTUVNPXkKQEAgLTE2MCw3ICsxNjEsNiBAQCBDT05GSUdfVVNCX0dB
-REdFVD15CiBDT05GSUdfVVNCX0dBREdFVF9ERlU9eQogQ09ORklHX1VTQl9HQURHRVRfU0VSSUFM
-PXkKIENPTkZJR19VU0JfR0FER0VUX0ZBU1RCT09UPXkKLUNPTkZJR19VU0JfR0FER0VUX0ZBU1RC
-T09UX0NNRF9PRU09eQogQ09ORklHX1ZJREVPPXkKIENPTkZJR19EUklWRVJfVklERU9fSU1YX0lQ
-VVYzPXkKIENPTkZJR19EUklWRVJfVklERU9fSU1YX0lQVVYzX0xWRFM9eQpkaWZmIC0tZ2l0IGEv
-YXJjaC9hcm0vY29uZmlncy9pbXhfdjhfZGVmY29uZmlnIGIvYXJjaC9hcm0vY29uZmlncy9pbXhf
-djhfZGVmY29uZmlnCmluZGV4IDA2ZmI0MDYwODQuLmI5Njg2N2FkMGMgMTAwNjQ0Ci0tLSBhL2Fy
-Y2gvYXJtL2NvbmZpZ3MvaW14X3Y4X2RlZmNvbmZpZworKysgYi9hcmNoL2FybS9jb25maWdzL2lt
-eF92OF9kZWZjb25maWcKQEAgLTI1LDYgKzI1LDcgQEAgQ09ORklHX0NPTlNPTEVfUkFUUD15CiBD
-T05GSUdfUEFSVElUSU9OX0RJU0tfRUZJPXkKIENPTkZJR19ERUZBVUxUX0VOVklST05NRU5UX0dF
-TkVSSUNfTkVXPXkKIENPTkZJR19SRVNFVF9TT1VSQ0U9eQorQ09ORklHX0ZBU1RCT09UX1NQQVJT
-RT15CiBDT05GSUdfQ01EX0RNRVNHPXkKIENPTkZJR19MT05HSEVMUD15CiBDT05GSUdfQ01EX0lP
-TUVNPXkKQEAgLTEwNiw3ICsxMDcsNiBAQCBDT05GSUdfVVNCX1NUT1JBR0U9eQogQ09ORklHX1VT
-Ql9HQURHRVQ9eQogQ09ORklHX1VTQl9HQURHRVRfU0VSSUFMPXkKIENPTkZJR19VU0JfR0FER0VU
-X0ZBU1RCT09UPXkKLUNPTkZJR19VU0JfR0FER0VUX0ZBU1RCT09UX1NQQVJTRT15CiBDT05GSUdf
-TUNJPXkKIENPTkZJR19NQ0lfTU1DX0JPT1RfUEFSVElUSU9OUz15CiBDT05GSUdfTUNJX0lNWF9F
-U0RIQz15CmRpZmYgLS1naXQgYS9hcmNoL2FybS9jb25maWdzL2tpbmRsZS1teDUwX2RlZmNvbmZp
-ZyBiL2FyY2gvYXJtL2NvbmZpZ3Mva2luZGxlLW14NTBfZGVmY29uZmlnCmluZGV4IDg1NWRhZWY3
-MWEuLjU1MmIyZDZkMzMgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2NvbmZpZ3Mva2luZGxlLW14NTBf
-ZGVmY29uZmlnCisrKyBiL2FyY2gvYXJtL2NvbmZpZ3Mva2luZGxlLW14NTBfZGVmY29uZmlnCkBA
-IC0yMCw2ICsyMCw3IEBAIENPTkZJR19CT09UTV9PRlRSRUU9eQogQ09ORklHX0NPTlNPTEVfQUNU
-SVZBVEVfQUxMPXkKIENPTkZJR19DT05TT0xFX0FMTE9XX0NPTE9SPXkKIENPTkZJR19ERUZBVUxU
-X0VOVklST05NRU5UX0dFTkVSSUNfTkVXPXkKK0NPTkZJR19GQVNUQk9PVF9DTURfT0VNPXkKIENP
-TkZJR19DTURfRE1FU0c9eQogQ09ORklHX0xPTkdIRUxQPXkKIENPTkZJR19DTURfTUVNSU5GTz15
-CkBAIC01MCw3ICs1MSw2IEBAIENPTkZJR19VU0JfRUhDST15CiBDT05GSUdfVVNCX0dBREdFVD15
-CiBDT05GSUdfVVNCX0dBREdFVF9TRVJJQUw9eQogQ09ORklHX1VTQl9HQURHRVRfRkFTVEJPT1Q9
-eQotQ09ORklHX1VTQl9HQURHRVRfRkFTVEJPT1RfQ01EX09FTT15CiBDT05GSUdfTUNJPXkKIENP
-TkZJR19NQ0lfU1RBUlRVUD15CiBDT05GSUdfTUNJX01NQ19CT09UX1BBUlRJVElPTlM9eQpkaWZm
-IC0tZ2l0IGEvYXJjaC9hcm0vY29uZmlncy9vbWFwX2RlZmNvbmZpZyBiL2FyY2gvYXJtL2NvbmZp
-Z3Mvb21hcF9kZWZjb25maWcKaW5kZXggOWQ3MWQwMjc0NC4uNTk4OTJjYjIzMSAxMDA2NDQKLS0t
-IGEvYXJjaC9hcm0vY29uZmlncy9vbWFwX2RlZmNvbmZpZworKysgYi9hcmNoL2FybS9jb25maWdz
-L29tYXBfZGVmY29uZmlnCkBAIC0zNCw2ICszNCw3IEBAIENPTkZJR19ERUZBVUxUX0VOVklST05N
-RU5UX0dFTkVSSUNfTkVXPXkKIENPTkZJR19TVEFURT15CiBDT05GSUdfQk9PVENIT09TRVI9eQog
-Q09ORklHX1JFU0VUX1NPVVJDRT15CitDT05GSUdfRkFTVEJPT1RfQ01EX09FTT15CiBDT05GSUdf
-TE9OR0hFTFA9eQogQ09ORklHX0NNRF9JT01FTT15CiBDT05GSUdfQ01EX01FTUlORk89eQpAQCAt
-MTIxLDcgKzEyMiw2IEBAIENPTkZJR19VU0JfR0FER0VUPXkKIENPTkZJR19VU0JfR0FER0VUX0RG
-VT15CiBDT05GSUdfVVNCX0dBREdFVF9TRVJJQUw9eQogQ09ORklHX1VTQl9HQURHRVRfRkFTVEJP
-T1Q9eQotQ09ORklHX1VTQl9HQURHRVRfRkFTVEJPT1RfQ01EX09FTT15CiBDT05GSUdfVVNCX01V
-U0I9eQogQ09ORklHX1VTQl9NVVNCX0FNMzM1WD15CiBDT05GSUdfVVNCX01VU0JfSE9TVD15CmRp
-ZmYgLS1naXQgYS9hcmNoL2FybS9jb25maWdzL3ppaV92ZjYxMF9kZXZfZGVmY29uZmlnIGIvYXJj
-aC9hcm0vY29uZmlncy96aWlfdmY2MTBfZGV2X2RlZmNvbmZpZwppbmRleCA3MTYxZDc0MGFjLi40
-NWMyNGQ2ZGY0IDEwMDY0NAotLS0gYS9hcmNoL2FybS9jb25maWdzL3ppaV92ZjYxMF9kZXZfZGVm
-Y29uZmlnCisrKyBiL2FyY2gvYXJtL2NvbmZpZ3MvemlpX3ZmNjEwX2Rldl9kZWZjb25maWcKQEAg
-LTIyLDYgKzIyLDcgQEAgQ09ORklHX0NPTlNPTEVfUkFUUD15CiBDT05GSUdfUEFSVElUSU9OX0RJ
-U0tfRUZJPXkKIENPTkZJR19ERUZBVUxUX0VOVklST05NRU5UX0dFTkVSSUNfTkVXPXkKIENPTkZJ
-R19SRVNFVF9TT1VSQ0U9eQorQ09ORklHX0ZBU1RCT09UX0NNRF9PRU09eQogQ09ORklHX0NNRF9E
-TUVTRz15CiBDT05GSUdfTE9OR0hFTFA9eQogQ09ORklHX0NNRF9JT01FTT15CkBAIC0xMTMsNyAr
-MTE0LDYgQEAgQ09ORklHX1VTQl9HQURHRVQ9eQogQ09ORklHX1VTQl9HQURHRVRfREZVPXkKIENP
-TkZJR19VU0JfR0FER0VUX1NFUklBTD15CiBDT05GSUdfVVNCX0dBREdFVF9GQVNUQk9PVD15Ci1D
-T05GSUdfVVNCX0dBREdFVF9GQVNUQk9PVF9DTURfT0VNPXkKIENPTkZJR19NQ0k9eQogQ09ORklH
-X01DSV9NTUNfQk9PVF9QQVJUSVRJT05TPXkKIENPTkZJR19NQ0lfSU1YX0VTREhDPXkKLS0gCjIu
-MjcuMAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJh
-cmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlz
-dHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+This patch moves the ethernet receive loop into a poller. With this
+network protocols no longer have to call net_loop() explicitly but
+can do it implicitly by calling is_timeout() when waiting for packets.
+
+Having the network receive loop running in a poller has the advantage
+that we have it running continuously and not only when we explicitly
+expect packets to come in. With this we can reasonably well answer to
+ping requests which is implemented in the next patch. This also helps
+protocols that run in the background like fastboot over UDP.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ fs/nfs.c         |  2 --
+ fs/tftp.c        |  2 --
+ include/net.h    |  3 ---
+ net/dhcp.c       |  1 -
+ net/dns.c        |  1 -
+ net/eth.c        | 15 ++++++++++-----
+ net/net.c        | 14 +++++++++++---
+ net/netconsole.c |  4 +---
+ net/nfs.c        |  1 -
+ net/ping.c       |  2 --
+ net/sntp.c       |  2 --
+ 11 files changed, 22 insertions(+), 25 deletions(-)
+
+diff --git a/fs/nfs.c b/fs/nfs.c
+index 6c4637281d..6844d13d50 100644
+--- a/fs/nfs.c
++++ b/fs/nfs.c
+@@ -447,8 +447,6 @@ again:
+ 	nfs_timer_start = get_time_ns();
+ 
+ 	while (1) {
+-		net_poll();
+-
+ 		if (is_timeout(nfs_timer_start, NFS_TIMEOUT)) {
+ 			tries++;
+ 			if (tries == NFS_MAX_RESEND)
+diff --git a/fs/tftp.c b/fs/tftp.c
+index d186e7983a..e5a58a4dae 100644
+--- a/fs/tftp.c
++++ b/fs/tftp.c
+@@ -207,8 +207,6 @@ static int tftp_poll(struct file_priv *priv)
+ 		return -ETIMEDOUT;
+ 	}
+ 
+-	net_poll();
+-
+ 	return 0;
+ }
+ 
+diff --git a/include/net.h b/include/net.h
+index 8d2b4923de..583dc14ed5 100644
+--- a/include/net.h
++++ b/include/net.h
+@@ -244,9 +244,6 @@ IPaddr_t net_get_nameserver(void);
+ const char *net_get_domainname(void);
+ struct eth_device *net_route(IPaddr_t ip);
+ 
+-/* Do the work */
+-void net_poll(void);
+-
+ static inline struct iphdr *net_eth_to_iphdr(char *pkt)
+ {
+ 	return (struct iphdr *)(pkt + ETHER_HDR_SIZE);
+diff --git a/net/dhcp.c b/net/dhcp.c
+index a27fa89996..ef22d2cef0 100644
+--- a/net/dhcp.c
++++ b/net/dhcp.c
+@@ -513,7 +513,6 @@ int dhcp_request(struct eth_device *edev, const struct dhcp_req_param *param,
+ 			ret = -ETIMEDOUT;
+ 			goto out1;
+ 		}
+-		net_poll();
+ 		if (is_timeout(dhcp_start, 3 * SECOND)) {
+ 			dhcp_start = get_time_ns();
+ 			printf("T ");
+diff --git a/net/dns.c b/net/dns.c
+index ffe98ef9e3..851bf3722e 100644
+--- a/net/dns.c
++++ b/net/dns.c
+@@ -231,7 +231,6 @@ int resolv(const char *host, IPaddr_t *ip)
+ 		if (ctrlc()) {
+ 			break;
+ 		}
+-		net_poll();
+ 		if (is_timeout(dns_timer_start, SECOND)) {
+ 			dns_timer_start = get_time_ns();
+ 			printf("T ");
+diff --git a/net/eth.c b/net/eth.c
+index a51e3421a7..d53d60d49c 100644
+--- a/net/eth.c
++++ b/net/eth.c
+@@ -286,14 +286,19 @@ static int __eth_rx(struct eth_device *edev)
+ {
+ 	int ret;
+ 
+-	slice_acquire(eth_device_slice(edev));
++	if (!phy_acquired(edev->phydev)) {
++		ret = eth_carrier_check(edev, 0);
++		if (ret)
++			return ret;
++	}
+ 
+-	ret = eth_carrier_check(edev, 0);
+-	if (ret)
+-		goto out;
++	if (slice_acquired(eth_device_slice(edev)))
++		return 0;
++
++	slice_acquire(eth_device_slice(edev));
+ 
+ 	ret = edev->recv(edev);
+-out:
++
+ 	slice_release(eth_device_slice(edev));
+ 
+ 	return ret;
+diff --git a/net/net.c b/net/net.c
+index 5fd6246ab2..197b551e72 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -239,8 +239,6 @@ static int arp_request(struct eth_device *edev, IPaddr_t dest, unsigned char *et
+ 
+ 		if (retries > PKT_NUM_RETRIES)
+ 			return -ETIMEDOUT;
+-
+-		net_poll();
+ 	}
+ 
+ 	pr_debug("Got ARP REPLY for %pI4: %02x:%02x:%02x:%02x:%02x:%02x\n",
+@@ -249,11 +247,21 @@ static int arp_request(struct eth_device *edev, IPaddr_t dest, unsigned char *et
+ 	return 0;
+ }
+ 
+-void net_poll(void)
++static void net_poll(struct poller_struct *poller)
+ {
+ 	eth_rx();
+ }
+ 
++static struct poller_struct net_poller = {
++	.func = net_poll,
++};
++
++static int init_net_poll(void)
++{
++	return poller_register(&net_poller, "net");
++}
++device_initcall(init_net_poll);
++
+ static uint16_t net_udp_new_localport(void)
+ {
+ 	static uint16_t localport;
+diff --git a/net/netconsole.c b/net/netconsole.c
+index 0fece65a23..c692db942f 100644
+--- a/net/netconsole.c
++++ b/net/netconsole.c
+@@ -59,7 +59,7 @@ static int nc_getc(struct console_device *cdev)
+ 		return 0;
+ 
+ 	while (!kfifo_len(priv->fifo))
+-		net_poll();
++		udelay(1);
+ 
+ 	kfifo_getc(priv->fifo, &c);
+ 
+@@ -77,8 +77,6 @@ static int nc_tstc(struct console_device *cdev)
+ 	if (priv->busy)
+ 		return kfifo_len(priv->fifo) ? 1 : 0;
+ 
+-	net_poll();
+-
+ 	return kfifo_len(priv->fifo) ? 1 : 0;
+ }
+ 
+diff --git a/net/nfs.c b/net/nfs.c
+index 591417e0de..266351da09 100644
+--- a/net/nfs.c
++++ b/net/nfs.c
+@@ -710,7 +710,6 @@ static int do_nfs(int argc, char *argv[])
+ 			nfs_err = -EINTR;
+ 			break;
+ 		}
+-		net_poll();
+ 		if (is_timeout(nfs_timer_start, NFS_TIMEOUT * SECOND)) {
+ 			show_progress(-1);
+ 			nfs_send();
+diff --git a/net/ping.c b/net/ping.c
+index a71f59a805..f3de0c27a4 100644
+--- a/net/ping.c
++++ b/net/ping.c
+@@ -89,8 +89,6 @@ static int do_ping(int argc, char *argv[])
+ 			break;
+ 		}
+ 
+-		net_poll();
+-
+ 		if (is_timeout(ping_start, SECOND)) {
+ 			/* No answer, send another packet */
+ 			ping_start = get_time_ns();
+diff --git a/net/sntp.c b/net/sntp.c
+index b4e6d6439c..f693a2e8af 100644
+--- a/net/sntp.c
++++ b/net/sntp.c
+@@ -145,8 +145,6 @@ s64 sntp(const char *server)
+ 			break;
+ 		}
+ 
+-		net_poll();
+-
+ 		if (is_timeout(sntp_start, 1 * SECOND)) {
+ 			sntp_start = get_time_ns();
+ 			ret = sntp_send();
+-- 
+2.27.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
