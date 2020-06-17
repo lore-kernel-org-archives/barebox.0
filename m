@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jlTAR-0000an-4Q
+ id 1jlTAR-0000ai-3I
  for barebox@lists.infradead.org; Wed, 17 Jun 2020 08:11:34 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 17 Jun 2020 10:11:19 +0200
-Message-Id: <20200617081126.5683-13-s.hauer@pengutronix.de>
+Date: Wed, 17 Jun 2020 10:11:10 +0200
+Message-Id: <20200617081126.5683-4-s.hauer@pengutronix.de>
 In-Reply-To: <20200617081126.5683-1-s.hauer@pengutronix.de>
 References: <20200617081126.5683-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,126 +21,201 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/19] globalvar: Add helper for deprecated variable names
+Subject: [PATCH 03/19] ratp: Switch to workqueues
 To: Barebox List <barebox@lists.infradead.org>
 Cc: =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-When globalvars are renamed across releases it's not nice when variables
-in the persistent environment loose their meaning. This adds a helper
-function which adds an alias for the old names. When the persistent
-variables still use the old names then their values are automatically
-written to variables with the new names.
+This switches running barebox commands in ratp to a context where it's
+safe to do so: In a work queue.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/globalvar.c  | 54 +++++++++++++++++++++++++++++++++++++++++++--
- include/globalvar.h |  5 +++++
- 2 files changed, 57 insertions(+), 2 deletions(-)
+ common/ratp/ratp.c | 57 ++++++++++++++++++++++++++++++++++------------
+ include/ratp_bb.h  |  1 -
+ lib/readline.c     |  6 +----
+ 3 files changed, 44 insertions(+), 20 deletions(-)
 
-diff --git a/common/globalvar.c b/common/globalvar.c
-index c87f2c9339..51d93ad385 100644
---- a/common/globalvar.c
-+++ b/common/globalvar.c
-@@ -293,6 +293,53 @@ int nvvar_remove(const char *name)
+diff --git a/common/ratp/ratp.c b/common/ratp/ratp.c
+index b8043fe5c7..84910cacb7 100644
+--- a/common/ratp/ratp.c
++++ b/common/ratp/ratp.c
+@@ -24,6 +24,7 @@
+ #include <environment.h>
+ #include <kfifo.h>
+ #include <poller.h>
++#include <work.h>
+ #include <linux/sizes.h>
+ #include <ratp_bb.h>
+ #include <fs.h>
+@@ -50,9 +51,11 @@ struct ratp_ctx {
+ 	struct ratp_bb_pkt *fs_rx;
+ 
+ 	struct poller_struct poller;
++	struct work_queue wq;
+ 
+ 	bool console_registered;
+ 	bool poller_registered;
++	bool wq_registered;
+ };
+ 
+ static int compare_ratp_command(struct list_head *a, struct list_head *b)
+@@ -194,9 +197,14 @@ static int ratp_bb_send_command_return(struct ratp_ctx *ctx, uint32_t errno)
  	return ret;
  }
  
-+struct globalvar_deprecated {
-+	char *newname;
-+	char *oldname;
-+	struct list_head list;
+-static char *ratp_command;
+ static struct ratp_ctx *ratp_ctx;
+ 
++struct ratp_work {
++	struct work_struct work;
++	struct ratp_ctx *ctx;
++	char *command;
 +};
 +
-+static LIST_HEAD(globalvar_deprecated_list);
-+
-+/*
-+ * globalvar_alias_deprecated - add an alias
-+ *
-+ * @oldname: The old name for the variable
-+ * @newname: The new name for the variable
-+ *
-+ * This function is a helper for globalvars that are renamed from one
-+ * release to another. when a variable @oldname is found in the persistent
-+ * environment a warning is issued and its value is written to @newname.
-+ *
-+ * Note that when both @oldname and @newname contain values then the values
-+ * existing in @newname are overwritten.
-+ */
-+void globalvar_alias_deprecated(const char *oldname, const char *newname)
-+{
-+	struct globalvar_deprecated *gd;
-+
-+	gd = xzalloc(sizeof(*gd));
-+	gd->newname = xstrdup(newname);
-+	gd->oldname = xstrdup(oldname);
-+	list_add_tail(&gd->list, &globalvar_deprecated_list);
-+}
-+
-+static const char *globalvar_new_name(const char *oldname)
-+{
-+	struct globalvar_deprecated *gd;
-+
-+	list_for_each_entry(gd, &globalvar_deprecated_list, list) {
-+		if (!strcmp(oldname, gd->oldname)) {
-+			pr_warn("nv.%s is deprecated, converting to nv.%s\n", oldname,
-+				gd->newname);
-+			nv_dirty = 1;
-+			return gd->newname;
-+		}
-+	}
-+
-+	return oldname;
-+}
-+
- int nvvar_load(void)
+ static int ratp_bb_dispatch(struct ratp_ctx *ctx, const void *buf, int len)
  {
- 	char *val;
-@@ -308,6 +355,8 @@ int nvvar_load(void)
- 		return -ENOENT;
+ 	const struct ratp_bb *rbb = buf;
+@@ -205,6 +213,7 @@ static int ratp_bb_dispatch(struct ratp_ctx *ctx, const void *buf, int len)
+ 	int ret = 0;
+ 	uint16_t type = be16_to_cpu(rbb->type);
+ 	struct ratp_command *cmd;
++	struct ratp_work *rw;
  
- 	while ((d = readdir(dir))) {
-+		const char *n;
+ 	/* See if there's a command registered to this type */
+ 	cmd = find_ratp_request(type);
+@@ -222,12 +231,16 @@ static int ratp_bb_dispatch(struct ratp_ctx *ctx, const void *buf, int len)
+ 
+ 	switch (type) {
+ 	case BB_RATP_TYPE_COMMAND:
+-		if (!IS_ENABLED(CONFIG_CONSOLE_RATP) || ratp_command)
++		if (!IS_ENABLED(CONFIG_CONSOLE_RATP))
+ 			return 0;
+ 
+-		ratp_command = xstrndup((const char *)rbb->data, dlen);
+-		ratp_ctx = ctx;
+-		pr_debug("got command: %s\n", ratp_command);
++		rw = xzalloc(sizeof(*rw));
++		rw->ctx = ctx;
++		rw->command = xstrndup((const char *)rbb->data, dlen);
 +
- 		if (!strcmp(d->d_name, ".") || !strcmp(d->d_name, ".."))
- 			continue;
++		wq_queue_work(&ctx->wq, &rw->work);
++
++		pr_debug("got command: %s\n", rw->command);
  
-@@ -316,10 +365,11 @@ int nvvar_load(void)
- 		pr_debug("%s: Setting \"%s\" to \"%s\"\n",
- 				__func__, d->d_name, val);
+ 		break;
  
--		ret = __nvvar_add(d->d_name, val);
-+		n = globalvar_new_name(d->d_name);
-+		ret = __nvvar_add(n, val);
- 		if (ret)
- 			pr_err("failed to create nv variable %s: %s\n",
--					d->d_name, strerror(-ret));
-+					n, strerror(-ret));
- 	}
- 
- 	closedir(dir);
-diff --git a/include/globalvar.h b/include/globalvar.h
-index fc85e93e14..db229e239c 100644
---- a/include/globalvar.h
-+++ b/include/globalvar.h
-@@ -33,6 +33,7 @@ int nvvar_remove(const char *name);
- void globalvar_print(void);
- 
- void dev_param_init_from_nv(struct device_d *dev, const char *name);
-+void globalvar_alias_deprecated(const char *newname, const char *oldname);
- 
- #else
- static inline int globalvar_add_simple(const char *name, const char *value)
-@@ -114,6 +115,10 @@ static inline void dev_param_init_from_nv(struct device_d *dev, const char *name
- {
+@@ -298,21 +311,20 @@ static void ratp_console_putc(struct console_device *cdev, char c)
+ 	kfifo_putc(ctx->console_transmit_fifo, c);
  }
  
-+static inline void globalvar_alias_deprecated(const char *newname, const char *oldname)
+-void barebox_ratp_command_run(void)
++static void ratp_command_run(struct work_struct *w)
+ {
++	struct ratp_work *rw = container_of(w, struct ratp_work, work);
++	struct ratp_ctx *ctx = rw->ctx;
+ 	int ret;
+ 
+-	if (!ratp_command)
+-		return;
+-
+-	pr_debug("running command: %s\n", ratp_command);
++	pr_debug("running command: %s\n", rw->command);
+ 
+-	ret = run_command(ratp_command);
++	ret = run_command(rw->command);
+ 
+-	free(ratp_command);
+-	ratp_command = NULL;
++	free(rw->command);
++	free(rw);
+ 
+-	ratp_bb_send_command_return(ratp_ctx, ret);
++	ratp_bb_send_command_return(ctx, ret);
+ }
+ 
+ static const char *ratpfs_mount_path;
+@@ -337,6 +349,9 @@ static void ratp_unregister(struct ratp_ctx *ctx)
+ 	if (ctx->poller_registered)
+ 		poller_unregister(&ctx->poller);
+ 
++	if (ctx->wq_registered)
++		wq_unregister(&ctx->wq);
++
+ 	ratp_close(&ctx->ratp);
+ 	console_set_active(ctx->cdev, ctx->old_active);
+ 
+@@ -369,6 +384,7 @@ static void ratp_poller(struct poller_struct *poller)
+ 	ret = ratp_poll(&ctx->ratp);
+ 	if (ret == -EINTR)
+ 		goto out;
++
+ 	if (ratp_closed(&ctx->ratp))
+ 		goto out;
+ 
+@@ -424,6 +440,14 @@ int barebox_ratp_fs_call(struct ratp_bb_pkt *tx, struct ratp_bb_pkt **rx)
+ 	return 0;
+ }
+ 
++static void ratp_work_cancel(struct work_struct *w)
 +{
++	struct ratp_work *rw = container_of(w, struct ratp_work, work);
++
++	free(rw->command);
++	free(rw);
 +}
 +
- #endif
+ int barebox_ratp(struct console_device *cdev)
+ {
+ 	int ret;
+@@ -467,6 +491,11 @@ int barebox_ratp(struct console_device *cdev)
+ 	if (ret < 0)
+ 		goto out;
  
- void nv_var_set_clean(void);
++	ctx->wq.fn = ratp_command_run;
++	ctx->wq.cancel = ratp_work_cancel;
++	wq_register(&ctx->wq);
++	ctx->wq_registered = true;
++
+ 	ret = poller_register(&ctx->poller, "ratp");
+ 	if (ret)
+ 		goto out;
+diff --git a/include/ratp_bb.h b/include/ratp_bb.h
+index a4f28c642c..b710f99bf9 100644
+--- a/include/ratp_bb.h
++++ b/include/ratp_bb.h
+@@ -41,7 +41,6 @@ struct ratp_bb_pkt {
+ };
+ 
+ int  barebox_ratp(struct console_device *cdev);
+-void barebox_ratp_command_run(void);
+ int  barebox_ratp_fs_call(struct ratp_bb_pkt *tx, struct ratp_bb_pkt **rx);
+ int  barebox_ratp_fs_mount(const char *path);
+ 
+diff --git a/lib/readline.c b/lib/readline.c
+index 3d16c1838c..e5370f9c7b 100644
+--- a/lib/readline.c
++++ b/lib/readline.c
+@@ -3,7 +3,6 @@
+ #include <init.h>
+ #include <libbb.h>
+ #include <poller.h>
+-#include <ratp_bb.h>
+ #include <xfuncs.h>
+ #include <complete.h>
+ #include <linux/ctype.h>
+@@ -200,11 +199,8 @@ int readline(const char *prompt, char *buf, int len)
+ 	puts (prompt);
+ 
+ 	while (1) {
+-		while (!tstc()) {
++		while (!tstc())
+ 			poller_call();
+-			if (IS_ENABLED(CONFIG_CONSOLE_RATP))
+-				barebox_ratp_command_run();
+-		}
+ 
+ 		ichar = read_key();
+ 
 -- 
 2.27.0
 
