@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail.savoirfairelinux.com ([208.88.110.44])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jleAr-0006f0-2h
- for barebox@lists.infradead.org; Wed, 17 Jun 2020 19:56:42 +0000
-Date: Wed, 17 Jun 2020 21:56:39 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200617195639.GF11869@pengutronix.de>
-References: <20200617081126.5683-1-s.hauer@pengutronix.de>
- <20200617081126.5683-3-s.hauer@pengutronix.de>
- <0a1a4dcb-b8c9-ee15-8f5b-0e292a9a84bc@emlix.com>
+ id 1jlgsd-0000AA-Ni
+ for barebox@lists.infradead.org; Wed, 17 Jun 2020 22:50:05 +0000
+Received: from localhost (localhost [127.0.0.1])
+ by mail.savoirfairelinux.com (Postfix) with ESMTP id A172B9C0342
+ for <barebox@lists.infradead.org>; Wed, 17 Jun 2020 18:49:59 -0400 (EDT)
+From: Gilles DOFFE <gilles.doffe@savoirfairelinux.com>
+Date: Thu, 18 Jun 2020 00:48:51 +0200
+Message-Id: <20200617224851.1163860-1-gilles.doffe@savoirfairelinux.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <0a1a4dcb-b8c9-ee15-8f5b-0e292a9a84bc@emlix.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,45 +18,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 02/19] Add workqueues
-To: Daniel =?iso-8859-15?Q?Gl=F6ckner?= <dg@emlix.com>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] common: avoid bootchooser double watchdog configuration
+To: barebox@lists.infradead.org
+Cc: rennes-dev@savoirfairelinux.com, jerome.oufella@savoirfairelinux.com
 
-On Wed, Jun 17, 2020 at 08:30:27PM +0200, Daniel Gl=F6ckner wrote:
-> Hello Sascha,
-> =
+In case bootchooser is used, boot_entry() will be called twice:
+1) boot bootchooser
+2) boot <chosen_entry>
+Thus it will lead to twice watchdog configuration if watchdog_timeout
+is set.
+Except that it should be activated only once in any way, it leads
+to unwanted reset when issuing too much "near" calls of the watchdog
+configuration for da9062.
+Can be reproduced with this command:
+ barebox/ wd 30;wd 30
+Even if this commands are intentional, 'boot bootchooser' is not.
+Resetting watchdog_timeout to 0 after first watchdog
+configuration solves this problem ensuring watchdog will not be
+configured a second time.
 
-> Am 17.06.20 um 10:11 schrieb Sascha Hauer:
-> > +static inline void wq_cancel_work(struct work_queue *wq)
-> > +{
-> > +	struct work_struct *work, *tmp;
-> > +
-> > +	list_for_each_entry_safe(work, tmp, &wq->work, list) {
-> > +		list_del(&work->list);
-> > +		wq->cancel(work);
-> > +	}
-> > +}
-> =
+Signed-off-by: Gilles DOFFE <gilles.doffe@savoirfairelinux.com>
+---
+ common/boot.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-> Why is this function in the header?
-> So far it is called only from wq_unregister.
+diff --git a/common/boot.c b/common/boot.c
+index f546fce62..8d09f96b6 100644
+--- a/common/boot.c
++++ b/common/boot.c
+@@ -150,6 +150,8 @@ int boot_entry(struct bootentry *be, int verbose, int dryrun)
+ 					   boot_watchdog_timeout);
+ 		if (ret)
+ 			pr_warn("Failed to enable watchdog: %s\n", strerror(-ret));
++
++		boot_watchdog_timeout = 0;
+ 	}
+ 
+ 	ret = be->boot(be, verbose, dryrun);
+-- 
+2.25.1
 
-Right, we can move it there. I think my original intention was that
-the user calls wq_cancel_work() before calling wq_unregister().
-
-Regards,
- Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
