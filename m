@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jlTAR-0000ap-6L
- for barebox@lists.infradead.org; Wed, 17 Jun 2020 08:11:36 +0000
+ id 1jlTAR-0000ah-3M
+ for barebox@lists.infradead.org; Wed, 17 Jun 2020 08:11:38 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 17 Jun 2020 10:11:15 +0200
-Message-Id: <20200617081126.5683-9-s.hauer@pengutronix.de>
+Date: Wed, 17 Jun 2020 10:11:08 +0200
+Message-Id: <20200617081126.5683-2-s.hauer@pengutronix.de>
 In-Reply-To: <20200617081126.5683-1-s.hauer@pengutronix.de>
 References: <20200617081126.5683-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,224 +21,447 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/19] net: Call net_poll() in a poller
+Subject: [PATCH 01/19] Introduce slices
 To: Barebox List <barebox@lists.infradead.org>
 Cc: =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-This patch moves the ethernet receive loop into a poller. With this
-network protocols no longer have to call net_loop() explicitly but
-can do it implicitly by calling is_timeout() when waiting for packets.
+slices, the barebox idea of locking
 
-Having the network receive loop running in a poller has the advantage
-that we have it running continuously and not only when we explicitly
-expect packets to come in. With this we can reasonably well answer to
-ping requests which is implemented in the next patch. This also helps
-protocols that run in the background like fastboot over UDP.
+barebox has pollers which execute code in the background whenever one of the
+delay functions (udelay, mdelay, ...) or is_timeout() are called. This
+introduces resource problems when some device triggers a poller by calling
+a delay function and then the poller code calls into the same device again.
+
+As an example consider a I2C GPIO expander which drives a LED which shall
+be used as a heartbeat LED:
+
+poller -> LED on/off -> GPIO high/low -> I2C transfer
+
+The I2C controller has a timeout loop using is_timeout() and thus can trigger
+a poller run. With this the following can happen during an unrelated I2C
+transfer:
+
+I2C transfer -> is_timeout() -> poller -> LED on/off -> GPIO high/low -> I2C transfer
+
+We end up with issuing an I2C transfer during another I2C transfer and
+things go downhill.
+
+Due to the lack of interrupts we can't do real locking in barebox. We use
+a mechanism called slices instead. A slice describes a resource to which
+other slices can be attached. Whenever a slice is needed it must be acquired.
+Acquiring a slice never fails, it just increases the acquired counter of
+the slice and its dependent slices. when a slice shall be used inside a
+poller it must first be tested if the slice is already in use. If it is,
+we can't do the operation on the slice now and must return and hope that
+we have more luck in the next poller call.
+
+slices can be attached other slices as dependencies. In the example above
+LED driver would add a dependency to the GPIO controller and the GPIO driver
+would add a dependency to the I2C bus:
+
+GPIO driver probe:
+
+slice_add(&gpio->slice, i2c_device_slice(i2cdev));
+
+LED driver probe:
+
+slice_add(&led->slice, gpio_slice(gpio));
+
+The GPIO code would call slice_acquire(&gpio->slice) before doing any
+operation on the GPIO chip providing this GPIO, likewise the I2C core
+would call slice_acquire(&i2cbus->slice) before doing an operation on
+this I2C bus.
+
+The heartbeat poller code would call slice_acquired(led_slice(led)) and
+only continue when the slice is not acquired.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/nfs.c         |  2 --
- fs/tftp.c        |  2 --
- include/net.h    |  3 ---
- net/dhcp.c       |  1 -
- net/dns.c        |  1 -
- net/eth.c        | 15 ++++++++++-----
- net/net.c        | 14 +++++++++++---
- net/netconsole.c |  4 +---
- net/nfs.c        |  1 -
- net/ping.c       |  2 --
- net/sntp.c       |  2 --
- 11 files changed, 22 insertions(+), 25 deletions(-)
+ commands/Kconfig |   8 ++
+ common/Makefile  |   1 +
+ common/slice.c   | 303 +++++++++++++++++++++++++++++++++++++++++++++++
+ include/slice.h  |  31 +++++
+ 4 files changed, 343 insertions(+)
+ create mode 100644 common/slice.c
+ create mode 100644 include/slice.h
 
-diff --git a/fs/nfs.c b/fs/nfs.c
-index 6c4637281d..6844d13d50 100644
---- a/fs/nfs.c
-+++ b/fs/nfs.c
-@@ -447,8 +447,6 @@ again:
- 	nfs_timer_start = get_time_ns();
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 3789f33c3b..608643fceb 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -253,6 +253,14 @@ config CMD_POLLER
+ 	  is_timeout() or one of the various delay functions. The poller command prints
+ 	  informations about registered pollers.
  
- 	while (1) {
--		net_poll();
--
- 		if (is_timeout(nfs_timer_start, NFS_TIMEOUT)) {
- 			tries++;
- 			if (tries == NFS_MAX_RESEND)
-diff --git a/fs/tftp.c b/fs/tftp.c
-index d186e7983a..e5a58a4dae 100644
---- a/fs/tftp.c
-+++ b/fs/tftp.c
-@@ -207,8 +207,6 @@ static int tftp_poll(struct file_priv *priv)
- 		return -ETIMEDOUT;
- 	}
++config CMD_SLICE
++	tristate
++	prompt "slice"
++	help
++	  slices are a way to protect resources from being accessed by pollers. The slice
++	  command can be used to print informations about slices and also to manipulate
++	  them on the command line for debugging purposes.
++
+ # end Information commands
+ endmenu
  
--	net_poll();
--
- 	return 0;
- }
- 
-diff --git a/include/net.h b/include/net.h
-index 8d2b4923de..583dc14ed5 100644
---- a/include/net.h
-+++ b/include/net.h
-@@ -244,9 +244,6 @@ IPaddr_t net_get_nameserver(void);
- const char *net_get_domainname(void);
- struct eth_device *net_route(IPaddr_t ip);
- 
--/* Do the work */
--void net_poll(void);
--
- static inline struct iphdr *net_eth_to_iphdr(char *pkt)
- {
- 	return (struct iphdr *)(pkt + ETHER_HDR_SIZE);
-diff --git a/net/dhcp.c b/net/dhcp.c
-index a27fa89996..ef22d2cef0 100644
---- a/net/dhcp.c
-+++ b/net/dhcp.c
-@@ -513,7 +513,6 @@ int dhcp_request(struct eth_device *edev, const struct dhcp_req_param *param,
- 			ret = -ETIMEDOUT;
- 			goto out1;
- 		}
--		net_poll();
- 		if (is_timeout(dhcp_start, 3 * SECOND)) {
- 			dhcp_start = get_time_ns();
- 			printf("T ");
-diff --git a/net/dns.c b/net/dns.c
-index ffe98ef9e3..851bf3722e 100644
---- a/net/dns.c
-+++ b/net/dns.c
-@@ -231,7 +231,6 @@ int resolv(const char *host, IPaddr_t *ip)
- 		if (ctrlc()) {
- 			break;
- 		}
--		net_poll();
- 		if (is_timeout(dns_timer_start, SECOND)) {
- 			dns_timer_start = get_time_ns();
- 			printf("T ");
-diff --git a/net/eth.c b/net/eth.c
-index a51e3421a7..d53d60d49c 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -286,14 +286,19 @@ static int __eth_rx(struct eth_device *edev)
- {
- 	int ret;
- 
--	slice_acquire(eth_device_slice(edev));
-+	if (!phy_acquired(edev->phydev)) {
-+		ret = eth_carrier_check(edev, 0);
-+		if (ret)
-+			return ret;
+diff --git a/common/Makefile b/common/Makefile
+index 53859d8d14..141109b23a 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -11,6 +11,7 @@ obj-y				+= bootsource.o
+ obj-$(CONFIG_ELF)		+= elf.o
+ obj-y				+= restart.o
+ obj-y				+= poweroff.o
++obj-y				+= slice.o
+ obj-$(CONFIG_MACHINE_ID)	+= machine_id.o
+ obj-$(CONFIG_AUTO_COMPLETE)	+= complete.o
+ obj-y				+= version.o
+diff --git a/common/slice.c b/common/slice.c
+new file mode 100644
+index 0000000000..085d67604f
+--- /dev/null
++++ b/common/slice.c
+@@ -0,0 +1,303 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#define pr_fmt(fmt) "slice: " fmt
++
++#include <common.h>
++#include <slice.h>
++
++/*
++ * slices, the barebox idea of locking
++ *
++ * barebox has pollers which execute code in the background whenever one of the
++ * delay functions (udelay, mdelay, ...) or is_timeout() are called. This
++ * introduces resource problems when some device triggers a poller by calling
++ * a delay function and then the poller code calls into the same device again.
++ *
++ * As an example consider a I2C GPIO expander which drives a LED which shall
++ * be used as a heartbeat LED:
++ *
++ * poller -> LED on/off -> GPIO high/low -> I2C transfer
++ *
++ * The I2C controller has a timeout loop using is_timeout() and thus can trigger
++ * a poller run. With this the following can happen during an unrelated I2C
++ * transfer:
++ *
++ * I2C transfer -> is_timeout() -> poller -> LED on/off -> GPIO high/low -> I2C transfer
++ *
++ * We end up with issuing an I2C transfer during another I2C transfer and
++ * things go downhill.
++ *
++ * Due to the lack of interrupts we can't do real locking in barebox. We use
++ * a mechanism called slices instead. A slice describes a resource to which
++ * other slices can be attached. Whenever a slice is needed it must be acquired.
++ * Acquiring a slice never fails, it just increases the acquired counter of
++ * the slice and its dependent slices. when a slice shall be used inside a
++ * poller it must first be tested if the slice is already in use. If it is,
++ * we can't do the operation on the slice now and must return and hope that
++ * we have more luck in the next poller call.
++ *
++ * slices can be attached other slices as dependencies. In the example above
++ * LED driver would add a dependency to the GPIO controller and the GPIO driver
++ * would add a dependency to the I2C bus:
++ *
++ * GPIO driver probe:
++ *
++ * slice_depends_on(&gpio->slice, i2c_device_slice(i2cdev));
++ *
++ * LED driver probe:
++ *
++ * slice_depends_on(&led->slice, gpio_slice(gpio));
++ *
++ * The GPIO code would call slice_acquire(&gpio->slice) before doing any
++ * operation on the GPIO chip providing this GPIO, likewise the I2C core
++ * would call slice_acquire(&i2cbus->slice) before doing an operation on
++ * this I2C bus.
++ *
++ * The heartbeat poller code would call slice_acquired(led_slice(led)) and
++ * only continue when the slice is not acquired.
++ */
++
++/*
++ * slices are not required to have a device and thus a name, but it really
++ * helps debugging when it has one.
++ */
++static const char *slice_name(struct slice *slice)
++{
++	return slice->name;
++}
++
++static void __slice_acquire(struct slice *slice, int add)
++{
++	slice->acquired += add;
++
++	if (slice->acquired < 0) {
++		pr_err("Slice %s acquired count drops below zero\n",
++			slice_name(slice));
++		dump_stack();
++		slice->acquired = 0;
++		return;
 +	}
- 
--	ret = eth_carrier_check(edev, 0);
--	if (ret)
--		goto out;
-+	if (slice_acquired(eth_device_slice(edev)))
-+		return 0;
++}
 +
-+	slice_acquire(eth_device_slice(edev));
- 
- 	ret = edev->recv(edev);
--out:
++/**
++ * slice_acquire: acquire a slice
++ * @slice: The slice to acquire
++ *
++ * This acquires a slice and its dependencies
++ */
++void slice_acquire(struct slice *slice)
++{
++	__slice_acquire(slice, 1);
++}
 +
- 	slice_release(eth_device_slice(edev));
- 
- 	return ret;
-diff --git a/net/net.c b/net/net.c
-index 5fd6246ab2..197b551e72 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -239,8 +239,6 @@ static int arp_request(struct eth_device *edev, IPaddr_t dest, unsigned char *et
- 
- 		if (retries > PKT_NUM_RETRIES)
- 			return -ETIMEDOUT;
--
--		net_poll();
- 	}
- 
- 	pr_debug("Got ARP REPLY for %pI4: %02x:%02x:%02x:%02x:%02x:%02x\n",
-@@ -249,11 +247,21 @@ static int arp_request(struct eth_device *edev, IPaddr_t dest, unsigned char *et
- 	return 0;
- }
- 
--void net_poll(void)
-+static void net_poll(struct poller_struct *poller)
- {
- 	eth_rx();
- }
- 
-+static struct poller_struct net_poller = {
-+	.func = net_poll,
++/**
++ * slice_release: release a slice
++ * @slice: The slice to release
++ *
++ * This releases a slice and its dependencies
++ */
++void slice_release(struct slice *slice)
++{
++	__slice_acquire(slice, -1);
++}
++
++/**
++ * slice_acquired: test if a slice is acquired
++ * @slice: The slice to test
++ *
++ * This tests if a slice is acquired. Returns true if it is, false otherwise
++ */
++bool slice_acquired(struct slice *slice)
++{
++	struct slice_entry *se;
++	bool ret = false;
++
++	if (slice->acquired > 0)
++		return true;
++
++	if (slice->acquired < 0) {
++		pr_err("Recursive dependency detected in slice %s\n",
++		       slice_name(slice));
++		panic("Cannot continue");
++	}
++
++	slice->acquired = -1;
++
++	list_for_each_entry(se, &slice->deps, list)
++		if (slice_acquired(se->slice)) {
++			ret = true;
++			break;
++		}
++
++	slice->acquired = 0;
++
++	return ret;
++}
++
++static void __slice_debug_acquired(struct slice *slice, int level)
++{
++	struct slice_entry *se;
++
++	pr_debug("%*s%s: %d\n", level * 4, "",
++		 slice_name(slice),
++		 slice->acquired);
++
++	list_for_each_entry(se, &slice->deps, list)
++		__slice_debug_acquired(se->slice, level + 1);
++}
++
++/**
++ * slice_debug_acquired: print the acquired state of a slice
++ *
++ * @slice: The slice to print
++ *
++ * This prints the acquired state of a slice and its dependencies.
++ */
++void slice_debug_acquired(struct slice *slice)
++{
++	if (!slice_acquired(slice))
++		return;
++
++	__slice_debug_acquired(slice, 0);
++}
++
++/**
++ * slice_depends_on: Add a dependency to a slice
++ *
++ * @slice: The slice to add the dependency to
++ * @dep:   The slice @slice depends on
++ *
++ * This makes @slice dependent on @dep. In other words, acquiring @slice
++ * will lead to also acquiring @dep.
++ */
++void slice_depends_on(struct slice *slice, struct slice *dep)
++{
++	struct slice_entry *se = xzalloc(sizeof(*se));
++
++	pr_debug("Adding dependency %s (%d) to slice %s (%d)\n",
++		 slice_name(dep), dep->acquired,
++		 slice_name(slice), slice->acquired);
++
++	se->slice = dep;
++
++	list_add_tail(&se->list, &slice->deps);
++}
++
++static LIST_HEAD(slices);
++
++/**
++ * slice_init - initialize a slice before usage
++ * @slice: The slice to initialize
++ * @name:  The name of the slice
++ *
++ * This initializes a slice before usage. @name should be a meaningful name, when
++ * a device context is available to the caller it is recommended to pass its
++ * dev_name() as name argument.
++ */
++void slice_init(struct slice *slice, const char *name)
++{
++	INIT_LIST_HEAD(&slice->deps);
++	slice->name = xstrdup(name);
++	list_add_tail(&slice->list, &slices);
++}
++
++/**
++ * slice_exit: Remove a slice
++ * @slice: The slice to remove the dependency from
++ */
++void slice_exit(struct slice *slice)
++{
++	struct slice *s;
++	struct slice_entry *se, *tmp;
++
++	list_del(&slice->list);
++
++	/* remove our dependencies */
++	list_for_each_entry_safe(se, tmp, &slice->deps, list) {
++		list_del(&se->list);
++		free(se);
++	}
++
++	/* remove this slice from other slices dependencies */
++	list_for_each_entry(s, &slices, list) {
++		list_for_each_entry_safe(se, tmp, &s->deps, list) {
++			if (se->slice == slice) {
++				list_del(&se->list);
++				free(se);
++			}
++		}
++	}
++
++	free(slice->name);
++}
++
++#if defined CONFIG_CMD_SLICE
++
++#include <command.h>
++#include <getopt.h>
++
++static void slice_info(void)
++{
++	struct slice *slice;
++	struct slice_entry *se;
++
++	list_for_each_entry(slice, &slices, list) {
++		printf("slice %s: acquired=%d\n",
++		       slice_name(slice), slice->acquired);
++		list_for_each_entry(se, &slice->deps, list)
++			printf("    dep: %s\n", slice_name(se->slice));
++	}
++}
++
++static int __slice_acquire_name(const char *name, int add)
++{
++	struct slice *slice;
++
++	list_for_each_entry(slice, &slices, list) {
++		if (!strcmp(slice->name, name)) {
++			__slice_acquire(slice, add);
++			return 0;
++		}
++	}
++
++	printf("No such slice: %s\n", name);
++
++	return 1;
++}
++
++BAREBOX_CMD_HELP_START(slice)
++BAREBOX_CMD_HELP_TEXT("slice debugging command")
++BAREBOX_CMD_HELP_TEXT("")
++BAREBOX_CMD_HELP_TEXT("Options:")
++BAREBOX_CMD_HELP_OPT ("-i", "Print information about slices")
++BAREBOX_CMD_HELP_OPT ("-a <devname>", "acquire a slice")
++BAREBOX_CMD_HELP_OPT ("-r <devname>", "release a slice")
++BAREBOX_CMD_HELP_END
++
++static int do_slice(int argc, char *argv[])
++{
++	int opt;
++
++	while ((opt = getopt(argc, argv, "a:r:i")) > 0) {
++		switch (opt) {
++		case 'a':
++			return __slice_acquire_name(optarg, 1);
++		case 'r':
++			return __slice_acquire_name(optarg, -1);
++		case 'i':
++			slice_info();
++			return 0;
++		}
++	}
++
++	return COMMAND_ERROR_USAGE;
++}
++
++BAREBOX_CMD_START(slice)
++	.cmd = do_slice,
++	BAREBOX_CMD_DESC("debug slices")
++	BAREBOX_CMD_OPTS("[-ari]")
++	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
++	BAREBOX_CMD_HELP(cmd_slice_help)
++BAREBOX_CMD_END
++#endif
+diff --git a/include/slice.h b/include/slice.h
+new file mode 100644
+index 0000000000..5538fc434a
+--- /dev/null
++++ b/include/slice.h
+@@ -0,0 +1,31 @@
++#ifndef __SLICE_H
++#define __SLICE_H
++
++enum slice_action {
++	SLICE_ACQUIRE = 1,
++	SLICE_RELEASE = -1,
++	SLICE_TEST = 0,
 +};
 +
-+static int init_net_poll(void)
-+{
-+	return poller_register(&net_poller, "net");
-+}
-+device_initcall(init_net_poll);
++struct slice {
++	int acquired;
++	struct list_head deps;
++	char *name;
++	struct list_head list;
++};
 +
- static uint16_t net_udp_new_localport(void)
- {
- 	static uint16_t localport;
-diff --git a/net/netconsole.c b/net/netconsole.c
-index 0fece65a23..c692db942f 100644
---- a/net/netconsole.c
-+++ b/net/netconsole.c
-@@ -59,7 +59,7 @@ static int nc_getc(struct console_device *cdev)
- 		return 0;
- 
- 	while (!kfifo_len(priv->fifo))
--		net_poll();
-+		udelay(1);
- 
- 	kfifo_getc(priv->fifo, &c);
- 
-@@ -77,8 +77,6 @@ static int nc_tstc(struct console_device *cdev)
- 	if (priv->busy)
- 		return kfifo_len(priv->fifo) ? 1 : 0;
- 
--	net_poll();
--
- 	return kfifo_len(priv->fifo) ? 1 : 0;
- }
- 
-diff --git a/net/nfs.c b/net/nfs.c
-index 591417e0de..266351da09 100644
---- a/net/nfs.c
-+++ b/net/nfs.c
-@@ -710,7 +710,6 @@ static int do_nfs(int argc, char *argv[])
- 			nfs_err = -EINTR;
- 			break;
- 		}
--		net_poll();
- 		if (is_timeout(nfs_timer_start, NFS_TIMEOUT * SECOND)) {
- 			show_progress(-1);
- 			nfs_send();
-diff --git a/net/ping.c b/net/ping.c
-index a71f59a805..f3de0c27a4 100644
---- a/net/ping.c
-+++ b/net/ping.c
-@@ -89,8 +89,6 @@ static int do_ping(int argc, char *argv[])
- 			break;
- 		}
- 
--		net_poll();
--
- 		if (is_timeout(ping_start, SECOND)) {
- 			/* No answer, send another packet */
- 			ping_start = get_time_ns();
-diff --git a/net/sntp.c b/net/sntp.c
-index b4e6d6439c..f693a2e8af 100644
---- a/net/sntp.c
-+++ b/net/sntp.c
-@@ -145,8 +145,6 @@ s64 sntp(const char *server)
- 			break;
- 		}
- 
--		net_poll();
--
- 		if (is_timeout(sntp_start, 1 * SECOND)) {
- 			sntp_start = get_time_ns();
- 			ret = sntp_send();
++struct slice_entry {
++	struct slice *slice;
++	struct list_head list;
++};
++
++void slice_acquire(struct slice *slice);
++void slice_release(struct slice *slice);
++bool slice_acquired(struct slice *slice);
++void slice_depends_on(struct slice *slice, struct slice *dep);
++void slice_init(struct slice *slice, const char *name);
++void slice_exit(struct slice *slice);
++
++void slice_debug_acquired(struct slice *slice);
++
++#endif /* __SLICE_H */
 -- 
 2.27.0
 
