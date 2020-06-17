@@ -1,12 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mx1.emlix.com ([188.40.240.192])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jlZOQ-0007fS-4R
- for barebox@lists.infradead.org; Wed, 17 Jun 2020 14:50:23 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 17 Jun 2020 16:50:16 +0200
-Message-Id: <20200617145016.2919-1-a.fatoum@pengutronix.de>
+ id 1jlck2-0007K8-Op
+ for barebox@lists.infradead.org; Wed, 17 Jun 2020 18:24:56 +0000
+References: <20200617081126.5683-1-s.hauer@pengutronix.de>
+ <20200617081126.5683-15-s.hauer@pengutronix.de>
+From: =?UTF-8?Q?Daniel_Gl=c3=b6ckner?= <dg@emlix.com>
+Message-ID: <2620277a-6a8e-6de1-ac2b-f8b870adee08@emlix.com>
+Date: Wed, 17 Jun 2020 20:24:48 +0200
 MIME-Version: 1.0
+In-Reply-To: <20200617081126.5683-15-s.hauer@pengutronix.de>
+Content-Language: de-DE
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,129 +19,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: rpi: dts: fix MMIO resources clash breaking boot
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH 14/19] fastboot: remove double print
+To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
 
-The rpi3b device tree specifies 1G of RAM in the memory node, but maps
-the highest 16M of RAM's physical address range for peripheral use.
-
-When support for device tree probing was first added for the rpi3b
-in e8fab18835a1 ("ARM: rpi: switch to DT probe and multi-image build"),
-it had a memory { } node overriding the kernel node size with 0, so the
-size is computed later correctly.
-
-1dc748b3b202 ("dts: update to v5.1-rc1") came and renamed the upstream
-memory { } node to memory@0. So instead of overriding the old, we
-now created a second dummy along with the broken node.
-barebox did only parse the dummy, so it continued to limp along.
-
-8226f7f90973 ("of: base: parse all available memory nodes") started
-considering both nodes and rendered barebox v2020.05.0 unable to start
-up on the rpi3b because of the conflict between RAM range and peripherals
-like the bcm2835_mbox caused by parsing the broken memory node.
-
-At least one board also was broken for the same reason[1], so a more
-robust approach is in order. For nodes that lack a phandle, the
-&{/path} syntax can be used instead. This has the benefit that should
-the path disappear in future, a compile failure would result.
-
-[1] 0d26ce1c11a1 ("ARM: Phytec phyFLEX i.MX6: delete wrong memory node")
-
-Fixes: 1dc748b3b202 ("dts: update to v5.1-rc1")
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-Hello Sascha,
-
-please apply to master. v2020.05.0 and v2020.06.0 are both unbootable on
-at least the rpi3b
-
-Cheers,
-Ahmad
----
- arch/arm/dts/bcm2835-rpi.dts     | 6 +++---
- arch/arm/dts/bcm2836-rpi-2.dts   | 6 +++---
- arch/arm/dts/bcm2837-rpi-3.dts   | 6 +++---
- arch/arm/dts/bcm2837-rpi-cm3.dts | 6 +++---
- 4 files changed, 12 insertions(+), 12 deletions(-)
-
-diff --git a/arch/arm/dts/bcm2835-rpi.dts b/arch/arm/dts/bcm2835-rpi.dts
-index c23e7c7c142b..4f227508010b 100644
---- a/arch/arm/dts/bcm2835-rpi.dts
-+++ b/arch/arm/dts/bcm2835-rpi.dts
-@@ -4,10 +4,10 @@
- 	chosen {
- 		stdout-path = &uart0;
- 	};
-+};
- 
--	memory {
--		reg = <0x0 0x0>;
--	};
-+&{/memory@0} {
-+	reg = <0x0 0x0>;
- };
- 
- &sdhci {
-diff --git a/arch/arm/dts/bcm2836-rpi-2.dts b/arch/arm/dts/bcm2836-rpi-2.dts
-index 42b6abb180de..c9c3892d6a21 100644
---- a/arch/arm/dts/bcm2836-rpi-2.dts
-+++ b/arch/arm/dts/bcm2836-rpi-2.dts
-@@ -4,8 +4,8 @@
- 	chosen {
- 		stdout-path = &uart0;
- 	};
-+};
- 
--	memory {
--		reg = <0x0 0x0>;
--	};
-+&{/memory@0} {
-+	reg = <0x0 0x0>;
- };
-diff --git a/arch/arm/dts/bcm2837-rpi-3.dts b/arch/arm/dts/bcm2837-rpi-3.dts
-index 420525b9e857..d66beddb2281 100644
---- a/arch/arm/dts/bcm2837-rpi-3.dts
-+++ b/arch/arm/dts/bcm2837-rpi-3.dts
-@@ -4,10 +4,10 @@
- 	chosen {
- 		stdout-path = &uart1;
- 	};
-+};
- 
--	memory {
--		reg = <0x0 0x0>;
--	};
-+&{/memory@0} {
-+	reg = <0x0 0x0>;
- };
- 
- &sdhci {
-diff --git a/arch/arm/dts/bcm2837-rpi-cm3.dts b/arch/arm/dts/bcm2837-rpi-cm3.dts
-index 01c1f9a67714..85a6ac46619a 100644
---- a/arch/arm/dts/bcm2837-rpi-cm3.dts
-+++ b/arch/arm/dts/bcm2837-rpi-cm3.dts
-@@ -4,8 +4,8 @@
- 	chosen {
- 		stdout-path = &uart0;
- 	};
-+};
- 
--	memory {
--		reg = <0x0 0x0>;
--	};
-+&{/memory@0} {
-+	reg = <0x0 0x0>;
- };
--- 
-2.27.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8gU2FzY2hhLAoKQW0gMTcuMDYuMjAgdW0gMTA6MTEgc2NocmllYiBTYXNjaGEgSGF1ZXI6
+Cj4gSW4gZmFzdGJvb3QgVURQIHdlIGNhbid0IHNlbmQgdHdvIG1lc3NhZ2VzIHdpdGhvdXQgd2Fp
+dGluZyBmb3IgYW4gYWNrCj4gZnJvbSB0aGUgaG9zdCBpbiBiZXR3ZWVuLiBEbyBub3Qgc2VuZCB0
+d28gbWVzc2FnZXMgZGlyZWN0bHkgYWZ0ZXIgZWFjaAo+IG90aGVyIGluIGZhc3Rib290X2Rvd25s
+b2FkX2ZpbmlzaGVkKCkgdG8gbWFrZSBpdCBzYWZlIHRvIGJlIGNhbGxlZCBmcm9tCj4gdGhlIGZh
+c3Rib290IFVERCBjb2RlLgoKVUREIC0+IFVEUD8KCkkgc2VlIG5vIHJlYXNvbiBmb3IgdGhpcyBw
+YXRjaC4gV2hlbiB0aGlzIGZ1bmN0aW9uIGlzIGNhbGxlZCwgd2UgaGF2ZSBqdXN0Cm1hbmFnZWQg
+dG8gdHJhbnNmZXIgYSBmaWxlIHdoZXJlIGV2ZXJ5IGRhdGEgcGFja2V0IHdhcyBzZW50IG9ubHkg
+YWZ0ZXIgdGhlCmhvc3QgaGFzIHJlY2VpdmVkIG91ciBhY2sgZm9yIHRoZSBwcmV2aW91cyBwYWNr
+ZXQuIEFuZCBub3cgeW91IGZlYXIgdGhhdCB0aGUKaG9zdCB3b24ndCBhY2sgb3VyIG5leHQgcGFj
+a2V0PwoKVGhlIGZhc3Rib290IFVEUCBjb2RlIGluIFUtQm9vdCB3YXMgZGVzaWduZWQgdG8gc2Vu
+ZCBvbmx5IGEgc2luZ2xlIG1lc3NhZ2UKZm9yIGV2ZXJ5IGV4ZWN1dGVkIGNvbW1hbmQgYmVjYXVz
+ZSBpdCBkb2Vzbid0IGhhdmUgY29kZSB0aGF0IHdhaXRzIGZvciBhCnBhY2tldCBmcm9tIHRoZSBo
+b3N0IHdoZW4gbmVjZXNzYXJ5LiBJIHRoaW5rIHdlIHNob3VsZCBiZSBwcm91ZCB0aGF0IEJhcmVi
+b3gKY2FuIGhhbmRsZSB0aGF0IGNhc2UuCgpCZXN0IHJlZ2FyZHMsCgogIERhbmllbAoKCi0tIApE
+aXBsLi1NYXRoLiBEYW5pZWwgR2zDtmNrbmVyLCBlbWxpeCBHbWJILCBodHRwOi8vd3d3LmVtbGl4
+LmNvbQpGb24gKzQ5IDU1MSAzMDY2NC0wLCBGYXggKzQ5IDU1MSAzMDY2NC0xMSwKR290aGFlciBQ
+bGF0eiAzLCAzNzA4MyBHw7Z0dGluZ2VuLCBHZXJtYW55ClNpdHogZGVyIEdlc2VsbHNjaGFmdDog
+R8O2dHRpbmdlbiwgQW10c2dlcmljaHQgR8O2dHRpbmdlbiBIUiBCIDMxNjAKR2VzY2jDpGZ0c2bD
+vGhydW5nOiBIZWlrZSBKb3JkYW4sIERyLiBVd2UgS3JhY2tlClVzdC1JZE5yLjogREUgMjA1IDE5
+OCAwNTUKCmVtbGl4IC0geW91ciBlbWJlZGRlZCBsaW51eCBwYXJ0bmVyCgpfX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApi
+YXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFp
+bG1hbi9saXN0aW5mby9iYXJlYm94Cg==
