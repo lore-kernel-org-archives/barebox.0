@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jlTQw-0003RN-0r
- for barebox@lists.infradead.org; Wed, 17 Jun 2020 08:28:35 +0000
-Date: Wed, 17 Jun 2020 10:28:32 +0200
+ id 1jlTSJ-0003iu-Jp
+ for barebox@lists.infradead.org; Wed, 17 Jun 2020 08:30:01 +0000
+Date: Wed, 17 Jun 2020 10:29:58 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200617082832.GY11869@pengutronix.de>
-References: <20200611171838.13876-1-a.fatoum@pengutronix.de>
+Message-ID: <20200617082958.GZ11869@pengutronix.de>
+References: <20200617025736.33666-1-masahiroy@kernel.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200611171838.13876-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20200617025736.33666-1-masahiroy@kernel.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,32 +22,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] watchdog: f71808e: maintain watchdog timeout occurred flag
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] kbuild: remove AS variable
+To: Masahiro Yamada <masahiroy@kernel.org>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jun 11, 2020 at 07:18:38PM +0200, Ahmad Fatoum wrote:
-> If we experience a watchdog reset, the indicating flag should persist
-> till the Linux driver had a chance to see it.
+On Wed, Jun 17, 2020 at 11:57:36AM +0900, Masahiro Yamada wrote:
+> The assembler files in the barebox are *.S instead of *.s, so they must
+> be preprocessed. Since 'as' of GNU binutils is not able to preprocess,
+> we always use $(CC) as an assembler driver.
 > 
-> The flag bit is special however in that writing 1 clears the bit and
-> writing 0 keeps it intact, i.e. :
+> Remove AS variable.
 > 
-> Bit
-> read written  result
->   0     0     = 0
->   1     0     = 1
->   0     1     = 0
->   1     1     = 0
+> Linux also removed AS. See Linux commits:
 > 
-> So in the bootloader, we should write a zero always. The OS on the
-> other hand can either write 1 or the old value after reading to
-> clear the flag.
+>  aa824e0c962b ("kbuild: remove AS variable")
+>  1ca0c2f61211 ("kbuild: remove unused AS assignment")
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 > ---
->  drivers/watchdog/f71808e_wdt.c | 59 +++++++++++++++++++++++-----------
->  1 file changed, 40 insertions(+), 19 deletions(-)
+> 
+>  Makefile          | 3 +--
+>  arch/arm/Makefile | 2 --
+>  2 files changed, 1 insertion(+), 4 deletions(-)
 
 Applied, thanks
 
