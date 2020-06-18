@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jlqZn-0001xV-8s
+ id 1jlqZn-0001xH-2z
  for barebox@lists.infradead.org; Thu, 18 Jun 2020 09:11:18 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 18 Jun 2020 11:11:02 +0200
-Message-Id: <20200618091102.30150-16-a.fatoum@pengutronix.de>
+Date: Thu, 18 Jun 2020 11:11:00 +0200
+Message-Id: <20200618091102.30150-14-a.fatoum@pengutronix.de>
 In-Reply-To: <20200618091102.30150-1-a.fatoum@pengutronix.de>
 References: <20200618091102.30150-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,79 +21,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 15/15] Documentation: devicetree: codify extension of upstream
- DTS by phandles
+Subject: [PATCH 13/15] ARM: zynqmp: dts: drop now superfluous zynqmp.dtsi
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Sync with the upstream device tree repository has been a common cause
-for breakage in barebox. Often unnoticed:
-
-* New bindings are merged upstream and device trees migrated, but
-  barebox didn't yet have support
-* Nodes are renamed upstream, but barebox still extends the old name,
-  with duplicate nodes resulting
-
-We can solve the second one by requiring dtc to give us errors when
-paths we extend no longer exist. Document how to do so.
+zynqmp.dtsi's only node is now available in the upstream dtsi at same
+path and same contents, so we can drop the file again.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Documentation/devicetree/index.rst | 41 ++++++++++++++++++++++++++++++
- 1 file changed, 41 insertions(+)
+ arch/arm/dts/zynqmp-zcu104-revA.dts |  1 -
+ arch/arm/dts/zynqmp.dtsi            | 17 -----------------
+ 2 files changed, 18 deletions(-)
+ delete mode 100644 arch/arm/dts/zynqmp.dtsi
 
-diff --git a/Documentation/devicetree/index.rst b/Documentation/devicetree/index.rst
-index 908652642b9a..62fa990032b3 100644
---- a/Documentation/devicetree/index.rst
-+++ b/Documentation/devicetree/index.rst
-@@ -31,6 +31,47 @@ device tree under ``dts/src/$ARCH`` with ``#include "$ARCH/board.dts"`` and
- then extends it with barebox-specifics like :ref:`barebox,state`,
- environment or boot-time device configuration.
+diff --git a/arch/arm/dts/zynqmp-zcu104-revA.dts b/arch/arm/dts/zynqmp-zcu104-revA.dts
+index c03112d7a02d..8b8dd84c1dc3 100644
+--- a/arch/arm/dts/zynqmp-zcu104-revA.dts
++++ b/arch/arm/dts/zynqmp-zcu104-revA.dts
+@@ -8,5 +8,4 @@
+  */
  
-+Device Tree probing largely happens via compatible properties with no special
-+meaning to the node names themselves. It's thus paramount that any device tree
-+nodes extended in the barebox device tree are referenced by a phandle, not by
-+path, to avoid run-time breakage like this::
-+
-+  # Upstream dts/src/$ARCH/board.dts
-+  / {
-+  	leds {
-+            led-red { /* formerly named red when the barebox DTS was written */
-+            	/* ... */
-+            };
-+        };
-+  };
-+
-+  # barebox arch/$ARCH/dts/board.dts
-+  #include <$ARCH/board.dts>
-+  / {
-+  	leds {
-+            red {
-+                barebox,default-trigger = "heartbeat";
-+            };
-+        };
-+  };
-+
-+In the prvious example, a device tree sync with upstream resulted in a regression
-+as the former override became a new node with a single property without effect.
-+
-+Using phandles avoids this. When no phandle mapping the full path is defined
-+upstream, the ``&{/path}`` syntax should be used instead, e.g.::
-+
-+  &{/leds/red} {
-+      barebox,default-trigger = "heartbeat";
-+  };
-+
-+This would lead to a compile error should the ``/leds/red`` path be renamed or
-+removed. This also applies to uses of ``/delete-node/``.
-+
-+Only exception to this rule are well-known node names that are specified by
-+the spec to be parsed by name. These are: ``chosen``, ``aliases`` and ``cpus``,
-+but **not** ``memory``.
-+
- Device Tree Compiler
- --------------------
- 
+ #include <arm64/xilinx/zynqmp-zcu104-revA.dts>
+-#include "zynqmp.dtsi"
+ #include "zynqmp-clk.dtsi"
+diff --git a/arch/arm/dts/zynqmp.dtsi b/arch/arm/dts/zynqmp.dtsi
+deleted file mode 100644
+index 59984ee75891..000000000000
+--- a/arch/arm/dts/zynqmp.dtsi
++++ /dev/null
+@@ -1,17 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0+
+-/*
+- * dts file for Xilinx ZynqMP
+- *
+- * (C) Copyright 2014 - 2015, Xilinx, Inc.
+- *
+- * Michal Simek <michal.simek@xilinx.com>
+- */
+-
+-/ {
+-	firmware {
+-		zynqmp_firmware: zynqmp-firmware {
+-			compatible = "xlnx,zynqmp-firmware";
+-			method = "smc";
+-		};
+-	};
+-};
 -- 
 2.27.0
 
