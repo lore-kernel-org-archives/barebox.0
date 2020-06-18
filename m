@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mx1.emlix.com ([188.40.240.192])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jlzLd-0005sW-An
- for barebox@lists.infradead.org; Thu, 18 Jun 2020 18:33:15 +0000
+ id 1jlztL-0000CF-Vo
+ for barebox@lists.infradead.org; Thu, 18 Jun 2020 19:08:05 +0000
 References: <20200617081126.5683-1-s.hauer@pengutronix.de>
- <20200617081126.5683-16-s.hauer@pengutronix.de>
- <946b4a56-1c05-6dbd-32d1-c100d6681065@emlix.com>
- <20200618115940.GH11869@pengutronix.de>
+ <20200617081126.5683-15-s.hauer@pengutronix.de>
+ <2620277a-6a8e-6de1-ac2b-f8b870adee08@emlix.com>
+ <20200617195446.GE11869@pengutronix.de>
 From: =?UTF-8?Q?Daniel_Gl=c3=b6ckner?= <dg@emlix.com>
-Message-ID: <510812c2-03a0-59a0-8d09-5c3c0f2f2593@emlix.com>
-Date: Thu, 18 Jun 2020 20:33:03 +0200
+Message-ID: <b170eaf6-60cb-2f8f-aff0-547f4fa03f0a@emlix.com>
+Date: Thu, 18 Jun 2020 21:08:01 +0200
 MIME-Version: 1.0
-In-Reply-To: <20200618115940.GH11869@pengutronix.de>
+In-Reply-To: <20200617195446.GE11869@pengutronix.de>
 Content-Language: de-DE
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,69 +25,23 @@ Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 15/19] fastboot net: implement fastboot over UDP
+Subject: Re: [PATCH 14/19] fastboot: remove double print
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>, Edmund Henniges <eh@emlix.com>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-Hello Sascha,
+Am 17.06.20 um 21:54 schrieb Sascha Hauer:
+> Another option would be to put calling of fastboot_download_finished()
+> into a workqueue, or just open code it as your original series did.
 
-Am 18.06.20 um 13:59 schrieb Sascha Hauer:
-> On Wed, Jun 17, 2020 at 09:32:45PM +0200, Daniel Gl=F6ckner wrote:
->>> +static void fastboot_start_download_net(struct fastboot *fb)
->>> +{
->>> +	struct fastboot_net *fbn =3D container_of(fb, struct fastboot_net,
->>> +						fastboot);
->>> +
->>> +	fastboot_start_download_generic(fb);
->>> +	fbn->active_download =3D true;
->>> +}
->>
->> You didn't base v4 on v3, did you?
-> =
+... now I understand that by "open code it" you are referring to calling
+net_poll!
 
-> No, you sent v3 while I had different changes in my version already.
-> =
-
->> If FASTBOOT_INIT is received before active_download is set to true, nobo=
-dy
->> will close fb->download_fd.
-> =
-
-> Ok, I'll add a fastboot_abort() function like you did in v3.
-
-What I was referring to are the three additional lines in v3 that call
-fastboot_download_finished here instead of setting active_download to true
-when reinit is already true.
-
->>> +static void fastboot_send_keep_alive(struct poller_struct *poller)
->>> +{
->>> +	struct fastboot_net *fbn =3D container_of(poller, struct fastboot_net,
->>> +					       keep_alive_poller);
->>> +
->>> +	if (!fbn->send_keep_alive)
->>> +		return;
->>> +
->>> +	if (!is_timeout_non_interruptible(fbn->host_waits_since,
->>> +					 30ULL * NSEC_PER_SEC))
->>> +		return;
->>> +
->>> +	if (!fbn->may_send)
->>> +		return;
->>> +
->>> +	fastboot_tx_print(&fbn->fastboot, FASTBOOT_MSG_INFO, "still busy");
->>> +
->>> +	fbn->host_waits_since =3D get_time_ns();
->>
->> Why do we need this line?
->> host_waits_since is assigned get_time_ns() when may_send is set to true.
-> =
-
-> It is needed to reinitialize the timeout when we sent the message once.
-> Without this we would send the "still busy" message every few ms after
-> we've sent it for the first time.
-
-No, because sending a message sets may_send to false and it stays false
-until we update host_waits_since in fastboot_handle_type_fastboot.
+I would have tried to run everything from fastboot_poll in a workqueue.
+Since worklets are not reordered, splitting fastboot_poll into two worklets
+might make sense. The worklet for calling fastboot_download_finished is
+queued when fastboot_handle_type_fastboot sets active_download to false and
+the worklet for the command execution is queued, as you implemented it, when
+a new command arrives.
 
 Best regards,
 
