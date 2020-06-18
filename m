@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from vsmx011.vodafonemail.xion.oxcs.net ([153.92.174.89])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jlpon-0000v6-NK
- for barebox@lists.infradead.org; Thu, 18 Jun 2020 08:22:43 +0000
-Received: from vsmx003.vodafonemail.xion.oxcs.net (unknown [192.168.75.197])
- by mta-5-out.mta.xion.oxcs.net (Postfix) with ESMTP id EB2C659CF54
- for <barebox@lists.infradead.org>; Thu, 18 Jun 2020 08:22:28 +0000 (UTC)
-Received: from app-44.app.xion.oxcs.net (app-44.app.xion.oxcs.net [10.10.1.44])
- by mta-7-out.mta.xion.oxcs.net (Postfix) with ESMTPA id D0B9A539CA0
- for <barebox@lists.infradead.org>; Thu, 18 Jun 2020 08:22:24 +0000 (UTC)
-Date: Thu, 18 Jun 2020 10:21:12 +0200 (CEST)
-From: Giorgio Dal Molin <giorgio.nicole@arcor.de>
-Message-ID: <1925287845.342649.1592468544667@mail.vodafone.de>
+ id 1jlqAG-0008R9-L6
+ for barebox@lists.infradead.org; Thu, 18 Jun 2020 08:44:53 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu, 18 Jun 2020 10:44:46 +0200
+Message-Id: <20200618084446.9684-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,38 +19,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: eMMC partitions kernel comand line
+Subject: [PATCH] Documentation: devicetree: hint at libfdt being available
 To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Hallo,
+Since 7e5a875fff7d ("Compile libfdt for barebox"), we now also have
+libfdt for operating on flattened device trees out of the PBL.
+Document this.
 
-I'm working on an arm IMX7 module with an eMMC flash on it.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ Documentation/devicetree/index.rst | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-I don't need/want to have a partition table on the eMMC, some hardcoded
-partitions are just OK. I've already defined them in the barebox device tree
-and it works, for barebox:
+diff --git a/Documentation/devicetree/index.rst b/Documentation/devicetree/index.rst
+index 908652642b9a..70ff9bc74a9c 100644
+--- a/Documentation/devicetree/index.rst
++++ b/Documentation/devicetree/index.rst
+@@ -3,9 +3,11 @@ Barebox devicetree handling and bindings
+ 
+ The preferred way of adding board support to barebox is to have devices
+ on non-enumerable buses probed from device tree.
+-barebox imports the Linux OpenFirmware ``of_*``-API functions for device tree
+-parsing, which makes porting the device tree specific bits from device drivers
+-very straight forward.
++barebox provide both the Linux OpenFirmware ``of_*`` and the libfdt ``fdt_`` APIs
++for device tree parsing. The former makes porting the device tree specific
++bits from Linux device drivers very straight forward, while the latter can be
++used for very early (PBL) handling of flattened device trees, should this be
++necessary.
+ 
+ Additionally, barebox has support for programmatically fixing up device trees
+ it passes to the kernel, either directly via ``of_register_fixup`` or via device
+-- 
+2.27.0
 
-...
-  partition@0 {
-    label = "bl_env";
-    reg = <BLENV_OFS BLENV_SIZE>;
-  };
-  partition@1 {
-    label = "boot";
-    reg = <BOOT_OFS BOOT_SIZE>;
-  };
-...
-
-Unfortunately the same trick is not supported by the linux kernel.
-What works for the kernel is the special command line option:
-
-blkdevparts=mmcblk1:1M(bl_env),50M(boot),...
-
-My question is: is it possible to let barebox automatically generate
-this command line according to what it has in its device tree or do I
-have to do it manually.
-
-giorgio
 
 _______________________________________________
 barebox mailing list
