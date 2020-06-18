@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jlqZf-0001qb-6D
+ id 1jlqZf-0001qZ-69
  for barebox@lists.infradead.org; Thu, 18 Jun 2020 09:11:10 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 18 Jun 2020 11:10:55 +0200
-Message-Id: <20200618091102.30150-9-a.fatoum@pengutronix.de>
+Date: Thu, 18 Jun 2020 11:10:59 +0200
+Message-Id: <20200618091102.30150-13-a.fatoum@pengutronix.de>
 In-Reply-To: <20200618091102.30150-1-a.fatoum@pengutronix.de>
 References: <20200618091102.30150-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,39 +21,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/15] ARM: mvebu: remove reference to non-existant node
+Subject: [PATCH 12/15] ARM: i.MX: mx53-qsrb: dts: remove now-superfluous
+ override
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The container node of the leds has never had the name gpio_leds,
-so there is no regression here, it just never worked.
-Instead of fixing it, just drop it.
+This gpio-keys node is now available upstream long with the
+GPIO_ACTIVE_LOW flag, so we can drop the barebox override.
 
-Cc: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/dts/armada-xp-openblocks-ax3-4-bb.dts | 10 ----------
- 1 file changed, 10 deletions(-)
+ arch/arm/dts/imx53-qsb-common.dtsi | 18 ------------------
+ 1 file changed, 18 deletions(-)
 
-diff --git a/arch/arm/dts/armada-xp-openblocks-ax3-4-bb.dts b/arch/arm/dts/armada-xp-openblocks-ax3-4-bb.dts
-index e88f1dc78130..e57cd8f0ce4b 100644
---- a/arch/arm/dts/armada-xp-openblocks-ax3-4-bb.dts
-+++ b/arch/arm/dts/armada-xp-openblocks-ax3-4-bb.dts
-@@ -9,14 +9,4 @@
- 	chosen {
- 		stdout-path = "/soc/internal-regs/serial@12000";
+diff --git a/arch/arm/dts/imx53-qsb-common.dtsi b/arch/arm/dts/imx53-qsb-common.dtsi
+index 24bbd6741aa2..5c692523c2e8 100644
+--- a/arch/arm/dts/imx53-qsb-common.dtsi
++++ b/arch/arm/dts/imx53-qsb-common.dtsi
+@@ -19,24 +19,6 @@
+ 			device-path = &bareboxenv;
+ 		};
  	};
 -
--	soc {
--		internal-regs {
--			gpio_leds {
--				red_led {
--					barebox,default-trigger = "heartbeat";
--				};
--			};
+-	/*
+-	 * The buttons are marked as active high in the upstream dts.
+-	 * Remove these once fixed upstream.
+-	 */
+-	gpio-keys {
+-		power {
+-			gpios = <&gpio1 8 GPIO_ACTIVE_LOW>;
+-		};
+-
+-		volume-up {
+-			gpios = <&gpio2 14 GPIO_ACTIVE_LOW>;
+-		};
+-
+-		volume-down {
+-			gpios = <&gpio2 15 GPIO_ACTIVE_LOW>;
 -		};
 -	};
  };
+ 
+ &esdhc1 {
 -- 
 2.27.0
 
