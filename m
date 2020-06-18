@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jlqZf-0001qV-6H
+ id 1jlqZf-0001qK-6H
  for barebox@lists.infradead.org; Thu, 18 Jun 2020 09:11:08 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 18 Jun 2020 11:10:56 +0200
-Message-Id: <20200618091102.30150-10-a.fatoum@pengutronix.de>
+Date: Thu, 18 Jun 2020 11:10:48 +0200
+Message-Id: <20200618091102.30150-2-a.fatoum@pengutronix.de>
 In-Reply-To: <20200618091102.30150-1-a.fatoum@pengutronix.de>
 References: <20200618091102.30150-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,47 +21,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/15] ARM: i.MX6UL: dts: remove defunct override of
- pico-hobbit memory node
+Subject: [PATCH 01/15] ARM: i.MX50: fix renamed node reference
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Prior to 8226f7f90973 ("of: base: parse all available memory nodes"),
-barebox first looked at a /memory node, then at a node with a
-device_type = "memory" property when probing available memory banks from
-device tree. Linux instead only considered nodes with device_type =
-"memory". The imx6ul-pico-hobbit predates the change in barebox behavior,
-so it's unclear what is gained from dropping device_type = "memory" as
-barebox used to parse the node by name anyway and Linux only saw the new
-fixed up node.
+There is no /soc/aips@50000000 node upstream any longer as it was
+renamed with the 8d158e1a4091 ("dts: update to v5.7-rc1") sync.
 
-Since then the Linux device tree has been split into a SoM and carrier
-board device tree and the node name is now called memory@80000000 with
-a size of 0 in the reg property. Because it's already used for boards
-with differing memory size, we assume this will remain so and thus we
-just drop the defunct barebox memory node override.
+Adjust the barebox device tree accordingly. It's likely that this
+resulted in barebox v2020.06.0 USB connectivity breakage for the
+i.MX50's second USB PHY.
 
-Cc: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Fixes: 8d158e1a4091 ("dts: update to v5.7-rc1")
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/dts/imx6ul-pico-hobbit.dts | 4 ----
- 1 file changed, 4 deletions(-)
+ arch/arm/dts/imx50.dtsi | 28 ++++++++++++----------------
+ 1 file changed, 12 insertions(+), 16 deletions(-)
 
-diff --git a/arch/arm/dts/imx6ul-pico-hobbit.dts b/arch/arm/dts/imx6ul-pico-hobbit.dts
-index 2f37b724b6e1..0c543de8c916 100644
---- a/arch/arm/dts/imx6ul-pico-hobbit.dts
-+++ b/arch/arm/dts/imx6ul-pico-hobbit.dts
-@@ -9,10 +9,6 @@
- 			device-path = &environment_usdhc1;
- 		};
+diff --git a/arch/arm/dts/imx50.dtsi b/arch/arm/dts/imx50.dtsi
+index 68edd37b13be..b5def2e4f67f 100644
+--- a/arch/arm/dts/imx50.dtsi
++++ b/arch/arm/dts/imx50.dtsi
+@@ -1,22 +1,18 @@
+ #include <arm/imx50.dtsi>
+ 
+-/ {
+-	soc {
+-		aips@50000000 { /* AIPS1 */
+-			usbphy1: usbphy@1 {
+-				compatible = "usb-nop-xceiv";
+-				clocks = <&clks IMX5_CLK_USB_PHY2_GATE>;
+-				clock-names = "main_clk";
+-				status = "okay";
+-			};
++&{/soc/bus@50000000} { /* AIPS1 */
++	usbphy1: usbphy@1 {
++		compatible = "usb-nop-xceiv";
++		clocks = <&clks IMX5_CLK_USB_PHY2_GATE>;
++		clock-names = "main_clk";
++		status = "okay";
++	};
+ 
+-			usbmisc: usbmisc@53f80800 {
+-				#index-cells = <1>;
+-				compatible = "fsl,imx53-usbmisc";
+-				reg = <0x53f80800 0x200>;
+-				clocks = <&clks IMX5_CLK_USBOH3_GATE>;
+-			};
+-		};
++	usbmisc: usbmisc@53f80800 {
++		#index-cells = <1>;
++		compatible = "fsl,imx53-usbmisc";
++		reg = <0x53f80800 0x200>;
++		clocks = <&clks IMX5_CLK_USBOH3_GATE>;
  	};
--
--	memory {
--		/delete-property/ device_type;
--	};
  };
  
- &usdhc1 {
 -- 
 2.27.0
 
