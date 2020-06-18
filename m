@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jlqZm-0001xD-Um
- for barebox@lists.infradead.org; Thu, 18 Jun 2020 09:11:18 +0000
+ id 1jlqZu-000277-Vr
+ for barebox@lists.infradead.org; Thu, 18 Jun 2020 09:11:24 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 18 Jun 2020 11:10:52 +0200
-Message-Id: <20200618091102.30150-6-a.fatoum@pengutronix.de>
+Date: Thu, 18 Jun 2020 11:10:54 +0200
+Message-Id: <20200618091102.30150-8-a.fatoum@pengutronix.de>
 In-Reply-To: <20200618091102.30150-1-a.fatoum@pengutronix.de>
 References: <20200618091102.30150-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,46 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/15] ARM: at91: dts: extend, don't create anew, pinctrl node
+Subject: [PATCH 07/15] ARM: i.MX7: warp: drop duplicate memory node
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The pinctrl device is also on the APB in the base device tree. The
-barebox device tree wrongly creates a new one top-level under /.
-Move it to the correct location, so the upstream node is extended.
+The upstream device tree already features a memory node with the correct
+size, but with the name memory@80000000. Drop the differently-named
+barebox node.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/dts/at91sam9263ek.dts | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ arch/arm/dts/imx7s-warp.dts | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/arch/arm/dts/at91sam9263ek.dts b/arch/arm/dts/at91sam9263ek.dts
-index 7fe283ced768..37f895d6ca73 100644
---- a/arch/arm/dts/at91sam9263ek.dts
-+++ b/arch/arm/dts/at91sam9263ek.dts
-@@ -24,15 +24,14 @@
- 						wp-gpios = <&pioE 19 GPIO_ACTIVE_HIGH>;
- 					};
- 			};
--		};
--	};
- 
--
--	pinctrl@fffff200 {
--		pinctrl_board_mmc1: mmc1-board {
--			atmel,pins =
--				<AT91_PIOE 18 AT91_PERIPH_GPIO AT91_PINCTRL_PULL_UP_DEGLITCH	/* PE18 gpio CD pin pull up and deglitch */
--				 AT91_PIOE 19 AT91_PERIPH_GPIO AT91_PINCTRL_PULL_UP>;		/* PE19 gpio WP pin pull up */
-+			pinctrl@fffff200 {
-+				pinctrl_board_mmc1: mmc1-board {
-+					atmel,pins =
-+						<AT91_PIOE 18 AT91_PERIPH_GPIO AT91_PINCTRL_PULL_UP_DEGLITCH	/* PE18 gpio CD pin pull up and deglitch */
-+						 AT91_PIOE 19 AT91_PERIPH_GPIO AT91_PINCTRL_PULL_UP>;		/* PE19 gpio WP pin pull up */
-+				};
-+			};
+diff --git a/arch/arm/dts/imx7s-warp.dts b/arch/arm/dts/imx7s-warp.dts
+index c90147778346..8e645999cf60 100644
+--- a/arch/arm/dts/imx7s-warp.dts
++++ b/arch/arm/dts/imx7s-warp.dts
+@@ -18,11 +18,6 @@
+ 			device-path = &bareboxenv;
  		};
  	};
+-
+-	memory {
+-		device_type = "memory";
+-		reg = <0x80000000 0x20000000>;
+-	};
  };
+ 
+ &usdhc3 {
 -- 
 2.27.0
 
