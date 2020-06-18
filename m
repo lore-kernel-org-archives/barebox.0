@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jlqZu-000277-Vr
- for barebox@lists.infradead.org; Thu, 18 Jun 2020 09:11:24 +0000
+ id 1jlqZv-00027G-8g
+ for barebox@lists.infradead.org; Thu, 18 Jun 2020 09:11:25 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 18 Jun 2020 11:10:54 +0200
-Message-Id: <20200618091102.30150-8-a.fatoum@pengutronix.de>
+Date: Thu, 18 Jun 2020 11:11:01 +0200
+Message-Id: <20200618091102.30150-15-a.fatoum@pengutronix.de>
 In-Reply-To: <20200618091102.30150-1-a.fatoum@pengutronix.de>
 References: <20200618091102.30150-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,35 +21,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/15] ARM: i.MX7: warp: drop duplicate memory node
+Subject: [PATCH 14/15] ARM: socfpga: dts: remove unused nodes and phandles
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The upstream device tree already features a memory node with the correct
-size, but with the name memory@80000000. Drop the differently-named
-barebox node.
+The phandles are unreferenced anywhere. They are likely a remnant of
+copy and paste from another device tree that makes use of them, e.g. the
+socfpga_cyclone5_socrates.dts. Drop them.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/dts/imx7s-warp.dts | 5 -----
- 1 file changed, 5 deletions(-)
+ arch/arm/dts/socfpga_cyclone5_de0_nano_soc.dts | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/arch/arm/dts/imx7s-warp.dts b/arch/arm/dts/imx7s-warp.dts
-index c90147778346..8e645999cf60 100644
---- a/arch/arm/dts/imx7s-warp.dts
-+++ b/arch/arm/dts/imx7s-warp.dts
-@@ -18,11 +18,6 @@
- 			device-path = &bareboxenv;
+diff --git a/arch/arm/dts/socfpga_cyclone5_de0_nano_soc.dts b/arch/arm/dts/socfpga_cyclone5_de0_nano_soc.dts
+index 40a7a9c488a7..427f150fb43d 100644
+--- a/arch/arm/dts/socfpga_cyclone5_de0_nano_soc.dts
++++ b/arch/arm/dts/socfpga_cyclone5_de0_nano_soc.dts
+@@ -31,10 +31,4 @@
+ 			file-path = "barebox.env";
  		};
  	};
 -
--	memory {
--		device_type = "memory";
--		reg = <0x80000000 0x20000000>;
+-	leds: gpio-leds {
+-	};
+-
+-	buttons: gpio-keys {
 -	};
  };
- 
- &usdhc3 {
 -- 
 2.27.0
 
