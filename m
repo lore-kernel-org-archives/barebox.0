@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jluJA-0007Jw-3J
- for barebox@lists.infradead.org; Thu, 18 Jun 2020 13:10:21 +0000
-Date: Thu, 18 Jun 2020 15:10:17 +0200
+ id 1jlunD-0003nF-OO
+ for barebox@lists.infradead.org; Thu, 18 Jun 2020 13:41:25 +0000
+Date: Thu, 18 Jun 2020 15:41:21 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200618131017.GJ11869@pengutronix.de>
-References: <20200617034404.5904-1-dgienda125@gmail.com>
- <20200617134538.GC11869@pengutronix.de>
- <20200618015455.GA9887@fizzbox.localdomain>
+Message-ID: <20200618134121.GL11869@pengutronix.de>
+References: <1592403665-18064-1-git-send-email-u74147@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200618015455.GA9887@fizzbox.localdomain>
+In-Reply-To: <1592403665-18064-1-git-send-email-u74147@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,67 +22,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC PATCH 0/8] Module and ARM Module updates and fixes
-To: David Dgien <dgienda125@gmail.com>
+Subject: Re: [PATCH v2] MIPS: AR9331: OKUD Max9331
+To: Du Huanpeng <u74147@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Jun 17, 2020 at 09:54:55PM -0400, David Dgien wrote:
-> Hi Sascha,
+On Wed, Jun 17, 2020 at 10:21:05PM +0800, Du Huanpeng wrote:
+> Oleksij and Kevin's Useless Devices.
+>         O&KUD Max9331
 > 
-> On Wed, Jun 17, 2020 at 03:45:38PM +0200, Sascha Hauer wrote:
-> > Hi David,
-> > 
-> > On Tue, Jun 16, 2020 at 11:43:56PM -0400, David Dgien wrote:
-> > > This series fixes various bugs and bit-rot issues with the module
-> > > loading code. It also ports a couple of modules features from the Linux
-> > > kernel: arch specific section fixups, and module PLTs for ARM modules,
-> > > to contain veneers for 'bl' instructions.
-> > > 
-> > > There are two things in this series I'm looking for feedback on:
-> > > Linux implements module_frob_arch_sections as a weak symbol for the
-> > > default case. I didn't see any other "weak" functions in barebox, so I
-> > > wasn't sure if using that was acceptable.
-> > 
-> > For things that are really mutually exclusive like different
-> > implementations on different architectures I think weak functions are
-> > ok. They are not ok as a quick hack for hooking something into something
-> > though.
-> > 
+>  AR9331 400MHz MIPS
+>    64M DRAM
+>    16M SPI Flash
+>     4G USB Nand Flash
+>      3 User LEDs
+>      3 Ports(1Wan/2Lan)
+>      1 TTL Debug Uart
 > 
-> I'll make the change to a weak function here in a v2, since it will be a
-> bit cleaner.
-> 
-> > > Since the Kconfig
-> > > HAVE_MOD_ARCH_SPECIFIC already exists as part of the change, I just used
-> > > that to define a static inline default implementation, but using a weak
-> > > function would make that slightly cleaner.
-> > > 
-> > > And in the patch that added the init macros to module.h, I wasn't sure
-> > > if it would be okay to pollute init.h with the #ifndef MODULE
-> > > directives, so instead I just #undef'd all of the initcalls before
-> > > redefining them in module.h.  If it's okay to add the #ifndef MODULE to
-> > > init.h, that would be significantly cleaner than the current
-> > > implementation.
-> > 
-> > I think it's ok to add #ifndef MODULE to init.h
-> 
-> Same as above.
-> 
-> > 
-> > Anyway, what do you need modules for? Do you have a good reason or is it
-> > just for the fun of it?
-> 
-> I'm working on a project that wants to use barebox as a very lightweight
-> OS replacement. 
-> We're using modules to allow loading user code with
-> controlled access to hw interfaces via exported driver symbols.
+> Signed-off-by: Du Huanpeng <u74147@gmail.com>
+> ---
+>  Documentation/boards/mips/max9331.rst          | 144 +++++++++++++++++++++++++
+>  arch/mips/boards/Makefile                      |   1 +
+>  arch/mips/boards/okud-max9331/Makefile         |   2 +
+>  arch/mips/boards/okud-max9331/lowlevel.S       |  22 ++++
+>  arch/mips/boards/okud-max9331/lowlevel_boot0.S |  22 ++++
+>  arch/mips/configs/ath79_defconfig              |   1 +
+>  arch/mips/dts/Makefile                         |   1 +
+>  arch/mips/dts/ar9331-okud-max9331.dts          | 140 ++++++++++++++++++++++++
+>  arch/mips/mach-ath79/Kconfig                   |   7 ++
+>  images/Makefile.ath79                          |   8 ++
+>  10 files changed, 348 insertions(+)
+>  create mode 100644 Documentation/boards/mips/max9331.rst
+>  create mode 100644 arch/mips/boards/okud-max9331/Makefile
+>  create mode 100644 arch/mips/boards/okud-max9331/lowlevel.S
+>  create mode 100644 arch/mips/boards/okud-max9331/lowlevel_boot0.S
+>  create mode 100644 arch/mips/dts/ar9331-okud-max9331.dts
 
-So barebOS again, we had that as an April fools joke once :)
-
-You'll probably miss things like interrupts, paging and multitasking
-very soon.
+Applied, thanks
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
