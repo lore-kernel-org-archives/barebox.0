@@ -1,17 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jltCq-0002QG-GX
- for barebox@lists.infradead.org; Thu, 18 Jun 2020 11:59:46 +0000
-Date: Thu, 18 Jun 2020 13:59:40 +0200
+ id 1jltOq-0003Bq-Ke
+ for barebox@lists.infradead.org; Thu, 18 Jun 2020 12:12:09 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200618115940.GH11869@pengutronix.de>
-References: <20200617081126.5683-1-s.hauer@pengutronix.de>
- <20200617081126.5683-16-s.hauer@pengutronix.de>
- <946b4a56-1c05-6dbd-32d1-c100d6681065@emlix.com>
+Date: Thu, 18 Jun 2020 14:12:06 +0200
+Message-Id: <20200618121206.5013-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <946b4a56-1c05-6dbd-32d1-c100d6681065@emlix.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,171 +15,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 15/19] fastboot net: implement fastboot over UDP
-To: Daniel =?iso-8859-15?Q?Gl=F6ckner?= <dg@emlix.com>
-Cc: Barebox List <barebox@lists.infradead.org>, Edmund Henniges <eh@emlix.com>
+Subject: [PATCH] Arm: i.MX5: Do not disable L2 cache
+To: Barebox List <barebox@lists.infradead.org>
 
-On Wed, Jun 17, 2020 at 09:32:45PM +0200, Daniel Gl=F6ckner wrote:
-> Hello Sascha,
-> =
+Disabling the L2 cache is not working in imx5_init_lowlevel() because
+the necessary cache maintenance operations are missing. This often
+results in cache corruption in a chainloaded barebox.
+Disabling the cache is unnecessary: when we come from the ROM the L2
+cache is disabled anyway, so disabling it is a no-op. When we get here
+in a chainloaded barebox the L2 cache is already enabled and correctly
+configured. So instead of initializing it again we can take an enabled
+L2 cache as a sign to skip initialization and just return from the
+function.
 
-> Am 17.06.20 um 10:11 schrieb Sascha Hauer:
-> =
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/mach-imx/imx5.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-> > +	ret =3D fastboot_net_wait_may_send(fbn);
-> > +	if (ret)
-> > +		return ret;
-> =
+diff --git a/arch/arm/mach-imx/imx5.c b/arch/arm/mach-imx/imx5.c
+index 96288f99e0..dd6c079fe3 100644
+--- a/arch/arm/mach-imx/imx5.c
++++ b/arch/arm/mach-imx/imx5.c
+@@ -37,10 +37,13 @@ void imx5_init_lowlevel(void)
+ {
+ 	u32 r;
+ 
+-	/* ARM errata ID #468414 */
+ 	__asm__ __volatile__("mrc 15, 0, %0, c1, c0, 1":"=r"(r));
++
++	if (r & (1 << 1))
++		return;
++
++	/* ARM errata ID #468414 */
+ 	r |= (1 << 5);    /* enable L1NEON bit */
+-	r &= ~(1 << 1);   /* explicitly disable L2 cache */
+ 	__asm__ __volatile__("mcr 15, 0, %0, c1, c0, 1" : : "r"(r));
+ 
+         /* reconfigure L2 cache aux control reg */
+-- 
+2.27.0
 
-> Where is the part that aborts the session on timeout?
-
-Ok, will add it (back)
-
-> =
-
-> > +static void fastboot_start_download_net(struct fastboot *fb)
-> > +{
-> > +	struct fastboot_net *fbn =3D container_of(fb, struct fastboot_net,
-> > +						fastboot);
-> > +
-> > +	fastboot_start_download_generic(fb);
-> > +	fbn->active_download =3D true;
-> > +}
-> =
-
-> You didn't base v4 on v3, did you?
-
-No, you sent v3 while I had different changes in my version already.
-
-> If FASTBOOT_INIT is received before active_download is set to true, nobody
-> will close fb->download_fd.
-
-Ok, I'll add a fastboot_abort() function like you did in v3.
-
-> =
-
-> > +static void fastboot_handle_type_fastboot(struct fastboot_net *fbn,
-> > +					  struct fastboot_header header,
-> > +					  char *fastboot_data,
-> > +					  unsigned int fastboot_data_len)
-> > +{
-> > +	fbn->response_header =3D header;
-> > +	fbn->host_waits_since =3D get_time_ns();
-> > +	fbn->may_send =3D true;
-> =
-
-> No MAY_SEND_ACK and MAY_SEND_MESSAGE? So you choose to ignore protocol
-> violations?
-
-Will add it back.
-
-> =
-
-> > +	if (fbn->active_download) {
-> > +		if (!fastboot_data_len && fbn->fastboot.download_bytes
-> > +					   =3D=3D fbn->fastboot.download_size) {
-> > +			fastboot_download_finished(&fbn->fastboot);
-> =
-
-> Now I see why you dropped that fastboot_tx_print in the previous patch.
-> =
-
-> > +		} else {
-> > +			fastboot_data_download(fbn, fastboot_data,
-> > +					       fastboot_data_len);
-> > +		}
-> > +	} else {
-> =
-
-> Fastboot does not allow to queue multiple commands. A command must have
-> finished before the host may send the next one. That's why there was
-> an "else if (!fbn->command[0])".
-
-Ah, I see. This would be !list_empty(&fbn->wq.work) now.
-
-> =
-
-> > +		if (fastboot_data_len >=3D FASTBOOT_MAX_CMD_LEN) {
-> =
-
-> Off-by-one error: if (fastboot_data_len > FASTBOOT_MAX_CMD_LEN) {
-
-Ok.
-
-> =
-
-> > +		} else if (fastboot_data_len) {
-> > +			struct fastboot_work *w;
-> > +
-> > +			w =3D xzalloc(sizeof(*w));
-> =
-
-> Why can't we embed struct fastboot_work in struct fastboot_net?
-> As I wrote above it is impossible to queue multiple commands.
-
-We could do that, but I prefer to keep it allocated. It makes the
-lifetime of the work item clearer.
-
-> =
-
-> > +			w->fbn =3D fbn;
-> > +			memcpy(w->command, fastboot_data, fastboot_data_len);
-> > +			w->command[fastboot_data_len] =3D 0;
-> > +
-> > +			wq_queue_work(&fbn->wq, &w->work);
-> > +		}
-> > +	}
-> > +
-> > +	if (!fbn->fastboot.active)
-> > +		fbn->active_download =3D false;
-> =
-
-> These two lines were gone in v3.
-
-Ok, will drop them.
-
-> =
-
-> > +static void fastboot_send_keep_alive(struct poller_struct *poller)
-> > +{
-> > +	struct fastboot_net *fbn =3D container_of(poller, struct fastboot_net,
-> > +					       keep_alive_poller);
-> > +
-> > +	if (!fbn->send_keep_alive)
-> > +		return;
-> > +
-> > +	if (!is_timeout_non_interruptible(fbn->host_waits_since,
-> > +					 30ULL * NSEC_PER_SEC))
-> > +		return;
-> > +
-> > +	if (!fbn->may_send)
-> > +		return;
-> > +
-> > +	fastboot_tx_print(&fbn->fastboot, FASTBOOT_MSG_INFO, "still busy");
-> > +
-> > +	fbn->host_waits_since =3D get_time_ns();
-> =
-
-> Why do we need this line?
-> host_waits_since is assigned get_time_ns() when may_send is set to true.
-
-It is needed to reinitialize the timeout when we sent the message once.
-Without this we would send the "still busy" message every few ms after
-we've sent it for the first time.
-
-Regards,
-  Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
