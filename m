@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.savoirfairelinux.com ([208.88.110.44])
+Received: from mail-qk1-x741.google.com ([2607:f8b0:4864:20::741])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jlgsd-0000AA-Ni
- for barebox@lists.infradead.org; Wed, 17 Jun 2020 22:50:05 +0000
-Received: from localhost (localhost [127.0.0.1])
- by mail.savoirfairelinux.com (Postfix) with ESMTP id A172B9C0342
- for <barebox@lists.infradead.org>; Wed, 17 Jun 2020 18:49:59 -0400 (EDT)
-From: Gilles DOFFE <gilles.doffe@savoirfairelinux.com>
-Date: Thu, 18 Jun 2020 00:48:51 +0200
-Message-Id: <20200617224851.1163860-1-gilles.doffe@savoirfairelinux.com>
+ id 1jljko-0005Tu-M0
+ for barebox@lists.infradead.org; Thu, 18 Jun 2020 01:54:21 +0000
+Received: by mail-qk1-x741.google.com with SMTP id l6so496680qkc.6
+ for <barebox@lists.infradead.org>; Wed, 17 Jun 2020 18:54:10 -0700 (PDT)
+Date: Wed, 17 Jun 2020 21:54:55 -0400
+From: David Dgien <dgienda125@gmail.com>
+Message-ID: <20200618015455.GA9887@fizzbox.localdomain>
+References: <20200617034404.5904-1-dgienda125@gmail.com>
+ <20200617134538.GC11869@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200617134538.GC11869@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,46 +25,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] common: avoid bootchooser double watchdog configuration
-To: barebox@lists.infradead.org
-Cc: rennes-dev@savoirfairelinux.com, jerome.oufella@savoirfairelinux.com
+Subject: Re: [RFC PATCH 0/8] Module and ARM Module updates and fixes
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-In case bootchooser is used, boot_entry() will be called twice:
-1) boot bootchooser
-2) boot <chosen_entry>
-Thus it will lead to twice watchdog configuration if watchdog_timeout
-is set.
-Except that it should be activated only once in any way, it leads
-to unwanted reset when issuing too much "near" calls of the watchdog
-configuration for da9062.
-Can be reproduced with this command:
- barebox/ wd 30;wd 30
-Even if this commands are intentional, 'boot bootchooser' is not.
-Resetting watchdog_timeout to 0 after first watchdog
-configuration solves this problem ensuring watchdog will not be
-configured a second time.
+Hi Sascha,
 
-Signed-off-by: Gilles DOFFE <gilles.doffe@savoirfairelinux.com>
----
- common/boot.c | 2 ++
- 1 file changed, 2 insertions(+)
+On Wed, Jun 17, 2020 at 03:45:38PM +0200, Sascha Hauer wrote:
+> Hi David,
+> 
+> On Tue, Jun 16, 2020 at 11:43:56PM -0400, David Dgien wrote:
+> > This series fixes various bugs and bit-rot issues with the module
+> > loading code. It also ports a couple of modules features from the Linux
+> > kernel: arch specific section fixups, and module PLTs for ARM modules,
+> > to contain veneers for 'bl' instructions.
+> > 
+> > There are two things in this series I'm looking for feedback on:
+> > Linux implements module_frob_arch_sections as a weak symbol for the
+> > default case. I didn't see any other "weak" functions in barebox, so I
+> > wasn't sure if using that was acceptable.
+> 
+> For things that are really mutually exclusive like different
+> implementations on different architectures I think weak functions are
+> ok. They are not ok as a quick hack for hooking something into something
+> though.
+> 
 
-diff --git a/common/boot.c b/common/boot.c
-index f546fce62..8d09f96b6 100644
---- a/common/boot.c
-+++ b/common/boot.c
-@@ -150,6 +150,8 @@ int boot_entry(struct bootentry *be, int verbose, int dryrun)
- 					   boot_watchdog_timeout);
- 		if (ret)
- 			pr_warn("Failed to enable watchdog: %s\n", strerror(-ret));
-+
-+		boot_watchdog_timeout = 0;
- 	}
- 
- 	ret = be->boot(be, verbose, dryrun);
--- 
-2.25.1
+I'll make the change to a weak function here in a v2, since it will be a
+bit cleaner.
 
+> > Since the Kconfig
+> > HAVE_MOD_ARCH_SPECIFIC already exists as part of the change, I just used
+> > that to define a static inline default implementation, but using a weak
+> > function would make that slightly cleaner.
+> > 
+> > And in the patch that added the init macros to module.h, I wasn't sure
+> > if it would be okay to pollute init.h with the #ifndef MODULE
+> > directives, so instead I just #undef'd all of the initcalls before
+> > redefining them in module.h.  If it's okay to add the #ifndef MODULE to
+> > init.h, that would be significantly cleaner than the current
+> > implementation.
+> 
+> I think it's ok to add #ifndef MODULE to init.h
+
+Same as above.
+
+> 
+> Anyway, what do you need modules for? Do you have a good reason or is it
+> just for the fun of it?
+
+I'm working on a project that wants to use barebox as a very lightweight
+OS replacement. We're using modules to allow loading user code with
+controlled access to hw interfaces via exported driver symbols.
+
+-- David Dgien
+
+> 
+> Sascha
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
