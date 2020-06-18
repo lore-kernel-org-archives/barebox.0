@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jlvk6-0002th-21
- for barebox@lists.infradead.org; Thu, 18 Jun 2020 14:42:15 +0000
-Date: Thu, 18 Jun 2020 16:42:12 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200618144212.GO11869@pengutronix.de>
-References: <20200617145016.2919-1-a.fatoum@pengutronix.de>
+ id 1jlvnb-00066V-BL
+ for barebox@lists.infradead.org; Thu, 18 Jun 2020 14:45:54 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu, 18 Jun 2020 16:45:48 +0200
+Message-Id: <20200618144548.603-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200617145016.2919-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,48 +19,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: rpi: dts: fix MMIO resources clash breaking boot
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] fixup! Documentation: devicetree: codify extension of
+ upstream DTS by phandles
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Wed, Jun 17, 2020 at 04:50:16PM +0200, Ahmad Fatoum wrote:
-> The rpi3b device tree specifies 1G of RAM in the memory node, but maps
-> the highest 16M of RAM's physical address range for peripheral use.
-> 
-> When support for device tree probing was first added for the rpi3b
-> in e8fab18835a1 ("ARM: rpi: switch to DT probe and multi-image build"),
-> it had a memory { } node overriding the kernel node size with 0, so the
-> size is computed later correctly.
-> 
-> 1dc748b3b202 ("dts: update to v5.1-rc1") came and renamed the upstream
-> memory { } node to memory@0. So instead of overriding the old, we
-> now created a second dummy along with the broken node.
-> barebox did only parse the dummy, so it continued to limp along.
-> 
-> 8226f7f90973 ("of: base: parse all available memory nodes") started
-> considering both nodes and rendered barebox v2020.05.0 unable to start
-> up on the rpi3b because of the conflict between RAM range and peripherals
-> like the bcm2835_mbox caused by parsing the broken memory node.
-> 
-> At least one board also was broken for the same reason[1], so a more
-> robust approach is in order. For nodes that lack a phandle, the
-> &{/path} syntax can be used instead. This has the benefit that should
-> the path disappear in future, a compile failure would result.
-> 
-> [1] 0d26ce1c11a1 ("ARM: Phytec phyFLEX i.MX6: delete wrong memory node")
-> 
-> Fixes: 1dc748b3b202 ("dts: update to v5.1-rc1")
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Fix a typo and add alink to the specification in question.
 
-Applied, thanks
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ Documentation/devicetree/index.rst | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-Sascha
-
+diff --git a/Documentation/devicetree/index.rst b/Documentation/devicetree/index.rst
+index 62fa990032b3..c5478d1f8516 100644
+--- a/Documentation/devicetree/index.rst
++++ b/Documentation/devicetree/index.rst
+@@ -55,7 +55,7 @@ path, to avoid run-time breakage like this::
+         };
+   };
+ 
+-In the prvious example, a device tree sync with upstream resulted in a regression
++In the previous example, a device tree sync with upstream resulted in a regression
+ as the former override became a new node with a single property without effect.
+ 
+ Using phandles avoids this. When no phandle mapping the full path is defined
+@@ -69,8 +69,10 @@ This would lead to a compile error should the ``/leds/red`` path be renamed or
+ removed. This also applies to uses of ``/delete-node/``.
+ 
+ Only exception to this rule are well-known node names that are specified by
+-the spec to be parsed by name. These are: ``chosen``, ``aliases`` and ``cpus``,
+-but **not** ``memory``.
++the `specification`_ to be parsed by name. These are: ``chosen``, ``aliases``
++and ``cpus``, but **not** ``memory``.
++
++.. _specification: https://www.devicetree.org/specifications/
+ 
+ Device Tree Compiler
+ --------------------
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.27.0
+
 
 _______________________________________________
 barebox mailing list
