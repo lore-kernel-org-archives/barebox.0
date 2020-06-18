@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from vsmx011.vodafonemail.xion.oxcs.net ([153.92.174.89])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jlow3-0005cs-Qf
- for barebox@lists.infradead.org; Thu, 18 Jun 2020 07:26:09 +0000
-Date: Thu, 18 Jun 2020 09:26:05 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200618072605.GG11869@pengutronix.de>
-References: <20200617081126.5683-1-s.hauer@pengutronix.de>
- <20200617081126.5683-17-s.hauer@pengutronix.de>
- <4aa6d528-2bbf-a952-523d-3a22875a7b52@emlix.com>
+ id 1jlpon-0000v6-NK
+ for barebox@lists.infradead.org; Thu, 18 Jun 2020 08:22:43 +0000
+Received: from vsmx003.vodafonemail.xion.oxcs.net (unknown [192.168.75.197])
+ by mta-5-out.mta.xion.oxcs.net (Postfix) with ESMTP id EB2C659CF54
+ for <barebox@lists.infradead.org>; Thu, 18 Jun 2020 08:22:28 +0000 (UTC)
+Received: from app-44.app.xion.oxcs.net (app-44.app.xion.oxcs.net [10.10.1.44])
+ by mta-7-out.mta.xion.oxcs.net (Postfix) with ESMTPA id D0B9A539CA0
+ for <barebox@lists.infradead.org>; Thu, 18 Jun 2020 08:22:24 +0000 (UTC)
+Date: Thu, 18 Jun 2020 10:21:12 +0200 (CEST)
+From: Giorgio Dal Molin <giorgio.nicole@arcor.de>
+Message-ID: <1925287845.342649.1592468544667@mail.vodafone.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <4aa6d528-2bbf-a952-523d-3a22875a7b52@emlix.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,46 +21,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 16/19] usb: fastboot: execute commands in command context
-To: Daniel =?iso-8859-15?Q?Gl=F6ckner?= <dg@emlix.com>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: eMMC partitions kernel comand line
+To: barebox@lists.infradead.org
 
-On Wed, Jun 17, 2020 at 09:40:56PM +0200, Daniel Gl=F6ckner wrote:
-> Hello Sascha,
-> =
+Hallo,
 
-> Am 17.06.20 um 10:11 schrieb Sascha Hauer:
-> > -	*(cmdbuf + req->actual) =3D 0;
-> > -	fastboot_exec_cmd(&f_fb->fastboot, cmdbuf);
-> > -	*cmdbuf =3D '\0';
-> > -	req->actual =3D 0;
-> > -	memset(req->buf, 0, EP_BUFFER_SIZE);
-> > -	usb_ep_queue(ep, req);
-> > +	w =3D xzalloc(sizeof(*w));
-> > +	w->f_fb =3D f_fb;
-> > +
-> > +	memcpy(w->command, req->buf, req->actual);
-> > +
-> > +	wq_queue_work(&f_fb->wq, &w->work);
-> =
+I'm working on an arm IMX7 module with an eMMC flash on it.
 
-> Do we need to check if req->actual < sizeof(w->command)?
+I don't need/want to have a partition table on the eMMC, some hardcoded
+partitions are just OK. I've already defined them in the barebox device tree
+and it works, for barebox:
 
-Yes, will add.
+...
+  partition@0 {
+    label = "bl_env";
+    reg = <BLENV_OFS BLENV_SIZE>;
+  };
+  partition@1 {
+    label = "boot";
+    reg = <BOOT_OFS BOOT_SIZE>;
+  };
+...
 
-Regards,
- Sascha
+Unfortunately the same trick is not supported by the linux kernel.
+What works for the kernel is the special command line option:
 
--- =
+blkdevparts=mmcblk1:1M(bl_env),50M(boot),...
 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+My question is: is it possible to let barebox automatically generate
+this command line according to what it has in its device tree or do I
+have to do it manually.
+
+giorgio
 
 _______________________________________________
 barebox mailing list
