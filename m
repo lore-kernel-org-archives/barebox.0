@@ -1,19 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jlraj-0007tM-O7
- for barebox@lists.infradead.org; Thu, 18 Jun 2020 10:16:19 +0000
-References: <20200316110008.2909-1-cleger@kalray.eu>
- <20200316110008.2909-2-cleger@kalray.eu>
- <20200323101246.GQ3335@pengutronix.de>
- <1211869674.11432033.1584958869528.JavaMail.zimbra@kalray.eu>
- <cbeedaec-9e16-d0e1-c4f8-3017b86b7f35@pengutronix.de>
- <20200325092958.GC27288@pengutronix.de>
+ id 1jlrkH-000664-8Q
+ for barebox@lists.infradead.org; Thu, 18 Jun 2020 10:26:10 +0000
+References: <20200617224851.1163860-1-gilles.doffe@savoirfairelinux.com>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <980eb1d7-fc8a-4602-aecd-a61d8c78327c@pengutronix.de>
-Date: Thu, 18 Jun 2020 12:16:13 +0200
+Message-ID: <d526d7ce-39bf-94e3-a61b-22b9f3043bf3@pengutronix.de>
+Date: Thu, 18 Jun 2020 12:25:59 +0200
 MIME-Version: 1.0
-In-Reply-To: <20200325092958.GC27288@pengutronix.de>
+In-Reply-To: <20200617224851.1163860-1-gilles.doffe@savoirfairelinux.com>
 Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,55 +18,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] of: base: parse all available memory nodes
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: =?UTF-8?Q?Cl=c3=a9ment_Leger?= <cleger@kalrayinc.com>, Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] common: avoid bootchooser double watchdog configuration
+To: Gilles DOFFE <gilles.doffe@savoirfairelinux.com>, barebox@lists.infradead.org
+Cc: rennes-dev@savoirfairelinux.com, jerome.oufella@savoirfairelinux.com
 
+Hello Gilles,
 
+On 6/18/20 12:48 AM, Gilles DOFFE wrote:
+> In case bootchooser is used, boot_entry() will be called twice:
+> 1) boot bootchooser
+> 2) boot <chosen_entry>
+> Thus it will lead to twice watchdog configuration if watchdog_timeout
+> is set.
+> Except that it should be activated only once in any way, it leads
+> to unwanted reset when issuing too much "near" calls of the watchdog
+> configuration for da9062.
 
-On 3/25/20 10:29 AM, Sascha Hauer wrote:
-> On Mon, Mar 23, 2020 at 11:31:26AM +0100, Ahmad Fatoum wrote:
->> Hi,
->>
->> On 3/23/20 11:21 AM, Cl=E9ment Leger wrote:
->>>> AFAIK the device_type =3D "memory" property was mandatory in the early
->>>> days as well, there shouldn't be any /memory nodes without this
->>>> property. Given that, is the add-legacy-node-first still necessary?
->>>
->>> Agreed, I did that after speaking with someone on IRC which stated
->>> (rightfully), that I should keep the legacy behavior if possible.
->>
->> My concern was about HW that passes a device tree to barebox (PowerPC
->> possibly?), where it might have worked before and now won't anymore.
->>
->> If this is no real concern, it can be removed.
-> =
+Imagine I have boot.default="bootchooser recovery". Both bootchooser
+slots fail, so I boot the recovery slot, but with your patch
+applied, the watchdog wouldn't be enabled, no?
 
-> There is no PowerPC hardware supported by barebox that passes a device
-> tree to barebox. I don't think this is necessary.
+The da9063 suffers from the same problem and this was instead addressed
+by dropping requests that come in too fast. See
+cbfdbf38c190 ("mfd: da9063: fix watchdog ping execution")
 
-Turns out we had quite a few device trees that lacked a device_type =3D "me=
-mory"
-property: https://lists.infradead.org/pipermail/barebox/2020-June/042269.ht=
-ml
+Cheers
+Ahmad
 
-The property used to be there, but when upstream removed skeleton.dtsi and
-either there was no upstream memory node to extend or it was renamed, we
-ended up with an invalid memory node.
+> Can be reproduced with this command:
+>  barebox/ wd 30;wd 30
+> Even if this commands are intentional, 'boot bootchooser' is not.
+> Resetting watchdog_timeout to 0 after first watchdog
+> configuration solves this problem ensuring watchdog will not be
+> configured a second time.
+> 
+> Signed-off-by: Gilles DOFFE <gilles.doffe@savoirfairelinux.com>
+> ---
+>  common/boot.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/common/boot.c b/common/boot.c
+> index f546fce62..8d09f96b6 100644
+> --- a/common/boot.c
+> +++ b/common/boot.c
+> @@ -150,6 +150,8 @@ int boot_entry(struct bootentry *be, int verbose, int dryrun)
+>  					   boot_watchdog_timeout);
+>  		if (ret)
+>  			pr_warn("Failed to enable watchdog: %s\n", strerror(-ret));
+> +
+> +		boot_watchdog_timeout = 0;
+>  	}
+>  
+>  	ret = be->boot(be, verbose, dryrun);
+> 
 
-
-> =
-
-> Sascha
-> =
-
-
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
