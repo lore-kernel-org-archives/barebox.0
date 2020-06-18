@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jltXb-0001Cm-V6
- for barebox@lists.infradead.org; Thu, 18 Jun 2020 12:21:13 +0000
-Message-ID: <8ed6835fbd1cb8e35117ff87f49502ef35d455d2.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Thu, 18 Jun 2020 14:21:08 +0200
-In-Reply-To: <20200618121206.5013-1-s.hauer@pengutronix.de>
-References: <20200618121206.5013-1-s.hauer@pengutronix.de>
+ id 1jlu7H-0004b4-FW
+ for barebox@lists.infradead.org; Thu, 18 Jun 2020 12:58:07 +0000
+Date: Thu, 18 Jun 2020 14:58:01 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200618125801.GI11869@pengutronix.de>
+References: <20200616055202.9308-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200616055202.9308-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,52 +22,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Arm: i.MX5: Do not disable L2 cache
-To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH v2 0/2] transfer Protonic barebox development to the
+ mainline
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org, David Jander <david@protonic.nl>
 
-Am Donnerstag, den 18.06.2020, 14:12 +0200 schrieb Sascha Hauer:
-> Disabling the L2 cache is not working in imx5_init_lowlevel() because
-> the necessary cache maintenance operations are missing. This often
-> results in cache corruption in a chainloaded barebox.
-> Disabling the cache is unnecessary: when we come from the ROM the L2
-> cache is disabled anyway, so disabling it is a no-op. When we get here
-> in a chainloaded barebox the L2 cache is already enabled and correctly
-> configured. So instead of initializing it again we can take an enabled
-> L2 cache as a sign to skip initialization and just return from the
-> function.
-
-While this won't hurt much, shouldn't we also disable the L2 cache on
-Barebox shutdown, like we do on other SoCs?
-
-Regards,
-Lucas
-
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  arch/arm/mach-imx/imx5.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
+On Tue, Jun 16, 2020 at 07:52:00AM +0200, Oleksij Rempel wrote:
+> This is initial patch set to transfer Protonic barebox development to the mainline.
+> Most important changes of this patches are in
+> arch/arm/boards/protonic-imx6 folder. The devicetrees are mostly
+> unchanged, since they will be replaced by kernel version soon. 
 > 
-> diff --git a/arch/arm/mach-imx/imx5.c b/arch/arm/mach-imx/imx5.c
-> index 96288f99e0..dd6c079fe3 100644
-> --- a/arch/arm/mach-imx/imx5.c
-> +++ b/arch/arm/mach-imx/imx5.c
-> @@ -37,10 +37,13 @@ void imx5_init_lowlevel(void)
->  {
->  	u32 r;
->  
-> -	/* ARM errata ID #468414 */
->  	__asm__ __volatile__("mrc 15, 0, %0, c1, c0, 1":"=r"(r));
-> +
-> +	if (r & (1 << 1))
-> +		return;
-> +
-> +	/* ARM errata ID #468414 */
->  	r |= (1 << 5);    /* enable L1NEON bit */
-> -	r &= ~(1 << 1);   /* explicitly disable L2 cache */
->  	__asm__ __volatile__("mcr 15, 0, %0, c1, c0, 1" : : "r"(r));
->  
->          /* reconfigure L2 cache aux control reg */
+> changes v2:
+> - use imx6_cpu_lowlevel_init instead of arm_cpu_lowlevel_init
+> - use imx6q_barebox_entry instead of barebox_arm_entry
+> - remove debug_ll. Currently it is not needed
+> - remove part of pinmuxing from DCD files
+> 
+> Oleksij Rempel (2):
+>   ARM: dts: imx6: add Protonic boards
+>   ARM: add imx6 based Protonic boads
 
+Applied, thanks
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
