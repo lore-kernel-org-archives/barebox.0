@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jmBhX-0001vL-Je
- for barebox@lists.infradead.org; Fri, 19 Jun 2020 07:44:40 +0000
+ id 1jmBhf-0001ve-NE
+ for barebox@lists.infradead.org; Fri, 19 Jun 2020 07:44:48 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 19 Jun 2020 09:44:11 +0200
-Message-Id: <20200619074427.17289-6-s.hauer@pengutronix.de>
+Date: Fri, 19 Jun 2020 09:44:20 +0200
+Message-Id: <20200619074427.17289-15-s.hauer@pengutronix.de>
 In-Reply-To: <20200619074427.17289-1-s.hauer@pengutronix.de>
 References: <20200619074427.17289-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,164 +21,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/21] net: mdiobus: Add slice
+Subject: [PATCH 14/21] fastboot: Warn when cb_download is called with file
+ still open
 To: Barebox List <barebox@lists.infradead.org>
 Cc: =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-By adding a slice to the mdio bus we make the mdio code safe for being
-called in a poller.
+Warn when we are about to open a new download file without having
+closed the old one.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/phy/mdio_bus.c | 43 ++++++++++++++++++++++++++++++++++++++
- include/linux/phy.h        | 38 +++++++++++++--------------------
- 2 files changed, 58 insertions(+), 23 deletions(-)
+ common/fastboot.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-index 3480e2ffb4..99d23ffedf 100644
---- a/drivers/net/phy/mdio_bus.c
-+++ b/drivers/net/phy/mdio_bus.c
-@@ -239,6 +239,8 @@ int mdiobus_register(struct mii_bus *bus)
- 		return -EINVAL;
- 	}
- 
-+	slice_init(&bus->slice, dev_name(&bus->dev));
-+
- 	if (bus->reset)
- 		bus->reset(bus);
- 
-@@ -272,6 +274,8 @@ void mdiobus_unregister(struct mii_bus *bus)
- 		bus->phy_map[i] = NULL;
- 	}
- 
-+	slice_exit(&bus->slice);
-+
- 	list_del(&bus->list);
- }
- EXPORT_SYMBOL(mdiobus_unregister);
-@@ -357,6 +361,45 @@ static int mdio_bus_match(struct device_d *dev, struct driver_d *drv)
- 	return 1;
- }
- 
-+/**
-+ * mdiobus_read - Convenience function for reading a given MII mgmt register
-+ * @bus: the mii_bus struct
-+ * @addr: the phy address
-+ * @regnum: register number to read
-+ */
-+int mdiobus_read(struct mii_bus *bus, int addr, u32 regnum)
-+{
-+	int ret;
-+
-+	slice_acquire(&bus->slice);
-+
-+	ret = bus->read(bus, addr, regnum);
-+
-+	slice_release(&bus->slice);
-+
-+	return ret;
-+}
-+
-+/**
-+ * mdiobus_write - Convenience function for writing a given MII mgmt register
-+ * @bus: the mii_bus struct
-+ * @addr: the phy address
-+ * @regnum: register number to write
-+ * @val: value to write to @regnum
-+ */
-+int mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val)
-+{
-+	int ret;
-+
-+	slice_acquire(&bus->slice);
-+
-+	ret = bus->write(bus, addr, regnum, val);
-+
-+	slice_release(&bus->slice);
-+
-+	return ret;
-+}
-+
- static ssize_t phydev_read(struct cdev *cdev, void *_buf, size_t count, loff_t offset, ulong flags)
+diff --git a/common/fastboot.c b/common/fastboot.c
+index c800e89a65..7f5b8b6f03 100644
+--- a/common/fastboot.c
++++ b/common/fastboot.c
+@@ -337,6 +337,7 @@ int fastboot_handle_download_data(struct fastboot *fb, const void *buffer,
+ void fastboot_download_finished(struct fastboot *fb)
  {
- 	int i = count;
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index eec1332c9d..cdcb7c24f2 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -16,6 +16,7 @@
- #define __PHY_H
+ 	close(fb->download_fd);
++	fb->download_fd = 0;
  
- #include <driver.h>
-+#include <slice.h>
- #include <linux/list.h>
- #include <linux/ethtool.h>
- #include <linux/mii.h>
-@@ -116,9 +117,16 @@ struct mii_bus {
- 	struct list_head list;
+ 	printf("\n");
  
- 	bool is_multiplexed;
+@@ -356,6 +357,11 @@ static void cb_download(struct fastboot *fb, const char *cmd)
+ 
+ 	init_progression_bar(fb->download_size);
+ 
++	if (fb->download_fd > 0) {
++		pr_err("%s called and %s is still opened\n", __func__, fb->tempname);
++		close(fb->download_fd);
++	}
 +
-+	struct slice slice;
- };
- #define to_mii_bus(d) container_of(d, struct mii_bus, dev)
- 
-+static inline struct slice *mdiobus_slice(struct mii_bus *bus)
-+{
-+	return &bus->slice;
-+}
-+
- int mdiobus_register(struct mii_bus *bus);
- void mdiobus_unregister(struct mii_bus *bus);
- struct phy_device *mdiobus_scan(struct mii_bus *bus, int addr);
-@@ -134,28 +142,8 @@ struct mii_bus *mdiobus_get_bus(int busnum);
- 
- struct mii_bus *of_mdio_find_bus(struct device_node *mdio_bus_np);
- 
--/**
-- * mdiobus_read - Convenience function for reading a given MII mgmt register
-- * @bus: the mii_bus struct
-- * @addr: the phy address
-- * @regnum: register number to read
-- */
--static inline int mdiobus_read(struct mii_bus *bus, int addr, u32 regnum)
--{
--	return bus->read(bus, addr, regnum);
--}
--
--/**
-- * mdiobus_write - Convenience function for writing a given MII mgmt register
-- * @bus: the mii_bus struct
-- * @addr: the phy address
-- * @regnum: register number to write
-- * @val: value to write to @regnum
-- */
--static inline int mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val)
--{
--	return bus->write(bus, addr, regnum, val);
--}
-+int mdiobus_read(struct mii_bus *bus, int addr, u32 regnum);
-+int mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val);
- 
- /* phy_device: An instance of a PHY
-  *
-@@ -397,11 +385,15 @@ int phy_register_fixup(const char *bus_id, u32 phy_uid, u32 phy_uid_mask,
- int phy_register_fixup_for_id(const char *bus_id,
- 		int (*run)(struct phy_device *));
- int phy_scan_fixups(struct phy_device *phydev);
--
- int phy_read_mmd_indirect(struct phy_device *phydev, int prtad, int devad);
- void phy_write_mmd_indirect(struct phy_device *phydev, int prtad, int devad,
- 				   u16 data);
- 
-+static inline bool phy_acquired(struct phy_device *phydev)
-+{
-+	return phydev && phydev->bus && slice_acquired(&phydev->bus->slice);
-+}
-+
- #ifdef CONFIG_PHYLIB
- int phy_register_fixup_for_uid(u32 phy_uid, u32 phy_uid_mask,
- 		int (*run)(struct phy_device *));
+ 	fb->download_fd = open(fb->tempname, O_WRONLY | O_CREAT | O_TRUNC);
+ 	if (fb->download_fd < 0) {
+ 		fastboot_tx_print(fb, FASTBOOT_MSG_FAIL, "internal error");
 -- 
 2.27.0
 
