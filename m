@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jmBhQ-0006Rc-Ho
- for barebox@lists.infradead.org; Fri, 19 Jun 2020 07:44:40 +0000
+ id 1jmBhQ-0006Rm-QE
+ for barebox@lists.infradead.org; Fri, 19 Jun 2020 07:44:42 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 19 Jun 2020 09:44:14 +0200
-Message-Id: <20200619074427.17289-9-s.hauer@pengutronix.de>
+Date: Fri, 19 Jun 2020 09:44:15 +0200
+Message-Id: <20200619074427.17289-10-s.hauer@pengutronix.de>
 In-Reply-To: <20200619074427.17289-1-s.hauer@pengutronix.de>
 References: <20200619074427.17289-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,224 +21,87 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/21] net: Call net_poll() in a poller
+Subject: [PATCH 09/21] net: reply to ping requests
 To: Barebox List <barebox@lists.infradead.org>
 Cc: =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-This patch moves the ethernet receive loop into a poller. With this
-network protocols no longer have to call net_loop() explicitly but
-can do it implicitly by calling is_timeout() when waiting for packets.
-
-Having the network receive loop running in a poller has the advantage
-that we have it running continuously and not only when we explicitly
-expect packets to come in. With this we can reasonably well answer to
-ping requests which is implemented in the next patch. This also helps
-protocols that run in the background like fastboot over UDP.
+Now that we have the network receive function running in a poller we
+can reasonably well answer to ping requests. Implement this feature.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/nfs.c         |  2 --
- fs/tftp.c        |  2 --
- include/net.h    |  3 ---
- net/dhcp.c       |  1 -
- net/dns.c        |  1 -
- net/eth.c        | 15 ++++++++++-----
- net/net.c        | 14 +++++++++++---
- net/netconsole.c |  4 +---
- net/nfs.c        |  1 -
- net/ping.c       |  2 --
- net/sntp.c       |  2 --
- 11 files changed, 22 insertions(+), 25 deletions(-)
+ net/net.c | 46 ++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 44 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfs.c b/fs/nfs.c
-index 6c4637281d..6844d13d50 100644
---- a/fs/nfs.c
-+++ b/fs/nfs.c
-@@ -447,8 +447,6 @@ again:
- 	nfs_timer_start = get_time_ns();
- 
- 	while (1) {
--		net_poll();
--
- 		if (is_timeout(nfs_timer_start, NFS_TIMEOUT)) {
- 			tries++;
- 			if (tries == NFS_MAX_RESEND)
-diff --git a/fs/tftp.c b/fs/tftp.c
-index d186e7983a..e5a58a4dae 100644
---- a/fs/tftp.c
-+++ b/fs/tftp.c
-@@ -207,8 +207,6 @@ static int tftp_poll(struct file_priv *priv)
- 		return -ETIMEDOUT;
- 	}
- 
--	net_poll();
--
- 	return 0;
- }
- 
-diff --git a/include/net.h b/include/net.h
-index 8d2b4923de..583dc14ed5 100644
---- a/include/net.h
-+++ b/include/net.h
-@@ -244,9 +244,6 @@ IPaddr_t net_get_nameserver(void);
- const char *net_get_domainname(void);
- struct eth_device *net_route(IPaddr_t ip);
- 
--/* Do the work */
--void net_poll(void);
--
- static inline struct iphdr *net_eth_to_iphdr(char *pkt)
- {
- 	return (struct iphdr *)(pkt + ETHER_HDR_SIZE);
-diff --git a/net/dhcp.c b/net/dhcp.c
-index a27fa89996..ef22d2cef0 100644
---- a/net/dhcp.c
-+++ b/net/dhcp.c
-@@ -513,7 +513,6 @@ int dhcp_request(struct eth_device *edev, const struct dhcp_req_param *param,
- 			ret = -ETIMEDOUT;
- 			goto out1;
- 		}
--		net_poll();
- 		if (is_timeout(dhcp_start, 3 * SECOND)) {
- 			dhcp_start = get_time_ns();
- 			printf("T ");
-diff --git a/net/dns.c b/net/dns.c
-index ffe98ef9e3..851bf3722e 100644
---- a/net/dns.c
-+++ b/net/dns.c
-@@ -231,7 +231,6 @@ int resolv(const char *host, IPaddr_t *ip)
- 		if (ctrlc()) {
- 			break;
- 		}
--		net_poll();
- 		if (is_timeout(dns_timer_start, SECOND)) {
- 			dns_timer_start = get_time_ns();
- 			printf("T ");
-diff --git a/net/eth.c b/net/eth.c
-index a51e3421a7..d53d60d49c 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -286,14 +286,19 @@ static int __eth_rx(struct eth_device *edev)
- {
- 	int ret;
- 
--	slice_acquire(eth_device_slice(edev));
-+	if (!phy_acquired(edev->phydev)) {
-+		ret = eth_carrier_check(edev, 0);
-+		if (ret)
-+			return ret;
-+	}
- 
--	ret = eth_carrier_check(edev, 0);
--	if (ret)
--		goto out;
-+	if (slice_acquired(eth_device_slice(edev)))
-+		return 0;
-+
-+	slice_acquire(eth_device_slice(edev));
- 
- 	ret = edev->recv(edev);
--out:
-+
- 	slice_release(eth_device_slice(edev));
- 
- 	return ret;
 diff --git a/net/net.c b/net/net.c
-index 5fd6246ab2..197b551e72 100644
+index 197b551e72..cb0013519c 100644
 --- a/net/net.c
 +++ b/net/net.c
-@@ -239,8 +239,6 @@ static int arp_request(struct eth_device *edev, IPaddr_t dest, unsigned char *et
- 
- 		if (retries > PKT_NUM_RETRIES)
- 			return -ETIMEDOUT;
--
--		net_poll();
- 	}
- 
- 	pr_debug("Got ARP REPLY for %pI4: %02x:%02x:%02x:%02x:%02x:%02x\n",
-@@ -249,11 +247,21 @@ static int arp_request(struct eth_device *edev, IPaddr_t dest, unsigned char *et
- 	return 0;
+@@ -570,12 +570,54 @@ static int net_handle_udp(unsigned char *pkt, int len)
+ 	return -EINVAL;
  }
  
--void net_poll(void)
-+static void net_poll(struct poller_struct *poller)
- {
- 	eth_rx();
- }
- 
-+static struct poller_struct net_poller = {
-+	.func = net_poll,
-+};
-+
-+static int init_net_poll(void)
+-static int net_handle_icmp(unsigned char *pkt, int len)
++static int ping_reply(struct eth_device *edev, unsigned char *pkt, int len)
 +{
-+	return poller_register(&net_poller, "net");
-+}
-+device_initcall(init_net_poll);
++	struct ethernet *et = (struct ethernet *)pkt;
++	struct icmphdr *icmp;
++	struct iphdr *ip = (struct iphdr *)(pkt + ETHER_HDR_SIZE);
++	unsigned char *packet;
++	int ret;
 +
- static uint16_t net_udp_new_localport(void)
++	memcpy(et->et_dest, et->et_src, 6);
++	memcpy(et->et_src, edev->ethaddr, 6);
++	et->et_protlen = htons(PROT_IP);
++
++	icmp = net_eth_to_icmphdr(pkt);
++
++	icmp->type = ICMP_ECHO_REPLY;
++	icmp->checksum = 0;
++	icmp->checksum = ~net_checksum((unsigned char *)icmp,
++				       len - sizeof(struct iphdr) - ETHER_HDR_SIZE);
++	ip->check = 0;
++	ip->frag_off = 0;
++	net_copy_ip((void *)&ip->daddr, &ip->saddr);
++	net_copy_ip((void *)&ip->saddr, &edev->ipaddr);
++	ip->check = ~net_checksum((unsigned char *)ip, sizeof(struct iphdr));
++
++	packet = net_alloc_packet();
++	if (!packet)
++		return 0;
++
++	memcpy(packet, pkt, ETHER_HDR_SIZE + len);
++
++	ret = eth_send(edev, packet, ETHER_HDR_SIZE + len);
++
++	free(packet);
++
++	return 0;
++}
++
++static int net_handle_icmp(struct eth_device *edev, unsigned char *pkt, int len)
  {
- 	static uint16_t localport;
-diff --git a/net/netconsole.c b/net/netconsole.c
-index 0fece65a23..c692db942f 100644
---- a/net/netconsole.c
-+++ b/net/netconsole.c
-@@ -59,7 +59,7 @@ static int nc_getc(struct console_device *cdev)
- 		return 0;
+ 	struct net_connection *con;
++	struct icmphdr *icmp;
  
- 	while (!kfifo_len(priv->fifo))
--		net_poll();
-+		udelay(1);
+ 	pr_debug("%s\n", __func__);
  
- 	kfifo_getc(priv->fifo, &c);
++	icmp = net_eth_to_icmphdr(pkt);
++	if (icmp->type == ICMP_ECHO_REQUEST)
++		ping_reply(edev, pkt, len);
++
+ 	list_for_each_entry(con, &connection_list, list) {
+ 		if (con->proto == IPPROTO_ICMP) {
+ 			con->handler(con->priv, pkt, len);
+@@ -612,7 +654,7 @@ static int net_handle_ip(struct eth_device *edev, unsigned char *pkt, int len)
  
-@@ -77,8 +77,6 @@ static int nc_tstc(struct console_device *cdev)
- 	if (priv->busy)
- 		return kfifo_len(priv->fifo) ? 1 : 0;
- 
--	net_poll();
--
- 	return kfifo_len(priv->fifo) ? 1 : 0;
- }
- 
-diff --git a/net/nfs.c b/net/nfs.c
-index 591417e0de..266351da09 100644
---- a/net/nfs.c
-+++ b/net/nfs.c
-@@ -710,7 +710,6 @@ static int do_nfs(int argc, char *argv[])
- 			nfs_err = -EINTR;
- 			break;
- 		}
--		net_poll();
- 		if (is_timeout(nfs_timer_start, NFS_TIMEOUT * SECOND)) {
- 			show_progress(-1);
- 			nfs_send();
-diff --git a/net/ping.c b/net/ping.c
-index a71f59a805..f3de0c27a4 100644
---- a/net/ping.c
-+++ b/net/ping.c
-@@ -89,8 +89,6 @@ static int do_ping(int argc, char *argv[])
- 			break;
- 		}
- 
--		net_poll();
--
- 		if (is_timeout(ping_start, SECOND)) {
- 			/* No answer, send another packet */
- 			ping_start = get_time_ns();
-diff --git a/net/sntp.c b/net/sntp.c
-index b4e6d6439c..f693a2e8af 100644
---- a/net/sntp.c
-+++ b/net/sntp.c
-@@ -145,8 +145,6 @@ s64 sntp(const char *server)
- 			break;
- 		}
- 
--		net_poll();
--
- 		if (is_timeout(sntp_start, 1 * SECOND)) {
- 			sntp_start = get_time_ns();
- 			ret = sntp_send();
+ 	switch (ip->protocol) {
+ 	case IPPROTO_ICMP:
+-		return net_handle_icmp(pkt, len);
++		return net_handle_icmp(edev, pkt, len);
+ 	case IPPROTO_UDP:
+ 		return net_handle_udp(pkt, len);
+ 	}
 -- 
 2.27.0
 
