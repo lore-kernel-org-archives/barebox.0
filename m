@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jmBhQ-0006Rm-QE
- for barebox@lists.infradead.org; Fri, 19 Jun 2020 07:44:42 +0000
+ by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jmBhX-0001vM-Ju
+ for barebox@lists.infradead.org; Fri, 19 Jun 2020 07:44:40 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 19 Jun 2020 09:44:15 +0200
-Message-Id: <20200619074427.17289-10-s.hauer@pengutronix.de>
+Date: Fri, 19 Jun 2020 09:44:22 +0200
+Message-Id: <20200619074427.17289-17-s.hauer@pengutronix.de>
 In-Reply-To: <20200619074427.17289-1-s.hauer@pengutronix.de>
 References: <20200619074427.17289-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,87 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/21] net: reply to ping requests
+Subject: [PATCH 16/21] fastboot: init list head in common
 To: Barebox List <barebox@lists.infradead.org>
 Cc: =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-Now that we have the network receive function running in a poller we
-can reasonably well answer to ping requests. Implement this feature.
+The list of variables can be initialized in common code, no need to do
+the in the different implementations.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- net/net.c | 46 ++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 44 insertions(+), 2 deletions(-)
+ common/fastboot.c               | 2 ++
+ drivers/usb/gadget/f_fastboot.c | 2 --
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/net.c b/net/net.c
-index 197b551e72..cb0013519c 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -570,12 +570,54 @@ static int net_handle_udp(unsigned char *pkt, int len)
- 	return -EINVAL;
- }
+diff --git a/common/fastboot.c b/common/fastboot.c
+index 10ebb8b2a9..3f61208a21 100644
+--- a/common/fastboot.c
++++ b/common/fastboot.c
+@@ -171,6 +171,8 @@ int fastboot_generic_init(struct fastboot *fb, bool export_bbu)
+ 	struct file_list_entry *fentry;
+ 	struct fb_variable *var;
  
--static int net_handle_icmp(unsigned char *pkt, int len)
-+static int ping_reply(struct eth_device *edev, unsigned char *pkt, int len)
-+{
-+	struct ethernet *et = (struct ethernet *)pkt;
-+	struct icmphdr *icmp;
-+	struct iphdr *ip = (struct iphdr *)(pkt + ETHER_HDR_SIZE);
-+	unsigned char *packet;
-+	int ret;
++	INIT_LIST_HEAD(&fb->variables);
 +
-+	memcpy(et->et_dest, et->et_src, 6);
-+	memcpy(et->et_src, edev->ethaddr, 6);
-+	et->et_protlen = htons(PROT_IP);
-+
-+	icmp = net_eth_to_icmphdr(pkt);
-+
-+	icmp->type = ICMP_ECHO_REPLY;
-+	icmp->checksum = 0;
-+	icmp->checksum = ~net_checksum((unsigned char *)icmp,
-+				       len - sizeof(struct iphdr) - ETHER_HDR_SIZE);
-+	ip->check = 0;
-+	ip->frag_off = 0;
-+	net_copy_ip((void *)&ip->daddr, &ip->saddr);
-+	net_copy_ip((void *)&ip->saddr, &edev->ipaddr);
-+	ip->check = ~net_checksum((unsigned char *)ip, sizeof(struct iphdr));
-+
-+	packet = net_alloc_packet();
-+	if (!packet)
-+		return 0;
-+
-+	memcpy(packet, pkt, ETHER_HDR_SIZE + len);
-+
-+	ret = eth_send(edev, packet, ETHER_HDR_SIZE + len);
-+
-+	free(packet);
-+
-+	return 0;
-+}
-+
-+static int net_handle_icmp(struct eth_device *edev, unsigned char *pkt, int len)
- {
- 	struct net_connection *con;
-+	struct icmphdr *icmp;
+ 	var = fb_addvar(fb, "version");
+ 	fb_setvar(var, "0.4");
+ 	var = fb_addvar(fb, "bootloader-version");
+diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
+index f8a9c32530..35ad351f73 100644
+--- a/drivers/usb/gadget/f_fastboot.c
++++ b/drivers/usb/gadget/f_fastboot.c
+@@ -313,8 +313,6 @@ static struct usb_function *fastboot_alloc_func(struct usb_function_instance *fi
  
- 	pr_debug("%s\n", __func__);
+ 	f_fb = xzalloc(sizeof(*f_fb));
  
-+	icmp = net_eth_to_icmphdr(pkt);
-+	if (icmp->type == ICMP_ECHO_REQUEST)
-+		ping_reply(edev, pkt, len);
-+
- 	list_for_each_entry(con, &connection_list, list) {
- 		if (con->proto == IPPROTO_ICMP) {
- 			con->handler(con->priv, pkt, len);
-@@ -612,7 +654,7 @@ static int net_handle_ip(struct eth_device *edev, unsigned char *pkt, int len)
- 
- 	switch (ip->protocol) {
- 	case IPPROTO_ICMP:
--		return net_handle_icmp(pkt, len);
-+		return net_handle_icmp(edev, pkt, len);
- 	case IPPROTO_UDP:
- 		return net_handle_udp(pkt, len);
- 	}
+-	INIT_LIST_HEAD(&f_fb->fastboot.variables);
+-
+ 	f_fb->func.name = "fastboot";
+ 	f_fb->func.strings = fastboot_strings;
+ 	f_fb->func.bind = fastboot_bind;
 -- 
 2.27.0
 
