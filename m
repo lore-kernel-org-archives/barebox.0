@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jmBhX-0005AK-9Z
- for barebox@lists.infradead.org; Fri, 19 Jun 2020 07:44:45 +0000
+ id 1jmBhX-0005AJ-6H
+ for barebox@lists.infradead.org; Fri, 19 Jun 2020 07:44:42 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 19 Jun 2020 09:44:27 +0200
-Message-Id: <20200619074427.17289-22-s.hauer@pengutronix.de>
+Date: Fri, 19 Jun 2020 09:44:17 +0200
+Message-Id: <20200619074427.17289-12-s.hauer@pengutronix.de>
 In-Reply-To: <20200619074427.17289-1-s.hauer@pengutronix.de>
 References: <20200619074427.17289-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -17,190 +17,103 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 21/21] Documentation: Add document for parallel execution in
- barebox
+Subject: [PATCH 11/21] defconfigs: update renamed fastboot options
 To: Barebox List <barebox@lists.infradead.org>
 Cc: =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- Documentation/devel/background-execution.rst | 123 +++++++++++++++++++
- Documentation/devel/devel.rst                |  14 +++
- Documentation/index.rst                      |   1 +
- 3 files changed, 138 insertions(+)
- create mode 100644 Documentation/devel/background-execution.rst
- create mode 100644 Documentation/devel/devel.rst
-
-diff --git a/Documentation/devel/background-execution.rst b/Documentation/devel/background-execution.rst
-new file mode 100644
-index 0000000000..29ec2236e7
---- /dev/null
-+++ b/Documentation/devel/background-execution.rst
-@@ -0,0 +1,123 @@
-+Background execution in barebox
-+===============================
-+
-+barebox is single-threaded and doesn't support interrupts. Nevertheless it is
-+sometimes desired to execute code "in the background", like for example polling
-+for completion of transfers or to regularly blink a heartbeat LED.  For these
-+scenarios barebox offers the techniques described below.
-+
-+Pollers
-+-------
-+
-+Pollers are a way in barebox to frequently execute code in the background.
-+barebox is single-threaded, so a poller is not executed as a separate thread,
-+but instead pollers are executed whenever ``is_timeout()`` is called.  This has
-+a few implications. First of all, pollers are not executed when
-+``is_timeout()`` is not called. For this and other reasons, loops polling for
-+hardware events should always use a timeout, which is best implemented with
-+``is_timeout()``. Another thing to remember is that pollers can be executed
-+anywhere in the middle of other device accesses whenever ``is_timeout()`` is
-+called. Care must be taken that a poller doesn't access the very same device
-+again itself. See "slices" below on how devices can safely be accessed from
-+pollers. Some operations are entirely forbidden from pollers. For example it is
-+forbidden to access the virtual filesystem, as this could trigger arbitrary
-+device accesses.  The macro ``assert_command_context()`` is added to those
-+places to make sure they are not called in the wrong context. The poller
-+interface is declared in ``include/poller.h``.  ``poller_register()`` is used
-+to register a poller. The ``struct poller_struct`` passed to
-+``poller_register()`` needs to have the ``poller_struct.func()`` member
-+populated with the function that shall be called. From the moment a poller is
-+registered ``poller_struct.func()`` will be called regularly as long as someone
-+calls ``is_timeout()``.  A special poller can be registered with
-+``poller_async_register()``. A poller registered this way won't be called right
-+away, instead running it can be triggered by calling ``poller_call_async()``.
-+This will execute the poller after the ``@delay_ns`` argument.
-+``poller_call_async()`` may also be called from with the poller, so with this
-+it's possible to run a poller regularly with configurable delays.
-+
-+Pollers are limited in the things they can do. Poller code must always be
-+prepared for the case that the resources it accesses are currently busy and
-+handle this gracefully by trying again later. Most places in barebox either do
-+not test for resources being busy or return with an error if they are busy.
-+Calling into the filesystem potentially uses arbitrary other devices, so
-+calling into the filesystem from pollers is forbidden. For the same reason it
-+is forbidden to execute barebox commands from pollers.
-+
-+Workqueues
-+----------
-+
-+Sometimes code wants to access files from poller context or even wants to
-+execute barebox commands from poller context. The fastboot implementation is an
-+example for such a case. The fastboot commands come in via USB or network and
-+the completion and packet receive handlers are executed in poller context. Here
-+workqueues come into play. They allow to queue work items from poller context.
-+These work items are executed later at the point where the shell fetches its
-+next command. At this point we implicitly know that it's allowed to execute
-+commands or to access the filesystem, because otherwise the shell could not do
-+it. This means that execution of the next shell command will be delayed until
-+all work items are being done. Likewise the work items will only be executed
-+when the current shell command has finished.
-+
-+The workqueue interface is declared in ``include/work.h``.
-+
-+``wq_register()`` is the first step to use the workqueue interface.
-+``wq_register()`` registers a workqueue to which work items can be attached.
-+Before registering a workqueue a ``struct work_queue`` has to be populated with
-+two function callbacks.  ``work_queue.fn()`` is the callback that actually does
-+the work once it is scheduled.  ``work_queue.cancel()`` is a callback which is
-+executed when the pending work shall be cancelled. This is primarily for
-+freeing the memory associated to a work item.  ``wq_queue_work()`` is for
-+actually queueing a work item on a work queue. This can be called from poller
-+code. Usually a work item is allocated by the poller and then freed either in
-+``work_queue.fn()`` or in ``work_queue.cancel()``.
-+
-+Slices
-+------
-+
-+Slices are a way to check if a device is currently busy and thus may not be
-+called into currently. Pollers wanting to access a device must call
-+``slice_busy()`` on the slice provided by the device before calling into it.
-+When the slice is acquired (which can only happen inside a poller) the poller
-+can't continue at this moment and must try again next time it is executed.
-+Drivers whose devices provide a slice must call ``slice_busy()`` before
-+accessing the device and ``slice_release()`` afterwards. Slices can have
-+dependencies to other slices, for example a USB network controller uses the
-+corresponding USB host controller. A dependency can be expressed with
-+``slice_depends_on()``. With this the USB network controller can add a
-+dependency from the network device it provides itself to the USB host
-+controller it depends on.  With this ``slice_busy()`` on the network device
-+will return ``true`` when the USB host controller is busy.
-+
-+The usual pattern for using slices is that the device driver for a device
-+calls ``slice_acquire()`` when entering the driver and ``slice_release()``
-+before leaving the driver. The driver also provides a function returning
-+the slice for a device, for example the ethernet support code provides
-+``struct slice *eth_device_slice(struct eth_device *edev)``. Poller code
-+which wants to use the ethernet device checks for the availability doing
-+``slice_busy(eth_device_slice(edev))`` before accessing the ethernet
-+device.
-+
-+Limitations
-+-----------
-+
-+What barebox does is best described as cooperative multitasking. As pollers
-+can't be interrupted, it will directly affect the user experience when they
-+take too long. When barebox reacts sluggishly to key presses, then probably
-+pollers likely take too long to execute. A first test if this is the case can
-+be done by executing ``poller -t`` on the command line. This command will print
-+how many times we can execute all registered pollers in one second. When this
-+number is too low then pollers are guilty responsible. Workqueues help to run
-+schedule/execute longer running code, but during the time while workqueues are
-+executed nothing else happens. This means that when fastboot flashes an image
-+in a workqueue then barebox won't react to any key presses on the command line.
-+The usage of the interfaces described in this document is not yet very
-+widespread in barebox. The interfaces are used in the places where we need
-+them, but there are other places which do not use them but should. For example
-+using a LED driven by a I2C GPIO exander used as hearbeat LED won't work
-+properly currently. Consider the I2C driver accesses an unrelated I2C device,
-+like an EEPROM. After having initiated the transfer the driver polls for the
-+transfer being completed using a ``is_timeout()`` loop. The call to
-+``is_timeout()`` then calls into the registered pollers from which one accesses
-+the same I2C bus whose driver is just polling for completion of another
-+transfer. With this the I2C driver is in an undefined state and will likely not
-+work anymore.
-diff --git a/Documentation/devel/devel.rst b/Documentation/devel/devel.rst
-new file mode 100644
-index 0000000000..f559512ca3
---- /dev/null
-+++ b/Documentation/devel/devel.rst
-@@ -0,0 +1,14 @@
-+.. highlight:: console
-+
-+barebox programming
-+===================
-+
-+Contents:
-+
-+.. toctree::
-+   :maxdepth: 2
-+
-+   background-execution
-+
-+* :ref:`search`
-+* :ref:`genindex`
-diff --git a/Documentation/index.rst b/Documentation/index.rst
-index b7dae2396b..836dc41af2 100644
---- a/Documentation/index.rst
-+++ b/Documentation/index.rst
-@@ -19,6 +19,7 @@ Contents:
-    boards
-    glossary
-    devicetree/*
-+   devel/devel.rst
- 
- * :ref:`search`
- * :ref:`genindex`
--- 
-2.27.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RnJvbTogRGFuaWVsIEdsw7Zja25lciA8ZGdAZW1saXguY29tPgoKVGhlIHNwbGl0IG9mIHRoZSBn
+ZW5lcmljIEZhc3Rib290IGNvZGUgZnJvbSB0aGUgRmFzdGJvb3QgVVNCIGdhZGdldAppbmNsdWRl
+ZCByZW5hbWluZyB0aGUgQ09ORklHX1VTQl9HQURHRVRfRkFTVEJPT1RfKiBvcHRpb25zIHRvCkNP
+TkZJR19GQVNUQk9PVF8qLiBVcGRhdGUgYWxsIGRlZmNvbmZpZ3MgdG8gdXNlIHRoZSBuZXcgbmFt
+ZXMuCgpTaWduZWQtb2ZmLWJ5OiBEYW5pZWwgR2zDtmNrbmVyIDxkZ0BlbWxpeC5jb20+ClNpZ25l
+ZC1vZmYtYnk6IFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4KLS0tCiBhcmNo
+L2FybS9jb25maWdzL2lteDIzX2RlZmNvbmZpZyAgICAgICAgIHwgMiArLQogYXJjaC9hcm0vY29u
+Zmlncy9pbXgyOF9kZWZjb25maWcgICAgICAgICB8IDIgKy0KIGFyY2gvYXJtL2NvbmZpZ3MvaW14
+X3Y3X2RlZmNvbmZpZyAgICAgICAgfCAxICsKIGFyY2gvYXJtL2NvbmZpZ3MvaW14X3Y4X2RlZmNv
+bmZpZyAgICAgICAgfCAyICstCiBhcmNoL2FybS9jb25maWdzL2tpbmRsZS1teDUwX2RlZmNvbmZp
+ZyAgIHwgMiArLQogYXJjaC9hcm0vY29uZmlncy9vbWFwX2RlZmNvbmZpZyAgICAgICAgICB8IDIg
+Ky0KIGFyY2gvYXJtL2NvbmZpZ3MvemlpX3ZmNjEwX2Rldl9kZWZjb25maWcgfCAyICstCiA3IGZp
+bGVzIGNoYW5nZWQsIDcgaW5zZXJ0aW9ucygrKSwgNiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQg
+YS9hcmNoL2FybS9jb25maWdzL2lteDIzX2RlZmNvbmZpZyBiL2FyY2gvYXJtL2NvbmZpZ3MvaW14
+MjNfZGVmY29uZmlnCmluZGV4IGJmZjljMDhjNDAuLjQ4YmYxNGEzOTAgMTAwNjQ0Ci0tLSBhL2Fy
+Y2gvYXJtL2NvbmZpZ3MvaW14MjNfZGVmY29uZmlnCisrKyBiL2FyY2gvYXJtL2NvbmZpZ3MvaW14
+MjNfZGVmY29uZmlnCkBAIC0yMiw2ICsyMiw3IEBAIENPTkZJR19CTFNQRUM9eQogQ09ORklHX0NP
+TlNPTEVfQUxMT1dfQ09MT1I9eQogQ09ORklHX0RFRkFVTFRfRU5WSVJPTk1FTlRfR0VORVJJQ19O
+RVc9eQogQ09ORklHX1JFU0VUX1NPVVJDRT15CitDT05GSUdfRkFTVEJPT1RfQ01EX09FTT15CiBD
+T05GSUdfQ01EX0RNRVNHPXkKIENPTkZJR19MT05HSEVMUD15CiBDT05GSUdfQ01EX0lPTUVNPXkK
+QEAgLTkwLDcgKzkxLDYgQEAgQ09ORklHX1VTQl9HQURHRVQ9eQogQ09ORklHX1VTQl9HQURHRVRf
+REZVPXkKIENPTkZJR19VU0JfR0FER0VUX1NFUklBTD15CiBDT05GSUdfVVNCX0dBREdFVF9GQVNU
+Qk9PVD15Ci1DT05GSUdfVVNCX0dBREdFVF9GQVNUQk9PVF9DTURfT0VNPXkKIENPTkZJR19WSURF
+Tz15CiBDT05GSUdfRFJJVkVSX1ZJREVPX1NUTT15CiBDT05GSUdfTUNJPXkKZGlmZiAtLWdpdCBh
+L2FyY2gvYXJtL2NvbmZpZ3MvaW14MjhfZGVmY29uZmlnIGIvYXJjaC9hcm0vY29uZmlncy9pbXgy
+OF9kZWZjb25maWcKaW5kZXggNDQ0MmM3OWNjNC4uYmViMGJjMmY3NiAxMDA2NDQKLS0tIGEvYXJj
+aC9hcm0vY29uZmlncy9pbXgyOF9kZWZjb25maWcKKysrIGIvYXJjaC9hcm0vY29uZmlncy9pbXgy
+OF9kZWZjb25maWcKQEAgLTI1LDYgKzI1LDcgQEAgQ09ORklHX0NPTlNPTEVfQUxMT1dfQ09MT1I9
+eQogQ09ORklHX1BCTF9DT05TT0xFPXkKIENPTkZJR19ERUZBVUxUX0VOVklST05NRU5UX0dFTkVS
+SUNfTkVXPXkKIENPTkZJR19SRVNFVF9TT1VSQ0U9eQorQ09ORklHX0ZBU1RCT09UX0NNRF9PRU09
+eQogQ09ORklHX0NNRF9ETUVTRz15CiBDT05GSUdfTE9OR0hFTFA9eQogQ09ORklHX0NNRF9JT01F
+TT15CkBAIC0xMDUsNyArMTA2LDYgQEAgQ09ORklHX1VTQl9HQURHRVQ9eQogQ09ORklHX1VTQl9H
+QURHRVRfREZVPXkKIENPTkZJR19VU0JfR0FER0VUX1NFUklBTD15CiBDT05GSUdfVVNCX0dBREdF
+VF9GQVNUQk9PVD15Ci1DT05GSUdfVVNCX0dBREdFVF9GQVNUQk9PVF9DTURfT0VNPXkKIENPTkZJ
+R19WSURFTz15CiBDT05GSUdfRFJJVkVSX1ZJREVPX1NUTT15CiBDT05GSUdfTUNJPXkKZGlmZiAt
+LWdpdCBhL2FyY2gvYXJtL2NvbmZpZ3MvaW14X3Y3X2RlZmNvbmZpZyBiL2FyY2gvYXJtL2NvbmZp
+Z3MvaW14X3Y3X2RlZmNvbmZpZwppbmRleCA0ZmE4YjE5YTZiLi5iMWZlNzE3ODZmIDEwMDY0NAot
+LS0gYS9hcmNoL2FybS9jb25maWdzL2lteF92N19kZWZjb25maWcKKysrIGIvYXJjaC9hcm0vY29u
+Zmlncy9pbXhfdjdfZGVmY29uZmlnCkBAIC03MCw2ICs3MCw3IEBAIENPTkZJR19DT05TT0xFX0FD
+VElWQVRFX05PTkU9eQogQ09ORklHX1BBUlRJVElPTl9ESVNLX0VGST15CiBDT05GSUdfREVGQVVM
+VF9FTlZJUk9OTUVOVF9HRU5FUklDX05FVz15CiBDT05GSUdfUkVTRVRfU09VUkNFPXkKK0NPTkZJ
+R19GQVNUQk9PVF9DTURfT0VNPXkKIENPTkZJR19DTURfRE1FU0c9eQogQ09ORklHX0xPTkdIRUxQ
+PXkKIENPTkZJR19DTURfSU9NRU09eQpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vY29uZmlncy9pbXhf
+djhfZGVmY29uZmlnIGIvYXJjaC9hcm0vY29uZmlncy9pbXhfdjhfZGVmY29uZmlnCmluZGV4IDA2
+ZmI0MDYwODQuLmI5Njg2N2FkMGMgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2NvbmZpZ3MvaW14X3Y4
+X2RlZmNvbmZpZworKysgYi9hcmNoL2FybS9jb25maWdzL2lteF92OF9kZWZjb25maWcKQEAgLTI1
+LDYgKzI1LDcgQEAgQ09ORklHX0NPTlNPTEVfUkFUUD15CiBDT05GSUdfUEFSVElUSU9OX0RJU0tf
+RUZJPXkKIENPTkZJR19ERUZBVUxUX0VOVklST05NRU5UX0dFTkVSSUNfTkVXPXkKIENPTkZJR19S
+RVNFVF9TT1VSQ0U9eQorQ09ORklHX0ZBU1RCT09UX1NQQVJTRT15CiBDT05GSUdfQ01EX0RNRVNH
+PXkKIENPTkZJR19MT05HSEVMUD15CiBDT05GSUdfQ01EX0lPTUVNPXkKQEAgLTEwNiw3ICsxMDcs
+NiBAQCBDT05GSUdfVVNCX1NUT1JBR0U9eQogQ09ORklHX1VTQl9HQURHRVQ9eQogQ09ORklHX1VT
+Ql9HQURHRVRfU0VSSUFMPXkKIENPTkZJR19VU0JfR0FER0VUX0ZBU1RCT09UPXkKLUNPTkZJR19V
+U0JfR0FER0VUX0ZBU1RCT09UX1NQQVJTRT15CiBDT05GSUdfTUNJPXkKIENPTkZJR19NQ0lfTU1D
+X0JPT1RfUEFSVElUSU9OUz15CiBDT05GSUdfTUNJX0lNWF9FU0RIQz15CmRpZmYgLS1naXQgYS9h
+cmNoL2FybS9jb25maWdzL2tpbmRsZS1teDUwX2RlZmNvbmZpZyBiL2FyY2gvYXJtL2NvbmZpZ3Mv
+a2luZGxlLW14NTBfZGVmY29uZmlnCmluZGV4IDg1NWRhZWY3MWEuLjU1MmIyZDZkMzMgMTAwNjQ0
+Ci0tLSBhL2FyY2gvYXJtL2NvbmZpZ3Mva2luZGxlLW14NTBfZGVmY29uZmlnCisrKyBiL2FyY2gv
+YXJtL2NvbmZpZ3Mva2luZGxlLW14NTBfZGVmY29uZmlnCkBAIC0yMCw2ICsyMCw3IEBAIENPTkZJ
+R19CT09UTV9PRlRSRUU9eQogQ09ORklHX0NPTlNPTEVfQUNUSVZBVEVfQUxMPXkKIENPTkZJR19D
+T05TT0xFX0FMTE9XX0NPTE9SPXkKIENPTkZJR19ERUZBVUxUX0VOVklST05NRU5UX0dFTkVSSUNf
+TkVXPXkKK0NPTkZJR19GQVNUQk9PVF9DTURfT0VNPXkKIENPTkZJR19DTURfRE1FU0c9eQogQ09O
+RklHX0xPTkdIRUxQPXkKIENPTkZJR19DTURfTUVNSU5GTz15CkBAIC01MCw3ICs1MSw2IEBAIENP
+TkZJR19VU0JfRUhDST15CiBDT05GSUdfVVNCX0dBREdFVD15CiBDT05GSUdfVVNCX0dBREdFVF9T
+RVJJQUw9eQogQ09ORklHX1VTQl9HQURHRVRfRkFTVEJPT1Q9eQotQ09ORklHX1VTQl9HQURHRVRf
+RkFTVEJPT1RfQ01EX09FTT15CiBDT05GSUdfTUNJPXkKIENPTkZJR19NQ0lfU1RBUlRVUD15CiBD
+T05GSUdfTUNJX01NQ19CT09UX1BBUlRJVElPTlM9eQpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vY29u
+Zmlncy9vbWFwX2RlZmNvbmZpZyBiL2FyY2gvYXJtL2NvbmZpZ3Mvb21hcF9kZWZjb25maWcKaW5k
+ZXggOWQ3MWQwMjc0NC4uNTk4OTJjYjIzMSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vY29uZmlncy9v
+bWFwX2RlZmNvbmZpZworKysgYi9hcmNoL2FybS9jb25maWdzL29tYXBfZGVmY29uZmlnCkBAIC0z
+NCw2ICszNCw3IEBAIENPTkZJR19ERUZBVUxUX0VOVklST05NRU5UX0dFTkVSSUNfTkVXPXkKIENP
+TkZJR19TVEFURT15CiBDT05GSUdfQk9PVENIT09TRVI9eQogQ09ORklHX1JFU0VUX1NPVVJDRT15
+CitDT05GSUdfRkFTVEJPT1RfQ01EX09FTT15CiBDT05GSUdfTE9OR0hFTFA9eQogQ09ORklHX0NN
+RF9JT01FTT15CiBDT05GSUdfQ01EX01FTUlORk89eQpAQCAtMTIxLDcgKzEyMiw2IEBAIENPTkZJ
+R19VU0JfR0FER0VUPXkKIENPTkZJR19VU0JfR0FER0VUX0RGVT15CiBDT05GSUdfVVNCX0dBREdF
+VF9TRVJJQUw9eQogQ09ORklHX1VTQl9HQURHRVRfRkFTVEJPT1Q9eQotQ09ORklHX1VTQl9HQURH
+RVRfRkFTVEJPT1RfQ01EX09FTT15CiBDT05GSUdfVVNCX01VU0I9eQogQ09ORklHX1VTQl9NVVNC
+X0FNMzM1WD15CiBDT05GSUdfVVNCX01VU0JfSE9TVD15CmRpZmYgLS1naXQgYS9hcmNoL2FybS9j
+b25maWdzL3ppaV92ZjYxMF9kZXZfZGVmY29uZmlnIGIvYXJjaC9hcm0vY29uZmlncy96aWlfdmY2
+MTBfZGV2X2RlZmNvbmZpZwppbmRleCA3MTYxZDc0MGFjLi40NWMyNGQ2ZGY0IDEwMDY0NAotLS0g
+YS9hcmNoL2FybS9jb25maWdzL3ppaV92ZjYxMF9kZXZfZGVmY29uZmlnCisrKyBiL2FyY2gvYXJt
+L2NvbmZpZ3MvemlpX3ZmNjEwX2Rldl9kZWZjb25maWcKQEAgLTIyLDYgKzIyLDcgQEAgQ09ORklH
+X0NPTlNPTEVfUkFUUD15CiBDT05GSUdfUEFSVElUSU9OX0RJU0tfRUZJPXkKIENPTkZJR19ERUZB
+VUxUX0VOVklST05NRU5UX0dFTkVSSUNfTkVXPXkKIENPTkZJR19SRVNFVF9TT1VSQ0U9eQorQ09O
+RklHX0ZBU1RCT09UX0NNRF9PRU09eQogQ09ORklHX0NNRF9ETUVTRz15CiBDT05GSUdfTE9OR0hF
+TFA9eQogQ09ORklHX0NNRF9JT01FTT15CkBAIC0xMTMsNyArMTE0LDYgQEAgQ09ORklHX1VTQl9H
+QURHRVQ9eQogQ09ORklHX1VTQl9HQURHRVRfREZVPXkKIENPTkZJR19VU0JfR0FER0VUX1NFUklB
+TD15CiBDT05GSUdfVVNCX0dBREdFVF9GQVNUQk9PVD15Ci1DT05GSUdfVVNCX0dBREdFVF9GQVNU
+Qk9PVF9DTURfT0VNPXkKIENPTkZJR19NQ0k9eQogQ09ORklHX01DSV9NTUNfQk9PVF9QQVJUSVRJ
+T05TPXkKIENPTkZJR19NQ0lfSU1YX0VTREhDPXkKLS0gCjIuMjcuMAoKCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
+cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
+bWFuL2xpc3RpbmZvL2JhcmVib3gK
