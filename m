@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jmBhQ-0006Rk-IY
+ by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jmBhX-0001vN-OG
  for barebox@lists.infradead.org; Fri, 19 Jun 2020 07:44:41 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 19 Jun 2020 09:44:16 +0200
-Message-Id: <20200619074427.17289-11-s.hauer@pengutronix.de>
+Date: Fri, 19 Jun 2020 09:44:26 +0200
+Message-Id: <20200619074427.17289-21-s.hauer@pengutronix.de>
 In-Reply-To: <20200619074427.17289-1-s.hauer@pengutronix.de>
 References: <20200619074427.17289-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,75 +21,174 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/21] usbnet: Be more friendly in the receive path
+Subject: [PATCH 20/21] fs: Warn when filesystem operations are called from a
+ poller
 To: Barebox List <barebox@lists.infradead.org>
 Cc: =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-To recognize if we have a receive packet pending we must set up a USB
-bulk transfer. When there's no incoming packet we must wait until the
-transfer times out. We do this with every poller call which can
-considerably slow down the system. With this patch we do two things
-against this:
-
-- lower the timeout for the bulk transfer
-- When we haven't received a packet for longer then lower the frequency
-  of calling into the USB stack to once every 100ms
+Filesystem operations possibly call into arbitrary devices, so shouldn't
+be used from a poller. This patch sprinkles some WARN_ONCE() when this
+happens. One exception is when the file which is accessed is on ramfs
+which doesn't have any dependencies to devices.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/usb/usbnet.c | 19 ++++++++++++++++++-
- include/usb/usbnet.h     |  3 +++
- 2 files changed, 21 insertions(+), 1 deletion(-)
+ common/poller.c |  2 +-
+ fs/fs.c         | 35 +++++++++++++++++++++++++++++++++++
+ include/slice.h |  6 ++++++
+ 3 files changed, 42 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index 46ea73247f..aa48678f87 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -122,12 +122,29 @@ static int usbnet_recv(struct eth_device *edev)
+diff --git a/common/poller.c b/common/poller.c
+index 7b1b92714c..50c518697b 100644
+--- a/common/poller.c
++++ b/common/poller.c
+@@ -16,7 +16,7 @@
+ #include <slice.h>
  
- 	dev_dbg(&edev->dev, "%s\n",__func__);
+ static LIST_HEAD(poller_list);
+-static int poller_active;
++int poller_active;
  
-+	/*
-+	 * we must let the usb_bulk_msg below timeout before we realize
-+	 * that we have no packet received. Since this function runs
-+	 * inside a poller we considerably slow down barebox when we
-+	 * wait for the timeout too often. To improve this we only poll
-+	 * with full speed when we actually have received a packet in the
-+	 * last 100ms.
-+	 */
-+	if (is_timeout(dev->last_pkt_received, 100 * MSECOND) &&
-+	    !is_timeout(dev->last_recv_call, 100 * MSECOND)) {
-+		return 0;
-+	}
+ int poller_register(struct poller_struct *poller, const char *name)
+ {
+diff --git a/fs/fs.c b/fs/fs.c
+index e04cadfe5d..d9bef0f852 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -31,6 +31,7 @@
+ #include <environment.h>
+ #include <libgen.h>
+ #include <block.h>
++#include <slice.h>
+ #include <libfile.h>
+ #include <parseopt.h>
+ #include <linux/namei.h>
+@@ -74,6 +75,8 @@ static FILE *files;
+ static struct dentry *d_root;
+ static struct vfsmount *mnt_root;
+ 
++static struct fs_driver_d *ramfs_driver;
 +
-+	dev->last_recv_call = get_time_ns();
-+
- 	len = dev->rx_urb_size;
+ static int init_fs(void)
+ {
+ 	cwd = xzalloc(PATH_MAX);
+@@ -250,6 +253,7 @@ static ssize_t __read(FILE *f, void *buf, size_t count)
+ 	struct fs_driver_d *fsdrv;
+ 	int ret;
  
--	ret = usb_bulk_msg(dev->udev, dev->in, dev->rx_buf, len, &alen, 100);
-+	ret = usb_bulk_msg(dev->udev, dev->in, dev->rx_buf, len, &alen, 2);
- 	if (ret)
- 		return ret;
- 
-+	dev->last_pkt_received = get_time_ns();
 +
- 	if (alen) {
- 		if (info->rx_fixup)
- 			return info->rx_fixup(dev, dev->rx_buf, alen);
-diff --git a/include/usb/usbnet.h b/include/usb/usbnet.h
-index 450db47b40..7ff32f280a 100644
---- a/include/usb/usbnet.h
-+++ b/include/usb/usbnet.h
-@@ -54,6 +54,9 @@ struct usbnet {
- #		define EVENT_RX_MEMORY	2
- #		define EVENT_STS_SPLIT	3
- #		define EVENT_LINK_RESET	4
-+
-+	uint64_t last_pkt_received;
-+	uint64_t last_recv_call;
- };
+ 	if ((f->flags & O_ACCMODE) == O_WRONLY) {
+ 		ret = -EBADF;
+ 		goto out;
+@@ -257,6 +261,9 @@ static ssize_t __read(FILE *f, void *buf, size_t count)
  
- #if 0
+ 	fsdrv = f->fsdev->driver;
+ 
++	if (fsdrv != ramfs_driver)
++		assert_command_context();
++
+ 	if (f->size != FILE_SIZE_STREAM && f->pos + count > f->size)
+ 		count = f->size - f->pos;
+ 
+@@ -315,6 +322,10 @@ static ssize_t __write(FILE *f, const void *buf, size_t count)
+ 	}
+ 
+ 	fsdrv = f->fsdev->driver;
++
++	if (fsdrv != ramfs_driver)
++		assert_command_context();
++
+ 	if (f->size != FILE_SIZE_STREAM && f->pos + count > f->size) {
+ 		ret = fsdrv->truncate(&f->fsdev->dev, f, f->pos + count);
+ 		if (ret) {
+@@ -402,6 +413,9 @@ loff_t lseek(int fd, loff_t offset, int whence)
+ 
+ 	fsdrv = f->fsdev->driver;
+ 
++	if (fsdrv != ramfs_driver)
++		assert_command_context();
++
+ 	ret = -EINVAL;
+ 
+ 	switch (whence) {
+@@ -457,6 +471,10 @@ int erase(int fd, loff_t count, loff_t offset)
+ 		return -EINVAL;
+ 
+ 	fsdrv = f->fsdev->driver;
++
++	if (fsdrv != ramfs_driver)
++		assert_command_context();
++
+ 	if (fsdrv->erase)
+ 		ret = fsdrv->erase(&f->fsdev->dev, f, count, offset);
+ 	else
+@@ -483,6 +501,10 @@ int protect(int fd, size_t count, loff_t offset, int prot)
+ 		count = f->size - offset;
+ 
+ 	fsdrv = f->fsdev->driver;
++
++	if (fsdrv != ramfs_driver)
++		assert_command_context();
++
+ 	if (fsdrv->protect)
+ 		ret = fsdrv->protect(&f->fsdev->dev, f, count, offset, prot);
+ 	else
+@@ -509,6 +531,10 @@ int discard_range(int fd, loff_t count, loff_t offset)
+ 		count = f->size - offset;
+ 
+ 	fsdrv = f->fsdev->driver;
++
++	if (fsdrv != ramfs_driver)
++		assert_command_context();
++
+ 	if (fsdrv->discard_range)
+ 		ret = fsdrv->discard_range(&f->fsdev->dev, f, count, offset);
+ 	else
+@@ -547,6 +573,9 @@ void *memmap(int fd, int flags)
+ 
+ 	fsdrv = f->fsdev->driver;
+ 
++	if (fsdrv != ramfs_driver)
++		assert_command_context();
++
+ 	if (fsdrv->memmap)
+ 		ret = fsdrv->memmap(&f->fsdev->dev, f, &retp, flags);
+ 	else
+@@ -570,6 +599,9 @@ int close(int fd)
+ 
+ 	fsdrv = f->fsdev->driver;
+ 
++	if (fsdrv != ramfs_driver)
++		assert_command_context();
++
+ 	if (fsdrv->close)
+ 		ret = fsdrv->close(&f->fsdev->dev, f);
+ 
+@@ -700,6 +732,9 @@ int register_fs_driver(struct fs_driver_d *fsdrv)
+ 	fsdrv->drv.bus = &fs_bus;
+ 	register_driver(&fsdrv->drv);
+ 
++	if (!strcmp(fsdrv->drv.name, "ramfs"))
++		ramfs_driver = fsdrv;
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL(register_fs_driver);
+diff --git a/include/slice.h b/include/slice.h
+index fd753e194b..5438aeef90 100644
+--- a/include/slice.h
++++ b/include/slice.h
+@@ -33,4 +33,10 @@ extern struct slice command_slice;
+ void command_slice_acquire(void);
+ void command_slice_release(void);
+ 
++extern int poller_active;
++
++#define assert_command_context() ({    \
++	WARN_ONCE(poller_active, "%s called in poller\n", __func__); \
++})
++
+ #endif /* __SLICE_H */
 -- 
 2.27.0
 
