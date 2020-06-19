@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jmBhQ-0006Ro-Fy
+ id 1jmBhQ-0006Rk-IY
  for barebox@lists.infradead.org; Fri, 19 Jun 2020 07:44:41 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 19 Jun 2020 09:44:19 +0200
-Message-Id: <20200619074427.17289-14-s.hauer@pengutronix.de>
+Date: Fri, 19 Jun 2020 09:44:16 +0200
+Message-Id: <20200619074427.17289-11-s.hauer@pengutronix.de>
 In-Reply-To: <20200619074427.17289-1-s.hauer@pengutronix.de>
 References: <20200619074427.17289-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -17,124 +17,84 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/21] fastboot: rename usbgadget.fastboot_* variables to
- fastboot.*
+Subject: [PATCH 10/21] usbnet: Be more friendly in the receive path
 To: Barebox List <barebox@lists.infradead.org>
 Cc: =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-RnJvbTogRGFuaWVsIEdsw7Zja25lciA8ZGdAZW1saXguY29tPgoKVGhlcmUgaXMgbm90aGluZyBV
-U0Itc3BlY2lmaWMgaW4gdGhlIGRlZmluZWQgdXNiZ2FkZ2V0LmZhc3Rib290XyoKdmFyaWFibGVz
-LiBSZW5hbWUgdGhlbSB0byBiZSB1c2FibGUgYWxzbyBmb3IgdGhlIFVEUCBmYXN0Ym9vdCB0cmFu
-c3BvcnQuCgpUaGUgdXNiZ2FkZ2V0LmZhc3Rib290X2Z1bmN0aW9uIHZhcmlhYmxlIGlzIHVzZWQg
-dG8gZGVmaW5lIHRoZSBmaWxlcyBhbmQKZGV2aWNlcyBhY2Nlc3NpYmxlIHdpdGggdGhlIGVyYXNl
-IGFuZCBmbGFzaCBjb21tYW5kcy4gU2luY2UgImZ1bmN0aW9uIiBpcwphIHRlcm0gZnJvbSB0aGUg
-VVNCIHNwZWNpZmljYXRpb24gYW5kIHRoZSBGYXN0Ym9vdCBzcGVjaWZpY2F0aW9uIHVzZXMgdGhl
-CnRlcm0gInBhcnRpdGlvbiIsIHdlIHJlbmFtZSB0aGF0IHZhcmlhYmxlIHRvICJmYXN0Ym9vdC5w
-YXJ0aXRpb25zIi4KClNpZ25lZC1vZmYtYnk6IERhbmllbCBHbMO2Y2tuZXIgPGRnQGVtbGl4LmNv
-bT4KU2lnbmVkLW9mZi1ieTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgot
-LS0KIERvY3VtZW50YXRpb24vdXNlci91c2IucnN0IHwgIDQgKystLQogY29tbWFuZHMvdXNiZ2Fk
-Z2V0LmMgICAgICAgfCAgMiArLQogY29tbW9uL2Zhc3Rib290LmMgICAgICAgICAgfCAyNCArKysr
-KysrKysrKysrKysrKysrKystLS0KIGNvbW1vbi91c2JnYWRnZXQuYyAgICAgICAgIHwgMTYgKyst
-LS0tLS0tLS0tLS0tLQogaW5jbHVkZS9mYXN0Ym9vdC5oICAgICAgICAgfCAgMyArKysKIDUgZmls
-ZXMgY2hhbmdlZCwgMjkgaW5zZXJ0aW9ucygrKSwgMjAgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0
-IGEvRG9jdW1lbnRhdGlvbi91c2VyL3VzYi5yc3QgYi9Eb2N1bWVudGF0aW9uL3VzZXIvdXNiLnJz
-dAppbmRleCA0YzFiMjkyNWYyLi5jYTVmODEzOGRlIDEwMDY0NAotLS0gYS9Eb2N1bWVudGF0aW9u
-L3VzZXIvdXNiLnJzdAorKysgYi9Eb2N1bWVudGF0aW9uL3VzZXIvdXNiLnJzdApAQCAtMjY2LDcg
-KzI2Niw3IEBAIFVTQiBHYWRnZXQgYXV0b3N0YXJ0IE9wdGlvbnMKICAgU2VlIDpyZWY6YGNvbW1h
-bmRfdXNiZ2FkZ2V0YCAtYS4gKERlZmF1bHQgMCkuCiBgYGdsb2JhbC51c2JnYWRnZXQuZGZ1X2Z1
-bmN0aW9uYGAKICAgRnVuY3Rpb24gZGVzY3JpcHRpb24gZm9yIERGVS4gU2VlIDpyZWY6YGNvbW1h
-bmRfdXNiZ2FkZ2V0YCAtRCBbZGVzY10uCi1gYGdsb2JhbC51c2JnYWRnZXQuZmFzdGJvb3RfZnVu
-Y3Rpb25gYAorYGBnbG9iYWwuZmFzdGJvb3QucGFydGl0aW9uc2BgCiAgIEZ1bmN0aW9uIGRlc2Ny
-aXB0aW9uIGZvciBmYXN0Ym9vdC4gU2VlIDpyZWY6YGNvbW1hbmRfdXNiZ2FkZ2V0YCAtQSBbZGVz
-Y10uCi1gYGdsb2JhbC51c2JnYWRnZXQuZmFzdGJvb3RfYmJ1YGAKK2BgZ2xvYmFsLmZhc3Rib290
-LmJidWBgCiAgIEV4cG9ydCBiYXJlYm94IHVwZGF0ZSBoYW5kbGVycy4gU2VlIDpyZWY6YGNvbW1h
-bmRfdXNiZ2FkZ2V0YCAtYi4gKERlZmF1bHQgMCkuCmRpZmYgLS1naXQgYS9jb21tYW5kcy91c2Jn
-YWRnZXQuYyBiL2NvbW1hbmRzL3VzYmdhZGdldC5jCmluZGV4IDE5M2RhODZkZWUuLjkxMzM0MDJm
-NTIgMTAwNjQ0Ci0tLSBhL2NvbW1hbmRzL3VzYmdhZGdldC5jCisrKyBiL2NvbW1hbmRzL3VzYmdh
-ZGdldC5jCkBAIC01Nyw3ICs1Nyw3IEBAIEJBUkVCT1hfQ01EX0hFTFBfVEVYVCgiIikKIEJBUkVC
-T1hfQ01EX0hFTFBfVEVYVCgiT3B0aW9uczoiKQogQkFSRUJPWF9DTURfSEVMUF9PUFQgKCItYVx0
-IiwgIkNyZWF0ZSBDREMgQUNNIGZ1bmN0aW9uIikKIEJBUkVCT1hfQ01EX0hFTFBfT1BUICgiLUEg
-PGRlc2M+IiwgIkNyZWF0ZSBBbmRyb2lkIEZhc3Rib290IGZ1bmN0aW9uLiBJZiAnZGVzYycgaXMg
-bm90IHByb3ZpZGVkLCAiCi0JCQkJICAgInRyeSB0byB1c2UgJ2dsb2JhbC51c2JnYWRnZXQuZmFz
-dGJvb3RfZnVuY3Rpb24nIHZhcmlhYmxlLiIpCisJCQkJICAgInRyeSB0byB1c2UgJ2dsb2JhbC5m
-YXN0Ym9vdC5wYXJ0aXRpb25zJyB2YXJpYWJsZS4iKQogQkFSRUJPWF9DTURfSEVMUF9PUFQgKCIt
-Ylx0IiwgImluY2x1ZGUgcmVnaXN0ZXJlZCBiYXJlYm94IHVwZGF0ZSBoYW5kbGVycyAoZmFzdGJv
-b3Qgc3BlY2lmaWMpIikKIEJBUkVCT1hfQ01EX0hFTFBfT1BUICgiLUQgPGRlc2M+IiwgIkNyZWF0
-ZSBERlUgZnVuY3Rpb24uIElmICdkZXNjJyBpcyBub3QgcHJvdmlkZWQsICIKIAkJCQkgICAidHJ5
-IHRvIHVzZSAnZ2xvYmFsLnVzYmdhZGdldC5kZnVfZnVuY3Rpb24nIHZhcmlhYmxlLiIpCmRpZmYg
-LS1naXQgYS9jb21tb24vZmFzdGJvb3QuYyBiL2NvbW1vbi9mYXN0Ym9vdC5jCmluZGV4IDMwMjcy
-MGM0M2QuLmM4MDBlODlhNjUgMTAwNjQ0Ci0tLSBhL2NvbW1vbi9mYXN0Ym9vdC5jCisrKyBiL2Nv
-bW1vbi9mYXN0Ym9vdC5jCkBAIC00Niw2ICs0Niw4IEBACiAjZGVmaW5lIEZBU1RCT09UX1ZFUlNJ
-T04JCSIwLjQiCiAKIHN0YXRpYyB1bnNpZ25lZCBpbnQgZmFzdGJvb3RfbWF4X2Rvd25sb2FkX3Np
-emUgPSBTWl84TTsKK2ludCBmYXN0Ym9vdF9iYnU7CitjaGFyICpmYXN0Ym9vdF9wYXJ0aXRpb25z
-OwogCiBzdHJ1Y3QgZmJfdmFyaWFibGUgewogCWNoYXIgKm5hbWU7CkBAIC05MDYsMTQgKzkwOCwz
-MCBAQCB2b2lkIGZhc3Rib290X2V4ZWNfY21kKHN0cnVjdCBmYXN0Ym9vdCAqZmIsIGNvbnN0IGNo
-YXIgKmNtZGJ1ZikKIHN0YXRpYyBpbnQgZmFzdGJvb3RfZ2xvYmFsdmFyc19pbml0KHZvaWQpCiB7
-CiAJaWYgKElTX0VOQUJMRUQoQ09ORklHX0ZBU1RCT09UX1NQQVJTRSkpCi0JCWdsb2JhbHZhcl9h
-ZGRfc2ltcGxlX2ludCgidXNiZ2FkZ2V0LmZhc3Rib290X21heF9kb3dubG9hZF9zaXplIiwKKwkJ
-Z2xvYmFsdmFyX2FkZF9zaW1wbGVfaW50KCJmYXN0Ym9vdC5tYXhfZG93bmxvYWRfc2l6ZSIsCiAJ
-CQkJICZmYXN0Ym9vdF9tYXhfZG93bmxvYWRfc2l6ZSwgIiV1Iik7CisJZ2xvYmFsdmFyX2FkZF9z
-aW1wbGVfYm9vbCgiZmFzdGJvb3QuYmJ1IiwgJmZhc3Rib290X2JidSk7CisJZ2xvYmFsdmFyX2Fk
-ZF9zaW1wbGVfc3RyaW5nKCJmYXN0Ym9vdC5wYXJ0aXRpb25zIiwKKwkJCQkgICAgJmZhc3Rib290
-X3BhcnRpdGlvbnMpOworCisJZ2xvYmFsdmFyX2FsaWFzX2RlcHJlY2F0ZWQoInVzYmdhZGdldC5m
-YXN0Ym9vdF9mdW5jdGlvbiIsCisJCQkJICAgImZhc3Rib290LnBhcnRpdGlvbnMiKTsKKwlnbG9i
-YWx2YXJfYWxpYXNfZGVwcmVjYXRlZCgidXNiZ2FkZ2V0LmZhc3Rib290X2JidSIsCisJCQkJICAg
-ImZhc3Rib290LmJidSIpOworCWdsb2JhbHZhcl9hbGlhc19kZXByZWNhdGVkKCJ1c2JnYWRnZXQu
-ZmFzdGJvb3RfbWF4X2Rvd25sb2FkX3NpemUiLAorCQkJCSAgICJmYXN0Ym9vdC5tYXhfZG93bmxv
-YWRfc2l6ZSIpOwogCiAJcmV0dXJuIDA7CiB9CiAKIGRldmljZV9pbml0Y2FsbChmYXN0Ym9vdF9n
-bG9iYWx2YXJzX2luaXQpOwogCi1CQVJFQk9YX01BR0lDVkFSX05BTUVEKGdsb2JhbF91c2JnYWRn
-ZXRfZmFzdGJvb3RfbWF4X2Rvd25sb2FkX3NpemUsCi0JCSAgICAgICBnbG9iYWwudXNiZ2FkZ2V0
-LmZhc3Rib290X21heF9kb3dubG9hZF9zaXplLAorQkFSRUJPWF9NQUdJQ1ZBUl9OQU1FRChnbG9i
-YWxfZmFzdGJvb3RfbWF4X2Rvd25sb2FkX3NpemUsCisJCSAgICAgICBnbG9iYWwuZmFzdGJvb3Qu
-bWF4X2Rvd25sb2FkX3NpemUsCiAJCSAgICAgICAiRmFzdGJvb3QgbWF4aW11bSBkb3dubG9hZCBz
-aXplIik7CitCQVJFQk9YX01BR0lDVkFSX05BTUVEKGdsb2JhbF9mYXN0Ym9vdF9wYXJ0aXRpb25z
-LAorCQkgICAgICAgZ2xvYmFsLmZhc3Rib290LnBhcnRpdGlvbnMsCisJCSAgICAgICAiUGFydGl0
-aW9ucyBleHBvcnRlZCBmb3IgdXBkYXRlIHZpYSBmYXN0Ym9vdCIpOworQkFSRUJPWF9NQUdJQ1ZB
-Ul9OQU1FRChnbG9iYWxfZmFzdGJvb3RfYmJ1LAorCQkgICAgICAgZ2xvYmFsLmZhc3Rib290LmJi
-dSwKKwkJICAgICAgICJFeHBvcnQgYmFyZWJveCB1cGRhdGUgaGFuZGxlcnMgdmlhIGZhc3Rib290
-Iik7CmRpZmYgLS1naXQgYS9jb21tb24vdXNiZ2FkZ2V0LmMgYi9jb21tb24vdXNiZ2FkZ2V0LmMK
-aW5kZXggYThmMTA0Y2YxYy4uMjVmZDk5NDkzMCAxMDA2NDQKLS0tIGEvY29tbW9uL3VzYmdhZGdl
-dC5jCisrKyBiL2NvbW1vbi91c2JnYWRnZXQuYwpAQCAtMzAsOCArMzAsNiBAQAogc3RhdGljIGlu
-dCBhdXRvc3RhcnQ7CiBzdGF0aWMgaW50IGFjbTsKIHN0YXRpYyBjaGFyICpkZnVfZnVuY3Rpb247
-Ci1zdGF0aWMgY2hhciAqZmFzdGJvb3RfZnVuY3Rpb247Ci1zdGF0aWMgaW50IGZhc3Rib290X2Ji
-dTsKIAogc3RhdGljIHN0cnVjdCBmaWxlX2xpc3QgKnBhcnNlKGNvbnN0IGNoYXIgKmZpbGVzKQog
-ewpAQCAtNTYsOCArNTQsOCBAQCBpbnQgdXNiZ2FkZ2V0X3JlZ2lzdGVyKGJvb2wgZGZ1LCBjb25z
-dCBjaGFyICpkZnVfb3B0cywKIAkJZGZ1X29wdHMgPSBkZnVfZnVuY3Rpb247CiAKIAlpZiAoZmFz
-dGJvb3QgJiYgIWZhc3Rib290X29wdHMgJiYKLQkgICAgZmFzdGJvb3RfZnVuY3Rpb24gJiYgKmZh
-c3Rib290X2Z1bmN0aW9uKQotCQlmYXN0Ym9vdF9vcHRzID0gZmFzdGJvb3RfZnVuY3Rpb247CisJ
-ICAgIGZhc3Rib290X3BhcnRpdGlvbnMgJiYgKmZhc3Rib290X3BhcnRpdGlvbnMpCisJCWZhc3Ri
-b290X29wdHMgPSBmYXN0Ym9vdF9wYXJ0aXRpb25zOwogCiAJaWYgKCFkZnVfb3B0cyAmJiAhZmFz
-dGJvb3Rfb3B0cyAmJiAhYWNtKQogCQlyZXR1cm4gQ09NTUFORF9FUlJPUl9VU0FHRTsKQEAgLTEx
-NiwxMiArMTE0LDggQEAgc3RhdGljIGludCB1c2JnYWRnZXRfZ2xvYmFsdmFyc19pbml0KHZvaWQp
-CiAJaWYgKElTX0VOQUJMRUQoQ09ORklHX1VTQl9HQURHRVRfQVVUT1NUQVJUKSkgewogCQlnbG9i
-YWx2YXJfYWRkX3NpbXBsZV9ib29sKCJ1c2JnYWRnZXQuYXV0b3N0YXJ0IiwgJmF1dG9zdGFydCk7
-CiAJCWdsb2JhbHZhcl9hZGRfc2ltcGxlX2Jvb2woInVzYmdhZGdldC5hY20iLCAmYWNtKTsKLQkJ
-Z2xvYmFsdmFyX2FkZF9zaW1wbGVfYm9vbCgidXNiZ2FkZ2V0LmZhc3Rib290X2JidSIsCi0JCQkJ
-CSAgJmZhc3Rib290X2JidSk7CiAJfQogCWdsb2JhbHZhcl9hZGRfc2ltcGxlX3N0cmluZygidXNi
-Z2FkZ2V0LmRmdV9mdW5jdGlvbiIsICZkZnVfZnVuY3Rpb24pOwotCWdsb2JhbHZhcl9hZGRfc2lt
-cGxlX3N0cmluZygidXNiZ2FkZ2V0LmZhc3Rib290X2Z1bmN0aW9uIiwKLQkJCQkgICAgJmZhc3Ri
-b290X2Z1bmN0aW9uKTsKIAogCXJldHVybiAwOwogfQpAQCAtMTM2LDkgKzEzMCwzIEBAIEJBUkVC
-T1hfTUFHSUNWQVJfTkFNRUQoZ2xvYmFsX3VzYmdhZGdldF9hY20sCiBCQVJFQk9YX01BR0lDVkFS
-X05BTUVEKGdsb2JhbF91c2JnYWRnZXRfZGZ1X2Z1bmN0aW9uLAogCQkgICAgICAgZ2xvYmFsLnVz
-YmdhZGdldC5kZnVfZnVuY3Rpb24sCiAJCSAgICAgICAidXNiZ2FkZ2V0OiBDcmVhdGUgREZVIGZ1
-bmN0aW9uIik7Ci1CQVJFQk9YX01BR0lDVkFSX05BTUVEKGdsb2JhbF91c2JnYWRnZXRfZmFzdGJv
-b3RfZnVuY3Rpb24sCi0JCSAgICAgICBnbG9iYWwudXNiZ2FkZ2V0LmZhc3Rib290X2Z1bmN0aW9u
-LAotCQkgICAgICAgInVzYmdhZGdldDogQ3JlYXRlIEFuZHJvaWQgRmFzdGJvb3QgZnVuY3Rpb24i
-KTsKLUJBUkVCT1hfTUFHSUNWQVJfTkFNRUQoZ2xvYmFsX3VzYmdhZGdldF9mYXN0Ym9vdF9iYnUs
-Ci0JCSAgICAgICBnbG9iYWwudXNiZ2FkZ2V0LmZhc3Rib290X2JidSwKLQkJICAgICAgICJ1c2Jn
-YWRnZXQ6IGV4cG9ydCBiYXJlYm94IHVwZGF0ZSBoYW5kbGVycyB2aWEgZmFzdGJvb3QiKTsKZGlm
-ZiAtLWdpdCBhL2luY2x1ZGUvZmFzdGJvb3QuaCBiL2luY2x1ZGUvZmFzdGJvb3QuaAppbmRleCBk
-MzNmOWQxODUxLi44NjE5ZGNkMzRlIDEwMDY0NAotLS0gYS9pbmNsdWRlL2Zhc3Rib290LmgKKysr
-IGIvaW5jbHVkZS9mYXN0Ym9vdC5oCkBAIC01Myw2ICs1Myw5IEBAIGVudW0gZmFzdGJvb3RfbXNn
-X3R5cGUgewogCUZBU1RCT09UX01TR19EQVRBLAogfTsKIAorZXh0ZXJuIGludCBmYXN0Ym9vdF9i
-YnU7CitleHRlcm4gY2hhciAqZmFzdGJvb3RfcGFydGl0aW9uczsKKwogaW50IGZhc3Rib290X2dl
-bmVyaWNfaW5pdChzdHJ1Y3QgZmFzdGJvb3QgKmZiLCBib29sIGV4cG9ydF9iYnUpOwogdm9pZCBm
-YXN0Ym9vdF9nZW5lcmljX2Nsb3NlKHN0cnVjdCBmYXN0Ym9vdCAqZmIpOwogdm9pZCBmYXN0Ym9v
-dF9nZW5lcmljX2ZyZWUoc3RydWN0IGZhc3Rib290ICpmYik7Ci0tIAoyLjI3LjAKCgpfX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcg
-bGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5v
-cmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+To recognize if we have a receive packet pending we must set up a USB
+bulk transfer. When there's no incoming packet we must wait until the
+transfer times out. We do this with every poller call which can
+considerably slow down the system. With this patch we do two things
+against this:
+
+- lower the timeout for the bulk transfer
+- When we haven't received a packet for longer then lower the frequency
+  of calling into the USB stack to once every 100ms
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/net/usb/usbnet.c | 19 ++++++++++++++++++-
+ include/usb/usbnet.h     |  3 +++
+ 2 files changed, 21 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index 46ea73247f..aa48678f87 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -122,12 +122,29 @@ static int usbnet_recv(struct eth_device *edev)
+ 
+ 	dev_dbg(&edev->dev, "%s\n",__func__);
+ 
++	/*
++	 * we must let the usb_bulk_msg below timeout before we realize
++	 * that we have no packet received. Since this function runs
++	 * inside a poller we considerably slow down barebox when we
++	 * wait for the timeout too often. To improve this we only poll
++	 * with full speed when we actually have received a packet in the
++	 * last 100ms.
++	 */
++	if (is_timeout(dev->last_pkt_received, 100 * MSECOND) &&
++	    !is_timeout(dev->last_recv_call, 100 * MSECOND)) {
++		return 0;
++	}
++
++	dev->last_recv_call = get_time_ns();
++
+ 	len = dev->rx_urb_size;
+ 
+-	ret = usb_bulk_msg(dev->udev, dev->in, dev->rx_buf, len, &alen, 100);
++	ret = usb_bulk_msg(dev->udev, dev->in, dev->rx_buf, len, &alen, 2);
+ 	if (ret)
+ 		return ret;
+ 
++	dev->last_pkt_received = get_time_ns();
++
+ 	if (alen) {
+ 		if (info->rx_fixup)
+ 			return info->rx_fixup(dev, dev->rx_buf, alen);
+diff --git a/include/usb/usbnet.h b/include/usb/usbnet.h
+index 450db47b40..7ff32f280a 100644
+--- a/include/usb/usbnet.h
++++ b/include/usb/usbnet.h
+@@ -54,6 +54,9 @@ struct usbnet {
+ #		define EVENT_RX_MEMORY	2
+ #		define EVENT_STS_SPLIT	3
+ #		define EVENT_LINK_RESET	4
++
++	uint64_t last_pkt_received;
++	uint64_t last_recv_call;
+ };
+ 
+ #if 0
+-- 
+2.27.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
