@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jmBhP-0006RC-EI
+ id 1jmBhQ-0006RK-1Q
  for barebox@lists.infradead.org; Fri, 19 Jun 2020 07:44:36 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 19 Jun 2020 09:44:06 +0200
-Message-Id: <20200619074427.17289-1-s.hauer@pengutronix.de>
+Date: Fri, 19 Jun 2020 09:44:09 +0200
+Message-Id: <20200619074427.17289-4-s.hauer@pengutronix.de>
+In-Reply-To: <20200619074427.17289-1-s.hauer@pengutronix.de>
+References: <20200619074427.17289-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -15,94 +17,210 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 00/21] Slices and fastboot over UDP
+Subject: [PATCH 03/21] ratp: Switch to workqueues
 To: Barebox List <barebox@lists.infradead.org>
 Cc: =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-SSBob3BlIHdlIGFyZSBnZXR0aW5nIGNsb3NlciB0byBmaW5hbGx5IGdldCB0aGlzIG1lcmdlZC4K
-CkNoYW5nZXMgc2luY2UgbGFzdCB2ZXJzaW9uOgoKLSBtYXlfc2VuZCBub3cgaGFzIHRocmVlIHN0
-YXRlcyBhZ2FpbiBsaWtlIGluIG9yaWdpbmFsIHNlcmllcwotIGludGVncmF0ZWQgcmV2aWV3IGZl
-ZWRiYWNrIGZyb20gRGFuaWVsCi0gUmVnaXN0ZXIvdW5yZWdpc3RlciBwb2xsZXIgd2hlbiBuZWVk
-ZWQKLSBhYm9ydCBjdXJyZW50IHNlc3Npb24gd2hlbiBubyBwcm9ncmVzcyBpcyBiZWluZyBtYWRl
-CgpEYW5pZWwgR2zDtmNrbmVyICgyKToKICBkZWZjb25maWdzOiB1cGRhdGUgcmVuYW1lZCBmYXN0
-Ym9vdCBvcHRpb25zCiAgZmFzdGJvb3Q6IHJlbmFtZSB1c2JnYWRnZXQuZmFzdGJvb3RfKiB2YXJp
-YWJsZXMgdG8gZmFzdGJvb3QuKgoKRWRtdW5kIEhlbm5pZ2VzICgxKToKICBmYXN0Ym9vdCBuZXQ6
-IGltcGxlbWVudCBmYXN0Ym9vdCBvdmVyIFVEUAoKU2FzY2hhIEhhdWVyICgxOCk6CiAgSW50cm9k
-dWNlIHNsaWNlcwogIEFkZCB3b3JrcXVldWVzCiAgcmF0cDogU3dpdGNoIHRvIHdvcmtxdWV1ZXMK
-ICBuZXQ6IEFkZCBhIHNsaWNlIHRvIHN0cnVjdCBldGhfZGV2aWNlCiAgbmV0OiBtZGlvYnVzOiBB
-ZGQgc2xpY2UKICB1c2I6IEFkZCBhIHNsaWNlIHRvIHVzYiBob3N0IGNvbnRyb2xsZXJzCiAgdXNi
-bmV0OiBBZGQgc2xpY2UKICBuZXQ6IENhbGwgbmV0X3BvbGwoKSBpbiBhIHBvbGxlcgogIG5ldDog
-cmVwbHkgdG8gcGluZyByZXF1ZXN0cwogIHVzYm5ldDogQmUgbW9yZSBmcmllbmRseSBpbiB0aGUg
-cmVjZWl2ZSBwYXRoCiAgZ2xvYmFsdmFyOiBBZGQgaGVscGVyIGZvciBkZXByZWNhdGVkIHZhcmlh
-YmxlIG5hbWVzCiAgZmFzdGJvb3Q6IFdhcm4gd2hlbiBjYl9kb3dubG9hZCBpcyBjYWxsZWQgd2l0
-aCBmaWxlIHN0aWxsIG9wZW4KICBmYXN0Ym9vdDogQWRkIGZhc3Rib290X2Fib3J0KCkKICBmYXN0
-Ym9vdDogaW5pdCBsaXN0IGhlYWQgaW4gY29tbW9uCiAgdXNiOiBmYXN0Ym9vdDogZXhlY3V0ZSBj
-b21tYW5kcyBpbiBjb21tYW5kIGNvbnRleHQKICBBZGQgV0FSTl9PTkNFKCkgbWFjcm8KICBmczog
-V2FybiB3aGVuIGZpbGVzeXN0ZW0gb3BlcmF0aW9ucyBhcmUgY2FsbGVkIGZyb20gYSBwb2xsZXIK
-ICBEb2N1bWVudGF0aW9uOiBBZGQgZG9jdW1lbnQgZm9yIHBhcmFsbGVsIGV4ZWN1dGlvbiBpbiBi
-YXJlYm94CgogRG9jdW1lbnRhdGlvbi9kZXZlbC9iYWNrZ3JvdW5kLWV4ZWN1dGlvbi5yc3QgfCAx
-MjMgKysrKwogRG9jdW1lbnRhdGlvbi9kZXZlbC9kZXZlbC5yc3QgICAgICAgICAgICAgICAgfCAg
-MTQgKwogRG9jdW1lbnRhdGlvbi9pbmRleC5yc3QgICAgICAgICAgICAgICAgICAgICAgfCAgIDEg
-KwogRG9jdW1lbnRhdGlvbi91c2VyL3VzYi5yc3QgICAgICAgICAgICAgICAgICAgfCAgIDQgKy0K
-IGFyY2gvYXJtL2NvbmZpZ3MvaW14MjNfZGVmY29uZmlnICAgICAgICAgICAgIHwgICAyICstCiBh
-cmNoL2FybS9jb25maWdzL2lteDI4X2RlZmNvbmZpZyAgICAgICAgICAgICB8ICAgMiArLQogYXJj
-aC9hcm0vY29uZmlncy9pbXhfdjdfZGVmY29uZmlnICAgICAgICAgICAgfCAgIDEgKwogYXJjaC9h
-cm0vY29uZmlncy9pbXhfdjhfZGVmY29uZmlnICAgICAgICAgICAgfCAgIDIgKy0KIGFyY2gvYXJt
-L2NvbmZpZ3Mva2luZGxlLW14NTBfZGVmY29uZmlnICAgICAgIHwgICAyICstCiBhcmNoL2FybS9j
-b25maWdzL29tYXBfZGVmY29uZmlnICAgICAgICAgICAgICB8ICAgMiArLQogYXJjaC9hcm0vY29u
-Zmlncy96aWlfdmY2MTBfZGV2X2RlZmNvbmZpZyAgICAgfCAgIDIgKy0KIGNvbW1hbmRzL0tjb25m
-aWcgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICA4ICsKIGNvbW1hbmRzL3VzYmdhZGdl
-dC5jICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAyICstCiBjb21tb24vTWFrZWZpbGUgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMiArCiBjb21tb24vZmFzdGJvb3QuYyAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICB8ICA0NyArLQogY29tbW9uL2dsb2JhbHZhci5jICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgfCAgNTQgKy0KIGNvbW1vbi9odXNoLmMgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgIHwgICA2ICsKIGNvbW1vbi9wb2xsZXIuYyAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgIHwgIDExICstCiBjb21tb24vcmF0cC9yYXRwLmMgICAgICAgICAgICAg
-ICAgICAgICAgICAgICB8ICA1NyArLQogY29tbW9uL3NsaWNlLmMgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgfCAzMzUgKysrKysrKysrKysKIGNvbW1vbi9zdGFydHVwLmMgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgIHwgICAzICsKIGNvbW1vbi91c2JnYWRnZXQuYyAgICAgICAgICAg
-ICAgICAgICAgICAgICAgIHwgIDE2ICstCiBjb21tb24vd29ya3F1ZXVlLmMgICAgICAgICAgICAg
-ICAgICAgICAgICAgICB8ICA1OCArKwogZHJpdmVycy9uZXQvcGh5L21kaW9fYnVzLmMgICAgICAg
-ICAgICAgICAgICAgfCAgNDMgKysKIGRyaXZlcnMvbmV0L3VzYi91c2JuZXQuYyAgICAgICAgICAg
-ICAgICAgICAgIHwgIDIyICstCiBkcml2ZXJzL3VzYi9jb3JlL3VzYi5jICAgICAgICAgICAgICAg
-ICAgICAgICB8ICAxMiArLQogZHJpdmVycy91c2IvZ2FkZ2V0L2ZfZmFzdGJvb3QuYyAgICAgICAg
-ICAgICAgfCAgNTQgKy0KIGZzL2ZzLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgIHwgIDM1ICsrCiBmcy9uZnMuYyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICB8ICAgMiAtCiBmcy90ZnRwLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8
-ICAgMiAtCiBpbmNsdWRlL2FzbS1nZW5lcmljL2J1Zy5oICAgICAgICAgICAgICAgICAgICB8ICAx
-MyArCiBpbmNsdWRlL2Zhc3Rib290LmggICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgOCAr
-CiBpbmNsdWRlL2Zhc3Rib290X25ldC5oICAgICAgICAgICAgICAgICAgICAgICB8ICAxMiArCiBp
-bmNsdWRlL2dsb2JhbHZhci5oICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgNSArCiBpbmNs
-dWRlL2xpbnV4L3BoeS5oICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAzOCArLQogaW5jbHVk
-ZS9uZXQuaCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgMTEgKy0KIGluY2x1ZGUv
-cmF0cF9iYi5oICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAxIC0KIGluY2x1ZGUvc2xp
-Y2UuaCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDQyICsrCiBpbmNsdWRlL3VzYi91
-c2IuaCAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgOCArLQogaW5jbHVkZS91c2IvdXNi
-bmV0LmggICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDMgKwogaW5jbHVkZS93b3JrLmggICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgMjkgKwogbGliL3JlYWRsaW5lLmMgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDYgKy0KIG5ldC9LY29uZmlnICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgIHwgIDEwICsKIG5ldC9NYWtlZmlsZSAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgIHwgICAxICsKIG5ldC9kaGNwLmMgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgIHwgICAxIC0KIG5ldC9kbnMuYyAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgIHwgICAxIC0KIG5ldC9ldGguYyAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgIHwgIDg0ICsrLQogbmV0L2Zhc3Rib290LmMgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgfCA1NjUgKysrKysrKysrKysrKysrKysrKwogbmV0L25ldC5jICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgfCAgNjAgKy0KIG5ldC9uZXRjb25zb2xlLmMgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgIHwgICA0ICstCiBuZXQvbmZzLmMgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICB8ICAgMSAtCiBuZXQvcGluZy5jICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICB8ICAgMiAtCiBuZXQvc250cC5jICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICB8ICAgMiAtCiA1MyBmaWxlcyBjaGFuZ2VkLCAxNzE2IGluc2VydGlvbnMo
-KyksIDExNSBkZWxldGlvbnMoLSkKIGNyZWF0ZSBtb2RlIDEwMDY0NCBEb2N1bWVudGF0aW9uL2Rl
-dmVsL2JhY2tncm91bmQtZXhlY3V0aW9uLnJzdAogY3JlYXRlIG1vZGUgMTAwNjQ0IERvY3VtZW50
-YXRpb24vZGV2ZWwvZGV2ZWwucnN0CiBjcmVhdGUgbW9kZSAxMDA2NDQgY29tbW9uL3NsaWNlLmMK
-IGNyZWF0ZSBtb2RlIDEwMDY0NCBjb21tb24vd29ya3F1ZXVlLmMKIGNyZWF0ZSBtb2RlIDEwMDY0
-NCBpbmNsdWRlL2Zhc3Rib290X25ldC5oCiBjcmVhdGUgbW9kZSAxMDA2NDQgaW5jbHVkZS9zbGlj
-ZS5oCiBjcmVhdGUgbW9kZSAxMDA2NDQgaW5jbHVkZS93b3JrLmgKIGNyZWF0ZSBtb2RlIDEwMDY0
-NCBuZXQvZmFzdGJvb3QuYwoKLS0gCjIuMjcuMAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
-aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2JhcmVib3gK
+This switches running barebox commands in ratp to a context where it's
+safe to do so: In a work queue.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/ratp/ratp.c | 57 ++++++++++++++++++++++++++++++++++------------
+ include/ratp_bb.h  |  1 -
+ lib/readline.c     |  6 +----
+ 3 files changed, 44 insertions(+), 20 deletions(-)
+
+diff --git a/common/ratp/ratp.c b/common/ratp/ratp.c
+index b8043fe5c7..84910cacb7 100644
+--- a/common/ratp/ratp.c
++++ b/common/ratp/ratp.c
+@@ -24,6 +24,7 @@
+ #include <environment.h>
+ #include <kfifo.h>
+ #include <poller.h>
++#include <work.h>
+ #include <linux/sizes.h>
+ #include <ratp_bb.h>
+ #include <fs.h>
+@@ -50,9 +51,11 @@ struct ratp_ctx {
+ 	struct ratp_bb_pkt *fs_rx;
+ 
+ 	struct poller_struct poller;
++	struct work_queue wq;
+ 
+ 	bool console_registered;
+ 	bool poller_registered;
++	bool wq_registered;
+ };
+ 
+ static int compare_ratp_command(struct list_head *a, struct list_head *b)
+@@ -194,9 +197,14 @@ static int ratp_bb_send_command_return(struct ratp_ctx *ctx, uint32_t errno)
+ 	return ret;
+ }
+ 
+-static char *ratp_command;
+ static struct ratp_ctx *ratp_ctx;
+ 
++struct ratp_work {
++	struct work_struct work;
++	struct ratp_ctx *ctx;
++	char *command;
++};
++
+ static int ratp_bb_dispatch(struct ratp_ctx *ctx, const void *buf, int len)
+ {
+ 	const struct ratp_bb *rbb = buf;
+@@ -205,6 +213,7 @@ static int ratp_bb_dispatch(struct ratp_ctx *ctx, const void *buf, int len)
+ 	int ret = 0;
+ 	uint16_t type = be16_to_cpu(rbb->type);
+ 	struct ratp_command *cmd;
++	struct ratp_work *rw;
+ 
+ 	/* See if there's a command registered to this type */
+ 	cmd = find_ratp_request(type);
+@@ -222,12 +231,16 @@ static int ratp_bb_dispatch(struct ratp_ctx *ctx, const void *buf, int len)
+ 
+ 	switch (type) {
+ 	case BB_RATP_TYPE_COMMAND:
+-		if (!IS_ENABLED(CONFIG_CONSOLE_RATP) || ratp_command)
++		if (!IS_ENABLED(CONFIG_CONSOLE_RATP))
+ 			return 0;
+ 
+-		ratp_command = xstrndup((const char *)rbb->data, dlen);
+-		ratp_ctx = ctx;
+-		pr_debug("got command: %s\n", ratp_command);
++		rw = xzalloc(sizeof(*rw));
++		rw->ctx = ctx;
++		rw->command = xstrndup((const char *)rbb->data, dlen);
++
++		wq_queue_work(&ctx->wq, &rw->work);
++
++		pr_debug("got command: %s\n", rw->command);
+ 
+ 		break;
+ 
+@@ -298,21 +311,20 @@ static void ratp_console_putc(struct console_device *cdev, char c)
+ 	kfifo_putc(ctx->console_transmit_fifo, c);
+ }
+ 
+-void barebox_ratp_command_run(void)
++static void ratp_command_run(struct work_struct *w)
+ {
++	struct ratp_work *rw = container_of(w, struct ratp_work, work);
++	struct ratp_ctx *ctx = rw->ctx;
+ 	int ret;
+ 
+-	if (!ratp_command)
+-		return;
+-
+-	pr_debug("running command: %s\n", ratp_command);
++	pr_debug("running command: %s\n", rw->command);
+ 
+-	ret = run_command(ratp_command);
++	ret = run_command(rw->command);
+ 
+-	free(ratp_command);
+-	ratp_command = NULL;
++	free(rw->command);
++	free(rw);
+ 
+-	ratp_bb_send_command_return(ratp_ctx, ret);
++	ratp_bb_send_command_return(ctx, ret);
+ }
+ 
+ static const char *ratpfs_mount_path;
+@@ -337,6 +349,9 @@ static void ratp_unregister(struct ratp_ctx *ctx)
+ 	if (ctx->poller_registered)
+ 		poller_unregister(&ctx->poller);
+ 
++	if (ctx->wq_registered)
++		wq_unregister(&ctx->wq);
++
+ 	ratp_close(&ctx->ratp);
+ 	console_set_active(ctx->cdev, ctx->old_active);
+ 
+@@ -369,6 +384,7 @@ static void ratp_poller(struct poller_struct *poller)
+ 	ret = ratp_poll(&ctx->ratp);
+ 	if (ret == -EINTR)
+ 		goto out;
++
+ 	if (ratp_closed(&ctx->ratp))
+ 		goto out;
+ 
+@@ -424,6 +440,14 @@ int barebox_ratp_fs_call(struct ratp_bb_pkt *tx, struct ratp_bb_pkt **rx)
+ 	return 0;
+ }
+ 
++static void ratp_work_cancel(struct work_struct *w)
++{
++	struct ratp_work *rw = container_of(w, struct ratp_work, work);
++
++	free(rw->command);
++	free(rw);
++}
++
+ int barebox_ratp(struct console_device *cdev)
+ {
+ 	int ret;
+@@ -467,6 +491,11 @@ int barebox_ratp(struct console_device *cdev)
+ 	if (ret < 0)
+ 		goto out;
+ 
++	ctx->wq.fn = ratp_command_run;
++	ctx->wq.cancel = ratp_work_cancel;
++	wq_register(&ctx->wq);
++	ctx->wq_registered = true;
++
+ 	ret = poller_register(&ctx->poller, "ratp");
+ 	if (ret)
+ 		goto out;
+diff --git a/include/ratp_bb.h b/include/ratp_bb.h
+index a4f28c642c..b710f99bf9 100644
+--- a/include/ratp_bb.h
++++ b/include/ratp_bb.h
+@@ -41,7 +41,6 @@ struct ratp_bb_pkt {
+ };
+ 
+ int  barebox_ratp(struct console_device *cdev);
+-void barebox_ratp_command_run(void);
+ int  barebox_ratp_fs_call(struct ratp_bb_pkt *tx, struct ratp_bb_pkt **rx);
+ int  barebox_ratp_fs_mount(const char *path);
+ 
+diff --git a/lib/readline.c b/lib/readline.c
+index 3d16c1838c..e5370f9c7b 100644
+--- a/lib/readline.c
++++ b/lib/readline.c
+@@ -3,7 +3,6 @@
+ #include <init.h>
+ #include <libbb.h>
+ #include <poller.h>
+-#include <ratp_bb.h>
+ #include <xfuncs.h>
+ #include <complete.h>
+ #include <linux/ctype.h>
+@@ -200,11 +199,8 @@ int readline(const char *prompt, char *buf, int len)
+ 	puts (prompt);
+ 
+ 	while (1) {
+-		while (!tstc()) {
++		while (!tstc())
+ 			poller_call();
+-			if (IS_ENABLED(CONFIG_CONSOLE_RATP))
+-				barebox_ratp_command_run();
+-		}
+ 
+ 		ichar = read_key();
+ 
+-- 
+2.27.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
