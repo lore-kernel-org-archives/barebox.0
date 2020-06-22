@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from zimbra2.kalray.eu ([92.103.151.219])
- by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jqN7J-0003rs-Bp
- for barebox@lists.infradead.org; Tue, 30 Jun 2020 20:44:34 +0000
-From: Clement Leger <cleger@kalray.eu>
-Date: Tue, 30 Jun 2020 22:44:02 +0200
-Message-Id: <20200630204402.26566-5-cleger@kalray.eu>
-In-Reply-To: <20200630204402.26566-1-cleger@kalray.eu>
-References: <20200630204402.26566-1-cleger@kalray.eu>
+Received: from enterprise02.smtp.diehl.com ([193.201.238.220])
+ by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jnH7C-0002Yn-TM
+ for barebox@lists.infradead.org; Mon, 22 Jun 2020 07:43:41 +0000
+From: Denis Osterland-Heim <denis.osterland@diehl.com>
+Date: Mon, 22 Jun 2020 07:42:11 +0000
+Message-ID: <3682d87514f9619b819ad6fb082c23d1330fb014.camel@diehl.com>
+Content-Language: en-US
+Content-ID: <239152314B2F8A4E9C7E77998F83720E@diehl.internal>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,251 +17,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 4/4] kvx: add support for elf loading using bootm
-To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
-Cc: Clement Leger <cleger@kalray.eu>, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Is it possible to pass extra device-tree include directory?
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-From: Clement Leger <clement.leger@kalray.eu>
-
-In order to boot elfs files, add bootm command support for kvx. This support
-can boot elf files using bootm elf support. initrd and device-tree handling
-is also included and loads them after the elf file load address.
-
-Signed-off-by: Clement Leger <cleger@kalray.eu>
----
- arch/kvx/Kconfig                   |   5 ++
- arch/kvx/configs/generic_defconfig |   3 +-
- arch/kvx/include/asm/bootm.h       |  11 +++
- arch/kvx/include/asm/elf.h         |   3 +
- arch/kvx/lib/Makefile              |   2 +-
- arch/kvx/lib/bootm.c               | 133 +++++++++++++++++++++++++++++
- 6 files changed, 155 insertions(+), 2 deletions(-)
- create mode 100644 arch/kvx/include/asm/bootm.h
- create mode 100644 arch/kvx/lib/bootm.c
-
-diff --git a/arch/kvx/Kconfig b/arch/kvx/Kconfig
-index 5463bb4f1..3327021e1 100644
---- a/arch/kvx/Kconfig
-+++ b/arch/kvx/Kconfig
-@@ -1,9 +1,14 @@
- config KVX
- 	bool
- 	select 64BIT
-+	select BOOTM
-+	select BOOTM_ELF
-+	select BOOTM_OFTREE
-+	select BOOTM_INITRD
- 	select CLKDEV_LOOKUP
- 	select COMMON_CLK
- 	select COMMON_CLK_OF_PROVIDER
-+	select ELF
- 	select FLEXIBLE_BOOTARGS
- 	select GENERIC_FIND_NEXT_BIT
- 	select LIBFDT
-diff --git a/arch/kvx/configs/generic_defconfig b/arch/kvx/configs/generic_defconfig
-index f9ff773a0..816217174 100644
---- a/arch/kvx/configs/generic_defconfig
-+++ b/arch/kvx/configs/generic_defconfig
-@@ -1,7 +1,8 @@
- CONFIG_AUTO_COMPLETE=y
- CONFIG_BAUDRATE=115200
--# CONFIG_BOOTM is not set
- CONFIG_CLOCKSOURCE_KVX=y
-+CONFIG_CMD_BOOT=y
-+CONFIG_CMD_BOOTM=y
- CONFIG_CMD_CMP=y
- CONFIG_CMD_OF_DUMP=y
- CONFIG_CMD_POWEROFF=y
-diff --git a/arch/kvx/include/asm/bootm.h b/arch/kvx/include/asm/bootm.h
-new file mode 100644
-index 000000000..7ad7e2e87
---- /dev/null
-+++ b/arch/kvx/include/asm/bootm.h
-@@ -0,0 +1,11 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright (C) 2019 Kalray Inc.
-+ */
-+
-+#ifndef _ASM_KVX_BOOTM_H
-+#define _ASM_KVX_BOOTM_H
-+
-+#define LINUX_BOOT_PARAM_MAGIC 0x31564752414E494CULL
-+
-+#endif /* _ASM_KVX_BOOTM_H */
-diff --git a/arch/kvx/include/asm/elf.h b/arch/kvx/include/asm/elf.h
-index 7cc09d7ba..2975ad1b9 100644
---- a/arch/kvx/include/asm/elf.h
-+++ b/arch/kvx/include/asm/elf.h
-@@ -11,6 +11,9 @@
-  */
- #include <linux/types.h>
- 
-+#define EM_KVX		256
-+
-+#define ELF_ARCH	EM_KVX
- #define ELF_CLASS	ELFCLASS32
- #define ELF_DATA	ELFDATA2MSB
- 
-diff --git a/arch/kvx/lib/Makefile b/arch/kvx/lib/Makefile
-index 352e7034a..6e56462da 100644
---- a/arch/kvx/lib/Makefile
-+++ b/arch/kvx/lib/Makefile
-@@ -3,4 +3,4 @@
- # Copyright (C) 2019 Kalray Inc.
- #
- 
--obj-y	+= cpuinfo.o board.o dtb.o poweroff.o
-+obj-y	+= cpuinfo.o board.o dtb.o poweroff.o bootm.o
-diff --git a/arch/kvx/lib/bootm.c b/arch/kvx/lib/bootm.c
-new file mode 100644
-index 000000000..198eef798
---- /dev/null
-+++ b/arch/kvx/lib/bootm.c
-@@ -0,0 +1,133 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2019 Kalray Inc.
-+ */
-+
-+#include <elf.h>
-+#include <boot.h>
-+#include <init.h>
-+#include <bootm.h>
-+#include <binfmt.h>
-+#include <common.h>
-+#include <libfile.h>
-+#include <linux/kernel.h>
-+
-+#include <asm/cache.h>
-+#include <asm/bootm.h>
-+
-+typedef void __noreturn (*boot_func_entry)(unsigned long, void *);
-+
-+static int do_boot_entry(struct image_data *data, boot_func_entry entry,
-+			 void *fdt_load_addr)
-+{
-+	printf("starting elf (entry at %p)\n", entry);
-+
-+	if (data->dryrun)
-+		return 0;
-+
-+	shutdown_barebox();
-+
-+	/* Synchronize I-cache with D-cache */
-+	sync_caches_for_execution();
-+
-+	/**
-+	 * Parameters passing
-+	 * r0: boot magic
-+	 * r1: device tree pointer
-+	 */
-+	entry(LINUX_BOOT_PARAM_MAGIC, (void *) fdt_load_addr);
-+
-+	/* should never return ! */
-+	panic("Returned from boot program !\n");
-+
-+	return -EINVAL;
-+}
-+
-+static int do_boot_elf(struct image_data *data, struct elf_image *elf)
-+{
-+	int ret;
-+	void *fdt;
-+	boot_func_entry entry;
-+	unsigned long load_addr, initrd_address;
-+
-+	/* load initrd after the elf */
-+	load_addr = PAGE_ALIGN((unsigned long) elf->high_addr);
-+	if (bootm_has_initrd(data)) {
-+		if (data->initrd_address != UIMAGE_INVALID_ADDRESS)
-+			initrd_address = data->initrd_address;
-+		else
-+			initrd_address = load_addr;
-+
-+		printf("Loading initrd at 0x%lx\n", initrd_address);
-+		ret = bootm_load_initrd(data, initrd_address);
-+		if (ret) {
-+			printf("Failed to load initrd\n");
-+			return ret;
-+		}
-+
-+		if (data->initrd_address == UIMAGE_INVALID_ADDRESS) {
-+			load_addr += resource_size(data->initrd_res);
-+			load_addr = PAGE_ALIGN(load_addr);
-+		}
-+	}
-+
-+	fdt = bootm_get_devicetree(data);
-+	if (IS_ERR(fdt)) {
-+		printf("Failed to load dtb\n");
-+		return PTR_ERR(fdt);
-+	}
-+
-+	printf("Loading device tree at %lx\n", load_addr);
-+	/* load device tree after the initrd if any */
-+	ret = bootm_load_devicetree(data, fdt, load_addr);
-+	if (ret) {
-+		printf("Failed to load device tree: %d\n", ret);
-+		goto err_free_fdt;
-+	}
-+
-+	entry = (boot_func_entry) data->os_address;
-+
-+	ret = do_boot_entry(data, entry, fdt);
-+
-+err_free_fdt:
-+	free(fdt);
-+
-+	return ret;
-+}
-+
-+static int do_bootm_elf(struct image_data *data)
-+{
-+	int ret;
-+
-+	ret = bootm_load_os(data, data->os_address);
-+	if (ret)
-+		return ret;
-+
-+	return do_boot_elf(data, data->elf);
-+}
-+
-+static struct image_handler elf_handler = {
-+	.name = "ELF",
-+	.bootm = do_bootm_elf,
-+	.filetype = filetype_elf,
-+};
-+
-+static struct binfmt_hook binfmt_elf_hook = {
-+	.type = filetype_elf,
-+	.exec = "bootm",
-+};
-+
-+static int kvx_register_image_handler(void)
-+{
-+	register_image_handler(&elf_handler);
-+
-+	binfmt_register(&binfmt_elf_hook);
-+
-+	return 0;
-+}
-+
-+late_initcall(kvx_register_image_handler);
--- 
-2.17.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGksDQoNCmlzIGl0IHBvc3NpYmxlIHRvIHBhc3MgZXh0cmEgZGV2aWNlLXRyZWUgaW5jbHVkZSBk
+aXJlY3Rvcnk/DQpGb3IgaW5zdGFuY2UgIiR7UFRYRElTVF9QTEFURk9STUNPTkZJR0RJUn0vZHRz
+IiB0byBoYXZlIGEgb3V0LW9mLXRyZWUgZHRzIG9ubHkgaW4gb25lIHBsYWNlPw0KDQpSZWdhcmRz
+LCBEZW5pcw0KDQoNCkRpZWhsIENvbm5lY3Rpdml0eSBTb2x1dGlvbnMgR21iSA0KR2VzY2jDpGZ0
+c2bDvGhydW5nOiBIb3JzdCBMZW9uYmVyZ2VyDQpTaXR6IGRlciBHZXNlbGxzY2hhZnQ6IE7DvHJu
+YmVyZyAtIFJlZ2lzdGVyZ2VyaWNodDogQW10c2dlcmljaHQNCk7DvHJuYmVyZzogSFJCIDMyMzE1
+DQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18NCg0KRGVyIEluaGFs
+dCBkZXIgdm9yc3RlaGVuZGVuIEUtTWFpbCBpc3QgbmljaHQgcmVjaHRsaWNoIGJpbmRlbmQuIERp
+ZXNlIEUtTWFpbCBlbnRoYWVsdCB2ZXJ0cmF1bGljaGUgdW5kL29kZXIgcmVjaHRsaWNoIGdlc2No
+dWV0enRlIEluZm9ybWF0aW9uZW4uDQpJbmZvcm1pZXJlbiBTaWUgdW5zIGJpdHRlLCB3ZW5uIFNp
+ZSBkaWVzZSBFLU1haWwgZmFlbHNjaGxpY2hlcndlaXNlIGVyaGFsdGVuIGhhYmVuLiBCaXR0ZSBs
+b2VzY2hlbiBTaWUgaW4gZGllc2VtIEZhbGwgZGllIE5hY2hyaWNodC4NCkplZGUgdW5lcmxhdWJ0
+ZSBGb3JtIGRlciBSZXByb2R1a3Rpb24sIEJla2FubnRnYWJlLCBBZW5kZXJ1bmcsIFZlcnRlaWx1
+bmcgdW5kL29kZXIgUHVibGlrYXRpb24gZGllc2VyIEUtTWFpbCBpc3Qgc3RyZW5nc3RlbnMgdW50
+ZXJzYWd0Lg0KLSBJbmZvcm1hdGlvbmVuIHp1bSBEYXRlbnNjaHV0eiwgaW5zYmVzb25kZXJlIHp1
+IElocmVuIFJlY2h0ZW4sIGVyaGFsdGVuIFNpZSB1bnRlciBodHRwczovL3d3dy5kaWVobC5jb20v
+Z3JvdXAvZGUvdHJhbnNwYXJlbnotdW5kLWluZm9ybWF0aW9uc3BmbGljaHRlbi8NCg0KVGhlIGNv
+bnRlbnRzIG9mIHRoZSBhYm92ZSBtZW50aW9uZWQgZS1tYWlsIGlzIG5vdCBsZWdhbGx5IGJpbmRp
+bmcuIFRoaXMgZS1tYWlsIGNvbnRhaW5zIGNvbmZpZGVudGlhbCBhbmQvb3IgbGVnYWxseSBwcm90
+ZWN0ZWQgaW5mb3JtYXRpb24uIFBsZWFzZSBpbmZvcm0gdXMgaWYgeW91IGhhdmUgcmVjZWl2ZWQg
+dGhpcyBlLW1haWwgYnkNCm1pc3Rha2UgYW5kIGRlbGV0ZSBpdCBpbiBzdWNoIGEgY2FzZS4gRWFj
+aCB1bmF1dGhvcml6ZWQgcmVwcm9kdWN0aW9uLCBkaXNjbG9zdXJlLCBhbHRlcmF0aW9uLCBkaXN0
+cmlidXRpb24gYW5kL29yIHB1YmxpY2F0aW9uIG9mIHRoaXMgZS1tYWlsIGlzIHN0cmljdGx5IHBy
+b2hpYml0ZWQuIA0KLSBGb3IgZ2VuZXJhbCBpbmZvcm1hdGlvbiBvbiBkYXRhIHByb3RlY3Rpb24g
+YW5kIHlvdXIgcmVzcGVjdGl2ZSByaWdodHMgcGxlYXNlIHZpc2l0IGh0dHBzOi8vd3d3LmRpZWhs
+LmNvbS9ncm91cC9lbi90cmFuc3BhcmVuY3ktYW5kLWluZm9ybWF0aW9uLW9ibGlnYXRpb25zLw0K
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBt
+YWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
+YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
