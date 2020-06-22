@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from enterprise01.smtp.diehl.com ([193.201.238.219])
- by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jokWB-0004j7-95
- for barebox@lists.infradead.org; Fri, 26 Jun 2020 09:19:57 +0000
-From: Denis Osterland-Heim <denis.osterland@diehl.com>
-Date: Fri, 26 Jun 2020 07:12:49 +0000
-Message-ID: <49f003eb1572d206373a34b2f3a6174cbe1be321.camel@diehl.com>
-References: <3682d87514f9619b819ad6fb082c23d1330fb014.camel@diehl.com>
- <20200626044945.GD19105@pengutronix.de>
-In-Reply-To: <20200626044945.GD19105@pengutronix.de>
-Content-Language: en-US
-Content-ID: <5A9BAD5B89CD4F46832CE06A737B6CF2@diehl.internal>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jnI1o-0000Fk-DR
+ for barebox@lists.infradead.org; Mon, 22 Jun 2020 08:42:10 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 22 Jun 2020 10:42:05 +0200
+Message-Id: <20200622084205.23897-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -20,69 +15,83 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Is it possible to pass extra device-tree include directory?
-To: "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] ARM: at91: add at91sam9/sama5 reset reason detection
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-SGkgU2FzY2hhLA0KDQp3aGljaCBpbXBsZW1lbnRhdGlvbiB2YXJpYW50IHdvdWxkIHlvdSBwcmVm
-ZXI/DQoNCjEpIHRhcmdldCBzcGVjaWZpYyBmbGFncw0KZGlmZiAtLWdpdCBhL3NjcmlwdHMvTWFr
-ZWZpbGUubGliIGIvc2NyaXB0cy9NYWtlZmlsZS5saWINCmluZGV4IDlhYThiZTUzNWYzMC4uNmYz
-NDFhNmUzZTg2IDEwMDY0NA0KLS0tIGEvc2NyaXB0cy9NYWtlZmlsZS5saWINCisrKyBiL3Njcmlw
-dHMvTWFrZWZpbGUubGliDQpAQCAtMTY0LDYgKzE2NCw3IEBAIGR0Y19jcHBfZmxhZ3MgID0gLVdw
-LC1NRCwkKGRlcGZpbGUpLnByZSAtbm9zdGRpbmMgICAgICAgICAgICAgICAgICAgICAgICBcDQog
-CQkgLUkkKHNyY3RyZWUpL2R0cy9pbmNsdWRlICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICBcDQogCQkgLUkkKHNyY3RyZWUpL2luY2x1ZGUgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICBcDQogCQkgLUkkKHNyY3RyZWUpL2R0cy9zcmMvICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICBcDQorCQkgJChEVENfQ1BQX0ZMQUdTXyQoYmFzZXRhcmdldCkuZHRiKSAg
-ICAgICAgICAgICAgICAgICAgICBcDQogCQkgLXVuZGVmIC1EX19EVFNfXw0KIA0KIGlmZGVmIENP
-TkZJR19CT09UTV9GSVRJTUFHRV9QVUJLRVkNCg0Kd2l0aCBzb21ldGhpbmcgbGlrZSB0aGlzIGlu
-IGFyY2gvYXJtL2R0cy9NYWtlZmlsZToNCkRUQ19DUFBfRkxBR1NfbXktYm9hcmQtbmFtZS5kdGIg
-Oj0gLUkke1BUWERJU1RfUExBVEZPUk1DT05GSUdESVJ9L2R0cw0KbHdsLWR0Yi0kKENPTkZJR19N
-QUNIX01ZX0JPQVJEX05BTUUpICs9IG15LWJvYXJkLW5hbWUuZHRiLm8NCg0KU28gd2UgY2FuIGNs
-ZWFybHkgc3RhdGUgdGhhdCB0aGUgZGV2aWNlLXRyZWUgaXMgb3V0IG9mIGJhcmVib3ggdHJlZS4N
-Cg0KDQoyKSBhZGQgRVhUUkFfRFRDX0NQUF9GTEFHUyB0byBNYWtlZmlsZS5saWIsIHRvIHBhc3Mg
-aXQgdG8gbWFrZQ0KDQoNCjMpIGFkZCAkKHBhdHN1YnN0ICIlIiwlLCQoQ09ORklHX0RUQ19DUFBf
-RkxBR1MpKSB0byBNYWtlZmlsZS5saWIsIGFuZCBhIEtjb25maWcgb3B0aW9uDQoNCmRpZmYgLS1n
-aXQgYS9jb21tb24vS2NvbmZpZyBiL2NvbW1vbi9LY29uZmlnDQppbmRleCAwMmVmMzYzMWUwNGIu
-LjA3NGYyNWFhNmI3ZiAxMDA2NDQNCi0tLSBhL2NvbW1vbi9LY29uZmlnDQorKysgYi9jb21tb24v
-S2NvbmZpZw0KQEAgLTEzNDcsMyArMTM0Nyw2IEBAIGNvbmZpZyBERFJfU1BEDQogDQogY29uZmln
-IEhBVkVfQVJDSF9LQVNBTg0KICAgICAgICBib29sDQorDQorY29uZmlnIERUQ19DUFBfRkxBR1MN
-CisgICAgICAgc3RyaW5nICJleHRyYSBkdGMtY3BwIGZsYWdzIg0KDQoNClJlZ2FyZHMgRGVuaXMN
-Cg0KQW0gRnJlaXRhZywgZGVuIDI2LjA2LjIwMjAsIDA2OjQ5ICswMjAwIHNjaHJpZWIgU2FzY2hh
-IEhhdWVyOg0KPiBIaSBEZW5pcywNCj4gDQo+IE9uIE1vbiwgSnVuIDIyLCAyMDIwIGF0IDA3OjQy
-OjExQU0gKzAwMDAsIERlbmlzIE9zdGVybGFuZC1IZWltIHdyb3RlOg0KPiA+IEhpLA0KPiA+IA0K
-PiA+IGlzIGl0IHBvc3NpYmxlIHRvIHBhc3MgZXh0cmEgZGV2aWNlLXRyZWUgaW5jbHVkZSBkaXJl
-Y3Rvcnk/DQo+ID4gRm9yIGluc3RhbmNlICIke1BUWERJU1RfUExBVEZPUk1DT05GSUdESVJ9L2R0
-cyIgdG8gaGF2ZSBhIG91dC1vZi10cmVlIGR0cyBvbmx5IGluIG9uZSBwbGFjZT8NCj4gDQo+IEkg
-YW0gbm90IGF3YXJlIG9mIGFueSBwb3NzaWJpbGl0eSBkb2luZyB0aGlzIGN1cnJlbnRseS4NCj4g
-DQo+IFJlZ2FyZHMsDQo+ICBTYXNjaGENCj4gDQoNCg0KRGllaGwgQ29ubmVjdGl2aXR5IFNvbHV0
-aW9ucyBHbWJIDQpHZXNjaMOkZnRzZsO8aHJ1bmc6IEhvcnN0IExlb25iZXJnZXINClNpdHogZGVy
-IEdlc2VsbHNjaGFmdDogTsO8cm5iZXJnIC0gUmVnaXN0ZXJnZXJpY2h0OiBBbXRzZ2VyaWNodA0K
-TsO8cm5iZXJnOiBIUkIgMzIzMTUNCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXw0KDQpEZXIgSW5oYWx0IGRlciB2b3JzdGVoZW5kZW4gRS1NYWlsIGlzdCBuaWNodCBy
-ZWNodGxpY2ggYmluZGVuZC4gRGllc2UgRS1NYWlsIGVudGhhZWx0IHZlcnRyYXVsaWNoZSB1bmQv
-b2RlciByZWNodGxpY2ggZ2VzY2h1ZXR6dGUgSW5mb3JtYXRpb25lbi4NCkluZm9ybWllcmVuIFNp
-ZSB1bnMgYml0dGUsIHdlbm4gU2llIGRpZXNlIEUtTWFpbCBmYWVsc2NobGljaGVyd2Vpc2UgZXJo
-YWx0ZW4gaGFiZW4uIEJpdHRlIGxvZXNjaGVuIFNpZSBpbiBkaWVzZW0gRmFsbCBkaWUgTmFjaHJp
-Y2h0Lg0KSmVkZSB1bmVybGF1YnRlIEZvcm0gZGVyIFJlcHJvZHVrdGlvbiwgQmVrYW5udGdhYmUs
-IEFlbmRlcnVuZywgVmVydGVpbHVuZyB1bmQvb2RlciBQdWJsaWthdGlvbiBkaWVzZXIgRS1NYWls
-IGlzdCBzdHJlbmdzdGVucyB1bnRlcnNhZ3QuDQotIEluZm9ybWF0aW9uZW4genVtIERhdGVuc2No
-dXR6LCBpbnNiZXNvbmRlcmUgenUgSWhyZW4gUmVjaHRlbiwgZXJoYWx0ZW4gU2llIHVudGVyIGh0
-dHBzOi8vd3d3LmRpZWhsLmNvbS9ncm91cC9kZS90cmFuc3BhcmVuei11bmQtaW5mb3JtYXRpb25z
-cGZsaWNodGVuLw0KDQpUaGUgY29udGVudHMgb2YgdGhlIGFib3ZlIG1lbnRpb25lZCBlLW1haWwg
-aXMgbm90IGxlZ2FsbHkgYmluZGluZy4gVGhpcyBlLW1haWwgY29udGFpbnMgY29uZmlkZW50aWFs
-IGFuZC9vciBsZWdhbGx5IHByb3RlY3RlZCBpbmZvcm1hdGlvbi4gUGxlYXNlIGluZm9ybSB1cyBp
-ZiB5b3UgaGF2ZSByZWNlaXZlZCB0aGlzIGUtbWFpbCBieQ0KbWlzdGFrZSBhbmQgZGVsZXRlIGl0
-IGluIHN1Y2ggYSBjYXNlLiBFYWNoIHVuYXV0aG9yaXplZCByZXByb2R1Y3Rpb24sIGRpc2Nsb3N1
-cmUsIGFsdGVyYXRpb24sIGRpc3RyaWJ1dGlvbiBhbmQvb3IgcHVibGljYXRpb24gb2YgdGhpcyBl
-LW1haWwgaXMgc3RyaWN0bHkgcHJvaGliaXRlZC4gDQotIEZvciBnZW5lcmFsIGluZm9ybWF0aW9u
-IG9uIGRhdGEgcHJvdGVjdGlvbiBhbmQgeW91ciByZXNwZWN0aXZlIHJpZ2h0cyBwbGVhc2Ugdmlz
-aXQgaHR0cHM6Ly93d3cuZGllaGwuY29tL2dyb3VwL2VuL3RyYW5zcGFyZW5jeS1hbmQtaW5mb3Jt
-YXRpb24tb2JsaWdhdGlvbnMvDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
-cmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+The reset controller status register contains information about the last
+reset's cause. Tell barebox about it.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/arm/mach-at91/at91sam9_rst.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
+
+diff --git a/arch/arm/mach-at91/at91sam9_rst.c b/arch/arm/mach-at91/at91sam9_rst.c
+index 8f03576e698f..a61a26936f5a 100644
+--- a/arch/arm/mach-at91/at91sam9_rst.c
++++ b/arch/arm/mach-at91/at91sam9_rst.c
+@@ -7,14 +7,42 @@
+ #include <init.h>
+ #include <io.h>
+ #include <restart.h>
++#include <linux/bitfield.h>
+ #include <linux/clk.h>
+ #include <mach/at91_rstc.h>
++#include <reset_source.h>
+ 
+ struct at91sam9x_rst {
+ 	struct restart_handler restart;
+ 	void __iomem *base;
+ };
+ 
++static int reasons[] = {
++	RESET_POR, /* GENERAL  Both VDDCORE and VDDBU rising */
++	RESET_WKE, /* WAKEUP   VDDCORE rising */
++	RESET_WDG, /* WATCHDOG Watchdog fault occurred */
++	RESET_RST, /* SOFTWARE Reset required by the software */
++	RESET_EXT, /* USER     NRST pin detected low */
++};
++
++static void at91sam9x_set_reset_reason(struct device_d *dev,
++				       void __iomem *base)
++{
++	enum reset_src_type type = RESET_UKWN;
++	u32 sr, rsttyp;
++
++	sr = readl(base + AT91_RSTC_SR);
++	rsttyp = FIELD_GET(AT91_RSTC_RSTTYP, sr);
++
++	if (rsttyp < ARRAY_SIZE(reasons))
++		type = reasons[rsttyp];
++
++	dev_info(dev, "reset reason %s (RSTC_SR: 0x%05x)\n",
++		reset_source_to_string(type), sr);
++
++	reset_source_set(type);
++}
++
+ static void __noreturn at91sam9x_restart_soc(struct restart_handler *rst)
+ {
+ 	struct at91sam9x_rst *priv = container_of(rst, struct at91sam9x_rst, restart);
+@@ -52,6 +80,8 @@ static int at91sam9x_rst_probe(struct device_d *dev)
+ 
+ 	clk_enable(clk);
+ 
++	at91sam9x_set_reset_reason(dev, priv->base);
++
+ 	priv->restart.name = "at91sam9x-rst";
+ 	priv->restart.restart = at91sam9x_restart_soc;
+ 
+-- 
+2.27.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
