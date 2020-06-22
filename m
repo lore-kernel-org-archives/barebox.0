@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jnOAR-0007JG-C5
- for barebox@lists.infradead.org; Mon, 22 Jun 2020 15:15:28 +0000
+ id 1jnHwg-00047P-VR
+ for barebox@lists.infradead.org; Mon, 22 Jun 2020 08:36:51 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 22 Jun 2020 17:15:25 +0200
-Message-Id: <20200622151525.21082-1-a.fatoum@pengutronix.de>
+Date: Mon, 22 Jun 2020 10:36:45 +0200
+Message-Id: <20200622083645.19986-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,8 +19,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] startup: inhibit watchdogs on non-interactive autoboot
- abort
+Subject: [PATCH] startup: inhibit watchdogs on non-interactive autoboot abort
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
@@ -34,9 +33,6 @@ Behavior on user aborting the shell prompt via keypad or uart input
 remains unchanged for backwards-compatibility.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-v1 -> v2:
- - use watchdog_hw_running helper
 ---
  common/startup.c           |  4 ++++
  drivers/watchdog/wd_core.c | 27 +++++++++++++++++++++++++++
@@ -66,7 +62,7 @@ index 511675ed55d4..fa66fe086edb 100644
  	run_command(MENUFILE);
  
 diff --git a/drivers/watchdog/wd_core.c b/drivers/watchdog/wd_core.c
-index a17234f4b6c1..7835ab6d1ff6 100644
+index a17234f4b6c1..e50703ce9b60 100644
 --- a/drivers/watchdog/wd_core.c
 +++ b/drivers/watchdog/wd_core.c
 @@ -273,3 +273,30 @@ struct watchdog *watchdog_get_by_name(const char *name)
@@ -81,7 +77,7 @@ index a17234f4b6c1..7835ab6d1ff6 100644
 +
 +	list_for_each_entry(wd, &watchdog_list, list) {
 +		int err;
-+		if (!wd->priority || watchdog_hw_running(wd) == false)
++		if (!wd->priority || wd->running == WDOG_HW_NOT_RUNNING)
 +			continue;
 +
 +		err = watchdog_set_timeout(wd, 0);
