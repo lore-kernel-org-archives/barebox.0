@@ -1,20 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mailex.mailcore.me ([94.136.40.149])
- by bombadil.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jgbeE-00066D-Pb
- for barebox@lists.infradead.org; Wed, 03 Jun 2020 22:14:12 +0000
-From: "john@mobius-embedded-systems.co.uk"
- <andrew@mobius-embedded-systems.co.uk>
-References: <00a601d638be$2f10f330$8d32d990$@mobius-embedded-systems.co.uk>
- <cf5280fe-d0e8-5fc9-bada-e95667ead7f9@pengutronix.de>
- <c52611ab-77d3-540c-2bd4-8959dc811510@pengutronix.de>
- <00e501d638c4$438feea0$caafcbe0$@mobius-embedded-systems.co.uk>
- <ea436d8b-7cc5-9d75-9df4-5d2dee312927@pengutronix.de>
-In-Reply-To: <ea436d8b-7cc5-9d75-9df4-5d2dee312927@pengutronix.de>
-Date: Wed, 3 Jun 2020 23:14:00 +0100
-Message-ID: <02a701d639f4$4bedafc0$e3c90f40$@mobius-embedded-systems.co.uk>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jnJ9S-0007x4-RN
+ for barebox@lists.infradead.org; Mon, 22 Jun 2020 09:54:07 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 22 Jun 2020 11:53:52 +0200
+Message-Id: <20200622095352.22991-2-a.fatoum@pengutronix.de>
+In-Reply-To: <20200622095352.22991-1-a.fatoum@pengutronix.de>
+References: <20200622095352.22991-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Language: en-gb
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,79 +17,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: Mini UART support for Raspberry Pi CM3 ?
-To: 'Ahmad Fatoum' <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
+Subject: [PATCH 2/2] ARM: at91: choose proper parent for both MCI clocks
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-SGkgQWhtYWQKCkkgZ290IGEgbGl0dGxlIGZ1cnRoZXIgYW5kIGFsdGhvdWdoIHRoZXJlJ3Mgc3Rp
-bGwgbm8gc2VyaWFsIG91dHB1dCBvbiBVQVJUMSwgSSBhdCBsZWFzdCBub3cgc2VlIGFuIGVycm9y
-IG1lc3NhZ2UgYWJvdXQgaXQgKG9uIFVBUlQwIHN0aWxsKS4gIAoKbnMxNjU1MF9zZXJpYWwgM2Yy
-MTUwNDAuc2VyaWFsQDdlMjE1MDQwLm9mOiBwcm9iZSBmYWlsZWQ6IERldmljZSBvciByZXNvdXJj
-ZSBidXN5CgpTbyB5b3VyIHBvaW50IGFib3V0IHNldHRpbmcgQ09OU09MRV9BQ1RJVkFURV9OT05F
-IHdhcyBjb3JyZWN0IPCfmIouICBNYXliZSBJJ3ZlIG1pc3NlZCBzb21ldGhpbmcgaW4gdGhlIGRl
-dmljZSB0cmVlcywgYnV0IGFtIGF0IGxlYXN0IGhlYXJ0ZW5lZCB0byBzZWUgc29tZXRoaW5nIHBy
-aW50ZWQuICAKClRoYW5rcwoKSm9obgoKLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0KRnJvbTog
-YmFyZWJveCA8YmFyZWJveC1ib3VuY2VzQGxpc3RzLmluZnJhZGVhZC5vcmc+IE9uIEJlaGFsZiBP
-ZiBBaG1hZCBGYXRvdW0KU2VudDogMDIgSnVuZSAyMDIwIDExOjEyClRvOiBqb2huQG1vYml1cy1l
-bWJlZGRlZC1zeXN0ZW1zLmNvLnVrIDxhbmRyZXdAbW9iaXVzLWVtYmVkZGVkLXN5c3RlbXMuY28u
-dWs+OyBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKU3ViamVjdDogUmU6IE1pbmkgVUFSVCBz
-dXBwb3J0IGZvciBSYXNwYmVycnkgUGkgQ00zID8KCk9uIDYvMi8yMCAxMTo1NyBBTSwgam9obkBt
-b2JpdXMtZW1iZWRkZWQtc3lzdGVtcy5jby51ayB3cm90ZToKPiBIaSBBaG1hZAo+IAo+IEkgaGF2
-ZSBiZWVuIHVzaW5nIHYyMDIwLjA1IGJ1dCBJIGJlbGlldmUgSSBoYWQgZW5hYmxlZCBhbGwgY29u
-c29sZXMgc28gCj4gSSdsbCB0cnkgc2V0dGluZyBpdCB0byBub25lIGFuZCBzZWUgaG93IHRoYXQg
-Z29lcy4KClRoaXMgd2lsbCBvbmx5IGZpeCB0aGUgdXNlIG9mIFVBUlQwIGFzIG91dHB1dC4gVG8g
-dXNlIFVBUlQxLCB5b3UnbGwgbmVlZCB0byBzZXQgc3Rkb3V0LXBhdGggPSAmdWFydDEgbGlrZSBh
-Yjc2ZjlkMDlkM2IgKCJBUk06IHJwaTogY2hvb3NlIG1pbml1YXJ0IGFzCnN0ZG91dCIpIGRvZXMu
-CgpDaGVlcnMKQWhtYWQKCj4gCj4gVGhhbmtzCj4gCj4gSm9obgo+IAo+IC0tLS0tT3JpZ2luYWwg
-TWVzc2FnZS0tLS0tCj4gRnJvbTogYmFyZWJveCA8YmFyZWJveC1ib3VuY2VzQGxpc3RzLmluZnJh
-ZGVhZC5vcmc+IE9uIEJlaGFsZiBPZiBBaG1hZCAKPiBGYXRvdW0KPiBTZW50OiAwMiBKdW5lIDIw
-MjAgMTA6NTUKPiBUbzogam9obkBtb2JpdXMtZW1iZWRkZWQtc3lzdGVtcy5jby51awo+IDxhbmRy
-ZXdAbW9iaXVzLWVtYmVkZGVkLXN5c3RlbXMuY28udWs+OyBiYXJlYm94QGxpc3RzLmluZnJhZGVh
-ZC5vcmcKPiBTdWJqZWN0OiBSZTogTWluaSBVQVJUIHN1cHBvcnQgZm9yIFJhc3BiZXJyeSBQaSBD
-TTMgPwo+IAo+IE9uIDYvMi8yMCAxMTo0MyBBTSwgQWhtYWQgRmF0b3VtIHdyb3RlOgo+PiBPbiA2
-LzIvMjAgMTE6MTQgQU0sIGpvaG5AbW9iaXVzLWVtYmVkZGVkLXN5c3RlbXMuY28udWsgd3JvdGU6
-Cj4+PiBIaQo+Pj4KPj4+IEkgaGF2ZSBiZWVuIHRyeWluZyB0byBnZXQgdGhlIG1pbmkgVUFSVCAo
-VUFSVDEpIHRvIHdvcmsgaW4gQmFyZWJveCAKPj4+IG9uIHRoZSBSUEkgQ29tcHV0ZSBNb2R1bGUg
-MysuICBJIGFscmVhZHkgaGF2ZSB0aGUgY2hhbmdlcyBtYWRlIGluIAo+Pj4gY29uZmlnLnR4dCBh
-bmQgdGhpcyB3b3JrcyBmaW5lIHdoZW4gSSBib290IGludG8gdGhlIG1haW4gTGludXggY29kZS4K
-Pj4+IEhvd2V2ZXIsIGluIEJhcmVib3gsIHRoZSBvdXRwdXQgYWx3YXlzIGNvbWVzIG91dCBvbiB0
-aGUgbWFpbiBVQVJUCj4+PiAoVUFSVDApIGFuZCB0aGF0IGlzIHdpcmVkIHRvIHRoZSBCbHVldG9v
-dGggbW9kdWxlIG9uIG15IHBsYXRmb3JtLiAgSSAKPj4+IGhhdmUKPiB0cmllZCBtb2RpZnlpbmcg
-dGhlIGRldmljZQo+Pj4gdHJlZXMgYW5kIGNhbm5vdCBzZWVtIHRvIGdldCBhbnkgb3V0cHV0LiAg
-IEkgYWxzbyBlbnN1cmVkIHRoYXQgSSBhZGRlZAo+IHRoZQo+Pj4gUlBJIENNMyBvdXRwdXQgdGFy
-Z2V0IGFzIGEgY29uZmlnIGluIHJwaV9kZWZjb25maWcuICAgCj4+Pgo+Pj4gSSd2ZSB0cmllZCB0
-dXJuaW5nIG9mZiB0aGUgUEwwMTEgY29uZmlnIG9wdGlvbiBhbmQgYWxzbyBjaGFuZ2luZyB0aGUg
-Cj4+PiBkZXZpY2UgdHJlZSB0byByZWZlcmVuY2UgVUFSVDEgYW5kIHNldCB0aGUgY2hvc2VuIHN0
-ZG91dC1wYXRoIHRvIAo+Pj4gcG9pbnQgdG8gdGhpcyBVQVJULCBidXQgd2hlbiBJIGRvIHRoaXMg
-SSBqdXN0IGdldCBhIGxhY2sgb2YgYW55IAo+Pj4gc2VyaWFsCj4gb3V0cHV0Lgo+Pj4KPj4+IEkg
-YW0gYWxzbyB3YW50aW5nIHRvIHVzZSB0aGUgYWx0ZXJuYXRlIHBpbnMgKDMyICYgMzMpIGZvciBV
-QVJUMSwgc28gCj4+PiBJIGFtIHRoaW5raW5nIHRoYXQgc29tZXRoaW5nIGVsc2UgbmVlZHMgdG8g
-YmUgY2hhbmdlZC4gIEhhcyBhbnlvbmUgCj4+PiBtYW5hZ2VkIHRvIGdldCB0aGlzIHRvIHdvcms/
-Cj4+Cj4+IFdoaWNoIGJhcmVib3ggdmVyc2lvbiBhcmUgeW91IG9uPyB2MjAyMC4wMy4wIGNvbnRh
-aW5zIGEgc2VyaWVzIGZvciAKPj4gbWluaSBVQVJUIHN1cHBvcnQgY3VsbWluYXRpbmcgaW4gYWI3
-NmY5ZDA5ZDNiICgiQVJNOiBycGk6IGNob29zZSAKPj4gbWluaXVhcnQgYXMgc3Rkb3V0IiksIHdo
-aWNoIHNvdW5kcyBsaWtlIHNvbWV0aGluZyB5b3Ugd2lsbCB3YW50IHRvIGhhdmUuCj4gCj4gT2gs
-IEkgc2VlIG5vdyB0aGF0IHRoaXMgaXMgaW4gc2luY2UgdjIwMTkuMDMuMC4gSSBhc3N1bWUgeW91
-IGFyZSAKPiBhbHJlYWR5IG9uIGEgbmV3ZXIgdmVyc2lvbj8KPiAKPj4gQWxzbyB3aGF0J3MgeW91
-ICJDb25zb2xlIGFjdGl2YXRpb24gc3RyYXRlZ3kiPyAoS2NvbmZpZyBzeW1ib2xzCj4+IENPTlNP
-TEVfQUNUSVZBVEVfLiopIFlvdSdsbCB3YW50IHRvIGhhdmUgQ09OU09MRV9BQ1RJVkFURV9OT05F
-LCBzbyAKPj4gb25seSB0aGUgc3Rkb3V0LXBhdGggZnJvbSB0aGUgZGV2aWNlIHRyZWUgaXMgYWN0
-aXZhdGVkIGJ5IGRlZmF1bHQuCj4+Cj4+IENoZWVycwo+PiBBaG1hZAo+Pgo+Pj4KPj4+IFJlZ2Fy
-ZHMKPj4+Cj4+PiBKb2huCj4+Pgo+Pj4KPj4+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCj4+PiBiYXJlYm94IG1haWxpbmcgbGlzdAo+Pj4gYmFyZWJveEBs
-aXN0cy5pbmZyYWRlYWQub3JnCj4+PiBodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
-L2xpc3RpbmZvL2JhcmVib3gKPj4+Cj4+Cj4gCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAg
-ICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKU3RldWVy
-d2FsZGVyIFN0ci4gMjEgICAgICAgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRy
-b25peC5kZS8gIHwKMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSAgICAgICAgICAgICAgICAgIHwg
-UGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJB
-IDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBs
-aXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9y
-Zy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmlu
-ZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9i
-YXJlYm94Cg==
+When booting from SDMMC0, Use of SDMMC1 fails with:
+ERROR: clk: couldn't set sdmmc1_gclk clk rate to 480000000 (-22), current rate: 32768
+
+This is because the first stage bootloader only reparents the boot SDMMC
+instance and barebox does no automatic reparenting for the other one.
+
+Force both clocks to have a suitable parent.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/arm/dts/sama5d2.dtsi | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/arch/arm/dts/sama5d2.dtsi b/arch/arm/dts/sama5d2.dtsi
+index 2064fd1ad28f..c9af5f2f7ad4 100644
+--- a/arch/arm/dts/sama5d2.dtsi
++++ b/arch/arm/dts/sama5d2.dtsi
+@@ -8,3 +8,11 @@
+ };
+ 
+ /delete-node/ &{/memory};
++
++&sdmmc0 {
++	assigned-clock-parents = <&pmc PMC_TYPE_CORE PMC_UTMI>;
++};
++
++&sdmmc1 {
++	assigned-clock-parents = <&pmc PMC_TYPE_CORE PMC_UTMI>;
++};
+-- 
+2.27.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
