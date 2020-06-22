@@ -1,12 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from conssluserg-04.nifty.com ([210.131.2.83])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jnHwg-00047P-VR
- for barebox@lists.infradead.org; Mon, 22 Jun 2020 08:36:51 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 22 Jun 2020 10:36:45 +0200
-Message-Id: <20200622083645.19986-1-a.fatoum@pengutronix.de>
+ id 1jnQdJ-0000BI-Sa
+ for barebox@lists.infradead.org; Mon, 22 Jun 2020 17:53:27 +0000
+Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com
+ [209.85.222.48]) (authenticated)
+ by conssluserg-04.nifty.com with ESMTP id 05MHr6Li005603
+ for <barebox@lists.infradead.org>; Tue, 23 Jun 2020 02:53:07 +0900
+Received: by mail-ua1-f48.google.com with SMTP id b13so5921769uav.3
+ for <barebox@lists.infradead.org>; Mon, 22 Jun 2020 10:53:07 -0700 (PDT)
 MIME-Version: 1.0
+References: <20200617034404.5904-1-dgienda125@gmail.com>
+ <20200617134538.GC11869@pengutronix.de>
+ <20200618015455.GA9887@fizzbox.localdomain>
+ <20200618131017.GJ11869@pengutronix.de>
+In-Reply-To: <20200618131017.GJ11869@pengutronix.de>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Tue, 23 Jun 2020 02:52:29 +0900
+Message-ID: <CAK7LNAS7mQOcwmjiMo9HbU=4SUiPywES1TDfEWOwQcu+VaTFvg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,110 +30,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] startup: inhibit watchdogs on non-interactive autoboot abort
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [RFC PATCH 0/8] Module and ARM Module updates and fixes
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>, David Dgien <dgienda125@gmail.com>
 
-nv.autoboot=abort has been added as development aid to have barebox stop
-at the shell prompt automatically. It makes sense to inhibit all watchdogs
-in this mode, so the user can later use the shell in peace.
+On Thu, Jun 18, 2020 at 10:10 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+>
+> On Wed, Jun 17, 2020 at 09:54:55PM -0400, David Dgien wrote:
+> > Hi Sascha,
+> >
+> > On Wed, Jun 17, 2020 at 03:45:38PM +0200, Sascha Hauer wrote:
+> > > Hi David,
+> > >
+> > > On Tue, Jun 16, 2020 at 11:43:56PM -0400, David Dgien wrote:
+> > > > This series fixes various bugs and bit-rot issues with the module
+> > > > loading code. It also ports a couple of modules features from the Linux
+> > > > kernel: arch specific section fixups, and module PLTs for ARM modules,
+> > > > to contain veneers for 'bl' instructions.
+> > > >
+> > > > There are two things in this series I'm looking for feedback on:
+> > > > Linux implements module_frob_arch_sections as a weak symbol for the
+> > > > default case. I didn't see any other "weak" functions in barebox, so I
+> > > > wasn't sure if using that was acceptable.
+> > >
+> > > For things that are really mutually exclusive like different
+> > > implementations on different architectures I think weak functions are
+> > > ok. They are not ok as a quick hack for hooking something into something
+> > > though.
+> > >
+> >
+> > I'll make the change to a weak function here in a v2, since it will be a
+> > bit cleaner.
+> >
+> > > > Since the Kconfig
+> > > > HAVE_MOD_ARCH_SPECIFIC already exists as part of the change, I just used
+> > > > that to define a static inline default implementation, but using a weak
+> > > > function would make that slightly cleaner.
+> > > >
+> > > > And in the patch that added the init macros to module.h, I wasn't sure
+> > > > if it would be okay to pollute init.h with the #ifndef MODULE
+> > > > directives, so instead I just #undef'd all of the initcalls before
+> > > > redefining them in module.h.  If it's okay to add the #ifndef MODULE to
+> > > > init.h, that would be significantly cleaner than the current
+> > > > implementation.
+> > >
+> > > I think it's ok to add #ifndef MODULE to init.h
+> >
+> > Same as above.
+> >
+> > >
+> > > Anyway, what do you need modules for? Do you have a good reason or is it
+> > > just for the fun of it?
+> >
+> > I'm working on a project that wants to use barebox as a very lightweight
+> > OS replacement.
+> > We're using modules to allow loading user code with
+> > controlled access to hw interfaces via exported driver symbols.
+>
+> So barebOS again, we had that as an April fools joke once :)
+>
+> You'll probably miss things like interrupts, paging and multitasking
+> very soon.
+>
+> Sascha
 
-This also applies to fastboot aborting the shell prompt. If this
-happens, watchdog will be automatically inhibited as well.
-Behavior on user aborting the shell prompt via keypad or uart input
-remains unchanged for backwards-compatibility.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- common/startup.c           |  4 ++++
- drivers/watchdog/wd_core.c | 27 +++++++++++++++++++++++++++
- include/watchdog.h         |  6 ++++++
- 3 files changed, 37 insertions(+)
+Does it make sense to choose y/m
+depending on how often they are used?
 
-diff --git a/common/startup.c b/common/startup.c
-index 511675ed55d4..fa66fe086edb 100644
---- a/common/startup.c
-+++ b/common/startup.c
-@@ -43,6 +43,7 @@
- #include <console_countdown.h>
- #include <environment.h>
- #include <linux/ctype.h>
-+#include <watchdog.h>
- 
- extern initcall_t __barebox_initcalls_start[], __barebox_early_initcalls_end[],
- 		  __barebox_initcalls_end[];
-@@ -351,6 +352,9 @@ static int run_init(void)
- 	if (autoboot == AUTOBOOT_MENU)
- 		run_command(MENUFILE);
- 
-+	if (autoboot == AUTOBOOT_ABORT && autoboot == global_autoboot_state)
-+		watchdog_inhibit_all();
-+
- 	run_shell();
- 	run_command(MENUFILE);
- 
-diff --git a/drivers/watchdog/wd_core.c b/drivers/watchdog/wd_core.c
-index a17234f4b6c1..e50703ce9b60 100644
---- a/drivers/watchdog/wd_core.c
-+++ b/drivers/watchdog/wd_core.c
-@@ -273,3 +273,30 @@ struct watchdog *watchdog_get_by_name(const char *name)
- 	return NULL;
- }
- EXPORT_SYMBOL(watchdog_get_by_name);
-+
-+int watchdog_inhibit_all(void)
-+{
-+	struct watchdog *wd;
-+	int ret = 0;
-+
-+	list_for_each_entry(wd, &watchdog_list, list) {
-+		int err;
-+		if (!wd->priority || wd->running == WDOG_HW_NOT_RUNNING)
-+			continue;
-+
-+		err = watchdog_set_timeout(wd, 0);
-+		if (!err)
-+			continue;
-+
-+		if (err != -ENOSYS || !IS_ENABLED(CONFIG_WATCHDOG_POLLER)) {
-+			ret = err;
-+			continue;
-+		}
-+
-+		wd->poller_enable = true;
-+		watchdog_poller_start(wd);
-+	}
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL(watchdog_inhibit_all);
-diff --git a/include/watchdog.h b/include/watchdog.h
-index 419c1cdf469e..81414ef8ecaa 100644
---- a/include/watchdog.h
-+++ b/include/watchdog.h
-@@ -45,6 +45,7 @@ int watchdog_deregister(struct watchdog *);
- struct watchdog *watchdog_get_default(void);
- struct watchdog *watchdog_get_by_name(const char *name);
- int watchdog_set_timeout(struct watchdog*, unsigned);
-+int watchdog_inhibit_all(void);
- #else
- static inline int watchdog_register(struct watchdog *w)
- {
-@@ -70,6 +71,11 @@ static inline int watchdog_set_timeout(struct watchdog*w, unsigned t)
- {
- 	return 0;
- }
-+
-+static inline int watchdog_inhibit_all(void)
-+{
-+	return -ENOSYS;
-+}
- #endif
- 
- #define WATCHDOG_DEFAULT_PRIORITY 100
+- commands and drivers that are used quite often   ->  built-in
+- commands and drivers that are sometimes used     ->  modules
+
+
+
 -- 
-2.27.0
-
+Best Regards
+Masahiro Yamada
 
 _______________________________________________
 barebox mailing list
