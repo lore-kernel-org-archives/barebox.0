@@ -1,23 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from conssluserg-04.nifty.com ([210.131.2.83])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jnQdJ-0000BI-Sa
- for barebox@lists.infradead.org; Mon, 22 Jun 2020 17:53:27 +0000
-Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com
- [209.85.222.48]) (authenticated)
- by conssluserg-04.nifty.com with ESMTP id 05MHr6Li005603
- for <barebox@lists.infradead.org>; Tue, 23 Jun 2020 02:53:07 +0900
-Received: by mail-ua1-f48.google.com with SMTP id b13so5921769uav.3
- for <barebox@lists.infradead.org>; Mon, 22 Jun 2020 10:53:07 -0700 (PDT)
+ id 1jnHzd-0004B3-C0
+ for barebox@lists.infradead.org; Mon, 22 Jun 2020 08:39:54 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 22 Jun 2020 10:39:41 +0200
+Message-Id: <20200622083943.21737-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-References: <20200617034404.5904-1-dgienda125@gmail.com>
- <20200617134538.GC11869@pengutronix.de>
- <20200618015455.GA9887@fizzbox.localdomain>
- <20200618131017.GJ11869@pengutronix.de>
-In-Reply-To: <20200618131017.GJ11869@pengutronix.de>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Tue, 23 Jun 2020 02:52:29 +0900
-Message-ID: <CAK7LNAS7mQOcwmjiMo9HbU=4SUiPywES1TDfEWOwQcu+VaTFvg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -30,82 +19,113 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC PATCH 0/8] Module and ARM Module updates and fixes
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>, David Dgien <dgienda125@gmail.com>
+Subject: [PATCH 1/3] mci: sdhci: atmel: don't print errors on command timeouts
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Thu, Jun 18, 2020 at 10:10 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
->
-> On Wed, Jun 17, 2020 at 09:54:55PM -0400, David Dgien wrote:
-> > Hi Sascha,
-> >
-> > On Wed, Jun 17, 2020 at 03:45:38PM +0200, Sascha Hauer wrote:
-> > > Hi David,
-> > >
-> > > On Tue, Jun 16, 2020 at 11:43:56PM -0400, David Dgien wrote:
-> > > > This series fixes various bugs and bit-rot issues with the module
-> > > > loading code. It also ports a couple of modules features from the Linux
-> > > > kernel: arch specific section fixups, and module PLTs for ARM modules,
-> > > > to contain veneers for 'bl' instructions.
-> > > >
-> > > > There are two things in this series I'm looking for feedback on:
-> > > > Linux implements module_frob_arch_sections as a weak symbol for the
-> > > > default case. I didn't see any other "weak" functions in barebox, so I
-> > > > wasn't sure if using that was acceptable.
-> > >
-> > > For things that are really mutually exclusive like different
-> > > implementations on different architectures I think weak functions are
-> > > ok. They are not ok as a quick hack for hooking something into something
-> > > though.
-> > >
-> >
-> > I'll make the change to a weak function here in a v2, since it will be a
-> > bit cleaner.
-> >
-> > > > Since the Kconfig
-> > > > HAVE_MOD_ARCH_SPECIFIC already exists as part of the change, I just used
-> > > > that to define a static inline default implementation, but using a weak
-> > > > function would make that slightly cleaner.
-> > > >
-> > > > And in the patch that added the init macros to module.h, I wasn't sure
-> > > > if it would be okay to pollute init.h with the #ifndef MODULE
-> > > > directives, so instead I just #undef'd all of the initcalls before
-> > > > redefining them in module.h.  If it's okay to add the #ifndef MODULE to
-> > > > init.h, that would be significantly cleaner than the current
-> > > > implementation.
-> > >
-> > > I think it's ok to add #ifndef MODULE to init.h
-> >
-> > Same as above.
-> >
-> > >
-> > > Anyway, what do you need modules for? Do you have a good reason or is it
-> > > just for the fun of it?
-> >
-> > I'm working on a project that wants to use barebox as a very lightweight
-> > OS replacement.
-> > We're using modules to allow loading user code with
-> > controlled access to hw interfaces via exported driver symbols.
->
-> So barebOS again, we had that as an April fools joke once :)
->
-> You'll probably miss things like interrupts, paging and multitasking
-> very soon.
->
-> Sascha
+Time outs can be expected, e.g. when probing whether a card is a MMC
+one. The core handles it, so don't have the driver print an error.
 
+While at it, simplify the error handling. We don't need to read the
+status more than once and returning -EPERM on non-timeout is what the
+other drivers are doing.
 
-Does it make sense to choose y/m
-depending on how often they are used?
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/mci/atmel-sdhci-common.c | 40 ++++++++++++++++++--------------
+ 1 file changed, 22 insertions(+), 18 deletions(-)
 
-- commands and drivers that are used quite often   ->  built-in
-- commands and drivers that are sometimes used     ->  modules
-
-
-
+diff --git a/drivers/mci/atmel-sdhci-common.c b/drivers/mci/atmel-sdhci-common.c
+index 597b903afa74..060d1c33d1a5 100644
+--- a/drivers/mci/atmel-sdhci-common.c
++++ b/drivers/mci/atmel-sdhci-common.c
+@@ -89,10 +89,10 @@ exit:
+ static int at91_sdhci_wait_for_done(struct at91_sdhci *host, u32 mask)
+ {
+ 	struct sdhci *sdhci = &host->sdhci;
+-	u16 status;
++	u32 status;
+ 	int ret;
+ 
+-	ret = sdhci_read16_poll_timeout(sdhci, SDHCI_INT_NORMAL_STATUS, status,
++	ret = sdhci_read32_poll_timeout(sdhci, SDHCI_INT_STATUS, status,
+ 					(status & mask) == mask || (status & SDHCI_INT_ERROR),
+ 					USEC_PER_SEC);
+ 
+@@ -101,13 +101,15 @@ static int at91_sdhci_wait_for_done(struct at91_sdhci *host, u32 mask)
+ 		return ret;
+ 	}
+ 
++	if (status & SDHCI_INT_TIMEOUT)
++		return -ETIMEDOUT;
++
+ 	if (status & SDHCI_INT_ERROR) {
+-		pr_err("SDHCI_INT_ERROR: 0x%08x\n",
+-			sdhci_read16(sdhci, SDHCI_INT_ERROR_STATUS));
++		pr_err("SDHCI_INT_STATUS: 0x%08x\n", status);
+ 		return -EPERM;
+ 	}
+ 
+-	return status;
++	return status & 0xFFFF;
+ }
+ 
+ int at91_sdhci_send_command(struct at91_sdhci *host, struct mci_cmd *cmd,
+@@ -115,7 +117,8 @@ int at91_sdhci_send_command(struct at91_sdhci *host, struct mci_cmd *cmd,
+ {
+ 	unsigned command, xfer;
+ 	struct sdhci *sdhci = &host->sdhci;
+-	u32 mask, status, state;
++	u32 mask, state;
++	int status;
+ 	int ret;
+ 
+ 	/* Wait for idle before next command */
+@@ -153,28 +156,29 @@ int at91_sdhci_send_command(struct at91_sdhci *host, struct mci_cmd *cmd,
+ 	sdhci_write16(sdhci, SDHCI_COMMAND, command);
+ 
+ 	status = at91_sdhci_wait_for_done(host, mask);
+-	if (status >= 0 && (status & (SDHCI_INT_ERROR | mask)) == mask) {
+-		sdhci_read_response(sdhci, cmd);
+-		sdhci_write32(sdhci, SDHCI_INT_STATUS, mask);
+-
+-		if (data)
+-			sdhci_transfer_data(sdhci, data);
++	if (status < 0)
++		goto error;
+ 
+-		udelay(1000);
++	sdhci_read_response(sdhci, cmd);
++	sdhci_write32(sdhci, SDHCI_INT_STATUS, mask);
+ 
+-		status = sdhci_read32(sdhci, SDHCI_INT_STATUS);
+-		sdhci_write32(sdhci, SDHCI_INT_STATUS, ~0U);
++	if (data)
++		sdhci_transfer_data(sdhci, data);
+ 
+-		return 0;
+-	}
++	udelay(1000);
+ 
+ 	status = sdhci_read32(sdhci, SDHCI_INT_STATUS);
+ 	sdhci_write32(sdhci, SDHCI_INT_STATUS, ~0U);
+ 
++	return 0;
++
++error:
++	sdhci_write32(sdhci, SDHCI_INT_STATUS, ~0U);
++
+ 	sdhci_reset(sdhci, SDHCI_RESET_CMD);
+ 	sdhci_reset(sdhci, SDHCI_RESET_DATA);
+ 
+-	return status & SDHCI_INT_TIMEOUT ? -ETIMEDOUT : -ECOMM;
++	return status;
+ }
+ 
+ static void at91_sdhci_set_power(struct at91_sdhci *host, unsigned vdd)
 -- 
-Best Regards
-Masahiro Yamada
+2.27.0
+
 
 _______________________________________________
 barebox mailing list
