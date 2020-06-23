@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from zimbra2.kalray.eu ([92.103.151.219])
- by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jnkXX-0006py-ES
- for barebox@lists.infradead.org; Tue, 23 Jun 2020 15:08:49 +0000
-From: Clement Leger <cleger@kalray.eu>
-Date: Tue, 23 Jun 2020 17:08:23 +0200
-Message-Id: <20200623150823.25336-1-cleger@kalray.eu>
+Received: from vsmx011.vodafonemail.xion.oxcs.net ([153.92.174.89])
+ by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jnkaN-00009M-7V
+ for barebox@lists.infradead.org; Tue, 23 Jun 2020 15:11:44 +0000
+Date: Tue, 23 Jun 2020 17:11:28 +0200 (CEST)
+From: Giorgio Dal Molin <giorgio.nicole@arcor.de>
+Message-ID: <245646662.425432.1592925096458@mail.vodafone.de>
+In-Reply-To: <CAOMZO5AeTg2afd+xVmNr=GxOM=s7qdzUhMqz2AHpTx_MPGWbPg@mail.gmail.com>
+References: <925732743.424285.1592919941556@mail.vodafone.de>
+ <CAOMZO5AeTg2afd+xVmNr=GxOM=s7qdzUhMqz2AHpTx_MPGWbPg@mail.gmail.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,53 +18,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] kbuild: fix typo in --no-whole-archive flag
-To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
-Cc: Clement Leger <cleger@kalray.eu>
+Subject: Re: reset / watchdog on an imx7d soc
+To: Fabio Estevam <festevam@gmail.com>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-"whole" was replaced with "while" during a previous patch. Fix this flag
-to allow building correctly.
+Hi Fabio,
 
-Fixes 0a78b33954 ("kbuild: switch over to thin archive")
-Signed-off-by: Clement Leger <cleger@kalray.eu>
----
- arch/kvx/Makefile      | 2 +-
- arch/mips/pbl/Makefile | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+thank you for your quick reply.
 
-diff --git a/arch/kvx/Makefile b/arch/kvx/Makefile
-index 9e7c8c07f..13c4e2431 100644
---- a/arch/kvx/Makefile
-+++ b/arch/kvx/Makefile
-@@ -30,6 +30,6 @@ lds-y += arch/kvx/cpu/barebox.lds
- 
- cmd_barebox__ ?= $(LD) $(KBUILD_LDFLAGS) $(LDFLAGS_barebox) -o $@ \
-       -T $(BAREBOX_LDS) \
--      --whole-archive $(BAREBOX_OBJS) --no-while-archive \
-+      --whole-archive $(BAREBOX_OBJS) --no-whole-archive \
-       -L$(LIBGCC_PATH) -lgcc \
-       $(filter-out $(BAREBOX_LDS) $(BAREBOX_OBJS) FORCE ,$^)
-diff --git a/arch/mips/pbl/Makefile b/arch/mips/pbl/Makefile
-index 3bd0df165..f85c7a6d6 100644
---- a/arch/mips/pbl/Makefile
-+++ b/arch/mips/pbl/Makefile
-@@ -31,7 +31,7 @@ zbarebox-lds := $(obj)/zbarebox.lds
- quiet_cmd_zbarebox__ ?= LD      $@
-       cmd_zbarebox__ ?= $(LD) $(KBUILD_LDFLAGS) $(LDFLAGS_zbarebox) -o $@ \
-       -T $(zbarebox-lds)                                           \
--      --whole-archive $(zbarebox-common) --no-while-archive        \
-+      --whole-archive $(zbarebox-common) --no-whole-archive        \
-       $(filter-out $(zbarebox-lds) $(zbarebox-common) FORCE ,$^)
- 
- $(obj)/zbarebox: $(zbarebox-lds) $(zbarebox-common) FORCE
--- 
-2.17.1
+I've already found the errata you linked in your mail but I had no success
+applying the suggestion there; maybe I'm doing it wrong.
+Let's take the Option 3 there:
 
+  Use the SNVS LPCR register to turn off the system power
+
+It suggests to set the SNVS_LPCR[TOP] bit together with SNVS_LPCR[DP_EN], this
+would mean something like:
+
+# mw -l 0x30370038 0x00000060
+
+But the effect of this write is to hang the soc.
+
+The same happens with the Option 2 in the errata:
+
+   Use SRC_A7RCR0[A7_CORE_POR_RESET0] to reset the ARM A7.
+
+To do this I use:
+
+# mw -l 0x30390004 0x00000003
+
+but again the soc just hangs as with the watchdog.
+
+giorgio
+
+> On June 23, 2020 at 3:53 PM Fabio Estevam <festevam@gmail.com> wrote:
+> 
+> 
+> Hi Giorgio,
+> 
+> On Tue, Jun 23, 2020 at 10:48 AM Giorgio Dal Molin
+> <giorgio.nicole@arcor.de> wrote:
+> 
+> > Can anyone confirm that the current barebox is able to restart an imx7 soc without
+> > using external signals ?
+> 
+> You really need to use the WDOG_B pin to trigger the reset due to an
+> i.MX7 erratum.
+> 
+> Please check the i.MX7 errata document:
+> https://www.nxp.com/docs/en/errata/IMX7DS_3N09P.pdf
+> 
+> Search for "e10574 Watchdog: A watchdog timeout or software trigger
+> will not reset the SOC"
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
