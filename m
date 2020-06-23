@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from conuserg-08.nifty.com ([210.131.2.75])
- by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jnZHQ-0001he-9l
- for barebox@lists.infradead.org; Tue, 23 Jun 2020 03:07:26 +0000
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Tue, 23 Jun 2020 12:07:00 +0900
-Message-Id: <20200623030702.666462-1-masahiroy@kernel.org>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jncIH-0002Rr-Lr
+ for barebox@lists.infradead.org; Tue, 23 Jun 2020 06:20:31 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue, 23 Jun 2020 08:20:09 +0200
+Message-Id: <20200623062011.19347-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,36 +19,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] kbuild: add -Wmissing-prototypes and -std=gnu89 to
- KBUILD_HOSTCFLAGS
+Subject: [PATCH 0/2] clk: at91: sync with Linux v5.8-rc1
 To: barebox@lists.infradead.org
-Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Align with Linux kernel.
+Hello Sascha,
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
----
+This series adds support for the new sama5d3 clk bindings present in v5.8-rc1.
+Please apply before the v5.8-rc1 device tree sync, so we avoid intermittent
+breakage for the microchip-ksz9477-evb.
 
- Makefile | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Thanks,
+Ahmad Fatoum (2):
+  include: import upstream header <linux/overflow.h>
+  clk: at91: sync with Linux v5.8-rc1
 
-diff --git a/Makefile b/Makefile
-index da01ca5b0..a4aac3db4 100644
---- a/Makefile
-+++ b/Makefile
-@@ -363,8 +363,8 @@ HOST_LFS_LIBS := $(shell getconf LFS_LIBS 2>/dev/null)
- 
- HOSTCC       = gcc
- HOSTCXX      = g++
--KBUILD_HOSTCFLAGS   := -Wall -Wstrict-prototypes -O2 \
--		-fomit-frame-pointer $(HOST_LFS_CFLAGS) \
-+KBUILD_HOSTCFLAGS   := -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 \
-+		-fomit-frame-pointer -std=gnu89 $(HOST_LFS_CFLAGS) \
- 		$(HOSTCFLAGS)
- KBUILD_HOSTCXXFLAGS := -Wall -O2 $(HOST_LFS_CFLAGS) $(HOSTCXXFLAGS)
- KBUILD_HOSTLDFLAGS  := $(HOST_LFS_LDFLAGS) $(HOSTLDFLAGS)
+ drivers/clk/at91/Makefile      |   5 +-
+ drivers/clk/at91/at91rm9200.c  | 209 +++++++++++++++++++++
+ drivers/clk/at91/at91sam9260.c |  13 +-
+ drivers/clk/at91/at91sam9g45.c | 221 +++++++++++++++++++++++
+ drivers/clk/at91/at91sam9n12.c | 249 +++++++++++++++++++++++++
+ drivers/clk/at91/at91sam9rl.c  |  10 +-
+ drivers/clk/at91/at91sam9x5.c  |  10 +-
+ drivers/clk/at91/clk-usb.c     |   9 +-
+ drivers/clk/at91/pmc.c         |  47 +++--
+ drivers/clk/at91/pmc.h         |  14 +-
+ drivers/clk/at91/sam9x60.c     |  28 ++-
+ drivers/clk/at91/sama5d2.c     |  13 +-
+ drivers/clk/at91/sama5d3.c     | 248 +++++++++++++++++++++++++
+ drivers/clk/at91/sama5d4.c     |  10 +-
+ include/linux/overflow.h       | 319 +++++++++++++++++++++++++++++++++
+ 15 files changed, 1343 insertions(+), 62 deletions(-)
+ create mode 100644 drivers/clk/at91/at91rm9200.c
+ create mode 100644 drivers/clk/at91/at91sam9g45.c
+ create mode 100644 drivers/clk/at91/at91sam9n12.c
+ create mode 100644 drivers/clk/at91/sama5d3.c
+ create mode 100644 include/linux/overflow.h
+
 -- 
-2.25.1
+2.27.0
 
 
 _______________________________________________
