@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jnfyb-0008CX-1a
- for barebox@lists.infradead.org; Tue, 23 Jun 2020 10:16:25 +0000
-Date: Tue, 23 Jun 2020 12:16:23 +0200
+ id 1jngsU-00084V-Hy
+ for barebox@lists.infradead.org; Tue, 23 Jun 2020 11:14:11 +0000
+Date: Tue, 23 Jun 2020 13:14:09 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200623101623.GC11869@pengutronix.de>
-References: <20200623100846.21965-1-a.fatoum@pengutronix.de>
+Message-ID: <20200623111409.GD11869@pengutronix.de>
+References: <20200623030702.666462-1-masahiroy@kernel.org>
+ <20200623030702.666462-2-masahiroy@kernel.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200623100846.21965-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20200623030702.666462-2-masahiroy@kernel.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,122 +23,144 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/3] mci: sdhci: atmel: don't print errors on command
- timeouts
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH 2/3] kbuild: add infrastructure to build userspace programs
+To: Masahiro Yamada <masahiroy@kernel.org>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jun 23, 2020 at 12:08:44PM +0200, Ahmad Fatoum wrote:
-> Time outs can be expected, e.g. when probing whether a card is a MMC
-> one. The core handles it, so don't have the driver print an error.
+On Tue, Jun 23, 2020 at 12:07:01PM +0900, Masahiro Yamada wrote:
+> Import Linux commit 7f3a59db274c3e3d884c785e363a054110f1c266
 > 
-> While at it, simplify the error handling. We don't need to read the
-> status more than once and returning -EPERM on non-timeout is what the
-> other drivers are doing.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 > ---
+>
+
+Very nice. Building userspace programs always was kind of a hack.
 
 Applied, thanks
 
 Sascha
 
-> v1 -> v2:
->   no change
-> ---
->  drivers/mci/atmel-sdhci-common.c | 40 ++++++++++++++++++--------------
->  1 file changed, 22 insertions(+), 18 deletions(-)
+>  Makefile                   | 13 ++++++++---
+>  scripts/Makefile.build     |  6 +++++
+>  scripts/Makefile.clean     |  2 +-
+>  scripts/Makefile.userprogs | 45 ++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 62 insertions(+), 4 deletions(-)
+>  create mode 100644 scripts/Makefile.userprogs
 > 
-> diff --git a/drivers/mci/atmel-sdhci-common.c b/drivers/mci/atmel-sdhci-common.c
-> index b9524622620f..fff4468d71e8 100644
-> --- a/drivers/mci/atmel-sdhci-common.c
-> +++ b/drivers/mci/atmel-sdhci-common.c
-> @@ -83,10 +83,10 @@ exit:
->  static int at91_sdhci_wait_for_done(struct at91_sdhci *host, u32 mask)
->  {
->  	struct sdhci *sdhci = &host->sdhci;
-> -	u16 status;
-> +	u32 status;
->  	int ret;
+> diff --git a/Makefile b/Makefile
+> index a4aac3db4..0da032532 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -363,9 +363,12 @@ HOST_LFS_LIBS := $(shell getconf LFS_LIBS 2>/dev/null)
 >  
-> -	ret = sdhci_read16_poll_timeout(sdhci, SDHCI_INT_NORMAL_STATUS, status,
-> +	ret = sdhci_read32_poll_timeout(sdhci, SDHCI_INT_STATUS, status,
->  					(status & mask) == mask || (status & SDHCI_INT_ERROR),
->  					USEC_PER_SEC);
->  
-> @@ -95,13 +95,15 @@ static int at91_sdhci_wait_for_done(struct at91_sdhci *host, u32 mask)
->  		return ret;
->  	}
->  
-> +	if (status & SDHCI_INT_TIMEOUT)
-> +		return -ETIMEDOUT;
+>  HOSTCC       = gcc
+>  HOSTCXX      = g++
+> -KBUILD_HOSTCFLAGS   := -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 \
+> -		-fomit-frame-pointer -std=gnu89 $(HOST_LFS_CFLAGS) \
+> -		$(HOSTCFLAGS)
 > +
->  	if (status & SDHCI_INT_ERROR) {
-> -		pr_err("SDHCI_INT_ERROR: 0x%08x\n",
-> -			sdhci_read16(sdhci, SDHCI_INT_ERROR_STATUS));
-> +		pr_err("SDHCI_INT_STATUS: 0x%08x\n", status);
->  		return -EPERM;
->  	}
->  
-> -	return status;
-> +	return status & 0xFFFF;
->  }
->  
->  int at91_sdhci_send_command(struct at91_sdhci *host, struct mci_cmd *cmd,
-> @@ -109,7 +111,8 @@ int at91_sdhci_send_command(struct at91_sdhci *host, struct mci_cmd *cmd,
->  {
->  	unsigned command, xfer;
->  	struct sdhci *sdhci = &host->sdhci;
-> -	u32 mask, status, state;
-> +	u32 mask, state;
-> +	int status;
->  	int ret;
->  
->  	/* Wait for idle before next command */
-> @@ -147,28 +150,29 @@ int at91_sdhci_send_command(struct at91_sdhci *host, struct mci_cmd *cmd,
->  	sdhci_write16(sdhci, SDHCI_COMMAND, command);
->  
->  	status = at91_sdhci_wait_for_done(host, mask);
-> -	if (status >= 0 && (status & (SDHCI_INT_ERROR | mask)) == mask) {
-> -		sdhci_read_response(sdhci, cmd);
-> -		sdhci_write32(sdhci, SDHCI_INT_STATUS, mask);
-> -
-> -		if (data)
-> -			sdhci_transfer_data(sdhci, data);
-> +	if (status < 0)
-> +		goto error;
->  
-> -		udelay(1000);
-> +	sdhci_read_response(sdhci, cmd);
-> +	sdhci_write32(sdhci, SDHCI_INT_STATUS, mask);
->  
-> -		status = sdhci_read32(sdhci, SDHCI_INT_STATUS);
-> -		sdhci_write32(sdhci, SDHCI_INT_STATUS, ~0U);
-> +	if (data)
-> +		sdhci_transfer_data(sdhci, data);
->  
-> -		return 0;
-> -	}
-> +	udelay(1000);
->  
->  	status = sdhci_read32(sdhci, SDHCI_INT_STATUS);
->  	sdhci_write32(sdhci, SDHCI_INT_STATUS, ~0U);
->  
-> +	return 0;
+> +export KBUILD_USERCFLAGS := -Wall -Wmissing-prototypes -Wstrict-prototypes \
+> +			      -O2 -fomit-frame-pointer -std=gnu89
+> +export KBUILD_USERLDFLAGS :=
 > +
-> +error:
-> +	sdhci_write32(sdhci, SDHCI_INT_STATUS, ~0U);
+> +KBUILD_HOSTCFLAGS   := $(KBUILD_USERCFLAGS) $(HOST_LFS_CFLAGS) $(HOSTCFLAGS)
+>  KBUILD_HOSTCXXFLAGS := -Wall -O2 $(HOST_LFS_CFLAGS) $(HOSTCXXFLAGS)
+>  KBUILD_HOSTLDFLAGS  := $(HOST_LFS_LDFLAGS) $(HOSTLDFLAGS)
+>  KBUILD_HOSTLDLIBS   := $(HOST_LFS_LIBS) $(HOSTLDLIBS)
+> @@ -608,6 +611,10 @@ KBUILD_CFLAGS += $(call cc-option, -fno-delete-null-pointer-checks,)
+>  
+>  KBUILD_CFLAGS   += $(call cc-disable-warning, address-of-packed-member)
+>  
+> +# Align the bit size of userspace programs with the kernel
+> +KBUILD_USERCFLAGS  += $(filter -m32 -m64, $(KBUILD_CFLAGS))
+> +KBUILD_USERLDFLAGS += $(filter -m32 -m64, $(KBUILD_CFLAGS))
 > +
->  	sdhci_reset(sdhci, SDHCI_RESET_CMD);
->  	sdhci_reset(sdhci, SDHCI_RESET_DATA);
+>  # arch Makefile may override CC so keep this after arch Makefile is included
+>  NOSTDINC_FLAGS += -nostdinc -isystem $(shell $(CC) -print-file-name=include)
+>  CHECKFLAGS     += $(NOSTDINC_FLAGS)
+> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+> index 00f627791..a3dfe261a 100644
+> --- a/scripts/Makefile.build
+> +++ b/scripts/Makefile.build
+> @@ -49,6 +49,12 @@ ifneq ($(hostprogs)$(hostprogs-y)$(hostprogs-m),)
+>  include scripts/Makefile.host
+>  endif
 >  
-> -	return status & SDHCI_INT_TIMEOUT ? -ETIMEDOUT : -ECOMM;
-> +	return status;
->  }
+> +# Do not include userprogs rules unless needed.
+> +userprogs := $(sort $(userprogs))
+> +ifneq ($(userprogs),)
+> +include scripts/Makefile.userprogs
+> +endif
+> +
+>  ifndef obj
+>  $(warning kbuild: Makefile.build is included improperly)
+>  endif
+> diff --git a/scripts/Makefile.clean b/scripts/Makefile.clean
+> index 6e6c9ef7c..97fd2ef48 100644
+> --- a/scripts/Makefile.clean
+> +++ b/scripts/Makefile.clean
+> @@ -37,7 +37,7 @@ subdir-ymn	:= $(addprefix $(obj)/,$(subdir-ymn))
 >  
->  static void at91_sdhci_set_power(struct at91_sdhci *host, unsigned vdd)
+>  __clean-files	:= $(extra-y) $(extra-m) $(extra-)       \
+>  		   $(always) $(always-y) $(always-m) $(always-) $(targets) $(clean-files)   \
+> -		   $(hostprogs) $(hostprogs-y) $(hostprogs-m) $(hostprogs-)
+> +		   $(hostprogs) $(hostprogs-y) $(hostprogs-m) $(hostprogs-) $(userprogs)
+>  
+>  # as clean-files is given relative to the current directory, this adds
+>  # a $(obj) prefix, except for absolute paths
+> diff --git a/scripts/Makefile.userprogs b/scripts/Makefile.userprogs
+> new file mode 100644
+> index 000000000..fb4152973
+> --- /dev/null
+> +++ b/scripts/Makefile.userprogs
+> @@ -0,0 +1,45 @@
+> +# SPDX-License-Identifier: GPL-2.0-only
+> +#
+> +# Build userspace programs for the target system
+> +#
+> +
+> +# Executables compiled from a single .c file
+> +user-csingle	:= $(foreach m, $(userprogs), $(if $($(m)-objs),,$(m)))
+> +
+> +# Executables linked based on several .o files
+> +user-cmulti	:= $(foreach m, $(userprogs), $(if $($(m)-objs),$(m)))
+> +
+> +# Objects compiled from .c files
+> +user-cobjs	:= $(sort $(foreach m, $(userprogs), $($(m)-objs)))
+> +
+> +user-csingle	:= $(addprefix $(obj)/, $(user-csingle))
+> +user-cmulti	:= $(addprefix $(obj)/, $(user-cmulti))
+> +user-cobjs	:= $(addprefix $(obj)/, $(user-cobjs))
+> +
+> +user_ccflags	= -Wp,-MMD,$(depfile) $(KBUILD_USERCFLAGS) $(userccflags) \
+> +			$($(target-stem)-userccflags)
+> +user_ldflags	= $(KBUILD_USERLDFLAGS) $(userldflags) $($(target-stem)-userldflags)
+> +
+> +# Create an executable from a single .c file
+> +quiet_cmd_user_cc_c = CC [U]  $@
+> +      cmd_user_cc_c = $(CC) $(user_ccflags) $(user_ldflags) -o $@ $< \
+> +		      $($(target-stem)-userldlibs)
+> +$(user-csingle): $(obj)/%: $(src)/%.c FORCE
+> +	$(call if_changed_dep,user_cc_c)
+> +
+> +# Link an executable based on list of .o files
+> +quiet_cmd_user_ld = LD [U]  $@
+> +      cmd_user_ld = $(CC) $(user_ldflags) -o $@ \
+> +		    $(addprefix $(obj)/, $($(target-stem)-objs)) \
+> +		    $($(target-stem)-userldlibs)
+> +$(user-cmulti): FORCE
+> +	$(call if_changed,user_ld)
+> +$(call multi_depend, $(user-cmulti), , -objs)
+> +
+> +# Create .o file from a .c file
+> +quiet_cmd_user_cc_o_c = CC [U]  $@
+> +      cmd_user_cc_o_c = $(CC) $(user_ccflags) -c -o $@ $<
+> +$(user-cobjs): $(obj)/%.o: $(src)/%.c FORCE
+> +	$(call if_changed_dep,user_cc_o_c)
+> +
+> +targets += $(user-csingle) $(user-cmulti) $(user-cobjs)
 > -- 
-> 2.27.0
+> 2.25.1
 > 
 > 
 > _______________________________________________
