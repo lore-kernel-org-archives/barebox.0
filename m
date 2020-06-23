@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jnfo5-0003zu-Qh
- for barebox@lists.infradead.org; Tue, 23 Jun 2020 10:05:34 +0000
-References: <20200622083943.21737-1-a.fatoum@pengutronix.de>
- <20200622083943.21737-2-a.fatoum@pengutronix.de>
- <20200623094636.GY11869@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <1259d972-2bdd-68c4-9826-eee7bb6c7141@pengutronix.de>
-Date: Tue, 23 Jun 2020 12:05:32 +0200
+ id 1jnfqX-0004WG-RX
+ for barebox@lists.infradead.org; Tue, 23 Jun 2020 10:08:06 +0000
+Date: Tue, 23 Jun 2020 12:08:04 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200623100804.GA11869@pengutronix.de>
+References: <20200622095352.22991-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20200623094636.GY11869@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20200622095352.22991-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,49 +22,121 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] mci: sdhci: atmel: use dev_printf instead of pr_print
- in common code
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 1/2] clk: sync of_clk_get_parent_name with upstream
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-
-
-On 6/23/20 11:46 AM, Sascha Hauer wrote:
-> On Mon, Jun 22, 2020 at 10:39:42AM +0200, Ahmad Fatoum wrote:
->> On boards like the sama5d27 som1 ek, we have two SD card slots, so error
->> messages are more useful if they refer to the SDHCI instance. We didn't
->> do this at first, because the common code is compiled for PBL as well.
->> With a sprinkle of preprocessor ifdeffery, we can have both.
->>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->> ---
->>  drivers/mci/atmel-sdhci-common.c | 14 +++++++++-----
->>  drivers/mci/atmel-sdhci.c        |  2 ++
->>  drivers/mci/atmel-sdhci.h        |  1 +
->>  3 files changed, 12 insertions(+), 5 deletions(-)
->>
->> diff --git a/drivers/mci/atmel-sdhci-common.c b/drivers/mci/atmel-sdhci-common.c
->> index 060d1c33d1a5..a83610c3d090 100644
->> --- a/drivers/mci/atmel-sdhci-common.c
->> +++ b/drivers/mci/atmel-sdhci-common.c
->> @@ -16,6 +16,10 @@
->>  
->>  #ifdef __PBL__
->>  #define udelay early_udelay
->> +#undef  dev_err
->> +#define dev_err(d, ...)		pr_err(__VA_ARGS__)
->> +#undef  dev_warn
->> +#define dev_warn(d, ...)	pr_warn(__VA_ARGS__)
->>  #endif
+On Mon, Jun 22, 2020 at 11:53:51AM +0200, Ahmad Fatoum wrote:
+> Upstream of_clk_get_parent_name only resorts to node name as a fallback.
+> Instead, it uses the name supplied for registered clocks whenever
+> possible. On the sama5d2, this results in sckc@f8048050 and slowck,
+> respectively. So far, sckc@f8048050 in the parents array couldn't be
+> matched with any existing clock, leading to an inaccurate clock tree.
 > 
-> This hunk doesn't apply. Is a patch missing in this series?
+> Port over the v5.8-rc1 state of the function to fix this.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  drivers/clk/clk.c   | 49 ++++++++++++++++++++++++++++++++++++++++-----
+>  include/linux/clk.h |  2 +-
+>  2 files changed, 45 insertions(+), 6 deletions(-)
 
-I have a series for first stage support, but picked out the second stage relevant
-parts to slim it down. I'll rebase and resend v2.
+Applied, thanks
 
+Sascha
 
 > 
-> Sascha
+> diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+> index 4386c95aa9ec..f2e459a76018 100644
+> --- a/drivers/clk/clk.c
+> +++ b/drivers/clk/clk.c
+> @@ -469,21 +469,60 @@ unsigned int of_clk_get_parent_count(struct device_node *np)
+>  }
+>  EXPORT_SYMBOL_GPL(of_clk_get_parent_count);
+>  
+> -char *of_clk_get_parent_name(struct device_node *np, unsigned int index)
+> +char *of_clk_get_parent_name(const struct device_node *np, int index)
+>  {
+>  	struct of_phandle_args clkspec;
+> +	struct property *prop;
+>  	const char *clk_name;
+> +	const __be32 *vp;
+> +	u32 pv;
+>  	int rc;
+> +	int count;
+> +	struct clk *clk;
+>  
+>  	rc = of_parse_phandle_with_args(np, "clocks", "#clock-cells", index,
+> -			&clkspec);
+> +					&clkspec);
+>  	if (rc)
+>  		return NULL;
+>  
+> +	index = clkspec.args_count ? clkspec.args[0] : 0;
+> +	count = 0;
+> +
+> +	/* if there is an indices property, use it to transfer the index
+> +	 * specified into an array offset for the clock-output-names property.
+> +	 */
+> +	of_property_for_each_u32(clkspec.np, "clock-indices", prop, vp, pv) {
+> +		if (index == pv) {
+> +			index = count;
+> +			break;
+> +		}
+> +		count++;
+> +	}
+> +	/* We went off the end of 'clock-indices' without finding it */
+> +	if (prop && !vp)
+> +		return NULL;
+> +
+>  	if (of_property_read_string_index(clkspec.np, "clock-output-names",
+> -				clkspec.args_count ? clkspec.args[0] : 0,
+> -				&clk_name) < 0)
+> -		clk_name = clkspec.np->name;
+> +					  index,
+> +					  &clk_name) < 0) {
+> +		/*
+> +		 * Best effort to get the name if the clock has been
+> +		 * registered with the framework. If the clock isn't
+> +		 * registered, we return the node name as the name of
+> +		 * the clock as long as #clock-cells = 0.
+> +		 */
+> +		clk = of_clk_get_from_provider(&clkspec);
+> +		if (IS_ERR(clk)) {
+> +			if (clkspec.args_count == 0)
+> +				clk_name = clkspec.np->name;
+> +			else
+> +				clk_name = NULL;
+> +		} else {
+> +			clk_name = __clk_get_name(clk);
+> +			clk_put(clk);
+> +		}
+> +	}
+> +
+>  
+>  	return xstrdup(clk_name);
+>  }
+> diff --git a/include/linux/clk.h b/include/linux/clk.h
+> index a005e7233de8..d14d8b96a342 100644
+> --- a/include/linux/clk.h
+> +++ b/include/linux/clk.h
+> @@ -556,7 +556,7 @@ struct string_list;
+>  
+>  int clk_name_complete(struct string_list *sl, char *instr);
+>  
+> -char *of_clk_get_parent_name(struct device_node *np, unsigned int index);
+> +char *of_clk_get_parent_name(const struct device_node *np, int index);
+>  
+>  static inline void clk_unregister(struct clk *clk)
+>  {
+> -- 
+> 2.27.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 > 
 
 -- 
