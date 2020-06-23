@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from conuserg-08.nifty.com ([210.131.2.75])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jnJ9L-0007wm-GM
- for barebox@lists.infradead.org; Mon, 22 Jun 2020 09:54:00 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 22 Jun 2020 11:53:51 +0200
-Message-Id: <20200622095352.22991-1-a.fatoum@pengutronix.de>
+ id 1jnZHQ-0001hy-9n
+ for barebox@lists.infradead.org; Tue, 23 Jun 2020 03:07:26 +0000
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Tue, 23 Jun 2020 12:07:01 +0900
+Message-Id: <20200623030702.666462-2-masahiroy@kernel.org>
+In-Reply-To: <20200623030702.666462-1-masahiroy@kernel.org>
+References: <20200623030702.666462-1-masahiroy@kernel.org>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,109 +21,136 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] clk: sync of_clk_get_parent_name with upstream
+Subject: [PATCH 2/3] kbuild: add infrastructure to build userspace programs
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
 
-Upstream of_clk_get_parent_name only resorts to node name as a fallback.
-Instead, it uses the name supplied for registered clocks whenever
-possible. On the sama5d2, this results in sckc@f8048050 and slowck,
-respectively. So far, sckc@f8048050 in the parents array couldn't be
-matched with any existing clock, leading to an inaccurate clock tree.
+Import Linux commit 7f3a59db274c3e3d884c785e363a054110f1c266
 
-Port over the v5.8-rc1 state of the function to fix this.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 ---
- drivers/clk/clk.c   | 49 ++++++++++++++++++++++++++++++++++++++++-----
- include/linux/clk.h |  2 +-
- 2 files changed, 45 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index 4386c95aa9ec..f2e459a76018 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -469,21 +469,60 @@ unsigned int of_clk_get_parent_count(struct device_node *np)
- }
- EXPORT_SYMBOL_GPL(of_clk_get_parent_count);
+ Makefile                   | 13 ++++++++---
+ scripts/Makefile.build     |  6 +++++
+ scripts/Makefile.clean     |  2 +-
+ scripts/Makefile.userprogs | 45 ++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 62 insertions(+), 4 deletions(-)
+ create mode 100644 scripts/Makefile.userprogs
+
+diff --git a/Makefile b/Makefile
+index a4aac3db4..0da032532 100644
+--- a/Makefile
++++ b/Makefile
+@@ -363,9 +363,12 @@ HOST_LFS_LIBS := $(shell getconf LFS_LIBS 2>/dev/null)
  
--char *of_clk_get_parent_name(struct device_node *np, unsigned int index)
-+char *of_clk_get_parent_name(const struct device_node *np, int index)
- {
- 	struct of_phandle_args clkspec;
-+	struct property *prop;
- 	const char *clk_name;
-+	const __be32 *vp;
-+	u32 pv;
- 	int rc;
-+	int count;
-+	struct clk *clk;
- 
- 	rc = of_parse_phandle_with_args(np, "clocks", "#clock-cells", index,
--			&clkspec);
-+					&clkspec);
- 	if (rc)
- 		return NULL;
- 
-+	index = clkspec.args_count ? clkspec.args[0] : 0;
-+	count = 0;
+ HOSTCC       = gcc
+ HOSTCXX      = g++
+-KBUILD_HOSTCFLAGS   := -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 \
+-		-fomit-frame-pointer -std=gnu89 $(HOST_LFS_CFLAGS) \
+-		$(HOSTCFLAGS)
 +
-+	/* if there is an indices property, use it to transfer the index
-+	 * specified into an array offset for the clock-output-names property.
-+	 */
-+	of_property_for_each_u32(clkspec.np, "clock-indices", prop, vp, pv) {
-+		if (index == pv) {
-+			index = count;
-+			break;
-+		}
-+		count++;
-+	}
-+	/* We went off the end of 'clock-indices' without finding it */
-+	if (prop && !vp)
-+		return NULL;
++export KBUILD_USERCFLAGS := -Wall -Wmissing-prototypes -Wstrict-prototypes \
++			      -O2 -fomit-frame-pointer -std=gnu89
++export KBUILD_USERLDFLAGS :=
 +
- 	if (of_property_read_string_index(clkspec.np, "clock-output-names",
--				clkspec.args_count ? clkspec.args[0] : 0,
--				&clk_name) < 0)
--		clk_name = clkspec.np->name;
-+					  index,
-+					  &clk_name) < 0) {
-+		/*
-+		 * Best effort to get the name if the clock has been
-+		 * registered with the framework. If the clock isn't
-+		 * registered, we return the node name as the name of
-+		 * the clock as long as #clock-cells = 0.
-+		 */
-+		clk = of_clk_get_from_provider(&clkspec);
-+		if (IS_ERR(clk)) {
-+			if (clkspec.args_count == 0)
-+				clk_name = clkspec.np->name;
-+			else
-+				clk_name = NULL;
-+		} else {
-+			clk_name = __clk_get_name(clk);
-+			clk_put(clk);
-+		}
-+	}
++KBUILD_HOSTCFLAGS   := $(KBUILD_USERCFLAGS) $(HOST_LFS_CFLAGS) $(HOSTCFLAGS)
+ KBUILD_HOSTCXXFLAGS := -Wall -O2 $(HOST_LFS_CFLAGS) $(HOSTCXXFLAGS)
+ KBUILD_HOSTLDFLAGS  := $(HOST_LFS_LDFLAGS) $(HOSTLDFLAGS)
+ KBUILD_HOSTLDLIBS   := $(HOST_LFS_LIBS) $(HOSTLDLIBS)
+@@ -608,6 +611,10 @@ KBUILD_CFLAGS += $(call cc-option, -fno-delete-null-pointer-checks,)
+ 
+ KBUILD_CFLAGS   += $(call cc-disable-warning, address-of-packed-member)
+ 
++# Align the bit size of userspace programs with the kernel
++KBUILD_USERCFLAGS  += $(filter -m32 -m64, $(KBUILD_CFLAGS))
++KBUILD_USERLDFLAGS += $(filter -m32 -m64, $(KBUILD_CFLAGS))
 +
+ # arch Makefile may override CC so keep this after arch Makefile is included
+ NOSTDINC_FLAGS += -nostdinc -isystem $(shell $(CC) -print-file-name=include)
+ CHECKFLAGS     += $(NOSTDINC_FLAGS)
+diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+index 00f627791..a3dfe261a 100644
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -49,6 +49,12 @@ ifneq ($(hostprogs)$(hostprogs-y)$(hostprogs-m),)
+ include scripts/Makefile.host
+ endif
  
- 	return xstrdup(clk_name);
- }
-diff --git a/include/linux/clk.h b/include/linux/clk.h
-index a005e7233de8..d14d8b96a342 100644
---- a/include/linux/clk.h
-+++ b/include/linux/clk.h
-@@ -556,7 +556,7 @@ struct string_list;
++# Do not include userprogs rules unless needed.
++userprogs := $(sort $(userprogs))
++ifneq ($(userprogs),)
++include scripts/Makefile.userprogs
++endif
++
+ ifndef obj
+ $(warning kbuild: Makefile.build is included improperly)
+ endif
+diff --git a/scripts/Makefile.clean b/scripts/Makefile.clean
+index 6e6c9ef7c..97fd2ef48 100644
+--- a/scripts/Makefile.clean
++++ b/scripts/Makefile.clean
+@@ -37,7 +37,7 @@ subdir-ymn	:= $(addprefix $(obj)/,$(subdir-ymn))
  
- int clk_name_complete(struct string_list *sl, char *instr);
+ __clean-files	:= $(extra-y) $(extra-m) $(extra-)       \
+ 		   $(always) $(always-y) $(always-m) $(always-) $(targets) $(clean-files)   \
+-		   $(hostprogs) $(hostprogs-y) $(hostprogs-m) $(hostprogs-)
++		   $(hostprogs) $(hostprogs-y) $(hostprogs-m) $(hostprogs-) $(userprogs)
  
--char *of_clk_get_parent_name(struct device_node *np, unsigned int index);
-+char *of_clk_get_parent_name(const struct device_node *np, int index);
- 
- static inline void clk_unregister(struct clk *clk)
- {
+ # as clean-files is given relative to the current directory, this adds
+ # a $(obj) prefix, except for absolute paths
+diff --git a/scripts/Makefile.userprogs b/scripts/Makefile.userprogs
+new file mode 100644
+index 000000000..fb4152973
+--- /dev/null
++++ b/scripts/Makefile.userprogs
+@@ -0,0 +1,45 @@
++# SPDX-License-Identifier: GPL-2.0-only
++#
++# Build userspace programs for the target system
++#
++
++# Executables compiled from a single .c file
++user-csingle	:= $(foreach m, $(userprogs), $(if $($(m)-objs),,$(m)))
++
++# Executables linked based on several .o files
++user-cmulti	:= $(foreach m, $(userprogs), $(if $($(m)-objs),$(m)))
++
++# Objects compiled from .c files
++user-cobjs	:= $(sort $(foreach m, $(userprogs), $($(m)-objs)))
++
++user-csingle	:= $(addprefix $(obj)/, $(user-csingle))
++user-cmulti	:= $(addprefix $(obj)/, $(user-cmulti))
++user-cobjs	:= $(addprefix $(obj)/, $(user-cobjs))
++
++user_ccflags	= -Wp,-MMD,$(depfile) $(KBUILD_USERCFLAGS) $(userccflags) \
++			$($(target-stem)-userccflags)
++user_ldflags	= $(KBUILD_USERLDFLAGS) $(userldflags) $($(target-stem)-userldflags)
++
++# Create an executable from a single .c file
++quiet_cmd_user_cc_c = CC [U]  $@
++      cmd_user_cc_c = $(CC) $(user_ccflags) $(user_ldflags) -o $@ $< \
++		      $($(target-stem)-userldlibs)
++$(user-csingle): $(obj)/%: $(src)/%.c FORCE
++	$(call if_changed_dep,user_cc_c)
++
++# Link an executable based on list of .o files
++quiet_cmd_user_ld = LD [U]  $@
++      cmd_user_ld = $(CC) $(user_ldflags) -o $@ \
++		    $(addprefix $(obj)/, $($(target-stem)-objs)) \
++		    $($(target-stem)-userldlibs)
++$(user-cmulti): FORCE
++	$(call if_changed,user_ld)
++$(call multi_depend, $(user-cmulti), , -objs)
++
++# Create .o file from a .c file
++quiet_cmd_user_cc_o_c = CC [U]  $@
++      cmd_user_cc_o_c = $(CC) $(user_ccflags) -c -o $@ $<
++$(user-cobjs): $(obj)/%.o: $(src)/%.c FORCE
++	$(call if_changed_dep,user_cc_o_c)
++
++targets += $(user-csingle) $(user-cmulti) $(user-cobjs)
 -- 
-2.27.0
+2.25.1
 
 
 _______________________________________________
