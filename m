@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jnj0a-0003jQ-O3
- for barebox@lists.infradead.org; Tue, 23 Jun 2020 13:30:43 +0000
-References: <20200623132521.4727-1-a.fatoum@pengutronix.de>
- <20200623132521.4727-2-a.fatoum@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <8e1b6fed-6161-09b4-bc65-aee57c1de153@pengutronix.de>
-Date: Tue, 23 Jun 2020 15:30:39 +0200
+ by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jnj4A-0000sl-SU
+ for barebox@lists.infradead.org; Tue, 23 Jun 2020 13:34:23 +0000
+Date: Tue, 23 Jun 2020 15:34:21 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200623133421.GE11869@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20200623132521.4727-2-a.fatoum@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,44 +20,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] ARM: vexpress: dts: use direct &phandle instead of
- &{/path}
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Mailing list issues
+To: Barebox List <barebox@lists.infradead.org>
 
+Hello,
 
+I just heard that infradead.org had a hard disk crash. The last backup
+was from May 2018 which is the state restored now. This includes the
+mailing list archive as well as the subscriptions.
 
-On 6/23/20 3:25 PM, Ahmad Fatoum wrote:
-> 6940ba22c66a ("dts: update to v5.3-rc1") added a label that we can
-> reference instead of relying on the path not changing. Make use of it,
-> so the compilation doesn't fail along with the v5.8-rc1 dts/ sync.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
-> [afa: board is still broken, because the "arm,arm-firmware-suite"
-> partitioning is unknown to barebox, but at least it's not doubly
-> broken.]
+If you are unsubscribed from the barebox mailing list and find yourself
+subscribed now again, please just unsubscribe once more. If that for
+whatever reason doesn't work please drop me a mail.
 
-I see now that Roland had fixed it for arch/arm/dts/vexpress-v2p-ca9.dts.
-Please skip this patch. I send it out again with Roland's fix incorporated. 
+Sorry for the inconvenience.
 
-> ---
->  arch/arm/dts/vexpress-v2p-ca15.dts | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/dts/vexpress-v2p-ca15.dts b/arch/arm/dts/vexpress-v2p-ca15.dts
-> index a4cdc8d1f5f0..d02b8ce523cf 100644
-> --- a/arch/arm/dts/vexpress-v2p-ca15.dts
-> +++ b/arch/arm/dts/vexpress-v2p-ca15.dts
-> @@ -7,7 +7,7 @@
->  	};
->  };
->  
-> -&{/bus@8000000/motherboard/flash@0,00000000} {
-> +&nor_flash {
->  	#address-cells = <1>;
->  	#size-cells = <1>;
->  
-> 
+Regards,
+ Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
