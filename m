@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jneNw-0003bP-13
- for barebox@lists.infradead.org; Tue, 23 Jun 2020 08:34:28 +0000
+ id 1jnfOf-0008KH-E2
+ for barebox@lists.infradead.org; Tue, 23 Jun 2020 09:39:18 +0000
+Date: Tue, 23 Jun 2020 11:39:15 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200623093915.GX11869@pengutronix.de>
 References: <20200622151525.21082-1-a.fatoum@pengutronix.de>
  <20200623082330.GW11869@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <510a3c4d-7c1d-751e-0cb4-be40507f98d4@pengutronix.de>
-Date: Tue, 23 Jun 2020 10:34:26 +0200
+ <510a3c4d-7c1d-751e-0cb4-be40507f98d4@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20200623082330.GW11869@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <510a3c4d-7c1d-751e-0cb4-be40507f98d4@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,44 +24,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] startup: inhibit watchdogs on non-interactive autoboot
- abort
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH v2] startup: inhibit watchdogs on non-interactive
+ autoboot abort
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hello Sascha,
-
-On 6/23/20 10:23 AM, Sascha Hauer wrote:
-> On Mon, Jun 22, 2020 at 05:15:25PM +0200, Ahmad Fatoum wrote:
->> nv.autoboot=abort has been added as development aid to have barebox stop
->> at the shell prompt automatically. It makes sense to inhibit all watchdogs
->> in this mode, so the user can later use the shell in peace.
+On Tue, Jun 23, 2020 at 10:34:26AM +0200, Ahmad Fatoum wrote:
+> Hello Sascha,
 > 
-> As a person who is frequently annoyed by watchdogs I really like this
-> change.
-
-:]
-
-> We could add a new option to the wd command to call
-> watchdog_inhibit_all() for the case when the autoboot timeout has been
-> interrupted by the user.
+> On 6/23/20 10:23 AM, Sascha Hauer wrote:
+> > On Mon, Jun 22, 2020 at 05:15:25PM +0200, Ahmad Fatoum wrote:
+> >> nv.autoboot=abort has been added as development aid to have barebox stop
+> >> at the shell prompt automatically. It makes sense to inhibit all watchdogs
+> >> in this mode, so the user can later use the shell in peace.
+> > 
+> > As a person who is frequently annoyed by watchdogs I really like this
+> > change.
 > 
-> Anyway, this could be done as a separate patch.
-
-I thought about having $global.autoboot_watchdog_inhibit_abort={nv,all},
-but didn't go through with it because I couldn't find a name I like.
-
-Is this what you are suggesting, but with wd setting an internal parameter
-instead?
-
-Cheers,
-Ahmad
-
+> :]
 > 
-> Applied, thanks
+> > We could add a new option to the wd command to call
+> > watchdog_inhibit_all() for the case when the autoboot timeout has been
+> > interrupted by the user.
+> > 
+> > Anyway, this could be done as a separate patch.
 > 
-> Sascha
+> I thought about having $global.autoboot_watchdog_inhibit_abort={nv,all},
+> but didn't go through with it because I couldn't find a name I like.
 > 
+> Is this what you are suggesting, but with wd setting an internal parameter
+> instead?
+
+I thought about a "wd -i" command that disables watchdogs or
+automatically pings them. I would use this in case I want to do
+something with barebox, but don't want to change nv.autoboot to "abort"
+
+Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
