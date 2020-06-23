@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jnjBx-0002gB-RE
- for barebox@lists.infradead.org; Tue, 23 Jun 2020 13:42:26 +0000
+ id 1jnjFA-0003Jy-08
+ for barebox@lists.infradead.org; Tue, 23 Jun 2020 13:45:44 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 23 Jun 2020 15:42:22 +0200
-Message-Id: <20200623134222.21886-1-a.fatoum@pengutronix.de>
+Date: Tue, 23 Jun 2020 15:45:34 +0200
+Message-Id: <20200623134533.27030-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,12 +19,12 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: dts: vexpress-v2p-ca15: adapt fixed NOR flash partition
- setup
+Subject: [PATCH v2] ARM: dts: vexpress-v2p-ca15: adapt fixed NOR flash
+ partition setup
 To: barebox@lists.infradead.org
 Cc: Roland Hieber <r.hieber@pengutronix.de>, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Roland already fixed the vexpress-v2p-ca15:
+Roland already fixed the vexpress-v2p-ca9:
  > Upstream DTS commit 62a5017bf825c9e4d317 ("ARM: dts: vexpress: specify
  > AFS partition") [1] introduced an empty node at /smb@4000000
  > /motherboard/flash@0,00000000/partitions, which is preferred by the OF
@@ -43,9 +43,13 @@ Fixes: 6940ba22c66ac1c71350 ("dts: update to v5.3-rc1")
 Cc: Roland Hieber <r.hieber@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
+v1 -> v2:
+ - Fixed other board name (ca9) in commit message
+
 Hello Sascha,
 
-please order this before the v5.8-rc1 dts/ update as otherwise, the vexpress
+please order this before the v5.8-rc1 dts/ update as otherwise, the
+vexpress
 configs get build-broken.
 
 Cheers,
