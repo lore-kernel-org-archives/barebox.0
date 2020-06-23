@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jnimX-0001U6-NU
- for barebox@lists.infradead.org; Tue, 23 Jun 2020 13:16:10 +0000
+ id 1jnimY-0001UJ-5l
+ for barebox@lists.infradead.org; Tue, 23 Jun 2020 13:16:12 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 23 Jun 2020 15:15:47 +0200
-Message-Id: <20200623131606.16316-2-s.hauer@pengutronix.de>
+Date: Tue, 23 Jun 2020 15:15:50 +0200
+Message-Id: <20200623131606.16316-5-s.hauer@pengutronix.de>
 In-Reply-To: <20200623131606.16316-1-s.hauer@pengutronix.de>
 References: <20200623131606.16316-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,52 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/20] scripts: imx-image: Only set DCD pointer when we have
- DCD data
+Subject: [PATCH 04/20] scripts: imx-image: exit with error when barebox header
+ conflicts with IVT
 To: Barebox List <barebox@lists.infradead.org>
 
-When we do not have any DCD data we can set the pointer to the
-data to NULL.
+When the IVT is right at the beginning of the image it conflicts with
+the barebox header. Bail out with an error when this happens.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- scripts/imx/imx-image.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ scripts/imx/imx-image.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
-index ec7444a772..2481ae6403 100644
+index edff3580dd..bbd7e95bc2 100644
 --- a/scripts/imx/imx-image.c
 +++ b/scripts/imx/imx-image.c
-@@ -329,7 +329,8 @@ static size_t add_header_v2(const struct config_data *data, void *buf)
- 	hdr->header.version	= IVT_VERSION;
+@@ -984,6 +984,12 @@ int main(int argc, char *argv[])
+ 		       header_len - sizeof_bb_header);
+ 		xwrite(outfd, buf, header_len);
+ 	} else {
++		if (add_barebox_header &&
++		    data.image_dcd_offset + data.header_gap < sizeof_bb_header) {
++			fprintf(stderr, "barebox header conflicts with IVT\n");
++			exit(1);
++		}
++
+ 		xwrite(outfd, add_barebox_header ? bb_header : buf,
+ 		       sizeof_bb_header);
  
- 	hdr->entry		= loadaddr + HEADER_LEN;
--	hdr->dcd_ptr		= loadaddr + offset + offsetof(struct imx_flash_header_v2, dcd_header);
-+	if (dcdsize)
-+		hdr->dcd_ptr = loadaddr + offset + offsetof(struct imx_flash_header_v2, dcd_header);
- 	if (create_usb_image) {
- 		dcd_ptr_content = hdr->dcd_ptr;
- 		dcd_ptr_offset = offsetof(struct imx_flash_header_v2, dcd_ptr) + offset;
-@@ -357,13 +358,14 @@ static size_t add_header_v2(const struct config_data *data, void *buf)
- 		hdr->boot_data.size += CSF_LEN;
- 	}
- 
--	hdr->dcd_header.tag	= TAG_DCD_HEADER;
--	hdr->dcd_header.length	= htobe16(sizeof(uint32_t) + dcdsize);
--	hdr->dcd_header.version	= DCD_VERSION;
--
- 	buf += sizeof(*hdr);
- 
--	memcpy(buf, dcdtable, dcdsize);
-+	if (dcdsize) {
-+		hdr->dcd_header.tag	= TAG_DCD_HEADER;
-+		hdr->dcd_header.length	= htobe16(sizeof(uint32_t) + dcdsize);
-+		hdr->dcd_header.version	= DCD_VERSION;
-+		memcpy(buf, dcdtable, dcdsize);
-+	}
- 
- 	return imagesize;
- }
 -- 
 2.27.0
 
