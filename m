@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jnimY-0001UQ-C0
- for barebox@lists.infradead.org; Tue, 23 Jun 2020 13:16:12 +0000
+ id 1jnimY-0001UX-Ji
+ for barebox@lists.infradead.org; Tue, 23 Jun 2020 13:16:13 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 23 Jun 2020 15:15:55 +0200
-Message-Id: <20200623131606.16316-10-s.hauer@pengutronix.de>
+Date: Tue, 23 Jun 2020 15:15:54 +0200
+Message-Id: <20200623131606.16316-9-s.hauer@pengutronix.de>
 In-Reply-To: <20200623131606.16316-1-s.hauer@pengutronix.de>
 References: <20200623131606.16316-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,27 +21,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/20] pinctrl: imx-iomux-v3: Add i.MX8MP compatible
+Subject: [PATCH 08/20] serial: i.MX: Add i.MX8MP compatible
 To: Barebox List <barebox@lists.infradead.org>
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/pinctrl/imx-iomux-v3.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/serial/serial_imx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/pinctrl/imx-iomux-v3.c b/drivers/pinctrl/imx-iomux-v3.c
-index a45c242fd1..fd05274512 100644
---- a/drivers/pinctrl/imx-iomux-v3.c
-+++ b/drivers/pinctrl/imx-iomux-v3.c
-@@ -250,6 +250,8 @@ static __maybe_unused struct of_device_id imx_iomux_v3_dt_ids[] = {
- 		.data = &imx_iomux_imx7_lpsr_data,
+diff --git a/drivers/serial/serial_imx.c b/drivers/serial/serial_imx.c
+index e5280ac3e9..c0265fc2d7 100644
+--- a/drivers/serial/serial_imx.c
++++ b/drivers/serial/serial_imx.c
+@@ -290,6 +290,9 @@ static __maybe_unused struct of_device_id imx_serial_dt_ids[] = {
  	}, {
- 		.compatible = "fsl,imx8mm-iomuxc",
+ 		.compatible = "fsl,imx8mm-uart",
+ 		.data = &imx21_data,
 +	}, {
-+		.compatible = "fsl,imx8mp-iomuxc",
++		.compatible = "fsl,imx8mp-uart",
++		.data = &imx21_data,
  	}, {
- 		.compatible = "fsl,imx8mq-iomuxc",
- 	}, {
+ 		/* sentinel */
+ 	}
 -- 
 2.27.0
 
