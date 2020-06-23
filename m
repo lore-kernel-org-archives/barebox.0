@@ -1,12 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jnivU-0003Ze-3o
- for barebox@lists.infradead.org; Tue, 23 Jun 2020 13:25:32 +0000
+ id 1jnj0a-0003jQ-O3
+ for barebox@lists.infradead.org; Tue, 23 Jun 2020 13:30:43 +0000
+References: <20200623132521.4727-1-a.fatoum@pengutronix.de>
+ <20200623132521.4727-2-a.fatoum@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 23 Jun 2020 15:25:17 +0200
-Message-Id: <20200623132521.4727-1-a.fatoum@pengutronix.de>
+Message-ID: <8e1b6fed-6161-09b4-bc65-aee57c1de153@pengutronix.de>
+Date: Tue, 23 Jun 2020 15:30:39 +0200
 MIME-Version: 1.0
+In-Reply-To: <20200623132521.4727-2-a.fatoum@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,47 +23,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/4] dts: clean up and a fix
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH 1/4] ARM: vexpress: dts: use direct &phandle instead of
+ &{/path}
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hello Sascha,
 
-the vexpress changed paths, again, so building now fails. Fortunately[1],
-a label: had been introduced meanwhile, that we could use. This is what
-the first patch does. Please order it before the v5.8-rc1 sync, so we
-don't have intermittent build breakage[2].
 
-The other three patches remove code that became obsolete with the device
-tree sync.
+On 6/23/20 3:25 PM, Ahmad Fatoum wrote:
+> 6940ba22c66a ("dts: update to v5.3-rc1") added a label that we can
+> reference instead of relying on the path not changing. Make use of it,
+> so the compilation doesn't fail along with the v5.8-rc1 dts/ sync.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+> [afa: board is still broken, because the "arm,arm-firmware-suite"
+> partitioning is unknown to barebox, but at least it's not doubly
+> broken.]
 
-[1]: The same patch adding the label, also added the partitions node,
-     which broke barebox on the board, but that's a different issue..
-[2]: We probably want a make dtbs target to spot such issues and fix
-     them up into the same commit if needed
+I see now that Roland had fixed it for arch/arm/dts/vexpress-v2p-ca9.dts.
+Please skip this patch. I send it out again with Roland's fix incorporated. 
 
-Cheers
-Ahmad Fatoum (4):
-  ARM: vexpress: dts: use direct &phandle instead of &{/path}
-  ARM: stm32mp: dts: extend now upstream stm32mp157c-lxa-mc1.dts
-  clk: at91: remove no-longer needed dt-compat code
-  clk: at91: remove now-duplicate crutch #defines
-
- arch/arm/dts/stm32mp157c-lxa-mc1.dts  |   2 +-
- arch/arm/dts/stm32mp157c-lxa-mc1.dtsi | 362 -------------
- arch/arm/dts/stm32mp15xx-osd32.dtsi   | 229 --------
- arch/arm/dts/vexpress-v2p-ca15.dts    |   2 +-
- drivers/clk/at91/Makefile             |  10 +-
- drivers/clk/at91/dt-compat.c          | 727 --------------------------
- drivers/clk/at91/pmc.h                |   6 -
- 7 files changed, 7 insertions(+), 1331 deletions(-)
- delete mode 100644 arch/arm/dts/stm32mp157c-lxa-mc1.dtsi
- delete mode 100644 arch/arm/dts/stm32mp15xx-osd32.dtsi
- delete mode 100644 drivers/clk/at91/dt-compat.c
+> ---
+>  arch/arm/dts/vexpress-v2p-ca15.dts | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/dts/vexpress-v2p-ca15.dts b/arch/arm/dts/vexpress-v2p-ca15.dts
+> index a4cdc8d1f5f0..d02b8ce523cf 100644
+> --- a/arch/arm/dts/vexpress-v2p-ca15.dts
+> +++ b/arch/arm/dts/vexpress-v2p-ca15.dts
+> @@ -7,7 +7,7 @@
+>  	};
+>  };
+>  
+> -&{/bus@8000000/motherboard/flash@0,00000000} {
+> +&nor_flash {
+>  	#address-cells = <1>;
+>  	#size-cells = <1>;
+>  
+> 
 
 -- 
-2.27.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
