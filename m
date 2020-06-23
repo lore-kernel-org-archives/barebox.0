@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jngsU-00084V-Hy
- for barebox@lists.infradead.org; Tue, 23 Jun 2020 11:14:11 +0000
-Date: Tue, 23 Jun 2020 13:14:09 +0200
+ id 1jnimY-0001UO-C4
+ for barebox@lists.infradead.org; Tue, 23 Jun 2020 13:16:13 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200623111409.GD11869@pengutronix.de>
-References: <20200623030702.666462-1-masahiroy@kernel.org>
- <20200623030702.666462-2-masahiroy@kernel.org>
+Date: Tue, 23 Jun 2020 15:15:51 +0200
+Message-Id: <20200623131606.16316-6-s.hauer@pengutronix.de>
+In-Reply-To: <20200623131606.16316-1-s.hauer@pengutronix.de>
+References: <20200623131606.16316-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200623030702.666462-2-masahiroy@kernel.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,157 +21,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] kbuild: add infrastructure to build userspace programs
-To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 05/20] scripts: imx-image: Fix writing image with IVT offset =
+ 0
+To: Barebox List <barebox@lists.infradead.org>
 
-On Tue, Jun 23, 2020 at 12:07:01PM +0900, Masahiro Yamada wrote:
-> Import Linux commit 7f3a59db274c3e3d884c785e363a054110f1c266
-> 
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> ---
->
+When we have written the barebox header the next thing we do is to lseek
+forward by the size of the header gap. This means our position is
+already inside of the rest of the image and we have to skip this offset
+from the rest of the image. This only works when the rest of the image
+doesn't have anything needed in the first few bytes. Some newer SoCs
+have the IVT at offset 0 though, so with the current approach we skip
+writing the IVT.
+Instead of doing this we should lseek to the end of the header gap.
+With this we are at the right position to just write the full image
+containing the IVT.
 
-Very nice. Building userspace programs always was kind of a hack.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ scripts/imx/imx-image.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-Applied, thanks
-
-Sascha
-
->  Makefile                   | 13 ++++++++---
->  scripts/Makefile.build     |  6 +++++
->  scripts/Makefile.clean     |  2 +-
->  scripts/Makefile.userprogs | 45 ++++++++++++++++++++++++++++++++++++++
->  4 files changed, 62 insertions(+), 4 deletions(-)
->  create mode 100644 scripts/Makefile.userprogs
-> 
-> diff --git a/Makefile b/Makefile
-> index a4aac3db4..0da032532 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -363,9 +363,12 @@ HOST_LFS_LIBS := $(shell getconf LFS_LIBS 2>/dev/null)
->  
->  HOSTCC       = gcc
->  HOSTCXX      = g++
-> -KBUILD_HOSTCFLAGS   := -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 \
-> -		-fomit-frame-pointer -std=gnu89 $(HOST_LFS_CFLAGS) \
-> -		$(HOSTCFLAGS)
-> +
-> +export KBUILD_USERCFLAGS := -Wall -Wmissing-prototypes -Wstrict-prototypes \
-> +			      -O2 -fomit-frame-pointer -std=gnu89
-> +export KBUILD_USERLDFLAGS :=
-> +
-> +KBUILD_HOSTCFLAGS   := $(KBUILD_USERCFLAGS) $(HOST_LFS_CFLAGS) $(HOSTCFLAGS)
->  KBUILD_HOSTCXXFLAGS := -Wall -O2 $(HOST_LFS_CFLAGS) $(HOSTCXXFLAGS)
->  KBUILD_HOSTLDFLAGS  := $(HOST_LFS_LDFLAGS) $(HOSTLDFLAGS)
->  KBUILD_HOSTLDLIBS   := $(HOST_LFS_LIBS) $(HOSTLDLIBS)
-> @@ -608,6 +611,10 @@ KBUILD_CFLAGS += $(call cc-option, -fno-delete-null-pointer-checks,)
->  
->  KBUILD_CFLAGS   += $(call cc-disable-warning, address-of-packed-member)
->  
-> +# Align the bit size of userspace programs with the kernel
-> +KBUILD_USERCFLAGS  += $(filter -m32 -m64, $(KBUILD_CFLAGS))
-> +KBUILD_USERLDFLAGS += $(filter -m32 -m64, $(KBUILD_CFLAGS))
-> +
->  # arch Makefile may override CC so keep this after arch Makefile is included
->  NOSTDINC_FLAGS += -nostdinc -isystem $(shell $(CC) -print-file-name=include)
->  CHECKFLAGS     += $(NOSTDINC_FLAGS)
-> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-> index 00f627791..a3dfe261a 100644
-> --- a/scripts/Makefile.build
-> +++ b/scripts/Makefile.build
-> @@ -49,6 +49,12 @@ ifneq ($(hostprogs)$(hostprogs-y)$(hostprogs-m),)
->  include scripts/Makefile.host
->  endif
->  
-> +# Do not include userprogs rules unless needed.
-> +userprogs := $(sort $(userprogs))
-> +ifneq ($(userprogs),)
-> +include scripts/Makefile.userprogs
-> +endif
-> +
->  ifndef obj
->  $(warning kbuild: Makefile.build is included improperly)
->  endif
-> diff --git a/scripts/Makefile.clean b/scripts/Makefile.clean
-> index 6e6c9ef7c..97fd2ef48 100644
-> --- a/scripts/Makefile.clean
-> +++ b/scripts/Makefile.clean
-> @@ -37,7 +37,7 @@ subdir-ymn	:= $(addprefix $(obj)/,$(subdir-ymn))
->  
->  __clean-files	:= $(extra-y) $(extra-m) $(extra-)       \
->  		   $(always) $(always-y) $(always-m) $(always-) $(targets) $(clean-files)   \
-> -		   $(hostprogs) $(hostprogs-y) $(hostprogs-m) $(hostprogs-)
-> +		   $(hostprogs) $(hostprogs-y) $(hostprogs-m) $(hostprogs-) $(userprogs)
->  
->  # as clean-files is given relative to the current directory, this adds
->  # a $(obj) prefix, except for absolute paths
-> diff --git a/scripts/Makefile.userprogs b/scripts/Makefile.userprogs
-> new file mode 100644
-> index 000000000..fb4152973
-> --- /dev/null
-> +++ b/scripts/Makefile.userprogs
-> @@ -0,0 +1,45 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +#
-> +# Build userspace programs for the target system
-> +#
-> +
-> +# Executables compiled from a single .c file
-> +user-csingle	:= $(foreach m, $(userprogs), $(if $($(m)-objs),,$(m)))
-> +
-> +# Executables linked based on several .o files
-> +user-cmulti	:= $(foreach m, $(userprogs), $(if $($(m)-objs),$(m)))
-> +
-> +# Objects compiled from .c files
-> +user-cobjs	:= $(sort $(foreach m, $(userprogs), $($(m)-objs)))
-> +
-> +user-csingle	:= $(addprefix $(obj)/, $(user-csingle))
-> +user-cmulti	:= $(addprefix $(obj)/, $(user-cmulti))
-> +user-cobjs	:= $(addprefix $(obj)/, $(user-cobjs))
-> +
-> +user_ccflags	= -Wp,-MMD,$(depfile) $(KBUILD_USERCFLAGS) $(userccflags) \
-> +			$($(target-stem)-userccflags)
-> +user_ldflags	= $(KBUILD_USERLDFLAGS) $(userldflags) $($(target-stem)-userldflags)
-> +
-> +# Create an executable from a single .c file
-> +quiet_cmd_user_cc_c = CC [U]  $@
-> +      cmd_user_cc_c = $(CC) $(user_ccflags) $(user_ldflags) -o $@ $< \
-> +		      $($(target-stem)-userldlibs)
-> +$(user-csingle): $(obj)/%: $(src)/%.c FORCE
-> +	$(call if_changed_dep,user_cc_c)
-> +
-> +# Link an executable based on list of .o files
-> +quiet_cmd_user_ld = LD [U]  $@
-> +      cmd_user_ld = $(CC) $(user_ldflags) -o $@ \
-> +		    $(addprefix $(obj)/, $($(target-stem)-objs)) \
-> +		    $($(target-stem)-userldlibs)
-> +$(user-cmulti): FORCE
-> +	$(call if_changed,user_ld)
-> +$(call multi_depend, $(user-cmulti), , -objs)
-> +
-> +# Create .o file from a .c file
-> +quiet_cmd_user_cc_o_c = CC [U]  $@
-> +      cmd_user_cc_o_c = $(CC) $(user_ccflags) -c -o $@ $<
-> +$(user-cobjs): $(obj)/%.o: $(src)/%.c FORCE
-> +	$(call if_changed_dep,user_cc_o_c)
-> +
-> +targets += $(user-csingle) $(user-cmulti) $(user-cobjs)
-> -- 
-> 2.25.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
+index bbd7e95bc2..9c40cf7340 100644
+--- a/scripts/imx/imx-image.c
++++ b/scripts/imx/imx-image.c
+@@ -993,13 +993,12 @@ int main(int argc, char *argv[])
+ 		xwrite(outfd, add_barebox_header ? bb_header : buf,
+ 		       sizeof_bb_header);
+ 
+-		if (lseek(outfd, data.header_gap, SEEK_CUR) < 0) {
++		if (lseek(outfd, data.header_gap, SEEK_SET) < 0) {
+ 			perror("lseek");
+ 			exit(1);
+ 		}
+ 
+-		xwrite(outfd, buf + sizeof_bb_header,
+-		       header_len - sizeof_bb_header);
++		xwrite(outfd, buf, header_len);
+ 	}
+ 
+ 	xwrite(outfd, infile, insize);
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.27.0
+
 
 _______________________________________________
 barebox mailing list
