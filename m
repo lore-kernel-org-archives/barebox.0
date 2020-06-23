@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jnfxw-0007zd-BK
- for barebox@lists.infradead.org; Tue, 23 Jun 2020 10:15:45 +0000
-Date: Tue, 23 Jun 2020 12:15:42 +0200
+ id 1jnfyb-0008CX-1a
+ for barebox@lists.infradead.org; Tue, 23 Jun 2020 10:16:25 +0000
+Date: Tue, 23 Jun 2020 12:16:23 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200623101542.GB11869@pengutronix.de>
-References: <20200623062011.19347-1-a.fatoum@pengutronix.de>
+Message-ID: <20200623101623.GC11869@pengutronix.de>
+References: <20200623100846.21965-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200623062011.19347-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20200623100846.21965-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,49 +22,120 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] clk: at91: sync with Linux v5.8-rc1
+Subject: Re: [PATCH v2 1/3] mci: sdhci: atmel: don't print errors on command
+ timeouts
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jun 23, 2020 at 08:20:09AM +0200, Ahmad Fatoum wrote:
-> Hello Sascha,
+On Tue, Jun 23, 2020 at 12:08:44PM +0200, Ahmad Fatoum wrote:
+> Time outs can be expected, e.g. when probing whether a card is a MMC
+> one. The core handles it, so don't have the driver print an error.
 > 
-> This series adds support for the new sama5d3 clk bindings present in v5.8-rc1.
-> Please apply before the v5.8-rc1 device tree sync, so we avoid intermittent
-> breakage for the microchip-ksz9477-evb.
+> While at it, simplify the error handling. We don't need to read the
+> status more than once and returning -EPERM on non-timeout is what the
+> other drivers are doing.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
 
-Did that and applied, thanks
+Applied, thanks
 
 Sascha
 
+> v1 -> v2:
+>   no change
+> ---
+>  drivers/mci/atmel-sdhci-common.c | 40 ++++++++++++++++++--------------
+>  1 file changed, 22 insertions(+), 18 deletions(-)
 > 
-> Thanks,
-> Ahmad Fatoum (2):
->   include: import upstream header <linux/overflow.h>
->   clk: at91: sync with Linux v5.8-rc1
-> 
->  drivers/clk/at91/Makefile      |   5 +-
->  drivers/clk/at91/at91rm9200.c  | 209 +++++++++++++++++++++
->  drivers/clk/at91/at91sam9260.c |  13 +-
->  drivers/clk/at91/at91sam9g45.c | 221 +++++++++++++++++++++++
->  drivers/clk/at91/at91sam9n12.c | 249 +++++++++++++++++++++++++
->  drivers/clk/at91/at91sam9rl.c  |  10 +-
->  drivers/clk/at91/at91sam9x5.c  |  10 +-
->  drivers/clk/at91/clk-usb.c     |   9 +-
->  drivers/clk/at91/pmc.c         |  47 +++--
->  drivers/clk/at91/pmc.h         |  14 +-
->  drivers/clk/at91/sam9x60.c     |  28 ++-
->  drivers/clk/at91/sama5d2.c     |  13 +-
->  drivers/clk/at91/sama5d3.c     | 248 +++++++++++++++++++++++++
->  drivers/clk/at91/sama5d4.c     |  10 +-
->  include/linux/overflow.h       | 319 +++++++++++++++++++++++++++++++++
->  15 files changed, 1343 insertions(+), 62 deletions(-)
->  create mode 100644 drivers/clk/at91/at91rm9200.c
->  create mode 100644 drivers/clk/at91/at91sam9g45.c
->  create mode 100644 drivers/clk/at91/at91sam9n12.c
->  create mode 100644 drivers/clk/at91/sama5d3.c
->  create mode 100644 include/linux/overflow.h
-> 
+> diff --git a/drivers/mci/atmel-sdhci-common.c b/drivers/mci/atmel-sdhci-common.c
+> index b9524622620f..fff4468d71e8 100644
+> --- a/drivers/mci/atmel-sdhci-common.c
+> +++ b/drivers/mci/atmel-sdhci-common.c
+> @@ -83,10 +83,10 @@ exit:
+>  static int at91_sdhci_wait_for_done(struct at91_sdhci *host, u32 mask)
+>  {
+>  	struct sdhci *sdhci = &host->sdhci;
+> -	u16 status;
+> +	u32 status;
+>  	int ret;
+>  
+> -	ret = sdhci_read16_poll_timeout(sdhci, SDHCI_INT_NORMAL_STATUS, status,
+> +	ret = sdhci_read32_poll_timeout(sdhci, SDHCI_INT_STATUS, status,
+>  					(status & mask) == mask || (status & SDHCI_INT_ERROR),
+>  					USEC_PER_SEC);
+>  
+> @@ -95,13 +95,15 @@ static int at91_sdhci_wait_for_done(struct at91_sdhci *host, u32 mask)
+>  		return ret;
+>  	}
+>  
+> +	if (status & SDHCI_INT_TIMEOUT)
+> +		return -ETIMEDOUT;
+> +
+>  	if (status & SDHCI_INT_ERROR) {
+> -		pr_err("SDHCI_INT_ERROR: 0x%08x\n",
+> -			sdhci_read16(sdhci, SDHCI_INT_ERROR_STATUS));
+> +		pr_err("SDHCI_INT_STATUS: 0x%08x\n", status);
+>  		return -EPERM;
+>  	}
+>  
+> -	return status;
+> +	return status & 0xFFFF;
+>  }
+>  
+>  int at91_sdhci_send_command(struct at91_sdhci *host, struct mci_cmd *cmd,
+> @@ -109,7 +111,8 @@ int at91_sdhci_send_command(struct at91_sdhci *host, struct mci_cmd *cmd,
+>  {
+>  	unsigned command, xfer;
+>  	struct sdhci *sdhci = &host->sdhci;
+> -	u32 mask, status, state;
+> +	u32 mask, state;
+> +	int status;
+>  	int ret;
+>  
+>  	/* Wait for idle before next command */
+> @@ -147,28 +150,29 @@ int at91_sdhci_send_command(struct at91_sdhci *host, struct mci_cmd *cmd,
+>  	sdhci_write16(sdhci, SDHCI_COMMAND, command);
+>  
+>  	status = at91_sdhci_wait_for_done(host, mask);
+> -	if (status >= 0 && (status & (SDHCI_INT_ERROR | mask)) == mask) {
+> -		sdhci_read_response(sdhci, cmd);
+> -		sdhci_write32(sdhci, SDHCI_INT_STATUS, mask);
+> -
+> -		if (data)
+> -			sdhci_transfer_data(sdhci, data);
+> +	if (status < 0)
+> +		goto error;
+>  
+> -		udelay(1000);
+> +	sdhci_read_response(sdhci, cmd);
+> +	sdhci_write32(sdhci, SDHCI_INT_STATUS, mask);
+>  
+> -		status = sdhci_read32(sdhci, SDHCI_INT_STATUS);
+> -		sdhci_write32(sdhci, SDHCI_INT_STATUS, ~0U);
+> +	if (data)
+> +		sdhci_transfer_data(sdhci, data);
+>  
+> -		return 0;
+> -	}
+> +	udelay(1000);
+>  
+>  	status = sdhci_read32(sdhci, SDHCI_INT_STATUS);
+>  	sdhci_write32(sdhci, SDHCI_INT_STATUS, ~0U);
+>  
+> +	return 0;
+> +
+> +error:
+> +	sdhci_write32(sdhci, SDHCI_INT_STATUS, ~0U);
+> +
+>  	sdhci_reset(sdhci, SDHCI_RESET_CMD);
+>  	sdhci_reset(sdhci, SDHCI_RESET_DATA);
+>  
+> -	return status & SDHCI_INT_TIMEOUT ? -ETIMEDOUT : -ECOMM;
+> +	return status;
+>  }
+>  
+>  static void at91_sdhci_set_power(struct at91_sdhci *host, unsigned vdd)
 > -- 
 > 2.27.0
 > 
