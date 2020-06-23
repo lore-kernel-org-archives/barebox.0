@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jnimZ-0001Uf-1w
+ id 1jnimZ-0001Ug-1w
  for barebox@lists.infradead.org; Tue, 23 Jun 2020 13:16:27 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 23 Jun 2020 15:16:01 +0200
-Message-Id: <20200623131606.16316-16-s.hauer@pengutronix.de>
+Date: Tue, 23 Jun 2020 15:15:58 +0200
+Message-Id: <20200623131606.16316-13-s.hauer@pengutronix.de>
 In-Reply-To: <20200623131606.16316-1-s.hauer@pengutronix.de>
 References: <20200623131606.16316-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,760 +21,1603 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 15/20] clk: imx: Add imx8mp clk driver
+Subject: [PATCH 12/20] arm: imx: add initial imx8mp support
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-This adds clock support for the i.MX8MP, taken from Linux-5.7.
+This adds base support for the i.MX8MP SoC. Not much to do here as this
+SoC is quite similar to the i.MX8M. This adds:
+
+- Kconfig symbols
+- bootsource detection
+- register base address defines
+- iomux defines
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/clk/imx/Makefile     |   2 +
- drivers/clk/imx/clk-imx8mp.c | 720 +++++++++++++++++++++++++++++++++++
- 2 files changed, 722 insertions(+)
- create mode 100644 drivers/clk/imx/clk-imx8mp.c
+ arch/arm/mach-imx/Kconfig                     |    4 +
+ arch/arm/mach-imx/atf.c                       |    5 +
+ arch/arm/mach-imx/boot.c                      |   17 +
+ arch/arm/mach-imx/cpu_init.c                  |    5 +
+ arch/arm/mach-imx/esdctl.c                    |    5 +
+ arch/arm/mach-imx/imx.c                       |    4 +
+ arch/arm/mach-imx/imx8m.c                     |   24 +
+ arch/arm/mach-imx/include/mach/atf.h          |    4 +-
+ arch/arm/mach-imx/include/mach/debug_ll.h     |    3 +
+ arch/arm/mach-imx/include/mach/esdctl.h       |    1 +
+ arch/arm/mach-imx/include/mach/generic.h      |   18 +-
+ arch/arm/mach-imx/include/mach/imx8mp-regs.h  |   46 +
+ arch/arm/mach-imx/include/mach/imx8mq.h       |   13 +-
+ .../arm/mach-imx/include/mach/imx_cpu_types.h |    1 +
+ arch/arm/mach-imx/include/mach/iomux-mx8mp.h  | 1100 +++++++++++++++++
+ common/Kconfig                                |    8 +
+ drivers/ddr/imx8m/Kconfig                     |    2 +-
+ firmware/Kconfig                              |    3 +
+ firmware/Makefile                             |    1 +
+ 19 files changed, 1260 insertions(+), 4 deletions(-)
+ create mode 100644 arch/arm/mach-imx/include/mach/imx8mp-regs.h
+ create mode 100644 arch/arm/mach-imx/include/mach/iomux-mx8mp.h
 
-diff --git a/drivers/clk/imx/Makefile b/drivers/clk/imx/Makefile
-index b1ce9d3d3e..bb6635d5e4 100644
---- a/drivers/clk/imx/Makefile
-+++ b/drivers/clk/imx/Makefile
-@@ -28,6 +28,8 @@ obj-$(CONFIG_ARCH_IMX6SL) += clk-imx6sl.o
- obj-$(CONFIG_ARCH_IMX6UL) += clk-imx6ul.o
- obj-$(CONFIG_ARCH_IMX7) += clk-imx7.o
- pbl-$(CONFIG_ARCH_IMX8MM) += clk-pll14xx.o
-+pbl-$(CONFIG_ARCH_IMX8MP) += clk-pll14xx.o
- obj-$(CONFIG_ARCH_IMX8MM) += clk-imx8mm.o
-+obj-$(CONFIG_ARCH_IMX8MP) += clk-imx8mp.o
- obj-$(CONFIG_ARCH_IMX8MQ) += clk-imx8mq.o
- obj-$(CONFIG_ARCH_VF610)  += clk-vf610.o
-diff --git a/drivers/clk/imx/clk-imx8mp.c b/drivers/clk/imx/clk-imx8mp.c
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 6dd5cb2aca..934a84ca45 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -190,6 +190,10 @@ config ARCH_IMX8MM
+ 	select ARCH_IMX8M
+ 	bool
+ 
++config ARCH_IMX8MP
++	select ARCH_IMX8M
++	bool
++
+ config ARCH_IMX8MQ
+ 	select ARCH_IMX8M
+ 	bool
+diff --git a/arch/arm/mach-imx/atf.c b/arch/arm/mach-imx/atf.c
+index 4ced8cd083..03857e6b9b 100644
+--- a/arch/arm/mach-imx/atf.c
++++ b/arch/arm/mach-imx/atf.c
+@@ -47,6 +47,11 @@ void imx8mm_atf_load_bl31(const void *fw, size_t fw_size)
+ 	imx8m_atf_load_bl31(fw, fw_size, (void *)MX8MM_ATF_BL31_BASE_ADDR);
+ }
+ 
++void imx8mp_atf_load_bl31(const void *fw, size_t fw_size)
++{
++	imx8m_atf_load_bl31(fw, fw_size, (void *)MX8MP_ATF_BL31_BASE_ADDR);
++}
++
+ void imx8mq_atf_load_bl31(const void *fw, size_t fw_size)
+ {
+ 	imx8m_atf_load_bl31(fw, fw_size, (void *)MX8MQ_ATF_BL31_BASE_ADDR);
+diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
+index ef868301cd..c3cf4b85ff 100644
+--- a/arch/arm/mach-imx/boot.c
++++ b/arch/arm/mach-imx/boot.c
+@@ -28,6 +28,7 @@
+ #include <mach/imx6-regs.h>
+ #include <mach/imx7-regs.h>
+ #include <mach/imx8mm-regs.h>
++#include <mach/imx8mp-regs.h>
+ #include <mach/imx8mq-regs.h>
+ #include <mach/vf610-regs.h>
+ #include <mach/imx8mq.h>
+@@ -651,3 +652,19 @@ void imx8mm_boot_save_loc(void)
+ {
+ 	imx_boot_save_loc(imx8mm_get_boot_source);
+ }
++
++void imx8mp_get_boot_source(enum bootsource *src, int *instance)
++{
++	unsigned long addr;
++	void __iomem *src_base = IOMEM(MX8MP_SRC_BASE_ADDR);
++	uint32_t sbmr2 = readl(src_base + 0x70);
++
++	addr = IMX8M_BOOT_SW_INFO_POINTER_ADDR_A0;
++
++	__imx7_get_boot_source(src, instance, addr, sbmr2);
++}
++
++void imx8mp_boot_save_loc(void)
++{
++	imx_boot_save_loc(imx8mp_get_boot_source);
++}
+diff --git a/arch/arm/mach-imx/cpu_init.c b/arch/arm/mach-imx/cpu_init.c
+index c6a0ac7c50..cc7a409e37 100644
+--- a/arch/arm/mach-imx/cpu_init.c
++++ b/arch/arm/mach-imx/cpu_init.c
+@@ -82,6 +82,11 @@ void imx8mm_cpu_lowlevel_init(void)
+ 	imx8m_cpu_lowlevel_init();
+ }
+ 
++void imx8mp_cpu_lowlevel_init(void)
++{
++	imx8m_cpu_lowlevel_init();
++}
++
+ void imx8mq_cpu_lowlevel_init(void)
+ {
+ 	imx8m_cpu_lowlevel_init();
+diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
+index 5d595addb8..cc5d3a8359 100644
+--- a/arch/arm/mach-imx/esdctl.c
++++ b/arch/arm/mach-imx/esdctl.c
+@@ -889,6 +889,11 @@ void __noreturn imx8mm_barebox_entry(void *boarddata)
+ 	imx8m_barebox_entry(boarddata);
+ }
+ 
++void __noreturn imx8mp_barebox_entry(void *boarddata)
++{
++	imx8m_barebox_entry(boarddata);
++}
++
+ void __noreturn imx8mq_barebox_entry(void *boarddata)
+ {
+ 	imx8m_barebox_entry(boarddata);
+diff --git a/arch/arm/mach-imx/imx.c b/arch/arm/mach-imx/imx.c
+index 0bbe44e4dd..3d8c55c54e 100644
+--- a/arch/arm/mach-imx/imx.c
++++ b/arch/arm/mach-imx/imx.c
+@@ -82,6 +82,8 @@ static int imx_soc_from_dt(void)
+ 		return IMX_CPU_IMX8MQ;
+ 	if (of_machine_is_compatible("fsl,imx8mm"))
+ 		return IMX_CPU_IMX8MM;
++	if (of_machine_is_compatible("fsl,imx8mp"))
++		return IMX_CPU_IMX8MP;
+ 	if (of_machine_is_compatible("fsl,vf610"))
+ 		return IMX_CPU_VF610;
+ 
+@@ -124,6 +126,8 @@ static int imx_init(void)
+ 		ret = imx7_init();
+ 	else if (cpu_is_mx8mm())
+ 		ret = imx8mm_init();
++	else if (cpu_is_mx8mp())
++		ret = imx8mp_init();
+ 	else if (cpu_is_mx8mq())
+ 		ret = imx8mq_init();
+ 	else if (cpu_is_vf610())
+diff --git a/arch/arm/mach-imx/imx8m.c b/arch/arm/mach-imx/imx8m.c
+index d2ed7d52a9..b9e01a1d18 100644
+--- a/arch/arm/mach-imx/imx8m.c
++++ b/arch/arm/mach-imx/imx8m.c
+@@ -22,6 +22,7 @@
+ #include <mach/imx8m-ccm-regs.h>
+ #include <mach/reset-reason.h>
+ #include <mach/ocotp.h>
++#include <mach/imx8mp-regs.h>
+ #include <mach/imx8mq-regs.h>
+ #include <mach/imx8m-ccm-regs.h>
+ #include <soc/imx8m/clk-early.h>
+@@ -105,6 +106,29 @@ int imx8mm_init(void)
+ 	return imx8m_init(cputypestr);
+ }
+ 
++int imx8mp_init(void)
++{
++	void __iomem *anatop = IOMEM(MX8MP_ANATOP_BASE_ADDR);
++	uint32_t type = FIELD_GET(DIGPROG_MAJOR,
++				  readl(anatop + MX8MP_ANATOP_DIGPROG));
++	const char *cputypestr;
++
++	imx8mp_boot_save_loc();
++
++	switch (type) {
++	case IMX8M_CPUTYPE_IMX8MP:
++		cputypestr = "i.MX8MP";
++		break;
++	default:
++		cputypestr = "unknown i.MX8M";
++		break;
++	};
++
++	imx_set_silicon_revision(cputypestr, imx8mp_cpu_revision());
++
++	return imx8m_init(cputypestr);
++}
++
+ int imx8mq_init(void)
+ {
+ 	void __iomem *anatop = IOMEM(MX8M_ANATOP_BASE_ADDR);
+diff --git a/arch/arm/mach-imx/include/mach/atf.h b/arch/arm/mach-imx/include/mach/atf.h
+index f64a9dd2ba..c21ffaeb56 100644
+--- a/arch/arm/mach-imx/include/mach/atf.h
++++ b/arch/arm/mach-imx/include/mach/atf.h
+@@ -7,12 +7,14 @@
+ #define MX8M_ATF_BL31_SIZE_LIMIT	SZ_64K
+ 
+ #define MX8MM_ATF_BL31_BASE_ADDR	0x00920000
++#define MX8MP_ATF_BL31_BASE_ADDR	0x00960000
+ #define MX8MQ_ATF_BL31_BASE_ADDR	0x00910000
+ #define MX8M_ATF_BL33_BASE_ADDR		0x40200000
+ #define MX8MM_ATF_BL33_BASE_ADDR	MX8M_ATF_BL33_BASE_ADDR
+ #define MX8MQ_ATF_BL33_BASE_ADDR	MX8M_ATF_BL33_BASE_ADDR
+ 
+ void imx8mm_atf_load_bl31(const void *fw, size_t fw_size);
++void imx8mp_atf_load_bl31(const void *fw, size_t fw_size);
+ void imx8mq_atf_load_bl31(const void *fw, size_t fw_size);
+ 
+-#endif
+\ No newline at end of file
++#endif
+diff --git a/arch/arm/mach-imx/include/mach/debug_ll.h b/arch/arm/mach-imx/include/mach/debug_ll.h
+index 5eed01631c..f2114d50e9 100644
+--- a/arch/arm/mach-imx/include/mach/debug_ll.h
++++ b/arch/arm/mach-imx/include/mach/debug_ll.h
+@@ -15,6 +15,7 @@
+ #include <mach/imx53-regs.h>
+ #include <mach/imx6-regs.h>
+ #include <mach/imx7-regs.h>
++#include <mach/imx8mp-regs.h>
+ #include <mach/imx8mq-regs.h>
+ #include <mach/vf610-regs.h>
+ 
+@@ -48,6 +49,8 @@
+ #define IMX_DEBUG_SOC MX6
+ #elif defined CONFIG_DEBUG_IMX7D_UART
+ #define IMX_DEBUG_SOC MX7
++#elif defined CONFIG_DEBUG_IMX8MP_UART
++#define IMX_DEBUG_SOC MX8MP
+ #elif defined CONFIG_DEBUG_IMX8MQ_UART
+ #define IMX_DEBUG_SOC MX8MQ
+ #elif defined CONFIG_DEBUG_VF610_UART
+diff --git a/arch/arm/mach-imx/include/mach/esdctl.h b/arch/arm/mach-imx/include/mach/esdctl.h
+index 41eb9f6729..e6bbc3145a 100644
+--- a/arch/arm/mach-imx/include/mach/esdctl.h
++++ b/arch/arm/mach-imx/include/mach/esdctl.h
+@@ -140,6 +140,7 @@ void __noreturn imx6q_barebox_entry(void *boarddata);
+ void __noreturn imx6ul_barebox_entry(void *boarddata);
+ void __noreturn vf610_barebox_entry(void *boarddata);
+ void __noreturn imx8mm_barebox_entry(void *boarddata);
++void __noreturn imx8mp_barebox_entry(void *boarddata);
+ void __noreturn imx8mq_barebox_entry(void *boarddata);
+ void __noreturn imx7d_barebox_entry(void *boarddata);
+ #define imx6sx_barebox_entry(boarddata) imx6ul_barebox_entry(boarddata)
+diff --git a/arch/arm/mach-imx/include/mach/generic.h b/arch/arm/mach-imx/include/mach/generic.h
+index 7742a002ce..f30133a05a 100644
+--- a/arch/arm/mach-imx/include/mach/generic.h
++++ b/arch/arm/mach-imx/include/mach/generic.h
+@@ -17,6 +17,7 @@ void imx6_boot_save_loc(void);
+ void imx7_boot_save_loc(void);
+ void vf610_boot_save_loc(void);
+ void imx8mm_boot_save_loc(void);
++void imx8mp_boot_save_loc(void);
+ void imx8mq_boot_save_loc(void);
+ 
+ void imx25_get_boot_source(enum bootsource *src, int *instance);
+@@ -28,6 +29,7 @@ void imx6_get_boot_source(enum bootsource *src, int *instance);
+ void imx7_get_boot_source(enum bootsource *src, int *instance);
+ void vf610_get_boot_source(enum bootsource *src, int *instance);
+ void imx8mm_get_boot_source(enum bootsource *src, int *instance);
++void imx8mp_get_boot_source(enum bootsource *src, int *instance);
+ void imx8mq_get_boot_source(enum bootsource *src, int *instance);
+ 
+ int imx1_init(void);
+@@ -43,6 +45,7 @@ int imx6_init(void);
+ int imx7_init(void);
+ int vf610_init(void);
+ int imx8mm_init(void);
++int imx8mp_init(void);
+ int imx8mq_init(void);
+ 
+ int imx1_devices_init(void);
+@@ -63,6 +66,7 @@ void imx7_cpu_lowlevel_init(void);
+ void vf610_cpu_lowlevel_init(void);
+ void imx8mq_cpu_lowlevel_init(void);
+ void imx8mm_cpu_lowlevel_init(void);
++void imx8mp_cpu_lowlevel_init(void);
+ 
+ /* There's a off-by-one betweem the gpio bank number and the gpiochip */
+ /* range e.g. GPIO_1_5 is gpio 5 under linux */
+@@ -215,6 +219,18 @@ extern unsigned int __imx_cpu_type;
+ # define cpu_is_mx8mm()	(0)
+ #endif
+ 
++#ifdef CONFIG_ARCH_IMX8MP
++# ifdef imx_cpu_type
++#  undef imx_cpu_type
++#  define imx_cpu_type __imx_cpu_type
++# else
++#  define imx_cpu_type IMX_CPU_IMX8MP
++# endif
++# define cpu_is_mx8mp()	(imx_cpu_type == IMX_CPU_IMX8MP)
++#else
++# define cpu_is_mx8mp()	(0)
++#endif
++
+ #ifdef CONFIG_ARCH_IMX8MQ
+ # ifdef imx_cpu_type
+ #  undef imx_cpu_type
+@@ -251,6 +267,6 @@ extern unsigned int __imx_cpu_type;
+ #define cpu_is_mx23()	(0)
+ #define cpu_is_mx28()	(0)
+ 
+-#define cpu_is_mx8m()	(cpu_is_mx8mq() || cpu_is_mx8mm())
++#define cpu_is_mx8m()	(cpu_is_mx8mq() || cpu_is_mx8mm() || cpu_is_mx8mp())
+ 
+ #endif /* __MACH_GENERIC_H */
+diff --git a/arch/arm/mach-imx/include/mach/imx8mp-regs.h b/arch/arm/mach-imx/include/mach/imx8mp-regs.h
 new file mode 100644
-index 0000000000..8286e47960
+index 0000000000..29e8a45706
 --- /dev/null
-+++ b/drivers/clk/imx/clk-imx8mp.c
-@@ -0,0 +1,720 @@
-+// SPDX-License-Identifier: GPL-2.0-only
++++ b/arch/arm/mach-imx/include/mach/imx8mp-regs.h
+@@ -0,0 +1,46 @@
++#ifndef __MACH_IMX8MP_REGS_H
++#define __MACH_IMX8MP_REGS_H
++
++#include <mach/imx8m-regs.h>
++
++#define MX8MP_M4_BOOTROM_BASE_ADDR	0x007e0000
++
++#define MX8MP_GPIO1_BASE_ADDR		0x30200000
++#define MX8MP_GPIO2_BASE_ADDR		0x30210000
++#define MX8MP_GPIO3_BASE_ADDR		0x30220000
++#define MX8MP_GPIO4_BASE_ADDR		0x30230000
++#define MX8MP_GPIO5_BASE_ADDR		0x30240000
++#define MX8MP_WDOG1_BASE_ADDR		0x30280000
++#define MX8MP_WDOG2_BASE_ADDR		0x30290000
++#define MX8MP_WDOG3_BASE_ADDR		0x302a0000
++#define MX8MP_IOMUXC_BASE_ADDR		0x30330000
++#define MX8MP_IOMUXC_GPR_BASE_ADDR	0x30340000
++#define MX8MP_OCOTP_BASE_ADDR		0x30350000
++#define MX8MP_ANATOP_BASE_ADDR		0x30360000
++#define MX8MP_CCM_BASE_ADDR		0x30380000
++#define MX8MP_SRC_BASE_ADDR		0x30390000
++#define MX8MP_GPC_BASE_ADDR		0x303a0000
++#define MX8MP_SYSCNT_RD_BASE_ADDR	0x306a0000
++#define MX8MP_SYSCNT_CMP_BASE_ADDR	0x306b0000
++#define MX8MP_SYSCNT_CTRL_BASE_ADDR	0x306c0000
++#define MX8MP_UART1_BASE_ADDR		0x30860000
++#define MX8MP_UART3_BASE_ADDR		0x30880000
++#define MX8MP_UART2_BASE_ADDR		0x30890000
++#define MX8MP_I2C1_BASE_ADDR		0x30a20000
++#define MX8MP_I2C2_BASE_ADDR		0x30a30000
++#define MX8MP_I2C3_BASE_ADDR		0x30a40000
++#define MX8MP_I2C4_BASE_ADDR		0x30a50000
++#define MX8MP_UART4_BASE_ADDR		0x30a60000
++#define MX8MP_USDHC1_BASE_ADDR		0x30b40000
++#define MX8MP_USDHC2_BASE_ADDR		0x30b50000
++#define MX8MP_USDHC3_BASE_ADDR		0x30b60000
++#define MX8MP_USB1_BASE_ADDR		0x32e40000
++#define MX8MP_USB2_BASE_ADDR		0x32e50000
++#define MX8MP_TZASC_BASE_ADDR		0x32f80000
++#define MX8MP_SRC_IPS_BASE_ADDR		0x30390000
++#define MX8MP_SRC_DDRC_RCR_ADDR		0x30391000
++#define MX8MP_SRC_DDRC2_RCR_ADDR	0x30391004
++#define MX8MP_DDRC_DDR_SS_GPR0		0x3d000000
++#define MX8MP_DDR_CSD1_BASE_ADDR	0x40000000
++
++#endif /* __MACH_IMX8MP_REGS_H */
+diff --git a/arch/arm/mach-imx/include/mach/imx8mq.h b/arch/arm/mach-imx/include/mach/imx8mq.h
+index 2ef2987188..1494fd661f 100644
+--- a/arch/arm/mach-imx/include/mach/imx8mq.h
++++ b/arch/arm/mach-imx/include/mach/imx8mq.h
+@@ -5,6 +5,7 @@
+ #include <mach/generic.h>
+ #include <mach/imx8mq-regs.h>
+ #include <mach/imx8mm-regs.h>
++#include <mach/imx8mp-regs.h>
+ #include <mach/revision.h>
+ #include <linux/bitfield.h>
+ 
+@@ -15,12 +16,14 @@
+ 
+ #define MX8MQ_ANATOP_DIGPROG	0x6c
+ #define MX8MM_ANATOP_DIGPROG	0x800
++#define MX8MP_ANATOP_DIGPROG	0x800
+ 
+ #define DIGPROG_MAJOR	GENMASK(23, 8)
+ #define DIGPROG_MINOR	GENMASK(7, 0)
+ 
+ #define IMX8M_CPUTYPE_IMX8MQ	0x8240
+ #define IMX8M_CPUTYPE_IMX8MM	0x8241
++#define IMX8M_CPUTYPE_IMX8MP	0x8243
+ 
+ static inline int imx8mm_cpu_revision(void)
+ {
+@@ -30,6 +33,14 @@ static inline int imx8mm_cpu_revision(void)
+ 	return revision;
+ }
+ 
++static inline int imx8mp_cpu_revision(void)
++{
++	void __iomem *anatop = IOMEM(MX8MP_ANATOP_BASE_ADDR);
++	uint32_t revision = FIELD_GET(DIGPROG_MINOR,
++				      readl(anatop + MX8MP_ANATOP_DIGPROG));
++	return revision;
++}
++
+ static inline int imx8mq_cpu_revision(void)
+ {
+ 	void __iomem *anatop = IOMEM(MX8MQ_ANATOP_BASE_ADDR);
+@@ -62,4 +73,4 @@ static inline int imx8mq_cpu_revision(void)
+ 
+ u64 imx8m_uid(void);
+ 
+-#endif /* __MACH_IMX8_H */
+\ No newline at end of file
++#endif /* __MACH_IMX8_H */
+diff --git a/arch/arm/mach-imx/include/mach/imx_cpu_types.h b/arch/arm/mach-imx/include/mach/imx_cpu_types.h
+index b3fccfadb5..6d96f7c590 100644
+--- a/arch/arm/mach-imx/include/mach/imx_cpu_types.h
++++ b/arch/arm/mach-imx/include/mach/imx_cpu_types.h
+@@ -14,6 +14,7 @@
+ #define IMX_CPU_IMX7	7
+ #define IMX_CPU_IMX8MQ	8
+ #define IMX_CPU_IMX8MM  81
++#define IMX_CPU_IMX8MP  83
+ #define IMX_CPU_VF610	610
+ 
+ #endif /* __MACH_IMX_CPU_TYPES_H */
+diff --git a/arch/arm/mach-imx/include/mach/iomux-mx8mp.h b/arch/arm/mach-imx/include/mach/iomux-mx8mp.h
+new file mode 100644
+index 0000000000..6c542fbf32
+--- /dev/null
++++ b/arch/arm/mach-imx/include/mach/iomux-mx8mp.h
+@@ -0,0 +1,1100 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
 +/*
-+ * Copyright 2019 NXP.
++ * Copyright 2019 NXP
 + */
 +
-+#include <dt-bindings/clock/imx8mp-clock.h>
-+#include <io.h>
-+#include <linux/clk.h>
-+#include <linux/err.h>
-+#include <linux/types.h>
-+#include <of_address.h>
-+
-+#include "clk.h"
-+
-+static const char *pll_ref_sels[] = { "osc_24m", "dummy", "dummy", "dummy", };
-+static const char *audio_pll1_bypass_sels[] = {"audio_pll1", "audio_pll1_ref_sel", };
-+static const char *audio_pll2_bypass_sels[] = {"audio_pll2", "audio_pll2_ref_sel", };
-+static const char *video_pll1_bypass_sels[] = {"video_pll1", "video_pll1_ref_sel", };
-+static const char *dram_pll_bypass_sels[] = {"dram_pll", "dram_pll_ref_sel", };
-+static const char *gpu_pll_bypass_sels[] = {"gpu_pll", "gpu_pll_ref_sel", };
-+static const char *vpu_pll_bypass_sels[] = {"vpu_pll", "vpu_pll_ref_sel", };
-+static const char *arm_pll_bypass_sels[] = {"arm_pll", "arm_pll_ref_sel", };
-+static const char *sys_pll1_bypass_sels[] = {"sys_pll1", "sys_pll1_ref_sel", };
-+static const char *sys_pll2_bypass_sels[] = {"sys_pll2", "sys_pll2_ref_sel", };
-+static const char *sys_pll3_bypass_sels[] = {"sys_pll3", "sys_pll3_ref_sel", };
-+
-+static const char *imx8mp_a53_sels[] = {"osc_24m", "arm_pll_out", "sys_pll2_500m",
-+					       "sys_pll2_1000m", "sys_pll1_800m", "sys_pll1_400m",
-+					       "audio_pll1_out", "sys_pll3_out", };
-+
-+static const char *imx8mp_a53_core_sels[] = {"arm_a53_div", "arm_pll_out", };
-+
-+static const char *imx8mp_m7_sels[] = {"osc_24m", "sys_pll2_200m", "sys_pll2_250m",
-+					      "vpu_pll_out", "sys_pll1_800m", "audio_pll1_out",
-+					      "video_pll1_out", "sys_pll3_out", };
-+
-+static const char *imx8mp_ml_sels[] = {"osc_24m", "gpu_pll_out", "sys_pll1_800m",
-+					      "sys_pll3_out", "sys_pll2_1000m", "audio_pll1_out",
-+					      "video_pll1_out", "audio_pll2_out", };
-+
-+static const char *imx8mp_gpu3d_core_sels[] = {"osc_24m", "gpu_pll_out", "sys_pll1_800m",
-+						      "sys_pll3_out", "sys_pll2_1000m", "audio_pll1_out",
-+						      "video_pll1_out", "audio_pll2_out", };
-+
-+static const char *imx8mp_gpu3d_shader_sels[] = {"osc_24m", "gpu_pll_out", "sys_pll1_800m",
-+							"sys_pll3_out", "sys_pll2_1000m", "audio_pll1_out",
-+							"video_pll1_out", "audio_pll2_out", };
-+
-+static const char *imx8mp_gpu2d_sels[] = {"osc_24m", "gpu_pll_out", "sys_pll1_800m",
-+						 "sys_pll3_out", "sys_pll2_1000m", "audio_pll1_out",
-+						 "video_pll1_out", "audio_pll2_out", };
-+
-+static const char *imx8mp_audio_axi_sels[] = {"osc_24m", "gpu_pll_out", "sys_pll1_800m",
-+						     "sys_pll3_out", "sys_pll2_1000m", "audio_pll1_out",
-+						     "video_pll1_out", "audio_pll2_out", };
-+
-+static const char *imx8mp_hsio_axi_sels[] = {"osc_24m", "sys_pll2_500m", "sys_pll1_800m",
-+						    "sys_pll2_100m", "sys_pll2_200m", "clk_ext2",
-+						    "clk_ext4", "audio_pll2_out", };
-+
-+static const char *imx8mp_media_isp_sels[] = {"osc_24m", "sys_pll2_1000m", "sys_pll1_800m",
-+						     "sys_pll3_out", "sys_pll1_400m", "audio_pll2_out",
-+						     "clk_ext1", "sys_pll2_500m", };
-+
-+static const char *imx8mp_main_axi_sels[] = {"osc_24m", "sys_pll2_333m", "sys_pll1_800m",
-+						    "sys_pll2_250m", "sys_pll2_1000m", "audio_pll1_out",
-+						    "video_pll1_out", "sys_pll1_100m",};
-+
-+static const char *imx8mp_enet_axi_sels[] = {"osc_24m", "sys_pll1_266m", "sys_pll1_800m",
-+						    "sys_pll2_250m", "sys_pll2_200m", "audio_pll1_out",
-+						    "video_pll1_out", "sys_pll3_out", };
-+
-+static const char *imx8mp_nand_usdhc_sels[] = {"osc_24m", "sys_pll1_266m", "sys_pll1_800m",
-+						      "sys_pll2_200m", "sys_pll1_133m", "sys_pll3_out",
-+						      "sys_pll2_250m", "audio_pll1_out", };
-+
-+static const char *imx8mp_vpu_bus_sels[] = {"osc_24m", "sys_pll1_800m", "vpu_pll_out",
-+						   "audio_pll2_out", "sys_pll3_out", "sys_pll2_1000m",
-+						   "sys_pll2_200m", "sys_pll1_100m", };
-+
-+static const char *imx8mp_media_axi_sels[] = {"osc_24m", "sys_pll2_1000m", "sys_pll1_800m",
-+						     "sys_pll3_out", "sys_pll1_40m", "audio_pll2_out",
-+						     "clk_ext1", "sys_pll2_500m", };
-+
-+static const char *imx8mp_media_apb_sels[] = {"osc_24m", "sys_pll2_125m", "sys_pll1_800m",
-+						     "sys_pll3_out", "sys_pll1_40m", "audio_pll2_out",
-+						     "clk_ext1", "sys_pll1_133m", };
-+
-+static const char *imx8mp_gpu_axi_sels[] = {"osc_24m", "sys_pll1_800m", "gpu_pll_out",
-+						   "sys_pll3_out", "sys_pll2_1000m", "audio_pll1_out",
-+						   "video_pll1_out", "audio_pll2_out", };
-+
-+static const char *imx8mp_gpu_ahb_sels[] = {"osc_24m", "sys_pll1_800m", "gpu_pll_out",
-+						   "sys_pll3_out", "sys_pll2_1000m", "audio_pll1_out",
-+						   "video_pll1_out", "audio_pll2_out", };
-+
-+static const char *imx8mp_noc_sels[] = {"osc_24m", "sys_pll1_800m", "sys_pll3_out",
-+					       "sys_pll2_1000m", "sys_pll2_500m", "audio_pll1_out",
-+					       "video_pll1_out", "audio_pll2_out", };
-+
-+static const char *imx8mp_noc_io_sels[] = {"osc_24m", "sys_pll1_800m", "sys_pll3_out",
-+						  "sys_pll2_1000m", "sys_pll2_500m", "audio_pll1_out",
-+						  "video_pll1_out", "audio_pll2_out", };
-+
-+static const char *imx8mp_ml_axi_sels[] = {"osc_24m", "sys_pll1_800m", "gpu_pll_out",
-+						  "sys_pll3_out", "sys_pll2_1000m", "audio_pll1_out",
-+						  "video_pll1_out", "audio_pll2_out", };
-+
-+static const char *imx8mp_ml_ahb_sels[] = {"osc_24m", "sys_pll1_800m", "gpu_pll_out",
-+						  "sys_pll3_out", "sys_pll2_1000m", "audio_pll1_out",
-+						  "video_pll1_out", "audio_pll2_out", };
-+
-+static const char *imx8mp_ahb_sels[] = {"osc_24m", "sys_pll1_133m", "sys_pll1_800m",
-+					       "sys_pll1_400m", "sys_pll2_125m", "sys_pll3_out",
-+					       "audio_pll1_out", "video_pll1_out", };
-+
-+static const char *imx8mp_audio_ahb_sels[] = {"osc_24m", "sys_pll2_500m", "sys_pll1_800m",
-+						     "sys_pll2_1000m", "sys_pll2_166m", "sys_pll3_out",
-+						     "audio_pll1_out", "video_pll1_out", };
-+
-+static const char *imx8mp_mipi_dsi_esc_rx_sels[] = {"osc_24m", "sys_pll2_100m", "sys_pll1_80m",
-+							   "sys_pll1_800m", "sys_pll2_1000m",
-+							   "sys_pll3_out", "clk_ext3", "audio_pll2_out", };
-+
-+static const char *imx8mp_dram_alt_sels[] = {"osc_24m", "sys_pll1_800m", "sys_pll1_100m",
-+						    "sys_pll2_500m", "sys_pll2_1000m", "sys_pll3_out",
-+						    "audio_pll1_out", "sys_pll1_266m", };
-+
-+static const char *imx8mp_dram_apb_sels[] = {"osc_24m", "sys_pll2_200m", "sys_pll1_40m",
-+						    "sys_pll1_160m", "sys_pll1_800m", "sys_pll3_out",
-+						    "sys_pll2_250m", "audio_pll2_out", };
-+
-+static const char *imx8mp_vpu_g1_sels[] = {"osc_24m", "vpu_pll_out", "sys_pll1_800m",
-+						  "sys_pll2_1000m", "sys_pll1_100m", "sys_pll2_125m",
-+						  "sys_pll3_out", "audio_pll1_out", };
-+
-+static const char *imx8mp_vpu_g2_sels[] = {"osc_24m", "vpu_pll_out", "sys_pll1_800m",
-+						  "sys_pll2_1000m", "sys_pll1_100m", "sys_pll2_125m",
-+						  "sys_pll3_out", "audio_pll1_out", };
-+
-+static const char *imx8mp_can1_sels[] = {"osc_24m", "sys_pll2_200m", "sys_pll1_40m",
-+						"sys_pll1_160m", "sys_pll1_800m", "sys_pll3_out",
-+						"sys_pll2_250m", "audio_pll2_out", };
-+
-+static const char *imx8mp_can2_sels[] = {"osc_24m", "sys_pll2_200m", "sys_pll1_40m",
-+						"sys_pll1_160m", "sys_pll1_800m", "sys_pll3_out",
-+						"sys_pll2_250m", "audio_pll2_out", };
-+
-+static const char *imx8mp_memrepair_sels[] = {"osc_24m", "sys_pll1_160m", "sys_pll2_50m",
-+						     "sys_pll3_out", "audio_pll1_out", "video_pll1_out",
-+						     "audio_pll2_out", "sys_pll1_133m", };
-+
-+static const char *imx8mp_pcie_phy_sels[] = {"osc_24m", "sys_pll2_100m", "sys_pll2_500m",
-+						    "clk_ext1", "clk_ext2", "clk_ext3",
-+						    "clk_ext4", "sys_pll1_400m", };
-+
-+static const char *imx8mp_pcie_aux_sels[] = {"osc_24m", "sys_pll2_200m", "sys_pll2_50m",
-+						    "sys_pll3_out", "sys_pll2_100m", "sys_pll1_80m",
-+						    "sys_pll1_160m", "sys_pll1_200m", };
-+
-+static const char *imx8mp_i2c5_sels[] = {"osc_24m", "sys_pll1_160m", "sys_pll2_50m",
-+						"sys_pll3_out", "audio_pll1_out", "video_pll1_out",
-+						"audio_pll2_out", "sys_pll1_133m", };
-+
-+static const char *imx8mp_i2c6_sels[] = {"osc_24m", "sys_pll1_160m", "sys_pll2_50m",
-+						"sys_pll3_out", "audio_pll1_out", "video_pll1_out",
-+						"audio_pll2_out", "sys_pll1_133m", };
-+
-+static const char *imx8mp_sai1_sels[] = {"osc_24m", "audio_pll1_out", "audio_pll2_out",
-+						"video_pll1_out", "sys_pll1_133m", "osc_hdmi",
-+						"clk_ext1", "clk_ext2", };
-+
-+static const char *imx8mp_sai2_sels[] = {"osc_24m", "audio_pll1_out", "audio_pll2_out",
-+						"video_pll1_out", "sys_pll1_133m", "osc_hdmi",
-+						"clk_ext2", "clk_ext3", };
-+
-+static const char *imx8mp_sai3_sels[] = {"osc_24m", "audio_pll1_out", "audio_pll2_out",
-+						"video_pll1_out", "sys_pll1_133m", "osc_hdmi",
-+						"clk_ext3", "clk_ext4", };
-+
-+static const char *imx8mp_sai4_sels[] = {"osc_24m", "audio_pll1_out", "audio_pll2_out",
-+						"video_pll1_out", "sys_pll1_133m", "osc_hdmi",
-+						"clk_ext1", "clk_ext2", };
-+
-+static const char *imx8mp_sai5_sels[] = {"osc_24m", "audio_pll1_out", "audio_pll2_out",
-+						"video_pll1_out", "sys_pll1_133m", "osc_hdmi",
-+						"clk_ext2", "clk_ext3", };
-+
-+static const char *imx8mp_sai6_sels[] = {"osc_24m", "audio_pll1_out", "audio_pll2_out",
-+						"video_pll1_out", "sys_pll1_133m", "osc_hdmi",
-+						"clk_ext3", "clk_ext4", };
-+
-+static const char *imx8mp_enet_qos_sels[] = {"osc_24m", "sys_pll2_125m", "sys_pll2_50m",
-+						    "sys_pll2_100m", "sys_pll1_160m", "audio_pll1_out",
-+						    "video_pll1_out", "clk_ext4", };
-+
-+static const char *imx8mp_enet_qos_timer_sels[] = {"osc_24m", "sys_pll2_100m", "audio_pll1_out",
-+							  "clk_ext1", "clk_ext2", "clk_ext3",
-+							  "clk_ext4", "video_pll1_out", };
-+
-+static const char *imx8mp_enet_ref_sels[] = {"osc_24m", "sys_pll2_125m", "sys_pll2_50m",
-+						    "sys_pll2_100m", "sys_pll1_160m", "audio_pll1_out",
-+						    "video_pll1_out", "clk_ext4", };
-+
-+static const char *imx8mp_enet_timer_sels[] = {"osc_24m", "sys_pll2_100m", "audio_pll1_out",
-+						      "clk_ext1", "clk_ext2", "clk_ext3",
-+						      "clk_ext4", "video_pll1_out", };
-+
-+static const char *imx8mp_enet_phy_ref_sels[] = {"osc_24m", "sys_pll2_50m", "sys_pll2_125m",
-+							"sys_pll2_200m", "sys_pll2_500m", "audio_pll1_out",
-+							"video_pll1_out", "audio_pll2_out", };
-+
-+static const char *imx8mp_nand_sels[] = {"osc_24m", "sys_pll2_500m", "audio_pll1_out",
-+						"sys_pll1_400m", "audio_pll2_out", "sys_pll3_out",
-+						"sys_pll2_250m", "video_pll1_out", };
-+
-+static const char *imx8mp_qspi_sels[] = {"osc_24m", "sys_pll1_400m", "sys_pll2_333m",
-+						"sys_pll2_500m", "audio_pll2_out", "sys_pll1_266m",
-+						"sys_pll3_out", "sys_pll1_100m", };
-+
-+static const char *imx8mp_usdhc1_sels[] = {"osc_24m", "sys_pll1_400m", "sys_pll1_800m",
-+						  "sys_pll2_500m", "sys_pll3_out", "sys_pll1_266m",
-+						  "audio_pll2_out", "sys_pll1_100m", };
-+
-+static const char *imx8mp_usdhc2_sels[] = {"osc_24m", "sys_pll1_400m", "sys_pll1_800m",
-+						  "sys_pll2_500m", "sys_pll3_out", "sys_pll1_266m",
-+						  "audio_pll2_out", "sys_pll1_100m", };
-+
-+static const char *imx8mp_i2c1_sels[] = {"osc_24m", "sys_pll1_160m", "sys_pll2_50m",
-+						"sys_pll3_out", "audio_pll1_out", "video_pll1_out",
-+						"audio_pll2_out", "sys_pll1_133m", };
-+
-+static const char *imx8mp_i2c2_sels[] = {"osc_24m", "sys_pll1_160m", "sys_pll2_50m",
-+						"sys_pll3_out", "audio_pll1_out", "video_pll1_out",
-+						"audio_pll2_out", "sys_pll1_133m", };
-+
-+static const char *imx8mp_i2c3_sels[] = {"osc_24m", "sys_pll1_160m", "sys_pll2_50m",
-+						"sys_pll3_out", "audio_pll1_out", "video_pll1_out",
-+						"audio_pll2_out", "sys_pll1_133m", };
-+
-+static const char *imx8mp_i2c4_sels[] = {"osc_24m", "sys_pll1_160m", "sys_pll2_50m",
-+						"sys_pll3_out", "audio_pll1_out", "video_pll1_out",
-+						"audio_pll2_out", "sys_pll1_133m", };
-+
-+static const char *imx8mp_uart1_sels[] = {"osc_24m", "sys_pll1_80m", "sys_pll2_200m",
-+						 "sys_pll2_100m", "sys_pll3_out", "clk_ext2",
-+						 "clk_ext4", "audio_pll2_out", };
-+
-+static const char *imx8mp_uart2_sels[] = {"osc_24m", "sys_pll1_80m", "sys_pll2_200m",
-+						 "sys_pll2_100m", "sys_pll3_out", "clk_ext2",
-+						 "clk_ext3", "audio_pll2_out", };
-+
-+static const char *imx8mp_uart3_sels[] = {"osc_24m", "sys_pll1_80m", "sys_pll2_200m",
-+						 "sys_pll2_100m", "sys_pll3_out", "clk_ext2",
-+						 "clk_ext4", "audio_pll2_out", };
-+
-+static const char *imx8mp_uart4_sels[] = {"osc_24m", "sys_pll1_80m", "sys_pll2_200m",
-+						 "sys_pll2_100m", "sys_pll3_out", "clk_ext2",
-+						 "clk_ext3", "audio_pll2_out", };
-+
-+static const char *imx8mp_usb_core_ref_sels[] = {"osc_24m", "sys_pll1_100m", "sys_pll1_40m",
-+							"sys_pll2_100m", "sys_pll2_200m", "clk_ext2",
-+							"clk_ext3", "audio_pll2_out", };
-+
-+static const char *imx8mp_usb_phy_ref_sels[] = {"osc_24m", "sys_pll1_100m", "sys_pll1_40m",
-+						       "sys_pll2_100m", "sys_pll2_200m", "clk_ext2",
-+						       "clk_ext3", "audio_pll2_out", };
-+
-+static const char *imx8mp_gic_sels[] = {"osc_24m", "sys_pll2_200m", "sys_pll1_40m",
-+					       "sys_pll2_100m", "sys_pll1_800m",
-+					       "sys_pll2_500m", "clk_ext4", "audio_pll2_out" };
-+
-+static const char *imx8mp_ecspi1_sels[] = {"osc_24m", "sys_pll2_200m", "sys_pll1_40m",
-+						  "sys_pll1_160m", "sys_pll1_800m", "sys_pll3_out",
-+						  "sys_pll2_250m", "audio_pll2_out", };
-+
-+static const char *imx8mp_ecspi2_sels[] = {"osc_24m", "sys_pll2_200m", "sys_pll1_40m",
-+						  "sys_pll1_160m", "sys_pll1_800m", "sys_pll3_out",
-+						  "sys_pll2_250m", "audio_pll2_out", };
-+
-+static const char *imx8mp_pwm1_sels[] = {"osc_24m", "sys_pll2_100m", "sys_pll1_160m",
-+						"sys_pll1_40m", "sys_pll3_out", "clk_ext1",
-+						"sys_pll1_80m", "video_pll1_out", };
-+
-+static const char *imx8mp_pwm2_sels[] = {"osc_24m", "sys_pll2_100m", "sys_pll1_160m",
-+						"sys_pll1_40m", "sys_pll3_out", "clk_ext1",
-+						"sys_pll1_80m", "video_pll1_out", };
-+
-+static const char *imx8mp_pwm3_sels[] = {"osc_24m", "sys_pll2_100m", "sys_pll1_160m",
-+						"sys_pll1_40m", "sys_pll3_out", "clk_ext2",
-+						"sys_pll1_80m", "video_pll1_out", };
-+
-+static const char *imx8mp_pwm4_sels[] = {"osc_24m", "sys_pll2_100m", "sys_pll1_160m",
-+						"sys_pll1_40m", "sys_pll3_out", "clk_ext2",
-+						"sys_pll1_80m", "video_pll1_out", };
-+
-+static const char *imx8mp_gpt1_sels[] = {"osc_24m", "sys_pll2_100m", "sys_pll1_400m",
-+						"sys_pll1_40m", "video_pll1_out", "sys_pll1_80m",
-+						"audio_pll1_out", "clk_ext1" };
-+
-+static const char *imx8mp_gpt2_sels[] = {"osc_24m", "sys_pll2_100m", "sys_pll1_400m",
-+						"sys_pll1_40m", "video_pll1_out", "sys_pll1_80m",
-+						"audio_pll1_out", "clk_ext2" };
-+
-+static const char *imx8mp_gpt3_sels[] = {"osc_24m", "sys_pll2_100m", "sys_pll1_400m",
-+						"sys_pll1_40m", "video_pll1_out", "sys_pll1_80m",
-+						"audio_pll1_out", "clk_ext3" };
-+
-+static const char *imx8mp_gpt4_sels[] = {"osc_24m", "sys_pll2_100m", "sys_pll1_400m",
-+						"sys_pll1_40m", "video_pll1_out", "sys_pll1_80m",
-+						"audio_pll1_out", "clk_ext1" };
-+
-+static const char *imx8mp_gpt5_sels[] = {"osc_24m", "sys_pll2_100m", "sys_pll1_400m",
-+						"sys_pll1_40m", "video_pll1_out", "sys_pll1_80m",
-+						"audio_pll1_out", "clk_ext2" };
-+
-+static const char *imx8mp_gpt6_sels[] = {"osc_24m", "sys_pll2_100m", "sys_pll1_400m",
-+						"sys_pll1_40m", "video_pll1_out", "sys_pll1_80m",
-+						"audio_pll1_out", "clk_ext3" };
-+
-+static const char *imx8mp_wdog_sels[] = {"osc_24m", "sys_pll1_133m", "sys_pll1_160m",
-+						"vpu_pll_out", "sys_pll2_125m", "sys_pll3_out",
-+						"sys_pll1_80m", "sys_pll2_166m" };
-+
-+static const char *imx8mp_wrclk_sels[] = {"osc_24m", "sys_pll1_40m", "vpu_pll_out",
-+						 "sys_pll3_out", "sys_pll2_200m", "sys_pll1_266m",
-+						 "sys_pll2_500m", "sys_pll1_100m" };
-+
-+static const char *imx8mp_ipp_do_clko1_sels[] = {"osc_24m", "sys_pll1_800m", "sys_pll1_133m",
-+							"sys_pll1_200m", "audio_pll2_out", "sys_pll2_500m",
-+							"vpu_pll_out", "sys_pll1_80m" };
-+
-+static const char *imx8mp_ipp_do_clko2_sels[] = {"osc_24m", "sys_pll2_200m", "sys_pll1_400m",
-+							"sys_pll1_166m", "sys_pll3_out", "audio_pll1_out",
-+							"video_pll1_out", "osc_32k" };
-+
-+static const char *imx8mp_hdmi_fdcc_tst_sels[] = {"osc_24m", "sys_pll1_266m", "sys_pll2_250m",
-+							 "sys_pll1_800m", "sys_pll2_1000m", "sys_pll3_out",
-+							 "audio_pll2_out", "video_pll1_out", };
-+
-+static const char *imx8mp_hdmi_24m_sels[] = {"osc_24m", "sys_pll1_160m", "sys_pll2_50m",
-+						    "sys_pll3_out", "audio_pll1_out", "video_pll1_out",
-+						    "audio_pll2_out", "sys_pll1_133m", };
-+
-+static const char *imx8mp_hdmi_ref_266m_sels[] = {"osc_24m", "sys_pll1_400m", "sys_pll3_out",
-+							 "sys_pll2_333m", "sys_pll1_266m", "sys_pll2_200m",
-+							 "audio_pll1_out", "video_pll1_out", };
-+
-+static const char *imx8mp_usdhc3_sels[] = {"osc_24m", "sys_pll1_400m", "sys_pll1_800m",
-+						  "sys_pll2_500m", "sys_pll3_out", "sys_pll1_266m",
-+						  "audio_pll2_out", "sys_pll1_100m", };
-+
-+static const char *imx8mp_media_cam1_pix_sels[] = {"osc_24m", "sys_pll1_266m", "sys_pll2_250m",
-+							  "sys_pll1_800m", "sys_pll2_1000m",
-+							  "sys_pll3_out", "audio_pll2_out",
-+							  "video_pll1_out", };
-+
-+static const char *imx8mp_media_mipi_phy1_ref_sels[] = {"osc_24m", "sys_pll2_333m", "sys_pll2_100m",
-+							       "sys_pll1_800m", "sys_pll2_1000m",
-+							       "clk_ext2", "audio_pll2_out",
-+							       "video_pll1_out", };
-+
-+static const char *imx8mp_media_disp1_pix_sels[] = {"osc_24m", "video_pll1_out", "audio_pll2_out",
-+							   "audio_pll1_out", "sys_pll1_800m",
-+							   "sys_pll2_1000m", "sys_pll3_out", "clk_ext4", };
-+
-+static const char *imx8mp_media_cam2_pix_sels[] = {"osc_24m", "sys_pll1_266m", "sys_pll2_250m",
-+							  "sys_pll1_800m", "sys_pll2_1000m",
-+							  "sys_pll3_out", "audio_pll2_out",
-+							  "video_pll1_out", };
-+
-+static const char *imx8mp_media_mipi_phy2_ref_sels[] = {"osc_24m", "sys_pll2_333m", "sys_pll2_100m",
-+							       "sys_pll1_800m", "sys_pll2_1000m",
-+							       "clk_ext2", "audio_pll2_out",
-+							       "video_pll1_out", };
-+
-+static const char *imx8mp_media_mipi_csi2_esc_sels[] = {"osc_24m", "sys_pll2_100m", "sys_pll1_80m",
-+							       "sys_pll1_800m", "sys_pll2_1000m",
-+							       "sys_pll3_out", "clk_ext3",
-+							       "audio_pll2_out", };
-+
-+static const char *imx8mp_pcie2_ctrl_sels[] = {"osc_24m", "sys_pll2_250m", "sys_pll2_200m",
-+						      "sys_pll1_266m", "sys_pll1_800m", "sys_pll2_500m",
-+						      "sys_pll2_333m", "sys_pll3_out", };
-+
-+static const char *imx8mp_pcie2_phy_sels[] = {"osc_24m", "sys_pll2_100m", "sys_pll2_500m",
-+						     "clk_ext1", "clk_ext2", "clk_ext3",
-+						     "clk_ext4", "sys_pll1_400m", };
-+
-+static const char *imx8mp_media_mipi_test_byte_sels[] = {"osc_24m", "sys_pll2_200m", "sys_pll2_50m",
-+								"sys_pll3_out", "sys_pll2_100m",
-+								"sys_pll1_80m", "sys_pll1_160m",
-+								"sys_pll1_200m", };
-+
-+static const char *imx8mp_ecspi3_sels[] = {"osc_24m", "sys_pll2_200m", "sys_pll1_40m",
-+						  "sys_pll1_160m", "sys_pll1_800m", "sys_pll3_out",
-+						  "sys_pll2_250m", "audio_pll2_out", };
-+
-+static const char *imx8mp_pdm_sels[] = {"osc_24m", "sys_pll2_100m", "audio_pll1_out",
-+					       "sys_pll1_800m", "sys_pll2_1000m", "sys_pll3_out",
-+					       "clk_ext3", "audio_pll2_out", };
-+
-+static const char *imx8mp_vpu_vc8000e_sels[] = {"osc_24m", "vpu_pll_out", "sys_pll1_800m",
-+						       "sys_pll2_1000m", "audio_pll2_out", "sys_pll2_125m",
-+						       "sys_pll3_out", "audio_pll1_out", };
-+
-+static const char *imx8mp_sai7_sels[] = {"osc_24m", "audio_pll1_out", "audio_pll2_out",
-+						"video_pll1_out", "sys_pll1_133m", "osc_hdmi",
-+						"clk_ext3", "clk_ext4", };
-+
-+static const char *imx8mp_dram_core_sels[] = {"dram_pll_out", "dram_alt_root", };
-+
-+static struct clk_onecell_data clk_data;
-+static struct clk *clks[IMX8MP_CLK_END];
-+
-+static int imx8mp_clocks_init(struct device_node *ccm_np)
++#ifndef __ASM_ARCH_IMX8MP_PINS_H__
++#define __ASM_ARCH_IMX8MP_PINS_H__
++
++#include <mach/iomux-v3.h>
++#include <mach/imx8mp-regs.h>
++#include <mach/iomux-mx8m.h>
++
++enum {
++	MX8MP_PAD_GPIO1_IO00__GPIO1_IO00                         = IOMUX_PAD(0x0274, 0x0014, 0, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO00__CCMSRCGPCMIX_ENET_PHY_REF_CLK_ROOT = IOMUX_PAD(0x0274, 0x0014, 1, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO00__MEDIAMIX_ISP_FL_TRIG_0             = IOMUX_PAD(0x0274, 0x0014, 3, 0x05D4, 0, 0),
++	MX8MP_PAD_GPIO1_IO00__ANAMIX_REF_CLK_32K                 = IOMUX_PAD(0x0274, 0x0014, 5, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO00__CCMSRCGPCMIX_EXT_CLK1              = IOMUX_PAD(0x0274, 0x0014, 6, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO00__SJC_FAIL                           = IOMUX_PAD(0x0274, 0x0014, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_GPIO1_IO01__GPIO1_IO01                         = IOMUX_PAD(0x0278, 0x0018, 0, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO01__PWM1_OUT                           = IOMUX_PAD(0x0278, 0x0018, 1, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO01__MEDIAMIX_ISP_SHUTTER_TRIG_0        = IOMUX_PAD(0x0278, 0x0018, 3, 0x05DC, 0, 0),
++	MX8MP_PAD_GPIO1_IO01__ANAMIX_REF_CLK_24M                 = IOMUX_PAD(0x0278, 0x0018, 5, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO01__CCMSRCGPCMIX_EXT_CLK2              = IOMUX_PAD(0x0278, 0x0018, 6, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO01__SJC_ACTIVE                         = IOMUX_PAD(0x0278, 0x0018, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_GPIO1_IO02__GPIO1_IO02                         = IOMUX_PAD(0x027C, 0x001C, 0, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO02__WDOG1_WDOG_B                       = IOMUX_PAD(0x027C, 0x001C, 1, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO02__MEDIAMIX_ISP_FLASH_TRIG_0          = IOMUX_PAD(0x027C, 0x001C, 3, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO02__WDOG1_WDOG_ANY                     = IOMUX_PAD(0x027C, 0x001C, 5, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO02__SJC_DE_B                           = IOMUX_PAD(0x027C, 0x001C, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_GPIO1_IO03__GPIO1_IO03                         = IOMUX_PAD(0x0280, 0x0020, 0, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO03__USDHC1_VSELECT                     = IOMUX_PAD(0x0280, 0x0020, 1, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO03__MEDIAMIX_ISP_PRELIGHT_TRIG_0       = IOMUX_PAD(0x0280, 0x0020, 3, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO03__SDMA1_EXT_EVENT00                  = IOMUX_PAD(0x0280, 0x0020, 5, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO03__ANAMIX_XTAL_OK                     = IOMUX_PAD(0x0280, 0x0020, 6, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO03__SJC_DONE                           = IOMUX_PAD(0x0280, 0x0020, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_GPIO1_IO04__GPIO1_IO04                         = IOMUX_PAD(0x0284, 0x0024, 0, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO04__USDHC2_VSELECT                     = IOMUX_PAD(0x0284, 0x0024, 1, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO04__MEDIAMIX_ISP_SHUTTER_OPEN_0        = IOMUX_PAD(0x0284, 0x0024, 3, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO04__SDMA1_EXT_EVENT01                  = IOMUX_PAD(0x0284, 0x0024, 5, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO04__ANAMIX_XTAL_OK_LV                  = IOMUX_PAD(0x0284, 0x0024, 6, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO04__USDHC1_TEST_TRIG                   = IOMUX_PAD(0x0284, 0x0024, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_GPIO1_IO05__GPIO1_IO05                         = IOMUX_PAD(0x0288, 0x0028, 0, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO05__M7_NMI                             = IOMUX_PAD(0x0288, 0x0028, 1, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO05__MEDIAMIX_ISP_FL_TRIG_1             = IOMUX_PAD(0x0288, 0x0028, 3, 0x05D8, 0, 0),
++	MX8MP_PAD_GPIO1_IO05__CCMSRCGPCMIX_PMIC_READY            = IOMUX_PAD(0x0288, 0x0028, 5, 0x0554, 0, 0),
++	MX8MP_PAD_GPIO1_IO05__CCMSRCGPCMIX_INT_BOOT              = IOMUX_PAD(0x0288, 0x0028, 6, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO05__USDHC2_TEST_TRIG                   = IOMUX_PAD(0x0288, 0x0028, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_GPIO1_IO06__GPIO1_IO06                         = IOMUX_PAD(0x028C, 0x002C, 0, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO06__ENET_QOS_MDC                       = IOMUX_PAD(0x028C, 0x002C, 1, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO06__MEDIAMIX_ISP_SHUTTER_TRIG_1        = IOMUX_PAD(0x028C, 0x002C, 3, 0x05E0, 0, 0),
++	MX8MP_PAD_GPIO1_IO06__USDHC1_CD_B                        = IOMUX_PAD(0x028C, 0x002C, 5, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO06__CCMSRCGPCMIX_EXT_CLK3              = IOMUX_PAD(0x028C, 0x002C, 6, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO06__ECSPI1_TEST_TRIG                   = IOMUX_PAD(0x028C, 0x002C, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_GPIO1_IO07__GPIO1_IO07                         = IOMUX_PAD(0x0290, 0x0030, 0, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO07__ENET_QOS_MDIO                      = IOMUX_PAD(0x0290, 0x0030, 1, 0x0590, 0, 0),
++	MX8MP_PAD_GPIO1_IO07__MEDIAMIX_ISP_FLASH_TRIG_1          = IOMUX_PAD(0x0290, 0x0030, 3, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO07__USDHC1_WP                          = IOMUX_PAD(0x0290, 0x0030, 5, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO07__CCMSRCGPCMIX_EXT_CLK4              = IOMUX_PAD(0x0290, 0x0030, 6, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO07__ECSPI2_TEST_TRIG                   = IOMUX_PAD(0x0290, 0x0030, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_GPIO1_IO08__GPIO1_IO08                         = IOMUX_PAD(0x0294, 0x0034, 0, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO08__ENET_QOS_1588_EVENT0_IN            = IOMUX_PAD(0x0294, 0x0034, 1, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO08__PWM1_OUT                           = IOMUX_PAD(0x0294, 0x0034, 2, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO08__MEDIAMIX_ISP_PRELIGHT_TRIG_1       = IOMUX_PAD(0x0294, 0x0034, 3, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO08__ENET_QOS_1588_EVENT0_AUX_IN        = IOMUX_PAD(0x0294, 0x0034, 4, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO08__USDHC2_RESET_B                     = IOMUX_PAD(0x0294, 0x0034, 5, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO08__CCMSRCGPCMIX_WAIT                  = IOMUX_PAD(0x0294, 0x0034, 6, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO08__FLEXSPI_TEST_TRIG                  = IOMUX_PAD(0x0294, 0x0034, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_GPIO1_IO09__GPIO1_IO09                         = IOMUX_PAD(0x0298, 0x0038, 0, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO09__ENET_QOS_1588_EVENT0_OUT           = IOMUX_PAD(0x0298, 0x0038, 1, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO09__PWM2_OUT                           = IOMUX_PAD(0x0298, 0x0038, 2, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO09__MEDIAMIX_ISP_SHUTTER_OPEN_1        = IOMUX_PAD(0x0298, 0x0038, 3, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO09__USDHC3_RESET_B                     = IOMUX_PAD(0x0298, 0x0038, 4, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO09__AUDIOMIX_EXT_EVENT00               = IOMUX_PAD(0x0298, 0x0038, 5, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO09__CCMSRCGPCMIX_STOP                  = IOMUX_PAD(0x0298, 0x0038, 6, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO09__RAWNAND_TEST_TRIG                  = IOMUX_PAD(0x0298, 0x0038, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_GPIO1_IO10__GPIO1_IO10                         = IOMUX_PAD(0x029C, 0x003C, 0, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO10__HSIOMIX_usb1_OTG_ID                = IOMUX_PAD(0x029C, 0x003C, 1, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO10__PWM3_OUT                           = IOMUX_PAD(0x029C, 0x003C, 2, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO10__OCOTP_FUSE_LATCHED                 = IOMUX_PAD(0x029C, 0x003C, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_GPIO1_IO11__GPIO1_IO11                         = IOMUX_PAD(0x02A0, 0x0040, 0, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO11__HSIOMIX_usb2_OTG_ID                = IOMUX_PAD(0x02A0, 0x0040, 1, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO11__PWM2_OUT                           = IOMUX_PAD(0x02A0, 0x0040, 2, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO11__USDHC3_VSELECT                     = IOMUX_PAD(0x02A0, 0x0040, 4, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO11__CCMSRCGPCMIX_PMIC_READY            = IOMUX_PAD(0x02A0, 0x0040, 5, 0x0554, 1, 0),
++	MX8MP_PAD_GPIO1_IO11__CCMSRCGPCMIX_OUT0                  = IOMUX_PAD(0x02A0, 0x0040, 6, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO11__CAAM_RNG_OSC_OBS                   = IOMUX_PAD(0x02A0, 0x0040, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_GPIO1_IO12__GPIO1_IO12                         = IOMUX_PAD(0x02A4, 0x0044, 0, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO12__HSIOMIX_usb1_OTG_PWR               = IOMUX_PAD(0x02A4, 0x0044, 1, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO12__AUDIOMIX_EXT_EVENT01               = IOMUX_PAD(0x02A4, 0x0044, 5, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO12__CCMSRCGPCMIX_OUT1                  = IOMUX_PAD(0x02A4, 0x0044, 6, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO12__CSU_CSU_ALARM_AUT00                = IOMUX_PAD(0x02A4, 0x0044, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_GPIO1_IO13__GPIO1_IO13                         = IOMUX_PAD(0x02A8, 0x0048, 0, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO13__HSIOMIX_usb1_OTG_OC                = IOMUX_PAD(0x02A8, 0x0048, 1, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO13__PWM2_OUT                           = IOMUX_PAD(0x02A8, 0x0048, 5, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO13__CCMSRCGPCMIX_OUT2                  = IOMUX_PAD(0x02A8, 0x0048, 6, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO13__CSU_CSU_ALARM_AUT01                = IOMUX_PAD(0x02A8, 0x0048, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_GPIO1_IO14__GPIO1_IO14                         = IOMUX_PAD(0x02AC, 0x004C, 0, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO14__HSIOMIX_usb2_OTG_PWR               = IOMUX_PAD(0x02AC, 0x004C, 1, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO14__USDHC3_CD_B                        = IOMUX_PAD(0x02AC, 0x004C, 4, 0x0608, 0, 0),
++	MX8MP_PAD_GPIO1_IO14__PWM3_OUT                           = IOMUX_PAD(0x02AC, 0x004C, 5, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO14__CCMSRCGPCMIX_CLKO1                 = IOMUX_PAD(0x02AC, 0x004C, 6, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO14__CSU_CSU_ALARM_AUT02                = IOMUX_PAD(0x02AC, 0x004C, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_GPIO1_IO15__GPIO1_IO15                         = IOMUX_PAD(0x02B0, 0x0050, 0, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO15__HSIOMIX_usb2_OTG_OC                = IOMUX_PAD(0x02B0, 0x0050, 1, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO15__USDHC3_WP                          = IOMUX_PAD(0x02B0, 0x0050, 4, 0x0634, 0, 0),
++	MX8MP_PAD_GPIO1_IO15__PWM4_OUT                           = IOMUX_PAD(0x02B0, 0x0050, 5, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO15__CCMSRCGPCMIX_CLKO2                 = IOMUX_PAD(0x02B0, 0x0050, 6, 0x0000, 0, 0),
++	MX8MP_PAD_GPIO1_IO15__CSU_CSU_INT_DEB                    = IOMUX_PAD(0x02B0, 0x0050, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_ENET_MDC__ENET_QOS_MDC                         = IOMUX_PAD(0x02B4, 0x0054, 0, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_MDC__AUDIOMIX_SAI6_TX_DATA00              = IOMUX_PAD(0x02B4, 0x0054, 2, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_MDC__GPIO1_IO16                           = IOMUX_PAD(0x02B4, 0x0054, 5, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_MDC__USDHC3_STROBE                        = IOMUX_PAD(0x02B4, 0x0054, 6, 0x0630, 0, 0),
++	MX8MP_PAD_ENET_MDC__SIM_M_HADDR15                        = IOMUX_PAD(0x02B4, 0x0054, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_ENET_MDIO__ENET_QOS_MDIO                       = IOMUX_PAD(0x02B8, 0x0058, 0, 0x0590, 1, 0),
++	MX8MP_PAD_ENET_MDIO__AUDIOMIX_SAI6_TX_SYNC               = IOMUX_PAD(0x02B8, 0x0058, 2, 0x0528, 0, 0),
++	MX8MP_PAD_ENET_MDIO__GPIO1_IO17                          = IOMUX_PAD(0x02B8, 0x0058, 5, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_MDIO__USDHC3_DATA5                        = IOMUX_PAD(0x02B8, 0x0058, 6, 0x0624, 0, 0),
++	MX8MP_PAD_ENET_MDIO__SIM_M_HADDR16                       = IOMUX_PAD(0x02B8, 0x0058, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_ENET_TD3__ENET_QOS_RGMII_TD3                   = IOMUX_PAD(0x02BC, 0x005C, 0, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_TD3__AUDIOMIX_SAI6_TX_BCLK                = IOMUX_PAD(0x02BC, 0x005C, 2, 0x0524, 0, 0),
++	MX8MP_PAD_ENET_TD3__GPIO1_IO18                           = IOMUX_PAD(0x02BC, 0x005C, 5, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_TD3__USDHC3_DATA6                         = IOMUX_PAD(0x02BC, 0x005C, 6, 0x0628, 0, 0),
++	MX8MP_PAD_ENET_TD3__SIM_M_HADDR17                        = IOMUX_PAD(0x02BC, 0x005C, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_ENET_TD2__ENET_QOS_RGMII_TD2                   = IOMUX_PAD(0x02C0, 0x0060, 0, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_TD2__CCM_ENET_QOS_CLOCK_GENERATE_REF_CLK  = IOMUX_PAD(0x02C0, 0x0060, 1, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_TD2__AUDIOMIX_SAI6_RX_DATA00              = IOMUX_PAD(0x02C0, 0x0060, 2, 0x051C, 0, 0),
++	MX8MP_PAD_ENET_TD2__GPIO1_IO19                           = IOMUX_PAD(0x02C0, 0x0060, 5, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_TD2__USDHC3_DATA7                         = IOMUX_PAD(0x02C0, 0x0060, 6, 0x062C, 0, 0),
++	MX8MP_PAD_ENET_TD2__SIM_M_HADDR18                        = IOMUX_PAD(0x02C0, 0x0060, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_ENET_TD1__ENET_QOS_RGMII_TD1                   = IOMUX_PAD(0x02C4, 0x0064, 0, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_TD1__AUDIOMIX_SAI6_RX_SYNC                = IOMUX_PAD(0x02C4, 0x0064, 2, 0x0520, 0, 0),
++	MX8MP_PAD_ENET_TD1__GPIO1_IO20                           = IOMUX_PAD(0x02C4, 0x0064, 5, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_TD1__USDHC3_CD_B                          = IOMUX_PAD(0x02C4, 0x0064, 6, 0x0608, 1, 0),
++	MX8MP_PAD_ENET_TD1__SIM_M_HADDR19                        = IOMUX_PAD(0x02C4, 0x0064, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_ENET_TD0__ENET_QOS_RGMII_TD0                   = IOMUX_PAD(0x02C8, 0x0068, 0, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_TD0__AUDIOMIX_SAI6_RX_BCLK                = IOMUX_PAD(0x02C8, 0x0068, 2, 0x0518, 0, 0),
++	MX8MP_PAD_ENET_TD0__GPIO1_IO21                           = IOMUX_PAD(0x02C8, 0x0068, 5, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_TD0__USDHC3_WP                            = IOMUX_PAD(0x02C8, 0x0068, 6, 0x0634, 1, 0),
++	MX8MP_PAD_ENET_TD0__SIM_M_HADDR20                        = IOMUX_PAD(0x02C8, 0x0068, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_ENET_TX_CTL__ENET_QOS_RGMII_TX_CTL             = IOMUX_PAD(0x02CC, 0x006C, 0, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_TX_CTL__AUDIOMIX_SAI6_MCLK                = IOMUX_PAD(0x02CC, 0x006C, 2, 0x0514, 0, 0),
++	MX8MP_PAD_ENET_TX_CTL__AUDIOMIX_SPDIF_OUT                = IOMUX_PAD(0x02CC, 0x006C, 3, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_TX_CTL__GPIO1_IO22                        = IOMUX_PAD(0x02CC, 0x006C, 5, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_TX_CTL__USDHC3_DATA0                      = IOMUX_PAD(0x02CC, 0x006C, 6, 0x0610, 0, 0),
++	MX8MP_PAD_ENET_TX_CTL__SIM_M_HADDR21                     = IOMUX_PAD(0x02CC, 0x006C, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_ENET_TXC__CCM_ENET_QOS_CLOCK_GENERATE_TX_CLK   = IOMUX_PAD(0x02D0, 0x0070, 0, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_TXC__ENET_QOS_TX_ER                       = IOMUX_PAD(0x02D0, 0x0070, 1, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_TXC__AUDIOMIX_SAI7_TX_DATA00              = IOMUX_PAD(0x02D0, 0x0070, 2, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_TXC__GPIO1_IO23                           = IOMUX_PAD(0x02D0, 0x0070, 5, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_TXC__USDHC3_DATA1                         = IOMUX_PAD(0x02D0, 0x0070, 6, 0x0614, 0, 0),
++	MX8MP_PAD_ENET_TXC__SIM_M_HADDR22                        = IOMUX_PAD(0x02D0, 0x0070, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_ENET_RX_CTL__ENET_QOS_RGMII_RX_CTL             = IOMUX_PAD(0x02D4, 0x0074, 0, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_RX_CTL__AUDIOMIX_SAI7_TX_SYNC             = IOMUX_PAD(0x02D4, 0x0074, 2, 0x0540, 0, 0),
++	MX8MP_PAD_ENET_RX_CTL__AUDIOMIX_BIT_STREAM03             = IOMUX_PAD(0x02D4, 0x0074, 3, 0x04CC, 0, 0),
++	MX8MP_PAD_ENET_RX_CTL__GPIO1_IO24                        = IOMUX_PAD(0x02D4, 0x0074, 5, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_RX_CTL__USDHC3_DATA2                      = IOMUX_PAD(0x02D4, 0x0074, 6, 0x0618, 0, 0),
++	MX8MP_PAD_ENET_RX_CTL__SIM_M_HADDR23                     = IOMUX_PAD(0x02D4, 0x0074, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_ENET_RXC__CCM_ENET_QOS_CLOCK_GENERATE_RX_CLK   = IOMUX_PAD(0x02D8, 0x0078, 0, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_RXC__ENET_QOS_RX_ER                       = IOMUX_PAD(0x02D8, 0x0078, 1, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_RXC__AUDIOMIX_SAI7_TX_BCLK                = IOMUX_PAD(0x02D8, 0x0078, 2, 0x053C, 0, 0),
++	MX8MP_PAD_ENET_RXC__AUDIOMIX_BIT_STREAM02                = IOMUX_PAD(0x02D8, 0x0078, 3, 0x04C8, 0, 0),
++	MX8MP_PAD_ENET_RXC__GPIO1_IO25                           = IOMUX_PAD(0x02D8, 0x0078, 5, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_RXC__USDHC3_DATA3                         = IOMUX_PAD(0x02D8, 0x0078, 6, 0x061C, 0, 0),
++	MX8MP_PAD_ENET_RXC__SIM_M_HADDR24                        = IOMUX_PAD(0x02D8, 0x0078, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_ENET_RD0__ENET_QOS_RGMII_RD0                   = IOMUX_PAD(0x02DC, 0x007C, 0, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_RD0__AUDIOMIX_SAI7_RX_DATA00              = IOMUX_PAD(0x02DC, 0x007C, 2, 0x0534, 0, 0),
++	MX8MP_PAD_ENET_RD0__AUDIOMIX_BIT_STREAM01                = IOMUX_PAD(0x02DC, 0x007C, 3, 0x04C4, 0, 0),
++	MX8MP_PAD_ENET_RD0__GPIO1_IO26                           = IOMUX_PAD(0x02DC, 0x007C, 5, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_RD0__USDHC3_DATA4                         = IOMUX_PAD(0x02DC, 0x007C, 6, 0x0620, 0, 0),
++	MX8MP_PAD_ENET_RD0__SIM_M_HADDR25                        = IOMUX_PAD(0x02DC, 0x007C, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_ENET_RD1__ENET_QOS_RGMII_RD1                   = IOMUX_PAD(0x02E0, 0x0080, 0, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_RD1__AUDIOMIX_SAI7_RX_SYNC                = IOMUX_PAD(0x02E0, 0x0080, 2, 0x0538, 0, 0),
++	MX8MP_PAD_ENET_RD1__AUDIOMIX_BIT_STREAM00                = IOMUX_PAD(0x02E0, 0x0080, 3, 0x04C0, 0, 0),
++	MX8MP_PAD_ENET_RD1__GPIO1_IO27                           = IOMUX_PAD(0x02E0, 0x0080, 5, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_RD1__USDHC3_RESET_B                       = IOMUX_PAD(0x02E0, 0x0080, 6, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_RD1__SIM_M_HADDR26                        = IOMUX_PAD(0x02E0, 0x0080, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_ENET_RD2__ENET_QOS_RGMII_RD2                   = IOMUX_PAD(0x02E4, 0x0084, 0, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_RD2__AUDIOMIX_SAI7_RX_BCLK                = IOMUX_PAD(0x02E4, 0x0084, 2, 0x0530, 0, 0),
++	MX8MP_PAD_ENET_RD2__AUDIOMIX_CLK                         = IOMUX_PAD(0x02E4, 0x0084, 3, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_RD2__GPIO1_IO28                           = IOMUX_PAD(0x02E4, 0x0084, 5, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_RD2__USDHC3_CLK                           = IOMUX_PAD(0x02E4, 0x0084, 6, 0x0604, 0, 0),
++	MX8MP_PAD_ENET_RD2__SIM_M_HADDR27                        = IOMUX_PAD(0x02E4, 0x0084, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_ENET_RD3__ENET_QOS_RGMII_RD3                   = IOMUX_PAD(0x02E8, 0x0088, 0, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_RD3__AUDIOMIX_SAI7_MCLK                   = IOMUX_PAD(0x02E8, 0x0088, 2, 0x052C, 0, 0),
++	MX8MP_PAD_ENET_RD3__AUDIOMIX_SPDIF_IN                    = IOMUX_PAD(0x02E8, 0x0088, 3, 0x0544, 0, 0),
++	MX8MP_PAD_ENET_RD3__GPIO1_IO29                           = IOMUX_PAD(0x02E8, 0x0088, 5, 0x0000, 0, 0),
++	MX8MP_PAD_ENET_RD3__USDHC3_CMD                           = IOMUX_PAD(0x02E8, 0x0088, 6, 0x060C, 0, 0),
++	MX8MP_PAD_ENET_RD3__SIM_M_HADDR28                        = IOMUX_PAD(0x02E8, 0x0088, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_SD1_CLK__USDHC1_CLK                            = IOMUX_PAD(0x02EC, 0x008C, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_CLK__ENET1_MDC                             = IOMUX_PAD(0x02EC, 0x008C, 1, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_CLK__I2C5_SCL                              = IOMUX_PAD(0x02EC, 0x008C, 3 | IOMUX_CONFIG_SION, 0x05C4, 0, 0),
++	MX8MP_PAD_SD1_CLK__UART1_DCE_TX                          = IOMUX_PAD(0x02EC, 0x008C, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_CLK__UART1_DTE_RX                          = IOMUX_PAD(0x02EC, 0x008C, 4, 0x05E8, 0, 0),
++	MX8MP_PAD_SD1_CLK__GPIO2_IO00                            = IOMUX_PAD(0x02EC, 0x008C, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_CLK__SIM_M_HADDR29                         = IOMUX_PAD(0x02EC, 0x008C, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_SD1_CMD__USDHC1_CMD                            = IOMUX_PAD(0x02F0, 0x0090, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_CMD__ENET1_MDIO                            = IOMUX_PAD(0x02F0, 0x0090, 1, 0x057C, 0, 0),
++	MX8MP_PAD_SD1_CMD__I2C5_SDA                              = IOMUX_PAD(0x02F0, 0x0090, 3 | IOMUX_CONFIG_SION, 0x05C8, 0, 0),
++	MX8MP_PAD_SD1_CMD__UART1_DCE_RX                          = IOMUX_PAD(0x02F0, 0x0090, 4, 0x05E8, 1, 0),
++	MX8MP_PAD_SD1_CMD__UART1_DTE_TX                          = IOMUX_PAD(0x02F0, 0x0090, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_CMD__GPIO2_IO01                            = IOMUX_PAD(0x02F0, 0x0090, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_CMD__SIM_M_HADDR30                         = IOMUX_PAD(0x02F0, 0x0090, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_SD1_DATA0__USDHC1_DATA0                        = IOMUX_PAD(0x02F4, 0x0094, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_DATA0__ENET1_RGMII_TD1                     = IOMUX_PAD(0x02F4, 0x0094, 1, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_DATA0__I2C6_SCL                            = IOMUX_PAD(0x02F4, 0x0094, 3 | IOMUX_CONFIG_SION, 0x05CC, 0, 0),
++	MX8MP_PAD_SD1_DATA0__UART1_DCE_RTS                       = IOMUX_PAD(0x02F4, 0x0094, 4, 0x05E4, 0, 0),
++	MX8MP_PAD_SD1_DATA0__UART1_DTE_CTS                       = IOMUX_PAD(0x02F4, 0x0094, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_DATA0__GPIO2_IO02                          = IOMUX_PAD(0x02F4, 0x0094, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_DATA0__SIM_M_HADDR31                       = IOMUX_PAD(0x02F4, 0x0094, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_SD1_DATA1__USDHC1_DATA1                        = IOMUX_PAD(0x02F8, 0x0098, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_DATA1__ENET1_RGMII_TD0                     = IOMUX_PAD(0x02F8, 0x0098, 1, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_DATA1__I2C6_SDA                            = IOMUX_PAD(0x02F8, 0x0098, 3 | IOMUX_CONFIG_SION, 0x05D0, 0, 0),
++	MX8MP_PAD_SD1_DATA1__UART1_DCE_CTS                       = IOMUX_PAD(0x02F8, 0x0098, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_DATA1__UART1_DTE_RTS                       = IOMUX_PAD(0x02F8, 0x0098, 4, 0x05E4, 1, 0),
++	MX8MP_PAD_SD1_DATA1__GPIO2_IO03                          = IOMUX_PAD(0x02F8, 0x0098, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_DATA1__SIM_M_HBURST00                      = IOMUX_PAD(0x02F8, 0x0098, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_SD1_DATA2__USDHC1_DATA2                        = IOMUX_PAD(0x02FC, 0x009C, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_DATA2__ENET1_RGMII_RD0                     = IOMUX_PAD(0x02FC, 0x009C, 1, 0x0580, 0, 0),
++	MX8MP_PAD_SD1_DATA2__I2C4_SCL                            = IOMUX_PAD(0x02FC, 0x009C, 3 | IOMUX_CONFIG_SION, 0x05BC, 0, 0),
++	MX8MP_PAD_SD1_DATA2__UART2_DCE_TX                        = IOMUX_PAD(0x02FC, 0x009C, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_DATA2__UART2_DTE_RX                        = IOMUX_PAD(0x02FC, 0x009C, 4, 0x05F0, 0, 0),
++	MX8MP_PAD_SD1_DATA2__GPIO2_IO04                          = IOMUX_PAD(0x02FC, 0x009C, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_DATA2__SIM_M_HBURST01                      = IOMUX_PAD(0x02FC, 0x009C, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_SD1_DATA3__USDHC1_DATA3                        = IOMUX_PAD(0x0300, 0x00A0, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_DATA3__ENET1_RGMII_RD1                     = IOMUX_PAD(0x0300, 0x00A0, 1, 0x0584, 0, 0),
++	MX8MP_PAD_SD1_DATA3__I2C4_SDA                            = IOMUX_PAD(0x0300, 0x00A0, 3 | IOMUX_CONFIG_SION, 0x05C0, 0, 0),
++	MX8MP_PAD_SD1_DATA3__UART2_DCE_RX                        = IOMUX_PAD(0x0300, 0x00A0, 4, 0x05F0, 1, 0),
++	MX8MP_PAD_SD1_DATA3__UART2_DTE_TX                        = IOMUX_PAD(0x0300, 0x00A0, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_DATA3__GPIO2_IO05                          = IOMUX_PAD(0x0300, 0x00A0, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_DATA3__SIM_M_HBURST02                      = IOMUX_PAD(0x0300, 0x00A0, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_SD1_DATA4__USDHC1_DATA4                        = IOMUX_PAD(0x0304, 0x00A4, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_DATA4__ENET1_RGMII_TX_CTL                  = IOMUX_PAD(0x0304, 0x00A4, 1, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_DATA4__I2C1_SCL                            = IOMUX_PAD(0x0304, 0x00A4, 3 | IOMUX_CONFIG_SION, 0x05A4, 0, 0),
++	MX8MP_PAD_SD1_DATA4__UART2_DCE_RTS                       = IOMUX_PAD(0x0304, 0x00A4, 4, 0x05EC, 0, 0),
++	MX8MP_PAD_SD1_DATA4__UART2_DTE_CTS                       = IOMUX_PAD(0x0304, 0x00A4, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_DATA4__GPIO2_IO06                          = IOMUX_PAD(0x0304, 0x00A4, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_DATA4__SIM_M_HRESP                         = IOMUX_PAD(0x0304, 0x00A4, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_SD1_DATA5__USDHC1_DATA5                        = IOMUX_PAD(0x0308, 0x00A8, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_DATA5__ENET1_TX_ER                         = IOMUX_PAD(0x0308, 0x00A8, 1, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_DATA5__I2C1_SDA                            = IOMUX_PAD(0x0308, 0x00A8, 3 | IOMUX_CONFIG_SION, 0x05A8, 0, 0),
++	MX8MP_PAD_SD1_DATA5__UART2_DCE_CTS                       = IOMUX_PAD(0x0308, 0x00A8, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_DATA5__UART2_DTE_RTS                       = IOMUX_PAD(0x0308, 0x00A8, 4, 0x05EC, 1, 0),
++	MX8MP_PAD_SD1_DATA5__GPIO2_IO07                          = IOMUX_PAD(0x0308, 0x00A8, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_DATA5__TPSMP_HDATA05                       = IOMUX_PAD(0x0308, 0x00A8, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_SD1_DATA6__USDHC1_DATA6                        = IOMUX_PAD(0x030C, 0x00AC, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_DATA6__ENET1_RGMII_RX_CTL                  = IOMUX_PAD(0x030C, 0x00AC, 1, 0x0588, 0, 0),
++	MX8MP_PAD_SD1_DATA6__I2C2_SCL                            = IOMUX_PAD(0x030C, 0x00AC, 3 | IOMUX_CONFIG_SION, 0x05AC, 0, 0),
++	MX8MP_PAD_SD1_DATA6__UART3_DCE_TX                        = IOMUX_PAD(0x030C, 0x00AC, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_DATA6__UART3_DTE_RX                        = IOMUX_PAD(0x030C, 0x00AC, 4, 0x05F8, 0, 0),
++	MX8MP_PAD_SD1_DATA6__GPIO2_IO08                          = IOMUX_PAD(0x030C, 0x00AC, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_DATA6__TPSMP_HDATA06                       = IOMUX_PAD(0x030C, 0x00AC, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_SD1_DATA7__USDHC1_DATA7                        = IOMUX_PAD(0x0310, 0x00B0, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_DATA7__ENET1_RX_ER                         = IOMUX_PAD(0x0310, 0x00B0, 1, 0x058C, 0, 0),
++	MX8MP_PAD_SD1_DATA7__I2C2_SDA                            = IOMUX_PAD(0x0310, 0x00B0, 3 | IOMUX_CONFIG_SION, 0x05B0, 0, 0),
++	MX8MP_PAD_SD1_DATA7__UART3_DCE_RX                        = IOMUX_PAD(0x0310, 0x00B0, 4, 0x05F8, 1, 0),
++	MX8MP_PAD_SD1_DATA7__UART3_DTE_TX                        = IOMUX_PAD(0x0310, 0x00B0, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_DATA7__GPIO2_IO09                          = IOMUX_PAD(0x0310, 0x00B0, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_DATA7__TPSMP_HDATA07                       = IOMUX_PAD(0x0310, 0x00B0, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_SD1_RESET_B__USDHC1_RESET_B                    = IOMUX_PAD(0x0314, 0x00B4, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_RESET_B__ENET1_TX_CLK                      = IOMUX_PAD(0x0314, 0x00B4, 1, 0x0578, 0, 0),
++	MX8MP_PAD_SD1_RESET_B__I2C3_SCL                          = IOMUX_PAD(0x0314, 0x00B4, 3 | IOMUX_CONFIG_SION, 0x05B4, 0, 0),
++	MX8MP_PAD_SD1_RESET_B__UART3_DCE_RTS                     = IOMUX_PAD(0x0314, 0x00B4, 4, 0x05F4, 0, 0),
++	MX8MP_PAD_SD1_RESET_B__UART3_DTE_CTS                     = IOMUX_PAD(0x0314, 0x00B4, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_RESET_B__GPIO2_IO10                        = IOMUX_PAD(0x0314, 0x00B4, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_RESET_B__ECSPI3_TEST_TRIG                  = IOMUX_PAD(0x0314, 0x00B4, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_SD1_STROBE__USDHC1_STROBE                      = IOMUX_PAD(0x0318, 0x00B8, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_STROBE__I2C3_SDA                           = IOMUX_PAD(0x0318, 0x00B8, 3 | IOMUX_CONFIG_SION, 0x05B8, 0, 0),
++	MX8MP_PAD_SD1_STROBE__UART3_DCE_CTS                      = IOMUX_PAD(0x0318, 0x00B8, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_STROBE__UART3_DTE_RTS                      = IOMUX_PAD(0x0318, 0x00B8, 4, 0x05F4, 1, 0),
++	MX8MP_PAD_SD1_STROBE__GPIO2_IO11                         = IOMUX_PAD(0x0318, 0x00B8, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SD1_STROBE__USDHC3_TEST_TRIG                   = IOMUX_PAD(0x0318, 0x00B8, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_SD2_CD_B__USDHC2_CD_B                          = IOMUX_PAD(0x031C, 0x00BC, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SD2_CD_B__GPIO2_IO12                           = IOMUX_PAD(0x031C, 0x00BC, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SD2_CD_B__CCMSRCGPCMIX_TESTER_ACK              = IOMUX_PAD(0x031C, 0x00BC, 6, 0x0000, 0, 0),
++
++	MX8MP_PAD_SD2_CLK__USDHC2_CLK                            = IOMUX_PAD(0x0320, 0x00C0, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SD2_CLK__ECSPI2_SCLK                           = IOMUX_PAD(0x0320, 0x00C0, 2, 0x0568, 0, 0),
++	MX8MP_PAD_SD2_CLK__UART4_DCE_RX                          = IOMUX_PAD(0x0320, 0x00C0, 3, 0x0600, 0, 0),
++	MX8MP_PAD_SD2_CLK__UART4_DTE_TX                          = IOMUX_PAD(0x0320, 0x00C0, 3, 0x0000, 0, 0),
++	MX8MP_PAD_SD2_CLK__GPIO2_IO13                            = IOMUX_PAD(0x0320, 0x00C0, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SD2_CLK__CCMSRCGPCMIX_OBSERVE0                 = IOMUX_PAD(0x0320, 0x00C0, 6, 0x0000, 0, 0),
++	MX8MP_PAD_SD2_CLK__OBSERVE_MUX_OUT00                     = IOMUX_PAD(0x0320, 0x00C0, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_SD2_CMD__USDHC2_CMD                            = IOMUX_PAD(0x0324, 0x00C4, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SD2_CMD__ECSPI2_MOSI                           = IOMUX_PAD(0x0324, 0x00C4, 2, 0x0570, 0, 0),
++	MX8MP_PAD_SD2_CMD__UART4_DCE_TX                          = IOMUX_PAD(0x0324, 0x00C4, 3, 0x0000, 0, 0),
++	MX8MP_PAD_SD2_CMD__UART4_DTE_RX                          = IOMUX_PAD(0x0324, 0x00C4, 3, 0x0600, 1, 0),
++	MX8MP_PAD_SD2_CMD__AUDIOMIX_CLK                          = IOMUX_PAD(0x0324, 0x00C4, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SD2_CMD__GPIO2_IO14                            = IOMUX_PAD(0x0324, 0x00C4, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SD2_CMD__CCMSRCGPCMIX_OBSERVE1                 = IOMUX_PAD(0x0324, 0x00C4, 6, 0x0000, 0, 0),
++	MX8MP_PAD_SD2_CMD__OBSERVE_MUX_OUT01                     = IOMUX_PAD(0x0324, 0x00C4, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_SD2_DATA0__USDHC2_DATA0                        = IOMUX_PAD(0x0328, 0x00C8, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SD2_DATA0__I2C4_SDA                            = IOMUX_PAD(0x0328, 0x00C8, 2 | IOMUX_CONFIG_SION, 0x05C0, 1, 0),
++	MX8MP_PAD_SD2_DATA0__UART2_DCE_RX                        = IOMUX_PAD(0x0328, 0x00C8, 3, 0x05F0, 2, 0),
++	MX8MP_PAD_SD2_DATA0__UART2_DTE_TX                        = IOMUX_PAD(0x0328, 0x00C8, 3, 0x0000, 0, 0),
++	MX8MP_PAD_SD2_DATA0__AUDIOMIX_BIT_STREAM00               = IOMUX_PAD(0x0328, 0x00C8, 4, 0x04C0, 1, 0),
++	MX8MP_PAD_SD2_DATA0__GPIO2_IO15                          = IOMUX_PAD(0x0328, 0x00C8, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SD2_DATA0__CCMSRCGPCMIX_OBSERVE2               = IOMUX_PAD(0x0328, 0x00C8, 6, 0x0000, 0, 0),
++	MX8MP_PAD_SD2_DATA0__OBSERVE_MUX_OUT02                   = IOMUX_PAD(0x0328, 0x00C8, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_SD2_DATA1__USDHC2_DATA1                        = IOMUX_PAD(0x032C, 0x00CC, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SD2_DATA1__I2C4_SCL                            = IOMUX_PAD(0x032C, 0x00CC, 2 | IOMUX_CONFIG_SION, 0x05BC, 1, 0),
++	MX8MP_PAD_SD2_DATA1__UART2_DCE_TX                        = IOMUX_PAD(0x032C, 0x00CC, 3, 0x0000, 0, 0),
++	MX8MP_PAD_SD2_DATA1__UART2_DTE_RX                        = IOMUX_PAD(0x032C, 0x00CC, 3, 0x05F0, 3, 0),
++	MX8MP_PAD_SD2_DATA1__AUDIOMIX_BIT_STREAM01               = IOMUX_PAD(0x032C, 0x00CC, 4, 0x04C4, 1, 0),
++	MX8MP_PAD_SD2_DATA1__GPIO2_IO16                          = IOMUX_PAD(0x032C, 0x00CC, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SD2_DATA1__CCMSRCGPCMIX_WAIT                   = IOMUX_PAD(0x032C, 0x00CC, 6, 0x0000, 0, 0),
++	MX8MP_PAD_SD2_DATA1__OBSERVE_MUX_OUT03                   = IOMUX_PAD(0x032C, 0x00CC, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_SD2_DATA2__USDHC2_DATA2                        = IOMUX_PAD(0x0330, 0x00D0, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SD2_DATA2__ECSPI2_SS0                          = IOMUX_PAD(0x0330, 0x00D0, 2, 0x0574, 0, 0),
++	MX8MP_PAD_SD2_DATA2__AUDIOMIX_SPDIF_OUT                  = IOMUX_PAD(0x0330, 0x00D0, 3, 0x0000, 0, 0),
++	MX8MP_PAD_SD2_DATA2__AUDIOMIX_BIT_STREAM02               = IOMUX_PAD(0x0330, 0x00D0, 4, 0x04C8, 1, 0),
++	MX8MP_PAD_SD2_DATA2__GPIO2_IO17                          = IOMUX_PAD(0x0330, 0x00D0, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SD2_DATA2__CCMSRCGPCMIX_STOP                   = IOMUX_PAD(0x0330, 0x00D0, 6, 0x0000, 0, 0),
++	MX8MP_PAD_SD2_DATA2__OBSERVE_MUX_OUT04                   = IOMUX_PAD(0x0330, 0x00D0, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_SD2_DATA3__USDHC2_DATA3                        = IOMUX_PAD(0x0334, 0x00D4, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SD2_DATA3__ECSPI2_MISO                         = IOMUX_PAD(0x0334, 0x00D4, 2, 0x056C, 0, 0),
++	MX8MP_PAD_SD2_DATA3__AUDIOMIX_SPDIF_IN                   = IOMUX_PAD(0x0334, 0x00D4, 3, 0x0544, 1, 0),
++	MX8MP_PAD_SD2_DATA3__AUDIOMIX_BIT_STREAM03               = IOMUX_PAD(0x0334, 0x00D4, 4, 0x04CC, 1, 0),
++	MX8MP_PAD_SD2_DATA3__GPIO2_IO18                          = IOMUX_PAD(0x0334, 0x00D4, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SD2_DATA3__CCMSRCGPCMIX_EARLY_RESET            = IOMUX_PAD(0x0334, 0x00D4, 6, 0x0000, 0, 0),
++
++	MX8MP_PAD_SD2_RESET_B__USDHC2_RESET_B                    = IOMUX_PAD(0x0338, 0x00D8, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SD2_RESET_B__GPIO2_IO19                        = IOMUX_PAD(0x0338, 0x00D8, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SD2_RESET_B__CCMSRCGPCMIX_SYSTEM_RESET         = IOMUX_PAD(0x0338, 0x00D8, 6, 0x0000, 0, 0),
++
++	MX8MP_PAD_SD2_WP__USDHC2_WP                              = IOMUX_PAD(0x033C, 0x00DC, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SD2_WP__GPIO2_IO20                             = IOMUX_PAD(0x033C, 0x00DC, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SD2_WP__CORESIGHT_EVENTI                       = IOMUX_PAD(0x033C, 0x00DC, 6, 0x0000, 0, 0),
++	MX8MP_PAD_SD2_WP__SIM_M_HMASTLOCK                        = IOMUX_PAD(0x033C, 0x00DC, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_NAND_ALE__RAWNAND_ALE                          = IOMUX_PAD(0x0340, 0x00E0, 0, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_ALE__FLEXSPI_A_SCLK                       = IOMUX_PAD(0x0340, 0x00E0, 1, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_ALE__AUDIOMIX_SAI3_TX_BCLK                = IOMUX_PAD(0x0340, 0x00E0, 2, 0x04E8, 0, 0),
++	MX8MP_PAD_NAND_ALE__MEDIAMIX_ISP_FL_TRIG_0               = IOMUX_PAD(0x0340, 0x00E0, 3, 0x05D4, 1, 0),
++	MX8MP_PAD_NAND_ALE__UART3_DCE_RX                         = IOMUX_PAD(0x0340, 0x00E0, 4, 0x05F8, 2, 0),
++	MX8MP_PAD_NAND_ALE__UART3_DTE_TX                         = IOMUX_PAD(0x0340, 0x00E0, 4, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_ALE__GPIO3_IO00                           = IOMUX_PAD(0x0340, 0x00E0, 5, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_ALE__CORESIGHT_TRACE_CLK                  = IOMUX_PAD(0x0340, 0x00E0, 6, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_ALE__SIM_M_HPROT00                        = IOMUX_PAD(0x0340, 0x00E0, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_NAND_CE0_B__RAWNAND_CE0_B                      = IOMUX_PAD(0x0344, 0x00E4, 0, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_CE0_B__FLEXSPI_A_SS0_B                    = IOMUX_PAD(0x0344, 0x00E4, 1, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_CE0_B__AUDIOMIX_SAI3_TX_DATA00            = IOMUX_PAD(0x0344, 0x00E4, 2, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_CE0_B__MEDIAMIX_ISP_SHUTTER_TRIG_0        = IOMUX_PAD(0x0344, 0x00E4, 3, 0x05DC, 1, 0),
++	MX8MP_PAD_NAND_CE0_B__UART3_DCE_TX                       = IOMUX_PAD(0x0344, 0x00E4, 4, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_CE0_B__UART3_DTE_RX                       = IOMUX_PAD(0x0344, 0x00E4, 4, 0x05F8, 3, 0),
++	MX8MP_PAD_NAND_CE0_B__GPIO3_IO01                         = IOMUX_PAD(0x0344, 0x00E4, 5, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_CE0_B__CORESIGHT_TRACE_CTL                = IOMUX_PAD(0x0344, 0x00E4, 6, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_CE0_B__SIM_M_HPROT01                      = IOMUX_PAD(0x0344, 0x00E4, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_NAND_CE1_B__RAWNAND_CE1_B                      = IOMUX_PAD(0x0348, 0x00E8, 0, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_CE1_B__FLEXSPI_A_SS1_B                    = IOMUX_PAD(0x0348, 0x00E8, 1, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_CE1_B__USDHC3_STROBE                      = IOMUX_PAD(0x0348, 0x00E8, 2, 0x0630, 1, 0),
++	MX8MP_PAD_NAND_CE1_B__I2C4_SCL                           = IOMUX_PAD(0x0348, 0x00E8, 4 | IOMUX_CONFIG_SION, 0x05BC, 2, 0),
++	MX8MP_PAD_NAND_CE1_B__GPIO3_IO02                         = IOMUX_PAD(0x0348, 0x00E8, 5, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_CE1_B__CORESIGHT_TRACE00                  = IOMUX_PAD(0x0348, 0x00E8, 6, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_CE1_B__SIM_M_HPROT02                      = IOMUX_PAD(0x0348, 0x00E8, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_NAND_CE2_B__RAWNAND_CE2_B                      = IOMUX_PAD(0x034C, 0x00EC, 0, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_CE2_B__FLEXSPI_B_SS0_B                    = IOMUX_PAD(0x034C, 0x00EC, 1, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_CE2_B__USDHC3_DATA5                       = IOMUX_PAD(0x034C, 0x00EC, 2, 0x0624, 1, 0),
++	MX8MP_PAD_NAND_CE2_B__I2C4_SDA                           = IOMUX_PAD(0x034C, 0x00EC, 4 | IOMUX_CONFIG_SION, 0x05C0, 2, 0),
++	MX8MP_PAD_NAND_CE2_B__GPIO3_IO03                         = IOMUX_PAD(0x034C, 0x00EC, 5, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_CE2_B__CORESIGHT_TRACE01                  = IOMUX_PAD(0x034C, 0x00EC, 6, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_CE2_B__SIM_M_HPROT03                      = IOMUX_PAD(0x034C, 0x00EC, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_NAND_CE3_B__RAWNAND_CE3_B                      = IOMUX_PAD(0x0350, 0x00F0, 0, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_CE3_B__FLEXSPI_B_SS1_B                    = IOMUX_PAD(0x0350, 0x00F0, 1, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_CE3_B__USDHC3_DATA6                       = IOMUX_PAD(0x0350, 0x00F0, 2, 0x0628, 1, 0),
++	MX8MP_PAD_NAND_CE3_B__I2C3_SDA                           = IOMUX_PAD(0x0350, 0x00F0, 4 | IOMUX_CONFIG_SION, 0x05B8, 1, 0),
++	MX8MP_PAD_NAND_CE3_B__GPIO3_IO04                         = IOMUX_PAD(0x0350, 0x00F0, 5, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_CE3_B__CORESIGHT_TRACE02                  = IOMUX_PAD(0x0350, 0x00F0, 6, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_CE3_B__SIM_M_HADDR00                      = IOMUX_PAD(0x0350, 0x00F0, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_NAND_CLE__RAWNAND_CLE                          = IOMUX_PAD(0x0354, 0x00F4, 0, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_CLE__FLEXSPI_B_SCLK                       = IOMUX_PAD(0x0354, 0x00F4, 1, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_CLE__USDHC3_DATA7                         = IOMUX_PAD(0x0354, 0x00F4, 2, 0x062C, 1, 0),
++	MX8MP_PAD_NAND_CLE__UART4_DCE_RX                         = IOMUX_PAD(0x0354, 0x00F4, 4, 0x0600, 2, 0),
++	MX8MP_PAD_NAND_CLE__UART4_DTE_TX                         = IOMUX_PAD(0x0354, 0x00F4, 4, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_CLE__GPIO3_IO05                           = IOMUX_PAD(0x0354, 0x00F4, 5, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_CLE__CORESIGHT_TRACE03                    = IOMUX_PAD(0x0354, 0x00F4, 6, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_CLE__SIM_M_HADDR01                        = IOMUX_PAD(0x0354, 0x00F4, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_NAND_DATA00__RAWNAND_DATA00                    = IOMUX_PAD(0x0358, 0x00F8, 0, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA00__FLEXSPI_A_DATA00                  = IOMUX_PAD(0x0358, 0x00F8, 1, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA00__AUDIOMIX_SAI3_RX_DATA00           = IOMUX_PAD(0x0358, 0x00F8, 2, 0x04E4, 0, 0),
++	MX8MP_PAD_NAND_DATA00__MEDIAMIX_ISP_FLASH_TRIG_0         = IOMUX_PAD(0x0358, 0x00F8, 3, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA00__UART4_DCE_RX                      = IOMUX_PAD(0x0358, 0x00F8, 4, 0x0600, 3, 0),
++	MX8MP_PAD_NAND_DATA00__UART4_DTE_TX                      = IOMUX_PAD(0x0358, 0x00F8, 4, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA00__GPIO3_IO06                        = IOMUX_PAD(0x0358, 0x00F8, 5, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA00__CORESIGHT_TRACE04                 = IOMUX_PAD(0x0358, 0x00F8, 6, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA00__SIM_M_HADDR02                     = IOMUX_PAD(0x0358, 0x00F8, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_NAND_DATA01__RAWNAND_DATA01                    = IOMUX_PAD(0x035C, 0x00FC, 0, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA01__FLEXSPI_A_DATA01                  = IOMUX_PAD(0x035C, 0x00FC, 1, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA01__AUDIOMIX_SAI3_TX_SYNC             = IOMUX_PAD(0x035C, 0x00FC, 2, 0x04EC, 0, 0),
++	MX8MP_PAD_NAND_DATA01__MEDIAMIX_ISP_PRELIGHT_TRIG_0      = IOMUX_PAD(0x035C, 0x00FC, 3, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA01__UART4_DCE_TX                      = IOMUX_PAD(0x035C, 0x00FC, 4, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA01__UART4_DTE_RX                      = IOMUX_PAD(0x035C, 0x00FC, 4, 0x0600, 4, 0),
++	MX8MP_PAD_NAND_DATA01__GPIO3_IO07                        = IOMUX_PAD(0x035C, 0x00FC, 5, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA01__CORESIGHT_TRACE05                 = IOMUX_PAD(0x035C, 0x00FC, 6, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA01__SIM_M_HADDR03                     = IOMUX_PAD(0x035C, 0x00FC, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_NAND_DATA02__RAWNAND_DATA02                    = IOMUX_PAD(0x0360, 0x0100, 0, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA02__FLEXSPI_A_DATA02                  = IOMUX_PAD(0x0360, 0x0100, 1, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA02__USDHC3_CD_B                       = IOMUX_PAD(0x0360, 0x0100, 2, 0x0608, 2, 0),
++	MX8MP_PAD_NAND_DATA02__UART4_DCE_CTS                     = IOMUX_PAD(0x0360, 0x0100, 3, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA02__UART4_DTE_RTS                     = IOMUX_PAD(0x0360, 0x0100, 3, 0x05FC, 0, 0),
++	MX8MP_PAD_NAND_DATA02__I2C4_SDA                          = IOMUX_PAD(0x0360, 0x0100, 4 | IOMUX_CONFIG_SION, 0x05C0, 3, 0),
++	MX8MP_PAD_NAND_DATA02__GPIO3_IO08                        = IOMUX_PAD(0x0360, 0x0100, 5, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA02__CORESIGHT_TRACE06                 = IOMUX_PAD(0x0360, 0x0100, 6, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA02__SIM_M_HADDR04                     = IOMUX_PAD(0x0360, 0x0100, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_NAND_DATA03__RAWNAND_DATA03                    = IOMUX_PAD(0x0364, 0x0104, 0, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA03__FLEXSPI_A_DATA03                  = IOMUX_PAD(0x0364, 0x0104, 1, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA03__USDHC3_WP                         = IOMUX_PAD(0x0364, 0x0104, 2, 0x0634, 2, 0),
++	MX8MP_PAD_NAND_DATA03__UART4_DCE_RTS                     = IOMUX_PAD(0x0364, 0x0104, 3, 0x05FC, 1, 0),
++	MX8MP_PAD_NAND_DATA03__UART4_DTE_CTS                     = IOMUX_PAD(0x0364, 0x0104, 3, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA03__MEDIAMIX_ISP_FL_TRIG_1            = IOMUX_PAD(0x0364, 0x0104, 4, 0x05D8, 1, 0),
++	MX8MP_PAD_NAND_DATA03__GPIO3_IO09                        = IOMUX_PAD(0x0364, 0x0104, 5, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA03__CORESIGHT_TRACE07                 = IOMUX_PAD(0x0364, 0x0104, 6, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA03__SIM_M_HADDR05                     = IOMUX_PAD(0x0364, 0x0104, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_NAND_DATA04__RAWNAND_DATA04                    = IOMUX_PAD(0x0368, 0x0108, 0, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA04__FLEXSPI_B_DATA00                  = IOMUX_PAD(0x0368, 0x0108, 1, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA04__USDHC3_DATA0                      = IOMUX_PAD(0x0368, 0x0108, 2, 0x0610, 1, 0),
++	MX8MP_PAD_NAND_DATA04__FLEXSPI_A_DATA04                  = IOMUX_PAD(0x0368, 0x0108, 3, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA04__MEDIAMIX_ISP_SHUTTER_TRIG_1       = IOMUX_PAD(0x0368, 0x0108, 4, 0x05E0, 1, 0),
++	MX8MP_PAD_NAND_DATA04__GPIO3_IO10                        = IOMUX_PAD(0x0368, 0x0108, 5, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA04__CORESIGHT_TRACE08                 = IOMUX_PAD(0x0368, 0x0108, 6, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA04__SIM_M_HADDR06                     = IOMUX_PAD(0x0368, 0x0108, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_NAND_DATA05__RAWNAND_DATA05                    = IOMUX_PAD(0x036C, 0x010C, 0, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA05__FLEXSPI_B_DATA01                  = IOMUX_PAD(0x036C, 0x010C, 1, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA05__USDHC3_DATA1                      = IOMUX_PAD(0x036C, 0x010C, 2, 0x0614, 1, 0),
++	MX8MP_PAD_NAND_DATA05__FLEXSPI_A_DATA05                  = IOMUX_PAD(0x036C, 0x010C, 3, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA05__MEDIAMIX_ISP_FLASH_TRIG_1         = IOMUX_PAD(0x036C, 0x010C, 4, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA05__GPIO3_IO11                        = IOMUX_PAD(0x036C, 0x010C, 5, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA05__CORESIGHT_TRACE09                 = IOMUX_PAD(0x036C, 0x010C, 6, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA05__SIM_M_HADDR07                     = IOMUX_PAD(0x036C, 0x010C, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_NAND_DATA06__RAWNAND_DATA06                    = IOMUX_PAD(0x0370, 0x0110, 0, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA06__FLEXSPI_B_DATA02                  = IOMUX_PAD(0x0370, 0x0110, 1, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA06__USDHC3_DATA2                      = IOMUX_PAD(0x0370, 0x0110, 2, 0x0618, 1, 0),
++	MX8MP_PAD_NAND_DATA06__FLEXSPI_A_DATA06                  = IOMUX_PAD(0x0370, 0x0110, 3, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA06__MEDIAMIX_ISP_PRELIGHT_TRIG_1      = IOMUX_PAD(0x0370, 0x0110, 4, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA06__GPIO3_IO12                        = IOMUX_PAD(0x0370, 0x0110, 5, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA06__CORESIGHT_TRACE10                 = IOMUX_PAD(0x0370, 0x0110, 6, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA06__SIM_M_HADDR08                     = IOMUX_PAD(0x0370, 0x0110, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_NAND_DATA07__RAWNAND_DATA07                    = IOMUX_PAD(0x0374, 0x0114, 0, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA07__FLEXSPI_B_DATA03                  = IOMUX_PAD(0x0374, 0x0114, 1, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA07__USDHC3_DATA3                      = IOMUX_PAD(0x0374, 0x0114, 2, 0x061C, 1, 0),
++	MX8MP_PAD_NAND_DATA07__FLEXSPI_A_DATA07                  = IOMUX_PAD(0x0374, 0x0114, 3, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA07__MEDIAMIX_ISP_SHUTTER_OPEN_1       = IOMUX_PAD(0x0374, 0x0114, 4, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA07__GPIO3_IO13                        = IOMUX_PAD(0x0374, 0x0114, 5, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA07__CORESIGHT_TRACE11                 = IOMUX_PAD(0x0374, 0x0114, 6, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DATA07__SIM_M_HADDR09                     = IOMUX_PAD(0x0374, 0x0114, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_NAND_DQS__RAWNAND_DQS                          = IOMUX_PAD(0x0378, 0x0118, 0, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DQS__FLEXSPI_A_DQS                        = IOMUX_PAD(0x0378, 0x0118, 1, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DQS__AUDIOMIX_SAI3_MCLK                   = IOMUX_PAD(0x0378, 0x0118, 2, 0x04E0, 0, 0),
++	MX8MP_PAD_NAND_DQS__MEDIAMIX_ISP_SHUTTER_OPEN_0          = IOMUX_PAD(0x0378, 0x0118, 3, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DQS__I2C3_SCL                             = IOMUX_PAD(0x0378, 0x0118, 4 | IOMUX_CONFIG_SION, 0x05B4, 1, 0),
++	MX8MP_PAD_NAND_DQS__GPIO3_IO14                           = IOMUX_PAD(0x0378, 0x0118, 5, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DQS__CORESIGHT_TRACE12                    = IOMUX_PAD(0x0378, 0x0118, 6, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_DQS__SIM_M_HADDR10                        = IOMUX_PAD(0x0378, 0x0118, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_NAND_RE_B__RAWNAND_RE_B                        = IOMUX_PAD(0x037C, 0x011C, 0, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_RE_B__FLEXSPI_B_DQS                       = IOMUX_PAD(0x037C, 0x011C, 1, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_RE_B__USDHC3_DATA4                        = IOMUX_PAD(0x037C, 0x011C, 2, 0x0620, 1, 0),
++	MX8MP_PAD_NAND_RE_B__UART4_DCE_TX                        = IOMUX_PAD(0x037C, 0x011C, 4, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_RE_B__UART4_DTE_RX                        = IOMUX_PAD(0x037C, 0x011C, 4, 0x0600, 5, 0),
++	MX8MP_PAD_NAND_RE_B__GPIO3_IO15                          = IOMUX_PAD(0x037C, 0x011C, 5, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_RE_B__CORESIGHT_TRACE13                   = IOMUX_PAD(0x037C, 0x011C, 6, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_RE_B__SIM_M_HADDR11                       = IOMUX_PAD(0x037C, 0x011C, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_NAND_READY_B__RAWNAND_READY_B                  = IOMUX_PAD(0x0380, 0x0120, 0, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_READY_B__USDHC3_RESET_B                   = IOMUX_PAD(0x0380, 0x0120, 2, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_READY_B__I2C3_SCL                         = IOMUX_PAD(0x0380, 0x0120, 4 | IOMUX_CONFIG_SION, 0x05B4, 2, 0),
++	MX8MP_PAD_NAND_READY_B__GPIO3_IO16                       = IOMUX_PAD(0x0380, 0x0120, 5, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_READY_B__CORESIGHT_TRACE14                = IOMUX_PAD(0x0380, 0x0120, 6, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_READY_B__SIM_M_HADDR12                    = IOMUX_PAD(0x0380, 0x0120, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_NAND_WE_B__RAWNAND_WE_B                        = IOMUX_PAD(0x0384, 0x0124, 0, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_WE_B__USDHC3_CLK                          = IOMUX_PAD(0x0384, 0x0124, 2, 0x0604, 1, 0),
++	MX8MP_PAD_NAND_WE_B__I2C3_SDA                            = IOMUX_PAD(0x0384, 0x0124, 4 | IOMUX_CONFIG_SION, 0x05B8, 2, 0),
++	MX8MP_PAD_NAND_WE_B__GPIO3_IO17                          = IOMUX_PAD(0x0384, 0x0124, 5, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_WE_B__CORESIGHT_TRACE15                   = IOMUX_PAD(0x0384, 0x0124, 6, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_WE_B__SIM_M_HADDR13                       = IOMUX_PAD(0x0384, 0x0124, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_NAND_WP_B__RAWNAND_WP_B                        = IOMUX_PAD(0x0388, 0x0128, 0, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_WP_B__USDHC3_CMD                          = IOMUX_PAD(0x0388, 0x0128, 2, 0x060C, 1, 0),
++	MX8MP_PAD_NAND_WP_B__I2C4_SCL                            = IOMUX_PAD(0x0388, 0x0128, 4 | IOMUX_CONFIG_SION, 0x05BC, 3, 0),
++	MX8MP_PAD_NAND_WP_B__GPIO3_IO18                          = IOMUX_PAD(0x0388, 0x0128, 5, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_WP_B__CORESIGHT_EVENTO                    = IOMUX_PAD(0x0388, 0x0128, 6, 0x0000, 0, 0),
++	MX8MP_PAD_NAND_WP_B__SIM_M_HADDR14                       = IOMUX_PAD(0x0388, 0x0128, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI5_RXFS__AUDIOMIX_SAI5_RX_SYNC               = IOMUX_PAD(0x038C, 0x012C, 0, 0x0508, 0, 0),
++	MX8MP_PAD_SAI5_RXFS__AUDIOMIX_SAI1_TX_DATA00             = IOMUX_PAD(0x038C, 0x012C, 1, 0x0000, 0, 0),
++	MX8MP_PAD_SAI5_RXFS__PWM4_OUT                            = IOMUX_PAD(0x038C, 0x012C, 2, 0x0000, 0, 0),
++	MX8MP_PAD_SAI5_RXFS__I2C6_SCL                            = IOMUX_PAD(0x038C, 0x012C, 3 | IOMUX_CONFIG_SION, 0x05CC, 1, 0),
++	MX8MP_PAD_SAI5_RXFS__GPIO3_IO19                          = IOMUX_PAD(0x038C, 0x012C, 5, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI5_RXC__AUDIOMIX_SAI5_RX_BCLK                = IOMUX_PAD(0x0390, 0x0130, 0, 0x04F4, 0, 0),
++	MX8MP_PAD_SAI5_RXC__AUDIOMIX_SAI1_TX_DATA01              = IOMUX_PAD(0x0390, 0x0130, 1, 0x0000, 0, 0),
++	MX8MP_PAD_SAI5_RXC__PWM3_OUT                             = IOMUX_PAD(0x0390, 0x0130, 2, 0x0000, 0, 0),
++	MX8MP_PAD_SAI5_RXC__I2C6_SDA                             = IOMUX_PAD(0x0390, 0x0130, 3 | IOMUX_CONFIG_SION, 0x05D0, 1, 0),
++	MX8MP_PAD_SAI5_RXC__AUDIOMIX_CLK                         = IOMUX_PAD(0x0390, 0x0130, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SAI5_RXC__GPIO3_IO20                           = IOMUX_PAD(0x0390, 0x0130, 5, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI5_RXD0__AUDIOMIX_SAI5_RX_DATA00             = IOMUX_PAD(0x0394, 0x0134, 0, 0x04F8, 0, 0),
++	MX8MP_PAD_SAI5_RXD0__AUDIOMIX_SAI1_TX_DATA02             = IOMUX_PAD(0x0394, 0x0134, 1, 0x0000, 0, 0),
++	MX8MP_PAD_SAI5_RXD0__PWM2_OUT                            = IOMUX_PAD(0x0394, 0x0134, 2, 0x0000, 0, 0),
++	MX8MP_PAD_SAI5_RXD0__I2C5_SCL                            = IOMUX_PAD(0x0394, 0x0134, 3 | IOMUX_CONFIG_SION, 0x05C4, 1, 0),
++	MX8MP_PAD_SAI5_RXD0__AUDIOMIX_BIT_STREAM00               = IOMUX_PAD(0x0394, 0x0134, 4, 0x04C0, 2, 0),
++	MX8MP_PAD_SAI5_RXD0__GPIO3_IO21                          = IOMUX_PAD(0x0394, 0x0134, 5, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI5_RXD1__AUDIOMIX_SAI5_RX_DATA01             = IOMUX_PAD(0x0398, 0x0138, 0, 0x04FC, 0, 0),
++	MX8MP_PAD_SAI5_RXD1__AUDIOMIX_SAI1_TX_DATA03             = IOMUX_PAD(0x0398, 0x0138, 1, 0x0000, 0, 0),
++	MX8MP_PAD_SAI5_RXD1__AUDIOMIX_SAI1_TX_SYNC               = IOMUX_PAD(0x0398, 0x0138, 2, 0x04D8, 0, 0),
++	MX8MP_PAD_SAI5_RXD1__AUDIOMIX_SAI5_TX_SYNC               = IOMUX_PAD(0x0398, 0x0138, 3, 0x0510, 0, 0),
++	MX8MP_PAD_SAI5_RXD1__AUDIOMIX_BIT_STREAM01               = IOMUX_PAD(0x0398, 0x0138, 4, 0x04C4, 2, 0),
++	MX8MP_PAD_SAI5_RXD1__GPIO3_IO22                          = IOMUX_PAD(0x0398, 0x0138, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SAI5_RXD1__CAN1_TX                             = IOMUX_PAD(0x0398, 0x0138, 6, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI5_RXD2__AUDIOMIX_SAI5_RX_DATA02             = IOMUX_PAD(0x039C, 0x013C, 0, 0x0500, 0, 0),
++	MX8MP_PAD_SAI5_RXD2__AUDIOMIX_SAI1_TX_DATA04             = IOMUX_PAD(0x039C, 0x013C, 1, 0x0000, 0, 0),
++	MX8MP_PAD_SAI5_RXD2__AUDIOMIX_SAI1_TX_SYNC               = IOMUX_PAD(0x039C, 0x013C, 2, 0x04D8, 1, 0),
++	MX8MP_PAD_SAI5_RXD2__AUDIOMIX_SAI5_TX_BCLK               = IOMUX_PAD(0x039C, 0x013C, 3, 0x050C, 0, 0),
++	MX8MP_PAD_SAI5_RXD2__AUDIOMIX_BIT_STREAM02               = IOMUX_PAD(0x039C, 0x013C, 4, 0x04C8, 2, 0),
++	MX8MP_PAD_SAI5_RXD2__GPIO3_IO23                          = IOMUX_PAD(0x039C, 0x013C, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SAI5_RXD2__CAN1_RX                             = IOMUX_PAD(0x039C, 0x013C, 6, 0x054C, 0, 0),
++
++	MX8MP_PAD_SAI5_RXD3__AUDIOMIX_SAI5_RX_DATA03             = IOMUX_PAD(0x03A0, 0x0140, 0, 0x0504, 0, 0),
++	MX8MP_PAD_SAI5_RXD3__AUDIOMIX_SAI1_TX_DATA05             = IOMUX_PAD(0x03A0, 0x0140, 1, 0x0000, 0, 0),
++	MX8MP_PAD_SAI5_RXD3__AUDIOMIX_SAI1_TX_SYNC               = IOMUX_PAD(0x03A0, 0x0140, 2, 0x04D8, 2, 0),
++	MX8MP_PAD_SAI5_RXD3__AUDIOMIX_SAI5_TX_DATA00             = IOMUX_PAD(0x03A0, 0x0140, 3, 0x0000, 0, 0),
++	MX8MP_PAD_SAI5_RXD3__AUDIOMIX_BIT_STREAM03               = IOMUX_PAD(0x03A0, 0x0140, 4, 0x04CC, 2, 0),
++	MX8MP_PAD_SAI5_RXD3__GPIO3_IO24                          = IOMUX_PAD(0x03A0, 0x0140, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SAI5_RXD3__CAN2_TX                             = IOMUX_PAD(0x03A0, 0x0140, 6, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI5_MCLK__AUDIOMIX_SAI5_MCLK                  = IOMUX_PAD(0x03A4, 0x0144, 0, 0x04F0, 0, 0),
++	MX8MP_PAD_SAI5_MCLK__AUDIOMIX_SAI1_TX_BCLK               = IOMUX_PAD(0x03A4, 0x0144, 1, 0x04D4, 0, 0),
++	MX8MP_PAD_SAI5_MCLK__PWM1_OUT                            = IOMUX_PAD(0x03A4, 0x0144, 2, 0x0000, 0, 0),
++	MX8MP_PAD_SAI5_MCLK__I2C5_SDA                            = IOMUX_PAD(0x03A4, 0x0144, 3 | IOMUX_CONFIG_SION, 0x05C8, 1, 0),
++	MX8MP_PAD_SAI5_MCLK__GPIO3_IO25                          = IOMUX_PAD(0x03A4, 0x0144, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SAI5_MCLK__CAN2_RX                             = IOMUX_PAD(0x03A4, 0x0144, 6, 0x0550, 0, 0),
++
++	MX8MP_PAD_SAI1_RXFS__AUDIOMIX_SAI1_RX_SYNC               = IOMUX_PAD(0x03A8, 0x0148, 0, 0x04D0, 0, 0),
++	MX8MP_PAD_SAI1_RXFS__AUDIOMIX_SAI5_RX_SYNC               = IOMUX_PAD(0x03A8, 0x0148, 1, 0x0508, 1, 0),
++	MX8MP_PAD_SAI1_RXFS__ENET1_1588_EVENT0_IN                = IOMUX_PAD(0x03A8, 0x0148, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_RXFS__GPIO4_IO00                          = IOMUX_PAD(0x03A8, 0x0148, 5, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI1_RXC__AUDIOMIX_SAI1_RX_BCLK                = IOMUX_PAD(0x03AC, 0x014C, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_RXC__AUDIOMIX_SAI5_RX_BCLK                = IOMUX_PAD(0x03AC, 0x014C, 1, 0x04F4, 1, 0),
++	MX8MP_PAD_SAI1_RXC__AUDIOMIX_CLK                         = IOMUX_PAD(0x03AC, 0x014C, 3, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_RXC__ENET1_1588_EVENT0_OUT                = IOMUX_PAD(0x03AC, 0x014C, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_RXC__GPIO4_IO01                           = IOMUX_PAD(0x03AC, 0x014C, 5, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI1_RXD0__AUDIOMIX_SAI1_RX_DATA00             = IOMUX_PAD(0x03B0, 0x0150, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_RXD0__AUDIOMIX_SAI5_RX_DATA00             = IOMUX_PAD(0x03B0, 0x0150, 1, 0x04F8, 1, 0),
++	MX8MP_PAD_SAI1_RXD0__AUDIOMIX_SAI1_TX_DATA01             = IOMUX_PAD(0x03B0, 0x0150, 2, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_RXD0__AUDIOMIX_BIT_STREAM00               = IOMUX_PAD(0x03B0, 0x0150, 3, 0x04C0, 3, 0),
++	MX8MP_PAD_SAI1_RXD0__ENET1_1588_EVENT1_IN                = IOMUX_PAD(0x03B0, 0x0150, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_RXD0__GPIO4_IO02                          = IOMUX_PAD(0x03B0, 0x0150, 5, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI1_RXD1__AUDIOMIX_SAI1_RX_DATA01             = IOMUX_PAD(0x03B4, 0x0154, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_RXD1__AUDIOMIX_SAI5_RX_DATA01             = IOMUX_PAD(0x03B4, 0x0154, 1, 0x04FC, 1, 0),
++	MX8MP_PAD_SAI1_RXD1__AUDIOMIX_BIT_STREAM01               = IOMUX_PAD(0x03B4, 0x0154, 3, 0x04C4, 3, 0),
++	MX8MP_PAD_SAI1_RXD1__ENET1_1588_EVENT1_OUT               = IOMUX_PAD(0x03B4, 0x0154, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_RXD1__GPIO4_IO03                          = IOMUX_PAD(0x03B4, 0x0154, 5, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI1_RXD2__AUDIOMIX_SAI1_RX_DATA02             = IOMUX_PAD(0x03B8, 0x0158, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_RXD2__AUDIOMIX_SAI5_RX_DATA02             = IOMUX_PAD(0x03B8, 0x0158, 1, 0x0500, 1, 0),
++	MX8MP_PAD_SAI1_RXD2__AUDIOMIX_BIT_STREAM02               = IOMUX_PAD(0x03B8, 0x0158, 3, 0x04C8, 3, 0),
++	MX8MP_PAD_SAI1_RXD2__ENET1_MDC                           = IOMUX_PAD(0x03B8, 0x0158, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_RXD2__GPIO4_IO04                          = IOMUX_PAD(0x03B8, 0x0158, 5, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI1_RXD3__AUDIOMIX_SAI1_RX_DATA03             = IOMUX_PAD(0x03BC, 0x015C, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_RXD3__AUDIOMIX_SAI5_RX_DATA03             = IOMUX_PAD(0x03BC, 0x015C, 1, 0x0504, 1, 0),
++	MX8MP_PAD_SAI1_RXD3__AUDIOMIX_BIT_STREAM03               = IOMUX_PAD(0x03BC, 0x015C, 3, 0x04CC, 3, 0),
++	MX8MP_PAD_SAI1_RXD3__ENET1_MDIO                          = IOMUX_PAD(0x03BC, 0x015C, 4, 0x057C, 1, 0),
++	MX8MP_PAD_SAI1_RXD3__GPIO4_IO05                          = IOMUX_PAD(0x03BC, 0x015C, 5, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI1_RXD4__AUDIOMIX_SAI1_RX_DATA04             = IOMUX_PAD(0x03C0, 0x0160, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_RXD4__AUDIOMIX_SAI6_TX_BCLK               = IOMUX_PAD(0x03C0, 0x0160, 1, 0x0524, 1, 0),
++	MX8MP_PAD_SAI1_RXD4__AUDIOMIX_SAI6_RX_BCLK               = IOMUX_PAD(0x03C0, 0x0160, 2, 0x0518, 1, 0),
++	MX8MP_PAD_SAI1_RXD4__ENET1_RGMII_RD0                     = IOMUX_PAD(0x03C0, 0x0160, 4, 0x0580, 1, 0),
++	MX8MP_PAD_SAI1_RXD4__GPIO4_IO06                          = IOMUX_PAD(0x03C0, 0x0160, 5, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI1_RXD5__AUDIOMIX_SAI1_RX_DATA05             = IOMUX_PAD(0x03C4, 0x0164, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_RXD5__AUDIOMIX_SAI6_TX_DATA00             = IOMUX_PAD(0x03C4, 0x0164, 1, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_RXD5__AUDIOMIX_SAI6_RX_DATA00             = IOMUX_PAD(0x03C4, 0x0164, 2, 0x051C, 1, 0),
++	MX8MP_PAD_SAI1_RXD5__AUDIOMIX_SAI1_RX_SYNC               = IOMUX_PAD(0x03C4, 0x0164, 3, 0x04D0, 1, 0),
++	MX8MP_PAD_SAI1_RXD5__ENET1_RGMII_RD1                     = IOMUX_PAD(0x03C4, 0x0164, 4, 0x0584, 1, 0),
++	MX8MP_PAD_SAI1_RXD5__GPIO4_IO07                          = IOMUX_PAD(0x03C4, 0x0164, 5, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI1_RXD6__AUDIOMIX_SAI1_RX_DATA06             = IOMUX_PAD(0x03C8, 0x0168, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_RXD6__AUDIOMIX_SAI6_TX_SYNC               = IOMUX_PAD(0x03C8, 0x0168, 1, 0x0528, 1, 0),
++	MX8MP_PAD_SAI1_RXD6__AUDIOMIX_SAI6_RX_SYNC               = IOMUX_PAD(0x03C8, 0x0168, 2, 0x0520, 1, 0),
++	MX8MP_PAD_SAI1_RXD6__ENET1_RGMII_RD2                     = IOMUX_PAD(0x03C8, 0x0168, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_RXD6__GPIO4_IO08                          = IOMUX_PAD(0x03C8, 0x0168, 5, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI1_RXD7__AUDIOMIX_SAI1_RX_DATA07             = IOMUX_PAD(0x03CC, 0x016C, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_RXD7__AUDIOMIX_SAI6_MCLK                  = IOMUX_PAD(0x03CC, 0x016C, 1, 0x0514, 1, 0),
++	MX8MP_PAD_SAI1_RXD7__AUDIOMIX_SAI1_TX_SYNC               = IOMUX_PAD(0x03CC, 0x016C, 2, 0x04D8, 3, 0),
++	MX8MP_PAD_SAI1_RXD7__AUDIOMIX_SAI1_TX_DATA04             = IOMUX_PAD(0x03CC, 0x016C, 3, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_RXD7__ENET1_RGMII_RD3                     = IOMUX_PAD(0x03CC, 0x016C, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_RXD7__GPIO4_IO09                          = IOMUX_PAD(0x03CC, 0x016C, 5, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI1_TXFS__AUDIOMIX_SAI1_TX_SYNC               = IOMUX_PAD(0x03D0, 0x0170, 0, 0x04D8, 4, 0),
++	MX8MP_PAD_SAI1_TXFS__AUDIOMIX_SAI5_TX_SYNC               = IOMUX_PAD(0x03D0, 0x0170, 1, 0x0510, 1, 0),
++	MX8MP_PAD_SAI1_TXFS__ENET1_RGMII_RX_CTL                  = IOMUX_PAD(0x03D0, 0x0170, 4, 0x0588, 1, 0),
++	MX8MP_PAD_SAI1_TXFS__GPIO4_IO10                          = IOMUX_PAD(0x03D0, 0x0170, 5, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI1_TXC__AUDIOMIX_SAI1_TX_BCLK                = IOMUX_PAD(0x03D4, 0x0174, 0, 0x04D4, 1, 0),
++	MX8MP_PAD_SAI1_TXC__AUDIOMIX_SAI5_TX_BCLK                = IOMUX_PAD(0x03D4, 0x0174, 1, 0x050C, 1, 0),
++	MX8MP_PAD_SAI1_TXC__ENET1_RGMII_RXC                      = IOMUX_PAD(0x03D4, 0x0174, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_TXC__GPIO4_IO11                           = IOMUX_PAD(0x03D4, 0x0174, 5, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI1_TXD0__AUDIOMIX_SAI1_TX_DATA00             = IOMUX_PAD(0x03D8, 0x0178, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_TXD0__AUDIOMIX_SAI5_TX_DATA00             = IOMUX_PAD(0x03D8, 0x0178, 1, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_TXD0__ENET1_RGMII_TD0                     = IOMUX_PAD(0x03D8, 0x0178, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_TXD0__GPIO4_IO12                          = IOMUX_PAD(0x03D8, 0x0178, 5, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI1_TXD1__AUDIOMIX_SAI1_TX_DATA01             = IOMUX_PAD(0x03DC, 0x017C, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_TXD1__AUDIOMIX_SAI5_TX_DATA01             = IOMUX_PAD(0x03DC, 0x017C, 1, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_TXD1__ENET1_RGMII_TD1                     = IOMUX_PAD(0x03DC, 0x017C, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_TXD1__GPIO4_IO13                          = IOMUX_PAD(0x03DC, 0x017C, 5, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI1_TXD2__AUDIOMIX_SAI1_TX_DATA02             = IOMUX_PAD(0x03E0, 0x0180, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_TXD2__AUDIOMIX_SAI5_TX_DATA02             = IOMUX_PAD(0x03E0, 0x0180, 1, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_TXD2__ENET1_RGMII_TD2                     = IOMUX_PAD(0x03E0, 0x0180, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_TXD2__GPIO4_IO14                          = IOMUX_PAD(0x03E0, 0x0180, 5, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI1_TXD3__AUDIOMIX_SAI1_TX_DATA03             = IOMUX_PAD(0x03E4, 0x0184, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_TXD3__AUDIOMIX_SAI5_TX_DATA03             = IOMUX_PAD(0x03E4, 0x0184, 1, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_TXD3__ENET1_RGMII_TD3                     = IOMUX_PAD(0x03E4, 0x0184, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_TXD3__GPIO4_IO15                          = IOMUX_PAD(0x03E4, 0x0184, 5, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI1_TXD4__AUDIOMIX_SAI1_TX_DATA04             = IOMUX_PAD(0x03E8, 0x0188, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_TXD4__AUDIOMIX_SAI6_RX_BCLK               = IOMUX_PAD(0x03E8, 0x0188, 1, 0x0518, 2, 0),
++	MX8MP_PAD_SAI1_TXD4__AUDIOMIX_SAI6_TX_BCLK               = IOMUX_PAD(0x03E8, 0x0188, 2, 0x0524, 2, 0),
++	MX8MP_PAD_SAI1_TXD4__ENET1_RGMII_TX_CTL                  = IOMUX_PAD(0x03E8, 0x0188, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_TXD4__GPIO4_IO16                          = IOMUX_PAD(0x03E8, 0x0188, 5, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI1_TXD5__AUDIOMIX_SAI1_TX_DATA05             = IOMUX_PAD(0x03EC, 0x018C, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_TXD5__AUDIOMIX_SAI6_RX_DATA00             = IOMUX_PAD(0x03EC, 0x018C, 1, 0x051C, 2, 0),
++	MX8MP_PAD_SAI1_TXD5__AUDIOMIX_SAI6_TX_DATA00             = IOMUX_PAD(0x03EC, 0x018C, 2, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_TXD5__ENET1_RGMII_TXC                     = IOMUX_PAD(0x03EC, 0x018C, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_TXD5__GPIO4_IO17                          = IOMUX_PAD(0x03EC, 0x018C, 5, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI1_TXD6__AUDIOMIX_SAI1_TX_DATA06             = IOMUX_PAD(0x03F0, 0x0190, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_TXD6__AUDIOMIX_SAI6_RX_SYNC               = IOMUX_PAD(0x03F0, 0x0190, 1, 0x0520, 2, 0),
++	MX8MP_PAD_SAI1_TXD6__AUDIOMIX_SAI6_TX_SYNC               = IOMUX_PAD(0x03F0, 0x0190, 2, 0x0528, 2, 0),
++	MX8MP_PAD_SAI1_TXD6__ENET1_RX_ER                         = IOMUX_PAD(0x03F0, 0x0190, 4, 0x058C, 1, 0),
++	MX8MP_PAD_SAI1_TXD6__GPIO4_IO18                          = IOMUX_PAD(0x03F0, 0x0190, 5, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI1_TXD7__AUDIOMIX_SAI1_TX_DATA07             = IOMUX_PAD(0x03F4, 0x0194, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_TXD7__AUDIOMIX_SAI6_MCLK                  = IOMUX_PAD(0x03F4, 0x0194, 1, 0x0514, 2, 0),
++	MX8MP_PAD_SAI1_TXD7__AUDIOMIX_CLK                        = IOMUX_PAD(0x03F4, 0x0194, 3, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_TXD7__ENET1_TX_ER                         = IOMUX_PAD(0x03F4, 0x0194, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_TXD7__GPIO4_IO19                          = IOMUX_PAD(0x03F4, 0x0194, 5, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI1_MCLK__AUDIOMIX_SAI1_MCLK                  = IOMUX_PAD(0x03F8, 0x0198, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SAI1_MCLK__AUDIOMIX_SAI5_MCLK                  = IOMUX_PAD(0x03F8, 0x0198, 1, 0x04F0, 1, 0),
++	MX8MP_PAD_SAI1_MCLK__AUDIOMIX_SAI1_TX_BCLK               = IOMUX_PAD(0x03F8, 0x0198, 2, 0x04D4, 2, 0),
++	MX8MP_PAD_SAI1_MCLK__ENET1_TX_CLK                        = IOMUX_PAD(0x03F8, 0x0198, 4, 0x0578, 1, 0),
++	MX8MP_PAD_SAI1_MCLK__GPIO4_IO20                          = IOMUX_PAD(0x03F8, 0x0198, 5, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI2_RXFS__AUDIOMIX_SAI2_RX_SYNC               = IOMUX_PAD(0x03FC, 0x019C, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_RXFS__AUDIOMIX_SAI5_TX_SYNC               = IOMUX_PAD(0x03FC, 0x019C, 1, 0x0510, 2, 0),
++	MX8MP_PAD_SAI2_RXFS__AUDIOMIX_SAI5_TX_DATA01             = IOMUX_PAD(0x03FC, 0x019C, 2, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_RXFS__AUDIOMIX_SAI2_RX_DATA01             = IOMUX_PAD(0x03FC, 0x019C, 3, 0x04DC, 0, 0),
++	MX8MP_PAD_SAI2_RXFS__UART1_DCE_TX                        = IOMUX_PAD(0x03FC, 0x019C, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_RXFS__UART1_DTE_RX                        = IOMUX_PAD(0x03FC, 0x019C, 4, 0x05E8, 2, 0),
++	MX8MP_PAD_SAI2_RXFS__GPIO4_IO21                          = IOMUX_PAD(0x03FC, 0x019C, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_RXFS__AUDIOMIX_BIT_STREAM02               = IOMUX_PAD(0x03FC, 0x019C, 6, 0x04C8, 4, 0),
++	MX8MP_PAD_SAI2_RXFS__SIM_M_HSIZE00                       = IOMUX_PAD(0x03FC, 0x019C, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI2_RXC__AUDIOMIX_SAI2_RX_BCLK                = IOMUX_PAD(0x0400, 0x01A0, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_RXC__AUDIOMIX_SAI5_TX_BCLK                = IOMUX_PAD(0x0400, 0x01A0, 1, 0x050C, 2, 0),
++	MX8MP_PAD_SAI2_RXC__CAN1_TX                              = IOMUX_PAD(0x0400, 0x01A0, 3, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_RXC__UART1_DCE_RX                         = IOMUX_PAD(0x0400, 0x01A0, 4, 0x05E8, 3, 0),
++	MX8MP_PAD_SAI2_RXC__UART1_DTE_TX                         = IOMUX_PAD(0x0400, 0x01A0, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_RXC__GPIO4_IO22                           = IOMUX_PAD(0x0400, 0x01A0, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_RXC__AUDIOMIX_BIT_STREAM01                = IOMUX_PAD(0x0400, 0x01A0, 6, 0x04C4, 4, 0),
++	MX8MP_PAD_SAI2_RXC__SIM_M_HSIZE01                        = IOMUX_PAD(0x0400, 0x01A0, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI2_RXD0__AUDIOMIX_SAI2_RX_DATA00             = IOMUX_PAD(0x0404, 0x01A4, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_RXD0__AUDIOMIX_SAI5_TX_DATA00             = IOMUX_PAD(0x0404, 0x01A4, 1, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_RXD0__ENET_QOS_1588_EVENT2_OUT            = IOMUX_PAD(0x0404, 0x01A4, 2, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_RXD0__AUDIOMIX_SAI2_TX_DATA01             = IOMUX_PAD(0x0404, 0x01A4, 3, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_RXD0__UART1_DCE_RTS                       = IOMUX_PAD(0x0404, 0x01A4, 4, 0x05E4, 2, 0),
++	MX8MP_PAD_SAI2_RXD0__UART1_DTE_CTS                       = IOMUX_PAD(0x0404, 0x01A4, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_RXD0__GPIO4_IO23                          = IOMUX_PAD(0x0404, 0x01A4, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_RXD0__AUDIOMIX_BIT_STREAM03               = IOMUX_PAD(0x0404, 0x01A4, 6, 0x04CC, 4, 0),
++	MX8MP_PAD_SAI2_RXD0__SIM_M_HSIZE02                       = IOMUX_PAD(0x0404, 0x01A4, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI2_TXFS__AUDIOMIX_SAI2_TX_SYNC               = IOMUX_PAD(0x0408, 0x01A8, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_TXFS__AUDIOMIX_SAI5_TX_DATA01             = IOMUX_PAD(0x0408, 0x01A8, 1, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_TXFS__ENET_QOS_1588_EVENT3_OUT            = IOMUX_PAD(0x0408, 0x01A8, 2, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_TXFS__AUDIOMIX_SAI2_TX_DATA01             = IOMUX_PAD(0x0408, 0x01A8, 3, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_TXFS__UART1_DCE_CTS                       = IOMUX_PAD(0x0408, 0x01A8, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_TXFS__UART1_DTE_RTS                       = IOMUX_PAD(0x0408, 0x01A8, 4, 0x05E4, 3, 0),
++	MX8MP_PAD_SAI2_TXFS__GPIO4_IO24                          = IOMUX_PAD(0x0408, 0x01A8, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_TXFS__AUDIOMIX_BIT_STREAM02               = IOMUX_PAD(0x0408, 0x01A8, 6, 0x04C8, 5, 0),
++	MX8MP_PAD_SAI2_TXFS__SIM_M_HWRITE                        = IOMUX_PAD(0x0408, 0x01A8, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI2_TXC__AUDIOMIX_SAI2_TX_BCLK                = IOMUX_PAD(0x040C, 0x01AC, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_TXC__AUDIOMIX_SAI5_TX_DATA02              = IOMUX_PAD(0x040C, 0x01AC, 1, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_TXC__CAN1_RX                              = IOMUX_PAD(0x040C, 0x01AC, 3, 0x054C, 1, 0),
++	MX8MP_PAD_SAI2_TXC__GPIO4_IO25                           = IOMUX_PAD(0x040C, 0x01AC, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_TXC__AUDIOMIX_BIT_STREAM01                = IOMUX_PAD(0x040C, 0x01AC, 6, 0x04C4, 5, 0),
++	MX8MP_PAD_SAI2_TXC__SIM_M_HREADYOUT                      = IOMUX_PAD(0x040C, 0x01AC, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI2_TXD0__AUDIOMIX_SAI2_TX_DATA00             = IOMUX_PAD(0x0410, 0x01B0, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_TXD0__AUDIOMIX_SAI5_TX_DATA03             = IOMUX_PAD(0x0410, 0x01B0, 1, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_TXD0__ENET_QOS_1588_EVENT2_IN             = IOMUX_PAD(0x0410, 0x01B0, 2, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_TXD0__CAN2_TX                             = IOMUX_PAD(0x0410, 0x01B0, 3, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_TXD0__ENET_QOS_1588_EVENT2_AUX_IN         = IOMUX_PAD(0x0410, 0x01B0, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_TXD0__GPIO4_IO26                          = IOMUX_PAD(0x0410, 0x01B0, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_TXD0__CCMSRCGPCMIX_BOOT_MODE04            = IOMUX_PAD(0x0410, 0x01B0, 6, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_TXD0__TPSMP_CLK                           = IOMUX_PAD(0x0410, 0x01B0, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI2_MCLK__AUDIOMIX_SAI2_MCLK                  = IOMUX_PAD(0x0414, 0x01B4, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_MCLK__AUDIOMIX_SAI5_MCLK                  = IOMUX_PAD(0x0414, 0x01B4, 1, 0x04F0, 2, 0),
++	MX8MP_PAD_SAI2_MCLK__ENET_QOS_1588_EVENT3_IN             = IOMUX_PAD(0x0414, 0x01B4, 2, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_MCLK__CAN2_RX                             = IOMUX_PAD(0x0414, 0x01B4, 3, 0x0550, 1, 0),
++	MX8MP_PAD_SAI2_MCLK__ENET_QOS_1588_EVENT3_AUX_IN         = IOMUX_PAD(0x0414, 0x01B4, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_MCLK__GPIO4_IO27                          = IOMUX_PAD(0x0414, 0x01B4, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SAI2_MCLK__AUDIOMIX_SAI3_MCLK                  = IOMUX_PAD(0x0414, 0x01B4, 6, 0x04E0, 1, 0),
++	MX8MP_PAD_SAI2_MCLK__TPSMP_HDATA_DIR                     = IOMUX_PAD(0x0414, 0x01B4, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI3_RXFS__AUDIOMIX_SAI3_RX_SYNC               = IOMUX_PAD(0x0418, 0x01B8, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SAI3_RXFS__AUDIOMIX_SAI2_RX_DATA01             = IOMUX_PAD(0x0418, 0x01B8, 1, 0x04DC, 1, 0),
++	MX8MP_PAD_SAI3_RXFS__AUDIOMIX_SAI5_RX_SYNC               = IOMUX_PAD(0x0418, 0x01B8, 2, 0x0508, 2, 0),
++	MX8MP_PAD_SAI3_RXFS__AUDIOMIX_SAI3_RX_DATA01             = IOMUX_PAD(0x0418, 0x01B8, 3, 0x0000, 0, 0),
++	MX8MP_PAD_SAI3_RXFS__AUDIOMIX_SPDIF_IN                   = IOMUX_PAD(0x0418, 0x01B8, 4, 0x0544, 2, 0),
++	MX8MP_PAD_SAI3_RXFS__GPIO4_IO28                          = IOMUX_PAD(0x0418, 0x01B8, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SAI3_RXFS__AUDIOMIX_BIT_STREAM00               = IOMUX_PAD(0x0418, 0x01B8, 6, 0x04C0, 4, 0),
++	MX8MP_PAD_SAI3_RXFS__TPSMP_HTRANS00                      = IOMUX_PAD(0x0418, 0x01B8, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI3_RXC__AUDIOMIX_SAI3_RX_BCLK                = IOMUX_PAD(0x041C, 0x01BC, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SAI3_RXC__AUDIOMIX_SAI2_RX_DATA02              = IOMUX_PAD(0x041C, 0x01BC, 1, 0x0000, 0, 0),
++	MX8MP_PAD_SAI3_RXC__AUDIOMIX_SAI5_RX_BCLK                = IOMUX_PAD(0x041C, 0x01BC, 2, 0x04F4, 2, 0),
++	MX8MP_PAD_SAI3_RXC__GPT1_CLK                             = IOMUX_PAD(0x041C, 0x01BC, 3, 0x059C, 0, 0),
++	MX8MP_PAD_SAI3_RXC__UART2_DCE_CTS                        = IOMUX_PAD(0x041C, 0x01BC, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SAI3_RXC__UART2_DTE_RTS                        = IOMUX_PAD(0x041C, 0x01BC, 4, 0x05EC, 2, 0),
++	MX8MP_PAD_SAI3_RXC__GPIO4_IO29                           = IOMUX_PAD(0x041C, 0x01BC, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SAI3_RXC__AUDIOMIX_CLK                         = IOMUX_PAD(0x041C, 0x01BC, 6, 0x0000, 0, 0),
++	MX8MP_PAD_SAI3_RXC__TPSMP_HTRANS01                       = IOMUX_PAD(0x041C, 0x01BC, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI3_RXD__AUDIOMIX_SAI3_RX_DATA00              = IOMUX_PAD(0x0420, 0x01C0, 0, 0x04E4, 1, 0),
++	MX8MP_PAD_SAI3_RXD__AUDIOMIX_SAI2_RX_DATA03              = IOMUX_PAD(0x0420, 0x01C0, 1, 0x0000, 0, 0),
++	MX8MP_PAD_SAI3_RXD__AUDIOMIX_SAI5_RX_DATA00              = IOMUX_PAD(0x0420, 0x01C0, 2, 0x04F8, 2, 0),
++	MX8MP_PAD_SAI3_RXD__UART2_DCE_RTS                        = IOMUX_PAD(0x0420, 0x01C0, 4, 0x05EC, 3, 0),
++	MX8MP_PAD_SAI3_RXD__UART2_DTE_CTS                        = IOMUX_PAD(0x0420, 0x01C0, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SAI3_RXD__GPIO4_IO30                           = IOMUX_PAD(0x0420, 0x01C0, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SAI3_RXD__AUDIOMIX_BIT_STREAM01                = IOMUX_PAD(0x0420, 0x01C0, 6, 0x04C4, 6, 0),
++	MX8MP_PAD_SAI3_RXD__TPSMP_HDATA00                        = IOMUX_PAD(0x0420, 0x01C0, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI3_TXFS__AUDIOMIX_SAI3_TX_SYNC               = IOMUX_PAD(0x0424, 0x01C4, 0, 0x04EC, 1, 0),
++	MX8MP_PAD_SAI3_TXFS__AUDIOMIX_SAI2_TX_DATA01             = IOMUX_PAD(0x0424, 0x01C4, 1, 0x0000, 0, 0),
++	MX8MP_PAD_SAI3_TXFS__AUDIOMIX_SAI5_RX_DATA01             = IOMUX_PAD(0x0424, 0x01C4, 2, 0x04FC, 2, 0),
++	MX8MP_PAD_SAI3_TXFS__AUDIOMIX_SAI3_TX_DATA01             = IOMUX_PAD(0x0424, 0x01C4, 3, 0x0000, 0, 0),
++	MX8MP_PAD_SAI3_TXFS__UART2_DCE_RX                        = IOMUX_PAD(0x0424, 0x01C4, 4, 0x05F0, 4, 0),
++	MX8MP_PAD_SAI3_TXFS__UART2_DTE_TX                        = IOMUX_PAD(0x0424, 0x01C4, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SAI3_TXFS__GPIO4_IO31                          = IOMUX_PAD(0x0424, 0x01C4, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SAI3_TXFS__AUDIOMIX_BIT_STREAM03               = IOMUX_PAD(0x0424, 0x01C4, 6, 0x04CC, 5, 0),
++	MX8MP_PAD_SAI3_TXFS__TPSMP_HDATA01                       = IOMUX_PAD(0x0424, 0x01C4, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI3_TXC__AUDIOMIX_SAI3_TX_BCLK                = IOMUX_PAD(0x0428, 0x01C8, 0, 0x04E8, 1, 0),
++	MX8MP_PAD_SAI3_TXC__AUDIOMIX_SAI2_TX_DATA02              = IOMUX_PAD(0x0428, 0x01C8, 1, 0x0000, 0, 0),
++	MX8MP_PAD_SAI3_TXC__AUDIOMIX_SAI5_RX_DATA02              = IOMUX_PAD(0x0428, 0x01C8, 2, 0x0500, 2, 0),
++	MX8MP_PAD_SAI3_TXC__GPT1_CAPTURE1                        = IOMUX_PAD(0x0428, 0x01C8, 3, 0x0594, 0, 0),
++	MX8MP_PAD_SAI3_TXC__UART2_DCE_TX                         = IOMUX_PAD(0x0428, 0x01C8, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SAI3_TXC__UART2_DTE_RX                         = IOMUX_PAD(0x0428, 0x01C8, 4, 0x05F0, 5, 0),
++	MX8MP_PAD_SAI3_TXC__GPIO5_IO00                           = IOMUX_PAD(0x0428, 0x01C8, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SAI3_TXC__AUDIOMIX_BIT_STREAM02                = IOMUX_PAD(0x0428, 0x01C8, 6, 0x04C8, 6, 0),
++	MX8MP_PAD_SAI3_TXC__TPSMP_HDATA02                        = IOMUX_PAD(0x0428, 0x01C8, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI3_TXD__AUDIOMIX_SAI3_TX_DATA00              = IOMUX_PAD(0x042C, 0x01CC, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SAI3_TXD__AUDIOMIX_SAI2_TX_DATA03              = IOMUX_PAD(0x042C, 0x01CC, 1, 0x0000, 0, 0),
++	MX8MP_PAD_SAI3_TXD__AUDIOMIX_SAI5_RX_DATA03              = IOMUX_PAD(0x042C, 0x01CC, 2, 0x0504, 2, 0),
++	MX8MP_PAD_SAI3_TXD__GPT1_CAPTURE2                        = IOMUX_PAD(0x042C, 0x01CC, 3, 0x0598, 0, 0),
++	MX8MP_PAD_SAI3_TXD__AUDIOMIX_SPDIF_EXT_CLK               = IOMUX_PAD(0x042C, 0x01CC, 4, 0x0548, 0, 0),
++	MX8MP_PAD_SAI3_TXD__GPIO5_IO01                           = IOMUX_PAD(0x042C, 0x01CC, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SAI3_TXD__CCMSRCGPCMIX_BOOT_MODE05             = IOMUX_PAD(0x042C, 0x01CC, 6, 0x0000, 0, 0),
++	MX8MP_PAD_SAI3_TXD__TPSMP_HDATA03                        = IOMUX_PAD(0x042C, 0x01CC, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_SAI3_MCLK__AUDIOMIX_SAI3_MCLK                  = IOMUX_PAD(0x0430, 0x01D0, 0, 0x04E0, 2, 0),
++	MX8MP_PAD_SAI3_MCLK__PWM4_OUT                            = IOMUX_PAD(0x0430, 0x01D0, 1, 0x0000, 0, 0),
++	MX8MP_PAD_SAI3_MCLK__AUDIOMIX_SAI5_MCLK                  = IOMUX_PAD(0x0430, 0x01D0, 2, 0x04F0, 3, 0),
++	MX8MP_PAD_SAI3_MCLK__AUDIOMIX_SPDIF_OUT                  = IOMUX_PAD(0x0430, 0x01D0, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SAI3_MCLK__GPIO5_IO02                          = IOMUX_PAD(0x0430, 0x01D0, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SAI3_MCLK__AUDIOMIX_SPDIF_IN                   = IOMUX_PAD(0x0430, 0x01D0, 6, 0x0544, 3, 0),
++	MX8MP_PAD_SAI3_MCLK__TPSMP_HDATA04                       = IOMUX_PAD(0x0430, 0x01D0, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_SPDIF_TX__AUDIOMIX_SPDIF_OUT                   = IOMUX_PAD(0x0434, 0x01D4, 0, 0x0000, 0, 0),
++	MX8MP_PAD_SPDIF_TX__PWM3_OUT                             = IOMUX_PAD(0x0434, 0x01D4, 1, 0x0000, 0, 0),
++	MX8MP_PAD_SPDIF_TX__I2C5_SCL                             = IOMUX_PAD(0x0434, 0x01D4, 2 | IOMUX_CONFIG_SION, 0x05C4, 2, 0),
++	MX8MP_PAD_SPDIF_TX__GPT1_COMPARE1                        = IOMUX_PAD(0x0434, 0x01D4, 3, 0x0000, 0, 0),
++	MX8MP_PAD_SPDIF_TX__CAN1_TX                              = IOMUX_PAD(0x0434, 0x01D4, 4, 0x0000, 0, 0),
++	MX8MP_PAD_SPDIF_TX__GPIO5_IO03                           = IOMUX_PAD(0x0434, 0x01D4, 5, 0x0000, 0, 0),
++
++	MX8MP_PAD_SPDIF_RX__AUDIOMIX_SPDIF_IN                    = IOMUX_PAD(0x0438, 0x01D8, 0, 0x0544, 4, 0),
++	MX8MP_PAD_SPDIF_RX__PWM2_OUT                             = IOMUX_PAD(0x0438, 0x01D8, 1, 0x0000, 0, 0),
++	MX8MP_PAD_SPDIF_RX__I2C5_SDA                             = IOMUX_PAD(0x0438, 0x01D8, 2 | IOMUX_CONFIG_SION, 0x05C8, 2, 0),
++	MX8MP_PAD_SPDIF_RX__GPT1_COMPARE2                        = IOMUX_PAD(0x0438, 0x01D8, 3, 0x0000, 0, 0),
++	MX8MP_PAD_SPDIF_RX__CAN1_RX                              = IOMUX_PAD(0x0438, 0x01D8, 4, 0x054C, 2, 0),
++	MX8MP_PAD_SPDIF_RX__GPIO5_IO04                           = IOMUX_PAD(0x0438, 0x01D8, 5, 0x0000, 0, 0),
++	MX8MP_PAD_SPDIF_EXT_CLK__GPT1_COMPARE3                   = IOMUX_PAD(0x043C, 0x01DC, 3, 0x0000, 0, 0),
++	MX8MP_PAD_SPDIF_EXT_CLK__GPIO5_IO05                      = IOMUX_PAD(0x043C, 0x01DC, 5, 0x0000, 0, 0),
++
++	MX8MP_PAD_SPDIF_EXT_CLK__AUDIOMIX_SPDIF_EXT_CLK          = IOMUX_PAD(0x043C, 0x01DC, 0, 0x0548, 1, 0),
++	MX8MP_PAD_SPDIF_EXT_CLK__PWM1_OUT                        = IOMUX_PAD(0x043C, 0x01DC, 1, 0x0000, 0, 0),
++
++	MX8MP_PAD_ECSPI1_SCLK__ECSPI1_SCLK                       = IOMUX_PAD(0x0440, 0x01E0, 0, 0x0558, 0, 0),
++	MX8MP_PAD_ECSPI1_SCLK__UART3_DCE_RX                      = IOMUX_PAD(0x0440, 0x01E0, 1, 0x05F8, 4, 0),
++	MX8MP_PAD_ECSPI1_SCLK__UART3_DTE_TX                      = IOMUX_PAD(0x0440, 0x01E0, 1, 0x0000, 0, 0),
++	MX8MP_PAD_ECSPI1_SCLK__I2C1_SCL                          = IOMUX_PAD(0x0440, 0x01E0, 2 | IOMUX_CONFIG_SION, 0x05A4, 1, 0),
++	MX8MP_PAD_ECSPI1_SCLK__AUDIOMIX_SAI7_RX_SYNC             = IOMUX_PAD(0x0440, 0x01E0, 3, 0x0538, 1, 0),
++	MX8MP_PAD_ECSPI1_SCLK__GPIO5_IO06                        = IOMUX_PAD(0x0440, 0x01E0, 5, 0x0000, 0, 0),
++	MX8MP_PAD_ECSPI1_SCLK__TPSMP_HDATA08                     = IOMUX_PAD(0x0440, 0x01E0, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_ECSPI1_MOSI__ECSPI1_MOSI                       = IOMUX_PAD(0x0444, 0x01E4, 0, 0x0560, 0, 0),
++	MX8MP_PAD_ECSPI1_MOSI__UART3_DCE_TX                      = IOMUX_PAD(0x0444, 0x01E4, 1, 0x0000, 0, 0),
++	MX8MP_PAD_ECSPI1_MOSI__UART3_DTE_RX                      = IOMUX_PAD(0x0444, 0x01E4, 1, 0x05F8, 5, 0),
++	MX8MP_PAD_ECSPI1_MOSI__I2C1_SDA                          = IOMUX_PAD(0x0444, 0x01E4, 2 | IOMUX_CONFIG_SION, 0x05A8, 1, 0),
++	MX8MP_PAD_ECSPI1_MOSI__AUDIOMIX_SAI7_RX_BCLK             = IOMUX_PAD(0x0444, 0x01E4, 3, 0x0530, 1, 0),
++	MX8MP_PAD_ECSPI1_MOSI__GPIO5_IO07                        = IOMUX_PAD(0x0444, 0x01E4, 5, 0x0000, 0, 0),
++	MX8MP_PAD_ECSPI1_MOSI__TPSMP_HDATA09                     = IOMUX_PAD(0x0444, 0x01E4, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_ECSPI1_MISO__ECSPI1_MISO                       = IOMUX_PAD(0x0448, 0x01E8, 0, 0x055C, 0, 0),
++	MX8MP_PAD_ECSPI1_MISO__UART3_DCE_CTS                     = IOMUX_PAD(0x0448, 0x01E8, 1, 0x0000, 0, 0),
++	MX8MP_PAD_ECSPI1_MISO__UART3_DTE_RTS                     = IOMUX_PAD(0x0448, 0x01E8, 1, 0x05F4, 2, 0),
++	MX8MP_PAD_ECSPI1_MISO__I2C2_SCL                          = IOMUX_PAD(0x0448, 0x01E8, 2 | IOMUX_CONFIG_SION, 0x05AC, 1, 0),
++	MX8MP_PAD_ECSPI1_MISO__AUDIOMIX_SAI7_RX_DATA00           = IOMUX_PAD(0x0448, 0x01E8, 3, 0x0534, 1, 0),
++	MX8MP_PAD_ECSPI1_MISO__GPIO5_IO08                        = IOMUX_PAD(0x0448, 0x01E8, 5, 0x0000, 0, 0),
++	MX8MP_PAD_ECSPI1_MISO__TPSMP_HDATA10                     = IOMUX_PAD(0x0448, 0x01E8, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_ECSPI1_SS0__ECSPI1_SS0                         = IOMUX_PAD(0x044C, 0x01EC, 0, 0x0564, 0, 0),
++	MX8MP_PAD_ECSPI1_SS0__UART3_DCE_RTS                      = IOMUX_PAD(0x044C, 0x01EC, 1, 0x05F4, 3, 0),
++	MX8MP_PAD_ECSPI1_SS0__UART3_DTE_CTS                      = IOMUX_PAD(0x044C, 0x01EC, 1, 0x0000, 0, 0),
++	MX8MP_PAD_ECSPI1_SS0__I2C2_SDA                           = IOMUX_PAD(0x044C, 0x01EC, 2 | IOMUX_CONFIG_SION, 0x05B0, 1, 0),
++	MX8MP_PAD_ECSPI1_SS0__AUDIOMIX_SAI7_TX_SYNC              = IOMUX_PAD(0x044C, 0x01EC, 3, 0x0540, 1, 0),
++	MX8MP_PAD_ECSPI1_SS0__GPIO5_IO09                         = IOMUX_PAD(0x044C, 0x01EC, 5, 0x0000, 0, 0),
++	MX8MP_PAD_ECSPI1_SS0__TPSMP_HDATA11                      = IOMUX_PAD(0x044C, 0x01EC, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_ECSPI2_SCLK__ECSPI2_SCLK                       = IOMUX_PAD(0x0450, 0x01F0, 0, 0x0568, 1, 0),
++	MX8MP_PAD_ECSPI2_SCLK__UART4_DCE_RX                      = IOMUX_PAD(0x0450, 0x01F0, 1, 0x0600, 6, 0),
++	MX8MP_PAD_ECSPI2_SCLK__UART4_DTE_TX                      = IOMUX_PAD(0x0450, 0x01F0, 1, 0x0000, 0, 0),
++	MX8MP_PAD_ECSPI2_SCLK__I2C3_SCL                          = IOMUX_PAD(0x0450, 0x01F0, 2 | IOMUX_CONFIG_SION, 0x05B4, 3, 0),
++	MX8MP_PAD_ECSPI2_SCLK__AUDIOMIX_SAI7_TX_BCLK             = IOMUX_PAD(0x0450, 0x01F0, 3, 0x053C, 1, 0),
++	MX8MP_PAD_ECSPI2_SCLK__GPIO5_IO10                        = IOMUX_PAD(0x0450, 0x01F0, 5, 0x0000, 0, 0),
++	MX8MP_PAD_ECSPI2_SCLK__TPSMP_HDATA12                     = IOMUX_PAD(0x0450, 0x01F0, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_ECSPI2_MOSI__ECSPI2_MOSI                       = IOMUX_PAD(0x0454, 0x01F4, 0, 0x0570, 1, 0),
++	MX8MP_PAD_ECSPI2_MOSI__UART4_DCE_TX                      = IOMUX_PAD(0x0454, 0x01F4, 1, 0x0000, 0, 0),
++	MX8MP_PAD_ECSPI2_MOSI__UART4_DTE_RX                      = IOMUX_PAD(0x0454, 0x01F4, 1, 0x0600, 7, 0),
++	MX8MP_PAD_ECSPI2_MOSI__I2C3_SDA                          = IOMUX_PAD(0x0454, 0x01F4, 2 | IOMUX_CONFIG_SION, 0x05B8, 3, 0),
++	MX8MP_PAD_ECSPI2_MOSI__AUDIOMIX_SAI7_TX_DATA00           = IOMUX_PAD(0x0454, 0x01F4, 3, 0x0000, 0, 0),
++	MX8MP_PAD_ECSPI2_MOSI__GPIO5_IO11                        = IOMUX_PAD(0x0454, 0x01F4, 5, 0x0000, 0, 0),
++	MX8MP_PAD_ECSPI2_MOSI__TPSMP_HDATA13                     = IOMUX_PAD(0x0454, 0x01F4, 7, 0x0000, 0, 0),
++	MX8MP_PAD_ECSPI2_MISO__GPIO5_IO12                        = IOMUX_PAD(0x0458, 0x01F8, 5, 0x0000, 0, 0),
++	MX8MP_PAD_ECSPI2_MISO__TPSMP_HDATA14                     = IOMUX_PAD(0x0458, 0x01F8, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_ECSPI2_MISO__ECSPI2_MISO                       = IOMUX_PAD(0x0458, 0x01F8, 0, 0x056C, 1, 0),
++	MX8MP_PAD_ECSPI2_MISO__UART4_DCE_CTS                     = IOMUX_PAD(0x0458, 0x01F8, 1, 0x0000, 0, 0),
++	MX8MP_PAD_ECSPI2_MISO__UART4_DTE_RTS                     = IOMUX_PAD(0x0458, 0x01F8, 1, 0x05FC, 2, 0),
++	MX8MP_PAD_ECSPI2_MISO__I2C4_SCL                          = IOMUX_PAD(0x0458, 0x01F8, 2 | IOMUX_CONFIG_SION, 0x05BC, 4, 0),
++	MX8MP_PAD_ECSPI2_MISO__AUDIOMIX_SAI7_MCLK                = IOMUX_PAD(0x0458, 0x01F8, 3, 0x052C, 1, 0),
++	MX8MP_PAD_ECSPI2_MISO__CCMSRCGPCMIX_CLKO1                = IOMUX_PAD(0x0458, 0x01F8, 4, 0x0000, 0, 0),
++
++	MX8MP_PAD_ECSPI2_SS0__ECSPI2_SS0                         = IOMUX_PAD(0x045C, 0x01FC, 0, 0x0574, 1, 0),
++	MX8MP_PAD_ECSPI2_SS0__UART4_DCE_RTS                      = IOMUX_PAD(0x045C, 0x01FC, 1, 0x05FC, 3, 0),
++	MX8MP_PAD_ECSPI2_SS0__UART4_DTE_CTS                      = IOMUX_PAD(0x045C, 0x01FC, 1, 0x0000, 0, 0),
++	MX8MP_PAD_ECSPI2_SS0__I2C4_SDA                           = IOMUX_PAD(0x045C, 0x01FC, 2 | IOMUX_CONFIG_SION, 0x05C0, 4, 0),
++	MX8MP_PAD_ECSPI2_SS0__CCMSRCGPCMIX_CLKO2                 = IOMUX_PAD(0x045C, 0x01FC, 4, 0x0000, 0, 0),
++	MX8MP_PAD_ECSPI2_SS0__GPIO5_IO13                         = IOMUX_PAD(0x045C, 0x01FC, 5, 0x0000, 0, 0),
++	MX8MP_PAD_ECSPI2_SS0__TPSMP_HDATA15                      = IOMUX_PAD(0x045C, 0x01FC, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_I2C1_SCL__I2C1_SCL                             = IOMUX_PAD(0x0460, 0x0200, 0 | IOMUX_CONFIG_SION, 0x05A4, 2, 0),
++	MX8MP_PAD_I2C1_SCL__ENET_QOS_MDC                         = IOMUX_PAD(0x0460, 0x0200, 1, 0x0000, 0, 0),
++	MX8MP_PAD_I2C1_SCL__ECSPI1_SCLK                          = IOMUX_PAD(0x0460, 0x0200, 3, 0x0558, 1, 0),
++	MX8MP_PAD_I2C1_SCL__GPIO5_IO14                           = IOMUX_PAD(0x0460, 0x0200, 5, 0x0000, 0, 0),
++	MX8MP_PAD_I2C1_SCL__TPSMP_HDATA16                        = IOMUX_PAD(0x0460, 0x0200, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_I2C1_SDA__I2C1_SDA                             = IOMUX_PAD(0x0464, 0x0204, 0 | IOMUX_CONFIG_SION, 0x05A8, 2, 0),
++	MX8MP_PAD_I2C1_SDA__ENET_QOS_MDIO                        = IOMUX_PAD(0x0464, 0x0204, 1, 0x0590, 2, 0),
++	MX8MP_PAD_I2C1_SDA__ECSPI1_MOSI                          = IOMUX_PAD(0x0464, 0x0204, 3, 0x0560, 1, 0),
++	MX8MP_PAD_I2C1_SDA__GPIO5_IO15                           = IOMUX_PAD(0x0464, 0x0204, 5, 0x0000, 0, 0),
++	MX8MP_PAD_I2C1_SDA__TPSMP_HDATA17                        = IOMUX_PAD(0x0464, 0x0204, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_I2C2_SCL__I2C2_SCL                             = IOMUX_PAD(0x0468, 0x0208, 0 | IOMUX_CONFIG_SION, 0x05AC, 2, 0),
++	MX8MP_PAD_I2C2_SCL__ENET_QOS_1588_EVENT1_IN              = IOMUX_PAD(0x0468, 0x0208, 1, 0x0000, 0, 0),
++	MX8MP_PAD_I2C2_SCL__USDHC3_CD_B                          = IOMUX_PAD(0x0468, 0x0208, 2, 0x0608, 3, 0),
++	MX8MP_PAD_I2C2_SCL__ECSPI1_MISO                          = IOMUX_PAD(0x0468, 0x0208, 3, 0x055C, 1, 0),
++	MX8MP_PAD_I2C2_SCL__ENET_QOS_1588_EVENT1_AUX_IN          = IOMUX_PAD(0x0468, 0x0208, 4, 0x0000, 0, 0),
++	MX8MP_PAD_I2C2_SCL__GPIO5_IO16                           = IOMUX_PAD(0x0468, 0x0208, 5, 0x0000, 0, 0),
++	MX8MP_PAD_I2C2_SCL__TPSMP_HDATA18                        = IOMUX_PAD(0x0468, 0x0208, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_I2C2_SDA__I2C2_SDA                             = IOMUX_PAD(0x046C, 0x020C, 0 | IOMUX_CONFIG_SION, 0x05B0, 2, 0),
++	MX8MP_PAD_I2C2_SDA__ENET_QOS_1588_EVENT1_OUT             = IOMUX_PAD(0x046C, 0x020C, 1, 0x0000, 0, 0),
++	MX8MP_PAD_I2C2_SDA__USDHC3_WP                            = IOMUX_PAD(0x046C, 0x020C, 2, 0x0634, 3, 0),
++	MX8MP_PAD_I2C2_SDA__ECSPI1_SS0                           = IOMUX_PAD(0x046C, 0x020C, 3, 0x0564, 1, 0),
++	MX8MP_PAD_I2C2_SDA__GPIO5_IO17                           = IOMUX_PAD(0x046C, 0x020C, 5, 0x0000, 0, 0),
++	MX8MP_PAD_I2C2_SDA__TPSMP_HDATA19                        = IOMUX_PAD(0x046C, 0x020C, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_I2C3_SCL__I2C3_SCL                             = IOMUX_PAD(0x0470, 0x0210, 0 | IOMUX_CONFIG_SION, 0x05B4, 4, 0),
++	MX8MP_PAD_I2C3_SCL__PWM4_OUT                             = IOMUX_PAD(0x0470, 0x0210, 1, 0x0000, 0, 0),
++	MX8MP_PAD_I2C3_SCL__GPT2_CLK                             = IOMUX_PAD(0x0470, 0x0210, 2, 0x0000, 0, 0),
++	MX8MP_PAD_I2C3_SCL__ECSPI2_SCLK                          = IOMUX_PAD(0x0470, 0x0210, 3, 0x0568, 2, 0),
++	MX8MP_PAD_I2C3_SCL__GPIO5_IO18                           = IOMUX_PAD(0x0470, 0x0210, 5, 0x0000, 0, 0),
++	MX8MP_PAD_I2C3_SCL__TPSMP_HDATA20                        = IOMUX_PAD(0x0470, 0x0210, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_I2C3_SDA__I2C3_SDA                             = IOMUX_PAD(0x0474, 0x0214, 0 | IOMUX_CONFIG_SION, 0x05B8, 4, 0),
++	MX8MP_PAD_I2C3_SDA__PWM3_OUT                             = IOMUX_PAD(0x0474, 0x0214, 1, 0x0000, 0, 0),
++	MX8MP_PAD_I2C3_SDA__GPT3_CLK                             = IOMUX_PAD(0x0474, 0x0214, 2, 0x0000, 0, 0),
++	MX8MP_PAD_I2C3_SDA__ECSPI2_MOSI                          = IOMUX_PAD(0x0474, 0x0214, 3, 0x0570, 2, 0),
++	MX8MP_PAD_I2C3_SDA__GPIO5_IO19                           = IOMUX_PAD(0x0474, 0x0214, 5, 0x0000, 0, 0),
++	MX8MP_PAD_I2C3_SDA__TPSMP_HDATA21                        = IOMUX_PAD(0x0474, 0x0214, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_I2C4_SCL__I2C4_SCL                             = IOMUX_PAD(0x0478, 0x0218, 0 | IOMUX_CONFIG_SION, 0x05BC, 5, 0),
++	MX8MP_PAD_I2C4_SCL__PWM2_OUT                             = IOMUX_PAD(0x0478, 0x0218, 1, 0x0000, 0, 0),
++	MX8MP_PAD_I2C4_SCL__HSIOMIX_PCIE_CLKREQ_B                = IOMUX_PAD(0x0478, 0x0218, 2, 0x05A0, 0, 0),
++	MX8MP_PAD_I2C4_SCL__ECSPI2_MISO                          = IOMUX_PAD(0x0478, 0x0218, 3, 0x056C, 2, 0),
++	MX8MP_PAD_I2C4_SCL__GPIO5_IO20                           = IOMUX_PAD(0x0478, 0x0218, 5, 0x0000, 0, 0),
++	MX8MP_PAD_I2C4_SCL__TPSMP_HDATA22                        = IOMUX_PAD(0x0478, 0x0218, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_I2C4_SDA__I2C4_SDA                             = IOMUX_PAD(0x047C, 0x021C, 0 | IOMUX_CONFIG_SION, 0x05C0, 5, 0),
++	MX8MP_PAD_I2C4_SDA__PWM1_OUT                             = IOMUX_PAD(0x047C, 0x021C, 1, 0x0000, 0, 0),
++	MX8MP_PAD_I2C4_SDA__ECSPI2_SS0                           = IOMUX_PAD(0x047C, 0x021C, 3, 0x0574, 2, 0),
++	MX8MP_PAD_I2C4_SDA__GPIO5_IO21                           = IOMUX_PAD(0x047C, 0x021C, 5, 0x0000, 0, 0),
++	MX8MP_PAD_I2C4_SDA__TPSMP_HDATA23                        = IOMUX_PAD(0x047C, 0x021C, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_UART1_RXD__UART1_DCE_RX                        = IOMUX_PAD(0x0480, 0x0220, 0, 0x05E8, 4, 0),
++
++	MX8MP_PAD_UART1_RXD__UART1_DTE_TX                        = IOMUX_PAD(0x0480, 0x0220, 0, 0x0000, 0, 0),
++	MX8MP_PAD_UART1_RXD__ECSPI3_SCLK                         = IOMUX_PAD(0x0480, 0x0220, 1, 0x0000, 0, 0),
++	MX8MP_PAD_UART1_RXD__GPIO5_IO22                          = IOMUX_PAD(0x0480, 0x0220, 5, 0x0000, 0, 0),
++	MX8MP_PAD_UART1_RXD__TPSMP_HDATA24                       = IOMUX_PAD(0x0480, 0x0220, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_UART1_TXD__UART1_DCE_TX                        = IOMUX_PAD(0x0484, 0x0224, 0, 0x0000, 0, 0),
++
++	MX8MP_PAD_UART1_TXD__UART1_DTE_RX                        = IOMUX_PAD(0x0484, 0x0224, 0, 0x05E8, 5, 0),
++	MX8MP_PAD_UART1_TXD__ECSPI3_MOSI                         = IOMUX_PAD(0x0484, 0x0224, 1, 0x0000, 0, 0),
++	MX8MP_PAD_UART1_TXD__GPIO5_IO23                          = IOMUX_PAD(0x0484, 0x0224, 5, 0x0000, 0, 0),
++	MX8MP_PAD_UART1_TXD__TPSMP_HDATA25                       = IOMUX_PAD(0x0484, 0x0224, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_UART2_RXD__UART2_DCE_RX                        = IOMUX_PAD(0x0488, 0x0228, 0, 0x05F0, 6, 0),
++
++	MX8MP_PAD_UART2_RXD__UART2_DTE_TX                        = IOMUX_PAD(0x0488, 0x0228, 0, 0x0000, 0, 0),
++	MX8MP_PAD_UART2_RXD__ECSPI3_MISO                         = IOMUX_PAD(0x0488, 0x0228, 1, 0x0000, 0, 0),
++	MX8MP_PAD_UART2_RXD__GPT1_COMPARE3                       = IOMUX_PAD(0x0488, 0x0228, 3, 0x0000, 0, 0),
++	MX8MP_PAD_UART2_RXD__GPIO5_IO24                          = IOMUX_PAD(0x0488, 0x0228, 5, 0x0000, 0, 0),
++	MX8MP_PAD_UART2_RXD__TPSMP_HDATA26                       = IOMUX_PAD(0x0488, 0x0228, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_UART2_TXD__UART2_DCE_TX                        = IOMUX_PAD(0x048C, 0x022C, 0, 0x0000, 0, 0),
++
++	MX8MP_PAD_UART2_TXD__UART2_DTE_RX                        = IOMUX_PAD(0x048C, 0x022C, 0, 0x05F0, 7, 0),
++	MX8MP_PAD_UART2_TXD__ECSPI3_SS0                          = IOMUX_PAD(0x048C, 0x022C, 1, 0x0000, 0, 0),
++	MX8MP_PAD_UART2_TXD__GPT1_COMPARE2                       = IOMUX_PAD(0x048C, 0x022C, 3, 0x0000, 0, 0),
++	MX8MP_PAD_UART2_TXD__GPIO5_IO25                          = IOMUX_PAD(0x048C, 0x022C, 5, 0x0000, 0, 0),
++	MX8MP_PAD_UART2_TXD__TPSMP_HDATA27                       = IOMUX_PAD(0x048C, 0x022C, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_UART3_RXD__UART3_DCE_RX                        = IOMUX_PAD(0x0490, 0x0230, 0, 0x05F8, 6, 0),
++
++	MX8MP_PAD_UART3_RXD__UART3_DTE_TX                        = IOMUX_PAD(0x0490, 0x0230, 0, 0x0000, 0, 0),
++	MX8MP_PAD_UART3_RXD__UART1_DCE_CTS                       = IOMUX_PAD(0x0490, 0x0230, 1, 0x0000, 0, 0),
++	MX8MP_PAD_UART3_RXD__UART1_DTE_RTS                       = IOMUX_PAD(0x0490, 0x0230, 1, 0x05E4, 4, 0),
++	MX8MP_PAD_UART3_RXD__USDHC3_RESET_B                      = IOMUX_PAD(0x0490, 0x0230, 2, 0x0000, 0, 0),
++	MX8MP_PAD_UART3_RXD__GPT1_CAPTURE2                       = IOMUX_PAD(0x0490, 0x0230, 3, 0x0598, 1, 0),
++	MX8MP_PAD_UART3_RXD__CAN2_TX                             = IOMUX_PAD(0x0490, 0x0230, 4, 0x0000, 0, 0),
++	MX8MP_PAD_UART3_RXD__GPIO5_IO26                          = IOMUX_PAD(0x0490, 0x0230, 5, 0x0000, 0, 0),
++	MX8MP_PAD_UART3_RXD__TPSMP_HDATA28                       = IOMUX_PAD(0x0490, 0x0230, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_UART3_TXD__UART3_DCE_TX                        = IOMUX_PAD(0x0494, 0x0234, 0, 0x0000, 0, 0),
++
++	MX8MP_PAD_UART3_TXD__UART3_DTE_RX                        = IOMUX_PAD(0x0494, 0x0234, 0, 0x05F8, 7, 0),
++	MX8MP_PAD_UART3_TXD__UART1_DCE_RTS                       = IOMUX_PAD(0x0494, 0x0234, 1, 0x05E4, 5, 0),
++	MX8MP_PAD_UART3_TXD__UART1_DTE_CTS                       = IOMUX_PAD(0x0494, 0x0234, 1, 0x0000, 0, 0),
++	MX8MP_PAD_UART3_TXD__USDHC3_VSELECT                      = IOMUX_PAD(0x0494, 0x0234, 2, 0x0000, 0, 0),
++	MX8MP_PAD_UART3_TXD__GPT1_CLK                            = IOMUX_PAD(0x0494, 0x0234, 3, 0x059C, 1, 0),
++	MX8MP_PAD_UART3_TXD__CAN2_RX                             = IOMUX_PAD(0x0494, 0x0234, 4, 0x0550, 2, 0),
++	MX8MP_PAD_UART3_TXD__GPIO5_IO27                          = IOMUX_PAD(0x0494, 0x0234, 5, 0x0000, 0, 0),
++	MX8MP_PAD_UART3_TXD__TPSMP_HDATA29                       = IOMUX_PAD(0x0494, 0x0234, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_UART4_RXD__UART4_DCE_RX                        = IOMUX_PAD(0x0498, 0x0238, 0, 0x0600, 8, 0),
++
++	MX8MP_PAD_UART4_RXD__UART4_DTE_TX                        = IOMUX_PAD(0x0498, 0x0238, 0, 0x0000, 0, 0),
++	MX8MP_PAD_UART4_RXD__UART2_DCE_CTS                       = IOMUX_PAD(0x0498, 0x0238, 1, 0x0000, 0, 0),
++	MX8MP_PAD_UART4_RXD__UART2_DTE_RTS                       = IOMUX_PAD(0x0498, 0x0238, 1, 0x05EC, 4, 0),
++	MX8MP_PAD_UART4_RXD__HSIOMIX_PCIE_CLKREQ_B               = IOMUX_PAD(0x0498, 0x0238, 2, 0x05A0, 1, 0),
++	MX8MP_PAD_UART4_RXD__GPT1_COMPARE1                       = IOMUX_PAD(0x0498, 0x0238, 3, 0x0000, 0, 0),
++	MX8MP_PAD_UART4_RXD__I2C6_SCL                            = IOMUX_PAD(0x0498, 0x0238, 4 | IOMUX_CONFIG_SION, 0x05CC, 2, 0),
++	MX8MP_PAD_UART4_RXD__GPIO5_IO28                          = IOMUX_PAD(0x0498, 0x0238, 5, 0x0000, 0, 0),
++	MX8MP_PAD_UART4_RXD__TPSMP_HDATA30                       = IOMUX_PAD(0x0498, 0x0238, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_UART4_TXD__UART4_DCE_TX                        = IOMUX_PAD(0x049C, 0x023C, 0, 0x0000, 0, 0),
++
++	MX8MP_PAD_UART4_TXD__UART4_DTE_RX                        = IOMUX_PAD(0x049C, 0x023C, 0, 0x0600, 9, 0),
++	MX8MP_PAD_UART4_TXD__UART2_DCE_RTS                       = IOMUX_PAD(0x049C, 0x023C, 1, 0x05EC, 5, 0),
++	MX8MP_PAD_UART4_TXD__UART2_DTE_CTS                       = IOMUX_PAD(0x049C, 0x023C, 1, 0x0000, 0, 0),
++	MX8MP_PAD_UART4_TXD__GPT1_CAPTURE1                       = IOMUX_PAD(0x049C, 0x023C, 3, 0x0594, 1, 0),
++	MX8MP_PAD_UART4_TXD__I2C6_SDA                            = IOMUX_PAD(0x049C, 0x023C, 4 | IOMUX_CONFIG_SION, 0x05D0, 2, 0),
++	MX8MP_PAD_UART4_TXD__GPIO5_IO29                          = IOMUX_PAD(0x049C, 0x023C, 5, 0x0000, 0, 0),
++	MX8MP_PAD_UART4_TXD__TPSMP_HDATA31                       = IOMUX_PAD(0x049C, 0x023C, 7, 0x0000, 0, 0),
++
++	MX8MP_PAD_HDMI_DDC_SCL__HDMIMIX_EARC_SCL                 = IOMUX_PAD(0x04A0, 0x0240, 0, 0x0000, 0, 0),
++	MX8MP_PAD_HDMI_DDC_SCL__I2C5_SCL                         = IOMUX_PAD(0x04A0, 0x0240, 3 | IOMUX_CONFIG_SION, 0x05C4, 3, 0),
++	MX8MP_PAD_HDMI_DDC_SCL__CAN1_TX                          = IOMUX_PAD(0x04A0, 0x0240, 4, 0x0000, 0, 0),
++	MX8MP_PAD_HDMI_DDC_SCL__GPIO3_IO26                       = IOMUX_PAD(0x04A0, 0x0240, 5, 0x0000, 0, 0),
++	MX8MP_PAD_HDMI_DDC_SCL__AUDIOMIX_test_out00              = IOMUX_PAD(0x04A0, 0x0240, 6, 0x0000, 0, 0),
++
++	MX8MP_PAD_HDMI_DDC_SDA__HDMIMIX_EARC_SDA                 = IOMUX_PAD(0x04A4, 0x0244, 0, 0x0000, 0, 0),
++	MX8MP_PAD_HDMI_DDC_SDA__I2C5_SDA                         = IOMUX_PAD(0x04A4, 0x0244, 3 | IOMUX_CONFIG_SION, 0x05C8, 3, 0),
++	MX8MP_PAD_HDMI_DDC_SDA__CAN1_RX                          = IOMUX_PAD(0x04A4, 0x0244, 4, 0x054C, 3, 0),
++	MX8MP_PAD_HDMI_DDC_SDA__GPIO3_IO27                       = IOMUX_PAD(0x04A4, 0x0244, 5, 0x0000, 0, 0),
++	MX8MP_PAD_HDMI_DDC_SDA__AUDIOMIX_test_out01              = IOMUX_PAD(0x04A4, 0x0244, 6, 0x0000, 0, 0),
++
++	MX8MP_PAD_HDMI_CEC__HDMIMIX_EARC_CEC                     = IOMUX_PAD(0x04A8, 0x0248, 0, 0x0000, 0, 0),
++	MX8MP_PAD_HDMI_CEC__I2C6_SCL                             = IOMUX_PAD(0x04A8, 0x0248, 3 | IOMUX_CONFIG_SION, 0x05CC, 3, 0),
++	MX8MP_PAD_HDMI_CEC__CAN2_TX                              = IOMUX_PAD(0x04A8, 0x0248, 4, 0x0000, 0, 0),
++	MX8MP_PAD_HDMI_CEC__GPIO3_IO28                           = IOMUX_PAD(0x04A8, 0x0248, 5, 0x0000, 0, 0),
++
++	MX8MP_PAD_HDMI_HPD__HDMIMIX_EARC_DC_HPD                  = IOMUX_PAD(0x04AC, 0x024C, 0, 0x0000, 0, 0),
++	MX8MP_PAD_HDMI_HPD__AUDIOMIX_EARC_HDMI_HPD_O             = IOMUX_PAD(0x04AC, 0x024C, 1, 0x0000, 0, 0),
++	MX8MP_PAD_HDMI_HPD__I2C6_SDA                             = IOMUX_PAD(0x04AC, 0x024C, 3 | IOMUX_CONFIG_SION, 0x05D0, 3, 0),
++	MX8MP_PAD_HDMI_HPD__CAN2_RX                              = IOMUX_PAD(0x04AC, 0x024C, 4, 0x0550, 3, 0),
++	MX8MP_PAD_HDMI_HPD__GPIO3_IO29                           = IOMUX_PAD(0x04AC, 0x024C, 5, 0x0000, 0, 0),
++};
++
++#define MX8MP_PAD_CTL_DSE1	(0 << 1)
++#define MX8MP_PAD_CTL_DSE2	(1 << 1)
++#define MX8MP_PAD_CTL_DSE4	(2 << 1)
++#define MX8MP_PAD_CTL_DSE6	(3 << 1)
++#define MX8MP_PAD_CTL_FSEL	BIT(4)
++#define MX8MP_PAD_CTL_ODE	BIT(5)
++#define MX8MP_PAD_CTL_PUE	BIT(6)
++#define MX8MP_PAD_CTL_HYS	BIT(7)
++#define MX8MP_PAD_CTL_PE	BIT(8)
++
++static inline void imx8mp_setup_pad(iomux_v3_cfg_t pad)
 +{
-+	struct device_node *anatop_np;
-+	void __iomem *ccm, *ana;
-+	int ret;
++	void __iomem *iomux = IOMEM(MX8MP_IOMUXC_BASE_ADDR);
 +
-+	anatop_np = of_find_compatible_node(NULL, NULL, "fsl,imx8mp-anatop");
-+	ana = of_iomap(anatop_np, 0);
-+	if (WARN_ON(!ana))
-+		return -ENOMEM;
-+
-+	ccm = of_iomap(ccm_np, 0);
-+	if (WARN_ON(!ccm))
-+		return -ENOMEM;
-+
-+	clks[IMX8MP_CLK_DUMMY] = clk_fixed("dummy", 0);
-+	clks[IMX8MP_CLK_24M] = of_clk_get_by_name(ccm_np, "osc_24m");
-+	clks[IMX8MP_CLK_32K] = of_clk_get_by_name(ccm_np, "osc_32k");
-+	clks[IMX8MP_CLK_EXT1] = of_clk_get_by_name(ccm_np, "clk_ext1");
-+	clks[IMX8MP_CLK_EXT2] = of_clk_get_by_name(ccm_np, "clk_ext2");
-+	clks[IMX8MP_CLK_EXT3] = of_clk_get_by_name(ccm_np, "clk_ext3");
-+	clks[IMX8MP_CLK_EXT4] = of_clk_get_by_name(ccm_np, "clk_ext4");
-+
-+	clks[IMX8MP_AUDIO_PLL1_REF_SEL] = imx_clk_mux("audio_pll1_ref_sel", ana + 0x0, 0, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
-+	clks[IMX8MP_AUDIO_PLL2_REF_SEL] = imx_clk_mux("audio_pll2_ref_sel", ana + 0x14, 0, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
-+	clks[IMX8MP_VIDEO_PLL1_REF_SEL] = imx_clk_mux("video_pll1_ref_sel", ana + 0x28, 0, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
-+	clks[IMX8MP_DRAM_PLL_REF_SEL] = imx_clk_mux("dram_pll_ref_sel", ana + 0x50, 0, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
-+	clks[IMX8MP_GPU_PLL_REF_SEL] = imx_clk_mux("gpu_pll_ref_sel", ana + 0x64, 0, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
-+	clks[IMX8MP_VPU_PLL_REF_SEL] = imx_clk_mux("vpu_pll_ref_sel", ana + 0x74, 0, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
-+	clks[IMX8MP_ARM_PLL_REF_SEL] = imx_clk_mux("arm_pll_ref_sel", ana + 0x84, 0, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
-+	clks[IMX8MP_SYS_PLL1_REF_SEL] = imx_clk_mux("sys_pll1_ref_sel", ana + 0x94, 0, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
-+	clks[IMX8MP_SYS_PLL2_REF_SEL] = imx_clk_mux("sys_pll2_ref_sel", ana + 0x104, 0, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
-+	clks[IMX8MP_SYS_PLL3_REF_SEL] = imx_clk_mux("sys_pll3_ref_sel", ana + 0x114, 0, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
-+
-+	clks[IMX8MP_AUDIO_PLL1] = imx_clk_pll14xx("audio_pll1", "audio_pll1_ref_sel", ana, &imx_1443x_pll);
-+	clks[IMX8MP_AUDIO_PLL2] = imx_clk_pll14xx("audio_pll2", "audio_pll2_ref_sel", ana + 0x14, &imx_1443x_pll);
-+	clks[IMX8MP_VIDEO_PLL1] = imx_clk_pll14xx("video_pll1", "video_pll1_ref_sel", ana + 0x28, &imx_1443x_pll);
-+	clks[IMX8MP_GPU_PLL] = imx_clk_pll14xx("gpu_pll", "gpu_pll_ref_sel", ana + 0x64, &imx_1416x_pll);
-+	clks[IMX8MP_VPU_PLL] = imx_clk_pll14xx("vpu_pll", "vpu_pll_ref_sel", ana + 0x74, &imx_1416x_pll);
-+	clks[IMX8MP_ARM_PLL] = imx_clk_pll14xx("arm_pll", "arm_pll_ref_sel", ana + 0x84, &imx_1416x_pll);
-+	clks[IMX8MP_SYS_PLL1] = imx_clk_pll14xx("sys_pll1", "sys_pll1_ref_sel", ana + 0x94, &imx_1416x_pll);
-+	clks[IMX8MP_SYS_PLL2] = imx_clk_pll14xx("sys_pll2", "sys_pll2_ref_sel", ana + 0x104, &imx_1416x_pll);
-+	clks[IMX8MP_SYS_PLL3] = imx_clk_pll14xx("sys_pll3", "sys_pll3_ref_sel", ana + 0x114, &imx_1416x_pll);
-+
-+	clks[IMX8MP_AUDIO_PLL1_BYPASS] = imx_clk_mux_flags("audio_pll1_bypass", ana, 4, 1, audio_pll1_bypass_sels, ARRAY_SIZE(audio_pll1_bypass_sels), CLK_SET_RATE_PARENT);
-+	clks[IMX8MP_AUDIO_PLL2_BYPASS] = imx_clk_mux_flags("audio_pll2_bypass", ana + 0x14, 4, 1, audio_pll2_bypass_sels, ARRAY_SIZE(audio_pll2_bypass_sels), CLK_SET_RATE_PARENT);
-+	clks[IMX8MP_VIDEO_PLL1_BYPASS] = imx_clk_mux_flags("video_pll1_bypass", ana + 0x28, 4, 1, video_pll1_bypass_sels, ARRAY_SIZE(video_pll1_bypass_sels), CLK_SET_RATE_PARENT);
-+	clks[IMX8MP_DRAM_PLL_BYPASS] = imx_clk_mux_flags("dram_pll_bypass", ana + 0x50, 4, 1, dram_pll_bypass_sels, ARRAY_SIZE(dram_pll_bypass_sels), CLK_SET_RATE_PARENT);
-+	clks[IMX8MP_GPU_PLL_BYPASS] = imx_clk_mux_flags("gpu_pll_bypass", ana + 0x64, 4, 1, gpu_pll_bypass_sels, ARRAY_SIZE(gpu_pll_bypass_sels), CLK_SET_RATE_PARENT);
-+	clks[IMX8MP_VPU_PLL_BYPASS] = imx_clk_mux_flags("vpu_pll_bypass", ana + 0x74, 4, 1, vpu_pll_bypass_sels, ARRAY_SIZE(vpu_pll_bypass_sels), CLK_SET_RATE_PARENT);
-+	clks[IMX8MP_ARM_PLL_BYPASS] = imx_clk_mux_flags("arm_pll_bypass", ana + 0x84, 4, 1, arm_pll_bypass_sels, ARRAY_SIZE(arm_pll_bypass_sels), CLK_SET_RATE_PARENT);
-+	clks[IMX8MP_SYS_PLL1_BYPASS] = imx_clk_mux_flags("sys_pll1_bypass", ana + 0x94, 4, 1, sys_pll1_bypass_sels, ARRAY_SIZE(sys_pll1_bypass_sels), CLK_SET_RATE_PARENT);
-+	clks[IMX8MP_SYS_PLL2_BYPASS] = imx_clk_mux_flags("sys_pll2_bypass", ana + 0x104, 4, 1, sys_pll2_bypass_sels, ARRAY_SIZE(sys_pll2_bypass_sels), CLK_SET_RATE_PARENT);
-+	clks[IMX8MP_SYS_PLL3_BYPASS] = imx_clk_mux_flags("sys_pll3_bypass", ana + 0x114, 4, 1, sys_pll3_bypass_sels, ARRAY_SIZE(sys_pll3_bypass_sels), CLK_SET_RATE_PARENT);
-+
-+	clks[IMX8MP_AUDIO_PLL1_OUT] = imx_clk_gate("audio_pll1_out", "audio_pll1_bypass", ana, 13);
-+	clks[IMX8MP_AUDIO_PLL2_OUT] = imx_clk_gate("audio_pll2_out", "audio_pll2_bypass", ana + 0x14, 13);
-+	clks[IMX8MP_VIDEO_PLL1_OUT] = imx_clk_gate("video_pll1_out", "video_pll1_bypass", ana + 0x28, 13);
-+	clks[IMX8MP_DRAM_PLL_OUT] = imx_clk_gate("dram_pll_out", "dram_pll_bypass", ana + 0x50, 13);
-+	clks[IMX8MP_GPU_PLL_OUT] = imx_clk_gate("gpu_pll_out", "gpu_pll_bypass", ana + 0x64, 11);
-+	clks[IMX8MP_VPU_PLL_OUT] = imx_clk_gate("vpu_pll_out", "vpu_pll_bypass", ana + 0x74, 11);
-+	clks[IMX8MP_ARM_PLL_OUT] = imx_clk_gate("arm_pll_out", "arm_pll_bypass", ana + 0x84, 11);
-+	clks[IMX8MP_SYS_PLL1_OUT] = imx_clk_gate("sys_pll1_out", "sys_pll1_bypass", ana + 0x94, 11);
-+	clks[IMX8MP_SYS_PLL2_OUT] = imx_clk_gate("sys_pll2_out", "sys_pll2_bypass", ana + 0x104, 11);
-+	clks[IMX8MP_SYS_PLL3_OUT] = imx_clk_gate("sys_pll3_out", "sys_pll3_bypass", ana + 0x114, 11);
-+
-+	clks[IMX8MP_SYS_PLL1_40M] = imx_clk_fixed_factor("sys_pll1_40m", "sys_pll1_out", 1, 20);
-+	clks[IMX8MP_SYS_PLL1_80M] = imx_clk_fixed_factor("sys_pll1_80m", "sys_pll1_out", 1, 10);
-+	clks[IMX8MP_SYS_PLL1_100M] = imx_clk_fixed_factor("sys_pll1_100m", "sys_pll1_out", 1, 8);
-+	clks[IMX8MP_SYS_PLL1_133M] = imx_clk_fixed_factor("sys_pll1_133m", "sys_pll1_out", 1, 6);
-+	clks[IMX8MP_SYS_PLL1_160M] = imx_clk_fixed_factor("sys_pll1_160m", "sys_pll1_out", 1, 5);
-+	clks[IMX8MP_SYS_PLL1_200M] = imx_clk_fixed_factor("sys_pll1_200m", "sys_pll1_out", 1, 4);
-+	clks[IMX8MP_SYS_PLL1_266M] = imx_clk_fixed_factor("sys_pll1_266m", "sys_pll1_out", 1, 3);
-+	clks[IMX8MP_SYS_PLL1_400M] = imx_clk_fixed_factor("sys_pll1_400m", "sys_pll1_out", 1, 2);
-+	clks[IMX8MP_SYS_PLL1_800M] = imx_clk_fixed_factor("sys_pll1_800m", "sys_pll1_out", 1, 1);
-+
-+	clks[IMX8MP_SYS_PLL2_50M] = imx_clk_fixed_factor("sys_pll2_50m", "sys_pll2_out", 1, 20);
-+	clks[IMX8MP_SYS_PLL2_100M] = imx_clk_fixed_factor("sys_pll2_100m", "sys_pll2_out", 1, 10);
-+	clks[IMX8MP_SYS_PLL2_125M] = imx_clk_fixed_factor("sys_pll2_125m", "sys_pll2_out", 1, 8);
-+	clks[IMX8MP_SYS_PLL2_166M] = imx_clk_fixed_factor("sys_pll2_166m", "sys_pll2_out", 1, 6);
-+	clks[IMX8MP_SYS_PLL2_200M] = imx_clk_fixed_factor("sys_pll2_200m", "sys_pll2_out", 1, 5);
-+	clks[IMX8MP_SYS_PLL2_250M] = imx_clk_fixed_factor("sys_pll2_250m", "sys_pll2_out", 1, 4);
-+	clks[IMX8MP_SYS_PLL2_333M] = imx_clk_fixed_factor("sys_pll2_333m", "sys_pll2_out", 1, 3);
-+	clks[IMX8MP_SYS_PLL2_500M] = imx_clk_fixed_factor("sys_pll2_500m", "sys_pll2_out", 1, 2);
-+	clks[IMX8MP_SYS_PLL2_1000M] = imx_clk_fixed_factor("sys_pll2_1000m", "sys_pll2_out", 1, 1);
-+
-+	clks[IMX8MP_CLK_A53_SRC] = imx_clk_mux2("arm_a53_src", ccm + 0x8000, 24, 3, imx8mp_a53_sels, ARRAY_SIZE(imx8mp_a53_sels));
-+	clks[IMX8MP_CLK_M7_SRC] = imx_clk_mux2("arm_m7_src", ccm + 0x8080, 24, 3, imx8mp_m7_sels, ARRAY_SIZE(imx8mp_m7_sels));
-+	clks[IMX8MP_CLK_ML_SRC] = imx_clk_mux2("ml_src", ccm + 0x8100, 24, 3, imx8mp_ml_sels, ARRAY_SIZE(imx8mp_ml_sels));
-+	clks[IMX8MP_CLK_GPU3D_CORE_SRC] = imx_clk_mux2("gpu3d_core_src", ccm + 0x8180, 24, 3,  imx8mp_gpu3d_core_sels, ARRAY_SIZE(imx8mp_gpu3d_core_sels));
-+	clks[IMX8MP_CLK_GPU3D_SHADER_SRC] = imx_clk_mux2("gpu3d_shader_src", ccm + 0x8200, 24, 3, imx8mp_gpu3d_shader_sels, ARRAY_SIZE(imx8mp_gpu3d_shader_sels));
-+	clks[IMX8MP_CLK_GPU2D_SRC] = imx_clk_mux2("gpu2d_src", ccm + 0x8280, 24, 3, imx8mp_gpu2d_sels, ARRAY_SIZE(imx8mp_gpu2d_sels));
-+	clks[IMX8MP_CLK_AUDIO_AXI_SRC] = imx_clk_mux2("audio_axi_src", ccm + 0x8300, 24, 3, imx8mp_audio_axi_sels, ARRAY_SIZE(imx8mp_audio_axi_sels));
-+	clks[IMX8MP_CLK_HSIO_AXI_SRC] = imx_clk_mux2("hsio_axi_src", ccm + 0x8380, 24, 3, imx8mp_hsio_axi_sels, ARRAY_SIZE(imx8mp_hsio_axi_sels));
-+	clks[IMX8MP_CLK_MEDIA_ISP_SRC] = imx_clk_mux2("media_isp_src", ccm + 0x8400, 24, 3, imx8mp_media_isp_sels, ARRAY_SIZE(imx8mp_media_isp_sels));
-+	clks[IMX8MP_CLK_A53_CG] = imx_clk_gate3("arm_a53_cg", "arm_a53_src", ccm + 0x8000, 28);
-+	clks[IMX8MP_CLK_M4_CG] = imx_clk_gate3("arm_m7_cg", "arm_m7_src", ccm + 0x8080, 28);
-+	clks[IMX8MP_CLK_ML_CG] = imx_clk_gate3("ml_cg", "ml_src", ccm + 0x8100, 28);
-+	clks[IMX8MP_CLK_GPU3D_CORE_CG] = imx_clk_gate3("gpu3d_core_cg", "gpu3d_core_src", ccm + 0x8180, 28);
-+	clks[IMX8MP_CLK_GPU3D_SHADER_CG] = imx_clk_gate3("gpu3d_shader_cg", "gpu3d_shader_src", ccm + 0x8200, 28);
-+	clks[IMX8MP_CLK_GPU2D_CG] = imx_clk_gate3("gpu2d_cg", "gpu2d_src", ccm + 0x8280, 28);
-+	clks[IMX8MP_CLK_AUDIO_AXI_CG] = imx_clk_gate3("audio_axi_cg", "audio_axi_src", ccm + 0x8300, 28);
-+	clks[IMX8MP_CLK_HSIO_AXI_CG] = imx_clk_gate3("hsio_axi_cg", "hsio_axi_src", ccm + 0x8380, 28);
-+	clks[IMX8MP_CLK_MEDIA_ISP_CG] = imx_clk_gate3("media_isp_cg", "media_isp_src", ccm + 0x8400, 28);
-+	clks[IMX8MP_CLK_A53_DIV] = imx_clk_divider2("arm_a53_div", "arm_a53_cg", ccm + 0x8000, 0, 3);
-+	clks[IMX8MP_CLK_M7_DIV] = imx_clk_divider2("arm_m7_div", "arm_m7_cg", ccm + 0x8080, 0, 3);
-+	clks[IMX8MP_CLK_ML_DIV] = imx_clk_divider2("ml_div", "ml_cg", ccm + 0x8100, 0, 3);
-+	clks[IMX8MP_CLK_GPU3D_CORE_DIV] = imx_clk_divider2("gpu3d_core_div", "gpu3d_core_cg", ccm + 0x8180, 0, 3);
-+	clks[IMX8MP_CLK_GPU3D_SHADER_DIV] = imx_clk_divider2("gpu3d_shader_div", "gpu3d_shader_cg", ccm + 0x8200, 0, 3);
-+	clks[IMX8MP_CLK_GPU2D_DIV] = imx_clk_divider2("gpu2d_div", "gpu2d_cg", ccm + 0x8280, 0, 3);
-+	clks[IMX8MP_CLK_AUDIO_AXI_DIV] = imx_clk_divider2("audio_axi_div", "audio_axi_cg", ccm + 0x8300, 0, 3);
-+	clks[IMX8MP_CLK_HSIO_AXI_DIV] = imx_clk_divider2("hsio_axi_div", "hsio_axi_cg", ccm + 0x8380, 0, 3);
-+	clks[IMX8MP_CLK_MEDIA_ISP_DIV] = imx_clk_divider2("media_isp_div", "media_isp_cg", ccm + 0x8400, 0, 3);
-+
-+	/* CORE SEL */
-+	clks[IMX8MP_CLK_A53_CORE] = imx_clk_mux2("arm_a53_core", ccm + 0x9880, 24, 1, imx8mp_a53_core_sels, ARRAY_SIZE(imx8mp_a53_core_sels));
-+
-+	clks[IMX8MP_CLK_MAIN_AXI] = imx8m_clk_composite_critical("main_axi", imx8mp_main_axi_sels, ccm + 0x8800);
-+	clks[IMX8MP_CLK_ENET_AXI] = imx8m_clk_composite("enet_axi", imx8mp_enet_axi_sels, ccm + 0x8880);
-+	clks[IMX8MP_CLK_NAND_USDHC_BUS] = imx8m_clk_composite_critical("nand_usdhc_bus", imx8mp_nand_usdhc_sels, ccm + 0x8900);
-+	clks[IMX8MP_CLK_VPU_BUS] = imx8m_clk_composite("vpu_bus", imx8mp_vpu_bus_sels, ccm + 0x8980);
-+	clks[IMX8MP_CLK_MEDIA_AXI] = imx8m_clk_composite("media_axi", imx8mp_media_axi_sels, ccm + 0x8a00);
-+	clks[IMX8MP_CLK_MEDIA_APB] = imx8m_clk_composite("media_apb", imx8mp_media_apb_sels, ccm + 0x8a80);
-+	clks[IMX8MP_CLK_HDMI_APB] = imx8m_clk_composite("hdmi_apb", imx8mp_media_apb_sels, ccm + 0x8b00);
-+	clks[IMX8MP_CLK_HDMI_AXI] = imx8m_clk_composite("hdmi_axi", imx8mp_media_axi_sels, ccm + 0x8b80);
-+	clks[IMX8MP_CLK_GPU_AXI] = imx8m_clk_composite("gpu_axi", imx8mp_gpu_axi_sels, ccm + 0x8c00);
-+	clks[IMX8MP_CLK_GPU_AHB] = imx8m_clk_composite("gpu_ahb", imx8mp_gpu_ahb_sels, ccm + 0x8c80);
-+	clks[IMX8MP_CLK_NOC] = imx8m_clk_composite_critical("noc", imx8mp_noc_sels, ccm + 0x8d00);
-+	clks[IMX8MP_CLK_NOC_IO] = imx8m_clk_composite_critical("noc_io", imx8mp_noc_io_sels, ccm + 0x8d80);
-+	clks[IMX8MP_CLK_ML_AXI] = imx8m_clk_composite("ml_axi", imx8mp_ml_axi_sels, ccm + 0x8e00);
-+	clks[IMX8MP_CLK_ML_AHB] = imx8m_clk_composite("ml_ahb", imx8mp_ml_ahb_sels, ccm + 0x8e80);
-+
-+	clks[IMX8MP_CLK_AHB] = imx8m_clk_composite_critical("ahb_root", imx8mp_ahb_sels, ccm + 0x9000);
-+	clks[IMX8MP_CLK_AUDIO_AHB] = imx8m_clk_composite("audio_ahb", imx8mp_audio_ahb_sels, ccm + 0x9100);
-+	clks[IMX8MP_CLK_MIPI_DSI_ESC_RX] = imx8m_clk_composite("mipi_dsi_esc_rx", imx8mp_mipi_dsi_esc_rx_sels, ccm + 0x9200);
-+
-+	clks[IMX8MP_CLK_IPG_ROOT] = imx_clk_divider2("ipg_root", "ahb_root", ccm + 0x9080, 0, 1);
-+	clks[IMX8MP_CLK_IPG_AUDIO_ROOT] = imx_clk_divider2("ipg_audio_root", "audio_ahb", ccm + 0x9180, 0, 1);
-+
-+	clks[IMX8MP_CLK_DRAM_ALT] = imx8m_clk_composite("dram_alt", imx8mp_dram_alt_sels, ccm + 0xa000);
-+	clks[IMX8MP_CLK_DRAM_APB] = imx8m_clk_composite_critical("dram_apb", imx8mp_dram_apb_sels, ccm + 0xa080);
-+	clks[IMX8MP_CLK_VPU_G1] = imx8m_clk_composite("vpu_g1", imx8mp_vpu_g1_sels, ccm + 0xa100);
-+	clks[IMX8MP_CLK_VPU_G2] = imx8m_clk_composite("vpu_g2", imx8mp_vpu_g2_sels, ccm + 0xa180);
-+	clks[IMX8MP_CLK_CAN1] = imx8m_clk_composite("can1", imx8mp_can1_sels, ccm + 0xa200);
-+	clks[IMX8MP_CLK_CAN2] = imx8m_clk_composite("can2", imx8mp_can2_sels, ccm + 0xa280);
-+	clks[IMX8MP_CLK_MEMREPAIR] = imx8m_clk_composite("memrepair", imx8mp_memrepair_sels, ccm + 0xa300);
-+	clks[IMX8MP_CLK_PCIE_PHY] = imx8m_clk_composite("pcie_phy", imx8mp_pcie_phy_sels, ccm + 0xa380);
-+	clks[IMX8MP_CLK_PCIE_AUX] = imx8m_clk_composite("pcie_aux", imx8mp_pcie_aux_sels, ccm + 0xa400);
-+	clks[IMX8MP_CLK_I2C5] = imx8m_clk_composite("i2c5", imx8mp_i2c5_sels, ccm + 0xa480);
-+	clks[IMX8MP_CLK_I2C6] = imx8m_clk_composite("i2c6", imx8mp_i2c6_sels, ccm + 0xa500);
-+	clks[IMX8MP_CLK_SAI1] = imx8m_clk_composite("sai1", imx8mp_sai1_sels, ccm + 0xa580);
-+	clks[IMX8MP_CLK_SAI2] = imx8m_clk_composite("sai2", imx8mp_sai2_sels, ccm + 0xa600);
-+	clks[IMX8MP_CLK_SAI3] = imx8m_clk_composite("sai3", imx8mp_sai3_sels, ccm + 0xa680);
-+	clks[IMX8MP_CLK_SAI4] = imx8m_clk_composite("sai4", imx8mp_sai4_sels, ccm + 0xa700);
-+	clks[IMX8MP_CLK_SAI5] = imx8m_clk_composite("sai5", imx8mp_sai5_sels, ccm + 0xa780);
-+	clks[IMX8MP_CLK_SAI6] = imx8m_clk_composite("sai6", imx8mp_sai6_sels, ccm + 0xa800);
-+	clks[IMX8MP_CLK_ENET_QOS] = imx8m_clk_composite("enet_qos", imx8mp_enet_qos_sels, ccm + 0xa880);
-+	clks[IMX8MP_CLK_ENET_QOS_TIMER] = imx8m_clk_composite("enet_qos_timer", imx8mp_enet_qos_timer_sels, ccm + 0xa900);
-+	clks[IMX8MP_CLK_ENET_REF] = imx8m_clk_composite("enet_ref", imx8mp_enet_ref_sels, ccm + 0xa980);
-+	clks[IMX8MP_CLK_ENET_TIMER] = imx8m_clk_composite("enet_timer", imx8mp_enet_timer_sels, ccm + 0xaa00);
-+	clks[IMX8MP_CLK_ENET_PHY_REF] = imx8m_clk_composite("enet_phy_ref", imx8mp_enet_phy_ref_sels, ccm + 0xaa80);
-+	clks[IMX8MP_CLK_NAND] = imx8m_clk_composite("nand", imx8mp_nand_sels, ccm + 0xab00);
-+	clks[IMX8MP_CLK_QSPI] = imx8m_clk_composite("qspi", imx8mp_qspi_sels, ccm + 0xab80);
-+	clks[IMX8MP_CLK_USDHC1] = imx8m_clk_composite("usdhc1", imx8mp_usdhc1_sels, ccm + 0xac00);
-+	clks[IMX8MP_CLK_USDHC2] = imx8m_clk_composite("usdhc2", imx8mp_usdhc2_sels, ccm + 0xac80);
-+	clks[IMX8MP_CLK_I2C1] = imx8m_clk_composite("i2c1", imx8mp_i2c1_sels, ccm + 0xad00);
-+	clks[IMX8MP_CLK_I2C2] = imx8m_clk_composite("i2c2", imx8mp_i2c2_sels, ccm + 0xad80);
-+	clks[IMX8MP_CLK_I2C3] = imx8m_clk_composite("i2c3", imx8mp_i2c3_sels, ccm + 0xae00);
-+	clks[IMX8MP_CLK_I2C4] = imx8m_clk_composite("i2c4", imx8mp_i2c4_sels, ccm + 0xae80);
-+
-+	clks[IMX8MP_CLK_UART1] = imx8m_clk_composite("uart1", imx8mp_uart1_sels, ccm + 0xaf00);
-+	clks[IMX8MP_CLK_UART2] = imx8m_clk_composite("uart2", imx8mp_uart2_sels, ccm + 0xaf80);
-+	clks[IMX8MP_CLK_UART3] = imx8m_clk_composite("uart3", imx8mp_uart3_sels, ccm + 0xb000);
-+	clks[IMX8MP_CLK_UART4] = imx8m_clk_composite("uart4", imx8mp_uart4_sels, ccm + 0xb080);
-+	clks[IMX8MP_CLK_USB_CORE_REF] = imx8m_clk_composite("usb_core_ref", imx8mp_usb_core_ref_sels, ccm + 0xb100);
-+	clks[IMX8MP_CLK_USB_PHY_REF] = imx8m_clk_composite("usb_phy_ref", imx8mp_usb_phy_ref_sels, ccm + 0xb180);
-+	clks[IMX8MP_CLK_GIC] = imx8m_clk_composite_critical("gic", imx8mp_gic_sels, ccm + 0xb200);
-+	clks[IMX8MP_CLK_ECSPI1] = imx8m_clk_composite("ecspi1", imx8mp_ecspi1_sels, ccm + 0xb280);
-+	clks[IMX8MP_CLK_ECSPI2] = imx8m_clk_composite("ecspi2", imx8mp_ecspi2_sels, ccm + 0xb300);
-+	clks[IMX8MP_CLK_PWM1] = imx8m_clk_composite("pwm1", imx8mp_pwm1_sels, ccm + 0xb380);
-+	clks[IMX8MP_CLK_PWM2] = imx8m_clk_composite("pwm2", imx8mp_pwm2_sels, ccm + 0xb400);
-+	clks[IMX8MP_CLK_PWM3] = imx8m_clk_composite("pwm3", imx8mp_pwm3_sels, ccm + 0xb480);
-+	clks[IMX8MP_CLK_PWM4] = imx8m_clk_composite("pwm4", imx8mp_pwm4_sels, ccm + 0xb500);
-+
-+	clks[IMX8MP_CLK_GPT1] = imx8m_clk_composite("gpt1", imx8mp_gpt1_sels, ccm + 0xb580);
-+	clks[IMX8MP_CLK_GPT2] = imx8m_clk_composite("gpt2", imx8mp_gpt2_sels, ccm + 0xb600);
-+	clks[IMX8MP_CLK_GPT3] = imx8m_clk_composite("gpt3", imx8mp_gpt3_sels, ccm + 0xb680);
-+	clks[IMX8MP_CLK_GPT4] = imx8m_clk_composite("gpt4", imx8mp_gpt4_sels, ccm + 0xb700);
-+	clks[IMX8MP_CLK_GPT5] = imx8m_clk_composite("gpt5", imx8mp_gpt5_sels, ccm + 0xb780);
-+	clks[IMX8MP_CLK_GPT6] = imx8m_clk_composite("gpt6", imx8mp_gpt6_sels, ccm + 0xb800);
-+	clks[IMX8MP_CLK_WDOG] = imx8m_clk_composite("wdog", imx8mp_wdog_sels, ccm + 0xb900);
-+	clks[IMX8MP_CLK_WRCLK] = imx8m_clk_composite("wrclk", imx8mp_wrclk_sels, ccm + 0xb980);
-+	clks[IMX8MP_CLK_IPP_DO_CLKO1] = imx8m_clk_composite("ipp_do_clko1", imx8mp_ipp_do_clko1_sels, ccm + 0xba00);
-+	clks[IMX8MP_CLK_IPP_DO_CLKO2] = imx8m_clk_composite("ipp_do_clko2", imx8mp_ipp_do_clko2_sels, ccm + 0xba80);
-+	clks[IMX8MP_CLK_HDMI_FDCC_TST] = imx8m_clk_composite("hdmi_fdcc_tst", imx8mp_hdmi_fdcc_tst_sels, ccm + 0xbb00);
-+	clks[IMX8MP_CLK_HDMI_24M] = imx8m_clk_composite("hdmi_24m", imx8mp_hdmi_24m_sels, ccm + 0xbb80);
-+	clks[IMX8MP_CLK_HDMI_REF_266M] = imx8m_clk_composite("hdmi_ref_266m", imx8mp_hdmi_ref_266m_sels, ccm + 0xbc00);
-+	clks[IMX8MP_CLK_USDHC3] = imx8m_clk_composite("usdhc3", imx8mp_usdhc3_sels, ccm + 0xbc80);
-+	clks[IMX8MP_CLK_MEDIA_CAM1_PIX] = imx8m_clk_composite("media_cam1_pix", imx8mp_media_cam1_pix_sels, ccm + 0xbd00);
-+	clks[IMX8MP_CLK_MEDIA_MIPI_PHY1_REF] = imx8m_clk_composite("media_mipi_phy1_ref", imx8mp_media_mipi_phy1_ref_sels, ccm + 0xbd80);
-+	clks[IMX8MP_CLK_MEDIA_DISP1_PIX] = imx8m_clk_composite("media_disp1_pix", imx8mp_media_disp1_pix_sels, ccm + 0xbe00);
-+	clks[IMX8MP_CLK_MEDIA_CAM2_PIX] = imx8m_clk_composite("media_cam2_pix", imx8mp_media_cam2_pix_sels, ccm + 0xbe80);
-+	clks[IMX8MP_CLK_MEDIA_MIPI_PHY2_REF] = imx8m_clk_composite("media_mipi_phy2_ref", imx8mp_media_mipi_phy2_ref_sels, ccm + 0xbf00);
-+	clks[IMX8MP_CLK_MEDIA_MIPI_CSI2_ESC] = imx8m_clk_composite("media_mipi_csi2_esc", imx8mp_media_mipi_csi2_esc_sels, ccm + 0xbf80);
-+	clks[IMX8MP_CLK_PCIE2_CTRL] = imx8m_clk_composite("pcie2_ctrl", imx8mp_pcie2_ctrl_sels, ccm + 0xc000);
-+	clks[IMX8MP_CLK_PCIE2_PHY] = imx8m_clk_composite("pcie2_phy", imx8mp_pcie2_phy_sels, ccm + 0xc080);
-+	clks[IMX8MP_CLK_MEDIA_MIPI_TEST_BYTE] = imx8m_clk_composite("media_mipi_test_byte", imx8mp_media_mipi_test_byte_sels, ccm + 0xc100);
-+	clks[IMX8MP_CLK_ECSPI3] = imx8m_clk_composite("ecspi3", imx8mp_ecspi3_sels, ccm + 0xc180);
-+	clks[IMX8MP_CLK_PDM] = imx8m_clk_composite("pdm", imx8mp_pdm_sels, ccm + 0xc200);
-+	clks[IMX8MP_CLK_VPU_VC8000E] = imx8m_clk_composite("vpu_vc8000e", imx8mp_vpu_vc8000e_sels, ccm + 0xc280);
-+	clks[IMX8MP_CLK_SAI7] = imx8m_clk_composite("sai7", imx8mp_sai7_sels, ccm + 0xc300);
-+
-+	clks[IMX8MP_CLK_DRAM_ALT_ROOT] = imx_clk_fixed_factor("dram_alt_root", "dram_alt", 1, 4);
-+	clks[IMX8MP_CLK_DRAM_CORE] = imx_clk_mux2_flags("dram_core_clk", ccm + 0x9800, 24, 1, imx8mp_dram_core_sels, ARRAY_SIZE(imx8mp_dram_core_sels), CLK_IS_CRITICAL);
-+
-+	clks[IMX8MP_CLK_ECSPI1_ROOT] = imx_clk_gate4("ecspi1_root_clk", "ecspi1", ccm + 0x4070, 0);
-+	clks[IMX8MP_CLK_ECSPI2_ROOT] = imx_clk_gate4("ecspi2_root_clk", "ecspi2", ccm + 0x4080, 0);
-+	clks[IMX8MP_CLK_ECSPI3_ROOT] = imx_clk_gate4("ecspi3_root_clk", "ecspi3", ccm + 0x4090, 0);
-+	clks[IMX8MP_CLK_ENET1_ROOT] = imx_clk_gate4("enet1_root_clk", "enet_axi", ccm + 0x40a0, 0);
-+	clks[IMX8MP_CLK_GPIO1_ROOT] = imx_clk_gate4("gpio1_root_clk", "ipg_root", ccm + 0x40b0, 0);
-+	clks[IMX8MP_CLK_GPIO2_ROOT] = imx_clk_gate4("gpio2_root_clk", "ipg_root", ccm + 0x40c0, 0);
-+	clks[IMX8MP_CLK_GPIO3_ROOT] = imx_clk_gate4("gpio3_root_clk", "ipg_root", ccm + 0x40d0, 0);
-+	clks[IMX8MP_CLK_GPIO4_ROOT] = imx_clk_gate4("gpio4_root_clk", "ipg_root", ccm + 0x40e0, 0);
-+	clks[IMX8MP_CLK_GPIO5_ROOT] = imx_clk_gate4("gpio5_root_clk", "ipg_root", ccm + 0x40f0, 0);
-+	clks[IMX8MP_CLK_GPT1_ROOT] = imx_clk_gate4("gpt1_root_clk", "gpt1", ccm + 0x4100, 0);
-+	clks[IMX8MP_CLK_GPT2_ROOT] = imx_clk_gate4("gpt2_root_clk", "gpt2", ccm + 0x4110, 0);
-+	clks[IMX8MP_CLK_GPT3_ROOT] = imx_clk_gate4("gpt3_root_clk", "gpt3", ccm + 0x4120, 0);
-+	clks[IMX8MP_CLK_GPT4_ROOT] = imx_clk_gate4("gpt4_root_clk", "gpt4", ccm + 0x4130, 0);
-+	clks[IMX8MP_CLK_GPT5_ROOT] = imx_clk_gate4("gpt5_root_clk", "gpt5", ccm + 0x4140, 0);
-+	clks[IMX8MP_CLK_GPT6_ROOT] = imx_clk_gate4("gpt6_root_clk", "gpt6", ccm + 0x4150, 0);
-+	clks[IMX8MP_CLK_I2C1_ROOT] = imx_clk_gate4("i2c1_root_clk", "i2c1", ccm + 0x4170, 0);
-+	clks[IMX8MP_CLK_I2C2_ROOT] = imx_clk_gate4("i2c2_root_clk", "i2c2", ccm + 0x4180, 0);
-+	clks[IMX8MP_CLK_I2C3_ROOT] = imx_clk_gate4("i2c3_root_clk", "i2c3", ccm + 0x4190, 0);
-+	clks[IMX8MP_CLK_I2C4_ROOT] = imx_clk_gate4("i2c4_root_clk", "i2c4", ccm + 0x41a0, 0);
-+	clks[IMX8MP_CLK_OCOTP_ROOT] = imx_clk_gate4("ocotp_root_clk", "ipg_root", ccm + 0x4220, 0);
-+	clks[IMX8MP_CLK_PCIE_ROOT] = imx_clk_gate4("pcie_root_clk", "pcie_aux", ccm + 0x4250, 0);
-+	clks[IMX8MP_CLK_PWM1_ROOT] = imx_clk_gate4("pwm1_root_clk", "pwm1", ccm + 0x4280, 0);
-+	clks[IMX8MP_CLK_PWM2_ROOT] = imx_clk_gate4("pwm2_root_clk", "pwm2", ccm + 0x4290, 0);
-+	clks[IMX8MP_CLK_PWM3_ROOT] = imx_clk_gate4("pwm3_root_clk", "pwm3", ccm + 0x42a0, 0);
-+	clks[IMX8MP_CLK_PWM4_ROOT] = imx_clk_gate4("pwm4_root_clk", "pwm4", ccm + 0x42b0, 0);
-+	clks[IMX8MP_CLK_QOS_ROOT] = imx_clk_gate4("qos_root_clk", "ipg_root", ccm + 0x42c0, 0);
-+	clks[IMX8MP_CLK_QOS_ENET_ROOT] = imx_clk_gate4("qos_enet_root_clk", "ipg_root", ccm + 0x42e0, 0);
-+	clks[IMX8MP_CLK_QSPI_ROOT] = imx_clk_gate4("qspi_root_clk", "qspi", ccm + 0x42f0, 0);
-+	clks[IMX8MP_CLK_NAND_ROOT] = imx_clk_gate2_shared2("nand_root_clk", "nand", ccm + 0x4300, 0);
-+	clks[IMX8MP_CLK_NAND_USDHC_BUS_RAWNAND_CLK] = imx_clk_gate2_shared2("nand_usdhc_rawnand_clk", "nand_usdhc_bus", ccm + 0x4300, 0);
-+	clks[IMX8MP_CLK_I2C5_ROOT] = imx_clk_gate2("i2c5_root_clk", "i2c5", ccm + 0x4330, 0);
-+	clks[IMX8MP_CLK_I2C6_ROOT] = imx_clk_gate2("i2c6_root_clk", "i2c6", ccm + 0x4340, 0);
-+	clks[IMX8MP_CLK_CAN1_ROOT] = imx_clk_gate2("can1_root_clk", "can1", ccm + 0x4350, 0);
-+	clks[IMX8MP_CLK_CAN2_ROOT] = imx_clk_gate2("can2_root_clk", "can2", ccm + 0x4360, 0);
-+	clks[IMX8MP_CLK_SDMA1_ROOT] = imx_clk_gate4("sdma1_root_clk", "ipg_root", ccm + 0x43a0, 0);
-+	clks[IMX8MP_CLK_ENET_QOS_ROOT] = imx_clk_gate4("enet_qos_root_clk", "sim_enet_root_clk", ccm + 0x43b0, 0);
-+	clks[IMX8MP_CLK_SIM_ENET_ROOT] = imx_clk_gate4("sim_enet_root_clk", "enet_axi", ccm + 0x4400, 0);
-+	clks[IMX8MP_CLK_GPU2D_ROOT] = imx_clk_gate4("gpu2d_root_clk", "gpu2d_div", ccm + 0x4450, 0);
-+	clks[IMX8MP_CLK_GPU3D_ROOT] = imx_clk_gate4("gpu3d_root_clk", "gpu3d_core_div", ccm + 0x4460, 0);
-+	clks[IMX8MP_CLK_SNVS_ROOT] = imx_clk_gate4("snvs_root_clk", "ipg_root", ccm + 0x4470, 0);
-+	clks[IMX8MP_CLK_UART1_ROOT] = imx_clk_gate4("uart1_root_clk", "uart1", ccm + 0x4490, 0);
-+	clks[IMX8MP_CLK_UART2_ROOT] = imx_clk_gate4("uart2_root_clk", "uart2", ccm + 0x44a0, 0);
-+	clks[IMX8MP_CLK_UART3_ROOT] = imx_clk_gate4("uart3_root_clk", "uart3", ccm + 0x44b0, 0);
-+	clks[IMX8MP_CLK_UART4_ROOT] = imx_clk_gate4("uart4_root_clk", "uart4", ccm + 0x44c0, 0);
-+	clks[IMX8MP_CLK_USB_ROOT] = imx_clk_gate4("usb_root_clk", "osc_32k", ccm + 0x44d0, 0);
-+	clks[IMX8MP_CLK_USB_PHY_ROOT] = imx_clk_gate4("usb_phy_root_clk", "usb_phy_ref", ccm + 0x44f0, 0);
-+	clks[IMX8MP_CLK_USDHC1_ROOT] = imx_clk_gate4("usdhc1_root_clk", "usdhc1", ccm + 0x4510, 0);
-+	clks[IMX8MP_CLK_USDHC2_ROOT] = imx_clk_gate4("usdhc2_root_clk", "usdhc2", ccm + 0x4520, 0);
-+	clks[IMX8MP_CLK_WDOG1_ROOT] = imx_clk_gate4("wdog1_root_clk", "wdog", ccm + 0x4530, 0);
-+	clks[IMX8MP_CLK_WDOG2_ROOT] = imx_clk_gate4("wdog2_root_clk", "wdog", ccm + 0x4540, 0);
-+	clks[IMX8MP_CLK_WDOG3_ROOT] = imx_clk_gate4("wdog3_root_clk", "wdog", ccm + 0x4550, 0);
-+	clks[IMX8MP_CLK_VPU_G1_ROOT] = imx_clk_gate4("vpu_g1_root_clk", "vpu_g1", ccm + 0x4560, 0);
-+	clks[IMX8MP_CLK_GPU_ROOT] = imx_clk_gate4("gpu_root_clk", "gpu_axi", ccm + 0x4570, 0);
-+	clks[IMX8MP_CLK_VPU_VC8KE_ROOT] = imx_clk_gate4("vpu_vc8ke_root_clk", "vpu_vc8000e", ccm + 0x4590, 0);
-+	clks[IMX8MP_CLK_VPU_G2_ROOT] = imx_clk_gate4("vpu_g2_root_clk", "vpu_g2", ccm + 0x45a0, 0);
-+	clks[IMX8MP_CLK_NPU_ROOT] = imx_clk_gate4("npu_root_clk", "ml_div", ccm + 0x45b0, 0);
-+	clks[IMX8MP_CLK_HSIO_ROOT] = imx_clk_gate4("hsio_root_clk", "ipg_root", ccm + 0x45c0, 0);
-+	clks[IMX8MP_CLK_MEDIA_APB_ROOT] = imx_clk_gate2_shared2("media_apb_root_clk", "media_apb", ccm + 0x45d0, 0);
-+	clks[IMX8MP_CLK_MEDIA_AXI_ROOT] = imx_clk_gate2_shared2("media_axi_root_clk", "media_axi", ccm + 0x45d0, 0);
-+	clks[IMX8MP_CLK_MEDIA_CAM1_PIX_ROOT] = imx_clk_gate2_shared2("media_cam1_pix_root_clk", "media_cam1_pix", ccm + 0x45d0, 0);
-+	clks[IMX8MP_CLK_MEDIA_CAM2_PIX_ROOT] = imx_clk_gate2_shared2("media_cam2_pix_root_clk", "media_cam2_pix", ccm + 0x45d0, 0);
-+	clks[IMX8MP_CLK_MEDIA_DISP1_PIX_ROOT] = imx_clk_gate2_shared2("media_disp1_pix_root_clk", "media_disp1_pix", ccm + 0x45d0, 0);
-+	clks[IMX8MP_CLK_MEDIA_DISP2_PIX_ROOT] = imx_clk_gate2_shared2("media_disp2_pix_root_clk", "media_disp2_pix", ccm + 0x45d0, 0);
-+	clks[IMX8MP_CLK_MEDIA_ISP_ROOT] = imx_clk_gate2_shared2("media_isp_root_clk", "media_isp_div", ccm + 0x45d0, 0);
-+
-+	clks[IMX8MP_CLK_USDHC3_ROOT] = imx_clk_gate4("usdhc3_root_clk", "usdhc3", ccm + 0x45e0, 0);
-+	clks[IMX8MP_CLK_HDMI_ROOT] = imx_clk_gate4("hdmi_root_clk", "hdmi_axi", ccm + 0x45f0, 0);
-+	clks[IMX8MP_CLK_TSENSOR_ROOT] = imx_clk_gate4("tsensor_root_clk", "ipg_root", ccm + 0x4620, 0);
-+	clks[IMX8MP_CLK_VPU_ROOT] = imx_clk_gate4("vpu_root_clk", "vpu_bus", ccm + 0x4630, 0);
-+	clks[IMX8MP_CLK_AUDIO_ROOT] = imx_clk_gate4("audio_root_clk", "ipg_root", ccm + 0x4650, 0);
-+
-+	clks[IMX8MP_CLK_ARM] = imx_clk_cpu("arm", "arm_a53_div",
-+					     clks[IMX8MP_CLK_A53_CORE],
-+					     clks[IMX8MP_CLK_A53_CORE],
-+					     clks[IMX8MP_ARM_PLL_OUT],
-+					     clks[IMX8MP_CLK_A53_DIV]);
-+
-+	imx_check_clocks(clks, ARRAY_SIZE(clks));
-+
-+	clk_enable(clks[IMX8MP_SYS_PLL3_OUT]);
-+	clk_data.clks = clks;
-+	clk_data.clk_num = ARRAY_SIZE(clks);
-+
-+	ret = of_clk_add_provider(ccm_np, of_clk_src_onecell_get, &clk_data);
-+	if (ret < 0)
-+		pr_err("failed to register clks for i.MX8MM\n");
-+
-+	return ret;
++	imx8m_setup_pad(iomux, pad);
 +}
-+CLK_OF_DECLARE(imx8mp, "fsl,imx8mp-ccm", imx8mp_clocks_init);
++
++#endif  /* __ASM_ARCH_IMX8MP_PINS_H__ */
+diff --git a/common/Kconfig b/common/Kconfig
+index 460ac487cb..67225b2f89 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -1147,6 +1147,13 @@ config DEBUG_IMX7D_UART
+ 	  Say Y here if you want barebox low-level debugging support
+ 	  on i.MX7D.
+ 
++config DEBUG_IMX8MP_UART
++	bool "i.MX8MP Debug UART"
++	depends on ARCH_IMX8MP
++	help
++	  Say Y here if you want barebox low-level debugging support
++	  on i.MX8MP.
++
+ config DEBUG_IMX8MQ_UART
+ 	bool "i.MX8MQ Debug UART"
+ 	depends on ARCH_IMX8MQ
+@@ -1244,6 +1251,7 @@ config DEBUG_IMX_UART_PORT
+ 						DEBUG_IMX6Q_UART || \
+ 						DEBUG_IMX6SL_UART || \
+ 						DEBUG_IMX7D_UART || \
++						DEBUG_IMX8MP_UART || \
+ 						DEBUG_IMX8MQ_UART || \
+ 						DEBUG_VF610_UART
+ 	default 1
+diff --git a/drivers/ddr/imx8m/Kconfig b/drivers/ddr/imx8m/Kconfig
+index e8bce8c49d..7673ab5b4c 100644
+--- a/drivers/ddr/imx8m/Kconfig
++++ b/drivers/ddr/imx8m/Kconfig
+@@ -1,5 +1,5 @@
+ menu "i.MX8M DDR controllers"
+-	depends on ARCH_IMX8MQ || ARCH_IMX8MM
++	depends on ARCH_IMX8MQ || ARCH_IMX8MM || ARCH_IMX8MP
+ 
+ config IMX8M_DRAM
+ 	bool "imx8m dram controller support"
+diff --git a/firmware/Kconfig b/firmware/Kconfig
+index 169c6ee915..97b7b3c2ee 100644
+--- a/firmware/Kconfig
++++ b/firmware/Kconfig
+@@ -10,6 +10,9 @@ config FIRMWARE_IMX_LPDDR4_PMU_TRAIN
+ config FIRMWARE_IMX8MM_ATF
+         bool
+ 
++config FIRMWARE_IMX8MP_ATF
++        bool
++
+ config FIRMWARE_IMX8MQ_ATF
+         bool
+ 
+diff --git a/firmware/Makefile b/firmware/Makefile
+index 020d48440d..3d4b7fd935 100644
+--- a/firmware/Makefile
++++ b/firmware/Makefile
+@@ -10,6 +10,7 @@ firmware-$(CONFIG_FIRMWARE_IMX_LPDDR4_PMU_TRAIN) += \
+ 	lpddr4_pmu_train_2d_imem.bin
+ 
+ firmware-$(CONFIG_FIRMWARE_IMX8MM_ATF) += imx8mm-bl31.bin
++firmware-$(CONFIG_FIRMWARE_IMX8MP_ATF) += imx8mp-bl31.bin
+ firmware-$(CONFIG_FIRMWARE_IMX8MQ_ATF) += imx8mq-bl31.bin
+ 
+ firmware-$(CONFIG_DRIVER_NET_FSL_FMAN) += fsl_fman_ucode_ls1046_r1.0_106_4_18.bin
 -- 
 2.27.0
 
