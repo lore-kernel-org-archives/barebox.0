@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jnfrW-0004wD-31
- for barebox@lists.infradead.org; Tue, 23 Jun 2020 10:09:06 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 23 Jun 2020 12:08:46 +0200
-Message-Id: <20200623100846.21965-3-a.fatoum@pengutronix.de>
-In-Reply-To: <20200623100846.21965-1-a.fatoum@pengutronix.de>
-References: <20200623100846.21965-1-a.fatoum@pengutronix.de>
+ id 1jnfxw-0007zd-BK
+ for barebox@lists.infradead.org; Tue, 23 Jun 2020 10:15:45 +0000
+Date: Tue, 23 Jun 2020 12:15:42 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200623101542.GB11869@pengutronix.de>
+References: <20200623062011.19347-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200623062011.19347-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,47 +22,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/3] mci: sdhci: atmel: avoid buggy SDHCI_RESET_ALL
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH 0/2] clk: at91: sync with Linux v5.8-rc1
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On the sama5d27, currently only the MCI used for boot is operational.
-The other one errors out when failing to reset the card.
+On Tue, Jun 23, 2020 at 08:20:09AM +0200, Ahmad Fatoum wrote:
+> Hello Sascha,
+> 
+> This series adds support for the new sama5d3 clk bindings present in v5.8-rc1.
+> Please apply before the v5.8-rc1 device tree sync, so we avoid intermittent
+> breakage for the microchip-ksz9477-evb.
 
-Changing the RESET_ALL to RESET_CMD | RESET_DATA fixes this.
-This might be due to the SoC's "11.1   Software 'Reset For all'
-command may not execute properly" erratum[1]:
-> The software 'Reset For All' command may not execute properly, and, as
-> a result, some registers of the host controller may not reset properly.
-> The setting of the different registers must be checked beforere
-> initializing the SD card.
+Did that and applied, thanks
 
-[1]: DS80000827A
+Sascha
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-v1 -> v2:
-  no change
----
- drivers/mci/atmel-sdhci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> Thanks,
+> Ahmad Fatoum (2):
+>   include: import upstream header <linux/overflow.h>
+>   clk: at91: sync with Linux v5.8-rc1
+> 
+>  drivers/clk/at91/Makefile      |   5 +-
+>  drivers/clk/at91/at91rm9200.c  | 209 +++++++++++++++++++++
+>  drivers/clk/at91/at91sam9260.c |  13 +-
+>  drivers/clk/at91/at91sam9g45.c | 221 +++++++++++++++++++++++
+>  drivers/clk/at91/at91sam9n12.c | 249 +++++++++++++++++++++++++
+>  drivers/clk/at91/at91sam9rl.c  |  10 +-
+>  drivers/clk/at91/at91sam9x5.c  |  10 +-
+>  drivers/clk/at91/clk-usb.c     |   9 +-
+>  drivers/clk/at91/pmc.c         |  47 +++--
+>  drivers/clk/at91/pmc.h         |  14 +-
+>  drivers/clk/at91/sam9x60.c     |  28 ++-
+>  drivers/clk/at91/sama5d2.c     |  13 +-
+>  drivers/clk/at91/sama5d3.c     | 248 +++++++++++++++++++++++++
+>  drivers/clk/at91/sama5d4.c     |  10 +-
+>  include/linux/overflow.h       | 319 +++++++++++++++++++++++++++++++++
+>  15 files changed, 1343 insertions(+), 62 deletions(-)
+>  create mode 100644 drivers/clk/at91/at91rm9200.c
+>  create mode 100644 drivers/clk/at91/at91sam9g45.c
+>  create mode 100644 drivers/clk/at91/at91sam9n12.c
+>  create mode 100644 drivers/clk/at91/sama5d3.c
+>  create mode 100644 include/linux/overflow.h
+> 
+> -- 
+> 2.27.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-diff --git a/drivers/mci/atmel-sdhci.c b/drivers/mci/atmel-sdhci.c
-index 70d3cd4091ff..59cd002aae9e 100644
---- a/drivers/mci/atmel-sdhci.c
-+++ b/drivers/mci/atmel-sdhci.c
-@@ -48,7 +48,7 @@ static int at91_sdhci_mci_init(struct mci_host *mci, struct device_d *dev)
- 
- 	priv->host.dev = dev;
- 
--	ret = sdhci_reset(sdhci, SDHCI_RESET_ALL);
-+	ret = sdhci_reset(sdhci, SDHCI_RESET_CMD | SDHCI_RESET_DATA);
- 	if (ret)
- 		return ret;
- 
 -- 
-2.27.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
