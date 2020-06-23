@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jnfqX-0004WG-RX
- for barebox@lists.infradead.org; Tue, 23 Jun 2020 10:08:06 +0000
-Date: Tue, 23 Jun 2020 12:08:04 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200623100804.GA11869@pengutronix.de>
-References: <20200622095352.22991-1-a.fatoum@pengutronix.de>
+ id 1jnfrH-0004lp-2u
+ for barebox@lists.infradead.org; Tue, 23 Jun 2020 10:08:51 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue, 23 Jun 2020 12:08:44 +0200
+Message-Id: <20200623100846.21965-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200622095352.22991-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,128 +19,117 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] clk: sync of_clk_get_parent_name with upstream
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 1/3] mci: sdhci: atmel: don't print errors on command
+ timeouts
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Mon, Jun 22, 2020 at 11:53:51AM +0200, Ahmad Fatoum wrote:
-> Upstream of_clk_get_parent_name only resorts to node name as a fallback.
-> Instead, it uses the name supplied for registered clocks whenever
-> possible. On the sama5d2, this results in sckc@f8048050 and slowck,
-> respectively. So far, sckc@f8048050 in the parents array couldn't be
-> matched with any existing clock, leading to an inaccurate clock tree.
-> 
-> Port over the v5.8-rc1 state of the function to fix this.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  drivers/clk/clk.c   | 49 ++++++++++++++++++++++++++++++++++++++++-----
->  include/linux/clk.h |  2 +-
->  2 files changed, 45 insertions(+), 6 deletions(-)
+Time outs can be expected, e.g. when probing whether a card is a MMC
+one. The core handles it, so don't have the driver print an error.
 
-Applied, thanks
+While at it, simplify the error handling. We don't need to read the
+status more than once and returning -EPERM on non-timeout is what the
+other drivers are doing.
 
-Sascha
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+v1 -> v2:
+  no change
+---
+ drivers/mci/atmel-sdhci-common.c | 40 ++++++++++++++++++--------------
+ 1 file changed, 22 insertions(+), 18 deletions(-)
 
-> 
-> diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-> index 4386c95aa9ec..f2e459a76018 100644
-> --- a/drivers/clk/clk.c
-> +++ b/drivers/clk/clk.c
-> @@ -469,21 +469,60 @@ unsigned int of_clk_get_parent_count(struct device_node *np)
->  }
->  EXPORT_SYMBOL_GPL(of_clk_get_parent_count);
->  
-> -char *of_clk_get_parent_name(struct device_node *np, unsigned int index)
-> +char *of_clk_get_parent_name(const struct device_node *np, int index)
->  {
->  	struct of_phandle_args clkspec;
-> +	struct property *prop;
->  	const char *clk_name;
-> +	const __be32 *vp;
-> +	u32 pv;
->  	int rc;
-> +	int count;
-> +	struct clk *clk;
->  
->  	rc = of_parse_phandle_with_args(np, "clocks", "#clock-cells", index,
-> -			&clkspec);
-> +					&clkspec);
->  	if (rc)
->  		return NULL;
->  
-> +	index = clkspec.args_count ? clkspec.args[0] : 0;
-> +	count = 0;
-> +
-> +	/* if there is an indices property, use it to transfer the index
-> +	 * specified into an array offset for the clock-output-names property.
-> +	 */
-> +	of_property_for_each_u32(clkspec.np, "clock-indices", prop, vp, pv) {
-> +		if (index == pv) {
-> +			index = count;
-> +			break;
-> +		}
-> +		count++;
-> +	}
-> +	/* We went off the end of 'clock-indices' without finding it */
-> +	if (prop && !vp)
-> +		return NULL;
-> +
->  	if (of_property_read_string_index(clkspec.np, "clock-output-names",
-> -				clkspec.args_count ? clkspec.args[0] : 0,
-> -				&clk_name) < 0)
-> -		clk_name = clkspec.np->name;
-> +					  index,
-> +					  &clk_name) < 0) {
-> +		/*
-> +		 * Best effort to get the name if the clock has been
-> +		 * registered with the framework. If the clock isn't
-> +		 * registered, we return the node name as the name of
-> +		 * the clock as long as #clock-cells = 0.
-> +		 */
-> +		clk = of_clk_get_from_provider(&clkspec);
-> +		if (IS_ERR(clk)) {
-> +			if (clkspec.args_count == 0)
-> +				clk_name = clkspec.np->name;
-> +			else
-> +				clk_name = NULL;
-> +		} else {
-> +			clk_name = __clk_get_name(clk);
-> +			clk_put(clk);
-> +		}
-> +	}
-> +
->  
->  	return xstrdup(clk_name);
->  }
-> diff --git a/include/linux/clk.h b/include/linux/clk.h
-> index a005e7233de8..d14d8b96a342 100644
-> --- a/include/linux/clk.h
-> +++ b/include/linux/clk.h
-> @@ -556,7 +556,7 @@ struct string_list;
->  
->  int clk_name_complete(struct string_list *sl, char *instr);
->  
-> -char *of_clk_get_parent_name(struct device_node *np, unsigned int index);
-> +char *of_clk_get_parent_name(const struct device_node *np, int index);
->  
->  static inline void clk_unregister(struct clk *clk)
->  {
-> -- 
-> 2.27.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/drivers/mci/atmel-sdhci-common.c b/drivers/mci/atmel-sdhci-common.c
+index b9524622620f..fff4468d71e8 100644
+--- a/drivers/mci/atmel-sdhci-common.c
++++ b/drivers/mci/atmel-sdhci-common.c
+@@ -83,10 +83,10 @@ exit:
+ static int at91_sdhci_wait_for_done(struct at91_sdhci *host, u32 mask)
+ {
+ 	struct sdhci *sdhci = &host->sdhci;
+-	u16 status;
++	u32 status;
+ 	int ret;
+ 
+-	ret = sdhci_read16_poll_timeout(sdhci, SDHCI_INT_NORMAL_STATUS, status,
++	ret = sdhci_read32_poll_timeout(sdhci, SDHCI_INT_STATUS, status,
+ 					(status & mask) == mask || (status & SDHCI_INT_ERROR),
+ 					USEC_PER_SEC);
+ 
+@@ -95,13 +95,15 @@ static int at91_sdhci_wait_for_done(struct at91_sdhci *host, u32 mask)
+ 		return ret;
+ 	}
+ 
++	if (status & SDHCI_INT_TIMEOUT)
++		return -ETIMEDOUT;
++
+ 	if (status & SDHCI_INT_ERROR) {
+-		pr_err("SDHCI_INT_ERROR: 0x%08x\n",
+-			sdhci_read16(sdhci, SDHCI_INT_ERROR_STATUS));
++		pr_err("SDHCI_INT_STATUS: 0x%08x\n", status);
+ 		return -EPERM;
+ 	}
+ 
+-	return status;
++	return status & 0xFFFF;
+ }
+ 
+ int at91_sdhci_send_command(struct at91_sdhci *host, struct mci_cmd *cmd,
+@@ -109,7 +111,8 @@ int at91_sdhci_send_command(struct at91_sdhci *host, struct mci_cmd *cmd,
+ {
+ 	unsigned command, xfer;
+ 	struct sdhci *sdhci = &host->sdhci;
+-	u32 mask, status, state;
++	u32 mask, state;
++	int status;
+ 	int ret;
+ 
+ 	/* Wait for idle before next command */
+@@ -147,28 +150,29 @@ int at91_sdhci_send_command(struct at91_sdhci *host, struct mci_cmd *cmd,
+ 	sdhci_write16(sdhci, SDHCI_COMMAND, command);
+ 
+ 	status = at91_sdhci_wait_for_done(host, mask);
+-	if (status >= 0 && (status & (SDHCI_INT_ERROR | mask)) == mask) {
+-		sdhci_read_response(sdhci, cmd);
+-		sdhci_write32(sdhci, SDHCI_INT_STATUS, mask);
+-
+-		if (data)
+-			sdhci_transfer_data(sdhci, data);
++	if (status < 0)
++		goto error;
+ 
+-		udelay(1000);
++	sdhci_read_response(sdhci, cmd);
++	sdhci_write32(sdhci, SDHCI_INT_STATUS, mask);
+ 
+-		status = sdhci_read32(sdhci, SDHCI_INT_STATUS);
+-		sdhci_write32(sdhci, SDHCI_INT_STATUS, ~0U);
++	if (data)
++		sdhci_transfer_data(sdhci, data);
+ 
+-		return 0;
+-	}
++	udelay(1000);
+ 
+ 	status = sdhci_read32(sdhci, SDHCI_INT_STATUS);
+ 	sdhci_write32(sdhci, SDHCI_INT_STATUS, ~0U);
+ 
++	return 0;
++
++error:
++	sdhci_write32(sdhci, SDHCI_INT_STATUS, ~0U);
++
+ 	sdhci_reset(sdhci, SDHCI_RESET_CMD);
+ 	sdhci_reset(sdhci, SDHCI_RESET_DATA);
+ 
+-	return status & SDHCI_INT_TIMEOUT ? -ETIMEDOUT : -ECOMM;
++	return status;
+ }
+ 
+ static void at91_sdhci_set_power(struct at91_sdhci *host, unsigned vdd)
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.27.0
+
 
 _______________________________________________
 barebox mailing list
