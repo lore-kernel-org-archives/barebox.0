@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jndoW-0006kY-4S
- for barebox@lists.infradead.org; Tue, 23 Jun 2020 07:57:54 +0000
-Date: Tue, 23 Jun 2020 09:57:50 +0200
+ by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jne8P-00072K-AX
+ for barebox@lists.infradead.org; Tue, 23 Jun 2020 08:18:26 +0000
+Date: Tue, 23 Jun 2020 10:18:22 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200623075750.GU11869@pengutronix.de>
-References: <20200619140353.18607-1-a.fatoum@pengutronix.de>
+Message-ID: <20200623081822.GV11869@pengutronix.de>
+References: <20200622151115.29012-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200619140353.18607-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20200622151115.29012-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,42 +22,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] devinfo: print device parent along with device info
+Subject: Re: [PATCH v2] watchdog: permit `wd 0` for non-stoppable, but
+ inactive, watchdogs
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Jun 19, 2020 at 04:03:53PM +0200, Ahmad Fatoum wrote:
-> Especially for "virtual" devices (e.g. wdog0 or mmc2), it is often
-> useful to know the corresponding hardware device.
+On Mon, Jun 22, 2020 at 05:11:15PM +0200, Ahmad Fatoum wrote:
+> A watchdog that can't be stopped returns -ENOSYS on set_timeout(0).
+> If the watchdog supports communicating whether it's running, we could
+> still allow `wd 0`, if it hasn't been started yet.
 > 
-> Instead of always having to search through plain devinfo, just
-> include this information in the output when running
-> `devinfo device`.
+> Setting device parameter .priority=0 disables a watchdog. One would
+> expect this to always succeed for a not-running watchdog, but currently
+> it doesn't, if the driver's set_timeout(0) returns -ENOSYS. With this
+> fix, this is supported making the user API less surprising.
 > 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  commands/devinfo.c | 3 +++
->  1 file changed, 3 insertions(+)
 
 Applied, thanks
 
 Sascha
 
+> v1 -> v2:
+>   - use watchdog_hw_running helper
+> ---
+>  drivers/watchdog/wd_core.c | 3 +++
+>  1 file changed, 3 insertions(+)
 > 
-> diff --git a/commands/devinfo.c b/commands/devinfo.c
-> index 81956b1cc099..2e2e48e42cc5 100644
-> --- a/commands/devinfo.c
-> +++ b/commands/devinfo.c
-> @@ -85,6 +85,9 @@ static int do_devinfo(int argc, char *argv[])
->  		if (dev->info)
->  			dev->info(dev);
+> diff --git a/drivers/watchdog/wd_core.c b/drivers/watchdog/wd_core.c
+> index 34040408f716..72ada91dbf71 100644
+> --- a/drivers/watchdog/wd_core.c
+> +++ b/drivers/watchdog/wd_core.c
+> @@ -45,6 +45,9 @@ int watchdog_set_timeout(struct watchdog *wd, unsigned timeout)
+>  	if (timeout > wd->timeout_max)
+>  		return -EINVAL;
 >  
-> +		if (dev->parent)
-> +			printf("Parent: %s\n", dev_name(dev->parent));
+> +	if (watchdog_hw_running(wd) == false)
+> +		return 0;
 > +
->  		first = true;
->  		list_for_each_entry(param, &dev->parameters, list) {
->  			if (first) {
+>  	pr_debug("setting timeout on %s to %ds\n", watchdog_name(wd), timeout);
+>  
+>  	ret = wd->set_timeout(wd, timeout);
 > -- 
 > 2.27.0
 > 
