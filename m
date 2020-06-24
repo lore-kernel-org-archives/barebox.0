@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jnzeS-0000tG-GT
- for barebox@lists.infradead.org; Wed, 24 Jun 2020 07:16:57 +0000
-Date: Wed, 24 Jun 2020 09:16:55 +0200
+ id 1jnzg5-0001NY-Jn
+ for barebox@lists.infradead.org; Wed, 24 Jun 2020 07:18:38 +0000
+Date: Wed, 24 Jun 2020 09:18:36 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200624071655.GA919@pengutronix.de>
-References: <20200623132521.4727-1-a.fatoum@pengutronix.de>
+Message-ID: <20200624071836.GH11869@pengutronix.de>
+References: <20200623150823.25336-1-cleger@kalray.eu>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200623132521.4727-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20200623150823.25336-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,37 +22,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/4] dts: clean up and a fix
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] kbuild: fix typo in --no-whole-archive flag
+To: Clement Leger <cleger@kalray.eu>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jun 23, 2020 at 03:25:17PM +0200, Ahmad Fatoum wrote:
-> Hello Sascha,
+On Tue, Jun 23, 2020 at 05:08:23PM +0200, Clement Leger wrote:
+> "whole" was replaced with "while" during a previous patch. Fix this flag
+> to allow building correctly.
 > 
-> the vexpress changed paths, again, so building now fails. Fortunately[1],
-> a label: had been introduced meanwhile, that we could use. This is what
-> the first patch does. Please order it before the v5.8-rc1 sync, so we
-> don't have intermittent build breakage[2].
-> 
-> The other three patches remove code that became obsolete with the device
-> tree sync.
-> 
-> [1]: The same patch adding the label, also added the partitions node,
->      which broke barebox on the board, but that's a different issue..
-> [2]: We probably want a make dtbs target to spot such issues and fix
->      them up into the same commit if needed
-> 
-> Cheers
-> Ahmad Fatoum (4):
->   ARM: vexpress: dts: use direct &phandle instead of &{/path}
->   ARM: stm32mp: dts: extend now upstream stm32mp157c-lxa-mc1.dts
->   clk: at91: remove no-longer needed dt-compat code
->   clk: at91: remove now-duplicate crutch #defines
+> Fixes 0a78b33954 ("kbuild: switch over to thin archive")
+> Signed-off-by: Clement Leger <cleger@kalray.eu>
+> ---
+>  arch/kvx/Makefile      | 2 +-
+>  arch/mips/pbl/Makefile | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
 
-Applied 2-4, thanks
+Applied to master, thanks
 
 Sascha
 
+> 
+> diff --git a/arch/kvx/Makefile b/arch/kvx/Makefile
+> index 9e7c8c07f..13c4e2431 100644
+> --- a/arch/kvx/Makefile
+> +++ b/arch/kvx/Makefile
+> @@ -30,6 +30,6 @@ lds-y += arch/kvx/cpu/barebox.lds
+>  
+>  cmd_barebox__ ?= $(LD) $(KBUILD_LDFLAGS) $(LDFLAGS_barebox) -o $@ \
+>        -T $(BAREBOX_LDS) \
+> -      --whole-archive $(BAREBOX_OBJS) --no-while-archive \
+> +      --whole-archive $(BAREBOX_OBJS) --no-whole-archive \
+>        -L$(LIBGCC_PATH) -lgcc \
+>        $(filter-out $(BAREBOX_LDS) $(BAREBOX_OBJS) FORCE ,$^)
+> diff --git a/arch/mips/pbl/Makefile b/arch/mips/pbl/Makefile
+> index 3bd0df165..f85c7a6d6 100644
+> --- a/arch/mips/pbl/Makefile
+> +++ b/arch/mips/pbl/Makefile
+> @@ -31,7 +31,7 @@ zbarebox-lds := $(obj)/zbarebox.lds
+>  quiet_cmd_zbarebox__ ?= LD      $@
+>        cmd_zbarebox__ ?= $(LD) $(KBUILD_LDFLAGS) $(LDFLAGS_zbarebox) -o $@ \
+>        -T $(zbarebox-lds)                                           \
+> -      --whole-archive $(zbarebox-common) --no-while-archive        \
+> +      --whole-archive $(zbarebox-common) --no-whole-archive        \
+>        $(filter-out $(zbarebox-lds) $(zbarebox-common) FORCE ,$^)
+>  
+>  $(obj)/zbarebox: $(zbarebox-lds) $(zbarebox-common) FORCE
+> -- 
+> 2.17.1
+> 
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
