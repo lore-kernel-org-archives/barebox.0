@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jnyYo-0001PU-Lb
- for barebox@lists.infradead.org; Wed, 24 Jun 2020 06:07:03 +0000
+ id 1jnyeA-0003IJ-PK
+ for barebox@lists.infradead.org; Wed, 24 Jun 2020 06:12:35 +0000
 References: <20200623193506.13716-1-cleger@kalray.eu>
- <20200623193506.13716-3-cleger@kalray.eu>
+ <20200623193506.13716-4-cleger@kalray.eu>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <cbc20459-b0a1-dbd0-2a3d-a8f64eb09d02@pengutronix.de>
-Date: Wed, 24 Jun 2020 08:06:58 +0200
+Message-ID: <4a15f2e0-b818-a228-4084-e35171a856de@pengutronix.de>
+Date: Wed, 24 Jun 2020 08:12:33 +0200
 MIME-Version: 1.0
-In-Reply-To: <20200623193506.13716-3-cleger@kalray.eu>
+In-Reply-To: <20200623193506.13716-4-cleger@kalray.eu>
 Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,39 +23,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/4] common: Kconfig: remove MIPS dependency
+Subject: Re: [PATCH 3/4] kvx: add D-cache inval and I-cache sync
 To: Clement Leger <cleger@kalray.eu>, Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
 
-Hello Clement,
+
 
 On 6/23/20 9:35 PM, Clement Leger wrote:
-> There is no reason anymore to limit the use of elf on mips since there
-> is no elf specific support needed in architectures. Remove this
-> dependency and drop COMPILE_TEST config.
+> Before booting, we must make sure the I-cache is synchronized with the
+> D-cache to execute loaded instructions. In order to do that, add a
+> function which execute a fence to ensure every memory accesses have
+> been committed out of processor pipeline to memory and then invalidate
+> I-cache to reload from memory. Moreover add a D-cache invalidation
+> routine to cleanup cache before booting.
 > 
 > Signed-off-by: Clement Leger <cleger@kalray.eu>
 > ---
->  common/Kconfig | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+>  arch/kvx/include/asm/cache.h | 24 ++++++++++++++++++++++++
+>  1 file changed, 24 insertions(+)
+>  create mode 100644 arch/kvx/include/asm/cache.h
 > 
-> diff --git a/common/Kconfig b/common/Kconfig
-> index f150092af..a3a290ad3 100644
-> --- a/common/Kconfig
-> +++ b/common/Kconfig
-> @@ -38,8 +38,7 @@ config BLOCK_WRITE
->  	bool
->  
->  config ELF
-> -	bool "ELF Support" if COMPILE_TEST
+> diff --git a/arch/kvx/include/asm/cache.h b/arch/kvx/include/asm/cache.h
+> new file mode 100644
+> index 000000000..efda37ebd
+> --- /dev/null
+> +++ b/arch/kvx/include/asm/cache.h
+> @@ -0,0 +1,24 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * Copyright (C) 2019 Kalray Inc.
+> + */
+> +
+> +#ifndef __KVX_CACHE_H
+> +#define __KVX_CACHE_H
+> +
+> +#include <linux/types.h>
+> +
+> +static inline void sync_dcache_icache(void)
+> +{
+> +	__builtin_kvx_fence();
+> +	__builtin_kvx_iinval();
+> +	__builtin_kvx_barrier();
+> +}
 
-With this line removed, you don't have a prompt symbol anymore to select it while COMPILE_TESTing.
-Please reinstate. The depends can be dropped.
+ARCH=arm calls this sync_caches_for_execution. Using the same name
+sounds like a good idea IMHO.
 
-> -	depends on MIPS || COMPILE_TEST
-> +	bool
->  
->  config FILETYPE
->  	bool
+> +
+> +static inline void dcache_inval(void)
+> +{
+> +	__builtin_kvx_fence();
+> +	__builtin_kvx_dinval();
+> +}
+> +
+> +#endif /* __KVX_CACHE_H */
 > 
 
 -- 
