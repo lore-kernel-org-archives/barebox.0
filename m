@@ -1,12 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1johQr-0006lH-Jz
- for barebox@lists.infradead.org; Fri, 26 Jun 2020 06:01:51 +0000
+ id 1jogH7-0001oI-MT
+ for barebox@lists.infradead.org; Fri, 26 Jun 2020 04:47:44 +0000
+Date: Fri, 26 Jun 2020 06:47:39 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 26 Jun 2020 08:01:34 +0200
-Message-Id: <20200626060134.19836-1-s.hauer@pengutronix.de>
+Message-ID: <20200626044739.GC19105@pengutronix.de>
+References: <20200618121206.5013-1-s.hauer@pengutronix.de>
+ <8ed6835fbd1cb8e35117ff87f49502ef35d455d2.camel@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <8ed6835fbd1cb8e35117ff87f49502ef35d455d2.camel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,67 +23,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] startup: register autoboot vars in initcall
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] Arm: i.MX5: Do not disable L2 cache
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-globalvars should be registered early so that code modifying them also
-updates the backing store pointer. Move registering of
-global.autoboot_abort_key, global.autoboot_timeout and global.autoboot
-to an initcall.
+On Thu, Jun 18, 2020 at 02:21:08PM +0200, Lucas Stach wrote:
+> Am Donnerstag, den 18.06.2020, 14:12 +0200 schrieb Sascha Hauer:
+> > Disabling the L2 cache is not working in imx5_init_lowlevel() because
+> > the necessary cache maintenance operations are missing. This often
+> > results in cache corruption in a chainloaded barebox.
+> > Disabling the cache is unnecessary: when we come from the ROM the L2
+> > cache is disabled anyway, so disabling it is a no-op. When we get here
+> > in a chainloaded barebox the L2 cache is already enabled and correctly
+> > configured. So instead of initializing it again we can take an enabled
+> > L2 cache as a sign to skip initialization and just return from the
+> > function.
+> 
+> While this won't hurt much, shouldn't we also disable the L2 cache on
+> Barebox shutdown, like we do on other SoCs?
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/startup.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+Documentation/arm/booting.rst clearly states:
 
-diff --git a/common/startup.c b/common/startup.c
-index 511675ed55..7e0f7d6b64 100644
---- a/common/startup.c
-+++ b/common/startup.c
-@@ -281,19 +281,8 @@ enum autoboot_state do_autoboot_countdown(void)
- 	return autoboot_state;
- }
- 
--static int run_init(void)
-+static int register_autoboot_vars(void)
- {
--	DIR *dir;
--	struct dirent *d;
--	const char *initdir = "/env/init";
--	bool env_bin_init_exists;
--	enum autoboot_state autoboot;
--	struct stat s;
--
--	/*
--	 * Register autoboot variables here as they might be altered by
--	 * init scripts.
--	 */
- 	globalvar_add_simple_enum("autoboot_abort_key",
- 				  &global_autoboot_abort_key,
-                                   global_autoboot_abort_keys,
-@@ -305,6 +294,19 @@ static int run_init(void)
- 				  global_autoboot_states,
- 				  ARRAY_SIZE(global_autoboot_states));
- 
-+	return 0;
-+}
-+postcore_initcall(register_autoboot_vars);
-+
-+static int run_init(void)
-+{
-+	DIR *dir;
-+	struct dirent *d;
-+	const char *initdir = "/env/init";
-+	bool env_bin_init_exists;
-+	enum autoboot_state autoboot;
-+	struct stat s;
-+
- 	setenv("PATH", "/env/bin");
- 
- 	/* Run legacy /env/bin/init if it exists */
+Data cache must be off.
+
+So yes, to do it correctly we should disable the L2 cache.
+
+So far I am happy that my QSB board no longer randomly crashes in a
+secondary barebox.
+
+Sascha
+
 -- 
-2.27.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
