@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from enterprise02.smtp.diehl.com ([193.201.238.220])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jnH7C-0002Yn-TM
- for barebox@lists.infradead.org; Mon, 22 Jun 2020 07:43:41 +0000
-From: Denis Osterland-Heim <denis.osterland@diehl.com>
-Date: Mon, 22 Jun 2020 07:42:11 +0000
-Message-ID: <3682d87514f9619b819ad6fb082c23d1330fb014.camel@diehl.com>
-Content-Language: en-US
-Content-ID: <239152314B2F8A4E9C7E77998F83720E@diehl.internal>
+ id 1jogJA-00024g-Bj
+ for barebox@lists.infradead.org; Fri, 26 Jun 2020 04:49:50 +0000
+Date: Fri, 26 Jun 2020 06:49:45 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200626044945.GD19105@pengutronix.de>
+References: <3682d87514f9619b819ad6fb082c23d1330fb014.camel@diehl.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <3682d87514f9619b819ad6fb082c23d1330fb014.camel@diehl.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,40 +18,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Is it possible to pass extra device-tree include directory?
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: Is it possible to pass extra device-tree include directory?
+To: Denis Osterland-Heim <denis.osterland@diehl.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-SGksDQoNCmlzIGl0IHBvc3NpYmxlIHRvIHBhc3MgZXh0cmEgZGV2aWNlLXRyZWUgaW5jbHVkZSBk
-aXJlY3Rvcnk/DQpGb3IgaW5zdGFuY2UgIiR7UFRYRElTVF9QTEFURk9STUNPTkZJR0RJUn0vZHRz
-IiB0byBoYXZlIGEgb3V0LW9mLXRyZWUgZHRzIG9ubHkgaW4gb25lIHBsYWNlPw0KDQpSZWdhcmRz
-LCBEZW5pcw0KDQoNCkRpZWhsIENvbm5lY3Rpdml0eSBTb2x1dGlvbnMgR21iSA0KR2VzY2jDpGZ0
-c2bDvGhydW5nOiBIb3JzdCBMZW9uYmVyZ2VyDQpTaXR6IGRlciBHZXNlbGxzY2hhZnQ6IE7DvHJu
-YmVyZyAtIFJlZ2lzdGVyZ2VyaWNodDogQW10c2dlcmljaHQNCk7DvHJuYmVyZzogSFJCIDMyMzE1
-DQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18NCg0KRGVyIEluaGFs
-dCBkZXIgdm9yc3RlaGVuZGVuIEUtTWFpbCBpc3QgbmljaHQgcmVjaHRsaWNoIGJpbmRlbmQuIERp
-ZXNlIEUtTWFpbCBlbnRoYWVsdCB2ZXJ0cmF1bGljaGUgdW5kL29kZXIgcmVjaHRsaWNoIGdlc2No
-dWV0enRlIEluZm9ybWF0aW9uZW4uDQpJbmZvcm1pZXJlbiBTaWUgdW5zIGJpdHRlLCB3ZW5uIFNp
-ZSBkaWVzZSBFLU1haWwgZmFlbHNjaGxpY2hlcndlaXNlIGVyaGFsdGVuIGhhYmVuLiBCaXR0ZSBs
-b2VzY2hlbiBTaWUgaW4gZGllc2VtIEZhbGwgZGllIE5hY2hyaWNodC4NCkplZGUgdW5lcmxhdWJ0
-ZSBGb3JtIGRlciBSZXByb2R1a3Rpb24sIEJla2FubnRnYWJlLCBBZW5kZXJ1bmcsIFZlcnRlaWx1
-bmcgdW5kL29kZXIgUHVibGlrYXRpb24gZGllc2VyIEUtTWFpbCBpc3Qgc3RyZW5nc3RlbnMgdW50
-ZXJzYWd0Lg0KLSBJbmZvcm1hdGlvbmVuIHp1bSBEYXRlbnNjaHV0eiwgaW5zYmVzb25kZXJlIHp1
-IElocmVuIFJlY2h0ZW4sIGVyaGFsdGVuIFNpZSB1bnRlciBodHRwczovL3d3dy5kaWVobC5jb20v
-Z3JvdXAvZGUvdHJhbnNwYXJlbnotdW5kLWluZm9ybWF0aW9uc3BmbGljaHRlbi8NCg0KVGhlIGNv
-bnRlbnRzIG9mIHRoZSBhYm92ZSBtZW50aW9uZWQgZS1tYWlsIGlzIG5vdCBsZWdhbGx5IGJpbmRp
-bmcuIFRoaXMgZS1tYWlsIGNvbnRhaW5zIGNvbmZpZGVudGlhbCBhbmQvb3IgbGVnYWxseSBwcm90
-ZWN0ZWQgaW5mb3JtYXRpb24uIFBsZWFzZSBpbmZvcm0gdXMgaWYgeW91IGhhdmUgcmVjZWl2ZWQg
-dGhpcyBlLW1haWwgYnkNCm1pc3Rha2UgYW5kIGRlbGV0ZSBpdCBpbiBzdWNoIGEgY2FzZS4gRWFj
-aCB1bmF1dGhvcml6ZWQgcmVwcm9kdWN0aW9uLCBkaXNjbG9zdXJlLCBhbHRlcmF0aW9uLCBkaXN0
-cmlidXRpb24gYW5kL29yIHB1YmxpY2F0aW9uIG9mIHRoaXMgZS1tYWlsIGlzIHN0cmljdGx5IHBy
-b2hpYml0ZWQuIA0KLSBGb3IgZ2VuZXJhbCBpbmZvcm1hdGlvbiBvbiBkYXRhIHByb3RlY3Rpb24g
-YW5kIHlvdXIgcmVzcGVjdGl2ZSByaWdodHMgcGxlYXNlIHZpc2l0IGh0dHBzOi8vd3d3LmRpZWhs
-LmNvbS9ncm91cC9lbi90cmFuc3BhcmVuY3ktYW5kLWluZm9ybWF0aW9uLW9ibGlnYXRpb25zLw0K
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBt
-YWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
-YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Hi Denis,
+
+On Mon, Jun 22, 2020 at 07:42:11AM +0000, Denis Osterland-Heim wrote:
+> Hi,
+> 
+> is it possible to pass extra device-tree include directory?
+> For instance "${PTXDIST_PLATFORMCONFIGDIR}/dts" to have a out-of-tree dts only in one place?
+
+I am not aware of any possibility doing this currently.
+
+Regards,
+ Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
