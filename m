@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jogJA-00024g-Bj
- for barebox@lists.infradead.org; Fri, 26 Jun 2020 04:49:50 +0000
-Date: Fri, 26 Jun 2020 06:49:45 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200626044945.GD19105@pengutronix.de>
-References: <3682d87514f9619b819ad6fb082c23d1330fb014.camel@diehl.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <3682d87514f9619b819ad6fb082c23d1330fb014.camel@diehl.com>
+Received: from zimbra2.kalray.eu ([92.103.151.219])
+ by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jpZas-00069z-SP
+ for barebox@lists.infradead.org; Sun, 28 Jun 2020 15:51:47 +0000
+From: Clement Leger <cleger@kalray.eu>
+Date: Sun, 28 Jun 2020 17:51:05 +0200
+Message-Id: <20200628155108.29083-2-cleger@kalray.eu>
+In-Reply-To: <20200628155108.29083-1-cleger@kalray.eu>
+References: <20200628155108.29083-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,32 +16,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Is it possible to pass extra device-tree include directory?
-To: Denis Osterland-Heim <denis.osterland@diehl.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH v2 1/4] common: bootm: allow building using undefined IH_ARCH
+To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
+Cc: Clement Leger <cleger@kalray.eu>, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Hi Denis,
+Some architectures might not want to support uImage. To do so, allow
+IH_ARCH to be let undefined which will make it possible to compile boot
+support.
 
-On Mon, Jun 22, 2020 at 07:42:11AM +0000, Denis Osterland-Heim wrote:
-> Hi,
-> 
-> is it possible to pass extra device-tree include directory?
-> For instance "${PTXDIST_PLATFORMCONFIGDIR}/dts" to have a out-of-tree dts only in one place?
+Signed-off-by: Clement Leger <cleger@kalray.eu>
+---
+ common/bootm.c  | 2 +-
+ include/image.h | 2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-I am not aware of any possibility doing this currently.
-
-Regards,
- Sascha
-
+diff --git a/common/bootm.c b/common/bootm.c
+index 4110d8d6e..bea73fac3 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -510,7 +510,7 @@ static int bootm_open_os_uimage(struct image_data *data)
+ 
+ 	uimage_print_contents(data->os);
+ 
+-	if (data->os->header.ih_arch != IH_ARCH) {
++	if (IH_ARCH == IH_ARCH_INVALID || data->os->header.ih_arch != IH_ARCH) {
+ 		printf("Unsupported Architecture 0x%x\n",
+ 		       data->os->header.ih_arch);
+ 		return -EINVAL;
+diff --git a/include/image.h b/include/image.h
+index 88b628bc7..0a7832f13 100644
+--- a/include/image.h
++++ b/include/image.h
+@@ -101,6 +101,8 @@
+ #define IH_ARCH IH_ARCH_AVR32
+ #elif defined(CONFIG_LINUX)
+ #define IH_ARCH IH_ARCH_LINUX
++#else
++#define IH_ARCH IH_ARCH_INVALID
+ #endif
+ 
+ /*
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.17.1
+
 
 _______________________________________________
 barebox mailing list
