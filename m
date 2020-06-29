@@ -1,12 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from vsmx009.vodafonemail.xion.oxcs.net ([153.92.174.87])
+Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jpwjC-0004oK-N6
- for barebox@lists.infradead.org; Mon, 29 Jun 2020 16:33:56 +0000
-Date: Mon, 29 Jun 2020 18:33:45 +0200 (CEST)
-From: Giorgio Dal Molin <giorgio.nicole@arcor.de>
-Message-ID: <1036676243.111725.1593448425601@mail.vodafone.de>
-In-Reply-To: <21c2fc40-e385-b05e-6392-55ad219597da@pengutronix.de>
+ id 1jpwoq-0005Sk-Ra
+ for barebox@lists.infradead.org; Mon, 29 Jun 2020 16:39:45 +0000
+Received: by mail-lj1-x236.google.com with SMTP id e4so18777811ljn.4
+ for <barebox@lists.infradead.org>; Mon, 29 Jun 2020 09:39:44 -0700 (PDT)
+MIME-Version: 1.0
 References: <925732743.424285.1592919941556@mail.vodafone.de>
  <CAOMZO5AeTg2afd+xVmNr=GxOM=s7qdzUhMqz2AHpTx_MPGWbPg@mail.gmail.com>
  <245646662.425432.1592925096458@mail.vodafone.de>
@@ -17,7 +16,11 @@ References: <925732743.424285.1592919941556@mail.vodafone.de>
  <aac7feb5-604f-2914-bfbd-75f0271401ad@pengutronix.de>
  <1874617325.108865.1593446626706@mail.vodafone.de>
  <21c2fc40-e385-b05e-6392-55ad219597da@pengutronix.de>
-MIME-Version: 1.0
+ <1036676243.111725.1593448425601@mail.vodafone.de>
+In-Reply-To: <1036676243.111725.1593448425601@mail.vodafone.de>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Mon, 29 Jun 2020 13:39:31 -0300
+Message-ID: <CAOMZO5Cxa6Yk-uWUummRhNVQbLHvduCZQM9djxXNG683GQ4gRw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -31,266 +34,38 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: reset / watchdog on an imx7d soc
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>
+To: Giorgio Dal Molin <giorgio.nicole@arcor.de>
+Cc: Barebox List <barebox@lists.infradead.org>, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Hi,
+Hi Giorgio,
 
-> On June 29, 2020 at 6:11 PM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
-> 
-> 
-> On 6/29/20 6:03 PM, Giorgio Dal Molin wrote:
-> > Hi,
-> > 
-> >> On June 29, 2020 at 5:35 PM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
-> >>
-> >>
-> >> Hello Giorgio,
-> >>
-> >> On 6/29/20 5:30 PM, Giorgio Dal Molin wrote:
-> >>> Hi,
-> >>>
-> >>>> On June 29, 2020 at 3:30 PM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
-> >>>>
-> >>>>
-> >>>> Hello,
-> >>>>
-> >>>> On 6/29/20 12:53 PM, Giorgio Dal Molin wrote:
-> >>>>> Hi,
-> >>>>>
-> >>>>>> On June 29, 2020 at 10:44 AM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
-> >>>>>>
-> >>>>>>
-> >>>>>> Hello Giorgio,
-> >>>>>>
-> >>>>>> On 6/23/20 5:11 PM, Giorgio Dal Molin wrote:
-> >>>>>>> Hi Fabio,
-> >>>>>>>
-> >>>>>>> thank you for your quick reply.
-> >>>>>>>
-> >>>>>>> I've already found the errata you linked in your mail but I had no success
-> >>>>>>> applying the suggestion there; maybe I'm doing it wrong.
-> >>>>>>> Let's take the Option 3 there:
-> >>>>>>
-> >>>>>> Does reset within Linux (with say the imx_v6_v7_defconfg) work?
-> >>>>>
-> >>>>> No. I see the same behavior also with the kernel: after a 'shutdown -r'
-> >>>>> the system 'goes down' but doesn't reboot, it just hang:
-> >>>>>
-> >>>>> ~ # shutdown -r
-> >>>>> system is going down for reboot NOW
-> >>>>> ...
-> >>>>> [   46.248222] 000: ci_hdrc ci_hdrc.0: remove, state 1
-> >>>>> [   46.248253] 000: usb usb1: USB disconnect, device number 1
-> >>>>> [   46.248263] 000: usb 1-1: USB disconnect, device number 2
-> >>>>>
-> >>>>>
-> >>>>> The same happens if I kill the 'watchdog' process: after ~2 seconds
-> >>>>> the system just hangs.
-> >>>>>
-> >>>>> I'm sure there must be a solution because the original u-boot bootloader
-> >>>>> for the cpu module I'm using reboots the system as expected, through the wdog1;
-> >>>>> unfortunately it's not so trivial to find what makes the difference.
-> >>>>
-> >>>> Linux probably attempts reset via PSCI. Check for psci_system_reset
-> >>>> in your vendor's U-Boot and transplant it into barebox.
-> >>>
-> >>> U-Boot has actually a psci_system_reset(), it also rely on wdog1:
-> >>>
-> >>> __secure void psci_system_reset(void)
-> >>> {
-> >>> 	struct wdog_regs *wdog = (struct wdog_regs *)WDOG1_BASE_ADDR;
-> >>>
-> >>> 	/* make sure WDOG1 clock is enabled */
-> >>> 	writel(0x1 << 28, CCM_BASE_ADDR + CCM_ROOT_WDOG);
-> >>> 	writel(0x3, CCM_BASE_ADDR + CCM_CCGR_WDOG1);
-> >>> 	writew(WCR_WDE, &wdog->wcr);
-> >>>
-> >>> 	while (1)
-> >>> 		wfi();
-> >>> }
-> >>>
-> >>> It is also compiled in the uboot image, because if I add a syntax error in
-> >>> its body the compiler tells me; anyway I think it's not called when I issue
-> >>> the 'reset' command at the prompt because the 'reset' works properly even if
-> >>> I comment out the whole body of the function or if I add an endless loop like
-> >>> while(1); to it.
-> >>
-> >> Yes. It should be called by the kernel when CONFIG_ARM_PSCI_FW=y
-> >> and the device tree has the correct node. 
-> >>> Anyway I ported it to barebox, defining a void psci_system_reset(void) in
-> >>> arch/arm/mach-imx/imx7.c:
-> >>>
-> >>> ...
-> >>> #define CCM_BASE_ADDR   0x30380000
-> >>> #define CCM_ROOT_WDOG   0xbb80
-> >>> #define CCM_CCGR_WDOG1  0x49c8
-> >>> #define WCR_WDE	        0x04
-> >>> #define WDOG1_WCR       0x30280000
-> >>> #define wfi() __asm__ __volatile__ ("wfi" : : : "memory")
-> >>>
-> >>> static void imx7_system_reset(void)
-> >>> {
-> >>> 	printf("%s: called now.\n",__func__);
-> >>>
-> >>> 	// make sure WDOG1 clock is enabled
-> >>> 	writel(0x1 << 28, CCM_BASE_ADDR + CCM_ROOT_WDOG);
-> >>> 	writel(0x3, CCM_BASE_ADDR + CCM_CCGR_WDOG1);
-> >>> 	writew(WCR_WDE, WDOG1_WCR);
-> >>>
-> >>> 	while (1)
-> >>> 		wfi();
-> >>> };
-> >>>
-> >>> static struct psci_ops imx7_psci_ops = {
-> >>> 	.cpu_on = imx7_cpu_on,
-> >>> 	.cpu_off = imx7_cpu_off,
-> >>> 	.system_reset = imx7_system_reset,
-> >>> };
-> >>>
-> >>> and the following case to smc.c:
-> >>>
-> >>> static int do_smc(int argc, char *argv[])
-> >>> {
-> >>> ...
-> >>> 		case 'r':
-> >>> 			printf("issue psci reset...\n");
-> >>> 			arm_smccc_smc(ARM_PSCI_0_2_FN_SYSTEM_RESET,
-> >>> 				      0, 0, 0, 0, 0, 0, 0, &res);
-> >>> 			printf("reset issued...\n");
-> >>> 			break;
-> >>> ...
-> >>>
-> >>> to be able to call it.
-> >>> Now, using the modified 'smc' command I can see my printf's:
-> >>>
-> >>> samx7: / smc -n
-> >>> samx7: / smc -r
-> >>> issue psci reset...
-> >>> psci_system_reset called.
-> >>> imx7_system_reset: called now.
-> >>>
-> >>> but the soc still just hangs.
-> >>
-> >> What does U-Boot's reset commando do on an i.MX7?
-> > 
-> > It ends up calling this function in the imx_watchdog.c:
-> > 
-> > void __attribute__((weak)) reset_cpu(ulong addr)
-> > {
-> > 	struct watchdog_regs *wdog = (struct watchdog_regs *)WDOG1_BASE_ADDR;
-> > 
-> > 	printf("%s: called now\n",__func__);
-> > 	udelay(500);
-> > 
-> > 	clrsetbits_le16(&wdog->wcr, WCR_WT_MSK, WCR_WDE);
-> > 
-> > 	writew(0x5555, &wdog->wsr);
-> > 	writew(0xaaaa, &wdog->wsr);	/* load minimum 1/2 second timeout */
-> > 	while (1) {
-> > 		/*
-> > 		 * spin for .5 seconds before reset
-> > 		 */
-> > 	}
-> > }
-> > 
-> > I added the printf / udelay to be sure. WCR_WT_MSK is (0xff << 8).
-> 
-> Hmm and same code doesn't reset it in barebox? That's strange.
-> Is there something in the DCD table that you are missing in barebox?
+On Mon, Jun 29, 2020 at 1:33 PM Giorgio Dal Molin
+<giorgio.nicole@arcor.de> wrote:
 
-U-Boot configures the ddr3 with c code in its board code 'lowlevel.c'.
-Looking at the code I noticed this special treatment:
+> U-Boot configures the ddr3 with c code in its board code 'lowlevel.c'.
+> Looking at the code I noticed this special treatment:
+>
+> static void spl_dram_init(void)
+> {
+> ...
+>         /*
+>          * Make sure that both aresetn/core_ddrc_rstn and preset/PHY reset
+>          * bits are set after WDOG reset event. DDRC_PRST can only be
+>          * released when DDRC clock inputs are stable for at least 30 cycles.
+>          */
+>         writel(SRC_DDRC_RCR_DDRC_CORE_RST_MASK | SRC_DDRC_RCR_DDRC_PRST_MASK, &src_regs->ddrc_rcr);
+>         udelay(500);
+> ...
+>
+> This writel() set both reset bits, the DDRC_CORE (0x2) and the DDRC_PRST (0x1) of the SRC
+> register 0x30391000.
+> Unfortunately, if I try also to set both bits in my DCD table then barebox doesn't boot anymore;
+> I also tried to port the uboot spl_dram_init(void) to my barebox lowlevel.c and I could eventually
+> boot barebox with an empty DCD but still adding the second bit (SRC_DDRC_RCR_DDRC_PRST_MASK)
+> hangs the soc.
 
-static void spl_dram_init(void)
-{
-...
-	/*
-	 * Make sure that both aresetn/core_ddrc_rstn and preset/PHY reset
-	 * bits are set after WDOG reset event. DDRC_PRST can only be
-	 * released when DDRC clock inputs are stable for at least 30 cycles.
-	 */
-	writel(SRC_DDRC_RCR_DDRC_CORE_RST_MASK | SRC_DDRC_RCR_DDRC_PRST_MASK, &src_regs->ddrc_rcr);
-	udelay(500);
-...
-
-This writel() set both reset bits, the DDRC_CORE (0x2) and the DDRC_PRST (0x1) of the SRC
-register 0x30391000.
-Unfortunately, if I try also to set both bits in my DCD table then barebox doesn't boot anymore;
-I also tried to port the uboot spl_dram_init(void) to my barebox lowlevel.c and I could eventually
-boot barebox with an empty DCD but still adding the second bit (SRC_DDRC_RCR_DDRC_PRST_MASK)
-hangs the soc.
-
-giorgio
-
-> 
-> > 
-> > What I also observed is that if I upload the uboot image with the imx-usb-loader it boots
-> > and runs normally but the reset in this case also just hangs the soc without rebooting it,
-> > like barebox; so there must be a difference between an 'usb uploaded' boot and a 'qspi native'
-> > boot.
-> 
-> Are you sure it's not resetting to serial download mode again?
-> 
-> > 
-> > giorgio
-> > 
-> >>
-> >>>
-> >>> giorgio
-> >>>
-> >>>>
-> >>>>>
-> >>>>> giorgio
-> >>>>>
-> >>>>>
-> >>>>>>
-> >>>>>> -- 
-> >>>>>> Pengutronix e.K.                           |                             |
-> >>>>>> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> >>>>>> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> >>>>>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> >>>>>>
-> >>>>>> _______________________________________________
-> >>>>>> barebox mailing list
-> >>>>>> barebox@lists.infradead.org
-> >>>>>> http://lists.infradead.org/mailman/listinfo/barebox
-> >>>>>
-> >>>>
-> >>>> -- 
-> >>>> Pengutronix e.K.                           |                             |
-> >>>> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> >>>> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> >>>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> >>>>
-> >>>> _______________________________________________
-> >>>> barebox mailing list
-> >>>> barebox@lists.infradead.org
-> >>>> http://lists.infradead.org/mailman/listinfo/barebox
-> >>>
-> >>
-> >> -- 
-> >> Pengutronix e.K.                           |                             |
-> >> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> >> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> >> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> >>
-> >> _______________________________________________
-> >> barebox mailing list
-> >> barebox@lists.infradead.org
-> >> http://lists.infradead.org/mailman/listinfo/barebox
-> > 
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+Does it help if you try to apply this U-Boot commit to Barebox?
+https://gitlab.denx.de/u-boot/u-boot/-/commit/0e06d63d195670f5181958f43216d7106c05357f
 
 _______________________________________________
 barebox mailing list
