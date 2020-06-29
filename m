@@ -1,19 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jppAT-0005Rh-51
- for barebox@lists.infradead.org; Mon, 29 Jun 2020 08:29:33 +0000
-References: <20200623193506.13716-1-cleger@kalray.eu>
- <20200623193506.13716-5-cleger@kalray.eu>
- <2ba71698-8c76-ef33-145c-3a587327492e@pengutronix.de>
- <755055850.8699790.1592982949409.JavaMail.zimbra@kalray.eu>
- <40a7f463-db1b-1241-13e5-a8a454393c75@pengutronix.de>
- <2007203678.240919.1593419006986.JavaMail.zimbra@kalray.eu>
+ id 1jppIQ-0000Ng-C9
+ for barebox@lists.infradead.org; Mon, 29 Jun 2020 08:37:47 +0000
+References: <20200626064129.12094-1-s.hauer@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <acfe5323-965f-daa5-f952-5e0fd953820b@pengutronix.de>
-Date: Mon, 29 Jun 2020 10:29:31 +0200
+Message-ID: <fa8c9ed1-8cde-a015-86ee-10c86ff65bbf@pengutronix.de>
+Date: Mon, 29 Jun 2020 10:37:43 +0200
 MIME-Version: 1.0
-In-Reply-To: <2007203678.240919.1593419006986.JavaMail.zimbra@kalray.eu>
+In-Reply-To: <20200626064129.12094-1-s.hauer@pengutronix.de>
 Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,106 +18,81 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/4] kvx: add support for elf loading using bootm
-To: =?UTF-8?Q?Cl=c3=a9ment_Leger?= <cleger@kalray.eu>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] startup: Fix do_autoboot_countdown() running multiple
+ times
+To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
 
-SGVsbG8gQ2xlbWVudCwKCk9uIDYvMjkvMjAgMTA6MjMgQU0sIENsw6ltZW50IExlZ2VyIHdyb3Rl
-Ogo+IEhpIEFobWFkCj4gCj4gLS0tLS0gT24gMjkgSnVuLCAyMDIwLCBhdCAxMDoxNSwgQWhtYWQg
-RmF0b3VtIGEuZmF0b3VtQHBlbmd1dHJvbml4LmRlIHdyb3RlOgo+IAo+PiBIZWxsbywKPj4KPj4g
-T24gNi8yNC8yMCA5OjE1IEFNLCBDbMOpbWVudCBMZWdlciB3cm90ZToKPj4+PiBZb3UgYWxyZWFk
-eSBmbHVzaGVkIG91dCB0aGUgZGNhY2hlIGNvbnRlbnRzIHRvIHRoZSBwb2ludCBvZiB1bmlmaWNh
-dGlvbi4KPj4+PiBXaGF0IGRvIHlvdSBnYWluIGJ5IGludmFsaWRhdGluZyBpdD8KPj4+Cj4+PiBJ
-bmRlZWQsIHRoaXMgaXMgbm90IHN0cmljdGx5IG5lY2Vzc2FyeSwgaXQganVzdCBhbGxvdyB0byBi
-b290IHRoZSBlbGYgd2l0aG91dCBhCj4+PiBkaXJ0eSBELWNhY2hlLiBCdXQgYWN0dWFsbHksIHRo
-ZSBib290ZWQgcHJvZ3JhbSBzaG91bGQgaW52YWxpZGF0ZSBpdHMgRC1jYWNoZQo+Pj4gYmVmb3Jl
-IGZldGNoaW5nIGFueSBkYXRhIHRvIGF2b2lkIHVzaW5nIGNhY2hlZCBkYXRhLiBJIGNhbiByZW1v
-dmUgaXQgc2luY2UKPj4+IHRoaXMgaXMgb25seSBmb3Igc29tZSBidWdneSBwcm9ncmFtcy4KPj4K
-Pj4gV2h5IHdvdWxkIHVzZSBvZiBjYWNoZWQgZGF0YSBodXJ0IGhlcmU/IElmIHlvdSBrZWVwIHRo
-ZSBNTVUgdGhyb3VnaG91dCwgeW91Cj4+IHNob3VsZCBvbmx5IG5lZWQgdG8gaW52YWxpZGF0ZSB0
-aGUgZGF0YSBjYWNoZSB3aGVuIGRvaW5nIERNQS4gQW0gSSBtaXNzaW5nCj4+IHNvbWV0aGluZz8K
-PiAKPiBZb3UgYXJlIGFjdHVhbGx5IHJpZ2h0LCBzaW5jZSBiYXJlYm94IGxvYWRlZCB0aGUgcHJv
-Z3JhbSBieSBpdHNlbGYsIHRoZSBELWNhY2hlCj4gY29udGFpbnMgdGhlIGV4cGVjdGVkIGRhdGEg
-ZXZlbiBmb3IgdGhlIGxvYWRlZCBwcm9ncmFtLgo+IEJUVywgTU1VIGlzIG5vdCBlbmFibGVkIHll
-dCBpbiBiYXJlYm94LgoKQWgsIEkgYXNzdW1lZCB0aGUgTU1VIHdvdWxkIGhhdmUgYmVlbiBlbmFi
-bGVkLCBzbyB0aGF0IE1NSU8gaXNuJ3QgY2FjaGVkL3NwZWN1bGF0ZWQKaW50by4gSWYgdGhlIE1N
-VSBpcyBub3QgZW5hYmxlZCwgeW91IHNob3VsZCBvbmx5IG5lZWQgdG8gaW52YWxpZGF0ZSBpZiB0
-aGUgY2FjaGUKY29udGVudHMgYXJlIGluZGV0ZXJtaW5hdGUgb24gcmVzZXQuCgo+IAo+Pgo+PiBF
-aXRoZXIgd2F5LCBJJ3ZlIG5vIHByZWZlcmVuY2UgKGV4Y2VwdCBmb3IgbmFtaW5nIGl0IHRoZSBz
-YW1lIGFzIG9uIEFSTSwKPj4gc2VlIHByZXZpb3VzIG1haWwpLgo+IAo+IFNvcnJ5LCBJIG1pc3Nl
-ZCB0aGUgcG9pbnRzIHlvdSBtYWRlIG9uIG15IHByZXZpb3VzIHBhdGNoc2V0LCBteSBtYWlsZXIg
-bWFya2VkCj4gYWxsIHRoZSBtYWlsIGhhcyByZWFkIDovLiBJIHdpbGwgbWFrZSBhbm90aGVyIG1v
-cmUgdGhyb3VnaCByZXZpZXcuCgpObyB3b3JyaWVzLgoKQ2hlZXJzCkFobWFkCgo+IAo+IFJlZ2Fy
-ZHMsCj4gCj4gQ2zDqW1lbnQKPiAKPj4KPj4gQ2hlZXJzCj4+IEFobWFkCj4+Cj4+Pgo+Pj4+Cj4+
-Pj4+ICsKPj4+Pj4gKwkvKioKPj4+Pj4gKwkgKiBQYXJhbWV0ZXJzIHBhc3NpbmcKPj4+Pj4gKwkg
-KiByMDogYm9vdCBtYWdpYwo+Pj4+PiArCSAqIHIxOiBkZXZpY2UgdHJlZSBwb2ludGVyCj4+Pj4+
-ICsJICovCj4+Pj4+ICsJZW50cnkoTElOVVhfQk9PVF9QQVJBTV9NQUdJQywgKHZvaWQgKikgZmR0
-X2xvYWRfYWRkcik7Cj4+Pj4+ICsKPj4+Pj4gKwkvKiBzaG91bGQgbmV2ZXIgcmV0dXJuICEgKi8K
-Pj4+Pj4gKwlwYW5pYygiUmV0dXJuZWQgZnJvbSBib290IHByb2dyYW0gIVxuIik7Cj4+Pj4+ICsK
-Pj4+Pj4gKwlyZXR1cm4gLUVJTlZBTDsKPj4+Pj4gK30KPj4+Pj4gKwo+Pj4+PiArc3RhdGljIGlu
-dCBkb19ib290X2VsZihzdHJ1Y3QgaW1hZ2VfZGF0YSAqZGF0YSwgc3RydWN0IGVsZl9pbWFnZSAq
-ZWxmKQo+Pj4+PiArewo+Pj4+PiArCWludCByZXQ7Cj4+Pj4+ICsJdm9pZCAqZmR0Owo+Pj4+PiAr
-CWJvb3RfZnVuY19lbnRyeSBlbnRyeTsKPj4+Pj4gKwl1bnNpZ25lZCBsb25nIGxvYWRfYWRkciwg
-aW5pdHJkX2FkZHJlc3M7Cj4+Pj4+ICsKPj4+Pj4gKwkvKiBsb2FkIGluaXRyZCBhZnRlciB0aGUg
-ZWxmICovCj4+Pj4+ICsJbG9hZF9hZGRyID0gUEFHRV9BTElHTigodW5zaWduZWQgbG9uZykgZWxm
-LT5oaWdoX2FkZHIpOwo+Pj4+PiArCWlmIChib290bV9oYXNfaW5pdHJkKGRhdGEpKSB7Cj4+Pj4+
-ICsJCWlmIChkYXRhLT5pbml0cmRfYWRkcmVzcyAhPSBVSU1BR0VfSU5WQUxJRF9BRERSRVNTKQo+
-Pj4+PiArCQkJaW5pdHJkX2FkZHJlc3MgPSBkYXRhLT5pbml0cmRfYWRkcmVzczsKPj4+Pj4gKwkJ
-ZWxzZQo+Pj4+PiArCQkJaW5pdHJkX2FkZHJlc3MgPSBsb2FkX2FkZHI7Cj4+Pj4+ICsKPj4+Pj4g
-KwkJcHJpbnRmKCJMb2FkaW5nIGluaXRyZCBhdCAweCVseFxuIiwgaW5pdHJkX2FkZHJlc3MpOwo+
-Pj4+PiArCQlyZXQgPSBib290bV9sb2FkX2luaXRyZChkYXRhLCBpbml0cmRfYWRkcmVzcyk7Cj4+
-Pj4+ICsJCWlmIChyZXQpIHsKPj4+Pj4gKwkJCXByaW50ZigiRmFpbGVkIHRvIGxvYWQgaW5pdHJk
-XG4iKTsKPj4+Pj4gKwkJCXJldHVybiByZXQ7Cj4+Pj4+ICsJCX0KPj4+Pj4gKwo+Pj4+PiArCQlp
-ZiAoZGF0YS0+aW5pdHJkX2FkZHJlc3MgPT0gVUlNQUdFX0lOVkFMSURfQUREUkVTUykgewo+Pj4+
-PiArCQkJbG9hZF9hZGRyICs9IHJlc291cmNlX3NpemUoZGF0YS0+aW5pdHJkX3Jlcyk7Cj4+Pj4+
-ICsJCQlsb2FkX2FkZHIgPSBQQUdFX0FMSUdOKGxvYWRfYWRkcik7Cj4+Pj4+ICsJCX0KPj4+Pj4g
-Kwl9Cj4+Pj4+ICsKPj4+Pj4gKwlmZHQgPSBib290bV9nZXRfZGV2aWNldHJlZShkYXRhKTsKPj4+
-Pj4gKwlpZiAoSVNfRVJSKGZkdCkpIHsKPj4+Pj4gKwkJcHJpbnRmKCJGYWlsZWQgdG8gbG9hZCBk
-dGJcbiIpOwo+Pj4+PiArCQlyZXR1cm4gUFRSX0VSUihmZHQpOwo+Pj4+PiArCX0KPj4+Pj4gKwo+
-Pj4+PiArCXByaW50ZigiTG9hZGluZyBkZXZpY2UgdHJlZSBhdCAlbHhcbiIsIGxvYWRfYWRkcik7
-Cj4+Pj4+ICsJLyogbG9hZCBkZXZpY2UgdHJlZSBhZnRlciB0aGUgaW5pdHJkIGlmIGFueSAqLwo+
-Pj4+PiArCXJldCA9IGJvb3RtX2xvYWRfZGV2aWNldHJlZShkYXRhLCBmZHQsIGxvYWRfYWRkcik7
-Cj4+Pj4+ICsJaWYgKHJldCkgewo+Pj4+PiArCQlwcmludGYoIkZhaWxlZCB0byBsb2FkIGRldmlj
-ZSB0cmVlOiAlZFxuIiwgcmV0KTsKPj4+Pj4gKwkJZ290byBlcnJfZnJlZV9mZHQ7Cj4+Pj4+ICsJ
-fQo+Pj4+PiArCj4+Pj4+ICsJZW50cnkgPSAoYm9vdF9mdW5jX2VudHJ5KSBkYXRhLT5vc19hZGRy
-ZXNzOwo+Pj4+PiArCj4+Pj4+ICsJcmV0ID0gZG9fYm9vdF9lbnRyeShkYXRhLCBlbnRyeSwgZmR0
-KTsKPj4+Pj4gKwo+Pj4+PiArZXJyX2ZyZWVfZmR0Ogo+Pj4+PiArCWZyZWUoZmR0KTsKPj4+Pj4g
-Kwo+Pj4+PiArCXJldHVybiByZXQ7Cj4+Pj4+ICt9Cj4+Pj4+ICsKPj4+Pj4gK3N0YXRpYyBpbnQg
-ZG9fYm9vdG1fZWxmKHN0cnVjdCBpbWFnZV9kYXRhICpkYXRhKQo+Pj4+PiArewo+Pj4+PiArCWlu
-dCByZXQ7Cj4+Pj4+ICsKPj4+Pj4gKwlyZXQgPSBib290bV9sb2FkX29zKGRhdGEsIGRhdGEtPm9z
-X2FkZHJlc3MpOwo+Pj4+PiArCWlmIChyZXQpCj4+Pj4+ICsJCXJldHVybiByZXQ7Cj4+Pj4+ICsK
-Pj4+Pj4gKwlyZXR1cm4gZG9fYm9vdF9lbGYoZGF0YSwgZGF0YS0+ZWxmKTsKPj4+Pj4gK30KPj4+
-Pj4gKwo+Pj4+PiArc3RhdGljIHN0cnVjdCBpbWFnZV9oYW5kbGVyIGVsZl9oYW5kbGVyID0gewo+
-Pj4+PiArCS5uYW1lID0gIkVMRiIsCj4+Pj4+ICsJLmJvb3RtID0gZG9fYm9vdG1fZWxmLAo+Pj4+
-PiArCS5maWxldHlwZSA9IGZpbGV0eXBlX2VsZiwKPj4+Pj4gK307Cj4+Pj4+ICsKPj4+Pj4gK3N0
-YXRpYyBzdHJ1Y3QgYmluZm10X2hvb2sgYmluZm10X2VsZl9ob29rID0gewo+Pj4+PiArCS50eXBl
-ID0gZmlsZXR5cGVfZWxmLAo+Pj4+PiArCS5leGVjID0gImJvb3RtIiwKPj4+Pj4gK307Cj4+Pj4+
-ICsKPj4+Pj4gK3N0YXRpYyBpbnQga3Z4X3JlZ2lzdGVyX2ltYWdlX2hhbmRsZXIodm9pZCkKPj4+
-Pj4gK3sKPj4+Pj4gKwlyZWdpc3Rlcl9pbWFnZV9oYW5kbGVyKCZlbGZfaGFuZGxlcik7Cj4+Pj4+
-ICsKPj4+Pj4gKwliaW5mbXRfcmVnaXN0ZXIoJmJpbmZtdF9lbGZfaG9vayk7Cj4+Pj4+ICsKPj4+
-Pj4gKwlyZXR1cm4gMDsKPj4+Pj4gK30KPj4+Pj4gKwo+Pj4+PiArbGF0ZV9pbml0Y2FsbChrdnhf
-cmVnaXN0ZXJfaW1hZ2VfaGFuZGxlcik7Cj4+Pj4+Cj4+Pj4KPj4+PiAtLQo+Pj4+IFBlbmd1dHJv
-bml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICB8Cj4+Pj4gU3RldWVyd2FsZGVyIFN0ci4gMjEgICAgICAgICAgICAgICAgICAgICAg
-IHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKPj4+PiAzMTEzNyBIaWxkZXNoZWltLCBH
-ZXJtYW55ICAgICAgICAgICAgICAgICAgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfAo+
-Pj4+IEFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICAr
-NDktNTEyMS0yMDY5MTctNTU1NSB8Cj4+Pgo+Pgo+PiAtLQo+PiBQZW5ndXRyb25peCBlLksuICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfAo+
-PiBTdGV1ZXJ3YWxkZXIgU3RyLiAyMSAgICAgICAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3
-LnBlbmd1dHJvbml4LmRlLyAgfAo+PiAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55ICAgICAgICAg
-ICAgICAgICAgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfAo+PiBBbXRzZ2VyaWNodCBI
-aWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1
-NTUgfAo+IAoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ClN0ZXVlcndhbGRlciBTdHIuIDIxICAgICAg
-ICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8CjMxMTM3IEhp
-bGRlc2hlaW0sIEdlcm1hbnkgICAgICAgICAgICAgICAgICB8IFBob25lOiArNDktNTEyMS0yMDY5
-MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZh
-eDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmlu
-ZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9i
-YXJlYm94Cg==
+Hi,
+
+On 6/26/20 8:41 AM, Sascha Hauer wrote:
+> The comment above do_autoboot_countdown() states: "This function can be
+> called multiple times, it is executed only the first time.". Since
+> 1973892533 ("startup: don't clobber original autoboot state") This is no
+> longer the case. Bring back the old and documented behaviour.
+
+guilty as charged. I didn't read the comment..
+do_autoboot_countdown is called only once though in the code base.
+How do you make use of being able to call it multiple times?
+
+Cheers
+Ahmad 
+
+> 
+> Fixes: 1973892533 ("startup: don't clobber original autoboot state")
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  common/startup.c | 5 ++++-
+>  include/common.h | 1 +
+>  2 files changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/common/startup.c b/common/startup.c
+> index 7e0f7d6b64..71a28a7be8 100644
+> --- a/common/startup.c
+> +++ b/common/startup.c
+> @@ -235,7 +235,7 @@ void set_autoboot_state(enum autoboot_state autoboot)
+>   */
+>  enum autoboot_state do_autoboot_countdown(void)
+>  {
+> -	enum autoboot_state autoboot_state;
+> +	static enum autoboot_state autoboot_state = AUTOBOOT_UNKNOWN;
+>  	unsigned flags = CONSOLE_COUNTDOWN_EXTERN;
+>  	int ret;
+>  	struct stat s;
+> @@ -243,6 +243,9 @@ enum autoboot_state do_autoboot_countdown(void)
+>  	char *abortkeys = NULL;
+>  	unsigned char outkey;
+>  
+> +	if (autoboot_state != AUTOBOOT_UNKNOWN)
+> +		return autoboot_state;
+> +
+>  	if (global_autoboot_state != AUTOBOOT_COUNTDOWN)
+>  		return global_autoboot_state;
+>  
+> diff --git a/include/common.h b/include/common.h
+> index ce16ff83af..ceb0b358bd 100644
+> --- a/include/common.h
+> +++ b/include/common.h
+> @@ -88,6 +88,7 @@ enum autoboot_state {
+>  	AUTOBOOT_ABORT,
+>  	AUTOBOOT_MENU,
+>  	AUTOBOOT_BOOT,
+> +	AUTOBOOT_UNKNOWN,
+>  };
+>  
+>  void set_autoboot_state(enum autoboot_state autoboot);
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
