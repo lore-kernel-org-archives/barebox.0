@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from zimbra2.kalray.eu ([92.103.151.219])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jpoxr-00028e-RM
- for barebox@lists.infradead.org; Mon, 29 Jun 2020 08:16:34 +0000
-References: <20200628155108.29083-1-cleger@kalray.eu>
- <20200628155108.29083-3-cleger@kalray.eu>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <47a07400-0a08-579c-06e2-4cd812bea699@pengutronix.de>
-Date: Mon, 29 Jun 2020 10:16:29 +0200
+ id 1jpp4d-0004eY-4V
+ for barebox@lists.infradead.org; Mon, 29 Jun 2020 08:23:32 +0000
+Date: Mon, 29 Jun 2020 10:23:26 +0200 (CEST)
+From: =?utf-8?Q?Cl=C3=A9ment?= Leger <cleger@kalray.eu>
+Message-ID: <2007203678.240919.1593419006986.JavaMail.zimbra@kalray.eu>
+In-Reply-To: <40a7f463-db1b-1241-13e5-a8a454393c75@pengutronix.de>
+References: <20200623193506.13716-1-cleger@kalray.eu>
+ <20200623193506.13716-5-cleger@kalray.eu>
+ <2ba71698-8c76-ef33-145c-3a587327492e@pengutronix.de>
+ <755055850.8699790.1592982949409.JavaMail.zimbra@kalray.eu>
+ <40a7f463-db1b-1241-13e5-a8a454393c75@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20200628155108.29083-3-cleger@kalray.eu>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,53 +21,92 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 2/4] common: Kconfig: remove MIPS dependency
-To: Clement Leger <cleger@kalray.eu>, Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
+Subject: Re: [PATCH 4/4] kvx: add support for elf loading using bootm
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-Hello Clement,
-
-On 6/28/20 5:51 PM, Clement Leger wrote:
-> There is no reason anymore to limit the use of elf on mips since there
-> is no elf specific support needed in architectures. Remove this
-> dependency and drop COMPILE_TEST config.
-> 
-> Signed-off-by: Clement Leger <cleger@kalray.eu>
-> ---
->  common/Kconfig | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/common/Kconfig b/common/Kconfig
-> index f150092af..a3a290ad3 100644
-> --- a/common/Kconfig
-> +++ b/common/Kconfig
-> @@ -38,8 +38,7 @@ config BLOCK_WRITE
->  	bool
->  
->  config ELF
-> -	bool "ELF Support" if COMPILE_TEST
-> -	depends on MIPS || COMPILE_TEST
-> +	bool
-
-as I already commented on v1, please don't remove the bool "Elf Support" if COMPILE_TEST
-line. You can drop the depends.
-
-
->  
->  config FILETYPE
->  	bool
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgQWhtYWQKCi0tLS0tIE9uIDI5IEp1biwgMjAyMCwgYXQgMTA6MTUsIEFobWFkIEZhdG91bSBh
+LmZhdG91bUBwZW5ndXRyb25peC5kZSB3cm90ZToKCj4gSGVsbG8sCj4gCj4gT24gNi8yNC8yMCA5
+OjE1IEFNLCBDbMOpbWVudCBMZWdlciB3cm90ZToKPj4+IFlvdSBhbHJlYWR5IGZsdXNoZWQgb3V0
+IHRoZSBkY2FjaGUgY29udGVudHMgdG8gdGhlIHBvaW50IG9mIHVuaWZpY2F0aW9uLgo+Pj4gV2hh
+dCBkbyB5b3UgZ2FpbiBieSBpbnZhbGlkYXRpbmcgaXQ/Cj4+IAo+PiBJbmRlZWQsIHRoaXMgaXMg
+bm90IHN0cmljdGx5IG5lY2Vzc2FyeSwgaXQganVzdCBhbGxvdyB0byBib290IHRoZSBlbGYgd2l0
+aG91dCBhCj4+IGRpcnR5IEQtY2FjaGUuIEJ1dCBhY3R1YWxseSwgdGhlIGJvb3RlZCBwcm9ncmFt
+IHNob3VsZCBpbnZhbGlkYXRlIGl0cyBELWNhY2hlCj4+IGJlZm9yZSBmZXRjaGluZyBhbnkgZGF0
+YSB0byBhdm9pZCB1c2luZyBjYWNoZWQgZGF0YS4gSSBjYW4gcmVtb3ZlIGl0IHNpbmNlCj4+IHRo
+aXMgaXMgb25seSBmb3Igc29tZSBidWdneSBwcm9ncmFtcy4KPiAKPiBXaHkgd291bGQgdXNlIG9m
+IGNhY2hlZCBkYXRhIGh1cnQgaGVyZT8gSWYgeW91IGtlZXAgdGhlIE1NVSB0aHJvdWdob3V0LCB5
+b3UKPiBzaG91bGQgb25seSBuZWVkIHRvIGludmFsaWRhdGUgdGhlIGRhdGEgY2FjaGUgd2hlbiBk
+b2luZyBETUEuIEFtIEkgbWlzc2luZwo+IHNvbWV0aGluZz8KCllvdSBhcmUgYWN0dWFsbHkgcmln
+aHQsIHNpbmNlIGJhcmVib3ggbG9hZGVkIHRoZSBwcm9ncmFtIGJ5IGl0c2VsZiwgdGhlIEQtY2Fj
+aGUKY29udGFpbnMgdGhlIGV4cGVjdGVkIGRhdGEgZXZlbiBmb3IgdGhlIGxvYWRlZCBwcm9ncmFt
+LgpCVFcsIE1NVSBpcyBub3QgZW5hYmxlZCB5ZXQgaW4gYmFyZWJveC4KCj4gCj4gRWl0aGVyIHdh
+eSwgSSd2ZSBubyBwcmVmZXJlbmNlIChleGNlcHQgZm9yIG5hbWluZyBpdCB0aGUgc2FtZSBhcyBv
+biBBUk0sCj4gc2VlIHByZXZpb3VzIG1haWwpLgoKU29ycnksIEkgbWlzc2VkIHRoZSBwb2ludHMg
+eW91IG1hZGUgb24gbXkgcHJldmlvdXMgcGF0Y2hzZXQsIG15IG1haWxlciBtYXJrZWQKYWxsIHRo
+ZSBtYWlsIGhhcyByZWFkIDovLiBJIHdpbGwgbWFrZSBhbm90aGVyIG1vcmUgdGhyb3VnaCByZXZp
+ZXcuCgpSZWdhcmRzLAoKQ2zDqW1lbnQKCj4gCj4gQ2hlZXJzCj4gQWhtYWQKPiAKPj4gCj4+Pgo+
+Pj4+ICsKPj4+PiArCS8qKgo+Pj4+ICsJICogUGFyYW1ldGVycyBwYXNzaW5nCj4+Pj4gKwkgKiBy
+MDogYm9vdCBtYWdpYwo+Pj4+ICsJICogcjE6IGRldmljZSB0cmVlIHBvaW50ZXIKPj4+PiArCSAq
+Lwo+Pj4+ICsJZW50cnkoTElOVVhfQk9PVF9QQVJBTV9NQUdJQywgKHZvaWQgKikgZmR0X2xvYWRf
+YWRkcik7Cj4+Pj4gKwo+Pj4+ICsJLyogc2hvdWxkIG5ldmVyIHJldHVybiAhICovCj4+Pj4gKwlw
+YW5pYygiUmV0dXJuZWQgZnJvbSBib290IHByb2dyYW0gIVxuIik7Cj4+Pj4gKwo+Pj4+ICsJcmV0
+dXJuIC1FSU5WQUw7Cj4+Pj4gK30KPj4+PiArCj4+Pj4gK3N0YXRpYyBpbnQgZG9fYm9vdF9lbGYo
+c3RydWN0IGltYWdlX2RhdGEgKmRhdGEsIHN0cnVjdCBlbGZfaW1hZ2UgKmVsZikKPj4+PiArewo+
+Pj4+ICsJaW50IHJldDsKPj4+PiArCXZvaWQgKmZkdDsKPj4+PiArCWJvb3RfZnVuY19lbnRyeSBl
+bnRyeTsKPj4+PiArCXVuc2lnbmVkIGxvbmcgbG9hZF9hZGRyLCBpbml0cmRfYWRkcmVzczsKPj4+
+PiArCj4+Pj4gKwkvKiBsb2FkIGluaXRyZCBhZnRlciB0aGUgZWxmICovCj4+Pj4gKwlsb2FkX2Fk
+ZHIgPSBQQUdFX0FMSUdOKCh1bnNpZ25lZCBsb25nKSBlbGYtPmhpZ2hfYWRkcik7Cj4+Pj4gKwlp
+ZiAoYm9vdG1faGFzX2luaXRyZChkYXRhKSkgewo+Pj4+ICsJCWlmIChkYXRhLT5pbml0cmRfYWRk
+cmVzcyAhPSBVSU1BR0VfSU5WQUxJRF9BRERSRVNTKQo+Pj4+ICsJCQlpbml0cmRfYWRkcmVzcyA9
+IGRhdGEtPmluaXRyZF9hZGRyZXNzOwo+Pj4+ICsJCWVsc2UKPj4+PiArCQkJaW5pdHJkX2FkZHJl
+c3MgPSBsb2FkX2FkZHI7Cj4+Pj4gKwo+Pj4+ICsJCXByaW50ZigiTG9hZGluZyBpbml0cmQgYXQg
+MHglbHhcbiIsIGluaXRyZF9hZGRyZXNzKTsKPj4+PiArCQlyZXQgPSBib290bV9sb2FkX2luaXRy
+ZChkYXRhLCBpbml0cmRfYWRkcmVzcyk7Cj4+Pj4gKwkJaWYgKHJldCkgewo+Pj4+ICsJCQlwcmlu
+dGYoIkZhaWxlZCB0byBsb2FkIGluaXRyZFxuIik7Cj4+Pj4gKwkJCXJldHVybiByZXQ7Cj4+Pj4g
+KwkJfQo+Pj4+ICsKPj4+PiArCQlpZiAoZGF0YS0+aW5pdHJkX2FkZHJlc3MgPT0gVUlNQUdFX0lO
+VkFMSURfQUREUkVTUykgewo+Pj4+ICsJCQlsb2FkX2FkZHIgKz0gcmVzb3VyY2Vfc2l6ZShkYXRh
+LT5pbml0cmRfcmVzKTsKPj4+PiArCQkJbG9hZF9hZGRyID0gUEFHRV9BTElHTihsb2FkX2FkZHIp
+Owo+Pj4+ICsJCX0KPj4+PiArCX0KPj4+PiArCj4+Pj4gKwlmZHQgPSBib290bV9nZXRfZGV2aWNl
+dHJlZShkYXRhKTsKPj4+PiArCWlmIChJU19FUlIoZmR0KSkgewo+Pj4+ICsJCXByaW50ZigiRmFp
+bGVkIHRvIGxvYWQgZHRiXG4iKTsKPj4+PiArCQlyZXR1cm4gUFRSX0VSUihmZHQpOwo+Pj4+ICsJ
+fQo+Pj4+ICsKPj4+PiArCXByaW50ZigiTG9hZGluZyBkZXZpY2UgdHJlZSBhdCAlbHhcbiIsIGxv
+YWRfYWRkcik7Cj4+Pj4gKwkvKiBsb2FkIGRldmljZSB0cmVlIGFmdGVyIHRoZSBpbml0cmQgaWYg
+YW55ICovCj4+Pj4gKwlyZXQgPSBib290bV9sb2FkX2RldmljZXRyZWUoZGF0YSwgZmR0LCBsb2Fk
+X2FkZHIpOwo+Pj4+ICsJaWYgKHJldCkgewo+Pj4+ICsJCXByaW50ZigiRmFpbGVkIHRvIGxvYWQg
+ZGV2aWNlIHRyZWU6ICVkXG4iLCByZXQpOwo+Pj4+ICsJCWdvdG8gZXJyX2ZyZWVfZmR0Owo+Pj4+
+ICsJfQo+Pj4+ICsKPj4+PiArCWVudHJ5ID0gKGJvb3RfZnVuY19lbnRyeSkgZGF0YS0+b3NfYWRk
+cmVzczsKPj4+PiArCj4+Pj4gKwlyZXQgPSBkb19ib290X2VudHJ5KGRhdGEsIGVudHJ5LCBmZHQp
+Owo+Pj4+ICsKPj4+PiArZXJyX2ZyZWVfZmR0Ogo+Pj4+ICsJZnJlZShmZHQpOwo+Pj4+ICsKPj4+
+PiArCXJldHVybiByZXQ7Cj4+Pj4gK30KPj4+PiArCj4+Pj4gK3N0YXRpYyBpbnQgZG9fYm9vdG1f
+ZWxmKHN0cnVjdCBpbWFnZV9kYXRhICpkYXRhKQo+Pj4+ICt7Cj4+Pj4gKwlpbnQgcmV0Owo+Pj4+
+ICsKPj4+PiArCXJldCA9IGJvb3RtX2xvYWRfb3MoZGF0YSwgZGF0YS0+b3NfYWRkcmVzcyk7Cj4+
+Pj4gKwlpZiAocmV0KQo+Pj4+ICsJCXJldHVybiByZXQ7Cj4+Pj4gKwo+Pj4+ICsJcmV0dXJuIGRv
+X2Jvb3RfZWxmKGRhdGEsIGRhdGEtPmVsZik7Cj4+Pj4gK30KPj4+PiArCj4+Pj4gK3N0YXRpYyBz
+dHJ1Y3QgaW1hZ2VfaGFuZGxlciBlbGZfaGFuZGxlciA9IHsKPj4+PiArCS5uYW1lID0gIkVMRiIs
+Cj4+Pj4gKwkuYm9vdG0gPSBkb19ib290bV9lbGYsCj4+Pj4gKwkuZmlsZXR5cGUgPSBmaWxldHlw
+ZV9lbGYsCj4+Pj4gK307Cj4+Pj4gKwo+Pj4+ICtzdGF0aWMgc3RydWN0IGJpbmZtdF9ob29rIGJp
+bmZtdF9lbGZfaG9vayA9IHsKPj4+PiArCS50eXBlID0gZmlsZXR5cGVfZWxmLAo+Pj4+ICsJLmV4
+ZWMgPSAiYm9vdG0iLAo+Pj4+ICt9Owo+Pj4+ICsKPj4+PiArc3RhdGljIGludCBrdnhfcmVnaXN0
+ZXJfaW1hZ2VfaGFuZGxlcih2b2lkKQo+Pj4+ICt7Cj4+Pj4gKwlyZWdpc3Rlcl9pbWFnZV9oYW5k
+bGVyKCZlbGZfaGFuZGxlcik7Cj4+Pj4gKwo+Pj4+ICsJYmluZm10X3JlZ2lzdGVyKCZiaW5mbXRf
+ZWxmX2hvb2spOwo+Pj4+ICsKPj4+PiArCXJldHVybiAwOwo+Pj4+ICt9Cj4+Pj4gKwo+Pj4+ICts
+YXRlX2luaXRjYWxsKGt2eF9yZWdpc3Rlcl9pbWFnZV9oYW5kbGVyKTsKPj4+Pgo+Pj4KPj4+IC0t
+Cj4+PiBQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgfAo+Pj4gU3RldWVyd2FsZGVyIFN0ci4gMjEgICAgICAgICAg
+ICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKPj4+IDMxMTM3IEhp
+bGRlc2hlaW0sIEdlcm1hbnkgICAgICAgICAgICAgICAgICB8IFBob25lOiArNDktNTEyMS0yMDY5
+MTctMCAgICB8Cj4+PiBBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAg
+fCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAo+PiAKPiAKPiAtLQo+IFBlbmd1dHJvbml4
+IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICB8Cj4gU3RldWVyd2FsZGVyIFN0ci4gMjEgICAgICAgICAgICAgICAgICAgICAgIHwgaHR0
+cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKPiAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55ICAg
+ICAgICAgICAgICAgICAgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfAo+IEFtdHNnZXJp
+Y2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5
+MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+XwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDov
+L2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
