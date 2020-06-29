@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jpowq-0001iN-8Y
- for barebox@lists.infradead.org; Mon, 29 Jun 2020 08:15:29 +0000
-References: <20200623193506.13716-1-cleger@kalray.eu>
- <20200623193506.13716-5-cleger@kalray.eu>
- <2ba71698-8c76-ef33-145c-3a587327492e@pengutronix.de>
- <755055850.8699790.1592982949409.JavaMail.zimbra@kalray.eu>
+ id 1jpoxr-00028e-RM
+ for barebox@lists.infradead.org; Mon, 29 Jun 2020 08:16:34 +0000
+References: <20200628155108.29083-1-cleger@kalray.eu>
+ <20200628155108.29083-3-cleger@kalray.eu>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <40a7f463-db1b-1241-13e5-a8a454393c75@pengutronix.de>
-Date: Mon, 29 Jun 2020 10:15:24 +0200
+Message-ID: <47a07400-0a08-579c-06e2-4cd812bea699@pengutronix.de>
+Date: Mon, 29 Jun 2020 10:16:29 +0200
 MIME-Version: 1.0
-In-Reply-To: <755055850.8699790.1592982949409.JavaMail.zimbra@kalray.eu>
+In-Reply-To: <20200628155108.29083-3-cleger@kalray.eu>
 Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,82 +19,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/4] kvx: add support for elf loading using bootm
-To: =?UTF-8?Q?Cl=c3=a9ment_Leger?= <cleger@kalray.eu>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH v2 2/4] common: Kconfig: remove MIPS dependency
+To: Clement Leger <cleger@kalray.eu>, Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
 
-SGVsbG8sCgpPbiA2LzI0LzIwIDk6MTUgQU0sIENsw6ltZW50IExlZ2VyIHdyb3RlOgo+PiBZb3Ug
-YWxyZWFkeSBmbHVzaGVkIG91dCB0aGUgZGNhY2hlIGNvbnRlbnRzIHRvIHRoZSBwb2ludCBvZiB1
-bmlmaWNhdGlvbi4KPj4gV2hhdCBkbyB5b3UgZ2FpbiBieSBpbnZhbGlkYXRpbmcgaXQ/Cj4gCj4g
-SW5kZWVkLCB0aGlzIGlzIG5vdCBzdHJpY3RseSBuZWNlc3NhcnksIGl0IGp1c3QgYWxsb3cgdG8g
-Ym9vdCB0aGUgZWxmIHdpdGhvdXQgYQo+IGRpcnR5IEQtY2FjaGUuIEJ1dCBhY3R1YWxseSwgdGhl
-IGJvb3RlZCBwcm9ncmFtIHNob3VsZCBpbnZhbGlkYXRlIGl0cyBELWNhY2hlCj4gYmVmb3JlIGZl
-dGNoaW5nIGFueSBkYXRhIHRvIGF2b2lkIHVzaW5nIGNhY2hlZCBkYXRhLiBJIGNhbiByZW1vdmUg
-aXQgc2luY2UKPiB0aGlzIGlzIG9ubHkgZm9yIHNvbWUgYnVnZ3kgcHJvZ3JhbXMuCgpXaHkgd291
-bGQgdXNlIG9mIGNhY2hlZCBkYXRhIGh1cnQgaGVyZT8gSWYgeW91IGtlZXAgdGhlIE1NVSB0aHJv
-dWdob3V0LCB5b3UKc2hvdWxkIG9ubHkgbmVlZCB0byBpbnZhbGlkYXRlIHRoZSBkYXRhIGNhY2hl
-IHdoZW4gZG9pbmcgRE1BLiBBbSBJIG1pc3NpbmcKc29tZXRoaW5nPwoKRWl0aGVyIHdheSwgSSd2
-ZSBubyBwcmVmZXJlbmNlIChleGNlcHQgZm9yIG5hbWluZyBpdCB0aGUgc2FtZSBhcyBvbiBBUk0s
-CnNlZSBwcmV2aW91cyBtYWlsKS4KCkNoZWVycwpBaG1hZAoKPiAKPj4KPj4+ICsKPj4+ICsJLyoq
-Cj4+PiArCSAqIFBhcmFtZXRlcnMgcGFzc2luZwo+Pj4gKwkgKiByMDogYm9vdCBtYWdpYwo+Pj4g
-KwkgKiByMTogZGV2aWNlIHRyZWUgcG9pbnRlcgo+Pj4gKwkgKi8KPj4+ICsJZW50cnkoTElOVVhf
-Qk9PVF9QQVJBTV9NQUdJQywgKHZvaWQgKikgZmR0X2xvYWRfYWRkcik7Cj4+PiArCj4+PiArCS8q
-IHNob3VsZCBuZXZlciByZXR1cm4gISAqLwo+Pj4gKwlwYW5pYygiUmV0dXJuZWQgZnJvbSBib290
-IHByb2dyYW0gIVxuIik7Cj4+PiArCj4+PiArCXJldHVybiAtRUlOVkFMOwo+Pj4gK30KPj4+ICsK
-Pj4+ICtzdGF0aWMgaW50IGRvX2Jvb3RfZWxmKHN0cnVjdCBpbWFnZV9kYXRhICpkYXRhLCBzdHJ1
-Y3QgZWxmX2ltYWdlICplbGYpCj4+PiArewo+Pj4gKwlpbnQgcmV0Owo+Pj4gKwl2b2lkICpmZHQ7
-Cj4+PiArCWJvb3RfZnVuY19lbnRyeSBlbnRyeTsKPj4+ICsJdW5zaWduZWQgbG9uZyBsb2FkX2Fk
-ZHIsIGluaXRyZF9hZGRyZXNzOwo+Pj4gKwo+Pj4gKwkvKiBsb2FkIGluaXRyZCBhZnRlciB0aGUg
-ZWxmICovCj4+PiArCWxvYWRfYWRkciA9IFBBR0VfQUxJR04oKHVuc2lnbmVkIGxvbmcpIGVsZi0+
-aGlnaF9hZGRyKTsKPj4+ICsJaWYgKGJvb3RtX2hhc19pbml0cmQoZGF0YSkpIHsKPj4+ICsJCWlm
-IChkYXRhLT5pbml0cmRfYWRkcmVzcyAhPSBVSU1BR0VfSU5WQUxJRF9BRERSRVNTKQo+Pj4gKwkJ
-CWluaXRyZF9hZGRyZXNzID0gZGF0YS0+aW5pdHJkX2FkZHJlc3M7Cj4+PiArCQllbHNlCj4+PiAr
-CQkJaW5pdHJkX2FkZHJlc3MgPSBsb2FkX2FkZHI7Cj4+PiArCj4+PiArCQlwcmludGYoIkxvYWRp
-bmcgaW5pdHJkIGF0IDB4JWx4XG4iLCBpbml0cmRfYWRkcmVzcyk7Cj4+PiArCQlyZXQgPSBib290
-bV9sb2FkX2luaXRyZChkYXRhLCBpbml0cmRfYWRkcmVzcyk7Cj4+PiArCQlpZiAocmV0KSB7Cj4+
-PiArCQkJcHJpbnRmKCJGYWlsZWQgdG8gbG9hZCBpbml0cmRcbiIpOwo+Pj4gKwkJCXJldHVybiBy
-ZXQ7Cj4+PiArCQl9Cj4+PiArCj4+PiArCQlpZiAoZGF0YS0+aW5pdHJkX2FkZHJlc3MgPT0gVUlN
-QUdFX0lOVkFMSURfQUREUkVTUykgewo+Pj4gKwkJCWxvYWRfYWRkciArPSByZXNvdXJjZV9zaXpl
-KGRhdGEtPmluaXRyZF9yZXMpOwo+Pj4gKwkJCWxvYWRfYWRkciA9IFBBR0VfQUxJR04obG9hZF9h
-ZGRyKTsKPj4+ICsJCX0KPj4+ICsJfQo+Pj4gKwo+Pj4gKwlmZHQgPSBib290bV9nZXRfZGV2aWNl
-dHJlZShkYXRhKTsKPj4+ICsJaWYgKElTX0VSUihmZHQpKSB7Cj4+PiArCQlwcmludGYoIkZhaWxl
-ZCB0byBsb2FkIGR0YlxuIik7Cj4+PiArCQlyZXR1cm4gUFRSX0VSUihmZHQpOwo+Pj4gKwl9Cj4+
-PiArCj4+PiArCXByaW50ZigiTG9hZGluZyBkZXZpY2UgdHJlZSBhdCAlbHhcbiIsIGxvYWRfYWRk
-cik7Cj4+PiArCS8qIGxvYWQgZGV2aWNlIHRyZWUgYWZ0ZXIgdGhlIGluaXRyZCBpZiBhbnkgKi8K
-Pj4+ICsJcmV0ID0gYm9vdG1fbG9hZF9kZXZpY2V0cmVlKGRhdGEsIGZkdCwgbG9hZF9hZGRyKTsK
-Pj4+ICsJaWYgKHJldCkgewo+Pj4gKwkJcHJpbnRmKCJGYWlsZWQgdG8gbG9hZCBkZXZpY2UgdHJl
-ZTogJWRcbiIsIHJldCk7Cj4+PiArCQlnb3RvIGVycl9mcmVlX2ZkdDsKPj4+ICsJfQo+Pj4gKwo+
-Pj4gKwllbnRyeSA9IChib290X2Z1bmNfZW50cnkpIGRhdGEtPm9zX2FkZHJlc3M7Cj4+PiArCj4+
-PiArCXJldCA9IGRvX2Jvb3RfZW50cnkoZGF0YSwgZW50cnksIGZkdCk7Cj4+PiArCj4+PiArZXJy
-X2ZyZWVfZmR0Ogo+Pj4gKwlmcmVlKGZkdCk7Cj4+PiArCj4+PiArCXJldHVybiByZXQ7Cj4+PiAr
-fQo+Pj4gKwo+Pj4gK3N0YXRpYyBpbnQgZG9fYm9vdG1fZWxmKHN0cnVjdCBpbWFnZV9kYXRhICpk
-YXRhKQo+Pj4gK3sKPj4+ICsJaW50IHJldDsKPj4+ICsKPj4+ICsJcmV0ID0gYm9vdG1fbG9hZF9v
-cyhkYXRhLCBkYXRhLT5vc19hZGRyZXNzKTsKPj4+ICsJaWYgKHJldCkKPj4+ICsJCXJldHVybiBy
-ZXQ7Cj4+PiArCj4+PiArCXJldHVybiBkb19ib290X2VsZihkYXRhLCBkYXRhLT5lbGYpOwo+Pj4g
-K30KPj4+ICsKPj4+ICtzdGF0aWMgc3RydWN0IGltYWdlX2hhbmRsZXIgZWxmX2hhbmRsZXIgPSB7
-Cj4+PiArCS5uYW1lID0gIkVMRiIsCj4+PiArCS5ib290bSA9IGRvX2Jvb3RtX2VsZiwKPj4+ICsJ
-LmZpbGV0eXBlID0gZmlsZXR5cGVfZWxmLAo+Pj4gK307Cj4+PiArCj4+PiArc3RhdGljIHN0cnVj
-dCBiaW5mbXRfaG9vayBiaW5mbXRfZWxmX2hvb2sgPSB7Cj4+PiArCS50eXBlID0gZmlsZXR5cGVf
-ZWxmLAo+Pj4gKwkuZXhlYyA9ICJib290bSIsCj4+PiArfTsKPj4+ICsKPj4+ICtzdGF0aWMgaW50
-IGt2eF9yZWdpc3Rlcl9pbWFnZV9oYW5kbGVyKHZvaWQpCj4+PiArewo+Pj4gKwlyZWdpc3Rlcl9p
-bWFnZV9oYW5kbGVyKCZlbGZfaGFuZGxlcik7Cj4+PiArCj4+PiArCWJpbmZtdF9yZWdpc3Rlcigm
-YmluZm10X2VsZl9ob29rKTsKPj4+ICsKPj4+ICsJcmV0dXJuIDA7Cj4+PiArfQo+Pj4gKwo+Pj4g
-K2xhdGVfaW5pdGNhbGwoa3Z4X3JlZ2lzdGVyX2ltYWdlX2hhbmRsZXIpOwo+Pj4KPj4KPj4gLS0K
-Pj4gUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgIHwKPj4gU3RldWVyd2FsZGVyIFN0ci4gMjEgICAgICAgICAgICAg
-ICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKPj4gMzExMzcgSGlsZGVz
-aGVpbSwgR2VybWFueSAgICAgICAgICAgICAgICAgIHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0w
-ICAgIHwKPj4gQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4
-OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKPiAKCi0tIApQZW5ndXRyb25peCBlLksuICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfApTdGV1
-ZXJ3YWxkZXIgU3RyLiAyMSAgICAgICAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1
-dHJvbml4LmRlLyAgfAozMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55ICAgICAgICAgICAgICAgICAg
-fCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBI
-UkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5n
-IGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQu
-b3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Hello Clement,
+
+On 6/28/20 5:51 PM, Clement Leger wrote:
+> There is no reason anymore to limit the use of elf on mips since there
+> is no elf specific support needed in architectures. Remove this
+> dependency and drop COMPILE_TEST config.
+> 
+> Signed-off-by: Clement Leger <cleger@kalray.eu>
+> ---
+>  common/Kconfig | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/common/Kconfig b/common/Kconfig
+> index f150092af..a3a290ad3 100644
+> --- a/common/Kconfig
+> +++ b/common/Kconfig
+> @@ -38,8 +38,7 @@ config BLOCK_WRITE
+>  	bool
+>  
+>  config ELF
+> -	bool "ELF Support" if COMPILE_TEST
+> -	depends on MIPS || COMPILE_TEST
+> +	bool
+
+as I already commented on v1, please don't remove the bool "Elf Support" if COMPILE_TEST
+line. You can drop the depends.
+
+
+>  
+>  config FILETYPE
+>  	bool
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
