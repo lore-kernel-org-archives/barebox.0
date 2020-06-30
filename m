@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qt1-x842.google.com ([2607:f8b0:4864:20::842])
+Received: from mail-qk1-x744.google.com ([2607:f8b0:4864:20::744])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jq4Nc-0007kG-Qs
- for barebox@lists.infradead.org; Tue, 30 Jun 2020 00:44:09 +0000
-Received: by mail-qt1-x842.google.com with SMTP id e12so14346470qtr.9
- for <barebox@lists.infradead.org>; Mon, 29 Jun 2020 17:44:08 -0700 (PDT)
+ id 1jq4Nc-0007k2-5M
+ for barebox@lists.infradead.org; Tue, 30 Jun 2020 00:44:08 +0000
+Received: by mail-qk1-x744.google.com with SMTP id 145so14608902qke.9
+ for <barebox@lists.infradead.org>; Mon, 29 Jun 2020 17:44:07 -0700 (PDT)
 From: David Dgien <dgienda125@gmail.com>
-Date: Mon, 29 Jun 2020 20:38:37 -0400
-Message-Id: <20200630003838.7745-8-dgienda125@gmail.com>
+Date: Mon, 29 Jun 2020 20:38:36 -0400
+Message-Id: <20200630003838.7745-7-dgienda125@gmail.com>
 In-Reply-To: <20200630003838.7745-1-dgienda125@gmail.com>
 References: <20200630003838.7745-1-dgienda125@gmail.com>
 MIME-Version: 1.0
@@ -23,29 +23,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 7/8] arm: elf: Add THM relocation types
+Subject: [PATCH v2 6/8] arm: makefile: Fix compiler flag variable
 To: barebox@lists.infradead.org
 Cc: David Dgien <dgienda125@gmail.com>
 
+In order for ARM modules to compile with the correct relocation types,
+they must be built without -fPIE. Move -fPIE from KBUILD_CPPFLAGS to
+KBUILD_CFLAGS_KERNEL so that the flag is only included when compiling
+files being built into the barebox image.
+
 Signed-off-by: David Dgien <dgienda125@gmail.com>
 ---
- arch/arm/include/asm/elf.h | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/include/asm/elf.h b/arch/arm/include/asm/elf.h
-index b98b3e52a..3def56769 100644
---- a/arch/arm/include/asm/elf.h
-+++ b/arch/arm/include/asm/elf.h
-@@ -30,6 +30,9 @@ typedef struct user_fp elf_fpregset_t;
- #define R_ARM_CALL	28
- #define R_ARM_JUMP24	29
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 46dfe1f62..42e409871 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -137,7 +137,7 @@ LDFLAGS_barebox += --gc-sections
+ LDFLAGS_pbl += --gc-sections
  
-+#define R_ARM_THM_CALL		10
-+#define R_ARM_THM_JUMP24	30
-+
- /*
-  * These are used to set parameters in the core dumps.
-  */
+ # early code often runs at addresses we are not linked at
+-KBUILD_CPPFLAGS += -fPIE
++KBUILD_CFLAGS_KERNEL += -fPIE
+ 
+ ifdef CONFIG_RELOCATABLE
+ LDFLAGS_barebox += -pie
 -- 
 2.27.0
 
