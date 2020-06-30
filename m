@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mickerik.phytec.de ([195.145.39.210])
- by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jqH7T-0002Bc-0a
- for barebox@lists.infradead.org; Tue, 30 Jun 2020 14:20:19 +0000
-References: <1593524914-228154-1-git-send-email-r.karszniewicz@phytec.de>
-From: Robert Karszniewicz <r.karszniewicz@phytec.de>
-Message-ID: <1a2cb925-dccd-8de7-08da-c4abe76d473c@phytec.de>
-Date: Tue, 30 Jun 2020 16:20:17 +0200
-MIME-Version: 1.0
-In-Reply-To: <1593524914-228154-1-git-send-email-r.karszniewicz@phytec.de>
-Content-Language: en-US
+Received: from zimbra2.kalray.eu ([92.103.151.219])
+ by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jqN7A-0003oK-Bk
+ for barebox@lists.infradead.org; Tue, 30 Jun 2020 20:44:25 +0000
+From: Clement Leger <cleger@kalray.eu>
+Date: Tue, 30 Jun 2020 22:43:58 +0200
+Message-Id: <20200630204402.26566-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,20 +14,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC PATCH 0/4] Introduce global.bootm.root env var for booting
- via PARTUUID
-To: barebox@lists.infradead.org
+Subject: [PATCH v3 0/4] kvx: add elf bootm support
+To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
+Cc: Clement Leger <cleger@kalray.eu>, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The problem is that we want to be able to have the rootfs and kernel on 
-separate partitions. We've looked into the Boot Loader Specification, 
-but from what we saw, it makes A-B systems difficult (according to the 
-spec, there can only be one "$BOOT" filesystem on a device).
+This serie adds support for elf bootm support on KVX architecture.
+First patches are allowing to build elf support for KVX and then bootm
+support is added to KVX.
 
-For reference: https://systemd.io/BOOT_LOADER_SPECIFICATION/
+Changes from v2 -> v3:
+ - Rename sync_icache_dcache to sync_caches_for_execution
+ - Keep COMPILE_TEST support for ELF
+
+Changes from v1 -> v2:
+ - Remove D-cache invalidation
+ - Reword first patch commit message
+
+Clement Leger (4):
+  common: bootm: allow building with an undefined IH_ARCH
+  common: Kconfig: remove MIPS dependency for ELF
+  kvx: add I-cache and D-cache synchronisation
+  kvx: add support for elf loading using bootm
+
+ arch/kvx/Kconfig                   |   5 ++
+ arch/kvx/configs/generic_defconfig |   3 +-
+ arch/kvx/include/asm/bootm.h       |  11 +++
+ arch/kvx/include/asm/cache.h       |  18 ++++
+ arch/kvx/include/asm/elf.h         |   3 +
+ arch/kvx/lib/Makefile              |   2 +-
+ arch/kvx/lib/bootm.c               | 133 +++++++++++++++++++++++++++++
+ common/Kconfig                     |   1 -
+ common/bootm.c                     |   2 +-
+ include/image.h                    |   2 +
+ 10 files changed, 176 insertions(+), 4 deletions(-)
+ create mode 100644 arch/kvx/include/asm/bootm.h
+ create mode 100644 arch/kvx/include/asm/cache.h
+ create mode 100644 arch/kvx/lib/bootm.c
+
+-- 
+2.17.1
+
 
 _______________________________________________
 barebox mailing list
