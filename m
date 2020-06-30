@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jqE0t-0002ws-C6
- for barebox@lists.infradead.org; Tue, 30 Jun 2020 11:01:20 +0000
-Date: Tue, 30 Jun 2020 13:01:18 +0200
+ id 1jqE1G-00031N-S9
+ for barebox@lists.infradead.org; Tue, 30 Jun 2020 11:01:44 +0000
+Date: Tue, 30 Jun 2020 13:01:41 +0200
 From: Michael Grzeschik <mgr@pengutronix.de>
-Message-ID: <20200630110118.GK21325@pengutronix.de>
+Message-ID: <20200630110141.GL21325@pengutronix.de>
 References: <20200630094934.18228-1-m.grzeschik@pengutronix.de>
- <20200630094934.18228-3-m.grzeschik@pengutronix.de>
- <3599483b-442b-36df-4e6f-edb2fcb041ae@pengutronix.de>
+ <20200630094934.18228-2-m.grzeschik@pengutronix.de>
+ <47637281-1409-301b-aa32-30e7a8d53b3c@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <3599483b-442b-36df-4e6f-edb2fcb041ae@pengutronix.de>
+In-Reply-To: <47637281-1409-301b-aa32-30e7a8d53b3c@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,288 +19,451 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============3386550985178675043=="
+Content-Type: multipart/mixed; boundary="===============0699110377335637780=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] drivers: net: phy: at803x: add phy clk setup via dts
+Subject: Re: [PATCH 1/2] net: phy: add uapi/linux/mdio.h from kernel for MDIO
+ MMD access
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
 
---===============3386550985178675043==
+--===============0699110377335637780==
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="3NJww9yp20AXRsxZ"
+	protocol="application/pgp-signature"; boundary="M9YpAf2t6OxtMGzg"
 Content-Disposition: inline
 
 
---3NJww9yp20AXRsxZ
+--M9YpAf2t6OxtMGzg
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 30, 2020 at 12:15:00PM +0200, Ahmad Fatoum wrote:
->Hello,
+On Tue, Jun 30, 2020 at 12:09:57PM +0200, Ahmad Fatoum wrote:
+>
 >
 >On 6/30/20 11:49 AM, Michael Grzeschik wrote:
->> There are dt-bindings for the setup of the clk configuration in the phy.
->> This patch adds support for these bindings in the driver.
+>> The headerfile is used in the kernel for access of MDIO Managed Devices
+>> (MMD) indirect access. Some drivers already use those device addresses.
+>> We add the headerfile from the kernel and change the current users to
+>> use the defines instead
 >>
 >> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 >> ---
->>  drivers/net/phy/at803x.c | 181 +++++++++++++++++++++++++++++++++++++--
->>  1 file changed, 175 insertions(+), 6 deletions(-)
+>>  drivers/net/phy/dp83867.c |   3 +-
+>>  drivers/net/phy/micrel.c  |   5 +-
+>>  include/uapi/linux/mdio.h | 327 ++++++++++++++++++++++++++++++++++++++
+>>  3 files changed, 332 insertions(+), 3 deletions(-)
+>>  create mode 100644 include/uapi/linux/mdio.h
 >>
->> diff --git a/drivers/net/phy/at803x.c b/drivers/net/phy/at803x.c
->> index b43cb0d23e..94349cbe0d 100644
->> --- a/drivers/net/phy/at803x.c
->> +++ b/drivers/net/phy/at803x.c
->> @@ -11,6 +11,9 @@
->>  #include <init.h>
+>> diff --git a/drivers/net/phy/dp83867.c b/drivers/net/phy/dp83867.c
+>> index b3328b7e44..6a136a76dd 100644
+>> --- a/drivers/net/phy/dp83867.c
+>> +++ b/drivers/net/phy/dp83867.c
+>> @@ -18,9 +18,10 @@
 >>  #include <linux/phy.h>
->>  #include <linux/string.h>
->> +#include <linux/bitfield.h>
+>>
+>>  #include <dt-bindings/net/ti-dp83867.h>
 >> +#include <uapi/linux/mdio.h>
->> +#include <dt-bindings/net/qca-ar803x.h>
 >>
->>  #define AT803X_INTR_ENABLE			0x12
->>  #define AT803X_INTR_STATUS			0x13
->> @@ -27,6 +30,164 @@
->>  #define AT803X_DEBUG_SYSTEM_MODE_CTRL		0x05
->>  #define AT803X_DEBUG_RGMII_TX_CLK_DLY		(1 << 8)
+>>  #define DP83867_PHY_ID		0x2000a231
+>> -#define DP83867_DEVADDR		0x1f
+>> +#define DP83867_DEVADDR		MDIO_MMD_VEND2
 >>
->> +/* AT803x supports either the XTAL input pad, an internal PLL or the
->> + * DSP as clock reference for the clock output pad. The XTAL reference
->> + * is only used for 25 MHz output, all other frequencies need the PLL.
->> + * The DSP as a clock reference is used in synchronous ethernet
->> + * applications.
->> + *
->> + * By default the PLL is only enabled if there is a link. Otherwise
->> + * the PHY will go into low power state and disabled the PLL. You can
->> + * set the PLL_ON bit (see debug register 0x1f) to keep the PLL always
->> + * enabled.
->> + */
->> +#define AT803X_MMD7_CLK25M			0x8016
->> +#define AT803X_CLK_OUT_MASK			GENMASK(4, 2)
->> +#define AT803X_CLK_OUT_25MHZ_XTAL		0
->> +#define AT803X_CLK_OUT_25MHZ_DSP		1
->> +#define AT803X_CLK_OUT_50MHZ_PLL		2
->> +#define AT803X_CLK_OUT_50MHZ_DSP		3
->> +#define AT803X_CLK_OUT_62_5MHZ_PLL		4
->> +#define AT803X_CLK_OUT_62_5MHZ_DSP		5
->> +#define AT803X_CLK_OUT_125MHZ_PLL		6
->> +#define AT803X_CLK_OUT_125MHZ_DSP		7
->> +
->> +/* The AR8035 has another mask which is compatible with the AR8031/AR80=
-33 mask
->> + * but doesn't support choosing between XTAL/PLL and DSP.
->> + */
->> +#define AT8035_CLK_OUT_MASK			GENMASK(4, 3)
->> +
->> +#define AT803X_CLK_OUT_STRENGTH_MASK		GENMASK(8, 7)
->> +#define AT803X_CLK_OUT_STRENGTH_FULL		0
->> +#define AT803X_CLK_OUT_STRENGTH_HALF		1
->> +#define AT803X_CLK_OUT_STRENGTH_QUARTER		2
->> +
->> +#define ATH9331_PHY_ID 0x004dd041
->> +#define ATH8030_PHY_ID 0x004dd076
->> +#define ATH8031_PHY_ID 0x004dd074
->> +#define ATH8032_PHY_ID 0x004dd023
->> +#define ATH8035_PHY_ID 0x004dd072
->> +#define AT8030_PHY_ID_MASK			0xffffffef
->> +
->> +struct at803x_priv {
->> +	u16 clk_25m_reg;
->> +	u16 clk_25m_mask;
->> +};
->> +
->> +static bool at803x_match_phy_id(struct phy_device *phydev, u32 phy_id)
->> +{
->> +	struct phy_driver *drv =3D to_phy_driver(phydev->dev.driver);
->> +
->> +	return (phydev->phy_id & drv->phy_id_mask)
->> +		=3D=3D (phy_id & drv->phy_id_mask);
->> +}
->> +
->> +static int at803x_parse_dt(struct phy_device *phydev)
->> +{
->> +	const struct device_d *dev =3D &phydev->dev;
->> +	const struct device_node *node =3D dev->device_node;
->> +	struct at803x_priv *priv =3D phydev->priv;
->> +	unsigned int sel, mask;
->> +	u32 freq, strength;
->> +	int ret;
->> +
->> +	ret =3D of_property_read_u32(node, "qca,clk-out-frequency", &freq);
->> +	if (!ret) {
->> +		mask =3D AT803X_CLK_OUT_MASK;
->> +		switch (freq) {
->> +		case 25000000:
->> +			sel =3D AT803X_CLK_OUT_25MHZ_XTAL;
->> +			break;
->> +		case 50000000:
->> +			sel =3D AT803X_CLK_OUT_50MHZ_PLL;
->> +			break;
->> +		case 62500000:
->> +			sel =3D AT803X_CLK_OUT_62_5MHZ_PLL;
->> +			break;
->> +		case 125000000:
->> +			sel =3D AT803X_CLK_OUT_125MHZ_PLL;
->> +			break;
->> +		default:
->> +			dev_err(dev, "invalid qca,clk-out-frequency\n");
->> +			return -EINVAL;
->> +		}
->> +
->> +		priv->clk_25m_reg |=3D FIELD_PREP(mask, sel);
->> +		priv->clk_25m_mask |=3D mask;
->> +
->> +		/* Fixup for the AR8030/AR8035. This chip has another mask and
->> +		 * doesn't support the DSP reference. Eg. the lowest bit of the
->> +		 * mask. The upper two bits select the same frequencies. Mask
->> +		 * the lowest bit here.
->> +		 *
->> +		 * Warning:
->> +		 *   There was no datasheet for the AR8030 available so this is
->> +		 *   just a guess. But the AR8035 is listed as pin compatible
->> +		 *   to the AR8030 so there might be a good chance it works on
->> +		 *   the AR8030 too.
->> +		 */
->> +		if (at803x_match_phy_id(phydev, ATH8030_PHY_ID) ||
->> +		    at803x_match_phy_id(phydev, ATH8035_PHY_ID)) {
->> +			priv->clk_25m_reg &=3D AT8035_CLK_OUT_MASK;
->> +			priv->clk_25m_mask &=3D AT8035_CLK_OUT_MASK;
->> +		}
->> +	}
->> +
->> +	ret =3D of_property_read_u32(node, "qca,clk-out-strength", &strength);
->> +	if (!ret) {
->> +		priv->clk_25m_mask |=3D AT803X_CLK_OUT_STRENGTH_MASK;
->> +		switch (strength) {
->> +		case AR803X_STRENGTH_FULL:
->> +			priv->clk_25m_reg |=3D AT803X_CLK_OUT_STRENGTH_FULL;
->> +			break;
->> +		case AR803X_STRENGTH_HALF:
->> +			priv->clk_25m_reg |=3D AT803X_CLK_OUT_STRENGTH_HALF;
->> +			break;
->> +		case AR803X_STRENGTH_QUARTER:
->> +			priv->clk_25m_reg |=3D AT803X_CLK_OUT_STRENGTH_QUARTER;
->> +			break;
->> +		default:
->> +			dev_err(dev, "invalid qca,clk-out-strength\n");
->> +			return -EINVAL;
->> +		}
->> +	}
->> +
->> +	return 0;
->> +}
->> +
->> +static int at803x_probe(struct phy_device *phydev)
->> +{
->> +	struct at803x_priv *priv;
->> +
->> +	priv =3D kzalloc(sizeof(*priv), GFP_KERNEL);
->> +	if (!priv)
->> +		return -ENOMEM;
->> +
->> +	phydev->priv =3D priv;
->> +
->> +	return at803x_parse_dt(phydev);
->> +}
->> +
->> +static int at803x_clk_out_config(struct phy_device *phydev)
->> +{
->> +	struct at803x_priv *priv =3D phydev->priv;
->> +	int val;
->> +
->> +	if (!priv->clk_25m_mask)
->> +		return 0;
->> +
->> +	val =3D phy_read_mmd_indirect(phydev, AT803X_MMD7_CLK25M, MDIO_MMD_AN);
->> +	if (val < 0)
->> +		return val;
->> +
->> +	val &=3D ~priv->clk_25m_mask;
->> +	val |=3D priv->clk_25m_reg;
->
->You could use |=3D FIELD_PREP for this.
->
-
-This will trigger compile_time_assert. I will leave it as is.
-
->> +
->> +	phy_write_mmd_indirect(phydev, AT803X_MMD7_CLK25M, MDIO_MMD_AN, val);
->> +
->> +	return 0;
->> +}
->> +
->>  static int at803x_config_init(struct phy_device *phydev)
->>  {
->>  	int ret;
->> @@ -46,33 +207,41 @@ static int at803x_config_init(struct phy_device *ph=
-ydev)
->>  			return ret;
->>  	}
+>>  #define MII_DP83867_PHYCTRL	0x10
+>>  #define MII_DP83867_MICR	0x12
+>> diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+>> index 8f0b81d8fa..c9a19d166e 100644
+>> --- a/drivers/net/phy/micrel.c
+>> +++ b/drivers/net/phy/micrel.c
+>> @@ -18,6 +18,7 @@
+>>  #include <linux/ethtool.h>
+>>  #include <linux/phy.h>
+>>  #include <linux/micrel_phy.h>
+>> +#include <uapi/linux/mdio.h>
 >>
->> +	ret =3D at803x_clk_out_config(phydev);
->> +	if (ret < 0)
->> +		return ret;
->> +
+>>  /* Operation Mode Strap Override */
+>>  #define MII_KSZPHY_OMSO				0x16
+>> @@ -179,7 +180,7 @@ static int ksz9031_of_load_skew_values(struct phy_de=
+vice *phydev,
+>>  		return 0;
+>>
+>>  	if (matches < numfields)
+>> -		newval =3D phy_read_mmd_indirect(phydev, reg, 2);
+>> +		newval =3D phy_read_mmd_indirect(phydev, reg, MDIO_MMD_WIS);
+>>  	else
+>>  		newval =3D 0;
+>>
+>> @@ -193,7 +194,7 @@ static int ksz9031_of_load_skew_values(struct phy_de=
+vice *phydev,
+>>  				<< (field_sz * i));
+>>  		}
+>>
+>> -	phy_write_mmd_indirect(phydev, reg, 2, newval);
+>> +	phy_write_mmd_indirect(phydev, reg, MDIO_MMD_WIS, newval);
 >>  	return 0;
->
->You could just return at803x_clk_out_config(phydev); directly.
-
-Right, will change thanks.
-
->
 >>  }
 >>
->>  static struct phy_driver at803x_driver[] =3D {
->>  {
->>  	/* ATHEROS 8035 */
->> -	.phy_id		=3D 0x004dd072,
->> -	.phy_id_mask	=3D 0xffffffef,
->> +	.phy_id		=3D ATH8035_PHY_ID,
->> +	.phy_id_mask	=3D AT8030_PHY_ID_MASK,
->>  	.drv.name	=3D "Atheros 8035 ethernet",
->> +	.probe		=3D at803x_probe,
->>  	.config_init	=3D at803x_config_init,
->>  	.features	=3D PHY_GBIT_FEATURES,
->>  	.config_aneg	=3D &genphy_config_aneg,
->>  	.read_status	=3D &genphy_read_status,
->>  }, {
->>  	/* ATHEROS 8030 */
->> -	.phy_id		=3D 0x004dd076,
->> -	.phy_id_mask	=3D 0xffffffef,
->> +	.phy_id		=3D ATH8030_PHY_ID,
->> +	.phy_id_mask	=3D AT8030_PHY_ID_MASK,
->>  	.drv.name	=3D "Atheros 8030 ethernet",
->>  	.config_init	=3D at803x_config_init,
->> +	.probe		=3D at803x_probe,
->>  	.features	=3D PHY_GBIT_FEATURES,
->>  	.config_aneg	=3D &genphy_config_aneg,
->>  	.read_status	=3D &genphy_read_status,
->>  }, {
->>  	/* ATHEROS 8031 */
->> -	.phy_id		=3D 0x004dd074,
->> -	.phy_id_mask	=3D 0xffffffef,
->> +	.phy_id		=3D ATH8031_PHY_ID,
->> +	.phy_id_mask	=3D AT8030_PHY_ID_MASK,
->> +	.drv.name	=3D "Atheros 8030 ethernet",
->>  	.drv.name	=3D "Atheros 8031 ethernet",
+>> diff --git a/include/uapi/linux/mdio.h b/include/uapi/linux/mdio.h
+>> new file mode 100644
+>> index 0000000000..4bcb41c71b
+>> --- /dev/null
+>> +++ b/include/uapi/linux/mdio.h
 >
->.drv.name is now specified twice.
+>I'd put mdio.h into include/linux instead. We do this for the closely
+>related mii.h, which in the kernel is in include/uapi/linux, but in
+>barebox in include/linux.
 
-Ups, will fix it.
+Makes sense! Will change it in v2.
 
->With this fixed; Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>Otherwise; Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
 Thanks!
 
 >
->> +	.probe		=3D at803x_probe,
->>  	.config_init	=3D at803x_config_init,
->>  	.features	=3D PHY_GBIT_FEATURES,
->>  	.config_aneg	=3D &genphy_config_aneg,
+>> @@ -0,0 +1,327 @@
+>> +/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+>> +/*
+>> + * linux/mdio.h: definitions for MDIO (clause 45) transceivers
+>> + * Copyright 2006-2009 Solarflare Communications Inc.
+>> + *
+>> + * This program is free software; you can redistribute it and/or modify=
+ it
+>> + * under the terms of the GNU General Public License version 2 as publi=
+shed
+>> + * by the Free Software Foundation, incorporated herein by reference.
+>> + */
+>> +
+>> +#ifndef _UAPI__LINUX_MDIO_H__
+>> +#define _UAPI__LINUX_MDIO_H__
+>> +
+>> +#include <linux/types.h>
+>> +#include <linux/mii.h>
+>> +
+>> +/* MDIO Manageable Devices (MMDs). */
+>> +#define MDIO_MMD_PMAPMD		1	/* Physical Medium Attachment/
+>> +					 * Physical Medium Dependent */
+>> +#define MDIO_MMD_WIS		2	/* WAN Interface Sublayer */
+>> +#define MDIO_MMD_PCS		3	/* Physical Coding Sublayer */
+>> +#define MDIO_MMD_PHYXS		4	/* PHY Extender Sublayer */
+>> +#define MDIO_MMD_DTEXS		5	/* DTE Extender Sublayer */
+>> +#define MDIO_MMD_TC		6	/* Transmission Convergence */
+>> +#define MDIO_MMD_AN		7	/* Auto-Negotiation */
+>> +#define MDIO_MMD_C22EXT		29	/* Clause 22 extension */
+>> +#define MDIO_MMD_VEND1		30	/* Vendor specific 1 */
+>> +#define MDIO_MMD_VEND2		31	/* Vendor specific 2 */
+>> +
+>> +/* Generic MDIO registers. */
+>> +#define MDIO_CTRL1		MII_BMCR
+>> +#define MDIO_STAT1		MII_BMSR
+>> +#define MDIO_DEVID1		MII_PHYSID1
+>> +#define MDIO_DEVID2		MII_PHYSID2
+>> +#define MDIO_SPEED		4	/* Speed ability */
+>> +#define MDIO_DEVS1		5	/* Devices in package */
+>> +#define MDIO_DEVS2		6
+>> +#define MDIO_CTRL2		7	/* 10G control 2 */
+>> +#define MDIO_STAT2		8	/* 10G status 2 */
+>> +#define MDIO_PMA_TXDIS		9	/* 10G PMA/PMD transmit disable */
+>> +#define MDIO_PMA_RXDET		10	/* 10G PMA/PMD receive signal detect */
+>> +#define MDIO_PMA_EXTABLE	11	/* 10G PMA/PMD extended ability */
+>> +#define MDIO_PKGID1		14	/* Package identifier */
+>> +#define MDIO_PKGID2		15
+>> +#define MDIO_AN_ADVERTISE	16	/* AN advertising (base page) */
+>> +#define MDIO_AN_LPA		19	/* AN LP abilities (base page) */
+>> +#define MDIO_PCS_EEE_ABLE	20	/* EEE Capability register */
+>> +#define MDIO_PCS_EEE_ABLE2	21	/* EEE Capability register 2 */
+>> +#define MDIO_PMA_NG_EXTABLE	21	/* 2.5G/5G PMA/PMD extended ability */
+>> +#define MDIO_PCS_EEE_WK_ERR	22	/* EEE wake error counter */
+>> +#define MDIO_PHYXS_LNSTAT	24	/* PHY XGXS lane state */
+>> +#define MDIO_AN_EEE_ADV		60	/* EEE advertisement */
+>> +#define MDIO_AN_EEE_LPABLE	61	/* EEE link partner ability */
+>> +#define MDIO_AN_EEE_ADV2	62	/* EEE advertisement 2 */
+>> +#define MDIO_AN_EEE_LPABLE2	63	/* EEE link partner ability 2 */
+>> +
+>> +/* Media-dependent registers. */
+>> +#define MDIO_PMA_10GBT_SWAPPOL	130	/* 10GBASE-T pair swap & polarity */
+>> +#define MDIO_PMA_10GBT_TXPWR	131	/* 10GBASE-T TX power control */
+>> +#define MDIO_PMA_10GBT_SNR	133	/* 10GBASE-T SNR margin, lane A.
+>> +					 * Lanes B-D are numbered 134-136. */
+>> +#define MDIO_PMA_10GBR_FECABLE	170	/* 10GBASE-R FEC ability */
+>> +#define MDIO_PCS_10GBX_STAT1	24	/* 10GBASE-X PCS status 1 */
+>> +#define MDIO_PCS_10GBRT_STAT1	32	/* 10GBASE-R/-T PCS status 1 */
+>> +#define MDIO_PCS_10GBRT_STAT2	33	/* 10GBASE-R/-T PCS status 2 */
+>> +#define MDIO_AN_10GBT_CTRL	32	/* 10GBASE-T auto-negotiation control */
+>> +#define MDIO_AN_10GBT_STAT	33	/* 10GBASE-T auto-negotiation status */
+>> +
+>> +/* LASI (Link Alarm Status Interrupt) registers, defined by XENPAK MSA.=
+ */
+>> +#define MDIO_PMA_LASI_RXCTRL	0x9000	/* RX_ALARM control */
+>> +#define MDIO_PMA_LASI_TXCTRL	0x9001	/* TX_ALARM control */
+>> +#define MDIO_PMA_LASI_CTRL	0x9002	/* LASI control */
+>> +#define MDIO_PMA_LASI_RXSTAT	0x9003	/* RX_ALARM status */
+>> +#define MDIO_PMA_LASI_TXSTAT	0x9004	/* TX_ALARM status */
+>> +#define MDIO_PMA_LASI_STAT	0x9005	/* LASI status */
+>> +
+>> +/* Control register 1. */
+>> +/* Enable extended speed selection */
+>> +#define MDIO_CTRL1_SPEEDSELEXT		(BMCR_SPEED1000 | BMCR_SPEED100)
+>> +/* All speed selection bits */
+>> +#define MDIO_CTRL1_SPEEDSEL		(MDIO_CTRL1_SPEEDSELEXT | 0x003c)
+>> +#define MDIO_CTRL1_FULLDPLX		BMCR_FULLDPLX
+>> +#define MDIO_CTRL1_LPOWER		BMCR_PDOWN
+>> +#define MDIO_CTRL1_RESET		BMCR_RESET
+>> +#define MDIO_PMA_CTRL1_LOOPBACK		0x0001
+>> +#define MDIO_PMA_CTRL1_SPEED1000	BMCR_SPEED1000
+>> +#define MDIO_PMA_CTRL1_SPEED100		BMCR_SPEED100
+>> +#define MDIO_PCS_CTRL1_LOOPBACK		BMCR_LOOPBACK
+>> +#define MDIO_PHYXS_CTRL1_LOOPBACK	BMCR_LOOPBACK
+>> +#define MDIO_AN_CTRL1_RESTART		BMCR_ANRESTART
+>> +#define MDIO_AN_CTRL1_ENABLE		BMCR_ANENABLE
+>> +#define MDIO_AN_CTRL1_XNP		0x2000	/* Enable extended next page */
+>> +#define MDIO_PCS_CTRL1_CLKSTOP_EN	0x400	/* Stop the clock during LPI */
+>> +
+>> +/* 10 Gb/s */
+>> +#define MDIO_CTRL1_SPEED10G		(MDIO_CTRL1_SPEEDSELEXT | 0x00)
+>> +/* 10PASS-TS/2BASE-TL */
+>> +#define MDIO_CTRL1_SPEED10P2B		(MDIO_CTRL1_SPEEDSELEXT | 0x04)
+>> +/* 2.5 Gb/s */
+>> +#define MDIO_CTRL1_SPEED2_5G		(MDIO_CTRL1_SPEEDSELEXT | 0x18)
+>> +/* 5 Gb/s */
+>> +#define MDIO_CTRL1_SPEED5G		(MDIO_CTRL1_SPEEDSELEXT | 0x1c)
+>> +
+>> +/* Status register 1. */
+>> +#define MDIO_STAT1_LPOWERABLE		0x0002	/* Low-power ability */
+>> +#define MDIO_STAT1_LSTATUS		BMSR_LSTATUS
+>> +#define MDIO_STAT1_FAULT		0x0080	/* Fault */
+>> +#define MDIO_AN_STAT1_LPABLE		0x0001	/* Link partner AN ability */
+>> +#define MDIO_AN_STAT1_ABLE		BMSR_ANEGCAPABLE
+>> +#define MDIO_AN_STAT1_RFAULT		BMSR_RFAULT
+>> +#define MDIO_AN_STAT1_COMPLETE		BMSR_ANEGCOMPLETE
+>> +#define MDIO_AN_STAT1_PAGE		0x0040	/* Page received */
+>> +#define MDIO_AN_STAT1_XNP		0x0080	/* Extended next page status */
+>> +
+>> +/* Speed register. */
+>> +#define MDIO_SPEED_10G			0x0001	/* 10G capable */
+>> +#define MDIO_PMA_SPEED_2B		0x0002	/* 2BASE-TL capable */
+>> +#define MDIO_PMA_SPEED_10P		0x0004	/* 10PASS-TS capable */
+>> +#define MDIO_PMA_SPEED_1000		0x0010	/* 1000M capable */
+>> +#define MDIO_PMA_SPEED_100		0x0020	/* 100M capable */
+>> +#define MDIO_PMA_SPEED_10		0x0040	/* 10M capable */
+>> +#define MDIO_PCS_SPEED_10P2B		0x0002	/* 10PASS-TS/2BASE-TL capable */
+>> +
+>> +/* Device present registers. */
+>> +#define MDIO_DEVS_PRESENT(devad)	(1 << (devad))
+>> +#define MDIO_DEVS_C22PRESENT		MDIO_DEVS_PRESENT(0)
+>> +#define MDIO_DEVS_PMAPMD		MDIO_DEVS_PRESENT(MDIO_MMD_PMAPMD)
+>> +#define MDIO_DEVS_WIS			MDIO_DEVS_PRESENT(MDIO_MMD_WIS)
+>> +#define MDIO_DEVS_PCS			MDIO_DEVS_PRESENT(MDIO_MMD_PCS)
+>> +#define MDIO_DEVS_PHYXS			MDIO_DEVS_PRESENT(MDIO_MMD_PHYXS)
+>> +#define MDIO_DEVS_DTEXS			MDIO_DEVS_PRESENT(MDIO_MMD_DTEXS)
+>> +#define MDIO_DEVS_TC			MDIO_DEVS_PRESENT(MDIO_MMD_TC)
+>> +#define MDIO_DEVS_AN			MDIO_DEVS_PRESENT(MDIO_MMD_AN)
+>> +#define MDIO_DEVS_C22EXT		MDIO_DEVS_PRESENT(MDIO_MMD_C22EXT)
+>> +#define MDIO_DEVS_VEND1			MDIO_DEVS_PRESENT(MDIO_MMD_VEND1)
+>> +#define MDIO_DEVS_VEND2			MDIO_DEVS_PRESENT(MDIO_MMD_VEND2)
+>> +
+>> +/* Control register 2. */
+>> +#define MDIO_PMA_CTRL2_TYPE		0x000f	/* PMA/PMD type selection */
+>> +#define MDIO_PMA_CTRL2_10GBCX4		0x0000	/* 10GBASE-CX4 type */
+>> +#define MDIO_PMA_CTRL2_10GBEW		0x0001	/* 10GBASE-EW type */
+>> +#define MDIO_PMA_CTRL2_10GBLW		0x0002	/* 10GBASE-LW type */
+>> +#define MDIO_PMA_CTRL2_10GBSW		0x0003	/* 10GBASE-SW type */
+>> +#define MDIO_PMA_CTRL2_10GBLX4		0x0004	/* 10GBASE-LX4 type */
+>> +#define MDIO_PMA_CTRL2_10GBER		0x0005	/* 10GBASE-ER type */
+>> +#define MDIO_PMA_CTRL2_10GBLR		0x0006	/* 10GBASE-LR type */
+>> +#define MDIO_PMA_CTRL2_10GBSR		0x0007	/* 10GBASE-SR type */
+>> +#define MDIO_PMA_CTRL2_10GBLRM		0x0008	/* 10GBASE-LRM type */
+>> +#define MDIO_PMA_CTRL2_10GBT		0x0009	/* 10GBASE-T type */
+>> +#define MDIO_PMA_CTRL2_10GBKX4		0x000a	/* 10GBASE-KX4 type */
+>> +#define MDIO_PMA_CTRL2_10GBKR		0x000b	/* 10GBASE-KR type */
+>> +#define MDIO_PMA_CTRL2_1000BT		0x000c	/* 1000BASE-T type */
+>> +#define MDIO_PMA_CTRL2_1000BKX		0x000d	/* 1000BASE-KX type */
+>> +#define MDIO_PMA_CTRL2_100BTX		0x000e	/* 100BASE-TX type */
+>> +#define MDIO_PMA_CTRL2_10BT		0x000f	/* 10BASE-T type */
+>> +#define MDIO_PMA_CTRL2_2_5GBT		0x0030  /* 2.5GBaseT type */
+>> +#define MDIO_PMA_CTRL2_5GBT		0x0031  /* 5GBaseT type */
+>> +#define MDIO_PCS_CTRL2_TYPE		0x0003	/* PCS type selection */
+>> +#define MDIO_PCS_CTRL2_10GBR		0x0000	/* 10GBASE-R type */
+>> +#define MDIO_PCS_CTRL2_10GBX		0x0001	/* 10GBASE-X type */
+>> +#define MDIO_PCS_CTRL2_10GBW		0x0002	/* 10GBASE-W type */
+>> +#define MDIO_PCS_CTRL2_10GBT		0x0003	/* 10GBASE-T type */
+>> +
+>> +/* Status register 2. */
+>> +#define MDIO_STAT2_RXFAULT		0x0400	/* Receive fault */
+>> +#define MDIO_STAT2_TXFAULT		0x0800	/* Transmit fault */
+>> +#define MDIO_STAT2_DEVPRST		0xc000	/* Device present */
+>> +#define MDIO_STAT2_DEVPRST_VAL		0x8000	/* Device present value */
+>> +#define MDIO_PMA_STAT2_LBABLE		0x0001	/* PMA loopback ability */
+>> +#define MDIO_PMA_STAT2_10GBEW		0x0002	/* 10GBASE-EW ability */
+>> +#define MDIO_PMA_STAT2_10GBLW		0x0004	/* 10GBASE-LW ability */
+>> +#define MDIO_PMA_STAT2_10GBSW		0x0008	/* 10GBASE-SW ability */
+>> +#define MDIO_PMA_STAT2_10GBLX4		0x0010	/* 10GBASE-LX4 ability */
+>> +#define MDIO_PMA_STAT2_10GBER		0x0020	/* 10GBASE-ER ability */
+>> +#define MDIO_PMA_STAT2_10GBLR		0x0040	/* 10GBASE-LR ability */
+>> +#define MDIO_PMA_STAT2_10GBSR		0x0080	/* 10GBASE-SR ability */
+>> +#define MDIO_PMD_STAT2_TXDISAB		0x0100	/* PMD TX disable ability */
+>> +#define MDIO_PMA_STAT2_EXTABLE		0x0200	/* Extended abilities */
+>> +#define MDIO_PMA_STAT2_RXFLTABLE	0x1000	/* Receive fault ability */
+>> +#define MDIO_PMA_STAT2_TXFLTABLE	0x2000	/* Transmit fault ability */
+>> +#define MDIO_PCS_STAT2_10GBR		0x0001	/* 10GBASE-R capable */
+>> +#define MDIO_PCS_STAT2_10GBX		0x0002	/* 10GBASE-X capable */
+>> +#define MDIO_PCS_STAT2_10GBW		0x0004	/* 10GBASE-W capable */
+>> +#define MDIO_PCS_STAT2_RXFLTABLE	0x1000	/* Receive fault ability */
+>> +#define MDIO_PCS_STAT2_TXFLTABLE	0x2000	/* Transmit fault ability */
+>> +
+>> +/* Transmit disable register. */
+>> +#define MDIO_PMD_TXDIS_GLOBAL		0x0001	/* Global PMD TX disable */
+>> +#define MDIO_PMD_TXDIS_0		0x0002	/* PMD TX disable 0 */
+>> +#define MDIO_PMD_TXDIS_1		0x0004	/* PMD TX disable 1 */
+>> +#define MDIO_PMD_TXDIS_2		0x0008	/* PMD TX disable 2 */
+>> +#define MDIO_PMD_TXDIS_3		0x0010	/* PMD TX disable 3 */
+>> +
+>> +/* Receive signal detect register. */
+>> +#define MDIO_PMD_RXDET_GLOBAL		0x0001	/* Global PMD RX signal detect */
+>> +#define MDIO_PMD_RXDET_0		0x0002	/* PMD RX signal detect 0 */
+>> +#define MDIO_PMD_RXDET_1		0x0004	/* PMD RX signal detect 1 */
+>> +#define MDIO_PMD_RXDET_2		0x0008	/* PMD RX signal detect 2 */
+>> +#define MDIO_PMD_RXDET_3		0x0010	/* PMD RX signal detect 3 */
+>> +
+>> +/* Extended abilities register. */
+>> +#define MDIO_PMA_EXTABLE_10GCX4		0x0001	/* 10GBASE-CX4 ability */
+>> +#define MDIO_PMA_EXTABLE_10GBLRM	0x0002	/* 10GBASE-LRM ability */
+>> +#define MDIO_PMA_EXTABLE_10GBT		0x0004	/* 10GBASE-T ability */
+>> +#define MDIO_PMA_EXTABLE_10GBKX4	0x0008	/* 10GBASE-KX4 ability */
+>> +#define MDIO_PMA_EXTABLE_10GBKR		0x0010	/* 10GBASE-KR ability */
+>> +#define MDIO_PMA_EXTABLE_1000BT		0x0020	/* 1000BASE-T ability */
+>> +#define MDIO_PMA_EXTABLE_1000BKX	0x0040	/* 1000BASE-KX ability */
+>> +#define MDIO_PMA_EXTABLE_100BTX		0x0080	/* 100BASE-TX ability */
+>> +#define MDIO_PMA_EXTABLE_10BT		0x0100	/* 10BASE-T ability */
+>> +#define MDIO_PMA_EXTABLE_NBT		0x4000  /* 2.5/5GBASE-T ability */
+>> +
+>> +/* PHY XGXS lane state register. */
+>> +#define MDIO_PHYXS_LNSTAT_SYNC0		0x0001
+>> +#define MDIO_PHYXS_LNSTAT_SYNC1		0x0002
+>> +#define MDIO_PHYXS_LNSTAT_SYNC2		0x0004
+>> +#define MDIO_PHYXS_LNSTAT_SYNC3		0x0008
+>> +#define MDIO_PHYXS_LNSTAT_ALIGN		0x1000
+>> +
+>> +/* PMA 10GBASE-T pair swap & polarity */
+>> +#define MDIO_PMA_10GBT_SWAPPOL_ABNX	0x0001	/* Pair A/B uncrossed */
+>> +#define MDIO_PMA_10GBT_SWAPPOL_CDNX	0x0002	/* Pair C/D uncrossed */
+>> +#define MDIO_PMA_10GBT_SWAPPOL_AREV	0x0100	/* Pair A polarity reversed =
+*/
+>> +#define MDIO_PMA_10GBT_SWAPPOL_BREV	0x0200	/* Pair B polarity reversed =
+*/
+>> +#define MDIO_PMA_10GBT_SWAPPOL_CREV	0x0400	/* Pair C polarity reversed =
+*/
+>> +#define MDIO_PMA_10GBT_SWAPPOL_DREV	0x0800	/* Pair D polarity reversed =
+*/
+>> +
+>> +/* PMA 10GBASE-T TX power register. */
+>> +#define MDIO_PMA_10GBT_TXPWR_SHORT	0x0001	/* Short-reach mode */
+>> +
+>> +/* PMA 10GBASE-T SNR registers. */
+>> +/* Value is SNR margin in dB, clamped to range [-127, 127], plus 0x8000=
+=2E */
+>> +#define MDIO_PMA_10GBT_SNR_BIAS		0x8000
+>> +#define MDIO_PMA_10GBT_SNR_MAX		127
+>> +
+>> +/* PMA 10GBASE-R FEC ability register. */
+>> +#define MDIO_PMA_10GBR_FECABLE_ABLE	0x0001	/* FEC ability */
+>> +#define MDIO_PMA_10GBR_FECABLE_ERRABLE	0x0002	/* FEC error indic. abili=
+ty */
+>> +
+>> +/* PCS 10GBASE-R/-T status register 1. */
+>> +#define MDIO_PCS_10GBRT_STAT1_BLKLK	0x0001	/* Block lock attained */
+>> +
+>> +/* PCS 10GBASE-R/-T status register 2. */
+>> +#define MDIO_PCS_10GBRT_STAT2_ERR	0x00ff
+>> +#define MDIO_PCS_10GBRT_STAT2_BER	0x3f00
+>> +
+>> +/* AN 10GBASE-T control register. */
+>> +#define MDIO_AN_10GBT_CTRL_ADV2_5G	0x0080	/* Advertise 2.5GBASE-T */
+>> +#define MDIO_AN_10GBT_CTRL_ADV5G	0x0100	/* Advertise 5GBASE-T */
+>> +#define MDIO_AN_10GBT_CTRL_ADV10G	0x1000	/* Advertise 10GBASE-T */
+>> +
+>> +/* AN 10GBASE-T status register. */
+>> +#define MDIO_AN_10GBT_STAT_LP2_5G	0x0020  /* LP is 2.5GBT capable */
+>> +#define MDIO_AN_10GBT_STAT_LP5G		0x0040  /* LP is 5GBT capable */
+>> +#define MDIO_AN_10GBT_STAT_LPTRR	0x0200	/* LP training reset req. */
+>> +#define MDIO_AN_10GBT_STAT_LPLTABLE	0x0400	/* LP loop timing ability */
+>> +#define MDIO_AN_10GBT_STAT_LP10G	0x0800	/* LP is 10GBT capable */
+>> +#define MDIO_AN_10GBT_STAT_REMOK	0x1000	/* Remote OK */
+>> +#define MDIO_AN_10GBT_STAT_LOCOK	0x2000	/* Local OK */
+>> +#define MDIO_AN_10GBT_STAT_MS		0x4000	/* Master/slave config */
+>> +#define MDIO_AN_10GBT_STAT_MSFLT	0x8000	/* Master/slave config fault */
+>> +
+>> +/* EEE Supported/Advertisement/LP Advertisement registers.
+>> + *
+>> + * EEE capability Register (3.20), Advertisement (7.60) and
+>> + * Link partner ability (7.61) registers have and can use the same iden=
+tical
+>> + * bit masks.
+>> + */
+>> +#define MDIO_AN_EEE_ADV_100TX	0x0002	/* Advertise 100TX EEE cap */
+>> +#define MDIO_AN_EEE_ADV_1000T	0x0004	/* Advertise 1000T EEE cap */
+>> +/* Note: the two defines above can be potentially used by the user-land
+>> + * and cannot remove them now.
+>> + * So, we define the new generic MDIO_EEE_100TX and MDIO_EEE_1000T macr=
+os
+>> + * using the previous ones (that can be considered obsolete).
+>> + */
+>> +#define MDIO_EEE_100TX		MDIO_AN_EEE_ADV_100TX	/* 100TX EEE cap */
+>> +#define MDIO_EEE_1000T		MDIO_AN_EEE_ADV_1000T	/* 1000T EEE cap */
+>> +#define MDIO_EEE_10GT		0x0008	/* 10GT EEE cap */
+>> +#define MDIO_EEE_1000KX		0x0010	/* 1000KX EEE cap */
+>> +#define MDIO_EEE_10GKX4		0x0020	/* 10G KX4 EEE cap */
+>> +#define MDIO_EEE_10GKR		0x0040	/* 10G KR EEE cap */
+>> +#define MDIO_EEE_40GR_FW	0x0100	/* 40G R fast wake */
+>> +#define MDIO_EEE_40GR_DS	0x0200	/* 40G R deep sleep */
+>> +#define MDIO_EEE_100GR_FW	0x1000	/* 100G R fast wake */
+>> +#define MDIO_EEE_100GR_DS	0x2000	/* 100G R deep sleep */
+>> +
+>> +#define MDIO_EEE_2_5GT		0x0001	/* 2.5GT EEE cap */
+>> +#define MDIO_EEE_5GT		0x0002	/* 5GT EEE cap */
+>> +
+>> +/* 2.5G/5G Extended abilities register. */
+>> +#define MDIO_PMA_NG_EXTABLE_2_5GBT	0x0001	/* 2.5GBASET ability */
+>> +#define MDIO_PMA_NG_EXTABLE_5GBT	0x0002	/* 5GBASET ability */
+>> +
+>> +/* LASI RX_ALARM control/status registers. */
+>> +#define MDIO_PMA_LASI_RX_PHYXSLFLT	0x0001	/* PHY XS RX local fault */
+>> +#define MDIO_PMA_LASI_RX_PCSLFLT	0x0008	/* PCS RX local fault */
+>> +#define MDIO_PMA_LASI_RX_PMALFLT	0x0010	/* PMA/PMD RX local fault */
+>> +#define MDIO_PMA_LASI_RX_OPTICPOWERFLT	0x0020	/* RX optical power fault=
+ */
+>> +#define MDIO_PMA_LASI_RX_WISLFLT	0x0200	/* WIS local fault */
+>> +
+>> +/* LASI TX_ALARM control/status registers. */
+>> +#define MDIO_PMA_LASI_TX_PHYXSLFLT	0x0001	/* PHY XS TX local fault */
+>> +#define MDIO_PMA_LASI_TX_PCSLFLT	0x0008	/* PCS TX local fault */
+>> +#define MDIO_PMA_LASI_TX_PMALFLT	0x0010	/* PMA/PMD TX local fault */
+>> +#define MDIO_PMA_LASI_TX_LASERPOWERFLT	0x0080	/* Laser output power fau=
+lt */
+>> +#define MDIO_PMA_LASI_TX_LASERTEMPFLT	0x0100	/* Laser temperature fault=
+ */
+>> +#define MDIO_PMA_LASI_TX_LASERBICURRFLT	0x0200	/* Laser bias current fa=
+ult */
+>> +
+>> +/* LASI control/status registers. */
+>> +#define MDIO_PMA_LASI_LSALARM		0x0001	/* LS_ALARM enable/status */
+>> +#define MDIO_PMA_LASI_TXALARM		0x0002	/* TX_ALARM enable/status */
+>> +#define MDIO_PMA_LASI_RXALARM		0x0004	/* RX_ALARM enable/status */
+>> +
+>> +/* Mapping between MDIO PRTAD/DEVAD and mii_ioctl_data::phy_id */
+>> +
+>> +#define MDIO_PHY_ID_C45			0x8000
+>> +#define MDIO_PHY_ID_PRTAD		0x03e0
+>> +#define MDIO_PHY_ID_DEVAD		0x001f
+>> +#define MDIO_PHY_ID_C45_MASK						\
+>> +	(MDIO_PHY_ID_C45 | MDIO_PHY_ID_PRTAD | MDIO_PHY_ID_DEVAD)
+>> +
+>> +static inline __u16 mdio_phy_id_c45(int prtad, int devad)
+>> +{
+>> +	return MDIO_PHY_ID_C45 | (prtad << 5) | devad;
+>> +}
+>> +
+>> +#endif /* _UAPI__LINUX_MDIO_H__ */
 >>
 >
 >--=20
@@ -316,30 +479,30 @@ Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
---3NJww9yp20AXRsxZ
+--M9YpAf2t6OxtMGzg
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEElXvEUs6VPX6mDPT8C+njFXoeLGQFAl77G3sACgkQC+njFXoe
-LGRxzQ//eGPCFDhkHaCVN06QZ8vtYwmKoBCNodQblNlaX2KGQtJ/DVtyejmcCOaK
-3I5AFAOf669PmXxLMeSpxV0gLO9H6ydcCUsBLmXpExfkUmPA8cDpm/9BlHnYFz32
-Yt5mVn/RgIeKneYYlzhyoPL8iCjJ0wb2JSgZAyZioT4kgeXBC8oMgQQIE2V0xK5W
-xx6UW5By98llAeREIvzGF6lbZpX8uTNdcMr9ahs99CdZqve50+aSUQ2Ta0ezKPdH
-Tlh2lMujLmvazk2hTSiaNxbMrHviYTfeMD2YPo2spYPy/5LUqAwbVeyUNaG44dSD
-z9ESa1ASB1fhTH/95CgccEDUYVaNVbzuKzLngRuFy0PSm5vNJUmK56K8HMMc2aq5
-dVNwpXhqKA9bEXo9YXbf3qY86LRKaVbYzOkC7c5++5hc754unDT1O0qVvJT4JShK
-jJzEq8ugdyVajhA0BnIoMdeqWSc3EUxjkTL+E5npxohhUp9GuoiNX4WZWbLO/JEj
-UkcH5vKO6mW/qz8Ct7q8O00DJsz8sHLlzqxCM8j+LxF4Oeuqw1mEvT9hw8w1S2Er
-FXT/f5hw/p2PvyyvMgvxJ6eoUQF2aXZ+ZFe/bVNpWb81I8lTSkDlf5oH9VmzHhLd
-QPG2SFPpR26ka2g/ZdjUuXEr+mb4ofFB/r4MJY/00ZF0WZ8XXuw=
-=ISoY
+iQIzBAABCgAdFiEElXvEUs6VPX6mDPT8C+njFXoeLGQFAl77G5UACgkQC+njFXoe
+LGR8zxAAg5esVPavfcei4+vdrnGJfsDdV1qqsT4+sOL/YJfFQMy4zrZvxcz4466h
+rflLd/ZcvD4Bu9nprkCQSJy3bJanmkOwHhdclFeZXhJoE9PT2TVRW8N8MeTt6Hb9
+68VDGMX9MktQj4Fg3XdBwFj00ZZZtKYIxr7oiW8XX1GxzPjaacNjoAZCXM3B5+sJ
+a/v2wVapY2csbd4YHY6wEjjRl5eXdySlz1IjqICicaO8SEAzgzIuSXrNoHPr7T6L
+X/ox80WT0mW0vPemCBQbvwnyeKQHBX54pxMxfWsnSIZTX7bRWd/YYbBPQJHqmhux
+IP/DdDh9kbdd4Zr1vaiuBxlLuAlg0o0V2IpKzKVhIkvEO8fP6jAQZy8N2h5nblGo
++Ha1vzTlxRZtL3aW62LSfoljVMrzfVUn+kPuh6dWaAxN21za2e48Su76N+iZv4kW
+ixtwUgD4BE77NeGEbKAO4v/YgWHiZdG3Q4CT0xeF4QmJxd0NAM3vxK1tIU+N5kmc
+SRuPSkmAPXHDVBCo0nT8RgkGBgL/ASrlyWhclS2vkg2pl55lDTa1dg2b6xW4Rriq
+UszAWy2GEyz8gs9oDB3ABusOrp5K+sTksdSyD6PAjzpyzCVy//K4hiSVRvi+Qjln
+eLbDKP9FEgE8hH1bVuozGpW4UqWl0ldvUfOBHKX9s4dnQ0l6HP0=
+=cowk
 -----END PGP SIGNATURE-----
 
---3NJww9yp20AXRsxZ--
+--M9YpAf2t6OxtMGzg--
 
 
---===============3386550985178675043==
+--===============0699110377335637780==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -350,4 +513,4 @@ barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
 
---===============3386550985178675043==--
+--===============0699110377335637780==--
