@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qk1-x741.google.com ([2607:f8b0:4864:20::741])
+Received: from mail-qt1-x843.google.com ([2607:f8b0:4864:20::843])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jq4NY-0007jD-8m
- for barebox@lists.infradead.org; Tue, 30 Jun 2020 00:44:04 +0000
-Received: by mail-qk1-x741.google.com with SMTP id r22so17062447qke.13
- for <barebox@lists.infradead.org>; Mon, 29 Jun 2020 17:44:02 -0700 (PDT)
+ id 1jq4NX-0007jC-A3
+ for barebox@lists.infradead.org; Tue, 30 Jun 2020 00:44:03 +0000
+Received: by mail-qt1-x843.google.com with SMTP id v19so14339564qtq.10
+ for <barebox@lists.infradead.org>; Mon, 29 Jun 2020 17:44:01 -0700 (PDT)
 From: David Dgien <dgienda125@gmail.com>
-Date: Mon, 29 Jun 2020 20:38:31 -0400
-Message-Id: <20200630003838.7745-2-dgienda125@gmail.com>
-In-Reply-To: <20200630003838.7745-1-dgienda125@gmail.com>
-References: <20200630003838.7745-1-dgienda125@gmail.com>
+Date: Mon, 29 Jun 2020 20:38:30 -0400
+Message-Id: <20200630003838.7745-1-dgienda125@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,56 +21,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/8] Makefile: Initialize and export KBUILD variables
+Subject: [PATCH v2 0/8] Module and ARM Module updates and fixes
 To: barebox@lists.infradead.org
 Cc: David Dgien <dgienda125@gmail.com>
 
-Initialize and export KBUILD KERNEL and MODULE variables. Otherwise,
-appending to them elsewhere in the srctree will not be seen by the build
-commands in Makefile.lib
+This series fixes various bugs and bit-rot issues with the module
+loading code. It also ports a couple of modules features from the Linux
+kernel: arch specific section fixups, and module PLTs for ARM modules,
+to contain veneers for 'bl' instructions.
 
-Signed-off-by: David Dgien <dgienda125@gmail.com>
----
- Makefile | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+Changes since v1:
+  - Added #ifndef MODULE guards to init.h, and removed #undefine
+    directives from module.h
+  - Created a weak function for module_frob_arch_sections default
+    implementation
 
-diff --git a/Makefile b/Makefile
-index 0da032532..62d548351 100644
---- a/Makefile
-+++ b/Makefile
-@@ -397,6 +397,8 @@ BASH		= bash
- CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ -Wbitwise $(CF)
- CFLAGS_KERNEL	=
- AFLAGS_KERNEL	=
-+CFLAGS_MODULE	=
-+AFLAGS_MODULE	=
- 
- LDFLAGS_MODULE  = -T common/module.lds
- 
-@@ -420,6 +422,10 @@ KBUILD_CFLAGS   := -Wall -Wundef -Werror=strict-prototypes -Wno-trigraphs \
-                    -Werror=implicit-function-declaration -Werror=implicit-int \
-                    -Os -pipe -Wmissing-prototypes -std=gnu89
- KBUILD_AFLAGS          := -D__ASSEMBLY__
-+KBUILD_AFLAGS_KERNEL :=
-+KBUILD_CFLAGS_KERNEL :=
-+KBUILD_AFLAGS_MODULE := -DMODULE
-+KBUILD_CFLAGS_MODULE := -DMODULE
- 
- LDFLAGS_barebox	:= -Map barebox.map
- 
-@@ -434,8 +440,10 @@ export HOSTCXX CHECK CHECKFLAGS
- export KBUILD_HOSTCXXFLAGS KBUILD_HOSTLDFLAGS KBUILD_HOSTLDLIBS LDFLAGS_MODULE
- 
- export KBUILD_CPPFLAGS NOSTDINC_FLAGS LINUXINCLUDE OBJCOPYFLAGS KBUILD_LDFLAGS
--export KBUILD_CFLAGS CFLAGS_KERNEL
--export KBUILD_AFLAGS AFLAGS_KERNEL
-+export KBUILD_CFLAGS CFLAGS_KERNEL CFLAGS_MODULE
-+export KBUILD_AFLAGS AFLAGS_KERNEL AFLAGS_MODULE
-+export KBUILD_AFLAGS_MODULE KBUILD_CFLAGS_MODULE
-+export KBUILD_AFLAGS_KERNEL KBUILD_CFLAGS_KERNEL
- export LDFLAGS_barebox
- export LDFLAGS_pbl
- 
+David Dgien (8):
+  Makefile: Initialize and export KBUILD variables
+  module: Add init macros to module.h
+  module: Fix adding module to list after layout
+  module: Fix module command registration
+  module: Implement HAVE_MOD_ARCH_SPECIFIC
+  arm: makefile: Fix compiler flag variable
+  arm: elf: Add THM relocation types
+  arm: module: Allow modules outside of bl range
+
+ Makefile                      |  12 +-
+ arch/arm/Kconfig              |  15 +++
+ arch/arm/Makefile             |   6 +-
+ arch/arm/cpu/Kconfig          |   1 +
+ arch/arm/include/asm/elf.h    |   3 +
+ arch/arm/include/asm/module.h |  33 ++++-
+ arch/arm/lib32/Makefile       |   1 +
+ arch/arm/lib32/module-plts.c  | 229 ++++++++++++++++++++++++++++++++++
+ arch/arm/lib32/module.c       |  14 +++
+ arch/arm/lib32/module.lds     |   4 +
+ common/Kconfig                |   7 ++
+ common/module.c               |  68 ++++++----
+ include/asm-generic/module.h  |  49 ++++++++
+ include/init.h                |  26 ++--
+ include/module.h              |  78 ++++++++++++
+ 15 files changed, 505 insertions(+), 41 deletions(-)
+ create mode 100644 arch/arm/lib32/module-plts.c
+ create mode 100644 arch/arm/lib32/module.lds
+ create mode 100644 include/asm-generic/module.h
+
 -- 
 2.27.0
 
