@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qt1-x843.google.com ([2607:f8b0:4864:20::843])
+Received: from mail-qk1-x741.google.com ([2607:f8b0:4864:20::741])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jq4NX-0007jC-A3
- for barebox@lists.infradead.org; Tue, 30 Jun 2020 00:44:03 +0000
-Received: by mail-qt1-x843.google.com with SMTP id v19so14339564qtq.10
- for <barebox@lists.infradead.org>; Mon, 29 Jun 2020 17:44:01 -0700 (PDT)
+ id 1jq4NZ-0007jW-Nj
+ for barebox@lists.infradead.org; Tue, 30 Jun 2020 00:44:06 +0000
+Received: by mail-qk1-x741.google.com with SMTP id e13so17107240qkg.5
+ for <barebox@lists.infradead.org>; Mon, 29 Jun 2020 17:44:05 -0700 (PDT)
 From: David Dgien <dgienda125@gmail.com>
-Date: Mon, 29 Jun 2020 20:38:30 -0400
-Message-Id: <20200630003838.7745-1-dgienda125@gmail.com>
+Date: Mon, 29 Jun 2020 20:38:34 -0400
+Message-Id: <20200630003838.7745-5-dgienda125@gmail.com>
+In-Reply-To: <20200630003838.7745-1-dgienda125@gmail.com>
+References: <20200630003838.7745-1-dgienda125@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,51 +23,103 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 0/8] Module and ARM Module updates and fixes
+Subject: [PATCH v2 4/8] module: Fix module command registration
 To: barebox@lists.infradead.org
 Cc: David Dgien <dgienda125@gmail.com>
 
-This series fixes various bugs and bit-rot issues with the module
-loading code. It also ports a couple of modules features from the Linux
-kernel: arch specific section fixups, and module PLTs for ARM modules,
-to contain veneers for 'bl' instructions.
+Commit 1e4a948673d7 ("command: Use array of pointers to commands")
+updated the command linker sections to contain an array of pointers to
+the command structs, rather than the command structs themselves.
+However, the load_module function was not updated to account for the
+change to the linker section, so fix that here.
 
-Changes since v1:
-  - Added #ifndef MODULE guards to init.h, and removed #undefine
-    directives from module.h
-  - Created a weak function for module_frob_arch_sections default
-    implementation
+Additionally, commit 22bdecc9c591 ("lds: Move start/end address
+variables into defines") moved the _start and _end symbols out of the
+linker script and into the section macro defines, causing them to show
+up in the module symbol table as well, so we take can advantage of those
+to find the array of pointers.
 
-David Dgien (8):
-  Makefile: Initialize and export KBUILD variables
-  module: Add init macros to module.h
-  module: Fix adding module to list after layout
-  module: Fix module command registration
-  module: Implement HAVE_MOD_ARCH_SPECIFIC
-  arm: makefile: Fix compiler flag variable
-  arm: elf: Add THM relocation types
-  arm: module: Allow modules outside of bl range
+Fixes: 1e4a948673d7 ("command: Use array of pointers to commands")
+Signed-off-by: David Dgien <dgienda125@gmail.com>
+---
+ common/module.c | 43 +++++++++++++++++++++++++++++--------------
+ 1 file changed, 29 insertions(+), 14 deletions(-)
 
- Makefile                      |  12 +-
- arch/arm/Kconfig              |  15 +++
- arch/arm/Makefile             |   6 +-
- arch/arm/cpu/Kconfig          |   1 +
- arch/arm/include/asm/elf.h    |   3 +
- arch/arm/include/asm/module.h |  33 ++++-
- arch/arm/lib32/Makefile       |   1 +
- arch/arm/lib32/module-plts.c  | 229 ++++++++++++++++++++++++++++++++++
- arch/arm/lib32/module.c       |  14 +++
- arch/arm/lib32/module.lds     |   4 +
- common/Kconfig                |   7 ++
- common/module.c               |  68 ++++++----
- include/asm-generic/module.h  |  49 ++++++++
- include/init.h                |  26 ++--
- include/module.h              |  78 ++++++++++++
- 15 files changed, 505 insertions(+), 41 deletions(-)
- create mode 100644 arch/arm/lib32/module-plts.c
- create mode 100644 arch/arm/lib32/module.lds
- create mode 100644 include/asm-generic/module.h
-
+diff --git a/common/module.c b/common/module.c
+index 5ace544e0..b08df1199 100644
+--- a/common/module.c
++++ b/common/module.c
+@@ -176,6 +176,34 @@ static void layout_sections( struct module *mod,
+ 	debug("core_size: %ld\n", mod->core_size);
+ }
+ 
++static void register_module_cmds(Elf32_Shdr *sechdrs, const char *strtab, unsigned int symindex)
++{
++	Elf32_Sym *sym;
++	unsigned int numsyms;
++	unsigned int i;
++	struct command * const *cmd_start = NULL;
++	struct command * const *cmd_end = NULL;
++	struct command * const *cmd;
++
++	numsyms = sechdrs[symindex].sh_size / sizeof(Elf32_Sym);
++	sym = (void *)sechdrs[symindex].sh_addr;
++
++	for (i = 0; i < numsyms; i++) {
++		if (strcmp(strtab + sym[i].st_name, MODULE_SYMBOL_PREFIX "__barebox_cmd_start") == 0)
++			cmd_start = (struct command * const *)sym[i].st_value;
++
++		if (strcmp(strtab + sym[i].st_name, MODULE_SYMBOL_PREFIX "__barebox_cmd_end") == 0)
++			cmd_end = (struct command * const *)sym[i].st_value;
++	}
++
++	if (cmd_start && cmd_end) {
++		debug("found __barebox_cmd_start at 0x%08x\n", (uint32_t)cmd_start);
++		for (cmd = cmd_start; cmd != cmd_end; cmd++) {
++			register_command(*cmd);
++		}
++	}
++}
++
+ LIST_HEAD(module_list);
+ 
+ struct module * load_module(void *mod_image, unsigned long len)
+@@ -183,8 +211,6 @@ struct module * load_module(void *mod_image, unsigned long len)
+ 	struct module *module = NULL;
+ 	Elf32_Ehdr *ehdr;		/* Elf header structure pointer     */
+ 	Elf32_Shdr *sechdrs;		/* Section header structure pointer */
+-	Elf32_Sym *sym;
+-	unsigned int numsyms;
+ 	char *strtab = 0;		/* String table pointer             */
+ 	int i;				/* Loop counter                     */
+ 	unsigned int strindex = 0;
+@@ -193,7 +219,6 @@ struct module * load_module(void *mod_image, unsigned long len)
+ 	char *secstrings;
+ 	void *ptr = NULL;
+ 	int err;
+-	int cmdindex;
+ 
+ 	if (len < sizeof(*ehdr))
+ 		return NULL;
+@@ -285,17 +310,7 @@ struct module * load_module(void *mod_image, unsigned long len)
+ 			apply_relocate_add(sechdrs, strtab, symindex, i, module);
+ 	}
+ 
+-	numsyms = sechdrs[symindex].sh_size / sizeof(Elf32_Sym);
+-	sym = (void *)sechdrs[symindex].sh_addr;
+-
+-	cmdindex = find_sec(ehdr, sechdrs, secstrings, ".barebox_cmd");
+-	if (cmdindex) {
+-		struct command *cmd =(struct command *)sechdrs[cmdindex].sh_addr;
+-		for (i = 0; i < sechdrs[cmdindex].sh_size / sizeof(struct command); i++) {
+-			register_command(cmd);
+-			cmd++;
+-		}
+-	}
++	register_module_cmds(sechdrs, strtab, symindex);
+ 
+ 	/* Module has been moved */
+ 	module = (void *)sechdrs[modindex].sh_addr;
 -- 
 2.27.0
 
