@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qk1-x741.google.com ([2607:f8b0:4864:20::741])
+Received: from mail-qt1-x842.google.com ([2607:f8b0:4864:20::842])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jq4NY-0007jG-OT
- for barebox@lists.infradead.org; Tue, 30 Jun 2020 00:44:05 +0000
-Received: by mail-qk1-x741.google.com with SMTP id j80so17117917qke.0
- for <barebox@lists.infradead.org>; Mon, 29 Jun 2020 17:44:04 -0700 (PDT)
+ id 1jq4Nc-0007kG-Qs
+ for barebox@lists.infradead.org; Tue, 30 Jun 2020 00:44:09 +0000
+Received: by mail-qt1-x842.google.com with SMTP id e12so14346470qtr.9
+ for <barebox@lists.infradead.org>; Mon, 29 Jun 2020 17:44:08 -0700 (PDT)
 From: David Dgien <dgienda125@gmail.com>
-Date: Mon, 29 Jun 2020 20:38:33 -0400
-Message-Id: <20200630003838.7745-4-dgienda125@gmail.com>
+Date: Mon, 29 Jun 2020 20:38:37 -0400
+Message-Id: <20200630003838.7745-8-dgienda125@gmail.com>
 In-Reply-To: <20200630003838.7745-1-dgienda125@gmail.com>
 References: <20200630003838.7745-1-dgienda125@gmail.com>
 MIME-Version: 1.0
@@ -23,52 +23,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/8] module: Fix adding module to list after layout
+Subject: [PATCH v2 7/8] arm: elf: Add THM relocation types
 To: barebox@lists.infradead.org
 Cc: David Dgien <dgienda125@gmail.com>
 
-During load_module(), the 'this_module' section is relocated, but the
-pointer to the module struct isn't updated to account account for the
-move. Do so before adding the module to the module_list.
-
-As a side effect of properly pointing to the relocated module struct, we
-no longer need to manually search for and fixup the init_module symbol,
-so remove that code.
-
 Signed-off-by: David Dgien <dgienda125@gmail.com>
 ---
- common/module.c | 11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ arch/arm/include/asm/elf.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/common/module.c b/common/module.c
-index 829c12000..5ace544e0 100644
---- a/common/module.c
-+++ b/common/module.c
-@@ -297,13 +297,8 @@ struct module * load_module(void *mod_image, unsigned long len)
- 		}
- 	}
+diff --git a/arch/arm/include/asm/elf.h b/arch/arm/include/asm/elf.h
+index b98b3e52a..3def56769 100644
+--- a/arch/arm/include/asm/elf.h
++++ b/arch/arm/include/asm/elf.h
+@@ -30,6 +30,9 @@ typedef struct user_fp elf_fpregset_t;
+ #define R_ARM_CALL	28
+ #define R_ARM_JUMP24	29
  
--	for (i = 0; i < numsyms; i++) {
--		if (!strcmp(strtab + sym[i].st_name, MODULE_SYMBOL_PREFIX "init_module")) {
--			printf("found init_module() at 0x%08x\n", sym[i].st_value);
--			module->init = (void *)sym[i].st_value;
--		}
--	}
--
-+	/* Module has been moved */
-+	module = (void *)sechdrs[modindex].sh_addr;
- 	list_add_tail(&module->list, &module_list);
- 
- 	return module;
-@@ -311,8 +306,6 @@ struct module * load_module(void *mod_image, unsigned long len)
- cleanup:
- 	if (ptr)
- 		free(ptr);
--	if (module)
--		free(module);
- 
- 	return NULL;
- }
++#define R_ARM_THM_CALL		10
++#define R_ARM_THM_JUMP24	30
++
+ /*
+  * These are used to set parameters in the core dumps.
+  */
 -- 
 2.27.0
 
