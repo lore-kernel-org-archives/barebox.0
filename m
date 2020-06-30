@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx1.emlix.com ([188.40.240.192])
- by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jpznv-0005ps-EE
- for barebox@lists.infradead.org; Mon, 29 Jun 2020 19:51:02 +0000
-References: <20200619074427.17289-1-s.hauer@pengutronix.de>
- <20200619074427.17289-18-s.hauer@pengutronix.de>
-From: =?UTF-8?Q?Daniel_Gl=c3=b6ckner?= <dg@emlix.com>
-Message-ID: <70810c58-b4f1-945d-fffa-c79083a03c48@emlix.com>
-Date: Mon, 29 Jun 2020 21:50:51 +0200
+Received: from mail-qk1-x741.google.com ([2607:f8b0:4864:20::741])
+ by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jq4NY-0007jG-OT
+ for barebox@lists.infradead.org; Tue, 30 Jun 2020 00:44:05 +0000
+Received: by mail-qk1-x741.google.com with SMTP id j80so17117917qke.0
+ for <barebox@lists.infradead.org>; Mon, 29 Jun 2020 17:44:04 -0700 (PDT)
+From: David Dgien <dgienda125@gmail.com>
+Date: Mon, 29 Jun 2020 20:38:33 -0400
+Message-Id: <20200630003838.7745-4-dgienda125@gmail.com>
+In-Reply-To: <20200630003838.7745-1-dgienda125@gmail.com>
+References: <20200630003838.7745-1-dgienda125@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20200619074427.17289-18-s.hauer@pengutronix.de>
-Content-Language: de-DE
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,120 +19,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 17/21] fastboot net: implement fastboot over UDP
-To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
-Cc: Edmund Henniges <eh@emlix.com>
+Subject: [PATCH v2 3/8] module: Fix adding module to list after layout
+To: barebox@lists.infradead.org
+Cc: David Dgien <dgienda125@gmail.com>
 
-SGVsbG8gU2FzY2hhLAoKQW0gMTkuMDYuMjAgdW0gMDk6NDQgc2NocmllYiBTYXNjaGEgSGF1ZXI6
-Cj4gK3N0cnVjdCBmYXN0Ym9vdF9uZXQgewo+ICsJc3RydWN0IGZhc3Rib290IGZhc3Rib290Owo+
-ICsKPiArCXN0cnVjdCBuZXRfY29ubmVjdGlvbiAqbmV0X2NvbjsKPiArCXN0cnVjdCBmYXN0Ym9v
-dF9oZWFkZXIgcmVzcG9uc2VfaGVhZGVyOwo+ICsJc3RydWN0IHBvbGxlcl9zdHJ1Y3QgcG9sbGVy
-Owo+ICsJc3RydWN0IHdvcmtfcXVldWUgd3E7Cj4gKwl1NjQgaG9zdF93YWl0c19zaW5jZTsKPiAr
-CXU2NCBsYXN0X2Rvd25sb2FkX3BrdDsKPiArCWJvb2wgc2VxdWVuY2VfbnVtYmVyX3NlZW47Cj4g
-Kwlib29sIGFjdGl2ZV9kb3dubG9hZDsKPiArCWJvb2wgcmVpbml0Owo+ICsJYm9vbCBzZW5kX2tl
-ZXBfYWxpdmU7Cj4gKwllbnVtIG1heV9zZW5kIG1heV9zZW5kOwo+ICsKPiArCUlQYWRkcl90IGhv
-c3RfYWRkcjsKPiArCXUxNiBob3N0X3BvcnQ7Cj4gKwl1OCBob3N0X21hY1tFVEhfQUxFTl07Cj4g
-Kwl1MTYgc2VxdWVuY2VfbnVtYmVyOwo+ICsJdTE2IGxhc3RfcGF5bG9hZF9sZW47Cj4gKwl1Y2hh
-ciBsYXN0X3BheWxvYWRbRkFTVEJPT1RfTUFYX0NNRF9MRU4gKyBzaXplb2Yoc3RydWN0IGZhc3Ri
-b290X2hlYWRlcildOwoKVGhpcyBpcyBub3QgRkFTVEJPT1RfTUFYX0NNRF9MRU4uIEl0J3MgdGhl
-IDY0IHRoYXQgaXMgc3RyZXduIGFyb3VuZCBpbgpmYXN0Ym9vdF90eF9wcmludC4gQWRkaW5nIGEg
-bmV3IGNvbnN0YW50IEZBU1RCT09UX01BWF9NU0dfTEVOIHdvdWxkIGJlCmNvcnJlY3QuCgpbLi4u
-XQoKPiArc3RhdGljIGludCBmYXN0Ym9vdF93cml0ZV9uZXQoc3RydWN0IGZhc3Rib290ICpmYiwg
-Y29uc3QgY2hhciAqYnVmLAo+ICsJCQkgICAgICB1bnNpZ25lZCBpbnQgbikKPiArewo+ICsJc3Ry
-dWN0IGZhc3Rib290X25ldCAqZmJuID0gY29udGFpbmVyX29mKGZiLCBzdHJ1Y3QgZmFzdGJvb3Rf
-bmV0LAo+ICsJCQkJCQlmYXN0Ym9vdCk7Cj4gKwlzdHJ1Y3QgZmFzdGJvb3RfaGVhZGVyIHJlc3Bv
-bnNlX2hlYWRlcjsKPiArCXVjaGFyICpwYWNrZXQ7Cj4gKwl1Y2hhciAqcGFja2V0X2Jhc2U7Cj4g
-KwlpbnQgcmV0Owo+ICsKPiArCWlmIChmYm4tPnJlaW5pdCkKPiArCQlyZXR1cm4gMDsKPiArCj4g
-KwkvKgo+ICsJICogVGhpcyBmdW5jdGlvbiBpcyBlaXRoZXIgY2FsbGVkIGluIGNvbW1hbmQgY29u
-dGV4dCwgaW4gd2hpY2gKPiArCSAqIGNhc2Ugd2UgbWF5IHdhaXQsIG9yIGZyb20gdGhlIGtlZXBh
-bGl2ZSBwb2xsZXIgd2hpY2ggZXhwbGljaXRseQo+ICsJICogb25seSBjYWxscyB1cyB3aGVuIHdl
-IGRvbid0IGhhdmUgdG8gd2FpdCBoZXJlLgo+ICsJICovCj4gKwlyZXQgPSBmYXN0Ym9vdF9uZXRf
-d2FpdF9tYXlfc2VuZChmYm4pOwo+ICsJaWYgKHJldCkgewo+ICsJCWZhc3Rib290X25ldF9hYm9y
-dChmYm4pOwo+ICsJCXJldHVybiByZXQ7Cj4gKwl9Cj4gKwo+ICsJaWYgKG4gJiYgZmJuLT5tYXlf
-c2VuZCA9PSBNQVlfU0VORF9BQ0spIHsKPiArCQlmYXN0Ym9vdF9zZW5kKGZibiwgZmJuLT5yZXNw
-b25zZV9oZWFkZXIsCj4gKwkJCQkiSGF2ZSBtZXNzYWdlIGJ1dCBvbmx5IEFDSyBhbGxvd2VkIik7
-Cj4gKwkJcmV0dXJuIC1FUFJPVE87Cj4gKwl9IGVsc2UgaWYgKCFuICYmIGZibi0+bWF5X3NlbmQg
-PT0gTUFZX1NFTkRfTUVTU0FHRSkgewo+ICsJCWZhc3Rib290X3NlbmQoZmJuLCBmYm4tPnJlc3Bv
-bnNlX2hlYWRlciwKPiArCQkJCSJXYW50IHRvIHNlbmQgQUNLIGJ1dCBtZXNzYWdlIGV4cGVjdGVk
-Iik7Cj4gKwkJcmV0dXJuIC1FUFJPVE87Cj4gKwl9Cj4gKwo+ICsJcmVzcG9uc2VfaGVhZGVyID0g
-ZmJuLT5yZXNwb25zZV9oZWFkZXI7Cj4gKwlyZXNwb25zZV9oZWFkZXIuZmxhZ3MgPSAwOwo+ICsJ
-cmVzcG9uc2VfaGVhZGVyLnNlcSA9IGh0b25zKGZibi0+c2VxdWVuY2VfbnVtYmVyKTsKPiArCSsr
-ZmJuLT5zZXF1ZW5jZV9udW1iZXI7Cj4gKwlmYm4tPnNlcXVlbmNlX251bWJlcl9zZWVuID0gZmFs
-c2U7Cj4gKwo+ICsJcGFja2V0ID0gbmV0X3VkcF9nZXRfcGF5bG9hZChmYm4tPm5ldF9jb24pOwo+
-ICsJcGFja2V0X2Jhc2UgPSBwYWNrZXQ7Cj4gKwo+ICsJLyogV3JpdGUgaGVhZGVycyAqLwo+ICsJ
-bWVtY3B5KHBhY2tldCwgJnJlc3BvbnNlX2hlYWRlciwgc2l6ZW9mKHJlc3BvbnNlX2hlYWRlcikp
-Owo+ICsJcGFja2V0ICs9IHNpemVvZihyZXNwb25zZV9oZWFkZXIpOwo+ICsJLyogV3JpdGUgcmVz
-cG9uc2UgKi8KPiArCW1lbWNweShwYWNrZXQsIGJ1Ziwgbik7Cj4gKwlwYWNrZXQgKz0gbjsKPiAr
-Cj4gKwkvKiBTYXZlIHBhY2tldCBmb3IgcmV0cmFuc21pdHRpbmcgKi8KPiArCWZibi0+bGFzdF9w
-YXlsb2FkX2xlbiA9IHBhY2tldCAtIHBhY2tldF9iYXNlOwo+ICsJbWVtY3B5KGZibi0+bGFzdF9w
-YXlsb2FkLCBwYWNrZXRfYmFzZSwgZmJuLT5sYXN0X3BheWxvYWRfbGVuKTsKPiArCj4gKwltZW1j
-cHkoZmJuLT5uZXRfY29uLT5ldC0+ZXRfZGVzdCwgZmJuLT5ob3N0X21hYywgRVRIX0FMRU4pOwo+
-ICsJbmV0X3dyaXRlX2lwKCZmYm4tPm5ldF9jb24tPmlwLT5kYWRkciwgZmJuLT5ob3N0X2FkZHIp
-Owo+ICsJZmJuLT5uZXRfY29uLT51ZHAtPnVoX2Rwb3J0ID0gZmJuLT5ob3N0X3BvcnQ7Cj4gKwlu
-ZXRfdWRwX3NlbmQoZmJuLT5uZXRfY29uLCBmYm4tPmxhc3RfcGF5bG9hZF9sZW4pOwo+ICsKPiAr
-CWZibi0+bWF5X3NlbmQgPSBNQVlfTk9UX1NFTkQ7CgpZb3UgbW92ZWQgdGhhdCBsaW5lIGJlbG93
-IG5ldF91ZHBfc2VuZC4gSXMgdGhlcmUgYW55IHJpc2sgdGhhdAoKMS4gb3VyIHdvcmsgcXVldWUg
-ZXhlY3V0ZXMgYSBjb21tYW5kIHdoaWNoIGNhbGxzIGZhc3Rib290X3R4X3ByaW50CjIuIHRoZSBu
-ZXRfdWRwX3NlbmQgY2F1c2VkIGJ5IHRoYXQgZmFzdGJvb3RfdHhfcHJpbnQgc2xlZXBzCjMuIG91
-ciBwb2xsZXIgaXMgZXhlY3V0ZWQgYW5kIGRlY2lkZXMgdG8gc2VuZCBhIG1lc3NhZ2UgYmVjYXVz
-ZQogICBtYXlfc2VuZCBpcyBzdGlsbCBNQVlfU0VORF9NRVNTQUdFCgo/CgpbLi4uXQoKPiArc3Rh
-dGljIHZvaWQgZmFzdGJvb3Rfc3RhcnRfZG93bmxvYWRfbmV0KHN0cnVjdCBmYXN0Ym9vdCAqZmIp
-Cj4gK3sKPiArCXN0cnVjdCBmYXN0Ym9vdF9uZXQgKmZibiA9IGNvbnRhaW5lcl9vZihmYiwgc3Ry
-dWN0IGZhc3Rib290X25ldCwKPiArCQkJCQkJZmFzdGJvb3QpOwo+ICsKPiArCWZhc3Rib290X3N0
-YXJ0X2Rvd25sb2FkX2dlbmVyaWMoZmIpOwo+ICsJZmJuLT5hY3RpdmVfZG93bmxvYWQgPSB0cnVl
-Owo+ICsJZmJuLT5sYXN0X2Rvd25sb2FkX3BrdCA9IGdldF90aW1lX25zKCk7Cj4gK30KCkFsdGhv
-dWdoIHlvdSBhZGRlZCB0aGF0IGxhc3RfZG93bmxvYWRfcGt0IHRpbWVvdXQgY2hlY2sgdG8gdGhl
-IHBvbGxlciwKdGhlcmUgaXMgc3RpbGwgdGhlIHJpc2sgdGhhdCB3ZSB3aWxsIG5ldmVyIGNsb3Nl
-IGRvd25sb2FkX2ZkIGlmCmZhc3Rib290X25ldF9hYm9ydCBpcyBjYWxsZWQgKGYuZXguIGJ5IHRo
-ZSBmaXJzdCBmYXN0Ym9vdF90eF9wcmludAppbnNpZGUgY2JfZG93bmxvYWQpIGJlZm9yZSB3ZSBv
-cGVuIGRvd25sb2FkX2ZkLiBJbiB0aGF0IGNhc2UgdGhlcmUKaXMgbm8gcG9sbGVyIHRvIGNoZWNr
-IGZvciB0aGUgdGltZW91dC4KClsuLi5dCgo+ICtzdGF0aWMgdm9pZCBmYXN0Ym9vdF9oYW5kbGVf
-dHlwZV9mYXN0Ym9vdChzdHJ1Y3QgZmFzdGJvb3RfbmV0ICpmYm4sCj4gKwkJCQkJICBzdHJ1Y3Qg
-ZmFzdGJvb3RfaGVhZGVyIGhlYWRlciwKPiArCQkJCQkgIGNoYXIgKmZhc3Rib290X2RhdGEsCj4g
-KwkJCQkJICB1bnNpZ25lZCBpbnQgZmFzdGJvb3RfZGF0YV9sZW4pCj4gK3sKPiArCXN0cnVjdCBm
-YXN0Ym9vdF93b3JrICp3Owo+ICsKPiArCWZibi0+cmVzcG9uc2VfaGVhZGVyID0gaGVhZGVyOwo+
-ICsJZmJuLT5ob3N0X3dhaXRzX3NpbmNlID0gZ2V0X3RpbWVfbnMoKTsKPiArCWZibi0+bWF5X3Nl
-bmQgPSBmYXN0Ym9vdF9kYXRhX2xlbiA/IE1BWV9TRU5EX0FDSyA6IE1BWV9TRU5EX01FU1NBR0U7
-Cj4gKwo+ICsJaWYgKGZibi0+YWN0aXZlX2Rvd25sb2FkKSB7Cj4gKwkJZmJuLT5sYXN0X2Rvd25s
-b2FkX3BrdCA9IGdldF90aW1lX25zKCk7Cj4gKwo+ICsJCWlmICghZmFzdGJvb3RfZGF0YV9sZW4g
-JiYgZmJuLT5mYXN0Ym9vdC5kb3dubG9hZF9ieXRlcwo+ICsJCQkJCSAgID09IGZibi0+ZmFzdGJv
-b3QuZG93bmxvYWRfc2l6ZSkgewo+ICsKPiArCQkJZmJuLT5hY3RpdmVfZG93bmxvYWQgPSBmYWxz
-ZTsKPiArCj4gKwkJCXcgPSB4emFsbG9jKHNpemVvZigqdykpOwo+ICsJCQl3LT5mYm4gPSBmYm47
-Cj4gKwkJCXctPmRvd25sb2FkX2ZpbmlzaGVkID0gdHJ1ZTsKPiArCj4gKwkJCXdxX3F1ZXVlX3dv
-cmsoJmZibi0+d3EsICZ3LT53b3JrKTsKPiArCQl9IGVsc2Ugewo+ICsJCQlmYXN0Ym9vdF9kYXRh
-X2Rvd25sb2FkKGZibiwgZmFzdGJvb3RfZGF0YSwKPiArCQkJCQkgICAgICAgZmFzdGJvb3RfZGF0
-YV9sZW4pOwo+ICsJCX0KPiArCQlyZXR1cm47Cj4gKwl9Cj4gKwo+ICsJaWYgKGZhc3Rib290X2Rh
-dGFfbGVuID49IEZBU1RCT09UX01BWF9DTURfTEVOKSB7CgpTdGlsbCBvZmYtYnktb25lLiBSZXBs
-YWNlID49IHdpdGggPgoKWy4uLl0KCj4gKwljYXNlIEZBU1RCT09UX0lOSVQ6Cj4gKwkJaWYgKG50
-b2hzKGhlYWRlci5zZXEpICE9IGZibi0+c2VxdWVuY2VfbnVtYmVyKSB7Cj4gKwkJCWZhc3Rib290
-X2NoZWNrX3JldHJhbnNtaXQoZmJuLCBoZWFkZXIpOwo+ICsJCQlicmVhazsKPiArCQl9Cj4gKwkJ
-ZmJuLT5ob3N0X2FkZHIgPSBuZXRfcmVhZF9pcCgmaXBfaGVhZGVyLT5zYWRkcik7Cj4gKwkJZmJu
-LT5ob3N0X3BvcnQgPSB1ZHBfaGVhZGVyLT51aF9zcG9ydDsKPiArCQltZW1jcHkoZmJuLT5ob3N0
-X21hYywgZXRoX2hlYWRlci0+ZXRfc3JjLCBFVEhfQUxFTik7Cj4gKwkJZmFzdGJvb3RfbmV0X2Fi
-b3J0KGZibik7Cj4gKwkJcmV0ID0gcG9sbGVyX3JlZ2lzdGVyKCZmYm4tPnBvbGxlciwgImZhc3Ri
-b290Iik7Cj4gKwkJaWYgKHJldCkgewo+ICsJCQlwcl9lcnIoIkNhbm5vdCByZWdpc3RlciBwb2xs
-ZXI6ICVzXG4iLCBzdHJlcnJvcigtcmV0KSk7Cj4gKwkJCXJldHVybjsKCkl0IGlzIG5vdCBvYnZp
-b3VzIHRoYXQgYSBzZWNvbmQgRkFTVEJPT1RfSU5JVCB3aWxsIF9ub3RfIGNhdXNlIHRoaXMKZXJy
-b3IgYmVjYXVzZSBmYXN0Ym9vdF9uZXRfYWJvcnQgdW5yZWdpc3RlcmVkIHRoZSBwcmV2aW91cyBw
-b2xsZXIuCkkgd291bGQgYXQgbGVhc3QgYWRkIGEgY29tbWVudCB0byB0aGUgZmFzdGJvb3RfbmV0
-X2Fib3J0KGZibikgbGluZS4KClsuLi5dCgo+ICtzdGF0aWMgdm9pZCBmYXN0Ym9vdF9wb2xsKHN0
-cnVjdCBwb2xsZXJfc3RydWN0ICpwb2xsZXIpCj4gK3sKPiArCXN0cnVjdCBmYXN0Ym9vdF9uZXQg
-KmZibiA9IGNvbnRhaW5lcl9vZihwb2xsZXIsIHN0cnVjdCBmYXN0Ym9vdF9uZXQsCj4gKwkJCQkJ
-ICAgICAgIHBvbGxlcik7Cj4gKwo+ICsJaWYgKGZibi0+YWN0aXZlX2Rvd25sb2FkICYmIGlzX3Rp
-bWVvdXQoZmJuLT5sYXN0X2Rvd25sb2FkX3BrdCwgNSAqIFNFQ09ORCkpIHsKClNob3VsZCBwb2xs
-ZXJzIHByZWZlciBpc190aW1lb3V0X25vbl9pbnRlcnJ1cHRpYmxlIG92ZXIgaXNfdGltZW91dD8K
-CkkgY2FuIG1ha2UgYSBuZXcgcGF0Y2ggc2V0IHdoZXJlIGFsbCBpc3N1ZXMgYXJlIGZpeGVkLCBp
-ZiB5b3UgZG9uJ3QgaW5zaXN0Cm9uIGRvaW5nIGl0IHlvdXJzZWxmLgoKQmVzdCByZWdhcmRzLAoK
-ICBEYW5pZWwKCgotLSAKRGlwbC4tTWF0aC4gRGFuaWVsIEdsw7Zja25lciwgZW1saXggR21iSCwg
-aHR0cDovL3d3dy5lbWxpeC5jb20KRm9uICs0OSA1NTEgMzA2NjQtMCwgRmF4ICs0OSA1NTEgMzA2
-NjQtMTEsCkdvdGhhZXIgUGxhdHogMywgMzcwODMgR8O2dHRpbmdlbiwgR2VybWFueQpTaXR6IGRl
-ciBHZXNlbGxzY2hhZnQ6IEfDtnR0aW5nZW4sIEFtdHNnZXJpY2h0IEfDtnR0aW5nZW4gSFIgQiAz
-MTYwCkdlc2Now6RmdHNmw7xocnVuZzogSGVpa2UgSm9yZGFuLCBEci4gVXdlIEtyYWNrZQpVc3Qt
-SWROci46IERFIDIwNSAxOTggMDU1CgplbWxpeCAtIHlvdXIgZW1iZWRkZWQgbGludXggcGFydG5l
-cgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJv
-eCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5p
-bmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+During load_module(), the 'this_module' section is relocated, but the
+pointer to the module struct isn't updated to account account for the
+move. Do so before adding the module to the module_list.
+
+As a side effect of properly pointing to the relocated module struct, we
+no longer need to manually search for and fixup the init_module symbol,
+so remove that code.
+
+Signed-off-by: David Dgien <dgienda125@gmail.com>
+---
+ common/module.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
+
+diff --git a/common/module.c b/common/module.c
+index 829c12000..5ace544e0 100644
+--- a/common/module.c
++++ b/common/module.c
+@@ -297,13 +297,8 @@ struct module * load_module(void *mod_image, unsigned long len)
+ 		}
+ 	}
+ 
+-	for (i = 0; i < numsyms; i++) {
+-		if (!strcmp(strtab + sym[i].st_name, MODULE_SYMBOL_PREFIX "init_module")) {
+-			printf("found init_module() at 0x%08x\n", sym[i].st_value);
+-			module->init = (void *)sym[i].st_value;
+-		}
+-	}
+-
++	/* Module has been moved */
++	module = (void *)sechdrs[modindex].sh_addr;
+ 	list_add_tail(&module->list, &module_list);
+ 
+ 	return module;
+@@ -311,8 +306,6 @@ struct module * load_module(void *mod_image, unsigned long len)
+ cleanup:
+ 	if (ptr)
+ 		free(ptr);
+-	if (module)
+-		free(module);
+ 
+ 	return NULL;
+ }
+-- 
+2.27.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
