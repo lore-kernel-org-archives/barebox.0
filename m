@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jqYmE-0002h9-BQ
+ id 1jqYmE-0002h7-9V
  for barebox@lists.infradead.org; Wed, 01 Jul 2020 09:11:37 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  1 Jul 2020 11:11:02 +0200
-Message-Id: <20200701091122.3437-9-a.fatoum@pengutronix.de>
+Date: Wed,  1 Jul 2020 11:11:12 +0200
+Message-Id: <20200701091122.3437-19-a.fatoum@pengutronix.de>
 In-Reply-To: <20200701091122.3437-1-a.fatoum@pengutronix.de>
 References: <20200701091122.3437-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,44 +21,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/28] ARM: at91: watchdog: implement at91_wdt_disable
+Subject: [PATCH 18/28] ARM: at91: add code for sama5 boot source detection
 To: barebox@lists.infradead.org
-Cc: Sam Ravnborg <sam@ravnborg.org>, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Board code might want to disable the watchdog in PBL and enable it later
-prior to boot. Provide a helper to do so.
+SAMA5 BootROM passes information about the boot source in the r4
+register. Add functions to parse these. To make use of this, entry point
+must back up the r4 register, because otherwise it's clobbered by local
+variable use.
 
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/mach-at91/include/mach/at91_wdt.h | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ .../mach-at91/include/mach/sama5_bootsource.h | 46 +++++++++++++++++++
+ 1 file changed, 46 insertions(+)
+ create mode 100644 arch/arm/mach-at91/include/mach/sama5_bootsource.h
 
-diff --git a/arch/arm/mach-at91/include/mach/at91_wdt.h b/arch/arm/mach-at91/include/mach/at91_wdt.h
-index 36d37b9d2d64..d295d35d1b5c 100644
---- a/arch/arm/mach-at91/include/mach/at91_wdt.h
-+++ b/arch/arm/mach-at91/include/mach/at91_wdt.h
-@@ -35,4 +35,20 @@
- #define		AT91_WDT_WDUNF		(1 << 0)		/* Watchdog Underflow */
- #define		AT91_WDT_WDERR		(1 << 1)		/* Watchdog Error */
- 
-+#ifndef __ASSEMBLY__
-+// SPDX-License-Identifier: BSD-1-Clause
-+/*
-+ * Copyright (c) 2006, Atmel Corporation
-+ */
+diff --git a/arch/arm/mach-at91/include/mach/sama5_bootsource.h b/arch/arm/mach-at91/include/mach/sama5_bootsource.h
+new file mode 100644
+index 000000000000..29354dcaf34d
+--- /dev/null
++++ b/arch/arm/mach-at91/include/mach/sama5_bootsource.h
+@@ -0,0 +1,46 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef AT91_SAMA5_BOOTSOURCE_H_
++#define AT91_SAMA5_BOOTSOURCE_H_
 +
-+#include <asm-generic/io.h>
++#include <errno.h>
++#include <bootsource.h>
++#include <linux/bitops.h>
++#include <linux/bitfield.h>
++#include <mach/hardware.h>
 +
-+static inline void at91_wdt_disable(void __iomem *wdt_base)
++/* Boot modes stored by BootROM in r4 */
++#define SAMA5_BOOTSOURCE_SPI	0
++#define SAMA5_BOOTSOURCE_MCI	1
++#define SAMA5_BOOTSOURCE_SMC	2
++#define SAMA5_BOOTSOURCE_TWI	3
++#define SAMA5_BOOTSOURCE_QSPI	4
++#define SAMA5_BOOTSOURCE_SAM_BA	7
++
++#define SAMA5_BOOTSOURCE		GENMASK(3, 0)
++#define SAMA5_BOOTSOURCE_INSTANCE	GENMASK(7, 4)
++
++static inline int sama5_bootsource(u32 reg)
 +{
-+	u32 reg = readl(wdt_base + AT91_WDT_MR);
-+	reg |= AT91_WDT_WDDIS;
-+	writel(reg, wdt_base + AT91_WDT_MR);
++	u32 dev = FIELD_GET(SAMA5_BOOTSOURCE, reg);
++
++	switch(dev) {
++	case SAMA5_BOOTSOURCE_MCI:
++		return BOOTSOURCE_MMC;
++	case SAMA5_BOOTSOURCE_SPI:
++		return BOOTSOURCE_SPI_NOR;
++	case SAMA5_BOOTSOURCE_QSPI:
++		return BOOTSOURCE_SPI;
++	case SAMA5_BOOTSOURCE_SMC:
++		return BOOTSOURCE_NAND;
++	case SAMA5_BOOTSOURCE_SAM_BA:
++		return BOOTSOURCE_SERIAL;
++	}
++	return BOOTSOURCE_UNKNOWN;
 +}
 +
-+#endif /* __ASSEMBLY__ */
- #endif
++static inline int sama5_bootsource_instance(u32 reg)
++{
++	return FIELD_GET(SAMA5_BOOTSOURCE_INSTANCE, reg);
++}
++
++#endif
 -- 
 2.27.0
 
