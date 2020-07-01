@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jqVEI-000591-3n
- for barebox@lists.infradead.org; Wed, 01 Jul 2020 05:24:18 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  1 Jul 2020 07:23:32 +0200
-Message-Id: <20200701052340.9462-21-a.fatoum@pengutronix.de>
-In-Reply-To: <20200701052340.9462-1-a.fatoum@pengutronix.de>
-References: <20200701052340.9462-1-a.fatoum@pengutronix.de>
+ id 1jqVGf-0006ck-Km
+ for barebox@lists.infradead.org; Wed, 01 Jul 2020 05:26:47 +0000
+Date: Wed, 1 Jul 2020 07:26:42 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200701052642.GI15485@pengutronix.de>
+References: <20200626064129.12094-1-s.hauer@pengutronix.de>
+ <fa8c9ed1-8cde-a015-86ee-10c86ff65bbf@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <fa8c9ed1-8cde-a015-86ee-10c86ff65bbf@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,85 +23,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 20/28] ARM: at91: sama5d2: reuse stack set-up by first stage
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] startup: Fix do_autoboot_countdown() running multiple
+ times
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-Stack is always set up to end of SRAM before PBL, either by ROM code or
-by first stage bootloader, be it at91bootstrap or barebox in a later
-commit, so no need to change the stack pointer again.
+On Mon, Jun 29, 2020 at 10:37:43AM +0200, Ahmad Fatoum wrote:
+> Hi,
+> 
+> On 6/26/20 8:41 AM, Sascha Hauer wrote:
+> > The comment above do_autoboot_countdown() states: "This function can be
+> > called multiple times, it is executed only the first time.". Since
+> > 1973892533 ("startup: don't clobber original autoboot state") This is no
+> > longer the case. Bring back the old and documented behaviour.
+> 
+> guilty as charged. I didn't read the comment..
+> do_autoboot_countdown is called only once though in the code base.
+> How do you make use of being able to call it multiple times?
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- arch/arm/boards/sama5d27-giantboard/lowlevel.c | 13 +++----------
- arch/arm/boards/sama5d27-som1/lowlevel.c       | 13 +++----------
- 2 files changed, 6 insertions(+), 20 deletions(-)
+We use this in a customer project. The decision whether we want to abort
+boot or not has to be made earlier. That said, it's out of tree code, so
+should this hurt anywhere else, we can change it and find another
+solution for our customer.
 
-diff --git a/arch/arm/boards/sama5d27-giantboard/lowlevel.c b/arch/arm/boards/sama5d27-giantboard/lowlevel.c
-index e08217105bcc..4419e946f1a8 100644
---- a/arch/arm/boards/sama5d27-giantboard/lowlevel.c
-+++ b/arch/arm/boards/sama5d27-giantboard/lowlevel.c
-@@ -34,10 +34,12 @@ static void dbgu_init(void)
- 
- extern char __dtb_z_at91_sama5d27_giantboard_start[];
- 
--static noinline void giantboard_entry(void)
-+ENTRY_FUNCTION(start_sama5d27_giantboard, r0, r1, r2)
- {
- 	void *fdt;
- 
-+	arm_cpu_lowlevel_init();
-+
- 	if (IS_ENABLED(CONFIG_DEBUG_LL))
- 		dbgu_init();
- 
-@@ -45,12 +47,3 @@ static noinline void giantboard_entry(void)
- 
- 	barebox_arm_entry(SAMA5_DDRCS, SZ_128M, fdt);
- }
--
--ENTRY_FUNCTION(start_sama5d27_giantboard, r0, r1, r2)
--{
--	arm_cpu_lowlevel_init();
--
--	arm_setup_stack(SAMA5D2_SRAM_BASE + SAMA5D2_SRAM_SIZE);
--
--	giantboard_entry();
--}
-diff --git a/arch/arm/boards/sama5d27-som1/lowlevel.c b/arch/arm/boards/sama5d27-som1/lowlevel.c
-index 2b39e5abc396..b7780ec8ae43 100644
---- a/arch/arm/boards/sama5d27-som1/lowlevel.c
-+++ b/arch/arm/boards/sama5d27-som1/lowlevel.c
-@@ -58,10 +58,12 @@ static void ek_dbgu_init(void)
- 
- extern char __dtb_z_at91_sama5d27_som1_ek_start[];
- 
--static noinline void som1_entry(void)
-+ENTRY_FUNCTION(start_sama5d27_som1_ek, r0, r1, r2)
- {
- 	void *fdt;
- 
-+	arm_cpu_lowlevel_init();
-+
- 	if (IS_ENABLED(CONFIG_DEBUG_LL))
- 		ek_dbgu_init();
- 
-@@ -70,12 +72,3 @@ static noinline void som1_entry(void)
- 	ek_turn_led(RGB_LED_GREEN);
- 	barebox_arm_entry(SAMA5_DDRCS, SZ_128M, fdt);
- }
--
--ENTRY_FUNCTION(start_sama5d27_som1_ek, r0, r1, r2)
--{
--	arm_cpu_lowlevel_init();
--
--	arm_setup_stack(SAMA5D2_SRAM_BASE + SAMA5D2_SRAM_SIZE);
--
--	som1_entry();
--}
+Sascha
+
+
 -- 
-2.27.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
