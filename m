@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jqVDm-0004qp-2Y
- for barebox@lists.infradead.org; Wed, 01 Jul 2020 05:23:59 +0000
+ id 1jqVDn-0004qv-3B
+ for barebox@lists.infradead.org; Wed, 01 Jul 2020 05:24:00 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  1 Jul 2020 07:23:19 +0200
-Message-Id: <20200701052340.9462-8-a.fatoum@pengutronix.de>
+Date: Wed,  1 Jul 2020 07:23:22 +0200
+Message-Id: <20200701052340.9462-11-a.fatoum@pengutronix.de>
 In-Reply-To: <20200701052340.9462-1-a.fatoum@pengutronix.de>
 References: <20200701052340.9462-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,589 +21,275 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/28] ARM: at91: import low level DDRAMC initialization code
- from at91bootstrap
+Subject: [PATCH 10/28] ARM: at91: implement sama5d2 lowlevel init
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-This commit imports DDRAMC initialization routines for use in PBL from
-https://github.com/linux4sam/at91bootstrap/blob/v3.8.12/driver/ddramc.c
+Port over the low level initialization for sama5d2 SoCs from
+at91bootstrap.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/mach-at91/Makefile              |   2 +-
- arch/arm/mach-at91/ddramc_ll.c           | 507 +++++++++++++++++++++++
- arch/arm/mach-at91/include/mach/ddramc.h |  36 ++
- 3 files changed, 544 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/mach-at91/ddramc_ll.c
- create mode 100644 arch/arm/mach-at91/include/mach/ddramc.h
+ .../arm/boards/sama5d27-giantboard/lowlevel.c |  9 +--
+ arch/arm/boards/sama5d27-som1/lowlevel.c      |  9 +--
+ arch/arm/mach-at91/Makefile                   |  1 +
+ arch/arm/mach-at91/include/mach/at91_pmc.h    | 22 +++++
+ arch/arm/mach-at91/include/mach/sama5d2_ll.h  | 27 +++++++
+ arch/arm/mach-at91/sama5d2_ll.c               | 80 +++++++++++++++++++
+ 6 files changed, 132 insertions(+), 16 deletions(-)
+ create mode 100644 arch/arm/mach-at91/include/mach/sama5d2_ll.h
+ create mode 100644 arch/arm/mach-at91/sama5d2_ll.c
 
+diff --git a/arch/arm/boards/sama5d27-giantboard/lowlevel.c b/arch/arm/boards/sama5d27-giantboard/lowlevel.c
+index 50bc2613c652..e08217105bcc 100644
+--- a/arch/arm/boards/sama5d27-giantboard/lowlevel.c
++++ b/arch/arm/boards/sama5d27-giantboard/lowlevel.c
+@@ -8,9 +8,7 @@
+ 
+ #include <asm/barebox-arm-head.h>
+ #include <asm/barebox-arm.h>
+-#include <mach/at91_pmc_ll.h>
+-
+-#include <mach/hardware.h>
++#include <mach/sama5d2_ll.h>
+ #include <mach/iomux.h>
+ #include <debug_ll.h>
+ #include <mach/at91_dbgu.h>
+@@ -18,11 +16,6 @@
+ /* PCK = 492MHz, MCK = 164MHz */
+ #define MASTER_CLOCK	164000000
+ 
+-static inline void sama5d2_pmc_enable_periph_clock(int clk)
+-{
+-	at91_pmc_sam9x5_enable_periph_clock(SAMA5D2_BASE_PMC, clk);
+-}
+-
+ static void dbgu_init(void)
+ {
+ 	unsigned mck = MASTER_CLOCK / 2;
+diff --git a/arch/arm/boards/sama5d27-som1/lowlevel.c b/arch/arm/boards/sama5d27-som1/lowlevel.c
+index 569960be445d..2b39e5abc396 100644
+--- a/arch/arm/boards/sama5d27-som1/lowlevel.c
++++ b/arch/arm/boards/sama5d27-som1/lowlevel.c
+@@ -8,9 +8,7 @@
+ 
+ #include <asm/barebox-arm-head.h>
+ #include <asm/barebox-arm.h>
+-#include <mach/at91_pmc_ll.h>
+-
+-#include <mach/hardware.h>
++#include <mach/sama5d2_ll.h>
+ #include <mach/iomux.h>
+ #include <debug_ll.h>
+ #include <mach/at91_dbgu.h>
+@@ -22,11 +20,6 @@
+ /* PCK = 492MHz, MCK = 164MHz */
+ #define MASTER_CLOCK	164000000
+ 
+-static inline void sama5d2_pmc_enable_periph_clock(int clk)
+-{
+-	at91_pmc_sam9x5_enable_periph_clock(SAMA5D2_BASE_PMC, clk);
+-}
+-
+ static void ek_turn_led(unsigned color)
+ {
+ 	struct {
 diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-index 863b62eddcd0..a7e9ce5938e8 100644
+index a7e9ce5938e8..ea39d7d8c240 100644
 --- a/arch/arm/mach-at91/Makefile
 +++ b/arch/arm/mach-at91/Makefile
-@@ -1,5 +1,5 @@
- obj-y += setup.o
--lwl-y += at91_pmc_ll.o
-+lwl-y += at91_pmc_ll.o ddramc_ll.o
- lwl-$(CONFIG_CLOCKSOURCE_ATMEL_PIT) += early_udelay.o
+@@ -25,6 +25,7 @@ ifeq ($(CONFIG_OFDEVICE),)
+ obj-$(CONFIG_SOC_AT91SAM9263) += at91sam9263.o at91sam9263_devices.o
+ obj-$(CONFIG_SOC_SAMA5D3)	+= sama5d3.o sama5d3_devices.o
+ endif
++lwl-$(CONFIG_SOC_SAMA5D2)	+= sama5d2_ll.o
+ obj-$(CONFIG_SOC_AT91SAM9G20) += at91sam9260.o at91sam9260_devices.o
+ obj-$(CONFIG_SOC_AT91SAM9G45) += at91sam9g45.o at91sam9g45_devices.o
+ obj-$(CONFIG_SOC_AT91SAM9X5)	+= at91sam9x5.o at91sam9x5_devices.o
+diff --git a/arch/arm/mach-at91/include/mach/at91_pmc.h b/arch/arm/mach-at91/include/mach/at91_pmc.h
+index 4d60becefbab..66b4e49286d7 100644
+--- a/arch/arm/mach-at91/include/mach/at91_pmc.h
++++ b/arch/arm/mach-at91/include/mach/at91_pmc.h
+@@ -42,6 +42,7 @@
+ #define	AT91_CKGR_UCKR		0x1C			/* UTMI Clock Register [some SAM9] */
+ #define		AT91_PMC_UPLLEN		(1   << 16)		/* UTMI PLL Enable */
+ #define		AT91_PMC_UPLLCOUNT	(0xf << 20)		/* UTMI PLL Start-up Time */
++#define			AT91_PMC_UPLLCOUNT_DEFAULT	(0x1UL << 20)
+ #define		AT91_PMC_BIASEN		(1   << 24)		/* UTMI BIAS Enable */
+ #define		AT91_PMC_BIASCOUNT	(0xf << 28)		/* UTMI BIAS Start-up Time */
  
- ifeq ($(CONFIG_COMMON_CLK_OF_PROVIDER),)
-diff --git a/arch/arm/mach-at91/ddramc_ll.c b/arch/arm/mach-at91/ddramc_ll.c
+@@ -66,9 +67,17 @@
+ #define	AT91_CKGR_PLLAR		0x28			/* PLL A Register */
+ #define	AT91_CKGR_PLLBR		0x2c			/* PLL B Register */
+ #define		AT91_PMC_DIV		(0xff  <<  0)		/* Divider */
++#define			AT91_PMC_DIV_BYPASS	(1 << 0)		/* Divider bypass */
+ #define		AT91_PMC_PLLCOUNT	(0x3f  <<  8)		/* PLL Counter */
+ #define		AT91_PMC_OUT		(3     << 14)		/* PLL Clock Frequency Range */
++#define			AT91_PMC_OUT_0		(0 << 14)
++#define			AT91_PMC_OUT_1		(1 << 14)
++#define			AT91_PMC_OUT_2		(2 << 14)
++#define			AT91_PMC_OUT_3		(3 << 14)
+ #define		AT91_PMC_MUL		(0x7ff << 16)		/* PLL Multiplier */
++#define			AT91_PMC_MUL_(n)		(((n) << 16) & AT91_PMC_MUL)
++#define		AT91_PMC3_MUL		(0x7f << 18)		/* PLL Multiplier [SAMA5 only]*/
++#define			AT91_PMC3_MUL_(n)		(((n) << 18) & AT91_PMC3_MUL)
+ #define		AT91_PMC_USBDIV		(3     << 28)		/* USB Divisor (PLLB only) */
+ #define			AT91_PMC_USBDIV_1		(0 << 28)
+ #define			AT91_PMC_USBDIV_2		(1 << 28)
+@@ -153,6 +162,7 @@
+ #define		AT91_PMC_MOSCSELS	(1 << 16)		/* Main Oscillator Selection [some SAM9] */
+ #define		AT91_PMC_MOSCRCS	(1 << 17)		/* Main On-Chip RC [some SAM9] */
+ #define		AT91_PMC_CFDEV		(1 << 18)		/* Clock Failure Detector Event [some SAM9] */
++#define		AT91_PMC_GCKRDY		(1 << 24)
+ #define	AT91_PMC_IMR		0x6c			/* Interrupt Mask Register */
+ #define	AT91_PMC_PLLICPR	0x80			/* PLL Charge Pump Current Register */
+ #define		AT91_PMC_ICPPLLA	(0xf <<  0)
+@@ -179,6 +189,13 @@
+ 
+ #define AT91_PMC_PCR		0x10c			/* Peripheral Control Register [some SAM9] */
+ #define		AT91_PMC_PCR_PID	(0x3f  <<  0)		/* Peripheral ID */
++#define		AT91_PMC_GCKCSS	(0x7 << 8)
++#define			AT91_PMC_GCKCSS_SLOW_CLK	(0x0 << 8)
++#define			AT91_PMC_GCKCSS_MAIN_CLK	(0x1 << 8)
++#define			AT91_PMC_GCKCSS_PLLA_CLK	(0x2 << 8)
++#define			AT91_PMC_GCKCSS_UPLL_CLK	(0x3 << 8)
++#define			AT91_PMC_GCKCSS_MCK_CLK		(0x4 << 8)
++#define			AT91_PMC_GCKCSS_AUDIO_CLK	(0x5 << 8)
+ #define		AT91_PMC_PCR_CMD	(0x1  <<  12)		/* Command */
+ #define		AT91_PMC_PCR_DIV_MASK	(0x3  <<  16)
+ #define		AT91_PMC_PCR_DIV(n)	((n) <<  16)	/* Divisor value */
+@@ -186,7 +203,12 @@
+ #define			AT91_PMC_PCR_DIV2	0x1		/* Peripheral clock is MCK/2 */
+ #define			AT91_PMC_PCR_DIV4	0x2		/* Peripheral clock is MCK/4 */
+ #define			AT91_PMC_PCR_DIV8	0x3		/* Peripheral clock is MCK/8 */
++#define		AT91_PMC_GCKDIV		(0xff << 20)
++#define			AT91_PMC_GCKDIV_MSK		0xff
++#define			AT91_PMC_GCKDIV_OFFSET		20
++#define			AT91_PMC_GCKDIV_(x)		(((x) & AT91_PMC_GCKDIV_MSK) << AT91_PMC_GCKDIV_OFFSET)
+ #define		AT91_PMC_PCR_EN		(0x1  <<  28)		/* Enable */
++#define		AT91_PMC_GCK_EN		(0x1  <<  29)
+ 
+ #define	AT91_PMC_PCER1		0x100			/* Peripheral Clock Enable Register 1 */
+ #define	AT91_PMC_PCDR1		0x104			/* Peripheral Clock Disable Register 1 */
+diff --git a/arch/arm/mach-at91/include/mach/sama5d2_ll.h b/arch/arm/mach-at91/include/mach/sama5d2_ll.h
 new file mode 100644
-index 000000000000..4768fdcd6281
+index 000000000000..7c38a84f5395
 --- /dev/null
-+++ b/arch/arm/mach-at91/ddramc_ll.c
-@@ -0,0 +1,507 @@
++++ b/arch/arm/mach-at91/include/mach/sama5d2_ll.h
+@@ -0,0 +1,27 @@
++#ifndef __MACH_SAMA5D2_LL__
++#define __MACH_SAMA5D2_LL__
++
++#include <mach/sama5d2.h>
++#include <mach/at91_pmc_ll.h>
++#include <mach/early_udelay.h>
++#include <mach/ddramc.h>
++
++#include <common.h>
++
++static inline void sama5d2_pmc_enable_periph_clock(int clk)
++{
++	at91_pmc_sam9x5_enable_periph_clock(SAMA5D2_BASE_PMC, clk);
++}
++
++void sama5d2_lowlevel_init(void);
++
++/* requires relocation */
++static inline void sama5d2_udelay_init(unsigned int msc)
++{
++	early_udelay_init(SAMA5D2_BASE_PMC, SAMA5D2_BASE_PITC,
++			  SAMA5D2_ID_PIT, msc, AT91_PMC_LL_SAMA5D2);
++}
++
++void sama5d2_ddr2_init(struct at91_ddramc_register *ddramc_reg_config);
++
++#endif
+diff --git a/arch/arm/mach-at91/sama5d2_ll.c b/arch/arm/mach-at91/sama5d2_ll.c
+new file mode 100644
+index 000000000000..a038bf4b86e6
+--- /dev/null
++++ b/arch/arm/mach-at91/sama5d2_ll.c
+@@ -0,0 +1,80 @@
 +// SPDX-License-Identifier: BSD-1-Clause
 +/*
-+ * Copyright (c) 2007, Stelian Pop <stelian.pop@leadtechdesign.com>
-+ * Copyright (c) 2007 Lead Tech Design <www.leadtechdesign.com>
++ * Copyright (c) 2017, Microchip Corporation
++ *
++ * Microchip's name may not be used to endorse or promote products derived
++ * from this software without specific prior written permission.
 + */
 +
-+#include <linux/kconfig.h>
-+#include <asm/system.h>
++#include <mach/sama5d2_ll.h>
 +#include <mach/at91_ddrsdrc.h>
 +#include <mach/ddramc.h>
 +#include <mach/early_udelay.h>
++#include <mach/at91_rstc.h>
++#include <asm/barebox-arm.h>
 +
-+void at91_ddram_initialize(void __iomem *base_address,
-+			   void __iomem *ram_address,
-+			   struct at91_ddramc_register *ddramc_config)
++#define sama5d2_pmc_write(off, val) writel(val, SAMA5D2_BASE_PMC + off)
++#define sama5d2_pmc_read(off) readl(SAMA5D2_BASE_PMC + off)
++
++void sama5d2_ddr2_init(struct at91_ddramc_register *ddramc_reg_config)
 +{
-+	unsigned long ba_offset;
-+	unsigned long cr = 0;
++	unsigned int reg;
 +
-+	/* compute BA[] offset according to CR configuration */
-+	ba_offset = (ddramc_config->cr & AT91_DDRC2_NC) + 9;
-+	if ((ddramc_config->cr & AT91_DDRC2_DECOD) == AT91_DDRC2_DECOD_SEQUENTIAL)
-+		ba_offset += ((ddramc_config->cr & AT91_DDRC2_NR) >> 2) + 11;
++	/* enable ddr2 clock */
++	sama5d2_pmc_enable_periph_clock(SAMA5D2_ID_MPDDRC);
++	sama5d2_pmc_write(AT91_PMC_SCER, AT91CAP9_PMC_DDR);
 +
-+	ba_offset += (ddramc_config->mdr & AT91_DDRC2_DBW) ? 1 : 2;
++	reg = AT91_MPDDRC_RD_DATA_PATH_ONE_CYCLES;
++	writel(reg, SAMA5D2_BASE_MPDDRC + AT91_MPDDRC_RD_DATA_PATH);
 +
-+	/*
-+	 * Step 1: Program the memory device type into the Memory Device Register
-+	 */
-+	writel(ddramc_config->mdr, base_address + AT91_HDDRSDRC2_MDR);
++	reg = readl(SAMA5D2_BASE_MPDDRC + AT91_MPDDRC_IO_CALIBR);
++	reg &= ~AT91_MPDDRC_RDIV;
++	reg &= ~AT91_MPDDRC_TZQIO;
++	reg |= AT91_MPDDRC_RDIV_DDR2_RZQ_50;
++	reg |= AT91_MPDDRC_TZQIO_(101);
++	writel(reg, SAMA5D2_BASE_MPDDRC + AT91_MPDDRC_IO_CALIBR);
 +
-+	/*
-+	 * Step 2: Program the feature of DDR2-SDRAM device into
-+	 * the Timing Register, and into the Configuration Register
-+	 */
-+	writel(ddramc_config->cr, base_address + AT91_HDDRSDRC2_CR);
-+
-+	writel(ddramc_config->t0pr, base_address + AT91_HDDRSDRC2_T0PR);
-+	writel(ddramc_config->t1pr, base_address + AT91_HDDRSDRC2_T1PR);
-+	writel(ddramc_config->t2pr, base_address + AT91_HDDRSDRC2_T2PR);
-+
-+	/*
-+	 * Step 3: An NOP command is issued to the DDR2-SDRAM
-+	 */
-+	writel(AT91_DDRC2_MODE_NOP_CMD, base_address + AT91_HDDRSDRC2_MR);
-+	writel(0, ram_address);
-+	/* Now, clocks which drive the DDR2-SDRAM device are enabled */
-+
-+	/* A minimum pause wait 200 us is provided to precede any signal toggle.
-+	   (6 core cycles per iteration, core is at 396MHz: min 13340 loops) */
-+	early_udelay(200);
-+
-+	/*
-+	 * Step 4:  An NOP command is issued to the DDR2-SDRAM
-+	 */
-+	writel(AT91_DDRC2_MODE_NOP_CMD, base_address + AT91_HDDRSDRC2_MR);
-+	writel(0, ram_address);
-+	/* Now, CKE is driven high */
-+	/* wait 400 ns min */
-+	early_udelay(1);
-+
-+	/*
-+	 * Step 5: An all banks precharge command is issued to the DDR2-SDRAM.
-+	 */
-+	writel(AT91_DDRC2_MODE_PRCGALL_CMD, base_address + AT91_HDDRSDRC2_MR);
-+	writel(0, ram_address);
-+
-+	/* wait 2 cycles min (of tCK) = 15 ns min */
-+	early_udelay(1);
-+
-+	/*
-+	 * Step 6: An Extended Mode Register set(EMRS2) cycle is issued to chose between commercial or high
-+	 * temperature operations.
-+	 * Perform a write access to DDR2-SDRAM to acknowledge this command.
-+	 * The write address must be chosen so that BA[1] is set to 1 and BA[0] is set to 0.
-+	 */
-+	writel(AT91_DDRC2_MODE_EXT_LMR_CMD, base_address + AT91_HDDRSDRC2_MR);
-+	writel(0, ram_address + (0x2 << ba_offset));
-+
-+	/* wait 2 cycles min (of tCK) = 15 ns min */
-+	early_udelay(1);
-+
-+	/*
-+	 * Step 7: An Extended Mode Register set(EMRS3) cycle is issued
-+	 * to set the Extended Mode Register to "0".
-+	 * Perform a write access to DDR2-SDRAM to acknowledge this command.
-+	 * The write address must be chosen so that BA[1] is set to 1 and BA[0] is set to 1.
-+	 */
-+	writel(AT91_DDRC2_MODE_EXT_LMR_CMD, base_address + AT91_HDDRSDRC2_MR);
-+	writel(0, ram_address + (0x3 << ba_offset));
-+
-+	/* wait 2 cycles min (of tCK) = 15 ns min */
-+	early_udelay(1);
-+
-+	/*
-+	 * Step 8: An Extened Mode Register set(EMRS1) cycle is issued to enable DLL,
-+	 * and to program D.I.C(Output Driver Impedance Control)
-+	 * Perform a write access to DDR2-SDRAM to acknowledge this command.
-+	 * The write address must be chosen so that BA[1] is set to 0 and BA[0] is set to 1.
-+	 */
-+	writel(AT91_DDRC2_MODE_EXT_LMR_CMD, base_address + AT91_HDDRSDRC2_MR);
-+	writel(0, ram_address + (0x1 << ba_offset));
-+
-+	/* An additional 200 cycles of clock are required for locking DLL */
-+	early_udelay(1);
-+
-+	/*
-+	 * Step 9: Program DLL field into the Configuration Register to high(Enable DLL reset)
-+	 */
-+	cr = readl(base_address + AT91_HDDRSDRC2_CR);
-+	writel(cr | AT91_DDRC2_ENABLE_RESET_DLL, base_address + AT91_HDDRSDRC2_CR);
-+
-+	/*
-+	 * Step 10: A Mode Register set(MRS) cycle is issied to reset DLL.
-+	 * Perform a write access to DDR2-SDRAM to acknowledge this command.
-+	 * The write address must be chosen so that BA[1:0] bits are set to 0.
-+	 */
-+	writel(AT91_DDRC2_MODE_LMR_CMD, base_address + AT91_HDDRSDRC2_MR);
-+	writel(0, ram_address + (0x0 << ba_offset));
-+
-+	/* wait 2 cycles min (of tCK) = 15 ns min */
-+	early_udelay(1);
-+
-+	/*
-+	 * Step 11: An all banks precharge command is issued to the DDR2-SDRAM.
-+	 */
-+	writel(AT91_DDRC2_MODE_PRCGALL_CMD, base_address + AT91_HDDRSDRC2_MR);
-+	writel(0, ram_address);
-+
-+	/* wait 400 ns min (not needed on certain DDR2 devices) */
-+	early_udelay(1);
-+
-+	/*
-+	 * Step 12: Two auto-refresh (CBR) cycles are provided.
-+	 * Program the auto refresh command (CBR) into the Mode Register.
-+	 */
-+	writel(AT91_DDRC2_MODE_RFSH_CMD, base_address + AT91_HDDRSDRC2_MR);
-+	writel(0, ram_address);
-+
-+	/* wait TRFC cycles min (135 ns min) extended to 400 ns */
-+	early_udelay(1);
-+
-+	/* Set 2nd CBR */
-+	writel(AT91_DDRC2_MODE_RFSH_CMD, base_address + AT91_HDDRSDRC2_MR);
-+	writel(0, ram_address);
-+
-+	/* wait TRFC cycles min (135 ns min) extended to 400 ns */
-+	early_udelay(1);
-+
-+	/*
-+	 * Step 13: Program DLL field into the Configuration Register to low(Disable DLL reset).
-+	 */
-+	cr = readl(base_address + AT91_HDDRSDRC2_CR);
-+	writel(cr & ~AT91_DDRC2_ENABLE_RESET_DLL, base_address + AT91_HDDRSDRC2_CR);
-+
-+	/*
-+	 * Step 14: A Mode Register set (MRS) cycle is issued to program
-+	 * the parameters of the DDR2-SDRAM devices, in particular CAS latency,
-+	 * burst length and to disable DDL reset.
-+	 * Perform a write access to DDR2-SDRAM to acknowledge this command.
-+	 * The write address must be chosen so that BA[1:0] bits are set to 0.
-+	 */
-+	writel(AT91_DDRC2_MODE_LMR_CMD, base_address + AT91_HDDRSDRC2_MR);
-+	writel(0, ram_address + (0x0 << ba_offset));
-+
-+	/* wait 2 cycles min (of tCK) = 15 ns min */
-+	early_udelay(1);
-+
-+	/*
-+	 * Step 15: Program OCD field into the Configuration Register
-+	 * to high (OCD calibration default).
-+	 */
-+	cr = readl(base_address + AT91_HDDRSDRC2_CR);
-+	writel(cr | AT91_DDRC2_OCD_DEFAULT, base_address + AT91_HDDRSDRC2_CR);
-+
-+	/* wait 2 cycles min (of tCK) = 15 ns min */
-+	early_udelay(1);
-+
-+	/*
-+	 * Step 16: An Extended Mode Register set (EMRS1) cycle is issued to OCD default value.
-+	 * Perform a write access to DDR2-SDRAM to acknowledge this command.
-+	 * The write address must be chosen so that BA[1] is set to 0 and BA[0] is set to 1.
-+	 */
-+	writel(AT91_DDRC2_MODE_EXT_LMR_CMD, base_address + AT91_HDDRSDRC2_MR);
-+	writel(0, ram_address + (0x1 << ba_offset));
-+
-+	/* wait 2 cycles min (of tCK) = 15 ns min */
-+	early_udelay(1);
-+
-+	/*
-+	 * Step 17: Program OCD field into the Configuration Register
-+	 * to low (OCD calibration mode exit).
-+	 */
-+	cr = readl(base_address + AT91_HDDRSDRC2_CR);
-+	writel(cr & ~AT91_DDRC2_OCD_DEFAULT, base_address + AT91_HDDRSDRC2_CR);
-+
-+	/* wait 2 cycles min (of tCK) = 15 ns min */
-+	early_udelay(1);
-+
-+	/*
-+	 * Step 18: An Extended Mode Register set (EMRS1) cycle is issued to enable OCD exit.
-+	 * Perform a write access to DDR2-SDRAM to acknowledge this command.
-+	 * The write address must be chosen so that BA[1] is set to 0 and BA[0] is set to 1.
-+	 */
-+	writel(AT91_DDRC2_MODE_EXT_LMR_CMD, base_address + AT91_HDDRSDRC2_MR);
-+	writel(0, ram_address + (0x1 << ba_offset));
-+
-+	/* wait 2 cycles min (of tCK) = 15 ns min */
-+	early_udelay(1);
-+
-+	/*
-+	 * Step 19: A Nornal mode command is provided.
-+	 */
-+	writel(AT91_DDRC2_MODE_NORMAL_CMD, base_address + AT91_HDDRSDRC2_MR);
-+	writel(0, ram_address);
-+
-+	/*
-+	 * Step 20: Perform a write access to any DDR2-SDRAM address
-+	 */
-+	writel(0, ram_address);
-+
-+	/*
-+	 * Step 21: Write the refresh rate into the count field in the Refresh Timer register.
-+	 */
-+	writel(ddramc_config->rtr, base_address + AT91_HDDRSDRC2_RTR);
-+
-+	/*
-+	 * Now we are ready to work on the DDRSDR
-+	 *  wait for end of calibration
-+	 */
-+	early_udelay(10);
++	/* DDRAM2 Controller initialize */
++	at91_ddram_initialize(SAMA5D2_BASE_MPDDRC, IOMEM(SAMA5_DDRCS),
++			      ddramc_reg_config);
 +}
 +
-+/* This initialization sequence is sama5d3 and sama5d4 LP-DDR2 specific */
-+
-+void at91_lpddr2_sdram_initialize(void __iomem *base_address,
-+				  void __iomem *ram_address,
-+				  struct at91_ddramc_register *ddramc_config)
++static void sama5d2_pmc_init(void)
 +{
-+	unsigned long reg;
++	at91_pmc_init(SAMA5D2_BASE_PMC, AT91_PMC_LL_SAMA5D2);
 +
-+	writel(ddramc_config->lpddr2_lpr, base_address + AT91_MPDDRC_LPDDR2_LPR);
++	/* Configure PLLA = MOSC * (PLL_MULA + 1) / PLL_DIVA */
++	sama5d2_pmc_write(AT91_CKGR_PLLAR, AT91_PMC_PLLA_WR_ERRATA);
++	sama5d2_pmc_write(AT91_CKGR_PLLAR, AT91_PMC_PLLA_WR_ERRATA
++		       | AT91_PMC3_MUL_(40) | AT91_PMC_OUT_0
++		       | AT91_PMC_PLLCOUNT
++		       | AT91_PMC_DIV_BYPASS);
 +
-+	writel(ddramc_config->tim_calr, base_address + AT91_MPDDRC_LPDDR2_TIM_CAL);
++	while (!(sama5d2_pmc_read(AT91_PMC_SR) & AT91_PMC_LOCKA))
++		;
 +
-+	/*
-+	 * Step 1: Program the memory device type.
-+	 */
-+	writel(ddramc_config->mdr, base_address + AT91_HDDRSDRC2_MDR);
++	/* Initialize PLLA charge pump */
++	/* No need: we keep what is set in ROM code */
++	//sama5d2_pmc_write(AT91_PMC_PLLICPR, AT91_PMC_IPLLA_3);
 +
-+	/*
-+	 * Step 2: Program the feature of the low-power DDR2-SDRAM device.
-+	 */
-+	writel(ddramc_config->cr, base_address + AT91_HDDRSDRC2_CR);
-+
-+	writel(ddramc_config->t0pr, base_address + AT91_HDDRSDRC2_T0PR);
-+	writel(ddramc_config->t1pr, base_address + AT91_HDDRSDRC2_T1PR);
-+	writel(ddramc_config->t2pr, base_address + AT91_HDDRSDRC2_T2PR);
-+
-+	/*
-+	 * Step 3: A NOP command is issued to the low-power DDR2-SDRAM.
-+	 */
-+	writel(AT91_DDRC2_MODE_NOP_CMD, base_address + AT91_HDDRSDRC2_MR);
-+
-+	/*
-+	 * Step 3bis: Add memory barrier then Perform a write access to
-+	 * any low-power DDR2-SDRAM address to acknowledge the command.
-+	 */
-+	dmb();
-+	writel(0, ram_address);
-+
-+	/*
-+	 * Step 4: A pause of at least 100 ns must be observed before
-+	 * a single toggle.
-+	 */
-+	early_udelay(1);
-+
-+	/*
-+	 * Step 5: A NOP command is issued to the low-power DDR2-SDRAM.
-+	 */
-+	writel(AT91_DDRC2_MODE_NOP_CMD, base_address + AT91_HDDRSDRC2_MR);
-+	dmb();
-+	writel(0, ram_address);
-+
-+	/*
-+	 * Step 6: A pause of at least 200 us must be observed before a Reset
-+	 * Command.
-+	 */
-+	early_udelay(200);
-+
-+	/*
-+	 * Step 7: A Reset command is issued to the low-power DDR2-SDRAM.
-+	 */
-+	writel(AT91_DDRC2_MRS(63) | AT91_DDRC2_MODE_LPDDR2_CMD,
-+		     base_address + AT91_HDDRSDRC2_MR);
-+	dmb();
-+	writel(0, ram_address);
-+
-+	/*
-+	 * Step 8: A pause of at least tINIT5 must be observed before issuing
-+	 * any commands.
-+	 */
-+	early_udelay(1);
-+
-+	/*
-+	 * Step 9: A Calibration command is issued to the low-power DDR2-SDRAM.
-+	 */
-+	reg = readl(base_address + AT91_HDDRSDRC2_CR);
-+	reg &= ~AT91_DDRC2_ZQ;
-+	reg |= AT91_DDRC2_ZQ_RESET;
-+	writel(reg, base_address + AT91_HDDRSDRC2_CR);
-+
-+	writel(AT91_DDRC2_MRS(10) | AT91_DDRC2_MODE_LPDDR2_CMD,
-+		     base_address + AT91_HDDRSDRC2_MR);
-+	dmb();
-+	writel(0, ram_address);
-+
-+	/*
-+	 * Step 9bis: The ZQ Calibration command is now issued.
-+	 * Program the type of calibration in the MPDDRC_CR: set the
-+	 * ZQ field to the SHORT value.
-+	 */
-+	reg = readl(base_address + AT91_HDDRSDRC2_CR);
-+	reg &= ~AT91_DDRC2_ZQ;
-+	reg |= AT91_DDRC2_ZQ_SHORT;
-+	writel(reg, base_address + AT91_HDDRSDRC2_CR);
-+
-+	/*
-+	 * Step 10: A Mode Register Write command with 1 to the MRS field
-+	 * is issued to the low-power DDR2-SDRAM.
-+	 */
-+	writel(AT91_DDRC2_MRS(1) | AT91_DDRC2_MODE_LPDDR2_CMD,
-+		     base_address + AT91_HDDRSDRC2_MR);
-+	dmb();
-+	writel(0, ram_address);
-+
-+	/*
-+	 * Step 11: A Mode Register Write command with 2 to the MRS field
-+	 * is issued to the low-power DDR2-SDRAM.
-+	 */
-+	writel(AT91_DDRC2_MRS(2) | AT91_DDRC2_MODE_LPDDR2_CMD,
-+		     base_address + AT91_HDDRSDRC2_MR);
-+	dmb();
-+	writel(0, ram_address);
-+
-+	/*
-+	 * Step 12: A Mode Register Write command with 3 to the MRS field
-+	 * is issued to the low-power DDR2-SDRAM.
-+	 */
-+	writel(AT91_DDRC2_MRS(3) | AT91_DDRC2_MODE_LPDDR2_CMD,
-+		     base_address + AT91_HDDRSDRC2_MR);
-+	dmb();
-+	writel(0, ram_address);
-+
-+	/*
-+	 * Step 13: A Mode Register Write command with 16 to the MRS field
-+	 * is issued to the low-power DDR2-SDRAM.
-+	 */
-+	writel(AT91_DDRC2_MRS(16) | AT91_DDRC2_MODE_LPDDR2_CMD,
-+		     base_address + AT91_HDDRSDRC2_MR);
-+	dmb();
-+	writel(0, ram_address);
-+
-+	/*
-+	 * Step 14: A Normal Mode command is provided.
-+	 */
-+	writel(AT91_DDRC2_MODE_NORMAL_CMD, base_address + AT91_HDDRSDRC2_MR);
-+	dmb();
-+	writel(0, ram_address);
-+
-+	/*
-+	 * Step 15: close the input buffers: error in documentation: no need.
-+	 */
-+
-+	/*
-+	 * Step 16: Write the refresh rate into the COUNT field in the MPDDRC
-+	 * Refresh Timer Register.
-+	 */
-+	writel(ddramc_config->rtr, base_address + AT91_HDDRSDRC2_RTR);
-+
-+	/*
-+	 * Now configure the CAL MR4 register.
-+	 */
-+	writel(ddramc_config->cal_mr4r, base_address + AT91_MPDDRC_LPDDR2_CAL_MR4);
++	/* Switch PCK/MCK on PLLA output */
++	at91_pmc_cfg_mck(SAMA5D2_BASE_PMC,
++			AT91_PMC_H32MXDIV
++			| AT91_PMC_PLLADIV2_ON
++			| AT91SAM9_PMC_MDIV_3
++			| AT91_PMC_CSS_PLLA,
++			AT91_PMC_LL_SAMA5D2);
 +}
 +
-+void at91_lpddr1_sdram_initialize(void __iomem *base_address,
-+				  void __iomem *ram_address,
-+				  struct at91_ddramc_register *ddramc_config)
++static void sama5d2_rstc_init(void)
 +{
-+	unsigned long ba_offset;
-+
-+	/* Compute BA[] offset according to CR configuration */
-+	ba_offset = (ddramc_config->cr & AT91_DDRC2_NC) + 8;
-+	if (!(ddramc_config->cr & AT91_DDRC2_DECOD_INTERLEAVED))
-+		ba_offset += ((ddramc_config->cr & AT91_DDRC2_NR) >> 2) + 11;
-+
-+	ba_offset += (ddramc_config->mdr & AT91_DDRC2_DBW) ? 1 : 2;
-+
-+	/*
-+	 * Step 1: Program the memory device type in the MPDDRC Memory Device Register
-+	 */
-+	writel(ddramc_config->mdr, base_address + AT91_HDDRSDRC2_MDR);
-+
-+	/*
-+	 * Step 2: Program the features of the low-power DDR1-SDRAM device
-+	 * in the MPDDRC Configuration Register and in the MPDDRC Timing
-+	 * Parameter 0 Register/MPDDRC Timing Parameter 1 Register.
-+	 */
-+	writel(ddramc_config->cr, base_address + AT91_HDDRSDRC2_CR);
-+
-+	writel(ddramc_config->t0pr, base_address + AT91_HDDRSDRC2_T0PR);
-+	writel(ddramc_config->t1pr, base_address + AT91_HDDRSDRC2_T1PR);
-+	writel(ddramc_config->t2pr, base_address + AT91_HDDRSDRC2_T2PR);
-+
-+	/*
-+	 * Step 3: Program Temperature Compensated Self-refresh (TCR),
-+	 * Partial Array Self-refresh (PASR) and Drive Strength (DS) parameters
-+	 * in the MPDDRC Low-power Register.
-+	 */
-+	writel(ddramc_config->lpr, base_address + AT91_HDDRSDRC2_LPR);
-+
-+	/*
-+	 * Step 4: A NOP command is issued to the low-power DDR1-SDRAM.
-+	 * Program the NOP command in the MPDDRC Mode Register (MPDDRC_MR).
-+	 * The clocks which drive the low-power DDR1-SDRAM device
-+	 * are now enabled.
-+	 */
-+	writel(AT91_DDRC2_MODE_NOP_CMD, base_address + AT91_HDDRSDRC2_MR);
-+	writel(0, ram_address);
-+
-+	/*
-+	 * Step 5: A pause of at least 200 us must be observed before
-+	 * a signal toggle.
-+	 */
-+	early_udelay(200);
-+
-+	/*
-+	 * Step 6: A NOP command is issued to the low-power DDR1-SDRAM.
-+	 * Program the NOP command in the MPDDRC_MR. calibration request is
-+	 * now made to the I/O pad.
-+	 */
-+	writel(AT91_DDRC2_MODE_NOP_CMD, base_address + AT91_HDDRSDRC2_MR);
-+	writel(0, ram_address);
-+
-+	/*
-+	 * Step 7: An All Banks Precharge command is issued
-+	 * to the low-power DDR1-SDRAM.
-+	 * Program All Banks Precharge command in the MPDDRC_MR.
-+	 */
-+	writel(AT91_DDRC2_MODE_PRCGALL_CMD, base_address + AT91_HDDRSDRC2_MR);
-+	writel(0, ram_address);
-+
-+	/*
-+	 * Step 8: Two auto-refresh (CBR) cycles are provided.
-+	 * Program the Auto Refresh command (CBR) in the MPDDRC_MR.
-+	 * The application must write a four to the MODE field
-+	 * in the MPDDRC_MR. Perform a write access to any low-power
-+	 * DDR1-SDRAM location twice to acknowledge these commands.
-+	 */
-+	writel(AT91_DDRC2_MODE_RFSH_CMD, base_address + AT91_HDDRSDRC2_MR);
-+	writel(0, ram_address);
-+
-+	writel(AT91_DDRC2_MODE_RFSH_CMD, base_address + AT91_HDDRSDRC2_MR);
-+	writel(0, ram_address);
-+
-+	/*
-+	 * Step 9: An Extended Mode Register Set (EMRS) cycle is issued to
-+	 * program the low-power DDR1-SDRAM parameters (TCSR, PASR, DS).
-+	 * The application must write a five to the MODE field in the MPDDRC_MR
-+	 * and perform a write access to the SDRAM to acknowledge this command.
-+	 * The write address must be chosen so that signal BA[1] is set to 1
-+	 * and BA[0] is set to 0.
-+	 */
-+	writel(AT91_DDRC2_MODE_EXT_LMR_CMD, base_address + AT91_HDDRSDRC2_MR);
-+	writel(0, ram_address + (0x2 << ba_offset));
-+
-+	/*
-+	 * Step 10: A Mode Register Set (MRS) cycle is issued to program
-+	 * parameters of the low-power DDR1-SDRAM devices, in particular
-+	 * CAS latency.
-+	 * The application must write a three to the MODE field in the MPDDRC_MR
-+	 * and perform a write access to the SDRAM to acknowledge this command.
-+	 * The write address must be chosen so that signals BA[1:0] are set to 0.
-+	 */
-+	writel(AT91_DDRC2_MODE_LMR_CMD, base_address + AT91_HDDRSDRC2_MR);
-+	writel(0, ram_address + (0x0 << ba_offset));
-+
-+	/*
-+	 * Step 11: The application must enter Normal mode, write a zero
-+	 * to the MODE field in the MPDDRC_MR and perform a write access
-+	 * at any location in the SDRAM to acknowledge this command.
-+	 */
-+	writel(AT91_DDRC2_MODE_NORMAL_CMD, base_address + AT91_HDDRSDRC2_MR);
-+	writel(0, ram_address);
-+
-+	/*
-+	 * Step 12: Perform a write access to any low-power DDR1-SDRAM address.
-+	 */
-+	writel(0, ram_address);
-+
-+	/*
-+	 * Step 14: Write the refresh rate into the COUNT field in the MPDDRC
-+	 * Refresh Timer Register (MPDDRC_RTR):
-+	 */
-+	writel(ddramc_config->rtr, base_address + AT91_HDDRSDRC2_RTR);
++	writel(AT91_RSTC_KEY | AT91_RSTC_URSTEN,
++	       SAMA5D2_BASE_RSTC + AT91_RSTC_MR);
 +}
-diff --git a/arch/arm/mach-at91/include/mach/ddramc.h b/arch/arm/mach-at91/include/mach/ddramc.h
-new file mode 100644
-index 000000000000..0b33afc21353
---- /dev/null
-+++ b/arch/arm/mach-at91/include/mach/ddramc.h
-@@ -0,0 +1,36 @@
-+// SPDX-License-Identifier: BSD-1-Clause
-+/*
-+ * Copyright (c) 2006, Atmel Corporation
-+ */
-+#ifndef __DDRAMC_H__
-+#define __DDRAMC_H__
 +
-+/* Note: reserved bits must always be zeroed */
-+struct at91_ddramc_register {
-+	unsigned long mdr;
-+	unsigned long cr;
-+	unsigned long rtr;
-+	unsigned long t0pr;
-+	unsigned long t1pr;
-+	unsigned long t2pr;
-+	unsigned long lpr;
-+	unsigned long lpddr2_lpr;
-+	unsigned long tim_calr;
-+	unsigned long cal_mr4r;
-+};
-+
-+void at91_ddram_initialize(void __iomem *base_address,
-+			   void __iomem *ram_address,
-+			   struct at91_ddramc_register *ddramc_config);
-+
-+void at91_lpddr2_sdram_initialize(void __iomem *base_address,
-+				  void __iomem *ram_address,
-+				  struct at91_ddramc_register *ddramc_config);
-+
-+
-+void at91_lpddr1_sdram_initialize(void __iomem *base_address,
-+				  void __iomem *ram_address,
-+				  struct at91_ddramc_register *ddramc_config);
-+
-+
-+#endif /* #ifndef __DDRAMC_H__ */
++void sama5d2_lowlevel_init(void)
++{
++	arm_cpu_lowlevel_init();
++	sama5d2_pmc_init();
++	sama5d2_rstc_init();
++}
 -- 
 2.27.0
 
