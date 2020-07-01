@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jqYm9-0001BL-Eh
- for barebox@lists.infradead.org; Wed, 01 Jul 2020 09:11:36 +0000
+ id 1jqYmA-0001BM-5C
+ for barebox@lists.infradead.org; Wed, 01 Jul 2020 09:11:35 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  1 Jul 2020 11:11:04 +0200
-Message-Id: <20200701091122.3437-11-a.fatoum@pengutronix.de>
+Date: Wed,  1 Jul 2020 11:11:17 +0200
+Message-Id: <20200701091122.3437-24-a.fatoum@pengutronix.de>
 In-Reply-To: <20200701091122.3437-1-a.fatoum@pengutronix.de>
 References: <20200701091122.3437-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,275 +21,189 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/28] ARM: at91: implement sama5d2 lowlevel init
+Subject: [PATCH 23/28] ARM: at91: sama5d27-som1: add additional first stage
+ entry point
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Port over the low level initialization for sama5d2 SoCs from
-at91bootstrap.
+The BootROM constrains us to a 64K big first stage bootloader. Add a PBL
+entry point for a xload barebox that sets up the minimum necessary to
+load a FAT32 barebox.bin from the SD-Card.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- .../arm/boards/sama5d27-giantboard/lowlevel.c |  9 +--
- arch/arm/boards/sama5d27-som1/lowlevel.c      |  9 +--
- arch/arm/mach-at91/Makefile                   |  1 +
- arch/arm/mach-at91/include/mach/at91_pmc.h    | 22 +++++
- arch/arm/mach-at91/include/mach/sama5d2_ll.h  | 27 +++++++
- arch/arm/mach-at91/sama5d2_ll.c               | 80 +++++++++++++++++++
- 6 files changed, 132 insertions(+), 16 deletions(-)
- create mode 100644 arch/arm/mach-at91/include/mach/sama5d2_ll.h
- create mode 100644 arch/arm/mach-at91/sama5d2_ll.c
+ arch/arm/boards/sama5d27-som1/lowlevel.c      | 32 +++++++++------
+ arch/arm/mach-at91/Kconfig                    |  1 +
+ arch/arm/mach-at91/include/mach/barebox-arm.h | 21 ++++++++++
+ .../include/mach/sama5d2-sip-ddramc.h         | 39 +++++++++++++++++++
+ images/Makefile.at91                          |  5 +++
+ 5 files changed, 87 insertions(+), 11 deletions(-)
+ create mode 100644 arch/arm/mach-at91/include/mach/barebox-arm.h
+ create mode 100644 arch/arm/mach-at91/include/mach/sama5d2-sip-ddramc.h
 
-diff --git a/arch/arm/boards/sama5d27-giantboard/lowlevel.c b/arch/arm/boards/sama5d27-giantboard/lowlevel.c
-index 50bc2613c652..e08217105bcc 100644
---- a/arch/arm/boards/sama5d27-giantboard/lowlevel.c
-+++ b/arch/arm/boards/sama5d27-giantboard/lowlevel.c
-@@ -8,9 +8,7 @@
- 
- #include <asm/barebox-arm-head.h>
- #include <asm/barebox-arm.h>
--#include <mach/at91_pmc_ll.h>
--
--#include <mach/hardware.h>
-+#include <mach/sama5d2_ll.h>
- #include <mach/iomux.h>
- #include <debug_ll.h>
- #include <mach/at91_dbgu.h>
-@@ -18,11 +16,6 @@
- /* PCK = 492MHz, MCK = 164MHz */
- #define MASTER_CLOCK	164000000
- 
--static inline void sama5d2_pmc_enable_periph_clock(int clk)
--{
--	at91_pmc_sam9x5_enable_periph_clock(SAMA5D2_BASE_PMC, clk);
--}
--
- static void dbgu_init(void)
- {
- 	unsigned mck = MASTER_CLOCK / 2;
 diff --git a/arch/arm/boards/sama5d27-som1/lowlevel.c b/arch/arm/boards/sama5d27-som1/lowlevel.c
-index 569960be445d..2b39e5abc396 100644
+index 2e408ce832f7..d52c4ca7465e 100644
 --- a/arch/arm/boards/sama5d27-som1/lowlevel.c
 +++ b/arch/arm/boards/sama5d27-som1/lowlevel.c
-@@ -8,9 +8,7 @@
+@@ -5,13 +5,12 @@
  
- #include <asm/barebox-arm-head.h>
- #include <asm/barebox-arm.h>
--#include <mach/at91_pmc_ll.h>
+ #include <common.h>
+ #include <init.h>
 -
--#include <mach/hardware.h>
-+#include <mach/sama5d2_ll.h>
+-#include <asm/barebox-arm-head.h>
+-#include <asm/barebox-arm.h>
++#include <mach/barebox-arm.h>
+ #include <mach/sama5d2_ll.h>
  #include <mach/iomux.h>
++#include <mach/xload.h>
  #include <debug_ll.h>
- #include <mach/at91_dbgu.h>
-@@ -22,11 +20,6 @@
- /* PCK = 492MHz, MCK = 164MHz */
- #define MASTER_CLOCK	164000000
+-#include <mach/at91_dbgu.h>
++#include <mach/sama5d2-sip-ddramc.h>
  
--static inline void sama5d2_pmc_enable_periph_clock(int clk)
--{
--	at91_pmc_sam9x5_enable_periph_clock(SAMA5D2_BASE_PMC, clk);
--}
--
- static void ek_turn_led(unsigned color)
+ #define RGB_LED_GREEN (1 << 0)
+ #define RGB_LED_RED   (1 << 1)
+@@ -40,23 +39,34 @@ static void ek_turn_led(unsigned color)
+ 	}
+ }
+ 
+-static void ek_dbgu_init(void)
++SAMA5_ENTRY_FUNCTION(start_sama5d27_som1_ek_xload_mmc, r4)
  {
- 	struct {
-diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-index a7e9ce5938e8..ea39d7d8c240 100644
---- a/arch/arm/mach-at91/Makefile
-+++ b/arch/arm/mach-at91/Makefile
-@@ -25,6 +25,7 @@ ifeq ($(CONFIG_OFDEVICE),)
- obj-$(CONFIG_SOC_AT91SAM9263) += at91sam9263.o at91sam9263_devices.o
- obj-$(CONFIG_SOC_SAMA5D3)	+= sama5d3.o sama5d3_devices.o
- endif
-+lwl-$(CONFIG_SOC_SAMA5D2)	+= sama5d2_ll.o
- obj-$(CONFIG_SOC_AT91SAM9G20) += at91sam9260.o at91sam9260_devices.o
- obj-$(CONFIG_SOC_AT91SAM9G45) += at91sam9g45.o at91sam9g45_devices.o
- obj-$(CONFIG_SOC_AT91SAM9X5)	+= at91sam9x5.o at91sam9x5_devices.o
-diff --git a/arch/arm/mach-at91/include/mach/at91_pmc.h b/arch/arm/mach-at91/include/mach/at91_pmc.h
-index 4d60becefbab..66b4e49286d7 100644
---- a/arch/arm/mach-at91/include/mach/at91_pmc.h
-+++ b/arch/arm/mach-at91/include/mach/at91_pmc.h
-@@ -42,6 +42,7 @@
- #define	AT91_CKGR_UCKR		0x1C			/* UTMI Clock Register [some SAM9] */
- #define		AT91_PMC_UPLLEN		(1   << 16)		/* UTMI PLL Enable */
- #define		AT91_PMC_UPLLCOUNT	(0xf << 20)		/* UTMI PLL Start-up Time */
-+#define			AT91_PMC_UPLLCOUNT_DEFAULT	(0x1UL << 20)
- #define		AT91_PMC_BIASEN		(1   << 24)		/* UTMI BIAS Enable */
- #define		AT91_PMC_BIASCOUNT	(0xf << 28)		/* UTMI BIAS Start-up Time */
+-	sama5d2_resetup_uart_console(MASTER_CLOCK);
++	void __iomem *dbgu_base;
++	sama5d2_lowlevel_init();
++
++	dbgu_base = sama5d2_resetup_uart_console(MASTER_CLOCK);
++	if (IS_ENABLED(CONFIG_DEBUG_LL))
++		putc_ll('>');
  
-@@ -66,9 +67,17 @@
- #define	AT91_CKGR_PLLAR		0x28			/* PLL A Register */
- #define	AT91_CKGR_PLLBR		0x2c			/* PLL B Register */
- #define		AT91_PMC_DIV		(0xff  <<  0)		/* Divider */
-+#define			AT91_PMC_DIV_BYPASS	(1 << 0)		/* Divider bypass */
- #define		AT91_PMC_PLLCOUNT	(0x3f  <<  8)		/* PLL Counter */
- #define		AT91_PMC_OUT		(3     << 14)		/* PLL Clock Frequency Range */
-+#define			AT91_PMC_OUT_0		(0 << 14)
-+#define			AT91_PMC_OUT_1		(1 << 14)
-+#define			AT91_PMC_OUT_2		(2 << 14)
-+#define			AT91_PMC_OUT_3		(3 << 14)
- #define		AT91_PMC_MUL		(0x7ff << 16)		/* PLL Multiplier */
-+#define			AT91_PMC_MUL_(n)		(((n) << 16) & AT91_PMC_MUL)
-+#define		AT91_PMC3_MUL		(0x7f << 18)		/* PLL Multiplier [SAMA5 only]*/
-+#define			AT91_PMC3_MUL_(n)		(((n) << 18) & AT91_PMC3_MUL)
- #define		AT91_PMC_USBDIV		(3     << 28)		/* USB Divisor (PLLB only) */
- #define			AT91_PMC_USBDIV_1		(0 << 28)
- #define			AT91_PMC_USBDIV_2		(1 << 28)
-@@ -153,6 +162,7 @@
- #define		AT91_PMC_MOSCSELS	(1 << 16)		/* Main Oscillator Selection [some SAM9] */
- #define		AT91_PMC_MOSCRCS	(1 << 17)		/* Main On-Chip RC [some SAM9] */
- #define		AT91_PMC_CFDEV		(1 << 18)		/* Clock Failure Detector Event [some SAM9] */
-+#define		AT91_PMC_GCKRDY		(1 << 24)
- #define	AT91_PMC_IMR		0x6c			/* Interrupt Mask Register */
- #define	AT91_PMC_PLLICPR	0x80			/* PLL Charge Pump Current Register */
- #define		AT91_PMC_ICPPLLA	(0xf <<  0)
-@@ -179,6 +189,13 @@
+-	putc_ll('>');
++	relocate_to_current_adr();
++	setup_c();
++
++	pbl_set_putc(at91_dbgu_putc, dbgu_base);
++
++	ek_turn_led(RGB_LED_RED | RGB_LED_GREEN); /* Yellow */
++	sama5d2_udelay_init(MASTER_CLOCK);
++	sama5d2_d1g_ddrconf();
++	sama5d2_sdhci_start_image(r4);
+ }
  
- #define AT91_PMC_PCR		0x10c			/* Peripheral Control Register [some SAM9] */
- #define		AT91_PMC_PCR_PID	(0x3f  <<  0)		/* Peripheral ID */
-+#define		AT91_PMC_GCKCSS	(0x7 << 8)
-+#define			AT91_PMC_GCKCSS_SLOW_CLK	(0x0 << 8)
-+#define			AT91_PMC_GCKCSS_MAIN_CLK	(0x1 << 8)
-+#define			AT91_PMC_GCKCSS_PLLA_CLK	(0x2 << 8)
-+#define			AT91_PMC_GCKCSS_UPLL_CLK	(0x3 << 8)
-+#define			AT91_PMC_GCKCSS_MCK_CLK		(0x4 << 8)
-+#define			AT91_PMC_GCKCSS_AUDIO_CLK	(0x5 << 8)
- #define		AT91_PMC_PCR_CMD	(0x1  <<  12)		/* Command */
- #define		AT91_PMC_PCR_DIV_MASK	(0x3  <<  16)
- #define		AT91_PMC_PCR_DIV(n)	((n) <<  16)	/* Divisor value */
-@@ -186,7 +203,12 @@
- #define			AT91_PMC_PCR_DIV2	0x1		/* Peripheral clock is MCK/2 */
- #define			AT91_PMC_PCR_DIV4	0x2		/* Peripheral clock is MCK/4 */
- #define			AT91_PMC_PCR_DIV8	0x3		/* Peripheral clock is MCK/8 */
-+#define		AT91_PMC_GCKDIV		(0xff << 20)
-+#define			AT91_PMC_GCKDIV_MSK		0xff
-+#define			AT91_PMC_GCKDIV_OFFSET		20
-+#define			AT91_PMC_GCKDIV_(x)		(((x) & AT91_PMC_GCKDIV_MSK) << AT91_PMC_GCKDIV_OFFSET)
- #define		AT91_PMC_PCR_EN		(0x1  <<  28)		/* Enable */
-+#define		AT91_PMC_GCK_EN		(0x1  <<  29)
+ extern char __dtb_z_at91_sama5d27_som1_ek_start[];
  
- #define	AT91_PMC_PCER1		0x100			/* Peripheral Clock Enable Register 1 */
- #define	AT91_PMC_PCDR1		0x104			/* Peripheral Clock Disable Register 1 */
-diff --git a/arch/arm/mach-at91/include/mach/sama5d2_ll.h b/arch/arm/mach-at91/include/mach/sama5d2_ll.h
+-ENTRY_FUNCTION(start_sama5d27_som1_ek, r0, r1, r2)
++SAMA5_ENTRY_FUNCTION(start_sama5d27_som1_ek, r4)
+ {
+ 	void *fdt;
+ 
+-	arm_cpu_lowlevel_init();
+-
+ 	if (IS_ENABLED(CONFIG_DEBUG_LL))
+-		ek_dbgu_init();
++		putc_ll('>');
+ 
+ 	fdt = __dtb_z_at91_sama5d27_som1_ek_start + get_runtime_offset();
+ 
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index 25ef854bf0b5..f388d00b8f47 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -603,6 +603,7 @@ config MACH_SAMA5D27_SOM1
+ 	bool "Microchip SAMA5D27 SoM-1 Evaluation Kit"
+ 	select SOC_SAMA5D2
+ 	select OFDEVICE
++	select MCI_ATMEL_SDHCI_PBL
+ 	select COMMON_CLK_OF_PROVIDER
+ 	help
+ 	  Select this if you are using Microchip's sama5d27 SoM evaluation kit
+diff --git a/arch/arm/mach-at91/include/mach/barebox-arm.h b/arch/arm/mach-at91/include/mach/barebox-arm.h
 new file mode 100644
-index 000000000000..7c38a84f5395
+index 000000000000..4a65c6f8fa55
 --- /dev/null
-+++ b/arch/arm/mach-at91/include/mach/sama5d2_ll.h
-@@ -0,0 +1,27 @@
-+#ifndef __MACH_SAMA5D2_LL__
-+#define __MACH_SAMA5D2_LL__
++++ b/arch/arm/mach-at91/include/mach/barebox-arm.h
+@@ -0,0 +1,21 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef AT91_BAREBOX_ARM_H_
++#define AT91_BAREBOX_ARM_H_
 +
-+#include <mach/sama5d2.h>
-+#include <mach/at91_pmc_ll.h>
-+#include <mach/early_udelay.h>
-+#include <mach/ddramc.h>
-+
-+#include <common.h>
-+
-+static inline void sama5d2_pmc_enable_periph_clock(int clk)
-+{
-+	at91_pmc_sam9x5_enable_periph_clock(SAMA5D2_BASE_PMC, clk);
-+}
-+
-+void sama5d2_lowlevel_init(void);
-+
-+/* requires relocation */
-+static inline void sama5d2_udelay_init(unsigned int msc)
-+{
-+	early_udelay_init(SAMA5D2_BASE_PMC, SAMA5D2_BASE_PITC,
-+			  SAMA5D2_ID_PIT, msc, AT91_PMC_LL_SAMA5D2);
-+}
-+
-+void sama5d2_ddr2_init(struct at91_ddramc_register *ddramc_reg_config);
-+
-+#endif
-diff --git a/arch/arm/mach-at91/sama5d2_ll.c b/arch/arm/mach-at91/sama5d2_ll.c
-new file mode 100644
-index 000000000000..a038bf4b86e6
---- /dev/null
-+++ b/arch/arm/mach-at91/sama5d2_ll.c
-@@ -0,0 +1,80 @@
-+// SPDX-License-Identifier: BSD-1-Clause
-+/*
-+ * Copyright (c) 2017, Microchip Corporation
-+ *
-+ * Microchip's name may not be used to endorse or promote products derived
-+ * from this software without specific prior written permission.
-+ */
-+
-+#include <mach/sama5d2_ll.h>
-+#include <mach/at91_ddrsdrc.h>
-+#include <mach/ddramc.h>
-+#include <mach/early_udelay.h>
-+#include <mach/at91_rstc.h>
 +#include <asm/barebox-arm.h>
 +
-+#define sama5d2_pmc_write(off, val) writel(val, SAMA5D2_BASE_PMC + off)
-+#define sama5d2_pmc_read(off) readl(SAMA5D2_BASE_PMC + off)
++#define SAMA5_ENTRY_FUNCTION(name, r4)						\
++	void name (u32 r0, u32 r1, u32 r2, u32 r3);				\
++										\
++	static void __##name(u32);						\
++										\
++	void NAKED __section(.text_head_entry_##name)	name			\
++				(u32 r0, u32 r1, u32 r2, u32 r3)		\
++		{								\
++			register u32 r4 asm("r4");				\
++			__barebox_arm_head();					\
++			__##name(r4);						\
++		}								\
++		static void NAKED noinline __##name				\
++			(u32 r4)
++#endif
+diff --git a/arch/arm/mach-at91/include/mach/sama5d2-sip-ddramc.h b/arch/arm/mach-at91/include/mach/sama5d2-sip-ddramc.h
+new file mode 100644
+index 000000000000..35c92c43fce8
+--- /dev/null
++++ b/arch/arm/mach-at91/include/mach/sama5d2-sip-ddramc.h
+@@ -0,0 +1,39 @@
++/* SPDX-License-Identifier: BSD-1-Clause
++ *
++ * Copyright (C) 2014, Atmel Corporation
++ *
++ * SAMA5D27 System-in-Package DDRAMC configuration
++ */
 +
-+void sama5d2_ddr2_init(struct at91_ddramc_register *ddramc_reg_config)
++#include <mach/at91_ddrsdrc.h>
++#include <mach/ddramc.h>
++#include <mach/sama5d2_ll.h>
++
++static inline void sama5d2_d1g_ddrconf(void) /* DDR2 1Gbit SDRAM */
 +{
-+	unsigned int reg;
++	struct at91_ddramc_register conf = {
++		.mdr = AT91_DDRC2_DBW_16_BITS | AT91_DDRC2_MD_DDR2_SDRAM,
 +
-+	/* enable ddr2 clock */
-+	sama5d2_pmc_enable_periph_clock(SAMA5D2_ID_MPDDRC);
-+	sama5d2_pmc_write(AT91_PMC_SCER, AT91CAP9_PMC_DDR);
++		.cr = AT91_DDRC2_NC_DDR10_SDR9 | AT91_DDRC2_NR_13 |
++			AT91_DDRC2_CAS_3 | AT91_DDRC2_DISABLE_RESET_DLL |
++			AT91_DDRC2_WEAK_STRENGTH_RZQ7 | AT91_DDRC2_ENABLE_DLL |
++			AT91_DDRC2_NB_BANKS_8 | AT91_DDRC2_NDQS_ENABLED |
++			AT91_DDRC2_DECOD_INTERLEAVED | AT91_DDRC2_UNAL_SUPPORTED,
 +
-+	reg = AT91_MPDDRC_RD_DATA_PATH_ONE_CYCLES;
-+	writel(reg, SAMA5D2_BASE_MPDDRC + AT91_MPDDRC_RD_DATA_PATH);
++		.rtr = 0x511,
 +
-+	reg = readl(SAMA5D2_BASE_MPDDRC + AT91_MPDDRC_IO_CALIBR);
-+	reg &= ~AT91_MPDDRC_RDIV;
-+	reg &= ~AT91_MPDDRC_TZQIO;
-+	reg |= AT91_MPDDRC_RDIV_DDR2_RZQ_50;
-+	reg |= AT91_MPDDRC_TZQIO_(101);
-+	writel(reg, SAMA5D2_BASE_MPDDRC + AT91_MPDDRC_IO_CALIBR);
++		.t0pr = AT91_DDRC2_TRAS_(7) | AT91_DDRC2_TRCD_(3) |
++			AT91_DDRC2_TWR_(3) | AT91_DDRC2_TRC_(9) |
++			AT91_DDRC2_TRP_(3) | AT91_DDRC2_TRRD_(2) |
++			AT91_DDRC2_TWTR_(2) | AT91_DDRC2_TMRD_(2),
 +
-+	/* DDRAM2 Controller initialize */
-+	at91_ddram_initialize(SAMA5D2_BASE_MPDDRC, IOMEM(SAMA5_DDRCS),
-+			      ddramc_reg_config);
++		.t1pr = AT91_DDRC2_TRFC_(22) | AT91_DDRC2_TXSNR_(23) |
++			AT91_DDRC2_TXSRD_(200) | AT91_DDRC2_TXP_(2),
++
++		.t2pr = AT91_DDRC2_TXARD_(2) | AT91_DDRC2_TXARDS_(8) |
++			AT91_DDRC2_TRPA_(4) | AT91_DDRC2_TRTP_(2) |
++			AT91_DDRC2_TFAW_(8),
++	};
++
++	sama5d2_ddr2_init(&conf);
 +}
+diff --git a/images/Makefile.at91 b/images/Makefile.at91
+index 448d71fb981d..bc63357c5d19 100644
+--- a/images/Makefile.at91
++++ b/images/Makefile.at91
+@@ -18,6 +18,11 @@ pblb-$(CONFIG_MACH_SAMA5D27_SOM1) += start_sama5d27_som1_ek
+ FILE_barebox-sama5d27-som1-ek.img = start_sama5d27_som1_ek.pblb
+ image-$(CONFIG_MACH_SAMA5D27_SOM1) += barebox-sama5d27-som1-ek.img
+ 
++pblb-$(CONFIG_MACH_SAMA5D27_SOM1) += start_sama5d27_som1_ek_xload_mmc
++MAX_PBL_IMAGE_SIZE_start_sama5d27_som1_ek_xload_mmc = 0xffff
++FILE_barebox-sama5d27-som1-ek-xload-mmc.img = start_sama5d27_som1_ek_xload_mmc.pblb
++image-$(CONFIG_MACH_SAMA5D27_SOM1) += barebox-sama5d27-som1-ek-xload-mmc.img
 +
-+static void sama5d2_pmc_init(void)
-+{
-+	at91_pmc_init(SAMA5D2_BASE_PMC, AT91_PMC_LL_SAMA5D2);
-+
-+	/* Configure PLLA = MOSC * (PLL_MULA + 1) / PLL_DIVA */
-+	sama5d2_pmc_write(AT91_CKGR_PLLAR, AT91_PMC_PLLA_WR_ERRATA);
-+	sama5d2_pmc_write(AT91_CKGR_PLLAR, AT91_PMC_PLLA_WR_ERRATA
-+		       | AT91_PMC3_MUL_(40) | AT91_PMC_OUT_0
-+		       | AT91_PMC_PLLCOUNT
-+		       | AT91_PMC_DIV_BYPASS);
-+
-+	while (!(sama5d2_pmc_read(AT91_PMC_SR) & AT91_PMC_LOCKA))
-+		;
-+
-+	/* Initialize PLLA charge pump */
-+	/* No need: we keep what is set in ROM code */
-+	//sama5d2_pmc_write(AT91_PMC_PLLICPR, AT91_PMC_IPLLA_3);
-+
-+	/* Switch PCK/MCK on PLLA output */
-+	at91_pmc_cfg_mck(SAMA5D2_BASE_PMC,
-+			AT91_PMC_H32MXDIV
-+			| AT91_PMC_PLLADIV2_ON
-+			| AT91SAM9_PMC_MDIV_3
-+			| AT91_PMC_CSS_PLLA,
-+			AT91_PMC_LL_SAMA5D2);
-+}
-+
-+static void sama5d2_rstc_init(void)
-+{
-+	writel(AT91_RSTC_KEY | AT91_RSTC_URSTEN,
-+	       SAMA5D2_BASE_RSTC + AT91_RSTC_MR);
-+}
-+
-+void sama5d2_lowlevel_init(void)
-+{
-+	arm_cpu_lowlevel_init();
-+	sama5d2_pmc_init();
-+	sama5d2_rstc_init();
-+}
+ pblb-$(CONFIG_MACH_SAMA5D27_GIANTBOARD) += start_sama5d27_giantboard
+ FILE_barebox-groboards-sama5d27-giantboard.img = start_sama5d27_giantboard.pblb
+ image-$(CONFIG_MACH_SAMA5D27_GIANTBOARD) += barebox-groboards-sama5d27-giantboard.img
 -- 
 2.27.0
 
