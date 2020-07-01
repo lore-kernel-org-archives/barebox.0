@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jqYmL-0001Ee-TN
- for barebox@lists.infradead.org; Wed, 01 Jul 2020 09:11:49 +0000
+ id 1jqYmM-0001Eg-1b
+ for barebox@lists.infradead.org; Wed, 01 Jul 2020 09:11:47 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  1 Jul 2020 11:11:15 +0200
-Message-Id: <20200701091122.3437-22-a.fatoum@pengutronix.de>
+Date: Wed,  1 Jul 2020 11:11:14 +0200
+Message-Id: <20200701091122.3437-21-a.fatoum@pengutronix.de>
 In-Reply-To: <20200701091122.3437-1-a.fatoum@pengutronix.de>
 References: <20200701091122.3437-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,72 +21,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 21/28] ARM: at91: debug_ll: remove duplicated
- IS_ENABLED(CONFIG_DEBUG_LL) condition
+Subject: [PATCH 20/28] ARM: at91: sama5d2: reuse stack set-up by first stage
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-There are three users of at91_dbgu_setup_ll and all already call this
-function only when IS_ENABLED(CONFIG_DEBUG_LL). Remove the duplicated
-condition from the function itself. This allows us to use the function
-for pbl_set_console use later on, even with DEBUG_LL disabled.
+Stack is always set up to end of SRAM before PBL, either by ROM code or
+by first stage bootloader, be it at91bootstrap or barebox in a later
+commit, so no need to change the stack pointer again.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/mach-at91/include/mach/at91_dbgu.h | 34 ++++++++++-----------
- 1 file changed, 16 insertions(+), 18 deletions(-)
+ arch/arm/boards/sama5d27-giantboard/lowlevel.c | 13 +++----------
+ arch/arm/boards/sama5d27-som1/lowlevel.c       | 13 +++----------
+ 2 files changed, 6 insertions(+), 20 deletions(-)
 
-diff --git a/arch/arm/mach-at91/include/mach/at91_dbgu.h b/arch/arm/mach-at91/include/mach/at91_dbgu.h
-index 0ba9cdae10ce..29aaa2dfe154 100644
---- a/arch/arm/mach-at91/include/mach/at91_dbgu.h
-+++ b/arch/arm/mach-at91/include/mach/at91_dbgu.h
-@@ -94,30 +94,28 @@ static inline void at91_dbgu_setup_ll(void __iomem *dbgu_base,
- 				      unsigned mck,
- 				      unsigned baudrate)
+diff --git a/arch/arm/boards/sama5d27-giantboard/lowlevel.c b/arch/arm/boards/sama5d27-giantboard/lowlevel.c
+index e08217105bcc..4419e946f1a8 100644
+--- a/arch/arm/boards/sama5d27-giantboard/lowlevel.c
++++ b/arch/arm/boards/sama5d27-giantboard/lowlevel.c
+@@ -34,10 +34,12 @@ static void dbgu_init(void)
+ 
+ extern char __dtb_z_at91_sama5d27_giantboard_start[];
+ 
+-static noinline void giantboard_entry(void)
++ENTRY_FUNCTION(start_sama5d27_giantboard, r0, r1, r2)
  {
--	if (IS_ENABLED(CONFIG_DEBUG_LL)) {
--		u32 brgr = mck / (baudrate * 16);
-+	u32 brgr = mck / (baudrate * 16);
+ 	void *fdt;
  
--		if ((mck / (baudrate * 16)) % 10 >= 5)
--			brgr++;
-+	if ((mck / (baudrate * 16)) % 10 >= 5)
-+		brgr++;
++	arm_cpu_lowlevel_init();
++
+ 	if (IS_ENABLED(CONFIG_DEBUG_LL))
+ 		dbgu_init();
  
--		writel(~0, dbgu_base + AT91_DBGU_IDR);
-+	writel(~0, dbgu_base + AT91_DBGU_IDR);
+@@ -45,12 +47,3 @@ static noinline void giantboard_entry(void)
  
--		writel(AT91_DBGU_RSTRX
--		       | AT91_DBGU_RSTTX
--		       | AT91_DBGU_RXDIS
--		       | AT91_DBGU_TXDIS,
--		       dbgu_base + AT91_DBGU_CR);
-+	writel(AT91_DBGU_RSTRX
-+	       | AT91_DBGU_RSTTX
-+	       | AT91_DBGU_RXDIS
-+	       | AT91_DBGU_TXDIS,
-+	       dbgu_base + AT91_DBGU_CR);
- 
--		writel(brgr, dbgu_base + AT91_DBGU_BRGR);
-+	writel(brgr, dbgu_base + AT91_DBGU_BRGR);
- 
--		writel(AT91_DBGU_PAR_NONE
--		       | AT91_DBGU_CHMODE_NORMAL
--		       | AT91_DBGU_CHRL_8BIT
--		       | AT91_DBGU_NBSTOP_1BIT,
--		       dbgu_base + AT91_DBGU_MR);
-+	writel(AT91_DBGU_PAR_NONE
-+	       | AT91_DBGU_CHMODE_NORMAL
-+	       | AT91_DBGU_CHRL_8BIT
-+	       | AT91_DBGU_NBSTOP_1BIT,
-+	       dbgu_base + AT91_DBGU_MR);
- 
--		writel(AT91_DBGU_RXEN | AT91_DBGU_TXEN, dbgu_base + AT91_DBGU_CR);
--	}
-+	writel(AT91_DBGU_RXEN | AT91_DBGU_TXEN, dbgu_base + AT91_DBGU_CR);
+ 	barebox_arm_entry(SAMA5_DDRCS, SZ_128M, fdt);
  }
+-
+-ENTRY_FUNCTION(start_sama5d27_giantboard, r0, r1, r2)
+-{
+-	arm_cpu_lowlevel_init();
+-
+-	arm_setup_stack(SAMA5D2_SRAM_BASE + SAMA5D2_SRAM_SIZE);
+-
+-	giantboard_entry();
+-}
+diff --git a/arch/arm/boards/sama5d27-som1/lowlevel.c b/arch/arm/boards/sama5d27-som1/lowlevel.c
+index 2b39e5abc396..b7780ec8ae43 100644
+--- a/arch/arm/boards/sama5d27-som1/lowlevel.c
++++ b/arch/arm/boards/sama5d27-som1/lowlevel.c
+@@ -58,10 +58,12 @@ static void ek_dbgu_init(void)
  
- #endif
+ extern char __dtb_z_at91_sama5d27_som1_ek_start[];
+ 
+-static noinline void som1_entry(void)
++ENTRY_FUNCTION(start_sama5d27_som1_ek, r0, r1, r2)
+ {
+ 	void *fdt;
+ 
++	arm_cpu_lowlevel_init();
++
+ 	if (IS_ENABLED(CONFIG_DEBUG_LL))
+ 		ek_dbgu_init();
+ 
+@@ -70,12 +72,3 @@ static noinline void som1_entry(void)
+ 	ek_turn_led(RGB_LED_GREEN);
+ 	barebox_arm_entry(SAMA5_DDRCS, SZ_128M, fdt);
+ }
+-
+-ENTRY_FUNCTION(start_sama5d27_som1_ek, r0, r1, r2)
+-{
+-	arm_cpu_lowlevel_init();
+-
+-	arm_setup_stack(SAMA5D2_SRAM_BASE + SAMA5D2_SRAM_SIZE);
+-
+-	som1_entry();
+-}
 -- 
 2.27.0
 
