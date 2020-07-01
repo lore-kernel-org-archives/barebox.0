@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jqVGf-0006ck-Km
- for barebox@lists.infradead.org; Wed, 01 Jul 2020 05:26:47 +0000
-Date: Wed, 1 Jul 2020 07:26:42 +0200
+ id 1jqVlU-0001dz-Pd
+ for barebox@lists.infradead.org; Wed, 01 Jul 2020 05:58:37 +0000
+Date: Wed, 1 Jul 2020 07:58:34 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200701052642.GI15485@pengutronix.de>
-References: <20200626064129.12094-1-s.hauer@pengutronix.de>
- <fa8c9ed1-8cde-a015-86ee-10c86ff65bbf@pengutronix.de>
+Message-ID: <20200701055834.GK15485@pengutronix.de>
+References: <1593524914-228154-1-git-send-email-r.karszniewicz@phytec.de>
+ <1a2cb925-dccd-8de7-08da-c4abe76d473c@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <fa8c9ed1-8cde-a015-86ee-10c86ff65bbf@pengutronix.de>
+In-Reply-To: <1a2cb925-dccd-8de7-08da-c4abe76d473c@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,31 +23,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] startup: Fix do_autoboot_countdown() running multiple
- times
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [RFC PATCH 0/4] Introduce global.bootm.root env var for booting
+ via PARTUUID
+To: Robert Karszniewicz <r.karszniewicz@phytec.de>
+Cc: barebox@lists.infradead.org
 
-On Mon, Jun 29, 2020 at 10:37:43AM +0200, Ahmad Fatoum wrote:
-> Hi,
-> 
-> On 6/26/20 8:41 AM, Sascha Hauer wrote:
-> > The comment above do_autoboot_countdown() states: "This function can be
-> > called multiple times, it is executed only the first time.". Since
-> > 1973892533 ("startup: don't clobber original autoboot state") This is no
-> > longer the case. Bring back the old and documented behaviour.
-> 
-> guilty as charged. I didn't read the comment..
-> do_autoboot_countdown is called only once though in the code base.
-> How do you make use of being able to call it multiple times?
+Hi Robert,
 
-We use this in a customer project. The decision whether we want to abort
-boot or not has to be made earlier. That said, it's out of tree code, so
-should this hurt anywhere else, we can change it and find another
-solution for our customer.
+On Tue, Jun 30, 2020 at 04:20:17PM +0200, Robert Karszniewicz wrote:
+> The problem is that we want to be able to have the rootfs and kernel on
+> separate partitions.
 
-Sascha
+Why do you want to have that? It's kind of traditional to have the
+kernel separated from the rootfs in some extra "kernel" partition, but
+are there good reasons for it? There's an overhead in that the
+bootloader has to read from a filesystem instead of only a raw
+partition. Is that the reason?
 
+Here at Pengutronix we are happy that we only have one partition image
+that has everything needed to boot, including a description how to boot
+it and including the kernel. No extra items that the bootloader has to
+take care of, just put one thing somewhere and be done with it.
+
+> We've looked into the Boot Loader Specification, but
+> from what we saw, it makes A-B systems difficult (according to the spec,
+> there can only be one "$BOOT" filesystem on a device).
+
+barebox is more relaxed here. What we do here is to put two full root
+filesystems into two different partitions on a SD/MMC. Each of the
+partitions has one or more /loader/entries/*.conf file(s) and kernels.
+You can then boot with "boot mmc0.0" into the first rootfs or with "boot
+mmc0.1" into the second.
+This may not be really conform to the specification, but works in
+barebox and is a supported usecase. We do this for A/B Boot scenarios in
+many projects.
+
+Regards,
+  Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
