@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jqVDm-0004r5-8r
- for barebox@lists.infradead.org; Wed, 01 Jul 2020 05:23:53 +0000
+ id 1jqVDm-0004qr-3g
+ for barebox@lists.infradead.org; Wed, 01 Jul 2020 05:23:56 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  1 Jul 2020 07:23:35 +0200
-Message-Id: <20200701052340.9462-24-a.fatoum@pengutronix.de>
+Date: Wed,  1 Jul 2020 07:23:16 +0200
+Message-Id: <20200701052340.9462-5-a.fatoum@pengutronix.de>
 In-Reply-To: <20200701052340.9462-1-a.fatoum@pengutronix.de>
 References: <20200701052340.9462-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,189 +21,224 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 23/28] ARM: at91: sama5d27-som1: add additional first stage
- entry point
+Subject: [PATCH 04/28] ARM: at91: migrate at91sam9_ddrsdr.h to use
+ at91bootstrap's at91_ddrsdrc.h
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The BootROM constrains us to a 64K big first stage bootloader. Add a PBL
-entry point for a xload barebox that sets up the minimum necessary to
-load a FAT32 barebox.bin from the SD-Card.
+Instead of adding missing definitions to the existing at91sam9_ddrsdr.h
+and adapting the incoming DDRAM initialization code from at91bootstrap,
+just replace the lightly used existing header with:
+https://github.com/linux4sam/at91bootstrap/blob/v3.8.12/include/arch/at91_ddrsdrc.h
+
+For easier comprehension, the replacement is done in three steps:
+Here the existing at91sam9_ddrsdr.h has its now duplicate (in function,
+not name) macros removed and existing users are migrated to use the new
+header.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/boards/sama5d27-som1/lowlevel.c      | 32 +++++++++------
- arch/arm/mach-at91/Kconfig                    |  1 +
- arch/arm/mach-at91/include/mach/barebox-arm.h | 21 ++++++++++
- .../include/mach/sama5d2-sip-ddramc.h         | 39 +++++++++++++++++++
- images/Makefile.at91                          |  5 +++
- 5 files changed, 87 insertions(+), 11 deletions(-)
- create mode 100644 arch/arm/mach-at91/include/mach/barebox-arm.h
- create mode 100644 arch/arm/mach-at91/include/mach/sama5d2-sip-ddramc.h
+ arch/arm/mach-at91/at91sam9g45_reset.S        |   6 +-
+ .../mach-at91/include/mach/at91sam9_ddrsdr.h  | 138 ++----------------
+ 2 files changed, 12 insertions(+), 132 deletions(-)
 
-diff --git a/arch/arm/boards/sama5d27-som1/lowlevel.c b/arch/arm/boards/sama5d27-som1/lowlevel.c
-index 2e408ce832f7..d52c4ca7465e 100644
---- a/arch/arm/boards/sama5d27-som1/lowlevel.c
-+++ b/arch/arm/boards/sama5d27-som1/lowlevel.c
-@@ -5,13 +5,12 @@
+diff --git a/arch/arm/mach-at91/at91sam9g45_reset.S b/arch/arm/mach-at91/at91sam9g45_reset.S
+index 98db15c0b0fc..c3115fd9ca7a 100644
+--- a/arch/arm/mach-at91/at91sam9g45_reset.S
++++ b/arch/arm/mach-at91/at91sam9g45_reset.S
+@@ -19,13 +19,13 @@
+ 			.globl	at91sam9g45_reset
  
- #include <common.h>
- #include <init.h>
+ at91sam9g45_reset:	mov	r2, #1
+-			mov	r3, #AT91_DDRSDRC_LPCB_POWER_DOWN
++			mov	r3, #AT91_DDRC2_LPCB_POWERDOWN
+ 			ldr	r4, =AT91_RSTC_KEY | AT91_RSTC_PERRST | AT91_RSTC_PROCRST
+ 
+ 			.balign	32				@ align to cache line
+ 
+-			str	r2, [r0, #AT91_DDRSDRC_RTR]	@ disable DDR0 access
+-			str	r3, [r0, #AT91_DDRSDRC_LPR]	@ power down DDR0
++			str	r2, [r0, #AT91_HDDRSDRC2_RTR]	@ disable DDR0 access
++			str	r3, [r0, #AT91_HDDRSDRC2_LPR]	@ power down DDR0
+ 			str	r4, [r1]			@ reset processor
+ 
+ 			b	.
+diff --git a/arch/arm/mach-at91/include/mach/at91sam9_ddrsdr.h b/arch/arm/mach-at91/include/mach/at91sam9_ddrsdr.h
+index 496cf707014e..88ed1fce558f 100644
+--- a/arch/arm/mach-at91/include/mach/at91sam9_ddrsdr.h
++++ b/arch/arm/mach-at91/include/mach/at91sam9_ddrsdr.h
+@@ -12,130 +12,10 @@
+ #ifndef AT91SAM9_DDRSDR_H
+ #define AT91SAM9_DDRSDR_H
+ 
+-#define AT91_DDRSDRC_MR		0x00	/* Mode Register */
+-#define		AT91_DDRSDRC_MODE	(0x7 << 0)		/* Command Mode */
+-#define			AT91_DDRSDRC_MODE_NORMAL	0
+-#define			AT91_DDRSDRC_MODE_NOP		1
+-#define			AT91_DDRSDRC_MODE_PRECHARGE	2
+-#define			AT91_DDRSDRC_MODE_LMR		3
+-#define			AT91_DDRSDRC_MODE_REFRESH	4
+-#define			AT91_DDRSDRC_MODE_EXT_LMR	5
+-#define			AT91_DDRSDRC_MODE_DEEP		6
 -
--#include <asm/barebox-arm-head.h>
--#include <asm/barebox-arm.h>
-+#include <mach/barebox-arm.h>
- #include <mach/sama5d2_ll.h>
- #include <mach/iomux.h>
-+#include <mach/xload.h>
- #include <debug_ll.h>
--#include <mach/at91_dbgu.h>
-+#include <mach/sama5d2-sip-ddramc.h>
- 
- #define RGB_LED_GREEN (1 << 0)
- #define RGB_LED_RED   (1 << 1)
-@@ -40,23 +39,34 @@ static void ek_turn_led(unsigned color)
- 	}
- }
- 
--static void ek_dbgu_init(void)
-+SAMA5_ENTRY_FUNCTION(start_sama5d27_som1_ek_xload_mmc, r4)
- {
--	sama5d2_resetup_uart_console(MASTER_CLOCK);
-+	void __iomem *dbgu_base;
-+	sama5d2_lowlevel_init();
-+
-+	dbgu_base = sama5d2_resetup_uart_console(MASTER_CLOCK);
-+	if (IS_ENABLED(CONFIG_DEBUG_LL))
-+		putc_ll('>');
- 
--	putc_ll('>');
-+	relocate_to_current_adr();
-+	setup_c();
-+
-+	pbl_set_putc(at91_dbgu_putc, dbgu_base);
-+
-+	ek_turn_led(RGB_LED_RED | RGB_LED_GREEN); /* Yellow */
-+	sama5d2_udelay_init(MASTER_CLOCK);
-+	sama5d2_d1g_ddrconf();
-+	sama5d2_sdhci_start_image(r4);
- }
- 
- extern char __dtb_z_at91_sama5d27_som1_ek_start[];
- 
--ENTRY_FUNCTION(start_sama5d27_som1_ek, r0, r1, r2)
-+SAMA5_ENTRY_FUNCTION(start_sama5d27_som1_ek, r4)
- {
- 	void *fdt;
- 
--	arm_cpu_lowlevel_init();
+-#define AT91_DDRSDRC_RTR	0x04	/* Refresh Timer Register */
+-#define		AT91_DDRSDRC_COUNT	(0xfff << 0)		/* Refresh Timer Counter */
 -
- 	if (IS_ENABLED(CONFIG_DEBUG_LL))
--		ek_dbgu_init();
-+		putc_ll('>');
- 
- 	fdt = __dtb_z_at91_sama5d27_som1_ek_start + get_runtime_offset();
- 
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 25ef854bf0b5..f388d00b8f47 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -603,6 +603,7 @@ config MACH_SAMA5D27_SOM1
- 	bool "Microchip SAMA5D27 SoM-1 Evaluation Kit"
- 	select SOC_SAMA5D2
- 	select OFDEVICE
-+	select MCI_ATMEL_SDHCI_PBL
- 	select COMMON_CLK_OF_PROVIDER
- 	help
- 	  Select this if you are using Microchip's sama5d27 SoM evaluation kit
-diff --git a/arch/arm/mach-at91/include/mach/barebox-arm.h b/arch/arm/mach-at91/include/mach/barebox-arm.h
-new file mode 100644
-index 000000000000..4a65c6f8fa55
---- /dev/null
-+++ b/arch/arm/mach-at91/include/mach/barebox-arm.h
-@@ -0,0 +1,21 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef AT91_BAREBOX_ARM_H_
-+#define AT91_BAREBOX_ARM_H_
-+
-+#include <asm/barebox-arm.h>
-+
-+#define SAMA5_ENTRY_FUNCTION(name, r4)						\
-+	void name (u32 r0, u32 r1, u32 r2, u32 r3);				\
-+										\
-+	static void __##name(u32);						\
-+										\
-+	void NAKED __section(.text_head_entry_##name)	name			\
-+				(u32 r0, u32 r1, u32 r2, u32 r3)		\
-+		{								\
-+			register u32 r4 asm("r4");				\
-+			__barebox_arm_head();					\
-+			__##name(r4);						\
-+		}								\
-+		static void NAKED noinline __##name				\
-+			(u32 r4)
-+#endif
-diff --git a/arch/arm/mach-at91/include/mach/sama5d2-sip-ddramc.h b/arch/arm/mach-at91/include/mach/sama5d2-sip-ddramc.h
-new file mode 100644
-index 000000000000..35c92c43fce8
---- /dev/null
-+++ b/arch/arm/mach-at91/include/mach/sama5d2-sip-ddramc.h
-@@ -0,0 +1,39 @@
-+/* SPDX-License-Identifier: BSD-1-Clause
-+ *
-+ * Copyright (C) 2014, Atmel Corporation
-+ *
-+ * SAMA5D27 System-in-Package DDRAMC configuration
-+ */
-+
+-#define AT91_DDRSDRC_CR		0x08	/* Configuration Register */
+-#define		AT91_DDRSDRC_NC		(3 << 0)		/* Number of Column Bits */
+-#define			AT91_DDRSDRC_NC_SDR8	(0 << 0)
+-#define			AT91_DDRSDRC_NC_SDR9	(1 << 0)
+-#define			AT91_DDRSDRC_NC_SDR10	(2 << 0)
+-#define			AT91_DDRSDRC_NC_SDR11	(3 << 0)
+-#define			AT91_DDRSDRC_NC_DDR9	(0 << 0)
+-#define			AT91_DDRSDRC_NC_DDR10	(1 << 0)
+-#define			AT91_DDRSDRC_NC_DDR11	(2 << 0)
+-#define			AT91_DDRSDRC_NC_DDR12	(3 << 0)
+-#define		AT91_DDRSDRC_NR		(3 << 2)		/* Number of Row Bits */
+-#define			AT91_DDRSDRC_NR_11	(0 << 2)
+-#define			AT91_DDRSDRC_NR_12	(1 << 2)
+-#define			AT91_DDRSDRC_NR_13	(2 << 2)
+-#define			AT91_DDRSDRC_NR_14	(3 << 2)
+-#define		AT91_DDRSDRC_CAS	(7 << 4)		/* CAS Latency */
+-#define			AT91_DDRSDRC_CAS_2	(2 << 4)
+-#define			AT91_DDRSDRC_CAS_3	(3 << 4)
+-#define			AT91_DDRSDRC_CAS_25	(6 << 4)
+-#define		AT91_DDRSDRC_RST_DLL	(1 << 7)		/* Reset DLL */
+-#define		AT91_DDRSDRC_DICDS	(1 << 8)		/* Output impedance control */
+-#define		AT91_DDRSDRC_DIS_DLL	(1 << 9)		/* Disable DLL [SAM9 Only] */
+-#define		AT91_DDRSDRC_OCD	(1 << 12)		/* Off-Chip Driver [SAM9 Only] */
+-#define		AT91_DDRSDRC_DQMS	(1 << 16)		/* Mask Data is Shared [SAM9 Only] */
+-#define		AT91_DDRSDRC_ACTBST	(1 << 18)		/* Active Bank X to Burst Stop Read Access Bank Y [SAM9 Only] */
+-#define		AT91_DDRSDRC_NB		(1 << 20)		/* Number of
+-Banks [not SAM9G45] */
+-#define			AT91_SDRAMC_NB_4	(0 << 20)
+-#define			AT91_SDRAMC_NB_8	(1 << 20)
+-
+-#define AT91_DDRSDRC_T0PR	0x0C	/* Timing 0 Register */
+-#define		AT91_DDRSDRC_TRAS	(0xf <<  0)		/* Active to Precharge delay */
+-#define		AT91_DDRSDRC_TRCD	(0xf <<  4)		/* Row to Column delay */
+-#define		AT91_DDRSDRC_TWR	(0xf <<  8)		/* Write recovery delay */
+-#define		AT91_DDRSDRC_TRC	(0xf << 12)		/* Row cycle delay */
+-#define		AT91_DDRSDRC_TRP	(0xf << 16)		/* Row precharge delay */
+-#define		AT91_DDRSDRC_TRRD	(0xf << 20)		/* Active BankA to BankB */
+-#define		AT91_DDRSDRC_TWTR	(0x7 << 24)		/* Internal Write to Read delay */
+-#define		AT91CAP9_DDRSDRC_TWTR	(1   << 24)		/* Internal Write to Read delay */
+-#define		AT91_DDRSDRC_RED_WRRD	(0x1 << 27)		/* Reduce Write to Read Delay [SAM9 Only] */
+-#define		AT91_DDRSDRC_TMRD	(0xf << 28)		/* Load mode to active/refresh delay */
+-
+-#define AT91_DDRSDRC_T1PR	0x10	/* Timing 1 Register */
+-#define		AT91_DDRSDRC_TRFC	(0x1f << 0)		/* Row Cycle Delay */
+-#define		AT91_DDRSDRC_TXSNR	(0xff << 8)		/* Exit self-refresh to non-read */
+-#define		AT91_DDRSDRC_TXSRD	(0xff << 16)		/* Exit self-refresh to read */
+-#define		AT91_DDRSDRC_TXP	(0xf  << 24)		/* Exit power-down delay */
+-
+-#define AT91_DDRSDRC_T2PR	0x14	/* Timing 2 Register [SAM9 Only] */
+-#define		AT91_DDRSDRC_TXARD	(0xf  << 0)		/* Exit active power down delay to read command in mode "Fast Exit" */
+-#define		AT91_DDRSDRC_TXARDS	(0xf  << 4)		/* Exit active power down delay to read command in mode "Slow Exit" */
+-#define		AT91_DDRSDRC_TRPA	(0xf  << 8)		/* Row Precharge All delay */
+-#define		AT91_DDRSDRC_TRTP	(0x7  << 12)		/* Read to Precharge delay */
+-
+-#define AT91_DDRSDRC_LPR	0x1C	/* Low Power Register */
+-#define AT91CAP9_DDRSDRC_LPR	0x18	/* Low Power Register */
+-#define		AT91_DDRSDRC_LPCB	(3 << 0)		/* Low-power Configurations */
+-#define			AT91_DDRSDRC_LPCB_DISABLE		0
+-#define			AT91_DDRSDRC_LPCB_SELF_REFRESH		1
+-#define			AT91_DDRSDRC_LPCB_POWER_DOWN		2
+-#define			AT91_DDRSDRC_LPCB_DEEP_POWER_DOWN	3
+-#define		AT91_DDRSDRC_CLKFR	(1 << 2)	/* Clock Frozen */
+-#define		AT91_DDRSDRC_PASR	(7 << 4)	/* Partial Array Self Refresh */
+-#define		AT91_DDRSDRC_TCSR	(3 << 8)	/* Temperature Compensated Self Refresh */
+-#define		AT91_DDRSDRC_DS		(3 << 10)	/* Drive Strength */
+-#define		AT91_DDRSDRC_TIMEOUT	(3 << 12)	/* Time to define when Low Power Mode is enabled */
+-#define			AT91_DDRSDRC_TIMEOUT_0_CLK_CYCLES	(0 << 12)
+-#define			AT91_DDRSDRC_TIMEOUT_64_CLK_CYCLES	(1 << 12)
+-#define			AT91_DDRSDRC_TIMEOUT_128_CLK_CYCLES	(2 << 12)
+-#define		AT91_DDRSDRC_APDE	(1 << 16)	 /* Active power down exit time */
+-#define		AT91_DDRSDRC_UPD_MR	(3 << 20)	 /* Update load mode register and extended mode register */
+-
+-#define AT91_DDRSDRC_MDR	0x20	/* Memory Device Register */
+-#define AT91CAP9_DDRSDRC_MDR	0x1C	/* Memory Device Register */
+-#define		AT91_DDRSDRC_MD		(3 << 0)		/* Memory Device Type */
+-#define			AT91_DDRSDRC_MD_SDR		0
+-#define			AT91_DDRSDRC_MD_LOW_POWER_SDR	1
+-#define			AT91CAP9_DDRSDRC_MD_DDR		2
+-#define			AT91_DDRSDRC_MD_LOW_POWER_DDR	3
+-#define			AT91_DDRSDRC_MD_DDR2		6	/* [SAM9 Only] */
+-#define		AT91_DDRSDRC_DBW	(1 << 4)		/* Data Bus Width */
+-#define			AT91_DDRSDRC_DBW_32BITS		(0 <<  4)
+-#define			AT91_DDRSDRC_DBW_16BITS		(1 <<  4)
+-
+-#define AT91_DDRSDRC_DLL	0x24	/* DLL Information Register */
+-#define AT91CAP9_DDRSDRC_DLL	0x20	/* DLL Information Register */
+-#define		AT91_DDRSDRC_MDINC	(1 << 0)		/* Master Delay increment */
+-#define		AT91_DDRSDRC_MDDEC	(1 << 1)		/* Master Delay decrement */
+-#define		AT91_DDRSDRC_MDOVF	(1 << 2)		/* Master Delay Overflow */
+-#define		AT91CAP9_DDRSDRC_SDCOVF	(1 << 3)		/* Slave Delay Correction Overflow */
+-#define		AT91CAP9_DDRSDRC_SDCUDF	(1 << 4)		/* Slave Delay Correction Underflow */
+-#define		AT91CAP9_DDRSDRC_SDERF	(1 << 5)		/* Slave Delay Correction error */
+-#define		AT91_DDRSDRC_MDVAL	(0xff <<  8)		/* Master Delay value */
+-#define		AT91CAP9_DDRSDRC_SDVAL	(0xff << 16)		/* Slave Delay value */
+-#define		AT91CAP9_DDRSDRC_SDCVAL	(0xff << 24)		/* Slave Delay Correction value */
+-
+-#define AT91_DDRSDRC_HS		0x2C	/* High Speed Register [SAM9 Only] */
+-#define		AT91_DDRSDRC_DIS_ATCP_RD	(1 << 2)	/* Anticip read access is disabled */
+-
+-#define AT91_DDRSDRC_DELAY(n)	(0x30 + (0x4 * (n)))	/* Delay I/O Register n */
+-
+-#define AT91_DDRSDRC_WPMR	0xE4	/* Write Protect Mode Register [SAM9 Only] */
+-#define		AT91_DDRSDRC_WP		(1 << 0)		/* Write protect enable */
+-#define		AT91_DDRSDRC_WPKEY	(0xffffff << 8)		/* Write protect key */
+-#define		AT91_DDRSDRC_KEY	(0x444452 << 8)		/* Write protect key = "DDR" */
+-
+-#define AT91_DDRSDRC_WPSR	0xE8	/* Write Protect Status Register [SAM9 Only] */
+-#define		AT91_DDRSDRC_WPVS	(1 << 0)		/* Write protect violation status */
+-#define		AT91_DDRSDRC_WPVSRC	(0xffff << 8)		/* Write protect violation source */
 +#include <mach/at91_ddrsdrc.h>
-+#include <mach/ddramc.h>
-+#include <mach/sama5d2_ll.h>
-+
-+static inline void sama5d2_d1g_ddrconf(void) /* DDR2 1Gbit SDRAM */
-+{
-+	struct at91_ddramc_register conf = {
-+		.mdr = AT91_DDRC2_DBW_16_BITS | AT91_DDRC2_MD_DDR2_SDRAM,
-+
-+		.cr = AT91_DDRC2_NC_DDR10_SDR9 | AT91_DDRC2_NR_13 |
-+			AT91_DDRC2_CAS_3 | AT91_DDRC2_DISABLE_RESET_DLL |
-+			AT91_DDRC2_WEAK_STRENGTH_RZQ7 | AT91_DDRC2_ENABLE_DLL |
-+			AT91_DDRC2_NB_BANKS_8 | AT91_DDRC2_NDQS_ENABLED |
-+			AT91_DDRC2_DECOD_INTERLEAVED | AT91_DDRC2_UNAL_SUPPORTED,
-+
-+		.rtr = 0x511,
-+
-+		.t0pr = AT91_DDRC2_TRAS_(7) | AT91_DDRC2_TRCD_(3) |
-+			AT91_DDRC2_TWR_(3) | AT91_DDRC2_TRC_(9) |
-+			AT91_DDRC2_TRP_(3) | AT91_DDRC2_TRRD_(2) |
-+			AT91_DDRC2_TWTR_(2) | AT91_DDRC2_TMRD_(2),
-+
-+		.t1pr = AT91_DDRC2_TRFC_(22) | AT91_DDRC2_TXSNR_(23) |
-+			AT91_DDRC2_TXSRD_(200) | AT91_DDRC2_TXP_(2),
-+
-+		.t2pr = AT91_DDRC2_TXARD_(2) | AT91_DDRC2_TXARDS_(8) |
-+			AT91_DDRC2_TRPA_(4) | AT91_DDRC2_TRTP_(2) |
-+			AT91_DDRC2_TFAW_(8),
-+	};
-+
-+	sama5d2_ddr2_init(&conf);
-+}
-diff --git a/images/Makefile.at91 b/images/Makefile.at91
-index 448d71fb981d..bc63357c5d19 100644
---- a/images/Makefile.at91
-+++ b/images/Makefile.at91
-@@ -18,6 +18,11 @@ pblb-$(CONFIG_MACH_SAMA5D27_SOM1) += start_sama5d27_som1_ek
- FILE_barebox-sama5d27-som1-ek.img = start_sama5d27_som1_ek.pblb
- image-$(CONFIG_MACH_SAMA5D27_SOM1) += barebox-sama5d27-som1-ek.img
  
-+pblb-$(CONFIG_MACH_SAMA5D27_SOM1) += start_sama5d27_som1_ek_xload_mmc
-+MAX_PBL_IMAGE_SIZE_start_sama5d27_som1_ek_xload_mmc = 0xffff
-+FILE_barebox-sama5d27-som1-ek-xload-mmc.img = start_sama5d27_som1_ek_xload_mmc.pblb
-+image-$(CONFIG_MACH_SAMA5D27_SOM1) += barebox-sama5d27-som1-ek-xload-mmc.img
-+
- pblb-$(CONFIG_MACH_SAMA5D27_GIANTBOARD) += start_sama5d27_giantboard
- FILE_barebox-groboards-sama5d27-giantboard.img = start_sama5d27_giantboard.pblb
- image-$(CONFIG_MACH_SAMA5D27_GIANTBOARD) += barebox-groboards-sama5d27-giantboard.img
+ #ifndef __ASSEMBLY__
++#include <common.h>
+ #include <io.h>
+ #include <mach/hardware.h>
+ 
+@@ -146,11 +26,11 @@ static inline u32 at91_get_ddram_size(void __iomem *base, bool is_nb)
+ 	u32 size;
+ 	bool is_sdram;
+ 
+-	cr = readl(base + AT91_DDRSDRC_CR);
+-	mdr = readl(base + AT91_DDRSDRC_MDR);
++	cr = readl(base + AT91C_HDDRSDRC2_CR);
++	mdr = readl(base + AT91C_HDDRSDRC2_MDR);
+ 
+ 	/* will always be false for sama5d2, sama5d3 or sama5d4 */
+-	is_sdram = (mdr & AT91_DDRSDRC_MD) <= AT91_DDRSDRC_MD_LOW_POWER_SDR;
++	is_sdram = (mdr & AT91C_DDRC2_MD) <= AT91C_DDRC2_MD_LP_SDR_SDRAM;
+ 
+ 	/* Formula:
+ 	 * size = bank << (col + row + 1);
+@@ -159,19 +39,19 @@ static inline u32 at91_get_ddram_size(void __iomem *base, bool is_nb)
+ 	 */
+ 	size = 1;
+ 	/* COL */
+-	size += (cr & AT91_DDRSDRC_NC) + 8;
++	size += (cr & AT91C_DDRC2_NC) + 8;
+ 	if (!is_sdram)
+ 		size ++;
+ 	/* ROW */
+-	size += ((cr & AT91_DDRSDRC_NR) >> 2) + 11;
++	size += ((cr & AT91C_DDRC2_NR) >> 2) + 11;
+ 	/* BANK */
+ 	if (is_nb)
+-		size = ((cr & AT91_DDRSDRC_NB) ? 8 : 4) << size;
++		size = ((cr & AT91C_DDRC2_NB_BANKS) ? 8 : 4) << size;
+ 	else
+ 		size = 4 << size;
+ 
+ 	/* bandwidth */
+-	if (!(mdr & AT91_DDRSDRC_DBW))
++	if (!(mdr & AT91C_DDRC2_DBW))
+ 		size <<= 1;
+ 
+ 	return size;
 -- 
 2.27.0
 
