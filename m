@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jqYmM-0001Eg-1b
- for barebox@lists.infradead.org; Wed, 01 Jul 2020 09:11:47 +0000
+ id 1jqYmL-0001Ed-Sd
+ for barebox@lists.infradead.org; Wed, 01 Jul 2020 09:11:46 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  1 Jul 2020 11:11:14 +0200
-Message-Id: <20200701091122.3437-21-a.fatoum@pengutronix.de>
+Date: Wed,  1 Jul 2020 11:11:07 +0200
+Message-Id: <20200701091122.3437-14-a.fatoum@pengutronix.de>
 In-Reply-To: <20200701091122.3437-1-a.fatoum@pengutronix.de>
 References: <20200701091122.3437-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,82 +21,103 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 20/28] ARM: at91: sama5d2: reuse stack set-up by first stage
+Subject: [PATCH 13/28] ARM: at91: add necessary Advanced Interrupt Controller
+ configuration
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Stack is always set up to end of SRAM before PBL, either by ROM code or
-by first stage bootloader, be it at91bootstrap or barebox in a later
-commit, so no need to change the stack pointer again.
+Without reconfiguration of the AIC redirection, the OS interrupt
+handling will misbehave later on. Add it to the SoC init.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/boards/sama5d27-giantboard/lowlevel.c | 13 +++----------
- arch/arm/boards/sama5d27-som1/lowlevel.c       | 13 +++----------
- 2 files changed, 6 insertions(+), 20 deletions(-)
+ arch/arm/mach-at91/Makefile           |  2 +-
+ arch/arm/mach-at91/aic.c              | 28 +++++++++++++++++++++++++++
+ arch/arm/mach-at91/include/mach/aic.h |  9 +++++++++
+ arch/arm/mach-at91/sama5d2.c          |  2 ++
+ 4 files changed, 40 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/mach-at91/aic.c
+ create mode 100644 arch/arm/mach-at91/include/mach/aic.h
 
-diff --git a/arch/arm/boards/sama5d27-giantboard/lowlevel.c b/arch/arm/boards/sama5d27-giantboard/lowlevel.c
-index e08217105bcc..4419e946f1a8 100644
---- a/arch/arm/boards/sama5d27-giantboard/lowlevel.c
-+++ b/arch/arm/boards/sama5d27-giantboard/lowlevel.c
-@@ -34,10 +34,12 @@ static void dbgu_init(void)
+diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
+index 7c8399ee76f2..254bbeef2773 100644
+--- a/arch/arm/mach-at91/Makefile
++++ b/arch/arm/mach-at91/Makefile
+@@ -1,4 +1,4 @@
+-obj-y += setup.o
++obj-y += setup.o aic.o
+ lwl-y += at91_pmc_ll.o ddramc_ll.o matrix.o
+ lwl-$(CONFIG_CLOCKSOURCE_ATMEL_PIT) += early_udelay.o
  
- extern char __dtb_z_at91_sama5d27_giantboard_start[];
- 
--static noinline void giantboard_entry(void)
-+ENTRY_FUNCTION(start_sama5d27_giantboard, r0, r1, r2)
- {
- 	void *fdt;
- 
-+	arm_cpu_lowlevel_init();
+diff --git a/arch/arm/mach-at91/aic.c b/arch/arm/mach-at91/aic.c
+new file mode 100644
+index 000000000000..b40f1d214b28
+--- /dev/null
++++ b/arch/arm/mach-at91/aic.c
+@@ -0,0 +1,28 @@
++// SPDX-License-Identifier: BSD-1-Clause
++/*
++ * Copyright (c) 2015, Atmel Corporation
++ *
++ * Atmel's name may not be used to endorse or promote products derived from
++ * this software without specific prior written permission.
++ */
 +
- 	if (IS_ENABLED(CONFIG_DEBUG_LL))
- 		dbgu_init();
- 
-@@ -45,12 +47,3 @@ static noinline void giantboard_entry(void)
- 
- 	barebox_arm_entry(SAMA5_DDRCS, SZ_128M, fdt);
- }
--
--ENTRY_FUNCTION(start_sama5d27_giantboard, r0, r1, r2)
--{
--	arm_cpu_lowlevel_init();
--
--	arm_setup_stack(SAMA5D2_SRAM_BASE + SAMA5D2_SRAM_SIZE);
--
--	giantboard_entry();
--}
-diff --git a/arch/arm/boards/sama5d27-som1/lowlevel.c b/arch/arm/boards/sama5d27-som1/lowlevel.c
-index 2b39e5abc396..b7780ec8ae43 100644
---- a/arch/arm/boards/sama5d27-som1/lowlevel.c
-+++ b/arch/arm/boards/sama5d27-som1/lowlevel.c
-@@ -58,10 +58,12 @@ static void ek_dbgu_init(void)
- 
- extern char __dtb_z_at91_sama5d27_som1_ek_start[];
- 
--static noinline void som1_entry(void)
-+ENTRY_FUNCTION(start_sama5d27_som1_ek, r0, r1, r2)
- {
- 	void *fdt;
- 
-+	arm_cpu_lowlevel_init();
++#include <mach/aic.h>
++#include <io.h>
 +
- 	if (IS_ENABLED(CONFIG_DEBUG_LL))
- 		ek_dbgu_init();
++#define SFR_AICREDIR	0x54
++#define SFR_SN1		0x50	/* Serial Number 1 Register */
++
++void at91_aic_redir(void __iomem *sfr, u32 key)
++{
++	u32 key32;
++
++	if (readl(sfr + SFR_AICREDIR) & 0x01)
++		return;
++
++	key32 = readl(sfr + SFR_SN1) ^ key;
++	writel(key32 | 0x01, sfr + SFR_AICREDIR);
++		/* bits[31:1] = key */
++		/* bit[0] = 1 => all interrupts redirected to AIC */
++		/* bit[0] = 0 => secure interrupts directed to SAIC,
++					others to AIC (default) */
++}
+diff --git a/arch/arm/mach-at91/include/mach/aic.h b/arch/arm/mach-at91/include/mach/aic.h
+new file mode 100644
+index 000000000000..c1f026b60c62
+--- /dev/null
++++ b/arch/arm/mach-at91/include/mach/aic.h
+@@ -0,0 +1,9 @@
++/* SPDX-License-Identifier: BSD-1-Clause */
++#ifndef __AT91_AIC_H_
++#define __AT91_AIC_H_
++
++#include <linux/compiler.h>
++
++void at91_aic_redir(void __iomem *sfr, u32 key);
++
++#endif
+diff --git a/arch/arm/mach-at91/sama5d2.c b/arch/arm/mach-at91/sama5d2.c
+index 2f74b0b38df1..c498b0964534 100644
+--- a/arch/arm/mach-at91/sama5d2.c
++++ b/arch/arm/mach-at91/sama5d2.c
+@@ -3,6 +3,7 @@
+ #include <common.h>
+ #include <of.h>
+ #include <init.h>
++#include <mach/aic.h>
+ #include <mach/sama5d2.h>
+ #include <asm/cache-l2x0.h>
+ #include <asm/mmu.h>
+@@ -44,6 +45,7 @@ static int sama5d2_init(void)
+ 	if (!of_machine_is_compatible("atmel,sama5d2"))
+ 		return 0;
  
-@@ -70,12 +72,3 @@ static noinline void som1_entry(void)
- 	ek_turn_led(RGB_LED_GREEN);
- 	barebox_arm_entry(SAMA5_DDRCS, SZ_128M, fdt);
- }
--
--ENTRY_FUNCTION(start_sama5d27_som1_ek, r0, r1, r2)
--{
--	arm_cpu_lowlevel_init();
--
--	arm_setup_stack(SAMA5D2_SRAM_BASE + SAMA5D2_SRAM_SIZE);
--
--	som1_entry();
--}
++	at91_aic_redir(SAMA5D2_BASE_SFR, SAMA5D2_AICREDIR_KEY);
+ 	sama5d2_can_ram_init();
+ 	sama5d2_l2x0_init();
+ 
 -- 
 2.27.0
 
