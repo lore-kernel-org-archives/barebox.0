@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jqVDl-0004qN-NO
+ id 1jqVDm-0004r3-09
  for barebox@lists.infradead.org; Wed, 01 Jul 2020 05:23:51 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  1 Jul 2020 07:23:12 +0200
-Message-Id: <20200701052340.9462-1-a.fatoum@pengutronix.de>
+Date: Wed,  1 Jul 2020 07:23:26 +0200
+Message-Id: <20200701052340.9462-15-a.fatoum@pengutronix.de>
+In-Reply-To: <20200701052340.9462-1-a.fatoum@pengutronix.de>
+References: <20200701052340.9462-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,170 +21,310 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/28] ARM: at91: add sama5d2 first stage support
+Subject: [PATCH 14/28] ARM: at91: extend low level PMC driver for generic clk
+ support
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-This adapts the sama5d3 first stage patch set I sent around a few times
-for use on the sama5d2. Unlike the original patch set, we now do the
-chainloading in the PBL, so integrators can still use multi-image and
-don't have to build barebox more than once.
+The SAMA5D2 and SAM9X60 both feature generic clocks, which we already
+support in barebox proper, but not in PBL. Add PBL support for setting
+the parent and enabling them, so we may use it to enable the SDMMC
+peripherals in first stage.
 
-With the FAT PBL implementation in place, first stages of the OMAP and
-SoCFPGA could also be migrated to multi-image.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/arm/mach-at91/at91_pmc_ll.c              | 169 ++++++++++++++++--
+ arch/arm/mach-at91/include/mach/at91_pmc_ll.h |  21 ++-
+ arch/arm/mach-at91/include/mach/sama5d2_ll.h  |  15 +-
+ 3 files changed, 187 insertions(+), 18 deletions(-)
 
-Much code has been adapted from at91bootstrap v3.8.12. Key changes:
-
- - We detect bootsource automatically, so we don't need to hardcode
-   which MCI instance to use
- - We pass along the bootsource, so it's available to second stage
-   bootloaders
- - We don't reset the SD card, so we can avoid having a complete
-   SD/MMC core implementation in PBL
- - We don't disable the watchdog in first stage. We leave the decision
-   on how to deal with it to second stage.
+diff --git a/arch/arm/mach-at91/at91_pmc_ll.c b/arch/arm/mach-at91/at91_pmc_ll.c
+index 4d39f579091e..9205322db972 100644
+--- a/arch/arm/mach-at91/at91_pmc_ll.c
++++ b/arch/arm/mach-at91/at91_pmc_ll.c
+@@ -1,17 +1,51 @@
+ // SPDX-License-Identifier: BSD-1-Clause
+ /*
+  * Copyright (c) 2006, Atmel Corporation
++ * Copyright (C) 2019 Microchip Technology Inc. and its subsidiaries
+  *
+- * Atmel's name may not be used to endorse or promote products
++ * Atmel/Microchip's name may not be used to endorse or promote products
+  * derived from this software without specific prior written permission.
+  */
  
-There's no defconfig for this yet, it will follow along with a generic
-at91_multi_defconfig, when support for the sama5d3 is posted.
-
-Cheers,
-Ahmad Fatoum (28):
-  ARM: at91: remove <mach/hardware.h> include from assembly code
-  ARM: at91: sama5d2: cast peripheral base addresses to __iomem pointers
-  ARM: at91: import at91bootstrap's at91_ddrsdrc.h
-  ARM: at91: migrate at91sam9_ddrsdr.h to use at91bootstrap's
-    at91_ddrsdrc.h
-  ARM: at91: replace at91sam9_ddrsdr.h with at91bootstrap's
-    at91_ddrsdrc.h
-  ARM: at91: import early_udelay from at91bootstrap
-  ARM: at91: import low level DDRAMC initialization code from
-    at91bootstrap
-  ARM: at91: watchdog: implement at91_wdt_disable
-  watchdog: add support for at91sam9/sama5 watchdog
-  ARM: at91: implement sama5d2 lowlevel init
-  ARM: at91: sama5d2: add sama5d2 matrix configuration
-  ARM: at91: add sama5d2 cache init
-  ARM: at91: add necessary Advanced Interrupt Controller configuration
-  ARM: at91: extend low level PMC driver for generic clk support
-  pbl: add block I/O API
-  fs: fat: extend for in-PBL support
-  mci: extend atmel-sdhci driver to first stage use
-  ARM: at91: add code for sama5 boot source detection
-  ARM: at91: add helpers for chain-loading barebox from SD-card
-  ARM: at91: sama5d2: reuse stack set-up by first stage
-  at91: debug_ll: remove duplicated IS_ENABLED(CONFIG_DEBUG_LL)
-    condition
-  ARM: at91: sama5d2: reduce UART setup boilerplate with new helpers
-  ARM: at91: sama5d27-som1: add additional first stage entry point
-  ARM: at91: sama5d2: read back memory size from DDRAM controller
-  ARM: at91: sama5d2: populate $bootsource and $bootsource_instance
-  ARM: at91: sama5d27-som1-ek: add barebox_update and multi environment
-    support
-  ARM: at91: sama5d27-giantboard: add additional first stage entry point
-  ARM: at91: sama5d27-giantboard: add default environment/bbu
-
- arch/arm/boards/at91sam9m10g45ek/lowlevel.c   |   2 +-
- arch/arm/boards/at91sam9m10ihd/lowlevel.c     |   2 +-
- arch/arm/boards/at91sam9n12ek/lowlevel.c      |   2 +-
- arch/arm/boards/at91sam9x5ek/lowlevel.c       |   3 +-
- arch/arm/boards/pm9g45/lowlevel.c             |   3 +-
- arch/arm/boards/sama5d27-giantboard/Makefile  |   2 +
- arch/arm/boards/sama5d27-giantboard/board.c   |  17 +
- .../defaultenv-giantboard/nv/boot.default     |   1 +
- .../arm/boards/sama5d27-giantboard/lowlevel.c |  51 +-
- arch/arm/boards/sama5d27-som1/Makefile        |   1 +
- arch/arm/boards/sama5d27-som1/board.c         |  35 ++
- arch/arm/boards/sama5d27-som1/lowlevel.c      |  61 +--
- arch/arm/boards/sama5d3_xplained/lowlevel.c   |   2 +-
- arch/arm/boards/sama5d3xek/lowlevel.c         |   2 +-
- arch/arm/boards/sama5d4_xplained/lowlevel.c   |   2 +-
- arch/arm/boards/sama5d4ek/lowlevel.c          |   2 +-
- arch/arm/dts/at91-sama5d27_giantboard.dts     |  10 +-
- arch/arm/dts/at91-sama5d27_som1_ek.dts        |  19 +-
- arch/arm/dts/sama5d2.dtsi                     |   2 +
- arch/arm/mach-at91/Kconfig                    |  11 +
- arch/arm/mach-at91/Makefile                   |   9 +-
- arch/arm/mach-at91/aic.c                      |  28 +
- arch/arm/mach-at91/at91_pmc_ll.c              | 169 +++++-
- arch/arm/mach-at91/at91sam9_reset.S           |   1 -
- arch/arm/mach-at91/at91sam9g45_devices.c      |   2 +-
- arch/arm/mach-at91/at91sam9g45_reset.S        |   9 +-
- arch/arm/mach-at91/at91sam9n12_devices.c      |   2 +-
- arch/arm/mach-at91/at91sam9x5_devices.c       |   2 +-
- arch/arm/mach-at91/ddramc.c                   |  59 ++
- arch/arm/mach-at91/ddramc_ll.c                | 507 ++++++++++++++++++
- arch/arm/mach-at91/early_udelay.c             |  56 ++
- arch/arm/mach-at91/include/mach/aic.h         |   9 +
- arch/arm/mach-at91/include/mach/at91_dbgu.h   |  34 +-
- .../arm/mach-at91/include/mach/at91_ddrsdrc.h | 373 +++++++++++++
- arch/arm/mach-at91/include/mach/at91_pmc.h    |  22 +
- arch/arm/mach-at91/include/mach/at91_pmc_ll.h |  32 +-
- arch/arm/mach-at91/include/mach/at91_wdt.h    |  16 +
- .../mach-at91/include/mach/at91sam9_ddrsdr.h  | 214 --------
- arch/arm/mach-at91/include/mach/barebox-arm.h |  21 +
- arch/arm/mach-at91/include/mach/ddramc.h      |  37 ++
- arch/arm/mach-at91/include/mach/debug_ll.h    |  17 +-
- .../arm/mach-at91/include/mach/early_udelay.h |  14 +
- arch/arm/mach-at91/include/mach/matrix.h      |  21 +
- .../mach-at91/include/mach/sama5_bootsource.h |  49 ++
- .../include/mach/sama5d2-sip-ddramc.h         |  39 ++
- arch/arm/mach-at91/include/mach/sama5d2.h     | 225 +++++---
- arch/arm/mach-at91/include/mach/sama5d2_ll.h  | 139 +++++
- arch/arm/mach-at91/include/mach/tz_matrix.h   |  95 ++++
- arch/arm/mach-at91/include/mach/xload.h       |  12 +
- arch/arm/mach-at91/matrix.c                   |  45 ++
- arch/arm/mach-at91/sama5d2.c                  |  71 +++
- arch/arm/mach-at91/sama5d2_ll.c               | 220 ++++++++
- arch/arm/mach-at91/sama5d3_devices.c          |   2 +-
- arch/arm/mach-at91/sama5d4_devices.c          |   2 +-
- arch/arm/mach-at91/xload-mmc.c                |  85 +++
- common/Makefile                               |   3 +-
- drivers/mci/Kconfig                           |   4 +
- drivers/mci/Makefile                          |   1 +
- drivers/mci/atmel-sdhci-common.c              |   3 +
- drivers/mci/atmel-sdhci-pbl.c                 | 128 +++++
- drivers/watchdog/Kconfig                      |   6 +
- drivers/watchdog/Makefile                     |   1 +
- drivers/watchdog/at91sam9_wdt.c               | 109 ++++
- fs/Makefile                                   |   2 +-
- fs/fat/Kconfig                                |   7 +
- fs/fat/Makefile                               |   4 +-
- fs/fat/diskio.h                               |   7 +-
- fs/fat/fat-pbl.c                              |  53 ++
- fs/fat/fat.c                                  |  31 --
- fs/fat/ff.c                                   |  89 +--
- fs/fat/ff.h                                   |  22 +-
- images/Makefile.at91                          |  10 +
- include/pbl.h                                 |  15 +
- lib/Makefile                                  |   2 +-
- 74 files changed, 2845 insertions(+), 520 deletions(-)
- create mode 100644 arch/arm/boards/sama5d27-giantboard/board.c
- create mode 100644 arch/arm/boards/sama5d27-giantboard/defaultenv-giantboard/nv/boot.default
- create mode 100644 arch/arm/boards/sama5d27-som1/board.c
- create mode 100644 arch/arm/mach-at91/aic.c
- create mode 100644 arch/arm/mach-at91/ddramc.c
- create mode 100644 arch/arm/mach-at91/ddramc_ll.c
- create mode 100644 arch/arm/mach-at91/early_udelay.c
- create mode 100644 arch/arm/mach-at91/include/mach/aic.h
- create mode 100644 arch/arm/mach-at91/include/mach/at91_ddrsdrc.h
- delete mode 100644 arch/arm/mach-at91/include/mach/at91sam9_ddrsdr.h
- create mode 100644 arch/arm/mach-at91/include/mach/barebox-arm.h
- create mode 100644 arch/arm/mach-at91/include/mach/ddramc.h
- create mode 100644 arch/arm/mach-at91/include/mach/early_udelay.h
- create mode 100644 arch/arm/mach-at91/include/mach/matrix.h
- create mode 100644 arch/arm/mach-at91/include/mach/sama5_bootsource.h
- create mode 100644 arch/arm/mach-at91/include/mach/sama5d2-sip-ddramc.h
- create mode 100644 arch/arm/mach-at91/include/mach/sama5d2_ll.h
- create mode 100644 arch/arm/mach-at91/include/mach/tz_matrix.h
- create mode 100644 arch/arm/mach-at91/include/mach/xload.h
- create mode 100644 arch/arm/mach-at91/matrix.c
- create mode 100644 arch/arm/mach-at91/sama5d2.c
- create mode 100644 arch/arm/mach-at91/sama5d2_ll.c
- create mode 100644 arch/arm/mach-at91/xload-mmc.c
- create mode 100644 drivers/mci/atmel-sdhci-pbl.c
- create mode 100644 drivers/watchdog/at91sam9_wdt.c
- create mode 100644 fs/fat/fat-pbl.c
-
++#define pr_fmt(fmt) "at91pmc: " fmt
++
+ #include <common.h>
++#include <mach/hardware.h>
++#include <mach/at91_pmc.h>
+ #include <mach/at91_pmc_ll.h>
++#include <mach/early_udelay.h>
++
++#define SFR_UTMICKTRIM	0x30	/* UTMI Clock Trimming Register */
++#define AT91_UTMICKTRIM_FREQ	0x03
++
++#define PMC_GCSR0	0xC0	/* PMCv2 Generic Clock Status Register 0 */
++#define PMC_GCSR1	0xC4	/* PMCv2 Generic Clock Status Register 1 */
+ 
+ #define at91_pmc_write(off, val) writel(val, pmc_base + off)
+ #define at91_pmc_read(off) readl(pmc_base + off)
+ 
++#define MHZ (1000 * 1000UL)
++
++static unsigned long at91_pmc_get_main_xtal(void __iomem *pmc_base)
++{
++	u32 tmp;
++
++	/* Enable a measurement of the Main Crystal Oscillator */
++	tmp = at91_pmc_read(AT91_CKGR_MCFR);
++	tmp |= AT91_PMC_CCSS_XTAL_OSC;
++	tmp |= AT91_PMC_RCMEAS;
++	at91_pmc_write(AT91_CKGR_MCFR, tmp);
++
++	do {
++		tmp = at91_pmc_read(AT91_CKGR_MCFR);
++	} while (!(tmp & AT91_PMC_MAINRDY));
++
++	/* read once more like the datasheet says */
++	tmp = at91_pmc_read(AT91_CKGR_MCFR) & AT91_PMC_MAINF;
++
++	return tmp * (AT91_SLOW_CLOCK / 16);
++}
++
+ void at91_pmc_init(void __iomem *pmc_base, unsigned int flags)
+ {
+ 	u32 tmp;
+@@ -46,16 +80,8 @@ void at91_pmc_init(void __iomem *pmc_base, unsigned int flags)
+ 		while (!(at91_pmc_read(AT91_PMC_SR) & AT91_PMC_MOSCS))
+ 			;
+ 
+-		if (flags & AT91_PMC_LL_FLAG_MEASURE_XTAL) {
+-			/* Enable a measurement of the Main Crystal Oscillator */
+-			tmp = at91_pmc_read(AT91_CKGR_MCFR);
+-			tmp |= AT91_PMC_CCSS_XTAL_OSC;
+-			tmp |= AT91_PMC_RCMEAS;
+-			at91_pmc_write(AT91_CKGR_MCFR, tmp);
+-
+-			while (!(at91_pmc_read(AT91_CKGR_MCFR) & AT91_PMC_MAINRDY))
+-				;
+-		}
++		if (flags & AT91_PMC_LL_FLAG_MEASURE_XTAL)
++			(void)at91_pmc_get_main_xtal(pmc_base);
+ 
+ 		/* Switch from internal 12MHz RC to the Main Crystal Oscillator */
+ 		tmp = at91_pmc_read(AT91_CKGR_MOR);
+@@ -184,3 +210,124 @@ void at91_pmc_cfg_mck(void __iomem *pmc_base, u32 pmc_mckr, unsigned int flags)
+ 	while (!(at91_pmc_read(AT91_PMC_SR) & AT91_PMC_MCKRDY))
+ 		;
+ }
++
++static void pmc_configure_utmi_ref_clk(void __iomem *pmc_base,
++				       void __iomem *sfr_base,
++				       unsigned long main_xtal)
++{
++	unsigned int utmi_ref_clk_freq = 0, tmp;
++
++	/*
++	 * If mainck rate is different from 12 MHz, we have to configure
++	 * the FREQ field of the SFR_UTMICKTRIM register to generate properly
++	 * the utmi clock.
++	 */
++	if (main_xtal < (16 +  4) * MHZ)
++		utmi_ref_clk_freq++;
++	if (main_xtal < (24 + 10) * MHZ)
++		utmi_ref_clk_freq++;
++	if (main_xtal < (48 + 10) * MHZ)
++		utmi_ref_clk_freq++;
++
++	/*
++	 * Not supported on SAMA5D2 but it's not an issue since MAINCK
++	 * maximum value is 24 MHz.
++	 */
++	tmp = readl(sfr_base + SFR_UTMICKTRIM);
++	tmp &= ~AT91_UTMICKTRIM_FREQ;
++	tmp |= utmi_ref_clk_freq;
++	writel(tmp, sfr_base + SFR_UTMICKTRIM);
++}
++
++static void pmc_uckr_clk(void __iomem *pmc_base,
++			 void __iomem *sfr_base,
++			 unsigned long main_xtal)
++{
++	unsigned int uckr = at91_pmc_read(AT91_CKGR_UCKR);
++	unsigned int sr;
++
++	if (main_xtal) {
++		pmc_configure_utmi_ref_clk(pmc_base, sfr_base,
++						 main_xtal);
++		uckr |= (AT91_PMC_UPLLCOUNT_DEFAULT |
++			 AT91_PMC_UPLLEN | AT91_PMC_BIASEN);
++		sr = AT91_PMC_LOCKU;
++	} else {
++		uckr &= ~(AT91_PMC_UPLLEN | AT91_PMC_BIASEN);
++		sr = 0;
++	}
++
++	at91_pmc_write(AT91_CKGR_UCKR, uckr);
++
++	do {
++		early_udelay(1);
++	} while ((at91_pmc_read(AT91_PMC_SR) & AT91_PMC_LOCKU) != sr);
++}
++
++static inline unsigned gck_status(unsigned periph_id,
++				  unsigned flags)
++{
++	if (flags & AT91_PMC_LL_FLAG_GCSR)
++		return periph_id < 32 ? PMC_GCSR0 : PMC_GCSR1;
++
++	return AT91_PMC_SR;
++}
++
++static inline unsigned gck_ready(unsigned status,
++				 unsigned periph_id,
++				 unsigned flags)
++{
++	unsigned mask;
++
++	if (flags & AT91_PMC_LL_FLAG_GCSR)
++		mask = 1 << (periph_id & 0x1f);
++	else
++		mask = AT91_PMC_GCKRDY;
++
++	return status & mask;
++}
++
++int at91_pmc_enable_generic_clock(void __iomem *pmc_base,
++				  void __iomem *sfr_base,
++				  unsigned int periph_id,
++				  unsigned int clk_source, unsigned int div,
++				  unsigned int flags)
++{
++	unsigned long main_xtal;
++	unsigned int regval, status;
++	unsigned int timeout = 1000;
++
++	if (periph_id > 0x7f)
++		return -EINVAL;
++
++	if (div > 0xff)
++		return -EINVAL;
++
++	main_xtal = at91_pmc_get_main_xtal(pmc_base);
++
++	if ((flags & AT91_PMC_LL_FLAG_PMC_UTMI) &&
++	    !(at91_pmc_read(AT91_PMC_SR) & AT91_PMC_LOCKU))
++		pmc_uckr_clk(pmc_base, sfr_base, main_xtal);
++
++	at91_pmc_write(AT91_PMC_PCR, periph_id);
++	regval = at91_pmc_read(AT91_PMC_PCR);
++	regval &= ~AT91_PMC_GCKCSS;
++	regval &= ~AT91_PMC_GCKDIV;
++
++	regval |= clk_source;
++	regval |= AT91_PMC_PCR_CMD | AT91_PMC_GCKDIV_(div) | AT91_PMC_GCK_EN;
++
++	at91_pmc_write(AT91_PMC_PCR, regval);
++
++	for (timeout = 1000; timeout; timeout--) {
++		early_udelay(1);
++
++		status = at91_pmc_read(gck_status(periph_id, flags));
++		if (gck_ready(status, periph_id, flags))
++			return 0;
++	}
++
++	pr_warn("Timeout waiting for GCK ready!\n");
++
++	return 0;
++}
+diff --git a/arch/arm/mach-at91/include/mach/at91_pmc_ll.h b/arch/arm/mach-at91/include/mach/at91_pmc_ll.h
+index e3d3e3ad59db..6ec3ae0852c6 100644
+--- a/arch/arm/mach-at91/include/mach/at91_pmc_ll.h
++++ b/arch/arm/mach-at91/include/mach/at91_pmc_ll.h
+@@ -14,27 +14,38 @@
+ #define AT91_PMC_LL_FLAG_MEASURE_XTAL	(1 << 1)
+ #define AT91_PMC_LL_FLAG_DISABLE_RC	(1 << 2)
+ #define AT91_PMC_LL_FLAG_H32MXDIV	(1 << 3)
++#define AT91_PMC_LL_FLAG_PMC_UTMI	(1 << 4)
++#define AT91_PMC_LL_FLAG_GCSR		(1 << 5)
+ 
+ #define AT91_PMC_LL_AT91RM9200	(0)
+ #define AT91_PMC_LL_AT91SAM9260	(0)
+ #define AT91_PMC_LL_AT91SAM9261	(0)
+ #define AT91_PMC_LL_AT91SAM9263	(0)
+-#define AT91_PMC_LL_AT91SAM9G45	(0)
++#define AT91_PMC_LL_AT91SAM9G45	(AT91_PMC_LL_FLAG_PMC_UTMI)
+ #define AT91_PMC_LL_AT91SAM9X5	(AT91_PMC_LL_FLAG_SAM9X5_PMC | \
+-				 AT91_PMC_LL_FLAG_DISABLE_RC)
++				 AT91_PMC_LL_FLAG_DISABLE_RC | \
++				 AT91_PMC_LL_FLAG_PMC_UTMI)
+ #define AT91_PMC_LL_AT91SAM9N12	(AT91_PMC_LL_FLAG_SAM9X5_PMC | \
+ 				 AT91_PMC_LL_FLAG_DISABLE_RC)
+ #define AT91_PMC_LL_SAMA5D2	(AT91_PMC_LL_FLAG_SAM9X5_PMC | \
+-				 AT91_PMC_LL_FLAG_MEASURE_XTAL)
++				 AT91_PMC_LL_FLAG_MEASURE_XTAL | \
++				 AT91_PMC_LL_FLAG_PMC_UTMI)
+ #define AT91_PMC_LL_SAMA5D3	(AT91_PMC_LL_FLAG_SAM9X5_PMC | \
+-				 AT91_PMC_LL_FLAG_DISABLE_RC)
++				 AT91_PMC_LL_FLAG_DISABLE_RC | \
++				 AT91_PMC_LL_FLAG_PMC_UTMI)
+ #define AT91_PMC_LL_SAMA5D4	(AT91_PMC_LL_FLAG_SAM9X5_PMC | \
+-				 AT91_PMC_LL_FLAG_H32MXDIV)
++				 AT91_PMC_LL_FLAG_H32MXDIV | \
++				 AT91_PMC_LL_FLAG_PMC_UTMI)
+ 
+ void at91_pmc_init(void __iomem *pmc_base, unsigned int flags);
+ void at91_pmc_cfg_mck(void __iomem *pmc_base, u32 pmc_mckr, unsigned int flags);
+ void at91_pmc_cfg_plla(void __iomem *pmc_base, u32 pmc_pllar, unsigned int flags);
+ 
++int at91_pmc_enable_generic_clock(void __iomem *pmc_base, void __iomem *sfr_base,
++				  unsigned int periph_id,
++				  unsigned int clk_source, unsigned int div,
++				  unsigned int flags);
++
+ static inline void at91_pmc_init_pll(void __iomem *pmc_base, u32 pmc_pllicpr)
+ {
+ 	writel(pmc_pllicpr, pmc_base + AT91_PMC_PLLICPR);
+diff --git a/arch/arm/mach-at91/include/mach/sama5d2_ll.h b/arch/arm/mach-at91/include/mach/sama5d2_ll.h
+index 7c38a84f5395..e6fa3914250b 100644
+--- a/arch/arm/mach-at91/include/mach/sama5d2_ll.h
++++ b/arch/arm/mach-at91/include/mach/sama5d2_ll.h
+@@ -8,13 +8,13 @@
+ 
+ #include <common.h>
+ 
++void sama5d2_lowlevel_init(void);
++
+ static inline void sama5d2_pmc_enable_periph_clock(int clk)
+ {
+ 	at91_pmc_sam9x5_enable_periph_clock(SAMA5D2_BASE_PMC, clk);
+ }
+ 
+-void sama5d2_lowlevel_init(void);
+-
+ /* requires relocation */
+ static inline void sama5d2_udelay_init(unsigned int msc)
+ {
+@@ -22,6 +22,17 @@ static inline void sama5d2_udelay_init(unsigned int msc)
+ 			  SAMA5D2_ID_PIT, msc, AT91_PMC_LL_SAMA5D2);
+ }
+ 
++
+ void sama5d2_ddr2_init(struct at91_ddramc_register *ddramc_reg_config);
+ 
++static inline int sama5d2_pmc_enable_generic_clock(unsigned int periph_id,
++						   unsigned int clk_source,
++						   unsigned int div)
++{
++	return at91_pmc_enable_generic_clock(SAMA5D2_BASE_PMC,
++					     SAMA5D2_BASE_SFR,
++					     periph_id, clk_source, div,
++					     AT91_PMC_LL_SAMA5D2);
++}
++
+ #endif
 -- 
 2.27.0
 
