@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jqYmU-0001G4-1i
- for barebox@lists.infradead.org; Wed, 01 Jul 2020 09:11:54 +0000
+ id 1jqYmT-0001G0-Ta
+ for barebox@lists.infradead.org; Wed, 01 Jul 2020 09:11:53 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  1 Jul 2020 11:11:21 +0200
-Message-Id: <20200701091122.3437-28-a.fatoum@pengutronix.de>
+Date: Wed,  1 Jul 2020 11:11:11 +0200
+Message-Id: <20200701091122.3437-18-a.fatoum@pengutronix.de>
 In-Reply-To: <20200701091122.3437-1-a.fatoum@pengutronix.de>
 References: <20200701091122.3437-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,91 +21,196 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 27/28] ARM: at91: sama5d27-giantboard: add additional first
- stage entry point
+Subject: [PATCH 17/28] mci: sdhci: atmel: extend driver for PBL usage
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The BootROM constrains us to a 64K big first stage bootloader. Add a PBL
-entry point for a xload barebox that sets up the minimum necessary to
-load a FAT32 barebox.bin from the SD-Card.
+The BootROM resets both the SD/MMC host controller and the pin controller,
+but the card itself remains in transfer mode. If we redo host-side
+setup, we can directly read new blocks off the card.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- .../arm/boards/sama5d27-giantboard/lowlevel.c | 28 +++++++++++++------
- images/Makefile.at91                          |  5 ++++
- 2 files changed, 24 insertions(+), 9 deletions(-)
+ drivers/mci/Kconfig              |   4 +
+ drivers/mci/Makefile             |   1 +
+ drivers/mci/atmel-sdhci-common.c |   3 +
+ drivers/mci/atmel-sdhci-pbl.c    | 128 +++++++++++++++++++++++++++++++
+ 4 files changed, 136 insertions(+)
+ create mode 100644 drivers/mci/atmel-sdhci-pbl.c
 
-diff --git a/arch/arm/boards/sama5d27-giantboard/lowlevel.c b/arch/arm/boards/sama5d27-giantboard/lowlevel.c
-index 3dada9baf23c..dc678e5d83ce 100644
---- a/arch/arm/boards/sama5d27-giantboard/lowlevel.c
-+++ b/arch/arm/boards/sama5d27-giantboard/lowlevel.c
-@@ -5,22 +5,34 @@
- 
+diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
+index 6ae1e812528c..3026b25cadc9 100644
+--- a/drivers/mci/Kconfig
++++ b/drivers/mci/Kconfig
+@@ -187,3 +187,7 @@ endif
+ config MCI_IMX_ESDHC_PBL
+ 	bool
+ 	select MCI_SDHCI
++
++config MCI_ATMEL_SDHCI_PBL
++	bool
++	select MCI_SDHCI
+diff --git a/drivers/mci/Makefile b/drivers/mci/Makefile
+index 177483dcfba5..4a5363367476 100644
+--- a/drivers/mci/Makefile
++++ b/drivers/mci/Makefile
+@@ -5,6 +5,7 @@ obj-$(CONFIG_MCI_ATMEL_SDHCI)	+= atmel-sdhci.o atmel-sdhci-common.o
+ obj-$(CONFIG_MCI_BCM283X)	+= mci-bcm2835.o
+ obj-$(CONFIG_MCI_BCM283X_SDHOST)	+= bcm2835-sdhost.o
+ obj-$(CONFIG_MCI_DOVE)		+= dove-sdhci.o
++pbl-$(CONFIG_MCI_ATMEL_SDHCI_PBL)	+= atmel-sdhci-pbl.o atmel-sdhci-common.o
+ obj-$(CONFIG_MCI_IMX)		+= imx.o
+ obj-$(CONFIG_MCI_IMX_ESDHC)	+= imx-esdhc.o imx-esdhc-common.o
+ pbl-$(CONFIG_MCI_IMX_ESDHC_PBL)	+= imx-esdhc-pbl.o imx-esdhc-common.o
+diff --git a/drivers/mci/atmel-sdhci-common.c b/drivers/mci/atmel-sdhci-common.c
+index 1884f3836337..a83610c3d090 100644
+--- a/drivers/mci/atmel-sdhci-common.c
++++ b/drivers/mci/atmel-sdhci-common.c
+@@ -12,7 +12,10 @@
  #include <common.h>
- #include <init.h>
--
--#include <asm/barebox-arm-head.h>
- #include <mach/barebox-arm.h>
- #include <mach/sama5d2_ll.h>
+ #include <mci.h>
+ 
++#include <mach/early_udelay.h>
++
+ #ifdef __PBL__
++#define udelay early_udelay
+ #undef  dev_err
+ #define dev_err(d, ...)		pr_err(__VA_ARGS__)
+ #undef  dev_warn
+diff --git a/drivers/mci/atmel-sdhci-pbl.c b/drivers/mci/atmel-sdhci-pbl.c
+new file mode 100644
+index 000000000000..626e4008fe85
+--- /dev/null
++++ b/drivers/mci/atmel-sdhci-pbl.c
+@@ -0,0 +1,128 @@
++// SPDX-License-Identifier: BSD-1-Clause
++/*
++ * Copyright (c) 2015, Atmel Corporation
++ * Copyright (c) 2019, Ahmad Fatoum, Pengutronix
++ *
++ * Atmel's name may not be used to endorse or promote products derived from
++ * this software without specific prior written permission.
++ */
++
++#include <common.h>
++#include <pbl.h>
++#include <mci.h>
++#include <debug_ll.h>
 +#include <mach/xload.h>
-+#include <mach/sama5d2-sip-ddramc.h>
- #include <mach/iomux.h>
- #include <debug_ll.h>
--#include <mach/at91_dbgu.h>
- 
- /* PCK = 492MHz, MCK = 164MHz */
- #define MASTER_CLOCK	164000000
- 
--static void dbgu_init(void)
-+SAMA5_ENTRY_FUNCTION(start_sama5d27_giantboard_xload_mmc, r4)
- {
--	sama5d2_resetup_uart_console(MASTER_CLOCK);
-+	void __iomem *dbgu_base;
++#include "atmel-sdhci.h"
 +
-+	sama5d2_lowlevel_init();
++#include <mach/early_udelay.h>
 +
-+	dbgu_base = sama5d2_resetup_uart_console(MASTER_CLOCK);
-+	if (IS_ENABLED(CONFIG_DEBUG_LL))
-+		putc_ll('>');
- 
--	putc_ll('>');
-+	relocate_to_current_adr();
-+	setup_c();
++#ifdef __PBL__
++#define udelay early_udelay
++#endif
 +
-+	pbl_set_putc(at91_dbgu_putc, dbgu_base);
++#define SECTOR_SIZE			512
++#define SUPPORT_MAX_BLOCKS		16U
 +
-+	sama5d2_udelay_init(MASTER_CLOCK);
-+	sama5d2_d1g_ddrconf();
-+	sama5d2_sdhci_start_image(r4);
- }
- 
- extern char __dtb_z_at91_sama5d27_giantboard_start[];
-@@ -29,10 +41,8 @@ SAMA5_ENTRY_FUNCTION(start_sama5d27_giantboard, r4)
- {
- 	void *fdt;
- 
--	arm_cpu_lowlevel_init();
--
- 	if (IS_ENABLED(CONFIG_DEBUG_LL))
--		dbgu_init();
-+		putc_ll('>');
- 
- 	fdt = __dtb_z_at91_sama5d27_giantboard_start + get_runtime_offset();
- 
-diff --git a/images/Makefile.at91 b/images/Makefile.at91
-index bc63357c5d19..00fa4cab27ea 100644
---- a/images/Makefile.at91
-+++ b/images/Makefile.at91
-@@ -26,3 +26,8 @@ image-$(CONFIG_MACH_SAMA5D27_SOM1) += barebox-sama5d27-som1-ek-xload-mmc.img
- pblb-$(CONFIG_MACH_SAMA5D27_GIANTBOARD) += start_sama5d27_giantboard
- FILE_barebox-groboards-sama5d27-giantboard.img = start_sama5d27_giantboard.pblb
- image-$(CONFIG_MACH_SAMA5D27_GIANTBOARD) += barebox-groboards-sama5d27-giantboard.img
++struct at91_sdhci_priv {
++	struct at91_sdhci host;
++	bool highcapacity_card;
++};
 +
-+pblb-$(CONFIG_MACH_SAMA5D27_GIANTBOARD) += start_sama5d27_giantboard_xload_mmc
-+FILE_barebox-groboards-sama5d27-giantboard-xload-mmc.img = start_sama5d27_giantboard_xload_mmc.pblb
-+MAX_PBL_IMAGE_SIZE_start_sama5d27_giantboard_xload_mmc = 0xffff
-+image-$(CONFIG_MACH_SAMA5D27_GIANTBOARD) += barebox-groboards-sama5d27-giantboard-xload-mmc.img
++static int sd_cmd_stop_transmission(struct at91_sdhci_priv *priv)
++{
++	struct mci_cmd cmd = {
++		.cmdidx = MMC_CMD_STOP_TRANSMISSION,
++		.resp_type = MMC_RSP_R1b,
++	};
++
++	return at91_sdhci_send_command(&priv->host, &cmd, NULL);
++}
++
++static int sd_cmd_read_multiple_block(struct at91_sdhci_priv *priv,
++				      void *buf,
++				      unsigned int start,
++				      unsigned int block_count)
++{
++	u16 block_len = SECTOR_SIZE;
++	struct mci_data data;
++	struct mci_cmd cmd = {
++		.cmdidx = MMC_CMD_READ_MULTIPLE_BLOCK,
++		.resp_type = MMC_RSP_R1,
++		.cmdarg = start,
++	};
++
++	if (!priv->highcapacity_card)
++		cmd.cmdarg *= block_len;
++
++	data.dest = buf;
++	data.flags = MMC_DATA_READ;
++	data.blocksize = block_len;
++	data.blocks = block_count;
++
++	return at91_sdhci_send_command(&priv->host, &cmd, &data);
++}
++
++static int at91_sdhci_bio_read(struct pbl_bio *bio, off_t start,
++				void *buf, unsigned int nblocks)
++{
++	struct at91_sdhci_priv *priv = bio->priv;
++	unsigned int blocks_done = 0;
++	unsigned int blocks;
++	unsigned int block_len = SECTOR_SIZE;
++	unsigned int blocks_read;
++	int ret;
++
++	/*
++	 * Refer to the at91sam9g20 datasheet:
++	 * Figure 35-10. Read Function Flow Diagram
++	*/
++
++	while (blocks_done < nblocks) {
++		blocks = min(nblocks - blocks_done, SUPPORT_MAX_BLOCKS);
++
++		blocks_read = sd_cmd_read_multiple_block(priv, buf,
++							 start + blocks_done,
++							 blocks);
++
++		ret = sd_cmd_stop_transmission(priv);
++		if (ret)
++			return ret;
++
++		blocks_done += blocks_read;
++
++		if (blocks_read != blocks)
++			break;
++
++		buf += blocks * block_len;
++	}
++
++	return blocks_done;
++}
++
++static struct at91_sdhci_priv atmel_sdcard;
++
++int at91_sdhci_bio_init(struct pbl_bio *bio, void __iomem *base)
++{
++	struct at91_sdhci_priv *priv = &atmel_sdcard;
++	struct at91_sdhci *host = &priv->host;
++	struct mci_ios ios = { .bus_width = MMC_BUS_WIDTH_1, .clock = 25000000 };
++	int ret;
++
++	bio->priv = priv;
++	bio->read = at91_sdhci_bio_read;
++
++	at91_sdhci_mmio_init(host, base);
++
++	sdhci_reset(&host->sdhci, SDHCI_RESET_CMD | SDHCI_RESET_DATA);
++
++	ret = at91_sdhci_init(host, 240000000, true, true);
++	if (ret)
++		return ret;
++
++	ret = at91_sdhci_set_ios(host, &ios);
++
++	 // FIXME can we determine this without leaving SD transfer mode?
++	priv->highcapacity_card = 1;
++
++	return 0;
++}
 -- 
 2.27.0
 
