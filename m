@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jqVDu-0004wy-BD
- for barebox@lists.infradead.org; Wed, 01 Jul 2020 05:24:04 +0000
+ id 1jqVE1-00051I-Vz
+ for barebox@lists.infradead.org; Wed, 01 Jul 2020 05:24:05 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  1 Jul 2020 07:23:40 +0200
-Message-Id: <20200701052340.9462-29-a.fatoum@pengutronix.de>
+Date: Wed,  1 Jul 2020 07:23:33 +0200
+Message-Id: <20200701052340.9462-22-a.fatoum@pengutronix.de>
 In-Reply-To: <20200701052340.9462-1-a.fatoum@pengutronix.de>
 References: <20200701052340.9462-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,79 +21,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 28/28] ARM: at91: sama5d27-giantboard: add default
- environment/bbu
+Subject: [PATCH 21/28] at91: debug_ll: remove duplicated
+ IS_ENABLED(CONFIG_DEBUG_LL) condition
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The board only has SD-Card as storage. Add a barebox update handler to
-flash barebox to it, as well as an nv.boot.default=mmc1 to boot from it.
+There are three users of at91_dbgu_setup_ll and all already call this
+function only when IS_ENABLED(CONFIG_DEBUG_LL). Remove the duplicated
+condition from the function itself. This allows us to use the function
+for pbl_set_console use later on, even with DEBUG_LL disabled.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/boards/sama5d27-giantboard/Makefile    |  2 ++
- arch/arm/boards/sama5d27-giantboard/board.c     | 17 +++++++++++++++++
- .../defaultenv-giantboard/nv/boot.default       |  1 +
- arch/arm/dts/at91-sama5d27_giantboard.dts       |  6 ++++++
- 4 files changed, 26 insertions(+)
- create mode 100644 arch/arm/boards/sama5d27-giantboard/board.c
- create mode 100644 arch/arm/boards/sama5d27-giantboard/defaultenv-giantboard/nv/boot.default
+ arch/arm/mach-at91/include/mach/at91_dbgu.h | 34 ++++++++++-----------
+ 1 file changed, 16 insertions(+), 18 deletions(-)
 
-diff --git a/arch/arm/boards/sama5d27-giantboard/Makefile b/arch/arm/boards/sama5d27-giantboard/Makefile
-index b08c4a93ca27..f5869c483978 100644
---- a/arch/arm/boards/sama5d27-giantboard/Makefile
-+++ b/arch/arm/boards/sama5d27-giantboard/Makefile
-@@ -1 +1,3 @@
- lwl-y += lowlevel.o
-+obj-y += board.o
-+bbenv-y += defaultenv-giantboard
-diff --git a/arch/arm/boards/sama5d27-giantboard/board.c b/arch/arm/boards/sama5d27-giantboard/board.c
-new file mode 100644
-index 000000000000..1d4453ede35b
---- /dev/null
-+++ b/arch/arm/boards/sama5d27-giantboard/board.c
-@@ -0,0 +1,17 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#include <init.h>
-+#include <envfs.h>
-+#include <bbu.h>
-+
-+static int giantboard_device_init(void)
-+{
-+	bbu_register_std_file_update("microSD", BBU_HANDLER_FLAG_DEFAULT,
-+				     "/mnt/mmc1.0/barebox.bin",
-+				     filetype_arm_barebox);
-+
-+	defaultenv_append_directory(defaultenv_giantboard);
-+
-+	return 0;
-+}
-+device_initcall(giantboard_device_init);
-diff --git a/arch/arm/boards/sama5d27-giantboard/defaultenv-giantboard/nv/boot.default b/arch/arm/boards/sama5d27-giantboard/defaultenv-giantboard/nv/boot.default
-new file mode 100644
-index 000000000000..646f435652ef
---- /dev/null
-+++ b/arch/arm/boards/sama5d27-giantboard/defaultenv-giantboard/nv/boot.default
-@@ -0,0 +1 @@
-+mmc1
-diff --git a/arch/arm/dts/at91-sama5d27_giantboard.dts b/arch/arm/dts/at91-sama5d27_giantboard.dts
-index 6ba094c3da1a..2ba3ff217101 100644
---- a/arch/arm/dts/at91-sama5d27_giantboard.dts
-+++ b/arch/arm/dts/at91-sama5d27_giantboard.dts
-@@ -25,6 +25,12 @@
+diff --git a/arch/arm/mach-at91/include/mach/at91_dbgu.h b/arch/arm/mach-at91/include/mach/at91_dbgu.h
+index 0ba9cdae10ce..29aaa2dfe154 100644
+--- a/arch/arm/mach-at91/include/mach/at91_dbgu.h
++++ b/arch/arm/mach-at91/include/mach/at91_dbgu.h
+@@ -94,30 +94,28 @@ static inline void at91_dbgu_setup_ll(void __iomem *dbgu_base,
+ 				      unsigned mck,
+ 				      unsigned baudrate)
+ {
+-	if (IS_ENABLED(CONFIG_DEBUG_LL)) {
+-		u32 brgr = mck / (baudrate * 16);
++	u32 brgr = mck / (baudrate * 16);
  
- 	chosen {
- 		stdout-path = &uart1;
-+
-+		environment {
-+			compatible = "barebox,environment";
-+			device-path = &sdmmc1;
-+			file-path = "barebox.env";
-+		};
- 	};
+-		if ((mck / (baudrate * 16)) % 10 >= 5)
+-			brgr++;
++	if ((mck / (baudrate * 16)) % 10 >= 5)
++		brgr++;
  
- 	leds {
+-		writel(~0, dbgu_base + AT91_DBGU_IDR);
++	writel(~0, dbgu_base + AT91_DBGU_IDR);
+ 
+-		writel(AT91_DBGU_RSTRX
+-		       | AT91_DBGU_RSTTX
+-		       | AT91_DBGU_RXDIS
+-		       | AT91_DBGU_TXDIS,
+-		       dbgu_base + AT91_DBGU_CR);
++	writel(AT91_DBGU_RSTRX
++	       | AT91_DBGU_RSTTX
++	       | AT91_DBGU_RXDIS
++	       | AT91_DBGU_TXDIS,
++	       dbgu_base + AT91_DBGU_CR);
+ 
+-		writel(brgr, dbgu_base + AT91_DBGU_BRGR);
++	writel(brgr, dbgu_base + AT91_DBGU_BRGR);
+ 
+-		writel(AT91_DBGU_PAR_NONE
+-		       | AT91_DBGU_CHMODE_NORMAL
+-		       | AT91_DBGU_CHRL_8BIT
+-		       | AT91_DBGU_NBSTOP_1BIT,
+-		       dbgu_base + AT91_DBGU_MR);
++	writel(AT91_DBGU_PAR_NONE
++	       | AT91_DBGU_CHMODE_NORMAL
++	       | AT91_DBGU_CHRL_8BIT
++	       | AT91_DBGU_NBSTOP_1BIT,
++	       dbgu_base + AT91_DBGU_MR);
+ 
+-		writel(AT91_DBGU_RXEN | AT91_DBGU_TXEN, dbgu_base + AT91_DBGU_CR);
+-	}
++	writel(AT91_DBGU_RXEN | AT91_DBGU_TXEN, dbgu_base + AT91_DBGU_CR);
+ }
+ 
+ #endif
 -- 
 2.27.0
 
