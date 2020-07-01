@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jqVDV-0004nk-Ub
- for barebox@lists.infradead.org; Wed, 01 Jul 2020 05:23:30 +0000
-Date: Wed, 1 Jul 2020 07:23:27 +0200
+ id 1jqVDi-0004q3-HU
+ for barebox@lists.infradead.org; Wed, 01 Jul 2020 05:23:43 +0000
+Date: Wed, 1 Jul 2020 07:23:41 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200701052327.GG15485@pengutronix.de>
-References: <20200630204402.26566-1-cleger@kalray.eu>
+Message-ID: <20200701052341.GH15485@pengutronix.de>
+References: <20200630205344.27786-1-cleger@kalray.eu>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200630204402.26566-1-cleger@kalray.eu>
+In-Reply-To: <20200630205344.27786-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,49 +22,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 0/4] kvx: add elf bootm support
+Subject: Re: [PATCH] kvx: remove duplicated dtb symbols
 To: Clement Leger <cleger@kalray.eu>
-Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Tue, Jun 30, 2020 at 10:43:58PM +0200, Clement Leger wrote:
-> This serie adds support for elf bootm support on KVX architecture.
-> First patches are allowing to build elf support for KVX and then bootm
-> support is added to KVX.
+On Tue, Jun 30, 2020 at 10:53:44PM +0200, Clement Leger wrote:
+> dtb symbols (__dtb_start, __dtb_end) are already defined using
+> RO_DATA_SECTION. This duplicated dtb section is a leftover used by
+> Kalray internal tools to patch the dtb when loading the elf on a
+> target. Remove it to keep only one symbol definition.
 > 
-> Changes from v2 -> v3:
->  - Rename sync_icache_dcache to sync_caches_for_execution
->  - Keep COMPILE_TEST support for ELF
-> 
-> Changes from v1 -> v2:
->  - Remove D-cache invalidation
->  - Reword first patch commit message
-> 
-> Clement Leger (4):
->   common: bootm: allow building with an undefined IH_ARCH
->   common: Kconfig: remove MIPS dependency for ELF
->   kvx: add I-cache and D-cache synchronisation
->   kvx: add support for elf loading using bootm
+> Signed-off-by: Clement Leger <cleger@kalray.eu>
+> ---
+>  arch/kvx/cpu/barebox.lds.S | 9 ---------
+>  1 file changed, 9 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
->  arch/kvx/Kconfig                   |   5 ++
->  arch/kvx/configs/generic_defconfig |   3 +-
->  arch/kvx/include/asm/bootm.h       |  11 +++
->  arch/kvx/include/asm/cache.h       |  18 ++++
->  arch/kvx/include/asm/elf.h         |   3 +
->  arch/kvx/lib/Makefile              |   2 +-
->  arch/kvx/lib/bootm.c               | 133 +++++++++++++++++++++++++++++
->  common/Kconfig                     |   1 -
->  common/bootm.c                     |   2 +-
->  include/image.h                    |   2 +
->  10 files changed, 176 insertions(+), 4 deletions(-)
->  create mode 100644 arch/kvx/include/asm/bootm.h
->  create mode 100644 arch/kvx/include/asm/cache.h
->  create mode 100644 arch/kvx/lib/bootm.c
-> 
+> diff --git a/arch/kvx/cpu/barebox.lds.S b/arch/kvx/cpu/barebox.lds.S
+> index bf92564cf..77ebaf0ae 100644
+> --- a/arch/kvx/cpu/barebox.lds.S
+> +++ b/arch/kvx/cpu/barebox.lds.S
+> @@ -10,8 +10,6 @@
+>  OUTPUT_FORMAT("elf64-kvx")
+>  OUTPUT_ARCH("kvx:kv3-1:64")
+>  
+> -#define DTB_DEFAULT_SIZE	(24 * 1024)
+> -
+>  SECTIONS
+>  {
+>  	. = CONFIG_ARCH_TEXT_BASE;
+> @@ -54,13 +52,6 @@ SECTIONS
+>  		RO_DATA_SECTION
+>  	}
+>  
+> -	.dtb ALIGN(16):
+> -	{
+> -		__dtb_start = .;
+> -		. += DTB_DEFAULT_SIZE;
+> -		__dtb_end = .;
+> -	}
+> -
+>  	_etext = .; /* End of text and rodata section */
+>  
+>  	.data ALIGN(4): {
 > -- 
 > 2.17.1
 > 
