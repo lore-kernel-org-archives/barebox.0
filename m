@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jqVEA-00055h-0w
- for barebox@lists.infradead.org; Wed, 01 Jul 2020 05:24:11 +0000
+ id 1jqVEI-000591-3n
+ for barebox@lists.infradead.org; Wed, 01 Jul 2020 05:24:18 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  1 Jul 2020 07:23:27 +0200
-Message-Id: <20200701052340.9462-16-a.fatoum@pengutronix.de>
+Date: Wed,  1 Jul 2020 07:23:32 +0200
+Message-Id: <20200701052340.9462-21-a.fatoum@pengutronix.de>
 In-Reply-To: <20200701052340.9462-1-a.fatoum@pengutronix.de>
 References: <20200701052340.9462-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,58 +21,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 15/28] pbl: add block I/O API
+Subject: [PATCH 20/28] ARM: at91: sama5d2: reuse stack set-up by first stage
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-We already have some PBL MCI implementations in barebox, but none
-are used for chainloading a barebox from a file system.
-
-There are some SoCs that would benefit from this however:
-At least the Zynq, AT91, SoCFPGA and TI SoCs.
-
-In preparation for supporting first stage boot on these where it's
-customary for both the BootROM and first stage bootloader to load the
-follow-up stage from FAT, add a very basic block I/O API that MCI
-drivers can implement.
+Stack is always set up to end of SRAM before PBL, either by ROM code or
+by first stage bootloader, be it at91bootstrap or barebox in a later
+commit, so no need to change the stack pointer again.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/pbl.h | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ arch/arm/boards/sama5d27-giantboard/lowlevel.c | 13 +++----------
+ arch/arm/boards/sama5d27-som1/lowlevel.c       | 13 +++----------
+ 2 files changed, 6 insertions(+), 20 deletions(-)
 
-diff --git a/include/pbl.h b/include/pbl.h
-index f84ed3b7bfcf..83a058075dc6 100644
---- a/include/pbl.h
-+++ b/include/pbl.h
-@@ -6,6 +6,8 @@
- #ifndef __PBL_H__
- #define __PBL_H__
+diff --git a/arch/arm/boards/sama5d27-giantboard/lowlevel.c b/arch/arm/boards/sama5d27-giantboard/lowlevel.c
+index e08217105bcc..4419e946f1a8 100644
+--- a/arch/arm/boards/sama5d27-giantboard/lowlevel.c
++++ b/arch/arm/boards/sama5d27-giantboard/lowlevel.c
+@@ -34,10 +34,12 @@ static void dbgu_init(void)
  
-+#include <linux/types.h>
-+
- extern unsigned long free_mem_ptr;
- extern unsigned long free_mem_end_ptr;
+ extern char __dtb_z_at91_sama5d27_giantboard_start[];
  
-@@ -13,6 +15,18 @@ void pbl_barebox_uncompress(void *dest, void *compressed_start, unsigned int len
+-static noinline void giantboard_entry(void)
++ENTRY_FUNCTION(start_sama5d27_giantboard, r0, r1, r2)
+ {
+ 	void *fdt;
  
- #ifdef __PBL__
- #define IN_PBL	1
++	arm_cpu_lowlevel_init();
 +
-+struct pbl_bio {
-+	void *priv;
-+	int (*read)(struct pbl_bio *bio, off_t block_off, void *buf, unsigned nblocks);
-+};
+ 	if (IS_ENABLED(CONFIG_DEBUG_LL))
+ 		dbgu_init();
+ 
+@@ -45,12 +47,3 @@ static noinline void giantboard_entry(void)
+ 
+ 	barebox_arm_entry(SAMA5_DDRCS, SZ_128M, fdt);
+ }
+-
+-ENTRY_FUNCTION(start_sama5d27_giantboard, r0, r1, r2)
+-{
+-	arm_cpu_lowlevel_init();
+-
+-	arm_setup_stack(SAMA5D2_SRAM_BASE + SAMA5D2_SRAM_SIZE);
+-
+-	giantboard_entry();
+-}
+diff --git a/arch/arm/boards/sama5d27-som1/lowlevel.c b/arch/arm/boards/sama5d27-som1/lowlevel.c
+index 2b39e5abc396..b7780ec8ae43 100644
+--- a/arch/arm/boards/sama5d27-som1/lowlevel.c
++++ b/arch/arm/boards/sama5d27-som1/lowlevel.c
+@@ -58,10 +58,12 @@ static void ek_dbgu_init(void)
+ 
+ extern char __dtb_z_at91_sama5d27_som1_ek_start[];
+ 
+-static noinline void som1_entry(void)
++ENTRY_FUNCTION(start_sama5d27_som1_ek, r0, r1, r2)
+ {
+ 	void *fdt;
+ 
++	arm_cpu_lowlevel_init();
 +
-+static inline int pbl_bio_read(struct pbl_bio *bio, off_t block_off,
-+			       void *buf, unsigned nblocks)
-+{
-+	return bio->read(bio, block_off, buf, nblocks);
-+}
-+
- #else
- #define IN_PBL	0
- #endif
+ 	if (IS_ENABLED(CONFIG_DEBUG_LL))
+ 		ek_dbgu_init();
+ 
+@@ -70,12 +72,3 @@ static noinline void som1_entry(void)
+ 	ek_turn_led(RGB_LED_GREEN);
+ 	barebox_arm_entry(SAMA5_DDRCS, SZ_128M, fdt);
+ }
+-
+-ENTRY_FUNCTION(start_sama5d27_som1_ek, r0, r1, r2)
+-{
+-	arm_cpu_lowlevel_init();
+-
+-	arm_setup_stack(SAMA5D2_SRAM_BASE + SAMA5D2_SRAM_SIZE);
+-
+-	som1_entry();
+-}
 -- 
 2.27.0
 
