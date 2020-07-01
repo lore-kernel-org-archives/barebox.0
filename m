@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jqVBs-0004ac-Am
- for barebox@lists.infradead.org; Wed, 01 Jul 2020 05:21:49 +0000
-Date: Wed, 1 Jul 2020 07:21:46 +0200
+ id 1jqVDV-0004nk-Ub
+ for barebox@lists.infradead.org; Wed, 01 Jul 2020 05:23:30 +0000
+Date: Wed, 1 Jul 2020 07:23:27 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200701052146.GF15485@pengutronix.de>
-References: <20200630003838.7745-1-dgienda125@gmail.com>
+Message-ID: <20200701052327.GG15485@pengutronix.de>
+References: <20200630204402.26566-1-cleger@kalray.eu>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200630003838.7745-1-dgienda125@gmail.com>
+In-Reply-To: <20200630204402.26566-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,35 +22,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 0/8] Module and ARM Module updates and fixes
-To: David Dgien <dgienda125@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH v3 0/4] kvx: add elf bootm support
+To: Clement Leger <cleger@kalray.eu>
+Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Mon, Jun 29, 2020 at 08:38:30PM -0400, David Dgien wrote:
-> This series fixes various bugs and bit-rot issues with the module
-> loading code. It also ports a couple of modules features from the Linux
-> kernel: arch specific section fixups, and module PLTs for ARM modules,
-> to contain veneers for 'bl' instructions.
+On Tue, Jun 30, 2020 at 10:43:58PM +0200, Clement Leger wrote:
+> This serie adds support for elf bootm support on KVX architecture.
+> First patches are allowing to build elf support for KVX and then bootm
+> support is added to KVX.
 > 
-> Changes since v1:
->   - Added #ifndef MODULE guards to init.h, and removed #undefine
->     directives from module.h
->   - Created a weak function for module_frob_arch_sections default
->     implementation
+> Changes from v2 -> v3:
+>  - Rename sync_icache_dcache to sync_caches_for_execution
+>  - Keep COMPILE_TEST support for ELF
 > 
-> David Dgien (8):
->   Makefile: Initialize and export KBUILD variables
->   module: Add init macros to module.h
->   module: Fix adding module to list after layout
->   module: Fix module command registration
->   module: Implement HAVE_MOD_ARCH_SPECIFIC
->   arm: makefile: Fix compiler flag variable
->   arm: elf: Add THM relocation types
->   arm: module: Allow modules outside of bl range
+> Changes from v1 -> v2:
+>  - Remove D-cache invalidation
+>  - Reword first patch commit message
+> 
+> Clement Leger (4):
+>   common: bootm: allow building with an undefined IH_ARCH
+>   common: Kconfig: remove MIPS dependency for ELF
+>   kvx: add I-cache and D-cache synchronisation
+>   kvx: add support for elf loading using bootm
 
 Applied, thanks
 
 Sascha
+
+> 
+>  arch/kvx/Kconfig                   |   5 ++
+>  arch/kvx/configs/generic_defconfig |   3 +-
+>  arch/kvx/include/asm/bootm.h       |  11 +++
+>  arch/kvx/include/asm/cache.h       |  18 ++++
+>  arch/kvx/include/asm/elf.h         |   3 +
+>  arch/kvx/lib/Makefile              |   2 +-
+>  arch/kvx/lib/bootm.c               | 133 +++++++++++++++++++++++++++++
+>  common/Kconfig                     |   1 -
+>  common/bootm.c                     |   2 +-
+>  include/image.h                    |   2 +
+>  10 files changed, 176 insertions(+), 4 deletions(-)
+>  create mode 100644 arch/kvx/include/asm/bootm.h
+>  create mode 100644 arch/kvx/include/asm/cache.h
+>  create mode 100644 arch/kvx/lib/bootm.c
+> 
+> -- 
+> 2.17.1
+> 
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
