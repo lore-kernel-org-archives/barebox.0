@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jqYm9-0001BO-Ql
- for barebox@lists.infradead.org; Wed, 01 Jul 2020 09:11:43 +0000
+ id 1jqYmA-0001BG-Ck
+ for barebox@lists.infradead.org; Wed, 01 Jul 2020 09:11:42 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  1 Jul 2020 11:11:05 +0200
-Message-Id: <20200701091122.3437-12-a.fatoum@pengutronix.de>
+Date: Wed,  1 Jul 2020 11:10:56 +0200
+Message-Id: <20200701091122.3437-3-a.fatoum@pengutronix.de>
 In-Reply-To: <20200701091122.3437-1-a.fatoum@pengutronix.de>
 References: <20200701091122.3437-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,380 +21,295 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/28] ARM: at91: sama5d2: add sama5d2 matrix configuration
+Subject: [PATCH 02/28] ARM: at91: sama5d2: cast peripheral base addresses to
+ __iomem pointers
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Different peripherals, including the SDRAM, are unusable without prior
-matrix configuration. Port over the necessary at91bootstrap parts for
-sama5d2 use.
+The peripheral addresses should be always cast with IOMEM() anyway, so do
+this directly in the header to make user code less verbose.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/mach-at91/Makefile                 |   2 +-
- arch/arm/mach-at91/include/mach/matrix.h    |  21 +++
- arch/arm/mach-at91/include/mach/tz_matrix.h |  95 +++++++++++++
- arch/arm/mach-at91/matrix.c                 |  45 +++++++
- arch/arm/mach-at91/sama5d2_ll.c             | 140 ++++++++++++++++++++
- 5 files changed, 302 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/mach-at91/include/mach/matrix.h
- create mode 100644 arch/arm/mach-at91/include/mach/tz_matrix.h
- create mode 100644 arch/arm/mach-at91/matrix.c
+ .../arm/boards/sama5d27-giantboard/lowlevel.c |   6 +-
+ arch/arm/boards/sama5d27-som1/lowlevel.c      |  14 +-
+ arch/arm/mach-at91/include/mach/sama5d2.h     | 169 +++++++++---------
+ 3 files changed, 96 insertions(+), 93 deletions(-)
 
-diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-index ea39d7d8c240..6aaef7c531da 100644
---- a/arch/arm/mach-at91/Makefile
-+++ b/arch/arm/mach-at91/Makefile
-@@ -1,5 +1,5 @@
- obj-y += setup.o
--lwl-y += at91_pmc_ll.o ddramc_ll.o
-+lwl-y += at91_pmc_ll.o ddramc_ll.o matrix.o
- lwl-$(CONFIG_CLOCKSOURCE_ATMEL_PIT) += early_udelay.o
+diff --git a/arch/arm/boards/sama5d27-giantboard/lowlevel.c b/arch/arm/boards/sama5d27-giantboard/lowlevel.c
+index 0236c424c195..50bc2613c652 100644
+--- a/arch/arm/boards/sama5d27-giantboard/lowlevel.c
++++ b/arch/arm/boards/sama5d27-giantboard/lowlevel.c
+@@ -20,7 +20,7 @@
  
- ifeq ($(CONFIG_COMMON_CLK_OF_PROVIDER),)
-diff --git a/arch/arm/mach-at91/include/mach/matrix.h b/arch/arm/mach-at91/include/mach/matrix.h
-new file mode 100644
-index 000000000000..5dbfcfe41439
---- /dev/null
-+++ b/arch/arm/mach-at91/include/mach/matrix.h
-@@ -0,0 +1,21 @@
-+/* SPDX-License-Identifier: BSD-1-Clause */
-+/*
-+ * Copyright (c) 2013, Atmel Corporation
-+ *
-+ * Atmel's name may not be used to endorse or promote products derived from
-+ * this software without specific prior written permission.
-+ */
-+#ifndef __MATRIX_H__
-+#define __MATRIX_H__
-+
-+#include <linux/compiler.h>
-+
-+void at91_matrix_write_protect_enable(void __iomem *matrix_base);
-+void at91_matrix_write_protect_disable(void __iomem *matrix_base);
-+void at91_matrix_configure_slave_security(void __iomem *matrix_base,
-+					  unsigned int slave,
-+					  unsigned int srtop_setting,
-+					  unsigned int srsplit_setting,
-+					  unsigned int ssr_setting);
-+
-+#endif /* #ifndef __MATRIX_H__ */
-diff --git a/arch/arm/mach-at91/include/mach/tz_matrix.h b/arch/arm/mach-at91/include/mach/tz_matrix.h
-new file mode 100644
-index 000000000000..85589bfa65c8
---- /dev/null
-+++ b/arch/arm/mach-at91/include/mach/tz_matrix.h
-@@ -0,0 +1,95 @@
-+/* SPDX-License-Identifier: BSD-1-Clause */
-+/*
-+ * Copyright (c) 2013, Atmel Corporation
-+ *
-+ * Atmel's name may not be used to endorse or promote products derived from
-+ * this software without specific prior written permission.
-+ */
-+#ifndef __TZ_MATRIX_H__
-+#define __TZ_MATRIX_H__
-+
-+#define MATRIX_MCFG(n)	(0x0000 + (n) * 4)/* Master Configuration Register */
-+#define MATRIX_SCFG(n)	(0x0040 + (n) * 4)/* Slave Configuration Register */
-+#define MATRIX_PRAS(n)	(0x0080 + (n) * 8)/* Priority Register A for Slave */
-+#define MATRIX_PRBS(n)	(0x0084 + (n) * 8)/* Priority Register B for Slave */
-+
-+#define MATRIX_MRCR	0x0100	/* Master Remap Control Register */
-+#define MATRIX_MEIER	0x0150	/* Master Error Interrupt Enable Register */
-+#define MATRIX_MEIDR	0x0154	/* Master Error Interrupt Disable Register */
-+#define MATRIX_MEIMR	0x0158	/* Master Error Interrupt Mask Register */
-+#define MATRIX_MESR	0x015c	/* Master Error Statue Register */
-+
-+/* Master n Error Address Register */
-+#define MATRIX_MEAR(n)	(0x0160 + (n) * 4)
-+
-+#define MATRIX_WPMR	0x01E4		/* Write Protect Mode Register */
-+#define MATRIX_WPSR	0x01E8		/* Write Protect Status Register */
-+
-+/* Security Slave n Register */
-+#define MATRIX_SSR(n)	(0x0200 + (n) * 4)
-+/* Security Area Split Slave n Register */
-+#define MATRIX_SASSR(n)	(0x0240 + (n) * 4)
-+/* Security Region Top Slave n Register */
-+#define MATRIX_SRTSR(n)	(0x0280 + (n) * 4)
-+
-+/* Security Peripheral Select n Register */
-+#define MATRIX_SPSELR(n)	(0x02c0	+ (n) * 4)
-+
-+/**************************************************************************/
-+/* Write Protect Mode Register (MATRIX_WPMR) */
-+#define MATRIX_WPMR_WPEN	(1 << 0)	/* Write Protect Enable */
-+#define		MATRIX_WPMR_WPEN_DISABLE	(0 << 0)
-+#define		MATRIX_WPMR_WPEN_ENABLE		(1 << 0)
-+#define	MATRIX_WPMR_WPKEY	(PASSWD << 8) /* Write Protect KEY */
-+#define		MATRIX_WPMR_WPKEY_PASSWD	(0x4D4154 << 8)
-+
-+/* Security Slave Registers (MATRIX_SSRx) */
-+#define MATRIX_LANSECH(n, bit)	((bit) << n)
-+#define		MATRIX_LANSECH_S(n)	(0x00 << n)
-+#define		MATRIX_LANSECH_NS(n)	(0x01 << n)
-+#define MATRIX_RDNSECH(n, bit)	((bit) << (n + 8))
-+#define		MATRIX_RDNSECH_S(n)	(0x00 << (n + 8))
-+#define		MATRIX_RDNSECH_NS(n)	(0x01 << (n + 8))
-+#define MATRIX_WRNSECH(n, bit)	((bit) << (n + 16))
-+#define		MATRIX_WRNSECH_S(n)	(0x00 << (n + 16))
-+#define		MATRIX_WRNSECH_NS(n)	(0x01 << (n + 16))
-+
-+/* Security Areas Split Slave Registers (MATRIX_SASSRx) */
-+#define MATRIX_SASPLIT(n, value)	((value) << (4 * n))
-+#define		MATRIX_SASPLIT_VALUE_4K		0x00
-+#define		MATRIX_SASPLIT_VALUE_8K		0x01
-+#define		MATRIX_SASPLIT_VALUE_16K	0x02
-+#define		MATRIX_SASPLIT_VALUE_32K	0x03
-+#define		MATRIX_SASPLIT_VALUE_64K	0x04
-+#define		MATRIX_SASPLIT_VALUE_128K	0x05
-+#define		MATRIX_SASPLIT_VALUE_256K	0x06
-+#define		MATRIX_SASPLIT_VALUE_512K	0x07
-+#define		MATRIX_SASPLIT_VALUE_1M		0x08
-+#define		MATRIX_SASPLIT_VALUE_2M		0x09
-+#define		MATRIX_SASPLIT_VALUE_4M		0x0a
-+#define		MATRIX_SASPLIT_VALUE_8M		0x0b
-+#define		MATRIX_SASPLIT_VALUE_16M	0x0c
-+#define		MATRIX_SASPLIT_VALUE_32M	0x0d
-+#define		MATRIX_SASPLIT_VALUE_64M	0x0e
-+#define		MATRIX_SASPLIT_VALUE_128M	0x0f
-+
-+/* Security Region Top Slave Registers (MATRIX_SRTSRx) */
-+#define MATRIX_SRTOP(n, value)		((value) << (4 * n))
-+#define		MATRIX_SRTOP_VALUE_4K		0x00
-+#define		MATRIX_SRTOP_VALUE_8K		0x01
-+#define		MATRIX_SRTOP_VALUE_16K		0x02
-+#define		MATRIX_SRTOP_VALUE_32K		0x03
-+#define		MATRIX_SRTOP_VALUE_64K		0x04
-+#define		MATRIX_SRTOP_VALUE_128K		0x05
-+#define		MATRIX_SRTOP_VALUE_256K		0x06
-+#define		MATRIX_SRTOP_VALUE_512K		0x07
-+#define		MATRIX_SRTOP_VALUE_1M		0x08
-+#define		MATRIX_SRTOP_VALUE_2M		0x09
-+#define		MATRIX_SRTOP_VALUE_4M		0x0a
-+#define		MATRIX_SRTOP_VALUE_8M		0x0b
-+#define		MATRIX_SRTOP_VALUE_16M		0x0c
-+#define		MATRIX_SRTOP_VALUE_32M		0x0d
-+#define		MATRIX_SRTOP_VALUE_64M		0x0e
-+#define		MATRIX_SRTOP_VALUE_128M		0x0f
-+
-+#endif /* #ifndef __TZ_MATRIX_H__ */
-diff --git a/arch/arm/mach-at91/matrix.c b/arch/arm/mach-at91/matrix.c
-new file mode 100644
-index 000000000000..b2e7345ec1d5
---- /dev/null
-+++ b/arch/arm/mach-at91/matrix.c
-@@ -0,0 +1,45 @@
-+/* SPDX-License-Identifier: BSD-1-Clause */
-+/*
-+ * Copyright (c) 2013, Atmel Corporation
-+ *
-+ * Atmel's name may not be used to endorse or promote products derived from
-+ * this software without specific prior written permission.
-+ */
-+
-+#include <io.h>
-+#include <mach/tz_matrix.h>
-+#include <mach/matrix.h>
-+
-+static inline void matrix_write(void __iomem *base,
-+				unsigned int offset,
-+				const unsigned int value)
-+{
-+	writel(value, base + offset);
-+}
-+
-+static inline unsigned int matrix_read(void __iomem *base, unsigned int offset)
-+{
-+	return readl(base + offset);
-+}
-+
-+void at91_matrix_write_protect_enable(void __iomem *matrix_base)
-+{
-+	matrix_write(matrix_base, MATRIX_WPMR,
-+		     MATRIX_WPMR_WPKEY_PASSWD | MATRIX_WPMR_WPEN_ENABLE);
-+}
-+
-+void at91_matrix_write_protect_disable(void __iomem *matrix_base)
-+{
-+	matrix_write(matrix_base, MATRIX_WPMR, MATRIX_WPMR_WPKEY_PASSWD);
-+}
-+
-+void at91_matrix_configure_slave_security(void __iomem *matrix_base,
-+					  unsigned int slave,
-+					  unsigned int srtop_setting,
-+					  unsigned int srsplit_setting,
-+					  unsigned int ssr_setting)
-+{
-+	matrix_write(matrix_base, MATRIX_SSR(slave), ssr_setting);
-+	matrix_write(matrix_base, MATRIX_SRTSR(slave), srtop_setting);
-+	matrix_write(matrix_base, MATRIX_SASSR(slave), srsplit_setting);
-+}
-diff --git a/arch/arm/mach-at91/sama5d2_ll.c b/arch/arm/mach-at91/sama5d2_ll.c
-index a038bf4b86e6..c3b50617778a 100644
---- a/arch/arm/mach-at91/sama5d2_ll.c
-+++ b/arch/arm/mach-at91/sama5d2_ll.c
-@@ -10,6 +10,8 @@
- #include <mach/at91_ddrsdrc.h>
- #include <mach/ddramc.h>
- #include <mach/early_udelay.h>
-+#include <mach/tz_matrix.h>
-+#include <mach/matrix.h>
- #include <mach/at91_rstc.h>
- #include <asm/barebox-arm.h>
- 
-@@ -66,6 +68,143 @@ static void sama5d2_pmc_init(void)
- 			AT91_PMC_LL_SAMA5D2);
+ static inline void sama5d2_pmc_enable_periph_clock(int clk)
+ {
+-	at91_pmc_sam9x5_enable_periph_clock(IOMEM(SAMA5D2_BASE_PMC), clk);
++	at91_pmc_sam9x5_enable_periph_clock(SAMA5D2_BASE_PMC, clk);
  }
  
-+static void matrix_configure_slave(void)
-+{
-+	u32 ddr_port;
-+	u32 ssr_setting, sasplit_setting, srtop_setting;
-+
-+	/*
-+	 * Matrix 0 (H64MX)
-+	 */
-+
-+	/*
-+	 * 0: Bridge from H64MX to AXIMX
-+	 * (Internal ROM, Crypto Library, PKCC RAM): Always Secured
-+	 */
-+
-+	/* 1: H64MX Peripheral Bridge */
-+
-+	/* 2 ~ 9 DDR2 Port0 ~ 7: Non-Secure */
-+	srtop_setting = MATRIX_SRTOP(0, MATRIX_SRTOP_VALUE_128M);
-+	sasplit_setting = MATRIX_SASPLIT(0, MATRIX_SASPLIT_VALUE_128M);
-+	ssr_setting = MATRIX_LANSECH_NS(0) |
-+		      MATRIX_RDNSECH_NS(0) |
-+		      MATRIX_WRNSECH_NS(0);
-+	for (ddr_port = 0; ddr_port < 8; ddr_port++) {
-+		at91_matrix_configure_slave_security(SAMA5D2_BASE_MATRIX64,
-+					SAMA5D2_H64MX_SLAVE_DDR2_PORT_0 + ddr_port,
-+					srtop_setting,
-+					sasplit_setting,
-+					ssr_setting);
-+	}
-+
-+	/*
-+	 * 10: Internal SRAM 128K
-+	 * TOP0 is set to 128K
-+	 * SPLIT0 is set to 64K
-+	 * LANSECH0 is set to 0, the low area of region 0 is the Securable one
-+	 * RDNSECH0 is set to 0, region 0 Securable area is secured for reads.
-+	 * WRNSECH0 is set to 0, region 0 Securable area is secured for writes
-+	 */
-+	srtop_setting = MATRIX_SRTOP(0, MATRIX_SRTOP_VALUE_128K);
-+	sasplit_setting = MATRIX_SASPLIT(0, MATRIX_SASPLIT_VALUE_64K);
-+	ssr_setting = MATRIX_LANSECH_S(0) |
-+		      MATRIX_RDNSECH_S(0) |
-+		      MATRIX_WRNSECH_S(0);
-+	at91_matrix_configure_slave_security(SAMA5D2_BASE_MATRIX64,
-+					SAMA5D2_H64MX_SLAVE_INTERNAL_SRAM,
-+					srtop_setting,
-+					sasplit_setting,
-+					ssr_setting);
-+
-+	/* 11:  Internal SRAM 128K (Cache L2) */
-+	/* 12:  QSPI0 */
-+	/* 13:  QSPI1 */
-+	/* 14:  AESB */
-+
-+	/*
-+	 * Matrix 1 (H32MX)
-+	 */
-+
-+	/* 0: Bridge from H32MX to H64MX: Not Secured */
-+
-+	/* 1: H32MX Peripheral Bridge 0: Not Secured */
-+
-+	/* 2: H32MX Peripheral Bridge 1: Not Secured */
-+
-+	/*
-+	 * 3: External Bus Interface
-+	 * EBI CS0 Memory(256M) ----> Slave Region 0, 1
-+	 * EBI CS1 Memory(256M) ----> Slave Region 2, 3
-+	 * EBI CS2 Memory(256M) ----> Slave Region 4, 5
-+	 * EBI CS3 Memory(128M) ----> Slave Region 6
-+	 * NFC Command Registers(128M) -->Slave Region 7
-+	 *
-+	 * NANDFlash(EBI CS3) --> Slave Region 6: Non-Secure
-+	 */
-+	srtop_setting =	MATRIX_SRTOP(6, MATRIX_SRTOP_VALUE_128M) |
-+			MATRIX_SRTOP(7, MATRIX_SRTOP_VALUE_128M);
-+	sasplit_setting = MATRIX_SASPLIT(6, MATRIX_SASPLIT_VALUE_128M) |
-+			  MATRIX_SASPLIT(7, MATRIX_SASPLIT_VALUE_128M);
-+	ssr_setting = MATRIX_LANSECH_NS(6) |
-+		      MATRIX_RDNSECH_NS(6) |
-+		      MATRIX_WRNSECH_NS(6) |
-+		      MATRIX_LANSECH_NS(7) |
-+		      MATRIX_RDNSECH_NS(7) |
-+		      MATRIX_WRNSECH_NS(7);
-+	at91_matrix_configure_slave_security(SAMA5D2_BASE_MATRIX32,
-+					SAMA5D2_H32MX_EXTERNAL_EBI,
-+					srtop_setting,
-+					sasplit_setting,
-+					ssr_setting);
-+
-+	/* 4: NFC SRAM (4K): Non-Secure */
-+	srtop_setting = MATRIX_SRTOP(0, MATRIX_SRTOP_VALUE_8K);
-+	sasplit_setting = MATRIX_SASPLIT(0, MATRIX_SASPLIT_VALUE_8K);
-+	ssr_setting = MATRIX_LANSECH_NS(0) |
-+		      MATRIX_RDNSECH_NS(0) |
-+		      MATRIX_WRNSECH_NS(0);
-+	at91_matrix_configure_slave_security(SAMA5D2_BASE_MATRIX32,
-+					SAMA5D2_H32MX_NFC_SRAM,
-+					srtop_setting,
-+					sasplit_setting,
-+					ssr_setting);
-+
-+	/* 5:
-+	 * USB Device High Speed Dual Port RAM (DPR): 1M
-+	 * USB Host OHCI registers: 1M
-+	 * USB Host EHCI registers: 1M
-+	 */
-+	srtop_setting = MATRIX_SRTOP(0, MATRIX_SRTOP_VALUE_1M) |
-+			MATRIX_SRTOP(1, MATRIX_SRTOP_VALUE_1M) |
-+			MATRIX_SRTOP(2, MATRIX_SRTOP_VALUE_1M);
-+	sasplit_setting = MATRIX_SASPLIT(0, MATRIX_SASPLIT_VALUE_1M) |
-+			  MATRIX_SASPLIT(1, MATRIX_SASPLIT_VALUE_1M) |
-+			  MATRIX_SASPLIT(2, MATRIX_SASPLIT_VALUE_1M);
-+	ssr_setting = MATRIX_LANSECH_NS(0) |
-+		      MATRIX_LANSECH_NS(1) |
-+		      MATRIX_LANSECH_NS(2) |
-+		      MATRIX_RDNSECH_NS(0) |
-+		      MATRIX_RDNSECH_NS(1) |
-+		      MATRIX_RDNSECH_NS(2) |
-+		      MATRIX_WRNSECH_NS(0) |
-+		      MATRIX_WRNSECH_NS(1) |
-+		      MATRIX_WRNSECH_NS(2);
-+	at91_matrix_configure_slave_security(SAMA5D2_BASE_MATRIX32,
-+					SAMA5D2_H32MX_USB,
-+					srtop_setting,
-+					sasplit_setting,
-+					ssr_setting);
-+}
-+
-+static void sama5d2_matrix_init(void)
-+{
-+	at91_matrix_write_protect_disable(SAMA5D2_BASE_MATRIX64);
-+	at91_matrix_write_protect_disable(SAMA5D2_BASE_MATRIX32);
-+
-+	matrix_configure_slave();
-+}
-+
- static void sama5d2_rstc_init(void)
- {
- 	writel(AT91_RSTC_KEY | AT91_RSTC_URSTEN,
-@@ -76,5 +215,6 @@ void sama5d2_lowlevel_init(void)
- {
- 	arm_cpu_lowlevel_init();
- 	sama5d2_pmc_init();
-+	sama5d2_matrix_init();
- 	sama5d2_rstc_init();
+ static void dbgu_init(void)
+@@ -29,12 +29,12 @@ static void dbgu_init(void)
+ 
+ 	sama5d2_pmc_enable_periph_clock(SAMA5D2_ID_PIOD);
+ 
+-	at91_mux_pio4_set_A_periph(IOMEM(SAMA5D2_BASE_PIOD),
++	at91_mux_pio4_set_A_periph(SAMA5D2_BASE_PIOD,
+ 				   pin_to_mask(AT91_PIN_PD3)); /* DBGU TXD */
+ 
+ 	sama5d2_pmc_enable_periph_clock(SAMA5D2_ID_UART1);
+ 
+-	at91_dbgu_setup_ll(IOMEM(SAMA5D2_BASE_UART1), mck, 115200);
++	at91_dbgu_setup_ll(SAMA5D2_BASE_UART1, mck, 115200);
+ 
+ 	putc_ll('>');
  }
+diff --git a/arch/arm/boards/sama5d27-som1/lowlevel.c b/arch/arm/boards/sama5d27-som1/lowlevel.c
+index 62d35be9123d..569960be445d 100644
+--- a/arch/arm/boards/sama5d27-som1/lowlevel.c
++++ b/arch/arm/boards/sama5d27-som1/lowlevel.c
+@@ -24,13 +24,13 @@
+ 
+ static inline void sama5d2_pmc_enable_periph_clock(int clk)
+ {
+-	at91_pmc_sam9x5_enable_periph_clock(IOMEM(SAMA5D2_BASE_PMC), clk);
++	at91_pmc_sam9x5_enable_periph_clock(SAMA5D2_BASE_PMC, clk);
+ }
+ 
+ static void ek_turn_led(unsigned color)
+ {
+ 	struct {
+-		unsigned long pio;
++		void __iomem *pio;
+ 		unsigned bit;
+ 		unsigned color;
+ 	} *led, leds[] = {
+@@ -41,9 +41,9 @@ static void ek_turn_led(unsigned color)
+ 	};
+ 
+ 	for (led = leds; led->pio; led++) {
+-		at91_mux_gpio4_enable(IOMEM(led->pio), BIT(led->bit));
+-		at91_mux_gpio4_input(IOMEM(led->pio), BIT(led->bit), false);
+-		at91_mux_gpio4_set(IOMEM(led->pio), BIT(led->bit), led->color);
++		at91_mux_gpio4_enable(led->pio, BIT(led->bit));
++		at91_mux_gpio4_input(led->pio, BIT(led->bit), false);
++		at91_mux_gpio4_set(led->pio, BIT(led->bit), led->color);
+ 	}
+ }
+ 
+@@ -53,12 +53,12 @@ static void ek_dbgu_init(void)
+ 
+ 	sama5d2_pmc_enable_periph_clock(SAMA5D2_ID_PIOD);
+ 
+-	at91_mux_pio4_set_A_periph(IOMEM(SAMA5D2_BASE_PIOD),
++	at91_mux_pio4_set_A_periph(SAMA5D2_BASE_PIOD,
+ 				   pin_to_mask(AT91_PIN_PD3)); /* DBGU TXD */
+ 
+ 	sama5d2_pmc_enable_periph_clock(SAMA5D2_ID_UART1);
+ 
+-	at91_dbgu_setup_ll(IOMEM(SAMA5D2_BASE_UART1), mck, 115200);
++	at91_dbgu_setup_ll(SAMA5D2_BASE_UART1, mck, 115200);
+ 
+ 	putc_ll('>');
+ }
+diff --git a/arch/arm/mach-at91/include/mach/sama5d2.h b/arch/arm/mach-at91/include/mach/sama5d2.h
+index 3dad7d9c9c2c..ada9c59e0370 100644
+--- a/arch/arm/mach-at91/include/mach/sama5d2.h
++++ b/arch/arm/mach-at91/include/mach/sama5d2.h
+@@ -14,6 +14,9 @@
+ #ifndef SAMA5D2_H
+ #define SAMA5D2_H
+ 
++#include <asm/io.h>
++#include <linux/sizes.h>
++
+ /*
+  * Peripheral identifiers/interrupts. (Table 18-9)
+  */
+@@ -101,100 +104,100 @@
+  * User Peripheral physical base addresses.
+  */
+ 
+-#define	SAMA5D2_BASE_LCDC	0xf0000000
+-#define	SAMA5D2_BASE_XDMAC1	0xf0004000
+-#define	SAMA5D2_BASE_HXISI	0xf0008000
+-#define	SAMA5D2_BASE_MPDDRC	0xf000c000
+-#define	SAMA5D2_BASE_XDMAC0	0xf0010000
+-#define	SAMA5D2_BASE_PMC	0xf0014000
+-#define	SAMA5D2_BASE_MATRIX64	0xf0018000	/* MATRIX0 */
+-#define	SAMA5D2_BASE_AESB	0xf001c000
+-#define	SAMA5D2_BASE_QSPI0	0xf0020000
+-#define	SAMA5D2_BASE_QSPI1	0xf0024000
+-#define	SAMA5D2_BASE_SHA	0xf0028000
+-#define	SAMA5D2_BASE_AES	0xf002c000
++#define	SAMA5D2_BASE_LCDC	IOMEM(0xf0000000)
++#define	SAMA5D2_BASE_XDMAC1	IOMEM(0xf0004000)
++#define	SAMA5D2_BASE_HXISI	IOMEM(0xf0008000)
++#define	SAMA5D2_BASE_MPDDRC	IOMEM(0xf000c000)
++#define	SAMA5D2_BASE_XDMAC0	IOMEM(0xf0010000)
++#define	SAMA5D2_BASE_PMC	IOMEM(0xf0014000)
++#define	SAMA5D2_BASE_MATRIX64	IOMEM(0xf0018000)	/* MATRIX0 */
++#define	SAMA5D2_BASE_AESB	IOMEM(0xf001c000)
++#define	SAMA5D2_BASE_QSPI0	IOMEM(0xf0020000)
++#define	SAMA5D2_BASE_QSPI1	IOMEM(0xf0024000)
++#define	SAMA5D2_BASE_SHA	IOMEM(0xf0028000)
++#define	SAMA5D2_BASE_AES	IOMEM(0xf002c000)
+ 
+-#define	SAMA5D2_BASE_SPI0	0xf8000000
+-#define	SAMA5D2_BASE_SSC0	0xf8004000
+-#define	SAMA5D2_BASE_GMAC	0xf8008000
+-#define	SAMA5D2_BASE_TC0	0xf800c000
+-#define	SAMA5D2_BASE_TC1	0xf8010000
+-#define	SAMA5D2_BASE_HSMC	0xf8014000
+-#define	SAMA5D2_BASE_PDMIC	0xf8018000
+-#define	SAMA5D2_BASE_UART0	0xf801c000
+-#define	SAMA5D2_BASE_UART1	0xf8020000
+-#define	SAMA5D2_BASE_UART2	0xf8024000
+-#define	SAMA5D2_BASE_TWI0	0xf8028000
+-#define	SAMA5D2_BASE_PWMC	0xf802c000
+-#define	SAMA5D2_BASE_SFR	0xf8030000
+-#define	SAMA5D2_BASE_FLEXCOM0	0xf8034000
+-#define	SAMA5D2_BASE_FLEXCOM1	0xf8038000
+-#define	SAMA5D2_BASE_SAIC	0xf803c000
+-#define	SAMA5D2_BASE_ICM	0xf8040000
+-#define	SAMA5D2_BASE_SECURAM	0xf8044000
+-#define	SAMA5D2_BASE_SYSC	0xf8048000
+-#define	SAMA5D2_BASE_ACC	0xf804a000
+-#define	SAMA5D2_BASE_SFC	0xf804c000
+-#define	SAMA5D2_BASE_I2SC0	0xf8050000
+-#define	SAMA5D2_BASE_CAN0	0xf8054000
++#define	SAMA5D2_BASE_SPI0	IOMEM(0xf8000000)
++#define	SAMA5D2_BASE_SSC0	IOMEM(0xf8004000)
++#define	SAMA5D2_BASE_GMAC	IOMEM(0xf8008000)
++#define	SAMA5D2_BASE_TC0	IOMEM(0xf800c000)
++#define	SAMA5D2_BASE_TC1	IOMEM(0xf8010000)
++#define	SAMA5D2_BASE_HSMC	IOMEM(0xf8014000)
++#define	SAMA5D2_BASE_PDMIC	IOMEM(0xf8018000)
++#define	SAMA5D2_BASE_UART0	IOMEM(0xf801c000)
++#define	SAMA5D2_BASE_UART1	IOMEM(0xf8020000)
++#define	SAMA5D2_BASE_UART2	IOMEM(0xf8024000)
++#define	SAMA5D2_BASE_TWI0	IOMEM(0xf8028000)
++#define	SAMA5D2_BASE_PWMC	IOMEM(0xf802c000)
++#define	SAMA5D2_BASE_SFR	IOMEM(0xf8030000)
++#define	SAMA5D2_BASE_FLEXCOM0	IOMEM(0xf8034000)
++#define	SAMA5D2_BASE_FLEXCOM1	IOMEM(0xf8038000)
++#define	SAMA5D2_BASE_SAIC	IOMEM(0xf803c000)
++#define	SAMA5D2_BASE_ICM	IOMEM(0xf8040000)
++#define	SAMA5D2_BASE_SECURAM	IOMEM(0xf8044000)
++#define	SAMA5D2_BASE_SYSC	IOMEM(0xf8048000)
++#define	SAMA5D2_BASE_ACC	IOMEM(0xf804a000)
++#define	SAMA5D2_BASE_SFC	IOMEM(0xf804c000)
++#define	SAMA5D2_BASE_I2SC0	IOMEM(0xf8050000)
++#define	SAMA5D2_BASE_CAN0	IOMEM(0xf8054000)
+ 
+-#define	SAMA5D2_BASE_SPI1	0xfc000000
+-#define	SAMA5D2_BASE_SSC1	0xfc004000
+-#define	SAMA5D2_BASE_UART3	0xfc008000
+-#define	SAMA5D2_BASE_UART4	0xfc00c000
+-#define	SAMA5D2_BASE_FLEXCOM2	0xfc010000
+-#define	SAMA5D2_BASE_FLEXCOM3	0xfc014000
+-#define	SAMA5D2_BASE_FLEXCOM4	0xfc018000
+-#define	SAMA5D2_BASE_TRNG	0xfc01c000
+-#define	SAMA5D2_BASE_AIC	0xfc020000
+-#define	SAMA5D2_BASE_TWI1	0xfc028000
+-#define	SAMA5D2_BASE_UDPHS	0xfc02c000
+-#define	SAMA5D2_BASE_ADC	0xfc030000
++#define	SAMA5D2_BASE_SPI1	IOMEM(0xfc000000)
++#define	SAMA5D2_BASE_SSC1	IOMEM(0xfc004000)
++#define	SAMA5D2_BASE_UART3	IOMEM(0xfc008000)
++#define	SAMA5D2_BASE_UART4	IOMEM(0xfc00c000)
++#define	SAMA5D2_BASE_FLEXCOM2	IOMEM(0xfc010000)
++#define	SAMA5D2_BASE_FLEXCOM3	IOMEM(0xfc014000)
++#define	SAMA5D2_BASE_FLEXCOM4	IOMEM(0xfc018000)
++#define	SAMA5D2_BASE_TRNG	IOMEM(0xfc01c000)
++#define	SAMA5D2_BASE_AIC	IOMEM(0xfc020000)
++#define	SAMA5D2_BASE_TWI1	IOMEM(0xfc028000)
++#define	SAMA5D2_BASE_UDPHS	IOMEM(0xfc02c000)
++#define	SAMA5D2_BASE_ADC	IOMEM(0xfc030000)
+ 
+-#define	SAMA5D2_BASE_PIOA	0xfc038000
+-#define	SAMA5D2_BASE_MATRIX32	0xfc03c000	/* MATRIX1 */
+-#define	SAMA5D2_BASE_SECUMOD	0xfc040000
+-#define	SAMA5D2_BASE_TDES	0xfc044000
+-#define	SAMA5D2_BASE_CLASSD	0xfc048000
+-#define	SAMA5D2_BASE_I2SC1	0xfc04c000
+-#define	SAMA5D2_BASE_CAN1	0xfc050000
+-#define	SAMA5D2_BASE_SFRBU	0xfc05c000
+-#define	SAMA5D2_BASE_CHIPID	0xfc069000
++#define	SAMA5D2_BASE_PIOA	IOMEM(0xfc038000)
++#define	SAMA5D2_BASE_MATRIX32	IOMEM(0xfc03c000)	/* MATRIX1 */
++#define	SAMA5D2_BASE_SECUMOD	IOMEM(0xfc040000)
++#define	SAMA5D2_BASE_TDES	IOMEM(0xfc044000)
++#define	SAMA5D2_BASE_CLASSD	IOMEM(0xfc048000)
++#define	SAMA5D2_BASE_I2SC1	IOMEM(0xfc04c000)
++#define	SAMA5D2_BASE_CAN1	IOMEM(0xfc050000)
++#define	SAMA5D2_BASE_SFRBU	IOMEM(0xfc05c000)
++#define	SAMA5D2_BASE_CHIPID	IOMEM(0xfc069000)
+ 
+ /*
+  * Address Memory Space
+  */
+-#define	SAMA5D2_BASE_INTERNAL_MEM	0x00000000
+-#define	SAMA5D2_BASE_CS0		0x10000000
+-#define	SAMA5D2_BASE_DDRCS		0x20000000
+-#define	SAMA5D2_BASE_DDRCS_AES		0x40000000
+-#define	SAMA5D2_BASE_CS1		0x60000000
+-#define	SAMA5D2_BASE_CS2		0x70000000
+-#define	SAMA5D2_BASE_CS3		0x80000000
+-#define	SAMA5D2_BASE_QSPI0_AES_MEM	0x90000000
+-#define	SAMA5D2_BASE_QSPI1_AES_MEM	0x98000000
+-#define	SAMA5D2_BASE_SDHC0		0xa0000000
+-#define	SAMA5D2_BASE_SDHC1		0xb0000000
+-#define	SAMA5D2_BASE_NFC_CMD_REG	0xc0000000
+-#define	SAMA5D2_BASE_QSPI0_MEM		0xd0000000
+-#define	SAMA5D2_BASE_QSPI1_MEM		0xd8000000
+-#define	SAMA5D2_BASE_PERIPH		0xf0000000
++#define	SAMA5D2_BASE_INTERNAL_MEM	IOMEM(0x00000000)
++#define	SAMA5D2_BASE_CS0		IOMEM(0x10000000)
++#define	SAMA5D2_BASE_DDRCS		IOMEM(0x20000000)
++#define	SAMA5D2_BASE_DDRCS_AES		IOMEM(0x40000000)
++#define	SAMA5D2_BASE_CS1		IOMEM(0x60000000)
++#define	SAMA5D2_BASE_CS2		IOMEM(0x70000000)
++#define	SAMA5D2_BASE_CS3		IOMEM(0x80000000)
++#define	SAMA5D2_BASE_QSPI0_AES_MEM	IOMEM(0x90000000)
++#define	SAMA5D2_BASE_QSPI1_AES_MEM	IOMEM(0x98000000)
++#define	SAMA5D2_BASE_SDHC0		IOMEM(0xa0000000)
++#define	SAMA5D2_BASE_SDHC1		IOMEM(0xb0000000)
++#define	SAMA5D2_BASE_NFC_CMD_REG	IOMEM(0xc0000000)
++#define	SAMA5D2_BASE_QSPI0_MEM		IOMEM(0xd0000000)
++#define	SAMA5D2_BASE_QSPI1_MEM		IOMEM(0xd8000000)
++#define	SAMA5D2_BASE_PERIPH		IOMEM(0xf0000000)
+ 
+ /*
+  * Internal Memories
+  */
+-#define	SAMA5D2_BASE_ROM		0x00000000	/* ROM */
+-#define	SAMA5D2_BASE_ECC_ROM		0x00060000	/* ECC ROM */
+-#define	SAMA5D2_BASE_NFC_SRAM		0x00100000	/* NFC SRAM */
+-#define	SAMA5D2_BASE_SRAM0		0x00200000	/* SRAM0 */
+-#define	SAMA5D2_BASE_SRAM1		0x00220000	/* SRAM1 */
+-#define	SAMA5D2_BASE_UDPHS_SRAM		0x00300000	/* UDPHS RAM */
+-#define	SAMA5D2_BASE_UHP_OHCI		0x00400000	/* UHP OHCI */
+-#define	SAMA5D2_BASE_UHP_EHCI		0x00500000	/* UHP EHCI */
+-#define	SAMA5D2_BASE_AXI_MATRIX		0x00600000	/* AXI Maxtrix */
+-#define	SAMA5D2_BASE_DAP		0x00700000	/* DAP */
+-#define	SAMA5D2_BASE_PTC		0x00800000	/* PTC */
+-#define	SAMA5D2_BASE_L2CC		0x00A00000	/* L2CC */
++#define	SAMA5D2_BASE_ROM		IOMEM(0x00000000)	/* ROM */
++#define	SAMA5D2_BASE_ECC_ROM		IOMEM(0x00060000)	/* ECC ROM */
++#define	SAMA5D2_BASE_NFC_SRAM		0x00100000		/* NFC SRAM */
++#define	SAMA5D2_BASE_SRAM0		0x00200000		/* SRAM0 */
++#define	SAMA5D2_BASE_SRAM1		0x00220000		/* SRAM1 */
++#define	SAMA5D2_BASE_UDPHS_SRAM		0x00300000		/* UDPHS RAM */
++#define	SAMA5D2_BASE_UHP_OHCI		IOMEM(0x00400000)	/* UHP OHCI */
++#define	SAMA5D2_BASE_UHP_EHCI		IOMEM(0x00500000)	/* UHP EHCI */
++#define	SAMA5D2_BASE_AXI_MATRIX		IOMEM(0x00600000)	/* AXI Maxtrix */
++#define	SAMA5D2_BASE_DAP		IOMEM(0x00700000)	/* DAP */
++#define	SAMA5D2_BASE_PTC		IOMEM(0x00800000)	/* PTC */
++#define	SAMA5D2_BASE_L2CC		IOMEM(0x00A00000)	/* L2CC */
+ 
+ /*
+  * Other misc defines
 -- 
 2.27.0
 
