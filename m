@@ -1,25 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from vsmx012.vodafonemail.xion.oxcs.net ([153.92.174.90])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jqZQM-0004v9-8J
- for barebox@lists.infradead.org; Wed, 01 Jul 2020 09:53:03 +0000
-Date: Wed, 1 Jul 2020 11:52:41 +0200 (CEST)
-From: Giorgio Dal Molin <giorgio.nicole@arcor.de>
-Message-ID: <473645456.227984.1593597168773@mail.vodafone.de>
-In-Reply-To: <CAOMZO5Cxa6Yk-uWUummRhNVQbLHvduCZQM9djxXNG683GQ4gRw@mail.gmail.com>
-References: <925732743.424285.1592919941556@mail.vodafone.de>
- <CAOMZO5AeTg2afd+xVmNr=GxOM=s7qdzUhMqz2AHpTx_MPGWbPg@mail.gmail.com>
- <245646662.425432.1592925096458@mail.vodafone.de>
- <d999acb9-ed34-7b02-42cf-675a152ddee3@pengutronix.de>
- <517310923.70062.1593427992397@mail.vodafone.de>
- <595dc8c8-09c8-81ad-d730-23781e207cbd@pengutronix.de>
- <429834562.114102.1593444620511@mail.vodafone.de>
- <aac7feb5-604f-2914-bfbd-75f0271401ad@pengutronix.de>
- <1874617325.108865.1593446626706@mail.vodafone.de>
- <21c2fc40-e385-b05e-6392-55ad219597da@pengutronix.de>
- <1036676243.111725.1593448425601@mail.vodafone.de>
- <CAOMZO5Cxa6Yk-uWUummRhNVQbLHvduCZQM9djxXNG683GQ4gRw@mail.gmail.com>
+ id 1jqiqu-0000yy-8U
+ for barebox@lists.infradead.org; Wed, 01 Jul 2020 19:57:05 +0000
+Date: Wed, 1 Jul 2020 21:56:58 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20200701195658.335aynqq7sssgik2@pengutronix.de>
+References: <20200519163733.2836-1-u.kleine-koenig@pengutronix.de>
+ <20200519194936.n3ttkn3s7j7ksrm6@pengutronix.de>
 MIME-Version: 1.0
+In-Reply-To: <20200519194936.n3ttkn3s7j7ksrm6@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,95 +18,128 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============0263214131347245856=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: reset / watchdog on an imx7d soc
-To: Fabio Estevam <festevam@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>, Ahmad Fatoum <a.fatoum@pengutronix.de>
-
-Hi,
-
-> On June 29, 2020 at 6:39 PM Fabio Estevam <festevam@gmail.com> wrote:
-> 
-> 
-> Hi Giorgio,
-> 
-> On Mon, Jun 29, 2020 at 1:33 PM Giorgio Dal Molin
-> <giorgio.nicole@arcor.de> wrote:
-> 
-> > U-Boot configures the ddr3 with c code in its board code 'lowlevel.c'.
-> > Looking at the code I noticed this special treatment:
-> >
-> > static void spl_dram_init(void)
-> > {
-> > ...
-> >         /*
-> >          * Make sure that both aresetn/core_ddrc_rstn and preset/PHY reset
-> >          * bits are set after WDOG reset event. DDRC_PRST can only be
-> >          * released when DDRC clock inputs are stable for at least 30 cycles.
-> >          */
-> >         writel(SRC_DDRC_RCR_DDRC_CORE_RST_MASK | SRC_DDRC_RCR_DDRC_PRST_MASK, &src_regs->ddrc_rcr);
-> >         udelay(500);
-> > ...
-> >
-> > This writel() set both reset bits, the DDRC_CORE (0x2) and the DDRC_PRST (0x1) of the SRC
-> > register 0x30391000.
-> > Unfortunately, if I try also to set both bits in my DCD table then barebox doesn't boot anymore;
-> > I also tried to port the uboot spl_dram_init(void) to my barebox lowlevel.c and I could eventually
-> > boot barebox with an empty DCD but still adding the second bit (SRC_DDRC_RCR_DDRC_PRST_MASK)
-> > hangs the soc.
-> 
-> Does it help if you try to apply this U-Boot commit to Barebox?
-> https://gitlab.denx.de/u-boot/u-boot/-/commit/0e06d63d195670f5181958f43216d7106c05357f
-
-I've made some more tests with the imx7d and found that the following DCD sequence:
-
-wm 32 0x30391000		0x00000003  // <== added this write
-wm 32 0x30391000		0x00000002
-...
-
-have an (unreliable) effect: I can now some time reboot barebox with a 'reset'
-command and after the reboot I can see the correct reset reason on the serial console:
-
-barebox 2020.06.0-00327-g712fde835-dirty #2 Wed Jul 1 10:21:11 CEST 2020
-
-Board: Kontron SMARC-sAMX7
-detected i.MX7d revision 1.3
-i.MX reset reason POR (SRSR: 0x00000001)
-...
-
-samx7: /
-samx7: / reset 
-
-barebox 2020.06.0-00327-g712fde835-dirty #2 Wed Jul 1 10:21:11 CEST 2020
-
-Board: Kontron SMARC-sAMX7
-detected i.MX7d revision 1.3
-i.MX reset reason WDG (SRSR: 0x00000010)
-mdio_bus: miibus0: probed
-...
-
-samx7: /
+Subject: Re: [PATCH] arch/arm/boards: Replace license and copyright
+ boilerplate by SPDX identfiers
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
 
-This is the first time I see a reset working on my imx7 module with barebox; the
-problem is now that the reboot process is not reliable: it works a couple of times
-(not deterministic) and then it hangs the soc forcing me to push the reset button.
+--===============0263214131347245856==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="lxjeq5xsnmjgtmfc"
+Content-Disposition: inline
 
-As a possible fix I tried adding some 'nop' in the DCD around the two wm 32 to simulate
-a delay but it makes no difference.
 
-giorgio
+--lxjeq5xsnmjgtmfc
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+Hello Andrey,
+
+On Tue, May 19, 2020 at 09:49:36PM +0200, Uwe Kleine-K=F6nig wrote:
+> On Tue, May 19, 2020 at 06:37:33PM +0200, Uwe Kleine-K=F6nig wrote:
+> > This adapts all files that were identifed by licensecheck
+> > (https://salsa.debian.org/build-common-team/licensecheck.git) as
+> > licensed under the GPL.
+> >=20
+> > The advantage is that these specifiers are machine-parseable which helps
+> > license conformance, e.g. for packaging barebox in Debian.
+> >=20
+> > While touching these files also do some minor comment reformatting to
+> > get some uniform layout.
+>=20
+> While going once more through this patch I noticed that there are a few
+> hunks that might be questionable and it would be great if you could
+> comment:
+>=20
+> > diff --git a/arch/arm/boards/freescale-mx7-sabresd/board.c b/arch/arm/b=
+oards/freescale-mx7-sabresd/board.c
+> > index 37941efdbeb4..e41d67017fe5 100644
+> > --- a/arch/arm/boards/freescale-mx7-sabresd/board.c
+> > +++ b/arch/arm/boards/freescale-mx7-sabresd/board.c
+> > @@ -1,17 +1,7 @@
+> > -/*
+> > - * Copyright (C) 2017 Zodiac Inflight Innovation
+> > - * Author: Andrey Smirnov <andrew.smirnov@gmail.com>
+> > - *
+> > - * This program is free software; you can redistribute it and/or
+> > - * modify it under the terms of the GNU General Public License as
+> > - * published by the Free Software Foundation; either version 2 of
+> > - * the License, or (at your option) any later version.
+> > - *
+> > - * This program is distributed in the hope that it will be useful,
+> > - * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> > - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> > - * GNU General Public License for more details.
+> > - */
+> > +// SPDX-License-Identifier: GPL-2.0-or-later
+> > +// SPDX-FileCopyrightText: 2017 Zodiac Inflight Innovation
+> > +
+> > +/* Author: Andrey Smirnov <andrew.smirnov@gmail.com> */
+> > =20
+> >  #include <common.h>
+> >  #include <init.h>
+>=20
+> Is this right? I.e does Zodiac hold the copyright and you are "only" the
+> author? Or would
+>=20
+> 	// SPDX-FileCopyrightText: 2017 Andrey Smirnov <andrew.smirnov@gmail.com=
+>, Zodiac Inflight Innovation
+>=20
+> be more appropriate?
+>=20
+> Same question for
+>=20
+> 	arch/arm/boards/zii-imx6q-rdu2/board.c
+> 	arch/arm/boards/zii-imx6q-rdu2/lowlevel.c
+> 	arch/arm/boards/zii-vf610-dev/board.c
+> 	arch/arm/boards/zii-vf610-dev/lowlevel.c
+
+While going further through the barebox source tree there are more files
+with this info. Last I found was
+
+	arch/arm/cpu/no-mmu.c
+
+Would be really great to get some input from you on this.
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--lxjeq5xsnmjgtmfc
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAl786ocACgkQwfwUeK3K
+7AlhGAf+NJhEfiM1N5rJ//FDEAtyMfri0//irc0tD2B4cOv2Klforfzrtp0SECjP
+xotC4pQhWDriT0VuYkAN54L2pMSRGgkKm613uMyPsbGzOMXy+3Yn2bbUBg9G5ULw
+UDeuIpB4/DYFOmLFShtKsIVd34Ni03ZKZXls3k3nnO35Fxn/8Spodo6BCeYhiv6w
+HxtqOQQxt4m5d6IiqZHAk3gRnbF+GDzKB+z2urk5mQ5W5Hd51z42PGaL+/Bynxe4
+EkV8ktfte/RwpC+wIb/RWSl2vkeMxv1pA8SkJMAlG2rR/0Xg9Qaa1ZFTtkqDL3oc
+4hA10hsxZViw8zzcQ+muIzwxfqs8bA==
+=RQDH
+-----END PGP SIGNATURE-----
+
+--lxjeq5xsnmjgtmfc--
+
+
+--===============0263214131347245856==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============0263214131347245856==--
