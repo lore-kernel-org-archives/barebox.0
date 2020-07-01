@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jqYmE-0002h8-AL
+ id 1jqYmE-0002h9-BQ
  for barebox@lists.infradead.org; Wed, 01 Jul 2020 09:11:37 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  1 Jul 2020 11:11:09 +0200
-Message-Id: <20200701091122.3437-16-a.fatoum@pengutronix.de>
+Date: Wed,  1 Jul 2020 11:11:02 +0200
+Message-Id: <20200701091122.3437-9-a.fatoum@pengutronix.de>
 In-Reply-To: <20200701091122.3437-1-a.fatoum@pengutronix.de>
 References: <20200701091122.3437-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,57 +21,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 15/28] pbl: add block I/O API
+Subject: [PATCH 08/28] ARM: at91: watchdog: implement at91_wdt_disable
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Sam Ravnborg <sam@ravnborg.org>, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-We already have some PBL MCI implementations in barebox, but none
-are used for chainloading a barebox from a file system.
+Board code might want to disable the watchdog in PBL and enable it later
+prior to boot. Provide a helper to do so.
 
-There are some SoCs that would benefit from this however:
-At least the Zynq, AT91, SoCFPGA and TI SoCs.
-
-In preparation for supporting first stage boot on these where it's
-customary for both the BootROM and first stage bootloader to load the
-follow-up stage from FAT, add a very basic block I/O API that MCI
-drivers can implement.
-
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/pbl.h | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ arch/arm/mach-at91/include/mach/at91_wdt.h | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/include/pbl.h b/include/pbl.h
-index f84ed3b7bfcf..83a058075dc6 100644
---- a/include/pbl.h
-+++ b/include/pbl.h
-@@ -6,6 +6,8 @@
- #ifndef __PBL_H__
- #define __PBL_H__
+diff --git a/arch/arm/mach-at91/include/mach/at91_wdt.h b/arch/arm/mach-at91/include/mach/at91_wdt.h
+index 36d37b9d2d64..d295d35d1b5c 100644
+--- a/arch/arm/mach-at91/include/mach/at91_wdt.h
++++ b/arch/arm/mach-at91/include/mach/at91_wdt.h
+@@ -35,4 +35,20 @@
+ #define		AT91_WDT_WDUNF		(1 << 0)		/* Watchdog Underflow */
+ #define		AT91_WDT_WDERR		(1 << 1)		/* Watchdog Error */
  
-+#include <linux/types.h>
++#ifndef __ASSEMBLY__
++// SPDX-License-Identifier: BSD-1-Clause
++/*
++ * Copyright (c) 2006, Atmel Corporation
++ */
 +
- extern unsigned long free_mem_ptr;
- extern unsigned long free_mem_end_ptr;
- 
-@@ -13,6 +15,18 @@ void pbl_barebox_uncompress(void *dest, void *compressed_start, unsigned int len
- 
- #ifdef __PBL__
- #define IN_PBL	1
++#include <asm-generic/io.h>
 +
-+struct pbl_bio {
-+	void *priv;
-+	int (*read)(struct pbl_bio *bio, off_t block_off, void *buf, unsigned nblocks);
-+};
-+
-+static inline int pbl_bio_read(struct pbl_bio *bio, off_t block_off,
-+			       void *buf, unsigned nblocks)
++static inline void at91_wdt_disable(void __iomem *wdt_base)
 +{
-+	return bio->read(bio, block_off, buf, nblocks);
++	u32 reg = readl(wdt_base + AT91_WDT_MR);
++	reg |= AT91_WDT_WDDIS;
++	writel(reg, wdt_base + AT91_WDT_MR);
 +}
 +
- #else
- #define IN_PBL	0
++#endif /* __ASSEMBLY__ */
  #endif
 -- 
 2.27.0
