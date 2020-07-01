@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jqVDu-0004wu-0F
- for barebox@lists.infradead.org; Wed, 01 Jul 2020 05:24:02 +0000
+ id 1jqVDu-0004ww-0H
+ for barebox@lists.infradead.org; Wed, 01 Jul 2020 05:24:03 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  1 Jul 2020 07:23:39 +0200
-Message-Id: <20200701052340.9462-28-a.fatoum@pengutronix.de>
+Date: Wed,  1 Jul 2020 07:23:38 +0200
+Message-Id: <20200701052340.9462-27-a.fatoum@pengutronix.de>
 In-Reply-To: <20200701052340.9462-1-a.fatoum@pengutronix.de>
 References: <20200701052340.9462-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,91 +21,116 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 27/28] ARM: at91: sama5d27-giantboard: add additional first
- stage entry point
+Subject: [PATCH 26/28] ARM: at91: sama5d27-som1-ek: add barebox_update and
+ multi environment support
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The BootROM constrains us to a 64K big first stage bootloader. Add a PBL
-entry point for a xload barebox that sets up the minimum necessary to
-load a FAT32 barebox.bin from the SD-Card.
+We now have second stage support for running from sdmmc0 and sdmmc1.
+Add a barebox environment and update handler for the two SD cards.
+
+As fall back, we use the environment in the QSPI flash as before as this
+is soldered to the SoM and is always available.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- .../arm/boards/sama5d27-giantboard/lowlevel.c | 28 +++++++++++++------
- images/Makefile.at91                          |  5 ++++
- 2 files changed, 24 insertions(+), 9 deletions(-)
+ arch/arm/boards/sama5d27-som1/Makefile |  1 +
+ arch/arm/boards/sama5d27-som1/board.c  | 35 ++++++++++++++++++++++++++
+ arch/arm/dts/at91-sama5d27_som1_ek.dts | 17 ++++++++++++-
+ arch/arm/mach-at91/Kconfig             |  1 +
+ 4 files changed, 53 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/boards/sama5d27-som1/board.c
 
-diff --git a/arch/arm/boards/sama5d27-giantboard/lowlevel.c b/arch/arm/boards/sama5d27-giantboard/lowlevel.c
-index 3dada9baf23c..dc678e5d83ce 100644
---- a/arch/arm/boards/sama5d27-giantboard/lowlevel.c
-+++ b/arch/arm/boards/sama5d27-giantboard/lowlevel.c
-@@ -5,22 +5,34 @@
- 
- #include <common.h>
- #include <init.h>
--
--#include <asm/barebox-arm-head.h>
- #include <mach/barebox-arm.h>
- #include <mach/sama5d2_ll.h>
-+#include <mach/xload.h>
-+#include <mach/sama5d2-sip-ddramc.h>
- #include <mach/iomux.h>
- #include <debug_ll.h>
--#include <mach/at91_dbgu.h>
- 
- /* PCK = 492MHz, MCK = 164MHz */
- #define MASTER_CLOCK	164000000
- 
--static void dbgu_init(void)
-+SAMA5_ENTRY_FUNCTION(start_sama5d27_giantboard_xload_mmc, r4)
- {
--	sama5d2_resetup_uart_console(MASTER_CLOCK);
-+	void __iomem *dbgu_base;
+diff --git a/arch/arm/boards/sama5d27-som1/Makefile b/arch/arm/boards/sama5d27-som1/Makefile
+index b08c4a93ca27..092c31d6b28d 100644
+--- a/arch/arm/boards/sama5d27-som1/Makefile
++++ b/arch/arm/boards/sama5d27-som1/Makefile
+@@ -1 +1,2 @@
+ lwl-y += lowlevel.o
++obj-y += board.o
+diff --git a/arch/arm/boards/sama5d27-som1/board.c b/arch/arm/boards/sama5d27-som1/board.c
+new file mode 100644
+index 000000000000..00c0e92a5da3
+--- /dev/null
++++ b/arch/arm/boards/sama5d27-som1/board.c
+@@ -0,0 +1,35 @@
++// SPDX-License-Identifier: GPL-2.0-only
 +
-+	sama5d2_lowlevel_init();
++#include <common.h>
++#include <linux/sizes.h>
++#include <init.h>
++#include <asm/memory.h>
++#include <bbu.h>
++#include <bootsource.h>
++#include <of.h>
 +
-+	dbgu_base = sama5d2_resetup_uart_console(MASTER_CLOCK);
-+	if (IS_ENABLED(CONFIG_DEBUG_LL))
-+		putc_ll('>');
- 
--	putc_ll('>');
-+	relocate_to_current_adr();
-+	setup_c();
++static int ek_device_init(void)
++{
++	int flags_sd = 0, flags_usd = 0;
++	if (!of_machine_is_compatible("atmel,sama5d27-som1-ek"))
++		return 0;
 +
-+	pbl_set_putc(at91_dbgu_putc, dbgu_base);
++	if (bootsource_get() == BOOTSOURCE_MMC) {
++		if (bootsource_get_instance() == 0) {
++			flags_sd = BBU_HANDLER_FLAG_DEFAULT;
++			of_device_enable_path("/chosen/environment-sd");
++		} else {
++			flags_usd = BBU_HANDLER_FLAG_DEFAULT;
++			of_device_enable_path("/chosen/environment-microsd");
++		}
++	} else {
++		of_device_enable_path("/chosen/environment-qspi");
++	}
 +
-+	sama5d2_udelay_init(MASTER_CLOCK);
-+	sama5d2_d1g_ddrconf();
-+	sama5d2_sdhci_start_image(r4);
- }
++	bbu_register_std_file_update("SD", flags_sd, "/mnt/mmc0.0/barebox.bin",
++				     filetype_arm_barebox);
++	bbu_register_std_file_update("microSD", flags_usd, "/mnt/mmc1.0/barebox.bin",
++				     filetype_arm_barebox);
++	return 0;
++}
++device_initcall(ek_device_init);
+diff --git a/arch/arm/dts/at91-sama5d27_som1_ek.dts b/arch/arm/dts/at91-sama5d27_som1_ek.dts
+index b9042d11317a..befee89ad78a 100644
+--- a/arch/arm/dts/at91-sama5d27_som1_ek.dts
++++ b/arch/arm/dts/at91-sama5d27_som1_ek.dts
+@@ -8,9 +8,24 @@
  
- extern char __dtb_z_at91_sama5d27_giantboard_start[];
-@@ -29,10 +41,8 @@ SAMA5_ENTRY_FUNCTION(start_sama5d27_giantboard, r4)
- {
- 	void *fdt;
- 
--	arm_cpu_lowlevel_init();
--
- 	if (IS_ENABLED(CONFIG_DEBUG_LL))
--		dbgu_init();
-+		putc_ll('>');
- 
- 	fdt = __dtb_z_at91_sama5d27_giantboard_start + get_runtime_offset();
- 
-diff --git a/images/Makefile.at91 b/images/Makefile.at91
-index bc63357c5d19..00fa4cab27ea 100644
---- a/images/Makefile.at91
-+++ b/images/Makefile.at91
-@@ -26,3 +26,8 @@ image-$(CONFIG_MACH_SAMA5D27_SOM1) += barebox-sama5d27-som1-ek-xload-mmc.img
- pblb-$(CONFIG_MACH_SAMA5D27_GIANTBOARD) += start_sama5d27_giantboard
- FILE_barebox-groboards-sama5d27-giantboard.img = start_sama5d27_giantboard.pblb
- image-$(CONFIG_MACH_SAMA5D27_GIANTBOARD) += barebox-groboards-sama5d27-giantboard.img
+ / {
+ 	chosen {
+-		environment {
++		environment-qspi {
+ 			compatible = "barebox,environment";
+ 			device-path = &barebox_env;
++			status = "disabled";
++		};
 +
-+pblb-$(CONFIG_MACH_SAMA5D27_GIANTBOARD) += start_sama5d27_giantboard_xload_mmc
-+FILE_barebox-groboards-sama5d27-giantboard-xload-mmc.img = start_sama5d27_giantboard_xload_mmc.pblb
-+MAX_PBL_IMAGE_SIZE_start_sama5d27_giantboard_xload_mmc = 0xffff
-+image-$(CONFIG_MACH_SAMA5D27_GIANTBOARD) += barebox-groboards-sama5d27-giantboard-xload-mmc.img
++		environment-sd {
++			compatible = "barebox,environment";
++			device-path = &sdmmc0;
++			file-path = "barebox.env";
++			status = "disabled";
++		};
++
++		environment-microsd {
++			compatible = "barebox,environment";
++			device-path = &sdmmc1;
++			file-path = "barebox.env";
++			status = "disabled";
+ 		};
+ 	};
+ };
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index 8584dcd97944..52eefc736138 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -609,6 +609,7 @@ config MACH_SAMA5D27_SOM1
+ 	select OFDEVICE
+ 	select MCI_ATMEL_SDHCI_PBL
+ 	select COMMON_CLK_OF_PROVIDER
++	select FS_FAT_WRITE if MCI_ATMEL_SDHCI && FS_FAT && ENV_HANDLING
+ 	help
+ 	  Select this if you are using Microchip's sama5d27 SoM evaluation kit
+ 
 -- 
 2.27.0
 
