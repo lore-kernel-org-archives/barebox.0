@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jqYmE-0002h3-8d
- for barebox@lists.infradead.org; Wed, 01 Jul 2020 09:11:40 +0000
+ by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jqYmM-0001Ef-1Y
+ for barebox@lists.infradead.org; Wed, 01 Jul 2020 09:11:52 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  1 Jul 2020 11:11:08 +0200
-Message-Id: <20200701091122.3437-15-a.fatoum@pengutronix.de>
+Date: Wed,  1 Jul 2020 11:11:16 +0200
+Message-Id: <20200701091122.3437-23-a.fatoum@pengutronix.de>
 In-Reply-To: <20200701091122.3437-1-a.fatoum@pengutronix.de>
 References: <20200701091122.3437-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,307 +21,304 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/28] ARM: at91: extend low level PMC driver for generic clk
- support
+Subject: [PATCH 22/28] ARM: at91: sama5d2: reduce UART setup boilerplate with
+ new helpers
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The SAMA5D2 and SAM9X60 both feature generic clocks, which we already
-support in barebox proper, but not in PBL. Add PBL support for setting
-the parent and enabling them, so we may use it to enable the SDMMC
-peripherals in first stage.
+The sama5d2 can be fused for one of 9 preset UART iosets. This is then
+used by the BootROM for printing the `RomBOOT' header and for the XMODEM
+protocol implemented by the SAM-BA monitor. Add two new sama5d2 specific
+helpers:
+
+- sama5d2_dbgu_setup_ll for setting up the port with only pinmux and
+  master clock as arguments
+- sama5d2_resetup_uart_console for resetup of the uart console with
+  same pinmux used by the ROM code
+
+The default value, when unfused, is UART_1_IOSET_1 (RX@PD2, TX@PD3),
+which are the same ones used on the two sama5d2 board supported so far.
+
+With this change, the DEBUG_LL baudrate is also no longer fixed at 115200,
+but instead comes from the CONFIG_BAUDRATE symbol.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/mach-at91/at91_pmc_ll.c              | 169 ++++++++++++++++--
- arch/arm/mach-at91/include/mach/at91_pmc_ll.h |  21 ++-
- arch/arm/mach-at91/include/mach/sama5d2_ll.h  |  15 +-
- 3 files changed, 187 insertions(+), 18 deletions(-)
+ .../arm/boards/sama5d27-giantboard/lowlevel.c |  11 +-
+ arch/arm/boards/sama5d27-som1/lowlevel.c      |  11 +-
+ arch/arm/mach-at91/include/mach/debug_ll.h    |  17 ++-
+ arch/arm/mach-at91/include/mach/sama5d2.h     |  56 ++++++++++
+ arch/arm/mach-at91/include/mach/sama5d2_ll.h  | 101 ++++++++++++++++++
+ 5 files changed, 172 insertions(+), 24 deletions(-)
 
-diff --git a/arch/arm/mach-at91/at91_pmc_ll.c b/arch/arm/mach-at91/at91_pmc_ll.c
-index 4d39f579091e..9205322db972 100644
---- a/arch/arm/mach-at91/at91_pmc_ll.c
-+++ b/arch/arm/mach-at91/at91_pmc_ll.c
-@@ -1,17 +1,51 @@
- // SPDX-License-Identifier: BSD-1-Clause
- /*
-  * Copyright (c) 2006, Atmel Corporation
-+ * Copyright (C) 2019 Microchip Technology Inc. and its subsidiaries
-  *
-- * Atmel's name may not be used to endorse or promote products
-+ * Atmel/Microchip's name may not be used to endorse or promote products
-  * derived from this software without specific prior written permission.
-  */
+diff --git a/arch/arm/boards/sama5d27-giantboard/lowlevel.c b/arch/arm/boards/sama5d27-giantboard/lowlevel.c
+index 4419e946f1a8..a30441d7ccfa 100644
+--- a/arch/arm/boards/sama5d27-giantboard/lowlevel.c
++++ b/arch/arm/boards/sama5d27-giantboard/lowlevel.c
+@@ -18,16 +18,7 @@
  
-+#define pr_fmt(fmt) "at91pmc: " fmt
-+
- #include <common.h>
-+#include <mach/hardware.h>
-+#include <mach/at91_pmc.h>
- #include <mach/at91_pmc_ll.h>
-+#include <mach/early_udelay.h>
-+
-+#define SFR_UTMICKTRIM	0x30	/* UTMI Clock Trimming Register */
-+#define AT91_UTMICKTRIM_FREQ	0x03
-+
-+#define PMC_GCSR0	0xC0	/* PMCv2 Generic Clock Status Register 0 */
-+#define PMC_GCSR1	0xC4	/* PMCv2 Generic Clock Status Register 1 */
- 
- #define at91_pmc_write(off, val) writel(val, pmc_base + off)
- #define at91_pmc_read(off) readl(pmc_base + off)
- 
-+#define MHZ (1000 * 1000UL)
-+
-+static unsigned long at91_pmc_get_main_xtal(void __iomem *pmc_base)
-+{
-+	u32 tmp;
-+
-+	/* Enable a measurement of the Main Crystal Oscillator */
-+	tmp = at91_pmc_read(AT91_CKGR_MCFR);
-+	tmp |= AT91_PMC_CCSS_XTAL_OSC;
-+	tmp |= AT91_PMC_RCMEAS;
-+	at91_pmc_write(AT91_CKGR_MCFR, tmp);
-+
-+	do {
-+		tmp = at91_pmc_read(AT91_CKGR_MCFR);
-+	} while (!(tmp & AT91_PMC_MAINRDY));
-+
-+	/* read once more like the datasheet says */
-+	tmp = at91_pmc_read(AT91_CKGR_MCFR) & AT91_PMC_MAINF;
-+
-+	return tmp * (AT91_SLOW_CLOCK / 16);
-+}
-+
- void at91_pmc_init(void __iomem *pmc_base, unsigned int flags)
+ static void dbgu_init(void)
  {
- 	u32 tmp;
-@@ -46,16 +80,8 @@ void at91_pmc_init(void __iomem *pmc_base, unsigned int flags)
- 		while (!(at91_pmc_read(AT91_PMC_SR) & AT91_PMC_MOSCS))
- 			;
- 
--		if (flags & AT91_PMC_LL_FLAG_MEASURE_XTAL) {
--			/* Enable a measurement of the Main Crystal Oscillator */
--			tmp = at91_pmc_read(AT91_CKGR_MCFR);
--			tmp |= AT91_PMC_CCSS_XTAL_OSC;
--			tmp |= AT91_PMC_RCMEAS;
--			at91_pmc_write(AT91_CKGR_MCFR, tmp);
+-	unsigned mck = MASTER_CLOCK / 2;
 -
--			while (!(at91_pmc_read(AT91_CKGR_MCFR) & AT91_PMC_MAINRDY))
--				;
--		}
-+		if (flags & AT91_PMC_LL_FLAG_MEASURE_XTAL)
-+			(void)at91_pmc_get_main_xtal(pmc_base);
+-	sama5d2_pmc_enable_periph_clock(SAMA5D2_ID_PIOD);
+-
+-	at91_mux_pio4_set_A_periph(SAMA5D2_BASE_PIOD,
+-				   pin_to_mask(AT91_PIN_PD3)); /* DBGU TXD */
+-
+-	sama5d2_pmc_enable_periph_clock(SAMA5D2_ID_UART1);
+-
+-	at91_dbgu_setup_ll(SAMA5D2_BASE_UART1, mck, 115200);
++	sama5d2_resetup_uart_console(MASTER_CLOCK);
  
- 		/* Switch from internal 12MHz RC to the Main Crystal Oscillator */
- 		tmp = at91_pmc_read(AT91_CKGR_MOR);
-@@ -184,3 +210,124 @@ void at91_pmc_cfg_mck(void __iomem *pmc_base, u32 pmc_mckr, unsigned int flags)
- 	while (!(at91_pmc_read(AT91_PMC_SR) & AT91_PMC_MCKRDY))
- 		;
+ 	putc_ll('>');
+ }
+diff --git a/arch/arm/boards/sama5d27-som1/lowlevel.c b/arch/arm/boards/sama5d27-som1/lowlevel.c
+index b7780ec8ae43..2e408ce832f7 100644
+--- a/arch/arm/boards/sama5d27-som1/lowlevel.c
++++ b/arch/arm/boards/sama5d27-som1/lowlevel.c
+@@ -42,16 +42,7 @@ static void ek_turn_led(unsigned color)
+ 
+ static void ek_dbgu_init(void)
+ {
+-	unsigned mck = MASTER_CLOCK / 2;
+-
+-	sama5d2_pmc_enable_periph_clock(SAMA5D2_ID_PIOD);
+-
+-	at91_mux_pio4_set_A_periph(SAMA5D2_BASE_PIOD,
+-				   pin_to_mask(AT91_PIN_PD3)); /* DBGU TXD */
+-
+-	sama5d2_pmc_enable_periph_clock(SAMA5D2_ID_UART1);
+-
+-	at91_dbgu_setup_ll(SAMA5D2_BASE_UART1, mck, 115200);
++	sama5d2_resetup_uart_console(MASTER_CLOCK);
+ 
+ 	putc_ll('>');
+ }
+diff --git a/arch/arm/mach-at91/include/mach/debug_ll.h b/arch/arm/mach-at91/include/mach/debug_ll.h
+index b71393042463..b3cbdbc26f1d 100644
+--- a/arch/arm/mach-at91/include/mach/debug_ll.h
++++ b/arch/arm/mach-at91/include/mach/debug_ll.h
+@@ -9,6 +9,9 @@
+ #define __MACH_DEBUG_LL_H__
+ 
+ #include <asm/io.h>
++#include <mach/gpio.h>
++#include <mach/hardware.h>
++#include <mach/at91_dbgu.h>
+ 
+ #define ATMEL_US_CSR		0x0014
+ #define ATMEL_US_THR		0x001c
+@@ -22,13 +25,19 @@
+  *
+  * This does not append a newline
+  */
+-static inline void PUTC_LL(char c)
++static inline void at91_dbgu_putc(void __iomem *base, int c)
+ {
+-	while (!(readl(CONFIG_DEBUG_AT91_UART_BASE + ATMEL_US_CSR) & ATMEL_US_TXRDY))
++	while (!(readl(base + ATMEL_US_CSR) & ATMEL_US_TXRDY))
+ 		barrier();
+-	writel(c, CONFIG_DEBUG_AT91_UART_BASE + ATMEL_US_THR);
++	writel(c, base + ATMEL_US_THR);
+ 
+-	while (!(readl(CONFIG_DEBUG_AT91_UART_BASE + ATMEL_US_CSR) & ATMEL_US_TXEMPTY))
++	while (!(readl(base + ATMEL_US_CSR) & ATMEL_US_TXEMPTY))
+ 		barrier();
  }
 +
-+static void pmc_configure_utmi_ref_clk(void __iomem *pmc_base,
-+				       void __iomem *sfr_base,
-+				       unsigned long main_xtal)
++static inline void PUTC_LL(char c)
 +{
-+	unsigned int utmi_ref_clk_freq = 0, tmp;
-+
-+	/*
-+	 * If mainck rate is different from 12 MHz, we have to configure
-+	 * the FREQ field of the SFR_UTMICKTRIM register to generate properly
-+	 * the utmi clock.
-+	 */
-+	if (main_xtal < (16 +  4) * MHZ)
-+		utmi_ref_clk_freq++;
-+	if (main_xtal < (24 + 10) * MHZ)
-+		utmi_ref_clk_freq++;
-+	if (main_xtal < (48 + 10) * MHZ)
-+		utmi_ref_clk_freq++;
-+
-+	/*
-+	 * Not supported on SAMA5D2 but it's not an issue since MAINCK
-+	 * maximum value is 24 MHz.
-+	 */
-+	tmp = readl(sfr_base + SFR_UTMICKTRIM);
-+	tmp &= ~AT91_UTMICKTRIM_FREQ;
-+	tmp |= utmi_ref_clk_freq;
-+	writel(tmp, sfr_base + SFR_UTMICKTRIM);
++	at91_dbgu_putc(IOMEM(CONFIG_DEBUG_AT91_UART_BASE), c);
 +}
 +
-+static void pmc_uckr_clk(void __iomem *pmc_base,
-+			 void __iomem *sfr_base,
-+			 unsigned long main_xtal)
+ #endif
+diff --git a/arch/arm/mach-at91/include/mach/sama5d2.h b/arch/arm/mach-at91/include/mach/sama5d2.h
+index ada9c59e0370..90b566ffc4ab 100644
+--- a/arch/arm/mach-at91/include/mach/sama5d2.h
++++ b/arch/arm/mach-at91/include/mach/sama5d2.h
+@@ -16,6 +16,8 @@
+ 
+ #include <asm/io.h>
+ #include <linux/sizes.h>
++#include <linux/bitops.h>
++#include <linux/bitfield.h>
+ 
+ /*
+  * Peripheral identifiers/interrupts. (Table 18-9)
+@@ -261,4 +263,58 @@
+ #define	SAMA5D2_SRAM_BASE			SAMA5D2_BASE_SRAM0
+ #define	SAMA5D2_SRAM_SIZE			(128 * SZ_1K)
+ 
++static inline void __iomem *sama5d2_pio_map_bank(int bank, unsigned *id)
 +{
-+	unsigned int uckr = at91_pmc_read(AT91_CKGR_UCKR);
-+	unsigned int sr;
-+
-+	if (main_xtal) {
-+		pmc_configure_utmi_ref_clk(pmc_base, sfr_base,
-+						 main_xtal);
-+		uckr |= (AT91_PMC_UPLLCOUNT_DEFAULT |
-+			 AT91_PMC_UPLLEN | AT91_PMC_BIASEN);
-+		sr = AT91_PMC_LOCKU;
-+	} else {
-+		uckr &= ~(AT91_PMC_UPLLEN | AT91_PMC_BIASEN);
-+		sr = 0;
++	switch(bank + 'A') {
++	case 'A':
++		*id = SAMA5D2_ID_PIOA;
++		return SAMA5D2_BASE_PIOA;
++	case 'B':
++		*id = SAMA5D2_ID_PIOB;
++		return SAMA5D2_BASE_PIOB;
++	case 'C':
++		*id = SAMA5D2_ID_PIOC;
++		return SAMA5D2_BASE_PIOC;
++	case 'D':
++		*id = SAMA5D2_ID_PIOD;
++		return SAMA5D2_BASE_PIOD;
 +	}
 +
-+	at91_pmc_write(AT91_CKGR_UCKR, uckr);
-+
-+	do {
-+		early_udelay(1);
-+	} while ((at91_pmc_read(AT91_PMC_SR) & AT91_PMC_LOCKU) != sr);
++	return NULL;
 +}
 +
-+static inline unsigned gck_status(unsigned periph_id,
-+				  unsigned flags)
++#define SAMA5D2_BUREG_INDEX	GENMASK(1, 0)
++#define SAMA5D2_BUREG_VALID	BIT(2)
++
++#define SAMA5D2_SFC_DR(x)	(SAMA5D2_BASE_SFC + 0x20 + 4 * (x))
++
++#define SAMA5D2_BOOTCFG_QSPI_0		GENMASK(1, 0)
++#define SAMA5D2_BOOTCFG_QSPI_1		GENMASK(3, 2)
++#define SAMA5D2_BOOTCFG_SPI_0		GENMASK(5, 4)
++#define SAMA5D2_BOOTCFG_SPI_1		GENMASK(7, 6)
++#define SAMA5D2_BOOTCFG_NFC		GENMASK(9, 8)
++#define SAMA5D2_BOOTCFG_SDMMC_0		BIT(10)
++#define SAMA5D2_BOOTCFG_SDMMC_1		BIT(11)
++#define SAMA5D2_BOOTCFG_UART		GENMASK(15, 12)
++#define SAMA5D2_BOOTCFG_JTAG		GENMASK(17, 16)
++#define SAMA5D2_BOOTCFG_EXT_MEM_BOOT_EN	BIT(18)
++#define SAMA5D2_BOOTCFG_QSPI_XIP	BIT(21)
++#define SAMA5D2_DISABLE_BSC_CR		BIT(22)
++#define SAMA5D2_DISABLE_MONITOR		BIT(24)
++#define SAMA5D2_SECURE_MODE		BIT(29)
++
++static inline u32 sama5d2_bootcfg(void)
 +{
-+	if (flags & AT91_PMC_LL_FLAG_GCSR)
-+		return periph_id < 32 ? PMC_GCSR0 : PMC_GCSR1;
++	u32 __iomem *bureg = SAMA5D2_BASE_SECURAM + 0x1400;
++	u32 bsc_cr = readl(SAMA5D2_BASE_SYSC + 0x54);
++	u32 __iomem *bootcfg;
 +
-+	return AT91_PMC_SR;
-+}
-+
-+static inline unsigned gck_ready(unsigned status,
-+				 unsigned periph_id,
-+				 unsigned flags)
-+{
-+	unsigned mask;
-+
-+	if (flags & AT91_PMC_LL_FLAG_GCSR)
-+		mask = 1 << (periph_id & 0x1f);
++	if (bsc_cr & SAMA5D2_BUREG_VALID)
++		bootcfg = &bureg[FIELD_GET(SAMA5D2_BUREG_INDEX, bsc_cr)];
 +	else
-+		mask = AT91_PMC_GCKRDY;
++		bootcfg = SAMA5D2_SFC_DR(512 / 32);
 +
-+	return status & mask;
++	return readl(bootcfg);
 +}
 +
-+int at91_pmc_enable_generic_clock(void __iomem *pmc_base,
-+				  void __iomem *sfr_base,
-+				  unsigned int periph_id,
-+				  unsigned int clk_source, unsigned int div,
-+				  unsigned int flags)
+ #endif
+diff --git a/arch/arm/mach-at91/include/mach/sama5d2_ll.h b/arch/arm/mach-at91/include/mach/sama5d2_ll.h
+index e6fa3914250b..96f3bc545284 100644
+--- a/arch/arm/mach-at91/include/mach/sama5d2_ll.h
++++ b/arch/arm/mach-at91/include/mach/sama5d2_ll.h
+@@ -3,6 +3,8 @@
+ 
+ #include <mach/sama5d2.h>
+ #include <mach/at91_pmc_ll.h>
++#include <mach/iomux.h>
++#include <mach/debug_ll.h>
+ #include <mach/early_udelay.h>
+ #include <mach/ddramc.h>
+ 
+@@ -35,4 +37,103 @@ static inline int sama5d2_pmc_enable_generic_clock(unsigned int periph_id,
+ 					     AT91_PMC_LL_SAMA5D2);
+ }
+ 
++static inline int sama5d2_dbgu_setup_ll(unsigned dbgu_id,
++					unsigned pin, unsigned periph,
++					unsigned mck)
 +{
-+	unsigned long main_xtal;
-+	unsigned int regval, status;
-+	unsigned int timeout = 1000;
++	unsigned mask, bank, pio_id;
++	void __iomem *dbgu_base, *pio_base;
 +
-+	if (periph_id > 0x7f)
++	mask = pin_to_mask(pin);
++	bank = pin_to_bank(pin);
++
++	switch (dbgu_id) {
++	case SAMA5D2_ID_UART0:
++		dbgu_base = SAMA5D2_BASE_UART0;
++		break;
++	case SAMA5D2_ID_UART1:
++		dbgu_base = SAMA5D2_BASE_UART1;
++		break;
++	case SAMA5D2_ID_UART2:
++		dbgu_base = SAMA5D2_BASE_UART2;
++		break;
++	case SAMA5D2_ID_UART3:
++		dbgu_base = SAMA5D2_BASE_UART3;
++		break;
++	case SAMA5D2_ID_UART4:
++		dbgu_base = SAMA5D2_BASE_UART4;
++		break;
++	default:
 +		return -EINVAL;
-+
-+	if (div > 0xff)
-+		return -EINVAL;
-+
-+	main_xtal = at91_pmc_get_main_xtal(pmc_base);
-+
-+	if ((flags & AT91_PMC_LL_FLAG_PMC_UTMI) &&
-+	    !(at91_pmc_read(AT91_PMC_SR) & AT91_PMC_LOCKU))
-+		pmc_uckr_clk(pmc_base, sfr_base, main_xtal);
-+
-+	at91_pmc_write(AT91_PMC_PCR, periph_id);
-+	regval = at91_pmc_read(AT91_PMC_PCR);
-+	regval &= ~AT91_PMC_GCKCSS;
-+	regval &= ~AT91_PMC_GCKDIV;
-+
-+	regval |= clk_source;
-+	regval |= AT91_PMC_PCR_CMD | AT91_PMC_GCKDIV_(div) | AT91_PMC_GCK_EN;
-+
-+	at91_pmc_write(AT91_PMC_PCR, regval);
-+
-+	for (timeout = 1000; timeout; timeout--) {
-+		early_udelay(1);
-+
-+		status = at91_pmc_read(gck_status(periph_id, flags));
-+		if (gck_ready(status, periph_id, flags))
-+			return 0;
 +	}
 +
-+	pr_warn("Timeout waiting for GCK ready!\n");
++	pio_base = sama5d2_pio_map_bank(bank, &pio_id);
++	if (!pio_base)
++		return -EINVAL;
++
++	sama5d2_pmc_enable_periph_clock(pio_id);
++
++	at91_mux_pio4_set_periph(pio_base, mask, periph);
++
++	sama5d2_pmc_enable_periph_clock(dbgu_id);
++
++	at91_dbgu_setup_ll(dbgu_base, mck / 2, CONFIG_BAUDRATE);
 +
 +	return 0;
 +}
-diff --git a/arch/arm/mach-at91/include/mach/at91_pmc_ll.h b/arch/arm/mach-at91/include/mach/at91_pmc_ll.h
-index e3d3e3ad59db..6ec3ae0852c6 100644
---- a/arch/arm/mach-at91/include/mach/at91_pmc_ll.h
-+++ b/arch/arm/mach-at91/include/mach/at91_pmc_ll.h
-@@ -14,27 +14,38 @@
- #define AT91_PMC_LL_FLAG_MEASURE_XTAL	(1 << 1)
- #define AT91_PMC_LL_FLAG_DISABLE_RC	(1 << 2)
- #define AT91_PMC_LL_FLAG_H32MXDIV	(1 << 3)
-+#define AT91_PMC_LL_FLAG_PMC_UTMI	(1 << 4)
-+#define AT91_PMC_LL_FLAG_GCSR		(1 << 5)
- 
- #define AT91_PMC_LL_AT91RM9200	(0)
- #define AT91_PMC_LL_AT91SAM9260	(0)
- #define AT91_PMC_LL_AT91SAM9261	(0)
- #define AT91_PMC_LL_AT91SAM9263	(0)
--#define AT91_PMC_LL_AT91SAM9G45	(0)
-+#define AT91_PMC_LL_AT91SAM9G45	(AT91_PMC_LL_FLAG_PMC_UTMI)
- #define AT91_PMC_LL_AT91SAM9X5	(AT91_PMC_LL_FLAG_SAM9X5_PMC | \
--				 AT91_PMC_LL_FLAG_DISABLE_RC)
-+				 AT91_PMC_LL_FLAG_DISABLE_RC | \
-+				 AT91_PMC_LL_FLAG_PMC_UTMI)
- #define AT91_PMC_LL_AT91SAM9N12	(AT91_PMC_LL_FLAG_SAM9X5_PMC | \
- 				 AT91_PMC_LL_FLAG_DISABLE_RC)
- #define AT91_PMC_LL_SAMA5D2	(AT91_PMC_LL_FLAG_SAM9X5_PMC | \
--				 AT91_PMC_LL_FLAG_MEASURE_XTAL)
-+				 AT91_PMC_LL_FLAG_MEASURE_XTAL | \
-+				 AT91_PMC_LL_FLAG_PMC_UTMI)
- #define AT91_PMC_LL_SAMA5D3	(AT91_PMC_LL_FLAG_SAM9X5_PMC | \
--				 AT91_PMC_LL_FLAG_DISABLE_RC)
-+				 AT91_PMC_LL_FLAG_DISABLE_RC | \
-+				 AT91_PMC_LL_FLAG_PMC_UTMI)
- #define AT91_PMC_LL_SAMA5D4	(AT91_PMC_LL_FLAG_SAM9X5_PMC | \
--				 AT91_PMC_LL_FLAG_H32MXDIV)
-+				 AT91_PMC_LL_FLAG_H32MXDIV | \
-+				 AT91_PMC_LL_FLAG_PMC_UTMI)
- 
- void at91_pmc_init(void __iomem *pmc_base, unsigned int flags);
- void at91_pmc_cfg_mck(void __iomem *pmc_base, u32 pmc_mckr, unsigned int flags);
- void at91_pmc_cfg_plla(void __iomem *pmc_base, u32 pmc_pllar, unsigned int flags);
- 
-+int at91_pmc_enable_generic_clock(void __iomem *pmc_base, void __iomem *sfr_base,
-+				  unsigned int periph_id,
-+				  unsigned int clk_source, unsigned int div,
-+				  unsigned int flags);
 +
- static inline void at91_pmc_init_pll(void __iomem *pmc_base, u32 pmc_pllicpr)
- {
- 	writel(pmc_pllicpr, pmc_base + AT91_PMC_PLLICPR);
-diff --git a/arch/arm/mach-at91/include/mach/sama5d2_ll.h b/arch/arm/mach-at91/include/mach/sama5d2_ll.h
-index 7c38a84f5395..e6fa3914250b 100644
---- a/arch/arm/mach-at91/include/mach/sama5d2_ll.h
-+++ b/arch/arm/mach-at91/include/mach/sama5d2_ll.h
-@@ -8,13 +8,13 @@
- 
- #include <common.h>
- 
-+void sama5d2_lowlevel_init(void);
++struct sama5d2_uart_pinmux {
++	void __iomem *base;
++	u8 id, dtxd, periph;
++};
 +
- static inline void sama5d2_pmc_enable_periph_clock(int clk)
- {
- 	at91_pmc_sam9x5_enable_periph_clock(SAMA5D2_BASE_PMC, clk);
- }
- 
--void sama5d2_lowlevel_init(void);
--
- /* requires relocation */
- static inline void sama5d2_udelay_init(unsigned int msc)
- {
-@@ -22,6 +22,17 @@ static inline void sama5d2_udelay_init(unsigned int msc)
- 			  SAMA5D2_ID_PIT, msc, AT91_PMC_LL_SAMA5D2);
- }
- 
++#define SAMA5D2_UART(idx, pio, periph) (struct sama5d2_uart_pinmux) {  \
++	SAMA5D2_BASE_UART##idx, SAMA5D2_ID_UART##idx, \
++	AT91_PIN_##pio, AT91_MUX_PERIPH_##periph }
 +
- void sama5d2_ddr2_init(struct at91_ddramc_register *ddramc_reg_config);
- 
-+static inline int sama5d2_pmc_enable_generic_clock(unsigned int periph_id,
-+						   unsigned int clk_source,
-+						   unsigned int div)
++static inline void __iomem *sama5d2_resetup_uart_console(unsigned mck)
 +{
-+	return at91_pmc_enable_generic_clock(SAMA5D2_BASE_PMC,
-+					     SAMA5D2_BASE_SFR,
-+					     periph_id, clk_source, div,
-+					     AT91_PMC_LL_SAMA5D2);
++	struct sama5d2_uart_pinmux pinmux;
++
++	/* Table 48-2 I/O Lines and 16.4.4 Boot Configuration Word */
++
++	switch (FIELD_GET(SAMA5D2_BOOTCFG_UART, sama5d2_bootcfg())) {
++	case 0: /* UART_1_IOSET_1 */
++		pinmux = SAMA5D2_UART(1, PD3,  A);
++		break;
++	case 1: /* UART_0_IOSET_1 */
++		pinmux = SAMA5D2_UART(0, PB27, C);
++		break;
++	case 2: /* UART_1_IOSET_2 */
++		pinmux = SAMA5D2_UART(1, PC8,  E);
++		break;
++	case 3: /* UART_2_IOSET_1 */
++		pinmux = SAMA5D2_UART(2, PD5,  B);
++		break;
++	case 4: /* UART_2_IOSET_2 */
++		pinmux = SAMA5D2_UART(2, PD24, A);
++		break;
++	case 5: /* UART_2_IOSET_3 */
++		pinmux = SAMA5D2_UART(2, PD20, C);
++		break;
++	case 6: /* UART_3_IOSET_1 */
++		pinmux = SAMA5D2_UART(3, PC13, D);
++		break;
++	case 7: /* UART_3_IOSET_2 */
++		pinmux = SAMA5D2_UART(3, PD0,  C);
++		break;
++	case 8: /* UART_3_IOSET_3 */
++		pinmux = SAMA5D2_UART(3, PB12, C);
++		break;
++	case 9: /* UART_4_IOSET_1 */
++		pinmux = SAMA5D2_UART(4, PB4,  A);
++		break;
++	default:
++		return NULL;
++	}
++
++	sama5d2_dbgu_setup_ll(pinmux.id, pinmux.dtxd, pinmux.periph, mck);
++	return pinmux.base;
 +}
 +
  #endif
