@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jqzKX-0006XT-Hf
- for barebox@lists.infradead.org; Thu, 02 Jul 2020 13:32:46 +0000
+ id 1jqzYD-0008C4-2X
+ for barebox@lists.infradead.org; Thu, 02 Jul 2020 13:46:53 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  2 Jul 2020 15:32:42 +0200
-Message-Id: <20200702133242.26487-1-a.fatoum@pengutronix.de>
+Date: Thu,  2 Jul 2020 15:46:50 +0200
+Message-Id: <20200702134650.19767-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,47 +19,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Revert "of: Add of_property_for_each_phandle() iterator"
+Subject: [PATCH master] sandbox: fix generation of broken binaries
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, "Signed-off-by : Trent Piepho" <tpiepho@kymetacorp.com>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, Peter Mamonov <pmamonov@gmail.com>
 
-Codebase is meant to be gnu89, but this was only enforced starting
-with bc4840e98b94 ("kbuild: add -Wmissing-prototypes and -std=gnu89
-to KBUILD_HOSTCFLAGS"). Since then, use of this macro would yield a
-compile error, because of the initialization inside the for-loop,
-which is a C99 feature. There hasn't been any users for the macro
-since it was added in 2016, thus drop it.
+Code under arch/sandbox/os is meant to link against the libc primitives
+of the OS, not the barebox counterparts (e.g. for malloc).
 
-This reverts commit d5f9415b04846661522141ea428f74e3c618fa9e.
+54d47eb7e912 ("sandbox: support forcing 32-bit x86") broke this
+rendering the sandbox architecture unusable. Fix this.
 
-Cc: Signed-off-by: Trent Piepho <tpiepho@kymetacorp.com>
+Reported-by: Peter Mamonov <pmamonov@gmail.com>
+Fixes: 54d47eb7e912 ("sandbox: support forcing 32-bit x86")
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/of.h | 11 -----------
- 1 file changed, 11 deletions(-)
+Hello Sascha,
 
-diff --git a/include/of.h b/include/of.h
-index 665580073f1b..b9b3a102284c 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -904,17 +904,6 @@ static inline int of_property_read_u32(const struct device_node *np,
- 		s;						\
- 		s = of_prop_next_string(prop, s))
+ARCH=sandbox is runtime-broken in master. Please add this patch there
+to fix this.
+
+Cheers,
+Ahmad
+---
+ arch/sandbox/os/Makefile | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/arch/sandbox/os/Makefile b/arch/sandbox/os/Makefile
+index ed921443e0fd..b2f95087dcc4 100644
+--- a/arch/sandbox/os/Makefile
++++ b/arch/sandbox/os/Makefile
+@@ -6,9 +6,13 @@ KBUILD_CPPFLAGS = $(patsubst %,-I$(srctree)/%include,$(machdirs))
  
--/*
-- * struct device_node *n;
-- *
-- * of_property_for_each_phandle(np, root, "propname", n)
-- *         printk("phandle points to: %s\n", n->full_name);
-- */
--#define of_property_for_each_phandle(np, root, propname, n)	\
--	for (int _i = 0; 					\
--	     (n = of_parse_phandle_from(np, root, propname, _i));\
--	     _i++)
--
- static inline int of_property_write_u8(struct device_node *np,
- 				       const char *propname, u8 value)
- {
+ KBUILD_CPPFLAGS += -DCONFIG_MALLOC_SIZE=$(CONFIG_MALLOC_SIZE)
+ 
+-KBUILD_CFLAGS += -Wall
++KBUILD_CFLAGS := -Wall
+ NOSTDINC_FLAGS :=
+ 
++ifeq ($(CONFIG_SANDBOX_LINUX_I386),y)
++KBUILD_CFLAGS += -m32
++endif
++
+ obj-y = common.o tap.o
+ 
+ CFLAGS_sdl.o = $(shell pkg-config sdl --cflags)
 -- 
 2.27.0
 
