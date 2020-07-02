@@ -1,27 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jqvTR-0008Rd-3b
- for barebox@lists.infradead.org; Thu, 02 Jul 2020 09:25:42 +0000
-References: <925732743.424285.1592919941556@mail.vodafone.de>
- <CAOMZO5AeTg2afd+xVmNr=GxOM=s7qdzUhMqz2AHpTx_MPGWbPg@mail.gmail.com>
- <245646662.425432.1592925096458@mail.vodafone.de>
- <d999acb9-ed34-7b02-42cf-675a152ddee3@pengutronix.de>
- <517310923.70062.1593427992397@mail.vodafone.de>
- <595dc8c8-09c8-81ad-d730-23781e207cbd@pengutronix.de>
- <429834562.114102.1593444620511@mail.vodafone.de>
- <aac7feb5-604f-2914-bfbd-75f0271401ad@pengutronix.de>
- <1874617325.108865.1593446626706@mail.vodafone.de>
- <21c2fc40-e385-b05e-6392-55ad219597da@pengutronix.de>
- <1036676243.111725.1593448425601@mail.vodafone.de>
- <CAOMZO5Cxa6Yk-uWUummRhNVQbLHvduCZQM9djxXNG683GQ4gRw@mail.gmail.com>
- <473645456.227984.1593597168773@mail.vodafone.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <b095fd3c-7cda-1394-ba4d-6dd882606920@pengutronix.de>
-Date: Thu, 2 Jul 2020 11:25:38 +0200
+ id 1jqxVD-0004tD-Cc
+ for barebox@lists.infradead.org; Thu, 02 Jul 2020 11:35:40 +0000
+Received: by mail-lf1-x12a.google.com with SMTP id c11so15859608lfh.8
+ for <barebox@lists.infradead.org>; Thu, 02 Jul 2020 04:35:37 -0700 (PDT)
+Date: Thu, 2 Jul 2020 14:35:24 +0300
+From: Peter Mamonov <pmamonov@gmail.com>
+Message-ID: <20200702113523.GA5528@localhost.localdomain>
 MIME-Version: 1.0
-In-Reply-To: <473645456.227984.1593597168773@mail.vodafone.de>
-Content-Language: en-US
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -34,103 +22,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: reset / watchdog on an imx7d soc
-To: Giorgio Dal Molin <giorgio.nicole@arcor.de>, Fabio Estevam <festevam@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: sandbox: barebox executable for x86_64 is nonfunctional
+To: a.fatoum@pengutronix.de
+Cc: barebox@lists.infradead.org
 
+Hello, Ahmad,
 
+After 54d47eb7e "sandbox: support forcing 32-bit x86" the sandbox barebox 
+executable produced on x86_64 host is nonfunctional, i.e. it exits right after 
+start. Reverting the mentioned commit does fix the problem.  The host is 
+running a bit outdated Debian bullseye/sid, gcc version is "gcc (Debian 9.2.1-19) 9.2.1 
+20191109". Here are the commands I've used to build and run barebox:
 
-On 7/1/20 11:52 AM, Giorgio Dal Molin wrote:
-> Hi,
-> 
->> On June 29, 2020 at 6:39 PM Fabio Estevam <festevam@gmail.com> wrote:
->>
->>
->> Hi Giorgio,
->>
->> On Mon, Jun 29, 2020 at 1:33 PM Giorgio Dal Molin
->> <giorgio.nicole@arcor.de> wrote:
->>
->>> U-Boot configures the ddr3 with c code in its board code 'lowlevel.c'.
->>> Looking at the code I noticed this special treatment:
->>>
->>> static void spl_dram_init(void)
->>> {
->>> ...
->>>         /*
->>>          * Make sure that both aresetn/core_ddrc_rstn and preset/PHY reset
->>>          * bits are set after WDOG reset event. DDRC_PRST can only be
->>>          * released when DDRC clock inputs are stable for at least 30 cycles.
->>>          */
->>>         writel(SRC_DDRC_RCR_DDRC_CORE_RST_MASK | SRC_DDRC_RCR_DDRC_PRST_MASK, &src_regs->ddrc_rcr);
->>>         udelay(500);
->>> ...
->>>
->>> This writel() set both reset bits, the DDRC_CORE (0x2) and the DDRC_PRST (0x1) of the SRC
->>> register 0x30391000.
->>> Unfortunately, if I try also to set both bits in my DCD table then barebox doesn't boot anymore;
->>> I also tried to port the uboot spl_dram_init(void) to my barebox lowlevel.c and I could eventually
->>> boot barebox with an empty DCD but still adding the second bit (SRC_DDRC_RCR_DDRC_PRST_MASK)
->>> hangs the soc.
->>
->> Does it help if you try to apply this U-Boot commit to Barebox?
->> https://gitlab.denx.de/u-boot/u-boot/-/commit/0e06d63d195670f5181958f43216d7106c05357f
-> 
-> I've made some more tests with the imx7d and found that the following DCD sequence:
-> 
-> wm 32 0x30391000		0x00000003  // <== added this write
-> wm 32 0x30391000		0x00000002
-> ...
-> 
-> have an (unreliable) effect: I can now some time reboot barebox with a 'reset'
-> command and after the reboot I can see the correct reset reason on the serial console:
-> 
-> barebox 2020.06.0-00327-g712fde835-dirty #2 Wed Jul 1 10:21:11 CEST 2020
-> 
-> Board: Kontron SMARC-sAMX7
-> detected i.MX7d revision 1.3
-> i.MX reset reason POR (SRSR: 0x00000001)
-> ...
-> 
-> samx7: /
-> samx7: / reset 
-> 
-> barebox 2020.06.0-00327-g712fde835-dirty #2 Wed Jul 1 10:21:11 CEST 2020
-> 
-> Board: Kontron SMARC-sAMX7
-> detected i.MX7d revision 1.3
-> i.MX reset reason WDG (SRSR: 0x00000010)
-> mdio_bus: miibus0: probed
-> ...
-> 
-> samx7: /
-> 
-> 
-> This is the first time I see a reset working on my imx7 module with barebox; the
-> problem is now that the reboot process is not reliable: it works a couple of times
-> (not deterministic) and then it hangs the soc forcing me to push the reset button.
-> 
-> As a possible fix I tried adding some 'nop' in the DCD around the two wm 32 to simulate
-> a delay but it makes no difference.
+	$ export ARCH=sandbox
+	$ make mrproper && make sandbox_defconfig && make -j4 -s
+	$ ./barebox
+	$ echo $?
+	1
 
-IIRC, you can poll an address for a set bit in the DCD table for N times. If you poll
-something that doesn't change, you can adjust N to simulate a delay..
-
-> 
-> giorgio
-> 
->>
->> _______________________________________________
->> barebox mailing list
->> barebox@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Regards,
+Peter
 
 _______________________________________________
 barebox mailing list
