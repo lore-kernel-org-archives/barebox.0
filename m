@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jqzHQ-0005qs-Vt
- for barebox@lists.infradead.org; Thu, 02 Jul 2020 13:29:33 +0000
+ id 1jqzHJ-0005ol-AJ
+ for barebox@lists.infradead.org; Thu, 02 Jul 2020 13:29:26 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  2 Jul 2020 15:29:19 +0200
-Message-Id: <20200702132919.22009-2-a.fatoum@pengutronix.de>
-In-Reply-To: <20200702132919.22009-1-a.fatoum@pengutronix.de>
-References: <20200702132919.22009-1-a.fatoum@pengutronix.de>
+Date: Thu,  2 Jul 2020 15:29:18 +0200
+Message-Id: <20200702132919.22009-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,37 +19,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] mfd: superio: depend on X86 || COMPILE_TEST
+Subject: [PATCH 1/2] mfd: superio: smsc: fix C99ism initial declaration in for
+ loop
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Super I/O chips are usually found x86 PCs. Make them depend on it,
-so users of other arches aren't prompted for it, when they oldconfig.
+Codebase is meant to be gnu89, but was only enforced starting
+with bc4840e98b94 ("kbuild: add -Wmissing-prototypes and -std=gnu89
+to KBUILD_HOSTCFLAGS"). Since then, this driver no longer compiles.
+Fix this.
 
+Fixes: eaf020f1bb52 ("mfd: superio: add base SMSC MFD driver")
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/mfd/Kconfig | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/mfd/smsc-superio.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-index 42346154e63a..d03d481898d8 100644
---- a/drivers/mfd/Kconfig
-+++ b/drivers/mfd/Kconfig
-@@ -73,12 +73,14 @@ config MFD_SUPERIO
- config FINTEK_SUPERIO
-        bool "Fintek Super I/O chip"
-        select MFD_SUPERIO
-+       depends on X86 || COMPILE_TEST
-        help
-          Select this to probe for IO-port connected Fintek Super I/O chips.
+diff --git a/drivers/mfd/smsc-superio.c b/drivers/mfd/smsc-superio.c
+index 349c878cefe0..ff83aa1a4419 100644
+--- a/drivers/mfd/smsc-superio.c
++++ b/drivers/mfd/smsc-superio.c
+@@ -106,8 +106,9 @@ static void smsc_superio_find(u16 sioaddr, u16 id_reg)
+ static int smsc_superio_detect(void)
+ {
+ 	u16 ports[] = { 0x2e, 0x4e, 0x162e, 0x164e, 0x3f0, 0x370 };
++	int i;
  
- config SMSC_SUPERIO
-        bool "SMSC Super I/O chip"
-        select MFD_SUPERIO
-+       depends on X86 || COMPILE_TEST
-        help
-          Select this to probe for IO-port connected SMSC Super I/O chips.
+-	for (int i = 0; i < ARRAY_SIZE(ports); i++)
++	for (i = 0; i < ARRAY_SIZE(ports); i++)
+ 		smsc_superio_find(ports[i], SIO_REG_DEVID);
  
+ 	return 0;
 -- 
 2.27.0
 
