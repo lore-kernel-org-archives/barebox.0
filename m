@@ -1,11 +1,27 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jr1HJ-0008Py-G0
- for barebox@lists.infradead.org; Thu, 02 Jul 2020 15:37:34 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  2 Jul 2020 17:37:30 +0200
-Message-Id: <20200702153730.24883-1-a.fatoum@pengutronix.de>
+ id 1jr1ii-0006eD-FU
+ for barebox@lists.infradead.org; Thu, 02 Jul 2020 16:05:53 +0000
+Message-ID: <c39270ce4ca906a98dd29c6a669fa0d25fedd551.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Thu, 02 Jul 2020 18:05:48 +0200
+In-Reply-To: <936755248.7359.1593703689870@mail.vodafone.de>
+References: <925732743.424285.1592919941556@mail.vodafone.de>
+ <CAOMZO5AeTg2afd+xVmNr=GxOM=s7qdzUhMqz2AHpTx_MPGWbPg@mail.gmail.com>
+ <245646662.425432.1592925096458@mail.vodafone.de>
+ <d999acb9-ed34-7b02-42cf-675a152ddee3@pengutronix.de>
+ <517310923.70062.1593427992397@mail.vodafone.de>
+ <595dc8c8-09c8-81ad-d730-23781e207cbd@pengutronix.de>
+ <429834562.114102.1593444620511@mail.vodafone.de>
+ <aac7feb5-604f-2914-bfbd-75f0271401ad@pengutronix.de>
+ <1874617325.108865.1593446626706@mail.vodafone.de>
+ <21c2fc40-e385-b05e-6392-55ad219597da@pengutronix.de>
+ <1036676243.111725.1593448425601@mail.vodafone.de>
+ <CAOMZO5Cxa6Yk-uWUummRhNVQbLHvduCZQM9djxXNG683GQ4gRw@mail.gmail.com>
+ <473645456.227984.1593597168773@mail.vodafone.de>
+ <b095fd3c-7cda-1394-ba4d-6dd882606920@pengutronix.de>
+ <936755248.7359.1593703689870@mail.vodafone.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,58 +35,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: stm32mp: depend on ARCH_STM32MP for SoC drivers
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: reset / watchdog on an imx7d soc
+To: Giorgio Dal Molin <giorgio.nicole@arcor.de>, Ahmad Fatoum <a.fatoum@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-The i2c, MCI and reset controller peripherals are STM32-specific.
-There is no reason to ask uses on oldconfig about it, thus make them
-depend on ARCH_STM32MP || COMPILE_TEST.
+Hi Giorgio,
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- drivers/i2c/busses/Kconfig | 1 +
- drivers/mci/Kconfig        | 1 +
- drivers/reset/Kconfig      | 1 +
- 3 files changed, 3 insertions(+)
+Am Donnerstag, den 02.07.2020, 17:28 +0200 schrieb Giorgio Dal Molin:
+[...]
+> barebox does something similar to trigger the wdog but afterwards also calls
+> mdelay() and a printf() before falling in the endless loop:
+> 
+> static void imx21_soc_reset(struct imx_wd *priv)
+> {
+> ...
+> 	imxwd_write(priv, IMX21_WDOG_WCR, val);
+> 
+> 	/* Two additional writes due to errata ERR004346 */
+> 	imxwd_write(priv, IMX21_WDOG_WCR, val);
+> 	imxwd_write(priv, IMX21_WDOG_WCR, val);
+> 
 
-diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
-index 21d2cb21cf5a..3bc8d1b8d2bc 100644
---- a/drivers/i2c/busses/Kconfig
-+++ b/drivers/i2c/busses/Kconfig
-@@ -59,5 +59,6 @@ config I2C_STM32
- 	bool "STM32 I2C master driver"
- 	select RESET_CONTROLLER
- 	depends on HAVE_CLK
-+	depends on ARCH_STM32MP || COMPILE_TEST
- 
- endmenu
-diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
-index 6ae1e812528c..d1695c678c30 100644
---- a/drivers/mci/Kconfig
-+++ b/drivers/mci/Kconfig
-@@ -177,6 +177,7 @@ config MCI_STM32_SDMMC2
- 	bool "STMicroelectronics STM32H7 SD/MMC Host Controller support"
- 	depends on ARM_AMBA
- 	depends on RESET_CONTROLLER
-+	depends on ARCH_STM32MP || COMPILE_TEST
- 	help
- 	  This selects support for the SD/MMC controller on STM32H7 SoCs.
- 	  If you have a board based on such a SoC and with a SD/MMC slot,
-diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
-index 9befc5e55f32..316ece9e7176 100644
---- a/drivers/reset/Kconfig
-+++ b/drivers/reset/Kconfig
-@@ -23,6 +23,7 @@ config RESET_IMX7
- 
- config RESET_STM32
- 	bool "STM32 Reset Driver"
-+	depends on ARCH_STM32MP || COMPILE_TEST
- 	help
- 	  This enables the reset controller driver for STM32MP and STM32 MCUs.
- 
--- 
-2.27.0
+I'm not sure if the i.MX7 needs the same double write. Just in case,
+can you add a dummy read to the IMX21_WDOG_WCR register after the
+writes to make sure the writes actually get flushed to the device
+before the delay?
+
+Regards,
+Lucas
+
+> ...
+> 
+> 	mdelay(1000);
+> 
+> 	hang(); // <== this also calls printf() before for(;;);
+> 
+> 
+> What I've found is that if I put the endless loop right at the end of
+> imx21_soc_reset(), after the imxwd_write's, then the reboot process becomes
+> reliable.
+> 
+> (The changes in the DCD with the addition of the write:
+> 
+> wm 32 0x30391000 0x00000003
+> 
+> at the beginning, before the write:
+> 
+> wm 32 0x30391000 0x00000002
+> 
+> are also essential, only the delay between the two seems to be not a big deal).
+> 
+> giorgio
+> 
+> > > giorgio
+> > > 
+> > > > _______________________________________________
+> > > > barebox mailing list
+> > > > barebox@lists.infradead.org
+> > > > http://lists.infradead.org/mailman/listinfo/barebox
+> > 
+> > -- 
+> > Pengutronix e.K.                           |                             |
+> > Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> > 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> > Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> > 
+> > _______________________________________________
+> > barebox mailing list
+> > barebox@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/barebox
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 
 _______________________________________________
