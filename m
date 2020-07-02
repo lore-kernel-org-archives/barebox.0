@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jqzYD-0008C4-2X
- for barebox@lists.infradead.org; Thu, 02 Jul 2020 13:46:53 +0000
+ id 1jqzZv-00009y-VB
+ for barebox@lists.infradead.org; Thu, 02 Jul 2020 13:48:40 +0000
+References: <20200702113523.GA5528@localhost.localdomain>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  2 Jul 2020 15:46:50 +0200
-Message-Id: <20200702134650.19767-1-a.fatoum@pengutronix.de>
+Message-ID: <f106ed79-5a62-8118-48d4-38f2eabac03a@pengutronix.de>
+Date: Thu, 2 Jul 2020 15:48:38 +0200
 MIME-Version: 1.0
+In-Reply-To: <20200702113523.GA5528@localhost.localdomain>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,53 +22,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH master] sandbox: fix generation of broken binaries
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, Peter Mamonov <pmamonov@gmail.com>
+Subject: Re: sandbox: barebox executable for x86_64 is nonfunctional
+To: Peter Mamonov <pmamonov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Code under arch/sandbox/os is meant to link against the libc primitives
-of the OS, not the barebox counterparts (e.g. for malloc).
 
-54d47eb7e912 ("sandbox: support forcing 32-bit x86") broke this
-rendering the sandbox architecture unusable. Fix this.
 
-Reported-by: Peter Mamonov <pmamonov@gmail.com>
-Fixes: 54d47eb7e912 ("sandbox: support forcing 32-bit x86")
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-Hello Sascha,
+On 7/2/20 1:35 PM, Peter Mamonov wrote:
+> Hello, Ahmad,
+> 
+> After 54d47eb7e "sandbox: support forcing 32-bit x86" the sandbox barebox 
+> executable produced on x86_64 host is nonfunctional, i.e. it exits right after 
+> start. Reverting the mentioned commit does fix the problem.  The host is 
+> running a bit outdated Debian bullseye/sid, gcc version is "gcc (Debian 9.2.1-19) 9.2.1 
+> 20191109". Here are the commands I've used to build and run barebox:
+> 
+> 	$ export ARCH=sandbox
+> 	$ make mrproper && make sandbox_defconfig && make -j4 -s
+> 	$ ./barebox
+> 	$ echo $?
+> 	1
 
-ARCH=sandbox is runtime-broken in master. Please add this patch there
-to fix this.
+You're right. Apparently I did some last minute fix and only retested that COMPILE_TESTing
+works, not that it can actually be started... Luckily there is no release with this
+patch yet. I just sent a fix out.
 
-Cheers,
+Thanks for the the report,
 Ahmad
----
- arch/sandbox/os/Makefile | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/sandbox/os/Makefile b/arch/sandbox/os/Makefile
-index ed921443e0fd..b2f95087dcc4 100644
---- a/arch/sandbox/os/Makefile
-+++ b/arch/sandbox/os/Makefile
-@@ -6,9 +6,13 @@ KBUILD_CPPFLAGS = $(patsubst %,-I$(srctree)/%include,$(machdirs))
- 
- KBUILD_CPPFLAGS += -DCONFIG_MALLOC_SIZE=$(CONFIG_MALLOC_SIZE)
- 
--KBUILD_CFLAGS += -Wall
-+KBUILD_CFLAGS := -Wall
- NOSTDINC_FLAGS :=
- 
-+ifeq ($(CONFIG_SANDBOX_LINUX_I386),y)
-+KBUILD_CFLAGS += -m32
-+endif
-+
- obj-y = common.o tap.o
- 
- CFLAGS_sdl.o = $(shell pkg-config sdl --cflags)
+> 
+> Regards,
+> Peter
+> 
+
 -- 
-2.27.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
