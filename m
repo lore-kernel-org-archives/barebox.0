@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jr15Q-00057i-Qp
- for barebox@lists.infradead.org; Thu, 02 Jul 2020 15:25:17 +0000
+ id 1jr15Y-0005AK-Ro
+ for barebox@lists.infradead.org; Thu, 02 Jul 2020 15:25:25 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  2 Jul 2020 17:25:06 +0200
-Message-Id: <20200702152507.13694-2-a.fatoum@pengutronix.de>
+Date: Thu,  2 Jul 2020 17:25:07 +0200
+Message-Id: <20200702152507.13694-3-a.fatoum@pengutronix.de>
 In-Reply-To: <20200702152507.13694-1-a.fatoum@pengutronix.de>
 References: <20200702152507.13694-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,77 +21,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] sandbox: specify sizeof(dma_addr_t) ==
- sizeof(phys_addr_t) == 8 on 64BIT
+Subject: [PATCH 3/3] sandbox: include: <asm/types.h>: don't define
+ INTERNAL_SIZE_T
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-sizeof(dma_addr_t) == 8 shouldn't introduce any functional change, because
-we can't have DMA on sandbox. For now it suppresses benign warnings about
-mismatched pointer and integer sizes when some headers are included.
-
-sizeof(phys_addr_t) == 8 was already the case on systems with
-__x86_64__. As CONFIG_64BIT now is set according to the bitness
-of the compiler, we can migrate this fully to Kconfig.
+The INTERNAL_SIZE_T default is size_t, which already is 64-bit on 64-bit
+platforms and 32-bit on 32-bit ones. We can thus drop the #define and go
+back to the minimal <asm/types.h>.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/sandbox/Kconfig             | 5 +++++
- arch/sandbox/include/asm/elf.h   | 1 -
- arch/sandbox/include/asm/types.h | 6 ------
- 3 files changed, 5 insertions(+), 7 deletions(-)
+ arch/sandbox/include/asm/types.h | 13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/arch/sandbox/Kconfig b/arch/sandbox/Kconfig
-index 3f10709021a7..40e04919d21e 100644
---- a/arch/sandbox/Kconfig
-+++ b/arch/sandbox/Kconfig
-@@ -24,6 +24,9 @@ config SANDBOX_UNWIND
- 	select ARCH_HAS_STACK_DUMP
- 	depends on UBSAN || KASAN
- 
-+config PHYS_ADDR_T_64BIT
-+	bool
-+
- config CC_IS_64BIT
- 	def_bool $(success,$(srctree)/scripts/gcc-64bitptr.sh $(CC))
- 
-@@ -34,6 +37,8 @@ config 64BIT
- 	bool
- 	default n if SANDBOX_LINUX_I386
- 	default CC_IS_64BIT
-+	select ARCH_DMA_ADDR_T_64BIT
-+	select PHYS_ADDR_T_64BIT
- 
- config SANDBOX_LINUX_I386
- 	bool "32-bit x86 barebox" if CC_HAS_LINUX_I386_SUPPORT
-diff --git a/arch/sandbox/include/asm/elf.h b/arch/sandbox/include/asm/elf.h
-index 3939336ccba4..e71a60aeb93f 100644
---- a/arch/sandbox/include/asm/elf.h
-+++ b/arch/sandbox/include/asm/elf.h
-@@ -3,7 +3,6 @@
- 
- #if __SIZEOF_POINTER__ == 8
- #define ELF_CLASS	ELFCLASS64
--#define CONFIG_PHYS_ADDR_T_64BIT
- #else
- #define ELF_CLASS	ELFCLASS32
- #endif
 diff --git a/arch/sandbox/include/asm/types.h b/arch/sandbox/include/asm/types.h
-index 3e4a8f7ba34f..28046670f4e2 100644
+index 28046670f4e2..7b356a99eb66 100644
 --- a/arch/sandbox/include/asm/types.h
 +++ b/arch/sandbox/include/asm/types.h
-@@ -10,12 +10,6 @@
-  */
- #define INTERNAL_SIZE_T unsigned long
+@@ -1,15 +1,6 @@
+-#ifndef __ASM_I386_TYPES_H
+-#define __ASM_I386_TYPES_H
++#ifndef __ASM_SANDBOX_TYPES_H
++#define __ASM_SANDBOX_TYPES_H
  
+ #include <asm-generic/int-ll64.h>
+ 
+-#ifdef __x86_64__
 -/*
-- * This is a Kconfig variable in the Kernel, but we want to detect
-- * this during compile time, so we set it here.
+- * This is used in dlmalloc. On X86_64 we need it to be
+- * 64 bit
 - */
--#define CONFIG_PHYS_ADDR_T_64BIT
+-#define INTERNAL_SIZE_T unsigned long
 -
- #endif
- 
+-#endif
+-
  #endif
 -- 
 2.27.0
