@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jqzx4-0005y2-SA
- for barebox@lists.infradead.org; Thu, 02 Jul 2020 14:12:35 +0000
+ id 1jr02A-0006wt-4z
+ for barebox@lists.infradead.org; Thu, 02 Jul 2020 14:17:50 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  2 Jul 2020 16:12:32 +0200
-Message-Id: <20200702141232.4734-1-a.fatoum@pengutronix.de>
+Date: Thu,  2 Jul 2020 16:17:47 +0200
+Message-Id: <20200702141747.7556-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,31 +19,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! fs: Add destroy_inode callbacks to filesystems
+Subject: [PATCH] mci: dw_mmc: remove unused local variable
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-struct squashfs_inode_info *node is the pointer returned by xzalloc and
-thus is what should be freed.
+data_start is assigned once and never used. Drop it.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- fs/squashfs/squashfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mci/dw_mmc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/squashfs/squashfs.c b/fs/squashfs/squashfs.c
-index cb2d936ea4d8..69451f7b846b 100644
---- a/fs/squashfs/squashfs.c
-+++ b/fs/squashfs/squashfs.c
-@@ -80,7 +80,7 @@ static void squashfs_destroy_inode(struct inode *inode)
+diff --git a/drivers/mci/dw_mmc.c b/drivers/mci/dw_mmc.c
+index ab8270814b86..0ada65e90eea 100644
+--- a/drivers/mci/dw_mmc.c
++++ b/drivers/mci/dw_mmc.c
+@@ -124,7 +124,7 @@ static int dwmci_prepare_data_dma(struct dwmci_host *host,
  {
- 	struct squashfs_inode_info *node = squashfs_i(inode);
+ 	unsigned long ctrl;
+ 	unsigned int i = 0, flags, cnt, blk_cnt;
+-	unsigned long data_start, start_addr;
++	unsigned start_addr;
+ 	struct dwmci_idmac *desc = host->idmac;
  
--	free(inode);
-+	free(node);
- }
+ 	blk_cnt = data->blocks;
+@@ -134,7 +134,6 @@ static int dwmci_prepare_data_dma(struct dwmci_host *host,
  
- static const struct super_operations squashfs_super_ops = {
+ 	dwmci_wait_reset(host, DWMCI_CTRL_FIFO_RESET);
+ 
+-	data_start = (uint32_t)desc;
+ 	dwmci_writel(host, DWMCI_DBADDR, (uint32_t)desc);
+ 
+ 	if (data->flags & MMC_DATA_READ)
 -- 
 2.27.0
 
