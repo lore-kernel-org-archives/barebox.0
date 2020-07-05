@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1js8Xs-0007tW-3C
- for barebox@lists.infradead.org; Sun, 05 Jul 2020 17:35:16 +0000
-Date: Sun, 5 Jul 2020 19:35:14 +0200
+ id 1js8mA-0000nj-Hn
+ for barebox@lists.infradead.org; Sun, 05 Jul 2020 17:50:03 +0000
+Date: Sun, 5 Jul 2020 19:49:59 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200705173513.GX15485@pengutronix.de>
-References: <20200702085934.5827-1-a.fatoum@pengutronix.de>
+Message-ID: <20200705174959.GY15485@pengutronix.de>
+References: <20200702071411.18969-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200702085934.5827-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20200702071411.18969-1-r.czerwinski@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,50 +22,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] kbuild: add dtbs target for building all dtbs of an ARCH
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] ARM: imx: Add Support for Webasto ccbv2
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jul 02, 2020 at 10:59:34AM +0200, Ahmad Fatoum wrote:
-> As described in the documentation, upstream device trees extended by
-> barebox should take care to cause compile errors, not runtime errors,
-> when the paths they extend disappear. This way, breakage can be easily
-> detected when synchronizing the dts/ directory and fixed right then.
-> 
-> Make this process easier by providing a dtbs target that builds all
-> device trees in arch/$(SRCARCH)/dts/ if available.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  Makefile | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
-> 
-> diff --git a/Makefile b/Makefile
-> index 0da032532712..9fa741966c00 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -990,6 +990,20 @@ include/generated/version.h: FORCE
->  include/generated/utsrelease.h: include/config/kernel.release FORCE
->  	$(call filechk,utsrelease.h)
->  
-> +# ---------------------------------------------------------------------------
-> +# Devicetree files
-> +
-> +ifneq ($(wildcard $(srctree)/arch/$(SRCARCH)/dts/),)
-> +dtstree := arch/$(SRCARCH)/dts
-> +endif
-> +
-> +ifneq ($(dtstree),)
-> +
-> +PHONY += dtbs
-> +dtbs: $(patsubst $(srctree)/%.dts,$(objtree)/%.dtb,$(wildcard $(srctree)/$(dtstree)/*.dts))
-> +
-> +endif
+Hi Rouven,
 
-Can we do this in a way that only rebuilds the changed files and not
-every dts again?
+On Thu, Jul 02, 2020 at 09:14:11AM +0200, Rouven Czerwinski wrote:
+> Add support for the Webasto Common Communication Board Version 2. The
+> device tree included with barebox can eventually be replaced with the
+> required barebox changes when the ccbv2 device tree is upstream.
+> 
+> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+> ---
+> +static int ccbv2_device_init(void)
+> +{
+> +	if (!of_machine_is_compatible("webasto,imx6ul-ccbv2"))
+> +		return 0;
+> +
+> +	/* the bootloader is stored in one of the two boot partitions */
+> +	imx6_bbu_internal_mmcboot_register_handler("emmc", "/dev/mmc1",
+> +			BBU_HANDLER_FLAG_DEFAULT);
+> +
+> +	barebox_set_hostname("weabsto-ccbv2");
+> +
+> +	return 0;
+> +
+> +}
+> +device_initcall(ccbv2_device_init);
+> +
+> +static int ccbv2_apply_overlay(void)
+> +{
+> +	struct device_node *overlay;
+> +	struct fdt_header *fdt;
+> +	int ret;
+> +
+> +	if(!IS_ENABLED(CONFIG_FIRMWARE_CCBV2_OPTEE))
+> +		return 0;
+
+The lack of the runtime test for a compatible machine breaks running
+barebox on other enabled machines. You probably do this in a
+pure_initcall to register the overlay before barebox unflattens the dtb.
+I'm not sure what to do about it, but breaking other machines is not an
+option.
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
