@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1js9aX-0004Y0-0F
- for barebox@lists.infradead.org; Sun, 05 Jul 2020 18:42:05 +0000
-Date: Sun, 5 Jul 2020 20:42:02 +0200
+ id 1js9el-0004uw-8o
+ for barebox@lists.infradead.org; Sun, 05 Jul 2020 18:46:27 +0000
+Date: Sun, 5 Jul 2020 20:46:25 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200705184202.GZ15485@pengutronix.de>
+Message-ID: <20200705184625.GA15485@pengutronix.de>
 References: <20200701091122.3437-1-a.fatoum@pengutronix.de>
- <20200701091122.3437-20-a.fatoum@pengutronix.de>
+ <20200701091122.3437-24-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200701091122.3437-20-a.fatoum@pengutronix.de>
+In-Reply-To: <20200701091122.3437-24-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,71 +23,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 19/28] ARM: at91: add helpers for chain-loading barebox
- from SD-card
+Subject: Re: [PATCH 23/28] ARM: at91: sama5d27-som1: add additional first
+ stage entry point
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Jul 01, 2020 at 11:11:13AM +0200, Ahmad Fatoum wrote:
-> +static void at91_fat_start_image(struct pbl_bio *bio,
-> +				 void *buf, unsigned int len,
-> +				 u32 r4)
-> +{
-> +	void __noreturn (*bb)(void);
-> +	int ret;
+On Wed, Jul 01, 2020 at 11:11:17AM +0200, Ahmad Fatoum wrote:
+> The BootROM constrains us to a 64K big first stage bootloader. Add a PBL
+> entry point for a xload barebox that sets up the minimum necessary to
+> load a FAT32 barebox.bin from the SD-Card.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  arch/arm/boards/sama5d27-som1/lowlevel.c      | 32 +++++++++------
+>  arch/arm/mach-at91/Kconfig                    |  1 +
+>  arch/arm/mach-at91/include/mach/barebox-arm.h | 21 ++++++++++
+>  .../include/mach/sama5d2-sip-ddramc.h         | 39 +++++++++++++++++++
+>  images/Makefile.at91                          |  5 +++
+>  5 files changed, 87 insertions(+), 11 deletions(-)
+>  create mode 100644 arch/arm/mach-at91/include/mach/barebox-arm.h
+>  create mode 100644 arch/arm/mach-at91/include/mach/sama5d2-sip-ddramc.h
+> 
+> diff --git a/arch/arm/boards/sama5d27-som1/lowlevel.c b/arch/arm/boards/sama5d27-som1/lowlevel.c
+> index 2e408ce832f7..d52c4ca7465e 100644
+> --- a/arch/arm/boards/sama5d27-som1/lowlevel.c
+> +++ b/arch/arm/boards/sama5d27-som1/lowlevel.c
+> @@ -5,13 +5,12 @@
+>  
+>  #include <common.h>
+>  #include <init.h>
+> -
+> -#include <asm/barebox-arm-head.h>
+> -#include <asm/barebox-arm.h>
+> +#include <mach/barebox-arm.h>
+>  #include <mach/sama5d2_ll.h>
+>  #include <mach/iomux.h>
+> +#include <mach/xload.h>
+>  #include <debug_ll.h>
+> -#include <mach/at91_dbgu.h>
+> +#include <mach/sama5d2-sip-ddramc.h>
+>  
+>  #define RGB_LED_GREEN (1 << 0)
+>  #define RGB_LED_RED   (1 << 1)
+> @@ -40,23 +39,34 @@ static void ek_turn_led(unsigned color)
+>  	}
+>  }
+>  
+> -static void ek_dbgu_init(void)
+> +SAMA5_ENTRY_FUNCTION(start_sama5d27_som1_ek_xload_mmc, r4)
+>  {
+> -	sama5d2_resetup_uart_console(MASTER_CLOCK);
+> +	void __iomem *dbgu_base;
+> +	sama5d2_lowlevel_init();
 > +
-> +	ret = pbl_fat_load(bio, "barebox.bin", buf, len);
-> +	if (ret < 0) {
-> +		pr_err("pbl_fat_load: error %d\n", ret);
-> +		return;
-> +	}
-> +
-> +	bb = buf;
-> +
-> +	sync_caches_for_execution();
-> +
-> +	xload_bb(bb, r4);
-> +}
-> +
-> +static const struct sdhci_instance {
-> +	void __iomem *base;
-> +	unsigned id;
-> +	u8 periph;
-> +	s8 pins[15];
-> +} sdhci_instances[] = {
-> +	[0] = { SAMA5D2_BASE_SDHC0, SAMA5D2_ID_SDMMC0, AT91_MUX_PERIPH_A,
-> +		{ 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 13, 10, 11, 12, -1 } },
-> +	[1] = { SAMA5D2_BASE_SDHC1, SAMA5D2_ID_SDMMC1, AT91_MUX_PERIPH_E,
-> +		{ 18, 19, 20, 21, 22, 28, 30, -1 } },
-> +};
+> +	dbgu_base = sama5d2_resetup_uart_console(MASTER_CLOCK);
+> +	if (IS_ENABLED(CONFIG_DEBUG_LL))
+> +		putc_ll('>');
 
-Can we use C99 initializer here please?
-
-> +
-> +/**
-> + * sama5d2_sdhci_start_image - Load and start an image from FAT-formatted SDHCI
-> + * @r4: value of r4 passed by BootROM
-> + *
-> + * Return: If successul, this function does not return. A negative error
-
-s/successul/successful/
-
-> + * code is returned when this function fails.
-
-This is not true, the function panics on error.
-
-> + */
-> +void __noreturn sama5d2_sdhci_start_image(u32 r4)
-> +{
-> +	void *buf = (void *)SAMA5_DDRCS;
-> +	const struct sdhci_instance *instance;
-> +	struct pbl_bio bio;
-> +	const s8 *pin;
-> +	int ret;
-> +
-> +	instance = &sdhci_instances[!!sama5_bootsource_instance(r4)];
-
-Why "!!"? sama5_bootsource_instance() should return exactly 0 or 1 here.
+putc_ll() is a noop function when CONFIG_DEBUG_LL is disabled. No need
+to put it inside a IS_ENABLED(CONFIG_DEBUG_LL).
 
 Sascha
 
