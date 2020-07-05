@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1js5SS-0007Bi-Kh
- for barebox@lists.infradead.org; Sun, 05 Jul 2020 14:17:29 +0000
-Date: Sun, 5 Jul 2020 16:17:27 +0200
+ id 1js5Ti-0007JS-96
+ for barebox@lists.infradead.org; Sun, 05 Jul 2020 14:18:46 +0000
+Date: Sun, 5 Jul 2020 16:18:44 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200705141727.GT15485@pengutronix.de>
-References: <20200702141232.4734-1-a.fatoum@pengutronix.de>
+Message-ID: <20200705141844.GU15485@pengutronix.de>
+References: <20200702134650.19767-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200702141232.4734-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20200702134650.19767-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,37 +22,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fixup! fs: Add destroy_inode callbacks to filesystems
+Subject: Re: [PATCH master] sandbox: fix generation of broken binaries
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>
 
-On Thu, Jul 02, 2020 at 04:12:32PM +0200, Ahmad Fatoum wrote:
-> struct squashfs_inode_info *node is the pointer returned by xzalloc and
-> thus is what should be freed.
+On Thu, Jul 02, 2020 at 03:46:50PM +0200, Ahmad Fatoum wrote:
+> Code under arch/sandbox/os is meant to link against the libc primitives
+> of the OS, not the barebox counterparts (e.g. for malloc).
 > 
+> 54d47eb7e912 ("sandbox: support forcing 32-bit x86") broke this
+> rendering the sandbox architecture unusable. Fix this.
+> 
+> Reported-by: Peter Mamonov <pmamonov@gmail.com>
+> Fixes: 54d47eb7e912 ("sandbox: support forcing 32-bit x86")
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  fs/squashfs/squashfs.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Hello Sascha,
+> 
+> ARCH=sandbox is runtime-broken in master. Please add this patch there
+> to fix this.
 
-Applied, thanks
+Did that, thanks
 
 Sascha
 
 > 
-> diff --git a/fs/squashfs/squashfs.c b/fs/squashfs/squashfs.c
-> index cb2d936ea4d8..69451f7b846b 100644
-> --- a/fs/squashfs/squashfs.c
-> +++ b/fs/squashfs/squashfs.c
-> @@ -80,7 +80,7 @@ static void squashfs_destroy_inode(struct inode *inode)
->  {
->  	struct squashfs_inode_info *node = squashfs_i(inode);
+> Cheers,
+> Ahmad
+> ---
+>  arch/sandbox/os/Makefile | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/sandbox/os/Makefile b/arch/sandbox/os/Makefile
+> index ed921443e0fd..b2f95087dcc4 100644
+> --- a/arch/sandbox/os/Makefile
+> +++ b/arch/sandbox/os/Makefile
+> @@ -6,9 +6,13 @@ KBUILD_CPPFLAGS = $(patsubst %,-I$(srctree)/%include,$(machdirs))
 >  
-> -	free(inode);
-> +	free(node);
->  }
+>  KBUILD_CPPFLAGS += -DCONFIG_MALLOC_SIZE=$(CONFIG_MALLOC_SIZE)
 >  
->  static const struct super_operations squashfs_super_ops = {
+> -KBUILD_CFLAGS += -Wall
+> +KBUILD_CFLAGS := -Wall
+>  NOSTDINC_FLAGS :=
+>  
+> +ifeq ($(CONFIG_SANDBOX_LINUX_I386),y)
+> +KBUILD_CFLAGS += -m32
+> +endif
+> +
+>  obj-y = common.o tap.o
+>  
+>  CFLAGS_sdl.o = $(shell pkg-config sdl --cflags)
 > -- 
 > 2.27.0
 > 
