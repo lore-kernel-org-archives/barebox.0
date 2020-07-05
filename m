@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1js5Vy-0007Vr-3t
- for barebox@lists.infradead.org; Sun, 05 Jul 2020 14:21:06 +0000
-Date: Sun, 5 Jul 2020 16:21:04 +0200
+ id 1js5ZJ-0007uc-VD
+ for barebox@lists.infradead.org; Sun, 05 Jul 2020 14:24:34 +0000
+Date: Sun, 5 Jul 2020 16:24:32 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200705142104.GV15485@pengutronix.de>
-References: <20200702132919.22009-1-a.fatoum@pengutronix.de>
+Message-ID: <20200705142432.GW15485@pengutronix.de>
+References: <20200630110603.21577-1-m.grzeschik@pengutronix.de>
+ <20200630110603.21577-2-m.grzeschik@pengutronix.de>
+ <c0249670-65ee-eb90-0f6f-49441f850d21@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200702132919.22009-1-a.fatoum@pengutronix.de>
+In-Reply-To: <c0249670-65ee-eb90-0f6f-49441f850d21@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,52 +24,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] mfd: superio: smsc: fix C99ism initial declaration
- in for loop
+Subject: Re: [PATCH v2 1/2] net: phy: add uapi/linux/mdio.h from kernel for
+ MDIO MMD access
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jul 02, 2020 at 03:29:18PM +0200, Ahmad Fatoum wrote:
-> Codebase is meant to be gnu89, but was only enforced starting
-> with bc4840e98b94 ("kbuild: add -Wmissing-prototypes and -std=gnu89
-> to KBUILD_HOSTCFLAGS"). Since then, this driver no longer compiles.
-> Fix this.
-> 
-> Fixes: eaf020f1bb52 ("mfd: superio: add base SMSC MFD driver")
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  drivers/mfd/smsc-superio.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+Hi Ahmad,
 
-Applied, thanks
+On Thu, Jul 02, 2020 at 01:58:10PM +0200, Ahmad Fatoum wrote:
+> Hello Sascha,
+> 
+> On 6/30/20 1:06 PM, Michael Grzeschik wrote:
+> > The headerfile is used in the kernel for access of MDIO Managed Devices
+> > (MMD) indirect access. Some drivers already use those device addresses.
+> > We add the headerfile from the kernel and change the current users to
+> > use the defines instead
+> > 
+> > Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> > Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+> > 
+> > ---
+> > v1 -> v2: - moved the header file from uapi one to include/linux
+> > 
+> >  drivers/net/phy/dp83867.c |   3 +-
+> >  drivers/net/phy/micrel.c  |   5 +-
+> >  include/linux/mdio.h      | 327 ++++++++++++++++++++++++++++++++++++++
+> 
+> a626211f3d36a in upstream/next lacks the <linux/mdio.h> header.
+> Can you take a look?
+
+One of my classic mistakes. The patch didn't apply cleanly, I then
+applied it manually and only git added the changed files, but not the
+new ones.
+
+Fixed, thanks for noting.
 
 Sascha
-
-> 
-> diff --git a/drivers/mfd/smsc-superio.c b/drivers/mfd/smsc-superio.c
-> index 349c878cefe0..ff83aa1a4419 100644
-> --- a/drivers/mfd/smsc-superio.c
-> +++ b/drivers/mfd/smsc-superio.c
-> @@ -106,8 +106,9 @@ static void smsc_superio_find(u16 sioaddr, u16 id_reg)
->  static int smsc_superio_detect(void)
->  {
->  	u16 ports[] = { 0x2e, 0x4e, 0x162e, 0x164e, 0x3f0, 0x370 };
-> +	int i;
->  
-> -	for (int i = 0; i < ARRAY_SIZE(ports); i++)
-> +	for (i = 0; i < ARRAY_SIZE(ports); i++)
->  		smsc_superio_find(ports[i], SIO_REG_DEVID);
->  
->  	return 0;
-> -- 
-> 2.27.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
