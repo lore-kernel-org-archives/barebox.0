@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1js5Ti-0007JS-96
- for barebox@lists.infradead.org; Sun, 05 Jul 2020 14:18:46 +0000
-Date: Sun, 5 Jul 2020 16:18:44 +0200
+ id 1js5Vy-0007Vr-3t
+ for barebox@lists.infradead.org; Sun, 05 Jul 2020 14:21:06 +0000
+Date: Sun, 5 Jul 2020 16:21:04 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200705141844.GU15485@pengutronix.de>
-References: <20200702134650.19767-1-a.fatoum@pengutronix.de>
+Message-ID: <20200705142104.GV15485@pengutronix.de>
+References: <20200702132919.22009-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200702134650.19767-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20200702132919.22009-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,56 +22,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH master] sandbox: fix generation of broken binaries
+Subject: Re: [PATCH 1/2] mfd: superio: smsc: fix C99ism initial declaration
+ in for loop
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On Thu, Jul 02, 2020 at 03:46:50PM +0200, Ahmad Fatoum wrote:
-> Code under arch/sandbox/os is meant to link against the libc primitives
-> of the OS, not the barebox counterparts (e.g. for malloc).
+On Thu, Jul 02, 2020 at 03:29:18PM +0200, Ahmad Fatoum wrote:
+> Codebase is meant to be gnu89, but was only enforced starting
+> with bc4840e98b94 ("kbuild: add -Wmissing-prototypes and -std=gnu89
+> to KBUILD_HOSTCFLAGS"). Since then, this driver no longer compiles.
+> Fix this.
 > 
-> 54d47eb7e912 ("sandbox: support forcing 32-bit x86") broke this
-> rendering the sandbox architecture unusable. Fix this.
-> 
-> Reported-by: Peter Mamonov <pmamonov@gmail.com>
-> Fixes: 54d47eb7e912 ("sandbox: support forcing 32-bit x86")
+> Fixes: eaf020f1bb52 ("mfd: superio: add base SMSC MFD driver")
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
-> Hello Sascha,
-> 
-> ARCH=sandbox is runtime-broken in master. Please add this patch there
-> to fix this.
+>  drivers/mfd/smsc-superio.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 
-Did that, thanks
+Applied, thanks
 
 Sascha
 
 > 
-> Cheers,
-> Ahmad
-> ---
->  arch/sandbox/os/Makefile | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/sandbox/os/Makefile b/arch/sandbox/os/Makefile
-> index ed921443e0fd..b2f95087dcc4 100644
-> --- a/arch/sandbox/os/Makefile
-> +++ b/arch/sandbox/os/Makefile
-> @@ -6,9 +6,13 @@ KBUILD_CPPFLAGS = $(patsubst %,-I$(srctree)/%include,$(machdirs))
+> diff --git a/drivers/mfd/smsc-superio.c b/drivers/mfd/smsc-superio.c
+> index 349c878cefe0..ff83aa1a4419 100644
+> --- a/drivers/mfd/smsc-superio.c
+> +++ b/drivers/mfd/smsc-superio.c
+> @@ -106,8 +106,9 @@ static void smsc_superio_find(u16 sioaddr, u16 id_reg)
+>  static int smsc_superio_detect(void)
+>  {
+>  	u16 ports[] = { 0x2e, 0x4e, 0x162e, 0x164e, 0x3f0, 0x370 };
+> +	int i;
 >  
->  KBUILD_CPPFLAGS += -DCONFIG_MALLOC_SIZE=$(CONFIG_MALLOC_SIZE)
+> -	for (int i = 0; i < ARRAY_SIZE(ports); i++)
+> +	for (i = 0; i < ARRAY_SIZE(ports); i++)
+>  		smsc_superio_find(ports[i], SIO_REG_DEVID);
 >  
-> -KBUILD_CFLAGS += -Wall
-> +KBUILD_CFLAGS := -Wall
->  NOSTDINC_FLAGS :=
->  
-> +ifeq ($(CONFIG_SANDBOX_LINUX_I386),y)
-> +KBUILD_CFLAGS += -m32
-> +endif
-> +
->  obj-y = common.o tap.o
->  
->  CFLAGS_sdl.o = $(shell pkg-config sdl --cflags)
+>  	return 0;
 > -- 
 > 2.27.0
 > 
