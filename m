@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jrESM-000218-F8
- for barebox@lists.infradead.org; Fri, 03 Jul 2020 05:41:51 +0000
+ id 1jsKWI-0000hq-01
+ for barebox@lists.infradead.org; Mon, 06 Jul 2020 06:22:26 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri,  3 Jul 2020 07:41:47 +0200
-Message-Id: <20200703054147.2990-1-a.fatoum@pengutronix.de>
+Date: Mon,  6 Jul 2020 08:22:21 +0200
+Message-Id: <20200706062221.14811-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20200701091122.3437-24-a.fatoum@pengutronix.de>
+References: <20200701091122.3437-24-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,89 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! clk: at91: sync with Linux v5.8-rc1
+Subject: [PATCH] fixup! ARM: at91: sama5d27-som1: add additional first stage
+ entry point
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-syscon_node_to_regmap() will make the created regmap get and enable the
-first clock it can parse from the device tree. This clock is not needed to
-access the registers and should not be enabled at that time.
+putc_ll() is already behind a IS_ENABLED(CONFIG_DEBUG_LL), so no need to
+replicate.
 
-Use the device_node_to_regmap to solve that as it looks up the regmap in
-the same list but doesn't care about the clocks.
-
-This fix already happened upstream in 6956eb33abb5 ("clk: at91: fix
-possible deadlock") for the drivers that had been migrated to the new
-clk binding back then and was imported into barebox.
-This does the same for the new drivers as well. A patch for this is
-under way for Linux.
-
-Without this patch, the sama5d3 is _very_ slow, whenever it tries to get
-the regmap.
-
-[afa: please squash, I missed to do so when i sent out the series]
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/clk/at91/at91sam9g45.c | 2 +-
- drivers/clk/at91/at91sam9n12.c | 2 +-
- drivers/clk/at91/sam9x60.c     | 2 +-
- drivers/clk/at91/sama5d3.c     | 2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
+ arch/arm/boards/sama5d27-som1/lowlevel.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/clk/at91/at91sam9g45.c b/drivers/clk/at91/at91sam9g45.c
-index af623cc7f0b6..a00a6a434284 100644
---- a/drivers/clk/at91/at91sam9g45.c
-+++ b/drivers/clk/at91/at91sam9g45.c
-@@ -110,7 +110,7 @@ static void __init at91sam9g45_pmc_setup(struct device_node *np)
- 		return;
- 	mainxtal_name = of_clk_get_parent_name(np, i);
+diff --git a/arch/arm/boards/sama5d27-som1/lowlevel.c b/arch/arm/boards/sama5d27-som1/lowlevel.c
+index e9c781297c27..b0937119184b 100644
+--- a/arch/arm/boards/sama5d27-som1/lowlevel.c
++++ b/arch/arm/boards/sama5d27-som1/lowlevel.c
+@@ -45,8 +45,7 @@ SAMA5_ENTRY_FUNCTION(start_sama5d27_som1_ek_xload_mmc, r4)
+ 	sama5d2_lowlevel_init();
  
--	regmap = syscon_node_to_regmap(np);
-+	regmap = device_node_to_regmap(np);
- 	if (IS_ERR(regmap))
- 		return;
+ 	dbgu_base = sama5d2_resetup_uart_console(MASTER_CLOCK);
+-	if (IS_ENABLED(CONFIG_DEBUG_LL))
+-		putc_ll('>');
++	putc_ll('>');
  
-diff --git a/drivers/clk/at91/at91sam9n12.c b/drivers/clk/at91/at91sam9n12.c
-index 5ed4aeed4a97..f06058febd52 100644
---- a/drivers/clk/at91/at91sam9n12.c
-+++ b/drivers/clk/at91/at91sam9n12.c
-@@ -131,7 +131,7 @@ static void __init at91sam9n12_pmc_setup(struct device_node *np)
- 		return;
- 	mainxtal_name = of_clk_get_parent_name(np, i);
+ 	relocate_to_current_adr();
+ 	setup_c();
+@@ -65,8 +64,7 @@ SAMA5_ENTRY_FUNCTION(start_sama5d27_som1_ek, r4)
+ {
+ 	void *fdt;
  
--	regmap = syscon_node_to_regmap(np);
-+	regmap = device_node_to_regmap(np);
- 	if (IS_ERR(regmap))
- 		return;
+-	if (IS_ENABLED(CONFIG_DEBUG_LL))
+-		putc_ll('>');
++	putc_ll('>');
  
-diff --git a/drivers/clk/at91/sam9x60.c b/drivers/clk/at91/sam9x60.c
-index 09f3e6e06977..9d54fa7fe1f4 100644
---- a/drivers/clk/at91/sam9x60.c
-+++ b/drivers/clk/at91/sam9x60.c
-@@ -182,7 +182,7 @@ static void __init sam9x60_pmc_setup(struct device_node *np)
- 		return;
- 	mainxtal_name = of_clk_get_parent_name(np, i);
- 
--	regmap = syscon_node_to_regmap(np);
-+	regmap = device_node_to_regmap(np);
- 	if (IS_ERR(regmap))
- 		return;
- 
-diff --git a/drivers/clk/at91/sama5d3.c b/drivers/clk/at91/sama5d3.c
-index 24aec6a71a3f..3f305ea5dd00 100644
---- a/drivers/clk/at91/sama5d3.c
-+++ b/drivers/clk/at91/sama5d3.c
-@@ -127,7 +127,7 @@ static void __init sama5d3_pmc_setup(struct device_node *np)
- 		return;
- 	mainxtal_name = of_clk_get_parent_name(np, i);
- 
--	regmap = syscon_node_to_regmap(np);
-+	regmap = device_node_to_regmap(np);
- 	if (IS_ERR(regmap))
- 		return;
+ 	fdt = __dtb_z_at91_sama5d27_som1_ek_start + get_runtime_offset();
  
 -- 
-2.20.1
+2.27.0
 
 
 _______________________________________________
