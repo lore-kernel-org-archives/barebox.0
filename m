@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jsKaT-0001CU-Dc
- for barebox@lists.infradead.org; Mon, 06 Jul 2020 06:26:46 +0000
+ id 1jsKao-0001Ew-KR
+ for barebox@lists.infradead.org; Mon, 06 Jul 2020 06:27:07 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  6 Jul 2020 08:26:43 +0200
-Message-Id: <20200706062643.29336-1-a.fatoum@pengutronix.de>
+Date: Mon,  6 Jul 2020 08:27:04 +0200
+Message-Id: <20200706062704.396-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,48 +19,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] i2c: designware: use proper type for writel argument
+Subject: [PATCH] ARM: layerscape: ppa: fix error propagation in ppa_init()
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-We need to write DW_IC_ENABLE_ENABLE (1 << 0) to the register to enable,
-but instead we were writing true. This happens to work, but is quite
-unusual. Make the code more readable.
+On fit_open_image, we returned PTR_ERR(fit) instead of the correct ret.
+We also didn't call fit_close as we should. Fix this.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/i2c/busses/i2c-designware.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/arm/mach-layerscape/ppa.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-designware.c b/drivers/i2c/busses/i2c-designware.c
-index 33f89148f0cc..bb9a0b7c4ad4 100644
---- a/drivers/i2c/busses/i2c-designware.c
-+++ b/drivers/i2c/busses/i2c-designware.c
-@@ -121,6 +121,8 @@ static inline struct dw_i2c_dev *to_dw_i2c_dev(struct i2c_adapter *a)
+diff --git a/arch/arm/mach-layerscape/ppa.c b/arch/arm/mach-layerscape/ppa.c
+index 477e8947813c..6ab7659be730 100644
+--- a/arch/arm/mach-layerscape/ppa.c
++++ b/arch/arm/mach-layerscape/ppa.c
+@@ -77,8 +77,8 @@ static int ppa_init(void *ppa, size_t ppa_size, void *sec_firmware_addr)
+ 	if (IS_ERR(conf)) {
+ 		pr_err("Cannot open default config in ppa FIT image: %s\n",
+ 		       strerrorp(conf));
+-		fit_close(fit);
+-		return PTR_ERR(fit);
++		ret = PTR_ERR(fit);
++		goto err;
+ 	}
  
- static void i2c_dw_enable(struct dw_i2c_dev *dw, bool enable)
- {
-+	u32 reg = 0;
-+
- 	/*
- 	 * This subrotine is an implementation of an algorithm
- 	 * described in "Cyclone V Hard Processor System Technical
-@@ -128,12 +130,13 @@ static void i2c_dw_enable(struct dw_i2c_dev *dw, bool enable)
- 	 */
- 	int timeout = MAX_T_POLL_COUNT;
  
--	enable = enable ? DW_IC_ENABLE_ENABLE : 0;
-+	if (enable)
-+		reg |= DW_IC_ENABLE_ENABLE;
+@@ -86,7 +86,6 @@ static int ppa_init(void *ppa, size_t ppa_size, void *sec_firmware_addr)
+ 	if (ret) {
+ 		pr_err("Cannot open firmware image in ppa FIT image: %s\n",
+ 		       strerror(-ret));
+-		ret = PTR_ERR(fit);
+ 		goto err;
+ 	}
  
- 	do {
- 		uint32_t ic_enable_status;
+@@ -107,7 +106,7 @@ static int ppa_init(void *ppa, size_t ppa_size, void *sec_firmware_addr)
+ err:
+ 	fit_close(fit);
  
--		writel(enable, dw->base + DW_IC_ENABLE);
-+		writel(reg, dw->base + DW_IC_ENABLE);
+-	return 0;
++	return ret;
+ }
  
- 		ic_enable_status = readl(dw->base + DW_IC_ENABLE_STATUS);
- 		if ((ic_enable_status & DW_IC_ENABLE_STATUS_IC_EN) == enable)
+ int ls1046a_ppa_init(resource_size_t ppa_start, resource_size_t ppa_size)
 -- 
 2.27.0
 
