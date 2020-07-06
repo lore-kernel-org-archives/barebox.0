@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jsKWn-0000lP-Bo
- for barebox@lists.infradead.org; Mon, 06 Jul 2020 06:22:57 +0000
+ id 1jsKZp-00018V-CH
+ for barebox@lists.infradead.org; Mon, 06 Jul 2020 06:26:06 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  6 Jul 2020 08:22:54 +0200
-Message-Id: <20200706062254.29127-1-a.fatoum@pengutronix.de>
-In-Reply-To: <20200701091122.3437-28-a.fatoum@pengutronix.de>
-References: <20200701091122.3437-28-a.fatoum@pengutronix.de>
+Date: Mon,  6 Jul 2020 08:26:02 +0200
+Message-Id: <20200706062602.10602-1-a.fatoum@pengutronix.de>
+In-Reply-To: <c9be71e8-1b06-7066-57e4-e86287b4e8f7@pengutronix.de>
+References: <c9be71e8-1b06-7066-57e4-e86287b4e8f7@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,43 +21,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! ARM: at91: sama5d27-giantboard: add additional first
- stage entry point
+Subject: [PATCH] fixup! ARM: at91: add helpers for chain-loading barebox from
+ SD-card
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-putc_ll() is already behind a IS_ENABLED(CONFIG_DEBUG_LL), so no need to
-replicate.
+Drop no longer accurate comment. Use c99 designated initializers.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/boards/sama5d27-giantboard/lowlevel.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/arm/mach-at91/xload-mmc.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm/boards/sama5d27-giantboard/lowlevel.c b/arch/arm/boards/sama5d27-giantboard/lowlevel.c
-index dc678e5d83ce..ee8297fa4562 100644
---- a/arch/arm/boards/sama5d27-giantboard/lowlevel.c
-+++ b/arch/arm/boards/sama5d27-giantboard/lowlevel.c
-@@ -22,8 +22,7 @@ SAMA5_ENTRY_FUNCTION(start_sama5d27_giantboard_xload_mmc, r4)
- 	sama5d2_lowlevel_init();
+diff --git a/arch/arm/mach-at91/xload-mmc.c b/arch/arm/mach-at91/xload-mmc.c
+index bc974b6446c7..c031f94aeeef 100644
+--- a/arch/arm/mach-at91/xload-mmc.c
++++ b/arch/arm/mach-at91/xload-mmc.c
+@@ -40,18 +40,19 @@ static const struct sdhci_instance {
+ 	u8 periph;
+ 	s8 pins[15];
+ } sdhci_instances[] = {
+-	[0] = { SAMA5D2_BASE_SDHC0, SAMA5D2_ID_SDMMC0, AT91_MUX_PERIPH_A,
+-		{ 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 13, 10, 11, 12, -1 } },
+-	[1] = { SAMA5D2_BASE_SDHC1, SAMA5D2_ID_SDMMC1, AT91_MUX_PERIPH_E,
+-		{ 18, 19, 20, 21, 22, 28, 30, -1 } },
++	[0] = {
++		.base = SAMA5D2_BASE_SDHC0, .id = SAMA5D2_ID_SDMMC0, .periph = AT91_MUX_PERIPH_A,
++		.pins = { 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 13, 10, 11, 12, -1 }
++	},
++	[1] = {
++		.base = SAMA5D2_BASE_SDHC1, .id = SAMA5D2_ID_SDMMC1, .periph = AT91_MUX_PERIPH_E,
++		.pins = { 18, 19, 20, 21, 22, 28, 30, -1 }
++	},
+ };
  
- 	dbgu_base = sama5d2_resetup_uart_console(MASTER_CLOCK);
--	if (IS_ENABLED(CONFIG_DEBUG_LL))
--		putc_ll('>');
-+	putc_ll('>');
- 
- 	relocate_to_current_adr();
- 	setup_c();
-@@ -41,8 +40,7 @@ SAMA5_ENTRY_FUNCTION(start_sama5d27_giantboard, r4)
+ /**
+  * sama5d2_sdhci_start_image - Load and start an image from FAT-formatted SDHCI
+  * @r4: value of r4 passed by BootROM
+- *
+- * Return: If successul, this function does not return. A negative error
+- * code is returned when this function fails.
+  */
+ void __noreturn sama5d2_sdhci_start_image(u32 r4)
  {
- 	void *fdt;
- 
--	if (IS_ENABLED(CONFIG_DEBUG_LL))
--		putc_ll('>');
-+	putc_ll('>');
- 
- 	fdt = __dtb_z_at91_sama5d27_giantboard_start + get_runtime_offset();
- 
 -- 
 2.27.0
 
