@@ -1,28 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from vsmx012.vodafonemail.xion.oxcs.net ([153.92.174.90])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jsgXb-0006zO-Ad
- for barebox@lists.infradead.org; Tue, 07 Jul 2020 05:53:16 +0000
-Date: Tue, 7 Jul 2020 07:52:58 +0200 (CEST)
-From: Giorgio Dal Molin <giorgio.nicole@arcor.de>
-Message-ID: <1980197793.159348.1594101178364@mail.vodafone.de>
-In-Reply-To: <CAOMZO5Ap8jDXJrkhjWVM0MF6yNk-gtzYzz6PWMOAxNpE-HYU+Q@mail.gmail.com>
-References: <925732743.424285.1592919941556@mail.vodafone.de>
- <CAOMZO5AeTg2afd+xVmNr=GxOM=s7qdzUhMqz2AHpTx_MPGWbPg@mail.gmail.com>
- <245646662.425432.1592925096458@mail.vodafone.de>
- <d999acb9-ed34-7b02-42cf-675a152ddee3@pengutronix.de>
- <517310923.70062.1593427992397@mail.vodafone.de>
- <595dc8c8-09c8-81ad-d730-23781e207cbd@pengutronix.de>
- <429834562.114102.1593444620511@mail.vodafone.de>
- <aac7feb5-604f-2914-bfbd-75f0271401ad@pengutronix.de>
- <1874617325.108865.1593446626706@mail.vodafone.de>
- <21c2fc40-e385-b05e-6392-55ad219597da@pengutronix.de>
- <1036676243.111725.1593448425601@mail.vodafone.de>
- <CAOMZO5Cxa6Yk-uWUummRhNVQbLHvduCZQM9djxXNG683GQ4gRw@mail.gmail.com>
- <473645456.227984.1593597168773@mail.vodafone.de>
- <b095fd3c-7cda-1394-ba4d-6dd882606920@pengutronix.de>
- <936755248.7359.1593703689870@mail.vodafone.de>
- <CAOMZO5Ap8jDXJrkhjWVM0MF6yNk-gtzYzz6PWMOAxNpE-HYU+Q@mail.gmail.com>
+ id 1jsisJ-0001RG-B6
+ for barebox@lists.infradead.org; Tue, 07 Jul 2020 08:22:47 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue,  7 Jul 2020 10:22:43 +0200
+Message-Id: <20200707082243.5916-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -36,38 +19,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: reset / watchdog on an imx7d soc
-To: Fabio Estevam <festevam@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] mci: omap: add new am335x and am437x SDHCI specific
+ compatibles
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Hi,
+For a while now, Linux has had a sdhci-omap driver for TI's OMAP SoCs
+making use of the SDHCI core library. This was in addition to the
+older omap-hsmmc driver, which didn't.
 
-> On July 2, 2020 at 6:24 PM Fabio Estevam <festevam@gmail.com> wrote:
-> 
-> 
-> Hi Giorgio,
-> 
-> On Thu, Jul 2, 2020 at 12:28 PM Giorgio Dal Molin
-> <giorgio.nicole@arcor.de> wrote:
-> 
-> > What I've found is that if I put the endless loop right at the end of
-> > imx21_soc_reset(), after the imxwd_write's, then the reboot process becomes
-> > reliable.
-> 
-> Just curious: are you able to reboot reliably if you issue a "reboot"
-> command from the Linux prompt?
-> 
+Linux commit 0b4edf11187 ("ARM: dts: Move am33xx and am43xx mmc nodes to
+sdhci-omap driver") changes the device tree compatible of the mmc nodes
+on the am33xx and am43xx SoCs away from the omap-hsmmc to the SDHCI
+driver. Add the new compatibles, so we aren't broken by the change.
 
-yesterday I ran a long reboot loop test:
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+Hello Sascha,
 
- system start => kernel / userland boot => reboot
+recent v5.8-rc3 sync breaks barebox SD/MMC use on OMAP3 and OMAP4 SoCs,
+like the beaglebone. Please rebase the sync on this patch, so we avoid
+intermittent breakage..
 
-and at least captured a hang.
+Cheers,
+Ahmad
+---
+ drivers/mci/omap_hsmmc.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-So, from what I can see, a kernel reboot hang is just as likely as a bootloader's
-one.
+diff --git a/drivers/mci/omap_hsmmc.c b/drivers/mci/omap_hsmmc.c
+index b14161032594..6623503cee06 100644
+--- a/drivers/mci/omap_hsmmc.c
++++ b/drivers/mci/omap_hsmmc.c
+@@ -650,6 +650,12 @@ static __maybe_unused struct of_device_id omap_mmc_dt_ids[] = {
+ 	}, {
+ 		.compatible = "ti,omap4-hsmmc",
+ 		.data = &omap4_data,
++	}, {
++		.compatible = "ti,am335-sdhci",
++		.data = &omap4_data,
++	}, {
++		.compatible = "ti,am437-sdhci",
++		.data = &omap4_data,
+ 	}, {
+ 		/* sentinel */
+ 	}
+-- 
+2.27.0
 
-giorgio
 
 _______________________________________________
 barebox mailing list
