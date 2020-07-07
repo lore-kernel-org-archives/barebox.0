@@ -1,13 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x244.google.com ([2a00:1450:4864:20::244])
+Received: from mail.cvg.de ([193.158.56.148])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jso5I-00074X-Co
- for barebox@lists.infradead.org; Tue, 07 Jul 2020 13:56:33 +0000
-Received: by mail-lj1-x244.google.com with SMTP id q4so14271416lji.2
- for <barebox@lists.infradead.org>; Tue, 07 Jul 2020 06:56:30 -0700 (PDT)
-From: Peter Mamonov <pmamonov@gmail.com>
-Date: Tue,  7 Jul 2020 16:56:08 +0300
-Message-Id: <20200707135608.31901-1-pmamonov@gmail.com>
+ id 1jsq58-00079a-KT
+ for barebox@lists.infradead.org; Tue, 07 Jul 2020 16:04:32 +0000
+Received: from mail-mta-0.intern.sigma-chemnitz.de
+ (mail-mta-0.intern.sigma-chemnitz.de [192.168.12.76])
+ by mailout-1.intern.sigma-chemnitz.de (8.14.7/8.14.7) with ESMTP id
+ 067G1obP024384
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+ for <barebox@lists.infradead.org>; Tue, 7 Jul 2020 18:01:50 +0200
+Received: from reddoxx.intern.sigma-chemnitz.de
+ (reddoxx.intern.sigma-chemnitz.de [192.168.0.193])
+ by mail-mta-0.intern.sigma-chemnitz.de (8.14.7/8.14.7) with ESMTP id
+ 067G1lRJ022912
+ for <barebox@lists.infradead.org> from enrico.scholz@sigma-chemnitz.de;
+ Tue, 7 Jul 2020 18:01:48 +0200
+From: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+Date: Tue,  7 Jul 2020 18:01:24 +0200
+Message-Id: <20200707160124.3188793-1-enrico.scholz@sigma-chemnitz.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,60 +31,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RFC: types conflicts
-To: s.hauer@pengutronix.de, antonynpavlov@gmail.com
-Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>
+Subject: [PATCH] net:fec: fixed unaligned access and stack corruption
+To: barebox@lists.infradead.org
+Cc: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
 
-Hello,
+on 64 bit architectures, the 'enum fec_type' might not be aligned and
+large enough to hold a pointer.  When running barebox without MMU,
+this will crash like
 
-I tried to build MicroPython using barebox toolchain and found a number of
-conflicts between barebox and compiler headers. Below you will find the patch
-which demostrates some of them. In this particular example the problem arises
-due to simultaneous inclusion of some compiler headers along with barebox
-version of `strings.h`, which in turn includes barebox analogs of those headers
-from `include/linux`. I belive there should be a segregation between headers in
-`include` and in `include/linux`, i.e. headers from `include/` should not
-reference <linux/*.h> headers. Yet I understand this is somewhat problematic.
-What do you think?
+| i.MX8MM unique ID: dab4b7491a2c4209
+| DABT (current EL) exception (ESR 0x96000061) at 0x00000000fffefeb4
+| elr: 00000000ffe14c28 lr : 00000000ffe196e0
+| x0 : 0000000000000002 x1 : 00000000fffefeb4
+| x2 : 00000000ffe91370 x3 : 00000000bfe1b6e8
+| x4 : 0000000000000000 x5 : 0000000011000000
+| ...
+| Call trace:
+| [<ffe14c28>] (dev_get_drvdata+0xc/0x30) from [<ffe1446c>] (device_probe+0x54/0xd0)
+| [<ffe1446c>] (device_probe+0x54/0xd0) from [<ffe14530>] (match+0x48/0x58)
+| [<ffe14530>] (match+0x48/0x58) from [<ffe14a64>] (register_driver+0xc0/0xd0)
+| [<ffe14a64>] (register_driver+0xc0/0xd0) from [<ffe01738>] (start_barebox+0x64/0x90)
 
-Regards,
-Peter
-
+Signed-off-by: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
 ---
- commands/Makefile         |  1 +
- commands/types_conflict.c | 12 ++++++++++++
- 2 files changed, 13 insertions(+)
- create mode 100644 commands/types_conflict.c
+ drivers/net/fec_imx.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/commands/Makefile b/commands/Makefile
-index 817fc36e96..4e0cf34560 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -1,3 +1,4 @@
-+obj-y				+= types_conflict.o
- obj-$(CONFIG_STDDEV)		+= stddev.o
- obj-$(CONFIG_CMD_DIGEST)	+= digest.o
- obj-$(CONFIG_COMPILE_HASH)	+= hashsum.o
-diff --git a/commands/types_conflict.c b/commands/types_conflict.c
-new file mode 100644
-index 0000000000..70fee8d6f4
---- /dev/null
-+++ b/commands/types_conflict.c
-@@ -0,0 +1,12 @@
-+#include <stdbool.h>
-+#include <stdint.h>
-+#include <stddef.h>
+diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+index 772f930f0d08..30ee7841faba 100644
+--- a/drivers/net/fec_imx.c
++++ b/drivers/net/fec_imx.c
+@@ -739,14 +739,17 @@ static int fec_probe(struct device_d *dev)
+ 	void *base;
+ 	int ret;
+ 	enum fec_type type;
++	void const *type_v;
+ 	int phy_reset;
+ 	u32 msec = 1, phy_post_delay = 0;
+ 	u32 reg;
+ 
+-	ret = dev_get_drvdata(dev, (const void **)&type);
++	ret = dev_get_drvdata(dev, &type_v);
+ 	if (ret)
+ 		return ret;
+ 
++	type = (uintptr_t)(type_v);
 +
-+#include <string.h>
-+
-+int test(void);
-+
-+int test()
-+{
-+	return 0;
-+}
+ 	fec = xzalloc(sizeof(*fec));
+ 	fec->type = type;
+ 	fec->dev = dev;
 -- 
-2.24.0
+2.25.4
 
 
 _______________________________________________
