@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mickerik.phytec.de ([195.145.39.210])
- by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jt3zq-0006mI-Az
- for barebox@lists.infradead.org; Wed, 08 Jul 2020 06:55:59 +0000
-References: <1593524914-228154-1-git-send-email-r.karszniewicz@phytec.de>
- <1a2cb925-dccd-8de7-08da-c4abe76d473c@phytec.de>
- <20200701055834.GK15485@pengutronix.de>
-From: =?UTF-8?Q?Stefan_Riedm=c3=bcller?= <s.riedmueller@phytec.de>
-Message-ID: <d89ff71b-e442-83aa-9ca5-dcf49002e23f@phytec.de>
-Date: Wed, 8 Jul 2020 08:55:56 +0200
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jt4nw-00032v-NE
+ for barebox@lists.infradead.org; Wed, 08 Jul 2020 07:47:45 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed,  8 Jul 2020 09:47:38 +0200
+Message-Id: <20200708074739.359-5-a.fatoum@pengutronix.de>
+In-Reply-To: <20200708074739.359-1-a.fatoum@pengutronix.de>
+References: <20200708074739.359-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20200701055834.GK15485@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,71 +17,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC PATCH 0/4] Introduce global.bootm.root env var for booting
- via PARTUUID
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Robert Karszniewicz <r.karszniewicz@phytec.de>
+Subject: [PATCH 4/5] commands: dhrystone: remove unneeded and out-of-place
+ <stdbool.h>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Hi Sascha,
+Our bool definitions come out of <linux/types.h>. <stdbool.h> shouldn't
+be used for normal barebox code. We already include <linux/types.h> by
+means of <common.h> above. So drop the <stdbool.h>
 
-let me answer on behalf of Robert.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ commands/dhrystone.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-On 01.07.20 07:58, Sascha Hauer wrote:
-> Hi Robert,
-> 
-> On Tue, Jun 30, 2020 at 04:20:17PM +0200, Robert Karszniewicz wrote:
->> The problem is that we want to be able to have the rootfs and kernel on
->> separate partitions.
-> 
-> Why do you want to have that? It's kind of traditional to have the
-> kernel separated from the rootfs in some extra "kernel" partition, but
-> are there good reasons for it? There's an overhead in that the
-> bootloader has to read from a filesystem instead of only a raw
-> partition. Is that the reason?
+diff --git a/commands/dhrystone.c b/commands/dhrystone.c
+index c839b0c04351..154910e5d079 100644
+--- a/commands/dhrystone.c
++++ b/commands/dhrystone.c
+@@ -17,7 +17,6 @@
+ #include <clock.h>
+ #include <asm-generic/div64.h>
+ #include <malloc.h>
+-#include <stdbool.h>
+ #include <stdio.h> /* for strcpy, strcmp */
+ 
+ enum idents {ident_1, ident_2, ident_3, ident_4, ident_5};
+-- 
+2.27.0
 
-Actually the reason is that we have this separate setup for quite some time 
-now in the field and changing it would have a whole string of consequences 
-attached to it. So we try not to change this setup, at least for existing 
-systems.
-
-That is why we would like to be able to get the PARTUUID from another 
-Partition than the one containing the kernel image.
-
-What do you think of Roberts proposal?
-
-> 
-> Here at Pengutronix we are happy that we only have one partition image
-> that has everything needed to boot, including a description how to boot
-> it and including the kernel. No extra items that the bootloader has to
-> take care of, just put one thing somewhere and be done with it.
-
-This sounds like a good thing to have and I think we should consider this 
-for new platforms.
-
-Regards,
-Stefan
-
-> 
->> We've looked into the Boot Loader Specification, but
->> from what we saw, it makes A-B systems difficult (according to the spec,
->> there can only be one "$BOOT" filesystem on a device).
-> 
-> barebox is more relaxed here. What we do here is to put two full root
-> filesystems into two different partitions on a SD/MMC. Each of the
-> partitions has one or more /loader/entries/*.conf file(s) and kernels.
-> You can then boot with "boot mmc0.0" into the first rootfs or with "boot
-> mmc0.1" into the second.
-> This may not be really conform to the specification, but works in
-> barebox and is a supported usecase. We do this for A/B Boot scenarios in
-> many projects.
-> 
-> Regards,
->    Sascha
-> 
 
 _______________________________________________
 barebox mailing list
