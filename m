@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jt4o3-00036E-UT
- for barebox@lists.infradead.org; Wed, 08 Jul 2020 07:47:53 +0000
+ id 1jt4o3-00036C-UH
+ for barebox@lists.infradead.org; Wed, 08 Jul 2020 07:47:54 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  8 Jul 2020 09:47:36 +0200
-Message-Id: <20200708074739.359-3-a.fatoum@pengutronix.de>
+Date: Wed,  8 Jul 2020 09:47:35 +0200
+Message-Id: <20200708074739.359-2-a.fatoum@pengutronix.de>
 In-Reply-To: <20200708074739.359-1-a.fatoum@pengutronix.de>
 References: <20200708074739.359-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,129 +21,720 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] include: delete unreferenced u-boot part.h header
+Subject: [PATCH 1/5] ppc: mpc5xxx: delete dead code
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-It's unused, the functions that it declares aren't defined in barebox
-and the <ide.h> header it references doesn't exist.
+These files had never been built since being added. At least the C file
+doesn't compile due to missing headers. Remove them.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/part.h | 104 -------------------------------------------------
- 1 file changed, 104 deletions(-)
- delete mode 100644 include/part.h
+ arch/powerpc/mach-mpc5xxx/Makefile            |   5 -
+ .../mach-mpc5xxx/firmware_sc_task.impl.S      | 364 ------------------
+ arch/powerpc/mach-mpc5xxx/io.S                | 121 ------
+ arch/powerpc/mach-mpc5xxx/pci_mpc5200.c       | 180 ---------
+ 4 files changed, 670 deletions(-)
+ delete mode 100644 arch/powerpc/mach-mpc5xxx/firmware_sc_task.impl.S
+ delete mode 100644 arch/powerpc/mach-mpc5xxx/io.S
+ delete mode 100644 arch/powerpc/mach-mpc5xxx/pci_mpc5200.c
 
-diff --git a/include/part.h b/include/part.h
+diff --git a/arch/powerpc/mach-mpc5xxx/Makefile b/arch/powerpc/mach-mpc5xxx/Makefile
+index c532a6d1ee30..101d0618152a 100644
+--- a/arch/powerpc/mach-mpc5xxx/Makefile
++++ b/arch/powerpc/mach-mpc5xxx/Makefile
+@@ -7,8 +7,3 @@ obj-y				+= time.o
+ extra-y				+= start.o
+ obj-$(CONFIG_MPC5200)		+= firmware_sc_task_bestcomm.impl.o
+ obj-$(CONFIG_REGINFO)		+= reginfo.o
+-
+-#obj-y				+= firmware_sc_task.impl.o
+-#obj-y				+= io.o
+-#obj-y				+= ide.o
+-#obj-y				+= pci_mpc5200.o
+diff --git a/arch/powerpc/mach-mpc5xxx/firmware_sc_task.impl.S b/arch/powerpc/mach-mpc5xxx/firmware_sc_task.impl.S
 deleted file mode 100644
-index e98647c70c35..000000000000
---- a/include/part.h
+index b668ee5cf8d4..000000000000
+--- a/arch/powerpc/mach-mpc5xxx/firmware_sc_task.impl.S
 +++ /dev/null
-@@ -1,104 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0-or-later */
+@@ -1,364 +0,0 @@
 -/*
-- * (C) Copyright 2000-2004
+- * Copyright (C) 2001, Software Center, Motorola China.
+- *
+- * This file contains microcode for the FEC controller of the MGT5100 CPU.
+- */
+-
+-#include <config.h>
+-
+-#if defined(CONFIG_MGT5100)
+-
+-/* sas/sccg, gas target */
+-.section	smartdmaInitData,"aw",@progbits	/* Initialized data for task variables */
+-.section	smartdmaTaskTable,"aw",@progbits	/* Task tables */
+-.globl taskTable
+-taskTable:
+-.globl scEthernetRecv_Entry
+-scEthernetRecv_Entry:		/* Task 0 */
+-.long	scEthernetRecv_TDT - taskTable	/* Task 0 Descriptor Table */
+-.long	scEthernetRecv_TDT - taskTable + 0x000000a4
+-.long	scEthernetRecv_VarTab - taskTable	/* Task 0 Variable Table */
+-.long	scEthernetRecv_FDT - taskTable + 0x03	/* Task 0 Function Descriptor Table & Flags */
+-.long	0x00000000
+-.long	0x00000000
+-.long	scEthernetRecv_CSave - taskTable	/* Task 0 context save space */
+-.long	0xf0000000
+-.globl scEthernetXmit_Entry
+-scEthernetXmit_Entry:		/* Task 1 */
+-.long	scEthernetXmit_TDT - taskTable	/* Task 1 Descriptor Table */
+-.long	scEthernetXmit_TDT - taskTable + 0x000000d0
+-.long	scEthernetXmit_VarTab - taskTable	/* Task 1 Variable Table */
+-.long	scEthernetXmit_FDT - taskTable + 0x03	/* Task 1 Function Descriptor Table & Flags */
+-.long	0x00000000
+-.long	0x00000000
+-.long	scEthernetXmit_CSave - taskTable	/* Task 1 context save space */
+-.long	0xf0000000
+-
+-
+-.globl scEthernetRecv_TDT
+-scEthernetRecv_TDT:	/* Task 0 Descriptor Table */
+-.long	0xc4c50000	/* 0000:  LCDEXT: idx0 = var9 + var10; idx0 once var0; idx0 += inc0 */
+-.long	0x84c5e000	/* 0004:  LCD: idx1 = var9 + var11; ; idx1 += inc0 */
+-.long	0x10001f08	/* 0008:    DRD1A: var7 = idx1; FN=0 MORE init=0 WS=0 RS=0 */
+-.long	0x10000380	/* 000C:    DRD1A: var0 = *idx0; FN=0 MORE init=0 WS=0 RS=0 */
+-.long	0x00000f88	/* 0010:    DRD1A: var3 = *idx1; FN=0 init=0 WS=0 RS=0 */
+-.long	0x81980000	/* 0014:  LCD: idx0 = var3; idx0 once var0; idx0 += inc0 */
+-.long	0x10000780	/* 0018:    DRD1A: var1 = *idx0; FN=0 MORE init=0 WS=0 RS=0 */
+-.long	0x60000000	/* 001C:    DRD2A: EU0=0 EU1=0 EU2=0 EU3=0 EXT init=0 WS=0 RS=0 */
+-.long	0x010c504c	/* 0020:    DRD2B1: var4 = EU1(); EU1(var1,var12)  */
+-.long	0x82180349	/* 0024:  LCD: idx0 = var4; idx0 != var13; idx0 += inc1 */
+-.long	0x81c68004	/* 0028:    LCD: idx1 = var3 + var13 + 4; idx1 once var0; idx1 += inc0 */
+-.long	0x70000000	/* 002C:      DRD2A: EU0=0 EU1=0 EU2=0 EU3=0 EXT MORE init=0 WS=0 RS=0 */
+-.long	0x018c504e	/* 0030:      DRD2B1: var6 = EU1(); EU1(var1,var14)  */
+-.long	0x70000000	/* 0034:      DRD2A: EU0=0 EU1=0 EU2=0 EU3=0 EXT MORE init=0 WS=0 RS=0 */
+-.long	0x020c504f	/* 0038:      DRD2B1: var8 = EU1(); EU1(var1,var15)  */
+-.long	0x00000b88	/* 003C:      DRD1A: var2 = *idx1; FN=0 init=0 WS=0 RS=0 */
+-.long	0x8000d184	/* 0040:    LCDEXT: idx1 = 0xf0003184; ; */
+-.long	0xc6990452	/* 0044:    LCDEXT: idx2 = var13; idx2 < var17; idx2 += inc2 */
+-.long	0x81486010	/* 0048:    LCD: idx3 = var2 + var16; ; idx3 += inc2 */
+-.long	0x006acf88	/* 004C:      DRD1A: *idx3 = *idx1; FN=0 init=3 WS=1 RS=1 */
+-.long	0x8000d184	/* 0050:    LCDEXT: idx1 = 0xf0003184; ; */
+-.long	0x86810492	/* 0054:    LCD: idx2 = var13, idx3 = var2; idx2 < var18; idx2 += inc2, idx3 += inc2 */
+-.long	0x006acf88	/* 0058:      DRD1A: *idx3 = *idx1; FN=0 init=3 WS=1 RS=1 */
+-.long	0x8000d184	/* 005C:    LCDEXT: idx1 = 0xf0003184; ; */
+-.long	0x868184d2	/* 0060:    LCD: idx2 = var13, idx3 = var3; idx2 < var19; idx2 += inc2, idx3 += inc2 */
+-.long	0x000acf88	/* 0064:      DRD1A: *idx3 = *idx1; FN=0 init=0 WS=1 RS=1 */
+-.long	0xc318839b	/* 0068:    LCDEXT: idx1 = var6; idx1 == var14; idx1 += inc3 */
+-.long	0x80190000	/* 006C:    LCD: idx2 = var0; idx2 once var0; idx2 += inc0 */
+-.long	0x04008468	/* 0070:      DRD1A: idx1 = var13; FN=0 INT init=0 WS=0 RS=0 */
+-.long	0xc4038358	/* 0074:    LCDEXT: idx1 = var8, idx2 = var7; idx1 == var13; idx1 += inc3, idx2 += inc0 */
+-.long	0x81c50000	/* 0078:    LCD: idx3 = var3 + var10; idx3 once var0; idx3 += inc0 */
+-.long	0x1000cb18	/* 007C:      DRD1A: *idx2 = idx3; FN=0 MORE init=0 WS=0 RS=0 */
+-.long	0x00000f18	/* 0080:      DRD1A: var3 = idx3; FN=0 init=0 WS=0 RS=0 */
+-.long	0xc4188364	/* 0084:    LCDEXT: idx1 = var8; idx1 > var13; idx1 += inc4 */
+-.long	0x83990000	/* 0088:    LCD: idx2 = var7; idx2 once var0; idx2 += inc0 */
+-.long	0x10000c00	/* 008C:      DRD1A: var3 = var0; FN=0 MORE init=0 WS=0 RS=0 */
+-.long	0x0000c800	/* 0090:      DRD1A: *idx2 = var0; FN=0 init=0 WS=0 RS=0 */
+-.long	0x81988000	/* 0094:    LCD: idx1 = var3; idx1 once var0; idx1 += inc0 */
+-.long	0x10000788	/* 0098:      DRD1A: var1 = *idx1; FN=0 MORE init=0 WS=0 RS=0 */
+-.long	0x60000000	/* 009C:      DRD2A: EU0=0 EU1=0 EU2=0 EU3=0 EXT init=0 WS=0 RS=0 */
+-.long	0x080c504c	/* 00A0:      DRD2B1: idx0 = EU1(); EU1(var1,var12)  */
+-.long	0x000001f8	/* 00A4(:0):    NOP */
+-
+-
+-.globl scEthernetXmit_TDT
+-scEthernetXmit_TDT:	/* Task 1 Descriptor Table */
+-.long	0x80014800	/* 0000:  LCDEXT: idx0 = 0xf0004800; ; */
+-.long	0x85c60004	/* 0004:  LCD: idx1 = var11 + var12 + 4; idx1 once var0; idx1 += inc0 */
+-.long	0x10002308	/* 0008:    DRD1A: var8 = idx1; FN=0 MORE init=0 WS=0 RS=0 */
+-.long	0x10000f88	/* 000C:    DRD1A: var3 = *idx1; FN=0 MORE init=0 WS=0 RS=0 */
+-.long	0x00000380	/* 0010:    DRD1A: var0 = *idx0; FN=0 init=0 WS=0 RS=0 */
+-.long	0x81980000	/* 0014:  LCD: idx0 = var3; idx0 once var0; idx0 += inc0 */
+-.long	0x10000780	/* 0018:    DRD1A: var1 = *idx0; FN=0 MORE init=0 WS=0 RS=0 */
+-.long	0x60000000	/* 001C:    DRD2A: EU0=0 EU1=0 EU2=0 EU3=0 EXT init=0 WS=0 RS=0 */
+-.long	0x024c504d	/* 0020:    DRD2B1: var9 = EU1(); EU1(var1,var13)  */
+-.long	0x84980309	/* 0024:  LCD: idx0 = var9; idx0 != var12; idx0 += inc1 */
+-.long	0xc0004003	/* 0028:    LCDEXT: idx1 = 0x00000003; ; */
+-.long	0x81c60004	/* 002C:    LCD: idx2 = var3 + var12 + 4; idx2 once var0; idx2 += inc0 */
+-.long	0x70000000	/* 0030:      DRD2A: EU0=0 EU1=0 EU2=0 EU3=0 EXT MORE init=0 WS=0 RS=0 */
+-.long	0x010c504e	/* 0034:      DRD2B1: var4 = EU1(); EU1(var1,var14)  */
+-.long	0x70000000	/* 0038:      DRD2A: EU0=0 EU1=0 EU2=0 EU3=0 EXT MORE init=0 WS=0 RS=0 */
+-.long	0x014c504f	/* 003C:      DRD2B1: var5 = EU1(); EU1(var1,var15)  */
+-.long	0x70000000	/* 0040:      DRD2A: EU0=0 EU1=0 EU2=0 EU3=0 EXT MORE init=0 WS=0 RS=0 */
+-.long	0x028c5050	/* 0044:      DRD2B1: var10 = EU1(); EU1(var1,var16)  */
+-.long	0x70000000	/* 0048:      DRD2A: EU0=0 EU1=0 EU2=0 EU3=0 EXT MORE init=0 WS=0 RS=0 */
+-.long	0x018c5051	/* 004C:      DRD2B1: var6 = EU1(); EU1(var1,var17)  */
+-.long	0x10000b90	/* 0050:      DRD1A: var2 = *idx2; FN=0 MORE init=0 WS=0 RS=0 */
+-.long	0x60000000	/* 0054:      DRD2A: EU0=0 EU1=0 EU2=0 EU3=0 EXT init=0 WS=0 RS=0 */
+-.long	0x01cc50a1	/* 0058:      DRD2B1: var7 = EU1(); EU1(var2,idx1)  */
+-.long	0xc2988312	/* 005C:    LCDEXT: idx1 = var5; idx1 > var12; idx1 += inc2 */
+-.long	0x83490000	/* 0060:    LCD: idx2 = var6 + var18; idx2 once var0; idx2 += inc0 */
+-.long	0x00001b10	/* 0064:      DRD1A: var6 = idx2; FN=0 init=0 WS=0 RS=0 */
+-.long	0x8000d1a4	/* 0068:    LCDEXT: idx1 = 0xf00031a4; ; */
+-.long	0x8301031c	/* 006C:    LCD: idx2 = var6, idx3 = var2; idx2 > var12; idx2 += inc3, idx3 += inc4 */
+-.long	0x008ac798	/* 0070:      DRD1A: *idx1 = *idx3; FN=0 init=4 WS=1 RS=1 */
+-.long	0x8000d1a4	/* 0074:    LCDEXT: idx1 = 0xf00031a4; ; */
+-.long	0xc1430000	/* 0078:    LCDEXT: idx2 = var2 + var6; idx2 once var0; idx2 += inc0 */
+-.long	0x82998312	/* 007C:    LCD: idx3 = var5; idx3 > var12; idx3 += inc2 */
+-.long	0x088ac790	/* 0080:      DRD1A: *idx1 = *idx2; FN=0 TFD init=4 WS=1 RS=1 */
+-.long	0x81988000	/* 0084:    LCD: idx1 = var3; idx1 once var0; idx1 += inc0 */
+-.long	0x60000100	/* 0088:      DRD2A: EU0=0 EU1=1 EU2=0 EU3=0 EXT init=0 WS=0 RS=0 */
+-.long	0x0c4c5c4d	/* 008C:      DRD2B1: *idx1 = EU1(); EU1(*idx1,var13)  */
+-.long	0xc21883ad	/* 0090:    LCDEXT: idx1 = var4; idx1 == var14; idx1 += inc5 */
+-.long	0x80190000	/* 0094:    LCD: idx2 = var0; idx2 once var0; idx2 += inc0 */
+-.long	0x04008460	/* 0098:      DRD1A: idx1 = var12; FN=0 INT init=0 WS=0 RS=0 */
+-.long	0xc4052305	/* 009C:    LCDEXT: idx1 = var8, idx2 = var10; idx2 == var12; idx1 += inc0, idx2 += inc5 */
+-.long	0x81c98000	/* 00A0:    LCD: idx3 = var3 + var19; idx3 once var0; idx3 += inc0 */
+-.long	0x1000c718	/* 00A4:      DRD1A: *idx1 = idx3; FN=0 MORE init=0 WS=0 RS=0 */
+-.long	0x00000f18	/* 00A8:      DRD1A: var3 = idx3; FN=0 init=0 WS=0 RS=0 */
+-.long	0xc4188000	/* 00AC:    LCDEXT: idx1 = var8; idx1 once var0; idx1 += inc0 */
+-.long	0x85190312	/* 00B0:    LCD: idx2 = var10; idx2 > var12; idx2 += inc2 */
+-.long	0x10000c00	/* 00B4:      DRD1A: var3 = var0; FN=0 MORE init=0 WS=0 RS=0 */
+-.long	0x1000c400	/* 00B8:      DRD1A: *idx1 = var0; FN=0 MORE init=0 WS=0 RS=0 */
+-.long	0x00008860	/* 00BC:      DRD1A: idx2 = var12; FN=0 init=0 WS=0 RS=0 */
+-.long	0x81988000	/* 00C0:    LCD: idx1 = var3; idx1 once var0; idx1 += inc0 */
+-.long	0x10000788	/* 00C4:      DRD1A: var1 = *idx1; FN=0 MORE init=0 WS=0 RS=0 */
+-.long	0x60000000	/* 00C8:      DRD2A: EU0=0 EU1=0 EU2=0 EU3=0 EXT init=0 WS=0 RS=0 */
+-.long	0x080c504d	/* 00CC:      DRD2B1: idx0 = EU1(); EU1(var1,var13)  */
+-.long	0x000001f8	/* 00D0(:0):    NOP */
+-
+-.align	8
+-
+-.globl scEthernetRecv_VarTab
+-scEthernetRecv_VarTab:	/* Task 0 Variable Table */
+-.long	0x00000000	/* var[0] */
+-.long	0x00000000	/* var[1] */
+-.long	0x00000000	/* var[2] */
+-.long	0x00000000	/* var[3] */
+-.long	0x00000000	/* var[4] */
+-.long	0x00000000	/* var[5] */
+-.long	0x00000000	/* var[6] */
+-.long	0x00000000	/* var[7] */
+-.long	0x00000000	/* var[8] */
+-.long	0xf0004800	/* var[9] */
+-.long	0x00000008	/* var[10] */
+-.long	0x0000000c	/* var[11] */
+-.long	0x80000000	/* var[12] */
+-.long	0x00000000	/* var[13] */
+-.long	0x10000000	/* var[14] */
+-.long	0x20000000	/* var[15] */
+-.long	0x000005e4	/* var[16] */
+-.long	0x0000000e	/* var[17] */
+-.long	0x000005e0	/* var[18] */
+-.long	0x00000004	/* var[19] */
+-.long	0x00000000	/* var[20] */
+-.long	0x00000000	/* var[21] */
+-.long	0x00000000	/* var[22] */
+-.long	0x00000000	/* var[23] */
+-.long	0x00000000	/* inc[0] */
+-.long	0x60000000	/* inc[1] */
+-.long	0x20000001	/* inc[2] */
+-.long	0x80000000	/* inc[3] */
+-.long	0x40000000	/* inc[4] */
+-.long	0x00000000	/* inc[5] */
+-.long	0x00000000	/* inc[6] */
+-.long	0x00000000	/* inc[7] */
+-
+-.align	8
+-
+-.globl scEthernetXmit_VarTab
+-scEthernetXmit_VarTab:	/* Task 1 Variable Table */
+-.long	0x00000000	/* var[0] */
+-.long	0x00000000	/* var[1] */
+-.long	0x00000000	/* var[2] */
+-.long	0x00000000	/* var[3] */
+-.long	0x00000000	/* var[4] */
+-.long	0x00000000	/* var[5] */
+-.long	0x00000000	/* var[6] */
+-.long	0x00000000	/* var[7] */
+-.long	0x00000000	/* var[8] */
+-.long	0x00000000	/* var[9] */
+-.long	0x00000000	/* var[10] */
+-.long	0xf0004800	/* var[11] */
+-.long	0x00000000	/* var[12] */
+-.long	0x80000000	/* var[13] */
+-.long	0x10000000	/* var[14] */
+-.long	0x08000000	/* var[15] */
+-.long	0x20000000	/* var[16] */
+-.long	0x0000ffff	/* var[17] */
+-.long	0xffffffff	/* var[18] */
+-.long	0x00000008	/* var[19] */
+-.long	0x00000000	/* var[20] */
+-.long	0x00000000	/* var[21] */
+-.long	0x00000000	/* var[22] */
+-.long	0x00000000	/* var[23] */
+-.long	0x00000000	/* inc[0] */
+-.long	0x60000000	/* inc[1] */
+-.long	0x40000000	/* inc[2] */
+-.long	0x4000ffff	/* inc[3] */
+-.long	0xe0000001	/* inc[4] */
+-.long	0x80000000	/* inc[5] */
+-.long	0x00000000	/* inc[6] */
+-.long	0x00000000	/* inc[7] */
+-
+-.align	8
+-
+-.globl scEthernetRecv_FDT
+-scEthernetRecv_FDT:	/* Task 0 Function Descriptor Table */
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x05800000	/* and(), EU# 1 */
+-.long	0x05400000	/* andn(), EU# 1 */
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-
+-.align	8
+-
+-.globl scEthernetXmit_FDT
+-scEthernetXmit_FDT:	/* Task 1 Function Descriptor Table */
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x05800000	/* and(), EU# 1 */
+-.long	0x05400000	/* andn(), EU# 1 */
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-.long	0x00000000
+-
+-
+-.align	8
+-.globl scEthernetRecv_CSave
+-scEthernetRecv_CSave:	/* Task 0 context save space */
+-.space	256, 0x0
+-
+-
+-.align	8
+-.globl scEthernetXmit_CSave
+-scEthernetXmit_CSave:	/* Task 1 context save space */
+-.space	256, 0x0
+-
+-#endif /* CONFIG_MGT5100 */
+diff --git a/arch/powerpc/mach-mpc5xxx/io.S b/arch/powerpc/mach-mpc5xxx/io.S
+deleted file mode 100644
+index 871d65ae38af..000000000000
+--- a/arch/powerpc/mach-mpc5xxx/io.S
++++ /dev/null
+@@ -1,121 +0,0 @@
+-/*
+- *  Copyright (C) 1998	Dan Malek <dmalek@jlc.net>
+- *  Copyright (C) 1999	Magnus Damm <kieraypc01.p.y.kie.era.ericsson.se>
+- *  Copyright (C) 2001	Sysgo Real-Time Solutions, GmbH <www.elinos.com>
+- *			Andreas Heppel <aheppel@sysgo.de>
+- *  Copyright (C) 2003	Wolfgang Denk <wd@denx.de>
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- */
+-
+-#include <config.h>
+-#include <ppc_asm.tmpl>
+-
+-/* ------------------------------------------------------------------------------- */
+-/*  Function:     in8 */
+-/*  Description:  Input 8 bits */
+-/* ------------------------------------------------------------------------------- */
+-	.globl  in8
+-in8:
+-	lbz     r3,0(r3)
+-	sync
+-	blr
+-
+-/* ------------------------------------------------------------------------------- */
+-/*  Function:     in16 */
+-/*  Description:  Input 16 bits */
+-/* ------------------------------------------------------------------------------- */
+-	.globl  in16
+-in16:
+-	lhz     r3,0(r3)
+-	sync
+-	blr
+-
+-/* ------------------------------------------------------------------------------- */
+-/*  Function:     in16r */
+-/*  Description:  Input 16 bits and byte reverse */
+-/* ------------------------------------------------------------------------------- */
+-	.globl  in16r
+-in16r:
+-	lhbrx   r3,0,r3
+-	sync
+-	blr
+-
+-/* ------------------------------------------------------------------------------- */
+-/*  Function:     in32 */
+-/*  Description:  Input 32 bits */
+-/* ------------------------------------------------------------------------------- */
+-	.globl  in32
+-in32:
+-	lwz     3,0(3)
+-	sync
+-	blr
+-
+-/* ------------------------------------------------------------------------------- */
+-/*  Function:     in32r */
+-/*  Description:  Input 32 bits and byte reverse */
+-/* ------------------------------------------------------------------------------- */
+-    .globl  in32r
+-in32r:
+-	lwbrx   r3,0,r3
+-	sync
+-	blr
+-
+-/* ------------------------------------------------------------------------------- */
+-/*  Function:     out8 */
+-/*  Description:  Output 8 bits */
+-/* ------------------------------------------------------------------------------- */
+-	.globl  out8
+-out8:
+-	stb     r4,0(r3)
+-	sync
+-	blr
+-
+-/* ------------------------------------------------------------------------------- */
+-/*  Function:     out16 */
+-/*  Description:  Output 16 bits */
+-/* ------------------------------------------------------------------------------- */
+-	.globl  out16
+-out16:
+-	sth     r4,0(r3)
+-	sync
+-	blr
+-
+-/* ------------------------------------------------------------------------------- */
+-/*  Function:     out16r */
+-/*  Description:  Byte reverse and output 16 bits */
+-/* ------------------------------------------------------------------------------- */
+-	.globl  out16r
+-out16r:
+-	sthbrx  r4,0,r3
+-	sync
+-	blr
+-
+-/* ------------------------------------------------------------------------------- */
+-/*  Function:     out32 */
+-/*  Description:  Output 32 bits */
+-/* ------------------------------------------------------------------------------- */
+-	.globl  out32
+-out32:
+-	stw     r4,0(r3)
+-	sync
+-	blr
+-
+-/* ------------------------------------------------------------------------------- */
+-/*  Function:     out32r */
+-/*  Description:  Byte reverse and output 32 bits */
+-/* ------------------------------------------------------------------------------- */
+-	.globl  out32r
+-out32r:
+-	stwbrx  r4,0,r3
+-	sync
+-	blr
+diff --git a/arch/powerpc/mach-mpc5xxx/pci_mpc5200.c b/arch/powerpc/mach-mpc5xxx/pci_mpc5200.c
+deleted file mode 100644
+index a3d62a168dac..000000000000
+--- a/arch/powerpc/mach-mpc5xxx/pci_mpc5200.c
++++ /dev/null
+@@ -1,180 +0,0 @@
+-/*
+- * (C) Copyright 2000-2003
 - * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
 - */
--#ifndef _PART_H
--#define _PART_H
--#include <ide.h>
 -
--typedef struct block_dev_desc {
--	int		if_type;	/* type of the interface */
--	int	        dev;	  	/* device number */
--	unsigned char	part_type;  	/* partition type */
--	unsigned char	target;		/* target SCSI ID */
--	unsigned char	lun;		/* target LUN */
--	unsigned char	type;		/* device type */
--	unsigned char	removable;	/* removable device */
--#ifdef CONFIG_LBA48
--	unsigned char	lba48;		/* device can use 48bit addr (ATA/ATAPI v7) */
+-#include <common.h>
+-
+-#if defined(CONFIG_PCI) && defined(CONFIG_MPC5200)
+-
+-#include <asm/processor.h>
+-#include <io.h>
+-#include <pci.h>
+-#include <mpc5xxx.h>
+-
+-/* System RAM mapped over PCI */
+-#define CONFIG_PCI_MEMORY_BUS	CFG_SDRAM_BASE
+-#define CONFIG_PCI_MEMORY_PHYS	CFG_SDRAM_BASE
+-#define CONFIG_PCI_MEMORY_SIZE	(1024 * 1024 * 1024)
+-
+-/* PCIIWCR bit fields */
+-#define IWCR_MEM	(0 << 3)
+-#define IWCR_IO		(1 << 3)
+-#define IWCR_READ	(0 << 1)
+-#define IWCR_READLINE	(1 << 1)
+-#define IWCR_READMULT	(2 << 1)
+-#define IWCR_EN		(1 << 0)
+-
+-static int mpc5200_read_config_dword(struct pci_controller *hose,
+-			      pci_dev_t dev, int offset, u32* value)
+-{
+-	*(volatile u32 *)MPC5XXX_PCI_CAR = (1 << 31) | dev | offset;
+-	eieio();
+-	udelay(10);
+-#if (defined CONFIG_PF5200 || defined CONFIG_CPCI5200)
+-	if (dev & 0x00ff0000) {
+-		u32 val;
+-		val  = in_le16((volatile u16 *)(CONFIG_PCI_IO_PHYS+2));
+-		udelay(10);
+-		val = val << 16;
+-		val |= in_le16((volatile u16 *)(CONFIG_PCI_IO_PHYS+0));
+-		*value = val;
+-	} else {
+-		*value = in_le32((volatile u32 *)CONFIG_PCI_IO_PHYS);
+-	}
+-	udelay(10);
+-#else
+-	*value = in_le32((volatile u32 *)CONFIG_PCI_IO_PHYS);
 -#endif
--	lbaint_t		lba;	  	/* number of blocks */
--	unsigned long	blksz;		/* block size */
--	unsigned char	vendor [40+1]; 	/* IDE model, SCSI Vendor */
--	unsigned char	product[20+1];	/* IDE Serial no, SCSI product */
--	unsigned char	revision[8+1];	/* firmware revision */
--	unsigned long	(*block_read)(int dev,
--				      unsigned long start,
--				      lbaint_t blkcnt,
--				      unsigned long *buffer);
--}block_dev_desc_t;
+-	eieio();
+-	*(volatile u32 *)MPC5XXX_PCI_CAR = 0;
+-	udelay(10);
+-	return 0;
+-}
 -
--/* Interface types: */
--#define IF_TYPE_UNKNOWN		0
--#define IF_TYPE_IDE		1
--#define IF_TYPE_SCSI		2
--#define IF_TYPE_ATAPI		3
--#define IF_TYPE_USB		4
--#define IF_TYPE_DOC		5
--#define IF_TYPE_MMC		6
+-static int mpc5200_write_config_dword(struct pci_controller *hose,
+-			      pci_dev_t dev, int offset, u32 value)
+-{
+-	*(volatile u32 *)MPC5XXX_PCI_CAR = (1 << 31) | dev | offset;
+-	eieio();
+-	udelay(10);
+-	out_le32((volatile u32 *)CONFIG_PCI_IO_PHYS, value);
+-	eieio();
+-	*(volatile u32 *)MPC5XXX_PCI_CAR = 0;
+-	udelay(10);
+-	return 0;
+-}
 -
--/* Part types */
--#define PART_TYPE_UNKNOWN	0x00
--#define PART_TYPE_MAC		0x01
--#define PART_TYPE_DOS		0x02
--#define PART_TYPE_ISO		0x03
--#define PART_TYPE_AMIGA		0x04
+-void pci_mpc5xxx_init (struct pci_controller *hose)
+-{
+-	hose->first_busno = 0;
+-	hose->last_busno = 0xff;
 -
--/*
-- * Type string for barebox bootable partitions
-- */
--#define BOOT_PART_TYPE	"barebox"	/* primary boot partition type	*/
--#define BOOT_PART_COMP	"PPCBoot"	/* PPCBoot compatibility type	*/
+-	/* System space */
+-	pci_set_region(hose->regions + 0,
+-		       CONFIG_PCI_MEMORY_BUS,
+-		       CONFIG_PCI_MEMORY_PHYS,
+-		       CONFIG_PCI_MEMORY_SIZE,
+-		       PCI_REGION_MEM | PCI_REGION_MEMORY);
 -
--/* device types */
--#define DEV_TYPE_UNKNOWN	0xff	/* not connected */
--#define DEV_TYPE_HARDDISK	0x00	/* harddisk */
--#define DEV_TYPE_TAPE		0x01	/* Tape */
--#define DEV_TYPE_CDROM		0x05	/* CD-ROM */
--#define DEV_TYPE_OPDISK		0x07	/* optical disk */
+-	/* PCI memory space */
+-	pci_set_region(hose->regions + 1,
+-		       CONFIG_PCI_MEM_BUS,
+-		       CONFIG_PCI_MEM_PHYS,
+-		       CONFIG_PCI_MEM_SIZE,
+-		       PCI_REGION_MEM);
 -
--typedef struct disk_partition {
--	ulong	start;		/* # of first block in partition	*/
--	ulong	size;		/* number of blocks in partition	*/
--	ulong	blksz;		/* block size in bytes			*/
--	uchar	name[32];	/* partition name			*/
--	uchar	type[32];	/* string type description		*/
--} disk_partition_t;
+-	/* PCI IO space */
+-	pci_set_region(hose->regions + 2,
+-		       CONFIG_PCI_IO_BUS,
+-		       CONFIG_PCI_IO_PHYS,
+-		       CONFIG_PCI_IO_SIZE,
+-		       PCI_REGION_IO);
 -
--/* disk/part.c */
--int get_partition_info (block_dev_desc_t * dev_desc, int part, disk_partition_t *info);
--void print_part (block_dev_desc_t *dev_desc);
--void  init_part (block_dev_desc_t *dev_desc);
--void dev_print(block_dev_desc_t *dev_desc);
+-	hose->region_count = 3;
 -
+-	pci_register_hose(hose);
 -
--#ifdef CONFIG_MAC_PARTITION
--/* disk/part_mac.c */
--int get_partition_info_mac (block_dev_desc_t * dev_desc, int part, disk_partition_t *info);
--void print_part_mac (block_dev_desc_t *dev_desc);
--int   test_part_mac (block_dev_desc_t *dev_desc);
+-	/* GPIO Multiplexing - enable PCI */
+-	*(vu_long *)MPC5XXX_GPS_PORT_CONFIG &= ~(1 << 15);
+-
+-	/* Set host bridge as pci master and enable memory decoding */
+-	*(vu_long *)MPC5XXX_PCI_CMD |=
+-		PCI_COMMAND_MASTER | PCI_COMMAND_MEMORY;
+-
+-	/* Set maximum latency timer */
+-	*(vu_long *)MPC5XXX_PCI_CFG |= (0xf800);
+-
+-	/* Set cache line size */
+-	*(vu_long *)MPC5XXX_PCI_CFG = (*(vu_long *)MPC5XXX_PCI_CFG & ~0xff) |
+-		(CACHELINE_SIZE / 4);
+-
+-	/* Map MBAR to PCI space */
+-	*(vu_long *)MPC5XXX_PCI_BAR0 = CFG_MBAR;
+-	*(vu_long *)MPC5XXX_PCI_TBATR0 = CFG_MBAR | 1;
+-
+-	/* Map RAM to PCI space */
+-	*(vu_long *)MPC5XXX_PCI_BAR1 = CONFIG_PCI_MEMORY_BUS | (1 << 3);
+-	*(vu_long *)MPC5XXX_PCI_TBATR1 = CONFIG_PCI_MEMORY_PHYS | 1;
+-
+-	/* Park XLB on PCI */
+-	*(vu_long *)(MPC5XXX_XLBARB + 0x40) &= ~((7 << 8) | (3 << 5));
+-	*(vu_long *)(MPC5XXX_XLBARB + 0x40) |= (3 << 8) | (3 << 5);
+-
+-	/* Disable interrupts from PCI controller */
+-	*(vu_long *)MPC5XXX_PCI_GSCR &= ~(7 << 12);
+-	*(vu_long *)MPC5XXX_PCI_ICR  &= ~(7 << 24);
+-
+-	/* Set PCI retry counter to 0 = infinite retry. */
+-	/* The default of 255 is too short for slow devices. */
+-	*(vu_long *)MPC5XXX_PCI_ICR &= 0xFFFFFF00;
+-
+-	/* Disable initiator windows */
+-	*(vu_long *)MPC5XXX_PCI_IWCR = 0;
+-
+-	/* Map PCI memory to physical space */
+-	*(vu_long *)MPC5XXX_PCI_IW0BTAR = CONFIG_PCI_MEM_PHYS |
+-		(((CONFIG_PCI_MEM_SIZE - 1) >> 8) & 0x00ff0000) |
+-		(CONFIG_PCI_MEM_BUS >> 16);
+-	*(vu_long *)MPC5XXX_PCI_IWCR |= (IWCR_MEM | IWCR_READ | IWCR_EN) << 24;
+-
+-	/* Map PCI I/O to physical space */
+-	*(vu_long *)MPC5XXX_PCI_IW1BTAR = CONFIG_PCI_IO_PHYS |
+-		(((CONFIG_PCI_IO_SIZE - 1) >> 8) & 0x00ff0000) |
+-		(CONFIG_PCI_IO_BUS >> 16);
+-	*(vu_long *)MPC5XXX_PCI_IWCR |= (IWCR_IO | IWCR_READ | IWCR_EN) << 16;
+-
+-	/* Reset the PCI bus */
+-	*(vu_long *)MPC5XXX_PCI_GSCR |= 1;
+-	udelay(1000);
+-	*(vu_long *)MPC5XXX_PCI_GSCR &= ~1;
+-	udelay(1000);
+-
+-	pci_set_ops(hose,
+-		pci_hose_read_config_byte_via_dword,
+-		pci_hose_read_config_word_via_dword,
+-		mpc5200_read_config_dword,
+-		pci_hose_write_config_byte_via_dword,
+-		pci_hose_write_config_word_via_dword,
+-		mpc5200_write_config_dword);
+-
+-	udelay(1000);
+-
+-#ifdef CONFIG_PCI_SCAN_SHOW
+-	printf("PCI:   Bus Dev VenId DevId Class Int\n");
 -#endif
 -
--#ifdef CONFIG_DOS_PARTITION
--/* disk/part_dos.c */
--int get_partition_info_dos (block_dev_desc_t * dev_desc, int part, disk_partition_t *info);
--void print_part_dos (block_dev_desc_t *dev_desc);
--int   test_part_dos (block_dev_desc_t *dev_desc);
--#endif
--
--#ifdef CONFIG_ISO_PARTITION
--/* disk/part_iso.c */
--int get_partition_info_iso (block_dev_desc_t * dev_desc, int part, disk_partition_t *info);
--void print_part_iso (block_dev_desc_t *dev_desc);
--int   test_part_iso (block_dev_desc_t *dev_desc);
--#endif
--
--#ifdef CONFIG_AMIGA_PARTITION
--/* disk/part_amiga.c */
--int get_partition_info_amiga (block_dev_desc_t * dev_desc, int part, disk_partition_t *info);
--void print_part_amiga (block_dev_desc_t *dev_desc);
--int   test_part_amiga (block_dev_desc_t *dev_desc);
--#endif
--
--#endif /* _PART_H */
+-	hose->last_busno = pci_hose_scan(hose);
+-}
+-#endif /* CONFIG_PCI && CONFIG_MPC5200 */
 -- 
 2.27.0
 
