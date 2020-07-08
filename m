@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jt51l-0005vv-QQ
- for barebox@lists.infradead.org; Wed, 08 Jul 2020 08:02:02 +0000
-References: <20200707135608.31901-1-pmamonov@gmail.com>
+ id 1jt5CJ-0006r8-Qy
+ for barebox@lists.infradead.org; Wed, 08 Jul 2020 08:12:56 +0000
+References: <20200708074739.359-1-a.fatoum@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <c50f7807-9bfa-bc70-d771-f798422760e1@pengutronix.de>
-Date: Wed, 8 Jul 2020 10:02:00 +0200
+Message-ID: <b01c47c3-9fe7-79dc-5a61-e0b11590e2bd@pengutronix.de>
+Date: Wed, 8 Jul 2020 10:12:54 +0200
 MIME-Version: 1.0
-In-Reply-To: <20200707135608.31901-1-pmamonov@gmail.com>
+In-Reply-To: <20200708074739.359-1-a.fatoum@pengutronix.de>
 Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,76 +22,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: RFC: types conflicts
-To: Peter Mamonov <pmamonov@gmail.com>, s.hauer@pengutronix.de, antonynpavlov@gmail.com
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/5] treewide: delete code referencing unused headers
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hello Peter,
+Should have thought a little more about the title..
+It removes code referencing _non-existent_ headers.
 
-On 7/7/20 3:56 PM, Peter Mamonov wrote:
-> Hello,
+
+On 7/8/20 9:47 AM, Ahmad Fatoum wrote:
+> Found by manual inspection of the output of following command:
 > 
-> I tried to build MicroPython using barebox toolchain and found a number of
-> conflicts between barebox and compiler headers. Below you will find the patch
-> which demostrates some of them. In this particular example the problem arises
-> due to simultaneous inclusion of some compiler headers along with barebox
-> version of `strings.h`, which in turn includes barebox analogs of those headers
-> from `include/linux`. I belive there should be a segregation between headers in
-> `include` and in `include/linux`, i.e. headers from `include/` should not
-> reference <linux/*.h> headers. Yet I understand this is somewhat problematic.
-> What do you think?
-
-barebox code shouldn't make use of any compiler headers at all, except for <stdarg.h>.
-The only exception are arch/sandbox/os and scripts/, which reference libc headers.
-Everything else should comes out of barebox' include/ directory.
-
-If you have foreign code that you want to port into barebox, either modify it
-to use barebox headers or change the include order when building it to use _local_
-versions of the headers it requires.
-
-
+> find . -name '*.[ch]' -exec egrep -H -o '^\s*#include <.*\.h>' {} \; | \
+>   perl -ne '/(.*):#include\s*<(.*)>/; print "$1: $2\n" unless -f "include/$2";' | \
+>   egrep -v ': (asm|dt-bindings|mach|generated|config\.h)' | egrep -v ^./scripts | \
+>   egrep -v ^./arch/sandbox/os
 > 
-> Regards,
-> Peter
+> Ahmad Fatoum (5):
+>   ppc: mpc5xxx: delete dead code
+>   include: delete unreferenced u-boot part.h header
+>   lib: list_sort: delete dead code
+>   commands: dhrystone: remove unneeded and out-of-place <stdbool.h>
+>   lib: lzo: drop unused compression code
 > 
-> ---
->  commands/Makefile         |  1 +
->  commands/types_conflict.c | 12 ++++++++++++
->  2 files changed, 13 insertions(+)
->  create mode 100644 commands/types_conflict.c
-> 
-> diff --git a/commands/Makefile b/commands/Makefile
-> index 817fc36e96..4e0cf34560 100644
-> --- a/commands/Makefile
-> +++ b/commands/Makefile
-> @@ -1,3 +1,4 @@
-> +obj-y				+= types_conflict.o
->  obj-$(CONFIG_STDDEV)		+= stddev.o
->  obj-$(CONFIG_CMD_DIGEST)	+= digest.o
->  obj-$(CONFIG_COMPILE_HASH)	+= hashsum.o
-> diff --git a/commands/types_conflict.c b/commands/types_conflict.c
-> new file mode 100644
-> index 0000000000..70fee8d6f4
-> --- /dev/null
-> +++ b/commands/types_conflict.c
-> @@ -0,0 +1,12 @@
-> +#include <stdbool.h>
-> +#include <stdint.h>
-> +#include <stddef.h>
-> +
-> +#include <string.h>
-
-barebox (except sandbox) is meant to be compiled with freestanding C implementations
-that aren't required to provide a <string.h>. So no barebox code should depend on
-compiler-provided <string.h>.
-
-> +
-> +int test(void);
-> +
-> +int test()
-> +{
-> +	return 0;
-> +}
+>  arch/powerpc/mach-mpc5xxx/Makefile            |   5 -
+>  .../mach-mpc5xxx/firmware_sc_task.impl.S      | 364 ------------------
+>  arch/powerpc/mach-mpc5xxx/io.S                | 121 ------
+>  arch/powerpc/mach-mpc5xxx/pci_mpc5200.c       | 180 ---------
+>  commands/dhrystone.c                          |   1 -
+>  include/part.h                                | 104 -----
+>  lib/list_sort.c                               | 149 -------
+>  lib/lzo/Kconfig                               |   4 -
+>  lib/lzo/Makefile                              |   3 -
+>  lib/lzo/lzo1x_compress.c                      | 279 --------------
+>  10 files changed, 1210 deletions(-)
+>  delete mode 100644 arch/powerpc/mach-mpc5xxx/firmware_sc_task.impl.S
+>  delete mode 100644 arch/powerpc/mach-mpc5xxx/io.S
+>  delete mode 100644 arch/powerpc/mach-mpc5xxx/pci_mpc5200.c
+>  delete mode 100644 include/part.h
+>  delete mode 100644 lib/lzo/lzo1x_compress.c
 > 
 
 -- 
