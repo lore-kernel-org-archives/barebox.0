@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jtXJO-0000Tr-NH
- for barebox@lists.infradead.org; Thu, 09 Jul 2020 14:14:07 +0000
-Date: Thu, 9 Jul 2020 16:14:00 +0200
+ id 1jtXMY-0000lC-Ro
+ for barebox@lists.infradead.org; Thu, 09 Jul 2020 14:17:23 +0000
+Date: Thu, 9 Jul 2020 16:17:21 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200709141400.GC15485@pengutronix.de>
-References: <1593524914-228154-1-git-send-email-r.karszniewicz@phytec.de>
+Message-ID: <20200709141721.GD15485@pengutronix.de>
+References: <20200702085934.5827-1-a.fatoum@pengutronix.de>
+ <20200705173513.GX15485@pengutronix.de>
+ <6be7e02f-a8a6-e76f-9960-ccff916bcf54@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1593524914-228154-1-git-send-email-r.karszniewicz@phytec.de>
+In-Reply-To: <6be7e02f-a8a6-e76f-9960-ccff916bcf54@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,59 +20,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC PATCH 0/4] Introduce global.bootm.root env var for booting
- via PARTUUID
-To: Robert Karszniewicz <r.karszniewicz@phytec.de>
+Subject: Re: [PATCH] kbuild: add dtbs target for building all dtbs of an ARCH
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jun 30, 2020 at 03:48:30PM +0200, Robert Karszniewicz wrote:
-> This patch introduces a new env var which specifies which device
-> is the rootfs device to be used in Linux, passed to Linux via bootargs,
-> identified by the rootfs partition's PARTUUID.
-> =
+On Mon, Jul 06, 2020 at 12:31:09AM +0200, Ahmad Fatoum wrote:
+> 
+> 
+> On 7/5/20 7:35 PM, Sascha Hauer wrote:
+> > On Thu, Jul 02, 2020 at 10:59:34AM +0200, Ahmad Fatoum wrote:
+> >> As described in the documentation, upstream device trees extended by
+> >> barebox should take care to cause compile errors, not runtime errors,
+> >> when the paths they extend disappear. This way, breakage can be easily
+> >> detected when synchronizing the dts/ directory and fixed right then.
+> >>
+> >> Make this process easier by providing a dtbs target that builds all
+> >> device trees in arch/$(SRCARCH)/dts/ if available.
+> >>
+> >> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> >> ---
+> >>  Makefile | 18 ++++++++++++++++++
+> >>  1 file changed, 18 insertions(+)
+> >>
+> >> diff --git a/Makefile b/Makefile
+> >> index 0da032532712..9fa741966c00 100644
+> >> --- a/Makefile
+> >> +++ b/Makefile
+> >> @@ -990,6 +990,20 @@ include/generated/version.h: FORCE
+> >>  include/generated/utsrelease.h: include/config/kernel.release FORCE
+> >>  	$(call filechk,utsrelease.h)
+> >>  
+> >> +# ---------------------------------------------------------------------------
+> >> +# Devicetree files
+> >> +
+> >> +ifneq ($(wildcard $(srctree)/arch/$(SRCARCH)/dts/),)
+> >> +dtstree := arch/$(SRCARCH)/dts
+> >> +endif
+> >> +
+> >> +ifneq ($(dtstree),)
+> >> +
+> >> +PHONY += dtbs
+> >> +dtbs: $(patsubst $(srctree)/%.dts,$(objtree)/%.dtb,$(wildcard $(srctree)/$(dtstree)/*.dts))
+> >> +
+> >> +endif
+> > 
+> > Can we do this in a way that only rebuilds the changed files and not
+> > every dts again?
+> 
+> Probably, I would have to check how though. But it doesn't matter that much IMO.
+> Target is meant to be run only after dts/ update. It's not part of the normal
+> development workflow.
 
-> global.bootm.root supplements global.bootm.appendroot, in that it overrid=
-es
-> appendroot's na=EFve default, which picks the partition that the kernel r=
-esides
-> on (global.bootm.image).
-> =
-
-> I don't know if it is the right way, or a good way, but this is the short=
-est
-> and simplest way that I've found.
-> =
-
-> What do you think of this? And is it generally something that would be
-> accepted, or is this out of scope for barebox?
-> =
-
-> Example:
-> detect mmc2
-> global.bootm.image=3D'/mnt/mmc2.0/zImage'
-> global.bootm.appendroot=3D1
-> global.bootm.root=3D'/mnt/mmc2.1/'
-
-Why do you pass the standard mount path here? I would expect /dev/mmc2.1.
-
-In 4/4 you mount the root device. I think this should be avoided as it
-only works when barebox has support for the rootfs, i.e. it doesn't work
-for XFS or the like.
-
-Ok, fsdev_set_linux_rootarg() is tied to a filesystem, so maybe we need
-something similar for a cdev.
-
-Generally I think barebox should support this usecase, but I am not
-convinced the approach you took is the right API.
+Well, you could convince me that this is really hard to solve, then we
+can talk about merging it like this. Otherwise I would really prefer
+solving this proper.
 
 Sascha
 
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
