@@ -1,14 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from zimbra2.kalray.eu ([92.103.151.219])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jtY3H-0005Wm-2M
- for barebox@lists.infradead.org; Thu, 09 Jul 2020 15:01:32 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  9 Jul 2020 17:01:24 +0200
-Message-Id: <20200709150124.30940-1-a.fatoum@pengutronix.de>
-In-Reply-To: <20200709141931.GE15485@pengutronix.de>
-References: <20200709141931.GE15485@pengutronix.de>
-MIME-Version: 1.0
+ id 1jtd3z-0005oI-T2
+ for barebox@lists.infradead.org; Thu, 09 Jul 2020 20:22:37 +0000
+From: Clement Leger <cleger@kalray.eu>
+Date: Thu,  9 Jul 2020 22:22:04 +0200
+Message-Id: <20200709202204.2448-1-cleger@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,69 +14,92 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] fixup! ARM: at91: add helpers for chain-loading barebox
- from SD-card
-To: sha@pengutronix.de
-Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: [PATCH] kvx: exclude dtb from malloc zone
+To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
+Cc: Clement Leger <cleger@kalray.eu>
 
-Drop no longer accurate comment. Use c99 designated initializers.
-Don't force != 0 to 1.
+When dtb is provided by the FSBL (first stage bootloader), it might
+end up in the malloc zone initialized by barebox. While the dtb is
+discarded after being unflatten, if the dtb is provided right after
+barebox elf, then the malloc can overwrite it while unflattening it when
+allocating nodes.
+To avoid that, exclude the dtb from the malloc zone by checking if it
+overlaps it. If so, determine the largest zone for the allocation and
+modify the memory area to use that.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Clement Leger <cleger@kalray.eu>
 ---
- arch/arm/mach-at91/xload-mmc.c | 21 +++++++++++++--------
- 1 file changed, 13 insertions(+), 8 deletions(-)
+ arch/kvx/lib/board.c | 43 +++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 41 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-at91/xload-mmc.c b/arch/arm/mach-at91/xload-mmc.c
-index bc974b6446c7..42341fa54bcd 100644
---- a/arch/arm/mach-at91/xload-mmc.c
-+++ b/arch/arm/mach-at91/xload-mmc.c
-@@ -40,18 +40,19 @@ static const struct sdhci_instance {
- 	u8 periph;
- 	s8 pins[15];
- } sdhci_instances[] = {
--	[0] = { SAMA5D2_BASE_SDHC0, SAMA5D2_ID_SDMMC0, AT91_MUX_PERIPH_A,
--		{ 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 13, 10, 11, 12, -1 } },
--	[1] = { SAMA5D2_BASE_SDHC1, SAMA5D2_ID_SDMMC1, AT91_MUX_PERIPH_E,
--		{ 18, 19, 20, 21, 22, 28, 30, -1 } },
-+	[0] = {
-+		.base = SAMA5D2_BASE_SDHC0, .id = SAMA5D2_ID_SDMMC0, .periph = AT91_MUX_PERIPH_A,
-+		.pins = { 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 13, 10, 11, 12, -1 }
-+	},
-+	[1] = {
-+		.base = SAMA5D2_BASE_SDHC1, .id = SAMA5D2_ID_SDMMC1, .periph = AT91_MUX_PERIPH_E,
-+		.pins = { 18, 19, 20, 21, 22, 28, 30, -1 }
-+	},
- };
+diff --git a/arch/kvx/lib/board.c b/arch/kvx/lib/board.c
+index 4d6ca6983..78fa83e02 100644
+--- a/arch/kvx/lib/board.c
++++ b/arch/kvx/lib/board.c
+@@ -103,15 +103,54 @@ err:
+ 	while (1);
+ }
  
- /**
-  * sama5d2_sdhci_start_image - Load and start an image from FAT-formatted SDHCI
-  * @r4: value of r4 passed by BootROM
-- *
-- * Return: If successul, this function does not return. A negative error
-- * code is returned when this function fails.
-  */
- void __noreturn sama5d2_sdhci_start_image(u32 r4)
- {
-@@ -61,7 +62,11 @@ void __noreturn sama5d2_sdhci_start_image(u32 r4)
- 	const s8 *pin;
- 	int ret;
- 
--	instance = &sdhci_instances[!!sama5_bootsource_instance(r4)];
-+	ret = sama5_bootsource_instance(r4);
-+	if (ret > 1)
-+		panic("Couldn't determine boot MCI instance\n");
++/**
++ * exclude_dtb_from_alloc - Find best zone to allocate without overwriting dtb
++ *
++ * @fdt: fdt blob
++ * @alloc_start: start of allocation zone
++ * @alloc_end: end of allocation zone
++ */
++static void exclude_dtb_from_alloc(void *fdt, u64 *alloc_start, u64 *alloc_end)
++{
++	const struct fdt_header *fdth = fdt;
++	u64 fdt_start = (u64) fdt;
++	u64 fdt_end = fdt_start + be32_to_cpu(fdth->totalsize);
++	u64 start_size = 0, end_size = 0;
 +
-+	instance = &sdhci_instances[ret];
++	/*
++	 * If the device tree is inside the malloc zone, we must exclude it to
++	 * avoid allocating memory over it while unflattening it
++	 */
++	if (fdt_end < *alloc_start || fdt_start > (*alloc_end))
++		return;
++
++	/* Compute the largest remaining chunk when removing the dtb */
++	if (fdt_start >= *alloc_start)
++		start_size = (fdt_start - *alloc_start);
++
++	if (fdt_end <= *alloc_end)
++		end_size = *alloc_end - fdt_end;
++
++	/* Modify start/end to reflect the maximum area we found */
++	if (start_size >= end_size)
++		*alloc_end = fdt_start;
++	else
++		*alloc_start = fdt_end;
++}
++
+ void __noreturn kvx_start_barebox(void)
+ {
+ 	u64 memsize = 0, membase = 0;
+ 	u64 barebox_text_end = (u64) &__end;
++	u64 alloc_start, alloc_end;
  
- 	sama5d2_pmc_enable_periph_clock(SAMA5D2_ID_PIOA);
- 	for (pin = instance->pins; *pin >= 0; pin++) {
+ 	of_find_mem(boot_dtb, barebox_text_end, &membase, &memsize);
+ 
+-	mem_malloc_init((void *) barebox_text_end,
+-			(void *) (membase + memsize));
++	alloc_start = barebox_text_end;
++	alloc_end = (membase + memsize);
++	exclude_dtb_from_alloc(boot_dtb, &alloc_start, &alloc_end);
++
++	mem_malloc_init((void *) alloc_start, (void *) alloc_end);
+ 
+ 	start_barebox();
+ 
 -- 
-2.27.0
+2.17.1
 
 
 _______________________________________________
