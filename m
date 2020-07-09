@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jtXQV-0001Ar-91
- for barebox@lists.infradead.org; Thu, 09 Jul 2020 14:21:28 +0000
-Date: Thu, 9 Jul 2020 16:21:26 +0200
+ id 1jtXRf-0001NX-Hm
+ for barebox@lists.infradead.org; Thu, 09 Jul 2020 14:22:40 +0000
+Date: Thu, 9 Jul 2020 16:22:37 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200709142126.GG15485@pengutronix.de>
-References: <20200706062704.396-1-a.fatoum@pengutronix.de>
+Message-ID: <20200709142237.GH15485@pengutronix.de>
+References: <1594050861-161289-1-git-send-email-r.karszniewicz@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200706062704.396-1-a.fatoum@pengutronix.de>
+In-Reply-To: <1594050861-161289-1-git-send-email-r.karszniewicz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,58 +22,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: layerscape: ppa: fix error propagation in ppa_init()
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] ARM: configs: Remove unused Kconfig symbol 'NAND_IMX_BBM'
+To: Robert Karszniewicz <r.karszniewicz@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jul 06, 2020 at 08:27:04AM +0200, Ahmad Fatoum wrote:
-> On fit_open_image, we returned PTR_ERR(fit) instead of the correct ret.
-> We also didn't call fit_close as we should. Fix this.
+On Mon, Jul 06, 2020 at 05:54:21PM +0200, Robert Karszniewicz wrote:
+> This Kconfig symbol has been removed in
+> 2ad441bb7e78 ("mtd: nand-imx: Create BBT automatically when necessary")
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Signed-off-by: Robert Karszniewicz <r.karszniewicz@phytec.de>
 > ---
->  arch/arm/mach-layerscape/ppa.c | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
+>  arch/arm/configs/eukrea_cpuimx35_defconfig    | 1 -
+>  arch/arm/configs/freescale-mx21-ads_defconfig | 1 -
+>  arch/arm/configs/imx_defconfig                | 1 -
+>  arch/arm/configs/imx_v7_defconfig             | 1 -
+>  4 files changed, 4 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/arch/arm/mach-layerscape/ppa.c b/arch/arm/mach-layerscape/ppa.c
-> index 477e8947813c..6ab7659be730 100644
-> --- a/arch/arm/mach-layerscape/ppa.c
-> +++ b/arch/arm/mach-layerscape/ppa.c
-> @@ -77,8 +77,8 @@ static int ppa_init(void *ppa, size_t ppa_size, void *sec_firmware_addr)
->  	if (IS_ERR(conf)) {
->  		pr_err("Cannot open default config in ppa FIT image: %s\n",
->  		       strerrorp(conf));
-> -		fit_close(fit);
-> -		return PTR_ERR(fit);
-> +		ret = PTR_ERR(fit);
-> +		goto err;
->  	}
->  
->  
-> @@ -86,7 +86,6 @@ static int ppa_init(void *ppa, size_t ppa_size, void *sec_firmware_addr)
->  	if (ret) {
->  		pr_err("Cannot open firmware image in ppa FIT image: %s\n",
->  		       strerror(-ret));
-> -		ret = PTR_ERR(fit);
->  		goto err;
->  	}
->  
-> @@ -107,7 +106,7 @@ static int ppa_init(void *ppa, size_t ppa_size, void *sec_firmware_addr)
->  err:
->  	fit_close(fit);
->  
-> -	return 0;
-> +	return ret;
->  }
->  
->  int ls1046a_ppa_init(resource_size_t ppa_start, resource_size_t ppa_size)
+> diff --git a/arch/arm/configs/eukrea_cpuimx35_defconfig b/arch/arm/configs/eukrea_cpuimx35_defconfig
+> index bd19fc45aa11..b3d5741c6978 100644
+> --- a/arch/arm/configs/eukrea_cpuimx35_defconfig
+> +++ b/arch/arm/configs/eukrea_cpuimx35_defconfig
+> @@ -74,7 +74,6 @@ CONFIG_MTD_RAW_DEVICE=y
+>  CONFIG_NAND=y
+>  CONFIG_NAND_ALLOW_ERASE_BAD=y
+>  CONFIG_NAND_IMX=y
+> -CONFIG_NAND_IMX_BBM=y
+>  CONFIG_USB_HOST=y
+>  CONFIG_USB_IMX_CHIPIDEA=y
+>  CONFIG_USB_EHCI=y
+> diff --git a/arch/arm/configs/freescale-mx21-ads_defconfig b/arch/arm/configs/freescale-mx21-ads_defconfig
+> index 7dc8cb142687..e1843db3e24c 100644
+> --- a/arch/arm/configs/freescale-mx21-ads_defconfig
+> +++ b/arch/arm/configs/freescale-mx21-ads_defconfig
+> @@ -36,5 +36,4 @@ CONFIG_DRIVER_CFI=y
+>  CONFIG_CFI_BUFFER_WRITE=y
+>  CONFIG_NAND=y
+>  CONFIG_NAND_IMX=y
+> -CONFIG_NAND_IMX_BBM=y
+>  CONFIG_FS_TFTP=y
+> diff --git a/arch/arm/configs/imx_defconfig b/arch/arm/configs/imx_defconfig
+> index ede70d7eaf9a..02e33e122ec8 100644
+> --- a/arch/arm/configs/imx_defconfig
+> +++ b/arch/arm/configs/imx_defconfig
+> @@ -90,7 +90,6 @@ CONFIG_NAND=y
+>  # CONFIG_NAND_ECC_HW_SYNDROME is not set
+>  CONFIG_NAND_ALLOW_ERASE_BAD=y
+>  CONFIG_NAND_IMX=y
+> -CONFIG_NAND_IMX_BBM=y
+>  CONFIG_MTD_UBI=y
+>  CONFIG_MTD_UBI_FASTMAP=y
+>  CONFIG_USB_HOST=y
+> diff --git a/arch/arm/configs/imx_v7_defconfig b/arch/arm/configs/imx_v7_defconfig
+> index 5bf908ee850c..d89ac1e3490c 100644
+> --- a/arch/arm/configs/imx_v7_defconfig
+> +++ b/arch/arm/configs/imx_v7_defconfig
+> @@ -143,7 +143,6 @@ CONFIG_MTD_SST25L=y
+>  CONFIG_NAND=y
+>  CONFIG_NAND_ALLOW_ERASE_BAD=y
+>  CONFIG_NAND_IMX=y
+> -CONFIG_NAND_IMX_BBM=y
+>  CONFIG_NAND_MXS=y
+>  CONFIG_MTD_UBI=y
+>  CONFIG_MTD_UBI_FASTMAP=y
 > -- 
-> 2.27.0
+> 2.7.4
 > 
 > 
 > _______________________________________________
