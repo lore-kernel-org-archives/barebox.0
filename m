@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay5-d.mail.gandi.net ([217.70.183.197])
+Received: from zimbra2.kalray.eu ([92.103.151.219])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1juBOe-0004OM-IR
- for barebox@lists.infradead.org; Sat, 11 Jul 2020 09:02:13 +0000
-Received: from geraet.fritz.box (i577B6DEB.versanet.de [87.123.109.235])
- (Authenticated sender: ahmad@a3f.at)
- by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 4862F1C0008
- for <barebox@lists.infradead.org>; Sat, 11 Jul 2020 09:02:08 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Sat, 11 Jul 2020 11:02:02 +0200
-Message-Id: <20200711090203.498881-1-ahmad@a3f.at>
+ id 1juCbi-0008GH-LW
+ for barebox@lists.infradead.org; Sat, 11 Jul 2020 10:19:47 +0000
+Date: Sat, 11 Jul 2020 12:19:38 +0200 (CEST)
+From: =?utf-8?Q?Cl=C3=A9ment?= Leger <cleger@kalray.eu>
+Message-ID: <1672417604.1973524.1594462778349.JavaMail.zimbra@kalray.eu>
+In-Reply-To: <20200711044135.GN15485@pengutronix.de>
+References: <20200709202204.2448-1-cleger@kalray.eu>
+ <20200711044135.GN15485@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,90 +18,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] ARM: at91: dts: sama5d27-som1: adapt to upstream
- partition layout
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] kvx: exclude dtb from malloc zone
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-Linux v5.8-rc1 adds partitions to the flash@0 node, which now overlap
-with the partitions we define and resulting in errors:
-
-  ERROR: m25p0.barebox: New partition m25p0.barebox conflicts
-	with m25p0.at91bootstrap
-  ERROR: m25p0.barebox-environment: New partition
-  	m25p0.barebox-environment conflicts with m25p0.bootloader
-
-We don't want to reuse those partitions as their name may and probably
-will change (they have leading zeroes in the unit address).
-We could use the &{/path/to/partition} syntax, but that might be broken
-soon as well, as the nodes aren't inside a partitions node with a
-"fixed-partitions" compatible.
-The busses also don't align with the yaml schema and might be renamed.
-
-Nuke the full flash@0 node and supply ours and avoid these problems.
-The offsets of the partitions have been adjusted to coincide with the
-upstream offsets for second stage bootloader and environment.
-
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
----
-Hello Sascha,
-
-The brekage doesn't seem to end..
-if possible please reorder before v5.8-rc1 dts/ sync.
----
- arch/arm/dts/at91-sama5d27_som1_ek.dts | 28 +++++++++++++++++---------
- 1 file changed, 19 insertions(+), 9 deletions(-)
-
-diff --git a/arch/arm/dts/at91-sama5d27_som1_ek.dts b/arch/arm/dts/at91-sama5d27_som1_ek.dts
-index befee89ad78a..97a326dd2b26 100644
---- a/arch/arm/dts/at91-sama5d27_som1_ek.dts
-+++ b/arch/arm/dts/at91-sama5d27_som1_ek.dts
-@@ -31,18 +31,28 @@
- };
- 
- &qspi1 {
-+	/delete-node/ flash@0;
-+
- 	flash@0 {
--		#address-cells = <1>;
--		#size-cells = <1>;
-+		compatible = "jedec,spi-nor";
-+		reg = <0>;
-+		spi-max-frequency = <80000000>;
-+		m25p,fast-read;
- 
--		partition@0 {
--			label = "barebox";
--			reg = <0x0 0x80000>;
--		};
-+		partitions {
-+			compatible = "fixed-partitions";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+
-+			barebox@40000 {
-+				label = "barebox";
-+				reg = <0x40000 0xc0000>;
-+			};
- 
--		barebox_env: partition@80000 {
--			label = "barebox-environment";
--			reg = <0x80000 0x80000>;
-+			barebox_env: barebox-env@100000 {
-+				label = "barebox-environment";
-+				reg = <0x100000 0x40000>;
-+			};
- 		};
- 	};
- };
--- 
-2.27.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgU2FzY2hhCgotLS0tLSBPbiAxMSBKdWwsIDIwMjAsIGF0IDA2OjQxLCBTYXNjaGEgSGF1ZXIg
+cy5oYXVlckBwZW5ndXRyb25peC5kZSB3cm90ZToKCj4gSGkgQ2xlbWVudCwKPiAKPiBPbiBUaHUs
+IEp1bCAwOSwgMjAyMCBhdCAxMDoyMjowNFBNICswMjAwLCBDbGVtZW50IExlZ2VyIHdyb3RlOgo+
+PiBXaGVuIGR0YiBpcyBwcm92aWRlZCBieSB0aGUgRlNCTCAoZmlyc3Qgc3RhZ2UgYm9vdGxvYWRl
+ciksIGl0IG1pZ2h0Cj4+IGVuZCB1cCBpbiB0aGUgbWFsbG9jIHpvbmUgaW5pdGlhbGl6ZWQgYnkg
+YmFyZWJveC4gV2hpbGUgdGhlIGR0YiBpcwo+PiBkaXNjYXJkZWQgYWZ0ZXIgYmVpbmcgdW5mbGF0
+dGVuLCBpZiB0aGUgZHRiIGlzIHByb3ZpZGVkIHJpZ2h0IGFmdGVyCj4+IGJhcmVib3ggZWxmLCB0
+aGVuIHRoZSBtYWxsb2MgY2FuIG92ZXJ3cml0ZSBpdCB3aGlsZSB1bmZsYXR0ZW5pbmcgaXQgd2hl
+bgo+PiBhbGxvY2F0aW5nIG5vZGVzLgo+PiBUbyBhdm9pZCB0aGF0LCBleGNsdWRlIHRoZSBkdGIg
+ZnJvbSB0aGUgbWFsbG9jIHpvbmUgYnkgY2hlY2tpbmcgaWYgaXQKPj4gb3ZlcmxhcHMgaXQuIElm
+IHNvLCBkZXRlcm1pbmUgdGhlIGxhcmdlc3Qgem9uZSBmb3IgdGhlIGFsbG9jYXRpb24gYW5kCj4+
+IG1vZGlmeSB0aGUgbWVtb3J5IGFyZWEgdG8gdXNlIHRoYXQuCj4gCj4gSXNuJ3QgdGhlcmUgc29t
+ZSBzYWZlIHBsYWNlIHdoZXJlIHRoZSBkdGIgY2FuIGJlIGNvcGllZCB0bz8gTWFraW5nIHRoZQo+
+IG1hbGxvYyBhcmVhIHNtYWxsZXIgc2VlbXMgYSBiaXQgd2FzdGVmdWwuCgpDdXJyZW50bHksIHRo
+ZSBGU0JMIG5vdyBhbHdheXMgcHV0IHRoZSBkdGIgYWZ0ZXIgdGhlIGJhcmVib3ggZWxmIHdoaWNo
+IGxlYWQKdG8gYSBtaW5pbWFsIGltcGFjdCBvbiB0aGUgbWFsbG9jIHpvbmUgKH4zR2liKSBtYWxs
+b2MgYXJlYSBzaW5jZSBiYXJlYm94IHJ1bnMKaW4gRERSLiAKCldlIGNvdWxkIHJlc2VydmUgc29t
+ZSBzcGFjZSBpbiBiYXJlYm94IHRvIHJlY29weSB0aGUgZHRiIGVhcmx5IGFmdGVyIGJvb3QKYmVm
+b3JlIHNldHRpbmcgdXAgdGhlIG1hbGxvYy4gSG93ZXZlciwgd2hhdCBzaXplIHNob3VsZCBpdCBi
+ZSB0byBhY2NvbW9kYXRlCmFsbCBkZXZpY2VzIHRyZWVzID8gV2UgY291bGQgYWxzbyBjb3B5IGl0
+IGluIHNtZW0gYnV0IHNpbmNlIHRoZSBrdnggYmFyZWJveApwb3J0IGlzIG1lbW9yeSBhZ25vc3Rp
+YyAoaWUgY2FuIHJ1biBpbiBlaXRoZXIgU01FTSBvciBERFIpLCBJJ20gbm90IHN1cmUKdGhpcyBp
+cyBmdXR1cmUgcHJvb2YuCkRvIHlvdSBoYXZlIGFueSBvdGhlciBpZGVhID8gCgpUaGFua3MsCgpD
+bMOpbWVudAoKPiAKPiBTYXNjaGEKPiAKPiAtLQo+IFBlbmd1dHJvbml4IGUuSy4gICAgICAgICAg
+ICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8Cj4gU3RldWVy
+d2FsZGVyIFN0ci4gMjEgICAgICAgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRy
+b25peC5kZS8gIHwKPiAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55ICAgICAgICAgICAgICAgICAg
+fCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfAo+IEFtdHNnZXJpY2h0IEhpbGRlc2hlaW0s
+IEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxp
+bmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVh
+ZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
