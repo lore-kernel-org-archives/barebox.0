@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ju74p-0003zH-C6
- for barebox@lists.infradead.org; Sat, 11 Jul 2020 04:25:28 +0000
-Date: Sat, 11 Jul 2020 06:25:25 +0200
+ id 1ju7DD-0004Rw-Fy
+ for barebox@lists.infradead.org; Sat, 11 Jul 2020 04:34:08 +0000
+Date: Sat, 11 Jul 2020 06:34:04 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200711042525.GL15485@pengutronix.de>
-References: <20200708074739.359-1-a.fatoum@pengutronix.de>
+Message-ID: <20200711043404.GM15485@pengutronix.de>
+References: <20200706062805.26278-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200708074739.359-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20200706062805.26278-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,47 +22,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/5] treewide: delete code referencing unused headers
+Subject: Re: [PATCH 1/4] sandbox: include: <asm/types.h>: don't define
+ INTERNAL_SIZE_T
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Jul 08, 2020 at 09:47:34AM +0200, Ahmad Fatoum wrote:
-> Found by manual inspection of the output of following command:
+On Mon, Jul 06, 2020 at 08:28:03AM +0200, Ahmad Fatoum wrote:
+> The INTERNAL_SIZE_T default is size_t, which already is 64-bit on 64-bit
+> platforms and 32-bit on 32-bit ones. We can thus drop the #define and go
+> back to the minimal <asm/types.h>.
 > 
-> find . -name '*.[ch]' -exec egrep -H -o '^\s*#include <.*\.h>' {} \; | \
->   perl -ne '/(.*):#include\s*<(.*)>/; print "$1: $2\n" unless -f "include/$2";' | \
->   egrep -v ': (asm|dt-bindings|mach|generated|config\.h)' | egrep -v ^./scripts | \
->   egrep -v ^./arch/sandbox/os
-> 
-> Ahmad Fatoum (5):
->   ppc: mpc5xxx: delete dead code
->   include: delete unreferenced u-boot part.h header
->   lib: list_sort: delete dead code
->   commands: dhrystone: remove unneeded and out-of-place <stdbool.h>
->   lib: lzo: drop unused compression code
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  arch/sandbox/include/asm/types.h | 13 ++-----------
+>  1 file changed, 2 insertions(+), 11 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
->  arch/powerpc/mach-mpc5xxx/Makefile            |   5 -
->  .../mach-mpc5xxx/firmware_sc_task.impl.S      | 364 ------------------
->  arch/powerpc/mach-mpc5xxx/io.S                | 121 ------
->  arch/powerpc/mach-mpc5xxx/pci_mpc5200.c       | 180 ---------
->  commands/dhrystone.c                          |   1 -
->  include/part.h                                | 104 -----
->  lib/list_sort.c                               | 149 -------
->  lib/lzo/Kconfig                               |   4 -
->  lib/lzo/Makefile                              |   3 -
->  lib/lzo/lzo1x_compress.c                      | 279 --------------
->  10 files changed, 1210 deletions(-)
->  delete mode 100644 arch/powerpc/mach-mpc5xxx/firmware_sc_task.impl.S
->  delete mode 100644 arch/powerpc/mach-mpc5xxx/io.S
->  delete mode 100644 arch/powerpc/mach-mpc5xxx/pci_mpc5200.c
->  delete mode 100644 include/part.h
->  delete mode 100644 lib/lzo/lzo1x_compress.c
-> 
+> diff --git a/arch/sandbox/include/asm/types.h b/arch/sandbox/include/asm/types.h
+> index 28046670f4e2..7b356a99eb66 100644
+> --- a/arch/sandbox/include/asm/types.h
+> +++ b/arch/sandbox/include/asm/types.h
+> @@ -1,15 +1,6 @@
+> -#ifndef __ASM_I386_TYPES_H
+> -#define __ASM_I386_TYPES_H
+> +#ifndef __ASM_SANDBOX_TYPES_H
+> +#define __ASM_SANDBOX_TYPES_H
+>  
+>  #include <asm-generic/int-ll64.h>
+>  
+> -#ifdef __x86_64__
+> -/*
+> - * This is used in dlmalloc. On X86_64 we need it to be
+> - * 64 bit
+> - */
+> -#define INTERNAL_SIZE_T unsigned long
+> -
+> -#endif
+> -
+>  #endif
 > -- 
 > 2.27.0
 > 
