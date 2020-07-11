@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jtuEQ-0004Mu-Tw
- for barebox@lists.infradead.org; Fri, 10 Jul 2020 14:42:31 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Fri, 10 Jul 2020 16:42:26 +0200
-Message-Id: <20200710144226.15870-1-u.kleine-koenig@pengutronix.de>
+ id 1ju7oa-00063U-G8
+ for barebox@lists.infradead.org; Sat, 11 Jul 2020 05:12:45 +0000
+Date: Sat, 11 Jul 2020 07:12:42 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200711051242.GQ15485@pengutronix.de>
+References: <20200707160124.3188793-1-enrico.scholz@sigma-chemnitz.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200707160124.3188793-1-enrico.scholz@sigma-chemnitz.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,94 +18,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] arch/arm/lib64: Convert to SPDX-License and -Copyright
- specifiers
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] net:fec: fixed unaligned access and stack corruption
+To: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+Cc: barebox@lists.infradead.org
 
-Q29udmVydHMgdGhlIGZpbGVzIHRoYXQgbGljZW5zZWNoZWNrIGNhbiBkZXRlcm1pbmUgdGhlIGxp
-Y2Vuc2UgZm9yLiBBbHNvCmNvbnZlcnQgdG8gb2J2aW91cyByaWdodCBDb3B5cmlnaHQgc3RhdGVt
-ZW50cy4gQWRkaXRpb25hbGx5IHNvbWUgbWlub3IKY29kZSByZWZvcm1hdHRpbmcgaXMgZG9uZS4K
-ClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0
-cm9uaXguZGU+Ci0tLQogYXJjaC9hcm0vbGliNjQvYXJtbGludXguYyAgICB8IDE0ICsrLS0tLS0t
-LS0tLS0tCiBhcmNoL2FybS9saWI2NC9iYXJlYm94Lmxkcy5TIHwgMTggKystLS0tLS0tLS0tLS0t
-LS0tCiBhcmNoL2FybS9saWI2NC9kaXYwLmMgICAgICAgIHwgMTggKysrLS0tLS0tLS0tLS0tLS0t
-CiBhcmNoL2FybS9saWI2NC9zZXRqbXAuUyAgICAgIHwgIDQgKy0tLQogYXJjaC9hcm0vbGliNjQv
-c3RhY2t0cmFjZS5jICB8IDExICstLS0tLS0tLS0tCiA1IGZpbGVzIGNoYW5nZWQsIDkgaW5zZXJ0
-aW9ucygrKSwgNTYgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbGliNjQvYXJt
-bGludXguYyBiL2FyY2gvYXJtL2xpYjY0L2FybWxpbnV4LmMKaW5kZXggYmNmZjc3MDc5M2U3Li5h
-NWYxMjJlZGNkMmEgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2xpYjY0L2FybWxpbnV4LmMKKysrIGIv
-YXJjaC9hcm0vbGliNjQvYXJtbGludXguYwpAQCAtMSwxNSArMSw1IEBACi0vKgotICogQ29weXJp
-Z2h0IChDKSAyMDE4IFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4KLSAqCi0g
-KiBUaGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2FyZTsgeW91IGNhbiByZWRpc3RyaWJ1dGUgaXQg
-YW5kL29yCi0gKiBtb2RpZnkgaXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBHTlUgR2VuZXJhbCBQ
-dWJsaWMgTGljZW5zZSBhcwotICogcHVibGlzaGVkIGJ5IHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5k
-YXRpb247IHZlcnNpb24gMi4KLSAqCi0gKiBUaGlzIHByb2dyYW0gaXMgZGlzdHJpYnV0ZWQgaW4g
-dGhlIGhvcGUgdGhhdCBpdCB3aWxsIGJlIHVzZWZ1bCwKLSAqIGJ1dCBXSVRIT1VUIEFOWSBXQVJS
-QU5UWTsgd2l0aG91dCBldmVuIHRoZSBpbXBsaWVkIHdhcnJhbnR5IG9mCi0gKiBNRVJDSEFOVEFC
-SUxJVFkgb3IgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UuIFNlZSB0aGUgR05VCi0g
-KiBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGZvciBtb3JlIGRldGFpbHMuCi0gKi8KKy8vIFNQRFgt
-TGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9ubHkKKy8vIFNQRFgtRmlsZUNvcHlyaWdodFRl
-eHQ6IDIwMTggU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgogCiAjaW5jbHVk
-ZSA8Ym9vdC5oPgogI2luY2x1ZGUgPGNvbW1vbi5oPgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbGli
-NjQvYmFyZWJveC5sZHMuUyBiL2FyY2gvYXJtL2xpYjY0L2JhcmVib3gubGRzLlMKaW5kZXggOGFl
-N2JmYjcxYzc3Li5hNDdiNzljZWQzOGMgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2xpYjY0L2JhcmVi
-b3gubGRzLlMKKysrIGIvYXJjaC9hcm0vbGliNjQvYmFyZWJveC5sZHMuUwpAQCAtMSwxOSArMSw1
-IEBACi0vKgotICogKEMpIENvcHlyaWdodCAyMDAwLTIwMDQKLSAqIFdvbGZnYW5nIERlbmssIERF
-TlggU29mdHdhcmUgRW5naW5lZXJpbmcsIHdkQGRlbnguZGUuCi0gKgotICogVGhpcyBwcm9ncmFt
-IGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmlidXRlIGl0IGFuZC9vcgotICogbW9k
-aWZ5IGl0IHVuZGVyIHRoZSB0ZXJtcyBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2Ug
-YXMKLSAqIHB1Ymxpc2hlZCBieSB0aGUgRnJlZSBTb2Z0d2FyZSBGb3VuZGF0aW9uOyBlaXRoZXIg
-dmVyc2lvbiAyIG9mCi0gKiB0aGUgTGljZW5zZSwgb3IgKGF0IHlvdXIgb3B0aW9uKSBhbnkgbGF0
-ZXIgdmVyc2lvbi4KLSAqCi0gKiBUaGlzIHByb2dyYW0gaXMgZGlzdHJpYnV0ZWQgaW4gdGhlIGhv
-cGUgdGhhdCBpdCB3aWxsIGJlIHVzZWZ1bCwKLSAqIGJ1dCBXSVRIT1VUIEFOWSBXQVJSQU5UWTsg
-d2l0aG91dCBldmVuIHRoZSBpbXBsaWVkIHdhcnJhbnR5IG9mCi0gKiBNRVJDSEFOVEFCSUxJVFkg
-b3IgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UuICBTZWUgdGhlCi0gKiBHTlUgR2Vu
-ZXJhbCBQdWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLgotICoKLSAqCi0gKi8KKy8vIFNQ
-RFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9yLWxhdGVyCisvLyBTUERYLUZpbGVDb3B5
-cmlnaHRUZXh0OiAyMDAwLTIwMDQgV29sZmdhbmcgRGVuayA8d2RAZGVueC5kZT4sIERFTlggU29m
-dHdhcmUgRW5naW5lZXJpbmcKIAogI2luY2x1ZGUgPGFzbS1nZW5lcmljL2JhcmVib3gubGRzLmg+
-CiAKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2xpYjY0L2RpdjAuYyBiL2FyY2gvYXJtL2xpYjY0L2Rp
-djAuYwppbmRleCA0NmY2NDUyNDE5ZjguLjU2ZWNiYTc1MGM5MyAxMDA2NDQKLS0tIGEvYXJjaC9h
-cm0vbGliNjQvZGl2MC5jCisrKyBiL2FyY2gvYXJtL2xpYjY0L2RpdjAuYwpAQCAtMSwxOCArMSw2
-IEBACi0vKgotICogKEMpIENvcHlyaWdodCAyMDAyCi0gKiBXb2xmZ2FuZyBEZW5rLCBERU5YIFNv
-ZnR3YXJlIEVuZ2luZWVyaW5nLCB3ZEBkZW54LmRlLgotICoKLSAqIFRoaXMgcHJvZ3JhbSBpcyBm
-cmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3IKLSAqIG1vZGlmeSBp
-dCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGFzCi0g
-KiBwdWJsaXNoZWQgYnkgdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbjsgZWl0aGVyIHZlcnNp
-b24gMiBvZgotICogdGhlIExpY2Vuc2UsIG9yIChhdCB5b3VyIG9wdGlvbikgYW55IGxhdGVyIHZl
-cnNpb24uCi0gKgotICogVGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVkIGluIHRoZSBob3BlIHRo
-YXQgaXQgd2lsbCBiZSB1c2VmdWwsCi0gKiBidXQgV0lUSE9VVCBBTlkgV0FSUkFOVFk7IHdpdGhv
-dXQgZXZlbiB0aGUgaW1wbGllZCB3YXJyYW50eSBvZgotICogTUVSQ0hBTlRBQklMSVRZIG9yIEZJ
-VE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFLiAgU2VlIHRoZQotICogR05VIEdlbmVyYWwg
-UHVibGljIExpY2Vuc2UgZm9yIG1vcmUgZGV0YWlscy4KLSAqCi0gKi8KKy8vIFNQRFgtTGljZW5z
-ZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9yLWxhdGVyCisvLyBTUERYLUZpbGVDb3B5cmlnaHRUZXh0
-OiAyMDAyIFdvbGZnYW5nIERlbmsgPHdkQGRlbnguZGU+LCBERU5YIFNvZnR3YXJlIEVuZ2luZWVy
-aW5nCisKICNpbmNsdWRlIDxjb21tb24uaD4KIAogZXh0ZXJuIHZvaWQgX19kaXYwKHZvaWQpOwpk
-aWZmIC0tZ2l0IGEvYXJjaC9hcm0vbGliNjQvc2V0am1wLlMgYi9hcmNoL2FybS9saWI2NC9zZXRq
-bXAuUwppbmRleCBhN2Y2ZDA1NDE3MGYuLjA5MTBlMmY1YTZjMyAxMDA2NDQKLS0tIGEvYXJjaC9h
-cm0vbGliNjQvc2V0am1wLlMKKysrIGIvYXJjaC9hcm0vbGliNjQvc2V0am1wLlMKQEAgLTEsNyAr
-MSw1IEBACiAvKiBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMCsgKi8KLS8qCi0gKiAo
-QykgMjAxNyBUaGVvYnJvbWEgU3lzdGVtcyBEZXNpZ24gdW5kIENvbnN1bHRpbmcgR21iSAotICov
-CisvKiBTUERYLUZpbGVDb3B5cmlnaHRUZXh0OiAyMDE3IFRoZW9icm9tYSBTeXN0ZW1zIERlc2ln
-biB1bmQgQ29uc3VsdGluZyBHbWJIICovCiAKICNpbmNsdWRlIDxjb25maWcuaD4KICNpbmNsdWRl
-IDxsaW51eC9saW5rYWdlLmg+CmRpZmYgLS1naXQgYS9hcmNoL2FybS9saWI2NC9zdGFja3RyYWNl
-LmMgYi9hcmNoL2FybS9saWI2NC9zdGFja3RyYWNlLmMKaW5kZXggNDM5MTE4ODQ0NjZkLi5kYjU2
-OTFhNjA5OGMgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2xpYjY0L3N0YWNrdHJhY2UuYworKysgYi9h
-cmNoL2FybS9saWI2NC9zdGFja3RyYWNlLmMKQEAgLTEsMTMgKzEsNCBAQAotLyoKLSAqIFRoaXMg
-cHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3IK
-LSAqIG1vZGlmeSBpdCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBM
-aWNlbnNlIGFzCi0gKiBwdWJsaXNoZWQgYnkgdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbjsg
-dmVyc2lvbiAyLgotICoKLSAqIFRoaXMgcHJvZ3JhbSBpcyBkaXN0cmlidXRlZCBpbiB0aGUgaG9w
-ZSB0aGF0IGl0IHdpbGwgYmUgdXNlZnVsLAotICogYnV0IFdJVEhPVVQgQU5ZIFdBUlJBTlRZOyB3
-aXRob3V0IGV2ZW4gdGhlIGltcGxpZWQgd2FycmFudHkgb2YKLSAqIE1FUkNIQU5UQUJJTElUWSBv
-ciBGSVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVSUE9TRS4gU2VlIHRoZSBHTlUKLSAqIEdlbmVy
-YWwgUHVibGljIExpY2Vuc2UgZm9yIG1vcmUgZGV0YWlscy4KLSAqLworLy8gU1BEWC1MaWNlbnNl
-LUlkZW50aWZpZXI6IEdQTC0yLjAtb25seQogCiAjaW5jbHVkZSA8Y29tbW9uLmg+CiAjaW5jbHVk
-ZSA8YXNtL3N0YWNrdHJhY2UuaD4KLS0gCjIuMjcuMAoKCl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
-dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
-bmZvL2JhcmVib3gK
+On Tue, Jul 07, 2020 at 06:01:24PM +0200, Enrico Scholz wrote:
+> on 64 bit architectures, the 'enum fec_type' might not be aligned and
+> large enough to hold a pointer.  When running barebox without MMU,
+> this will crash like
+> 
+> | i.MX8MM unique ID: dab4b7491a2c4209
+> | DABT (current EL) exception (ESR 0x96000061) at 0x00000000fffefeb4
+> | elr: 00000000ffe14c28 lr : 00000000ffe196e0
+> | x0 : 0000000000000002 x1 : 00000000fffefeb4
+> | x2 : 00000000ffe91370 x3 : 00000000bfe1b6e8
+> | x4 : 0000000000000000 x5 : 0000000011000000
+> | ...
+> | Call trace:
+> | [<ffe14c28>] (dev_get_drvdata+0xc/0x30) from [<ffe1446c>] (device_probe+0x54/0xd0)
+> | [<ffe1446c>] (device_probe+0x54/0xd0) from [<ffe14530>] (match+0x48/0x58)
+> | [<ffe14530>] (match+0x48/0x58) from [<ffe14a64>] (register_driver+0xc0/0xd0)
+> | [<ffe14a64>] (register_driver+0xc0/0xd0) from [<ffe01738>] (start_barebox+0x64/0x90)
+> 
+> Signed-off-by: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+> ---
+>  drivers/net/fec_imx.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+
+Until Ahmads suggestion is in place I applied this as a stop gap
+solution.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
