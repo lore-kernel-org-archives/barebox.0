@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mickerik.phytec.de ([195.145.39.210])
- by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1juwTH-0008DK-C1
- for barebox@lists.infradead.org; Mon, 13 Jul 2020 11:18:08 +0000
-References: <1593524914-228154-1-git-send-email-r.karszniewicz@phytec.de>
- <20200709141400.GC15485@pengutronix.de>
-From: Robert Karszniewicz <r.karszniewicz@phytec.de>
-Message-ID: <a112fa10-08b5-dca4-1189-c51766329f79@phytec.de>
-Date: Mon, 13 Jul 2020 13:18:04 +0200
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1ju7Po-0004wJ-Tx
+ for barebox@lists.infradead.org; Sat, 11 Jul 2020 04:47:09 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Sat, 11 Jul 2020 06:46:59 +0200
+Message-Id: <20200711044702.18949-2-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20200711044702.18949-1-u.kleine-koenig@pengutronix.de>
+References: <20200711044702.18949-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20200709141400.GC15485@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,81 +17,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-15"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC PATCH 0/4] Introduce global.bootm.root env var for booting
- via PARTUUID
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 1/4] fixup! arm/boards: Replace license boilerplate by SPDX
+ identfiers
+To: barebox@lists.infradead.org
+Cc: Marc Zyngier <maz@kernel.org>, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On 7/9/20 4:14 PM, Sascha Hauer wrote:
-> On Tue, Jun 30, 2020 at 03:48:30PM +0200, Robert Karszniewicz wrote:
->> This patch introduces a new env var which specifies which device
->> is the rootfs device to be used in Linux, passed to Linux via bootargs,
->> identified by the rootfs partition's PARTUUID.
->>
->> global.bootm.root supplements global.bootm.appendroot, in that it overri=
-des
->> appendroot's na=EFve default, which picks the partition that the kernel =
-resides
->> on (global.bootm.image).
->>
->> I don't know if it is the right way, or a good way, but this is the shor=
-test
->> and simplest way that I've found.
->>
->> What do you think of this? And is it generally something that would be
->> accepted, or is this out of scope for barebox?
->>
->> Example:
->> detect mmc2
->> global.bootm.image=3D'/mnt/mmc2.0/zImage'
->> global.bootm.appendroot=3D1
->> global.bootm.root=3D'/mnt/mmc2.1/'
-> =
+---
+ arch/arm/boards/phytec-phycore-pxa270/config.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/arch/arm/boards/phytec-phycore-pxa270/config.h b/arch/arm/boards/phytec-phycore-pxa270/config.h
+index c630befcb8b3..6aba53edea22 100644
+--- a/arch/arm/boards/phytec-phycore-pxa270/config.h
++++ b/arch/arm/boards/phytec-phycore-pxa270/config.h
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
++/* SPDX-License-Identifier: GPL-2.0-or-later */
+ 
+ /*
+  * Copyright (C) 2005 Phytec Messtechnik GmbH
+-- 
+2.27.0
 
-Generally, this was just the shortest possible way to make it basically =
-
-work, before I knew if such a feature would be accepted at all.
-
-> Why do you pass the standard mount path here? I would expect /dev/mmc2.1.
-> =
-
-
-Agree.
-
-> In 4/4 you mount the root device. I think this should be avoided as it
-
-Agree.
-
-> only works when barebox has support for the rootfs, i.e. it doesn't work
-> for XFS or the like.
-> =
-
-
-I see.
-
-> Ok, fsdev_set_linux_rootarg() is tied to a filesystem, so maybe we need
-> something similar for a cdev.
-> =
-
-> Generally I think barebox should support this usecase, but I am not
-> convinced the approach you took is the right API.
-> =
-
-
-So do I understand it correctly, that doing it via a new 'root_dev' =
-
-variable is fine, just that the implementation needs to be better?
-
-> Sascha
-> =
-
-
-Robert
 
 _______________________________________________
 barebox mailing list
