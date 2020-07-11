@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jul51-0005f9-1Y
- for barebox@lists.infradead.org; Sun, 12 Jul 2020 23:08:19 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 13 Jul 2020 01:08:14 +0200
-Message-Id: <20200712230814.7207-3-a.fatoum@pengutronix.de>
-In-Reply-To: <20200712230814.7207-1-a.fatoum@pengutronix.de>
-References: <20200712230814.7207-1-a.fatoum@pengutronix.de>
+ id 1ju7Po-0004wI-Tw
+ for barebox@lists.infradead.org; Sat, 11 Jul 2020 04:47:09 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Sat, 11 Jul 2020 06:46:58 +0200
+Message-Id: <20200711044702.18949-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -17,56 +15,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] scripts: imx-image: throw descriptive error on
- encountering dcdofs
+Subject: [PATCH v2 0/4] SPDX conversions
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Marc Zyngier <maz@kernel.org>, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-With dcdofs renamed to ivtofs, out-of-tree boards will start to fail.
-Make the migration easier by suggesting what needs to be changed on
-stderr.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- scripts/imx/imx.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
-
-diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
-index 4d2f65af9bc8..1fb3922fcf34 100644
---- a/scripts/imx/imx.c
-+++ b/scripts/imx/imx.c
-@@ -221,6 +221,12 @@ static int do_ivt_offset(struct config_data *data, int argc, char *argv[])
- 	return 0;
- }
- 
-+static int do_dcdofs_error(struct config_data *data, int argc, char *argv[])
-+{
-+	fprintf(stderr, "ERROR: misnomer dcdofs has been renamed to ivtofs. imxcfg must be adapted.\n");
-+	return -EINVAL;
-+}
-+
- struct soc_type {
- 	char *name;
- 	int header_version;
-@@ -588,6 +594,9 @@ struct command cmds[] = {
- 	}, {
- 		.name = "ivtofs",
- 		.parse = do_ivt_offset,
-+	}, {
-+		.name = "dcdofs",
-+		.parse = do_dcdofs_error,
- 	}, {
- 		.name = "soc",
- 		.parse = do_soc,
--- 
-2.27.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8sCgpJIGNvbGxlY3RlZCBhbGwgcGVuZGluZyBTUERYIHBhdGNoZXMgaW4gYSBzZXJpZXMg
+YW5kIHVzZWQgLyogKi8gY29tbWVudHMKZm9yIGhlYWRlcnMgYW5kIGFzc2VtYmxlciBmaWxlcyBu
+b3cgYXMgQWhtYWQgcmVxdWVzdGVkLgoKVGhlcmUgaXMgb25lIGZpeHVwIGZvciBhIHBhdGNoIHRo
+YXQgU2FzY2hhIGFscmVhZHkgYXBwbGllZCB0byBuZXh0LgoKQmVzdCByZWdhcmRzClV3ZQoKVXdl
+IEtsZWluZS1Lw7ZuaWcgKDQpOgogIGZpeHVwISBhcm0vYm9hcmRzOiBSZXBsYWNlIGxpY2Vuc2Ug
+Ym9pbGVycGxhdGUgYnkgU1BEWCBpZGVudGZpZXJzCiAgYXJjaC9hcm0vaW5jbHVkZTogQ29udmVy
+dCB0byBTUERYLUxpY2Vuc2UgYW5kIC1Db3B5cmlnaHQgc3BlY2lmaWVycwogIHRyZWV3aWRlOiBD
+b252ZXJ0IGZpbGVzIGNvdmVyZWQgYnkgQVJNIGNvcHlyaWdodCB0byBTUERYCiAgYXJjaC9hcm0v
+bGliNjQ6IENvbnZlcnQgdG8gU1BEWC1MaWNlbnNlIGFuZCAtQ29weXJpZ2h0IHNwZWNpZmllcnMK
+CiAuLi4vYXJtL2JvYXJkcy9waHl0ZWMtcGh5Y29yZS1weGEyNzAvY29uZmlnLmggfCAgMiArLQog
+YXJjaC9hcm0vaW5jbHVkZS9hc20vYXNzZW1ibGVyLmggICAgICAgICAgICAgIHwgIDkgKysrLS0t
+LQogYXJjaC9hcm0vaW5jbHVkZS9hc20vYmFyZWJveC1hcm0uaCAgICAgICAgICAgIHwgMTIgKy0t
+LS0tLS0tCiBhcmNoL2FybS9pbmNsdWRlL2FzbS9jYWNoZS1sMngwLmggICAgICAgICAgICAgfCAx
+OSArKystLS0tLS0tLS0tCiBhcmNoL2FybS9pbmNsdWRlL2FzbS9kbWEuaCAgICAgICAgICAgICAg
+ICAgICAgfCAgOCArKy0tLS0KIGFyY2gvYXJtL2luY2x1ZGUvYXNtL2VycmF0YS5oICAgICAgICAg
+ICAgICAgICB8IDE1ICsrLS0tLS0tLS0tCiBhcmNoL2FybS9pbmNsdWRlL2FzbS9lc3IuaCAgICAg
+ICAgICAgICAgICAgICAgfCAyMCArKystLS0tLS0tLS0tLQogYXJjaC9hcm0vaW5jbHVkZS9hc20v
+aGFyZHdhcmUvc3A4MTAuaCAgICAgICAgIHwgIDYgKystLS0KIGFyY2gvYXJtL2luY2x1ZGUvYXNt
+L29wY29kZXMtdmlydC5oICAgICAgICAgICB8IDIzICsrKystLS0tLS0tLS0tLS0KIGFyY2gvYXJt
+L2luY2x1ZGUvYXNtL29wY29kZXMuaCAgICAgICAgICAgICAgICB8IDEwICsrKy0tLS0KIGFyY2gv
+YXJtL2luY2x1ZGUvYXNtL3BndGFibGUuaCAgICAgICAgICAgICAgICB8IDE0ICsrKystLS0tLS0K
+IGFyY2gvYXJtL2luY2x1ZGUvYXNtL3BndGFibGU2NC5oICAgICAgICAgICAgICB8IDE4ICsrKy0t
+LS0tLS0tLS0KIGFyY2gvYXJtL2luY2x1ZGUvYXNtL3Byb2MtYXJtdi9zeXN0ZW0uaCAgICAgICB8
+IDE0ICsrKystLS0tLS0KIGFyY2gvYXJtL2luY2x1ZGUvYXNtL3BzY2kuaCAgICAgICAgICAgICAg
+ICAgICB8IDIwICsrKy0tLS0tLS0tLS0tCiBhcmNoL2FybS9pbmNsdWRlL2FzbS9wdHJhY2UuaCAg
+ICAgICAgICAgICAgICAgfCAxNCArKysrLS0tLS0tCiBhcmNoL2FybS9pbmNsdWRlL2FzbS9zZXR1
+cC5oICAgICAgICAgICAgICAgICAgfCAgOSArKystLS0tCiBhcmNoL2FybS9pbmNsdWRlL2FzbS91
+bmlmaWVkLmggICAgICAgICAgICAgICAgfCAxOSArKystLS0tLS0tLS0tCiBhcmNoL2FybS9pbmNs
+dWRlL2FzbS91bndpbmQuaCAgICAgICAgICAgICAgICAgfCAxOSArKystLS0tLS0tLS0tCiBhcmNo
+L2FybS9saWI2NC9hcm1saW51eC5jICAgICAgICAgICAgICAgICAgICAgfCAxNCArKy0tLS0tLS0t
+CiBhcmNoL2FybS9saWI2NC9iYXJlYm94Lmxkcy5TICAgICAgICAgICAgICAgICAgfCAxOCArKy0t
+LS0tLS0tLS0tCiBhcmNoL2FybS9saWI2NC9jb3B5X3RlbXBsYXRlLlMgICAgICAgICAgICAgICAg
+fCAyMCArKystLS0tLS0tLS0tLQogYXJjaC9hcm0vbGliNjQvZGl2MC5jICAgICAgICAgICAgICAg
+ICAgICAgICAgIHwgMTggKysrLS0tLS0tLS0tLQogYXJjaC9hcm0vbGliNjQvbWVtY3B5LlMgICAg
+ICAgICAgICAgICAgICAgICAgIHwgMTkgKysrLS0tLS0tLS0tLQogYXJjaC9hcm0vbGliNjQvbWVt
+c2V0LlMgICAgICAgICAgICAgICAgICAgICAgIHwgMTkgKysrLS0tLS0tLS0tLQogYXJjaC9hcm0v
+bGliNjQvc2V0am1wLlMgICAgICAgICAgICAgICAgICAgICAgIHwgIDQgKy0tCiBhcmNoL2FybS9s
+aWI2NC9zdGFja3RyYWNlLmMgICAgICAgICAgICAgICAgICAgfCAxMSArLS0tLS0tLQogLi4uL21h
+Y2gtdmVyc2F0aWxlL2luY2x1ZGUvbWFjaC9wbGF0Zm9ybS5oICAgIHwgMTggKysrLS0tLS0tLS0t
+LQogZHJpdmVycy9jbGsvdmV4cHJlc3MvY2xrLXNwODEwLmMgICAgICAgICAgICAgIHwgIDQgKy0t
+CiBkcml2ZXJzL2kyYy9idXNzZXMvaTJjLXZlcnNhdGlsZS5jICAgICAgICAgICAgfCAxMyArKysr
+Ky0tLS0KIGRyaXZlcnMvc2VyaWFsL3NlcmlhbF9wbDAxMC5jICAgICAgICAgICAgICAgICB8IDI3
+ICsrKysrLS0tLS0tLS0tLS0tLS0KIGRyaXZlcnMvc2VyaWFsL3NlcmlhbF9wbDAxMC5oICAgICAg
+ICAgICAgICAgICB8IDIzICsrKystLS0tLS0tLS0tLS0KIGluY2x1ZGUvbGludXgvYW1iYS9zZXJp
+YWwuaCAgICAgICAgICAgICAgICAgICB8IDE5ICsrKystLS0tLS0tLS0KIGluY2x1ZGUvbGludXgv
+Y2xrLmggICAgICAgICAgICAgICAgICAgICAgICAgICB8ICA5ICsrKy0tLS0KIDMzIGZpbGVzIGNo
+YW5nZWQsIDExMSBpbnNlcnRpb25zKCspLCAzNzYgZGVsZXRpb25zKC0pCgoKYmFzZS1jb21taXQ6
+IDg5YWQ0NjM4YmIzMDBhMmJiZDZmY2U2MDU0YTg1NzQ4ZWE0Y2JmMWQKLS0gCjIuMjcuMAoKCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFp
+bGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFk
+ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
