@@ -1,11 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from zimbra2.kalray.eu ([92.103.151.219])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jtd3z-0005oI-T2
- for barebox@lists.infradead.org; Thu, 09 Jul 2020 20:22:37 +0000
-From: Clement Leger <cleger@kalray.eu>
-Date: Thu,  9 Jul 2020 22:22:04 +0200
-Message-Id: <20200709202204.2448-1-cleger@kalray.eu>
+ id 1ju7jO-0005qB-H0
+ for barebox@lists.infradead.org; Sat, 11 Jul 2020 05:07:23 +0000
+Date: Sat, 11 Jul 2020 07:07:19 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200711050719.GP15485@pengutronix.de>
+References: <20200707160124.3188793-1-enrico.scholz@sigma-chemnitz.de>
+ <9c7cf1e5-baf1-65b0-ddef-e651f6f21e2d@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <9c7cf1e5-baf1-65b0-ddef-e651f6f21e2d@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,93 +19,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] kvx: exclude dtb from malloc zone
-To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
-Cc: Clement Leger <cleger@kalray.eu>
+Subject: Re: [PATCH] net:fec: fixed unaligned access and stack corruption
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>, barebox@lists.infradead.org
 
-When dtb is provided by the FSBL (first stage bootloader), it might
-end up in the malloc zone initialized by barebox. While the dtb is
-discarded after being unflatten, if the dtb is provided right after
-barebox elf, then the malloc can overwrite it while unflattening it when
-allocating nodes.
-To avoid that, exclude the dtb from the malloc zone by checking if it
-overlaps it. If so, determine the largest zone for the allocation and
-modify the memory area to use that.
+On Tue, Jul 07, 2020 at 07:11:31PM +0200, Ahmad Fatoum wrote:
+> On 7/7/20 6:01 PM, Enrico Scholz wrote:
+> > on 64 bit architectures, the 'enum fec_type' might not be aligned and
+> > large enough to hold a pointer.  
+> 
+> I am wondering if we couldn't just adopt the Linux prototype:
+> void *dev_get_drvdata(const struct device_d *dev);
+> 
+> and do away with the error code and most of the casts.
+> Users won't be able to differentiate between NULL from id table
+> and NULL due to lack of drvdata, but I don't think this is
+> that much of a downside, compared with not having casts obscure
+> the more common pitfall (besides fec_imx.c, lm75.c, apbh_dma.c and nand_mxs.c
+> are affected as well of which probably only the first is an issue.)
 
-Signed-off-by: Clement Leger <cleger@kalray.eu>
----
- arch/kvx/lib/board.c | 43 +++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 41 insertions(+), 2 deletions(-)
+Sounds good. When we change this we should rename the function
+alongside, because dev_get_drvdata() does something different in Linux.
 
-diff --git a/arch/kvx/lib/board.c b/arch/kvx/lib/board.c
-index 4d6ca6983..78fa83e02 100644
---- a/arch/kvx/lib/board.c
-+++ b/arch/kvx/lib/board.c
-@@ -103,15 +103,54 @@ err:
- 	while (1);
- }
- 
-+/**
-+ * exclude_dtb_from_alloc - Find best zone to allocate without overwriting dtb
-+ *
-+ * @fdt: fdt blob
-+ * @alloc_start: start of allocation zone
-+ * @alloc_end: end of allocation zone
-+ */
-+static void exclude_dtb_from_alloc(void *fdt, u64 *alloc_start, u64 *alloc_end)
-+{
-+	const struct fdt_header *fdth = fdt;
-+	u64 fdt_start = (u64) fdt;
-+	u64 fdt_end = fdt_start + be32_to_cpu(fdth->totalsize);
-+	u64 start_size = 0, end_size = 0;
-+
-+	/*
-+	 * If the device tree is inside the malloc zone, we must exclude it to
-+	 * avoid allocating memory over it while unflattening it
-+	 */
-+	if (fdt_end < *alloc_start || fdt_start > (*alloc_end))
-+		return;
-+
-+	/* Compute the largest remaining chunk when removing the dtb */
-+	if (fdt_start >= *alloc_start)
-+		start_size = (fdt_start - *alloc_start);
-+
-+	if (fdt_end <= *alloc_end)
-+		end_size = *alloc_end - fdt_end;
-+
-+	/* Modify start/end to reflect the maximum area we found */
-+	if (start_size >= end_size)
-+		*alloc_end = fdt_start;
-+	else
-+		*alloc_start = fdt_end;
-+}
-+
- void __noreturn kvx_start_barebox(void)
- {
- 	u64 memsize = 0, membase = 0;
- 	u64 barebox_text_end = (u64) &__end;
-+	u64 alloc_start, alloc_end;
- 
- 	of_find_mem(boot_dtb, barebox_text_end, &membase, &memsize);
- 
--	mem_malloc_init((void *) barebox_text_end,
--			(void *) (membase + memsize));
-+	alloc_start = barebox_text_end;
-+	alloc_end = (membase + memsize);
-+	exclude_dtb_from_alloc(boot_dtb, &alloc_start, &alloc_end);
-+
-+	mem_malloc_init((void *) alloc_start, (void *) alloc_end);
- 
- 	start_barebox();
- 
+Sascha
+
 -- 
-2.17.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
