@@ -1,14 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from zimbra2.kalray.eu ([92.103.151.219])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1juCbi-0008GH-LW
- for barebox@lists.infradead.org; Sat, 11 Jul 2020 10:19:47 +0000
-Date: Sat, 11 Jul 2020 12:19:38 +0200 (CEST)
-From: =?utf-8?Q?Cl=C3=A9ment?= Leger <cleger@kalray.eu>
-Message-ID: <1672417604.1973524.1594462778349.JavaMail.zimbra@kalray.eu>
-In-Reply-To: <20200711044135.GN15485@pengutronix.de>
-References: <20200709202204.2448-1-cleger@kalray.eu>
- <20200711044135.GN15485@pengutronix.de>
+ id 1jul5F-0005gZ-3y
+ for barebox@lists.infradead.org; Sun, 12 Jul 2020 23:08:33 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 13 Jul 2020 01:08:12 +0200
+Message-Id: <20200712230814.7207-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -18,43 +15,72 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] kvx: exclude dtb from malloc zone
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 1/3] fixup! scripts: imx-image: Fix writing image with IVT
+ offset = 0
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-SGkgU2FzY2hhCgotLS0tLSBPbiAxMSBKdWwsIDIwMjAsIGF0IDA2OjQxLCBTYXNjaGEgSGF1ZXIg
-cy5oYXVlckBwZW5ndXRyb25peC5kZSB3cm90ZToKCj4gSGkgQ2xlbWVudCwKPiAKPiBPbiBUaHUs
-IEp1bCAwOSwgMjAyMCBhdCAxMDoyMjowNFBNICswMjAwLCBDbGVtZW50IExlZ2VyIHdyb3RlOgo+
-PiBXaGVuIGR0YiBpcyBwcm92aWRlZCBieSB0aGUgRlNCTCAoZmlyc3Qgc3RhZ2UgYm9vdGxvYWRl
-ciksIGl0IG1pZ2h0Cj4+IGVuZCB1cCBpbiB0aGUgbWFsbG9jIHpvbmUgaW5pdGlhbGl6ZWQgYnkg
-YmFyZWJveC4gV2hpbGUgdGhlIGR0YiBpcwo+PiBkaXNjYXJkZWQgYWZ0ZXIgYmVpbmcgdW5mbGF0
-dGVuLCBpZiB0aGUgZHRiIGlzIHByb3ZpZGVkIHJpZ2h0IGFmdGVyCj4+IGJhcmVib3ggZWxmLCB0
-aGVuIHRoZSBtYWxsb2MgY2FuIG92ZXJ3cml0ZSBpdCB3aGlsZSB1bmZsYXR0ZW5pbmcgaXQgd2hl
-bgo+PiBhbGxvY2F0aW5nIG5vZGVzLgo+PiBUbyBhdm9pZCB0aGF0LCBleGNsdWRlIHRoZSBkdGIg
-ZnJvbSB0aGUgbWFsbG9jIHpvbmUgYnkgY2hlY2tpbmcgaWYgaXQKPj4gb3ZlcmxhcHMgaXQuIElm
-IHNvLCBkZXRlcm1pbmUgdGhlIGxhcmdlc3Qgem9uZSBmb3IgdGhlIGFsbG9jYXRpb24gYW5kCj4+
-IG1vZGlmeSB0aGUgbWVtb3J5IGFyZWEgdG8gdXNlIHRoYXQuCj4gCj4gSXNuJ3QgdGhlcmUgc29t
-ZSBzYWZlIHBsYWNlIHdoZXJlIHRoZSBkdGIgY2FuIGJlIGNvcGllZCB0bz8gTWFraW5nIHRoZQo+
-IG1hbGxvYyBhcmVhIHNtYWxsZXIgc2VlbXMgYSBiaXQgd2FzdGVmdWwuCgpDdXJyZW50bHksIHRo
-ZSBGU0JMIG5vdyBhbHdheXMgcHV0IHRoZSBkdGIgYWZ0ZXIgdGhlIGJhcmVib3ggZWxmIHdoaWNo
-IGxlYWQKdG8gYSBtaW5pbWFsIGltcGFjdCBvbiB0aGUgbWFsbG9jIHpvbmUgKH4zR2liKSBtYWxs
-b2MgYXJlYSBzaW5jZSBiYXJlYm94IHJ1bnMKaW4gRERSLiAKCldlIGNvdWxkIHJlc2VydmUgc29t
-ZSBzcGFjZSBpbiBiYXJlYm94IHRvIHJlY29weSB0aGUgZHRiIGVhcmx5IGFmdGVyIGJvb3QKYmVm
-b3JlIHNldHRpbmcgdXAgdGhlIG1hbGxvYy4gSG93ZXZlciwgd2hhdCBzaXplIHNob3VsZCBpdCBi
-ZSB0byBhY2NvbW9kYXRlCmFsbCBkZXZpY2VzIHRyZWVzID8gV2UgY291bGQgYWxzbyBjb3B5IGl0
-IGluIHNtZW0gYnV0IHNpbmNlIHRoZSBrdnggYmFyZWJveApwb3J0IGlzIG1lbW9yeSBhZ25vc3Rp
-YyAoaWUgY2FuIHJ1biBpbiBlaXRoZXIgU01FTSBvciBERFIpLCBJJ20gbm90IHN1cmUKdGhpcyBp
-cyBmdXR1cmUgcHJvb2YuCkRvIHlvdSBoYXZlIGFueSBvdGhlciBpZGVhID8gCgpUaGFua3MsCgpD
-bMOpbWVudAoKPiAKPiBTYXNjaGEKPiAKPiAtLQo+IFBlbmd1dHJvbml4IGUuSy4gICAgICAgICAg
-ICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8Cj4gU3RldWVy
-d2FsZGVyIFN0ci4gMjEgICAgICAgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRy
-b25peC5kZS8gIHwKPiAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55ICAgICAgICAgICAgICAgICAg
-fCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfAo+IEFtdHNnZXJpY2h0IEhpbGRlc2hlaW0s
-IEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxp
-bmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVh
-ZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+When data.header_gap == 0, like on i.MX6, we seek to the start of the
+file after writing the barebox header there and proceed to overwrite
+it again.
+
+Therefore we can no longer detect the filetype and affected images
+can't be booted/flashed directly on < i.MX8 anymore. Fix this up:
+
+- on i.MX8, there is nothing at the start, so it's ok to write there
+- on i.MX6, we overwrite buf[0..sizeof_bb_header-1], but that's the way
+  it was before
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ scripts/imx/imx-image.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
+
+diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
+index 64be682417e0..de04962b09d1 100644
+--- a/scripts/imx/imx-image.c
++++ b/scripts/imx/imx-image.c
+@@ -978,10 +978,7 @@ int main(int argc, char *argv[])
+ 	}
+ 
+ 	if (data.cpu_type == IMX_CPU_IMX35) {
+-		xwrite(outfd, add_barebox_header ? bb_header : buf,
+-		       sizeof_bb_header);
+-		xwrite(outfd, buf + sizeof_bb_header,
+-		       header_len - sizeof_bb_header);
++		xwrite(outfd, buf, header_len);
+ 		xwrite(outfd, buf, header_len);
+ 	} else {
+ 		if (add_barebox_header &&
+@@ -990,9 +987,6 @@ int main(int argc, char *argv[])
+ 			exit(1);
+ 		}
+ 
+-		xwrite(outfd, add_barebox_header ? bb_header : buf,
+-		       sizeof_bb_header);
+-
+ 		if (lseek(outfd, data.header_gap, SEEK_SET) < 0) {
+ 			perror("lseek");
+ 			exit(1);
+@@ -1001,6 +995,9 @@ int main(int argc, char *argv[])
+ 		xwrite(outfd, buf, header_len);
+ 	}
+ 
++	if (add_barebox_header)
++		pwrite(outfd, bb_header, sizeof_bb_header, 0);
++
+ 	xwrite(outfd, infile, insize);
+ 
+ 	/* pad until next 4k boundary */
+-- 
+2.27.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
