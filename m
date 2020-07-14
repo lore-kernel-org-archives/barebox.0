@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jvPXf-0004EC-2C
- for barebox@lists.infradead.org; Tue, 14 Jul 2020 18:20:35 +0000
-Date: Tue, 14 Jul 2020 20:20:33 +0200
+ id 1jvPdF-0004Wz-Ui
+ for barebox@lists.infradead.org; Tue, 14 Jul 2020 18:26:22 +0000
+Date: Tue, 14 Jul 2020 20:26:19 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200714182033.GT15485@pengutronix.de>
-References: <20200712230814.7207-1-a.fatoum@pengutronix.de>
+Message-ID: <20200714182619.GU15485@pengutronix.de>
+References: <20200714051328.17224-1-yegorslists@googlemail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200712230814.7207-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20200714051328.17224-1-yegorslists@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,78 +22,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] fixup! scripts: imx-image: Fix writing image with
- IVT offset = 0
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] arm: baltos: add environment node
+To: yegorslists@googlemail.com
 Cc: barebox@lists.infradead.org
 
-On Mon, Jul 13, 2020 at 01:08:12AM +0200, Ahmad Fatoum wrote:
-> When data.header_gap == 0, like on i.MX6, we seek to the start of the
-> file after writing the barebox header there and proceed to overwrite
-> it again.
+Hi Yegor,
+
+On Tue, Jul 14, 2020 at 07:13:28AM +0200, yegorslists@googlemail.com wrote:
+> From: Yegor Yefremov <yegorslists@googlemail.com>
 > 
-> Therefore we can no longer detect the filetype and affected images
-> can't be booted/flashed directly on < i.MX8 anymore. Fix this up:
+> Use the second SPL partition in NAND for environment storage.
 > 
-> - on i.MX8, there is nothing at the start, so it's ok to write there
-> - on i.MX6, we overwrite buf[0..sizeof_bb_header-1], but that's the way
->   it was before
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
 > ---
->  scripts/imx/imx-image.c | 11 ++++-------
->  1 file changed, 4 insertions(+), 7 deletions(-)
-
-Applied, thanks
-
-Sascha
-
+>  arch/arm/dts/am335x-baltos-minimal.dts | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
 > 
-> diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
-> index 64be682417e0..de04962b09d1 100644
-> --- a/scripts/imx/imx-image.c
-> +++ b/scripts/imx/imx-image.c
-> @@ -978,10 +978,7 @@ int main(int argc, char *argv[])
->  	}
+> diff --git a/arch/arm/dts/am335x-baltos-minimal.dts b/arch/arm/dts/am335x-baltos-minimal.dts
+> index 137c177b2..8dfad3eb0 100644
+> --- a/arch/arm/dts/am335x-baltos-minimal.dts
+> +++ b/arch/arm/dts/am335x-baltos-minimal.dts
+> @@ -22,6 +22,11 @@
 >  
->  	if (data.cpu_type == IMX_CPU_IMX35) {
-> -		xwrite(outfd, add_barebox_header ? bb_header : buf,
-> -		       sizeof_bb_header);
-> -		xwrite(outfd, buf + sizeof_bb_header,
-> -		       header_len - sizeof_bb_header);
-> +		xwrite(outfd, buf, header_len);
->  		xwrite(outfd, buf, header_len);
->  	} else {
->  		if (add_barebox_header &&
-> @@ -990,9 +987,6 @@ int main(int argc, char *argv[])
->  			exit(1);
->  		}
->  
-> -		xwrite(outfd, add_barebox_header ? bb_header : buf,
-> -		       sizeof_bb_header);
-> -
->  		if (lseek(outfd, data.header_gap, SEEK_SET) < 0) {
->  			perror("lseek");
->  			exit(1);
-> @@ -1001,6 +995,9 @@ int main(int argc, char *argv[])
->  		xwrite(outfd, buf, header_len);
->  	}
->  
-> +	if (add_barebox_header)
-> +		pwrite(outfd, bb_header, sizeof_bb_header, 0);
+>  	chosen {
+>  		stdout-path = &uart0;
 > +
->  	xwrite(outfd, infile, insize);
->  
->  	/* pad until next 4k boundary */
-> -- 
-> 2.27.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+> +		environment-nand {
+> +			compatible = "barebox,environment";
+> +			device-path = &nand, "partname:SPL.backup1";
+> +		};
+
+Please add a phandle to the partition directly rather than to the NAND
+device containing it.
+
+When this is used as environment partition, shouldn't it be renamed
+accordingly? In case the ROM needs one of the SPL backups, does it cope
+with the environment being in SPL.backup1? Otherwise I would suggest
+using SPL.backup3 for the environment.
+
+Regards,
+  Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
