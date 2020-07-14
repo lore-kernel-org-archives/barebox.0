@@ -1,13 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ej1-x644.google.com ([2a00:1450:4864:20::644])
+Received: from dedi548.your-server.de ([85.10.215.148])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jvDGH-00048u-6a
- for barebox@lists.infradead.org; Tue, 14 Jul 2020 05:13:50 +0000
-Received: by mail-ej1-x644.google.com with SMTP id ga4so20120193ejb.11
- for <barebox@lists.infradead.org>; Mon, 13 Jul 2020 22:13:43 -0700 (PDT)
-From: yegorslists@googlemail.com
-Date: Tue, 14 Jul 2020 07:13:28 +0200
-Message-Id: <20200714051328.17224-1-yegorslists@googlemail.com>
+ id 1jvFCV-0004CY-45
+ for barebox@lists.infradead.org; Tue, 14 Jul 2020 07:18:05 +0000
+From: Christian Mauderer <christian.mauderer@embedded-brains.de>
+Date: Tue, 14 Jul 2020 09:17:48 +0200
+Message-Id: <20200714071748.28459-1-christian.mauderer@embedded-brains.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,50 +15,186 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] arm: baltos: add environment node
+Subject: [PATCH v2] FIT: Parse `load` and `entry` addresses.
 To: barebox@lists.infradead.org
+Cc: a.fatoum@pengutronix.de
 
-From: Yegor Yefremov <yegorslists@googlemail.com>
+According to the U-Boot documentation for the FIT file format, the load
+and entry have to be allways defined for a "kernel" or "standalone".
+But Barebox ignored the parameters. That changes with this patch.
 
-Use the second SPL partition in NAND for environment storage.
+For backward compatibility the default address is still used for images
+without `load` or `entry`.
 
-Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+Signed-off-by: Christian Mauderer <christian.mauderer@embedded-brains.de>
 ---
- arch/arm/dts/am335x-baltos-minimal.dts | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/arm/mach-layerscape/ppa.c |  3 +-
+ common/bootm.c                 |  7 +++--
+ common/image-fit.c             | 57 ++++++++++++++++++++++++++++++++--
+ include/image-fit.h            |  3 +-
+ 4 files changed, 63 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm/dts/am335x-baltos-minimal.dts b/arch/arm/dts/am335x-baltos-minimal.dts
-index 137c177b2..8dfad3eb0 100644
---- a/arch/arm/dts/am335x-baltos-minimal.dts
-+++ b/arch/arm/dts/am335x-baltos-minimal.dts
-@@ -22,6 +22,11 @@
+diff --git a/arch/arm/mach-layerscape/ppa.c b/arch/arm/mach-layerscape/ppa.c
+index 477e89478..3eb7ab641 100644
+--- a/arch/arm/mach-layerscape/ppa.c
++++ b/arch/arm/mach-layerscape/ppa.c
+@@ -82,7 +82,8 @@ static int ppa_init(void *ppa, size_t ppa_size, void *sec_firmware_addr)
+ 	}
  
- 	chosen {
- 		stdout-path = &uart0;
+ 
+-	ret = fit_open_image(fit, conf, "firmware", &buf, &firmware_size);
++	ret = fit_open_image(fit, conf, "firmware", &buf, &firmware_size,
++			     NULL, NULL);
+ 	if (ret) {
+ 		pr_err("Cannot open firmware image in ppa FIT image: %s\n",
+ 		       strerror(-ret));
+diff --git a/common/bootm.c b/common/bootm.c
+index 366f31455..94600cae3 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -222,7 +222,7 @@ int bootm_load_initrd(struct image_data *data, unsigned long load_address)
+ 		unsigned long initrd_size;
+ 
+ 		ret = fit_open_image(data->os_fit, data->fit_config, "ramdisk",
+-				     &initrd, &initrd_size);
++				     &initrd, &initrd_size, NULL, NULL);
+ 
+ 		data->initrd_res = request_sdram_region("initrd",
+ 				load_address,
+@@ -348,7 +348,7 @@ void *bootm_get_devicetree(struct image_data *data)
+ 		unsigned long of_size;
+ 
+ 		ret = fit_open_image(data->os_fit, data->fit_config, "fdt",
+-				     &of_tree, &of_size);
++				     &of_tree, &of_size, NULL, NULL);
+ 		if (ret)
+ 			return ERR_PTR(ret);
+ 
+@@ -622,7 +622,8 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 		}
+ 
+ 		ret = fit_open_image(data->os_fit, data->fit_config, "kernel",
+-				     &data->fit_kernel, &data->fit_kernel_size);
++				     &data->fit_kernel, &data->fit_kernel_size,
++				     &data->os_address, &data->os_entry);
+ 		if (ret)
+ 			goto err_out;
+ 	}
+diff --git a/common/image-fit.c b/common/image-fit.c
+index 2681d62a9..310013121 100644
+--- a/common/image-fit.c
++++ b/common/image-fit.c
+@@ -517,12 +517,30 @@ int fit_has_image(struct fit_handle *handle, void *configuration,
+ 	return 1;
+ }
+ 
++static int fit_get_address(struct device_node *image, const char *property,
++			   unsigned long *addr)
++{
++	const __be32 *cell;
++	int len = 0;
 +
-+		environment-nand {
-+			compatible = "barebox,environment";
-+			device-path = &nand, "partname:SPL.backup1";
-+		};
- 	};
++	cell = of_get_property(image, property, &len);
++	if (!cell)
++		return -EINVAL;
++	if (len > sizeof(*addr))
++		return -ENOTSUPP;
++	
++	*addr = (unsigned long)of_read_number(cell, len / sizeof(*cell));
++	return 0;
++}
++
+ /**
+  * fit_open_image - Open an image in a FIT image
+  * @handle: The FIT image handle
+  * @name: The name of the image to open
+  * @outdata: The returned image
+  * @outsize: Size of the returned image
++ * @load: The load address given by the image
++ * @entry: The entry address given by the image
+  *
+  * Open an image in a FIT image. The returned image is freed during fit_close().
+  * @configuration holds the cookie returned from fit_open_configuration() if
+@@ -532,14 +550,21 @@ int fit_has_image(struct fit_handle *handle, void *configuration,
+  * then only the hash is checked (because opening the configuration already
+  * checks the RSA signature of all involved nodes).
+  *
++ * The load address and entry point of the image description in the FIT will be
++ * parsed if they exist and if the @load and @entry parameters are not NULL.
++ * Otherwise @load and @entry won't be changed.
++ *
+  * Return: 0 for success, negative error code otherwise
+  */
+ int fit_open_image(struct fit_handle *handle, void *configuration,
+ 		   const char *name, const void **outdata,
+-		   unsigned long *outsize)
++		   unsigned long *outsize, unsigned long *load,
++		   unsigned long *entry)
+ {
+ 	struct device_node *image;
+ 	const char *unit, *type = NULL, *desc= "(no description)";
++	char load_str[sizeof("; load: 0x12345678")] = "";
++	char entry_str[sizeof("; entry (relative to load): 0x12345678")] = "";
+ 	const void *data;
+ 	int data_len;
+ 	int ret = 0;
+@@ -559,7 +584,35 @@ int fit_open_image(struct fit_handle *handle, void *configuration,
+ 		return -ENOENT;
  
- 	cpus {
-@@ -179,7 +184,7 @@
- 	ranges = <0 0 0x08000000 0x10000000>;	/* CS0: NAND */
- 	status = "okay";
+ 	of_property_read_string(image, "description", &desc);
+-	pr_info("image '%s': '%s'\n", unit, desc);
++
++	if (load) {
++		ret = fit_get_address(image, "load", load);
++		if (ret < 0) {
++			pr_info("Couldn't get load address in %s. Use default.\n", image->full_name);
++			ret = 0;
++		}
++	}
++
++	if (load && entry) {
++		ret = fit_get_address(image, "entry", entry);
++		if (ret < 0) {
++			pr_info("Couldn't get entry point in %s. Use default.\n", image->full_name);
++			ret = 0;
++		} else {
++			/* Barebox uses an entry relative to load but the FIT
++			 * images assume an absolute entry. */
++			*entry -= *load;
++		}
++	}
++
++	if (load) {
++		snprintf(load_str, sizeof(load_str), "; load: 0x%08lx", *load);
++	}
++	if (load) {
++		snprintf(entry_str, sizeof(entry_str),
++			 "; entry (relative to load): 0x%08lx", *entry);
++	}
++	pr_info("image '%s': '%s'%s%s\n", unit, desc, load_str, entry_str);
  
--	nand@0,0 {
-+	nand: nand@0,0 {
- 		reg = <0 0 0>; /* CS0, offset 0 */
- 		nand-bus-width = <8>;
- 		ti,nand-ecc-opt = "bch8";
+ 	of_property_read_string(image, "type", &type);
+ 	if (!type) {
+diff --git a/include/image-fit.h b/include/image-fit.h
+index 27c9e8351..038732d0d 100644
+--- a/include/image-fit.h
++++ b/include/image-fit.h
+@@ -31,7 +31,8 @@ int fit_has_image(struct fit_handle *handle, void *configuration,
+ 		  const char *name);
+ int fit_open_image(struct fit_handle *handle, void *configuration,
+ 		   const char *name, const void **outdata,
+-		   unsigned long *outsize);
++		   unsigned long *outsize, unsigned long *load,
++		   unsigned long *entry);
+ 
+ void fit_close(struct fit_handle *handle);
+ 
 -- 
-2.17.0
+2.26.2
 
 
 _______________________________________________
