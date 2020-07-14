@@ -1,17 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jvPoW-0005fd-Jn
- for barebox@lists.infradead.org; Tue, 14 Jul 2020 18:38:01 +0000
-Date: Tue, 14 Jul 2020 20:37:59 +0200
+ id 1jvPpX-0005n6-Ca
+ for barebox@lists.infradead.org; Tue, 14 Jul 2020 18:39:04 +0000
+Date: Tue, 14 Jul 2020 20:39:01 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200714183759.GX15485@pengutronix.de>
-References: <1593524914-228154-1-git-send-email-r.karszniewicz@phytec.de>
- <20200709141400.GC15485@pengutronix.de>
- <a112fa10-08b5-dca4-1189-c51766329f79@phytec.de>
+Message-ID: <20200714183901.GY15485@pengutronix.de>
+References: <20200707160124.3188793-1-enrico.scholz@sigma-chemnitz.de>
+ <9c7cf1e5-baf1-65b0-ddef-e651f6f21e2d@pengutronix.de>
+ <20200711050719.GP15485@pengutronix.de>
+ <6525ec7f-c391-4394-4eef-6777459b94da@pengutronix.de>
+ <20200711052007.GR15485@pengutronix.de>
+ <d10c9162-4b11-92ad-daea-69f16b0f214d@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <a112fa10-08b5-dca4-1189-c51766329f79@phytec.de>
+In-Reply-To: <d10c9162-4b11-92ad-daea-69f16b0f214d@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,97 +23,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC PATCH 0/4] Introduce global.bootm.root env var for booting
- via PARTUUID
-To: Robert Karszniewicz <r.karszniewicz@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] net:fec: fixed unaligned access and stack corruption
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>, barebox@lists.infradead.org
 
-On Mon, Jul 13, 2020 at 01:18:04PM +0200, Robert Karszniewicz wrote:
-> On 7/9/20 4:14 PM, Sascha Hauer wrote:
-> > On Tue, Jun 30, 2020 at 03:48:30PM +0200, Robert Karszniewicz wrote:
-> > > This patch introduces a new env var which specifies which device
-> > > is the rootfs device to be used in Linux, passed to Linux via bootarg=
-s,
-> > > identified by the rootfs partition's PARTUUID.
-> > > =
+On Sat, Jul 11, 2020 at 07:28:58AM +0200, Ahmad Fatoum wrote:
+> Hi,
+> 
+> On 7/11/20 7:20 AM, Sascha Hauer wrote:
+> > On Sat, Jul 11, 2020 at 07:13:11AM +0200, Ahmad Fatoum wrote:
+> >>
+> >>
+> >> On 7/11/20 7:07 AM, Sascha Hauer wrote:
+> >>> On Tue, Jul 07, 2020 at 07:11:31PM +0200, Ahmad Fatoum wrote:
+> >>>> On 7/7/20 6:01 PM, Enrico Scholz wrote:
+> >>>>> on 64 bit architectures, the 'enum fec_type' might not be aligned and
+> >>>>> large enough to hold a pointer.  
+> >>>>
+> >>>> I am wondering if we couldn't just adopt the Linux prototype:
+> >>>> void *dev_get_drvdata(const struct device_d *dev);
+> >>>>
+> >>>> and do away with the error code and most of the casts.
+> >>>> Users won't be able to differentiate between NULL from id table
+> >>>> and NULL due to lack of drvdata, but I don't think this is
+> >>>> that much of a downside, compared with not having casts obscure
+> >>>> the more common pitfall (besides fec_imx.c, lm75.c, apbh_dma.c and nand_mxs.c
+> >>>> are affected as well of which probably only the first is an issue.)
+> >>>
+> >>> Sounds good. When we change this we should rename the function
+> >>> alongside, because dev_get_drvdata() does something different in Linux.
+> >>
+> >> Does it? I thought it does the same, with the difference that it can
+> >> be set with dev_set_drvdata as well. At the cost of one extra pointer
+> >> per device_d, we could have both of them.
+> > 
+> > dev_set_drvdata() in Linux allows you to store a pointer to private
+> > driver data in struct device. We don't have a function for that in
+> > barebox and use dev->priv instead.
+> > dev_get_drvdata() in barebox gets you the device type data (or however
+> > we want to call it). There's no function for that in Linux and we have
+> > to first find out if we probe from platform data or from device tree
+> > to pick the right function to get the data.
+> 
+> Ah, I thought the drvdata is pre-populated in Linux. I would rename
+> the new function to device_get_match_data then for alignment with
+> Linux, with the difference that it returns either platform data or
+> device tree driver_data as appropriate.
 
-> > > global.bootm.root supplements global.bootm.appendroot, in that it ove=
-rrides
-> > > appendroot's na=EFve default, which picks the partition that the kern=
-el resides
-> > > on (global.bootm.image).
-> > > =
-
-> > > I don't know if it is the right way, or a good way, but this is the s=
-hortest
-> > > and simplest way that I've found.
-> > > =
-
-> > > What do you think of this? And is it generally something that would be
-> > > accepted, or is this out of scope for barebox?
-> > > =
-
-> > > Example:
-> > > detect mmc2
-> > > global.bootm.image=3D'/mnt/mmc2.0/zImage'
-> > > global.bootm.appendroot=3D1
-> > > global.bootm.root=3D'/mnt/mmc2.1/'
-> > =
-
-> =
-
-> Generally, this was just the shortest possible way to make it basically
-> work, before I knew if such a feature would be accepted at all.
-> =
-
-> > Why do you pass the standard mount path here? I would expect /dev/mmc2.=
-1.
-> > =
-
-> =
-
-> Agree.
-> =
-
-> > In 4/4 you mount the root device. I think this should be avoided as it
-> =
-
-> Agree.
-> =
-
-> > only works when barebox has support for the rootfs, i.e. it doesn't work
-> > for XFS or the like.
-> > =
-
-> =
-
-> I see.
-> =
-
-> > Ok, fsdev_set_linux_rootarg() is tied to a filesystem, so maybe we need
-> > something similar for a cdev.
-> > =
-
-> > Generally I think barebox should support this usecase, but I am not
-> > convinced the approach you took is the right API.
-> > =
-
-> =
-
-> So do I understand it correctly, that doing it via a new 'root_dev' varia=
-ble
-> is fine, just that the implementation needs to be better?
-
-Yes.
+Sounds good.
 
 Sascha
 
--- =
 
+-- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
