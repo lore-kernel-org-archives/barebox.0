@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from dedi548.your-server.de ([85.10.215.148])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jvGFI-0003bC-1g
- for barebox@lists.infradead.org; Tue, 14 Jul 2020 08:25:01 +0000
+ id 1jvGJu-0004JR-Fh
+ for barebox@lists.infradead.org; Tue, 14 Jul 2020 08:29:47 +0000
 References: <20200714081125.18397-1-christian.mauderer@embedded-brains.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <7389c464-df5b-6728-7902-727af0a6d5ec@pengutronix.de>
-Date: Tue, 14 Jul 2020 10:24:58 +0200
+ <7389c464-df5b-6728-7902-727af0a6d5ec@pengutronix.de>
+From: Christian Mauderer <christian.mauderer@embedded-brains.de>
+Message-ID: <c11fd43d-4165-83be-9ef9-11144459b4d2@embedded-brains.de>
+Date: Tue, 14 Jul 2020 10:29:43 +0200
 MIME-Version: 1.0
-In-Reply-To: <20200714081125.18397-1-christian.mauderer@embedded-brains.de>
+In-Reply-To: <7389c464-df5b-6728-7902-727af0a6d5ec@pengutronix.de>
 Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -18,207 +19,141 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v3] FIT: Parse `load` and `entry` addresses.
-To: Christian Mauderer <christian.mauderer@embedded-brains.de>, barebox@lists.infradead.org
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
 
-Hi,
-
-A final nitpick, see below:
-
-On 7/14/20 10:11 AM, Christian Mauderer wrote:
-> According to the U-Boot documentation for the FIT file format, the load
-> and entry have to be allways defined for a "kernel" or "standalone".
-> But Barebox ignored the parameters. That changes with this patch.
-> 
-> For backward compatibility the default address is still used for images
-> without `load` or `entry`.
-> 
-> Signed-off-by: Christian Mauderer <christian.mauderer@embedded-brains.de>
-> ---
->  arch/arm/mach-layerscape/ppa.c |  3 +-
->  common/bootm.c                 |  7 +++--
->  common/image-fit.c             | 51 ++++++++++++++++++++++++++++++++--
->  include/image-fit.h            |  3 +-
->  4 files changed, 57 insertions(+), 7 deletions(-)
-> 
-> diff --git a/arch/arm/mach-layerscape/ppa.c b/arch/arm/mach-layerscape/ppa.c
-> index 477e89478..3eb7ab641 100644
-> --- a/arch/arm/mach-layerscape/ppa.c
-> +++ b/arch/arm/mach-layerscape/ppa.c
-> @@ -82,7 +82,8 @@ static int ppa_init(void *ppa, size_t ppa_size, void *sec_firmware_addr)
->  	}
->  
->  
-> -	ret = fit_open_image(fit, conf, "firmware", &buf, &firmware_size);
-> +	ret = fit_open_image(fit, conf, "firmware", &buf, &firmware_size,
-> +			     NULL, NULL);
->  	if (ret) {
->  		pr_err("Cannot open firmware image in ppa FIT image: %s\n",
->  		       strerror(-ret));
-> diff --git a/common/bootm.c b/common/bootm.c
-> index 366f31455..94600cae3 100644
-> --- a/common/bootm.c
-> +++ b/common/bootm.c
-> @@ -222,7 +222,7 @@ int bootm_load_initrd(struct image_data *data, unsigned long load_address)
->  		unsigned long initrd_size;
->  
->  		ret = fit_open_image(data->os_fit, data->fit_config, "ramdisk",
-> -				     &initrd, &initrd_size);
-> +				     &initrd, &initrd_size, NULL, NULL);
->  
->  		data->initrd_res = request_sdram_region("initrd",
->  				load_address,
-> @@ -348,7 +348,7 @@ void *bootm_get_devicetree(struct image_data *data)
->  		unsigned long of_size;
->  
->  		ret = fit_open_image(data->os_fit, data->fit_config, "fdt",
-> -				     &of_tree, &of_size);
-> +				     &of_tree, &of_size, NULL, NULL);
->  		if (ret)
->  			return ERR_PTR(ret);
->  
-> @@ -622,7 +622,8 @@ int bootm_boot(struct bootm_data *bootm_data)
->  		}
->  
->  		ret = fit_open_image(data->os_fit, data->fit_config, "kernel",
-> -				     &data->fit_kernel, &data->fit_kernel_size);
-> +				     &data->fit_kernel, &data->fit_kernel_size,
-> +				     &data->os_address, &data->os_entry);
->  		if (ret)
->  			goto err_out;
->  	}
-> diff --git a/common/image-fit.c b/common/image-fit.c
-> index 2681d62a9..7f0d3f98f 100644
-> --- a/common/image-fit.c
-> +++ b/common/image-fit.c
-> @@ -517,12 +517,30 @@ int fit_has_image(struct fit_handle *handle, void *configuration,
->  	return 1;
->  }
->  
-> +static int fit_get_address(struct device_node *image, const char *property,
-> +			   unsigned long *addr)
-> +{
-> +	const __be32 *cell;
-> +	int len = 0;
-> +
-> +	cell = of_get_property(image, property, &len);
-> +	if (!cell)
-> +		return -EINVAL;
-> +	if (len > sizeof(*addr))
-> +		return -ENOTSUPP;
-> +	
-> +	*addr = (unsigned long)of_read_number(cell, len / sizeof(*cell));
-> +	return 0;
-> +}
-> +
->  /**
->   * fit_open_image - Open an image in a FIT image
->   * @handle: The FIT image handle
->   * @name: The name of the image to open
->   * @outdata: The returned image
->   * @outsize: Size of the returned image
-> + * @load: The load address given by the image
-> + * @entry: The entry address given by the image
->   *
->   * Open an image in a FIT image. The returned image is freed during fit_close().
->   * @configuration holds the cookie returned from fit_open_configuration() if
-> @@ -532,11 +550,16 @@ int fit_has_image(struct fit_handle *handle, void *configuration,
->   * then only the hash is checked (because opening the configuration already
->   * checks the RSA signature of all involved nodes).
->   *
-> + * The load address and entry point of the image description in the FIT will be
-> + * parsed if they exist and if the @load and @entry parameters are not NULL.
-> + * Otherwise @load and @entry won't be changed.
-> + *
->   * Return: 0 for success, negative error code otherwise
->   */
->  int fit_open_image(struct fit_handle *handle, void *configuration,
->  		   const char *name, const void **outdata,
-> -		   unsigned long *outsize)
-> +		   unsigned long *outsize, unsigned long *load,
-> +		   unsigned long *entry)
->  {
->  	struct device_node *image;
->  	const char *unit, *type = NULL, *desc= "(no description)";
-> @@ -559,7 +582,31 @@ int fit_open_image(struct fit_handle *handle, void *configuration,
->  		return -ENOENT;
->  
->  	of_property_read_string(image, "description", &desc);
-> -	pr_info("image '%s': '%s'\n", unit, desc);
-
-Leave it, but without newline
-
-> +
-> +	if (load) {
-> +		ret = fit_get_address(image, "load", load);
-> +		if (ret < 0)
-> +			pr_info("Couldn't get load address in %s. Use default.\n",
-> +				image->full_name);
-		else
-			pr_cont("; load: 0x%lx", *load);
-> +	}
-> +
-> +	if (load && entry) {
-> +		ret = fit_get_address(image, "entry", entry);
-> +		if (ret < 0)
-{
-> +			pr_info("Couldn't get entry point in %s. Use default.\n",
-> +				image->full_name);> +		else
-} else {
-> +			/* Barebox uses an entry relative to load but the FIT
-> +			 * images assume an absolute entry. */
-> +			*entry -= *load;
-			pr_cont("; entry (relative to load): 0x%lx", *entry);
-}
-> +	}
-> +
-> +	pr_info("image '%s': '%s'", unit, desc);
-> +	if (load)
-> +		pr_cont("; load: 0x%lx", *load);
-> +	if (entry)
-> +		pr_cont("; entry (relative to load): 0x%lx", *entry);
-
-if (!load && entry), you don't populate *entry, yet to print it here.
-This address was not made relative, despite that the output claims it is.
-
-With the suggestions above:
-
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-
-Thanks
-Ahmad
-
-> +	pr_cont("\n");
->  
->  	of_property_read_string(image, "type", &type);
->  	if (!type) {
-> diff --git a/include/image-fit.h b/include/image-fit.h
-> index 27c9e8351..038732d0d 100644
-> --- a/include/image-fit.h
-> +++ b/include/image-fit.h
-> @@ -31,7 +31,8 @@ int fit_has_image(struct fit_handle *handle, void *configuration,
->  		  const char *name);
->  int fit_open_image(struct fit_handle *handle, void *configuration,
->  		   const char *name, const void **outdata,
-> -		   unsigned long *outsize);
-> +		   unsigned long *outsize, unsigned long *load,
-> +		   unsigned long *entry);
->  
->  void fit_close(struct fit_handle *handle);
->  
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gMTQvMDcvMjAyMCAxMDoyNCwgQWhtYWQgRmF0b3VtIHdyb3RlOgo+IEhpLAo+IAo+IEEgZmlu
+YWwgbml0cGljaywgc2VlIGJlbG93Ogo+IAo+IE9uIDcvMTQvMjAgMTA6MTEgQU0sIENocmlzdGlh
+biBNYXVkZXJlciB3cm90ZToKPj4gQWNjb3JkaW5nIHRvIHRoZSBVLUJvb3QgZG9jdW1lbnRhdGlv
+biBmb3IgdGhlIEZJVCBmaWxlIGZvcm1hdCwgdGhlIGxvYWQKPj4gYW5kIGVudHJ5IGhhdmUgdG8g
+YmUgYWxsd2F5cyBkZWZpbmVkIGZvciBhICJrZXJuZWwiIG9yICJzdGFuZGFsb25lIi4KPj4gQnV0
+IEJhcmVib3ggaWdub3JlZCB0aGUgcGFyYW1ldGVycy4gVGhhdCBjaGFuZ2VzIHdpdGggdGhpcyBw
+YXRjaC4KPj4KPj4gRm9yIGJhY2t3YXJkIGNvbXBhdGliaWxpdHkgdGhlIGRlZmF1bHQgYWRkcmVz
+cyBpcyBzdGlsbCB1c2VkIGZvciBpbWFnZXMKPj4gd2l0aG91dCBgbG9hZGAgb3IgYGVudHJ5YC4K
+Pj4KPj4gU2lnbmVkLW9mZi1ieTogQ2hyaXN0aWFuIE1hdWRlcmVyIDxjaHJpc3RpYW4ubWF1ZGVy
+ZXJAZW1iZWRkZWQtYnJhaW5zLmRlPgo+PiAtLS0KPj4gIGFyY2gvYXJtL21hY2gtbGF5ZXJzY2Fw
+ZS9wcGEuYyB8ICAzICstCj4+ICBjb21tb24vYm9vdG0uYyAgICAgICAgICAgICAgICAgfCAgNyAr
+KystLQo+PiAgY29tbW9uL2ltYWdlLWZpdC5jICAgICAgICAgICAgIHwgNTEgKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKystLQo+PiAgaW5jbHVkZS9pbWFnZS1maXQuaCAgICAgICAgICAg
+IHwgIDMgKy0KPj4gIDQgZmlsZXMgY2hhbmdlZCwgNTcgaW5zZXJ0aW9ucygrKSwgNyBkZWxldGlv
+bnMoLSkKPj4KPj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtbGF5ZXJzY2FwZS9wcGEuYyBi
+L2FyY2gvYXJtL21hY2gtbGF5ZXJzY2FwZS9wcGEuYwo+PiBpbmRleCA0NzdlODk0NzguLjNlYjdh
+YjY0MSAxMDA2NDQKPj4gLS0tIGEvYXJjaC9hcm0vbWFjaC1sYXllcnNjYXBlL3BwYS5jCj4+ICsr
+KyBiL2FyY2gvYXJtL21hY2gtbGF5ZXJzY2FwZS9wcGEuYwo+PiBAQCAtODIsNyArODIsOCBAQCBz
+dGF0aWMgaW50IHBwYV9pbml0KHZvaWQgKnBwYSwgc2l6ZV90IHBwYV9zaXplLCB2b2lkICpzZWNf
+ZmlybXdhcmVfYWRkcikKPj4gIAl9Cj4+ICAKPj4gIAo+PiAtCXJldCA9IGZpdF9vcGVuX2ltYWdl
+KGZpdCwgY29uZiwgImZpcm13YXJlIiwgJmJ1ZiwgJmZpcm13YXJlX3NpemUpOwo+PiArCXJldCA9
+IGZpdF9vcGVuX2ltYWdlKGZpdCwgY29uZiwgImZpcm13YXJlIiwgJmJ1ZiwgJmZpcm13YXJlX3Np
+emUsCj4+ICsJCQkgICAgIE5VTEwsIE5VTEwpOwo+PiAgCWlmIChyZXQpIHsKPj4gIAkJcHJfZXJy
+KCJDYW5ub3Qgb3BlbiBmaXJtd2FyZSBpbWFnZSBpbiBwcGEgRklUIGltYWdlOiAlc1xuIiwKPj4g
+IAkJICAgICAgIHN0cmVycm9yKC1yZXQpKTsKPj4gZGlmZiAtLWdpdCBhL2NvbW1vbi9ib290bS5j
+IGIvY29tbW9uL2Jvb3RtLmMKPj4gaW5kZXggMzY2ZjMxNDU1Li45NDYwMGNhZTMgMTAwNjQ0Cj4+
+IC0tLSBhL2NvbW1vbi9ib290bS5jCj4+ICsrKyBiL2NvbW1vbi9ib290bS5jCj4+IEBAIC0yMjIs
+NyArMjIyLDcgQEAgaW50IGJvb3RtX2xvYWRfaW5pdHJkKHN0cnVjdCBpbWFnZV9kYXRhICpkYXRh
+LCB1bnNpZ25lZCBsb25nIGxvYWRfYWRkcmVzcykKPj4gIAkJdW5zaWduZWQgbG9uZyBpbml0cmRf
+c2l6ZTsKPj4gIAo+PiAgCQlyZXQgPSBmaXRfb3Blbl9pbWFnZShkYXRhLT5vc19maXQsIGRhdGEt
+PmZpdF9jb25maWcsICJyYW1kaXNrIiwKPj4gLQkJCQkgICAgICZpbml0cmQsICZpbml0cmRfc2l6
+ZSk7Cj4+ICsJCQkJICAgICAmaW5pdHJkLCAmaW5pdHJkX3NpemUsIE5VTEwsIE5VTEwpOwo+PiAg
+Cj4+ICAJCWRhdGEtPmluaXRyZF9yZXMgPSByZXF1ZXN0X3NkcmFtX3JlZ2lvbigiaW5pdHJkIiwK
+Pj4gIAkJCQlsb2FkX2FkZHJlc3MsCj4+IEBAIC0zNDgsNyArMzQ4LDcgQEAgdm9pZCAqYm9vdG1f
+Z2V0X2RldmljZXRyZWUoc3RydWN0IGltYWdlX2RhdGEgKmRhdGEpCj4+ICAJCXVuc2lnbmVkIGxv
+bmcgb2Zfc2l6ZTsKPj4gIAo+PiAgCQlyZXQgPSBmaXRfb3Blbl9pbWFnZShkYXRhLT5vc19maXQs
+IGRhdGEtPmZpdF9jb25maWcsICJmZHQiLAo+PiAtCQkJCSAgICAgJm9mX3RyZWUsICZvZl9zaXpl
+KTsKPj4gKwkJCQkgICAgICZvZl90cmVlLCAmb2Zfc2l6ZSwgTlVMTCwgTlVMTCk7Cj4+ICAJCWlm
+IChyZXQpCj4+ICAJCQlyZXR1cm4gRVJSX1BUUihyZXQpOwo+PiAgCj4+IEBAIC02MjIsNyArNjIy
+LDggQEAgaW50IGJvb3RtX2Jvb3Qoc3RydWN0IGJvb3RtX2RhdGEgKmJvb3RtX2RhdGEpCj4+ICAJ
+CX0KPj4gIAo+PiAgCQlyZXQgPSBmaXRfb3Blbl9pbWFnZShkYXRhLT5vc19maXQsIGRhdGEtPmZp
+dF9jb25maWcsICJrZXJuZWwiLAo+PiAtCQkJCSAgICAgJmRhdGEtPmZpdF9rZXJuZWwsICZkYXRh
+LT5maXRfa2VybmVsX3NpemUpOwo+PiArCQkJCSAgICAgJmRhdGEtPmZpdF9rZXJuZWwsICZkYXRh
+LT5maXRfa2VybmVsX3NpemUsCj4+ICsJCQkJICAgICAmZGF0YS0+b3NfYWRkcmVzcywgJmRhdGEt
+Pm9zX2VudHJ5KTsKPj4gIAkJaWYgKHJldCkKPj4gIAkJCWdvdG8gZXJyX291dDsKPj4gIAl9Cj4+
+IGRpZmYgLS1naXQgYS9jb21tb24vaW1hZ2UtZml0LmMgYi9jb21tb24vaW1hZ2UtZml0LmMKPj4g
+aW5kZXggMjY4MWQ2MmE5Li43ZjBkM2Y5OGYgMTAwNjQ0Cj4+IC0tLSBhL2NvbW1vbi9pbWFnZS1m
+aXQuYwo+PiArKysgYi9jb21tb24vaW1hZ2UtZml0LmMKPj4gQEAgLTUxNywxMiArNTE3LDMwIEBA
+IGludCBmaXRfaGFzX2ltYWdlKHN0cnVjdCBmaXRfaGFuZGxlICpoYW5kbGUsIHZvaWQgKmNvbmZp
+Z3VyYXRpb24sCj4+ICAJcmV0dXJuIDE7Cj4+ICB9Cj4+ICAKPj4gK3N0YXRpYyBpbnQgZml0X2dl
+dF9hZGRyZXNzKHN0cnVjdCBkZXZpY2Vfbm9kZSAqaW1hZ2UsIGNvbnN0IGNoYXIgKnByb3BlcnR5
+LAo+PiArCQkJICAgdW5zaWduZWQgbG9uZyAqYWRkcikKPj4gK3sKPj4gKwljb25zdCBfX2JlMzIg
+KmNlbGw7Cj4+ICsJaW50IGxlbiA9IDA7Cj4+ICsKPj4gKwljZWxsID0gb2ZfZ2V0X3Byb3BlcnR5
+KGltYWdlLCBwcm9wZXJ0eSwgJmxlbik7Cj4+ICsJaWYgKCFjZWxsKQo+PiArCQlyZXR1cm4gLUVJ
+TlZBTDsKPj4gKwlpZiAobGVuID4gc2l6ZW9mKCphZGRyKSkKPj4gKwkJcmV0dXJuIC1FTk9UU1VQ
+UDsKPj4gKwkKPj4gKwkqYWRkciA9ICh1bnNpZ25lZCBsb25nKW9mX3JlYWRfbnVtYmVyKGNlbGws
+IGxlbiAvIHNpemVvZigqY2VsbCkpOwo+PiArCXJldHVybiAwOwo+PiArfQo+PiArCj4+ICAvKioK
+Pj4gICAqIGZpdF9vcGVuX2ltYWdlIC0gT3BlbiBhbiBpbWFnZSBpbiBhIEZJVCBpbWFnZQo+PiAg
+ICogQGhhbmRsZTogVGhlIEZJVCBpbWFnZSBoYW5kbGUKPj4gICAqIEBuYW1lOiBUaGUgbmFtZSBv
+ZiB0aGUgaW1hZ2UgdG8gb3Blbgo+PiAgICogQG91dGRhdGE6IFRoZSByZXR1cm5lZCBpbWFnZQo+
+PiAgICogQG91dHNpemU6IFNpemUgb2YgdGhlIHJldHVybmVkIGltYWdlCj4+ICsgKiBAbG9hZDog
+VGhlIGxvYWQgYWRkcmVzcyBnaXZlbiBieSB0aGUgaW1hZ2UKPj4gKyAqIEBlbnRyeTogVGhlIGVu
+dHJ5IGFkZHJlc3MgZ2l2ZW4gYnkgdGhlIGltYWdlCj4+ICAgKgo+PiAgICogT3BlbiBhbiBpbWFn
+ZSBpbiBhIEZJVCBpbWFnZS4gVGhlIHJldHVybmVkIGltYWdlIGlzIGZyZWVkIGR1cmluZyBmaXRf
+Y2xvc2UoKS4KPj4gICAqIEBjb25maWd1cmF0aW9uIGhvbGRzIHRoZSBjb29raWUgcmV0dXJuZWQg
+ZnJvbSBmaXRfb3Blbl9jb25maWd1cmF0aW9uKCkgaWYKPj4gQEAgLTUzMiwxMSArNTUwLDE2IEBA
+IGludCBmaXRfaGFzX2ltYWdlKHN0cnVjdCBmaXRfaGFuZGxlICpoYW5kbGUsIHZvaWQgKmNvbmZp
+Z3VyYXRpb24sCj4+ICAgKiB0aGVuIG9ubHkgdGhlIGhhc2ggaXMgY2hlY2tlZCAoYmVjYXVzZSBv
+cGVuaW5nIHRoZSBjb25maWd1cmF0aW9uIGFscmVhZHkKPj4gICAqIGNoZWNrcyB0aGUgUlNBIHNp
+Z25hdHVyZSBvZiBhbGwgaW52b2x2ZWQgbm9kZXMpLgo+PiAgICoKPj4gKyAqIFRoZSBsb2FkIGFk
+ZHJlc3MgYW5kIGVudHJ5IHBvaW50IG9mIHRoZSBpbWFnZSBkZXNjcmlwdGlvbiBpbiB0aGUgRklU
+IHdpbGwgYmUKPj4gKyAqIHBhcnNlZCBpZiB0aGV5IGV4aXN0IGFuZCBpZiB0aGUgQGxvYWQgYW5k
+IEBlbnRyeSBwYXJhbWV0ZXJzIGFyZSBub3QgTlVMTC4KPj4gKyAqIE90aGVyd2lzZSBAbG9hZCBh
+bmQgQGVudHJ5IHdvbid0IGJlIGNoYW5nZWQuCj4+ICsgKgo+PiAgICogUmV0dXJuOiAwIGZvciBz
+dWNjZXNzLCBuZWdhdGl2ZSBlcnJvciBjb2RlIG90aGVyd2lzZQo+PiAgICovCj4+ICBpbnQgZml0
+X29wZW5faW1hZ2Uoc3RydWN0IGZpdF9oYW5kbGUgKmhhbmRsZSwgdm9pZCAqY29uZmlndXJhdGlv
+biwKPj4gIAkJICAgY29uc3QgY2hhciAqbmFtZSwgY29uc3Qgdm9pZCAqKm91dGRhdGEsCj4+IC0J
+CSAgIHVuc2lnbmVkIGxvbmcgKm91dHNpemUpCj4+ICsJCSAgIHVuc2lnbmVkIGxvbmcgKm91dHNp
+emUsIHVuc2lnbmVkIGxvbmcgKmxvYWQsCj4+ICsJCSAgIHVuc2lnbmVkIGxvbmcgKmVudHJ5KQo+
+PiAgewo+PiAgCXN0cnVjdCBkZXZpY2Vfbm9kZSAqaW1hZ2U7Cj4+ICAJY29uc3QgY2hhciAqdW5p
+dCwgKnR5cGUgPSBOVUxMLCAqZGVzYz0gIihubyBkZXNjcmlwdGlvbikiOwo+PiBAQCAtNTU5LDcg
+KzU4MiwzMSBAQCBpbnQgZml0X29wZW5faW1hZ2Uoc3RydWN0IGZpdF9oYW5kbGUgKmhhbmRsZSwg
+dm9pZCAqY29uZmlndXJhdGlvbiwKPj4gIAkJcmV0dXJuIC1FTk9FTlQ7Cj4+ICAKPj4gIAlvZl9w
+cm9wZXJ0eV9yZWFkX3N0cmluZyhpbWFnZSwgImRlc2NyaXB0aW9uIiwgJmRlc2MpOwo+PiAtCXBy
+X2luZm8oImltYWdlICclcyc6ICclcydcbiIsIHVuaXQsIGRlc2MpOwo+IAo+IExlYXZlIGl0LCBi
+dXQgd2l0aG91dCBuZXdsaW5lCj4gCgpPSy4KCj4+ICsKPj4gKwlpZiAobG9hZCkgewo+PiArCQly
+ZXQgPSBmaXRfZ2V0X2FkZHJlc3MoaW1hZ2UsICJsb2FkIiwgbG9hZCk7Cj4+ICsJCWlmIChyZXQg
+PCAwKQo+PiArCQkJcHJfaW5mbygiQ291bGRuJ3QgZ2V0IGxvYWQgYWRkcmVzcyBpbiAlcy4gVXNl
+IGRlZmF1bHQuXG4iLAo+PiArCQkJCWltYWdlLT5mdWxsX25hbWUpOwo+IAkJZWxzZQo+IAkJCXBy
+X2NvbnQoIjsgbG9hZDogMHglbHgiLCAqbG9hZCk7CgpPSwoKPj4gKwl9Cj4+ICsKPj4gKwlpZiAo
+bG9hZCAmJiBlbnRyeSkgewo+PiArCQlyZXQgPSBmaXRfZ2V0X2FkZHJlc3MoaW1hZ2UsICJlbnRy
+eSIsIGVudHJ5KTsKPj4gKwkJaWYgKHJldCA8IDApCj4gewoKV2h5IGEgYnJhY2tldCBoZXJlIGJ1
+dCBub3QgaW4gdGhlIGxvYWQgY2FzZT8gSXQncyBjbGVhciBmb3IgdGhlIGVsc2UKY2FzZSBidXQg
+bm90IGZvciB0aGUgaWYuCgo+PiArCQkJcHJfaW5mbygiQ291bGRuJ3QgZ2V0IGVudHJ5IHBvaW50
+IGluICVzLiBVc2UgZGVmYXVsdC5cbiIsCj4+ICsJCQkJaW1hZ2UtPmZ1bGxfbmFtZSk7PiArCQll
+bHNlCj4gfSBlbHNlIHsKPj4gKwkJCS8qIEJhcmVib3ggdXNlcyBhbiBlbnRyeSByZWxhdGl2ZSB0
+byBsb2FkIGJ1dCB0aGUgRklUCj4+ICsJCQkgKiBpbWFnZXMgYXNzdW1lIGFuIGFic29sdXRlIGVu
+dHJ5LiAqLwo+PiArCQkJKmVudHJ5IC09ICpsb2FkOwo+IAkJCXByX2NvbnQoIjsgZW50cnkgKHJl
+bGF0aXZlIHRvIGxvYWQpOiAweCVseCIsICplbnRyeSk7Cj4gfQo+PiArCX0KPj4gKwo+PiArCXBy
+X2luZm8oImltYWdlICclcyc6ICclcyciLCB1bml0LCBkZXNjKTsKPj4gKwlpZiAobG9hZCkKPj4g
+KwkJcHJfY29udCgiOyBsb2FkOiAweCVseCIsICpsb2FkKTsKPj4gKwlpZiAoZW50cnkpCj4+ICsJ
+CXByX2NvbnQoIjsgZW50cnkgKHJlbGF0aXZlIHRvIGxvYWQpOiAweCVseCIsICplbnRyeSk7Cj4g
+Cj4gaWYgKCFsb2FkICYmIGVudHJ5KSwgeW91IGRvbid0IHBvcHVsYXRlICplbnRyeSwgeWV0IHRv
+IHByaW50IGl0IGhlcmUuCj4gVGhpcyBhZGRyZXNzIHdhcyBub3QgbWFkZSByZWxhdGl2ZSwgZGVz
+cGl0ZSB0aGF0IHRoZSBvdXRwdXQgY2xhaW1zIGl0IGlzLgoKVGhlIGRlZmF1bHQgY2FzZSBmb3Ig
+ZW50cnkgcG9pbnRzIGluIGJhcmVib3ggaXMgdG8gaGFuZGxlIGl0IGFzIGEKcmVsYXRpdmUgYWRk
+cmVzcy4gU28gSSBhc3N1bWUgaWYgSSBkb24ndCBjaGFuZ2UgaXQsIGl0IHdpbGwgYmUgcmVsYXRp
+dmUuCkJ1dCBpZiBJIG1vdmUgdGhlIHByaW50IGZ1cnRoZXIgdXAgbGlrZSB5b3Ugc3VnZ2VzdGVk
+LCBpdCB3b24ndCBiZQpyZWxldmFudCBhbnl3YXkuCgo+IAo+IFdpdGggdGhlIHN1Z2dlc3Rpb25z
+IGFib3ZlOgo+IAo+IFJldmlld2VkLWJ5OiBBaG1hZCBGYXRvdW0gPGEuZmF0b3VtQHBlbmd1dHJv
+bml4LmRlPgo+IAo+IFRoYW5rcwo+IEFobWFkCj4gCj4+ICsJcHJfY29udCgiXG4iKTsKPj4gIAo+
+PiAgCW9mX3Byb3BlcnR5X3JlYWRfc3RyaW5nKGltYWdlLCAidHlwZSIsICZ0eXBlKTsKPj4gIAlp
+ZiAoIXR5cGUpIHsKPj4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvaW1hZ2UtZml0LmggYi9pbmNsdWRl
+L2ltYWdlLWZpdC5oCj4+IGluZGV4IDI3YzllODM1MS4uMDM4NzMyZDBkIDEwMDY0NAo+PiAtLS0g
+YS9pbmNsdWRlL2ltYWdlLWZpdC5oCj4+ICsrKyBiL2luY2x1ZGUvaW1hZ2UtZml0LmgKPj4gQEAg
+LTMxLDcgKzMxLDggQEAgaW50IGZpdF9oYXNfaW1hZ2Uoc3RydWN0IGZpdF9oYW5kbGUgKmhhbmRs
+ZSwgdm9pZCAqY29uZmlndXJhdGlvbiwKPj4gIAkJICBjb25zdCBjaGFyICpuYW1lKTsKPj4gIGlu
+dCBmaXRfb3Blbl9pbWFnZShzdHJ1Y3QgZml0X2hhbmRsZSAqaGFuZGxlLCB2b2lkICpjb25maWd1
+cmF0aW9uLAo+PiAgCQkgICBjb25zdCBjaGFyICpuYW1lLCBjb25zdCB2b2lkICoqb3V0ZGF0YSwK
+Pj4gLQkJICAgdW5zaWduZWQgbG9uZyAqb3V0c2l6ZSk7Cj4+ICsJCSAgIHVuc2lnbmVkIGxvbmcg
+Km91dHNpemUsIHVuc2lnbmVkIGxvbmcgKmxvYWQsCj4+ICsJCSAgIHVuc2lnbmVkIGxvbmcgKmVu
+dHJ5KTsKPj4gIAo+PiAgdm9pZCBmaXRfY2xvc2Uoc3RydWN0IGZpdF9oYW5kbGUgKmhhbmRsZSk7
+Cj4+ICAKPj4KPiAKCi0tIAotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLQplbWJlZGRlZCBicmFpbnMgR21iSApIZXJyIENocmlzdGlhbiBNYXVkZXJlcgpEb3JuaWVy
+c3RyLiA0CkQtODIxNzggUHVjaGhlaW0KR2VybWFueQplbWFpbDogY2hyaXN0aWFuLm1hdWRlcmVy
+QGVtYmVkZGVkLWJyYWlucy5kZQpQaG9uZTogKzQ5LTg5LTE4IDk0IDc0MSAtIDE4CkZheDogICAr
+NDktODktMTggOTQgNzQxIC0gMDgKUEdQOiBQdWJsaWMga2V5IGF2YWlsYWJsZSBvbiByZXF1ZXN0
+LgoKRGllc2UgTmFjaHJpY2h0IGlzdCBrZWluZSBnZXNjaMOkZnRsaWNoZSBNaXR0ZWlsdW5nIGlt
+IFNpbm5lIGRlcyBFSFVHLgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
+Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
