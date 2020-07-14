@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jvPdF-0004Wz-Ui
- for barebox@lists.infradead.org; Tue, 14 Jul 2020 18:26:22 +0000
-Date: Tue, 14 Jul 2020 20:26:19 +0200
+ id 1jvPfN-0004qP-DM
+ for barebox@lists.infradead.org; Tue, 14 Jul 2020 18:28:34 +0000
+Date: Tue, 14 Jul 2020 20:28:31 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200714182619.GU15485@pengutronix.de>
-References: <20200714051328.17224-1-yegorslists@googlemail.com>
+Message-ID: <20200714182831.GV15485@pengutronix.de>
+References: <20200711044702.18949-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200714051328.17224-1-yegorslists@googlemail.com>
+In-Reply-To: <20200711044702.18949-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,52 +18,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] arm: baltos: add environment node
-To: yegorslists@googlemail.com
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 0/4] SPDX conversions
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>, Marc Zyngier <maz@kernel.org>
 
-Hi Yegor,
+On Sat, Jul 11, 2020 at 06:46:58AM +0200, Uwe Kleine-K=F6nig wrote:
+> Hello,
+> =
 
-On Tue, Jul 14, 2020 at 07:13:28AM +0200, yegorslists@googlemail.com wrote:
-> From: Yegor Yefremov <yegorslists@googlemail.com>
-> 
-> Use the second SPL partition in NAND for environment storage.
-> 
-> Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
-> ---
->  arch/arm/dts/am335x-baltos-minimal.dts | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/dts/am335x-baltos-minimal.dts b/arch/arm/dts/am335x-baltos-minimal.dts
-> index 137c177b2..8dfad3eb0 100644
-> --- a/arch/arm/dts/am335x-baltos-minimal.dts
-> +++ b/arch/arm/dts/am335x-baltos-minimal.dts
-> @@ -22,6 +22,11 @@
->  
->  	chosen {
->  		stdout-path = &uart0;
-> +
-> +		environment-nand {
-> +			compatible = "barebox,environment";
-> +			device-path = &nand, "partname:SPL.backup1";
-> +		};
+> I collected all pending SPDX patches in a series and used /* */ comments
+> for headers and assembler files now as Ahmad requested.
+> =
 
-Please add a phandle to the partition directly rather than to the NAND
-device containing it.
+> There is one fixup for a patch that Sascha already applied to next.
+> =
 
-When this is used as environment partition, shouldn't it be renamed
-accordingly? In case the ROM needs one of the SPL backups, does it cope
-with the environment being in SPL.backup1? Otherwise I would suggest
-using SPL.backup3 for the environment.
+> Best regards
+> Uwe
+> =
 
-Regards,
-  Sascha
+> Uwe Kleine-K=F6nig (4):
+>   fixup! arm/boards: Replace license boilerplate by SPDX identfiers
+>   arch/arm/include: Convert to SPDX-License and -Copyright specifiers
+>   treewide: Convert files covered by ARM copyright to SPDX
+>   arch/arm/lib64: Convert to SPDX-License and -Copyright specifiers
 
--- 
+Applied, thanks
+
+Sascha
+
+
+-- =
+
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
