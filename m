@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jvPNJ-0003C7-Cp
- for barebox@lists.infradead.org; Tue, 14 Jul 2020 18:09:54 +0000
-Date: Tue, 14 Jul 2020 20:09:49 +0200
+ id 1jvPXf-0004EC-2C
+ for barebox@lists.infradead.org; Tue, 14 Jul 2020 18:20:35 +0000
+Date: Tue, 14 Jul 2020 20:20:33 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200714180949.GS15485@pengutronix.de>
-References: <20200714091139.26244-1-christian.mauderer@embedded-brains.de>
+Message-ID: <20200714182033.GT15485@pengutronix.de>
+References: <20200712230814.7207-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200714091139.26244-1-christian.mauderer@embedded-brains.de>
+In-Reply-To: <20200712230814.7207-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,39 +22,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v4] FIT: Parse `load` and `entry` addresses.
-To: Christian Mauderer <christian.mauderer@embedded-brains.de>
-Cc: barebox@lists.infradead.org, a.fatoum@pengutronix.de
+Subject: Re: [PATCH 1/3] fixup! scripts: imx-image: Fix writing image with
+ IVT offset = 0
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi Christian,
+On Mon, Jul 13, 2020 at 01:08:12AM +0200, Ahmad Fatoum wrote:
+> When data.header_gap == 0, like on i.MX6, we seek to the start of the
+> file after writing the barebox header there and proceed to overwrite
+> it again.
+> 
+> Therefore we can no longer detect the filetype and affected images
+> can't be booted/flashed directly on < i.MX8 anymore. Fix this up:
+> 
+> - on i.MX8, there is nothing at the start, so it's ok to write there
+> - on i.MX6, we overwrite buf[0..sizeof_bb_header-1], but that's the way
+>   it was before
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  scripts/imx/imx-image.c | 11 ++++-------
+>  1 file changed, 4 insertions(+), 7 deletions(-)
 
-On Tue, Jul 14, 2020 at 11:11:39AM +0200, Christian Mauderer wrote:
-> @@ -622,7 +622,8 @@ int bootm_boot(struct bootm_data *bootm_data)
+Applied, thanks
+
+Sascha
+
+> 
+> diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
+> index 64be682417e0..de04962b09d1 100644
+> --- a/scripts/imx/imx-image.c
+> +++ b/scripts/imx/imx-image.c
+> @@ -978,10 +978,7 @@ int main(int argc, char *argv[])
+>  	}
+>  
+>  	if (data.cpu_type == IMX_CPU_IMX35) {
+> -		xwrite(outfd, add_barebox_header ? bb_header : buf,
+> -		       sizeof_bb_header);
+> -		xwrite(outfd, buf + sizeof_bb_header,
+> -		       header_len - sizeof_bb_header);
+> +		xwrite(outfd, buf, header_len);
+>  		xwrite(outfd, buf, header_len);
+>  	} else {
+>  		if (add_barebox_header &&
+> @@ -990,9 +987,6 @@ int main(int argc, char *argv[])
+>  			exit(1);
 >  		}
 >  
->  		ret = fit_open_image(data->os_fit, data->fit_config, "kernel",
-> -				     &data->fit_kernel, &data->fit_kernel_size);
-> +				     &data->fit_kernel, &data->fit_kernel_size,
-> +				     &data->os_address, &data->os_entry);
-
-bootm has -a and -e options to specify the load address and the entry
-point. If given, these should take precedence over the addresses given
-in the FIT image.
-
->  int fit_open_image(struct fit_handle *handle, void *configuration,
->  		   const char *name, const void **outdata,
-> -		   unsigned long *outsize)
-> +		   unsigned long *outsize, unsigned long *load,
-> +		   unsigned long *entry)
->  {
-
-fit_open_image() has many parameters already and the two new ones are
-not always needed or used. I think it's better to make getting the
-addresses a separate function, fit_get_load_address() and
-fit_get_entry() maybe?
-
-Regards,
-  Sascha
+> -		xwrite(outfd, add_barebox_header ? bb_header : buf,
+> -		       sizeof_bb_header);
+> -
+>  		if (lseek(outfd, data.header_gap, SEEK_SET) < 0) {
+>  			perror("lseek");
+>  			exit(1);
+> @@ -1001,6 +995,9 @@ int main(int argc, char *argv[])
+>  		xwrite(outfd, buf, header_len);
+>  	}
+>  
+> +	if (add_barebox_header)
+> +		pwrite(outfd, bb_header, sizeof_bb_header, 0);
+> +
+>  	xwrite(outfd, infile, insize);
+>  
+>  	/* pad until next 4k boundary */
+> -- 
+> 2.27.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
