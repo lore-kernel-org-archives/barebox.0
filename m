@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jvKK6-0005Oe-OI
- for barebox@lists.infradead.org; Tue, 14 Jul 2020 12:46:15 +0000
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Tue, 14 Jul 2020 14:46:10 +0200
-Message-Id: <20200714124610.12655-1-o.rempel@pengutronix.de>
+ id 1jvPNJ-0003C7-Cp
+ for barebox@lists.infradead.org; Tue, 14 Jul 2020 18:09:54 +0000
+Date: Tue, 14 Jul 2020 20:09:49 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200714180949.GS15485@pengutronix.de>
+References: <20200714091139.26244-1-christian.mauderer@embedded-brains.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200714091139.26244-1-christian.mauderer@embedded-brains.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,49 +22,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1] drivers: of: register DT root as device
-To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>, david@protonic.nl
+Subject: Re: [PATCH v4] FIT: Parse `load` and `entry` addresses.
+To: Christian Mauderer <christian.mauderer@embedded-brains.de>
+Cc: barebox@lists.infradead.org, a.fatoum@pengutronix.de
 
-A usual board file contains at least one of_machine_is_compatible().
-Some of the have a rather ling list with complicated version logic.
+Hi Christian,
 
-To avoid own implementation for driver management, register the root node
-of devicetree as platform device. So, the main platform bus can attach
-proper board driver. After this patch a typical board.c file can reuse
-existing driver infrastructure.
+On Tue, Jul 14, 2020 at 11:11:39AM +0200, Christian Mauderer wrote:
+> @@ -622,7 +622,8 @@ int bootm_boot(struct bootm_data *bootm_data)
+>  		}
+>  
+>  		ret = fit_open_image(data->os_fit, data->fit_config, "kernel",
+> -				     &data->fit_kernel, &data->fit_kernel_size);
+> +				     &data->fit_kernel, &data->fit_kernel_size,
+> +				     &data->os_address, &data->os_entry);
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- drivers/of/platform.c | 5 +++++
- 1 file changed, 5 insertions(+)
+bootm has -a and -e options to specify the load address and the entry
+point. If given, these should take precedence over the addresses given
+in the FIT image.
 
-diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-index ca84cede23..ab4329314e 100644
---- a/drivers/of/platform.c
-+++ b/drivers/of/platform.c
-@@ -348,6 +348,7 @@ int of_platform_populate(struct device_node *root,
- 			struct device_d *parent)
- {
- 	struct device_node *child;
-+	struct device_d *dev;
- 	int rc = 0;
- 
- 	if (!root)
-@@ -355,6 +356,10 @@ int of_platform_populate(struct device_node *root,
- 	if (!root)
- 		return -EINVAL;
- 
-+	dev = of_platform_device_create(root, NULL);
-+	if (dev)
-+		dev_set_name(dev, "%s.of", "machine");
-+
- 	for_each_child_of_node(root, child) {
- 		rc = of_platform_bus_create(child, matches, parent);
- 		if (rc)
+>  int fit_open_image(struct fit_handle *handle, void *configuration,
+>  		   const char *name, const void **outdata,
+> -		   unsigned long *outsize)
+> +		   unsigned long *outsize, unsigned long *load,
+> +		   unsigned long *entry)
+>  {
+
+fit_open_image() has many parameters already and the two new ones are
+not always needed or used. I think it's better to make getting the
+addresses a separate function, fit_get_load_address() and
+fit_get_entry() maybe?
+
+Regards,
+  Sascha
+
 -- 
-2.27.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
