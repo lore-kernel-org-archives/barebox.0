@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([2a01:4f8:c17:c88::2])
+Received: from magratgarlick.emantor.de ([78.46.208.201])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jvaP2-0006so-Cu
- for barebox@lists.infradead.org; Wed, 15 Jul 2020 05:56:26 +0000
+ id 1jvaP2-0006sm-0o
+ for barebox@lists.infradead.org; Wed, 15 Jul 2020 05:56:25 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Wed, 15 Jul 2020 07:56:06 +0200
-Message-Id: <20200715055608.20993-3-r.czerwinski@pengutronix.de>
-In-Reply-To: <20200715055608.20993-1-r.czerwinski@pengutronix.de>
-References: <20200715055608.20993-1-r.czerwinski@pengutronix.de>
+Date: Wed, 15 Jul 2020 07:56:04 +0200
+Message-Id: <20200715055608.20993-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,59 +19,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] nvmem: ocotp: add new timing function for i.MX7
+Subject: [PATCH 1/5] clk: imx7: add IMX7D_OCOTP_CLK
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Ported from the linux kernel.
+Otherwise barebox is not able to resolve the clock from the device tree
+node.
 
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- drivers/nvmem/ocotp.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ drivers/clk/imx/clk-imx7.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/nvmem/ocotp.c b/drivers/nvmem/ocotp.c
-index 3f475e5b1f..1b842ec0ed 100644
---- a/drivers/nvmem/ocotp.c
-+++ b/drivers/nvmem/ocotp.c
-@@ -48,6 +48,9 @@
- #define OCOTP_READ_CTRL			0x30
- #define OCOTP_READ_FUSE_DATA		0x40
- 
-+#define DEF_FSOURCE			1001	/* > 1000 ns */
-+#define DEF_STROBE_PROG			10000	/* IPG clocks */
-+
- /* OCOTP Registers bits and masks */
- #define OCOTP_CTRL_WR_UNLOCK		16
- #define OCOTP_CTRL_WR_UNLOCK_KEY	0x3E77
-@@ -171,6 +174,27 @@ static int imx6_ocotp_set_timing(struct ocotp_priv *priv)
- 	return 0;
- }
- 
-+static int imx7_ocotp_set_timing(struct ocotp_priv *priv)
-+{
-+	unsigned long clk_rate;
-+	u64 fsource, strobe_prog;
-+	u32 timing;
-+
-+	clk_rate = clk_get_rate(priv->clk);
-+
-+	fsource = DIV_ROUND_UP_ULL((u64)clk_rate * DEF_FSOURCE,
-+				   NSEC_PER_SEC) + 1;
-+	strobe_prog = DIV_ROUND_CLOSEST_ULL((u64)clk_rate * DEF_STROBE_PROG,
-+					    NSEC_PER_SEC) + 1;
-+
-+	timing = strobe_prog & 0x00000FFF;
-+	timing |= (fsource << 12) & 0x000FF000;
-+
-+	writel(timing, priv->base + OCOTP_TIMING);
-+
-+	return 0;
-+}
-+
- static int imx6_ocotp_wait_busy(struct ocotp_priv *priv, u32 flags)
- {
- 	uint64_t start = get_time_ns();
+diff --git a/drivers/clk/imx/clk-imx7.c b/drivers/clk/imx/clk-imx7.c
+index 1f15d7ef11..b6c7c2c3a8 100644
+--- a/drivers/clk/imx/clk-imx7.c
++++ b/drivers/clk/imx/clk-imx7.c
+@@ -722,10 +722,12 @@ static int imx7_ccm_probe(struct device_d *dev)
+ 	clks[IMX7D_OCRAM_S_CLK] = imx_clk_gate4("ocram_s_clk", "ahb_post_div", base + 0x4120, 0);
+ 	clks[IMX7D_NAND_USDHC_BUS_ROOT_CLK] = imx_clk_gate4("nand_usdhc_root_clk", "nand_usdhc_post_div", base + 0x4130, 0);
+ 	clks[IMX7D_AHB_CHANNEL_ROOT_CLK] = imx_clk_gate4("ahb_root_clk", "ahb_post_div", base + 0x4200, 0);
++	clks[IMX7D_IPG_ROOT_CLK] = imx_clk_divider_flags("ipg_root_clk", "ahb_root_clk", base + 0x9080, 0, 2, CLK_IS_CRITICAL | CLK_OPS_PARENT_ENABLE | CLK_SET_RATE_PARENT);
+ 	clks[IMX7D_DRAM_ROOT_CLK] = imx_clk_gate4("dram_root_clk", "dram_post_div", base + 0x4130, 0);
+ 	clks[IMX7D_DRAM_PHYM_ROOT_CLK] = imx_clk_gate4("dram_phym_root_clk", "dram_phym_cg", base + 0x4130, 0);
+ 	clks[IMX7D_DRAM_PHYM_ALT_ROOT_CLK] = imx_clk_gate4("dram_phym_alt_root_clk", "dram_phym_alt_post_div", base + 0x4130, 0);
+ 	clks[IMX7D_DRAM_ALT_ROOT_CLK] = imx_clk_gate4("dram_alt_root_clk", "dram_alt_post_div", base + 0x4130, 0);
++	clks[IMX7D_OCOTP_CLK] = imx_clk_gate4("ocotp_clk", "ipg_root_clk", base + 0x4230, 0);
+ 	clks[IMX7D_USB_HSIC_ROOT_CLK] = imx_clk_gate4("usb_hsic_root_clk", "usb_hsic_post_div", base + 0x4420, 0);
+ 	clks[IMX7D_SDMA_CORE_CLK] = imx_clk_gate4("sdma_root_clk", "ahb_root_clk", base + 0x4480, 0);
+ 	clks[IMX7D_PCIE_CTRL_ROOT_CLK] = imx_clk_gate4("pcie_ctrl_root_clk", "pcie_ctrl_post_div", base + 0x4600, 0);
 -- 
 2.27.0
 
