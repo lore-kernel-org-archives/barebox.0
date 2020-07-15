@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jveNC-0004y7-Vi
- for barebox@lists.infradead.org; Wed, 15 Jul 2020 10:10:47 +0000
+ id 1jveNC-0004yA-Vj
+ for barebox@lists.infradead.org; Wed, 15 Jul 2020 10:10:48 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Wed, 15 Jul 2020 12:10:39 +0200
-Message-Id: <20200715101042.29944-1-o.rempel@pengutronix.de>
+Date: Wed, 15 Jul 2020 12:10:42 +0200
+Message-Id: <20200715101042.29944-4-o.rempel@pengutronix.de>
+In-Reply-To: <20200715101042.29944-1-o.rempel@pengutronix.de>
+References: <20200715101042.29944-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,25 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 0/3] introduce board-driver support
+Subject: [PATCH v2 3/3] devinfo: do not dump the device node for the root node
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>, david@protonic.nl
 
-changes v2:
-- move root device registration to the of_probe()
-- port one board as example
-- fix issue with devinfo
+In case the device is a root node, then do not dump it. Otherwise it will be a
+mess.
 
-Oleksij Rempel (3):
-  of: base: register DT root as device
-  ARM: embest-riotboard: port board file to the driver model
-  devinfo: do not dump the device node for the root node
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ commands/devinfo.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- arch/arm/boards/embest-riotboard/board.c | 18 +++++++++++++-----
- commands/devinfo.c                       |  2 +-
- drivers/of/base.c                        |  5 +++++
- 3 files changed, 19 insertions(+), 6 deletions(-)
-
+diff --git a/commands/devinfo.c b/commands/devinfo.c
+index 81956b1cc0..018a7c4167 100644
+--- a/commands/devinfo.c
++++ b/commands/devinfo.c
+@@ -99,7 +99,7 @@ static int do_devinfo(int argc, char *argv[])
+ 			printf("\n");
+ 		}
+ #ifdef CONFIG_OFDEVICE
+-		if (dev->device_node) {
++		if (dev->device_node && dev->device_node != of_get_root_node()) {
+ 			printf("Device node: %s\n", dev->device_node->full_name);
+ 			of_print_nodes(dev->device_node, 0);
+ 		}
 -- 
 2.27.0
 
