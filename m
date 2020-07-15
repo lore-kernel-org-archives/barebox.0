@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jveNC-0004yA-Vj
+ id 1jveNC-0004y8-Vh
  for barebox@lists.infradead.org; Wed, 15 Jul 2020 10:10:48 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Wed, 15 Jul 2020 12:10:42 +0200
-Message-Id: <20200715101042.29944-4-o.rempel@pengutronix.de>
+Date: Wed, 15 Jul 2020 12:10:40 +0200
+Message-Id: <20200715101042.29944-2-o.rempel@pengutronix.de>
 In-Reply-To: <20200715101042.29944-1-o.rempel@pengutronix.de>
 References: <20200715101042.29944-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
@@ -21,31 +21,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/3] devinfo: do not dump the device node for the root node
+Subject: [PATCH v2 1/3] of: base: register DT root as device
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>, david@protonic.nl
 
-In case the device is a root node, then do not dump it. Otherwise it will be a
-mess.
+A usual board file contains at least one of_machine_is_compatible().
+Some of the have a rather long list with complicated version logic.
+
+To avoid own implementation for driver management, register the root node
+of devicetree as platform device. So, the main platform bus can attach
+proper board driver. After this patch a typical board.c file can reuse
+existing driver infrastructure.
+
+After this patch, you will be able to see all registered board drivers
+with drvinfo as fallow:
+...
+board-embest-riot
+board-protonic-imx6
+    machine.of
+...
+
+With devinfo, you'll be able to get some board specific information,
+if this is implemented:
+barebox@Protonic PRTI6Q board:/ devinfo machine.of
+Driver: board-protonic-imx6
+Bus: platform
+Parameters:
+  boardid: 0 (type: uint32)
+  boardrev: 1 (type: uint32)
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- commands/devinfo.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/of/base.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/commands/devinfo.c b/commands/devinfo.c
-index 81956b1cc0..018a7c4167 100644
---- a/commands/devinfo.c
-+++ b/commands/devinfo.c
-@@ -99,7 +99,7 @@ static int do_devinfo(int argc, char *argv[])
- 			printf("\n");
- 		}
- #ifdef CONFIG_OFDEVICE
--		if (dev->device_node) {
-+		if (dev->device_node && dev->device_node != of_get_root_node()) {
- 			printf("Device node: %s\n", dev->device_node->full_name);
- 			of_print_nodes(dev->device_node, 0);
- 		}
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 4c633bcd49..c48bf7a7fb 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -2133,6 +2133,7 @@ static void of_probe_memory(void)
+ int of_probe(void)
+ {
+ 	struct device_node *firmware;
++	struct device_d *dev;
+ 
+ 	if(!root_node)
+ 		return -ENODEV;
+@@ -2149,6 +2150,10 @@ int of_probe(void)
+ 	if (firmware)
+ 		of_platform_populate(firmware, NULL, NULL);
+ 
++	dev = of_platform_device_create(root_node, NULL);
++	if (dev)
++		dev_set_name(dev, "%s.of", "machine");
++
+ 	of_clk_init(root_node, NULL);
+ 	of_platform_populate(root_node, of_default_bus_match_table, NULL);
+ 
 -- 
 2.27.0
 
