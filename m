@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([2a01:4f8:c17:c88::2])
+Received: from dedi548.your-server.de ([85.10.215.148])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jvaP2-0006sq-B1
- for barebox@lists.infradead.org; Wed, 15 Jul 2020 05:56:26 +0000
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Wed, 15 Jul 2020 07:56:07 +0200
-Message-Id: <20200715055608.20993-4-r.czerwinski@pengutronix.de>
-In-Reply-To: <20200715055608.20993-1-r.czerwinski@pengutronix.de>
-References: <20200715055608.20993-1-r.czerwinski@pengutronix.de>
+ id 1jvdgz-0002LD-Nf
+ for barebox@lists.infradead.org; Wed, 15 Jul 2020 09:27:11 +0000
+From: Christian Mauderer <christian.mauderer@embedded-brains.de>
+Date: Wed, 15 Jul 2020 11:26:56 +0200
+Message-Id: <20200715092656.27253-1-christian.mauderer@embedded-brains.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,278 +19,251 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] nvmem: ocotp: read/write i.MX7 support
+Subject: [PATCH v5] FIT: Parse `load` and `entry` addresses.
 To: barebox@lists.infradead.org
-Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Cc: a.fatoum@pengutronix.de
 
-Implement read and write support for the banked access on i.MX7.
+According to the U-Boot documentation for the FIT file format, the load
+and entry have to be allways defined for a "kernel" or "standalone".
+But Barebox ignored the parameters. That changes with this patch.
 
-Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+For backward compatibility the default address is still used for images
+without `load` or `entry`.
+
+Signed-off-by: Christian Mauderer <christian.mauderer@embedded-brains.de>
 ---
- drivers/nvmem/ocotp.c | 147 ++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 141 insertions(+), 6 deletions(-)
+ common/blspec.c     |  1 +
+ common/boot.c       |  1 +
+ common/bootm.c      | 24 ++++++++++-
+ common/image-fit.c  | 97 ++++++++++++++++++++++++++++++++++++++-------
+ include/image-fit.h |  3 ++
+ 5 files changed, 110 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/nvmem/ocotp.c b/drivers/nvmem/ocotp.c
-index 1b842ec0ed..7081eb5479 100644
---- a/drivers/nvmem/ocotp.c
-+++ b/drivers/nvmem/ocotp.c
-@@ -48,6 +48,16 @@
- #define OCOTP_READ_CTRL			0x30
- #define OCOTP_READ_FUSE_DATA		0x40
+diff --git a/common/blspec.c b/common/blspec.c
+index 7fb62d310..050aed26a 100644
+--- a/common/blspec.c
++++ b/common/blspec.c
+@@ -142,6 +142,7 @@ static int blspec_boot(struct bootentry *be, int verbose, int dryrun)
+ 	globalvar_set_match("bootm.initrd", "");
  
-+#define MX7_OCOTP_DATA0 		0x20
-+#define MX7_OCOTP_DATA1 		0x30
-+#define MX7_OCOTP_DATA2 		0x40
-+#define MX7_OCOTP_DATA3 		0x50
-+#define MX7_OCOTP_READ_CTRL 		0x60
-+#define MX7_OCOTP_READ_FUSE_DATA0 	0x70
-+#define MX7_OCOTP_READ_FUSE_DATA1	0x80
-+#define MX7_OCOTP_READ_FUSE_DATA2	0x90
-+#define MX7_OCOTP_READ_FUSE_DATA3	0xA0
-+
- #define DEF_FSOURCE			1001	/* > 1000 ns */
- #define DEF_STROBE_PROG			10000	/* IPG clocks */
+ 	bootm_data_init_defaults(&data);
++	data.os_entry = 0;
  
-@@ -97,6 +107,8 @@ struct imx_ocotp_data {
- 	void (*format_mac)(u8 *dst, const u8 *src,
- 			   enum imx_ocotp_format_mac_direction dir);
- 	int (*set_timing)(struct ocotp_priv *priv);
-+	int (*fuse_read)(struct ocotp_priv *priv, u32 addr, u32 *pdata);
-+	int (*fuse_blow)(struct ocotp_priv *priv, u32 addr, u32 value);
- 	u8  mac_offsets[MAX_MAC_OFFSETS];
- 	u8  mac_offsets_num;
- };
-@@ -221,7 +233,7 @@ static int imx6_ocotp_prepare(struct ocotp_priv *priv)
- 	return 0;
- }
+ 	devicetree = blspec_entry_var_get(entry, "devicetree");
+ 	initrd = blspec_entry_var_get(entry, "initrd");
+diff --git a/common/boot.c b/common/boot.c
+index dcbe5cc2e..93ac1612d 100644
+--- a/common/boot.c
++++ b/common/boot.c
+@@ -104,6 +104,7 @@ static int bootscript_boot(struct bootentry *entry, int verbose, int dryrun)
  
--static int fuse_read_addr(struct ocotp_priv *priv, u32 addr, u32 *pdata)
-+static int imx6_fuse_read_addr(struct ocotp_priv *priv, u32 addr, u32 *pdata)
+ 	bootm_data_init_defaults(&data);
+ 
++	data.os_entry = 0;
+ 	if (verbose)
+ 		data.verbose = verbose;
+ 	if (dryrun)
+diff --git a/common/bootm.c b/common/bootm.c
+index 366f31455..8f8dbe6cb 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -58,6 +58,7 @@ void bootm_data_init_defaults(struct bootm_data *data)
  {
- 	u32 ctrl_reg;
- 	int ret;
-@@ -247,6 +259,50 @@ static int fuse_read_addr(struct ocotp_priv *priv, u32 addr, u32 *pdata)
- 	return 0;
+ 	data->initrd_address = UIMAGE_INVALID_ADDRESS;
+ 	data->os_address = UIMAGE_SOME_ADDRESS;
++	data->os_entry = UIMAGE_SOME_ADDRESS;
+ 	data->oftree_file = getenv_nonempty("global.bootm.oftree");
+ 	data->tee_file = getenv_nonempty("global.bootm.tee");
+ 	data->os_file = getenv_nonempty("global.bootm.image");
+@@ -601,6 +602,7 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 
+ 	if (IS_ENABLED(CONFIG_FITIMAGE) && os_type == filetype_oftree) {
+ 		struct fit_handle *fit;
++		static const char *kernel_img = "kernel";
+ 
+ 		fit = fit_open(data->os_file, data->verbose, data->verify);
+ 		if (IS_ERR(fit)) {
+@@ -621,10 +623,28 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 			goto err_out;
+ 		}
+ 
+-		ret = fit_open_image(data->os_fit, data->fit_config, "kernel",
++		ret = fit_open_image(data->os_fit, data->fit_config, kernel_img,
+ 				     &data->fit_kernel, &data->fit_kernel_size);
+ 		if (ret)
+ 			goto err_out;
++		if (data->os_address == UIMAGE_SOME_ADDRESS) {
++			ret = fit_get_image_address(data->os_fit,
++						    data->fit_config,
++						    kernel_img,
++						    "load", &data->os_address);
++			if (ret)
++				goto err_out;
++		}
++		if (data->os_entry == UIMAGE_SOME_ADDRESS) {
++			unsigned long entry;
++			ret = fit_get_image_address(data->os_fit,
++						    data->fit_config,
++						    kernel_img,
++						    "entry", &entry);
++			if (!ret)
++				data->os_entry = entry - data->os_address;
++				/* Note: Error case used default value. */
++		}
+ 	}
+ 
+ 	if (os_type == filetype_uimage) {
+@@ -672,6 +692,8 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 
+ 	if (data->os_address == UIMAGE_SOME_ADDRESS)
+ 		data->os_address = UIMAGE_INVALID_ADDRESS;
++	if (data->os_entry == UIMAGE_SOME_ADDRESS)
++		data->os_entry = 0;
+ 
+ 	handler = bootm_find_handler(os_type, data);
+ 	if (!handler) {
+diff --git a/common/image-fit.c b/common/image-fit.c
+index 2681d62a9..61aa299b1 100644
+--- a/common/image-fit.c
++++ b/common/image-fit.c
+@@ -517,6 +517,83 @@ int fit_has_image(struct fit_handle *handle, void *configuration,
+ 	return 1;
  }
  
-+static int imx7_fuse_read_addr(struct ocotp_priv *priv, u32 index, u32 *pdata)
++static int fit_get_address(struct device_node *image, const char *property,
++			   unsigned long *addr)
 +{
-+	u32 ctrl_reg;
-+	u32 bank_addr;
-+	u16 word;
-+	int ret;
++	const __be32 *cell;
++	int len = 0;
 +
-+	word = index & 0x3;
-+	bank_addr = index >> 2;
++	cell = of_get_property(image, property, &len);
++	if (!cell)
++		return -EINVAL;
++	if (len > sizeof(*addr))
++		return -ENOTSUPP;
 +
-+	writel(OCOTP_CTRL_ERROR, priv->base + OCOTP_CTRL_CLR);
-+
-+	ctrl_reg = readl(priv->base + OCOTP_CTRL);
-+	ctrl_reg &= ~OCOTP_CTRL_ADDR_MASK;
-+	ctrl_reg &= ~OCOTP_CTRL_WR_UNLOCK_MASK;
-+	ctrl_reg |= BF(bank_addr, OCOTP_CTRL_ADDR);
-+	writel(ctrl_reg, priv->base + OCOTP_CTRL);
-+
-+	writel(OCOTP_READ_CTRL_READ_FUSE, priv->base + MX7_OCOTP_READ_CTRL);
-+	ret = imx6_ocotp_wait_busy(priv, 0);
-+	if (ret)
-+		return ret;
-+
-+	if (readl(priv->base + OCOTP_CTRL) & OCOTP_CTRL_ERROR)
-+		*pdata = 0xbadabada;
-+	else
-+		switch (word) {
-+			case 0:
-+				*pdata = readl(priv->base + MX7_OCOTP_READ_FUSE_DATA0);
-+				break;
-+			case 1:
-+				*pdata = readl(priv->base + MX7_OCOTP_READ_FUSE_DATA1);
-+				break;
-+			case 2:
-+				*pdata = readl(priv->base + MX7_OCOTP_READ_FUSE_DATA2);
-+				break;
-+			case 3:
-+				*pdata = readl(priv->base + MX7_OCOTP_READ_FUSE_DATA2);
-+				break;
-+		}
-+
++	*addr = (unsigned long)of_read_number(cell, len / sizeof(*cell));
 +	return 0;
 +}
 +
- static int imx6_ocotp_read_one_u32(struct ocotp_priv *priv, u32 index, u32 *pdata)
- {
- 	int ret;
-@@ -258,7 +314,7 @@ static int imx6_ocotp_read_one_u32(struct ocotp_priv *priv, u32 index, u32 *pdat
- 		return ret;
- 	}
- 
--	ret = fuse_read_addr(priv, index, pdata);
-+	ret = priv->data->fuse_read(priv, index, pdata);
- 	if (ret) {
- 		dev_err(&priv->dev, "failed to read fuse 0x%08x\n", index);
- 		return ret;
-@@ -287,19 +343,27 @@ static int imx_ocotp_reg_read(void *ctx, unsigned int reg, unsigned int *val)
- 	return 0;
- }
- 
--static int fuse_blow_addr(struct ocotp_priv *priv, u32 addr, u32 value)
-+static void imx_ocotp_clear_unlock(struct ocotp_priv *priv, u32 index)
- {
- 	u32 ctrl_reg;
--	int ret;
- 
- 	writel(OCOTP_CTRL_ERROR, priv->base + OCOTP_CTRL_CLR);
- 
- 	/* Control register */
- 	ctrl_reg = readl(priv->base + OCOTP_CTRL);
- 	ctrl_reg &= ~OCOTP_CTRL_ADDR_MASK;
--	ctrl_reg |= BF(addr, OCOTP_CTRL_ADDR);
-+	ctrl_reg |= BF(index, OCOTP_CTRL_ADDR);
- 	ctrl_reg |= BF(OCOTP_CTRL_WR_UNLOCK_KEY, OCOTP_CTRL_WR_UNLOCK);
- 	writel(ctrl_reg, priv->base + OCOTP_CTRL);
-+}
-+
-+static int imx6_fuse_blow_addr(struct ocotp_priv *priv, u32 index, u32 value)
++static int
++fit_get_image(struct fit_handle *handle, void *configuration,
++	      const char **unit, struct device_node **image)
 +{
-+	int ret;
++	struct device_node *conf_node = configuration;
 +
-+	imx_ocotp_clear_unlock(priv, index);
-+
-+	writel(OCOTP_CTRL_ERROR, priv->base + OCOTP_CTRL_CLR);
- 
- 	writel(value, priv->base + OCOTP_DATA);
- 	ret = imx6_ocotp_wait_busy(priv, 0);
-@@ -311,6 +375,53 @@ static int fuse_blow_addr(struct ocotp_priv *priv, u32 addr, u32 value)
- 	return 0;
- }
- 
-+static int imx7_fuse_blow_addr(struct ocotp_priv *priv, u32 index, u32 value)
-+{
-+	int ret;
-+	int word;
-+	int bank_addr;
-+
-+	bank_addr = index >> 2;
-+	word = index & 0x3;
-+
-+	imx_ocotp_clear_unlock(priv, bank_addr);
-+
-+	switch(word) {
-+		case 0:
-+			writel(0, priv->base + MX7_OCOTP_DATA1);
-+			writel(0, priv->base + MX7_OCOTP_DATA2);
-+			writel(0, priv->base + MX7_OCOTP_DATA3);
-+			writel(value, priv->base + MX7_OCOTP_DATA0);
-+			break;
-+		case 1:
-+			writel(value, priv->base + MX7_OCOTP_DATA1);
-+			writel(0, priv->base + MX7_OCOTP_DATA2);
-+			writel(0, priv->base + MX7_OCOTP_DATA3);
-+			writel(0, priv->base + MX7_OCOTP_DATA0);
-+			break;
-+		case 2:
-+			writel(value, priv->base + MX7_OCOTP_DATA2);
-+			writel(0, priv->base + MX7_OCOTP_DATA3);
-+			writel(0, priv->base + MX7_OCOTP_DATA1);
-+			writel(0, priv->base + MX7_OCOTP_DATA0);
-+			break;
-+		case 3:
-+			writel(value, priv->base + MX7_OCOTP_DATA3);
-+			writel(0, priv->base + MX7_OCOTP_DATA1);
-+			writel(0, priv->base + MX7_OCOTP_DATA2);
-+			writel(0, priv->base + MX7_OCOTP_DATA0);
-+			break;
++	if (conf_node) {
++		if (of_property_read_string(conf_node, *unit, unit)) {
++			pr_err("No image named '%s'\n", *unit);
++			return -ENOENT;
++		}
 +	}
 +
-+	ret = imx6_ocotp_wait_busy(priv, 0);
-+	if (ret)
-+		return ret;
++	*image = of_get_child_by_name(handle->images, *unit);
++	if (!*image)
++		return -ENOENT;
 +
-+	/* Write postamble */
-+	udelay(2000);
 +	return 0;
 +}
 +
- static int imx6_ocotp_reload_shadow(struct ocotp_priv *priv)
++/**
++ * fit_get_image_address - Get an address from an image in a FIT image
++ * @handle: The FIT image handle
++ * @name: The name of the image to open
++ * @property: The name of the address to get (for example "load" or "entry")
++ * @address: The address given by the image
++ *
++ * Try to parse the @property in the image @name as an address. @configuration
++ * holds the cookie returned from fit_open_configuration() if the image is
++ * opened as part of a configuration, or NULL if the image is opened without a
++ * configuration. If it exists the value will be returned in @address. Otherwise
++ * @address won't be changed.
++ *
++ * Return: 0 for success, negative error code otherwise
++ */
++int fit_get_image_address(struct fit_handle *handle, void *configuration,
++			  const char *name, const char *property,
++			  unsigned long *address)
++{
++	struct device_node *image;
++	const char *unit = name;
++	int ret;
++
++	if (!address || !property || !name)
++		return -EINVAL;
++
++	ret = fit_get_image(handle, configuration, &unit, &image);
++	if (ret)
++		return ret;
++
++	pr_info("%s/%s: ", image->full_name, property);
++
++	ret = fit_get_address(image, property, address);
++	if (ret < 0)
++		pr_cont("<not found>\n");
++	else
++		pr_cont("0x%lx\n", *address);
++
++	return ret;
++}
++
+ /**
+  * fit_open_image - Open an image in a FIT image
+  * @handle: The FIT image handle
+@@ -539,24 +616,14 @@ int fit_open_image(struct fit_handle *handle, void *configuration,
+ 		   unsigned long *outsize)
  {
- 	dev_info(&priv->dev, "reloading shadow registers...\n");
-@@ -331,7 +442,7 @@ static int imx6_ocotp_blow_one_u32(struct ocotp_priv *priv, u32 index, u32 data,
- 		return ret;
+ 	struct device_node *image;
+-	const char *unit, *type = NULL, *desc= "(no description)";
++	const char *unit = name, *type = NULL, *desc= "(no description)";
+ 	const void *data;
+ 	int data_len;
+ 	int ret = 0;
+-	struct device_node *conf_node = configuration;
+ 
+-	if (conf_node) {
+-		if (of_property_read_string(conf_node, name, &unit)) {
+-			pr_err("No image named '%s'\n", name);
+-			return -ENOENT;
+-		}
+-	} else {
+-		unit = name;
+-	}
+-
+-	image = of_get_child_by_name(handle->images, unit);
+-	if (!image)
+-		return -ENOENT;
++	ret = fit_get_image(handle, configuration, &unit, &image);
++	if (ret)
++		return ret;
+ 
+ 	of_property_read_string(image, "description", &desc);
+ 	pr_info("image '%s': '%s'\n", unit, desc);
+@@ -573,7 +640,7 @@ int fit_open_image(struct fit_handle *handle, void *configuration,
+ 		return -EINVAL;
  	}
  
--	ret = fuse_blow_addr(priv, index, data);
-+	ret = priv->data->fuse_blow(priv, index, data);
- 	if (ret) {
- 		dev_err(&priv->dev, "fuse blow failed\n");
- 		return ret;
-@@ -731,6 +842,8 @@ static struct imx_ocotp_data imx6sl_ocotp_data = {
- 	.mac_offsets = { MAC_OFFSET_0 },
- 	.format_mac = imx_ocotp_format_mac,
- 	.set_timing = imx6_ocotp_set_timing,
-+	.fuse_blow = imx6_fuse_blow_addr,
-+	.fuse_read = imx6_fuse_read_addr,
- };
+-	if (conf_node)
++	if (configuration)
+ 		ret = fit_verify_hash(handle, image, data, data_len);
+ 	else
+ 		ret = fit_image_verify_signature(handle, image, data, data_len);
+diff --git a/include/image-fit.h b/include/image-fit.h
+index 27c9e8351..f21545988 100644
+--- a/include/image-fit.h
++++ b/include/image-fit.h
+@@ -32,6 +32,9 @@ int fit_has_image(struct fit_handle *handle, void *configuration,
+ int fit_open_image(struct fit_handle *handle, void *configuration,
+ 		   const char *name, const void **outdata,
+ 		   unsigned long *outsize);
++int fit_get_image_address(struct fit_handle *handle, void *configuration,
++			  const char *name, const char *property,
++			  unsigned long *address);
  
- static struct imx_ocotp_data imx6ul_ocotp_data = {
-@@ -740,6 +853,8 @@ static struct imx_ocotp_data imx6ul_ocotp_data = {
- 	.mac_offsets = { MAC_OFFSET_0, IMX6UL_MAC_OFFSET_1 },
- 	.format_mac = imx_ocotp_format_mac,
- 	.set_timing = imx6_ocotp_set_timing,
-+	.fuse_blow = imx6_fuse_blow_addr,
-+	.fuse_read = imx6_fuse_read_addr,
- };
+ void fit_close(struct fit_handle *handle);
  
- static struct imx_ocotp_data imx6ull_ocotp_data = {
-@@ -749,6 +864,8 @@ static struct imx_ocotp_data imx6ull_ocotp_data = {
- 	.mac_offsets = { MAC_OFFSET_0, IMX6UL_MAC_OFFSET_1 },
- 	.format_mac = imx_ocotp_format_mac,
- 	.set_timing = imx6_ocotp_set_timing,
-+	.fuse_blow = imx6_fuse_blow_addr,
-+	.fuse_read = imx6_fuse_read_addr,
- };
- 
- static struct imx_ocotp_data vf610_ocotp_data = {
-@@ -758,6 +875,8 @@ static struct imx_ocotp_data vf610_ocotp_data = {
- 	.mac_offsets = { MAC_OFFSET_0, MAC_OFFSET_1 },
- 	.format_mac = vf610_ocotp_format_mac,
- 	.set_timing = imx6_ocotp_set_timing,
-+	.fuse_blow = imx6_fuse_blow_addr,
-+	.fuse_read = imx6_fuse_read_addr,
- };
- 
- static struct imx_ocotp_data imx8mq_ocotp_data = {
-@@ -767,6 +886,19 @@ static struct imx_ocotp_data imx8mq_ocotp_data = {
- 	.mac_offsets = { 0x90 },
- 	.format_mac = imx_ocotp_format_mac,
- 	.set_timing = imx6_ocotp_set_timing,
-+	.fuse_blow = imx6_fuse_blow_addr,
-+	.fuse_read = imx6_fuse_read_addr,
-+};
-+
-+static struct imx_ocotp_data imx7d_ocotp_data = {
-+	.num_regs = 2048,
-+	.addr_to_offset = imx6sl_addr_to_offset,
-+	.mac_offsets_num = 1,
-+	.mac_offsets = { MAC_OFFSET_0, IMX6UL_MAC_OFFSET_1 },
-+	.format_mac = imx_ocotp_format_mac,
-+	.set_timing = imx7_ocotp_set_timing,
-+	.fuse_blow = imx7_fuse_blow_addr,
-+	.fuse_read = imx7_fuse_read_addr,
- };
- 
- static __maybe_unused struct of_device_id imx_ocotp_dt_ids[] = {
-@@ -785,6 +917,9 @@ static __maybe_unused struct of_device_id imx_ocotp_dt_ids[] = {
- 	}, {
- 		.compatible = "fsl,imx6ull-ocotp",
- 		.data = &imx6ull_ocotp_data,
-+	}, {
-+		.compatible = "fsl,imx7d-ocotp",
-+		.data = &imx7d_ocotp_data,
- 	}, {
- 		.compatible = "fsl,imx8mq-ocotp",
- 		.data = &imx8mq_ocotp_data,
 -- 
-2.27.0
+2.26.2
 
 
 _______________________________________________
