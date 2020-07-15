@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from dedi548.your-server.de ([85.10.215.148])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jvdkd-00032v-8P
- for barebox@lists.infradead.org; Wed, 15 Jul 2020 09:30:56 +0000
-References: <20200714091139.26244-1-christian.mauderer@embedded-brains.de>
- <20200714180949.GS15485@pengutronix.de>
-From: Christian Mauderer <christian.mauderer@embedded-brains.de>
-Message-ID: <9cfeb3a0-bb95-deb7-fbd4-d42ef48947b7@embedded-brains.de>
-Date: Wed, 15 Jul 2020 11:30:52 +0200
+ id 1jveNC-0004y7-Vi
+ for barebox@lists.infradead.org; Wed, 15 Jul 2020 10:10:47 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Wed, 15 Jul 2020 12:10:39 +0200
+Message-Id: <20200715101042.29944-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20200714180949.GS15485@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,89 +15,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v4] FIT: Parse `load` and `entry` addresses.
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, a.fatoum@pengutronix.de
+Subject: [PATCH v2 0/3] introduce board-driver support
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>, david@protonic.nl
 
-SGVsbG8gU2FzY2hhLAoKdGhhbmtzIGZvciB0aGUgcmV2aWV3LiBJdCB3YXMgYSBiaXQgbW9yZSBl
-ZmZvcnQgYW5kIGVzcGVjaWFsbHkgdGhlCmV4dHJhIGZpdF9nZXRfaW1hZ2VfYWRkcmVzcyAoSSB1
-c2VkIG9uZSBpbnN0ZWFkIG9mIHNlcGFyYXRlIG9uZXMgZm9yCmxvYWQgYW5kIGVudHJ5KSBtb3Zl
-ZCBxdWl0ZSBzb21lIGNvZGUgYXJvdW5kLiBCdXQgSSBwb3N0ZWQgYSB2NSB0aGF0CnNob3VsZCBm
-dWxmaWxsIHRoZSBhc2tlZCBjaGFuZ2VzLiBUaGUgb3V0cHV0IGZvciB0aGUgZm91ciBjYXNlcyAo
-bG9hZCwKZW50cnkgc2V0IG9yIG5vdCBzZXQpIG5vdyBsb29rcyBsaWtlIHRoZSBmb2xsb3dpbmc6
-CgpiYXJlYm94QHNvbWV0YXJnZXQ6L21udC9tbWMgYm9vdG0gLXYgLWQgZmFsbGJhY2suaXRiCkZJ
-VDogT3BlbmVkIEZJVCBpbWFnZTogU29tZSBJbWFnZQpGSVQ6IE5vIG1hdGNoIGZvdW5kLiBUcnlp
-bmcgZGVmYXVsdC4KRklUOiBjb25maWd1cmF0aW9uICdjb25mLTEnOiBCb290IEFwcGxpY2F0aW9u
-IHdpdGggRkRUIGJsb2IKRklUOiBpbWFnZSAna2VybmVsJzogJ1JURU1TIEFwcGxpY2F0aW9uJwpG
-SVQ6IC9pbWFnZXMva2VybmVsL2hhc2gtMTogaGFzaCBPSwpGSVQ6IC9pbWFnZXMva2VybmVsL2xv
-YWQ6IDB4ODA1MDAwMDAKRklUOiAvaW1hZ2VzL2tlcm5lbC9lbnRyeTogMHg4MDUwMDAwMAoKTG9h
-ZGluZyBvcGVuIGZpcm13YXJlIERldmljZSBUcmVlIGZsYXR0ZW5lZCBCaW5hcnkgJ2ZhbGxiYWNr
-Lml0YicKT1MgaW1hZ2Ugbm90IHlldCByZWxvY2F0ZWQKUGFzc2luZyBjb250cm9sIHRvIEZJVCBp
-bWFnZSBoYW5kbGVyCm5vIGluaXRyZCBsb2FkIGFkZHJlc3MsIGRlZmF1bHRpbmcgdG8gMHg4MmFi
-YjAwMApGSVQ6IGltYWdlICdmZHQtMSc6ICdGbGF0dGVuZWQgRGV2aWNlIFRyZWUgYmxvYicKRklU
-OiAvaW1hZ2VzL2ZkdC0xL2hhc2gtMTogaGFzaCBPSwpjb21tYW5kbGluZTogIGNvbnNvbGU9dHR5
-bXhjMCwxMTUyMDBuOAoKU3RhcnRpbmcga2VybmVsIGF0IDB4ODA1MDAwMDAsIG9mdHJlZSBhdCAw
-eDgyYWJiMDAwLi4uClN0YXJ0aW5nIGtlcm5lbCBpbiBzZWN1cmUgbW9kZQpEcnlydW4uIEFib3J0
-ZWQKYmFyZWJveEBzb21ldGFyZ2V0Oi9tbnQvbW1jIGJvb3RtIC12IC1kIC1lIDB4MTAgZmFsbGJh
-Y2suaXRiCkZJVDogT3BlbmVkIEZJVCBpbWFnZTogU29tZSBJbWFnZQpGSVQ6IE5vIG1hdGNoIGZv
-dW5kLiBUcnlpbmcgZGVmYXVsdC4KRklUOiBjb25maWd1cmF0aW9uICdjb25mLTEnOiBCb290IEFw
-cGxpY2F0aW9uIHdpdGggRkRUIGJsb2IKRklUOiBpbWFnZSAna2VybmVsJzogJ1JURU1TIEFwcGxp
-Y2F0aW9uJwpGSVQ6IC9pbWFnZXMva2VybmVsL2hhc2gtMTogaGFzaCBPSwpGSVQ6IC9pbWFnZXMv
-a2VybmVsL2xvYWQ6IDB4ODA1MDAwMDAKCkxvYWRpbmcgb3BlbiBmaXJtd2FyZSBEZXZpY2UgVHJl
-ZSBmbGF0dGVuZWQgQmluYXJ5ICdmYWxsYmFjay5pdGInCk9TIGltYWdlIG5vdCB5ZXQgcmVsb2Nh
-dGVkClBhc3NpbmcgY29udHJvbCB0byBGSVQgaW1hZ2UgaGFuZGxlcgpubyBpbml0cmQgbG9hZCBh
-ZGRyZXNzLCBkZWZhdWx0aW5nIHRvIDB4ODJhYmIwMDAKRklUOiBpbWFnZSAnZmR0LTEnOiAnRmxh
-dHRlbmVkIERldmljZSBUcmVlIGJsb2InCkZJVDogL2ltYWdlcy9mZHQtMS9oYXNoLTE6IGhhc2gg
-T0sKY29tbWFuZGxpbmU6ICBjb25zb2xlPXR0eW14YzAsMTE1MjAwbjgKClN0YXJ0aW5nIGtlcm5l
-bCBhdCAweDgwNTAwMDEwLCBvZnRyZWUgYXQgMHg4MmFiYjAwMC4uLgpTdGFydGluZyBrZXJuZWwg
-aW4gc2VjdXJlIG1vZGUKRHJ5cnVuLiBBYm9ydGVkCmJhcmVib3hAc29tZXRhcmdldDovbW50L21t
-YyBib290bSAtdiAtZCAtYSAweDEwIGZhbGxiYWNrLml0YgpGSVQ6IE9wZW5lZCBGSVQgaW1hZ2U6
-IFNvbWUgSW1hZ2UKRklUOiBObyBtYXRjaCBmb3VuZC4gVHJ5aW5nIGRlZmF1bHQuCkZJVDogY29u
-ZmlndXJhdGlvbiAnY29uZi0xJzogQm9vdCBBcHBsaWNhdGlvbiB3aXRoIEZEVCBibG9iCkZJVDog
-aW1hZ2UgJ2tlcm5lbCc6ICdSVEVNUyBBcHBsaWNhdGlvbicKRklUOiAvaW1hZ2VzL2tlcm5lbC9o
-YXNoLTE6IGhhc2ggT0sKRklUOiAvaW1hZ2VzL2tlcm5lbC9lbnRyeTogMHg4MDUwMDAwMAoKTG9h
-ZGluZyBvcGVuIGZpcm13YXJlIERldmljZSBUcmVlIGZsYXR0ZW5lZCBCaW5hcnkgJ2ZhbGxiYWNr
-Lml0YicKT1MgaW1hZ2Ugbm90IHlldCByZWxvY2F0ZWQKUGFzc2luZyBjb250cm9sIHRvIEZJVCBp
-bWFnZSBoYW5kbGVyCkRyeXJ1bi4gQWJvcnRlZApoYW5kbGVyIGZhaWxlZCB3aXRoOiBPdXQgb2Yg
-bWVtb3J5CmJhcmVib3hAc29tZXRhcmdldDovbW50L21tYyBib290bSAtdiAtZCAtYSAweDEwIC1l
-IDB4MTAgZmFsbGJhY2suaXRiCkZJVDogT3BlbmVkIEZJVCBpbWFnZTogU29tZSBJbWFnZQpGSVQ6
-IE5vIG1hdGNoIGZvdW5kLiBUcnlpbmcgZGVmYXVsdC4KRklUOiBjb25maWd1cmF0aW9uICdjb25m
-LTEnOiBCb290IEFwcGxpY2F0aW9uIHdpdGggRkRUIGJsb2IKRklUOiBpbWFnZSAna2VybmVsJzog
-J1JURU1TIEFwcGxpY2F0aW9uJwpGSVQ6IC9pbWFnZXMva2VybmVsL2hhc2gtMTogaGFzaCBPSwoK
-TG9hZGluZyBvcGVuIGZpcm13YXJlIERldmljZSBUcmVlIGZsYXR0ZW5lZCBCaW5hcnkgJ2ZhbGxi
-YWNrLml0YicKT1MgaW1hZ2Ugbm90IHlldCByZWxvY2F0ZWQKUGFzc2luZyBjb250cm9sIHRvIEZJ
-VCBpbWFnZSBoYW5kbGVyCkRyeXJ1bi4gQWJvcnRlZApoYW5kbGVyIGZhaWxlZCB3aXRoOiBPdXQg
-b2YgbWVtb3J5CmJhcmVib3hAc29tZXRhcmdldDovbW50L21tYwoKQmVzdCByZWdhcmRzCgpDaHJp
-c3RpYW4KCk9uIDE0LzA3LzIwMjAgMjA6MDksIFNhc2NoYSBIYXVlciB3cm90ZToKPiBIaSBDaHJp
-c3RpYW4sCj4KPiBPbiBUdWUsIEp1bCAxNCwgMjAyMCBhdCAxMToxMTozOUFNICswMjAwLCBDaHJp
-c3RpYW4gTWF1ZGVyZXIgd3JvdGU6Cj4+IEBAIC02MjIsNyArNjIyLDggQEAgaW50IGJvb3RtX2Jv
-b3Qoc3RydWN0IGJvb3RtX2RhdGEgKmJvb3RtX2RhdGEpCj4+ICAJCX0KPj4KPj4gIAkJcmV0ID0g
-Zml0X29wZW5faW1hZ2UoZGF0YS0+b3NfZml0LCBkYXRhLT5maXRfY29uZmlnLCAia2VybmVsIiwK
-Pj4gLQkJCQkgICAgICZkYXRhLT5maXRfa2VybmVsLCAmZGF0YS0+Zml0X2tlcm5lbF9zaXplKTsK
-Pj4gKwkJCQkgICAgICZkYXRhLT5maXRfa2VybmVsLCAmZGF0YS0+Zml0X2tlcm5lbF9zaXplLAo+
-PiArCQkJCSAgICAgJmRhdGEtPm9zX2FkZHJlc3MsICZkYXRhLT5vc19lbnRyeSk7Cj4KPiBib290
-bSBoYXMgLWEgYW5kIC1lIG9wdGlvbnMgdG8gc3BlY2lmeSB0aGUgbG9hZCBhZGRyZXNzIGFuZCB0
-aGUgZW50cnkKPiBwb2ludC4gSWYgZ2l2ZW4sIHRoZXNlIHNob3VsZCB0YWtlIHByZWNlZGVuY2Ug
-b3ZlciB0aGUgYWRkcmVzc2VzIGdpdmVuCj4gaW4gdGhlIEZJVCBpbWFnZS4KPgo+PiAgaW50IGZp
-dF9vcGVuX2ltYWdlKHN0cnVjdCBmaXRfaGFuZGxlICpoYW5kbGUsIHZvaWQgKmNvbmZpZ3VyYXRp
-b24sCj4+ICAJCSAgIGNvbnN0IGNoYXIgKm5hbWUsIGNvbnN0IHZvaWQgKipvdXRkYXRhLAo+PiAt
-CQkgICB1bnNpZ25lZCBsb25nICpvdXRzaXplKQo+PiArCQkgICB1bnNpZ25lZCBsb25nICpvdXRz
-aXplLCB1bnNpZ25lZCBsb25nICpsb2FkLAo+PiArCQkgICB1bnNpZ25lZCBsb25nICplbnRyeSkK
-Pj4gIHsKPgo+IGZpdF9vcGVuX2ltYWdlKCkgaGFzIG1hbnkgcGFyYW1ldGVycyBhbHJlYWR5IGFu
-ZCB0aGUgdHdvIG5ldyBvbmVzIGFyZQo+IG5vdCBhbHdheXMgbmVlZGVkIG9yIHVzZWQuIEkgdGhp
-bmsgaXQncyBiZXR0ZXIgdG8gbWFrZSBnZXR0aW5nIHRoZQo+IGFkZHJlc3NlcyBhIHNlcGFyYXRl
-IGZ1bmN0aW9uLCBmaXRfZ2V0X2xvYWRfYWRkcmVzcygpIGFuZAo+IGZpdF9nZXRfZW50cnkoKSBt
-YXliZT8KPgo+IFJlZ2FyZHMsCj4gICBTYXNjaGEKPgoKLS0gCi0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCmVtYmVkZGVkIGJyYWlucyBHbWJICkhlcnIgQ2hyaXN0
-aWFuIE1hdWRlcmVyCkRvcm5pZXJzdHIuIDQKRC04MjE3OCBQdWNoaGVpbQpHZXJtYW55CmVtYWls
-OiBjaHJpc3RpYW4ubWF1ZGVyZXJAZW1iZWRkZWQtYnJhaW5zLmRlClBob25lOiArNDktODktMTgg
-OTQgNzQxIC0gMTgKRmF4OiAgICs0OS04OS0xOCA5NCA3NDEgLSAwOApQR1A6IFB1YmxpYyBrZXkg
-YXZhaWxhYmxlIG9uIHJlcXVlc3QuCgpEaWVzZSBOYWNocmljaHQgaXN0IGtlaW5lIGdlc2Now6Rm
-dGxpY2hlIE1pdHRlaWx1bmcgaW0gU2lubmUgZGVzIEVIVUcuCgpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94
-QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9s
-aXN0aW5mby9iYXJlYm94Cg==
+changes v2:
+- move root device registration to the of_probe()
+- port one board as example
+- fix issue with devinfo
+
+Oleksij Rempel (3):
+  of: base: register DT root as device
+  ARM: embest-riotboard: port board file to the driver model
+  devinfo: do not dump the device node for the root node
+
+ arch/arm/boards/embest-riotboard/board.c | 18 +++++++++++++-----
+ commands/devinfo.c                       |  2 +-
+ drivers/of/base.c                        |  5 +++++
+ 3 files changed, 19 insertions(+), 6 deletions(-)
+
+-- 
+2.27.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
