@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jvxfP-00016H-Aj
- for barebox@lists.infradead.org; Thu, 16 Jul 2020 06:46:53 +0000
+ id 1jvxfP-00016F-9N
+ for barebox@lists.infradead.org; Thu, 16 Jul 2020 06:46:52 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Thu, 16 Jul 2020 08:46:40 +0200
-Message-Id: <20200716064642.25729-2-o.rempel@pengutronix.de>
+Date: Thu, 16 Jul 2020 08:46:41 +0200
+Message-Id: <20200716064642.25729-3-o.rempel@pengutronix.de>
 In-Reply-To: <20200716064642.25729-1-o.rempel@pengutronix.de>
 References: <20200716064642.25729-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
@@ -21,30 +21,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 1/3] devinfo: do not dump the device node for the root node
+Subject: [PATCH v3 2/3] of: base: register DT root as device
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>, david@protonic.nl
 
-Calling the devinfo against a device which is linked to some devicetree
-node weill result a devictree dump of this node. For example:
+A usual board file contains at least one of_machine_is_compatible().
+Some of the have a rather long list with complicated version logic.
 
-barebox@Protonic PRTI6Q board:/ devinfo sound-spdif.of
-Bus: platform
-Device node: /sound-spdif
-sound-spdif {
-        compatible = "fsl,imx-audio-spdif";
-        model = "imx-spdif";
-        spdif-controller = <0x7a>;
-        spdif-in;
-        spdif-out;
-};
+To avoid own implementation for driver management, register the root node
+of devicetree as platform device. So, the main platform bus can attach
+proper board driver. After this patch a typical board.c file can reuse
+existing driver infrastructure.
 
-Calling same command on a device wich is linked to the root node of
-devicetree, for example "machine.of", will trigger a dump fo complete
-devicetree. Since the same functionality is provided by the "of_dump"
-command, it is better to limit devinfo on the root device. After this
-patch we would get following output:
+After this patch, you will be able to see all registered board drivers
+with drvinfo as fallow:
+...
+board-embest-riot
+board-protonic-imx6
+    machine.of
+...
 
+With devinfo, you'll be able to get some board specific information,
+if this is implemented:
 barebox@Protonic PRTI6Q board:/ devinfo machine.of
 Driver: board-protonic-imx6
 Bus: platform
@@ -52,27 +50,34 @@ Parameters:
   boardid: 0 (type: uint32)
   boardrev: 1 (type: uint32)
 
-In this example, "boardid" and "boardrev" are variabled provided by this
-this specific board driver.
-
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- commands/devinfo.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/of/base.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/commands/devinfo.c b/commands/devinfo.c
-index 81956b1cc0..018a7c4167 100644
---- a/commands/devinfo.c
-+++ b/commands/devinfo.c
-@@ -99,7 +99,7 @@ static int do_devinfo(int argc, char *argv[])
- 			printf("\n");
- 		}
- #ifdef CONFIG_OFDEVICE
--		if (dev->device_node) {
-+		if (dev->device_node && dev->device_node != of_get_root_node()) {
- 			printf("Device node: %s\n", dev->device_node->full_name);
- 			of_print_nodes(dev->device_node, 0);
- 		}
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 4c633bcd49..c48bf7a7fb 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -2133,6 +2133,7 @@ static void of_probe_memory(void)
+ int of_probe(void)
+ {
+ 	struct device_node *firmware;
++	struct device_d *dev;
+ 
+ 	if(!root_node)
+ 		return -ENODEV;
+@@ -2149,6 +2150,10 @@ int of_probe(void)
+ 	if (firmware)
+ 		of_platform_populate(firmware, NULL, NULL);
+ 
++	dev = of_platform_device_create(root_node, NULL);
++	if (dev)
++		dev_set_name(dev, "%s.of", "machine");
++
+ 	of_clk_init(root_node, NULL);
+ 	of_platform_populate(root_node, of_default_bus_match_table, NULL);
+ 
 -- 
 2.27.0
 
