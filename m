@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jvxfP-00016E-7j
- for barebox@lists.infradead.org; Thu, 16 Jul 2020 06:46:52 +0000
+ id 1jvxfP-00016G-Br
+ for barebox@lists.infradead.org; Thu, 16 Jul 2020 06:46:53 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Thu, 16 Jul 2020 08:46:39 +0200
-Message-Id: <20200716064642.25729-1-o.rempel@pengutronix.de>
+Date: Thu, 16 Jul 2020 08:46:42 +0200
+Message-Id: <20200716064642.25729-4-o.rempel@pengutronix.de>
+In-Reply-To: <20200716064642.25729-1-o.rempel@pengutronix.de>
+References: <20200716064642.25729-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,29 +21,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 0/3] introduce board-driver support
+Subject: [PATCH v3 3/3] ARM: embest-riotboard: port board file to the driver
+ model
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>, david@protonic.nl
 
-changes v3:
-- move devinfo patch to the first place
-- devinfo: provide better commit message 
+This patch can be used as example for the new board-driver
+functionality.
 
-changes v2:
-- move root device registration to the of_probe()
-- port one board as example
-- fix issue with devinfo
-
-Oleksij Rempel (3):
-  devinfo: do not dump the device node for the root node
-  of: base: register DT root as device
-  ARM: embest-riotboard: port board file to the driver model
-
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
  arch/arm/boards/embest-riotboard/board.c | 18 +++++++++++++-----
- commands/devinfo.c                       |  2 +-
- drivers/of/base.c                        |  5 +++++
- 3 files changed, 19 insertions(+), 6 deletions(-)
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
+diff --git a/arch/arm/boards/embest-riotboard/board.c b/arch/arm/boards/embest-riotboard/board.c
+index 2e0cc9f0ab..746ecf0562 100644
+--- a/arch/arm/boards/embest-riotboard/board.c
++++ b/arch/arm/boards/embest-riotboard/board.c
+@@ -51,11 +51,8 @@ static int ar8035_phy_fixup(struct phy_device *dev)
+ 	return 0;
+ }
+ 
+-static int riotboard_device_init(void)
++static int riotboard_probe(struct device_d *dev)
+ {
+-	if (!of_machine_is_compatible("riot,imx6s-riotboard"))
+-		return 0;
+-
+ 	phy_register_fixup_for_uid(0x004dd072, 0xffffffef, ar8035_phy_fixup);
+ 
+ 	imx6_bbu_internal_mmc_register_handler("emmc", "/dev/mmc3.barebox",
+@@ -65,4 +62,15 @@ static int riotboard_device_init(void)
+ 
+ 	return 0;
+ }
+-device_initcall(riotboard_device_init);
++
++static const struct of_device_id riotboard_of_match[] = {
++	{ .compatible = "riot,imx6s-riotboard" },
++	{},
++};
++
++static struct driver_d riotboard_driver = {
++	.name = "board-embest-riot",
++	.probe = riotboard_probe,
++	.of_compatible = DRV_OF_COMPAT(riotboard_of_match),
++};
++device_platform_driver(riotboard_driver);
 -- 
 2.27.0
 
