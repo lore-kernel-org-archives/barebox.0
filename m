@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from zimbra2.kalray.eu ([92.103.151.219])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jw0Nk-0008Eh-Pw
- for barebox@lists.infradead.org; Thu, 16 Jul 2020 09:40:49 +0000
-Message-ID: <1159851c97f3fff37c5ec0e2cb005007d1903b85.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Thu, 16 Jul 2020 11:40:46 +0200
-In-Reply-To: <20200716064642.25729-2-o.rempel@pengutronix.de>
-References: <20200716064642.25729-1-o.rempel@pengutronix.de>
- <20200716064642.25729-2-o.rempel@pengutronix.de>
-MIME-Version: 1.0
+ id 1jw3w3-0007DU-UZ
+ for barebox@lists.infradead.org; Thu, 16 Jul 2020 13:28:28 +0000
+Received: from localhost (localhost [127.0.0.1])
+ by zimbra2.kalray.eu (Postfix) with ESMTP id 0012027E084E
+ for <barebox@lists.infradead.org>; Thu, 16 Jul 2020 15:28:26 +0200 (CEST)
+From: Jules Maselbas <jmaselbas@kalray.eu>
+Date: Thu, 16 Jul 2020 15:28:16 +0200
+Message-Id: <20200716132816.16400-1-jmaselbas@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,80 +17,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 1/3] devinfo: do not dump the device node for the
- root node
-To: Oleksij Rempel <o.rempel@pengutronix.de>, barebox@lists.infradead.org
-Cc: david@protonic.nl
+Subject: [PATCH] startup: Add missing newline to notice message
+To: Barebox List <barebox@lists.infradead.org>
+Cc: Jules Maselbas <jmaselbas@kalray.eu>
 
-Am Donnerstag, den 16.07.2020, 08:46 +0200 schrieb Oleksij Rempel:
-> Calling the devinfo against a device which is linked to some devicetree
-> node weill result a devictree dump of this node. For example:
-> 
-> barebox@Protonic PRTI6Q board:/ devinfo sound-spdif.of
-> Bus: platform
-> Device node: /sound-spdif
-> sound-spdif {
->         compatible = "fsl,imx-audio-spdif";
->         model = "imx-spdif";
->         spdif-controller = <0x7a>;
->         spdif-in;
->         spdif-out;
-> };
-> 
-> Calling same command on a device wich is linked to the root node of
-> devicetree, for example "machine.of", will trigger a dump fo complete
-> devicetree.
+Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
+---
+ common/startup.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Taking a step back from the immediate issue with the root node: is it
-even a good idea to dump the whole subtree of nodes in the devinfo?
-Most likely someone using devinfo is only interested in the of_node of
-the device and maybe some subnodes that don't have a device on their
-own.
-
-So wouldn't it make more sense to only dump the node of the device in
-question and subnodes without a compatible? This way we could remove
-the special case for the root node and still get some useful
-information in devinfo, like the board compatible property.
-
-Regards,
-Lucas
-
->  Since the same functionality is provided by the "of_dump"
-> command, it is better to limit devinfo on the root device. After this
-> patch we would get following output:
-> 
-> barebox@Protonic PRTI6Q board:/ devinfo machine.of
-> Driver: board-protonic-imx6
-> Bus: platform
-> Parameters:
->   boardid: 0 (type: uint32)
->   boardrev: 1 (type: uint32)
-> 
-> In this example, "boardid" and "boardrev" are variabled provided by this
-> this specific board driver.
-> 
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> ---
->  commands/devinfo.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/commands/devinfo.c b/commands/devinfo.c
-> index 81956b1cc0..018a7c4167 100644
-> --- a/commands/devinfo.c
-> +++ b/commands/devinfo.c
-> @@ -99,7 +99,7 @@ static int do_devinfo(int argc, char *argv[])
->  			printf("\n");
->  		}
->  #ifdef CONFIG_OFDEVICE
-> -		if (dev->device_node) {
-> +		if (dev->device_node && dev->device_node != of_get_root_node()) {
->  			printf("Device node: %s\n", dev->device_node->full_name);
->  			of_print_nodes(dev->device_node, 0);
->  		}
+diff --git a/common/startup.c b/common/startup.c
+index 511675ed5..10dbe754e 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -155,7 +155,7 @@ static int load_environment(void)
+ 			envfs_load(default_environment_path, "/env", 0);
+ 	} else {
+ 		if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT))
+-			pr_notice("No support for persistent environment. Using default environment");
++			pr_notice("No support for persistent environment. Using default environment\n");
+ 	}
+ 
+ 	nvvar_load();
+-- 
+2.17.1
 
 
 _______________________________________________
