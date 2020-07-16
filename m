@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jvxfP-00016F-9N
+ id 1jvxfP-00016E-7j
  for barebox@lists.infradead.org; Thu, 16 Jul 2020 06:46:52 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Thu, 16 Jul 2020 08:46:41 +0200
-Message-Id: <20200716064642.25729-3-o.rempel@pengutronix.de>
-In-Reply-To: <20200716064642.25729-1-o.rempel@pengutronix.de>
-References: <20200716064642.25729-1-o.rempel@pengutronix.de>
+Date: Thu, 16 Jul 2020 08:46:39 +0200
+Message-Id: <20200716064642.25729-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,63 +19,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 2/3] of: base: register DT root as device
+Subject: [PATCH v2 0/3] introduce board-driver support
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>, david@protonic.nl
 
-A usual board file contains at least one of_machine_is_compatible().
-Some of the have a rather long list with complicated version logic.
+changes v3:
+- move devinfo patch to the first place
+- devinfo: provide better commit message 
 
-To avoid own implementation for driver management, register the root node
-of devicetree as platform device. So, the main platform bus can attach
-proper board driver. After this patch a typical board.c file can reuse
-existing driver infrastructure.
+changes v2:
+- move root device registration to the of_probe()
+- port one board as example
+- fix issue with devinfo
 
-After this patch, you will be able to see all registered board drivers
-with drvinfo as fallow:
-...
-board-embest-riot
-board-protonic-imx6
-    machine.of
-...
+Oleksij Rempel (3):
+  devinfo: do not dump the device node for the root node
+  of: base: register DT root as device
+  ARM: embest-riotboard: port board file to the driver model
 
-With devinfo, you'll be able to get some board specific information,
-if this is implemented:
-barebox@Protonic PRTI6Q board:/ devinfo machine.of
-Driver: board-protonic-imx6
-Bus: platform
-Parameters:
-  boardid: 0 (type: uint32)
-  boardrev: 1 (type: uint32)
+ arch/arm/boards/embest-riotboard/board.c | 18 +++++++++++++-----
+ commands/devinfo.c                       |  2 +-
+ drivers/of/base.c                        |  5 +++++
+ 3 files changed, 19 insertions(+), 6 deletions(-)
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- drivers/of/base.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 4c633bcd49..c48bf7a7fb 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -2133,6 +2133,7 @@ static void of_probe_memory(void)
- int of_probe(void)
- {
- 	struct device_node *firmware;
-+	struct device_d *dev;
- 
- 	if(!root_node)
- 		return -ENODEV;
-@@ -2149,6 +2150,10 @@ int of_probe(void)
- 	if (firmware)
- 		of_platform_populate(firmware, NULL, NULL);
- 
-+	dev = of_platform_device_create(root_node, NULL);
-+	if (dev)
-+		dev_set_name(dev, "%s.of", "machine");
-+
- 	of_clk_init(root_node, NULL);
- 	of_platform_populate(root_node, of_default_bus_match_table, NULL);
- 
 -- 
 2.27.0
 
