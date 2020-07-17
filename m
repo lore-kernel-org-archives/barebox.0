@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ed1-x542.google.com ([2a00:1450:4864:20::542])
+Received: from mail-ej1-x644.google.com ([2a00:1450:4864:20::644])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jwUQm-0006vM-WA
- for barebox@lists.infradead.org; Fri, 17 Jul 2020 17:45:57 +0000
-Received: by mail-ed1-x542.google.com with SMTP id a1so8327327edt.10
- for <barebox@lists.infradead.org>; Fri, 17 Jul 2020 10:45:55 -0700 (PDT)
+ id 1jwUj1-0002iW-QO
+ for barebox@lists.infradead.org; Fri, 17 Jul 2020 18:04:48 +0000
+Received: by mail-ej1-x644.google.com with SMTP id rk21so11800780ejb.2
+ for <barebox@lists.infradead.org>; Fri, 17 Jul 2020 11:04:47 -0700 (PDT)
 From: yegorslists@googlemail.com
-Date: Fri, 17 Jul 2020 19:45:45 +0200
-Message-Id: <20200717174545.10200-1-yegorslists@googlemail.com>
+Date: Fri, 17 Jul 2020 20:04:43 +0200
+Message-Id: <20200717180443.11390-1-yegorslists@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,57 +21,87 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] arm: baltos: add environment node
+Subject: [PATCH] arm: baltos: export DIP switch value
 To: barebox@lists.infradead.org
 
 From: Yegor Yefremov <yegorslists@googlemail.com>
 
-Use the fourth SPL partition in NAND for environment storage.
+Some device in the OnRISC device family provide four DIP switches.
+Read them and provide their value as a hex in the global variable
+"board.dip".
 
 Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
 ---
-Changes:
-   v2: use the fourth SPL partition and a partition phandle
- 
- arch/arm/dts/am335x-baltos-minimal.dts | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ arch/arm/boards/vscom-baltos/board.c | 42 ++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
 
-diff --git a/arch/arm/dts/am335x-baltos-minimal.dts b/arch/arm/dts/am335x-baltos-minimal.dts
-index 137c177b2..a57bb6c80 100644
---- a/arch/arm/dts/am335x-baltos-minimal.dts
-+++ b/arch/arm/dts/am335x-baltos-minimal.dts
-@@ -22,6 +22,11 @@
+diff --git a/arch/arm/boards/vscom-baltos/board.c b/arch/arm/boards/vscom-baltos/board.c
+index 800f42df3..59782d299 100644
+--- a/arch/arm/boards/vscom-baltos/board.c
++++ b/arch/arm/boards/vscom-baltos/board.c
+@@ -45,6 +45,43 @@ struct bsp_vs_hwparam {
+ 	uint8_t MAC3[6];
+ } __attribute__ ((packed));
  
- 	chosen {
- 		stdout-path = &uart0;
++static uint8_t get_dip_switch(uint16_t id, uint32_t rev)
++{
++	uint16_t maj, min;
++	uint8_t dip = 0;
 +
-+		environment-nand {
-+			compatible = "barebox,environment";
-+			device-path = &environment_nand;
-+		};
- 	};
++	maj = rev >> 16;
++	min = rev & 0xffff;
++
++	if ((id == 220 || id == 222) && (maj == 1 && min == 2))
++		id = 214;
++
++	switch(id) {
++		case 214:
++		case 215:
++			dip = !gpio_get_value(44);
++			dip += !gpio_get_value(45) << 1;
++			dip += !gpio_get_value(46) << 2;
++			dip += !gpio_get_value(47) << 3;
++			break;
++		case 212:
++		case 221:
++		case 223:
++		case 224:
++		case 225:
++		case 226:
++		case 227:
++		case 230:
++			dip = !gpio_get_value(82);
++			dip += !gpio_get_value(83) << 1;
++			dip += !gpio_get_value(105) << 2;
++			dip += !gpio_get_value(106) << 3;
++			break;
++	}
++
++	return dip;
++}
++
+ static int baltos_read_eeprom(void)
+ {
+ 	struct bsp_vs_hwparam hw_param;
+@@ -52,6 +89,7 @@ static int baltos_read_eeprom(void)
+ 	char *buf, var_buf[32];
+ 	int rc;
+ 	unsigned char mac_addr[6];
++	uint8_t dip;
  
- 	cpus {
-@@ -179,7 +184,7 @@
- 	ranges = <0 0 0x08000000 0x10000000>;	/* CS0: NAND */
- 	status = "okay";
+ 	if (!of_machine_is_compatible("vscom,onrisc"))
+ 		return 0;
+@@ -109,6 +147,10 @@ static int baltos_read_eeprom(void)
+ 		gpio_direction_output(135, 0);
+ 	}
  
--	nand@0,0 {
-+	nand: nand@0,0 {
- 		reg = <0 0 0>; /* CS0, offset 0 */
- 		nand-bus-width = <8>;
- 		ti,nand-ecc-opt = "bch8";
-@@ -226,8 +231,8 @@
- 		       label = "SPL.backup2";
- 		       reg = <0x40000 0x20000>;
- 		};
--		boot@60000 {
--		       label = "SPL.backup3";
-+		environment_nand: boot@60000 {
-+		       label = "bareboxenv";
- 		       reg = <0x60000 0x20000>;
- 		};
- 		boot@80000 {
++	dip = get_dip_switch(hw_param.SystemId, hw_param.HwRev);
++	sprintf(var_buf, "%02x", dip);
++	globalvar_add_simple("board.dip", var_buf);
++
+ 	return 0;
+ }
+ environment_initcall(baltos_read_eeprom);
 -- 
 2.17.0
 
