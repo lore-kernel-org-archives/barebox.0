@@ -1,11 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from enterprise02.smtp.diehl.com ([193.201.238.220])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jxPU8-0007qn-2S
- for barebox@lists.infradead.org; Mon, 20 Jul 2020 06:41:12 +0000
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Mon, 20 Jul 2020 08:41:08 +0200
-Message-Id: <20200720064108.8426-1-o.rempel@pengutronix.de>
+ id 1jxPWh-00086m-Mw
+ for barebox@lists.infradead.org; Mon, 20 Jul 2020 06:43:53 +0000
+From: Denis Osterland-Heim <denis.osterland@diehl.com>
+Date: Mon, 20 Jul 2020 06:43:39 +0000
+Message-ID: <20200720064312.22894-1-Denis.Osterland@diehl.com>
+Content-Language: en-US
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -15,94 +16,72 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1] gpiolib: add gpio_array_to_id helper to get ID out of GPIO
- array
-To: barebox@lists.infradead.org, yegorslists@googlemail.com
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>, david@protonic.nl
+Subject: [PATCH] dtc_cpp: allow to pass options per target
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Some boards provide a board version and/or ID coded by pull-up/down
-resistors connected to the gpio pins (or pins which can be multiplexed
-at some point as gpio). In this case every one implements own gpio id
-reader function.
+This patch adds support to pass extra option per target to DTC CPP.
 
-To avoid it, provide the common helper function to extract a value out
-of provided gpio array.
+For example:
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+    DTC_CPP_FLAGS_my-board-name.dtb :=3D -DMY_DEFINE=3Dextra
+    lwl-dtb-$(CONFIG_MACH_MY_BOARD_NAME) +=3D my-board-name.dtb.o
+
+Signed-off-by: Denis Osterland-Heim <Denis.Osterland@diehl.com>
 ---
- drivers/gpio/gpiolib.c | 28 ++++++++++++++++++++++++++++
- include/gpio.h         |  5 +++++
- 2 files changed, 33 insertions(+)
+ scripts/Makefile.lib | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 27674af54c..b3d7450ef2 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -381,6 +381,34 @@ void gpio_free_array(const struct gpio *array, size_t num)
- }
- EXPORT_SYMBOL_GPL(gpio_free_array);
- 
-+int gpio_array_to_id(const struct gpio *array, size_t num, u32 *val)
-+{
-+	u32 id = 0;
-+	int ret, i;
-+
-+	if (num >= 32)
-+		return -EOVERFLOW;
-+
-+	ret = gpio_request_array(array, num);
-+	if (ret)
-+		return ret;
-+
-+	/* Wait untill logic level will be stable */
-+	udelay(5);
-+	for (i = 0; i < num; i++) {
-+		ret = gpio_get_value(array[i].gpio);
-+		if (ret < 0)
-+			return ret;
-+
-+		id |= ret << i;
-+	}
-+
-+	*val = id;
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(gpio_array_to_id);
-+
- static int gpiochip_find_base(int start, int ngpio)
- {
- 	int i;
-diff --git a/include/gpio.h b/include/gpio.h
-index 98c5b93ba2..81beb47309 100644
---- a/include/gpio.h
-+++ b/include/gpio.h
-@@ -145,6 +145,10 @@ static inline void gpio_free_array(const struct gpio *array, size_t num)
- 	/* GPIO can never have been requested */
- 	WARN_ON(1);
- }
-+static inline int gpio_array_to_id(const struct gpio *array, size_t num, u32 *val)
-+{
-+	return -EINVAL;
-+}
- #else
- int gpio_request(unsigned gpio, const char *label);
- int gpio_find_by_name(const char *name);
-@@ -153,6 +157,7 @@ void gpio_free(unsigned gpio);
- int gpio_request_one(unsigned gpio, unsigned long flags, const char *label);
- int gpio_request_array(const struct gpio *array, size_t num);
- void gpio_free_array(const struct gpio *array, size_t num);
-+int gpio_array_to_id(const struct gpio *array, size_t num, u32 *val);
- #endif
- 
- struct gpio_chip;
--- 
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index 39cc24b196a2..c8f3be8aad01 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -178,6 +178,7 @@ dtc_cpp_flags  =3D -Wp,-MD,$(depfile).pre -nostdinc    =
+                    \
+ 		 -I$(srctree)/dts/include                                \
+ 		 -I$(srctree)/include                                    \
+ 		 -I$(srctree)/dts/src/                                   \
++		 $(DTC_CPP_FLAGS_$(basetarget).dtb)                      \
+ 		 -undef -D__DTS__
+ =
+
+ ifdef CONFIG_BOOTM_FITIMAGE_PUBKEY
+-- =
+
 2.27.0
 
+
+
+Diehl Connectivity Solutions GmbH
+Gesch=E4ftsf=FChrung: Horst Leonberger
+Sitz der Gesellschaft: N=FCrnberg - Registergericht: Amtsgericht
+N=FCrnberg: HRB 32315
+___________________________________________________________________________=
+________________________
+
+Der Inhalt der vorstehenden E-Mail ist nicht rechtlich bindend. Diese E-Mai=
+l enthaelt vertrauliche und/oder rechtlich geschuetzte Informationen.
+Informieren Sie uns bitte, wenn Sie diese E-Mail faelschlicherweise erhalte=
+n haben. Bitte loeschen Sie in diesem Fall die Nachricht.
+Jede unerlaubte Form der Reproduktion, Bekanntgabe, Aenderung, Verteilung u=
+nd/oder Publikation dieser E-Mail ist strengstens untersagt.
+- Informationen zum Datenschutz, insbesondere zu Ihren Rechten, erhalten Si=
+e unter https://www.diehl.com/group/de/transparenz-und-informationspflichte=
+n/
+
+The contents of the above mentioned e-mail is not legally binding. This e-m=
+ail contains confidential and/or legally protected information. Please info=
+rm us if you have received this e-mail by
+mistake and delete it in such a case. Each unauthorized reproduction, discl=
+osure, alteration, distribution and/or publication of this e-mail is strict=
+ly prohibited. =
+
+- For general information on data protection and your respective rights ple=
+ase visit https://www.diehl.com/group/en/transparency-and-information-oblig=
+ations/
 
 _______________________________________________
 barebox mailing list
