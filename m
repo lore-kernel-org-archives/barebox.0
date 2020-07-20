@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jxPSQ-0007ay-M2
- for barebox@lists.infradead.org; Mon, 20 Jul 2020 06:39:28 +0000
+ id 1jxPU8-0007qn-2S
+ for barebox@lists.infradead.org; Mon, 20 Jul 2020 06:41:12 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Mon, 20 Jul 2020 08:39:18 +0200
-Message-Id: <20200720063921.7547-1-o.rempel@pengutronix.de>
+Date: Mon, 20 Jul 2020 08:41:08 +0200
+Message-Id: <20200720064108.8426-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,33 +19,87 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 0/3] introduce board-driver support
-To: barebox@lists.infradead.org
+Subject: [PATCH v1] gpiolib: add gpio_array_to_id helper to get ID out of GPIO
+ array
+To: barebox@lists.infradead.org, yegorslists@googlemail.com
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>, david@protonic.nl
 
-changes v4:
-- rework devinfo to print DT node without child nodes
+Some boards provide a board version and/or ID coded by pull-up/down
+resistors connected to the gpio pins (or pins which can be multiplexed
+at some point as gpio). In this case every one implements own gpio id
+reader function.
 
-changes v3:
-- move devinfo patch to the first place
-- devinfo: provide better commit message 
+To avoid it, provide the common helper function to extract a value out
+of provided gpio array.
 
-changes v2:
-- move root device registration to the of_probe()
-- port one board as example
-- fix issue with devinfo
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ drivers/gpio/gpiolib.c | 28 ++++++++++++++++++++++++++++
+ include/gpio.h         |  5 +++++
+ 2 files changed, 33 insertions(+)
 
-Oleksij Rempel (3):
-  devinfo: do not dump the device node for the root node
-  of: base: register DT root as device
-  ARM: embest-riotboard: port board file to the driver model
-
- arch/arm/boards/embest-riotboard/board.c | 18 ++++++++++++-----
- commands/devinfo.c                       |  2 +-
- drivers/of/base.c                        | 25 ++++++++++++++++++------
- include/of.h                             |  1 +
- 4 files changed, 34 insertions(+), 12 deletions(-)
-
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 27674af54c..b3d7450ef2 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -381,6 +381,34 @@ void gpio_free_array(const struct gpio *array, size_t num)
+ }
+ EXPORT_SYMBOL_GPL(gpio_free_array);
+ 
++int gpio_array_to_id(const struct gpio *array, size_t num, u32 *val)
++{
++	u32 id = 0;
++	int ret, i;
++
++	if (num >= 32)
++		return -EOVERFLOW;
++
++	ret = gpio_request_array(array, num);
++	if (ret)
++		return ret;
++
++	/* Wait untill logic level will be stable */
++	udelay(5);
++	for (i = 0; i < num; i++) {
++		ret = gpio_get_value(array[i].gpio);
++		if (ret < 0)
++			return ret;
++
++		id |= ret << i;
++	}
++
++	*val = id;
++
++	return 0;
++}
++EXPORT_SYMBOL(gpio_array_to_id);
++
+ static int gpiochip_find_base(int start, int ngpio)
+ {
+ 	int i;
+diff --git a/include/gpio.h b/include/gpio.h
+index 98c5b93ba2..81beb47309 100644
+--- a/include/gpio.h
++++ b/include/gpio.h
+@@ -145,6 +145,10 @@ static inline void gpio_free_array(const struct gpio *array, size_t num)
+ 	/* GPIO can never have been requested */
+ 	WARN_ON(1);
+ }
++static inline int gpio_array_to_id(const struct gpio *array, size_t num, u32 *val)
++{
++	return -EINVAL;
++}
+ #else
+ int gpio_request(unsigned gpio, const char *label);
+ int gpio_find_by_name(const char *name);
+@@ -153,6 +157,7 @@ void gpio_free(unsigned gpio);
+ int gpio_request_one(unsigned gpio, unsigned long flags, const char *label);
+ int gpio_request_array(const struct gpio *array, size_t num);
+ void gpio_free_array(const struct gpio *array, size_t num);
++int gpio_array_to_id(const struct gpio *array, size_t num, u32 *val);
+ #endif
+ 
+ struct gpio_chip;
 -- 
 2.27.0
 
