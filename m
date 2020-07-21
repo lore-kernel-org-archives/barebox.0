@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from zimbra2.kalray.eu ([92.103.151.219])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jxr2Y-0007DH-Ej
- for barebox@lists.infradead.org; Tue, 21 Jul 2020 12:06:36 +0000
+ id 1jxr2Y-0007DQ-Es
+ for barebox@lists.infradead.org; Tue, 21 Jul 2020 12:06:38 +0000
 From: Jules Maselbas <jmaselbas@kalray.eu>
-Date: Tue, 21 Jul 2020 14:05:57 +0200
-Message-Id: <20200721120600.15114-12-jmaselbas@kalray.eu>
+Date: Tue, 21 Jul 2020 14:06:00 +0200
+Message-Id: <20200721120600.15114-15-jmaselbas@kalray.eu>
 In-Reply-To: <20200721120600.15114-1-jmaselbas@kalray.eu>
 References: <20200721120600.15114-1-jmaselbas@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
@@ -21,88 +21,74 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 11/14] usb: dwc2: Add structure for gadget driver
+Subject: [PATCH v3 14/14] usb: dwc2: Add ulpi phy function
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Jules Maselbas <jmaselbas@kalray.eu>
 
 Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
 ---
- drivers/usb/dwc2/core.h | 55 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 55 insertions(+)
+ drivers/usb/dwc2/core.c | 33 +++++++++++++++++++++++++++++++++
+ drivers/usb/dwc2/dwc2.h |  3 +++
+ 2 files changed, 36 insertions(+)
 
-diff --git a/drivers/usb/dwc2/core.h b/drivers/usb/dwc2/core.h
-index a2ec3ff68..b188990a0 100644
---- a/drivers/usb/dwc2/core.h
-+++ b/drivers/usb/dwc2/core.h
-@@ -416,6 +416,49 @@ struct dwc2_hw_params {
- #define MAX_DEVICE			16
- #define MAX_ENDPOINT DWC2_MAX_EPS_CHANNELS
+diff --git a/drivers/usb/dwc2/core.c b/drivers/usb/dwc2/core.c
+index c4a3cc789..f83788d51 100644
+--- a/drivers/usb/dwc2/core.c
++++ b/drivers/usb/dwc2/core.c
+@@ -1,6 +1,39 @@
+ // SPDX-License-Identifier: GPL-2.0+
+ #include "dwc2.h"
  
-+struct dwc2_ep {
-+	struct usb_ep ep;
-+	struct dwc2 *dwc2;
-+	struct list_head queue;
-+	struct dwc2_request *req;
-+	char name[8];
++int dwc2_ulpi_read(struct dwc2 *dwc2, u8 addr)
++{
++	u32 gpvndctl;
++	int data;
 +
-+	unsigned int            size_loaded;
-+	unsigned int            last_load;
-+	unsigned short          fifo_size;
-+	unsigned short		fifo_index;
++	gpvndctl = GPVNDCTL_NEWREGREQ;
++	gpvndctl |= (addr << GPVNDCTL_REGADDR_SHIFT) & GPVNDCTL_REGADDR_MASK;
 +
-+	u8 dir_in;
-+	u8 epnum;
-+	u8 mc;
-+	u16 interval;
++	dwc2_writel(dwc2, gpvndctl, GPVNDCTL);
 +
-+	unsigned int            halted:1;
-+	unsigned int            periodic:1;
-+	unsigned int            isochronous:1;
-+	unsigned int            send_zlp:1;
-+	unsigned int            target_frame;
-+#define TARGET_FRAME_INITIAL   0xFFFFFFFF
-+	bool			frame_overrun;
-+};
++	if (dwc2_wait_bit_set(dwc2, GPVNDCTL, GPVNDCTL_VSTSDONE, 10000))
++		dwc2_err(dwc2, "Timeout: Waiting for phy read to complete\n");
 +
-+struct dwc2_request {
-+	struct usb_request req;
-+	struct list_head queue;
-+};
++	gpvndctl = dwc2_readl(dwc2, GPVNDCTL);
++	data = (gpvndctl & GPVNDCTL_REGDATA_MASK) >> GPVNDCTL_REGDATA_SHIFT;
 +
-+/* Gadget ep0 states */
-+enum dwc2_ep0_state {
-+	DWC2_EP0_SETUP,
-+	DWC2_EP0_DATA_IN,
-+	DWC2_EP0_DATA_OUT,
-+	DWC2_EP0_STATUS_IN,
-+	DWC2_EP0_STATUS_OUT,
-+};
++	return data;
++}
 +
-+/* Size of control and EP0 buffers */
-+#define DWC2_CTRL_BUFF_SIZE 8
++void dwc2_ulpi_write(struct dwc2 *dwc2, u32 addr, u32 data)
++{
++	u32 gpvndctl;
 +
- struct dwc2 {
- 	struct device_d *dev;
- 	void __iomem *regs;
-@@ -429,6 +472,18 @@ struct dwc2 {
- 	u8 out_data_toggle[MAX_DEVICE][MAX_ENDPOINT];
- 	int root_hub_devnum;
- #endif
++	gpvndctl = GPVNDCTL_NEWREGREQ | GPVNDCTL_REGWR;
++	gpvndctl |= (addr << GPVNDCTL_REGADDR_SHIFT) & GPVNDCTL_REGADDR_MASK;
++	gpvndctl |= (data << GPVNDCTL_REGDATA_SHIFT) & GPVNDCTL_REGDATA_MASK;
 +
-+#ifdef CONFIG_USB_DWC2_GADGET
-+	struct usb_gadget gadget;
-+	struct dwc2_ep *eps_in[MAX_ENDPOINT];
-+	struct dwc2_ep *eps_out[MAX_ENDPOINT];
-+	struct usb_request *ctrl_req;
-+	void *ep0_buff;
-+	void *ctrl_buff;
-+	enum dwc2_ep0_state ep0_state;
-+	struct usb_gadget_driver *driver;
-+	int num_eps;
-+#endif
- };
++	dwc2_writel(dwc2, gpvndctl, GPVNDCTL);
++
++	if (dwc2_wait_bit_set(dwc2, GPVNDCTL, GPVNDCTL_VSTSDONE, 10000))
++		dwc2_err(dwc2, "Timeout: Waiting for phy write to complete\n");
++}
++
+ /* Returns the controller's GHWCFG2.OTG_MODE. */
+ static unsigned int dwc2_op_mode(struct dwc2 *dwc2)
+ {
+diff --git a/drivers/usb/dwc2/dwc2.h b/drivers/usb/dwc2/dwc2.h
+index 5e845f349..2475fd005 100644
+--- a/drivers/usb/dwc2/dwc2.h
++++ b/drivers/usb/dwc2/dwc2.h
+@@ -28,6 +28,9 @@ int dwc2_get_dr_mode(struct dwc2 *dwc2);
+ int dwc2_core_reset(struct dwc2 *dwc2);
+ void dwc2_core_init(struct dwc2 *dwc2);
  
- #define host_to_dwc2(ptr) container_of(ptr, struct dwc2, host)
++int dwc2_ulpi_read(struct dwc2 *dwc2, u8 addr);
++void dwc2_ulpi_write(struct dwc2 *dwc2, u32 addr, u32 data);
++
+ /* Host functions */
+ #ifdef CONFIG_USB_DWC2_HOST
+ int dwc2_submit_roothub(struct dwc2 *dwc2, struct usb_device *dev,
 -- 
 2.17.1
 
