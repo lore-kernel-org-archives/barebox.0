@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jxlYK-0001kg-Ec
- for barebox@lists.infradead.org; Tue, 21 Jul 2020 06:15:03 +0000
+ id 1jxlYS-0001oy-HI
+ for barebox@lists.infradead.org; Tue, 21 Jul 2020 06:15:10 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 21 Jul 2020 08:14:56 +0200
-Message-Id: <20200721061458.26739-1-a.fatoum@pengutronix.de>
+Date: Tue, 21 Jul 2020 08:14:58 +0200
+Message-Id: <20200721061458.26739-3-a.fatoum@pengutronix.de>
+In-Reply-To: <20200721061458.26739-1-a.fatoum@pengutronix.de>
+References: <20200721061458.26739-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,151 +21,134 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] i2c: sync i2c_parse_fw_timings() with upstream
+Subject: [PATCH 3/3] mfd: add Atmel Flexcom support
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Upstream now has support for i2c-digital-filter-width-ns and
-i2c-analog-filter-cutoff-frequency device tree properties, that are
-used in an upcoming patch.
-Prepare for it by syncing with Linux v5.8-rc4.
+This is a wrapper which embeds a SPI controller, a I2C controller and
+a USART. Only one function can be used at a time. The choice is done
+at boot time by the probe function of this MFD driver according to
+a device tree property.
+
+These IP cores are available in the sama5d2 and sam9x60. We already have
+support for all three configurations, only thing we need is the MFD
+selecting one of them. Add this.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/i2c/i2c.c | 73 ++++++++++++++++++++++-------------------------
- include/i2c/i2c.h | 14 +++++++++
- 2 files changed, 48 insertions(+), 39 deletions(-)
+ drivers/mfd/Kconfig         | 10 +++++
+ drivers/mfd/Makefile        |  1 +
+ drivers/mfd/atmel-flexcom.c | 73 +++++++++++++++++++++++++++++++++++++
+ 3 files changed, 84 insertions(+)
+ create mode 100644 drivers/mfd/atmel-flexcom.c
 
-diff --git a/drivers/i2c/i2c.c b/drivers/i2c/i2c.c
-index 2fed624d69f9..57d8c7017f4b 100644
---- a/drivers/i2c/i2c.c
-+++ b/drivers/i2c/i2c.c
-@@ -569,6 +569,18 @@ struct i2c_client *of_find_i2c_device_by_node(struct device_node *node)
- 	return to_i2c_client(dev);
- }
+diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+index d03d481898d8..d7a8949bafc8 100644
+--- a/drivers/mfd/Kconfig
++++ b/drivers/mfd/Kconfig
+@@ -91,4 +91,14 @@ config MFD_STM32_TIMERS
+ 	  Select this to get regmap support for the timer blocks on STM32
+ 	  MCUs and MPUs.
  
-+static void i2c_parse_timing(struct device_d *dev, char *prop_name, u32 *cur_val_p,
-+			    u32 def_val, bool use_def)
++config MFD_ATMEL_FLEXCOM
++	tristate "Atmel Flexcom (Flexible Serial Communication Unit)"
++	depends on OFDEVICE
++	help
++	  Select this to get support for Atmel Flexcom. This is a wrapper
++	  which embeds a SPI controller, a I2C controller and a USART. Only
++	  one function can be used at a time. The choice is done at boot time
++	  by the probe function of this MFD driver according to a device tree
++	  property.
++
+ endmenu
+diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
+index a3b296a803f8..690e53693ebc 100644
+--- a/drivers/mfd/Makefile
++++ b/drivers/mfd/Makefile
+@@ -16,3 +16,4 @@ obj-$(CONFIG_MFD_SUPERIO)	+= superio.o
+ obj-$(CONFIG_FINTEK_SUPERIO)	+= fintek-superio.o
+ obj-$(CONFIG_SMSC_SUPERIO)	+= smsc-superio.o
+ obj-$(CONFIG_MFD_STM32_TIMERS)	+= stm32-timers.o
++obj-$(CONFIG_MFD_ATMEL_FLEXCOM)	+= atmel-flexcom.o
+diff --git a/drivers/mfd/atmel-flexcom.c b/drivers/mfd/atmel-flexcom.c
+new file mode 100644
+index 000000000000..996d4850ee81
+--- /dev/null
++++ b/drivers/mfd/atmel-flexcom.c
+@@ -0,0 +1,73 @@
++// SPDX-License-Identifier: GPL-2.0-only
++// SPDX-FileCopyrightText: (C) 2015 Atmel Corporation
++/*
++ * Driver for Atmel Flexcom
++ * Author: Cyrille Pitchen <cyrille.pitchen@atmel.com>
++ */
++
++#include <common.h>
++#include <of.h>
++#include <linux/clk.h>
++#include <dt-bindings/mfd/atmel-flexcom.h>
++
++/* I/O register offsets */
++#define FLEX_MR		0x0	/* Mode Register */
++#define FLEX_VERSION	0xfc	/* Version Register */
++
++/* Mode Register bit fields */
++#define FLEX_MR_OPMODE_OFFSET	(0)  /* Operating Mode */
++#define FLEX_MR_OPMODE_MASK	(0x3 << FLEX_MR_OPMODE_OFFSET)
++#define FLEX_MR_OPMODE(opmode)	(((opmode) << FLEX_MR_OPMODE_OFFSET) &	\
++				 FLEX_MR_OPMODE_MASK)
++
++static int atmel_flexcom_probe(struct device_d *dev)
 +{
-+	int ret;
++	struct resource *res;
++	struct clk *clk;
++	u32 opmode;
++	int err;
 +
-+	ret = of_property_read_u32(dev->device_node, prop_name, cur_val_p);
-+	if (ret && use_def)
-+		*cur_val_p = def_val;
++	err = of_property_read_u32(dev->device_node,
++				   "atmel,flexcom-mode", &opmode);
++	if (err)
++		return err;
 +
-+	dev_dbg(dev, "%s: %u\n", prop_name, *cur_val_p);
++	if (opmode < ATMEL_FLEXCOM_MODE_USART || opmode > ATMEL_FLEXCOM_MODE_TWI)
++		return -EINVAL;
++
++	res = dev_request_mem_resource(dev, 0);
++	if (IS_ERR(res))
++		return PTR_ERR(res);
++
++	clk = clk_get(dev, NULL);
++	if (IS_ERR(clk))
++		return PTR_ERR(clk);
++
++	err = clk_enable(clk);
++	if (err)
++		return err;
++
++	/*
++	 * Set the Operating Mode in the Mode Register: only the selected device
++	 * is clocked. Hence, registers of the other serial devices remain
++	 * inaccessible and are read as zero. Also the external I/O lines of the
++	 * Flexcom are muxed to reach the selected device.
++	 */
++	writel(FLEX_MR_OPMODE(opmode), IOMEM(res->start) + FLEX_MR);
++
++	clk_disable(clk);
++
++	return of_platform_populate(dev->device_node, NULL, dev);
 +}
 +
- /**
-  * i2c_parse_fw_timings - get I2C related timing parameters from firmware
-  * @dev: The device to scan for I2C timing properties
-@@ -587,45 +599,28 @@ struct i2c_client *of_find_i2c_device_by_node(struct device_node *node)
- 
- void i2c_parse_fw_timings(struct device_d *dev, struct i2c_timings *t, bool use_defaults)
- {
--	int ret;
--
--	memset(t, 0, sizeof(*t));
--
--	ret = of_property_read_u32(dev->device_node, "clock-frequency",
--				   &t->bus_freq_hz);
--	if (ret && use_defaults)
--		t->bus_freq_hz = 100000;
--
--	ret = of_property_read_u32(dev->device_node, "i2c-scl-rising-time-ns",
--				   &t->scl_rise_ns);
--	if (ret && use_defaults) {
--		if (t->bus_freq_hz <= 100000)
--			t->scl_rise_ns = 1000;
--		else if (t->bus_freq_hz <= 400000)
--			t->scl_rise_ns = 300;
--		else
--			t->scl_rise_ns = 120;
--	}
--
--	ret = of_property_read_u32(dev->device_node, "i2c-scl-falling-time-ns",
--				   &t->scl_fall_ns);
--	if (ret && use_defaults) {
--		if (t->bus_freq_hz <= 400000)
--			t->scl_fall_ns = 300;
--		else
--			t->scl_fall_ns = 120;
--	}
--
--	of_property_read_u32(dev->device_node, "i2c-scl-internal-delay-ns",
--			     &t->scl_int_delay_ns);
--
--	ret = of_property_read_u32(dev->device_node, "i2c-sda-falling-time-ns",
--				   &t->sda_fall_ns);
--	if (ret && use_defaults)
--		t->sda_fall_ns = t->scl_fall_ns;
--
--	of_property_read_u32(dev->device_node, "i2c-sda-hold-time-ns",
--			     &t->sda_hold_ns);
-+	bool u = use_defaults;
-+	u32 d;
++static const struct of_device_id atmel_flexcom_of_match[] = {
++	{ .compatible = "atmel,sama5d2-flexcom" },
++	{ /* sentinel */ }
++};
 +
-+	i2c_parse_timing(dev, "clock-frequency", &t->bus_freq_hz,
-+			 I2C_MAX_STANDARD_MODE_FREQ, u);
-+
-+	d = t->bus_freq_hz <= I2C_MAX_STANDARD_MODE_FREQ ? 1000 :
-+	    t->bus_freq_hz <= I2C_MAX_FAST_MODE_FREQ ? 300 : 120;
-+	i2c_parse_timing(dev, "i2c-scl-rising-time-ns", &t->scl_rise_ns, d, u);
-+
-+	d = t->bus_freq_hz <= I2C_MAX_FAST_MODE_FREQ ? 300 : 120;
-+	i2c_parse_timing(dev, "i2c-scl-falling-time-ns", &t->scl_fall_ns, d, u);
-+
-+	i2c_parse_timing(dev, "i2c-scl-internal-delay-ns",
-+			 &t->scl_int_delay_ns, 0, u);
-+	i2c_parse_timing(dev, "i2c-sda-falling-time-ns", &t->sda_fall_ns,
-+			 t->scl_fall_ns, u);
-+	i2c_parse_timing(dev, "i2c-sda-hold-time-ns", &t->sda_hold_ns, 0, u);
-+	i2c_parse_timing(dev, "i2c-digital-filter-width-ns",
-+			 &t->digital_filter_width_ns, 0, u);
-+	i2c_parse_timing(dev, "i2c-analog-filter-cutoff-frequency",
-+			 &t->analog_filter_cutoff_freq_hz, 0, u);
- }
- EXPORT_SYMBOL_GPL(i2c_parse_fw_timings);
- 
-diff --git a/include/i2c/i2c.h b/include/i2c/i2c.h
-index bfc1eab81588..af6287602ca5 100644
---- a/include/i2c/i2c.h
-+++ b/include/i2c/i2c.h
-@@ -31,6 +31,14 @@ struct i2c_platform_data {
- 	int bitrate;
- };
- 
-+/* I2C Frequency Modes */
-+#define I2C_MAX_STANDARD_MODE_FREQ	100000
-+#define I2C_MAX_FAST_MODE_FREQ		400000
-+#define I2C_MAX_FAST_MODE_PLUS_FREQ	1000000
-+#define I2C_MAX_TURBO_MODE_FREQ		1400000
-+#define I2C_MAX_HIGH_SPEED_MODE_FREQ	3400000
-+#define I2C_MAX_ULTRA_FAST_MODE_FREQ	5000000
-+
- #define I2C_NAME_SIZE	20
- 
- #define I2C_M_RD		0x0001	/* read data, from slave to master */
-@@ -246,6 +254,10 @@ struct i2c_board_info {
-  * @scl_int_delay_ns: time IP core additionally needs to setup SCL in ns
-  * @sda_fall_ns: time SDA signal takes to fall in ns; t(f) in the I2C specification
-  * @sda_hold_ns: time IP core additionally needs to hold SDA in ns
-+ * @digital_filter_width_ns: width in ns of spikes on i2c lines that the IP core
-+ *	digital filter can filter out
-+ * @analog_filter_cutoff_freq_hz: threshold frequency for the low pass IP core
-+ *	analog filter
-  */
- struct i2c_timings {
- 	u32 bus_freq_hz;
-@@ -254,6 +266,8 @@ struct i2c_timings {
- 	u32 scl_int_delay_ns;
- 	u32 sda_fall_ns;
- 	u32 sda_hold_ns;
-+	u32 digital_filter_width_ns;
-+	u32 analog_filter_cutoff_freq_hz;
- };
- 
- /**
++static struct driver_d atmel_flexcom_driver = {
++	.probe		= atmel_flexcom_probe,
++	.name		= "atmel_flexcom",
++	.of_compatible	= atmel_flexcom_of_match,
++};
++coredevice_platform_driver(atmel_flexcom_driver);
 -- 
 2.27.0
 
