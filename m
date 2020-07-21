@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from zimbra2.kalray.eu ([92.103.151.219])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jxnjL-0006xc-Bc
+ id 1jxnjL-0006xb-B5
  for barebox@lists.infradead.org; Tue, 21 Jul 2020 08:34:32 +0000
 Received: from localhost (localhost [127.0.0.1])
- by zimbra2.kalray.eu (Postfix) with ESMTP id 76C8627E04F6
+ by zimbra2.kalray.eu (Postfix) with ESMTP id 7AE9927E0506
  for <barebox@lists.infradead.org>; Tue, 21 Jul 2020 10:34:27 +0200 (CEST)
 From: Jules Maselbas <jmaselbas@kalray.eu>
-Date: Tue, 21 Jul 2020 10:34:00 +0200
-Message-Id: <20200721083401.31880-1-jmaselbas@kalray.eu>
+Date: Tue, 21 Jul 2020 10:34:01 +0200
+Message-Id: <20200721083401.31880-2-jmaselbas@kalray.eu>
+In-Reply-To: <20200721083401.31880-1-jmaselbas@kalray.eu>
+References: <20200721083401.31880-1-jmaselbas@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,36 +24,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] ratp: Abort console_countdown when activated
+Subject: [PATCH 2/2] ratp: Remove duplicated includes
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Jules Maselbas <jmaselbas@kalray.eu>
 
 Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
 ---
- common/ratp/ratp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ common/ratp/ratp.c | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/common/ratp/ratp.c b/common/ratp/ratp.c
-index e84ad2216..d06a7ca96 100644
+index d06a7ca96..1f9271c99 100644
 --- a/common/ratp/ratp.c
 +++ b/common/ratp/ratp.c
-@@ -30,6 +30,7 @@
- #include <linux/sizes.h>
- #include <ratp_bb.h>
- #include <fs.h>
-+#include <console_countdown.h>
+@@ -18,11 +18,9 @@
  
- LIST_HEAD(ratp_command_list);
- EXPORT_SYMBOL(ratp_command_list);
-@@ -458,6 +459,8 @@ int barebox_ratp(struct console_device *cdev)
- 	if (ret)
- 		goto out1;
- 
-+	console_countdown_abort();
-+
- 	console_set_active(&ctx->ratp_console, CONSOLE_STDOUT | CONSOLE_STDERR |
- 			CONSOLE_STDIN);
- 
+ #include <common.h>
+ #include <command.h>
+-#include <kfifo.h>
+ #include <malloc.h>
+ #include <init.h>
+ #include <ratp.h>
+-#include <command.h>
+ #include <byteorder.h>
+ #include <environment.h>
+ #include <kfifo.h>
 -- 
 2.17.1
 
