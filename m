@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from zimbra2.kalray.eu ([92.103.151.219])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jxr2Y-0007DQ-Es
- for barebox@lists.infradead.org; Tue, 21 Jul 2020 12:06:38 +0000
+ id 1jxr2Y-0007DI-El
+ for barebox@lists.infradead.org; Tue, 21 Jul 2020 12:06:39 +0000
 From: Jules Maselbas <jmaselbas@kalray.eu>
-Date: Tue, 21 Jul 2020 14:06:00 +0200
-Message-Id: <20200721120600.15114-15-jmaselbas@kalray.eu>
+Date: Tue, 21 Jul 2020 14:05:59 +0200
+Message-Id: <20200721120600.15114-14-jmaselbas@kalray.eu>
 In-Reply-To: <20200721120600.15114-1-jmaselbas@kalray.eu>
 References: <20200721120600.15114-1-jmaselbas@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
@@ -21,74 +21,88 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 14/14] usb: dwc2: Add ulpi phy function
+Subject: [PATCH v3 13/14] usb: dwc2: Use register_otg_device
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Jules Maselbas <jmaselbas@kalray.eu>
 
 Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
 ---
- drivers/usb/dwc2/core.c | 33 +++++++++++++++++++++++++++++++++
- drivers/usb/dwc2/dwc2.h |  3 +++
- 2 files changed, 36 insertions(+)
+ drivers/usb/dwc2/dwc2.c | 29 ++++++++++++++++++++++++++---
+ drivers/usb/dwc2/dwc2.h |  4 ++--
+ 2 files changed, 28 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/usb/dwc2/core.c b/drivers/usb/dwc2/core.c
-index c4a3cc789..f83788d51 100644
---- a/drivers/usb/dwc2/core.c
-+++ b/drivers/usb/dwc2/core.c
-@@ -1,6 +1,39 @@
- // SPDX-License-Identifier: GPL-2.0+
- #include "dwc2.h"
+diff --git a/drivers/usb/dwc2/dwc2.c b/drivers/usb/dwc2/dwc2.c
+index 2d14b218a..7a8ba6c4f 100644
+--- a/drivers/usb/dwc2/dwc2.c
++++ b/drivers/usb/dwc2/dwc2.c
+@@ -28,6 +28,27 @@ static void dwc2_uninit_common(struct dwc2 *dwc2)
+ 	dwc2_writel(dwc2, hprt0, HPRT0);
+ }
  
-+int dwc2_ulpi_read(struct dwc2 *dwc2, u8 addr)
++static int dwc2_set_mode(void *ctx, enum usb_dr_mode mode)
 +{
-+	u32 gpvndctl;
-+	int data;
++	struct dwc2 *dwc2 = ctx;
++	int ret = -ENODEV;
 +
-+	gpvndctl = GPVNDCTL_NEWREGREQ;
-+	gpvndctl |= (addr << GPVNDCTL_REGADDR_SHIFT) & GPVNDCTL_REGADDR_MASK;
++	if (mode == USB_DR_MODE_HOST || mode == USB_DR_MODE_OTG) {
++		if (IS_ENABLED(CONFIG_USB_DWC2_HOST))
++			ret = dwc2_register_host(dwc2);
++		else
++			dwc2_err(dwc2, "Host support not available\n");
++	}
++	if (mode == USB_DR_MODE_PERIPHERAL || mode == USB_DR_MODE_OTG) {
++		if (IS_ENABLED(CONFIG_USB_DWC2_GADGET))
++			ret = dwc2_gadget_init(dwc2);
++		else
++			dwc2_err(dwc2, "Peripheral support not available\n");
++	}
 +
-+	dwc2_writel(dwc2, gpvndctl, GPVNDCTL);
-+
-+	if (dwc2_wait_bit_set(dwc2, GPVNDCTL, GPVNDCTL_VSTSDONE, 10000))
-+		dwc2_err(dwc2, "Timeout: Waiting for phy read to complete\n");
-+
-+	gpvndctl = dwc2_readl(dwc2, GPVNDCTL);
-+	data = (gpvndctl & GPVNDCTL_REGDATA_MASK) >> GPVNDCTL_REGDATA_SHIFT;
-+
-+	return data;
++	return ret;
 +}
 +
-+void dwc2_ulpi_write(struct dwc2 *dwc2, u32 addr, u32 data)
-+{
-+	u32 gpvndctl;
-+
-+	gpvndctl = GPVNDCTL_NEWREGREQ | GPVNDCTL_REGWR;
-+	gpvndctl |= (addr << GPVNDCTL_REGADDR_SHIFT) & GPVNDCTL_REGADDR_MASK;
-+	gpvndctl |= (data << GPVNDCTL_REGDATA_SHIFT) & GPVNDCTL_REGDATA_MASK;
-+
-+	dwc2_writel(dwc2, gpvndctl, GPVNDCTL);
-+
-+	if (dwc2_wait_bit_set(dwc2, GPVNDCTL, GPVNDCTL_VSTSDONE, 10000))
-+		dwc2_err(dwc2, "Timeout: Waiting for phy write to complete\n");
-+}
-+
- /* Returns the controller's GHWCFG2.OTG_MODE. */
- static unsigned int dwc2_op_mode(struct dwc2 *dwc2)
+ static int dwc2_probe(struct device_d *dev)
  {
+ 	struct resource *iores;
+@@ -58,15 +79,17 @@ static int dwc2_probe(struct device_d *dev)
+ 	/* Detect config values from hardware */
+ 	dwc2_get_hwparams(dwc2);
+ 
+-	dwc2_get_dr_mode(dwc2);
++	ret = dwc2_get_dr_mode(dwc2);
+ 
+ 	dwc2_set_default_params(dwc2);
+ 
+ 	dma_set_mask(dev, DMA_BIT_MASK(32));
+ 
+-	ret = dwc2_register_host(dwc2);
++	if (dwc2->dr_mode == USB_DR_MODE_OTG)
++		ret = usb_register_otg_device(dwc2->dev, dwc2_set_mode, dwc2);
++	else
++		ret = dwc2_set_mode(dwc2, dwc2->dr_mode);
+ 
+-	ret = dwc2_gadget_init(dwc2);
+ error:
+ 	return ret;
+ }
 diff --git a/drivers/usb/dwc2/dwc2.h b/drivers/usb/dwc2/dwc2.h
-index 5e845f349..2475fd005 100644
+index 0ec21a5ac..5e845f349 100644
 --- a/drivers/usb/dwc2/dwc2.h
 +++ b/drivers/usb/dwc2/dwc2.h
-@@ -28,6 +28,9 @@ int dwc2_get_dr_mode(struct dwc2 *dwc2);
- int dwc2_core_reset(struct dwc2 *dwc2);
- void dwc2_core_init(struct dwc2 *dwc2);
+@@ -35,12 +35,12 @@ int dwc2_submit_roothub(struct dwc2 *dwc2, struct usb_device *dev,
+ 		struct devrequest *setup);
+ int dwc2_register_host(struct dwc2 *dwc2);
+ #else
+-static inline int dwc2_register_host(struct dwc2 *dwc2) { return 0; }
++static inline int dwc2_register_host(struct dwc2 *dwc2) { return -ENODEV; }
+ #endif
  
-+int dwc2_ulpi_read(struct dwc2 *dwc2, u8 addr);
-+void dwc2_ulpi_write(struct dwc2 *dwc2, u32 addr, u32 data);
-+
- /* Host functions */
- #ifdef CONFIG_USB_DWC2_HOST
- int dwc2_submit_roothub(struct dwc2 *dwc2, struct usb_device *dev,
+ /* Gadget functions */
+ #ifdef CONFIG_USB_DWC2_GADGET
+ int dwc2_gadget_init(struct dwc2 *dwc2);
+ #else
+-static inline int dwc2_gadget_init(struct dwc2 *dwc2) { return 0; }
++static inline int dwc2_gadget_init(struct dwc2 *dwc2) { return -ENODEV; }
+ #endif
 -- 
 2.17.1
 
