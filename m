@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jxlXx-0001aj-Ea
- for barebox@lists.infradead.org; Tue, 21 Jul 2020 06:14:38 +0000
+ id 1jxlYK-0001kg-Ec
+ for barebox@lists.infradead.org; Tue, 21 Jul 2020 06:15:03 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 21 Jul 2020 08:14:33 +0200
-Message-Id: <20200721061433.26554-1-a.fatoum@pengutronix.de>
+Date: Tue, 21 Jul 2020 08:14:56 +0200
+Message-Id: <20200721061458.26739-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,197 +19,151 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: at91: pass along bootsource to netbooted barebox
+Subject: [PATCH 1/3] i2c: sync i2c_parse_fw_timings() with upstream
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-ROM-Code passes boot source information in r4. First stage does likewise
-when invoking second stage. When net booting second stage, r4 has no
-definite value. Fix this and pass the original boot source along.
-
-This gives us a valid $bootsource value in net booted barebox, which is
-important, so the same environment is loaded.
+Upstream now has support for i2c-digital-filter-width-ns and
+i2c-analog-filter-cutoff-frequency device tree properties, that are
+used in an upcoming patch.
+Prepare for it by syncing with Linux v5.8-rc4.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/mach-at91/Makefile                   |  2 +-
- arch/arm/mach-at91/bootm-barebox.c            | 46 +++++++++++++++++++
- arch/arm/mach-at91/include/mach/cpu.h         |  1 +
- .../mach-at91/include/mach/sama5_bootsource.h |  7 +++
- arch/arm/mach-at91/include/mach/xload.h       |  1 -
- arch/arm/mach-at91/sama5d2.c                  |  9 ++--
- arch/arm/mach-at91/setup.c                    |  3 ++
- arch/arm/mach-at91/xload-mmc.c                |  8 +---
- 8 files changed, 63 insertions(+), 14 deletions(-)
- create mode 100644 arch/arm/mach-at91/bootm-barebox.c
+ drivers/i2c/i2c.c | 73 ++++++++++++++++++++++-------------------------
+ include/i2c/i2c.h | 14 +++++++++
+ 2 files changed, 48 insertions(+), 39 deletions(-)
 
-diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-index 3b9f60a95af3..ba46c1a16edb 100644
---- a/arch/arm/mach-at91/Makefile
-+++ b/arch/arm/mach-at91/Makefile
-@@ -1,4 +1,4 @@
--obj-y += setup.o aic.o
-+obj-y += setup.o aic.o bootm-barebox.o
- lwl-y += at91_pmc_ll.o ddramc_ll.o matrix.o
- lwl-$(CONFIG_CLOCKSOURCE_ATMEL_PIT) += early_udelay.o
+diff --git a/drivers/i2c/i2c.c b/drivers/i2c/i2c.c
+index 2fed624d69f9..57d8c7017f4b 100644
+--- a/drivers/i2c/i2c.c
++++ b/drivers/i2c/i2c.c
+@@ -569,6 +569,18 @@ struct i2c_client *of_find_i2c_device_by_node(struct device_node *node)
+ 	return to_i2c_client(dev);
+ }
  
-diff --git a/arch/arm/mach-at91/bootm-barebox.c b/arch/arm/mach-at91/bootm-barebox.c
-new file mode 100644
-index 000000000000..1dccdb86a939
---- /dev/null
-+++ b/arch/arm/mach-at91/bootm-barebox.c
-@@ -0,0 +1,46 @@
-+#define pr_fmt(fmt) "at91-bootm-barebox: " fmt
-+
-+#include <bootm.h>
-+#include <common.h>
-+#include <init.h>
-+#include <memory.h>
-+#include <mach/cpu.h>
-+#include <mach/sama5_bootsource.h>
-+
-+static int do_bootm_at91_barebox_image(struct image_data *data)
++static void i2c_parse_timing(struct device_d *dev, char *prop_name, u32 *cur_val_p,
++			    u32 def_val, bool use_def)
 +{
-+	resource_size_t start, end;
 +	int ret;
 +
-+	ret = memory_bank_first_find_space(&start, &end);
-+	if (ret)
-+		return ret;
++	ret = of_property_read_u32(dev->device_node, prop_name, cur_val_p);
++	if (ret && use_def)
++		*cur_val_p = def_val;
 +
-+	ret = bootm_load_os(data, start);
-+	if (ret)
-+		return ret;
-+
-+	if (data->verbose)
-+		printf("Loaded barebox image to 0x%08zx\n", start);
-+
-+	shutdown_barebox();
-+
-+	sama5_boot_xload((void *)start, at91_bootsource);
-+
-+	return -EIO;
++	dev_dbg(dev, "%s: %u\n", prop_name, *cur_val_p);
 +}
 +
-+static struct image_handler image_handler_at91_barebox_image = {
-+	.name = "AT91 barebox image",
-+	.bootm = do_bootm_at91_barebox_image,
-+	.filetype = filetype_arm_barebox,
-+};
-+
-+static int at91_register_barebox_image_handler(void)
-+{
-+	if (!of_machine_is_compatible("atmel,sama5d2"))
-+	    return 0;
-+
-+	return register_image_handler(&image_handler_at91_barebox_image);
-+}
-+late_initcall(at91_register_barebox_image_handler);
-diff --git a/arch/arm/mach-at91/include/mach/cpu.h b/arch/arm/mach-at91/include/mach/cpu.h
-index 6e0f25f32562..fa25a4783b31 100644
---- a/arch/arm/mach-at91/include/mach/cpu.h
-+++ b/arch/arm/mach-at91/include/mach/cpu.h
-@@ -167,6 +167,7 @@ struct at91_socinfo {
- extern struct at91_socinfo at91_soc_initdata;
- const char *at91_get_soc_type(struct at91_socinfo *c);
- const char *at91_get_soc_subtype(struct at91_socinfo *c);
-+extern unsigned long at91_bootsource;
+ /**
+  * i2c_parse_fw_timings - get I2C related timing parameters from firmware
+  * @dev: The device to scan for I2C timing properties
+@@ -587,45 +599,28 @@ struct i2c_client *of_find_i2c_device_by_node(struct device_node *node)
  
- static inline int at91_soc_is_detected(void)
+ void i2c_parse_fw_timings(struct device_d *dev, struct i2c_timings *t, bool use_defaults)
  {
-diff --git a/arch/arm/mach-at91/include/mach/sama5_bootsource.h b/arch/arm/mach-at91/include/mach/sama5_bootsource.h
-index 0f90afe90232..8355c2eeb69d 100644
---- a/arch/arm/mach-at91/include/mach/sama5_bootsource.h
-+++ b/arch/arm/mach-at91/include/mach/sama5_bootsource.h
-@@ -46,4 +46,11 @@ static inline int sama5_bootsource_instance(u32 reg)
- #define __sama5d2_stashed_bootrom_r4 \
- 	(*(volatile u32 *)(SAMA5D2_SRAM_BASE + SAMA5D2_SRAM_SIZE - 0x4))
- 
-+static inline void __noreturn sama5_boot_xload(void __noreturn (*bb)(void), u32 r4)
-+{
-+	asm volatile("mov r4, %0" : : "r"(r4) : );
-+	asm volatile("bx  %0"     : : "r"(bb) : );
-+	__builtin_unreachable();
-+}
+-	int ret;
+-
+-	memset(t, 0, sizeof(*t));
+-
+-	ret = of_property_read_u32(dev->device_node, "clock-frequency",
+-				   &t->bus_freq_hz);
+-	if (ret && use_defaults)
+-		t->bus_freq_hz = 100000;
+-
+-	ret = of_property_read_u32(dev->device_node, "i2c-scl-rising-time-ns",
+-				   &t->scl_rise_ns);
+-	if (ret && use_defaults) {
+-		if (t->bus_freq_hz <= 100000)
+-			t->scl_rise_ns = 1000;
+-		else if (t->bus_freq_hz <= 400000)
+-			t->scl_rise_ns = 300;
+-		else
+-			t->scl_rise_ns = 120;
+-	}
+-
+-	ret = of_property_read_u32(dev->device_node, "i2c-scl-falling-time-ns",
+-				   &t->scl_fall_ns);
+-	if (ret && use_defaults) {
+-		if (t->bus_freq_hz <= 400000)
+-			t->scl_fall_ns = 300;
+-		else
+-			t->scl_fall_ns = 120;
+-	}
+-
+-	of_property_read_u32(dev->device_node, "i2c-scl-internal-delay-ns",
+-			     &t->scl_int_delay_ns);
+-
+-	ret = of_property_read_u32(dev->device_node, "i2c-sda-falling-time-ns",
+-				   &t->sda_fall_ns);
+-	if (ret && use_defaults)
+-		t->sda_fall_ns = t->scl_fall_ns;
+-
+-	of_property_read_u32(dev->device_node, "i2c-sda-hold-time-ns",
+-			     &t->sda_hold_ns);
++	bool u = use_defaults;
++	u32 d;
 +
- #endif
-diff --git a/arch/arm/mach-at91/include/mach/xload.h b/arch/arm/mach-at91/include/mach/xload.h
-index f110236b0b10..338577c22174 100644
---- a/arch/arm/mach-at91/include/mach/xload.h
-+++ b/arch/arm/mach-at91/include/mach/xload.h
-@@ -9,4 +9,3 @@ void __noreturn sama5d2_sdhci_start_image(u32 r4);
- int at91_sdhci_bio_init(struct pbl_bio *bio, void __iomem *base);
- 
- #endif /* __MACH_XLOAD_H */
--
-diff --git a/arch/arm/mach-at91/sama5d2.c b/arch/arm/mach-at91/sama5d2.c
-index 2ce6d7f36f56..a4aa8a23399d 100644
---- a/arch/arm/mach-at91/sama5d2.c
-+++ b/arch/arm/mach-at91/sama5d2.c
-@@ -8,6 +8,7 @@
- #include <asm/cache-l2x0.h>
- #include <mach/sama5_bootsource.h>
- #include <asm/mmu.h>
-+#include <mach/cpu.h>
- 
- #define SFR_CAN		0x48
- #define SFR_L2CC_HRAMC	0x58
-@@ -56,15 +57,13 @@ postmmu_initcall(sama5d2_init);
- 
- static int sama5d2_bootsource_init(void)
- {
--	u32 r4;
--
- 	if (!of_machine_is_compatible("atmel,sama5d2"))
- 		return 0;
- 
--	r4 = __sama5d2_stashed_bootrom_r4;
-+	at91_bootsource = __sama5d2_stashed_bootrom_r4;
- 
--	bootsource_set(sama5_bootsource(r4));
--	bootsource_set_instance(sama5_bootsource_instance(r4));
-+	bootsource_set(sama5_bootsource(at91_bootsource));
-+	bootsource_set_instance(sama5_bootsource_instance(at91_bootsource));
- 
- 	return 0;
- }
-diff --git a/arch/arm/mach-at91/setup.c b/arch/arm/mach-at91/setup.c
-index b7a66aa0ae80..47247dc97cbc 100644
---- a/arch/arm/mach-at91/setup.c
-+++ b/arch/arm/mach-at91/setup.c
-@@ -403,3 +403,6 @@ void at91sam_phy_reset(void __iomem *rstc_base)
- 	/* Restore NRST value */
- 	writel(AT91_RSTC_KEY | (rstc) | AT91_RSTC_URSTEN, rstc_base + AT91_RSTC_MR);
- }
++	i2c_parse_timing(dev, "clock-frequency", &t->bus_freq_hz,
++			 I2C_MAX_STANDARD_MODE_FREQ, u);
 +
-+unsigned long at91_bootsource;
-+EXPORT_SYMBOL(at91_bootsource);
-diff --git a/arch/arm/mach-at91/xload-mmc.c b/arch/arm/mach-at91/xload-mmc.c
-index 42341fa54bcd..e9edeccb7f05 100644
---- a/arch/arm/mach-at91/xload-mmc.c
-+++ b/arch/arm/mach-at91/xload-mmc.c
-@@ -8,12 +8,6 @@
- #include <asm/cache.h>
- #include <pbl.h>
- 
--static void __naked __noreturn xload_bb(void __noreturn (*bb)(void), u32 r4)
--{
--	asm volatile("mov r4, %0" : : "r"(r4) : );
--	asm volatile("bx  %0"     : : "r"(bb) : );
--}
--
- static void at91_fat_start_image(struct pbl_bio *bio,
- 				 void *buf, unsigned int len,
- 				 u32 r4)
-@@ -31,7 +25,7 @@ static void at91_fat_start_image(struct pbl_bio *bio,
- 
- 	sync_caches_for_execution();
- 
--	xload_bb(bb, r4);
-+	sama5_boot_xload(bb, r4);
++	d = t->bus_freq_hz <= I2C_MAX_STANDARD_MODE_FREQ ? 1000 :
++	    t->bus_freq_hz <= I2C_MAX_FAST_MODE_FREQ ? 300 : 120;
++	i2c_parse_timing(dev, "i2c-scl-rising-time-ns", &t->scl_rise_ns, d, u);
++
++	d = t->bus_freq_hz <= I2C_MAX_FAST_MODE_FREQ ? 300 : 120;
++	i2c_parse_timing(dev, "i2c-scl-falling-time-ns", &t->scl_fall_ns, d, u);
++
++	i2c_parse_timing(dev, "i2c-scl-internal-delay-ns",
++			 &t->scl_int_delay_ns, 0, u);
++	i2c_parse_timing(dev, "i2c-sda-falling-time-ns", &t->sda_fall_ns,
++			 t->scl_fall_ns, u);
++	i2c_parse_timing(dev, "i2c-sda-hold-time-ns", &t->sda_hold_ns, 0, u);
++	i2c_parse_timing(dev, "i2c-digital-filter-width-ns",
++			 &t->digital_filter_width_ns, 0, u);
++	i2c_parse_timing(dev, "i2c-analog-filter-cutoff-frequency",
++			 &t->analog_filter_cutoff_freq_hz, 0, u);
  }
+ EXPORT_SYMBOL_GPL(i2c_parse_fw_timings);
  
- static const struct sdhci_instance {
+diff --git a/include/i2c/i2c.h b/include/i2c/i2c.h
+index bfc1eab81588..af6287602ca5 100644
+--- a/include/i2c/i2c.h
++++ b/include/i2c/i2c.h
+@@ -31,6 +31,14 @@ struct i2c_platform_data {
+ 	int bitrate;
+ };
+ 
++/* I2C Frequency Modes */
++#define I2C_MAX_STANDARD_MODE_FREQ	100000
++#define I2C_MAX_FAST_MODE_FREQ		400000
++#define I2C_MAX_FAST_MODE_PLUS_FREQ	1000000
++#define I2C_MAX_TURBO_MODE_FREQ		1400000
++#define I2C_MAX_HIGH_SPEED_MODE_FREQ	3400000
++#define I2C_MAX_ULTRA_FAST_MODE_FREQ	5000000
++
+ #define I2C_NAME_SIZE	20
+ 
+ #define I2C_M_RD		0x0001	/* read data, from slave to master */
+@@ -246,6 +254,10 @@ struct i2c_board_info {
+  * @scl_int_delay_ns: time IP core additionally needs to setup SCL in ns
+  * @sda_fall_ns: time SDA signal takes to fall in ns; t(f) in the I2C specification
+  * @sda_hold_ns: time IP core additionally needs to hold SDA in ns
++ * @digital_filter_width_ns: width in ns of spikes on i2c lines that the IP core
++ *	digital filter can filter out
++ * @analog_filter_cutoff_freq_hz: threshold frequency for the low pass IP core
++ *	analog filter
+  */
+ struct i2c_timings {
+ 	u32 bus_freq_hz;
+@@ -254,6 +266,8 @@ struct i2c_timings {
+ 	u32 scl_int_delay_ns;
+ 	u32 sda_fall_ns;
+ 	u32 sda_hold_ns;
++	u32 digital_filter_width_ns;
++	u32 analog_filter_cutoff_freq_hz;
+ };
+ 
+ /**
 -- 
 2.27.0
 
