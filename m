@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from zimbra2.kalray.eu ([92.103.151.219])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jxr2S-0007AH-G3
- for barebox@lists.infradead.org; Tue, 21 Jul 2020 12:06:29 +0000
+ id 1jxr2S-0007A9-G4
+ for barebox@lists.infradead.org; Tue, 21 Jul 2020 12:06:31 +0000
 From: Jules Maselbas <jmaselbas@kalray.eu>
-Date: Tue, 21 Jul 2020 14:05:51 +0200
-Message-Id: <20200721120600.15114-6-jmaselbas@kalray.eu>
-In-Reply-To: <20200721120600.15114-1-jmaselbas@kalray.eu>
-References: <20200721120600.15114-1-jmaselbas@kalray.eu>
+Date: Tue, 21 Jul 2020 14:05:46 +0200
+Message-Id: <20200721120600.15114-1-jmaselbas@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,90 +19,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 05/14] usb: dwc2: Rework timeout
+Subject: [PATCH v3 00/14] usb: dwc2: Add host and gadget driver
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Jules Maselbas <jmaselbas@kalray.eu>
 
-Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
----
- drivers/usb/dwc2/core.h | 22 ++++------------------
- drivers/usb/dwc2/host.c | 16 +++++++++++++++-
- 2 files changed, 19 insertions(+), 19 deletions(-)
+This patchset add USB host and gadget support for the DWC2 controller
+The host driver is ported from the U-Boot driver, some part are taken
+taken from Linux.
 
-diff --git a/drivers/usb/dwc2/core.h b/drivers/usb/dwc2/core.h
-index 94f992cb1..a2ec3ff68 100644
---- a/drivers/usb/dwc2/core.h
-+++ b/drivers/usb/dwc2/core.h
-@@ -466,15 +466,8 @@ static inline void dwc2_writel(struct dwc2 *dwc2, u32 value, u32 offset)
- static inline int dwc2_wait_bit_set(struct dwc2 *dwc2, u32 offset, u32 mask,
- 			    u32 timeout)
- {
--	u32 i;
--
--	for (i = 0; i < timeout; i++) {
--		if (dwc2_readl(dwc2, offset) & mask)
--			return 0;
--		udelay(1);
--	}
--
--	return -ETIMEDOUT;
-+	return wait_on_timeout(timeout * USECOND,
-+			dwc2_readl(dwc2, offset) & mask);
- }
- 
- /**
-@@ -489,15 +482,8 @@ static inline int dwc2_wait_bit_set(struct dwc2 *dwc2, u32 offset, u32 mask,
- static inline int dwc2_wait_bit_clear(struct dwc2 *dwc2, u32 offset, u32 mask,
- 			    u32 timeout)
- {
--	u32 i;
--
--	for (i = 0; i < timeout; i++) {
--		if (!(dwc2_readl(dwc2, offset) & mask))
--			return 0;
--		udelay(1);
--	}
--
--	return -ETIMEDOUT;
-+	return wait_on_timeout(timeout * USECOND,
-+			!(dwc2_readl(dwc2, offset) & mask));
- }
- 
- /*
-diff --git a/drivers/usb/dwc2/host.c b/drivers/usb/dwc2/host.c
-index 86c37aa22..b32b47867 100644
---- a/drivers/usb/dwc2/host.c
-+++ b/drivers/usb/dwc2/host.c
-@@ -383,6 +383,8 @@ static int dwc2_submit_bulk_msg(struct usb_device *udev, unsigned long pipe,
- 	int in = usb_pipein(pipe);
- 	u8 *pid;
- 	u8 hc = DWC2_HC_CHANNEL;
-+	uint64_t start;
-+	int ret;
- 
- 	if ((devnum >= MAX_DEVICE) || (devnum == dwc2->root_hub_devnum)) {
- 		udev->status = 0;
-@@ -394,7 +396,19 @@ static int dwc2_submit_bulk_msg(struct usb_device *udev, unsigned long pipe,
- 	else
- 		pid = &dwc2->out_data_toggle[devnum][ep];
- 
--	return dwc2_submit_packet(dwc2, udev, hc, pipe, pid, in, buffer, len);
-+	start = get_time_ns();
-+	do {
-+		ret = dwc2_submit_packet(dwc2, udev, hc, pipe, pid, in,
-+					 buffer, len);
-+	} while (ret == -EAGAIN && !is_timeout(start, timeout * MSECOND));
-+	if (ret == -EAGAIN) {
-+		dwc2_err(dwc2, "Timeout on bulk endpoint\n");
-+		ret = -ETIMEDOUT;
-+	}
-+
-+	dwc2_dbg(dwc2, "%s: return %d\n", __func__, ret);
-+
-+	return ret;
- }
- 
- static int dwc2_submit_int_msg(struct usb_device *udev, unsigned long pipe,
+The gadget driver is ported from Linux and only support direct dma (not
+descriptor based) and does not support direct buffer although this could
+be nice to have.
+
+changes since v2:
+ - rework timeout handling for networking
+ - use usb_register_otg_device
+ - rework gadget fifo allocation
+ - modified makefile/kconfig for host or gadget only
+
+---
+
+Jules Maselbas (14):
+  Revert "usb: Add dwc2 host driver"
+  usb: dwc2: Add host controller driver
+  usb: dwc2: host: Read dr_mode from device tree
+  usb: dwc2: Rework roothub interface
+  usb: dwc2: Rework timeout
+  usb: dwc2: host: Handle dma mapping errors
+  usb: dwc2: host: Dynamic fifo size support from Linux
+  usb: dwc2: host: Fix toggle reset
+  usb: dwc2: host: Rewrite dwc2_hc_init
+  usb: dwc2: Add function to flush tx fifo
+  usb: dwc2: Add structure for gadget driver
+  usb: dwc2: Add gadget driver
+  usb: dwc2: Use register_otg_device
+  usb: dwc2: Add ulpi phy function
+
+ drivers/usb/Kconfig       |    2 +
+ drivers/usb/Makefile      |    1 +
+ drivers/usb/dwc2/Kconfig  |   21 +
+ drivers/usb/dwc2/Makefile |    2 +
+ drivers/usb/dwc2/core.c   |  839 ++++++++++++
+ drivers/usb/dwc2/core.h   |  562 ++++++++
+ drivers/usb/dwc2/dwc2.c   |  117 ++
+ drivers/usb/dwc2/dwc2.h   |   49 +
+ drivers/usb/dwc2/gadget.c | 2736 +++++++++++++++++++++++++++++++++++++
+ drivers/usb/dwc2/host.c   |  781 +++++++++++
+ drivers/usb/dwc2/regs.h   |  841 ++++++++++++
+ drivers/usb/dwc2/rhub.c   |  384 ++++++
+ drivers/usb/host/Kconfig  |    3 -
+ drivers/usb/host/Makefile |    1 -
+ drivers/usb/host/dwc2.c   | 1132 ---------------
+ drivers/usb/host/dwc2.h   |  778 -----------
+ 16 files changed, 6335 insertions(+), 1914 deletions(-)
+ create mode 100644 drivers/usb/dwc2/Kconfig
+ create mode 100644 drivers/usb/dwc2/Makefile
+ create mode 100644 drivers/usb/dwc2/core.c
+ create mode 100644 drivers/usb/dwc2/core.h
+ create mode 100644 drivers/usb/dwc2/dwc2.c
+ create mode 100644 drivers/usb/dwc2/dwc2.h
+ create mode 100644 drivers/usb/dwc2/gadget.c
+ create mode 100644 drivers/usb/dwc2/host.c
+ create mode 100644 drivers/usb/dwc2/regs.h
+ create mode 100644 drivers/usb/dwc2/rhub.c
+ delete mode 100644 drivers/usb/host/dwc2.c
+ delete mode 100644 drivers/usb/host/dwc2.h
+
 -- 
 2.17.1
 
