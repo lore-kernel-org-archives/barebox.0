@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from zimbra2.kalray.eu ([92.103.151.219])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jxr2Z-0007Db-CN
- for barebox@lists.infradead.org; Tue, 21 Jul 2020 12:06:47 +0000
-From: Jules Maselbas <jmaselbas@kalray.eu>
-Date: Tue, 21 Jul 2020 14:05:58 +0200
-Message-Id: <20200721120600.15114-13-jmaselbas@kalray.eu>
-In-Reply-To: <20200721120600.15114-1-jmaselbas@kalray.eu>
+ id 1jy8Me-0004rc-9W
+ for barebox@lists.infradead.org; Wed, 22 Jul 2020 06:36:30 +0000
 References: <20200721120600.15114-1-jmaselbas@kalray.eu>
+ <20200721120600.15114-3-jmaselbas@kalray.eu>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <c6c0ba75-68dc-6977-2c5f-77eabe36a63d@pengutronix.de>
+Date: Wed, 22 Jul 2020 08:36:25 +0200
+MIME-Version: 1.0
+In-Reply-To: <20200721120600.15114-3-jmaselbas@kalray.eu>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,2957 +19,3302 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 12/14] usb: dwc2: Add gadget driver
-To: Barebox List <barebox@lists.infradead.org>
-Cc: Jules Maselbas <jmaselbas@kalray.eu>
+Subject: Re: [PATCH v3 02/14] usb: dwc2: Add host controller driver
+To: Jules Maselbas <jmaselbas@kalray.eu>, Barebox List <barebox@lists.infradead.org>
 
-Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
----
- drivers/usb/dwc2/Kconfig  |    7 +
- drivers/usb/dwc2/Makefile |    1 +
- drivers/usb/dwc2/core.c   |   64 +
- drivers/usb/dwc2/core.h   |    7 +
- drivers/usb/dwc2/dwc2.c   |    2 +
- drivers/usb/dwc2/dwc2.h   |    7 +
- drivers/usb/dwc2/gadget.c | 2736 +++++++++++++++++++++++++++++++++++++
- drivers/usb/dwc2/regs.h   |    1 +
- 8 files changed, 2825 insertions(+)
- create mode 100644 drivers/usb/dwc2/gadget.c
 
-diff --git a/drivers/usb/dwc2/Kconfig b/drivers/usb/dwc2/Kconfig
-index cd24d8cfa..3c3cdc3de 100644
---- a/drivers/usb/dwc2/Kconfig
-+++ b/drivers/usb/dwc2/Kconfig
-@@ -12,3 +12,10 @@ config USB_DWC2_HOST
- 	select USB_DWC2
- 	help
- 	  Select this when you want to use DWC2 in host mode.
-+
-+config USB_DWC2_GADGET
-+	bool "DWC2 Gadget mode support"
-+	depends on USB_GADGET
-+	select USB_DWC2
-+	help
-+	  Select this when you want to use DWC2 in gadget mode.
-diff --git a/drivers/usb/dwc2/Makefile b/drivers/usb/dwc2/Makefile
-index f513fbec7..f019051d8 100644
---- a/drivers/usb/dwc2/Makefile
-+++ b/drivers/usb/dwc2/Makefile
-@@ -1 +1,2 @@
- obj-$(CONFIG_USB_DWC2_HOST)	+= dwc2.o core.o host.o rhub.o
-+obj-$(CONFIG_USB_DWC2_GADGET)	+= dwc2.o core.o gadget.o
-diff --git a/drivers/usb/dwc2/core.c b/drivers/usb/dwc2/core.c
-index a8693097d..c4a3cc789 100644
---- a/drivers/usb/dwc2/core.c
-+++ b/drivers/usb/dwc2/core.c
-@@ -87,6 +87,46 @@ void dwc2_set_param_phy_utmi_width(struct dwc2 *dwc2)
- 	dwc2->params.phy_utmi_width = val;
- }
- 
-+/**
-+ * dwc2_hsotg_tx_fifo_count - return count of TX FIFOs in device mode
-+ *
-+ * @hsotg: Programming view of the DWC_otg controller
-+ */
-+int dwc2_tx_fifo_count(struct dwc2 *dwc2)
-+{
-+	if (dwc2->hw_params.en_multiple_tx_fifo)
-+		/* In dedicated FIFO mode we need count of IN EPs */
-+		return dwc2->hw_params.num_dev_in_eps;
-+	else
-+		/* In shared FIFO mode we need count of Periodic IN EPs */
-+		return dwc2->hw_params.num_dev_perio_in_ep;
-+}
-+
-+static void dwc2_set_param_fifo_sizes(struct dwc2 *dwc2)
-+{
-+	struct dwc2_hw_params *hw = &dwc2->hw_params;
-+	struct dwc2_core_params *p = &dwc2->params;
-+	u32 total_fifo_size = dwc2->hw_params.total_fifo_size;
-+	u32 max_np_tx_fifo_size = hw->dev_nperio_tx_fifo_size;
-+	u32 max_rx_fifo_size = hw->rx_fifo_size;
-+	u32 depth;
-+	int count, i;
-+
-+	count = dwc2_tx_fifo_count(dwc2);
-+
-+	depth = total_fifo_size / 4;
-+	p->g_np_tx_fifo_size = min(max_np_tx_fifo_size, depth);
-+	total_fifo_size -= p->g_np_tx_fifo_size;
-+
-+	depth = 8 * count + 256;
-+	depth = max(total_fifo_size / count, depth);
-+	p->g_rx_fifo_size = min(max_rx_fifo_size, depth);
-+	total_fifo_size -= p->g_rx_fifo_size;
-+
-+	for (i = 1; i <= count; i++)
-+		p->g_tx_fifo_size[i] = total_fifo_size / count;
-+}
-+
- /**
-  * dwc2_set_default_params() - Set all core parameters to their
-  * auto-detected default values.
-@@ -138,6 +178,11 @@ void dwc2_set_default_params(struct dwc2 *dwc2)
- 		p->host_nperio_tx_fifo_size = hw->host_nperio_tx_fifo_size;
- 		p->host_perio_tx_fifo_size = hw->host_perio_tx_fifo_size;
- 	}
-+
-+	if ((dwc2->dr_mode == USB_DR_MODE_PERIPHERAL) ||
-+	    (dwc2->dr_mode == USB_DR_MODE_OTG)) {
-+		dwc2_set_param_fifo_sizes(dwc2);
-+	}
- }
- 
- int dwc2_core_snpsid(struct dwc2 *dwc2)
-@@ -167,6 +212,23 @@ int dwc2_core_snpsid(struct dwc2 *dwc2)
- 	return 0;
- }
- 
-+static void dwc2_get_dev_hwparams(struct dwc2 *dwc2)
-+{
-+	struct dwc2_hw_params *hw = &dwc2->hw_params;
-+	u32 size;
-+	int count, i;
-+
-+	size = FIFOSIZE_DEPTH_GET(dwc2_readl(dwc2, GNPTXFSIZ));
-+	hw->dev_nperio_tx_fifo_size = size;
-+
-+	count = dwc2_tx_fifo_count(dwc2);
-+
-+	for (i = 1; i <= count; i++) {
-+		size = FIFOSIZE_DEPTH_GET(dwc2_readl(dwc2, DPTXFSIZN(i)));
-+		hw->g_tx_fifo_size[i] = size;
-+	}
-+}
-+
- /**
-  * During device initialization, read various hardware configuration
-  * registers and interpret the contents.
-@@ -243,6 +305,8 @@ void dwc2_get_hwparams(struct dwc2 *dwc2)
- 	/* fifo sizes */
- 	hw->rx_fifo_size = (grxfsiz & GRXFSIZ_DEPTH_MASK) >>
- 				GRXFSIZ_DEPTH_SHIFT;
-+
-+	dwc2_get_dev_hwparams(dwc2);
- }
- 
- /*
-diff --git a/drivers/usb/dwc2/core.h b/drivers/usb/dwc2/core.h
-index b188990a0..090ca15fe 100644
---- a/drivers/usb/dwc2/core.h
-+++ b/drivers/usb/dwc2/core.h
-@@ -482,7 +482,14 @@ struct dwc2 {
- 	void *ctrl_buff;
- 	enum dwc2_ep0_state ep0_state;
- 	struct usb_gadget_driver *driver;
-+
- 	int num_eps;
-+	u16 frame_number;
-+	u32 fifo_map;
-+	unsigned int dedicated_fifos:1;
-+	unsigned int enabled:1;
-+	unsigned int connected:1;
-+	unsigned int is_selfpowered:1;
- #endif
- };
- 
-diff --git a/drivers/usb/dwc2/dwc2.c b/drivers/usb/dwc2/dwc2.c
-index e058cb257..2d14b218a 100644
---- a/drivers/usb/dwc2/dwc2.c
-+++ b/drivers/usb/dwc2/dwc2.c
-@@ -65,6 +65,8 @@ static int dwc2_probe(struct device_d *dev)
- 	dma_set_mask(dev, DMA_BIT_MASK(32));
- 
- 	ret = dwc2_register_host(dwc2);
-+
-+	ret = dwc2_gadget_init(dwc2);
- error:
- 	return ret;
- }
-diff --git a/drivers/usb/dwc2/dwc2.h b/drivers/usb/dwc2/dwc2.h
-index f620175df..0ec21a5ac 100644
---- a/drivers/usb/dwc2/dwc2.h
-+++ b/drivers/usb/dwc2/dwc2.h
-@@ -18,6 +18,7 @@ void dwc2_get_hwparams(struct dwc2 *dwc2);
- void dwc2_init_fs_ls_pclk_sel(struct dwc2 *dwc2);
- void dwc2_flush_all_fifo(struct dwc2 *dwc2);
- void dwc2_flush_tx_fifo(struct dwc2 *dwc2, const int idx);
-+int dwc2_tx_fifo_count(struct dwc2 *dwc2);
- 
- int dwc2_phy_init(struct dwc2 *dwc2, bool select_phy);
- int dwc2_gahbcfg_init(struct dwc2 *dwc2);
-@@ -37,3 +38,9 @@ int dwc2_register_host(struct dwc2 *dwc2);
- static inline int dwc2_register_host(struct dwc2 *dwc2) { return 0; }
- #endif
- 
-+/* Gadget functions */
-+#ifdef CONFIG_USB_DWC2_GADGET
-+int dwc2_gadget_init(struct dwc2 *dwc2);
-+#else
-+static inline int dwc2_gadget_init(struct dwc2 *dwc2) { return 0; }
-+#endif
-diff --git a/drivers/usb/dwc2/gadget.c b/drivers/usb/dwc2/gadget.c
-new file mode 100644
-index 000000000..71fac225b
---- /dev/null
-+++ b/drivers/usb/dwc2/gadget.c
-@@ -0,0 +1,2736 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+#include <dma.h>
-+#include <usb/gadget.h>
-+#include "dwc2.h"
-+
-+#define to_dwc2 gadget_to_dwc2
-+#define dwc2_set_bit(d, r, b)	dwc2_writel(d, (b) | dwc2_readl(d, r), r)
-+#define dwc2_clear_bit(d, r, b)	dwc2_writel(d, ~(b) & dwc2_readl(d, r), r)
-+
-+#define spin_lock(lock)
-+#define spin_unlock(lock)
-+#define local_irq_save(flags)(void)(flags)
-+#define local_irq_restore(flags) (void)(flags)
-+#define spin_lock_irqsave(lock, flags) (void)(flags)
-+#define spin_unlock_irqrestore(lock, flags) (void)(flags)
-+
-+#ifndef USB_ENDPOINT_MAXP_MASK
-+#define USB_ENDPOINT_MAXP_MASK	0x07ff
-+#endif
-+#ifndef USB_EP_MAXP_MULT
-+#define USB_EP_MAXP_MULT(m)	(((m) & 0x1800) >> 11)
-+#endif
-+
-+static void kill_all_requests(struct dwc2 *, struct dwc2_ep *, int);
-+
-+static inline struct dwc2_ep *index_to_ep(struct dwc2 *dwc2,
-+					  unsigned int ep, int in)
-+{
-+	if (ep >= DWC2_MAX_EPS_CHANNELS)
-+		return NULL;
-+	if (in)
-+		return dwc2->eps_in[ep];
-+	else
-+		return dwc2->eps_out[ep];
-+}
-+
-+static inline int using_dma(struct dwc2 *dwc2)
-+{
-+	/* Only buffer dma is supported */
-+	return 1;
-+}
-+
-+static void dwc2_dcfg_set_addr(struct dwc2 *dwc2, int addr)
-+{
-+	u32 dcfg = dwc2_readl(dwc2, DCFG);
-+
-+	dcfg &= ~DCFG_DEVADDR_MASK;
-+	dcfg |= (addr << DCFG_DEVADDR_SHIFT) & DCFG_DEVADDR_MASK;
-+	dwc2_writel(dwc2, dcfg, DCFG);
-+}
-+
-+/**
-+ * dwc2_hsotg_ctrl_epint - enable/disable an endpoint irq
-+ * @hsotg: The device state
-+ * @ep: The endpoint index
-+ * @dir_in: True if direction is in.
-+ * @en: The enable value, true to enable
-+ *
-+ * Set or clear the mask for an individual endpoint's interrupt
-+ * request.
-+ */
-+static void dwc2_hsotg_ctrl_epint(struct dwc2 *dwc2,
-+				  unsigned int ep, unsigned int dir_in,
-+				  unsigned int en)
-+{
-+	unsigned long flags;
-+	u32 bit = 1 << ep;
-+	u32 daint;
-+
-+	if (!dir_in)
-+		bit <<= 16;
-+
-+	local_irq_save(flags);
-+	daint = dwc2_readl(dwc2, DAINTMSK);
-+	if (en)
-+		daint |= bit;
-+	else
-+		daint &= ~bit;
-+	dwc2_writel(dwc2, daint, DAINTMSK);
-+	local_irq_restore(flags);
-+
-+}
-+
-+/**
-+ * get_ep_head - return the first request on the endpoint
-+ * @hs_ep: The controller endpoint to get
-+ *
-+ * Get the first request on the endpoint.
-+ */
-+static struct dwc2_request *get_ep_head(struct dwc2_ep *hs_ep)
-+{
-+	return list_first_entry_or_null(&hs_ep->queue, struct dwc2_request,
-+					queue);
-+}
-+
-+/**
-+ * get_ep_limit - get the maximum data legnth for this endpoint
-+ * @hs_ep: The endpoint
-+ *
-+ * Return the maximum data that can be queued in one go on a given endpoint
-+ * so that transfers that are too long can be split.
-+ */
-+static unsigned int get_ep_limit(struct dwc2_ep *hs_ep)
-+{
-+	int index = hs_ep->epnum;
-+	unsigned int maxsize;
-+	unsigned int maxpkt;
-+
-+	if (index != 0) {
-+		maxsize = DXEPTSIZ_XFERSIZE_LIMIT + 1;
-+		maxpkt = DXEPTSIZ_PKTCNT_LIMIT + 1;
-+	} else {
-+		maxsize = 64 + 64;
-+		if (hs_ep->dir_in)
-+			maxpkt = DIEPTSIZ0_PKTCNT_LIMIT + 1;
-+		else
-+			maxpkt = 2;
-+	}
-+
-+	/* we made the constant loading easier above by using +1 */
-+	maxpkt--;
-+	maxsize--;
-+
-+	/*
-+	 * constrain by packet count if maxpkts*pktsize is greater
-+	 * than the length register size.
-+	 */
-+
-+	if ((maxpkt * hs_ep->ep.maxpacket) < maxsize)
-+		maxsize = maxpkt * hs_ep->ep.maxpacket;
-+
-+	return maxsize;
-+}
-+
-+static u32 dwc2_read_frameno(struct dwc2 *dwc2)
-+{
-+	u32 dsts;
-+
-+	dsts = dwc2_readl(dwc2, DSTS);
-+	dsts &= DSTS_SOFFN_MASK;
-+	dsts >>= DSTS_SOFFN_SHIFT;
-+
-+	return dsts;
-+}
-+
-+/**
-+ * dwc2_gadget_incr_frame_num - Increments the targeted frame number.
-+ * @hs_ep: The endpoint
-+ *
-+ * This function will also check if the frame number overruns DSTS_SOFFN_LIMIT.
-+ * If an overrun occurs it will wrap the value and set the frame_overrun flag.
-+ */
-+static inline void dwc2_gadget_incr_frame_num(struct dwc2_ep *hs_ep)
-+{
-+	hs_ep->target_frame += hs_ep->interval;
-+	if (hs_ep->target_frame > DSTS_SOFFN_LIMIT) {
-+		hs_ep->frame_overrun = true;
-+		hs_ep->target_frame &= DSTS_SOFFN_LIMIT;
-+	} else {
-+		hs_ep->frame_overrun = false;
-+	}
-+}
-+
-+/**
-+ * dwc2_gadget_target_frame_elapsed - Checks target frame
-+ * @hs_ep: The driver endpoint to check
-+ *
-+ * Returns 1 if targeted frame elapsed. If returned 1 then we need to drop
-+ * corresponding transfer.
-+ */
-+static bool dwc2_gadget_target_frame_elapsed(struct dwc2_ep *hs_ep)
-+{
-+	struct dwc2 *dwc2 = hs_ep->dwc2;
-+	u32 target_frame = hs_ep->target_frame;
-+	u32 current_frame = dwc2->frame_number;
-+	bool frame_overrun = hs_ep->frame_overrun;
-+
-+	if (!frame_overrun && current_frame >= target_frame)
-+		return true;
-+
-+	if (frame_overrun && current_frame >= target_frame &&
-+	    ((current_frame - target_frame) < DSTS_SOFFN_LIMIT / 2))
-+		return true;
-+
-+	return false;
-+}
-+
-+
-+/**
-+ * dwc2_gadget_start_req - start a USB request from an endpoint's queue
-+ * @dwc2: The controller state.
-+ * @hs_ep: The endpoint to process a request for
-+ * @hs_req: The request to start.
-+ * @continuing: True if we are doing more for the current request.
-+ *
-+ * Start the given request running by setting the endpoint registers
-+ * appropriately, and writing any data to the FIFOs.
-+ */
-+static void dwc2_gadget_start_req(struct dwc2 *dwc2,
-+				  struct dwc2_ep *hs_ep,
-+				  struct dwc2_request *hs_req,
-+				  bool continuing)
-+{
-+	struct usb_request *ureq = &hs_req->req;
-+	int index = hs_ep->epnum;
-+	int dir_in = hs_ep->dir_in;
-+	u32 epctrl_reg;
-+	u32 epsize_reg;
-+	u32 epsize;
-+	u32 ctrl;
-+	unsigned int length;
-+	unsigned int packets;
-+	unsigned int maxreq;
-+	unsigned int dma_reg;
-+
-+	if (index != 0) {
-+		if (hs_ep->req && !continuing) {
-+			dwc2_err(dwc2, "%s: active request\n", __func__);
-+			WARN_ON(1);
-+			return;
-+		} else if (hs_ep->req != hs_req && continuing) {
-+			dwc2_err(dwc2,
-+				 "%s: continue different req\n", __func__);
-+			WARN_ON(1);
-+			return;
-+		}
-+	}
-+
-+	dma_reg = dir_in ? DIEPDMA(index) : DOEPDMA(index);
-+	epctrl_reg = dir_in ? DIEPCTL(index) : DOEPCTL(index);
-+	epsize_reg = dir_in ? DIEPTSIZ(index) : DOEPTSIZ(index);
-+
-+	dwc2_dbg(dwc2, "%s: DxEPCTL=0x%08x, ep %d, dir %s\n",
-+		__func__, dwc2_readl(dwc2, epctrl_reg), index,
-+		hs_ep->dir_in ? "in" : "out");
-+
-+	/* If endpoint is stalled, we will restart request later */
-+	ctrl = dwc2_readl(dwc2, epctrl_reg);
-+
-+	if (index && ctrl & DXEPCTL_STALL) {
-+		dwc2_warn(dwc2, "%s: ep%d is stalled\n", __func__, index);
-+		return;
-+	}
-+
-+	length = ureq->length - ureq->actual;
-+	dwc2_dbg(dwc2, "ureq->length:%d ureq->actual:%d\n",
-+		ureq->length, ureq->actual);
-+
-+	maxreq = get_ep_limit(hs_ep);
-+
-+	if (length > maxreq) {
-+		int round = maxreq % hs_ep->ep.maxpacket;
-+
-+		dwc2_dbg(dwc2, "%s: length %d, max-req %d, r %d\n",
-+			__func__, length, maxreq, round);
-+
-+		/* round down to multiple of packets */
-+		if (round)
-+			maxreq -= round;
-+
-+		length = maxreq;
-+	}
-+
-+	if (length)
-+		packets = DIV_ROUND_UP(length, hs_ep->ep.maxpacket);
-+	else
-+		packets = 1;	/* send one packet if length is zero. */
-+
-+	if (dir_in && index != 0)
-+		if (hs_ep->isochronous)
-+			epsize = DXEPTSIZ_MC(packets);
-+		else
-+			epsize = DXEPTSIZ_MC(1);
-+	else
-+		epsize = 0;
-+
-+	/*
-+	 * zero length packet should be programmed on its own and should not
-+	 * be counted in DIEPTSIZ.PktCnt with other packets.
-+	 */
-+	if (dir_in && ureq->zero && !continuing) {
-+		/* Test if zlp is actually required. */
-+		if ((ureq->length >= hs_ep->ep.maxpacket) &&
-+		    !(ureq->length % hs_ep->ep.maxpacket))
-+			hs_ep->send_zlp = 1;
-+	}
-+
-+	epsize |= DXEPTSIZ_PKTCNT(packets);
-+	epsize |= DXEPTSIZ_XFERSIZE(length);
-+
-+	dwc2_dbg(dwc2, "%s: %d@%d/%d, 0x%08x => 0x%08x\n",
-+		__func__, packets, length, ureq->length, epsize, epsize_reg);
-+
-+	/* store the request as the current one we're doing */
-+	hs_ep->req = hs_req;
-+
-+	/* write size / packets */
-+	dwc2_writel(dwc2, epsize, epsize_reg);
-+
-+	if (using_dma(dwc2) && !continuing && (length != 0)) {
-+		/*
-+		 * write DMA address to control register, buffer
-+		 * already synced by dwc2_ep_queue().
-+		 */
-+
-+		dwc2_writel(dwc2, ureq->dma, dma_reg);
-+
-+		dwc2_dbg(dwc2, "%s: 0x%p => 0x%08x\n",
-+			 __func__, (void *)ureq->dma, dma_reg);
-+	}
-+
-+	if (hs_ep->isochronous && hs_ep->interval == 1) {
-+		hs_ep->target_frame = dwc2_read_frameno(dwc2);
-+		dwc2_gadget_incr_frame_num(hs_ep);
-+
-+		if (hs_ep->target_frame & 0x1)
-+			ctrl |= DXEPCTL_SETODDFR;
-+		else
-+			ctrl |= DXEPCTL_SETEVENFR;
-+	}
-+
-+	ctrl |= DXEPCTL_EPENA;	/* ensure ep enabled */
-+
-+	dwc2_dbg(dwc2, "%s: ep0 state:%d\n", __func__, dwc2->ep0_state);
-+
-+	/* For Setup request do not clear NAK */
-+	if (!(index == 0 && dwc2->ep0_state == DWC2_EP0_SETUP))
-+		ctrl |= DXEPCTL_CNAK;	/* clear NAK set by core */
-+
-+	dwc2_dbg(dwc2, "%s: DxEPCTL=0x%08x\n", __func__, ctrl);
-+	dwc2_writel(dwc2, ctrl, epctrl_reg);
-+
-+	/*
-+	 * set these, it seems that DMA support increments past the end
-+	 * of the packet buffer so we need to calculate the length from
-+	 * this information.
-+	 */
-+	hs_ep->size_loaded = length;
-+	hs_ep->last_load = ureq->actual;
-+
-+	/*
-+	 * Note, trying to clear the NAK here causes problems with transmit
-+	 * on the S3C6400 ending up with the TXFIFO becoming full.
-+	 */
-+
-+	/* check ep is enabled */
-+	if (!(dwc2_readl(dwc2, epctrl_reg) & DXEPCTL_EPENA))
-+		dwc2_dbg(dwc2,
-+			"ep%d: failed to become enabled (DXEPCTL=0x%08x)?\n",
-+			 index, dwc2_readl(dwc2, epctrl_reg));
-+
-+	dwc2_dbg(dwc2, "%s: DXEPCTL=0x%08x\n",
-+		__func__, dwc2_readl(dwc2, epctrl_reg));
-+
-+	/* enable ep interrupts */
-+	dwc2_hsotg_ctrl_epint(dwc2, hs_ep->epnum, hs_ep->dir_in, 1);
-+}
-+
-+/* conversion functions */
-+static inline struct dwc2_request *our_req(struct usb_request *req)
-+{
-+	return container_of(req, struct dwc2_request, req);
-+}
-+
-+static inline struct dwc2_ep *our_ep(struct usb_ep *ep)
-+{
-+	return container_of(ep, struct dwc2_ep, ep);
-+}
-+
-+
-+/**
-+ * dwc2_ep0_mps - turn max packet size into register setting
-+ * @mps: The maximum packet size in bytes.
-+ */
-+static u32 dwc2_ep0_mps(unsigned int mps)
-+{
-+	switch (mps) {
-+	case 64:
-+		return D0EPCTL_MPS_64;
-+	case 32:
-+		return D0EPCTL_MPS_32;
-+	case 16:
-+		return D0EPCTL_MPS_16;
-+	case 8:
-+		return D0EPCTL_MPS_8;
-+	}
-+
-+	/* bad max packet size, warn and return invalid result */
-+	WARN_ON(1);
-+	return (u32)-1;
-+}
-+
-+/**
-+ * dwc2_set_ep_maxpacket - set endpoint's max-packet field
-+ * @dwc2: The driver state.
-+ * @ep: The index number of the endpoint
-+ * @mps: The maximum packet size in bytes
-+ * @mc: The multicount value
-+ * @dir_in: True if direction is in.
-+ *
-+ * Configure the maximum packet size for the given endpoint, updating
-+ * the hardware control registers to reflect this.
-+ */
-+static void dwc2_set_ep_maxpacket(struct dwc2 *dwc2,
-+				  unsigned int ep, unsigned int mps,
-+				  unsigned int mc, unsigned int dir_in)
-+{
-+	struct dwc2_ep *hs_ep;
-+	u32 reg;
-+
-+	hs_ep = index_to_ep(dwc2, ep, dir_in);
-+	if (!hs_ep)
-+		return;
-+
-+	if (ep == 0) {
-+		u32 mps_bytes = mps;
-+
-+		/* EP0 is a special case */
-+		mps = dwc2_ep0_mps(mps_bytes);
-+		if (mps > 3)
-+			goto bad_mps;
-+		hs_ep->ep.maxpacket = mps_bytes;
-+		hs_ep->mc = 1;
-+	} else {
-+		if (mps > 1024)
-+			goto bad_mps;
-+		hs_ep->mc = mc;
-+		if (mc > 3)
-+			goto bad_mps;
-+		hs_ep->ep.maxpacket = mps;
-+	}
-+
-+	if (dir_in) {
-+		reg = dwc2_readl(dwc2, DIEPCTL(ep));
-+		reg &= ~DXEPCTL_MPS_MASK;
-+		reg |= mps;
-+		dwc2_writel(dwc2, reg, DIEPCTL(ep));
-+	} else {
-+		reg = dwc2_readl(dwc2, DOEPCTL(ep));
-+		reg &= ~DXEPCTL_MPS_MASK;
-+		reg |= mps;
-+		dwc2_writel(dwc2, reg, DOEPCTL(ep));
-+	}
-+
-+	return;
-+
-+bad_mps:
-+	dwc2_err(dwc2, "ep%d: bad mps of %d\n", ep, mps);
-+}
-+
-+static int dwc2_ep_enable(struct usb_ep *ep,
-+			  const struct usb_endpoint_descriptor *desc)
-+{
-+	struct dwc2_ep *hs_ep = our_ep(ep);
-+	struct dwc2 *dwc2 = hs_ep->dwc2;
-+	unsigned long flags;
-+	unsigned int index = hs_ep->epnum;
-+	u32 epctrl_reg;
-+	u32 epctrl;
-+	u32 mps;
-+	u32 mc;
-+	u32 mask;
-+	unsigned int dir_in;
-+	unsigned int i, val, size;
-+	int ret = 0;
-+	unsigned char ep_type;
-+
-+	dwc2_dbg(dwc2,
-+		"%s: ep %s: a 0x%02x, attr 0x%02x, mps 0x%04x, intr %d\n",
-+		__func__, ep->name, desc->bEndpointAddress, desc->bmAttributes,
-+		desc->wMaxPacketSize, desc->bInterval);
-+
-+	/* not to be called for EP0 */
-+	if (index == 0) {
-+		dwc2_err(dwc2, "%s: called for EP 0\n", __func__);
-+		return -EINVAL;
-+	}
-+
-+	dir_in = (desc->bEndpointAddress & USB_ENDPOINT_DIR_MASK) ? 1 : 0;
-+	if (dir_in != hs_ep->dir_in) {
-+		dwc2_err(dwc2, "%s: direction mismatch!\n", __func__);
-+		return -EINVAL;
-+	}
-+
-+	ep_type = desc->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK;
-+	mps = usb_endpoint_maxp(desc) & USB_ENDPOINT_MAXP_MASK;
-+	mc =  USB_EP_MAXP_MULT(usb_endpoint_maxp(desc));
-+
-+	/* note, we handle this here instead of dwc2_set_ep_maxpacket */
-+	epctrl_reg = dir_in ? DIEPCTL(index) : DOEPCTL(index);
-+	epctrl = dwc2_readl(dwc2, epctrl_reg);
-+
-+	dwc2_dbg(dwc2, "%s: read DxEPCTL=0x%08x from 0x%08x\n",
-+		__func__, epctrl, epctrl_reg);
-+
-+	spin_lock_irqsave(&dwc2->lock, flags);
-+
-+	epctrl &= ~(DXEPCTL_EPTYPE_MASK | DXEPCTL_MPS_MASK);
-+	epctrl |= DXEPCTL_MPS(mps);
-+
-+	/*
-+	 * mark the endpoint as active, otherwise the core may ignore
-+	 * transactions entirely for this endpoint
-+	 */
-+	epctrl |= DXEPCTL_USBACTEP;
-+
-+	/* update the endpoint state */
-+	dwc2_set_ep_maxpacket(dwc2, index, mps, mc, dir_in);
-+
-+	/* default, set to non-periodic */
-+	hs_ep->isochronous = 0;
-+	hs_ep->periodic = 0;
-+	hs_ep->halted = 0;
-+	hs_ep->interval = desc->bInterval;
-+
-+	switch (ep_type) {
-+	case USB_ENDPOINT_XFER_ISOC:
-+		epctrl |= DXEPCTL_EPTYPE_ISO;
-+		epctrl |= DXEPCTL_SETEVENFR;
-+		hs_ep->isochronous = 1;
-+		hs_ep->interval = 1 << (desc->bInterval - 1);
-+		hs_ep->target_frame = TARGET_FRAME_INITIAL;
-+		if (dir_in) {
-+			hs_ep->periodic = 1;
-+			mask = dwc2_readl(dwc2, DIEPMSK);
-+			mask |= DIEPMSK_NAKMSK;
-+			dwc2_writel(dwc2, mask, DIEPMSK);
-+		} else {
-+			mask = dwc2_readl(dwc2, DOEPMSK);
-+			mask |= DOEPMSK_OUTTKNEPDISMSK;
-+			dwc2_writel(dwc2, mask, DOEPMSK);
-+		}
-+		break;
-+
-+	case USB_ENDPOINT_XFER_BULK:
-+		epctrl |= DXEPCTL_EPTYPE_BULK;
-+		break;
-+
-+	case USB_ENDPOINT_XFER_INT:
-+		if (dir_in)
-+			hs_ep->periodic = 1;
-+
-+		if (dwc2->gadget.speed == USB_SPEED_HIGH)
-+			hs_ep->interval = 1 << (desc->bInterval - 1);
-+
-+		epctrl |= DXEPCTL_EPTYPE_INTERRUPT;
-+		break;
-+
-+	case USB_ENDPOINT_XFER_CONTROL:
-+		epctrl |= DXEPCTL_EPTYPE_CONTROL;
-+		break;
-+	}
-+
-+	/*
-+	 * if the hardware has dedicated fifos, we must give each IN EP
-+	 * a unique tx-fifo even if it is non-periodic.
-+	 */
-+	if (dir_in && dwc2->dedicated_fifos) {
-+		unsigned int fifo_count = dwc2_tx_fifo_count(dwc2);
-+		u32 fifo_index = 0;
-+		u32 fifo_size = UINT_MAX;
-+
-+		size = hs_ep->ep.maxpacket * hs_ep->mc;
-+		for (i = 1; i <= fifo_count; i++) {
-+			if (dwc2->fifo_map & (1 << i))
-+				continue;
-+
-+			val = dwc2_readl(dwc2, DPTXFSIZN(i));
-+			val = (val >> FIFOSIZE_DEPTH_SHIFT) * 4;
-+			if (val < size)
-+				continue;
-+			/* Search for smallest acceptable fifo */
-+			if (val < fifo_size) {
-+				fifo_size = val;
-+				fifo_index = i;
-+			}
-+		}
-+		if (!fifo_index) {
-+			dwc2_err(dwc2,
-+				"%s: No suitable fifo found\n", __func__);
-+			ret = -ENOMEM;
-+			goto error;
-+		}
-+		epctrl &= ~(DXEPCTL_TXFNUM_LIMIT << DXEPCTL_TXFNUM_SHIFT);
-+		epctrl |= DXEPCTL_TXFNUM(fifo_index);
-+		dwc2->fifo_map |= 1 << fifo_index;
-+		hs_ep->fifo_index = fifo_index;
-+		hs_ep->fifo_size = fifo_size;
-+	}
-+
-+	/* for non control endpoints, set PID to D0 */
-+	if (index && !hs_ep->isochronous)
-+		epctrl |= DXEPCTL_SETD0PID;
-+
-+	dwc2_dbg(dwc2, "%s: write DxEPCTL=0x%08x\n",
-+		__func__, epctrl);
-+
-+	dwc2_writel(dwc2, epctrl, epctrl_reg);
-+	dwc2_dbg(dwc2, "%s: read DxEPCTL=0x%08x\n",
-+		__func__, dwc2_readl(dwc2, epctrl_reg));
-+
-+	/* enable the endpoint interrupt */
-+	dwc2_hsotg_ctrl_epint(dwc2, index, dir_in, 1);
-+
-+error:
-+	spin_unlock_irqrestore(&dwc2->lock, flags);
-+
-+	return ret;
-+}
-+
-+static void dwc2_ep_stop_xfr(struct dwc2 *dwc2, struct dwc2_ep *hs_ep)
-+{
-+	int in = hs_ep->dir_in;
-+	int epnum = hs_ep->epnum;
-+	u32 epctl_reg = in ? DIEPCTL(epnum) : DOEPCTL(epnum);
-+	u32 epint_reg = in ? DIEPINT(epnum) : DOEPINT(epnum);
-+
-+	dwc2_dbg(dwc2, "%s: stopping transfer on %s\n", __func__,
-+		hs_ep->name);
-+
-+	if (in) {
-+		if (dwc2->dedicated_fifos || hs_ep->periodic) {
-+			dwc2_set_bit(dwc2, epctl_reg, DXEPCTL_SNAK);
-+			/* Wait for Nak effect */
-+			if (dwc2_wait_bit_set(dwc2, epint_reg,
-+						    DXEPINT_INEPNAKEFF, 100))
-+				dwc2_warn(dwc2,
-+					 "%s: timeout DIEPINT.NAKEFF\n",
-+					 __func__);
-+		} else {
-+			dwc2_set_bit(dwc2, DCTL, DCTL_SGNPINNAK);
-+			/* Wait for Nak effect */
-+			if (dwc2_wait_bit_set(dwc2, GINTSTS,
-+						    GINTSTS_GINNAKEFF, 100))
-+				dwc2_warn(dwc2,
-+					 "%s: timeout GINTSTS.GINNAKEFF\n",
-+					 __func__);
-+		}
-+	} else {
-+		if (!(dwc2_readl(dwc2, GINTSTS) & GINTSTS_GOUTNAKEFF))
-+			dwc2_set_bit(dwc2, DCTL, DCTL_SGOUTNAK);
-+
-+		/* Wait for global nak to take effect */
-+		if (dwc2_wait_bit_set(dwc2, GINTSTS,
-+					    GINTSTS_GOUTNAKEFF, 100))
-+			dwc2_warn(dwc2, "%s: timeout GINTSTS.GOUTNAKEFF\n",
-+				 __func__);
-+	}
-+
-+	/* Disable ep */
-+	dwc2_set_bit(dwc2, epctl_reg, DXEPCTL_EPDIS | DXEPCTL_SNAK);
-+
-+	/* Wait for ep to be disabled */
-+	if (dwc2_wait_bit_set(dwc2, epint_reg, DXEPINT_EPDISBLD, 100))
-+		dwc2_warn(dwc2, "%s: timeout DOEPCTL.EPDisable\n", __func__);
-+
-+	/* Clear EPDISBLD interrupt */
-+	dwc2_set_bit(dwc2, epint_reg, DXEPINT_EPDISBLD);
-+
-+	if (in) {
-+		unsigned short fifo_index;
-+
-+		if (dwc2->dedicated_fifos || hs_ep->periodic)
-+			fifo_index = hs_ep->fifo_index;
-+		else
-+			fifo_index = 0;
-+
-+		dwc2_flush_tx_fifo(dwc2, fifo_index);
-+
-+		/* Clear Global In NP NAK in Shared FIFO for non periodic ep */
-+		if (!dwc2->dedicated_fifos && !hs_ep->periodic)
-+			dwc2_set_bit(dwc2, DCTL, DCTL_CGNPINNAK);
-+
-+	} else {
-+		/* Remove global NAKs */
-+		dwc2_set_bit(dwc2, DCTL, DCTL_CGOUTNAK);
-+	}
-+}
-+
-+static int dwc2_ep_disable(struct usb_ep *ep)
-+{
-+	struct dwc2_ep *hs_ep = our_ep(ep);
-+	struct dwc2 *dwc2 = hs_ep->dwc2;
-+	int dir_in = hs_ep->dir_in;
-+	int index = hs_ep->epnum;
-+	u32 epctrl_reg = dir_in ? DIEPCTL(index) : DOEPCTL(index);
-+	u32 ctrl;
-+
-+	dwc2_dbg(dwc2, "%s(ep %p)\n", __func__, ep);
-+
-+	if (index == 0) {
-+		dwc2_err(dwc2, "%s: called for ep0\n", __func__);
-+		return -EINVAL;
-+	}
-+
-+	ctrl = dwc2_readl(dwc2, epctrl_reg);
-+	if (ctrl & DXEPCTL_EPENA)
-+		dwc2_ep_stop_xfr(dwc2, hs_ep);
-+
-+	ctrl &= ~DXEPCTL_EPENA;
-+	ctrl &= ~DXEPCTL_USBACTEP;
-+	ctrl |= DXEPCTL_SNAK;
-+
-+	dwc2_dbg(dwc2, "%s: DxEPCTL=0x%08x\n", __func__, ctrl);
-+	dwc2_writel(dwc2, ctrl, epctrl_reg);
-+
-+	/* disable endpoint interrupts */
-+	dwc2_hsotg_ctrl_epint(dwc2, index, hs_ep->dir_in, 0);
-+
-+	/* terminate all requests with shutdown */
-+	kill_all_requests(dwc2, hs_ep, -ESHUTDOWN);
-+
-+	dwc2->fifo_map &= ~(1 << hs_ep->fifo_index);
-+	hs_ep->fifo_index = 0;
-+	hs_ep->fifo_size = 0;
-+
-+	return 0;
-+}
-+
-+static struct usb_request *dwc2_ep_alloc_req(struct usb_ep *ep)
-+{
-+	struct dwc2_request *req;
-+
-+	req = kzalloc(sizeof(*req), GFP_KERNEL);
-+	if (!req)
-+		return NULL;
-+
-+	INIT_LIST_HEAD(&req->queue);
-+
-+	return &req->req;
-+}
-+
-+static void dwc2_ep_free_req(struct usb_ep *ep, struct usb_request *req)
-+{
-+	struct dwc2_request *hs_req = our_req(req);
-+
-+	kfree(hs_req);
-+}
-+
-+/**
-+ * dwc2_start_next_request - Starts next request from ep queue
-+ * @hs_ep: Endpoint structure
-+ *
-+ * If queue is empty and EP is ISOC-OUT - unmasks OUTTKNEPDIS which is masked
-+ * in its handler. Hence we need to unmask it here to be able to do
-+ * resynchronization.
-+ */
-+static void dwc2_start_next_request(struct dwc2_ep *hs_ep)
-+{
-+	u32 mask;
-+	struct dwc2 *dwc2 = hs_ep->dwc2;
-+	int dir_in = hs_ep->dir_in;
-+	struct dwc2_request *hs_req;
-+	u32 epmsk_reg = dir_in ? DIEPMSK : DOEPMSK;
-+
-+	dwc2_dbg(dwc2, "%s: next req\n", __func__);
-+
-+	if (!list_empty(&hs_ep->queue)) {
-+		hs_req = get_ep_head(hs_ep);
-+		dwc2_gadget_start_req(dwc2, hs_ep, hs_req, false);
-+		return;
-+	}
-+	if (!hs_ep->isochronous)
-+		return;
-+
-+	if (dir_in) {
-+		dwc2_dbg(dwc2, "%s: No more ISOC-IN requests\n", __func__);
-+	} else {
-+		dwc2_dbg(dwc2, "%s: No more ISOC-OUT requests\n", __func__);
-+		mask = dwc2_readl(dwc2, epmsk_reg);
-+		mask |= DOEPMSK_OUTTKNEPDISMSK;
-+		dwc2_writel(dwc2, mask, epmsk_reg);
-+	}
-+}
-+
-+static int dwc2_ep_queue(struct usb_ep *ep, struct usb_request *req)
-+{
-+
-+	struct dwc2_request *hs_req = our_req(req);
-+	struct dwc2_ep *hs_ep = our_ep(ep);
-+	struct dwc2 *dwc2 = hs_ep->dwc2;
-+	bool first;
-+
-+	dwc2_dbg(dwc2, "%s: req %p: %d@%p, noi=%d, zero=%d, snok=%d\n",
-+		ep->name, req, req->length, req->buf, req->no_interrupt,
-+		req->zero, req->short_not_ok);
-+
-+	/* initialise status of the request */
-+	INIT_LIST_HEAD(&hs_req->queue);
-+	req->actual = 0;
-+	req->status = -EINPROGRESS;
-+
-+	/* Don't queue ISOC request if length greater than mps*mc */
-+	if (hs_ep->isochronous &&
-+	    req->length > (hs_ep->mc * hs_ep->ep.maxpacket)) {
-+		dwc2_err(dwc2, "req length > maxpacket*mc\n");
-+		return -EINVAL;
-+	}
-+
-+	if ((long)req->buf & 3)
-+		dwc2_err(dwc2, "dma buffer not aligned\n");
-+
-+	req->dma = dma_map_single(dwc2->dev, req->buf, req->length,
-+			hs_ep->dir_in ? DMA_TO_DEVICE : DMA_FROM_DEVICE);
-+
-+	if (dma_mapping_error(dwc2->dev, req->dma)) {
-+		dwc2_err(dwc2, "failed to map buffer\n");
-+		return -EFAULT;
-+	}
-+
-+	first = list_empty(&hs_ep->queue);
-+	list_add_tail(&hs_req->queue, &hs_ep->queue);
-+
-+	/* Change EP direction if status phase request is after data out */
-+	if (hs_ep->epnum == 0 && !req->length && !hs_ep->dir_in &&
-+		dwc2->ep0_state == DWC2_EP0_DATA_OUT)
-+		hs_ep->dir_in = 1;
-+
-+	if (first) {
-+		if (!hs_ep->isochronous) {
-+			dwc2_gadget_start_req(dwc2, hs_ep, hs_req, false);
-+			return 0;
-+		}
-+
-+		/* Update current frame number value. */
-+		dwc2->frame_number = dwc2_read_frameno(dwc2);
-+		while (dwc2_gadget_target_frame_elapsed(hs_ep)) {
-+			dwc2_gadget_incr_frame_num(hs_ep);
-+			/* Update current frame number value once more as it
-+			 * changes here.
-+			 */
-+			dwc2->frame_number = dwc2_read_frameno(dwc2);
-+		}
-+
-+		if (hs_ep->target_frame != TARGET_FRAME_INITIAL)
-+			dwc2_gadget_start_req(dwc2, hs_ep, hs_req, false);
-+	}
-+	return 0;
-+}
-+
-+static int dwc2_ep_dequeue(struct usb_ep *ep, struct usb_request *req)
-+{
-+	struct dwc2_ep *hs_ep = our_ep(ep);
-+	struct dwc2 *dwc2 = hs_ep->dwc2;
-+	dwc2_warn(dwc2, "%s\n", __func__);
-+	return -EOPNOTSUPP;
-+}
-+
-+static int dwc2_ep_set_halt(struct usb_ep *ep, int value)
-+{
-+	struct dwc2_ep *hs_ep = our_ep(ep);
-+	struct dwc2 *dwc2 = hs_ep->dwc2;
-+	dwc2_warn(dwc2, "%s\n", __func__);
-+	return -EOPNOTSUPP;
-+}
-+
-+static int dwc2_ep_set_wedge(struct usb_ep *ep)
-+{
-+	struct dwc2_ep *hs_ep = our_ep(ep);
-+	struct dwc2 *dwc2 = hs_ep->dwc2;
-+	dwc2_warn(dwc2, "%s\n", __func__);
-+	return -EOPNOTSUPP;
-+}
-+
-+static int dwc2_ep_fifo_status(struct usb_ep *ep)
-+{
-+	struct dwc2_ep *hs_ep = our_ep(ep);
-+	struct dwc2 *dwc2 = hs_ep->dwc2;
-+	dwc2_warn(dwc2, "%s\n", __func__);
-+	return -EOPNOTSUPP;
-+}
-+
-+static void dwc2_ep_fifo_flush(struct usb_ep *ep)
-+{
-+	struct dwc2_ep *hs_ep = our_ep(ep);
-+	struct dwc2 *dwc2 = hs_ep->dwc2;
-+	dwc2_warn(dwc2, "%s\n", __func__);
-+}
-+
-+static const struct usb_ep_ops dwc2_ep_ops = {
-+	.enable		= dwc2_ep_enable,
-+	.disable	= dwc2_ep_disable,
-+	.alloc_request	= dwc2_ep_alloc_req,
-+	.free_request	= dwc2_ep_free_req,
-+	.queue		= dwc2_ep_queue,
-+	.dequeue	= dwc2_ep_dequeue,
-+	.set_halt	= dwc2_ep_set_halt,
-+	.set_wedge	= dwc2_ep_set_wedge,
-+	.fifo_status	= dwc2_ep_fifo_status,
-+	.fifo_flush	= dwc2_ep_fifo_flush,
-+};
-+
-+static void dwc2_program_zlp(struct dwc2 *dwc2, struct dwc2_ep *hs_ep)
-+{
-+	u32 ctrl;
-+	u8 index = hs_ep->epnum;
-+	u32 epctl_reg = hs_ep->dir_in ? DIEPCTL(index) : DOEPCTL(index);
-+	u32 epsiz_reg = hs_ep->dir_in ? DIEPTSIZ(index) : DOEPTSIZ(index);
-+
-+	if (hs_ep->dir_in)
-+		dwc2_dbg(dwc2, "Sending zero-length packet on ep%d\n", index);
-+	else
-+		dwc2_dbg(dwc2, "Receiving zero-length packet on ep%d\n", index);
-+
-+	dwc2_writel(dwc2, DXEPTSIZ_MC(1) | DXEPTSIZ_PKTCNT(1) |
-+		    DXEPTSIZ_XFERSIZE(0),
-+		    epsiz_reg);
-+
-+	ctrl = dwc2_readl(dwc2, epctl_reg);
-+	ctrl |= DXEPCTL_CNAK;  /* clear NAK set by core */
-+	ctrl |= DXEPCTL_EPENA; /* ensure ep enabled */
-+	ctrl |= DXEPCTL_USBACTEP;
-+	dwc2_writel(dwc2, ctrl, epctl_reg);
-+}
-+
-+/**
-+ * windex_to_ep - convert control wIndex value to endpoint
-+ * @dwc2: The driver state.
-+ * @windex: The control request wIndex field (in host order).
-+ *
-+ * Convert the given wIndex into a pointer to an driver endpoint
-+ * structure, or return NULL if it is not a valid endpoint.
-+ */
-+static struct dwc2_ep *windex_to_ep(struct dwc2 *dwc2, u16 windex)
-+{
-+	struct dwc2_ep *ep;
-+	int dir = (windex & USB_DIR_IN) ? 1 : 0;
-+	int idx = windex & 0x7F;
-+
-+	if (windex >= 0x100)
-+		return NULL;
-+
-+	if (idx >= dwc2->num_eps)
-+		return NULL;
-+
-+	ep = index_to_ep(dwc2, idx, dir);
-+
-+	if (idx && ep->dir_in != dir)
-+		return NULL;
-+
-+	return ep;
-+}
-+
-+/**
-+ * dwc2_hsotg_send_reply - send reply to control request
-+ * @dwc2: The device state
-+ * @buff: Buffer for request
-+ * @length: Length of reply.
-+ *
-+ * Create a request and queue it on the given endpoint. This is useful as
-+ * an internal method of sending replies to certain control requests, etc.
-+ */
-+static int dwc2_hsotg_send_reply(struct dwc2 *dwc2, void *buff, int length)
-+{
-+	struct dwc2_ep *ep0 = dwc2->eps_out[0];
-+	struct usb_request *req;
-+	int ret;
-+
-+	if (length == 0 && (dwc2->ep0_state == DWC2_EP0_STATUS_IN ||
-+			    dwc2->ep0_state == DWC2_EP0_STATUS_OUT)) {
-+		dwc2_program_zlp(dwc2, ep0);
-+		return 0;
-+	}
-+
-+	dwc2_dbg(dwc2, "%s: buff %p, len %d\n", __func__, buff, length);
-+
-+	req = dwc2_ep_alloc_req(&ep0->ep);
-+	if (!req) {
-+		dwc2_warn(dwc2, "%s: cannot alloc req\n", __func__);
-+		return -ENOMEM;
-+	}
-+
-+	req->buf = dwc2->ep0_buff;
-+	req->length = length;
-+	/*
-+	 * zero flag is for sending zlp in DATA IN stage. It has no impact on
-+	 * STATUS stage.
-+	 */
-+	req->zero = 0;
-+	req->complete = dwc2_ep_free_req;
-+
-+	if (length)
-+		memcpy(req->buf, buff, length);
-+
-+	ret = dwc2_ep_queue(&ep0->ep, req);
-+	if (ret) {
-+		dwc2_warn(dwc2, "%s: cannot queue req\n", __func__);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+/**
-+ * dwc2_process_req_status - process request GET_STATUS
-+ * @dwc2: The device state
-+ * @ctrl: USB control request
-+ */
-+static int dwc2_process_req_status(struct dwc2 *dwc2,
-+				   struct usb_ctrlrequest *ctrl)
-+{
-+	struct dwc2_ep *ep0 = dwc2->eps_out[0];
-+	struct dwc2_ep *ep;
-+	__le16 reply;
-+	u16 status;
-+	int ret;
-+
-+	dwc2_dbg(dwc2, "%s: USB_REQ_GET_STATUS\n", __func__);
-+
-+	if (!ep0->dir_in) {
-+		dwc2_warn(dwc2, "%s: direction out?\n", __func__);
-+		return -EINVAL;
-+	}
-+
-+	switch (ctrl->bRequestType & USB_RECIP_MASK) {
-+	case USB_RECIP_DEVICE:
-+		status = dwc2->is_selfpowered << USB_DEVICE_SELF_POWERED;
-+		status |= 0 << USB_DEVICE_REMOTE_WAKEUP;
-+
-+		reply = cpu_to_le16(status);
-+		break;
-+
-+	case USB_RECIP_INTERFACE:
-+		/* currently, the data result should be zero */
-+		reply = cpu_to_le16(0);
-+		break;
-+
-+	case USB_RECIP_ENDPOINT:
-+		ep = windex_to_ep(dwc2, le16_to_cpu(ctrl->wIndex));
-+		if (!ep)
-+			return -ENOENT;
-+
-+		reply = cpu_to_le16(ep->halted ? 1 : 0);
-+		break;
-+
-+	default:
-+		return 0;
-+	}
-+
-+	if (le16_to_cpu(ctrl->wLength) != 2)
-+		return -EINVAL;
-+
-+	ret = dwc2_hsotg_send_reply(dwc2, &reply, 2);
-+	if (ret) {
-+		dwc2_err(dwc2, "%s: failed to send reply\n", __func__);
-+		return ret;
-+	}
-+
-+	return 1;
-+}
-+
-+/**
-+ * dwc2_process_req_feature - process request {SET,CLEAR}_FEATURE
-+ * @dwc2: The device state
-+ * @ctrl: USB control request
-+ */
-+static int dwc2_process_req_feature(struct dwc2 *dwc2,
-+				    struct usb_ctrlrequest *ctrl)
-+{
-+	struct dwc2_request *hs_req;
-+	bool set = (ctrl->bRequest == USB_REQ_SET_FEATURE);
-+	struct dwc2_ep *ep;
-+	int ret;
-+	bool halted;
-+	u32 recip;
-+	u16 wValue;
-+	u16 wIndex;
-+
-+	dwc2_dbg(dwc2, "%s: %s_FEATURE\n", __func__, set ? "SET" : "CLEAR");
-+
-+	wValue = le16_to_cpu(ctrl->wValue);
-+	wIndex = le16_to_cpu(ctrl->wIndex);
-+	recip = ctrl->bRequestType & USB_RECIP_MASK;
-+
-+	switch (recip) {
-+	case USB_RECIP_DEVICE:
-+		switch (wValue) {
-+		case USB_DEVICE_REMOTE_WAKEUP:
-+		case USB_DEVICE_TEST_MODE:
-+			/* Not supported */
-+		default:
-+			return -ENOENT;
-+		}
-+		break;
-+
-+	case USB_RECIP_ENDPOINT:
-+		ep = windex_to_ep(dwc2, wIndex);
-+		if (!ep)
-+			return -ENOENT;
-+
-+		switch (wValue) {
-+		case USB_ENDPOINT_HALT:
-+			halted = ep->halted;
-+
-+			dwc2_ep_set_halt(&ep->ep, set);
-+
-+			ret = dwc2_hsotg_send_reply(dwc2, NULL, 0);
-+			if (ret) {
-+				dwc2_err(dwc2,
-+					"%s: failed to send reply\n", __func__);
-+				return ret;
-+			}
-+
-+			/*
-+			 * we have to complete all requests for ep if it was
-+			 * halted, and the halt was cleared by CLEAR_FEATURE
-+			 */
-+
-+			if (!set && halted) {
-+				/*
-+				 * If we have request in progress,
-+				 * then complete it
-+				 */
-+				if (ep->req) {
-+					hs_req = ep->req;
-+					ep->req = NULL;
-+					list_del_init(&hs_req->queue);
-+					if (hs_req->req.complete) {
-+						spin_unlock(&dwc2->lock);
-+						hs_req->req.complete(
-+							&ep->ep, &hs_req->req);
-+						spin_lock(&dwc2->lock);
-+					}
-+				}
-+
-+				/* If we have pending request, then start it */
-+				if (!ep->req)
-+					dwc2_start_next_request(ep);
-+			}
-+
-+			break;
-+
-+		default:
-+			return -ENOENT;
-+		}
-+		break;
-+	default:
-+		return -ENOENT;
-+	}
-+	return 1;
-+}
-+
-+static int dwc2_gadget_get_frame(struct usb_gadget *gadget)
-+{
-+	return dwc2_read_frameno(to_dwc2(gadget));
-+}
-+
-+static void dwc2_core_disconnect(struct dwc2 *dwc2)
-+{
-+	u32 dctl;
-+
-+	dctl = dwc2_readl(dwc2, DCTL);
-+	/* set the soft-disconnect bit */
-+	dctl |= DCTL_SFTDISCON;
-+	dwc2_writel(dwc2, dctl, DCTL);
-+}
-+
-+static void dwc2_core_connect(struct dwc2 *dwc2)
-+{
-+	u32 dctl;
-+
-+	dctl = dwc2_readl(dwc2, DCTL);
-+	/* clear the soft-disconnect bit */
-+	dctl &= ~DCTL_SFTDISCON;
-+	dwc2_writel(dwc2, dctl, DCTL);
-+}
-+
-+static void dwc2_enqueue_setup(struct dwc2 *dwc2);
-+
-+/**
-+ * dwc2_stall_ep0 - stall ep0
-+ * @dwc2: The device state
-+ *
-+ * Set stall for ep0 as response for setup request.
-+ */
-+static void dwc2_stall_ep0(struct dwc2 *dwc2)
-+{
-+	struct dwc2_ep *ep0 = dwc2->eps_out[0];
-+	u32 reg;
-+	u32 ctrl;
-+
-+	dwc2_dbg(dwc2, "ep0 stall (dir=%d)\n", ep0->dir_in);
-+	reg = (ep0->dir_in) ? DIEPCTL0 : DOEPCTL0;
-+
-+	/*
-+	 * DxEPCTL_Stall will be cleared by EP once it has
-+	 * taken effect, so no need to clear later.
-+	 */
-+
-+	ctrl = dwc2_readl(dwc2, reg);
-+	ctrl |= DXEPCTL_STALL;
-+	ctrl |= DXEPCTL_CNAK;
-+	dwc2_writel(dwc2, ctrl, reg);
-+
-+	dwc2_dbg(dwc2,
-+		"written DXEPCTL=0x%08x to %08x (DXEPCTL=0x%08x)\n",
-+		ctrl, reg, dwc2_readl(dwc2, reg));
-+
-+	 /*
-+	  * complete won't be called, so we enqueue
-+	  * setup request here
-+	  */
-+	 dwc2_enqueue_setup(dwc2);
-+}
-+
-+/**
-+ * dwc2_process_control - process a control request
-+ * @dwc2: The device state
-+ * @ctrl: The control request received
-+ *
-+ * The controller has received the SETUP phase of a control request, and
-+ * needs to work out what to do next (and whether to pass it on to the
-+ * gadget driver).
-+ */
-+static void dwc2_process_control(struct dwc2 *dwc2,
-+				 struct usb_ctrlrequest *ctrl)
-+{
-+	struct dwc2_ep *ep0 = dwc2->eps_out[0];
-+	int handled = false;
-+	int ret = 0;
-+
-+	dwc2_dbg(dwc2,
-+		"ctrl Type=%02x, Req=%02x, V=%04x, I=%04x, L=%04x\n",
-+		ctrl->bRequestType, ctrl->bRequest, ctrl->wValue,
-+		ctrl->wIndex, ctrl->wLength);
-+
-+	if (ctrl->wLength == 0) {
-+		ep0->dir_in = 1;
-+		dwc2->ep0_state = DWC2_EP0_STATUS_IN;
-+	} else if (ctrl->bRequestType & USB_DIR_IN) {
-+		ep0->dir_in = 1;
-+		dwc2->ep0_state = DWC2_EP0_DATA_IN;
-+	} else {
-+		ep0->dir_in = 0;
-+		dwc2->ep0_state = DWC2_EP0_DATA_OUT;
-+	}
-+
-+	if ((ctrl->bRequestType & USB_TYPE_MASK) == USB_TYPE_STANDARD) {
-+		switch (ctrl->bRequest) {
-+		case USB_REQ_SET_ADDRESS:
-+			dwc2->connected = 1;
-+			dwc2_dcfg_set_addr(dwc2, le16_to_cpu(ctrl->wValue));
-+			ret = dwc2_hsotg_send_reply(dwc2, NULL, 0);
-+			handled = true;
-+			dwc2_info(dwc2, "new address %d\n", ctrl->wValue);
-+			break;
-+
-+		case USB_REQ_GET_STATUS:
-+			ret = dwc2_process_req_status(dwc2, ctrl);
-+			handled = true;
-+			break;
-+
-+		case USB_REQ_CLEAR_FEATURE:
-+		case USB_REQ_SET_FEATURE:
-+			ret = dwc2_process_req_feature(dwc2, ctrl);
-+			handled = true;
-+			break;
-+		}
-+	}
-+
-+	/* as a fallback, try delivering it to the driver to deal with */
-+	if (!handled && dwc2->driver) {
-+		spin_unlock(&dwc2->lock);
-+		ret = dwc2->driver->setup(&dwc2->gadget, ctrl);
-+		spin_lock(&dwc2->lock);
-+		if (ret < 0)
-+			dwc2_dbg(dwc2, "driver->setup() ret %d\n", ret);
-+	}
-+
-+	/*
-+	 * the request is either unhandlable, or is not formatted correctly
-+	 * so respond with a STALL for the status stage to indicate failure.
-+	 */
-+
-+	if (ret < 0) {
-+		dwc2_dbg(dwc2, "unhandled ctrl request ");
-+		dwc2_stall_ep0(dwc2);
-+	}
-+}
-+
-+/**
-+ * dwc2_complete_setup - completion of a setup transfer
-+ * @ep: The endpoint the request was on.
-+ * @req: The request completed.
-+ *
-+ * Called on completion of any requests the driver itself submitted for
-+ * EP0 setup packets
-+ */
-+static void dwc2_complete_setup(struct usb_ep *ep, struct usb_request *req)
-+{
-+	struct dwc2_ep *hs_ep = our_ep(ep);
-+	struct dwc2 *dwc2 = hs_ep->dwc2;
-+
-+	if (req->status < 0) {
-+		dwc2_dbg(dwc2, "%s: failed %d\n", __func__, req->status);
-+		return;
-+	}
-+
-+	spin_lock(&dwc2->lock);
-+	if (req->actual == 0)
-+		dwc2_enqueue_setup(dwc2);
-+	else
-+		dwc2_process_control(dwc2, req->buf);
-+	spin_unlock(&dwc2->lock);
-+}
-+
-+static void dwc2_enqueue_setup(struct dwc2 *dwc2)
-+{
-+	struct usb_request *req = dwc2->ctrl_req;
-+	struct dwc2_request *hs_req = our_req(req);
-+	int ret;
-+
-+	dwc2_dbg(dwc2, "%s: queueing setup request\n", __func__);
-+
-+	req->zero = 0;
-+	req->length = 8;
-+	req->buf = dwc2->ctrl_buff;
-+	req->complete = dwc2_complete_setup;
-+
-+	if (!list_empty(&hs_req->queue)) {
-+		dwc2_dbg(dwc2, "%s already queued???\n", __func__);
-+		return;
-+	}
-+
-+	dwc2->eps_out[0]->dir_in = 0;
-+	dwc2->eps_out[0]->send_zlp = 0;
-+	dwc2->ep0_state = DWC2_EP0_SETUP;
-+
-+	ret = dwc2_ep_queue(&dwc2->eps_out[0]->ep, req);
-+	if (ret < 0) {
-+		dwc2_err(dwc2, "%s: failed queue (%d)\n", __func__, ret);
-+		/*
-+		 * Don't think there's much we can do other than watch the
-+		 * driver fail.
-+		 */
-+	}
-+}
-+
-+/**
-+ * dwc2_complete_request - complete a request given to us
-+ * @dwc2: The device state.
-+ * @hs_ep: The endpoint the request was on.
-+ * @hs_req: The request to complete.
-+ * @result: The result code (0 => Ok, otherwise errno)
-+ *
-+ * The given request has finished, so call the necessary completion
-+ * if it has one and then look to see if we can start a new request
-+ * on the endpoint.
-+ *
-+ * Note, expects the ep to already be locked as appropriate.
-+ */
-+static void dwc2_complete_request(struct dwc2 *dwc2, struct dwc2_ep *hs_ep,
-+				  struct dwc2_request *hs_req, int status)
-+{
-+	if (!hs_req) {
-+		dwc2_dbg(dwc2, "%s: nothing to complete?\n", __func__);
-+		return;
-+	}
-+
-+	dwc2_dbg(dwc2, "complete: ep %p %s, req %p, %d => %p\n",
-+		hs_ep, hs_ep->ep.name, hs_req, status, hs_req->req.complete);
-+
-+	/*
-+	 * only replace the status if we've not already set an error
-+	 * from a previous transaction
-+	 */
-+
-+	if (hs_req->req.status == -EINPROGRESS)
-+		hs_req->req.status = status;
-+
-+	dma_unmap_single(dwc2->dev, hs_req->req.dma, hs_req->req.length,
-+			hs_ep->dir_in ? DMA_TO_DEVICE : DMA_FROM_DEVICE);
-+	hs_ep->req = NULL;
-+	list_del_init(&hs_req->queue);
-+
-+	/*
-+	 * call the complete request with the locks off, just in case the
-+	 * request tries to queue more work for this endpoint.
-+	 */
-+
-+	if (hs_req->req.complete) {
-+		spin_unlock(&dwc2->lock);
-+		hs_req->req.complete(&hs_ep->ep, &hs_req->req);
-+		spin_lock(&dwc2->lock);
-+	}
-+
-+	/*
-+	 * Look to see if there is anything else to do. Note, the completion
-+	 * of the previous request may have caused a new request to be started
-+	 * so be careful when doing this.
-+	 */
-+	dwc2_dbg(dwc2, "%s: req %p, status %d\n", __func__, hs_ep->req, status);
-+	if (!hs_ep->req && status >= 0)
-+		dwc2_start_next_request(hs_ep);
-+}
-+
-+/**
-+ * dwc2_handle_outdone - handle receiving OutDone/SetupDone from RXFIFO
-+ * @dwc2: The device instance
-+ * @epnum: The endpoint received from
-+ *
-+ * The RXFIFO has delivered an OutDone event, which means that the data
-+ * transfer for an OUT endpoint has been completed, either by a short
-+ * packet or by the finish of a transfer.
-+ */
-+static void dwc2_handle_outdone(struct dwc2 *dwc2, int epnum)
-+{
-+	u32 epsize = dwc2_readl(dwc2, DOEPTSIZ(epnum));
-+	struct dwc2_ep *hs_ep = dwc2->eps_out[epnum];
-+	struct dwc2_request *hs_req = hs_ep->req;
-+	struct usb_request *req = &hs_req->req;
-+	unsigned int size_left = DXEPTSIZ_XFERSIZE_GET(epsize);
-+	int result = 0;
-+
-+	if (!hs_req) {
-+		dwc2_dbg(dwc2, "%s: no request active\n", __func__);
-+		return;
-+	}
-+
-+	if (epnum == 0 && dwc2->ep0_state == DWC2_EP0_STATUS_OUT) {
-+		dwc2_dbg(dwc2, "zlp packet received\n");
-+		dwc2_complete_request(dwc2, hs_ep, hs_req, 0);
-+		dwc2_enqueue_setup(dwc2);
-+		return;
-+	}
-+
-+	if (using_dma(dwc2)) {
-+		unsigned int size_done;
-+
-+		/*
-+		 * Calculate the size of the transfer by checking how much
-+		 * is left in the endpoint size register and then working it
-+		 * out from the amount we loaded for the transfer.
-+		 *
-+		 * We need to do this as DMA pointers are always 32bit aligned
-+		 * so may overshoot/undershoot the transfer.
-+		 */
-+		size_done = hs_ep->size_loaded - size_left;
-+		size_done += hs_ep->last_load;
-+
-+		req->actual = size_done;
-+	}
-+
-+	if (req->actual < req->length && size_left == 0) {
-+		dwc2_gadget_start_req(dwc2, hs_ep, hs_req, true);
-+		return;
-+	}
-+
-+	if (req->actual < req->length && req->short_not_ok) {
-+		dwc2_dbg(dwc2, "%s: got %d/%d (short not ok) => error\n",
-+			__func__, req->actual, req->length);
-+
-+		/*
-+		 * todo - what should we return here? there's no one else
-+		 * even bothering to check the status.
-+		 */
-+	}
-+
-+	if (epnum == 0 && dwc2->ep0_state == DWC2_EP0_DATA_OUT) {
-+		/* Move to STATUS IN */
-+		dwc2->eps_out[0]->dir_in = 1;
-+		dwc2->ep0_state = DWC2_EP0_STATUS_IN;
-+		dwc2_program_zlp(dwc2, dwc2->eps_out[0]);
-+	}
-+
-+	/*
-+	 * Slave mode OUT transfers do not go through XferComplete so
-+	 * adjust the ISOC parity here.
-+	 */
-+#if 0
-+	if (!using_dma(dwc2)) {
-+		if (hs_ep->isochronous && hs_ep->interval == 1)
-+			dwc2_hsotg_change_ep_iso_parity(dwc2, DOEPCTL(epnum));
-+		else if (hs_ep->isochronous && hs_ep->interval > 1)
-+			dwc2_gadget_incr_frame_num(hs_ep);
-+	}
-+
-+	/* Set actual frame number for completed transfers */
-+	if (hs_ep->isochronous)
-+		req->frame_number = dwc2->frame_number;
-+#endif
-+
-+	dwc2_complete_request(dwc2, hs_ep, hs_req, result);
-+}
-+
-+/**
-+ * kill_all_requests - remove all requests from the endpoint's queue
-+ * @dwc2: The device state.
-+ * @ep: The endpoint the requests may be on.
-+ * @result: The result code to use.
-+ *
-+ * Go through the requests on the given endpoint and mark them
-+ * completed with the given result code.
-+ */
-+static void kill_all_requests(struct dwc2 *dwc2, struct dwc2_ep *ep, int result)
-+{
-+	struct dwc2_request *req, *treq;
-+	unsigned int size;
-+
-+	ep->req = NULL;
-+
-+	list_for_each_entry_safe(req, treq, &ep->queue, queue)
-+		dwc2_complete_request(dwc2, ep, req, result);
-+
-+	if (!dwc2->dedicated_fifos)
-+		return;
-+	size = (dwc2_readl(dwc2, DTXFSTS(ep->fifo_index)) & 0xffff) * 4;
-+	if (size < ep->fifo_size)
-+		dwc2_flush_tx_fifo(dwc2, ep->fifo_index);
-+}
-+
-+/**
-+ * dwc2_gadget_disconnect - disconnect service
-+ * @dwc2: The device state.
-+ *
-+ * The device has been disconnected. Remove all current
-+ * transactions and signal the gadget driver that this
-+ * has happened.
-+ */
-+static void dwc2_gadget_disconnect(struct dwc2 *dwc2)
-+{
-+
-+	unsigned int ep;
-+
-+	if (!dwc2->connected)
-+		return;
-+
-+	dwc2->connected = 0;
-+
-+	/* all endpoints should be shutdown */
-+	for (ep = 0; ep < dwc2->num_eps; ep++) {
-+		if (dwc2->eps_in[ep])
-+			kill_all_requests(dwc2, dwc2->eps_in[ep], -ESHUTDOWN);
-+		if (dwc2->eps_out[ep])
-+			kill_all_requests(dwc2, dwc2->eps_out[ep], -ESHUTDOWN);
-+	}
-+
-+	spin_unlock(&dwc2->lock);
-+	dwc2->driver->disconnect(&dwc2->gadget);
-+	spin_lock(&dwc2->lock);
-+
-+	usb_gadget_set_state(&dwc2->gadget, USB_STATE_NOTATTACHED);
-+}
-+
-+static void dwc2_gadget_setup_fifo(struct dwc2 *dwc2)
-+{
-+	unsigned int ep;
-+	unsigned int addr;
-+	u32 np_tx_fifo_size = dwc2->params.g_np_tx_fifo_size;
-+	u32 rx_fifo_size = dwc2->params.g_rx_fifo_size;
-+	u32 fifo_size = dwc2->hw_params.total_fifo_size;
-+	u32 *tx_fifo_size = dwc2->params.g_tx_fifo_size;
-+	u32 size, depth;
-+	u32 txfsz;
-+
-+	/* Reset fifo map if not correctly cleared during previous session */
-+	WARN_ON(dwc2->fifo_map);
-+	dwc2->fifo_map = 0;
-+
-+	/* set RX/NPTX FIFO sizes */
-+	dwc2_writel(dwc2, rx_fifo_size, GRXFSIZ);
-+	size = rx_fifo_size << FIFOSIZE_STARTADDR_SHIFT;
-+	size |= np_tx_fifo_size << FIFOSIZE_DEPTH_SHIFT;
-+	dwc2_writel(dwc2, size, GNPTXFSIZ);
-+
-+	/*
-+	 * arange all the rest of the TX FIFOs, as some versions of this
-+	 * block have overlapping default addresses. This also ensures
-+	 * that if the settings have been changed, then they are set to
-+	 * known values.
-+	 */
-+
-+	/* start at the end of the GNPTXFSIZ, rounded up */
-+	addr = rx_fifo_size + np_tx_fifo_size;
-+
-+	/*
-+	 * Configure fifos sizes from provided configuration and assign
-+	 * them to endpoints dynamically according to maxpacket size value of
-+	 * given endpoint.
-+	 */
-+
-+	for (ep = 1; ep < dwc2->num_eps; ep++) {
-+		txfsz = dwc2_readl(dwc2, DPTXFSIZN(ep));
-+		depth = tx_fifo_size[ep];
-+
-+		if (addr + depth > fifo_size)
-+			dwc2_err(dwc2, "insufficient fifo memory\n");
-+
-+		txfsz = depth << FIFOSIZE_DEPTH_SHIFT;
-+		txfsz |= addr & 0xffff;
-+		dwc2_writel(dwc2, txfsz, DPTXFSIZN(ep));
-+
-+		addr += depth;
-+	}
-+
-+	dwc2_writel(dwc2, dwc2->hw_params.total_fifo_size |
-+		    addr << GDFIFOCFG_EPINFOBASE_SHIFT,
-+		    GDFIFOCFG);
-+
-+	dwc2_flush_all_fifo(dwc2);
-+}
-+
-+static void dwc2_gadget_interrupt_init(struct dwc2 *dwc2)
-+{
-+	/* unmask subset of endpoint interrupts */
-+	dwc2_writel(dwc2, DIEPMSK_TIMEOUTMSK | DIEPMSK_AHBERRMSK |
-+		    DIEPMSK_EPDISBLDMSK | DIEPMSK_XFERCOMPLMSK,
-+		    DIEPMSK);
-+
-+	dwc2_writel(dwc2, DOEPMSK_SETUPMSK | DOEPMSK_AHBERRMSK |
-+		    DOEPMSK_EPDISBLDMSK | DOEPMSK_XFERCOMPLMSK,
-+		    DOEPMSK);
-+
-+	dwc2_writel(dwc2, 0, DAINTMSK);
-+}
-+
-+/**
-+ * dwc2_complete_in - complete IN transfer
-+ * @dwc2: The device state.
-+ * @hs_ep: The endpoint that has just completed.
-+ *
-+ * An IN transfer has been completed, update the transfer's state and then
-+ * call the relevant completion routines.
-+ */
-+static void dwc2_complete_in(struct dwc2 *dwc2, struct dwc2_ep *hs_ep)
-+{
-+	struct dwc2_request *hs_req = hs_ep->req;
-+	u32 epsize = dwc2_readl(dwc2, DIEPTSIZ(hs_ep->epnum));
-+	int size_left, size_done;
-+
-+	if (!hs_req) {
-+		dwc2_dbg(dwc2, "XferCompl but no req\n");
-+		return;
-+	}
-+
-+	/* Finish ZLP handling for IN EP0 transactions */
-+	if (hs_ep->epnum == 0 && dwc2->ep0_state == DWC2_EP0_STATUS_IN) {
-+		dwc2_dbg(dwc2, "zlp packet sent\n");
-+		/*
-+		 * While send zlp for DWC2_EP0_STATUS_IN EP direction was
-+		 * changed to IN. Change back to complete OUT transfer request
-+		 */
-+		hs_ep->dir_in = 0;
-+		dwc2_complete_request(dwc2, hs_ep, hs_req, 0);
-+		dwc2_enqueue_setup(dwc2);
-+		return;
-+	}
-+
-+	/*
-+	 * Calculate the size of the transfer by checking how much is left
-+	 * in the endpoint size register and then working it out from
-+	 * the amount we loaded for the transfer.
-+	 *
-+	 * We do this even for DMA, as the transfer may have incremented
-+	 * past the end of the buffer (DMA transfers are always 32bit
-+	 * aligned).
-+	 */
-+	size_left = DXEPTSIZ_XFERSIZE_GET(epsize);
-+
-+	size_done = hs_ep->size_loaded - size_left;
-+	size_done += hs_ep->last_load;
-+
-+	if (hs_req->req.actual != size_done)
-+		dwc2_dbg(dwc2, "%s: adjusting size done %d => %d\n",
-+			__func__, hs_req->req.actual, size_done);
-+
-+	hs_req->req.actual = size_done;
-+	dwc2_dbg(dwc2, "req->length:%d req->actual:%d req->zero:%d\n",
-+		hs_req->req.length, hs_req->req.actual, hs_req->req.zero);
-+
-+	if (!size_left && hs_req->req.actual < hs_req->req.length) {
-+		dwc2_dbg(dwc2, "%s trying more for req...\n", __func__);
-+		dwc2_gadget_start_req(dwc2, hs_ep, hs_req, true);
-+		return;
-+	}
-+
-+	/* Zlp for all endpoints, for ep0 only in DATA IN stage */
-+	if (hs_ep->send_zlp) {
-+		dwc2_program_zlp(dwc2, hs_ep);
-+		hs_ep->send_zlp = 0;
-+		/* transfer will be completed on next complete interrupt */
-+		return;
-+	}
-+
-+	if (hs_ep->epnum == 0 && dwc2->ep0_state == DWC2_EP0_DATA_IN) {
-+		/* Move to STATUS OUT */
-+		dwc2->eps_out[0]->dir_in = 0;
-+		dwc2->ep0_state = DWC2_EP0_STATUS_OUT;
-+		dwc2_program_zlp(dwc2, dwc2->eps_out[0]);
-+		return;
-+	}
-+
-+	dwc2_complete_request(dwc2, hs_ep, hs_req, 0);
-+}
-+
-+/**
-+ * dwc2_core_gadget_init - issue softreset to the core
-+ * @dwc2: The device state
-+ * @usb_reset: Usb resetting flag
-+ *
-+ * Issue a soft reset to the core, and await the core finishing it.
-+ */
-+static void dwc2_core_gadget_init(struct dwc2 *dwc2, bool usb_reset)
-+{
-+	u32 intmsk;
-+	u32 dctl;
-+	u32 usbcfg;
-+	u32 dcfg;
-+	int ep;
-+
-+	/* Kill any ep0 requests as controller will be reinitialized */
-+	kill_all_requests(dwc2, dwc2->eps_out[0], -ECONNRESET);
-+
-+	if (!usb_reset) {
-+		if (dwc2_core_reset(dwc2))
-+			return;
-+	} else {
-+		/* all endpoints should be shutdown */
-+		for (ep = 1; ep < dwc2->num_eps; ep++) {
-+			if (dwc2->eps_in[ep])
-+				dwc2_ep_disable(&dwc2->eps_in[ep]->ep);
-+			if (dwc2->eps_out[ep])
-+				dwc2_ep_disable(&dwc2->eps_out[ep]->ep);
-+		}
-+	}
-+
-+	/*
-+	 * we must now enable ep0 ready for host detection and then
-+	 * set configuration.
-+	 */
-+
-+	/* keep other bits untouched (so e.g. forced modes are not lost) */
-+	usbcfg = dwc2_readl(dwc2, GUSBCFG);
-+	usbcfg &= ~GUSBCFG_TOUTCAL_MASK;
-+	usbcfg |= GUSBCFG_TOUTCAL(7);
-+	dwc2_writel(dwc2, usbcfg, GUSBCFG);
-+
-+	dwc2_phy_init(dwc2, true);
-+
-+	dwc2_gadget_setup_fifo(dwc2);
-+
-+	if (!usb_reset)
-+		dwc2_core_disconnect(dwc2);
-+
-+	dcfg = DCFG_EPMISCNT(1);
-+
-+	if (dwc2->params.speed == DWC2_SPEED_PARAM_LOW) {
-+		dcfg |= DCFG_DEVSPD_LS;
-+	} else if (dwc2->params.speed == DWC2_SPEED_PARAM_FULL &&
-+		   dwc2->params.phy_type == DWC2_PHY_TYPE_PARAM_FS) {
-+		dcfg |= DCFG_DEVSPD_FS48;
-+	} else if (dwc2->params.speed == DWC2_SPEED_PARAM_FULL &&
-+		   dwc2->params.phy_type != DWC2_PHY_TYPE_PARAM_FS) {
-+		dcfg |= DCFG_DEVSPD_FS;
-+	}
-+
-+	if (dwc2->params.ipg_isoc_en)
-+		dcfg |= DCFG_IPG_ISOC_SUPPORDED;
-+
-+	dwc2_writel(dwc2, dcfg,  DCFG);
-+
-+	/* Clear any pending OTG interrupts */
-+	dwc2_writel(dwc2, 0xffffffff, GOTGINT);
-+
-+	/* Clear any pending interrupts */
-+	dwc2_writel(dwc2, 0xffffffff, GINTSTS);
-+	intmsk = GINTSTS_ERLYSUSP |
-+		GINTSTS_GOUTNAKEFF | GINTSTS_GINNAKEFF |
-+		GINTSTS_USBRST | GINTSTS_RESETDET |
-+		GINTSTS_ENUMDONE |
-+		GINTSTS_USBSUSP | GINTSTS_WKUPINT |
-+		GINTSTS_LPMTRANRCVD;
-+
-+	intmsk |= GINTSTS_INCOMPL_SOIN | GINTSTS_INCOMPL_SOOUT;
-+
-+	/* enable in and out endpoint interrupts */
-+	intmsk |= GINTSTS_OEPINT | GINTSTS_IEPINT;
-+
-+	/*
-+	 * Enable the RXFIFO when in slave mode, as this is how we collect
-+	 * the data. In DMA mode, we get events from the FIFO but also
-+	 * things we cannot process, so do not use it.
-+	 */
-+	if (!using_dma(dwc2))
-+		intmsk |= GINTSTS_RXFLVL;
-+
-+	if (!dwc2->params.external_id_pin_ctl)
-+		intmsk |= GINTSTS_CONIDSTSCHNG;
-+
-+	dwc2_writel(dwc2, intmsk, GINTMSK);
-+
-+	dwc2_gahbcfg_init(dwc2);
-+
-+	/*
-+	 * If INTknTXFEmpMsk is enabled, it's important to disable ep interrupts
-+	 * when we have no data to transfer. Otherwise we get being flooded by
-+	 * interrupts.
-+	 */
-+	intmsk = DIEPMSK_EPDISBLDMSK | DIEPMSK_XFERCOMPLMSK |
-+		DIEPMSK_TIMEOUTMSK | DIEPMSK_AHBERRMSK;
-+
-+	if (dwc2->dedicated_fifos && !using_dma(dwc2))
-+		intmsk |= DIEPMSK_TXFIFOEMPTY | DIEPMSK_INTKNTXFEMPMSK;
-+
-+	dwc2_writel(dwc2, intmsk, DIEPMSK);
-+
-+	/*
-+	 * don't need XferCompl, we get that from RXFIFO in slave mode. In
-+	 * DMA mode we may need this and StsPhseRcvd.
-+	 */
-+	intmsk = DOEPMSK_EPDISBLDMSK | DOEPMSK_AHBERRMSK | DOEPMSK_SETUPMSK;
-+	if (using_dma(dwc2))
-+		intmsk |= DIEPMSK_XFERCOMPLMSK |  DOEPMSK_STSPHSERCVDMSK;
-+	dwc2_writel(dwc2, intmsk, DOEPMSK);
-+
-+	dwc2_writel(dwc2, 0, DAINTMSK);
-+
-+	dwc2_dbg(dwc2, "EP0: DIEPCTL0=0x%08x, DOEPCTL0=0x%08x\n",
-+		dwc2_readl(dwc2, DIEPCTL0),
-+		dwc2_readl(dwc2, DOEPCTL0));
-+
-+	/* Enable interrupts for EP0 in and out */
-+	dwc2_hsotg_ctrl_epint(dwc2, 0, 0, 1);
-+	dwc2_hsotg_ctrl_epint(dwc2, 0, 1, 1);
-+	dwc2_dbg(dwc2, "DAINTMSK=0x%08x\n", dwc2_readl(dwc2, DAINTMSK));
-+
-+	if (!usb_reset) {
-+		dctl = dwc2_readl(dwc2, DCTL);
-+		dwc2_writel(dwc2, dctl | DCTL_PWRONPRGDONE, DCTL);
-+
-+		udelay(10);  /* see openiboot */
-+
-+		dctl = dwc2_readl(dwc2, DCTL);
-+		dwc2_writel(dwc2, dctl & ~DCTL_PWRONPRGDONE, DCTL);
-+	}
-+
-+	dwc2_dbg(dwc2, "DCTL=0x%08x\n", dwc2_readl(dwc2, DCTL));
-+
-+	/*
-+	 * DxEPCTL_USBActEp says RO in manual, but seems to be set by
-+	 * writing to the EPCTL register..
-+	 */
-+	dwc2_writel(dwc2, dwc2_ep0_mps(dwc2->eps_out[0]->ep.maxpacket) |
-+		    DXEPCTL_CNAK | DXEPCTL_EPENA |
-+		    DXEPCTL_USBACTEP, DOEPCTL0);
-+
-+	/* enable, but don't activate EP0in */
-+	dwc2_writel(dwc2, dwc2_ep0_mps(dwc2->eps_out[0]->ep.maxpacket) |
-+		    DXEPCTL_USBACTEP, DIEPCTL0);
-+
-+	/* clear global NAKs */
-+	dctl = dwc2_readl(dwc2, DCTL);
-+	dctl |= DCTL_CGOUTNAK | DCTL_CGNPINNAK;
-+
-+	if (!usb_reset)
-+		dctl |= DCTL_SFTDISCON;
-+	dwc2_writel(dwc2, dctl, DCTL);
-+
-+	/* must be at-least 3ms to allow bus to see disconnect */
-+	mdelay(3);
-+}
-+
-+/**
-+ * dwc2_set_selfpowered - set if device is self/bus powered
-+ * @gadget: The usb gadget state
-+ * @is_selfpowered: Whether the device is self-powered
-+ *
-+ * Set if the device is self or bus powered.
-+ */
-+static int dwc2_set_selfpowered(struct usb_gadget *gadget, int is_selfpowered)
-+{
-+	struct dwc2 *dwc2 = to_dwc2(gadget);
-+
-+	dwc2->is_selfpowered = !!is_selfpowered;
-+
-+	return 0;
-+}
-+
-+/**
-+ * dwc2_gadget_pullup - connect/disconnect the USB PHY
-+ * @gadget: The usb gadget state
-+ * @is_on: Current state of the USB PHY
-+ *
-+ * Connect/Disconnect the USB PHY pullup
-+ */
-+static int dwc2_gadget_pullup(struct usb_gadget *gadget, int is_on)
-+{
-+	struct dwc2 *dwc2 = to_dwc2(gadget);
-+	unsigned long flags = 0;
-+
-+	dwc2_dbg(dwc2, "%s: is_on: %d\n", __func__, is_on);
-+
-+	dwc2->enabled = is_on;
-+	/* Don't modify pullup state while in host mode */
-+	if (dwc2_is_host_mode(dwc2)) {
-+		WARN_ON(dwc2_is_host_mode(dwc2));
-+		return -EINVAL;
-+	}
-+
-+	spin_lock_irqsave(&dwc2->lock, flags);
-+	if (is_on) {
-+		dwc2_core_gadget_init(dwc2, false);
-+		/* Enable ACG feature in device mode,if supported */
-+		dwc2_core_connect(dwc2);
-+	} else {
-+		dwc2_core_disconnect(dwc2);
-+		dwc2_gadget_disconnect(dwc2);
-+	}
-+
-+	dwc2->gadget.speed = USB_SPEED_UNKNOWN;
-+	spin_unlock_irqrestore(&dwc2->lock, flags);
-+
-+	return 0;
-+}
-+
-+static int dwc2_gadget_vbus_session(struct usb_gadget *gadget, int is_active)
-+{
-+	struct dwc2 *dwc2 = to_dwc2(gadget);
-+	unsigned long flags;
-+
-+	dwc2_dbg(dwc2, "%s: is_active: %d\n", __func__, is_active);
-+	spin_lock_irqsave(&dwc2->lock, flags);
-+
-+	if (is_active) {
-+		dwc2_core_gadget_init(dwc2, false);
-+		if (dwc2->enabled)
-+			dwc2_core_connect(dwc2);
-+	} else {
-+		dwc2_core_disconnect(dwc2);
-+		dwc2_gadget_disconnect(dwc2);
-+	}
-+
-+	spin_unlock_irqrestore(&dwc2->lock, flags);
-+	return 0;
-+}
-+
-+
-+/**
-+ * dwc2_handle_ep_disabled - handle DXEPINT_EPDISBLD
-+ * @hs_ep: The endpoint on which interrupt is asserted.
-+ *
-+ * This interrupt indicates that the endpoint has been disabled per the
-+ * application's request.
-+ *
-+ * For IN endpoints flushes txfifo, in case of BULK clears DCTL_CGNPINNAK,
-+ * in case of ISOC completes current request.
-+ *
-+ * For ISOC-OUT endpoints completes expired requests. If there is remaining
-+ * request starts it.
-+ */
-+static void dwc2_handle_ep_disabled(struct dwc2_ep *hs_ep)
-+{
-+	struct dwc2 *dwc2 = hs_ep->dwc2;
-+	struct dwc2_request *hs_req;
-+	unsigned char idx = hs_ep->epnum;
-+	int dir_in = hs_ep->dir_in;
-+	u32 epctl_reg = dir_in ? DIEPCTL(idx) : DOEPCTL(idx);
-+	int dctl = dwc2_readl(dwc2, DCTL);
-+
-+	dwc2_dbg(dwc2, "%s: EPDisbld\n", __func__);
-+
-+	if (dir_in) {
-+		int epctl = dwc2_readl(dwc2, epctl_reg);
-+
-+		dwc2_flush_tx_fifo(dwc2, hs_ep->fifo_index);
-+
-+		if (hs_ep->isochronous) {
-+			dwc2_complete_in(dwc2, hs_ep);
-+			return;
-+		}
-+
-+		if ((epctl & DXEPCTL_STALL) && (epctl & DXEPCTL_EPTYPE_BULK)) {
-+			int dctl = dwc2_readl(dwc2, DCTL);
-+
-+			dctl |= DCTL_CGNPINNAK;
-+			dwc2_writel(dwc2, dctl, DCTL);
-+		}
-+		return;
-+	}
-+
-+	if (dctl & DCTL_GOUTNAKSTS) {
-+		dctl |= DCTL_CGOUTNAK;
-+		dwc2_writel(dwc2, dctl, DCTL);
-+	}
-+
-+	if (!hs_ep->isochronous)
-+		return;
-+
-+	if (list_empty(&hs_ep->queue)) {
-+		dwc2_dbg(dwc2, "%s: complete_ep 0x%p, ep->queue empty!\n",
-+			__func__, hs_ep);
-+		return;
-+	}
-+
-+	do {
-+		hs_req = get_ep_head(hs_ep);
-+		if (hs_req)
-+			dwc2_complete_request(dwc2, hs_ep, hs_req, -ENODATA);
-+		dwc2_gadget_incr_frame_num(hs_ep);
-+		/* Update current frame number value. */
-+		dwc2->frame_number = dwc2_read_frameno(dwc2);
-+	} while (dwc2_gadget_target_frame_elapsed(hs_ep));
-+
-+	dwc2_start_next_request(hs_ep);
-+}
-+
-+/**
-+ * dwc2_handle_out_token_ep_disabled - handle DXEPINT_OUTTKNEPDIS
-+ * @ep: The endpoint on which interrupt is asserted.
-+ *
-+ * This is starting point for ISOC-OUT transfer, synchronization done with
-+ * first out token received from host while corresponding EP is disabled.
-+ *
-+ * Device does not know initial frame in which out token will come. For this
-+ * HW generates OUTTKNEPDIS - out token is received while EP is disabled. Upon
-+ * getting this interrupt SW starts calculation for next transfer frame.
-+ */
-+static void dwc2_handle_out_token_ep_disabled(struct dwc2_ep *ep)
-+{
-+	struct dwc2 *dwc2 = ep->dwc2;
-+	int dir_in = ep->dir_in;
-+	u32 doepmsk;
-+	u32 ctrl;
-+
-+	dwc2_dbg(dwc2, "%s\n", __func__);
-+
-+	if (dir_in || !ep->isochronous)
-+		return;
-+
-+	if (ep->interval > 1 && ep->target_frame == TARGET_FRAME_INITIAL) {
-+		ep->target_frame = dwc2->frame_number;
-+
-+		dwc2_gadget_incr_frame_num(ep);
-+
-+		ctrl = dwc2_readl(dwc2, DOEPCTL(ep->epnum));
-+
-+		if (ep->target_frame & 0x1)
-+			ctrl |= DXEPCTL_SETODDFR;
-+		else
-+			ctrl |= DXEPCTL_SETEVENFR;
-+
-+		dwc2_writel(dwc2, ctrl, DOEPCTL(ep->epnum));
-+	}
-+
-+	dwc2_start_next_request(ep);
-+
-+	doepmsk = dwc2_readl(dwc2, DOEPMSK);
-+	doepmsk &= ~DOEPMSK_OUTTKNEPDISMSK;
-+	dwc2_writel(dwc2, doepmsk, DOEPMSK);
-+}
-+
-+/**
-+ * dwc2_handle_nak - handle NAK interrupt
-+ * @hs_ep: The endpoint on which interrupt is asserted.
-+ *
-+ * This is starting point for ISOC-IN transfer, synchronization done with
-+ * first IN token received from host while corresponding EP is disabled.
-+ *
-+ * Device does not know when first one token will arrive from host. On first
-+ * token arrival HW generates 2 interrupts: 'in token received while FIFO empty'
-+ * and 'NAK'. NAK interrupt for ISOC-IN means that token has arrived and ZLP was
-+ * sent in response to that as there was no data in FIFO. SW is basing on this
-+ * interrupt to obtain frame in which token has come and then based on the
-+ * interval calculates next frame for transfer.
-+ */
-+static void dwc2_handle_nak(struct dwc2_ep *hs_ep)
-+{
-+	struct dwc2 *dwc2 = hs_ep->dwc2;
-+	int dir_in = hs_ep->dir_in;
-+	u32 ctrl;
-+
-+	if (!dir_in || !hs_ep->isochronous)
-+		return;
-+
-+	if (hs_ep->target_frame == TARGET_FRAME_INITIAL) {
-+		hs_ep->target_frame = dwc2->frame_number;
-+		if (hs_ep->interval > 1) {
-+			ctrl = dwc2_readl(dwc2, DIEPCTL(hs_ep->epnum));
-+
-+			if (hs_ep->target_frame & 0x1)
-+				ctrl |= DXEPCTL_SETODDFR;
-+			else
-+				ctrl |= DXEPCTL_SETEVENFR;
-+
-+			dwc2_writel(dwc2, ctrl, DIEPCTL(hs_ep->epnum));
-+		}
-+
-+		dwc2_complete_request(dwc2, hs_ep, get_ep_head(hs_ep), 0);
-+	}
-+
-+	dwc2_gadget_incr_frame_num(hs_ep);
-+}
-+
-+/**
-+ * dwc2_handle_epint - handle an in/out endpoint interrupt
-+ * @dwc2: The driver state
-+ * @idx: The index for the endpoint (0..15)
-+ * @dir_in: Set if this is an IN endpoint
-+ *
-+ * Process and clear any interrupt pending for an individual endpoint
-+ */
-+static void dwc2_handle_epint(struct dwc2 *dwc2, unsigned int idx,
-+			      int dir_in)
-+{
-+	struct dwc2_ep *hs_ep = index_to_ep(dwc2, idx, dir_in);
-+	u32 epmsk_reg = dir_in ? DIEPMSK : DOEPMSK;
-+	u32 epint_reg = dir_in ? DIEPINT(idx) : DOEPINT(idx);
-+	u32 epctl_reg = dir_in ? DIEPCTL(idx) : DOEPCTL(idx);
-+	u32 epsiz_reg = dir_in ? DIEPTSIZ(idx) : DOEPTSIZ(idx);
-+	u32 ints;
-+	u32 mask;
-+	u32 ctrl;
-+
-+	mask = dwc2_readl(dwc2, epmsk_reg);
-+	if ((dwc2_readl(dwc2, DIEPEMPMSK) >> idx) & 1)
-+		mask |= DIEPMSK_TXFIFOEMPTY;
-+	mask |= DXEPINT_SETUP_RCVD;
-+
-+	ints = dwc2_readl(dwc2, epint_reg);
-+
-+	if (ints & DXEPINT_AHBERR)
-+		dwc2_err(dwc2, "%s: AHBErr\n", __func__);
-+
-+	ints &= mask;
-+
-+	ctrl = dwc2_readl(dwc2, epctl_reg);
-+
-+	/* Clear endpoint interrupts */
-+	dwc2_writel(dwc2, ints, epint_reg);
-+
-+	if (!hs_ep) {
-+		dwc2_err(dwc2, "%s:Interrupt for unconfigured ep%d(%s)\n",
-+			__func__, idx, dir_in ? "in" : "out");
-+		return;
-+	}
-+
-+	dwc2_dbg(dwc2, "%s: ep%d(%s) DxEPINT=0x%08x\n",
-+		__func__, idx, dir_in ? "in" : "out", ints);
-+
-+	/* Don't process XferCompl interrupt if it is a setup packet */
-+	if (idx == 0 && (ints & (DXEPINT_SETUP | DXEPINT_SETUP_RCVD)))
-+		ints &= ~DXEPINT_XFERCOMPL;
-+
-+	if (ints & DXEPINT_XFERCOMPL) {
-+		dwc2_dbg(dwc2,
-+			"%s: XferCompl: DxEPCTL=0x%08x, DXEPTSIZ=%08x\n",
-+			__func__, dwc2_readl(dwc2, epctl_reg),
-+			dwc2_readl(dwc2, epsiz_reg));
-+		if (dir_in) {
-+			/*
-+			 * We get OutDone from the FIFO, so we only
-+			 * need to look at completing IN requests here
-+			 * if operating slave mode
-+			 */
-+			if (hs_ep->isochronous && hs_ep->interval > 1)
-+				dwc2_gadget_incr_frame_num(hs_ep);
-+
-+			dwc2_complete_in(dwc2, hs_ep);
-+			if (ints & DXEPINT_NAKINTRPT)
-+				ints &= ~DXEPINT_NAKINTRPT;
-+
-+			if (idx == 0 && !hs_ep->req)
-+				dwc2_enqueue_setup(dwc2);
-+		} else if (using_dma(dwc2)) {
-+			/*
-+			 * We're using DMA, we need to fire an OutDone here
-+			 * as we ignore the RXFIFO.
-+			 */
-+			if (hs_ep->isochronous && hs_ep->interval > 1)
-+				dwc2_gadget_incr_frame_num(hs_ep);
-+
-+			dwc2_handle_outdone(dwc2, idx);
-+		}
-+	}
-+
-+	if (ints & DXEPINT_EPDISBLD)
-+		dwc2_handle_ep_disabled(hs_ep);
-+
-+	if (ints & DXEPINT_OUTTKNEPDIS)
-+		dwc2_handle_out_token_ep_disabled(hs_ep);
-+
-+	if (ints & DXEPINT_NAKINTRPT)
-+		dwc2_handle_nak(hs_ep);
-+
-+	if (ints & DXEPINT_SETUP) {  /* Setup or Timeout */
-+		dwc2_dbg(dwc2, "%s: Setup/Timeout\n",  __func__);
-+
-+		if (using_dma(dwc2) && idx == 0) {
-+			/*
-+			 * this is the notification we've received a
-+			 * setup packet. In non-DMA mode we'd get this
-+			 * from the RXFIFO, instead we need to process
-+			 * the setup here.
-+			 */
-+
-+			if (!dir_in && dwc2->ep0_state == DWC2_EP0_SETUP)
-+				dwc2_handle_outdone(dwc2, 0);
-+		}
-+	}
-+
-+	if (ints & DXEPINT_STSPHSERCVD)
-+		dwc2_dbg(dwc2, "%s: StsPhseRcvd\n", __func__);
-+
-+	if (ints & DXEPINT_BACK2BACKSETUP)
-+		dwc2_dbg(dwc2, "%s: B2BSetup/INEPNakEff\n", __func__);
-+
-+	if (ints & DXEPINT_BNAINTR) {
-+		dwc2_dbg(dwc2, "%s: BNA interrupt\n", __func__);
-+#if 0
-+		if (hs_ep->isochronous)
-+			dwc2_handle_isoc_bna(hs_ep);
-+#endif
-+	}
-+
-+	if (dir_in && !hs_ep->isochronous) {
-+		/* not sure if this is important, but we'll clear it anyway */
-+		if (ints & DXEPINT_INTKNTXFEMP) {
-+			dwc2_dbg(dwc2, "%s: ep%d: INTknTXFEmpMsk\n",
-+				__func__, idx);
-+		}
-+
-+		/* this probably means something bad is happening */
-+		if (ints & DXEPINT_INTKNEPMIS) {
-+			dwc2_warn(dwc2, "%s: ep%d: INTknEP\n",
-+				 __func__, idx);
-+		}
-+
-+		/* FIFO has space or is empty (see GAHBCFG) */
-+		if (dwc2->dedicated_fifos && ints & DXEPINT_TXFEMP) {
-+			dwc2_dbg(dwc2, "%s: ep%d: TxFIFOEmpty\n",
-+				__func__, idx);
-+		}
-+	}
-+}
-+
-+/**
-+ * dwc2_handle_enumdone - Handle EnumDone interrupt (enumeration done)
-+ * @dwc2: The device state.
-+ *
-+ * Handle updating the device settings after the enumeration phase has
-+ * been completed.
-+ */
-+static void dwc2_handle_enumdone(struct dwc2 *dwc2)
-+{
-+	u32 dsts = dwc2_readl(dwc2, DSTS);
-+	int ep0_mps = 0, ep_mps = 8;
-+	int i;
-+
-+	/*
-+	 * This should signal the finish of the enumeration phase
-+	 * of the USB handshaking, so we should now know what rate
-+	 * we connected at.
-+	 */
-+	dwc2_dbg(dwc2, "EnumDone (DSTS=0x%08x)\n", dsts);
-+
-+	/*
-+	 * note, since we're limited by the size of transfer on EP0, and
-+	 * it seems IN transfers must be a even number of packets we do
-+	 * not advertise a 64byte MPS on EP0.
-+	 */
-+
-+	/* catch both EnumSpd_FS and EnumSpd_FS48 */
-+	switch ((dsts & DSTS_ENUMSPD_MASK) >> DSTS_ENUMSPD_SHIFT) {
-+	case DSTS_ENUMSPD_FS:
-+	case DSTS_ENUMSPD_FS48:
-+		dwc2->gadget.speed = USB_SPEED_FULL;
-+		ep0_mps = 64;
-+		ep_mps = 1023;
-+		break;
-+	case DSTS_ENUMSPD_HS:
-+		dwc2->gadget.speed = USB_SPEED_HIGH;
-+		ep0_mps = 64;
-+		ep_mps = 1024;
-+		break;
-+	case DSTS_ENUMSPD_LS:
-+		dwc2->gadget.speed = USB_SPEED_LOW;
-+		ep0_mps = 8;
-+		ep_mps = 8;
-+		/*
-+		 * note, we don't actually support LS in this driver at the
-+		 * moment, and the documentation seems to imply that it isn't
-+		 * supported by the PHYs on some of the devices.
-+		 */
-+		break;
-+	}
-+	dwc2_dbg(dwc2, "new %s device\n", usb_speed_string(dwc2->gadget.speed));
-+
-+	/*
-+	 * we should now know the maximum packet size for an
-+	 * endpoint, so set the endpoints to a default value.
-+	 */
-+	if (ep0_mps) {
-+		/* Initialize ep0 for both in and out directions */
-+		dwc2_set_ep_maxpacket(dwc2, 0, ep0_mps, 0, 1);
-+		dwc2_set_ep_maxpacket(dwc2, 0, ep0_mps, 0, 0);
-+		for (i = 1; i < dwc2->num_eps; i++) {
-+			if (dwc2->eps_in[i])
-+				dwc2_set_ep_maxpacket(dwc2, i, ep_mps, 0, 1);
-+			if (dwc2->eps_out[i])
-+				dwc2_set_ep_maxpacket(dwc2, i, ep_mps, 0, 0);
-+		}
-+	}
-+
-+	/* ensure after enumeration our EP0 is active */
-+	dwc2_enqueue_setup(dwc2);
-+
-+	dwc2_dbg(dwc2, "EP0: DIEPCTL0=0x%08x, DOEPCTL0=0x%08x\n",
-+		dwc2_readl(dwc2, DIEPCTL0),
-+		dwc2_readl(dwc2, DOEPCTL0));
-+}
-+
-+/* IRQ flags which will trigger a retry around the IRQ loop */
-+#define IRQ_RETRY_MASK (GINTSTS_NPTXFEMP | \
-+			GINTSTS_PTXFEMP |  \
-+			GINTSTS_RXFLVL)
-+
-+static void dwc2_gadget_udc_poll(struct usb_gadget *gadget)
-+{
-+	struct dwc2 *dwc2 = to_dwc2(gadget);
-+	int retry_count = 4;
-+	u32 gintsts;
-+	u32 gintmsk;
-+
-+	if (!dwc2_is_device_mode(dwc2))
-+		return;
-+
-+	spin_lock(&dwc2->lock);
-+
-+irq_retry:
-+	gintsts = readl(dwc2->regs + GINTSTS);
-+	gintmsk = readl(dwc2->regs + GINTMSK);
-+	gintsts &= gintmsk;
-+
-+	if (!gintsts)
-+		return;
-+
-+	dwc2_dbg(dwc2, "%s: %08x (%08x) retry %d\n",
-+		__func__, gintsts, gintmsk, 4 - retry_count);
-+
-+	if (gintsts & GINTSTS_RESETDET) {
-+		dwc2_dbg(dwc2, "%s: USBRstDet\n", __func__);
-+		dwc2_writel(dwc2, GINTSTS_RESETDET, GINTSTS);
-+	}
-+
-+	if (gintsts & (GINTSTS_USBRST | GINTSTS_RESETDET)) {
-+		u32 usb_status = dwc2_readl(dwc2, GOTGCTL);
-+		u32 connected = dwc2->connected;
-+
-+		dwc2_dbg(dwc2, "%s: USBRst\n", __func__);
-+		dwc2_dbg(dwc2, "GNPTXSTS=%08x\n", dwc2_readl(dwc2, GNPTXSTS));
-+
-+		dwc2_writel(dwc2, GINTSTS_USBRST, GINTSTS);
-+
-+		/* Report disconnection if it is not already done. */
-+		dwc2_gadget_disconnect(dwc2);
-+
-+		/* Reset device address to zero */
-+		dwc2_dcfg_set_addr(dwc2, 0);
-+
-+		if (usb_status & GOTGCTL_BSESVLD && connected)
-+			dwc2_core_gadget_init(dwc2, true);
-+	}
-+
-+	if (gintsts & GINTSTS_ENUMDONE) {
-+		dwc2_writel(dwc2, GINTSTS_ENUMDONE, GINTSTS);
-+
-+		dwc2_handle_enumdone(dwc2);
-+	}
-+
-+	if (gintsts & (GINTSTS_OEPINT | GINTSTS_IEPINT)) {
-+		u32 daint = dwc2_readl(dwc2, DAINT);
-+		u32 daintmsk = dwc2_readl(dwc2, DAINTMSK);
-+		u32 daint_out, daint_in;
-+		int ep;
-+
-+		daint &= daintmsk;
-+		daint_out = daint >> DAINT_OUTEP_SHIFT;
-+		daint_in = daint & ~(daint_out << DAINT_OUTEP_SHIFT);
-+
-+		dwc2_dbg(dwc2, "%s: daint=%08x\n", __func__, daint);
-+
-+		for (ep = 0; ep < dwc2->num_eps && daint_out;
-+						ep++, daint_out >>= 1) {
-+			if (daint_out & 1)
-+				dwc2_handle_epint(dwc2, ep, 0);
-+		}
-+
-+		for (ep = 0; ep < dwc2->num_eps && daint_in;
-+						ep++, daint_in >>= 1) {
-+			if (daint_in & 1)
-+				dwc2_handle_epint(dwc2, ep, 1);
-+		}
-+	}
-+
-+	/* check both FIFOs */
-+	if (gintsts & GINTSTS_NPTXFEMP) {
-+		dwc2_dbg(dwc2, "NPTxFEmp\n");
-+
-+		/*
-+		 * Disable the interrupt to stop it happening again
-+		 * unless one of these endpoint routines decides that
-+		 * it needs re-enabling
-+		 */
-+#if 0
-+		dwc2_hsotg_disable_gsint(dwc2, GINTSTS_NPTXFEMP);
-+		dwc2_hsotg_irq_fifoempty(dwc2, false);
-+#endif
-+	}
-+
-+	if (gintsts & GINTSTS_PTXFEMP) {
-+		dwc2_dbg(dwc2, "PTxFEmp\n");
-+
-+		/* See note in GINTSTS_NPTxFEmp */
-+#if 0
-+		dwc2_hsotg_disable_gsint(dwc2, GINTSTS_PTXFEMP);
-+		dwc2_hsotg_irq_fifoempty(dwc2, true);
-+#endif
-+	}
-+
-+	if (gintsts & GINTSTS_RXFLVL) {
-+		/*
-+		 * note, since GINTSTS_RxFLvl doubles as FIFO-not-empty,
-+		 * we need to retry dwc2_hsotg_handle_rx if this is still
-+		 * set.
-+		 */
-+		dwc2_err(dwc2, "RXFLVL\n");
-+#if 0
-+		dwc2_handle_rx(dwc2);
-+#endif
-+	}
-+
-+	if (gintsts & GINTSTS_ERLYSUSP) {
-+		dwc2_dbg(dwc2, "GINTSTS_ErlySusp\n");
-+		dwc2_writel(dwc2, GINTSTS_ERLYSUSP, GINTSTS);
-+	}
-+	if (gintsts & GINTSTS_USBSUSP) {
-+		dwc2_dbg(dwc2, "USBSusp\n");
-+		dwc2_writel(dwc2, GINTSTS_USBSUSP, GINTSTS);
-+	}
-+
-+	/*
-+	 * these next two seem to crop-up occasionally causing the core
-+	 * to shutdown the USB transfer, so try clearing them and logging
-+	 * the occurrence.
-+	 */
-+
-+	if (gintsts & GINTSTS_GOUTNAKEFF) {
-+		u8 idx;
-+		u32 epctrl;
-+		u32 gintmsk;
-+		u32 daintmsk;
-+		struct dwc2_ep *hs_ep;
-+
-+		daintmsk = dwc2_readl(dwc2, DAINTMSK);
-+		daintmsk >>= DAINT_OUTEP_SHIFT;
-+		/* Mask this interrupt */
-+		gintmsk = dwc2_readl(dwc2, GINTMSK);
-+		gintmsk &= ~GINTSTS_GOUTNAKEFF;
-+		dwc2_writel(dwc2, gintmsk, GINTMSK);
-+
-+		dwc2_dbg(dwc2, "GOUTNakEff triggered\n");
-+		for (idx = 1; idx < dwc2->num_eps; idx++) {
-+			hs_ep = dwc2->eps_out[idx];
-+			/* Proceed only unmasked ISOC EPs */
-+			if ((BIT(idx) & ~daintmsk) || !hs_ep->isochronous)
-+				continue;
-+
-+			epctrl = dwc2_readl(dwc2, DOEPCTL(idx));
-+
-+			if (epctrl & DXEPCTL_EPENA) {
-+				epctrl |= DXEPCTL_SNAK;
-+				epctrl |= DXEPCTL_EPDIS;
-+				dwc2_writel(dwc2, epctrl, DOEPCTL(idx));
-+			}
-+		}
-+
-+		/* This interrupt bit is cleared in DXEPINT_EPDISBLD handler */
-+	}
-+
-+	if (gintsts & GINTSTS_GINNAKEFF) {
-+		dwc2_info(dwc2, "GINNakEff triggered\n");
-+		dwc2_set_bit(dwc2, DCTL, DCTL_CGNPINNAK);
-+	}
-+#if 0
-+	if (gintsts & GINTSTS_INCOMPL_SOIN)
-+		dwc2_handle_incomplete_isoc_in(dwc2);
-+
-+	if (gintsts & GINTSTS_INCOMPL_SOOUT)
-+		dwc2_handle_incomplete_isoc_out(dwc2);
-+#endif
-+
-+	/*
-+	 * if we've had fifo events, we should try and go around the
-+	 * loop again to see if there's any point in returning yet.
-+	 */
-+	if (gintsts & IRQ_RETRY_MASK && --retry_count > 0)
-+		goto irq_retry;
-+
-+	spin_unlock(&dwc2->lock);
-+}
-+
-+/**
-+ * dwc2_dwc2_udc_start - prepare the udc for work
-+ * @gadget: The usb gadget state
-+ * @driver: The usb gadget driver
-+ *
-+ * Perform initialization to prepare udc device and driver
-+ * to work.
-+ */
-+static int dwc2_gadget_udc_start(struct usb_gadget *gadget,
-+				 struct usb_gadget_driver *driver)
-+{
-+	struct dwc2 *dwc2 = to_dwc2(gadget);
-+
-+	if (!driver) {
-+		dwc2_err(dwc2, "%s: no driver\n", __func__);
-+		return -EINVAL;
-+	}
-+
-+	if (driver->max_speed < USB_SPEED_FULL) {
-+		dwc2_err(dwc2, "%s: bad speed\n", __func__);
-+		return -EINVAL;
-+	}
-+
-+	dwc2->driver = driver;
-+	dwc2->gadget.speed = USB_SPEED_UNKNOWN;
-+
-+	dwc2_core_gadget_init(dwc2, false);
-+	dwc2_gadget_interrupt_init(dwc2);
-+
-+	dwc2_info(dwc2, "bound driver %s\n", driver->driver.name);
-+
-+	return 0;
-+}
-+
-+static int dwc2_gadget_udc_stop(struct usb_gadget *gadget,
-+				struct usb_gadget_driver *driver)
-+{
-+	struct dwc2 *dwc2 = to_dwc2(gadget);
-+	unsigned long flags = 0;
-+
-+	dwc2_dbg(dwc2, "%s\n", __func__);
-+
-+	/* all endpoints should be shutdown */
-+	spin_lock_irqsave(&dwc2->lock, flags);
-+
-+	dwc2->driver = NULL;
-+	dwc2->gadget.speed = USB_SPEED_UNKNOWN;
-+	dwc2->enabled = 0;
-+
-+	spin_unlock_irqrestore(&dwc2->lock, flags);
-+
-+	return 0;
-+}
-+
-+static const struct usb_gadget_ops dwc2_gadget_ops = {
-+	.get_frame		= dwc2_gadget_get_frame,
-+	.set_selfpowered	= dwc2_set_selfpowered,
-+	.vbus_session		= dwc2_gadget_vbus_session,
-+	.vbus_draw		= NULL,
-+	.pullup			= dwc2_gadget_pullup,
-+	.udc_start		= dwc2_gadget_udc_start,
-+	.udc_stop		= dwc2_gadget_udc_stop,
-+	.udc_poll		= dwc2_gadget_udc_poll,
-+};
-+
-+/**
-+ * dwc2_gadget_ep_init - initialise a single endpoint
-+ * @dwc2: The device state.
-+ * @epnum: The endpoint number
-+ * @dir_in: True if direction is in.
-+ *
-+ * Initialise the given endpoint (as part of the probe and device state
-+ * creation) to give to the gadget driver. Setup the endpoint name, any
-+ * direction information and other state that may be required.
-+ */
-+static void dwc2_ep_init(struct dwc2 *dwc2, int epnum,  bool dir_in)
-+{
-+	struct dwc2_ep *ep;
-+	char *dir;
-+
-+	if (dir_in)
-+		ep = dwc2->eps_in[epnum];
-+	else
-+		ep = dwc2->eps_out[epnum];
-+
-+	if (epnum == 0)
-+		dir = "";
-+	else if (dir_in)
-+		dir = "in";
-+	else
-+		dir = "out";
-+
-+	ep->dir_in = dir_in;
-+	ep->epnum = epnum;
-+
-+	snprintf(ep->name, sizeof(ep->name), "ep%d%s", epnum, dir);
-+
-+	INIT_LIST_HEAD(&ep->queue);
-+	INIT_LIST_HEAD(&ep->ep.ep_list);
-+
-+	if (epnum)
-+		list_add_tail(&ep->ep.ep_list, &dwc2->gadget.ep_list);
-+
-+	ep->dwc2 = dwc2;
-+	ep->ep.name = ep->name;
-+
-+	if (dwc2->params.speed == DWC2_SPEED_PARAM_LOW)
-+		usb_ep_set_maxpacket_limit(&ep->ep, 8);
-+	else if (epnum == 0)
-+		usb_ep_set_maxpacket_limit(&ep->ep, D0EPCTL_MPS_LIMIT);
-+	else
-+		usb_ep_set_maxpacket_limit(&ep->ep, 1024);
-+
-+	ep->ep.ops = &dwc2_ep_ops;
-+}
-+
-+static int dwc2_eps_alloc(struct dwc2 *dwc2)
-+{
-+	struct dwc2_ep *ep;
-+	u32 cfg;
-+	u32 ep_type;
-+	u32 i;
-+
-+	/* Number of Device Endpoints */
-+	dwc2->num_eps = 1 + dwc2->hw_params.num_dev_ep;
-+
-+	ep = kzalloc(sizeof(*ep), GFP_KERNEL);
-+	if (!ep)
-+		return -ENOMEM;
-+
-+	/* Same endpoint is used in both directions for ep0 */
-+	dwc2->eps_out[0] = dwc2->eps_in[0] = ep;
-+
-+	cfg = dwc2->hw_params.dev_ep_dirs;
-+	for (i = 1, cfg >>= 2; i < dwc2->num_eps; i++, cfg >>= 2) {
-+		ep_type = cfg & 3;
-+		/* Direction in or both */
-+		if (!(ep_type & 2)) {
-+			ep = kzalloc(sizeof(*ep), GFP_KERNEL);
-+			if (!ep)
-+				return -ENOMEM;
-+			dwc2->eps_in[i] = ep;
-+		}
-+		/* Direction out or both */
-+		if (!(ep_type & 1)) {
-+			ep = kzalloc(sizeof(*ep), GFP_KERNEL);
-+			if (!ep)
-+				return -ENOMEM;
-+			dwc2->eps_out[i] = ep;
-+		}
-+	}
-+
-+	dwc2->dedicated_fifos = dwc2->hw_params.en_multiple_tx_fifo;
-+
-+	dwc2_info(dwc2, "EPs: %d, %s fifos, 0x%x entries in SPRAM\n",
-+		 dwc2->num_eps,
-+		 dwc2->dedicated_fifos ? "dedicated" : "shared",
-+		 dwc2->hw_params.total_fifo_size);
-+	return 0;
-+}
-+
-+int dwc2_gadget_init(struct dwc2 *dwc2)
-+{
-+	u32 dctl;
-+	int epnum;
-+	int ret;
-+
-+	if (!dwc2->params.dma) {
-+		dwc2_err(dwc2, "no DMA support, required by gadget driver");
-+		return -ENOTSUPP;
-+	}
-+
-+	dwc2_core_init(dwc2);
-+
-+	dwc2->gadget.speed = USB_SPEED_UNKNOWN;
-+	if (dwc2->params.speed == DWC2_SPEED_PARAM_HIGH)
-+		dwc2->gadget.max_speed = USB_SPEED_HIGH;
-+	else
-+		dwc2->gadget.max_speed = USB_SPEED_FULL;
-+
-+	dwc2->gadget.ops = &dwc2_gadget_ops;
-+	dwc2->gadget.name = "DWC2 gadget";
-+
-+	dwc2->gadget.is_otg = (dwc2->dr_mode == USB_DR_MODE_OTG) ? 1 : 0;
-+
-+	ret = dwc2_eps_alloc(dwc2);
-+	if (ret) {
-+		dwc2_err(dwc2, "Endpoints allocation failed: %d\n", ret);
-+		return ret;
-+	}
-+
-+	dwc2->ctrl_buff = dma_alloc(DWC2_CTRL_BUFF_SIZE);
-+	if (!dwc2->ctrl_buff)
-+		return -ENOMEM;
-+
-+	dwc2->ep0_buff = dma_alloc(DWC2_CTRL_BUFF_SIZE);
-+	if (!dwc2->ep0_buff)
-+		return -ENOMEM;
-+
-+	if (dwc2->num_eps == 0) {
-+		dwc2_err(dwc2, "wrong number of EPs (zero)\n");
-+		return -EINVAL;
-+	}
-+
-+	/* setup endpoint information */
-+	INIT_LIST_HEAD(&dwc2->gadget.ep_list);
-+	dwc2->gadget.ep0 = &dwc2->eps_out[0]->ep;
-+
-+	/* allocate EP0 request */
-+	dwc2->ctrl_req = dwc2_ep_alloc_req(&dwc2->eps_out[0]->ep);
-+	if (!dwc2->ctrl_req) {
-+		dwc2_err(dwc2, "failed to allocate ctrl req\n");
-+		return -ENOMEM;
-+	}
-+
-+	/* initialise the endpoints now the core has been initialised */
-+	for (epnum = 0; epnum < dwc2->num_eps; epnum++) {
-+		if (dwc2->eps_in[epnum])
-+			dwc2_ep_init(dwc2, epnum, 1);
-+		if (dwc2->eps_out[epnum])
-+			dwc2_ep_init(dwc2, epnum, 0);
-+	}
-+
-+	/* Be in disconnected state until gadget is registered */
-+	dctl = dwc2_readl(dwc2, DCTL);
-+	dwc2_writel(dwc2, dctl | DCTL_SFTDISCON, DCTL);
-+
-+	ret = usb_add_gadget_udc(dwc2->dev, &dwc2->gadget);
-+	if (ret) {
-+		dwc2_ep_free_req(&dwc2->eps_out[0]->ep, dwc2->ctrl_req);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-diff --git a/drivers/usb/dwc2/regs.h b/drivers/usb/dwc2/regs.h
-index e842c2c2e..06fc8da82 100644
---- a/drivers/usb/dwc2/regs.h
-+++ b/drivers/usb/dwc2/regs.h
-@@ -502,6 +502,7 @@
- #define D0EPCTL_MPS_32			1
- #define D0EPCTL_MPS_16			2
- #define D0EPCTL_MPS_8			3
-+#define D0EPCTL_MPS_LIMIT		64
- 
- #define DXEPCTL_EPENA			BIT(31)
- #define DXEPCTL_EPDIS			BIT(30)
+
+On 7/21/20 2:05 PM, Jules Maselbas wrote:
+> The host driver is taken from U-Boot and mix with some part from Linux.
+> 
+> Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
+> ---
+>  drivers/usb/Kconfig       |   2 +
+>  drivers/usb/Makefile      |   1 +
+>  drivers/usb/dwc2/Kconfig  |  14 +
+>  drivers/usb/dwc2/Makefile |   1 +
+>  drivers/usb/dwc2/core.c   | 614 +++++++++++++++++++++++++++
+>  drivers/usb/dwc2/core.h   | 514 +++++++++++++++++++++++
+>  drivers/usb/dwc2/dwc2.c   |  90 ++++
+>  drivers/usb/dwc2/dwc2.h   |  37 ++
+>  drivers/usb/dwc2/host.c   | 634 ++++++++++++++++++++++++++++
+>  drivers/usb/dwc2/regs.h   | 848 ++++++++++++++++++++++++++++++++++++++
+>  drivers/usb/dwc2/rhub.c   | 419 +++++++++++++++++++
+>  11 files changed, 3174 insertions(+)
+>  create mode 100644 drivers/usb/dwc2/Kconfig
+>  create mode 100644 drivers/usb/dwc2/Makefile
+>  create mode 100644 drivers/usb/dwc2/core.c
+>  create mode 100644 drivers/usb/dwc2/core.h
+>  create mode 100644 drivers/usb/dwc2/dwc2.c
+>  create mode 100644 drivers/usb/dwc2/dwc2.h
+>  create mode 100644 drivers/usb/dwc2/host.c
+>  create mode 100644 drivers/usb/dwc2/regs.h
+>  create mode 100644 drivers/usb/dwc2/rhub.c
+> 
+> diff --git a/drivers/usb/Kconfig b/drivers/usb/Kconfig
+> index 99eff1c8d..aab1564ab 100644
+> --- a/drivers/usb/Kconfig
+> +++ b/drivers/usb/Kconfig
+> @@ -9,6 +9,8 @@ if USB_HOST
+>  
+>  source "drivers/usb/imx/Kconfig"
+>  
+> +source "drivers/usb/dwc2/Kconfig"
+> +
+>  source "drivers/usb/dwc3/Kconfig"
+>  
+>  source "drivers/usb/host/Kconfig"
+> diff --git a/drivers/usb/Makefile b/drivers/usb/Makefile
+> index 64d4bddad..c39ce8bb6 100644
+> --- a/drivers/usb/Makefile
+> +++ b/drivers/usb/Makefile
+> @@ -1,5 +1,6 @@
+>  obj-$(CONFIG_USB)		+= core/
+>  obj-$(CONFIG_USB_IMX_CHIPIDEA)	+= imx/
+> +obj-$(CONFIG_USB_DWC2)		+= dwc2/
+>  obj-$(CONFIG_USB_DWC3)		+= dwc3/
+>  obj-$(CONFIG_USB_MUSB)		+= musb/
+>  obj-$(CONFIG_USB_STORAGE)	+= storage/
+> diff --git a/drivers/usb/dwc2/Kconfig b/drivers/usb/dwc2/Kconfig
+> new file mode 100644
+> index 000000000..cd24d8cfa
+> --- /dev/null
+> +++ b/drivers/usb/dwc2/Kconfig
+> @@ -0,0 +1,14 @@
+> +config USB_DWC2
+> +	bool
+> +	depends on USB && HAS_DMA
+> +	select USB_OTGDEV
+> +	select OFDEVICE
+> +	help
+> +	  DesignWare Core USB2 OTG driver.
+> +
+> +config USB_DWC2_HOST
+> +	bool "DWC2 Host mode support"
+> +	depends on USB_HOST
+> +	select USB_DWC2
+> +	help
+> +	  Select this when you want to use DWC2 in host mode.
+> diff --git a/drivers/usb/dwc2/Makefile b/drivers/usb/dwc2/Makefile
+> new file mode 100644
+> index 000000000..f513fbec7
+> --- /dev/null
+> +++ b/drivers/usb/dwc2/Makefile
+> @@ -0,0 +1 @@
+> +obj-$(CONFIG_USB_DWC2_HOST)	+= dwc2.o core.o host.o rhub.o
+> diff --git a/drivers/usb/dwc2/core.c b/drivers/usb/dwc2/core.c
+> new file mode 100644
+> index 000000000..0046e955f
+> --- /dev/null
+> +++ b/drivers/usb/dwc2/core.c
+> @@ -0,0 +1,614 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +#include "dwc2.h"
+> +
+> +void dwc2_set_param_otg_cap(struct dwc2 *dwc2)
+> +{
+> +	u8 val;
+> +
+> +	switch (dwc2->hw_params.op_mode) {
+> +	case GHWCFG2_OP_MODE_HNP_SRP_CAPABLE:
+> +		val = DWC2_CAP_PARAM_HNP_SRP_CAPABLE;
+> +		break;
+> +	case GHWCFG2_OP_MODE_SRP_ONLY_CAPABLE:
+> +	case GHWCFG2_OP_MODE_SRP_CAPABLE_DEVICE:
+> +	case GHWCFG2_OP_MODE_SRP_CAPABLE_HOST:
+> +		val = DWC2_CAP_PARAM_SRP_ONLY_CAPABLE;
+> +		break;
+> +	default:
+> +		val = DWC2_CAP_PARAM_NO_HNP_SRP_CAPABLE;
+> +		break;
+> +	}
+> +
+> +	dwc2->params.otg_cap = val;
+> +}
+> +
+> +void dwc2_set_param_phy_type(struct dwc2 *dwc2)
+> +{
+> +	u8 val;
+> +
+> +	switch (dwc2->hw_params.hs_phy_type) {
+> +	case GHWCFG2_HS_PHY_TYPE_UTMI:
+> +	case GHWCFG2_HS_PHY_TYPE_UTMI_ULPI:
+> +		val = DWC2_PHY_TYPE_PARAM_UTMI;
+> +		break;
+> +	case GHWCFG2_HS_PHY_TYPE_ULPI:
+> +		val = DWC2_PHY_TYPE_PARAM_ULPI;
+> +		break;
+> +	case GHWCFG2_HS_PHY_TYPE_NOT_SUPPORTED:
+> +		val = DWC2_PHY_TYPE_PARAM_FS;
+> +		break;
+> +	}
+> +
+> +	dwc2->params.phy_type = val;
+> +}
+> +
+> +void dwc2_set_param_speed(struct dwc2 *dwc2)
+> +{
+> +	if (dwc2->params.phy_type == DWC2_PHY_TYPE_PARAM_FS)
+> +		dwc2->params.speed = DWC2_SPEED_PARAM_FULL;
+> +	else
+> +		dwc2->params.speed = DWC2_SPEED_PARAM_HIGH;
+> +}
+> +
+> +void dwc2_set_param_phy_utmi_width(struct dwc2 *dwc2)
+> +{
+> +	int val;
+> +
+> +	val = (dwc2->hw_params.utmi_phy_data_width ==
+> +	       GHWCFG4_UTMI_PHY_DATA_WIDTH_8) ? 8 : 16;
+> +
+> +	dwc2->params.phy_utmi_width = val;
+> +}
+> +
+> +/**
+> + * dwc2_set_default_params() - Set all core parameters to their
+> + * auto-detected default values.
+> + *
+> + * @dwc2: Programming view of the DWC2 controller
+> + *
+> + */
+> +void dwc2_set_default_params(struct dwc2 *dwc2)
+> +{
+> +	struct dwc2_hw_params *hw = &dwc2->hw_params;
+> +	struct dwc2_core_params *p = &dwc2->params;
+> +	bool dma_capable = !(hw->arch == GHWCFG2_SLAVE_ONLY_ARCH);
+> +
+> +	dwc2_set_param_otg_cap(dwc2);
+> +	dwc2_set_param_phy_type(dwc2);
+> +	dwc2_set_param_speed(dwc2);
+> +	dwc2_set_param_phy_utmi_width(dwc2);
+> +	p->phy_ulpi_ddr = false;
+> +	p->phy_ulpi_ext_vbus = false;
+> +
+> +	p->enable_dynamic_fifo = hw->enable_dynamic_fifo;
+> +	p->en_multiple_tx_fifo = hw->en_multiple_tx_fifo;
+> +	p->i2c_enable = hw->i2c_enable;
+> +	p->acg_enable = hw->acg_enable;
+> +	p->ulpi_fs_ls = false;
+> +	p->ts_dline = false;
+> +	p->reload_ctl = (hw->snpsid >= DWC2_CORE_REV_2_92a);
+> +	p->uframe_sched = true;
+> +	p->external_id_pin_ctl = false;
+> +	p->lpm = true;
+> +	p->lpm_clock_gating = true;
+> +	p->besl = true;
+> +	p->hird_threshold_en = true;
+> +	p->hird_threshold = 4;
+> +	p->ipg_isoc_en = false;
+> +	p->max_packet_count = hw->max_packet_count;
+> +	p->max_transfer_size = hw->max_transfer_size;
+> +	p->ahbcfg = GAHBCFG_HBSTLEN_INCR << GAHBCFG_HBSTLEN_SHIFT;
+> +
+> +	p->dma = dma_capable;
+> +	p->dma_desc = false;
+> +
+> +	if (dwc2->dr_mode == USB_DR_MODE_HOST ||
+> +	    dwc2->dr_mode == USB_DR_MODE_OTG) {
+> +		p->host_support_fs_ls_low_power = false;
+> +		p->host_ls_low_power_phy_clk = false;
+> +		p->host_channels = hw->host_channels;
+> +		p->host_rx_fifo_size = hw->rx_fifo_size;
+> +		p->host_nperio_tx_fifo_size = hw->host_nperio_tx_fifo_size;
+> +		p->host_perio_tx_fifo_size = hw->host_perio_tx_fifo_size;
+> +	}
+> +}
+> +
+> +int dwc2_core_snpsid(struct dwc2 *dwc2)
+> +{
+> +	struct dwc2_hw_params *hw = &dwc2->hw_params;
+> +
+> +	hw->snpsid = dwc2_readl(dwc2, GSNPSID);
+> +
+> +	/*
+> +	 * Attempt to ensure this device is really a DWC2 Controller.
+> +	 * Read and verify the GSNPSID register contents. The value should be
+> +	 * 0x4f54xxxx, 0x5531xxxx or 0x5532xxxx
+> +	 */
+> +	hw->snpsid = dwc2_readl(dwc2, GSNPSID);
+> +	if ((hw->snpsid & GSNPSID_ID_MASK) != DWC2_OTG_ID &&
+> +	    (hw->snpsid & GSNPSID_ID_MASK) != DWC2_FS_IOT_ID &&
+> +	    (hw->snpsid & GSNPSID_ID_MASK) != DWC2_HS_IOT_ID) {
+> +		dwc2_err(dwc2, "Bad value for GSNPSID: 0x%08x\n",
+> +			hw->snpsid);
+> +		return -ENODEV;
+> +	}
+> +
+> +	dwc2_dbg(dwc2, "Core Release: %1x.%1x%1x%1x (snpsid=%x)\n",
+> +		hw->snpsid >> 12 & 0xf, hw->snpsid >> 8 & 0xf,
+> +		hw->snpsid >> 4 & 0xf, hw->snpsid & 0xf, hw->snpsid);
+> +
+> +	return 0;
+> +}
+> +
+> +/**
+> + * During device initialization, read various hardware configuration
+> + * registers and interpret the contents.
+> + *
+> + * @dwc2: Programming view of the DWC2 controller
+> + *
+> + */
+> +void dwc2_get_hwparams(struct dwc2 *dwc2)
+> +{
+> +	struct dwc2_hw_params *hw = &dwc2->hw_params;
+> +	unsigned int width;
+> +	u32 hwcfg1, hwcfg2, hwcfg3, hwcfg4;
+> +	u32 grxfsiz;
+> +
+> +	hwcfg1 = dwc2_readl(dwc2, GHWCFG1);
+> +	hwcfg2 = dwc2_readl(dwc2, GHWCFG2);
+> +	hwcfg3 = dwc2_readl(dwc2, GHWCFG3);
+> +	hwcfg4 = dwc2_readl(dwc2, GHWCFG4);
+> +	grxfsiz = dwc2_readl(dwc2, GRXFSIZ);
+> +
+> +	/* hwcfg1 */
+> +	hw->dev_ep_dirs = hwcfg1;
+> +
+> +	/* hwcfg2 */
+> +	hw->op_mode = (hwcfg2 & GHWCFG2_OP_MODE_MASK) >>
+> +		      GHWCFG2_OP_MODE_SHIFT;
+> +	hw->arch = (hwcfg2 & GHWCFG2_ARCHITECTURE_MASK) >>
+> +		   GHWCFG2_ARCHITECTURE_SHIFT;
+> +	hw->enable_dynamic_fifo = !!(hwcfg2 & GHWCFG2_DYNAMIC_FIFO);
+> +	hw->host_channels = 1 + ((hwcfg2 & GHWCFG2_NUM_HOST_CHAN_MASK) >>
+> +				GHWCFG2_NUM_HOST_CHAN_SHIFT);
+> +	hw->hs_phy_type = (hwcfg2 & GHWCFG2_HS_PHY_TYPE_MASK) >>
+> +			  GHWCFG2_HS_PHY_TYPE_SHIFT;
+> +	hw->fs_phy_type = (hwcfg2 & GHWCFG2_FS_PHY_TYPE_MASK) >>
+> +			  GHWCFG2_FS_PHY_TYPE_SHIFT;
+> +	hw->num_dev_ep = (hwcfg2 & GHWCFG2_NUM_DEV_EP_MASK) >>
+> +			 GHWCFG2_NUM_DEV_EP_SHIFT;
+> +	hw->nperio_tx_q_depth =
+> +		(hwcfg2 & GHWCFG2_NONPERIO_TX_Q_DEPTH_MASK) >>
+> +		GHWCFG2_NONPERIO_TX_Q_DEPTH_SHIFT << 1;
+> +	hw->host_perio_tx_q_depth =
+> +		(hwcfg2 & GHWCFG2_HOST_PERIO_TX_Q_DEPTH_MASK) >>
+> +		GHWCFG2_HOST_PERIO_TX_Q_DEPTH_SHIFT << 1;
+> +	hw->dev_token_q_depth =
+> +		(hwcfg2 & GHWCFG2_DEV_TOKEN_Q_DEPTH_MASK) >>
+> +		GHWCFG2_DEV_TOKEN_Q_DEPTH_SHIFT;
+> +
+> +	/* hwcfg3 */
+> +	width = (hwcfg3 & GHWCFG3_XFER_SIZE_CNTR_WIDTH_MASK) >>
+> +		GHWCFG3_XFER_SIZE_CNTR_WIDTH_SHIFT;
+> +	hw->max_transfer_size = (1 << (width + 11)) - 1;
+> +	width = (hwcfg3 & GHWCFG3_PACKET_SIZE_CNTR_WIDTH_MASK) >>
+> +		GHWCFG3_PACKET_SIZE_CNTR_WIDTH_SHIFT;
+> +	hw->max_packet_count = (1 << (width + 4)) - 1;
+> +	hw->i2c_enable = !!(hwcfg3 & GHWCFG3_I2C);
+> +	hw->total_fifo_size = (hwcfg3 & GHWCFG3_DFIFO_DEPTH_MASK) >>
+> +			      GHWCFG3_DFIFO_DEPTH_SHIFT;
+> +	hw->lpm_mode = !!(hwcfg3 & GHWCFG3_OTG_LPM_EN);
+> +
+> +	/* hwcfg4 */
+> +	hw->en_multiple_tx_fifo = !!(hwcfg4 & GHWCFG4_DED_FIFO_EN);
+> +	hw->num_dev_perio_in_ep = (hwcfg4 & GHWCFG4_NUM_DEV_PERIO_IN_EP_MASK) >>
+> +				  GHWCFG4_NUM_DEV_PERIO_IN_EP_SHIFT;
+> +	hw->num_dev_in_eps = (hwcfg4 & GHWCFG4_NUM_IN_EPS_MASK) >>
+> +			     GHWCFG4_NUM_IN_EPS_SHIFT;
+> +	hw->dma_desc_enable = !!(hwcfg4 & GHWCFG4_DESC_DMA);
+> +	hw->power_optimized = !!(hwcfg4 & GHWCFG4_POWER_OPTIMIZ);
+> +	hw->hibernation = !!(hwcfg4 & GHWCFG4_HIBER);
+> +	hw->utmi_phy_data_width = (hwcfg4 & GHWCFG4_UTMI_PHY_DATA_WIDTH_MASK) >>
+> +				  GHWCFG4_UTMI_PHY_DATA_WIDTH_SHIFT;
+> +	hw->acg_enable = !!(hwcfg4 & GHWCFG4_ACG_SUPPORTED);
+> +	hw->ipg_isoc_en = !!(hwcfg4 & GHWCFG4_IPG_ISOC_SUPPORTED);
+> +
+> +	/* fifo sizes */
+> +	hw->rx_fifo_size = (grxfsiz & GRXFSIZ_DEPTH_MASK) >>
+> +				GRXFSIZ_DEPTH_SHIFT;
+> +}
+> +
+> +/*
+> + * Initializes the FSLSPClkSel field of the HCFG register depending on the
+> + * PHY type
+> + */
+> +void dwc2_init_fs_ls_pclk_sel(struct dwc2 *dwc2)
+> +{
+> +	u32 hcfg, val;
+> +
+> +	if ((dwc2->hw_params.hs_phy_type == GHWCFG2_HS_PHY_TYPE_ULPI &&
+> +	     dwc2->hw_params.fs_phy_type == GHWCFG2_FS_PHY_TYPE_DEDICATED &&
+> +	     dwc2->params.ulpi_fs_ls) ||
+> +	    dwc2->params.phy_type == DWC2_PHY_TYPE_PARAM_FS) {
+> +		/* Full speed PHY */
+> +		val = HCFG_FSLSPCLKSEL_48_MHZ;
+> +	} else {
+> +		/* High speed PHY running at full speed or high speed */
+> +		val = HCFG_FSLSPCLKSEL_30_60_MHZ;
+> +	}
+> +
+> +	dwc2_dbg(dwc2, "Initializing HCFG.FSLSPClkSel to %08x\n", val);
+> +	hcfg = dwc2_readl(dwc2, HCFG);
+> +	hcfg &= ~HCFG_FSLSPCLKSEL_MASK;
+> +	hcfg |= val << HCFG_FSLSPCLKSEL_SHIFT;
+> +	dwc2_writel(dwc2, hcfg, HCFG);
+> +}
+> +
+> +void dwc2_flush_all_fifo(struct dwc2 *dwc2)
+> +{
+> +	uint32_t greset;
+> +
+> +	/* Wait for AHB master IDLE state */
+> +	if (dwc2_wait_bit_set(dwc2, GRSTCTL, GRSTCTL_AHBIDLE, 10000)) {
+> +		dwc2_warn(dwc2, "%s: Timeout waiting for AHB Idle\n", __func__);
+> +		return;
+> +	}
+> +
+> +	greset = GRSTCTL_TXFFLSH | GRSTCTL_RXFFLSH;
+> +	/* TXFNUM of 0x10 is to flush all TX FIFO */
+> +	dwc2_writel(dwc2, greset | GRSTCTL_TXFNUM(0x10), GRSTCTL);
+> +
+> +	/* Wait for TxFIFO and RxFIFO flush done */
+> +	if (dwc2_wait_bit_clear(dwc2, GRSTCTL, greset, 10000))
+> +		dwc2_warn(dwc2, "Timeout flushing fifos (GRSTCTL=%08x)\n",
+> +			 dwc2_readl(dwc2, GRSTCTL));
+> +
+> +	/* Wait for 3 PHY Clocks */
+> +	udelay(1);
+> +}
+> +
+> +static int dwc2_fs_phy_init(struct dwc2 *dwc2, bool select_phy)
+> +{
+> +	u32 usbcfg, ggpio, i2cctl;
+> +	int retval = 0;
+> +
+> +	/*
+> +	 * core_init() is now called on every switch so only call the
+> +	 * following for the first time through
+> +	 */
+> +	if (select_phy) {
+> +		dwc2_dbg(dwc2, "FS PHY selected\n");
+> +
+> +		usbcfg = dwc2_readl(dwc2, GUSBCFG);
+> +		if (!(usbcfg & GUSBCFG_PHYSEL)) {
+> +			usbcfg |= GUSBCFG_PHYSEL;
+> +			dwc2_writel(dwc2, usbcfg, GUSBCFG);
+> +
+> +			/* Reset after a PHY select */
+> +			retval = dwc2_core_reset(dwc2);
+> +
+> +			if (retval) {
+> +				dwc2_err(dwc2,
+> +					"%s: Reset failed, aborting", __func__);
+> +				return retval;
+> +			}
+> +		}
+> +
+> +		if (dwc2->params.activate_stm_fs_transceiver) {
+> +			ggpio = dwc2_readl(dwc2, GGPIO);
+> +			if (!(ggpio & GGPIO_STM32_OTG_GCCFG_PWRDWN)) {
+> +				dwc2_dbg(dwc2, "Activating transceiver\n");
+> +				/*
+> +				 * STM32F4x9 uses the GGPIO register as general
+> +				 * core configuration register.
+> +				 */
+> +				ggpio |= GGPIO_STM32_OTG_GCCFG_PWRDWN;
+> +				dwc2_writel(dwc2, ggpio, GGPIO);
+> +			}
+> +		}
+> +	}
+> +
+> +	if (dwc2->params.i2c_enable) {
+> +		dwc2_dbg(dwc2, "FS PHY enabling I2C\n");
+> +
+> +		/* Program GUSBCFG.OtgUtmiFsSel to I2C */
+> +		usbcfg = dwc2_readl(dwc2, GUSBCFG);
+> +		usbcfg |= GUSBCFG_OTG_UTMI_FS_SEL;
+> +		dwc2_writel(dwc2, usbcfg, GUSBCFG);
+> +
+> +		/* Program GI2CCTL.I2CEn */
+> +		i2cctl = dwc2_readl(dwc2, GI2CCTL);
+> +		i2cctl &= ~GI2CCTL_I2CDEVADDR_MASK;
+> +		i2cctl |= 1 << GI2CCTL_I2CDEVADDR_SHIFT;
+> +		i2cctl &= ~GI2CCTL_I2CEN;
+> +		dwc2_writel(dwc2, i2cctl, GI2CCTL);
+> +		i2cctl |= GI2CCTL_I2CEN;
+> +		dwc2_writel(dwc2, i2cctl, GI2CCTL);
+> +	}
+> +
+> +	return retval;
+> +}
+> +
+> +static int dwc2_hs_phy_init(struct dwc2 *dwc2, bool select_phy)
+> +{
+> +	u32 usbcfg, usbcfg_old;
+> +	int retval = 0;
+> +
+> +	if (!select_phy)
+> +		return 0;
+> +
+> +	usbcfg = dwc2_readl(dwc2, GUSBCFG);
+> +	usbcfg_old = usbcfg;
+> +
+> +	/*
+> +	 * HS PHY parameters. These parameters are preserved during soft reset
+> +	 * so only program the first time. Do a soft reset immediately after
+> +	 * setting phyif.
+> +	 */
+> +	switch (dwc2->params.phy_type) {
+> +	case DWC2_PHY_TYPE_PARAM_ULPI:
+> +		/* ULPI interface */
+> +		dwc2_dbg(dwc2, "HS ULPI PHY selected\n");
+> +		usbcfg |= GUSBCFG_ULPI_UTMI_SEL;
+> +		usbcfg &= ~(GUSBCFG_PHYIF16 | GUSBCFG_DDRSEL | GUSBCFG_PHYSEL);
+> +		if (dwc2->params.phy_ulpi_ddr)
+> +			usbcfg |= GUSBCFG_DDRSEL;
+> +
+> +		/* Set external VBUS indicator as needed. */
+> +		if (dwc2->params.phy_ulpi_ext_vbus_ind) {
+> +			dwc2_dbg(dwc2, "Use external VBUS indicator\n");
+> +			usbcfg |= GUSBCFG_ULPI_EXT_VBUS_IND;
+> +			usbcfg &= ~GUSBCFG_INDICATORCOMPLEMENT;
+> +			usbcfg &= ~GUSBCFG_INDICATORPASSTHROUGH;
+> +
+> +			if (dwc2->params.phy_ulpi_ext_vbus_ind_complement)
+> +				usbcfg |= GUSBCFG_INDICATORCOMPLEMENT;
+> +			if (dwc2->params.phy_ulpi_ext_vbus_ind_passthrough)
+> +				usbcfg |= GUSBCFG_INDICATORPASSTHROUGH;
+> +		}
+> +		break;
+> +	case DWC2_PHY_TYPE_PARAM_UTMI:
+> +		/* UTMI+ interface */
+> +		dwc2_dbg(dwc2, "HS UTMI+ PHY selected\n");
+> +		usbcfg &= ~(GUSBCFG_ULPI_UTMI_SEL | GUSBCFG_PHYIF16);
+> +		if (dwc2->params.phy_utmi_width == 16)
+> +			usbcfg |= GUSBCFG_PHYIF16;
+> +		break;
+> +	default:
+> +		dwc2_err(dwc2, "FS PHY selected at HS!\n");
+> +		break;
+> +	}
+> +
+> +	if (usbcfg != usbcfg_old) {
+> +		dwc2_writel(dwc2, usbcfg, GUSBCFG);
+> +
+> +		/* Reset after setting the PHY parameters */
+> +		retval = dwc2_core_reset(dwc2);
+> +		if (retval) {
+> +			dwc2_err(dwc2,
+> +				"%s: Reset failed, aborting", __func__);
+> +			return retval;
+> +		}
+> +	}
+> +
+> +	return retval;
+> +}
+> +
+> +int dwc2_phy_init(struct dwc2 *dwc2, bool select_phy)
+> +{
+> +	u32 usbcfg;
+> +	int retval = 0;
+> +
+> +	if ((dwc2->params.speed == DWC2_SPEED_PARAM_FULL ||
+> +	     dwc2->params.speed == DWC2_SPEED_PARAM_LOW) &&
+> +	    dwc2->params.phy_type == DWC2_PHY_TYPE_PARAM_FS) {
+> +		/* If FS/LS mode with FS/LS PHY */
+> +		retval = dwc2_fs_phy_init(dwc2, select_phy);
+> +		if (retval)
+> +			return retval;
+> +	} else {
+> +		/* High speed PHY */
+> +		retval = dwc2_hs_phy_init(dwc2, select_phy);
+> +		if (retval)
+> +			return retval;
+> +	}
+> +
+> +	usbcfg = dwc2_readl(dwc2, GUSBCFG);
+> +	usbcfg &= ~GUSBCFG_ULPI_FS_LS;
+> +	usbcfg &= ~GUSBCFG_ULPI_CLK_SUSP_M;
+> +	if (dwc2->hw_params.hs_phy_type == GHWCFG2_HS_PHY_TYPE_ULPI &&
+> +	    dwc2->hw_params.fs_phy_type == GHWCFG2_FS_PHY_TYPE_DEDICATED &&
+> +	    dwc2->params.ulpi_fs_ls) {
+> +		dwc2_dbg(dwc2, "Setting ULPI FSLS\n");
+> +		usbcfg |= GUSBCFG_ULPI_FS_LS;
+> +		usbcfg |= GUSBCFG_ULPI_CLK_SUSP_M;
+> +	}
+> +	dwc2_writel(dwc2, usbcfg, GUSBCFG);
+> +
+> +	return retval;
+> +}
+> +
+> +int dwc2_gahbcfg_init(struct dwc2 *dwc2)
+> +{
+> +	u32 ahbcfg = dwc2_readl(dwc2, GAHBCFG);
+> +
+> +	switch (dwc2->hw_params.arch) {
+> +	case GHWCFG2_EXT_DMA_ARCH:
+> +		dwc2_err(dwc2, "External DMA Mode not supported\n");
+> +		return -EINVAL;
+> +
+> +	case GHWCFG2_INT_DMA_ARCH:
+> +		dwc2_dbg(dwc2, "Internal DMA Mode\n");
+> +		if (dwc2->params.ahbcfg != -1) {
+> +			ahbcfg &= GAHBCFG_CTRL_MASK;
+> +			ahbcfg |= dwc2->params.ahbcfg &
+> +				  ~GAHBCFG_CTRL_MASK;
+> +		}
+> +		break;
+> +
+> +	case GHWCFG2_SLAVE_ONLY_ARCH:
+> +	default:
+> +		dwc2_dbg(dwc2, "Slave Only Mode\n");
+> +		break;
+> +	}
+> +
+> +	if (dwc2->params.dma)
+> +		ahbcfg |= GAHBCFG_DMA_EN;
+> +	else
+> +		dwc2->params.dma_desc = false;
+> +
+> +	dwc2_writel(dwc2, ahbcfg, GAHBCFG);
+> +
+> +	return 0;
+> +}
+> +
+> +void dwc2_gusbcfg_init(struct dwc2 *dwc2)
+> +{
+> +	u32 usbcfg;
+> +
+> +	usbcfg = dwc2_readl(dwc2, GUSBCFG);
+> +	usbcfg &= ~(GUSBCFG_HNPCAP | GUSBCFG_SRPCAP);
+> +
+> +	switch (dwc2->hw_params.op_mode) {
+> +	case GHWCFG2_OP_MODE_HNP_SRP_CAPABLE:
+> +		if (dwc2->params.otg_cap ==
+> +				DWC2_CAP_PARAM_HNP_SRP_CAPABLE)
+> +			usbcfg |= GUSBCFG_HNPCAP;
+> +
+> +	case GHWCFG2_OP_MODE_SRP_ONLY_CAPABLE:
+> +	case GHWCFG2_OP_MODE_SRP_CAPABLE_DEVICE:
+> +	case GHWCFG2_OP_MODE_SRP_CAPABLE_HOST:
+> +		if (dwc2->params.otg_cap !=
+> +				DWC2_CAP_PARAM_NO_HNP_SRP_CAPABLE)
+> +			usbcfg |= GUSBCFG_SRPCAP;
+> +		break;
+> +
+> +	case GHWCFG2_OP_MODE_NO_HNP_SRP_CAPABLE:
+> +	case GHWCFG2_OP_MODE_NO_SRP_CAPABLE_DEVICE:
+> +	case GHWCFG2_OP_MODE_NO_SRP_CAPABLE_HOST:
+> +	default:
+> +		break;
+> +	}
+> +
+> +	dwc2_writel(dwc2, usbcfg, GUSBCFG);
+> +}
+> +
+> +/*
+> + * Do core a soft reset of the core.  Be careful with this because it
+> + * resets all the internal state machines of the core.
+> + */
+> +int dwc2_core_reset(struct dwc2 *dwc2)
+> +{
+> +	bool wait_for_host_mode = false;
+> +	uint32_t greset;
+> +	int ret;
+> +
+> +	dwc2_dbg(dwc2, "%s(%p)\n", __func__, dwc2);
+> +
+> +	/* Wait for AHB master IDLE state. */
+> +	ret = dwc2_wait_bit_set(dwc2, GRSTCTL, GRSTCTL_AHBIDLE, 10000);
+> +	if (ret) {
+> +		pr_info("%s: Timeout! Waiting for AHB master IDLE state\n",
+> +			__func__);
+> +		return ret;
+> +	}
+> +
+> +	/*
+> +	 * If the current mode is host, either due to the force mode
+> +	 * bit being set (which persists after core reset) or the
+> +	 * connector id pin, a core soft reset will temporarily reset
+> +	 * the mode to device. A delay from the IDDIG debounce filter
+> +	 * will occur before going back to host mode.
+> +	 *
+> +	 * Determine whether we will go back into host mode after a
+> +	 * reset and account for this delay after the reset.
+> +	 */
+> +	{
+> +	u32 gotgctl = dwc2_readl(dwc2, GOTGCTL);
+> +	u32 gusbcfg = dwc2_readl(dwc2, GUSBCFG);
+> +
+> +	if (!(gotgctl & GOTGCTL_CONID_B) ||
+> +	    (gusbcfg & GUSBCFG_FORCEHOSTMODE)) {
+> +		dwc2_dbg(dwc2, "HOST MODE\n");
+> +		wait_for_host_mode = true;
+> +	}
+> +	}
+> +	/* Core Soft Reset */
+> +	greset = dwc2_readl(dwc2, GRSTCTL);
+> +	greset |= GRSTCTL_CSFTRST;
+> +	dwc2_writel(dwc2, greset, GRSTCTL);
+> +
+> +	ret = dwc2_wait_bit_clear(dwc2, GRSTCTL, GRSTCTL_CSFTRST, 10000);
+> +	if (ret) {
+> +		pr_info("%s: Timeout! Waiting for Core Soft Reset\n", __func__);
+> +		return ret;
+> +	}
+> +
+> +	/*
+> +	 * Wait for core to come out of reset.
+> +	 * NOTE: This long sleep is _very_ important, otherwise the core will
+> +	 *       not stay in host mode after a connector ID change!
+> +	 */
+> +	mdelay(100);
+> +
+> +	return 0;
+> +}
+> +
+> +/*
+> + * This function initializes the DWC2 controller registers and
+> + * prepares the core for device mode or host mode operation.
+> + *
+> + * @param regs Programming view of the DWC2 controller
+> + */
+> +void dwc2_core_init(struct dwc2 *dwc2)
+> +{
+> +	uint32_t otgctl = 0;
+> +	uint32_t usbcfg = 0;
+> +	int retval;
+> +
+> +	dwc2_dbg(dwc2, "%s(%p)\n", __func__, dwc2);
+> +
+> +	/* Common Initialization */
+> +	usbcfg = dwc2_readl(dwc2, GUSBCFG);
+> +
+> +	/* Set ULPI External VBUS bit if needed */
+> +	usbcfg &= ~GUSBCFG_ULPI_EXT_VBUS_DRV;
+> +	if (dwc2->params.phy_ulpi_ext_vbus)
+> +		usbcfg |= GUSBCFG_ULPI_EXT_VBUS_DRV;
+> +
+> +	/* Set external TS Dline pulsing bit if needed */
+> +	usbcfg &= ~GUSBCFG_TERMSELDLPULSE;
+> +	if (dwc2->params.ts_dline)
+> +		usbcfg |= GUSBCFG_TERMSELDLPULSE;
+> +
+> +	dwc2_writel(dwc2, usbcfg, GUSBCFG);
+> +
+> +	/* Reset the Controller */
+> +	dwc2_core_reset(dwc2);
+> +
+> +	/*
+> +	 * This programming sequence needs to happen in FS mode before
+> +	 * any other programming occurs
+> +	 */
+> +	retval = dwc2_phy_init(dwc2, true);
+> +	if (retval)
+> +		return;
+> +
+> +	/* Program the GAHBCFG Register */
+> +	retval = dwc2_gahbcfg_init(dwc2);
+> +	if (retval)
+> +		return;
+> +
+> +	/* Program the GUSBCFG register */
+> +	dwc2_gusbcfg_init(dwc2);
+> +
+> +	/* Program the GOTGCTL register */
+> +	otgctl = dwc2_readl(dwc2, GOTGCTL);
+> +	otgctl &= ~GOTGCTL_OTGVER;
+> +	dwc2_writel(dwc2, otgctl, GOTGCTL);
+> +
+> +	if (dwc2_is_host_mode(dwc2))
+> +		dwc2_dbg(dwc2, "Host Mode\n");
+> +	else
+> +		dwc2_dbg(dwc2, "Device Mode\n");
+> +}
+> diff --git a/drivers/usb/dwc2/core.h b/drivers/usb/dwc2/core.h
+> new file mode 100644
+> index 000000000..94f992cb1
+> --- /dev/null
+> +++ b/drivers/usb/dwc2/core.h
+> @@ -0,0 +1,514 @@
+> +/* SPDX-License-Identifier: GPL-2.0+ */
+> +/* Maximum number of Endpoints/HostChannels */
+> +#define DWC2_MAX_EPS_CHANNELS	16
+> +
+> +/**
+> + * struct dwc2_core_params - Parameters for configuring the core
+> + *
+> + * @otg_cap:            Specifies the OTG capabilities.
+> + *                       0 - HNP and SRP capable
+> + *                       1 - SRP Only capable
+> + *                       2 - No HNP/SRP capable (always available)
+> + *                      Defaults to best available option (0, 1, then 2)
+> + * @host_dma:           Specifies whether to use slave or DMA mode for accessing
+> + *                      the data FIFOs. The driver will automatically detect the
+> + *                      value for this parameter if none is specified.
+> + *                       0 - Slave (always available)
+> + *                       1 - DMA (default, if available)
+> + * @dma_desc_enable:    When DMA mode is enabled, specifies whether to use
+> + *                      address DMA mode or descriptor DMA mode for accessing
+> + *                      the data FIFOs. The driver will automatically detect the
+> + *                      value for this if none is specified.
+> + *                       0 - Address DMA
+> + *                       1 - Descriptor DMA (default, if available)
+> + * @dma_desc_fs_enable: When DMA mode is enabled, specifies whether to use
+> + *                      address DMA mode or descriptor DMA mode for accessing
+> + *                      the data FIFOs in Full Speed mode only. The driver
+> + *                      will automatically detect the value for this if none is
+> + *                      specified.
+> + *                       0 - Address DMA
+> + *                       1 - Descriptor DMA in FS (default, if available)
+> + * @speed:              Specifies the maximum speed of operation in host and
+> + *                      device mode. The actual speed depends on the speed of
+> + *                      the attached device and the value of phy_type.
+> + *                       0 - High Speed
+> + *                           (default when phy_type is UTMI+ or ULPI)
+> + *                       1 - Full Speed
+> + *                           (default when phy_type is Full Speed)
+> + * @enable_dynamic_fifo: 0 - Use coreConsultant-specified FIFO size parameters
+> + *                       1 - Allow dynamic FIFO sizing (default, if available)
+> + * @en_multiple_tx_fifo: Specifies whether dedicated per-endpoint transmit FIFOs
+> + *                      are enabled for non-periodic IN endpoints in device
+> + *                      mode.
+> + * @host_rx_fifo_size:  Number of 4-byte words in the Rx FIFO in host mode when
+> + *                      dynamic FIFO sizing is enabled
+> + *                       16 to 32768
+> + *                      Actual maximum value is autodetected and also
+> + *                      the default.
+> + * @host_nperio_tx_fifo_size: Number of 4-byte words in the non-periodic Tx FIFO
+> + *                      in host mode when dynamic FIFO sizing is enabled
+> + *                       16 to 32768
+> + *                      Actual maximum value is autodetected and also
+> + *                      the default.
+> + * @host_perio_tx_fifo_size: Number of 4-byte words in the periodic Tx FIFO in
+> + *                      host mode when dynamic FIFO sizing is enabled
+> + *                       16 to 32768
+> + *                      Actual maximum value is autodetected and also
+> + *                      the default.
+> + * @max_transfer_size:  The maximum transfer size supported, in bytes
+> + *                       2047 to 65,535
+> + *                      Actual maximum value is autodetected and also
+> + *                      the default.
+> + * @max_packet_count:   The maximum number of packets in a transfer
+> + *                       15 to 511
+> + *                      Actual maximum value is autodetected and also
+> + *                      the default.
+> + * @host_channels:      The number of host channel registers to use
+> + *                       1 to 16
+> + *                      Actual maximum value is autodetected and also
+> + *                      the default.
+> + * @phy_type:           Specifies the type of PHY interface to use. By default,
+> + *                      the driver will automatically detect the phy_type.
+> + *                       0 - Full Speed Phy
+> + *                       1 - UTMI+ Phy
+> + *                       2 - ULPI Phy
+> + *                      Defaults to best available option (2, 1, then 0)
+> + * @phy_utmi_width:     Specifies the UTMI+ Data Width (in bits). This parameter
+> + *                      is applicable for a phy_type of UTMI+ or ULPI. (For a
+> + *                      ULPI phy_type, this parameter indicates the data width
+> + *                      between the MAC and the ULPI Wrapper.) Also, this
+> + *                      parameter is applicable only if the OTG_HSPHY_WIDTH cC
+> + *                      parameter was set to "8 and 16 bits", meaning that the
+> + *                      core has been configured to work at either data path
+> + *                      width.
+> + *                       8 or 16 (default 16 if available)
+> + * @phy_ulpi_ddr:       Specifies whether the ULPI operates at double or single
+> + *                      data rate. This parameter is only applicable if phy_type
+> + *                      is ULPI.
+> + *                       0 - single data rate ULPI interface with 8 bit wide
+> + *                           data bus (default)
+> + *                       1 - double data rate ULPI interface with 4 bit wide
+> + *                           data bus
+> + * @phy_ulpi_ext_vbus:  For a ULPI phy, specifies whether to use the internal or
+> + *                      external supply to drive the VBus
+> + *                       0 - Internal supply (default)
+> + *                       1 - External supply
+> + * @i2c_enable:         Specifies whether to use the I2Cinterface for a full
+> + *                      speed PHY. This parameter is only applicable if phy_type
+> + *                      is FS.
+> + *                       0 - No (default)
+> + *                       1 - Yes
+> + * @ipg_isoc_en:        Indicates the IPG supports is enabled or disabled.
+> + *                       0 - Disable (default)
+> + *                       1 - Enable
+> + * @acg_enable:		For enabling Active Clock Gating in the controller
+> + *                       0 - No
+> + *                       1 - Yes
+> + * @ulpi_fs_ls:         Make ULPI phy operate in FS/LS mode only
+> + *                       0 - No (default)
+> + *                       1 - Yes
+> + * @host_support_fs_ls_low_power: Specifies whether low power mode is supported
+> + *                      when attached to a Full Speed or Low Speed device in
+> + *                      host mode.
+> + *                       0 - Don't support low power mode (default)
+> + *                       1 - Support low power mode
+> + * @host_ls_low_power_phy_clk: Specifies the PHY clock rate in low power mode
+> + *                      when connected to a Low Speed device in host
+> + *                      mode. This parameter is applicable only if
+> + *                      host_support_fs_ls_low_power is enabled.
+> + *                       0 - 48 MHz
+> + *                           (default when phy_type is UTMI+ or ULPI)
+> + *                       1 - 6 MHz
+> + *                           (default when phy_type is Full Speed)
+> + * @oc_disable:		Flag to disable overcurrent condition.
+> + *			0 - Allow overcurrent condition to get detected
+> + *			1 - Disable overcurrent condtion to get detected
+> + * @ts_dline:           Enable Term Select Dline pulsing
+> + *                       0 - No (default)
+> + *                       1 - Yes
+> + * @reload_ctl:         Allow dynamic reloading of HFIR register during runtime
+> + *                       0 - No (default for core < 2.92a)
+> + *                       1 - Yes (default for core >= 2.92a)
+> + * @ahbcfg:             This field allows the default value of the GAHBCFG
+> + *                      register to be overridden
+> + *                       -1         - GAHBCFG value will be set to 0x06
+> + *                                    (INCR, default)
+> + *                       all others - GAHBCFG value will be overridden with
+> + *                                    this value
+> + *                      Not all bits can be controlled like this, the
+> + *                      bits defined by GAHBCFG_CTRL_MASK are controlled
+> + *                      by the driver and are ignored in this
+> + *                      configuration value.
+> + * @uframe_sched:       True to enable the microframe scheduler
+> + * @external_id_pin_ctl: Specifies whether ID pin is handled externally.
+> + *                      Disable CONIDSTSCHNG controller interrupt in such
+> + *                      case.
+> + *                      0 - No (default)
+> + *                      1 - Yes
+> + * @power_down:         Specifies whether the controller support power_down.
+> + *			If power_down is enabled, the controller will enter
+> + *			power_down in both peripheral and host mode when
+> + *			needed.
+> + *			0 - No (default)
+> + *			1 - Partial power down
+> + *			2 - Hibernation
+> + * @lpm:		Enable LPM support.
+> + *			0 - No
+> + *			1 - Yes
+> + * @lpm_clock_gating:		Enable core PHY clock gating.
+> + *			0 - No
+> + *			1 - Yes
+> + * @besl:		Enable LPM Errata support.
+> + *			0 - No
+> + *			1 - Yes
+> + * @hird_threshold_en:	HIRD or HIRD Threshold enable.
+> + *			0 - No
+> + *			1 - Yes
+> + * @hird_threshold:	Value of BESL or HIRD Threshold.
+> + * @activate_stm_fs_transceiver: Activate internal transceiver using GGPIO
+> + *			register.
+> + *			0 - Deactivate the transceiver (default)
+> + *			1 - Activate the transceiver
+> + * @g_dma:              Enables gadget dma usage (default: autodetect).
+> + * @g_dma_desc:         Enables gadget descriptor DMA (default: autodetect).
+> + * @g_rx_fifo_size:	The periodic rx fifo size for the device, in
+> + *			DWORDS from 16-32768 (default: 2048 if
+> + *			possible, otherwise autodetect).
+> + * @g_np_tx_fifo_size:	The non-periodic tx fifo size for the device in
+> + *			DWORDS from 16-32768 (default: 1024 if
+> + *			possible, otherwise autodetect).
+> + * @g_tx_fifo_size:	An array of TX fifo sizes in dedicated fifo
+> + *			mode. Each value corresponds to one EP
+> + *			starting from EP1 (max 15 values). Sizes are
+> + *			in DWORDS with possible values from from
+> + *			16-32768 (default: 256, 256, 256, 256, 768,
+> + *			768, 768, 768, 0, 0, 0, 0, 0, 0, 0).
+> + * @change_speed_quirk: Change speed configuration to DWC2_SPEED_PARAM_FULL
+> + *                      while full&low speed device connect. And change speed
+> + *                      back to DWC2_SPEED_PARAM_HIGH while device is gone.
+> + *			0 - No (default)
+> + *			1 - Yes
+> + *
+> + * The following parameters may be specified when starting the module. These
+> + * parameters define how the DWC_otg controller should be configured. A
+> + * value of -1 (or any other out of range value) for any parameter means
+> + * to read the value from hardware (if possible) or use the builtin
+> + * default described above.
+> + */
+> +struct dwc2_core_params {
+> +	u8 otg_cap;
+> +#define DWC2_CAP_PARAM_HNP_SRP_CAPABLE		0
+> +#define DWC2_CAP_PARAM_SRP_ONLY_CAPABLE		1
+> +#define DWC2_CAP_PARAM_NO_HNP_SRP_CAPABLE	2
+> +
+> +	u8 phy_type;
+> +#define DWC2_PHY_TYPE_PARAM_FS		0
+> +#define DWC2_PHY_TYPE_PARAM_UTMI	1
+> +#define DWC2_PHY_TYPE_PARAM_ULPI	2
+> +
+> +	u8 speed;
+> +#define DWC2_SPEED_PARAM_HIGH	0
+> +#define DWC2_SPEED_PARAM_FULL	1
+> +#define DWC2_SPEED_PARAM_LOW	2
+> +
+> +	u8 phy_utmi_width;
+> +	bool phy_ulpi_ddr;
+> +	bool phy_ulpi_ext_vbus;
+> +	bool phy_ulpi_ext_vbus_ind;
+> +	bool phy_ulpi_ext_vbus_ind_complement;
+> +	bool phy_ulpi_ext_vbus_ind_passthrough;
+> +
+> +	bool enable_dynamic_fifo;
+> +	bool en_multiple_tx_fifo;
+> +	bool i2c_enable;
+> +	bool acg_enable;
+> +	bool ulpi_fs_ls;
+> +	bool ts_dline;
+> +	bool reload_ctl;
+> +	bool uframe_sched;
+> +	bool external_id_pin_ctl;
+> +
+> +	int power_down;
+> +#define DWC2_POWER_DOWN_PARAM_NONE		0
+> +#define DWC2_POWER_DOWN_PARAM_PARTIAL		1
+> +#define DWC2_POWER_DOWN_PARAM_HIBERNATION	2
+> +
+> +	bool lpm;
+> +	bool lpm_clock_gating;
+> +	bool besl;
+> +	bool hird_threshold_en;
+> +	u8 hird_threshold;
+> +	bool activate_stm_fs_transceiver;
+> +	bool ipg_isoc_en;
+> +	u16 max_packet_count;
+> +	u32 max_transfer_size;
+> +	u32 ahbcfg;
+> +
+> +	bool dma;
+> +	bool dma_desc;
+> +
+> +	/* Host parameters */
+> +	bool host_support_fs_ls_low_power;
+> +	bool host_ls_low_power_phy_clk;
+> +
+> +	u8 host_channels;
+> +	u16 host_rx_fifo_size;
+> +	u16 host_nperio_tx_fifo_size;
+> +	u16 host_perio_tx_fifo_size;
+> +
+> +	/* Gadget parameters */
+> +	u32 g_rx_fifo_size;
+> +	u32 g_np_tx_fifo_size;
+> +	u32 g_tx_fifo_size[DWC2_MAX_EPS_CHANNELS];
+> +
+> +	bool change_speed_quirk;
+> +};
+> +
+> +/**
+> + * struct dwc2_hw_params - Autodetected parameters.
+> + *
+> + * These parameters are the various parameters read from hardware
+> + * registers during initialization. They typically contain the best
+> + * supported or maximum value that can be configured in the
+> + * corresponding dwc2_core_params value.
+> + *
+> + * The values that are not in dwc2_core_params are documented below.
+> + *
+> + * @op_mode:             Mode of Operation
+> + *                       0 - HNP- and SRP-Capable OTG (Host & Device)
+> + *                       1 - SRP-Capable OTG (Host & Device)
+> + *                       2 - Non-HNP and Non-SRP Capable OTG (Host & Device)
+> + *                       3 - SRP-Capable Device
+> + *                       4 - Non-OTG Device
+> + *                       5 - SRP-Capable Host
+> + *                       6 - Non-OTG Host
+> + * @arch:                Architecture
+> + *                       0 - Slave only
+> + *                       1 - External DMA
+> + *                       2 - Internal DMA
+> + * @ipg_isoc_en:        This feature indicates that the controller supports
+> + *                      the worst-case scenario of Rx followed by Rx
+> + *                      Interpacket Gap (IPG) (32 bitTimes) as per the utmi
+> + *                      specification for any token following ISOC OUT token.
+> + *                       0 - Don't support
+> + *                       1 - Support
+> + * @power_optimized:    Are power optimizations enabled?
+> + * @num_dev_ep:         Number of device endpoints available
+> + * @num_dev_in_eps:     Number of device IN endpoints available
+> + * @num_dev_perio_in_ep: Number of device periodic IN endpoints
+> + *                       available
+> + * @dev_token_q_depth:  Device Mode IN Token Sequence Learning Queue
+> + *                      Depth
+> + *                       0 to 30
+> + * @host_perio_tx_q_depth:
+> + *                      Host Mode Periodic Request Queue Depth
+> + *                       2, 4 or 8
+> + * @nperio_tx_q_depth:
+> + *                      Non-Periodic Request Queue Depth
+> + *                       2, 4 or 8
+> + * @hs_phy_type:         High-speed PHY interface type
+> + *                       0 - High-speed interface not supported
+> + *                       1 - UTMI+
+> + *                       2 - ULPI
+> + *                       3 - UTMI+ and ULPI
+> + * @fs_phy_type:         Full-speed PHY interface type
+> + *                       0 - Full speed interface not supported
+> + *                       1 - Dedicated full speed interface
+> + *                       2 - FS pins shared with UTMI+ pins
+> + *                       3 - FS pins shared with ULPI pins
+> + * @total_fifo_size:    Total internal RAM for FIFOs (bytes)
+> + * @hibernation:	Is hibernation enabled?
+> + * @utmi_phy_data_width: UTMI+ PHY data width
+> + *                       0 - 8 bits
+> + *                       1 - 16 bits
+> + *                       2 - 8 or 16 bits
+> + * @snpsid:             Value from SNPSID register
+> + * @dev_ep_dirs:        Direction of device endpoints (GHWCFG1)
+> + * @g_tx_fifo_size:	Power-on values of TxFIFO sizes
+> + * @dma_desc_enable:    When DMA mode is enabled, specifies whether to use
+> + *                      address DMA mode or descriptor DMA mode for accessing
+> + *                      the data FIFOs. The driver will automatically detect the
+> + *                      value for this if none is specified.
+> + *                       0 - Address DMA
+> + *                       1 - Descriptor DMA (default, if available)
+> + * @enable_dynamic_fifo: 0 - Use coreConsultant-specified FIFO size parameters
+> + *                       1 - Allow dynamic FIFO sizing (default, if available)
+> + * @en_multiple_tx_fifo: Specifies whether dedicated per-endpoint transmit FIFOs
+> + *                      are enabled for non-periodic IN endpoints in device
+> + *                      mode.
+> + * @host_nperio_tx_fifo_size: Number of 4-byte words in the non-periodic Tx FIFO
+> + *                      in host mode when dynamic FIFO sizing is enabled
+> + *                       16 to 32768
+> + *                      Actual maximum value is autodetected and also
+> + *                      the default.
+> + * @host_perio_tx_fifo_size: Number of 4-byte words in the periodic Tx FIFO in
+> + *                      host mode when dynamic FIFO sizing is enabled
+> + *                       16 to 32768
+> + *                      Actual maximum value is autodetected and also
+> + *                      the default.
+> + * @max_transfer_size:  The maximum transfer size supported, in bytes
+> + *                       2047 to 65,535
+> + *                      Actual maximum value is autodetected and also
+> + *                      the default.
+> + * @max_packet_count:   The maximum number of packets in a transfer
+> + *                       15 to 511
+> + *                      Actual maximum value is autodetected and also
+> + *                      the default.
+> + * @host_channels:      The number of host channel registers to use
+> + *                       1 to 16
+> + *                      Actual maximum value is autodetected and also
+> + *                      the default.
+> + * @dev_nperio_tx_fifo_size: Number of 4-byte words in the non-periodic Tx FIFO
+> + *			     in device mode when dynamic FIFO sizing is enabled
+> + *			     16 to 32768
+> + *			     Actual maximum value is autodetected and also
+> + *			     the default.
+> + * @i2c_enable:         Specifies whether to use the I2Cinterface for a full
+> + *                      speed PHY. This parameter is only applicable if phy_type
+> + *                      is FS.
+> + *                       0 - No (default)
+> + *                       1 - Yes
+> + * @acg_enable:		For enabling Active Clock Gating in the controller
+> + *                       0 - Disable
+> + *                       1 - Enable
+> + * @lpm_mode:		For enabling Link Power Management in the controller
+> + *                       0 - Disable
+> + *                       1 - Enable
+> + * @rx_fifo_size:	Number of 4-byte words in the  Rx FIFO when dynamic
+> + *			FIFO sizing is enabled 16 to 32768
+> + *			Actual maximum value is autodetected and also
+> + *			the default.
+> + */
+> +struct dwc2_hw_params {
+> +	unsigned op_mode:3;
+> +	unsigned arch:2;
+> +	unsigned dma_desc_enable:1;
+> +	unsigned enable_dynamic_fifo:1;
+> +	unsigned en_multiple_tx_fifo:1;
+> +	unsigned rx_fifo_size:16;
+> +	unsigned host_nperio_tx_fifo_size:16;
+> +	unsigned dev_nperio_tx_fifo_size:16;
+> +	unsigned host_perio_tx_fifo_size:16;
+> +	unsigned nperio_tx_q_depth:3;
+> +	unsigned host_perio_tx_q_depth:3;
+> +	unsigned dev_token_q_depth:5;
+> +	unsigned max_transfer_size:26;
+> +	unsigned max_packet_count:11;
+> +	unsigned host_channels:5;
+> +	unsigned hs_phy_type:2;
+> +	unsigned fs_phy_type:2;
+> +	unsigned i2c_enable:1;
+> +	unsigned acg_enable:1;
+> +	unsigned num_dev_ep:4;
+> +	unsigned num_dev_in_eps:4;
+> +	unsigned num_dev_perio_in_ep:4;
+> +	unsigned total_fifo_size:16;
+> +	unsigned power_optimized:1;
+> +	unsigned hibernation:1;
+> +	unsigned utmi_phy_data_width:2;
+> +	unsigned lpm_mode:1;
+> +	unsigned ipg_isoc_en:1;
+> +	u32 snpsid;
+> +	u32 dev_ep_dirs;
+> +	u32 g_tx_fifo_size[DWC2_MAX_EPS_CHANNELS];
+> +};
+> +
+> +#define MAX_DEVICE			16
+> +#define MAX_ENDPOINT DWC2_MAX_EPS_CHANNELS
+> +
+> +struct dwc2 {
+> +	struct device_d *dev;
+> +	void __iomem *regs;
+> +	enum usb_dr_mode dr_mode;
+> +	struct dwc2_hw_params hw_params;
+> +	struct dwc2_core_params params;
+> +
+> +#ifdef CONFIG_USB_DWC2_HOST
+> +	struct usb_host host;
+> +	u8 in_data_toggle[MAX_DEVICE][MAX_ENDPOINT];
+> +	u8 out_data_toggle[MAX_DEVICE][MAX_ENDPOINT];
+> +	int root_hub_devnum;
+> +#endif
+> +};
+> +
+> +#define host_to_dwc2(ptr) container_of(ptr, struct dwc2, host)
+> +#define gadget_to_dwc2(ptr) container_of(ptr, struct dwc2, gadget)
+> +
+> +#define dwc2_err(d, arg...) dev_err((d)->dev, ## arg)
+> +#define dwc2_warn(d, arg...) dev_err((d)->dev, ## arg)
+> +#define dwc2_info(d, arg...) dev_info((d)->dev, ## arg)
+> +#define dwc2_dbg(d, arg...) dev_dbg((d)->dev, ## arg)
+> +#define dwc2_vdbg(d, arg...) dev_vdbg((d)->dev, ## arg)
+> +
+> +static inline u32 dwc2_readl(struct dwc2 *dwc2, u32 offset)
+> +{
+> +	u32 val;
+> +
+> +	val = readl(dwc2->regs + offset);
+> +
+> +	return val;
+> +}
+> +
+> +static inline void dwc2_writel(struct dwc2 *dwc2, u32 value, u32 offset)
+> +{
+> +	writel(value, dwc2->regs + offset);
+> +}
+> +
+> +/**
+> + * dwc2_wait_bit_set - Waits for bit to be set.
+> + * @dwc2: Programming view of DWC2 controller.
+> + * @offset: Register's offset where bit/bits must be set.
+> + * @mask: Mask of the bit/bits which must be set.
+> + * @timeout: Timeout to wait.
+> + *
+> + * Return: 0 if bit/bits are set or -ETIMEDOUT in case of timeout.
+> + */
+> +static inline int dwc2_wait_bit_set(struct dwc2 *dwc2, u32 offset, u32 mask,
+> +			    u32 timeout)
+> +{
+> +	u32 i;
+> +
+> +	for (i = 0; i < timeout; i++) {
+> +		if (dwc2_readl(dwc2, offset) & mask)
+> +			return 0;
+> +		udelay(1);
+> +	}
+> +
+> +	return -ETIMEDOUT;
+> +}
+> +
+> +/**
+> + * dwc2_wait_bit_clear - Waits for bit to be clear.
+> + * @dwc2: Programming view of DWC2 controller.
+> + * @offset: Register's offset where bit/bits must be set.
+> + * @mask: Mask of the bit/bits which must be set.
+> + * @timeout: Timeout to wait.
+> + *
+> + * Return: 0 if bit/bits are set or -ETIMEDOUT in case of timeout.
+> + */
+> +static inline int dwc2_wait_bit_clear(struct dwc2 *dwc2, u32 offset, u32 mask,
+> +			    u32 timeout)
+> +{
+> +	u32 i;
+> +
+> +	for (i = 0; i < timeout; i++) {
+> +		if (!(dwc2_readl(dwc2, offset) & mask))
+> +			return 0;
+> +		udelay(1);
+> +	}
+> +
+> +	return -ETIMEDOUT;
+> +}
+> +
+> +/*
+> + * Returns the mode of operation, host or device
+> + */
+> +static inline int dwc2_is_host_mode(struct dwc2 *dwc2)
+> +{
+> +	return (dwc2_readl(dwc2, GINTSTS) & GINTSTS_CURMODE_HOST) != 0;
+> +}
+> +
+> +static inline int dwc2_is_device_mode(struct dwc2 *dwc2)
+> +{
+> +	return (dwc2_readl(dwc2, GINTSTS) & GINTSTS_CURMODE_HOST) == 0;
+> +}
+> diff --git a/drivers/usb/dwc2/dwc2.c b/drivers/usb/dwc2/dwc2.c
+> new file mode 100644
+> index 000000000..52a790468
+> --- /dev/null
+> +++ b/drivers/usb/dwc2/dwc2.c
+> @@ -0,0 +1,90 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/*
+> + * Copyright (C) 2012 Oleksandr Tymoshenko <gonzo@freebsd.org>
+> + * Copyright (C) 2014 Marek Vasut <marex@denx.de>
+> + *
+> + * Copied from u-Boot
+> + */
+> +#include <common.h>
+> +#include <of.h>
+> +#include <dma.h>
+> +#include <init.h>
+> +#include <errno.h>
+> +#include <driver.h>
+> +#include <linux/clk.h>
+> +
+> +#include "dwc2.h"
+> +
+> +static void dwc2_uninit_common(struct dwc2 *dwc2)
+> +{
+> +	uint32_t hprt0;
+> +
+> +	hprt0 = dwc2_readl(dwc2, HPRT0);
+> +
+> +	/* Put everything in reset. */
+> +	hprt0 &= ~(HPRT0_ENA | HPRT0_ENACHG | HPRT0_CONNDET | HPRT0_OVRCURRCHG);
+> +	hprt0 |= HPRT0_RST;
+> +
+> +	dwc2_writel(dwc2, hprt0, HPRT0);
+> +}
+> +
+> +static int dwc2_probe(struct device_d *dev)
+> +{
+> +	struct resource *iores;
+> +	struct dwc2 *dwc2;
+> +	int ret;
+> +
+> +	dwc2 = xzalloc(sizeof(struct dwc2));
+> +	dev->priv = dwc2;
+> +	dwc2->dev = dev;
+> +
+> +	iores = dev_request_mem_resource(dev, 0);
+> +	if (IS_ERR(iores))
+> +		return PTR_ERR(iores);
+> +	dwc2->regs = IOMEM(iores->start);
+> +
+> +	ret = dwc2_core_snpsid(dwc2);
+> +	if (ret)
+> +		goto error;
+> +
+> +	/*
+> +	 * Reset before dwc2_get_hwparams() then it could get power-on real
+> +	 * reset value form registers.
+> +	 */
+> +	ret = dwc2_core_reset(dwc2);
+> +	if (ret)
+> +		goto error;
+> +
+> +	/* Detect config values from hardware */
+> +	dwc2_get_hwparams(dwc2);
+> +
+> +	dwc2_set_default_params(dwc2);
+> +
+> +	dma_set_mask(dev, DMA_BIT_MASK(32));
+> +
+> +	ret = dwc2_register_host(dwc2);
+> +error:
+> +	return ret;
+> +}
+> +
+> +static void dwc2_remove(struct device_d *dev)
+> +{
+> +	struct dwc2 *dwc2 = dev->priv;
+> +
+> +	dwc2_uninit_common(dwc2);
+> +}
+> +
+> +static const struct of_device_id dwc2_platform_dt_ids[] = {
+> +	{ .compatible = "brcm,bcm2835-usb", },
+> +	{ .compatible = "brcm,bcm2708-usb", },
+> +	{ .compatible = "snps,dwc2", },
+> +	{ }
+> +};
+> +
+> +static struct driver_d dwc2_driver = {
+> +	.name	= "dwc2",
+> +	.probe	= dwc2_probe,
+> +	.remove = dwc2_remove,
+> +	.of_compatible = DRV_OF_COMPAT(dwc2_platform_dt_ids),
+> +};
+> +device_platform_driver(dwc2_driver);
+> diff --git a/drivers/usb/dwc2/dwc2.h b/drivers/usb/dwc2/dwc2.h
+> new file mode 100644
+> index 000000000..35c0d1415
+> --- /dev/null
+> +++ b/drivers/usb/dwc2/dwc2.h
+> @@ -0,0 +1,37 @@
+> +/* SPDX-License-Identifier: GPL-2.0+ */
+> +#include <usb/usb.h>
+> +#include <usb/usb_defs.h>
+> +#include <usb/gadget.h>
+> +
+> +#include "regs.h"
+> +#include "core.h"
+> +
+> +/* Core functions */
+> +void dwc2_set_param_otg_cap(struct dwc2 *dwc2);
+> +void dwc2_set_param_phy_type(struct dwc2 *dwc2);
+> +void dwc2_set_param_speed(struct dwc2 *dwc2);
+> +void dwc2_set_param_phy_utmi_width(struct dwc2 *dwc2);
+> +void dwc2_set_default_params(struct dwc2 *dwc2);
+> +int dwc2_core_snpsid(struct dwc2 *dwc2);
+> +void dwc2_get_hwparams(struct dwc2 *dwc2);
+> +
+> +void dwc2_init_fs_ls_pclk_sel(struct dwc2 *dwc2);
+> +void dwc2_flush_all_fifo(struct dwc2 *dwc2);
+> +
+> +int dwc2_phy_init(struct dwc2 *dwc2, bool select_phy);
+> +int dwc2_gahbcfg_init(struct dwc2 *dwc2);
+> +void dwc2_gusbcfg_init(struct dwc2 *dwc2);
+> +
+> +int dwc2_core_reset(struct dwc2 *dwc2);
+> +void dwc2_core_init(struct dwc2 *dwc2);
+> +
+> +/* Host functions */
+> +#ifdef CONFIG_USB_DWC2_HOST
+> +int dwc2_submit_rh_msg(struct dwc2 *dwc2, struct usb_device *dev,
+> +		unsigned long pipe, void *buf, int len,
+> +		struct devrequest *setup);
+> +int dwc2_register_host(struct dwc2 *dwc2);
+> +#else
+> +static inline int dwc2_register_host(struct dwc2 *dwc2) { return 0; }
+> +#endif
+> +
+> diff --git a/drivers/usb/dwc2/host.c b/drivers/usb/dwc2/host.c
+> new file mode 100644
+> index 000000000..058e2e2bc
+> --- /dev/null
+> +++ b/drivers/usb/dwc2/host.c
+> @@ -0,0 +1,634 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +#include <dma.h>
+> +#include "dwc2.h"
+> +
+> +#define to_dwc2 host_to_dwc2
+> +
+> +/* Use only HC channel 0. */
+> +#define DWC2_HC_CHANNEL			0
+> +
+> +static int dwc2_eptype[] = {
+> +	DXEPCTL_EPTYPE_ISO,
+> +	DXEPCTL_EPTYPE_INTERRUPT,
+> +	DXEPCTL_EPTYPE_CONTROL,
+> +	DXEPCTL_EPTYPE_BULK,
+> +};
+> +
+> +static int dwc2_do_split(struct dwc2 *dwc2, struct usb_device *dev)
+> +{
+> +	uint32_t hprt0 = dwc2_readl(dwc2, HPRT0);
+> +	uint32_t prtspd = (hprt0 & HPRT0_SPD_MASK) >> HPRT0_SPD_SHIFT;
+> +
+> +	return prtspd == HPRT0_SPD_HIGH_SPEED && dev->speed != USB_SPEED_HIGH;
+> +}
+> +
+> +static void dwc2_host_hub_info(struct dwc2 *dwc2, struct usb_device *dev,
+> +			       uint8_t *hub_addr, uint8_t *hub_port)
+> +{
+> +	*hub_addr = dev->devnum;
+> +	*hub_port = dev->portnr;
+> +
+> +	for (; dev->parent; dev = dev->parent) {
+> +		if (dev->parent->descriptor->bDeviceClass == USB_CLASS_HUB) {
+> +			*hub_addr = dev->parent->devnum;
+> +			*hub_port = dev->parent->portnr;
+> +			break;
+> +		}
+> +	}
+> +}
+> +
+> +static void dwc2_hc_init_split(struct dwc2 *dwc2, struct usb_device *dev,
+> +			       uint8_t hc)
+> +{
+> +	uint8_t hub_addr, hub_port;
+> +	uint32_t hcsplt = 0;
+> +
+> +	dwc2_host_hub_info(dwc2, dev, &hub_addr, &hub_port);
+> +
+> +	hcsplt = HCSPLT_SPLTENA;
+> +	hcsplt |= hub_addr << HCSPLT_HUBADDR_SHIFT;
+> +	hcsplt |= hub_port << HCSPLT_PRTADDR_SHIFT;
+> +
+> +	/* Program the HCSPLIT register for SPLITs */
+> +	dwc2_writel(dwc2, hcsplt, HCSPLT(hc));
+> +}
+> +
+> +static void dwc2_hc_enable_ints(struct dwc2 *dwc2, uint8_t hc)
+> +{
+> +	uint32_t intmsk;
+> +	uint32_t hcintmsk = HCINTMSK_CHHLTD;
+> +
+> +	dwc2_writel(dwc2, hcintmsk, HCINTMSK(hc));
+> +
+> +	/* Enable the top level host channel interrupt */
+> +	intmsk = dwc2_readl(dwc2, HAINTMSK);
+> +	intmsk |= 1 << hc;
+> +	dwc2_writel(dwc2, intmsk, HAINTMSK);
+> +
+> +	/* Make sure host channel interrupts are enabled */
+> +	intmsk = dwc2_readl(dwc2, GINTMSK);
+> +	intmsk |= GINTSTS_HCHINT;
+> +	dwc2_writel(dwc2, intmsk, GINTMSK);
+> +}
+> +
+> +/**
+> + * Prepares a host channel for transferring packets to/from a specific
+> + * endpoint. The HCCHARn register is set up with the characteristics specified
+> + * in _hc. Host channel interrupts that may need to be serviced while this
+> + * transfer is in progress are enabled.
+> + *
+> + * @param regs Programming view of DWC2 controller
+> + * @param hc Information needed to initialize the host channel
+> + */
+> +static void dwc2_hc_init(struct dwc2 *dwc2, uint8_t hc,
+> +		struct usb_device *dev, uint8_t dev_addr, uint8_t ep_num,
+> +		uint8_t ep_is_in, uint32_t ep_type, uint16_t max_packet)
+> +{
+> +	uint32_t hcchar = (dev_addr << HCCHAR_DEVADDR_SHIFT) |
+> +			  (ep_num << HCCHAR_EPNUM_SHIFT) |
+> +			  (ep_is_in ? HCCHAR_EPDIR : 0) |
+> +			  ep_type |
+> +			  (max_packet << HCCHAR_MPS_SHIFT);
+> +
+> +	if (dev->speed == USB_SPEED_LOW)
+> +		hcchar |= HCCHAR_LSPDDEV;
+> +
+> +	/* Clear old interrupt conditions for this dwc2 channel */
+> +	dwc2_writel(dwc2, ~HCINTMSK_RESERVED14_31, HCINT(hc));
+> +
+> +	/* Enable channel interrupts required for this transfer */
+> +	dwc2_hc_enable_ints(dwc2, hc);
+> +
+> +	/*
+> +	 * Program the HCCHARn register with the endpoint characteristics
+> +	 * for the current transfer.
+> +	 */
+> +	dwc2_writel(dwc2, hcchar, HCCHAR(hc));
+> +
+> +	/* Program the HCSPLIT register, default to no SPLIT */
+> +	dwc2_writel(dwc2, 0, HCSPLT(hc));
+> +}
+> +
+> +static int wait_for_chhltd(struct dwc2 *dwc2, u8 hc, uint32_t *sub, u8 *tgl)
+> +{
+> +	int ret;
+> +	uint32_t hcint, hctsiz, hcchar;
+> +
+> +	ret = dwc2_wait_bit_set(dwc2, HCINT(hc), HCINTMSK_CHHLTD, 10000);
+> +	if (ret) {
+> +		hcchar = dwc2_readl(dwc2, HCCHAR(hc));
+> +		dwc2_writel(dwc2, hcchar | HCCHAR_CHDIS, HCCHAR(hc));
+> +		dwc2_wait_bit_set(dwc2, HCINT(hc), HCINTMSK_CHHLTD, 10000);
+> +		return ret;
+> +	}
+> +
+> +	hcint = dwc2_readl(dwc2, HCINT(hc));
+> +
+> +	if (hcint & HCINTMSK_AHBERR)
+> +		dwc2_err(dwc2, "%s: AHB error during internal DMA access\n",
+> +			   __func__);
+> +
+> +	if (hcint & HCINTMSK_XFERCOMPL) {
+> +		hctsiz = dwc2_readl(dwc2, HCTSIZ(hc));
+> +		*sub = (hctsiz & TSIZ_XFERSIZE_MASK) >> TSIZ_XFERSIZE_SHIFT;
+> +		*tgl = (hctsiz & TSIZ_SC_MC_PID_MASK) >> TSIZ_SC_MC_PID_SHIFT;
+> +
+> +		dwc2_dbg(dwc2, "%s: HCINT=%08x sub=%u toggle=%d\n", __func__,
+> +			 hcint, *sub, *tgl);
+> +		return 0;
+> +	}
+> +
+> +	if (hcint & (HCINTMSK_NAK | HCINTMSK_FRMOVRUN))
+> +		return -EAGAIN;
+> +
+> +	dwc2_dbg(dwc2, "%s: Unknown channel status: (HCINT=%08x)\n", __func__,
+> +		 hcint);
+> +	return -EINVAL;
+> +}
+> +
+> +static int transfer_chunk(struct dwc2 *dwc2, u8 hc,
+> +			  u8 *pid, int in, void *buffer, int num_packets,
+> +			  int xfer_len, int *actual_len, int odd_frame)
+> +{
+> +	uint32_t hctsiz, hcchar, sub;
+> +	dma_addr_t dma_addr;
+> +	int ret = 0;
+> +
+> +	dma_addr = dma_map_single(dwc2->dev, buffer, xfer_len,
+> +				  in ? DMA_FROM_DEVICE : DMA_TO_DEVICE);
+> +
+> +	dwc2_dbg(dwc2, "chunk: pid=%d xfer_len=%u pkts=%u dma_addr=%llx\n",
+> +			*pid, xfer_len, num_packets, dma_addr);
+
+Use %da for printing dma_addr, otherwise on 32-bit builds with #define DEBUG,
+garbage would be read here.
+
+> +
+> +	dwc2_writel(dwc2, dma_addr, HCDMA(hc));
+> +
+> +	hctsiz = (xfer_len << TSIZ_XFERSIZE_SHIFT)
+> +		| (1 << TSIZ_PKTCNT_SHIFT)
+> +		| (*pid << TSIZ_SC_MC_PID_SHIFT);
+> +
+> +	dwc2_writel(dwc2, hctsiz, HCTSIZ(hc));
+> +
+> +	/* Clear old interrupt conditions for this dwc2 channel. */
+> +	dwc2_writel(dwc2, 0x3fff, HCINT(hc));
+> +
+> +	/* Set dwc2 channel enable after all other setup is complete. */
+> +	hcchar = dwc2_readl(dwc2, HCCHAR(hc));
+> +	hcchar &= ~(HCCHAR_MULTICNT_MASK | HCCHAR_CHDIS);
+> +	hcchar |= (1 << HCCHAR_MULTICNT_SHIFT) | HCCHAR_CHENA;
+> +	if (odd_frame)
+> +		hcchar |= HCCHAR_ODDFRM;
+> +	else
+> +		hcchar &= ~HCCHAR_ODDFRM;
+> +	dwc2_writel(dwc2, hcchar, HCCHAR(hc));
+> +
+> +	ret = wait_for_chhltd(dwc2, hc, &sub, pid);
+> +	if (ret < 0)
+> +		goto exit;
+> +
+> +	if (in)
+> +		xfer_len -= sub;
+> +	*actual_len = xfer_len;
+> +
+> +exit:
+> +	dma_unmap_single(dwc2->dev, dma_addr, xfer_len,
+> +				  in ? DMA_FROM_DEVICE : DMA_TO_DEVICE);
+> +
+> +	return ret;
+> +}
+> +
+> +static int dwc2_submit_packet(struct dwc2 *dwc2, struct usb_device *dev, u8 hc,
+> +			      unsigned long pipe, u8 *pid, int in, void *buf,
+> +			      int len)
+> +{
+> +	int devnum = usb_pipedevice(pipe);
+> +	int ep = usb_pipeendpoint(pipe);
+> +	int mps = usb_maxpacket(dev, pipe);
+> +	int eptype = dwc2_eptype[usb_pipetype(pipe)];
+> +	int do_split = dwc2_do_split(dwc2, dev);
+> +	int complete_split = 0;
+> +	int done = 0;
+> +	int ret = 0;
+> +	uint32_t xfer_len;
+> +	uint32_t num_packets;
+> +	int stop_transfer = 0;
+> +	uint32_t max_xfer_len;
+> +	int ssplit_frame_num = 0;
+> +
+> +	max_xfer_len = dwc2->params.max_packet_count * mps;
+> +
+> +	if (max_xfer_len > dwc2->params.max_transfer_size)
+> +		max_xfer_len = dwc2->params.max_transfer_size;
+> +
+> +	/* Make sure that max_xfer_len is a multiple of max packet size. */
+> +	num_packets = max_xfer_len / mps;
+> +	max_xfer_len = num_packets * mps;
+> +
+> +	/* Initialize channel */
+> +	dwc2_hc_init(dwc2, hc, dev, devnum, ep, in, eptype, mps);
+> +
+> +	/* Check if the target is a FS/LS device behind a HS hub */
+> +	if (do_split) {
+> +		dwc2_hc_init_split(dwc2, dev, hc);
+> +		num_packets = 1;
+> +		max_xfer_len = mps;
+> +	}
+> +	do {
+> +		int actual_len = 0;
+> +		uint32_t hcint, hcsplt;
+> +		int odd_frame = 0;
+> +
+> +		xfer_len = len - done;
+> +
+> +		if (xfer_len > max_xfer_len)
+> +			xfer_len = max_xfer_len;
+> +		else if (xfer_len > mps)
+> +			num_packets = (xfer_len + mps - 1) / mps;
+> +		else
+> +			num_packets = 1;
+> +
+> +		if (complete_split || do_split) {
+> +			hcsplt = dwc2_readl(dwc2, HCSPLT(hc));
+> +			if (complete_split)
+> +				hcsplt |= HCSPLT_COMPSPLT;
+> +			else if (do_split)
+> +				hcsplt &= ~HCSPLT_COMPSPLT;
+> +			dwc2_writel(dwc2, hcsplt, HCSPLT(hc));
+> +		}
+> +
+> +		if (eptype == DXEPCTL_EPTYPE_INTERRUPT) {
+> +			int uframe_num = dwc2_readl(dwc2, HFNUM);
+> +
+> +			if (!(uframe_num & 0x1))
+> +				odd_frame = 1;
+> +		}
+> +
+> +		ret = transfer_chunk(dwc2, hc, pid,
+> +				     in, (char *)buf + done, num_packets,
+> +				     xfer_len, &actual_len, odd_frame);
+> +
+> +		hcint = dwc2_readl(dwc2, HCINT(hc));
+> +		if (complete_split) {
+> +			stop_transfer = 0;
+> +			if (hcint & HCINTMSK_NYET) {
+> +				int frame_num = HFNUM_MAX_FRNUM &
+> +					dwc2_readl(dwc2, HFNUM);
+> +
+> +				ret = 0;
+> +				if (((frame_num - ssplit_frame_num) &
+> +				    HFNUM_MAX_FRNUM) > 4)
+> +					ret = -EAGAIN;
+> +			} else {
+> +				complete_split = 0;
+> +			}
+> +		} else if (do_split) {
+> +			if (hcint & HCINTMSK_ACK) {
+> +				ssplit_frame_num = HFNUM_MAX_FRNUM &
+> +					dwc2_readl(dwc2, HFNUM);
+> +				ret = 0;
+> +				complete_split = 1;
+> +			}
+> +		}
+> +
+> +		if (ret)
+> +			break;
+> +
+> +		if (actual_len < xfer_len)
+> +			stop_transfer = 1;
+> +
+> +		done += actual_len;
+> +
+> +	/* Transactions are done when when either all data is transferred or
+> +	 * there is a short transfer. In case of a SPLIT make sure the CSPLIT
+> +	 * is executed.
+> +	 */
+> +	} while (((done < len) && !stop_transfer) || complete_split);
+> +
+> +	dwc2_writel(dwc2, 0, HCINTMSK(hc));
+> +	dwc2_writel(dwc2, 0xFFFFFFFF, HCINT(hc));
+> +
+> +	dev->status = 0;
+> +	dev->act_len = done;
+> +
+> +	return ret;
+> +}
+> +
+> +static int dwc2_submit_control_msg(struct usb_device *udev,
+> +				   unsigned long pipe, void *buffer, int len,
+> +				   struct devrequest *setup, int timeout)
+> +{
+> +	struct usb_host *host = udev->host;
+> +	struct dwc2 *dwc2 = to_dwc2(host);
+> +	int devnum = usb_pipedevice(pipe);
+> +	int ret, act_len;
+> +	u8 pid;
+> +	u8 hc = DWC2_HC_CHANNEL;
+> +	/* For CONTROL endpoint pid should start with DATA1 */
+> +	int status_direction;
+> +
+> +	if (devnum == dwc2->root_hub_devnum) {
+> +		udev->status = 0;
+> +		udev->speed = USB_SPEED_HIGH;
+> +		return dwc2_submit_rh_msg(dwc2, udev, pipe, buffer, len, setup);
+> +	}
+> +
+> +	/* SETUP stage */
+> +	pid = TSIZ_SC_MC_PID_SETUP;
+> +	do {
+> +		ret = dwc2_submit_packet(dwc2, udev, hc, pipe, &pid,
+> +					 0, setup, 8);
+> +	} while (ret == -EAGAIN);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* DATA stage */
+> +	act_len = 0;
+> +	if (buffer) {
+> +		pid = TSIZ_SC_MC_PID_DATA1;
+> +		do {
+> +			ret = dwc2_submit_packet(dwc2, udev, hc, pipe, &pid,
+> +						 usb_pipein(pipe), buffer, len);
+> +			act_len += udev->act_len;
+> +			buffer += udev->act_len;
+> +			len -= udev->act_len;
+> +		} while (ret == -EAGAIN);
+> +		if (ret)
+> +			return ret;
+> +		status_direction = usb_pipeout(pipe);
+> +	} else {
+> +		/* No-data CONTROL always ends with an IN transaction */
+> +		status_direction = 1;
+> +	}
+> +
+> +	/* STATUS stage */
+> +	pid = TSIZ_SC_MC_PID_DATA1;
+> +	do {
+> +		ret = dwc2_submit_packet(dwc2, udev, hc, pipe, &pid,
+> +					 status_direction, NULL, 0);
+> +	} while (ret == -EAGAIN);
+> +	if (ret)
+> +		return ret;
+> +
+> +	udev->act_len = act_len;
+> +
+> +	return 0;
+> +}
+> +
+> +static int dwc2_submit_bulk_msg(struct usb_device *udev, unsigned long pipe,
+> +				void *buffer, int len, int timeout)
+> +{
+> +	struct usb_host *host = udev->host;
+> +	struct dwc2 *dwc2 = to_dwc2(host);
+> +	int devnum = usb_pipedevice(pipe);
+> +	int ep = usb_pipeendpoint(pipe);
+> +	int in = usb_pipein(pipe);
+> +	u8 *pid;
+> +	u8 hc = DWC2_HC_CHANNEL;
+> +
+> +	if ((devnum >= MAX_DEVICE) || (devnum == dwc2->root_hub_devnum)) {
+> +		udev->status = 0;
+> +		return -EINVAL;
+> +	}
+> +
+> +	if (in)
+> +		pid = &dwc2->in_data_toggle[devnum][ep];
+> +	else
+> +		pid = &dwc2->out_data_toggle[devnum][ep];
+> +
+> +	return dwc2_submit_packet(dwc2, udev, hc, pipe, pid, in, buffer, len);
+> +}
+> +
+> +static int dwc2_submit_int_msg(struct usb_device *udev, unsigned long pipe,
+> +			       void *buffer, int len, int interval)
+> +{
+> +	struct usb_host *host = udev->host;
+> +	struct dwc2 *dwc2 = to_dwc2(host);
+> +	int devnum = usb_pipedevice(pipe);
+> +	int ep = usb_pipeendpoint(pipe);
+> +	int in = usb_pipein(pipe);
+> +	u8 *pid;
+> +	u8 hc = DWC2_HC_CHANNEL;
+> +	uint64_t start;
+> +	int ret;
+> +
+> +	if ((devnum >= MAX_DEVICE) || (devnum == dwc2->root_hub_devnum)) {
+> +		udev->status = 0;
+> +		return -EINVAL;
+> +	}
+> +
+> +	if (usb_pipein(pipe))
+> +		pid = &dwc2->in_data_toggle[devnum][ep];
+> +	else
+> +		pid = &dwc2->out_data_toggle[devnum][ep];
+> +
+> +	start = get_time_ns();
+> +
+> +	while (1) {
+> +		ret = dwc2_submit_packet(dwc2, udev, hc, pipe, pid, in,
+> +					 buffer, len);
+> +		if (ret != -EAGAIN)
+> +			return ret;
+> +		if (is_timeout(start, USB_CNTL_TIMEOUT * MSECOND)) {
+> +			dwc2_err(dwc2, "Timeout on interrupt endpoint\n");
+> +			return -ETIMEDOUT;
+> +		}
+> +	}
+> +}
+> +
+> +/*
+> + * This function initializes the DWC2 controller registers for
+> + * host mode.
+> + *
+> + * This function flushes the Tx and Rx FIFOs and it flushes any entries in the
+> + * request queues. Host channels are reset to ensure that they are ready for
+> + * performing transfers.
+> + *
+> + * @param dev USB Device (NULL if driver model is not being used)
+> + * @param regs Programming view of DWC2 controller
+> + *
+> + */
+> +static void dwc2_core_host_init(struct device_d *dev,
+> +				   struct dwc2 *dwc2)
+> +{
+> +	uint32_t nptxfifosize = 0;
+> +	uint32_t ptxfifosize = 0;
+> +	uint32_t hcchar, hcfg, hprt0, hotgctl, usbcfg;
+> +	int i, ret, num_channels;
+> +
+> +	dwc2_dbg(dwc2, "%s(%p)\n", __func__, dwc2);
+> +
+> +	/* Set HS/FS Timeout Calibration to 7 (max available value).
+> +	 * The number of PHY clocks that the application programs in
+> +	 * this field is added to the high/full speed interpacket timeout
+> +	 * duration in the core to account for any additional delays
+> +	 * introduced by the PHY. This can be required, because the delay
+> +	 * introduced by the PHY in generating the linestate condition
+> +	 * can vary from one PHY to another.
+> +	 */
+> +	usbcfg = dwc2_readl(dwc2, GUSBCFG);
+> +	usbcfg |= GUSBCFG_TOUTCAL(7);
+> +	dwc2_writel(dwc2, usbcfg, GUSBCFG);
+> +
+> +	/* Restart the Phy Clock */
+> +	dwc2_writel(dwc2, 0, PCGCTL);
+> +
+> +	/* Initialize Host Configuration Register */
+> +	dwc2_init_fs_ls_pclk_sel(dwc2);
+> +	if (dwc2->params.speed == DWC2_SPEED_PARAM_FULL ||
+> +	    dwc2->params.speed == DWC2_SPEED_PARAM_LOW) {
+> +		hcfg = dwc2_readl(dwc2, HCFG);
+> +		hcfg |= HCFG_FSLSSUPP;
+> +		dwc2_writel(dwc2, hcfg, HCFG);
+> +	}
+> +
+> +	if (dwc2->params.dma_desc) {
+> +		u32 op_mode = dwc2->hw_params.op_mode;
+> +
+> +		if (dwc2->hw_params.snpsid < DWC2_CORE_REV_2_90a ||
+> +		    !dwc2->hw_params.dma_desc_enable ||
+> +		    op_mode == GHWCFG2_OP_MODE_SRP_CAPABLE_DEVICE ||
+> +		    op_mode == GHWCFG2_OP_MODE_NO_SRP_CAPABLE_DEVICE ||
+> +		    op_mode == GHWCFG2_OP_MODE_UNDEFINED) {
+> +			dwc2_err(dwc2, "Descriptor DMA not suppported\n");
+> +			dwc2_err(dwc2, "falling back to buffer DMA mode.\n");
+> +			dwc2->params.dma_desc = false;
+> +		} else {
+> +			hcfg = dwc2_readl(dwc2, HCFG);
+> +			hcfg |= HCFG_DESCDMA;
+> +			dwc2_writel(dwc2, hcfg, HCFG);
+> +		}
+> +	}
+> +
+> +	/* Configure data FIFO sizes */
+> +	if (dwc2_readl(dwc2, GHWCFG2) & GHWCFG2_DYNAMIC_FIFO) {
+> +		/* Rx FIFO */
+> +		dwc2_writel(dwc2, CONFIG_DWC2_HOST_RX_FIFO_SIZE, GRXFSIZ);
+> +
+> +		/* Non-periodic Tx FIFO */
+> +		nptxfifosize |= CONFIG_DWC2_HOST_NPERIO_TX_FIFO_SIZE <<
+> +				FIFOSIZE_DEPTH_SHIFT;
+> +		nptxfifosize |= CONFIG_DWC2_HOST_RX_FIFO_SIZE <<
+> +				FIFOSIZE_STARTADDR_SHIFT;
+> +		dwc2_writel(dwc2, nptxfifosize, GNPTXFSIZ);
+> +
+> +		/* Periodic Tx FIFO */
+> +		ptxfifosize |= CONFIG_DWC2_HOST_PERIO_TX_FIFO_SIZE <<
+> +				FIFOSIZE_DEPTH_SHIFT;
+> +		ptxfifosize |= (CONFIG_DWC2_HOST_RX_FIFO_SIZE +
+> +				CONFIG_DWC2_HOST_NPERIO_TX_FIFO_SIZE) <<
+> +				FIFOSIZE_STARTADDR_SHIFT;
+> +		dwc2_writel(dwc2, ptxfifosize, HPTXFSIZ);
+> +	}
+> +
+> +	/* Clear Host Set HNP Enable in the OTG Control Register */
+> +	hotgctl = dwc2_readl(dwc2, GOTGCTL);
+> +	hotgctl &= ~GOTGCTL_HSTSETHNPEN;
+> +	dwc2_writel(dwc2, hotgctl, GOTGCTL);
+> +
+> +	/* Make sure the FIFOs are flushed. */
+> +	dwc2_flush_all_fifo(dwc2);
+> +
+> +	/* Flush out any leftover queued requests. */
+> +	num_channels = dwc2->params.host_channels;
+> +	for (i = 0; i < num_channels; i++) {
+> +		hcchar = dwc2_readl(dwc2, HCCHAR(i));
+> +		if (!(hcchar & HCCHAR_CHENA))
+> +			continue;
+> +		hcchar |= HCCHAR_CHDIS;
+> +		hcchar &= ~(HCCHAR_CHENA | HCCHAR_EPDIR);
+> +		dwc2_writel(dwc2, hcchar, HCCHAR(i));
+> +	}
+> +
+> +	/* Halt all channels to put them into a known state. */
+> +	for (i = 0; i < num_channels; i++) {
+> +		hcchar = dwc2_readl(dwc2, HCCHAR(i));
+> +		if (!(hcchar & HCCHAR_CHENA))
+> +			continue;
+> +		hcchar |= HCCHAR_CHENA | HCCHAR_CHDIS;
+> +		hcchar &= ~HCCHAR_EPDIR;
+> +
+> +		dwc2_writel(dwc2, hcchar, HCCHAR(i));
+> +		ret = dwc2_wait_bit_clear(dwc2, HCCHAR(i), HCCHAR_CHENA, 10000);
+> +		if (ret)
+> +			dwc2_warn(dwc2, "%s: Timeout! Reseting channel %d\n",
+> +				  __func__, i);
+> +	}
+> +
+> +	/* Turn on the vbus power */
+> +	if (dwc2_is_host_mode(dwc2)) {
+> +		hprt0 = dwc2_readl(dwc2, HPRT0);
+> +		hprt0 &= ~(HPRT0_ENA | HPRT0_CONNDET);
+> +		hprt0 &= ~(HPRT0_ENACHG | HPRT0_OVRCURRCHG);
+> +		if (!(hprt0 & HPRT0_PWR)) {
+> +			hprt0 |= HPRT0_PWR;
+> +			dwc2_writel(dwc2, hprt0, HPRT0);
+> +		}
+> +	}
+> +
+> +	/* Disable all interrupts */
+> +	dwc2_writel(dwc2, 0, GINTMSK);
+> +	dwc2_writel(dwc2, 0, HAINTMSK);
+> +}
+> +
+> +static int dwc2_host_init(struct usb_host *host)
+> +{
+> +	struct dwc2 *dwc2 = to_dwc2(host);
+> +	struct device_d *dev = dwc2->dev;
+> +	uint32_t hprt0, gusbcfg;
+> +	int i, j;
+> +
+> +	/* Force Host mode in case the dwc2 controller is otg,
+> +	 * otherwise the mode selection is dictated by the id
+> +	 * pin, thus will require a otg A cable to be plugged-in.
+> +	 */
+> +	gusbcfg = dwc2_readl(dwc2, GUSBCFG) | GUSBCFG_FORCEHOSTMODE;
+> +	dwc2_writel(dwc2, gusbcfg, GUSBCFG);
+> +	mdelay(25);
+> +
+> +	dwc2_core_init(dwc2);
+> +	dwc2_core_host_init(dev, dwc2);
+> +
+> +	hprt0 = dwc2_readl(dwc2, HPRT0);
+> +	hprt0 &= ~(HPRT0_ENA | HPRT0_CONNDET);
+> +	/* clear HPRT0_ENACHG and HPRT0_OVRCURRCHG by writing 1 */
+> +	hprt0 |= HPRT0_ENACHG | HPRT0_OVRCURRCHG;
+> +	hprt0 |= HPRT0_RST;
+> +	dwc2_writel(dwc2, hprt0, HPRT0);
+> +
+> +	mdelay(50);
+> +
+> +	hprt0 = dwc2_readl(dwc2, HPRT0);
+> +	hprt0 &= ~(HPRT0_ENA | HPRT0_CONNDET | HPRT0_RST);
+> +	dwc2_writel(dwc2, hprt0, HPRT0);
+> +
+> +	for (i = 0; i < MAX_DEVICE; i++) {
+> +		for (j = 0; j < MAX_ENDPOINT; j++) {
+> +			dwc2->in_data_toggle[i][j] = TSIZ_SC_MC_PID_DATA0;
+> +			dwc2->out_data_toggle[i][j] = TSIZ_SC_MC_PID_DATA0;
+> +		}
+> +	}
+> +
+> +	/*
+> +	 * Add a 1 second delay here. This gives the host controller
+> +	 * a bit time before the comminucation with the USB devices
+> +	 * is started (the bus is scanned) and  fixes the USB detection
+> +	 * problems with some problematic USB keys.
+> +	 */
+> +	if (dwc2_is_host_mode(dwc2))
+> +		mdelay(1000);
+> +
+> +	return 0;
+> +}
+> +
+> +int dwc2_register_host(struct dwc2 *dwc2)
+> +{
+> +	struct usb_host *host;
+> +
+> +	host = &dwc2->host;
+> +	host->hw_dev = dwc2->dev;
+> +	host->init = dwc2_host_init;
+> +	host->submit_bulk_msg = dwc2_submit_bulk_msg;
+> +	host->submit_control_msg = dwc2_submit_control_msg;
+> +	host->submit_int_msg = dwc2_submit_int_msg;
+> +
+> +	return usb_register_host(host);
+> +}
+> diff --git a/drivers/usb/dwc2/regs.h b/drivers/usb/dwc2/regs.h
+> new file mode 100644
+> index 000000000..2170a0eaa
+> --- /dev/null
+> +++ b/drivers/usb/dwc2/regs.h
+> @@ -0,0 +1,848 @@
+> +/* SPDX-License-Identifier: GPL-2.0+ */
+> +/*
+> + * Copyright (C) 2014 Marek Vasut <marex@denx.de>
+> + */
+> +
+> +#ifndef __DWC2_H__
+> +#define __DWC2_H__
+> +
+> +#define HSOTG_REG(x)	(x)
+> +
+> +#define GOTGCTL				HSOTG_REG(0x000)
+> +#define GOTGCTL_CHIRPEN			BIT(27)
+> +#define GOTGCTL_MULT_VALID_BC_MASK	(0x1f << 22)
+> +#define GOTGCTL_MULT_VALID_BC_SHIFT	22
+> +#define GOTGCTL_CURMODE			BIT(21) /* was missing wtf ? */
+> +#define GOTGCTL_OTGVER			BIT(20)
+> +#define GOTGCTL_BSESVLD			BIT(19)
+> +#define GOTGCTL_ASESVLD			BIT(18)
+> +#define GOTGCTL_DBNC_SHORT		BIT(17)
+> +#define GOTGCTL_CONID_B			BIT(16)
+> +#define GOTGCTL_DBNCE_FLTR_BYPASS	BIT(15)
+> +#define GOTGCTL_EMBHOSTEN		BIT(12)
+> +#define GOTGCTL_DEVHNPEN		BIT(11)
+> +#define GOTGCTL_HSTSETHNPEN		BIT(10)
+> +#define GOTGCTL_HNPREQ			BIT(9)
+> +#define GOTGCTL_HSTNEGSCS		BIT(8)
+> +#define GOTGCTL_SESREQ			BIT(1)
+> +#define GOTGCTL_SESREQSCS		BIT(0)
+> +
+> +#define GOTGINT				HSOTG_REG(0x004)
+> +#define GOTGINT_DBNCE_DONE		BIT(19)
+> +#define GOTGINT_A_DEV_TOUT_CHG		BIT(18)
+> +#define GOTGINT_HST_NEG_DET		BIT(17)
+> +#define GOTGINT_HST_NEG_SUC_STS_CHNG	BIT(9)
+> +#define GOTGINT_SES_REQ_SUC_STS_CHNG	BIT(8)
+> +#define GOTGINT_SES_END_DET		BIT(2)
+> +
+> +#define GAHBCFG				HSOTG_REG(0x008)
+> +#define GAHBCFG_AHB_SINGLE		BIT(23)
+> +#define GAHBCFG_NOTI_ALL_DMA_WRIT	BIT(22)
+> +#define GAHBCFG_REM_MEM_SUPP		BIT(21)
+> +#define GAHBCFG_P_TXF_EMP_LVL		BIT(8)
+> +#define GAHBCFG_NP_TXF_EMP_LVL		BIT(7)
+> +#define GAHBCFG_DMA_EN			BIT(5)
+> +#define GAHBCFG_HBSTLEN_MASK		(0xf << 1)
+> +#define GAHBCFG_HBSTLEN_SHIFT		1
+> +#define GAHBCFG_HBSTLEN_SINGLE		0
+> +#define GAHBCFG_HBSTLEN_INCR		1
+> +#define GAHBCFG_HBSTLEN_INCR4		3
+> +#define GAHBCFG_HBSTLEN_INCR8		5
+> +#define GAHBCFG_HBSTLEN_INCR16		7
+> +#define GAHBCFG_GLBL_INTR_EN		BIT(0)
+> +#define GAHBCFG_CTRL_MASK		(GAHBCFG_P_TXF_EMP_LVL | \
+> +					 GAHBCFG_NP_TXF_EMP_LVL | \
+> +					 GAHBCFG_DMA_EN | \
+> +					 GAHBCFG_GLBL_INTR_EN)
+> +
+> +#define GUSBCFG				HSOTG_REG(0x00C)
+> +#define GUSBCFG_FORCEDEVMODE		BIT(30)
+> +#define GUSBCFG_FORCEHOSTMODE		BIT(29)
+> +#define GUSBCFG_TXENDDELAY		BIT(28)
+> +#define GUSBCFG_ICTRAFFICPULLREMOVE	BIT(27)
+> +#define GUSBCFG_ICUSBCAP		BIT(26)
+> +#define GUSBCFG_ULPI_INT_PROT_DIS	BIT(25)
+> +#define GUSBCFG_INDICATORPASSTHROUGH	BIT(24)
+> +#define GUSBCFG_INDICATORCOMPLEMENT	BIT(23)
+> +#define GUSBCFG_TERMSELDLPULSE		BIT(22)
+> +#define GUSBCFG_ULPI_EXT_VBUS_IND	BIT(21)
+> +#define GUSBCFG_ULPI_EXT_VBUS_DRV	BIT(20)
+> +#define GUSBCFG_ULPI_CLK_SUSP_M		BIT(19)
+> +#define GUSBCFG_ULPI_AUTO_RES		BIT(18)
+> +#define GUSBCFG_ULPI_FS_LS		BIT(17)
+> +#define GUSBCFG_OTG_UTMI_FS_SEL		BIT(16)
+> +#define GUSBCFG_PHY_LP_CLK_SEL		BIT(15)
+> +#define GUSBCFG_USBTRDTIM_MASK		(0xf << 10)
+> +#define GUSBCFG_USBTRDTIM_SHIFT		10
+> +#define GUSBCFG_HNPCAP			BIT(9)
+> +#define GUSBCFG_SRPCAP			BIT(8)
+> +#define GUSBCFG_DDRSEL			BIT(7)
+> +#define GUSBCFG_PHYSEL			BIT(6)
+> +#define GUSBCFG_FSINTF			BIT(5)
+> +#define GUSBCFG_ULPI_UTMI_SEL		BIT(4)
+> +#define GUSBCFG_PHYIF16			BIT(3)
+> +#define GUSBCFG_PHYIF8			(0 << 3)
+> +#define GUSBCFG_TOUTCAL_MASK		(0x7 << 0)
+> +#define GUSBCFG_TOUTCAL_SHIFT		0
+> +#define GUSBCFG_TOUTCAL_LIMIT		0x7
+> +#define GUSBCFG_TOUTCAL(_x)		((_x) << 0)
+> +
+> +#define GRSTCTL				HSOTG_REG(0x010)
+> +#define GRSTCTL_AHBIDLE			BIT(31)
+> +#define GRSTCTL_DMAREQ			BIT(30)
+> +#define GRSTCTL_TXFNUM_MASK		(0x1f << 6)
+> +#define GRSTCTL_TXFNUM_SHIFT		6
+> +#define GRSTCTL_TXFNUM_LIMIT		0x1f
+> +#define GRSTCTL_TXFNUM(_x)		((_x) << 6)
+> +#define GRSTCTL_TXFFLSH			BIT(5)
+> +#define GRSTCTL_RXFFLSH			BIT(4)
+> +#define GRSTCTL_IN_TKNQ_FLSH		BIT(3)
+> +#define GRSTCTL_FRMCNTRRST		BIT(2)
+> +#define GRSTCTL_HSFTRST			BIT(1)
+> +#define GRSTCTL_CSFTRST			BIT(0)
+> +
+> +#define GINTSTS				HSOTG_REG(0x014)
+> +#define GINTMSK				HSOTG_REG(0x018)
+> +#define GINTSTS_WKUPINT			BIT(31)
+> +#define GINTSTS_SESSREQINT		BIT(30)
+> +#define GINTSTS_DISCONNINT		BIT(29)
+> +#define GINTSTS_CONIDSTSCHNG		BIT(28)
+> +#define GINTSTS_LPMTRANRCVD		BIT(27)
+> +#define GINTSTS_PTXFEMP			BIT(26)
+> +#define GINTSTS_HCHINT			BIT(25)
+> +#define GINTSTS_PRTINT			BIT(24)
+> +#define GINTSTS_RESETDET		BIT(23)
+> +#define GINTSTS_FET_SUSP		BIT(22)
+> +#define GINTSTS_INCOMPL_IP		BIT(21)
+> +#define GINTSTS_INCOMPL_SOOUT		BIT(21)
+> +#define GINTSTS_INCOMPL_SOIN		BIT(20)
+> +#define GINTSTS_OEPINT			BIT(19)
+> +#define GINTSTS_IEPINT			BIT(18)
+> +#define GINTSTS_EPMIS			BIT(17)
+> +#define GINTSTS_RESTOREDONE		BIT(16)
+> +#define GINTSTS_EOPF			BIT(15)
+> +#define GINTSTS_ISOUTDROP		BIT(14)
+> +#define GINTSTS_ENUMDONE		BIT(13)
+> +#define GINTSTS_USBRST			BIT(12)
+> +#define GINTSTS_USBSUSP			BIT(11)
+> +#define GINTSTS_ERLYSUSP		BIT(10)
+> +#define GINTSTS_I2CINT			BIT(9)
+> +#define GINTSTS_ULPI_CK_INT		BIT(8)
+> +#define GINTSTS_GOUTNAKEFF		BIT(7)
+> +#define GINTSTS_GINNAKEFF		BIT(6)
+> +#define GINTSTS_NPTXFEMP		BIT(5)
+> +#define GINTSTS_RXFLVL			BIT(4)
+> +#define GINTSTS_SOF			BIT(3)
+> +#define GINTSTS_OTGINT			BIT(2)
+> +#define GINTSTS_MODEMIS			BIT(1)
+> +#define GINTSTS_CURMODE_HOST		BIT(0)
+> +
+> +#define GRXSTSR				HSOTG_REG(0x01C)
+> +#define GRXSTSP				HSOTG_REG(0x020)
+> +#define GRXSTS_FN_MASK			(0x7f << 25)
+> +#define GRXSTS_FN_SHIFT			25
+> +#define GRXSTS_PKTSTS_MASK		(0xf << 17)
+> +#define GRXSTS_PKTSTS_SHIFT		17
+> +#define GRXSTS_PKTSTS_GLOBALOUTNAK	1
+> +#define GRXSTS_PKTSTS_OUTRX		2
+> +#define GRXSTS_PKTSTS_HCHIN		2
+> +#define GRXSTS_PKTSTS_OUTDONE		3
+> +#define GRXSTS_PKTSTS_HCHIN_XFER_COMP	3
+> +#define GRXSTS_PKTSTS_SETUPDONE		4
+> +#define GRXSTS_PKTSTS_DATATOGGLEERR	5
+> +#define GRXSTS_PKTSTS_SETUPRX		6
+> +#define GRXSTS_PKTSTS_HCHHALTED		7
+> +#define GRXSTS_HCHNUM_MASK		(0xf << 0)
+> +#define GRXSTS_HCHNUM_SHIFT		0
+> +#define GRXSTS_DPID_MASK		(0x3 << 15)
+> +#define GRXSTS_DPID_SHIFT		15
+> +#define GRXSTS_BYTECNT_MASK		(0x7ff << 4)
+> +#define GRXSTS_BYTECNT_SHIFT		4
+> +#define GRXSTS_EPNUM_MASK		(0xf << 0)
+> +#define GRXSTS_EPNUM_SHIFT		0
+> +
+> +#define GRXFSIZ				HSOTG_REG(0x024)
+> +#define GRXFSIZ_DEPTH_MASK		(0xffff << 0)
+> +#define GRXFSIZ_DEPTH_SHIFT		0
+> +
+> +#define GNPTXFSIZ			HSOTG_REG(0x028)
+> +/* Use FIFOSIZE_* constants to access this register */
+> +
+> +#define GNPTXSTS			HSOTG_REG(0x02C)
+> +#define GNPTXSTS_NP_TXQ_TOP_MASK		(0x7f << 24)
+> +#define GNPTXSTS_NP_TXQ_TOP_SHIFT		24
+> +#define GNPTXSTS_NP_TXQ_SPC_AVAIL_MASK		(0xff << 16)
+> +#define GNPTXSTS_NP_TXQ_SPC_AVAIL_SHIFT		16
+> +#define GNPTXSTS_NP_TXQ_SPC_AVAIL_GET(_v)	(((_v) >> 16) & 0xff)
+> +#define GNPTXSTS_NP_TXF_SPC_AVAIL_MASK		(0xffff << 0)
+> +#define GNPTXSTS_NP_TXF_SPC_AVAIL_SHIFT		0
+> +#define GNPTXSTS_NP_TXF_SPC_AVAIL_GET(_v)	(((_v) >> 0) & 0xffff)
+> +
+> +#define GI2CCTL				HSOTG_REG(0x0030)
+> +#define GI2CCTL_BSYDNE			BIT(31)
+> +#define GI2CCTL_RW			BIT(30)
+> +#define GI2CCTL_I2CDATSE0		BIT(28)
+> +#define GI2CCTL_I2CDEVADDR_MASK		(0x3 << 26)
+> +#define GI2CCTL_I2CDEVADDR_SHIFT	26
+> +#define GI2CCTL_I2CSUSPCTL		BIT(25)
+> +#define GI2CCTL_ACK			BIT(24)
+> +#define GI2CCTL_I2CEN			BIT(23)
+> +#define GI2CCTL_ADDR_MASK		(0x7f << 16)
+> +#define GI2CCTL_ADDR_SHIFT		16
+> +#define GI2CCTL_REGADDR_MASK		(0xff << 8)
+> +#define GI2CCTL_REGADDR_SHIFT		8
+> +#define GI2CCTL_RWDATA_MASK		(0xff << 0)
+> +#define GI2CCTL_RWDATA_SHIFT		0
+> +
+> +#define GPVNDCTL			HSOTG_REG(0x0034)
+> +#define GPVNDCTL_REGWR			BIT(22)
+> +#define GPVNDCTL_NEWREGREQ		BIT(25)
+> +#define GPVNDCTL_VSTSDONE		BIT(27)
+> +#define GPVNDCTL_REGADDR_SHIFT		16
+> +#define GPVNDCTL_REGADDR_MASK		(0x3f << 16)
+> +#define GPVNDCTL_REGDATA_SHIFT		0
+> +#define GPVNDCTL_REGDATA_MASK		0xff
+> +
+> +#define GGPIO				HSOTG_REG(0x0038)
+> +#define GGPIO_STM32_OTG_GCCFG_PWRDWN	BIT(16)
+> +
+> +#define GUID				HSOTG_REG(0x003c)
+> +#define GSNPSID				HSOTG_REG(0x0040)
+> +#define GHWCFG1				HSOTG_REG(0x0044)
+> +#define GSNPSID_ID_MASK			GENMASK(31, 16)
+> +
+> +#define GHWCFG2				HSOTG_REG(0x0048)
+> +#define GHWCFG2_OTG_ENABLE_IC_USB		BIT(31)
+> +#define GHWCFG2_DEV_TOKEN_Q_DEPTH_MASK		(0x1f << 26)
+> +#define GHWCFG2_DEV_TOKEN_Q_DEPTH_SHIFT		26
+> +#define GHWCFG2_HOST_PERIO_TX_Q_DEPTH_MASK	(0x3 << 24)
+> +#define GHWCFG2_HOST_PERIO_TX_Q_DEPTH_SHIFT	24
+> +#define GHWCFG2_NONPERIO_TX_Q_DEPTH_MASK	(0x3 << 22)
+> +#define GHWCFG2_NONPERIO_TX_Q_DEPTH_SHIFT	22
+> +#define GHWCFG2_MULTI_PROC_INT			BIT(20)
+> +#define GHWCFG2_DYNAMIC_FIFO			BIT(19)
+> +#define GHWCFG2_PERIO_EP_SUPPORTED		BIT(18)
+> +#define GHWCFG2_NUM_HOST_CHAN_MASK		(0xf << 14)
+> +#define GHWCFG2_NUM_HOST_CHAN_SHIFT		14
+> +#define GHWCFG2_NUM_DEV_EP_MASK			(0xf << 10)
+> +#define GHWCFG2_NUM_DEV_EP_SHIFT		10
+> +#define GHWCFG2_FS_PHY_TYPE_MASK		(0x3 << 8)
+> +#define GHWCFG2_FS_PHY_TYPE_SHIFT		8
+> +#define GHWCFG2_FS_PHY_TYPE_NOT_SUPPORTED	0
+> +#define GHWCFG2_FS_PHY_TYPE_DEDICATED		1
+> +#define GHWCFG2_FS_PHY_TYPE_SHARED_UTMI		2
+> +#define GHWCFG2_FS_PHY_TYPE_SHARED_ULPI		3
+> +#define GHWCFG2_HS_PHY_TYPE_MASK		(0x3 << 6)
+> +#define GHWCFG2_HS_PHY_TYPE_SHIFT		6
+> +#define GHWCFG2_HS_PHY_TYPE_NOT_SUPPORTED	0
+> +#define GHWCFG2_HS_PHY_TYPE_UTMI		1
+> +#define GHWCFG2_HS_PHY_TYPE_ULPI		2
+> +#define GHWCFG2_HS_PHY_TYPE_UTMI_ULPI		3
+> +#define GHWCFG2_POINT2POINT			BIT(5)
+> +#define GHWCFG2_ARCHITECTURE_MASK		(0x3 << 3)
+> +#define GHWCFG2_ARCHITECTURE_SHIFT		3
+> +#define GHWCFG2_SLAVE_ONLY_ARCH			0
+> +#define GHWCFG2_EXT_DMA_ARCH			1
+> +#define GHWCFG2_INT_DMA_ARCH			2
+> +#define GHWCFG2_OP_MODE_MASK			(0x7 << 0)
+> +#define GHWCFG2_OP_MODE_SHIFT			0
+> +#define GHWCFG2_OP_MODE_HNP_SRP_CAPABLE		0
+> +#define GHWCFG2_OP_MODE_SRP_ONLY_CAPABLE	1
+> +#define GHWCFG2_OP_MODE_NO_HNP_SRP_CAPABLE	2
+> +#define GHWCFG2_OP_MODE_SRP_CAPABLE_DEVICE	3
+> +#define GHWCFG2_OP_MODE_NO_SRP_CAPABLE_DEVICE	4
+> +#define GHWCFG2_OP_MODE_SRP_CAPABLE_HOST	5
+> +#define GHWCFG2_OP_MODE_NO_SRP_CAPABLE_HOST	6
+> +#define GHWCFG2_OP_MODE_UNDEFINED		7
+> +
+> +#define GHWCFG3				HSOTG_REG(0x004c)
+> +#define GHWCFG3_DFIFO_DEPTH_MASK		(0xffff << 16)
+> +#define GHWCFG3_DFIFO_DEPTH_SHIFT		16
+> +#define GHWCFG3_OTG_LPM_EN			BIT(15)
+> +#define GHWCFG3_BC_SUPPORT			BIT(14)
+> +#define GHWCFG3_OTG_ENABLE_HSIC			BIT(13)
+> +#define GHWCFG3_ADP_SUPP			BIT(12)
+> +#define GHWCFG3_SYNCH_RESET_TYPE		BIT(11)
+> +#define GHWCFG3_OPTIONAL_FEATURES		BIT(10)
+> +#define GHWCFG3_VENDOR_CTRL_IF			BIT(9)
+> +#define GHWCFG3_I2C				BIT(8)
+> +#define GHWCFG3_OTG_FUNC			BIT(7)
+> +#define GHWCFG3_PACKET_SIZE_CNTR_WIDTH_MASK	(0x7 << 4)
+> +#define GHWCFG3_PACKET_SIZE_CNTR_WIDTH_SHIFT	4
+> +#define GHWCFG3_XFER_SIZE_CNTR_WIDTH_MASK	(0xf << 0)
+> +#define GHWCFG3_XFER_SIZE_CNTR_WIDTH_SHIFT	0
+> +
+> +#define GHWCFG4				HSOTG_REG(0x0050)
+> +#define GHWCFG4_DESC_DMA_DYN			BIT(31)
+> +#define GHWCFG4_DESC_DMA			BIT(30)
+> +#define GHWCFG4_NUM_IN_EPS_MASK			(0xf << 26)
+> +#define GHWCFG4_NUM_IN_EPS_SHIFT		26
+> +#define GHWCFG4_DED_FIFO_EN			BIT(25)
+> +#define GHWCFG4_DED_FIFO_SHIFT		25
+> +#define GHWCFG4_SESSION_END_FILT_EN		BIT(24)
+> +#define GHWCFG4_B_VALID_FILT_EN			BIT(23)
+> +#define GHWCFG4_A_VALID_FILT_EN			BIT(22)
+> +#define GHWCFG4_VBUS_VALID_FILT_EN		BIT(21)
+> +#define GHWCFG4_IDDIG_FILT_EN			BIT(20)
+> +#define GHWCFG4_NUM_DEV_MODE_CTRL_EP_MASK	(0xf << 16)
+> +#define GHWCFG4_NUM_DEV_MODE_CTRL_EP_SHIFT	16
+> +#define GHWCFG4_UTMI_PHY_DATA_WIDTH_MASK	(0x3 << 14)
+> +#define GHWCFG4_UTMI_PHY_DATA_WIDTH_SHIFT	14
+> +#define GHWCFG4_ACG_SUPPORTED			BIT(12)
+> +#define GHWCFG4_IPG_ISOC_SUPPORTED		BIT(11)
+> +#define GHWCFG4_UTMI_PHY_DATA_WIDTH_8		0
+> +#define GHWCFG4_UTMI_PHY_DATA_WIDTH_16		1
+> +#define GHWCFG4_UTMI_PHY_DATA_WIDTH_8_OR_16	2
+> +#define GHWCFG4_XHIBER				BIT(7)
+> +#define GHWCFG4_HIBER				BIT(6)
+> +#define GHWCFG4_MIN_AHB_FREQ			BIT(5)
+> +#define GHWCFG4_POWER_OPTIMIZ			BIT(4)
+> +#define GHWCFG4_NUM_DEV_PERIO_IN_EP_MASK	(0xf << 0)
+> +#define GHWCFG4_NUM_DEV_PERIO_IN_EP_SHIFT	0
+> +
+> +#define GLPMCFG				HSOTG_REG(0x0054)
+> +#define GLPMCFG_INVSELHSIC		BIT(31)
+> +#define GLPMCFG_HSICCON			BIT(30)
+> +#define GLPMCFG_RSTRSLPSTS		BIT(29)
+> +#define GLPMCFG_ENBESL			BIT(28)
+> +#define GLPMCFG_LPM_RETRYCNT_STS_MASK	(0x7 << 25)
+> +#define GLPMCFG_LPM_RETRYCNT_STS_SHIFT	25
+> +#define GLPMCFG_SNDLPM			BIT(24)
+> +#define GLPMCFG_RETRY_CNT_MASK		(0x7 << 21)
+> +#define GLPMCFG_RETRY_CNT_SHIFT		21
+> +#define GLPMCFG_LPM_CHNL_INDX_MASK	(0xf << 17)
+> +#define GLPMCFG_LPM_CHNL_INDX_SHIFT	17
+> +#define GLPMCFG_L1RESUMEOK		BIT(16)
+> +#define GLPMCFG_SLPSTS			BIT(15)
+> +#define GLPMCFG_COREL1RES_MASK		(0x3 << 13)
+> +#define GLPMCFG_COREL1RES_SHIFT		13
+> +#define GLPMCFG_HIRD_THRES_MASK		(0x1f << 8)
+> +#define GLPMCFG_HIRD_THRES_SHIFT	8
+> +#define GLPMCFG_HIRD_THRES_EN		(0x10 << 8)
+> +#define GLPMCFG_ENBLSLPM		BIT(7)
+> +#define GLPMCFG_BREMOTEWAKE		BIT(6)
+> +#define GLPMCFG_HIRD_MASK		(0xf << 2)
+> +#define GLPMCFG_HIRD_SHIFT		2
+> +#define GLPMCFG_APPL1RES		BIT(1)
+> +#define GLPMCFG_LPMCAP			BIT(0)
+> +
+> +#define GPWRDN				HSOTG_REG(0x0058)
+> +#define GPWRDN_MULT_VAL_ID_BC_MASK	(0x1f << 24)
+> +#define GPWRDN_MULT_VAL_ID_BC_SHIFT	24
+> +#define GPWRDN_ADP_INT			BIT(23)
+> +#define GPWRDN_BSESSVLD			BIT(22)
+> +#define GPWRDN_IDSTS			BIT(21)
+> +#define GPWRDN_LINESTATE_MASK		(0x3 << 19)
+> +#define GPWRDN_LINESTATE_SHIFT		19
+> +#define GPWRDN_STS_CHGINT_MSK		BIT(18)
+> +#define GPWRDN_STS_CHGINT		BIT(17)
+> +#define GPWRDN_SRP_DET_MSK		BIT(16)
+> +#define GPWRDN_SRP_DET			BIT(15)
+> +#define GPWRDN_CONNECT_DET_MSK		BIT(14)
+> +#define GPWRDN_CONNECT_DET		BIT(13)
+> +#define GPWRDN_DISCONN_DET_MSK		BIT(12)
+> +#define GPWRDN_DISCONN_DET		BIT(11)
+> +#define GPWRDN_RST_DET_MSK		BIT(10)
+> +#define GPWRDN_RST_DET			BIT(9)
+> +#define GPWRDN_LNSTSCHG_MSK		BIT(8)
+> +#define GPWRDN_LNSTSCHG			BIT(7)
+> +#define GPWRDN_DIS_VBUS			BIT(6)
+> +#define GPWRDN_PWRDNSWTCH		BIT(5)
+> +#define GPWRDN_PWRDNRSTN		BIT(4)
+> +#define GPWRDN_PWRDNCLMP		BIT(3)
+> +#define GPWRDN_RESTORE			BIT(2)
+> +#define GPWRDN_PMUACTV			BIT(1)
+> +#define GPWRDN_PMUINTSEL		BIT(0)
+> +
+> +#define GDFIFOCFG			HSOTG_REG(0x005c)
+> +#define GDFIFOCFG_EPINFOBASE_MASK	(0xffff << 16)
+> +#define GDFIFOCFG_EPINFOBASE_SHIFT	16
+> +#define GDFIFOCFG_GDFIFOCFG_MASK	(0xffff << 0)
+> +#define GDFIFOCFG_GDFIFOCFG_SHIFT	0
+> +
+> +#define ADPCTL				HSOTG_REG(0x0060)
+> +#define ADPCTL_AR_MASK			(0x3 << 27)
+> +#define ADPCTL_AR_SHIFT			27
+> +#define ADPCTL_ADP_TMOUT_INT_MSK	BIT(26)
+> +#define ADPCTL_ADP_SNS_INT_MSK		BIT(25)
+> +#define ADPCTL_ADP_PRB_INT_MSK		BIT(24)
+> +#define ADPCTL_ADP_TMOUT_INT		BIT(23)
+> +#define ADPCTL_ADP_SNS_INT		BIT(22)
+> +#define ADPCTL_ADP_PRB_INT		BIT(21)
+> +#define ADPCTL_ADPENA			BIT(20)
+> +#define ADPCTL_ADPRES			BIT(19)
+> +#define ADPCTL_ENASNS			BIT(18)
+> +#define ADPCTL_ENAPRB			BIT(17)
+> +#define ADPCTL_RTIM_MASK		(0x7ff << 6)
+> +#define ADPCTL_RTIM_SHIFT		6
+> +#define ADPCTL_PRB_PER_MASK		(0x3 << 4)
+> +#define ADPCTL_PRB_PER_SHIFT		4
+> +#define ADPCTL_PRB_DELTA_MASK		(0x3 << 2)
+> +#define ADPCTL_PRB_DELTA_SHIFT		2
+> +#define ADPCTL_PRB_DSCHRG_MASK		(0x3 << 0)
+> +#define ADPCTL_PRB_DSCHRG_SHIFT		0
+> +
+> +#define HPTXFSIZ			HSOTG_REG(0x100)
+> +/* Use FIFOSIZE_* constants to access this register */
+> +
+> +#define DPTXFSIZN(_a)			HSOTG_REG(0x104 + (((_a) - 1) * 4))
+> +/* Use FIFOSIZE_* constants to access this register */
+> +
+> +/* These apply to the GNPTXFSIZ, HPTXFSIZ and DPTXFSIZN registers */
+> +#define FIFOSIZE_DEPTH_MASK		(0xffff << 16)
+> +#define FIFOSIZE_DEPTH_SHIFT		16
+> +#define FIFOSIZE_STARTADDR_MASK		(0xffff << 0)
+> +#define FIFOSIZE_STARTADDR_SHIFT	0
+> +#define FIFOSIZE_DEPTH_GET(_x)		(((_x) >> 16) & 0xffff)
+> +
+> +/* Device mode registers */
+> +
+> +#define DCFG				HSOTG_REG(0x800)
+> +#define DCFG_DESCDMA_EN			BIT(23)
+> +#define DCFG_EPMISCNT_MASK		(0x1f << 18)
+> +#define DCFG_EPMISCNT_SHIFT		18
+> +#define DCFG_EPMISCNT_LIMIT		0x1f
+> +#define DCFG_EPMISCNT(_x)		((_x) << 18)
+> +#define DCFG_IPG_ISOC_SUPPORDED		BIT(17)
+> +#define DCFG_PERFRINT_MASK		(0x3 << 11)
+> +#define DCFG_PERFRINT_SHIFT		11
+> +#define DCFG_PERFRINT_LIMIT		0x3
+> +#define DCFG_PERFRINT(_x)		((_x) << 11)
+> +#define DCFG_DEVADDR_MASK		(0x7f << 4)
+> +#define DCFG_DEVADDR_SHIFT		4
+> +#define DCFG_DEVADDR_LIMIT		0x7f
+> +#define DCFG_DEVADDR(_x)		((_x) << 4)
+> +#define DCFG_NZ_STS_OUT_HSHK		BIT(2)
+> +#define DCFG_DEVSPD_MASK		(0x3 << 0)
+> +#define DCFG_DEVSPD_SHIFT		0
+> +#define DCFG_DEVSPD_HS			0
+> +#define DCFG_DEVSPD_FS			1
+> +#define DCFG_DEVSPD_LS			2
+> +#define DCFG_DEVSPD_FS48		3
+> +
+> +#define DCTL				HSOTG_REG(0x804)
+> +#define DCTL_PWRONPRGDONE		BIT(11)
+> +#define DCTL_CGOUTNAK			BIT(10)
+> +#define DCTL_SGOUTNAK			BIT(9)
+> +#define DCTL_CGNPINNAK			BIT(8)
+> +#define DCTL_SGNPINNAK			BIT(7)
+> +#define DCTL_TSTCTL_MASK		(0x7 << 4)
+> +#define DCTL_TSTCTL_SHIFT		4
+> +#define DCTL_GOUTNAKSTS			BIT(3)
+> +#define DCTL_GNPINNAKSTS		BIT(2)
+> +#define DCTL_SFTDISCON			BIT(1)
+> +#define DCTL_RMTWKUPSIG			BIT(0)
+> +
+> +#define DSTS				HSOTG_REG(0x808)
+> +#define DSTS_SOFFN_MASK			(0x3fff << 8)
+> +#define DSTS_SOFFN_SHIFT		8
+> +#define DSTS_SOFFN_LIMIT		0x3fff
+> +#define DSTS_SOFFN(_x)			((_x) << 8)
+> +#define DSTS_ERRATICERR			BIT(3)
+> +#define DSTS_ENUMSPD_MASK		(0x3 << 1)
+> +#define DSTS_ENUMSPD_SHIFT		1
+> +#define DSTS_ENUMSPD_HS			0
+> +#define DSTS_ENUMSPD_FS			1
+> +#define DSTS_ENUMSPD_LS			2
+> +#define DSTS_ENUMSPD_FS48		3
+> +#define DSTS_SUSPSTS			BIT(0)
+> +
+> +#define DIEPMSK				HSOTG_REG(0x810)
+> +#define DIEPMSK_NAKMSK			BIT(13)
+> +#define DIEPMSK_BNAININTRMSK		BIT(9)
+> +#define DIEPMSK_TXFIFOUNDRNMSK		BIT(8)
+> +#define DIEPMSK_TXFIFOEMPTY		BIT(7)
+> +#define DIEPMSK_INEPNAKEFFMSK		BIT(6)
+> +#define DIEPMSK_INTKNEPMISMSK		BIT(5)
+> +#define DIEPMSK_INTKNTXFEMPMSK		BIT(4)
+> +#define DIEPMSK_TIMEOUTMSK		BIT(3)
+> +#define DIEPMSK_AHBERRMSK		BIT(2)
+> +#define DIEPMSK_EPDISBLDMSK		BIT(1)
+> +#define DIEPMSK_XFERCOMPLMSK		BIT(0)
+> +
+> +#define DOEPMSK				HSOTG_REG(0x814)
+> +#define DOEPMSK_BNAMSK			BIT(9)
+> +#define DOEPMSK_BACK2BACKSETUP		BIT(6)
+> +#define DOEPMSK_STSPHSERCVDMSK		BIT(5)
+> +#define DOEPMSK_OUTTKNEPDISMSK		BIT(4)
+> +#define DOEPMSK_SETUPMSK		BIT(3)
+> +#define DOEPMSK_AHBERRMSK		BIT(2)
+> +#define DOEPMSK_EPDISBLDMSK		BIT(1)
+> +#define DOEPMSK_XFERCOMPLMSK		BIT(0)
+> +
+> +#define DAINT				HSOTG_REG(0x818)
+> +#define DAINTMSK			HSOTG_REG(0x81C)
+> +#define DAINT_OUTEP_SHIFT		16
+> +#define DAINT_OUTEP(_x)			(1 << ((_x) + 16))
+> +#define DAINT_INEP(_x)			(1 << (_x))
+> +
+> +#define DTKNQR1				HSOTG_REG(0x820)
+> +#define DTKNQR2				HSOTG_REG(0x824)
+> +#define DTKNQR3				HSOTG_REG(0x830)
+> +#define DTKNQR4				HSOTG_REG(0x834)
+> +#define DIEPEMPMSK			HSOTG_REG(0x834)
+> +
+> +#define DVBUSDIS			HSOTG_REG(0x828)
+> +#define DVBUSPULSE			HSOTG_REG(0x82C)
+> +
+> +#define DIEPCTL0			HSOTG_REG(0x900)
+> +#define DIEPCTL(_a)			HSOTG_REG(0x900 + ((_a) * 0x20))
+> +
+> +#define DOEPCTL0			HSOTG_REG(0xB00)
+> +#define DOEPCTL(_a)			HSOTG_REG(0xB00 + ((_a) * 0x20))
+> +
+> +/* EP0 specialness:
+> + * bits[29..28] - reserved (no SetD0PID, SetD1PID)
+> + * bits[25..22] - should always be zero, this isn't a periodic endpoint
+> + * bits[10..0]  - MPS setting different for EP0
+> + */
+> +#define D0EPCTL_MPS_MASK		(0x3 << 0)
+> +#define D0EPCTL_MPS_SHIFT		0
+> +#define D0EPCTL_MPS_64			0
+> +#define D0EPCTL_MPS_32			1
+> +#define D0EPCTL_MPS_16			2
+> +#define D0EPCTL_MPS_8			3
+> +
+> +#define DXEPCTL_EPENA			BIT(31)
+> +#define DXEPCTL_EPDIS			BIT(30)
+> +#define DXEPCTL_SETD1PID		BIT(29)
+> +#define DXEPCTL_SETODDFR		BIT(29)
+> +#define DXEPCTL_SETD0PID		BIT(28)
+> +#define DXEPCTL_SETEVENFR		BIT(28)
+> +#define DXEPCTL_SNAK			BIT(27)
+> +#define DXEPCTL_CNAK			BIT(26)
+> +#define DXEPCTL_TXFNUM_MASK		(0xf << 22)
+> +#define DXEPCTL_TXFNUM_SHIFT		22
+> +#define DXEPCTL_TXFNUM_LIMIT		0xf
+> +#define DXEPCTL_TXFNUM(_x)		((_x) << 22)
+> +#define DXEPCTL_STALL			BIT(21)
+> +#define DXEPCTL_SNP			BIT(20)
+> +#define DXEPCTL_EPTYPE_MASK		(0x3 << 18)
+> +#define DXEPCTL_EPTYPE_CONTROL		(0x0 << 18)
+> +#define DXEPCTL_EPTYPE_ISO		(0x1 << 18)
+> +#define DXEPCTL_EPTYPE_BULK		(0x2 << 18)
+> +#define DXEPCTL_EPTYPE_INTERRUPT	(0x3 << 18)
+> +
+> +#define DXEPCTL_NAKSTS			BIT(17)
+> +#define DXEPCTL_DPID			BIT(16)
+> +#define DXEPCTL_EOFRNUM			BIT(16)
+> +#define DXEPCTL_USBACTEP		BIT(15)
+> +#define DXEPCTL_NEXTEP_MASK		(0xf << 11)
+> +#define DXEPCTL_NEXTEP_SHIFT		11
+> +#define DXEPCTL_NEXTEP_LIMIT		0xf
+> +#define DXEPCTL_NEXTEP(_x)		((_x) << 11)
+> +#define DXEPCTL_MPS_MASK		(0x7ff << 0)
+> +#define DXEPCTL_MPS_SHIFT		0
+> +#define DXEPCTL_MPS_LIMIT		0x7ff
+> +#define DXEPCTL_MPS(_x)			((_x) << 0)
+> +
+> +#define DIEPINT(_a)			HSOTG_REG(0x908 + ((_a) * 0x20))
+> +#define DOEPINT(_a)			HSOTG_REG(0xB08 + ((_a) * 0x20))
+> +#define DXEPINT_SETUP_RCVD		BIT(15)
+> +#define DXEPINT_NYETINTRPT		BIT(14)
+> +#define DXEPINT_NAKINTRPT		BIT(13)
+> +#define DXEPINT_BBLEERRINTRPT		BIT(12)
+> +#define DXEPINT_PKTDRPSTS		BIT(11)
+> +#define DXEPINT_BNAINTR			BIT(9)
+> +#define DXEPINT_TXFIFOUNDRN		BIT(8)
+> +#define DXEPINT_OUTPKTERR		BIT(8)
+> +#define DXEPINT_TXFEMP			BIT(7)
+> +#define DXEPINT_INEPNAKEFF		BIT(6)
+> +#define DXEPINT_BACK2BACKSETUP		BIT(6)
+> +#define DXEPINT_INTKNEPMIS		BIT(5)
+> +#define DXEPINT_STSPHSERCVD		BIT(5)
+> +#define DXEPINT_INTKNTXFEMP		BIT(4)
+> +#define DXEPINT_OUTTKNEPDIS		BIT(4)
+> +#define DXEPINT_TIMEOUT			BIT(3)
+> +#define DXEPINT_SETUP			BIT(3)
+> +#define DXEPINT_AHBERR			BIT(2)
+> +#define DXEPINT_EPDISBLD		BIT(1)
+> +#define DXEPINT_XFERCOMPL		BIT(0)
+> +
+> +#define DIEPTSIZ0			HSOTG_REG(0x910)
+> +#define DIEPTSIZ0_PKTCNT_MASK		(0x3 << 19)
+> +#define DIEPTSIZ0_PKTCNT_SHIFT		19
+> +#define DIEPTSIZ0_PKTCNT_LIMIT		0x3
+> +#define DIEPTSIZ0_PKTCNT(_x)		((_x) << 19)
+> +#define DIEPTSIZ0_XFERSIZE_MASK		(0x7f << 0)
+> +#define DIEPTSIZ0_XFERSIZE_SHIFT	0
+> +#define DIEPTSIZ0_XFERSIZE_LIMIT	0x7f
+> +#define DIEPTSIZ0_XFERSIZE(_x)		((_x) << 0)
+> +
+> +#define DOEPTSIZ0			HSOTG_REG(0xB10)
+> +#define DOEPTSIZ0_SUPCNT_MASK		(0x3 << 29)
+> +#define DOEPTSIZ0_SUPCNT_SHIFT		29
+> +#define DOEPTSIZ0_SUPCNT_LIMIT		0x3
+> +#define DOEPTSIZ0_SUPCNT(_x)		((_x) << 29)
+> +#define DOEPTSIZ0_PKTCNT		BIT(19)
+> +#define DOEPTSIZ0_XFERSIZE_MASK		(0x7f << 0)
+> +#define DOEPTSIZ0_XFERSIZE_SHIFT	0
+> +
+> +#define DIEPTSIZ(_a)			HSOTG_REG(0x910 + ((_a) * 0x20))
+> +#define DOEPTSIZ(_a)			HSOTG_REG(0xB10 + ((_a) * 0x20))
+> +#define DXEPTSIZ_MC_MASK		(0x3 << 29)
+> +#define DXEPTSIZ_MC_SHIFT		29
+> +#define DXEPTSIZ_MC_LIMIT		0x3
+> +#define DXEPTSIZ_MC(_x)			((_x) << 29)
+> +#define DXEPTSIZ_PKTCNT_MASK		(0x3ff << 19)
+> +#define DXEPTSIZ_PKTCNT_SHIFT		19
+> +#define DXEPTSIZ_PKTCNT_LIMIT		0x3ff
+> +#define DXEPTSIZ_PKTCNT_GET(_v)		(((_v) >> 19) & 0x3ff)
+> +#define DXEPTSIZ_PKTCNT(_x)		((_x) << 19)
+> +#define DXEPTSIZ_XFERSIZE_MASK		(0x7ffff << 0)
+> +#define DXEPTSIZ_XFERSIZE_SHIFT		0
+> +#define DXEPTSIZ_XFERSIZE_LIMIT		0x7ffff
+> +#define DXEPTSIZ_XFERSIZE_GET(_v)	(((_v) >> 0) & 0x7ffff)
+> +#define DXEPTSIZ_XFERSIZE(_x)		((_x) << 0)
+> +
+> +#define DIEPDMA(_a)			HSOTG_REG(0x914 + ((_a) * 0x20))
+> +#define DOEPDMA(_a)			HSOTG_REG(0xB14 + ((_a) * 0x20))
+> +
+> +#define DTXFSTS(_a)			HSOTG_REG(0x918 + ((_a) * 0x20))
+> +
+> +#define PCGCTL				HSOTG_REG(0x0e00)
+> +#define PCGCTL_IF_DEV_MODE		BIT(31)
+> +#define PCGCTL_P2HD_PRT_SPD_MASK	(0x3 << 29)
+> +#define PCGCTL_P2HD_PRT_SPD_SHIFT	29
+> +#define PCGCTL_P2HD_DEV_ENUM_SPD_MASK	(0x3 << 27)
+> +#define PCGCTL_P2HD_DEV_ENUM_SPD_SHIFT	27
+> +#define PCGCTL_MAC_DEV_ADDR_MASK	(0x7f << 20)
+> +#define PCGCTL_MAC_DEV_ADDR_SHIFT	20
+> +#define PCGCTL_MAX_TERMSEL		BIT(19)
+> +#define PCGCTL_MAX_XCVRSELECT_MASK	(0x3 << 17)
+> +#define PCGCTL_MAX_XCVRSELECT_SHIFT	17
+> +#define PCGCTL_PORT_POWER		BIT(16)
+> +#define PCGCTL_PRT_CLK_SEL_MASK		(0x3 << 14)
+> +#define PCGCTL_PRT_CLK_SEL_SHIFT	14
+> +#define PCGCTL_ESS_REG_RESTORED		BIT(13)
+> +#define PCGCTL_EXTND_HIBER_SWITCH	BIT(12)
+> +#define PCGCTL_EXTND_HIBER_PWRCLMP	BIT(11)
+> +#define PCGCTL_ENBL_EXTND_HIBER		BIT(10)
+> +#define PCGCTL_RESTOREMODE		BIT(9)
+> +#define PCGCTL_RESETAFTSUSP		BIT(8)
+> +#define PCGCTL_DEEP_SLEEP		BIT(7)
+> +#define PCGCTL_PHY_IN_SLEEP		BIT(6)
+> +#define PCGCTL_ENBL_SLEEP_GATING	BIT(5)
+> +#define PCGCTL_RSTPDWNMODULE		BIT(3)
+> +#define PCGCTL_PWRCLMP			BIT(2)
+> +#define PCGCTL_GATEHCLK			BIT(1)
+> +#define PCGCTL_STOPPCLK			BIT(0)
+> +
+> +#define PCGCCTL1			HSOTG_REG(0xe04)
+> +#define PCGCCTL1_TIMER			(0x3 << 1)
+> +#define PCGCCTL1_GATEEN			BIT(0)
+> +
+> +#define EPFIFO(_a)			HSOTG_REG(0x1000 + ((_a) * 0x1000))
+> +
+> +/* Host Mode Registers */
+> +
+> +#define HCFG				HSOTG_REG(0x0400)
+> +#define HCFG_MODECHTIMEN		BIT(31)
+> +#define HCFG_PERSCHEDENA		BIT(26)
+> +#define HCFG_FRLISTEN_MASK		(0x3 << 24)
+> +#define HCFG_FRLISTEN_SHIFT		24
+> +#define HCFG_FRLISTEN_8				(0 << 24)
+> +#define FRLISTEN_8_SIZE				8
+> +#define HCFG_FRLISTEN_16			BIT(24)
+> +#define FRLISTEN_16_SIZE			16
+> +#define HCFG_FRLISTEN_32			(2 << 24)
+> +#define FRLISTEN_32_SIZE			32
+> +#define HCFG_FRLISTEN_64			(3 << 24)
+> +#define FRLISTEN_64_SIZE			64
+> +#define HCFG_DESCDMA			BIT(23)
+> +#define HCFG_RESVALID_MASK		(0xff << 8)
+> +#define HCFG_RESVALID_SHIFT		8
+> +#define HCFG_ENA32KHZ			BIT(7)
+> +#define HCFG_FSLSSUPP			BIT(2)
+> +#define HCFG_FSLSPCLKSEL_MASK		(0x3 << 0)
+> +#define HCFG_FSLSPCLKSEL_SHIFT		0
+> +#define HCFG_FSLSPCLKSEL_30_60_MHZ	0
+> +#define HCFG_FSLSPCLKSEL_48_MHZ		1
+> +#define HCFG_FSLSPCLKSEL_6_MHZ		2
+> +
+> +#define HFIR				HSOTG_REG(0x0404)
+> +#define HFIR_FRINT_MASK			(0xffff << 0)
+> +#define HFIR_FRINT_SHIFT		0
+> +#define HFIR_RLDCTRL			BIT(16)
+> +
+> +#define HFNUM				HSOTG_REG(0x0408)
+> +#define HFNUM_FRREM_MASK		(0xffff << 16)
+> +#define HFNUM_FRREM_SHIFT		16
+> +#define HFNUM_FRNUM_MASK		(0xffff << 0)
+> +#define HFNUM_FRNUM_SHIFT		0
+> +#define HFNUM_MAX_FRNUM			0x3fff
+> +
+> +#define HPTXSTS				HSOTG_REG(0x0410)
+> +#define TXSTS_QTOP_ODD			BIT(31)
+> +#define TXSTS_QTOP_CHNEP_MASK		(0xf << 27)
+> +#define TXSTS_QTOP_CHNEP_SHIFT		27
+> +#define TXSTS_QTOP_TOKEN_MASK		(0x3 << 25)
+> +#define TXSTS_QTOP_TOKEN_SHIFT		25
+> +#define TXSTS_QTOP_TERMINATE		BIT(24)
+> +#define TXSTS_QSPCAVAIL_MASK		(0xff << 16)
+> +#define TXSTS_QSPCAVAIL_SHIFT		16
+> +#define TXSTS_FSPCAVAIL_MASK		(0xffff << 0)
+> +#define TXSTS_FSPCAVAIL_SHIFT		0
+> +
+> +#define HAINT				HSOTG_REG(0x0414)
+> +#define HAINTMSK			HSOTG_REG(0x0418)
+> +#define HFLBADDR			HSOTG_REG(0x041c)
+> +
+> +#define HPRT0				HSOTG_REG(0x0440)
+> +#define HPRT0_SPD_MASK			(0x3 << 17)
+> +#define HPRT0_SPD_SHIFT			17
+> +#define HPRT0_SPD_HIGH_SPEED		0
+> +#define HPRT0_SPD_FULL_SPEED		1
+> +#define HPRT0_SPD_LOW_SPEED		2
+> +#define HPRT0_TSTCTL_MASK		(0xf << 13)
+> +#define HPRT0_TSTCTL_SHIFT		13
+> +#define HPRT0_PWR			BIT(12)
+> +#define HPRT0_LNSTS_MASK		(0x3 << 10)
+> +#define HPRT0_LNSTS_SHIFT		10
+> +#define HPRT0_RST			BIT(8)
+> +#define HPRT0_SUSP			BIT(7)
+> +#define HPRT0_RES			BIT(6)
+> +#define HPRT0_OVRCURRCHG		BIT(5)
+> +#define HPRT0_OVRCURRACT		BIT(4)
+> +#define HPRT0_ENACHG			BIT(3)
+> +#define HPRT0_ENA			BIT(2)
+> +#define HPRT0_CONNDET			BIT(1)
+> +#define HPRT0_CONNSTS			BIT(0)
+> +
+> +#define HCCHAR(_ch)			HSOTG_REG(0x0500 + 0x20 * (_ch))
+> +#define HCCHAR_CHENA			BIT(31)
+> +#define HCCHAR_CHDIS			BIT(30)
+> +#define HCCHAR_ODDFRM			BIT(29)
+> +#define HCCHAR_DEVADDR_MASK		(0x7f << 22)
+> +#define HCCHAR_DEVADDR_SHIFT		22
+> +#define HCCHAR_MULTICNT_MASK		(0x3 << 20)
+> +#define HCCHAR_MULTICNT_SHIFT		20
+> +#define HCCHAR_EPTYPE_MASK		(0x3 << 18)
+> +#define HCCHAR_EPTYPE_SHIFT		18
+> +#define HCCHAR_LSPDDEV			BIT(17)
+> +#define HCCHAR_EPDIR			BIT(15)
+> +#define HCCHAR_EPNUM_MASK		(0xf << 11)
+> +#define HCCHAR_EPNUM_SHIFT		11
+> +#define HCCHAR_MPS_MASK			(0x7ff << 0)
+> +#define HCCHAR_MPS_SHIFT		0
+> +
+> +#define HCSPLT(_ch)			HSOTG_REG(0x0504 + 0x20 * (_ch))
+> +#define HCSPLT_SPLTENA			BIT(31)
+> +#define HCSPLT_COMPSPLT			BIT(16)
+> +#define HCSPLT_XACTPOS_MASK		(0x3 << 14)
+> +#define HCSPLT_XACTPOS_SHIFT		14
+> +#define HCSPLT_XACTPOS_MID		0
+> +#define HCSPLT_XACTPOS_END		1
+> +#define HCSPLT_XACTPOS_BEGIN		2
+> +#define HCSPLT_XACTPOS_ALL		3
+> +#define HCSPLT_HUBADDR_MASK		(0x7f << 7)
+> +#define HCSPLT_HUBADDR_SHIFT		7
+> +#define HCSPLT_PRTADDR_MASK		(0x7f << 0)
+> +#define HCSPLT_PRTADDR_SHIFT		0
+> +
+> +#define HCINT(_ch)			HSOTG_REG(0x0508 + 0x20 * (_ch))
+> +#define HCINTMSK(_ch)			HSOTG_REG(0x050c + 0x20 * (_ch))
+> +#define HCINTMSK_RESERVED14_31		(0x3ffff << 14)
+> +#define HCINTMSK_FRM_LIST_ROLL		BIT(13)
+> +#define HCINTMSK_XCS_XACT		BIT(12)
+> +#define HCINTMSK_BNA			BIT(11)
+> +#define HCINTMSK_DATATGLERR		BIT(10)
+> +#define HCINTMSK_FRMOVRUN		BIT(9)
+> +#define HCINTMSK_BBLERR			BIT(8)
+> +#define HCINTMSK_XACTERR		BIT(7)
+> +#define HCINTMSK_NYET			BIT(6)
+> +#define HCINTMSK_ACK			BIT(5)
+> +#define HCINTMSK_NAK			BIT(4)
+> +#define HCINTMSK_STALL			BIT(3)
+> +#define HCINTMSK_AHBERR			BIT(2)
+> +#define HCINTMSK_CHHLTD			BIT(1)
+> +#define HCINTMSK_XFERCOMPL		BIT(0)
+> +
+> +#define HCTSIZ(_ch)			HSOTG_REG(0x0510 + 0x20 * (_ch))
+> +#define TSIZ_DOPNG			BIT(31)
+> +#define TSIZ_SC_MC_PID_MASK		(0x3 << 29)
+> +#define TSIZ_SC_MC_PID_SHIFT		29
+> +#define TSIZ_SC_MC_PID_DATA0		0
+> +#define TSIZ_SC_MC_PID_DATA2		1
+> +#define TSIZ_SC_MC_PID_DATA1		2
+> +#define TSIZ_SC_MC_PID_MDATA		3
+> +#define TSIZ_SC_MC_PID_SETUP		3
+> +#define TSIZ_PKTCNT_MASK		(0x3ff << 19)
+> +#define TSIZ_PKTCNT_SHIFT		19
+> +#define TSIZ_NTD_MASK			(0xff << 8)
+> +#define TSIZ_NTD_SHIFT			8
+> +#define TSIZ_SCHINFO_MASK		(0xff << 0)
+> +#define TSIZ_SCHINFO_SHIFT		0
+> +#define TSIZ_XFERSIZE_MASK		(0x7ffff << 0)
+> +#define TSIZ_XFERSIZE_SHIFT		0
+> +
+> +#define HCDMA(_ch)			HSOTG_REG(0x0514 + 0x20 * (_ch))
+> +
+> +#define HCDMAB(_ch)			HSOTG_REG(0x051c + 0x20 * (_ch))
+> +
+> +#define HCFIFO(_ch)			HSOTG_REG(0x1000 + 0x1000 * (_ch))
+> +
+> +/**
+> + * struct dwc2_dma_desc - DMA descriptor structure,
+> + * used for both host and gadget modes
+> + *
+> + * @status: DMA descriptor status quadlet
+> + * @buf:    DMA descriptor data buffer pointer
+> + *
+> + * DMA Descriptor structure contains two quadlets:
+> + * Status quadlet and Data buffer pointer.
+> + */
+> +struct dwc2_dma_desc {
+> +	u32 status;
+> +	u32 buf;
+> +} __packed;
+> +
+> +/* Host Mode DMA descriptor status quadlet */
+> +
+> +#define HOST_DMA_A			BIT(31)
+> +#define HOST_DMA_STS_MASK		(0x3 << 28)
+> +#define HOST_DMA_STS_SHIFT		28
+> +#define HOST_DMA_STS_PKTERR		BIT(28)
+> +#define HOST_DMA_EOL			BIT(26)
+> +#define HOST_DMA_IOC			BIT(25)
+> +#define HOST_DMA_SUP			BIT(24)
+> +#define HOST_DMA_ALT_QTD		BIT(23)
+> +#define HOST_DMA_QTD_OFFSET_MASK	(0x3f << 17)
+> +#define HOST_DMA_QTD_OFFSET_SHIFT	17
+> +#define HOST_DMA_ISOC_NBYTES_MASK	(0xfff << 0)
+> +#define HOST_DMA_ISOC_NBYTES_SHIFT	0
+> +#define HOST_DMA_NBYTES_MASK		(0x1ffff << 0)
+> +#define HOST_DMA_NBYTES_SHIFT		0
+> +#define HOST_DMA_NBYTES_LIMIT		131071
+> +
+> +#define MAX_DMA_DESC_NUM_GENERIC	64
+> +#define MAX_DMA_DESC_NUM_HS_ISOC	256
+> +
+> +	/* DWC OTG HW Release versions */
+> +#define DWC2_CORE_REV_2_71a	0x4f54271a
+> +#define DWC2_CORE_REV_2_72a     0x4f54272a
+> +#define DWC2_CORE_REV_2_80a	0x4f54280a
+> +#define DWC2_CORE_REV_2_90a	0x4f54290a
+> +#define DWC2_CORE_REV_2_91a	0x4f54291a
+> +#define DWC2_CORE_REV_2_92a	0x4f54292a
+> +#define DWC2_CORE_REV_2_94a	0x4f54294a
+> +#define DWC2_CORE_REV_3_00a	0x4f54300a
+> +#define DWC2_CORE_REV_3_10a	0x4f54310a
+> +#define DWC2_CORE_REV_4_00a	0x4f54400a
+> +#define DWC2_FS_IOT_REV_1_00a	0x5531100a
+> +#define DWC2_HS_IOT_REV_1_00a	0x5532100a
+> +
+> +	/* DWC OTG HW Core ID */
+> +#define DWC2_OTG_ID		0x4f540000
+> +#define DWC2_FS_IOT_ID		0x55310000
+> +#define DWC2_HS_IOT_ID		0x55320000
+> +
+> +/* ==== u-boot ==== */
+> +
+> +/* Default driver configuration */
+> +#define CONFIG_DWC2_MAX_CHANNELS		DWC2_MAX_EPS_CHANNELS	/* Max # of EPs */
+> +#define CONFIG_DWC2_HOST_RX_FIFO_SIZE		(516 + CONFIG_DWC2_MAX_CHANNELS)
+> +#define CONFIG_DWC2_HOST_NPERIO_TX_FIFO_SIZE	0x100	/* nPeriodic TX FIFO */
+> +#define CONFIG_DWC2_HOST_PERIO_TX_FIFO_SIZE	0x200	/* Periodic TX FIFO */
+> +
+> +#endif	/* __DWC2_H__ */
+> diff --git a/drivers/usb/dwc2/rhub.c b/drivers/usb/dwc2/rhub.c
+> new file mode 100644
+> index 000000000..01c938943
+> --- /dev/null
+> +++ b/drivers/usb/dwc2/rhub.c
+> @@ -0,0 +1,419 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +#include "dwc2.h"
+> +
+> +static struct descriptor {
+> +	struct usb_hub_descriptor hub;
+> +	struct usb_device_descriptor device;
+> +	struct usb_config_descriptor config;
+> +	struct usb_interface_descriptor interface;
+> +	struct usb_endpoint_descriptor endpoint;
+> +}  __attribute__ ((packed)) descriptor = {
+> +	.hub = {
+> +		.bLength		= USB_DT_HUB_NONVAR_SIZE +
+> +					  ((USB_MAXCHILDREN + 1 + 7) / 8),
+> +		.bDescriptorType	= USB_DT_HUB,
+> +		.bNbrPorts		= 1,
+> +		.wHubCharacteristics	= 0,
+> +		.bPwrOn2PwrGood		= 0,
+> +		.bHubContrCurrent	= 0,
+> +		.u.hs.DeviceRemovable	= {0xff},
+> +		.u.hs.PortPwrCtrlMask	= {}
+> +	},
+> +	.device = {
+> +		.bLength		= USB_DT_DEVICE_SIZE,
+> +		.bDescriptorType	= USB_DT_DEVICE,
+> +		.bcdUSB			= __constant_cpu_to_le16(2), /* v2.0 */
+> +		.bDeviceClass		= USB_CLASS_HUB,
+> +		.bDeviceSubClass	= 0,
+> +		.bDeviceProtocol	= USB_HUB_PR_HS_NO_TT,
+> +		.bMaxPacketSize0	= 64,
+> +		.idVendor		= 0x0000,
+> +		.idProduct		= 0x0000,
+> +		.bcdDevice		= 0x0000,
+> +		.iManufacturer		= 1,
+> +		.iProduct		= 2,
+> +		.iSerialNumber		= 0,
+> +		.bNumConfigurations	= 1
+> +	},
+> +	.config = {
+> +		.bLength		= USB_DT_CONFIG_SIZE,
+> +		.bDescriptorType	= USB_DT_CONFIG,
+> +		.wTotalLength		= __constant_cpu_to_le16(
+> +						USB_DT_CONFIG_SIZE +
+> +						USB_DT_INTERFACE_SIZE +
+> +						USB_DT_ENDPOINT_SIZE),
+> +		.bNumInterfaces		= 1,
+> +		.bConfigurationValue	= 1,
+> +		.iConfiguration		= 0,
+> +		.bmAttributes		= USB_CONFIG_ATT_SELFPOWER,
+> +		.bMaxPower		= 0
+> +	},
+> +	.interface = {
+> +		.bLength		= USB_DT_INTERFACE_SIZE,
+> +		.bDescriptorType	= USB_DT_INTERFACE,
+> +		.bInterfaceNumber	= 0,
+> +		.bAlternateSetting	= 0,
+> +		.bNumEndpoints		= 1,
+> +		.bInterfaceClass	= USB_CLASS_HUB,
+> +		.bInterfaceSubClass	= 0,
+> +		.bInterfaceProtocol	= 0,
+> +		.iInterface		= 0
+> +	},
+> +	.endpoint = {
+> +		.bLength		= USB_DT_ENDPOINT_SIZE,
+> +		.bDescriptorType	= USB_DT_ENDPOINT,
+> +		.bEndpointAddress	= 1 | USB_DIR_IN, /* 0x81 */
+> +		.bmAttributes		= USB_ENDPOINT_XFER_INT,
+> +		.wMaxPacketSize		= __constant_cpu_to_le16(
+> +						(USB_MAXCHILDREN + 1 + 7) / 8),
+> +		.bInterval		= 255
+> +	},
+> +};
+> +
+> +static char *language_string = "\x09\x04";
+> +static char *vendor_string = "u-boot";
+> +static char *product_string = "DWC2 root hub";
+> +
+> +/*
+> + * DWC2 to USB API interface
+> + */
+> +static int dwc2_submit_rh_msg_in_status(struct dwc2 *dwc2,
+> +					   struct usb_device *dev, void *buffer,
+> +					   int txlen, struct devrequest *cmd)
+> +{
+> +	struct usb_port_status *portsts;
+> +	uint32_t hprt0 = 0;
+> +	uint32_t port_status = 0;
+> +	uint32_t port_change = 0;
+> +	int len = 0;
+> +	int speed;
+> +
+> +	switch (cmd->requesttype & (USB_TYPE_MASK | USB_RECIP_MASK)) {
+> +	case USB_TYPE_STANDARD | USB_RECIP_DEVICE:
+> +		*(uint16_t *)buffer = cpu_to_le16(1);
+> +		len = 2;
+> +		break;
+> +	case USB_TYPE_STANDARD | USB_RECIP_INTERFACE:
+> +	case USB_TYPE_STANDARD | USB_RECIP_ENDPOINT:
+> +		*(uint16_t *)buffer = cpu_to_le16(0);
+> +		len = 2;
+> +		break;
+> +	case USB_RT_HUB:	/* USB_TYPE_CLASS | USB_RECIP_DEVICE */
+> +		*(uint32_t *)buffer = cpu_to_le32(0);
+> +		len = 4;
+> +		break;
+> +	case USB_RT_PORT:	/* USB_TYPE_CLASS | USB_RECIP_OTHER */
+> +		hprt0 = dwc2_readl(dwc2, HPRT0);
+> +
+> +		if (hprt0 & HPRT0_CONNSTS)
+> +			port_status |= USB_PORT_STAT_CONNECTION;
+> +		if (hprt0 & HPRT0_ENA)
+> +			port_status |= USB_PORT_STAT_ENABLE;
+> +		if (hprt0 & HPRT0_SUSP)
+> +			port_status |= USB_PORT_STAT_SUSPEND;
+> +		if (hprt0 & HPRT0_OVRCURRACT)
+> +			port_status |= USB_PORT_STAT_OVERCURRENT;
+> +		if (hprt0 & HPRT0_RST)
+> +			port_status |= USB_PORT_STAT_RESET;
+> +		if (hprt0 & HPRT0_PWR)
+> +			port_status |= USB_PORT_STAT_POWER;
+> +
+> +		speed = (hprt0 & HPRT0_SPD_MASK) >> HPRT0_SPD_SHIFT;
+> +		if (speed == HPRT0_SPD_HIGH_SPEED)
+> +			port_status |= USB_PORT_STAT_HIGH_SPEED;
+> +		else if (speed == HPRT0_SPD_LOW_SPEED)
+> +			port_status |= USB_PORT_STAT_LOW_SPEED;
+> +
+> +		if (hprt0 & HPRT0_ENACHG)
+> +			port_change |= USB_PORT_STAT_C_ENABLE;
+> +		if (hprt0 & HPRT0_CONNDET)
+> +			port_change |= USB_PORT_STAT_C_CONNECTION;
+> +		if (hprt0 & HPRT0_OVRCURRCHG)
+> +			port_change |= USB_PORT_STAT_C_OVERCURRENT;
+> +
+> +		portsts = buffer;
+> +		portsts->wPortStatus = cpu_to_le16(port_status);
+> +		portsts->wPortChange = cpu_to_le16(port_change);
+> +		len = sizeof(*portsts);
+> +
+> +		break;
+> +	default:
+> +		goto unknown;
+> +	}
+> +
+> +	dev->act_len = min(len, txlen);
+> +	dev->status = 0;
+> +
+> +	return 0;
+> +
+> +unknown:
+> +	dev->act_len = 0;
+> +	dev->status = USB_ST_STALLED;
+> +
+> +	return -1;
+> +}
+> +
+> +static void strtodesc(char *dest, char *src, size_t n)
+> +{
+> +	unsigned int i;
+> +
+> +	dest[0] = n;
+> +	dest[1] = 0x3;
+> +	for (i = 2; i < n && *src != '\0'; i += 2) {
+> +		dest[i] = *(src++);
+> +		dest[i + 1] = 0;
+> +	}
+> +}
+> +
+> +/* Direction: In ; Request: Descriptor */
+> +static int dwc2_submit_rh_msg_in_descriptor(struct usb_device *dev,
+> +					       void *buffer, int txlen,
+> +					       struct devrequest *cmd)
+> +{
+> +	int len = 0;
+> +	char *src;
+> +	uint16_t wValue = le16_to_cpu(cmd->value);
+> +	uint16_t wLength = le16_to_cpu(cmd->length);
+> +
+> +	switch (cmd->requesttype & (USB_TYPE_MASK | USB_RECIP_MASK)) {
+> +	case USB_TYPE_STANDARD | USB_RECIP_DEVICE:
+> +		switch (wValue >> 8) {
+> +		case USB_DT_DEVICE:
+> +			debug("USB_DT_DEVICE request\n");
+> +			len = min3(txlen, (int)descriptor.device.bLength, (int)wLength);
+> +			memcpy(buffer, &descriptor.device, len);
+> +			break;
+> +		case USB_DT_CONFIG:
+> +			debug("USB_DT_CONFIG config\n");
+> +			len = min3(txlen, (int)descriptor.config.wTotalLength, (int)wLength);
+> +			memcpy(buffer, &descriptor.config, len);
+> +			break;
+> +		case USB_DT_STRING:
+> +			debug("USB_DT_STRING: %#x\n", wValue);
+> +			switch (wValue & 0xff) {
+> +			case 0: /* Language */
+> +				src = language_string;
+> +				len = strlen(src) + 2;
+> +				((char *)buffer)[0] = len;
+> +				((char *)buffer)[1] = 0x03;
+> +				memcpy(buffer + 2, src, strlen(src));
+> +				break;
+> +			case 1: /* Vendor */
+> +				src = vendor_string;
+> +				len = 2 * strlen(src) + 2;
+> +				strtodesc(buffer, src, len);
+> +				break;
+> +			case 2: /* Product */
+> +				src = product_string;
+> +				len = 2 * strlen(src) + 2;
+> +				strtodesc(buffer, src, len);
+> +				break;
+> +			default:
+> +				debug("%s(): unknown string index 0x%x\n", __func__, wValue & 0xff);
+> +				goto unknown;
+> +			}
+> +			len = min3(txlen, len, (int)wLength);
+> +			break;
+> +		default:
+> +			debug("%s(): unknown requesttype: 0x%x\n", __func__,
+> +			       cmd->requesttype & (USB_TYPE_MASK | USB_RECIP_MASK));
+> +			goto unknown;
+> +		}
+> +		break;
+> +
+> +	case USB_RT_HUB:	/* USB_TYPE_CLASS | USB_RECIP_DEVICE */
+> +		debug("USB_RT_HUB\n");
+> +
+> +		len = min3(txlen, (int)descriptor.hub.bLength, (int)wLength);
+> +		memcpy(buffer, &descriptor.hub, len);
+> +		break;
+> +	default:
+> +		goto unknown;
+> +	}
+> +
+> +	dev->act_len = len;
+> +	dev->status = 0;
+> +
+> +	return 0;
+> +
+> +unknown:
+> +	dev->act_len = 0;
+> +	dev->status = USB_ST_STALLED;
+> +
+> +	return -1;
+> +}
+> +
+> +/* Direction: In ; Request: Configuration */
+> +static int dwc2_submit_rh_msg_in_configuration(struct usb_device *dev,
+> +					       void *buffer, int txlen,
+> +					       struct devrequest *cmd)
+> +{
+> +	int len = 0;
+> +
+> +	switch (cmd->requesttype & (USB_TYPE_MASK | USB_RECIP_MASK)) {
+> +	case USB_TYPE_STANDARD | USB_RECIP_DEVICE:
+> +		*(uint8_t *)buffer = 0x01;
+> +		len = min(txlen, 1);
+> +		break;
+> +	default:
+> +		goto unknown;
+> +	}
+> +
+> +	dev->act_len = len;
+> +	dev->status = 0;
+> +
+> +	return 0;
+> +
+> +unknown:
+> +	dev->act_len = 0;
+> +	dev->status = USB_ST_STALLED;
+> +
+> +	return -1;
+> +}
+> +
+> +/* Direction: In */
+> +static int dwc2_submit_rh_msg_in(struct dwc2 *dwc2,
+> +				 struct usb_device *dev, void *buffer,
+> +				 int txlen, struct devrequest *cmd)
+> +{
+> +	switch (cmd->request) {
+> +	case USB_REQ_GET_STATUS:
+> +		return dwc2_submit_rh_msg_in_status(dwc2, dev, buffer,
+> +						       txlen, cmd);
+> +	case USB_REQ_GET_DESCRIPTOR:
+> +		return dwc2_submit_rh_msg_in_descriptor(dev, buffer,
+> +							   txlen, cmd);
+> +	case USB_REQ_GET_CONFIGURATION:
+> +		return dwc2_submit_rh_msg_in_configuration(dev, buffer,
+> +							      txlen, cmd);
+> +	default:
+> +		dev->act_len = 0;
+> +		dev->status = USB_ST_STALLED;
+> +
+> +		return -1;
+> +	}
+> +}
+> +
+> +/* Direction: Out */
+> +static int dwc2_submit_rh_msg_out(struct dwc2 *dwc2,
+> +				  struct usb_device *dev,
+> +				  void *buffer, int txlen,
+> +				  struct devrequest *cmd)
+> +{
+> +	uint16_t wValue = le16_to_cpu(cmd->value);
+> +	uint32_t hprt0;
+> +
+> +	switch (cmd->requesttype & (USB_TYPE_MASK | USB_RECIP_MASK)) {
+> +	case USB_TYPE_STANDARD | USB_RECIP_DEVICE:
+> +		switch (cmd->request) {
+> +		case USB_REQ_SET_ADDRESS:
+> +			dwc2_dbg(dwc2, "set root hub addr %d\n", wValue);
+> +			dwc2->root_hub_devnum = wValue;
+> +			break;
+> +		case USB_REQ_SET_CONFIGURATION:
+> +			break;
+> +		default:
+> +			goto unknown;
+> +		}
+> +		break;
+> +	case USB_TYPE_STANDARD | USB_RECIP_ENDPOINT:
+> +	case USB_RT_HUB:	/* USB_TYPE_CLASS | USB_RECIP_DEVICE */
+> +		switch (cmd->request) {
+> +		case USB_REQ_CLEAR_FEATURE:
+> +			break;
+> +		}
+> +		break;
+> +	case USB_RT_PORT:	/* USB_TYPE_CLASS | USB_RECIP_OTHER */
+> +		switch (cmd->request) {
+> +		case USB_REQ_CLEAR_FEATURE:
+> +			hprt0 = dwc2_readl(dwc2, HPRT0);
+> +			hprt0 &= ~(HPRT0_ENA | HPRT0_CONNDET
+> +				   | HPRT0_ENACHG | HPRT0_OVRCURRCHG);
+> +			switch (wValue) {
+> +			case USB_PORT_FEAT_ENABLE:
+> +				hprt0 |= HPRT0_ENA;
+> +				break;
+> +			case USB_PORT_FEAT_SUSPEND:
+> +				break;
+> +			case USB_PORT_FEAT_POWER:
+> +				break;
+> +			case USB_PORT_FEAT_C_CONNECTION:
+> +				hprt0 |= HPRT0_CONNDET;
+> +				break;
+> +			case USB_PORT_FEAT_C_ENABLE:
+> +				hprt0 |= HPRT0_ENACHG;
+> +				break;
+> +			case USB_PORT_FEAT_C_OVER_CURRENT:
+> +				hprt0 |= HPRT0_OVRCURRCHG;
+> +				break;
+> +			default:
+> +				dwc2_dbg(dwc2, "unknown feature 0x%x\n", wValue);
+> +				goto unknown;
+> +			}
+> +			dwc2_writel(dwc2, hprt0, HPRT0);
+> +			break;
+> +		case USB_REQ_SET_FEATURE:
+> +			hprt0 = dwc2_readl(dwc2, HPRT0);
+> +			hprt0 &= ~(HPRT0_ENA | HPRT0_CONNDET
+> +				   | HPRT0_ENACHG | HPRT0_OVRCURRCHG);
+> +			switch (wValue) {
+> +			case USB_PORT_FEAT_SUSPEND:
+> +				break;
+> +			case USB_PORT_FEAT_RESET:
+> +				hprt0 |= HPRT0_RST;
+> +				dwc2_writel(dwc2, hprt0, HPRT0);
+> +
+> +				mdelay(60);
+> +
+> +				hprt0 = dwc2_readl(dwc2, HPRT0);
+> +				hprt0 &= ~HPRT0_RST;
+> +				dwc2_writel(dwc2, hprt0, HPRT0);
+> +				break;
+> +			case USB_PORT_FEAT_POWER:
+> +				break;
+> +			case USB_PORT_FEAT_ENABLE:
+> +				/* Set by the core after a reset */
+> +				break;
+> +			default:
+> +				dwc2_dbg(dwc2, "unknown feature 0x%x\n", wValue);
+> +				goto unknown;
+> +			}
+> +			break;
+> +		default: goto unknown;
+> +		}
+> +		break;
+> +	default:
+> +		goto unknown;
+> +	}
+> +
+> +	dev->act_len = 0;
+> +	dev->status = 0;
+> +
+> +	return 0;
+> +
+> +unknown:
+> +	dev->act_len = 0;
+> +	dev->status = USB_ST_STALLED;
+> +	return -1;
+> +}
+> +
+> +int
+> +dwc2_submit_rh_msg(struct dwc2 *dwc2, struct usb_device *dev,
+> +				 unsigned long pipe, void *buffer, int txlen,
+> +				 struct devrequest *cmd)
+> +{
+> +	int stat = 0;
+> +
+> +	if (usb_pipeint(pipe)) {
+> +		dwc2_err(dwc2, "Root-Hub submit IRQ: NOT implemented\n");
+> +		return 0;
+> +	}
+> +
+> +	if (cmd->requesttype & USB_DIR_IN)
+> +		stat = dwc2_submit_rh_msg_in(dwc2, dev, buffer, txlen, cmd);
+> +	else
+> +		stat = dwc2_submit_rh_msg_out(dwc2, dev, buffer, txlen, cmd);
+> +
+> +	mdelay(1);
+> +	return stat;
+> +}
+> 
+
 -- 
-2.17.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
