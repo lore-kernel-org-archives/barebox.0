@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jy9p9-0000dK-Un
- for barebox@lists.infradead.org; Wed, 22 Jul 2020 08:10:00 +0000
+ id 1jyA0V-0001nY-GN
+ for barebox@lists.infradead.org; Wed, 22 Jul 2020 08:21:44 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 22 Jul 2020 10:09:56 +0200
-Message-Id: <20200722080956.17454-2-a.fatoum@pengutronix.de>
-In-Reply-To: <20200722080956.17454-1-a.fatoum@pengutronix.de>
-References: <20200722080956.17454-1-a.fatoum@pengutronix.de>
+Date: Wed, 22 Jul 2020 10:21:41 +0200
+Message-Id: <20200722082141.23590-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,52 +19,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] regulator: stm32-pwr: release resources to properly
- support EPROBE_DEFER
+Subject: [PATCH master] i2c: stm32: support new st,stm32mp15-i2c compatible
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Driver failed to release resources on failed probe so far, leading to
-deferred probe failing with -EBUSY. Fix this.
+Linux v5.8-rc1 has gained support for the FastMode+ registers on the
+stm32mp15, but those are incompatible between the stm32mp15 and the
+stm32f7, so a new compatible was introduced. The old compatible was
+replaced for the MP15 SoC, breaking I2C in barebox.
+Add the new compatible to fix this.
+
+Unlike Linux, we just use the same setup parameters as for the stm32f7.
+This is ok as long we don't want to support FastMode+.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/regulator/stm32-pwr.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+Hello Sascha,
 
-diff --git a/drivers/regulator/stm32-pwr.c b/drivers/regulator/stm32-pwr.c
-index 296f95bc4c32..99cabc5f8882 100644
---- a/drivers/regulator/stm32-pwr.c
-+++ b/drivers/regulator/stm32-pwr.c
-@@ -184,18 +184,25 @@ static int stm32_pwr_regulator_probe(struct device_d *dev)
- 		priv->rdev.desc = &desc->desc;
+Yet another v5.8-rc1 dts/ sync breakage.
+If possible, please reorder before the dts/ sync.
+Otherwise, please apply to master
+
+Cheers,
+Ahmad
+---
+ drivers/i2c/busses/i2c-stm32.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/i2c/busses/i2c-stm32.c b/drivers/i2c/busses/i2c-stm32.c
+index 9f34760e3fdf..971f2e68a4da 100644
+--- a/drivers/i2c/busses/i2c-stm32.c
++++ b/drivers/i2c/busses/i2c-stm32.c
+@@ -847,6 +847,7 @@ static const struct stm32_i2c_setup stm32f7_setup = {
  
- 		priv->supply = regulator_get(dev, desc->supply_name);
--		if (IS_ERR(priv->supply))
--			return PTR_ERR(priv->supply);
-+		if (IS_ERR(priv->supply)) {
-+			ret = PTR_ERR(priv->supply);
-+			goto release_region;
-+		}
+ static __maybe_unused struct of_device_id stm32_i2c_dt_ids[] = {
+ 	{ .compatible = "st,stm32f7-i2c", .data = &stm32f7_setup, },
++	{ .compatible = "st,stm32mp15-i2c", .data = &stm32f7_setup},
+ 	{ /* sentinel */ }
+ };
  
- 		ret = of_regulator_register(&priv->rdev, child);
- 		if (ret) {
- 			dev_err(dev, "%s: Failed to register regulator: %d\n",
- 				desc->name, ret);
--			return ret;
-+			goto release_region;
- 		}
- 	}
- 
- 	return 0;
-+
-+release_region:
-+	release_region(iores);
-+
-+	return ret;
- }
- 
- static const struct of_device_id stm32_pwr_of_match[] = {
 -- 
 2.27.0
 
