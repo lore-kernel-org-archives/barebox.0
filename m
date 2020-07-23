@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jyYXc-0000mZ-Ok
+ id 1jyYXc-0000mf-TL
  for barebox@lists.infradead.org; Thu, 23 Jul 2020 10:33:37 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Thu, 23 Jul 2020 12:33:20 +0200
-Message-Id: <20200723103326.23226-6-o.rempel@pengutronix.de>
+Date: Thu, 23 Jul 2020 12:33:25 +0200
+Message-Id: <20200723103326.23226-11-o.rempel@pengutronix.de>
 In-Reply-To: <20200723103326.23226-1-o.rempel@pengutronix.de>
 References: <20200723103326.23226-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
@@ -21,106 +21,169 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 05/11] of: of_net: sync of_get_mac_address() with latest
- kernel version
+Subject: [PATCH v1 10/11] of: add barebox-serial driver
 To: barebox@lists.infradead.org, david@protonic.nl
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-Sync of_get_mac_address() with kernel 5.8-rc1 do add nvmem cell support
+Provide a driver which should act as nvmem consumer
+for board serial number information.
+
+To make use of this driver, DTS should contain a serial
+node with compatibe "barebox,serial" and nvmem-cell-names
+"serial-number":
+
+...
+	chosen {
+		serial {
+			compatible = "barebox,serial";
+			nvmem-cell-names = "serial-number";
+			nvmem-cells = &some_provider;
+		};
+	};
+...
+
+The driver will read nvmem cell on probe and register
+a fixup for the kernel devicetree.
+
+This fixup will create a "/serial-number" property, which is
+used by current kernel:
+https://elixir.bootlin.com/linux/v5.7/source/arch/arm/kernel/setup.c#L941
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/of/of_net.c | 63 ++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 51 insertions(+), 12 deletions(-)
+ drivers/of/Makefile         |   2 +-
+ drivers/of/barebox_serial.c | 111 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 112 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/of/barebox_serial.c
 
-diff --git a/drivers/of/of_net.c b/drivers/of/of_net.c
-index cee4597195..946c4a4352 100644
---- a/drivers/of/of_net.c
-+++ b/drivers/of/of_net.c
-@@ -67,12 +67,45 @@ int of_get_phy_mode(struct device_node *np)
- }
- EXPORT_SYMBOL_GPL(of_get_phy_mode);
- 
-+static const void *of_get_mac_addr(struct device_node *np, const char *name)
-+{
-+	struct property *pp = of_find_property(np, name, NULL);
+diff --git a/drivers/of/Makefile b/drivers/of/Makefile
+index b6847752d2..b4a4c36b2a 100644
+--- a/drivers/of/Makefile
++++ b/drivers/of/Makefile
+@@ -5,5 +5,5 @@ obj-$(CONFIG_OF_PCI) += of_pci.o
+ obj-y += partition.o
+ obj-y += of_net.o
+ obj-$(CONFIG_MTD) += of_mtd.o
+-obj-$(CONFIG_OF_BAREBOX_DRIVERS) += barebox.o
++obj-$(CONFIG_OF_BAREBOX_DRIVERS) += barebox.o barebox_serial.o
+ obj-$(CONFIG_OF_OVERLAY) += overlay.o resolver.o of_firmware.o
+diff --git a/drivers/of/barebox_serial.c b/drivers/of/barebox_serial.c
+new file mode 100644
+index 0000000000..40efb731d3
+--- /dev/null
++++ b/drivers/of/barebox_serial.c
+@@ -0,0 +1,111 @@
++// SPDX-License-Identifier: GPL-2.0-only
++// Copyright (c) 2020 Pengutronix, Oleksij Rempel <kernel@pengutronix.de>
 +
-+	if (pp && pp->length == ETH_ALEN && is_valid_ether_addr(pp->value))
-+		return pp->value;
-+	return NULL;
++#include <common.h>
++#include <init.h>
++#include <linux/nvmem-consumer.h>
++
++struct bb_ser_priv {
++	struct device_d *dev;
++	char *ser;
++};
++
++static int bb_ser_fixup(struct device_node *root, void *data)
++{
++	struct bb_ser_priv *priv = data;
++	int ret;
++
++	ret = of_property_write_string(root, "serial-number", priv->ser);
++	if (ret)
++		dev_err(priv->dev, "Failed to set /serial-number\n");
++
++	return ret;
 +}
 +
-+static const void *of_get_mac_addr_nvmem(struct device_node *np)
++static int bb_ser_of_get_nvmem(struct bb_ser_priv *priv)
 +{
-+	int ret;
-+	const void *mac;
-+	u8 nvmem_mac[ETH_ALEN];
-+	struct device_d *dev = of_find_device_by_node(np);
++	struct nvmem_cell *cell;
++	size_t len;
++	char *ser;
 +
-+	if (!dev)
-+		return ERR_PTR(-ENODEV);
++	cell = nvmem_cell_get(priv->dev, "serial-number");
++	if (IS_ERR(cell))
++		return PTR_ERR(cell);
 +
-+	ret = nvmem_get_mac_address(dev, &nvmem_mac);
-+	if (ret) {
-+		return ERR_PTR(ret);
++	ser = nvmem_cell_read(cell, &len);
++	nvmem_cell_put(cell);
++
++	if (IS_ERR(ser))
++		return PTR_ERR(ser);
++
++	/* check if serial number is zero terminated */
++	if (ser[len - 1] != 0x0) {
++		char *tmp;
++
++		tmp = kzalloc(len + 1, GFP_KERNEL);
++		if (!tmp) {
++			kfree(ser);
++			return -ENOMEM;
++		}
++
++		memcpy(tmp, ser, len);
++		tmp[len] = 0x0;
++		kfree(ser);
++		ser = tmp;
 +	}
 +
-+	mac = kmemdup(nvmem_mac, ETH_ALEN, GFP_KERNEL);
-+	if (!mac)
-+		return ERR_PTR(-ENOMEM);
++	priv->ser = ser;
 +
-+	return mac;
++	return 0;
 +}
 +
- /**
-  * Search the device tree for the best MAC address to use.  'mac-address' is
-  * checked first, because that is supposed to contain to "most recent" MAC
-  * address. If that isn't set, then 'local-mac-address' is checked next,
-- * because that is the default address.  If that isn't set, then the obsolete
-- * 'address' is checked, just in case we're using an old device tree.
-+ * because that is the default address. If that isn't set, then the obsolete
-+ * 'address' is checked, just in case we're using an old device tree. If any
-+ * of the above isn't set, then try to get MAC address from nvmem cell named
-+ * 'mac-address'.
-  *
-  * Note that the 'address' property is supposed to contain a virtual address of
-  * the register set, but some DTS files have redefined that property to be the
-@@ -84,19 +117,25 @@ EXPORT_SYMBOL_GPL(of_get_phy_mode);
-  * addresses.  Some older U-Boots only initialized 'local-mac-address'.  In
-  * this case, the real MAC is in 'local-mac-address', and 'mac-address' exists
-  * but is all zeros.
-+ *
-+ * Return: Will be a valid pointer on success and ERR_PTR in case of error.
- */
- const void *of_get_mac_address(struct device_node *np)
- {
--	const void *p;
--	int len, i;
--	const char *str[] = { "mac-address", "local-mac-address", "address" };
--
--	for (i = 0; i < ARRAY_SIZE(str); i++) {
--		p = of_get_property(np, str[i], &len);
--		if (p && (len == 6) && is_valid_ether_addr(p))
--			return p;
--	}
-+	const void *addr;
- 
--	return NULL;
-+	addr = of_get_mac_addr(np, "mac-address");
-+	if (addr)
-+		return addr;
++static int bb_ser_probe(struct device_d *dev)
++{
++	struct bb_ser_priv *priv;
++	struct param_d *p;
++	int ret;
 +
-+	addr = of_get_mac_addr(np, "local-mac-address");
-+	if (addr)
-+		return addr;
++	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
++	if (!priv)
++		return -ENOMEM;
 +
-+	addr = of_get_mac_addr(np, "address");
-+	if (addr)
-+		return addr;
++	priv->dev = dev;
 +
-+	return of_get_mac_addr_nvmem(np);
- }
- EXPORT_SYMBOL(of_get_mac_address);
++	ret = bb_ser_of_get_nvmem(priv);
++	if (ret) {
++		dev_err(priv->dev, "Failed to read nvmem\n");
++		goto free_priv;
++	}
++
++	p = dev_add_param_string_fixed(dev, "serial-number", priv->ser);
++	if (IS_ERR(p)) {
++		dev_err(priv->dev, "Failed to set param_string\n");
++		ret = PTR_ERR(p);
++		goto free_ser;
++	}
++
++	ret = of_register_fixup(bb_ser_fixup, priv);
++	if (ret) {
++		dev_err(priv->dev, "Failed to register fixup\n");
++		goto free_ser;
++	}
++
++	return 0;
++free_ser:
++	kfree(priv->ser);
++free_priv:
++	kfree(priv);
++	return ret;
++}
++
++static const struct of_device_id bb_ser_of_match[] = {
++	{ .compatible = "barebox,serial", },
++	{ /* sentinel */ },
++};
++
++static struct driver_d bb_ser_driver = {
++	.name = "barebox-serial",
++	.probe = bb_ser_probe,
++	.of_compatible = DRV_OF_COMPAT(bb_ser_of_match),
++};
++device_platform_driver(bb_ser_driver);
 -- 
 2.27.0
 
