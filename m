@@ -1,19 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from zimbra2.kalray.eu ([92.103.151.219])
+Received: from mout.gmx.net ([212.227.17.20])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jyAw1-0000r5-2o
- for barebox@lists.infradead.org; Wed, 22 Jul 2020 09:21:10 +0000
-Date: Wed, 22 Jul 2020 11:21:06 +0200
-From: Jules Maselbas <jmaselbas@kalray.eu>
-Message-ID: <20200722092106.qdqz44coh33yud47@tellis.lin.mbt.kalray.eu>
-References: <20200721120600.15114-1-jmaselbas@kalray.eu>
- <20200721120600.15114-3-jmaselbas@kalray.eu>
- <c6c0ba75-68dc-6977-2c5f-77eabe36a63d@pengutronix.de>
- <20200722091235.l6zwavdfsz7c5lh4@tellis.lin.mbt.kalray.eu>
- <f1b04e58-742e-ad6d-61f3-2b91e43e4183@pengutronix.de>
+ id 1jyUsA-0007or-EK
+ for barebox@lists.infradead.org; Thu, 23 Jul 2020 06:38:31 +0000
+Received: from [192.168.178.55] ([95.90.205.186]) by mail.gmx.com (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MmDIu-1kgavc1JYW-00iG7k for
+ <barebox@lists.infradead.org>; Thu, 23 Jul 2020 08:25:24 +0200
+References: <20200720064108.8426-1-o.rempel@pengutronix.de>
+From: Oleksij Rempel <linux@rempel-privat.de>
+Message-ID: <5cf6b88f-db0b-bcce-b2f4-f9e14659b6e6@rempel-privat.de>
+Date: Thu, 23 Jul 2020 08:25:21 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <f1b04e58-742e-ad6d-61f3-2b91e43e4183@pengutronix.de>
+In-Reply-To: <20200720064108.8426-1-o.rempel@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,38 +25,96 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 02/14] usb: dwc2: Add host controller driver
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH v1] gpiolib: add gpio_array_to_id helper to get ID out of
+ GPIO array
+To: barebox@lists.infradead.org
 
-On Wed, Jul 22, 2020 at 11:18:39AM +0200, Ahmad Fatoum wrote:
-> On 7/22/20 11:12 AM, Jules Maselbas wrote:
-> > On Wed, Jul 22, 2020 at 08:36:25AM +0200, Ahmad Fatoum wrote:
-> >> On 7/21/20 2:05 PM, Jules Maselbas wrote:
-> >>> +static int transfer_chunk(struct dwc2 *dwc2, u8 hc,
-> >>> +			  u8 *pid, int in, void *buffer, int num_packets,
-> >>> +			  int xfer_len, int *actual_len, int odd_frame)
-> >>> +{
-> >>> +	uint32_t hctsiz, hcchar, sub;
-> >>> +	dma_addr_t dma_addr;
-> >>> +	int ret = 0;
-> >>> +
-> >>> +	dma_addr = dma_map_single(dwc2->dev, buffer, xfer_len,
-> >>> +				  in ? DMA_FROM_DEVICE : DMA_TO_DEVICE);
-> >>> +
-> >>> +	dwc2_dbg(dwc2, "chunk: pid=%d xfer_len=%u pkts=%u dma_addr=%llx\n",
-> >>> +			*pid, xfer_len, num_packets, dma_addr);
-> >>
-> >> Use %da for printing dma_addr, otherwise on 32-bit builds with #define DEBUG,
-> >> garbage would be read here.
-> > Yup sounds good, from what i've seen in vsprintf.c it's '%ad' to print
-> > dma_addr_t.
-> 
-> Sorry, I misread the code.
-> Apparently, it's neither. It should be %pad for dma_addr_t.
-> 
-oh! you're right.
-Thanks
+This version need some fixes,
+I'll send a new version soon
+
+Am 20.07.20 um 08:41 schrieb Oleksij Rempel:
+> Some boards provide a board version and/or ID coded by pull-up/down
+> resistors connected to the gpio pins (or pins which can be multiplexed
+> at some point as gpio). In this case every one implements own gpio id
+> reader function.
+>
+> To avoid it, provide the common helper function to extract a value out
+> of provided gpio array.
+>
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> ---
+>  drivers/gpio/gpiolib.c | 28 ++++++++++++++++++++++++++++
+>  include/gpio.h         |  5 +++++
+>  2 files changed, 33 insertions(+)
+>
+> diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+> index 27674af54c..b3d7450ef2 100644
+> --- a/drivers/gpio/gpiolib.c
+> +++ b/drivers/gpio/gpiolib.c
+> @@ -381,6 +381,34 @@ void gpio_free_array(const struct gpio *array, size_t num)
+>  }
+>  EXPORT_SYMBOL_GPL(gpio_free_array);
+>
+> +int gpio_array_to_id(const struct gpio *array, size_t num, u32 *val)
+> +{
+> +	u32 id = 0;
+> +	int ret, i;
+> +
+> +	if (num >= 32)
+> +		return -EOVERFLOW;
+> +
+> +	ret = gpio_request_array(array, num);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Wait untill logic level will be stable */
+> +	udelay(5);
+> +	for (i = 0; i < num; i++) {
+> +		ret = gpio_get_value(array[i].gpio);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		id |= ret << i;
+> +	}
+> +
+> +	*val = id;
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL(gpio_array_to_id);
+> +
+>  static int gpiochip_find_base(int start, int ngpio)
+>  {
+>  	int i;
+> diff --git a/include/gpio.h b/include/gpio.h
+> index 98c5b93ba2..81beb47309 100644
+> --- a/include/gpio.h
+> +++ b/include/gpio.h
+> @@ -145,6 +145,10 @@ static inline void gpio_free_array(const struct gpio *array, size_t num)
+>  	/* GPIO can never have been requested */
+>  	WARN_ON(1);
+>  }
+> +static inline int gpio_array_to_id(const struct gpio *array, size_t num, u32 *val)
+> +{
+> +	return -EINVAL;
+> +}
+>  #else
+>  int gpio_request(unsigned gpio, const char *label);
+>  int gpio_find_by_name(const char *name);
+> @@ -153,6 +157,7 @@ void gpio_free(unsigned gpio);
+>  int gpio_request_one(unsigned gpio, unsigned long flags, const char *label);
+>  int gpio_request_array(const struct gpio *array, size_t num);
+>  void gpio_free_array(const struct gpio *array, size_t num);
+> +int gpio_array_to_id(const struct gpio *array, size_t num, u32 *val);
+>  #endif
+>
+>  struct gpio_chip;
+>
+
+
+--
+Regards,
+Oleksij
 
 _______________________________________________
 barebox mailing list
