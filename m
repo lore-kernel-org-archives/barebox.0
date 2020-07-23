@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jyYXc-0000md-QP
- for barebox@lists.infradead.org; Thu, 23 Jul 2020 10:33:37 +0000
+ id 1jyYXc-0000ma-Kf
+ for barebox@lists.infradead.org; Thu, 23 Jul 2020 10:33:35 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Thu, 23 Jul 2020 12:33:19 +0200
-Message-Id: <20200723103326.23226-5-o.rempel@pengutronix.de>
+Date: Thu, 23 Jul 2020 12:33:23 +0200
+Message-Id: <20200723103326.23226-9-o.rempel@pengutronix.de>
 In-Reply-To: <20200723103326.23226-1-o.rempel@pengutronix.de>
 References: <20200723103326.23226-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
@@ -21,93 +21,87 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 04/11] net: port nvmem_get_mac_address() from linux kernel
+Subject: [PATCH v1 08/11] gpiolib: add gpio_array_to_id helper to get ID out
+ of GPIO array
 To: barebox@lists.infradead.org, david@protonic.nl
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-Port nvmem help to read mac-address from nvmem cell linked to the
-ethernet node. This function was ported from kernel 5.8-rc1.
+Some boards provide a board version and/or ID coded by pull-up/down
+resistors connected to the gpio pins (or pins which can be multiplexed
+at some point as gpio). In this case every one implements own gpio id
+reader function.
+
+To avoid it, provide the common helper function to extract a value out
+of provided gpio array.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- include/net.h |  4 ++++
- net/eth.c     | 38 ++++++++++++++++++++++++++++++++++++++
- 2 files changed, 42 insertions(+)
+ drivers/gpio/gpiolib.c | 28 ++++++++++++++++++++++++++++
+ include/gpio.h         |  5 +++++
+ 2 files changed, 33 insertions(+)
 
-diff --git a/include/net.h b/include/net.h
-index 54db8a179a..a5bfe9e7f8 100644
---- a/include/net.h
-+++ b/include/net.h
-@@ -97,9 +97,13 @@ static inline void of_eth_register_ethaddr(struct device_node *node,
- 		const char *ethaddr)
- {
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 27674af54c..2e9150d2ea 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -381,6 +381,34 @@ void gpio_free_array(const struct gpio *array, size_t num)
  }
-+static inline int nvmem_get_mac_address(struct device_d *dev, void *addrbuf)
-+{
-+}
- #else
- void eth_register_ethaddr(int ethid, const char *ethaddr);
- void of_eth_register_ethaddr(struct device_node *node, const char *ethaddr);
-+int nvmem_get_mac_address(struct device_d *dev, void *addrbuf);
- #endif
- /*
-  *	Ethernet header
-diff --git a/net/eth.c b/net/eth.c
-index e3d0d06efe..b33ef5fe1f 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -29,6 +29,7 @@
- #include <globalvar.h>
- #include <environment.h>
- #include <linux/ctype.h>
-+#include <linux/nvmem-consumer.h>
- #include <linux/stat.h>
+ EXPORT_SYMBOL_GPL(gpio_free_array);
  
- static uint64_t last_link_check;
-@@ -152,6 +153,43 @@ void of_eth_register_ethaddr(struct device_node *node, const char *ethaddr)
- 	list_add_tail(&addr->list, &ethaddr_list);
- }
- 
-+/**
-+ * Obtain the MAC address from an nvmem cell named 'mac-address' associated
-+ * with given device.
-+ *
-+ * @dev:	Device with which the mac-address cell is associated.
-+ * @addrbuf:	Buffer to which the MAC address will be copied on success.
-+ *
-+ * Returns 0 on success or a negative error number on failure.
-+ */
-+int nvmem_get_mac_address(struct device_d *dev, void *addrbuf)
++int gpio_array_to_id(const struct gpio *array, size_t num, u32 *val)
 +{
-+	struct nvmem_cell *cell;
-+	const void *mac;
-+	size_t len;
++	u32 id = 0;
++	int ret, i;
 +
-+	cell = nvmem_cell_get(dev, "mac-address");
-+	if (IS_ERR(cell))
-+		return PTR_ERR(cell);
++	if (num > 32)
++		return -EOVERFLOW;
 +
-+	mac = nvmem_cell_read(cell, &len);
-+	nvmem_cell_put(cell);
++	ret = gpio_request_array(array, num);
++	if (ret)
++		return ret;
 +
-+	if (IS_ERR(mac))
-+		return PTR_ERR(mac);
++	/* Wait untill logic level will be stable */
++	udelay(5);
++	for (i = 0; i < num; i++) {
++		ret = gpio_is_active(array[i].gpio);
++		if (ret < 0)
++			return ret;
 +
-+	if (len != ETH_ALEN || !is_valid_ether_addr(mac)) {
-+		kfree(mac);
-+		return -EINVAL;
++		id |= ret << i;
 +	}
 +
-+	memcpy(addrbuf, mac, ETH_ALEN);
-+	kfree(mac);
++	*val = id;
 +
 +	return 0;
 +}
-+EXPORT_SYMBOL(nvmem_get_mac_address);
++EXPORT_SYMBOL(gpio_array_to_id);
 +
- struct eth_device *eth_get_byname(const char *ethname)
+ static int gpiochip_find_base(int start, int ngpio)
  {
- 	struct eth_device *edev;
+ 	int i;
+diff --git a/include/gpio.h b/include/gpio.h
+index 98c5b93ba2..81beb47309 100644
+--- a/include/gpio.h
++++ b/include/gpio.h
+@@ -145,6 +145,10 @@ static inline void gpio_free_array(const struct gpio *array, size_t num)
+ 	/* GPIO can never have been requested */
+ 	WARN_ON(1);
+ }
++static inline int gpio_array_to_id(const struct gpio *array, size_t num, u32 *val)
++{
++	return -EINVAL;
++}
+ #else
+ int gpio_request(unsigned gpio, const char *label);
+ int gpio_find_by_name(const char *name);
+@@ -153,6 +157,7 @@ void gpio_free(unsigned gpio);
+ int gpio_request_one(unsigned gpio, unsigned long flags, const char *label);
+ int gpio_request_array(const struct gpio *array, size_t num);
+ void gpio_free_array(const struct gpio *array, size_t num);
++int gpio_array_to_id(const struct gpio *array, size_t num, u32 *val);
+ #endif
+ 
+ struct gpio_chip;
 -- 
 2.27.0
 
