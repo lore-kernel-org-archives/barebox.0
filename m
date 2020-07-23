@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jyYXc-0000ma-Kf
+ id 1jyYXc-0000me-Ms
  for barebox@lists.infradead.org; Thu, 23 Jul 2020 10:33:35 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Thu, 23 Jul 2020 12:33:23 +0200
-Message-Id: <20200723103326.23226-9-o.rempel@pengutronix.de>
+Date: Thu, 23 Jul 2020 12:33:22 +0200
+Message-Id: <20200723103326.23226-8-o.rempel@pengutronix.de>
 In-Reply-To: <20200723103326.23226-1-o.rempel@pengutronix.de>
 References: <20200723103326.23226-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
@@ -21,87 +21,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 08/11] gpiolib: add gpio_array_to_id helper to get ID out
- of GPIO array
+Subject: [PATCH v1 07/11] of: of_device_get_match_compatible() helper
 To: barebox@lists.infradead.org, david@protonic.nl
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-Some boards provide a board version and/or ID coded by pull-up/down
-resistors connected to the gpio pins (or pins which can be multiplexed
-at some point as gpio). In this case every one implements own gpio id
-reader function.
-
-To avoid it, provide the common helper function to extract a value out
-of provided gpio array.
+Some times we need to know, against which compatible did the driver
+was registered. So, instead of coding it in the driver, add generic
+helper for all drivers.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/gpio/gpiolib.c | 28 ++++++++++++++++++++++++++++
- include/gpio.h         |  5 +++++
- 2 files changed, 33 insertions(+)
+ drivers/of/device.c | 12 ++++++++++++
+ include/of_device.h |  6 ++++++
+ 2 files changed, 18 insertions(+)
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 27674af54c..2e9150d2ea 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -381,6 +381,34 @@ void gpio_free_array(const struct gpio *array, size_t num)
+diff --git a/drivers/of/device.c b/drivers/of/device.c
+index 67a67bd565..b3f522e1fa 100644
+--- a/drivers/of/device.c
++++ b/drivers/of/device.c
+@@ -31,3 +31,15 @@ const void *of_device_get_match_data(const struct device_d *dev)
+ 	return match->data;
  }
- EXPORT_SYMBOL_GPL(gpio_free_array);
- 
-+int gpio_array_to_id(const struct gpio *array, size_t num, u32 *val)
+ EXPORT_SYMBOL(of_device_get_match_data);
++
++const char *of_device_get_match_compatible(const struct device_d *dev)
 +{
-+	u32 id = 0;
-+	int ret, i;
++	const struct of_device_id *match;
 +
-+	if (num > 32)
-+		return -EOVERFLOW;
++	match = of_match_device(dev->driver->of_compatible, dev);
++	if (!match)
++		return NULL;
 +
-+	ret = gpio_request_array(array, num);
-+	if (ret)
-+		return ret;
-+
-+	/* Wait untill logic level will be stable */
-+	udelay(5);
-+	for (i = 0; i < num; i++) {
-+		ret = gpio_is_active(array[i].gpio);
-+		if (ret < 0)
-+			return ret;
-+
-+		id |= ret << i;
-+	}
-+
-+	*val = id;
-+
-+	return 0;
++	return match->compatible;
 +}
-+EXPORT_SYMBOL(gpio_array_to_id);
++EXPORT_SYMBOL(of_device_get_match_compatible);
+diff --git a/include/of_device.h b/include/of_device.h
+index 244f5fcbbb..cef6d5b5cc 100644
+--- a/include/of_device.h
++++ b/include/of_device.h
+@@ -22,6 +22,7 @@ static inline int of_driver_match_device(struct device_d *dev,
+ }
+ 
+ extern const void *of_device_get_match_data(const struct device_d *dev);
++extern const char *of_device_get_match_compatible(const struct device_d *dev);
+ 
+ #else /* CONFIG_OFTREE */
+ 
+@@ -36,6 +37,11 @@ static inline const void *of_device_get_match_data(const struct device_d *dev)
+ 	return NULL;
+ }
+ 
++static inline const char *of_device_get_match_compatible(const struct device_d *dev)
++{
++	return NULL;
++}
 +
- static int gpiochip_find_base(int start, int ngpio)
+ static inline const struct of_device_id *__of_match_device(
+ 		const struct of_device_id *matches, const struct device_d *dev)
  {
- 	int i;
-diff --git a/include/gpio.h b/include/gpio.h
-index 98c5b93ba2..81beb47309 100644
---- a/include/gpio.h
-+++ b/include/gpio.h
-@@ -145,6 +145,10 @@ static inline void gpio_free_array(const struct gpio *array, size_t num)
- 	/* GPIO can never have been requested */
- 	WARN_ON(1);
- }
-+static inline int gpio_array_to_id(const struct gpio *array, size_t num, u32 *val)
-+{
-+	return -EINVAL;
-+}
- #else
- int gpio_request(unsigned gpio, const char *label);
- int gpio_find_by_name(const char *name);
-@@ -153,6 +157,7 @@ void gpio_free(unsigned gpio);
- int gpio_request_one(unsigned gpio, unsigned long flags, const char *label);
- int gpio_request_array(const struct gpio *array, size_t num);
- void gpio_free_array(const struct gpio *array, size_t num);
-+int gpio_array_to_id(const struct gpio *array, size_t num, u32 *val);
- #endif
- 
- struct gpio_chip;
 -- 
 2.27.0
 
