@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jyYXc-0000mb-HV
- for barebox@lists.infradead.org; Thu, 23 Jul 2020 10:33:35 +0000
+ id 1jyYXf-0000mh-5d
+ for barebox@lists.infradead.org; Thu, 23 Jul 2020 10:33:37 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Thu, 23 Jul 2020 12:33:18 +0200
-Message-Id: <20200723103326.23226-4-o.rempel@pengutronix.de>
+Date: Thu, 23 Jul 2020 12:33:26 +0200
+Message-Id: <20200723103326.23226-12-o.rempel@pengutronix.de>
 In-Reply-To: <20200723103326.23226-1-o.rempel@pengutronix.de>
 References: <20200723103326.23226-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
@@ -21,53 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1 03/11] ARM: embest-riotboard: port board file to the driver
- model
+Subject: [PATCH v1 11/11] ARM: dts: imx6q-prti6q: add barebox.serial node
 To: barebox@lists.infradead.org, david@protonic.nl
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-This patch can be used as example for the new board-driver
-functionality.
+Add serial node provider
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- arch/arm/boards/embest-riotboard/board.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ arch/arm/dts/imx6q-prti6q.dts | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm/boards/embest-riotboard/board.c b/arch/arm/boards/embest-riotboard/board.c
-index 2e0cc9f0ab..746ecf0562 100644
---- a/arch/arm/boards/embest-riotboard/board.c
-+++ b/arch/arm/boards/embest-riotboard/board.c
-@@ -51,11 +51,8 @@ static int ar8035_phy_fixup(struct phy_device *dev)
- 	return 0;
- }
+diff --git a/arch/arm/dts/imx6q-prti6q.dts b/arch/arm/dts/imx6q-prti6q.dts
+index 76bb4d53d3..67e7f63979 100644
+--- a/arch/arm/dts/imx6q-prti6q.dts
++++ b/arch/arm/dts/imx6q-prti6q.dts
+@@ -18,6 +18,11 @@
+ 			compatible = "barebox,environment";
+ 			device-path = &ecspi1, "partname:env";
+ 		};
++		serial {
++			compatible = "barebox,serial";
++			nvmem-cell-names = "serial-number";
++			/* nvmem-cells will added board code */
++		};
+ 	};
  
--static int riotboard_device_init(void)
-+static int riotboard_probe(struct device_d *dev)
- {
--	if (!of_machine_is_compatible("riot,imx6s-riotboard"))
--		return 0;
--
- 	phy_register_fixup_for_uid(0x004dd072, 0xffffffef, ar8035_phy_fixup);
- 
- 	imx6_bbu_internal_mmc_register_handler("emmc", "/dev/mmc3.barebox",
-@@ -65,4 +62,15 @@ static int riotboard_device_init(void)
- 
- 	return 0;
- }
--device_initcall(riotboard_device_init);
-+
-+static const struct of_device_id riotboard_of_match[] = {
-+	{ .compatible = "riot,imx6s-riotboard" },
-+	{},
-+};
-+
-+static struct driver_d riotboard_driver = {
-+	.name = "board-embest-riot",
-+	.probe = riotboard_probe,
-+	.of_compatible = DRV_OF_COMPAT(riotboard_of_match),
-+};
-+device_platform_driver(riotboard_driver);
+ 	memory@10000000 {
 -- 
 2.27.0
 
