@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-mw2nam10on2103.outbound.protection.outlook.com
- ([40.107.94.103] helo=NAM10-MW2-obe.outbound.protection.outlook.com)
+Received: from mail-eopbgr700099.outbound.protection.outlook.com
+ ([40.107.70.99] helo=NAM04-SN1-obe.outbound.protection.outlook.com)
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jytFV-0000iS-Ty
- for barebox@lists.infradead.org; Fri, 24 Jul 2020 08:40:15 +0000
-From: "Barbier, Renaud" <renaud.barbier@abaco.com>
-Date: Fri, 24 Jul 2020 08:40:07 +0000
-Message-ID: <MN2PR16MB313567A878F515D9A7ECF86991770@MN2PR16MB3135.namprd16.prod.outlook.com>
-References: <MN2PR16MB313535B92C50776EC02EBD6191760@MN2PR16MB3135.namprd16.prod.outlook.com>
- <795d7b96dea1b9f6ab60020f9725c185d9f0822c.camel@pengutronix.de>
-In-Reply-To: <795d7b96dea1b9f6ab60020f9725c185d9f0822c.camel@pengutronix.de>
-Content-Language: en-US
+ id 1jyvb4-0000WL-HW
+ for barebox@lists.infradead.org; Fri, 24 Jul 2020 11:10:39 +0000
+From: Renaud Barbier <renaud.barbier@abaco.com>
+Date: Fri, 24 Jul 2020 12:09:37 +0100
+Message-Id: <1595588977-5147-1-git-send-email-renaud.barbier@abaco.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,51 +20,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: gpio generic driver
-To: Lucas Stach <l.stach@pengutronix.de>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] gpio: get function returns masked register value
+To: barebox@lists.infradead.org
+Cc: Renaud Barbier <renaud.barbier@abaco.com>
 
-Of course. Preparing a patch
+Unlike Linux the generic driver get function returns the masked register
+content and not the 0 or 1 value. The consequence is that gpio_get_value
+returns for instance 0x10 for bit 4 instead of 1.
+Use the Linux normalized form instead.
 
-> -----Original Message-----
-> From: Lucas Stach [mailto:l.stach@pengutronix.de]
-> Sent: 24 July 2020 09:20
-> To: Barbier, Renaud <renaud.barbier@abaco.com>;
-> barebox@lists.infradead.org
-> Subject: Re: gpio generic driver
-> 
-> 
-> 
-> [**EXTERNAL SOURCE**]:Please verify the source before clicking link or
-> opening attachment.
-> 
-> Am Donnerstag, den 23.07.2020, 19:51 +0000 schrieb Barbier, Renaud:
-> > Question regarding the function below:
-> >
-> > static int bgpio_get(struct gpio_chip *gc, unsigned int gpio)
-> >   {
-> >           struct bgpio_chip *bgc = to_bgpio_chip(gc);
-> >
-> > ~         return bgc->read_reg(bgc->reg_dat) & bgc->pin2mask(bgc, gpio);
-> >   }
-> >
-> > This returns the value from the register i.e the value as in 0x01000000 for
-> bit 3BE or 28LE. This is what I see using the drivers/gpio/gpio-mpc8xxx.c
-> driver.
-> >
-> > Is it not supposed to return just 0 or 1?
-> >
-> > Linux has
-> >
-> > return !!(gc->read_reg(gc->reg_dat) & bgpio_line2mask(gc, gpio));
-> 
-> This shouldn't make a difference when the return value is just used in
-> a condition, but it may confuse other uses which expect the normalized
-> 1/0 form.
-> 
-> Care to send a patch to change this to the more correct Linux version?
-> 
-> Regards,
-> Lucas
+Signed-off-by: Renaud Barbier <renaud.barbier@abaco.com>
+---
+ drivers/gpio/gpio-generic.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/gpio/gpio-generic.c b/drivers/gpio/gpio-generic.c
+index e4c4f39..2e0dad9 100644
+--- a/drivers/gpio/gpio-generic.c
++++ b/drivers/gpio/gpio-generic.c
+@@ -62,7 +62,7 @@ static int bgpio_get(struct gpio_chip *gc, unsigned int gpio)
+ {
+ 	struct bgpio_chip *bgc = to_bgpio_chip(gc);
+ 
+-	return bgc->read_reg(bgc->reg_dat) & bgc->pin2mask(bgc, gpio);
++	return !!(bgc->read_reg(bgc->reg_dat) & bgc->pin2mask(bgc, gpio));
+ }
+ 
+ static void bgpio_set(struct gpio_chip *gc, unsigned int gpio, int val)
+-- 
+1.7.1
+
 
 _______________________________________________
 barebox mailing list
