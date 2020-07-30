@@ -1,20 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k1FsF-0007b9-MB
- for barebox@lists.infradead.org; Thu, 30 Jul 2020 21:14:00 +0000
-Date: Thu, 30 Jul 2020 23:13:56 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-Message-ID: <20200730211356.GA10482@pengutronix.de>
+ id 1k1G1w-0000Hh-J8
+ for barebox@lists.infradead.org; Thu, 30 Jul 2020 21:24:01 +0000
 References: <20200707160124.3188793-1-enrico.scholz@sigma-chemnitz.de>
  <9c7cf1e5-baf1-65b0-ddef-e651f6f21e2d@pengutronix.de>
  <20200711050719.GP15485@pengutronix.de>
  <6525ec7f-c391-4394-4eef-6777459b94da@pengutronix.de>
  <20200711052007.GR15485@pengutronix.de>
  <d10c9162-4b11-92ad-daea-69f16b0f214d@pengutronix.de>
+ <20200730211356.GA10482@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <5895f2db-5702-c1f9-c4e2-81bd020da291@pengutronix.de>
+Date: Thu, 30 Jul 2020 23:23:58 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <d10c9162-4b11-92ad-daea-69f16b0f214d@pengutronix.de>
+In-Reply-To: <20200730211356.GA10482@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,62 +29,44 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] net:fec: fixed unaligned access and stack corruption
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: Marco Felsch <m.felsch@pengutronix.de>
 Cc: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>, barebox@lists.infradead.org
 
-Hi,
+Hello Marco,
 
-sorry for jumping in.
-
-On 20-07-11 07:28, Ahmad Fatoum wrote:
+On 7/30/20 11:13 PM, Marco Felsch wrote:
 > Hi,
 > 
-> On 7/11/20 7:20 AM, Sascha Hauer wrote:
-> > On Sat, Jul 11, 2020 at 07:13:11AM +0200, Ahmad Fatoum wrote:
-> >>
-> >>
-> >> On 7/11/20 7:07 AM, Sascha Hauer wrote:
-> >>> On Tue, Jul 07, 2020 at 07:11:31PM +0200, Ahmad Fatoum wrote:
-> >>>> On 7/7/20 6:01 PM, Enrico Scholz wrote:
-> >>>>> on 64 bit architectures, the 'enum fec_type' might not be aligned and
-> >>>>> large enough to hold a pointer.  
-> >>>>
-> >>>> I am wondering if we couldn't just adopt the Linux prototype:
-> >>>> void *dev_get_drvdata(const struct device_d *dev);
-> >>>>
-> >>>> and do away with the error code and most of the casts.
-> >>>> Users won't be able to differentiate between NULL from id table
-> >>>> and NULL due to lack of drvdata, but I don't think this is
-> >>>> that much of a downside, compared with not having casts obscure
-> >>>> the more common pitfall (besides fec_imx.c, lm75.c, apbh_dma.c and nand_mxs.c
-> >>>> are affected as well of which probably only the first is an issue.)
-> >>>
-> >>> Sounds good. When we change this we should rename the function
-> >>> alongside, because dev_get_drvdata() does something different in Linux.
-> >>
-> >> Does it? I thought it does the same, with the difference that it can
-> >> be set with dev_set_drvdata as well. At the cost of one extra pointer
-> >> per device_d, we could have both of them.
-> > 
-> > dev_set_drvdata() in Linux allows you to store a pointer to private
-> > driver data in struct device. We don't have a function for that in
-> > barebox and use dev->priv instead.
-> > dev_get_drvdata() in barebox gets you the device type data (or however
-> > we want to call it). There's no function for that in Linux and we have
-> > to first find out if we probe from platform data or from device tree
-> > to pick the right function to get the data.
+> sorry for jumping in.
+
+No worries,
+
+> On 20-07-11 07:28, Ahmad Fatoum wrote:
+>> Ah, I thought the drvdata is pre-populated in Linux. I would rename
+>> the new function to device_get_match_data then for alignment with
+>> Linux, with the difference that it returns either platform data or
+>> device tree driver_data as appropriate.
 > 
-> Ah, I thought the drvdata is pre-populated in Linux. I would rename
-> the new function to device_get_match_data then for alignment with
-> Linux, with the difference that it returns either platform data or
-> device tree driver_data as appropriate.
+> Linux uses the of_device_get_match_data() [1] for of-based drivers.
+> 
+> [1] https://elixir.bootlin.com/linux/v5.8-rc4/source/drivers/of/device.c#L189
 
-Linux uses the of_device_get_match_data() [1] for of-based drivers.
+Yes, future barebox device_get_match_data should work with both of
+and platform data, that's why I'd drop the of_ prefix.
 
-[1] https://elixir.bootlin.com/linux/v5.8-rc4/source/drivers/of/device.c#L189
+Cheers,
+Ahmad
 
-Regards,
-  Marco
+> 
+> Regards,
+>   Marco
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
