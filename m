@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from dedi548.your-server.de ([85.10.215.148])
+Received: from mail-qk1-x741.google.com ([2607:f8b0:4864:20::741])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k11AN-0005sC-CV
- for barebox@lists.infradead.org; Thu, 30 Jul 2020 05:31:44 +0000
-References: <20200715092656.27253-1-christian.mauderer@embedded-brains.de>
- <09d1bc99-aaa0-0b5b-5e98-e0bfbde8fb7b@embedded-brains.de>
- <f5bc216a-a034-8744-c0f2-a47af340bebb@pengutronix.de>
-From: Christian Mauderer <christian.mauderer@embedded-brains.de>
-Message-ID: <9b4e5db9-feae-ad66-5de3-977e8d8ad2a5@embedded-brains.de>
-Date: Thu, 30 Jul 2020 07:31:37 +0200
+ id 1k12WM-0004jb-1E
+ for barebox@lists.infradead.org; Thu, 30 Jul 2020 06:58:31 +0000
+Received: by mail-qk1-x741.google.com with SMTP id h7so24694041qkk.7
+ for <barebox@lists.infradead.org>; Wed, 29 Jul 2020 23:58:29 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <f5bc216a-a034-8744-c0f2-a47af340bebb@pengutronix.de>
-Content-Language: en-US
+References: <CAKd8=GuMSvfaXiTvx4MSOnkLNvTuZg--deRufN6wDaPr8OxA1g@mail.gmail.com>
+ <52e432ea-2ecb-2464-9126-379900da2433@pengutronix.de>
+In-Reply-To: <52e432ea-2ecb-2464-9126-379900da2433@pengutronix.de>
+From: Lars Pedersen <lapeddk@gmail.com>
+Date: Thu, 30 Jul 2020 08:58:16 +0200
+Message-ID: <CAKd8=GvjdkC=mHYq3LpLwtaSi8WhYsn3e1VphTWefbzpq=_ZFA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,176 +20,783 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v5] FIT: Parse `load` and `entry` addresses.
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
+Subject: Re: Getting serial console output on new imx7d tqma7 board UART4
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-SGVsbG8gQWhtZWQsCgpPbiAyOS8wNy8yMDIwIDE5OjIzLCBBaG1hZCBGYXRvdW0gd3JvdGU6Cj4g
-SGVsbG8gQ2hyaXN0aWFuLAo+IAo+IE9uIDcvMjgvMjAgMzo1NyBQTSwgQ2hyaXN0aWFuIE1hdWRl
-cmVyIHdyb3RlOgo+PiBIZWxsbywKPj4KPj4gYXJlIHRoZXJlIGFueSBvdGhlciBjaGFuZ2VzIHRv
-IG1ha2UgdGhhdCBwYXRjaCBhY2NlcHRhYmxlPwo+IAo+IFNhc2NoYSBpcyBvbiB2YWNhdGlvbiwg
-YnV0IHBhdGNoZXMgb24gdGhlIG1haWxpbmcgbGlzdCB3aWxsCj4gYmUgcmV2aWV3ZWQgYmVmb3Jl
-IHRoZSBuZXh0IHJlbGVhc2UuCgpUaGFua3MgZm9yIHRoZSBpbmZvcm1hdGlvbi4gSSB3YXNuJ3Qg
-YXdhcmUgb2YgdGhhdCBwcm9jZWR1cmUuCgpCZXN0IHJlZ2FyZHMKCkNocmlzdGlhbgoKPiAKPiBD
-aGVlcnMKPiBBaG1hZAo+IAo+Pgo+PiBCZXN0IHJlZ2FyZHMKPj4KPj4gQ2hyaXN0aWFuIE1hdWRl
-cmVyCj4+Cj4+IE9uIDE1LzA3LzIwMjAgMTE6MjYsIENocmlzdGlhbiBNYXVkZXJlciB3cm90ZToK
-Pj4+IEFjY29yZGluZyB0byB0aGUgVS1Cb290IGRvY3VtZW50YXRpb24gZm9yIHRoZSBGSVQgZmls
-ZSBmb3JtYXQsIHRoZSBsb2FkCj4+PiBhbmQgZW50cnkgaGF2ZSB0byBiZSBhbGx3YXlzIGRlZmlu
-ZWQgZm9yIGEgImtlcm5lbCIgb3IgInN0YW5kYWxvbmUiLgo+Pj4gQnV0IEJhcmVib3ggaWdub3Jl
-ZCB0aGUgcGFyYW1ldGVycy4gVGhhdCBjaGFuZ2VzIHdpdGggdGhpcyBwYXRjaC4KPj4+Cj4+PiBG
-b3IgYmFja3dhcmQgY29tcGF0aWJpbGl0eSB0aGUgZGVmYXVsdCBhZGRyZXNzIGlzIHN0aWxsIHVz
-ZWQgZm9yIGltYWdlcwo+Pj4gd2l0aG91dCBgbG9hZGAgb3IgYGVudHJ5YC4KPj4+Cj4+PiBTaWdu
-ZWQtb2ZmLWJ5OiBDaHJpc3RpYW4gTWF1ZGVyZXIgPGNocmlzdGlhbi5tYXVkZXJlckBlbWJlZGRl
-ZC1icmFpbnMuZGU+Cj4+PiAtLS0KPj4+ICBjb21tb24vYmxzcGVjLmMgICAgIHwgIDEgKwo+Pj4g
-IGNvbW1vbi9ib290LmMgICAgICAgfCAgMSArCj4+PiAgY29tbW9uL2Jvb3RtLmMgICAgICB8IDI0
-ICsrKysrKysrKystCj4+PiAgY29tbW9uL2ltYWdlLWZpdC5jICB8IDk3ICsrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLQo+Pj4gIGluY2x1ZGUvaW1hZ2UtZml0Lmgg
-fCAgMyArKwo+Pj4gIDUgZmlsZXMgY2hhbmdlZCwgMTEwIGluc2VydGlvbnMoKyksIDE2IGRlbGV0
-aW9ucygtKQo+Pj4KPj4+IGRpZmYgLS1naXQgYS9jb21tb24vYmxzcGVjLmMgYi9jb21tb24vYmxz
-cGVjLmMKPj4+IGluZGV4IDdmYjYyZDMxMC4uMDUwYWVkMjZhIDEwMDY0NAo+Pj4gLS0tIGEvY29t
-bW9uL2Jsc3BlYy5jCj4+PiArKysgYi9jb21tb24vYmxzcGVjLmMKPj4+IEBAIC0xNDIsNiArMTQy
-LDcgQEAgc3RhdGljIGludCBibHNwZWNfYm9vdChzdHJ1Y3QgYm9vdGVudHJ5ICpiZSwgaW50IHZl
-cmJvc2UsIGludCBkcnlydW4pCj4+PiAgCWdsb2JhbHZhcl9zZXRfbWF0Y2goImJvb3RtLmluaXRy
-ZCIsICIiKTsKPj4+ICAKPj4+ICAJYm9vdG1fZGF0YV9pbml0X2RlZmF1bHRzKCZkYXRhKTsKPj4+
-ICsJZGF0YS5vc19lbnRyeSA9IDA7Cj4+PiAgCj4+PiAgCWRldmljZXRyZWUgPSBibHNwZWNfZW50
-cnlfdmFyX2dldChlbnRyeSwgImRldmljZXRyZWUiKTsKPj4+ICAJaW5pdHJkID0gYmxzcGVjX2Vu
-dHJ5X3Zhcl9nZXQoZW50cnksICJpbml0cmQiKTsKPj4+IGRpZmYgLS1naXQgYS9jb21tb24vYm9v
-dC5jIGIvY29tbW9uL2Jvb3QuYwo+Pj4gaW5kZXggZGNiZTVjYzJlLi45M2FjMTYxMmQgMTAwNjQ0
-Cj4+PiAtLS0gYS9jb21tb24vYm9vdC5jCj4+PiArKysgYi9jb21tb24vYm9vdC5jCj4+PiBAQCAt
-MTA0LDYgKzEwNCw3IEBAIHN0YXRpYyBpbnQgYm9vdHNjcmlwdF9ib290KHN0cnVjdCBib290ZW50
-cnkgKmVudHJ5LCBpbnQgdmVyYm9zZSwgaW50IGRyeXJ1bikKPj4+ICAKPj4+ICAJYm9vdG1fZGF0
-YV9pbml0X2RlZmF1bHRzKCZkYXRhKTsKPj4+ICAKPj4+ICsJZGF0YS5vc19lbnRyeSA9IDA7Cj4+
-PiAgCWlmICh2ZXJib3NlKQo+Pj4gIAkJZGF0YS52ZXJib3NlID0gdmVyYm9zZTsKPj4+ICAJaWYg
-KGRyeXJ1bikKPj4+IGRpZmYgLS1naXQgYS9jb21tb24vYm9vdG0uYyBiL2NvbW1vbi9ib290bS5j
-Cj4+PiBpbmRleCAzNjZmMzE0NTUuLjhmOGRiZTZjYiAxMDA2NDQKPj4+IC0tLSBhL2NvbW1vbi9i
-b290bS5jCj4+PiArKysgYi9jb21tb24vYm9vdG0uYwo+Pj4gQEAgLTU4LDYgKzU4LDcgQEAgdm9p
-ZCBib290bV9kYXRhX2luaXRfZGVmYXVsdHMoc3RydWN0IGJvb3RtX2RhdGEgKmRhdGEpCj4+PiAg
-ewo+Pj4gIAlkYXRhLT5pbml0cmRfYWRkcmVzcyA9IFVJTUFHRV9JTlZBTElEX0FERFJFU1M7Cj4+
-PiAgCWRhdGEtPm9zX2FkZHJlc3MgPSBVSU1BR0VfU09NRV9BRERSRVNTOwo+Pj4gKwlkYXRhLT5v
-c19lbnRyeSA9IFVJTUFHRV9TT01FX0FERFJFU1M7Cj4+PiAgCWRhdGEtPm9mdHJlZV9maWxlID0g
-Z2V0ZW52X25vbmVtcHR5KCJnbG9iYWwuYm9vdG0ub2Z0cmVlIik7Cj4+PiAgCWRhdGEtPnRlZV9m
-aWxlID0gZ2V0ZW52X25vbmVtcHR5KCJnbG9iYWwuYm9vdG0udGVlIik7Cj4+PiAgCWRhdGEtPm9z
-X2ZpbGUgPSBnZXRlbnZfbm9uZW1wdHkoImdsb2JhbC5ib290bS5pbWFnZSIpOwo+Pj4gQEAgLTYw
-MSw2ICs2MDIsNyBAQCBpbnQgYm9vdG1fYm9vdChzdHJ1Y3QgYm9vdG1fZGF0YSAqYm9vdG1fZGF0
-YSkKPj4+ICAKPj4+ICAJaWYgKElTX0VOQUJMRUQoQ09ORklHX0ZJVElNQUdFKSAmJiBvc190eXBl
-ID09IGZpbGV0eXBlX29mdHJlZSkgewo+Pj4gIAkJc3RydWN0IGZpdF9oYW5kbGUgKmZpdDsKPj4+
-ICsJCXN0YXRpYyBjb25zdCBjaGFyICprZXJuZWxfaW1nID0gImtlcm5lbCI7Cj4+PiAgCj4+PiAg
-CQlmaXQgPSBmaXRfb3BlbihkYXRhLT5vc19maWxlLCBkYXRhLT52ZXJib3NlLCBkYXRhLT52ZXJp
-ZnkpOwo+Pj4gIAkJaWYgKElTX0VSUihmaXQpKSB7Cj4+PiBAQCAtNjIxLDEwICs2MjMsMjggQEAg
-aW50IGJvb3RtX2Jvb3Qoc3RydWN0IGJvb3RtX2RhdGEgKmJvb3RtX2RhdGEpCj4+PiAgCQkJZ290
-byBlcnJfb3V0Owo+Pj4gIAkJfQo+Pj4gIAo+Pj4gLQkJcmV0ID0gZml0X29wZW5faW1hZ2UoZGF0
-YS0+b3NfZml0LCBkYXRhLT5maXRfY29uZmlnLCAia2VybmVsIiwKPj4+ICsJCXJldCA9IGZpdF9v
-cGVuX2ltYWdlKGRhdGEtPm9zX2ZpdCwgZGF0YS0+Zml0X2NvbmZpZywga2VybmVsX2ltZywKPj4+
-ICAJCQkJICAgICAmZGF0YS0+Zml0X2tlcm5lbCwgJmRhdGEtPmZpdF9rZXJuZWxfc2l6ZSk7Cj4+
-PiAgCQlpZiAocmV0KQo+Pj4gIAkJCWdvdG8gZXJyX291dDsKPj4+ICsJCWlmIChkYXRhLT5vc19h
-ZGRyZXNzID09IFVJTUFHRV9TT01FX0FERFJFU1MpIHsKPj4+ICsJCQlyZXQgPSBmaXRfZ2V0X2lt
-YWdlX2FkZHJlc3MoZGF0YS0+b3NfZml0LAo+Pj4gKwkJCQkJCSAgICBkYXRhLT5maXRfY29uZmln
-LAo+Pj4gKwkJCQkJCSAgICBrZXJuZWxfaW1nLAo+Pj4gKwkJCQkJCSAgICAibG9hZCIsICZkYXRh
-LT5vc19hZGRyZXNzKTsKPj4+ICsJCQlpZiAocmV0KQo+Pj4gKwkJCQlnb3RvIGVycl9vdXQ7Cj4+
-PiArCQl9Cj4+PiArCQlpZiAoZGF0YS0+b3NfZW50cnkgPT0gVUlNQUdFX1NPTUVfQUREUkVTUykg
-ewo+Pj4gKwkJCXVuc2lnbmVkIGxvbmcgZW50cnk7Cj4+PiArCQkJcmV0ID0gZml0X2dldF9pbWFn
-ZV9hZGRyZXNzKGRhdGEtPm9zX2ZpdCwKPj4+ICsJCQkJCQkgICAgZGF0YS0+Zml0X2NvbmZpZywK
-Pj4+ICsJCQkJCQkgICAga2VybmVsX2ltZywKPj4+ICsJCQkJCQkgICAgImVudHJ5IiwgJmVudHJ5
-KTsKPj4+ICsJCQlpZiAoIXJldCkKPj4+ICsJCQkJZGF0YS0+b3NfZW50cnkgPSBlbnRyeSAtIGRh
-dGEtPm9zX2FkZHJlc3M7Cj4+PiArCQkJCS8qIE5vdGU6IEVycm9yIGNhc2UgdXNlZCBkZWZhdWx0
-IHZhbHVlLiAqLwo+Pj4gKwkJfQo+Pj4gIAl9Cj4+PiAgCj4+PiAgCWlmIChvc190eXBlID09IGZp
-bGV0eXBlX3VpbWFnZSkgewo+Pj4gQEAgLTY3Miw2ICs2OTIsOCBAQCBpbnQgYm9vdG1fYm9vdChz
-dHJ1Y3QgYm9vdG1fZGF0YSAqYm9vdG1fZGF0YSkKPj4+ICAKPj4+ICAJaWYgKGRhdGEtPm9zX2Fk
-ZHJlc3MgPT0gVUlNQUdFX1NPTUVfQUREUkVTUykKPj4+ICAJCWRhdGEtPm9zX2FkZHJlc3MgPSBV
-SU1BR0VfSU5WQUxJRF9BRERSRVNTOwo+Pj4gKwlpZiAoZGF0YS0+b3NfZW50cnkgPT0gVUlNQUdF
-X1NPTUVfQUREUkVTUykKPj4+ICsJCWRhdGEtPm9zX2VudHJ5ID0gMDsKPj4+ICAKPj4+ICAJaGFu
-ZGxlciA9IGJvb3RtX2ZpbmRfaGFuZGxlcihvc190eXBlLCBkYXRhKTsKPj4+ICAJaWYgKCFoYW5k
-bGVyKSB7Cj4+PiBkaWZmIC0tZ2l0IGEvY29tbW9uL2ltYWdlLWZpdC5jIGIvY29tbW9uL2ltYWdl
-LWZpdC5jCj4+PiBpbmRleCAyNjgxZDYyYTkuLjYxYWEyOTliMSAxMDA2NDQKPj4+IC0tLSBhL2Nv
-bW1vbi9pbWFnZS1maXQuYwo+Pj4gKysrIGIvY29tbW9uL2ltYWdlLWZpdC5jCj4+PiBAQCAtNTE3
-LDYgKzUxNyw4MyBAQCBpbnQgZml0X2hhc19pbWFnZShzdHJ1Y3QgZml0X2hhbmRsZSAqaGFuZGxl
-LCB2b2lkICpjb25maWd1cmF0aW9uLAo+Pj4gIAlyZXR1cm4gMTsKPj4+ICB9Cj4+PiAgCj4+PiAr
-c3RhdGljIGludCBmaXRfZ2V0X2FkZHJlc3Moc3RydWN0IGRldmljZV9ub2RlICppbWFnZSwgY29u
-c3QgY2hhciAqcHJvcGVydHksCj4+PiArCQkJICAgdW5zaWduZWQgbG9uZyAqYWRkcikKPj4+ICt7
-Cj4+PiArCWNvbnN0IF9fYmUzMiAqY2VsbDsKPj4+ICsJaW50IGxlbiA9IDA7Cj4+PiArCj4+PiAr
-CWNlbGwgPSBvZl9nZXRfcHJvcGVydHkoaW1hZ2UsIHByb3BlcnR5LCAmbGVuKTsKPj4+ICsJaWYg
-KCFjZWxsKQo+Pj4gKwkJcmV0dXJuIC1FSU5WQUw7Cj4+PiArCWlmIChsZW4gPiBzaXplb2YoKmFk
-ZHIpKQo+Pj4gKwkJcmV0dXJuIC1FTk9UU1VQUDsKPj4+ICsKPj4+ICsJKmFkZHIgPSAodW5zaWdu
-ZWQgbG9uZylvZl9yZWFkX251bWJlcihjZWxsLCBsZW4gLyBzaXplb2YoKmNlbGwpKTsKPj4+ICsJ
-cmV0dXJuIDA7Cj4+PiArfQo+Pj4gKwo+Pj4gK3N0YXRpYyBpbnQKPj4+ICtmaXRfZ2V0X2ltYWdl
-KHN0cnVjdCBmaXRfaGFuZGxlICpoYW5kbGUsIHZvaWQgKmNvbmZpZ3VyYXRpb24sCj4+PiArCSAg
-ICAgIGNvbnN0IGNoYXIgKip1bml0LCBzdHJ1Y3QgZGV2aWNlX25vZGUgKippbWFnZSkKPj4+ICt7
-Cj4+PiArCXN0cnVjdCBkZXZpY2Vfbm9kZSAqY29uZl9ub2RlID0gY29uZmlndXJhdGlvbjsKPj4+
-ICsKPj4+ICsJaWYgKGNvbmZfbm9kZSkgewo+Pj4gKwkJaWYgKG9mX3Byb3BlcnR5X3JlYWRfc3Ry
-aW5nKGNvbmZfbm9kZSwgKnVuaXQsIHVuaXQpKSB7Cj4+PiArCQkJcHJfZXJyKCJObyBpbWFnZSBu
-YW1lZCAnJXMnXG4iLCAqdW5pdCk7Cj4+PiArCQkJcmV0dXJuIC1FTk9FTlQ7Cj4+PiArCQl9Cj4+
-PiArCX0KPj4+ICsKPj4+ICsJKmltYWdlID0gb2ZfZ2V0X2NoaWxkX2J5X25hbWUoaGFuZGxlLT5p
-bWFnZXMsICp1bml0KTsKPj4+ICsJaWYgKCEqaW1hZ2UpCj4+PiArCQlyZXR1cm4gLUVOT0VOVDsK
-Pj4+ICsKPj4+ICsJcmV0dXJuIDA7Cj4+PiArfQo+Pj4gKwo+Pj4gKy8qKgo+Pj4gKyAqIGZpdF9n
-ZXRfaW1hZ2VfYWRkcmVzcyAtIEdldCBhbiBhZGRyZXNzIGZyb20gYW4gaW1hZ2UgaW4gYSBGSVQg
-aW1hZ2UKPj4+ICsgKiBAaGFuZGxlOiBUaGUgRklUIGltYWdlIGhhbmRsZQo+Pj4gKyAqIEBuYW1l
-OiBUaGUgbmFtZSBvZiB0aGUgaW1hZ2UgdG8gb3Blbgo+Pj4gKyAqIEBwcm9wZXJ0eTogVGhlIG5h
-bWUgb2YgdGhlIGFkZHJlc3MgdG8gZ2V0IChmb3IgZXhhbXBsZSAibG9hZCIgb3IgImVudHJ5IikK
-Pj4+ICsgKiBAYWRkcmVzczogVGhlIGFkZHJlc3MgZ2l2ZW4gYnkgdGhlIGltYWdlCj4+PiArICoK
-Pj4+ICsgKiBUcnkgdG8gcGFyc2UgdGhlIEBwcm9wZXJ0eSBpbiB0aGUgaW1hZ2UgQG5hbWUgYXMg
-YW4gYWRkcmVzcy4gQGNvbmZpZ3VyYXRpb24KPj4+ICsgKiBob2xkcyB0aGUgY29va2llIHJldHVy
-bmVkIGZyb20gZml0X29wZW5fY29uZmlndXJhdGlvbigpIGlmIHRoZSBpbWFnZSBpcwo+Pj4gKyAq
-IG9wZW5lZCBhcyBwYXJ0IG9mIGEgY29uZmlndXJhdGlvbiwgb3IgTlVMTCBpZiB0aGUgaW1hZ2Ug
-aXMgb3BlbmVkIHdpdGhvdXQgYQo+Pj4gKyAqIGNvbmZpZ3VyYXRpb24uIElmIGl0IGV4aXN0cyB0
-aGUgdmFsdWUgd2lsbCBiZSByZXR1cm5lZCBpbiBAYWRkcmVzcy4gT3RoZXJ3aXNlCj4+PiArICog
-QGFkZHJlc3Mgd29uJ3QgYmUgY2hhbmdlZC4KPj4+ICsgKgo+Pj4gKyAqIFJldHVybjogMCBmb3Ig
-c3VjY2VzcywgbmVnYXRpdmUgZXJyb3IgY29kZSBvdGhlcndpc2UKPj4+ICsgKi8KPj4+ICtpbnQg
-Zml0X2dldF9pbWFnZV9hZGRyZXNzKHN0cnVjdCBmaXRfaGFuZGxlICpoYW5kbGUsIHZvaWQgKmNv
-bmZpZ3VyYXRpb24sCj4+PiArCQkJICBjb25zdCBjaGFyICpuYW1lLCBjb25zdCBjaGFyICpwcm9w
-ZXJ0eSwKPj4+ICsJCQkgIHVuc2lnbmVkIGxvbmcgKmFkZHJlc3MpCj4+PiArewo+Pj4gKwlzdHJ1
-Y3QgZGV2aWNlX25vZGUgKmltYWdlOwo+Pj4gKwljb25zdCBjaGFyICp1bml0ID0gbmFtZTsKPj4+
-ICsJaW50IHJldDsKPj4+ICsKPj4+ICsJaWYgKCFhZGRyZXNzIHx8ICFwcm9wZXJ0eSB8fCAhbmFt
-ZSkKPj4+ICsJCXJldHVybiAtRUlOVkFMOwo+Pj4gKwo+Pj4gKwlyZXQgPSBmaXRfZ2V0X2ltYWdl
-KGhhbmRsZSwgY29uZmlndXJhdGlvbiwgJnVuaXQsICZpbWFnZSk7Cj4+PiArCWlmIChyZXQpCj4+
-PiArCQlyZXR1cm4gcmV0Owo+Pj4gKwo+Pj4gKwlwcl9pbmZvKCIlcy8lczogIiwgaW1hZ2UtPmZ1
-bGxfbmFtZSwgcHJvcGVydHkpOwo+Pj4gKwo+Pj4gKwlyZXQgPSBmaXRfZ2V0X2FkZHJlc3MoaW1h
-Z2UsIHByb3BlcnR5LCBhZGRyZXNzKTsKPj4+ICsJaWYgKHJldCA8IDApCj4+PiArCQlwcl9jb250
-KCI8bm90IGZvdW5kPlxuIik7Cj4+PiArCWVsc2UKPj4+ICsJCXByX2NvbnQoIjB4JWx4XG4iLCAq
-YWRkcmVzcyk7Cj4+PiArCj4+PiArCXJldHVybiByZXQ7Cj4+PiArfQo+Pj4gKwo+Pj4gIC8qKgo+
-Pj4gICAqIGZpdF9vcGVuX2ltYWdlIC0gT3BlbiBhbiBpbWFnZSBpbiBhIEZJVCBpbWFnZQo+Pj4g
-ICAqIEBoYW5kbGU6IFRoZSBGSVQgaW1hZ2UgaGFuZGxlCj4+PiBAQCAtNTM5LDI0ICs2MTYsMTQg
-QEAgaW50IGZpdF9vcGVuX2ltYWdlKHN0cnVjdCBmaXRfaGFuZGxlICpoYW5kbGUsIHZvaWQgKmNv
-bmZpZ3VyYXRpb24sCj4+PiAgCQkgICB1bnNpZ25lZCBsb25nICpvdXRzaXplKQo+Pj4gIHsKPj4+
-ICAJc3RydWN0IGRldmljZV9ub2RlICppbWFnZTsKPj4+IC0JY29uc3QgY2hhciAqdW5pdCwgKnR5
-cGUgPSBOVUxMLCAqZGVzYz0gIihubyBkZXNjcmlwdGlvbikiOwo+Pj4gKwljb25zdCBjaGFyICp1
-bml0ID0gbmFtZSwgKnR5cGUgPSBOVUxMLCAqZGVzYz0gIihubyBkZXNjcmlwdGlvbikiOwo+Pj4g
-IAljb25zdCB2b2lkICpkYXRhOwo+Pj4gIAlpbnQgZGF0YV9sZW47Cj4+PiAgCWludCByZXQgPSAw
-Owo+Pj4gLQlzdHJ1Y3QgZGV2aWNlX25vZGUgKmNvbmZfbm9kZSA9IGNvbmZpZ3VyYXRpb247Cj4+
-PiAgCj4+PiAtCWlmIChjb25mX25vZGUpIHsKPj4+IC0JCWlmIChvZl9wcm9wZXJ0eV9yZWFkX3N0
-cmluZyhjb25mX25vZGUsIG5hbWUsICZ1bml0KSkgewo+Pj4gLQkJCXByX2VycigiTm8gaW1hZ2Ug
-bmFtZWQgJyVzJ1xuIiwgbmFtZSk7Cj4+PiAtCQkJcmV0dXJuIC1FTk9FTlQ7Cj4+PiAtCQl9Cj4+
-PiAtCX0gZWxzZSB7Cj4+PiAtCQl1bml0ID0gbmFtZTsKPj4+IC0JfQo+Pj4gLQo+Pj4gLQlpbWFn
-ZSA9IG9mX2dldF9jaGlsZF9ieV9uYW1lKGhhbmRsZS0+aW1hZ2VzLCB1bml0KTsKPj4+IC0JaWYg
-KCFpbWFnZSkKPj4+IC0JCXJldHVybiAtRU5PRU5UOwo+Pj4gKwlyZXQgPSBmaXRfZ2V0X2ltYWdl
-KGhhbmRsZSwgY29uZmlndXJhdGlvbiwgJnVuaXQsICZpbWFnZSk7Cj4+PiArCWlmIChyZXQpCj4+
-PiArCQlyZXR1cm4gcmV0Owo+Pj4gIAo+Pj4gIAlvZl9wcm9wZXJ0eV9yZWFkX3N0cmluZyhpbWFn
-ZSwgImRlc2NyaXB0aW9uIiwgJmRlc2MpOwo+Pj4gIAlwcl9pbmZvKCJpbWFnZSAnJXMnOiAnJXMn
-XG4iLCB1bml0LCBkZXNjKTsKPj4+IEBAIC01NzMsNyArNjQwLDcgQEAgaW50IGZpdF9vcGVuX2lt
-YWdlKHN0cnVjdCBmaXRfaGFuZGxlICpoYW5kbGUsIHZvaWQgKmNvbmZpZ3VyYXRpb24sCj4+PiAg
-CQlyZXR1cm4gLUVJTlZBTDsKPj4+ICAJfQo+Pj4gIAo+Pj4gLQlpZiAoY29uZl9ub2RlKQo+Pj4g
-KwlpZiAoY29uZmlndXJhdGlvbikKPj4+ICAJCXJldCA9IGZpdF92ZXJpZnlfaGFzaChoYW5kbGUs
-IGltYWdlLCBkYXRhLCBkYXRhX2xlbik7Cj4+PiAgCWVsc2UKPj4+ICAJCXJldCA9IGZpdF9pbWFn
-ZV92ZXJpZnlfc2lnbmF0dXJlKGhhbmRsZSwgaW1hZ2UsIGRhdGEsIGRhdGFfbGVuKTsKPj4+IGRp
-ZmYgLS1naXQgYS9pbmNsdWRlL2ltYWdlLWZpdC5oIGIvaW5jbHVkZS9pbWFnZS1maXQuaAo+Pj4g
-aW5kZXggMjdjOWU4MzUxLi5mMjE1NDU5ODggMTAwNjQ0Cj4+PiAtLS0gYS9pbmNsdWRlL2ltYWdl
-LWZpdC5oCj4+PiArKysgYi9pbmNsdWRlL2ltYWdlLWZpdC5oCj4+PiBAQCAtMzIsNiArMzIsOSBA
-QCBpbnQgZml0X2hhc19pbWFnZShzdHJ1Y3QgZml0X2hhbmRsZSAqaGFuZGxlLCB2b2lkICpjb25m
-aWd1cmF0aW9uLAo+Pj4gIGludCBmaXRfb3Blbl9pbWFnZShzdHJ1Y3QgZml0X2hhbmRsZSAqaGFu
-ZGxlLCB2b2lkICpjb25maWd1cmF0aW9uLAo+Pj4gIAkJICAgY29uc3QgY2hhciAqbmFtZSwgY29u
-c3Qgdm9pZCAqKm91dGRhdGEsCj4+PiAgCQkgICB1bnNpZ25lZCBsb25nICpvdXRzaXplKTsKPj4+
-ICtpbnQgZml0X2dldF9pbWFnZV9hZGRyZXNzKHN0cnVjdCBmaXRfaGFuZGxlICpoYW5kbGUsIHZv
-aWQgKmNvbmZpZ3VyYXRpb24sCj4+PiArCQkJICBjb25zdCBjaGFyICpuYW1lLCBjb25zdCBjaGFy
-ICpwcm9wZXJ0eSwKPj4+ICsJCQkgIHVuc2lnbmVkIGxvbmcgKmFkZHJlc3MpOwo+Pj4gIAo+Pj4g
-IHZvaWQgZml0X2Nsb3NlKHN0cnVjdCBmaXRfaGFuZGxlICpoYW5kbGUpOwo+Pj4gIAo+Pj4KPj4K
-PiAKCi0tIAotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQplbWJl
-ZGRlZCBicmFpbnMgR21iSApIZXJyIENocmlzdGlhbiBNYXVkZXJlcgpEb3JuaWVyc3RyLiA0CkQt
-ODIxNzggUHVjaGhlaW0KR2VybWFueQplbWFpbDogY2hyaXN0aWFuLm1hdWRlcmVyQGVtYmVkZGVk
-LWJyYWlucy5kZQpQaG9uZTogKzQ5LTg5LTE4IDk0IDc0MSAtIDE4CkZheDogICArNDktODktMTgg
-OTQgNzQxIC0gMDgKUEdQOiBQdWJsaWMga2V5IGF2YWlsYWJsZSBvbiByZXF1ZXN0LgoKRGllc2Ug
-TmFjaHJpY2h0IGlzdCBrZWluZSBnZXNjaMOkZnRsaWNoZSBNaXR0ZWlsdW5nIGltIFNpbm5lIGRl
-cyBFSFVHLgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-YmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9s
-aXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+The DCD part now matches exactly for the top part (00000000 to
+00000020)  of it which i guess is the IVT header, which shouldn't be
+the same?
+
+The following is xxd where barebox  (left side) has been shifted 0x400
+to match u-boot part.
+
+/usr/bin/diff -y <(xxd barebox_stripped) <(xxd uboot_stripped)
+00000000: d100 2040 0010 0080 0000 0000 2c04 0080  .. @...... |
+00000000: d100 2040 0000 c0bf 0000 0000 2cf4 bfbf  .. @......
+00000010: 2004 0080 0004 0080 0000 0000 0000 0000   ......... |
+00000010: 20f4 bfbf 00f4 bfbf 0000 0000 0000 0000   .........
+00000020: 0000 0080 00e0 0500 0000 0000 d201 ec40  .......... |
+00000020: 00f0 bfbf 00b0 0600 0000 0000 d201 ec40  ..........
+00000030: cc00 3404 3034 0004 4f40 0005 3036 0388  ..4.04..O@
+00000030: cc00 3404 3034 0004 4f40 0005 3036 0388  ..4.04..O@
+00000040: 4000 0000 3036 0384 4000 0000 3036 0070  @...06..@.
+00000040: 4000 0000 3036 0384 4000 0000 3036 0070  @...06..@.
+00000050: 0070 302c 3036 0090 0000 0000 3036 0070  .p0,06....
+00000050: 0070 302c 3036 0090 0000 0000 3036 0070  .p0,06....
+00000060: 0060 302c cf00 0c14 3036 0070 8000 0000  .`0,....06
+00000060: 0060 302c cf00 0c14 3036 0070 8000 0000  .`0,....06
+00000070: cc01 5c04 3039 1000 0000 0002 307a 0000  ..\.09....
+00000070: cc01 5c04 3039 1000 0000 0002 307a 0000  ..\.09....
+00000080: 0104 0001 307a 01a0 8040 0003 307a 01a4  ....0z...@
+00000080: 0104 0001 307a 01a0 8040 0003 307a 01a4  ....0z...@
+00000090: 0010 0020 307a 01a8 8010 0004 307a 0064  ... 0z....
+00000090: 0010 0020 307a 01a8 8010 0004 307a 0064  ... 0z....
+000000a0: 0020 0045 307a 0490 0000 0001 307a 00d0  . .E0z....
+000000a0: 0020 0045 307a 0490 0000 0001 307a 00d0  . .E0z....
+000000b0: 0002 0081 307a 00d4 0068 0000 307a 00dc  ....0z...h
+000000b0: 0002 0081 307a 00d4 0068 0000 307a 00dc  ....0z...h
+000000c0: 0930 0004 307a 00e0 0048 0000 307a 00e4  .0..0z...H
+000000c0: 0930 0004 307a 00e0 0048 0000 307a 00e4  .0..0z...H
+000000d0: 0010 0004 307a 00f4 0000 033f 307a 0100  ....0z....
+000000d0: 0010 0004 307a 00f4 0000 033f 307a 0100  ....0z....
+000000e0: 090e 0809 307a 0104 0007 020e 307a 0108  ....0z....
+000000e0: 090e 0809 307a 0104 0007 020e 307a 0108  ....0z....
+000000f0: 0304 0407 307a 010c 0000 2006 307a 0110  ....0z....
+000000f0: 0304 0407 307a 010c 0000 2006 307a 0110  ....0z....
+00000100: 0402 0304 307a 0114 0303 0202 307a 0120  ....0z....
+00000100: 0402 0304 307a 0114 0303 0202 307a 0120  ....0z....
+00000110: 0000 0803 307a 0180 0080 0020 307a 0190  ....0z....
+00000110: 0000 0803 307a 0180 0080 0020 307a 0190  ....0z....
+00000120: 0209 8204 307a 0194 0003 0303 307a 0200  ....0z....
+00000120: 0209 8204 307a 0194 0003 0303 307a 0200  ....0z....
+00000130: 0000 0016 307a 0204 0017 1717 307a 0210  ....0z....
+00000130: 0000 0016 307a 0204 0017 1717 307a 0210  ....0z....
+00000140: 0000 0f0f 307a 0214 0404 0404 307a 0218  ....0z....
+00000140: 0000 0f0f 307a 0214 0404 0404 307a 0218  ....0z....
+00000150: 0f04 0404 307a 0240 0600 0604 307a 0244  ....0z.@..
+00000150: 0f04 0404 307a 0240 0600 0604 307a 0244  ....0z.@..
+00000160: 0000 0001 3039 1000 0000 0000 3079 0000  ....09....
+00000160: 0000 0001 3039 1000 0000 0000 3079 0000  ....09....
+00000170: 1742 0f40 3079 0004 1021 0100 3079 0010  .B.@0y...!
+00000170: 1742 0f40 3079 0004 1021 0100 3079 0010  .B.@0y...!
+00000180: 0006 0807 3079 00b0 1010 007e 3079 009c  ....0y....
+00000180: 0006 0807 3079 00b0 1010 007e 3079 009c  ....0y....
+00000190: 0000 0924 3079 0020 0b0b 0b0b 3079 0030  ...$0y. ..
+00000190: 0000 0924 3079 0020 0b0b 0b0b 3079 0030  ...$0y. ..
+000001a0: 0606 0606 3079 0050 0100 0010 3079 0050  ....0y.P..
+000001a0: 0606 0606 3079 0050 0100 0010 3079 0050  ....0y.P..
+000001b0: 0000 0010 3079 00c0 0c40 7304 3079 00c0  ....0y...@
+000001b0: 0000 0010 3079 00c0 0c40 7304 3079 00c0  ....0y...@
+000001c0: 0c44 7304 3079 00c0 0c44 7306 cf00 0c14  .Ds.0y...D
+000001c0: 0c44 7304 3079 00c0 0c44 7306 cf00 0c14  .Ds.0y...D
+000001d0: 3079 00c4 0000 0001 cc00 3404 3079 00c0  0y........
+000001d0: 3079 00c4 0000 0001 cc00 3404 3079 00c0  0y........
+000001e0: 0c44 7304 3079 00c0 0c40 7304 3038 4130  .Ds.0y...@
+000001e0: 0c44 7304 3079 00c0 0c40 7304 3038 4130  .Ds.0y...@
+000001f0: 0000 0000 3034 0020 0000 0178 3038 4130  ....04. ..
+000001f0: 0000 0000 3034 0020 0000 0178 3038 4130  ....04. ..
+00000200: 0000 0002 3079 0018 0000 000f cf00 0c14  ....0y....
+00000200: 0000 0002 3079 0018 0000 000f cf00 0c14  ....0y....
+00000210: 307a 0004 0000 0001 0000 0000 0000 0000  0z........
+00000210: 307a 0004 0000 0001 0000 0000 0000 0000  0z........
+
+So I guess that the DCD table part now should be correct. So the
+question is if this is and lowlevel.c/board.c boilerplate issue or
+maybe I need something in the Kconfig menu.
+
+/Lars Pedersen
+
+On Wed, 29 Jul 2020 at 19:22, Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+>
+> Hello Lars,
+>
+> On 7/29/20 6:52 PM, Lars Pedersen wrote:
+> > I have spent the last couple of days trying to port our bootloader
+> > from u-boot to barebox 2020.07 but have yet to get any console output.
+> > Our product is based on tqma7d i.MX7 dual core cpu and uses UART4 for
+> > serial console and boots from internal eMMC.
+> >
+> > I created a new board inspired from "NXP i.MX7 SabreSD board" and
+> > tried to only add the basic in the first step to get a console output
+> > working. The image is built using ptxdist and the imx_v7_defconfig
+> > where the new board is selected. The image is flashed with "dd
+> > if=barebox-image of=/dev/mmcblk0 bs=1024 skip=1 seek=1 conv=fsync".
+> > The device works using u-boot 2020.07 with the same device trees but
+> > we thought it was time to try out barebox since u-boot felt a little
+> > bloated :)
+> >
+> > So can anyone be of assistance and tell me what I'm missing?
+> >
+> > /Lars Pedersen
+> >
+> > From: Lars Pedersen <laa@kamstrup.com>
+> > Date: Tue, 28 Jul 2020 08:57:57 +0000
+> > Subject: [PATCH] Add kamstrup imx7d dev board
+> >
+> > ---
+> >  arch/arm/boards/Makefile                           |   1 +
+> >  arch/arm/boards/kamstrup-imx7d-tqma7d/Makefile     |   2 +
+> >  arch/arm/boards/kamstrup-imx7d-tqma7d/board.c      |  19 ++
+> >  .../flash-header-kamstrup-imx7d-tqma7d.imxcfg      |  79 ++++++
+> >  arch/arm/boards/kamstrup-imx7d-tqma7d/lowlevel.c   |  35 +++
+> >  arch/arm/dts/Makefile                              |   1 +
+> >  arch/arm/dts/imx7d-flex-concentrator-mfg.dts       |  11 +
+> >  arch/arm/mach-imx/Kconfig                          |   5 +
+> >  drivers/regulator/Kconfig                          |   2 +-
+> >  dts/src/arm/imx7d-flex-concentrator-mfg.dts        |  25 ++
+> >  dts/src/arm/imx7d-flex-concentrator.dts            | 313 +++++++++++++++++++++
+> >  images/Makefile.imx                                |   5 +
+> >  12 files changed, 497 insertions(+), 1 deletion(-)
+> >  create mode 100644 arch/arm/boards/kamstrup-imx7d-tqma7d/Makefile
+> >  create mode 100644 arch/arm/boards/kamstrup-imx7d-tqma7d/board.c
+> >  create mode 100644
+> > arch/arm/boards/kamstrup-imx7d-tqma7d/flash-header-kamstrup-imx7d-tqma7d.imxcfg
+> >  create mode 100644 arch/arm/boards/kamstrup-imx7d-tqma7d/lowlevel.c
+> >  create mode 100644 arch/arm/dts/imx7d-flex-concentrator-mfg.dts
+> >  create mode 100644 dts/src/arm/imx7d-flex-concentrator-mfg.dts
+> >  create mode 100644 dts/src/arm/imx7d-flex-concentrator.dts
+> >
+> > diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+> > index e9e9163d589b..58bb4cf2adab 100644
+> > --- a/arch/arm/boards/Makefile
+> > +++ b/arch/arm/boards/Makefile
+> > @@ -64,6 +64,7 @@ obj-$(CONFIG_MACH_HIGHBANK)            += highbank/
+> >  obj-$(CONFIG_MACH_IMX21ADS)            += freescale-mx21-ads/
+> >  obj-$(CONFIG_MACH_IMX233_OLINUXINO)        += imx233-olinuxino/
+> >  obj-$(CONFIG_MACH_IMX27ADS)            += freescale-mx27-ads/
+> > +obj-$(CONFIG_MACH_KAMSTRUP_IMX7D_TQMA7D)    += kamstrup-imx7d-tqma7d/
+> >  obj-$(CONFIG_MACH_KINDLE3)            += kindle3/
+> >  obj-$(CONFIG_MACH_KONTRON_SAMX6I)        += kontron-samx6i/
+> >  obj-$(CONFIG_MACH_LENOVO_IX4_300D)        += lenovo-ix4-300d/
+> > diff --git a/arch/arm/boards/kamstrup-imx7d-tqma7d/Makefile
+> > b/arch/arm/boards/kamstrup-imx7d-tqma7d/Makefile
+> > new file mode 100644
+> > index 000000000000..01c7a259e9a5
+> > --- /dev/null
+> > +++ b/arch/arm/boards/kamstrup-imx7d-tqma7d/Makefile
+> > @@ -0,0 +1,2 @@
+> > +obj-y += board.o
+> > +lwl-y += lowlevel.o
+> > diff --git a/arch/arm/boards/kamstrup-imx7d-tqma7d/board.c
+> > b/arch/arm/boards/kamstrup-imx7d-tqma7d/board.c
+> > new file mode 100644
+> > index 000000000000..b3ffa851f3e6
+> > --- /dev/null
+> > +++ b/arch/arm/boards/kamstrup-imx7d-tqma7d/board.c
+> > @@ -0,0 +1,19 @@
+> > +// SPDX-License-Identifier: GPL-2.0-or-later
+> > +// SPDX-FileCopyrightText: 2020 Kamstrup A/S
+> > +
+> > +/* Author: Lars Pedersen <lapeddk@gmail.com> */
+> > +
+> > +#include <common.h>
+> > +#include <init.h>
+> > +#include <io.h>
+> > +#include <mach/imx7-regs.h>
+> > +#include <mfd/imx7-iomuxc-gpr.h>
+> > +
+> > +static int kamstrup_mx7_tqma7d_coredevices_init(void)
+> > +{
+> > +    if (!of_machine_is_compatible("kam,imx7d-flex-concentrator"))
+> > +        return 0;
+> > +
+> > +    return 0;
+> > +}
+> > +coredevice_initcall(kamstrup_mx7_tqma7d_coredevices_init);
+> > diff --git a/arch/arm/boards/kamstrup-imx7d-tqma7d/flash-header-kamstrup-imx7d-tqma7d.imxcfg
+> > b/arch/arm/boards/kamstrup-imx7d-tqma7d/flash-header-kamstrup-imx7d-tqma7d.imxcfg
+> > new file mode 100644
+> > index 000000000000..7656619c1b2e
+> > --- /dev/null
+> > +++ b/arch/arm/boards/kamstrup-imx7d-tqma7d/flash-header-kamstrup-imx7d-tqma7d.imxcfg
+> > @@ -0,0 +1,79 @@
+> > +soc imx7
+> > +loadaddr 0x80000000
+> > +dcdofs 0x400
+> > +
+> > +#include <mach/imx7-ddr-regs.h>
+> > +wm 32 0x30340004 0x4F400005 /* IOMUXC_GPR_GPR1 */
+> > +/* TODO this is copied from imx7sabresd */
+> > +/* Clear then set bit30 to ensure exit from DDR retention */
+> > +wm 32 0x30360388 0x40000000
+> > +wm 32 0x30360384 0x40000000
+> > +
+> > +/* TQMa7x DRAM Timing REV0100 */
+> > +/* DCD Code i.MX7D/S 528 MHz 1 GByte Samsung K4B4G1646D */
+> > +wm 32 0x30360070 0x0070302C     /*CCM_ANALOG_PLL_DDRx*/
+> > +wm 32  0x30360090 0x00000000    /*CCM_ANALOG_PLL_NUM*/
+> > +wm 32  0x30360070 0x0060302C    /*CCM_ANALOG_PLL_DDRx*/
+> > +check 32 until_any_bit_set 0x30360070 0x80000000
+> > +wm 32 0x30391000 0x00000002     /*SRC_DDRC_RCR*/
+> > +
+> > +wm 32 MX7_DDRC_MSTR 0x01040001   /*DDRC_MSTR*/
+> > +wm 32 MX7_DDRC_DFIUPD0 0x80400003   /*DDRC_DFIUPD0*/
+> > +wm 32 MX7_DDRC_DFIUPD1 0x00100020   /*DDRC_DFIUPD1*/
+> > +wm 32 MX7_DDRC_DFIUPD2 0x80100004   /*DDRC_DFIUPD2*/
+> > +wm 32 MX7_DDRC_RFSHTMG 0x00200045   /*DDRC_RFSHTMG*/
+> > +wm 32 MX7_DDRC_MP_PCTRL_0 0x00000001   /*DDRC_MP_PCTRL_0*/
+> > +wm 32 MX7_DDRC_INIT0 0x00020081   /*DDRC_INIT0*/
+> > +wm 32 MX7_DDRC_INIT1 0x00680000   /*DDRC_INIT1*/
+> > +wm 32 MX7_DDRC_INIT3 0x09300004   /*DDRC_INIT3*/
+> > +wm 32 MX7_DDRC_INIT4 0x00480000   /*DDRC_INIT4*/
+> > +wm 32 MX7_DDRC_INIT5 0x00100004   /*DDRC_INIT5*/
+> > +wm 32 MX7_DDRC_RANKCTL 0x0000033F   /*DDRC_RANKCTL*/
+> > +wm 32 MX7_DDRC_DRAMTMG0 0x090E0809   /*DDRC_DRAMTMG0*/
+> > +wm 32 MX7_DDRC_DRAMTMG1 0x0007020E   /*DDRC_DRAMTMG1*/
+> > +wm 32 MX7_DDRC_DRAMTMG2 0x03040407   /*DDRC_DRAMTMG2*/
+> > +wm 32 MX7_DDRC_DRAMTMG3 0x00002006   /*DDRC_DRAMTMG3*/
+> > +wm 32 MX7_DDRC_DRAMTMG4 0x04020304   /*DDRC_DRAMTMG4*/
+> > +wm 32 MX7_DDRC_DRAMTMG5 0x03030202   /*DDRC_DRAMTMG5*/
+> > +wm 32 MX7_DDRC_DRAMTMG8 0x00000803   /*DDRC_DRAMTMG8*/
+> > +wm 32 MX7_DDRC_ZQCTL0 0x00800020   /*DDRC_ZQCTL0*/
+> > +wm 32 MX7_DDRC_DFITMG0 0x02098204   /*DDRC_DFITMG0*/
+> > +wm 32 MX7_DDRC_DFITMG1 0x00030303   /*DDRC_DFITMG1*/
+> > +wm 32 MX7_DDRC_ADDRMAP0 0x00000016   /*DDRC_ADDRMAP0*/
+> > +wm 32 MX7_DDRC_ADDRMAP1 0x00171717   /*DDRC_ADDRMAP1*/
+> > +wm 32 MX7_DDRC_ADDRMAP4 0x00000F0F   /*DDRC_ADDRMAP4*/
+> > +wm 32 MX7_DDRC_ADDRMAP5 0x04040404   /*DDRC_ADDRMAP5*/
+> > +wm 32 MX7_DDRC_ADDRMAP6 0x0F040404   /*DDRC_ADDRMAP6*/
+> > +wm 32 MX7_DDRC_ODTCFG 0x06000604   /*DDRC_ODTCFG*/
+> > +wm 32 MX7_DDRC_ODTMAP 0x00000001   /*DDRC_ODTMAP*/
+> > +wm 32 0x30391000 0x00000000   /*SRC_DDRC_RCR*/
+> > +wm 32 MX7_DDR_PHY_PHY_CON0 0x17420F40   /*DDR_PHY_PHY_CON0*/
+> > +wm 32 MX7_DDR_PHY_PHY_CON1 0x10210100   /*DDR_PHY_PHY_CON1*/
+> > +wm 32 MX7_DDR_PHY_PHY_CON4 0x00060807   /*DDR_PHY_PHY_CON4*/
+> > +wm 32 MX7_DDR_PHY_MDLL_CON0 0x1010007E   /*DDR_PHY_MDLL_CON0*/
+> > +wm 32 MX7_DDR_PHY_DRVDS_CON0 0x00000924   /*DDR_PHY_DRVDS_CON0*/
+> > +/*DDR_PHY_CMD_DESKEW_CON0*/
+> > +/*DDR_PHY_CMD_DESKEW_CON1*/
+> > +/*DDR_PHY_CMD_DESKEW_CON2*/
+> > +/*DDR_PHY_CMD_DESKEW_CON3*/
+> > +/*DDR_PHY_LVL_CON0*/
+> > +wm 32 MX7_DDR_PHY_OFFSET_RD_CON0 0x0B0B0B0B   /*DDR_PHY_OFFSET_RD_CON0 */
+> > +wm 32 MX7_DDR_PHY_OFFSET_WR_CON0 0x06060606   /*DDR_PHY_OFFSET_WR_CON0 */
+> > +wm 32 MX7_DDR_PHY_CMD_SDLL_CON0 0x01000010   /*DDR_PHY_CMD_SDLL_CON0*/
+> > +wm 32 MX7_DDR_PHY_CMD_SDLL_CON0 0x00000010   /*DDR_PHY_CMD_SDLL_CON0*/
+> > +
+> > +wm 32 MX7_DDR_PHY_ZQ_CON0 0x0C407304   /*DDR_PHY_ZQ_CON0*/
+> > +wm 32 MX7_DDR_PHY_ZQ_CON0 0x0C447304   /*DDR_PHY_ZQ_CON0*/
+> > +wm 32 MX7_DDR_PHY_ZQ_CON0 0x0C447306   /*DDR_PHY_ZQ_CON0*/
+> > +check 32 until_any_bit_set MX7_DDR_PHY_ZQ_CON0 0x1 /*ZQ Calibration
+> > is finished*/
+> > +wm 32 MX7_DDR_PHY_ZQ_CON0 0x0C447304   /*DDR_PHY_ZQ_CON0*/
+> > +wm 32 MX7_DDR_PHY_ZQ_CON0 0x0C407304   /*DDR_PHY_ZQ_CON0*/
+> > +
+> > +wm 32 0x30384130 0x00000000 /* CCM_CCGRn */
+> > +wm 32 0x30340020 0x00000178 /* IOMUXC_GPR_GPR8 */
+> > +wm 32 0x30384130 0x00000002 /* CCM_CCGRn */
+> > +wm 32 0x30790018 0x0000000f /* DDR_PHY_LP_CON0 */
+> > +
+> > +/* DDRC_STAT */
+> > +check 32 until_any_bit_set 4 0x307a0004 0x1
+>
+> You use the same exact DCD table under U-Boot as well?
+>
+> > +
+> > diff --git a/arch/arm/boards/kamstrup-imx7d-tqma7d/lowlevel.c
+> > b/arch/arm/boards/kamstrup-imx7d-tqma7d/lowlevel.c
+> > new file mode 100644
+> > index 000000000000..d8c455701edc
+> > --- /dev/null
+> > +++ b/arch/arm/boards/kamstrup-imx7d-tqma7d/lowlevel.c
+> > @@ -0,0 +1,35 @@
+> > +#include <debug_ll.h>
+> > +#include <io.h>
+> > +#include <common.h>
+> > +#include <linux/sizes.h>
+> > +#include <mach/generic.h>
+> > +#include <asm/barebox-arm-head.h>
+> > +#include <asm/barebox-arm.h>
+> > +#include <mach/imx7-ccm-regs.h>
+> > +#include <mach/iomux-mx7.h>
+> > +#include <mach/debug_ll.h>
+> > +#include <asm/cache.h>
+> > +#include <mach/esdctl.h>
+> > +
+> > +extern char __dtb_imx7d_flex_concentrator_mfg_start[];
+>
+> Unrelated to your issue, but you want __dtb_z_ here
+> (compressed device tree). Check CONFIG_ARM_COMPRESSED_DTB
+>
+> > +
+> > +static inline void setup_uart(void)
+> > +{
+> > +    imx7_early_setup_uart_clock();
+> > +
+> > +    imx7_setup_pad(MX7D_PAD_SAI2_TX_BCLK__UART4_DCE_TX);
+> > +
+> > +    imx7_uart_setup_ll();
+> > +
+> > +    putc_ll('>');
+>
+> You've CONFIG_DEBUG_LL=y and you choose the correct UART port
+> in the i.MX menuconfig option?
+>
+> > +}
+> > +
+> > +ENTRY_FUNCTION(start_kamstrup_imx7d_tqma7d, r0, r1, r2)
+> > +{
+> > +    imx7_cpu_lowlevel_init();
+> > +
+> > +    if (IS_ENABLED(CONFIG_DEBUG_LL))
+> > +        setup_uart();
+> > +
+> > +    imx7d_barebox_entry(__dtb_imx7d_flex_concentrator_mfg_start +
+> > get_runtime_offset());
+> > +}
+> > diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+> > index d61a052310ce..ec3d0f372786 100644
+> > --- a/arch/arm/dts/Makefile
+> > +++ b/arch/arm/dts/Makefile
+> > @@ -23,6 +23,7 @@ lwl-$(CONFIG_MACH_CCMX53) += imx53-ccxmx53.dtb.o
+> >  lwl-$(CONFIG_MACH_DIGI_CCIMX6ULSBCPRO) += imx6ul-ccimx6ulsbcpro.dtb.o
+> >  lwl-$(CONFIG_MACH_FREESCALE_MX53_VMX53) += imx53-voipac-bsb.dtb.o
+> >  lwl-$(CONFIG_MACH_FREESCALE_MX7_SABRESD) += imx7d-sdb.dtb.o
+> > +lwl-$(CONFIG_MACH_KAMSTRUP_IMX7D_TQMA7D) += imx7d-flex-concentrator-mfg.dtb.o
+> >  lwl-$(CONFIG_MACH_GK802) += imx6q-gk802.dtb.o
+> >  lwl-$(CONFIG_MACH_GLOBALSCALE_GURUPLUG) +=
+> > kirkwood-guruplug-server-plus-bb.dtb.o
+> >  lwl-$(CONFIG_MACH_GLOBALSCALE_MIRABOX) += armada-370-mirabox-bb.dtb.o
+> > diff --git a/arch/arm/dts/imx7d-flex-concentrator-mfg.dts
+> > b/arch/arm/dts/imx7d-flex-concentrator-mfg.dts
+> > new file mode 100644
+> > index 000000000000..746e36a70f4c
+> > --- /dev/null
+> > +++ b/arch/arm/dts/imx7d-flex-concentrator-mfg.dts
+> > @@ -0,0 +1,11 @@
+> > +/*
+> > + * The code contained herein is licensed under the GNU General Public
+> > + * License. You may obtain a copy of the GNU General Public License
+> > + * Version 2 or later at the following locations:
+> > + *
+> > + * http://www.opensource.org/licenses/gpl-license.html
+> > + * http://www.gnu.org/copyleft/gpl.html
+> > + */
+> > +
+> > +#include <arm/imx7d-flex-concentrator-mfg.dts>
+> > +
+> > diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+> > index 6dd5cb2aca15..d0a9332c7a24 100644
+> > --- a/arch/arm/mach-imx/Kconfig
+> > +++ b/arch/arm/mach-imx/Kconfig
+> > @@ -492,6 +492,11 @@ config MACH_ZII_IMX7D_DEV
+> >      select ARCH_IMX7
+> >      select ARM_USE_COMPRESSED_DTB
+> >
+> > +config MACH_KAMSTRUP_IMX7D_TQMA7D
+> > +    bool "Kamstrup TQMa7D based devices"
+> > +    select ARCH_IMX7
+> > +    select ARM_USE_COMPRESSED_DTB
+> > +
+> >  config MACH_PHYTEC_PHYCORE_IMX7
+> >      bool "Phytec phyCORE i.MX7"
+> >      select ARCH_IMX7
+> > diff --git a/drivers/regulator/Kconfig b/drivers/regulator/Kconfig
+> > index 1ce057180a01..b0bdc48399e3 100644
+> > --- a/drivers/regulator/Kconfig
+> > +++ b/drivers/regulator/Kconfig
+> > @@ -19,7 +19,7 @@ config REGULATOR_BCM283X
+> >  config REGULATOR_PFUZE
+> >      bool "Freescale PFUZE100/200/3000 regulator driver"
+> >      depends on I2C
+> > -    depends on ARCH_IMX6 || ARCH_IMX8MQ
+> > +    depends on ARCH_IMX6 || ARCH_IMX7 || ARCH_IMX8MQ
+> >
+> >  config REGULATOR_STM32_PWR
+> >      bool "STMicroelectronics STM32 PWR"
+> > diff --git a/dts/src/arm/imx7d-flex-concentrator-mfg.dts
+> > b/dts/src/arm/imx7d-flex-concentrator-mfg.dts
+> > new file mode 100644
+> > index 000000000000..789f0837058f
+> > --- /dev/null
+> > +++ b/dts/src/arm/imx7d-flex-concentrator-mfg.dts
+> > @@ -0,0 +1,25 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/*
+> > + * Device Tree Source for Kamstrup OMNIA Flex Concentrator in
+> > + * manufacturing/debugging mode.
+> > + *
+> > + * Copyright (C) 2020 Kamstrup A/S
+> > + * Author: Bruno Thomsen <bruno.thomsen@gmail.com>
+> > + */
+> > +
+> > +/dts-v1/;
+> > +
+> > +#include "imx7d-flex-concentrator.dts"
+> > +
+> > +/ {
+> > +    model = "Kamstrup OMNIA Flex Concentrator - Manufacturing";
+> > +    compatible = "kam,imx7d-flex-concentrator-mfg",
+> > "kam,imx7d-flex-concentrator", "fsl,imx7d";
+> > +
+> > +    chosen {
+> > +        stdout-path = &uart4;
+> > +    };
+> > +};
+> > +
+> > +&uart4 {
+> > +    status = "okay";
+> > +};
+> > diff --git a/dts/src/arm/imx7d-flex-concentrator.dts
+> > b/dts/src/arm/imx7d-flex-concentrator.dts
+> > new file mode 100644
+> > index 000000000000..43b331222a47
+> > --- /dev/null
+> > +++ b/dts/src/arm/imx7d-flex-concentrator.dts
+> > @@ -0,0 +1,313 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/*
+> > + * Device Tree Source for Kamstrup OMNIA Flex Concentrator.
+> > + *
+> > + * Copyright (C) 2020 Kamstrup A/S
+> > + * Author: Bruno Thomsen <bruno.thomsen@gmail.com>
+> > + */
+> > +
+> > +/dts-v1/;
+> > +
+> > +#include "imx7d-tqma7.dtsi"
+> > +
+> > +/* Some I2C devices on TQMa7 SoM are not mounted */
+> > +/delete-node/ &m24c64;
+> > +/delete-node/ &ds1339;
+> > +
+> > +/ {
+> > +    model = "Kamstrup OMNIA Flex Concentrator";
+> > +    compatible = "kam,imx7d-flex-concentrator", "fsl,imx7d";
+> > +
+> > +    memory@80000000 {
+> > +        device_type = "memory";
+> > +        /* 1024 MB - TQMa7D board configuration */
+> > +        reg = <0x80000000 0x40000000>;
+> > +    };
+> > +
+> > +    reg_usb_otg2_vbus: regulator-usb-otg2-vbus {
+> > +        compatible = "regulator-fixed";
+> > +        regulator-name = "VBUS_USBOTG2";
+> > +        regulator-min-microvolt = <5000000>;
+> > +        regulator-max-microvolt = <5000000>;
+> > +        gpio = <&gpio1 7 GPIO_ACTIVE_HIGH>;
+> > +        enable-active-high;
+> > +    };
+> > +
+> > +    reg_vref_1v8: regulator-vref-1v8 {
+> > +        compatible = "regulator-fixed";
+> > +        regulator-name = "VCC1V8_REF";
+> > +        regulator-min-microvolt = <1800000>;
+> > +        regulator-max-microvolt = <1800000>;
+> > +        regulator-always-on;
+> > +        vin-supply = <&sw2_reg>;
+> > +    };
+> > +
+> > +    /*
+> > +     * Human Machine Interface consists of 4 dual red/green LEDs.
+> > +     * hmi-a-green is controlled directly by the switch-mode power supply.
+> > +     * hmi-a-red is not used.
+> > +     */
+> > +    gpio-leds {
+> > +        compatible = "gpio-leds";
+> > +        pinctrl-names = "default";
+> > +        pinctrl-0 = <&pinctrl_leds>;
+> > +
+> > +        hmi-b-red {
+> > +            label = "hmi-b:red:provisioning";
+> > +            gpios = <&gpio3 6 GPIO_ACTIVE_HIGH>;
+> > +            default-state = "off";
+> > +        };
+> > +
+> > +        hmi-b-green {
+> > +            label = "hmi-b:green:operation";
+> > +            gpios = <&gpio2 28 GPIO_ACTIVE_HIGH>;
+> > +            default-state = "off";
+> > +        };
+> > +
+> > +        hmi-c-red {
+> > +            label = "hmi-c:red:mesh-error";
+> > +            gpios = <&gpio2 29 GPIO_ACTIVE_HIGH>;
+> > +            default-state = "off";
+> > +        };
+> > +
+> > +        hmi-c-green {
+> > +            label = "hmi-c:green:mesh-activity";
+> > +            gpios = <&gpio2 30 GPIO_ACTIVE_HIGH>;
+> > +            default-state = "off";
+> > +        };
+> > +
+> > +        hmi-d-red {
+> > +            label = "hmi-d:red:wan-down";
+> > +            gpios = <&gpio2 31 GPIO_ACTIVE_HIGH>;
+> > +            default-state = "off";
+> > +        };
+> > +
+> > +        hmi-d-green {
+> > +            label = "hmi-d:green:ipsec-up";
+> > +            gpios = <&gpio4 3 GPIO_ACTIVE_HIGH>;
+> > +            default-state = "off";
+> > +        };
+> > +    };
+> > +
+> > +    /*
+> > +     * Errata e10574 board restart workaround.
+> > +     */
+> > +    gpio-restart {
+> > +        pinctrl-names = "default";
+> > +        pinctrl-0 = <&pinctrl_restart>;
+> > +        compatible = "gpio-restart";
+> > +        gpios = <&gpio7 12 GPIO_ACTIVE_LOW>;
+> > +        priority = <200>;
+> > +    };
+> > +};
+> > +
+> > +/*
+> > + * Analog signals
+> > + * ADC1_IN0: SMPS - 5V output monitor (voltage divider: 1/0.2806)
+> > + */
+> > +&adc1 {
+> > +    vref-supply = <&reg_vref_1v8>;
+> > +    status = "okay";
+> > +};
+> > +
+> > +&ecspi2 {
+> > +    pinctrl-names = "default";
+> > +    pinctrl-0 = <&pinctrl_ecspi2>;
+> > +    num-chipselects = <1>;
+> > +    cs-gpios = <&gpio4 23 GPIO_ACTIVE_LOW>;
+> > +    status = "okay";
+> > +
+> > +    pcf2127: rtc@0 {
+> > +        compatible = "nxp,pcf2127";
+> > +        reg = <0>;
+> > +        spi-max-frequency = <2000000>;
+> > +    };
+> > +};
+> > +
+> > +&ecspi4 {
+> > +    pinctrl-names = "default";
+> > +    pinctrl-0 = <&pinctrl_ecspi4>;
+> > +    num-chipselects = <1>;
+> > +    cs-gpios = <&gpio3 3 GPIO_ACTIVE_LOW>;
+> > +    status = "okay";
+> > +
+> > +    /*
+> > +     * ST chip maximum SPI clock frequency is 33 MHz.
+> > +     *
+> > +     * TCG specification - Section 6.4.1 Clocking:
+> > +     * TPM shall support a SPI clock frequency range of 10-24 MHz.
+> > +     */
+> > +    st33htph: tpm-tis@0 {
+> > +        compatible = "st,st33htpm-spi", "tcg,tpm_tis-spi";
+> > +        reg = <0>;
+> > +        spi-max-frequency = <24000000>;
+> > +    };
+> > +};
+> > +
+> > +&fec1 {
+> > +    pinctrl-names = "default";
+> > +    pinctrl-0 = <&pinctrl_enet1>;
+> > +    phy-mode = "rmii";
+> > +    phy-handle = <&ethphy>;
+> > +    status = "okay";
+> > +
+> > +    mdio {
+> > +        #address-cells = <1>;
+> > +        #size-cells = <0>;
+> > +
+> > +        /* Micrel KSZ8081RNB */
+> > +        ethphy: ethernet-phy@1 {
+> > +            compatible = "ethernet-phy-id0022.1560",
+> > "ethernet-phy-ieee802.3-c22";
+> > +            reg = <1>;
+> > +            max-speed = <100>;
+> > +            interrupt-parent = <&gpio1>;
+> > +            interrupts = <9 IRQ_TYPE_LEVEL_LOW>;
+> > +            reset-assert-us = <100000>;
+> > +            reset-deassert-us = <1000000>;
+> > +            reset-gpios = <&gpio7 15 GPIO_ACTIVE_LOW>;
+> > +        };
+> > +    };
+> > +};
+> > +
+> > +/*
+> > + * Detection signals for internal USB modules.
+> > + * Used for robust USB plug and play handling such as USB downstream port
+> > + * power-cycle and USB hub reset in case of misbehaving or crashed modules.
+> > + *
+> > + * SMPS - AC input monitor based on zero crossing.
+> > + * Used for last gasp notification.
+> > + */
+> > +&gpio3 {
+> > +    gpio-line-names = "", "", "", "", "", "", "", "",
+> > +    "", "", "", "", "smps-ac-monitor", "", "usb-hub-reset", "",
+> > +    "", "", "", "", "", "", "", "",
+> > +    "", "module-b-detection", "", "module-a-detection", "", "", "", "";
+> > +};
+> > +
+> > +/*
+> > + * Tamper IRQ trigger timestamp reading.
+> > + * Used for sealed cover opened/closed notification.
+> > + */
+> > +&gpio5 {
+> > +    gpio-line-names = "", "", "", "", "", "", "", "",
+> > +    "", "", "", "", "rtc-tamper-irq", "", "", "",
+> > +    "", "", "", "", "", "", "", "",
+> > +    "", "", "", "", "", "", "", "";
+> > +};
+> > +
+> > +&iomuxc {
+> > +    pinctrl-names = "default";
+> > +    pinctrl-0 = <&pinctrl_misc>;
+> > +
+> > +    pinctrl_ecspi2: ecspi2grp {
+> > +        fsl,pins = <
+> > +            MX7D_PAD_ECSPI2_MISO__ECSPI2_MISO        0x7c /* X2-15 */
+> > +            MX7D_PAD_ECSPI2_MOSI__ECSPI2_MOSI        0x74 /* X2-18 */
+> > +            MX7D_PAD_ECSPI2_SCLK__ECSPI2_SCLK        0x74 /* X2-13 */
+> > +            MX7D_PAD_ECSPI2_SS0__GPIO4_IO23            0x74 /* X2-20 */
+> > +            /* RTC - Tamper IRQ */
+> > +            MX7D_PAD_SD2_CLK__GPIO5_IO12            0x3c /* X1-92 */
+> > +        >;
+> > +    };
+> > +
+> > +    pinctrl_ecspi4: ecspi4grp {
+> > +        fsl,pins = <
+> > +            MX7D_PAD_LCD_CLK__ECSPI4_MISO            0x7c /* X2-72 */
+> > +            MX7D_PAD_LCD_ENABLE__ECSPI4_MOSI        0x74 /* X2-68 */
+> > +            MX7D_PAD_LCD_HSYNC__ECSPI4_SCLK            0x74 /* X2-76 */
+> > +            MX7D_PAD_LCD_VSYNC__GPIO3_IO3            0x74 /* X2-78 */
+> > +        >;
+> > +    };
+> > +
+> > +    pinctrl_enet1: enet1grp {
+> > +        fsl,pins = <
+> > +            MX7D_PAD_GPIO1_IO10__ENET1_MDIO            0x02 /* X2-48 */
+> > +            MX7D_PAD_GPIO1_IO11__ENET1_MDC            0x00 /* X2-46 */
+> > +            MX7D_PAD_ENET1_RGMII_TD0__ENET1_RGMII_TD0    0x71 /* X2-53 */
+> > +            MX7D_PAD_ENET1_RGMII_TD1__ENET1_RGMII_TD1    0x71 /* X2-55 */
+> > +            MX7D_PAD_ENET1_RGMII_TX_CTL__ENET1_RGMII_TX_CTL    0x71 /* X2-61 */
+> > +            MX7D_PAD_ENET1_RGMII_RD0__ENET1_RGMII_RD0    0x79 /* X2-56 */
+> > +            MX7D_PAD_ENET1_RGMII_RD1__ENET1_RGMII_RD1    0x79 /* X2-58 */
+> > +            MX7D_PAD_ENET1_RGMII_RX_CTL__ENET1_RGMII_RX_CTL    0x79 /* X2-64 */
+> > +            MX7D_PAD_ENET1_RGMII_RXC__ENET1_RX_ER        0x73 /* X2-52 */
+> > +            /* PHY reset: SION, 100kPU, SRE_FAST, DSE_X1 */
+> > +            MX7D_PAD_ENET1_COL__GPIO7_IO15        0x40000070 /* X1-96 */
+> > +            /* Clock from PHY to MAC */
+> > +            MX7D_PAD_GPIO1_IO12__CCM_ENET_REF_CLK1    0x40000073 /* X3-4 */
+> > +            /* PHY interrupt: SION, 100kPU, HYS, SRE_FAST, DSE_X1 */
+> > +            MX7D_PAD_GPIO1_IO09__GPIO1_IO9        0x40000078 /* X1-80 */
+> > +        >;
+> > +    };
+> > +
+> > +    pinctrl_leds: ledsgrp {
+> > +        fsl,pins = <
+> > +            MX7D_PAD_LCD_DATA01__GPIO3_IO6            0x14 /* X2-82 */
+> > +            MX7D_PAD_EPDC_BDR0__GPIO2_IO28            0x14 /* X1-82 */
+> > +            MX7D_PAD_EPDC_BDR1__GPIO2_IO29            0x14 /* X1-84 */
+> > +            MX7D_PAD_EPDC_PWR_COM__GPIO2_IO30        0x14 /* X1-86 */
+> > +            MX7D_PAD_EPDC_PWR_STAT__GPIO2_IO31        0x14 /* X1-88 */
+> > +            MX7D_PAD_UART2_TX_DATA__GPIO4_IO3        0x14 /* X1-90 */
+> > +        >;
+> > +    };
+> > +
+> > +    pinctrl_misc: miscgrp {
+> > +        fsl,pins = <
+> > +            /* Module A detection (low = present) */
+> > +            MX7D_PAD_LCD_DATA22__GPIO3_IO27            0x7c /* X2-105 */
+> > +            /* Module B detection (low = present) */
+> > +            MX7D_PAD_LCD_DATA20__GPIO3_IO25            0x7c /* X2-103 */
+> > +            /* SMPS - AC input monitor (high = failure) */
+> > +            MX7D_PAD_LCD_DATA07__GPIO3_IO12            0x7c /* X2-88 */
+> > +            /* USB - Hub reset */
+> > +            MX7D_PAD_LCD_DATA09__GPIO3_IO14            0x74 /* X2-92 */
+> > +        >;
+> > +    };
+> > +
+> > +    pinctrl_restart: restartgrp {
+> > +        fsl,pins = <
+> > +            MX7D_PAD_ENET1_TX_CLK__GPIO7_IO12    0x74 /* X1-94 */
+> > +        >;
+> > +    };
+> > +
+> > +    pinctrl_uart4: uart4grp {
+> > +        fsl,pins = <
+> > +            MX7D_PAD_SAI2_TX_SYNC__UART4_DCE_RX    0x7e /* X3-14 */
+> > +            MX7D_PAD_SAI2_TX_BCLK__UART4_DCE_TX    0x76 /* X3-16 */
+> > +        >;
+> > +    };
+> > +};
+> > +
+> > +&iomuxc_lpsr {
+> > +    pinctrl_usbotg2: usbotg2grp {
+> > +        fsl,pins = <
+> > +            MX7D_PAD_LPSR_GPIO1_IO06__USB_OTG2_OC    0x5c /* X3-11 */
+> > +            MX7D_PAD_LPSR_GPIO1_IO07__GPIO1_IO7    0x59 /* X3-9 */
+> > +        >;
+> > +    };
+> > +
+> > +};
+> > +
+> > +&uart4 {
+> > +    pinctrl-names = "default";
+> > +    pinctrl-0 = <&pinctrl_uart4>;
+> > +    assigned-clocks = <&clks IMX7D_UART4_ROOT_SRC>;
+> > +    assigned-clock-parents = <&clks IMX7D_OSC_24M_CLK>;
+> > +};
+> > +
+> > +&usbotg2 {
+> > +    pinctrl-names = "default";
+> > +    pinctrl-0 = <&pinctrl_usbotg2>;
+> > +    vbus-supply = <&reg_usb_otg2_vbus>;
+> > +    srp-disable;
+> > +    hnp-disable;
+> > +    adp-disable;
+> > +    dr_mode = "host";
+> > +    status = "okay";
+> > +};
+> > +
+> > +/*
+> > + * External watchdog feature provided by pcf2127.
+> > + */
+> > +&wdog1 {
+> > +    status = "disabled";
+> > +};
+> > diff --git a/images/Makefile.imx b/images/Makefile.imx
+> > index 765702f26deb..cbbefd5c085b 100644
+> > --- a/images/Makefile.imx
+> > +++ b/images/Makefile.imx
+> > @@ -364,6 +364,11 @@ CFG_start_zii_imx7d_dev.pblb.imximg =
+> > $(board)/zii-imx7d-dev/flash-header-zii-im
+> >  FILE_barebox-zii-imx7d-dev.img = start_zii_imx7d_dev.pblb.imximg
+> >  image-$(CONFIG_MACH_ZII_IMX7D_DEV) += barebox-zii-imx7d-dev.img
+> >
+> > +pblb-$(CONFIG_MACH_KAMSTRUP_IMX7D_TQMA7D) += start_kamstrup_imx7d_tqma7d
+> > +CFG_start_kamstrup_imx7d_tqma7d.pblb.imximg =
+> > $(board)/kamstrup-imx7d-tqma7d/flash-header-kamstrup-imx7d-tqma7d.imxcfg
+> > +FILE_barebox-kamstrup-imx7d-tqma7d.img =
+> > start_kamstrup_imx7d_tqma7d.pblb.imximg
+> > +image-$(CONFIG_MACH_KAMSTRUP_IMX7D_TQMA7D) += barebox-kamstrup-imx7d-tqma7d.img
+> > +
+> >  # ----------------------- i.MX8mm based boards --------------------------
+> >  pblb-$(CONFIG_MACH_NXP_IMX8MM_EVK) += start_nxp_imx8mm_evk
+> >  CFG_start_nxp_imx8mm_evk.pblb.imximg =
+> > $(board)/nxp-imx8mm-evk/flash-header-imx8mm-evk.imxcfg
+> >
+> > _______________________________________________
+> > barebox mailing list
+> > barebox@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/barebox
+> >
+>
+> --
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
