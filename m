@@ -1,19 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k191l-0008HW-8w
- for barebox@lists.infradead.org; Thu, 30 Jul 2020 13:55:22 +0000
-References: <CAKd8=GuMSvfaXiTvx4MSOnkLNvTuZg--deRufN6wDaPr8OxA1g@mail.gmail.com>
- <52e432ea-2ecb-2464-9126-379900da2433@pengutronix.de>
- <CAKd8=GvjdkC=mHYq3LpLwtaSi8WhYsn3e1VphTWefbzpq=_ZFA@mail.gmail.com>
- <ce3df13a-29aa-809f-f39c-1213da23038e@pengutronix.de>
- <CAKd8=GsqcUz23Rc81ZFJ5R1TzofXcJd+HGGE0u=UZyRsvZh_-Q@mail.gmail.com>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <61831111-a404-b312-8fbe-06b1b80eaf03@pengutronix.de>
-Date: Thu, 30 Jul 2020 15:55:18 +0200
+ id 1k1FsF-0007b9-MB
+ for barebox@lists.infradead.org; Thu, 30 Jul 2020 21:14:00 +0000
+Date: Thu, 30 Jul 2020 23:13:56 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+Message-ID: <20200730211356.GA10482@pengutronix.de>
+References: <20200707160124.3188793-1-enrico.scholz@sigma-chemnitz.de>
+ <9c7cf1e5-baf1-65b0-ddef-e651f6f21e2d@pengutronix.de>
+ <20200711050719.GP15485@pengutronix.de>
+ <6525ec7f-c391-4394-4eef-6777459b94da@pengutronix.de>
+ <20200711052007.GR15485@pengutronix.de>
+ <d10c9162-4b11-92ad-daea-69f16b0f214d@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <CAKd8=GsqcUz23Rc81ZFJ5R1TzofXcJd+HGGE0u=UZyRsvZh_-Q@mail.gmail.com>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <d10c9162-4b11-92ad-daea-69f16b0f214d@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,56 +27,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Getting serial console output on new imx7d tqma7 board UART4
-To: Lars Pedersen <lapeddk@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] net:fec: fixed unaligned access and stack corruption
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>, barebox@lists.infradead.org
 
 Hi,
 
-On 7/30/20 12:16 PM, Lars Pedersen wrote:
-> Thanks for the quick response :) I have made some inline comments
+sorry for jumping in.
+
+On 20-07-11 07:28, Ahmad Fatoum wrote:
+> Hi,
 > 
-> Additionally I have fixed the __dtb_z_ unrelated issue, but still
-> troubles to get some output. Could you maybe send me a barebox binary
-> for an mx6 or mx7 board? I'm still unsure if it has the correct binary
-> format.
-
-Can you not compile a i.MX7-EVK barebox and run it on the EVK?
-If this doesn't work, this is a different issue.
-
-
-> My current Kconfig values look like this. Maybe you can see something
-> missing.I have patched drivers/regulator/Kconfig (ARCH_IMX7) so that I
-> can enable REGULATOR_PFUZE, which is used on the tqma7d board. From
-> what I can see the NXP i.MX7 SabreSD board uses a PF3000 PMIC too so
-> iam unsure why it can work without this fix.
-
-DEBUG_LL lets barebox print a > symbol first thing it boots. This should
-work for you regardless of any PMIC configuration.
-
->>> So I guess that the DCD table part now should be correct. So the
->>> question is if this is and lowlevel.c/board.c boilerplate issue or
->>> maybe I need something in the Kconfig menu.
->>
->> Enable CONFIG_DEBUG_LL and see how far barebox comes.
->> See the inline comment from my last mail.
+> On 7/11/20 7:20 AM, Sascha Hauer wrote:
+> > On Sat, Jul 11, 2020 at 07:13:11AM +0200, Ahmad Fatoum wrote:
+> >>
+> >>
+> >> On 7/11/20 7:07 AM, Sascha Hauer wrote:
+> >>> On Tue, Jul 07, 2020 at 07:11:31PM +0200, Ahmad Fatoum wrote:
+> >>>> On 7/7/20 6:01 PM, Enrico Scholz wrote:
+> >>>>> on 64 bit architectures, the 'enum fec_type' might not be aligned and
+> >>>>> large enough to hold a pointer.  
+> >>>>
+> >>>> I am wondering if we couldn't just adopt the Linux prototype:
+> >>>> void *dev_get_drvdata(const struct device_d *dev);
+> >>>>
+> >>>> and do away with the error code and most of the casts.
+> >>>> Users won't be able to differentiate between NULL from id table
+> >>>> and NULL due to lack of drvdata, but I don't think this is
+> >>>> that much of a downside, compared with not having casts obscure
+> >>>> the more common pitfall (besides fec_imx.c, lm75.c, apbh_dma.c and nand_mxs.c
+> >>>> are affected as well of which probably only the first is an issue.)
+> >>>
+> >>> Sounds good. When we change this we should rename the function
+> >>> alongside, because dev_get_drvdata() does something different in Linux.
+> >>
+> >> Does it? I thought it does the same, with the difference that it can
+> >> be set with dev_set_drvdata as well. At the cost of one extra pointer
+> >> per device_d, we could have both of them.
+> > 
+> > dev_set_drvdata() in Linux allows you to store a pointer to private
+> > driver data in struct device. We don't have a function for that in
+> > barebox and use dev->priv instead.
+> > dev_get_drvdata() in barebox gets you the device type data (or however
+> > we want to call it). There's no function for that in Linux and we have
+> > to first find out if we probe from platform data or from device tree
+> > to pick the right function to get the data.
 > 
-> I missed some of the last comments but I have already enabled
-> CONFIG_DEBUG_LL and can't get any console output to appear. UART4 has
-> been selected in the menu for this.
+> Ah, I thought the drvdata is pre-populated in Linux. I would rename
+> the new function to device_get_match_data then for alignment with
+> Linux, with the difference that it returns either platform data or
+> device tree driver_data as appropriate.
 
-Then that's what you need to focus on. Prior to that '>', not much
-code has run. If you don't come that far, chances are you set up your serial port
-wrong (looks correct to me though) or your DCD table is wrong...
+Linux uses the of_device_get_match_data() [1] for of-based drivers.
 
-Cheers,
-Ahmad
+[1] https://elixir.bootlin.com/linux/v5.8-rc4/source/drivers/of/device.c#L189
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Regards,
+  Marco
 
 _______________________________________________
 barebox mailing list
