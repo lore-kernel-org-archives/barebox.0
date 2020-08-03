@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k2gGF-0004fC-KJ
- for barebox@lists.infradead.org; Mon, 03 Aug 2020 19:36:40 +0000
-Date: Mon, 3 Aug 2020 21:36:37 +0200
+ id 1k2gbe-0002p3-5S
+ for barebox@lists.infradead.org; Mon, 03 Aug 2020 19:58:46 +0000
+Date: Mon, 3 Aug 2020 21:58:43 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200803193637.GG31536@pengutronix.de>
-References: <20200724111233.23725-1-l.stach@pengutronix.de>
- <20200724111233.23725-2-l.stach@pengutronix.de>
+Message-ID: <20200803195843.GH31536@pengutronix.de>
+References: <20200803050700.28388-1-yegorslists@googlemail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200724111233.23725-2-l.stach@pengutronix.de>
+In-Reply-To: <20200803050700.28388-1-yegorslists@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,27 +22,92 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/4] ARM: imx8m: make debug UART selection available on
- i.MX8MM
-To: Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: [PATCH] add untar command
+To: yegorslists@googlemail.com
 Cc: barebox@lists.infradead.org
 
-On Fri, Jul 24, 2020 at 01:12:31PM +0200, Lucas Stach wrote:
-> i.MX8MM/MN has UARTs in the same place in the MMIO address space as
-> the i.MX8MQ, so make the lowlevel debug a bit more generic across the
-> i.MX8M family.
-> 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> ---
->  arch/arm/mach-imx/include/mach/debug_ll.h |  6 +++---
->  common/Kconfig                            | 10 +++++-----
->  2 files changed, 8 insertions(+), 8 deletions(-)
+Hi Yegor,
 
-Please rebase on current master. It seems the i.MX8MP support got in the
-way.
+On Mon, Aug 03, 2020 at 07:07:00AM +0200, yegorslists@googlemail.com wrote:
+> From: Yegor Yefremov <yegorslists@googlemail.com>
+> 
+> Use busybox implementation as a reference.
+
+Would you add the busybox version to the commit message for reference
+and to make future updates easier?
+
+> +/* Concatenate path and filename to new allocated buffer.
+> + * Add '/' only as needed (no duplicate // are produced).
+> + * If path is NULL, it is assumed to be "/".
+> + * filename should not be NULL.
+> + */
+> +static char* concat_path_file(const char *path, const char *filename)
+> +{
+> +      char *lc;
+> +
+> +      if (!path)
+> +          path = "";
+> +      lc = last_char_is(path, '/');
+> +      while (*filename == '/')
+> +          filename++;
+> +      return xasprintf("%s%s%s", path, (lc==NULL ? "/" : ""), filename);
+> +}
+
+We already have this function in lib/libbb.c, better use it than adding
+it again. You add more functions that seem to be generic busybox
+functions, please check if they are better added to lib/libbb.c in case
+we need them for other code.
+
+> +static int do_untar(int argc, char *argv[])
+> +{
+> +	archive_handle_t *handle;
+> +	int ret;
+> +
+> +	if (argc < 2)
+> +		return COMMAND_ERROR_USAGE;
+> +
+> +	handle = init_handle();
+
+This allocates memory which you never free, neither in the successful
+case nor in the error path.
+
+> +	handle->src_fd = open(argv[1], O_RDONLY);
+> +	if (handle->src_fd < 0) {
+> +		perror("open");
+> +		return 1;
+> +	}
+> +
+> +	if (argc == 3) {
+> +		chdir(argv[2]);
+
+Doesn't this change the current directory also in the calling shell?
+Also this call can fail when the path doesn't exist or is not a
+directory. You should check this.
+
+> +	}
+> +
+> +	while(!get_header(handle))
+> +		ret = 0;
+> +
+> +	if (ret)
+> +		printf("failed to decompress\n");
+
+'ret' is either used uninitialized or initialized to zero.
+
+> +
+> +	close(handle->src_fd);
+> +	return ret;
+> +}
+> +
+> +BAREBOX_CMD_START(untar)
+> +	.cmd            = do_untar,
+> +	BAREBOX_CMD_DESC("unpack a tar file")
+> +	BAREBOX_CMD_OPTS("INFILE [DIRECTORY]")
+
+I don't like positional arguments very much. It's fine for the infile,
+but IMO the directory should be given with an option instead.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
