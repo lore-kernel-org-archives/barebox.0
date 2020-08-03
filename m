@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k2iCe-0002IV-VI
- for barebox@lists.infradead.org; Mon, 03 Aug 2020 21:41:05 +0000
-Date: Mon, 3 Aug 2020 23:41:03 +0200
+ id 1k2iNA-0004Om-Di
+ for barebox@lists.infradead.org; Mon, 03 Aug 2020 21:51:58 +0000
+Date: Mon, 3 Aug 2020 23:51:54 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200803214103.GR31536@pengutronix.de>
-References: <20200716132830.16453-1-jmaselbas@kalray.eu>
+Message-ID: <20200803215154.GS31536@pengutronix.de>
+References: <CAKd8=GuMSvfaXiTvx4MSOnkLNvTuZg--deRufN6wDaPr8OxA1g@mail.gmail.com>
+ <52e432ea-2ecb-2464-9126-379900da2433@pengutronix.de>
+ <CAKd8=GvjdkC=mHYq3LpLwtaSi8WhYsn3e1VphTWefbzpq=_ZFA@mail.gmail.com>
+ <ce3df13a-29aa-809f-f39c-1213da23038e@pengutronix.de>
+ <CAKd8=GsqcUz23Rc81ZFJ5R1TzofXcJd+HGGE0u=UZyRsvZh_-Q@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200716132830.16453-1-jmaselbas@kalray.eu>
+In-Reply-To: <CAKd8=GsqcUz23Rc81ZFJ5R1TzofXcJd+HGGE0u=UZyRsvZh_-Q@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,24 +26,22 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] USB: gadget: Add serialnumber device parameter
-To: Jules Maselbas <jmaselbas@kalray.eu>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: Getting serial console output on new imx7d tqma7 board UART4
+To: Lars Pedersen <lapeddk@gmail.com>
+Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Thu, Jul 16, 2020 at 03:28:30PM +0200, Jules Maselbas wrote:
-> This add the device parameter usbgadget.serialnumber
-> 
-> Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
-> ---
->  drivers/usb/gadget/multi.c    | 2 ++
->  drivers/usb/gadget/udc-core.c | 3 +++
->  include/usb/gadget.h          | 1 +
->  3 files changed, 6 insertions(+)
+Hi Lars,
 
-Applied, thanks
+On Thu, Jul 30, 2020 at 12:16:14PM +0200, Lars Pedersen wrote:
+
+> CONFIG_DEBUG_IMX_UART_PORT=1
+> CONFIG_HAS_DEBUG_LL=y
+
+This config still has CONFIG_DEBUG_IMX_UART_PORT=1. You probably sent
+this before you changed it to '4', right? Otherwise this might be the
+issue.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
