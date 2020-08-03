@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k2fzv-0002En-Ua
- for barebox@lists.infradead.org; Mon, 03 Aug 2020 19:19:48 +0000
-Date: Mon, 3 Aug 2020 21:19:46 +0200
+ id 1k2g0j-0002QH-AC
+ for barebox@lists.infradead.org; Mon, 03 Aug 2020 19:20:38 +0000
+Date: Mon, 3 Aug 2020 21:20:35 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200803191946.GE31536@pengutronix.de>
-References: <20200722082141.23590-1-a.fatoum@pengutronix.de>
+Message-ID: <20200803192035.GF31536@pengutronix.de>
+References: <1595588977-5147-1-git-send-email-renaud.barbier@abaco.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200722082141.23590-1-a.fatoum@pengutronix.de>
+In-Reply-To: <1595588977-5147-1-git-send-email-renaud.barbier@abaco.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,31 +22,25 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH master] i2c: stm32: support new st,stm32mp15-i2c compatible
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] gpio: get function returns masked register value
+To: Renaud Barbier <renaud.barbier@abaco.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Jul 22, 2020 at 10:21:41AM +0200, Ahmad Fatoum wrote:
-> Linux v5.8-rc1 has gained support for the FastMode+ registers on the
-> stm32mp15, but those are incompatible between the stm32mp15 and the
-> stm32f7, so a new compatible was introduced. The old compatible was
-> replaced for the MP15 SoC, breaking I2C in barebox.
-> Add the new compatible to fix this.
+On Fri, Jul 24, 2020 at 12:09:37PM +0100, Renaud Barbier wrote:
+> Unlike Linux the generic driver get function returns the masked register
+> content and not the 0 or 1 value. The consequence is that gpio_get_value
+> returns for instance 0x10 for bit 4 instead of 1.
+> Use the Linux normalized form instead.
 > 
-> Unlike Linux, we just use the same setup parameters as for the stm32f7.
-> This is ok as long we don't want to support FastMode+.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Signed-off-by: Renaud Barbier <renaud.barbier@abaco.com>
 > ---
-> Hello Sascha,
-> 
-> Yet another v5.8-rc1 dts/ sync breakage.
-> If possible, please reorder before the dts/ sync.
-> Otherwise, please apply to master
+>  drivers/gpio/gpio-generic.c |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
 
 Applied to master, thanks
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
