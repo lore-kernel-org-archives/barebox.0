@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k2gbe-0002p3-5S
- for barebox@lists.infradead.org; Mon, 03 Aug 2020 19:58:46 +0000
-Date: Mon, 3 Aug 2020 21:58:43 +0200
+ id 1k2gph-0003qD-F5
+ for barebox@lists.infradead.org; Mon, 03 Aug 2020 20:13:18 +0000
+Date: Mon, 3 Aug 2020 22:13:14 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200803195843.GH31536@pengutronix.de>
-References: <20200803050700.28388-1-yegorslists@googlemail.com>
+Message-ID: <20200803201314.GI31536@pengutronix.de>
+References: <20200723103326.23226-1-o.rempel@pengutronix.de>
+ <20200723103326.23226-7-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200803050700.28388-1-yegorslists@googlemail.com>
+In-Reply-To: <20200723103326.23226-7-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,90 +23,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] add untar command
-To: yegorslists@googlemail.com
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH v1 06/11] net: fec_imx: use of_get_mac_address() to get
+ mac address out of DT
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org, david@protonic.nl
 
-Hi Yegor,
-
-On Mon, Aug 03, 2020 at 07:07:00AM +0200, yegorslists@googlemail.com wrote:
-> From: Yegor Yefremov <yegorslists@googlemail.com>
+On Thu, Jul 23, 2020 at 12:33:21PM +0200, Oleksij Rempel wrote:
+> A mac address can be provided by the DT over nvmem cell. Start to use
+> of_get_mac_address() since it will be able to read nvmem cell for us.
 > 
-> Use busybox implementation as a reference.
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> ---
+>  drivers/net/fec_imx.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+> 
+> diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+> index 0c2d600d12..578a85c28b 100644
+> --- a/drivers/net/fec_imx.c
+> +++ b/drivers/net/fec_imx.c
+> @@ -628,6 +628,7 @@ static void fec_free_receive_packets(struct fec_priv *fec, int count, int size)
+>  static int fec_probe_dt(struct device_d *dev, struct fec_priv *fec)
+>  {
+>  	struct device_node *mdiobus;
+> +	const char *mac_addr;
+>  	int ret;
+>  
+>  	ret = of_get_phy_mode(dev->device_node);
+> @@ -640,6 +641,14 @@ static int fec_probe_dt(struct device_d *dev, struct fec_priv *fec)
+>  	if (mdiobus)
+>  		fec->miibus.dev.device_node = mdiobus;
+>  
+> +	mac_addr = of_get_mac_address(dev->device_node);
+> +	if (IS_ERR(mac_addr))
+> +		return PTR_ERR(mac_addr);
 
-Would you add the busybox version to the commit message for reference
-and to make future updates easier?
-
-> +/* Concatenate path and filename to new allocated buffer.
-> + * Add '/' only as needed (no duplicate // are produced).
-> + * If path is NULL, it is assumed to be "/".
-> + * filename should not be NULL.
-> + */
-> +static char* concat_path_file(const char *path, const char *filename)
-> +{
-> +      char *lc;
-> +
-> +      if (!path)
-> +          path = "";
-> +      lc = last_char_is(path, '/');
-> +      while (*filename == '/')
-> +          filename++;
-> +      return xasprintf("%s%s%s", path, (lc==NULL ? "/" : ""), filename);
-> +}
-
-We already have this function in lib/libbb.c, better use it than adding
-it again. You add more functions that seem to be generic busybox
-functions, please check if they are better added to lib/libbb.c in case
-we need them for other code.
-
-> +static int do_untar(int argc, char *argv[])
-> +{
-> +	archive_handle_t *handle;
-> +	int ret;
-> +
-> +	if (argc < 2)
-> +		return COMMAND_ERROR_USAGE;
-> +
-> +	handle = init_handle();
-
-This allocates memory which you never free, neither in the successful
-case nor in the error path.
-
-> +	handle->src_fd = open(argv[1], O_RDONLY);
-> +	if (handle->src_fd < 0) {
-> +		perror("open");
-> +		return 1;
-> +	}
-> +
-> +	if (argc == 3) {
-> +		chdir(argv[2]);
-
-Doesn't this change the current directory also in the calling shell?
-Also this call can fail when the path doesn't exist or is not a
-directory. You should check this.
-
-> +	}
-> +
-> +	while(!get_header(handle))
-> +		ret = 0;
-> +
-> +	if (ret)
-> +		printf("failed to decompress\n");
-
-'ret' is either used uninitialized or initialized to zero.
-
-> +
-> +	close(handle->src_fd);
-> +	return ret;
-> +}
-> +
-> +BAREBOX_CMD_START(untar)
-> +	.cmd            = do_untar,
-> +	BAREBOX_CMD_DESC("unpack a tar file")
-> +	BAREBOX_CMD_OPTS("INFILE [DIRECTORY]")
-
-I don't like positional arguments very much. It's fine for the infile,
-but IMO the directory should be given with an option instead.
+A MAC address *can* be provided by the DT, but it's not mandatory, no?
+Shouldn't you return successfully here when no MAC adress is found?
 
 Sascha
 
