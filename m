@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf1-x141.google.com ([2a00:1450:4864:20::141])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k2iXX-0005UR-9I
- for barebox@lists.infradead.org; Mon, 03 Aug 2020 22:02:40 +0000
-References: <20200615060229.7533-1-s.hauer@pengutronix.de>
- <20200615060229.7533-5-s.hauer@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <11fac320-418d-4fc1-249b-59b5008f2839@pengutronix.de>
-Date: Tue, 4 Aug 2020 00:02:37 +0200
+ id 1k2ifu-00067c-Ld
+ for barebox@lists.infradead.org; Mon, 03 Aug 2020 22:11:19 +0000
+Received: by mail-lf1-x141.google.com with SMTP id k13so21318815lfo.0
+ for <barebox@lists.infradead.org>; Mon, 03 Aug 2020 15:11:17 -0700 (PDT)
+From: Anees Rehman <anees.r3hman@gmail.com>
+Date: Tue,  4 Aug 2020 00:11:06 +0200
+Message-Id: <20200803221108.15351-1-anees.r3hman@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20200615060229.7533-5-s.hauer@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,59 +21,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 04/11] fs: free inodes we no longer need
-To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 0/2] ARM: i.MX: Add support for IMX7 based board
+To: barebox@lists.infradead.org
+Cc: Anees Rehman <anees.r3hman@gmail.com>
 
-Hello Sascha,
+The first patch adds support for the IMX7 to load image from SD/MMC similar to
+IMX6 and IMX8.
 
-On 6/15/20 8:02 AM, Sascha Hauer wrote:
-> So far we freed the no longer needed inodes only at unmount time.
-> Let's trust our reference counting a bit more and free them once
-> the reference counter hits zero.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  fs/fs.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
-> 
-> diff --git a/fs/fs.c b/fs/fs.c
-> index cecb3d70e0..e04cadfe5d 100644
-> --- a/fs/fs.c
-> +++ b/fs/fs.c
-> @@ -1090,10 +1090,12 @@ void iput(struct inode *inode)
->  	if (!inode)
->  		return;
->  
-> -	if (!inode->i_count)
-> -		return;
-> -
->  	inode->i_count--;
-> +
-> +	if (!inode->i_count) {
-> +		list_del(&inode->i_sb_list);
+The second patch adds support for Atlas Copco's IXB tool which comes with
+IMX7D, 1GB lpddr2 and has most of the interfaces supported by the SoC.
+This patch also shows booting IMX7 without a static DCD file which allows
+to have a single barebox image on multiple revisions of the same board
+(different memory chips).
 
-There is no explicit initialization of i_sb_list anywhere, only
-list_add.
+The _no_ DCD file part is an adaptation for ac-sxb from zii-imx6q-rdu2.
 
-Without reverting this patch, I can reproduce null pointer dereference
-booting from squashfs as i_sb_list remained uninitialized when this
-line is executed.
+Anees Rehman (2):
+  mci: imx-esdhc-pbl: Add support for IMX7
+  ARM: i.MX: Add atlascopco sxb board
 
-Can you drop this patch for now?
-
-
-> +		destroy_inode(inode);
-> +	}
->  }
->  
->  struct inode *iget(struct inode *inode)
-> 
+ arch/arm/boards/Makefile                      |   1 +
+ arch/arm/boards/ac-sxb/Makefile               |   2 +
+ arch/arm/boards/ac-sxb/board.c                |  17 +++
+ .../ac-sxb/flash-header-mx7d-lpddr2.imxcfg    |  10 ++
+ arch/arm/boards/ac-sxb/lowlevel.c             | 131 ++++++++++++++++++
+ arch/arm/dts/Makefile                         |   1 +
+ arch/arm/dts/ac-sxb.dts                       |  92 ++++++++++++
+ arch/arm/mach-imx/Kconfig                     |   5 +
+ arch/arm/mach-imx/include/mach/xload.h        |   1 +
+ drivers/mci/imx-esdhc-pbl.c                   |  37 +++++
+ dts/src/arm/imx7d-ac-sxb.dts                  | 126 +++++++++++++++++
+ images/Makefile.imx                           |   5 +
+ 12 files changed, 428 insertions(+)
+ create mode 100644 arch/arm/boards/ac-sxb/Makefile
+ create mode 100644 arch/arm/boards/ac-sxb/board.c
+ create mode 100644 arch/arm/boards/ac-sxb/flash-header-mx7d-lpddr2.imxcfg
+ create mode 100644 arch/arm/boards/ac-sxb/lowlevel.c
+ create mode 100644 arch/arm/dts/ac-sxb.dts
+ create mode 100644 dts/src/arm/imx7d-ac-sxb.dts
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.28.0
+
 
 _______________________________________________
 barebox mailing list
