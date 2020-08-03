@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k2gph-0003qD-F5
- for barebox@lists.infradead.org; Mon, 03 Aug 2020 20:13:18 +0000
-Date: Mon, 3 Aug 2020 22:13:14 +0200
+ id 1k2gyW-0005DB-DV
+ for barebox@lists.infradead.org; Mon, 03 Aug 2020 20:22:25 +0000
+Date: Mon, 3 Aug 2020 22:22:22 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200803201314.GI31536@pengutronix.de>
+Message-ID: <20200803202222.GJ31536@pengutronix.de>
 References: <20200723103326.23226-1-o.rempel@pengutronix.de>
- <20200723103326.23226-7-o.rempel@pengutronix.de>
+ <20200723103326.23226-9-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200723103326.23226-7-o.rempel@pengutronix.de>
+In-Reply-To: <20200723103326.23226-9-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,44 +23,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1 06/11] net: fec_imx: use of_get_mac_address() to get
- mac address out of DT
+Subject: Re: [PATCH v1 08/11] gpiolib: add gpio_array_to_id helper to get ID
+ out of GPIO array
 To: Oleksij Rempel <o.rempel@pengutronix.de>
 Cc: barebox@lists.infradead.org, david@protonic.nl
 
-On Thu, Jul 23, 2020 at 12:33:21PM +0200, Oleksij Rempel wrote:
-> A mac address can be provided by the DT over nvmem cell. Start to use
-> of_get_mac_address() since it will be able to read nvmem cell for us.
+Hi Oleksij,
+
+On Thu, Jul 23, 2020 at 12:33:23PM +0200, Oleksij Rempel wrote:
+> Some boards provide a board version and/or ID coded by pull-up/down
+> resistors connected to the gpio pins (or pins which can be multiplexed
+> at some point as gpio). In this case every one implements own gpio id
+> reader function.
+> 
+> To avoid it, provide the common helper function to extract a value out
+> of provided gpio array.
 > 
 > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 > ---
->  drivers/net/fec_imx.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
+>  drivers/gpio/gpiolib.c | 28 ++++++++++++++++++++++++++++
+>  include/gpio.h         |  5 +++++
+>  2 files changed, 33 insertions(+)
 > 
-> diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-> index 0c2d600d12..578a85c28b 100644
-> --- a/drivers/net/fec_imx.c
-> +++ b/drivers/net/fec_imx.c
-> @@ -628,6 +628,7 @@ static void fec_free_receive_packets(struct fec_priv *fec, int count, int size)
->  static int fec_probe_dt(struct device_d *dev, struct fec_priv *fec)
->  {
->  	struct device_node *mdiobus;
-> +	const char *mac_addr;
->  	int ret;
+> diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+> index 27674af54c..2e9150d2ea 100644
+> --- a/drivers/gpio/gpiolib.c
+> +++ b/drivers/gpio/gpiolib.c
+> @@ -381,6 +381,34 @@ void gpio_free_array(const struct gpio *array, size_t num)
+>  }
+>  EXPORT_SYMBOL_GPL(gpio_free_array);
 >  
->  	ret = of_get_phy_mode(dev->device_node);
-> @@ -640,6 +641,14 @@ static int fec_probe_dt(struct device_d *dev, struct fec_priv *fec)
->  	if (mdiobus)
->  		fec->miibus.dev.device_node = mdiobus;
->  
-> +	mac_addr = of_get_mac_address(dev->device_node);
-> +	if (IS_ERR(mac_addr))
-> +		return PTR_ERR(mac_addr);
+> +int gpio_array_to_id(const struct gpio *array, size_t num, u32 *val)
+> +{
+> +	u32 id = 0;
+> +	int ret, i;
+> +
+> +	if (num > 32)
+> +		return -EOVERFLOW;
+> +
+> +	ret = gpio_request_array(array, num);
+> +	if (ret)
+> +		return ret;
 
-A MAC address *can* be provided by the DT, but it's not mandatory, no?
-Shouldn't you return successfully here when no MAC adress is found?
+This function expects an unrequested array and returns with the array
+requested. This is at least inconsistent.
+
+> +
+> +	/* Wait untill logic level will be stable */
+
+s/untill/until/
+
+> +	udelay(5);
+
+This delay looks rather arbitrary. Is it really necessary?
+
+> +	for (i = 0; i < num; i++) {
+> +		ret = gpio_is_active(array[i].gpio);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		id |= ret << i;
+
+'ret' is signed. Does this work when i == 31 ?
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
