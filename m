@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k2i5d-0001Vt-08
- for barebox@lists.infradead.org; Mon, 03 Aug 2020 21:33:49 +0000
-Date: Mon, 3 Aug 2020 23:33:47 +0200
+ id 1k2iAW-00023R-6g
+ for barebox@lists.infradead.org; Mon, 03 Aug 2020 21:38:52 +0000
+Date: Mon, 3 Aug 2020 23:38:50 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200803213347.GP31536@pengutronix.de>
-References: <20200721061458.26739-1-a.fatoum@pengutronix.de>
+Message-ID: <20200803213850.GQ31536@pengutronix.de>
+References: <20200716132816.16400-1-jmaselbas@kalray.eu>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200721061458.26739-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20200716132816.16400-1-jmaselbas@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,26 +22,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] i2c: sync i2c_parse_fw_timings() with upstream
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] startup: Add missing newline to notice message
+To: Jules Maselbas <jmaselbas@kalray.eu>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Tue, Jul 21, 2020 at 08:14:56AM +0200, Ahmad Fatoum wrote:
-> Upstream now has support for i2c-digital-filter-width-ns and
-> i2c-analog-filter-cutoff-frequency device tree properties, that are
-> used in an upcoming patch.
-> Prepare for it by syncing with Linux v5.8-rc4.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+On Thu, Jul 16, 2020 at 03:28:16PM +0200, Jules Maselbas wrote:
+> Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
 > ---
->  drivers/i2c/i2c.c | 73 ++++++++++++++++++++++-------------------------
->  include/i2c/i2c.h | 14 +++++++++
->  2 files changed, 48 insertions(+), 39 deletions(-)
+>  common/startup.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Applied, thanks
+Applied to master, thanks
 
 Sascha
 
+> 
+> diff --git a/common/startup.c b/common/startup.c
+> index 511675ed5..10dbe754e 100644
+> --- a/common/startup.c
+> +++ b/common/startup.c
+> @@ -155,7 +155,7 @@ static int load_environment(void)
+>  			envfs_load(default_environment_path, "/env", 0);
+>  	} else {
+>  		if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT))
+> -			pr_notice("No support for persistent environment. Using default environment");
+> +			pr_notice("No support for persistent environment. Using default environment\n");
+>  	}
+>  
+>  	nvvar_load();
+> -- 
+> 2.17.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
