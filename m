@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k2fx5-0001bE-2u
- for barebox@lists.infradead.org; Mon, 03 Aug 2020 19:16:53 +0000
-Date: Mon, 3 Aug 2020 21:16:49 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200803191649.GC31536@pengutronix.de>
-References: <20200729162555.12689-1-yegorslists@googlemail.com>
+ id 1k2fyh-0001t7-Bu
+ for barebox@lists.infradead.org; Mon, 03 Aug 2020 19:18:32 +0000
+Date: Mon, 3 Aug 2020 21:18:29 +0200
+From: Sascha Hauer <sha@pengutronix.de>
+Message-ID: <20200803191829.GD31536@pengutronix.de>
+References: <20200729111240.24702-1-mkl@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200729162555.12689-1-yegorslists@googlemail.com>
+In-Reply-To: <20200729111240.24702-1-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,24 +22,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Documentation/sandbox: fix code block
-To: yegorslists@googlemail.com
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] scripts/rsatoc: fix printing of error message, if
+ environment variable doen't contain a path
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: barebox@lists.infradead.org, lst@pengutronix.de
 
-On Wed, Jul 29, 2020 at 06:25:55PM +0200, yegorslists@googlemail.com wrote:
-> From: Yegor Yefremov <yegorslists@googlemail.com>
-> 
-> Remove unneeded colon.
-> 
-> Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+On Wed, Jul 29, 2020 at 01:12:40PM +0200, Marc Kleine-Budde wrote:
+> Fixes: 128ad3cbe043 ("scripts: Add rsatoc tool")
+> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 > ---
->  Documentation/boards/sandbox.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  scripts/rsatoc.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 
-Applied, thanks
+Applied to master, thanks
 
 Sascha
 
+> 
+> diff --git a/scripts/rsatoc.c b/scripts/rsatoc.c
+> index 647380214092..9410f33a654f 100644
+> --- a/scripts/rsatoc.c
+> +++ b/scripts/rsatoc.c
+> @@ -471,10 +471,12 @@ int main(int argc, char *argv[])
+>  		path++;
+>  
+>  		if (!strncmp(path, "__ENV__", 7)) {
+> -			path = getenv(path + 7);
+> +			const char *orig_path = path;
+> +			
+> +			path = getenv(orig_path + 7);
+>  			if (!path) {
+>  				fprintf(stderr, "%s doesn't contain a path\n",
+> -					path + 7);
+> +					orig_path + 7);
+>  				exit(1);
+>  			}
+>  		}
+> -- 
+> 2.20.1
+> 
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
