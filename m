@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k2fji-0000Qo-VI
- for barebox@lists.infradead.org; Mon, 03 Aug 2020 19:03:03 +0000
-Date: Mon, 3 Aug 2020 21:02:59 +0200
+ id 1k2fwH-0001Vp-Rz
+ for barebox@lists.infradead.org; Mon, 03 Aug 2020 19:16:02 +0000
+Date: Mon, 3 Aug 2020 21:15:59 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200803190259.GA31536@pengutronix.de>
-References: <20200802104041.780304-1-ahmad@a3f.at>
+Message-ID: <20200803191559.GB31536@pengutronix.de>
+References: <20200731045905.546141-1-ahmad@a3f.at>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200802104041.780304-1-ahmad@a3f.at>
+In-Reply-To: <20200731045905.546141-1-ahmad@a3f.at>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,65 +22,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: socfpga: achilles: remove unused barebox,bootstate
- node
+Subject: Re: [PATCH] ARM: stm32mp: add support for Seeed Odyssey board
 To: Ahmad Fatoum <ahmad@a3f.at>
-Cc: barebox@lists.infradead.org, Xogium <contact@xogium.me>
+Cc: barebox@lists.infradead.org, Xogium <contact@xogium.me>, Jookia <contact@jookia.org>
 
-On Sun, Aug 02, 2020 at 12:40:41PM +0200, Ahmad Fatoum wrote:
-> We use barebox,state as compatible for the state node. The
-> barebox,bootstate node serves no purpose with current code base and is
-> just confusing. Drop it.
+On Fri, Jul 31, 2020 at 06:59:05AM +0200, Ahmad Fatoum wrote:
+> Board consists of SoM with stm32mp157c with 4G eMMC and 512M DDR3 RAM.
+> Carrier board features USB and ETH interfaces and SD card connector.
 > 
-> Reported-by: Xogium <contact@xogium.me>
+> USB and ETH interfaces not yet operational.
+> 
+> Boot from eMMC requires boot ack bit set.
+> 
+> Device Tree taken from v5 of kernel device tree off mailing list[1].
+> 
+> [1]: https://lore.kernel.org/linux-arm-kernel/20200724145107.35772-3-marcin.sloniewski@gmail.com/
+> 
+> Tested-by: Jookia <contact@jookia.org>
+> Tested-by: Xogium <contact@xogium.me>
 > Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 > ---
->  arch/arm/dts/socfpga_arria10_achilles.dts | 18 ------------------
->  1 file changed, 18 deletions(-)
 
 Applied, thanks
 
 Sascha
 
-> 
-> diff --git a/arch/arm/dts/socfpga_arria10_achilles.dts b/arch/arm/dts/socfpga_arria10_achilles.dts
-> index 2fce0114c89a..6071dbfb49ee 100644
-> --- a/arch/arm/dts/socfpga_arria10_achilles.dts
-> +++ b/arch/arm/dts/socfpga_arria10_achilles.dts
-> @@ -106,24 +106,6 @@
->  			};
->  		};
->  	};
-> -
-> -	bootstate: bootstate {
-> -		compatible = "barebox,bootstate";
-> -		backend-type = "state"; // or "nv", or "efivar"
-> -		backend = <&state>;
-> -
-> -		system0 {
-> -			default_attempts = <3>;
-> -		};
-> -
-> -		system1 {
-> -			default_attempts = <3>;
-> -		};
-> -
-> -		factory {
-> -			default_attempts = <3>;
-> -		};
-> -	};
->  };
->  
->  &{/soc/clkmgr@ffd04000/clocks/osc1} {
-> -- 
-> 2.27.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
