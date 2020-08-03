@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf1-x141.google.com ([2a00:1450:4864:20::141])
+Received: from mail-lf1-x143.google.com ([2a00:1450:4864:20::143])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k2ifu-00067c-Ld
+ id 1k2ifu-00067e-Qo
  for barebox@lists.infradead.org; Mon, 03 Aug 2020 22:11:19 +0000
-Received: by mail-lf1-x141.google.com with SMTP id k13so21318815lfo.0
- for <barebox@lists.infradead.org>; Mon, 03 Aug 2020 15:11:17 -0700 (PDT)
+Received: by mail-lf1-x143.google.com with SMTP id h8so21262793lfp.9
+ for <barebox@lists.infradead.org>; Mon, 03 Aug 2020 15:11:18 -0700 (PDT)
 From: Anees Rehman <anees.r3hman@gmail.com>
-Date: Tue,  4 Aug 2020 00:11:06 +0200
-Message-Id: <20200803221108.15351-1-anees.r3hman@gmail.com>
+Date: Tue,  4 Aug 2020 00:11:07 +0200
+Message-Id: <20200803221108.15351-2-anees.r3hman@gmail.com>
+In-Reply-To: <20200803221108.15351-1-anees.r3hman@gmail.com>
+References: <20200803221108.15351-1-anees.r3hman@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,45 +23,85 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/2] ARM: i.MX: Add support for IMX7 based board
+Subject: [PATCH 1/2] mci: imx-esdhc-pbl: Add support for IMX7
 To: barebox@lists.infradead.org
-Cc: Anees Rehman <anees.r3hman@gmail.com>
+Cc: Anees Rehman <anees.rehman@atlascopco.com>, Anees Rehman <anees.r3hman@gmail.com>
 
-The first patch adds support for the IMX7 to load image from SD/MMC similar to
-IMX6 and IMX8.
+From: Anees Rehman <anees.rehman@atlascopco.com>
 
-The second patch adds support for Atlas Copco's IXB tool which comes with
-IMX7D, 1GB lpddr2 and has most of the interfaces supported by the SoC.
-This patch also shows booting IMX7 without a static DCD file which allows
-to have a single barebox image on multiple revisions of the same board
-(different memory chips).
+Signed-off-by: Anees Rehman <anees.r3hman@gmail.com>
+---
+ arch/arm/mach-imx/include/mach/xload.h |  1 +
+ drivers/mci/imx-esdhc-pbl.c            | 37 ++++++++++++++++++++++++++
+ 2 files changed, 38 insertions(+)
 
-The _no_ DCD file part is an adaptation for ac-sxb from zii-imx6q-rdu2.
-
-Anees Rehman (2):
-  mci: imx-esdhc-pbl: Add support for IMX7
-  ARM: i.MX: Add atlascopco sxb board
-
- arch/arm/boards/Makefile                      |   1 +
- arch/arm/boards/ac-sxb/Makefile               |   2 +
- arch/arm/boards/ac-sxb/board.c                |  17 +++
- .../ac-sxb/flash-header-mx7d-lpddr2.imxcfg    |  10 ++
- arch/arm/boards/ac-sxb/lowlevel.c             | 131 ++++++++++++++++++
- arch/arm/dts/Makefile                         |   1 +
- arch/arm/dts/ac-sxb.dts                       |  92 ++++++++++++
- arch/arm/mach-imx/Kconfig                     |   5 +
- arch/arm/mach-imx/include/mach/xload.h        |   1 +
- drivers/mci/imx-esdhc-pbl.c                   |  37 +++++
- dts/src/arm/imx7d-ac-sxb.dts                  | 126 +++++++++++++++++
- images/Makefile.imx                           |   5 +
- 12 files changed, 428 insertions(+)
- create mode 100644 arch/arm/boards/ac-sxb/Makefile
- create mode 100644 arch/arm/boards/ac-sxb/board.c
- create mode 100644 arch/arm/boards/ac-sxb/flash-header-mx7d-lpddr2.imxcfg
- create mode 100644 arch/arm/boards/ac-sxb/lowlevel.c
- create mode 100644 arch/arm/dts/ac-sxb.dts
- create mode 100644 dts/src/arm/imx7d-ac-sxb.dts
-
+diff --git a/arch/arm/mach-imx/include/mach/xload.h b/arch/arm/mach-imx/include/mach/xload.h
+index 05022e9d0..94b2f3761 100644
+--- a/arch/arm/mach-imx/include/mach/xload.h
++++ b/arch/arm/mach-imx/include/mach/xload.h
+@@ -5,6 +5,7 @@ int imx53_nand_start_image(void);
+ int imx6_spi_load_image(int instance, unsigned int flash_offset, void *buf, int len);
+ int imx6_spi_start_image(int instance);
+ int imx6_esdhc_start_image(int instance);
++int imx7_esdhc_start_image(int instance);
+ int imx8m_esdhc_load_image(int instance, bool start);
+ int imx8mp_esdhc_load_image(int instance, bool start);
+ 
+diff --git a/drivers/mci/imx-esdhc-pbl.c b/drivers/mci/imx-esdhc-pbl.c
+index 5c382bbcc..10a008280 100644
+--- a/drivers/mci/imx-esdhc-pbl.c
++++ b/drivers/mci/imx-esdhc-pbl.c
+@@ -21,6 +21,7 @@
+ #ifdef CONFIG_ARCH_IMX
+ #include <mach/atf.h>
+ #include <mach/imx6-regs.h>
++#include <mach/imx7-regs.h>
+ #include <mach/imx8mq-regs.h>
+ #include <mach/imx8mm-regs.h>
+ #include <mach/imx-header.h>
+@@ -265,6 +266,42 @@ int imx6_esdhc_start_image(int instance)
+ 	return esdhc_load_image(&host, 0x10000000, 0x10000000, 0, SZ_1K, true);
+ }
+ 
++/**
++ * imx7_esdhc_start_image - Load and start an image from USDHC controller
++ * @instance: The USDHC controller instance (0..2)
++ *
++ * This uses esdhc_start_image() to load an image from SD/MMC.  It is
++ * assumed that the image is the currently running barebox image (This
++ * information is used to calculate the length of the image). The
++ * image is started afterwards.
++ *
++ * Return: If successful, this function does not return. A negative error
++ * code is returned when this function fails.
++ */
++int imx7_esdhc_start_image(int instance)
++{
++	struct esdhc_soc_data data;
++	struct fsl_esdhc_host host;
++
++	switch (instance) {
++	case 0:
++		host.regs = IOMEM(MX7_USDHC1_BASE_ADDR);
++		break;
++	case 1:
++		host.regs = IOMEM(MX7_USDHC2_BASE_ADDR);
++		break;
++	case 2:
++		host.regs = IOMEM(MX7_USDHC3_BASE_ADDR);
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	imx_esdhc_init(&host, &data);
++
++	return esdhc_load_image(&host, 0x80000000, 0x80000000, 0, SZ_1K, true);
++}
++
+ /**
+  * imx8m_esdhc_load_image - Load and optionally start an image from USDHC controller
+  * @instance: The USDHC controller instance (0..2)
 -- 
 2.28.0
 
