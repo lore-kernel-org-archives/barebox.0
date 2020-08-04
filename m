@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k2pVg-0003qU-Cc
- for barebox@lists.infradead.org; Tue, 04 Aug 2020 05:29:13 +0000
-Date: Tue, 4 Aug 2020 07:29:10 +0200
+ id 1k2poN-0005vF-EA
+ for barebox@lists.infradead.org; Tue, 04 Aug 2020 05:48:32 +0000
+Date: Tue, 4 Aug 2020 07:48:29 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Message-ID: <20200804052910.w6kpqnznwhpfox6m@pengutronix.de>
+Message-ID: <20200804054829.44eqvc47p5q67jam@pengutronix.de>
 References: <20200723103326.23226-1-o.rempel@pengutronix.de>
- <20200723103326.23226-7-o.rempel@pengutronix.de>
- <20200803201314.GI31536@pengutronix.de>
+ <20200723103326.23226-12-o.rempel@pengutronix.de>
+ <20200803211259.GL31536@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20200803201314.GI31536@pengutronix.de>
+In-Reply-To: <20200803211259.GL31536@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,62 +19,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============2835456732371308632=="
+Content-Type: multipart/mixed; boundary="===============5128347324770833579=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1 06/11] net: fec_imx: use of_get_mac_address() to get
- mac address out of DT
+Subject: Re: [PATCH v1 11/11] ARM: dts: imx6q-prti6q: add barebox.serial node
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org, david@protonic.nl
 
 
---===============2835456732371308632==
+--===============5128347324770833579==
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="qerlajhzo67ayocq"
+	protocol="application/pgp-signature"; boundary="noxgm4pxly2rqgjf"
 Content-Disposition: inline
 
 
---qerlajhzo67ayocq
+--noxgm4pxly2rqgjf
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 03, 2020 at 10:13:14PM +0200, Sascha Hauer wrote:
-> On Thu, Jul 23, 2020 at 12:33:21PM +0200, Oleksij Rempel wrote:
-> > A mac address can be provided by the DT over nvmem cell. Start to use
-> > of_get_mac_address() since it will be able to read nvmem cell for us.
+On Mon, Aug 03, 2020 at 11:12:59PM +0200, Sascha Hauer wrote:
+> On Thu, Jul 23, 2020 at 12:33:26PM +0200, Oleksij Rempel wrote:
+> > Add serial node provider
 > >=20
 > > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 > > ---
-> >  drivers/net/fec_imx.c | 9 +++++++++
-> >  1 file changed, 9 insertions(+)
+> >  arch/arm/dts/imx6q-prti6q.dts | 5 +++++
+> >  1 file changed, 5 insertions(+)
 > >=20
-> > diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-> > index 0c2d600d12..578a85c28b 100644
-> > --- a/drivers/net/fec_imx.c
-> > +++ b/drivers/net/fec_imx.c
-> > @@ -628,6 +628,7 @@ static void fec_free_receive_packets(struct fec_pri=
-v *fec, int count, int size)
-> >  static int fec_probe_dt(struct device_d *dev, struct fec_priv *fec)
-> >  {
-> >  	struct device_node *mdiobus;
-> > +	const char *mac_addr;
-> >  	int ret;
-> > =20
-> >  	ret =3D of_get_phy_mode(dev->device_node);
-> > @@ -640,6 +641,14 @@ static int fec_probe_dt(struct device_d *dev, stru=
-ct fec_priv *fec)
-> >  	if (mdiobus)
-> >  		fec->miibus.dev.device_node =3D mdiobus;
-> > =20
-> > +	mac_addr =3D of_get_mac_address(dev->device_node);
-> > +	if (IS_ERR(mac_addr))
-> > +		return PTR_ERR(mac_addr);
+> > diff --git a/arch/arm/dts/imx6q-prti6q.dts b/arch/arm/dts/imx6q-prti6q.=
+dts
+> > index 76bb4d53d3..67e7f63979 100644
+> > --- a/arch/arm/dts/imx6q-prti6q.dts
+> > +++ b/arch/arm/dts/imx6q-prti6q.dts
+> > @@ -18,6 +18,11 @@
+> >  			compatible =3D "barebox,environment";
+> >  			device-path =3D &ecspi1, "partname:env";
+> >  		};
+> > +		serial {
+> > +			compatible =3D "barebox,serial";
+> > +			nvmem-cell-names =3D "serial-number";
+> > +			/* nvmem-cells will added board code */
 >=20
-> A MAC address *can* be provided by the DT, but it's not mandatory, no?
-> Shouldn't you return successfully here when no MAC adress is found?
+> You probably mean "nvmem-cells will be added by board code".
+>=20
+> You need board code to fully describe the device which triggers a
+> freshly written driver which puts the found serial number as
+> /serial-number into dt. Is this really worth it? I'd just read the
+> serial number in board code and put it into dt, maybe add some helper
+> function to set the right property from a given string.
 
-ok, fixed.
+If eeprom should only be used to read serial-number - yes. But this
+RFID-eeprom provides more space and functionality. Why not make it
+available for barebox and linux to be able to do more things with it?
+
+> BTW you seem to be lucky that the i2c eeprom driver probes before the
+> barebox,serial driver, otherwise I think this doesn't work.
+
+We would have the same issue with the board code. It seems to work just for
+this particular barebox version and i2c controller was accidentally probed
+before board code.
+
+I think it is time to talk about deferred probe patches made by Lucas ;)
 
 Regards,
 Oleksij
@@ -84,30 +90,30 @@ Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
---qerlajhzo67ayocq
+--noxgm4pxly2rqgjf
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCAAdFiEERBNZvwSgvmcMY/T74omh9DUaUbMFAl8o8iAACgkQ4omh9DUa
-UbNLAQ/+JDEyKed/o8Bc10EIK0XuNarGlDX/TA+pABMBvZxgGujgOhXAsTyxdWVl
-DgmvrY6zhe9Q4kYugMhgS8PXhsW1/7aFfTHg0ZtKtxnRI0AWFtyb2ZfXuC38A5l2
-pUr1kJWOxPKcW8zKIcs8TQ9ZzOjO1AqfZpR+vJp9xjUMA8hBZL2No6Df+mR8WxU3
-tZUf2c5JWaxvVl56dZPlk8UPYZpOvYal3UKZdC1G2h27iYDZz26s82J0ZsTEYpFB
-UQOEeA4pI4uNMCI+fdSmDWWAC3v2+2itzgb+3Dlsc7mp5/yfyQVE7BJZD0rXuUuU
-3AZ/3zDkCqf0qTApPAa6ftZuEgbtJ55WnrIxKKnDCgVtG0pwC9OeGXhbBzH8A4Y4
-wOe/ub0caTyBrsD2JXxHcg2wf2kBqfexiGRyrFMtUY4Egua3GKN9MegFeqCAWcXR
-7XJZzyjgZlxD5/MIVQko5lB0pArlyEAwohtHyBI8MpIE0WKA/DS2rOzKdy/r/U/x
-viV9EUNeiJ//i383pax3NWWppLQZIbA0/sovzBzN9DEhd5i37CpzKN3/mFfYwPUc
-BAllk2ZCxDR2nVdy8DPaERhcInlUutKicEi/0dBI8FJMlLJ0tjP/tqZrSYkSWxDX
-+fCSImixe5xm5FYnPW2kV4w7DgXyJO2EDnuqGFiKlq4HMYVDJcI=
-=fgxG
+iQIzBAABCAAdFiEERBNZvwSgvmcMY/T74omh9DUaUbMFAl8o9qkACgkQ4omh9DUa
+UbPMJg//Ugv/SVgaV41VWUoHCFM2qg+Kq1m6mwZ4EBTfFrG50U3TivN0gGx1tyZi
+wrj4WKn3/k4wJLQyNpNtnH18iHlycz3LzwSbbOXH5cI+8Cdcr1MJlb3Qr1mA3+0X
+n1jrtcMhMHoA6WZhWfWj5bebK36/CvDEKFi3f8AdBbIh1wE7xDsq3EhJkGUaxodP
+A/2rXBAWz8bjz+09SlDNRvyHEX/6htDWIxwCiChoKD63nXhxIDJ97MVbRKdb8Sug
+Wfx5ZNv/E/RtXuET1BuuTcu56FcDxap8Mey7d6CPm0h2OwtAGbdeihVsWxqpWL+/
+jKkohHGinjRLRXoo9DAaFzz1jqu9R+OkwzUj9WBjbB0Nz6wP7c6KcGso1v/DOP9s
+nCVxEmS+LjSidmyn/ho33EVMBECYXl3gHGN5kxIhrnH4wWz9cTmMzebB+kM80Bbw
+Z5oXaoRYw1EgWO1MVtAgi5Ao6BdFEl6FZF/LUyqKy2v/eVdwBPsigkWI0pkXVYVb
+L8WnzebBDXbM806mgfgAiPkqCrVNcOpEv3FtyVgMtoH1njuH5QvxqPCrcSst7q2n
+ts4wGcXb/m831PwXUilSjOx6opLZF1z7FHEmfJ2D4nXEKqJbg3Sstn7OQlEh93JD
+YKqkkxOg8d6MVlIfyipnJppVqwiI6ImiEiyf7o+/KwLokC2uXU0=
+=dmxl
 -----END PGP SIGNATURE-----
 
---qerlajhzo67ayocq--
+--noxgm4pxly2rqgjf--
 
 
---===============2835456732371308632==
+--===============5128347324770833579==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -118,4 +124,4 @@ barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
 
---===============2835456732371308632==--
+--===============5128347324770833579==--
