@@ -1,21 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qt1-x82d.google.com ([2607:f8b0:4864:20::82d])
+Received: from mail-qv1-xf34.google.com ([2607:f8b0:4864:20::f34])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k2wRs-0004f4-IM
- for barebox@lists.infradead.org; Tue, 04 Aug 2020 12:53:45 +0000
-Received: by mail-qt1-x82d.google.com with SMTP id h21so24348819qtp.11
- for <barebox@lists.infradead.org>; Tue, 04 Aug 2020 05:53:42 -0700 (PDT)
+ id 1k2wf7-0005M4-4S
+ for barebox@lists.infradead.org; Tue, 04 Aug 2020 13:07:26 +0000
+Received: by mail-qv1-xf34.google.com with SMTP id a19so12941073qvy.3
+ for <barebox@lists.infradead.org>; Tue, 04 Aug 2020 06:07:24 -0700 (PDT)
 MIME-Version: 1.0
 References: <CAKd8=GuMSvfaXiTvx4MSOnkLNvTuZg--deRufN6wDaPr8OxA1g@mail.gmail.com>
- <52e432ea-2ecb-2464-9126-379900da2433@pengutronix.de>
- <CAKd8=GvjdkC=mHYq3LpLwtaSi8WhYsn3e1VphTWefbzpq=_ZFA@mail.gmail.com>
- <ce3df13a-29aa-809f-f39c-1213da23038e@pengutronix.de>
- <CAKd8=GsqcUz23Rc81ZFJ5R1TzofXcJd+HGGE0u=UZyRsvZh_-Q@mail.gmail.com>
- <20200803215154.GS31536@pengutronix.de>
-In-Reply-To: <20200803215154.GS31536@pengutronix.de>
+ <e29ef420-c914-72b4-5ef2-875d3f9844e7@pengutronix.de>
+In-Reply-To: <e29ef420-c914-72b4-5ef2-875d3f9844e7@pengutronix.de>
 From: Lars Pedersen <lapeddk@gmail.com>
-Date: Tue, 4 Aug 2020 14:53:30 +0200
-Message-ID: <CAKd8=GtFaC_SOC-=xBBhWxgQOdkZQ-o2sYW7ya3tEur4qFFmpA@mail.gmail.com>
+Date: Tue, 4 Aug 2020 15:07:11 +0200
+Message-ID: <CAKd8=Gsyqhy-bzTdSQTfd8z6=JtkkhP1m00yoC=3uLRr4q1-xg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,36 +25,214 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Getting serial console output on new imx7d tqma7 board UART4
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi Sascha thx for the reply.
+Hi.
+
+I just go an MCIMX7SABRE board and it now trying to start barebox from
+the external SD card, which I guess should be possible right?
+
+I have taken barebox 2020.07.0 and copied the imx_v7_defconfig and
+deselected all boards except the "NXP i.MX7 SabreSD board"
+
+After compilation i copy the image using:
+
+sudo dd if=barebox-freescale-mx7-sabresd.img of=/dev/sdb bs=1024 skip=1 seek=1
+sync
+
+But still no boot screen for that either. :/
+
+Shouldn't this work out of the box??
 
 /Lars Pedersen
 
-On Mon, 3 Aug 2020 at 23:51, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+On Mon, 3 Aug 2020 at 12:10, Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
 >
-> Hi Lars,
+> Hi,
 >
-> On Thu, Jul 30, 2020 at 12:16:14PM +0200, Lars Pedersen wrote:
+> On 7/29/20 6:52 PM, Lars Pedersen wrote:
+> > I have spent the last couple of days trying to port our bootloader
+> > from u-boot to barebox 2020.07 but have yet to get any console output.
+> > Our product is based on tqma7d i.MX7 dual core cpu and uses UART4 for
+> > serial console and boots from internal eMMC.
+> >
+> > I created a new board inspired from "NXP i.MX7 SabreSD board" and
+> > tried to only add the basic in the first step to get a console output
+> > working. The image is built using ptxdist and the imx_v7_defconfig
+> > where the new board is selected. The image is flashed with "dd
+> > if=barebox-image of=/dev/mmcblk0 bs=1024 skip=1 seek=1 conv=fsync".
+> > The device works using u-boot 2020.07 with the same device trees but
+> > we thought it was time to try out barebox since u-boot felt a little
+> > bloated :)
+> >
+> > So can anyone be of assistance and tell me what I'm missing?
 >
-> > CONFIG_DEBUG_IMX_UART_PORT=1
-> > CONFIG_HAS_DEBUG_LL=y
+> When I looked through your patch the first time, I just looked
+> for stuff that would cause it to not boot. Some more comments
+> inline that are unrelated to your boot problems.
 >
-> This config still has CONFIG_DEBUG_IMX_UART_PORT=1. You probably sent
-> this before you changed it to '4', right? Otherwise this might be the
-> issue.
+> >
+> > /Lars Pedersen
+> >
+> > From: Lars Pedersen <laa@kamstrup.com>
+> > Date: Tue, 28 Jul 2020 08:57:57 +0000
+> > Subject: [PATCH] Add kamstrup imx7d dev board
+> >
+> > ---
+> >  arch/arm/boards/Makefile                           |   1 +
+> >  arch/arm/boards/kamstrup-imx7d-tqma7d/Makefile     |   2 +
+> >  arch/arm/boards/kamstrup-imx7d-tqma7d/board.c      |  19 ++
+> >  .../flash-header-kamstrup-imx7d-tqma7d.imxcfg      |  79 ++++++
+> >  arch/arm/boards/kamstrup-imx7d-tqma7d/lowlevel.c   |  35 +++
+> >  arch/arm/dts/Makefile                              |   1 +
+> >  arch/arm/dts/imx7d-flex-concentrator-mfg.dts       |  11 +
+> >  arch/arm/mach-imx/Kconfig                          |   5 +
+> >  drivers/regulator/Kconfig                          |   2 +-
+> >  dts/src/arm/imx7d-flex-concentrator-mfg.dts        |  25 ++
+> >  dts/src/arm/imx7d-flex-concentrator.dts            | 313 +++++++++++++++++++++
+> >  images/Makefile.imx                                |   5 +
+> >  12 files changed, 497 insertions(+), 1 deletion(-)
+> >  create mode 100644 arch/arm/boards/kamstrup-imx7d-tqma7d/Makefile
+> >  create mode 100644 arch/arm/boards/kamstrup-imx7d-tqma7d/board.c
+> >  create mode 100644
+> > arch/arm/boards/kamstrup-imx7d-tqma7d/flash-header-kamstrup-imx7d-tqma7d.imxcfg
+> >  create mode 100644 arch/arm/boards/kamstrup-imx7d-tqma7d/lowlevel.c
+> >  create mode 100644 arch/arm/dts/imx7d-flex-concentrator-mfg.dts
+> >  create mode 100644 dts/src/arm/imx7d-flex-concentrator-mfg.dts
+> >  create mode 100644 dts/src/arm/imx7d-flex-concentrator.dts
+> >
+> > diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+> > index e9e9163d589b..58bb4cf2adab 100644
+> > --- a/arch/arm/boards/Makefile
+> > +++ b/arch/arm/boards/Makefile
+> > @@ -64,6 +64,7 @@ obj-$(CONFIG_MACH_HIGHBANK)            += highbank/
+> >  obj-$(CONFIG_MACH_IMX21ADS)            += freescale-mx21-ads/
+> >  obj-$(CONFIG_MACH_IMX233_OLINUXINO)        += imx233-olinuxino/
+> >  obj-$(CONFIG_MACH_IMX27ADS)            += freescale-mx27-ads/
+> > +obj-$(CONFIG_MACH_KAMSTRUP_IMX7D_TQMA7D)    += kamstrup-imx7d-tqma7d/
+> >  obj-$(CONFIG_MACH_KINDLE3)            += kindle3/
+> >  obj-$(CONFIG_MACH_KONTRON_SAMX6I)        += kontron-samx6i/
+> >  obj-$(CONFIG_MACH_LENOVO_IX4_300D)        += lenovo-ix4-300d/
+> > diff --git a/arch/arm/boards/kamstrup-imx7d-tqma7d/Makefile
+> > b/arch/arm/boards/kamstrup-imx7d-tqma7d/Makefile
+> > new file mode 100644
+> > index 000000000000..01c7a259e9a5
+> > --- /dev/null
+> > +++ b/arch/arm/boards/kamstrup-imx7d-tqma7d/Makefile
+> > @@ -0,0 +1,2 @@
+> > +obj-y += board.o
+> > +lwl-y += lowlevel.o
+> > diff --git a/arch/arm/boards/kamstrup-imx7d-tqma7d/board.c
+> > b/arch/arm/boards/kamstrup-imx7d-tqma7d/board.c
+> > new file mode 100644
+> > index 000000000000..b3ffa851f3e6
+> > --- /dev/null
+> > +++ b/arch/arm/boards/kamstrup-imx7d-tqma7d/board.c
+> > @@ -0,0 +1,19 @@
+> > +// SPDX-License-Identifier: GPL-2.0-or-later
+> > +// SPDX-FileCopyrightText: 2020 Kamstrup A/S
+> > +
+> > +/* Author: Lars Pedersen <lapeddk@gmail.com> */
+> > +
+> > +#include <common.h>
+> > +#include <init.h>
+> > +#include <io.h>
+> > +#include <mach/imx7-regs.h>
+> > +#include <mfd/imx7-iomuxc-gpr.h>
+> > +
+> > +static int kamstrup_mx7_tqma7d_coredevices_init(void)
+> > +{
+> > +    if (!of_machine_is_compatible("kam,imx7d-flex-concentrator"))
+> > +        return 0;
+> > +
+> > +    return 0;
+> > +}
+>
+> Function serves no purpose. If you don't have baord code, drop it altogether.
+>
 
-Yes, it has been changed to 4.
+I'll do a cleanup when I have it working :D
 
+> > +coredevice_initcall(kamstrup_mx7_tqma7d_coredevices_init);
+> > diff --git a/arch/arm/boards/kamstrup-imx7d-tqma7d/flash-header-kamstrup-imx7d-tqma7d.imxcfg
+> > b/arch/arm/boards/kamstrup-imx7d-tqma7d/flash-header-kamstrup-imx7d-tqma7d.imxcfg
+> > new file mode 100644
+> > index 000000000000..7656619c1b2e
+> > --- /dev/null
+> > +++ b/arch/arm/boards/kamstrup-imx7d-tqma7d/flash-header-kamstrup-imx7d-tqma7d.imxcfg
+> > @@ -0,0 +1,79 @@
+> > +soc imx7
+> > +loadaddr 0x80000000
+> > +dcdofs 0x400
 >
-> Sascha
+> Called ivtofs now in barebox next branch now.
 >
-> --
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+Okay thanks.
+
+> > diff --git a/arch/arm/dts/imx7d-flex-concentrator-mfg.dts
+> > b/arch/arm/dts/imx7d-flex-concentrator-mfg.dts
+> > new file mode 100644
+> > index 000000000000..746e36a70f4c
+> > --- /dev/null
+> > +++ b/arch/arm/dts/imx7d-flex-concentrator-mfg.dts
+> > @@ -0,0 +1,11 @@
+> > +/*
+> > + * The code contained herein is licensed under the GNU General Public
+> > + * License. You may obtain a copy of the GNU General Public License
+> > + * Version 2 or later at the following locations:
+> > + *
+> > + * http://www.opensource.org/licenses/gpl-license.html
+> > + * http://www.gnu.org/copyleft/gpl.html
+> > + */
+> > +
+> > +#include <arm/imx7d-flex-concentrator-mfg.dts>
+> > +
+> > diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+> > index 6dd5cb2aca15..d0a9332c7a24 100644
+> > --- a/arch/arm/mach-imx/Kconfig
+> > +++ b/arch/arm/mach-imx/Kconfig
+> > @@ -492,6 +492,11 @@ config MACH_ZII_IMX7D_DEV
+> >      select ARCH_IMX7
+> >      select ARM_USE_COMPRESSED_DTB
+> >
+> > +config MACH_KAMSTRUP_IMX7D_TQMA7D
+> > +    bool "Kamstrup TQMa7D based devices"
+> > +    select ARCH_IMX7
+> > +    select ARM_USE_COMPRESSED_DTB
+> > +
+> >  config MACH_PHYTEC_PHYCORE_IMX7
+> >      bool "Phytec phyCORE i.MX7"
+> >      select ARCH_IMX7
+> > diff --git a/drivers/regulator/Kconfig b/drivers/regulator/Kconfig
+> > index 1ce057180a01..b0bdc48399e3 100644
+> > --- a/drivers/regulator/Kconfig
+> > +++ b/drivers/regulator/Kconfig
+> > @@ -19,7 +19,7 @@ config REGULATOR_BCM283X
+> >  config REGULATOR_PFUZE
+> >      bool "Freescale PFUZE100/200/3000 regulator driver"
+> >      depends on I2C
+> > -    depends on ARCH_IMX6 || ARCH_IMX8MQ
+> > +    depends on ARCH_IMX6 || ARCH_IMX7 || ARCH_IMX8MQ
+> >
+> >  config REGULATOR_STM32_PWR
+> >      bool "STMicroelectronics STM32 PWR"
+> > diff --git a/dts/src/arm/imx7d-flex-concentrator-mfg.dts
+> > b/dts/src/arm/imx7d-flex-concentrator-mfg.dts
+> > new file mode 100644
+> > index 000000000000..789f0837058f
+> > --- /dev/null
+> > +++ b/dts/src/arm/imx7d-flex-concentrator-mfg.dts
+>
+> Perfectly fine for your patch stack in BSP, but if you want to upstream
+> it, you need to either:
+>
+> 1) upstream your device tree to Linux. dts/ is a sync with Linux and
+>    shortly after, it will be imported into barebox
+> 2) put your device tree in arch/arm/dts
+>
+The dts will upstreamed soon. Hopefully :D
 
 _______________________________________________
 barebox mailing list
