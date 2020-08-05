@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k3GTU-0005eo-OD
+ id 1k3GTU-0005eu-Mi
  for barebox@lists.infradead.org; Wed, 05 Aug 2020 10:16:46 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Wed,  5 Aug 2020 12:16:16 +0200
-Message-Id: <20200805101628.4698-2-o.rempel@pengutronix.de>
+Date: Wed,  5 Aug 2020 12:16:28 +0200
+Message-Id: <20200805101628.4698-14-o.rempel@pengutronix.de>
 In-Reply-To: <20200805101628.4698-1-o.rempel@pengutronix.de>
 References: <20200805101628.4698-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
@@ -21,30 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 01/13] ARM: dts: imx6q-prti6q: fix PHY register
+Subject: [PATCH v2 13/13] ARM: dts: imx6q-prti6q: add barebox,
+ serial-number node
 To: barebox@lists.infradead.org, david@protonic.nl
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
+Add serial-number node provider
+
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- arch/arm/dts/imx6q-prti6q.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/dts/imx6qdl-prti6q.dtsi | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/arm/dts/imx6q-prti6q.dts b/arch/arm/dts/imx6q-prti6q.dts
-index f0469d5f62..76bb4d53d3 100644
---- a/arch/arm/dts/imx6q-prti6q.dts
-+++ b/arch/arm/dts/imx6q-prti6q.dts
-@@ -225,8 +225,8 @@
- 		#size-cells = <0>;
+diff --git a/arch/arm/dts/imx6qdl-prti6q.dtsi b/arch/arm/dts/imx6qdl-prti6q.dtsi
+index ed526d185f..968617f372 100644
+--- a/arch/arm/dts/imx6qdl-prti6q.dtsi
++++ b/arch/arm/dts/imx6qdl-prti6q.dtsi
+@@ -9,6 +9,12 @@
+ / {
+ 	chosen {
+ 		stdout-path = &uart4;
++
++		serial {
++			compatible = "barebox,serial-number";
++			nvmem-cell-names = "serial-number";
++			/* nvmem-cells will be added board code */
++		};
+ 	};
  
- 		/* Microchip KSZ9031RNX PHY */
--		rgmii_phy: ethernet-phy@0 {
--			reg = <0>;
-+		rgmii_phy: ethernet-phy@4 {
-+			reg = <4>;
- 			interrupts-extended = <&gpio1 28 IRQ_TYPE_LEVEL_LOW>;
- 			reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>;
- 			reset-assert-us = <10000>;
+ 	reg_1v8: regulator-1v8 {
 -- 
 2.28.0
 
