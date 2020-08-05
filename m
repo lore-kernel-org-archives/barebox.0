@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mickerik.phytec.de ([195.145.39.210])
- by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k3GSi-0005Tb-4D
- for barebox@lists.infradead.org; Wed, 05 Aug 2020 10:15:56 +0000
-References: <1596622207-286083-1-git-send-email-r.karszniewicz@phytec.de>
- <1596622207-286083-4-git-send-email-r.karszniewicz@phytec.de>
-From: Robert Karszniewicz <r.karszniewicz@phytec.de>
-Message-ID: <ca916ead-6cc1-ab54-0e9f-18c3e84e82d3@phytec.de>
-Date: Wed, 5 Aug 2020 12:15:50 +0200
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1k3GTU-0005ep-DH
+ for barebox@lists.infradead.org; Wed, 05 Aug 2020 10:16:45 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Wed,  5 Aug 2020 12:16:17 +0200
+Message-Id: <20200805101628.4698-3-o.rempel@pengutronix.de>
+In-Reply-To: <20200805101628.4698-1-o.rempel@pengutronix.de>
+References: <20200805101628.4698-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <1596622207-286083-4-git-send-email-r.karszniewicz@phytec.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,47 +17,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC PATCH v2 3/3] bootm: handle global.bootm.root_dev
-To: barebox@lists.infradead.org
+Subject: [PATCH v2 02/13] ARM: dts: imx6: vicut1: fix network support
+To: barebox@lists.infradead.org, david@protonic.nl
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-On 8/5/20 12:10 PM, Robert Karszniewicz wrote:
-> ---
->   common/bootm.c | 13 ++++++++++++-
->   1 file changed, 12 insertions(+), 1 deletion(-)
-> 
-> diff --git a/common/bootm.c b/common/bootm.c
-> index 73409bf9f70c..01b54ab93958 100644
-> --- a/common/bootm.c
-> +++ b/common/bootm.c
-> @@ -656,7 +656,18 @@ int bootm_boot(struct bootm_data *bootm_data)
->   	if (bootm_data->appendroot) {
->   		char *rootarg;
->   
-> -		rootarg = path_get_linux_rootarg(data->os_file);
-> +		if (bootm_data->root_dev) {
-> +			const char *root_dev_name = devpath_to_name(bootm_data->root_dev);
-> +			const struct cdev *root_cdev = cdev_by_name(root_dev_name);
-> +
-> +			if (root_cdev && root_cdev->partuuid[0] != 0) {
-> +				rootarg = basprintf("root=PARTUUID=%s", root_cdev->partuuid);
-> +			} else {
-> +				rootarg = path_get_linux_rootarg("invalid");
+Create the PHY node with properly configured phy-mode and reset lines.
+In this case we will not need board specific PHY fixups.
 
-Here I wasn't sure if I should be uniform and let the function return an 
-error or just straight assign ERR_PTR(-EINVAL).
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ arch/arm/dts/imx6q-vicut1.dts | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-> +			}
-> +		} else {
-> +			rootarg = path_get_linux_rootarg(data->os_file);
-> +		}
->   		if (!IS_ERR(rootarg)) {
->   			printf("Adding \"%s\" to Kernel commandline\n", rootarg);
->   			globalvar_add_simple("linux.bootargs.bootm.appendroot",
-> 
+diff --git a/arch/arm/dts/imx6q-vicut1.dts b/arch/arm/dts/imx6q-vicut1.dts
+index 9f60ed1ac2..9747b3c62e 100644
+--- a/arch/arm/dts/imx6q-vicut1.dts
++++ b/arch/arm/dts/imx6q-vicut1.dts
+@@ -19,9 +19,23 @@
+ &fec {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_enet>;
+-	phy-mode = "rgmii";
+-	/* phy-reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>; */
++	phy-mode = "rgmii-id";
++	phy-handle = <&rgmii_phy>;
+ 	status = "okay";
++
++	mdio {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		/* Microchip KSZ9031RNX PHY */
++		rgmii_phy: ethernet-phy@4 {
++			reg = <4>;
++			interrupts-extended = <&gpio1 28 IRQ_TYPE_LEVEL_LOW>;
++			reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>;
++			reset-assert-us = <10000>;
++			reset-deassert-us = <300>;
++		};
++	};
+ };
+ 
+ &iomuxc {
+-- 
+2.28.0
 
 
 _______________________________________________
