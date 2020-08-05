@@ -1,12 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mickerik.phytec.de ([195.145.39.210])
  by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k3GN7-0004gk-Nj
- for barebox@lists.infradead.org; Wed, 05 Aug 2020 10:10:10 +0000
+ id 1k3GN9-0004gk-7u
+ for barebox@lists.infradead.org; Wed, 05 Aug 2020 10:10:12 +0000
 From: Robert Karszniewicz <r.karszniewicz@phytec.de>
-Date: Wed, 5 Aug 2020 12:10:04 +0200
-Message-Id: <1596622207-286083-1-git-send-email-r.karszniewicz@phytec.de>
-MIME-Version: 1.0
+Date: Wed, 5 Aug 2020 12:10:05 +0200
+Message-Id: <1596622207-286083-2-git-send-email-r.karszniewicz@phytec.de>
+In-Reply-To: <1596622207-286083-1-git-send-email-r.karszniewicz@phytec.de>
+References: <1596622207-286083-1-git-send-email-r.karszniewicz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,31 +16,64 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC PATCH v2 0/3] Introduce global.bootm.root_dev env var for
- booting via PARTUUID
+Subject: [RFC PATCH v2 1/3] bootm: add env var root_dev
 To: barebox@lists.infradead.org
 
-VGhpcyBwYXRjaCBpbnRyb2R1Y2VzIGEgbmV3IGVudiB2YXIgd2hpY2ggc3BlY2lmaWVzIHdoaWNo
-IGRldmljZSBpcyB0aGUKcm9vdGZzIGRldmljZSB0byBiZSB1c2VkIGluIExpbnV4LCBwYXNzZWQg
-dG8gTGludXggdmlhIGJvb3RhcmdzLAppZGVudGlmaWVkIGJ5IHRoZSByb290ZnMgcGFydGl0aW9u
-J3MgUEFSVFVVSUQuCgpnbG9iYWwuYm9vdG0ucm9vdF9kZXYgc3VwcGxlbWVudHMgZ2xvYmFsLmJv
-b3RtLmFwcGVuZHJvb3QsIGluIHRoYXQgaXQKb3ZlcnJpZGVzIGFwcGVuZHJvb3QncyBuYcOvdmUg
-ZGVmYXVsdCwgd2hpY2ggcGlja3MgdGhlIHBhcnRpdGlvbiB0aGF0IHRoZQprZXJuZWwgcmVzaWRl
-cyBvbiAoZ2xvYmFsLmJvb3RtLmltYWdlKS4KCkV4YW1wbGU6CmRldGVjdCBtbWMyCmdsb2JhbC5i
-b290bS5pbWFnZT0nL21udC9tbWMyLjAvekltYWdlJwpnbG9iYWwuYm9vdG0uYXBwZW5kcm9vdD0x
-Cmdsb2JhbC5ib290bS5yb290X2Rldj0vZGV2L21tYzIuMQpib290IG1tYwoKRm9yIHByb3BlciBw
-YXRjaCwgSSB3b3VsZCBzcXVhc2ggYWxsIGNvbW1pdHMuCgpDaGFuZ2VzIGZyb20gdjE6Ci0gcmVu
-YW1lZCBlbnYgdmFyIHMvcm9vdC9yb290X2Rldi8KLSB1c2VkIGZpbGVzeXN0ZW0tYWdub3N0aWMg
-YXBwcm9hY2ggKHJvb3RfZGV2IG5vdyB0YWtlcyBhIC9kZXYvIGluc3RlYWQKICBvZiBhIG1vdW50
-ZWQgcGFydGl0aW9uKQoKUm9iZXJ0IEthcnN6bmlld2ljeiAoMyk6CiAgYm9vdG06IGFkZCBlbnYg
-dmFyIHJvb3RfZGV2CiAgZ2xvYmFsdmFyOiBhZGQgYm9vdG0ucm9vdF9kZXYKICBib290bTogaGFu
-ZGxlIGdsb2JhbC5ib290bS5yb290X2RldgoKIGNvbW1vbi9ib290bS5jICB8IDE4ICsrKysrKysr
-KysrKysrKystLQogaW5jbHVkZS9ib290bS5oIHwgIDIgKysKIDIgZmlsZXMgY2hhbmdlZCwgMTgg
-aW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkKCi0tIAoyLjcuNAoKCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
-cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2JhcmVib3gK
+---
+ common/bootm.c  | 4 +++-
+ include/bootm.h | 2 ++
+ 2 files changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/common/bootm.c b/common/bootm.c
+index 8fec1ee34dd8..311d0e058321 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -64,6 +64,7 @@ void bootm_data_init_defaults(struct bootm_data *data)
+ 	getenv_ul("global.bootm.image.loadaddr", &data->os_address);
+ 	getenv_ul("global.bootm.initrd.loadaddr", &data->initrd_address);
+ 	data->initrd_file = getenv_nonempty("global.bootm.initrd");
++	data->root_dev = getenv_nonempty("global.bootm.root_dev");
+ 	data->verify = bootm_get_verify_mode();
+ 	data->appendroot = bootm_appendroot;
+ 	data->provide_machine_id = bootm_provide_machine_id;
+@@ -771,5 +772,6 @@ BAREBOX_MAGICVAR_NAMED(global_bootm_oftree, global.bootm.oftree, "bootm default
+ BAREBOX_MAGICVAR_NAMED(global_bootm_tee, global.bootm.tee, "bootm default tee image");
+ BAREBOX_MAGICVAR_NAMED(global_bootm_verify, global.bootm.verify, "bootm default verify level");
+ BAREBOX_MAGICVAR_NAMED(global_bootm_verbose, global.bootm.verbose, "bootm default verbosity level (0=quiet)");
+-BAREBOX_MAGICVAR_NAMED(global_bootm_appendroot, global.bootm.appendroot, "Add root= option to Kernel to mount rootfs from the device the Kernel comes from");
++BAREBOX_MAGICVAR_NAMED(global_bootm_appendroot, global.bootm.appendroot, "Add root= option to Kernel to mount rootfs from the device the Kernel comes from (default, device can be overridden via global.bootm.root_dev)");
++BAREBOX_MAGICVAR_NAMED(global_bootm_root_dev, global.bootm.root_dev, "bootm default root device (overrides default device in global.bootm.appendroot)");
+ BAREBOX_MAGICVAR_NAMED(global_bootm_provide_machine_id, global.bootm.provide_machine_id, "If true, add systemd.machine_id= with value of global.machine_id to Kernel");
+diff --git a/include/bootm.h b/include/bootm.h
+index 7782de7a476d..3628a7eea5b9 100644
+--- a/include/bootm.h
++++ b/include/bootm.h
+@@ -18,6 +18,7 @@ struct bootm_data {
+ 	const char *initrd_file;
+ 	const char *oftree_file;
+ 	const char *tee_file;
++	const char *root_dev;
+ 	int verbose;
+ 	enum bootm_verify verify;
+ 	bool force;
+@@ -25,6 +26,7 @@ struct bootm_data {
+ 	/*
+ 	 * appendroot - if true, try to add a suitable root= Kernel option to
+ 	 * mount the rootfs from the same device as the Kernel comes from.
++	 * The default rootfs device can be overridden with root_dev.
+ 	 */
+ 	bool appendroot;
+ 	/*
+-- 
+2.7.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
