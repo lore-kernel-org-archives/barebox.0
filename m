@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k3GTU-0005ep-DH
+ id 1k3GTU-0005en-Hq
  for barebox@lists.infradead.org; Wed, 05 Aug 2020 10:16:45 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Wed,  5 Aug 2020 12:16:17 +0200
-Message-Id: <20200805101628.4698-3-o.rempel@pengutronix.de>
-In-Reply-To: <20200805101628.4698-1-o.rempel@pengutronix.de>
-References: <20200805101628.4698-1-o.rempel@pengutronix.de>
+Date: Wed,  5 Aug 2020 12:16:15 +0200
+Message-Id: <20200805101628.4698-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,48 +19,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 02/13] ARM: dts: imx6: vicut1: fix network support
+Subject: [PATCH v2 00/13] prepare Protonic board code for mainline 
 To: barebox@lists.infradead.org, david@protonic.nl
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-Create the PHY node with properly configured phy-mode and reset lines.
-In this case we will not need board specific PHY fixups.
+changes v2:
+- add power init support for KvG boards
+- spell fixes
+- do not print error on probe exit
+- add of_console_get_by_alias() helper
+- free requested gpio array
+- exit fec init only in case of PROBE_DEFERED
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- arch/arm/dts/imx6q-vicut1.dts | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+This patch series is a preparation and actual Protonic board code.
+Following changes was made in the main code:
+- register DT root node as device to make it possible to loade board
+  code as usual driver
+- provide helpers to read ethernet mac from nvmem cell register in a
+  devicetree.
+- provide barebox-serial driver which should be a nvmem cell consumer
+  and
+  serial-number DT property provider.
+- provide gpio helper to read gpio based board revision.
 
-diff --git a/arch/arm/dts/imx6q-vicut1.dts b/arch/arm/dts/imx6q-vicut1.dts
-index 9f60ed1ac2..9747b3c62e 100644
---- a/arch/arm/dts/imx6q-vicut1.dts
-+++ b/arch/arm/dts/imx6q-vicut1.dts
-@@ -19,9 +19,23 @@
- &fec {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_enet>;
--	phy-mode = "rgmii";
--	/* phy-reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>; */
-+	phy-mode = "rgmii-id";
-+	phy-handle = <&rgmii_phy>;
- 	status = "okay";
-+
-+	mdio {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		/* Microchip KSZ9031RNX PHY */
-+		rgmii_phy: ethernet-phy@4 {
-+			reg = <4>;
-+			interrupts-extended = <&gpio1 28 IRQ_TYPE_LEVEL_LOW>;
-+			reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>;
-+			reset-assert-us = <10000>;
-+			reset-deassert-us = <300>;
-+		};
-+	};
- };
- 
- &iomuxc {
+Oleksij Rempel (13):
+  ARM: dts: imx6q-prti6q: fix PHY register
+  ARM: dts: imx6: vicut1: fix network support
+  of: base: register DT root as device
+  ARM: embest-riotboard: port board file to the driver model
+  net: port nvmem_get_mac_address() from linux kernel
+  of: of_net: sync of_get_mac_address() with latest kernel version
+  net: fec_imx: use of_get_mac_address() to get mac address out of DT
+  of: of_device_get_match_compatible() helper
+  gpiolib: add gpio_array_to_id helper to get ID out of GPIO array
+  common: console_common: add of_console_get_by_alias() helper
+  ARM: protonic-imx6: port Protonic specific board code
+  of: add barebox-serial driver
+  ARM: dts: imx6q-prti6q: add barebox,serial-number node
+
+ arch/arm/boards/embest-riotboard/board.c |  18 +-
+ arch/arm/boards/protonic-imx6/Makefile   |   1 +
+ arch/arm/boards/protonic-imx6/board.c    | 860 +++++++++++++++++++++++
+ arch/arm/dts/imx6q-prti6q.dts            |   4 +-
+ arch/arm/dts/imx6q-vicut1.dts            |  18 +-
+ arch/arm/dts/imx6qdl-prti6q.dtsi         |   6 +
+ common/console_common.c                  |  18 +
+ drivers/gpio/gpiolib.c                   |  31 +
+ drivers/net/fec_imx.c                    |  14 +
+ drivers/of/Makefile                      |   2 +-
+ drivers/of/barebox_serial.c              | 113 +++
+ drivers/of/base.c                        |   5 +
+ drivers/of/device.c                      |  12 +
+ drivers/of/of_net.c                      |  63 +-
+ include/console.h                        |   1 +
+ include/gpio.h                           |   5 +
+ include/net.h                            |   4 +
+ include/of_device.h                      |   6 +
+ net/eth.c                                |  38 +
+ 19 files changed, 1197 insertions(+), 22 deletions(-)
+ create mode 100644 arch/arm/boards/protonic-imx6/board.c
+ create mode 100644 drivers/of/barebox_serial.c
+
 -- 
 2.28.0
 
