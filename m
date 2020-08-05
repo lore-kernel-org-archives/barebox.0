@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k3GTY-0005ey-6H
+ id 1k3GTY-0005ex-6L
  for barebox@lists.infradead.org; Wed, 05 Aug 2020 10:16:49 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Wed,  5 Aug 2020 12:16:23 +0200
-Message-Id: <20200805101628.4698-9-o.rempel@pengutronix.de>
+Date: Wed,  5 Aug 2020 12:16:22 +0200
+Message-Id: <20200805101628.4698-8-o.rempel@pengutronix.de>
 In-Reply-To: <20200805101628.4698-1-o.rempel@pengutronix.de>
 References: <20200805101628.4698-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
@@ -21,64 +21,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 08/13] of: of_device_get_match_compatible() helper
+Subject: [PATCH v2 07/13] net: fec_imx: use of_get_mac_address() to get mac
+ address out of DT
 To: barebox@lists.infradead.org, david@protonic.nl
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-Some times we need to know, against which compatible did the driver
-was registered. So, instead of coding it in the driver, add generic
-helper for all drivers.
+A mac address can be provided by the DT over nvmem cell. Start to use
+of_get_mac_address() since it will be able to read nvmem cell for us.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/of/device.c | 12 ++++++++++++
- include/of_device.h |  6 ++++++
- 2 files changed, 18 insertions(+)
+ drivers/net/fec_imx.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/of/device.c b/drivers/of/device.c
-index 67a67bd565..b3f522e1fa 100644
---- a/drivers/of/device.c
-+++ b/drivers/of/device.c
-@@ -31,3 +31,15 @@ const void *of_device_get_match_data(const struct device_d *dev)
- 	return match->data;
- }
- EXPORT_SYMBOL(of_device_get_match_data);
-+
-+const char *of_device_get_match_compatible(const struct device_d *dev)
-+{
-+	const struct of_device_id *match;
-+
-+	match = of_match_device(dev->driver->of_compatible, dev);
-+	if (!match)
-+		return NULL;
-+
-+	return match->compatible;
-+}
-+EXPORT_SYMBOL(of_device_get_match_compatible);
-diff --git a/include/of_device.h b/include/of_device.h
-index 244f5fcbbb..cef6d5b5cc 100644
---- a/include/of_device.h
-+++ b/include/of_device.h
-@@ -22,6 +22,7 @@ static inline int of_driver_match_device(struct device_d *dev,
- }
- 
- extern const void *of_device_get_match_data(const struct device_d *dev);
-+extern const char *of_device_get_match_compatible(const struct device_d *dev);
- 
- #else /* CONFIG_OFTREE */
- 
-@@ -36,6 +37,11 @@ static inline const void *of_device_get_match_data(const struct device_d *dev)
- 	return NULL;
- }
- 
-+static inline const char *of_device_get_match_compatible(const struct device_d *dev)
-+{
-+	return NULL;
-+}
-+
- static inline const struct of_device_id *__of_match_device(
- 		const struct of_device_id *matches, const struct device_d *dev)
+diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+index 0c2d600d12..65dbb1d9c0 100644
+--- a/drivers/net/fec_imx.c
++++ b/drivers/net/fec_imx.c
+@@ -628,6 +628,7 @@ static void fec_free_receive_packets(struct fec_priv *fec, int count, int size)
+ static int fec_probe_dt(struct device_d *dev, struct fec_priv *fec)
  {
+ 	struct device_node *mdiobus;
++	const char *mac_addr;
+ 	int ret;
+ 
+ 	ret = of_get_phy_mode(dev->device_node);
+@@ -640,6 +641,19 @@ static int fec_probe_dt(struct device_d *dev, struct fec_priv *fec)
+ 	if (mdiobus)
+ 		fec->miibus.dev.device_node = mdiobus;
+ 
++	mac_addr = of_get_mac_address(dev->device_node);
++	if (IS_ERR(mac_addr)) {
++		if (PTR_ERR(mac_addr) == -EPROBE_DEFER)
++			return -EPROBE_DEFER;
++		else
++			dev_err(fec->dev, "Failed on of_get_mac_address: %li\n",
++				PTR_ERR(mac_addr));
++	} else {
++		of_eth_register_ethaddr(dev->device_node, mac_addr);
++
++		kfree(mac_addr);
++	}
++
+ 	return 0;
+ }
+ #else
 -- 
 2.28.0
 
