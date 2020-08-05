@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k3GTU-0005eq-Sz
+ id 1k3GTU-0005es-Uc
  for barebox@lists.infradead.org; Wed, 05 Aug 2020 10:16:48 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Wed,  5 Aug 2020 12:16:20 +0200
-Message-Id: <20200805101628.4698-6-o.rempel@pengutronix.de>
+Date: Wed,  5 Aug 2020 12:16:21 +0200
+Message-Id: <20200805101628.4698-7-o.rempel@pengutronix.de>
 In-Reply-To: <20200805101628.4698-1-o.rempel@pengutronix.de>
 References: <20200805101628.4698-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
@@ -21,93 +21,106 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 05/13] net: port nvmem_get_mac_address() from linux kernel
+Subject: [PATCH v2 06/13] of: of_net: sync of_get_mac_address() with latest
+ kernel version
 To: barebox@lists.infradead.org, david@protonic.nl
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-Port nvmem help to read mac-address from nvmem cell linked to the
-ethernet node. This function was ported from kernel 5.8-rc1.
+Sync of_get_mac_address() with kernel 5.8-rc1 do add nvmem cell support
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- include/net.h |  4 ++++
- net/eth.c     | 38 ++++++++++++++++++++++++++++++++++++++
- 2 files changed, 42 insertions(+)
+ drivers/of/of_net.c | 63 ++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 51 insertions(+), 12 deletions(-)
 
-diff --git a/include/net.h b/include/net.h
-index 54db8a179a..a5bfe9e7f8 100644
---- a/include/net.h
-+++ b/include/net.h
-@@ -97,9 +97,13 @@ static inline void of_eth_register_ethaddr(struct device_node *node,
- 		const char *ethaddr)
- {
+diff --git a/drivers/of/of_net.c b/drivers/of/of_net.c
+index cee4597195..946c4a4352 100644
+--- a/drivers/of/of_net.c
++++ b/drivers/of/of_net.c
+@@ -67,12 +67,45 @@ int of_get_phy_mode(struct device_node *np)
  }
-+static inline int nvmem_get_mac_address(struct device_d *dev, void *addrbuf)
+ EXPORT_SYMBOL_GPL(of_get_phy_mode);
+ 
++static const void *of_get_mac_addr(struct device_node *np, const char *name)
 +{
++	struct property *pp = of_find_property(np, name, NULL);
++
++	if (pp && pp->length == ETH_ALEN && is_valid_ether_addr(pp->value))
++		return pp->value;
++	return NULL;
 +}
- #else
- void eth_register_ethaddr(int ethid, const char *ethaddr);
- void of_eth_register_ethaddr(struct device_node *node, const char *ethaddr);
-+int nvmem_get_mac_address(struct device_d *dev, void *addrbuf);
- #endif
- /*
-  *	Ethernet header
-diff --git a/net/eth.c b/net/eth.c
-index e3d0d06efe..b33ef5fe1f 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -29,6 +29,7 @@
- #include <globalvar.h>
- #include <environment.h>
- #include <linux/ctype.h>
-+#include <linux/nvmem-consumer.h>
- #include <linux/stat.h>
- 
- static uint64_t last_link_check;
-@@ -152,6 +153,43 @@ void of_eth_register_ethaddr(struct device_node *node, const char *ethaddr)
- 	list_add_tail(&addr->list, &ethaddr_list);
- }
- 
-+/**
-+ * Obtain the MAC address from an nvmem cell named 'mac-address' associated
-+ * with given device.
-+ *
-+ * @dev:	Device with which the mac-address cell is associated.
-+ * @addrbuf:	Buffer to which the MAC address will be copied on success.
-+ *
-+ * Returns 0 on success or a negative error number on failure.
-+ */
-+int nvmem_get_mac_address(struct device_d *dev, void *addrbuf)
++
++static const void *of_get_mac_addr_nvmem(struct device_node *np)
 +{
-+	struct nvmem_cell *cell;
++	int ret;
 +	const void *mac;
-+	size_t len;
++	u8 nvmem_mac[ETH_ALEN];
++	struct device_d *dev = of_find_device_by_node(np);
 +
-+	cell = nvmem_cell_get(dev, "mac-address");
-+	if (IS_ERR(cell))
-+		return PTR_ERR(cell);
++	if (!dev)
++		return ERR_PTR(-ENODEV);
 +
-+	mac = nvmem_cell_read(cell, &len);
-+	nvmem_cell_put(cell);
-+
-+	if (IS_ERR(mac))
-+		return PTR_ERR(mac);
-+
-+	if (len != ETH_ALEN || !is_valid_ether_addr(mac)) {
-+		kfree(mac);
-+		return -EINVAL;
++	ret = nvmem_get_mac_address(dev, &nvmem_mac);
++	if (ret) {
++		return ERR_PTR(ret);
 +	}
 +
-+	memcpy(addrbuf, mac, ETH_ALEN);
-+	kfree(mac);
++	mac = kmemdup(nvmem_mac, ETH_ALEN, GFP_KERNEL);
++	if (!mac)
++		return ERR_PTR(-ENOMEM);
 +
-+	return 0;
++	return mac;
 +}
-+EXPORT_SYMBOL(nvmem_get_mac_address);
 +
- struct eth_device *eth_get_byname(const char *ethname)
+ /**
+  * Search the device tree for the best MAC address to use.  'mac-address' is
+  * checked first, because that is supposed to contain to "most recent" MAC
+  * address. If that isn't set, then 'local-mac-address' is checked next,
+- * because that is the default address.  If that isn't set, then the obsolete
+- * 'address' is checked, just in case we're using an old device tree.
++ * because that is the default address. If that isn't set, then the obsolete
++ * 'address' is checked, just in case we're using an old device tree. If any
++ * of the above isn't set, then try to get MAC address from nvmem cell named
++ * 'mac-address'.
+  *
+  * Note that the 'address' property is supposed to contain a virtual address of
+  * the register set, but some DTS files have redefined that property to be the
+@@ -84,19 +117,25 @@ EXPORT_SYMBOL_GPL(of_get_phy_mode);
+  * addresses.  Some older U-Boots only initialized 'local-mac-address'.  In
+  * this case, the real MAC is in 'local-mac-address', and 'mac-address' exists
+  * but is all zeros.
++ *
++ * Return: Will be a valid pointer on success and ERR_PTR in case of error.
+ */
+ const void *of_get_mac_address(struct device_node *np)
  {
- 	struct eth_device *edev;
+-	const void *p;
+-	int len, i;
+-	const char *str[] = { "mac-address", "local-mac-address", "address" };
+-
+-	for (i = 0; i < ARRAY_SIZE(str); i++) {
+-		p = of_get_property(np, str[i], &len);
+-		if (p && (len == 6) && is_valid_ether_addr(p))
+-			return p;
+-	}
++	const void *addr;
+ 
+-	return NULL;
++	addr = of_get_mac_addr(np, "mac-address");
++	if (addr)
++		return addr;
++
++	addr = of_get_mac_addr(np, "local-mac-address");
++	if (addr)
++		return addr;
++
++	addr = of_get_mac_addr(np, "address");
++	if (addr)
++		return addr;
++
++	return of_get_mac_addr_nvmem(np);
+ }
+ EXPORT_SYMBOL(of_get_mac_address);
 -- 
 2.28.0
 
