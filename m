@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k3GTY-0005ex-6L
- for barebox@lists.infradead.org; Wed, 05 Aug 2020 10:16:49 +0000
+ by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1k3GTX-0004Uc-CP
+ for barebox@lists.infradead.org; Wed, 05 Aug 2020 10:16:50 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Wed,  5 Aug 2020 12:16:22 +0200
-Message-Id: <20200805101628.4698-8-o.rempel@pengutronix.de>
+Date: Wed,  5 Aug 2020 12:16:24 +0200
+Message-Id: <20200805101628.4698-10-o.rempel@pengutronix.de>
 In-Reply-To: <20200805101628.4698-1-o.rempel@pengutronix.de>
 References: <20200805101628.4698-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
@@ -21,51 +21,90 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 07/13] net: fec_imx: use of_get_mac_address() to get mac
- address out of DT
+Subject: [PATCH v2 09/13] gpiolib: add gpio_array_to_id helper to get ID out
+ of GPIO array
 To: barebox@lists.infradead.org, david@protonic.nl
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-A mac address can be provided by the DT over nvmem cell. Start to use
-of_get_mac_address() since it will be able to read nvmem cell for us.
+Some boards provide a board version and/or ID coded by pull-up/down
+resistors connected to the gpio pins (or pins which can be multiplexed
+at some point as gpio). In this case every one implements own gpio id
+reader function.
+
+To avoid it, provide the common helper function to extract a value out
+of provided gpio array.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/net/fec_imx.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/gpio/gpiolib.c | 31 +++++++++++++++++++++++++++++++
+ include/gpio.h         |  5 +++++
+ 2 files changed, 36 insertions(+)
 
-diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-index 0c2d600d12..65dbb1d9c0 100644
---- a/drivers/net/fec_imx.c
-+++ b/drivers/net/fec_imx.c
-@@ -628,6 +628,7 @@ static void fec_free_receive_packets(struct fec_priv *fec, int count, int size)
- static int fec_probe_dt(struct device_d *dev, struct fec_priv *fec)
- {
- 	struct device_node *mdiobus;
-+	const char *mac_addr;
- 	int ret;
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 27674af54c..556b82fea3 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -381,6 +381,37 @@ void gpio_free_array(const struct gpio *array, size_t num)
+ }
+ EXPORT_SYMBOL_GPL(gpio_free_array);
  
- 	ret = of_get_phy_mode(dev->device_node);
-@@ -640,6 +641,19 @@ static int fec_probe_dt(struct device_d *dev, struct fec_priv *fec)
- 	if (mdiobus)
- 		fec->miibus.dev.device_node = mdiobus;
- 
-+	mac_addr = of_get_mac_address(dev->device_node);
-+	if (IS_ERR(mac_addr)) {
-+		if (PTR_ERR(mac_addr) == -EPROBE_DEFER)
-+			return -EPROBE_DEFER;
-+		else
-+			dev_err(fec->dev, "Failed on of_get_mac_address: %li\n",
-+				PTR_ERR(mac_addr));
-+	} else {
-+		of_eth_register_ethaddr(dev->device_node, mac_addr);
++int gpio_array_to_id(const struct gpio *array, size_t num, u32 *val)
++{
++	u32 id = 0;
++	int ret, i;
 +
-+		kfree(mac_addr);
++	if (num > 32)
++		return -EOVERFLOW;
++
++	ret = gpio_request_array(array, num);
++	if (ret)
++		return ret;
++
++	/* Wait until logic level will be stable */
++	udelay(5);
++	for (i = 0; i < num; i++) {
++		ret = gpio_is_active(array[i].gpio);
++		if (ret < 0)
++			goto free_array;
++
++		id |= ret << i;
 +	}
 +
- 	return 0;
++	*val = id;
++	ret = 0;
++
++free_array:
++	gpio_free_array(array, num);
++	return ret;
++}
++EXPORT_SYMBOL(gpio_array_to_id);
++
+ static int gpiochip_find_base(int start, int ngpio)
+ {
+ 	int i;
+diff --git a/include/gpio.h b/include/gpio.h
+index 98c5b93ba2..81beb47309 100644
+--- a/include/gpio.h
++++ b/include/gpio.h
+@@ -145,6 +145,10 @@ static inline void gpio_free_array(const struct gpio *array, size_t num)
+ 	/* GPIO can never have been requested */
+ 	WARN_ON(1);
  }
++static inline int gpio_array_to_id(const struct gpio *array, size_t num, u32 *val)
++{
++	return -EINVAL;
++}
  #else
+ int gpio_request(unsigned gpio, const char *label);
+ int gpio_find_by_name(const char *name);
+@@ -153,6 +157,7 @@ void gpio_free(unsigned gpio);
+ int gpio_request_one(unsigned gpio, unsigned long flags, const char *label);
+ int gpio_request_array(const struct gpio *array, size_t num);
+ void gpio_free_array(const struct gpio *array, size_t num);
++int gpio_array_to_id(const struct gpio *array, size_t num, u32 *val);
+ #endif
+ 
+ struct gpio_chip;
 -- 
 2.28.0
 
