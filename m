@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k3GTU-0005er-LL
+ id 1k3GTU-0005eo-OD
  for barebox@lists.infradead.org; Wed, 05 Aug 2020 10:16:46 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Wed,  5 Aug 2020 12:16:19 +0200
-Message-Id: <20200805101628.4698-5-o.rempel@pengutronix.de>
+Date: Wed,  5 Aug 2020 12:16:16 +0200
+Message-Id: <20200805101628.4698-2-o.rempel@pengutronix.de>
 In-Reply-To: <20200805101628.4698-1-o.rempel@pengutronix.de>
 References: <20200805101628.4698-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
@@ -21,53 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 04/13] ARM: embest-riotboard: port board file to the driver
- model
+Subject: [PATCH v2 01/13] ARM: dts: imx6q-prti6q: fix PHY register
 To: barebox@lists.infradead.org, david@protonic.nl
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-This patch can be used as example for the new board-driver
-functionality.
-
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- arch/arm/boards/embest-riotboard/board.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ arch/arm/dts/imx6q-prti6q.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boards/embest-riotboard/board.c b/arch/arm/boards/embest-riotboard/board.c
-index 2e0cc9f0ab..746ecf0562 100644
---- a/arch/arm/boards/embest-riotboard/board.c
-+++ b/arch/arm/boards/embest-riotboard/board.c
-@@ -51,11 +51,8 @@ static int ar8035_phy_fixup(struct phy_device *dev)
- 	return 0;
- }
+diff --git a/arch/arm/dts/imx6q-prti6q.dts b/arch/arm/dts/imx6q-prti6q.dts
+index f0469d5f62..76bb4d53d3 100644
+--- a/arch/arm/dts/imx6q-prti6q.dts
++++ b/arch/arm/dts/imx6q-prti6q.dts
+@@ -225,8 +225,8 @@
+ 		#size-cells = <0>;
  
--static int riotboard_device_init(void)
-+static int riotboard_probe(struct device_d *dev)
- {
--	if (!of_machine_is_compatible("riot,imx6s-riotboard"))
--		return 0;
--
- 	phy_register_fixup_for_uid(0x004dd072, 0xffffffef, ar8035_phy_fixup);
- 
- 	imx6_bbu_internal_mmc_register_handler("emmc", "/dev/mmc3.barebox",
-@@ -65,4 +62,15 @@ static int riotboard_device_init(void)
- 
- 	return 0;
- }
--device_initcall(riotboard_device_init);
-+
-+static const struct of_device_id riotboard_of_match[] = {
-+	{ .compatible = "riot,imx6s-riotboard" },
-+	{},
-+};
-+
-+static struct driver_d riotboard_driver = {
-+	.name = "board-embest-riot",
-+	.probe = riotboard_probe,
-+	.of_compatible = DRV_OF_COMPAT(riotboard_of_match),
-+};
-+device_platform_driver(riotboard_driver);
+ 		/* Microchip KSZ9031RNX PHY */
+-		rgmii_phy: ethernet-phy@0 {
+-			reg = <0>;
++		rgmii_phy: ethernet-phy@4 {
++			reg = <4>;
+ 			interrupts-extended = <&gpio1 28 IRQ_TYPE_LEVEL_LOW>;
+ 			reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>;
+ 			reset-assert-us = <10000>;
 -- 
 2.28.0
 
