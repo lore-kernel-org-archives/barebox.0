@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k5DRd-0003KS-Sk
- for barebox@lists.infradead.org; Mon, 10 Aug 2020 19:26:54 +0000
-Date: Mon, 10 Aug 2020 21:26:43 +0200
+ id 1k5DV2-0003ew-07
+ for barebox@lists.infradead.org; Mon, 10 Aug 2020 19:30:24 +0000
+Date: Mon, 10 Aug 2020 21:30:22 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200810192643.GB31536@pengutronix.de>
-References: <5183365.pEXpNOHncD@n95hx1g2>
- <3346214.S29caFStrp@n95hx1g2>
+Message-ID: <20200810193022.GC31536@pengutronix.de>
+References: <20200721061523.27105-1-a.fatoum@pengutronix.de>
+ <20200803212133.GM31536@pengutronix.de>
+ <CAK7LNAT_00x3qCRiU8J_K=MHD-=cFZUmHGxxoTXx2md+=0gO-g@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <3346214.S29caFStrp@n95hx1g2>
+In-Reply-To: <CAK7LNAT_00x3qCRiU8J_K=MHD-=cFZUmHGxxoTXx2md+=0gO-g@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,44 +24,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Some USB memory sticks not (fully) recognized
-To: Christian Eggers <ceggers@arri.de>
-Cc: barebox@lists.infradead.org, Primoz Fiser <primoz.fiser@norik.com>
+Subject: Re: [PATCH] treewide: remove stale instances of struct device
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Barebox List <barebox@lists.infradead.org>, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Hi Christian,
+On Tue, Aug 04, 2020 at 02:02:16PM +0900, Masahiro Yamada wrote:
+> On Tue, Aug 4, 2020 at 6:22 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> >
+> > On Tue, Jul 21, 2020 at 08:15:23AM +0200, Ahmad Fatoum wrote:
+> > > We call it struct device_d, any instances of struct device are likely
+> > > left-over code after porting from Linux.
+> > >
+> > > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> > > ---
+> > >  drivers/crypto/caam/intern.h   | 5 -----
+> > >  drivers/crypto/caam/jr.h       | 2 --
+> > >  drivers/gpio/gpio-sx150x.c     | 1 -
+> > >  drivers/usb/musb/musb_gadget.c | 9 ---------
+> > >  4 files changed, 17 deletions(-)
+> >
+> > Applied, thanks
+> >
+> > Sascha
+> 
+> 
+> Why doesn't barebox use (struct device)?
 
-On Mon, Aug 10, 2020 at 01:52:01PM +0200, Christian Eggers wrote:
-> On Thursday, 6 August 2020, 16:29:13 CEST, Christian Eggers wrote:
-> > Barebox version: 2020.07.0
-> > Hardware: i.MX6 ULL with external Microchip USB Hub attached
-> > 
-> > I got a bug report that some newer USB memory sticks do not work with
-> > barebox. While with barebox-2020.01 these devices are not recognized at all,
-> > in barebox-2020.07 I get at least some warnings:
-> I checked again with an older release of barebox (2019-06). With this version,
-> the USB drive is detected:
-> 
-> > # usb -s
-> > usb: USB: scanning bus for devices...
-> > usb: Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
-> > usb: Bus 001 Device 002: ID 0424:4916 USB4916
-> > usb: Bus 001 Device 003: ID 090c:3267 Flash Disk
-> > Using index 0 for the new disk
-> > usb: Bus 001 Device 004: ID 0424:494a USB2 Controller Hub
-> > usb: 4 USB Device(s) found
-> > Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
-> > Bus 001 Device 002: ID 0424:4916 USB4916
-> > Bus 001 Device 003: ID 090c:3267 Flash Disk
-> > Bus 001 Device 004: ID 0424:494a USB2 Controller Hub
-> 
-> Also mounting the drive works fine. So I guess that this problem may have been 
-> introduced here:
-> 
-> b1d9837182 ("usb: Change power-on / scanning timeout handling")
+For historical reasons. When creating barebox I thought that it's better
+to not use the same struct name when they are not exactly compatible. We
+have struct driver_d for the same reason.
 
-Before guessing further could you verify that exactly this commit breaks
-your setup? There are a few more changes in the area that could be the
-culprit.
+I am not sure I would do the same again. If we find good reasons to name
+them struct device and struct driver we can change that.
 
 Sascha
 
