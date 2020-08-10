@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k51S9-00062o-MY
- for barebox@lists.infradead.org; Mon, 10 Aug 2020 06:38:38 +0000
-Date: Mon, 10 Aug 2020 08:38:36 +0200
+ id 1k522a-0002MB-41
+ for barebox@lists.infradead.org; Mon, 10 Aug 2020 07:16:16 +0000
+Date: Mon, 10 Aug 2020 09:16:14 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200810063836.GV31536@pengutronix.de>
-References: <20200807072905.2488-1-a.fatoum@pengutronix.de>
+Message-ID: <20200810071614.GW31536@pengutronix.de>
+References: <20200806092919.1892-1-m.felsch@pengutronix.de>
+ <20200806092919.1892-3-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200807072905.2488-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20200806092919.1892-3-m.felsch@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,24 +23,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] spi: add coredevice_spi_driver macro as well
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH 3/3] ARM: i.MX: setup ENET_CLK_SEL in imx6_init for every
+ imx6q/imx6d
+To: Marco Felsch <m.felsch@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Aug 07, 2020 at 09:29:05AM +0200, Ahmad Fatoum wrote:
-> Some drivers would benefit from earlier probing, e.g. because they
-> provide regulators. Add a macro to make registration of such drivers
-> easier.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  include/spi/spi.h | 2 ++
->  1 file changed, 2 insertions(+)
+Hi Marco,
 
-Applied, thanks
+On Thu, Aug 06, 2020 at 11:29:19AM +0200, Marco Felsch wrote:
+> Setup the ENET TX reference clk to get it from the internal clock from
+> anatop. This is the default value for newer imx6 processors like: 6sx,
+> 6ul, 6ull. So it should be safe to set it as default for imx6q/d too.
+
+I don't follow this reasoning. We only ever know the boards that are
+unhappy with the reset default, because these are the ones that change
+it. Now if we change the register default we can't know which boards
+stop working because they relied on the previous reset default value.
+
+Here is an example from U-Boot where this bit is explicitly cleared:
+
+board/tqc/tqma6/tqma6_mba6.c:85: clrbits_le32(&iomuxc_regs->gpr[1], IOMUXC_GPR1_ENET_CLK_SEL_MASK);
+
+We support this board in barebox as well and it might break with your
+change, so I don't think this patch is a good idea.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
