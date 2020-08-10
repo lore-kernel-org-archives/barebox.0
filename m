@@ -1,12 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mickerik.phytec.de ([195.145.39.210])
- by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k56mf-00018f-Rd
- for barebox@lists.infradead.org; Mon, 10 Aug 2020 12:20:11 +0000
-From: Robert Karszniewicz <r.karszniewicz@phytec.de>
-Date: Mon, 10 Aug 2020 14:20:08 +0200
-Message-Id: <1597062008-184305-1-git-send-email-r.karszniewicz@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1k5DRd-0003KS-Sk
+ for barebox@lists.infradead.org; Mon, 10 Aug 2020 19:26:54 +0000
+Date: Mon, 10 Aug 2020 21:26:43 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200810192643.GB31536@pengutronix.de>
+References: <5183365.pEXpNOHncD@n95hx1g2>
+ <3346214.S29caFStrp@n95hx1g2>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <3346214.S29caFStrp@n95hx1g2>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,96 +19,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3] bootm: add global.bootm.root_dev env var for booting via
- PARTUUID
-To: barebox@lists.infradead.org
+Subject: Re: Some USB memory sticks not (fully) recognized
+To: Christian Eggers <ceggers@arri.de>
+Cc: barebox@lists.infradead.org, Primoz Fiser <primoz.fiser@norik.com>
 
-SW50cm9kdWNlcyBhIG5ldyBlbnYgdmFyIHdoaWNoIHNwZWNpZmllcyB3aGljaCBkZXZpY2UgaXMg
-dGhlIHJvb3RmcwpkZXZpY2UgdG8gYmUgdXNlZCBpbiBMaW51eCwgcGFzc2VkIHRvIExpbnV4IHZp
-YSBib290YXJncywgaWRlbnRpZmllZCBieQp0aGUgcm9vdGZzIHBhcnRpdGlvbidzIFBBUlRVVUlE
-LgoKZ2xvYmFsLmJvb3RtLnJvb3RfZGV2IHN1cHBsZW1lbnRzIGdsb2JhbC5ib290bS5hcHBlbmRy
-b290LCBpbiB0aGF0IGl0Cm92ZXJyaWRlcyBhcHBlbmRyb290J3MgbmHDr3ZlIGRlZmF1bHQsIHdo
-aWNoIHBpY2tzIHRoZSBwYXJ0aXRpb24gdGhhdCB0aGUKa2VybmVsIHJlc2lkZXMgb24gKGdsb2Jh
-bC5ib290bS5pbWFnZSkuCgpFeGFtcGxlOgpkZXRlY3QgbW1jMgpnbG9iYWwuYm9vdG0uaW1hZ2U9
-Jy9tbnQvbW1jMi4wL3pJbWFnZScKZ2xvYmFsLmJvb3RtLmFwcGVuZHJvb3Q9MQpnbG9iYWwuYm9v
-dG0ucm9vdF9kZXY9L2Rldi9tbWMyLjEKYm9vdCBtbWMKClNpZ25lZC1vZmYtYnk6IFJvYmVydCBL
-YXJzem5pZXdpY3ogPHIua2Fyc3puaWV3aWN6QHBoeXRlYy5kZT4KLS0tCkNoYW5nZXMgZnJvbSB2
-MjoKLSBjb3JyZWN0IGNvbW1pdCBtZXNzYWdlIGxpbmUgbGVuZ3RocwoKQ2hhbmdlcyBmcm9tIHYx
-OgotIG1pbm9yIGNvbW1pdCBtZXNzYWdlIGNoYW5nZQoKQ2hhbmdlcyBmcm9tIFJGQyB2MjoKLSBy
-ZXBsYWNlZCBwYXRoX2dldF9saW51eF9yb290YXJnKCJpbnZhbGlkIikgYnkgRVJSX1BUUigtRUlO
-VkFMKQotIGFkZGVkIGVycm9yIG1lc3NhZ2VzLiAoSSd2ZSBtYWRlIHRoZW0gbXV0dWFsbHkgZXhj
-bHVzaXZlIHRvIHByZXZlbnQKICBOVUxMLXBvaW50ZXIgZGVyZWZlcmVuY2UpCgogY29tbW9uL2Jv
-b3RtLmMgIHwgMjUgKysrKysrKysrKysrKysrKysrKysrKystLQogaW5jbHVkZS9ib290bS5oIHwg
-IDIgKysKIDIgZmlsZXMgY2hhbmdlZCwgMjUgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkK
-CmRpZmYgLS1naXQgYS9jb21tb24vYm9vdG0uYyBiL2NvbW1vbi9ib290bS5jCmluZGV4IDhmZWMx
-ZWUzNGRkOC4uN2Y5NTExNzJjY2Y1IDEwMDY0NAotLS0gYS9jb21tb24vYm9vdG0uYworKysgYi9j
-b21tb24vYm9vdG0uYwpAQCAtNjQsNiArNjQsNyBAQCB2b2lkIGJvb3RtX2RhdGFfaW5pdF9kZWZh
-dWx0cyhzdHJ1Y3QgYm9vdG1fZGF0YSAqZGF0YSkKIAlnZXRlbnZfdWwoImdsb2JhbC5ib290bS5p
-bWFnZS5sb2FkYWRkciIsICZkYXRhLT5vc19hZGRyZXNzKTsKIAlnZXRlbnZfdWwoImdsb2JhbC5i
-b290bS5pbml0cmQubG9hZGFkZHIiLCAmZGF0YS0+aW5pdHJkX2FkZHJlc3MpOwogCWRhdGEtPmlu
-aXRyZF9maWxlID0gZ2V0ZW52X25vbmVtcHR5KCJnbG9iYWwuYm9vdG0uaW5pdHJkIik7CisJZGF0
-YS0+cm9vdF9kZXYgPSBnZXRlbnZfbm9uZW1wdHkoImdsb2JhbC5ib290bS5yb290X2RldiIpOwog
-CWRhdGEtPnZlcmlmeSA9IGJvb3RtX2dldF92ZXJpZnlfbW9kZSgpOwogCWRhdGEtPmFwcGVuZHJv
-b3QgPSBib290bV9hcHBlbmRyb290OwogCWRhdGEtPnByb3ZpZGVfbWFjaGluZV9pZCA9IGJvb3Rt
-X3Byb3ZpZGVfbWFjaGluZV9pZDsKQEAgLTY1NSw3ICs2NTYsMjUgQEAgaW50IGJvb3RtX2Jvb3Qo
-c3RydWN0IGJvb3RtX2RhdGEgKmJvb3RtX2RhdGEpCiAJaWYgKGJvb3RtX2RhdGEtPmFwcGVuZHJv
-b3QpIHsKIAkJY2hhciAqcm9vdGFyZzsKIAotCQlyb290YXJnID0gcGF0aF9nZXRfbGludXhfcm9v
-dGFyZyhkYXRhLT5vc19maWxlKTsKKwkJaWYgKGJvb3RtX2RhdGEtPnJvb3RfZGV2KSB7CisJCQlj
-b25zdCBjaGFyICpyb290X2Rldl9uYW1lID0gZGV2cGF0aF90b19uYW1lKGJvb3RtX2RhdGEtPnJv
-b3RfZGV2KTsKKwkJCWNvbnN0IHN0cnVjdCBjZGV2ICpyb290X2NkZXYgPSBjZGV2X2J5X25hbWUo
-cm9vdF9kZXZfbmFtZSk7CisKKwkJCWlmIChyb290X2NkZXYgJiYgcm9vdF9jZGV2LT5wYXJ0dXVp
-ZFswXSAhPSAwKSB7CisJCQkJcm9vdGFyZyA9IGJhc3ByaW50Zigicm9vdD1QQVJUVVVJRD0lcyIs
-IHJvb3RfY2Rldi0+cGFydHV1aWQpOworCQkJfSBlbHNlIHsKKwkJCQlyb290YXJnID0gRVJSX1BU
-UigtRUlOVkFMKTsKKworCQkJCWlmICghcm9vdF9jZGV2KQorCQkJCQlwcl9lcnIoIm5vIGNkZXYg
-Zm91bmQgZm9yICVzLCBjYW5ub3Qgc2V0IHJvb3Q9IG9wdGlvblxuIiwKKwkJCQkJCXJvb3RfZGV2
-X25hbWUpOworCQkJCWVsc2UgaWYgKCFyb290X2NkZXYtPnBhcnR1dWlkWzBdKQorCQkJCQlwcl9l
-cnIoIiVzIGRvZXNuJ3QgaGF2ZSBhIFBBUlRVVUlELCBjYW5ub3Qgc2V0IHJvb3Q9IG9wdGlvblxu
-IiwKKwkJCQkJCXJvb3RfZGV2X25hbWUpOworCQkJfQorCQl9IGVsc2UgeworCQkJcm9vdGFyZyA9
-IHBhdGhfZ2V0X2xpbnV4X3Jvb3RhcmcoZGF0YS0+b3NfZmlsZSk7CisJCX0KIAkJaWYgKCFJU19F
-UlIocm9vdGFyZykpIHsKIAkJCXByaW50ZigiQWRkaW5nIFwiJXNcIiB0byBLZXJuZWwgY29tbWFu
-ZGxpbmVcbiIsIHJvb3RhcmcpOwogCQkJZ2xvYmFsdmFyX2FkZF9zaW1wbGUoImxpbnV4LmJvb3Rh
-cmdzLmJvb3RtLmFwcGVuZHJvb3QiLApAQCAtNzQyLDYgKzc2MSw3IEBAIHN0YXRpYyBpbnQgYm9v
-dG1faW5pdCh2b2lkKQogCWdsb2JhbHZhcl9hZGRfc2ltcGxlKCJib290bS5pbWFnZSIsIE5VTEwp
-OwogCWdsb2JhbHZhcl9hZGRfc2ltcGxlKCJib290bS5pbWFnZS5sb2FkYWRkciIsIE5VTEwpOwog
-CWdsb2JhbHZhcl9hZGRfc2ltcGxlKCJib290bS5vZnRyZWUiLCBOVUxMKTsKKwlnbG9iYWx2YXJf
-YWRkX3NpbXBsZSgiYm9vdG0ucm9vdF9kZXYiLCBOVUxMKTsKIAlnbG9iYWx2YXJfYWRkX3NpbXBs
-ZSgiYm9vdG0udGVlIiwgTlVMTCk7CiAJZ2xvYmFsdmFyX2FkZF9zaW1wbGVfYm9vbCgiYm9vdG0u
-YXBwZW5kcm9vdCIsICZib290bV9hcHBlbmRyb290KTsKIAlnbG9iYWx2YXJfYWRkX3NpbXBsZV9i
-b29sKCJib290bS5wcm92aWRlX21hY2hpbmVfaWQiLCAmYm9vdG1fcHJvdmlkZV9tYWNoaW5lX2lk
-KTsKQEAgLTc3MSw1ICs3OTEsNiBAQCBCQVJFQk9YX01BR0lDVkFSX05BTUVEKGdsb2JhbF9ib290
-bV9vZnRyZWUsIGdsb2JhbC5ib290bS5vZnRyZWUsICJib290bSBkZWZhdWx0CiBCQVJFQk9YX01B
-R0lDVkFSX05BTUVEKGdsb2JhbF9ib290bV90ZWUsIGdsb2JhbC5ib290bS50ZWUsICJib290bSBk
-ZWZhdWx0IHRlZSBpbWFnZSIpOwogQkFSRUJPWF9NQUdJQ1ZBUl9OQU1FRChnbG9iYWxfYm9vdG1f
-dmVyaWZ5LCBnbG9iYWwuYm9vdG0udmVyaWZ5LCAiYm9vdG0gZGVmYXVsdCB2ZXJpZnkgbGV2ZWwi
-KTsKIEJBUkVCT1hfTUFHSUNWQVJfTkFNRUQoZ2xvYmFsX2Jvb3RtX3ZlcmJvc2UsIGdsb2JhbC5i
-b290bS52ZXJib3NlLCAiYm9vdG0gZGVmYXVsdCB2ZXJib3NpdHkgbGV2ZWwgKDA9cXVpZXQpIik7
-Ci1CQVJFQk9YX01BR0lDVkFSX05BTUVEKGdsb2JhbF9ib290bV9hcHBlbmRyb290LCBnbG9iYWwu
-Ym9vdG0uYXBwZW5kcm9vdCwgIkFkZCByb290PSBvcHRpb24gdG8gS2VybmVsIHRvIG1vdW50IHJv
-b3RmcyBmcm9tIHRoZSBkZXZpY2UgdGhlIEtlcm5lbCBjb21lcyBmcm9tIik7CitCQVJFQk9YX01B
-R0lDVkFSX05BTUVEKGdsb2JhbF9ib290bV9hcHBlbmRyb290LCBnbG9iYWwuYm9vdG0uYXBwZW5k
-cm9vdCwgIkFkZCByb290PSBvcHRpb24gdG8gS2VybmVsIHRvIG1vdW50IHJvb3RmcyBmcm9tIHRo
-ZSBkZXZpY2UgdGhlIEtlcm5lbCBjb21lcyBmcm9tIChkZWZhdWx0LCBkZXZpY2UgY2FuIGJlIG92
-ZXJyaWRkZW4gdmlhIGdsb2JhbC5ib290bS5yb290X2RldikiKTsKK0JBUkVCT1hfTUFHSUNWQVJf
-TkFNRUQoZ2xvYmFsX2Jvb3RtX3Jvb3RfZGV2LCBnbG9iYWwuYm9vdG0ucm9vdF9kZXYsICJib290
-bSBkZWZhdWx0IHJvb3QgZGV2aWNlIChvdmVycmlkZXMgZGVmYXVsdCBkZXZpY2UgaW4gZ2xvYmFs
-LmJvb3RtLmFwcGVuZHJvb3QpIik7CiBCQVJFQk9YX01BR0lDVkFSX05BTUVEKGdsb2JhbF9ib290
-bV9wcm92aWRlX21hY2hpbmVfaWQsIGdsb2JhbC5ib290bS5wcm92aWRlX21hY2hpbmVfaWQsICJJ
-ZiB0cnVlLCBhZGQgc3lzdGVtZC5tYWNoaW5lX2lkPSB3aXRoIHZhbHVlIG9mIGdsb2JhbC5tYWNo
-aW5lX2lkIHRvIEtlcm5lbCIpOwpkaWZmIC0tZ2l0IGEvaW5jbHVkZS9ib290bS5oIGIvaW5jbHVk
-ZS9ib290bS5oCmluZGV4IDc3ODJkZTdhNDc2ZC4uMzYyOGE3ZWVhNWI5IDEwMDY0NAotLS0gYS9p
-bmNsdWRlL2Jvb3RtLmgKKysrIGIvaW5jbHVkZS9ib290bS5oCkBAIC0xOCw2ICsxOCw3IEBAIHN0
-cnVjdCBib290bV9kYXRhIHsKIAljb25zdCBjaGFyICppbml0cmRfZmlsZTsKIAljb25zdCBjaGFy
-ICpvZnRyZWVfZmlsZTsKIAljb25zdCBjaGFyICp0ZWVfZmlsZTsKKwljb25zdCBjaGFyICpyb290
-X2RldjsKIAlpbnQgdmVyYm9zZTsKIAllbnVtIGJvb3RtX3ZlcmlmeSB2ZXJpZnk7CiAJYm9vbCBm
-b3JjZTsKQEAgLTI1LDYgKzI2LDcgQEAgc3RydWN0IGJvb3RtX2RhdGEgewogCS8qCiAJICogYXBw
-ZW5kcm9vdCAtIGlmIHRydWUsIHRyeSB0byBhZGQgYSBzdWl0YWJsZSByb290PSBLZXJuZWwgb3B0
-aW9uIHRvCiAJICogbW91bnQgdGhlIHJvb3RmcyBmcm9tIHRoZSBzYW1lIGRldmljZSBhcyB0aGUg
-S2VybmVsIGNvbWVzIGZyb20uCisJICogVGhlIGRlZmF1bHQgcm9vdGZzIGRldmljZSBjYW4gYmUg
-b3ZlcnJpZGRlbiB3aXRoIHJvb3RfZGV2LgogCSAqLwogCWJvb2wgYXBwZW5kcm9vdDsKIAkvKgot
-LSAKMi43LjQKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDov
-L2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Hi Christian,
+
+On Mon, Aug 10, 2020 at 01:52:01PM +0200, Christian Eggers wrote:
+> On Thursday, 6 August 2020, 16:29:13 CEST, Christian Eggers wrote:
+> > Barebox version: 2020.07.0
+> > Hardware: i.MX6 ULL with external Microchip USB Hub attached
+> > 
+> > I got a bug report that some newer USB memory sticks do not work with
+> > barebox. While with barebox-2020.01 these devices are not recognized at all,
+> > in barebox-2020.07 I get at least some warnings:
+> I checked again with an older release of barebox (2019-06). With this version,
+> the USB drive is detected:
+> 
+> > # usb -s
+> > usb: USB: scanning bus for devices...
+> > usb: Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
+> > usb: Bus 001 Device 002: ID 0424:4916 USB4916
+> > usb: Bus 001 Device 003: ID 090c:3267 Flash Disk
+> > Using index 0 for the new disk
+> > usb: Bus 001 Device 004: ID 0424:494a USB2 Controller Hub
+> > usb: 4 USB Device(s) found
+> > Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
+> > Bus 001 Device 002: ID 0424:4916 USB4916
+> > Bus 001 Device 003: ID 090c:3267 Flash Disk
+> > Bus 001 Device 004: ID 0424:494a USB2 Controller Hub
+> 
+> Also mounting the drive works fine. So I guess that this problem may have been 
+> introduced here:
+> 
+> b1d9837182 ("usb: Change power-on / scanning timeout handling")
+
+Before guessing further could you verify that exactly this commit breaks
+your setup? There are a few more changes in the area that could be the
+culprit.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
