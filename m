@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k53gt-000707-SN
- for barebox@lists.infradead.org; Mon, 10 Aug 2020 09:02:00 +0000
-Date: Mon, 10 Aug 2020 11:01:56 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-Message-ID: <20200810090156.ni6as3o4xrs4e5zh@pengutronix.de>
+ id 1k54B6-0001Io-0K
+ for barebox@lists.infradead.org; Mon, 10 Aug 2020 09:33:13 +0000
+Date: Mon, 10 Aug 2020 11:33:10 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200810093310.GY31536@pengutronix.de>
 References: <20200804214158.25721-1-anees.r3hman@gmail.com>
- <20200804214158.25721-3-anees.r3hman@gmail.com>
- <20200806124127.iw4k32vpzrdb6f42@pengutronix.de>
- <20200810083115.GA614969@man-ws>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200810083115.GA614969@man-ws>
+In-Reply-To: <20200804214158.25721-1-anees.r3hman@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,59 +22,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 2/2] ARM: i.MX: Add atlascopco sxb board
+Subject: Re: [PATCH v2 0/2] ARM: i.MX: Add support for IMX7 based board
 To: Anees Rehman <anees.r3hman@gmail.com>
-Cc: Anees Rehman <anees.rehman@atlascopco.com>, barebox@lists.infradead.org
+Cc: barebox@lists.infradead.org
 
-On 20-08-10 10:31, Anees Rehman wrote:
-> On Thu, Aug 06, 2020 at 02:41:27PM +0200, Marco Felsch wrote:
-> > On 20-08-04 23:41, Anees Rehman wrote:
-> > 
-> > ...
-> > 
-> > > +static noinline void imx7d_sxb_sram_setup(void)
-> > > +{
-> > > +	int ret;
-> > > +
-> > > +	relocate_to_current_adr();
-> > > +	setup_c();
-> > > +
-> > > +	pr_debug("configuring ddr...\n");
-> > > +	write_regs(imx7d_ixb_dcd, ARRAY_SIZE(imx7d_ixb_dcd));
-> > > +
-> > > +	ret = imx7_esdhc_start_image(2);
-> > > +
-> > > +	BUG_ON(ret);
-> > > +}
-> > > +
-> > > +ENTRY_FUNCTION(start_ac_sxb, r0, r1, r2)
-> > > +{
-> > > +	imx7_cpu_lowlevel_init();
-> > > +
-> > > +	if (IS_ENABLED(CONFIG_DEBUG_LL))
-> > > +		setup_uart();
-> > > +
-> > > +	if (get_pc() < 0x80000000)
-> > > +		imx7d_sxb_sram_setup();
-> > 
-> > Nit:
-> > After this call we are running in the correct place...
-> > 
-> > > +	imx7d_barebox_entry(__dtb_z_ac_sxb_start + get_runtime_offset());
-> > 
-> > So get_runtime_offset() shouldn't be necessary if I got it right.
-> > 
-> > > +}
+On Tue, Aug 04, 2020 at 11:41:56PM +0200, Anees Rehman wrote:
+> The first patch adds support for the IMX7 to load image from SD/MMC similar to
+> IMX6 and IMX8.
 > 
-> If I remove get_runtime_offset(), I end up with the
-> following crash:
+> The second patch adds support for Atlas Copco's IXB tool which comes with
+> IMX7D, 1GB lpddr2 and has most of the interfaces supported by the SoC.
+> This patch also shows booting IMX7 without a static DCD file which allows
+> to have a single barebox image on multiple revisions of the same board
+> (different memory chips).
+> 
+> The _no_ DCD file part is an adaptation for ac-sxb from zii-imx6q-rdu2.
+> 
+> Changes since v1:
+> Changes according to Ahmad's review, thank you very much Ahmad!
+> * Add barebox update handler in device initcall
+> * Introduce compressed dtb
+> * Remove explicit initialization of return value
+> * Use imx7d-ddrc.dtsi instead of hardcoded memory node
+> * Move imx7d-ac-sxb.dts to arch/arm/dts directory
+> 
+> Anees Rehman (2):
+>   mci: imx-esdhc-pbl: Add support for IMX7
+>   ARM: i.MX: Add atlascopco sxb board
 
-Arg.. just saw that imx7d_sxb_sram_setup() isn't called every time.
+Applied, thanks
 
-Sorry.
+Sascha
 
-Regards,
-  Marco
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
