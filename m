@@ -1,19 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x241.google.com ([2a00:1450:4864:20::241])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k53DH-0003Rd-07
- for barebox@lists.infradead.org; Mon, 10 Aug 2020 08:31:23 +0000
-Received: by mail-lj1-x241.google.com with SMTP id t23so8626162ljc.3
- for <barebox@lists.infradead.org>; Mon, 10 Aug 2020 01:31:21 -0700 (PDT)
-Date: Mon, 10 Aug 2020 10:31:15 +0200
-From: Anees Rehman <anees.r3hman@gmail.com>
-Message-ID: <20200810083115.GA614969@man-ws>
-References: <20200804214158.25721-1-anees.r3hman@gmail.com>
- <20200804214158.25721-3-anees.r3hman@gmail.com>
- <20200806124127.iw4k32vpzrdb6f42@pengutronix.de>
+ id 1k53Kc-0003nv-B5
+ for barebox@lists.infradead.org; Mon, 10 Aug 2020 08:38:59 +0000
+Date: Mon, 10 Aug 2020 10:38:55 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+Message-ID: <20200810083855.u3aeqdner7nhesyn@pengutronix.de>
+References: <20200806092919.1892-1-m.felsch@pengutronix.de>
+ <20200806092919.1892-3-m.felsch@pengutronix.de>
+ <20200810071614.GW31536@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200806124127.iw4k32vpzrdb6f42@pengutronix.de>
+In-Reply-To: <20200810071614.GW31536@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,69 +24,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 2/2] ARM: i.MX: Add atlascopco sxb board
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: Anees Rehman <anees.rehman@atlascopco.com>, barebox@lists.infradead.org
+Subject: Re: [PATCH 3/3] ARM: i.MX: setup ENET_CLK_SEL in imx6_init for every
+ imx6q/imx6d
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Thu, Aug 06, 2020 at 02:41:27PM +0200, Marco Felsch wrote:
-> On 20-08-04 23:41, Anees Rehman wrote:
+On 20-08-10 09:16, Sascha Hauer wrote:
+> Hi Marco,
 > 
-> ...
+> On Thu, Aug 06, 2020 at 11:29:19AM +0200, Marco Felsch wrote:
+> > Setup the ENET TX reference clk to get it from the internal clock from
+> > anatop. This is the default value for newer imx6 processors like: 6sx,
+> > 6ul, 6ull. So it should be safe to set it as default for imx6q/d too.
 > 
-> > +static noinline void imx7d_sxb_sram_setup(void)
-> > +{
-> > +	int ret;
-> > +
-> > +	relocate_to_current_adr();
-> > +	setup_c();
-> > +
-> > +	pr_debug("configuring ddr...\n");
-> > +	write_regs(imx7d_ixb_dcd, ARRAY_SIZE(imx7d_ixb_dcd));
-> > +
-> > +	ret = imx7_esdhc_start_image(2);
-> > +
-> > +	BUG_ON(ret);
-> > +}
-> > +
-> > +ENTRY_FUNCTION(start_ac_sxb, r0, r1, r2)
-> > +{
-> > +	imx7_cpu_lowlevel_init();
-> > +
-> > +	if (IS_ENABLED(CONFIG_DEBUG_LL))
-> > +		setup_uart();
-> > +
-> > +	if (get_pc() < 0x80000000)
-> > +		imx7d_sxb_sram_setup();
+> I don't follow this reasoning. We only ever know the boards that are
+> unhappy with the reset default, because these are the ones that change
+> it. Now if we change the register default we can't know which boards
+> stop working because they relied on the previous reset default value.
 > 
-> Nit:
-> After this call we are running in the correct place...
+> Here is an example from U-Boot where this bit is explicitly cleared:
 > 
-> > +	imx7d_barebox_entry(__dtb_z_ac_sxb_start + get_runtime_offset());
+> board/tqc/tqma6/tqma6_mba6.c:85: clrbits_le32(&iomuxc_regs->gpr[1], IOMUXC_GPR1_ENET_CLK_SEL_MASK);
 > 
-> So get_runtime_offset() shouldn't be necessary if I got it right.
-> 
-> > +}
+> We support this board in barebox as well and it might break with your
+> change, so I don't think this patch is a good idea.
 
-If I remove get_runtime_offset(), I end up with the
-following crash:
-initcall-> imx_init+0x1/0x238
-detected i.MX7d revision 1.2
-i.MX reset reason POR (SRSR: 0x00000001)
-initcall imx_init+0x1/0x238 failed: Invalid argument
-initcall-> imx_serial_driver_register+0x1/0xc
-initcall-> input_init+0x1/0x70
-initcall-> dos_partition_init+0x1/0xc
-initcall-> efi_partition_init+0x1/0xc
-initcall-> imx_esdctl_init+0x1/0xc
-initcall-> mmu_init+0x1/0x34
-MMU: No memory bank found! Cannot continue
+Okay, after talking with Oleksij I thought this would be the common
+case instead of using an external osc and it would drop confusions
+why it's working 'magicaly' out of the box for all other imx devices.
 
-[<9fe6373d>] (unwind_backtrace+0x1/0x78) from [<9fe01379>] (panic+0x1d/0x34)
-[<9fe01379>] (panic+0x1d/0x34) from [<9fe614b9>] (mmu_init+0x19/0x34)
-[<9fe614b9>] (mmu_init+0x19/0x34) from [<9fe01061>] (start_barebox+0x51/0x90)
-[<9fe01061>] (start_barebox+0x51/0x90) from [<9fe61749>] (barebox_non_pbl_start+0x121/0x164)
-[<9fe61749>] (barebox_non_pbl_start+0x121/0x164) from [<9fe00005>] (__bare_init_start+0x1/0xc)
-### ERROR ### Please RESET the board ###
+Anyway got your point.
+
+Regards,
+  Marco
+
+> Sascha
 
 _______________________________________________
 barebox mailing list
