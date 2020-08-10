@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k55jF-0003LI-Ap
- for barebox@lists.infradead.org; Mon, 10 Aug 2020 11:12:34 +0000
+ id 1k55jN-0003Mt-BA
+ for barebox@lists.infradead.org; Mon, 10 Aug 2020 11:12:42 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 10 Aug 2020 13:12:10 +0200
-Message-Id: <20200810111212.31286-2-s.hauer@pengutronix.de>
+Date: Mon, 10 Aug 2020 13:12:11 +0200
+Message-Id: <20200810111212.31286-3-s.hauer@pengutronix.de>
 In-Reply-To: <20200810111212.31286-1-s.hauer@pengutronix.de>
 References: <20200810111212.31286-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,39 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] fs: squashfs: set s_op in time
+Subject: [PATCH 2/3] fs: squashfs: Do not free root inode
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-When calling squashfs_mount() s_op needs to be set already, otherwise
-calling alloc_inode() yields in a NULL pointer derefence.
+With inode reference counting in place the core will free the root
+inode, so do not free it in the squashfs code.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/squashfs/squashfs.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/squashfs/super.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/fs/squashfs/squashfs.c b/fs/squashfs/squashfs.c
-index 69451f7b84..be03618b2f 100644
---- a/fs/squashfs/squashfs.c
-+++ b/fs/squashfs/squashfs.c
-@@ -101,6 +101,7 @@ static int squashfs_probe(struct device_d *dev)
- 	if (ret)
- 		goto err_out;
+diff --git a/fs/squashfs/super.c b/fs/squashfs/super.c
+index e2b7b8d5a1..35df3a0307 100644
+--- a/fs/squashfs/super.c
++++ b/fs/squashfs/super.c
+@@ -83,7 +83,6 @@ void squashfs_put_super(struct super_block *sb)
+ 	}
  
-+	sb->s_op = &squashfs_super_ops;
- 
- 	ret = squashfs_mount(fsdev, 0);
- 	if (ret) {
-@@ -110,8 +111,6 @@ static int squashfs_probe(struct device_d *dev)
- 
- 	squashfs_set_rootarg(fsdev);
- 
--	sb->s_op = &squashfs_super_ops;
--
- 	return 0;
- 
- err_out:
+ 	if (sb->s_root) {
+-		kfree(squashfs_i(sb->s_root->d_inode));
+ 		kfree(sb->s_root);
+ 		sb->s_root = NULL;
+ 	}
 -- 
 2.28.0
 
