@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k5DV2-0003ew-07
- for barebox@lists.infradead.org; Mon, 10 Aug 2020 19:30:24 +0000
-Date: Mon, 10 Aug 2020 21:30:22 +0200
+ id 1k5DkB-0004mw-Gy
+ for barebox@lists.infradead.org; Mon, 10 Aug 2020 19:46:04 +0000
+Date: Mon, 10 Aug 2020 21:46:01 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200810193022.GC31536@pengutronix.de>
-References: <20200721061523.27105-1-a.fatoum@pengutronix.de>
- <20200803212133.GM31536@pengutronix.de>
- <CAK7LNAT_00x3qCRiU8J_K=MHD-=cFZUmHGxxoTXx2md+=0gO-g@mail.gmail.com>
+Message-ID: <20200810194601.GE31536@pengutronix.de>
+References: <20200716132753.16342-1-jmaselbas@kalray.eu>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAK7LNAT_00x3qCRiU8J_K=MHD-=cFZUmHGxxoTXx2md+=0gO-g@mail.gmail.com>
+In-Reply-To: <20200716132753.16342-1-jmaselbas@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,40 +22,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] treewide: remove stale instances of struct device
-To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Barebox List <barebox@lists.infradead.org>, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] console_countdown: Add CR as valid return key
+To: Jules Maselbas <jmaselbas@kalray.eu>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Tue, Aug 04, 2020 at 02:02:16PM +0900, Masahiro Yamada wrote:
-> On Tue, Aug 4, 2020 at 6:22 AM Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> >
-> > On Tue, Jul 21, 2020 at 08:15:23AM +0200, Ahmad Fatoum wrote:
-> > > We call it struct device_d, any instances of struct device are likely
-> > > left-over code after porting from Linux.
-> > >
-> > > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> > > ---
-> > >  drivers/crypto/caam/intern.h   | 5 -----
-> > >  drivers/crypto/caam/jr.h       | 2 --
-> > >  drivers/gpio/gpio-sx150x.c     | 1 -
-> > >  drivers/usb/musb/musb_gadget.c | 9 ---------
-> > >  4 files changed, 17 deletions(-)
-> >
-> > Applied, thanks
-> >
-> > Sascha
+Hi Jules,
+
+On Thu, Jul 16, 2020 at 03:27:53PM +0200, Jules Maselbas wrote:
+> Now both LF ('\n') and CR ('\r') are valid keys to abort
+> console_countdown when using CONSOLE_COUNTDOWN_RETURN flag.
+
+I have no problem with this change, but out of curiosity: In which case
+do you need it?
+
+Regards,
+ Sascha
+
+> 
+> Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
+> ---
+>  common/console_countdown.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/common/console_countdown.c b/common/console_countdown.c
+> index 74dc38279..b92948f50 100644
+> --- a/common/console_countdown.c
+> +++ b/common/console_countdown.c
+> @@ -64,7 +64,7 @@ int console_countdown(int timeout_s, unsigned flags, const char *keys,
+>  					goto out;
+>  				if (flags & CONSOLE_COUNTDOWN_ANYKEY)
+>  					goto out;
+> -				if (flags & CONSOLE_COUNTDOWN_RETURN && key == '\n')
+> +				if (flags & CONSOLE_COUNTDOWN_RETURN && (key == '\n' || key == '\r'))
+>  					goto out;
+>  				if (flags & CONSOLE_COUNTDOWN_CTRLC && key == 3)
+>  					goto out;
+> -- 
+> 2.17.1
 > 
 > 
-> Why doesn't barebox use (struct device)?
-
-For historical reasons. When creating barebox I thought that it's better
-to not use the same struct name when they are not exactly compatible. We
-have struct driver_d for the same reason.
-
-I am not sure I would do the same again. If we find good reasons to name
-them struct device and struct driver we can change that.
-
-Sascha
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
