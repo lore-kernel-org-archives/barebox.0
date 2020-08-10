@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k5EN2-0008Mc-Ts
- for barebox@lists.infradead.org; Mon, 10 Aug 2020 20:26:13 +0000
-Date: Mon, 10 Aug 2020 22:26:11 +0200
+ id 1k5EUo-0000S8-8q
+ for barebox@lists.infradead.org; Mon, 10 Aug 2020 20:34:15 +0000
+Date: Mon, 10 Aug 2020 22:34:12 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200810202611.GC9475@pengutronix.de>
+Message-ID: <20200810203412.GD9475@pengutronix.de>
 References: <20200721120600.15114-1-jmaselbas@kalray.eu>
- <20200721120600.15114-3-jmaselbas@kalray.eu>
+ <20200721120600.15114-15-jmaselbas@kalray.eu>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200721120600.15114-3-jmaselbas@kalray.eu>
+In-Reply-To: <20200721120600.15114-15-jmaselbas@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,19 +23,22 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 02/14] usb: dwc2: Add host controller driver
+Subject: Re: [PATCH v3 14/14] usb: dwc2: Add ulpi phy function
 To: Jules Maselbas <jmaselbas@kalray.eu>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-On Tue, Jul 21, 2020 at 02:05:48PM +0200, Jules Maselbas wrote:
-> The host driver is taken from U-Boot and mix with some part from Linux.
+On Tue, Jul 21, 2020 at 02:06:00PM +0200, Jules Maselbas wrote:
+> Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
+> ---
+>  drivers/usb/dwc2/core.c | 33 +++++++++++++++++++++++++++++++++
+>  drivers/usb/dwc2/dwc2.h |  3 +++
+>  2 files changed, 36 insertions(+)
 
-Which versions exactly? Having the base version helps when we later want
-to update the driver from newer U-Boot or Kernel versions.
+The functions introduced in this patch are unused, it seems there are
+bits missing for full ULPI support. Can we delay this patch until we
+have users of these functions?
 
 Sascha
-
-
 
 -- 
 Pengutronix e.K.                           |                             |
