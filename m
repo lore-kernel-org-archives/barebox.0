@@ -1,23 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mailout12.rmx.de ([94.199.88.78])
- by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k56Lk-0006tI-17
- for barebox@lists.infradead.org; Mon, 10 Aug 2020 11:52:21 +0000
-Received: from kdin01.retarus.com (kdin01.dmz1.retloc [172.19.17.48])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mailout12.rmx.de (Postfix) with ESMTPS id 4BQDpY4tzSzRkpm
- for <barebox@lists.infradead.org>; Mon, 10 Aug 2020 13:52:05 +0200 (CEST)
-Received: from mta.arri.de (unknown [217.111.95.66])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
- (No client certificate requested)
- by kdin01.retarus.com (Postfix) with ESMTPS id 4BQDpW08y8z2xDp
- for <barebox@lists.infradead.org>; Mon, 10 Aug 2020 13:52:03 +0200 (CEST)
-From: Christian Eggers <ceggers@arri.de>
-Date: Mon, 10 Aug 2020 13:52:01 +0200
-Message-ID: <3346214.S29caFStrp@n95hx1g2>
-In-Reply-To: <5183365.pEXpNOHncD@n95hx1g2>
-References: <5183365.pEXpNOHncD@n95hx1g2>
+Received: from mickerik.phytec.de ([195.145.39.210])
+ by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1k56bE-0008IR-4L
+ for barebox@lists.infradead.org; Mon, 10 Aug 2020 12:08:21 +0000
+From: Robert Karszniewicz <r.karszniewicz@phytec.de>
+Date: Mon, 10 Aug 2020 14:08:17 +0200
+Message-Id: <1597061297-182899-1-git-send-email-r.karszniewicz@phytec.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -27,94 +15,95 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Some USB memory sticks not (fully) recognized
+Subject: [PATCH] bootm: add global.bootm.root_dev env var for booting via
+ PARTUUID
 To: barebox@lists.infradead.org
-Cc: Primoz Fiser <primoz.fiser@norik.com>
 
-On Thursday, 6 August 2020, 16:29:13 CEST, Christian Eggers wrote:
-> Barebox version: 2020.07.0
-> Hardware: i.MX6 ULL with external Microchip USB Hub attached
-> 
-> I got a bug report that some newer USB memory sticks do not work with
-> barebox. While with barebox-2020.01 these devices are not recognized at all,
-> in barebox-2020.07 I get at least some warnings:
-I checked again with an older release of barebox (2019-06). With this version,
-the USB drive is detected:
-
-> # usb -s
-> usb: USB: scanning bus for devices...
-> usb: Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
-> usb: Bus 001 Device 002: ID 0424:4916 USB4916
-> usb: Bus 001 Device 003: ID 090c:3267 Flash Disk
-> Using index 0 for the new disk
-> usb: Bus 001 Device 004: ID 0424:494a USB2 Controller Hub
-> usb: 4 USB Device(s) found
-> Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
-> Bus 001 Device 002: ID 0424:4916 USB4916
-> Bus 001 Device 003: ID 090c:3267 Flash Disk
-> Bus 001 Device 004: ID 0424:494a USB2 Controller Hub
-
-Also mounting the drive works fine. So I guess that this problem may have been 
-introduced here:
-
-b1d9837182 ("usb: Change power-on / scanning timeout handling")
-
-Best regards
-Christian
-
-> 
-> # usb
-> 
-> > usb: USB: scanning bus for devices...
-> > usb1: Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
-> > usb1-0: Bus 001 Device 002: ID 0424:4916 USB4916
-> > ERROR: usb1-0-4: unable to get descriptor, error 80000000
-> > usb1-0-4: Bus 001 Device 003: ID 0424:2240
-> > usb1-0-6: Bus 001 Device 004: ID 0424:494a USB2 Controller Hub
-> > ERROR: usb1-0-0: unable to get descriptor, error 80000000
-> > usb1-0-0: Bus 001 Device 005: ID 090c:3267
-> > usb: 5 USB Device(s) found
-> 
-> Beside the USB memory stick, also one of the hub's internal
-> devices is not recognized correctly. The full log output with
-> global.loglevel=7 is attached. The first error seems to appear
-> 
-> in line 233. The USB device descriptor cannot be read:
-> > usb1-0-4: usb_control_msg: request: 0x6, requesttype: 0x80, value 0x100
-> > index 0x0 length 0x12 imx-usb 2184200.usb@2184200.of: pipe=8c000483,
-> > buffer=8ffca7c0, length=18, req=8ff57580 imx-usb 2184200.usb@2184200.of:
-> > (req=6 (0x6), type=128 (0x80), value=256 (0x100), index=0 imx-usb
-> > 2184200.usb@2184200.of: dev=4, usbsts=0x40081, p[1]=0x18001205, p[2]=0x0
-> Under Linux (on the same device), the USB drives work without any noticeable
-> problems:
-> Linux messages (v5.4):
-> > [  111.458582] 000: usb 1-1.1: new high-speed USB device number 5 using
-> > ci_hdrc [  111.613740] 000: usb 1-1.1: New USB device found,
-> > idVendor=090c, idProduct=3267, bcdDevice=11.00 [  111.613763] 000: usb
-> > 1-1.1: New USB device strings: Mfr=1, Product=2, SerialNumber=0 [ 
-> > 111.613777] 000: usb 1-1.1: Product: Flash Disk
-> > [  111.613784] 000: usb 1-1.1: Manufacturer: USB
-> > [  111.615642] 000: usb-storage 1-1.1:1.0: USB Mass Storage device
-> > detected
-> 
-> An usbmon capture for Linux is also attached (USB memory stick is plugged in
-> at about packet 99).
-> 
-> Any hints how I can debug this problem. I've almost now knowledge about
-> USB...
-> 
-> regards
-> Christian
-
-
-
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhpcyBwYXRjaCBpbnRyb2R1Y2VzIGEgbmV3IGVudiB2YXIgd2hpY2ggc3BlY2lmaWVzIHdoaWNo
+IGRldmljZSBpcyB0aGUKcm9vdGZzIGRldmljZSB0byBiZSB1c2VkIGluIExpbnV4LCBwYXNzZWQg
+dG8gTGludXggdmlhIGJvb3RhcmdzLAppZGVudGlmaWVkIGJ5IHRoZSByb290ZnMgcGFydGl0aW9u
+J3MgUEFSVFVVSUQuCgpnbG9iYWwuYm9vdG0ucm9vdF9kZXYgc3VwcGxlbWVudHMgZ2xvYmFsLmJv
+b3RtLmFwcGVuZHJvb3QsIGluIHRoYXQgaXQKb3ZlcnJpZGVzIGFwcGVuZHJvb3QncyBuYcOvdmUg
+ZGVmYXVsdCwgd2hpY2ggcGlja3MgdGhlIHBhcnRpdGlvbiB0aGF0IHRoZQprZXJuZWwgcmVzaWRl
+cyBvbiAoZ2xvYmFsLmJvb3RtLmltYWdlKS4KCkV4YW1wbGU6CmRldGVjdCBtbWMyCmdsb2JhbC5i
+b290bS5pbWFnZT0nL21udC9tbWMyLjAvekltYWdlJwpnbG9iYWwuYm9vdG0uYXBwZW5kcm9vdD0x
+Cmdsb2JhbC5ib290bS5yb290X2Rldj0vZGV2L21tYzIuMQpib290IG1tYwoKU2lnbmVkLW9mZi1i
+eTogUm9iZXJ0IEthcnN6bmlld2ljeiA8ci5rYXJzem5pZXdpY3pAcGh5dGVjLmRlPgotLS0KQ2hh
+bmdlcyBmcm9tIFJGQyB2MjoKLSByZXBsYWNlZCBwYXRoX2dldF9saW51eF9yb290YXJnKCJpbnZh
+bGlkIikgYnkgRVJSX1BUUigtRUlOVkFMKQotIGFkZGVkIGVycm9yIG1lc3NhZ2VzLiAoSSd2ZSBt
+YWRlIHRoZW0gbXV0dWFsbHkgZXhjbHVzaXZlIHRvIHByZXZlbnQKICBOVUxMLXBvaW50ZXIgZGVy
+ZWZlcmVuY2UpCgogY29tbW9uL2Jvb3RtLmMgIHwgMjUgKysrKysrKysrKysrKysrKysrKysrKyst
+LQogaW5jbHVkZS9ib290bS5oIHwgIDIgKysKIDIgZmlsZXMgY2hhbmdlZCwgMjUgaW5zZXJ0aW9u
+cygrKSwgMiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9jb21tb24vYm9vdG0uYyBiL2NvbW1v
+bi9ib290bS5jCmluZGV4IDhmZWMxZWUzNGRkOC4uN2Y5NTExNzJjY2Y1IDEwMDY0NAotLS0gYS9j
+b21tb24vYm9vdG0uYworKysgYi9jb21tb24vYm9vdG0uYwpAQCAtNjQsNiArNjQsNyBAQCB2b2lk
+IGJvb3RtX2RhdGFfaW5pdF9kZWZhdWx0cyhzdHJ1Y3QgYm9vdG1fZGF0YSAqZGF0YSkKIAlnZXRl
+bnZfdWwoImdsb2JhbC5ib290bS5pbWFnZS5sb2FkYWRkciIsICZkYXRhLT5vc19hZGRyZXNzKTsK
+IAlnZXRlbnZfdWwoImdsb2JhbC5ib290bS5pbml0cmQubG9hZGFkZHIiLCAmZGF0YS0+aW5pdHJk
+X2FkZHJlc3MpOwogCWRhdGEtPmluaXRyZF9maWxlID0gZ2V0ZW52X25vbmVtcHR5KCJnbG9iYWwu
+Ym9vdG0uaW5pdHJkIik7CisJZGF0YS0+cm9vdF9kZXYgPSBnZXRlbnZfbm9uZW1wdHkoImdsb2Jh
+bC5ib290bS5yb290X2RldiIpOwogCWRhdGEtPnZlcmlmeSA9IGJvb3RtX2dldF92ZXJpZnlfbW9k
+ZSgpOwogCWRhdGEtPmFwcGVuZHJvb3QgPSBib290bV9hcHBlbmRyb290OwogCWRhdGEtPnByb3Zp
+ZGVfbWFjaGluZV9pZCA9IGJvb3RtX3Byb3ZpZGVfbWFjaGluZV9pZDsKQEAgLTY1NSw3ICs2NTYs
+MjUgQEAgaW50IGJvb3RtX2Jvb3Qoc3RydWN0IGJvb3RtX2RhdGEgKmJvb3RtX2RhdGEpCiAJaWYg
+KGJvb3RtX2RhdGEtPmFwcGVuZHJvb3QpIHsKIAkJY2hhciAqcm9vdGFyZzsKIAotCQlyb290YXJn
+ID0gcGF0aF9nZXRfbGludXhfcm9vdGFyZyhkYXRhLT5vc19maWxlKTsKKwkJaWYgKGJvb3RtX2Rh
+dGEtPnJvb3RfZGV2KSB7CisJCQljb25zdCBjaGFyICpyb290X2Rldl9uYW1lID0gZGV2cGF0aF90
+b19uYW1lKGJvb3RtX2RhdGEtPnJvb3RfZGV2KTsKKwkJCWNvbnN0IHN0cnVjdCBjZGV2ICpyb290
+X2NkZXYgPSBjZGV2X2J5X25hbWUocm9vdF9kZXZfbmFtZSk7CisKKwkJCWlmIChyb290X2NkZXYg
+JiYgcm9vdF9jZGV2LT5wYXJ0dXVpZFswXSAhPSAwKSB7CisJCQkJcm9vdGFyZyA9IGJhc3ByaW50
+Zigicm9vdD1QQVJUVVVJRD0lcyIsIHJvb3RfY2Rldi0+cGFydHV1aWQpOworCQkJfSBlbHNlIHsK
+KwkJCQlyb290YXJnID0gRVJSX1BUUigtRUlOVkFMKTsKKworCQkJCWlmICghcm9vdF9jZGV2KQor
+CQkJCQlwcl9lcnIoIm5vIGNkZXYgZm91bmQgZm9yICVzLCBjYW5ub3Qgc2V0IHJvb3Q9IG9wdGlv
+blxuIiwKKwkJCQkJCXJvb3RfZGV2X25hbWUpOworCQkJCWVsc2UgaWYgKCFyb290X2NkZXYtPnBh
+cnR1dWlkWzBdKQorCQkJCQlwcl9lcnIoIiVzIGRvZXNuJ3QgaGF2ZSBhIFBBUlRVVUlELCBjYW5u
+b3Qgc2V0IHJvb3Q9IG9wdGlvblxuIiwKKwkJCQkJCXJvb3RfZGV2X25hbWUpOworCQkJfQorCQl9
+IGVsc2UgeworCQkJcm9vdGFyZyA9IHBhdGhfZ2V0X2xpbnV4X3Jvb3RhcmcoZGF0YS0+b3NfZmls
+ZSk7CisJCX0KIAkJaWYgKCFJU19FUlIocm9vdGFyZykpIHsKIAkJCXByaW50ZigiQWRkaW5nIFwi
+JXNcIiB0byBLZXJuZWwgY29tbWFuZGxpbmVcbiIsIHJvb3RhcmcpOwogCQkJZ2xvYmFsdmFyX2Fk
+ZF9zaW1wbGUoImxpbnV4LmJvb3RhcmdzLmJvb3RtLmFwcGVuZHJvb3QiLApAQCAtNzQyLDYgKzc2
+MSw3IEBAIHN0YXRpYyBpbnQgYm9vdG1faW5pdCh2b2lkKQogCWdsb2JhbHZhcl9hZGRfc2ltcGxl
+KCJib290bS5pbWFnZSIsIE5VTEwpOwogCWdsb2JhbHZhcl9hZGRfc2ltcGxlKCJib290bS5pbWFn
+ZS5sb2FkYWRkciIsIE5VTEwpOwogCWdsb2JhbHZhcl9hZGRfc2ltcGxlKCJib290bS5vZnRyZWUi
+LCBOVUxMKTsKKwlnbG9iYWx2YXJfYWRkX3NpbXBsZSgiYm9vdG0ucm9vdF9kZXYiLCBOVUxMKTsK
+IAlnbG9iYWx2YXJfYWRkX3NpbXBsZSgiYm9vdG0udGVlIiwgTlVMTCk7CiAJZ2xvYmFsdmFyX2Fk
+ZF9zaW1wbGVfYm9vbCgiYm9vdG0uYXBwZW5kcm9vdCIsICZib290bV9hcHBlbmRyb290KTsKIAln
+bG9iYWx2YXJfYWRkX3NpbXBsZV9ib29sKCJib290bS5wcm92aWRlX21hY2hpbmVfaWQiLCAmYm9v
+dG1fcHJvdmlkZV9tYWNoaW5lX2lkKTsKQEAgLTc3MSw1ICs3OTEsNiBAQCBCQVJFQk9YX01BR0lD
+VkFSX05BTUVEKGdsb2JhbF9ib290bV9vZnRyZWUsIGdsb2JhbC5ib290bS5vZnRyZWUsICJib290
+bSBkZWZhdWx0CiBCQVJFQk9YX01BR0lDVkFSX05BTUVEKGdsb2JhbF9ib290bV90ZWUsIGdsb2Jh
+bC5ib290bS50ZWUsICJib290bSBkZWZhdWx0IHRlZSBpbWFnZSIpOwogQkFSRUJPWF9NQUdJQ1ZB
+Ul9OQU1FRChnbG9iYWxfYm9vdG1fdmVyaWZ5LCBnbG9iYWwuYm9vdG0udmVyaWZ5LCAiYm9vdG0g
+ZGVmYXVsdCB2ZXJpZnkgbGV2ZWwiKTsKIEJBUkVCT1hfTUFHSUNWQVJfTkFNRUQoZ2xvYmFsX2Jv
+b3RtX3ZlcmJvc2UsIGdsb2JhbC5ib290bS52ZXJib3NlLCAiYm9vdG0gZGVmYXVsdCB2ZXJib3Np
+dHkgbGV2ZWwgKDA9cXVpZXQpIik7Ci1CQVJFQk9YX01BR0lDVkFSX05BTUVEKGdsb2JhbF9ib290
+bV9hcHBlbmRyb290LCBnbG9iYWwuYm9vdG0uYXBwZW5kcm9vdCwgIkFkZCByb290PSBvcHRpb24g
+dG8gS2VybmVsIHRvIG1vdW50IHJvb3RmcyBmcm9tIHRoZSBkZXZpY2UgdGhlIEtlcm5lbCBjb21l
+cyBmcm9tIik7CitCQVJFQk9YX01BR0lDVkFSX05BTUVEKGdsb2JhbF9ib290bV9hcHBlbmRyb290
+LCBnbG9iYWwuYm9vdG0uYXBwZW5kcm9vdCwgIkFkZCByb290PSBvcHRpb24gdG8gS2VybmVsIHRv
+IG1vdW50IHJvb3RmcyBmcm9tIHRoZSBkZXZpY2UgdGhlIEtlcm5lbCBjb21lcyBmcm9tIChkZWZh
+dWx0LCBkZXZpY2UgY2FuIGJlIG92ZXJyaWRkZW4gdmlhIGdsb2JhbC5ib290bS5yb290X2Rldiki
+KTsKK0JBUkVCT1hfTUFHSUNWQVJfTkFNRUQoZ2xvYmFsX2Jvb3RtX3Jvb3RfZGV2LCBnbG9iYWwu
+Ym9vdG0ucm9vdF9kZXYsICJib290bSBkZWZhdWx0IHJvb3QgZGV2aWNlIChvdmVycmlkZXMgZGVm
+YXVsdCBkZXZpY2UgaW4gZ2xvYmFsLmJvb3RtLmFwcGVuZHJvb3QpIik7CiBCQVJFQk9YX01BR0lD
+VkFSX05BTUVEKGdsb2JhbF9ib290bV9wcm92aWRlX21hY2hpbmVfaWQsIGdsb2JhbC5ib290bS5w
+cm92aWRlX21hY2hpbmVfaWQsICJJZiB0cnVlLCBhZGQgc3lzdGVtZC5tYWNoaW5lX2lkPSB3aXRo
+IHZhbHVlIG9mIGdsb2JhbC5tYWNoaW5lX2lkIHRvIEtlcm5lbCIpOwpkaWZmIC0tZ2l0IGEvaW5j
+bHVkZS9ib290bS5oIGIvaW5jbHVkZS9ib290bS5oCmluZGV4IDc3ODJkZTdhNDc2ZC4uMzYyOGE3
+ZWVhNWI5IDEwMDY0NAotLS0gYS9pbmNsdWRlL2Jvb3RtLmgKKysrIGIvaW5jbHVkZS9ib290bS5o
+CkBAIC0xOCw2ICsxOCw3IEBAIHN0cnVjdCBib290bV9kYXRhIHsKIAljb25zdCBjaGFyICppbml0
+cmRfZmlsZTsKIAljb25zdCBjaGFyICpvZnRyZWVfZmlsZTsKIAljb25zdCBjaGFyICp0ZWVfZmls
+ZTsKKwljb25zdCBjaGFyICpyb290X2RldjsKIAlpbnQgdmVyYm9zZTsKIAllbnVtIGJvb3RtX3Zl
+cmlmeSB2ZXJpZnk7CiAJYm9vbCBmb3JjZTsKQEAgLTI1LDYgKzI2LDcgQEAgc3RydWN0IGJvb3Rt
+X2RhdGEgewogCS8qCiAJICogYXBwZW5kcm9vdCAtIGlmIHRydWUsIHRyeSB0byBhZGQgYSBzdWl0
+YWJsZSByb290PSBLZXJuZWwgb3B0aW9uIHRvCiAJICogbW91bnQgdGhlIHJvb3RmcyBmcm9tIHRo
+ZSBzYW1lIGRldmljZSBhcyB0aGUgS2VybmVsIGNvbWVzIGZyb20uCisJICogVGhlIGRlZmF1bHQg
+cm9vdGZzIGRldmljZSBjYW4gYmUgb3ZlcnJpZGRlbiB3aXRoIHJvb3RfZGV2LgogCSAqLwogCWJv
+b2wgYXBwZW5kcm9vdDsKIAkvKgotLSAKMi43LjQKCgpfX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3Rz
+LmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5m
+by9iYXJlYm94Cg==
