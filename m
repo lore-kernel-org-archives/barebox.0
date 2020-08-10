@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k51Pg-0005nh-Rw
- for barebox@lists.infradead.org; Mon, 10 Aug 2020 06:36:05 +0000
-Date: Mon, 10 Aug 2020 08:36:02 +0200
+ id 1k51S9-00062o-MY
+ for barebox@lists.infradead.org; Mon, 10 Aug 2020 06:38:38 +0000
+Date: Mon, 10 Aug 2020 08:38:36 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200810063602.GU31536@pengutronix.de>
-References: <20200805073258.10973-1-antonynpavlov@gmail.com>
+Message-ID: <20200810063836.GV31536@pengutronix.de>
+References: <20200807072905.2488-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200805073258.10973-1-antonynpavlov@gmail.com>
+In-Reply-To: <20200807072905.2488-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,26 +22,19 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] image: Convert the IH_... values to enums
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH] spi: add coredevice_spi_driver macro as well
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Aug 05, 2020 at 10:32:57AM +0300, Antony Pavlov wrote:
-> Adoption of U-Boot commit:
+On Fri, Aug 07, 2020 at 09:29:05AM +0200, Ahmad Fatoum wrote:
+> Some drivers would benefit from earlier probing, e.g. because they
+> provide regulators. Add a macro to make registration of such drivers
+> easier.
 > 
->   | commit 555f45d8f9168b09b406a241e7cee7980104d902
->   | Author: Simon Glass <sjg@chromium.org>
->   | Date:   Thu Jun 30 10:52:13 2016 -0600
->   |
->   |     image: Convert the IH_... values to enums
-> 
-> As a side effect, several new architecture macros
-> are introduced, especially IH_ARCH_RISCV.
-> 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  include/image.h | 188 +++++++++++++++++++++++++++++++++---------------
->  1 file changed, 132 insertions(+), 56 deletions(-)
+>  include/spi/spi.h | 2 ++
+>  1 file changed, 2 insertions(+)
 
 Applied, thanks
 
