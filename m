@@ -1,17 +1,24 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mailout12.rmx.de ([94.199.88.78])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k55jj-0003RW-2z
- for barebox@lists.infradead.org; Mon, 10 Aug 2020 11:13:03 +0000
-Date: Mon, 10 Aug 2020 13:13:01 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200810111301.GA31536@pengutronix.de>
-References: <20200615060229.7533-1-s.hauer@pengutronix.de>
- <20200615060229.7533-5-s.hauer@pengutronix.de>
- <11fac320-418d-4fc1-249b-59b5008f2839@pengutronix.de>
+ id 1k56Lk-0006tI-17
+ for barebox@lists.infradead.org; Mon, 10 Aug 2020 11:52:21 +0000
+Received: from kdin01.retarus.com (kdin01.dmz1.retloc [172.19.17.48])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mailout12.rmx.de (Postfix) with ESMTPS id 4BQDpY4tzSzRkpm
+ for <barebox@lists.infradead.org>; Mon, 10 Aug 2020 13:52:05 +0200 (CEST)
+Received: from mta.arri.de (unknown [217.111.95.66])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by kdin01.retarus.com (Postfix) with ESMTPS id 4BQDpW08y8z2xDp
+ for <barebox@lists.infradead.org>; Mon, 10 Aug 2020 13:52:03 +0200 (CEST)
+From: Christian Eggers <ceggers@arri.de>
+Date: Mon, 10 Aug 2020 13:52:01 +0200
+Message-ID: <3346214.S29caFStrp@n95hx1g2>
+In-Reply-To: <5183365.pEXpNOHncD@n95hx1g2>
+References: <5183365.pEXpNOHncD@n95hx1g2>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <11fac320-418d-4fc1-249b-59b5008f2839@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,59 +31,88 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 04/11] fs: free inodes we no longer need
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: Some USB memory sticks not (fully) recognized
+To: barebox@lists.infradead.org
+Cc: Primoz Fiser <primoz.fiser@norik.com>
 
-Hi Ahmad,
-
-On Tue, Aug 04, 2020 at 12:02:37AM +0200, Ahmad Fatoum wrote:
-> Hello Sascha,
+On Thursday, 6 August 2020, 16:29:13 CEST, Christian Eggers wrote:
+> Barebox version: 2020.07.0
+> Hardware: i.MX6 ULL with external Microchip USB Hub attached
 > 
-> On 6/15/20 8:02 AM, Sascha Hauer wrote:
-> > So far we freed the no longer needed inodes only at unmount time.
-> > Let's trust our reference counting a bit more and free them once
-> > the reference counter hits zero.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  fs/fs.c | 8 +++++---
-> >  1 file changed, 5 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/fs/fs.c b/fs/fs.c
-> > index cecb3d70e0..e04cadfe5d 100644
-> > --- a/fs/fs.c
-> > +++ b/fs/fs.c
-> > @@ -1090,10 +1090,12 @@ void iput(struct inode *inode)
-> >  	if (!inode)
-> >  		return;
-> >  
-> > -	if (!inode->i_count)
-> > -		return;
-> > -
-> >  	inode->i_count--;
-> > +
-> > +	if (!inode->i_count) {
-> > +		list_del(&inode->i_sb_list);
-> 
-> There is no explicit initialization of i_sb_list anywhere, only
-> list_add.
-> 
-> Without reverting this patch, I can reproduce null pointer dereference
-> booting from squashfs as i_sb_list remained uninitialized when this
-> line is executed.
-> 
-> Can you drop this patch for now?
+> I got a bug report that some newer USB memory sticks do not work with
+> barebox. While with barebox-2020.01 these devices are not recognized at all,
+> in barebox-2020.07 I get at least some warnings:
+I checked again with an older release of barebox (2019-06). With this version,
+the USB drive is detected:
 
-Find a fix for this issue in your inbox.
+> # usb -s
+> usb: USB: scanning bus for devices...
+> usb: Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
+> usb: Bus 001 Device 002: ID 0424:4916 USB4916
+> usb: Bus 001 Device 003: ID 090c:3267 Flash Disk
+> Using index 0 for the new disk
+> usb: Bus 001 Device 004: ID 0424:494a USB2 Controller Hub
+> usb: 4 USB Device(s) found
+> Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
+> Bus 001 Device 002: ID 0424:4916 USB4916
+> Bus 001 Device 003: ID 090c:3267 Flash Disk
+> Bus 001 Device 004: ID 0424:494a USB2 Controller Hub
 
-Sascha
+Also mounting the drive works fine. So I guess that this problem may have been 
+introduced here:
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+b1d9837182 ("usb: Change power-on / scanning timeout handling")
+
+Best regards
+Christian
+
+> 
+> # usb
+> 
+> > usb: USB: scanning bus for devices...
+> > usb1: Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
+> > usb1-0: Bus 001 Device 002: ID 0424:4916 USB4916
+> > ERROR: usb1-0-4: unable to get descriptor, error 80000000
+> > usb1-0-4: Bus 001 Device 003: ID 0424:2240
+> > usb1-0-6: Bus 001 Device 004: ID 0424:494a USB2 Controller Hub
+> > ERROR: usb1-0-0: unable to get descriptor, error 80000000
+> > usb1-0-0: Bus 001 Device 005: ID 090c:3267
+> > usb: 5 USB Device(s) found
+> 
+> Beside the USB memory stick, also one of the hub's internal
+> devices is not recognized correctly. The full log output with
+> global.loglevel=7 is attached. The first error seems to appear
+> 
+> in line 233. The USB device descriptor cannot be read:
+> > usb1-0-4: usb_control_msg: request: 0x6, requesttype: 0x80, value 0x100
+> > index 0x0 length 0x12 imx-usb 2184200.usb@2184200.of: pipe=8c000483,
+> > buffer=8ffca7c0, length=18, req=8ff57580 imx-usb 2184200.usb@2184200.of:
+> > (req=6 (0x6), type=128 (0x80), value=256 (0x100), index=0 imx-usb
+> > 2184200.usb@2184200.of: dev=4, usbsts=0x40081, p[1]=0x18001205, p[2]=0x0
+> Under Linux (on the same device), the USB drives work without any noticeable
+> problems:
+> Linux messages (v5.4):
+> > [  111.458582] 000: usb 1-1.1: new high-speed USB device number 5 using
+> > ci_hdrc [  111.613740] 000: usb 1-1.1: New USB device found,
+> > idVendor=090c, idProduct=3267, bcdDevice=11.00 [  111.613763] 000: usb
+> > 1-1.1: New USB device strings: Mfr=1, Product=2, SerialNumber=0 [ 
+> > 111.613777] 000: usb 1-1.1: Product: Flash Disk
+> > [  111.613784] 000: usb 1-1.1: Manufacturer: USB
+> > [  111.615642] 000: usb-storage 1-1.1:1.0: USB Mass Storage device
+> > detected
+> 
+> An usbmon capture for Linux is also attached (USB memory stick is plugged in
+> at about packet 99).
+> 
+> Any hints how I can debug this problem. I've almost now knowledge about
+> USB...
+> 
+> regards
+> Christian
+
+
+
+
 
 _______________________________________________
 barebox mailing list
