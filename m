@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k5Qoe-00015a-NX
- for barebox@lists.infradead.org; Tue, 11 Aug 2020 09:43:34 +0000
-Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
- helo=dude02.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <l.stach@pengutronix.de>) id 1k5Qoc-0006AM-CU
- for barebox@lists.infradead.org; Tue, 11 Aug 2020 11:43:30 +0200
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Tue, 11 Aug 2020 11:43:27 +0200
-Message-Id: <20200811094330.4754-1-l.stach@pengutronix.de>
+Received: from protonic.xs4all.nl ([83.163.252.89])
+ by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1k5Qxp-0002ZN-AO
+ for barebox@lists.infradead.org; Tue, 11 Aug 2020 09:53:02 +0000
+Date: Tue, 11 Aug 2020 11:52:53 +0200
+From: David Jander <david@protonic.nl>
+Message-ID: <20200811115253.3f9e79ec@erd988>
+In-Reply-To: <20200811085847.ut5mfcjbt2bncsro@pengutronix.de>
+References: <20200805101628.4698-1-o.rempel@pengutronix.de>
+ <20200805101628.4698-13-o.rempel@pengutronix.de>
+ <20200811083401.GK9475@pengutronix.de>
+ <20200811085847.ut5mfcjbt2bncsro@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,33 +24,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/4] ARM: imx8mm: select FIRMWARE_IMX_LPDDR4_PMU_TRAIN from
- IMX8MM_EVK
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 12/13] of: add barebox-serial driver
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Without this select the necessary DDR PHY firmware files will be missing
-when only building for the i.MX8MM-EVK board.
+On Tue, 11 Aug 2020 10:58:47 +0200
+Oleksij Rempel <o.rempel@pengutronix.de> wrote:
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
----
- arch/arm/mach-imx/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+> On Tue, Aug 11, 2020 at 10:34:01AM +0200, Sascha Hauer wrote:
+> > On Wed, Aug 05, 2020 at 12:16:27PM +0200, Oleksij Rempel wrote:  
+> > > Provide a driver which should act as nvmem consumer
+> > > for board serial number information.
+> > > 
+> > > To make use of this driver, DTS should contain a serial
+> > > node with compatibe "barebox,serial" and nvmem-cell-names
+> > > "serial-number":
+> > > 
+> > > ...
+> > > 	chosen {
+> > > 		serial {
+> > > 			compatible = "barebox,serial";
+> > > 			nvmem-cell-names = "serial-number";
+> > > 			nvmem-cells = &some_provider;
+> > > 		};
+> > > 	};  
+> > 
+> > This driver only works when the EEPROM or whatever provides the NVMEM
+> > contains the serial number in exactly the same format as shall be added
+> > to the /serial-number property. This seems to be a special case only and
+> > doesn't seem to justify a generic driver.  
+> 
+> As with usual devicetree based solution we can add additional
+> compatibles to better describe a variant or quirk which should be used
+> to convert raw data to the serial number in usable for environment and
+> device tree way. I hope, by having generic drivers other users will alight
+> with it by making new products or extend existing driver by mainlining
+> existing products.
 
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index 7e4265900479..007845c6d13d 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -525,6 +525,7 @@ config MACH_NXP_IMX6ULL_EVK
- config MACH_NXP_IMX8MM_EVK
- 	bool "NXP i.MX8MM EVK Board"
- 	select ARCH_IMX8MM
-+	select FIRMWARE_IMX_LPDDR4_PMU_TRAIN
- 	select FIRMWARE_IMX8MM_ATF
- 	select ARM_SMCCC
- 	select MCI_IMX_ESDHC_PBL
+Just for information, this is the layout used for I2C EEPROM contents in the
+RFID chip (from I2C address 0x6000, device id 0x51):
+
+struct rfid_contents {
+        u8 mac[6];
+        char serial[10];
+        u8 cs;
+} __attribute__ ((packed));
+
+The cs field is just the bit-inverted LSB of the sum of all bytes composing
+the struct up to cs.
+
+Note, that even boards without ethernet interface use the same struct, but the
+MAC address field is ignored and can be anything. The design of this struct is
+quite specific, inflexible and not at all future-proof. So maybe it shouldn't
+go into a full-blown driver and instead stay hidden in the board code.
+
+Best regards,
+
 -- 
-2.20.1
-
+David Jander
+Protonic Holland.
 
 _______________________________________________
 barebox mailing list
