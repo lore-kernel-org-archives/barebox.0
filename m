@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k5PA1-0002Dl-6m
- for barebox@lists.infradead.org; Tue, 11 Aug 2020 07:57:30 +0000
-Date: Tue, 11 Aug 2020 09:57:27 +0200
+ id 1k5PdC-0003n4-BN
+ for barebox@lists.infradead.org; Tue, 11 Aug 2020 08:27:39 +0000
+Date: Tue, 11 Aug 2020 10:27:36 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200811075727.GJ9475@pengutronix.de>
-References: <20200715092656.27253-1-christian.mauderer@embedded-brains.de>
+Message-ID: <20200811082736.GC17014@pengutronix.de>
+References: <20200723103326.23226-1-o.rempel@pengutronix.de>
+ <20200723103326.23226-12-o.rempel@pengutronix.de>
+ <20200803211259.GL31536@pengutronix.de>
+ <20200804054829.44eqvc47p5q67jam@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200715092656.27253-1-christian.mauderer@embedded-brains.de>
+In-Reply-To: <20200804054829.44eqvc47p5q67jam@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,87 +25,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v5] FIT: Parse `load` and `entry` addresses.
-To: Christian Mauderer <christian.mauderer@embedded-brains.de>
-Cc: barebox@lists.infradead.org, a.fatoum@pengutronix.de
+Subject: Re: [PATCH v1 11/11] ARM: dts: imx6q-prti6q: add barebox.serial node
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org, david@protonic.nl
 
-Hi Christian,
-
-On Wed, Jul 15, 2020 at 11:26:56AM +0200, Christian Mauderer wrote:
-> According to the U-Boot documentation for the FIT file format, the load
-> and entry have to be allways defined for a "kernel" or "standalone".
-> But Barebox ignored the parameters. That changes with this patch.
+On Tue, Aug 04, 2020 at 07:48:29AM +0200, Oleksij Rempel wrote:
+> On Mon, Aug 03, 2020 at 11:12:59PM +0200, Sascha Hauer wrote:
+> > On Thu, Jul 23, 2020 at 12:33:26PM +0200, Oleksij Rempel wrote:
+> > > Add serial node provider
+> > > 
+> > > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> > > ---
+> > >  arch/arm/dts/imx6q-prti6q.dts | 5 +++++
+> > >  1 file changed, 5 insertions(+)
+> > > 
+> > > diff --git a/arch/arm/dts/imx6q-prti6q.dts b/arch/arm/dts/imx6q-prti6q.dts
+> > > index 76bb4d53d3..67e7f63979 100644
+> > > --- a/arch/arm/dts/imx6q-prti6q.dts
+> > > +++ b/arch/arm/dts/imx6q-prti6q.dts
+> > > @@ -18,6 +18,11 @@
+> > >  			compatible = "barebox,environment";
+> > >  			device-path = &ecspi1, "partname:env";
+> > >  		};
+> > > +		serial {
+> > > +			compatible = "barebox,serial";
+> > > +			nvmem-cell-names = "serial-number";
+> > > +			/* nvmem-cells will added board code */
+> > 
+> > You probably mean "nvmem-cells will be added by board code".
+> > 
+> > You need board code to fully describe the device which triggers a
+> > freshly written driver which puts the found serial number as
+> > /serial-number into dt. Is this really worth it? I'd just read the
+> > serial number in board code and put it into dt, maybe add some helper
+> > function to set the right property from a given string.
 > 
-> For backward compatibility the default address is still used for images
-> without `load` or `entry`.
-> 
-> Signed-off-by: Christian Mauderer <christian.mauderer@embedded-brains.de>
-> ---
->  common/blspec.c     |  1 +
->  common/boot.c       |  1 +
->  common/bootm.c      | 24 ++++++++++-
->  common/image-fit.c  | 97 ++++++++++++++++++++++++++++++++++++++-------
->  include/image-fit.h |  3 ++
->  5 files changed, 110 insertions(+), 16 deletions(-)
-> 
-> diff --git a/common/blspec.c b/common/blspec.c
-> index 7fb62d310..050aed26a 100644
-> --- a/common/blspec.c
-> +++ b/common/blspec.c
-> @@ -142,6 +142,7 @@ static int blspec_boot(struct bootentry *be, int verbose, int dryrun)
->  	globalvar_set_match("bootm.initrd", "");
->  
->  	bootm_data_init_defaults(&data);
-> +	data.os_entry = 0;
+> If eeprom should only be used to read serial-number - yes. But this
+> RFID-eeprom provides more space and functionality. Why not make it
+> available for barebox and linux to be able to do more things with it?
 
-You set data.os_entry explicitly to 0 here...
-
->  
->  	devicetree = blspec_entry_var_get(entry, "devicetree");
->  	initrd = blspec_entry_var_get(entry, "initrd");
-> diff --git a/common/boot.c b/common/boot.c
-> index dcbe5cc2e..93ac1612d 100644
-> --- a/common/boot.c
-> +++ b/common/boot.c
-> @@ -104,6 +104,7 @@ static int bootscript_boot(struct bootentry *entry, int verbose, int dryrun)
->  
->  	bootm_data_init_defaults(&data);
->  
-> +	data.os_entry = 0;
-
-...and here. Why is this done? I think these should be left to the
-default UIMAGE_SOME_ADDRESS. In the end the kernels bootet from blspec
-or a boot script could be a FIT image as well.
-
-> +int fit_get_image_address(struct fit_handle *handle, void *configuration,
-> +			  const char *name, const char *property,
-> +			  unsigned long *address)
-> +{
-> +	struct device_node *image;
-> +	const char *unit = name;
-> +	int ret;
-> +
-> +	if (!address || !property || !name)
-> +		return -EINVAL;
-> +
-> +	ret = fit_get_image(handle, configuration, &unit, &image);
-> +	if (ret)
-> +		return ret;
-> +
-> +	pr_info("%s/%s: ", image->full_name, property);
-> +
-> +	ret = fit_get_address(image, property, address);
-> +	if (ret < 0)
-> +		pr_cont("<not found>\n");
-> +	else
-> +		pr_cont("0x%lx\n", *address);
-
-pr_cont() doesn't work well in barebox and should be avoided.
-
-Also I think this function shouldn't print anything, the caller should
-if it wishes to.
-
-Otherwise the patch looks fine to me.
+Yes, the EEPROM should be available to Linux and barebox, I do not
+disagree here. I was referring to the way you extract the serial number
+here. You already have the information where the serial number is in
+board code. So instead of putting it into the device tree where some
+driver picks it up you could use that information directly.
 
 Sascha
 
