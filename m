@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k5SDG-0005Ft-8k
- for barebox@lists.infradead.org; Tue, 11 Aug 2020 11:13:03 +0000
-Date: Tue, 11 Aug 2020 13:12:56 +0200
+ id 1k5SON-0007Qp-8m
+ for barebox@lists.infradead.org; Tue, 11 Aug 2020 11:24:32 +0000
+Date: Tue, 11 Aug 2020 13:24:29 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200811111256.GL9475@pengutronix.de>
-References: <20200805101628.4698-1-o.rempel@pengutronix.de>
+Message-ID: <20200811112429.GM9475@pengutronix.de>
+References: <20200716132753.16342-1-jmaselbas@kalray.eu>
+ <20200810194601.GE31536@pengutronix.de>
+ <20200811092946.kvowvfmlfc2gqo4t@tellis.lin.mbt.kalray.eu>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200805101628.4698-1-o.rempel@pengutronix.de>
+In-Reply-To: <20200811092946.kvowvfmlfc2gqo4t@tellis.lin.mbt.kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,49 +24,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 00/13] prepare Protonic board code for mainline
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org, david@protonic.nl
+Subject: Re: [PATCH] console_countdown: Add CR as valid return key
+To: Jules Maselbas <jmaselbas@kalray.eu>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Wed, Aug 05, 2020 at 12:16:15PM +0200, Oleksij Rempel wrote:
-> changes v2:
-> - add power init support for KvG boards
-> - spell fixes
-> - do not print error on probe exit
-> - add of_console_get_by_alias() helper
-> - free requested gpio array
-> - exit fec init only in case of PROBE_DEFERED
+On Tue, Aug 11, 2020 at 11:29:46AM +0200, Jules Maselbas wrote:
+> Hi Sascha,
 > 
-> This patch series is a preparation and actual Protonic board code.
-> Following changes was made in the main code:
-> - register DT root node as device to make it possible to loade board
->   code as usual driver
-> - provide helpers to read ethernet mac from nvmem cell register in a
->   devicetree.
-> - provide barebox-serial driver which should be a nvmem cell consumer
->   and
->   serial-number DT property provider.
-> - provide gpio helper to read gpio based board revision.
-> 
-> Oleksij Rempel (13):
->   ARM: dts: imx6q-prti6q: fix PHY register
->   ARM: dts: imx6: vicut1: fix network support
->   of: base: register DT root as device
->   ARM: embest-riotboard: port board file to the driver model
->   net: port nvmem_get_mac_address() from linux kernel
->   of: of_net: sync of_get_mac_address() with latest kernel version
->   net: fec_imx: use of_get_mac_address() to get mac address out of DT
->   of: of_device_get_match_compatible() helper
->   gpiolib: add gpio_array_to_id helper to get ID out of GPIO array
->   common: console_common: add of_console_get_by_alias() helper
->   ARM: protonic-imx6: port Protonic specific board code
->   of: add barebox-serial driver
->   ARM: dts: imx6q-prti6q: add barebox,serial-number node
+> > I have no problem with this change, but out of curiosity: In which case
+> > do you need it?
+> I am using minicom to communicate with barebox through an UART interface.
+> It seems that minicom is sending an carriage return when the enter key
+> is pressed.
 
-Applied 1-4 for now.
+You could give microcom a try, see https://github.com/pengutronix/microcom.
+It's also contained in Debian/Ubuntu. Instead of having its own terminal
+emulation it just sends the characters through to your existing
+terminal.
+
+Anyway, when it helps to better work with minicom: Applied, thanks
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
