@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k5Qoe-00015c-Pi
- for barebox@lists.infradead.org; Tue, 11 Aug 2020 09:43:34 +0000
+ id 1k5Qoe-00015d-KX
+ for barebox@lists.infradead.org; Tue, 11 Aug 2020 09:43:33 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
  helo=dude02.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <l.stach@pengutronix.de>) id 1k5Qoc-0006AM-DX
+ (envelope-from <l.stach@pengutronix.de>) id 1k5Qoc-0006AM-FL
  for barebox@lists.infradead.org; Tue, 11 Aug 2020 11:43:30 +0200
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Tue, 11 Aug 2020 11:43:29 +0200
-Message-Id: <20200811094330.4754-3-l.stach@pengutronix.de>
+Date: Tue, 11 Aug 2020 11:43:30 +0200
+Message-Id: <20200811094330.4754-4-l.stach@pengutronix.de>
 In-Reply-To: <20200811094330.4754-1-l.stach@pengutronix.de>
 References: <20200811094330.4754-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
@@ -26,50 +26,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/4] ARM: nxp-imx8mm-evk: always set up UART
+Subject: [PATCH v2 4/4] nvmem: ocotp: add support for i.MX8MM
 To: barebox@lists.infradead.org
 
-When the TF-A is configured to have some output on the UART it does not
-set up the UART on its own, but just expects a pre-existing configuration.
-If Barebox did not set up the UART in the !DEBUG_LL case, TF-A will just
-hang without any user accessible debug output, which is a very non-obvious
-failure, so better be safe and always set up the UART in case TF-A wants
-to use it.
+For whatever reason the i.MX8MM OCOTP got a separate compatible and
+is not marked as compatible to imx8mq, while the parameters used in the
+driver seem to be the same.
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- arch/arm/boards/nxp-imx8mm-evk/lowlevel.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/nvmem/Kconfig | 2 +-
+ drivers/nvmem/ocotp.c | 3 +++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c
-index cd1f7d168bc6..082aefb8c1c5 100644
---- a/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c
-+++ b/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c
-@@ -32,9 +32,12 @@ static void setup_uart(void)
+diff --git a/drivers/nvmem/Kconfig b/drivers/nvmem/Kconfig
+index 968342b281ad..55fc6f382d16 100644
+--- a/drivers/nvmem/Kconfig
++++ b/drivers/nvmem/Kconfig
+@@ -18,7 +18,7 @@ config NVMEM_SNVS_LPGPR
  
- 	imx8mm_setup_pad(IMX8MM_PAD_UART2_TXD_UART2_TX | UART_PAD_CTRL);
- 
--	imx8m_uart_setup_ll();
-+	imx8mq_uart_setup((void *)MX8M_UART2_BASE_ADDR);
- 
--	putc_ll('>');
-+	if (IS_ENABLED(CONFIG_DEBUG_LL)) {
-+		imx8m_uart_setup_ll();
-+		putc_ll('>');
-+	}
- }
- 
- static void pmic_reg_write(void *i2c, int reg, uint8_t val)
-@@ -157,8 +160,7 @@ static void start_atf(void)
-  */
- static __noreturn noinline void nxp_imx8mm_evk_start(void)
- {
--	if (IS_ENABLED(CONFIG_DEBUG_LL))
--		setup_uart();
-+	setup_uart();
- 
- 	start_atf();
- 
+ config IMX_OCOTP
+ 	tristate "i.MX6 On Chip OTP controller"
+-	depends on ARCH_IMX6 || ARCH_VF610 || ARCH_IMX8MQ
++	depends on ARCH_IMX6 || ARCH_VF610 || ARCH_IMX8M
+ 	depends on OFDEVICE
+ 	help
+ 	  This adds support for the i.MX6 On-Chip OTP controller. Currently the
+diff --git a/drivers/nvmem/ocotp.c b/drivers/nvmem/ocotp.c
+index 62f510785be1..4ad5f25139e5 100644
+--- a/drivers/nvmem/ocotp.c
++++ b/drivers/nvmem/ocotp.c
+@@ -766,6 +766,9 @@ static __maybe_unused struct of_device_id imx_ocotp_dt_ids[] = {
+ 	}, {
+ 		.compatible = "fsl,imx8mq-ocotp",
+ 		.data = &imx8mq_ocotp_data,
++	}, {
++		.compatible = "fsl,imx8mm-ocotp",
++		.data = &imx8mq_ocotp_data,
+ 	}, {
+ 		.compatible = "fsl,vf610-ocotp",
+ 		.data = &vf610_ocotp_data,
 -- 
 2.20.1
 
