@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from zimbra2.kalray.eu ([92.103.151.219])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k5W1A-000436-WA
- for barebox@lists.infradead.org; Tue, 11 Aug 2020 15:16:50 +0000
+ id 1k5W19-000420-G9
+ for barebox@lists.infradead.org; Tue, 11 Aug 2020 15:16:49 +0000
 From: Jules Maselbas <jmaselbas@kalray.eu>
-Date: Tue, 11 Aug 2020 17:16:30 +0200
-Message-Id: <20200811151637.17705-7-jmaselbas@kalray.eu>
-In-Reply-To: <20200811151637.17705-1-jmaselbas@kalray.eu>
-References: <20200811151637.17705-1-jmaselbas@kalray.eu>
+Date: Tue, 11 Aug 2020 17:16:24 +0200
+Message-Id: <20200811151637.17705-1-jmaselbas@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,31 +19,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 06/13] usb: dwc2: host: Handle dma mapping errors
+Subject: [PATCH v4 00/13] usb: dwc2: Add host and gadget driver
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Jules Maselbas <jmaselbas@kalray.eu>, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
----
- drivers/usb/dwc2/host.c | 5 +++++
- 1 file changed, 5 insertions(+)
+This patchset add USB host and gadget support for the DWC2 controller.
 
-diff --git a/drivers/usb/dwc2/host.c b/drivers/usb/dwc2/host.c
-index ea2facbc8..ccc32ba04 100644
---- a/drivers/usb/dwc2/host.c
-+++ b/drivers/usb/dwc2/host.c
-@@ -157,6 +157,11 @@ static int transfer_chunk(struct dwc2 *dwc2, u8 hc,
- 	dma_addr = dma_map_single(dwc2->dev, buffer, xfer_len,
- 				  in ? DMA_FROM_DEVICE : DMA_TO_DEVICE);
- 
-+	if (dma_mapping_error(dwc2->dev, dma_addr)) {
-+		dwc2_err(dwc2, "Failed to map buffer@0x%p for dma\n", buffer);
-+		return -EFAULT;
-+	}
-+
- 	dwc2_dbg(dwc2, "chunk: pid=%d xfer_len=%u pkts=%u dma_addr=%pad\n",
- 		 *pid, xfer_len, num_packets, (void *)dma_addr);
- 
+The host driver is ported from the U-Boot driver (v2018.09-rc3), the
+memory map structure from U-Boot has been replaced with read/write
+functions and the hardware parameters structure are taken from Linux.
+
+The gadget driver is ported from Linux (5.1-rc6) and only support direct
+dma (not descriptor based) and does not support direct buffer although
+this could be nice to have.
+
+changes since v3:
+ - drop ulpi phy patch
+ - add dev->detect callback, will call usb_host_detect in host mode
+ - use '%pad' when printing dma_addr_t
+ - update commit messages to include version information of original driver
+changes since v2:
+ - rework timeout handling for networking
+ - use usb_register_otg_device
+ - rework gadget fifo allocation
+ - modified makefile/kconfig for host or gadget only
+
+---
+
+Jules Maselbas (13):
+  Revert "usb: Add dwc2 host driver"
+  usb: dwc2: Add host controller driver
+  usb: dwc2: host: Read dr_mode from device tree
+  usb: dwc2: Rework roothub interface
+  usb: dwc2: Rework timeout
+  usb: dwc2: host: Handle dma mapping errors
+  usb: dwc2: host: Dynamic fifo size support from Linux
+  usb: dwc2: host: Fix toggle reset
+  usb: dwc2: host: Rewrite dwc2_hc_init
+  usb: dwc2: Add function to flush tx fifo
+  usb: dwc2: Add structure for gadget driver
+  usb: dwc2: Add gadget driver
+  usb: dwc2: Use register_otg_device
+
+ drivers/usb/Kconfig       |    2 +
+ drivers/usb/Makefile      |    1 +
+ drivers/usb/dwc2/Kconfig  |   21 +
+ drivers/usb/dwc2/Makefile |    2 +
+ drivers/usb/dwc2/core.c   |  806 +++++++++++
+ drivers/usb/dwc2/core.h   |  562 ++++++++
+ drivers/usb/dwc2/dwc2.c   |  117 ++
+ drivers/usb/dwc2/dwc2.h   |   46 +
+ drivers/usb/dwc2/gadget.c | 2736 +++++++++++++++++++++++++++++++++++++
+ drivers/usb/dwc2/host.c   |  790 +++++++++++
+ drivers/usb/dwc2/regs.h   |  841 ++++++++++++
+ drivers/usb/dwc2/rhub.c   |  384 ++++++
+ drivers/usb/host/Kconfig  |    3 -
+ drivers/usb/host/Makefile |    1 -
+ drivers/usb/host/dwc2.c   | 1132 ---------------
+ drivers/usb/host/dwc2.h   |  778 -----------
+ 16 files changed, 6308 insertions(+), 1914 deletions(-)
+ create mode 100644 drivers/usb/dwc2/Kconfig
+ create mode 100644 drivers/usb/dwc2/Makefile
+ create mode 100644 drivers/usb/dwc2/core.c
+ create mode 100644 drivers/usb/dwc2/core.h
+ create mode 100644 drivers/usb/dwc2/dwc2.c
+ create mode 100644 drivers/usb/dwc2/dwc2.h
+ create mode 100644 drivers/usb/dwc2/gadget.c
+ create mode 100644 drivers/usb/dwc2/host.c
+ create mode 100644 drivers/usb/dwc2/regs.h
+ create mode 100644 drivers/usb/dwc2/rhub.c
+ delete mode 100644 drivers/usb/host/dwc2.c
+ delete mode 100644 drivers/usb/host/dwc2.h
+
 -- 
 2.17.1
 
