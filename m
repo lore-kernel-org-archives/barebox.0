@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from zimbra2.kalray.eu ([92.103.151.219])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k5W19-000429-Ui
- for barebox@lists.infradead.org; Tue, 11 Aug 2020 15:16:51 +0000
+ id 1k5W1C-00048W-4E
+ for barebox@lists.infradead.org; Tue, 11 Aug 2020 15:16:54 +0000
 From: Jules Maselbas <jmaselbas@kalray.eu>
-Date: Tue, 11 Aug 2020 17:16:27 +0200
-Message-Id: <20200811151637.17705-4-jmaselbas@kalray.eu>
+Date: Tue, 11 Aug 2020 17:16:31 +0200
+Message-Id: <20200811151637.17705-8-jmaselbas@kalray.eu>
 In-Reply-To: <20200811151637.17705-1-jmaselbas@kalray.eu>
 References: <20200811151637.17705-1-jmaselbas@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
@@ -21,155 +21,204 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 03/13] usb: dwc2: host: Read dr_mode from device tree
+Subject: [PATCH v4 07/13] usb: dwc2: host: Dynamic fifo size support from Linux
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Jules Maselbas <jmaselbas@kalray.eu>, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
 Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
 ---
- drivers/usb/dwc2/core.c | 95 +++++++++++++++++++++++++++++++++++++++++
- drivers/usb/dwc2/dwc2.c |  2 +
- drivers/usb/dwc2/dwc2.h |  1 +
- 3 files changed, 98 insertions(+)
+ drivers/usb/dwc2/host.c | 146 ++++++++++++++++++++++++++++++++++------
+ drivers/usb/dwc2/regs.h |   8 ---
+ 2 files changed, 124 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/usb/dwc2/core.c b/drivers/usb/dwc2/core.c
-index 0046e955f..6e8d30c22 100644
---- a/drivers/usb/dwc2/core.c
-+++ b/drivers/usb/dwc2/core.c
-@@ -1,6 +1,33 @@
- // SPDX-License-Identifier: GPL-2.0+
- #include "dwc2.h"
- 
-+/* Returns the controller's GHWCFG2.OTG_MODE. */
-+static unsigned int dwc2_op_mode(struct dwc2 *dwc2)
-+{
-+	u32 ghwcfg2 = dwc2_readl(dwc2, GHWCFG2);
-+
-+	return (ghwcfg2 & GHWCFG2_OP_MODE_MASK) >>
-+		GHWCFG2_OP_MODE_SHIFT;
-+}
-+
-+/* Returns true if the controller is host-only. */
-+static bool dwc2_hw_is_host(struct dwc2 *dwc2)
-+{
-+	unsigned int op_mode = dwc2_op_mode(dwc2);
-+
-+	return (op_mode == GHWCFG2_OP_MODE_SRP_CAPABLE_HOST) ||
-+		(op_mode == GHWCFG2_OP_MODE_NO_SRP_CAPABLE_HOST);
-+}
-+
-+/* Returns true if the controller is device-only. */
-+static bool dwc2_hw_is_device(struct dwc2 *dwc2)
-+{
-+	unsigned int op_mode = dwc2_op_mode(dwc2);
-+
-+	return (op_mode == GHWCFG2_OP_MODE_SRP_CAPABLE_DEVICE) ||
-+		(op_mode == GHWCFG2_OP_MODE_NO_SRP_CAPABLE_DEVICE);
-+}
-+
- void dwc2_set_param_otg_cap(struct dwc2 *dwc2)
- {
- 	u8 val;
-@@ -493,6 +520,74 @@ void dwc2_gusbcfg_init(struct dwc2 *dwc2)
- 	dwc2_writel(dwc2, usbcfg, GUSBCFG);
+diff --git a/drivers/usb/dwc2/host.c b/drivers/usb/dwc2/host.c
+index ccc32ba04..8c116c5df 100644
+--- a/drivers/usb/dwc2/host.c
++++ b/drivers/usb/dwc2/host.c
+@@ -453,6 +453,129 @@ static int dwc2_submit_int_msg(struct usb_device *udev, unsigned long pipe,
+ 	}
  }
  
-+/*
-+ * Check the dr_mode against the module configuration and hardware
-+ * capabilities.
++/**
++ * dwc2_calculate_dynamic_fifo() - Calculates the default fifo size
++ * For system that have a total fifo depth that is smaller than the default
++ * RX + TX fifo size.
 + *
-+ * The hardware, module, and dr_mode, can each be set to host, device,
-+ * or otg. Check that all these values are compatible and adjust the
-+ * value of dr_mode if possible.
-+ *
-+ *                      actual
-+ *    HW  MOD dr_mode   dr_mode
-+ *  ------------------------------
-+ *   HST  HST  any    :  HST
-+ *   HST  DEV  any    :  ---
-+ *   HST  OTG  any    :  HST
-+ *
-+ *   DEV  HST  any    :  ---
-+ *   DEV  DEV  any    :  DEV
-+ *   DEV  OTG  any    :  DEV
-+ *
-+ *   OTG  HST  any    :  HST
-+ *   OTG  DEV  any    :  DEV
-+ *   OTG  OTG  any    :  dr_mode
++ * @dwc2: Programming view of DWC_otg controller
 + */
-+int dwc2_get_dr_mode(struct dwc2 *dwc2)
++static void dwc2_calculate_dynamic_fifo(struct dwc2 *dwc2)
 +{
-+	enum usb_dr_mode mode;
++	struct dwc2_core_params *params = &dwc2->params;
++	struct dwc2_hw_params *hw = &dwc2->hw_params;
++	u32 rxfsiz, nptxfsiz, ptxfsiz, total_fifo_size;
 +
-+	mode = of_usb_get_dr_mode(dwc2->dev->device_node, NULL);
-+	dwc2->dr_mode = mode;
++	total_fifo_size = hw->total_fifo_size;
++	rxfsiz = params->host_rx_fifo_size;
++	nptxfsiz = params->host_nperio_tx_fifo_size;
++	ptxfsiz = params->host_perio_tx_fifo_size;
 +
-+	if (dwc2_hw_is_device(dwc2)) {
-+		dwc2_dbg(dwc2, "Controller is device only\n");
-+		if (IS_ENABLED(CONFIG_USB_DWC2_HOST)) {
-+			dwc2_err(dwc2,
-+				"Controller does not support host mode.\n");
-+			return -EINVAL;
-+		}
-+		mode = USB_DR_MODE_PERIPHERAL;
-+	} else if (dwc2_hw_is_host(dwc2)) {
-+		dwc2_dbg(dwc2, "Controller is host only\n");
-+		if (IS_ENABLED(CONFIG_USB_DWC2_GADGET)) {
-+			dwc2_err(dwc2,
-+				"Controller does not support device mode.\n");
-+			return -EINVAL;
-+		}
-+		mode = USB_DR_MODE_HOST;
-+	} else {
-+		dwc2_dbg(dwc2, "Controller is otg\n");
-+		if (IS_ENABLED(CONFIG_USB_DWC2_HOST) &&
-+		    IS_ENABLED(CONFIG_USB_DWC2_GADGET))
-+			mode = dwc2->dr_mode;
-+		else if (IS_ENABLED(CONFIG_USB_DWC2_HOST))
-+			mode = USB_DR_MODE_HOST;
-+		else if (IS_ENABLED(CONFIG_USB_DWC2_GADGET))
-+			mode = USB_DR_MODE_PERIPHERAL;
++	/*
++	 * Will use Method 2 defined in the DWC2 spec: minimum FIFO depth
++	 * allocation with support for high bandwidth endpoints. Synopsys
++	 * defines MPS(Max Packet size) for a periodic EP=1024, and for
++	 * non-periodic as 512.
++	 */
++	if (total_fifo_size < (rxfsiz + nptxfsiz + ptxfsiz)) {
++		/*
++		 * For Buffer DMA mode/Scatter Gather DMA mode
++		 * 2 * ((Largest Packet size / 4) + 1 + 1) + n
++		 * with n = number of host channel.
++		 * 2 * ((1024/4) + 2) = 516
++		 */
++		rxfsiz = 516 + hw->host_channels;
++
++		/*
++		 * min non-periodic tx fifo depth
++		 * 2 * (largest non-periodic USB packet used / 4)
++		 * 2 * (512/4) = 256
++		 */
++		nptxfsiz = 256;
++
++		/*
++		 * min periodic tx fifo depth
++		 * (largest packet size*MC)/4
++		 * (1024 * 3)/4 = 768
++		 */
++		ptxfsiz = 768;
 +	}
 +
-+	if (mode != dwc2->dr_mode) {
-+		dwc2_warn(dwc2,
-+			 "Configuration mismatch. dr_mode forced to %s\n",
-+			mode == USB_DR_MODE_HOST ? "host" : "device");
++	params->host_rx_fifo_size = rxfsiz;
++	params->host_nperio_tx_fifo_size = nptxfsiz;
++	params->host_perio_tx_fifo_size = ptxfsiz;
 +
-+		dwc2->dr_mode = mode;
++	/*
++	 * If the summation of RX, NPTX and PTX fifo sizes is still
++	 * bigger than the total_fifo_size, then we have a problem.
++	 *
++	 * We won't be able to allocate as many endpoints. Right now,
++	 * we're just printing an error message, but ideally this FIFO
++	 * allocation algorithm would be improved in the future.
++	 *
++	 * FIXME improve this FIFO allocation algorithm.
++	 */
++	if (unlikely(total_fifo_size < (rxfsiz + nptxfsiz + ptxfsiz)))
++		dwc2_err(dwc2, "invalid fifo sizes\n");
++}
++
++static void dwc2_config_fifos(struct dwc2 *dwc2)
++{
++	struct dwc2_core_params *params = &dwc2->params;
++	u32 nptxfsiz, hptxfsiz, dfifocfg, grxfsiz;
++
++	if (!params->enable_dynamic_fifo)
++		return;
++
++	dwc2_calculate_dynamic_fifo(dwc2);
++
++	/* Rx FIFO */
++	grxfsiz = dwc2_readl(dwc2, GRXFSIZ);
++	dwc2_dbg(dwc2, "initial grxfsiz=%08x\n", grxfsiz);
++	grxfsiz &= ~GRXFSIZ_DEPTH_MASK;
++	grxfsiz |= params->host_rx_fifo_size <<
++		   GRXFSIZ_DEPTH_SHIFT & GRXFSIZ_DEPTH_MASK;
++	dwc2_writel(dwc2, grxfsiz, GRXFSIZ);
++	dwc2_dbg(dwc2, "new grxfsiz=%08x\n", dwc2_readl(dwc2, GRXFSIZ));
++
++	/* Non-periodic Tx FIFO */
++	dwc2_dbg(dwc2, "initial gnptxfsiz=%08x\n", dwc2_readl(dwc2, GNPTXFSIZ));
++	nptxfsiz = params->host_nperio_tx_fifo_size <<
++		   FIFOSIZE_DEPTH_SHIFT & FIFOSIZE_DEPTH_MASK;
++	nptxfsiz |= params->host_rx_fifo_size <<
++		    FIFOSIZE_STARTADDR_SHIFT & FIFOSIZE_STARTADDR_MASK;
++	dwc2_writel(dwc2, nptxfsiz, GNPTXFSIZ);
++	dwc2_dbg(dwc2, "new gnptxfsiz=%08x\n", dwc2_readl(dwc2, GNPTXFSIZ));
++
++	/* Periodic Tx FIFO */
++	dwc2_dbg(dwc2, "initial hptxfsiz=%08x\n", dwc2_readl(dwc2, HPTXFSIZ));
++	hptxfsiz = params->host_perio_tx_fifo_size <<
++		   FIFOSIZE_DEPTH_SHIFT & FIFOSIZE_DEPTH_MASK;
++	hptxfsiz |= (params->host_rx_fifo_size +
++		     params->host_nperio_tx_fifo_size) <<
++		    FIFOSIZE_STARTADDR_SHIFT & FIFOSIZE_STARTADDR_MASK;
++	dwc2_writel(dwc2, hptxfsiz, HPTXFSIZ);
++	dwc2_dbg(dwc2, "new hptxfsiz=%08x\n", dwc2_readl(dwc2, HPTXFSIZ));
++
++	if (dwc2->params.en_multiple_tx_fifo &&
++	    dwc2->hw_params.snpsid >= DWC2_CORE_REV_2_91a) {
++		/*
++		 * This feature was implemented in 2.91a version
++		 * Global DFIFOCFG calculation for Host mode -
++		 * include RxFIFO, NPTXFIFO and HPTXFIFO
++		 */
++		dfifocfg = dwc2_readl(dwc2, GDFIFOCFG);
++		dfifocfg &= ~GDFIFOCFG_EPINFOBASE_MASK;
++		dfifocfg |= (params->host_rx_fifo_size +
++			     params->host_nperio_tx_fifo_size +
++			     params->host_perio_tx_fifo_size) <<
++			    GDFIFOCFG_EPINFOBASE_SHIFT &
++			    GDFIFOCFG_EPINFOBASE_MASK;
++		dwc2_writel(dwc2, dfifocfg, GDFIFOCFG);
++		dwc2_dbg(dwc2, "new dfifocfg=%08x\n", dfifocfg);
 +	}
-+
-+	return 0;
 +}
 +
  /*
-  * Do core a soft reset of the core.  Be careful with this because it
-  * resets all the internal state machines of the core.
-diff --git a/drivers/usb/dwc2/dwc2.c b/drivers/usb/dwc2/dwc2.c
-index a2f68d250..5e1f73a8a 100644
---- a/drivers/usb/dwc2/dwc2.c
-+++ b/drivers/usb/dwc2/dwc2.c
-@@ -57,6 +57,8 @@ static int dwc2_probe(struct device_d *dev)
- 	/* Detect config values from hardware */
- 	dwc2_get_hwparams(dwc2);
+  * This function initializes the DWC2 controller registers for
+  * host mode.
+@@ -468,8 +591,6 @@ static int dwc2_submit_int_msg(struct usb_device *udev, unsigned long pipe,
+ static void dwc2_core_host_init(struct device_d *dev,
+ 				   struct dwc2 *dwc2)
+ {
+-	uint32_t nptxfifosize = 0;
+-	uint32_t ptxfifosize = 0;
+ 	uint32_t hcchar, hcfg, hprt0, hotgctl, usbcfg;
+ 	int i, ret, num_channels;
  
-+	dwc2_get_dr_mode(dwc2);
-+
- 	dwc2_set_default_params(dwc2);
+@@ -517,26 +638,7 @@ static void dwc2_core_host_init(struct device_d *dev,
+ 		}
+ 	}
  
- 	dma_set_mask(dev, DMA_BIT_MASK(32));
-diff --git a/drivers/usb/dwc2/dwc2.h b/drivers/usb/dwc2/dwc2.h
-index 35c0d1415..d18b10cbf 100644
---- a/drivers/usb/dwc2/dwc2.h
-+++ b/drivers/usb/dwc2/dwc2.h
-@@ -21,6 +21,7 @@ void dwc2_flush_all_fifo(struct dwc2 *dwc2);
- int dwc2_phy_init(struct dwc2 *dwc2, bool select_phy);
- int dwc2_gahbcfg_init(struct dwc2 *dwc2);
- void dwc2_gusbcfg_init(struct dwc2 *dwc2);
-+int dwc2_get_dr_mode(struct dwc2 *dwc2);
+-	/* Configure data FIFO sizes */
+-	if (dwc2_readl(dwc2, GHWCFG2) & GHWCFG2_DYNAMIC_FIFO) {
+-		/* Rx FIFO */
+-		dwc2_writel(dwc2, CONFIG_DWC2_HOST_RX_FIFO_SIZE, GRXFSIZ);
+-
+-		/* Non-periodic Tx FIFO */
+-		nptxfifosize |= CONFIG_DWC2_HOST_NPERIO_TX_FIFO_SIZE <<
+-				FIFOSIZE_DEPTH_SHIFT;
+-		nptxfifosize |= CONFIG_DWC2_HOST_RX_FIFO_SIZE <<
+-				FIFOSIZE_STARTADDR_SHIFT;
+-		dwc2_writel(dwc2, nptxfifosize, GNPTXFSIZ);
+-
+-		/* Periodic Tx FIFO */
+-		ptxfifosize |= CONFIG_DWC2_HOST_PERIO_TX_FIFO_SIZE <<
+-				FIFOSIZE_DEPTH_SHIFT;
+-		ptxfifosize |= (CONFIG_DWC2_HOST_RX_FIFO_SIZE +
+-				CONFIG_DWC2_HOST_NPERIO_TX_FIFO_SIZE) <<
+-				FIFOSIZE_STARTADDR_SHIFT;
+-		dwc2_writel(dwc2, ptxfifosize, HPTXFSIZ);
+-	}
++	dwc2_config_fifos(dwc2);
  
- int dwc2_core_reset(struct dwc2 *dwc2);
- void dwc2_core_init(struct dwc2 *dwc2);
+ 	/* Clear Host Set HNP Enable in the OTG Control Register */
+ 	hotgctl = dwc2_readl(dwc2, GOTGCTL);
+diff --git a/drivers/usb/dwc2/regs.h b/drivers/usb/dwc2/regs.h
+index 2170a0eaa..e842c2c2e 100644
+--- a/drivers/usb/dwc2/regs.h
++++ b/drivers/usb/dwc2/regs.h
+@@ -837,12 +837,4 @@ struct dwc2_dma_desc {
+ #define DWC2_FS_IOT_ID		0x55310000
+ #define DWC2_HS_IOT_ID		0x55320000
+ 
+-/* ==== u-boot ==== */
+-
+-/* Default driver configuration */
+-#define CONFIG_DWC2_MAX_CHANNELS		DWC2_MAX_EPS_CHANNELS	/* Max # of EPs */
+-#define CONFIG_DWC2_HOST_RX_FIFO_SIZE		(516 + CONFIG_DWC2_MAX_CHANNELS)
+-#define CONFIG_DWC2_HOST_NPERIO_TX_FIFO_SIZE	0x100	/* nPeriodic TX FIFO */
+-#define CONFIG_DWC2_HOST_PERIO_TX_FIFO_SIZE	0x200	/* Periodic TX FIFO */
+-
+ #endif	/* __DWC2_H__ */
 -- 
 2.17.1
 
