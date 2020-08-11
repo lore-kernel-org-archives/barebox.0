@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from zimbra2.kalray.eu ([92.103.151.219])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k5Qcx-0007v8-JG
- for barebox@lists.infradead.org; Tue, 11 Aug 2020 09:31:29 +0000
-Date: Tue, 11 Aug 2020 11:31:25 +0200
-From: Jules Maselbas <jmaselbas@kalray.eu>
-Message-ID: <20200811093125.5dk47sjabozf764x@tellis.lin.mbt.kalray.eu>
-References: <20200721120600.15114-1-jmaselbas@kalray.eu>
- <20200721120600.15114-15-jmaselbas@kalray.eu>
- <20200810203412.GD9475@pengutronix.de>
+ id 1k5Qoe-00015c-Pi
+ for barebox@lists.infradead.org; Tue, 11 Aug 2020 09:43:34 +0000
+Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
+ helo=dude02.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <l.stach@pengutronix.de>) id 1k5Qoc-0006AM-DX
+ for barebox@lists.infradead.org; Tue, 11 Aug 2020 11:43:30 +0200
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Tue, 11 Aug 2020 11:43:29 +0200
+Message-Id: <20200811094330.4754-3-l.stach@pengutronix.de>
+In-Reply-To: <20200811094330.4754-1-l.stach@pengutronix.de>
+References: <20200811094330.4754-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200810203412.GD9475@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,31 +26,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 14/14] usb: dwc2: Add ulpi phy function
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v2 3/4] ARM: nxp-imx8mm-evk: always set up UART
+To: barebox@lists.infradead.org
 
-On Mon, Aug 10, 2020 at 10:34:12PM +0200, Sascha Hauer wrote:
-> On Tue, Jul 21, 2020 at 02:06:00PM +0200, Jules Maselbas wrote:
-> > Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
-> > ---
-> >  drivers/usb/dwc2/core.c | 33 +++++++++++++++++++++++++++++++++
-> >  drivers/usb/dwc2/dwc2.h |  3 +++
-> >  2 files changed, 36 insertions(+)
-> 
-> The functions introduced in this patch are unused, it seems there are
-> bits missing for full ULPI support. Can we delay this patch until we
-> have users of these functions?
-Yes sure we can delay this patch.
+When the TF-A is configured to have some output on the UART it does not
+set up the UART on its own, but just expects a pre-existing configuration.
+If Barebox did not set up the UART in the !DEBUG_LL case, TF-A will just
+hang without any user accessible debug output, which is a very non-obvious
+failure, so better be safe and always set up the UART in case TF-A wants
+to use it.
 
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+ arch/arm/boards/nxp-imx8mm-evk/lowlevel.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c
+index cd1f7d168bc6..082aefb8c1c5 100644
+--- a/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c
++++ b/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c
+@@ -32,9 +32,12 @@ static void setup_uart(void)
+ 
+ 	imx8mm_setup_pad(IMX8MM_PAD_UART2_TXD_UART2_TX | UART_PAD_CTRL);
+ 
+-	imx8m_uart_setup_ll();
++	imx8mq_uart_setup((void *)MX8M_UART2_BASE_ADDR);
+ 
+-	putc_ll('>');
++	if (IS_ENABLED(CONFIG_DEBUG_LL)) {
++		imx8m_uart_setup_ll();
++		putc_ll('>');
++	}
+ }
+ 
+ static void pmic_reg_write(void *i2c, int reg, uint8_t val)
+@@ -157,8 +160,7 @@ static void start_atf(void)
+  */
+ static __noreturn noinline void nxp_imx8mm_evk_start(void)
+ {
+-	if (IS_ENABLED(CONFIG_DEBUG_LL))
+-		setup_uart();
++	setup_uart();
+ 
+ 	start_atf();
+ 
+-- 
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
