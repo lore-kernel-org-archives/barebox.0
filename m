@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mailout07.rmx.de ([94.199.90.95])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k5mFC-00042k-I3
- for barebox@lists.infradead.org; Wed, 12 Aug 2020 08:36:24 +0000
-From: Christian Eggers <ceggers@arri.de>
-Date: Wed, 12 Aug 2020 10:35:59 +0200
-Message-ID: <20200812083559.18189-1-ceggers@arri.de>
-In-Reply-To: <20200811063325.GH9475@pengutronix.de>
-References: <20200811063325.GH9475@pengutronix.de>
+ id 1k5mY6-0007VR-RW
+ for barebox@lists.infradead.org; Wed, 12 Aug 2020 08:55:55 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Wed, 12 Aug 2020 10:55:52 +0200
+Message-Id: <20200812085552.12688-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,95 +19,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Revert "usb: host: ehci: Use to USBSTS to wait for transfer
- completion"
-To: s.hauer@pengutronix.de
-Cc: barebox@lists.infradead.org, ceggers@arri.de
+Subject: [PATCH fixup v1] of: base: register DT root as device
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-Since 6044d6c08e, some USB mass storage devices (in my case some USB
-memory sticks and one SD card reader) are not detected anymore. Waiting
-once for USBSTS::USBINT is not sufficient as it takes multiple USBINT
-events until QT_TOKEN_STATUS_ACTIVE is cleared.
+A usual board file contains at least one of_machine_is_compatible().
+Some of the have a rather long list with complicated version logic.
 
-Fixes: 6044d6c08e ("usb: host: ehci: Use to USBSTS to wait for transfer completion")
-Signed-off-by: Christian Eggers <ceggers@arri.de>
+To avoid own implementation for driver management, register the root node
+of device tree as platform device. So, the main platform bus can attach
+proper board driver. After this patch a typical board.c file can reuse
+existing driver infrastructure.
+
+After this patch, you will be able to see all registered board drivers
+with drvinfo as fallow:
+...
+board-embest-riot
+board-protonic-imx6
+    dt-root.of
+...
+
+With devinfo, you'll be able to get some board specific information,
+if this is implemented:
+barebox@Protonic PRTI6Q board:/ devinfo dt-root.of
+Driver: board-protonic-imx6
+Bus: platform
+Parameters:
+  boardid: 0 (type: uint32)
+  boardrev: 1 (type: uint32)
+
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
-On Tue, Aug 11, 2020, Sascha Hauer wrote:
-> I am fine with reverting 6044d6c08e, but let's give Andrey some time to
-> react before doing this.
+ drivers/of/base.c     | 2 ++
+ drivers/of/platform.c | 5 +++++
+ 2 files changed, 7 insertions(+)
 
-I'll be on holiday next week. So it send it now before it gets lost.
-
- drivers/usb/host/ehci-hcd.c | 21 ++++++++++++++-------
- drivers/usb/host/ehci.h     |  1 -
- 2 files changed, 14 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index ead63b2c9f..38999927c5 100644
---- a/drivers/usb/host/ehci-hcd.c
-+++ b/drivers/usb/host/ehci-hcd.c
-@@ -308,12 +308,14 @@ ehci_submit_async(struct usb_device *dev, unsigned long pipe, void *buffer,
- 	dma_addr_t buffer_dma, req_dma;
- 	struct QH *qh = &ehci->qh_list[1];
- 	struct qTD *td;
-+	volatile struct qTD *vtd;
- 	uint32_t *tdp;
- 	uint32_t endpt, token, usbsts;
- 	uint32_t status;
- 	uint32_t toggle;
- 	bool c;
- 	int ret;
-+	uint64_t start, timeout_val;
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 4c633bcd49..6f6cdc9379 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -2149,6 +2149,8 @@ int of_probe(void)
+ 	if (firmware)
+ 		of_platform_populate(firmware, NULL, NULL);
  
++	of_platform_device_create(root_node, NULL);
++
+ 	of_clk_init(root_node, NULL);
+ 	of_platform_populate(root_node, of_default_bus_match_table, NULL);
  
- 	dev_dbg(ehci->dev, "pipe=%lx, buffer=%p, length=%d, req=%p\n", pipe,
-@@ -442,13 +444,18 @@ ehci_submit_async(struct usb_device *dev, unsigned long pipe, void *buffer,
- 		return ret;
- 	}
+diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+index ca84cede23..767beebe06 100644
+--- a/drivers/of/platform.c
++++ b/drivers/of/platform.c
+@@ -50,6 +50,11 @@ static void of_device_make_bus_id(struct device_d *dev)
+ 	const __be32 *reg;
+ 	u64 addr;
  
--	ret = handshake(&ehci->hcor->or_usbsts, STS_USBINT, STS_USBINT,
--			timeout_ms * 1000);
--	if (ret < 0) {
--		ehci_enable_async_schedule(ehci, false);
--		ehci_writel(&qh->qt_token, 0);
--		return -ETIMEDOUT;
--	}
-+	/* Wait for TDs to be processed. */
-+	timeout_val = timeout_ms * MSECOND;
-+	start = get_time_ns();
-+	vtd = td;
-+	do {
-+		token = hc32_to_cpu(vtd->qt_token);
-+		if (is_timeout_non_interruptible(start, timeout_val)) {
-+			ehci_enable_async_schedule(ehci, false);
-+			ehci_writel(&qh->qt_token, 0);
-+			return -ETIMEDOUT;
-+		}
-+	} while (token & QT_TOKEN_STATUS_ACTIVE);
- 
- 	if (req)
- 		dma_unmap_single(ehci->dev, req_dma, sizeof(*req),
-diff --git a/drivers/usb/host/ehci.h b/drivers/usb/host/ehci.h
-index e88e37e14c..4b9092d1fe 100644
---- a/drivers/usb/host/ehci.h
-+++ b/drivers/usb/host/ehci.h
-@@ -53,7 +53,6 @@ struct ehci_hcor {
- #define	STD_ASS		(1 << 15)
- #define STS_PSS         (1 << 14)
- #define STS_HALT	(1 << 12)
--#define STS_USBINT	BIT(0)
- 	uint32_t or_usbintr;
- 	uint32_t or_frindex;
- 	uint32_t or_ctrldssegment;
++	if (!node->parent) {
++		dev_set_name(dev, "dt-root.of");
++		return;
++	}
++
+ 	/* Construct the name, using parent nodes if necessary to ensure uniqueness */
+ 	while (node->parent) {
+ 		/*
 -- 
-Christian Eggers
-Embedded software developer
-
-Arnold & Richter Cine Technik GmbH & Co. Betriebs KG
-Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRA 57918
-Persoenlich haftender Gesellschafter: Arnold & Richter Cine Technik GmbH
-Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRB 54477
-Geschaeftsfuehrer: Dr. Michael Neuhaeuser; Stephan Schenk; Walter Trauninger; Markus Zeiler
+2.28.0
 
 
 _______________________________________________
