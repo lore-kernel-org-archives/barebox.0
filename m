@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([2a01:4f8:c17:c88::2])
+Received: from mailout07.rmx.de ([94.199.90.95])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k5lep-0006Vy-8J
- for barebox@lists.infradead.org; Wed, 12 Aug 2020 07:58:49 +0000
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Wed, 12 Aug 2020 09:58:34 +0200
-Message-Id: <20200812075833.22334-1-r.czerwinski@pengutronix.de>
+ id 1k5mFC-00042k-I3
+ for barebox@lists.infradead.org; Wed, 12 Aug 2020 08:36:24 +0000
+From: Christian Eggers <ceggers@arri.de>
+Date: Wed, 12 Aug 2020 10:35:59 +0200
+Message-ID: <20200812083559.18189-1-ceggers@arri.de>
+In-Reply-To: <20200811063325.GH9475@pengutronix.de>
+References: <20200811063325.GH9475@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,187 +21,95 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: Layerscape: TQMLS1046a: remove ddr calc code
-To: barebox@lists.infradead.org
-Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Subject: [PATCH] Revert "usb: host: ehci: Use to USBSTS to wait for transfer
+ completion"
+To: s.hauer@pengutronix.de
+Cc: barebox@lists.infradead.org, ceggers@arri.de
 
-The Layerscape DDR code has two entry points, one which calculates the
-DDRC register values from the DDR timings and one which directly sets
-precomputed values. The TQMLS1046a has soldered RAM and does not require
-the dynamic calculation code which currently isn't used. Remove it.
+Since 6044d6c08e, some USB mass storage devices (in my case some USB
+memory sticks and one SD card reader) are not detected anymore. Waiting
+once for USBSTS::USBINT is not sufficient as it takes multiple USBINT
+events until QT_TOKEN_STATUS_ACTIVE is cleared.
 
-Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Fixes: 6044d6c08e ("usb: host: ehci: Use to USBSTS to wait for transfer completion")
+Signed-off-by: Christian Eggers <ceggers@arri.de>
 ---
- arch/arm/boards/tqmls1046a/lowlevel.c | 145 --------------------------
- 1 file changed, 145 deletions(-)
+On Tue, Aug 11, 2020, Sascha Hauer wrote:
+> I am fine with reverting 6044d6c08e, but let's give Andrey some time to
+> react before doing this.
 
-diff --git a/arch/arm/boards/tqmls1046a/lowlevel.c b/arch/arm/boards/tqmls1046a/lowlevel.c
-index f79f491ecc..99dcf1eff7 100644
---- a/arch/arm/boards/tqmls1046a/lowlevel.c
-+++ b/arch/arm/boards/tqmls1046a/lowlevel.c
-@@ -14,152 +14,8 @@
- #include <mach/xload.h>
- #include <mach/layerscape.h>
+I'll be on holiday next week. So it send it now before it gets lost.
+
+ drivers/usb/host/ehci-hcd.c | 21 ++++++++++++++-------
+ drivers/usb/host/ehci.h     |  1 -
+ 2 files changed, 14 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index ead63b2c9f..38999927c5 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -308,12 +308,14 @@ ehci_submit_async(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 	dma_addr_t buffer_dma, req_dma;
+ 	struct QH *qh = &ehci->qh_list[1];
+ 	struct qTD *td;
++	volatile struct qTD *vtd;
+ 	uint32_t *tdp;
+ 	uint32_t endpt, token, usbsts;
+ 	uint32_t status;
+ 	uint32_t toggle;
+ 	bool c;
+ 	int ret;
++	uint64_t start, timeout_val;
  
--struct board_specific_parameters {
--	u32 n_ranks;
--	u32 datarate_mhz_high;
--	u32 rank_gb;
--	u32 clk_adjust;
--	u32 wrlvl_start;
--	u32 wrlvl_ctl_2;
--	u32 wrlvl_ctl_3;
--};
--
--/*
-- * These tables contain all valid speeds we want to override with board
-- * specific parameters. datarate_mhz_high values need to be in ascending order
-- * for each n_ranks group.
-- */
--static const struct board_specific_parameters udimm0[] = {
--	/*
--	 * memory controller 0
--	 *   num|  hi| rank|  clk| wrlvl |   wrlvl   |  wrlvl | cpo  |wrdata|2T
--	 * ranks| mhz| GB  |adjst| start |   ctl2    |  ctl3  |      |delay |
--	 */
--	{1,  2100, 0, 8,     9, 0x09080806, 0x07060606,},
--	{}
--};
--
--static const struct board_specific_parameters *udimms[] = {
--	udimm0,
--};
--
--static void ddr_board_options(memctl_options_t *popts,
--			      struct dimm_params *pdimm,
--			      struct fsl_ddr_controller *c)
--{
--	const struct board_specific_parameters *pbsp, *pbsp_highest = NULL;
--	unsigned long ddr_freq;
--
--	if (!pdimm->n_ranks)
--		return;
--
--	pbsp = udimms[0];
--
--	/*
--	 * Get clk_adjust, wrlvl_start, wrlvl_ctl, according to the board ddr
--	 * freqency and n_banks specified in board_specific_parameters table.
--	 */
--	ddr_freq = c->ddr_freq / 1000000;
--	while (pbsp->datarate_mhz_high) {
--		if (pbsp->n_ranks == pdimm->n_ranks) {
--			if (ddr_freq <= pbsp->datarate_mhz_high) {
--				popts->clk_adjust = pbsp->clk_adjust;
--				popts->wrlvl_start = pbsp->wrlvl_start;
--				popts->wrlvl_ctl_2 = pbsp->wrlvl_ctl_2;
--				popts->wrlvl_ctl_3 = pbsp->wrlvl_ctl_3;
--				goto found;
--			}
--			pbsp_highest = pbsp;
--		}
--		pbsp++;
+ 
+ 	dev_dbg(ehci->dev, "pipe=%lx, buffer=%p, length=%d, req=%p\n", pipe,
+@@ -442,13 +444,18 @@ ehci_submit_async(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 		return ret;
+ 	}
+ 
+-	ret = handshake(&ehci->hcor->or_usbsts, STS_USBINT, STS_USBINT,
+-			timeout_ms * 1000);
+-	if (ret < 0) {
+-		ehci_enable_async_schedule(ehci, false);
+-		ehci_writel(&qh->qt_token, 0);
+-		return -ETIMEDOUT;
 -	}
--
--	if (pbsp_highest) {
--		printf("Error: board specific timing not found for %lu MT/s\n",
--		       ddr_freq);
--		printf("Trying to use the highest speed (%u) parameters\n",
--		       pbsp_highest->datarate_mhz_high);
--		popts->clk_adjust = pbsp_highest->clk_adjust;
--		popts->wrlvl_start = pbsp_highest->wrlvl_start;
--		popts->wrlvl_ctl_2 = pbsp->wrlvl_ctl_2;
--		popts->wrlvl_ctl_3 = pbsp->wrlvl_ctl_3;
--	} else {
--		panic("DIMM is not supported by this board");
--	}
--found:
--	debug("Found timing match: n_ranks %d, data rate %d, rank_gb %d\n",
--	      pbsp->n_ranks, pbsp->datarate_mhz_high, pbsp->rank_gb);
--
--	popts->data_bus_width = 0;	/* 64-bit data bus */
--	popts->bstopre = 0;		/* enable auto precharge */
--
--	/*
--	 * Factors to consider for half-strength driver enable:
--	 *	- number of DIMMs installed
--	 */
--	popts->half_strength_driver_enable = 0;
--	/*
--	 * Write leveling override
--	 */
--	popts->wrlvl_override = 1;
--	popts->wrlvl_sample = 0xf;
--
--	/*
--	 * Rtt and Rtt_WR override
--	 */
--	popts->rtt_override = 0;
--
--	/* Enable ZQ calibration */
--	popts->zq_en = 1;
--
--	popts->ddr_cdr1 = DDR_CDR1_DHC_EN | DDR_CDR1_ODT(DDR4_CDR_ODT_60ohm);
--	popts->ddr_cdr2 = DDR_CDR2_ODT(DDR4_CDR_ODT_60ohm) |
--			  DDR_CDR2_VREF_TRAIN_EN | DDR_CDR2_VREF_RANGE_2;
--
--	/* optimize cpo for erratum A-009942 */
--	popts->cpo_sample = 0x48;
--}
--
--static struct dimm_params dimm_params[] = {
--	{
--		.n_ranks = 1,
--		.rank_density = 2147483648u,
--		.capacity = 2147483648u,
--		.primary_sdram_width = 64,
--		.ec_sdram_width = 8,
--		.registered_dimm = 0,
--		.mirrored_dimm = 0,
--		.n_row_addr = 15,
--		.n_col_addr = 10,
--		.bank_addr_bits = 2,
--		.bank_group_bits = 0,
--		.edc_config = 2,
--		.burst_lengths_bitmask = 0x0c,
--
--		.tckmin_x_ps = 833,
--		.tckmax_ps = 1900,
--		.caslat_x = 0x000DFA00, //
--		.taa_ps = 13320,
--		.trcd_ps = 13320,
--		.trp_ps = 13320,
--		.tras_ps = 32000,
--		.trc_ps = 45320,
--		.trfc1_ps = 260000,
--		.trfc2_ps = 160000,
--		.trfc4_ps = 110000,
--		.tfaw_ps = 21000,
--		.trrds_ps = 3300,
--		.trrdl_ps = 4900,
--		.tccdl_ps = 5000,
--		.trfc_slr_ps = 3500000,
--		.refresh_rate_ps = 7800000,
--	},
--};
--
- static struct fsl_ddr_controller ddrc[] = {
- 	{
--		.dimm_slots_per_ctrl = ARRAY_SIZE(dimm_params),
--		.dimm_params = dimm_params,
- 		.memctl_opts.ddrtype = SDRAM_TYPE_DDR4,
- 		.base = IOMEM(LSCH2_DDR_ADDR),
- 		.ddr_freq = LS1046A_DDR_FREQ,
-@@ -169,7 +25,6 @@ static struct fsl_ddr_controller ddrc[] = {
- 		.erratum_A009801 = 1,
- 		.erratum_A009942 = 1,
- 		.chip_selects_per_ctrl = 4,
--		.board_options = ddr_board_options,
- 		.fsl_ddr_config_reg = {
- 	.cs[0].bnds         = 0x0000007F,
- 	.cs[0].config       = 0x80010312,
++	/* Wait for TDs to be processed. */
++	timeout_val = timeout_ms * MSECOND;
++	start = get_time_ns();
++	vtd = td;
++	do {
++		token = hc32_to_cpu(vtd->qt_token);
++		if (is_timeout_non_interruptible(start, timeout_val)) {
++			ehci_enable_async_schedule(ehci, false);
++			ehci_writel(&qh->qt_token, 0);
++			return -ETIMEDOUT;
++		}
++	} while (token & QT_TOKEN_STATUS_ACTIVE);
+ 
+ 	if (req)
+ 		dma_unmap_single(ehci->dev, req_dma, sizeof(*req),
+diff --git a/drivers/usb/host/ehci.h b/drivers/usb/host/ehci.h
+index e88e37e14c..4b9092d1fe 100644
+--- a/drivers/usb/host/ehci.h
++++ b/drivers/usb/host/ehci.h
+@@ -53,7 +53,6 @@ struct ehci_hcor {
+ #define	STD_ASS		(1 << 15)
+ #define STS_PSS         (1 << 14)
+ #define STS_HALT	(1 << 12)
+-#define STS_USBINT	BIT(0)
+ 	uint32_t or_usbintr;
+ 	uint32_t or_frindex;
+ 	uint32_t or_ctrldssegment;
 -- 
-2.28.0
+Christian Eggers
+Embedded software developer
+
+Arnold & Richter Cine Technik GmbH & Co. Betriebs KG
+Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRA 57918
+Persoenlich haftender Gesellschafter: Arnold & Richter Cine Technik GmbH
+Sitz: Muenchen - Registergericht: Amtsgericht Muenchen - Handelsregisternummer: HRB 54477
+Geschaeftsfuehrer: Dr. Michael Neuhaeuser; Stephan Schenk; Walter Trauninger; Markus Zeiler
 
 
 _______________________________________________
