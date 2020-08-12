@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k5pvZ-0000qN-OF
- for barebox@lists.infradead.org; Wed, 12 Aug 2020 12:32:23 +0000
-Date: Wed, 12 Aug 2020 14:32:20 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200812123220.GU9475@pengutronix.de>
-References: <7600f760-0533-a0e6-6075-834b064fb998@embedded-brains.de>
- <20200812100812.GT9475@pengutronix.de>
- <21ed352b-21e4-dd34-1fd9-d0aec60e8576@embedded-brains.de>
+ id 1k5q35-0001Gb-Hi
+ for barebox@lists.infradead.org; Wed, 12 Aug 2020 12:40:08 +0000
+References: <20200812085552.12688-1-o.rempel@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <96efaeac-1ad4-b869-7ebf-c43a67d2358d@pengutronix.de>
+Date: Wed, 12 Aug 2020 14:40:05 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <21ed352b-21e4-dd34-1fd9-d0aec60e8576@embedded-brains.de>
+In-Reply-To: <20200812085552.12688-1-o.rempel@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,158 +22,103 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v5] FIT: Parse `load` and `entry` addresses.
-To: Christian Mauderer <christian.mauderer@embedded-brains.de>
-Cc: barebox@lists.infradead.org, a.fatoum@pengutronix.de
+Subject: Re: [PATCH fixup v1] of: base: register DT root as device
+To: Oleksij Rempel <o.rempel@pengutronix.de>, barebox@lists.infradead.org
 
-On Wed, Aug 12, 2020 at 01:01:31PM +0200, Christian Mauderer wrote:
-> Hello Sascha,
+Hello,
+
+On 8/12/20 10:55 AM, Oleksij Rempel wrote:
+> A usual board file contains at least one of_machine_is_compatible().
+> Some of the have a rather long list with complicated version logic.
 > 
-> On 12/08/2020 12:08, Sascha Hauer wrote:
-> > On Wed, Aug 12, 2020 at 08:47:47AM +0200, Christian Mauderer wrote:
-> >> Hello Sascha,
-> >>
-> >> thanks for the review.
-> >>
-> >> On 11/08/2020 09:57, Sascha Hauer wrote:
-> >>> Hi Christian,
-> >>>
-> >>> On Wed, Jul 15, 2020 at 11:26:56AM +0200, Christian Mauderer wrote:
-> >>>> According to the U-Boot documentation for the FIT file format, the load
-> >>>> and entry have to be allways defined for a "kernel" or "standalone".
-> >>>> But Barebox ignored the parameters. That changes with this patch.
-> >>>>
-> >>>> For backward compatibility the default address is still used for images
-> >>>> without `load` or `entry`.
-> >>>>
-> >>>> Signed-off-by: Christian Mauderer <christian.mauderer@embedded-brains.de>
-> >>>> ---
-> >>>>  common/blspec.c     |  1 +
-> >>>>  common/boot.c       |  1 +
-> >>>>  common/bootm.c      | 24 ++++++++++-
-> >>>>  common/image-fit.c  | 97 ++++++++++++++++++++++++++++++++++++++-------
-> >>>>  include/image-fit.h |  3 ++
-> >>>>  5 files changed, 110 insertions(+), 16 deletions(-)
-> >>>>
-> >>>> diff --git a/common/blspec.c b/common/blspec.c
-> >>>> index 7fb62d310..050aed26a 100644
-> >>>> --- a/common/blspec.c
-> >>>> +++ b/common/blspec.c
-> >>>> @@ -142,6 +142,7 @@ static int blspec_boot(struct bootentry *be, int verbose, int dryrun)
-> >>>>  	globalvar_set_match("bootm.initrd", "");
-> >>>>  
-> >>>>  	bootm_data_init_defaults(&data);
-> >>>> +	data.os_entry = 0;
-> >>>
-> >>> You set data.os_entry explicitly to 0 here...
-> >>>
-> >>>>  
-> >>>>  	devicetree = blspec_entry_var_get(entry, "devicetree");
-> >>>>  	initrd = blspec_entry_var_get(entry, "initrd");
-> >>>> diff --git a/common/boot.c b/common/boot.c
-> >>>> index dcbe5cc2e..93ac1612d 100644
-> >>>> --- a/common/boot.c
-> >>>> +++ b/common/boot.c
-> >>>> @@ -104,6 +104,7 @@ static int bootscript_boot(struct bootentry *entry, int verbose, int dryrun)
-> >>>>  
-> >>>>  	bootm_data_init_defaults(&data);
-> >>>>  
-> >>>> +	data.os_entry = 0;
-> >>>
-> >>> ...and here. Why is this done? I think these should be left to the
-> >>> default UIMAGE_SOME_ADDRESS. In the end the kernels bootet from blspec
-> >>> or a boot script could be a FIT image as well.
-> >>>
-> >>
-> >> You maybe noted that I added the default of UIMAGE_SOME_ADDRESS to
-> >> bootm_data_init_defaults. I think that it is a sensible default and it
-> >> was useful for adding the command.
-> > 
-> > Yes.
-> > 
-> >>
-> >> Before I did that, in these two cases the value for os_entry was
-> >> initialized with 0. With setting it explicitly to 0 I wanted to make
-> >> sure that the behavior doesn't change.
-> >>
-> >> But you are right: I added a check for that in bootm_boot later. I just
-> >> checked again: There is no case where the os_entry is used in between.
-> >> So these two should be not unnecessary.
-> >>
-> >> I'll remove it in a v6 of the patch.
-> > 
-> > Ok, thanks
-> > 
-> >>
-> >>>> +int fit_get_image_address(struct fit_handle *handle, void *configuration,
-> >>>> +			  const char *name, const char *property,
-> >>>> +			  unsigned long *address)
-> >>>> +{
-> >>>> +	struct device_node *image;
-> >>>> +	const char *unit = name;
-> >>>> +	int ret;
-> >>>> +
-> >>>> +	if (!address || !property || !name)
-> >>>> +		return -EINVAL;
-> >>>> +
-> >>>> +	ret = fit_get_image(handle, configuration, &unit, &image);
-> >>>> +	if (ret)
-> >>>> +		return ret;
-> >>>> +
-> >>>> +	pr_info("%s/%s: ", image->full_name, property);
-> >>>> +
-> >>>> +	ret = fit_get_address(image, property, address);
-> >>>> +	if (ret < 0)
-> >>>> +		pr_cont("<not found>\n");
-> >>>> +	else
-> >>>> +		pr_cont("0x%lx\n", *address);
-> >>>
-> >>> pr_cont() doesn't work well in barebox and should be avoided.
-> >>
-> >> I wasn't aware of that. In one of the earlier versions of the patch it
-> >> was suggested to print that info. I'll find another solution or remove it.
-> >>
-> >>>
-> >>> Also I think this function shouldn't print anything, the caller should
-> >>> if it wishes to.
-> >>
-> >> I had the impression that most of the functions print the information
-> >> themselves. For example fit_open_image prints a lot of information about
-> >> the image. fit_find_compatible_unit (which is used in
-> >> fit_open_configuration) prints that it found a matching unit.
-> >>
-> >> It is a bit unclear when it would be OK for a function to print anything
-> >> and when not.
-> > 
-> > Indeed it is unclear :)
-> > 
-> > Generally it's nice when a function prints some information, but here I
-> > had the feeling that this function might get called in places where we
-> > don't want to print anything. It doesn't matter much at the moment since
-> > this function is called in this single place only anyway.
-> > 
-> >> But I can move the print to bootm_boot where the function
-> >> is called. Or would you prefer that it is removed completely? I'm not
-> >> sure whether bootm_boot prints that information later?
-> > 
-> > bootm will print later where it puts the kernel, but not where it got
-> > the address from, so I think printing it here is valuable.
-> > 
-> > I just noticed that with your patch bootm refuses to boot FIT images
-> > that don't have load and entry address explicitly given, right? That
-> > shouldn't be the case.
+> To avoid own implementation for driver management, register the root node
+> of device tree as platform device. So, the main platform bus can attach
+> proper board driver. After this patch a typical board.c file can reuse
+> existing driver infrastructure.
 > 
-> Also according to the spec for a FIT image the load and entry are
-> mandatory
+> After this patch, you will be able to see all registered board drivers
+> with drvinfo as fallow:
+> ...
+> board-embest-riot
+> board-protonic-imx6
+>     dt-root.of
+> ...
+> 
+> With devinfo, you'll be able to get some board specific information,
+> if this is implemented:
+> barebox@Protonic PRTI6Q board:/ devinfo dt-root.of
+> Driver: board-protonic-imx6
+> Bus: platform
+> Parameters:
+>   boardid: 0 (type: uint32)
+>   boardrev: 1 (type: uint32)
+> 
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> ---
+>  drivers/of/base.c     | 2 ++
+>  drivers/of/platform.c | 5 +++++
+>  2 files changed, 7 insertions(+)
+> 
+> diff --git a/drivers/of/base.c b/drivers/of/base.c
+> index 4c633bcd49..6f6cdc9379 100644
+> --- a/drivers/of/base.c
+> +++ b/drivers/of/base.c
+> @@ -2149,6 +2149,8 @@ int of_probe(void)
+>  	if (firmware)
+>  		of_platform_populate(firmware, NULL, NULL);
+>  
+> +	of_platform_device_create(root_node, NULL);
+> +
+>  	of_clk_init(root_node, NULL);
+>  	of_platform_populate(root_node, of_default_bus_match_table, NULL);
+>  
+> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+> index ca84cede23..767beebe06 100644
+> --- a/drivers/of/platform.c
+> +++ b/drivers/of/platform.c
+> @@ -50,6 +50,11 @@ static void of_device_make_bus_id(struct device_d *dev)
+>  	const __be32 *reg;
+>  	u64 addr;
+>  
+> +	if (!node->parent) {
+> +		dev_set_name(dev, "dt-root.of");
 
-barebox deliberately ignores this. Background is that a ARM zImage
-compiled with CONFIG_AUTO_ZRELADDR enabled can be placed anywhere in the
-first 128MiB from start of memory. This means we can build a kernel
-image that runs on various architectures which have their memory at
-different locations. Forcing the entry to a single address limits the
-kernel image to machines which have a common memory start address.
+Couldn't we drop the dt-? just let it be root.of.
+dashes make use of device parameters less convenient should we
+want to use those in future IIRC.
 
-Sascha
+> +		return;
+> +	}
+
+of_platform_device_create does:
+
+[-] check if device is available: not applicable to root node
+[-] populate io resources: not applicable to root node
+[-] use of_device_make_bus_id to get a name: not applicable to root node (prior to this patch)
+[-] configure dma: not applicable to root node
+[x] call platform_device_register
+
+So why not just call platform_device_register yourself?
+I'd assume you just need:
+
+ dev = xzalloc(sizeof(*dev));
+ dev->id = DEVICE_ID_SINGLE;
+ dev->device_node = root_node;
+ dev_set_name(dev, "dt-root.of")
+
+ ret = platform_device_register(dev);
+ if (!ret)
+         return dev;
+
+
+I'll test your patch layer anyway and report back if it fixes the issue I observed.
+(Looks like it should though).
+
+> +
+>  	/* Construct the name, using parent nodes if necessary to ensure uniqueness */
+>  	while (node->parent) {
+>  		/*
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
