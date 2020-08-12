@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k5nJU-0008KI-23
- for barebox@lists.infradead.org; Wed, 12 Aug 2020 09:44:52 +0000
-Date: Wed, 12 Aug 2020 11:44:50 +0200
+ id 1k5nPv-0001xI-9t
+ for barebox@lists.infradead.org; Wed, 12 Aug 2020 09:51:32 +0000
+Date: Wed, 12 Aug 2020 11:51:28 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200812094450.GR9475@pengutronix.de>
-References: <20200720064312.22894-1-Denis.Osterland@diehl.com>
+Message-ID: <20200812095128.GS9475@pengutronix.de>
+References: <AM0PR01MB4467F624E0FEFF24256BA6838F420@AM0PR01MB4467.eurprd01.prod.exchangelabs.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200720064312.22894-1-Denis.Osterland@diehl.com>
+In-Reply-To: <AM0PR01MB4467F624E0FEFF24256BA6838F420@AM0PR01MB4467.eurprd01.prod.exchangelabs.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,99 +18,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] dtc_cpp: allow to pass options per target
-To: Denis Osterland-Heim <denis.osterland@diehl.com>
+Subject: Re: Enable Display/Splash on Phycore am335x with barebox 2020.01.0
+To: "Koelle, Holger" <Holger.Koelle@allegion.com>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Mon, Jul 20, 2020 at 06:43:39AM +0000, Denis Osterland-Heim wrote:
-> This patch adds support to pass extra option per target to DTC CPP.
-> =
+Hi Holger,
 
-> For example:
-> =
+On Wed, Aug 12, 2020 at 07:36:58AM +0000, Koelle, Holger wrote:
+> Hi everybody,
+> 
+> This week i've tried to enable our Display (which working without
+> problems in Linuxkernel 4.19.94) in Barebox without success.
+> 
+> I've patched the Devicetree similar to am335x-evm.dts with our display
+> timings and the other values. But I got no fb0 device or a matching
+> driver for the panel/gpu.
+> In the drivers section I can't find any driver which matching tilcdc
+> and am335x-tilcdc like described in the barebox documentation.
+> 
+> Of_dump shows that the panel is there, but drvinfo says there is no
+> driver.I've tried to use the simple-panel driver but without
+> success...
+> 
+> So my Question :  Is it possible to enable the drm (gpu) unit in
+> Barebox 2020.01.0 at the am335x phycore board or is it not supported?
 
->     DTC_CPP_FLAGS_my-board-name.dtb :=3D -DMY_DEFINE=3Dextra
->     lwl-dtb-$(CONFIG_MACH_MY_BOARD_NAME) +=3D my-board-name.dtb.o
-> =
-
-> Signed-off-by: Denis Osterland-Heim <Denis.Osterland@diehl.com>
-> ---
->  scripts/Makefile.lib | 1 +
->  1 file changed, 1 insertion(+)
-
-Applied, thanks
+We don't have a framebuffer driver for am335x, so you won't have any
+luck getting a picture out of the hardware with barebox. The
+simple-panel driver is only for the panel itself, but not for the
+framebuffer.
 
 Sascha
 
-> =
-
-> diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-> index 39cc24b196a2..c8f3be8aad01 100644
-> --- a/scripts/Makefile.lib
-> +++ b/scripts/Makefile.lib
-> @@ -178,6 +178,7 @@ dtc_cpp_flags  =3D -Wp,-MD,$(depfile).pre -nostdinc  =
-                      \
->  		 -I$(srctree)/dts/include                                \
->  		 -I$(srctree)/include                                    \
->  		 -I$(srctree)/dts/src/                                   \
-> +		 $(DTC_CPP_FLAGS_$(basetarget).dtb)                      \
->  		 -undef -D__DTS__
->  =
-
->  ifdef CONFIG_BOOTM_FITIMAGE_PUBKEY
-> -- =
-
-> 2.27.0
-> =
-
-> =
-
-> =
-
-> Diehl Connectivity Solutions GmbH
-> Gesch=E4ftsf=FChrung: Horst Leonberger
-> Sitz der Gesellschaft: N=FCrnberg - Registergericht: Amtsgericht
-> N=FCrnberg: HRB 32315
-> _________________________________________________________________________=
-__________________________
-> =
-
-> Der Inhalt der vorstehenden E-Mail ist nicht rechtlich bindend. Diese E-M=
-ail enthaelt vertrauliche und/oder rechtlich geschuetzte Informationen.
-> Informieren Sie uns bitte, wenn Sie diese E-Mail faelschlicherweise erhal=
-ten haben. Bitte loeschen Sie in diesem Fall die Nachricht.
-> Jede unerlaubte Form der Reproduktion, Bekanntgabe, Aenderung, Verteilung=
- und/oder Publikation dieser E-Mail ist strengstens untersagt.
-> - Informationen zum Datenschutz, insbesondere zu Ihren Rechten, erhalten =
-Sie unter https://www.diehl.com/group/de/transparenz-und-informationspflich=
-ten/
-> =
-
-> The contents of the above mentioned e-mail is not legally binding. This e=
--mail contains confidential and/or legally protected information. Please in=
-form us if you have received this e-mail by
-> mistake and delete it in such a case. Each unauthorized reproduction, dis=
-closure, alteration, distribution and/or publication of this e-mail is stri=
-ctly prohibited. =
-
-> - For general information on data protection and your respective rights p=
-lease visit https://www.diehl.com/group/en/transparency-and-information-obl=
-igations/
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> =
-
-
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
