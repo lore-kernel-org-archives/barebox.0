@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from dedi548.your-server.de ([85.10.215.148])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k5ql3-0002ym-Up
- for barebox@lists.infradead.org; Wed, 12 Aug 2020 13:25:35 +0000
-From: Christian Mauderer <christian.mauderer@embedded-brains.de>
-Date: Wed, 12 Aug 2020 15:25:15 +0200
-Message-Id: <20200812132515.16684-1-christian.mauderer@embedded-brains.de>
+ id 1k5sRu-0000Jg-FF
+ for barebox@lists.infradead.org; Wed, 12 Aug 2020 15:13:55 +0000
+Date: Wed, 12 Aug 2020 17:13:51 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Message-ID: <20200812151351.rvhjjymyzaezz7kd@pengutronix.de>
+References: <20200812085552.12688-1-o.rempel@pengutronix.de>
+ <96efaeac-1ad4-b869-7ebf-c43a67d2358d@pengutronix.de>
 MIME-Version: 1.0
+In-Reply-To: <96efaeac-1ad4-b869-7ebf-c43a67d2358d@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,251 +18,152 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============5118419154294431854=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v6] FIT: Parse `load` and `entry` addresses.
-To: barebox@lists.infradead.org
-Cc: a.fatoum@pengutronix.de
+Subject: Re: [PATCH fixup v1] of: base: register DT root as device
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-According to the U-Boot documentation for the FIT file format, the load
-and entry have to be allways defined for a "kernel" or "standalone".
-But Barebox ignored the parameters. That changes with this patch.
 
-For backward compatibility the default values for load or entry are
-still used if they are not given by the FIT file.
+--===============5118419154294431854==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="2bxpthfc3sf2qc7d"
+Content-Disposition: inline
 
-Signed-off-by: Christian Mauderer <christian.mauderer@embedded-brains.de>
----
 
-Like discussed in
-http://lists.infradead.org/pipermail/barebox/2020-August/033550.html
-I made the following changes compared to v5:
+--2bxpthfc3sf2qc7d
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-- Removed the superflous `data.os_entry = 0` at two locations.
-- Remove the prints from fit_get_image_address and print the information in
-  bootm instead.
-- Make sure that an image without "load" and "entry" can be booted.
+On Wed, Aug 12, 2020 at 02:40:05PM +0200, Ahmad Fatoum wrote:
+> Hello,
+>=20
+> On 8/12/20 10:55 AM, Oleksij Rempel wrote:
+> > A usual board file contains at least one of_machine_is_compatible().
+> > Some of the have a rather long list with complicated version logic.
+> >=20
+> > To avoid own implementation for driver management, register the root no=
+de
+> > of device tree as platform device. So, the main platform bus can attach
+> > proper board driver. After this patch a typical board.c file can reuse
+> > existing driver infrastructure.
+> >=20
+> > After this patch, you will be able to see all registered board drivers
+> > with drvinfo as fallow:
+> > ...
+> > board-embest-riot
+> > board-protonic-imx6
+> >     dt-root.of
+> > ...
+> >=20
+> > With devinfo, you'll be able to get some board specific information,
+> > if this is implemented:
+> > barebox@Protonic PRTI6Q board:/ devinfo dt-root.of
+> > Driver: board-protonic-imx6
+> > Bus: platform
+> > Parameters:
+> >   boardid: 0 (type: uint32)
+> >   boardrev: 1 (type: uint32)
+> >=20
+> > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> > ---
+> >  drivers/of/base.c     | 2 ++
+> >  drivers/of/platform.c | 5 +++++
+> >  2 files changed, 7 insertions(+)
+> >=20
+> > diff --git a/drivers/of/base.c b/drivers/of/base.c
+> > index 4c633bcd49..6f6cdc9379 100644
+> > --- a/drivers/of/base.c
+> > +++ b/drivers/of/base.c
+> > @@ -2149,6 +2149,8 @@ int of_probe(void)
+> >  	if (firmware)
+> >  		of_platform_populate(firmware, NULL, NULL);
+> > =20
+> > +	of_platform_device_create(root_node, NULL);
+> > +
+> >  	of_clk_init(root_node, NULL);
+> >  	of_platform_populate(root_node, of_default_bus_match_table, NULL);
+> > =20
+> > diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+> > index ca84cede23..767beebe06 100644
+> > --- a/drivers/of/platform.c
+> > +++ b/drivers/of/platform.c
+> > @@ -50,6 +50,11 @@ static void of_device_make_bus_id(struct device_d *d=
+ev)
+> >  	const __be32 *reg;
+> >  	u64 addr;
+> > =20
+> > +	if (!node->parent) {
+> > +		dev_set_name(dev, "dt-root.of");
+>=20
+> Couldn't we drop the dt-? just let it be root.of.
+> dashes make use of device parameters less convenient should we
+> want to use those in future IIRC.
 
-Note that the behaviour maybe is a bit unexpected if someone tries to overwrite
-the load address but not the entry. "entry" in a FIT is absolute. So if load is
-overwritten by environment or parameter, bootm will still use the absolute
-entry address from the FIT image.
+dt is used to make clear: it is root of dt and not some random root of
+what ever.
 
-On the other hand it would also be unexpected if the entry address changes in a
-file format like FIT, only because load is overwritten. And there would also be
-an edge case if someone specifies an "entry" in the FIT but no load address
-where it could be only a guess whether it's a relative or an absolute entry.
+> > +		return;
+> > +	}
+>=20
+> of_platform_device_create does:
+>=20
+> [-] check if device is available: not applicable to root node
+> [-] populate io resources: not applicable to root node
+> [-] use of_device_make_bus_id to get a name: not applicable to root node =
+(prior to this patch)
+> [-] configure dma: not applicable to root node
+> [x] call platform_device_register
 
- common/bootm.c      | 29 ++++++++++++++-
- common/image-fit.c  | 91 +++++++++++++++++++++++++++++++++++++--------
- include/image-fit.h |  3 ++
- 3 files changed, 107 insertions(+), 16 deletions(-)
+You make this assumption, just because this node has no parents?
+Does it means, a parent less child may have no resources to do some work?
+You should be ashamed of yourself! :D
 
-diff --git a/common/bootm.c b/common/bootm.c
-index 366f31455..a73f37aeb 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -58,6 +58,7 @@ void bootm_data_init_defaults(struct bootm_data *data)
- {
- 	data->initrd_address = UIMAGE_INVALID_ADDRESS;
- 	data->os_address = UIMAGE_SOME_ADDRESS;
-+	data->os_entry = UIMAGE_SOME_ADDRESS;
- 	data->oftree_file = getenv_nonempty("global.bootm.oftree");
- 	data->tee_file = getenv_nonempty("global.bootm.tee");
- 	data->os_file = getenv_nonempty("global.bootm.image");
-@@ -601,6 +602,7 @@ int bootm_boot(struct bootm_data *bootm_data)
- 
- 	if (IS_ENABLED(CONFIG_FITIMAGE) && os_type == filetype_oftree) {
- 		struct fit_handle *fit;
-+		static const char *kernel_img = "kernel";
- 
- 		fit = fit_open(data->os_file, data->verbose, data->verify);
- 		if (IS_ERR(fit)) {
-@@ -621,10 +623,33 @@ int bootm_boot(struct bootm_data *bootm_data)
- 			goto err_out;
- 		}
- 
--		ret = fit_open_image(data->os_fit, data->fit_config, "kernel",
-+		ret = fit_open_image(data->os_fit, data->fit_config, kernel_img,
- 				     &data->fit_kernel, &data->fit_kernel_size);
- 		if (ret)
- 			goto err_out;
-+		if (data->os_address == UIMAGE_SOME_ADDRESS) {
-+			ret = fit_get_image_address(data->os_fit,
-+						    data->fit_config,
-+						    kernel_img,
-+						    "load", &data->os_address);
-+			if (!ret)
-+				printf("Load address from FIT '%s': 0x%lx\n",
-+				       kernel_img, data->os_address);
-+			/* Note: Error case uses default value. */
-+		}
-+		if (data->os_entry == UIMAGE_SOME_ADDRESS) {
-+			unsigned long entry;
-+			ret = fit_get_image_address(data->os_fit,
-+						    data->fit_config,
-+						    kernel_img,
-+						    "entry", &entry);
-+			if (!ret) {
-+				data->os_entry = entry - data->os_address;
-+				printf("Entry address from FIT '%s': 0x%lx\n",
-+				       kernel_img, entry);
-+			}
-+			/* Note: Error case uses default value. */
-+		}
- 	}
- 
- 	if (os_type == filetype_uimage) {
-@@ -672,6 +697,8 @@ int bootm_boot(struct bootm_data *bootm_data)
- 
- 	if (data->os_address == UIMAGE_SOME_ADDRESS)
- 		data->os_address = UIMAGE_INVALID_ADDRESS;
-+	if (data->os_entry == UIMAGE_SOME_ADDRESS)
-+		data->os_entry = 0;
- 
- 	handler = bootm_find_handler(os_type, data);
- 	if (!handler) {
-diff --git a/common/image-fit.c b/common/image-fit.c
-index 2681d62a9..658f09b04 100644
---- a/common/image-fit.c
-+++ b/common/image-fit.c
-@@ -517,6 +517,77 @@ int fit_has_image(struct fit_handle *handle, void *configuration,
- 	return 1;
- }
- 
-+static int fit_get_address(struct device_node *image, const char *property,
-+			   unsigned long *addr)
-+{
-+	const __be32 *cell;
-+	int len = 0;
-+
-+	cell = of_get_property(image, property, &len);
-+	if (!cell)
-+		return -EINVAL;
-+	if (len > sizeof(*addr))
-+		return -ENOTSUPP;
-+
-+	*addr = (unsigned long)of_read_number(cell, len / sizeof(*cell));
-+	return 0;
-+}
-+
-+static int
-+fit_get_image(struct fit_handle *handle, void *configuration,
-+	      const char **unit, struct device_node **image)
-+{
-+	struct device_node *conf_node = configuration;
-+
-+	if (conf_node) {
-+		if (of_property_read_string(conf_node, *unit, unit)) {
-+			pr_err("No image named '%s'\n", *unit);
-+			return -ENOENT;
-+		}
-+	}
-+
-+	*image = of_get_child_by_name(handle->images, *unit);
-+	if (!*image)
-+		return -ENOENT;
-+
-+	return 0;
-+}
-+
-+/**
-+ * fit_get_image_address - Get an address from an image in a FIT image
-+ * @handle: The FIT image handle
-+ * @name: The name of the image to open
-+ * @property: The name of the address to get (for example "load" or "entry")
-+ * @address: The address given by the image
-+ *
-+ * Try to parse the @property in the image @name as an address. @configuration
-+ * holds the cookie returned from fit_open_configuration() if the image is
-+ * opened as part of a configuration, or NULL if the image is opened without a
-+ * configuration. If it exists the value will be returned in @address. Otherwise
-+ * @address won't be changed.
-+ *
-+ * Return: 0 for success, negative error code otherwise
-+ */
-+int fit_get_image_address(struct fit_handle *handle, void *configuration,
-+			  const char *name, const char *property,
-+			  unsigned long *address)
-+{
-+	struct device_node *image;
-+	const char *unit = name;
-+	int ret;
-+
-+	if (!address || !property || !name)
-+		return -EINVAL;
-+
-+	ret = fit_get_image(handle, configuration, &unit, &image);
-+	if (ret)
-+		return ret;
-+
-+	ret = fit_get_address(image, property, address);
-+
-+	return ret;
-+}
-+
- /**
-  * fit_open_image - Open an image in a FIT image
-  * @handle: The FIT image handle
-@@ -539,24 +610,14 @@ int fit_open_image(struct fit_handle *handle, void *configuration,
- 		   unsigned long *outsize)
- {
- 	struct device_node *image;
--	const char *unit, *type = NULL, *desc= "(no description)";
-+	const char *unit = name, *type = NULL, *desc= "(no description)";
- 	const void *data;
- 	int data_len;
- 	int ret = 0;
--	struct device_node *conf_node = configuration;
--
--	if (conf_node) {
--		if (of_property_read_string(conf_node, name, &unit)) {
--			pr_err("No image named '%s'\n", name);
--			return -ENOENT;
--		}
--	} else {
--		unit = name;
--	}
- 
--	image = of_get_child_by_name(handle->images, unit);
--	if (!image)
--		return -ENOENT;
-+	ret = fit_get_image(handle, configuration, &unit, &image);
-+	if (ret)
-+		return ret;
- 
- 	of_property_read_string(image, "description", &desc);
- 	pr_info("image '%s': '%s'\n", unit, desc);
-@@ -573,7 +634,7 @@ int fit_open_image(struct fit_handle *handle, void *configuration,
- 		return -EINVAL;
- 	}
- 
--	if (conf_node)
-+	if (configuration)
- 		ret = fit_verify_hash(handle, image, data, data_len);
- 	else
- 		ret = fit_image_verify_signature(handle, image, data, data_len);
-diff --git a/include/image-fit.h b/include/image-fit.h
-index 27c9e8351..f21545988 100644
---- a/include/image-fit.h
-+++ b/include/image-fit.h
-@@ -32,6 +32,9 @@ int fit_has_image(struct fit_handle *handle, void *configuration,
- int fit_open_image(struct fit_handle *handle, void *configuration,
- 		   const char *name, const void **outdata,
- 		   unsigned long *outsize);
-+int fit_get_image_address(struct fit_handle *handle, void *configuration,
-+			  const char *name, const char *property,
-+			  unsigned long *address);
- 
- void fit_close(struct fit_handle *handle);
- 
--- 
-2.26.2
+But really, what prevents you to assign board specific resource to a
+root node. It is just node as many others.
 
+Regards,
+Oleksij
+--=20
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+--2bxpthfc3sf2qc7d
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEERBNZvwSgvmcMY/T74omh9DUaUbMFAl80ByoACgkQ4omh9DUa
+UbPodg/9GIugCwXwHuc5bww3RIC6YNihOuaQMjhmIPhytWEQ89vRCdiyXp1DeG2z
+4MX1u/b5fwqy3jKUAZVtwOXWJD9nnZpoTmccc3COXrVGODRMQYQqnk34LH46gocK
+zKreY5uOHlC7VeabqToVPnTCVpR+TfhgD/8h2TaOEFe17aEkFrR5fvBW/Ja3EvWV
+P3fmFi32qINS8SWG83jDITIPBLl4khhiFWQ2qKzL375v8wuZq/RxCg9aOe2qelxv
+XMT0fslHAnpUc6vdRyXrwzUjz+jA60AsQe1SkToTsxhpVSemfIdhqKuaYwpSKw90
+jDSXYXmCBTZmIpRAM53SCL1AeXDRiWWit3b2BeC9PbfIk2X3nX538NP7k0sc2O3n
+cBBNSyHlQtiH4cQpKC8/gtwTrVjOM2mFg4Ws+wSmAaNO6dFYMWVtn5JsWBO1a+eS
+mRMmVi9jocJxnVhlfJu4mygH7xYjB88yc2UQF2/Mzgms75mrO41wUsbt8WZeyLx2
+9PRb8YLk8D0gi1EuITxOfjwLklOeME34rc8YQb/u8ikGKvwSpUno3El/DQ8LZnYQ
+hsODvaqBswhfWjKh/dhoNGOa5z+7X8Sn/JCeslYwhWjT1P8pbFoZ6pM+IJcd/8rP
+yS5M+nijvN/i/f01ZYmDHe9smTXyCktVfb6LNOy5WGAZ5yAPQac=
+=cmFe
+-----END PGP SIGNATURE-----
+
+--2bxpthfc3sf2qc7d--
+
+
+--===============5118419154294431854==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============5118419154294431854==--
