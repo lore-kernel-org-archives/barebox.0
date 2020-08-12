@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from dedi548.your-server.de ([85.10.215.148])
+Received: from mail-db8eur05on2127.outbound.protection.outlook.com
+ ([40.107.20.127] helo=EUR05-DB8-obe.outbound.protection.outlook.com)
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k5kYC-0006BM-EW
- for barebox@lists.infradead.org; Wed, 12 Aug 2020 06:47:53 +0000
-References: <20200715092656.27253-1-christian.mauderer@embedded-brains.de>
- <20200811075727.GJ9475@pengutronix.de>
-From: Christian Mauderer <christian.mauderer@embedded-brains.de>
-Message-ID: <7600f760-0533-a0e6-6075-834b064fb998@embedded-brains.de>
-Date: Wed, 12 Aug 2020 08:47:47 +0200
+ id 1k5lJt-0001Da-O4
+ for barebox@lists.infradead.org; Wed, 12 Aug 2020 07:37:11 +0000
+From: "Koelle, Holger" <Holger.Koelle@allegion.com>
+Date: Wed, 12 Aug 2020 07:36:58 +0000
+Message-ID: <AM0PR01MB4467F624E0FEFF24256BA6838F420@AM0PR01MB4467.eurprd01.prod.exchangelabs.com>
+Content-Language: de-DE
 MIME-Version: 1.0
-In-Reply-To: <20200811075727.GJ9475@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,90 +17,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v5] FIT: Parse `load` and `entry` addresses.
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, a.fatoum@pengutronix.de
+Subject: Enable Display/Splash on Phycore am335x with barebox 2020.01.0
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-SGVsbG8gU2FzY2hhLAoKdGhhbmtzIGZvciB0aGUgcmV2aWV3LgoKT24gMTEvMDgvMjAyMCAwOTo1
-NywgU2FzY2hhIEhhdWVyIHdyb3RlOgo+IEhpIENocmlzdGlhbiwKPiAKPiBPbiBXZWQsIEp1bCAx
-NSwgMjAyMCBhdCAxMToyNjo1NkFNICswMjAwLCBDaHJpc3RpYW4gTWF1ZGVyZXIgd3JvdGU6Cj4+
-IEFjY29yZGluZyB0byB0aGUgVS1Cb290IGRvY3VtZW50YXRpb24gZm9yIHRoZSBGSVQgZmlsZSBm
-b3JtYXQsIHRoZSBsb2FkCj4+IGFuZCBlbnRyeSBoYXZlIHRvIGJlIGFsbHdheXMgZGVmaW5lZCBm
-b3IgYSAia2VybmVsIiBvciAic3RhbmRhbG9uZSIuCj4+IEJ1dCBCYXJlYm94IGlnbm9yZWQgdGhl
-IHBhcmFtZXRlcnMuIFRoYXQgY2hhbmdlcyB3aXRoIHRoaXMgcGF0Y2guCj4+Cj4+IEZvciBiYWNr
-d2FyZCBjb21wYXRpYmlsaXR5IHRoZSBkZWZhdWx0IGFkZHJlc3MgaXMgc3RpbGwgdXNlZCBmb3Ig
-aW1hZ2VzCj4+IHdpdGhvdXQgYGxvYWRgIG9yIGBlbnRyeWAuCj4+Cj4+IFNpZ25lZC1vZmYtYnk6
-IENocmlzdGlhbiBNYXVkZXJlciA8Y2hyaXN0aWFuLm1hdWRlcmVyQGVtYmVkZGVkLWJyYWlucy5k
-ZT4KPj4gLS0tCj4+ICBjb21tb24vYmxzcGVjLmMgICAgIHwgIDEgKwo+PiAgY29tbW9uL2Jvb3Qu
-YyAgICAgICB8ICAxICsKPj4gIGNvbW1vbi9ib290bS5jICAgICAgfCAyNCArKysrKysrKysrLQo+
-PiAgY29tbW9uL2ltYWdlLWZpdC5jICB8IDk3ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrLS0tLS0tLQo+PiAgaW5jbHVkZS9pbWFnZS1maXQuaCB8ICAzICsrCj4+ICA1IGZp
-bGVzIGNoYW5nZWQsIDExMCBpbnNlcnRpb25zKCspLCAxNiBkZWxldGlvbnMoLSkKPj4KPj4gZGlm
-ZiAtLWdpdCBhL2NvbW1vbi9ibHNwZWMuYyBiL2NvbW1vbi9ibHNwZWMuYwo+PiBpbmRleCA3ZmI2
-MmQzMTAuLjA1MGFlZDI2YSAxMDA2NDQKPj4gLS0tIGEvY29tbW9uL2Jsc3BlYy5jCj4+ICsrKyBi
-L2NvbW1vbi9ibHNwZWMuYwo+PiBAQCAtMTQyLDYgKzE0Miw3IEBAIHN0YXRpYyBpbnQgYmxzcGVj
-X2Jvb3Qoc3RydWN0IGJvb3RlbnRyeSAqYmUsIGludCB2ZXJib3NlLCBpbnQgZHJ5cnVuKQo+PiAg
-CWdsb2JhbHZhcl9zZXRfbWF0Y2goImJvb3RtLmluaXRyZCIsICIiKTsKPj4gIAo+PiAgCWJvb3Rt
-X2RhdGFfaW5pdF9kZWZhdWx0cygmZGF0YSk7Cj4+ICsJZGF0YS5vc19lbnRyeSA9IDA7Cj4gCj4g
-WW91IHNldCBkYXRhLm9zX2VudHJ5IGV4cGxpY2l0bHkgdG8gMCBoZXJlLi4uCj4gCj4+ICAKPj4g
-IAlkZXZpY2V0cmVlID0gYmxzcGVjX2VudHJ5X3Zhcl9nZXQoZW50cnksICJkZXZpY2V0cmVlIik7
-Cj4+ICAJaW5pdHJkID0gYmxzcGVjX2VudHJ5X3Zhcl9nZXQoZW50cnksICJpbml0cmQiKTsKPj4g
-ZGlmZiAtLWdpdCBhL2NvbW1vbi9ib290LmMgYi9jb21tb24vYm9vdC5jCj4+IGluZGV4IGRjYmU1
-Y2MyZS4uOTNhYzE2MTJkIDEwMDY0NAo+PiAtLS0gYS9jb21tb24vYm9vdC5jCj4+ICsrKyBiL2Nv
-bW1vbi9ib290LmMKPj4gQEAgLTEwNCw2ICsxMDQsNyBAQCBzdGF0aWMgaW50IGJvb3RzY3JpcHRf
-Ym9vdChzdHJ1Y3QgYm9vdGVudHJ5ICplbnRyeSwgaW50IHZlcmJvc2UsIGludCBkcnlydW4pCj4+
-ICAKPj4gIAlib290bV9kYXRhX2luaXRfZGVmYXVsdHMoJmRhdGEpOwo+PiAgCj4+ICsJZGF0YS5v
-c19lbnRyeSA9IDA7Cj4gCj4gLi4uYW5kIGhlcmUuIFdoeSBpcyB0aGlzIGRvbmU/IEkgdGhpbmsg
-dGhlc2Ugc2hvdWxkIGJlIGxlZnQgdG8gdGhlCj4gZGVmYXVsdCBVSU1BR0VfU09NRV9BRERSRVNT
-LiBJbiB0aGUgZW5kIHRoZSBrZXJuZWxzIGJvb3RldCBmcm9tIGJsc3BlYwo+IG9yIGEgYm9vdCBz
-Y3JpcHQgY291bGQgYmUgYSBGSVQgaW1hZ2UgYXMgd2VsbC4KPiAKCllvdSBtYXliZSBub3RlZCB0
-aGF0IEkgYWRkZWQgdGhlIGRlZmF1bHQgb2YgVUlNQUdFX1NPTUVfQUREUkVTUyB0bwpib290bV9k
-YXRhX2luaXRfZGVmYXVsdHMuIEkgdGhpbmsgdGhhdCBpdCBpcyBhIHNlbnNpYmxlIGRlZmF1bHQg
-YW5kIGl0CndhcyB1c2VmdWwgZm9yIGFkZGluZyB0aGUgY29tbWFuZC4KCkJlZm9yZSBJIGRpZCB0
-aGF0LCBpbiB0aGVzZSB0d28gY2FzZXMgdGhlIHZhbHVlIGZvciBvc19lbnRyeSB3YXMKaW5pdGlh
-bGl6ZWQgd2l0aCAwLiBXaXRoIHNldHRpbmcgaXQgZXhwbGljaXRseSB0byAwIEkgd2FudGVkIHRv
-IG1ha2UKc3VyZSB0aGF0IHRoZSBiZWhhdmlvciBkb2Vzbid0IGNoYW5nZS4KCkJ1dCB5b3UgYXJl
-IHJpZ2h0OiBJIGFkZGVkIGEgY2hlY2sgZm9yIHRoYXQgaW4gYm9vdG1fYm9vdCBsYXRlci4gSSBq
-dXN0CmNoZWNrZWQgYWdhaW46IFRoZXJlIGlzIG5vIGNhc2Ugd2hlcmUgdGhlIG9zX2VudHJ5IGlz
-IHVzZWQgaW4gYmV0d2Vlbi4KU28gdGhlc2UgdHdvIHNob3VsZCBiZSBub3QgdW5uZWNlc3Nhcnku
-CgpJJ2xsIHJlbW92ZSBpdCBpbiBhIHY2IG9mIHRoZSBwYXRjaC4KCj4+ICtpbnQgZml0X2dldF9p
-bWFnZV9hZGRyZXNzKHN0cnVjdCBmaXRfaGFuZGxlICpoYW5kbGUsIHZvaWQgKmNvbmZpZ3VyYXRp
-b24sCj4+ICsJCQkgIGNvbnN0IGNoYXIgKm5hbWUsIGNvbnN0IGNoYXIgKnByb3BlcnR5LAo+PiAr
-CQkJICB1bnNpZ25lZCBsb25nICphZGRyZXNzKQo+PiArewo+PiArCXN0cnVjdCBkZXZpY2Vfbm9k
-ZSAqaW1hZ2U7Cj4+ICsJY29uc3QgY2hhciAqdW5pdCA9IG5hbWU7Cj4+ICsJaW50IHJldDsKPj4g
-Kwo+PiArCWlmICghYWRkcmVzcyB8fCAhcHJvcGVydHkgfHwgIW5hbWUpCj4+ICsJCXJldHVybiAt
-RUlOVkFMOwo+PiArCj4+ICsJcmV0ID0gZml0X2dldF9pbWFnZShoYW5kbGUsIGNvbmZpZ3VyYXRp
-b24sICZ1bml0LCAmaW1hZ2UpOwo+PiArCWlmIChyZXQpCj4+ICsJCXJldHVybiByZXQ7Cj4+ICsK
-Pj4gKwlwcl9pbmZvKCIlcy8lczogIiwgaW1hZ2UtPmZ1bGxfbmFtZSwgcHJvcGVydHkpOwo+PiAr
-Cj4+ICsJcmV0ID0gZml0X2dldF9hZGRyZXNzKGltYWdlLCBwcm9wZXJ0eSwgYWRkcmVzcyk7Cj4+
-ICsJaWYgKHJldCA8IDApCj4+ICsJCXByX2NvbnQoIjxub3QgZm91bmQ+XG4iKTsKPj4gKwllbHNl
-Cj4+ICsJCXByX2NvbnQoIjB4JWx4XG4iLCAqYWRkcmVzcyk7Cj4gCj4gcHJfY29udCgpIGRvZXNu
-J3Qgd29yayB3ZWxsIGluIGJhcmVib3ggYW5kIHNob3VsZCBiZSBhdm9pZGVkLgoKSSB3YXNuJ3Qg
-YXdhcmUgb2YgdGhhdC4gSW4gb25lIG9mIHRoZSBlYXJsaWVyIHZlcnNpb25zIG9mIHRoZSBwYXRj
-aCBpdAp3YXMgc3VnZ2VzdGVkIHRvIHByaW50IHRoYXQgaW5mby4gSSdsbCBmaW5kIGFub3RoZXIg
-c29sdXRpb24gb3IgcmVtb3ZlIGl0LgoKPiAKPiBBbHNvIEkgdGhpbmsgdGhpcyBmdW5jdGlvbiBz
-aG91bGRuJ3QgcHJpbnQgYW55dGhpbmcsIHRoZSBjYWxsZXIgc2hvdWxkCj4gaWYgaXQgd2lzaGVz
-IHRvLgoKSSBoYWQgdGhlIGltcHJlc3Npb24gdGhhdCBtb3N0IG9mIHRoZSBmdW5jdGlvbnMgcHJp
-bnQgdGhlIGluZm9ybWF0aW9uCnRoZW1zZWx2ZXMuIEZvciBleGFtcGxlIGZpdF9vcGVuX2ltYWdl
-IHByaW50cyBhIGxvdCBvZiBpbmZvcm1hdGlvbiBhYm91dAp0aGUgaW1hZ2UuIGZpdF9maW5kX2Nv
-bXBhdGlibGVfdW5pdCAod2hpY2ggaXMgdXNlZCBpbgpmaXRfb3Blbl9jb25maWd1cmF0aW9uKSBw
-cmludHMgdGhhdCBpdCBmb3VuZCBhIG1hdGNoaW5nIHVuaXQuCgpJdCBpcyBhIGJpdCB1bmNsZWFy
-IHdoZW4gaXQgd291bGQgYmUgT0sgZm9yIGEgZnVuY3Rpb24gdG8gcHJpbnQgYW55dGhpbmcKYW5k
-IHdoZW4gbm90LiBCdXQgSSBjYW4gbW92ZSB0aGUgcHJpbnQgdG8gYm9vdG1fYm9vdCB3aGVyZSB0
-aGUgZnVuY3Rpb24KaXMgY2FsbGVkLiBPciB3b3VsZCB5b3UgcHJlZmVyIHRoYXQgaXQgaXMgcmVt
-b3ZlZCBjb21wbGV0ZWx5PyBJJ20gbm90CnN1cmUgd2hldGhlciBib290bV9ib290IHByaW50cyB0
-aGF0IGluZm9ybWF0aW9uIGxhdGVyPwoKQmVzdCByZWdhcmRzCgpDaHJpc3RpYW4KCj4gCj4gT3Ro
-ZXJ3aXNlIHRoZSBwYXRjaCBsb29rcyBmaW5lIHRvIG1lLgo+IAo+IFNhc2NoYQo+IAoKLS0gCi0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCmVtYmVkZGVkIGJyYWlu
-cyBHbWJICkhlcnIgQ2hyaXN0aWFuIE1hdWRlcmVyCkRvcm5pZXJzdHIuIDQKRC04MjE3OCBQdWNo
-aGVpbQpHZXJtYW55CmVtYWlsOiBjaHJpc3RpYW4ubWF1ZGVyZXJAZW1iZWRkZWQtYnJhaW5zLmRl
-ClBob25lOiArNDktODktMTggOTQgNzQxIC0gMTgKRmF4OiAgICs0OS04OS0xOCA5NCA3NDEgLSAw
-OApQR1A6IFB1YmxpYyBrZXkgYXZhaWxhYmxlIG9uIHJlcXVlc3QuCgpEaWVzZSBOYWNocmljaHQg
-aXN0IGtlaW5lIGdlc2Now6RmdGxpY2hlIE1pdHRlaWx1bmcgaW0gU2lubmUgZGVzIEVIVUcuCgpf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
-aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
-ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Hi everybody,
+
+This week i've tried to enable our Display (which working without problems =
+in Linuxkernel 4.19.94) in Barebox without success.
+
+I've patched the Devicetree similar to am335x-evm.dts with our display timi=
+ngs and the other values. But I got no fb0 device or a matching driver for =
+the panel/gpu.
+In the drivers section I can't find any driver which matching tilcdc and am=
+335x-tilcdc like described in the barebox documentation.
+
+Of_dump shows that the panel is there, but drvinfo says there is no driver.=
+I've tried to use the simple-panel driver but without success...
+
+
+So my Question :  Is it possible to enable the drm (gpu) unit in Barebox 20=
+20.01.0 at the am335x phycore board or is it not supported?
+
+
+Regards,
+
+H.K=F6lle
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
