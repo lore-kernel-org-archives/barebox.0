@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k5nHT-0007rA-42
- for barebox@lists.infradead.org; Wed, 12 Aug 2020 09:42:48 +0000
-Date: Wed, 12 Aug 2020 11:42:45 +0200
+ id 1k5nJU-0008KI-23
+ for barebox@lists.infradead.org; Wed, 12 Aug 2020 09:44:52 +0000
+Date: Wed, 12 Aug 2020 11:44:50 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200812094245.GQ9475@pengutronix.de>
-References: <20200812085552.12688-1-o.rempel@pengutronix.de>
+Message-ID: <20200812094450.GR9475@pengutronix.de>
+References: <20200720064312.22894-1-Denis.Osterland@diehl.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200812085552.12688-1-o.rempel@pengutronix.de>
+In-Reply-To: <20200720064312.22894-1-Denis.Osterland@diehl.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,51 +18,99 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH fixup v1] of: base: register DT root as device
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] dtc_cpp: allow to pass options per target
+To: Denis Osterland-Heim <denis.osterland@diehl.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Wed, Aug 12, 2020 at 10:55:52AM +0200, Oleksij Rempel wrote:
-> A usual board file contains at least one of_machine_is_compatible().
-> Some of the have a rather long list with complicated version logic.
-> 
-> To avoid own implementation for driver management, register the root node
-> of device tree as platform device. So, the main platform bus can attach
-> proper board driver. After this patch a typical board.c file can reuse
-> existing driver infrastructure.
-> 
-> After this patch, you will be able to see all registered board drivers
-> with drvinfo as fallow:
-> ...
-> board-embest-riot
-> board-protonic-imx6
->     dt-root.of
-> ...
-> 
-> With devinfo, you'll be able to get some board specific information,
-> if this is implemented:
-> barebox@Protonic PRTI6Q board:/ devinfo dt-root.of
-> Driver: board-protonic-imx6
-> Bus: platform
-> Parameters:
->   boardid: 0 (type: uint32)
->   boardrev: 1 (type: uint32)
-> 
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+On Mon, Jul 20, 2020 at 06:43:39AM +0000, Denis Osterland-Heim wrote:
+> This patch adds support to pass extra option per target to DTC CPP.
+> =
+
+> For example:
+> =
+
+>     DTC_CPP_FLAGS_my-board-name.dtb :=3D -DMY_DEFINE=3Dextra
+>     lwl-dtb-$(CONFIG_MACH_MY_BOARD_NAME) +=3D my-board-name.dtb.o
+> =
+
+> Signed-off-by: Denis Osterland-Heim <Denis.Osterland@diehl.com>
 > ---
->  drivers/of/base.c     | 2 ++
->  drivers/of/platform.c | 5 +++++
->  2 files changed, 7 insertions(+)
+>  scripts/Makefile.lib | 1 +
+>  1 file changed, 1 insertion(+)
 
-Replaced original patch with this one.
+Applied, thanks
 
 Sascha
 
--- 
+> =
+
+> diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+> index 39cc24b196a2..c8f3be8aad01 100644
+> --- a/scripts/Makefile.lib
+> +++ b/scripts/Makefile.lib
+> @@ -178,6 +178,7 @@ dtc_cpp_flags  =3D -Wp,-MD,$(depfile).pre -nostdinc  =
+                      \
+>  		 -I$(srctree)/dts/include                                \
+>  		 -I$(srctree)/include                                    \
+>  		 -I$(srctree)/dts/src/                                   \
+> +		 $(DTC_CPP_FLAGS_$(basetarget).dtb)                      \
+>  		 -undef -D__DTS__
+>  =
+
+>  ifdef CONFIG_BOOTM_FITIMAGE_PUBKEY
+> -- =
+
+> 2.27.0
+> =
+
+> =
+
+> =
+
+> Diehl Connectivity Solutions GmbH
+> Gesch=E4ftsf=FChrung: Horst Leonberger
+> Sitz der Gesellschaft: N=FCrnberg - Registergericht: Amtsgericht
+> N=FCrnberg: HRB 32315
+> _________________________________________________________________________=
+__________________________
+> =
+
+> Der Inhalt der vorstehenden E-Mail ist nicht rechtlich bindend. Diese E-M=
+ail enthaelt vertrauliche und/oder rechtlich geschuetzte Informationen.
+> Informieren Sie uns bitte, wenn Sie diese E-Mail faelschlicherweise erhal=
+ten haben. Bitte loeschen Sie in diesem Fall die Nachricht.
+> Jede unerlaubte Form der Reproduktion, Bekanntgabe, Aenderung, Verteilung=
+ und/oder Publikation dieser E-Mail ist strengstens untersagt.
+> - Informationen zum Datenschutz, insbesondere zu Ihren Rechten, erhalten =
+Sie unter https://www.diehl.com/group/de/transparenz-und-informationspflich=
+ten/
+> =
+
+> The contents of the above mentioned e-mail is not legally binding. This e=
+-mail contains confidential and/or legally protected information. Please in=
+form us if you have received this e-mail by
+> mistake and delete it in such a case. Each unauthorized reproduction, dis=
+closure, alteration, distribution and/or publication of this e-mail is stri=
+ctly prohibited. =
+
+> - For general information on data protection and your respective rights p=
+lease visit https://www.diehl.com/group/en/transparency-and-information-obl=
+igations/
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> =
+
+
+-- =
+
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
