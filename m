@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k6ClN-00071x-5p
- for barebox@lists.infradead.org; Thu, 13 Aug 2020 12:55:41 +0000
+ id 1k6ClN-00071y-BG
+ for barebox@lists.infradead.org; Thu, 13 Aug 2020 12:55:45 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Thu, 13 Aug 2020 14:55:09 +0200
-Message-Id: <20200813125514.13574-2-o.rempel@pengutronix.de>
-In-Reply-To: <20200813125514.13574-1-o.rempel@pengutronix.de>
-References: <20200813125514.13574-1-o.rempel@pengutronix.de>
+Date: Thu, 13 Aug 2020 14:55:08 +0200
+Message-Id: <20200813125514.13574-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,90 +19,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 1/6] gpiolib: add gpio_array_to_id helper to get ID out of
- GPIO array
+Subject: [PATCH v3 0/6] prepare Protonic board code for mainline 
 To: barebox@lists.infradead.org, david@protonic.nl
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-Some boards provide a board version and/or ID coded by pull-up/down
-resistors connected to the gpio pins (or pins which can be multiplexed
-at some point as gpio). In this case every one implements own gpio id
-reader function.
+changes v3:
+- remove barebox-serial driver and use read the rfid directy from board
+  code (as was done in initial implementation)
+- use initcall instead of registering driver in the board code
+- add delayed USB scan
+- add rampoops node
+- add partition tables 
 
-To avoid it, provide the common helper function to extract a value out
-of provided gpio array.
+changes v2:
+- add power init support for KvG boards
+- spell fixes
+- do not print error on probe exit
+- add of_console_get_by_alias() helper
+- free requested gpio array
+- exit fec init only in case of PROBE_DEFERED
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- drivers/gpio/gpiolib.c | 31 +++++++++++++++++++++++++++++++
- include/gpio.h         |  5 +++++
- 2 files changed, 36 insertions(+)
+This patch series is a preparation and actual Protonic board code.
+Following changes was made in the main code:
+- register DT root node as device to make it possible to loade board
+  code as usual driver
+- provide helpers to read ethernet mac from nvmem cell register in a
+  devicetree.
+- provide barebox-serial driver which should be a nvmem cell consumer
+  and
+  serial-number DT property provider.
+- provide gpio helper to read gpio based board revision.
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 27674af54c..6088cadd8a 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -381,6 +381,37 @@ void gpio_free_array(const struct gpio *array, size_t num)
- }
- EXPORT_SYMBOL_GPL(gpio_free_array);
- 
-+int gpio_array_to_id(const struct gpio *array, size_t num, u32 *val)
-+{
-+	u32 id = 0;
-+	int ret, i;
-+
-+	if (num > 32)
-+		return -EOVERFLOW;
-+
-+	ret = gpio_request_array(array, num);
-+	if (ret)
-+		return ret;
-+
-+	/* Wait until logic level will be stable */
-+	udelay(5);
-+	for (i = 0; i < num; i++) {
-+		ret = gpio_is_active(array[i].gpio);
-+		if (ret < 0)
-+			goto free_array;
-+		if (ret)
-+			id |= 1UL << i;
-+	}
-+
-+	*val = id;
-+	ret = 0;
-+
-+free_array:
-+	gpio_free_array(array, num);
-+	return ret;
-+}
-+EXPORT_SYMBOL(gpio_array_to_id);
-+
- static int gpiochip_find_base(int start, int ngpio)
- {
- 	int i;
-diff --git a/include/gpio.h b/include/gpio.h
-index 98c5b93ba2..81beb47309 100644
---- a/include/gpio.h
-+++ b/include/gpio.h
-@@ -145,6 +145,10 @@ static inline void gpio_free_array(const struct gpio *array, size_t num)
- 	/* GPIO can never have been requested */
- 	WARN_ON(1);
- }
-+static inline int gpio_array_to_id(const struct gpio *array, size_t num, u32 *val)
-+{
-+	return -EINVAL;
-+}
- #else
- int gpio_request(unsigned gpio, const char *label);
- int gpio_find_by_name(const char *name);
-@@ -153,6 +157,7 @@ void gpio_free(unsigned gpio);
- int gpio_request_one(unsigned gpio, unsigned long flags, const char *label);
- int gpio_request_array(const struct gpio *array, size_t num);
- void gpio_free_array(const struct gpio *array, size_t num);
-+int gpio_array_to_id(const struct gpio *array, size_t num, u32 *val);
- #endif
- 
- struct gpio_chip;
+Oleksij Rempel (6):
+  gpiolib: add gpio_array_to_id helper to get ID out of GPIO array
+  common: console_common: add of_console_get_by_alias() helper
+  of: of_device_get_match_compatible() helper
+  ARM: protonic-imx6: port Protonic specific board code
+  ARM: dts: unify barebox and barebox,env partitions for all Protonic
+    boards
+  ARM: dts: imx6q-prti6q: add pstore/ramoops node
+
+ arch/arm/boards/protonic-imx6/Makefile |    1 +
+ arch/arm/boards/protonic-imx6/board.c  | 1002 ++++++++++++++++++++++++
+ arch/arm/dts/imx6dl-plym2m.dts         |   25 +
+ arch/arm/dts/imx6dl-prtrvt.dts         |    1 +
+ arch/arm/dts/imx6q-prti6q.dts          |   24 +-
+ arch/arm/dts/imx6qdl-prti6q-nor.dtsi   |   10 +
+ arch/arm/dts/imx6qdl-prti6q.dtsi       |   31 +
+ arch/arm/dts/imx6qdl-vicut1.dtsi       |   26 +
+ common/console_common.c                |   18 +
+ drivers/gpio/gpiolib.c                 |   31 +
+ drivers/of/device.c                    |   12 +
+ include/console.h                      |    1 +
+ include/gpio.h                         |    5 +
+ include/of_device.h                    |    6 +
+ 14 files changed, 1170 insertions(+), 23 deletions(-)
+ create mode 100644 arch/arm/boards/protonic-imx6/board.c
+ create mode 100644 arch/arm/dts/imx6qdl-prti6q-nor.dtsi
+
 -- 
 2.28.0
 
