@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k6ClN-00071y-BG
- for barebox@lists.infradead.org; Thu, 13 Aug 2020 12:55:45 +0000
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Thu, 13 Aug 2020 14:55:08 +0200
-Message-Id: <20200813125514.13574-1-o.rempel@pengutronix.de>
+ by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1k6DVV-0003m5-2n
+ for barebox@lists.infradead.org; Thu, 13 Aug 2020 13:43:02 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 13 Aug 2020 15:42:37 +0200
+Message-Id: <20200813134257.24627-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -15,73 +15,84 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 0/6] prepare Protonic board code for mainline 
-To: barebox@lists.infradead.org, david@protonic.nl
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: [PATCH v6 00/20] Slices and fastboot over UDP
+To: Barebox List <barebox@lists.infradead.org>
+Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-changes v3:
-- remove barebox-serial driver and use read the rfid directy from board
-  code (as was done in initial implementation)
-- use initcall instead of registering driver in the board code
-- add delayed USB scan
-- add rampoops node
-- add partition tables 
-
-changes v2:
-- add power init support for KvG boards
-- spell fixes
-- do not print error on probe exit
-- add of_console_get_by_alias() helper
-- free requested gpio array
-- exit fec init only in case of PROBE_DEFERED
-
-This patch series is a preparation and actual Protonic board code.
-Following changes was made in the main code:
-- register DT root node as device to make it possible to loade board
-  code as usual driver
-- provide helpers to read ethernet mac from nvmem cell register in a
-  devicetree.
-- provide barebox-serial driver which should be a nvmem cell consumer
-  and
-  serial-number DT property provider.
-- provide gpio helper to read gpio based board revision.
-
-Oleksij Rempel (6):
-  gpiolib: add gpio_array_to_id helper to get ID out of GPIO array
-  common: console_common: add of_console_get_by_alias() helper
-  of: of_device_get_match_compatible() helper
-  ARM: protonic-imx6: port Protonic specific board code
-  ARM: dts: unify barebox and barebox,env partitions for all Protonic
-    boards
-  ARM: dts: imx6q-prti6q: add pstore/ramoops node
-
- arch/arm/boards/protonic-imx6/Makefile |    1 +
- arch/arm/boards/protonic-imx6/board.c  | 1002 ++++++++++++++++++++++++
- arch/arm/dts/imx6dl-plym2m.dts         |   25 +
- arch/arm/dts/imx6dl-prtrvt.dts         |    1 +
- arch/arm/dts/imx6q-prti6q.dts          |   24 +-
- arch/arm/dts/imx6qdl-prti6q-nor.dtsi   |   10 +
- arch/arm/dts/imx6qdl-prti6q.dtsi       |   31 +
- arch/arm/dts/imx6qdl-vicut1.dtsi       |   26 +
- common/console_common.c                |   18 +
- drivers/gpio/gpiolib.c                 |   31 +
- drivers/of/device.c                    |   12 +
- include/console.h                      |    1 +
- include/gpio.h                         |    5 +
- include/of_device.h                    |    6 +
- 14 files changed, 1170 insertions(+), 23 deletions(-)
- create mode 100644 arch/arm/boards/protonic-imx6/board.c
- create mode 100644 arch/arm/dts/imx6qdl-prti6q-nor.dtsi
-
--- 
-2.28.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T25lIG1vcmUgcm91bmQuCgpDaGFuZ2VzIHNpbmNlIGxhc3QgdmVyc2lvbjoKCi0gaW50ZWdyYXRl
+ZCByZXZpZXcgZmVlZGJhY2sgZnJvbSBEYW5pZWwgR2zDtmNrbmVyCi0gQ2xhcmlmeSBkb2N1bWVu
+dGF0aW9uIGEgYml0LCBmaXhlZCB0eXBvcwoKRGFuaWVsIEdsw7Zja25lciAoMSk6CiAgZmFzdGJv
+b3Q6IHJlbmFtZSB1c2JnYWRnZXQuZmFzdGJvb3RfKiB2YXJpYWJsZXMgdG8gZmFzdGJvb3QuKgoK
+RWRtdW5kIEhlbm5pZ2VzICgxKToKICBmYXN0Ym9vdCBuZXQ6IGltcGxlbWVudCBmYXN0Ym9vdCBv
+dmVyIFVEUAoKU2FzY2hhIEhhdWVyICgxOCk6CiAgSW50cm9kdWNlIHNsaWNlcwogIEFkZCB3b3Jr
+cXVldWVzCiAgcmF0cDogU3dpdGNoIHRvIHdvcmtxdWV1ZXMKICBuZXQ6IEFkZCBhIHNsaWNlIHRv
+IHN0cnVjdCBldGhfZGV2aWNlCiAgbmV0OiBtZGlvYnVzOiBBZGQgc2xpY2UKICB1c2I6IEFkZCBh
+IHNsaWNlIHRvIHVzYiBob3N0IGNvbnRyb2xsZXJzCiAgdXNibmV0OiBBZGQgc2xpY2UKICBuZXQ6
+IENhbGwgbmV0X3BvbGwoKSBpbiBhIHBvbGxlcgogIG5ldDogcmVwbHkgdG8gcGluZyByZXF1ZXN0
+cwogIHVzYm5ldDogQmUgbW9yZSBmcmllbmRseSBpbiB0aGUgcmVjZWl2ZSBwYXRoCiAgZ2xvYmFs
+dmFyOiBBZGQgaGVscGVyIGZvciBkZXByZWNhdGVkIHZhcmlhYmxlIG5hbWVzCiAgZmFzdGJvb3Q6
+IFdhcm4gd2hlbiBjYl9kb3dubG9hZCBpcyBjYWxsZWQgd2l0aCBmaWxlIHN0aWxsIG9wZW4KICBm
+YXN0Ym9vdDogQWRkIGZhc3Rib290X2Fib3J0KCkKICBmYXN0Ym9vdDogaW5pdCBsaXN0IGhlYWQg
+aW4gY29tbW9uCiAgdXNiOiBmYXN0Ym9vdDogZXhlY3V0ZSBjb21tYW5kcyBpbiBjb21tYW5kIGNv
+bnRleHQKICBBZGQgV0FSTl9PTkNFKCkgbWFjcm8KICBmczogV2FybiB3aGVuIGZpbGVzeXN0ZW0g
+b3BlcmF0aW9ucyBhcmUgY2FsbGVkIGZyb20gYSBwb2xsZXIKICBEb2N1bWVudGF0aW9uOiBBZGQg
+ZG9jdW1lbnQgYWJvdXQgYmFja2dyb3VuZCBleGVjdXRpb24gaW4gYmFyZWJveAoKIERvY3VtZW50
+YXRpb24vZGV2ZWwvYmFja2dyb3VuZC1leGVjdXRpb24ucnN0IHwgMTI1ICsrKysKIERvY3VtZW50
+YXRpb24vZGV2ZWwvZGV2ZWwucnN0ICAgICAgICAgICAgICAgIHwgIDE0ICsKIERvY3VtZW50YXRp
+b24vaW5kZXgucnN0ICAgICAgICAgICAgICAgICAgICAgIHwgICAxICsKIERvY3VtZW50YXRpb24v
+dXNlci91c2IucnN0ICAgICAgICAgICAgICAgICAgIHwgICA0ICstCiBjb21tYW5kcy9LY29uZmln
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgOCArCiBjb21tYW5kcy91c2JnYWRnZXQu
+YyAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMiArLQogY29tbW9uL01ha2VmaWxlICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDIgKwogY29tbW9uL2Zhc3Rib290LmMgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgfCAgNDcgKy0KIGNvbW1vbi9nbG9iYWx2YXIuYyAgICAgICAg
+ICAgICAgICAgICAgICAgICAgIHwgIDU0ICstCiBjb21tb24vaHVzaC5jICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICB8ICAgNiArCiBjb21tb24vcG9sbGVyLmMgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICB8ICAxMSArLQogY29tbW9uL3JhdHAvcmF0cC5jICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgfCAgNTcgKy0KIGNvbW1vbi9zbGljZS5jICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgIHwgMzM1ICsrKysrKysrKysrCiBjb21tb24vc3RhcnR1cC5jICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICB8ICAgMyArCiBjb21tb24vdXNiZ2FkZ2V0LmMgICAgICAgICAgICAg
+ICAgICAgICAgICAgICB8ICAxNiArLQogY29tbW9uL3dvcmtxdWV1ZS5jICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgfCAgNTggKysKIGRyaXZlcnMvbmV0L3BoeS9tZGlvX2J1cy5jICAgICAgICAg
+ICAgICAgICAgIHwgIDQzICsrCiBkcml2ZXJzL25ldC91c2IvdXNibmV0LmMgICAgICAgICAgICAg
+ICAgICAgICB8ICAyMiArLQogZHJpdmVycy91c2IvY29yZS91c2IuYyAgICAgICAgICAgICAgICAg
+ICAgICAgfCAgMTIgKy0KIGRyaXZlcnMvdXNiL2dhZGdldC9mX2Zhc3Rib290LmMgICAgICAgICAg
+ICAgIHwgIDU0ICstCiBmcy9mcy5jICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICB8ICAzNCArKwogZnMvbmZzLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+fCAgIDIgLQogZnMvdGZ0cC5jICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAg
+IDIgLQogaW5jbHVkZS9hc20tZ2VuZXJpYy9idWcuaCAgICAgICAgICAgICAgICAgICAgfCAgMTMg
+KwogaW5jbHVkZS9mYXN0Ym9vdC5oICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDggKwog
+aW5jbHVkZS9mYXN0Ym9vdF9uZXQuaCAgICAgICAgICAgICAgICAgICAgICAgfCAgMTIgKwogaW5j
+bHVkZS9nbG9iYWx2YXIuaCAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDUgKwogaW5jbHVk
+ZS9saW51eC9waHkuaCAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgMzggKy0KIGluY2x1ZGUv
+bmV0LmggICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDExICstCiBpbmNsdWRlL3Jh
+dHBfYmIuaCAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMSAtCiBpbmNsdWRlL3NsaWNl
+LmggICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICA0MiArKwogaW5jbHVkZS91c2IvdXNi
+LmggICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDggKy0KIGluY2x1ZGUvdXNiL3VzYm5l
+dC5oICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAzICsKIGluY2x1ZGUvd29yay5oICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDI5ICsKIGxpYi9yZWFkbGluZS5jICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIHwgICA2ICstCiBuZXQvS2NvbmZpZyAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICB8ICAxMCArCiBuZXQvTWFrZWZpbGUgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICB8ICAgMSArCiBuZXQvZGhjcC5jICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICB8ICAgMSAtCiBuZXQvZG5zLmMgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICB8ICAgMSAtCiBuZXQvZXRoLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICB8ICA5NyArKystCiBuZXQvZmFzdGJvb3QuYyAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICB8IDU4MCArKysrKysrKysrKysrKysrKysrCiBuZXQvbmV0LmMgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICB8ICA2MCArLQogbmV0L25ldGNvbnNvbGUuYyAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgfCAgIDQgKy0KIG5ldC9uZnMuYyAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgIHwgICAxIC0KIG5ldC9waW5nLmMgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgIHwgICAyIC0KIG5ldC9zbnRwLmMgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgIHwgICAyIC0KIDQ2IGZpbGVzIGNoYW5nZWQsIDE3MzggaW5zZXJ0aW9ucygr
+KSwgMTA5IGRlbGV0aW9ucygtKQogY3JlYXRlIG1vZGUgMTAwNjQ0IERvY3VtZW50YXRpb24vZGV2
+ZWwvYmFja2dyb3VuZC1leGVjdXRpb24ucnN0CiBjcmVhdGUgbW9kZSAxMDA2NDQgRG9jdW1lbnRh
+dGlvbi9kZXZlbC9kZXZlbC5yc3QKIGNyZWF0ZSBtb2RlIDEwMDY0NCBjb21tb24vc2xpY2UuYwog
+Y3JlYXRlIG1vZGUgMTAwNjQ0IGNvbW1vbi93b3JrcXVldWUuYwogY3JlYXRlIG1vZGUgMTAwNjQ0
+IGluY2x1ZGUvZmFzdGJvb3RfbmV0LmgKIGNyZWF0ZSBtb2RlIDEwMDY0NCBpbmNsdWRlL3NsaWNl
+LmgKIGNyZWF0ZSBtb2RlIDEwMDY0NCBpbmNsdWRlL3dvcmsuaAogY3JlYXRlIG1vZGUgMTAwNjQ0
+IG5ldC9mYXN0Ym9vdC5jCgotLSAKMi4yOC4wCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5p
+bmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8v
+YmFyZWJveAo=
