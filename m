@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k6DVV-0003m5-2n
- for barebox@lists.infradead.org; Thu, 13 Aug 2020 13:43:02 +0000
+ id 1k6DVV-0003mF-4X
+ for barebox@lists.infradead.org; Thu, 13 Aug 2020 13:43:04 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 13 Aug 2020 15:42:37 +0200
-Message-Id: <20200813134257.24627-1-s.hauer@pengutronix.de>
+Date: Thu, 13 Aug 2020 15:42:44 +0200
+Message-Id: <20200813134257.24627-8-s.hauer@pengutronix.de>
+In-Reply-To: <20200813134257.24627-1-s.hauer@pengutronix.de>
+References: <20200813134257.24627-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -15,84 +17,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v6 00/20] Slices and fastboot over UDP
+Subject: [PATCH 07/20] usbnet: Add slice
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-T25lIG1vcmUgcm91bmQuCgpDaGFuZ2VzIHNpbmNlIGxhc3QgdmVyc2lvbjoKCi0gaW50ZWdyYXRl
-ZCByZXZpZXcgZmVlZGJhY2sgZnJvbSBEYW5pZWwgR2zDtmNrbmVyCi0gQ2xhcmlmeSBkb2N1bWVu
-dGF0aW9uIGEgYml0LCBmaXhlZCB0eXBvcwoKRGFuaWVsIEdsw7Zja25lciAoMSk6CiAgZmFzdGJv
-b3Q6IHJlbmFtZSB1c2JnYWRnZXQuZmFzdGJvb3RfKiB2YXJpYWJsZXMgdG8gZmFzdGJvb3QuKgoK
-RWRtdW5kIEhlbm5pZ2VzICgxKToKICBmYXN0Ym9vdCBuZXQ6IGltcGxlbWVudCBmYXN0Ym9vdCBv
-dmVyIFVEUAoKU2FzY2hhIEhhdWVyICgxOCk6CiAgSW50cm9kdWNlIHNsaWNlcwogIEFkZCB3b3Jr
-cXVldWVzCiAgcmF0cDogU3dpdGNoIHRvIHdvcmtxdWV1ZXMKICBuZXQ6IEFkZCBhIHNsaWNlIHRv
-IHN0cnVjdCBldGhfZGV2aWNlCiAgbmV0OiBtZGlvYnVzOiBBZGQgc2xpY2UKICB1c2I6IEFkZCBh
-IHNsaWNlIHRvIHVzYiBob3N0IGNvbnRyb2xsZXJzCiAgdXNibmV0OiBBZGQgc2xpY2UKICBuZXQ6
-IENhbGwgbmV0X3BvbGwoKSBpbiBhIHBvbGxlcgogIG5ldDogcmVwbHkgdG8gcGluZyByZXF1ZXN0
-cwogIHVzYm5ldDogQmUgbW9yZSBmcmllbmRseSBpbiB0aGUgcmVjZWl2ZSBwYXRoCiAgZ2xvYmFs
-dmFyOiBBZGQgaGVscGVyIGZvciBkZXByZWNhdGVkIHZhcmlhYmxlIG5hbWVzCiAgZmFzdGJvb3Q6
-IFdhcm4gd2hlbiBjYl9kb3dubG9hZCBpcyBjYWxsZWQgd2l0aCBmaWxlIHN0aWxsIG9wZW4KICBm
-YXN0Ym9vdDogQWRkIGZhc3Rib290X2Fib3J0KCkKICBmYXN0Ym9vdDogaW5pdCBsaXN0IGhlYWQg
-aW4gY29tbW9uCiAgdXNiOiBmYXN0Ym9vdDogZXhlY3V0ZSBjb21tYW5kcyBpbiBjb21tYW5kIGNv
-bnRleHQKICBBZGQgV0FSTl9PTkNFKCkgbWFjcm8KICBmczogV2FybiB3aGVuIGZpbGVzeXN0ZW0g
-b3BlcmF0aW9ucyBhcmUgY2FsbGVkIGZyb20gYSBwb2xsZXIKICBEb2N1bWVudGF0aW9uOiBBZGQg
-ZG9jdW1lbnQgYWJvdXQgYmFja2dyb3VuZCBleGVjdXRpb24gaW4gYmFyZWJveAoKIERvY3VtZW50
-YXRpb24vZGV2ZWwvYmFja2dyb3VuZC1leGVjdXRpb24ucnN0IHwgMTI1ICsrKysKIERvY3VtZW50
-YXRpb24vZGV2ZWwvZGV2ZWwucnN0ICAgICAgICAgICAgICAgIHwgIDE0ICsKIERvY3VtZW50YXRp
-b24vaW5kZXgucnN0ICAgICAgICAgICAgICAgICAgICAgIHwgICAxICsKIERvY3VtZW50YXRpb24v
-dXNlci91c2IucnN0ICAgICAgICAgICAgICAgICAgIHwgICA0ICstCiBjb21tYW5kcy9LY29uZmln
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgOCArCiBjb21tYW5kcy91c2JnYWRnZXQu
-YyAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMiArLQogY29tbW9uL01ha2VmaWxlICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDIgKwogY29tbW9uL2Zhc3Rib290LmMgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgfCAgNDcgKy0KIGNvbW1vbi9nbG9iYWx2YXIuYyAgICAgICAg
-ICAgICAgICAgICAgICAgICAgIHwgIDU0ICstCiBjb21tb24vaHVzaC5jICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICB8ICAgNiArCiBjb21tb24vcG9sbGVyLmMgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICB8ICAxMSArLQogY29tbW9uL3JhdHAvcmF0cC5jICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgfCAgNTcgKy0KIGNvbW1vbi9zbGljZS5jICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgIHwgMzM1ICsrKysrKysrKysrCiBjb21tb24vc3RhcnR1cC5jICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICB8ICAgMyArCiBjb21tb24vdXNiZ2FkZ2V0LmMgICAgICAgICAgICAg
-ICAgICAgICAgICAgICB8ICAxNiArLQogY29tbW9uL3dvcmtxdWV1ZS5jICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgfCAgNTggKysKIGRyaXZlcnMvbmV0L3BoeS9tZGlvX2J1cy5jICAgICAgICAg
-ICAgICAgICAgIHwgIDQzICsrCiBkcml2ZXJzL25ldC91c2IvdXNibmV0LmMgICAgICAgICAgICAg
-ICAgICAgICB8ICAyMiArLQogZHJpdmVycy91c2IvY29yZS91c2IuYyAgICAgICAgICAgICAgICAg
-ICAgICAgfCAgMTIgKy0KIGRyaXZlcnMvdXNiL2dhZGdldC9mX2Zhc3Rib290LmMgICAgICAgICAg
-ICAgIHwgIDU0ICstCiBmcy9mcy5jICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICB8ICAzNCArKwogZnMvbmZzLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-fCAgIDIgLQogZnMvdGZ0cC5jICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAg
-IDIgLQogaW5jbHVkZS9hc20tZ2VuZXJpYy9idWcuaCAgICAgICAgICAgICAgICAgICAgfCAgMTMg
-KwogaW5jbHVkZS9mYXN0Ym9vdC5oICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDggKwog
-aW5jbHVkZS9mYXN0Ym9vdF9uZXQuaCAgICAgICAgICAgICAgICAgICAgICAgfCAgMTIgKwogaW5j
-bHVkZS9nbG9iYWx2YXIuaCAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDUgKwogaW5jbHVk
-ZS9saW51eC9waHkuaCAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgMzggKy0KIGluY2x1ZGUv
-bmV0LmggICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDExICstCiBpbmNsdWRlL3Jh
-dHBfYmIuaCAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMSAtCiBpbmNsdWRlL3NsaWNl
-LmggICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICA0MiArKwogaW5jbHVkZS91c2IvdXNi
-LmggICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDggKy0KIGluY2x1ZGUvdXNiL3VzYm5l
-dC5oICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAzICsKIGluY2x1ZGUvd29yay5oICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDI5ICsKIGxpYi9yZWFkbGluZS5jICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgIHwgICA2ICstCiBuZXQvS2NvbmZpZyAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICB8ICAxMCArCiBuZXQvTWFrZWZpbGUgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICB8ICAgMSArCiBuZXQvZGhjcC5jICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICB8ICAgMSAtCiBuZXQvZG5zLmMgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICB8ICAgMSAtCiBuZXQvZXRoLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICB8ICA5NyArKystCiBuZXQvZmFzdGJvb3QuYyAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICB8IDU4MCArKysrKysrKysrKysrKysrKysrCiBuZXQvbmV0LmMgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICB8ICA2MCArLQogbmV0L25ldGNvbnNvbGUuYyAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgfCAgIDQgKy0KIG5ldC9uZnMuYyAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgIHwgICAxIC0KIG5ldC9waW5nLmMgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgIHwgICAyIC0KIG5ldC9zbnRwLmMgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgIHwgICAyIC0KIDQ2IGZpbGVzIGNoYW5nZWQsIDE3MzggaW5zZXJ0aW9ucygr
-KSwgMTA5IGRlbGV0aW9ucygtKQogY3JlYXRlIG1vZGUgMTAwNjQ0IERvY3VtZW50YXRpb24vZGV2
-ZWwvYmFja2dyb3VuZC1leGVjdXRpb24ucnN0CiBjcmVhdGUgbW9kZSAxMDA2NDQgRG9jdW1lbnRh
-dGlvbi9kZXZlbC9kZXZlbC5yc3QKIGNyZWF0ZSBtb2RlIDEwMDY0NCBjb21tb24vc2xpY2UuYwog
-Y3JlYXRlIG1vZGUgMTAwNjQ0IGNvbW1vbi93b3JrcXVldWUuYwogY3JlYXRlIG1vZGUgMTAwNjQ0
-IGluY2x1ZGUvZmFzdGJvb3RfbmV0LmgKIGNyZWF0ZSBtb2RlIDEwMDY0NCBpbmNsdWRlL3NsaWNl
-LmgKIGNyZWF0ZSBtb2RlIDEwMDY0NCBpbmNsdWRlL3dvcmsuaAogY3JlYXRlIG1vZGUgMTAwNjQ0
-IG5ldC9mYXN0Ym9vdC5jCgotLSAKMi4yOC4wCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5p
-bmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8v
-YmFyZWJveAo=
+Both the ethernet device and the mdio bus of a USB network controller
+need the USB bus. Add dependencies to it.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/net/usb/usbnet.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index 7397034586..46ea73247f 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -233,6 +233,9 @@ int usbnet_probe(struct usb_device *usbdev, const struct usb_device_id *prod)
+ 
+ 	eth_register(edev);
+ 
++	slice_depends_on(eth_device_slice(edev), usb_device_slice(usbdev));
++	slice_depends_on(mdiobus_slice(&undev->miibus), usb_device_slice(usbdev));
++
+ 	return 0;
+ out1:
+ 	dev_dbg(&edev->dev, "err: %d\n", status);
+-- 
+2.28.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
