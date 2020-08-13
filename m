@@ -1,18 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k5vQ6-0005Kp-2L
- for barebox@lists.infradead.org; Wed, 12 Aug 2020 18:24:14 +0000
-Message-ID: <7740a8a1097da1b20e10b105e8f42d68496135b2.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Wed, 12 Aug 2020 20:24:10 +0200
-In-Reply-To: <20200812161109.66jgmksevsru3w5c@pengutronix.de>
+ id 1k657j-00067x-2F
+ for barebox@lists.infradead.org; Thu, 13 Aug 2020 04:45:56 +0000
+Date: Thu, 13 Aug 2020 06:45:51 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Message-ID: <20200813044551.rrrzsd5nxz4so6dz@pengutronix.de>
 References: <20200812085552.12688-1-o.rempel@pengutronix.de>
  <96efaeac-1ad4-b869-7ebf-c43a67d2358d@pengutronix.de>
  <20200812151351.rvhjjymyzaezz7kd@pengutronix.de>
  <b2c40e80-946d-ede0-97b2-b0a1d4dccace@pengutronix.de>
  <20200812161109.66jgmksevsru3w5c@pengutronix.de>
+ <7740a8a1097da1b20e10b105e8f42d68496135b2.camel@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <7740a8a1097da1b20e10b105e8f42d68496135b2.camel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,116 +28,149 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH fixup v1] of: base: register DT root as device
-To: Oleksij Rempel <o.rempel@pengutronix.de>, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Hi Oleksij,
-
-Am Mittwoch, den 12.08.2020, 18:11 +0200 schrieb Oleksij Rempel:
-> On Wed, Aug 12, 2020 at 05:37:33PM +0200, Ahmad Fatoum wrote:
-> > Hello,
-> > 
-> > On 8/12/20 5:13 PM, Oleksij Rempel wrote:
-> > > > > +		dev_set_name(dev, "dt-root.of");
+On Wed, Aug 12, 2020 at 08:24:10PM +0200, Lucas Stach wrote:
+> Hi Oleksij,
+> 
+> Am Mittwoch, den 12.08.2020, 18:11 +0200 schrieb Oleksij Rempel:
+> > On Wed, Aug 12, 2020 at 05:37:33PM +0200, Ahmad Fatoum wrote:
+> > > Hello,
+> > > 
+> > > On 8/12/20 5:13 PM, Oleksij Rempel wrote:
+> > > > > > +		dev_set_name(dev, "dt-root.of");
+> > > > > 
+> > > > > Couldn't we drop the dt-? just let it be root.of.
+> > > > > dashes make use of device parameters less convenient should we
+> > > > > want to use those in future IIRC.
 > > > > 
-> > > > Couldn't we drop the dt-? just let it be root.of.
-> > > > dashes make use of device parameters less convenient should we
-> > > > want to use those in future IIRC.
+> > > > dt is used to make clear: it is root of dt and not some random root of
+> > > > what ever.
 > > > 
-> > > dt is used to make clear: it is root of dt and not some random root of
-> > > what ever.
-> > 
-> > It's redundant, there is already a .of suffix.
-> > I like machine.of more though.
-> > 
-> > > > of_platform_device_create does:
+> > > It's redundant, there is already a .of suffix.
+> > > I like machine.of more though.
+> > > 
+> > > > > of_platform_device_create does:
+> > > > > 
+> > > > > [-] check if device is available: not applicable to root node
+> > > > > [-] populate io resources: not applicable to root node
+> > > > > [-] use of_device_make_bus_id to get a name: not applicable to root node (prior to this patch)
+> > > > > [-] configure dma: not applicable to root node
+> > > > > [x] call platform_device_register
 > > > > 
-> > > > [-] check if device is available: not applicable to root node
-> > > > [-] populate io resources: not applicable to root node
-> > > > [-] use of_device_make_bus_id to get a name: not applicable to root node (prior to this patch)
-> > > > [-] configure dma: not applicable to root node
-> > > > [x] call platform_device_register
+> > > > You make this assumption, just because this node has no parents?
+> > > > Does it means, a parent less child may have no resources to do some work?
+> > > > You should be ashamed of yourself! :D
+> > > > 
+> > > > But really, what prevents you to assign board specific resource to a
+> > > > root node. It is just node as many others.
 > > > 
-> > > You make this assumption, just because this node has no parents?
-> > > Does it means, a parent less child may have no resources to do some work?
-> > > You should be ashamed of yourself! :D
+> > > It makes no sense for the root node to have resources.
+> > > What is a machine-wide interrupt? Or a machine-wide MMIO region?
+> > > What size would that region even have, when you have no parent
+> > > bus that defines address/size cells?
+> > 
+> > yes, you are right.
+> > 
+> > > Do you have any examples of oftree resources for the root node?
+> > 
+> > Do you have any example of the root node used as device?
+> > 
+> > > I'd rather not litter core code with an if-clause that evaluates to
+> > > true only once,
+> > 
+> > How many ifs are added in this patch and how many ifs will by added by
+> > your suggestion? 
+> > 
+> > > to support your (IMHO wrong)  use of a helper.
+> > 
+> > Interesting change of conversation. Please stay technical.
+> > 
+> > > of_device_make_bus_id is taken from Linux and does per comment:
 > > > 
-> > > But really, what prevents you to assign board specific resource to a
-> > > root node. It is just node as many others.
+> > > This routine will first try using the translated bus address to
+> > > derive a unique name. If it cannot, then it will prepend names from
+> > > parent nodes until a unique name can be derived.
+> > > 
+> > > IMO, it should stay that way.
 > > 
-> > It makes no sense for the root node to have resources.
-> > What is a machine-wide interrupt? Or a machine-wide MMIO region?
-> > What size would that region even have, when you have no parent
-> > bus that defines address/size cells?
-> 
-> yes, you are right.
-> 
-> > Do you have any examples of oftree resources for the root node?
-> 
-> Do you have any example of the root node used as device?
-> 
-> > I'd rather not litter core code with an if-clause that evaluates to
-> > true only once,
-> 
-> How many ifs are added in this patch and how many ifs will by added by
-> your suggestion? 
-> 
-> > to support your (IMHO wrong)  use of a helper.
-> 
-> Interesting change of conversation. Please stay technical.
-> 
-> > of_device_make_bus_id is taken from Linux and does per comment:
+> > Ok, i'll send a patch to rename of_device_make_bus_id to of_device_make_id.
+> > In this case it will reflect new reality and keep the code readable.
 > > 
-> > This routine will first try using the translated bus address to
-> > derive a unique name. If it cannot, then it will prepend names from
-> > parent nodes until a unique name can be derived.
+> > If you have arguments in following topics:
+> > - it will significantly affect performance
+> > - it will affect size of executable
+> > - it will affect maintainability
 > > 
-> > IMO, it should stay that way.
+> > Please use them
 > 
-> Ok, i'll send a patch to rename of_device_make_bus_id to of_device_make_id.
-> In this case it will reflect new reality and keep the code readable.
+> Please tone it down a bit. From my PoV most of Ahmad's points were
+> technical and quite to the point.
 > 
-> If you have arguments in following topics:
-> - it will significantly affect performance
-> - it will affect size of executable
-> - it will affect maintainability
-> 
-> Please use them
+> I guess the miscommunication between you two is that you are trying to
+> treat the root node just as every other node
 
-Please tone it down a bit. From my PoV most of Ahmad's points were
-technical and quite to the point.
+ack
 
-I guess the miscommunication between you two is that you are trying to
-treat the root node just as every other node, while that's just not the
-case. As Ahmad rightfully said the root node is quite special: the
-device we are talking about here is not populated by a
-of_platform_populate call as done for all the other nodes. The root
-node can also not have resources on its own (phandles to other
-resources yes, but no own resources) as it's the special node
-describing how to interpret resource descriptions in all the other
-child nodes.
+> while that's just not the
+> case. As Ahmad rightfully said the root node is quite special: the
+> device we are talking about here is not populated by a
+> of_platform_populate call as done for all the other nodes. The root
+> node can also not have resources on its own (phandles to other
+> resources yes, but no own resources) as it's the special node
+> describing how to interpret resource descriptions in all the other
+> child nodes.
 
-Spreading the special cases used for the root node between different
-areas of the codebase actually makes maintenance harder. It might be
-obvious to you how things work together now, since you worked on those
-areas recently, but in the long run people will have to piece this
-knowledge together by reading different parts of the codebase. If we
-can contain the special cases for the root node in a single place (by
-doing all the custom device setup in of_probe) we should try to do so.
+ack. And all of this resources are optional, so of_platform_populate()
+can already without additional work handle lack of them, as on ever node
+without resources.
 
-Renaming of_device_make_bus_id to of_device_make_id is a step in
-totally the wrong direction, as it takes us further away from the
-common ancestry in the Linux kernel codebase, just to cater for the
-special case of the root node.
+> Spreading the special cases used for the root node between different
+> areas of the codebase actually makes maintenance harder.
 
-Also my vote is on the "machine.of" name for the device, but that's
-really just bikeshedding, so please don't let this distract you from
-the other, much more interesting points I tried to make in this mail.
-;)
+This will happen on any of this patch version. We will have a special case
+which should be handled.
+
+> It might be
+> obvious to you how things work together now, since you worked on those
+> areas recently, but in the long run people will have to piece this
+> knowledge together by reading different parts of the codebase. If we
+> can contain the special cases for the root node in a single place (by
+> doing all the custom device setup in of_probe) we should try to do so.
+
+currently, it is the single point i would agree. On other hand, we
+already have a function which handles all of this exceptions. It is
+common, mostly executed, perfectly tested code path.
+
+As we already seen, this patch introduced an issue which was not detected
+on some SoCs, because we have no exception handlers at this early stage.
+It means, the reworked version, will never be tested in the same way as
+the current version. Since testability is one aspect of maintainability,
+i would prefer to add an comment to the code to clarify things.
+
+> Renaming of_device_make_bus_id to of_device_make_id is a step in
+> totally the wrong direction, as it takes us further away from the
+> common ancestry in the Linux kernel codebase, just to cater for the
+> special case of the root node.
+
+Yes, but it was never an issue for us. Why now?
+Any way, i can move this part of code out of of_device_make_bus_id()
+
+> Also my vote is on the "machine.of" name for the device, but that's
+> really just bikeshedding, so please don't let this distract you from
+> the other, much more interesting points I tried to make in this mail.
+> ;)
+
+:)
 
 Regards,
-Lucas
-
+Oleksij
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
