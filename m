@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k6DVV-0003mH-8j
- for barebox@lists.infradead.org; Thu, 13 Aug 2020 13:43:07 +0000
+ id 1k6DVV-0003m7-2p
+ for barebox@lists.infradead.org; Thu, 13 Aug 2020 13:43:08 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 13 Aug 2020 15:42:45 +0200
-Message-Id: <20200813134257.24627-9-s.hauer@pengutronix.de>
+Date: Thu, 13 Aug 2020 15:42:39 +0200
+Message-Id: <20200813134257.24627-3-s.hauer@pengutronix.de>
 In-Reply-To: <20200813134257.24627-1-s.hauer@pengutronix.de>
 References: <20200813134257.24627-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,224 +21,298 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/20] net: Call net_poll() in a poller
+Subject: [PATCH 02/20] Add workqueues
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-This patch moves the ethernet receive loop into a poller. With this
-network protocols no longer have to call net_loop() explicitly but
-can do it implicitly by calling is_timeout() when waiting for packets.
+Some code wants to run arbitrary code in the background, examples are
+fastboot and ratp. Currently this is implemented in pollers. The problem
+with this is that pollers are executed whenever is_timeout() is called
+which may happen anywhere in the code. With this we can never tell which
+resources are currently in use when the poller is executed.
 
-Having the network receive loop running in a poller has the advantage
-that we have it running continuously and not only when we explicitly
-expect packets to come in. With this we can reasonably well answer to
-ping requests which is implemented in the next patch. This also helps
-protocols that run in the background like fastboot over UDP.
+This adds a work queue interface which is specifically designed to
+trigger doing work in a context where it's safe to run arbitrary commands.
+
+Code in pollers can attach work to a work queue which is at that time
+only queued up. A new slice, the command slice, is added which by
+default is acquired. It is only released at places where the shell waits
+for input. When during this time pollers are executed the queued up
+works are done before running the registered pollers.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/nfs.c         |  2 --
- fs/tftp.c        |  2 --
- include/net.h    |  3 ---
- net/dhcp.c       |  1 -
- net/dns.c        |  1 -
- net/eth.c        | 15 ++++++++++-----
- net/net.c        | 14 +++++++++++---
- net/netconsole.c |  4 +---
- net/nfs.c        |  1 -
- net/ping.c       |  2 --
- net/sntp.c       |  2 --
- 11 files changed, 22 insertions(+), 25 deletions(-)
+ common/Makefile    |  1 +
+ common/hush.c      |  6 +++++
+ common/poller.c    |  9 +++++++
+ common/slice.c     | 32 +++++++++++++++++++++++++
+ common/startup.c   |  3 +++
+ common/workqueue.c | 58 ++++++++++++++++++++++++++++++++++++++++++++++
+ include/slice.h    |  5 ++++
+ include/work.h     | 29 +++++++++++++++++++++++
+ 8 files changed, 143 insertions(+)
+ create mode 100644 common/workqueue.c
+ create mode 100644 include/work.h
 
-diff --git a/fs/nfs.c b/fs/nfs.c
-index 6c4637281d..6844d13d50 100644
---- a/fs/nfs.c
-+++ b/fs/nfs.c
-@@ -447,8 +447,6 @@ again:
- 	nfs_timer_start = get_time_ns();
+diff --git a/common/Makefile b/common/Makefile
+index 58594d9782..99f1977b4b 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -12,6 +12,7 @@ obj-$(CONFIG_ELF)		+= elf.o
+ obj-y				+= restart.o
+ obj-y				+= poweroff.o
+ obj-y				+= slice.o
++obj-y				+= workqueue.o
+ obj-$(CONFIG_MACHINE_ID)	+= machine_id.o
+ obj-$(CONFIG_AUTO_COMPLETE)	+= complete.o
+ obj-y				+= version.o
+diff --git a/common/hush.c b/common/hush.c
+index c24b2c7cd2..ec0d5129b7 100644
+--- a/common/hush.c
++++ b/common/hush.c
+@@ -121,6 +121,7 @@
+ #include <libbb.h>
+ #include <password.h>
+ #include <glob.h>
++#include <slice.h>
+ #include <getopt.h>
+ #include <libfile.h>
+ #include <libbb.h>
+@@ -460,7 +461,12 @@ static void get_user_input(struct in_str *i)
+ 	else
+ 		prompt = CONFIG_PROMPT_HUSH_PS2;
  
- 	while (1) {
--		net_poll();
--
- 		if (is_timeout(nfs_timer_start, NFS_TIMEOUT)) {
- 			tries++;
- 			if (tries == NFS_MAX_RESEND)
-diff --git a/fs/tftp.c b/fs/tftp.c
-index d186e7983a..e5a58a4dae 100644
---- a/fs/tftp.c
-+++ b/fs/tftp.c
-@@ -207,8 +207,6 @@ static int tftp_poll(struct file_priv *priv)
- 		return -ETIMEDOUT;
- 	}
++	command_slice_release();
++
+ 	n = readline(prompt, console_buffer, CONFIG_CBSIZE);
++
++	command_slice_acquire();
++
+ 	if (n == -1 ) {
+ 		i->interrupt = 1;
+ 		n = 0;
+diff --git a/common/poller.c b/common/poller.c
+index 95f828b439..7b1b92714c 100644
+--- a/common/poller.c
++++ b/common/poller.c
+@@ -12,6 +12,8 @@
+ #include <param.h>
+ #include <poller.h>
+ #include <clock.h>
++#include <work.h>
++#include <slice.h>
  
--	net_poll();
--
- 	return 0;
+ static LIST_HEAD(poller_list);
+ static int poller_active;
+@@ -110,15 +112,22 @@ int poller_async_unregister(struct poller_async *pa)
+ void poller_call(void)
+ {
+ 	struct poller_struct *poller, *tmp;
++	bool run_workqueues = !slice_acquired(&command_slice);
+ 
+ 	if (poller_active)
+ 		return;
+ 
++	command_slice_acquire();
++
++	if (run_workqueues)
++		wq_do_all_works();
++
+ 	poller_active = 1;
+ 
+ 	list_for_each_entry_safe(poller, tmp, &poller_list, list)
+ 		poller->func(poller);
+ 
++	command_slice_release();
+ 	poller_active = 0;
  }
  
-diff --git a/include/net.h b/include/net.h
-index 8d2b4923de..583dc14ed5 100644
---- a/include/net.h
-+++ b/include/net.h
-@@ -244,9 +244,6 @@ IPaddr_t net_get_nameserver(void);
- const char *net_get_domainname(void);
- struct eth_device *net_route(IPaddr_t ip);
+diff --git a/common/slice.c b/common/slice.c
+index 085d67604f..9d7e0d16cf 100644
+--- a/common/slice.c
++++ b/common/slice.c
+@@ -3,6 +3,7 @@
+ #define pr_fmt(fmt) "slice: " fmt
  
--/* Do the work */
--void net_poll(void);
--
- static inline struct iphdr *net_eth_to_iphdr(char *pkt)
- {
- 	return (struct iphdr *)(pkt + ETHER_HDR_SIZE);
-diff --git a/net/dhcp.c b/net/dhcp.c
-index a27fa89996..ef22d2cef0 100644
---- a/net/dhcp.c
-+++ b/net/dhcp.c
-@@ -513,7 +513,6 @@ int dhcp_request(struct eth_device *edev, const struct dhcp_req_param *param,
- 			ret = -ETIMEDOUT;
- 			goto out1;
- 		}
--		net_poll();
- 		if (is_timeout(dhcp_start, 3 * SECOND)) {
- 			dhcp_start = get_time_ns();
- 			printf("T ");
-diff --git a/net/dns.c b/net/dns.c
-index ffe98ef9e3..851bf3722e 100644
---- a/net/dns.c
-+++ b/net/dns.c
-@@ -231,7 +231,6 @@ int resolv(const char *host, IPaddr_t *ip)
- 		if (ctrlc()) {
- 			break;
- 		}
--		net_poll();
- 		if (is_timeout(dns_timer_start, SECOND)) {
- 			dns_timer_start = get_time_ns();
- 			printf("T ");
-diff --git a/net/eth.c b/net/eth.c
-index e67cc306c2..ab484cdd05 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -288,14 +288,19 @@ static int __eth_rx(struct eth_device *edev)
- {
- 	int ret;
+ #include <common.h>
++#include <init.h>
+ #include <slice.h>
  
--	slice_acquire(eth_device_slice(edev));
-+	if (!phy_acquired(edev->phydev)) {
-+		ret = eth_carrier_check(edev, 0);
-+		if (ret)
-+			return ret;
+ /*
+@@ -231,6 +232,37 @@ void slice_exit(struct slice *slice)
+ 	free(slice->name);
+ }
+ 
++struct slice command_slice;
++
++/**
++ * command_slice_acquire - acquire the command slice
++ *
++ * The command slice is acquired by default. It is only released
++ * at certain points we know it's safe to execute code in the
++ * background, like when the shell is waiting for input.
++ */
++void command_slice_acquire(void)
++{
++	slice_acquire(&command_slice);
++}
++
++/**
++ * command_slice_release - release the command slice
++ */
++void command_slice_release(void)
++{
++	slice_release(&command_slice);
++}
++
++static int command_slice_init(void)
++{
++	slice_init(&command_slice, "command");
++	slice_acquire(&command_slice);
++	return 0;
++}
++
++pure_initcall(command_slice_init);
++
+ #if defined CONFIG_CMD_SLICE
+ 
+ #include <command.h>
+diff --git a/common/startup.c b/common/startup.c
+index 1c58e41288..075863d22e 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -34,6 +34,7 @@
+ #include <debug_ll.h>
+ #include <fs.h>
+ #include <errno.h>
++#include <slice.h>
+ #include <linux/stat.h>
+ #include <envfs.h>
+ #include <magicvar.h>
+@@ -272,8 +273,10 @@ enum autoboot_state do_autoboot_countdown(void)
+ 		break;
+ 	}
+ 
++	command_slice_release();
+ 	ret = console_countdown(global_autoboot_timeout, flags, abortkeys,
+ 				&outkey);
++	command_slice_acquire();
+ 
+ 	if (ret == 0)
+ 		autoboot_state = AUTOBOOT_BOOT;
+diff --git a/common/workqueue.c b/common/workqueue.c
+new file mode 100644
+index 0000000000..6fdd4e42ea
+--- /dev/null
++++ b/common/workqueue.c
+@@ -0,0 +1,58 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include <common.h>
++#include <work.h>
++
++static void wq_do_pending_work(struct work_queue *wq)
++{
++	struct work_struct *work, *tmp;
++
++	list_for_each_entry_safe(work, tmp, &wq->work, list) {
++		list_del(&work->list);
++		wq->fn(work);
 +	}
- 
--	ret = eth_carrier_check(edev, 0);
--	if (ret)
--		goto out;
-+	if (slice_acquired(eth_device_slice(edev)))
-+		return 0;
++}
 +
-+	slice_acquire(eth_device_slice(edev));
- 
- 	ret = edev->recv(edev);
--out:
++void wq_cancel_work(struct work_queue *wq)
++{
++	struct work_struct *work, *tmp;
 +
- 	slice_release(eth_device_slice(edev));
++	list_for_each_entry_safe(work, tmp, &wq->work, list) {
++		list_del(&work->list);
++		wq->cancel(work);
++	}
++}
++
++static LIST_HEAD(work_queues);
++
++/**
++ * wq_do_all_works - do all pending work
++ *
++ * This calls all pending work functions
++ */
++void wq_do_all_works(void)
++{
++	struct work_queue *wq;
++
++	list_for_each_entry(wq, &work_queues, list)
++		wq_do_pending_work(wq);
++}
++
++/**
++ * wq_register - register a new work queue
++ * @wq:    The work queue
++ */
++void wq_register(struct work_queue *wq)
++{
++	INIT_LIST_HEAD(&wq->work);
++	list_add_tail(&wq->list, &work_queues);
++}
++
++/**
++ * wq_unregister - unregister a work queue
++ * @wq:    The work queue
++ */
++void wq_unregister(struct work_queue *wq)
++{
++	wq_cancel_work(wq);
++	list_del(&wq->list);
++}
+diff --git a/include/slice.h b/include/slice.h
+index 5538fc434a..fd753e194b 100644
+--- a/include/slice.h
++++ b/include/slice.h
+@@ -28,4 +28,9 @@ void slice_exit(struct slice *slice);
  
- 	return ret;
-diff --git a/net/net.c b/net/net.c
-index 5fd6246ab2..197b551e72 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -239,8 +239,6 @@ static int arp_request(struct eth_device *edev, IPaddr_t dest, unsigned char *et
+ void slice_debug_acquired(struct slice *slice);
  
- 		if (retries > PKT_NUM_RETRIES)
- 			return -ETIMEDOUT;
--
--		net_poll();
- 	}
- 
- 	pr_debug("Got ARP REPLY for %pI4: %02x:%02x:%02x:%02x:%02x:%02x\n",
-@@ -249,11 +247,21 @@ static int arp_request(struct eth_device *edev, IPaddr_t dest, unsigned char *et
- 	return 0;
- }
- 
--void net_poll(void)
-+static void net_poll(struct poller_struct *poller)
- {
- 	eth_rx();
- }
- 
-+static struct poller_struct net_poller = {
-+	.func = net_poll,
++extern struct slice command_slice;
++
++void command_slice_acquire(void);
++void command_slice_release(void);
++
+ #endif /* __SLICE_H */
+diff --git a/include/work.h b/include/work.h
+new file mode 100644
+index 0000000000..e428e821ea
+--- /dev/null
++++ b/include/work.h
+@@ -0,0 +1,29 @@
++#ifndef __WORK_H
++#define __WORK_H
++
++#include <linux/list.h>
++
++struct work_struct {
++	struct list_head list;
 +};
 +
-+static int init_net_poll(void)
-+{
-+	return poller_register(&net_poller, "net");
-+}
-+device_initcall(init_net_poll);
++struct work_queue {
++	void (*fn)(struct work_struct *work);
++	void (*cancel)(struct work_struct *work);
 +
- static uint16_t net_udp_new_localport(void)
- {
- 	static uint16_t localport;
-diff --git a/net/netconsole.c b/net/netconsole.c
-index 0fece65a23..c692db942f 100644
---- a/net/netconsole.c
-+++ b/net/netconsole.c
-@@ -59,7 +59,7 @@ static int nc_getc(struct console_device *cdev)
- 		return 0;
- 
- 	while (!kfifo_len(priv->fifo))
--		net_poll();
-+		udelay(1);
- 
- 	kfifo_getc(priv->fifo, &c);
- 
-@@ -77,8 +77,6 @@ static int nc_tstc(struct console_device *cdev)
- 	if (priv->busy)
- 		return kfifo_len(priv->fifo) ? 1 : 0;
- 
--	net_poll();
--
- 	return kfifo_len(priv->fifo) ? 1 : 0;
- }
- 
-diff --git a/net/nfs.c b/net/nfs.c
-index 591417e0de..266351da09 100644
---- a/net/nfs.c
-+++ b/net/nfs.c
-@@ -710,7 +710,6 @@ static int do_nfs(int argc, char *argv[])
- 			nfs_err = -EINTR;
- 			break;
- 		}
--		net_poll();
- 		if (is_timeout(nfs_timer_start, NFS_TIMEOUT * SECOND)) {
- 			show_progress(-1);
- 			nfs_send();
-diff --git a/net/ping.c b/net/ping.c
-index a71f59a805..f3de0c27a4 100644
---- a/net/ping.c
-+++ b/net/ping.c
-@@ -89,8 +89,6 @@ static int do_ping(int argc, char *argv[])
- 			break;
- 		}
- 
--		net_poll();
--
- 		if (is_timeout(ping_start, SECOND)) {
- 			/* No answer, send another packet */
- 			ping_start = get_time_ns();
-diff --git a/net/sntp.c b/net/sntp.c
-index b4e6d6439c..f693a2e8af 100644
---- a/net/sntp.c
-+++ b/net/sntp.c
-@@ -145,8 +145,6 @@ s64 sntp(const char *server)
- 			break;
- 		}
- 
--		net_poll();
--
- 		if (is_timeout(sntp_start, 1 * SECOND)) {
- 			sntp_start = get_time_ns();
- 			ret = sntp_send();
++	struct list_head list;
++	struct list_head work;
++};
++
++static inline void wq_queue_work(struct work_queue *wq, struct work_struct *work)
++{
++	list_add_tail(&work->list, &wq->work);
++}
++
++void wq_register(struct work_queue *wq);
++void wq_unregister(struct work_queue *wq);
++
++void wq_do_all_works(void);
++void wq_cancel_work(struct work_queue *wq);
++
++#endif /* __WORK_H */
 -- 
 2.28.0
 
