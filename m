@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k6DVV-0003mJ-DD
+ id 1k6DVV-0003mK-EH
  for barebox@lists.infradead.org; Thu, 13 Aug 2020 13:43:05 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 13 Aug 2020 15:42:51 +0200
-Message-Id: <20200813134257.24627-15-s.hauer@pengutronix.de>
+Date: Thu, 13 Aug 2020 15:42:55 +0200
+Message-Id: <20200813134257.24627-19-s.hauer@pengutronix.de>
 In-Reply-To: <20200813134257.24627-1-s.hauer@pengutronix.de>
 References: <20200813134257.24627-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,51 +21,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/20] fastboot: Add fastboot_abort()
+Subject: [PATCH 18/20] Add WARN_ONCE() macro
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-Add fastboot_abort() to allow aborting the current session.
+This adds WARN_ONCE from the Linux Kernel. It is useful to warn only
+once when we would otherwise spam the log.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/fastboot.c  | 12 ++++++++++++
- include/fastboot.h |  2 ++
- 2 files changed, 14 insertions(+)
+ include/asm-generic/bug.h | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/common/fastboot.c b/common/fastboot.c
-index 7f5b8b6f03..10ebb8b2a9 100644
---- a/common/fastboot.c
-+++ b/common/fastboot.c
-@@ -347,6 +347,18 @@ void fastboot_download_finished(struct fastboot *fb)
- 	fastboot_tx_print(fb, FASTBOOT_MSG_OKAY, "");
- }
- 
-+void fastboot_abort(struct fastboot *fb)
-+{
-+	if (fb->download_fd > 0) {
-+		close(fb->download_fd);
-+		fb->download_fd = 0;
-+	}
+diff --git a/include/asm-generic/bug.h b/include/asm-generic/bug.h
+index 8583d2425f..82b78261fc 100644
+--- a/include/asm-generic/bug.h
++++ b/include/asm-generic/bug.h
+@@ -34,4 +34,17 @@
+ 	unlikely(__ret_warn_on);					\
+ })
+ #endif
 +
-+	fb->active = false;
-+
-+	unlink(fb->tempname);
-+}
-+
- static void cb_download(struct fastboot *fb, const char *cmd)
- {
- 	fb->download_size = simple_strtoul(cmd, NULL, 16);
-diff --git a/include/fastboot.h b/include/fastboot.h
-index 8619dcd34e..7718390ae5 100644
---- a/include/fastboot.h
-+++ b/include/fastboot.h
-@@ -66,4 +66,6 @@ int fastboot_tx_print(struct fastboot *fb, enum fastboot_msg_type type,
- void fastboot_start_download_generic(struct fastboot *fb);
- void fastboot_download_finished(struct fastboot *fb);
- void fastboot_exec_cmd(struct fastboot *fb, const char *cmdbuf);
-+void fastboot_abort(struct fastboot *fb);
-+
++#define WARN_ONCE(condition, format...) ({	\
++	static int __warned;			\
++	int __ret_warn_once = !!(condition);	\
++						\
++	if (unlikely(__ret_warn_once)) {	\
++		if (WARN(!__warned, format)) {	\
++			__warned = 1;		\
++			dump_stack();		\
++		}				\
++	}					\
++	unlikely(__ret_warn_once);		\
++})
  #endif
 -- 
 2.28.0
