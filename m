@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k6DVV-0003mE-3R
- for barebox@lists.infradead.org; Thu, 13 Aug 2020 13:43:04 +0000
+ id 1k6DVV-0003mD-3P
+ for barebox@lists.infradead.org; Thu, 13 Aug 2020 13:43:02 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 13 Aug 2020 15:42:46 +0200
-Message-Id: <20200813134257.24627-10-s.hauer@pengutronix.de>
+Date: Thu, 13 Aug 2020 15:42:43 +0200
+Message-Id: <20200813134257.24627-7-s.hauer@pengutronix.de>
 In-Reply-To: <20200813134257.24627-1-s.hauer@pengutronix.de>
 References: <20200813134257.24627-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,87 +21,88 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/20] net: reply to ping requests
+Subject: [PATCH 06/20] usb: Add a slice to usb host controllers
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-Now that we have the network receive function running in a poller we
-can reasonably well answer to ping requests. Implement this feature.
-
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- net/net.c | 46 ++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 44 insertions(+), 2 deletions(-)
+ drivers/usb/core/usb.c | 12 +++++++-----
+ include/usb/usb.h      |  8 +++++++-
+ 2 files changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/net/net.c b/net/net.c
-index 197b551e72..cb0013519c 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -570,12 +570,54 @@ static int net_handle_udp(unsigned char *pkt, int len)
- 	return -EINVAL;
+diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+index 30c251f405..c068c64c6b 100644
+--- a/drivers/usb/core/usb.c
++++ b/drivers/usb/core/usb.c
+@@ -75,28 +75,30 @@ static int host_busnum = 1;
+ 
+ static inline int usb_host_acquire(struct usb_host *host)
+ {
+-	if (host->sem)
++	if (slice_acquired(&host->slice))
+ 		return -EAGAIN;
+-	host->sem++;
++
++	slice_acquire(&host->slice);
++
+ 	return 0;
  }
  
--static int net_handle_icmp(unsigned char *pkt, int len)
-+static int ping_reply(struct eth_device *edev, unsigned char *pkt, int len)
+ static inline void usb_host_release(struct usb_host *host)
+ {
+-	if (host->sem > 0)
+-		host->sem--;
++	slice_release(&host->slice);
+ }
+ 
+ int usb_register_host(struct usb_host *host)
+ {
+ 	list_add_tail(&host->list, &host_list);
+ 	host->busnum = host_busnum++;
+-	host->sem = 0;
++	slice_init(&host->slice, dev_name(host->hw_dev));
+ 	return 0;
+ }
+ 
+ void usb_unregister_host(struct usb_host *host)
+ {
++	slice_exit(&host->slice);
+ 	list_del(&host->list);
+ }
+ 
+diff --git a/include/usb/usb.h b/include/usb/usb.h
+index c2085eae87..39f4750916 100644
+--- a/include/usb/usb.h
++++ b/include/usb/usb.h
+@@ -20,6 +20,7 @@
+ #define _USB_H_
+ 
+ #include <driver.h>
++#include <slice.h>
+ #include <usb/ch9.h>
+ #include <usb/ch11.h>
+ #include <usb/usb_defs.h>
+@@ -163,13 +164,18 @@ struct usb_host {
+ 	struct device_d *hw_dev;
+ 	int busnum;
+ 	struct usb_device *root_dev;
+-	int sem;
+ 	struct usb_phy *usbphy;
++	struct slice slice;
+ };
+ 
+ int usb_register_host(struct usb_host *);
+ void usb_unregister_host(struct usb_host *host);
+ 
++static inline struct slice *usb_device_slice(struct usb_device *udev)
 +{
-+	struct ethernet *et = (struct ethernet *)pkt;
-+	struct icmphdr *icmp;
-+	struct iphdr *ip = (struct iphdr *)(pkt + ETHER_HDR_SIZE);
-+	unsigned char *packet;
-+	int ret;
-+
-+	memcpy(et->et_dest, et->et_src, 6);
-+	memcpy(et->et_src, edev->ethaddr, 6);
-+	et->et_protlen = htons(PROT_IP);
-+
-+	icmp = net_eth_to_icmphdr(pkt);
-+
-+	icmp->type = ICMP_ECHO_REPLY;
-+	icmp->checksum = 0;
-+	icmp->checksum = ~net_checksum((unsigned char *)icmp,
-+				       len - sizeof(struct iphdr) - ETHER_HDR_SIZE);
-+	ip->check = 0;
-+	ip->frag_off = 0;
-+	net_copy_ip((void *)&ip->daddr, &ip->saddr);
-+	net_copy_ip((void *)&ip->saddr, &edev->ipaddr);
-+	ip->check = ~net_checksum((unsigned char *)ip, sizeof(struct iphdr));
-+
-+	packet = net_alloc_packet();
-+	if (!packet)
-+		return 0;
-+
-+	memcpy(packet, pkt, ETHER_HDR_SIZE + len);
-+
-+	ret = eth_send(edev, packet, ETHER_HDR_SIZE + len);
-+
-+	free(packet);
-+
-+	return 0;
++	return &udev->host->slice;
 +}
 +
-+static int net_handle_icmp(struct eth_device *edev, unsigned char *pkt, int len)
- {
- 	struct net_connection *con;
-+	struct icmphdr *icmp;
+ int usb_host_detect(struct usb_host *host);
  
- 	pr_debug("%s\n", __func__);
- 
-+	icmp = net_eth_to_icmphdr(pkt);
-+	if (icmp->type == ICMP_ECHO_REQUEST)
-+		ping_reply(edev, pkt, len);
-+
- 	list_for_each_entry(con, &connection_list, list) {
- 		if (con->proto == IPPROTO_ICMP) {
- 			con->handler(con->priv, pkt, len);
-@@ -612,7 +654,7 @@ static int net_handle_ip(struct eth_device *edev, unsigned char *pkt, int len)
- 
- 	switch (ip->protocol) {
- 	case IPPROTO_ICMP:
--		return net_handle_icmp(pkt, len);
-+		return net_handle_icmp(edev, pkt, len);
- 	case IPPROTO_UDP:
- 		return net_handle_udp(pkt, len);
- 	}
+ int usb_set_protocol(struct usb_device *dev, int ifnum, int protocol);
 -- 
 2.28.0
 
