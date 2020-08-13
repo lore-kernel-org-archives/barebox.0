@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k6DVV-0003m6-2p
- for barebox@lists.infradead.org; Thu, 13 Aug 2020 13:43:12 +0000
+ id 1k6DVd-0003sB-BI
+ for barebox@lists.infradead.org; Thu, 13 Aug 2020 13:43:13 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 13 Aug 2020 15:42:38 +0200
-Message-Id: <20200813134257.24627-2-s.hauer@pengutronix.de>
+Date: Thu, 13 Aug 2020 15:42:48 +0200
+Message-Id: <20200813134257.24627-12-s.hauer@pengutronix.de>
 In-Reply-To: <20200813134257.24627-1-s.hauer@pengutronix.de>
 References: <20200813134257.24627-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,447 +21,126 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/20] Introduce slices
+Subject: [PATCH 11/20] globalvar: Add helper for deprecated variable names
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-slices, the barebox idea of locking
-
-barebox has pollers which execute code in the background whenever one of the
-delay functions (udelay, mdelay, ...) or is_timeout() are called. This
-introduces resource problems when some device triggers a poller by calling
-a delay function and then the poller code calls into the same device again.
-
-As an example consider a I2C GPIO expander which drives a LED which shall
-be used as a heartbeat LED:
-
-poller -> LED on/off -> GPIO high/low -> I2C transfer
-
-The I2C controller has a timeout loop using is_timeout() and thus can trigger
-a poller run. With this the following can happen during an unrelated I2C
-transfer:
-
-I2C transfer -> is_timeout() -> poller -> LED on/off -> GPIO high/low -> I2C transfer
-
-We end up with issuing an I2C transfer during another I2C transfer and
-things go downhill.
-
-Due to the lack of interrupts we can't do real locking in barebox. We use
-a mechanism called slices instead. A slice describes a resource to which
-other slices can be attached. Whenever a slice is needed it must be acquired.
-Acquiring a slice never fails, it just increases the acquired counter of
-the slice and its dependent slices. when a slice shall be used inside a
-poller it must first be tested if the slice is already in use. If it is,
-we can't do the operation on the slice now and must return and hope that
-we have more luck in the next poller call.
-
-slices can be attached other slices as dependencies. In the example above
-LED driver would add a dependency to the GPIO controller and the GPIO driver
-would add a dependency to the I2C bus:
-
-GPIO driver probe:
-
-slice_add(&gpio->slice, i2c_device_slice(i2cdev));
-
-LED driver probe:
-
-slice_add(&led->slice, gpio_slice(gpio));
-
-The GPIO code would call slice_acquire(&gpio->slice) before doing any
-operation on the GPIO chip providing this GPIO, likewise the I2C core
-would call slice_acquire(&i2cbus->slice) before doing an operation on
-this I2C bus.
-
-The heartbeat poller code would call slice_acquired(led_slice(led)) and
-only continue when the slice is not acquired.
+When globalvars are renamed across releases it's not nice when variables
+in the persistent environment loose their meaning. This adds a helper
+function which adds an alias for the old names. When the persistent
+variables still use the old names then their values are automatically
+written to variables with the new names.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/Kconfig |   8 ++
- common/Makefile  |   1 +
- common/slice.c   | 303 +++++++++++++++++++++++++++++++++++++++++++++++
- include/slice.h  |  31 +++++
- 4 files changed, 343 insertions(+)
- create mode 100644 common/slice.c
- create mode 100644 include/slice.h
+ common/globalvar.c  | 54 +++++++++++++++++++++++++++++++++++++++++++--
+ include/globalvar.h |  5 +++++
+ 2 files changed, 57 insertions(+), 2 deletions(-)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 3789f33c3b..608643fceb 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -253,6 +253,14 @@ config CMD_POLLER
- 	  is_timeout() or one of the various delay functions. The poller command prints
- 	  informations about registered pollers.
+diff --git a/common/globalvar.c b/common/globalvar.c
+index 98a028a68a..e9379085f2 100644
+--- a/common/globalvar.c
++++ b/common/globalvar.c
+@@ -293,6 +293,53 @@ int nvvar_remove(const char *name)
+ 	return ret;
+ }
  
-+config CMD_SLICE
-+	tristate
-+	prompt "slice"
-+	help
-+	  slices are a way to protect resources from being accessed by pollers. The slice
-+	  command can be used to print informations about slices and also to manipulate
-+	  them on the command line for debugging purposes.
-+
- # end Information commands
- endmenu
- 
-diff --git a/common/Makefile b/common/Makefile
-index ad5146a301..58594d9782 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -11,6 +11,7 @@ obj-y				+= bootsource.o
- obj-$(CONFIG_ELF)		+= elf.o
- obj-y				+= restart.o
- obj-y				+= poweroff.o
-+obj-y				+= slice.o
- obj-$(CONFIG_MACHINE_ID)	+= machine_id.o
- obj-$(CONFIG_AUTO_COMPLETE)	+= complete.o
- obj-y				+= version.o
-diff --git a/common/slice.c b/common/slice.c
-new file mode 100644
-index 0000000000..085d67604f
---- /dev/null
-+++ b/common/slice.c
-@@ -0,0 +1,303 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#define pr_fmt(fmt) "slice: " fmt
-+
-+#include <common.h>
-+#include <slice.h>
-+
-+/*
-+ * slices, the barebox idea of locking
-+ *
-+ * barebox has pollers which execute code in the background whenever one of the
-+ * delay functions (udelay, mdelay, ...) or is_timeout() are called. This
-+ * introduces resource problems when some device triggers a poller by calling
-+ * a delay function and then the poller code calls into the same device again.
-+ *
-+ * As an example consider a I2C GPIO expander which drives a LED which shall
-+ * be used as a heartbeat LED:
-+ *
-+ * poller -> LED on/off -> GPIO high/low -> I2C transfer
-+ *
-+ * The I2C controller has a timeout loop using is_timeout() and thus can trigger
-+ * a poller run. With this the following can happen during an unrelated I2C
-+ * transfer:
-+ *
-+ * I2C transfer -> is_timeout() -> poller -> LED on/off -> GPIO high/low -> I2C transfer
-+ *
-+ * We end up with issuing an I2C transfer during another I2C transfer and
-+ * things go downhill.
-+ *
-+ * Due to the lack of interrupts we can't do real locking in barebox. We use
-+ * a mechanism called slices instead. A slice describes a resource to which
-+ * other slices can be attached. Whenever a slice is needed it must be acquired.
-+ * Acquiring a slice never fails, it just increases the acquired counter of
-+ * the slice and its dependent slices. when a slice shall be used inside a
-+ * poller it must first be tested if the slice is already in use. If it is,
-+ * we can't do the operation on the slice now and must return and hope that
-+ * we have more luck in the next poller call.
-+ *
-+ * slices can be attached other slices as dependencies. In the example above
-+ * LED driver would add a dependency to the GPIO controller and the GPIO driver
-+ * would add a dependency to the I2C bus:
-+ *
-+ * GPIO driver probe:
-+ *
-+ * slice_depends_on(&gpio->slice, i2c_device_slice(i2cdev));
-+ *
-+ * LED driver probe:
-+ *
-+ * slice_depends_on(&led->slice, gpio_slice(gpio));
-+ *
-+ * The GPIO code would call slice_acquire(&gpio->slice) before doing any
-+ * operation on the GPIO chip providing this GPIO, likewise the I2C core
-+ * would call slice_acquire(&i2cbus->slice) before doing an operation on
-+ * this I2C bus.
-+ *
-+ * The heartbeat poller code would call slice_acquired(led_slice(led)) and
-+ * only continue when the slice is not acquired.
-+ */
-+
-+/*
-+ * slices are not required to have a device and thus a name, but it really
-+ * helps debugging when it has one.
-+ */
-+static const char *slice_name(struct slice *slice)
-+{
-+	return slice->name;
-+}
-+
-+static void __slice_acquire(struct slice *slice, int add)
-+{
-+	slice->acquired += add;
-+
-+	if (slice->acquired < 0) {
-+		pr_err("Slice %s acquired count drops below zero\n",
-+			slice_name(slice));
-+		dump_stack();
-+		slice->acquired = 0;
-+		return;
-+	}
-+}
-+
-+/**
-+ * slice_acquire: acquire a slice
-+ * @slice: The slice to acquire
-+ *
-+ * This acquires a slice and its dependencies
-+ */
-+void slice_acquire(struct slice *slice)
-+{
-+	__slice_acquire(slice, 1);
-+}
-+
-+/**
-+ * slice_release: release a slice
-+ * @slice: The slice to release
-+ *
-+ * This releases a slice and its dependencies
-+ */
-+void slice_release(struct slice *slice)
-+{
-+	__slice_acquire(slice, -1);
-+}
-+
-+/**
-+ * slice_acquired: test if a slice is acquired
-+ * @slice: The slice to test
-+ *
-+ * This tests if a slice is acquired. Returns true if it is, false otherwise
-+ */
-+bool slice_acquired(struct slice *slice)
-+{
-+	struct slice_entry *se;
-+	bool ret = false;
-+
-+	if (slice->acquired > 0)
-+		return true;
-+
-+	if (slice->acquired < 0) {
-+		pr_err("Recursive dependency detected in slice %s\n",
-+		       slice_name(slice));
-+		panic("Cannot continue");
-+	}
-+
-+	slice->acquired = -1;
-+
-+	list_for_each_entry(se, &slice->deps, list)
-+		if (slice_acquired(se->slice)) {
-+			ret = true;
-+			break;
-+		}
-+
-+	slice->acquired = 0;
-+
-+	return ret;
-+}
-+
-+static void __slice_debug_acquired(struct slice *slice, int level)
-+{
-+	struct slice_entry *se;
-+
-+	pr_debug("%*s%s: %d\n", level * 4, "",
-+		 slice_name(slice),
-+		 slice->acquired);
-+
-+	list_for_each_entry(se, &slice->deps, list)
-+		__slice_debug_acquired(se->slice, level + 1);
-+}
-+
-+/**
-+ * slice_debug_acquired: print the acquired state of a slice
-+ *
-+ * @slice: The slice to print
-+ *
-+ * This prints the acquired state of a slice and its dependencies.
-+ */
-+void slice_debug_acquired(struct slice *slice)
-+{
-+	if (!slice_acquired(slice))
-+		return;
-+
-+	__slice_debug_acquired(slice, 0);
-+}
-+
-+/**
-+ * slice_depends_on: Add a dependency to a slice
-+ *
-+ * @slice: The slice to add the dependency to
-+ * @dep:   The slice @slice depends on
-+ *
-+ * This makes @slice dependent on @dep. In other words, acquiring @slice
-+ * will lead to also acquiring @dep.
-+ */
-+void slice_depends_on(struct slice *slice, struct slice *dep)
-+{
-+	struct slice_entry *se = xzalloc(sizeof(*se));
-+
-+	pr_debug("Adding dependency %s (%d) to slice %s (%d)\n",
-+		 slice_name(dep), dep->acquired,
-+		 slice_name(slice), slice->acquired);
-+
-+	se->slice = dep;
-+
-+	list_add_tail(&se->list, &slice->deps);
-+}
-+
-+static LIST_HEAD(slices);
-+
-+/**
-+ * slice_init - initialize a slice before usage
-+ * @slice: The slice to initialize
-+ * @name:  The name of the slice
-+ *
-+ * This initializes a slice before usage. @name should be a meaningful name, when
-+ * a device context is available to the caller it is recommended to pass its
-+ * dev_name() as name argument.
-+ */
-+void slice_init(struct slice *slice, const char *name)
-+{
-+	INIT_LIST_HEAD(&slice->deps);
-+	slice->name = xstrdup(name);
-+	list_add_tail(&slice->list, &slices);
-+}
-+
-+/**
-+ * slice_exit: Remove a slice
-+ * @slice: The slice to remove the dependency from
-+ */
-+void slice_exit(struct slice *slice)
-+{
-+	struct slice *s;
-+	struct slice_entry *se, *tmp;
-+
-+	list_del(&slice->list);
-+
-+	/* remove our dependencies */
-+	list_for_each_entry_safe(se, tmp, &slice->deps, list) {
-+		list_del(&se->list);
-+		free(se);
-+	}
-+
-+	/* remove this slice from other slices dependencies */
-+	list_for_each_entry(s, &slices, list) {
-+		list_for_each_entry_safe(se, tmp, &s->deps, list) {
-+			if (se->slice == slice) {
-+				list_del(&se->list);
-+				free(se);
-+			}
-+		}
-+	}
-+
-+	free(slice->name);
-+}
-+
-+#if defined CONFIG_CMD_SLICE
-+
-+#include <command.h>
-+#include <getopt.h>
-+
-+static void slice_info(void)
-+{
-+	struct slice *slice;
-+	struct slice_entry *se;
-+
-+	list_for_each_entry(slice, &slices, list) {
-+		printf("slice %s: acquired=%d\n",
-+		       slice_name(slice), slice->acquired);
-+		list_for_each_entry(se, &slice->deps, list)
-+			printf("    dep: %s\n", slice_name(se->slice));
-+	}
-+}
-+
-+static int __slice_acquire_name(const char *name, int add)
-+{
-+	struct slice *slice;
-+
-+	list_for_each_entry(slice, &slices, list) {
-+		if (!strcmp(slice->name, name)) {
-+			__slice_acquire(slice, add);
-+			return 0;
-+		}
-+	}
-+
-+	printf("No such slice: %s\n", name);
-+
-+	return 1;
-+}
-+
-+BAREBOX_CMD_HELP_START(slice)
-+BAREBOX_CMD_HELP_TEXT("slice debugging command")
-+BAREBOX_CMD_HELP_TEXT("")
-+BAREBOX_CMD_HELP_TEXT("Options:")
-+BAREBOX_CMD_HELP_OPT ("-i", "Print information about slices")
-+BAREBOX_CMD_HELP_OPT ("-a <devname>", "acquire a slice")
-+BAREBOX_CMD_HELP_OPT ("-r <devname>", "release a slice")
-+BAREBOX_CMD_HELP_END
-+
-+static int do_slice(int argc, char *argv[])
-+{
-+	int opt;
-+
-+	while ((opt = getopt(argc, argv, "a:r:i")) > 0) {
-+		switch (opt) {
-+		case 'a':
-+			return __slice_acquire_name(optarg, 1);
-+		case 'r':
-+			return __slice_acquire_name(optarg, -1);
-+		case 'i':
-+			slice_info();
-+			return 0;
-+		}
-+	}
-+
-+	return COMMAND_ERROR_USAGE;
-+}
-+
-+BAREBOX_CMD_START(slice)
-+	.cmd = do_slice,
-+	BAREBOX_CMD_DESC("debug slices")
-+	BAREBOX_CMD_OPTS("[-ari]")
-+	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
-+	BAREBOX_CMD_HELP(cmd_slice_help)
-+BAREBOX_CMD_END
-+#endif
-diff --git a/include/slice.h b/include/slice.h
-new file mode 100644
-index 0000000000..5538fc434a
---- /dev/null
-+++ b/include/slice.h
-@@ -0,0 +1,31 @@
-+#ifndef __SLICE_H
-+#define __SLICE_H
-+
-+enum slice_action {
-+	SLICE_ACQUIRE = 1,
-+	SLICE_RELEASE = -1,
-+	SLICE_TEST = 0,
-+};
-+
-+struct slice {
-+	int acquired;
-+	struct list_head deps;
-+	char *name;
++struct globalvar_deprecated {
++	char *newname;
++	char *oldname;
 +	struct list_head list;
 +};
 +
-+struct slice_entry {
-+	struct slice *slice;
-+	struct list_head list;
-+};
++static LIST_HEAD(globalvar_deprecated_list);
 +
-+void slice_acquire(struct slice *slice);
-+void slice_release(struct slice *slice);
-+bool slice_acquired(struct slice *slice);
-+void slice_depends_on(struct slice *slice, struct slice *dep);
-+void slice_init(struct slice *slice, const char *name);
-+void slice_exit(struct slice *slice);
++/*
++ * globalvar_alias_deprecated - add an alias
++ *
++ * @oldname: The old name for the variable
++ * @newname: The new name for the variable
++ *
++ * This function is a helper for globalvars that are renamed from one
++ * release to another. when a variable @oldname is found in the persistent
++ * environment a warning is issued and its value is written to @newname.
++ *
++ * Note that when both @oldname and @newname contain values then the values
++ * existing in @newname are overwritten.
++ */
++void globalvar_alias_deprecated(const char *oldname, const char *newname)
++{
++	struct globalvar_deprecated *gd;
 +
-+void slice_debug_acquired(struct slice *slice);
++	gd = xzalloc(sizeof(*gd));
++	gd->newname = xstrdup(newname);
++	gd->oldname = xstrdup(oldname);
++	list_add_tail(&gd->list, &globalvar_deprecated_list);
++}
 +
-+#endif /* __SLICE_H */
++static const char *globalvar_new_name(const char *oldname)
++{
++	struct globalvar_deprecated *gd;
++
++	list_for_each_entry(gd, &globalvar_deprecated_list, list) {
++		if (!strcmp(oldname, gd->oldname)) {
++			pr_warn("nv.%s is deprecated, converting to nv.%s\n", oldname,
++				gd->newname);
++			nv_dirty = 1;
++			return gd->newname;
++		}
++	}
++
++	return oldname;
++}
++
+ int nvvar_load(void)
+ {
+ 	char *val;
+@@ -308,6 +355,8 @@ int nvvar_load(void)
+ 		return -ENOENT;
+ 
+ 	while ((d = readdir(dir))) {
++		const char *n;
++
+ 		if (!strcmp(d->d_name, ".") || !strcmp(d->d_name, ".."))
+ 			continue;
+ 
+@@ -316,10 +365,11 @@ int nvvar_load(void)
+ 		pr_debug("%s: Setting \"%s\" to \"%s\"\n",
+ 				__func__, d->d_name, val);
+ 
+-		ret = __nvvar_add(d->d_name, val);
++		n = globalvar_new_name(d->d_name);
++		ret = __nvvar_add(n, val);
+ 		if (ret)
+ 			pr_err("failed to create nv variable %s: %s\n",
+-					d->d_name, strerror(-ret));
++					n, strerror(-ret));
+ 	}
+ 
+ 	closedir(dir);
+diff --git a/include/globalvar.h b/include/globalvar.h
+index fc85e93e14..db229e239c 100644
+--- a/include/globalvar.h
++++ b/include/globalvar.h
+@@ -33,6 +33,7 @@ int nvvar_remove(const char *name);
+ void globalvar_print(void);
+ 
+ void dev_param_init_from_nv(struct device_d *dev, const char *name);
++void globalvar_alias_deprecated(const char *newname, const char *oldname);
+ 
+ #else
+ static inline int globalvar_add_simple(const char *name, const char *value)
+@@ -114,6 +115,10 @@ static inline void dev_param_init_from_nv(struct device_d *dev, const char *name
+ {
+ }
+ 
++static inline void globalvar_alias_deprecated(const char *newname, const char *oldname)
++{
++}
++
+ #endif
+ 
+ void nv_var_set_clean(void);
 -- 
 2.28.0
 
