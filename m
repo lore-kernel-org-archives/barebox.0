@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k6DVV-0003mB-3I
+ id 1k6DVV-0003mA-3L
  for barebox@lists.infradead.org; Thu, 13 Aug 2020 13:43:04 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 13 Aug 2020 15:42:42 +0200
-Message-Id: <20200813134257.24627-6-s.hauer@pengutronix.de>
+Date: Thu, 13 Aug 2020 15:42:41 +0200
+Message-Id: <20200813134257.24627-5-s.hauer@pengutronix.de>
 In-Reply-To: <20200813134257.24627-1-s.hauer@pengutronix.de>
 References: <20200813134257.24627-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,164 +21,209 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/20] net: mdiobus: Add slice
+Subject: [PATCH 04/20] net: Add a slice to struct eth_device
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-By adding a slice to the mdio bus we make the mdio code safe for being
-called in a poller.
+Add ethernet code safe for being called from a poller.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/phy/mdio_bus.c | 43 ++++++++++++++++++++++++++++++++++++++
- include/linux/phy.h        | 38 +++++++++++++--------------------
- 2 files changed, 58 insertions(+), 23 deletions(-)
+ include/net.h |  8 +++++
+ net/eth.c     | 88 +++++++++++++++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 93 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-index 3480e2ffb4..99d23ffedf 100644
---- a/drivers/net/phy/mdio_bus.c
-+++ b/drivers/net/phy/mdio_bus.c
-@@ -239,6 +239,8 @@ int mdiobus_register(struct mii_bus *bus)
- 		return -EINVAL;
- 	}
- 
-+	slice_init(&bus->slice, dev_name(&bus->dev));
-+
- 	if (bus->reset)
- 		bus->reset(bus);
- 
-@@ -272,6 +274,8 @@ void mdiobus_unregister(struct mii_bus *bus)
- 		bus->phy_map[i] = NULL;
- 	}
- 
-+	slice_exit(&bus->slice);
-+
- 	list_del(&bus->list);
- }
- EXPORT_SYMBOL(mdiobus_unregister);
-@@ -357,6 +361,45 @@ static int mdio_bus_match(struct device_d *dev, struct driver_d *drv)
- 	return 1;
- }
- 
-+/**
-+ * mdiobus_read - Convenience function for reading a given MII mgmt register
-+ * @bus: the mii_bus struct
-+ * @addr: the phy address
-+ * @regnum: register number to read
-+ */
-+int mdiobus_read(struct mii_bus *bus, int addr, u32 regnum)
-+{
-+	int ret;
-+
-+	slice_acquire(&bus->slice);
-+
-+	ret = bus->read(bus, addr, regnum);
-+
-+	slice_release(&bus->slice);
-+
-+	return ret;
-+}
-+
-+/**
-+ * mdiobus_write - Convenience function for writing a given MII mgmt register
-+ * @bus: the mii_bus struct
-+ * @addr: the phy address
-+ * @regnum: register number to write
-+ * @val: value to write to @regnum
-+ */
-+int mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val)
-+{
-+	int ret;
-+
-+	slice_acquire(&bus->slice);
-+
-+	ret = bus->write(bus, addr, regnum, val);
-+
-+	slice_release(&bus->slice);
-+
-+	return ret;
-+}
-+
- static ssize_t phydev_read(struct cdev *cdev, void *_buf, size_t count, loff_t offset, ulong flags)
- {
- 	int i = count;
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index eec1332c9d..cdcb7c24f2 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -16,6 +16,7 @@
- #define __PHY_H
- 
- #include <driver.h>
+diff --git a/include/net.h b/include/net.h
+index 54db8a179a..8d2b4923de 100644
+--- a/include/net.h
++++ b/include/net.h
+@@ -19,6 +19,7 @@
+ #include <stdlib.h>
+ #include <clock.h>
+ #include <led.h>
 +#include <slice.h>
- #include <linux/list.h>
- #include <linux/ethtool.h>
- #include <linux/mii.h>
-@@ -116,9 +117,16 @@ struct mii_bus {
- 	struct list_head list;
+ #include <xfuncs.h>
+ #include <linux/phy.h>
+ #include <linux/string.h>	/* memcpy */
+@@ -63,6 +64,8 @@ struct eth_device {
+ 	char *bootarg;
+ 	char *linuxdevname;
  
- 	bool is_multiplexed;
-+
 +	struct slice slice;
- };
- #define to_mii_bus(d) container_of(d, struct mii_bus, dev)
++
+ 	bool ifup;
+ #define ETH_MODE_DHCP 0
+ #define ETH_MODE_STATIC 1
+@@ -72,6 +75,11 @@ struct eth_device {
  
-+static inline struct slice *mdiobus_slice(struct mii_bus *bus)
+ #define dev_to_edev(d) container_of(d, struct eth_device, dev)
+ 
++static inline struct slice *eth_device_slice(struct eth_device *edev)
 +{
-+	return &bus->slice;
++	return &edev->slice;
 +}
 +
- int mdiobus_register(struct mii_bus *bus);
- void mdiobus_unregister(struct mii_bus *bus);
- struct phy_device *mdiobus_scan(struct mii_bus *bus, int addr);
-@@ -134,28 +142,8 @@ struct mii_bus *mdiobus_get_bus(int busnum);
+ static inline const char *eth_name(struct eth_device *edev)
+ {
+ 	return edev->devname;
+diff --git a/net/eth.c b/net/eth.c
+index e3d0d06efe..e67cc306c2 100644
+--- a/net/eth.c
++++ b/net/eth.c
+@@ -22,6 +22,7 @@
+ #include <init.h>
+ #include <dhcp.h>
+ #include <net.h>
++#include <dma.h>
+ #include <of.h>
+ #include <linux/phy.h>
+ #include <errno.h>
+@@ -208,6 +209,56 @@ static int eth_carrier_check(struct eth_device *edev, int force)
+ 	return edev->phydev->link ? 0 : -ENETDOWN;
+ }
  
- struct mii_bus *of_mdio_find_bus(struct device_node *mdio_bus_np);
- 
--/**
-- * mdiobus_read - Convenience function for reading a given MII mgmt register
-- * @bus: the mii_bus struct
-- * @addr: the phy address
-- * @regnum: register number to read
-- */
--static inline int mdiobus_read(struct mii_bus *bus, int addr, u32 regnum)
--{
--	return bus->read(bus, addr, regnum);
--}
--
--/**
-- * mdiobus_write - Convenience function for writing a given MII mgmt register
-- * @bus: the mii_bus struct
-- * @addr: the phy address
-- * @regnum: register number to write
-- * @val: value to write to @regnum
-- */
--static inline int mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val)
--{
--	return bus->write(bus, addr, regnum, val);
--}
-+int mdiobus_read(struct mii_bus *bus, int addr, u32 regnum);
-+int mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val);
- 
- /* phy_device: An instance of a PHY
-  *
-@@ -397,11 +385,15 @@ int phy_register_fixup(const char *bus_id, u32 phy_uid, u32 phy_uid_mask,
- int phy_register_fixup_for_id(const char *bus_id,
- 		int (*run)(struct phy_device *));
- int phy_scan_fixups(struct phy_device *phydev);
--
- int phy_read_mmd_indirect(struct phy_device *phydev, int prtad, int devad);
- void phy_write_mmd_indirect(struct phy_device *phydev, int prtad, int devad,
- 				   u16 data);
- 
-+static inline bool phy_acquired(struct phy_device *phydev)
++struct eth_q {
++	struct eth_device *edev;
++	int length;
++	struct list_head list;
++	void *data;
++};
++
++static int eth_queue(struct list_head *list, struct eth_device *edev,
++		     void *packet, int length)
 +{
-+	return phydev && phydev->bus && slice_acquired(&phydev->bus->slice);
++	struct eth_q *q;
++
++	q = xzalloc(sizeof(*q));
++	if (!q)
++		return -ENOMEM;
++
++	q->data = dma_alloc(length);
++	if (!q->data) {
++		free(q);
++		return -ENOMEM;
++	}
++
++	q->length = length;
++	q->edev = edev;
++
++	memcpy(q->data, packet, length);
++	list_add_tail(&q->list, list);
++
++	return 0;
 +}
 +
- #ifdef CONFIG_PHYLIB
- int phy_register_fixup_for_uid(u32 phy_uid, u32 phy_uid_mask,
- 		int (*run)(struct phy_device *));
++static LIST_HEAD(eth_send_list);
++
++static void eth_send_queue(void)
++{
++	struct eth_q *q, *tmp;
++
++	list_for_each_entry_safe(q, tmp, &eth_send_list, list) {
++		if (slice_acquired(eth_device_slice(q->edev)))
++			continue;
++
++		if (q->edev->active)
++			eth_send(q->edev, q->data, q->length);
++
++		list_del(&q->list);
++		free(q->data);
++		free(q);
++	}
++}
++
+ int eth_send(struct eth_device *edev, void *packet, int length)
+ {
+ 	int ret;
+@@ -215,24 +266,39 @@ int eth_send(struct eth_device *edev, void *packet, int length)
+ 	if (!edev->active)
+ 		return -ENETDOWN;
+ 
++	if (slice_acquired(eth_device_slice(edev)))
++		return eth_queue(&eth_send_list, edev, packet, length);
++
+ 	ret = eth_carrier_check(edev, 0);
+ 	if (ret)
+ 		return ret;
+ 
++	slice_acquire(eth_device_slice(edev));
++
+ 	led_trigger_network(LED_TRIGGER_NET_TX);
+ 
+-	return edev->send(edev, packet, length);
++	ret = edev->send(edev, packet, length);
++
++	slice_release(eth_device_slice(edev));
++
++	return ret;
+ }
+ 
+ static int __eth_rx(struct eth_device *edev)
+ {
+ 	int ret;
+ 
++	slice_acquire(eth_device_slice(edev));
++
+ 	ret = eth_carrier_check(edev, 0);
+ 	if (ret)
+-		return ret;
++		goto out;
+ 
+-	return edev->recv(edev);
++	ret = edev->recv(edev);
++out:
++	slice_release(eth_device_slice(edev));
++
++	return ret;
+ }
+ 
+ int eth_rx(void)
+@@ -244,6 +310,8 @@ int eth_rx(void)
+ 			__eth_rx(edev);
+ 	}
+ 
++	eth_send_queue();
++
+ 	return 0;
+ }
+ 
+@@ -353,6 +421,8 @@ int eth_register(struct eth_device *edev)
+ 	if (ret)
+ 		return ret;
+ 
++	slice_init(&edev->slice, dev_name(dev));
++
+ 	edev->devname = xstrdup(dev_name(&edev->dev));
+ 
+ 	dev_add_param_ip(dev, "ipaddr", NULL, NULL, &edev->ipaddr, edev);
+@@ -422,15 +492,27 @@ void eth_close(struct eth_device *edev)
+ 
+ void eth_unregister(struct eth_device *edev)
+ {
++	struct eth_q *q, *tmp;
++
+ 	if (edev->active)
+ 		edev->halt(edev);
+ 
++	list_for_each_entry_safe(q, tmp, &eth_send_list, list) {
++		if (q->edev != edev)
++			continue;
++
++		list_del(&q->list);
++		free(q->data);
++		free(q);
++	}
++
+ 	if (IS_ENABLED(CONFIG_OFDEVICE))
+ 		free(edev->nodepath);
+ 
+ 	free(edev->devname);
+ 
+ 	unregister_device(&edev->dev);
++	slice_exit(&edev->slice);
+ 	list_del(&edev->list);
+ }
+ 
 -- 
 2.28.0
 
