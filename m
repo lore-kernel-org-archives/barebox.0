@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k6DVl-0003vM-DJ
- for barebox@lists.infradead.org; Thu, 13 Aug 2020 13:43:18 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 13 Aug 2020 15:42:50 +0200
-Message-Id: <20200813134257.24627-14-s.hauer@pengutronix.de>
-In-Reply-To: <20200813134257.24627-1-s.hauer@pengutronix.de>
-References: <20200813134257.24627-1-s.hauer@pengutronix.de>
+ by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1k6ClM-000720-PV
+ for barebox@lists.infradead.org; Thu, 13 Aug 2020 12:55:38 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Thu, 13 Aug 2020 14:55:11 +0200
+Message-Id: <20200813125514.13574-4-o.rempel@pengutronix.de>
+In-Reply-To: <20200813125514.13574-1-o.rempel@pengutronix.de>
+References: <20200813125514.13574-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,43 +21,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/20] fastboot: Warn when cb_download is called with file
- still open
-To: Barebox List <barebox@lists.infradead.org>
-Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
+Subject: [PATCH v3 3/6] of: of_device_get_match_compatible() helper
+To: barebox@lists.infradead.org, david@protonic.nl
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-Warn when we are about to open a new download file without having
-closed the old one.
+Some times we need to know, against which compatible did the driver
+was registered. So, instead of coding it in the driver, add generic
+helper for all drivers.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- common/fastboot.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/of/device.c | 12 ++++++++++++
+ include/of_device.h |  6 ++++++
+ 2 files changed, 18 insertions(+)
 
-diff --git a/common/fastboot.c b/common/fastboot.c
-index c800e89a65..7f5b8b6f03 100644
---- a/common/fastboot.c
-+++ b/common/fastboot.c
-@@ -337,6 +337,7 @@ int fastboot_handle_download_data(struct fastboot *fb, const void *buffer,
- void fastboot_download_finished(struct fastboot *fb)
- {
- 	close(fb->download_fd);
-+	fb->download_fd = 0;
- 
- 	printf("\n");
- 
-@@ -356,6 +357,11 @@ static void cb_download(struct fastboot *fb, const char *cmd)
- 
- 	init_progression_bar(fb->download_size);
- 
-+	if (fb->download_fd > 0) {
-+		pr_err("%s called and %s is still opened\n", __func__, fb->tempname);
-+		close(fb->download_fd);
-+	}
+diff --git a/drivers/of/device.c b/drivers/of/device.c
+index 67a67bd565..b3f522e1fa 100644
+--- a/drivers/of/device.c
++++ b/drivers/of/device.c
+@@ -31,3 +31,15 @@ const void *of_device_get_match_data(const struct device_d *dev)
+ 	return match->data;
+ }
+ EXPORT_SYMBOL(of_device_get_match_data);
 +
- 	fb->download_fd = open(fb->tempname, O_WRONLY | O_CREAT | O_TRUNC);
- 	if (fb->download_fd < 0) {
- 		fastboot_tx_print(fb, FASTBOOT_MSG_FAIL, "internal error");
++const char *of_device_get_match_compatible(const struct device_d *dev)
++{
++	const struct of_device_id *match;
++
++	match = of_match_device(dev->driver->of_compatible, dev);
++	if (!match)
++		return NULL;
++
++	return match->compatible;
++}
++EXPORT_SYMBOL(of_device_get_match_compatible);
+diff --git a/include/of_device.h b/include/of_device.h
+index 244f5fcbbb..cef6d5b5cc 100644
+--- a/include/of_device.h
++++ b/include/of_device.h
+@@ -22,6 +22,7 @@ static inline int of_driver_match_device(struct device_d *dev,
+ }
+ 
+ extern const void *of_device_get_match_data(const struct device_d *dev);
++extern const char *of_device_get_match_compatible(const struct device_d *dev);
+ 
+ #else /* CONFIG_OFTREE */
+ 
+@@ -36,6 +37,11 @@ static inline const void *of_device_get_match_data(const struct device_d *dev)
+ 	return NULL;
+ }
+ 
++static inline const char *of_device_get_match_compatible(const struct device_d *dev)
++{
++	return NULL;
++}
++
+ static inline const struct of_device_id *__of_match_device(
+ 		const struct of_device_id *matches, const struct device_d *dev)
+ {
 -- 
 2.28.0
 
