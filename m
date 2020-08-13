@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k6DVV-0003mK-EH
- for barebox@lists.infradead.org; Thu, 13 Aug 2020 13:43:05 +0000
+ id 1k6DVV-0003mI-Dt
+ for barebox@lists.infradead.org; Thu, 13 Aug 2020 13:43:06 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 13 Aug 2020 15:42:55 +0200
-Message-Id: <20200813134257.24627-19-s.hauer@pengutronix.de>
+Date: Thu, 13 Aug 2020 15:42:47 +0200
+Message-Id: <20200813134257.24627-11-s.hauer@pengutronix.de>
 In-Reply-To: <20200813134257.24627-1-s.hauer@pengutronix.de>
 References: <20200813134257.24627-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,40 +21,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 18/20] Add WARN_ONCE() macro
+Subject: [PATCH 10/20] usbnet: Be more friendly in the receive path
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Edmund Henniges <eh@emlix.com>, =?UTF-8?q?Daniel=20Gl=C3=B6ckner?= <dg@emlix.com>
 
-This adds WARN_ONCE from the Linux Kernel. It is useful to warn only
-once when we would otherwise spam the log.
+To recognize if we have a receive packet pending we must set up a USB
+bulk transfer. When there's no incoming packet we must wait until the
+transfer times out. We do this with every poller call which can
+considerably slow down the system. With this patch we do two things
+against this:
+
+- lower the timeout for the bulk transfer
+- When we haven't received a packet for longer then lower the frequency
+  of calling into the USB stack to once every 100ms
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/asm-generic/bug.h | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/net/usb/usbnet.c | 19 ++++++++++++++++++-
+ include/usb/usbnet.h     |  3 +++
+ 2 files changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/include/asm-generic/bug.h b/include/asm-generic/bug.h
-index 8583d2425f..82b78261fc 100644
---- a/include/asm-generic/bug.h
-+++ b/include/asm-generic/bug.h
-@@ -34,4 +34,17 @@
- 	unlikely(__ret_warn_on);					\
- })
- #endif
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index 46ea73247f..aa48678f87 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -122,12 +122,29 @@ static int usbnet_recv(struct eth_device *edev)
+ 
+ 	dev_dbg(&edev->dev, "%s\n",__func__);
+ 
++	/*
++	 * we must let the usb_bulk_msg below timeout before we realize
++	 * that we have no packet received. Since this function runs
++	 * inside a poller we considerably slow down barebox when we
++	 * wait for the timeout too often. To improve this we only poll
++	 * with full speed when we actually have received a packet in the
++	 * last 100ms.
++	 */
++	if (is_timeout(dev->last_pkt_received, 100 * MSECOND) &&
++	    !is_timeout(dev->last_recv_call, 100 * MSECOND)) {
++		return 0;
++	}
 +
-+#define WARN_ONCE(condition, format...) ({	\
-+	static int __warned;			\
-+	int __ret_warn_once = !!(condition);	\
-+						\
-+	if (unlikely(__ret_warn_once)) {	\
-+		if (WARN(!__warned, format)) {	\
-+			__warned = 1;		\
-+			dump_stack();		\
-+		}				\
-+	}					\
-+	unlikely(__ret_warn_once);		\
-+})
- #endif
++	dev->last_recv_call = get_time_ns();
++
+ 	len = dev->rx_urb_size;
+ 
+-	ret = usb_bulk_msg(dev->udev, dev->in, dev->rx_buf, len, &alen, 100);
++	ret = usb_bulk_msg(dev->udev, dev->in, dev->rx_buf, len, &alen, 2);
+ 	if (ret)
+ 		return ret;
+ 
++	dev->last_pkt_received = get_time_ns();
++
+ 	if (alen) {
+ 		if (info->rx_fixup)
+ 			return info->rx_fixup(dev, dev->rx_buf, alen);
+diff --git a/include/usb/usbnet.h b/include/usb/usbnet.h
+index 450db47b40..7ff32f280a 100644
+--- a/include/usb/usbnet.h
++++ b/include/usb/usbnet.h
+@@ -54,6 +54,9 @@ struct usbnet {
+ #		define EVENT_RX_MEMORY	2
+ #		define EVENT_STS_SPLIT	3
+ #		define EVENT_LINK_RESET	4
++
++	uint64_t last_pkt_received;
++	uint64_t last_recv_call;
+ };
+ 
+ #if 0
 -- 
 2.28.0
 
