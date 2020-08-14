@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-mw2nam12on2105.outbound.protection.outlook.com
+ ([40.107.244.105] helo=NAM12-MW2-obe.outbound.protection.outlook.com)
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k6Zf0-0001X9-6V
- for barebox@lists.infradead.org; Fri, 14 Aug 2020 13:22:19 +0000
-Date: Fri, 14 Aug 2020 15:22:16 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200814132216.GK13023@pengutronix.de>
-References: <20200812132515.16684-1-christian.mauderer@embedded-brains.de>
+ id 1k6a5N-0003sd-HS
+ for barebox@lists.infradead.org; Fri, 14 Aug 2020 13:49:34 +0000
+From: "Barbier, Renaud" <renaud.barbier@abaco.com>
+Date: Fri, 14 Aug 2020 13:49:25 +0000
+Message-ID: <MN2PR16MB3135C2AADD985DE82E3E787591400@MN2PR16MB3135.namprd16.prod.outlook.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200812132515.16684-1-christian.mauderer@embedded-brains.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,30 +21,19 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v6] FIT: Parse `load` and `entry` addresses.
-To: Christian Mauderer <christian.mauderer@embedded-brains.de>
-Cc: barebox@lists.infradead.org, a.fatoum@pengutronix.de
+Subject: barebox:ubi attach time
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Wed, Aug 12, 2020 at 03:25:15PM +0200, Christian Mauderer wrote:
-> According to the U-Boot documentation for the FIT file format, the load
-> and entry have to be allways defined for a "kernel" or "standalone".
-> But Barebox ignored the parameters. That changes with this patch.
-> 
-> For backward compatibility the default values for load or entry are
-> still used if they are not given by the FIT file.
-> 
-> Signed-off-by: Christian Mauderer <christian.mauderer@embedded-brains.de>
-> ---
+Just to see if somebody has the following problem:
 
-Applied, thanks
+We have PPC or ARM platforms with a NOR containing barebox and a UBI volume with an ITB image.
+The File system is on NAND.
 
-Sascha
+If I boot the system, ubiattach and mount the NOR volume, then detach. On reboot it takes more time for barebox to ubiattach  the NOR boot volume. I have noticed that with on 2019.07 barebox branch and 2020.03. 
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+I ubidetach the volume from barebox then boot time is restored.
+
+I will be off for 2 weeks I will not be able answer until 1st of September.
 
 _______________________________________________
 barebox mailing list
