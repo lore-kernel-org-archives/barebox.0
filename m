@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
- by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k7QZG-0000JO-3x
- for barebox@lists.infradead.org; Sun, 16 Aug 2020 21:51:56 +0000
-Received: from radon.fritz.box (a89-183-41-155.net-htp.de [89.183.41.155])
- by lynxeye.de (Postfix) with ESMTPA id 47D18E74217
- for <barebox@lists.infradead.org>; Sun, 16 Aug 2020 23:42:46 +0200 (CEST)
-From: Lucas Stach <dev@lynxeye.de>
-Date: Sun, 16 Aug 2020 23:42:42 +0200
-Message-Id: <20200816214242.137168-3-dev@lynxeye.de>
-In-Reply-To: <20200816214242.137168-1-dev@lynxeye.de>
-References: <20200816214242.137168-1-dev@lynxeye.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1k7WW5-0008Ai-U6
+ for barebox@lists.infradead.org; Mon, 17 Aug 2020 04:13:02 +0000
+Date: Mon, 17 Aug 2020 06:12:57 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200817041257.GM13023@pengutronix.de>
+References: <MN2PR16MB3135C2AADD985DE82E3E787591400@MN2PR16MB3135.namprd16.prod.outlook.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <MN2PR16MB3135C2AADD985DE82E3E787591400@MN2PR16MB3135.namprd16.prod.outlook.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,33 +22,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] ARM: vexpress: enable KALLSYMS in defconfig
-To: barebox@lists.infradead.org
+Subject: Re: barebox:ubi attach time
+To: "Barbier, Renaud" <renaud.barbier@abaco.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Vexpress is mostly a vehicle to test things in a virtual enviroment,
-so it makes sense to enable this option which helps a lot when trying
-to debug where things go wrong.
+Hi Renaud,
 
-Signed-off-by: Lucas Stach <dev@lynxeye.de>
----
- arch/arm/configs/vexpress_defconfig | 1 +
- 1 file changed, 1 insertion(+)
+On Fri, Aug 14, 2020 at 01:49:25PM +0000, Barbier, Renaud wrote:
+> Just to see if somebody has the following problem:
+> 
+> We have PPC or ARM platforms with a NOR containing barebox and a UBI
+> volume with an ITB image.  The File system is on NAND.
+> 
+> If I boot the system, ubiattach and mount the NOR volume, then detach.
+> On reboot it takes more time for barebox to ubiattach  the NOR boot
+> volume. I have noticed that with on 2019.07 barebox branch and
+> 2020.03. 
+> 
+> I ubidetach the volume from barebox then boot time is restored.
 
-diff --git a/arch/arm/configs/vexpress_defconfig b/arch/arm/configs/vexpress_defconfig
-index 149ba1732116..caa9f512d646 100644
---- a/arch/arm/configs/vexpress_defconfig
-+++ b/arch/arm/configs/vexpress_defconfig
-@@ -3,6 +3,7 @@ CONFIG_AEABI=y
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_MALLOC_SIZE=0x0
- CONFIG_MALLOC_TLSF=y
-+CONFIG_KALLSYMS=y
- CONFIG_PROMPT="vexpress: "
- CONFIG_HUSH_FANCY_PROMPT=y
- CONFIG_CMDLINE_EDITING=y
+Are you using fastmap?
+
+Sascha
+
 -- 
-2.26.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
