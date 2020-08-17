@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k7YID-0001aU-W9
- for barebox@lists.infradead.org; Mon, 17 Aug 2020 06:06:50 +0000
-Date: Mon, 17 Aug 2020 08:06:47 +0200
+ id 1k7Ybb-0002pC-SK
+ for barebox@lists.infradead.org; Mon, 17 Aug 2020 06:26:53 +0000
+Date: Mon, 17 Aug 2020 08:26:48 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200817060647.GO13023@pengutronix.de>
-References: <20200816214300.137240-1-dev@lynxeye.de>
+Message-ID: <20200817062648.GQ13023@pengutronix.de>
+References: <20200813113938.24127-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200816214300.137240-1-dev@lynxeye.de>
+In-Reply-To: <20200813113938.24127-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,30 +22,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] of: base: move memory init from DT to initcall
-To: Lucas Stach <dev@lynxeye.de>
+Subject: Re: [PATCH v1] string: add sanity check to the strcmp() and strncmp()
+To: Oleksij Rempel <o.rempel@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Lucas,
+On Thu, Aug 13, 2020 at 01:39:38PM +0200, Oleksij Rempel wrote:
+> A relatively big portion of barebox init sequence is running without
+> configured exception vector. As result we may not detect some NULL
+> pointer dereferences (as on iMX6) or just silently freeze (as on stm32).
+> 
+> So, add sanity check to detect this kind of issues as early as possible.
+> 
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> ---
+>  lib/string.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 
-On Sun, Aug 16, 2020 at 11:43:00PM +0200, Lucas Stach wrote:
-> Instead of calling it from of_probe, convert it to a initcall at
-> the appropriate level. This allows to move of_probe to later in
-> the init sequence while keeping the memory init at the same place,
-> which is important as many other drivers need the valid memory area
-> to be set up properly.
-
-With this the latest point where of_probe() could be called would be
-one before mem_initcall, so postconsole_initcall.
-
-On some architectures we have a driver for the SDRAM controller which
-configures the RAM banks based on values read from the controller. On
-others we depend on the device tree information and finally there are
-cases where we have both and hope for the best that both information
-sources do not clash. This is all not very nice and moving the initcall
-level for registering the RAM might have undesired side effects.
-In this situation I'm a bit hesitant to merge this patch when it doesn't
-have a concrete user.
+Applied, thanks
 
 Sascha
 
