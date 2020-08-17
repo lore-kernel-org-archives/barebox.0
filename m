@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k7aMk-0004I6-AG
+ id 1k7aMl-0004I3-1m
  for barebox@lists.infradead.org; Mon, 17 Aug 2020 08:19:46 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Mon, 17 Aug 2020 10:19:26 +0200
-Message-Id: <20200817081929.2329-5-o.rempel@pengutronix.de>
+Date: Mon, 17 Aug 2020 10:19:23 +0200
+Message-Id: <20200817081929.2329-2-o.rempel@pengutronix.de>
 In-Reply-To: <20200817081929.2329-1-o.rempel@pengutronix.de>
 References: <20200817081929.2329-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
@@ -21,64 +21,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 4/7] of: of_device_get_match_compatible() helper
+Subject: [PATCH v4 1/7] of: base: register DT root as device
 To: barebox@lists.infradead.org, david@protonic.nl
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-Some times we need to know, against which compatible did the driver
-was registered. So, instead of coding it in the driver, add generic
-helper for all drivers.
+A usual board file contains at least one of_machine_is_compatible().
+Some of the have a rather long list with complicated version logic.
+
+To avoid own implementation for driver management, register the root node
+of device tree as platform device. So, the main platform bus can attach
+proper board driver. After this patch a typical board.c file can reuse
+existing driver infrastructure.
+
+After this patch, you will be able to see all registered board drivers
+with drvinfo as fallow:
+...
+board-embest-riot
+board-protonic-imx6
+    machine.of
+...
+
+With devinfo, you'll be able to get some board specific information,
+if this is implemented:
+barebox@Protonic PRTI6Q board:/ devinfo machine.of
+Driver: board-protonic-imx6
+Bus: platform
+Parameters:
+  boardid: 0 (type: uint32)
+  boardrev: 1 (type: uint32)
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/of/device.c | 12 ++++++++++++
- include/of_device.h |  6 ++++++
- 2 files changed, 18 insertions(+)
+ drivers/of/base.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/drivers/of/device.c b/drivers/of/device.c
-index 67a67bd565..b3f522e1fa 100644
---- a/drivers/of/device.c
-+++ b/drivers/of/device.c
-@@ -31,3 +31,15 @@ const void *of_device_get_match_data(const struct device_d *dev)
- 	return match->data;
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 2fc87528eb..9e49158e61 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -2136,6 +2136,21 @@ static int of_probe_memory(void)
  }
- EXPORT_SYMBOL(of_device_get_match_data);
-+
-+const char *of_device_get_match_compatible(const struct device_d *dev)
+ mem_initcall(of_probe_memory);
+ 
++static void of_platform_device_create_root(struct device_node *np)
 +{
-+	const struct of_device_id *match;
++	struct device_d *dev;
++	int ret;
 +
-+	match = of_match_device(dev->driver->of_compatible, dev);
-+	if (!match)
-+		return NULL;
++	dev = xzalloc(sizeof(*dev));
++	dev->id = DEVICE_ID_SINGLE;
++	dev->device_node = np;
++	dev_set_name(dev, "machine.of");
 +
-+	return match->compatible;
-+}
-+EXPORT_SYMBOL(of_device_get_match_compatible);
-diff --git a/include/of_device.h b/include/of_device.h
-index 244f5fcbbb..cef6d5b5cc 100644
---- a/include/of_device.h
-+++ b/include/of_device.h
-@@ -22,6 +22,7 @@ static inline int of_driver_match_device(struct device_d *dev,
- }
- 
- extern const void *of_device_get_match_data(const struct device_d *dev);
-+extern const char *of_device_get_match_compatible(const struct device_d *dev);
- 
- #else /* CONFIG_OFTREE */
- 
-@@ -36,6 +37,11 @@ static inline const void *of_device_get_match_data(const struct device_d *dev)
- 	return NULL;
- }
- 
-+static inline const char *of_device_get_match_compatible(const struct device_d *dev)
-+{
-+	return NULL;
++	ret = platform_device_register(dev);
++	if (ret)
++		free(dev);
 +}
 +
- static inline const struct of_device_id *__of_match_device(
- 		const struct of_device_id *matches, const struct device_d *dev)
+ int of_probe(void)
  {
+ 	struct device_node *firmware;
+@@ -2153,6 +2168,8 @@ int of_probe(void)
+ 	if (firmware)
+ 		of_platform_populate(firmware, NULL, NULL);
+ 
++	of_platform_device_create_root(root_node);
++
+ 	of_clk_init(root_node, NULL);
+ 	of_platform_populate(root_node, of_default_bus_match_table, NULL);
+ 
 -- 
 2.28.0
 
