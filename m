@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k7X1d-0001er-3Z
- for barebox@lists.infradead.org; Mon, 17 Aug 2020 04:45:38 +0000
-Date: Mon, 17 Aug 2020 06:45:35 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200817044535.GC19745@pengutronix.de>
-References: <20200812085552.12688-1-o.rempel@pengutronix.de>
+ id 1k7X9M-00024u-8O
+ for barebox@lists.infradead.org; Mon, 17 Aug 2020 04:53:37 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 17 Aug 2020 06:53:30 +0200
+Message-Id: <20200817045332.28099-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200812085552.12688-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,82 +19,169 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH fixup v1] of: base: register DT root as device
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/3] video: add simple, transparent, bridge implementation
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Wed, Aug 12, 2020 at 10:55:52AM +0200, Oleksij Rempel wrote:
-> A usual board file contains at least one of_machine_is_compatible().
-> Some of the have a rather long list with complicated version logic.
-> 
-> To avoid own implementation for driver management, register the root node
-> of device tree as platform device. So, the main platform bus can attach
-> proper board driver. After this patch a typical board.c file can reuse
-> existing driver infrastructure.
-> 
-> After this patch, you will be able to see all registered board drivers
-> with drvinfo as fallow:
-> ...
-> board-embest-riot
-> board-protonic-imx6
->     dt-root.of
-> ...
-> 
-> With devinfo, you'll be able to get some board specific information,
-> if this is implemented:
-> barebox@Protonic PRTI6Q board:/ devinfo dt-root.of
-> Driver: board-protonic-imx6
-> Bus: platform
-> Parameters:
->   boardid: 0 (type: uint32)
->   boardrev: 1 (type: uint32)
-> 
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> ---
->  drivers/of/base.c     | 2 ++
->  drivers/of/platform.c | 5 +++++
->  2 files changed, 7 insertions(+)
-> 
-> diff --git a/drivers/of/base.c b/drivers/of/base.c
-> index 4c633bcd49..6f6cdc9379 100644
-> --- a/drivers/of/base.c
-> +++ b/drivers/of/base.c
-> @@ -2149,6 +2149,8 @@ int of_probe(void)
->  	if (firmware)
->  		of_platform_populate(firmware, NULL, NULL);
->  
-> +	of_platform_device_create(root_node, NULL);
+This enables support for simple bridges, i.e. bridges that can be
+used without initialization.
 
-I am with Ahmad here: The bulk of of_platform_device_create() is unused
-when called with the root node...
+This is e.g. the case with bridges that have persistent configuration,
+the kernel has a full-fledged driver to configure the bridge and persist it.
 
-> +
->  	of_clk_init(root_node, NULL);
->  	of_platform_populate(root_node, of_default_bus_match_table, NULL);
->  
-> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-> index ca84cede23..767beebe06 100644
-> --- a/drivers/of/platform.c
-> +++ b/drivers/of/platform.c
-> @@ -50,6 +50,11 @@ static void of_device_make_bus_id(struct device_d *dev)
->  	const __be32 *reg;
->  	u64 addr;
->  
-> +	if (!node->parent) {
-> +		dev_set_name(dev, "dt-root.of");
-> +		return;
-> +	}
+The bootloader then needs to do nothing more. Having such a transparent
+bridge allows reusing the kernel device tree without changing the graph
+specification.
 
-...and one of the few things that it actually does needs patching.
-Please open code creating and registering the device for the root node.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ .../video/display/bridge/simple-bridge.txt    | 41 +++++++++++++
+ drivers/video/Kconfig                         |  7 +++
+ drivers/video/Makefile                        |  2 +-
+ drivers/video/simple-bridge.c                 | 57 +++++++++++++++++++
+ 4 files changed, 106 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/devicetree/bindings/video/display/bridge/simple-bridge.txt
+ create mode 100644 drivers/video/simple-bridge.c
 
-Sascha
-
+diff --git a/Documentation/devicetree/bindings/video/display/bridge/simple-bridge.txt b/Documentation/devicetree/bindings/video/display/bridge/simple-bridge.txt
+new file mode 100644
+index 000000000000..b1485569d992
+--- /dev/null
++++ b/Documentation/devicetree/bindings/video/display/bridge/simple-bridge.txt
+@@ -0,0 +1,41 @@
++Simple display bridge
++=====================
++
++bridge node
++-----------
++
++Required properties:
++	- compatible : "barebox,simple-bridge".
++	- #address-cells : must be <1>
++	- #size-cells : must be <0>
++	- video interfaces: Device node should contain two video interface port
++			    nodes for input and output according to [1].
++			    - port@0 - bridge input
++			    - port@1 - bridge output
++
++[1]: dts/Bindings/media/video-interfaces.txt
++
++
++Example:
++	fpga-display-bridge@0 {
++		compatible = "barebox,simple-bridge";
++		reg = <0>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		port@0 {
++			reg = <0>;
++
++			ch0_lcd_in: endpoint {
++				remote-endpoint = <&parallel_display_out>;
++			};
++		};
++
++		port@1 {
++			reg = <1>;
++
++			ch0_out: endpoint {
++				remote-endpoint = <&disp1_in>;
++			};
++		};
++	};
+diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
+index a26bace176a1..b153978492a9 100644
+--- a/drivers/video/Kconfig
++++ b/drivers/video/Kconfig
+@@ -161,4 +161,11 @@ config DRIVER_VIDEO_SIMPLE_PANEL
+ 	  Linux Kernel implementation this one is able to understand display-timings
+ 	  nodes so that it's not necessary to keep a list of all known displays
+ 	  with their corresponding timings in barebox.
++
++config DRIVER_VIDEO_SIMPLE_BRIDGE
++	bool "Simple bridge support"
++	depends on OFTREE
++	help
++	  This enables support for simple bridges, i.e. bridges that can be
++	  used without initialization.
+ endif
+diff --git a/drivers/video/Makefile b/drivers/video/Makefile
+index 01fabe880920..2296c14ccc73 100644
+--- a/drivers/video/Makefile
++++ b/drivers/video/Makefile
+@@ -24,4 +24,4 @@ obj-$(CONFIG_DRIVER_VIDEO_IMX_IPUV3) += imx-ipu-v3/
+ obj-$(CONFIG_DRIVER_VIDEO_EFI_GOP) += efi_gop.o
+ obj-$(CONFIG_DRIVER_VIDEO_FB_SSD1307) += ssd1307fb.o
+ obj-$(CONFIG_BACKLIGHT_RAVE_SP)	+= rave-sp-backlight.o
+-
++obj-$(CONFIG_DRIVER_VIDEO_SIMPLE_BRIDGE)	+= simple-bridge.o
+diff --git a/drivers/video/simple-bridge.c b/drivers/video/simple-bridge.c
+new file mode 100644
+index 000000000000..0d6621df7b0c
+--- /dev/null
++++ b/drivers/video/simple-bridge.c
+@@ -0,0 +1,57 @@
++// SPDX-License-Identifier: GPL-2.0-only
++// SPDX-FileCopyright-Text: 2020 Pengutronix, Ahmad Fatoum <a.fatoum@pengutronix.de>
++
++#include <common.h>
++#include <init.h>
++#include <driver.h>
++#include <video/vpl.h>
++#include <of_graph.h>
++
++enum { BRIDGE_INPUT_PORT = 0, BRIDGE_OUTPUT_PORT = 1 };
++
++struct simple_bridge_priv {
++	struct device_d	*dev;
++	struct vpl	vpl;
++};
++
++static int simple_bridge_ioctl(struct vpl *vpl, unsigned int port,
++			       unsigned int cmd, void *ptr)
++{
++	struct simple_bridge_priv *priv = container_of(vpl, struct simple_bridge_priv, vpl);
++
++	dev_dbg(priv->dev, "ioctl(port=%d, cmd=0x%08x)\n", port, cmd);
++
++	return vpl_ioctl(vpl, BRIDGE_OUTPUT_PORT, cmd, ptr);
++}
++
++static int simple_bridge_probe(struct device_d *dev)
++{
++	struct simple_bridge_priv *priv;
++	struct device_node *port;
++
++	priv = xzalloc(sizeof(*priv));
++	priv->dev = dev;
++
++	port = of_graph_get_port_by_id(dev->device_node, BRIDGE_OUTPUT_PORT);
++	if (!port) {
++		dev_err(dev, "No remote panel found\n");
++		return -ENODEV;
++	}
++
++	priv->vpl.node = dev->device_node;
++	priv->vpl.ioctl = simple_bridge_ioctl;
++
++	return vpl_register(&priv->vpl);
++}
++
++static const struct of_device_id __maybe_unused simple_bridge_match[] = {
++	{ .compatible = "barebox,simple-bridge" },
++	{ /* sentinel */ },
++};
++
++static struct driver_d simple_bridge_driver = {
++	.name		= "simple-bridge",
++	.probe		= simple_bridge_probe,
++	.of_compatible	= DRV_OF_COMPAT(simple_bridge_match),
++};
++device_platform_driver(simple_bridge_driver);
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.28.0
+
 
 _______________________________________________
 barebox mailing list
