@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k7aMk-0004I7-5Y
- for barebox@lists.infradead.org; Mon, 17 Aug 2020 08:19:44 +0000
+ id 1k7aMk-0004I6-AG
+ for barebox@lists.infradead.org; Mon, 17 Aug 2020 08:19:46 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Mon, 17 Aug 2020 10:19:25 +0200
-Message-Id: <20200817081929.2329-4-o.rempel@pengutronix.de>
+Date: Mon, 17 Aug 2020 10:19:26 +0200
+Message-Id: <20200817081929.2329-5-o.rempel@pengutronix.de>
 In-Reply-To: <20200817081929.2329-1-o.rempel@pengutronix.de>
 References: <20200817081929.2329-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
@@ -21,67 +21,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 3/7] common: console_common: add of_console_get_by_alias()
- helper
+Subject: [PATCH v4 4/7] of: of_device_get_match_compatible() helper
 To: barebox@lists.infradead.org, david@protonic.nl
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-Add helper function to get console device by devicetree alias
+Some times we need to know, against which compatible did the driver
+was registered. So, instead of coding it in the driver, add generic
+helper for all drivers.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- common/console_common.c | 18 ++++++++++++++++++
- include/console.h       |  1 +
- 2 files changed, 19 insertions(+)
+ drivers/of/device.c | 12 ++++++++++++
+ include/of_device.h |  6 ++++++
+ 2 files changed, 18 insertions(+)
 
-diff --git a/common/console_common.c b/common/console_common.c
-index a174c2deed..8cd57e623d 100644
---- a/common/console_common.c
-+++ b/common/console_common.c
-@@ -23,6 +23,7 @@
- #include <environment.h>
- #include <globalvar.h>
- #include <magicvar.h>
-+#include <of.h>
- #include <password.h>
- #include <clock.h>
- #include <malloc.h>
-@@ -323,6 +324,23 @@ struct console_device *console_get_first_active(void)
+diff --git a/drivers/of/device.c b/drivers/of/device.c
+index 67a67bd565..b3f522e1fa 100644
+--- a/drivers/of/device.c
++++ b/drivers/of/device.c
+@@ -31,3 +31,15 @@ const void *of_device_get_match_data(const struct device_d *dev)
+ 	return match->data;
  }
- EXPORT_SYMBOL(console_get_first_active);
- 
-+struct console_device *of_console_get_by_alias(const char *alias)
+ EXPORT_SYMBOL(of_device_get_match_data);
++
++const char *of_device_get_match_compatible(const struct device_d *dev)
 +{
-+	struct device_node *node;
-+	struct device_d *dev;
++	const struct of_device_id *match;
 +
-+	node = of_find_node_by_alias(NULL, alias);
-+	if (!node)
++	match = of_match_device(dev->driver->of_compatible, dev);
++	if (!match)
 +		return NULL;
 +
-+	dev = of_find_device_by_node(node);
-+	if (!dev)
-+		return NULL;
-+
-+	return console_get_by_dev(dev);
++	return match->compatible;
 +}
-+EXPORT_SYMBOL(of_console_get_by_alias);
++EXPORT_SYMBOL(of_device_get_match_compatible);
+diff --git a/include/of_device.h b/include/of_device.h
+index 244f5fcbbb..cef6d5b5cc 100644
+--- a/include/of_device.h
++++ b/include/of_device.h
+@@ -22,6 +22,7 @@ static inline int of_driver_match_device(struct device_d *dev,
+ }
+ 
+ extern const void *of_device_get_match_data(const struct device_d *dev);
++extern const char *of_device_get_match_compatible(const struct device_d *dev);
+ 
+ #else /* CONFIG_OFTREE */
+ 
+@@ -36,6 +37,11 @@ static inline const void *of_device_get_match_data(const struct device_d *dev)
+ 	return NULL;
+ }
+ 
++static inline const char *of_device_get_match_compatible(const struct device_d *dev)
++{
++	return NULL;
++}
 +
- #endif /* !CONFIG_CONSOLE_NONE */
- 
- int dprintf(int file, const char *fmt, ...)
-diff --git a/include/console.h b/include/console.h
-index 5b5c037026..a71d0da42e 100644
---- a/include/console.h
-+++ b/include/console.h
-@@ -87,6 +87,7 @@ int console_unregister(struct console_device *cdev);
- 
- struct console_device *console_get_by_dev(struct device_d *dev);
- struct console_device *console_get_by_name(const char *name);
-+struct console_device *of_console_get_by_alias(const char *alias);
- 
- extern struct list_head console_list;
- #define for_each_console(console) list_for_each_entry(console, &console_list, list)
+ static inline const struct of_device_id *__of_match_device(
+ 		const struct of_device_id *matches, const struct device_d *dev)
+ {
 -- 
 2.28.0
 
