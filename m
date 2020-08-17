@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k7X9a-00026q-Or
- for barebox@lists.infradead.org; Mon, 17 Aug 2020 04:53:51 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 17 Aug 2020 06:53:32 +0200
-Message-Id: <20200817045332.28099-3-a.fatoum@pengutronix.de>
-In-Reply-To: <20200817045332.28099-1-a.fatoum@pengutronix.de>
-References: <20200817045332.28099-1-a.fatoum@pengutronix.de>
+ id 1k7XA9-0002Bm-75
+ for barebox@lists.infradead.org; Mon, 17 Aug 2020 04:54:27 +0000
+Date: Mon, 17 Aug 2020 06:54:23 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200817045423.GN13023@pengutronix.de>
+References: <20200816214242.137168-1-dev@lynxeye.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200816214242.137168-1-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,46 +22,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] video: simple-panel: don't error out on unhandled ioctl
- command
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH 1/3] ARM: vexpress: set stdout path
+To: Lucas Stach <dev@lynxeye.de>
+Cc: barebox@lists.infradead.org
 
-Video devices propagate ioctls down the pipeline by calling vpl_ioctl
-themselves. This also happens when propagating VPL_PREPARE.
-simple-panel doesn't have anything special to do in VPL_PREPARE, so
-it returned -ENOSYS so far. This leads vpl_ioctl to fail, which in
-turn is propagated back through the pipeline.
+On Sun, Aug 16, 2020 at 11:42:40PM +0200, Lucas Stach wrote:
+> This ensures that the correct console gets activated independent
+> of the device probe order.
+> 
+> Signed-off-by: Lucas Stach <dev@lynxeye.de>
+> ---
+>  arch/arm/dts/vexpress-v2p-ca15.dts | 4 ++++
+>  arch/arm/dts/vexpress-v2p-ca9.dts  | 4 ++++
+>  2 files changed, 8 insertions(+)
 
-For devices with multiple endpoints, vpl_ioctl passes the ioctl
-to each one of them. An early exit by a simple-panel can thus cause
-other endpoints to not prepare themselves leading to display
-issues.
+Applied, thanks
 
-Fix this by having the simple panel ignore ioctls that aren't relevant
-to it.
+Sascha
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- drivers/video/simple-panel.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/video/simple-panel.c b/drivers/video/simple-panel.c
-index 1d05153d1669..2f904a7b2bee 100644
---- a/drivers/video/simple-panel.c
-+++ b/drivers/video/simple-panel.c
-@@ -135,7 +135,7 @@ static int simple_panel_ioctl(struct vpl *vpl, unsigned int port,
- 	case VPL_GET_VIDEOMODES:
- 		return simple_panel_get_modes(panel, ptr);
- 	default:
--		return -ENOSYS;
-+		return 0;
- 	}
- }
- 
 -- 
-2.28.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
