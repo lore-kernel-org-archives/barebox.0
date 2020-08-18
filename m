@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k7xnS-0004pA-Vx
- for barebox@lists.infradead.org; Tue, 18 Aug 2020 09:20:48 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 18 Aug 2020 11:20:39 +0200
-Message-Id: <20200818092039.2521-1-s.hauer@pengutronix.de>
+ id 1k7y1C-0006Y4-95
+ for barebox@lists.infradead.org; Tue, 18 Aug 2020 09:34:58 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Tue, 18 Aug 2020 11:34:48 +0200
+Message-Id: <20200818093448.13732-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,58 +19,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] libfile: copy_file: Fix ftruncate called on device files
-To: Barebox List <barebox@lists.infradead.org>
-Cc: Bastian Krause <bst@pengutronix.de>
+Subject: [PATCH v1] serial: imx: set CTS if DT property "linux,
+ rs485-enabled-at-boot-time" is present
+To: barebox@lists.infradead.org, david@protonic.nl
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-ftruncate may only be called on regular files. This became broken in
-a5f73a6dcd. Revert to the previous behaviour and pass O_TRUNC to the
-initial open() call instead of truncating it with ftruncate().
+If we have a "linux,rs485-enabled-at-boot-time" DT property, we should
+set CTS flag as soon as possible to the active state. This will set an
+RS485 transmitter to receive-enable mode. Otherwise the RS485 bus will
+be blocked for entire system boot time and other bus participants will
+not be able to communicate.
 
-Also we can call ftruncate() to the final size also when the file
-previously didn't exist.
-
-Fixes: a5f73a6dcd ("libfile: copy_file: explicitly truncate to final size")
-Reported-by: Bastian Krause <bst@pengutronix.de>
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- lib/libfile.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/serial/serial_imx.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/lib/libfile.c b/lib/libfile.c
-index 863b6833a5..20bb689a79 100644
---- a/lib/libfile.c
-+++ b/lib/libfile.c
-@@ -353,6 +353,10 @@ int copy_file(const char *src, const char *dst, int verbose)
- 		goto out;
- 	}
+diff --git a/drivers/serial/serial_imx.c b/drivers/serial/serial_imx.c
+index c0265fc2d7..fe9b15d8b5 100644
+--- a/drivers/serial/serial_imx.c
++++ b/drivers/serial/serial_imx.c
+@@ -60,6 +60,7 @@ struct imx_serial_priv {
+ 	void __iomem *regs;
+ 	struct clk *clk;
+ 	struct imx_serial_devtype_data *devtype;
++	bool rs485_mode;
+ };
  
-+	/* Set O_TRUNC only if file exists and is a regular file */
-+	if (!s && S_ISREG(dststat.st_mode))
-+		mode |= O_TRUNC;
+ static int imx_serial_reffreq(struct imx_serial_priv *priv)
+@@ -107,6 +108,9 @@ static int imx_serial_init_port(struct console_device *cdev)
+ 
+ 	/* Enable FIFOs */
+ 	val = readl(regs + UCR2);
++	/* set CTS to not block RS485 bus */
++	if (priv->rs485_mode)
++		val |= UCR2_CTS;
+ 	val |= UCR2_SRST | UCR2_RXEN | UCR2_TXEN;
+ 	writel(val, regs + UCR2);
+ 
+@@ -252,6 +256,10 @@ static int imx_serial_probe(struct device_d *dev)
+ 	if (of_property_read_bool(dev->device_node, "fsl,dte-mode"))
+ 		priv->dte_mode = 1;
+ 
++	if (of_property_read_bool(dev->device_node,
++				  "linux,rs485-enabled-at-boot-time"))
++		priv->rs485_mode = 1;
 +
- 	dstfd = open(dst, mode);
- 	if (dstfd < 0) {
- 		printf("could not open %s: %s\n", dst, errno_str());
-@@ -360,17 +364,13 @@ int copy_file(const char *src, const char *dst, int verbose)
- 		goto out;
- 	}
+ 	imx_serial_init_port(cdev);
  
--	ret = ftruncate(dstfd, 0);
--	if (ret)
--		goto out;
--
- 	ret = stat(src, &srcstat);
- 	if (ret)
- 		goto out;
- 
- 	if (srcstat.st_size != FILESIZE_MAX) {
- 		discard_range(dstfd, srcstat.st_size, 0);
--		if (S_ISREG(dststat.st_mode)) {
-+		if (s || S_ISREG(dststat.st_mode)) {
- 			ret = ftruncate(dstfd, srcstat.st_size);
- 			if (ret)
- 				goto out;
+ 	/* Enable UART */
 -- 
 2.28.0
 
