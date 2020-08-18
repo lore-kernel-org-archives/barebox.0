@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from conuserg-10.nifty.com ([210.131.2.77])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k7y1C-0006Y4-95
- for barebox@lists.infradead.org; Tue, 18 Aug 2020 09:34:58 +0000
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Tue, 18 Aug 2020 11:34:48 +0200
-Message-Id: <20200818093448.13732-1-o.rempel@pengutronix.de>
+ id 1k7zHW-0007Rs-6n
+ for barebox@lists.infradead.org; Tue, 18 Aug 2020 10:55:56 +0000
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Tue, 18 Aug 2020 19:55:17 +0900
+Message-Id: <20200818105520.32326-2-masahiroy@kernel.org>
+In-Reply-To: <20200818105520.32326-1-masahiroy@kernel.org>
+References: <20200818105520.32326-1-masahiroy@kernel.org>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,57 +21,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1] serial: imx: set CTS if DT property "linux,
- rs485-enabled-at-boot-time" is present
-To: barebox@lists.infradead.org, david@protonic.nl
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: [PATCH 2/5] kvx,riscv: remove unused $(dtb-y) assignment
+To: barebox@lists.infradead.org
+Cc: Masahiro Yamada <masahiroy@kernel.org>
 
-If we have a "linux,rs485-enabled-at-boot-time" DT property, we should
-set CTS flag as soon as possible to the active state. This will set an
-RS485 transmitter to receive-enable mode. Otherwise the RS485 bus will
-be blocked for entire system boot time and other bus participants will
-not be able to communicate.
+dtb-y is not defined in these Makefiles. Remove the meaningless code.
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 ---
- drivers/serial/serial_imx.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/serial/serial_imx.c b/drivers/serial/serial_imx.c
-index c0265fc2d7..fe9b15d8b5 100644
---- a/drivers/serial/serial_imx.c
-+++ b/drivers/serial/serial_imx.c
-@@ -60,6 +60,7 @@ struct imx_serial_priv {
- 	void __iomem *regs;
- 	struct clk *clk;
- 	struct imx_serial_devtype_data *devtype;
-+	bool rs485_mode;
- };
+ arch/kvx/dts/Makefile   | 1 -
+ arch/riscv/dts/Makefile | 1 -
+ 2 files changed, 2 deletions(-)
+
+diff --git a/arch/kvx/dts/Makefile b/arch/kvx/dts/Makefile
+index 391783c1e..d4221d2c1 100644
+--- a/arch/kvx/dts/Makefile
++++ b/arch/kvx/dts/Makefile
+@@ -9,5 +9,4 @@ endif
  
- static int imx_serial_reffreq(struct imx_serial_priv *priv)
-@@ -107,6 +108,9 @@ static int imx_serial_init_port(struct console_device *cdev)
+ obj-$(CONFIG_BOARD_K200) += k200.dtb.o
  
- 	/* Enable FIFOs */
- 	val = readl(regs + UCR2);
-+	/* set CTS to not block RS485 bus */
-+	if (priv->rs485_mode)
-+		val |= UCR2_CTS;
- 	val |= UCR2_SRST | UCR2_RXEN | UCR2_TXEN;
- 	writel(val, regs + UCR2);
+-always := $(dtb-y)
+ clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts
+diff --git a/arch/riscv/dts/Makefile b/arch/riscv/dts/Makefile
+index 509f236cc..6bd4e5a92 100644
+--- a/arch/riscv/dts/Makefile
++++ b/arch/riscv/dts/Makefile
+@@ -9,5 +9,4 @@ obj-$(CONFIG_BOARD_ERIZO_GENERIC) += erizo-generic.dtb.o
+ # created.
+ obj- += dummy.o
  
-@@ -252,6 +256,10 @@ static int imx_serial_probe(struct device_d *dev)
- 	if (of_property_read_bool(dev->device_node, "fsl,dte-mode"))
- 		priv->dte_mode = 1;
- 
-+	if (of_property_read_bool(dev->device_node,
-+				  "linux,rs485-enabled-at-boot-time"))
-+		priv->rs485_mode = 1;
-+
- 	imx_serial_init_port(cdev);
- 
- 	/* Enable UART */
+-always := $(dtb-y)
+ clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts
 -- 
-2.28.0
+2.25.1
 
 
 _______________________________________________
