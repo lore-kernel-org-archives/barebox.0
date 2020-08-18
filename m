@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from conuserg-10.nifty.com ([210.131.2.77])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k7zHW-0007Rv-6q
- for barebox@lists.infradead.org; Tue, 18 Aug 2020 10:55:58 +0000
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Tue, 18 Aug 2020 19:55:19 +0900
-Message-Id: <20200818105520.32326-4-masahiroy@kernel.org>
-In-Reply-To: <20200818105520.32326-1-masahiroy@kernel.org>
-References: <20200818105520.32326-1-masahiroy@kernel.org>
+ id 1k81VO-0006de-TT
+ for barebox@lists.infradead.org; Tue, 18 Aug 2020 13:18:23 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue, 18 Aug 2020 15:18:16 +0200
+Message-Id: <20200818131816.7700-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,83 +19,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] kbuild: sync the top level Kbuild file with Linux
+Subject: [PATCH] watchdog: fix watchdog_set_timeout breakage for drivers like
+ imxwd
 To: barebox@lists.infradead.org
-Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, Bastian Krause <bst@pengutronix.de>
 
- - Convert 'always' to 'always-y'
+Commit 0b944fce55f4 ("watchdog: permit `wd 0` for non-stoppable, but
+inactive, watchdogs") silently broke use of non-stoppable, but inactive,
+watchdogs altogether. Because those always had watchdog_hw_running
+evaluating to false, it early exited without a chance to ever actually
+set the timeout (and for watchdog_hw_running to evaluate to != false).
 
- - Remove redundant 'targets' assignment
+This results in following watchdog drivers being broken in v2020.08.0:
 
- - Use filechk for the offset generation to avoid unneeded
-   rebuilds when the content of asm-offsets.h is not changed
+ - imxwd
+ - f71808e_wdt
+ - at91sam9_wdt
 
- - Remove the explicit build rule of asm-offsets.s because
-   it can be built of the pattern rule in scripts/Makefile.build
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Fixes: 0b944fce55f4 ("watchdog: permit `wd 0` for non-stoppable, but inactive, watchdogs")
+Reported-by: Bastian Krause <bst@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
+Please apply to master (and to v2020.08.1?).
+---
+ drivers/watchdog/wd_core.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
- Kbuild | 28 ++++++++++++----------------
- 1 file changed, 12 insertions(+), 16 deletions(-)
-
-diff --git a/Kbuild b/Kbuild
-index 329609604..519be4a3c 100644
---- a/Kbuild
-+++ b/Kbuild
-@@ -1,14 +1,15 @@
--#####
--# 1) Generate asm-offsets.h
-+# SPDX-License-Identifier: GPL-2.0
- #
-+# Kbuild for top-level directory of Barebox
-+
-+#####
-+# Generate asm-offsets.h
+diff --git a/drivers/watchdog/wd_core.c b/drivers/watchdog/wd_core.c
+index ab1dcaa40a3a..4247288dbd0a 100644
+--- a/drivers/watchdog/wd_core.c
++++ b/drivers/watchdog/wd_core.c
+@@ -45,12 +45,11 @@ int watchdog_set_timeout(struct watchdog *wd, unsigned timeout)
+ 	if (timeout > wd->timeout_max)
+ 		return -EINVAL;
  
- offsets-file := include/generated/asm-offsets.h
- 
--always  += $(offsets-file)
--targets += $(offsets-file)
-+always-y += $(offsets-file)
- targets += arch/$(SRCARCH)/lib/asm-offsets.s
- 
+-	if (watchdog_hw_running(wd) == false)
+-		return 0;
 -
- # Default sed regexp - multiline due to syntax constraints
- define sed-y
- 	"/^->/{s:->#\(.*\):/* \1 */:; \
-@@ -17,9 +18,9 @@ define sed-y
- 	s:->::; p;}"
- endef
+ 	pr_debug("setting timeout on %s to %ds\n", watchdog_name(wd), timeout);
  
--quiet_cmd_offsets = GEN     $@
--define cmd_offsets
--	(set -e; \
-+# Use filechk to avoid rebuilds when a header changes, but the resulting file
-+# does not
-+define filechk_offsets
- 	 echo "#ifndef __ASM_OFFSETS_H__"; \
- 	 echo "#define __ASM_OFFSETS_H__"; \
- 	 echo "/*"; \
-@@ -31,13 +32,8 @@ define cmd_offsets
- 	 echo ""; \
- 	 sed -ne $(sed-y) $<; \
- 	 echo ""; \
--	 echo "#endif" ) > $@
-+	 echo "#endif"
- endef
+ 	ret = wd->set_timeout(wd, timeout);
++	if (ret == -ENOSYS && watchdog_hw_running(wd) == false)
++		return 0;
+ 	if (ret)
+ 		return ret;
  
--# We use internal kbuild rules to avoid the "is up to date" message from make
--arch/$(SRCARCH)/lib/asm-offsets.s: arch/$(SRCARCH)/lib/asm-offsets.c FORCE
--	$(Q)mkdir -p $(dir $@)
--	$(call if_changed_dep,cc_s_c)
--
--$(obj)/$(offsets-file): arch/$(SRCARCH)/lib/asm-offsets.s Kbuild
--	$(call cmd,offsets)
-+$(offsets-file): arch/$(SRCARCH)/lib/asm-offsets.s FORCE
-+	$(call filechk,offsets)
 -- 
-2.25.1
+2.28.0
 
 
 _______________________________________________
