@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k8IbA-0002Uh-IW
- for barebox@lists.infradead.org; Wed, 19 Aug 2020 07:33:29 +0000
-Date: Wed, 19 Aug 2020 09:33:27 +0200
+ id 1k8Ifi-0002rg-9C
+ for barebox@lists.infradead.org; Wed, 19 Aug 2020 07:38:11 +0000
+Date: Wed, 19 Aug 2020 09:38:08 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200819073326.GR13023@pengutronix.de>
+Message-ID: <20200819073808.GS13023@pengutronix.de>
 References: <20200818131816.7700-1-a.fatoum@pengutronix.de>
- <20200819065951.GQ13023@pengutronix.de>
- <1596f917-83af-a467-e1ee-02c83a309b7d@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1596f917-83af-a467-e1ee-02c83a309b7d@pengutronix.de>
+In-Reply-To: <20200818131816.7700-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,25 +27,51 @@ Subject: Re: [PATCH] watchdog: fix watchdog_set_timeout breakage for drivers
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org, Bastian Krause <bst@pengutronix.de>
 
-On Wed, Aug 19, 2020 at 09:18:44AM +0200, Ahmad Fatoum wrote:
-> On 8/19/20 8:59 AM, Sascha Hauer wrote:
-> > Hi Ahmad,
-> > 
-> > On Tue, Aug 18, 2020 at 03:18:16PM +0200, Ahmad Fatoum wrote:
-> >> Commit 0b944fce55f4 ("watchdog: permit `wd 0` for non-stoppable, but
-> >> inactive, watchdogs") silently broke use of non-stoppable, but inactive,
-> >> watchdogs altogether.
-> > 
-> > Didn't this commit break *all* watchdogs? With 0b944fce55f4 an inactive
-> > watchdog will never be activated anymore.
+On Tue, Aug 18, 2020 at 03:18:16PM +0200, Ahmad Fatoum wrote:
+> Commit 0b944fce55f4 ("watchdog: permit `wd 0` for non-stoppable, but
+> inactive, watchdogs") silently broke use of non-stoppable, but inactive,
+> watchdogs altogether. Because those always had watchdog_hw_running
+> evaluating to false, it early exited without a chance to ever actually
+> set the timeout (and for watchdog_hw_running to evaluate to != false).
 > 
-> watchdog_hw_running() returns -ENOSYS for watchdog that don't report whether
-> they are running, so it broke all those who do report it and are inactive at
-> driver probe time.
+> This results in following watchdog drivers being broken in v2020.08.0:
+> 
+>  - imxwd
+>  - f71808e_wdt
+>  - at91sam9_wdt
+> 
+> Fixes: 0b944fce55f4 ("watchdog: permit `wd 0` for non-stoppable, but inactive, watchdogs")
+> Reported-by: Bastian Krause <bst@pengutronix.de>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+> Please apply to master (and to v2020.08.1?).
+> ---
+>  drivers/watchdog/wd_core.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/watchdog/wd_core.c b/drivers/watchdog/wd_core.c
+> index ab1dcaa40a3a..4247288dbd0a 100644
+> --- a/drivers/watchdog/wd_core.c
+> +++ b/drivers/watchdog/wd_core.c
+> @@ -45,12 +45,11 @@ int watchdog_set_timeout(struct watchdog *wd, unsigned timeout)
+>  	if (timeout > wd->timeout_max)
+>  		return -EINVAL;
+>  
+> -	if (watchdog_hw_running(wd) == false)
+> -		return 0;
+> -
+>  	pr_debug("setting timeout on %s to %ds\n", watchdog_name(wd), timeout);
+>  
+>  	ret = wd->set_timeout(wd, timeout);
+> +	if (ret == -ENOSYS && watchdog_hw_running(wd) == false)
 
-Ah, I see. I didn't look at the implementation of watchdog_hw_running().
-The code explicitly tested for a boolean result, so it seemed obvious to
-me that this function returns either true or false, but not an error.
+Instead of testing for a specific error code from set_timeout(), can't
+we just do a
+
+	if (!timeout && !watchdog_hw_running(wd))
+		return 0;
+
+This would make the intention of the code more clear.
 
 Sascha
 
