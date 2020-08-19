@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pj1-x1043.google.com ([2607:f8b0:4864:20::1043])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k8HfE-0002Hw-Ue
- for barebox@lists.infradead.org; Wed, 19 Aug 2020 06:33:37 +0000
-Received: by mail-pj1-x1043.google.com with SMTP id ds1so317258pjb.1
- for <barebox@lists.infradead.org>; Tue, 18 Aug 2020 23:33:34 -0700 (PDT)
-From: Du Huanpeng <u74147@gmail.com>
-Date: Wed, 19 Aug 2020 14:33:19 +0800
-Message-Id: <1597818799-11414-1-git-send-email-u74147@gmail.com>
+ id 1k8HqI-0003m2-0j
+ for barebox@lists.infradead.org; Wed, 19 Aug 2020 06:45:02 +0000
+Date: Wed, 19 Aug 2020 08:45:00 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200819064500.GO13023@pengutronix.de>
+References: <20200817110346.118450-1-lapeddk@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200817110346.118450-1-lapeddk@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,36 +18,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Documentation: update for loongson1 board
-To: barebox@lists.infradead.org
-Cc: Du Huanpeng <u74147@gmail.com>
+Subject: Re: [PATCH] arm: imx: RELOCATABLE default yes on IMX_MULTI_BOARDS
+To: Lars Pedersen <lapeddk@gmail.com>
+Cc: barebox@lists.infradead.org, a.fatoum@pengutronix.de
 
-Signed-off-by: Du Huanpeng <u74147@gmail.com>
----
- Documentation/boards/mips/loongson_ls1b.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hi Lars,
 
-diff --git a/Documentation/boards/mips/loongson_ls1b.rst b/Documentation/boards/mips/loongson_ls1b.rst
-index 8f475e6..ea7ed8d 100644
---- a/Documentation/boards/mips/loongson_ls1b.rst
-+++ b/Documentation/boards/mips/loongson_ls1b.rst
-@@ -30,7 +30,7 @@ Running barebox
- 
-   3. Wait ``Press <Enter> to execute loading image`` prompt and press the space key.
- 
--  4. Build barebox and upload ``zbarebox.bin`` via Ymodem to the board:
-+  4. Build barebox and upload ``images/barebox-loongson-ls1b.img`` via Ymodem to the board:
- 
- .. code-block:: none
- 
+On Mon, Aug 17, 2020 at 01:03:46PM +0200, Lars Pedersen wrote:
+> Set relocatable to default yes when compiling for multiple i.MX boards,
+> since setting a suitable TEXT_BASE value across multiple boards is impossible.
+> 
+> Signed-off-by: Lars Pedersen <lapeddk@gmail.com>
+> ---
+>  common/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/common/Kconfig b/common/Kconfig
+> index 658437f01..c37339793 100644
+> --- a/common/Kconfig
+> +++ b/common/Kconfig
+> @@ -349,6 +349,7 @@ config KALLSYMS
+>  config RELOCATABLE
+>  	depends on PPC || ARM
+>  	bool "generate relocatable barebox binary"
+> +	default y if IMX_MULTI_BOARDS
+
+I would rather just select RELOCATABLE from IMX_MULTI_BOARDS. This makes
+it impossible to deselect RELOCATABLE for many boards, but I can't think
+of any valid case where this is really needed, at least not in mainline.
+
+Sascha
+
 -- 
-2.7.4
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
