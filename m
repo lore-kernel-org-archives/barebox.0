@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mickerik.phytec.de ([195.145.39.210])
- by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k8LGt-0007Gm-UQ
- for barebox@lists.infradead.org; Wed, 19 Aug 2020 10:24:45 +0000
-References: <1597062008-184305-1-git-send-email-r.karszniewicz@phytec.de>
-From: Robert Karszniewicz <r.karszniewicz@phytec.de>
-Message-ID: <62828c67-f355-d10b-1aed-0f7b152b1b05@phytec.de>
-Date: Wed, 19 Aug 2020 12:24:37 +0200
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1k8TLM-00089P-Tx
+ for barebox@lists.infradead.org; Wed, 19 Aug 2020 19:01:54 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 19 Aug 2020 21:01:48 +0200
+Message-Id: <20200819190148.14082-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <1597062008-184305-1-git-send-email-r.karszniewicz@phytec.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,102 +15,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3] bootm: add global.bootm.root_dev env var for booting
- via PARTUUID
-To: barebox@lists.infradead.org
+Subject: [PATCH] clk: imx-imx8mp: Mark arm_a53_core clk as critical
+To: Barebox List <barebox@lists.infradead.org>
 
-V2hhdCdzIHRoZSBzdGF0dXMgb24gdGhpcywgcGxlYXNlPwoKR3JlZXRpbmdzLgoKT24gOC8xMC8y
-MCAyOjIwIFBNLCBSb2JlcnQgS2Fyc3puaWV3aWN6IHdyb3RlOgo+IEludHJvZHVjZXMgYSBuZXcg
-ZW52IHZhciB3aGljaCBzcGVjaWZpZXMgd2hpY2ggZGV2aWNlIGlzIHRoZSByb290ZnMKPiBkZXZp
-Y2UgdG8gYmUgdXNlZCBpbiBMaW51eCwgcGFzc2VkIHRvIExpbnV4IHZpYSBib290YXJncywgaWRl
-bnRpZmllZCBieQo+IHRoZSByb290ZnMgcGFydGl0aW9uJ3MgUEFSVFVVSUQuCj4gCj4gZ2xvYmFs
-LmJvb3RtLnJvb3RfZGV2IHN1cHBsZW1lbnRzIGdsb2JhbC5ib290bS5hcHBlbmRyb290LCBpbiB0
-aGF0IGl0Cj4gb3ZlcnJpZGVzIGFwcGVuZHJvb3QncyBuYcOvdmUgZGVmYXVsdCwgd2hpY2ggcGlj
-a3MgdGhlIHBhcnRpdGlvbiB0aGF0IHRoZQo+IGtlcm5lbCByZXNpZGVzIG9uIChnbG9iYWwuYm9v
-dG0uaW1hZ2UpLgo+IAo+IEV4YW1wbGU6Cj4gZGV0ZWN0IG1tYzIKPiBnbG9iYWwuYm9vdG0uaW1h
-Z2U9Jy9tbnQvbW1jMi4wL3pJbWFnZScKPiBnbG9iYWwuYm9vdG0uYXBwZW5kcm9vdD0xCj4gZ2xv
-YmFsLmJvb3RtLnJvb3RfZGV2PS9kZXYvbW1jMi4xCj4gYm9vdCBtbWMKPiAKPiBTaWduZWQtb2Zm
-LWJ5OiBSb2JlcnQgS2Fyc3puaWV3aWN6IDxyLmthcnN6bmlld2ljekBwaHl0ZWMuZGU+Cj4gLS0t
-Cj4gQ2hhbmdlcyBmcm9tIHYyOgo+IC0gY29ycmVjdCBjb21taXQgbWVzc2FnZSBsaW5lIGxlbmd0
-aHMKPiAKPiBDaGFuZ2VzIGZyb20gdjE6Cj4gLSBtaW5vciBjb21taXQgbWVzc2FnZSBjaGFuZ2UK
-PiAKPiBDaGFuZ2VzIGZyb20gUkZDIHYyOgo+IC0gcmVwbGFjZWQgcGF0aF9nZXRfbGludXhfcm9v
-dGFyZygiaW52YWxpZCIpIGJ5IEVSUl9QVFIoLUVJTlZBTCkKPiAtIGFkZGVkIGVycm9yIG1lc3Nh
-Z2VzLiAoSSd2ZSBtYWRlIHRoZW0gbXV0dWFsbHkgZXhjbHVzaXZlIHRvIHByZXZlbnQKPiAgICBO
-VUxMLXBvaW50ZXIgZGVyZWZlcmVuY2UpCj4gCj4gICBjb21tb24vYm9vdG0uYyAgfCAyNSArKysr
-KysrKysrKysrKysrKysrKysrKy0tCj4gICBpbmNsdWRlL2Jvb3RtLmggfCAgMiArKwo+ICAgMiBm
-aWxlcyBjaGFuZ2VkLCAyNSBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQo+IAo+IGRpZmYg
-LS1naXQgYS9jb21tb24vYm9vdG0uYyBiL2NvbW1vbi9ib290bS5jCj4gaW5kZXggOGZlYzFlZTM0
-ZGQ4Li43Zjk1MTE3MmNjZjUgMTAwNjQ0Cj4gLS0tIGEvY29tbW9uL2Jvb3RtLmMKPiArKysgYi9j
-b21tb24vYm9vdG0uYwo+IEBAIC02NCw2ICs2NCw3IEBAIHZvaWQgYm9vdG1fZGF0YV9pbml0X2Rl
-ZmF1bHRzKHN0cnVjdCBib290bV9kYXRhICpkYXRhKQo+ICAgCWdldGVudl91bCgiZ2xvYmFsLmJv
-b3RtLmltYWdlLmxvYWRhZGRyIiwgJmRhdGEtPm9zX2FkZHJlc3MpOwo+ICAgCWdldGVudl91bCgi
-Z2xvYmFsLmJvb3RtLmluaXRyZC5sb2FkYWRkciIsICZkYXRhLT5pbml0cmRfYWRkcmVzcyk7Cj4g
-ICAJZGF0YS0+aW5pdHJkX2ZpbGUgPSBnZXRlbnZfbm9uZW1wdHkoImdsb2JhbC5ib290bS5pbml0
-cmQiKTsKPiArCWRhdGEtPnJvb3RfZGV2ID0gZ2V0ZW52X25vbmVtcHR5KCJnbG9iYWwuYm9vdG0u
-cm9vdF9kZXYiKTsKPiAgIAlkYXRhLT52ZXJpZnkgPSBib290bV9nZXRfdmVyaWZ5X21vZGUoKTsK
-PiAgIAlkYXRhLT5hcHBlbmRyb290ID0gYm9vdG1fYXBwZW5kcm9vdDsKPiAgIAlkYXRhLT5wcm92
-aWRlX21hY2hpbmVfaWQgPSBib290bV9wcm92aWRlX21hY2hpbmVfaWQ7Cj4gQEAgLTY1NSw3ICs2
-NTYsMjUgQEAgaW50IGJvb3RtX2Jvb3Qoc3RydWN0IGJvb3RtX2RhdGEgKmJvb3RtX2RhdGEpCj4g
-ICAJaWYgKGJvb3RtX2RhdGEtPmFwcGVuZHJvb3QpIHsKPiAgIAkJY2hhciAqcm9vdGFyZzsKPiAg
-IAo+IC0JCXJvb3RhcmcgPSBwYXRoX2dldF9saW51eF9yb290YXJnKGRhdGEtPm9zX2ZpbGUpOwo+
-ICsJCWlmIChib290bV9kYXRhLT5yb290X2Rldikgewo+ICsJCQljb25zdCBjaGFyICpyb290X2Rl
-dl9uYW1lID0gZGV2cGF0aF90b19uYW1lKGJvb3RtX2RhdGEtPnJvb3RfZGV2KTsKPiArCQkJY29u
-c3Qgc3RydWN0IGNkZXYgKnJvb3RfY2RldiA9IGNkZXZfYnlfbmFtZShyb290X2Rldl9uYW1lKTsK
-PiArCj4gKwkJCWlmIChyb290X2NkZXYgJiYgcm9vdF9jZGV2LT5wYXJ0dXVpZFswXSAhPSAwKSB7
-Cj4gKwkJCQlyb290YXJnID0gYmFzcHJpbnRmKCJyb290PVBBUlRVVUlEPSVzIiwgcm9vdF9jZGV2
-LT5wYXJ0dXVpZCk7Cj4gKwkJCX0gZWxzZSB7Cj4gKwkJCQlyb290YXJnID0gRVJSX1BUUigtRUlO
-VkFMKTsKPiArCj4gKwkJCQlpZiAoIXJvb3RfY2RldikKPiArCQkJCQlwcl9lcnIoIm5vIGNkZXYg
-Zm91bmQgZm9yICVzLCBjYW5ub3Qgc2V0IHJvb3Q9IG9wdGlvblxuIiwKPiArCQkJCQkJcm9vdF9k
-ZXZfbmFtZSk7Cj4gKwkJCQllbHNlIGlmICghcm9vdF9jZGV2LT5wYXJ0dXVpZFswXSkKPiArCQkJ
-CQlwcl9lcnIoIiVzIGRvZXNuJ3QgaGF2ZSBhIFBBUlRVVUlELCBjYW5ub3Qgc2V0IHJvb3Q9IG9w
-dGlvblxuIiwKPiArCQkJCQkJcm9vdF9kZXZfbmFtZSk7Cj4gKwkJCX0KPiArCQl9IGVsc2Ugewo+
-ICsJCQlyb290YXJnID0gcGF0aF9nZXRfbGludXhfcm9vdGFyZyhkYXRhLT5vc19maWxlKTsKPiAr
-CQl9Cj4gICAJCWlmICghSVNfRVJSKHJvb3RhcmcpKSB7Cj4gICAJCQlwcmludGYoIkFkZGluZyBc
-IiVzXCIgdG8gS2VybmVsIGNvbW1hbmRsaW5lXG4iLCByb290YXJnKTsKPiAgIAkJCWdsb2JhbHZh
-cl9hZGRfc2ltcGxlKCJsaW51eC5ib290YXJncy5ib290bS5hcHBlbmRyb290IiwKPiBAQCAtNzQy
-LDYgKzc2MSw3IEBAIHN0YXRpYyBpbnQgYm9vdG1faW5pdCh2b2lkKQo+ICAgCWdsb2JhbHZhcl9h
-ZGRfc2ltcGxlKCJib290bS5pbWFnZSIsIE5VTEwpOwo+ICAgCWdsb2JhbHZhcl9hZGRfc2ltcGxl
-KCJib290bS5pbWFnZS5sb2FkYWRkciIsIE5VTEwpOwo+ICAgCWdsb2JhbHZhcl9hZGRfc2ltcGxl
-KCJib290bS5vZnRyZWUiLCBOVUxMKTsKPiArCWdsb2JhbHZhcl9hZGRfc2ltcGxlKCJib290bS5y
-b290X2RldiIsIE5VTEwpOwo+ICAgCWdsb2JhbHZhcl9hZGRfc2ltcGxlKCJib290bS50ZWUiLCBO
-VUxMKTsKPiAgIAlnbG9iYWx2YXJfYWRkX3NpbXBsZV9ib29sKCJib290bS5hcHBlbmRyb290Iiwg
-JmJvb3RtX2FwcGVuZHJvb3QpOwo+ICAgCWdsb2JhbHZhcl9hZGRfc2ltcGxlX2Jvb2woImJvb3Rt
-LnByb3ZpZGVfbWFjaGluZV9pZCIsICZib290bV9wcm92aWRlX21hY2hpbmVfaWQpOwo+IEBAIC03
-NzEsNSArNzkxLDYgQEAgQkFSRUJPWF9NQUdJQ1ZBUl9OQU1FRChnbG9iYWxfYm9vdG1fb2Z0cmVl
-LCBnbG9iYWwuYm9vdG0ub2Z0cmVlLCAiYm9vdG0gZGVmYXVsdAo+ICAgQkFSRUJPWF9NQUdJQ1ZB
-Ul9OQU1FRChnbG9iYWxfYm9vdG1fdGVlLCBnbG9iYWwuYm9vdG0udGVlLCAiYm9vdG0gZGVmYXVs
-dCB0ZWUgaW1hZ2UiKTsKPiAgIEJBUkVCT1hfTUFHSUNWQVJfTkFNRUQoZ2xvYmFsX2Jvb3RtX3Zl
-cmlmeSwgZ2xvYmFsLmJvb3RtLnZlcmlmeSwgImJvb3RtIGRlZmF1bHQgdmVyaWZ5IGxldmVsIik7
-Cj4gICBCQVJFQk9YX01BR0lDVkFSX05BTUVEKGdsb2JhbF9ib290bV92ZXJib3NlLCBnbG9iYWwu
-Ym9vdG0udmVyYm9zZSwgImJvb3RtIGRlZmF1bHQgdmVyYm9zaXR5IGxldmVsICgwPXF1aWV0KSIp
-Owo+IC1CQVJFQk9YX01BR0lDVkFSX05BTUVEKGdsb2JhbF9ib290bV9hcHBlbmRyb290LCBnbG9i
-YWwuYm9vdG0uYXBwZW5kcm9vdCwgIkFkZCByb290PSBvcHRpb24gdG8gS2VybmVsIHRvIG1vdW50
-IHJvb3RmcyBmcm9tIHRoZSBkZXZpY2UgdGhlIEtlcm5lbCBjb21lcyBmcm9tIik7Cj4gK0JBUkVC
-T1hfTUFHSUNWQVJfTkFNRUQoZ2xvYmFsX2Jvb3RtX2FwcGVuZHJvb3QsIGdsb2JhbC5ib290bS5h
-cHBlbmRyb290LCAiQWRkIHJvb3Q9IG9wdGlvbiB0byBLZXJuZWwgdG8gbW91bnQgcm9vdGZzIGZy
-b20gdGhlIGRldmljZSB0aGUgS2VybmVsIGNvbWVzIGZyb20gKGRlZmF1bHQsIGRldmljZSBjYW4g
-YmUgb3ZlcnJpZGRlbiB2aWEgZ2xvYmFsLmJvb3RtLnJvb3RfZGV2KSIpOwo+ICtCQVJFQk9YX01B
-R0lDVkFSX05BTUVEKGdsb2JhbF9ib290bV9yb290X2RldiwgZ2xvYmFsLmJvb3RtLnJvb3RfZGV2
-LCAiYm9vdG0gZGVmYXVsdCByb290IGRldmljZSAob3ZlcnJpZGVzIGRlZmF1bHQgZGV2aWNlIGlu
-IGdsb2JhbC5ib290bS5hcHBlbmRyb290KSIpOwo+ICAgQkFSRUJPWF9NQUdJQ1ZBUl9OQU1FRChn
-bG9iYWxfYm9vdG1fcHJvdmlkZV9tYWNoaW5lX2lkLCBnbG9iYWwuYm9vdG0ucHJvdmlkZV9tYWNo
-aW5lX2lkLCAiSWYgdHJ1ZSwgYWRkIHN5c3RlbWQubWFjaGluZV9pZD0gd2l0aCB2YWx1ZSBvZiBn
-bG9iYWwubWFjaGluZV9pZCB0byBLZXJuZWwiKTsKPiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9ib290
-bS5oIGIvaW5jbHVkZS9ib290bS5oCj4gaW5kZXggNzc4MmRlN2E0NzZkLi4zNjI4YTdlZWE1Yjkg
-MTAwNjQ0Cj4gLS0tIGEvaW5jbHVkZS9ib290bS5oCj4gKysrIGIvaW5jbHVkZS9ib290bS5oCj4g
-QEAgLTE4LDYgKzE4LDcgQEAgc3RydWN0IGJvb3RtX2RhdGEgewo+ICAgCWNvbnN0IGNoYXIgKmlu
-aXRyZF9maWxlOwo+ICAgCWNvbnN0IGNoYXIgKm9mdHJlZV9maWxlOwo+ICAgCWNvbnN0IGNoYXIg
-KnRlZV9maWxlOwo+ICsJY29uc3QgY2hhciAqcm9vdF9kZXY7Cj4gICAJaW50IHZlcmJvc2U7Cj4g
-ICAJZW51bSBib290bV92ZXJpZnkgdmVyaWZ5Owo+ICAgCWJvb2wgZm9yY2U7Cj4gQEAgLTI1LDYg
-KzI2LDcgQEAgc3RydWN0IGJvb3RtX2RhdGEgewo+ICAgCS8qCj4gICAJICogYXBwZW5kcm9vdCAt
-IGlmIHRydWUsIHRyeSB0byBhZGQgYSBzdWl0YWJsZSByb290PSBLZXJuZWwgb3B0aW9uIHRvCj4g
-ICAJICogbW91bnQgdGhlIHJvb3RmcyBmcm9tIHRoZSBzYW1lIGRldmljZSBhcyB0aGUgS2VybmVs
-IGNvbWVzIGZyb20uCj4gKwkgKiBUaGUgZGVmYXVsdCByb290ZnMgZGV2aWNlIGNhbiBiZSBvdmVy
-cmlkZGVuIHdpdGggcm9vdF9kZXYuCj4gICAJICovCj4gICAJYm9vbCBhcHBlbmRyb290Owo+ICAg
-CS8qCj4gCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-YmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9s
-aXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Changes in imx8mp.dtsi for v5.8-rc1 added some clock reparenting to the
+device tree. IMX8MP_CLK_A53_CORE is reparented to IMX8MP_ARM_PLL_OUT.
+The latter is not enabled in hardware, so the CPU clock is disabled
+locking up the system. Mark IMX8MP_CLK_A53_CORE as critical so that the
+new parent gets enabled before reparenting.
+
+Fixes: abef60363d ("dts: update to v5.8-rc1")
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/clk/imx/clk-imx8mp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/clk/imx/clk-imx8mp.c b/drivers/clk/imx/clk-imx8mp.c
+index 8286e47960..83659792ea 100644
+--- a/drivers/clk/imx/clk-imx8mp.c
++++ b/drivers/clk/imx/clk-imx8mp.c
+@@ -528,7 +528,7 @@ static int imx8mp_clocks_init(struct device_node *ccm_np)
+ 	clks[IMX8MP_CLK_MEDIA_ISP_DIV] = imx_clk_divider2("media_isp_div", "media_isp_cg", ccm + 0x8400, 0, 3);
+ 
+ 	/* CORE SEL */
+-	clks[IMX8MP_CLK_A53_CORE] = imx_clk_mux2("arm_a53_core", ccm + 0x9880, 24, 1, imx8mp_a53_core_sels, ARRAY_SIZE(imx8mp_a53_core_sels));
++	clks[IMX8MP_CLK_A53_CORE] = imx_clk_mux2_flags("arm_a53_core", ccm + 0x9880, 24, 1, imx8mp_a53_core_sels, ARRAY_SIZE(imx8mp_a53_core_sels), CLK_IS_CRITICAL);
+ 
+ 	clks[IMX8MP_CLK_MAIN_AXI] = imx8m_clk_composite_critical("main_axi", imx8mp_main_axi_sels, ccm + 0x8800);
+ 	clks[IMX8MP_CLK_ENET_AXI] = imx8m_clk_composite("enet_axi", imx8mp_enet_axi_sels, ccm + 0x8880);
+-- 
+2.28.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
