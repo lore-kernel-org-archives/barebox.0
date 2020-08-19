@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k8TLM-00089P-Tx
- for barebox@lists.infradead.org; Wed, 19 Aug 2020 19:01:54 +0000
+ id 1k8U1K-0008RT-Te
+ for barebox@lists.infradead.org; Wed, 19 Aug 2020 19:45:20 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 19 Aug 2020 21:01:48 +0200
-Message-Id: <20200819190148.14082-1-s.hauer@pengutronix.de>
+Date: Wed, 19 Aug 2020 21:45:09 +0200
+Message-Id: <20200819194511.14005-5-s.hauer@pengutronix.de>
+In-Reply-To: <20200819194511.14005-1-s.hauer@pengutronix.de>
+References: <20200819194511.14005-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,34 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] clk: imx-imx8mp: Mark arm_a53_core clk as critical
+Subject: [PATCH 5/7] clk: imx: Add imx_clk_gate4_flags
 To: Barebox List <barebox@lists.infradead.org>
 
-Changes in imx8mp.dtsi for v5.8-rc1 added some clock reparenting to the
-device tree. IMX8MP_CLK_A53_CORE is reparented to IMX8MP_ARM_PLL_OUT.
-The latter is not enabled in hardware, so the CPU clock is disabled
-locking up the system. Mark IMX8MP_CLK_A53_CORE as critical so that the
-new parent gets enabled before reparenting.
+Needed for further clock driver updates, taken from Linux Kernel.
 
-Fixes: abef60363d ("dts: update to v5.8-rc1")
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/clk/imx/clk-imx8mp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/imx/clk.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/clk/imx/clk-imx8mp.c b/drivers/clk/imx/clk-imx8mp.c
-index 8286e47960..83659792ea 100644
---- a/drivers/clk/imx/clk-imx8mp.c
-+++ b/drivers/clk/imx/clk-imx8mp.c
-@@ -528,7 +528,7 @@ static int imx8mp_clocks_init(struct device_node *ccm_np)
- 	clks[IMX8MP_CLK_MEDIA_ISP_DIV] = imx_clk_divider2("media_isp_div", "media_isp_cg", ccm + 0x8400, 0, 3);
+diff --git a/drivers/clk/imx/clk.h b/drivers/clk/imx/clk.h
+index 32e7c5cbb7..02270cdf0f 100644
+--- a/drivers/clk/imx/clk.h
++++ b/drivers/clk/imx/clk.h
+@@ -141,6 +141,12 @@ static inline struct clk *imx_clk_gate4(const char *name, const char *parent,
+ 	return clk_gate2(name, parent, reg, shift, 0x3, CLK_OPS_PARENT_ENABLE);
+ }
  
- 	/* CORE SEL */
--	clks[IMX8MP_CLK_A53_CORE] = imx_clk_mux2("arm_a53_core", ccm + 0x9880, 24, 1, imx8mp_a53_core_sels, ARRAY_SIZE(imx8mp_a53_core_sels));
-+	clks[IMX8MP_CLK_A53_CORE] = imx_clk_mux2_flags("arm_a53_core", ccm + 0x9880, 24, 1, imx8mp_a53_core_sels, ARRAY_SIZE(imx8mp_a53_core_sels), CLK_IS_CRITICAL);
- 
- 	clks[IMX8MP_CLK_MAIN_AXI] = imx8m_clk_composite_critical("main_axi", imx8mp_main_axi_sels, ccm + 0x8800);
- 	clks[IMX8MP_CLK_ENET_AXI] = imx8m_clk_composite("enet_axi", imx8mp_enet_axi_sels, ccm + 0x8880);
++static inline struct clk *imx_clk_gate4_flags(const char *name, const char *parent,
++		void __iomem *reg, u8 shift, unsigned long flags)
++{
++	return clk_gate2(name, parent, reg, shift, 0x3, flags | CLK_OPS_PARENT_ENABLE);
++}
++
+ static inline struct clk *imx_clk_gate_shared(const char *name, const char *parent,
+ 					      const char *shared)
+ {
 -- 
 2.28.0
 
