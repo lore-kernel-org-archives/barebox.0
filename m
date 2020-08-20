@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from vsmx012.vodafonemail.xion.oxcs.net ([153.92.174.90])
+Received: from mail-lj1-x243.google.com ([2a00:1450:4864:20::243])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k8kHD-00027B-UO
- for barebox@lists.infradead.org; Thu, 20 Aug 2020 13:06:44 +0000
-Date: Thu, 20 Aug 2020 15:06:36 +0200 (CEST)
-From: Giorgio Dal Molin <giorgio.nicole@arcor.de>
-Message-ID: <1558463995.8719.1597928796440@mail.vodafone.de>
-In-Reply-To: <20200820125723.GZ13023@pengutronix.de>
-References: <1196968959.8187.1597925911899@mail.vodafone.de>
- <3254031d-0a9d-42c5-2e26-b41095d52227@pengutronix.de>
- <1964884639.8285.1597926404532@mail.vodafone.de>
- <15d59a58-4c45-c83f-cb96-17b2d3bc4c93@pengutronix.de>
- <670188591.8565.1597927841179@mail.vodafone.de>
- <20200820125723.GZ13023@pengutronix.de>
+ id 1k8kIR-0002J8-MR
+ for barebox@lists.infradead.org; Thu, 20 Aug 2020 13:08:00 +0000
+Received: by mail-lj1-x243.google.com with SMTP id m22so2009518ljj.5
+ for <barebox@lists.infradead.org>; Thu, 20 Aug 2020 06:07:56 -0700 (PDT)
+From: Lars Pedersen <lapeddk@gmail.com>
+Date: Thu, 20 Aug 2020 15:07:31 +0200
+Message-Id: <20200820130731.1211839-1-lapeddk@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -26,58 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: NULL pointer deref crash on barebox 2020.08.0
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: [PATCH v2] arm: imx: Select RELOCATABLE on IMX_MULTI_BOARDS
+To: barebox@lists.infradead.org
+Cc: a.fatoum@pengutronix.de, Lars Pedersen <lapeddk@gmail.com>
 
+Depend on RELOCATABLE when compiling for multiple i.MX boards,
+since setting a suitable TEXT_BASE value across multiple boards is impossible.
 
-> On August 20, 2020 at 2:57 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> 
-> 
-> On Thu, Aug 20, 2020 at 02:50:40PM +0200, Giorgio Dal Molin wrote:
-> > 
-> > > On August 20, 2020 at 2:28 PM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
-> > > 
-> > > 
-> > > Hello,
-> > > 
-> > > On 8/20/20 2:26 PM, Giorgio Dal Molin wrote:
-> > > >> What kind of file system is mounted at /mnt/boot?
-> > > >>
-> > > > 
-> > > > Hi
-> > > > 
-> > > > it's a squashfs:
-> > > 
-> > > Do you have Sascha's "squashfs: Fix current master" series applied?
-> > > https://lists.infradead.org/pipermail/barebox/2020-August/033488.html
-> > > 
-> > Hi,
-> > 
-> > are these commits already visible in git://git.pengutronix.de/git/barebox.git
-> 
-> They are not because I forgot to apply them. Give me a minute, Ahmad is
-> just testing them
-> 
-> Sascha
+Signed-off-by: Lars Pedersen <lapeddk@gmail.com>
+---
+ arch/arm/mach-imx/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-Hi,
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 2e8d2bd56..0fffde46e 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -215,6 +215,7 @@ config ARCH_VF610
+ config IMX_MULTI_BOARDS
+ 	bool "Allow multiple boards to be selected"
+ 	select HAVE_PBL_MULTI_IMAGES
++	select RELOCATABLE
+ 
+ if IMX_MULTI_BOARDS
+ 
+-- 
+2.26.2
 
-I'm actually not in a hurry, I just noticed the problem and reported it.
-
-giorgio
-
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
