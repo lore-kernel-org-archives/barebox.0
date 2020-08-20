@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([85.220.165.71])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k8f69-0004mr-QU
+ id 1k8f69-0004mm-Pq
  for barebox@lists.infradead.org; Thu, 20 Aug 2020 07:35:03 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Thu, 20 Aug 2020 09:34:53 +0200
-Message-Id: <20200820073454.17500-12-o.rempel@pengutronix.de>
+Date: Thu, 20 Aug 2020 09:34:46 +0200
+Message-Id: <20200820073454.17500-5-o.rempel@pengutronix.de>
 In-Reply-To: <20200820073454.17500-1-o.rempel@pengutronix.de>
 References: <20200820073454.17500-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
@@ -21,79 +21,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 11/12] ARM: dts: protonic: properly define PHY nodes on
- lanmcu and plym2m boards
+Subject: [PATCH v5 04/12] of: of_device_get_match_compatible() helper
 To: barebox@lists.infradead.org, david@protonic.nl
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
+Some times we need to know, against which compatible did the driver
+was registered. So, instead of coding it in the driver, add generic
+helper for all drivers.
+
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- arch/arm/dts/imx6dl-lanmcu.dts | 15 ++++++++++++++-
- arch/arm/dts/imx6dl-plym2m.dts | 15 ++++++++++++++-
- 2 files changed, 28 insertions(+), 2 deletions(-)
+ drivers/of/device.c | 12 ++++++++++++
+ include/of_device.h |  6 ++++++
+ 2 files changed, 18 insertions(+)
 
-diff --git a/arch/arm/dts/imx6dl-lanmcu.dts b/arch/arm/dts/imx6dl-lanmcu.dts
-index 42f8c91ece..67139930f9 100644
---- a/arch/arm/dts/imx6dl-lanmcu.dts
-+++ b/arch/arm/dts/imx6dl-lanmcu.dts
-@@ -308,12 +308,25 @@
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_enet>;
- 	phy-mode = "rmii";
--	phy-reset-gpios = <&gpio5 22 GPIO_ACTIVE_LOW>;
- 	clocks = <&clks IMX6QDL_CLK_ENET>,
- 		 <&clks IMX6QDL_CLK_ENET>,
- 		 <&clk50m_phy>;
- 	clock-names = "ipg", "ahb", "ptp";
- 	status = "okay";
+diff --git a/drivers/of/device.c b/drivers/of/device.c
+index 67a67bd565..b3f522e1fa 100644
+--- a/drivers/of/device.c
++++ b/drivers/of/device.c
+@@ -31,3 +31,15 @@ const void *of_device_get_match_data(const struct device_d *dev)
+ 	return match->data;
+ }
+ EXPORT_SYMBOL(of_device_get_match_data);
 +
-+	mdio {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
++const char *of_device_get_match_compatible(const struct device_d *dev)
++{
++	const struct of_device_id *match;
 +
-+		/* Microchip KSZ8081RNA PHY */
-+		rgmii_phy: ethernet-phy@0 {
-+			reg = <0>;
-+			interrupts-extended = <&gpio5 23 IRQ_TYPE_LEVEL_LOW>;
-+			reset-gpios = <&gpio5 22 GPIO_ACTIVE_LOW>;
-+			reset-assert-us = <10000>;
-+			reset-deassert-us = <300>;
-+		};
-+	};
- };
++	match = of_match_device(dev->driver->of_compatible, dev);
++	if (!match)
++		return NULL;
++
++	return match->compatible;
++}
++EXPORT_SYMBOL(of_device_get_match_compatible);
+diff --git a/include/of_device.h b/include/of_device.h
+index 244f5fcbbb..cef6d5b5cc 100644
+--- a/include/of_device.h
++++ b/include/of_device.h
+@@ -22,6 +22,7 @@ static inline int of_driver_match_device(struct device_d *dev,
+ }
  
- &uart2 {
-diff --git a/arch/arm/dts/imx6dl-plym2m.dts b/arch/arm/dts/imx6dl-plym2m.dts
-index d04137e282..e944a14dce 100644
---- a/arch/arm/dts/imx6dl-plym2m.dts
-+++ b/arch/arm/dts/imx6dl-plym2m.dts
-@@ -54,12 +54,25 @@
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_enet>;
- 	phy-mode = "rmii";
--	phy-reset-gpios = <&gpio5 22 GPIO_ACTIVE_LOW>;
- 	clocks = <&clks IMX6QDL_CLK_ENET>,
- 		 <&clks IMX6QDL_CLK_ENET>,
- 		 <&clk50m_phy>;
- 	clock-names = "ipg", "ahb", "ptp";
- 	status = "okay";
-+
-+	mdio {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		/* Microchip KSZ8081RNA PHY */
-+		rgmii_phy: ethernet-phy@0 {
-+			reg = <0>;
-+			interrupts-extended = <&gpio5 23 IRQ_TYPE_LEVEL_LOW>;
-+			reset-gpios = <&gpio5 22 GPIO_ACTIVE_LOW>;
-+			reset-assert-us = <10000>;
-+			reset-deassert-us = <300>;
-+		};
-+	};
- };
+ extern const void *of_device_get_match_data(const struct device_d *dev);
++extern const char *of_device_get_match_compatible(const struct device_d *dev);
  
- &iomuxc {
+ #else /* CONFIG_OFTREE */
+ 
+@@ -36,6 +37,11 @@ static inline const void *of_device_get_match_data(const struct device_d *dev)
+ 	return NULL;
+ }
+ 
++static inline const char *of_device_get_match_compatible(const struct device_d *dev)
++{
++	return NULL;
++}
++
+ static inline const struct of_device_id *__of_match_device(
+ 		const struct of_device_id *matches, const struct device_d *dev)
+ {
 -- 
 2.28.0
 
