@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([85.220.165.71])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k8f69-0004mu-S6
+ id 1k8f69-0004mh-Pu
  for barebox@lists.infradead.org; Thu, 20 Aug 2020 07:35:03 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Thu, 20 Aug 2020 09:34:54 +0200
-Message-Id: <20200820073454.17500-13-o.rempel@pengutronix.de>
-In-Reply-To: <20200820073454.17500-1-o.rempel@pengutronix.de>
-References: <20200820073454.17500-1-o.rempel@pengutronix.de>
+Date: Thu, 20 Aug 2020 09:34:42 +0200
+Message-Id: <20200820073454.17500-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,39 +19,85 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 12/12] ARM: dts: protonic: lanmcu: add uart-has-rtscts to
- enable rs485 functionality
+Subject: [PATCH v5 00/12] prepare Protonic board code for mainline 
 To: barebox@lists.infradead.org, david@protonic.nl
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-Without this flag the kernel was ignoring linux,rs485-enabled-at-boot-time
-property.
+changes v5:
+- board: apply requested changes
+- add PHY and rs458 devicetree fixes for lanmcu and plym2m
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- arch/arm/dts/imx6dl-lanmcu.dts | 2 ++
- 1 file changed, 2 insertions(+)
+changes v4:
+- follow suggestion provided by Ahmad and open-code the root node
+  registration and call it machine.of
+- board: rename crc and cs
+- board: ignore most of init related errors. Even if one part will fail,
+  we should be able to get as mach as possible.
 
-diff --git a/arch/arm/dts/imx6dl-lanmcu.dts b/arch/arm/dts/imx6dl-lanmcu.dts
-index 67139930f9..12fa816ca4 100644
---- a/arch/arm/dts/imx6dl-lanmcu.dts
-+++ b/arch/arm/dts/imx6dl-lanmcu.dts
-@@ -333,6 +333,7 @@
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_uart2>;
- 	linux,rs485-enabled-at-boot-time;
-+	uart-has-rtscts;
- 	status = "okay";
- };
- 
-@@ -340,6 +341,7 @@
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_uart3>;
- 	linux,rs485-enabled-at-boot-time;
-+	uart-has-rtscts;
- 	status = "okay";
- };
- 
+changes v3:
+- remove barebox-serial driver and use read the rfid directy from board
+  code (as was done in initial implementation)
+- use initcall instead of registering driver in the board code
+- add delayed USB scan
+- add rampoops node
+- add partition tables 
+
+changes v2:
+- add power init support for KvG boards
+- spell fixes
+- do not print error on probe exit
+- add of_console_get_by_alias() helper
+- free requested gpio array
+- exit fec init only in case of PROBE_DEFERED
+
+This patch series is a preparation and actual Protonic board code.
+Following changes was made in the main code:
+- register DT root node as device to make it possible to loade board
+  code as usual driver
+- provide helpers to read ethernet mac from nvmem cell register in a
+  devicetree.
+- provide barebox-serial driver which should be a nvmem cell consumer
+  and
+  serial-number DT property provider.
+- provide gpio helper to read gpio based board revision.
+
+Oleksij Rempel (12):
+  of: base: register DT root as device
+  gpiolib: add gpio_array_to_id helper to get ID out of GPIO array
+  common: console_common: add of_console_get_by_alias() helper
+  of: of_device_get_match_compatible() helper
+  ARM: protonic-imx6: port Protonic specific board code
+  ARM: dts: unify barebox and barebox,env partitions for all Protonic
+    boards
+  ARM: dts: imx6q-prti6q: add pstore/ramoops node
+  ARM: dts: protonic: lanmcu: add eMMC partition table
+  ARM: dts: protonic: add fixed clock for the FEC node
+  ARM: dts: protonic: lanmcu: use UART_CTS instead of GPIO based CTS
+  ARM: dts: protonic: properly define PHY nodes on lanmcu and plym2m
+    boards
+  ARM: dts: protonic: lanmcu: add uart-has-rtscts to enable rs485
+    functionality
+
+ arch/arm/boards/protonic-imx6/Makefile |    1 +
+ arch/arm/boards/protonic-imx6/board.c  | 1034 ++++++++++++++++++++++++
+ arch/arm/dts/imx6dl-lanmcu.dts         |   50 +-
+ arch/arm/dts/imx6dl-plym2m.dts         |   51 +-
+ arch/arm/dts/imx6dl-prtrvt.dts         |    1 +
+ arch/arm/dts/imx6q-prti6q.dts          |   24 +-
+ arch/arm/dts/imx6qdl-prti6q-nor.dtsi   |   10 +
+ arch/arm/dts/imx6qdl-prti6q.dtsi       |   31 +
+ arch/arm/dts/imx6qdl-vicut1.dtsi       |   26 +
+ common/console_common.c                |   18 +
+ drivers/gpio/gpiolib.c                 |   31 +
+ drivers/of/base.c                      |   17 +
+ drivers/of/device.c                    |   12 +
+ include/console.h                      |    1 +
+ include/gpio.h                         |    5 +
+ include/of_device.h                    |    6 +
+ 16 files changed, 1282 insertions(+), 36 deletions(-)
+ create mode 100644 arch/arm/boards/protonic-imx6/board.c
+ create mode 100644 arch/arm/dts/imx6qdl-prti6q-nor.dtsi
+
 -- 
 2.28.0
 
