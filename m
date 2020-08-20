@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([85.220.165.71])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k8jg9-0006QZ-Rw
- for barebox@lists.infradead.org; Thu, 20 Aug 2020 12:28:26 +0000
-References: <1196968959.8187.1597925911899@mail.vodafone.de>
- <3254031d-0a9d-42c5-2e26-b41095d52227@pengutronix.de>
- <1964884639.8285.1597926404532@mail.vodafone.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <15d59a58-4c45-c83f-cb96-17b2d3bc4c93@pengutronix.de>
-Date: Thu, 20 Aug 2020 14:28:24 +0200
+ id 1k8jyc-0008K8-Bi
+ for barebox@lists.infradead.org; Thu, 20 Aug 2020 12:47:31 +0000
+Date: Thu, 20 Aug 2020 14:47:28 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200820124728.GY13023@pengutronix.de>
+References: <20200817045332.28099-1-a.fatoum@pengutronix.de>
+ <20200817045332.28099-2-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <1964884639.8285.1597926404532@mail.vodafone.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20200817045332.28099-2-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,21 +23,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: NULL pointer deref crash on barebox 2020.08.0
-To: Giorgio Dal Molin <giorgio.nicole@arcor.de>, barebox@lists.infradead.org
+Subject: Re: [PATCH 2/3] video: ipuv3: parallel-display: support of_graph
+ binding
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hello,
-
-On 8/20/20 2:26 PM, Giorgio Dal Molin wrote:
->> What kind of file system is mounted at /mnt/boot?
->>
+On Mon, Aug 17, 2020 at 06:53:31AM +0200, Ahmad Fatoum wrote:
+> "fsl,imx-parallel-display"-compatible devices are supposed to support
+> two bindings to query the connected LCD's parameters:
 > 
-> Hi
+>   - A display timings sub node
+>   - A of_graph pointing to a panel or a bridge
 > 
-> it's a squashfs:
+> So far only the first was supported. Mimic what LDB is already doing, so
+> we support both.
+> 
+> Unlike LDB, if both are specified, the display timings node takes
+> precedence. This is to maintain backwards compatibility.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  drivers/video/imx-ipu-v3/imx-pd.c | 31 +++++++++++++++++++++----------
+>  1 file changed, 21 insertions(+), 10 deletions(-)
 
-Do you have Sascha's "squashfs: Fix current master" series applied?
-https://lists.infradead.org/pipermail/barebox/2020-August/033488.html
+Applied 2/3 and 3/3, thanks
+
+Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
