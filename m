@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lj1-x243.google.com ([2a00:1450:4864:20::243])
+Received: from metis.ext.pengutronix.de ([85.220.165.71])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k8kIR-0002J8-MR
- for barebox@lists.infradead.org; Thu, 20 Aug 2020 13:08:00 +0000
-Received: by mail-lj1-x243.google.com with SMTP id m22so2009518ljj.5
- for <barebox@lists.infradead.org>; Thu, 20 Aug 2020 06:07:56 -0700 (PDT)
-From: Lars Pedersen <lapeddk@gmail.com>
-Date: Thu, 20 Aug 2020 15:07:31 +0200
-Message-Id: <20200820130731.1211839-1-lapeddk@gmail.com>
+ id 1k8kRp-0005Pi-GL
+ for barebox@lists.infradead.org; Thu, 20 Aug 2020 13:17:42 +0000
+Date: Thu, 20 Aug 2020 15:17:37 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200820131737.GA13023@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,33 +20,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] arm: imx: Select RELOCATABLE on IMX_MULTI_BOARDS
-To: barebox@lists.infradead.org
-Cc: a.fatoum@pengutronix.de, Lars Pedersen <lapeddk@gmail.com>
+Subject: v2020.08.1
+To: Barebox List <barebox@lists.infradead.org>
 
-Depend on RELOCATABLE when compiling for multiple i.MX boards,
-since setting a suitable TEXT_BASE value across multiple boards is impossible.
+Hi All,
 
-Signed-off-by: Lars Pedersen <lapeddk@gmail.com>
----
- arch/arm/mach-imx/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+I just released a stable update for v2020.08. It fixes a few problems:
 
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index 2e8d2bd56..0fffde46e 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -215,6 +215,7 @@ config ARCH_VF610
- config IMX_MULTI_BOARDS
- 	bool "Allow multiple boards to be selected"
- 	select HAVE_PBL_MULTI_IMAGES
-+	select RELOCATABLE
- 
- if IMX_MULTI_BOARDS
- 
+- (some) watchdogs broken
+- squashfs broken
+- i.MX8MP was broken due to the last dts update
+
+For a detailed list of patches, see below
+
+Have Fun!
+ Sascha
+
+----------------------------------------------------------------
+Ahmad Fatoum (1):
+      watchdog: fix watchdog_set_timeout breakage for drivers like imxwd
+
+Sascha Hauer (6):
+      libfile: copy_file: Fix ftruncate called on device files
+      clk: imx-imx8mp: Mark arm_a53_core clk as critical
+      fs: squashfs: set s_op in time
+      fs: squashfs: Do not free root inode
+      fs: Use iget_locked() rather than squashfs specific function
+      Release v2020.08.1
+
+ Makefile                     |  2 +-
+ drivers/clk/imx/clk-imx8mp.c |  2 +-
+ drivers/watchdog/wd_core.c   |  2 +-
+ fs/squashfs/inode.c          | 18 +-----------------
+ fs/squashfs/squashfs.c       |  3 +--
+ fs/squashfs/squashfs.h       |  1 -
+ fs/squashfs/super.c          |  1 -
+ lib/libfile.c                | 10 +++++-----
+ 8 files changed, 10 insertions(+), 29 deletions(-)
 -- 
-2.26.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
