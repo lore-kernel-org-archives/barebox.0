@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([85.220.165.71])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k8f69-0004mq-QS
+ id 1k8f69-0004ml-Q0
  for barebox@lists.infradead.org; Thu, 20 Aug 2020 07:35:00 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Thu, 20 Aug 2020 09:34:49 +0200
-Message-Id: <20200820073454.17500-8-o.rempel@pengutronix.de>
+Date: Thu, 20 Aug 2020 09:34:45 +0200
+Message-Id: <20200820073454.17500-4-o.rempel@pengutronix.de>
 In-Reply-To: <20200820073454.17500-1-o.rempel@pengutronix.de>
 References: <20200820073454.17500-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
@@ -21,37 +21,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 07/12] ARM: dts: imx6q-prti6q: add pstore/ramoops node
+Subject: [PATCH v5 03/12] common: console_common: add
+ of_console_get_by_alias() helper
 To: barebox@lists.infradead.org, david@protonic.nl
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
+Add helper function to get console device by devicetree alias
+
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- arch/arm/dts/imx6qdl-prti6q.dtsi | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ common/console_common.c | 18 ++++++++++++++++++
+ include/console.h       |  1 +
+ 2 files changed, 19 insertions(+)
 
-diff --git a/arch/arm/dts/imx6qdl-prti6q.dtsi b/arch/arm/dts/imx6qdl-prti6q.dtsi
-index 19acca042d..f2b36553d4 100644
---- a/arch/arm/dts/imx6qdl-prti6q.dtsi
-+++ b/arch/arm/dts/imx6qdl-prti6q.dtsi
-@@ -16,6 +16,17 @@
- 		};
- 	};
+diff --git a/common/console_common.c b/common/console_common.c
+index a174c2deed..8cd57e623d 100644
+--- a/common/console_common.c
++++ b/common/console_common.c
+@@ -23,6 +23,7 @@
+ #include <environment.h>
+ #include <globalvar.h>
+ #include <magicvar.h>
++#include <of.h>
+ #include <password.h>
+ #include <clock.h>
+ #include <malloc.h>
+@@ -323,6 +324,23 @@ struct console_device *console_get_first_active(void)
+ }
+ EXPORT_SYMBOL(console_get_first_active);
  
-+	reserved-memory {
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		ranges;
++struct console_device *of_console_get_by_alias(const char *alias)
++{
++	struct device_node *node;
++	struct device_d *dev;
 +
-+		/* Address will be determined by the bootloader */
-+		ramoops {
-+			compatible = "ramoops";
-+		};
-+	};
++	node = of_find_node_by_alias(NULL, alias);
++	if (!node)
++		return NULL;
 +
- 	reg_1v8: regulator-1v8 {
- 		compatible = "regulator-fixed";
- 		regulator-name = "1v8";
++	dev = of_find_device_by_node(node);
++	if (!dev)
++		return NULL;
++
++	return console_get_by_dev(dev);
++}
++EXPORT_SYMBOL(of_console_get_by_alias);
++
+ #endif /* !CONFIG_CONSOLE_NONE */
+ 
+ int dprintf(int file, const char *fmt, ...)
+diff --git a/include/console.h b/include/console.h
+index 5b5c037026..a71d0da42e 100644
+--- a/include/console.h
++++ b/include/console.h
+@@ -87,6 +87,7 @@ int console_unregister(struct console_device *cdev);
+ 
+ struct console_device *console_get_by_dev(struct device_d *dev);
+ struct console_device *console_get_by_name(const char *name);
++struct console_device *of_console_get_by_alias(const char *alias);
+ 
+ extern struct list_head console_list;
+ #define for_each_console(console) list_for_each_entry(console, &console_list, list)
 -- 
 2.28.0
 
