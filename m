@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([85.220.165.71])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k8f69-0004mm-Pq
+ id 1k8f69-0004mu-S6
  for barebox@lists.infradead.org; Thu, 20 Aug 2020 07:35:03 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Thu, 20 Aug 2020 09:34:46 +0200
-Message-Id: <20200820073454.17500-5-o.rempel@pengutronix.de>
+Date: Thu, 20 Aug 2020 09:34:54 +0200
+Message-Id: <20200820073454.17500-13-o.rempel@pengutronix.de>
 In-Reply-To: <20200820073454.17500-1-o.rempel@pengutronix.de>
 References: <20200820073454.17500-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
@@ -21,64 +21,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 04/12] of: of_device_get_match_compatible() helper
+Subject: [PATCH v5 12/12] ARM: dts: protonic: lanmcu: add uart-has-rtscts to
+ enable rs485 functionality
 To: barebox@lists.infradead.org, david@protonic.nl
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-Some times we need to know, against which compatible did the driver
-was registered. So, instead of coding it in the driver, add generic
-helper for all drivers.
+Without this flag the kernel was ignoring linux,rs485-enabled-at-boot-time
+property.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/of/device.c | 12 ++++++++++++
- include/of_device.h |  6 ++++++
- 2 files changed, 18 insertions(+)
+ arch/arm/dts/imx6dl-lanmcu.dts | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/of/device.c b/drivers/of/device.c
-index 67a67bd565..b3f522e1fa 100644
---- a/drivers/of/device.c
-+++ b/drivers/of/device.c
-@@ -31,3 +31,15 @@ const void *of_device_get_match_data(const struct device_d *dev)
- 	return match->data;
- }
- EXPORT_SYMBOL(of_device_get_match_data);
-+
-+const char *of_device_get_match_compatible(const struct device_d *dev)
-+{
-+	const struct of_device_id *match;
-+
-+	match = of_match_device(dev->driver->of_compatible, dev);
-+	if (!match)
-+		return NULL;
-+
-+	return match->compatible;
-+}
-+EXPORT_SYMBOL(of_device_get_match_compatible);
-diff --git a/include/of_device.h b/include/of_device.h
-index 244f5fcbbb..cef6d5b5cc 100644
---- a/include/of_device.h
-+++ b/include/of_device.h
-@@ -22,6 +22,7 @@ static inline int of_driver_match_device(struct device_d *dev,
- }
+diff --git a/arch/arm/dts/imx6dl-lanmcu.dts b/arch/arm/dts/imx6dl-lanmcu.dts
+index 67139930f9..12fa816ca4 100644
+--- a/arch/arm/dts/imx6dl-lanmcu.dts
++++ b/arch/arm/dts/imx6dl-lanmcu.dts
+@@ -333,6 +333,7 @@
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_uart2>;
+ 	linux,rs485-enabled-at-boot-time;
++	uart-has-rtscts;
+ 	status = "okay";
+ };
  
- extern const void *of_device_get_match_data(const struct device_d *dev);
-+extern const char *of_device_get_match_compatible(const struct device_d *dev);
+@@ -340,6 +341,7 @@
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_uart3>;
+ 	linux,rs485-enabled-at-boot-time;
++	uart-has-rtscts;
+ 	status = "okay";
+ };
  
- #else /* CONFIG_OFTREE */
- 
-@@ -36,6 +37,11 @@ static inline const void *of_device_get_match_data(const struct device_d *dev)
- 	return NULL;
- }
- 
-+static inline const char *of_device_get_match_compatible(const struct device_d *dev)
-+{
-+	return NULL;
-+}
-+
- static inline const struct of_device_id *__of_match_device(
- 		const struct of_device_id *matches, const struct device_d *dev)
- {
 -- 
 2.28.0
 
