@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from vsmx011.vodafonemail.xion.oxcs.net ([153.92.174.89])
- by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k8k1n-0000SP-TI
- for barebox@lists.infradead.org; Thu, 20 Aug 2020 12:50:48 +0000
-Date: Thu, 20 Aug 2020 14:50:40 +0200 (CEST)
-From: Giorgio Dal Molin <giorgio.nicole@arcor.de>
-Message-ID: <670188591.8565.1597927841179@mail.vodafone.de>
-In-Reply-To: <15d59a58-4c45-c83f-cb96-17b2d3bc4c93@pengutronix.de>
-References: <1196968959.8187.1597925911899@mail.vodafone.de>
- <3254031d-0a9d-42c5-2e26-b41095d52227@pengutronix.de>
- <1964884639.8285.1597926404532@mail.vodafone.de>
- <15d59a58-4c45-c83f-cb96-17b2d3bc4c93@pengutronix.de>
+Received: from mickerik.phytec.de ([195.145.39.210])
+ by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1k8k4g-0000sJ-PZ
+ for barebox@lists.infradead.org; Thu, 20 Aug 2020 12:53:47 +0000
+References: <1597062008-184305-1-git-send-email-r.karszniewicz@phytec.de>
+ <20200820070554.GV13023@pengutronix.de>
+From: Robert Karszniewicz <r.karszniewicz@phytec.de>
+Message-ID: <9af975d3-5512-6da6-d636-284b1f2764f6@phytec.de>
+Date: Thu, 20 Aug 2020 14:53:39 +0200
 MIME-Version: 1.0
+In-Reply-To: <20200820070554.GV13023@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,37 +19,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-15"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: NULL pointer deref crash on barebox 2020.08.0
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
+Subject: Re: [PATCH v3] bootm: add global.bootm.root_dev env var for booting
+ via PARTUUID
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
+
+On 8/20/20 9:05 AM, Sascha Hauer wrote:
+> On Mon, Aug 10, 2020 at 02:20:08PM +0200, Robert Karszniewicz wrote:
+>> Introduces a new env var which specifies which device is the rootfs
+>> device to be used in Linux, passed to Linux via bootargs, identified by
+>> the rootfs partition's PARTUUID.
+>>
+>> global.bootm.root_dev supplements global.bootm.appendroot, in that it
+>> overrides appendroot's na=EFve default, which picks the partition that t=
+he
+>> kernel resides on (global.bootm.image).
+>>
+>> Example:
+>> detect mmc2
+>> global.bootm.image=3D'/mnt/mmc2.0/zImage'
+>> global.bootm.appendroot=3D1
+>> global.bootm.root_dev=3D/dev/mmc2.1
+>> boot mmc
+>>
+>> Signed-off-by: Robert Karszniewicz <r.karszniewicz@phytec.de>
+>> ---
+> =
+
+> Applied, thanks
+> =
+
+> Sascha
+> =
 
 
-> On August 20, 2020 at 2:28 PM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
-> 
-> 
-> Hello,
-> 
-> On 8/20/20 2:26 PM, Giorgio Dal Molin wrote:
-> >> What kind of file system is mounted at /mnt/boot?
-> >>
-> > 
-> > Hi
-> > 
-> > it's a squashfs:
-> 
-> Do you have Sascha's "squashfs: Fix current master" series applied?
-> https://lists.infradead.org/pipermail/barebox/2020-August/033488.html
-> 
-Hi,
-
-are these commits already visible in git://git.pengutronix.de/git/barebox.git
-
-I cannot find them.
-
-giorgio
+Thanks!
 
 _______________________________________________
 barebox mailing list
