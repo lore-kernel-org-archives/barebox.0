@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([85.220.165.71])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k8f69-0004mi-Pm
+ id 1k8f69-0004mk-Q1
  for barebox@lists.infradead.org; Thu, 20 Aug 2020 07:35:01 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Thu, 20 Aug 2020 09:34:44 +0200
-Message-Id: <20200820073454.17500-3-o.rempel@pengutronix.de>
+Date: Thu, 20 Aug 2020 09:34:51 +0200
+Message-Id: <20200820073454.17500-10-o.rempel@pengutronix.de>
 In-Reply-To: <20200820073454.17500-1-o.rempel@pengutronix.de>
 References: <20200820073454.17500-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
@@ -21,90 +21,99 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 02/12] gpiolib: add gpio_array_to_id helper to get ID out
- of GPIO array
+Subject: [PATCH v5 09/12] ARM: dts: protonic: add fixed clock for the FEC node
 To: barebox@lists.infradead.org, david@protonic.nl
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-Some boards provide a board version and/or ID coded by pull-up/down
-resistors connected to the gpio pins (or pins which can be multiplexed
-at some point as gpio). In this case every one implements own gpio id
-reader function.
+Add fixed clock for the FEC nodes to workaround HW TX checksum issues in
+case a PHY is used as the clock source for RMII connection.
 
-To avoid it, provide the common helper function to extract a value out
-of provided gpio array.
+By default the FEC node is using 3 clock sources, one of which is named
+"ptp" clock. If ptp clock has same source as "enet_ref" clock, then the
+ENET_REF_CLK input will become output. See [1].
+
+The default configuration will work only if iMX is the clock provider
+for the PHY chip. In case PHY has own XTAL, then the PHY should be used as
+clock provider for the iMX/FEC.
+
+In case "ptp" clock is removed, the PHY clock will be used and most of
+communication will work as expected. But will trigger other issue - the
+HW generated checksums for UDP and TCP packets will be zero. It is
+kernel specific issue, not reproducible on barebox.
+
+Since, currently, most of PHY drivers are not defined as clock provider, we
+should define dummy fixed clock and use it. This workaround is used in
+some other devicetrees [2]. But it may imply the next hidden issue - the
+PHY can be suspended, reseted or reconfigured any time and this may add
+clock glitches on the ENET_REF_CLK line and put FEC in undefined state.
+
+[1] https://elixir.bootlin.com/linux/latest/source/arch/arm/mach-imx/mach-imx6q.c#L164
+[2] https://elixir.bootlin.com/linux/latest/source/arch/arm/boot/dts/imx6dl-eckelmann-ci4x10.dts#L300
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/gpio/gpiolib.c | 31 +++++++++++++++++++++++++++++++
- include/gpio.h         |  5 +++++
- 2 files changed, 36 insertions(+)
+ arch/arm/dts/imx6dl-lanmcu.dts | 11 +++++++++--
+ arch/arm/dts/imx6dl-plym2m.dts | 11 +++++++++--
+ 2 files changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 27674af54c..6088cadd8a 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -381,6 +381,37 @@ void gpio_free_array(const struct gpio *array, size_t num)
- }
- EXPORT_SYMBOL_GPL(gpio_free_array);
+diff --git a/arch/arm/dts/imx6dl-lanmcu.dts b/arch/arm/dts/imx6dl-lanmcu.dts
+index 06d47bdc0d..65f6cbf395 100644
+--- a/arch/arm/dts/imx6dl-lanmcu.dts
++++ b/arch/arm/dts/imx6dl-lanmcu.dts
+@@ -97,6 +97,12 @@
+ 			linux,default-trigger = "heartbeat";
+ 		};
+ 	};
++
++	clk50m_phy: phy_clock {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		clock-frequency = <50000000>;
++	};
+ };
  
-+int gpio_array_to_id(const struct gpio *array, size_t num, u32 *val)
-+{
-+	u32 id = 0;
-+	int ret, i;
-+
-+	if (num > 32)
-+		return -EOVERFLOW;
-+
-+	ret = gpio_request_array(array, num);
-+	if (ret)
-+		return ret;
-+
-+	/* Wait until logic level will be stable */
-+	udelay(5);
-+	for (i = 0; i < num; i++) {
-+		ret = gpio_is_active(array[i].gpio);
-+		if (ret < 0)
-+			goto free_array;
-+		if (ret)
-+			id |= 1UL << i;
-+	}
-+
-+	*val = id;
-+	ret = 0;
-+
-+free_array:
-+	gpio_free_array(array, num);
-+	return ret;
-+}
-+EXPORT_SYMBOL(gpio_array_to_id);
-+
- static int gpiochip_find_base(int start, int ngpio)
- {
- 	int i;
-diff --git a/include/gpio.h b/include/gpio.h
-index 98c5b93ba2..81beb47309 100644
---- a/include/gpio.h
-+++ b/include/gpio.h
-@@ -145,6 +145,10 @@ static inline void gpio_free_array(const struct gpio *array, size_t num)
- 	/* GPIO can never have been requested */
- 	WARN_ON(1);
- }
-+static inline int gpio_array_to_id(const struct gpio *array, size_t num, u32 *val)
-+{
-+	return -EINVAL;
-+}
- #else
- int gpio_request(unsigned gpio, const char *label);
- int gpio_find_by_name(const char *name);
-@@ -153,6 +157,7 @@ void gpio_free(unsigned gpio);
- int gpio_request_one(unsigned gpio, unsigned long flags, const char *label);
- int gpio_request_array(const struct gpio *array, size_t num);
- void gpio_free_array(const struct gpio *array, size_t num);
-+int gpio_array_to_id(const struct gpio *array, size_t num, u32 *val);
- #endif
+ &iomuxc {
+@@ -304,8 +310,9 @@
+ 	phy-mode = "rmii";
+ 	phy-reset-gpios = <&gpio5 22 GPIO_ACTIVE_LOW>;
+ 	clocks = <&clks IMX6QDL_CLK_ENET>,
+-		 <&clks IMX6QDL_CLK_ENET>;
+-	clock-names = "ipg", "ahb";
++		 <&clks IMX6QDL_CLK_ENET>,
++		 <&clk50m_phy>;
++	clock-names = "ipg", "ahb", "ptp";
+ 	status = "okay";
+ };
  
- struct gpio_chip;
+diff --git a/arch/arm/dts/imx6dl-plym2m.dts b/arch/arm/dts/imx6dl-plym2m.dts
+index 335cb6f342..d04137e282 100644
+--- a/arch/arm/dts/imx6dl-plym2m.dts
++++ b/arch/arm/dts/imx6dl-plym2m.dts
+@@ -27,6 +27,12 @@
+ 			linux,default-trigger = "heartbeat";
+ 		};
+ 	};
++
++	clk50m_phy: phy_clock {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		clock-frequency = <50000000>;
++	};
+ };
+ 
+ &ecspi1 {
+@@ -50,8 +56,9 @@
+ 	phy-mode = "rmii";
+ 	phy-reset-gpios = <&gpio5 22 GPIO_ACTIVE_LOW>;
+ 	clocks = <&clks IMX6QDL_CLK_ENET>,
+-		 <&clks IMX6QDL_CLK_ENET>;
+-	clock-names = "ipg", "ahb";
++		 <&clks IMX6QDL_CLK_ENET>,
++		 <&clk50m_phy>;
++	clock-names = "ipg", "ahb", "ptp";
+ 	status = "okay";
+ };
+ 
 -- 
 2.28.0
 
