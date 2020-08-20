@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([85.220.165.71])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k8f69-0004ml-Q0
- for barebox@lists.infradead.org; Thu, 20 Aug 2020 07:35:00 +0000
+ id 1k8f69-0004mi-Pm
+ for barebox@lists.infradead.org; Thu, 20 Aug 2020 07:35:01 +0000
 From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Thu, 20 Aug 2020 09:34:45 +0200
-Message-Id: <20200820073454.17500-4-o.rempel@pengutronix.de>
+Date: Thu, 20 Aug 2020 09:34:44 +0200
+Message-Id: <20200820073454.17500-3-o.rempel@pengutronix.de>
 In-Reply-To: <20200820073454.17500-1-o.rempel@pengutronix.de>
 References: <20200820073454.17500-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
@@ -21,67 +21,90 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 03/12] common: console_common: add
- of_console_get_by_alias() helper
+Subject: [PATCH v5 02/12] gpiolib: add gpio_array_to_id helper to get ID out
+ of GPIO array
 To: barebox@lists.infradead.org, david@protonic.nl
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
 
-Add helper function to get console device by devicetree alias
+Some boards provide a board version and/or ID coded by pull-up/down
+resistors connected to the gpio pins (or pins which can be multiplexed
+at some point as gpio). In this case every one implements own gpio id
+reader function.
+
+To avoid it, provide the common helper function to extract a value out
+of provided gpio array.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- common/console_common.c | 18 ++++++++++++++++++
- include/console.h       |  1 +
- 2 files changed, 19 insertions(+)
+ drivers/gpio/gpiolib.c | 31 +++++++++++++++++++++++++++++++
+ include/gpio.h         |  5 +++++
+ 2 files changed, 36 insertions(+)
 
-diff --git a/common/console_common.c b/common/console_common.c
-index a174c2deed..8cd57e623d 100644
---- a/common/console_common.c
-+++ b/common/console_common.c
-@@ -23,6 +23,7 @@
- #include <environment.h>
- #include <globalvar.h>
- #include <magicvar.h>
-+#include <of.h>
- #include <password.h>
- #include <clock.h>
- #include <malloc.h>
-@@ -323,6 +324,23 @@ struct console_device *console_get_first_active(void)
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 27674af54c..6088cadd8a 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -381,6 +381,37 @@ void gpio_free_array(const struct gpio *array, size_t num)
  }
- EXPORT_SYMBOL(console_get_first_active);
+ EXPORT_SYMBOL_GPL(gpio_free_array);
  
-+struct console_device *of_console_get_by_alias(const char *alias)
++int gpio_array_to_id(const struct gpio *array, size_t num, u32 *val)
 +{
-+	struct device_node *node;
-+	struct device_d *dev;
++	u32 id = 0;
++	int ret, i;
 +
-+	node = of_find_node_by_alias(NULL, alias);
-+	if (!node)
-+		return NULL;
++	if (num > 32)
++		return -EOVERFLOW;
 +
-+	dev = of_find_device_by_node(node);
-+	if (!dev)
-+		return NULL;
++	ret = gpio_request_array(array, num);
++	if (ret)
++		return ret;
 +
-+	return console_get_by_dev(dev);
++	/* Wait until logic level will be stable */
++	udelay(5);
++	for (i = 0; i < num; i++) {
++		ret = gpio_is_active(array[i].gpio);
++		if (ret < 0)
++			goto free_array;
++		if (ret)
++			id |= 1UL << i;
++	}
++
++	*val = id;
++	ret = 0;
++
++free_array:
++	gpio_free_array(array, num);
++	return ret;
 +}
-+EXPORT_SYMBOL(of_console_get_by_alias);
++EXPORT_SYMBOL(gpio_array_to_id);
 +
- #endif /* !CONFIG_CONSOLE_NONE */
+ static int gpiochip_find_base(int start, int ngpio)
+ {
+ 	int i;
+diff --git a/include/gpio.h b/include/gpio.h
+index 98c5b93ba2..81beb47309 100644
+--- a/include/gpio.h
++++ b/include/gpio.h
+@@ -145,6 +145,10 @@ static inline void gpio_free_array(const struct gpio *array, size_t num)
+ 	/* GPIO can never have been requested */
+ 	WARN_ON(1);
+ }
++static inline int gpio_array_to_id(const struct gpio *array, size_t num, u32 *val)
++{
++	return -EINVAL;
++}
+ #else
+ int gpio_request(unsigned gpio, const char *label);
+ int gpio_find_by_name(const char *name);
+@@ -153,6 +157,7 @@ void gpio_free(unsigned gpio);
+ int gpio_request_one(unsigned gpio, unsigned long flags, const char *label);
+ int gpio_request_array(const struct gpio *array, size_t num);
+ void gpio_free_array(const struct gpio *array, size_t num);
++int gpio_array_to_id(const struct gpio *array, size_t num, u32 *val);
+ #endif
  
- int dprintf(int file, const char *fmt, ...)
-diff --git a/include/console.h b/include/console.h
-index 5b5c037026..a71d0da42e 100644
---- a/include/console.h
-+++ b/include/console.h
-@@ -87,6 +87,7 @@ int console_unregister(struct console_device *cdev);
- 
- struct console_device *console_get_by_dev(struct device_d *dev);
- struct console_device *console_get_by_name(const char *name);
-+struct console_device *of_console_get_by_alias(const char *alias);
- 
- extern struct list_head console_list;
- #define for_each_console(console) list_for_each_entry(console, &console_list, list)
+ struct gpio_chip;
 -- 
 2.28.0
 
