@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pl1-x641.google.com ([2607:f8b0:4864:20::641])
+Received: from vsmx012.vodafonemail.xion.oxcs.net ([153.92.174.90])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1k8kGF-00020D-OQ
- for barebox@lists.infradead.org; Thu, 20 Aug 2020 13:05:44 +0000
-Received: by mail-pl1-x641.google.com with SMTP id y6so1017653plt.3
- for <barebox@lists.infradead.org>; Thu, 20 Aug 2020 06:05:41 -0700 (PDT)
-Date: Thu, 20 Aug 2020 21:05:25 +0800
-From: Du Huanpeng <u74147@gmail.com>
-Message-ID: <20200820130523.GA11870@tkernel.org>
-References: <1597818799-11414-1-git-send-email-u74147@gmail.com>
- <20200820071319.GW13023@pengutronix.de>
+ id 1k8kHD-00027B-UO
+ for barebox@lists.infradead.org; Thu, 20 Aug 2020 13:06:44 +0000
+Date: Thu, 20 Aug 2020 15:06:36 +0200 (CEST)
+From: Giorgio Dal Molin <giorgio.nicole@arcor.de>
+Message-ID: <1558463995.8719.1597928796440@mail.vodafone.de>
+In-Reply-To: <20200820125723.GZ13023@pengutronix.de>
+References: <1196968959.8187.1597925911899@mail.vodafone.de>
+ <3254031d-0a9d-42c5-2e26-b41095d52227@pengutronix.de>
+ <1964884639.8285.1597926404532@mail.vodafone.de>
+ <15d59a58-4c45-c83f-cb96-17b2d3bc4c93@pengutronix.de>
+ <670188591.8565.1597927841179@mail.vodafone.de>
+ <20200820125723.GZ13023@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200820071319.GW13023@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,39 +26,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Documentation: update for loongson1 board
+Subject: Re: NULL pointer deref crash on barebox 2020.08.0
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+
+
+> On August 20, 2020 at 2:57 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> 
+> 
+> On Thu, Aug 20, 2020 at 02:50:40PM +0200, Giorgio Dal Molin wrote:
+> > 
+> > > On August 20, 2020 at 2:28 PM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+> > > 
+> > > 
+> > > Hello,
+> > > 
+> > > On 8/20/20 2:26 PM, Giorgio Dal Molin wrote:
+> > > >> What kind of file system is mounted at /mnt/boot?
+> > > >>
+> > > > 
+> > > > Hi
+> > > > 
+> > > > it's a squashfs:
+> > > 
+> > > Do you have Sascha's "squashfs: Fix current master" series applied?
+> > > https://lists.infradead.org/pipermail/barebox/2020-August/033488.html
+> > > 
+> > Hi,
+> > 
+> > are these commits already visible in git://git.pengutronix.de/git/barebox.git
+> 
+> They are not because I forgot to apply them. Give me a minute, Ahmad is
+> just testing them
+> 
+> Sascha
 
 Hi,
+
+I'm actually not in a hurry, I just noticed the problem and reported it.
+
+giorgio
+
 > 
-> I already applied this version before you sent v2, but as far as I can
-> see only the commit message has changed, right?
-Hi, only commit message changed. :)
-
-by the way, what happen to these targets:
-  zbarebox.bin
-  zbarebox
-
-are all broken with these defconfigs
-  ath79_defconfig
-  xburst_defconfig
-  loongson-ls1b_defconfig
-
---8<----
-  LDS     arch/mips/pbl/zbarebox.lds
-  LZO     arch/mips/pbl/piggy.lzo
-  AS      arch/mips/pbl/piggy.lzo.o
-  LD      arch/mips/pbl/zbarebox
-arch/mips/pbl/zbarebox.lds:5: undefined symbol `MALLOC_BASE' referenced in expression
-/home/du/o/barebox/arch/mips/pbl/Makefile:38: recipe for target 'arch/mips/pbl/zbarebox' failed
-make[1]: *** [arch/mips/pbl/zbarebox] Error 1
-/home/du/o/barebox/arch/mips/Makefile:114: recipe for target 'zbarebox' failed
-make: *** [zbarebox] Error 2
---8<---
-
-Du Huanpeng
-
+> -- 
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
