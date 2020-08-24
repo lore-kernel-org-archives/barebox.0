@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([85.220.165.71])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kA6Kd-0000nF-0O
- for barebox@lists.infradead.org; Mon, 24 Aug 2020 06:51:51 +0000
-Date: Mon, 24 Aug 2020 08:51:49 +0200
+ id 1kA6V8-0001wH-J4
+ for barebox@lists.infradead.org; Mon, 24 Aug 2020 07:02:43 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200824065149.GG13023@pengutronix.de>
-References: <20200820073454.17500-1-o.rempel@pengutronix.de>
+Date: Mon, 24 Aug 2020 09:02:40 +0200
+Message-Id: <20200824070240.20188-2-s.hauer@pengutronix.de>
+In-Reply-To: <20200824070240.20188-1-s.hauer@pengutronix.de>
+References: <20200824070240.20188-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200820073454.17500-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,76 +21,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v5 00/12] prepare Protonic board code for mainline
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org, david@protonic.nl
+Subject: [PATCH 2/2] treewide: s/filed/field/
+To: Barebox List <barebox@lists.infradead.org>
 
-On Thu, Aug 20, 2020 at 09:34:42AM +0200, Oleksij Rempel wrote:
-> changes v5:
-> - board: apply requested changes
-> - add PHY and rs458 devicetree fixes for lanmcu and plym2m
-> 
-> changes v4:
-> - follow suggestion provided by Ahmad and open-code the root node
->   registration and call it machine.of
-> - board: rename crc and cs
-> - board: ignore most of init related errors. Even if one part will fail,
->   we should be able to get as mach as possible.
-> 
-> changes v3:
-> - remove barebox-serial driver and use read the rfid directy from board
->   code (as was done in initial implementation)
-> - use initcall instead of registering driver in the board code
-> - add delayed USB scan
-> - add rampoops node
-> - add partition tables 
-> 
-> changes v2:
-> - add power init support for KvG boards
-> - spell fixes
-> - do not print error on probe exit
-> - add of_console_get_by_alias() helper
-> - free requested gpio array
-> - exit fec init only in case of PROBE_DEFERED
-> 
-> This patch series is a preparation and actual Protonic board code.
-> Following changes was made in the main code:
-> - register DT root node as device to make it possible to loade board
->   code as usual driver
-> - provide helpers to read ethernet mac from nvmem cell register in a
->   devicetree.
-> - provide barebox-serial driver which should be a nvmem cell consumer
->   and
->   serial-number DT property provider.
-> - provide gpio helper to read gpio based board revision.
-> 
-> Oleksij Rempel (12):
->   of: base: register DT root as device
->   gpiolib: add gpio_array_to_id helper to get ID out of GPIO array
->   common: console_common: add of_console_get_by_alias() helper
->   of: of_device_get_match_compatible() helper
->   ARM: protonic-imx6: port Protonic specific board code
->   ARM: dts: unify barebox and barebox,env partitions for all Protonic
->     boards
->   ARM: dts: imx6q-prti6q: add pstore/ramoops node
->   ARM: dts: protonic: lanmcu: add eMMC partition table
->   ARM: dts: protonic: add fixed clock for the FEC node
->   ARM: dts: protonic: lanmcu: use UART_CTS instead of GPIO based CTS
->   ARM: dts: protonic: properly define PHY nodes on lanmcu and plym2m
->     boards
->   ARM: dts: protonic: lanmcu: add uart-has-rtscts to enable rs485
->     functionality
+Fix typos.
 
-Applied, thanks
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/clk/mvebu/armada-38x.c | 2 +-
+ drivers/clk/mvebu/armada-xp.c  | 2 +-
+ include/linux/mtd/bbm.h        | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-Sascha
-
-
+diff --git a/drivers/clk/mvebu/armada-38x.c b/drivers/clk/mvebu/armada-38x.c
+index 627de7de6c..80865965e1 100644
+--- a/drivers/clk/mvebu/armada-38x.c
++++ b/drivers/clk/mvebu/armada-38x.c
+@@ -17,7 +17,7 @@
+ /*
+  * Core Clocks
+  *
+- * Armada XP Sample At Reset is a 64 bit bitfiled split in two
++ * Armada XP Sample At Reset is a 64 bit bitfield split in two
+  * register of 32 bits
+  */
+ 
+diff --git a/drivers/clk/mvebu/armada-xp.c b/drivers/clk/mvebu/armada-xp.c
+index d79f846d3f..f0276d32f5 100644
+--- a/drivers/clk/mvebu/armada-xp.c
++++ b/drivers/clk/mvebu/armada-xp.c
+@@ -16,7 +16,7 @@
+ /*
+  * Core Clocks
+  *
+- * Armada XP Sample At Reset is a 64 bit bitfiled split in two
++ * Armada XP Sample At Reset is a 64 bit bitfield split in two
+  * register of 32 bits
+  */
+ 
+diff --git a/include/linux/mtd/bbm.h b/include/linux/mtd/bbm.h
+index 36bb6a503f..1e39883a2d 100644
+--- a/include/linux/mtd/bbm.h
++++ b/include/linux/mtd/bbm.h
+@@ -159,7 +159,7 @@ struct bbm_info {
+ 
+ 	int (*isbad_bbt)(struct mtd_info *mtd, loff_t ofs, int allowbbt);
+ 
+-	/* TODO Add more NAND specific fileds */
++	/* TODO Add more NAND specific fields */
+ 	struct nand_bbt_descr *badblock_pattern;
+ 
+ 	void *priv;
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.28.0
+
 
 _______________________________________________
 barebox mailing list
