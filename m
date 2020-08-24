@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([85.220.165.71])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kA6V8-0001wH-J4
+ id 1kA6V8-0001wG-J3
  for barebox@lists.infradead.org; Mon, 24 Aug 2020 07:02:43 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 24 Aug 2020 09:02:40 +0200
-Message-Id: <20200824070240.20188-2-s.hauer@pengutronix.de>
-In-Reply-To: <20200824070240.20188-1-s.hauer@pengutronix.de>
-References: <20200824070240.20188-1-s.hauer@pengutronix.de>
+Date: Mon, 24 Aug 2020 09:02:39 +0200
+Message-Id: <20200824070240.20188-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,57 +19,84 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] treewide: s/filed/field/
+Subject: [PATCH 1/2] treewide: s/filed/failed/
 To: Barebox List <barebox@lists.infradead.org>
 
 Fix typos.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/clk/mvebu/armada-38x.c | 2 +-
- drivers/clk/mvebu/armada-xp.c  | 2 +-
- include/linux/mtd/bbm.h        | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/remoteproc/imx_rproc.c       | 8 ++++----
+ drivers/remoteproc/remoteproc_core.c | 2 +-
+ drivers/watchdog/efi_wdt.c           | 2 +-
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/clk/mvebu/armada-38x.c b/drivers/clk/mvebu/armada-38x.c
-index 627de7de6c..80865965e1 100644
---- a/drivers/clk/mvebu/armada-38x.c
-+++ b/drivers/clk/mvebu/armada-38x.c
-@@ -17,7 +17,7 @@
- /*
-  * Core Clocks
-  *
-- * Armada XP Sample At Reset is a 64 bit bitfiled split in two
-+ * Armada XP Sample At Reset is a 64 bit bitfield split in two
-  * register of 32 bits
-  */
+diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+index c5cba3711a..370bebe6e2 100644
+--- a/drivers/remoteproc/imx_rproc.c
++++ b/drivers/remoteproc/imx_rproc.c
+@@ -172,7 +172,7 @@ static int imx_rproc_start(struct rproc *rproc)
+ 	ret = regmap_update_bits(priv->regmap, dcfg->src_reg,
+ 				 dcfg->src_mask, dcfg->src_start);
+ 	if (ret)
+-		dev_err(dev, "Filed to enable M4!\n");
++		dev_err(dev, "Failed to enable M4!\n");
  
-diff --git a/drivers/clk/mvebu/armada-xp.c b/drivers/clk/mvebu/armada-xp.c
-index d79f846d3f..f0276d32f5 100644
---- a/drivers/clk/mvebu/armada-xp.c
-+++ b/drivers/clk/mvebu/armada-xp.c
-@@ -16,7 +16,7 @@
- /*
-  * Core Clocks
-  *
-- * Armada XP Sample At Reset is a 64 bit bitfiled split in two
-+ * Armada XP Sample At Reset is a 64 bit bitfield split in two
-  * register of 32 bits
-  */
+ 	return ret;
+ }
+@@ -187,7 +187,7 @@ static int imx_rproc_stop(struct rproc *rproc)
+ 	ret = regmap_update_bits(priv->regmap, dcfg->src_reg,
+ 				 dcfg->src_mask, dcfg->src_stop);
+ 	if (ret)
+-		dev_err(dev, "Filed to stop M4!\n");
++		dev_err(dev, "Failed to stop M4!\n");
  
-diff --git a/include/linux/mtd/bbm.h b/include/linux/mtd/bbm.h
-index 36bb6a503f..1e39883a2d 100644
---- a/include/linux/mtd/bbm.h
-+++ b/include/linux/mtd/bbm.h
-@@ -159,7 +159,7 @@ struct bbm_info {
+ 	return ret;
+ }
+@@ -210,7 +210,7 @@ static int imx_rproc_da_to_sys(struct imx_rproc *priv, u64 da,
+ 		}
+ 	}
  
- 	int (*isbad_bbt)(struct mtd_info *mtd, loff_t ofs, int allowbbt);
+-	dev_warn(priv->dev, "Translation filed: da = 0x%llx len = 0x%x\n",
++	dev_warn(priv->dev, "Translation failed: da = 0x%llx len = 0x%x\n",
+ 		 da, len);
+ 	return -ENOENT;
+ }
+@@ -353,7 +353,7 @@ static int imx_rproc_probe(struct device_d *dev)
  
--	/* TODO Add more NAND specific fileds */
-+	/* TODO Add more NAND specific fields */
- 	struct nand_bbt_descr *badblock_pattern;
+ 	ret = imx_rproc_addr_init(priv, dev);
+ 	if (ret) {
+-		dev_err(dev, "filed on imx_rproc_addr_init\n");
++		dev_err(dev, "failed on imx_rproc_addr_init\n");
+ 		goto err_put_rproc;
+ 	}
  
- 	void *priv;
+diff --git a/drivers/remoteproc/remoteproc_core.c b/drivers/remoteproc/remoteproc_core.c
+index 8a28c1bafc..a81787bc6c 100644
+--- a/drivers/remoteproc/remoteproc_core.c
++++ b/drivers/remoteproc/remoteproc_core.c
+@@ -143,7 +143,7 @@ int rproc_add(struct rproc *rproc)
+ 
+ 	ret = firmwaremgr_register(fh);
+ 	if (ret)
+-		dev_err(dev, "filed to register firmware handler %s\n", rproc->name);
++		dev_err(dev, "failed to register firmware handler %s\n", rproc->name);
+ 	else
+ 		dev_info(dev, "%s is available\n", rproc->name);
+ 
+diff --git a/drivers/watchdog/efi_wdt.c b/drivers/watchdog/efi_wdt.c
+index ea1ede1381..1512b1d99a 100644
+--- a/drivers/watchdog/efi_wdt.c
++++ b/drivers/watchdog/efi_wdt.c
+@@ -24,7 +24,7 @@ static int efi_wdt_set_timeout(struct watchdog *wd, unsigned timeout)
+ 
+ 	efiret = BS->set_watchdog_timer(timeout, 0, 0, NULL);
+ 	if (EFI_ERROR(efiret)) {
+-		dev_err(priv->dev, "filed to set EFI watchdog: %lx\n", efiret);
++		dev_err(priv->dev, "failed to set EFI watchdog: %lx\n", efiret);
+ 		return -EINVAL;
+ 	}
+ 
 -- 
 2.28.0
 
