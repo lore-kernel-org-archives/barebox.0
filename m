@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kCinT-0003of-Ub
- for barebox@lists.infradead.org; Mon, 31 Aug 2020 12:20:30 +0000
-Message-ID: <3ba3448bda8b4832870af5f5305f85a65080de88.camel@pengutronix.de>
-From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-Date: Mon, 31 Aug 2020 14:20:21 +0200
-In-Reply-To: <20200518070848.GP11869@pengutronix.de>
-References: <20200513114636.811-1-l.stach@pengutronix.de>
- <20200518070848.GP11869@pengutronix.de>
+Received: from mail-dm6nam11on2137.outbound.protection.outlook.com
+ ([40.107.223.137] helo=NAM11-DM6-obe.outbound.protection.outlook.com)
+ by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1kD3Zj-00083N-Pt
+ for barebox@lists.infradead.org; Tue, 01 Sep 2020 10:31:40 +0000
+From: "Barbier, Renaud" <renaud.barbier@abaco.com>
+Date: Tue, 1 Sep 2020 10:31:36 +0000
+Message-ID: <MN2PR16MB313561D8BE9DFFB84707FA49912E0@MN2PR16MB3135.namprd16.prod.outlook.com>
+References: <MN2PR16MB3135C2AADD985DE82E3E787591400@MN2PR16MB3135.namprd16.prod.outlook.com>
+ <20200817041257.GM13023@pengutronix.de>
+In-Reply-To: <20200817041257.GM13023@pengutronix.de>
+Content-Language: en-US
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -18,46 +20,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: jlu@pengutronix.de
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mci: core: add device parameter for eMMC boot ack
-To: Sascha Hauer <s.hauer@pengutronix.de>, Lucas Stach <l.stach@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: RE: barebox:ubi attach time
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Mon, 2020-05-18 at 09:08 +0200, Sascha Hauer wrote:
-> There's only one correct setting for each board or SoC. Instead of
-> letting the user choose between right and wrong, can't we add a hook
-> to be called from the board/SoC code? A device tree property might be
-> an option as well, something like barebox,enable-boot-ack.
+
+
 > 
-> There are also bits to change the bus width after power up which
-> might need adjustments which would mean another parameter with the
-> current approach.
-
-If I remember the i.MX6 eMMC boot process correctly, there is no single
-correct configuration, even for a fixed HW layout. The eFUSE and eMMC
-EXT-CDS configuration just needs to match.
-
-Instead of trying to handle all the corner cases correctly (which is
-hard to test without permanently fusing HW), I'd prefer to just make it
-straight-forward to set and inspect these values (via a command or
-device parameters). Then these would be set once during board
-manufacturing/bring-up.
-
-After bring-up, the value in DT would be redundant configuration and
-could lead to confusion if it conflicts with the FUSEs.
-
-Regards,
-Jan
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
+> Hi Renaud,
+> 
+> On Fri, Aug 14, 2020 at 01:49:25PM +0000, Barbier, Renaud wrote:
+> > Just to see if somebody has the following problem:
+> >
+> > We have PPC or ARM platforms with a NOR containing barebox and a UBI
+> > volume with an ITB image.  The File system is on NAND.
+> >
+> > If I boot the system, ubiattach and mount the NOR volume, then detach.
+> > On reboot it takes more time for barebox to ubiattach  the NOR boot
+> > volume. I have noticed that with on 2019.07 barebox branch and
+> > 2020.03.
+> >
+> > I ubidetach the volume from barebox then boot time is restored.
+> 
+> Are you using fastmap?
+[Barbier, Renaud] 
+Indeed. We do.
+> 
+> Sascha
+> 
+> --
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
