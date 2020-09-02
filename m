@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-dm6nam11on2137.outbound.protection.outlook.com
- ([40.107.223.137] helo=NAM11-DM6-obe.outbound.protection.outlook.com)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kD3Zj-00083N-Pt
- for barebox@lists.infradead.org; Tue, 01 Sep 2020 10:31:40 +0000
-From: "Barbier, Renaud" <renaud.barbier@abaco.com>
-Date: Tue, 1 Sep 2020 10:31:36 +0000
-Message-ID: <MN2PR16MB313561D8BE9DFFB84707FA49912E0@MN2PR16MB3135.namprd16.prod.outlook.com>
-References: <MN2PR16MB3135C2AADD985DE82E3E787591400@MN2PR16MB3135.namprd16.prod.outlook.com>
- <20200817041257.GM13023@pengutronix.de>
-In-Reply-To: <20200817041257.GM13023@pengutronix.de>
-Content-Language: en-US
+ id 1kDSZc-0007GV-8v
+ for barebox@lists.infradead.org; Wed, 02 Sep 2020 13:13:13 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed,  2 Sep 2020 15:13:07 +0200
+Message-Id: <20200902131307.17613-3-a.fatoum@pengutronix.de>
+In-Reply-To: <20200902131307.17613-1-a.fatoum@pengutronix.de>
+References: <20200902131307.17613-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,39 +21,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: barebox:ubi attach time
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH master 3/3] ARM: at91: sama5d27-giantboard: fix multi-image
+ compatibility
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
+For multi-image compatibility, board code needs to be guarded by a check
+against the compatible. Retrofit the check.
 
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/arm/boards/sama5d27-giantboard/board.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-> 
-> Hi Renaud,
-> 
-> On Fri, Aug 14, 2020 at 01:49:25PM +0000, Barbier, Renaud wrote:
-> > Just to see if somebody has the following problem:
-> >
-> > We have PPC or ARM platforms with a NOR containing barebox and a UBI
-> > volume with an ITB image.  The File system is on NAND.
-> >
-> > If I boot the system, ubiattach and mount the NOR volume, then detach.
-> > On reboot it takes more time for barebox to ubiattach  the NOR boot
-> > volume. I have noticed that with on 2019.07 barebox branch and
-> > 2020.03.
-> >
-> > I ubidetach the volume from barebox then boot time is restored.
-> 
-> Are you using fastmap?
-[Barbier, Renaud] 
-Indeed. We do.
-> 
-> Sascha
-> 
-> --
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+diff --git a/arch/arm/boards/sama5d27-giantboard/board.c b/arch/arm/boards/sama5d27-giantboard/board.c
+index 1d4453ede35b..006c6ffad5cd 100644
+--- a/arch/arm/boards/sama5d27-giantboard/board.c
++++ b/arch/arm/boards/sama5d27-giantboard/board.c
+@@ -3,9 +3,13 @@
+ #include <init.h>
+ #include <envfs.h>
+ #include <bbu.h>
++#include <of.h>
+ 
+ static int giantboard_device_init(void)
+ {
++	if (!of_machine_is_compatible("groboards,sama5d27-giantboard"))
++		return 0;
++
+ 	bbu_register_std_file_update("microSD", BBU_HANDLER_FLAG_DEFAULT,
+ 				     "/mnt/mmc1.0/barebox.bin",
+ 				     filetype_arm_barebox);
+-- 
+2.28.0
+
 
 _______________________________________________
 barebox mailing list
