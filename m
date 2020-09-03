@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kDSZc-0007GU-6m
- for barebox@lists.infradead.org; Wed, 02 Sep 2020 13:13:13 +0000
+ id 1kDmQJ-0003t9-PM
+ for barebox@lists.infradead.org; Thu, 03 Sep 2020 10:24:57 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  2 Sep 2020 15:13:06 +0200
-Message-Id: <20200902131307.17613-2-a.fatoum@pengutronix.de>
-In-Reply-To: <20200902131307.17613-1-a.fatoum@pengutronix.de>
-References: <20200902131307.17613-1-a.fatoum@pengutronix.de>
+Date: Thu,  3 Sep 2020 12:24:44 +0200
+Message-Id: <20200903102444.23505-2-a.fatoum@pengutronix.de>
+In-Reply-To: <20200903102444.23505-1-a.fatoum@pengutronix.de>
+References: <20200903102444.23505-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,36 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH master 2/3] ARM: at91: fix link error when CONFIG_BOOTM=n
+Subject: [PATCH 2/2] ARM: stm32mp: enable mmc_extcsd in defconfig
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-bootm-barebox.c understandably expects barebox bootm functionality to be
-available. Don't build it if that's not the case.
+The documentation suggests use of mmc_extcsd for configuring the boot
+ack bit needed to boot from eMMC, thus have it enabled in the defconfig.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/mach-at91/Makefile | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/configs/stm32mp_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-index ba46c1a16edb..9cfba28fa093 100644
---- a/arch/arm/mach-at91/Makefile
-+++ b/arch/arm/mach-at91/Makefile
-@@ -1,4 +1,4 @@
--obj-y += setup.o aic.o bootm-barebox.o
-+obj-y += setup.o aic.o
- lwl-y += at91_pmc_ll.o ddramc_ll.o matrix.o
- lwl-$(CONFIG_CLOCKSOURCE_ATMEL_PIT) += early_udelay.o
- 
-@@ -9,6 +9,7 @@ endif
- obj-$(CONFIG_CMD_AT91_BOOT_TEST) += boot_test_cmd.o
- 
- obj-$(CONFIG_AT91_BOOTSTRAP)	+= bootstrap.o
-+obj-$(CONFIG_BOOTM) += bootm-barebox.o
- 
- obj-y += at91sam9_reset.o
- obj-y += at91sam9g45_reset.o
+diff --git a/arch/arm/configs/stm32mp_defconfig b/arch/arm/configs/stm32mp_defconfig
+index c98908debc2a..92bdf5b04083 100644
+--- a/arch/arm/configs/stm32mp_defconfig
++++ b/arch/arm/configs/stm32mp_defconfig
+@@ -37,6 +37,7 @@ CONFIG_CMD_MEMINFO=y
+ CONFIG_CMD_ARM_MMUINFO=y
+ CONFIG_CMD_REGULATOR=y
+ CONFIG_CMD_MMC=y
++CONFIG_CMD_MMC_EXTCSD=y
+ # CONFIG_CMD_BOOTU is not set
+ CONFIG_CMD_GO=y
+ CONFIG_CMD_RESET=y
 -- 
 2.28.0
 
