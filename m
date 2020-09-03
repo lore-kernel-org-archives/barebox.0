@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kDmQJ-0003t9-PM
- for barebox@lists.infradead.org; Thu, 03 Sep 2020 10:24:57 +0000
+ id 1kDmQC-0003sS-Dh
+ for barebox@lists.infradead.org; Thu, 03 Sep 2020 10:24:49 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  3 Sep 2020 12:24:44 +0200
-Message-Id: <20200903102444.23505-2-a.fatoum@pengutronix.de>
-In-Reply-To: <20200903102444.23505-1-a.fatoum@pengutronix.de>
-References: <20200903102444.23505-1-a.fatoum@pengutronix.de>
+Date: Thu,  3 Sep 2020 12:24:43 +0200
+Message-Id: <20200903102444.23505-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,30 +19,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ARM: stm32mp: enable mmc_extcsd in defconfig
+Subject: [PATCH 1/2] mfd: stpmic1: warn if reset reason detection fails
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The documentation suggests use of mmc_extcsd for configuring the boot
-ack bit needed to boot from eMMC, thus have it enabled in the defconfig.
+stpmic1_set_reset_reason returns an error code, but so far we didn't
+check it. Fix this.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/configs/stm32mp_defconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/watchdog/stpmic1_wdt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/configs/stm32mp_defconfig b/arch/arm/configs/stm32mp_defconfig
-index c98908debc2a..92bdf5b04083 100644
---- a/arch/arm/configs/stm32mp_defconfig
-+++ b/arch/arm/configs/stm32mp_defconfig
-@@ -37,6 +37,7 @@ CONFIG_CMD_MEMINFO=y
- CONFIG_CMD_ARM_MMUINFO=y
- CONFIG_CMD_REGULATOR=y
- CONFIG_CMD_MMC=y
-+CONFIG_CMD_MMC_EXTCSD=y
- # CONFIG_CMD_BOOTU is not set
- CONFIG_CMD_GO=y
- CONFIG_CMD_RESET=y
+diff --git a/drivers/watchdog/stpmic1_wdt.c b/drivers/watchdog/stpmic1_wdt.c
+index 458c5c16a3ff..12280f144762 100644
+--- a/drivers/watchdog/stpmic1_wdt.c
++++ b/drivers/watchdog/stpmic1_wdt.c
+@@ -200,7 +200,7 @@ static int stpmic1_wdt_probe(struct device_d *dev)
+ 	if (ret)
+ 		dev_warn(dev, "Cannot register poweroff handler\n");
+ 
+-	stpmic1_set_reset_reason(wdt->regmap);
++	ret = stpmic1_set_reset_reason(wdt->regmap);
+ 	if (ret)
+ 		dev_warn(dev, "Cannot query reset reason\n");
+ 
 -- 
 2.28.0
 
