@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ed1-x542.google.com ([2a00:1450:4864:20::542])
+Received: from mail-pl1-x641.google.com ([2607:f8b0:4864:20::641])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kE8gC-0007D5-Mh
- for barebox@lists.infradead.org; Fri, 04 Sep 2020 10:10:49 +0000
-Received: by mail-ed1-x542.google.com with SMTP id ay8so5542695edb.8
- for <barebox@lists.infradead.org>; Fri, 04 Sep 2020 03:10:46 -0700 (PDT)
-From: Hubert Feurstein <h.feurstein@gmail.com>
-Date: Fri,  4 Sep 2020 12:10:40 +0200
-Message-Id: <20200904101040.19043-1-hubert.feurstein@vahle.at>
+ id 1kEB9l-0008Ms-9k
+ for barebox@lists.infradead.org; Fri, 04 Sep 2020 12:49:29 +0000
+Received: by mail-pl1-x641.google.com with SMTP id k13so1090019plk.13
+ for <barebox@lists.infradead.org>; Fri, 04 Sep 2020 05:49:28 -0700 (PDT)
 MIME-Version: 1.0
+References: <20200904101040.19043-1-hubert.feurstein@vahle.at>
+In-Reply-To: <20200904101040.19043-1-hubert.feurstein@vahle.at>
+From: Hubert Feurstein <h.feurstein@gmail.com>
+Date: Fri, 4 Sep 2020 14:49:15 +0200
+Message-ID: <CAFfN3gXFSC8AzwM2FdUb7kOr_Qp_scAxzWu47MkAEhBp4ePdrw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,34 +23,17 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] imd: imd_calculate_crc32: initialize imd_crc to NULL
+Subject: Re: [PATCH] imd: imd_calculate_crc32: initialize imd_crc to NULL
 To: barebox@lists.infradead.org
 
-From: Hubert Feurstein <h.feurstein@gmail.com>
+Am Fr., 4. Sept. 2020 um 12:10 Uhr schrieb Hubert Feurstein
+<h.feurstein@gmail.com>:
+> This fixes a NULL pointer dereference in the caller when imd-crc-token is
+> not found.
+In fact, it is even worse, it is a "uninitialized pointer dereference".
 
-This fixes a NULL pointer dereference in the caller when imd-crc-token is
-not found.
-
-Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
----
- common/imd.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/common/imd.c b/common/imd.c
-index 96496514a..0644e6d3b 100644
---- a/common/imd.c
-+++ b/common/imd.c
-@@ -312,6 +312,7 @@ static int imd_calculate_crc32(void *input, const struct imd_header *imd_start,
- 	const struct imd_header *imd;
- 	int length;
- 	int end_ofs = (char *)imd_start - (char *)input + sizeof(char) * 8;
-+	*imd_crc = NULL;
- 
- 	/* search the checksum imd token */
- 	imd_for_each(imd_start, imd) {
--- 
-2.28.0
-
+Regards
+Hubert
 
 _______________________________________________
 barebox mailing list
