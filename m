@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-ed1-x542.google.com ([2a00:1450:4864:20::542])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kDmQC-0003sS-Dh
- for barebox@lists.infradead.org; Thu, 03 Sep 2020 10:24:49 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  3 Sep 2020 12:24:43 +0200
-Message-Id: <20200903102444.23505-1-a.fatoum@pengutronix.de>
+ id 1kE8gC-0007D5-Mh
+ for barebox@lists.infradead.org; Fri, 04 Sep 2020 10:10:49 +0000
+Received: by mail-ed1-x542.google.com with SMTP id ay8so5542695edb.8
+ for <barebox@lists.infradead.org>; Fri, 04 Sep 2020 03:10:46 -0700 (PDT)
+From: Hubert Feurstein <h.feurstein@gmail.com>
+Date: Fri,  4 Sep 2020 12:10:40 +0200
+Message-Id: <20200904101040.19043-1-hubert.feurstein@vahle.at>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,31 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] mfd: stpmic1: warn if reset reason detection fails
+Subject: [PATCH] imd: imd_calculate_crc32: initialize imd_crc to NULL
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-stpmic1_set_reset_reason returns an error code, but so far we didn't
-check it. Fix this.
+From: Hubert Feurstein <h.feurstein@gmail.com>
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+This fixes a NULL pointer dereference in the caller when imd-crc-token is
+not found.
+
+Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
 ---
- drivers/watchdog/stpmic1_wdt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ common/imd.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/watchdog/stpmic1_wdt.c b/drivers/watchdog/stpmic1_wdt.c
-index 458c5c16a3ff..12280f144762 100644
---- a/drivers/watchdog/stpmic1_wdt.c
-+++ b/drivers/watchdog/stpmic1_wdt.c
-@@ -200,7 +200,7 @@ static int stpmic1_wdt_probe(struct device_d *dev)
- 	if (ret)
- 		dev_warn(dev, "Cannot register poweroff handler\n");
+diff --git a/common/imd.c b/common/imd.c
+index 96496514a..0644e6d3b 100644
+--- a/common/imd.c
++++ b/common/imd.c
+@@ -312,6 +312,7 @@ static int imd_calculate_crc32(void *input, const struct imd_header *imd_start,
+ 	const struct imd_header *imd;
+ 	int length;
+ 	int end_ofs = (char *)imd_start - (char *)input + sizeof(char) * 8;
++	*imd_crc = NULL;
  
--	stpmic1_set_reset_reason(wdt->regmap);
-+	ret = stpmic1_set_reset_reason(wdt->regmap);
- 	if (ret)
- 		dev_warn(dev, "Cannot query reset reason\n");
- 
+ 	/* search the checksum imd token */
+ 	imd_for_each(imd_start, imd) {
 -- 
 2.28.0
 
