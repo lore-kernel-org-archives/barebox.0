@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mickerik.phytec.de ([195.145.39.210])
- by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kFb7N-0006WT-Oe
- for barebox@lists.infradead.org; Tue, 08 Sep 2020 10:44:54 +0000
-From: Maik Otto <m.otto@phytec.de>
-Date: Tue, 8 Sep 2020 12:29:15 +0200
-Message-Id: <1599560955-311228-3-git-send-email-m.otto@phytec.de>
-In-Reply-To: <1599560955-311228-1-git-send-email-m.otto@phytec.de>
-References: <1599560955-311228-1-git-send-email-m.otto@phytec.de>
+Received: from mail-lf1-x143.google.com ([2a00:1450:4864:20::143])
+ by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1kFbyl-0005Zw-VG
+ for barebox@lists.infradead.org; Tue, 08 Sep 2020 11:40:04 +0000
+Received: by mail-lf1-x143.google.com with SMTP id q8so8994794lfb.6
+ for <barebox@lists.infradead.org>; Tue, 08 Sep 2020 04:39:55 -0700 (PDT)
+Date: Tue, 8 Sep 2020 14:39:53 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20200908143953.93018587d571f1c3e13c9297@gmail.com>
+In-Reply-To: <1599546305-10121-1-git-send-email-u74147@gmail.com>
+References: <1599546305-10121-1-git-send-email-u74147@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,88 +19,105 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] arch: arm: mach-imx: Add habv4 config file for i.MX6ULL
-To: barebox@lists.infradead.org
-Cc: Maik Otto <m.otto@phytec.de>
+Subject: Re: [PATCH] MIPS: asm/debug_ll_ns16550.h: add nop in delay slot
+To: Du Huanpeng <u74147@gmail.com>
+Cc: barebox@lists.infradead.org
 
-The i.MX6ULL has no CAAM engine for Secure Boot on HABv4 (NXP AN4581).
-For i.MX6ULL the engine Software (SW) must used for the image
-validation.
+On Tue,  8 Sep 2020 14:25:05 +0800
+Du Huanpeng <u74147@gmail.com> wrote:
 
-Signed-off-by: Maik Otto <m.otto@phytec.de>
----
- .../phytec-som-imx6/flash-header-phytec-pcl063ull-256mb.imxcfg    | 2 +-
- .../phytec-som-imx6/flash-header-phytec-pcl063ull-512mb.imxcfg    | 2 +-
- arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h                | 8 ++++++++
- arch/arm/mach-imx/include/mach/habv4-imx6ull-gencsf.h             | 4 ++++
- 4 files changed, 14 insertions(+), 2 deletions(-)
- create mode 100644 arch/arm/mach-imx/include/mach/habv4-imx6ull-gencsf.h
+Hi!
 
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063ull-256mb.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063ull-256mb.imxcfg
-index b93e81f..e6871d8 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063ull-256mb.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063ull-256mb.imxcfg
-@@ -7,4 +7,4 @@
- 	wm 32 0x021B0000 0x83180000
- 
- #include "flash-header-phytec-pcl063.h"
--#include <mach/habv4-imx6-gencsf.h>
-+#include <mach/habv4-imx6ull-gencsf.h>
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063ull-512mb.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063ull-512mb.imxcfg
-index f629a8e..d2d7183 100644
---- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063ull-512mb.imxcfg
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063ull-512mb.imxcfg
-@@ -1,3 +1,3 @@
- 
- #include "flash-header-phytec-pcl063-512mb.h"
--#include <mach/habv4-imx6-gencsf.h>
-+#include <mach/habv4-imx6ull-gencsf.h>
-diff --git a/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h b/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
-index 17c4d79..ed692a8 100644
---- a/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
-+++ b/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
-@@ -14,7 +14,11 @@ hab Hash Algorithm = sha256
- hab Engine Configuration = 0
- hab Certificate Format = X509
- hab Signature Format = CMS
-+#ifndef SETUP_HABV4_ENGINE
- hab Engine = CAAM
-+#else
-+hab Engine = SETUP_HABV4_ENGINE
-+#endif
- 
- hab [Install SRK]
- hab File = CONFIG_HABV4_TABLE_BIN
-@@ -28,7 +32,11 @@ hab File = CONFIG_HABV4_CSF_CRT_PEM
- hab [Authenticate CSF]
- 
- hab [Unlock]
-+#ifndef SETUP_HABV4_ENGINE
- hab Engine = CAAM
-+#else
-+hab Engine = SETUP_HABV4_ENGINE
-+#endif
- hab Features = RNG, MID
- 
- hab [Install Key]
-diff --git a/arch/arm/mach-imx/include/mach/habv4-imx6ull-gencsf.h b/arch/arm/mach-imx/include/mach/habv4-imx6ull-gencsf.h
-new file mode 100644
-index 0000000..54c4915
---- /dev/null
-+++ b/arch/arm/mach-imx/include/mach/habv4-imx6ull-gencsf.h
-@@ -0,0 +1,4 @@
-+
-+#define SETUP_HABV4_ENGINE SW
-+
-+#include <mach/habv4-imx6-gencsf.h>
--- 
-2.7.4
+Adding nop is not necessary.
 
+Please see full text of debug_ll_outc_a0:
+
+.macro  debug_ll_outc_a0
+#ifdef CONFIG_DEBUG_LL
+        .set    push
+        .set    reorder  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+        la      t0, DEBUG_LL_UART_ADDR
+
+201:    lbu     t1, UART_LSR(t0)        /* get line status */
+        andi    t1, t1, UART_LSR_THRE   /* check for transmitter empty */
+        beqz    t1, 201b                        /* try again */
+
+        sb      a0, UART_THR(t0)        /* write the character */
+
+        .set    pop
+#endif /* CONFIG_DEBUG_LL */
+.endm
+
+
+There is '.set reorder' so assembler has insert nop after beqz automaticall=
+y.
+
+I have compiled barebox for qemu-malta with DEBUG_LL enabled.
+
+barebox$ mips-linux-gnu-objdump -D arch/mips/boards/qemu-malta/lowlevel.pbl=
+.o  | grep -A 10 "_nmon_outc_a0>:$"
+
+00000314 <_nmon_outc_a0>:
+ 314:	3c08b800 	lui	t0,0xb800
+ 318:	350803f8 	ori	t0,t0,0x3f8
+ 31c:	91090005 	lbu	t1,5(t0)
+ 320:	31290020 	andi	t1,t1,0x20
+ 324:	1120fffd 	beqz	t1,31c <_nmon_outc_a0+0x8>
+ 328:	00000000 	nop                            <<<<<<<<<<<<<<<<<<<<<<<<<<<<=
+<<<
+ 32c:	a1040000 	sb	a0,0(t0)
+ 330:	03e00008 	jr	ra
+ 334:	00000000 	nop
+
+
+> In the debug_ll_outc_a0 macro, a0 is written to the uart data
+> register many times in a delay slot when the uart is not ready
+> to send data. insert a nop to avoid this.
+> =
+
+> Signed-off-by: Du Huanpeng <u74147@gmail.com>
+> ---
+>  arch/mips/include/asm/debug_ll_ns16550.h | 1 +
+>  1 file changed, 1 insertion(+)
+> =
+
+> diff --git a/arch/mips/include/asm/debug_ll_ns16550.h b/arch/mips/include=
+/asm/debug_ll_ns16550.h
+> index df58c4c..cf666d1 100644
+> --- a/arch/mips/include/asm/debug_ll_ns16550.h
+> +++ b/arch/mips/include/asm/debug_ll_ns16550.h
+> @@ -88,6 +88,7 @@ static inline void PUTC_LL(char ch)
+>  201:	lbu	t1, UART_LSR(t0)	/* get line status */
+>  	andi	t1, t1, UART_LSR_THRE	/* check for transmitter empty */
+>  	beqz	t1, 201b			/* try again */
+> +	nop
+>  =
+
+>  	sb	a0, UART_THR(t0)	/* write the character */
+>  =
+
+> -- =
+
+> 2.7.4
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+
+-- =
+
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
