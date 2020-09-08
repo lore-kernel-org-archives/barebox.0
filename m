@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pj1-x1041.google.com ([2607:f8b0:4864:20::1041])
- by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kFX48-0002vf-1X
- for barebox@lists.infradead.org; Tue, 08 Sep 2020 06:25:16 +0000
-Received: by mail-pj1-x1041.google.com with SMTP id u3so4256757pjr.3
- for <barebox@lists.infradead.org>; Mon, 07 Sep 2020 23:25:13 -0700 (PDT)
-From: Du Huanpeng <u74147@gmail.com>
-Date: Tue,  8 Sep 2020 14:25:05 +0800
-Message-Id: <1599546305-10121-1-git-send-email-u74147@gmail.com>
+Received: from mickerik.phytec.de ([195.145.39.210])
+ by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1kFb77-0006U1-Bl
+ for barebox@lists.infradead.org; Tue, 08 Sep 2020 10:44:38 +0000
+From: Maik Otto <m.otto@phytec.de>
+Date: Tue, 8 Sep 2020 12:29:13 +0200
+Message-Id: <1599560955-311228-1-git-send-email-m.otto@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,31 +19,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] MIPS: asm/debug_ll_ns16550.h: add nop in delay slot
+Subject: [PATCH 0/2] i.MX6ULL: set engine software for Secure Boot on HABv4 
 To: barebox@lists.infradead.org
-Cc: Du Huanpeng <u74147@gmail.com>
+Cc: Maik Otto <m.otto@phytec.de>
 
-In the debug_ll_outc_a0 macro, a0 is written to the uart data
-register many times in a delay slot when the uart is not ready
-to send data. insert a nop to avoid this.
+The i.MX6ULL has no CAAM engine for Secure Boot on HABv4. This patch series
+set the engine software for i.MX6ULL and for the PHYTEC boards PCL-063 with
+i.MX6ULL.
 
-Signed-off-by: Du Huanpeng <u74147@gmail.com>
----
- arch/mips/include/asm/debug_ll_ns16550.h | 1 +
- 1 file changed, 1 insertion(+)
+Maik Otto (2):
+  arch: arm: boards phytec: Split flash header for pcl063 with i.MX6Ul
+    and i.MX6ULL
+  arch: arm: mach-imx: Add habv4 config file for i.MX6ULL
 
-diff --git a/arch/mips/include/asm/debug_ll_ns16550.h b/arch/mips/include/asm/debug_ll_ns16550.h
-index df58c4c..cf666d1 100644
---- a/arch/mips/include/asm/debug_ll_ns16550.h
-+++ b/arch/mips/include/asm/debug_ll_ns16550.h
-@@ -88,6 +88,7 @@ static inline void PUTC_LL(char ch)
- 201:	lbu	t1, UART_LSR(t0)	/* get line status */
- 	andi	t1, t1, UART_LSR_THRE	/* check for transmitter empty */
- 	beqz	t1, 201b			/* try again */
-+	nop
- 
- 	sb	a0, UART_THR(t0)	/* write the character */
- 
+ ...tec-pcl063-512mb.imxcfg => flash-header-phytec-pcl063-512mb.h} | 1 -
+ .../phytec-som-imx6/flash-header-phytec-pcl063ul-512mb.imxcfg     | 3 +++
+ ...63-256mb.imxcfg => flash-header-phytec-pcl063ull-256mb.imxcfg} | 2 +-
+ .../phytec-som-imx6/flash-header-phytec-pcl063ull-512mb.imxcfg    | 3 +++
+ arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h                | 8 ++++++++
+ arch/arm/mach-imx/include/mach/habv4-imx6ull-gencsf.h             | 4 ++++
+ images/Makefile.imx                                               | 8 ++++----
+ 7 files changed, 23 insertions(+), 6 deletions(-)
+ rename arch/arm/boards/phytec-som-imx6/{flash-header-phytec-pcl063-512mb.imxcfg => flash-header-phytec-pcl063-512mb.h} (83%)
+ create mode 100644 arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063ul-512mb.imxcfg
+ rename arch/arm/boards/phytec-som-imx6/{flash-header-phytec-pcl063-256mb.imxcfg => flash-header-phytec-pcl063ull-256mb.imxcfg} (82%)
+ create mode 100644 arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063ull-512mb.imxcfg
+ create mode 100644 arch/arm/mach-imx/include/mach/habv4-imx6ull-gencsf.h
+
 -- 
 2.7.4
 
