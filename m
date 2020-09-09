@@ -1,11 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mickerik.phytec.de ([195.145.39.210])
- by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kFxkX-0002L5-EB
- for barebox@lists.infradead.org; Wed, 09 Sep 2020 10:54:50 +0000
-From: Albert Schwarzkopf <a.schwarzkopf@phytec.de>
-Date: Wed, 9 Sep 2020 12:54:46 +0200
-Message-Id: <20200909105446.22379-1-a.schwarzkopf@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1kFxrG-0002u8-Bo
+ for barebox@lists.infradead.org; Wed, 09 Sep 2020 11:01:47 +0000
+From: Juergen Borleis <jbe@pengutronix.de>
+Date: Wed,  9 Sep 2020 13:01:15 +0200
+Message-Id: <20200909110118.19923-2-jbe@pengutronix.de>
+In-Reply-To: <20200909110118.19923-1-jbe@pengutronix.de>
+References: <20200909110118.19923-1-jbe@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,43 +17,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] common: bootm: Add missing check of fit_open_image() return
- code
+Subject: [PATCH 2/5] commands: mmc_extcsd: print_field: fix layout
 To: barebox@lists.infradead.org
+Cc: Juergen Borleis <jbe@pengutronix.de>
 
-Check the return code of fit_open_image() inside bootm_load_initrd(). 
-Without this check, the code works with undefined values of 
-"initrd_size" and "initrd" should fit_open_image() fail.
-
-Signed-off-by: Albert Schwarzkopf <a.schwarzkopf@phytec.de>
+Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
 ---
- common/bootm.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ commands/mmc_extcsd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/common/bootm.c b/common/bootm.c
-index 7f22ca5ce..5713edad3 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -232,7 +232,11 @@ int bootm_load_initrd(struct image_data *data, unsigned long load_address)
+diff --git a/commands/mmc_extcsd.c b/commands/mmc_extcsd.c
+index 40d11df17d..7ae068348d 100644
+--- a/commands/mmc_extcsd.c
++++ b/commands/mmc_extcsd.c
+@@ -2163,7 +2163,7 @@ static int print_field(u8 *reg, int index)
+ 			str = "FIFO policy for cache";
+ 		else
+ 			str = "not provided";
+-		printf("\t[0] Device flushing: %s", str);
++		printf("\t[0] Device flushing: %s\n", str);
+ 		return 1;
  
- 		ret = fit_open_image(data->os_fit, data->fit_config, "ramdisk",
- 				     &initrd, &initrd_size);
--
-+		if (ret) {
-+			pr_err("Cannot open ramdisk image in FIT image: %s\n",
-+					strerror(-ret));
-+			return ret;
-+		}
- 		data->initrd_res = request_sdram_region("initrd",
- 				load_address,
- 				initrd_size);
+ 	case EXT_CSD_OPTIMAL_READ_SIZE:
 -- 
-2.25.1
+2.20.1
 
 
 _______________________________________________
