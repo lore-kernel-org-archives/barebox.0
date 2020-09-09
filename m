@@ -1,14 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-dm6nam12on2115.outbound.protection.outlook.com
- ([40.107.243.115] helo=NAM12-DM6-obe.outbound.protection.outlook.com)
+Received: from mail-bn8nam12on2133.outbound.protection.outlook.com
+ ([40.107.237.133] helo=NAM12-BN8-obe.outbound.protection.outlook.com)
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kG5uE-0006rd-1c
- for barebox@lists.infradead.org; Wed, 09 Sep 2020 19:37:22 +0000
+ id 1kG5u2-0006nY-Jg
+ for barebox@lists.infradead.org; Wed, 09 Sep 2020 19:37:11 +0000
 From: Trent Piepho <trent.piepho@synapse.com>
-Date: Wed,  9 Sep 2020 12:36:49 -0700
-Message-Id: <20200909193650.347646-3-trent.piepho@synapse.com>
-In-Reply-To: <20200909193650.347646-1-trent.piepho@synapse.com>
-References: <20200909193650.347646-1-trent.piepho@synapse.com>
+Date: Wed,  9 Sep 2020 12:36:47 -0700
+Message-Id: <20200909193650.347646-1-trent.piepho@synapse.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,51 +20,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] ARM: am335x: Enable TSC/ADC clock
+Subject: [PATCH 1/4] aiodev: Name channels with device instance name
 To: barebox@lists.infradead.org
 Cc: Trent Piepho <trent.piepho@synapse.com>
 
-Now that there is a Barebox driver for the ADC, enable the clock to the
-TSC/ADC block.
+When dynamically assigning device names, an aiodev's name will be
+"aiodev" and an index, not part of the name string itself, will be
+allocated dynamically.  These are combined to register a device with a
+name like "aiodev0" or "aiodev1".
 
-This machine doesn't use common clock framework clocks in Barebox, and
-instead enables any clock that might get used.  Enalbing the clock could
-be made conditional based on enabling the driver, but none of the other
-clocks do this.
+The shell environment variables use the device name, so one might use
+"${aiodev0.in_value0_mV}" and "${aiodev1.in_value0_mV}".
+
+However, the channel names that are used with aiochannel_get_by_name()
+just use the aiodev's name and channel name.  So channel 0 of the 1st
+aiodev would be "aiodev.in_value0_mV" and the 2nd aiodev would use the
+same name.
+
+Change the channel naming to use the device instance name, e.g.
+"aiodev0", rather than the aiodev's base name.  This makes the names
+used aiochannel_get_by_name() match the environment variable names and
+also avoids duplicate names with more than one dynamically allocated
+aiodev.
 
 Signed-off-by: Trent Piepho <trent.piepho@synapse.com>
 ---
- arch/arm/mach-omap/am33xx_clock.c              | 4 ++++
- arch/arm/mach-omap/include/mach/am33xx-clock.h | 1 +
- 2 files changed, 5 insertions(+)
+ drivers/aiodev/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-omap/am33xx_clock.c b/arch/arm/mach-omap/am33xx_clock.c
-index 0a4903827..8fa2c70aa 100644
---- a/arch/arm/mach-omap/am33xx_clock.c
-+++ b/arch/arm/mach-omap/am33xx_clock.c
-@@ -165,6 +165,10 @@ void am33xx_enable_per_clocks(void)
- 	__raw_writel(PRCM_MOD_EN, CM_PER_USB0_CLKCTRL);
- 	while ((__raw_readl(CM_PER_USB0_CLKCTRL) & 0x30000) != 0x0);
+diff --git a/drivers/aiodev/core.c b/drivers/aiodev/core.c
+index b8428346a..7d9170d2d 100644
+--- a/drivers/aiodev/core.c
++++ b/drivers/aiodev/core.c
+@@ -131,7 +131,7 @@ int aiodevice_register(struct aiodevice *aiodev)
+ 				  aiochannel_param_get_value,
+ 				  &aiochan->value, "%d", aiochan);
  
-+	/* TSC & ADC */
-+	__raw_writel(PRCM_MOD_EN, CM_WKUP_ADC_TSC_CLKCTRL);
-+	while (__raw_readl(CM_WKUP_ADC_TSC_CLKCTRL) != PRCM_MOD_EN);
-+
- 	clkdcoldo = __raw_readl(CM_CLKDCOLDO_DPLL_PER);
- 	clkdcoldo = clkdcoldo | 0x100;
- 	__raw_writel(clkdcoldo, CM_CLKDCOLDO_DPLL_PER);
-diff --git a/arch/arm/mach-omap/include/mach/am33xx-clock.h b/arch/arm/mach-omap/include/mach/am33xx-clock.h
-index 284d5f8cf..e71ecbcd2 100644
---- a/arch/arm/mach-omap/include/mach/am33xx-clock.h
-+++ b/arch/arm/mach-omap/include/mach/am33xx-clock.h
-@@ -138,6 +138,7 @@
- #define CM_PER_I2C1_CLKCTRL             (CM_PER + 0x48) /* I2C1 */
- #define CM_PER_I2C2_CLKCTRL             (CM_PER + 0x44) /* I2C2 */
- #define CM_WKUP_GPIO0_CLKCTRL           (CM_WKUP + 0x8) /* GPIO0 */
-+#define CM_WKUP_ADC_TSC_CLKCTRL         (CM_WKUP + 0xbc)/* TSCADC */
+-		aiochan->name = xasprintf("%s.%s", aiodev->name, name);
++		aiochan->name = xasprintf("%s.%s", dev_name(&aiodev->dev), name);
  
- #define CM_PER_MMC0_CLKCTRL             (CM_PER + 0x3C)
- #define CM_PER_MMC1_CLKCTRL             (CM_PER + 0xF4)
+ 		free(name);
+ 	}
 -- 
 2.25.4
 
