@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kFxrD-0002tP-Br
- for barebox@lists.infradead.org; Wed, 09 Sep 2020 11:01:44 +0000
+ id 1kFxrJ-0002vE-Hv
+ for barebox@lists.infradead.org; Wed, 09 Sep 2020 11:01:50 +0000
 From: Juergen Borleis <jbe@pengutronix.de>
-Date: Wed,  9 Sep 2020 13:01:14 +0200
-Message-Id: <20200909110118.19923-1-jbe@pengutronix.de>
+Date: Wed,  9 Sep 2020 13:01:16 +0200
+Message-Id: <20200909110118.19923-3-jbe@pengutronix.de>
+In-Reply-To: <20200909110118.19923-1-jbe@pengutronix.de>
+References: <20200909110118.19923-1-jbe@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,102 +21,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] commands: mmc_extcsd: print_field: fix 32 bit overflow
+Subject: [PATCH 3/5] mci: mci-core: fix long lasting FIXMEs
 To: barebox@lists.infradead.org
 Cc: Juergen Borleis <jbe@pengutronix.de>
 
 Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
 ---
- commands/mmc_extcsd.c | 23 +++++++++++++++--------
- 1 file changed, 15 insertions(+), 8 deletions(-)
+ drivers/mci/mci-core.c | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
-diff --git a/commands/mmc_extcsd.c b/commands/mmc_extcsd.c
-index c9a28fb1fe..40d11df17d 100644
---- a/commands/mmc_extcsd.c
-+++ b/commands/mmc_extcsd.c
-@@ -11,6 +11,7 @@
- #include <mci.h>
- #include <getopt.h>
- #include <fs.h>
-+#include <linux/sizes.h>
+diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+index a58dedc1cd..d93be6d33f 100644
+--- a/drivers/mci/mci-core.c
++++ b/drivers/mci/mci-core.c
+@@ -361,9 +361,9 @@ static int mmc_send_op_cond(struct mci *mci)
+ }
  
- #define EXT_CSD_BLOCKSIZE	512
+ /**
+- * FIXME
+- * @param mci MCI instance
+- * @param ext_csd Buffer for a 512 byte sized extended CSD
++ * Read-in the card's whole extended CSD configuration area
++ * @param[in] mci MCI instance
++ * @param[out] ext_csd Buffer for an #EXT_CSD_BLOCKSIZE byte sized extended CSD
+  * @return Transaction status (0 on success)
+  *
+  * Note: Only cards newer than Version 1.1 (Physical Layer Spec) support
+@@ -379,19 +379,23 @@ int mci_send_ext_csd(struct mci *mci, char *ext_csd)
  
-@@ -1142,7 +1143,7 @@ static int print_field(u8 *reg, int index)
- 		return 1;
+ 	data.dest = ext_csd;
+ 	data.blocks = 1;
+-	data.blocksize = 512;
++	data.blocksize = EXT_CSD_BLOCKSIZE;
+ 	data.flags = MMC_DATA_READ;
  
- 	case EXT_CSD_SEC_COUNT:
--		tmp64 = val * 512;
-+		tmp64 *= 512;
- 		printf("\tDevice density: %llu B\n", tmp64);
- 		return 1;
+ 	return mci_send_cmd(mci, &cmd, &data);
+ }
  
-@@ -1232,7 +1233,7 @@ static int print_field(u8 *reg, int index)
- 
- 	case EXT_CSD_HC_ERASE_GRP_SIZE:
- 		val = get_field_val(EXT_CSD_HC_ERASE_GRP_SIZE, 0, 0xFF);
--		val = val * 524288;
-+		val = val * SZ_512K;
- 		if (val)
- 			str = basprintf("Erase-unit size: %u", val);
- 		else
-@@ -1342,7 +1343,8 @@ static int print_field(u8 *reg, int index)
- 	case EXT_CSD_ENH_SIZE_MULT:
- 		tmp = get_field_val(EXT_CSD_HC_WP_GRP_SIZE, 0, 0xFF);
- 		tmp = tmp + get_field_val(EXT_CSD_HC_ERASE_GRP_SIZE, 0, 0xFF);
--		tmp64 = val * tmp * 524288;
-+		tmp64 *= tmp;
-+		tmp64 *= SZ_512K;
- 		printf("\tEnhanced User Data Area %i Size: %llu B\n",
- 				index - EXT_CSD_ENH_SIZE_MULT, tmp64);
- 		return 1;
-@@ -1350,28 +1352,32 @@ static int print_field(u8 *reg, int index)
- 	case EXT_CSD_GP_SIZE_MULT3:
- 		tmp = get_field_val(EXT_CSD_HC_WP_GRP_SIZE, 0, 0xFF);
- 		tmp = tmp + get_field_val(EXT_CSD_HC_ERASE_GRP_SIZE, 0, 0xFF);
--		tmp64 = val * tmp * 524288;
-+		tmp64 *= tmp;
-+		tmp64 *= SZ_512K;
- 		printf("\tGeneral_Purpose_Partition_3 Size: %llu B\n", tmp64);
- 		return 1;
- 
- 	case EXT_CSD_GP_SIZE_MULT2:
- 		tmp = get_field_val(EXT_CSD_HC_WP_GRP_SIZE, 0, 0xFF);
- 		tmp = tmp + get_field_val(EXT_CSD_HC_ERASE_GRP_SIZE, 0, 0xFF);
--		tmp64 = val * tmp * 524288;
-+		tmp64 *= tmp;
-+		tmp64 *= SZ_512K;
- 		printf("\tGeneral_Purpose_Partition_2 Size: %llu B\n", tmp64);
- 		return 1;
- 
- 	case EXT_CSD_GP_SIZE_MULT1:
- 		tmp = get_field_val(EXT_CSD_HC_WP_GRP_SIZE, 0, 0xFF);
- 		tmp = tmp + get_field_val(EXT_CSD_HC_ERASE_GRP_SIZE, 0, 0xFF);
--		tmp64 = val * tmp * 524288;
-+		tmp64 *= tmp;
-+		tmp64 *= SZ_512K;
- 		printf("\tGeneral_Purpose_Partition_1 Size: %llu B\n", tmp64);
- 		return 1;
- 
- 	case EXT_CSD_GP_SIZE_MULT0:
- 		tmp = get_field_val(EXT_CSD_HC_WP_GRP_SIZE, 0, 0xFF);
- 		tmp = tmp + get_field_val(EXT_CSD_HC_ERASE_GRP_SIZE, 0, 0xFF);
--		tmp64 = val * tmp * 524288;
-+		tmp64 *= tmp;
-+		tmp64 *= SZ_512K;
- 		printf("\tGeneral_Purpose_Partition_0 Size: %llu B\n", tmp64);
- 		return 1;
- 
-@@ -1422,7 +1428,8 @@ static int print_field(u8 *reg, int index)
- 	case EXT_CSD_MAX_ENH_SIZE_MULT:
- 		tmp = get_field_val(EXT_CSD_HC_WP_GRP_SIZE, 0, 0xFF);
- 		tmp = tmp + get_field_val(EXT_CSD_HC_ERASE_GRP_SIZE, 0, 0xFF);
--		tmp64 = val * tmp * 524288;
-+		tmp64 *= tmp;
-+		tmp64 *= SZ_512K;
- 		printf("\tMax Enhanced Area: %llu B\n", tmp64);
- 		return 1;
- 
+ /**
+- * FIXME
+- * @param mci MCI instance
+- * @param set FIXME
+- * @param index FIXME
+- * @param value FIXME
++ * Write a byte into the card's extended CSD configuration area
++ * @param[in] mci MCI instance
++ * @param[in] index Byte index in the extended CSD configuration area
++ * @param[in] value Byte to write at index into the extended CSD configuration area
+  * @return Transaction status (0 on success)
++ *
++ * This sends a CMD6 (aka SWITCH) to the card and writes @b value at extended CSD @b index.
++ *
++ * @note It always writes a full byte, the alternatives 'bit set' and
++ *      'bit clear' aren't supported.
+  */
+ int mci_switch(struct mci *mci, unsigned index, unsigned value)
+ {
 -- 
 2.20.1
 
