@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf1-x143.google.com ([2a00:1450:4864:20::143])
+Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kFbyl-0005Zw-VG
- for barebox@lists.infradead.org; Tue, 08 Sep 2020 11:40:04 +0000
-Received: by mail-lf1-x143.google.com with SMTP id q8so8994794lfb.6
- for <barebox@lists.infradead.org>; Tue, 08 Sep 2020 04:39:55 -0700 (PDT)
-Date: Tue, 8 Sep 2020 14:39:53 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20200908143953.93018587d571f1c3e13c9297@gmail.com>
-In-Reply-To: <1599546305-10121-1-git-send-email-u74147@gmail.com>
-References: <1599546305-10121-1-git-send-email-u74147@gmail.com>
-Mime-Version: 1.0
+ id 1kFuNp-0001HL-Ad
+ for barebox@lists.infradead.org; Wed, 09 Sep 2020 07:19:10 +0000
+Received: by mail-pf1-x442.google.com with SMTP id d6so1354920pfn.9
+ for <barebox@lists.infradead.org>; Wed, 09 Sep 2020 00:19:09 -0700 (PDT)
+Received: from zen.local (174-21-64-208.tukw.qwest.net. [174.21.64.208])
+ by smtp.gmail.com with ESMTPSA id p190sm1759890pfp.9.2020.09.09.00.19.05
+ for <barebox@lists.infradead.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 09 Sep 2020 00:19:06 -0700 (PDT)
+From: Trent Piepho <tpiepho@gmail.com>
+Date: Wed, 09 Sep 2020 00:19:05 -0700
+Message-ID: <2373015.TR22srR748@zen.local>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,105 +22,107 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] MIPS: asm/debug_ll_ns16550.h: add nop in delay slot
-To: Du Huanpeng <u74147@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] pinctrl-single: Support 2 pinctrl-cells in ,pins mode
+To: barebox@lists.infradead.org
 
-On Tue,  8 Sep 2020 14:25:05 +0800
-Du Huanpeng <u74147@gmail.com> wrote:
+The 5.9rc-1 dts update pulled in a change that broke all TI AM33xx
+platforms.  This fixes that.
 
-Hi!
+Previously, when using pinctrl-single,pins, the value of
+"#pinctrl-cells" was always 1, which indicates one data cell per pin,
+which contains the value to to program into the pinctrl register.
 
-Adding nop is not necessary.
+In kernel v5.9-rc1, commit a13395418888 ("pinctrl: single: parse #pinctrl-cells
+ = 2"), added support for 2 data cells per pin.  The two cells get ORed
+together to produce one register value.
 
-Please see full text of debug_ll_outc_a0:
+Then commit 27c90e5e48d0 ("ARM: dts: am33xx-l4: change #pinctrl-cells
+from 1 to 2"), changed the dts files to use two cells for am33xx and
+changed the AM33XX_PADCONF() macro to produce two data cells instead of
+ORing the two values together.  The pinctrl driver will now do the OR
+to produce the same value that was in one cell before.  I don't see what
+this accomplishes, but there it is.
 
-.macro  debug_ll_outc_a0
-#ifdef CONFIG_DEBUG_LL
-        .set    push
-        .set    reorder  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+The dts update pulled in the latter change, but not the former, leaving
+Barebox's pinctrl-single driver unable to correctly use the am33xx
+pinctrl data.  This commit adds support for the 2 cell format.
 
-        la      t0, DEBUG_LL_UART_ADDR
+It would be easier to just change the dts files back, since this change
+doesn't appear actually accomplish anything, but then the dts source
+would be out of sync with the kernel.
 
-201:    lbu     t1, UART_LSR(t0)        /* get line status */
-        andi    t1, t1, UART_LSR_THRE   /* check for transmitter empty */
-        beqz    t1, 201b                        /* try again */
+Signed-off-by: Trent Piepho <tpiepho@gmail.com>
+---
+ drivers/pinctrl/pinctrl-single.c | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
-        sb      a0, UART_THR(t0)        /* write the character */
-
-        .set    pop
-#endif /* CONFIG_DEBUG_LL */
-.endm
-
-
-There is '.set reorder' so assembler has insert nop after beqz automaticall=
-y.
-
-I have compiled barebox for qemu-malta with DEBUG_LL enabled.
-
-barebox$ mips-linux-gnu-objdump -D arch/mips/boards/qemu-malta/lowlevel.pbl=
-.o  | grep -A 10 "_nmon_outc_a0>:$"
-
-00000314 <_nmon_outc_a0>:
- 314:	3c08b800 	lui	t0,0xb800
- 318:	350803f8 	ori	t0,t0,0x3f8
- 31c:	91090005 	lbu	t1,5(t0)
- 320:	31290020 	andi	t1,t1,0x20
- 324:	1120fffd 	beqz	t1,31c <_nmon_outc_a0+0x8>
- 328:	00000000 	nop                            <<<<<<<<<<<<<<<<<<<<<<<<<<<<=
-<<<
- 32c:	a1040000 	sb	a0,0(t0)
- 330:	03e00008 	jr	ra
- 334:	00000000 	nop
-
-
-> In the debug_ll_outc_a0 macro, a0 is written to the uart data
-> register many times in a delay slot when the uart is not ready
-> to send data. insert a nop to avoid this.
-> =
-
-> Signed-off-by: Du Huanpeng <u74147@gmail.com>
-> ---
->  arch/mips/include/asm/debug_ll_ns16550.h | 1 +
->  1 file changed, 1 insertion(+)
-> =
-
-> diff --git a/arch/mips/include/asm/debug_ll_ns16550.h b/arch/mips/include=
-/asm/debug_ll_ns16550.h
-> index df58c4c..cf666d1 100644
-> --- a/arch/mips/include/asm/debug_ll_ns16550.h
-> +++ b/arch/mips/include/asm/debug_ll_ns16550.h
-> @@ -88,6 +88,7 @@ static inline void PUTC_LL(char ch)
->  201:	lbu	t1, UART_LSR(t0)	/* get line status */
->  	andi	t1, t1, UART_LSR_THRE	/* check for transmitter empty */
->  	beqz	t1, 201b			/* try again */
-> +	nop
->  =
-
->  	sb	a0, UART_THR(t0)	/* write the character */
->  =
-
-> -- =
-
-> 2.7.4
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
+index 4ce66a84d..c31b7e036 100644
+--- a/drivers/pinctrl/pinctrl-single.c
++++ b/drivers/pinctrl/pinctrl-single.c
+@@ -27,12 +27,13 @@ struct pinctrl_single {
+ 	unsigned (*read)(void __iomem *reg);
+ 	void (*write)(unsigned val, void __iomem *reg);
+ 	unsigned int width;
+-	unsigned int  fmask;
++	unsigned int fmask;
+ 	unsigned int fshift;
+ 	unsigned int fmax;
+ 
+ 	bool bits_per_mux;
+ 	unsigned int bits_per_pin;
++	unsigned int args_count;
+ };
+ 
+ static unsigned __maybe_unused pcs_readb(void __iomem *reg)
+@@ -96,7 +97,7 @@ static int pcs_set_state(struct pinctrl_device *pdev, struct device_node *np)
+ 
+ 		size /= sizeof(*mux);	/* Number of elements in array */
+ 
+-		if (!mux || !size || (size & 1)) {
++		if (!mux || !size || (size % (pcs->args_count + 1))) {
+ 			dev_err(pcs->pinctrl.dev, "bad data for mux %s\n",
+ 				np->full_name);
+ 			return -EINVAL;
+@@ -107,6 +108,14 @@ static int pcs_set_state(struct pinctrl_device *pdev, struct device_node *np)
+ 
+ 			offset = be32_to_cpup(mux + index++);
+ 			val = be32_to_cpup(mux + index++);
++			if (pcs->args_count > 1) {
++				/* If a 2nd data cell is present, it's ORed into
++				 * the 1st.  Additional cells are undefined,
++				 * just skip them.
++				 */
++				val |= be32_to_cpup(mux + index);
++				index += pcs->args_count - 1;
++			}
+ 
+ 			pcs->write(val, pcs->base + offset);
+ 		}
+@@ -177,6 +186,13 @@ static int pcs_probe(struct device_d *dev)
+ 	if (pcs->bits_per_mux)
+ 		pcs->bits_per_pin = fls(pcs->fmask);
+ 
++	/* If no pinctrl-cells is present, default to old style of 2 cells with
++	 * bits per mux and 1 cell otherwise.
++	 */
++	ret = of_property_read_u32(np, "#pinctrl-cells", &pcs->args_count);
++	if (ret)
++		pcs->args_count = pcs->bits_per_mux ? 2 : 1;
++
+ 	ret = pinctrl_register(&pcs->pinctrl);
+ 	if (ret)
+ 		goto out;
+-- 
+2.25.4
 
 
--- =
 
-Best regards,
-=A0 Antony Pavlov
+
 
 _______________________________________________
 barebox mailing list
