@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-eopbgr760109.outbound.protection.outlook.com
- ([40.107.76.109] helo=NAM02-CY1-obe.outbound.protection.outlook.com)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kG5uI-0006sT-AG
- for barebox@lists.infradead.org; Wed, 09 Sep 2020 19:37:28 +0000
-From: Trent Piepho <trent.piepho@synapse.com>
-Date: Wed,  9 Sep 2020 12:36:50 -0700
-Message-Id: <20200909193650.347646-4-trent.piepho@synapse.com>
-In-Reply-To: <20200909193650.347646-1-trent.piepho@synapse.com>
+ id 1kGICR-0000j3-Ey
+ for barebox@lists.infradead.org; Thu, 10 Sep 2020 08:45:00 +0000
 References: <20200909193650.347646-1-trent.piepho@synapse.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <8debe2fb-d16a-856d-8d95-631964c56d94@pengutronix.de>
+Date: Thu, 10 Sep 2020 10:44:55 +0200
 MIME-Version: 1.0
+In-Reply-To: <20200909193650.347646-1-trent.piepho@synapse.com>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,41 +22,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] ARM: beaglebone: Enable ADC
-To: barebox@lists.infradead.org
-Cc: Trent Piepho <trent.piepho@synapse.com>
+Subject: Re: [PATCH 1/4] aiodev: Name channels with device instance name
+To: Trent Piepho <trent.piepho@synapse.com>, barebox@lists.infradead.org
 
-On the BeagleBone Black, enable the dts node for the TSC/ADC.  Add a
-simple configuration that maps all eight channels in order.  AIN[0:6]
-are exposed on connector P9, while AIN7 measures the 3.3V rail divided
-by 2.
+Hi,
 
-Signed-off-by: Trent Piepho <trent.piepho@synapse.com>
----
- arch/arm/dts/am335x-boneblack.dts | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+On 9/9/20 9:36 PM, Trent Piepho wrote:
+> When dynamically assigning device names, an aiodev's name will be
+> "aiodev" and an index, not part of the name string itself, will be
+> allocated dynamically.  These are combined to register a device with a
+> name like "aiodev0" or "aiodev1".
+> 
+> The shell environment variables use the device name, so one might use
+> "${aiodev0.in_value0_mV}" and "${aiodev1.in_value0_mV}".
+> 
+> However, the channel names that are used with aiochannel_get_by_name()
+> just use the aiodev's name and channel name.  So channel 0 of the 1st
+> aiodev would be "aiodev.in_value0_mV" and the 2nd aiodev would use the
+> same name.
+> 
+> Change the channel naming to use the device instance name, e.g.
+> "aiodev0", rather than the aiodev's base name.  This makes the names
+> used aiochannel_get_by_name() match the environment variable names and
+> also avoids duplicate names with more than one dynamically allocated
+> aiodev.
 
-diff --git a/arch/arm/dts/am335x-boneblack.dts b/arch/arm/dts/am335x-boneblack.dts
-index 80d710b92..c06a532e4 100644
---- a/arch/arm/dts/am335x-boneblack.dts
-+++ b/arch/arm/dts/am335x-boneblack.dts
-@@ -85,3 +85,13 @@
- 		status = "okay";
- 	};
- };
-+
-+&tscadc {
-+	status = "okay";
-+	adc {
-+		/* Ch 0-6 are on connector P9.	Ch 7 measures the 3.3V rail
-+		 * divided by 2 (e.g., it should read 1650).
-+		 */
-+		ti,adc-channels = <0>, <1>, <2>, <3>, <4>, <5>, <6>, <7>;
-+	};
-+};
+sounds good, but that would silently break existing users, wouldn't i?
+There are none in-tree, but I assume there are some in external patch
+stacks, otherwise the function would've not been added.
+
+These patch stacks would rebase cleanly and build successfully, but
+still be runtime broken. Would it makes sense to rename
+aiochannel_get_by_name() because the API changed?
+
+> 
+> Signed-off-by: Trent Piepho <trent.piepho@synapse.com>
+> ---
+>  drivers/aiodev/core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/aiodev/core.c b/drivers/aiodev/core.c
+> index b8428346a..7d9170d2d 100644
+> --- a/drivers/aiodev/core.c
+> +++ b/drivers/aiodev/core.c
+> @@ -131,7 +131,7 @@ int aiodevice_register(struct aiodevice *aiodev)
+>  				  aiochannel_param_get_value,
+>  				  &aiochan->value, "%d", aiochan);
+>  
+> -		aiochan->name = xasprintf("%s.%s", aiodev->name, name);
+> +		aiochan->name = xasprintf("%s.%s", dev_name(&aiodev->dev), name);
+>  
+>  		free(name);
+>  	}
+> 
+
 -- 
-2.25.4
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
