@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-co1nam11on2099.outbound.protection.outlook.com
- ([40.107.220.99] helo=NAM11-CO1-obe.outbound.protection.outlook.com)
+Received: from relay4-d.mail.gandi.net ([217.70.183.196])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kGnC7-0005le-Ck
- for barebox@lists.infradead.org; Fri, 11 Sep 2020 17:50:44 +0000
-From: Trent Piepho <trent.piepho@synapse.com>
-Date: Fri, 11 Sep 2020 17:50:39 +0000
-Message-ID: <MW3PR18MB348474DA5350DA9BC3B4A9BA8A240@MW3PR18MB3484.namprd18.prod.outlook.com>
-References: <20200909193650.347646-1-trent.piepho@synapse.com>,
- <8debe2fb-d16a-856d-8d95-631964c56d94@pengutronix.de>
-In-Reply-To: <8debe2fb-d16a-856d-8d95-631964c56d94@pengutronix.de>
-Content-Language: en-US
+ id 1kGod1-0000HE-Q8
+ for barebox@lists.infradead.org; Fri, 11 Sep 2020 19:22:36 +0000
+Received: from geraet.fritz.box (muedsl-82-207-193-004.citykom.de
+ [82.207.193.4]) (Authenticated sender: ahmad@a3f.at)
+ by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 737D3E0006
+ for <barebox@lists.infradead.org>; Fri, 11 Sep 2020 19:22:30 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Fri, 11 Sep 2020 21:22:16 +0200
+Message-Id: <20200911192216.99575-1-ahmad@a3f.at>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -20,32 +19,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] aiodev: Name channels with device instance name
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] fixup! workqueues: Add support for delayed work
+To: barebox@lists.infradead.org
 
-> > On 9/9/20 9:36 PM, Trent Piepho wrote:
-> > Change the channel naming to use the device instance name, e.g.
-> > "aiodev0", rather than the aiodev's base name.=A0 This makes the names
-> > used aiochannel_get_by_name() match the environment variable names and
-> > also avoids duplicate names with more than one dynamically allocated
-> > aiodev.
->
-> sounds good, but that would silently break existing users, wouldn't i?
-> There are none in-tree, but I assume there are some in external patch
-> stacks, otherwise the function would've not been added.
->
-> These patch stacks would rebase cleanly and build successfully, but
-> still be runtime broken. Would it makes sense to rename
-> aiochannel_get_by_name() because the API changed?
+Otherwise, we run into a compile error, because get_time_ns() is used
+below without declaration.
 
-Assuming they used dynamic names for the devices.  So probably.
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ include/work.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-I can rename it to aiochannel_by_name().  There are number of other
-functions in barebox that follow that pattern.
+diff --git a/include/work.h b/include/work.h
+index 7ae596760a8b..0785bb3a8818 100644
+--- a/include/work.h
++++ b/include/work.h
+@@ -2,6 +2,7 @@
+ #define __WORK_H
+ 
+ #include <linux/list.h>
++#include <clock.h>
+ 
+ struct work_struct {
+ 	struct list_head list;
+-- 
+2.28.0
 
 
 _______________________________________________
