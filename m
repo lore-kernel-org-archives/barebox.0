@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kGICR-0000j3-Ey
- for barebox@lists.infradead.org; Thu, 10 Sep 2020 08:45:00 +0000
-References: <20200909193650.347646-1-trent.piepho@synapse.com>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <8debe2fb-d16a-856d-8d95-631964c56d94@pengutronix.de>
-Date: Thu, 10 Sep 2020 10:44:55 +0200
-MIME-Version: 1.0
-In-Reply-To: <20200909193650.347646-1-trent.piepho@synapse.com>
-Content-Language: en-US
+Received: from mickerik.phytec.de ([195.145.39.210])
+ by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1kGdcv-0008Kw-PX
+ for barebox@lists.infradead.org; Fri, 11 Sep 2020 07:37:46 +0000
+From: Maik Otto <m.otto@phytec.de>
+Date: Fri, 11 Sep 2020 09:37:37 +0200
+Message-Id: <1599809857-266934-3-git-send-email-m.otto@phytec.de>
+In-Reply-To: <1599809857-266934-1-git-send-email-m.otto@phytec.de>
+References: <1599809857-266934-1-git-send-email-m.otto@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,69 +16,93 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] aiodev: Name channels with device instance name
-To: Trent Piepho <trent.piepho@synapse.com>, barebox@lists.infradead.org
+Subject: [PATCH v2 2/2] arch: arm: mach-imx: Add habv4 config file for i.MX6ULL
+To: barebox@lists.infradead.org
+Cc: Maik Otto <m.otto@phytec.de>
 
-Hi,
+The i.MX6ULL has no CAAM engine for Secure Boot on HABv4 (NXP AN4581).
+For i.MX6ULL the engine Software (SW) must used for the image
+validation.
 
-On 9/9/20 9:36 PM, Trent Piepho wrote:
-> When dynamically assigning device names, an aiodev's name will be
-> "aiodev" and an index, not part of the name string itself, will be
-> allocated dynamically.  These are combined to register a device with a
-> name like "aiodev0" or "aiodev1".
-> 
-> The shell environment variables use the device name, so one might use
-> "${aiodev0.in_value0_mV}" and "${aiodev1.in_value0_mV}".
-> 
-> However, the channel names that are used with aiochannel_get_by_name()
-> just use the aiodev's name and channel name.  So channel 0 of the 1st
-> aiodev would be "aiodev.in_value0_mV" and the 2nd aiodev would use the
-> same name.
-> 
-> Change the channel naming to use the device instance name, e.g.
-> "aiodev0", rather than the aiodev's base name.  This makes the names
-> used aiochannel_get_by_name() match the environment variable names and
-> also avoids duplicate names with more than one dynamically allocated
-> aiodev.
+Signed-off-by: Maik Otto <m.otto@phytec.de>
+---
+Changes in v2:
+    - Rework the file habv4-imx6-gencsf.h, because cst 3.3.1 fails for engine
+      software with parameter Feature.
+---
+ .../phytec-som-imx6/flash-header-phytec-pcl063ull-256mb.imxcfg    | 2 +-
+ .../phytec-som-imx6/flash-header-phytec-pcl063ull-512mb.imxcfg    | 2 +-
+ arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h                | 8 ++++++++
+ arch/arm/mach-imx/include/mach/habv4-imx6ull-gencsf.h             | 4 ++++
+ 4 files changed, 14 insertions(+), 2 deletions(-)
+ create mode 100644 arch/arm/mach-imx/include/mach/habv4-imx6ull-gencsf.h
 
-sounds good, but that would silently break existing users, wouldn't i?
-There are none in-tree, but I assume there are some in external patch
-stacks, otherwise the function would've not been added.
-
-These patch stacks would rebase cleanly and build successfully, but
-still be runtime broken. Would it makes sense to rename
-aiochannel_get_by_name() because the API changed?
-
-> 
-> Signed-off-by: Trent Piepho <trent.piepho@synapse.com>
-> ---
->  drivers/aiodev/core.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/aiodev/core.c b/drivers/aiodev/core.c
-> index b8428346a..7d9170d2d 100644
-> --- a/drivers/aiodev/core.c
-> +++ b/drivers/aiodev/core.c
-> @@ -131,7 +131,7 @@ int aiodevice_register(struct aiodevice *aiodev)
->  				  aiochannel_param_get_value,
->  				  &aiochan->value, "%d", aiochan);
->  
-> -		aiochan->name = xasprintf("%s.%s", aiodev->name, name);
-> +		aiochan->name = xasprintf("%s.%s", dev_name(&aiodev->dev), name);
->  
->  		free(name);
->  	}
-> 
-
+diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063ull-256mb.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063ull-256mb.imxcfg
+index b93e81f..e6871d8 100644
+--- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063ull-256mb.imxcfg
++++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063ull-256mb.imxcfg
+@@ -7,4 +7,4 @@
+ 	wm 32 0x021B0000 0x83180000
+ 
+ #include "flash-header-phytec-pcl063.h"
+-#include <mach/habv4-imx6-gencsf.h>
++#include <mach/habv4-imx6ull-gencsf.h>
+diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063ull-512mb.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063ull-512mb.imxcfg
+index f629a8e..d2d7183 100644
+--- a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063ull-512mb.imxcfg
++++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063ull-512mb.imxcfg
+@@ -1,3 +1,3 @@
+ 
+ #include "flash-header-phytec-pcl063-512mb.h"
+-#include <mach/habv4-imx6-gencsf.h>
++#include <mach/habv4-imx6ull-gencsf.h>
+diff --git a/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h b/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
+index 17c4d79..ee21e0b 100644
+--- a/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
++++ b/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
+@@ -14,7 +14,11 @@ hab Hash Algorithm = sha256
+ hab Engine Configuration = 0
+ hab Certificate Format = X509
+ hab Signature Format = CMS
++#ifndef SETUP_HABV4_ENGINE
+ hab Engine = CAAM
++#else
++hab Engine = SETUP_HABV4_ENGINE
++#endif
+ 
+ hab [Install SRK]
+ hab File = CONFIG_HABV4_TABLE_BIN
+@@ -28,8 +32,12 @@ hab File = CONFIG_HABV4_CSF_CRT_PEM
+ hab [Authenticate CSF]
+ 
+ hab [Unlock]
++#ifndef SETUP_HABV4_ENGINE
+ hab Engine = CAAM
+ hab Features = RNG, MID
++#else
++hab Engine = SETUP_HABV4_ENGINE
++#endif
+ 
+ hab [Install Key]
+ /* verification key index in key store (0, 2...4) */
+diff --git a/arch/arm/mach-imx/include/mach/habv4-imx6ull-gencsf.h b/arch/arm/mach-imx/include/mach/habv4-imx6ull-gencsf.h
+new file mode 100644
+index 0000000..54c4915
+--- /dev/null
++++ b/arch/arm/mach-imx/include/mach/habv4-imx6ull-gencsf.h
+@@ -0,0 +1,4 @@
++
++#define SETUP_HABV4_ENGINE SW
++
++#include <mach/habv4-imx6-gencsf.h>
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.7.4
+
 
 _______________________________________________
 barebox mailing list
