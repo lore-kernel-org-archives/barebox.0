@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mickerik.phytec.de ([195.145.39.210])
- by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kGdcs-0008Kw-QS
- for barebox@lists.infradead.org; Fri, 11 Sep 2020 07:37:43 +0000
-From: Maik Otto <m.otto@phytec.de>
-Date: Fri, 11 Sep 2020 09:37:35 +0200
-Message-Id: <1599809857-266934-1-git-send-email-m.otto@phytec.de>
+Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
+ by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1kGiFn-0002mV-Qa
+ for barebox@lists.infradead.org; Fri, 11 Sep 2020 12:34:12 +0000
+Received: by mail-pf1-x442.google.com with SMTP id o68so7360565pfg.2
+ for <barebox@lists.infradead.org>; Fri, 11 Sep 2020 05:34:11 -0700 (PDT)
+From: Du Huanpeng <u74147@gmail.com>
+Date: Fri, 11 Sep 2020 20:33:58 +0800
+Message-Id: <1599827638-15320-2-git-send-email-u74147@gmail.com>
+In-Reply-To: <1599827638-15320-1-git-send-email-u74147@gmail.com>
+References: <1599827638-15320-1-git-send-email-u74147@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,37 +23,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 0/2] i.MX6ULL: set engine software for Secure Boot on HABv4
+Subject: [PATCH] MIPS: DEBUG_LL_UART_DIVISOR is 0, use a0 instead
 To: barebox@lists.infradead.org
-Cc: Maik Otto <m.otto@phytec.de>
+Cc: Du Huanpeng <u74147@gmail.com>
 
-The i.MX6ULL has no CAAM engine for Secure Boot on HABv4. This patch series
-set the engine software for i.MX6ULL and for the PHYTEC boards PCL-063 with
-i.MX6ULL.
+this make it possiable pass a0 as divisor to calculate uart baudrate
+in run time on boot.
 
-Changes in v2:
-    - Rework in Patch 2 the file habv4-imx6-gencsf.h, because cst 3.3.1 fails 
-      for engine software with parameter Feature.
+Signed-off-by: Du Huanpeng <u74147@gmail.com>
+---
+ arch/mips/include/asm/debug_ll_ns16550.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Maik Otto (2):
-  arch: arm: boards phytec: Split flash header for pcl063 with i.MX6Ul
-    and i.MX6ULL
-  arch: arm: mach-imx: Add habv4 config file for i.MX6ULL
-
- ...tec-pcl063-512mb.imxcfg => flash-header-phytec-pcl063-512mb.h} | 1 -
- .../phytec-som-imx6/flash-header-phytec-pcl063ul-512mb.imxcfg     | 3 +++
- ...63-256mb.imxcfg => flash-header-phytec-pcl063ull-256mb.imxcfg} | 2 +-
- .../phytec-som-imx6/flash-header-phytec-pcl063ull-512mb.imxcfg    | 3 +++
- arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h                | 8 ++++++++
- arch/arm/mach-imx/include/mach/habv4-imx6ull-gencsf.h             | 4 ++++
- images/Makefile.imx                                               | 8 ++++----
- 7 files changed, 23 insertions(+), 6 deletions(-)
- rename arch/arm/boards/phytec-som-imx6/{flash-header-phytec-pcl063-512mb.imxcfg => flash-header-phytec-pcl063-512mb.h} (83%)
- create mode 100644 arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063ul-512mb.imxcfg
- rename arch/arm/boards/phytec-som-imx6/{flash-header-phytec-pcl063-256mb.imxcfg => flash-header-phytec-pcl063ull-256mb.imxcfg} (82%)
- create mode 100644 arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063ull-512mb.imxcfg
- create mode 100644 arch/arm/mach-imx/include/mach/habv4-imx6ull-gencsf.h
-
+diff --git a/arch/mips/include/asm/debug_ll_ns16550.h b/arch/mips/include/asm/debug_ll_ns16550.h
+index df58c4c..a33587a 100644
+--- a/arch/mips/include/asm/debug_ll_ns16550.h
++++ b/arch/mips/include/asm/debug_ll_ns16550.h
+@@ -66,6 +66,9 @@ static inline void PUTC_LL(char ch)
+ 	sb	t1, UART_LCR(t0)		/* Write it out */
+ 
+ 	li	t1, DEBUG_LL_UART_DIVISOR
++#if DEBUG_LL_UART_DIVISOR == 0
++	move	t1, a0
++#endif
+ 	sb	t1, UART_DLL(t0)		/* write low order byte */
+ 	srl	t1, t1, 8
+ 	sb	t1, UART_DLM(t0)		/* write high order byte */
 -- 
 2.7.4
 
