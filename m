@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay4-d.mail.gandi.net ([217.70.183.196])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kGod1-0000HE-Q8
- for barebox@lists.infradead.org; Fri, 11 Sep 2020 19:22:36 +0000
-Received: from geraet.fritz.box (muedsl-82-207-193-004.citykom.de
- [82.207.193.4]) (Authenticated sender: ahmad@a3f.at)
- by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 737D3E0006
- for <barebox@lists.infradead.org>; Fri, 11 Sep 2020 19:22:30 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Fri, 11 Sep 2020 21:22:16 +0200
-Message-Id: <20200911192216.99575-1-ahmad@a3f.at>
+ id 1kGzkl-0000iI-Bx
+ for barebox@lists.infradead.org; Sat, 12 Sep 2020 07:15:20 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=localhost)
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <r.czerwinski@pengutronix.de>) id 1kGzki-00006r-P5
+ for barebox@lists.infradead.org; Sat, 12 Sep 2020 09:15:16 +0200
+Message-ID: <6e29e35c4dba12a3cb2a31962c49dd6357ef429e.camel@pengutronix.de>
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Sat, 12 Sep 2020 09:15:15 +0200
+In-Reply-To: <20200912071241.29924-2-r.czerwinski@pengutronix.de>
+References: <20200912071241.29924-1-r.czerwinski@pengutronix.de>
+ <20200912071241.29924-2-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,31 +28,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! workqueues: Add support for delayed work
+Subject: Re: [PATCH] iotmaxx: gw4100: WDOG_ANY as GPIO output
 To: barebox@lists.infradead.org
 
-Otherwise, we run into a compile error, because get_time_ns() is used
-below without declaration.
+Hi,
 
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
----
- include/work.h | 1 +
- 1 file changed, 1 insertion(+)
+On Sat, 2020-09-12 at 09:12 +0200, Rouven Czerwinski wrote:
+> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+> ---
+>  dts/src/arm/imx7d-iotmaxx-gw4100.dts | 20 ++++++++++++++++++++
+>  1 file changed, 20 insertions(+)
+> 
+> diff --git a/dts/src/arm/imx7d-iotmaxx-gw4100.dts
+> b/dts/src/arm/imx7d-iotmaxx-gw4100.dts
+> index 91befd2607..c9321ca7e0 100644
+> --- a/dts/src/arm/imx7d-iotmaxx-gw4100.dts
+> +++ b/dts/src/arm/imx7d-iotmaxx-gw4100.dts
+> @@ -220,6 +220,21 @@
+>  	};
+>  };
+>  
+> +&gpio7 {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_gpio7>;
+> +	status = "okay";
+> +	gpio-line-names = "",
+> +	"", "", "", "", "",
+> +	"", "reset", "", "", "",
+> +	"", "", "", "", "",
+> +	"", "", "", "", "",
+> +	"", "", "", "", "",
+> +	"", "", "", "", "",
+> +	"";
+> +
+> +};
+> +
+>  &i2c1 {
+>  	pinctrl-names = "default";
+>  	pinctrl-0 = <&pinctrl_i2c1>;
+> @@ -454,6 +469,11 @@
+>  		MX7D_PAD_SD3_STROBE__SD3_STROBE			0x1b
+>  		>;
+>  	};
+> +	pinctrl_gpio7: gpio7grp {
+> +		fsl,pins = <
+> +		MX7D_PAD_ENET1_COL__GPIO7_IO15			0x51
+> +		>;
+> +	};
+>  };
+>  
+>  &iomuxc_lpsr {
 
-diff --git a/include/work.h b/include/work.h
-index 7ae596760a8b..0785bb3a8818 100644
---- a/include/work.h
-+++ b/include/work.h
-@@ -2,6 +2,7 @@
- #define __WORK_H
- 
- #include <linux/list.h>
-+#include <clock.h>
- 
- struct work_struct {
- 	struct list_head list;
--- 
-2.28.0
+Please ignore this, leftover patch in my patch directory.
+
+Regards,
+Rouven
 
 
 _______________________________________________
