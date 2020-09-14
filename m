@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kHpvf-00061g-9F
- for barebox@lists.infradead.org; Mon, 14 Sep 2020 14:58:09 +0000
-References: <20200909110118.19923-1-jbe@pengutronix.de>
- <20200909110118.19923-3-jbe@pengutronix.de>
+ id 1kHq1w-00088m-Os
+ for barebox@lists.infradead.org; Mon, 14 Sep 2020 15:04:35 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <e7db4a95-5665-2d86-0450-3cfd56ec477a@pengutronix.de>
-Date: Mon, 14 Sep 2020 16:58:01 +0200
+Date: Mon, 14 Sep 2020 17:04:30 +0200
+Message-Id: <20200914150430.23818-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20200909110118.19923-3-jbe@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,75 +19,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/5] mci: mci-core: fix long lasting FIXMEs
-To: Juergen Borleis <jbe@pengutronix.de>, barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
+Subject: [PATCH] fixup! mci: mci-core: add GPP support
+To: barebox@lists.infradead.org
+Cc: Juergen Borleis <jbe@pengutronix.de>, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Hello Juergen,
+1) use %zu for size_t argument, otherwise we read garbage on 64-bit CPUs
+2) use xasprintf instead of risking null pointer deref on ENOMEM
 
-On 9/9/20 1:01 PM, Juergen Borleis wrote:
-> Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
-> ---
->  drivers/mci/mci-core.c | 22 +++++++++++++---------
->  1 file changed, 13 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-> index a58dedc1cd..d93be6d33f 100644
-> --- a/drivers/mci/mci-core.c
-> +++ b/drivers/mci/mci-core.c
-> @@ -361,9 +361,9 @@ static int mmc_send_op_cond(struct mci *mci)
->  }
->  
->  /**
-> - * FIXME
-> - * @param mci MCI instance
-> - * @param ext_csd Buffer for a 512 byte sized extended CSD
-> + * Read-in the card's whole extended CSD configuration area
-> + * @param[in] mci MCI instance
-> + * @param[out] ext_csd Buffer for an #EXT_CSD_BLOCKSIZE byte sized extended CSD
->   * @return Transaction status (0 on success)
->   *
->   * Note: Only cards newer than Version 1.1 (Physical Layer Spec) support
-> @@ -379,19 +379,23 @@ int mci_send_ext_csd(struct mci *mci, char *ext_csd)
->  
->  	data.dest = ext_csd;
->  	data.blocks = 1;
-> -	data.blocksize = 512;
-> +	data.blocksize = EXT_CSD_BLOCKSIZE;
+Cc: Juergen Borleis <jbe@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/mci/mci-core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-This breaks the build; EXT_CSD_BLOCKSIZE is undeclared in mci-core.c.
-Did you forget a prerequisite patch?
-
->  	data.flags = MMC_DATA_READ;
->  
->  	return mci_send_cmd(mci, &cmd, &data);
->  }
->  
->  /**
-> - * FIXME
-> - * @param mci MCI instance
-> - * @param set FIXME
-> - * @param index FIXME
-> - * @param value FIXME
-> + * Write a byte into the card's extended CSD configuration area
-> + * @param[in] mci MCI instance
-> + * @param[in] index Byte index in the extended CSD configuration area
-> + * @param[in] value Byte to write at index into the extended CSD configuration area
->   * @return Transaction status (0 on success)
-> + *
-> + * This sends a CMD6 (aka SWITCH) to the card and writes @b value at extended CSD @b index.
-> + *
-> + * @note It always writes a full byte, the alternatives 'bit set' and
-> + *      'bit clear' aren't supported.
->   */
->  int mci_switch(struct mci *mci, unsigned index, unsigned value)
->  {
-> 
-
+diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+index 21eff2f593d8..437ecc76c96f 100644
+--- a/drivers/mci/mci-core.c
++++ b/drivers/mci/mci-core.c
+@@ -496,8 +496,8 @@ static __maybe_unused void mmc_extract_gpp_partitions(struct mci *mci)
+ 		/* Convert to bytes */
+ 		part_size *= wpgs;
+ 
+-		partname = basprintf("gpp%d", idx);
+-		name = basprintf("%s.%s", mci->cdevname, partname);
++		partname = xasprintf("gpp%zu", idx);
++		name = xasprintf("%s.%s", mci->cdevname, partname);
+ 		/* TODO read-only flag */
+ 		mci_part_add(mci, part_size, EXT_CSD_PART_CONFIG_ACC_GPP0 + idx,
+ 			     name, partname, idx, false, MMC_BLK_DATA_AREA_GP);
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.28.0
+
 
 _______________________________________________
 barebox mailing list
