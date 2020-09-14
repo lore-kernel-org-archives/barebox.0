@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kHuh0-0004ED-Dj
- for barebox@lists.infradead.org; Mon, 14 Sep 2020 20:03:15 +0000
+ id 1kHuh7-0004Er-T9
+ for barebox@lists.infradead.org; Mon, 14 Sep 2020 20:03:25 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 14 Sep 2020 22:03:09 +0200
-Message-Id: <20200914200309.32513-2-a.fatoum@pengutronix.de>
-In-Reply-To: <20200914200309.32513-1-a.fatoum@pengutronix.de>
-References: <20200914200309.32513-1-a.fatoum@pengutronix.de>
+Date: Mon, 14 Sep 2020 22:03:08 +0200
+Message-Id: <20200914200309.32513-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,101 +19,125 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] README: use lower-case barebox spelling
+Subject: [PATCH 1/2] README: update to reflect current state
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-This is a bit of a churn, but at least the top level README can use the
-correct casing.
+The bulk of the README has stayed unchanged for the last ten years or
+so. Polish it up up a bit.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- README | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ README | 40 ++++++++++++++++++++--------------------
+ 1 file changed, 20 insertions(+), 20 deletions(-)
 
 diff --git a/README b/README
-index c4c8abbb4b62..d206e301391a 100644
+index d8077d21b618..c4c8abbb4b62 100644
 --- a/README
 +++ b/README
-@@ -1,9 +1,9 @@
- # SPDX-License-Identifier: GPL-2.0-only
+@@ -18,33 +18,34 @@ Features
  
--Barebox
-+barebox
- -------
+ - The environment is not a variable store anymore, but a file store. It has
+   currently some limitations, of course. The environment is not a real
+-  read/write filesystem, it is more like a tar archive, or even more like
+-  an ar archive, because it cannot handle directories. The saveenv command
+-  saves the files under a certain directory (by default /env) in persistent
+-  storage (by default /dev/env0). There is a counterpart called loadenv, too.
++  read/write filesystem, but more like a tar archive.
++  The saveenv command saves the files under a certain directory (by default
++  /env) in persistent storage (by default /dev/env0). There is a counterpart
++  called loadenv, too.
  
--Barebox is a bootloader that follows the tradition of Das U-Boot, while
-+barebox is a bootloader that follows the tradition of Das U-Boot, while
- adopting modern design ideas from the Linux kernel.
+ - filesystem support
+   The loader starts up with mounting a ramdisk on /. Then a devfs is mounted
+   on /dev allowing the user (or shell commands) to access devices. Apart from
+-  these two filesystems there is currently one filesystem ported: cramfs. One
+-  can mount it with the usual mount command.
++  these two filesystems there are a number of different filesystems ported:
++  ext4, efi, efivarfs, ext4, fat, jffs2, NFS, pstore, squashfs, ubifs,
++  u-boot variable FS among others.
  
+ - device/driver model
+   Devices are no longer described by defines in the config file. Instead
+-  there are devices which can be registered in the board .c file or
+-  dynamically allocated. Drivers will match upon the devices automatically.
++  devices are registered as they are discovered (e.g. through OpenFirmware
++  device tree traversal or EFI handles) or by board code.
++  Drivers will match upon the devices automatically.
  
-@@ -72,10 +72,10 @@ Features
-   except the ones really needed: moving the cursor and typing characters.
+ - clocksource support
+   Timekeeping has been simplified by the use of the Linux clocksource API.
+-  Only one function is needed for a new board, no [gs]et_timer[masked]() or
+-  reset_timer[masked]() functions.
++  no [gs]et_timer[masked]() or reset_timer[masked]() functions.
  
+ - Kconfig and Kernel build system
+   Only targets which are really needed get recompiled. Parallel builds are
+   no problem anymore. This also removes the need for many many ifdefs in
+   the code.
  
--Building Barebox
-+Building barebox
- ----------------
+-- simulation target
++- ARCH=sandbox simulation target
+   barebox can be compiled to run under Linux. While this is rather useless
+   in real world this is a great debugging and development aid. New features
+   can be easily developed and tested on long train journeys and started
+@@ -53,7 +54,7 @@ Features
+   devices under barebox to emulate storage devices.
  
--Barebox uses the Linux kernel's build system. It consists of two parts:
-+barebox uses the Linux kernel's build system. It consists of two parts:
- the Makefile infrastructure (kbuild), plus a configuration system
- (kconfig). So building barebox is very similar to building the Linux
- kernel.
-@@ -109,7 +109,7 @@ If everything goes well, the result is a file called barebox:
-   # ls -l barebox
-     -rwxr-xr-x 1 rsc ptx 114073 Jun 26 22:34 barebox
+ - device parameter support
+-  Each device can have a unlimited number of parameters. They can be accessed
++  Each device can have an unlimited number of parameters. They can be accessed
+   on the command line with <devid>.<param>="...", for example
+   'eth0.ip=192.168.0.7' or 'echo $eth0.ip'
  
--Barebox usually needs an environment for storing the configuration data.
-+barebox usually needs an environment for storing the configuration data.
- You can generate an environment using the example environment contained
- in board/sandbox/env:
+@@ -83,7 +84,7 @@ For the examples below, we use the User Mode barebox implementation, which
+ is a port of barebox to the Linux userspace. This makes it possible to
+ test drive the code without having real hardware. So for this test
+ scenario, ARCH=sandbox is the valid architecture selection. This currently
+-only works on ia32 hosts and partly on x86-64.
++works on at least IA32 hosts and x86-64 hosts.
  
+ Selection of the architecture and the cross compiler can be done by using
+ the environment variables ARCH and CROSS_COMPILE.
+@@ -137,7 +138,7 @@ loaded the example environment barebox will show you a menu asking for
+ your settings.
+ 
+ If you have started barebox as root you will find a new tap device on your
+-host which you can configure using ifconfig. Once you configured bareboxs
++host which you can configure using ifconfig. Once you configured barebox'
+ network settings accordingly you can do a ping or tftpboot.
+ 
+ If you have mapped a cramfs image try mounting it with
+@@ -157,16 +158,15 @@ Directory Layout
+ 
+ Most of the directory layout is based upon the Linux Kernel:
+ 
+-arch/*/               -> contains architecture specific parts
+-arch/*/mach-*/        -> SoC specific code
++arch/*                -> contains architecture specific parts
++arch/*/include        -> architecture specific includes
++arch/*/mach-*         -> SoC specific code
++arch/*/mach-*/include -> SoC specific includes
+ 
+ drivers/serial        -> drivers
+ drivers/net
+ drivers/...
+ 
+-include/asm-*         -> architecture specific includes
+-include/asm-*/arch-*  -> SoC specific includes
+-
+ fs/                   -> filesystem support and filesystem drivers
+ 
+ lib/                  -> generic library functions (getopt, readline and the
 @@ -188,7 +188,7 @@ Documentation/        -> Sphinx generated documentation. Call "make docs" to
  Release Strategy
  ----------------
  
--Barebox is developed with git. On a monthly schedule, tarball releases are
-+barebox is developed with git. On a monthly schedule, tarball releases are
+-Barebox is developed with git. From time to time, tarball releases are
++Barebox is developed with git. On a monthly schedule, tarball releases are
  branched from the repository and released on the project web site. Here
  are the release rules:
  
-@@ -228,15 +228,15 @@ are the release rules:
- Contributing
- ------------
- 
--For any questions regarding Barebox, send a mail to the mailing list at
-+For any questions regarding barebox, send a mail to the mailing list at
- <barebox@lists.infradead.org>. The archives for this list are available
- publicly at <http://lists.infradead.org/pipermail/barebox/> and
- <https://www.mail-archive.com/barebox@lists.infradead.org/>.
- 
--The same list should also be used to send patches. Barebox uses a similar
-+The same list should also be used to send patches. barebox uses a similar
- process as the Linux kernel, so most of the Linux guide for submitting patches
- <https://www.kernel.org/doc/html/latest/process/submitting-patches.html> also
--applies to Barebox (except the step for selecting your recipient - we don't
-+applies to barebox (except the step for selecting your recipient - we don't
- have a MAINTAINERS file, instead all patches go to the list).
- 
- 
-@@ -246,7 +246,7 @@ License
- Copyright (C) 2000 - 2005 Wolfgang Denk, DENX Software Engineering, wd@denx.de.
- Copyright (C) 2018 Sascha Hauer, Pengutronix, and individual contributors
- 
--Barebox is free software: you can redistribute it and/or modify it under the
-+barebox is free software: you can redistribute it and/or modify it under the
- terms of the GNU General Public License, version 2, as published by the Free
- Software Foundation.
- 
-@@ -266,6 +266,6 @@ the above copyright and warranty notices:
- This eases machine processing of licensing information based on the SPDX
- License Identifiers that are available at http://spdx.org/licenses/.
- 
--Also note that some files in the Barebox source tree are available under
-+Also note that some files in the barebox source tree are available under
- several different GPLv2-compatible open-source licenses. This fact is noted
- clearly in the file headers of the respective files.
 -- 
 2.28.0
 
