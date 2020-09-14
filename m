@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kHoC2-0003P7-JD
- for barebox@lists.infradead.org; Mon, 14 Sep 2020 13:06:51 +0000
+ id 1kHoDP-0003yD-5k
+ for barebox@lists.infradead.org; Mon, 14 Sep 2020 13:08:17 +0000
+Date: Mon, 14 Sep 2020 15:08:13 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 14 Sep 2020 15:06:38 +0200
-Message-Id: <20200914130640.21416-2-s.hauer@pengutronix.de>
-In-Reply-To: <20200914130640.21416-1-s.hauer@pengutronix.de>
-References: <20200914130640.21416-1-s.hauer@pengutronix.de>
+Message-ID: <20200914130813.GR4498@pengutronix.de>
+References: <20200828033014.54583-1-masahiroy@kernel.org>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200828033014.54583-1-masahiroy@kernel.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,32 +22,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] fs: Drop unnecessary dput()
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] kconfig: update to Linux 5.9-rc2
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: barebox@lists.infradead.org
 
-Calling dput() on the root dentry during unmount time is unnecessary,
-the dentry will be removed later in dentry_delete_subtree() anyway.
+On Fri, Aug 28, 2020 at 12:30:14PM +0900, Masahiro Yamada wrote:
+> The previous sync was Linux 5.7-rc2. Resync scripts/kconfig/ and
+> scripts/Kconfig.include with Linux 5.9-rc2.
+> 
+> Highlights:
+> 
+>  - fix and improve 'make xconfig'
+> 
+>  - remove '---help---' keyword
+> 
+>  - forbid nested 'choice' blocks
+> 
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> ---
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- fs/fs.c | 1 -
- 1 file changed, 1 deletion(-)
+Applied, thanks
 
-diff --git a/fs/fs.c b/fs/fs.c
-index 30b835e265..a6c6f0cc93 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -667,7 +667,6 @@ static void fs_remove(struct device_d *dev)
- 	if (fsdev->loop && fsdev->cdev)
- 		cdev_remove_loop(fsdev->cdev);
- 
--	dput(sb->s_root);
- 	dentry_delete_subtree(sb, sb->s_root);
- 
- 	list_for_each_entry_safe(inode, tmp, &sb->s_inodes, i_sb_list)
+Sascha
+
+
 -- 
-2.28.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
