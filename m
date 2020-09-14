@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kHpHO-0007a0-5v
- for barebox@lists.infradead.org; Mon, 14 Sep 2020 14:16:26 +0000
-Date: Mon, 14 Sep 2020 16:16:24 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200914141624.GW4498@pengutronix.de>
-References: <20200914130005.3156-1-u.kleine-koenig@pengutronix.de>
+ id 1kHpvf-00061g-9F
+ for barebox@lists.infradead.org; Mon, 14 Sep 2020 14:58:09 +0000
+References: <20200909110118.19923-1-jbe@pengutronix.de>
+ <20200909110118.19923-3-jbe@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <e7db4a95-5665-2d86-0450-3cfd56ec477a@pengutronix.de>
+Date: Mon, 14 Sep 2020 16:58:01 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200914130005.3156-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20200909110118.19923-3-jbe@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,33 +19,75 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] arm/cpu/*.S: Replace license and copyright boilerplate
- by SPDX identfiers
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 3/5] mci: mci-core: fix long lasting FIXMEs
+To: Juergen Borleis <jbe@pengutronix.de>, barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
 
-On Mon, Sep 14, 2020 at 03:00:05PM +0200, Uwe Kleine-K=F6nig wrote:
-> Since commit ed2f892a1ba7 ("arm/cpu: Replace license and copyright
-> boilerplate by SPDX identfiers") my script learned to detect .S files,
-> too.
-> =
+Hello Juergen,
 
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+On 9/9/20 1:01 PM, Juergen Borleis wrote:
+> Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
 > ---
->  arch/arm/cpu/smccc-call.S    | 16 +++-------------
->  arch/arm/cpu/smccc-call_64.S | 16 +++-------------
->  2 files changed, 6 insertions(+), 26 deletions(-)
+>  drivers/mci/mci-core.c | 22 +++++++++++++---------
+>  1 file changed, 13 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+> index a58dedc1cd..d93be6d33f 100644
+> --- a/drivers/mci/mci-core.c
+> +++ b/drivers/mci/mci-core.c
+> @@ -361,9 +361,9 @@ static int mmc_send_op_cond(struct mci *mci)
+>  }
+>  
+>  /**
+> - * FIXME
+> - * @param mci MCI instance
+> - * @param ext_csd Buffer for a 512 byte sized extended CSD
+> + * Read-in the card's whole extended CSD configuration area
+> + * @param[in] mci MCI instance
+> + * @param[out] ext_csd Buffer for an #EXT_CSD_BLOCKSIZE byte sized extended CSD
+>   * @return Transaction status (0 on success)
+>   *
+>   * Note: Only cards newer than Version 1.1 (Physical Layer Spec) support
+> @@ -379,19 +379,23 @@ int mci_send_ext_csd(struct mci *mci, char *ext_csd)
+>  
+>  	data.dest = ext_csd;
+>  	data.blocks = 1;
+> -	data.blocksize = 512;
+> +	data.blocksize = EXT_CSD_BLOCKSIZE;
 
-Applied, thanks
+This breaks the build; EXT_CSD_BLOCKSIZE is undeclared in mci-core.c.
+Did you forget a prerequisite patch?
 
-Sascha
+>  	data.flags = MMC_DATA_READ;
+>  
+>  	return mci_send_cmd(mci, &cmd, &data);
+>  }
+>  
+>  /**
+> - * FIXME
+> - * @param mci MCI instance
+> - * @param set FIXME
+> - * @param index FIXME
+> - * @param value FIXME
+> + * Write a byte into the card's extended CSD configuration area
+> + * @param[in] mci MCI instance
+> + * @param[in] index Byte index in the extended CSD configuration area
+> + * @param[in] value Byte to write at index into the extended CSD configuration area
+>   * @return Transaction status (0 on success)
+> + *
+> + * This sends a CMD6 (aka SWITCH) to the card and writes @b value at extended CSD @b index.
+> + *
+> + * @note It always writes a full byte, the alternatives 'bit set' and
+> + *      'bit clear' aren't supported.
+>   */
+>  int mci_switch(struct mci *mci, unsigned index, unsigned value)
+>  {
+> 
 
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
