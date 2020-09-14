@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kHjfu-0000Aj-3w
- for barebox@lists.infradead.org; Mon, 14 Sep 2020 08:17:23 +0000
-Date: Mon, 14 Sep 2020 10:17:17 +0200
+ id 1kHjgf-0000L4-L8
+ for barebox@lists.infradead.org; Mon, 14 Sep 2020 08:18:10 +0000
+Date: Mon, 14 Sep 2020 10:18:06 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200914081717.GI4498@pengutronix.de>
-References: <20200911192216.99575-1-ahmad@a3f.at>
+Message-ID: <20200914081806.GJ4498@pengutronix.de>
+References: <20200911172534.4349-1-tk-scherer@mailbox.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200911192216.99575-1-ahmad@a3f.at>
+In-Reply-To: <20200911172534.4349-1-tk-scherer@mailbox.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,23 +22,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fixup! workqueues: Add support for delayed work
-To: Ahmad Fatoum <ahmad@a3f.at>
+Subject: Re: [PATCH] Documentation: user: fix referenced filename
+To: Thorsten Scherer <tk-scherer@mailbox.org>
 Cc: barebox@lists.infradead.org
 
-On Fri, Sep 11, 2020 at 09:22:16PM +0200, Ahmad Fatoum wrote:
-> Otherwise, we run into a compile error, because get_time_ns() is used
-> below without declaration.
-> 
-> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+On Fri, Sep 11, 2020 at 07:25:34PM +0200, Thorsten Scherer wrote:
+> Adjust filename and path of nfsroot.txt according to Linux commit
+> f9a9349 ("Documentation: nfsroot.txt: convert to ReST")
 > ---
->  include/work.h | 1 +
->  1 file changed, 1 insertion(+)
+>  Documentation/user/booting-linux.rst | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
 Applied, thanks
 
 Sascha
 
+> 
+> diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/booting-linux.rst
+> index 983b56dee..60babb513 100644
+> --- a/Documentation/user/booting-linux.rst
+> +++ b/Documentation/user/booting-linux.rst
+> @@ -274,7 +274,7 @@ In any case, make sure that the specified mountpoint is exported by your NFS
+>  server.
+>  
+>  For more information about booting with ``nfsroot``, see
+> -`Documentation/filesystems/nfs/nfsroot.txt <https://github.com/torvalds/linux/blob/master/Documentation/filesystems/nfs/nfsroot.txt>`__
+> +`Documentation/admin-guide/nfs/nfsroot.rst <https://github.com/torvalds/linux/blob/master/Documentation/admin-guide/nfs/nfsroot.rst>`__
+>  in the Linux kernel documentation.
+>  
+>  If the preconfigured paths or names are not suitable, they can be adjusted in
+> -- 
+> 2.20.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
