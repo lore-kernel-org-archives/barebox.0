@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kHo5d-0002ND-1e
- for barebox@lists.infradead.org; Mon, 14 Sep 2020 13:00:14 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Mon, 14 Sep 2020 15:00:05 +0200
-Message-Id: <20200914130005.3156-1-u.kleine-koenig@pengutronix.de>
+ id 1kHoBu-0003LH-LZ
+ for barebox@lists.infradead.org; Mon, 14 Sep 2020 13:06:43 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 14 Sep 2020 15:06:39 +0200
+Message-Id: <20200914130640.21416-3-s.hauer@pengutronix.de>
+In-Reply-To: <20200914130640.21416-1-s.hauer@pengutronix.de>
+References: <20200914130640.21416-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -15,51 +17,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] arm/cpu/*.S: Replace license and copyright boilerplate by
- SPDX identfiers
-To: barebox@lists.infradead.org
+Subject: [PATCH 3/4] fs: Fix use after free
+To: Barebox List <barebox@lists.infradead.org>
 
-U2luY2UgY29tbWl0IGVkMmY4OTJhMWJhNyAoImFybS9jcHU6IFJlcGxhY2UgbGljZW5zZSBhbmQg
-Y29weXJpZ2h0CmJvaWxlcnBsYXRlIGJ5IFNQRFggaWRlbnRmaWVycyIpIG15IHNjcmlwdCBsZWFy
-bmVkIHRvIGRldGVjdCAuUyBmaWxlcywKdG9vLgoKU2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1L
-w7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCiBhcmNoL2FybS9jcHUv
-c21jY2MtY2FsbC5TICAgIHwgMTYgKysrLS0tLS0tLS0tLS0tLQogYXJjaC9hcm0vY3B1L3NtY2Nj
-LWNhbGxfNjQuUyB8IDE2ICsrKy0tLS0tLS0tLS0tLS0KIDIgZmlsZXMgY2hhbmdlZCwgNiBpbnNl
-cnRpb25zKCspLCAyNiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9jcHUvc21j
-Y2MtY2FsbC5TIGIvYXJjaC9hcm0vY3B1L3NtY2NjLWNhbGwuUwppbmRleCBiNmJkYzhiM2I1OTMu
-LjdmNWNmZDhjOGI4MyAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vY3B1L3NtY2NjLWNhbGwuUworKysg
-Yi9hcmNoL2FybS9jcHUvc21jY2MtY2FsbC5TCkBAIC0xLDE2ICsxLDYgQEAKLS8qCi0gKiBDb3B5
-cmlnaHQgKGMpIDIwMTUsIExpbmFybyBMaW1pdGVkCi0gKgotICogVGhpcyBzb2Z0d2FyZSBpcyBs
-aWNlbnNlZCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYwotICogTGlj
-ZW5zZSB2ZXJzaW9uIDIsIGFzIHB1Ymxpc2hlZCBieSB0aGUgRnJlZSBTb2Z0d2FyZSBGb3VuZGF0
-aW9uLCBhbmQKLSAqIG1heSBiZSBjb3BpZWQsIGRpc3RyaWJ1dGVkLCBhbmQgbW9kaWZpZWQgdW5k
-ZXIgdGhvc2UgdGVybXMuCi0gKgotICogVGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVkIGluIHRo
-ZSBob3BlIHRoYXQgaXQgd2lsbCBiZSB1c2VmdWwsCi0gKiBidXQgV0lUSE9VVCBBTlkgV0FSUkFO
-VFk7IHdpdGhvdXQgZXZlbiB0aGUgaW1wbGllZCB3YXJyYW50eSBvZgotICogTUVSQ0hBTlRBQklM
-SVRZIG9yIEZJVE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFLiAgU2VlIHRoZQotICogR05V
-IEdlbmVyYWwgUHVibGljIExpY2Vuc2UgZm9yIG1vcmUgZGV0YWlscy4KLSAqCi0gKi8KKy8qIFNQ
-RFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9ubHkgKi8KKy8qIFNQRFgtRmlsZUNvcHly
-aWdodFRleHQ6IDIwMTUgTGluYXJvIExpbWl0ZWQKKwogI2luY2x1ZGUgPGxpbnV4L2xpbmthZ2Uu
-aD4KIAogI2luY2x1ZGUgPGFzbS91bndpbmQuaD4KZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2NwdS9z
-bWNjYy1jYWxsXzY0LlMgYi9hcmNoL2FybS9jcHUvc21jY2MtY2FsbF82NC5TCmluZGV4IDQ0ODg4
-ZmI1OTQzNS4uYzI5NTkwNTBkMmVmIDEwMDY0NAotLS0gYS9hcmNoL2FybS9jcHUvc21jY2MtY2Fs
-bF82NC5TCisrKyBiL2FyY2gvYXJtL2NwdS9zbWNjYy1jYWxsXzY0LlMKQEAgLTEsMTYgKzEsNiBA
-QAotLyoKLSAqIENvcHlyaWdodCAoYykgMjAxNSwgTGluYXJvIExpbWl0ZWQKLSAqCi0gKiBUaGlz
-IHByb2dyYW0gaXMgZnJlZSBzb2Z0d2FyZTsgeW91IGNhbiByZWRpc3RyaWJ1dGUgaXQgYW5kL29y
-IG1vZGlmeQotICogaXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMg
-TGljZW5zZSBWZXJzaW9uIDIgYXMKLSAqIHB1Ymxpc2hlZCBieSB0aGUgRnJlZSBTb2Z0d2FyZSBG
-b3VuZGF0aW9uLgotICoKLSAqIFRoaXMgcHJvZ3JhbSBpcyBkaXN0cmlidXRlZCBpbiB0aGUgaG9w
-ZSB0aGF0IGl0IHdpbGwgYmUgdXNlZnVsLAotICogYnV0IFdJVEhPVVQgQU5ZIFdBUlJBTlRZOyB3
-aXRob3V0IGV2ZW4gdGhlIGltcGxpZWQgd2FycmFudHkgb2YKLSAqIE1FUkNIQU5UQUJJTElUWSBv
-ciBGSVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVSUE9TRS4gU2VlIHRoZQotICogR05VIEdlbmVy
-YWwgUHVibGljIExpY2Vuc2UgZm9yIG1vcmUgZGV0YWlscy4KLSAqCi0gKi8KKy8qIFNQRFgtTGlj
-ZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9ubHkgKi8KKy8qIFNQRFgtRmlsZUNvcHlyaWdodFRl
-eHQ6IDIwMTUgTGluYXJvIExpbWl0ZWQgKi8KKwogI2luY2x1ZGUgPGxpbnV4L2xpbmthZ2UuaD4K
-ICNpbmNsdWRlIDxsaW51eC9hcm0tc21jY2MuaD4KICNpbmNsdWRlIDxhc20vYXNtLW9mZnNldHMu
-aD4KLS0gCjIuMjcuMAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpo
-dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+In case of the fs mounted to '/' the root dentry of the mounted
+filesystem is the place where it's mounted itself, so sb->s_root
+is the same as fsdev->vfsmount.mountpoint. In that case make
+sure we only access it before it has been killed in
+dentry_delete_subtree().
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ fs/fs.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/fs/fs.c b/fs/fs.c
+index a6c6f0cc93..5784e9c1f3 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -667,14 +667,14 @@ static void fs_remove(struct device_d *dev)
+ 	if (fsdev->loop && fsdev->cdev)
+ 		cdev_remove_loop(fsdev->cdev);
+ 
++	if (fsdev->vfsmount.mountpoint)
++		fsdev->vfsmount.mountpoint->d_flags &= ~DCACHE_MOUNTED;
++
+ 	dentry_delete_subtree(sb, sb->s_root);
+ 
+ 	list_for_each_entry_safe(inode, tmp, &sb->s_inodes, i_sb_list)
+ 		destroy_inode(inode);
+ 
+-	if (fsdev->vfsmount.mountpoint)
+-		fsdev->vfsmount.mountpoint->d_flags &= ~DCACHE_MOUNTED;
+-
+ 	mntput(fsdev->vfsmount.parent);
+ 
+ 	free(fsdev->backingstore);
+-- 
+2.28.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
