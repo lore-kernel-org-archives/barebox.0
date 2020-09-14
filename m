@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from relay7-d.mail.gandi.net ([217.70.183.200])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kI9lB-0005s0-E6
- for barebox@lists.infradead.org; Tue, 15 Sep 2020 12:08:34 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 15 Sep 2020 14:08:30 +0200
-Message-Id: <20200915120831.20549-1-a.fatoum@pengutronix.de>
+ id 1kHvTI-0005P0-Iq
+ for barebox@lists.infradead.org; Mon, 14 Sep 2020 20:53:14 +0000
+Received: from geraet.fritz.box (muedsl-82-207-214-223.citykom.de
+ [82.207.214.223]) (Authenticated sender: ahmad@a3f.at)
+ by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 74C0420006
+ for <barebox@lists.infradead.org>; Mon, 14 Sep 2020 20:53:03 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Mon, 14 Sep 2020 22:52:59 +0200
+Message-Id: <20200914205259.834746-1-ahmad@a3f.at>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,49 +23,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] commands: setenv: support setenv dev.var=VAL syntax
+Subject: [PATCH] ARM: dts: stm32mp: drop no longer needed PSCI version override
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-In preparation for making setenv selectable under CONFIG_SHELL_HUSH,
-allow a `setenv dev.var=VAL syntax`:
-  - makes command use less surprising for hush users
-  - allows seamless integration with current device parameter complete
+52cc061f50aa ("ARM: dts: stm32mp: report psci v0.2 at least") adds a
+barebox override, because the upstream device tree's compatible was
+outdated.  Since abef60363d8e ("dts: update to v5.8-rc1"), the
+upstream device tree has &{/psci} { compatible = "arm,psci-1.0"; }; ,
+so now we can drop our override again without adverse effect.
 
-While at it, propagate setenv's return code to the calling shell.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- commands/setenv.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ arch/arm/dts/stm32mp151.dtsi | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/commands/setenv.c b/commands/setenv.c
-index 3cf769d24a68..a70a0de4cebc 100644
---- a/commands/setenv.c
-+++ b/commands/setenv.c
-@@ -8,12 +8,20 @@
+diff --git a/arch/arm/dts/stm32mp151.dtsi b/arch/arm/dts/stm32mp151.dtsi
+index 5ff3b96fae4a..cc2540047591 100644
+--- a/arch/arm/dts/stm32mp151.dtsi
++++ b/arch/arm/dts/stm32mp151.dtsi
+@@ -37,10 +37,6 @@
+ 	compatible = "simple-bus";
+ };
  
- static int do_setenv(int argc, char *argv[])
- {
-+	char *equal;
-+
- 	if (argc < 2)
- 		return COMMAND_ERROR_USAGE;
- 
--	setenv(argv[1], argv[2]);
-+	equal = strrchr(argv[1], '=');
-+	if (equal) {
-+		equal[0] = '\0';
-+		if (equal[1])
-+			argv[2] = &equal[1];
-+	}
-+
- 
--	return 0;
-+	return setenv(argv[1], argv[2]) ? COMMAND_ERROR : COMMAND_SUCCESS;
- }
- 
- BAREBOX_CMD_HELP_START(setenv)
+-&{/psci} {
+-		compatible = "arm,psci-0.2";
+-};
+-
+ &{/soc} {
+ 	memory-controller@5a003000 {
+ 		compatible = "st,stm32mp1-ddr";
 -- 
 2.28.0
 
