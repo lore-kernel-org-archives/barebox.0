@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kHk6b-0007Bd-G7
- for barebox@lists.infradead.org; Mon, 14 Sep 2020 08:44:58 +0000
-Date: Mon, 14 Sep 2020 10:44:56 +0200
+ id 1kHkXo-00030m-7c
+ for barebox@lists.infradead.org; Mon, 14 Sep 2020 09:13:04 +0000
+Date: Mon, 14 Sep 2020 11:13:02 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200914084456.GM4498@pengutronix.de>
-References: <1599809857-266934-1-git-send-email-m.otto@phytec.de>
- <1599809857-266934-3-git-send-email-m.otto@phytec.de>
+Message-ID: <20200914091302.GN4498@pengutronix.de>
+References: <20200912071241.29924-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1599809857-266934-3-git-send-email-m.otto@phytec.de>
+In-Reply-To: <20200912071241.29924-1-r.czerwinski@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,68 +22,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 2/2] arch: arm: mach-imx: Add habv4 config file for
- i.MX6ULL
-To: Maik Otto <m.otto@phytec.de>
+Subject: Re: [PATCH 1/4] globalvar: add set_single function
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Maik,
+Hi Rouven,
 
-On Fri, Sep 11, 2020 at 09:37:37AM +0200, Maik Otto wrote:
-> The i.MX6ULL has no CAAM engine for Secure Boot on HABv4 (NXP AN4581).
-> For i.MX6ULL the engine Software (SW) must used for the image
-> validation.
+On Sat, Sep 12, 2020 at 09:12:37AM +0200, Rouven Czerwinski wrote:
+> Instead of overwriting the whole hierarchy beneath a globalvar, the
+> set_single function only sets the specific globalvar.
 > 
-> +++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcl063ull-512mb.imxcfg
-> @@ -1,3 +1,3 @@
+> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+> ---
+>  common/globalvar.c  | 11 +++++++++++
+>  include/globalvar.h |  1 +
+>  2 files changed, 12 insertions(+)
+> 
+> diff --git a/common/globalvar.c b/common/globalvar.c
+> index 98a028a68a..848a7d6832 100644
+> --- a/common/globalvar.c
+> +++ b/common/globalvar.c
+> @@ -399,6 +399,17 @@ void globalvar_set_match(const char *match, const char *val)
+>  	}
+>  }
 >  
->  #include "flash-header-phytec-pcl063-512mb.h"
-> -#include <mach/habv4-imx6-gencsf.h>
-> +#include <mach/habv4-imx6ull-gencsf.h>
-> diff --git a/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h b/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
-> index 17c4d79..ee21e0b 100644
-> --- a/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
-> +++ b/arch/arm/mach-imx/include/mach/habv4-imx6-gencsf.h
+> +void globalvar_set_single(const char *match, const char *val)
+> +{
+> +	struct param_d *param;
+> +
+> +	list_for_each_entry(param, &global_device.parameters, list) {
+> +		if (!strncmp(match, param->name, strlen(match))
+> +		    && strlen(match) == strlen(param->name))
 
-I would prefer to rename this file to habv4-imx6-gencsf-template.h and
-let it start with:
+What's the difference between this construct and plain strcmp()?
 
-#ifndef SETUP_HABV4_ENGINE
-#error "SETUP_HABV4_ENGINE undefined"
-#endif
+> +			dev_set_param(&global_device, param->name, val);
 
-The habv4-imx6-gencsf.h would then only set the defines and include the
-template file like you already did for the i.MX6ULL.
+And then, why not call dev_set_param directly with "match" as argument?
 
-This makes it more clear what defines the file expects.
-
-> @@ -14,7 +14,11 @@ hab Hash Algorithm = sha256
->  hab Engine Configuration = 0
->  hab Certificate Format = X509
->  hab Signature Format = CMS
-> +#ifndef SETUP_HABV4_ENGINE
->  hab Engine = CAAM
-> +#else
-> +hab Engine = SETUP_HABV4_ENGINE
-> +#endif
->  
->  hab [Install SRK]
->  hab File = CONFIG_HABV4_TABLE_BIN
-> @@ -28,8 +32,12 @@ hab File = CONFIG_HABV4_CSF_CRT_PEM
->  hab [Authenticate CSF]
->  
->  hab [Unlock]
-> +#ifndef SETUP_HABV4_ENGINE
->  hab Engine = CAAM
->  hab Features = RNG, MID
-> +#else
-> +hab Engine = SETUP_HABV4_ENGINE
-> +#endif
-
-Do we need this #ifdef here? Can't we instead have a
-SETUP_HABV4_FEATURES macro and let the SoC specific files define it as
-
-#define SETUP_HABV4_FEATURES RNG,MID
+I would rename "match" to "name" as it describes a single variable name.
+Also "globalvar_set" is IMO enough as a function name.
 
 Sascha
 
