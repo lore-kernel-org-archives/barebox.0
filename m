@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kHkXo-00030m-7c
- for barebox@lists.infradead.org; Mon, 14 Sep 2020 09:13:04 +0000
-Date: Mon, 14 Sep 2020 11:13:02 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200914091302.GN4498@pengutronix.de>
-References: <20200912071241.29924-1-r.czerwinski@pengutronix.de>
+ id 1kHlH6-0001jS-Mj
+ for barebox@lists.infradead.org; Mon, 14 Sep 2020 09:59:53 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 14 Sep 2020 11:59:48 +0200
+Message-Id: <20200914095948.16811-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200912071241.29924-1-r.czerwinski@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,54 +19,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] globalvar: add set_single function
-To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] readkey: shrink table of known escape sequences in size
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Hi Rouven,
+Instead of storing pointers to 4-byte strings, we could just store the
+characters directly in the struct. Can save us up to 18 pointers worth
+of space. Additionally, the nul byte need not be stored explicitly for
+3-byte strings, if we know those are the largest strings we have.
 
-On Sat, Sep 12, 2020 at 09:12:37AM +0200, Rouven Czerwinski wrote:
-> Instead of overwriting the whole hierarchy beneath a globalvar, the
-> set_single function only sets the specific globalvar.
-> 
-> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-> ---
->  common/globalvar.c  | 11 +++++++++++
->  include/globalvar.h |  1 +
->  2 files changed, 12 insertions(+)
-> 
-> diff --git a/common/globalvar.c b/common/globalvar.c
-> index 98a028a68a..848a7d6832 100644
-> --- a/common/globalvar.c
-> +++ b/common/globalvar.c
-> @@ -399,6 +399,17 @@ void globalvar_set_match(const char *match, const char *val)
->  	}
->  }
->  
-> +void globalvar_set_single(const char *match, const char *val)
-> +{
-> +	struct param_d *param;
-> +
-> +	list_for_each_entry(param, &global_device.parameters, list) {
-> +		if (!strncmp(match, param->name, strlen(match))
-> +		    && strlen(match) == strlen(param->name))
+The latter likely does not save us any space because of the usual
+alignment rules, but it will allow us to support sequences one byte
+bigger in future at no increase in size.
 
-What's the difference between this construct and plain strcmp()?
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ lib/readkey.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-> +			dev_set_param(&global_device, param->name, val);
-
-And then, why not call dev_set_param directly with "match" as argument?
-
-I would rename "match" to "name" as it describes a single variable name.
-Also "globalvar_set" is IMO enough as a function name.
-
-Sascha
-
+diff --git a/lib/readkey.c b/lib/readkey.c
+index c26e9d51aba9..551296de3eb6 100644
+--- a/lib/readkey.c
++++ b/lib/readkey.c
+@@ -20,8 +20,10 @@
+ #include <linux/ctype.h>
+ #include <readkey.h>
+ 
++#define MAX_ESC_LEN 3
++
+ struct esc_cmds {
+-	const char *seq;
++	const char seq[MAX_ESC_LEN];
+ 	unsigned char val;
+ };
+ 
+@@ -49,7 +51,7 @@ static const struct esc_cmds esccmds[] = {
+ int read_key(void)
+ {
+ 	unsigned char c;
+-	unsigned char esc[5];
++	unsigned char esc[MAX_ESC_LEN + 2];
+ 	c = getchar();
+ 
+ 	if (c == 27) {
+@@ -67,7 +69,7 @@ int read_key(void)
+ 		}
+ 		esc[i] = 0;
+ 		for (i = 0; i < ARRAY_SIZE(esccmds); i++){
+-			if (!strcmp(esc, esccmds[i].seq))
++			if (!strncmp(esc, esccmds[i].seq, MAX_ESC_LEN))
+ 				return esccmds[i].val;
+ 		}
+ 		return -1;
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.28.0
+
 
 _______________________________________________
 barebox mailing list
