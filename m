@@ -1,14 +1,24 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mib.mailinblack.com ([185.7.73.95])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kHqNw-0008So-7k
- for barebox@lists.infradead.org; Mon, 14 Sep 2020 15:27:36 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 14 Sep 2020 17:27:11 +0200
-Message-Id: <20200914152711.3693-2-a.fatoum@pengutronix.de>
-In-Reply-To: <20200914152711.3693-1-a.fatoum@pengutronix.de>
-References: <20200914152711.3693-1-a.fatoum@pengutronix.de>
-MIME-Version: 1.0
+ id 1kHqOq-0000TO-4Y
+ for barebox@lists.infradead.org; Mon, 14 Sep 2020 15:28:27 +0000
+Received: from localhost (localhost [127.0.0.1])
+ by mib.mailinblack.com (Postfix) with ESMTP id C43B732C35E
+ for <barebox@lists.infradead.org>; Mon, 14 Sep 2020 15:28:00 +0000 (UTC)
+Received: from mib.mailinblack.com (localhost [127.0.0.1])
+ by mib.mailinblack.com with SMTP (Mib Daemon ) id KF2OLVEE
+ for barebox@lists.infradead.org;
+ Mon, 14 Sep 2020 15:28:00 +0000 (UTC)
+Received: from zimbra2.kalray.eu (zimbra2.kalray.eu [92.103.151.219])
+ by mib.mailinblack.com (Postfix) with ESMTPS id 7E14832B91F
+ for <barebox@lists.infradead.org>; Mon, 14 Sep 2020 15:28:00 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+ by zimbra2.kalray.eu (Postfix) with ESMTP id 454A427E0AE0
+ for <barebox@lists.infradead.org>; Mon, 14 Sep 2020 17:28:00 +0200 (CEST)
+From: Yann Sionneau <ysionneau@kalray.eu>
+Date: Mon, 14 Sep 2020 17:27:44 +0200
+Message-Id: <20200914152744.9218-1-ysionneau@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,49 +27,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] blspec: devicetree-overlay: don't warn on multiple
- delimiting spaces
+Subject: [PATCH] mci: fix wrong sd/mmc/emmc card size computation for arch
+ where char is signed
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, Michael Tretter <m.tretter@pengutronix.de>
+Cc: Yann Sionneau <ysionneau@kalray.eu>
 
-strsep unlike strtok(_r) returns an empty string for each pair of
-consecutive delimiters.
-blspec_apply_oftree_overlay is not equipped to handle an empty
-string and will attempt treating "abspath/" as device tree file.
+char type can be either signed or unsigned according to C standard.
+If your arch has signed char, this kind of computation will end up wrong
+because of sign extension:
 
-Explicitly check for empty strings, so this doesn't happen.
+https://git.pengutronix.de/cgit/barebox/tree/drivers/mci/mci-core.c#n869
 
-Cc: Michael Tretter <m.tretter@pengutronix.de>
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+mci->capacity = mci->ext_csd[EXT_CSD_SEC_COUNT] << 0 |
+		mci->ext_csd[EXT_CSD_SEC_COUNT + 1] << 8 |
+		mci->ext_csd[EXT_CSD_SEC_COUNT + 2] << 16 |
+		mci->ext_csd[EXT_CSD_SEC_COUNT + 3] << 24;
+
+Turning the ext_csd field into u8 * fixes the issue.
 ---
-Change is untested
----
- common/blspec.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/mci.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/common/blspec.c b/common/blspec.c
-index 9e1036c8342c..ed66352d1107 100644
---- a/common/blspec.c
-+++ b/common/blspec.c
-@@ -109,8 +109,11 @@ static void blspec_apply_oftree_overlays(const char *overlays,
- 
- 	sep = freep = xstrdup(overlays);
- 
--	while ((overlay = strsep(&sep, " ")))
-+	while ((overlay = strsep(&sep, " "))) {
-+		if (!*overlay)
-+			continue;
- 		blspec_apply_oftree_overlay(overlay, abspath, dryrun);
-+	}
- 
- 	free(freep);
- }
+diff --git a/include/mci.h b/include/mci.h
+index 96547fb39..f6d845440 100644
+--- a/include/mci.h
++++ b/include/mci.h
+@@ -456,7 +456,7 @@ struct mci {
+ 	uint64_t capacity;	/**< Card's data capacity in bytes */
+ 	int ready_for_use;	/** true if already probed */
+ 	int dsr_imp;		/**< DSR implementation state from CSD */
+-	char *ext_csd;
++	u8 *ext_csd;
+ 	int probe;
+ 	struct param_d *param_boot;
+ 	int bootpart;
 -- 
-2.28.0
+2.17.1
+
 
 
 _______________________________________________
