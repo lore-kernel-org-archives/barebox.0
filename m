@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kHsoZ-0008Mu-DX
- for barebox@lists.infradead.org; Mon, 14 Sep 2020 18:02:56 +0000
-Date: Mon, 14 Sep 2020 20:02:54 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200914180254.GY4498@pengutronix.de>
-References: <20200909110118.19923-1-jbe@pengutronix.de>
- <20200909110118.19923-3-jbe@pengutronix.de>
- <e7db4a95-5665-2d86-0450-3cfd56ec477a@pengutronix.de>
+ id 1kHuh0-0004ED-Dj
+ for barebox@lists.infradead.org; Mon, 14 Sep 2020 20:03:15 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 14 Sep 2020 22:03:09 +0200
+Message-Id: <20200914200309.32513-2-a.fatoum@pengutronix.de>
+In-Reply-To: <20200914200309.32513-1-a.fatoum@pengutronix.de>
+References: <20200914200309.32513-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <e7db4a95-5665-2d86-0450-3cfd56ec477a@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,55 +21,104 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/5] mci: mci-core: fix long lasting FIXMEs
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, Juergen Borleis <jbe@pengutronix.de>
+Subject: [PATCH 2/2] README: use lower-case barebox spelling
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Mon, Sep 14, 2020 at 04:58:01PM +0200, Ahmad Fatoum wrote:
-> Hello Juergen,
-> 
-> On 9/9/20 1:01 PM, Juergen Borleis wrote:
-> > Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
-> > ---
-> >  drivers/mci/mci-core.c | 22 +++++++++++++---------
-> >  1 file changed, 13 insertions(+), 9 deletions(-)
-> > 
-> > diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-> > index a58dedc1cd..d93be6d33f 100644
-> > --- a/drivers/mci/mci-core.c
-> > +++ b/drivers/mci/mci-core.c
-> > @@ -361,9 +361,9 @@ static int mmc_send_op_cond(struct mci *mci)
-> >  }
-> >  
-> >  /**
-> > - * FIXME
-> > - * @param mci MCI instance
-> > - * @param ext_csd Buffer for a 512 byte sized extended CSD
-> > + * Read-in the card's whole extended CSD configuration area
-> > + * @param[in] mci MCI instance
-> > + * @param[out] ext_csd Buffer for an #EXT_CSD_BLOCKSIZE byte sized extended CSD
-> >   * @return Transaction status (0 on success)
-> >   *
-> >   * Note: Only cards newer than Version 1.1 (Physical Layer Spec) support
-> > @@ -379,19 +379,23 @@ int mci_send_ext_csd(struct mci *mci, char *ext_csd)
-> >  
-> >  	data.dest = ext_csd;
-> >  	data.blocks = 1;
-> > -	data.blocksize = 512;
-> > +	data.blocksize = EXT_CSD_BLOCKSIZE;
-> 
-> This breaks the build; EXT_CSD_BLOCKSIZE is undeclared in mci-core.c.
-> Did you forget a prerequisite patch?
+This is a bit of a churn, but at least the top level README can use the
+correct casing.
 
-Dropped the patch for now.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ README | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-Sascha
-
+diff --git a/README b/README
+index c4c8abbb4b62..d206e301391a 100644
+--- a/README
++++ b/README
+@@ -1,9 +1,9 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ 
+-Barebox
++barebox
+ -------
+ 
+-Barebox is a bootloader that follows the tradition of Das U-Boot, while
++barebox is a bootloader that follows the tradition of Das U-Boot, while
+ adopting modern design ideas from the Linux kernel.
+ 
+ 
+@@ -72,10 +72,10 @@ Features
+   except the ones really needed: moving the cursor and typing characters.
+ 
+ 
+-Building Barebox
++Building barebox
+ ----------------
+ 
+-Barebox uses the Linux kernel's build system. It consists of two parts:
++barebox uses the Linux kernel's build system. It consists of two parts:
+ the Makefile infrastructure (kbuild), plus a configuration system
+ (kconfig). So building barebox is very similar to building the Linux
+ kernel.
+@@ -109,7 +109,7 @@ If everything goes well, the result is a file called barebox:
+   # ls -l barebox
+     -rwxr-xr-x 1 rsc ptx 114073 Jun 26 22:34 barebox
+ 
+-Barebox usually needs an environment for storing the configuration data.
++barebox usually needs an environment for storing the configuration data.
+ You can generate an environment using the example environment contained
+ in board/sandbox/env:
+ 
+@@ -188,7 +188,7 @@ Documentation/        -> Sphinx generated documentation. Call "make docs" to
+ Release Strategy
+ ----------------
+ 
+-Barebox is developed with git. On a monthly schedule, tarball releases are
++barebox is developed with git. On a monthly schedule, tarball releases are
+ branched from the repository and released on the project web site. Here
+ are the release rules:
+ 
+@@ -228,15 +228,15 @@ are the release rules:
+ Contributing
+ ------------
+ 
+-For any questions regarding Barebox, send a mail to the mailing list at
++For any questions regarding barebox, send a mail to the mailing list at
+ <barebox@lists.infradead.org>. The archives for this list are available
+ publicly at <http://lists.infradead.org/pipermail/barebox/> and
+ <https://www.mail-archive.com/barebox@lists.infradead.org/>.
+ 
+-The same list should also be used to send patches. Barebox uses a similar
++The same list should also be used to send patches. barebox uses a similar
+ process as the Linux kernel, so most of the Linux guide for submitting patches
+ <https://www.kernel.org/doc/html/latest/process/submitting-patches.html> also
+-applies to Barebox (except the step for selecting your recipient - we don't
++applies to barebox (except the step for selecting your recipient - we don't
+ have a MAINTAINERS file, instead all patches go to the list).
+ 
+ 
+@@ -246,7 +246,7 @@ License
+ Copyright (C) 2000 - 2005 Wolfgang Denk, DENX Software Engineering, wd@denx.de.
+ Copyright (C) 2018 Sascha Hauer, Pengutronix, and individual contributors
+ 
+-Barebox is free software: you can redistribute it and/or modify it under the
++barebox is free software: you can redistribute it and/or modify it under the
+ terms of the GNU General Public License, version 2, as published by the Free
+ Software Foundation.
+ 
+@@ -266,6 +266,6 @@ the above copyright and warranty notices:
+ This eases machine processing of licensing information based on the SPDX
+ License Identifiers that are available at http://spdx.org/licenses/.
+ 
+-Also note that some files in the Barebox source tree are available under
++Also note that some files in the barebox source tree are available under
+ several different GPLv2-compatible open-source licenses. This fact is noted
+ clearly in the file headers of the respective files.
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.28.0
+
 
 _______________________________________________
 barebox mailing list
