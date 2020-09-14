@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kHlND-00044n-FH
- for barebox@lists.infradead.org; Mon, 14 Sep 2020 10:06:12 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 14 Sep 2020 12:05:51 +0200
-Message-Id: <20200914100553.24808-5-a.fatoum@pengutronix.de>
-In-Reply-To: <20200914100553.24808-1-a.fatoum@pengutronix.de>
-References: <20200914100553.24808-1-a.fatoum@pengutronix.de>
+ id 1kHlOu-0004dc-HV
+ for barebox@lists.infradead.org; Mon, 14 Sep 2020 10:07:57 +0000
+Date: Mon, 14 Sep 2020 12:07:55 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200914100755.GO4498@pengutronix.de>
+References: <20200909110118.19923-1-jbe@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200909110118.19923-1-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,36 +22,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH master 5/7] sandbox: fix SANDBOX_UNWIND dependency to be KASAN
- only
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH 1/5] commands: mmc_extcsd: print_field: fix 32 bit overflow
+To: Juergen Borleis <jbe@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-gcc v9.3.0's libubsan does not export a __sanitizer_print_stack_trace
-symbol. Play it safe and avoid possible linker errors by having the
-optional SANDBOX_UNWIND depend only on CONFIG_KASAN.
+On Wed, Sep 09, 2020 at 01:01:14PM +0200, Juergen Borleis wrote:
+> Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
+> ---
+>  commands/mmc_extcsd.c | 23 +++++++++++++++--------
+>  1 file changed, 15 insertions(+), 8 deletions(-)
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- arch/sandbox/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Applied, thanks
 
-diff --git a/arch/sandbox/Kconfig b/arch/sandbox/Kconfig
-index 40e04919d21e..c4d0ab4dbcde 100644
---- a/arch/sandbox/Kconfig
-+++ b/arch/sandbox/Kconfig
-@@ -22,7 +22,7 @@ config SANDBOX_UNWIND
- 	bool
- 	default y
- 	select ARCH_HAS_STACK_DUMP
--	depends on UBSAN || KASAN
-+	depends on KASAN
- 
- config PHYS_ADDR_T_64BIT
- 	bool
+Sascha
+
+
 -- 
-2.28.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
