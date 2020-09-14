@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kHqNw-0008Sm-7j
- for barebox@lists.infradead.org; Mon, 14 Sep 2020 15:27:35 +0000
+ id 1kHqNw-0008So-7k
+ for barebox@lists.infradead.org; Mon, 14 Sep 2020 15:27:36 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 14 Sep 2020 17:27:10 +0200
-Message-Id: <20200914152711.3693-1-a.fatoum@pengutronix.de>
+Date: Mon, 14 Sep 2020 17:27:11 +0200
+Message-Id: <20200914152711.3693-2-a.fatoum@pengutronix.de>
+In-Reply-To: <20200914152711.3693-1-a.fatoum@pengutronix.de>
+References: <20200914152711.3693-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,40 +21,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] boot: ignore all spaces between boot targets
+Subject: [PATCH 2/2] blspec: devicetree-overlay: don't warn on multiple
+ delimiting spaces
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, Michael Tretter <m.tretter@pengutronix.de>
 
-Boot targets are split by space. strsep unlike strtok(_r) returns an
-empty string for each pair of consecutive delimiters. Ignore this case.
+strsep unlike strtok(_r) returns an empty string for each pair of
+consecutive delimiters.
+blspec_apply_oftree_overlay is not equipped to handle an empty
+string and will attempt treating "abspath/" as device tree file.
 
-Note that this changes behavior: previously both
-	boot ''
-	global.boot.default= boot
+Explicitly check for empty strings, so this doesn't happen.
 
-were identical to
-	boot /env/boot
-
-With this change, this is no longer the case.
-
+Cc: Michael Tretter <m.tretter@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- commands/boot.c | 2 ++
- 1 file changed, 2 insertions(+)
+Change is untested
+---
+ common/blspec.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/commands/boot.c b/commands/boot.c
-index ad2d83a17912..d7795bde726b 100644
---- a/commands/boot.c
-+++ b/commands/boot.c
-@@ -76,6 +76,8 @@ static int do_boot(int argc, char *argv[])
- 	entries = bootentries_alloc();
+diff --git a/common/blspec.c b/common/blspec.c
+index 9e1036c8342c..ed66352d1107 100644
+--- a/common/blspec.c
++++ b/common/blspec.c
+@@ -109,8 +109,11 @@ static void blspec_apply_oftree_overlays(const char *overlays,
  
- 	while ((name = next(&handle)) != NULL) {
-+		if (!*name)
+ 	sep = freep = xstrdup(overlays);
+ 
+-	while ((overlay = strsep(&sep, " ")))
++	while ((overlay = strsep(&sep, " "))) {
++		if (!*overlay)
 +			continue;
- 		ret = bootentry_create_from_name(entries, name);
- 		if (ret <= 0)
- 			printf("Nothing bootable found on '%s'\n", name);
+ 		blspec_apply_oftree_overlay(overlay, abspath, dryrun);
++	}
+ 
+ 	free(freep);
+ }
 -- 
 2.28.0
 
