@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kHoBu-0003LH-LZ
+ id 1kHoBu-0003LP-La
  for barebox@lists.infradead.org; Mon, 14 Sep 2020 13:06:43 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 14 Sep 2020 15:06:39 +0200
-Message-Id: <20200914130640.21416-3-s.hauer@pengutronix.de>
+Date: Mon, 14 Sep 2020 15:06:40 +0200
+Message-Id: <20200914130640.21416-4-s.hauer@pengutronix.de>
 In-Reply-To: <20200914130640.21416-1-s.hauer@pengutronix.de>
 References: <20200914130640.21416-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,42 +21,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] fs: Fix use after free
+Subject: [PATCH 4/4] fs: free unused dentries
 To: Barebox List <barebox@lists.infradead.org>
 
-In case of the fs mounted to '/' the root dentry of the mounted
-filesystem is the place where it's mounted itself, so sb->s_root
-is the same as fsdev->vfsmount.mountpoint. In that case make
-sure we only access it before it has been killed in
-dentry_delete_subtree().
+So far we only ever freed dentries when the filesystem they are on is
+unmounted. With this patch we actually trust reference counting and free
+the dentries once the reference count hits zero.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/fs.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/fs.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/fs/fs.c b/fs/fs.c
-index a6c6f0cc93..5784e9c1f3 100644
+index 5784e9c1f3..824c4e2806 100644
 --- a/fs/fs.c
 +++ b/fs/fs.c
-@@ -667,14 +667,14 @@ static void fs_remove(struct device_d *dev)
- 	if (fsdev->loop && fsdev->cdev)
- 		cdev_remove_loop(fsdev->cdev);
+@@ -1129,6 +1129,9 @@ void dput(struct dentry *dentry)
+ 		return;
  
-+	if (fsdev->vfsmount.mountpoint)
-+		fsdev->vfsmount.mountpoint->d_flags &= ~DCACHE_MOUNTED;
+ 	dentry->d_count--;
 +
- 	dentry_delete_subtree(sb, sb->s_root);
++	if (!dentry->d_count)
++		dentry_kill(dentry);
+ }
  
- 	list_for_each_entry_safe(inode, tmp, &sb->s_inodes, i_sb_list)
- 		destroy_inode(inode);
- 
--	if (fsdev->vfsmount.mountpoint)
--		fsdev->vfsmount.mountpoint->d_flags &= ~DCACHE_MOUNTED;
--
- 	mntput(fsdev->vfsmount.parent);
- 
- 	free(fsdev->backingstore);
+ struct dentry *dget(struct dentry *dentry)
+@@ -2837,7 +2840,6 @@ int mount(const char *device, const char *fsname, const char *pathname,
+ 		fsdev->vfsmount.mountpoint->d_flags |= DCACHE_MOUNTED;
+ 	} else {
+ 		d_root = fsdev->sb.s_root;
+-		path.dentry = d_root;
+ 		mnt_root = &fsdev->vfsmount;
+ 		fsdev->vfsmount.mountpoint = d_root;
+ 		fsdev->vfsmount.parent = &fsdev->vfsmount;
 -- 
 2.28.0
 
