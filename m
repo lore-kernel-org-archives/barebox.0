@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kHog3-0000WE-FW
+ id 1kHog3-0000WC-DY
  for barebox@lists.infradead.org; Mon, 14 Sep 2020 13:37:53 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 14 Sep 2020 15:37:47 +0200
-Message-Id: <20200914133748.5988-4-a.fatoum@pengutronix.de>
+Date: Mon, 14 Sep 2020 15:37:48 +0200
+Message-Id: <20200914133748.5988-5-a.fatoum@pengutronix.de>
 In-Reply-To: <20200914133748.5988-1-a.fatoum@pengutronix.de>
 References: <20200914133748.5988-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,239 +21,310 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] sandbox: implement actual sandbox reset via exec(2)
+Subject: [PATCH 5/5] sandbox: hostfile: support registering images as barebox
+ block devices
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <ahmad@a3f.at>, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-From: Ahmad Fatoum <ahmad@a3f.at>
+While we can mount file systems on cdevs in barebox, partition table
+parsing only works for block devices. Allow for
+--image=argument,blkdev to try to mount an image as block device.
 
-On Linux, /proc/self/exe is a symlink to the originally exec(2)d
-executable. We can exec that with the original argv to simulate
-a reset. This is useful for shorter development cycles on sandbox
-and in future, could be used to test barebox behavior around resets
-(e.g. reset reason can be passed through via libc environment).
+This will fail for files that aren't of a multiple of the 512 byte
+block size. Host OS block devices are suitable for use as barebox
+block devices always, so that's the default unless overridden with
+a ,cdev suffix.
 
-We leave the original hanging reset in place though, because:
-
- - Many boards have multiple reset providers and incoming patches
-    will allow users to select a specific one. Having this on
-    sandbox as well makes testing easier.
-
- - /proc/self/exe is Linux-specific and wouldn't work when being
-   run on e.g. BSDs or macOS
+The initcall level has been changed to occur after fs initcall level.
+This is required, because we can't have automounts without / mounted.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/sandbox/Kconfig                          |  7 +++
- arch/sandbox/Makefile                         |  2 +-
- arch/sandbox/board/poweroff.c                 | 13 ++++++
- .../sandbox/mach-sandbox/include/mach/linux.h |  1 +
- arch/sandbox/os/common.c                      | 43 ++++++++++++++++---
- arch/sandbox/os/tap.c                         |  2 +-
- 6 files changed, 59 insertions(+), 9 deletions(-)
+ arch/sandbox/Kconfig                          |   2 +
+ arch/sandbox/board/hostfile.c                 | 116 ++++++++++++++----
+ .../mach-sandbox/include/mach/hostfile.h      |   1 +
+ arch/sandbox/os/common.c                      |  15 ++-
+ 4 files changed, 108 insertions(+), 26 deletions(-)
 
 diff --git a/arch/sandbox/Kconfig b/arch/sandbox/Kconfig
-index c4d0ab4dbcde..b5213c662b1b 100644
+index b5213c662b1b..0c1c7bd73a01 100644
 --- a/arch/sandbox/Kconfig
 +++ b/arch/sandbox/Kconfig
-@@ -24,6 +24,13 @@ config SANDBOX_UNWIND
- 	select ARCH_HAS_STACK_DUMP
- 	depends on KASAN
+@@ -7,6 +7,8 @@ config SANDBOX
+ 	select ARCH_HAS_UBSAN_SANITIZE_ALL
+ 	select HAVE_ARCH_KASAN
+ 	select HAS_DMA
++	select BLOCK
++	select BLOCK_WRITE
+ 	default y
  
-+config SANDBOX_REEXEC
-+	prompt "exec(2) reset handler"
-+	def_bool y
-+	help
-+	  The normal reset handler hangs barebox. On Linux, barebox
-+	  instead can exec itself to simulate a reset.
-+
- config PHYS_ADDR_T_64BIT
- 	bool
+ config ARCH_TEXT_BASE
+diff --git a/arch/sandbox/board/hostfile.c b/arch/sandbox/board/hostfile.c
+index 07287fc0b4a1..63530bd25e1b 100644
+--- a/arch/sandbox/board/hostfile.c
++++ b/arch/sandbox/board/hostfile.c
+@@ -16,6 +16,8 @@
  
-diff --git a/arch/sandbox/Makefile b/arch/sandbox/Makefile
-index 27021222dc48..eb678b72dbcd 100644
---- a/arch/sandbox/Makefile
-+++ b/arch/sandbox/Makefile
-@@ -25,7 +25,7 @@ KBUILD_CFLAGS += -Dmalloc=barebox_malloc -Dcalloc=barebox_calloc \
- 		-Dglob=barebox_glob -Dglobfree=barebox_globfree \
- 		-Dioctl=barebox_ioctl -Dfstat=barebox_fstat \
- 		-Dopendir=barebox_opendir -Dreaddir=barebox_readdir \
--		-Dclosedir=barebox_closedir \
-+		-Dclosedir=barebox_closedir -Dreadlink=barebox_readlink \
- 		-Doptarg=barebox_optarg -Doptind=barebox_optind
+ #include <common.h>
+ #include <driver.h>
++#include <block.h>
++#include <disks.h>
+ #include <malloc.h>
+ #include <mach/linux.h>
+ #include <init.h>
+@@ -27,14 +29,16 @@
+ #include <linux/err.h>
  
- machdirs := $(patsubst %,arch/sandbox/mach-%/,$(machine-y))
-diff --git a/arch/sandbox/board/poweroff.c b/arch/sandbox/board/poweroff.c
-index 5072b756e108..8ce739af72c1 100644
---- a/arch/sandbox/board/poweroff.c
-+++ b/arch/sandbox/board/poweroff.c
-@@ -19,11 +19,24 @@ static struct restart_handler rst_hang = {
- 	.restart = sandbox_rst_hang
+ struct hf_priv {
+-	struct cdev cdev;
++	union {
++		struct block_device blk;
++		struct cdev cdev;
++	};
+ 	const char *filename;
+ 	int fd;
  };
  
-+static void sandbox_rst_reexec(struct restart_handler *rst)
+-static ssize_t hf_read(struct cdev *cdev, void *buf, size_t count, loff_t offset, ulong flags)
++static ssize_t hf_read(struct hf_priv *priv, void *buf, size_t count, loff_t offset, ulong flags)
+ {
+-	struct hf_priv *priv= cdev->priv;
+ 	int fd = priv->fd;
+ 
+ 	if (linux_lseek(fd, offset) != offset)
+@@ -43,9 +47,8 @@ static ssize_t hf_read(struct cdev *cdev, void *buf, size_t count, loff_t offset
+ 	return linux_read(fd, buf, count);
+ }
+ 
+-static ssize_t hf_write(struct cdev *cdev, const void *buf, size_t count, loff_t offset, ulong flags)
++static ssize_t hf_write(struct hf_priv *priv, const void *buf, size_t count, loff_t offset, ulong flags)
+ {
+-	struct hf_priv *priv = cdev->priv;
+ 	int fd = priv->fd;
+ 
+ 	if (linux_lseek(fd, offset) != offset)
+@@ -54,6 +57,40 @@ static ssize_t hf_write(struct cdev *cdev, const void *buf, size_t count, loff_t
+ 	return linux_write(fd, buf, count);
+ }
+ 
++static ssize_t hf_cdev_read(struct cdev *cdev, void *buf, size_t count, loff_t offset, ulong flags)
 +{
-+	linux_reexec();
++	return hf_read(cdev->priv, buf, count, offset, flags);
 +}
 +
-+static struct restart_handler rst_reexec = {
-+	.name = "reexec", .priority = 200,
-+	.restart = sandbox_rst_reexec,
++static ssize_t hf_cdev_write(struct cdev *cdev, const void *buf, size_t count, loff_t offset, ulong flags)
++{
++	return hf_write(cdev->priv, buf, count, offset, flags);
++}
++
++static struct cdev_operations hf_cdev_ops = {
++	.read  = hf_cdev_read,
++	.write = hf_cdev_write,
 +};
 +
- static int poweroff_register_feature(void)
- {
- 	poweroff_handler_register_fn(sandbox_poweroff);
- 	restart_handler_register(&rst_hang);
- 
-+	if (IS_ENABLED(CONFIG_SANDBOX_REEXEC))
-+		restart_handler_register(&rst_reexec);
-+
- 	return 0;
- }
- coredevice_initcall(poweroff_register_feature);
-diff --git a/arch/sandbox/mach-sandbox/include/mach/linux.h b/arch/sandbox/mach-sandbox/include/mach/linux.h
-index f0a3a7b510fc..1ab48e52a00a 100644
---- a/arch/sandbox/mach-sandbox/include/mach/linux.h
-+++ b/arch/sandbox/mach-sandbox/include/mach/linux.h
-@@ -18,6 +18,7 @@ off_t linux_lseek(int fildes, off_t offset);
- int linux_tstc(int fd);
- void __attribute__((noreturn)) linux_exit(void);
- void linux_hang(void);
-+void linux_reexec(void);
- 
- int linux_execve(const char * filename, char *const argv[], char *const envp[]);
- 
-diff --git a/arch/sandbox/os/common.c b/arch/sandbox/os/common.c
-index bbab3bd2312d..63839a1ccc68 100644
---- a/arch/sandbox/os/common.c
-+++ b/arch/sandbox/os/common.c
-@@ -44,6 +44,8 @@
- #include <mach/linux.h>
- #include <mach/hostfile.h>
- 
-+#define DELETED_OFFSET (sizeof(" (deleted)") - 1)
-+
- void __sanitizer_set_death_callback(void (*callback)(void));
- 
- int sdl_xres;
-@@ -122,6 +124,31 @@ void __attribute__((noreturn)) linux_exit(void)
- 	exit(0);
- }
- 
-+static char **saved_argv;
-+
-+void linux_reexec(void)
++static int hf_blk_read(struct block_device *blk, void *buf, int block, int num_blocks)
 +{
-+	char buf[4097];
-+	ssize_t ret;
-+
-+	cookmode();
-+
-+	/* we must follow the symlink, so we can exec an updated executable */
-+	ret = readlink("/proc/self/exe", buf, sizeof(buf) - 1);
-+	if (0 < ret && ret < sizeof(buf) - 1) {
-+		buf[ret] = '\0';
-+		execv(buf, saved_argv);
-+		if (!strcmp(&buf[ret - DELETED_OFFSET], " (deleted)")) {
-+			printf("barebox image on disk changed. Loading new.\n");
-+			buf[ret - DELETED_OFFSET] = '\0';
-+			execv(buf, saved_argv);
-+		}
-+	}
-+
-+	printf("exec(%s) failed: %d\n", buf, errno);
-+	/* falls through to generic hang() */
++	ssize_t ret = hf_read(container_of(blk, struct hf_priv, blk), buf,
++			      num_blocks << SECTOR_SHIFT, block << SECTOR_SHIFT, 0);
++	return ret > 0 ? 0 : ret;
 +}
 +
- void linux_hang(void)
++static int hf_blk_write(struct block_device *blk, const void *buf, int block, int num_blocks)
++{
++	ssize_t ret = hf_write(container_of(blk, struct hf_priv, blk), buf,
++			       num_blocks << SECTOR_SHIFT, block << SECTOR_SHIFT, 0);
++	return ret > 0 ? 0 : ret;
++}
++
++static struct block_device_ops hf_blk_ops = {
++	.read  = hf_blk_read,
++	.write = hf_blk_write,
++};
++
+ static void hf_info(struct device_d *dev)
  {
- 	cookmode();
-@@ -130,7 +157,7 @@ void linux_hang(void)
- 
- int linux_open(const char *filename, int readwrite)
- {
--	return open(filename, readwrite ? O_RDWR : O_RDONLY);
-+	return open(filename, (readwrite ? O_RDWR : O_RDONLY) | O_CLOEXEC);
+ 	struct hf_priv *priv = dev->priv;
+@@ -61,29 +98,28 @@ static void hf_info(struct device_d *dev)
+ 	printf("file: %s\n", priv->filename);
  }
  
- int linux_read(int fd, void *buf, size_t count)
-@@ -252,7 +279,7 @@ static int add_image(char *str, char *devname_template, int *devname_number)
- 	printf("add %s backed by file %s%s\n", devname,
- 	       filename, readonly ? "(ro)" : "");
+-static struct cdev_operations hf_fops = {
+-	.read  = hf_read,
+-	.write = hf_write,
+-};
+-
+ static int hf_probe(struct device_d *dev)
+ {
++	struct device_node *np = dev->device_node;
+ 	struct hf_priv *priv = xzalloc(sizeof(*priv));
+ 	struct resource *res;
++	struct cdev *cdev;
++	bool is_blockdev;
++	resource_size_t size;
+ 	int err;
  
--	fd = open(filename, readonly ? O_RDONLY : O_RDWR);
-+	fd = open(filename, (readonly ? O_RDONLY : O_RDWR) | O_CLOEXEC);
+ 	res = dev_get_resource(dev, IORESOURCE_MEM, 0);
+ 	if (IS_ERR(res))
+ 		return PTR_ERR(res);
+ 
+-	priv->cdev.size = resource_size(res);
++	size = resource_size(res);
+ 
+-	if (!dev->device_node)
++	if (!np)
+ 		return -ENODEV;
+ 
+-	of_property_read_u32(dev->device_node, "barebox,fd", &priv->fd);
++	of_property_read_u32(np, "barebox,fd", &priv->fd);
+ 
+-	err = of_property_read_string(dev->device_node, "barebox,filename",
++	err = of_property_read_string(np, "barebox,filename",
+ 				      &priv->filename);
+ 	if (err)
+ 		return err;
+@@ -94,20 +130,47 @@ static int hf_probe(struct device_d *dev)
+ 	if (priv->fd < 0)
+ 		return priv->fd;
+ 
+-	priv->cdev.name = dev->device_node->name;
+-	priv->cdev.dev = dev;
+-	priv->cdev.ops = &hf_fops;
+-	priv->cdev.priv = priv;
+-
+ 	dev->info = hf_info;
+ 	dev->priv = priv;
+ 
+-	err = devfs_create(&priv->cdev);
+-	if (err)
+-		return err;
++	is_blockdev = of_property_read_bool(np, "barebox,blockdev");
++
++	cdev = is_blockdev ? &priv->blk.cdev : &priv->cdev;
++
++	cdev->device_node = np;
+ 
+-	of_parse_partitions(&priv->cdev, dev->device_node);
+-	of_partitions_register_fixup(&priv->cdev);
++	if (is_blockdev) {
++		cdev->name = np->name;
++		priv->blk.dev = dev;
++		priv->blk.ops = &hf_blk_ops;
++		priv->blk.blockbits = SECTOR_SHIFT;
++		priv->blk.num_blocks = size / SECTOR_SIZE;
++
++		err = blockdevice_register(&priv->blk);
++		if (err)
++			return err;
++
++		err = parse_partition_table(&priv->blk);
++		if (err)
++			dev_warn(dev, "No partition table found\n");
++
++		dev_info(dev, "registered as block device\n");
++	} else {
++		cdev->name = np->name;
++		cdev->dev = dev;
++		cdev->ops = &hf_cdev_ops;
++		cdev->size = size;
++		cdev->priv = priv;
++
++		err = devfs_create(cdev);
++		if (err)
++			return err;
++
++		dev_info(dev, "registered as character device\n");
++	}
++
++	of_parse_partitions(cdev, np);
++	of_partitions_register_fixup(cdev);
+ 
+ 	return 0;
+ }
+@@ -125,7 +188,7 @@ static struct driver_d hf_drv = {
+ 	.of_compatible = DRV_OF_COMPAT(hostfile_dt_ids),
+ 	.probe = hf_probe,
+ };
+-coredevice_platform_driver(hf_drv);
++device_platform_driver(hf_drv);
+ 
+ static int of_hostfile_fixup(struct device_node *root, void *ctx)
+ {
+@@ -155,6 +218,9 @@ static int of_hostfile_fixup(struct device_node *root, void *ctx)
+ 
+ 	ret = of_property_write_string(node, "barebox,filename", hf->filename);
+ 
++	if (hf->is_blockdev)
++		ret = of_property_write_bool(node, "barebox,blockdev", true);
++
+ 	return ret;
+ }
+ 
+diff --git a/arch/sandbox/mach-sandbox/include/mach/hostfile.h b/arch/sandbox/mach-sandbox/include/mach/hostfile.h
+index e2f44c4f7b0c..c3f9af97c451 100644
+--- a/arch/sandbox/mach-sandbox/include/mach/hostfile.h
++++ b/arch/sandbox/mach-sandbox/include/mach/hostfile.h
+@@ -7,6 +7,7 @@ struct hf_info {
+ 	unsigned long long size;
+ 	const char *devname;
+ 	const char *filename;
++	unsigned int is_blockdev:1;
+ };
+ 
+ int barebox_register_filedev(struct hf_info *hf);
+diff --git a/arch/sandbox/os/common.c b/arch/sandbox/os/common.c
+index 63839a1ccc68..778ac3d6e60f 100644
+--- a/arch/sandbox/os/common.c
++++ b/arch/sandbox/os/common.c
+@@ -252,7 +252,7 @@ static int add_image(char *str, char *devname_template, int *devname_number)
+ 	struct hf_info *hf = malloc(sizeof(struct hf_info));
+ 	char *filename, *devname;
+ 	char tmp[16];
+-	int readonly = 0;
++	int readonly = 0, cdev = 0, blkdev = 0;
+ 	struct stat s;
+ 	char *opt;
+ 	int fd, ret;
+@@ -264,6 +264,10 @@ static int add_image(char *str, char *devname_template, int *devname_number)
+ 	while ((opt = strsep_unescaped(&str, ","))) {
+ 		if (!strcmp(opt, "ro"))
+ 			readonly = 1;
++		if (!strcmp(opt, "cdev"))
++			cdev = 1;
++		if (!strcmp(opt, "blkdev"))
++			blkdev = 1;
+ 	}
+ 
+ 	/* parses: "devname=filename" */
+@@ -282,6 +286,7 @@ static int add_image(char *str, char *devname_template, int *devname_number)
+ 	fd = open(filename, (readonly ? O_RDONLY : O_RDWR) | O_CLOEXEC);
  	hf->fd = fd;
  	hf->filename = filename;
++	hf->is_blockdev = blkdev;
  
-@@ -303,7 +330,7 @@ static int add_dtb(const char *file)
- 	void *dtb = NULL;
- 	int fd;
- 
--	fd = open(file, O_RDONLY);
-+	fd = open(file, O_RDONLY | O_CLOEXEC);
  	if (fd < 0) {
  		perror("open");
- 		goto err_out;
-@@ -363,6 +390,8 @@ int main(int argc, char *argv[])
- 	__sanitizer_set_death_callback(cookmode);
- #endif
- 
-+	saved_argv = argv;
-+
- 	while (1) {
- 		option_index = 0;
- 		opt = getopt_long(argc, argv, optstring,
-@@ -434,7 +463,7 @@ int main(int argc, char *argv[])
- 				exit(1);
- 			break;
- 		case 'O':
--			fd = open(optarg, O_WRONLY);
-+			fd = open(optarg, O_WRONLY | O_CLOEXEC);
- 			if (fd < 0) {
- 				perror("open");
- 				exit(1);
-@@ -443,7 +472,7 @@ int main(int argc, char *argv[])
- 			barebox_register_console(-1, fd);
- 			break;
- 		case 'I':
--			fd = open(optarg, O_RDWR);
-+			fd = open(optarg, O_RDWR | O_CLOEXEC);
- 			if (fd < 0) {
- 				perror("open");
- 				exit(1);
-@@ -459,7 +488,7 @@ int main(int argc, char *argv[])
- 			}
- 
- 			/* open stdout file */
--			fd = open(aux + 1, O_WRONLY);
-+			fd = open(aux + 1, O_WRONLY | O_CLOEXEC);
- 			if (fd < 0) {
- 				perror("open stdout");
- 				exit(1);
-@@ -467,7 +496,7 @@ int main(int argc, char *argv[])
- 
- 			/* open stdin file */
- 			aux = strndup(optarg, aux - optarg);
--			fd2 = open(aux, O_RDWR);
-+			fd2 = open(aux, O_RDWR | O_CLOEXEC);
- 			if (fd2 < 0) {
- 				perror("open stdin");
- 				exit(1);
-diff --git a/arch/sandbox/os/tap.c b/arch/sandbox/os/tap.c
-index 72b7fbb5ac4b..83b97ffd49c7 100644
---- a/arch/sandbox/os/tap.c
-+++ b/arch/sandbox/os/tap.c
-@@ -30,7 +30,7 @@ int tap_alloc(const char *dev)
- 	struct ifreq ifr;
- 	int fd, err;
- 
--	if ((fd = open("/dev/net/tun", O_RDWR)) < 0) {
-+	if ((fd = open("/dev/net/tun", O_RDWR | O_CLOEXEC)) < 0) {
- 		perror("could not open /dev/net/tun");
- 		return -1;
+@@ -301,6 +306,8 @@ static int add_image(char *str, char *devname_template, int *devname_number)
+ 			perror("ioctl");
+ 			goto err_out;
+ 		}
++		if (!cdev)
++			hf->is_blockdev = 1;
  	}
+ 	if (hf->size <= SIZE_MAX)
+ 		hf->base = (unsigned long)mmap(NULL, hf->size,
+@@ -312,6 +319,12 @@ static int add_image(char *str, char *devname_template, int *devname_number)
+ 	if (hf->base == (unsigned long)MAP_FAILED)
+ 		printf("warning: mmapping %s failed: %s\n", filename, strerror(errno));
+ 
++	if (blkdev && hf->size % 512 != 0) {
++		printf("warning: registering %s as block device failed: invalid block size\n",
++		       filename);
++		return -EINVAL;
++	}
++
+ 	ret = barebox_register_filedev(hf);
+ 	if (ret)
+ 		goto err_out;
 -- 
 2.28.0
 
