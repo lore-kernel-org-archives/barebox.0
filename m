@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([2a01:4f8:c17:c88::2])
+Received: from magratgarlick.emantor.de ([78.46.208.201])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kI4kU-00031J-TE
+ id 1kI4kV-00031Q-Qc
  for barebox@lists.infradead.org; Tue, 15 Sep 2020 06:47:32 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Tue, 15 Sep 2020 08:47:21 +0200
-Message-Id: <20200915064722.17355-3-r.czerwinski@pengutronix.de>
+Date: Tue, 15 Sep 2020 08:47:22 +0200
+Message-Id: <20200915064722.17355-4-r.czerwinski@pengutronix.de>
 In-Reply-To: <20200915064722.17355-1-r.czerwinski@pengutronix.de>
 References: <20200915064722.17355-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
@@ -21,44 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] blspec: fix bootm_data initialization
+Subject: [PATCH 4/4] fastboot: only unset image, not loadaddr
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Remove initialization of the verbose struct member, it will be
-overwritten by the call to bootm_data_init_defaults(). Also remove
-members which are initialized in the call.
-Verbose should be enabled if either the argument or variable is set, so
-|| both.
+In case the board needs to setup the load address of the kernel, don't
+overwrite the variable, instead only override the image.
 
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- common/blspec.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ common/fastboot.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/common/blspec.c b/common/blspec.c
-index 14c98d4f7b..7858df685f 100644
---- a/common/blspec.c
-+++ b/common/blspec.c
-@@ -130,9 +130,6 @@ static int blspec_boot(struct bootentry *be, int verbose, int dryrun)
- 	const char *overlays;
- 	const char *appendroot;
- 	struct bootm_data data = {
--		.initrd_address = UIMAGE_INVALID_ADDRESS,
--		.os_address = UIMAGE_SOME_ADDRESS,
--		.verbose = verbose,
- 		.dryrun = dryrun,
- 	};
+diff --git a/common/fastboot.c b/common/fastboot.c
+index 302720c43d..86e7997a0b 100644
+--- a/common/fastboot.c
++++ b/common/fastboot.c
+@@ -383,7 +383,7 @@ static void __maybe_unused cb_boot(struct fastboot *fb, const char *opt)
+ 	fastboot_tx_print(fb, FASTBOOT_MSG_INFO, "Booting kernel..\n");
  
-@@ -143,6 +140,8 @@ static int blspec_boot(struct bootentry *be, int verbose, int dryrun)
+ 	globalvar_set_match("linux.bootargs.dyn.", "");
+-	globalvar_set_match("bootm.image", "");
++	globalvar_set("bootm.image", "");
  
- 	bootm_data_init_defaults(&data);
+ 	data.os_file = fb->tempname;
  
-+	data.verbose = verbose || data.verbose;
-+
- 	devicetree = blspec_entry_var_get(entry, "devicetree");
- 	initrd = blspec_entry_var_get(entry, "initrd");
- 	options = blspec_entry_var_get(entry, "options");
 -- 
 2.28.0
 
