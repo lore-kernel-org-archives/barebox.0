@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kIAXF-0005aY-Q0
- for barebox@lists.infradead.org; Tue, 15 Sep 2020 12:58:14 +0000
-Date: Tue, 15 Sep 2020 14:58:11 +0200
+ id 1kIAkv-0000AL-97
+ for barebox@lists.infradead.org; Tue, 15 Sep 2020 13:12:22 +0000
+Date: Tue, 15 Sep 2020 15:12:19 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200915125811.GO4498@pengutronix.de>
-References: <20200909193650.347646-1-trent.piepho@synapse.com>
+Message-ID: <20200915131219.GP4498@pengutronix.de>
+References: <20200914130640.21416-1-s.hauer@pengutronix.de>
+ <20200914130640.21416-4-s.hauer@pengutronix.de>
+ <da8f70a1-921f-ad94-ffb1-855eb4004f86@pengutronix.de>
+ <20200915071215.GZ4498@pengutronix.de>
+ <5e8911d3-2fe2-f2c7-09da-c971d97e8ff3@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200909193650.347646-1-trent.piepho@synapse.com>
+In-Reply-To: <5e8911d3-2fe2-f2c7-09da-c971d97e8ff3@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,37 +26,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] aiodev: Name channels with device instance name
-To: Trent Piepho <trent.piepho@synapse.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 4/4] fs: free unused dentries
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Wed, Sep 09, 2020 at 12:36:47PM -0700, Trent Piepho wrote:
-> When dynamically assigning device names, an aiodev's name will be
-> "aiodev" and an index, not part of the name string itself, will be
-> allocated dynamically.  These are combined to register a device with a
-> name like "aiodev0" or "aiodev1".
+On Tue, Sep 15, 2020 at 10:01:23AM +0200, Ahmad Fatoum wrote:
+> Hello Sascha,
 > 
-> The shell environment variables use the device name, so one might use
-> "${aiodev0.in_value0_mV}" and "${aiodev1.in_value0_mV}".
+> On 9/15/20 9:12 AM, Sascha Hauer wrote:
+> > On Tue, Sep 15, 2020 at 07:25:15AM +0200, Ahmad Fatoum wrote:
+> >> Hello Sascha,
+> >>
+> >> On 9/14/20 3:06 PM, Sascha Hauer wrote:
+> >>> So far we only ever freed dentries when the filesystem they are on is
+> >>> unmounted. With this patch we actually trust reference counting and free
+> >>> the dentries once the reference count hits zero.
+> >>
+> >> Unless I revert this patch, I run into a crash doing:
+> >>
+> >> dd if=/dev/zero of=barebox.env count=1
+> >> ./barebox --image=barebox.env
+> >> barebox@barebox sandbox:/ saveenv
+> >> saving environment
+> > 
+> > "saveenv" answers with: "saveenv: No such file or directory". Did you
+> > mean to do a "saveenv /dev/fd0"?
+> > 
+> >> barebox@barebox sandbox:/ reset
+> >> =================================================================
+> >> ==894761==ERROR: AddressSanitizer: heap-use-after-free on address 0x60e000005d70 at pc 0x5617cfde210a bp 0x7ffff89957d0 sp 0x7ffff89957c8
+> > 
+> > I can't reproduce this here unfortunately.
 > 
-> However, the channel names that are used with aiochannel_get_by_name()
-> just use the aiodev's name and channel name.  So channel 0 of the 1st
-> aiodev would be "aiodev.in_value0_mV" and the 2nd aiodev would use the
-> same name.
+> Sorry, should've been ./barebox --env=barebox.env
 > 
-> Change the channel naming to use the device instance name, e.g.
-> "aiodev0", rather than the aiodev's base name.  This makes the names
-> used aiochannel_get_by_name() match the environment variable names and
-> also avoids duplicate names with more than one dynamically allocated
-> aiodev.
-> 
-> Signed-off-by: Trent Piepho <trent.piepho@synapse.com>
-> ---
->  drivers/aiodev/core.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> I can reproduce it with upstream/next (91a23b64445b8861acbfd96fcc03082b343b0211)
+> and sandbox_defconfig (+CONFIG_RESET). saveenv; reset results in a segmentation fault.
+> CONFIG_KASAN=y
+> CONFIG_MALLOC_LIBC=y
+> gives the better debugging output.
 
-Looks good to go from my side, so with Ahmads comments fixed we can
-merge this series.
+Hm, still can't reproduce, neither with
+91a23b64445b8861acbfd96fcc03082b343b0211 nor with current next.
 
 Sascha
 
