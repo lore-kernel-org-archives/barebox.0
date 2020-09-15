@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay5-d.mail.gandi.net ([217.70.183.197])
+Received: from magratgarlick.emantor.de ([2a01:4f8:c17:c88::2])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kHv8L-0008O4-Nu
- for barebox@lists.infradead.org; Mon, 14 Sep 2020 20:31:30 +0000
-From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Mon, 14 Sep 2020 22:31:15 +0200
-Message-Id: <20200914203115.818974-1-ahmad@a3f.at>
+ id 1kI4kU-00030y-Tm
+ for barebox@lists.infradead.org; Tue, 15 Sep 2020 06:47:31 +0000
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Tue, 15 Sep 2020 08:47:20 +0200
+Message-Id: <20200915064722.17355-2-r.czerwinski@pengutronix.de>
+In-Reply-To: <20200915064722.17355-1-r.czerwinski@pengutronix.de>
+References: <20200915064722.17355-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -15,26 +17,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! arm/cpu/*.S: Replace license and copyright boilerplate
- by SPDX identfiers
+Subject: [PATCH 2/4] blspec: only reset variable locations, not paths
 To: barebox@lists.infradead.org
-Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Rml4IHVudGVybWluYXRlZCBjb21tZW50IGJsb2NrLgoKQ2M6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1
-LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+ClNpZ25lZC1vZmYtYnk6IEFobWFkIEZhdG91
-bSA8YWhtYWRAYTNmLmF0PgotLS0KIGFyY2gvYXJtL2NwdS9zbWNjYy1jYWxsLlMgfCAyICstCiAx
-IGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQg
-YS9hcmNoL2FybS9jcHUvc21jY2MtY2FsbC5TIGIvYXJjaC9hcm0vY3B1L3NtY2NjLWNhbGwuUwpp
-bmRleCA3ZjVjZmQ4YzhiODMuLjk4NzVlMWY5NDc1NSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vY3B1
-L3NtY2NjLWNhbGwuUworKysgYi9hcmNoL2FybS9jcHUvc21jY2MtY2FsbC5TCkBAIC0xLDUgKzEs
-NSBAQAogLyogU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjAtb25seSAqLwotLyogU1BE
-WC1GaWxlQ29weXJpZ2h0VGV4dDogMjAxNSBMaW5hcm8gTGltaXRlZAorLyogU1BEWC1GaWxlQ29w
-eXJpZ2h0VGV4dDogMjAxNSBMaW5hcm8gTGltaXRlZCAqLwogCiAjaW5jbHVkZSA8bGludXgvbGlu
-a2FnZS5oPgogCi0tIAoyLjI4LjAKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVh
-ZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94
-Cg==
+Configuration of the loadaddresses for image oftree and initrd can not
+be done inside the bootloader spec yet, so using bootloader spec should
+not override settings from the environment.
+
+Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+---
+ common/blspec.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/common/blspec.c b/common/blspec.c
+index 9e1036c834..14c98d4f7b 100644
+--- a/common/blspec.c
++++ b/common/blspec.c
+@@ -137,9 +137,9 @@ static int blspec_boot(struct bootentry *be, int verbose, int dryrun)
+ 	};
+ 
+ 	globalvar_set_match("linux.bootargs.dyn.", "");
+-	globalvar_set_match("bootm.image", "");
+-	globalvar_set_match("bootm.oftree", "");
+-	globalvar_set_match("bootm.initrd", "");
++	globalvar_set("bootm.image", "");
++	globalvar_set("bootm.oftree", "");
++	globalvar_set("bootm.initrd", "");
+ 
+ 	bootm_data_init_defaults(&data);
+ 
+-- 
+2.28.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
