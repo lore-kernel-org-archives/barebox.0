@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([78.46.208.201])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kI4kV-00031Q-Qc
- for barebox@lists.infradead.org; Tue, 15 Sep 2020 06:47:32 +0000
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Tue, 15 Sep 2020 08:47:22 +0200
-Message-Id: <20200915064722.17355-4-r.czerwinski@pengutronix.de>
-In-Reply-To: <20200915064722.17355-1-r.czerwinski@pengutronix.de>
-References: <20200915064722.17355-1-r.czerwinski@pengutronix.de>
+ id 1kI4zc-0005fj-QF
+ for barebox@lists.infradead.org; Tue, 15 Sep 2020 07:03:09 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 15 Sep 2020 09:03:05 +0200
+Message-Id: <20200915070305.15763-7-s.hauer@pengutronix.de>
+In-Reply-To: <20200915070305.15763-1-s.hauer@pengutronix.de>
+References: <20200915070305.15763-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,31 +21,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] fastboot: only unset image, not loadaddr
-To: barebox@lists.infradead.org
-Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Subject: [PATCH 6/6] powerpc: Add function prototypes for exception handlers
+To: Barebox List <barebox@lists.infradead.org>
 
-In case the board needs to setup the load address of the kernel, don't
-overwrite the variable, instead only override the image.
+The exception handlers lead to -Wmissing-prototypes warnings. Add
+prototypes for them to avoid these warnings.
 
-Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/fastboot.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/include/asm/processor.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/common/fastboot.c b/common/fastboot.c
-index 302720c43d..86e7997a0b 100644
---- a/common/fastboot.c
-+++ b/common/fastboot.c
-@@ -383,7 +383,7 @@ static void __maybe_unused cb_boot(struct fastboot *fb, const char *opt)
- 	fastboot_tx_print(fb, FASTBOOT_MSG_INFO, "Booting kernel..\n");
+diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/asm/processor.h
+index 39a89a9d15..f4677d11e1 100644
+--- a/arch/powerpc/include/asm/processor.h
++++ b/arch/powerpc/include/asm/processor.h
+@@ -1109,6 +1109,14 @@ void ll_puts(const char *);
+ /* In misc.c */
+ void _nmask_and_or_msr(unsigned long nmask, unsigned long or_val);
  
- 	globalvar_set_match("linux.bootargs.dyn.", "");
--	globalvar_set_match("bootm.image", "");
-+	globalvar_set("bootm.image", "");
++void CritcalInputException(struct pt_regs *regs);
++void MachineCheckException(struct pt_regs *regs);
++void AlignmentException(struct pt_regs *regs);
++void ProgramCheckException(struct pt_regs *regs);
++void PITException(struct pt_regs *regs);
++void UnknownException(struct pt_regs *regs);
++void DebugException(struct pt_regs *regs);
++
+ #endif /* ndef ASSEMBLY*/
  
- 	data.os_file = fb->tempname;
- 
+ #ifdef CONFIG_MACH_SPECIFIC
 -- 
 2.28.0
 
