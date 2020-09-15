@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kI86z-00056B-Hr
- for barebox@lists.infradead.org; Tue, 15 Sep 2020 10:22:58 +0000
-Date: Tue, 15 Sep 2020 12:22:47 +0200
+ id 1kI9W8-00043L-AR
+ for barebox@lists.infradead.org; Tue, 15 Sep 2020 11:53:01 +0000
 From: Roland Hieber <rhi@pengutronix.de>
-Message-ID: <20200915102247.ltdgdajif6dwgrle@pengutronix.de>
-References: <20200915094417.957978-1-ahmad@a3f.at>
+Date: Tue, 15 Sep 2020 13:52:47 +0200
+Message-Id: <20200915115247.30015-1-rhi@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200915094417.957978-1-ahmad@a3f.at>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,53 +19,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] regulator: provide regulator_get_name() stub for
- !CONFIG_REGULATOR
-To: Ahmad Fatoum <ahmad@a3f.at>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] mci: bcm2835: depend on sdhci
+To: Barebox Mailing List <barebox@lists.infradead.org>
+Cc: Roland Hieber <rhi@pengutronix.de>
 
-On Tue, Sep 15, 2020 at 11:44:17AM +0200, Ahmad Fatoum wrote:
-> Otherwise users of this function run into a link error when regulator
-> support is compiled out.
-> 
-> Reported-by: Roland Hieber <rhi@pengutronix.de>
-> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+The driver uses functions defined in sdhci.o, and will fail to build
+otherwise:
 
-Thanks!
-Tested-by: Roland Hieber <rhi@pengutronix.de>
+    drivers/mci/mci-bcm2835.o: in function `bcm2835_mci_request':
+    drivers/mci/mci-bcm2835.c:134: undefined reference to `sdhci_set_cmd_xfer_mode'
+    arm-v5te-linux-gnueabi-ld: drivers/mci/mci-bcm2835.c:169: undefined reference to `sdhci_read_response'
+    arm-v5te-linux-gnueabi-ld: drivers/mci/mci-bcm2835.c:175: undefined reference to `sdhci_transfer_data'
 
-> ---
-> Forgot to commit a deleted semicolon..
-> ---
->  include/regulator.h | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/include/regulator.h b/include/regulator.h
-> index 12d8e816cdb1..a9cb6dedca5e 100644
-> --- a/include/regulator.h
-> +++ b/include/regulator.h
-> @@ -175,6 +175,11 @@ static inline struct regulator *regulator_get(struct device_d *dev, const char *
->  	return NULL;
->  }
->  
-> +static inline struct regulator *regulator_get_name(const char *name)
-> +{
-> +	return NULL;
-> +}
-> +
->  static inline int regulator_enable(struct regulator *r)
->  {
->  	return 0;
-> -- 
-> 2.28.0
-> 
-> 
+Fixes: f8dffc9338dc2c7ae830 (2019-11-19, "mci: bcm2835: Use sdhci_set_cmd_xfer_mode()")
+Signed-off-by: Roland Hieber <rhi@pengutronix.de>
+---
+ drivers/mci/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
+diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
+index f7dc5c508912..09c056928627 100644
+--- a/drivers/mci/Kconfig
++++ b/drivers/mci/Kconfig
+@@ -69,6 +69,7 @@ config MCI_S3C
+ config MCI_BCM283X
+ 	bool "MCI support for BCM283X"
+ 	depends on ARCH_BCM283X || COMPILE_TEST
++	select MCI_SDHCI
+ 
+ config MCI_BCM283X_SDHOST
+ 	bool "BCM283X sdhost"
 -- 
-Roland Hieber, Pengutronix e.K.          | r.hieber@pengutronix.de     |
-Steuerwalder Str. 21                     | https://www.pengutronix.de/ |
-31137 Hildesheim, Germany                | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686         | Fax:   +49-5121-206917-5555 |
+2.28.0
+
 
 _______________________________________________
 barebox mailing list
