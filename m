@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kIA1t-0007kI-Rm
- for barebox@lists.infradead.org; Tue, 15 Sep 2020 12:25:51 +0000
+ id 1kIA21-0007nh-U5
+ for barebox@lists.infradead.org; Tue, 15 Sep 2020 12:25:59 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 15 Sep 2020 14:25:31 +0200
-Message-Id: <20200915122539.18744-3-s.hauer@pengutronix.de>
+Date: Tue, 15 Sep 2020 14:25:30 +0200
+Message-Id: <20200915122539.18744-2-s.hauer@pengutronix.de>
 In-Reply-To: <20200915122539.18744-1-s.hauer@pengutronix.de>
 References: <20200915122539.18744-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,76 +21,79 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/10] arm: Add prototypes for functions called from assembly
+Subject: [PATCH 01/10] ARM: dts: beaglebone: Remove unnecessary tps65217.dtsi
 To: Barebox List <barebox@lists.infradead.org>
 
-Some functions are called from assembly only. There's no prototype
-for them so this leads to -Wmissing-prototypes warnings. Add a prototype
-right aboce the functions to avoid these warnings.
+tps65217.dtsi should be used from the upstream dts sources instead.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/edb93xx/flash_cfg.c | 3 +++
- arch/arm/boards/edb93xx/pll_cfg.c   | 3 +++
- arch/arm/boards/edb93xx/sdram_cfg.c | 3 +++
- arch/arm/mach-ep93xx/header.c       | 2 ++
- 4 files changed, 11 insertions(+)
+ arch/arm/dts/tps65217.dtsi | 56 --------------------------------------
+ 1 file changed, 56 deletions(-)
+ delete mode 100644 arch/arm/dts/tps65217.dtsi
 
-diff --git a/arch/arm/boards/edb93xx/flash_cfg.c b/arch/arm/boards/edb93xx/flash_cfg.c
-index 6b742f967c..8400db69de 100644
---- a/arch/arm/boards/edb93xx/flash_cfg.c
-+++ b/arch/arm/boards/edb93xx/flash_cfg.c
-@@ -11,6 +11,9 @@
- 				SMC_BCR_BLE | 2 << SMC_BCR_WST2_SHIFT | \
- 				1 << SMC_BCR_MW_SHIFT)
- 
-+/* Called from assembly */
-+void flash_cfg(void);
-+
- void flash_cfg(void)
- {
- 	struct smc_regs *smc = (struct smc_regs *)SMC_BASE;
-diff --git a/arch/arm/boards/edb93xx/pll_cfg.c b/arch/arm/boards/edb93xx/pll_cfg.c
-index 1f03acf915..1a1c01aba2 100644
---- a/arch/arm/boards/edb93xx/pll_cfg.c
-+++ b/arch/arm/boards/edb93xx/pll_cfg.c
-@@ -9,6 +9,9 @@
- #include "pll_cfg.h"
- #include "early_udelay.h"
- 
-+/* Called from assembly */
-+void pll_cfg(void);
-+
- void pll_cfg(void)
- {
- 	struct syscon_regs *syscon = (struct syscon_regs *)SYSCON_BASE;
-diff --git a/arch/arm/boards/edb93xx/sdram_cfg.c b/arch/arm/boards/edb93xx/sdram_cfg.c
-index a9f591f197..3cee834910 100644
---- a/arch/arm/boards/edb93xx/sdram_cfg.c
-+++ b/arch/arm/boards/edb93xx/sdram_cfg.c
-@@ -17,6 +17,9 @@ static void precharge_all_banks(void);
- static void setup_refresh_timer(void);
- static void program_mode_registers(void);
- 
-+/* Called from assembly */
-+void sdram_cfg(void);
-+
- void sdram_cfg(void)
- {
- 	struct sdram_regs *sdram = (struct sdram_regs *)SDRAM_BASE;
-diff --git a/arch/arm/mach-ep93xx/header.c b/arch/arm/mach-ep93xx/header.c
-index 4e6a2e57c8..a9dde2d8b0 100644
---- a/arch/arm/mach-ep93xx/header.c
-+++ b/arch/arm/mach-ep93xx/header.c
-@@ -2,6 +2,8 @@
- #include <linux/compiler.h>
- #include <asm/barebox-arm-head.h>
- 
-+void go(void);
-+
- void __naked __section(.flash_header_start) go(void)
- {
-         barebox_arm_head();
+diff --git a/arch/arm/dts/tps65217.dtsi b/arch/arm/dts/tps65217.dtsi
+deleted file mode 100644
+index a63272422d..0000000000
+--- a/arch/arm/dts/tps65217.dtsi
++++ /dev/null
+@@ -1,56 +0,0 @@
+-/*
+- * Copyright (C) 2012 Texas Instruments Incorporated - http://www.ti.com/
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License version 2 as
+- * published by the Free Software Foundation.
+- */
+-
+-/*
+- * Integrated Power Management Chip
+- * http://www.ti.com/lit/ds/symlink/tps65217.pdf
+- */
+-
+-&tps {
+-	compatible = "ti,tps65217";
+-
+-	regulators {
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-
+-		dcdc1_reg: regulator@0 {
+-			reg = <0>;
+-			regulator-compatible = "dcdc1";
+-		};
+-
+-		dcdc2_reg: regulator@1 {
+-			reg = <1>;
+-			regulator-compatible = "dcdc2";
+-		};
+-
+-		dcdc3_reg: regulator@2 {
+-			reg = <2>;
+-			regulator-compatible = "dcdc3";
+-		};
+-
+-		ldo1_reg: regulator@3 {
+-			reg = <3>;
+-			regulator-compatible = "ldo1";
+-		};
+-
+-		ldo2_reg: regulator@4 {
+-			reg = <4>;
+-			regulator-compatible = "ldo2";
+-		};
+-
+-		ldo3_reg: regulator@5 {
+-			reg = <5>;
+-			regulator-compatible = "ldo3";
+-		};
+-
+-		ldo4_reg: regulator@6 {
+-			reg = <6>;
+-			regulator-compatible = "ldo4";
+-		};
+-	};
+-};
 -- 
 2.28.0
 
