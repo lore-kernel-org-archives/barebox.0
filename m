@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kIANT-0003nq-Mv
- for barebox@lists.infradead.org; Tue, 15 Sep 2020 12:48:08 +0000
-Date: Tue, 15 Sep 2020 14:48:06 +0200
+ id 1kIAO0-00041U-6C
+ for barebox@lists.infradead.org; Tue, 15 Sep 2020 12:48:41 +0000
+Date: Tue, 15 Sep 2020 14:48:38 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200915124806.GL4498@pengutronix.de>
-References: <20200914200309.32513-1-a.fatoum@pengutronix.de>
+Message-ID: <20200915124838.GM4498@pengutronix.de>
+References: <20200914205415.835304-1-ahmad@a3f.at>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200914200309.32513-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20200914205415.835304-1-ahmad@a3f.at>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,22 +22,22 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] README: update to reflect current state
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] sandbox: unwind: fix indentation
+To: Ahmad Fatoum <ahmad@a3f.at>
 Cc: barebox@lists.infradead.org
 
-On Mon, Sep 14, 2020 at 10:03:08PM +0200, Ahmad Fatoum wrote:
-> The bulk of the README has stayed unchanged for the last ten years or
-> so. Polish it up up a bit.
+On Mon, Sep 14, 2020 at 10:54:15PM +0200, Ahmad Fatoum wrote:
+> Indentation was unintentionally doubled. Fix this.
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 > ---
->  README | 40 ++++++++++++++++++++--------------------
->  1 file changed, 20 insertions(+), 20 deletions(-)
+>  arch/sandbox/lib/unwind.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
 Applied, thanks
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
