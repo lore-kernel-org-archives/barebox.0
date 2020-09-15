@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kI4zc-0005fg-QI
+ id 1kI4zc-0005ff-QJ
  for barebox@lists.infradead.org; Tue, 15 Sep 2020 07:03:11 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 15 Sep 2020 09:03:00 +0200
-Message-Id: <20200915070305.15763-2-s.hauer@pengutronix.de>
+Date: Tue, 15 Sep 2020 09:03:03 +0200
+Message-Id: <20200915070305.15763-5-s.hauer@pengutronix.de>
 In-Reply-To: <20200915070305.15763-1-s.hauer@pengutronix.de>
 References: <20200915070305.15763-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,97 +21,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/6] powerpc: Add prototypes to header file
+Subject: [PATCH 4/6] powerpc: Add prototypes for functions called from assembly
 To: Barebox List <barebox@lists.infradead.org>
 
-This adds prototypes of the board specific functions
-fsl_ddr_board_options() and fsl_ddr_board_info() to a header
-file. Including this header file from the board files reveals
-that the prototypes are different across the different implementations,
-so harmonize them.
+Some functions are called from assembly only. There's no prototype
+for them so this leads to -Wmissing-prototypes warnings. Add a prototype
+right aboce the functions to avoid these warnings.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/powerpc/boards/freescale-p1010rdb/ddr.c | 4 +---
- arch/powerpc/boards/freescale-p1022ds/ddr.c  | 4 +---
- arch/powerpc/ddr-8xxx/ddr.h                  | 4 ----
- arch/powerpc/include/asm/fsl_ddr_sdram.h     | 8 ++++++++
- 4 files changed, 10 insertions(+), 10 deletions(-)
+ arch/powerpc/boards/pcm030/pcm030.c  | 3 +++
+ arch/powerpc/lib/board.c             | 3 +++
+ arch/powerpc/mach-mpc85xx/cpu.c      | 3 +++
+ arch/powerpc/mach-mpc85xx/cpu_init.c | 3 +++
+ 4 files changed, 12 insertions(+)
 
-diff --git a/arch/powerpc/boards/freescale-p1010rdb/ddr.c b/arch/powerpc/boards/freescale-p1010rdb/ddr.c
-index 18069f4df1..14fa426726 100644
---- a/arch/powerpc/boards/freescale-p1010rdb/ddr.c
-+++ b/arch/powerpc/boards/freescale-p1010rdb/ddr.c
-@@ -20,7 +20,7 @@
- 
- static const u8 spd_addr = 0x52;
- 
--int fsl_ddr_board_info(struct ddr_board_info_s *info)
-+void fsl_ddr_board_info(struct ddr_board_info_s *info)
- {
- 	p1010rdb_early_init();
- 
-@@ -34,8 +34,6 @@ int fsl_ddr_board_info(struct ddr_board_info_s *info)
- 	info->i2c_speed = 400000;
- 	info->i2c_base = IOMEM(I2C2_BASE_ADDR);
- 	info->spd_i2c_addr = &spd_addr;
--
--	return 0;
+diff --git a/arch/powerpc/boards/pcm030/pcm030.c b/arch/powerpc/boards/pcm030/pcm030.c
+index 330d29868e..c603643d58 100644
+--- a/arch/powerpc/boards/pcm030/pcm030.c
++++ b/arch/powerpc/boards/pcm030/pcm030.c
+@@ -143,6 +143,9 @@ static void sdram_start (int hi_addr)
+ 	__asm__ volatile ("sync");
  }
  
- void fsl_ddr_board_options(struct memctl_options_s *popts,
-diff --git a/arch/powerpc/boards/freescale-p1022ds/ddr.c b/arch/powerpc/boards/freescale-p1022ds/ddr.c
-index 1944518c79..3a8298f928 100644
---- a/arch/powerpc/boards/freescale-p1022ds/ddr.c
-+++ b/arch/powerpc/boards/freescale-p1022ds/ddr.c
-@@ -19,7 +19,7 @@
- 
- static const u8 spd_addr = 0x51;
- 
--int fsl_ddr_board_info(struct ddr_board_info_s *info)
-+void fsl_ddr_board_info(struct ddr_board_info_s *info)
++/* Called from assembly */
++void initdram(int board_type);
++
+ void initdram (int board_type)
  {
- 	/*
- 	 * Early mapping is needed to access the clock
-@@ -37,8 +37,6 @@ int fsl_ddr_board_info(struct ddr_board_info_s *info)
- 	info->i2c_speed = 400000;
- 	info->i2c_base = IOMEM(I2C2_BASE_ADDR);
- 	info->spd_i2c_addr = &spd_addr;
--
--	return 0;
+ 	ulong dramsize = 0;
+diff --git a/arch/powerpc/lib/board.c b/arch/powerpc/lib/board.c
+index 9031b37ada..a6111606b6 100644
+--- a/arch/powerpc/lib/board.c
++++ b/arch/powerpc/lib/board.c
+@@ -33,6 +33,9 @@
+  ************************************************************************
+  */
+ 
++/* Called from assembly */
++void board_init_r (ulong end_of_ram);
++
+ void board_init_r (ulong end_of_ram)
+ {
+ 	unsigned long malloc_end;
+diff --git a/arch/powerpc/mach-mpc85xx/cpu.c b/arch/powerpc/mach-mpc85xx/cpu.c
+index 1d5a69c999..a5241b82a7 100644
+--- a/arch/powerpc/mach-mpc85xx/cpu.c
++++ b/arch/powerpc/mach-mpc85xx/cpu.c
+@@ -49,6 +49,9 @@ static int restart_register_feature(void)
  }
+ coredevice_initcall(restart_register_feature);
  
- struct board_specific_parameters {
-diff --git a/arch/powerpc/ddr-8xxx/ddr.h b/arch/powerpc/ddr-8xxx/ddr.h
-index 2ef87f2776..8560e37167 100644
---- a/arch/powerpc/ddr-8xxx/ddr.h
-+++ b/arch/powerpc/ddr-8xxx/ddr.h
-@@ -109,8 +109,4 @@ int fsl_ddr_get_spd(
- 		struct ddr_board_info_s *binfo);
- int fsl_ddr_set_memctl_regs(
- 		const struct fsl_ddr_info_s *info);
--void fsl_ddr_board_options(
--		struct memctl_options_s *popts,
--		struct dimm_params_s *pdimm);
--void fsl_ddr_board_info(struct ddr_board_info_s *info);
++/* Called from assembly */
++long int initdram(int board_type);
++
+ long int initdram(int board_type)
+ {
+ 	phys_size_t dram_size = 0;
+diff --git a/arch/powerpc/mach-mpc85xx/cpu_init.c b/arch/powerpc/mach-mpc85xx/cpu_init.c
+index b9eadfadfd..3259945fda 100644
+--- a/arch/powerpc/mach-mpc85xx/cpu_init.c
++++ b/arch/powerpc/mach-mpc85xx/cpu_init.c
+@@ -184,6 +184,9 @@ static void fsl_erratum_p1010_a003549(void)
+ static void fsl_erratum_p1010_a003549(void) {}
  #endif
-diff --git a/arch/powerpc/include/asm/fsl_ddr_sdram.h b/arch/powerpc/include/asm/fsl_ddr_sdram.h
-index f4732389f6..b6c0b4dd7a 100644
---- a/arch/powerpc/include/asm/fsl_ddr_sdram.h
-+++ b/arch/powerpc/include/asm/fsl_ddr_sdram.h
-@@ -184,4 +184,12 @@ struct memctl_options_s {
  
- extern phys_size_t fsl_ddr_sdram(void);
- extern phys_size_t fixed_sdram(void);
++/* Called from assembly */
++void cpu_init_early_f(void);
 +
-+struct dimm_params_s;
-+
-+void fsl_ddr_board_options(
-+		struct memctl_options_s *popts,
-+		struct dimm_params_s *pdimm);
-+void fsl_ddr_board_info(struct ddr_board_info_s *info);
-+
- #endif
+ void cpu_init_early_f(void)
+ {
+ 	u32 mas0, mas1, mas2, mas3, mas7;
 -- 
 2.28.0
 
