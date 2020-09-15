@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kIA1m-0007hM-7X
- for barebox@lists.infradead.org; Tue, 15 Sep 2020 12:25:44 +0000
+ id 1kIA1t-0007kI-Rm
+ for barebox@lists.infradead.org; Tue, 15 Sep 2020 12:25:51 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 15 Sep 2020 14:25:37 +0200
-Message-Id: <20200915122539.18744-9-s.hauer@pengutronix.de>
+Date: Tue, 15 Sep 2020 14:25:31 +0200
+Message-Id: <20200915122539.18744-3-s.hauer@pengutronix.de>
 In-Reply-To: <20200915122539.18744-1-s.hauer@pengutronix.de>
 References: <20200915122539.18744-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,44 +21,76 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/10] openrisc: Make locally used functions static
+Subject: [PATCH 02/10] arm: Add prototypes for functions called from assembly
 To: Barebox List <barebox@lists.infradead.org>
 
-Make only locally used functions static to avoid -Wmissing-prototypes
-warnings.
+Some functions are called from assembly only. There's no prototype
+for them so this leads to -Wmissing-prototypes warnings. Add a prototype
+right aboce the functions to avoid these warnings.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/openrisc/cpu/cache.c   | 2 +-
- arch/openrisc/lib/cpuinfo.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/boards/edb93xx/flash_cfg.c | 3 +++
+ arch/arm/boards/edb93xx/pll_cfg.c   | 3 +++
+ arch/arm/boards/edb93xx/sdram_cfg.c | 3 +++
+ arch/arm/mach-ep93xx/header.c       | 2 ++
+ 4 files changed, 11 insertions(+)
 
-diff --git a/arch/openrisc/cpu/cache.c b/arch/openrisc/cpu/cache.c
-index db6403634a..a124d6612c 100644
---- a/arch/openrisc/cpu/cache.c
-+++ b/arch/openrisc/cpu/cache.c
-@@ -131,7 +131,7 @@ void icache_disable(void)
- 	mtspr(SPR_SR, mfspr(SPR_SR) & ~SPR_SR_ICE);
- }
+diff --git a/arch/arm/boards/edb93xx/flash_cfg.c b/arch/arm/boards/edb93xx/flash_cfg.c
+index 6b742f967c..8400db69de 100644
+--- a/arch/arm/boards/edb93xx/flash_cfg.c
++++ b/arch/arm/boards/edb93xx/flash_cfg.c
+@@ -11,6 +11,9 @@
+ 				SMC_BCR_BLE | 2 << SMC_BCR_WST2_SHIFT | \
+ 				1 << SMC_BCR_MW_SHIFT)
  
--int cache_init(void)
-+static int cache_init(void)
++/* Called from assembly */
++void flash_cfg(void);
++
+ void flash_cfg(void)
  {
- 	if (mfspr(SPR_UPR) & SPR_UPR_ICP) {
- 		icache_disable();
-diff --git a/arch/openrisc/lib/cpuinfo.c b/arch/openrisc/lib/cpuinfo.c
-index 4c52a65421..d94178ea59 100644
---- a/arch/openrisc/lib/cpuinfo.c
-+++ b/arch/openrisc/lib/cpuinfo.c
-@@ -95,7 +95,7 @@ static void cpu_implementation(ulong vr2, char *string)
- 	}
- }
+ 	struct smc_regs *smc = (struct smc_regs *)SMC_BASE;
+diff --git a/arch/arm/boards/edb93xx/pll_cfg.c b/arch/arm/boards/edb93xx/pll_cfg.c
+index 1f03acf915..1a1c01aba2 100644
+--- a/arch/arm/boards/edb93xx/pll_cfg.c
++++ b/arch/arm/boards/edb93xx/pll_cfg.c
+@@ -9,6 +9,9 @@
+ #include "pll_cfg.h"
+ #include "early_udelay.h"
  
--int checkcpu(void)
-+static int checkcpu(void)
++/* Called from assembly */
++void pll_cfg(void);
++
+ void pll_cfg(void)
  {
- 	ulong upr = mfspr(SPR_UPR);
- 	ulong vr = mfspr(SPR_VR);
+ 	struct syscon_regs *syscon = (struct syscon_regs *)SYSCON_BASE;
+diff --git a/arch/arm/boards/edb93xx/sdram_cfg.c b/arch/arm/boards/edb93xx/sdram_cfg.c
+index a9f591f197..3cee834910 100644
+--- a/arch/arm/boards/edb93xx/sdram_cfg.c
++++ b/arch/arm/boards/edb93xx/sdram_cfg.c
+@@ -17,6 +17,9 @@ static void precharge_all_banks(void);
+ static void setup_refresh_timer(void);
+ static void program_mode_registers(void);
+ 
++/* Called from assembly */
++void sdram_cfg(void);
++
+ void sdram_cfg(void)
+ {
+ 	struct sdram_regs *sdram = (struct sdram_regs *)SDRAM_BASE;
+diff --git a/arch/arm/mach-ep93xx/header.c b/arch/arm/mach-ep93xx/header.c
+index 4e6a2e57c8..a9dde2d8b0 100644
+--- a/arch/arm/mach-ep93xx/header.c
++++ b/arch/arm/mach-ep93xx/header.c
+@@ -2,6 +2,8 @@
+ #include <linux/compiler.h>
+ #include <asm/barebox-arm-head.h>
+ 
++void go(void);
++
+ void __naked __section(.flash_header_start) go(void)
+ {
+         barebox_arm_head();
 -- 
 2.28.0
 
