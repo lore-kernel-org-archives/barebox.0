@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kI7Wy-0001uw-51
- for barebox@lists.infradead.org; Tue, 15 Sep 2020 09:45:44 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Tue, 15 Sep 2020 11:45:40 +0200
-Message-Id: <20200915094540.26840-1-u.kleine-koenig@pengutronix.de>
+ id 1kI5IR-00005Y-Em
+ for barebox@lists.infradead.org; Tue, 15 Sep 2020 07:22:36 +0000
+Date: Tue, 15 Sep 2020 09:22:33 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200915072233.GB4498@pengutronix.de>
+References: <20200914171707.30127-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200914171707.30127-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,31 +18,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] scripts/imx-usb-loader: Drop duplicate definition of ALIGN
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] ls: align file size correctly on non-ARM 64-bit platforms
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org
 
-VGhpcyBmaXhlczoKCglzY3JpcHRzL2lteC9pbXgtdXNiLWxvYWRlci5jOjQyOiB3YXJuaW5nOiAi
-QUxJR04iIHJlZGVmaW5lZAoJICNkZWZpbmUgQUxJR04oeCwgYSkgICAgICAgICgoKHgpICsgKGEp
-IC0gMSkgJiB+KChhKSAtIDEpKQoKCUluIGZpbGUgaW5jbHVkZWQgZnJvbSBzY3JpcHRzL2lteC9p
-bXgtdXNiLWxvYWRlci5jOjM1OgoJc2NyaXB0cy9pbmNsdWRlL2xpbnV4L2tlcm5lbC5oOjEwOiBu
-b3RlOiB0aGlzIGlzIHRoZSBsb2NhdGlvbiBvZiB0aGUgcHJldmlvdXMgZGVmaW5pdGlvbgoJICNk
-ZWZpbmUgQUxJR04oeCwgYSkgIF9fQUxJR05fTUFTSyh4LCAodHlwZW9mKHgpKShhKSAtIDEpCgpG
-aXhlczogYTg3NmQxNmU2YWQzICgic2NyaXB0czogZGVmaW5lIEFMSUdOKHgpIGluIHNjcmlwdHMn
-IDxsaW51eC9rZXJuZWwuaD4iKQpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5r
-bGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgotLS0KIHNjcmlwdHMvaW14L2lteC11c2ItbG9h
-ZGVyLmMgfCAyIC0tCiAxIGZpbGUgY2hhbmdlZCwgMiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQg
-YS9zY3JpcHRzL2lteC9pbXgtdXNiLWxvYWRlci5jIGIvc2NyaXB0cy9pbXgvaW14LXVzYi1sb2Fk
-ZXIuYwppbmRleCAyOGYzNDI2MzNkNDMuLmUyNzdkMjkwMzUyZSAxMDA2NDQKLS0tIGEvc2NyaXB0
-cy9pbXgvaW14LXVzYi1sb2FkZXIuYworKysgYi9zY3JpcHRzL2lteC9pbXgtdXNiLWxvYWRlci5j
-CkBAIC0zOSw4ICszOSw2IEBACiAKICNkZWZpbmUgZ2V0X21pbihhLCBiKSAoKChhKSA8IChiKSkg
-PyAoYSkgOiAoYikpCiAKLSNkZWZpbmUgQUxJR04oeCwgYSkgICAgICAgICgoKHgpICsgKGEpIC0g
-MSkgJiB+KChhKSAtIDEpKQotCiAjZGVmaW5lIEZUX0FQUAkweGFhCiAjZGVmaW5lIEZUX0NTRgkw
-eGNjCiAjZGVmaW5lIEZUX0RDRAkweGVlCi0tIAoyLjI3LjAKCgpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94
-QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9s
-aXN0aW5mby9iYXJlYm94Cg==
+On Mon, Sep 14, 2020 at 07:17:08PM +0200, Ahmad Fatoum wrote:
+> CONFIG_CPU_64 is ARM-specific. Use the generic CONFIG_64BIT instead
+> for aligning the file size.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+> Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+> ---
+>  commands/ls.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+
+Applied, thanks
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
