@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kI4zc-0005ff-QJ
- for barebox@lists.infradead.org; Tue, 15 Sep 2020 07:03:11 +0000
+ id 1kI4zj-0005j3-SD
+ for barebox@lists.infradead.org; Tue, 15 Sep 2020 07:03:17 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 15 Sep 2020 09:03:03 +0200
-Message-Id: <20200915070305.15763-5-s.hauer@pengutronix.de>
+Date: Tue, 15 Sep 2020 09:03:01 +0200
+Message-Id: <20200915070305.15763-3-s.hauer@pengutronix.de>
 In-Reply-To: <20200915070305.15763-1-s.hauer@pengutronix.de>
 References: <20200915070305.15763-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,77 +21,106 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/6] powerpc: Add prototypes for functions called from assembly
+Subject: [PATCH 2/6] powerpc: Add missing includes
 To: Barebox List <barebox@lists.infradead.org>
 
-Some functions are called from assembly only. There's no prototype
-for them so this leads to -Wmissing-prototypes warnings. Add a prototype
-right aboce the functions to avoid these warnings.
+Add missing includes to avoid -Wmissing-prototypes warnings.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/powerpc/boards/pcm030/pcm030.c  | 3 +++
- arch/powerpc/lib/board.c             | 3 +++
- arch/powerpc/mach-mpc85xx/cpu.c      | 3 +++
- arch/powerpc/mach-mpc85xx/cpu_init.c | 3 +++
- 4 files changed, 12 insertions(+)
+ arch/powerpc/boards/freescale-p1010rdb/p1010rdb.c | 2 ++
+ arch/powerpc/boards/freescale-p1022ds/p1022ds.c   | 2 ++
+ arch/powerpc/mach-mpc5xxx/reginfo.c               | 1 +
+ arch/powerpc/mach-mpc5xxx/speed.c                 | 1 +
+ arch/powerpc/mach-mpc85xx/cpu.c                   | 1 +
+ arch/powerpc/mach-mpc85xx/cpuid.c                 | 1 +
+ arch/powerpc/mach-mpc85xx/fsl_i2c.c               | 1 +
+ 7 files changed, 9 insertions(+)
 
-diff --git a/arch/powerpc/boards/pcm030/pcm030.c b/arch/powerpc/boards/pcm030/pcm030.c
-index 330d29868e..c603643d58 100644
---- a/arch/powerpc/boards/pcm030/pcm030.c
-+++ b/arch/powerpc/boards/pcm030/pcm030.c
-@@ -143,6 +143,9 @@ static void sdram_start (int hi_addr)
- 	__asm__ volatile ("sync");
- }
+diff --git a/arch/powerpc/boards/freescale-p1010rdb/p1010rdb.c b/arch/powerpc/boards/freescale-p1010rdb/p1010rdb.c
+index b163327597..f2f6d00b77 100644
+--- a/arch/powerpc/boards/freescale-p1010rdb/p1010rdb.c
++++ b/arch/powerpc/boards/freescale-p1010rdb/p1010rdb.c
+@@ -37,6 +37,8 @@
+ #include <mach/early_udelay.h>
+ #include <of.h>
  
-+/* Called from assembly */
-+void initdram(int board_type);
++#include "p1010rdb.h"
 +
- void initdram (int board_type)
- {
- 	ulong dramsize = 0;
-diff --git a/arch/powerpc/lib/board.c b/arch/powerpc/lib/board.c
-index 9031b37ada..a6111606b6 100644
---- a/arch/powerpc/lib/board.c
-+++ b/arch/powerpc/lib/board.c
-@@ -33,6 +33,9 @@
-  ************************************************************************
-  */
+ static struct gfar_info_struct gfar_info[] = {
+ 	{
+ 		.phyaddr = 1,
+diff --git a/arch/powerpc/boards/freescale-p1022ds/p1022ds.c b/arch/powerpc/boards/freescale-p1022ds/p1022ds.c
+index d80c234ea9..956b830c5d 100644
+--- a/arch/powerpc/boards/freescale-p1022ds/p1022ds.c
++++ b/arch/powerpc/boards/freescale-p1022ds/p1022ds.c
+@@ -34,6 +34,8 @@
+ #include <mach/clock.h>
+ #include <mach/early_udelay.h>
  
-+/* Called from assembly */
-+void board_init_r (ulong end_of_ram);
++#include "p1022ds.h"
 +
- void board_init_r (ulong end_of_ram)
- {
- 	unsigned long malloc_end;
+ /* Define attributes for eTSEC1 and eTSEC2 */
+ static struct gfar_info_struct gfar_info[] = {
+ 	{
+diff --git a/arch/powerpc/mach-mpc5xxx/reginfo.c b/arch/powerpc/mach-mpc5xxx/reginfo.c
+index e41d235a5d..8b646e7d04 100644
+--- a/arch/powerpc/mach-mpc5xxx/reginfo.c
++++ b/arch/powerpc/mach-mpc5xxx/reginfo.c
+@@ -1,4 +1,5 @@
+ #include <stdio.h>
++#include <common.h>
+ #include <config.h>
+ #include <mach/mpc5xxx.h>
+ #include <asm/io.h>
+diff --git a/arch/powerpc/mach-mpc5xxx/speed.c b/arch/powerpc/mach-mpc5xxx/speed.c
+index 0cec9522e5..8aa20bd373 100644
+--- a/arch/powerpc/mach-mpc5xxx/speed.c
++++ b/arch/powerpc/mach-mpc5xxx/speed.c
+@@ -19,6 +19,7 @@
+ #include <init.h>
+ #include <asm/processor.h>
+ #include <types.h>
++#include <mach/clock.h>
+ 
+ /* Bus-to-Core Multipliers */
+ 
 diff --git a/arch/powerpc/mach-mpc85xx/cpu.c b/arch/powerpc/mach-mpc85xx/cpu.c
-index 1d5a69c999..a5241b82a7 100644
+index 7c8a59edc9..1d5a69c999 100644
 --- a/arch/powerpc/mach-mpc85xx/cpu.c
 +++ b/arch/powerpc/mach-mpc85xx/cpu.c
-@@ -49,6 +49,9 @@ static int restart_register_feature(void)
- }
- coredevice_initcall(restart_register_feature);
+@@ -28,6 +28,7 @@
+ #include <asm-generic/memory_layout.h>
+ #include <mach/mmu.h>
+ #include <mach/immap_85xx.h>
++#include <mach/mpc85xx.h>
  
-+/* Called from assembly */
-+long int initdram(int board_type);
-+
- long int initdram(int board_type)
+ static void __noreturn mpc85xx_restart_soc(struct restart_handler *rst)
  {
- 	phys_size_t dram_size = 0;
-diff --git a/arch/powerpc/mach-mpc85xx/cpu_init.c b/arch/powerpc/mach-mpc85xx/cpu_init.c
-index b9eadfadfd..3259945fda 100644
---- a/arch/powerpc/mach-mpc85xx/cpu_init.c
-+++ b/arch/powerpc/mach-mpc85xx/cpu_init.c
-@@ -184,6 +184,9 @@ static void fsl_erratum_p1010_a003549(void)
- static void fsl_erratum_p1010_a003549(void) {}
- #endif
+diff --git a/arch/powerpc/mach-mpc85xx/cpuid.c b/arch/powerpc/mach-mpc85xx/cpuid.c
+index ae82e3fd3f..28f08ca292 100644
+--- a/arch/powerpc/mach-mpc85xx/cpuid.c
++++ b/arch/powerpc/mach-mpc85xx/cpuid.c
+@@ -23,6 +23,7 @@
+ #include <asm/cache.h>
+ #include <asm/io.h>
+ #include <mach/immap_85xx.h>
++#include <mach/mpc85xx.h>
  
-+/* Called from assembly */
-+void cpu_init_early_f(void);
-+
- void cpu_init_early_f(void)
- {
- 	u32 mas0, mas1, mas2, mas3, mas7;
+ struct cpu_type cpu_type_list[] = {
+ 	CPU_TYPE_ENTRY(8544, 8544, 1),
+diff --git a/arch/powerpc/mach-mpc85xx/fsl_i2c.c b/arch/powerpc/mach-mpc85xx/fsl_i2c.c
+index 51fcc64c26..8cf80713f6 100644
+--- a/arch/powerpc/mach-mpc85xx/fsl_i2c.c
++++ b/arch/powerpc/mach-mpc85xx/fsl_i2c.c
+@@ -21,6 +21,7 @@
+ #include <mach/clock.h>
+ #include <mach/immap_85xx.h>
+ #include <mach/early_udelay.h>
++#include <mach/fsl_i2c.h>
+ 
+ /* FSL I2C registers */
+ #define FSL_I2C_ADR	0x00
 -- 
 2.28.0
 
