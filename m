@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kI9W8-00043L-AR
- for barebox@lists.infradead.org; Tue, 15 Sep 2020 11:53:01 +0000
-From: Roland Hieber <rhi@pengutronix.de>
-Date: Tue, 15 Sep 2020 13:52:47 +0200
-Message-Id: <20200915115247.30015-1-rhi@pengutronix.de>
+ id 1kI9iU-0005UH-0w
+ for barebox@lists.infradead.org; Tue, 15 Sep 2020 12:05:46 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue, 15 Sep 2020 14:05:41 +0200
+Message-Id: <20200915120541.22508-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20200602075757.4734-2-a.fatoum@pengutronix.de>
+References: <20200602075757.4734-2-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,36 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mci: bcm2835: depend on sdhci
-To: Barebox Mailing List <barebox@lists.infradead.org>
-Cc: Roland Hieber <rhi@pengutronix.de>
+Subject: [PATCH] fixup! restart: give all restart handlers a descriptive name
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The driver uses functions defined in sdhci.o, and will fail to build
-otherwise:
+As suggested by Sascha, allow users to pass automatically allocated
+name.
 
-    drivers/mci/mci-bcm2835.o: in function `bcm2835_mci_request':
-    drivers/mci/mci-bcm2835.c:134: undefined reference to `sdhci_set_cmd_xfer_mode'
-    arm-v5te-linux-gnueabi-ld: drivers/mci/mci-bcm2835.c:169: undefined reference to `sdhci_read_response'
-    arm-v5te-linux-gnueabi-ld: drivers/mci/mci-bcm2835.c:175: undefined reference to `sdhci_transfer_data'
-
-Fixes: f8dffc9338dc2c7ae830 (2019-11-19, "mci: bcm2835: Use sdhci_set_cmd_xfer_mode()")
-Signed-off-by: Roland Hieber <rhi@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/mci/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ common/restart.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
-index f7dc5c508912..09c056928627 100644
---- a/drivers/mci/Kconfig
-+++ b/drivers/mci/Kconfig
-@@ -69,6 +69,7 @@ config MCI_S3C
- config MCI_BCM283X
- 	bool "MCI support for BCM283X"
- 	depends on ARCH_BCM283X || COMPILE_TEST
-+	select MCI_SDHCI
+diff --git a/common/restart.c b/common/restart.c
+index 3791337a7505..7bd39de8c318 100644
+--- a/common/restart.c
++++ b/common/restart.c
+@@ -64,7 +64,7 @@ int restart_handler_register_fn(const char *name,
  
- config MCI_BCM283X_SDHOST
- 	bool "BCM283X sdhost"
+ 	rst = xzalloc(sizeof(*rst));
+ 
+-	rst->name = name;
++	rst->name = xstrdup(name);
+ 	rst->restart = restart_fn;
+ 
+ 	ret = restart_handler_register(rst);
 -- 
 2.28.0
 
