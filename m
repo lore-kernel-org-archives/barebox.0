@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kIA1m-0007hP-7W
+ id 1kIA1m-0007hN-7Z
  for barebox@lists.infradead.org; Tue, 15 Sep 2020 12:25:44 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 15 Sep 2020 14:25:32 +0200
-Message-Id: <20200915122539.18744-4-s.hauer@pengutronix.de>
-In-Reply-To: <20200915122539.18744-1-s.hauer@pengutronix.de>
-References: <20200915122539.18744-1-s.hauer@pengutronix.de>
+Date: Tue, 15 Sep 2020 14:25:29 +0200
+Message-Id: <20200915122539.18744-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,48 +19,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/10] openrisc: Add prototypes for functions called from
- assembly
+Subject: [PATCH 00/10] Compiler warning fixes
 To: Barebox List <barebox@lists.infradead.org>
 
-Some functions are called from assembly only. There's no prototype
-for them so this leads to -Wmissing-prototypes warnings. Add a prototype
-right aboce the functions to avoid these warnings.
+This contains a bunch of annoying compiler warnings.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/openrisc/cpu/exceptions.c | 3 +++
- arch/openrisc/lib/board.c      | 3 +++
- 2 files changed, 6 insertions(+)
+Sascha Hauer (10):
+  ARM: dts: beaglebone: Remove unnecessary tps65217.dtsi
+  arm: Add prototypes for functions called from assembly
+  openrisc: Add prototypes for functions called from assembly
+  ARM: tx28: provide header file with function prototype
+  ARM: tegra20-colibri-iris: drop regulators node
+  ARM: versatile: Remove unused function
+  openrisc: Add missing includes
+  openrisc: Make locally used functions static
+  scripts: tegra: Add missing include
+  ARM: zync: Fix include path
 
-diff --git a/arch/openrisc/cpu/exceptions.c b/arch/openrisc/cpu/exceptions.c
-index d01fbfbb1c..4c52feb51c 100644
---- a/arch/openrisc/cpu/exceptions.c
-+++ b/arch/openrisc/cpu/exceptions.c
-@@ -69,6 +69,9 @@ static void exception_hang(int vect)
- 	hang();
- }
- 
-+/* Called from assembly */
-+void exception_handler(int vect);
-+
- void exception_handler(int vect)
- {
- 	int exception = vect >> 8;
-diff --git a/arch/openrisc/lib/board.c b/arch/openrisc/lib/board.c
-index 67ea96fc02..9591120fee 100644
---- a/arch/openrisc/lib/board.c
-+++ b/arch/openrisc/lib/board.c
-@@ -19,6 +19,9 @@
- #include <memory.h>
- #include <asm-generic/memory_layout.h>
- 
-+/* Called from assembly */
-+void openrisc_start_barebox(void);
-+
- void __noreturn openrisc_start_barebox(void)
- {
- 	mem_malloc_init((void *)(OPENRISC_SOPC_TEXT_BASE - MALLOC_SIZE),
+ arch/arm/boards/edb93xx/flash_cfg.c   |  3 ++
+ arch/arm/boards/edb93xx/pll_cfg.c     |  3 ++
+ arch/arm/boards/edb93xx/sdram_cfg.c   |  3 ++
+ arch/arm/boards/karo-tx28/tx28-stk5.c |  2 +
+ arch/arm/boards/karo-tx28/tx28.c      |  4 +-
+ arch/arm/boards/karo-tx28/tx28.h      |  3 ++
+ arch/arm/dts/tegra20-colibri-iris.dts | 36 ++++++++---------
+ arch/arm/dts/tps65217.dtsi            | 56 ---------------------------
+ arch/arm/mach-ep93xx/header.c         |  2 +
+ arch/arm/mach-versatile/core.c        | 13 -------
+ arch/openrisc/cpu/cache.c             |  3 +-
+ arch/openrisc/cpu/exceptions.c        |  4 ++
+ arch/openrisc/lib/board.c             |  3 ++
+ arch/openrisc/lib/cpuinfo.c           |  2 +-
+ images/Makefile.zynq                  |  2 +-
+ scripts/tegra/context.c               |  1 +
+ 16 files changed, 46 insertions(+), 94 deletions(-)
+ create mode 100644 arch/arm/boards/karo-tx28/tx28.h
+ delete mode 100644 arch/arm/dts/tps65217.dtsi
+
 -- 
 2.28.0
 
