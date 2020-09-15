@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kI5RQ-0001e5-Cz
- for barebox@lists.infradead.org; Tue, 15 Sep 2020 07:31:53 +0000
-Date: Tue, 15 Sep 2020 09:31:50 +0200
+ id 1kI5Sy-0001pp-6V
+ for barebox@lists.infradead.org; Tue, 15 Sep 2020 07:33:28 +0000
+Date: Tue, 15 Sep 2020 09:33:26 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200915073150.GD4498@pengutronix.de>
-References: <20200914152711.3693-1-a.fatoum@pengutronix.de>
+Message-ID: <20200915073326.GE4498@pengutronix.de>
+References: <20200914160208.14747-1-ysionneau@kalray.eu>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200914152711.3693-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20200914160208.14747-1-ysionneau@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,27 +22,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] boot: ignore all spaces between boot targets
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] mci: fix wrong sd/mmc/emmc card size computation for
+ arch where char is signed
+To: Yann Sionneau <ysionneau@kalray.eu>
 Cc: barebox@lists.infradead.org
 
-On Mon, Sep 14, 2020 at 05:27:10PM +0200, Ahmad Fatoum wrote:
-> Boot targets are split by space. strsep unlike strtok(_r) returns an
-> empty string for each pair of consecutive delimiters. Ignore this case.
+On Mon, Sep 14, 2020 at 06:02:08PM +0200, Yann Sionneau wrote:
+> char type can be either signed or unsigned according to C standard.
+> If your arch has signed char, this kind of computation will end up wrong
+> because of sign extension:
 > 
-> Note that this changes behavior: previously both
-> 	boot ''
-> 	global.boot.default= boot
+> https://git.pengutronix.de/cgit/barebox/tree/drivers/mci/mci-core.c#n869
 > 
-> were identical to
-> 	boot /env/boot
+> mci->capacity = mci->ext_csd[EXT_CSD_SEC_COUNT] << 0 |
+> 		mci->ext_csd[EXT_CSD_SEC_COUNT + 1] << 8 |
+> 		mci->ext_csd[EXT_CSD_SEC_COUNT + 2] << 16 |
+> 		mci->ext_csd[EXT_CSD_SEC_COUNT + 3] << 24;
 > 
-> With this change, this is no longer the case.
+> Turning the ext_csd field into u8 * fixes the issue.
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Signed-off-by: Yann Sionneau <ysionneau@kalray.eu>
 > ---
->  commands/boot.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  include/mci.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
 Applied, thanks
 
