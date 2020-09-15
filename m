@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kIA21-0007ng-U4
- for barebox@lists.infradead.org; Tue, 15 Sep 2020 12:25:59 +0000
+ id 1kIA29-0007rE-Sl
+ for barebox@lists.infradead.org; Tue, 15 Sep 2020 12:26:06 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 15 Sep 2020 14:25:33 +0200
-Message-Id: <20200915122539.18744-5-s.hauer@pengutronix.de>
+Date: Tue, 15 Sep 2020 14:25:36 +0200
+Message-Id: <20200915122539.18744-8-s.hauer@pengutronix.de>
 In-Reply-To: <20200915122539.18744-1-s.hauer@pengutronix.de>
 References: <20200915122539.18744-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,64 +21,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/10] ARM: tx28: provide header file with function prototype
+Subject: [PATCH 07/10] openrisc: Add missing includes
 To: Barebox List <barebox@lists.infradead.org>
 
-base_board_init() doesn't have a prototype anywhere, add a header file
-for it.
+Add missing includes to avoid -Wmissing-prototypes warnings.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/karo-tx28/tx28-stk5.c | 2 ++
- arch/arm/boards/karo-tx28/tx28.c      | 4 ++--
- arch/arm/boards/karo-tx28/tx28.h      | 3 +++
- 3 files changed, 7 insertions(+), 2 deletions(-)
- create mode 100644 arch/arm/boards/karo-tx28/tx28.h
+ arch/openrisc/cpu/cache.c      | 1 +
+ arch/openrisc/cpu/exceptions.c | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/arch/arm/boards/karo-tx28/tx28-stk5.c b/arch/arm/boards/karo-tx28/tx28-stk5.c
-index c9b947953b..56211d7a3a 100644
---- a/arch/arm/boards/karo-tx28/tx28-stk5.c
-+++ b/arch/arm/boards/karo-tx28/tx28-stk5.c
-@@ -22,6 +22,8 @@
- #include <mach/iomux.h>
- #include <generated/mach-types.h>
+diff --git a/arch/openrisc/cpu/cache.c b/arch/openrisc/cpu/cache.c
+index 1da2380c03..db6403634a 100644
+--- a/arch/openrisc/cpu/cache.c
++++ b/arch/openrisc/cpu/cache.c
+@@ -17,6 +17,7 @@
+ #include <common.h>
+ #include <init.h>
+ #include <asm/system.h>
++#include <asm/cache.h>
  
-+#include "tx28.h"
-+
- static struct mxs_mci_platform_data mci_pdata = {
- 	.caps = MMC_CAP_4_BIT_DATA,
- 	.voltages = MMC_VDD_32_33 | MMC_VDD_33_34,	/* fixed to 3.3 V */
-diff --git a/arch/arm/boards/karo-tx28/tx28.c b/arch/arm/boards/karo-tx28/tx28.c
-index 52f74b5f36..8bd2252410 100644
---- a/arch/arm/boards/karo-tx28/tx28.c
-+++ b/arch/arm/boards/karo-tx28/tx28.c
-@@ -15,6 +15,8 @@
- #include <mach/iomux.h>
- #include <asm/mmu.h>
- 
-+#include "tx28.h"
-+
- /* setup the CPU card internal signals */
- static const uint32_t tx28_pad_setup[] = {
- 	/* NAND interface */
-@@ -61,8 +63,6 @@ static const uint32_t tx28_pad_setup[] = {
- 
- };
- 
--extern void base_board_init(void);
--
- static int tx28_devices_init(void)
+ void flush_dcache_range(unsigned long addr, unsigned long stop)
  {
- 	int i;
-diff --git a/arch/arm/boards/karo-tx28/tx28.h b/arch/arm/boards/karo-tx28/tx28.h
-new file mode 100644
-index 0000000000..5fb1e13412
---- /dev/null
-+++ b/arch/arm/boards/karo-tx28/tx28.h
-@@ -0,0 +1,3 @@
-+
-+void base_board_init(void);
-+
+diff --git a/arch/openrisc/cpu/exceptions.c b/arch/openrisc/cpu/exceptions.c
+index 4c52feb51c..c69ceafe80 100644
+--- a/arch/openrisc/cpu/exceptions.c
++++ b/arch/openrisc/cpu/exceptions.c
+@@ -16,6 +16,7 @@
+ 
+ #include <common.h>
+ #include <asm/system.h>
++#include <asm/openrisc_exc.h>
+ 
+ static const char * const excp_table[] = {
+ 	"Unknown exception",
 -- 
 2.28.0
 
