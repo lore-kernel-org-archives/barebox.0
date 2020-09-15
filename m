@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kIAPg-0004UE-RS
- for barebox@lists.infradead.org; Tue, 15 Sep 2020 12:50:25 +0000
-Date: Tue, 15 Sep 2020 14:50:23 +0200
+ id 1kIAXF-0005aY-Q0
+ for barebox@lists.infradead.org; Tue, 15 Sep 2020 12:58:14 +0000
+Date: Tue, 15 Sep 2020 14:58:11 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200915125023.GN4498@pengutronix.de>
-References: <20200914205259.834746-1-ahmad@a3f.at>
+Message-ID: <20200915125811.GO4498@pengutronix.de>
+References: <20200909193650.347646-1-trent.piepho@synapse.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200914205259.834746-1-ahmad@a3f.at>
+In-Reply-To: <20200909193650.347646-1-trent.piepho@synapse.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,24 +22,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: dts: stm32mp: drop no longer needed PSCI version
- override
-To: Ahmad Fatoum <ahmad@a3f.at>
+Subject: Re: [PATCH 1/4] aiodev: Name channels with device instance name
+To: Trent Piepho <trent.piepho@synapse.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Sep 14, 2020 at 10:52:59PM +0200, Ahmad Fatoum wrote:
-> 52cc061f50aa ("ARM: dts: stm32mp: report psci v0.2 at least") adds a
-> barebox override, because the upstream device tree's compatible was
-> outdated.  Since abef60363d8e ("dts: update to v5.8-rc1"), the
-> upstream device tree has &{/psci} { compatible = "arm,psci-1.0"; }; ,
-> so now we can drop our override again without adverse effect.
+On Wed, Sep 09, 2020 at 12:36:47PM -0700, Trent Piepho wrote:
+> When dynamically assigning device names, an aiodev's name will be
+> "aiodev" and an index, not part of the name string itself, will be
+> allocated dynamically.  These are combined to register a device with a
+> name like "aiodev0" or "aiodev1".
 > 
-> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+> The shell environment variables use the device name, so one might use
+> "${aiodev0.in_value0_mV}" and "${aiodev1.in_value0_mV}".
+> 
+> However, the channel names that are used with aiochannel_get_by_name()
+> just use the aiodev's name and channel name.  So channel 0 of the 1st
+> aiodev would be "aiodev.in_value0_mV" and the 2nd aiodev would use the
+> same name.
+> 
+> Change the channel naming to use the device instance name, e.g.
+> "aiodev0", rather than the aiodev's base name.  This makes the names
+> used aiochannel_get_by_name() match the environment variable names and
+> also avoids duplicate names with more than one dynamically allocated
+> aiodev.
+> 
+> Signed-off-by: Trent Piepho <trent.piepho@synapse.com>
 > ---
->  arch/arm/dts/stm32mp151.dtsi | 4 ----
->  1 file changed, 4 deletions(-)
+>  drivers/aiodev/core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Applied, thanks
+Looks good to go from my side, so with Ahmads comments fixed we can
+merge this series.
 
 Sascha
 
