@@ -1,17 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kI58U-0007aJ-0v
- for barebox@lists.infradead.org; Tue, 15 Sep 2020 07:12:18 +0000
-Date: Tue, 15 Sep 2020 09:12:15 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200915071215.GZ4498@pengutronix.de>
-References: <20200914130640.21416-1-s.hauer@pengutronix.de>
- <20200914130640.21416-4-s.hauer@pengutronix.de>
- <da8f70a1-921f-ad94-ffb1-855eb4004f86@pengutronix.de>
+ id 1kI7Wy-0001uw-51
+ for barebox@lists.infradead.org; Tue, 15 Sep 2020 09:45:44 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Tue, 15 Sep 2020 11:45:40 +0200
+Message-Id: <20200915094540.26840-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <da8f70a1-921f-ad94-ffb1-855eb4004f86@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,48 +15,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/4] fs: free unused dentries
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] scripts/imx-usb-loader: Drop duplicate definition of ALIGN
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Tue, Sep 15, 2020 at 07:25:15AM +0200, Ahmad Fatoum wrote:
-> Hello Sascha,
-> 
-> On 9/14/20 3:06 PM, Sascha Hauer wrote:
-> > So far we only ever freed dentries when the filesystem they are on is
-> > unmounted. With this patch we actually trust reference counting and free
-> > the dentries once the reference count hits zero.
-> 
-> Unless I revert this patch, I run into a crash doing:
-> 
-> dd if=/dev/zero of=barebox.env count=1
-> ./barebox --image=barebox.env
-> barebox@barebox sandbox:/ saveenv
-> saving environment
-
-"saveenv" answers with: "saveenv: No such file or directory". Did you
-mean to do a "saveenv /dev/fd0"?
-
-> barebox@barebox sandbox:/ reset
-> =================================================================
-> ==894761==ERROR: AddressSanitizer: heap-use-after-free on address 0x60e000005d70 at pc 0x5617cfde210a bp 0x7ffff89957d0 sp 0x7ffff89957c8
-
-I can't reproduce this here unfortunately.
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhpcyBmaXhlczoKCglzY3JpcHRzL2lteC9pbXgtdXNiLWxvYWRlci5jOjQyOiB3YXJuaW5nOiAi
+QUxJR04iIHJlZGVmaW5lZAoJICNkZWZpbmUgQUxJR04oeCwgYSkgICAgICAgICgoKHgpICsgKGEp
+IC0gMSkgJiB+KChhKSAtIDEpKQoKCUluIGZpbGUgaW5jbHVkZWQgZnJvbSBzY3JpcHRzL2lteC9p
+bXgtdXNiLWxvYWRlci5jOjM1OgoJc2NyaXB0cy9pbmNsdWRlL2xpbnV4L2tlcm5lbC5oOjEwOiBu
+b3RlOiB0aGlzIGlzIHRoZSBsb2NhdGlvbiBvZiB0aGUgcHJldmlvdXMgZGVmaW5pdGlvbgoJICNk
+ZWZpbmUgQUxJR04oeCwgYSkgIF9fQUxJR05fTUFTSyh4LCAodHlwZW9mKHgpKShhKSAtIDEpCgpG
+aXhlczogYTg3NmQxNmU2YWQzICgic2NyaXB0czogZGVmaW5lIEFMSUdOKHgpIGluIHNjcmlwdHMn
+IDxsaW51eC9rZXJuZWwuaD4iKQpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5r
+bGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgotLS0KIHNjcmlwdHMvaW14L2lteC11c2ItbG9h
+ZGVyLmMgfCAyIC0tCiAxIGZpbGUgY2hhbmdlZCwgMiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQg
+YS9zY3JpcHRzL2lteC9pbXgtdXNiLWxvYWRlci5jIGIvc2NyaXB0cy9pbXgvaW14LXVzYi1sb2Fk
+ZXIuYwppbmRleCAyOGYzNDI2MzNkNDMuLmUyNzdkMjkwMzUyZSAxMDA2NDQKLS0tIGEvc2NyaXB0
+cy9pbXgvaW14LXVzYi1sb2FkZXIuYworKysgYi9zY3JpcHRzL2lteC9pbXgtdXNiLWxvYWRlci5j
+CkBAIC0zOSw4ICszOSw2IEBACiAKICNkZWZpbmUgZ2V0X21pbihhLCBiKSAoKChhKSA8IChiKSkg
+PyAoYSkgOiAoYikpCiAKLSNkZWZpbmUgQUxJR04oeCwgYSkgICAgICAgICgoKHgpICsgKGEpIC0g
+MSkgJiB+KChhKSAtIDEpKQotCiAjZGVmaW5lIEZUX0FQUAkweGFhCiAjZGVmaW5lIEZUX0NTRgkw
+eGNjCiAjZGVmaW5lIEZUX0RDRAkweGVlCi0tIAoyLjI3LjAKCgpfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94
+QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9s
+aXN0aW5mby9iYXJlYm94Cg==
