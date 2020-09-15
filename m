@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kIA3U-0008Lp-74
- for barebox@lists.infradead.org; Tue, 15 Sep 2020 12:27:36 +0000
-Date: Tue, 15 Sep 2020 14:27:26 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200915122726.GF4498@pengutronix.de>
-References: <20200915094540.26840-1-u.kleine-koenig@pengutronix.de>
+ id 1kI86z-00056B-Hr
+ for barebox@lists.infradead.org; Tue, 15 Sep 2020 10:22:58 +0000
+Date: Tue, 15 Sep 2020 12:22:47 +0200
+From: Roland Hieber <rhi@pengutronix.de>
+Message-ID: <20200915102247.ltdgdajif6dwgrle@pengutronix.de>
+References: <20200915094417.957978-1-ahmad@a3f.at>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200915094540.26840-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20200915094417.957978-1-ahmad@a3f.at>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,46 +18,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] scripts/imx-usb-loader: Drop duplicate definition of ALIGN
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH v2] regulator: provide regulator_get_name() stub for
+ !CONFIG_REGULATOR
+To: Ahmad Fatoum <ahmad@a3f.at>
+Cc: barebox@lists.infradead.org
 
-On Tue, Sep 15, 2020 at 11:45:40AM +0200, Uwe Kleine-K=F6nig wrote:
-> This fixes:
-> =
+On Tue, Sep 15, 2020 at 11:44:17AM +0200, Ahmad Fatoum wrote:
+> Otherwise users of this function run into a link error when regulator
+> support is compiled out.
+> 
+> Reported-by: Roland Hieber <rhi@pengutronix.de>
+> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 
-> 	scripts/imx/imx-usb-loader.c:42: warning: "ALIGN" redefined
-> 	 #define ALIGN(x, a)        (((x) + (a) - 1) & ~((a) - 1))
-> =
+Thanks!
+Tested-by: Roland Hieber <rhi@pengutronix.de>
 
-> 	In file included from scripts/imx/imx-usb-loader.c:35:
-> 	scripts/include/linux/kernel.h:10: note: this is the location of the pre=
-vious definition
-> 	 #define ALIGN(x, a)  __ALIGN_MASK(x, (typeof(x))(a) - 1)
-> =
-
-> Fixes: a876d16e6ad3 ("scripts: define ALIGN(x) in scripts' <linux/kernel.=
-h>")
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
 > ---
->  scripts/imx/imx-usb-loader.c | 2 --
->  1 file changed, 2 deletions(-)
+> Forgot to commit a deleted semicolon..
+> ---
+>  include/regulator.h | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/include/regulator.h b/include/regulator.h
+> index 12d8e816cdb1..a9cb6dedca5e 100644
+> --- a/include/regulator.h
+> +++ b/include/regulator.h
+> @@ -175,6 +175,11 @@ static inline struct regulator *regulator_get(struct device_d *dev, const char *
+>  	return NULL;
+>  }
+>  
+> +static inline struct regulator *regulator_get_name(const char *name)
+> +{
+> +	return NULL;
+> +}
+> +
+>  static inline int regulator_enable(struct regulator *r)
+>  {
+>  	return 0;
+> -- 
+> 2.28.0
+> 
+> 
 
-Applied, thanks
-
-Sascha
-
-
--- =
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+-- 
+Roland Hieber, Pengutronix e.K.          | r.hieber@pengutronix.de     |
+Steuerwalder Str. 21                     | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686         | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
