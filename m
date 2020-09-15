@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kIA1m-0007hO-7V
- for barebox@lists.infradead.org; Tue, 15 Sep 2020 12:25:43 +0000
+ id 1kIA1m-0007hP-7W
+ for barebox@lists.infradead.org; Tue, 15 Sep 2020 12:25:44 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 15 Sep 2020 14:25:38 +0200
-Message-Id: <20200915122539.18744-10-s.hauer@pengutronix.de>
+Date: Tue, 15 Sep 2020 14:25:32 +0200
+Message-Id: <20200915122539.18744-4-s.hauer@pengutronix.de>
 In-Reply-To: <20200915122539.18744-1-s.hauer@pengutronix.de>
 References: <20200915122539.18744-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,29 +21,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/10] scripts: tegra: Add missing include
+Subject: [PATCH 03/10] openrisc: Add prototypes for functions called from
+ assembly
 To: Barebox List <barebox@lists.infradead.org>
 
-Include context.h to get the prototypes for the functions defined in
-context.c
+Some functions are called from assembly only. There's no prototype
+for them so this leads to -Wmissing-prototypes warnings. Add a prototype
+right aboce the functions to avoid these warnings.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- scripts/tegra/context.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/openrisc/cpu/exceptions.c | 3 +++
+ arch/openrisc/lib/board.c      | 3 +++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/scripts/tegra/context.c b/scripts/tegra/context.c
-index 9d2fb27dc9..47e65d570b 100644
---- a/scripts/tegra/context.c
-+++ b/scripts/tegra/context.c
-@@ -17,6 +17,7 @@
- #include "cbootimage.h"
- #include "data_layout.h"
- #include "set.h"
-+#include "context.h"
+diff --git a/arch/openrisc/cpu/exceptions.c b/arch/openrisc/cpu/exceptions.c
+index d01fbfbb1c..4c52feb51c 100644
+--- a/arch/openrisc/cpu/exceptions.c
++++ b/arch/openrisc/cpu/exceptions.c
+@@ -69,6 +69,9 @@ static void exception_hang(int vect)
+ 	hang();
+ }
  
- void
- cleanup_context(build_image_context *context)
++/* Called from assembly */
++void exception_handler(int vect);
++
+ void exception_handler(int vect)
+ {
+ 	int exception = vect >> 8;
+diff --git a/arch/openrisc/lib/board.c b/arch/openrisc/lib/board.c
+index 67ea96fc02..9591120fee 100644
+--- a/arch/openrisc/lib/board.c
++++ b/arch/openrisc/lib/board.c
+@@ -19,6 +19,9 @@
+ #include <memory.h>
+ #include <asm-generic/memory_layout.h>
+ 
++/* Called from assembly */
++void openrisc_start_barebox(void);
++
+ void __noreturn openrisc_start_barebox(void)
+ {
+ 	mem_malloc_init((void *)(OPENRISC_SOPC_TEXT_BASE - MALLOC_SIZE),
 -- 
 2.28.0
 
