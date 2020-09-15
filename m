@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kIA1m-0007hR-7a
+ id 1kIA1m-0007hM-7X
  for barebox@lists.infradead.org; Tue, 15 Sep 2020 12:25:44 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 15 Sep 2020 14:25:39 +0200
-Message-Id: <20200915122539.18744-11-s.hauer@pengutronix.de>
+Date: Tue, 15 Sep 2020 14:25:37 +0200
+Message-Id: <20200915122539.18744-9-s.hauer@pengutronix.de>
 In-Reply-To: <20200915122539.18744-1-s.hauer@pengutronix.de>
 References: <20200915122539.18744-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,31 +21,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/10] ARM: zync: Fix include path
+Subject: [PATCH 08/10] openrisc: Make locally used functions static
 To: Barebox List <barebox@lists.infradead.org>
 
-When building out of tree we must explicitly include an absolute path
-starting with $(srctree) as a relative path would be relative to
-$(objtree).
+Make only locally used functions static to avoid -Wmissing-prototypes
+warnings.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- images/Makefile.zynq | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/openrisc/cpu/cache.c   | 2 +-
+ arch/openrisc/lib/cpuinfo.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/images/Makefile.zynq b/images/Makefile.zynq
-index 062496ac7d..b00e748697 100644
---- a/images/Makefile.zynq
-+++ b/images/Makefile.zynq
-@@ -3,7 +3,7 @@
- #
+diff --git a/arch/openrisc/cpu/cache.c b/arch/openrisc/cpu/cache.c
+index db6403634a..a124d6612c 100644
+--- a/arch/openrisc/cpu/cache.c
++++ b/arch/openrisc/cpu/cache.c
+@@ -131,7 +131,7 @@ void icache_disable(void)
+ 	mtspr(SPR_SR, mfspr(SPR_SR) & ~SPR_SR_ICE);
+ }
  
- zynqcfg_cpp_flags  = -Wp,-MD,$(depfile) -nostdinc -x assembler-with-cpp \
--                     -I arch/arm/mach-zynq/include
-+                     -I $(srctree)/arch/arm/mach-zynq/include
+-int cache_init(void)
++static int cache_init(void)
+ {
+ 	if (mfspr(SPR_UPR) & SPR_UPR_ICP) {
+ 		icache_disable();
+diff --git a/arch/openrisc/lib/cpuinfo.c b/arch/openrisc/lib/cpuinfo.c
+index 4c52a65421..d94178ea59 100644
+--- a/arch/openrisc/lib/cpuinfo.c
++++ b/arch/openrisc/lib/cpuinfo.c
+@@ -95,7 +95,7 @@ static void cpu_implementation(ulong vr2, char *string)
+ 	}
+ }
  
- zynqcfg-tmp = $(subst $(comma),_,$(dot-target).zynqcfg.tmp)
- 
+-int checkcpu(void)
++static int checkcpu(void)
+ {
+ 	ulong upr = mfspr(SPR_UPR);
+ 	ulong vr = mfspr(SPR_VR);
 -- 
 2.28.0
 
