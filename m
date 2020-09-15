@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kIADi-0001MY-Mg
- for barebox@lists.infradead.org; Tue, 15 Sep 2020 12:38:04 +0000
-Date: Tue, 15 Sep 2020 14:38:01 +0200
+ id 1kIANT-0003nq-Mv
+ for barebox@lists.infradead.org; Tue, 15 Sep 2020 12:48:08 +0000
+Date: Tue, 15 Sep 2020 14:48:06 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200915123801.GK4498@pengutronix.de>
-References: <20200915064722.17355-1-r.czerwinski@pengutronix.de>
+Message-ID: <20200915124806.GL4498@pengutronix.de>
+References: <20200914200309.32513-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200915064722.17355-1-r.czerwinski@pengutronix.de>
+In-Reply-To: <20200914200309.32513-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,19 +22,18 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] globalvar: add globalvar_set function
-To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Subject: Re: [PATCH 1/2] README: update to reflect current state
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Sep 15, 2020 at 08:47:19AM +0200, Rouven Czerwinski wrote:
-> Instead of overwriting the whole hierarchy beneath a globalvar, the
-> globalvar_set function only sets the specific globalvar.
+On Mon, Sep 14, 2020 at 10:03:08PM +0200, Ahmad Fatoum wrote:
+> The bulk of the README has stayed unchanged for the last ten years or
+> so. Polish it up up a bit.
 > 
-> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
-> v2:
-> - use the name directly to set the variable
-> - rename to globalvar_set
+>  README | 40 ++++++++++++++++++++--------------------
+>  1 file changed, 20 insertions(+), 20 deletions(-)
 
 Applied, thanks
 
