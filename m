@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kITDj-0005vQ-OA
- for barebox@lists.infradead.org; Wed, 16 Sep 2020 08:55:20 +0000
-Date: Wed, 16 Sep 2020 10:55:17 +0200
-From: Roland Hieber <rhi@pengutronix.de>
-Message-ID: <20200916085517.lpy2uz6tcewdvat7@pengutronix.de>
+ id 1kIURj-0005o5-GT
+ for barebox@lists.infradead.org; Wed, 16 Sep 2020 10:13:52 +0000
 References: <20200915205417.15484-1-u.kleine-koenig@pengutronix.de>
  <20200915205417.15484-6-u.kleine-koenig@pengutronix.de>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Message-ID: <852764f4-0b7d-9787-8fca-0e318fedaa56@pengutronix.de>
+Date: Wed, 16 Sep 2020 12:13:44 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
 In-Reply-To: <20200915205417.15484-6-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,44 +18,108 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============5753849754511184601=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 5/7] scripts/rsatoc: relicense to allow distribution of
  binary linked with OpenSSL
-To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+To: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>, barebox@lists.infradead.org
 
-T24gVHVlLCBTZXAgMTUsIDIwMjAgYXQgMTA6NTQ6MTVQTSArMDIwMCwgVXdlIEtsZWluZS1Lw7Zu
-aWcgd3JvdGU6Cj4gVGhlIEdQTCAoYm90aCwgdmVyc2lvbnMgMiBhbmQgMykgYXJlIGluY29tcGF0
-aWJsZSB3aXRoIHRoZSBPcGVuU1NMIGxpY2Vuc2UuCj4gQWNjb3JkaW5nIHRvIHRoZSBGcmVlIFNv
-ZnR3YXJlIEZvdW5kYXRpb24gdGhlIGNvcHlyaWdodCBob2xkZXJzIG9mIEdQTAo+IHNvZnR3YXJl
-IGhhdmUgdG8gcHJvdmlkZSBhbiBleGNlcHRpb24gdG8gYWxsb3cgdGhpcyBsaW5rYWdlLgo+IAo+
-IFRoaXMgaXMgZWZmZWN0aXZlbHkgYSBsaWNlbnNlIGNoYW5nZSBhbmQgc28gbmVlZHMgY29uZmly
-bWF0aW9uIGJ5IGFsbAo+IGNvcHlyaWdodCBob2xkZXJzLgo+IAo+IENjOiBTYXNjaGEgSGF1ZXIg
-PHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Cj4gU2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7Zu
-aWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KCkFwYXJ0IGZyb20gU2FzY2hhJ3Mg
-bGluZXMsIHRoZXJlIGFyZSBhbHNvIHNvbWUgbGluZXMgYnkgTWFyYyBmcm9tIGNvbW1pdAo0YWM5
-YTQ1OWNkODRhYjMxNzE5MiAoMjAyMC0wNy0yOSwgInNjcmlwdHMvcnNhdG9jOiBmaXggcHJpbnRp
-bmcgb2YgZXJyb3IKbWVzc2FnZSwgaWYgZW52aXJvbm1lbnQgdmFyaWFibGUgZG9lbid0IGNvbnRh
-aW4gYSBwYXRoIikuCkkndmUgQ0NlZCBoaW0gaGVyZWJ5LgoKIC0gUm9sYW5kCgo+IC0tLQo+ICBz
-Y3JpcHRzL3JzYXRvYy5jIHwgMiArLQo+ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyks
-IDEgZGVsZXRpb24oLSkKPiAKPiBkaWZmIC0tZ2l0IGEvc2NyaXB0cy9yc2F0b2MuYyBiL3Njcmlw
-dHMvcnNhdG9jLmMKPiBpbmRleCA4ZjJlYjhmZGVkYzkuLjE0MmQ3MWI4OWY5YSAxMDA2NDQKPiAt
-LS0gYS9zY3JpcHRzL3JzYXRvYy5jCj4gKysrIGIvc2NyaXB0cy9yc2F0b2MuYwo+IEBAIC0xLDQg
-KzEsNCBAQAo+IC0vLyBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMCsKPiArLy8gU1BE
-WC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjArIFdJVEggT3BlblNTTC1leGNlcHRpb24KPiAg
-LyoKPiAgICogcnNhdG9jIC0gdXRpbGl0eSB0byBjb252ZXJ0IGFuIFJTQSBrZXkgdG8gYSBDIHN0
-cnVjdAo+ICAgKgo+IC0tIAo+IDIuMjcuMAo+IAo+IAo+IF9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCj4gYmFyZWJveCBtYWlsaW5nIGxpc3QKPiBiYXJlYm94
-QGxpc3RzLmluZnJhZGVhZC5vcmcKPiBodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
-L2xpc3RpbmZvL2JhcmVib3gKCi0tIApSb2xhbmQgSGllYmVyLCBQZW5ndXRyb25peCBlLksuICAg
-ICAgICAgIHwgci5oaWViZXJAcGVuZ3V0cm9uaXguZGUgICAgIHwKU3RldWVyd2FsZGVyIFN0ci4g
-MjEgICAgICAgICAgICAgICAgICAgICB8IGh0dHBzOi8vd3d3LnBlbmd1dHJvbml4LmRlLyB8CjMx
-MTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgICAgICAgICAgICAgICAgfCBQaG9uZTogKzQ5LTUxMjEt
-MjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgIHwg
-RmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
-aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2JhcmVib3gK
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--===============5753849754511184601==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature";
+ boundary="PGrGHKq7MeSfKqRNrAnk3DIE6iPyM2sWV"
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--PGrGHKq7MeSfKqRNrAnk3DIE6iPyM2sWV
+Content-Type: multipart/mixed; boundary="X9hAgxBlcoXxfpEVxtVKgj6qK7TUKiFz4";
+ protected-headers="v1"
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+ barebox@lists.infradead.org
+Message-ID: <852764f4-0b7d-9787-8fca-0e318fedaa56@pengutronix.de>
+Subject: Re: [PATCH 5/7] scripts/rsatoc: relicense to allow distribution of
+ binary linked with OpenSSL
+References: <20200915205417.15484-1-u.kleine-koenig@pengutronix.de>
+ <20200915205417.15484-6-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20200915205417.15484-6-u.kleine-koenig@pengutronix.de>
+
+--X9hAgxBlcoXxfpEVxtVKgj6qK7TUKiFz4
+Content-Type: text/plain; charset=utf-8
+Content-Language: de-DE
+Content-Transfer-Encoding: quoted-printable
+
+On 9/15/20 10:54 PM, Uwe Kleine-K=C3=B6nig wrote:
+> The GPL (both, versions 2 and 3) are incompatible with the OpenSSL lice=
+nse.
+> According to the Free Software Foundation the copyright holders of GPL
+> software have to provide an exception to allow this linkage.
+>=20
+> This is effectively a license change and so needs confirmation by all
+> copyright holders.
+>=20
+> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+
+Acked-by: Marc Kleine-Budde <mkl@pengutronix.de>
+
+> ---
+>  scripts/rsatoc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/scripts/rsatoc.c b/scripts/rsatoc.c
+> index 8f2eb8fdedc9..142d71b89f9a 100644
+> --- a/scripts/rsatoc.c
+> +++ b/scripts/rsatoc.c
+> @@ -1,4 +1,4 @@
+> -// SPDX-License-Identifier: GPL-2.0+
+> +// SPDX-License-Identifier: GPL-2.0+ WITH OpenSSL-exception
+>  /*
+>   * rsatoc - utility to convert an RSA key to a C struct
+>   *
+>=20
+
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde           |
+Embedded Linux                   | https://www.pengutronix.de  |
+Vertretung West/Dortmund         | Phone: +49-231-2826-924     |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-5555 |
+
+
+--X9hAgxBlcoXxfpEVxtVKgj6qK7TUKiFz4--
+
+--PGrGHKq7MeSfKqRNrAnk3DIE6iPyM2sWV
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEK3kIWJt9yTYMP3ehqclaivrt76kFAl9h5VgACgkQqclaivrt
+76m/BAgAg4w7kbd24JbBwkSsJrpEtpoBdlnmf9F/IztW2zbklbC6Y/MRcJImuDR1
+p8Tc5w9gmoxdoL8Qi5yMKJ7YybRHruEnYo8jeaHggC1XuEz6FNscyKY095BBKt/t
+6J2fTx60q4e0NFqn9a+zUZzzEVyke3liPl8s8muGfd+51rW66toGURcEBMGlNoga
+rDU2EurIHPDoClG6B9xAIBB+6voTMWNYBvZf8ZrBpstR9HhBsdqfU30jnXhhYA52
+8fJ0/qCR/ux9R9mi8Sm/Cfizz+JbhJ0a/ZH5C2CmSFEgnVxF47DwHvKQGCdT2ZdK
+n+gIATaxrZ2Uxor3AU7OCpSdzMR1Fg==
+=G8tV
+-----END PGP SIGNATURE-----
+
+--PGrGHKq7MeSfKqRNrAnk3DIE6iPyM2sWV--
+
+
+--===============5753849754511184601==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============5753849754511184601==--
