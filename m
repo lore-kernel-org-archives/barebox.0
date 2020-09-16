@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kIXrH-0007wY-J8
- for barebox@lists.infradead.org; Wed, 16 Sep 2020 13:52:29 +0000
+ id 1kIXrH-0007wW-Ic
+ for barebox@lists.infradead.org; Wed, 16 Sep 2020 13:52:31 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 16 Sep 2020 15:50:30 +0200
-Message-Id: <20200916135035.7089-6-a.fatoum@pengutronix.de>
+Date: Wed, 16 Sep 2020 15:50:27 +0200
+Message-Id: <20200916135035.7089-3-a.fatoum@pengutronix.de>
 In-Reply-To: <20200916135035.7089-1-a.fatoum@pengutronix.de>
 References: <20200916135035.7089-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,183 +21,428 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/10] defaultenv: provide defaults for generic reboot modes
+Subject: [PATCH 02/10] drivers: add reboot-mode infrastructure
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-While reboot mode magic identifiers can be very board specific, we can
-settle on common names to allow some generic reboot mode handling:
-
-  - loader     -> drop to bootloader shell on next boot
-  - bootloader -> enable fastboot on next boot
-  - recovery   -> display barebox boot menu
-
-Boot modes loader and bootloader are admittedly a bit ambiguous, but
-this nomenclature was chosen, because it's already in use on Android and
-Rockchip systems.
+Reboot modes provide a well-defined way to exchange information between
+different stage of the boot process. When configured, users can type
+`reboot bootloader` in the OS and barebox can read it out a device
+parameter. Likewise barebox can write a reboot mode for the BootROM to
+evaluate and then reset to fall into a serial recovery mode for example.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Documentation/user/defaultenv-2.rst            | 18 ++++++++++++++----
- common/Kconfig                                 |  5 +++++
- common/startup.c                               | 16 ++++++++++++++++
- defaultenv/Makefile                            |  1 +
- .../defaultenv-2-reboot-mode/bmode/bootloader  |  3 +++
- .../defaultenv-2-reboot-mode/bmode/loader      |  2 ++
- .../defaultenv-2-reboot-mode/bmode/recovery    |  2 ++
- defaultenv/defaultenv.c                        |  2 ++
- 8 files changed, 45 insertions(+), 4 deletions(-)
- create mode 100644 defaultenv/defaultenv-2-reboot-mode/bmode/bootloader
- create mode 100755 defaultenv/defaultenv-2-reboot-mode/bmode/loader
- create mode 100644 defaultenv/defaultenv-2-reboot-mode/bmode/recovery
+ Documentation/user/reboot-mode.rst |  84 +++++++++++++
+ drivers/Kconfig                    |   1 +
+ drivers/Makefile                   |   1 +
+ drivers/power/Kconfig              |   2 +
+ drivers/power/Makefile             |   2 +
+ drivers/power/reset/Kconfig        |   5 +
+ drivers/power/reset/Makefile       |   2 +
+ drivers/power/reset/reboot-mode.c  | 185 +++++++++++++++++++++++++++++
+ include/linux/reboot-mode.h        |  36 ++++++
+ include/of.h                       |   2 +
+ 10 files changed, 320 insertions(+)
+ create mode 100644 Documentation/user/reboot-mode.rst
+ create mode 100644 drivers/power/Kconfig
+ create mode 100644 drivers/power/Makefile
+ create mode 100644 drivers/power/reset/Kconfig
+ create mode 100644 drivers/power/reset/Makefile
+ create mode 100644 drivers/power/reset/reboot-mode.c
+ create mode 100644 include/linux/reboot-mode.h
 
-diff --git a/Documentation/user/defaultenv-2.rst b/Documentation/user/defaultenv-2.rst
-index a79ae83d56c3..da766e4edcbc 100644
---- a/Documentation/user/defaultenv-2.rst
-+++ b/Documentation/user/defaultenv-2.rst
-@@ -19,10 +19,11 @@ All new boards should use defaultenv-2 exclusively.
- 
- The default environment is composed from different directories during compilation::
- 
--  defaultenv/defaultenv-2-base   -> base files
--  defaultenv/defaultenv-2-dfu    -> overlay for DFU
--  defaultenv/defaultenv-2-menu   -> overlay for menus
--  arch/$ARCH/boards/<board>/env  -> board specific overlay
-+  defaultenv/defaultenv-2-base        -> base files
-+  defaultenv/defaultenv-2-dfu         -> overlay for DFU
-+  defaultenv/defaultenv-2-reboot-mode -> overlay for reboot modes
-+  defaultenv/defaultenv-2-menu        -> overlay for menus
-+  arch/$ARCH/boards/<board>/env       -> board specific overlay
- 
- The content of the above directories is applied one after another. If the
- same file exists in a later overlay, it will overwrite the preceding one.
-@@ -37,6 +38,7 @@ and their respective included directories in ``defaultenv/Makefile``:
-   bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW) += defaultenv-2-base
-   bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_MENU) += defaultenv-2-menu
-   bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_DFU) += defaultenv-2-dfu
-+  bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_REBOOT_MODE) += defaultenv-2-reboot-mode
-   bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-1
- 
- /env/bin/init
-@@ -138,3 +140,11 @@ there will be a file ``eth0`` with a content like this:
-   # put code to discover eth0 (i.e. 'usb') to /env/network/eth0-discover
- 
-   exit 0
+diff --git a/Documentation/user/reboot-mode.rst b/Documentation/user/reboot-mode.rst
+new file mode 100644
+index 000000000000..1908da3ed2d7
+--- /dev/null
++++ b/Documentation/user/reboot-mode.rst
+@@ -0,0 +1,84 @@
++.. _reboot_mode:
 +
-+/env/bmode/
++Reboot Mode
 +-----------
 +
-+This contains the files to be sourced when barebox detects that the OS
-+had requested a specific reboot mode (via e.g. ``reboot bootloader``
-+under Linux). After the ``/env/init`` scripts were executed, barebox will
-+``source /env/bmode/${global.system.reboot_mode.prev}`` if available.
-diff --git a/common/Kconfig b/common/Kconfig
-index 4ba58e55d436..a7815d2ab7c8 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -906,6 +906,11 @@ config DEFAULT_ENVIRONMENT_GENERIC_NEW_DFU
- 	depends on USB_GADGET_DFU
- 	default y
- 
-+config DEFAULT_ENVIRONMENT_GENERIC_NEW_REBOOT_MODE
-+	bool "Generic reboot-mode handlers in the environment"
-+	depends on DEFAULT_ENVIRONMENT_GENERIC_NEW
-+	depends on REBOOT_MODE
++To simplify debugging, many BootROMs sample registers that survive
++a warm reset to customize the boot. These registers can e.g. indicate
++that boot should happen from a different boot medium.
 +
- config DEFAULT_ENVIRONMENT_PATH
- 	string
- 	depends on DEFAULT_ENVIRONMENT
-diff --git a/common/startup.c b/common/startup.c
-index 075863d22e88..3a4ac81ffb4c 100644
---- a/common/startup.c
-+++ b/common/startup.c
-@@ -38,6 +38,7 @@
- #include <linux/stat.h>
- #include <envfs.h>
- #include <magicvar.h>
++Likewise, many bootloaders reuse such registers, or if unavailable,
++non-volatile memory to determine whether the OS requested a special
++reboot mode, e.g. rebooting into an USB recovery mode. This is
++common on Android systems.
++
++barebox implements the upstream device tree bindings for
++`reboot-modes <https://www.kernel.org/doc/Documentation/devicetree/bindings/power/reset/reboot-mode.txt>`_
++to act upon reboot mode protocols specified in the device tree.
++
++The device tree nodes list a number of reboot modes along with a
++magic value for each. On reboot, an OS implementing the binding
++would take the reboot command's argument and match it against the
++modes in the device tree. If a match is found the associated magic
++is written to the location referenced in the device tree node.
++
++User API
++~~~~~~~~
++
++Devices registered with the reboot mode API gain two parameters:
++
++ - ``$dev_of_reboot_mode.prev`` (read-only): The reboot mode that was
++   set previous to barebox startup
++ - ``$dev_of_reboot_mode.next``: The next reboot mode, for when the
++   system is reset
++
++The reboot mode driver core use the alias name if available to name
++the device. By convention, this should end with ``.reboot_mode``, e.g.::
++
++	/ {
++		aliases {
++			gpr.reboot_name = &reboot_name_gpr;
++		};
++	};
++
++Reboot mode providers have priorities. The provider with the highest
++priority has its parameters aliased as ``$global.system.reboot_mode.prev``
++and ``$global.system.reboot_mode.next``.
++
++Disambiguation
++~~~~~~~~~~~~~~
++
++Some uses of reboot modes partially overlap with other barebox
++functionality. They all ultimately serve different purposes, however.
++
++Comparison to reset reason
++---------------------------
++
++The reset reason ``$global.system.reset`` is populated by different drivers
++to reflect the hardware cause of a reset, e.g. a watchdog. A reboot mode
++describes the OS intention behind a reset, e.g. to fall into a recovery
++mode. Reboot modes besides the default ``normal`` mode usually accompany
++a reset reason of ``RST`` (because the OS intentionally triggered a reset
++to activate the next reboot mode).
++
++Comparison to bootsource
++------------------------
++
++``$bootsource`` reflects the current boot's medium as indicated by the
++SoC. In cases where the reboot mode is used to communicate with the BootROM,
++``$bootsource`` and ``$bootsource_instance`` may describe the same device
++as the reboot mode.
++
++For cases, where the communication instead happens between barebox and an OS,
++they can be completely different, e.g. ``$bootsource`` may say barebox was
++booted from ``spi-nor``, while the reboot mode describes that barebox should
++boot the Kernel off an USB flash drive.
++
++Comparison to barebox state
++---------------------------
++
++barebox state also allows sharing information between barebox and the OS,
++but it does so while providing atomic updates, redundant storage and
++optionally wear leveling. In contrast to state, reboot mode is just that:
++a mode for a single reboot. barebox clears the reboot mode after reading it,
++so this can be reliably used across one reset only.
+diff --git a/drivers/Kconfig b/drivers/Kconfig
+index 09595433a0e5..dda240578067 100644
+--- a/drivers/Kconfig
++++ b/drivers/Kconfig
+@@ -42,5 +42,6 @@ source "drivers/memory/Kconfig"
+ source "drivers/soc/imx/Kconfig"
+ source "drivers/nvme/Kconfig"
+ source "drivers/ddr/Kconfig"
++source "drivers/power/Kconfig"
+ 
+ endmenu
+diff --git a/drivers/Makefile b/drivers/Makefile
+index 08a17ff459d3..5a03bdceab81 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -42,3 +42,4 @@ obj-y	+= memory/
+ obj-y	+= soc/imx/
+ obj-y	+= nvme/
+ obj-y	+= ddr/
++obj-y	+= power/
+diff --git a/drivers/power/Kconfig b/drivers/power/Kconfig
+new file mode 100644
+index 000000000000..b56414c49750
+--- /dev/null
++++ b/drivers/power/Kconfig
+@@ -0,0 +1,2 @@
++# SPDX-License-Identifier: GPL-2.0-only
++source "drivers/power/reset/Kconfig"
+diff --git a/drivers/power/Makefile b/drivers/power/Makefile
+new file mode 100644
+index 000000000000..3009da59bf46
+--- /dev/null
++++ b/drivers/power/Makefile
+@@ -0,0 +1,2 @@
++# SPDX-License-Identifier: GPL-2.0-only
++obj-y	+= reset/
+diff --git a/drivers/power/reset/Kconfig b/drivers/power/reset/Kconfig
+new file mode 100644
+index 000000000000..5554fc122d92
+--- /dev/null
++++ b/drivers/power/reset/Kconfig
+@@ -0,0 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++#
++
++config REBOOT_MODE
++	bool
+diff --git a/drivers/power/reset/Makefile b/drivers/power/reset/Makefile
+new file mode 100644
+index 000000000000..68231f044a52
+--- /dev/null
++++ b/drivers/power/reset/Makefile
+@@ -0,0 +1,2 @@
++# SPDX-License-Identifier: GPL-2.0-only
++obj-$(CONFIG_REBOOT_MODE) += reboot-mode.o
+diff --git a/drivers/power/reset/reboot-mode.c b/drivers/power/reset/reboot-mode.c
+new file mode 100644
+index 000000000000..5992a2acd99a
+--- /dev/null
++++ b/drivers/power/reset/reboot-mode.c
+@@ -0,0 +1,185 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Copyright (c) 2016, Fuzhou Rockchip Electronics Co., Ltd
++ * Copyright (c) 2019, Ahmad Fatoum, Pengutronix
++ */
++
++#include <common.h>
++#include <driver.h>
++#include <init.h>
++#include <of.h>
 +#include <linux/reboot-mode.h>
- #include <asm/sections.h>
- #include <uncompress.h>
- #include <globalvar.h>
-@@ -310,6 +311,7 @@ static int run_init(void)
- 	DIR *dir;
- 	struct dirent *d;
- 	const char *initdir = "/env/init";
-+	const char *bmode;
- 	bool env_bin_init_exists;
- 	enum autoboot_state autoboot;
- 	struct stat s;
-@@ -350,6 +352,20 @@ static int run_init(void)
- 		closedir(dir);
- 	}
- 
-+	/* source matching script in /env/bmode/ */
-+	bmode = reboot_mode_get();
-+	if (bmode) {
-+		char *scr, *path;
++#include <globalvar.h>
++#include <magicvar.h>
 +
-+		scr = xasprintf("source /env/bmode/%s", bmode);
-+		path = &scr[strlen("source ")];
-+		if (stat(path, &s) == 0) {
-+			pr_info("Invoking '%s'...\n", path);
-+			run_command(scr);
-+		}
-+		free(scr);
++#define PREFIX "mode-"
++
++static int __priority;
++static struct reboot_mode_driver *__boot_mode;
++
++static int reboot_mode_param_set(struct param_d *p, void *priv)
++{
++	struct reboot_mode_driver *reboot = priv;
++	u32 magic;
++
++	magic = reboot->magics[reboot->reboot_mode_next];
++
++	return reboot->write(reboot, magic);
++}
++
++static int reboot_mode_add_param(struct device_d *dev,
++				 const char *prefix,
++				 struct reboot_mode_driver *reboot)
++{
++	char name[sizeof "system.reboot_mode.when"];
++	struct param_d *param;
++
++	scnprintf(name, sizeof(name), "%sprev", prefix);
++
++	param = dev_add_param_enum_ro(dev, name,
++				      &reboot->reboot_mode_prev, reboot->modes,
++				      reboot->nmodes);
++	if (IS_ERR(param))
++		return PTR_ERR(param);
++
++	scnprintf(name, sizeof(name), "%snext", prefix);
++
++	param = dev_add_param_enum(dev, name,
++				   reboot_mode_param_set, NULL,
++				   &reboot->reboot_mode_next, reboot->modes,
++				   reboot->nmodes, reboot);
++
++	return PTR_ERR_OR_ZERO(param);
++}
++
++static int reboot_mode_add_globalvar(void)
++{
++	struct reboot_mode_driver *reboot = __boot_mode;
++
++	if (!reboot)
++		return 0;
++
++	return reboot_mode_add_param(&global_device, "system.reboot_mode.", reboot);
++}
++late_initcall(reboot_mode_add_globalvar);
++
++
++static void reboot_mode_print(struct reboot_mode_driver *reboot,
++			      const char *prefix, u32 magic)
++{
++	dev_dbg(reboot->dev, "%s: %08x\n", prefix, magic);
++}
++
++/**
++ * reboot_mode_register - register a reboot mode driver
++ * @reboot: reboot mode driver
++ * @reboot_mode: reboot mode read from hardware
++ *
++ * Returns: 0 on success or a negative error code on failure.
++ */
++int reboot_mode_register(struct reboot_mode_driver *reboot, u32 reboot_mode)
++{
++	struct property *prop;
++	struct device_node *np = reboot->dev->device_node;
++	size_t len = strlen(PREFIX);
++	const char *alias;
++	size_t nmodes = 0;
++	int i = 0;
++	int ret;
++
++	for_each_property_of_node(np, prop) {
++		u32 magic;
++
++		if (strncmp(prop->name, PREFIX, len))
++			continue;
++		if (of_property_read_u32(np, prop->name, &magic))
++			continue;
++
++		nmodes++;
 +	}
 +
- 	autoboot = do_autoboot_countdown();
++	reboot->nmodes = nmodes;
++	reboot->magics = xzalloc(nmodes * sizeof(u32));
++	reboot->modes = xzalloc(nmodes * sizeof(const char *));
++
++	reboot_mode_print(reboot, "registering magic", reboot_mode);
++
++	for_each_property_of_node(np, prop) {
++		const char **mode;
++		u32 *magic;
++
++		magic = &reboot->magics[i];
++		mode = &reboot->modes[i];
++
++		if (strncmp(prop->name, PREFIX, len))
++			continue;
++
++		if (of_property_read_u32(np, prop->name, magic)) {
++			dev_err(reboot->dev, "reboot mode %s without magic number\n",
++				*mode);
++			continue;
++		}
++
++		*mode = prop->name + len;
++		if (*mode[0] == '\0') {
++			ret = -EINVAL;
++			dev_err(reboot->dev, "invalid mode name(%s): too short!\n",
++				prop->name);
++			goto error;
++		}
++
++		reboot_mode_print(reboot, *mode, *magic);
++
++		i++;
++	}
++
++	for (i = 0; i < reboot->nmodes; i++) {
++		if (reboot->magics[i] == reboot_mode) {
++			reboot->reboot_mode_prev = i;
++			break;
++		}
++	}
++
++	reboot_mode_add_param(reboot->dev, "", reboot);
++
++	/* clear mode for next reboot */
++	reboot->write(reboot, 0);
++
++	if (!reboot->priority)
++		reboot->priority = REBOOT_MODE_DEFAULT_PRIORITY;
++
++	if (reboot->priority >= __priority) {
++		__priority = reboot->priority;
++		__boot_mode = reboot;
++	}
++
++
++	alias = of_alias_get(np);
++	if (alias)
++		dev_set_name(reboot->dev, alias);
++
++	return 0;
++
++error:
++	free(reboot->magics);
++	free(reboot->modes);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(reboot_mode_register);
++
++const char *reboot_mode_get(void)
++{
++	if (!__boot_mode)
++		return NULL;
++
++	return __boot_mode->modes[__boot_mode->reboot_mode_prev];
++}
++EXPORT_SYMBOL_GPL(reboot_mode_get);
++
++BAREBOX_MAGICVAR_NAMED(global_system_reboot_mode_prev,
++		       global.system.reboot_mode.prev,
++		       "reboot-mode: Mode set previously, before barebox start");
++BAREBOX_MAGICVAR_NAMED(global_system_reboot_mode_next,
++		       global.system.reboot_mode.next,
++		       "reboot-mode: Mode to set next, to be evaluated after reset");
+diff --git a/include/linux/reboot-mode.h b/include/linux/reboot-mode.h
+new file mode 100644
+index 000000000000..92a1da7b5562
+--- /dev/null
++++ b/include/linux/reboot-mode.h
+@@ -0,0 +1,36 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __REBOOT_MODE_H__
++#define __REBOOT_MODE_H__
++
++#include <linux/types.h>
++
++struct device_d;
++
++#ifdef CONFIG_REBOOT_MODE
++struct reboot_mode_driver {
++	struct device_d *dev;
++	int (*write)(struct reboot_mode_driver *reboot, u32 magic);
++	int priority;
++
++	/* filled by reboot_mode_register */
++	int reboot_mode_prev, reboot_mode_next;
++	unsigned nmodes;
++	const char **modes;
++	u32 *magics;
++};
++
++int reboot_mode_register(struct reboot_mode_driver *reboot, u32 reboot_mode);
++const char *reboot_mode_get(void);
++
++#define REBOOT_MODE_DEFAULT_PRIORITY 100
++
++#else
++
++static inline const char *reboot_mode_get(void)
++{
++	return NULL;
++}
++
++#endif
++
++#endif
+diff --git a/include/of.h b/include/of.h
+index d548e517896b..b9b3a102284c 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -732,6 +732,8 @@ static inline int of_autoenable_i2c_by_component(char *path)
  
- 	console_ctrlc_allow();
-diff --git a/defaultenv/Makefile b/defaultenv/Makefile
-index e030355a4052..91293567c0d3 100644
---- a/defaultenv/Makefile
-+++ b/defaultenv/Makefile
-@@ -1,6 +1,7 @@
- bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW) += defaultenv-2-base
- bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_MENU) += defaultenv-2-menu
- bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_DFU) += defaultenv-2-dfu
-+bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_REBOOT_MODE) += defaultenv-2-reboot-mode
- bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-1
- obj-$(CONFIG_DEFAULT_ENVIRONMENT) += defaultenv.o
- extra-y += barebox_default_env barebox_default_env.h barebox_default_env$(DEFAULT_COMPRESSION_SUFFIX) barebox_zero_env
-diff --git a/defaultenv/defaultenv-2-reboot-mode/bmode/bootloader b/defaultenv/defaultenv-2-reboot-mode/bmode/bootloader
-new file mode 100644
-index 000000000000..50a7a0f633ae
---- /dev/null
-+++ b/defaultenv/defaultenv-2-reboot-mode/bmode/bootloader
-@@ -0,0 +1,3 @@
-+# Mode to re-flash partitions
-+global.autoboot_timeout=30
-+global.usbgadget.autostart=1
-diff --git a/defaultenv/defaultenv-2-reboot-mode/bmode/loader b/defaultenv/defaultenv-2-reboot-mode/bmode/loader
-new file mode 100755
-index 000000000000..45647dec29a6
---- /dev/null
-+++ b/defaultenv/defaultenv-2-reboot-mode/bmode/loader
-@@ -0,0 +1,2 @@
-+# Development mode
-+global.autoboot=abort
-diff --git a/defaultenv/defaultenv-2-reboot-mode/bmode/recovery b/defaultenv/defaultenv-2-reboot-mode/bmode/recovery
-new file mode 100644
-index 000000000000..0496ba3b0dad
---- /dev/null
-+++ b/defaultenv/defaultenv-2-reboot-mode/bmode/recovery
-@@ -0,0 +1,2 @@
-+# Interactive mode for recovery
-+global.autoboot=menu
-diff --git a/defaultenv/defaultenv.c b/defaultenv/defaultenv.c
-index b773030fe8ce..d69446c8937a 100644
---- a/defaultenv/defaultenv.c
-+++ b/defaultenv/defaultenv.c
-@@ -45,6 +45,8 @@ static void defaultenv_add_base(void)
- 		defaultenv_append_directory(defaultenv_2_menu);
- 	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_DFU))
- 		defaultenv_append_directory(defaultenv_2_dfu);
-+	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_REBOOT_MODE))
-+		defaultenv_append_directory(defaultenv_2_reboot_mode);
- 	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC))
- 		defaultenv_append_directory(defaultenv_1);
- }
+ #endif
+ 
++#define for_each_property_of_node(dn, pp) \
++	list_for_each_entry(pp, &dn->properties, list)
+ #define for_each_node_by_name(dn, name) \
+ 	for (dn = of_find_node_by_name(NULL, name); dn; \
+ 	     dn = of_find_node_by_name(dn, name))
 -- 
 2.28.0
 
