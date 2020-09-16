@@ -1,12 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp95.ord1d.emailsrvr.com ([184.106.54.95])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kIaDb-000474-TF
- for barebox@lists.infradead.org; Wed, 16 Sep 2020 16:23:41 +0000
-From: Ian Abbott <abbotti@mev.co.uk>
-Date: Wed, 16 Sep 2020 17:23:17 +0100
-Message-Id: <20200916162317.5270-1-abbotti@mev.co.uk>
+ id 1kITZ7-0007pk-CF
+ for barebox@lists.infradead.org; Wed, 16 Sep 2020 09:17:26 +0000
+Date: Wed, 16 Sep 2020 11:17:23 +0200
+From: Roland Hieber <rhi@pengutronix.de>
+Message-ID: <20200916091723.75efcqmfb7lnjntk@pengutronix.de>
+References: <20200915205417.15484-1-u.kleine-koenig@pengutronix.de>
+ <20200915205417.15484-6-u.kleine-koenig@pengutronix.de>
+ <20200916085517.lpy2uz6tcewdvat7@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200916085517.lpy2uz6tcewdvat7@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,50 +20,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd: spi-nor: cadence: fix csqpi corruption in
- cqspi_set_protocol
-To: barebox@lists.infradead.org
-Cc: Ian Abbott <abbotti@mev.co.uk>
+Subject: Re: [PATCH 5/7] scripts/rsatoc: relicense to allow distribution of
+ binary linked with OpenSSL
+To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-cqspi_set_protocol() sets `inst_width`, `addr_width` and `data_width`
-for the previous chip-select in `cqspi->current_cs`, but that is
-initially set to -1, leading to corruption of other `cqspi->` members.
-Change it to set `inst_width`, `addr_width` and `data_width` for the
-chip-select associated with the `nor` parameter.
-
-Fixes: 5085d2ef3fbf ("mtd: spi-nor: cadence: add cqspi_set_protocol")
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
----
- drivers/mtd/spi-nor/cadence-quadspi.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/mtd/spi-nor/cadence-quadspi.c b/drivers/mtd/spi-nor/cadence-quadspi.c
-index 11e4d236d..2372482ac 100644
---- a/drivers/mtd/spi-nor/cadence-quadspi.c
-+++ b/drivers/mtd/spi-nor/cadence-quadspi.c
-@@ -896,8 +896,12 @@ static int cqspi_set_protocol(struct spi_nor *nor, const int read)
- {
- 	struct cqspi_st *cqspi = nor->priv;
- 	struct cqspi_flash_pdata *f_pdata;
-+	int cs = cqspi_find_chipselect(nor);
- 
--	f_pdata = &cqspi->f_pdata[cqspi->current_cs];
-+	if (cs < 0)
-+		return -EINVAL;
-+
-+	f_pdata = &cqspi->f_pdata[cs];
- 
- 	f_pdata->inst_width = CQSPI_INST_TYPE_SINGLE;
- 	f_pdata->addr_width = CQSPI_INST_TYPE_SINGLE;
--- 
-2.28.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gV2VkLCBTZXAgMTYsIDIwMjAgYXQgMTA6NTU6MTdBTSArMDIwMCwgUm9sYW5kIEhpZWJlciB3
+cm90ZToKPiBPbiBUdWUsIFNlcCAxNSwgMjAyMCBhdCAxMDo1NDoxNVBNICswMjAwLCBVd2UgS2xl
+aW5lLUvDtm5pZyB3cm90ZToKPiA+IFRoZSBHUEwgKGJvdGgsIHZlcnNpb25zIDIgYW5kIDMpIGFy
+ZSBpbmNvbXBhdGlibGUgd2l0aCB0aGUgT3BlblNTTCBsaWNlbnNlLgo+ID4gQWNjb3JkaW5nIHRv
+IHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5kYXRpb24gdGhlIGNvcHlyaWdodCBob2xkZXJzIG9mIEdQ
+TAo+ID4gc29mdHdhcmUgaGF2ZSB0byBwcm92aWRlIGFuIGV4Y2VwdGlvbiB0byBhbGxvdyB0aGlz
+IGxpbmthZ2UuCj4gPiAKPiA+IFRoaXMgaXMgZWZmZWN0aXZlbHkgYSBsaWNlbnNlIGNoYW5nZSBh
+bmQgc28gbmVlZHMgY29uZmlybWF0aW9uIGJ5IGFsbAo+ID4gY29weXJpZ2h0IGhvbGRlcnMuCj4g
+PiAKPiA+IENjOiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Cj4gPiBTaWdu
+ZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4
+LmRlPgo+IAo+IEFwYXJ0IGZyb20gU2FzY2hhJ3MgbGluZXMsIHRoZXJlIGFyZSBhbHNvIHNvbWUg
+bGluZXMgYnkgTWFyYyBmcm9tIGNvbW1pdAo+IDRhYzlhNDU5Y2Q4NGFiMzE3MTkyICgyMDIwLTA3
+LTI5LCAic2NyaXB0cy9yc2F0b2M6IGZpeCBwcmludGluZyBvZiBlcnJvcgo+IG1lc3NhZ2UsIGlm
+IGVudmlyb25tZW50IHZhcmlhYmxlIGRvZW4ndCBjb250YWluIGEgcGF0aCIpLgo+IEkndmUgQ0Nl
+ZCBoaW0gaGVyZWJ5LgoKU29tZWhvdyB0aGUgQ2MgZ290IGxvc3QuCgogLSBSb2xhbmQKCj4gCj4g
+IC0gUm9sYW5kCj4gCj4gPiAtLS0KPiA+ICBzY3JpcHRzL3JzYXRvYy5jIHwgMiArLQo+ID4gIDEg
+ZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQo+ID4gCj4gPiBkaWZm
+IC0tZ2l0IGEvc2NyaXB0cy9yc2F0b2MuYyBiL3NjcmlwdHMvcnNhdG9jLmMKPiA+IGluZGV4IDhm
+MmViOGZkZWRjOS4uMTQyZDcxYjg5ZjlhIDEwMDY0NAo+ID4gLS0tIGEvc2NyaXB0cy9yc2F0b2Mu
+Ywo+ID4gKysrIGIvc2NyaXB0cy9yc2F0b2MuYwo+ID4gQEAgLTEsNCArMSw0IEBACj4gPiAtLy8g
+U1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjArCj4gPiArLy8gU1BEWC1MaWNlbnNlLUlk
+ZW50aWZpZXI6IEdQTC0yLjArIFdJVEggT3BlblNTTC1leGNlcHRpb24KPiA+ICAvKgo+ID4gICAq
+IHJzYXRvYyAtIHV0aWxpdHkgdG8gY29udmVydCBhbiBSU0Ega2V5IHRvIGEgQyBzdHJ1Y3QKPiA+
+ICAgKgo+ID4gLS0gCj4gPiAyLjI3LjAKPiA+IAo+ID4gCj4gPiBfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwo+ID4gYmFyZWJveCBtYWlsaW5nIGxpc3QKPiA+
+IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+ID4gaHR0cDovL2xpc3RzLmluZnJhZGVhZC5v
+cmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cj4gCj4gLS0gCj4gUm9sYW5kIEhpZWJlciwgUGVu
+Z3V0cm9uaXggZS5LLiAgICAgICAgICB8IHIuaGllYmVyQHBlbmd1dHJvbml4LmRlICAgICB8Cj4g
+U3RldWVyd2FsZGVyIFN0ci4gMjEgICAgICAgICAgICAgICAgICAgICB8IGh0dHBzOi8vd3d3LnBl
+bmd1dHJvbml4LmRlLyB8Cj4gMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSAgICAgICAgICAgICAg
+ICB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8Cj4gQW10c2dlcmljaHQgSGlsZGVzaGVp
+bSwgSFJBIDI2ODYgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8Cj4gCj4g
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiBiYXJlYm94
+IG1haWxpbmcgbGlzdAo+IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+IGh0dHA6Ly9saXN0
+cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAoKLS0gClJvbGFuZCBIaWVi
+ZXIsIFBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgfCByLmhpZWJlckBwZW5ndXRyb25peC5kZSAg
+ICAgfApTdGV1ZXJ3YWxkZXIgU3RyLiAyMSAgICAgICAgICAgICAgICAgICAgIHwgaHR0cHM6Ly93
+d3cucGVuZ3V0cm9uaXguZGUvIHwKMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSAgICAgICAgICAg
+ICAgICB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hl
+aW0sIEhSQSAyNjg2ICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWls
+aW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRl
+YWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
