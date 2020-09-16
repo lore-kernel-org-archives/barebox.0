@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kISN4-0004SQ-IJ
- for barebox@lists.infradead.org; Wed, 16 Sep 2020 08:00:55 +0000
+ id 1kIShS-0006oG-SH
+ for barebox@lists.infradead.org; Wed, 16 Sep 2020 08:21:59 +0000
 References: <20200915205417.15484-1-u.kleine-koenig@pengutronix.de>
  <20200915205417.15484-7-u.kleine-koenig@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <7a67cafd-7f3d-2bcf-8f77-9a967d2be932@pengutronix.de>
-Date: Wed, 16 Sep 2020 10:00:48 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Message-ID: <b975f528-f432-4d69-7534-4460f26d2689@pengutronix.de>
+Date: Wed, 16 Sep 2020 10:21:47 +0200
 MIME-Version: 1.0
 In-Reply-To: <20200915205417.15484-7-u.kleine-koenig@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,46 +18,125 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============4370290560428566460=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 6/7] scripts/imx-image: relicense to allow distribution of
  binary linked with OpenSSL
 To: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>, barebox@lists.infradead.org
-Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>, Andrey Smirnov <andrew.smirnov@gmail.com>, Marcin Niestroj <m.niestroj@grinn-global.com>, Alexander Kurz <akurz@blala.de>, Bastian Krause <bst@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, Andrey Smirnov <andrew.smirnov@gmail.com>, Marcin Niestroj <m.niestroj@grinn-global.com>, =?UTF-8?Q?Eric_B=c3=a9nard?= <eric@eukrea.com>, Rouven Czerwinski <r.czerwinski@pengutronix.de>, Alexander Kurz <akurz@blala.de>, Bastian Krause <bst@pengutronix.de>
 
-CgpPbiA5LzE1LzIwIDEwOjU0IFBNLCBVd2UgS2xlaW5lLUvDtm5pZyB3cm90ZToKPiBUaGUgR1BM
-IChib3RoLCB2ZXJzaW9ucyAyIGFuZCAzKSBhcmUgaW5jb21wYXRpYmxlIHdpdGggdGhlIE9wZW5T
-U0wgbGljZW5zZS4KPiBBY2NvcmRpbmcgdG8gdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbiB0
-aGUgY29weXJpZ2h0IGhvbGRlcnMgb2YgR1BMCj4gc29mdHdhcmUgaGF2ZSB0byBwcm92aWRlIGFu
-IGV4Y2VwdGlvbiB0byBhbGxvdyB0aGlzIGxpbmthZ2UuCj4gCj4gVGhpcyBpcyBlZmZlY3RpdmVs
-eSBhIGxpY2Vuc2UgY2hhbmdlIGFuZCBzbyBuZWVkcyBjb25maXJtYXRpb24gYnkgYWxsCj4gY29w
-eXJpZ2h0IGhvbGRlcnMuCj4gCj4gQ2M6IEFobWFkIEZhdG91bSA8YS5mYXRvdW1AcGVuZ3V0cm9u
-aXguZGU+CgpGaW5lIGJ5IG1lLApBY2tlZC1ieTogQWhtYWQgRmF0b3VtIDxhLmZhdG91bUBwZW5n
-dXRyb25peC5kZT4KCj4gQ2M6IEFsZXhhbmRlciBLdXJ6IDxha3VyekBibGFsYS5kZT4KPiBDYzog
-QW5kcmV5IFNtaXJub3YgPGFuZHJldy5zbWlybm92QGdtYWlsLmNvbT4KPiBDYzogQmFzdGlhbiBL
-cmF1c2UgPGJzdEBwZW5ndXRyb25peC5kZT4KPiBDYzogRXJpYyBCw6luYXJkIDxlcmljQGV1a3Jl
-YS5jb20+Cj4gQ2M6IEx1Y2FzIFN0YWNoIDxsLnN0YWNoQHBlbmd1dHJvbml4LmRlPgo+IENjOiBN
-YXJjaW4gTmllc3Ryb2ogPG0ubmllc3Ryb2pAZ3Jpbm4tZ2xvYmFsLmNvbT4KPiBDYzogTWFyYyBL
-bGVpbmUtQnVkZGUgPG1rbEBwZW5ndXRyb25peC5kZT4KPiBDYzogUm91dmVuIEN6ZXJ3aW5za2kg
-PHIuY3plcndpbnNraUBwZW5ndXRyb25peC5kZT4KPiBDYzogU2FzY2hhIEhhdWVyIDxzLmhhdWVy
-QHBlbmd1dHJvbml4LmRlPgo+IFNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1Lmts
-ZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Cj4gLS0tCj4gIHNjcmlwdHMvaW14L2lteC1pbWFn
-ZS5jIHwgMiArLQo+ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24o
-LSkKPiAKPiBkaWZmIC0tZ2l0IGEvc2NyaXB0cy9pbXgvaW14LWltYWdlLmMgYi9zY3JpcHRzL2lt
-eC9pbXgtaW1hZ2UuYwo+IGluZGV4IGY1ZTg5ZDA3YTZlZS4uMzRiYmZjOGQ4MzA4IDEwMDY0NAo+
-IC0tLSBhL3NjcmlwdHMvaW14L2lteC1pbWFnZS5jCj4gKysrIGIvc2NyaXB0cy9pbXgvaW14LWlt
-YWdlLmMKPiBAQCAtMSw0ICsxLDQgQEAKPiAtLy8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQ
-TC0yLjAtb3ItbGF0ZXIKPiArLy8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjAtb3It
-bGF0ZXIgV0lUSCBPcGVuU1NMLWV4Y2VwdGlvbgo+ICAvLyBTUERYLUZpbGVDb3B5cmlnaHRUZXh0
-OiAyMDEzIFNhc2NoYSBIYXVlciwgUGVuZ3V0cm9uaXgKPiAgCj4gICNkZWZpbmUgX0dOVV9TT1VS
-Q0UKPiAKCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgfApTdGV1ZXJ3YWxkZXIgU3RyLiAyMSAgICAgICAg
-ICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfAozMTEzNyBIaWxk
-ZXNoZWltLCBHZXJtYW55ICAgICAgICAgICAgICAgICAgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3
-LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6
-ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZy
-YWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
-ZWJveAo=
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--===============4370290560428566460==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature";
+ boundary="DpULdXivbMf6lXrljHic0XxHFMdrVyHpR"
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--DpULdXivbMf6lXrljHic0XxHFMdrVyHpR
+Content-Type: multipart/mixed; boundary="4BimIG3d36LOokbc8Mr5eorlrlh2ikw8W";
+ protected-headers="v1"
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+ barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, Alexander Kurz <akurz@blala.de>,
+ Andrey Smirnov <andrew.smirnov@gmail.com>,
+ Bastian Krause <bst@pengutronix.de>, =?UTF-8?Q?Eric_B=c3=a9nard?=
+ <eric@eukrea.com>, Lucas Stach <l.stach@pengutronix.de>,
+ Marcin Niestroj <m.niestroj@grinn-global.com>,
+ Rouven Czerwinski <r.czerwinski@pengutronix.de>,
+ Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <b975f528-f432-4d69-7534-4460f26d2689@pengutronix.de>
+Subject: Re: [PATCH 6/7] scripts/imx-image: relicense to allow distribution of
+ binary linked with OpenSSL
+References: <20200915205417.15484-1-u.kleine-koenig@pengutronix.de>
+ <20200915205417.15484-7-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20200915205417.15484-7-u.kleine-koenig@pengutronix.de>
+
+--4BimIG3d36LOokbc8Mr5eorlrlh2ikw8W
+Content-Type: text/plain; charset=utf-8
+Content-Language: de-DE
+Content-Transfer-Encoding: quoted-printable
+
+On 9/15/20 10:54 PM, Uwe Kleine-K=C3=B6nig wrote:
+> The GPL (both, versions 2 and 3) are incompatible with the OpenSSL lice=
+nse.
+> According to the Free Software Foundation the copyright holders of GPL
+> software have to provide an exception to allow this linkage.
+>=20
+> This is effectively a license change and so needs confirmation by all
+> copyright holders.
+>=20
+> Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Cc: Alexander Kurz <akurz@blala.de>
+> Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+> Cc: Bastian Krause <bst@pengutronix.de>
+> Cc: Eric B=C3=A9nard <eric@eukrea.com>
+> Cc: Lucas Stach <l.stach@pengutronix.de>
+> Cc: Marcin Niestroj <m.niestroj@grinn-global.com>
+> Cc: Marc Kleine-Budde <mkl@pengutronix.de>
+
+Acked-by: Marc Kleine-Budde <mkl@pengutronix.de>
+
+> Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  scripts/imx/imx-image.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
+> index f5e89d07a6ee..34bbfc8d8308 100644
+> --- a/scripts/imx/imx-image.c
+> +++ b/scripts/imx/imx-image.c
+> @@ -1,4 +1,4 @@
+> -// SPDX-License-Identifier: GPL-2.0-or-later
+> +// SPDX-License-Identifier: GPL-2.0-or-later WITH OpenSSL-exception
+>  // SPDX-FileCopyrightText: 2013 Sascha Hauer, Pengutronix
+> =20
+>  #define _GNU_SOURCE
+>=20
+
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde           |
+Embedded Linux                   | https://www.pengutronix.de  |
+Vertretung West/Dortmund         | Phone: +49-231-2826-924     |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-5555 |
+
+
+--4BimIG3d36LOokbc8Mr5eorlrlh2ikw8W--
+
+--DpULdXivbMf6lXrljHic0XxHFMdrVyHpR
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEK3kIWJt9yTYMP3ehqclaivrt76kFAl9hyxsACgkQqclaivrt
+76m5FggArHhmMx39X+n16gxb088Em2mYYFhjS5sa4S67Gs0MUBHRpFOfjpMbv7Iu
+0P/xZ8J793Q480sPMJ3ulwwQEvfYXJxHYnEgWPirwaforOncDT3vxORUs2XSkCgS
+aoluIUSm6K+n/cVRe3ufFpouEH7MsTDn/t9N0s21qYJuyGNEZaDR4phFdFIIOWtp
+60R+6cIxyeKuDZiiiI1W+/hJq08BqAhPemo0ai45YHqldEav479HZ/sj+E9eK6RU
+ubDL9LlrPJKRfX60Sm1Macg78AhjJM1puwyvemUNnrJFXcyCRy6p9Wlk4lSkE+sF
+Iqvhn35IiFNQkZQaXT201V4VwL9isA==
+=b6CM
+-----END PGP SIGNATURE-----
+
+--DpULdXivbMf6lXrljHic0XxHFMdrVyHpR--
+
+
+--===============4370290560428566460==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============4370290560428566460==--
