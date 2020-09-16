@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from smtp95.ord1d.emailsrvr.com ([184.106.54.95])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kIZDx-0006si-Kh
- for barebox@lists.infradead.org; Wed, 16 Sep 2020 15:19:58 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 16 Sep 2020 17:19:51 +0200
-Message-Id: <20200916151951.29117-1-a.fatoum@pengutronix.de>
+ id 1kIaDb-000474-TF
+ for barebox@lists.infradead.org; Wed, 16 Sep 2020 16:23:41 +0000
+From: Ian Abbott <abbotti@mev.co.uk>
+Date: Wed, 16 Sep 2020 17:23:17 +0100
+Message-Id: <20200916162317.5270-1-abbotti@mev.co.uk>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,65 +19,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] kbuild: add dtbs target for building all dtbs of an ARCH
+Subject: [PATCH] mtd: spi-nor: cadence: fix csqpi corruption in
+ cqspi_set_protocol
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Ian Abbott <abbotti@mev.co.uk>
 
-As described in the documentation, upstream device trees extended by
-barebox should take care to cause compile errors, not runtime errors,
-when the paths they extend disappear. This way, breakage can be easily
-detected when synchronizing the dts/ directory and fixed right then.
+cqspi_set_protocol() sets `inst_width`, `addr_width` and `data_width`
+for the previous chip-select in `cqspi->current_cs`, but that is
+initially set to -1, leading to corruption of other `cqspi->` members.
+Change it to set `inst_width`, `addr_width` and `data_width` for the
+chip-select associated with the `nor` parameter.
 
-Make this process easier by providing a dtbs target that builds all
-device trees available in arch/$(SRCARCH)/dts/.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Fixes: 5085d2ef3fbf ("mtd: spi-nor: cadence: add cqspi_set_protocol")
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
 ---
-v1 -> v2:
-  - populate $(targets) with device trees to build, so make dtbs does
-    only build dts files changed since the last make dtbs run (Sascha)
----
- Makefile | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ drivers/mtd/spi-nor/cadence-quadspi.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/Makefile b/Makefile
-index 906068036715..3bf5cbce32a4 100644
---- a/Makefile
-+++ b/Makefile
-@@ -998,6 +998,22 @@ include/generated/version.h: FORCE
- include/generated/utsrelease.h: include/config/kernel.release FORCE
- 	$(call filechk,utsrelease.h)
+diff --git a/drivers/mtd/spi-nor/cadence-quadspi.c b/drivers/mtd/spi-nor/cadence-quadspi.c
+index 11e4d236d..2372482ac 100644
+--- a/drivers/mtd/spi-nor/cadence-quadspi.c
++++ b/drivers/mtd/spi-nor/cadence-quadspi.c
+@@ -896,8 +896,12 @@ static int cqspi_set_protocol(struct spi_nor *nor, const int read)
+ {
+ 	struct cqspi_st *cqspi = nor->priv;
+ 	struct cqspi_flash_pdata *f_pdata;
++	int cs = cqspi_find_chipselect(nor);
  
-+# ---------------------------------------------------------------------------
-+# Devicetree files
+-	f_pdata = &cqspi->f_pdata[cqspi->current_cs];
++	if (cs < 0)
++		return -EINVAL;
 +
-+ifneq ($(wildcard $(srctree)/arch/$(SRCARCH)/dts/),)
-+dtstree := arch/$(SRCARCH)/dts
-+endif
-+
-+ifneq ($(dtstree),)
-+
-+PHONY += dtbs
-+all_dtbs += $(patsubst $(srctree)/%.dts,$(objtree)/%.dtb,$(wildcard $(srctree)/$(dtstree)/*.dts))
-+targets += $(all_dtbs)
-+dtbs: $(all_dtbs)
-+
-+endif
-+
- # ---------------------------------------------------------------------------
- # Modules
++	f_pdata = &cqspi->f_pdata[cs];
  
-@@ -1173,6 +1189,10 @@ help:
- 	@$(if $(archhelp),$(archhelp),\
- 		echo '  No architecture specific help defined for $(SRCARCH)')
- 	@echo  ''
-+	@$(if $(dtstree), \
-+		echo '  Devicetree:'; \
-+		echo '    * dtbs             - Build device tree blobs for all boards'; \
-+		echo '')
- 	@$(if $(boards), \
- 		$(foreach b, $(boards), \
- 		printf "  %-24s - Build for %s\\n" $(b) $(subst _defconfig,,$(b));) \
+ 	f_pdata->inst_width = CQSPI_INST_TYPE_SINGLE;
+ 	f_pdata->addr_width = CQSPI_INST_TYPE_SINGLE;
 -- 
 2.28.0
 
