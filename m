@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kJ9wk-0004YV-DS
- for barebox@lists.infradead.org; Fri, 18 Sep 2020 06:32:39 +0000
-Date: Fri, 18 Sep 2020 08:32:36 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20200918063236.pvjcksl3skozhw7q@pengutronix.de>
+ id 1kITiT-0000IH-TD
+ for barebox@lists.infradead.org; Wed, 16 Sep 2020 09:27:06 +0000
+Date: Wed, 16 Sep 2020 11:27:00 +0200
+From: Roland Hieber <rhi@pengutronix.de>
+Message-ID: <20200916092700.z6pv5l3jmud2lar7@pengutronix.de>
 References: <20200915205417.15484-1-u.kleine-koenig@pengutronix.de>
- <20200915205417.15484-8-u.kleine-koenig@pengutronix.de>
- <6e99cb83-e7f0-c925-6306-c9153afd91bf@denx.de>
+ <20200915205417.15484-5-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <6e99cb83-e7f0-c925-6306-c9153afd91bf@denx.de>
+Content-Disposition: inline
+In-Reply-To: <20200915205417.15484-5-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,79 +19,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0884972248277813721=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 7/7] scripts/mxsimage: relicense to allow distribution of
- binary linked with OpenSSL
-To: Marek Vasut <marex@denx.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 4/7] LICENSES: add OpenSSL exception
+To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: Marek Vasut <marex@denx.de>, barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>, Andrey Smirnov <andrew.smirnov@gmail.com>, Marcin Niestroj <m.niestroj@grinn-global.com>, Eric =?utf-8?Q?B=C3=A9nard?= <eric@eukrea.com>, Rouven Czerwinski <r.czerwinski@pengutronix.de>, Alexander Kurz <akurz@blala.de>, Bastian Krause <bst@pengutronix.de>
 
-
---===============0884972248277813721==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="7dtvrhrhyjgw7k24"
-Content-Disposition: inline
-
-
---7dtvrhrhyjgw7k24
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Sep 15, 2020 at 11:31:17PM +0200, Marek Vasut wrote:
-> On 9/15/20 10:54 PM, Uwe Kleine-K=F6nig wrote:
-> > The GPL (both, versions 2 and 3) are incompatible with the OpenSSL
-> > license.  According to the Free Software Foundation the copyright
-> > holders of GPL software have to provide an exception to allow this
-> > linkage.
-> >=20
-> > This is effectively a license change and so needs confirmation by all
-> > copyright holders.
-> >=20
-> > Cc: Marek Vasut <marex@denx.de>
-> > Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
->=20
-> Fine by me.
-
-I'll interpret that as an Acked-by: Marek Vasut <marex@denx.de> for v2
-of the series.
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---7dtvrhrhyjgw7k24
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAl9kVIAACgkQwfwUeK3K
-7AmB/gf+PovVML57M5cduj2bU9fVHDlF31o/3oGwcAefjrgu9AW+azAgmHgxV95Z
-WjOc+7SGHKrRwJx4Qs1vPB9o1vfBnK18q8Ct0XMTRU/EAXNGj1390z+SO7TQLxAS
-CTDeMepgjbA7XMHZsT8OReTd/N7hXiLEbId61uh7KKyxfZOo5bBgdWs2mZcFUP42
-vCSlggocZi8HWFDtNvxPDLTQLGjEK4DEEIFHrkVPQ8UXqvlPT6xWgTPrwkl6Gu92
-UdPQiJ3zK40kZJl7bB2ga5ZXgKXwNa4nqbiTBxBiuD7KQRoHTXdhFGXa1hZhCk/Y
-By3p96xkpep8JcWx/gUgxPGvWVYqow==
-=I5Xo
------END PGP SIGNATURE-----
-
---7dtvrhrhyjgw7k24--
-
-
---===============0884972248277813721==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
-
---===============0884972248277813721==--
+T24gVHVlLCBTZXAgMTUsIDIwMjAgYXQgMTA6NTQ6MTRQTSArMDIwMCwgVXdlIEtsZWluZS1Lw7Zu
+aWcgd3JvdGU6Cj4gVGhlIEdQTCAoYm90aCwgdmVyc2lvbiAyIGFuZCAzKSBhcmUgaW5jb21wYXRp
+YmxlIHdpdGggdGhlIE9wZW5TU0wgbGljZW5zZS4KPiAoT3BlblNTTCBoYXMgcmVxdWlyZW1lbnRz
+IG9uIGF0dHJpYnV0aW9uLCB3aGljaCBmcm9tIHRoZSBHUEwncyBwb2ludCBvZgo+IHZpZXcgaXMg
+YSBmdXJ0aGVyIHJlcXVpcmVtZW50IHdoaWNoIGlzIGZvcmJpZGRlbi4pCj4gCj4gU2VlIGh0dHBz
+Oi8vd3d3LmdudS5vcmcvbGljZW5zZXMvZ3BsLWZhcS5odG1sI0dQTEluY29tcGF0aWJsZUxpYnMg
+Zm9yCj4gc29tZSBtb3JlIGRldGFpbHMuCj4gCj4gU2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1L
+w7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KPiAtLS0KPiAgTElDRU5TRVMv
+ZXhjZXB0aW9ucy9PcGVuU1NMLWV4Y2VwdGlvbiB8IDEyICsrKysrKysrKysrKwo+ICAxIGZpbGUg
+Y2hhbmdlZCwgMTIgaW5zZXJ0aW9ucygrKQo+ICBjcmVhdGUgbW9kZSAxMDA2NDQgTElDRU5TRVMv
+ZXhjZXB0aW9ucy9PcGVuU1NMLWV4Y2VwdGlvbgo+IAo+IGRpZmYgLS1naXQgYS9MSUNFTlNFUy9l
+eGNlcHRpb25zL09wZW5TU0wtZXhjZXB0aW9uIGIvTElDRU5TRVMvZXhjZXB0aW9ucy9PcGVuU1NM
+LWV4Y2VwdGlvbgo+IG5ldyBmaWxlIG1vZGUgMTAwNjQ0Cj4gaW5kZXggMDAwMDAwMDAwMDAwLi4y
+ODBjMTE2ZDRlNDYKPiAtLS0gL2Rldi9udWxsCj4gKysrIGIvTElDRU5TRVMvZXhjZXB0aW9ucy9P
+cGVuU1NMLWV4Y2VwdGlvbgo+IEBAIC0wLDAgKzEsMTIgQEAKPiArU1BEWC1FeGNlcHRpb24tSWRl
+bnRpZmllcjogT3BlblNTTC1leGNlcHRpb24KCkkgdGhpbmsgd2Ugc2hvdWxkIG5vdCBwb2xsdXRl
+IFNQRFgncyBuYW1lc3BhY2Ugd2l0aCBpZGVudGlmaWVycyB0aGF0CmNvdWxkIGJlIGRlZmluZWQg
+YnkgdGhlbSBpbiB0aGUgZnV0dXJlLiBJbnN0ZWFkLCBJIHdvdWxkIGxpa2UgdXNlIHRoZQppZGVu
+dGlmaWVyICJMaWNlbnNlUmVmLU9wZW5TU0wtZXhjZXB0aW9uIiBpbiBhY2NvcmRhbmNlIHdpdGgg
+dGhlIFNQRFgKc3BlYyBbMV0uCgpPbiB0aGUgb3RoZXIgaGFuZCwgaXQncyBhIGJpdCB1bmZvcnR1
+bmF0ZSB0aGF0IHRoZSBTUERYIHB1bGwgcmVxdWVzdCBbMl0KaW50cm9kdWNpbmcgdGhlIGRlYmlh
+bi1vcGVuc3NsLWV4Y2VwdGlvbiBpZGVudGlmaWVyIGlzIG5vdCBtZXJnZWQgeWV0LApvdGhlcndp
+c2Ugd2UgY291bGQgdXNlIHRoaXMgb25lIChpdCBoYXMgYSBzbGlnaHRseSBkaWZmZXJlbnQgd29y
+ZGluZwpjb21wYXJlZCB0byB0aGUgdmVyc2lvbiB5b3UgdXNlZCBiZWxvdykuIEJ1dCBub3cgdGhh
+dCBzb21lIHBlb3BsZSBoYXZlCmFscmVhZHkgQUNLZWQgdGhlIHdvcmRpbmcgYmVsb3csIGl0IHNl
+ZW1zIGVhc2llciBqdXN0IHRvIHJlbmFtZSB0aGUKaWRlbnRpZmllci4KClsxXTogaHR0cHM6Ly9z
+cGR4LmdpdGh1Yi5pby9zcGR4LXNwZWMvNi1vdGhlci1saWNlbnNpbmctaW5mb3JtYXRpb24tZGV0
+ZWN0ZWQvIzYxLWxpY2Vuc2UtaWRlbnRpZmllcgpbMl06IGh0dHBzOi8vZ2l0aHViLmNvbS9zcGR4
+L2xpY2Vuc2UtbGlzdC1YTUwvcHVsbC84MjQKCiAtIFJvbGFuZAoKPiArU1BEWC1MaWNlbnNlczog
+R1BMLTIuMC1vci1sYXRlciwgR1BMLTIuMC1vbmx5Cj4gK0xpY2Vuc2UtVGV4dDoKPiArCj4gK0lu
+IGFkZGl0aW9uLCBhcyBhIHNwZWNpYWwgZXhjZXB0aW9uIHRoZSBjb3B5cmlnaHQgaG9sZGVycyBn
+aXZlCj4gK3Blcm1pc3Npb24gdG8gbGluayB0aGUgY29kZSBvZiB0aGlzIHByb2dyYW0gd2l0aCB0
+aGUgT3BlblNTTCBMaWJyYXJ5IChvciB3aXRoCj4gK21vZGlmaWVkIHZlcnNpb25zIG9mIE9wZW5T
+U0wgdGhhdCB1c2UgdGhlIHNhbWUgbGljZW5zZSBhcyBPcGVuU1NMKSwgYW5kCj4gK2Rpc3RyaWJ1
+dGUgbGlua2VkIGNvbWJpbmF0aW9ucyBpbmNsdWRpbmcgdGhlIHR3by4gWW91IG11c3Qgb2JleSB0
+aGUgR05VIEdlbmVyYWwKPiArUHVibGljIExpY2Vuc2UgaW4gYWxsIHJlc3BlY3RzIGZvciBhbGwg
+b2YgdGhlIGNvZGUgdXNlZCBvdGhlciB0aGFuIE9wZW5TU0wuIElmCj4gK3lvdSBtb2RpZnkgdGhp
+cyBmaWxlLCB5b3UgbWF5IGV4dGVuZCB0aGlzIGV4Y2VwdGlvbiB0byB5b3VyIHZlcnNpb24gb2Yg
+dGhlCj4gK2ZpbGUsIGJ1dCB5b3UgYXJlIG5vdCBvYmxpZ2F0ZWQgdG8gZG8gc28uIElmIHlvdSBk
+byBub3Qgd2lzaCB0byBkbyBzbywgZGVsZXRlCj4gK3RoaXMgZXhjZXB0aW9uIHN0YXRlbWVudCBm
+cm9tIHlvdXIgdmVyc2lvbi4KPiAtLSAKPiAyLjI3LjAKPiAKPiAKPiBfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwo+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4g
+YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCj4gaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcv
+bWFpbG1hbi9saXN0aW5mby9iYXJlYm94CgotLSAKUm9sYW5kIEhpZWJlciwgUGVuZ3V0cm9uaXgg
+ZS5LLiAgICAgICAgICB8IHIuaGllYmVyQHBlbmd1dHJvbml4LmRlICAgICB8ClN0ZXVlcndhbGRl
+ciBTdHIuIDIxICAgICAgICAgICAgICAgICAgICAgfCBodHRwczovL3d3dy5wZW5ndXRyb25peC5k
+ZS8gfAozMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55ICAgICAgICAgICAgICAgIHwgUGhvbmU6ICs0
+OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAg
+ICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94
+QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9s
+aXN0aW5mby9iYXJlYm94Cg==
