@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kIXrH-0007wU-Cw
+ id 1kIXrG-0007wb-Th
  for barebox@lists.infradead.org; Wed, 16 Sep 2020 13:52:29 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 16 Sep 2020 15:50:25 +0200
-Message-Id: <20200916135035.7089-1-a.fatoum@pengutronix.de>
+Date: Wed, 16 Sep 2020 15:50:29 +0200
+Message-Id: <20200916135035.7089-5-a.fatoum@pengutronix.de>
+In-Reply-To: <20200916135035.7089-1-a.fatoum@pengutronix.de>
+References: <20200916135035.7089-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,93 +21,94 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/10] power: reset: add support for syscon reboot modes
+Subject: [PATCH 04/10] power: reset: reboot-mode: fix up node into boot device
+ tree
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-With this patch set, we have a framework to generically support passing
-reboot modes to previous bootloader stages as well as process them.
-Stuff you can do with this:
+Instead of relying that the kernel and barebox device trees are in sync,
+just enforce it by having barebox fix up the device tree node it probed
+into the kernel device tree. We usually want that, but some reboot mode
+drivers might want to inhibit the fixup, e.g. because they implement
+a non-upstream binding or because they communicate with the BootROM,
+while the kernel shouldn't. For those the fixup is made optional via
+a struct reboot_mode_driver::no_fixup member.
 
-  linux$ reboot recovery
-  * fall into barebox menu prompt, unless overridden *
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/power/reset/reboot-mode.c | 39 +++++++++++++++++++++++++++++++
+ include/linux/reboot-mode.h       |  1 +
+ 2 files changed, 40 insertions(+)
 
-  linux$ reboot emmc
-  * sources /env/bmode/emmc if available *
-
-  barebox$ gpr.reboot_mode.next=serial reset
-  * fall into imx-usb-loader mode *
-
-To enable this, besides having kernel and bootloader driver support,
-you'll need to describe in the device tree where the reboot mode is
-to be stored and what reboot modes there are.
-This patch set implements it for two SoC families:
-
-stm32mp15x:
-  - All now support `reboot loader` and `reboot recovery` from Linux,
-    if the syscon exists (The reboot mode itself is fixed up).
-
-i.MX6Q/DL:
-  - No OS communication by default, but you can now easily tell the
-    BootROM where to boot from after warm reset
-
-One thing missing in this series is support for nvmem-reboot-mode.
-I ported the kernel driver[], but didn't come around to test it.
-
-Details inside. Feedback appreciated. :-)
-
-[1]: https://github.com/a3f/barebox/tree/reboot_mode
-
-Ahmad Fatoum (10):
-  usbgadget: autostart: support delayed usbgadget.autostart=1
-  drivers: add reboot-mode infrastructure
-  power: reset: reboot-mode: port syscon-reboot-mode support
-  power: reset: reboot-mode: fix up node into boot device tree
-  defaultenv: provide defaults for generic reboot modes
-  ARM: dts: stm32mp: setup syscon-reboot-mode on TAMP general purpose
-    register
-  ARM: stm32mp: remove custom reboot mode logic from arch code
-  power: reset: reboot-mode: support multi-word magic
-  power: reset: syscon-reboot-mode: support multi-word reboot modes
-  ARM: dts: i.MX6qdl: define BootROM reboot-mode on top of SRC_GPR{9,10}
-
- Documentation/user/defaultenv-2.rst           |  18 +-
- Documentation/user/reboot-mode.rst            |  95 ++++++++
- arch/arm/dts/imx6qdl.dtsi                     |  21 ++
- arch/arm/dts/stm32mp151.dtsi                  |  15 ++
- .../mach-stm32mp/include/mach/bootsource.h    |  12 -
- arch/arm/mach-stm32mp/init.c                  |  16 +-
- common/Kconfig                                |   5 +
- common/startup.c                              |  16 ++
- common/usbgadget.c                            |   6 +-
- defaultenv/Makefile                           |   1 +
- .../defaultenv-2-reboot-mode/bmode/bootloader |   3 +
- .../defaultenv-2-reboot-mode/bmode/loader     |   2 +
- .../defaultenv-2-reboot-mode/bmode/recovery   |   2 +
- defaultenv/defaultenv.c                       |   2 +
- drivers/Kconfig                               |   1 +
- drivers/Makefile                              |   1 +
- drivers/power/Kconfig                         |   2 +
- drivers/power/Makefile                        |   2 +
- drivers/power/reset/Kconfig                   |  16 ++
- drivers/power/reset/Makefile                  |   3 +
- drivers/power/reset/reboot-mode.c             | 229 ++++++++++++++++++
- drivers/power/reset/syscon-reboot-mode.c      | 129 ++++++++++
- include/linux/reboot-mode.h                   |  38 +++
- include/of.h                                  |   2 +
- 24 files changed, 604 insertions(+), 33 deletions(-)
- create mode 100644 Documentation/user/reboot-mode.rst
- create mode 100644 defaultenv/defaultenv-2-reboot-mode/bmode/bootloader
- create mode 100755 defaultenv/defaultenv-2-reboot-mode/bmode/loader
- create mode 100644 defaultenv/defaultenv-2-reboot-mode/bmode/recovery
- create mode 100644 drivers/power/Kconfig
- create mode 100644 drivers/power/Makefile
- create mode 100644 drivers/power/reset/Kconfig
- create mode 100644 drivers/power/reset/Makefile
- create mode 100644 drivers/power/reset/reboot-mode.c
- create mode 100644 drivers/power/reset/syscon-reboot-mode.c
- create mode 100644 include/linux/reboot-mode.h
-
+diff --git a/drivers/power/reset/reboot-mode.c b/drivers/power/reset/reboot-mode.c
+index 5992a2acd99a..5fc29ebf8091 100644
+--- a/drivers/power/reset/reboot-mode.c
++++ b/drivers/power/reset/reboot-mode.c
+@@ -52,6 +52,42 @@ static int reboot_mode_add_param(struct device_d *dev,
+ 	return PTR_ERR_OR_ZERO(param);
+ }
+ 
++static struct device_node *of_get_node_by_reproducible_name(struct device_node *dstroot,
++							    struct device_node *srcnp)
++{
++	struct device_node *dstnp;
++	char *name;
++
++	name = of_get_reproducible_name(srcnp);
++	dstnp = of_find_node_by_reproducible_name(dstroot, name);
++	free(name);
++
++	return dstnp;
++}
++
++static int of_reboot_mode_fixup(struct device_node *root, void *ctx)
++{
++	struct reboot_mode_driver *reboot = ctx;
++	struct device_node *dstnp, *srcnp, *dstparent;
++
++	srcnp = reboot->dev->device_node;
++
++	dstnp = of_get_node_by_reproducible_name(root, srcnp);
++	if (dstnp) {
++		dstparent = dstnp->parent;
++		of_delete_node(dstnp);
++	} else {
++		dstparent = of_get_node_by_reproducible_name(root, srcnp->parent);
++	}
++
++	if (!dstparent)
++		return -EINVAL;
++
++	of_copy_node(dstparent, srcnp);
++
++	return 0;
++}
++
+ static int reboot_mode_add_globalvar(void)
+ {
+ 	struct reboot_mode_driver *reboot = __boot_mode;
+@@ -59,6 +95,9 @@ static int reboot_mode_add_globalvar(void)
+ 	if (!reboot)
+ 		return 0;
+ 
++	if (!reboot->no_fixup)
++		of_register_fixup(of_reboot_mode_fixup, reboot);
++
+ 	return reboot_mode_add_param(&global_device, "system.reboot_mode.", reboot);
+ }
+ late_initcall(reboot_mode_add_globalvar);
+diff --git a/include/linux/reboot-mode.h b/include/linux/reboot-mode.h
+index 92a1da7b5562..bc57f1d72df7 100644
+--- a/include/linux/reboot-mode.h
++++ b/include/linux/reboot-mode.h
+@@ -11,6 +11,7 @@ struct reboot_mode_driver {
+ 	struct device_d *dev;
+ 	int (*write)(struct reboot_mode_driver *reboot, u32 magic);
+ 	int priority;
++	bool no_fixup;
+ 
+ 	/* filled by reboot_mode_register */
+ 	int reboot_mode_prev, reboot_mode_next;
 -- 
 2.28.0
 
