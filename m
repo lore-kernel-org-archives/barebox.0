@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kIA29-0007rE-Sl
- for barebox@lists.infradead.org; Tue, 15 Sep 2020 12:26:06 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 15 Sep 2020 14:25:36 +0200
-Message-Id: <20200915122539.18744-8-s.hauer@pengutronix.de>
-In-Reply-To: <20200915122539.18744-1-s.hauer@pengutronix.de>
-References: <20200915122539.18744-1-s.hauer@pengutronix.de>
+ id 1kIXrV-00083M-0f
+ for barebox@lists.infradead.org; Wed, 16 Sep 2020 13:52:41 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 16 Sep 2020 15:50:31 +0200
+Message-Id: <20200916135035.7089-7-a.fatoum@pengutronix.de>
+In-Reply-To: <20200916135035.7089-1-a.fatoum@pengutronix.de>
+References: <20200916135035.7089-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,41 +21,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/10] openrisc: Add missing includes
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 06/10] ARM: dts: stm32mp: setup syscon-reboot-mode on TAMP
+ general purpose register
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Add missing includes to avoid -Wmissing-prototypes warnings.
+With the reboot mode infrastructure in place, lets add the first in-tree
+user. The STM32MP1 SoCs have general purpose registers in the TAMP
+peripheral. Register 20 there is used by the vendor's U-Boot for storing
+a forced boot mode. We will use the same location for our reboot mode.
+Consistency between barebox and OS is maintained by having barebox fixup
+the device tree with the same reboot mode information it used itself, so
+we are free to choose our own mode identifiers.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/openrisc/cpu/cache.c      | 1 +
- arch/openrisc/cpu/exceptions.c | 1 +
- 2 files changed, 2 insertions(+)
+ arch/arm/dts/stm32mp151.dtsi | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/arch/openrisc/cpu/cache.c b/arch/openrisc/cpu/cache.c
-index 1da2380c03..db6403634a 100644
---- a/arch/openrisc/cpu/cache.c
-+++ b/arch/openrisc/cpu/cache.c
-@@ -17,6 +17,7 @@
- #include <common.h>
- #include <init.h>
- #include <asm/system.h>
-+#include <asm/cache.h>
+diff --git a/arch/arm/dts/stm32mp151.dtsi b/arch/arm/dts/stm32mp151.dtsi
+index 5ff3b96fae4a..9638e972264a 100644
+--- a/arch/arm/dts/stm32mp151.dtsi
++++ b/arch/arm/dts/stm32mp151.dtsi
+@@ -28,6 +28,7 @@
+ 		pwm15 = &{/soc/timer@44006000/pwm};
+ 		pwm16 = &{/soc/timer@44007000/pwm};
+ 		pwm17 = &{/soc/timer@44008000/pwm};
++		tamp.reboot_mode = &reboot_mode_tamp;
+ 	};
  
- void flush_dcache_range(unsigned long addr, unsigned long stop)
- {
-diff --git a/arch/openrisc/cpu/exceptions.c b/arch/openrisc/cpu/exceptions.c
-index 4c52feb51c..c69ceafe80 100644
---- a/arch/openrisc/cpu/exceptions.c
-+++ b/arch/openrisc/cpu/exceptions.c
-@@ -16,6 +16,7 @@
+ };
+@@ -46,6 +47,20 @@
+ 		compatible = "st,stm32mp1-ddr";
+ 		reg = <0x5a003000 0x1000>;
+ 	};
++
++	tamp@5c00a000 {
++		compatible = "simple-bus", "syscon", "simple-mfd";
++		reg = <0x5c00a000 0x400>;
++
++		reboot_mode_tamp: reboot-mode {
++			compatible = "syscon-reboot-mode";
++			offset = <0x150>; /* reg20 */
++			mask = <0xff>;
++			mode-normal = <0>;
++			mode-loader = <0xBB>;
++			mode-recovery = <0xBC>;
++		};
++	};
+ };
  
- #include <common.h>
- #include <asm/system.h>
-+#include <asm/openrisc_exc.h>
- 
- static const char * const excp_table[] = {
- 	"Unknown exception",
+ &bsec {
 -- 
 2.28.0
 
