@@ -1,14 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kI4Se-0000k4-Pr
- for barebox@lists.infradead.org; Tue, 15 Sep 2020 06:29:05 +0000
-Date: Tue, 15 Sep 2020 08:29:01 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20200915062901.x6k4buz2xybgz4vz@pengutronix.de>
-References: <20200914203115.818974-1-ahmad@a3f.at>
+ id 1kIUu9-000071-GD
+ for barebox@lists.infradead.org; Wed, 16 Sep 2020 10:43:14 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+References: <20200914130640.21416-1-s.hauer@pengutronix.de>
+ <20200914130640.21416-4-s.hauer@pengutronix.de>
+ <da8f70a1-921f-ad94-ffb1-855eb4004f86@pengutronix.de>
+ <20200915071215.GZ4498@pengutronix.de>
+ <5e8911d3-2fe2-f2c7-09da-c971d97e8ff3@pengutronix.de>
+ <20200915131219.GP4498@pengutronix.de>
+ <7d170c31-d117-0493-6487-364de7b285b9@pengutronix.de>
+Message-ID: <ba7d4bbf-4229-e27f-3702-4618b7a41905@pengutronix.de>
+Date: Wed, 16 Sep 2020 12:43:11 +0200
 MIME-Version: 1.0
-In-Reply-To: <20200914203115.818974-1-ahmad@a3f.at>
+In-Reply-To: <7d170c31-d117-0493-6487-364de7b285b9@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,70 +24,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============8544536051922183293=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fixup! arm/cpu/*.S: Replace license and copyright
- boilerplate by SPDX identfiers
-To: Ahmad Fatoum <ahmad@a3f.at>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 4/4] fs: free unused dentries
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
+Hello,
 
---===============8544536051922183293==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="fjsgjszddmylgdkn"
-Content-Disposition: inline
+On 9/15/20 3:28 PM, Ahmad Fatoum wrote:
+> Just tried on the build server; could you try to run nv autoboot=abort; reset instead?
 
+Small update: THis affects non-sandbox as well. I have observed broken reset on the
+stm32mp1.
 
---fjsgjszddmylgdkn
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, Sep 14, 2020 at 10:31:15PM +0200, Ahmad Fatoum wrote:
-> Fix unterminated comment block.
->=20
-> Cc: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
-
-Looks right, thanks for spotting (or sorry for breaking the build for
-you).
-
-Best regards
-Uwe
-
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---fjsgjszddmylgdkn
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAl9gXyoACgkQwfwUeK3K
-7Am+dwf+MFMB/743xQ0ckGuHYlXqJcM0Tpqox7qiP/rkLRTYO0MmJnteH6lbWPPE
-veOX4gh1YoXXsvRJ/JwCdYH5OrSh5ZiCDwkNmzYXUiKb2eVq37PdsY9tn0O5z+pN
-bGF6Uw0A5rHRSKoJ0zTmdUTJKRyuZ5epD+5//H/rJdtTO2p2o/uZX7mj5oF7lTpk
-Pn5CUr2fmqSL+zl24GdR0WJAX7BhE+VHICiFKrj8DAfx9amNSMofVHr6LtodYq8k
-TuIqWJ1+huOL3NHr0Pxeliglo51v6gGwTmun5qI1XXUbQddcfJ+dWZStT/o2/7jC
-VE4T76pRqeLH3Fq6Nn19hd9I86mbwA==
-=fsTA
------END PGP SIGNATURE-----
-
---fjsgjszddmylgdkn--
-
-
---===============8544536051922183293==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============8544536051922183293==--
