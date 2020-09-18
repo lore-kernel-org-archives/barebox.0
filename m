@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kNcaW-0008Ns-8D
- for barebox@lists.infradead.org; Wed, 30 Sep 2020 13:56:11 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 30 Sep 2020 15:56:03 +0200
-Message-Id: <20200930135603.8250-1-a.fatoum@pengutronix.de>
+ id 1kJEC7-00004u-HJ
+ for barebox@lists.infradead.org; Fri, 18 Sep 2020 11:04:48 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Fri, 18 Sep 2020 13:04:42 +0200
+Message-Id: <20200918110442.25159-2-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20200918110442.25159-1-u.kleine-koenig@pengutronix.de>
+References: <20200918110442.25159-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -15,44 +17,28 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH master] ARM: psci: fix NULL pointer dereference on CPU idle
+Subject: [PATCH 2/2] x86/config/efi: drop DRIVER_SERIAL_NS16550
 To: barebox@lists.infradead.org
-Cc: lst@pengutronix.de, Ahmad Fatoum <a.fatoum@pengutronix.de>, jbe@pengutronix.de
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-We guard against cpu_off being NULL, but dereference cpu_suspend
-instead.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-Cc: lst@pengutronix.de
-Cc: jbe@pengutronix.de
-Cc: jlu@pengutronix.de
----
- arch/arm/cpu/psci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/arm/cpu/psci.c b/arch/arm/cpu/psci.c
-index 436561f8649f..d1056e0659da 100644
---- a/arch/arm/cpu/psci.c
-+++ b/arch/arm/cpu/psci.c
-@@ -89,7 +89,7 @@ static unsigned long psci_cpu_suspend(u32 power_state, unsigned long entry,
- {
- 	psci_printf("%s\n", __func__);
- 
--	if (psci_ops->cpu_off)
-+	if (psci_ops->cpu_suspend)
- 		return psci_ops->cpu_suspend(power_state, entry, context_id);
- 
- 	return ARM_PSCI_RET_NOT_SUPPORTED;
--- 
-2.28.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Rm9yIG1vc3QgbWFjaGluZXMgaGF2aW5nIERSSVZFUl9TRVJJQUxfTlMxNjU1MCBhbmQgRFJJVkVS
+X1NFUklBTF9FRklfU1RESU8KYm90aCBlbmFibGVkIHJlc3VsdHMgaW4gdGhlIG91dHB1dCBhcHBl
+YXJpbmcgdHdpY2Ugb24gdGhlIHNlcmlhbCBvdXRwdXQuClNvIHJlbW92ZSBkaXNhYmxlIHRoZSBs
+b3dsZXZlbCBkcml2ZXIgYW5kIHJlbHkgb24gdGhlIEVGSSBiaW9zIGZvciBzZXJpYWwuCgpTaWdu
+ZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4
+LmRlPgotLS0KIGFyY2gveDg2L2NvbmZpZ3MvZWZpX2RlZmNvbmZpZyB8IDEgLQogMSBmaWxlIGNo
+YW5nZWQsIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9hcmNoL3g4Ni9jb25maWdzL2VmaV9k
+ZWZjb25maWcgYi9hcmNoL3g4Ni9jb25maWdzL2VmaV9kZWZjb25maWcKaW5kZXggOTliYzM5ZWFh
+NmYxLi44Mzc5NGQ3YTA3MDIgMTAwNjQ0Ci0tLSBhL2FyY2gveDg2L2NvbmZpZ3MvZWZpX2RlZmNv
+bmZpZworKysgYi9hcmNoL3g4Ni9jb25maWdzL2VmaV9kZWZjb25maWcKQEAgLTY1LDcgKzY1LDYg
+QEAgQ09ORklHX05FVD15CiBDT05GSUdfTkVUX05GUz15CiBDT05GSUdfTkVUX05FVENPTlNPTEU9
+eQogQ09ORklHX0RSSVZFUl9TRVJJQUxfRUZJX1NURElPPXkKLUNPTkZJR19EUklWRVJfU0VSSUFM
+X05TMTY1NTA9eQogQ09ORklHX0RSSVZFUl9ORVRfRUZJX1NOUD15CiAjIENPTkZJR19TUEkgaXMg
+bm90IHNldAogQ09ORklHX0RJU0s9eQotLSAKMi4yNy4wCgoKX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBs
+aXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
+dGluZm8vYmFyZWJveAo=
