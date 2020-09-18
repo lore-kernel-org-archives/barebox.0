@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kJCug-0005eN-5Q
- for barebox@lists.infradead.org; Fri, 18 Sep 2020 09:42:43 +0000
-Date: Fri, 18 Sep 2020 11:42:40 +0200
+ id 1kJCwX-0006Dc-RP
+ for barebox@lists.infradead.org; Fri, 18 Sep 2020 09:44:38 +0000
+Date: Fri, 18 Sep 2020 11:44:36 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200918094240.GS4498@pengutronix.de>
-References: <20200915133630.32511-1-a.schwarzkopf@phytec.de>
- <20200915133630.32511-2-a.schwarzkopf@phytec.de>
+Message-ID: <20200918094436.GT4498@pengutronix.de>
+References: <20200916135409.24896-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200915133630.32511-2-a.schwarzkopf@phytec.de>
+In-Reply-To: <20200916135409.24896-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,22 +22,22 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] bootm: Allow loading OP-TEE from FIT image
-To: Albert Schwarzkopf <a.schwarzkopf@phytec.de>
+Subject: Re: [PATCH] globalvar: allow running actions on set with
+ globalvar_add_bool()
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Sep 15, 2020 at 03:36:30PM +0200, Albert Schwarzkopf wrote:
-> Currently, TEE binaries can only be loaded if CONFIG_BOOTM_FORCE_SIGNED_IMAGES
-> is not set. No signature check is being performed on them.
+On Wed, Sep 16, 2020 at 03:54:09PM +0200, Ahmad Fatoum wrote:
+> globalvar_add_simple_bool() and the other family of globalvars don't allow
+> running a callback when the variable is set. This is a useful thing
+> to have however for things like global.usbgadget.autostart=1.
+> Provide a globalvar_add_bool() that accommodates this.
 > 
-> Allow loading OP-TEE from FIT images. Therefore, now it's possible
-> to ensure that only trusted OP-TEE binaries will be loaded by using
-> signed FIT images.
-> 
-> Signed-off-by: Albert Schwarzkopf <a.schwarzkopf@phytec.de>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  arch/arm/lib32/bootm.c | 44 +++++++++++++++++++++++++++++++++++++-----
->  1 file changed, 39 insertions(+), 5 deletions(-)
+>  common/globalvar.c  |  8 +++++---
+>  include/globalvar.h | 14 +++++++++++---
+>  2 files changed, 16 insertions(+), 6 deletions(-)
 
 Applied, thanks
 
