@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kJCwX-0006Dc-RP
- for barebox@lists.infradead.org; Fri, 18 Sep 2020 09:44:38 +0000
-Date: Fri, 18 Sep 2020 11:44:36 +0200
+ id 1kJCyd-0006kV-L4
+ for barebox@lists.infradead.org; Fri, 18 Sep 2020 09:46:49 +0000
+Date: Fri, 18 Sep 2020 11:46:46 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200918094436.GT4498@pengutronix.de>
-References: <20200916135409.24896-1-a.fatoum@pengutronix.de>
+Message-ID: <20200918094646.GU4498@pengutronix.de>
+References: <20200916162317.5270-1-abbotti@mev.co.uk>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200916135409.24896-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20200916162317.5270-1-abbotti@mev.co.uk>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,26 +22,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] globalvar: allow running actions on set with
- globalvar_add_bool()
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] mtd: spi-nor: cadence: fix csqpi corruption in
+ cqspi_set_protocol
+To: Ian Abbott <abbotti@mev.co.uk>
 Cc: barebox@lists.infradead.org
 
-On Wed, Sep 16, 2020 at 03:54:09PM +0200, Ahmad Fatoum wrote:
-> globalvar_add_simple_bool() and the other family of globalvars don't allow
-> running a callback when the variable is set. This is a useful thing
-> to have however for things like global.usbgadget.autostart=1.
-> Provide a globalvar_add_bool() that accommodates this.
+On Wed, Sep 16, 2020 at 05:23:17PM +0100, Ian Abbott wrote:
+> cqspi_set_protocol() sets `inst_width`, `addr_width` and `data_width`
+> for the previous chip-select in `cqspi->current_cs`, but that is
+> initially set to -1, leading to corruption of other `cqspi->` members.
+> Change it to set `inst_width`, `addr_width` and `data_width` for the
+> chip-select associated with the `nor` parameter.
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Fixes: 5085d2ef3fbf ("mtd: spi-nor: cadence: add cqspi_set_protocol")
+> Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
 > ---
->  common/globalvar.c  |  8 +++++---
->  include/globalvar.h | 14 +++++++++++---
->  2 files changed, 16 insertions(+), 6 deletions(-)
+>  drivers/mtd/spi-nor/cadence-quadspi.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
 
 Applied, thanks
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
