@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kIXtx-0000p8-Fn
- for barebox@lists.infradead.org; Wed, 16 Sep 2020 13:55:14 +0000
-References: <20200916135035.7089-1-a.fatoum@pengutronix.de>
- <20200916135035.7089-2-a.fatoum@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <2dc49984-bcf3-7740-1c05-c0864c649590@pengutronix.de>
-Date: Wed, 16 Sep 2020 15:55:10 +0200
+ id 1kJ9wk-0004YV-DS
+ for barebox@lists.infradead.org; Fri, 18 Sep 2020 06:32:39 +0000
+Date: Fri, 18 Sep 2020 08:32:36 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20200918063236.pvjcksl3skozhw7q@pengutronix.de>
+References: <20200915205417.15484-1-u.kleine-koenig@pengutronix.de>
+ <20200915205417.15484-8-u.kleine-koenig@pengutronix.de>
+ <6e99cb83-e7f0-c925-6306-c9153afd91bf@denx.de>
 MIME-Version: 1.0
-In-Reply-To: <20200916135035.7089-2-a.fatoum@pengutronix.de>
-Content-Language: en-US
+In-Reply-To: <6e99cb83-e7f0-c925-6306-c9153afd91bf@denx.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,70 +19,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============0884972248277813721=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 01/10] usbgadget: autostart: support delayed
- usbgadget.autostart=1
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH 7/7] scripts/mxsimage: relicense to allow distribution of
+ binary linked with OpenSSL
+To: Marek Vasut <marex@denx.de>
+Cc: barebox@lists.infradead.org
 
-On 9/16/20 3:50 PM, Ahmad Fatoum wrote:
-> So far, global.usbgadget.autostart=1 from the shell was without effect,
-> because the variable is only evaluated once at postenvironment_initcall.
-> 
-> Use the new globalvar_add_bool() to allow acting on the variable being
 
-Sent out one patch to few. I just sent out the prerequisite
-"globalvar: allow running actions on set with globalvar_add_bool()" patch:
-<20200916135409.24896-1-a.fatoum@pengutronix.de>
+--===============0884972248277813721==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="7dtvrhrhyjgw7k24"
+Content-Disposition: inline
 
-> true at any time. This is necessary for scripts that want to enable
-> the usbgadget autostart functionality selectively without themselves
-> hardcoding the particularities of what is exported.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  common/usbgadget.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/common/usbgadget.c b/common/usbgadget.c
-> index b4f4ba04ca8c..be2bcc467d72 100644
-> --- a/common/usbgadget.c
-> +++ b/common/usbgadget.c
-> @@ -101,7 +101,7 @@ int usbgadget_register(bool dfu, const char *dfu_opts,
->  	return ret;
->  }
->  
-> -static int usbgadget_autostart(void)
-> +static int usbgadget_autostart_set(struct param_d *param, void *ctx)
->  {
->  	bool fastboot_bbu = get_fastboot_bbu();
->  
-> @@ -110,12 +110,12 @@ static int usbgadget_autostart(void)
->  
->  	return usbgadget_register(true, NULL, true, NULL, acm, fastboot_bbu);
->  }
-> -postenvironment_initcall(usbgadget_autostart);
->  
->  static int usbgadget_globalvars_init(void)
->  {
->  	if (IS_ENABLED(CONFIG_USB_GADGET_AUTOSTART)) {
-> -		globalvar_add_simple_bool("usbgadget.autostart", &autostart);
-> +		globalvar_add_bool("usbgadget.autostart", usbgadget_autostart_set,
-> +				   &autostart, NULL);
->  		globalvar_add_simple_bool("usbgadget.acm", &acm);
->  	}
->  	globalvar_add_simple_string("usbgadget.dfu_function", &dfu_function);
-> 
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+--7dtvrhrhyjgw7k24
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Sep 15, 2020 at 11:31:17PM +0200, Marek Vasut wrote:
+> On 9/15/20 10:54 PM, Uwe Kleine-K=F6nig wrote:
+> > The GPL (both, versions 2 and 3) are incompatible with the OpenSSL
+> > license.  According to the Free Software Foundation the copyright
+> > holders of GPL software have to provide an exception to allow this
+> > linkage.
+> >=20
+> > This is effectively a license change and so needs confirmation by all
+> > copyright holders.
+> >=20
+> > Cc: Marek Vasut <marex@denx.de>
+> > Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+>=20
+> Fine by me.
+
+I'll interpret that as an Acked-by: Marek Vasut <marex@denx.de> for v2
+of the series.
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--7dtvrhrhyjgw7k24
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAl9kVIAACgkQwfwUeK3K
+7AmB/gf+PovVML57M5cduj2bU9fVHDlF31o/3oGwcAefjrgu9AW+azAgmHgxV95Z
+WjOc+7SGHKrRwJx4Qs1vPB9o1vfBnK18q8Ct0XMTRU/EAXNGj1390z+SO7TQLxAS
+CTDeMepgjbA7XMHZsT8OReTd/N7hXiLEbId61uh7KKyxfZOo5bBgdWs2mZcFUP42
+vCSlggocZi8HWFDtNvxPDLTQLGjEK4DEEIFHrkVPQ8UXqvlPT6xWgTPrwkl6Gu92
+UdPQiJ3zK40kZJl7bB2ga5ZXgKXwNa4nqbiTBxBiuD7KQRoHTXdhFGXa1hZhCk/Y
+By3p96xkpep8JcWx/gUgxPGvWVYqow==
+=I5Xo
+-----END PGP SIGNATURE-----
+
+--7dtvrhrhyjgw7k24--
+
+
+--===============0884972248277813721==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============0884972248277813721==--
