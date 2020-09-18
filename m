@@ -1,12 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kJEC4-0008Vx-Ko
- for barebox@lists.infradead.org; Fri, 18 Sep 2020 11:04:45 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Fri, 18 Sep 2020 13:04:41 +0200
-Message-Id: <20200918110442.25159-1-u.kleine-koenig@pengutronix.de>
+ id 1kJDEq-0002pg-U4
+ for barebox@lists.infradead.org; Fri, 18 Sep 2020 10:03:33 +0000
+Date: Fri, 18 Sep 2020 12:03:31 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200918100331.GV4498@pengutronix.de>
+References: <20200917201708.12168-1-u.kleine-koenig@pengutronix.de>
+ <20200917201708.12168-4-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200917201708.12168-4-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,152 +19,85 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] Regenerate defconfig files
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH 4/4] arm/boards: Add IMD_USED_OF for a few boards
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-RG9uZSB3aXRoIHRoZSBzYW1lIHNjcmlwdCB1c2VkIHRvIGdlbmVyYXRlIGNvbW1pdCBkOTUyYTBl
-ZWJhMzcKKCJSZWdlbmVyYXRlIGRlZmNvbmZpZyBmaWxlcyIpLgoKU2lnbmVkLW9mZi1ieTogVXdl
-IEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCiBhcmNo
-L2FybS9jb25maWdzL2F0OTFzYW05MjYzZWtfZGVmY29uZmlnICAgICAgICAgfCAgMSAtCiBhcmNo
-L2FybS9jb25maWdzL2F0OTFzYW05eDVla19kZWZjb25maWcgICAgICAgICAgfCAgMSAtCiBhcmNo
-L2FybS9jb25maWdzL2ZyZWVzY2FsZS1teDIxLWFkc19kZWZjb25maWcgICAgfCAgMSAtCiBhcmNo
-L2FybS9jb25maWdzL2lteF9kZWZjb25maWcgICAgICAgICAgICAgICAgICAgfCAgMSAtCiBhcmNo
-L2FybS9jb25maWdzL2lteF92OF9kZWZjb25maWcgICAgICAgICAgICAgICAgfCAgMiAtLQogYXJj
-aC9hcm0vY29uZmlncy9raW5kbGUtbXg1MF9kZWZjb25maWcgICAgICAgICAgIHwgIDEgLQogYXJj
-aC9hcm0vY29uZmlncy9sYXllcnNjYXBlX2RlZmNvbmZpZyAgICAgICAgICAgIHwgIDIgLS0KIGFy
-Y2gvYXJtL2NvbmZpZ3MvbWljcm9jaGlwX2tzejk0NzdfZXZiX2RlZmNvbmZpZyB8ICAxIC0KIGFy
-Y2gvYXJtL2NvbmZpZ3Mvc29jZnBnYS1hcnJpYTEwX2RlZmNvbmZpZyAgICAgICB8ICAxIC0KIGFy
-Y2gvYXJtL2NvbmZpZ3MvdmlydDJyZWFsX2RlZmNvbmZpZyAgICAgICAgICAgICB8ICAxIC0KIGFy
-Y2gvYXJtL2NvbmZpZ3MvemlpX3ZmNjEwX2Rldl9kZWZjb25maWcgICAgICAgICB8ICAxIC0KIGFy
-Y2gva3Z4L2NvbmZpZ3MvZ2VuZXJpY19kZWZjb25maWcgICAgICAgICAgICAgICB8IDEyICsrKysr
-LS0tLS0tLQogYXJjaC9taXBzL2NvbmZpZ3MvYmNtNDd4eF9kZWZjb25maWcgICAgICAgICAgICAg
-IHwgIDEgLQogYXJjaC9taXBzL2NvbmZpZ3MvcWVtdS1tYWx0YV9kZWZjb25maWcgICAgICAgICAg
-IHwgIDEgLQogYXJjaC94ODYvY29uZmlncy9lZmlfZGVmY29uZmlnICAgICAgICAgICAgICAgICAg
-IHwgIDEgLQogMTUgZmlsZXMgY2hhbmdlZCwgNSBpbnNlcnRpb25zKCspLCAyMyBkZWxldGlvbnMo
-LSkKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9jb25maWdzL2F0OTFzYW05MjYzZWtfZGVmY29uZmln
-IGIvYXJjaC9hcm0vY29uZmlncy9hdDkxc2FtOTI2M2VrX2RlZmNvbmZpZwppbmRleCA0NWM2Zjc5
-ZGU0MGIuLjBjZGU1Mzk2YWYzYyAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vY29uZmlncy9hdDkxc2Ft
-OTI2M2VrX2RlZmNvbmZpZworKysgYi9hcmNoL2FybS9jb25maWdzL2F0OTFzYW05MjYzZWtfZGVm
-Y29uZmlnCkBAIC0xLDQgKzEsMyBAQAotQ09ORklHX0FSQ0hfQVQ5MVNBTTkyNjM9eQogQ09ORklH
-X0FUOTFfTVVMVElfQk9BUkRTPXkKIENPTkZJR19NQUNIX0FUOTFTQU05MjYzRUs9eQogQ09ORklH
-X0JBUkVCT1hfTUFYX0lNQUdFX1NJWkU9MHg0MDAwMApkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vY29u
-Zmlncy9hdDkxc2FtOXg1ZWtfZGVmY29uZmlnIGIvYXJjaC9hcm0vY29uZmlncy9hdDkxc2FtOXg1
-ZWtfZGVmY29uZmlnCmluZGV4IDExZDFlNDUxMWUwMy4uN2I3NDNhYmZhYTE3IDEwMDY0NAotLS0g
-YS9hcmNoL2FybS9jb25maWdzL2F0OTFzYW05eDVla19kZWZjb25maWcKKysrIGIvYXJjaC9hcm0v
-Y29uZmlncy9hdDkxc2FtOXg1ZWtfZGVmY29uZmlnCkBAIC0xLDQgKzEsMyBAQAotQ09ORklHX0FS
-Q0hfQVQ5MVNBTTlYNT15CiBDT05GSUdfQVQ5MV9NVUxUSV9CT0FSRFM9eQogQ09ORklHX01BQ0hf
-QVQ5MVNBTTlYNUVLPXkKIENPTkZJR19CQVJFQk9YX01BWF9JTUFHRV9TSVpFPTB4NDAwMDAKZGlm
-ZiAtLWdpdCBhL2FyY2gvYXJtL2NvbmZpZ3MvZnJlZXNjYWxlLW14MjEtYWRzX2RlZmNvbmZpZyBi
-L2FyY2gvYXJtL2NvbmZpZ3MvZnJlZXNjYWxlLW14MjEtYWRzX2RlZmNvbmZpZwppbmRleCBlMTg0
-M2RiM2UyNGMuLmIxZDM3Zjc2YTg5NSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vY29uZmlncy9mcmVl
-c2NhbGUtbXgyMS1hZHNfZGVmY29uZmlnCisrKyBiL2FyY2gvYXJtL2NvbmZpZ3MvZnJlZXNjYWxl
-LW14MjEtYWRzX2RlZmNvbmZpZwpAQCAtMSw2ICsxLDUgQEAKIENPTkZJR19URVhUX0JBU0U9MHhj
-MzAwMDAwMAogQ09ORklHX0FSQ0hfSU1YPXkKLUNPTkZJR19NQUNIX0lNWDIxQURTPXkKIENPTkZJ
-R19BUk1fT1BUSU1aRURfU1RSSU5HX0ZVTkNUSU9OUz15CiBDT05GSUdfTUFMTE9DX1NJWkU9MHgy
-MDAwMDAwCiBDT05GSUdfQ01ETElORV9FRElUSU5HPXkKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2Nv
-bmZpZ3MvaW14X2RlZmNvbmZpZyBiL2FyY2gvYXJtL2NvbmZpZ3MvaW14X2RlZmNvbmZpZwppbmRl
-eCAwMmUzM2UxMjJlYzguLmU2MzMzMjIwYjZjOSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vY29uZmln
-cy9pbXhfZGVmY29uZmlnCisrKyBiL2FyY2gvYXJtL2NvbmZpZ3MvaW14X2RlZmNvbmZpZwpAQCAt
-MTMsNyArMTMsNiBAQCBDT05GSUdfTU1VPXkKIENPTkZJR19NQUxMT0NfU0laRT0weDAKIENPTkZJ
-R19NQUxMT0NfVExTRj15CiBDT05GSUdfS0FMTFNZTVM9eQotQ09ORklHX1JFTE9DQVRBQkxFPXkK
-IENPTkZJR19QQU5JQ19IQU5HPXkKIENPTkZJR19IVVNIX0ZBTkNZX1BST01QVD15CiBDT05GSUdf
-Q01ETElORV9FRElUSU5HPXkKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2NvbmZpZ3MvaW14X3Y4X2Rl
-ZmNvbmZpZyBiL2FyY2gvYXJtL2NvbmZpZ3MvaW14X3Y4X2RlZmNvbmZpZwppbmRleCAyNjg3NzBl
-YzNmMmUuLjA2ZDc5ZjU5NGQ1YiAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vY29uZmlncy9pbXhfdjhf
-ZGVmY29uZmlnCisrKyBiL2FyY2gvYXJtL2NvbmZpZ3MvaW14X3Y4X2RlZmNvbmZpZwpAQCAtMTAs
-NyArMTAsNiBAQCBDT05GSUdfTU1VPXkKIENPTkZJR19NQUxMT0NfU0laRT0weDAKIENPTkZJR19N
-QUxMT0NfVExTRj15CiBDT05GSUdfS0FMTFNZTVM9eQotQ09ORklHX1JFTE9DQVRBQkxFPXkKIENP
-TkZJR19IVVNIX0ZBTkNZX1BST01QVD15CiBDT05GSUdfQVVUT19DT01QTEVURT15CiBDT05GSUdf
-TUVOVT15CkBAIC0xMzAsNyArMTI5LDYgQEAgQ09ORklHX1JUQ19DTEFTUz15CiBDT05GSUdfUlRD
-X0RSVl9EUzEzMDc9eQogQ09ORklHX0dFTkVSSUNfUEhZPXkKIENPTkZJR19VU0JfTk9QX1hDRUlW
-PXkKLUNPTkZJR19QSFlfRlNMX0lNWDhNUV9VU0I9eQogQ09ORklHX0ZTX0VYVDQ9eQogQ09ORklH
-X0ZTX1RGVFA9eQogQ09ORklHX0ZTX05GUz15CmRpZmYgLS1naXQgYS9hcmNoL2FybS9jb25maWdz
-L2tpbmRsZS1teDUwX2RlZmNvbmZpZyBiL2FyY2gvYXJtL2NvbmZpZ3Mva2luZGxlLW14NTBfZGVm
-Y29uZmlnCmluZGV4IDU1MmIyZDZkMzMxYy4uOTVmYWZkNTZlNjhjIDEwMDY0NAotLS0gYS9hcmNo
-L2FybS9jb25maWdzL2tpbmRsZS1teDUwX2RlZmNvbmZpZworKysgYi9hcmNoL2FybS9jb25maWdz
-L2tpbmRsZS1teDUwX2RlZmNvbmZpZwpAQCAtOSw3ICs5LDYgQEAgQ09ORklHX01NVT15CiBDT05G
-SUdfTUFMTE9DX1NJWkU9MHgwCiBDT05GSUdfTUFMTE9DX1RMU0Y9eQogQ09ORklHX0tBTExTWU1T
-PXkKLUNPTkZJR19SRUxPQ0FUQUJMRT15CiBDT05GSUdfSFVTSF9GQU5DWV9QUk9NUFQ9eQogQ09O
-RklHX0NNRExJTkVfRURJVElORz15CiBDT05GSUdfQVVUT19DT01QTEVURT15CmRpZmYgLS1naXQg
-YS9hcmNoL2FybS9jb25maWdzL2xheWVyc2NhcGVfZGVmY29uZmlnIGIvYXJjaC9hcm0vY29uZmln
-cy9sYXllcnNjYXBlX2RlZmNvbmZpZwppbmRleCBiMzZmMTk0NGVjZGMuLjM5NGNkOTVjOTgwYSAx
-MDA2NDQKLS0tIGEvYXJjaC9hcm0vY29uZmlncy9sYXllcnNjYXBlX2RlZmNvbmZpZworKysgYi9h
-cmNoL2FybS9jb25maWdzL2xheWVyc2NhcGVfZGVmY29uZmlnCkBAIC03OCw3ICs3OCw2IEBAIENP
-TkZJR19DTURfT0ZUUkVFPXkKIENPTkZJR19DTURfVElNRT15CiBDT05GSUdfTkVUPXkKIENPTkZJ
-R19ORVRfTkVUQ09OU09MRT15Ci1DT05GSUdfT0ZERVZJQ0U9eQogQ09ORklHX09GX0JBUkVCT1hf
-RFJJVkVSUz15CiBDT05GSUdfRFJJVkVSX1NFUklBTF9OUzE2NTUwPXkKIENPTkZJR19EUklWRVJf
-TkVUX0ZTTF9GTUFOPXkKQEAgLTEwNSw3ICsxMDQsNiBAQCBDT05GSUdfRUVQUk9NX0FUMjQ9eQog
-Q09ORklHX1dBVENIRE9HPXkKIENPTkZJR19XQVRDSERPR19JTVg9eQogQ09ORklHX0dQSU9fUENB
-OTUzWD15Ci1DT05GSUdfTlZNRU09eQogQ09ORklHX1JFR1VMQVRPUj15CiBDT05GSUdfUkVHVUxB
-VE9SX0ZJWEVEPXkKIENPTkZJR19GU19FWFQ0PXkKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2NvbmZp
-Z3MvbWljcm9jaGlwX2tzejk0NzdfZXZiX2RlZmNvbmZpZyBiL2FyY2gvYXJtL2NvbmZpZ3MvbWlj
-cm9jaGlwX2tzejk0NzdfZXZiX2RlZmNvbmZpZwppbmRleCA0MTg5YjJjMDM5ZDkuLjcxMzA0OTk0
-OTAyYSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vY29uZmlncy9taWNyb2NoaXBfa3N6OTQ3N19ldmJf
-ZGVmY29uZmlnCisrKyBiL2FyY2gvYXJtL2NvbmZpZ3MvbWljcm9jaGlwX2tzejk0NzdfZXZiX2Rl
-ZmNvbmZpZwpAQCAtMSw0ICsxLDMgQEAKLUNPTkZJR19BUkNIX1NBTUE1RDM9eQogQ09ORklHX0FU
-OTFfTVVMVElfQk9BUkRTPXkKIENPTkZJR19NQUNIX01JQ1JPQ0hJUF9LU1o5NDc3X0VWQj15CiBD
-T05GSUdfQUVBQkk9eQpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vY29uZmlncy9zb2NmcGdhLWFycmlh
-MTBfZGVmY29uZmlnIGIvYXJjaC9hcm0vY29uZmlncy9zb2NmcGdhLWFycmlhMTBfZGVmY29uZmln
-CmluZGV4IGU0N2EwYWIxODM2ZC4uYTM3YmFlNjIxNzI5IDEwMDY0NAotLS0gYS9hcmNoL2FybS9j
-b25maWdzL3NvY2ZwZ2EtYXJyaWExMF9kZWZjb25maWcKKysrIGIvYXJjaC9hcm0vY29uZmlncy9z
-b2NmcGdhLWFycmlhMTBfZGVmY29uZmlnCkBAIC0xOCw3ICsxOCw2IEBAIENPTkZJR19CT09UTV9J
-TklUUkQ9eQogQ09ORklHX0JPT1RNX09GVFJFRT15CiBDT05GSUdfREVGQVVMVF9DT01QUkVTU0lP
-Tl9MWk89eQogQ09ORklHX0RFRkFVTFRfRU5WSVJPTk1FTlRfR0VORVJJQ19ORVc9eQotQ09ORklH
-X1BPTExFUj15CiBDT05GSUdfU1RBVEU9eQogQ09ORklHX0xPTkdIRUxQPXkKIENPTkZJR19DTURf
-SU9NRU09eQpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vY29uZmlncy92aXJ0MnJlYWxfZGVmY29uZmln
-IGIvYXJjaC9hcm0vY29uZmlncy92aXJ0MnJlYWxfZGVmY29uZmlnCmluZGV4IDgxNGZlNjllNDJj
-ZS4uNjIzMTViOGNiM2VjIDEwMDY0NAotLS0gYS9hcmNoL2FybS9jb25maWdzL3ZpcnQycmVhbF9k
-ZWZjb25maWcKKysrIGIvYXJjaC9hcm0vY29uZmlncy92aXJ0MnJlYWxfZGVmY29uZmlnCkBAIC0z
-Niw3ICszNiw2IEBAIENPTkZJR19DTURfTEVEPXkKIENPTkZJR19DTURfT0ZfTk9ERT15CiBDT05G
-SUdfQ01EX09GX1BST1BFUlRZPXkKIENPTkZJR19DTURfT0ZUUkVFPXkKLUNPTkZJR19PRkRFVklD
-RT15CiBDT05GSUdfT0ZfQkFSRUJPWF9EUklWRVJTPXkKIENPTkZJR19EUklWRVJfU0VSSUFMX05T
-MTY1NTA9eQogIyBDT05GSUdfU1BJIGlzIG5vdCBzZXQKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2Nv
-bmZpZ3MvemlpX3ZmNjEwX2Rldl9kZWZjb25maWcgYi9hcmNoL2FybS9jb25maWdzL3ppaV92ZjYx
-MF9kZXZfZGVmY29uZmlnCmluZGV4IDQ1YzI0ZDZkZjQ3MS4uM2VkNWQzNzQ1ODZkIDEwMDY0NAot
-LS0gYS9hcmNoL2FybS9jb25maWdzL3ppaV92ZjYxMF9kZXZfZGVmY29uZmlnCisrKyBiL2FyY2gv
-YXJtL2NvbmZpZ3MvemlpX3ZmNjEwX2Rldl9kZWZjb25maWcKQEAgLTgsNyArOCw2IEBAIENPTkZJ
-R19NTVU9eQogQ09ORklHX01BTExPQ19TSVpFPTB4MAogQ09ORklHX01BTExPQ19UTFNGPXkKIENP
-TkZJR19LQUxMU1lNUz15Ci1DT05GSUdfUkVMT0NBVEFCTEU9eQogQ09ORklHX0hVU0hfRkFOQ1lf
-UFJPTVBUPXkKIENPTkZJR19BVVRPX0NPTVBMRVRFPXkKIENPTkZJR19NRU5VPXkKZGlmZiAtLWdp
-dCBhL2FyY2gva3Z4L2NvbmZpZ3MvZ2VuZXJpY19kZWZjb25maWcgYi9hcmNoL2t2eC9jb25maWdz
-L2dlbmVyaWNfZGVmY29uZmlnCmluZGV4IDgxNjIxNzE3NDE4My4uMGQ5NzFmZjNkNWRkIDEwMDY0
-NAotLS0gYS9hcmNoL2t2eC9jb25maWdzL2dlbmVyaWNfZGVmY29uZmlnCisrKyBiL2FyY2gva3Z4
-L2NvbmZpZ3MvZ2VuZXJpY19kZWZjb25maWcKQEAgLTEsMTUgKzEsMTMgQEAKIENPTkZJR19BVVRP
-X0NPTVBMRVRFPXkKLUNPTkZJR19CQVVEUkFURT0xMTUyMDAKLUNPTkZJR19DTE9DS1NPVVJDRV9L
-Vlg9eQorQ09ORklHX0NPTlNPTEVfUkFUUD15CiBDT05GSUdfQ01EX0JPT1Q9eQotQ09ORklHX0NN
-RF9CT09UTT15CitDT05GSUdfQ01EX1JFU0VUPXkKIENPTkZJR19DTURfQ01QPXkKLUNPTkZJR19D
-TURfT0ZfRFVNUD15CiBDT05GSUdfQ01EX1BPV0VST0ZGPXkKLUNPTkZJR19DTURfUkVTRVQ9eQog
-Q09ORklHX0NNRF9XRD15Ci1DT05GSUdfQ09OU09MRV9SQVRQPXkKK0NPTkZJR19DTURfT0ZfRFVN
-UD15CiBDT05GSUdfRFJJVkVSX1NFUklBTF9OUzE2NTUwPXkKLUNPTkZJR19QSU5DVFJMX1NJTkdM
-RT15CitDT05GSUdfQ0xPQ0tTT1VSQ0VfS1ZYPXkKIENPTkZJR19XQVRDSERPRz15CiBDT05GSUdf
-V0FUQ0hET0dfS1ZYPXkKK0NPTkZJR19QSU5DVFJMX1NJTkdMRT15CmRpZmYgLS1naXQgYS9hcmNo
-L21pcHMvY29uZmlncy9iY200N3h4X2RlZmNvbmZpZyBiL2FyY2gvbWlwcy9jb25maWdzL2JjbTQ3
-eHhfZGVmY29uZmlnCmluZGV4IDBjZDBlOWU2NTBlNy4uOWNmMTcyYTcwZTU3IDEwMDY0NAotLS0g
-YS9hcmNoL21pcHMvY29uZmlncy9iY200N3h4X2RlZmNvbmZpZworKysgYi9hcmNoL21pcHMvY29u
-Zmlncy9iY200N3h4X2RlZmNvbmZpZwpAQCAtOSw3ICs5LDYgQEAgQ09ORklHX01FTlU9eQogQ09O
-RklHX0JPT1RNX1NIT1dfVFlQRT15CiBDT05GSUdfUEFSVElUSU9OPXkKICMgQ09ORklHX0RFRkFV
-TFRfRU5WSVJPTk1FTlQgaXMgbm90IHNldAotQ09ORklHX1BPTExFUj15CiBDT05GSUdfTE9OR0hF
-TFA9eQogQ09ORklHX0NNRF9JT01FTT15CiBDT05GSUdfQ01EX01FTUlORk89eQpkaWZmIC0tZ2l0
-IGEvYXJjaC9taXBzL2NvbmZpZ3MvcWVtdS1tYWx0YV9kZWZjb25maWcgYi9hcmNoL21pcHMvY29u
-Zmlncy9xZW11LW1hbHRhX2RlZmNvbmZpZwppbmRleCAyNDY1YzAyNjBkMWQuLmFjMDU3N2MyMTdl
-MyAxMDA2NDQKLS0tIGEvYXJjaC9taXBzL2NvbmZpZ3MvcWVtdS1tYWx0YV9kZWZjb25maWcKKysr
-IGIvYXJjaC9taXBzL2NvbmZpZ3MvcWVtdS1tYWx0YV9kZWZjb25maWcKQEAgLTEyLDcgKzEyLDYg
-QEAgQ09ORklHX0JPT1RNX1NIT1dfVFlQRT15CiBDT05GSUdfQ09OU09MRV9BTExPV19DT0xPUj15
-CiBDT05GSUdfUEFSVElUSU9OPXkKIENPTkZJR19ERUZBVUxUX0VOVklST05NRU5UX0dFTkVSSUNf
-TkVXPXkKLUNPTkZJR19QT0xMRVI9eQogQ09ORklHX0NNRF9ETUVTRz15CiBDT05GSUdfTE9OR0hF
-TFA9eQogQ09ORklHX0NNRF9JT01FTT15CmRpZmYgLS1naXQgYS9hcmNoL3g4Ni9jb25maWdzL2Vm
-aV9kZWZjb25maWcgYi9hcmNoL3g4Ni9jb25maWdzL2VmaV9kZWZjb25maWcKaW5kZXggNDc4NDJk
-MTBhZmRkLi45OWJjMzllYWE2ZjEgMTAwNjQ0Ci0tLSBhL2FyY2gveDg2L2NvbmZpZ3MvZWZpX2Rl
-ZmNvbmZpZworKysgYi9hcmNoL3g4Ni9jb25maWdzL2VmaV9kZWZjb25maWcKQEAgLTE0LDcgKzE0
-LDYgQEAgQ09ORklHX0JMU1BFQz15CiBDT05GSUdfQ09OU09MRV9BQ1RJVkFURV9BTEw9eQogQ09O
-RklHX1BBUlRJVElPTl9ESVNLX0VGST15CiBDT05GSUdfREVGQVVMVF9FTlZJUk9OTUVOVF9HRU5F
-UklDX05FVz15Ci1DT05GSUdfUE9MTEVSPXkKIENPTkZJR19TVEFURT15CiBDT05GSUdfREVCVUdf
-TEw9eQogQ09ORklHX0xPTkdIRUxQPXkKLS0gCjIuMjcuMAoKCl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hA
-bGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xp
-c3RpbmZvL2JhcmVib3gK
+On Thu, Sep 17, 2020 at 10:17:08PM +0200, Uwe Kleine-K=F6nig wrote:
+> Not all boards can make use of the helper macros introduced in the previo=
+us
+> commits, for these add an explicit call to IMD_USED_OF to add meta data
+> to the barebox image.
+> =
+
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  arch/arm/boards/embest-riotboard/lowlevel.c     | 1 +
+>  arch/arm/boards/technexion-wandboard/lowlevel.c | 2 ++
+>  arch/arm/boards/zii-imx51-rdu1/lowlevel.c       | 3 +++
+>  3 files changed, 6 insertions(+)
+> =
+
+> diff --git a/arch/arm/boards/embest-riotboard/lowlevel.c b/arch/arm/board=
+s/embest-riotboard/lowlevel.c
+> index 07f669fc0309..b0f5339b0a70 100644
+> --- a/arch/arm/boards/embest-riotboard/lowlevel.c
+> +++ b/arch/arm/boards/embest-riotboard/lowlevel.c
+> @@ -23,6 +23,7 @@ ENTRY_FUNCTION(start_imx6s_riotboard, r0, r1, r2)
+>  		putc_ll('a');
+>  	}
+>  =
+
+> +	IMD_USED_OF(imx6s_riotboard);
+>  	fdt =3D __dtb_imx6s_riotboard_start + get_runtime_offset();
+>  	barebox_arm_entry(0x10000000, SZ_1G, fdt);
+>  }
+> diff --git a/arch/arm/boards/technexion-wandboard/lowlevel.c b/arch/arm/b=
+oards/technexion-wandboard/lowlevel.c
+> index 33babbbb2feb..5c1b5d6ed292 100644
+> --- a/arch/arm/boards/technexion-wandboard/lowlevel.c
+> +++ b/arch/arm/boards/technexion-wandboard/lowlevel.c
+> @@ -334,9 +334,11 @@ static noinline void wandboard_start(void)
+>  	switch (cpu_type) {
+>  	case IMX6_CPUTYPE_IMX6S:
+>  	case IMX6_CPUTYPE_IMX6DL:
+> +		IMD_USED_OF(imx6dl_wandboard);
+>  		dtb =3D __dtb_z_imx6dl_wandboard_start;
+>  		break;
+>  	case IMX6_CPUTYPE_IMX6Q:
+> +		IMD_USED_OF(imx6q_wandboard);
+>  		dtb =3D __dtb_z_imx6q_wandboard_start;
+>  		break;
+>  	default:
+
+This doesn't work like you might expect. IMD_USED_OF uses imd_used().
+This fake function only has the effect that
+__barebox_imd_OF_imx6q_wandboard appears to be used and thus doesn't get
+discarded by the linker. By putting imd_used() multiple times into code
+which ends up in the same binary you'll get all tags in the binary, no
+matter where in the code you put IMD_USED_OF.
+
+Having two tags is fine, because you really have a binary that is
+compatible to both wand,imx6dl-wandboard and wand,imx6q-wandboard, but
+please put them side by side into the ENTRY_FUNCTION.
+
+Have you compile tested this patch? It seems an #include
+<image-metadata.h> is missing at least in this file.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
