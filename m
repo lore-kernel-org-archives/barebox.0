@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay4-d.mail.gandi.net ([217.70.183.196])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kKG0a-00052i-RO
- for barebox@lists.infradead.org; Mon, 21 Sep 2020 07:13:10 +0000
-Received: from localhost.localdomain (p5ded6c86.dip0.t-ipconnect.de
- [93.237.108.134]) (Authenticated sender: ahmad@a3f.at)
- by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id D10EBE0012
- for <barebox@lists.infradead.org>; Mon, 21 Sep 2020 07:13:06 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Mon, 21 Sep 2020 09:13:01 +0200
-Message-Id: <20200921071301.561952-2-ahmad@a3f.at>
-In-Reply-To: <20200921071301.561952-1-ahmad@a3f.at>
-References: <20200921071301.561952-1-ahmad@a3f.at>
+ id 1kJBcx-0005WJ-Q4
+ for barebox@lists.infradead.org; Fri, 18 Sep 2020 08:20:23 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Fri, 18 Sep 2020 10:19:54 +0200
+Message-Id: <20200918081956.24971-6-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20200918081956.24971-1-u.kleine-koenig@pengutronix.de>
+References: <20200918081956.24971-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,42 +17,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] USB: musb: host: fix mismatched format specifier in
- dev_dbg()
+Subject: [PATCH v2 5/7] scripts/rsatoc: relicense to allow distribution of
+ binary linked with OpenSSL
 To: barebox@lists.infradead.org
 
-Unadorned 0 is an int, but is printed used %zu. As it's just an interger
-literal, just hardcode it into the string.
-
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
----
- drivers/usb/musb/musb_host.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/usb/musb/musb_host.c b/drivers/usb/musb/musb_host.c
-index 68d819af2cc8..be9651b04960 100644
---- a/drivers/usb/musb/musb_host.c
-+++ b/drivers/usb/musb/musb_host.c
-@@ -1189,8 +1189,8 @@ void musb_host_rx(struct musb *musb, u8 epnum)
- 
- 	pipe = urb->pipe;
- 
--	dev_dbg(musb->controller, "<== hw %d rxcsr %04x, urb actual %d (+dma %zu)\n",
--		epnum, rx_csr, urb->actual_length, 0);
-+	dev_dbg(musb->controller, "<== hw %d rxcsr %04x, urb actual %d (+dma 0)\n",
-+		epnum, rx_csr, urb->actual_length);
- 
- 	/* check for errors, concurrent stall & unlink is not really
- 	 * handled yet! */
--- 
-2.28.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhlIEdQTCAoYm90aCwgdmVyc2lvbnMgMiBhbmQgMykgYXJlIGluY29tcGF0aWJsZSB3aXRoIHRo
+ZSBPcGVuU1NMIGxpY2Vuc2UuCkFjY29yZGluZyB0byB0aGUgRnJlZSBTb2Z0d2FyZSBGb3VuZGF0
+aW9uIHRoZSBjb3B5cmlnaHQgaG9sZGVycyBvZiBHUEwKc29mdHdhcmUgaGF2ZSB0byBwcm92aWRl
+IGFuIGV4Y2VwdGlvbiB0byBhbGxvdyB0aGlzIGxpbmthZ2UuCgpUaGlzIGlzIGVmZmVjdGl2ZWx5
+IGEgbGljZW5zZSBjaGFuZ2UgYW5kIHNvIG5lZWRzIGNvbmZpcm1hdGlvbiBieSBhbGwKY29weXJp
+Z2h0IGhvbGRlcnMuCgpBY2tlZC1ieTogTWFyYyBLbGVpbmUtQnVkZGUgPG1rbEBwZW5ndXRyb25p
+eC5kZT4KQ2M6IFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4KU2lnbmVkLW9m
+Zi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4K
+LS0tCiBzY3JpcHRzL3JzYXRvYy5jIHwgMiArLQogMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9u
+KCspLCAxIGRlbGV0aW9uKC0pCgpkaWZmIC0tZ2l0IGEvc2NyaXB0cy9yc2F0b2MuYyBiL3Njcmlw
+dHMvcnNhdG9jLmMKaW5kZXggOGYyZWI4ZmRlZGM5Li5mMmQ5MWI4ZTBkNzAgMTAwNjQ0Ci0tLSBh
+L3NjcmlwdHMvcnNhdG9jLmMKKysrIGIvc2NyaXB0cy9yc2F0b2MuYwpAQCAtMSw0ICsxLDQgQEAK
+LS8vIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wKworLy8gU1BEWC1MaWNlbnNlLUlk
+ZW50aWZpZXI6IEdQTC0yLjAtb3ItbGF0ZXIgV0lUSCBMaWNlbnNlUmVmLU9wZW5TU0wtZXhjZXB0
+aW9uCiAvKgogICogcnNhdG9jIC0gdXRpbGl0eSB0byBjb252ZXJ0IGFuIFJTQSBrZXkgdG8gYSBD
+IHN0cnVjdAogICoKLS0gCjIuMjcuMAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFk
+ZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVi
+b3gK
