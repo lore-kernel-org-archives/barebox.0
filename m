@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kJBbv-0005F0-Oq
- for barebox@lists.infradead.org; Fri, 18 Sep 2020 08:19:16 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 18 Sep 2020 10:19:12 +0200
-Message-Id: <20200918081912.31566-1-s.hauer@pengutronix.de>
+ id 1kJBcw-0005Ur-5v
+ for barebox@lists.infradead.org; Fri, 18 Sep 2020 08:20:21 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Fri, 18 Sep 2020 10:19:50 +0200
+Message-Id: <20200918081956.24971-2-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20200918081956.24971-1-u.kleine-koenig@pengutronix.de>
+References: <20200918081956.24971-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -15,38 +17,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] clk: imx: clk-frac-pll: Use do_div for 64bit division
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH v2 1/7] scripts/spdxcheck: fix usage of non-existing variables
+To: barebox@lists.infradead.org
 
-Use do_div() to avoid undefined references to `__aeabi_uldivmod'
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/clk/imx/clk-frac-pll.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/clk/imx/clk-frac-pll.c b/drivers/clk/imx/clk-frac-pll.c
-index b3d665cff9..2195762c8b 100644
---- a/drivers/clk/imx/clk-frac-pll.c
-+++ b/drivers/clk/imx/clk-frac-pll.c
-@@ -110,7 +110,7 @@ static unsigned long clk_pll_recalc_rate(struct clk *clk,
- 	temp64 = (u64)parent_rate * 8;
- 	temp64 *= divff;
- 	do_div(temp64, PLL_FRAC_DENOM);
--	temp64 /= divq;
-+	do_div(temp64, divq);
- 
- 	return parent_rate * 8 * (divfi + 1) / divq + (unsigned long)temp64;
- }
--- 
-2.28.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
+b25peC5kZT4KLS0tCiBzY3JpcHRzL3NwZHhjaGVjay5weSB8IDQgKystLQogMSBmaWxlIGNoYW5n
+ZWQsIDIgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9zY3JpcHRz
+L3NwZHhjaGVjay5weSBiL3NjcmlwdHMvc3BkeGNoZWNrLnB5CmluZGV4IDcyM2JmYTRlYmY3Ny4u
+N2UwOGM2ZTQxMzZlIDEwMDc1NQotLS0gYS9zY3JpcHRzL3NwZHhjaGVjay5weQorKysgYi9zY3Jp
+cHRzL3NwZHhjaGVjay5weQpAQCAtNTgsMTMgKzU4LDEzIEBAIGRlZiByZWFkX3NwZHhkYXRhKHJl
+cG8pOgogICAgICAgICAgICAgICAgIGVsaWYgbC5zdGFydHN3aXRoKCdTUERYLUxpY2Vuc2VzOicp
+OgogICAgICAgICAgICAgICAgICAgICBmb3IgbGljIGluIGwuc3BsaXQoJzonKVsxXS51cHBlcigp
+LnN0cmlwKCkucmVwbGFjZSgnICcsICcnKS5yZXBsYWNlKCdcdCcsICcnKS5zcGxpdCgnLCcpOgog
+ICAgICAgICAgICAgICAgICAgICAgICAgaWYgbm90IGxpYyBpbiBzcGR4LmxpY2Vuc2VzOgotICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgIHJhaXNlIFNQRFhFeGNlcHRpb24oTm9uZSwgJ0V4Y2Vw
+dGlvbiAlcyBtaXNzaW5nIGxpY2Vuc2UgJXMnICUoZXgsIGxpYykpCisgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgcmFpc2UgU1BEWEV4Y2VwdGlvbihOb25lLCAnRXhjZXB0aW9uICVzIG1pc3Np
+bmcgbGljZW5zZSAlcycgJShleGNlcHRpb24sIGxpYykpCiAgICAgICAgICAgICAgICAgICAgICAg
+ICBzcGR4LmV4Y2VwdGlvbnNbZXhjZXB0aW9uXS5hcHBlbmQobGljKQogCiAgICAgICAgICAgICAg
+ICAgZWxpZiBsLnN0YXJ0c3dpdGgoIkxpY2Vuc2UtVGV4dDoiKToKICAgICAgICAgICAgICAgICAg
+ICAgaWYgZXhjZXB0aW9uOgogICAgICAgICAgICAgICAgICAgICAgICAgaWYgbm90IGxlbihzcGR4
+LmV4Y2VwdGlvbnNbZXhjZXB0aW9uXSk6Ci0gICAgICAgICAgICAgICAgICAgICAgICAgICAgcmFp
+c2UgU1BEWEV4Y2VwdGlvbihlbCwgJ0V4Y2VwdGlvbiAlcyBpcyBtaXNzaW5nIFNQRFgtTGljZW5z
+ZXMnICVleGNpZCkKKyAgICAgICAgICAgICAgICAgICAgICAgICAgICByYWlzZSBTUERYRXhjZXB0
+aW9uKGVsLCAnRXhjZXB0aW9uICVzIGlzIG1pc3NpbmcgU1BEWC1MaWNlbnNlcycgJWV4Y2VwdGlv
+bikKICAgICAgICAgICAgICAgICAgICAgICAgIHNwZHguZXhjZXB0aW9uX2ZpbGVzICs9IDEKICAg
+ICAgICAgICAgICAgICAgICAgZWxzZToKICAgICAgICAgICAgICAgICAgICAgICAgIHNwZHgubGlj
+ZW5zZV9maWxlcyArPSAxCi0tIAoyLjI3LjAKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmlu
+ZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9i
+YXJlYm94Cg==
