@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kJCIL-0006wV-58
- for barebox@lists.infradead.org; Fri, 18 Sep 2020 09:03:05 +0000
-Date: Fri, 18 Sep 2020 11:03:02 +0200
+ id 1kJCug-0005eN-5Q
+ for barebox@lists.infradead.org; Fri, 18 Sep 2020 09:42:43 +0000
+Date: Fri, 18 Sep 2020 11:42:40 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200918090302.GR4498@pengutronix.de>
-References: <20200915143828.13087-1-u.kleine-koenig@pengutronix.de>
+Message-ID: <20200918094240.GS4498@pengutronix.de>
+References: <20200915133630.32511-1-a.schwarzkopf@phytec.de>
+ <20200915133630.32511-2-a.schwarzkopf@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200915143828.13087-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20200915133630.32511-2-a.schwarzkopf@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,26 +19,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] scripts/imx: fix typo "unkown" -> "unknown"
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH 1/1] bootm: Allow loading OP-TEE from FIT image
+To: Albert Schwarzkopf <a.schwarzkopf@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Sep 15, 2020 at 04:38:28PM +0200, Uwe Kleine-K=F6nig wrote:
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+On Tue, Sep 15, 2020 at 03:36:30PM +0200, Albert Schwarzkopf wrote:
+> Currently, TEE binaries can only be loaded if CONFIG_BOOTM_FORCE_SIGNED_IMAGES
+> is not set. No signature check is being performed on them.
+> 
+> Allow loading OP-TEE from FIT images. Therefore, now it's possible
+> to ensure that only trusted OP-TEE binaries will be loaded by using
+> signed FIT images.
+> 
+> Signed-off-by: Albert Schwarzkopf <a.schwarzkopf@phytec.de>
 > ---
->  scripts/imx/imx.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  arch/arm/lib32/bootm.c | 44 +++++++++++++++++++++++++++++++++++++-----
+>  1 file changed, 39 insertions(+), 5 deletions(-)
 
 Applied, thanks
 
 Sascha
 
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
