@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kJDgU-00014b-9A
- for barebox@lists.infradead.org; Fri, 18 Sep 2020 10:32:07 +0000
-Date: Fri, 18 Sep 2020 12:32:04 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200918103204.GW4498@pengutronix.de>
-References: <20200917201708.12168-1-u.kleine-koenig@pengutronix.de>
- <20200917201708.12168-2-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200917201708.12168-2-u.kleine-koenig@pengutronix.de>
+Received: from mickerik.phytec.de ([195.145.39.210])
+ by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1kJHND-0002aY-FG
+ for barebox@lists.infradead.org; Fri, 18 Sep 2020 14:28:28 +0000
+From: Yunus Bas <y.bas@phytec.de>
+Date: Fri, 18 Sep 2020 16:28:23 +0200
+Message-Id: <20200918142823.5347-1-y.bas@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,69 +14,120 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/4] imx/esdctl: Define new helper macros to reduce board
- entry boilerplate
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: dts: imx6ul: phycore: Add phyCORE i.MX6 UL with eMMC
+To: barebox@lists.infradead.org
 
-On Thu, Sep 17, 2020 at 10:17:06PM +0200, Uwe Kleine-K=F6nig wrote:
-> The macro provides the extern declaration of the devicetree variable, cal=
-ls
-> IMD_USED_OF to add metadata to the resulting barebox image and then calls
-> the right entry function.
-> =
+Add a phyCORE-i.MX 6UL with eMMC. It has following features:
+	- i.MX 6UL
+	- 512 MB RAM
+	- eMMC
+	- 10/100 MBits Ethernet
+	- USB OTG
+	- USB Host
 
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> ---
->  arch/arm/mach-imx/include/mach/esdctl.h | 21 +++++++++++++++++++++
->  1 file changed, 21 insertions(+)
-> =
+Signed-off-by: Yunus Bas <y.bas@phytec.de>
+---
+ arch/arm/boards/phytec-som-imx6/lowlevel.c    |  1 +
+ arch/arm/dts/Makefile                         |  1 +
+ .../dts/imx6ul-phytec-phycore-som-emmc.dts    | 43 +++++++++++++++++++
+ images/Makefile.imx                           |  2 +
+ 4 files changed, 47 insertions(+)
+ create mode 100644 arch/arm/dts/imx6ul-phytec-phycore-som-emmc.dts
 
-> diff --git a/arch/arm/mach-imx/include/mach/esdctl.h b/arch/arm/mach-imx/=
-include/mach/esdctl.h
-> index 8073b7f40937..506dda2d5a1c 100644
-> --- a/arch/arm/mach-imx/include/mach/esdctl.h
-> +++ b/arch/arm/mach-imx/include/mach/esdctl.h
-> @@ -145,6 +145,27 @@ void __noreturn imx8mp_barebox_entry(void *boarddata=
-);
->  void __noreturn imx8mq_barebox_entry(void *boarddata);
->  void __noreturn vf610_barebox_entry(void *boarddata);
->  =
+diff --git a/arch/arm/boards/phytec-som-imx6/lowlevel.c b/arch/arm/boards/phytec-som-imx6/lowlevel.c
+index 407115c2a..62a1c8de7 100644
+--- a/arch/arm/boards/phytec-som-imx6/lowlevel.c
++++ b/arch/arm/boards/phytec-som-imx6/lowlevel.c
+@@ -110,6 +110,7 @@ PHYTEC_ENTRY(start_phytec_phycore_imx6qp_som_nand_1gib, imx6qp_phytec_phycore_so
+ PHYTEC_ENTRY(start_phytec_phycore_imx6q_som_emmc_1gib, imx6q_phytec_phycore_som_emmc, SZ_1G, true);
+ PHYTEC_ENTRY(start_phytec_phycore_imx6q_som_emmc_2gib, imx6q_phytec_phycore_som_emmc, SZ_2G, true);
+ 
++PHYTEC_ENTRY(start_phytec_phycore_imx6ul_som_emmc_512mb, imx6ul_phytec_phycore_som_emmc, SZ_512M, false);
+ PHYTEC_ENTRY(start_phytec_phycore_imx6ul_som_nand_512mb, imx6ul_phytec_phycore_som_nand, SZ_512M, false);
+ PHYTEC_ENTRY(start_phytec_phycore_imx6ull_som_lc_nand_256mb, imx6ull_phytec_phycore_som_lc_nand, SZ_256M, false);
+ PHYTEC_ENTRY(start_phytec_phycore_imx6ull_som_nand_512mb, imx6ull_phytec_phycore_som_nand, SZ_512M, false);
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index af061bd29..37e0f07b9 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -67,6 +67,7 @@ lwl-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += imx6q-phytec-phycard.dtb.o \
+ 				imx6dl-phytec-phycore-som-emmc.dtb.o \
+ 				imx6dl-phytec-phycore-som-lc-emmc.dtb.o \
+ 				imx6ul-phytec-phycore-som-nand.dtb.o \
++				imx6ul-phytec-phycore-som-emmc.dtb.o \
+ 				imx6ull-phytec-phycore-som-lc-nand.dtb.o \
+ 				imx6ull-phytec-phycore-som-nand.dtb.o \
+ 				imx6ull-phytec-phycore-som-emmc.dtb.o
+diff --git a/arch/arm/dts/imx6ul-phytec-phycore-som-emmc.dts b/arch/arm/dts/imx6ul-phytec-phycore-som-emmc.dts
+new file mode 100644
+index 000000000..c51907665
+--- /dev/null
++++ b/arch/arm/dts/imx6ul-phytec-phycore-som-emmc.dts
+@@ -0,0 +1,43 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
++/*
++ * Copyright (C) 2020 PHYTEC Messtechnik GmbH
++ * Author: Yunus Bas <y.bas@phytec.de>
++ */
++
++/dts-v1/;
++
++#include <arm/imx6ul.dtsi>
++#include "imx6ul-phytec-phycore-som.dtsi"
++
++/ {
++	model = "PHYTEC phyCORE-i.MX6 Ultra Light SOM with eMMC";
++	compatible = "phytec,imx6ul-pcl063-emmc", "fsl,imx6ul";
++};
++
++&fec1 {
++	status = "okay";
++};
++
++&i2c1 {
++	status = "okay";
++};
++
++&uart1 {
++	status = "okay";
++};
++
++&usdhc1 {
++	status = "okay";
++};
++
++&usdhc2 {
++	status = "okay";
++};
++
++&usbotg1 {
++	status = "okay";
++};
++
++&usbotg2 {
++	status = "okay";
++};
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index 7b24e5fee..2327b8a0b 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -346,6 +346,8 @@ $(call build_imx_habv4img, CONFIG_MACH_GRINN_LITEBOARD, start_imx6ul_liteboard_5
+ 
+ $(call build_imx_habv4img, CONFIG_MACH_NXP_IMX6ULL_EVK, start_nxp_imx6ull_evk, nxp-imx6ull-evk/flash-header-nxp-imx6ull-evk, nxp-imx6ull-evk)
+ 
++$(call build_imx_habv4img, CONFIG_MACH_PHYTEC_SOM_IMX6, start_phytec_phycore_imx6ul_som_emmc_512mb, phytec-som-imx6/flash-header-phytec-pcl063-512mb, phytec-phycore-imx6ul-emmc-512mb)
++
+ $(call build_imx_habv4img, CONFIG_MACH_PHYTEC_SOM_IMX6, start_phytec_phycore_imx6ul_som_nand_512mb, phytec-som-imx6/flash-header-phytec-pcl063-512mb, phytec-phycore-imx6ul-nand-512mb)
+ 
+ $(call build_imx_habv4img, CONFIG_MACH_PHYTEC_SOM_IMX6, start_phytec_phycore_imx6ull_som_lc_nand_256mb, phytec-som-imx6/flash-header-phytec-pcl063-256mb, phytec-phycore-imx6ull-lc-nand-256mb)
+-- 
+2.17.1
 
-> +#include <image-metadata.h>
-> +
-> +#define IMX_BAREBOX__ENTRY(_fdtname, _suffix, _compressed) ({ extern cha=
-r __dtb_ ## _compressed ## _fdtname ## _start[]; IMD_USED_OF(_fdtname); imx=
- ## _suffix ## _barebox_entry(__dtb_ ## _compressed ## _fdtname ## _start +=
- get_runtime_offset()); })
-
-I think this macro does a bit too much.
-
-How about this one first:
-
-#define GET_DTB(name) ({					\
-	extern char __dtb_ ## name ## _start[];			\
-	__dtb_ ## name ## _start + get_runtime_offset();	\
-});
-
-and an analog GET_DTBZ? This would be generally userful and not only on
-i.MX.
-
-I am not sure I would put the IMD_USED_OF into this macro. My gut
-feeling is that I would rather make it explicit in the board code.
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
