@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kKFJq-0007Y0-DG
- for barebox@lists.infradead.org; Mon, 21 Sep 2020 06:28:59 +0000
-Date: Mon, 21 Sep 2020 08:28:55 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200921062855.GE21278@pengutronix.de>
+ id 1kJBcx-0005VL-2U
+ for barebox@lists.infradead.org; Fri, 18 Sep 2020 08:20:23 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Fri, 18 Sep 2020 10:19:53 +0200
+Message-Id: <20200918081956.24971-5-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20200918081956.24971-1-u.kleine-koenig@pengutronix.de>
 References: <20200918081956.24971-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200918081956.24971-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,51 +17,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 0/7] Relicense GPL programs for compatibility with
- OpenSSL
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org, Marcin Niestroj <m.niestroj@grinn-global.com>, Alexander Kurz <akurz@blala.de>
+Subject: [PATCH v2 4/7] LICENSES: add OpenSSL exception
+To: barebox@lists.infradead.org
 
-On Fri, Sep 18, 2020 at 10:19:49AM +0200, Uwe Kleine-K=F6nig wrote:
-> Hello,
-> =
-
-> this series addresses the problem that binaries licensed under plain GPL
-> and linked to OpenSSL cannot be distributed. To allow this a special
-> exception by the copyright holders is needed[1].
-> =
-
-> The changes since (implicit) v1 sent with
-> Message-Id: 20200915205417.15484-1-u.kleine-koenig@pengutronix.de:
-> =
-
->  - added acks
->  - rename OpenSSL-exception to LicenseRef-OpenSSL-exception as suggested =
-by
->    Roland
->  - s/GPL-2.0+/GPL-2.0-or-later/ in rsatoc; similar changes also in the
->    license text copied from Linux to not use the names deprecated by
->    SPDX.
->  - dropped Eric B=E9nard, his address isn't working any more. Tried to co=
-ntact
->    via other means, no feedback yet.
-
-Applied, thanks
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhlIEdQTCAoYm90aCwgdmVyc2lvbiAyIGFuZCAzKSBhcmUgaW5jb21wYXRpYmxlIHdpdGggdGhl
+IE9wZW5TU0wgbGljZW5zZS4KKE9wZW5TU0wgaGFzIHJlcXVpcmVtZW50cyBvbiBhdHRyaWJ1dGlv
+biwgd2hpY2ggZnJvbSB0aGUgR1BMJ3MgcG9pbnQgb2YKdmlldyBpcyBhIGZ1cnRoZXIgcmVxdWly
+ZW1lbnQgd2hpY2ggaXMgZm9yYmlkZGVuLikKClNlZSBodHRwczovL3d3dy5nbnUub3JnL2xpY2Vu
+c2VzL2dwbC1mYXEuaHRtbCNHUExJbmNvbXBhdGlibGVMaWJzIGZvcgpzb21lIG1vcmUgZGV0YWls
+cy4KClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVu
+Z3V0cm9uaXguZGU+Ci0tLQogTElDRU5TRVMvZXhjZXB0aW9ucy9MaWNlbnNlUmVmLU9wZW5TU0wt
+ZXhjZXB0aW9uIHwgMTIgKysrKysrKysrKysrCiAxIGZpbGUgY2hhbmdlZCwgMTIgaW5zZXJ0aW9u
+cygrKQogY3JlYXRlIG1vZGUgMTAwNjQ0IExJQ0VOU0VTL2V4Y2VwdGlvbnMvTGljZW5zZVJlZi1P
+cGVuU1NMLWV4Y2VwdGlvbgoKZGlmZiAtLWdpdCBhL0xJQ0VOU0VTL2V4Y2VwdGlvbnMvTGljZW5z
+ZVJlZi1PcGVuU1NMLWV4Y2VwdGlvbiBiL0xJQ0VOU0VTL2V4Y2VwdGlvbnMvTGljZW5zZVJlZi1P
+cGVuU1NMLWV4Y2VwdGlvbgpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwMDAwMDAu
+LmIxZjc3OGI0N2QwZQotLS0gL2Rldi9udWxsCisrKyBiL0xJQ0VOU0VTL2V4Y2VwdGlvbnMvTGlj
+ZW5zZVJlZi1PcGVuU1NMLWV4Y2VwdGlvbgpAQCAtMCwwICsxLDEyIEBACitTUERYLUV4Y2VwdGlv
+bi1JZGVudGlmaWVyOiBMaWNlbnNlUmVmLU9wZW5TU0wtZXhjZXB0aW9uCitTUERYLUxpY2Vuc2Vz
+OiBHUEwtMi4wLW9yLWxhdGVyLCBHUEwtMi4wLW9ubHkKK0xpY2Vuc2UtVGV4dDoKKworSW4gYWRk
+aXRpb24sIGFzIGEgc3BlY2lhbCBleGNlcHRpb24gdGhlIGNvcHlyaWdodCBob2xkZXJzIGdpdmUK
+K3Blcm1pc3Npb24gdG8gbGluayB0aGUgY29kZSBvZiB0aGlzIHByb2dyYW0gd2l0aCB0aGUgT3Bl
+blNTTCBMaWJyYXJ5IChvciB3aXRoCittb2RpZmllZCB2ZXJzaW9ucyBvZiBPcGVuU1NMIHRoYXQg
+dXNlIHRoZSBzYW1lIGxpY2Vuc2UgYXMgT3BlblNTTCksIGFuZAorZGlzdHJpYnV0ZSBsaW5rZWQg
+Y29tYmluYXRpb25zIGluY2x1ZGluZyB0aGUgdHdvLiBZb3UgbXVzdCBvYmV5IHRoZSBHTlUgR2Vu
+ZXJhbAorUHVibGljIExpY2Vuc2UgaW4gYWxsIHJlc3BlY3RzIGZvciBhbGwgb2YgdGhlIGNvZGUg
+dXNlZCBvdGhlciB0aGFuIE9wZW5TU0wuIElmCit5b3UgbW9kaWZ5IHRoaXMgZmlsZSwgeW91IG1h
+eSBleHRlbmQgdGhpcyBleGNlcHRpb24gdG8geW91ciB2ZXJzaW9uIG9mIHRoZQorZmlsZSwgYnV0
+IHlvdSBhcmUgbm90IG9ibGlnYXRlZCB0byBkbyBzby4gSWYgeW91IGRvIG5vdCB3aXNoIHRvIGRv
+IHNvLCBkZWxldGUKK3RoaXMgZXhjZXB0aW9uIHN0YXRlbWVudCBmcm9tIHlvdXIgdmVyc2lvbi4K
+LS0gCjIuMjcuMAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRw
+Oi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
