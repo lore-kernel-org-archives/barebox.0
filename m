@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kJDEq-0002pg-U4
- for barebox@lists.infradead.org; Fri, 18 Sep 2020 10:03:33 +0000
-Date: Fri, 18 Sep 2020 12:03:31 +0200
+ id 1kJDgU-00014b-9A
+ for barebox@lists.infradead.org; Fri, 18 Sep 2020 10:32:07 +0000
+Date: Fri, 18 Sep 2020 12:32:04 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200918100331.GV4498@pengutronix.de>
+Message-ID: <20200918103204.GW4498@pengutronix.de>
 References: <20200917201708.12168-1-u.kleine-koenig@pengutronix.de>
- <20200917201708.12168-4-u.kleine-koenig@pengutronix.de>
+ <20200917201708.12168-2-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200917201708.12168-4-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20200917201708.12168-2-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,70 +23,56 @@ Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/4] arm/boards: Add IMD_USED_OF for a few boards
+Subject: Re: [PATCH 2/4] imx/esdctl: Define new helper macros to reduce board
+ entry boilerplate
 To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Sep 17, 2020 at 10:17:08PM +0200, Uwe Kleine-K=F6nig wrote:
-> Not all boards can make use of the helper macros introduced in the previo=
-us
-> commits, for these add an explicit call to IMD_USED_OF to add meta data
-> to the barebox image.
+On Thu, Sep 17, 2020 at 10:17:06PM +0200, Uwe Kleine-K=F6nig wrote:
+> The macro provides the extern declaration of the devicetree variable, cal=
+ls
+> IMD_USED_OF to add metadata to the resulting barebox image and then calls
+> the right entry function.
 > =
 
 > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
 > ---
->  arch/arm/boards/embest-riotboard/lowlevel.c     | 1 +
->  arch/arm/boards/technexion-wandboard/lowlevel.c | 2 ++
->  arch/arm/boards/zii-imx51-rdu1/lowlevel.c       | 3 +++
->  3 files changed, 6 insertions(+)
+>  arch/arm/mach-imx/include/mach/esdctl.h | 21 +++++++++++++++++++++
+>  1 file changed, 21 insertions(+)
 > =
 
-> diff --git a/arch/arm/boards/embest-riotboard/lowlevel.c b/arch/arm/board=
-s/embest-riotboard/lowlevel.c
-> index 07f669fc0309..b0f5339b0a70 100644
-> --- a/arch/arm/boards/embest-riotboard/lowlevel.c
-> +++ b/arch/arm/boards/embest-riotboard/lowlevel.c
-> @@ -23,6 +23,7 @@ ENTRY_FUNCTION(start_imx6s_riotboard, r0, r1, r2)
->  		putc_ll('a');
->  	}
+> diff --git a/arch/arm/mach-imx/include/mach/esdctl.h b/arch/arm/mach-imx/=
+include/mach/esdctl.h
+> index 8073b7f40937..506dda2d5a1c 100644
+> --- a/arch/arm/mach-imx/include/mach/esdctl.h
+> +++ b/arch/arm/mach-imx/include/mach/esdctl.h
+> @@ -145,6 +145,27 @@ void __noreturn imx8mp_barebox_entry(void *boarddata=
+);
+>  void __noreturn imx8mq_barebox_entry(void *boarddata);
+>  void __noreturn vf610_barebox_entry(void *boarddata);
 >  =
 
-> +	IMD_USED_OF(imx6s_riotboard);
->  	fdt =3D __dtb_imx6s_riotboard_start + get_runtime_offset();
->  	barebox_arm_entry(0x10000000, SZ_1G, fdt);
->  }
-> diff --git a/arch/arm/boards/technexion-wandboard/lowlevel.c b/arch/arm/b=
-oards/technexion-wandboard/lowlevel.c
-> index 33babbbb2feb..5c1b5d6ed292 100644
-> --- a/arch/arm/boards/technexion-wandboard/lowlevel.c
-> +++ b/arch/arm/boards/technexion-wandboard/lowlevel.c
-> @@ -334,9 +334,11 @@ static noinline void wandboard_start(void)
->  	switch (cpu_type) {
->  	case IMX6_CPUTYPE_IMX6S:
->  	case IMX6_CPUTYPE_IMX6DL:
-> +		IMD_USED_OF(imx6dl_wandboard);
->  		dtb =3D __dtb_z_imx6dl_wandboard_start;
->  		break;
->  	case IMX6_CPUTYPE_IMX6Q:
-> +		IMD_USED_OF(imx6q_wandboard);
->  		dtb =3D __dtb_z_imx6q_wandboard_start;
->  		break;
->  	default:
+> +#include <image-metadata.h>
+> +
+> +#define IMX_BAREBOX__ENTRY(_fdtname, _suffix, _compressed) ({ extern cha=
+r __dtb_ ## _compressed ## _fdtname ## _start[]; IMD_USED_OF(_fdtname); imx=
+ ## _suffix ## _barebox_entry(__dtb_ ## _compressed ## _fdtname ## _start +=
+ get_runtime_offset()); })
 
-This doesn't work like you might expect. IMD_USED_OF uses imd_used().
-This fake function only has the effect that
-__barebox_imd_OF_imx6q_wandboard appears to be used and thus doesn't get
-discarded by the linker. By putting imd_used() multiple times into code
-which ends up in the same binary you'll get all tags in the binary, no
-matter where in the code you put IMD_USED_OF.
+I think this macro does a bit too much.
 
-Having two tags is fine, because you really have a binary that is
-compatible to both wand,imx6dl-wandboard and wand,imx6q-wandboard, but
-please put them side by side into the ENTRY_FUNCTION.
+How about this one first:
 
-Have you compile tested this patch? It seems an #include
-<image-metadata.h> is missing at least in this file.
+#define GET_DTB(name) ({					\
+	extern char __dtb_ ## name ## _start[];			\
+	__dtb_ ## name ## _start + get_runtime_offset();	\
+});
+
+and an analog GET_DTBZ? This would be generally userful and not only on
+i.MX.
+
+I am not sure I would put the IMD_USED_OF into this macro. My gut
+feeling is that I would rather make it explicit in the board code.
 
 Sascha
 
