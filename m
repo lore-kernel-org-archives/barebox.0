@@ -1,11 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mickerik.phytec.de ([195.145.39.210])
- by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kJHND-0002aY-FG
- for barebox@lists.infradead.org; Fri, 18 Sep 2020 14:28:28 +0000
-From: Yunus Bas <y.bas@phytec.de>
-Date: Fri, 18 Sep 2020 16:28:23 +0200
-Message-Id: <20200918142823.5347-1-y.bas@phytec.de>
+Received: from mout02.posteo.de ([185.67.36.66])
+ by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1kJeHa-0002ii-R6
+ for barebox@lists.infradead.org; Sat, 19 Sep 2020 14:56:13 +0000
+Received: from submission (posteo.de [89.146.220.130]) 
+ by mout02.posteo.de (Postfix) with ESMTPS id 467252400FC
+ for <barebox@lists.infradead.org>; Sat, 19 Sep 2020 16:56:07 +0200 (CEST)
+Received: from customer (localhost [127.0.0.1])
+ by submission (posteo.de) with ESMTPSA id 4Btv0Q6TjQz9rxP
+ for <barebox@lists.infradead.org>; Sat, 19 Sep 2020 16:56:06 +0200 (CEST)
+From: Robert Karszniewicz <avoidr@posteo.de>
+Date: Sat, 19 Sep 2020 16:55:58 +0200
+Message-Id: <20200919145558.12274-1-avoidr@posteo.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,119 +21,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: dts: imx6ul: phycore: Add phyCORE i.MX6 UL with eMMC
+Subject: [PATCH] README: add some commas for clarity
 To: barebox@lists.infradead.org
 
-Add a phyCORE-i.MX 6UL with eMMC. It has following features:
-	- i.MX 6UL
-	- 512 MB RAM
-	- eMMC
-	- 10/100 MBits Ethernet
-	- USB OTG
-	- USB Host
-
-Signed-off-by: Yunus Bas <y.bas@phytec.de>
+Signed-off-by: Robert Karszniewicz <avoidr@posteo.de>
 ---
- arch/arm/boards/phytec-som-imx6/lowlevel.c    |  1 +
- arch/arm/dts/Makefile                         |  1 +
- .../dts/imx6ul-phytec-phycore-som-emmc.dts    | 43 +++++++++++++++++++
- images/Makefile.imx                           |  2 +
- 4 files changed, 47 insertions(+)
- create mode 100644 arch/arm/dts/imx6ul-phytec-phycore-som-emmc.dts
+ README | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/boards/phytec-som-imx6/lowlevel.c b/arch/arm/boards/phytec-som-imx6/lowlevel.c
-index 407115c2a..62a1c8de7 100644
---- a/arch/arm/boards/phytec-som-imx6/lowlevel.c
-+++ b/arch/arm/boards/phytec-som-imx6/lowlevel.c
-@@ -110,6 +110,7 @@ PHYTEC_ENTRY(start_phytec_phycore_imx6qp_som_nand_1gib, imx6qp_phytec_phycore_so
- PHYTEC_ENTRY(start_phytec_phycore_imx6q_som_emmc_1gib, imx6q_phytec_phycore_som_emmc, SZ_1G, true);
- PHYTEC_ENTRY(start_phytec_phycore_imx6q_som_emmc_2gib, imx6q_phytec_phycore_som_emmc, SZ_2G, true);
+diff --git a/README b/README
+index d8077d21b..0a837b2de 100644
+--- a/README
++++ b/README
+@@ -114,7 +114,7 @@ in board/sandbox/env:
  
-+PHYTEC_ENTRY(start_phytec_phycore_imx6ul_som_emmc_512mb, imx6ul_phytec_phycore_som_emmc, SZ_512M, false);
- PHYTEC_ENTRY(start_phytec_phycore_imx6ul_som_nand_512mb, imx6ul_phytec_phycore_som_nand, SZ_512M, false);
- PHYTEC_ENTRY(start_phytec_phycore_imx6ull_som_lc_nand_256mb, imx6ull_phytec_phycore_som_lc_nand, SZ_256M, false);
- PHYTEC_ENTRY(start_phytec_phycore_imx6ull_som_nand_512mb, imx6ull_phytec_phycore_som_nand, SZ_512M, false);
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index af061bd29..37e0f07b9 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -67,6 +67,7 @@ lwl-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += imx6q-phytec-phycard.dtb.o \
- 				imx6dl-phytec-phycore-som-emmc.dtb.o \
- 				imx6dl-phytec-phycore-som-lc-emmc.dtb.o \
- 				imx6ul-phytec-phycore-som-nand.dtb.o \
-+				imx6ul-phytec-phycore-som-emmc.dtb.o \
- 				imx6ull-phytec-phycore-som-lc-nand.dtb.o \
- 				imx6ull-phytec-phycore-som-nand.dtb.o \
- 				imx6ull-phytec-phycore-som-emmc.dtb.o
-diff --git a/arch/arm/dts/imx6ul-phytec-phycore-som-emmc.dts b/arch/arm/dts/imx6ul-phytec-phycore-som-emmc.dts
-new file mode 100644
-index 000000000..c51907665
---- /dev/null
-+++ b/arch/arm/dts/imx6ul-phytec-phycore-som-emmc.dts
-@@ -0,0 +1,43 @@
-+// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
-+/*
-+ * Copyright (C) 2020 PHYTEC Messtechnik GmbH
-+ * Author: Yunus Bas <y.bas@phytec.de>
-+ */
-+
-+/dts-v1/;
-+
-+#include <arm/imx6ul.dtsi>
-+#include "imx6ul-phytec-phycore-som.dtsi"
-+
-+/ {
-+	model = "PHYTEC phyCORE-i.MX6 Ultra Light SOM with eMMC";
-+	compatible = "phytec,imx6ul-pcl063-emmc", "fsl,imx6ul";
-+};
-+
-+&fec1 {
-+	status = "okay";
-+};
-+
-+&i2c1 {
-+	status = "okay";
-+};
-+
-+&uart1 {
-+	status = "okay";
-+};
-+
-+&usdhc1 {
-+	status = "okay";
-+};
-+
-+&usdhc2 {
-+	status = "okay";
-+};
-+
-+&usbotg1 {
-+	status = "okay";
-+};
-+
-+&usbotg2 {
-+	status = "okay";
-+};
-diff --git a/images/Makefile.imx b/images/Makefile.imx
-index 7b24e5fee..2327b8a0b 100644
---- a/images/Makefile.imx
-+++ b/images/Makefile.imx
-@@ -346,6 +346,8 @@ $(call build_imx_habv4img, CONFIG_MACH_GRINN_LITEBOARD, start_imx6ul_liteboard_5
+   # ./scripts/bareboxenv -s -p 0x10000 arch/sandbox/board/env env.bin
  
- $(call build_imx_habv4img, CONFIG_MACH_NXP_IMX6ULL_EVK, start_nxp_imx6ull_evk, nxp-imx6ull-evk/flash-header-nxp-imx6ull-evk, nxp-imx6ull-evk)
+-To get some files to play with you can generate a cramfs image:
++To get some files to play with, you can generate a cramfs image:
+   # mkcramfs somedir/ cramfs.bin
  
-+$(call build_imx_habv4img, CONFIG_MACH_PHYTEC_SOM_IMX6, start_phytec_phycore_imx6ul_som_emmc_512mb, phytec-som-imx6/flash-header-phytec-pcl063-512mb, phytec-phycore-imx6ul-emmc-512mb)
-+
- $(call build_imx_habv4img, CONFIG_MACH_PHYTEC_SOM_IMX6, start_phytec_phycore_imx6ul_som_nand_512mb, phytec-som-imx6/flash-header-phytec-pcl063-512mb, phytec-phycore-imx6ul-nand-512mb)
+ The barebox image is a normal Linux executable, so it can be started
+@@ -133,14 +133,14 @@ given with '-i' will appear as /dev/fd[n].
  
- $(call build_imx_habv4img, CONFIG_MACH_PHYTEC_SOM_IMX6, start_phytec_phycore_imx6ull_som_lc_nand_256mb, phytec-som-imx6/flash-header-phytec-pcl063-256mb, phytec-phycore-imx6ull-lc-nand-256mb)
+ If barebox finds a valid configuration sector on /dev/env0 it will
+ load it to /env. It then executes /env/init if it exists. If you have
+-loaded the example environment barebox will show you a menu asking for
++loaded the example environment, barebox will show you a menu asking for
+ your settings.
+ 
+-If you have started barebox as root you will find a new tap device on your
++If you have started barebox as root, you will find a new tap device on your
+ host which you can configure using ifconfig. Once you configured bareboxs
+-network settings accordingly you can do a ping or tftpboot.
++network settings accordingly, you can do a ping or tftpboot.
+ 
+-If you have mapped a cramfs image try mounting it with
++If you have mapped a cramfs image, try mounting it with
+ 
+   # mkdir /cram
+   # mount /dev/fd0 cramfs /cram
 -- 
-2.17.1
+2.28.0
 
 
 _______________________________________________
