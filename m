@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from relay6-d.mail.gandi.net ([217.70.183.198])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kKFMr-0008WF-Dl
- for barebox@lists.infradead.org; Mon, 21 Sep 2020 06:32:06 +0000
-Date: Mon, 21 Sep 2020 08:32:03 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200921063203.GF21278@pengutronix.de>
-References: <1600335415-315975-1-git-send-email-m.otto@phytec.de>
+ id 1kKFzE-0004x2-0f
+ for barebox@lists.infradead.org; Mon, 21 Sep 2020 07:11:44 +0000
+Received: from localhost.localdomain (p5ded6c86.dip0.t-ipconnect.de
+ [93.237.108.134]) (Authenticated sender: ahmad@a3f.at)
+ by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 2B395C000B
+ for <barebox@lists.infradead.org>; Mon, 21 Sep 2020 07:11:39 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Mon, 21 Sep 2020 09:11:35 +0200
+Message-Id: <20200921071135.561256-1-ahmad@a3f.at>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1600335415-315975-1-git-send-email-m.otto@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,40 +23,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 0/2] i.MX6ULL: set engine software for Secure Boot on
- HABv4
-To: Maik Otto <m.otto@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] common: misc: support strerror(err) for all err <= MAX_ERRNO
+To: barebox@lists.infradead.org
 
-On Thu, Sep 17, 2020 at 11:36:53AM +0200, Maik Otto wrote:
-> The i.MX6ULL has no CAAM engine for Secure Boot on HABv4. This patch series
-> set the engine software for i.MX6ULL and for the PHYTEC boards PCL-063 with
-> i.MX6ULL.
-> 
-> Changes in v3 and Patch 2:
->     - rework and move the file habv4-imx6-gencsf.h to habv4-imx6-gencsf-template.h
->     - rework the file habv4-imx6ull-gencsf.h and add new file
->       habv4-imx6-gencsf.h
-> 
-> Changes in v2:                                                                   
->     - Rework in Patch 2 the file habv4-imx6-gencsf.h, because cst 3.3.1 fails
->       for engine software with parameter Feature.
-> 
-> Maik Otto (2):
->   arch: arm: boards phytec: Split flash header for pcl063 with i.MX6Ul
->     and i.MX6ULL
->   arch: arm: mach-imx: Add habv4 config file for i.MX6ULL
+We have a _LAST_ERRNO of 3 decimal digits. strerror(_LAST_ERRNO) is ok,
+but it's still possible that some code passes a non-error code int,
+which will overflow the static buffer. Play it safe and bump up the
+buffer size to at least 11 characters. This is enough to represent
+all integers, with only 7 characters more static storage.
 
-Applied, thanks
+This way strerror(some_int_passed_by_mistake) will not invoke UB.
 
-Sascha
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+Detected by ASAN on sandbox a while ago. The place which passed the
+non-errno int needs probably fixing as well, but I need to find it again
+first..
+---
+ common/misc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-
+diff --git a/common/misc.c b/common/misc.c
+index 1c7f93760804..1a1cc071b4d1 100644
+--- a/common/misc.c
++++ b/common/misc.c
+@@ -22,6 +22,7 @@
+ #include <led.h>
+ #include <of.h>
+ #include <restart.h>
++#include <linux/stringify.h>
+ 
+ int errno;
+ EXPORT_SYMBOL(errno);
+@@ -29,7 +30,7 @@ EXPORT_SYMBOL(errno);
+ 
+ const char *strerror(int errnum)
+ {
+-	static char errno_string[10];
++	static char errno_string[sizeof("error -2147483648")];
+ 
+ #ifdef CONFIG_ERRNO_MESSAGES
+ 	char *str;
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.28.0
+
 
 _______________________________________________
 barebox mailing list
