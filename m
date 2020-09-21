@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay6-d.mail.gandi.net ([217.70.183.198])
+Received: from relay4-d.mail.gandi.net ([217.70.183.196])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kKFzE-0004x2-0f
- for barebox@lists.infradead.org; Mon, 21 Sep 2020 07:11:44 +0000
+ id 1kKG0a-00052i-RO
+ for barebox@lists.infradead.org; Mon, 21 Sep 2020 07:13:10 +0000
 Received: from localhost.localdomain (p5ded6c86.dip0.t-ipconnect.de
  [93.237.108.134]) (Authenticated sender: ahmad@a3f.at)
- by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 2B395C000B
- for <barebox@lists.infradead.org>; Mon, 21 Sep 2020 07:11:39 +0000 (UTC)
+ by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id D10EBE0012
+ for <barebox@lists.infradead.org>; Mon, 21 Sep 2020 07:13:06 +0000 (UTC)
 From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Mon, 21 Sep 2020 09:11:35 +0200
-Message-Id: <20200921071135.561256-1-ahmad@a3f.at>
+Date: Mon, 21 Sep 2020 09:13:01 +0200
+Message-Id: <20200921071301.561952-2-ahmad@a3f.at>
+In-Reply-To: <20200921071301.561952-1-ahmad@a3f.at>
+References: <20200921071301.561952-1-ahmad@a3f.at>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,47 +25,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] common: misc: support strerror(err) for all err <= MAX_ERRNO
+Subject: [PATCH 2/2] USB: musb: host: fix mismatched format specifier in
+ dev_dbg()
 To: barebox@lists.infradead.org
 
-We have a _LAST_ERRNO of 3 decimal digits. strerror(_LAST_ERRNO) is ok,
-but it's still possible that some code passes a non-error code int,
-which will overflow the static buffer. Play it safe and bump up the
-buffer size to at least 11 characters. This is enough to represent
-all integers, with only 7 characters more static storage.
-
-This way strerror(some_int_passed_by_mistake) will not invoke UB.
+Unadorned 0 is an int, but is printed used %zu. As it's just an interger
+literal, just hardcode it into the string.
 
 Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
-Detected by ASAN on sandbox a while ago. The place which passed the
-non-errno int needs probably fixing as well, but I need to find it again
-first..
----
- common/misc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/musb/musb_host.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/common/misc.c b/common/misc.c
-index 1c7f93760804..1a1cc071b4d1 100644
---- a/common/misc.c
-+++ b/common/misc.c
-@@ -22,6 +22,7 @@
- #include <led.h>
- #include <of.h>
- #include <restart.h>
-+#include <linux/stringify.h>
+diff --git a/drivers/usb/musb/musb_host.c b/drivers/usb/musb/musb_host.c
+index 68d819af2cc8..be9651b04960 100644
+--- a/drivers/usb/musb/musb_host.c
++++ b/drivers/usb/musb/musb_host.c
+@@ -1189,8 +1189,8 @@ void musb_host_rx(struct musb *musb, u8 epnum)
  
- int errno;
- EXPORT_SYMBOL(errno);
-@@ -29,7 +30,7 @@ EXPORT_SYMBOL(errno);
+ 	pipe = urb->pipe;
  
- const char *strerror(int errnum)
- {
--	static char errno_string[10];
-+	static char errno_string[sizeof("error -2147483648")];
+-	dev_dbg(musb->controller, "<== hw %d rxcsr %04x, urb actual %d (+dma %zu)\n",
+-		epnum, rx_csr, urb->actual_length, 0);
++	dev_dbg(musb->controller, "<== hw %d rxcsr %04x, urb actual %d (+dma 0)\n",
++		epnum, rx_csr, urb->actual_length);
  
- #ifdef CONFIG_ERRNO_MESSAGES
- 	char *str;
+ 	/* check for errors, concurrent stall & unlink is not really
+ 	 * handled yet! */
 -- 
 2.28.0
 
