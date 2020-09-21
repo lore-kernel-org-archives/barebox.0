@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kKEkZ-0002u6-Fx
- for barebox@lists.infradead.org; Mon, 21 Sep 2020 05:52:32 +0000
-Date: Mon, 21 Sep 2020 07:52:28 +0200
+ id 1kKEnz-0003A4-NW
+ for barebox@lists.infradead.org; Mon, 21 Sep 2020 05:56:04 +0000
+Date: Mon, 21 Sep 2020 07:56:02 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200921055228.GA21278@pengutronix.de>
-References: <20200919204133.31990-1-avoidr@posteo.de>
+Message-ID: <20200921055602.GB21278@pengutronix.de>
+References: <20200919145558.12274-1-avoidr@posteo.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200919204133.31990-1-avoidr@posteo.de>
+In-Reply-To: <20200919145558.12274-1-avoidr@posteo.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,37 +22,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] scripts: compiler.h: include <sys/types.h>
+Subject: Re: [PATCH] README: add some commas for clarity
 To: Robert Karszniewicz <avoidr@posteo.de>
 Cc: barebox@lists.infradead.org
 
-On Sat, Sep 19, 2020 at 10:41:33PM +0200, Robert Karszniewicz wrote:
-> ulong is not a standard type, so it has to be defined explicitly.
-> 
+On Sat, Sep 19, 2020 at 04:55:58PM +0200, Robert Karszniewicz wrote:
 > Signed-off-by: Robert Karszniewicz <avoidr@posteo.de>
 > ---
-> This fixes compile errors on musl when building the sandbox.
+>  README | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
 > 
->  scripts/compiler.h | 1 +
->  1 file changed, 1 insertion(+)
+> diff --git a/README b/README
 
 Applied, thanks
 
 Sascha
 
-> 
-> diff --git a/scripts/compiler.h b/scripts/compiler.h
-> index 0ad25f9e8..c932f715c 100644
-> --- a/scripts/compiler.h
-> +++ b/scripts/compiler.h
-> @@ -62,6 +62,7 @@ typedef unsigned int  uint;
->        defined(__NetBSD__) || defined(__DragonFly__)
->  # include <sys/endian.h>
->  #else /* assume Linux */
-> +# include <sys/types.h>
->  # include <endian.h>
->  # include <byteswap.h>
->  #endif
+> index d8077d21b..0a837b2de 100644
+> --- a/README
+> +++ b/README
+> @@ -114,7 +114,7 @@ in board/sandbox/env:
+>  
+>    # ./scripts/bareboxenv -s -p 0x10000 arch/sandbox/board/env env.bin
+>  
+> -To get some files to play with you can generate a cramfs image:
+> +To get some files to play with, you can generate a cramfs image:
+>    # mkcramfs somedir/ cramfs.bin
+>  
+>  The barebox image is a normal Linux executable, so it can be started
+> @@ -133,14 +133,14 @@ given with '-i' will appear as /dev/fd[n].
+>  
+>  If barebox finds a valid configuration sector on /dev/env0 it will
+>  load it to /env. It then executes /env/init if it exists. If you have
+> -loaded the example environment barebox will show you a menu asking for
+> +loaded the example environment, barebox will show you a menu asking for
+>  your settings.
+>  
+> -If you have started barebox as root you will find a new tap device on your
+> +If you have started barebox as root, you will find a new tap device on your
+>  host which you can configure using ifconfig. Once you configured bareboxs
+> -network settings accordingly you can do a ping or tftpboot.
+> +network settings accordingly, you can do a ping or tftpboot.
+>  
+> -If you have mapped a cramfs image try mounting it with
+> +If you have mapped a cramfs image, try mounting it with
+>  
+>    # mkdir /cram
+>    # mount /dev/fd0 cramfs /cram
 > -- 
 > 2.28.0
 > 
