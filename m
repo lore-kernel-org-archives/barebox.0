@@ -1,13 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kL0h6-0004BX-Sa
- for barebox@lists.infradead.org; Wed, 23 Sep 2020 09:04:09 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 23 Sep 2020 11:03:58 +0200
-Message-Id: <20200923090358.26942-2-s.hauer@pengutronix.de>
-In-Reply-To: <20200923090358.26942-1-s.hauer@pengutronix.de>
-References: <20200923090358.26942-1-s.hauer@pengutronix.de>
+ id 1kL26S-0007I0-AT
+ for barebox@lists.infradead.org; Wed, 23 Sep 2020 10:34:25 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <str@pengutronix.de>) id 1kL26P-0005vh-5x
+ for barebox@lists.infradead.org; Wed, 23 Sep 2020 12:34:21 +0200
+Received: from str by dude.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <str@pengutronix.de>) id 1kL26O-0000LO-SC
+ for barebox@lists.infradead.org; Wed, 23 Sep 2020 12:34:20 +0200
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Wed, 23 Sep 2020 12:34:15 +0200
+Message-Id: <20200923103418.11186-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,117 +27,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] usb: dwc3-of-simple: Use clk_bulk API
+Subject: [PATCH 1/4] Makefile: add buildsystem version variable
 To: Barebox List <barebox@lists.infradead.org>
 
-Use clk_bulk_get_all() to retrieve all clocks rather than open code
-this. Also actually enable the clocks, previously they had been disabled
-in the error path, but never enabled before. Also this fixes a memory
-corruption: The driver populated an array of clks, but only allocated
-space for a single entry.
+Introduce a new variable to store a buildsystem version information.
+The exact information that is stored here (git commit, git tag,...) is
+defined by the buildsystem.
+It is intended to have the possibility to get information about the
+exact barebox binary, environment and configuration.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+The variable is utilized the same as KERNELVERSION for linux:
+
+   make BUILDSYSTEM_VERSION=$COMMITISH
+
+Via scripts/mkcompile_h this information is injected into the barebox
+codebase.
+
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- drivers/usb/dwc3/dwc3-of-simple.c | 58 ++++++-------------------------
- 1 file changed, 10 insertions(+), 48 deletions(-)
+ Makefile            | 3 ++-
+ scripts/mkcompile_h | 3 +++
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/dwc3/dwc3-of-simple.c b/drivers/usb/dwc3/dwc3-of-simple.c
-index a0aab4f114..ac16d22624 100644
---- a/drivers/usb/dwc3/dwc3-of-simple.c
-+++ b/drivers/usb/dwc3/dwc3-of-simple.c
-@@ -21,50 +21,16 @@
+diff --git a/Makefile b/Makefile
+index d27b78201bda..d829e33c4621 100644
+--- a/Makefile
++++ b/Makefile
+@@ -311,7 +311,8 @@ include scripts/Kbuild.include
+ # Read KERNELRELEASE from include/config/kernel.release (if it exists)
+ KERNELRELEASE = $(shell cat include/config/kernel.release 2> /dev/null)
+ KERNELVERSION = $(VERSION)$(if $(PATCHLEVEL),.$(PATCHLEVEL)$(if $(SUBLEVEL),.$(SUBLEVEL)))$(EXTRAVERSION)
+-export VERSION PATCHLEVEL SUBLEVEL KERNELRELEASE KERNELVERSION
++BUILDSYSTEM_VERSION =
++export VERSION PATCHLEVEL SUBLEVEL KERNELRELEASE KERNELVERSION BUILDSYSTEM_VERSION
  
- struct dwc3_of_simple {
- 	struct device_d		*dev;
--	struct clk		**clks;
-+	struct clk_bulk_data	*clks;
- 	int			num_clocks;
- };
+ # Cross compiling and selecting different set of gcc/bin-utils
+ # ---------------------------------------------------------------------------
+diff --git a/scripts/mkcompile_h b/scripts/mkcompile_h
+index 60b20cafc65e..49aadc153d44 100755
+--- a/scripts/mkcompile_h
++++ b/scripts/mkcompile_h
+@@ -54,6 +54,7 @@ fi
+ UTS_VERSION="#$VERSION"
+ CONFIG_FLAGS=""
+ UTS_VERSION="$UTS_VERSION $CONFIG_FLAGS $TIMESTAMP"
++BUILDSYSTEM_VERSION="$BUILDSYSTEM_VERSION"
  
--static int dwc3_of_simple_clk_init(struct dwc3_of_simple *simple, int count)
--{
--	struct device_d		*dev = simple->dev;
--	struct device_node	*np = dev->device_node;
--	int			i;
--
--	simple->num_clocks = count;
--
--	if (!count)
--		return 0;
--
--	simple->clks = xzalloc(sizeof(struct clk *));
--	if (!simple->clks)
--		return -ENOMEM;
--
--	for (i = 0; i < simple->num_clocks; i++) {
--		struct clk	*clk;
--
--		clk = of_clk_get(np, i);
--		if (IS_ERR(clk)) {
--			while (--i >= 0) {
--				clk_disable(simple->clks[i]);
--				clk_put(simple->clks[i]);
--			}
--			return PTR_ERR(clk);
--		}
--
--		simple->clks[i] = clk;
--	}
--
--	return 0;
--}
--
- static int dwc3_of_simple_probe(struct device_d *dev)
- {
- 	struct dwc3_of_simple	*simple;
- 	struct device_node	*np = dev->device_node;
+ # Truncate to maximum length
  
- 	int			ret;
--	int			i;
+@@ -69,6 +70,8 @@ UTS_TRUNCATE="cut -b -$UTS_LEN"
  
- 	simple = xzalloc(sizeof(*simple));
- 	if (!simple)
-@@ -73,17 +39,18 @@ static int dwc3_of_simple_probe(struct device_d *dev)
- 	dev->priv = simple;
- 	simple->dev = dev;
+   echo \#define UTS_VERSION \"`echo $UTS_VERSION | $UTS_TRUNCATE`\"
  
--	ret = dwc3_of_simple_clk_init(simple, of_count_phandle_with_args(np,
--						"clocks", "#clock-cells"));
-+	ret = clk_bulk_get_all(simple->dev, &simple->clks);
-+	if (ret < 0)
-+		return ret;
++  echo \#define BUILDSYSTEM_VERSION \"`echo $BUILDSYSTEM_VERSION`\"
 +
-+	simple->num_clocks = ret;
-+	ret = clk_bulk_enable(simple->num_clocks, simple->clks);
- 	if (ret)
- 		return ret;
+   echo \#define BAREBOX_COMPILE_BY \"`echo $BAREBOX_COMPILE_BY | $UTS_TRUNCATE`\"
+   echo \#define BAREBOX_COMPILE_HOST \"`echo $BAREBOX_COMPILE_HOST | $UTS_TRUNCATE`\"
  
--	ret = of_platform_populate(np, NULL, dev);
-+        ret = of_platform_populate(np, NULL, dev);
- 	if (ret) {
--		for (i = 0; i < simple->num_clocks; i++) {
--			clk_disable(simple->clks[i]);
--			clk_put(simple->clks[i]);
--		}
-+		clk_bulk_disable(simple->num_clocks, simple->clks);
- 		return ret;
- 	}
- 
-@@ -93,13 +60,8 @@ static int dwc3_of_simple_probe(struct device_d *dev)
- static void dwc3_of_simple_remove(struct device_d *dev)
- {
- 	struct dwc3_of_simple	*simple = dev->priv;
--	int			i;
- 
--	for (i = 0; i < simple->num_clocks; i++) {
--		clk_disable(simple->clks[i]);
--		clk_put(simple->clks[i]);
--	}
--	simple->num_clocks = 0;
-+	clk_bulk_disable(simple->num_clocks, simple->clks);
- }
- 
- static const struct of_device_id of_dwc3_simple_match[] = {
 -- 
 2.28.0
 
