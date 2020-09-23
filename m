@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kL0YW-0002SC-QH
- for barebox@lists.infradead.org; Wed, 23 Sep 2020 08:55:17 +0000
+ id 1kL0bL-00038v-TH
+ for barebox@lists.infradead.org; Wed, 23 Sep 2020 08:58:12 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 23 Sep 2020 10:55:14 +0200
-Message-Id: <20200923085514.23231-1-s.hauer@pengutronix.de>
+Date: Wed, 23 Sep 2020 10:58:09 +0200
+Message-Id: <20200923085809.24740-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,47 +19,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] usb: dwc3: Whitespace cleanup
+Subject: [PATCH] ARM: dts: imx8mq: Use ddr controller node from upstream
 To: Barebox List <barebox@lists.infradead.org>
 
-Replace spaces with tabs.
+The upstream dtsi now has a ddr controller node, so no need to duplicate
+anymore.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/dwc3/dwc3-of-simple.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm/dts/imx8mq-ddrc.dtsi | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/drivers/usb/dwc3/dwc3-of-simple.c b/drivers/usb/dwc3/dwc3-of-simple.c
-index e58d9f95fe..a0aab4f114 100644
---- a/drivers/usb/dwc3/dwc3-of-simple.c
-+++ b/drivers/usb/dwc3/dwc3-of-simple.c
-@@ -70,7 +70,7 @@ static int dwc3_of_simple_probe(struct device_d *dev)
- 	if (!simple)
- 		return -ENOMEM;
+diff --git a/arch/arm/dts/imx8mq-ddrc.dtsi b/arch/arm/dts/imx8mq-ddrc.dtsi
+index 64826b0373..1df39151a1 100644
+--- a/arch/arm/dts/imx8mq-ddrc.dtsi
++++ b/arch/arm/dts/imx8mq-ddrc.dtsi
+@@ -6,12 +6,5 @@
+ / {
  
--        dev->priv = simple;
-+	dev->priv = simple;
- 	simple->dev = dev;
+ 	/delete-node/ memory@40000000;
+-
+-	soc@0 {
+-		ddrc@3d400000 {
+-			compatible = "fsl,imx8mq-ddrc";
+-			reg = <0x3d400000 0x400000>;
+-		};
+-	};
+ };
  
- 	ret = dwc3_of_simple_clk_init(simple, of_count_phandle_with_args(np,
-@@ -78,7 +78,7 @@ static int dwc3_of_simple_probe(struct device_d *dev)
- 	if (ret)
- 		return ret;
- 
--        ret = of_platform_populate(np, NULL, dev);
-+	ret = of_platform_populate(np, NULL, dev);
- 	if (ret) {
- 		for (i = 0; i < simple->num_clocks; i++) {
- 			clk_disable(simple->clks[i]);
-@@ -87,7 +87,7 @@ static int dwc3_of_simple_probe(struct device_d *dev)
- 		return ret;
- 	}
- 
--        return 0;
-+	return 0;
- }
- 
- static void dwc3_of_simple_remove(struct device_d *dev)
 -- 
 2.28.0
 
