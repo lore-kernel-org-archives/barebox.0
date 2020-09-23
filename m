@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kKHMv-0001eX-Ni
- for barebox@lists.infradead.org; Mon, 21 Sep 2020 08:40:18 +0000
-Date: Mon, 21 Sep 2020 10:40:16 +0200
+ id 1kL0Xq-0002Ds-62
+ for barebox@lists.infradead.org; Wed, 23 Sep 2020 08:54:34 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200921084016.GG21278@pengutronix.de>
-References: <20200916135035.7089-1-a.fatoum@pengutronix.de>
- <20200916135035.7089-5-a.fatoum@pengutronix.de>
+Date: Wed, 23 Sep 2020 10:54:26 +0200
+Message-Id: <20200923085426.8172-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200916135035.7089-5-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,103 +19,156 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 04/10] power: reset: reboot-mode: fix up node into boot
- device tree
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] clk_dump command: Allow printing a single clock
+To: Barebox List <barebox@lists.infradead.org>
 
-On Wed, Sep 16, 2020 at 03:50:29PM +0200, Ahmad Fatoum wrote:
-> Instead of relying that the kernel and barebox device trees are in sync,
-> just enforce it by having barebox fix up the device tree node it probed
-> into the kernel device tree. We usually want that, but some reboot mode
-> drivers might want to inhibit the fixup, e.g. because they implement
-> a non-upstream binding or because they communicate with the BootROM,
-> while the kernel shouldn't. For those the fixup is made optional via
-> a struct reboot_mode_driver::no_fixup member.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  drivers/power/reset/reboot-mode.c | 39 +++++++++++++++++++++++++++++++
->  include/linux/reboot-mode.h       |  1 +
->  2 files changed, 40 insertions(+)
-> 
-> diff --git a/drivers/power/reset/reboot-mode.c b/drivers/power/reset/reboot-mode.c
-> index 5992a2acd99a..5fc29ebf8091 100644
-> --- a/drivers/power/reset/reboot-mode.c
-> +++ b/drivers/power/reset/reboot-mode.c
-> @@ -52,6 +52,42 @@ static int reboot_mode_add_param(struct device_d *dev,
->  	return PTR_ERR_OR_ZERO(param);
->  }
->  
-> +static struct device_node *of_get_node_by_reproducible_name(struct device_node *dstroot,
-> +							    struct device_node *srcnp)
-> +{
-> +	struct device_node *dstnp;
-> +	char *name;
-> +
-> +	name = of_get_reproducible_name(srcnp);
-> +	dstnp = of_find_node_by_reproducible_name(dstroot, name);
-> +	free(name);
-> +
-> +	return dstnp;
-> +}
-> +
-> +static int of_reboot_mode_fixup(struct device_node *root, void *ctx)
-> +{
-> +	struct reboot_mode_driver *reboot = ctx;
-> +	struct device_node *dstnp, *srcnp, *dstparent;
-> +
-> +	srcnp = reboot->dev->device_node;
-> +
-> +	dstnp = of_get_node_by_reproducible_name(root, srcnp);
-> +	if (dstnp) {
-> +		dstparent = dstnp->parent;
-> +		of_delete_node(dstnp);
-> +	} else {
-> +		dstparent = of_get_node_by_reproducible_name(root, srcnp->parent);
-> +	}
+So far the clk_dump command can only print all clocks. With this patch
+we can limit the output to ancestors and children of a given clock. This
+makes it easier to find the desired information in big clock trees.
 
-\o/ barebox KASan found it's first bug!
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ commands/clk.c      | 15 ++++++++++++--
+ drivers/clk/clk.c   | 50 ++++++++++++++++++++++++++++++++++++++++-----
+ include/linux/clk.h |  1 +
+ 3 files changed, 59 insertions(+), 7 deletions(-)
 
-This ends up in:
-
-ERROR: ==================================================================
-ERROR: BUG: KASAN: out-of-bounds in of_copy_node+0x11/0x8e
-ERROR: Read of size 4 at addr 2fe0a2a0
-ERROR:
-WARNING: [<4fcd3101>] (unwind_backtrace+0x1/0x100) from [<4fc93e0d>] (kasan_report+0xa9/0x214)
-WARNING: [<4fc93e0d>] (kasan_report+0xa9/0x214) from [<4fc7cd83>] (of_copy_node+0x11/0x8e)
-WARNING: [<4fc7cd83>] (of_copy_node+0x11/0x8e) from [<4fc811b7>] (of_reboot_mode_fixup+0x9f/0xd4)
-WARNING: [<4fc811b7>] (of_reboot_mode_fixup+0x9f/0xd4) from [<4fc0bda9>] (of_fix_tree+0x3d/0x70)
-WARNING: [<4fc0bda9>] (of_fix_tree+0x3d/0x70) from [<4fc0bdf5>] (of_get_fixed_tree+0x19/0x2c)
-WARNING: [<4fc0bdf5>] (of_get_fixed_tree+0x19/0x2c) from [<4fc05ae9>] (bootm_get_devicetree+0x279/0x2b4)
-WARNING: [<4fc05ae9>] (bootm_get_devicetree+0x279/0x2b4) from [<4fcd2111>] (__do_bootm_linux+0xdd/0x1e0)
-WARNING: [<4fcd2111>] (__do_bootm_linux+0xdd/0x1e0) from [<4fcd2299>] (do_bootm_linux+0x85/0xa0)
-WARNING: [<4fcd2299>] (do_bootm_linux+0x85/0xa0) from [<4fc062bd>] (bootm_boot+0x60d/0x684)
-WARNING: [<4fc062bd>] (bootm_boot+0x60d/0x684) from [<4fc820d5>] (do_bootm+0x1b5/0x1f8)
-WARNING: [<4fc820d5>] (do_bootm+0x1b5/0x1f8) from [<4fc06dd3>] (execute_command+0x6b/0xb4)
-WARNING: [<4fc06dd3>] (execute_command+0x6b/0xb4) from [<4fc0f835>] (run_list_real+0x985/0x9f0)
-WARNING: [<4fc0f835>] (run_list_real+0x985/0x9f0) from [<4fc0ed05>] (parse_stream_outer+0x221/0x2a8)
-WARNING: [<4fc0ed05>] (parse_stream_outer+0x221/0x2a8) from [<4fc0fc0b>] (run_shell+0x8b/0xdc)
-WARNING: [<4fc0fc0b>] (run_shell+0x8b/0xdc) from [<4fc01895>] (run_init+0x205/0x264)
-WARNING: [<4fc01895>] (run_init+0x205/0x264) from [<4fc01933>] (start_barebox+0x3f/0xa4)
-WARNING: [<4fc01933>] (start_barebox+0x3f/0xa4) from [<4fcd09f9>] (barebox_non_pbl_start+0x131/0x174)
-WARNING: [<4fcd09f9>] (barebox_non_pbl_start+0x131/0x174) from [<4fc00005>] (__bare_init_start+0x1/0xc)
-
-This happens in the case when the to-be-fixed up device tree is the internal
-device tree itself. Here of_delete_node(dstnp) is called, but this is
-also srcnp which is then read from.
-
-The solution might also be to make sure we make a copy of the internal
-tree before doing a of_fixup on it.
-
-Sascha
-
+diff --git a/commands/clk.c b/commands/clk.c
+index 47159dddd2..649a0a7cb2 100644
+--- a/commands/clk.c
++++ b/commands/clk.c
+@@ -139,6 +139,7 @@ BAREBOX_CMD_END
+ static int do_clk_dump(int argc, char *argv[])
+ {
+ 	int opt, verbose = 0;
++	struct clk *clk;
+ 
+ 	while ((opt = getopt(argc, argv, "v")) > 0) {
+ 		switch(opt) {
+@@ -151,7 +152,16 @@ static int do_clk_dump(int argc, char *argv[])
+ 		}
+ 	}
+ 
+-	clk_dump(verbose);
++	if (optind == argc) {
++		clk_dump(verbose);
++		return COMMAND_SUCCESS;
++	}
++
++	clk = clk_lookup(argv[optind]);
++	if (IS_ERR(clk))
++		return PTR_ERR(clk);
++
++	clk_dump_one(clk, verbose);
+ 
+ 	return COMMAND_SUCCESS;
+ }
+@@ -164,9 +174,10 @@ BAREBOX_CMD_HELP_END
+ BAREBOX_CMD_START(clk_dump)
+ 	.cmd		= do_clk_dump,
+ 	BAREBOX_CMD_DESC("show information about registered clocks")
+-	BAREBOX_CMD_OPTS("[-v]")
++	BAREBOX_CMD_OPTS("[-v] [clkname]")
+ 	BAREBOX_CMD_GROUP(CMD_GRP_INFO)
+ 	BAREBOX_CMD_HELP(cmd_clk_dump_help)
++	BAREBOX_CMD_COMPLETE(clk_name_complete)
+ BAREBOX_CMD_END
+ 
+ static int do_clk_set_parent(int argc, char *argv[])
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index f2e459a760..b04d44593b 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -678,7 +678,6 @@ static const char *clk_hw_stat(struct clk *clk)
+ 
+ static void dump_one(struct clk *clk, int verbose, int indent)
+ {
+-	struct clk *c;
+ 	int enabled = clk_is_enabled(clk);
+ 	const char *hwstat, *stat;
+ 
+@@ -705,13 +704,19 @@ static void dump_one(struct clk *clk, int verbose, int indent)
+ 			printf("\n");
+ 		}
+ 	}
++}
++
++static void dump_subtree(struct clk *clk, int verbose, int indent)
++{
++	struct clk *c;
++
++	dump_one(clk, verbose, indent);
+ 
+ 	list_for_each_entry(c, &clks, list) {
+ 		struct clk *parent = clk_get_parent(c);
+ 
+-		if (parent == clk) {
+-			dump_one(c, verbose, indent + 1);
+-		}
++		if (parent == clk)
++			dump_subtree(c, verbose, indent + 1);
+ 	}
+ }
+ 
+@@ -723,7 +728,42 @@ void clk_dump(int verbose)
+ 		struct clk *parent = clk_get_parent(c);
+ 
+ 		if (IS_ERR_OR_NULL(parent))
+-			dump_one(c, verbose, 0);
++			dump_subtree(c, verbose, 0);
++	}
++}
++
++static int clk_print_parent(struct clk *clk, int verbose)
++{
++	struct clk *c;
++	int indent;
++
++	c = clk_get_parent(clk);
++	if (IS_ERR_OR_NULL(c))
++		return 0;
++
++	indent = clk_print_parent(c, verbose);
++
++	dump_one(c, verbose, indent);
++
++	return indent + 1;
++}
++
++void clk_dump_one(struct clk *clk, int verbose)
++{
++	int indent;
++	struct clk *c;
++
++	indent = clk_print_parent(clk, verbose);
++
++	printf("\033[1m");
++	dump_one(clk, verbose, indent);
++	printf("\033[0m");
++
++	list_for_each_entry(c, &clks, list) {
++		struct clk *parent = clk_get_parent(c);
++
++		if (parent == clk)
++			dump_subtree(c, verbose, indent + 1);
+ 	}
+ }
+ 
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index 868bf3e4ed..3d66343e8d 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -456,6 +456,7 @@ int clk_register(struct clk *clk);
+ struct clk *clk_lookup(const char *name);
+ 
+ void clk_dump(int verbose);
++void clk_dump_one(struct clk *clk, int verbose);
+ 
+ struct clk *clk_register_composite(const char *name,
+ 			const char * const *parent_names, int num_parents,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.28.0
+
 
 _______________________________________________
 barebox mailing list
