@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kL3lb-0002Mu-Sh
- for barebox@lists.infradead.org; Wed, 23 Sep 2020 12:21:00 +0000
-Date: Wed, 23 Sep 2020 14:20:58 +0200
+ id 1kL0RE-0000BY-0c
+ for barebox@lists.infradead.org; Wed, 23 Sep 2020 08:47:48 +0000
+Date: Wed, 23 Sep 2020 10:47:41 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200923122057.GF25328@pengutronix.de>
+Message-ID: <20200923084741.GE25328@pengutronix.de>
+References: <20200918110442.25159-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
+In-Reply-To: <20200918110442.25159-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,144 +18,272 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: v2020.09.0
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH 1/2] Regenerate defconfig files
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Hi All,
+On Fri, Sep 18, 2020 at 01:04:41PM +0200, Uwe Kleine-K=F6nig wrote:
+> Done with the same script used to generate commit d952a0eeba37
+> ("Regenerate defconfig files").
+> =
 
-barebox-2020.09.0 is out. This is a rather small release this time. The
-most significant change is that barebox now honours the load and entry
-addresses if given in a FIT image. Still the addresses are optional,
-barebox will continue to pick suitable addresses if they are not given.
-Another bigger change is that the dwc2 USB controller driver is
-completely replaced.  The new version now has USB device support, check
-it out.
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
 
-Have fun!
-  Sascha
+Applied, thanks
 
+Sascha
 
-----------------------------------------------------------------
-Ahmad Fatoum (12):
-      ARM: socfpga: achilles: remove unused barebox,bootstate node
-      ARM: stm32mp: add support for Seeed Odyssey board
-      treewide: remove stale instances of struct device
-      ARM: at91: pass along bootsource to netbooted barebox
-      i2c: sync i2c_parse_fw_timings() with upstream
-      i2c: at91: extend for sama5d2 support
-      mfd: add Atmel Flexcom support
-      spi: add coredevice_spi_driver macro as well
-      watchdog: fix watchdog_set_timeout breakage for drivers like imxwd
-      clk: at91: sama5d2: fix buffer overflow of clk parent_names
-      ARM: at91: fix link error when CONFIG_BOOTM=n
-      ARM: at91: sama5d27-giantboard: fix multi-image compatibility
+>  arch/arm/configs/at91sam9263ek_defconfig         |  1 -
+>  arch/arm/configs/at91sam9x5ek_defconfig          |  1 -
+>  arch/arm/configs/freescale-mx21-ads_defconfig    |  1 -
+>  arch/arm/configs/imx_defconfig                   |  1 -
+>  arch/arm/configs/imx_v8_defconfig                |  2 --
+>  arch/arm/configs/kindle-mx50_defconfig           |  1 -
+>  arch/arm/configs/layerscape_defconfig            |  2 --
+>  arch/arm/configs/microchip_ksz9477_evb_defconfig |  1 -
+>  arch/arm/configs/socfpga-arria10_defconfig       |  1 -
+>  arch/arm/configs/virt2real_defconfig             |  1 -
+>  arch/arm/configs/zii_vf610_dev_defconfig         |  1 -
+>  arch/kvx/configs/generic_defconfig               | 12 +++++-------
+>  arch/mips/configs/bcm47xx_defconfig              |  1 -
+>  arch/mips/configs/qemu-malta_defconfig           |  1 -
+>  arch/x86/configs/efi_defconfig                   |  1 -
+>  15 files changed, 5 insertions(+), 23 deletions(-)
+> =
 
-Anees Rehman (2):
-      mci: imx-esdhc-pbl: Add support for IMX7
-      ARM: i.MX: Add atlascopco sxb board
+> diff --git a/arch/arm/configs/at91sam9263ek_defconfig b/arch/arm/configs/=
+at91sam9263ek_defconfig
+> index 45c6f79de40b..0cde5396af3c 100644
+> --- a/arch/arm/configs/at91sam9263ek_defconfig
+> +++ b/arch/arm/configs/at91sam9263ek_defconfig
+> @@ -1,4 +1,3 @@
+> -CONFIG_ARCH_AT91SAM9263=3Dy
+>  CONFIG_AT91_MULTI_BOARDS=3Dy
+>  CONFIG_MACH_AT91SAM9263EK=3Dy
+>  CONFIG_BAREBOX_MAX_IMAGE_SIZE=3D0x40000
+> diff --git a/arch/arm/configs/at91sam9x5ek_defconfig b/arch/arm/configs/a=
+t91sam9x5ek_defconfig
+> index 11d1e4511e03..7b743abfaa17 100644
+> --- a/arch/arm/configs/at91sam9x5ek_defconfig
+> +++ b/arch/arm/configs/at91sam9x5ek_defconfig
+> @@ -1,4 +1,3 @@
+> -CONFIG_ARCH_AT91SAM9X5=3Dy
+>  CONFIG_AT91_MULTI_BOARDS=3Dy
+>  CONFIG_MACH_AT91SAM9X5EK=3Dy
+>  CONFIG_BAREBOX_MAX_IMAGE_SIZE=3D0x40000
+> diff --git a/arch/arm/configs/freescale-mx21-ads_defconfig b/arch/arm/con=
+figs/freescale-mx21-ads_defconfig
+> index e1843db3e24c..b1d37f76a895 100644
+> --- a/arch/arm/configs/freescale-mx21-ads_defconfig
+> +++ b/arch/arm/configs/freescale-mx21-ads_defconfig
+> @@ -1,6 +1,5 @@
+>  CONFIG_TEXT_BASE=3D0xc3000000
+>  CONFIG_ARCH_IMX=3Dy
+> -CONFIG_MACH_IMX21ADS=3Dy
+>  CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=3Dy
+>  CONFIG_MALLOC_SIZE=3D0x2000000
+>  CONFIG_CMDLINE_EDITING=3Dy
+> diff --git a/arch/arm/configs/imx_defconfig b/arch/arm/configs/imx_defcon=
+fig
+> index 02e33e122ec8..e6333220b6c9 100644
+> --- a/arch/arm/configs/imx_defconfig
+> +++ b/arch/arm/configs/imx_defconfig
+> @@ -13,7 +13,6 @@ CONFIG_MMU=3Dy
+>  CONFIG_MALLOC_SIZE=3D0x0
+>  CONFIG_MALLOC_TLSF=3Dy
+>  CONFIG_KALLSYMS=3Dy
+> -CONFIG_RELOCATABLE=3Dy
+>  CONFIG_PANIC_HANG=3Dy
+>  CONFIG_HUSH_FANCY_PROMPT=3Dy
+>  CONFIG_CMDLINE_EDITING=3Dy
+> diff --git a/arch/arm/configs/imx_v8_defconfig b/arch/arm/configs/imx_v8_=
+defconfig
+> index 268770ec3f2e..06d79f594d5b 100644
+> --- a/arch/arm/configs/imx_v8_defconfig
+> +++ b/arch/arm/configs/imx_v8_defconfig
+> @@ -10,7 +10,6 @@ CONFIG_MMU=3Dy
+>  CONFIG_MALLOC_SIZE=3D0x0
+>  CONFIG_MALLOC_TLSF=3Dy
+>  CONFIG_KALLSYMS=3Dy
+> -CONFIG_RELOCATABLE=3Dy
+>  CONFIG_HUSH_FANCY_PROMPT=3Dy
+>  CONFIG_AUTO_COMPLETE=3Dy
+>  CONFIG_MENU=3Dy
+> @@ -130,7 +129,6 @@ CONFIG_RTC_CLASS=3Dy
+>  CONFIG_RTC_DRV_DS1307=3Dy
+>  CONFIG_GENERIC_PHY=3Dy
+>  CONFIG_USB_NOP_XCEIV=3Dy
+> -CONFIG_PHY_FSL_IMX8MQ_USB=3Dy
+>  CONFIG_FS_EXT4=3Dy
+>  CONFIG_FS_TFTP=3Dy
+>  CONFIG_FS_NFS=3Dy
+> diff --git a/arch/arm/configs/kindle-mx50_defconfig b/arch/arm/configs/ki=
+ndle-mx50_defconfig
+> index 552b2d6d331c..95fafd56e68c 100644
+> --- a/arch/arm/configs/kindle-mx50_defconfig
+> +++ b/arch/arm/configs/kindle-mx50_defconfig
+> @@ -9,7 +9,6 @@ CONFIG_MMU=3Dy
+>  CONFIG_MALLOC_SIZE=3D0x0
+>  CONFIG_MALLOC_TLSF=3Dy
+>  CONFIG_KALLSYMS=3Dy
+> -CONFIG_RELOCATABLE=3Dy
+>  CONFIG_HUSH_FANCY_PROMPT=3Dy
+>  CONFIG_CMDLINE_EDITING=3Dy
+>  CONFIG_AUTO_COMPLETE=3Dy
+> diff --git a/arch/arm/configs/layerscape_defconfig b/arch/arm/configs/lay=
+erscape_defconfig
+> index b36f1944ecdc..394cd95c980a 100644
+> --- a/arch/arm/configs/layerscape_defconfig
+> +++ b/arch/arm/configs/layerscape_defconfig
+> @@ -78,7 +78,6 @@ CONFIG_CMD_OFTREE=3Dy
+>  CONFIG_CMD_TIME=3Dy
+>  CONFIG_NET=3Dy
+>  CONFIG_NET_NETCONSOLE=3Dy
+> -CONFIG_OFDEVICE=3Dy
+>  CONFIG_OF_BAREBOX_DRIVERS=3Dy
+>  CONFIG_DRIVER_SERIAL_NS16550=3Dy
+>  CONFIG_DRIVER_NET_FSL_FMAN=3Dy
+> @@ -105,7 +104,6 @@ CONFIG_EEPROM_AT24=3Dy
+>  CONFIG_WATCHDOG=3Dy
+>  CONFIG_WATCHDOG_IMX=3Dy
+>  CONFIG_GPIO_PCA953X=3Dy
+> -CONFIG_NVMEM=3Dy
+>  CONFIG_REGULATOR=3Dy
+>  CONFIG_REGULATOR_FIXED=3Dy
+>  CONFIG_FS_EXT4=3Dy
+> diff --git a/arch/arm/configs/microchip_ksz9477_evb_defconfig b/arch/arm/=
+configs/microchip_ksz9477_evb_defconfig
+> index 4189b2c039d9..71304994902a 100644
+> --- a/arch/arm/configs/microchip_ksz9477_evb_defconfig
+> +++ b/arch/arm/configs/microchip_ksz9477_evb_defconfig
+> @@ -1,4 +1,3 @@
+> -CONFIG_ARCH_SAMA5D3=3Dy
+>  CONFIG_AT91_MULTI_BOARDS=3Dy
+>  CONFIG_MACH_MICROCHIP_KSZ9477_EVB=3Dy
+>  CONFIG_AEABI=3Dy
+> diff --git a/arch/arm/configs/socfpga-arria10_defconfig b/arch/arm/config=
+s/socfpga-arria10_defconfig
+> index e47a0ab1836d..a37bae621729 100644
+> --- a/arch/arm/configs/socfpga-arria10_defconfig
+> +++ b/arch/arm/configs/socfpga-arria10_defconfig
+> @@ -18,7 +18,6 @@ CONFIG_BOOTM_INITRD=3Dy
+>  CONFIG_BOOTM_OFTREE=3Dy
+>  CONFIG_DEFAULT_COMPRESSION_LZO=3Dy
+>  CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=3Dy
+> -CONFIG_POLLER=3Dy
+>  CONFIG_STATE=3Dy
+>  CONFIG_LONGHELP=3Dy
+>  CONFIG_CMD_IOMEM=3Dy
+> diff --git a/arch/arm/configs/virt2real_defconfig b/arch/arm/configs/virt=
+2real_defconfig
+> index 814fe69e42ce..62315b8cb3ec 100644
+> --- a/arch/arm/configs/virt2real_defconfig
+> +++ b/arch/arm/configs/virt2real_defconfig
+> @@ -36,7 +36,6 @@ CONFIG_CMD_LED=3Dy
+>  CONFIG_CMD_OF_NODE=3Dy
+>  CONFIG_CMD_OF_PROPERTY=3Dy
+>  CONFIG_CMD_OFTREE=3Dy
+> -CONFIG_OFDEVICE=3Dy
+>  CONFIG_OF_BAREBOX_DRIVERS=3Dy
+>  CONFIG_DRIVER_SERIAL_NS16550=3Dy
+>  # CONFIG_SPI is not set
+> diff --git a/arch/arm/configs/zii_vf610_dev_defconfig b/arch/arm/configs/=
+zii_vf610_dev_defconfig
+> index 45c24d6df471..3ed5d374586d 100644
+> --- a/arch/arm/configs/zii_vf610_dev_defconfig
+> +++ b/arch/arm/configs/zii_vf610_dev_defconfig
+> @@ -8,7 +8,6 @@ CONFIG_MMU=3Dy
+>  CONFIG_MALLOC_SIZE=3D0x0
+>  CONFIG_MALLOC_TLSF=3Dy
+>  CONFIG_KALLSYMS=3Dy
+> -CONFIG_RELOCATABLE=3Dy
+>  CONFIG_HUSH_FANCY_PROMPT=3Dy
+>  CONFIG_AUTO_COMPLETE=3Dy
+>  CONFIG_MENU=3Dy
+> diff --git a/arch/kvx/configs/generic_defconfig b/arch/kvx/configs/generi=
+c_defconfig
+> index 816217174183..0d971ff3d5dd 100644
+> --- a/arch/kvx/configs/generic_defconfig
+> +++ b/arch/kvx/configs/generic_defconfig
+> @@ -1,15 +1,13 @@
+>  CONFIG_AUTO_COMPLETE=3Dy
+> -CONFIG_BAUDRATE=3D115200
+> -CONFIG_CLOCKSOURCE_KVX=3Dy
+> +CONFIG_CONSOLE_RATP=3Dy
+>  CONFIG_CMD_BOOT=3Dy
+> -CONFIG_CMD_BOOTM=3Dy
+> +CONFIG_CMD_RESET=3Dy
+>  CONFIG_CMD_CMP=3Dy
+> -CONFIG_CMD_OF_DUMP=3Dy
+>  CONFIG_CMD_POWEROFF=3Dy
+> -CONFIG_CMD_RESET=3Dy
+>  CONFIG_CMD_WD=3Dy
+> -CONFIG_CONSOLE_RATP=3Dy
+> +CONFIG_CMD_OF_DUMP=3Dy
+>  CONFIG_DRIVER_SERIAL_NS16550=3Dy
+> -CONFIG_PINCTRL_SINGLE=3Dy
+> +CONFIG_CLOCKSOURCE_KVX=3Dy
+>  CONFIG_WATCHDOG=3Dy
+>  CONFIG_WATCHDOG_KVX=3Dy
+> +CONFIG_PINCTRL_SINGLE=3Dy
+> diff --git a/arch/mips/configs/bcm47xx_defconfig b/arch/mips/configs/bcm4=
+7xx_defconfig
+> index 0cd0e9e650e7..9cf172a70e57 100644
+> --- a/arch/mips/configs/bcm47xx_defconfig
+> +++ b/arch/mips/configs/bcm47xx_defconfig
+> @@ -9,7 +9,6 @@ CONFIG_MENU=3Dy
+>  CONFIG_BOOTM_SHOW_TYPE=3Dy
+>  CONFIG_PARTITION=3Dy
+>  # CONFIG_DEFAULT_ENVIRONMENT is not set
+> -CONFIG_POLLER=3Dy
+>  CONFIG_LONGHELP=3Dy
+>  CONFIG_CMD_IOMEM=3Dy
+>  CONFIG_CMD_MEMINFO=3Dy
+> diff --git a/arch/mips/configs/qemu-malta_defconfig b/arch/mips/configs/q=
+emu-malta_defconfig
+> index 2465c0260d1d..ac0577c217e3 100644
+> --- a/arch/mips/configs/qemu-malta_defconfig
+> +++ b/arch/mips/configs/qemu-malta_defconfig
+> @@ -12,7 +12,6 @@ CONFIG_BOOTM_SHOW_TYPE=3Dy
+>  CONFIG_CONSOLE_ALLOW_COLOR=3Dy
+>  CONFIG_PARTITION=3Dy
+>  CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=3Dy
+> -CONFIG_POLLER=3Dy
+>  CONFIG_CMD_DMESG=3Dy
+>  CONFIG_LONGHELP=3Dy
+>  CONFIG_CMD_IOMEM=3Dy
+> diff --git a/arch/x86/configs/efi_defconfig b/arch/x86/configs/efi_defcon=
+fig
+> index 47842d10afdd..99bc39eaa6f1 100644
+> --- a/arch/x86/configs/efi_defconfig
+> +++ b/arch/x86/configs/efi_defconfig
+> @@ -14,7 +14,6 @@ CONFIG_BLSPEC=3Dy
+>  CONFIG_CONSOLE_ACTIVATE_ALL=3Dy
+>  CONFIG_PARTITION_DISK_EFI=3Dy
+>  CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=3Dy
+> -CONFIG_POLLER=3Dy
+>  CONFIG_STATE=3Dy
+>  CONFIG_DEBUG_LL=3Dy
+>  CONFIG_LONGHELP=3Dy
+> -- =
 
-Antony Pavlov (2):
-      image: Convert the IH_... values to enums
-      riscv: Makefile: make it possible to use riscv64 compiler
+> 2.27.0
+> =
 
-Christian Mauderer (1):
-      FIT: Parse `load` and `entry` addresses.
+> =
 
-Clement Leger (1):
-      kvx: exclude dtb from malloc zone
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
-Denis Osterland-Heim (1):
-      dtc_cpp: allow to pass options per target
+-- =
 
-Du Huanpeng (1):
-      Documentation: update for loongson1 board
-
-Hubert Feurstein (1):
-      imd: imd_calculate_crc32: initialize imd_crc to NULL
-
-Ian Abbott (1):
-      mtd: spi-nor: cadence: fix csqpi corruption in cqspi_set_protocol
-
-Jules Maselbas (17):
-      ratp: Abort console_countdown when activated
-      ratp: Remove duplicated includes
-      USB: gadget: Add serialnumber device parameter
-      console_countdown: Add CR as valid return key
-      Revert "usb: Add dwc2 host driver"
-      usb: dwc2: Add host controller driver
-      usb: dwc2: host: Read dr_mode from device tree
-      usb: dwc2: Rework roothub interface
-      usb: dwc2: Rework timeout
-      usb: dwc2: host: Handle dma mapping errors
-      usb: dwc2: host: Dynamic fifo size support from Linux
-      usb: dwc2: host: Fix toggle reset
-      usb: dwc2: host: Rewrite dwc2_hc_init
-      usb: dwc2: Add function to flush tx fifo
-      usb: dwc2: Add structure for gadget driver
-      usb: dwc2: Add gadget driver
-      usb: dwc2: Use register_otg_device
-
-Lucas Stach (7):
-      ARM: imx8mm: select FIRMWARE_IMX_LPDDR4_PMU_TRAIN from IMX8MM_EVK
-      ARM: imx8m: make debug UART selection available on i.MX8MM/MP
-      ARM: nxp-imx8mm-evk: always set up UART
-      nvmem: ocotp: add support for i.MX8MM
-      ARM: vexpress: set stdout path
-      ARM: vexpress: enable KALLSYMS in defconfig
-      clk: imx8mm: fix CPU clock
-
-Oleksij Rempel (3):
-      ARM: dts: imx6q-prti6q: fix PHY register
-      ARM: dts: imx6: vicut1: fix network support
-      string: add sanity check to the strcmp() and strncmp()
-
-Rouven Czerwinski (6):
-      clk: imx7: add IMX7D_OCOTP_CLK
-      nvmem: ocotp: retrieve set_timing from structure
-      nvmem: ocotp: add new timing function for i.MX7
-      nvmem: ocotp: read/write i.MX7 support
-      nvmem: enable OCOTP for i.MX7
-      ARM: Layerscape: TQMLS1046a: remove ddr calc code
-
-Sascha Hauer (22):
-      dts: update to v5.8-rc4
-      dts: update to v5.8-rc6
-      dts: update to v5.8-rc7
-      dts: update to v5.8
-      dts: update to v5.9-rc1
-      video: ssd1307fb: Honour reset GPIO polarity
-      libfile: copy_file: Fix ftruncate called on device files
-      Merge branch 'for-next/at91' into master
-      Merge branch 'for-next/dts' into master
-      Merge branch 'for-next/imx' into master
-      Merge branch 'for-next/kvx' into master
-      Merge branch 'for-next/misc' into master
-      Merge branch 'for-next/stm32' into master
-      Merge branch 'for-next/usb-dwc2' into master
-      clk: imx-imx8mp: Mark arm_a53_core clk as critical
-      fs: squashfs: set s_op in time
-      fs: squashfs: Do not free root inode
-      fs: Use iget_locked() rather than squashfs specific function
-      ARM: imx8m: Make uart setup function name more generic
-      ARM: i.MX8M boards: always set up UART
-      clk: imx: clk-frac-pll: Use do_div for 64bit division
-      Release v2020.09.0
-
-Stefan Riedmueller (1):
-      ARM: boards: phytec-som-imx6: Add mmc and emmc-boot bbu update handler
-
-Trent Piepho (1):
-      pinctrl-single: Support 2 pinctrl-cells in ,pins mode
-
-Yegor Yefremov (2):
-      arm: baltos: add environment node
-      arm: baltos: export DIP switch value
-
--- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
