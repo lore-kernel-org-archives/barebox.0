@@ -1,19 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kL26S-0007I0-AT
+ id 1kL26S-0007I4-BY
  for barebox@lists.infradead.org; Wed, 23 Sep 2020 10:34:25 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1kL26P-0005vh-5x
+ (envelope-from <str@pengutronix.de>) id 1kL26P-0005vk-BH
  for barebox@lists.infradead.org; Wed, 23 Sep 2020 12:34:21 +0200
 Received: from str by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1kL26O-0000LO-SC
- for barebox@lists.infradead.org; Wed, 23 Sep 2020 12:34:20 +0200
+ (envelope-from <str@pengutronix.de>) id 1kL26O-0000M7-W4
+ for barebox@lists.infradead.org; Wed, 23 Sep 2020 12:34:21 +0200
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Wed, 23 Sep 2020 12:34:15 +0200
-Message-Id: <20200923103418.11186-1-s.trumtrar@pengutronix.de>
+Date: Wed, 23 Sep 2020 12:34:18 +0200
+Message-Id: <20200923103418.11186-4-s.trumtrar@pengutronix.de>
+In-Reply-To: <20200923103418.11186-1-s.trumtrar@pengutronix.de>
+References: <20200923103418.11186-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -27,63 +29,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] Makefile: add buildsystem version variable
+Subject: [PATCH 4/4] imd: add buildsystem version to metadata
 To: Barebox List <barebox@lists.infradead.org>
 
-Introduce a new variable to store a buildsystem version information.
-The exact information that is stored here (git commit, git tag,...) is
-defined by the buildsystem.
-It is intended to have the possibility to get information about the
-exact barebox binary, environment and configuration.
-
-The variable is utilized the same as KERNELVERSION for linux:
-
-   make BUILDSYSTEM_VERSION=$COMMITISH
-
-Via scripts/mkcompile_h this information is injected into the barebox
-codebase.
+To have information about the exact state of a barebox binary from
+userspace, add the buildsystem version to the IMD.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- Makefile            | 3 ++-
- scripts/mkcompile_h | 3 +++
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ common/imd-barebox.c     | 1 +
+ common/imd.c             | 3 +++
+ include/image-metadata.h | 1 +
+ 3 files changed, 5 insertions(+)
 
-diff --git a/Makefile b/Makefile
-index d27b78201bda..d829e33c4621 100644
---- a/Makefile
-+++ b/Makefile
-@@ -311,7 +311,8 @@ include scripts/Kbuild.include
- # Read KERNELRELEASE from include/config/kernel.release (if it exists)
- KERNELRELEASE = $(shell cat include/config/kernel.release 2> /dev/null)
- KERNELVERSION = $(VERSION)$(if $(PATCHLEVEL),.$(PATCHLEVEL)$(if $(SUBLEVEL),.$(SUBLEVEL)))$(EXTRAVERSION)
--export VERSION PATCHLEVEL SUBLEVEL KERNELRELEASE KERNELVERSION
-+BUILDSYSTEM_VERSION =
-+export VERSION PATCHLEVEL SUBLEVEL KERNELRELEASE KERNELVERSION BUILDSYSTEM_VERSION
+diff --git a/common/imd-barebox.c b/common/imd-barebox.c
+index e5cdfd1aed34..06731d0600cf 100644
+--- a/common/imd-barebox.c
++++ b/common/imd-barebox.c
+@@ -23,4 +23,5 @@ __BAREBOX_IMD_SECTION(.barebox_imd_end) = {
  
- # Cross compiling and selecting different set of gcc/bin-utils
- # ---------------------------------------------------------------------------
-diff --git a/scripts/mkcompile_h b/scripts/mkcompile_h
-index 60b20cafc65e..49aadc153d44 100755
---- a/scripts/mkcompile_h
-+++ b/scripts/mkcompile_h
-@@ -54,6 +54,7 @@ fi
- UTS_VERSION="#$VERSION"
- CONFIG_FLAGS=""
- UTS_VERSION="$UTS_VERSION $CONFIG_FLAGS $TIMESTAMP"
-+BUILDSYSTEM_VERSION="$BUILDSYSTEM_VERSION"
+ BAREBOX_IMD_TAG_STRING(imd_build_tag, IMD_TYPE_BUILD, UTS_VERSION, 1);
+ BAREBOX_IMD_TAG_STRING(imd_release_tag, IMD_TYPE_RELEASE, UTS_RELEASE, 1);
++BAREBOX_IMD_TAG_STRING(imd_buildsystem_version_tag, IMD_TYPE_BUILDSYSTEM, BUILDSYSTEM_VERSION, 1);
+ BAREBOX_IMD_CRC(imd_crc32, 0x0, 1);
+diff --git a/common/imd.c b/common/imd.c
+index 96496514a54a..6970edaf96f1 100644
+--- a/common/imd.c
++++ b/common/imd.c
+@@ -168,6 +168,9 @@ static struct imd_type_names imd_types[] = {
+ 	}, {
+ 		.type = IMD_TYPE_CRC32,
+ 		.name = "crc32",
++	}, {
++		.type = IMD_TYPE_BUILDSYSTEM,
++		.name = "buildsystem version",
+ 	},
+ };
  
- # Truncate to maximum length
- 
-@@ -69,6 +70,8 @@ UTS_TRUNCATE="cut -b -$UTS_LEN"
- 
-   echo \#define UTS_VERSION \"`echo $UTS_VERSION | $UTS_TRUNCATE`\"
- 
-+  echo \#define BUILDSYSTEM_VERSION \"`echo $BUILDSYSTEM_VERSION`\"
-+
-   echo \#define BAREBOX_COMPILE_BY \"`echo $BAREBOX_COMPILE_BY | $UTS_TRUNCATE`\"
-   echo \#define BAREBOX_COMPILE_HOST \"`echo $BAREBOX_COMPILE_HOST | $UTS_TRUNCATE`\"
- 
+diff --git a/include/image-metadata.h b/include/image-metadata.h
+index 42ddf2fab02a..a9cb9cfe8f16 100644
+--- a/include/image-metadata.h
++++ b/include/image-metadata.h
+@@ -26,6 +26,7 @@
+ #define IMD_TYPE_MODEL		0x640c8004 /* The board name this image is for */
+ #define IMD_TYPE_OF_COMPATIBLE	0x640c8005 /* the device tree compatible string */
+ #define IMD_TYPE_PARAMETER	0x640c8006 /* A generic parameter. Use key=value as data */
++#define IMD_TYPE_BUILDSYSTEM	0x640c8007 /* The buildsystem version barebox was built with */
+ #define IMD_TYPE_CRC32		0x640c1007 /* the checksum of the barebox images */
+ #define IMD_TYPE_END		0x640c7fff
+ #define IMD_TYPE_INVALID	0xffffffff
 -- 
 2.28.0
 
