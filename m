@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-co1nam11on2120.outbound.protection.outlook.com
- ([40.107.220.120] helo=NAM11-CO1-obe.outbound.protection.outlook.com)
+Received: from mail-dm6nam11on2125.outbound.protection.outlook.com
+ ([40.107.223.125] helo=NAM11-DM6-obe.outbound.protection.outlook.com)
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kLxGN-0007OR-3G
- for barebox@lists.infradead.org; Fri, 25 Sep 2020 23:36:28 +0000
+ id 1kLxNG-0007gg-PI
+ for barebox@lists.infradead.org; Fri, 25 Sep 2020 23:43:36 +0000
 From: Trent Piepho <trent.piepho@synapse.com>
-Date: Fri, 25 Sep 2020 16:36:04 -0700
-Message-Id: <20200925233607.453281-1-trent.piepho@synapse.com>
+Date: Fri, 25 Sep 2020 16:43:12 -0700
+Message-Id: <20200925234315.453448-1-trent.piepho@synapse.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
