@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-co1nam11on2100.outbound.protection.outlook.com
- ([40.107.220.100] helo=NAM11-CO1-obe.outbound.protection.outlook.com)
+Received: from mail-dm6nam10on2093.outbound.protection.outlook.com
+ ([40.107.93.93] helo=NAM10-DM6-obe.outbound.protection.outlook.com)
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kLxNG-0007gZ-Tf
- for barebox@lists.infradead.org; Fri, 25 Sep 2020 23:43:36 +0000
+ id 1kLxNG-0007gT-AA
+ for barebox@lists.infradead.org; Fri, 25 Sep 2020 23:43:35 +0000
 From: Trent Piepho <trent.piepho@synapse.com>
-Date: Fri, 25 Sep 2020 16:43:14 -0700
-Message-Id: <20200925234315.453448-3-trent.piepho@synapse.com>
+Date: Fri, 25 Sep 2020 16:43:15 -0700
+Message-Id: <20200925234315.453448-4-trent.piepho@synapse.com>
 In-Reply-To: <20200925234315.453448-1-trent.piepho@synapse.com>
 References: <20200925234315.453448-1-trent.piepho@synapse.com>
 MIME-Version: 1.0
@@ -22,51 +22,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/4] ARM: am335x: Enable TSC/ADC clock
+Subject: [PATCH v2 4/4] ARM: beaglebone: Enable ADC
 To: barebox@lists.infradead.org
 Cc: Trent Piepho <trent.piepho@synapse.com>
 
-Now that there is a Barebox driver for the ADC, enable the clock to the
-TSC/ADC block.
-
-This machine doesn't use common clock framework clocks in Barebox, and
-instead enables any clock that might get used.  Enalbing the clock could
-be made conditional based on enabling the driver, but none of the other
-clocks do this.
+On the BeagleBone Black, enable the dts node for the TSC/ADC.  Add a
+simple configuration that maps all eight channels in order.  AIN[0:6]
+are exposed on connector P9, while AIN7 measures the 3.3V rail divided
+by 2.
 
 Signed-off-by: Trent Piepho <trent.piepho@synapse.com>
 ---
- arch/arm/mach-omap/am33xx_clock.c              | 4 ++++
- arch/arm/mach-omap/include/mach/am33xx-clock.h | 1 +
- 2 files changed, 5 insertions(+)
+ arch/arm/dts/am335x-boneblack.dts | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/arch/arm/mach-omap/am33xx_clock.c b/arch/arm/mach-omap/am33xx_clock.c
-index 0a4903827..8fa2c70aa 100644
---- a/arch/arm/mach-omap/am33xx_clock.c
-+++ b/arch/arm/mach-omap/am33xx_clock.c
-@@ -165,6 +165,10 @@ void am33xx_enable_per_clocks(void)
- 	__raw_writel(PRCM_MOD_EN, CM_PER_USB0_CLKCTRL);
- 	while ((__raw_readl(CM_PER_USB0_CLKCTRL) & 0x30000) != 0x0);
- 
-+	/* TSC & ADC */
-+	__raw_writel(PRCM_MOD_EN, CM_WKUP_ADC_TSC_CLKCTRL);
-+	while (__raw_readl(CM_WKUP_ADC_TSC_CLKCTRL) != PRCM_MOD_EN);
+diff --git a/arch/arm/dts/am335x-boneblack.dts b/arch/arm/dts/am335x-boneblack.dts
+index 80d710b92..c06a532e4 100644
+--- a/arch/arm/dts/am335x-boneblack.dts
++++ b/arch/arm/dts/am335x-boneblack.dts
+@@ -85,3 +85,13 @@
+ 		status = "okay";
+ 	};
+ };
 +
- 	clkdcoldo = __raw_readl(CM_CLKDCOLDO_DPLL_PER);
- 	clkdcoldo = clkdcoldo | 0x100;
- 	__raw_writel(clkdcoldo, CM_CLKDCOLDO_DPLL_PER);
-diff --git a/arch/arm/mach-omap/include/mach/am33xx-clock.h b/arch/arm/mach-omap/include/mach/am33xx-clock.h
-index 284d5f8cf..e71ecbcd2 100644
---- a/arch/arm/mach-omap/include/mach/am33xx-clock.h
-+++ b/arch/arm/mach-omap/include/mach/am33xx-clock.h
-@@ -138,6 +138,7 @@
- #define CM_PER_I2C1_CLKCTRL             (CM_PER + 0x48) /* I2C1 */
- #define CM_PER_I2C2_CLKCTRL             (CM_PER + 0x44) /* I2C2 */
- #define CM_WKUP_GPIO0_CLKCTRL           (CM_WKUP + 0x8) /* GPIO0 */
-+#define CM_WKUP_ADC_TSC_CLKCTRL         (CM_WKUP + 0xbc)/* TSCADC */
- 
- #define CM_PER_MMC0_CLKCTRL             (CM_PER + 0x3C)
- #define CM_PER_MMC1_CLKCTRL             (CM_PER + 0xF4)
++&tscadc {
++	status = "okay";
++	adc {
++		/* Ch 0-6 are on connector P9.	Ch 7 measures the 3.3V rail
++		 * divided by 2 (e.g., it should read 1650).
++		 */
++		ti,adc-channels = <0>, <1>, <2>, <3>, <4>, <5>, <6>, <7>;
++	};
++};
 -- 
 2.26.2
 
