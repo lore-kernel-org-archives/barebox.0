@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kMvQi-0000ZY-1W
- for barebox@lists.infradead.org; Mon, 28 Sep 2020 15:51:12 +0000
+ by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1kMvQg-0008C0-WC
+ for barebox@lists.infradead.org; Mon, 28 Sep 2020 15:51:13 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <mfe@pengutronix.de>) id 1kMvQf-0000ZJ-Tw
+ (envelope-from <mfe@pengutronix.de>) id 1kMvQf-0000ZH-Oh
  for barebox@lists.infradead.org; Mon, 28 Sep 2020 17:51:05 +0200
 Received: from mfe by dude02.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <mfe@pengutronix.de>) id 1kMvQe-0000KK-PM
+ (envelope-from <mfe@pengutronix.de>) id 1kMvQe-0000KC-OT
  for barebox@lists.infradead.org; Mon, 28 Sep 2020 17:51:04 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Mon, 28 Sep 2020 17:50:41 +0200
-Message-Id: <20200928155041.32649-19-m.felsch@pengutronix.de>
+Date: Mon, 28 Sep 2020 17:50:39 +0200
+Message-Id: <20200928155041.32649-17-m.felsch@pengutronix.de>
 In-Reply-To: <20200928155041.32649-1-m.felsch@pengutronix.de>
 References: <20200928155041.32649-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
@@ -29,82 +29,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 18/18] ARM: boards: mx6-sabrelite: add deep-probe support
+Subject: [PATCH 16/18] ARM: i.MX: esdctl: add deep-probe support
 To: barebox@lists.infradead.org
 
-Explicit request the required gpio resources instead of relying on their
-existence based on the initcall level.
+In case of deep-probe we have to ensure that the memory device is
+available after the mem_initcall().
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- .../boards/freescale-mx6-sabrelite/board.c    | 24 ++++++++++++-------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ arch/arm/mach-imx/esdctl.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boards/freescale-mx6-sabrelite/board.c b/arch/arm/boards/freescale-mx6-sabrelite/board.c
-index 1b39ef82c6..7fc3d4dc3f 100644
---- a/arch/arm/boards/freescale-mx6-sabrelite/board.c
-+++ b/arch/arm/boards/freescale-mx6-sabrelite/board.c
-@@ -13,7 +13,9 @@
- #include <mach/bbu.h>
- #include <asm/armlinux.h>
- #include <generated/mach-types.h>
-+#include <of.h>
- #include <partition.h>
+diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
+index cc5d3a8359..3819c1a9a6 100644
+--- a/arch/arm/mach-imx/esdctl.c
++++ b/arch/arm/mach-imx/esdctl.c
+@@ -14,6 +14,7 @@
+  */
+ 
+ #include <common.h>
 +#include <deep-probe.h>
- #include <linux/phy.h>
- #include <asm/io.h>
- #include <asm/mmu.h>
-@@ -98,10 +100,6 @@ static int sabrelite_ksz9021rn_setup(void)
+ #include <io.h>
+ #include <errno.h>
+ #include <linux/sizes.h>
+@@ -705,9 +706,20 @@ static struct driver_d imx_esdctl_driver = {
+ 
+ static int imx_esdctl_init(void)
  {
- 	int ret;
- 
--	if (!of_machine_is_compatible("fsl,imx6q-sabrelite") &&
--	    !of_machine_is_compatible("fsl,imx6dl-sabrelite"))
--		return 0;
--
- 	mxc_iomux_v3_setup_multiple_pads(sabrelite_enet_gpio_pads,
- 			ARRAY_SIZE(sabrelite_enet_gpio_pads));
- 
-@@ -118,11 +116,6 @@ static int sabrelite_ksz9021rn_setup(void)
- 
- 	return 0;
- }
--/*
-- * Do this before the fec initializes but after our
-- * gpios are available.
-- */
--fs_initcall(sabrelite_ksz9021rn_setup);
- 
- static void sabrelite_ehci_init(void)
- {
-@@ -134,10 +127,20 @@ static void sabrelite_ehci_init(void)
- 
- static int sabrelite_devices_init(void)
- {
+-	return platform_driver_register(&imx_esdctl_driver);
+-}
++	struct device_d *dev;
 +	int ret;
 +
- 	if (!of_machine_is_compatible("fsl,imx6q-sabrelite") &&
- 	    !of_machine_is_compatible("fsl,imx6dl-sabrelite"))
- 		return 0;
- 
-+	ret = of_devices_create_on_demand_by_property("gpio-controller");
++	ret = platform_driver_register(&imx_esdctl_driver);
 +	if (ret)
 +		return ret;
 +
-+	ret = sabrelite_ksz9021rn_setup();
-+	if (ret)
-+		return ret;
-+
- 	sabrelite_ehci_init();
++	dev = of_device_create_on_demand_by_dev_id(of_get_root_node(),
++						   imx_esdctl_dt_ids);
++	if (IS_ERR(dev))
++		return PTR_ERR(dev);
  
- 	armlinux_set_architecture(3769);
-@@ -163,3 +166,6 @@ static int sabrelite_coredevices_init(void)
- 	return 0;
- }
- coredevice_initcall(sabrelite_coredevices_init);
-+
-+deep_probe_enable(imx6q_sabrelite, "fsl,imx6q-sabrelite");
-+deep_probe_enable(imx6dl_sabrelite, "fsl,imx6dl-sabrelite");
++	return 0;
++}
+ mem_initcall(imx_esdctl_init);
+ 
+ /*
 -- 
 2.20.1
 
