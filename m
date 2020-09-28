@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kMvIg-0006Vh-Qp
- for barebox@lists.infradead.org; Mon, 28 Sep 2020 15:42:51 +0000
+ id 1kMvIo-0006Xt-G2
+ for barebox@lists.infradead.org; Mon, 28 Sep 2020 15:42:59 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 28 Sep 2020 17:42:42 +0200
-Message-Id: <20200928154247.15619-2-a.fatoum@pengutronix.de>
+Date: Mon, 28 Sep 2020 17:42:43 +0200
+Message-Id: <20200928154247.15619-3-a.fatoum@pengutronix.de>
 In-Reply-To: <20200928154247.15619-1-a.fatoum@pengutronix.de>
 References: <20200928154247.15619-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,36 +21,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/7] led: pca955x: fix probing from device tree
+Subject: [PATCH 3/7] dma: apbh: fix out-of-bounds write on 64-bit SoCs
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-dev->id_entry is not populated for devices probed from the device
-tree. It was used unconditionally however. Use device_get_match_data
-instead to support device tree probing.
+i.MX8 MM & MN are both ARM64 SoCs with a device compatible
+with "fsl,imx28-dma-apbh". Probing the barebox device driver on these
+SoCs would invoke undefined behavior however, because of an
+errant cast. Fix this.
+
+This has a side-effect: Whereas before, probing devices matched by
+driver name failed with -ENODEV, they are now considered to be
+compatible to IMX23_DMA instead. As we don't depend on this, this
+is deemed acceptable.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/led/led-pca955x.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/dma/apbh_dma.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/led/led-pca955x.c b/drivers/led/led-pca955x.c
-index 27fefce8d524..f89fcbfba5ac 100644
---- a/drivers/led/led-pca955x.c
-+++ b/drivers/led/led-pca955x.c
-@@ -349,8 +349,11 @@ static int led_pca955x_probe(struct device_d *dev)
- 	struct i2c_client *client;
- 	int err;
- 	struct pca955x_platform_data *pdata;
-+	enum pca955x_type type;
+diff --git a/drivers/dma/apbh_dma.c b/drivers/dma/apbh_dma.c
+index 3bee89f78b85..186c69388c7f 100644
+--- a/drivers/dma/apbh_dma.c
++++ b/drivers/dma/apbh_dma.c
+@@ -596,9 +596,7 @@ static int apbh_dma_probe(struct device_d *dev)
+ 	enum mxs_dma_id id;
+ 	int ret, channel;
  
--	chip = &pca955x_chipdefs[dev->id_entry->driver_data];
-+	type = (enum pca955x_type)device_get_match_data(dev);
-+
-+	chip = &pca955x_chipdefs[type];
- 	client = to_i2c_client(dev);
+-	ret = dev_get_drvdata(dev, (const void **)&id);
+-	if (ret)
+-		return ret;
++	id = (enum mxs_dma_id)device_get_match_data(dev);
  
- 	/* Make sure the slave address / chip type combo given is possible */
+ 	apbh_dma = apbh = xzalloc(sizeof(*apbh));
+ 	iores = dev_request_mem_resource(dev, 0);
 -- 
 2.28.0
 
