@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kMuP6-0006xu-PH
+ id 1kMuP6-0006xs-PL
  for barebox@lists.infradead.org; Mon, 28 Sep 2020 14:45:26 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 28 Sep 2020 16:45:11 +0200
-Message-Id: <20200928144514.14398-8-a.fatoum@pengutronix.de>
+Date: Mon, 28 Sep 2020 16:45:05 +0200
+Message-Id: <20200928144514.14398-2-a.fatoum@pengutronix.de>
 In-Reply-To: <20200928144514.14398-1-a.fatoum@pengutronix.de>
 References: <20200928144514.14398-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,85 +21,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 07/10] ARM: stm32mp: remove custom reboot mode logic from
- arch code
+Subject: [PATCH v2 01/10] usbgadget: autostart: support delayed
+ usbgadget.autostart=1
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-This was ported from U-Boot to support st32mp_get_forced_boot_mode(),
-which allows board code to customize boot according to values the kernel
-places in the reboot mode region on the TAMP syscon.
+So far, global.usbgadget.autostart=1 from the shell was without effect,
+because the variable is only evaluated once at postenvironment_initcall.
 
-We no have a syscon-reboot-mode driver, a device node in the
-stm32mp151.dtsi, a ${global.system.reboot_mode} variable and a common
-reboot_mode_get(), which together achieve the same, but in a generic
-manner. Drop the now duplicate code. There has been no in-tree users so
-far, so we don't need to touch anything else.
+Use the new globalvar_add_bool() to allow acting on the variable being
+true at any time. This is necessary for scripts that want to enable
+the usbgadget autostart functionality selectively without themselves
+hardcoding the particularities of what is exported.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/mach-stm32mp/include/mach/bootsource.h | 12 ------------
- arch/arm/mach-stm32mp/init.c                    | 16 ++--------------
- 2 files changed, 2 insertions(+), 26 deletions(-)
+ common/usbgadget.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/mach-stm32mp/include/mach/bootsource.h b/arch/arm/mach-stm32mp/include/mach/bootsource.h
-index 1b6f562ac301..5750dc14482f 100644
---- a/arch/arm/mach-stm32mp/include/mach/bootsource.h
-+++ b/arch/arm/mach-stm32mp/include/mach/bootsource.h
-@@ -18,16 +18,4 @@ enum stm32mp_boot_device {
- 	STM32MP_BOOT_SERIAL_USB_OTG	= 0x62,
- };
- 
--enum stm32mp_forced_boot_mode {
--	STM32MP_BOOT_NORMAL	= 0x00,
--	STM32MP_BOOT_FASTBOOT	= 0x01,
--	STM32MP_BOOT_RECOVERY	= 0x02,
--	STM32MP_BOOT_STM32PROG	= 0x03,
--	STM32MP_BOOT_UMS_MMC0	= 0x10,
--	STM32MP_BOOT_UMS_MMC1	= 0x11,
--	STM32MP_BOOT_UMS_MMC2	= 0x12,
--};
--
--enum stm32mp_forced_boot_mode st32mp_get_forced_boot_mode(void);
--
- #endif
-diff --git a/arch/arm/mach-stm32mp/init.c b/arch/arm/mach-stm32mp/init.c
-index 7f687fa4f29a..7094e0e7dd08 100644
---- a/arch/arm/mach-stm32mp/init.c
-+++ b/arch/arm/mach-stm32mp/init.c
-@@ -80,12 +80,6 @@
- #define FIXUP_CPU_NUM(mask) ((mask) >> 16)
- #define FIXUP_CPU_HZ(mask) (((mask) & GENMASK(15, 0)) * 1000UL * 1000UL)
- 
--static enum stm32mp_forced_boot_mode __stm32mp_forced_boot_mode;
--enum stm32mp_forced_boot_mode st32mp_get_forced_boot_mode(void)
--{
--	return __stm32mp_forced_boot_mode;
--}
--
- static void setup_boot_mode(void)
- {
- 	u32 boot_ctx = readl(TAMP_BOOT_CONTEXT);
-@@ -121,17 +115,11 @@ static void setup_boot_mode(void)
- 		break;
- 	}
- 
--	__stm32mp_forced_boot_mode = boot_ctx & TAMP_BOOT_FORCED_MASK;
--
--	pr_debug("[boot_ctx=0x%x] => mode=0x%x, instance=%d forced=0x%x\n",
--		 boot_ctx, boot_mode, instance, __stm32mp_forced_boot_mode);
-+	pr_debug("[boot_ctx=0x%x] => mode=0x%x, instance=%d\n",
-+		 boot_ctx, boot_mode, instance);
- 
- 	bootsource_set(src);
- 	bootsource_set_instance(instance);
--
--	/* clear TAMP for next reboot */
--	clrsetbits_le32(TAMP_BOOT_CONTEXT, TAMP_BOOT_FORCED_MASK,
--			STM32MP_BOOT_NORMAL);
+diff --git a/common/usbgadget.c b/common/usbgadget.c
+index b4f4ba04ca8c..be2bcc467d72 100644
+--- a/common/usbgadget.c
++++ b/common/usbgadget.c
+@@ -101,7 +101,7 @@ int usbgadget_register(bool dfu, const char *dfu_opts,
+ 	return ret;
  }
  
- static int __stm32mp_cputype;
+-static int usbgadget_autostart(void)
++static int usbgadget_autostart_set(struct param_d *param, void *ctx)
+ {
+ 	bool fastboot_bbu = get_fastboot_bbu();
+ 
+@@ -110,12 +110,12 @@ static int usbgadget_autostart(void)
+ 
+ 	return usbgadget_register(true, NULL, true, NULL, acm, fastboot_bbu);
+ }
+-postenvironment_initcall(usbgadget_autostart);
+ 
+ static int usbgadget_globalvars_init(void)
+ {
+ 	if (IS_ENABLED(CONFIG_USB_GADGET_AUTOSTART)) {
+-		globalvar_add_simple_bool("usbgadget.autostart", &autostart);
++		globalvar_add_bool("usbgadget.autostart", usbgadget_autostart_set,
++				   &autostart, NULL);
+ 		globalvar_add_simple_bool("usbgadget.acm", &acm);
+ 	}
+ 	globalvar_add_simple_string("usbgadget.dfu_function", &dfu_function);
 -- 
 2.28.0
 
