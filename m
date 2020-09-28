@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kMvAg-0005Bi-FR
- for barebox@lists.infradead.org; Mon, 28 Sep 2020 15:34:36 +0000
+ id 1kMvAg-0005Bl-FT
+ for barebox@lists.infradead.org; Mon, 28 Sep 2020 15:34:35 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 28 Sep 2020 17:34:28 +0200
-Message-Id: <20200928153431.1095-1-a.fatoum@pengutronix.de>
+Date: Mon, 28 Sep 2020 17:34:29 +0200
+Message-Id: <20200928153431.1095-2-a.fatoum@pengutronix.de>
+In-Reply-To: <20200928153431.1095-1-a.fatoum@pengutronix.de>
+References: <20200928153431.1095-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -15,112 +17,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] vsprintf: constify pointers where appropriate
+Subject: [PATCH 2/4] vsprintf: add %pe format specifier for printing symbolic
+ error names
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 
-No functional change, but makes code bit more future proof when it is
-extended.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- lib/vsprintf.c | 25 +++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
-
-diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-index 6fe0283e8466..3e5f4db75ac8 100644
---- a/lib/vsprintf.c
-+++ b/lib/vsprintf.c
-@@ -41,7 +41,8 @@ static int skip_atoi(const char **s)
- #define SMALL	32		/* Must be 32 == 0x20 */
- #define SPECIAL	64		/* 0x */
- 
--static char *number(char *buf, char *end, unsigned long long num, int base, int size, int precision, int type)
-+static char *number(char *buf, const char *end, unsigned long long num, int base, int size,
-+		    int precision, int type)
- {
- 	/* we are called with base 8, 10 or 16, only, thus don't need "G..."  */
- 	static const char digits[16] = "0123456789ABCDEF"; /* "GHIJKLMNOPQRSTUVWXYZ"; */
-@@ -146,7 +147,8 @@ static char *number(char *buf, char *end, unsigned long long num, int base, int
- #define PAGE_SIZE 4096
- #endif
- 
--static char *string(char *buf, char *end, char *s, int field_width, int precision, int flags)
-+static char *string(char *buf, const char *end, const char *s, int field_width,
-+		    int precision, int flags)
- {
- 	int len, i;
- 
-@@ -176,7 +178,8 @@ static char *string(char *buf, char *end, char *s, int field_width, int precisio
- }
- 
- #ifndef __PBL__
--static char *symbol_string(char *buf, char *end, void *ptr, int field_width, int precision, int flags)
-+static char *symbol_string(char *buf, const char *end, const void *ptr, int field_width,
-+			   int precision, int flags)
- {
- 	unsigned long value = (unsigned long) ptr;
- #ifdef CONFIG_KALLSYMS
-@@ -191,7 +194,7 @@ static char *symbol_string(char *buf, char *end, void *ptr, int field_width, int
- }
- 
- static noinline_for_stack
--char *ip4_addr_string(char *buf, char *end, const u8 *addr, int field_width,
-+char *ip4_addr_string(char *buf, const char *end, const u8 *addr, int field_width,
- 		      int precision, int flags, const char *fmt)
- {
- 	char ip4_addr[sizeof("255.255.255.255")];
-@@ -212,8 +215,8 @@ char *ip4_addr_string(char *buf, char *end, const u8 *addr, int field_width,
- }
- 
- static noinline_for_stack
--char *uuid_string(char *buf, char *end, const u8 *addr, int field_width,
--		int precision, int flags, const char *fmt)
-+char *uuid_string(char *buf, const char *end, const u8 *addr, int field_width,
-+		  int precision, int flags, const char *fmt)
- {
- 	char uuid[sizeof("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx")];
- 	char *p = uuid;
-@@ -259,8 +262,8 @@ char *uuid_string(char *buf, char *end, const u8 *addr, int field_width,
- }
- 
- static noinline_for_stack
--char *address_val(char *buf, char *end, const void *addr,
--		int field_width, int precision, int flags, const char *fmt)
-+char *address_val(char *buf, const char *end, const void *addr,
-+		  int field_width, int precision, int flags, const char *fmt)
- {
- 	unsigned long long num;
- 
-@@ -314,7 +317,8 @@ char *address_val(char *buf, char *end, const void *addr,
-  * function pointers are really function descriptors, which contain a
-  * pointer to the real address.
-  */
--static char *pointer(const char *fmt, char *buf, char *end, void *ptr, int field_width, int precision, int flags)
-+static char *pointer(const char *fmt, char *buf, const char *end, const void *ptr,
-+		     int field_width, int precision, int flags)
- {
- 	switch (*fmt) {
- 	case 'S':
-@@ -350,7 +354,8 @@ static char *pointer(const char *fmt, char *buf, char *end, void *ptr, int field
- 	return number(buf, end, (unsigned long) ptr, 16, field_width, precision, flags);
- }
- #else
--static char *pointer(const char *fmt, char *buf, char *end, void *ptr, int field_width, int precision, int flags)
-+static char *pointer(const char *fmt, char *buf, const char *end, const void *ptr,
-+		     int field_width, int precision, int flags)
- {
- 	flags |= SMALL;
- 	if (field_width == -1) {
--- 
-2.28.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U3RhcnRpbmcgd2l0aCB2NS41LCBMaW51eCBoYXMgYSBmb3JtYXQgc3BlY2lmaWVyIGZvciBwcmlu
+dGluZyBlcnJvcgpwb2ludGVycy4gV2UgaGF2ZSBoYWQgc3RyZXJyb3IgaW4gYmFyZWJveCBiZWZv
+cmUgdGhhdCwgYnV0IGxldHMgd2lyZSBpdAppbnRvIHZzcHJpbnRmIHdpdGggdGhlIHNhbWUgZm9y
+bWF0IHNwZWNpZmllciB0aGF0IExpbnV4IG5vdyB1c2VzLgoKVGhpcyB5aWVsZHMgbGVzcyB2ZXJi
+b3NlIGNhbGwgc2l0ZXMgYW5kIG1ha2VzIExpbnV4IGRyaXZlcnMgbW9yZSBwb3J0YWJsZQp0byBi
+YXJlYm94IGluIGZ1dHVyZS4gVGhpcyBhbHNvIGhhcyB0aGUgcG90ZW50aWFsIHRvIHJlZHVjZSBj
+b2RlIHNpemUgYXMKdGhlIHByZXZpb3VzbHkgImlubGluZWQiIHN0cmVycm9yIGF0IGNhbGxzaXRl
+cyBjYW4gbm93IGJlIHJlcGxhY2VkIGJ5CmEgc2luZ2xlIHZzcHJpbnRmLgoKQ2M6IFV3ZSBLbGVp
+bmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+ClNpZ25lZC1vZmYtYnk6
+IEFobWFkIEZhdG91bSA8YS5mYXRvdW1AcGVuZ3V0cm9uaXguZGU+Ci0tLQogbGliL3ZzcHJpbnRm
+LmMgfCAzOSArKysrKysrKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0KIDEgZmlsZSBj
+aGFuZ2VkLCAyNyBpbnNlcnRpb25zKCspLCAxMiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9s
+aWIvdnNwcmludGYuYyBiL2xpYi92c3ByaW50Zi5jCmluZGV4IDNlNWY0ZGI3NWFjOC4uM2ZjY2Zh
+N2E1NmJhIDEwMDY0NAotLS0gYS9saWIvdnNwcmludGYuYworKysgYi9saWIvdnNwcmludGYuYwpA
+QCAtMTc3LDYgKzE3NywxNyBAQCBzdGF0aWMgY2hhciAqc3RyaW5nKGNoYXIgKmJ1ZiwgY29uc3Qg
+Y2hhciAqZW5kLCBjb25zdCBjaGFyICpzLCBpbnQgZmllbGRfd2lkdGgsCiAJcmV0dXJuIGJ1ZjsK
+IH0KIAorc3RhdGljIGNoYXIgKnJhd19wb2ludGVyKGNoYXIgKmJ1ZiwgY29uc3QgY2hhciAqZW5k
+LCBjb25zdCB2b2lkICpwdHIsIGludCBmaWVsZF93aWR0aCwKKwkJCSBpbnQgcHJlY2lzaW9uLCBp
+bnQgZmxhZ3MpCit7CisJZmxhZ3MgfD0gU01BTEw7CisJaWYgKGZpZWxkX3dpZHRoID09IC0xKSB7
+CisJCWZpZWxkX3dpZHRoID0gMipzaXplb2Yodm9pZCAqKTsKKwkJZmxhZ3MgfD0gWkVST1BBRDsK
+Kwl9CisJcmV0dXJuIG51bWJlcihidWYsIGVuZCwgKHVuc2lnbmVkIGxvbmcpIHB0ciwgMTYsIGZp
+ZWxkX3dpZHRoLCBwcmVjaXNpb24sIGZsYWdzKTsKK30KKwogI2lmbmRlZiBfX1BCTF9fCiBzdGF0
+aWMgY2hhciAqc3ltYm9sX3N0cmluZyhjaGFyICpidWYsIGNvbnN0IGNoYXIgKmVuZCwgY29uc3Qg
+dm9pZCAqcHRyLCBpbnQgZmllbGRfd2lkdGgsCiAJCQkgICBpbnQgcHJlY2lzaW9uLCBpbnQgZmxh
+Z3MpCkBAIC0yMTQsNiArMjI1LDE2IEBAIGNoYXIgKmlwNF9hZGRyX3N0cmluZyhjaGFyICpidWYs
+IGNvbnN0IGNoYXIgKmVuZCwgY29uc3QgdTggKmFkZHIsIGludCBmaWVsZF93aWR0CiAJcmV0dXJu
+IHN0cmluZyhidWYsIGVuZCwgaXA0X2FkZHIsIGZpZWxkX3dpZHRoLCBwcmVjaXNpb24sIGZsYWdz
+KTsKIH0KIAorc3RhdGljCitjaGFyICplcnJvcl9zdHJpbmcoY2hhciAqYnVmLCBjb25zdCBjaGFy
+ICplbmQsIGNvbnN0IHU4ICplcnJwdHIsIGludCBmaWVsZF93aWR0aCwKKwkJICAgaW50IHByZWNp
+c2lvbiwgaW50IGZsYWdzLCBjb25zdCBjaGFyICpmbXQpCit7CisgICAgaWYgKCFJU19FUlIoZXJy
+cHRyKSkKKwkgICAgcmV0dXJuIHJhd19wb2ludGVyKGJ1ZiwgZW5kLCBlcnJwdHIsIGZpZWxkX3dp
+ZHRoLCBwcmVjaXNpb24sIGZsYWdzKTsKKworICAgIHJldHVybiBzdHJpbmcoYnVmLCBlbmQsIHN0
+cmVycm9ycChlcnJwdHIpLCBmaWVsZF93aWR0aCwgcHJlY2lzaW9uLCBmbGFncyk7Cit9CisKIHN0
+YXRpYyBub2lubGluZV9mb3Jfc3RhY2sKIGNoYXIgKnV1aWRfc3RyaW5nKGNoYXIgKmJ1ZiwgY29u
+c3QgY2hhciAqZW5kLCBjb25zdCB1OCAqYWRkciwgaW50IGZpZWxkX3dpZHRoLAogCQkgIGludCBw
+cmVjaXNpb24sIGludCBmbGFncywgY29uc3QgY2hhciAqZm10KQpAQCAtMzQ1LDI0ICszNjYsMTgg
+QEAgc3RhdGljIGNoYXIgKnBvaW50ZXIoY29uc3QgY2hhciAqZm10LCBjaGFyICpidWYsIGNvbnN0
+IGNoYXIgKmVuZCwgY29uc3Qgdm9pZCAqcHQKICAgICAgICAgICAgICAgICAgICAgICAgIHJldHVy
+biBpcDRfYWRkcl9zdHJpbmcoYnVmLCBlbmQsIHB0ciwgZmllbGRfd2lkdGgsIHByZWNpc2lvbiwg
+ZmxhZ3MsIGZtdCk7CiAJCX0KIAkJYnJlYWs7CisJY2FzZSAnZSc6CisJCXJldHVybiBlcnJvcl9z
+dHJpbmcoYnVmLCBlbmQsIHB0ciwgZmllbGRfd2lkdGgsIHByZWNpc2lvbiwgZmxhZ3MsIGZtdCk7
+CiAJfQotCWZsYWdzIHw9IFNNQUxMOwotCWlmIChmaWVsZF93aWR0aCA9PSAtMSkgewotCQlmaWVs
+ZF93aWR0aCA9IDIqc2l6ZW9mKHZvaWQgKik7Ci0JCWZsYWdzIHw9IFpFUk9QQUQ7Ci0JfQotCXJl
+dHVybiBudW1iZXIoYnVmLCBlbmQsICh1bnNpZ25lZCBsb25nKSBwdHIsIDE2LCBmaWVsZF93aWR0
+aCwgcHJlY2lzaW9uLCBmbGFncyk7CisKKwlyZXR1cm4gcmF3X3BvaW50ZXIoYnVmLCBlbmQsIHB0
+ciwgZmllbGRfd2lkdGgsIHByZWNpc2lvbiwgZmxhZ3MpOwogfQorCiAjZWxzZQogc3RhdGljIGNo
+YXIgKnBvaW50ZXIoY29uc3QgY2hhciAqZm10LCBjaGFyICpidWYsIGNvbnN0IGNoYXIgKmVuZCwg
+Y29uc3Qgdm9pZCAqcHRyLAogCQkgICAgIGludCBmaWVsZF93aWR0aCwgaW50IHByZWNpc2lvbiwg
+aW50IGZsYWdzKQogewotCWZsYWdzIHw9IFNNQUxMOwotCWlmIChmaWVsZF93aWR0aCA9PSAtMSkg
+ewotCQlmaWVsZF93aWR0aCA9IDIqc2l6ZW9mKHZvaWQgKik7Ci0JCWZsYWdzIHw9IFpFUk9QQUQ7
+Ci0JfQotCXJldHVybiBudW1iZXIoYnVmLCBlbmQsICh1bnNpZ25lZCBsb25nKSBwdHIsIDE2LCBm
+aWVsZF93aWR0aCwgcHJlY2lzaW9uLCBmbGFncyk7CisJcmV0dXJuIHJhd19wb2ludGVyKGJ1Ziwg
+ZW5kLCBwdHIsIGZpZWxkX3dpZHRoLCBwcmVjaXNpb24sIGZsYWdzKTsKIH0KICNlbmRpZgogCi0t
+IAoyLjI4LjAKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+XwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDov
+L2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
