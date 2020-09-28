@@ -1,18 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kMvhd-0003st-4Q
- for barebox@lists.infradead.org; Mon, 28 Sep 2020 16:08:37 +0000
-Date: Mon, 28 Sep 2020 18:08:35 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-Message-ID: <20200928160835.GB20189@pengutronix.de>
-References: <20200928154247.15619-1-a.fatoum@pengutronix.de>
- <20200928154247.15619-5-a.fatoum@pengutronix.de>
- <20200928160102.GA20189@pengutronix.de>
- <d0fb2978-7053-40c2-92e1-5648c2841da8@pengutronix.de>
+ id 1kMvjx-00047J-S8
+ for barebox@lists.infradead.org; Mon, 28 Sep 2020 16:11:02 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>) id 1kMvjw-000460-Nz
+ for barebox@lists.infradead.org; Mon, 28 Sep 2020 18:11:00 +0200
+References: <20200928155041.32649-1-m.felsch@pengutronix.de>
+ <20200928155041.32649-8-m.felsch@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <5d920605-b570-058e-180c-ab314b8abcef@pengutronix.de>
+Date: Mon, 28 Sep 2020 18:11:00 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <d0fb2978-7053-40c2-92e1-5648c2841da8@pengutronix.de>
+In-Reply-To: <20200928155041.32649-8-m.felsch@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,77 +28,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/7] mtd: nand-mxs: fix out-of-bounds write on 64-bit SoCs
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 07/18] regulator: test of_regulator_register input before
+ accessing it
+To: barebox@lists.infradead.org
 
-On 20-09-28 18:03, Ahmad Fatoum wrote:
-> 
-> 
-> On 9/28/20 6:01 PM, Marco Felsch wrote:
-> > On 20-09-28 17:42, Ahmad Fatoum wrote:
-> >> Probing the nand_mxs device driver on 64 bit systems invokes
-> >> undefined behavior, because of an errant cast. Fix this.
-> >>
-> >> No change of behavior for 32-bit SoCs intended.
-> >>
-> >> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> >> ---
-> >>  drivers/mtd/nand/nand_mxs.c | 4 +---
-> >>  1 file changed, 1 insertion(+), 3 deletions(-)
-> >>
-> >> diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
-> >> index 36b6e7ac224e..e2b6e2162076 100644
-> >> --- a/drivers/mtd/nand/nand_mxs.c
-> >> +++ b/drivers/mtd/nand/nand_mxs.c
-> >> @@ -2145,9 +2145,7 @@ static int mxs_nand_probe(struct device_d *dev)
-> >>  	if (mxs_nand_mtd)
-> >>  		return -EBUSY;
-> >>  
-> >> -	err = dev_get_drvdata(dev, (const void **)&type);
-> >> -	if (err)
-> >> -		type = GPMI_MXS;
-> >> +	type = (enum gpmi_type)device_get_match_data(dev);
-> > 
-> > Should we add:
-> > 
-> > 	if (!type)
-> > 		type = GPMI_MXS;
-> > 
-> > here?
-> 
-> (enum gpmi_type)0 is already GPMI_MXS. So that's a no-op.
 
-I see, just wanted to be sure :)
 
-Regards,
-  Marco
+On 9/28/20 5:50 PM, Marco Felsch wrote:
+> Add simple parameter check to avoid possible NULL pointer dereferences.
+> 
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 
+For patches 05,06,07:
+
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+
+
+> ---
+>  drivers/regulator/core.c | 3 +++
+>  1 file changed, 3 insertions(+)
 > 
-> > 	
-> >>  	nand_info = kzalloc(sizeof(struct mxs_nand_info), GFP_KERNEL);
-> >>  	if (!nand_info) {
-> >> -- 
-> >> 2.28.0
-> >>
-> >>
-> >> _______________________________________________
-> >> barebox mailing list
-> >> barebox@lists.infradead.org
-> >> http://lists.infradead.org/mailman/listinfo/barebox
-> >>
-> > 
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+> diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+> index a767e383fb..6ea21a4609 100644
+> --- a/drivers/regulator/core.c
+> +++ b/drivers/regulator/core.c
+> @@ -163,6 +163,9 @@ int of_regulator_register(struct regulator_dev *rd, struct device_node *node)
+>  	struct regulator_internal *ri;
+>  	const char *name;
+>  
+> +	if (!rd || !node)
+> +		return -EINVAL;
+> +
+>  	rd->boot_on = of_property_read_bool(node, "regulator-boot-on");
+>  
+>  	name = of_get_property(node, "regulator-name", NULL);
 > 
 
 -- 
