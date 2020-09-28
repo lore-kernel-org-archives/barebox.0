@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kMvg6-0003eg-Ot
- for barebox@lists.infradead.org; Mon, 28 Sep 2020 16:07:04 +0000
-References: <20200928155041.32649-1-m.felsch@pengutronix.de>
- <20200928155041.32649-5-m.felsch@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <ae1a4707-d410-6c63-b18c-3233d6383109@pengutronix.de>
-Date: Mon, 28 Sep 2020 18:07:01 +0200
+ id 1kMvhd-0003st-4Q
+ for barebox@lists.infradead.org; Mon, 28 Sep 2020 16:08:37 +0000
+Date: Mon, 28 Sep 2020 18:08:35 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+Message-ID: <20200928160835.GB20189@pengutronix.de>
+References: <20200928154247.15619-1-a.fatoum@pengutronix.de>
+ <20200928154247.15619-5-a.fatoum@pengutronix.de>
+ <20200928160102.GA20189@pengutronix.de>
+ <d0fb2978-7053-40c2-92e1-5648c2841da8@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20200928155041.32649-5-m.felsch@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <d0fb2978-7053-40c2-92e1-5648c2841da8@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,50 +25,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 04/18] ARM: mx6-sabrelite: remove obsolete
- sabrelite_mem_init()
-To: Marco Felsch <m.felsch@pengutronix.de>, barebox@lists.infradead.org
+Subject: Re: [PATCH 5/7] mtd: nand-mxs: fix out-of-bounds write on 64-bit SoCs
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
+On 20-09-28 18:03, Ahmad Fatoum wrote:
+> 
+> 
+> On 9/28/20 6:01 PM, Marco Felsch wrote:
+> > On 20-09-28 17:42, Ahmad Fatoum wrote:
+> >> Probing the nand_mxs device driver on 64 bit systems invokes
+> >> undefined behavior, because of an errant cast. Fix this.
+> >>
+> >> No change of behavior for 32-bit SoCs intended.
+> >>
+> >> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> >> ---
+> >>  drivers/mtd/nand/nand_mxs.c | 4 +---
+> >>  1 file changed, 1 insertion(+), 3 deletions(-)
+> >>
+> >> diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
+> >> index 36b6e7ac224e..e2b6e2162076 100644
+> >> --- a/drivers/mtd/nand/nand_mxs.c
+> >> +++ b/drivers/mtd/nand/nand_mxs.c
+> >> @@ -2145,9 +2145,7 @@ static int mxs_nand_probe(struct device_d *dev)
+> >>  	if (mxs_nand_mtd)
+> >>  		return -EBUSY;
+> >>  
+> >> -	err = dev_get_drvdata(dev, (const void **)&type);
+> >> -	if (err)
+> >> -		type = GPMI_MXS;
+> >> +	type = (enum gpmi_type)device_get_match_data(dev);
+> > 
+> > Should we add:
+> > 
+> > 	if (!type)
+> > 		type = GPMI_MXS;
+> > 
+> > here?
+> 
+> (enum gpmi_type)0 is already GPMI_MXS. So that's a no-op.
 
+I see, just wanted to be sure :)
 
-On 9/28/20 5:50 PM, Marco Felsch wrote:
-> The memory init is done by of_probe_memory() first which is part of the
-> core_initcall's because the device tree has an valid memory node.
-> Otherwise the memory-controller driver (esdctl) would add it by reading
-> the information from the controller which are set by the DCD data.
-> Therefore we can drop it from the local board file.
-
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Regards,
+  Marco
 
 > 
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> ---
->  arch/arm/boards/freescale-mx6-sabrelite/board.c | 12 ------------
->  1 file changed, 12 deletions(-)
+> > 	
+> >>  	nand_info = kzalloc(sizeof(struct mxs_nand_info), GFP_KERNEL);
+> >>  	if (!nand_info) {
+> >> -- 
+> >> 2.28.0
+> >>
+> >>
+> >> _______________________________________________
+> >> barebox mailing list
+> >> barebox@lists.infradead.org
+> >> http://lists.infradead.org/mailman/listinfo/barebox
+> >>
+> > 
 > 
-> diff --git a/arch/arm/boards/freescale-mx6-sabrelite/board.c b/arch/arm/boards/freescale-mx6-sabrelite/board.c
-> index 020a44297a..1b39ef82c6 100644
-> --- a/arch/arm/boards/freescale-mx6-sabrelite/board.c
-> +++ b/arch/arm/boards/freescale-mx6-sabrelite/board.c
-> @@ -39,18 +39,6 @@ static iomux_v3_cfg_t sabrelite_enet_gpio_pads[] = {
->  	MX6Q_PAD_RGMII_RX_CTL__GPIO_6_24,
->  };
->  
-> -static int sabrelite_mem_init(void)
-> -{
-> -	if (!of_machine_is_compatible("fsl,imx6q-sabrelite") &&
-> -	    !of_machine_is_compatible("fsl,imx6dl-sabrelite"))
-> -		return 0;
-> -
-> -	arm_add_mem_device("ram0", 0x10000000, SZ_1G);
-> -
-> -	return 0;
-> -}
-> -mem_initcall(sabrelite_mem_init);
-> -
->  static int ksz9021rn_phy_fixup(struct phy_device *dev)
->  {
->  	phy_write(dev, 0x09, 0x0f00);
+> -- 
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 > 
 
 -- 
