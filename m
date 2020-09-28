@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kMuOy-0006uM-QI
+ id 1kMuOy-0006uP-Qr
  for barebox@lists.infradead.org; Mon, 28 Sep 2020 14:45:20 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 28 Sep 2020 16:45:08 +0200
-Message-Id: <20200928144514.14398-5-a.fatoum@pengutronix.de>
+Date: Mon, 28 Sep 2020 16:45:13 +0200
+Message-Id: <20200928144514.14398-10-a.fatoum@pengutronix.de>
 In-Reply-To: <20200928144514.14398-1-a.fatoum@pengutronix.de>
 References: <20200928144514.14398-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,98 +21,168 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 04/10] power: reset: reboot-mode: fix up node into boot
- device tree
+Subject: [PATCH v2 09/10] power: reset: syscon-reboot-mode: support multi-word
+ reboot modes
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Instead of relying that the kernel and barebox device trees are in sync,
-just enforce it by having barebox fix up the device tree node it probed
-into the kernel device tree. We usually want that, but some reboot mode
-drivers might want to inhibit the fixup, e.g. because they implement
-a non-upstream binding or because they communicate with the BootROM,
-while the kernel shouldn't. For those the fixup is made optional via
-a struct reboot_mode_driver::no_fixup member.
+SoCs like the i.MX6 have their BootROM consult two distinct 32-bit
+registers to determine the reboot mode. Extend the driver to support
+this. While backwards compatible, this is not so far supported by the
+upstream binding, which is why a new barebox,syscon-reboot-mode is
+introduced. This new compatible be inhibit used to inhibit fixup
+into a kernel device tree.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/power/reset/reboot-mode.c | 43 +++++++++++++++++++++++++++++++
- include/linux/reboot-mode.h       |  1 +
- 2 files changed, 44 insertions(+)
+ drivers/power/reset/syscon-reboot-mode.c | 91 +++++++++++++++++-------
+ 1 file changed, 65 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/power/reset/reboot-mode.c b/drivers/power/reset/reboot-mode.c
-index 5992a2acd99a..bf51c00aee75 100644
---- a/drivers/power/reset/reboot-mode.c
-+++ b/drivers/power/reset/reboot-mode.c
-@@ -52,6 +52,46 @@ static int reboot_mode_add_param(struct device_d *dev,
- 	return PTR_ERR_OR_ZERO(param);
- }
+diff --git a/drivers/power/reset/syscon-reboot-mode.c b/drivers/power/reset/syscon-reboot-mode.c
+index bd4f1a3d04b0..0cbc9d0803ff 100644
+--- a/drivers/power/reset/syscon-reboot-mode.c
++++ b/drivers/power/reset/syscon-reboot-mode.c
+@@ -10,75 +10,114 @@
+ #include <regmap.h>
+ #include <mfd/syscon.h>
+ #include <linux/reboot-mode.h>
++#include <linux/overflow.h>
++
++struct mode_reg {
++	u32 offset;
++	u32 mask;
++};
  
-+static struct device_node *of_get_node_by_reproducible_name(struct device_node *dstroot,
-+							    struct device_node *srcnp)
-+{
-+	struct device_node *dstnp;
-+	char *name;
-+
-+	name = of_get_reproducible_name(srcnp);
-+	dstnp = of_find_node_by_reproducible_name(dstroot, name);
-+	free(name);
-+
-+	return dstnp;
-+}
-+
-+static int of_reboot_mode_fixup(struct device_node *root, void *ctx)
-+{
-+	struct reboot_mode_driver *reboot = ctx;
-+	struct device_node *dstnp, *srcnp, *dstparent;
-+
-+	srcnp = reboot->dev->device_node;
-+	dstnp = of_get_node_by_reproducible_name(root, srcnp);
-+
-+	/* nothing to do when called on barebox-internal tree */
-+	if (srcnp == dstnp)
-+		return 0;
-+
-+	if (dstnp) {
-+		dstparent = dstnp->parent;
-+		of_delete_node(dstnp);
-+	} else {
-+		dstparent = of_get_node_by_reproducible_name(root, srcnp->parent);
-+	}
-+
-+	if (!dstparent)
-+		return -EINVAL;
-+
-+	of_copy_node(dstparent, srcnp);
-+
-+	return 0;
-+}
-+
- static int reboot_mode_add_globalvar(void)
+ struct syscon_reboot_mode {
+ 	struct regmap *map;
+ 	struct reboot_mode_driver reboot;
+-	u32 offset;
+-	u32 mask;
++	struct mode_reg reg[];
+ };
+ 
+ static int syscon_reboot_mode_write(struct reboot_mode_driver *reboot,
+ 				    const u32 *magic)
  {
- 	struct reboot_mode_driver *reboot = __boot_mode;
-@@ -59,6 +99,9 @@ static int reboot_mode_add_globalvar(void)
- 	if (!reboot)
- 		return 0;
+ 	struct syscon_reboot_mode *syscon_rbm;
+-	int ret;
++	size_t i;
++	int ret = 0;
  
-+	if (!reboot->no_fixup)
-+		of_register_fixup(of_reboot_mode_fixup, reboot);
+ 	syscon_rbm = container_of(reboot, struct syscon_reboot_mode, reboot);
+ 
+-	ret = regmap_update_bits(syscon_rbm->map, syscon_rbm->offset,
+-				 syscon_rbm->mask, *magic);
+-	if (ret < 0)
+-		dev_err(reboot->dev, "update reboot mode bits failed\n");
++	for (i = 0; i < reboot->nelems; i++) {
++		struct mode_reg *reg = &syscon_rbm->reg[i];
 +
- 	return reboot_mode_add_param(&global_device, "system.reboot_mode.", reboot);
- }
- late_initcall(reboot_mode_add_globalvar);
-diff --git a/include/linux/reboot-mode.h b/include/linux/reboot-mode.h
-index 92a1da7b5562..bc57f1d72df7 100644
---- a/include/linux/reboot-mode.h
-+++ b/include/linux/reboot-mode.h
-@@ -11,6 +11,7 @@ struct reboot_mode_driver {
- 	struct device_d *dev;
- 	int (*write)(struct reboot_mode_driver *reboot, u32 magic);
- 	int priority;
-+	bool no_fixup;
++		ret = regmap_update_bits(syscon_rbm->map, reg->offset,
++					 reg->mask, *magic++);
++		if (ret < 0) {
++			dev_err(reboot->dev, "update reboot mode bits failed\n");
++			break;
++		}
++	}
  
- 	/* filled by reboot_mode_register */
- 	int reboot_mode_prev, reboot_mode_next;
+ 	return ret;
+ }
+ 
+ static int syscon_reboot_mode_probe(struct device_d *dev)
+ {
+-	int ret;
++	int ret, i, nelems;
+ 	struct syscon_reboot_mode *syscon_rbm;
++	struct reboot_mode_driver *reboot_template;
+ 	struct device_node *np = dev->device_node;
+-	size_t nelems;
+-	u32 magic;
++	u32 *magic;
+ 
+ 	nelems = of_property_count_elems_of_size(np, "offset", sizeof(__be32));
+-	if (nelems != 1)
++	if (nelems <= 0)
+ 		return -EINVAL;
+ 
+-	syscon_rbm = xzalloc(sizeof(*syscon_rbm));
++	syscon_rbm = xzalloc(struct_size(syscon_rbm, reg, nelems));
++
++	ret = dev_get_drvdata(dev, (const void **)&reboot_template);
++	if (ret)
++		return ret;
+ 
++	syscon_rbm->reboot = *reboot_template;
+ 	syscon_rbm->reboot.dev = dev;
+-	syscon_rbm->reboot.write = syscon_reboot_mode_write;
+-	syscon_rbm->mask = 0xffffffff;
+ 
+ 	syscon_rbm->map = syscon_node_to_regmap(dev->parent->device_node);
+ 	if (IS_ERR(syscon_rbm->map))
+ 		return PTR_ERR(syscon_rbm->map);
+ 
+-	if (of_property_read_u32(np, "offset", &syscon_rbm->offset))
+-		return -EINVAL;
++	magic = xzalloc(nelems * sizeof(*magic));
+ 
+-	of_property_read_u32(np, "mask", &syscon_rbm->mask);
++	for (i = 0; i < nelems; i++) {
++		struct mode_reg *reg = &syscon_rbm->reg[i];
+ 
+-	ret = regmap_read(syscon_rbm->map, syscon_rbm->offset, &magic);
+-	if (ret) {
+-		dev_err(dev, "error reading reboot mode: %s\n",
+-			strerror(-ret));
+-		return ret;
+-	}
++		ret = of_property_read_u32_index(np, "offset", i, &reg->offset);
++		if (ret)
++			goto free_magic;
+ 
+-	magic &= syscon_rbm->mask;
++		reg->mask = 0xffffffff;
++		of_property_read_u32_index(np, "mask", i, &reg->mask);
++
++		ret = regmap_read(syscon_rbm->map, reg->offset, &magic[i]);
++		if (ret) {
++			dev_err(dev, "error reading reboot mode: %s\n",
++				strerror(-ret));
++			goto free_magic;
++		}
++
++		magic[i] &= reg->mask;
++	}
+ 
+-	ret = reboot_mode_register(&syscon_rbm->reboot, &magic, 1);
++	ret = reboot_mode_register(&syscon_rbm->reboot, magic, nelems);
+ 	if (ret)
+ 		dev_err(dev, "can't register reboot mode\n");
+ 
++free_magic:
++	free(magic);
+ 	return ret;
++
+ }
+ 
++static struct reboot_mode_driver reboot_fixup  = {
++	.write = syscon_reboot_mode_write,
++	.priority = 100,
++	.no_fixup = false,
++};
++
++static struct reboot_mode_driver reboot_nofixup  = {
++	.write = syscon_reboot_mode_write,
++	.priority = 50,
++	.no_fixup = true,
++};
++
+ static const struct of_device_id syscon_reboot_mode_of_match[] = {
+-	{ .compatible = "syscon-reboot-mode" },
++	{ .compatible = "syscon-reboot-mode", .data = &reboot_fixup },
++	{ .compatible = "barebox,syscon-reboot-mode", .data = &reboot_nofixup },
+ 	{ /* sentinel */ }
+ };
+ 
 -- 
 2.28.0
 
