@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kMuPE-00071a-SS
- for barebox@lists.infradead.org; Mon, 28 Sep 2020 14:45:34 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 28 Sep 2020 16:45:07 +0200
-Message-Id: <20200928144514.14398-4-a.fatoum@pengutronix.de>
-In-Reply-To: <20200928144514.14398-1-a.fatoum@pengutronix.de>
-References: <20200928144514.14398-1-a.fatoum@pengutronix.de>
+ id 1kMubb-0001rF-Ko
+ for barebox@lists.infradead.org; Mon, 28 Sep 2020 14:58:20 +0000
+Date: Mon, 28 Sep 2020 16:58:18 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200928145818.GH11648@pengutronix.de>
+References: <20200928144146.21931-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200928144146.21931-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,168 +22,536 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 03/10] power: reset: reboot-mode: port syscon-reboot-mode
- support
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH 1/2] lib: kasan: remove reference of non-existent
+ test_kasan.o
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Reboot modes are one-shot information that should be valid for only a
-single reset. Syscons that survive a warm reset are one way to implement
-this. This is used by many BootROMs to allow falling into a recovery
-mode on the next boot. This ports the Linux syscon-reboot-mode support.
+On Mon, Sep 28, 2020 at 04:41:45PM +0200, Ahmad Fatoum wrote:
+> We don't have anything that test_kasan.o can be generated out of,
+> thus drop it to fix the build.
+> 
+> It would still be nice to have this as a command, but that
+> should be a separate patch.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  lib/kasan/Makefile | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+I prefer to add the code that I have forgotten to git add ;)
+
+Sascha
+
+----------------------8<-----------------
+
+
+From ff5cbfcbbe21d7883e3ce661fec3751f7cb7e58c Mon Sep 17 00:00:00 2001
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 28 Sep 2020 16:56:36 +0200
+Subject: [PATCH] KASan: Add missing test code
+
+Add missing test code.
+
+Fixes: 6cd9d2d600 ("Add KASan support")
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- Documentation/user/reboot-mode.rst       | 11 +++
- drivers/power/reset/Kconfig              | 11 +++
- drivers/power/reset/Makefile             |  1 +
- drivers/power/reset/syscon-reboot-mode.c | 85 ++++++++++++++++++++++++
- 4 files changed, 108 insertions(+)
- create mode 100644 drivers/power/reset/syscon-reboot-mode.c
+ lib/kasan/test_kasan.c | 478 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 478 insertions(+)
+ create mode 100644 lib/kasan/test_kasan.c
 
-diff --git a/Documentation/user/reboot-mode.rst b/Documentation/user/reboot-mode.rst
-index 1908da3ed2d7..9321d928f41a 100644
---- a/Documentation/user/reboot-mode.rst
-+++ b/Documentation/user/reboot-mode.rst
-@@ -45,6 +45,17 @@ Reboot mode providers have priorities. The provider with the highest
- priority has its parameters aliased as ``$global.system.reboot_mode.prev``
- and ``$global.system.reboot_mode.next``.
- 
-+Reset
-+~~~~~
-+
-+Reboot modes can be stored on a syscon wrapping general purpose registers
-+that survives warm resets. If the system instead did reset via an external
-+power management IC, the registers may lose their value.
-+
-+If such reboot mode storage is used, users must take care to use the correct
-+reset provider. In barebox, multiple reset providers may co-exist. They
-+``reset`` command allows listing and choosing a specific reboot mode.
-+
- Disambiguation
- ~~~~~~~~~~~~~~
- 
-diff --git a/drivers/power/reset/Kconfig b/drivers/power/reset/Kconfig
-index 5554fc122d92..f65e1f67fd59 100644
---- a/drivers/power/reset/Kconfig
-+++ b/drivers/power/reset/Kconfig
-@@ -3,3 +3,14 @@
- 
- config REBOOT_MODE
- 	bool
-+
-+config SYSCON_REBOOT_MODE
-+	bool "Generic SYSCON regmap reboot mode driver"
-+	depends on OFDEVICE
-+	depends on MFD_SYSCON
-+	select REBOOT_MODE
-+	help
-+	  Say y here will enable reboot mode driver. This will
-+	  get reboot mode arguments and store it in SYSCON mapped
-+	  register, then the bootloader can read it to take different
-+	  action according to the mode.
-diff --git a/drivers/power/reset/Makefile b/drivers/power/reset/Makefile
-index 68231f044a52..56feec78cf26 100644
---- a/drivers/power/reset/Makefile
-+++ b/drivers/power/reset/Makefile
-@@ -1,2 +1,3 @@
- # SPDX-License-Identifier: GPL-2.0-only
- obj-$(CONFIG_REBOOT_MODE) += reboot-mode.o
-+obj-$(CONFIG_SYSCON_REBOOT_MODE) += syscon-reboot-mode.o
-diff --git a/drivers/power/reset/syscon-reboot-mode.c b/drivers/power/reset/syscon-reboot-mode.c
+diff --git a/lib/kasan/test_kasan.c b/lib/kasan/test_kasan.c
 new file mode 100644
-index 000000000000..5e4aed943d5c
+index 0000000000..e472bb3499
 --- /dev/null
-+++ b/drivers/power/reset/syscon-reboot-mode.c
-@@ -0,0 +1,85 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
++++ b/lib/kasan/test_kasan.c
+@@ -0,0 +1,478 @@
++// SPDX-License-Identifier: GPL-2.0-only
 +/*
-+ * Copyright (c) 2016, Fuzhou Rockchip Electronics Co., Ltd
++ *
++ * Copyright (c) 2014 Samsung Electronics Co., Ltd.
++ * Author: Andrey Ryabinin <a.ryabinin@samsung.com>
 + */
 +
++#define pr_fmt(fmt) "kasan test: " fmt
++
 +#include <common.h>
-+#include <init.h>
-+#include <driver.h>
-+#include <of.h>
-+#include <regmap.h>
-+#include <mfd/syscon.h>
-+#include <linux/reboot-mode.h>
++#include <command.h>
++#include <complete.h>
 +
-+struct syscon_reboot_mode {
-+	struct regmap *map;
-+	struct reboot_mode_driver reboot;
-+	u32 offset;
-+	u32 mask;
-+};
++#include "kasan.h"
 +
-+static int syscon_reboot_mode_write(struct reboot_mode_driver *reboot,
-+				    unsigned int magic)
++/*
++ * We assign some test results to these globals to make sure the tests
++ * are not eliminated as dead code.
++ */
++
++int kasan_int_result;
++void *kasan_ptr_result;
++
++/*
++ * Note: test functions are marked noinline so that their names appear in
++ * reports.
++ */
++
++static noinline void malloc_oob_right(void)
 +{
-+	struct syscon_reboot_mode *syscon_rbm;
-+	int ret;
++	char *ptr;
++	size_t size = 123;
 +
-+	syscon_rbm = container_of(reboot, struct syscon_reboot_mode, reboot);
-+
-+	ret = regmap_update_bits(syscon_rbm->map, syscon_rbm->offset,
-+				 syscon_rbm->mask, magic);
-+	if (ret < 0)
-+		dev_err(reboot->dev, "update reboot mode bits failed\n");
-+
-+	return ret;
-+}
-+
-+static int syscon_reboot_mode_probe(struct device_d *dev)
-+{
-+	int ret;
-+	struct syscon_reboot_mode *syscon_rbm;
-+	struct device_node *np = dev->device_node;
-+	u32 magic;
-+
-+	syscon_rbm = xzalloc(sizeof(*syscon_rbm));
-+
-+	syscon_rbm->reboot.dev = dev;
-+	syscon_rbm->reboot.write = syscon_reboot_mode_write;
-+	syscon_rbm->mask = 0xffffffff;
-+
-+	syscon_rbm->map = syscon_node_to_regmap(dev->parent->device_node);
-+	if (IS_ERR(syscon_rbm->map))
-+		return PTR_ERR(syscon_rbm->map);
-+
-+	if (of_property_read_u32(np, "offset", &syscon_rbm->offset))
-+		return -EINVAL;
-+
-+	of_property_read_u32(np, "mask", &syscon_rbm->mask);
-+
-+	ret = regmap_read(syscon_rbm->map, syscon_rbm->offset, &magic);
-+	if (ret) {
-+		dev_err(dev, "error reading reboot mode: %s\n",
-+			strerror(-ret));
-+		return ret;
++	pr_info("out-of-bounds to right\n");
++	ptr = malloc(size);
++	if (!ptr) {
++		pr_err("Allocation failed\n");
++		return;
 +	}
 +
-+	magic &= syscon_rbm->mask;
++	ptr[size] = 'x';
 +
-+	ret = reboot_mode_register(&syscon_rbm->reboot, magic);
-+	if (ret)
-+		dev_err(dev, "can't register reboot mode\n");
-+
-+	return ret;
++	free(ptr);
 +}
 +
-+static const struct of_device_id syscon_reboot_mode_of_match[] = {
-+	{ .compatible = "syscon-reboot-mode" },
-+	{ /* sentinel */ }
-+};
++static noinline void malloc_oob_left(void)
++{
++	char *ptr;
++	size_t size = 15;
 +
-+static struct driver_d syscon_reboot_mode_driver = {
-+	.probe = syscon_reboot_mode_probe,
-+	.name = "syscon-reboot-mode",
-+	.of_compatible = syscon_reboot_mode_of_match,
-+};
-+coredevice_platform_driver(syscon_reboot_mode_driver);
++	pr_info("out-of-bounds to left\n");
++	ptr = malloc(size);
++	if (!ptr) {
++		pr_err("Allocation failed\n");
++		return;
++	}
++
++	*ptr = *(ptr - 1);
++	free(ptr);
++}
++
++static noinline void malloc_oob_realloc_more(void)
++{
++	char *ptr1, *ptr2;
++	size_t size1 = 17;
++	size_t size2 = 19;
++
++	pr_info("out-of-bounds after krealloc more\n");
++	ptr1 = malloc(size1);
++	ptr2 = realloc(ptr1, size2);
++	if (!ptr1 || !ptr2) {
++		pr_err("Allocation failed\n");
++		free(ptr1);
++		free(ptr2);
++		return;
++	}
++
++	ptr2[size2] = 'x';
++
++	free(ptr2);
++}
++
++static noinline void malloc_oob_realloc_less(void)
++{
++	char *ptr1, *ptr2;
++	size_t size1 = 17;
++	size_t size2 = 15;
++
++	pr_info("out-of-bounds after krealloc less\n");
++	ptr1 = malloc(size1);
++	ptr2 = realloc(ptr1, size2);
++	if (!ptr1 || !ptr2) {
++		pr_err("Allocation failed\n");
++		free(ptr1);
++		return;
++	}
++
++	ptr2[size2] = 'x';
++
++	free(ptr2);
++}
++
++static noinline void malloc_oob_16(void)
++{
++	struct {
++		u64 words[2];
++	} *ptr1, *ptr2;
++
++	pr_info("malloc out-of-bounds for 16-bytes access\n");
++	ptr1 = malloc(sizeof(*ptr1) - 3);
++	ptr2 = malloc(sizeof(*ptr2));
++	if (!ptr1 || !ptr2) {
++		pr_err("Allocation failed\n");
++		free(ptr1);
++		free(ptr2);
++		return;
++	}
++	*ptr1 = *ptr2;
++	free(ptr1);
++	free(ptr2);
++}
++
++static noinline void malloc_oob_memset_2(void)
++{
++	char *ptr;
++	size_t size = 8;
++
++	pr_info("out-of-bounds in memset2\n");
++	ptr = malloc(size);
++	if (!ptr) {
++		pr_err("Allocation failed\n");
++		return;
++	}
++
++	memset(ptr + 7, 0, 2);
++
++	free(ptr);
++}
++
++static noinline void malloc_oob_memset_4(void)
++{
++	char *ptr;
++	size_t size = 8;
++
++	pr_info("out-of-bounds in memset4\n");
++	ptr = malloc(size);
++	if (!ptr) {
++		pr_err("Allocation failed\n");
++		return;
++	}
++
++	memset(ptr + 5, 0, 4);
++
++	free(ptr);
++}
++
++
++static noinline void malloc_oob_memset_8(void)
++{
++	char *ptr;
++	size_t size = 8;
++
++	pr_info("out-of-bounds in memset8\n");
++	ptr = malloc(size);
++	if (!ptr) {
++		pr_err("Allocation failed\n");
++		return;
++	}
++
++	memset(ptr + 1, 0, 8);
++
++	free(ptr);
++}
++
++static noinline void malloc_oob_memset_16(void)
++{
++	char *ptr;
++	size_t size = 16;
++
++	pr_info("out-of-bounds in memset16\n");
++	ptr = malloc(size);
++	if (!ptr) {
++		pr_err("Allocation failed\n");
++		return;
++	}
++
++	memset(ptr + 1, 0, 16);
++
++	free(ptr);
++}
++
++static noinline void malloc_oob_in_memset(void)
++{
++	char *ptr;
++	size_t size = 666;
++
++	pr_info("out-of-bounds in memset\n");
++	ptr = malloc(size);
++	if (!ptr) {
++		pr_err("Allocation failed\n");
++		return;
++	}
++
++	memset(ptr, 0, size + 5);
++
++	free(ptr);
++}
++
++static noinline void malloc_uaf(void)
++{
++	char *ptr;
++	size_t size = 10;
++
++	pr_info("use-after-free\n");
++	ptr = malloc(size);
++	if (!ptr) {
++		pr_err("Allocation failed\n");
++		return;
++	}
++
++	free(ptr);
++	*(ptr + 8) = 'x';
++}
++
++static noinline void malloc_uaf_memset(void)
++{
++	char *ptr;
++	size_t size = 33;
++
++	pr_info("use-after-free in memset\n");
++	ptr = malloc(size);
++	if (!ptr) {
++		pr_err("Allocation failed\n");
++		return;
++	}
++
++	free(ptr);
++	memset(ptr, 0, size);
++}
++
++static noinline void malloc_uaf2(void)
++{
++	char *ptr1, *ptr2;
++	size_t size = 43;
++
++	pr_info("use-after-free after another malloc\n");
++	ptr1 = malloc(size);
++	if (!ptr1) {
++		pr_err("Allocation failed\n");
++		return;
++	}
++
++	free(ptr1);
++	ptr2 = malloc(size);
++	if (!ptr2) {
++		pr_err("Allocation failed\n");
++		return;
++	}
++
++	ptr1[40] = 'x';
++	if (ptr1 == ptr2)
++		pr_err("Could not detect use-after-free: ptr1 == ptr2\n");
++	free(ptr2);
++}
++
++static char global_array[10];
++
++static noinline void kasan_global_oob(void)
++{
++	volatile int i = 3;
++	char *p = &global_array[ARRAY_SIZE(global_array) + i];
++
++	pr_info("out-of-bounds global variable\n");
++	*(volatile char *)p;
++}
++
++static noinline void kasan_stack_oob(void)
++{
++	char stack_array[10];
++	volatile int i = 0;
++	char *p = &stack_array[ARRAY_SIZE(stack_array) + i];
++
++	pr_info("out-of-bounds on stack\n");
++	*(volatile char *)p;
++}
++
++static noinline void kasan_alloca_oob_left(void)
++{
++	volatile int i = 10;
++	char alloca_array[i];
++	char *p = alloca_array - 1;
++
++	pr_info("out-of-bounds to left on alloca\n");
++	*(volatile char *)p;
++}
++
++static noinline void kasan_alloca_oob_right(void)
++{
++	volatile int i = 10;
++	char alloca_array[i];
++	char *p = alloca_array + i;
++
++	pr_info("out-of-bounds to right on alloca\n");
++	*(volatile char *)p;
++}
++
++static noinline void kasan_memchr(void)
++{
++	char *ptr;
++	size_t size = 24;
++
++	pr_info("out-of-bounds in memchr\n");
++	ptr = kzalloc(size, 0);
++	if (!ptr)
++		return;
++
++	kasan_ptr_result = memchr(ptr, '1', size + 1);
++	free(ptr);
++}
++
++static noinline void kasan_memcmp(void)
++{
++	char *ptr;
++	size_t size = 24;
++	int arr[9];
++
++	pr_info("out-of-bounds in memcmp\n");
++	ptr = kzalloc(size, 0);
++	if (!ptr)
++		return;
++
++	memset(arr, 0, sizeof(arr));
++	kasan_int_result = memcmp(ptr, arr, size + 1);
++	free(ptr);
++}
++
++static noinline void kasan_strings(void)
++{
++	char *ptr;
++	size_t size = 24;
++
++	pr_info("use-after-free in strchr\n");
++	ptr = malloc(size);
++	if (!ptr)
++		return;
++
++	free(ptr);
++
++	/*
++	 * Try to cause only 1 invalid access (less spam in dmesg).
++	 * For that we need ptr to point to zeroed byte.
++	 * Skip metadata that could be stored in freed object so ptr
++	 * will likely point to zeroed byte.
++	 */
++	ptr += 16;
++	kasan_ptr_result = strchr(ptr, '1');
++
++	pr_info("use-after-free in strrchr\n");
++	kasan_ptr_result = strrchr(ptr, '1');
++
++	pr_info("use-after-free in strcmp\n");
++	kasan_int_result = strcmp(ptr, "2");
++
++	pr_info("use-after-free in strncmp\n");
++	kasan_int_result = strncmp(ptr, "2", 1);
++
++	pr_info("use-after-free in strlen\n");
++	kasan_int_result = strlen(ptr);
++
++	pr_info("use-after-free in strnlen\n");
++	kasan_int_result = strnlen(ptr, 1);
++}
++
++static noinline void kasan_bitops(void)
++{
++	/*
++	 * Allocate 1 more byte, which causes kzalloc to round up to 16-bytes;
++	 * this way we do not actually corrupt other memory.
++	 */
++	long *bits = xzalloc(sizeof(*bits) + 1);
++	if (!bits)
++		return;
++
++	/*
++	 * Below calls try to access bit within allocated memory; however, the
++	 * below accesses are still out-of-bounds, since bitops are defined to
++	 * operate on the whole long the bit is in.
++	 */
++	pr_info("out-of-bounds in set_bit\n");
++	set_bit(BITS_PER_LONG, bits);
++
++	pr_info("out-of-bounds in __set_bit\n");
++	__set_bit(BITS_PER_LONG, bits);
++
++	pr_info("out-of-bounds in clear_bit\n");
++	clear_bit(BITS_PER_LONG, bits);
++
++	pr_info("out-of-bounds in __clear_bit\n");
++	__clear_bit(BITS_PER_LONG, bits);
++
++	pr_info("out-of-bounds in change_bit\n");
++	change_bit(BITS_PER_LONG, bits);
++
++	pr_info("out-of-bounds in __change_bit\n");
++	__change_bit(BITS_PER_LONG, bits);
++
++	/*
++	 * Below calls try to access bit beyond allocated memory.
++	 */
++	pr_info("out-of-bounds in test_and_set_bit\n");
++	test_and_set_bit(BITS_PER_LONG + BITS_PER_BYTE, bits);
++
++	pr_info("out-of-bounds in __test_and_set_bit\n");
++	__test_and_set_bit(BITS_PER_LONG + BITS_PER_BYTE, bits);
++
++	pr_info("out-of-bounds in test_and_clear_bit\n");
++	test_and_clear_bit(BITS_PER_LONG + BITS_PER_BYTE, bits);
++
++	pr_info("out-of-bounds in __test_and_clear_bit\n");
++	__test_and_clear_bit(BITS_PER_LONG + BITS_PER_BYTE, bits);
++
++	pr_info("out-of-bounds in test_and_change_bit\n");
++	test_and_change_bit(BITS_PER_LONG + BITS_PER_BYTE, bits);
++
++	pr_info("out-of-bounds in __test_and_change_bit\n");
++	__test_and_change_bit(BITS_PER_LONG + BITS_PER_BYTE, bits);
++
++	pr_info("out-of-bounds in test_bit\n");
++	kasan_int_result = test_bit(BITS_PER_LONG + BITS_PER_BYTE, bits);
++
++#if defined(clear_bit_unlock_is_negative_byte)
++	pr_info("out-of-bounds in clear_bit_unlock_is_negative_byte\n");
++	kasan_int_result = clear_bit_unlock_is_negative_byte(BITS_PER_LONG +
++		BITS_PER_BYTE, bits);
++#endif
++	free(bits);
++}
++
++static int do_kasan_test(int argc, char *argv[])
++{
++	/*
++	 * Temporarily enable multi-shot mode. Otherwise, we'd only get a
++	 * report for the first case.
++	 */
++	bool multishot = kasan_save_enable_multi_shot();
++
++	malloc_oob_right();
++	malloc_oob_left();
++	malloc_oob_realloc_more();
++	malloc_oob_realloc_less();
++	malloc_oob_16();
++	malloc_oob_in_memset();
++	malloc_oob_memset_2();
++	malloc_oob_memset_4();
++	malloc_oob_memset_8();
++	malloc_oob_memset_16();
++	malloc_uaf();
++	malloc_uaf_memset();
++	malloc_uaf2();
++	kasan_stack_oob();
++	kasan_global_oob();
++	kasan_alloca_oob_left();
++	kasan_alloca_oob_right();
++	kasan_memchr();
++	kasan_memcmp();
++	kasan_strings();
++	kasan_bitops();
++
++	kasan_restore_multi_shot(multishot);
++
++        return 0;
++}
++
++BAREBOX_CMD_START(kasan_tests)
++        .cmd            = do_kasan_test,
++        BAREBOX_CMD_DESC("Run KAsan tests")
++        BAREBOX_CMD_COMPLETE(empty_complete)
++BAREBOX_CMD_END
 -- 
 2.28.0
 
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
