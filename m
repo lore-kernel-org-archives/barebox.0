@@ -1,17 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kMv8X-0004gp-6O
- for barebox@lists.infradead.org; Mon, 28 Sep 2020 15:32:22 +0000
-Date: Mon, 28 Sep 2020 17:32:19 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200928153219.GK11648@pengutronix.de>
-References: <20200928144146.21931-1-a.fatoum@pengutronix.de>
- <20200928145818.GH11648@pengutronix.de>
- <510aac46-363f-a521-18a6-0b062368ef63@pengutronix.de>
+ id 1kMvAg-0005Bi-FR
+ for barebox@lists.infradead.org; Mon, 28 Sep 2020 15:34:36 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 28 Sep 2020 17:34:28 +0200
+Message-Id: <20200928153431.1095-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <510aac46-363f-a521-18a6-0b062368ef63@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,41 +19,106 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] lib: kasan: remove reference of non-existent
- test_kasan.o
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/4] vsprintf: constify pointers where appropriate
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Mon, Sep 28, 2020 at 04:59:40PM +0200, Ahmad Fatoum wrote:
-> On 9/28/20 4:58 PM, Sascha Hauer wrote:
-> > On Mon, Sep 28, 2020 at 04:41:45PM +0200, Ahmad Fatoum wrote:
-> >> We don't have anything that test_kasan.o can be generated out of,
-> >> thus drop it to fix the build.
-> >>
-> >> It would still be nice to have this as a command, but that
-> >> should be a separate patch.
-> >>
-> >> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> >> ---
-> >>  lib/kasan/Makefile | 2 +-
-> >>  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > I prefer to add the code that I have forgotten to git add ;)
-> 
-> Wouldn't locating it in commands/ be better?
+No functional change, but makes code bit more future proof when it is
+extended.
 
-It uses internal KASan functions. Putting it into commands would mean
-that we have to include "../lib/kasan/kasan.h". That's possible of
-course, but I thought it looks better that way.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ lib/vsprintf.c | 25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
 
-Sascha
-
-
+diff --git a/lib/vsprintf.c b/lib/vsprintf.c
+index 6fe0283e8466..3e5f4db75ac8 100644
+--- a/lib/vsprintf.c
++++ b/lib/vsprintf.c
+@@ -41,7 +41,8 @@ static int skip_atoi(const char **s)
+ #define SMALL	32		/* Must be 32 == 0x20 */
+ #define SPECIAL	64		/* 0x */
+ 
+-static char *number(char *buf, char *end, unsigned long long num, int base, int size, int precision, int type)
++static char *number(char *buf, const char *end, unsigned long long num, int base, int size,
++		    int precision, int type)
+ {
+ 	/* we are called with base 8, 10 or 16, only, thus don't need "G..."  */
+ 	static const char digits[16] = "0123456789ABCDEF"; /* "GHIJKLMNOPQRSTUVWXYZ"; */
+@@ -146,7 +147,8 @@ static char *number(char *buf, char *end, unsigned long long num, int base, int
+ #define PAGE_SIZE 4096
+ #endif
+ 
+-static char *string(char *buf, char *end, char *s, int field_width, int precision, int flags)
++static char *string(char *buf, const char *end, const char *s, int field_width,
++		    int precision, int flags)
+ {
+ 	int len, i;
+ 
+@@ -176,7 +178,8 @@ static char *string(char *buf, char *end, char *s, int field_width, int precisio
+ }
+ 
+ #ifndef __PBL__
+-static char *symbol_string(char *buf, char *end, void *ptr, int field_width, int precision, int flags)
++static char *symbol_string(char *buf, const char *end, const void *ptr, int field_width,
++			   int precision, int flags)
+ {
+ 	unsigned long value = (unsigned long) ptr;
+ #ifdef CONFIG_KALLSYMS
+@@ -191,7 +194,7 @@ static char *symbol_string(char *buf, char *end, void *ptr, int field_width, int
+ }
+ 
+ static noinline_for_stack
+-char *ip4_addr_string(char *buf, char *end, const u8 *addr, int field_width,
++char *ip4_addr_string(char *buf, const char *end, const u8 *addr, int field_width,
+ 		      int precision, int flags, const char *fmt)
+ {
+ 	char ip4_addr[sizeof("255.255.255.255")];
+@@ -212,8 +215,8 @@ char *ip4_addr_string(char *buf, char *end, const u8 *addr, int field_width,
+ }
+ 
+ static noinline_for_stack
+-char *uuid_string(char *buf, char *end, const u8 *addr, int field_width,
+-		int precision, int flags, const char *fmt)
++char *uuid_string(char *buf, const char *end, const u8 *addr, int field_width,
++		  int precision, int flags, const char *fmt)
+ {
+ 	char uuid[sizeof("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx")];
+ 	char *p = uuid;
+@@ -259,8 +262,8 @@ char *uuid_string(char *buf, char *end, const u8 *addr, int field_width,
+ }
+ 
+ static noinline_for_stack
+-char *address_val(char *buf, char *end, const void *addr,
+-		int field_width, int precision, int flags, const char *fmt)
++char *address_val(char *buf, const char *end, const void *addr,
++		  int field_width, int precision, int flags, const char *fmt)
+ {
+ 	unsigned long long num;
+ 
+@@ -314,7 +317,8 @@ char *address_val(char *buf, char *end, const void *addr,
+  * function pointers are really function descriptors, which contain a
+  * pointer to the real address.
+  */
+-static char *pointer(const char *fmt, char *buf, char *end, void *ptr, int field_width, int precision, int flags)
++static char *pointer(const char *fmt, char *buf, const char *end, const void *ptr,
++		     int field_width, int precision, int flags)
+ {
+ 	switch (*fmt) {
+ 	case 'S':
+@@ -350,7 +354,8 @@ static char *pointer(const char *fmt, char *buf, char *end, void *ptr, int field
+ 	return number(buf, end, (unsigned long) ptr, 16, field_width, precision, flags);
+ }
+ #else
+-static char *pointer(const char *fmt, char *buf, char *end, void *ptr, int field_width, int precision, int flags)
++static char *pointer(const char *fmt, char *buf, const char *end, const void *ptr,
++		     int field_width, int precision, int flags)
+ {
+ 	flags |= SMALL;
+ 	if (field_width == -1) {
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.28.0
+
 
 _______________________________________________
 barebox mailing list
