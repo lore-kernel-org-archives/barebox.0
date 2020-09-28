@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kMoWO-0003uP-Jw
- for barebox@lists.infradead.org; Mon, 28 Sep 2020 08:28:33 +0000
-Date: Mon, 28 Sep 2020 10:28:31 +0200
+ id 1kMoYb-0004E5-Aj
+ for barebox@lists.infradead.org; Mon, 28 Sep 2020 08:30:50 +0000
+Date: Mon, 28 Sep 2020 10:30:47 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200928082831.GE11648@pengutronix.de>
-References: <20200921071135.561256-1-ahmad@a3f.at>
+Message-ID: <20200928083047.GF11648@pengutronix.de>
+References: <20200918084532.2794-1-s.hauer@pengutronix.de>
+ <20200918084532.2794-4-s.hauer@pengutronix.de>
+ <20200922161722.GA30919@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200921071135.561256-1-ahmad@a3f.at>
+In-Reply-To: <20200922161722.GA30919@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,30 +24,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] common: misc: support strerror(err) for all err <=
- MAX_ERRNO
-To: Ahmad Fatoum <ahmad@a3f.at>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 3/9] Kallsyms: Also resolve global variables
+To: Michael Grzeschik <mgr@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Sep 21, 2020 at 09:11:35AM +0200, Ahmad Fatoum wrote:
-> We have a _LAST_ERRNO of 3 decimal digits. strerror(_LAST_ERRNO) is ok,
-> but it's still possible that some code passes a non-error code int,
-> which will overflow the static buffer. Play it safe and bump up the
-> buffer size to at least 11 characters. This is enough to represent
-> all integers, with only 7 characters more static storage.
+On Tue, Sep 22, 2020 at 06:17:22PM +0200, Michael Grzeschik wrote:
+> Hi!
 > 
-> This way strerror(some_int_passed_by_mistake) will not invoke UB.
+> On Fri, Sep 18, 2020 at 10:45:26AM +0200, Sascha Hauer wrote:
+> > Increase the area used for resolving symbols so that global variables
+> > can also be resolved to names.
+> > 
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > ---
+> > common/kallsyms.c | 4 ++--
+> > 1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/common/kallsyms.c b/common/kallsyms.c
+> > index e15dec5dfc..2c16ab2884 100644
+> > --- a/common/kallsyms.c
+> > +++ b/common/kallsyms.c
+> > @@ -15,8 +15,8 @@ extern const unsigned long kallsyms_markers[] __attribute__((weak));
+> > 
+> > static inline int is_kernel_text(unsigned long addr)
+> > {
+> > -	if ((addr >= (unsigned long)_stext && addr <= (unsigned long)_etext))
+> > -		return 1;
+> > +        if (addr >= (unsigned long)_stext && addr <= (unsigned long)_end)
+> > +                return 1;
 > 
-> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
-> ---
-> Detected by ASAN on sandbox a while ago. The place which passed the
-> non-errno int needs probably fixing as well, but I need to find it again
-> first..
-> ---
->  common/misc.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+> tabs vs spaces.
 
-Applied, thanks
+Added a separate patch fixing it.
 
 Sascha
 
