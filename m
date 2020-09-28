@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kMvQh-0008C4-0i
+ by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1kMvQi-0000ZY-1W
  for barebox@lists.infradead.org; Mon, 28 Sep 2020 15:51:12 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <mfe@pengutronix.de>) id 1kMvQf-0000ZD-Sn
+ (envelope-from <mfe@pengutronix.de>) id 1kMvQf-0000ZJ-Tw
  for barebox@lists.infradead.org; Mon, 28 Sep 2020 17:51:05 +0200
 Received: from mfe by dude02.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <mfe@pengutronix.de>) id 1kMvQe-0000Jz-MX
+ (envelope-from <mfe@pengutronix.de>) id 1kMvQe-0000KK-PM
  for barebox@lists.infradead.org; Mon, 28 Sep 2020 17:51:04 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Mon, 28 Sep 2020 17:50:35 +0200
-Message-Id: <20200928155041.32649-13-m.felsch@pengutronix.de>
+Date: Mon, 28 Sep 2020 17:50:41 +0200
+Message-Id: <20200928155041.32649-19-m.felsch@pengutronix.de>
 In-Reply-To: <20200928155041.32649-1-m.felsch@pengutronix.de>
 References: <20200928155041.32649-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
@@ -29,62 +29,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/18] of: base: move memory init from DT to initcall
+Subject: [PATCH 18/18] ARM: boards: mx6-sabrelite: add deep-probe support
 To: barebox@lists.infradead.org
 
-From: Lucas Stach <dev@lynxeye.de>
+Explicit request the required gpio resources instead of relying on their
+existence based on the initcall level.
 
-Instead of calling it from of_probe, convert it to a initcall at
-the appropriate level. This allows to move of_probe to later in
-the init sequence while keeping the memory init at the same place,
-which is important as many other drivers need the valid memory area
-to be set up properly.
-
-Signed-off-by: Lucas Stach <dev@lynxeye.de>
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- drivers/of/base.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ .../boards/freescale-mx6-sabrelite/board.c    | 24 ++++++++++++-------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 6e2fb8b281..4f08c45e40 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -2144,10 +2144,13 @@ const struct of_device_id of_default_bus_match_table[] = {
- 	}
- };
- 
--static void of_probe_memory(void)
-+static int of_probe_memory(void)
+diff --git a/arch/arm/boards/freescale-mx6-sabrelite/board.c b/arch/arm/boards/freescale-mx6-sabrelite/board.c
+index 1b39ef82c6..7fc3d4dc3f 100644
+--- a/arch/arm/boards/freescale-mx6-sabrelite/board.c
++++ b/arch/arm/boards/freescale-mx6-sabrelite/board.c
+@@ -13,7 +13,9 @@
+ #include <mach/bbu.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
++#include <of.h>
+ #include <partition.h>
++#include <deep-probe.h>
+ #include <linux/phy.h>
+ #include <asm/io.h>
+ #include <asm/mmu.h>
+@@ -98,10 +100,6 @@ static int sabrelite_ksz9021rn_setup(void)
  {
- 	struct device_node *memory = root_node;
+ 	int ret;
  
-+	if (!IS_ENABLED(CONFIG_OFDEVICE))
-+		return 0;
-+
- 	/* Parse all available node with "memory" device_type */
- 	while (1) {
- 		memory = of_find_node_by_type(memory, "memory");
-@@ -2156,7 +2159,10 @@ static void of_probe_memory(void)
- 
- 		of_add_memory(memory, false);
- 	}
-+
-+	return 0;
- }
-+mem_initcall(of_probe_memory);
- 
- static void of_platform_device_create_root(struct device_node *np)
- {
-@@ -2186,8 +2192,6 @@ int of_probe(void)
- 	if (of_model)
- 		barebox_set_model(of_model);
- 
--	of_probe_memory();
+-	if (!of_machine_is_compatible("fsl,imx6q-sabrelite") &&
+-	    !of_machine_is_compatible("fsl,imx6dl-sabrelite"))
+-		return 0;
 -
- 	firmware = of_find_node_by_path("/firmware");
- 	if (firmware)
- 		of_platform_populate(firmware, NULL, NULL);
+ 	mxc_iomux_v3_setup_multiple_pads(sabrelite_enet_gpio_pads,
+ 			ARRAY_SIZE(sabrelite_enet_gpio_pads));
+ 
+@@ -118,11 +116,6 @@ static int sabrelite_ksz9021rn_setup(void)
+ 
+ 	return 0;
+ }
+-/*
+- * Do this before the fec initializes but after our
+- * gpios are available.
+- */
+-fs_initcall(sabrelite_ksz9021rn_setup);
+ 
+ static void sabrelite_ehci_init(void)
+ {
+@@ -134,10 +127,20 @@ static void sabrelite_ehci_init(void)
+ 
+ static int sabrelite_devices_init(void)
+ {
++	int ret;
++
+ 	if (!of_machine_is_compatible("fsl,imx6q-sabrelite") &&
+ 	    !of_machine_is_compatible("fsl,imx6dl-sabrelite"))
+ 		return 0;
+ 
++	ret = of_devices_create_on_demand_by_property("gpio-controller");
++	if (ret)
++		return ret;
++
++	ret = sabrelite_ksz9021rn_setup();
++	if (ret)
++		return ret;
++
+ 	sabrelite_ehci_init();
+ 
+ 	armlinux_set_architecture(3769);
+@@ -163,3 +166,6 @@ static int sabrelite_coredevices_init(void)
+ 	return 0;
+ }
+ coredevice_initcall(sabrelite_coredevices_init);
++
++deep_probe_enable(imx6q_sabrelite, "fsl,imx6q-sabrelite");
++deep_probe_enable(imx6dl_sabrelite, "fsl,imx6dl-sabrelite");
 -- 
 2.20.1
 
