@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kMuOy-0006uL-OC
- for barebox@lists.infradead.org; Mon, 28 Sep 2020 14:45:18 +0000
+ id 1kMuOy-0006uO-QE
+ for barebox@lists.infradead.org; Mon, 28 Sep 2020 14:45:19 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 28 Sep 2020 16:45:10 +0200
-Message-Id: <20200928144514.14398-7-a.fatoum@pengutronix.de>
+Date: Mon, 28 Sep 2020 16:45:14 +0200
+Message-Id: <20200928144514.14398-11-a.fatoum@pengutronix.de>
 In-Reply-To: <20200928144514.14398-1-a.fatoum@pengutronix.de>
 References: <20200928144514.14398-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,57 +21,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 06/10] ARM: dts: stm32mp: setup syscon-reboot-mode on TAMP
- general purpose register
+Subject: [PATCH v2 10/10] ARM: dts: i.MX6qdl: define BootROM reboot-mode on
+ top of SRC_GPR{9, 10}
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-With the reboot mode infrastructure in place, lets add the first in-tree
-user. The STM32MP1 SoCs have general purpose registers in the TAMP
-peripheral. Register 20 there is used by the vendor's U-Boot for storing
-a forced boot mode. We will use the same location for our reboot mode.
-Consistency between barebox and OS is maintained by having barebox fixup
-the device tree with the same reboot mode information it used itself, so
-we are free to choose our own mode identifiers.
+The SRC general purpose registers of the i.MX6 keep their values after a
+warm reset and are used for communication between the BootROM and upper
+level software.
+
+SRC_GPR9 allows software override of SRC_SBMR1, e.g. to boot via
+serial download protocol. Define a suitable syscon-reboot-mode
+node to use it.
+
+To have SRC_GPR9 take effect, bit 28 in SRC_GPR10 has to be set as well.
+To support this, we use the backward-compatible barebox-specific binding
+for having multiple 32-bit values for a single mode.
+
+This node will _not_ be fixed up into the kernel device tree due to
+the barebox-specific compatible, but as with all reboot mode storage,
+the referenced locations will be cleared to the normal (here all-zero)
+mode. User software that expects exclusive access to GPR9 while GPR10
+bit 28 is zero will be broken.
+
+Rebooting into serial download is now possible via:
+
+  barebox@board:/ gpr.reboot_mode.next=serial reset -r imxwd
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/dts/stm32mp151.dtsi | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ arch/arm/dts/imx6qdl.dtsi | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/arch/arm/dts/stm32mp151.dtsi b/arch/arm/dts/stm32mp151.dtsi
-index cc2540047591..ca11492de564 100644
---- a/arch/arm/dts/stm32mp151.dtsi
-+++ b/arch/arm/dts/stm32mp151.dtsi
-@@ -28,6 +28,7 @@
- 		pwm15 = &{/soc/timer@44006000/pwm};
- 		pwm16 = &{/soc/timer@44007000/pwm};
- 		pwm17 = &{/soc/timer@44008000/pwm};
-+		tamp.reboot_mode = &reboot_mode_tamp;
- 	};
- 
- };
-@@ -42,6 +43,20 @@
- 		compatible = "st,stm32mp1-ddr";
- 		reg = <0x5a003000 0x1000>;
- 	};
-+
-+	tamp@5c00a000 {
-+		compatible = "simple-bus", "syscon", "simple-mfd";
-+		reg = <0x5c00a000 0x400>;
-+
-+		reboot_mode_tamp: reboot-mode {
-+			compatible = "syscon-reboot-mode";
-+			offset = <0x150>; /* reg20 */
-+			mask = <0xff>;
-+			mode-normal = <0>;
-+			mode-loader = <0xBB>;
-+			mode-recovery = <0xBC>;
-+		};
+diff --git a/arch/arm/dts/imx6qdl.dtsi b/arch/arm/dts/imx6qdl.dtsi
+index 828be9ce0dbb..c3e02d2117b3 100644
+--- a/arch/arm/dts/imx6qdl.dtsi
++++ b/arch/arm/dts/imx6qdl.dtsi
+@@ -6,5 +6,26 @@
+ 		pwm2 = &pwm3;
+ 		pwm3 = &pwm4;
+ 		ipu0 = &ipu1;
++		gpr.reboot_mode = &reboot_mode_gpr;
 +	};
++};
++
++&src {
++	compatible = "fsl,imx6q-src", "fsl,imx51-src", "syscon", "simple-mfd";
++
++	reboot_mode_gpr: reboot-mode {
++		compatible = "barebox,syscon-reboot-mode";
++		offset = <0x40>, <0x44>; /* SRC_GPR{9,10} */
++		mask = <0xffffffff>, <0x10000000>;
++		mode-normal = <0>, <0>;
++		mode-serial = <0x00000010>, <0x10000000>;
++		mode-spi0-0 = <0x08000030>, <0x10000000>;
++		mode-spi0-1 = <0x18000030>, <0x10000000>;
++		mode-spi0-2 = <0x28000030>, <0x10000000>;
++		mode-spi0-3 = <0x38000030>, <0x10000000>;
++		mode-mmc0 = <0x00002040>, <0x10000000>;
++		mode-mmc1 = <0x00002840>, <0x10000000>;
++		mode-mmc2 = <0x00003040>, <0x10000000>;
++		mode-mmc3 = <0x00003840>, <0x10000000>;
+ 	};
  };
- 
- &bsec {
 -- 
 2.28.0
 
