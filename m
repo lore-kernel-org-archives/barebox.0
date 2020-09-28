@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kMuLd-0006Ko-4f
- for barebox@lists.infradead.org; Mon, 28 Sep 2020 14:41:49 +0000
+ id 1kMuOy-0006uI-Kh
+ for barebox@lists.infradead.org; Mon, 28 Sep 2020 14:45:18 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 28 Sep 2020 16:41:46 +0200
-Message-Id: <20200928144146.21931-2-a.fatoum@pengutronix.de>
-In-Reply-To: <20200928144146.21931-1-a.fatoum@pengutronix.de>
-References: <20200928144146.21931-1-a.fatoum@pengutronix.de>
+Date: Mon, 28 Sep 2020 16:45:04 +0200
+Message-Id: <20200928144514.14398-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,44 +19,99 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] lib: kasan: migrate Kconfig option to Debugging menu
+Subject: [PATCH v2 00/10] power: reset: add support for syscon reboot
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-UBSAN and ASAN as well as other debugging aids are all in the
-Debugging menu. Relocate KASAN to be there as well.
+v1 -> v2:
+ - Fixed use-after-free when attempting to fix up barebox internal
+   device tree (Sascha)
+ - reworded commit message in last patch to explicitly indicate
+   that imxwd must be used as reset for syscon to maintain value
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- common/Kconfig | 1 +
- lib/Kconfig    | 2 --
- 2 files changed, 1 insertion(+), 2 deletions(-)
+With this patch set, we have a framework to generically support passing
+reboot modes to previous bootloader stages as well as process them.
+Stuff you can do with this:
 
-diff --git a/common/Kconfig b/common/Kconfig
-index 8b8b30db0fc7..9419977276b2 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -1379,6 +1379,7 @@ config PBL_BREAK
- 	  on early pbl init. This option should be used only with JTAG debugger!
- 
- source "lib/Kconfig.ubsan"
-+source "lib/kasan/Kconfig"
- 
- config ASAN
- 	bool "ASAN: runtime memory debugger"
-diff --git a/lib/Kconfig b/lib/Kconfig
-index 6d909c1ac8f0..90552f3c2762 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -154,8 +154,6 @@ source "lib/logo/Kconfig"
- 
- source "lib/bootstrap/Kconfig"
- 
--source "lib/kasan/Kconfig"
--
- config PRINTF_UUID
- 	bool
- 
+  linux$ reboot recovery
+  * fall into barebox menu prompt, unless overridden *
+
+  linux$ reboot emmc
+  * sources /env/bmode/emmc if available *
+
+  barebox$ gpr.reboot_mode.next=serial reset -r imxwd
+  * fall into imx-usb-loader mode *
+
+To enable this, besides having kernel and bootloader driver support,
+you'll need to describe in the device tree where the reboot mode is
+to be stored and what reboot modes there are.
+This patch set implements it for two SoC families:
+
+stm32mp15x:
+  - All now support `reboot loader` and `reboot recovery` from Linux,
+    if the syscon exists (The reboot mode itself is fixed up).
+
+i.MX6Q/DL:
+  - No OS communication by default, but you can now easily tell the
+    BootROM where to boot from after warm reset
+
+One thing missing in this series is support for nvmem-reboot-mode.
+I ported the kernel driver[], but didn't come around to test it.
+
+Details inside. Feedback appreciated. 
+
+[1]: https://github.com/a3f/barebox/tree/reboot_mode
+
+Ahmad Fatoum (10):
+  usbgadget: autostart: support delayed usbgadget.autostart=1
+  drivers: add reboot-mode infrastructure
+  power: reset: reboot-mode: port syscon-reboot-mode support
+  power: reset: reboot-mode: fix up node into boot device tree
+  defaultenv: provide defaults for generic reboot modes
+  ARM: dts: stm32mp: setup syscon-reboot-mode on TAMP general purpose
+    register
+  ARM: stm32mp: remove custom reboot mode logic from arch code
+  power: reset: reboot-mode: support multi-word magic
+  power: reset: syscon-reboot-mode: support multi-word reboot modes
+  ARM: dts: i.MX6qdl: define BootROM reboot-mode on top of SRC_GPR{9,10}
+
+ Documentation/user/defaultenv-2.rst           |  18 +-
+ Documentation/user/reboot-mode.rst            |  95 +++++++
+ arch/arm/dts/imx6qdl.dtsi                     |  21 ++
+ arch/arm/dts/stm32mp151.dtsi                  |  15 ++
+ .../mach-stm32mp/include/mach/bootsource.h    |  12 -
+ arch/arm/mach-stm32mp/init.c                  |  16 +-
+ common/Kconfig                                |   5 +
+ common/startup.c                              |  16 ++
+ common/usbgadget.c                            |   6 +-
+ defaultenv/Makefile                           |   1 +
+ .../defaultenv-2-reboot-mode/bmode/bootloader |   3 +
+ .../defaultenv-2-reboot-mode/bmode/loader     |   2 +
+ .../defaultenv-2-reboot-mode/bmode/recovery   |   2 +
+ defaultenv/defaultenv.c                       |   2 +
+ drivers/Kconfig                               |   1 +
+ drivers/Makefile                              |   1 +
+ drivers/power/Kconfig                         |   2 +
+ drivers/power/Makefile                        |   2 +
+ drivers/power/reset/Kconfig                   |  16 ++
+ drivers/power/reset/Makefile                  |   3 +
+ drivers/power/reset/reboot-mode.c             | 233 ++++++++++++++++++
+ drivers/power/reset/syscon-reboot-mode.c      | 129 ++++++++++
+ include/linux/reboot-mode.h                   |  38 +++
+ include/of.h                                  |   2 +
+ 24 files changed, 608 insertions(+), 33 deletions(-)
+ create mode 100644 Documentation/user/reboot-mode.rst
+ create mode 100644 defaultenv/defaultenv-2-reboot-mode/bmode/bootloader
+ create mode 100755 defaultenv/defaultenv-2-reboot-mode/bmode/loader
+ create mode 100644 defaultenv/defaultenv-2-reboot-mode/bmode/recovery
+ create mode 100644 drivers/power/Kconfig
+ create mode 100644 drivers/power/Makefile
+ create mode 100644 drivers/power/reset/Kconfig
+ create mode 100644 drivers/power/reset/Makefile
+ create mode 100644 drivers/power/reset/reboot-mode.c
+ create mode 100644 drivers/power/reset/syscon-reboot-mode.c
+ create mode 100644 include/linux/reboot-mode.h
+
 -- 
 2.28.0
 
