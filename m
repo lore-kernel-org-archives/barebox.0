@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kMvIg-0006Vg-Qp
+ id 1kMvIg-0006Vj-Qt
  for barebox@lists.infradead.org; Mon, 28 Sep 2020 15:42:52 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 28 Sep 2020 17:42:41 +0200
-Message-Id: <20200928154247.15619-1-a.fatoum@pengutronix.de>
+Date: Mon, 28 Sep 2020 17:42:44 +0200
+Message-Id: <20200928154247.15619-4-a.fatoum@pengutronix.de>
+In-Reply-To: <20200928154247.15619-1-a.fatoum@pengutronix.de>
+References: <20200928154247.15619-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,87 +21,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/7] driver: introduce less error-prone dev_get_drvdata
- alternative
+Subject: [PATCH 4/7] aiodev: lm75: fix out-of-bounds write on 64-bit SoCs
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-We use dev_get_drvdata to get the driver match data associated with a
-device. This has two shortcomings:
+Probing the lm75 device driver on 64 bit systems invokes
+undefined behavior, because of an errant cast. Fix this.
 
- - Linux has dev_get_drvdata too, which returns a private pointer for
-   driver specific info to associate with a device. We use dev->priv
-   (or more often container_of) for that in barebox instead
-
- - It nearly always involves a cast to a double pointer, which is
-   error-prone as size and alignment match need to be ensured
-   on the programmer's part and can easily be gotten wrong:
-	enum dev_type type
-	dev_get_drvdata(dev, (const void **)&type);
-
-Add a new function that instead of using a double pointer argument,
-returns the pointer directly:
-
- - For normal pointer driver data, no cast is necessary
- - For integer driver data casted to a pointer for storage,
-   the cast is still necessary, but
+This has a side-effect: Whereas before, probing devices matched by
+driver name failed with -ENODEV, they are now considered to be
+compatible to adt75 instead. As we don't depend on this, this
+is deemed acceptable.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/base/driver.c | 11 +++++++++++
- include/driver.h      | 18 ++++++++++++++++++
- 2 files changed, 29 insertions(+)
+ drivers/aiodev/lm75.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index 412db6c40699..3205bbc3c33b 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -500,3 +500,14 @@ int dev_get_drvdata(struct device_d *dev, const void **data)
+diff --git a/drivers/aiodev/lm75.c b/drivers/aiodev/lm75.c
+index 8186fd2c2b97..4bdccaad5828 100644
+--- a/drivers/aiodev/lm75.c
++++ b/drivers/aiodev/lm75.c
+@@ -109,9 +109,7 @@ static int lm75_probe(struct device_d *dev)
+ 	int new, ret;
+ 	enum lm75_type kind;
  
- 	return -ENODEV;
- }
-+
-+const void *device_get_match_data(struct device_d *dev)
-+{
-+	if (dev->of_id_entry)
-+		return dev->of_id_entry->data;
-+
-+	if (dev->id_entry)
-+		return (void *)dev->id_entry->driver_data;
-+
-+	return NULL;
-+}
-diff --git a/include/driver.h b/include/driver.h
-index 154525e0fde7..14220431f2d6 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -534,8 +534,26 @@ int devfs_create_partitions(const char *devname,
- #define DRV_OF_COMPAT(compat) \
- 	IS_ENABLED(CONFIG_OFDEVICE) ? (compat) : NULL
+-	ret = dev_get_drvdata(dev, (const void **)&kind);
+-	if (ret)
+-		return ret;
++	kind = (enum lm75_type)device_get_match_data(dev);
  
-+/**
-+ * dev_get_drvdata - get driver match data associated with device
-+ * @dev: device instance
-+ * @data: pointer to void *, where match data is stored
-+ *
-+ * Returns 0 on success and error code otherwise.
-+ *
-+ * DEPRECATED: use device_get_match_data instead, which avoids
-+ * common pitfalls due to explicit pointer casts
-+ */
- int dev_get_drvdata(struct device_d *dev, const void **data);
+ 	data = xzalloc(sizeof(*data));
  
-+/**
-+ * device_get_match_data - get driver match data associated with device
-+ * @dev: device instance
-+ *
-+ * Returns match data on success and NULL otherwise
-+ */
-+const void *device_get_match_data(struct device_d *dev);
-+
- int device_match_of_modalias(struct device_d *dev, struct driver_d *drv);
- 
- #endif /* DRIVER_H */
 -- 
 2.28.0
 
