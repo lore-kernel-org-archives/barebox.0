@@ -1,18 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kMvDL-0005uj-LB
- for barebox@lists.infradead.org; Mon, 28 Sep 2020 15:37:20 +0000
-References: <20200928144146.21931-1-a.fatoum@pengutronix.de>
- <20200928145818.GH11648@pengutronix.de>
- <510aac46-363f-a521-18a6-0b062368ef63@pengutronix.de>
- <20200928153219.GK11648@pengutronix.de>
+ id 1kMvIg-0006Vg-Qp
+ for barebox@lists.infradead.org; Mon, 28 Sep 2020 15:42:52 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <f1835301-d6a2-59e6-429d-c7e9e7596688@pengutronix.de>
-Date: Mon, 28 Sep 2020 17:37:18 +0200
+Date: Mon, 28 Sep 2020 17:42:41 +0200
+Message-Id: <20200928154247.15619-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20200928153219.GK11648@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,48 +19,90 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] lib: kasan: remove reference of non-existent
- test_kasan.o
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/7] driver: introduce less error-prone dev_get_drvdata
+ alternative
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
+We use dev_get_drvdata to get the driver match data associated with a
+device. This has two shortcomings:
 
+ - Linux has dev_get_drvdata too, which returns a private pointer for
+   driver specific info to associate with a device. We use dev->priv
+   (or more often container_of) for that in barebox instead
 
-On 9/28/20 5:32 PM, Sascha Hauer wrote:
-> On Mon, Sep 28, 2020 at 04:59:40PM +0200, Ahmad Fatoum wrote:
->> On 9/28/20 4:58 PM, Sascha Hauer wrote:
->>> On Mon, Sep 28, 2020 at 04:41:45PM +0200, Ahmad Fatoum wrote:
->>>> We don't have anything that test_kasan.o can be generated out of,
->>>> thus drop it to fix the build.
->>>>
->>>> It would still be nice to have this as a command, but that
->>>> should be a separate patch.
->>>>
->>>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->>>> ---
->>>>  lib/kasan/Makefile | 2 +-
->>>>  1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> I prefer to add the code that I have forgotten to git add ;)
->>
->> Wouldn't locating it in commands/ be better?
-> 
-> It uses internal KASan functions. Putting it into commands would mean
-> that we have to include "../lib/kasan/kasan.h". That's possible of
-> course, but I thought it looks better that way.
+ - It nearly always involves a cast to a double pointer, which is
+   error-prone as size and alignment match need to be ensured
+   on the programmer's part and can easily be gotten wrong:
+	enum dev_type type
+	dev_get_drvdata(dev, (const void **)&type);
 
-Ok.
+Add a new function that instead of using a double pointer argument,
+returns the pointer directly:
 
-> 
-> Sascha
-> 
-> 
+ - For normal pointer driver data, no cast is necessary
+ - For integer driver data casted to a pointer for storage,
+   the cast is still necessary, but
 
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/base/driver.c | 11 +++++++++++
+ include/driver.h      | 18 ++++++++++++++++++
+ 2 files changed, 29 insertions(+)
+
+diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+index 412db6c40699..3205bbc3c33b 100644
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -500,3 +500,14 @@ int dev_get_drvdata(struct device_d *dev, const void **data)
+ 
+ 	return -ENODEV;
+ }
++
++const void *device_get_match_data(struct device_d *dev)
++{
++	if (dev->of_id_entry)
++		return dev->of_id_entry->data;
++
++	if (dev->id_entry)
++		return (void *)dev->id_entry->driver_data;
++
++	return NULL;
++}
+diff --git a/include/driver.h b/include/driver.h
+index 154525e0fde7..14220431f2d6 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -534,8 +534,26 @@ int devfs_create_partitions(const char *devname,
+ #define DRV_OF_COMPAT(compat) \
+ 	IS_ENABLED(CONFIG_OFDEVICE) ? (compat) : NULL
+ 
++/**
++ * dev_get_drvdata - get driver match data associated with device
++ * @dev: device instance
++ * @data: pointer to void *, where match data is stored
++ *
++ * Returns 0 on success and error code otherwise.
++ *
++ * DEPRECATED: use device_get_match_data instead, which avoids
++ * common pitfalls due to explicit pointer casts
++ */
+ int dev_get_drvdata(struct device_d *dev, const void **data);
+ 
++/**
++ * device_get_match_data - get driver match data associated with device
++ * @dev: device instance
++ *
++ * Returns match data on success and NULL otherwise
++ */
++const void *device_get_match_data(struct device_d *dev);
++
+ int device_match_of_modalias(struct device_d *dev, struct driver_d *drv);
+ 
+ #endif /* DRIVER_H */
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.28.0
+
 
 _______________________________________________
 barebox mailing list
