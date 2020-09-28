@@ -1,12 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kMq4r-0003w8-Dp
- for barebox@lists.infradead.org; Mon, 28 Sep 2020 10:08:14 +0000
+ id 1kMrgi-0005nv-W3
+ for barebox@lists.infradead.org; Mon, 28 Sep 2020 11:51:25 +0000
+References: <20200914095948.16811-1-a.fatoum@pengutronix.de>
+ <20200928093102.GA12463@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 28 Sep 2020 12:08:09 +0200
-Message-Id: <20200928100809.25868-1-a.fatoum@pengutronix.de>
+Message-ID: <ffe4a9fa-5eec-c9ee-d9d3-44fcd426cc4c@pengutronix.de>
+Date: Mon, 28 Sep 2020 13:51:22 +0200
 MIME-Version: 1.0
+In-Reply-To: <20200928093102.GA12463@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,70 +23,84 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: at91: support sama5 low level clock setup with oscillator
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, Michael Grzeschik <mgr@pengutronix.de>
+Subject: Re: [PATCH] readkey: shrink table of known escape sequences in size
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-AT91Bootstrap has a CONFIG_MCK_BYPASS option with following help text:
+Hello Sascha,
 
-  "Use external 8 to 24 Mhz clock signal as source of main clock
-  instead of an external crystal oscillator.
-  This option disables the internal driving on the XOUT pin.
-  The external source has to provide a stable clock on the XIN pin.
-  If this option is disabled, the SoC expects a crystal oscillator
-  that needs driving on both XIN and XOUT lines."
+On 9/28/20 11:31 AM, Sascha Hauer wrote:
+> On Mon, Sep 14, 2020 at 11:59:48AM +0200, Ahmad Fatoum wrote:
+>> Instead of storing pointers to 4-byte strings, we could just store the
+>> characters directly in the struct. Can save us up to 18 pointers worth
+>> of space. Additionally, the nul byte need not be stored explicitly for
+>> 3-byte strings, if we know those are the largest strings we have.
+>>
+>> The latter likely does not save us any space because of the usual
+>> alignment rules, but it will allow us to support sequences one byte
+>> bigger in future at no increase in size.
+>>
+>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>> ---
+>>  lib/readkey.c | 8 +++++---
+>>  1 file changed, 5 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/lib/readkey.c b/lib/readkey.c
+>> index c26e9d51aba9..551296de3eb6 100644
+>> --- a/lib/readkey.c
+>> +++ b/lib/readkey.c
+>> @@ -20,8 +20,10 @@
+>>  #include <linux/ctype.h>
+>>  #include <readkey.h>
+>>  
+>> +#define MAX_ESC_LEN 3
+>> +
+>>  struct esc_cmds {
+>> -	const char *seq;
+>> +	const char seq[MAX_ESC_LEN];
+> 
+> I would have expected that when this array is initialized with a static
+> initializer, the compiler would add a \0 at the end. Apparently this is
+> not the case, initializing this 3 byte array with "[6~" is perfectly
+> fine for the compiler.
 
-When the low level clock setup was ported over from AT91Bootstrap,
-this config option was dropped. It wasn't necessary for the xplained
-boards that have a crystal, but for ones with an oscillator, it's
-required. Add the bit flag back.
+Initializers are padded with zeroes if they are too short.
 
-Suggested-by: Michael Grzeschik <mgr@pengutronix.de>
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- arch/arm/mach-at91/at91_pmc_ll.c              | 2 ++
- arch/arm/mach-at91/include/mach/at91_pmc_ll.h | 5 +++++
- 2 files changed, 7 insertions(+)
+>> @@ -49,7 +51,7 @@ static const struct esc_cmds esccmds[] = {
+>>  int read_key(void)
+>>  {
+>>  	unsigned char c;
+>> -	unsigned char esc[5];
+>> +	unsigned char esc[MAX_ESC_LEN + 2];
+>>  	c = getchar();
+>>  
+>>  	if (c == 27) {
+>> @@ -67,7 +69,7 @@ int read_key(void)
+>>  		}
+>>  		esc[i] = 0;
+>>  		for (i = 0; i < ARRAY_SIZE(esccmds); i++){
+>> -			if (!strcmp(esc, esccmds[i].seq))
+>> +			if (!strncmp(esc, esccmds[i].seq, MAX_ESC_LEN))
+>>  				return esccmds[i].val;
+> 
+> Anyway, I don't think we should play tricks with dropping string
+> termination characters just to squeeze some bytes out of the binary.
 
-diff --git a/arch/arm/mach-at91/at91_pmc_ll.c b/arch/arm/mach-at91/at91_pmc_ll.c
-index 9205322db972..e561f207551d 100644
---- a/arch/arm/mach-at91/at91_pmc_ll.c
-+++ b/arch/arm/mach-at91/at91_pmc_ll.c
-@@ -88,6 +88,8 @@ void at91_pmc_init(void __iomem *pmc_base, unsigned int flags)
- 		tmp &= ~AT91_PMC_OSCBYPASS;
- 		tmp &= ~AT91_PMC_KEY_MASK;
- 		tmp |= AT91_PMC_KEY;
-+		if (flags & AT91_PMC_LL_FLAG_MCK_BYPASS)
-+			tmp |= AT91_PMC_OSCBYPASS;
- 		at91_pmc_write(AT91_CKGR_MOR, tmp);
- 
- 		tmp = at91_pmc_read(AT91_CKGR_MOR);
-diff --git a/arch/arm/mach-at91/include/mach/at91_pmc_ll.h b/arch/arm/mach-at91/include/mach/at91_pmc_ll.h
-index 6ec3ae0852c6..85896a01d5b5 100644
---- a/arch/arm/mach-at91/include/mach/at91_pmc_ll.h
-+++ b/arch/arm/mach-at91/include/mach/at91_pmc_ll.h
-@@ -16,6 +16,7 @@
- #define AT91_PMC_LL_FLAG_H32MXDIV	(1 << 3)
- #define AT91_PMC_LL_FLAG_PMC_UTMI	(1 << 4)
- #define AT91_PMC_LL_FLAG_GCSR		(1 << 5)
-+#define AT91_PMC_LL_FLAG_MCK_BYPASS	(1 << 6)
- 
- #define AT91_PMC_LL_AT91RM9200	(0)
- #define AT91_PMC_LL_AT91SAM9260	(0)
-@@ -30,6 +31,10 @@
- #define AT91_PMC_LL_SAMA5D2	(AT91_PMC_LL_FLAG_SAM9X5_PMC | \
- 				 AT91_PMC_LL_FLAG_MEASURE_XTAL | \
- 				 AT91_PMC_LL_FLAG_PMC_UTMI)
-+/* This assumes a crystal on both XIN and XOUT. If your board
-+ * instead has an extenal oscillator on XIN only,
-+ * AT91_PMC_LL_FLAG_MCK_BYPASS needs to be OR`ed in as well
-+ */
- #define AT91_PMC_LL_SAMA5D3	(AT91_PMC_LL_FLAG_SAM9X5_PMC | \
- 				 AT91_PMC_LL_FLAG_DISABLE_RC | \
- 				 AT91_PMC_LL_FLAG_PMC_UTMI)
+I can define #define MAX_ESC_LEN 4 if you prefer that, but I consider
+it superfluous.
+
+Cheers,
+Ahmad
+
+> 
+> Sascha
+> 
+
 -- 
-2.28.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
