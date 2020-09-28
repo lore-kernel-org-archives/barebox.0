@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kMuOy-0006uO-QE
- for barebox@lists.infradead.org; Mon, 28 Sep 2020 14:45:19 +0000
+ id 1kMuOy-0006uM-QI
+ for barebox@lists.infradead.org; Mon, 28 Sep 2020 14:45:20 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 28 Sep 2020 16:45:14 +0200
-Message-Id: <20200928144514.14398-11-a.fatoum@pengutronix.de>
+Date: Mon, 28 Sep 2020 16:45:08 +0200
+Message-Id: <20200928144514.14398-5-a.fatoum@pengutronix.de>
 In-Reply-To: <20200928144514.14398-1-a.fatoum@pengutronix.de>
 References: <20200928144514.14398-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,69 +21,98 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 10/10] ARM: dts: i.MX6qdl: define BootROM reboot-mode on
- top of SRC_GPR{9, 10}
+Subject: [PATCH v2 04/10] power: reset: reboot-mode: fix up node into boot
+ device tree
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The SRC general purpose registers of the i.MX6 keep their values after a
-warm reset and are used for communication between the BootROM and upper
-level software.
-
-SRC_GPR9 allows software override of SRC_SBMR1, e.g. to boot via
-serial download protocol. Define a suitable syscon-reboot-mode
-node to use it.
-
-To have SRC_GPR9 take effect, bit 28 in SRC_GPR10 has to be set as well.
-To support this, we use the backward-compatible barebox-specific binding
-for having multiple 32-bit values for a single mode.
-
-This node will _not_ be fixed up into the kernel device tree due to
-the barebox-specific compatible, but as with all reboot mode storage,
-the referenced locations will be cleared to the normal (here all-zero)
-mode. User software that expects exclusive access to GPR9 while GPR10
-bit 28 is zero will be broken.
-
-Rebooting into serial download is now possible via:
-
-  barebox@board:/ gpr.reboot_mode.next=serial reset -r imxwd
+Instead of relying that the kernel and barebox device trees are in sync,
+just enforce it by having barebox fix up the device tree node it probed
+into the kernel device tree. We usually want that, but some reboot mode
+drivers might want to inhibit the fixup, e.g. because they implement
+a non-upstream binding or because they communicate with the BootROM,
+while the kernel shouldn't. For those the fixup is made optional via
+a struct reboot_mode_driver::no_fixup member.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/dts/imx6qdl.dtsi | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ drivers/power/reset/reboot-mode.c | 43 +++++++++++++++++++++++++++++++
+ include/linux/reboot-mode.h       |  1 +
+ 2 files changed, 44 insertions(+)
 
-diff --git a/arch/arm/dts/imx6qdl.dtsi b/arch/arm/dts/imx6qdl.dtsi
-index 828be9ce0dbb..c3e02d2117b3 100644
---- a/arch/arm/dts/imx6qdl.dtsi
-+++ b/arch/arm/dts/imx6qdl.dtsi
-@@ -6,5 +6,26 @@
- 		pwm2 = &pwm3;
- 		pwm3 = &pwm4;
- 		ipu0 = &ipu1;
-+		gpr.reboot_mode = &reboot_mode_gpr;
-+	};
-+};
+diff --git a/drivers/power/reset/reboot-mode.c b/drivers/power/reset/reboot-mode.c
+index 5992a2acd99a..bf51c00aee75 100644
+--- a/drivers/power/reset/reboot-mode.c
++++ b/drivers/power/reset/reboot-mode.c
+@@ -52,6 +52,46 @@ static int reboot_mode_add_param(struct device_d *dev,
+ 	return PTR_ERR_OR_ZERO(param);
+ }
+ 
++static struct device_node *of_get_node_by_reproducible_name(struct device_node *dstroot,
++							    struct device_node *srcnp)
++{
++	struct device_node *dstnp;
++	char *name;
 +
-+&src {
-+	compatible = "fsl,imx6q-src", "fsl,imx51-src", "syscon", "simple-mfd";
++	name = of_get_reproducible_name(srcnp);
++	dstnp = of_find_node_by_reproducible_name(dstroot, name);
++	free(name);
 +
-+	reboot_mode_gpr: reboot-mode {
-+		compatible = "barebox,syscon-reboot-mode";
-+		offset = <0x40>, <0x44>; /* SRC_GPR{9,10} */
-+		mask = <0xffffffff>, <0x10000000>;
-+		mode-normal = <0>, <0>;
-+		mode-serial = <0x00000010>, <0x10000000>;
-+		mode-spi0-0 = <0x08000030>, <0x10000000>;
-+		mode-spi0-1 = <0x18000030>, <0x10000000>;
-+		mode-spi0-2 = <0x28000030>, <0x10000000>;
-+		mode-spi0-3 = <0x38000030>, <0x10000000>;
-+		mode-mmc0 = <0x00002040>, <0x10000000>;
-+		mode-mmc1 = <0x00002840>, <0x10000000>;
-+		mode-mmc2 = <0x00003040>, <0x10000000>;
-+		mode-mmc3 = <0x00003840>, <0x10000000>;
- 	};
- };
++	return dstnp;
++}
++
++static int of_reboot_mode_fixup(struct device_node *root, void *ctx)
++{
++	struct reboot_mode_driver *reboot = ctx;
++	struct device_node *dstnp, *srcnp, *dstparent;
++
++	srcnp = reboot->dev->device_node;
++	dstnp = of_get_node_by_reproducible_name(root, srcnp);
++
++	/* nothing to do when called on barebox-internal tree */
++	if (srcnp == dstnp)
++		return 0;
++
++	if (dstnp) {
++		dstparent = dstnp->parent;
++		of_delete_node(dstnp);
++	} else {
++		dstparent = of_get_node_by_reproducible_name(root, srcnp->parent);
++	}
++
++	if (!dstparent)
++		return -EINVAL;
++
++	of_copy_node(dstparent, srcnp);
++
++	return 0;
++}
++
+ static int reboot_mode_add_globalvar(void)
+ {
+ 	struct reboot_mode_driver *reboot = __boot_mode;
+@@ -59,6 +99,9 @@ static int reboot_mode_add_globalvar(void)
+ 	if (!reboot)
+ 		return 0;
+ 
++	if (!reboot->no_fixup)
++		of_register_fixup(of_reboot_mode_fixup, reboot);
++
+ 	return reboot_mode_add_param(&global_device, "system.reboot_mode.", reboot);
+ }
+ late_initcall(reboot_mode_add_globalvar);
+diff --git a/include/linux/reboot-mode.h b/include/linux/reboot-mode.h
+index 92a1da7b5562..bc57f1d72df7 100644
+--- a/include/linux/reboot-mode.h
++++ b/include/linux/reboot-mode.h
+@@ -11,6 +11,7 @@ struct reboot_mode_driver {
+ 	struct device_d *dev;
+ 	int (*write)(struct reboot_mode_driver *reboot, u32 magic);
+ 	int priority;
++	bool no_fixup;
+ 
+ 	/* filled by reboot_mode_register */
+ 	int reboot_mode_prev, reboot_mode_next;
 -- 
 2.28.0
 
