@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kMujb-0004PK-8G
- for barebox@lists.infradead.org; Mon, 28 Sep 2020 15:06:36 +0000
-Date: Mon, 28 Sep 2020 17:06:33 +0200
+ id 1kMv8X-0004gp-6O
+ for barebox@lists.infradead.org; Mon, 28 Sep 2020 15:32:22 +0000
+Date: Mon, 28 Sep 2020 17:32:19 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200928150633.GI11648@pengutronix.de>
-References: <20200918084532.2794-1-s.hauer@pengutronix.de>
- <d2172e61-a0a7-f536-f755-032751164e0d@pengutronix.de>
+Message-ID: <20200928153219.GK11648@pengutronix.de>
+References: <20200928144146.21931-1-a.fatoum@pengutronix.de>
+ <20200928145818.GH11648@pengutronix.de>
+ <510aac46-363f-a521-18a6-0b062368ef63@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <d2172e61-a0a7-f536-f755-032751164e0d@pengutronix.de>
+In-Reply-To: <510aac46-363f-a521-18a6-0b062368ef63@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,27 +24,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/9] barebox KASan support
+Subject: Re: [PATCH 1/2] lib: kasan: remove reference of non-existent
+ test_kasan.o
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Cc: barebox@lists.infradead.org
 
-On Mon, Sep 28, 2020 at 04:33:21PM +0200, Ahmad Fatoum wrote:
-> Hello Sascha,
+On Mon, Sep 28, 2020 at 04:59:40PM +0200, Ahmad Fatoum wrote:
+> On 9/28/20 4:58 PM, Sascha Hauer wrote:
+> > On Mon, Sep 28, 2020 at 04:41:45PM +0200, Ahmad Fatoum wrote:
+> >> We don't have anything that test_kasan.o can be generated out of,
+> >> thus drop it to fix the build.
+> >>
+> >> It would still be nice to have this as a command, but that
+> >> should be a separate patch.
+> >>
+> >> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> >> ---
+> >>  lib/kasan/Makefile | 2 +-
+> >>  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > I prefer to add the code that I have forgotten to git add ;)
 > 
-> On 9/18/20 10:45 AM, Sascha Hauer wrote:
-> > This series adds KASan support to barebox. We already have ASan support
-> > for sandbox which uses libasan, this time we get KASan for use on real
-> > hardware. The KASan support is based on the Kernel code and contains the
-> > subset of features we need for barebox. KASan is currently supported on
-> > ARM(32/64) only and requires a supported allocator. Currently only the
-> > TLSF allocator is supported.
-> 
-> Should the md/mw/memcpy commands be exempt from KASAN checks?
+> Wouldn't locating it in commands/ be better?
 
-I asked myself the same question. For now I decided that including these
-commands in KASan checks helps debugging KASan. You can easily trigger a
-KASan exception with them. Also you shouldn't have any business
-manipulating the malloc area outside the allocated regions.
+It uses internal KASan functions. Putting it into commands would mean
+that we have to include "../lib/kasan/kasan.h". That's possible of
+course, but I thought it looks better that way.
 
 Sascha
 
