@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kMva1-000172-Ly
- for barebox@lists.infradead.org; Mon, 28 Sep 2020 16:00:48 +0000
-References: <20200928155041.32649-1-m.felsch@pengutronix.de>
- <20200928155041.32649-3-m.felsch@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <c8b21a2a-70ba-81ec-7c3f-cec15868b6c2@pengutronix.de>
-Date: Mon, 28 Sep 2020 18:00:45 +0200
+ id 1kMvaJ-00018H-8v
+ for barebox@lists.infradead.org; Mon, 28 Sep 2020 16:01:05 +0000
+Date: Mon, 28 Sep 2020 18:01:02 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+Message-ID: <20200928160102.GA20189@pengutronix.de>
+References: <20200928154247.15619-1-a.fatoum@pengutronix.de>
+ <20200928154247.15619-5-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20200928155041.32649-3-m.felsch@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20200928154247.15619-5-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,84 +23,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 02/18] ARM: boards: mx6-sabrelite: [cosmetic] make use of
- IMX_GPIO_NR
-To: Marco Felsch <m.felsch@pengutronix.de>, barebox@lists.infradead.org
+Subject: Re: [PATCH 5/7] mtd: nand-mxs: fix out-of-bounds write on 64-bit SoCs
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On 9/28/20 5:50 PM, Marco Felsch wrote:
-> Convert the global number to the more readable IMX_GPIO_NR() macro, no
-> functional changes.
+On 20-09-28 17:42, Ahmad Fatoum wrote:
+> Probing the nand_mxs device driver on 64 bit systems invokes
+> undefined behavior, because of an errant cast. Fix this.
 > 
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-
+> No change of behavior for 32-bit SoCs intended.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  .../boards/freescale-mx6-sabrelite/board.c    | 20 +++++++++----------
->  1 file changed, 10 insertions(+), 10 deletions(-)
+>  drivers/mtd/nand/nand_mxs.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
 > 
-> diff --git a/arch/arm/boards/freescale-mx6-sabrelite/board.c b/arch/arm/boards/freescale-mx6-sabrelite/board.c
-> index f4f2994a51..020a44297a 100644
-> --- a/arch/arm/boards/freescale-mx6-sabrelite/board.c
-> +++ b/arch/arm/boards/freescale-mx6-sabrelite/board.c
-> @@ -70,37 +70,37 @@ static int ksz9021rn_phy_fixup(struct phy_device *dev)
+> diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
+> index 36b6e7ac224e..e2b6e2162076 100644
+> --- a/drivers/mtd/nand/nand_mxs.c
+> +++ b/drivers/mtd/nand/nand_mxs.c
+> @@ -2145,9 +2145,7 @@ static int mxs_nand_probe(struct device_d *dev)
+>  	if (mxs_nand_mtd)
+>  		return -EBUSY;
 >  
->  static struct gpio fec_gpios[] = {
->  	{
-> -		.gpio = 87,
-> +		.gpio = IMX_GPIO_NR(3, 23),
->  		.flags = GPIOF_OUT_INIT_LOW,
->  		.label = "phy-rst",
->  	}, {
-> -		.gpio = 190,
-> +		.gpio = IMX_GPIO_NR(6, 30),
->  		.flags = GPIOF_OUT_INIT_HIGH,
->  		.label = "phy-addr2",
->  	}, {
-> -		.gpio = 23,
-> +		.gpio = IMX_GPIO_NR(1, 23),
->  		.flags = GPIOF_OUT_INIT_LOW,
->  		.label = "phy-led-mode",
->  	}, {
->  		/* MODE strap-in pins: advertise all capabilities */
-> -		.gpio = 185,
-> +		.gpio = IMX_GPIO_NR(6, 25),
->  		.flags = GPIOF_OUT_INIT_HIGH,
->  		.label = "phy-adv1",
->  	}, {
-> -		.gpio = 187,
-> +		.gpio = IMX_GPIO_NR(6, 27),
->  		.flags = GPIOF_OUT_INIT_HIGH,
->  		.label = "phy-adv1",
->  	}, {
-> -		.gpio = 188,
-> +		.gpio = IMX_GPIO_NR(6, 28),
->  		.flags = GPIOF_OUT_INIT_HIGH,
->  		.label = "phy-adv1",
->  	}, {
-> -		.gpio = 189,
-> +		.gpio = IMX_GPIO_NR(6, 29),
->  		.flags = GPIOF_OUT_INIT_HIGH,
->  		.label = "phy-adv1",
->  	}, {
->  		/* Enable 125 MHz clock output */
-> -		.gpio = 184,
-> +		.gpio = IMX_GPIO_NR(6, 24),
->  		.flags = GPIOF_OUT_INIT_HIGH,
->  		.label = "phy-125MHz",
->  	},
-> @@ -139,9 +139,9 @@ fs_initcall(sabrelite_ksz9021rn_setup);
->  static void sabrelite_ehci_init(void)
->  {
->  	/* hub reset */
-> -	gpio_direction_output(204, 0);
-> +	gpio_direction_output(IMX_GPIO_NR(7, 12), 0);
->  	udelay(2000);
-> -	gpio_set_value(204, 1);
-> +	gpio_set_value(IMX_GPIO_NR(7, 12), 1);
->  }
->  
->  static int sabrelite_devices_init(void)
+> -	err = dev_get_drvdata(dev, (const void **)&type);
+> -	if (err)
+> -		type = GPMI_MXS;
+> +	type = (enum gpmi_type)device_get_match_data(dev);
+
+Should we add:
+
+	if (!type)
+		type = GPMI_MXS;
+
+here?
+	
+>  	nand_info = kzalloc(sizeof(struct mxs_nand_info), GFP_KERNEL);
+>  	if (!nand_info) {
+> -- 
+> 2.28.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 > 
 
 -- 
