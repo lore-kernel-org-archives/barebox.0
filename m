@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kNDL1-0004Zx-AW
+ id 1kNDL1-0004a2-FQ
  for barebox@lists.infradead.org; Tue, 29 Sep 2020 10:58:29 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 29 Sep 2020 12:58:19 +0200
-Message-Id: <20200929105823.11542-1-a.fatoum@pengutronix.de>
+Date: Tue, 29 Sep 2020 12:58:22 +0200
+Message-Id: <20200929105823.11542-4-a.fatoum@pengutronix.de>
+In-Reply-To: <20200929105823.11542-1-a.fatoum@pengutronix.de>
+References: <20200929105823.11542-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,31 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] common: debug_ll: remove reference to undefined Kconfig
- option
+Subject: [PATCH 4/5] include: asm-generic: bitio.h don't include
+ <asm-generic/io.h> directly
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The code was copied from the kernel, but we don't support the imx6sl.
-Drop the left-over.
+<asm-generic/io.h> is not meant for direct inclusion. It provides
+defaults for each arch's <asm/io.h> to fall back to.
+Use <asm/io.h> instead.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
+ include/asm-generic/bitio.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/common/Kconfig b/common/Kconfig
-index 9e6918189bdb..be03c0d5df2b 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -1292,7 +1292,6 @@ config DEBUG_IMX_UART_PORT
- 						DEBUG_IMX51_UART || \
- 						DEBUG_IMX53_UART || \
- 						DEBUG_IMX6Q_UART || \
--						DEBUG_IMX6SL_UART || \
- 						DEBUG_IMX7D_UART || \
- 						DEBUG_IMX8M_UART || \
- 						DEBUG_VF610_UART
+diff --git a/include/asm-generic/bitio.h b/include/asm-generic/bitio.h
+index e88dbd7b8527..99b85da59c6d 100644
+--- a/include/asm-generic/bitio.h
++++ b/include/asm-generic/bitio.h
+@@ -3,7 +3,7 @@
+ #ifndef __ASM_GENERIC_BITIO_H
+ #define __ASM_GENERIC_BITIO_H
+ 
+-#include <asm-generic/io.h>
++#include <asm/io.h>
+ 
+ /*
+  * Clear and set bits in one shot. These macros can be used to clear and
 -- 
 2.28.0
 
