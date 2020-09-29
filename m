@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kN9h3-0008Ey-Ux
- for barebox@lists.infradead.org; Tue, 29 Sep 2020 07:04:58 +0000
-Date: Tue, 29 Sep 2020 09:04:56 +0200
+ id 1kN9vO-0000iV-VM
+ for barebox@lists.infradead.org; Tue, 29 Sep 2020 07:19:47 +0000
+Date: Tue, 29 Sep 2020 09:19:45 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200929070456.GS11648@pengutronix.de>
-References: <20200925234315.453448-1-trent.piepho@synapse.com>
+Message-ID: <20200929071945.GT11648@pengutronix.de>
+References: <20200928154247.15619-1-a.fatoum@pengutronix.de>
+ <20200928154247.15619-2-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200925234315.453448-1-trent.piepho@synapse.com>
+In-Reply-To: <20200928154247.15619-2-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,40 +23,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/4] aiodev: Name channels with device instance name
-To: Trent Piepho <trent.piepho@synapse.com>
+Subject: Re: [PATCH 2/7] led: pca955x: fix probing from device tree
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Sep 25, 2020 at 04:43:12PM -0700, Trent Piepho wrote:
-> When dynamically assigning device names, an aiodev's name will be
-> "aiodev" and an index, not part of the name string itself, will be
-> allocated dynamically.  These are combined to register a device with a
-> name like "aiodev0" or "aiodev1".
+On Mon, Sep 28, 2020 at 05:42:42PM +0200, Ahmad Fatoum wrote:
+> dev->id_entry is not populated for devices probed from the device
+> tree. It was used unconditionally however. Use device_get_match_data
+> instead to support device tree probing.
 > 
-> The shell environment variables use the device name, so one might use
-> "${aiodev0.in_value0_mV}" and "${aiodev1.in_value0_mV}".
-> 
-> However, the channel names that are used with aiochannel_get_by_name()
-> just use the aiodev's name and channel name.  So channel 0 of the 1st
-> aiodev would be "aiodev.in_value0_mV" and the 2nd aiodev would use the
-> same name.
-> 
-> Change the channel naming to use the device instance name, e.g.
-> "aiodev0", rather than the aiodev's base name.  This makes the names
-> used aiochannel_get_by_name() match the environment variable names and
-> also avoids duplicate names with more than one dynamically allocated
-> aiodev.
-> 
-> Rename aiochannel_get_by_name() to aiochannel_by_name() so that any out
-> of tree boards that use it will fail to compile, since they now need to
-> pass in a different name.
-> 
-> Signed-off-by: Trent Piepho <trent.piepho@synapse.com>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
-> Changes in v2:
->   * Rename aiochannel_get_by_name()
+>  drivers/led/led-pca955x.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/led/led-pca955x.c b/drivers/led/led-pca955x.c
+> index 27fefce8d524..f89fcbfba5ac 100644
+> --- a/drivers/led/led-pca955x.c
+> +++ b/drivers/led/led-pca955x.c
+> @@ -349,8 +349,11 @@ static int led_pca955x_probe(struct device_d *dev)
+>  	struct i2c_client *client;
+>  	int err;
+>  	struct pca955x_platform_data *pdata;
+> +	enum pca955x_type type;
+>  
+> -	chip = &pca955x_chipdefs[dev->id_entry->driver_data];
+> +	type = (enum pca955x_type)device_get_match_data(dev);
 
-Applied all, thanks
+In this driver we have this:
+
+static struct pca955x_chipdef pca955x_chipdefs[] = {
+	[pca9550] = {
+		.bits		= 2,
+		.slv_addr	= /* 110000x */ 0x60,
+		.slv_addr_shift	= 1,
+	},
+	[pca9551] = {
+		.bits		= 8,
+		.slv_addr	= /* 1100xxx */ 0x60,
+		.slv_addr_shift	= 3,
+	},
+	[pca9552] = {
+		.bits		= 16,
+		.slv_addr	= /* 1100xxx */ 0x60,
+		.slv_addr_shift	= 3,
+	},
+	[pca9553] = {
+		.bits		= 4,
+		.slv_addr	= /* 110001x */ 0x62,
+		.slv_addr_shift	= 1,
+	},
+};
+
+So instead of putting the enum casted to void pointer into the matchdata
+we could put pointers to struct pca955x_chipdef directly into the
+matchdata.
 
 Sascha
 
