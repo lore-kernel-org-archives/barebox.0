@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kMvAg-0005Bl-FT
- for barebox@lists.infradead.org; Mon, 28 Sep 2020 15:34:35 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 28 Sep 2020 17:34:29 +0200
-Message-Id: <20200928153431.1095-2-a.fatoum@pengutronix.de>
-In-Reply-To: <20200928153431.1095-1-a.fatoum@pengutronix.de>
-References: <20200928153431.1095-1-a.fatoum@pengutronix.de>
+ id 1kN9Gh-0006WL-AU
+ for barebox@lists.infradead.org; Tue, 29 Sep 2020 06:37:44 +0000
+Date: Tue, 29 Sep 2020 08:37:41 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20200929063741.GM11648@pengutronix.de>
+References: <20200928144146.21931-1-a.fatoum@pengutronix.de>
+ <20200928144146.21931-2-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200928144146.21931-2-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,68 +19,71 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] vsprintf: add %pe format specifier for printing symbolic
- error names
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH 2/2] lib: kasan: migrate Kconfig option to Debugging menu
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-U3RhcnRpbmcgd2l0aCB2NS41LCBMaW51eCBoYXMgYSBmb3JtYXQgc3BlY2lmaWVyIGZvciBwcmlu
-dGluZyBlcnJvcgpwb2ludGVycy4gV2UgaGF2ZSBoYWQgc3RyZXJyb3IgaW4gYmFyZWJveCBiZWZv
-cmUgdGhhdCwgYnV0IGxldHMgd2lyZSBpdAppbnRvIHZzcHJpbnRmIHdpdGggdGhlIHNhbWUgZm9y
-bWF0IHNwZWNpZmllciB0aGF0IExpbnV4IG5vdyB1c2VzLgoKVGhpcyB5aWVsZHMgbGVzcyB2ZXJi
-b3NlIGNhbGwgc2l0ZXMgYW5kIG1ha2VzIExpbnV4IGRyaXZlcnMgbW9yZSBwb3J0YWJsZQp0byBi
-YXJlYm94IGluIGZ1dHVyZS4gVGhpcyBhbHNvIGhhcyB0aGUgcG90ZW50aWFsIHRvIHJlZHVjZSBj
-b2RlIHNpemUgYXMKdGhlIHByZXZpb3VzbHkgImlubGluZWQiIHN0cmVycm9yIGF0IGNhbGxzaXRl
-cyBjYW4gbm93IGJlIHJlcGxhY2VkIGJ5CmEgc2luZ2xlIHZzcHJpbnRmLgoKQ2M6IFV3ZSBLbGVp
-bmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+ClNpZ25lZC1vZmYtYnk6
-IEFobWFkIEZhdG91bSA8YS5mYXRvdW1AcGVuZ3V0cm9uaXguZGU+Ci0tLQogbGliL3ZzcHJpbnRm
-LmMgfCAzOSArKysrKysrKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0KIDEgZmlsZSBj
-aGFuZ2VkLCAyNyBpbnNlcnRpb25zKCspLCAxMiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9s
-aWIvdnNwcmludGYuYyBiL2xpYi92c3ByaW50Zi5jCmluZGV4IDNlNWY0ZGI3NWFjOC4uM2ZjY2Zh
-N2E1NmJhIDEwMDY0NAotLS0gYS9saWIvdnNwcmludGYuYworKysgYi9saWIvdnNwcmludGYuYwpA
-QCAtMTc3LDYgKzE3NywxNyBAQCBzdGF0aWMgY2hhciAqc3RyaW5nKGNoYXIgKmJ1ZiwgY29uc3Qg
-Y2hhciAqZW5kLCBjb25zdCBjaGFyICpzLCBpbnQgZmllbGRfd2lkdGgsCiAJcmV0dXJuIGJ1ZjsK
-IH0KIAorc3RhdGljIGNoYXIgKnJhd19wb2ludGVyKGNoYXIgKmJ1ZiwgY29uc3QgY2hhciAqZW5k
-LCBjb25zdCB2b2lkICpwdHIsIGludCBmaWVsZF93aWR0aCwKKwkJCSBpbnQgcHJlY2lzaW9uLCBp
-bnQgZmxhZ3MpCit7CisJZmxhZ3MgfD0gU01BTEw7CisJaWYgKGZpZWxkX3dpZHRoID09IC0xKSB7
-CisJCWZpZWxkX3dpZHRoID0gMipzaXplb2Yodm9pZCAqKTsKKwkJZmxhZ3MgfD0gWkVST1BBRDsK
-Kwl9CisJcmV0dXJuIG51bWJlcihidWYsIGVuZCwgKHVuc2lnbmVkIGxvbmcpIHB0ciwgMTYsIGZp
-ZWxkX3dpZHRoLCBwcmVjaXNpb24sIGZsYWdzKTsKK30KKwogI2lmbmRlZiBfX1BCTF9fCiBzdGF0
-aWMgY2hhciAqc3ltYm9sX3N0cmluZyhjaGFyICpidWYsIGNvbnN0IGNoYXIgKmVuZCwgY29uc3Qg
-dm9pZCAqcHRyLCBpbnQgZmllbGRfd2lkdGgsCiAJCQkgICBpbnQgcHJlY2lzaW9uLCBpbnQgZmxh
-Z3MpCkBAIC0yMTQsNiArMjI1LDE2IEBAIGNoYXIgKmlwNF9hZGRyX3N0cmluZyhjaGFyICpidWYs
-IGNvbnN0IGNoYXIgKmVuZCwgY29uc3QgdTggKmFkZHIsIGludCBmaWVsZF93aWR0CiAJcmV0dXJu
-IHN0cmluZyhidWYsIGVuZCwgaXA0X2FkZHIsIGZpZWxkX3dpZHRoLCBwcmVjaXNpb24sIGZsYWdz
-KTsKIH0KIAorc3RhdGljCitjaGFyICplcnJvcl9zdHJpbmcoY2hhciAqYnVmLCBjb25zdCBjaGFy
-ICplbmQsIGNvbnN0IHU4ICplcnJwdHIsIGludCBmaWVsZF93aWR0aCwKKwkJICAgaW50IHByZWNp
-c2lvbiwgaW50IGZsYWdzLCBjb25zdCBjaGFyICpmbXQpCit7CisgICAgaWYgKCFJU19FUlIoZXJy
-cHRyKSkKKwkgICAgcmV0dXJuIHJhd19wb2ludGVyKGJ1ZiwgZW5kLCBlcnJwdHIsIGZpZWxkX3dp
-ZHRoLCBwcmVjaXNpb24sIGZsYWdzKTsKKworICAgIHJldHVybiBzdHJpbmcoYnVmLCBlbmQsIHN0
-cmVycm9ycChlcnJwdHIpLCBmaWVsZF93aWR0aCwgcHJlY2lzaW9uLCBmbGFncyk7Cit9CisKIHN0
-YXRpYyBub2lubGluZV9mb3Jfc3RhY2sKIGNoYXIgKnV1aWRfc3RyaW5nKGNoYXIgKmJ1ZiwgY29u
-c3QgY2hhciAqZW5kLCBjb25zdCB1OCAqYWRkciwgaW50IGZpZWxkX3dpZHRoLAogCQkgIGludCBw
-cmVjaXNpb24sIGludCBmbGFncywgY29uc3QgY2hhciAqZm10KQpAQCAtMzQ1LDI0ICszNjYsMTgg
-QEAgc3RhdGljIGNoYXIgKnBvaW50ZXIoY29uc3QgY2hhciAqZm10LCBjaGFyICpidWYsIGNvbnN0
-IGNoYXIgKmVuZCwgY29uc3Qgdm9pZCAqcHQKICAgICAgICAgICAgICAgICAgICAgICAgIHJldHVy
-biBpcDRfYWRkcl9zdHJpbmcoYnVmLCBlbmQsIHB0ciwgZmllbGRfd2lkdGgsIHByZWNpc2lvbiwg
-ZmxhZ3MsIGZtdCk7CiAJCX0KIAkJYnJlYWs7CisJY2FzZSAnZSc6CisJCXJldHVybiBlcnJvcl9z
-dHJpbmcoYnVmLCBlbmQsIHB0ciwgZmllbGRfd2lkdGgsIHByZWNpc2lvbiwgZmxhZ3MsIGZtdCk7
-CiAJfQotCWZsYWdzIHw9IFNNQUxMOwotCWlmIChmaWVsZF93aWR0aCA9PSAtMSkgewotCQlmaWVs
-ZF93aWR0aCA9IDIqc2l6ZW9mKHZvaWQgKik7Ci0JCWZsYWdzIHw9IFpFUk9QQUQ7Ci0JfQotCXJl
-dHVybiBudW1iZXIoYnVmLCBlbmQsICh1bnNpZ25lZCBsb25nKSBwdHIsIDE2LCBmaWVsZF93aWR0
-aCwgcHJlY2lzaW9uLCBmbGFncyk7CisKKwlyZXR1cm4gcmF3X3BvaW50ZXIoYnVmLCBlbmQsIHB0
-ciwgZmllbGRfd2lkdGgsIHByZWNpc2lvbiwgZmxhZ3MpOwogfQorCiAjZWxzZQogc3RhdGljIGNo
-YXIgKnBvaW50ZXIoY29uc3QgY2hhciAqZm10LCBjaGFyICpidWYsIGNvbnN0IGNoYXIgKmVuZCwg
-Y29uc3Qgdm9pZCAqcHRyLAogCQkgICAgIGludCBmaWVsZF93aWR0aCwgaW50IHByZWNpc2lvbiwg
-aW50IGZsYWdzKQogewotCWZsYWdzIHw9IFNNQUxMOwotCWlmIChmaWVsZF93aWR0aCA9PSAtMSkg
-ewotCQlmaWVsZF93aWR0aCA9IDIqc2l6ZW9mKHZvaWQgKik7Ci0JCWZsYWdzIHw9IFpFUk9QQUQ7
-Ci0JfQotCXJldHVybiBudW1iZXIoYnVmLCBlbmQsICh1bnNpZ25lZCBsb25nKSBwdHIsIDE2LCBm
-aWVsZF93aWR0aCwgcHJlY2lzaW9uLCBmbGFncyk7CisJcmV0dXJuIHJhd19wb2ludGVyKGJ1Ziwg
-ZW5kLCBwdHIsIGZpZWxkX3dpZHRoLCBwcmVjaXNpb24sIGZsYWdzKTsKIH0KICNlbmRpZgogCi0t
-IAoyLjI4LjAKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDov
-L2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Mon, Sep 28, 2020 at 04:41:46PM +0200, Ahmad Fatoum wrote:
+> UBSAN and ASAN as well as other debugging aids are all in the
+> Debugging menu. Relocate KASAN to be there as well.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  common/Kconfig | 1 +
+>  lib/Kconfig    | 2 --
+>  2 files changed, 1 insertion(+), 2 deletions(-)
+
+Applied, thanks
+
+Sascha
+
+> 
+> diff --git a/common/Kconfig b/common/Kconfig
+> index 8b8b30db0fc7..9419977276b2 100644
+> --- a/common/Kconfig
+> +++ b/common/Kconfig
+> @@ -1379,6 +1379,7 @@ config PBL_BREAK
+>  	  on early pbl init. This option should be used only with JTAG debugger!
+>  
+>  source "lib/Kconfig.ubsan"
+> +source "lib/kasan/Kconfig"
+>  
+>  config ASAN
+>  	bool "ASAN: runtime memory debugger"
+> diff --git a/lib/Kconfig b/lib/Kconfig
+> index 6d909c1ac8f0..90552f3c2762 100644
+> --- a/lib/Kconfig
+> +++ b/lib/Kconfig
+> @@ -154,8 +154,6 @@ source "lib/logo/Kconfig"
+>  
+>  source "lib/bootstrap/Kconfig"
+>  
+> -source "lib/kasan/Kconfig"
+> -
+>  config PRINTF_UUID
+>  	bool
+>  
+> -- 
+> 2.28.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
