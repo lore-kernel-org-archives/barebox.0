@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kNA7Z-00029H-Ga
- for barebox@lists.infradead.org; Tue, 29 Sep 2020 07:32:22 +0000
-Date: Tue, 29 Sep 2020 09:32:20 +0200
+ id 1kNAqv-0000qy-Q0
+ for barebox@lists.infradead.org; Tue, 29 Sep 2020 08:19:14 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200929073220.GU11648@pengutronix.de>
-References: <20200928154247.15619-1-a.fatoum@pengutronix.de>
+Date: Tue, 29 Sep 2020 10:19:09 +0200
+Message-Id: <20200929081909.30235-3-s.hauer@pengutronix.de>
+In-Reply-To: <20200929081909.30235-1-s.hauer@pengutronix.de>
+References: <20200929081909.30235-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200928154247.15619-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,82 +21,251 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/7] driver: introduce less error-prone dev_get_drvdata
- alternative
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 3/3] net: phy: Add and use driver register macro
+To: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Sep 28, 2020 at 05:42:41PM +0200, Ahmad Fatoum wrote:
-> We use dev_get_drvdata to get the driver match data associated with a
-> device. This has two shortcomings:
-> 
->  - Linux has dev_get_drvdata too, which returns a private pointer for
->    driver specific info to associate with a device. We use dev->priv
->    (or more often container_of) for that in barebox instead
-> 
->  - It nearly always involves a cast to a double pointer, which is
->    error-prone as size and alignment match need to be ensured
->    on the programmer's part and can easily be gotten wrong:
-> 	enum dev_type type
-> 	dev_get_drvdata(dev, (const void **)&type);
-> 
-> Add a new function that instead of using a double pointer argument,
-> returns the pointer directly:
-> 
->  - For normal pointer driver data, no cast is necessary
->  - For integer driver data casted to a pointer for storage,
->    the cast is still necessary, but
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  drivers/base/driver.c | 11 +++++++++++
->  include/driver.h      | 18 ++++++++++++++++++
->  2 files changed, 29 insertions(+)
-> 
-> diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-> index 412db6c40699..3205bbc3c33b 100644
-> --- a/drivers/base/driver.c
-> +++ b/drivers/base/driver.c
-> @@ -500,3 +500,14 @@ int dev_get_drvdata(struct device_d *dev, const void **data)
->  
->  	return -ENODEV;
->  }
-> +
-> +const void *device_get_match_data(struct device_d *dev)
-> +{
-> +	if (dev->of_id_entry)
-> +		return dev->of_id_entry->data;
-> +
-> +	if (dev->id_entry)
-> +		return (void *)dev->id_entry->driver_data;
-> +
-> +	return NULL;
-> +}
+Add driver registration macros for phy drivers similar to the existing
+platform device macros. This also changes the initcall level from
+fs_initcall to device_initcall for the phy drivers. It is not clear
+why the phy driver have been at fs_initcall in the first place, changing
+it shouldn't be a problem.
 
-Can we please give the caller a possibility to distinguish between
-errors and a valid NULL pointer?
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/net/phy/ar8327.c         |  7 +------
+ drivers/net/phy/at803x.c         |  7 +------
+ drivers/net/phy/davicom.c        |  7 +------
+ drivers/net/phy/dp83867.c        |  6 +-----
+ drivers/net/phy/lxt.c            |  7 +------
+ drivers/net/phy/marvell.c        |  7 +------
+ drivers/net/phy/micrel.c         |  7 +------
+ drivers/net/phy/mv88e6xxx/port.c |  8 ++------
+ drivers/net/phy/national.c       |  6 +-----
+ drivers/net/phy/phy.c            |  6 +-----
+ drivers/net/phy/realtek.c        |  7 +------
+ drivers/net/phy/smsc.c           |  6 +-----
+ include/linux/phy.h              | 20 ++++++++++++++++++++
+ 13 files changed, 33 insertions(+), 68 deletions(-)
 
-As you realize in your series some drivers cast the returned value into
-an integer type and use 0 as a valid possibility. These need an extra
-explanation why we can accept that case. I can think of different
-possibilies to get that straight:
-
-- Put a real pointer into matchdata. This is really preferred as it
-  motivates people to put flags into a (struct type) matchdata which
-  doesn't lead to excessive if (type == foo || type == bar || type ==
-  baz) we sometimes see in drivers.
-- Return an ERR_PTR from device_get_match_data(). this is less likely
-  interpreted as a valid int value
-- add a int * ret argument to device_get_match_data() which returns
-  the error code.
-
-Sascha
-
+diff --git a/drivers/net/phy/ar8327.c b/drivers/net/phy/ar8327.c
+index 5f3a2e2cf2..f13d574b30 100644
+--- a/drivers/net/phy/ar8327.c
++++ b/drivers/net/phy/ar8327.c
+@@ -268,9 +268,4 @@ static struct phy_driver ar8327n_driver[] = {
+ 	.aneg_done	= &ar8327n_aneg_done,
+ }};
+ 
+-static int atheros_phy_init(void)
+-{
+-	return phy_drivers_register(ar8327n_driver,
+-				    ARRAY_SIZE(ar8327n_driver));
+-}
+-fs_initcall(atheros_phy_init);
++device_phy_drivers(ar8327n_driver);
+diff --git a/drivers/net/phy/at803x.c b/drivers/net/phy/at803x.c
+index de053a36fb..016ed97020 100644
+--- a/drivers/net/phy/at803x.c
++++ b/drivers/net/phy/at803x.c
+@@ -243,9 +243,4 @@ static struct phy_driver at803x_driver[] = {
+ 	.read_status	= &genphy_read_status,
+ } };
+ 
+-static int atheros_phy_init(void)
+-{
+-	return phy_drivers_register(at803x_driver,
+-				    ARRAY_SIZE(at803x_driver));
+-}
+-fs_initcall(atheros_phy_init);
++device_phy_drivers(at803x_driver);
+diff --git a/drivers/net/phy/davicom.c b/drivers/net/phy/davicom.c
+index febaffa52c..794e5f2c96 100644
+--- a/drivers/net/phy/davicom.c
++++ b/drivers/net/phy/davicom.c
+@@ -127,9 +127,4 @@ static struct phy_driver dm91xx_driver[] = {
+ 	.features	= PHY_BASIC_FEATURES,
+ } };
+ 
+-static int dm9161_init(void)
+-{
+-	return phy_drivers_register(dm91xx_driver,
+-		ARRAY_SIZE(dm91xx_driver));
+-}
+-fs_initcall(dm9161_init);
++device_phy_drivers(dm91xx_driver);
+diff --git a/drivers/net/phy/dp83867.c b/drivers/net/phy/dp83867.c
+index 929a407b09..8131e8c9d6 100644
+--- a/drivers/net/phy/dp83867.c
++++ b/drivers/net/phy/dp83867.c
+@@ -311,8 +311,4 @@ static struct phy_driver dp83867_driver[] = {
+ 		},
+ };
+ 
+-static int dp83867_phy_init(void)
+-{
+-	return phy_drivers_register(dp83867_driver, ARRAY_SIZE(dp83867_driver));
+-}
+-fs_initcall(dp83867_phy_init);
++device_phy_drivers(dp83867_driver);
+diff --git a/drivers/net/phy/lxt.c b/drivers/net/phy/lxt.c
+index b661ae7316..9b023c8c40 100644
+--- a/drivers/net/phy/lxt.c
++++ b/drivers/net/phy/lxt.c
+@@ -19,9 +19,4 @@ static struct phy_driver lxt97x_driver[] = {
+ 	.features	= PHY_BASIC_FEATURES,
+ } };
+ 
+-static int lxt97x_phy_init(void)
+-{
+-	return phy_drivers_register(lxt97x_driver,
+-				    ARRAY_SIZE(lxt97x_driver));
+-}
+-fs_initcall(lxt97x_phy_init);
++device_phy_drivers(lxt97x_driver);
+diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
+index af39ed68fd..3bf0fef34b 100644
+--- a/drivers/net/phy/marvell.c
++++ b/drivers/net/phy/marvell.c
+@@ -733,9 +733,4 @@ static struct phy_driver marvell_drivers[] = {
+ 	},
+ };
+ 
+-static int __init marvell_phy_init(void)
+-{
+-	return phy_drivers_register(marvell_drivers,
+-				    ARRAY_SIZE(marvell_drivers));
+-}
+-fs_initcall(marvell_phy_init);
++device_phy_drivers(marvell_drivers);
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index 4655430573..4e46370241 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -537,9 +537,4 @@ static struct phy_driver ksphy_driver[] = {
+ 	.read_status	= ksz8873mll_read_status,
+ } };
+ 
+-static int ksphy_init(void)
+-{
+-	return phy_drivers_register(ksphy_driver,
+-		ARRAY_SIZE(ksphy_driver));
+-}
+-fs_initcall(ksphy_init);
++device_phy_drivers(ksphy_driver);
+diff --git a/drivers/net/phy/mv88e6xxx/port.c b/drivers/net/phy/mv88e6xxx/port.c
+index 52f95d622c..3f10719d9a 100644
+--- a/drivers/net/phy/mv88e6xxx/port.c
++++ b/drivers/net/phy/mv88e6xxx/port.c
+@@ -547,11 +547,7 @@ static struct phy_driver mv88e6xxx_port_driver = {
+ 	.read_status	= mv88e6xxx_port_read_status,
+ };
+ 
+-static int __init mv88e6xxx_port_driver_register(void)
+-{
+-	return phy_driver_register(&mv88e6xxx_port_driver);
+-}
+-fs_initcall(mv88e6xxx_port_driver_register);
++device_phy_driver(mv88e6xxx_port_driver);
+ 
+ int mv88e6xxx_port_probe(struct mv88e6xxx_chip *chip)
+ {
+@@ -660,4 +656,4 @@ int mv88e6xxx_port_probe(struct mv88e6xxx_chip *chip)
+ 	}
+ 
+ 	return 0;
+-}
+\ No newline at end of file
++}
+diff --git a/drivers/net/phy/national.c b/drivers/net/phy/national.c
+index 83390b99ab..d74cd81933 100644
+--- a/drivers/net/phy/national.c
++++ b/drivers/net/phy/national.c
+@@ -84,8 +84,4 @@ static struct phy_driver dp83865_driver = {
+ 	.config_init    = ns_config_init,
+ };
+ 
+-static int ns_phy_init(void)
+-{
+-	return phy_driver_register(&dp83865_driver);
+-}
+-fs_initcall(ns_phy_init);
++device_phy_driver(dp83865_driver);
+diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+index 57c2f8044f..622acbe40d 100644
+--- a/drivers/net/phy/phy.c
++++ b/drivers/net/phy/phy.c
+@@ -981,8 +981,4 @@ static struct phy_driver genphy_driver = {
+ 		SUPPORTED_BNC,
+ };
+ 
+-static int generic_phy_register(void)
+-{
+-	return phy_driver_register(&genphy_driver);
+-}
+-device_initcall(generic_phy_register);
++device_phy_driver(genphy_driver);
+diff --git a/drivers/net/phy/realtek.c b/drivers/net/phy/realtek.c
+index 695a6c384d..9ba0495d41 100644
+--- a/drivers/net/phy/realtek.c
++++ b/drivers/net/phy/realtek.c
+@@ -196,9 +196,4 @@ static struct phy_driver realtek_drvs[] = {
+ 	},
+ };
+ 
+-static int __init realtek_phy_init(void)
+-{
+-	return phy_drivers_register(realtek_drvs,
+-				    ARRAY_SIZE(realtek_drvs));
+-}
+-fs_initcall(realtek_phy_init);
++device_phy_drivers(realtek_drvs);
+diff --git a/drivers/net/phy/smsc.c b/drivers/net/phy/smsc.c
+index d6705e4fe2..1e1f3d5274 100644
+--- a/drivers/net/phy/smsc.c
++++ b/drivers/net/phy/smsc.c
+@@ -135,8 +135,4 @@ static struct phy_driver smsc_phy_driver[] = {
+ 	.config_init	= lan87xx_config_init,
+ } };
+ 
+-static int __init smsc_init(void)
+-{
+-	return phy_drivers_register(smsc_phy_driver, ARRAY_SIZE(smsc_phy_driver));
+-}
+-fs_initcall(smsc_init);
++device_phy_drivers(smsc_phy_driver);
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index cdcb7c24f2..2152c84447 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -284,6 +284,26 @@ struct phy_device *get_phy_device(struct mii_bus *bus, int addr);
+ int phy_init(void);
+ int phy_init_hw(struct phy_device *phydev);
+ 
++#define phy_register_drivers_macro(level, drvs)				\
++        static int __init drv##_register(void)				\
++        {								\
++                return phy_drivers_register(drvs, ARRAY_SIZE(drvs));	\
++        }								\
++        level##_initcall(drv##_register)
++
++#define device_phy_drivers(drvs)	\
++        phy_register_drivers_macro(device, drvs)
++
++#define phy_register_driver_macro(level, drv)		\
++        static int __init drv##_register(void)		\
++        {						\
++                return phy_driver_register(&drv);	\
++        }						\
++        level##_initcall(drv##_register)
++
++#define device_phy_driver(drv)	\
++        phy_register_driver_macro(device, drv)
++
+ int phy_save_page(struct phy_device *phydev);
+ int phy_select_page(struct phy_device *phydev, int page);
+ int phy_restore_page(struct phy_device *phydev, int oldpage, int ret);
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.28.0
+
 
 _______________________________________________
 barebox mailing list
