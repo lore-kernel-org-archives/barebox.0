@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kN9vO-0000iV-VM
- for barebox@lists.infradead.org; Tue, 29 Sep 2020 07:19:47 +0000
-Date: Tue, 29 Sep 2020 09:19:45 +0200
+ id 1kNA7Z-00029H-Ga
+ for barebox@lists.infradead.org; Tue, 29 Sep 2020 07:32:22 +0000
+Date: Tue, 29 Sep 2020 09:32:20 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200929071945.GT11648@pengutronix.de>
+Message-ID: <20200929073220.GU11648@pengutronix.de>
 References: <20200928154247.15619-1-a.fatoum@pengutronix.de>
- <20200928154247.15619-2-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200928154247.15619-2-a.fatoum@pengutronix.de>
+In-Reply-To: <20200928154247.15619-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,61 +22,74 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/7] led: pca955x: fix probing from device tree
+Subject: Re: [PATCH 1/7] driver: introduce less error-prone dev_get_drvdata
+ alternative
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Sep 28, 2020 at 05:42:42PM +0200, Ahmad Fatoum wrote:
-> dev->id_entry is not populated for devices probed from the device
-> tree. It was used unconditionally however. Use device_get_match_data
-> instead to support device tree probing.
+On Mon, Sep 28, 2020 at 05:42:41PM +0200, Ahmad Fatoum wrote:
+> We use dev_get_drvdata to get the driver match data associated with a
+> device. This has two shortcomings:
+> 
+>  - Linux has dev_get_drvdata too, which returns a private pointer for
+>    driver specific info to associate with a device. We use dev->priv
+>    (or more often container_of) for that in barebox instead
+> 
+>  - It nearly always involves a cast to a double pointer, which is
+>    error-prone as size and alignment match need to be ensured
+>    on the programmer's part and can easily be gotten wrong:
+> 	enum dev_type type
+> 	dev_get_drvdata(dev, (const void **)&type);
+> 
+> Add a new function that instead of using a double pointer argument,
+> returns the pointer directly:
+> 
+>  - For normal pointer driver data, no cast is necessary
+>  - For integer driver data casted to a pointer for storage,
+>    the cast is still necessary, but
 > 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  drivers/led/led-pca955x.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+>  drivers/base/driver.c | 11 +++++++++++
+>  include/driver.h      | 18 ++++++++++++++++++
+>  2 files changed, 29 insertions(+)
 > 
-> diff --git a/drivers/led/led-pca955x.c b/drivers/led/led-pca955x.c
-> index 27fefce8d524..f89fcbfba5ac 100644
-> --- a/drivers/led/led-pca955x.c
-> +++ b/drivers/led/led-pca955x.c
-> @@ -349,8 +349,11 @@ static int led_pca955x_probe(struct device_d *dev)
->  	struct i2c_client *client;
->  	int err;
->  	struct pca955x_platform_data *pdata;
-> +	enum pca955x_type type;
+> diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+> index 412db6c40699..3205bbc3c33b 100644
+> --- a/drivers/base/driver.c
+> +++ b/drivers/base/driver.c
+> @@ -500,3 +500,14 @@ int dev_get_drvdata(struct device_d *dev, const void **data)
 >  
-> -	chip = &pca955x_chipdefs[dev->id_entry->driver_data];
-> +	type = (enum pca955x_type)device_get_match_data(dev);
+>  	return -ENODEV;
+>  }
+> +
+> +const void *device_get_match_data(struct device_d *dev)
+> +{
+> +	if (dev->of_id_entry)
+> +		return dev->of_id_entry->data;
+> +
+> +	if (dev->id_entry)
+> +		return (void *)dev->id_entry->driver_data;
+> +
+> +	return NULL;
+> +}
 
-In this driver we have this:
+Can we please give the caller a possibility to distinguish between
+errors and a valid NULL pointer?
 
-static struct pca955x_chipdef pca955x_chipdefs[] = {
-	[pca9550] = {
-		.bits		= 2,
-		.slv_addr	= /* 110000x */ 0x60,
-		.slv_addr_shift	= 1,
-	},
-	[pca9551] = {
-		.bits		= 8,
-		.slv_addr	= /* 1100xxx */ 0x60,
-		.slv_addr_shift	= 3,
-	},
-	[pca9552] = {
-		.bits		= 16,
-		.slv_addr	= /* 1100xxx */ 0x60,
-		.slv_addr_shift	= 3,
-	},
-	[pca9553] = {
-		.bits		= 4,
-		.slv_addr	= /* 110001x */ 0x62,
-		.slv_addr_shift	= 1,
-	},
-};
+As you realize in your series some drivers cast the returned value into
+an integer type and use 0 as a valid possibility. These need an extra
+explanation why we can accept that case. I can think of different
+possibilies to get that straight:
 
-So instead of putting the enum casted to void pointer into the matchdata
-we could put pointers to struct pca955x_chipdef directly into the
-matchdata.
+- Put a real pointer into matchdata. This is really preferred as it
+  motivates people to put flags into a (struct type) matchdata which
+  doesn't lead to excessive if (type == foo || type == bar || type ==
+  baz) we sometimes see in drivers.
+- Return an ERR_PTR from device_get_match_data(). this is less likely
+  interpreted as a valid int value
+- add a int * ret argument to device_get_match_data() which returns
+  the error code.
 
 Sascha
 
