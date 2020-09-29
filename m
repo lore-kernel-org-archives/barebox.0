@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay6-d.mail.gandi.net ([217.70.183.198])
+Received: from relay10.mail.gandi.net ([217.70.178.230])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kNHGD-0008UF-6q
- for barebox@lists.infradead.org; Tue, 29 Sep 2020 15:09:46 +0000
+ id 1kNM3k-0004wQ-39
+ for barebox@lists.infradead.org; Tue, 29 Sep 2020 20:17:13 +0000
 From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Tue, 29 Sep 2020 17:09:35 +0200
-Message-Id: <20200929150935.21237-1-ahmad@a3f.at>
+Date: Tue, 29 Sep 2020 22:17:01 +0200
+Message-Id: <20200929201701.26526-1-ahmad@a3f.at>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
