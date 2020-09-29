@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kN9Zf-0007YH-NZ
- for barebox@lists.infradead.org; Tue, 29 Sep 2020 06:57:20 +0000
-Date: Tue, 29 Sep 2020 08:57:18 +0200
+ id 1kN9dd-0007ws-Pf
+ for barebox@lists.infradead.org; Tue, 29 Sep 2020 07:01:26 +0000
+Date: Tue, 29 Sep 2020 09:01:24 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200929065718.GQ11648@pengutronix.de>
-References: <1601199177-11599-1-git-send-email-u74147@gmail.com>
+Message-ID: <20200929070124.GR11648@pengutronix.de>
+References: <20200928100809.25868-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1601199177-11599-1-git-send-email-u74147@gmail.com>
+In-Reply-To: <20200928100809.25868-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,29 +22,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] asm/debug_ll_ns16550.h: add parament divisor
-To: Du Huanpeng <u74147@gmail.com>
-Cc: barebox@lists.infradead.org, a.fatoum@pengutronix.de
+Subject: Re: [PATCH] ARM: at91: support sama5 low level clock setup with
+ oscillator
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, Michael Grzeschik <mgr@pengutronix.de>
 
-On Sun, Sep 27, 2020 at 05:32:57PM +0800, Du Huanpeng wrote:
-> From: duhuanpeng <u74147@gmail.com>
+On Mon, Sep 28, 2020 at 12:08:09PM +0200, Ahmad Fatoum wrote:
+> AT91Bootstrap has a CONFIG_MCK_BYPASS option with following help text:
 > 
-> add a parameters for the assembly version for passing divisor,
-> and set the default value to DEBUG_LL_UART_ADDR when no parameter
-> is given.
-> now it is possiable to recalculate divisor in runtime to keep
-> the baudrate unchanged. when pll settings changed outside of barebox.
-> e.g. jtag.
+>   "Use external 8 to 24 Mhz clock signal as source of main clock
+>   instead of an external crystal oscillator.
+>   This option disables the internal driving on the XOUT pin.
+>   The external source has to provide a stable clock on the XIN pin.
+>   If this option is disabled, the SoC expects a crystal oscillator
+>   that needs driving on both XIN and XOUT lines."
 > 
-> Signed-off-by: duhuanpeng <u74147@gmail.com>
+> When the low level clock setup was ported over from AT91Bootstrap,
+> this config option was dropped. It wasn't necessary for the xplained
+> boards that have a crystal, but for ones with an oscillator, it's
+> required. Add the bit flag back.
+> 
+> Suggested-by: Michael Grzeschik <mgr@pengutronix.de>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  arch/mips/include/asm/debug_ll_ns16550.h  | 4 ++--
->  arch/riscv/include/asm/debug_ll_ns16550.h | 4 ++--
->  2 files changed, 4 insertions(+), 4 deletions(-)
+>  arch/arm/mach-at91/at91_pmc_ll.c              | 2 ++
+>  arch/arm/mach-at91/include/mach/at91_pmc_ll.h | 5 +++++
+>  2 files changed, 7 insertions(+)
 
 Applied, thanks
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
