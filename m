@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kN9dd-0007ws-Pf
- for barebox@lists.infradead.org; Tue, 29 Sep 2020 07:01:26 +0000
-Date: Tue, 29 Sep 2020 09:01:24 +0200
+ id 1kN9h3-0008Ey-Ux
+ for barebox@lists.infradead.org; Tue, 29 Sep 2020 07:04:58 +0000
+Date: Tue, 29 Sep 2020 09:04:56 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200929070124.GR11648@pengutronix.de>
-References: <20200928100809.25868-1-a.fatoum@pengutronix.de>
+Message-ID: <20200929070456.GS11648@pengutronix.de>
+References: <20200925234315.453448-1-trent.piepho@synapse.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200928100809.25868-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20200925234315.453448-1-trent.piepho@synapse.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,37 +22,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: at91: support sama5 low level clock setup with
- oscillator
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, Michael Grzeschik <mgr@pengutronix.de>
+Subject: Re: [PATCH v2 1/4] aiodev: Name channels with device instance name
+To: Trent Piepho <trent.piepho@synapse.com>
+Cc: barebox@lists.infradead.org
 
-On Mon, Sep 28, 2020 at 12:08:09PM +0200, Ahmad Fatoum wrote:
-> AT91Bootstrap has a CONFIG_MCK_BYPASS option with following help text:
+On Fri, Sep 25, 2020 at 04:43:12PM -0700, Trent Piepho wrote:
+> When dynamically assigning device names, an aiodev's name will be
+> "aiodev" and an index, not part of the name string itself, will be
+> allocated dynamically.  These are combined to register a device with a
+> name like "aiodev0" or "aiodev1".
 > 
->   "Use external 8 to 24 Mhz clock signal as source of main clock
->   instead of an external crystal oscillator.
->   This option disables the internal driving on the XOUT pin.
->   The external source has to provide a stable clock on the XIN pin.
->   If this option is disabled, the SoC expects a crystal oscillator
->   that needs driving on both XIN and XOUT lines."
+> The shell environment variables use the device name, so one might use
+> "${aiodev0.in_value0_mV}" and "${aiodev1.in_value0_mV}".
 > 
-> When the low level clock setup was ported over from AT91Bootstrap,
-> this config option was dropped. It wasn't necessary for the xplained
-> boards that have a crystal, but for ones with an oscillator, it's
-> required. Add the bit flag back.
+> However, the channel names that are used with aiochannel_get_by_name()
+> just use the aiodev's name and channel name.  So channel 0 of the 1st
+> aiodev would be "aiodev.in_value0_mV" and the 2nd aiodev would use the
+> same name.
 > 
-> Suggested-by: Michael Grzeschik <mgr@pengutronix.de>
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Change the channel naming to use the device instance name, e.g.
+> "aiodev0", rather than the aiodev's base name.  This makes the names
+> used aiochannel_get_by_name() match the environment variable names and
+> also avoids duplicate names with more than one dynamically allocated
+> aiodev.
+> 
+> Rename aiochannel_get_by_name() to aiochannel_by_name() so that any out
+> of tree boards that use it will fail to compile, since they now need to
+> pass in a different name.
+> 
+> Signed-off-by: Trent Piepho <trent.piepho@synapse.com>
 > ---
->  arch/arm/mach-at91/at91_pmc_ll.c              | 2 ++
->  arch/arm/mach-at91/include/mach/at91_pmc_ll.h | 5 +++++
->  2 files changed, 7 insertions(+)
+> Changes in v2:
+>   * Rename aiochannel_get_by_name()
 
-Applied, thanks
+Applied all, thanks
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
