@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kN9OO-0006qW-G3
- for barebox@lists.infradead.org; Tue, 29 Sep 2020 06:45:41 +0000
-Date: Tue, 29 Sep 2020 08:45:38 +0200
+ id 1kN9Zf-0007YH-NZ
+ for barebox@lists.infradead.org; Tue, 29 Sep 2020 06:57:20 +0000
+Date: Tue, 29 Sep 2020 08:57:18 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200929064538.GO11648@pengutronix.de>
-References: <20200928154247.15619-1-a.fatoum@pengutronix.de>
+Message-ID: <20200929065718.GQ11648@pengutronix.de>
+References: <1601199177-11599-1-git-send-email-u74147@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200928154247.15619-1-a.fatoum@pengutronix.de>
+In-Reply-To: <1601199177-11599-1-git-send-email-u74147@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,36 +22,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/7] driver: introduce less error-prone dev_get_drvdata
- alternative
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH v2] asm/debug_ll_ns16550.h: add parament divisor
+To: Du Huanpeng <u74147@gmail.com>
+Cc: barebox@lists.infradead.org, a.fatoum@pengutronix.de
 
-On Mon, Sep 28, 2020 at 05:42:41PM +0200, Ahmad Fatoum wrote:
-> We use dev_get_drvdata to get the driver match data associated with a
-> device. This has two shortcomings:
+On Sun, Sep 27, 2020 at 05:32:57PM +0800, Du Huanpeng wrote:
+> From: duhuanpeng <u74147@gmail.com>
 > 
->  - Linux has dev_get_drvdata too, which returns a private pointer for
->    driver specific info to associate with a device. We use dev->priv
->    (or more often container_of) for that in barebox instead
+> add a parameters for the assembly version for passing divisor,
+> and set the default value to DEBUG_LL_UART_ADDR when no parameter
+> is given.
+> now it is possiable to recalculate divisor in runtime to keep
+> the baudrate unchanged. when pll settings changed outside of barebox.
+> e.g. jtag.
 > 
->  - It nearly always involves a cast to a double pointer, which is
->    error-prone as size and alignment match need to be ensured
->    on the programmer's part and can easily be gotten wrong:
-> 	enum dev_type type
-> 	dev_get_drvdata(dev, (const void **)&type);
-> 
-> Add a new function that instead of using a double pointer argument,
-> returns the pointer directly:
-> 
->  - For normal pointer driver data, no cast is necessary
->  - For integer driver data casted to a pointer for storage,
->    the cast is still necessary, but
+> Signed-off-by: duhuanpeng <u74147@gmail.com>
+> ---
+>  arch/mips/include/asm/debug_ll_ns16550.h  | 4 ++--
+>  arch/riscv/include/asm/debug_ll_ns16550.h | 4 ++--
+>  2 files changed, 4 insertions(+), 4 deletions(-)
 
-but what?
+Applied, thanks
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
