@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kNDL1-0004a0-DO
- for barebox@lists.infradead.org; Tue, 29 Sep 2020 10:58:29 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 29 Sep 2020 12:58:23 +0200
-Message-Id: <20200929105823.11542-5-a.fatoum@pengutronix.de>
-In-Reply-To: <20200929105823.11542-1-a.fatoum@pengutronix.de>
-References: <20200929105823.11542-1-a.fatoum@pengutronix.de>
+ id 1kNEDn-0007O9-Hw
+ for barebox@lists.infradead.org; Tue, 29 Sep 2020 11:55:04 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Tue, 29 Sep 2020 13:54:57 +0200
+Message-Id: <20200929115457.5034-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -17,66 +15,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] sandbox: add dummy memory-mapped I/O port region
+Subject: [PATCH] scripts/dtc: only append to HOST_EXTRACFLAGS instead of
+ overwriting
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Super I/O devices on x86 have their base usually located at one of two
-I/O ports. They are probed by writing a "passcode" to the I/O port
-and then a value is read back.
-
-When COMPILE_TESTing these drivers and running them on sandbox,
-this fails with a segfault because all I/O port access lead to
-zero page dereference on that architecture. Even without running
-barebox, static analyzers correctly flag these accesses as invoking
-undefined behavior. Adding a dummy I/O region solves both issues.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- arch/sandbox/board/devices.c  | 3 +++
- arch/sandbox/include/asm/io.h | 6 +++++-
- 2 files changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/arch/sandbox/board/devices.c b/arch/sandbox/board/devices.c
-index 72e62552a3b8..1fd1913ae60f 100644
---- a/arch/sandbox/board/devices.c
-+++ b/arch/sandbox/board/devices.c
-@@ -9,6 +9,9 @@
- #include <mach/linux.h>
- #include <init.h>
- #include <mach/linux.h>
-+#include <asm/io.h>
-+
-+unsigned char __pci_iobase[IO_SPACE_LIMIT];
- 
- static LIST_HEAD(sandbox_device_list);
- 
-diff --git a/arch/sandbox/include/asm/io.h b/arch/sandbox/include/asm/io.h
-index 6a0e77aead42..9f9cd3a42ab1 100644
---- a/arch/sandbox/include/asm/io.h
-+++ b/arch/sandbox/include/asm/io.h
-@@ -1,7 +1,11 @@
- #ifndef __ASM_SANDBOX_IO_H
- #define __ASM_SANDBOX_IO_H
- 
--#define	IO_SPACE_LIMIT 0
-+#define	IO_SPACE_LIMIT 0xffff
-+/* pacify static analyzers */
-+#define PCI_IOBASE     ((void __iomem *)__pci_iobase)
-+
-+extern unsigned char __pci_iobase[IO_SPACE_LIMIT];
- 
- #include <asm-generic/io.h>
- #include <asm-generic/bitio.h>
--- 
-2.28.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhpcyBjb3JyZXNwb25kcyB0byBMaW51eCBjb21taXQgN2UyNTIxYTg1Yzk4ICh0aGF0IGN1cnJl
+bnRseSBzaXRzIGluCmxpbnV4LW5leHQpIHdpdGggdGhlIHNhbWUgc2hvcnQgbG9nLgoKV2hlbiBi
+dWlsZGluZyB3aXRoCgoJJCBIT1NUX0VYVFJBQ0ZMQUdTPS1nIG1ha2UKCnRoZSBleHBlY3RhdGlv
+biBpcyB0aGF0IGhvc3QgdG9vbHMgYXJlIGJ1aWx0IHdpdGggZGVidWcgaW5mb3JtYXRpb25zLgpU
+aGlzIGhvd2V2ZXIgZG9lc24ndCBoYXBwZW4gaWYgdGhlIE1ha2VmaWxlIGFzc2lnbnMgYSBuZXcg
+dmFsdWUgdG8gdGhlCkhPU1RfRVhUUkFDRkxBR1MgaW5zdGVhZCBvZiBhcHBlbmRpbmcgdG8gaXQu
+IFNvIHVzZSArPSBpbnN0ZWFkIG9mIDo9IGZvcgp0aGUgZmlyc3QgYXNzaWdubWVudC4KClNpZ25l
+ZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXgu
+ZGU+Ci0tLQogc2NyaXB0cy9kdGMvTWFrZWZpbGUgfCAyICstCiAxIGZpbGUgY2hhbmdlZCwgMSBp
+bnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9zY3JpcHRzL2R0Yy9NYWtl
+ZmlsZSBiL3NjcmlwdHMvZHRjL01ha2VmaWxlCmluZGV4IDA2YTI2NWNmN2I1MS4uNzIxZThlMmI4
+YzJlIDEwMDY0NAotLS0gYS9zY3JpcHRzL2R0Yy9NYWtlZmlsZQorKysgYi9zY3JpcHRzL2R0Yy9N
+YWtlZmlsZQpAQCAtMTQsNyArMTQsNyBAQCBsaWJmZHQtb2Jqcwk6PSAkKGxpYmZkdC1vYmpzOiUu
+bz1saWJmZHQvJS5vKQogZmR0Z2V0LW9ianMgICAgKz0gZmR0Z2V0Lm8gJChsaWJmZHQtb2Jqcykg
+dXRpbC5vCiAKICMgU291cmNlIGZpbGVzIG5lZWQgdG8gZ2V0IGF0IHRoZSB1c2Vyc3BhY2UgdmVy
+c2lvbiBvZiBsaWJmZHRfZW52LmggdG8gY29tcGlsZQotSE9TVF9FWFRSQUNGTEFHUyA6PSAtSSQo
+c3JjKS9saWJmZHQKK0hPU1RfRVhUUkFDRkxBR1MgKz0gLUkkKHNyYykvbGliZmR0CiAKIGlmZXEg
+KCQod2lsZGNhcmQgL3Vzci9pbmNsdWRlL3lhbWwuaCksKQogaWZuZXEgKCQoQ0hFQ0tfRFRCUyks
+KQotLSAKMi4yOC4wCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0
+dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
