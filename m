@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kNDL1-0004a2-FQ
- for barebox@lists.infradead.org; Tue, 29 Sep 2020 10:58:29 +0000
+ id 1kNDL7-0004dn-Ol
+ for barebox@lists.infradead.org; Tue, 29 Sep 2020 10:58:34 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 29 Sep 2020 12:58:22 +0200
-Message-Id: <20200929105823.11542-4-a.fatoum@pengutronix.de>
+Date: Tue, 29 Sep 2020 12:58:21 +0200
+Message-Id: <20200929105823.11542-3-a.fatoum@pengutronix.de>
 In-Reply-To: <20200929105823.11542-1-a.fatoum@pengutronix.de>
 References: <20200929105823.11542-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,8 +21,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] include: asm-generic: bitio.h don't include
- <asm-generic/io.h> directly
+Subject: [PATCH 3/5] at91: wdt: don't include <asm-generic/io.h> directly
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
@@ -32,22 +31,22 @@ Use <asm/io.h> instead.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/asm-generic/bitio.h | 2 +-
+ arch/arm/mach-at91/include/mach/at91_wdt.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/asm-generic/bitio.h b/include/asm-generic/bitio.h
-index e88dbd7b8527..99b85da59c6d 100644
---- a/include/asm-generic/bitio.h
-+++ b/include/asm-generic/bitio.h
-@@ -3,7 +3,7 @@
- #ifndef __ASM_GENERIC_BITIO_H
- #define __ASM_GENERIC_BITIO_H
+diff --git a/arch/arm/mach-at91/include/mach/at91_wdt.h b/arch/arm/mach-at91/include/mach/at91_wdt.h
+index d295d35d1b5c..04924742a533 100644
+--- a/arch/arm/mach-at91/include/mach/at91_wdt.h
++++ b/arch/arm/mach-at91/include/mach/at91_wdt.h
+@@ -41,7 +41,7 @@
+  * Copyright (c) 2006, Atmel Corporation
+  */
  
 -#include <asm-generic/io.h>
 +#include <asm/io.h>
  
- /*
-  * Clear and set bits in one shot. These macros can be used to clear and
+ static inline void at91_wdt_disable(void __iomem *wdt_base)
+ {
 -- 
 2.28.0
 
