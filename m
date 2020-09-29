@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kNAxk-00025y-LY
- for barebox@lists.infradead.org; Tue, 29 Sep 2020 08:26:17 +0000
-Date: Tue, 29 Sep 2020 10:26:15 +0200
+ id 1kNB1y-0002ai-Ri
+ for barebox@lists.infradead.org; Tue, 29 Sep 2020 08:30:40 +0000
+Date: Tue, 29 Sep 2020 10:30:36 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20200929082615.GY11648@pengutronix.de>
-References: <20200928161638.17189-1-a.fatoum@pengutronix.de>
+Message-ID: <20200929083036.GZ11648@pengutronix.de>
+References: <20200928155041.32649-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200928161638.17189-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20200928155041.32649-1-m.felsch@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,23 +22,25 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] include: regulator.h: forward declare struct device_d
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH 00/18] Barebox Deep-Probe
+To: Marco Felsch <m.felsch@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Sep 28, 2020 at 06:16:38PM +0200, Ahmad Fatoum wrote:
-> We so far depended on include order for struct device_d to be declared
-> before <regulator.h> inclusion. Fix this.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  include/regulator.h | 2 ++
->  1 file changed, 2 insertions(+)
+Hi Marco,
 
-Applied, thanks
+On Mon, Sep 28, 2020 at 05:50:23PM +0200, Marco Felsch wrote:
+> Hi all,
+> 
+> this series is our approach to address the EPROBE_DEFER and initcall
+> shifting problem. I skip the deep-probe explanation here and instead
+> refer to the detailed commit message of patch 15. 
+> 
+> Patche 1-11:
+>  - Fixes and cleanups I found during the development of deep-probe
+
+I applied these to -next, so no need to resend them for the next round.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
