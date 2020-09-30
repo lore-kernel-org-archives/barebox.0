@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kNabS-0006I0-L9
- for barebox@lists.infradead.org; Wed, 30 Sep 2020 11:48:59 +0000
-Message-ID: <a447a82ae7f8e45a9e86b39d1aa0383504f1cf75.camel@pengutronix.de>
-From: Enrico =?ISO-8859-1?Q?J=F6rns?= <ejo@pengutronix.de>
-Date: Wed, 30 Sep 2020 13:48:52 +0200
-In-Reply-To: <ec3d10ca7432771f49d1f4e14aaa5cae@protonic.nl>
-References: <af59b1cfcfbb69990ddc84d9d454f44e@protonic.nl>
- <20200930073946.GG11648@pengutronix.de>
- <5ad7abf6ca49d58b928acceb49bac2225a0629f4.camel@pengutronix.de>
- <c88ecdbe8296e1e05b546115b2e3d21e@protonic.nl>
- <ec3d10ca7432771f49d1f4e14aaa5cae@protonic.nl>
+ id 1kNbPR-00085Z-Rh
+ for barebox@lists.infradead.org; Wed, 30 Sep 2020 12:40:38 +0000
+Received: from [2a0a:edc0:0:900:6245:cbff:fea0:1793]
+ (helo=kresse.office.stw.pengutronix.de)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <l.stach@pengutronix.de>) id 1kNbPO-00071J-Ic
+ for barebox@lists.infradead.org; Wed, 30 Sep 2020 14:40:35 +0200
+Message-ID: <0ae4ff9734730d318fc6a62301deafe5d300441c.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Wed, 30 Sep 2020 14:40:34 +0200
+In-Reply-To: <20200820194547.3738-1-l.stach@pengutronix.de>
+References: <20200820194547.3738-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,45 +22,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Using bootspec with RAUC and redundant partitions
-To: robin@protonic.nl
-Cc: barebox@lists.infradead.org, david@protonic.nl
+Subject: Re: [PATCH 1/2] clk: imx: remove leftover debug printk's from pll14xx
+To: barebox@lists.infradead.org
 
-SGkgUm9iaW4sCgpBbSBNaXR0d29jaCwgZGVuIDMwLjA5LjIwMjAsIDEzOjI2ICswMjAwIHNjaHJp
-ZWIgcm9iaW46Cj4gRW5yaWNvLAo+IAo+ID4gT24gMjAyMC0wOS0zMCAxMDowOSwgRW5yaWNvIErD
-tnJucyB3cm90ZToKPiA+ID4gSGkgUm9iaW4sCj4gLi4KPiA+ID4gV2h5IHRoaXMgd291bGQgd29y
-ayBhbnl3YXkgaXMgYmVjYXVzZSBiYXJlYm94IGV4dGVuZHMgdGhlIGtlcm5lbAo+ID4gPiBjb21t
-YW5kbGluZSB3aXRoIHRoZSByb290PSBlbnRyaWVzIHJlcXVpcmVkIHRvIGJvb3QgdGhlIGtlcm5l
-bCBmcm9tCj4gPiA+IHRoYXQgc3BlY2lmaWMgcGFydGl0aW9uIHdoZXJlIGl0IGRpZCByZWFkIHRo
-ZSBlbnRyeSBmcm9tLgo+IAo+IFJlLXJlYWRpbmcgdGhpcywgZG8geW91IG1lYW4gdGhhdCB0aGUg
-YmxzcGVjIGZpbGVzIG9uIHRoZSByb290ZnMgCj4gcGFydGl0aW9ucwo+IHNob3VsZCBjb250YWlu
-IGEgcm9vdD0vZGV2L21tY2Jsayogb2YgdGhlIHBhcnRpdGlvbiB0aGV5IGFyZSBvbj8gQW5kIAo+
-IHRodXMKPiBzdGlsbCBjb250YWluIGR5bmFtaWMgKGluc3RhbGwgdGltZSBjb21wdXRlZCkgY29u
-ZmlndXJhdGlvbj8KCm5vLCB3aGF0IEkgbWVhbnQgd2FzIHRoZSBvcHBvc2l0ZTogVG8gZXhjbHVk
-ZSB0aGlzIGluZm9ybWF0aW9uIGZyb20gdGhlCmJsc3BlYyBmaWxlLgoKPiBJIHBsYWNlZCBteSBr
-ZXJuZWwgYW5kIGJvb3RzcGVjIGVudHJ5IGluIHRoZSByb290ZnMgcGFydGl0aW9uIHVuZGVyIAo+
-IC9ib290Lgo+IFRoZSByb290ZnMgcGFydGl0aW9uIGlzIG1tY2JsazJwNSAoYmFyZWJveDogbW1j
-Mi40KS4KPiAKPiBUaGUgJ2Jvb3QnIGNvbW1hbmQgZG9lc24ndCB3b3JrIHdpdGggdGFyZ2V0ICdt
-bWMyLjQnIChwcm9iYWJseSBzaW5jZSBJIAo+IHBsYWNlZAo+IHRoZSBkYXRhIGluIGEgJy9ib290
-JyBzdWJkaXJlY3RvcnkuCgpUaGUgYm9vdHNwZWMgZW50cmllcyBhcmUgZXhwZWN0ZWQgdG8gYmUg
-aW4gL2xvYWRlci9lbnRyaWVzIG9mIHlvdXIKcm9vdGZzLgoKPiBJZiBJIHVzZSAnYm9vdCAvbW50
-L21tYzIuNC9ib290JyBiYXJlYm94IGZpbmRzIHRoZSBzcGVjLCBrZXJuZWwgYW5kIGR0YiAKPiBi
-dXQKPiBteSByb290PSBpcyBub3Qgc2V0IGluIHRoZSBrZXJuZWwgY29tbWFuZGxpbmUuCgpBIGxp
-dHRsZSBkZXRhaWwgSSBmb3Jnb3QgdG8gbWVudGlvbiBpcyB0aGF0IGJhcmVib3ggcmVxdWlyZXMg
-eW91IHRvCmhhdmUgYSBsaW5lICdsaW51eC1hcHBlbmRyb290IHRydWUnIGluIHRoZSBibHNwZWMg
-ZmlsZS4KCk1vcmUgaW5mbyBjYW4gYmUgZm91bmQgaGVyZToKCmh0dHBzOi8vd3d3LmJhcmVib3gu
-b3JnL2RvYy9sYXRlc3QvdXNlci9ib290aW5nLWxpbnV4Lmh0bWwjYm9vdGxvYWRlci1zcGVjCgpC
-ZXN0IHJlZ2FyZHMsIEVucmljbwoKPiBCZXN0IHJlZ2FyZHMsCj4gUm9iaW4gdmFuIGRlciBHcmFj
-aHQKPiAKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8IEVu
-cmljbyBKw7ZybnMgICAgICAgICAgICAgICAgfApFbWJlZGRlZCBMaW51eCBDb25zdWx0aW5nICYg
-U3VwcG9ydCAgICAgICAgfCBodHRwczovL3d3dy5wZW5ndXRyb25peC5kZS8gfApTdGV1ZXJ3YWxk
-ZXIgU3RyLiAyMSAgICAgICAgICAgICAgICAgICAgICAgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3
-LTE4MCAgfAozMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55ICAgICAgICAgICAgICAgICAgfCBGYXg6
-ICAgKzQ5LTUxMjEtMjA2OTE3LTkgICAgfAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5m
-cmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2Jh
-cmVib3gK
+Hi Sascha,
+
+seems like this patch fell though the cracks (but 2/2 has been applied).
+
+Regards,
+Lucas
+
+On Do, 2020-08-20 at 21:45 +0200, Lucas Stach wrote:
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> ---
+>  drivers/clk/imx/clk-pll14xx.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/drivers/clk/imx/clk-pll14xx.c b/drivers/clk/imx/clk-pll14xx.c
+> index 91e9624a606d..6ba519516b9f 100644
+> --- a/drivers/clk/imx/clk-pll14xx.c
+> +++ b/drivers/clk/imx/clk-pll14xx.c
+> @@ -358,8 +358,7 @@ static void clk_pll14xx_unprepare(struct clk *clk)
+>  {
+>  	struct clk_pll14xx *pll = to_clk_pll14xx(clk);
+>  	u32 val;
+> -printf("%s %p\n", __func__, pll);
+> -printf("%s %p\n", __func__, pll->base);
+> +
+>  	/*
+>  	 * Set RST to 0, power down mode is enabled and
+>  	 * every digital block is reset
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
