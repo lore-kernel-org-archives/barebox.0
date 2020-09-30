@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kNXlg-00086z-Nt
+ id 1kNXlg-00086x-LN
  for barebox@lists.infradead.org; Wed, 30 Sep 2020 08:47:22 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <mfe@pengutronix.de>) id 1kNXlf-0003VW-Qq
+ (envelope-from <mfe@pengutronix.de>) id 1kNXlf-0003VU-On
  for barebox@lists.infradead.org; Wed, 30 Sep 2020 10:47:19 +0200
 Received: from mfe by dude02.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <mfe@pengutronix.de>) id 1kNXlf-000174-BK
+ (envelope-from <mfe@pengutronix.de>) id 1kNXlf-00016y-7X
  for barebox@lists.infradead.org; Wed, 30 Sep 2020 10:47:19 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Wed, 30 Sep 2020 10:47:12 +0200
-Message-Id: <20200930084716.4200-5-m.felsch@pengutronix.de>
+Date: Wed, 30 Sep 2020 10:47:10 +0200
+Message-Id: <20200930084716.4200-3-m.felsch@pengutronix.de>
 In-Reply-To: <20200930084716.4200-1-m.felsch@pengutronix.de>
 References: <20200930084716.4200-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
@@ -29,61 +29,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 4/8] initcall: add of_populate_initcall
+Subject: [PATCH v2 2/8] of: base: move memory init from DT to initcall
 To: barebox@lists.infradead.org
 
-Add dedicated initcall for of_probe() which is required for the following
-device-on-demand/deep-probe mechanism.
+From: Lucas Stach <dev@lynxeye.de>
 
+Instead of calling it from of_probe, convert it to a initcall at
+the appropriate level. This allows to move of_probe to later in
+the init sequence while keeping the memory init at the same place,
+which is important as many other drivers need the valid memory area
+to be set up properly.
+
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
 v2:
 - no changes
 
- include/asm-generic/barebox.lds.h |  1 +
- include/init.h                    | 10 +++++++---
- 2 files changed, 8 insertions(+), 3 deletions(-)
+ drivers/of/base.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/include/asm-generic/barebox.lds.h b/include/asm-generic/barebox.lds.h
-index 6971e2c1d2..a7d32160d1 100644
---- a/include/asm-generic/barebox.lds.h
-+++ b/include/asm-generic/barebox.lds.h
-@@ -33,6 +33,7 @@
- 	KEEP(*(.initcall.12))			\
- 	KEEP(*(.initcall.13))			\
- 	KEEP(*(.initcall.14))			\
-+	KEEP(*(.initcall.15))			\
- 	__barebox_initcalls_end = .;
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 4e88af7b22..83e4d0e9b5 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -2144,10 +2144,13 @@ const struct of_device_id of_default_bus_match_table[] = {
+ 	}
+ };
  
- #define BAREBOX_EXITCALLS			\
-diff --git a/include/init.h b/include/init.h
-index 2d61bc8963..1bd5c94b14 100644
---- a/include/init.h
-+++ b/include/init.h
-@@ -47,6 +47,9 @@ typedef void (*exitcall_t)(void);
-  * initializes variables that couldn't be statically initialized.
-  *
-  * This only exists for built-in code, not for modules.
-+ *
-+ * The only purpose for "of_populate" is to call of_probe() other functions are
-+ * not allowed.
-  */
- #define pure_initcall(fn)		__define_initcall("0",fn,0)
+-static void of_probe_memory(void)
++static int of_probe_memory(void)
+ {
+ 	struct device_node *memory = root_node;
  
-@@ -61,9 +64,10 @@ typedef void (*exitcall_t)(void);
- #define fs_initcall(fn)			__define_initcall("9",fn,9)
- #define device_initcall(fn)		__define_initcall("10",fn,10)
- #define crypto_initcall(fn)		__define_initcall("11",fn,11)
--#define late_initcall(fn)		__define_initcall("12",fn,12)
--#define environment_initcall(fn)	__define_initcall("13",fn,13)
--#define postenvironment_initcall(fn)	__define_initcall("14",fn,14)
-+#define of_populate_initcall(fn)	__define_initcall("12",fn,15)
-+#define late_initcall(fn)		__define_initcall("13",fn,12)
-+#define environment_initcall(fn)	__define_initcall("14",fn,13)
-+#define postenvironment_initcall(fn)	__define_initcall("15",fn,14)
++	if (!IS_ENABLED(CONFIG_OFDEVICE))
++		return 0;
++
+ 	/* Parse all available node with "memory" device_type */
+ 	while (1) {
+ 		memory = of_find_node_by_type(memory, "memory");
+@@ -2156,7 +2159,10 @@ static void of_probe_memory(void)
  
- #define early_exitcall(fn)		__define_exitcall("0",fn,0)
- #define predevshutdown_exitcall(fn)	__define_exitcall("1",fn,1)
+ 		of_add_memory(memory, false);
+ 	}
++
++	return 0;
+ }
++mem_initcall(of_probe_memory);
+ 
+ static void of_platform_device_create_root(struct device_node *np)
+ {
+@@ -2186,8 +2192,6 @@ int of_probe(void)
+ 	if (of_model)
+ 		barebox_set_model(of_model);
+ 
+-	of_probe_memory();
+-
+ 	firmware = of_find_node_by_path("/firmware");
+ 	if (firmware)
+ 		of_platform_populate(firmware, NULL, NULL);
 -- 
 2.20.1
 
