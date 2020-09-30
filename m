@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kNc5k-0001kY-RK
- for barebox@lists.infradead.org; Wed, 30 Sep 2020 13:24:22 +0000
+ id 1kNc60-0001or-2U
+ for barebox@lists.infradead.org; Wed, 30 Sep 2020 13:24:36 +0000
 Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <l.stach@pengutronix.de>) id 1kNc5j-0004GK-G9
- for barebox@lists.infradead.org; Wed, 30 Sep 2020 15:24:19 +0200
+ (envelope-from <l.stach@pengutronix.de>) id 1kNc5y-0004HV-Sr
+ for barebox@lists.infradead.org; Wed, 30 Sep 2020 15:24:35 +0200
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Wed, 30 Sep 2020 15:24:17 +0200
-Message-Id: <20200930132417.351944-2-l.stach@pengutronix.de>
-In-Reply-To: <20200930132417.351944-1-l.stach@pengutronix.de>
-References: <20200930132417.351944-1-l.stach@pengutronix.de>
+Date: Wed, 30 Sep 2020 15:24:34 +0200
+Message-Id: <20200930132434.354105-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,56 +23,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ARM: i.MX: nxp-imx8mm-evk: adjust DDR training order
+Subject: [PATCH] ARM: i.MX: nxp-imx8mm-evk: use eMMC update handler
 To: barebox@lists.infradead.org
 
-This way we end up with the fastest DDR speed when training is finished
-and don't need to rely on TF-A to switch into a higher DDR speed.
+Use the proper eMMC update handler to write the barebox image into
+the non-active boot partition and switch automatically.
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- arch/arm/boards/nxp-imx8mm-evk/lpddr4-timing.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ arch/arm/boards/nxp-imx8mm-evk/board.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boards/nxp-imx8mm-evk/lpddr4-timing.c b/arch/arm/boards/nxp-imx8mm-evk/lpddr4-timing.c
-index b164bdec07f1..33ef5542a364 100644
---- a/arch/arm/boards/nxp-imx8mm-evk/lpddr4-timing.c
-+++ b/arch/arm/boards/nxp-imx8mm-evk/lpddr4-timing.c
-@@ -118,7 +118,7 @@ static struct dram_cfg_param lpddr4_ddrc_cfg[] = {
- 	{ DDRC_FREQ2_INIT7(0), 0x0006004a },
+diff --git a/arch/arm/boards/nxp-imx8mm-evk/board.c b/arch/arm/boards/nxp-imx8mm-evk/board.c
+index 8f5d851a8897..4350abd15793 100644
+--- a/arch/arm/boards/nxp-imx8mm-evk/board.c
++++ b/arch/arm/boards/nxp-imx8mm-evk/board.c
+@@ -55,7 +55,7 @@ static int nxp_imx8mm_evk_init(void)
  
- 	/* boot start point */
--	{ DDRC_MSTR2(0), 0x2 }, //DDRC_MSTR2
-+	{ DDRC_MSTR2(0), 0x0 }, //DDRC_MSTR2
- };
+ 	imx8mq_bbu_internal_mmc_register_handler("SD", "/dev/mmc1.barebox",
+ 						 emmc_sd_flag);
+-	imx8mq_bbu_internal_mmc_register_handler("eMMC", "/dev/mmc2",
++	imx8mq_bbu_internal_mmcboot_register_handler("eMMC", "/dev/mmc2",
+ 						     emmc_bbu_flag);
  
- /* PHY Initialize Configuration */
-@@ -1940,12 +1940,6 @@ static struct dram_fsp_msg lpddr4_dram_fsp_msg[] = {
- 		.fw_type = FW_1D_IMAGE,
- 		.fsp_cfg = lpddr4_fsp0_cfg,
- 		.fsp_cfg_num = ARRAY_SIZE(lpddr4_fsp0_cfg),
--	}, {
--		/* P0 3000mts 2D */
--		.drate = 3000,
--		.fw_type = FW_2D_IMAGE,
--		.fsp_cfg = lpddr4_fsp0_2d_cfg,
--		.fsp_cfg_num = ARRAY_SIZE(lpddr4_fsp0_2d_cfg),
- 	}, {
- 		/* P1 400mts 1D */
- 		.drate = 400,
-@@ -1958,6 +1952,12 @@ static struct dram_fsp_msg lpddr4_dram_fsp_msg[] = {
- 		.fw_type = FW_1D_IMAGE,
- 		.fsp_cfg = lpddr4_fsp2_cfg,
- 		.fsp_cfg_num = ARRAY_SIZE(lpddr4_fsp2_cfg),
-+	}, {
-+		/* P0 3000mts 2D */
-+		.drate = 3000,
-+		.fw_type = FW_2D_IMAGE,
-+		.fsp_cfg = lpddr4_fsp0_2d_cfg,
-+		.fsp_cfg_num = ARRAY_SIZE(lpddr4_fsp0_2d_cfg),
- 	},
- };
- 
+ 	phy_register_fixup_for_uid(PHY_ID_AR8031, AR_PHY_ID_MASK,
 -- 
 2.20.1
 
