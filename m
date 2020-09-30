@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kNc5k-0001kV-ES
- for barebox@lists.infradead.org; Wed, 30 Sep 2020 13:24:21 +0000
+ id 1kNc5k-0001kY-RK
+ for barebox@lists.infradead.org; Wed, 30 Sep 2020 13:24:22 +0000
 Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
  by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <l.stach@pengutronix.de>) id 1kNc5i-0004GK-9D
+ (envelope-from <l.stach@pengutronix.de>) id 1kNc5j-0004GK-G9
  for barebox@lists.infradead.org; Wed, 30 Sep 2020 15:24:19 +0200
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Wed, 30 Sep 2020 15:24:16 +0200
-Message-Id: <20200930132417.351944-1-l.stach@pengutronix.de>
+Date: Wed, 30 Sep 2020 15:24:17 +0200
+Message-Id: <20200930132417.351944-2-l.stach@pengutronix.de>
+In-Reply-To: <20200930132417.351944-1-l.stach@pengutronix.de>
+References: <20200930132417.351944-1-l.stach@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,44 +25,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] drivers/ddr/imx8: remove leftover DEBUG defines
+Subject: [PATCH 2/2] ARM: i.MX: nxp-imx8mm-evk: adjust DDR training order
 To: barebox@lists.infradead.org
 
-This produces quite a bit of log noise and should not be
-enabled by default.
+This way we end up with the fastest DDR speed when training is finished
+and don't need to rely on TF-A to switch into a higher DDR speed.
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- drivers/ddr/imx8m/ddr_init.c     | 2 +-
- drivers/ddr/imx8m/ddrphy_train.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/boards/nxp-imx8mm-evk/lpddr4-timing.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/ddr/imx8m/ddr_init.c b/drivers/ddr/imx8m/ddr_init.c
-index 374601b786c2..093b9ea905db 100644
---- a/drivers/ddr/imx8m/ddr_init.c
-+++ b/drivers/ddr/imx8m/ddr_init.c
-@@ -2,7 +2,7 @@
- /*
-  * Copyright 2018-2019 NXP
-  */
--#define DEBUG
-+
- #include <common.h>
- #include <errno.h>
- #include <io.h>
-diff --git a/drivers/ddr/imx8m/ddrphy_train.c b/drivers/ddr/imx8m/ddrphy_train.c
-index c2238cc66b3b..2563b809467a 100644
---- a/drivers/ddr/imx8m/ddrphy_train.c
-+++ b/drivers/ddr/imx8m/ddrphy_train.c
-@@ -2,7 +2,7 @@
- /*
-  * Copyright 2018 NXP
-  */
--#define DEBUG
-+
- #include <common.h>
- #include <linux/kernel.h>
- #include <soc/imx8m/ddr.h>
+diff --git a/arch/arm/boards/nxp-imx8mm-evk/lpddr4-timing.c b/arch/arm/boards/nxp-imx8mm-evk/lpddr4-timing.c
+index b164bdec07f1..33ef5542a364 100644
+--- a/arch/arm/boards/nxp-imx8mm-evk/lpddr4-timing.c
++++ b/arch/arm/boards/nxp-imx8mm-evk/lpddr4-timing.c
+@@ -118,7 +118,7 @@ static struct dram_cfg_param lpddr4_ddrc_cfg[] = {
+ 	{ DDRC_FREQ2_INIT7(0), 0x0006004a },
+ 
+ 	/* boot start point */
+-	{ DDRC_MSTR2(0), 0x2 }, //DDRC_MSTR2
++	{ DDRC_MSTR2(0), 0x0 }, //DDRC_MSTR2
+ };
+ 
+ /* PHY Initialize Configuration */
+@@ -1940,12 +1940,6 @@ static struct dram_fsp_msg lpddr4_dram_fsp_msg[] = {
+ 		.fw_type = FW_1D_IMAGE,
+ 		.fsp_cfg = lpddr4_fsp0_cfg,
+ 		.fsp_cfg_num = ARRAY_SIZE(lpddr4_fsp0_cfg),
+-	}, {
+-		/* P0 3000mts 2D */
+-		.drate = 3000,
+-		.fw_type = FW_2D_IMAGE,
+-		.fsp_cfg = lpddr4_fsp0_2d_cfg,
+-		.fsp_cfg_num = ARRAY_SIZE(lpddr4_fsp0_2d_cfg),
+ 	}, {
+ 		/* P1 400mts 1D */
+ 		.drate = 400,
+@@ -1958,6 +1952,12 @@ static struct dram_fsp_msg lpddr4_dram_fsp_msg[] = {
+ 		.fw_type = FW_1D_IMAGE,
+ 		.fsp_cfg = lpddr4_fsp2_cfg,
+ 		.fsp_cfg_num = ARRAY_SIZE(lpddr4_fsp2_cfg),
++	}, {
++		/* P0 3000mts 2D */
++		.drate = 3000,
++		.fw_type = FW_2D_IMAGE,
++		.fsp_cfg = lpddr4_fsp0_2d_cfg,
++		.fsp_cfg_num = ARRAY_SIZE(lpddr4_fsp0_2d_cfg),
+ 	},
+ };
+ 
 -- 
 2.20.1
 
