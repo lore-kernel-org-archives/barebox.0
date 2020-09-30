@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kNbvU-0007gF-Oj
- for barebox@lists.infradead.org; Wed, 30 Sep 2020 13:13:45 +0000
-References: <20200928154247.15619-1-a.fatoum@pengutronix.de>
- <20200929073220.GU11648@pengutronix.de>
- <50c46e25-4b69-2868-e264-72b37b82244e@pengutronix.de>
- <20200930074847.GH11648@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <ba127a9d-1db2-9960-5522-14a93035e62e@pengutronix.de>
-Date: Wed, 30 Sep 2020 15:13:42 +0200
+Received: from protonic.xs4all.nl ([83.163.252.89])
+ by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1kNc0K-0000iW-5v
+ for barebox@lists.infradead.org; Wed, 30 Sep 2020 13:18:45 +0000
 MIME-Version: 1.0
-In-Reply-To: <20200930074847.GH11648@pengutronix.de>
-Content-Language: en-US
+Date: Wed, 30 Sep 2020 15:18:39 +0200
+From: robin <robin@protonic.nl>
+In-Reply-To: <a447a82ae7f8e45a9e86b39d1aa0383504f1cf75.camel@pengutronix.de>
+References: <af59b1cfcfbb69990ddc84d9d454f44e@protonic.nl>
+ <20200930073946.GG11648@pengutronix.de>
+ <5ad7abf6ca49d58b928acceb49bac2225a0629f4.camel@pengutronix.de>
+ <c88ecdbe8296e1e05b546115b2e3d21e@protonic.nl>
+ <ec3d10ca7432771f49d1f4e14aaa5cae@protonic.nl>
+ <a447a82ae7f8e45a9e86b39d1aa0383504f1cf75.camel@pengutronix.de>
+Message-ID: <2345573d89ba39fcb96a2d182ff3e5aa@protonic.nl>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,100 +22,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: robin@protonic.nl
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/7] driver: introduce less error-prone dev_get_drvdata
- alternative
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: Using bootspec with RAUC and redundant partitions
+To: =?UTF-8?Q?Enrico_J=C3=B6rns?= <ejo@pengutronix.de>
+Cc: barebox@lists.infradead.org, david@protonic.nl
 
-Hi,
-
-On 9/30/20 9:48 AM, Sascha Hauer wrote:
->> If the match data is a valid pointer:
->>  -> It doesn't matter, why we have no match data either way.
->>
->> If the match data is a casted integer (e.g. enum):
->>  The driver author should either:
->>    -> place the default enum value as first one,
->>       so no match data => default
-> 
-> You know that, but "The driver Author" probably doesn't.
-
-Like with all other functions that return an error code,
-the author should check those errors:
-
-enum lm75_type type = (enum lm75_type)device_get_match_data(dev);
-if (type == 0)
-   return -ENODEV;
-
-I'd expect they will see that 0 shouldn't be part of the enumeration.
-
->>    -> should add an initial DEVICE_TYPE_UNKNOWN = 0 in the enum
->>       and handle it appropriately
->>
->> I like the function signature like that, I don't really see
->> a need to adjust it.
->>
->>> As you realize in your series some drivers cast the returned value into
->>> an integer type and use 0 as a valid possibility. These need an extra
->>> explanation why we can accept that case. I can think of different
->>> possibilies to get that straight:
->>>
->>> - Put a real pointer into matchdata. This is really preferred as it
->>>   motivates people to put flags into a (struct type) matchdata which
->>>   doesn't lead to excessive if (type == foo || type == bar || type ==
->>>   baz) we sometimes see in drivers.
->>
->> We have a real pointer there already. The problem is migrating the
->> existing drivers.
-> 
-> Yes, existing drivers would have to be migrated, that is exactly what I
-> am proposing.
-> 
->>
->>> - Return an ERR_PTR from device_get_match_data(). this is less likely
->>>   interpreted as a valid int value
->>
->> Doesn't cover all cases. Also for the normal use, it means
->> you need to have to check with IS_ERR_OR_NULL everywhere to
->> be sure you don't dereference a NULL pointer.
-> 
-> Why that? Just don't return NULL when there's no match data, but return
-> -ESOMETHING.
-
-For the lm75 we would have to do:
-
-enum lm75_type { TYPE_1, TYPE_2 };
-
-const void *match = device_get_match_data(dev);
-if (IS_ERR(match))
-   return PTR_ERR(match);
-enum lm75_type type = (enum lm75_type)match;
-
-The alternative being:
-
-enum lm75_type { TYPE_UNKNOWN = 0, TYPE_1, TYPE_2 };
-
-enum lm75_type type = (enum lm75_type)device_get_match_data(dev);
-if (type == TYPE_UNKNOWN)
-   return -ENODEV;
-
-I prefer the second one very much.
-
-> 
-> Sascha
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gMjAyMC0wOS0zMCAxMzo0OCwgRW5yaWNvIErDtnJucyB3cm90ZToKPiBIaSBSb2JpbiwKPiAK
+PiBBbSBNaXR0d29jaCwgZGVuIDMwLjA5LjIwMjAsIDEzOjI2ICswMjAwIHNjaHJpZWIgcm9iaW46
+Cj4+IEVucmljbywKPj4gCj4+ID4gT24gMjAyMC0wOS0zMCAxMDowOSwgRW5yaWNvIErDtnJucyB3
+cm90ZToKPj4gPiA+IEhpIFJvYmluLAo+PiAuLgo+PiA+ID4gV2h5IHRoaXMgd291bGQgd29yayBh
+bnl3YXkgaXMgYmVjYXVzZSBiYXJlYm94IGV4dGVuZHMgdGhlIGtlcm5lbAo+PiA+ID4gY29tbWFu
+ZGxpbmUgd2l0aCB0aGUgcm9vdD0gZW50cmllcyByZXF1aXJlZCB0byBib290IHRoZSBrZXJuZWwg
+ZnJvbQo+PiA+ID4gdGhhdCBzcGVjaWZpYyBwYXJ0aXRpb24gd2hlcmUgaXQgZGlkIHJlYWQgdGhl
+IGVudHJ5IGZyb20uCj4+IAo+PiBSZS1yZWFkaW5nIHRoaXMsIGRvIHlvdSBtZWFuIHRoYXQgdGhl
+IGJsc3BlYyBmaWxlcyBvbiB0aGUgcm9vdGZzCj4+IHBhcnRpdGlvbnMKPj4gc2hvdWxkIGNvbnRh
+aW4gYSByb290PS9kZXYvbW1jYmxrKiBvZiB0aGUgcGFydGl0aW9uIHRoZXkgYXJlIG9uPyBBbmQK
+Pj4gdGh1cwo+PiBzdGlsbCBjb250YWluIGR5bmFtaWMgKGluc3RhbGwgdGltZSBjb21wdXRlZCkg
+Y29uZmlndXJhdGlvbj8KPiAKPiBubywgd2hhdCBJIG1lYW50IHdhcyB0aGUgb3Bwb3NpdGU6IFRv
+IGV4Y2x1ZGUgdGhpcyBpbmZvcm1hdGlvbiBmcm9tIHRoZQo+IGJsc3BlYyBmaWxlLgoKYWNrLCB0
+aGFuIHdlJ3JlIG9uIHRoZSBzYW1lIHBhZ2UgaGVyZSA7KQoKPj4gSWYgSSB1c2UgJ2Jvb3QgL21u
+dC9tbWMyLjQvYm9vdCcgYmFyZWJveCBmaW5kcyB0aGUgc3BlYywga2VybmVsIGFuZCAKPj4gZHRi
+Cj4+IGJ1dCBteSByb290PSBpcyBub3Qgc2V0IGluIHRoZSBrZXJuZWwgY29tbWFuZGxpbmUuCj4g
+Cj4gQSBsaXR0bGUgZGV0YWlsIEkgZm9yZ290IHRvIG1lbnRpb24gaXMgdGhhdCBiYXJlYm94IHJl
+cXVpcmVzIHlvdSB0bwo+IGhhdmUgYSBsaW5lICdsaW51eC1hcHBlbmRyb290IHRydWUnIGluIHRo
+ZSBibHNwZWMgZmlsZS4KClRoYXRzIHdoYXQgSSBtaXNzZWQuIEEgY3VzdG9tIGJvb3RzcGVjIGtl
+eSA6UAoKICBibHNwZWM6IGJvb3RpbmcgdmljdXQxLTEuMDUuODguMi4xIGZyb20gbW1jMgogIEFk
+ZGluZyAicm9vdD1QQVJUVVVJRD1mMzQwYTBmNS0wNSIgdG8gS2VybmVsIGNvbW1hbmRsaW5lCgpO
+b3cgd29ya3MgYXMgcHJldmlvdXNseSBkaXNjdXNzZWQsIHRoYW5rcyEKCkJlc3QgcmVnYXJkcywK
+Um9iaW4gdmFuIGRlciBHcmFjaHQKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFk
+Lm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
