@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from protonic.xs4all.nl ([83.163.252.89])
- by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kNaFu-0003JA-5Q
- for barebox@lists.infradead.org; Wed, 30 Sep 2020 11:26:46 +0000
-MIME-Version: 1.0
-Date: Wed, 30 Sep 2020 13:26:41 +0200
-From: robin <robin@protonic.nl>
-In-Reply-To: <c88ecdbe8296e1e05b546115b2e3d21e@protonic.nl>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1kNabS-0006I0-L9
+ for barebox@lists.infradead.org; Wed, 30 Sep 2020 11:48:59 +0000
+Message-ID: <a447a82ae7f8e45a9e86b39d1aa0383504f1cf75.camel@pengutronix.de>
+From: Enrico =?ISO-8859-1?Q?J=F6rns?= <ejo@pengutronix.de>
+Date: Wed, 30 Sep 2020 13:48:52 +0200
+In-Reply-To: <ec3d10ca7432771f49d1f4e14aaa5cae@protonic.nl>
 References: <af59b1cfcfbb69990ddc84d9d454f44e@protonic.nl>
  <20200930073946.GG11648@pengutronix.de>
  <5ad7abf6ca49d58b928acceb49bac2225a0629f4.camel@pengutronix.de>
  <c88ecdbe8296e1e05b546115b2e3d21e@protonic.nl>
-Message-ID: <ec3d10ca7432771f49d1f4e14aaa5cae@protonic.nl>
+ <ec3d10ca7432771f49d1f4e14aaa5cae@protonic.nl>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,31 +21,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: robin@protonic.nl
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Using bootspec with RAUC and redundant partitions
 To: robin@protonic.nl
-Cc: barebox@lists.infradead.org, =?UTF-8?Q?Enrico_J=C3=B6rns?= <ejo@pengutronix.de>, david@protonic.nl
+Cc: barebox@lists.infradead.org, david@protonic.nl
 
-RW5yaWNvLAoKPiBPbiAyMDIwLTA5LTMwIDEwOjA5LCBFbnJpY28gSsO2cm5zIHdyb3RlOgo+PiBI
-aSBSb2JpbiwKLi4KPj4gV2h5IHRoaXMgd291bGQgd29yayBhbnl3YXkgaXMgYmVjYXVzZSBiYXJl
-Ym94IGV4dGVuZHMgdGhlIGtlcm5lbAo+PiBjb21tYW5kbGluZSB3aXRoIHRoZSByb290PSBlbnRy
-aWVzIHJlcXVpcmVkIHRvIGJvb3QgdGhlIGtlcm5lbCBmcm9tCj4+IHRoYXQgc3BlY2lmaWMgcGFy
-dGl0aW9uIHdoZXJlIGl0IGRpZCByZWFkIHRoZSBlbnRyeSBmcm9tLgoKUmUtcmVhZGluZyB0aGlz
-LCBkbyB5b3UgbWVhbiB0aGF0IHRoZSBibHNwZWMgZmlsZXMgb24gdGhlIHJvb3RmcyAKcGFydGl0
-aW9ucwpzaG91bGQgY29udGFpbiBhIHJvb3Q9L2Rldi9tbWNibGsqIG9mIHRoZSBwYXJ0aXRpb24g
-dGhleSBhcmUgb24/IEFuZCAKdGh1cwpzdGlsbCBjb250YWluIGR5bmFtaWMgKGluc3RhbGwgdGlt
-ZSBjb21wdXRlZCkgY29uZmlndXJhdGlvbj8KCkkgcGxhY2VkIG15IGtlcm5lbCBhbmQgYm9vdHNw
-ZWMgZW50cnkgaW4gdGhlIHJvb3RmcyBwYXJ0aXRpb24gdW5kZXIgCi9ib290LgpUaGUgcm9vdGZz
-IHBhcnRpdGlvbiBpcyBtbWNibGsycDUgKGJhcmVib3g6IG1tYzIuNCkuCgpUaGUgJ2Jvb3QnIGNv
-bW1hbmQgZG9lc24ndCB3b3JrIHdpdGggdGFyZ2V0ICdtbWMyLjQnIChwcm9iYWJseSBzaW5jZSBJ
-IApwbGFjZWQKdGhlIGRhdGEgaW4gYSAnL2Jvb3QnIHN1YmRpcmVjdG9yeS4KCklmIEkgdXNlICdi
-b290IC9tbnQvbW1jMi40L2Jvb3QnIGJhcmVib3ggZmluZHMgdGhlIHNwZWMsIGtlcm5lbCBhbmQg
-ZHRiIApidXQKbXkgcm9vdD0gaXMgbm90IHNldCBpbiB0aGUga2VybmVsIGNvbW1hbmRsaW5lLgoK
-QmVzdCByZWdhcmRzLApSb2JpbiB2YW4gZGVyIEdyYWNodAoKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBs
-aXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
-dGluZm8vYmFyZWJveAo=
+SGkgUm9iaW4sCgpBbSBNaXR0d29jaCwgZGVuIDMwLjA5LjIwMjAsIDEzOjI2ICswMjAwIHNjaHJp
+ZWIgcm9iaW46Cj4gRW5yaWNvLAo+IAo+ID4gT24gMjAyMC0wOS0zMCAxMDowOSwgRW5yaWNvIErD
+tnJucyB3cm90ZToKPiA+ID4gSGkgUm9iaW4sCj4gLi4KPiA+ID4gV2h5IHRoaXMgd291bGQgd29y
+ayBhbnl3YXkgaXMgYmVjYXVzZSBiYXJlYm94IGV4dGVuZHMgdGhlIGtlcm5lbAo+ID4gPiBjb21t
+YW5kbGluZSB3aXRoIHRoZSByb290PSBlbnRyaWVzIHJlcXVpcmVkIHRvIGJvb3QgdGhlIGtlcm5l
+bCBmcm9tCj4gPiA+IHRoYXQgc3BlY2lmaWMgcGFydGl0aW9uIHdoZXJlIGl0IGRpZCByZWFkIHRo
+ZSBlbnRyeSBmcm9tLgo+IAo+IFJlLXJlYWRpbmcgdGhpcywgZG8geW91IG1lYW4gdGhhdCB0aGUg
+YmxzcGVjIGZpbGVzIG9uIHRoZSByb290ZnMgCj4gcGFydGl0aW9ucwo+IHNob3VsZCBjb250YWlu
+IGEgcm9vdD0vZGV2L21tY2Jsayogb2YgdGhlIHBhcnRpdGlvbiB0aGV5IGFyZSBvbj8gQW5kIAo+
+IHRodXMKPiBzdGlsbCBjb250YWluIGR5bmFtaWMgKGluc3RhbGwgdGltZSBjb21wdXRlZCkgY29u
+ZmlndXJhdGlvbj8KCm5vLCB3aGF0IEkgbWVhbnQgd2FzIHRoZSBvcHBvc2l0ZTogVG8gZXhjbHVk
+ZSB0aGlzIGluZm9ybWF0aW9uIGZyb20gdGhlCmJsc3BlYyBmaWxlLgoKPiBJIHBsYWNlZCBteSBr
+ZXJuZWwgYW5kIGJvb3RzcGVjIGVudHJ5IGluIHRoZSByb290ZnMgcGFydGl0aW9uIHVuZGVyIAo+
+IC9ib290Lgo+IFRoZSByb290ZnMgcGFydGl0aW9uIGlzIG1tY2JsazJwNSAoYmFyZWJveDogbW1j
+Mi40KS4KPiAKPiBUaGUgJ2Jvb3QnIGNvbW1hbmQgZG9lc24ndCB3b3JrIHdpdGggdGFyZ2V0ICdt
+bWMyLjQnIChwcm9iYWJseSBzaW5jZSBJIAo+IHBsYWNlZAo+IHRoZSBkYXRhIGluIGEgJy9ib290
+JyBzdWJkaXJlY3RvcnkuCgpUaGUgYm9vdHNwZWMgZW50cmllcyBhcmUgZXhwZWN0ZWQgdG8gYmUg
+aW4gL2xvYWRlci9lbnRyaWVzIG9mIHlvdXIKcm9vdGZzLgoKPiBJZiBJIHVzZSAnYm9vdCAvbW50
+L21tYzIuNC9ib290JyBiYXJlYm94IGZpbmRzIHRoZSBzcGVjLCBrZXJuZWwgYW5kIGR0YiAKPiBi
+dXQKPiBteSByb290PSBpcyBub3Qgc2V0IGluIHRoZSBrZXJuZWwgY29tbWFuZGxpbmUuCgpBIGxp
+dHRsZSBkZXRhaWwgSSBmb3Jnb3QgdG8gbWVudGlvbiBpcyB0aGF0IGJhcmVib3ggcmVxdWlyZXMg
+eW91IHRvCmhhdmUgYSBsaW5lICdsaW51eC1hcHBlbmRyb290IHRydWUnIGluIHRoZSBibHNwZWMg
+ZmlsZS4KCk1vcmUgaW5mbyBjYW4gYmUgZm91bmQgaGVyZToKCmh0dHBzOi8vd3d3LmJhcmVib3gu
+b3JnL2RvYy9sYXRlc3QvdXNlci9ib290aW5nLWxpbnV4Lmh0bWwjYm9vdGxvYWRlci1zcGVjCgpC
+ZXN0IHJlZ2FyZHMsIEVucmljbwoKPiBCZXN0IHJlZ2FyZHMsCj4gUm9iaW4gdmFuIGRlciBHcmFj
+aHQKPiAKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8IEVu
+cmljbyBKw7ZybnMgICAgICAgICAgICAgICAgfApFbWJlZGRlZCBMaW51eCBDb25zdWx0aW5nICYg
+U3VwcG9ydCAgICAgICAgfCBodHRwczovL3d3dy5wZW5ndXRyb25peC5kZS8gfApTdGV1ZXJ3YWxk
+ZXIgU3RyLiAyMSAgICAgICAgICAgICAgICAgICAgICAgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3
+LTE4MCAgfAozMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55ICAgICAgICAgICAgICAgICAgfCBGYXg6
+ICAgKzQ5LTUxMjEtMjA2OTE3LTkgICAgfAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5m
+cmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2Jh
+cmVib3gK
