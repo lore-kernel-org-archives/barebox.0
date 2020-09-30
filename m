@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kNWPK-0002mr-89
- for barebox@lists.infradead.org; Wed, 30 Sep 2020 07:20:16 +0000
+ id 1kNWPK-0002mq-9V
+ for barebox@lists.infradead.org; Wed, 30 Sep 2020 07:20:17 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 30 Sep 2020 09:19:58 +0200
-Message-Id: <20200930072005.1407-5-a.fatoum@pengutronix.de>
+Date: Wed, 30 Sep 2020 09:20:01 +0200
+Message-Id: <20200930072005.1407-8-a.fatoum@pengutronix.de>
 In-Reply-To: <20200930072005.1407-1-a.fatoum@pengutronix.de>
 References: <20200930072005.1407-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,73 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/12] net: usb: asix: propagate errors from MDIO accessors
+Subject: [PATCH 08/12] USB: musb: remove dead stores
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The primitives asix_mdio_write and asix_mdio_read use return errors, but
-are unchecked. Propagate them instead.
+Reading the interrupt registers has a side-effect, so their value need
+not be used for anythig. Storing it into a variable never read
+obfuscates this however. Cast to (void) for clarity.
 
 Reported-by: clang-analyzer-10
-[afa: Untested on real hardware]
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/net/usb/asix.c | 29 +++++++++++++++++++++--------
- 1 file changed, 21 insertions(+), 8 deletions(-)
+ drivers/usb/musb/musb_core.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/usb/asix.c b/drivers/net/usb/asix.c
-index 3ca27ff0270e..fc7063095b6c 100644
---- a/drivers/net/usb/asix.c
-+++ b/drivers/net/usb/asix.c
-@@ -252,11 +252,19 @@ static int asix_mdio_read(struct mii_bus *bus, int phy_id, int loc)
+diff --git a/drivers/usb/musb/musb_core.c b/drivers/usb/musb/musb_core.c
+index 9fdef8679b88..266663a9b0ec 100644
+--- a/drivers/usb/musb/musb_core.c
++++ b/drivers/usb/musb/musb_core.c
+@@ -330,7 +330,6 @@ void musb_load_testpacket(struct musb *musb)
+ static void musb_generic_disable(struct musb *musb)
  {
- 	struct usbnet *dev = bus->priv;
- 	__le16 res;
-+	int ret;
-+
-+	ret = asix_set_sw_mii(dev);
-+	if (ret)
-+		return ret;
+ 	void __iomem	*mbase = musb->mregs;
+-	u16	temp;
  
--	asix_set_sw_mii(dev);
--	asix_read_cmd(dev, AX_CMD_READ_MII_REG, phy_id,
--				(__u16)loc, 2, &res);
--	asix_set_hw_mii(dev);
-+	ret = asix_read_cmd(dev, AX_CMD_READ_MII_REG, phy_id, (__u16)loc, 2, &res);
-+	if (ret)
-+		return ret;
-+
-+	ret = asix_set_hw_mii(dev);
-+	if (ret)
-+		return ret;
+ 	/* disable interrupts */
+ 	musb_writeb(mbase, MUSB_INTRUSBE, 0);
+@@ -343,9 +342,9 @@ static void musb_generic_disable(struct musb *musb)
+ 	musb_writeb(mbase, MUSB_DEVCTL, 0);
  
- 	dev_dbg(&dev->edev.dev, "asix_mdio_read() phy_id=0x%02x, loc=0x%02x, returns=0x%04x\n",
- 			phy_id, loc, le16_to_cpu(res));
-@@ -268,15 +276,20 @@ static int asix_mdio_write(struct mii_bus *bus, int phy_id, int loc, u16 val)
- {
- 	struct usbnet *dev = bus->priv;
- 	__le16 res = cpu_to_le16(val);
-+	int ret;
+ 	/*  flush pending interrupts */
+-	temp = musb_readb(mbase, MUSB_INTRUSB);
+-	temp = musb_readw(mbase, MUSB_INTRTX);
+-	temp = musb_readw(mbase, MUSB_INTRRX);
++	(void)musb_readb(mbase, MUSB_INTRUSB);
++	(void)musb_readw(mbase, MUSB_INTRTX);
++	(void)musb_readw(mbase, MUSB_INTRRX);
  
- 	dev_dbg(&dev->edev.dev, "asix_mdio_write() phy_id=0x%02x, loc=0x%02x, val=0x%04x\n",
- 			phy_id, loc, val);
- 
--	asix_set_sw_mii(dev);
--	asix_write_cmd(dev, AX_CMD_WRITE_MII_REG, phy_id, (__u16)loc, 2, &res);
--	asix_set_hw_mii(dev);
-+	ret = asix_set_sw_mii(dev);
-+	if (ret)
-+		return ret;
- 
--	return 0;
-+	ret = asix_write_cmd(dev, AX_CMD_WRITE_MII_REG, phy_id, (__u16)loc, 2, &res);
-+	if (ret)
-+		return ret;
-+
-+	return asix_set_hw_mii(dev);
  }
  
- static inline int asix_get_phy_addr(struct usbnet *dev)
 -- 
 2.28.0
 
