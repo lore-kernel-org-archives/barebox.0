@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kO12M-000071-9f
- for barebox@lists.infradead.org; Thu, 01 Oct 2020 16:02:31 +0000
-Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <mfe@pengutronix.de>) id 1kO12J-0002jS-Bb
- for barebox@lists.infradead.org; Thu, 01 Oct 2020 18:02:27 +0200
-Received: from mfe by dude02.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <mfe@pengutronix.de>) id 1kO12J-0001Ag-3I
- for barebox@lists.infradead.org; Thu, 01 Oct 2020 18:02:27 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Thu,  1 Oct 2020 18:02:25 +0200
-Message-Id: <20201001160225.4447-1-m.felsch@pengutronix.de>
+ id 1kNrr2-00025U-6r
+ for barebox@lists.infradead.org; Thu, 01 Oct 2020 06:14:12 +0000
+Date: Thu, 1 Oct 2020 08:14:10 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20201001061410.GJ11648@pengutronix.de>
+References: <20200929115457.5034-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200929115457.5034-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,37 +18,78 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: phytec-som-imx6: fix build dependency
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] scripts/dtc: only append to HOST_EXTRACFLAGS instead of
+ overwriting
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Enable i2c support since the board code configures the i2c connected
-PMIC.
+On Tue, Sep 29, 2020 at 01:54:57PM +0200, Uwe Kleine-K=F6nig wrote:
+> This corresponds to Linux commit 7e2521a85c98 (that currently sits in
+> linux-next) with the same short log.
+> =
 
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
----
- arch/arm/mach-imx/Kconfig | 2 ++
- 1 file changed, 2 insertions(+)
+> When building with
+> =
 
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index 2e8d2bd56c..a67e59fd4f 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -339,6 +339,8 @@ config MACH_PHYTEC_SOM_IMX6
-         bool "Phytec phyCARD-i.MX6 and phyFLEX-i.MX6"
-         select ARCH_IMX6
- 	select ARCH_IMX6UL
-+	select I2C
-+	select I2C_IMX
- 
- config MACH_PROTONIC_IMX6
- 	bool "Protonic-Holland i.MX6 based boards"
--- 
-2.20.1
+> 	$ HOST_EXTRACFLAGS=3D-g make
+> =
 
+> the expectation is that host tools are built with debug informations.
+> This however doesn't happen if the Makefile assigns a new value to the
+> HOST_EXTRACFLAGS instead of appending to it. So use +=3D instead of :=3D =
+for
+> the first assignment.
+> =
+
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  scripts/dtc/Makefile | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+
+Applied, thanks
+
+Sascha
+
+> =
+
+> diff --git a/scripts/dtc/Makefile b/scripts/dtc/Makefile
+> index 06a265cf7b51..721e8e2b8c2e 100644
+> --- a/scripts/dtc/Makefile
+> +++ b/scripts/dtc/Makefile
+> @@ -14,7 +14,7 @@ libfdt-objs	:=3D $(libfdt-objs:%.o=3Dlibfdt/%.o)
+>  fdtget-objs    +=3D fdtget.o $(libfdt-objs) util.o
+>  =
+
+>  # Source files need to get at the userspace version of libfdt_env.h to c=
+ompile
+> -HOST_EXTRACFLAGS :=3D -I$(src)/libfdt
+> +HOST_EXTRACFLAGS +=3D -I$(src)/libfdt
+>  =
+
+>  ifeq ($(wildcard /usr/include/yaml.h),)
+>  ifneq ($(CHECK_DTBS),)
+> -- =
+
+> 2.28.0
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
