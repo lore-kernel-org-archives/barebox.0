@@ -1,24 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kNvaQ-0001lK-VN
- for barebox@lists.infradead.org; Thu, 01 Oct 2020 10:13:19 +0000
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+ id 1kO12M-000071-9f
+ for barebox@lists.infradead.org; Thu, 01 Oct 2020 16:02:31 +0000
+Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <mfe@pengutronix.de>) id 1kNvaO-0004I4-Hn
- for barebox@lists.infradead.org; Thu, 01 Oct 2020 12:13:16 +0200
-Received: from mfe by pty.hi.pengutronix.de with local (Exim 4.89)
- (envelope-from <mfe@pengutronix.de>) id 1kNvaO-00054I-89
- for barebox@lists.infradead.org; Thu, 01 Oct 2020 12:13:16 +0200
-Date: Thu, 1 Oct 2020 12:13:16 +0200
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <mfe@pengutronix.de>) id 1kO12J-0002jS-Bb
+ for barebox@lists.infradead.org; Thu, 01 Oct 2020 18:02:27 +0200
+Received: from mfe by dude02.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <mfe@pengutronix.de>) id 1kO12J-0001Ag-3I
+ for barebox@lists.infradead.org; Thu, 01 Oct 2020 18:02:27 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
-Message-ID: <20201001101316.ezjwn6oe3rhwoxnf@pengutronix.de>
-References: <20200930084716.4200-1-m.felsch@pengutronix.de>
- <20200930084716.4200-6-m.felsch@pengutronix.de>
+Date: Thu,  1 Oct 2020 18:02:25 +0200
+Message-Id: <20201001160225.4447-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200930084716.4200-6-m.felsch@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -31,24 +27,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 5/8] common: add initial barebox deep-probe support
+Subject: [PATCH] ARM: phytec-som-imx6: fix build dependency
 To: barebox@lists.infradead.org
 
-Hi,
+Enable i2c support since the board code configures the i2c connected
+PMIC.
 
-On 20-09-30 10:47, Marco Felsch wrote:
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+---
+ arch/arm/mach-imx/Kconfig | 2 ++
+ 1 file changed, 2 insertions(+)
 
-> +#define BAREBOX_DEEP_PROBE_ENABLE(_entry,_compatible)			\
-> +	const struct deep_probe_entry _DEEP_PROBE_ENTRY(_entry)		\
-> +        __attribute__ ((unused,section (".barebox_deep_probe_" __stringify(_entry)))) = { \
-> +		.compatible = _compatible,				\
-> +	}
-
-I forgot to change this to use the __UNIQUE_ID. I will send a fixup if
-that is the the only finding in this round, if it is okay for all.
-
-Regards,
-  Marco
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 2e8d2bd56c..a67e59fd4f 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -339,6 +339,8 @@ config MACH_PHYTEC_SOM_IMX6
+         bool "Phytec phyCARD-i.MX6 and phyFLEX-i.MX6"
+         select ARCH_IMX6
+ 	select ARCH_IMX6UL
++	select I2C
++	select I2C_IMX
+ 
+ config MACH_PROTONIC_IMX6
+ 	bool "Protonic-Holland i.MX6 based boards"
+-- 
+2.20.1
 
 
 _______________________________________________
