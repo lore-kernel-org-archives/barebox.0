@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kNvCS-0007c3-Pg
+ id 1kNvCS-0007c2-Pf
  for barebox@lists.infradead.org; Thu, 01 Oct 2020 09:48:33 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  1 Oct 2020 11:48:21 +0200
-Message-Id: <20201001094820.21931-2-a.fatoum@pengutronix.de>
-In-Reply-To: <20201001094820.21931-1-a.fatoum@pengutronix.de>
-References: <20201001094820.21931-1-a.fatoum@pengutronix.de>
+Date: Thu,  1 Oct 2020 11:48:20 +0200
+Message-Id: <20201001094820.21931-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,73 +19,167 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/2] ARM: stm32mp: dk2: have barebox image support DK1 as
- well
+Subject: [PATCH 1/2] ARM: stm32mp: revision: make CPU type accessible to PBL
 To: barebox@lists.infradead.org
-Cc: Holger Assmann <h.assmann@pengutronix.de>, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The STM32MP157C-DK2 and STM32MP157A-DK1 are basically the same board
-except the DK2 has a MIPI-DSI display attached and the SoC has a
-crypto block. We can thus use the SoC type to differentiate between
-them and just include both device trees at tolerable 12K size increase.
+There is nothing holding holding us back from reading SoC type in
+the PBL. Migrate the necessary definitions to the header to allow
+for this.
 
-Cc: Holger Assmann <h.assmann@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/boards/stm32mp157c-dk2/lowlevel.c | 12 ++++++++++--
- arch/arm/dts/Makefile                      |  2 +-
- 2 files changed, 11 insertions(+), 3 deletions(-)
+ arch/arm/mach-stm32mp/include/mach/revision.h | 51 ++++++++++++++++++
+ arch/arm/mach-stm32mp/init.c                  | 53 +------------------
+ 2 files changed, 53 insertions(+), 51 deletions(-)
 
-diff --git a/arch/arm/boards/stm32mp157c-dk2/lowlevel.c b/arch/arm/boards/stm32mp157c-dk2/lowlevel.c
-index 7261d7a8bc58..d79bfa4f4d01 100644
---- a/arch/arm/boards/stm32mp157c-dk2/lowlevel.c
-+++ b/arch/arm/boards/stm32mp157c-dk2/lowlevel.c
-@@ -2,8 +2,10 @@
- #include <common.h>
- #include <mach/entry.h>
- #include <debug_ll.h>
-+#include <mach/revision.h>
+diff --git a/arch/arm/mach-stm32mp/include/mach/revision.h b/arch/arm/mach-stm32mp/include/mach/revision.h
+index 2eb4d44b3368..2ef8ef30c3ae 100644
+--- a/arch/arm/mach-stm32mp/include/mach/revision.h
++++ b/arch/arm/mach-stm32mp/include/mach/revision.h
+@@ -6,6 +6,9 @@
+ #ifndef __MACH_CPUTYPE_H__
+ #define __MACH_CPUTYPE_H__
  
- extern char __dtb_z_stm32mp157c_dk2_start[];
-+extern char __dtb_z_stm32mp157a_dk1_start[];
++#include <mach/bsec.h>
++#include <asm/io.h>
++#include <mach/stm32.h>
  
- static void setup_uart(void)
- {
-@@ -14,13 +16,19 @@ static void setup_uart(void)
- ENTRY_FUNCTION(start_stm32mp157c_dk2, r0, r1, r2)
- {
- 	void *fdt;
-+	u32 cputype;
-+	int err;
+ /* ID = Device Version (bit31:16) + Device Part Number (RPN) (bit7:0)
+  * 157X: 2x Cortex-A7, Cortex-M4, CAN FD, GPU, DSI
+@@ -45,4 +48,52 @@ int stm32mp_package(void);
+ #define cpu_is_stm32mp151c() (stm32mp_cputype() == CPU_STM32MP151Cxx)
+ #define cpu_is_stm32mp151a() (stm32mp_cputype() == CPU_STM32MP151Axx)
  
- 	stm32mp_cpu_lowlevel_init();
++/* DBGMCU register */
++#define DBGMCU_APB4FZ1		(STM32_DBGMCU_BASE + 0x2C)
++#define DBGMCU_IDC		(STM32_DBGMCU_BASE + 0x00)
++#define DBGMCU_IDC_DEV_ID_MASK	GENMASK(11, 0)
++#define DBGMCU_IDC_DEV_ID_SHIFT	0
++#define DBGMCU_IDC_REV_ID_MASK	GENMASK(31, 16)
++#define DBGMCU_IDC_REV_ID_SHIFT	16
++
++#define RCC_DBGCFGR		(STM32_RCC_BASE + 0x080C)
++#define RCC_DBGCFGR_DBGCKEN	BIT(8)
++
++/* BSEC OTP index */
++#define BSEC_OTP_RPN	1
++#define BSEC_OTP_PKG	16
++
++/* Device Part Number (RPN) = OTP_DATA1 lower 8 bits */
++#define RPN_SHIFT	0
++#define RPN_MASK	GENMASK(7, 0)
++
++static inline u32 stm32mp_read_idc(void)
++{
++	setbits_le32(RCC_DBGCFGR, RCC_DBGCFGR_DBGCKEN);
++	return readl(IOMEM(DBGMCU_IDC));
++}
++
++/* Get Device Part Number (RPN) from OTP */
++static inline int __stm32mp_get_cpu_rpn(u32 *rpn)
++{
++	int ret = bsec_read_field(BSEC_OTP_RPN, rpn);
++	if (ret)
++		return ret;
++
++	*rpn = (*rpn >> RPN_SHIFT) & RPN_MASK;
++	return 0;
++}
++
++static inline int __stm32mp_get_cpu_type(u32 *type)
++{
++	u32 id;
++	int ret = __stm32mp_get_cpu_rpn(type);
++	if (ret)
++		return ret;
++
++	id = (stm32mp_read_idc() & DBGMCU_IDC_DEV_ID_MASK) >> DBGMCU_IDC_DEV_ID_SHIFT;
++	*type |= id << 16;
++	return 0;
++}
++
+ #endif /* __MACH_CPUTYPE_H__ */
+diff --git a/arch/arm/mach-stm32mp/init.c b/arch/arm/mach-stm32mp/init.c
+index 7094e0e7dd08..5d8d111f9f5a 100644
+--- a/arch/arm/mach-stm32mp/init.c
++++ b/arch/arm/mach-stm32mp/init.c
+@@ -15,26 +15,6 @@
+ #include <bootsource.h>
+ #include <dt-bindings/pinctrl/stm32-pinfunc.h>
  
- 	if (IS_ENABLED(CONFIG_DEBUG_LL))
- 		setup_uart();
- 
--	fdt = __dtb_z_stm32mp157c_dk2_start + get_runtime_offset();
-+	err = __stm32mp_get_cpu_type(&cputype);
-+	if (!err && cputype == CPU_STM32MP157Axx)
-+		fdt = __dtb_z_stm32mp157a_dk1_start;
-+	else
-+		fdt = __dtb_z_stm32mp157c_dk2_start;
- 
--	stm32mp1_barebox_entry(fdt);
-+	stm32mp1_barebox_entry(fdt + get_runtime_offset());
+-/* DBGMCU register */
+-#define DBGMCU_IDC		(STM32_DBGMCU_BASE + 0x00)
+-#define DBGMCU_APB4FZ1		(STM32_DBGMCU_BASE + 0x2C)
+-#define DBGMCU_APB4FZ1_IWDG2	BIT(2)
+-#define DBGMCU_IDC_DEV_ID_MASK	GENMASK(11, 0)
+-#define DBGMCU_IDC_DEV_ID_SHIFT	0
+-#define DBGMCU_IDC_REV_ID_MASK	GENMASK(31, 16)
+-#define DBGMCU_IDC_REV_ID_SHIFT	16
+-
+-#define RCC_DBGCFGR		(STM32_RCC_BASE + 0x080C)
+-#define RCC_DBGCFGR_DBGCKEN	BIT(8)
+-
+-/* BSEC OTP index */
+-#define BSEC_OTP_RPN	1
+-#define BSEC_OTP_PKG	16
+-
+-/* Device Part Number (RPN) = OTP_DATA1 lower 8 bits */
+-#define RPN_SHIFT	0
+-#define RPN_MASK	GENMASK(7, 0)
+-
+ /* Package = bit 27:29 of OTP16
+  * - 100: LBGA448  (FFI) => AA = LFBGA 18x18mm 448 balls p. 0.8mm
+  * - 011: LBGA354  (LCI) => AB = LFBGA 16x16mm 359 balls p. 0.8mm
+@@ -140,38 +120,9 @@ int stm32mp_package(void)
+ 	return __stm32mp_package;
  }
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index af061bd292b2..fe5b6e439898 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -110,7 +110,7 @@ lwl-$(CONFIG_MACH_SOLIDRUN_MICROSOM) += imx6dl-hummingboard.dtb.o imx6q-hummingb
- 				imx6dl-hummingboard2.dtb.o imx6q-hummingboard2.dtb.o \
- 				imx6q-h100.dtb.o
- lwl-$(CONFIG_MACH_SEEED_ODYSSEY) += stm32mp157c-odyssey.dtb.o
--lwl-$(CONFIG_MACH_STM32MP157C_DK2) += stm32mp157c-dk2.dtb.o
-+lwl-$(CONFIG_MACH_STM32MP157C_DK2) += stm32mp157c-dk2.dtb.o stm32mp157a-dk1.dtb.o
- lwl-$(CONFIG_MACH_LXA_MC1) += stm32mp157c-lxa-mc1.dtb.o
- lwl-$(CONFIG_MACH_SCB9328) += imx1-scb9328.dtb.o
- lwl-$(CONFIG_MACH_TECHNEXION_WANDBOARD) += imx6q-wandboard.dtb.o imx6dl-wandboard.dtb.o
+ 
+-static inline u32 read_idc(void)
+-{
+-	setbits_le32(RCC_DBGCFGR, RCC_DBGCFGR_DBGCKEN);
+-	return readl(IOMEM(DBGMCU_IDC));
+-}
+-
+-/* Get Device Part Number (RPN) from OTP */
+-static int get_cpu_rpn(u32 *rpn)
+-{
+-	int ret = bsec_read_field(BSEC_OTP_RPN, rpn);
+-	if (ret)
+-		return ret;
+-
+-	*rpn = (*rpn >> RPN_SHIFT) & RPN_MASK;
+-	return 0;
+-}
+-
+ static u32 get_cpu_revision(void)
+ {
+-	return (read_idc() & DBGMCU_IDC_REV_ID_MASK) >> DBGMCU_IDC_REV_ID_SHIFT;
+-}
+-
+-static int get_cpu_type(u32 *type)
+-{
+-	u32 id;
+-	int ret = get_cpu_rpn(type);
+-	if (ret)
+-		return ret;
+-
+-	id = (read_idc() & DBGMCU_IDC_DEV_ID_MASK) >> DBGMCU_IDC_DEV_ID_SHIFT;
+-	*type |= id << 16;
+-	return 0;
++	return (stm32mp_read_idc() & DBGMCU_IDC_REV_ID_MASK) >> DBGMCU_IDC_REV_ID_SHIFT;
+ }
+ 
+ static int get_cpu_package(u32 *pkg)
+@@ -238,7 +189,7 @@ static int setup_cpu_type(void)
+ 	u32 pkg;
+ 	int ret;
+ 
+-	get_cpu_type(&__stm32mp_cputype);
++	__stm32mp_get_cpu_type(&__stm32mp_cputype);
+ 	switch (__stm32mp_cputype) {
+ 	case CPU_STM32MP157Fxx:
+ 		cputypestr = "157F";
 -- 
 2.28.0
 
