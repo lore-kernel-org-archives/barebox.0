@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kUjtB-0006Bp-10
- for barebox@lists.infradead.org; Tue, 20 Oct 2020 05:08:49 +0000
-References: <20200918110442.25159-1-u.kleine-koenig@pengutronix.de>
- <20200918110442.25159-2-u.kleine-koenig@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <bb53e525-250d-4572-ba93-ec7ddd35b5cf@pengutronix.de>
-Date: Tue, 20 Oct 2020 07:08:47 +0200
+ id 1kNrpu-0001yW-Ch
+ for barebox@lists.infradead.org; Thu, 01 Oct 2020 06:13:03 +0000
+Date: Thu, 1 Oct 2020 08:12:55 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20201001061255.GI11648@pengutronix.de>
+References: <20200929105823.11542-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20200918110442.25159-2-u.kleine-koenig@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20200929105823.11542-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,42 +18,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] x86/config/efi: drop DRIVER_SERIAL_NS16550
-To: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>, barebox@lists.infradead.org
+Subject: Re: [PATCH 1/5] common: debug_ll: remove reference to undefined
+ Kconfig option
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-SGVsbG8gVXdlLAoKT24gOS8xOC8yMCAxOjA0IFBNLCBVd2UgS2xlaW5lLUvDtm5pZyB3cm90ZToK
-PiBGb3IgbW9zdCBtYWNoaW5lcyBoYXZpbmcgRFJJVkVSX1NFUklBTF9OUzE2NTUwIGFuZCBEUklW
-RVJfU0VSSUFMX0VGSV9TVERJTwo+IGJvdGggZW5hYmxlZCByZXN1bHRzIGluIHRoZSBvdXRwdXQg
-YXBwZWFyaW5nIHR3aWNlIG9uIHRoZSBzZXJpYWwgb3V0cHV0Lgo+IFNvIHJlbW92ZSBkaXNhYmxl
-IHRoZSBsb3dsZXZlbCBkcml2ZXIgYW5kIHJlbHkgb24gdGhlIEVGSSBiaW9zIGZvciBzZXJpYWwu
-CgpPbiB0aGUgZmxpcC1zaWRlLCBzb21lIHN5c3RlbXMgbm93IHdvbid0IG91dHB1dCBhbnl0aGlu
-ZyBvdmVyIHNlcmlhbCB3aXRoCnRoZSBkZWZjb25maWcsIGxpa2UgdGhlIG9uZSBJIGp1c3QgcmFu
-IGludG8uIE1heWJlIHdlIHNob3VsZCBrZWVwIGJvdGgKZW5hYmxlZCwgYnV0IGhhdmUgYSBxdWly
-ayB0YWJsZSwgd2hpY2ggYm9hcmRzIHRvIGRpc2FibGUgdGhlIDE2NTUwIGZvcj8KCk15IGJvYXJk
-IGlzCiAgRUZJIHYyLjQwIGJ5IEFtZXJpY2FuIE1lZ2F0cmVuZHMgdjMyNzY5MSIuIFdoYXQncyB5
-b3Vycz8KICBiYXJlYm94QGJhcmVib3ggRUZJIHBheWxvYWQ6LyBkZXZpbmZvIGFjcGktRkFDUDAK
-ICBbLi4uXQogIFJldmlzaW9uOiA1CiAgT2VtSWQ6IEFMQVNLQQogIE9lbVRhYmxlSWQ6IEEgTSBJ
-CiAgT2VtUmV2aXNpb246IDE3MjQ0MTY5CiAgQ3JlYXRvcklkOiAweDIwNDk0ZDQxCiAgQ3JlYXRv
-clJldmlzaW9uOiA2NTU1NQoKV2hhdCdzIHlvdXJzPwogCkNoZWVycywKQWhtYWQKCiAKPiBTaWdu
-ZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4
-LmRlPgo+IC0tLQo+ICBhcmNoL3g4Ni9jb25maWdzL2VmaV9kZWZjb25maWcgfCAxIC0KPiAgMSBm
-aWxlIGNoYW5nZWQsIDEgZGVsZXRpb24oLSkKPiAKPiBkaWZmIC0tZ2l0IGEvYXJjaC94ODYvY29u
-Zmlncy9lZmlfZGVmY29uZmlnIGIvYXJjaC94ODYvY29uZmlncy9lZmlfZGVmY29uZmlnCj4gaW5k
-ZXggOTliYzM5ZWFhNmYxLi44Mzc5NGQ3YTA3MDIgMTAwNjQ0Cj4gLS0tIGEvYXJjaC94ODYvY29u
-Zmlncy9lZmlfZGVmY29uZmlnCj4gKysrIGIvYXJjaC94ODYvY29uZmlncy9lZmlfZGVmY29uZmln
-Cj4gQEAgLTY1LDcgKzY1LDYgQEAgQ09ORklHX05FVD15Cj4gIENPTkZJR19ORVRfTkZTPXkKPiAg
-Q09ORklHX05FVF9ORVRDT05TT0xFPXkKPiAgQ09ORklHX0RSSVZFUl9TRVJJQUxfRUZJX1NURElP
-PXkKPiAtQ09ORklHX0RSSVZFUl9TRVJJQUxfTlMxNjU1MD15Cj4gIENPTkZJR19EUklWRVJfTkVU
-X0VGSV9TTlA9eQo+ICAjIENPTkZJR19TUEkgaXMgbm90IHNldAo+ICBDT05GSUdfRElTSz15Cj4g
-CgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgIHwKU3RldWVyd2FsZGVyIFN0ci4gMjEgICAgICAgICAgICAg
-ICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKMzExMzcgSGlsZGVzaGVp
-bSwgR2VybWFueSAgICAgICAgICAgICAgICAgIHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAg
-IHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0
-OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFk
-Lm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Tue, Sep 29, 2020 at 12:58:19PM +0200, Ahmad Fatoum wrote:
+> The code was copied from the kernel, but we don't support the imx6sl.
+> Drop the left-over.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  common/Kconfig | 1 -
+>  1 file changed, 1 deletion(-)
+
+Applied, thanks
+
+Sascha
+
+> 
+> diff --git a/common/Kconfig b/common/Kconfig
+> index 9e6918189bdb..be03c0d5df2b 100644
+> --- a/common/Kconfig
+> +++ b/common/Kconfig
+> @@ -1292,7 +1292,6 @@ config DEBUG_IMX_UART_PORT
+>  						DEBUG_IMX51_UART || \
+>  						DEBUG_IMX53_UART || \
+>  						DEBUG_IMX6Q_UART || \
+> -						DEBUG_IMX6SL_UART || \
+>  						DEBUG_IMX7D_UART || \
+>  						DEBUG_IMX8M_UART || \
+>  						DEBUG_VF610_UART
+> -- 
+> 2.28.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
