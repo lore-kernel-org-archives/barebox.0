@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail.fullbizgoal.com ([80.211.27.207]
+ helo=server1.mail.fullbizgoal.com)
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kNtFj-00027D-B7
- for barebox@lists.infradead.org; Thu, 01 Oct 2020 07:43:48 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  1 Oct 2020 09:43:35 +0200
-Message-Id: <20201001074337.23430-3-a.fatoum@pengutronix.de>
-In-Reply-To: <20201001074337.23430-1-a.fatoum@pengutronix.de>
-References: <20201001074337.23430-1-a.fatoum@pengutronix.de>
+ id 1kNtIS-0002oA-PF
+ for barebox@lists.infradead.org; Thu, 01 Oct 2020 07:46:37 +0000
+Received: by mail.fullbizgoal.com for <barebox@lists.infradead.org>;
+ Thu,  1 Oct 2020 07:45:39 GMT
+Message-ID: <20201001074500-0.1.o.1s8n.0.6d956e284w@fullbizgoal.com>
+Date: Thu,  1 Oct 2020 07:45:39 GMT
+From: "William Jones" <william.jones@fullbizgoal.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,35 +22,24 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] ARM: layerscape: ppa: fix wrong return values on some
- errors
+Subject: Disinfection
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Coccinelle detected that the IS_ERR and ERR_PTR are mismatched.
-Fix it.
+Good morning,
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- arch/arm/mach-layerscape/ppa.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+would you like to expand your range with odorless disinfection products that effectively remove viruses and bacteria from your hands?
 
-diff --git a/arch/arm/mach-layerscape/ppa.c b/arch/arm/mach-layerscape/ppa.c
-index f38220dbc1e7..53e73f6a581f 100644
---- a/arch/arm/mach-layerscape/ppa.c
-+++ b/arch/arm/mach-layerscape/ppa.c
-@@ -76,7 +76,7 @@ static int ppa_init(void *ppa, size_t ppa_size, void *sec_firmware_addr)
- 	conf = fit_open_configuration(fit, NULL);
- 	if (IS_ERR(conf)) {
- 		pr_err("Cannot open default config in ppa FIT image: %pe\n", conf);
--		ret = PTR_ERR(fit);
-+		ret = PTR_ERR(conf);
- 		goto err;
- 	}
- 
--- 
-2.28.0
+As a producer of soaps, liquids and gels for hand disinfection, I would like to present our offer for this type of assortment, which works great in everyday use, as well as as a professional agent in medical facilities.
 
+We can also offer you liquid soaps, shower gels, shampoos and hair conditioners with a wide range of fragrances and concentrated detergents.
+
+Our products are very popular on the global market due to price availability and high efficiency, while the high level of concentration of active substances guarantees full effectiveness of the means.
+
+If you would like to familiarize yourself with our offer and introduce new products to your range, I will gladly present what we can offer.
+
+Please contact me.
+
+William Jones
 
 _______________________________________________
 barebox mailing list
