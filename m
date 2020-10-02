@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kOCRM-0000DE-Tf
- for barebox@lists.infradead.org; Fri, 02 Oct 2020 04:13:05 +0000
-Date: Fri, 2 Oct 2020 06:13:03 +0200
+ id 1kOCZB-0000fN-Av
+ for barebox@lists.infradead.org; Fri, 02 Oct 2020 04:21:10 +0000
+Date: Fri, 2 Oct 2020 06:21:07 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201002041303.GP11648@pengutronix.de>
-References: <20200820194547.3738-1-l.stach@pengutronix.de>
- <0ae4ff9734730d318fc6a62301deafe5d300441c.camel@pengutronix.de>
+Message-ID: <20201002042107.GQ11648@pengutronix.de>
+References: <20200930132417.351944-1-l.stach@pengutronix.de>
+ <20200930132417.351944-2-l.stach@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <0ae4ff9734730d318fc6a62301deafe5d300441c.camel@pengutronix.de>
+In-Reply-To: <20200930132417.351944-2-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,45 +23,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] clk: imx: remove leftover debug printk's from pll14xx
+Subject: Re: [PATCH 2/2] ARM: i.MX: nxp-imx8mm-evk: adjust DDR training order
 To: Lucas Stach <l.stach@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Sep 30, 2020 at 02:40:34PM +0200, Lucas Stach wrote:
-> Hi Sascha,
-> 
-> seems like this patch fell though the cracks (but 2/2 has been applied).
+Hi Lucas,
 
-I had created this patch myself just before you sent it, so I didn't
-apply this one but my own version. This really didn't make it into
-2020.09.0 as it should, but it's on current master.
+On Wed, Sep 30, 2020 at 03:24:17PM +0200, Lucas Stach wrote:
+> This way we end up with the fastest DDR speed when training is finished
+> and don't need to rely on TF-A to switch into a higher DDR speed.
+> 
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> ---
+>  arch/arm/boards/nxp-imx8mm-evk/lpddr4-timing.c | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/arm/boards/nxp-imx8mm-evk/lpddr4-timing.c b/arch/arm/boards/nxp-imx8mm-evk/lpddr4-timing.c
+> index b164bdec07f1..33ef5542a364 100644
+> --- a/arch/arm/boards/nxp-imx8mm-evk/lpddr4-timing.c
+> +++ b/arch/arm/boards/nxp-imx8mm-evk/lpddr4-timing.c
+> @@ -118,7 +118,7 @@ static struct dram_cfg_param lpddr4_ddrc_cfg[] = {
+>  	{ DDRC_FREQ2_INIT7(0), 0x0006004a },
+>  
+>  	/* boot start point */
+> -	{ DDRC_MSTR2(0), 0x2 }, //DDRC_MSTR2
+> +	{ DDRC_MSTR2(0), 0x0 }, //DDRC_MSTR2
+
+What's this change about?
 
 Sascha
 
-> 
-> Regards,
-> Lucas
-> 
-> On Do, 2020-08-20 at 21:45 +0200, Lucas Stach wrote:
-> > Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> > ---
-> >  drivers/clk/imx/clk-pll14xx.c | 3 +--
-> >  1 file changed, 1 insertion(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/clk/imx/clk-pll14xx.c b/drivers/clk/imx/clk-pll14xx.c
-> > index 91e9624a606d..6ba519516b9f 100644
-> > --- a/drivers/clk/imx/clk-pll14xx.c
-> > +++ b/drivers/clk/imx/clk-pll14xx.c
-> > @@ -358,8 +358,7 @@ static void clk_pll14xx_unprepare(struct clk *clk)
-> >  {
-> >  	struct clk_pll14xx *pll = to_clk_pll14xx(clk);
-> >  	u32 val;
-> > -printf("%s %p\n", __func__, pll);
-> > -printf("%s %p\n", __func__, pll->base);
-> > +
-> >  	/*
-> >  	 * Set RST to 0, power down mode is enabled and
-> >  	 * every digital block is reset
+>  };
+>  
+>  /* PHY Initialize Configuration */
+> @@ -1940,12 +1940,6 @@ static struct dram_fsp_msg lpddr4_dram_fsp_msg[] = {
+>  		.fw_type = FW_1D_IMAGE,
+>  		.fsp_cfg = lpddr4_fsp0_cfg,
+>  		.fsp_cfg_num = ARRAY_SIZE(lpddr4_fsp0_cfg),
+> -	}, {
+> -		/* P0 3000mts 2D */
+> -		.drate = 3000,
+> -		.fw_type = FW_2D_IMAGE,
+> -		.fsp_cfg = lpddr4_fsp0_2d_cfg,
+> -		.fsp_cfg_num = ARRAY_SIZE(lpddr4_fsp0_2d_cfg),
+>  	}, {
+>  		/* P1 400mts 1D */
+>  		.drate = 400,
+> @@ -1958,6 +1952,12 @@ static struct dram_fsp_msg lpddr4_dram_fsp_msg[] = {
+>  		.fw_type = FW_1D_IMAGE,
+>  		.fsp_cfg = lpddr4_fsp2_cfg,
+>  		.fsp_cfg_num = ARRAY_SIZE(lpddr4_fsp2_cfg),
+> +	}, {
+> +		/* P0 3000mts 2D */
+> +		.drate = 3000,
+> +		.fw_type = FW_2D_IMAGE,
+> +		.fsp_cfg = lpddr4_fsp0_2d_cfg,
+> +		.fsp_cfg_num = ARRAY_SIZE(lpddr4_fsp0_2d_cfg),
+>  	},
+>  };
+>  
+> -- 
+> 2.20.1
 > 
 > 
 > _______________________________________________
