@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kOFL9-0007EU-P7
- for barebox@lists.infradead.org; Fri, 02 Oct 2020 07:18:52 +0000
-Date: Fri, 2 Oct 2020 09:18:49 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201002071849.GB12463@pengutronix.de>
-References: <20201001094915.29005-1-y.bas@phytec.de>
+ id 1kOGI9-0004Hu-6M
+ for barebox@lists.infradead.org; Fri, 02 Oct 2020 08:19:50 +0000
+Message-ID: <ca88eeed3d5df5c849b5a3c081a4e857c726a357.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Fri, 02 Oct 2020 10:19:45 +0200
+In-Reply-To: <20201002042107.GQ11648@pengutronix.de>
+References: <20200930132417.351944-1-l.stach@pengutronix.de>
+ <20200930132417.351944-2-l.stach@pengutronix.de>
+ <20201002042107.GQ11648@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201001094915.29005-1-y.bas@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,132 +23,83 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] ARM: dts: imx6ul: phycore: Add phyCORE i.MX6 UL with
- eMMC
-To: Yunus Bas <y.bas@phytec.de>
+Subject: Re: [PATCH 2/2] ARM: i.MX: nxp-imx8mm-evk: adjust DDR training order
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Oct 01, 2020 at 11:49:15AM +0200, Yunus Bas wrote:
-> Add a phyCORE-i.MX 6UL with eMMC. It has following features:
->         - i.MX 6UL
->         - 512 MB RAM
->         - eMMC
->         - 10/100 MBits Ethernet
->         - USB OTG
->         - USB Host
+On Fr, 2020-10-02 at 06:21 +0200, Sascha Hauer wrote:
+> Hi Lucas,
 > 
-> Signed-off-by: Yunus Bas <y.bas@phytec.de>
-> ---
-> Changes in v2:
->  - Added missing include for the FIT-Image verification
-> ---
->  arch/arm/boards/phytec-som-imx6/lowlevel.c    |  1 +
->  arch/arm/dts/Makefile                         |  1 +
->  .../dts/imx6ul-phytec-phycore-som-emmc.dts    | 45 +++++++++++++++++++
->  images/Makefile.imx                           |  2 +
->  4 files changed, 49 insertions(+)
->  create mode 100644 arch/arm/dts/imx6ul-phytec-phycore-som-emmc.dts
+> On Wed, Sep 30, 2020 at 03:24:17PM +0200, Lucas Stach wrote:
+> > This way we end up with the fastest DDR speed when training is finished
+> > and don't need to rely on TF-A to switch into a higher DDR speed.
+> > 
+> > Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> > ---
+> >  arch/arm/boards/nxp-imx8mm-evk/lpddr4-timing.c | 14 +++++++-------
+> >  1 file changed, 7 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/arch/arm/boards/nxp-imx8mm-evk/lpddr4-timing.c b/arch/arm/boards/nxp-imx8mm-evk/lpddr4-timing.c
+> > index b164bdec07f1..33ef5542a364 100644
+> > --- a/arch/arm/boards/nxp-imx8mm-evk/lpddr4-timing.c
+> > +++ b/arch/arm/boards/nxp-imx8mm-evk/lpddr4-timing.c
+> > @@ -118,7 +118,7 @@ static struct dram_cfg_param lpddr4_ddrc_cfg[] = {
+> >  	{ DDRC_FREQ2_INIT7(0), 0x0006004a },
+> >  
+> >  	/* boot start point */
+> > -	{ DDRC_MSTR2(0), 0x2 }, //DDRC_MSTR2
+> > +	{ DDRC_MSTR2(0), 0x0 }, //DDRC_MSTR2
 > 
-> diff --git a/arch/arm/boards/phytec-som-imx6/lowlevel.c b/arch/arm/boards/phytec-som-imx6/lowlevel.c
-> index 407115c2a..62a1c8de7 100644
-> --- a/arch/arm/boards/phytec-som-imx6/lowlevel.c
-> +++ b/arch/arm/boards/phytec-som-imx6/lowlevel.c
-> @@ -110,6 +110,7 @@ PHYTEC_ENTRY(start_phytec_phycore_imx6qp_som_nand_1gib, imx6qp_phytec_phycore_so
->  PHYTEC_ENTRY(start_phytec_phycore_imx6q_som_emmc_1gib, imx6q_phytec_phycore_som_emmc, SZ_1G, true);
->  PHYTEC_ENTRY(start_phytec_phycore_imx6q_som_emmc_2gib, imx6q_phytec_phycore_som_emmc, SZ_2G, true);
->  
-> +PHYTEC_ENTRY(start_phytec_phycore_imx6ul_som_emmc_512mb, imx6ul_phytec_phycore_som_emmc, SZ_512M, false);
->  PHYTEC_ENTRY(start_phytec_phycore_imx6ul_som_nand_512mb, imx6ul_phytec_phycore_som_nand, SZ_512M, false);
->  PHYTEC_ENTRY(start_phytec_phycore_imx6ull_som_lc_nand_256mb, imx6ull_phytec_phycore_som_lc_nand, SZ_256M, false);
->  PHYTEC_ENTRY(start_phytec_phycore_imx6ull_som_nand_512mb, imx6ull_phytec_phycore_som_nand, SZ_512M, false);
-> diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-> index af061bd29..37e0f07b9 100644
-> --- a/arch/arm/dts/Makefile
-> +++ b/arch/arm/dts/Makefile
-> @@ -67,6 +67,7 @@ lwl-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += imx6q-phytec-phycard.dtb.o \
->  				imx6dl-phytec-phycore-som-emmc.dtb.o \
->  				imx6dl-phytec-phycore-som-lc-emmc.dtb.o \
->  				imx6ul-phytec-phycore-som-nand.dtb.o \
-> +				imx6ul-phytec-phycore-som-emmc.dtb.o \
->  				imx6ull-phytec-phycore-som-lc-nand.dtb.o \
->  				imx6ull-phytec-phycore-som-nand.dtb.o \
->  				imx6ull-phytec-phycore-som-emmc.dtb.o
-> diff --git a/arch/arm/dts/imx6ul-phytec-phycore-som-emmc.dts b/arch/arm/dts/imx6ul-phytec-phycore-som-emmc.dts
-> new file mode 100644
-> index 000000000..7d29c329a
-> --- /dev/null
-> +++ b/arch/arm/dts/imx6ul-phytec-phycore-som-emmc.dts
-> @@ -0,0 +1,45 @@
-> +// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
-> +/*
-> + * Copyright (C) 2020 PHYTEC Messtechnik GmbH
-> + * Author: Yunus Bas <y.bas@phytec.de>
-> + */
-> +
-> +/dts-v1/;
-> +#ifdef CONFIG_BOOTM_FITIMAGE_PUBKEY
-> +#include CONFIG_BOOTM_FITIMAGE_PUBKEY
-> +#endif
-> +#include <arm/imx6ul.dtsi>
-> +#include "imx6ul-phytec-phycore-som.dtsi"
-> +
-> +/ {
-> +	model = "PHYTEC phyCORE-i.MX6 Ultra Light SOM with eMMC";
-> +	compatible = "phytec,imx6ul-pcl063-emmc", "fsl,imx6ul";
-> +};
-> +
-> +&fec1 {
-> +	status = "okay";
-> +};
-> +
-> +&i2c1 {
-> +	status = "okay";
-> +};
-> +
-> +&uart1 {
-> +	status = "okay";
-> +};
-> +
-> +&usdhc1 {
-> +	status = "okay";
-> +};
-> +
-> +&usdhc2 {
-> +	status = "okay";
-> +};
-> +
-> +&usbotg1 {
-> +	status = "okay";
-> +};
-> +
-> +&usbotg2 {
-> +	status = "okay";
-> +};
-> diff --git a/images/Makefile.imx b/images/Makefile.imx
-> index 7b24e5fee..2327b8a0b 100644
-> --- a/images/Makefile.imx
-> +++ b/images/Makefile.imx
-> @@ -346,6 +346,8 @@ $(call build_imx_habv4img, CONFIG_MACH_GRINN_LITEBOARD, start_imx6ul_liteboard_5
->  
->  $(call build_imx_habv4img, CONFIG_MACH_NXP_IMX6ULL_EVK, start_nxp_imx6ull_evk, nxp-imx6ull-evk/flash-header-nxp-imx6ull-evk, nxp-imx6ull-evk)
->  
-> +$(call build_imx_habv4img, CONFIG_MACH_PHYTEC_SOM_IMX6, start_phytec_phycore_imx6ul_som_emmc_512mb, phytec-som-imx6/flash-header-phytec-pcl063-512mb, phytec-phycore-imx6ul-emmc-512mb)
-> +
+> What's this change about?
 
-There is a 'ul' missing for mainline, should be:
+That's the initial timing set being used. Without this change we would
+end up with the PLL set for 3000MT/s, but the timing set for 100MT/s
+being used by the controller, which obviously will not work.
 
-phytec-som-imx6/flash-header-phytec-pcl063ul-512mb
+Regards,
+Lucas
 
-I fixed this up here, please check -next branch if the result matches
-your expectations.
+> Sascha
+> 
+> >  };
+> >  
+> >  /* PHY Initialize Configuration */
+> > @@ -1940,12 +1940,6 @@ static struct dram_fsp_msg lpddr4_dram_fsp_msg[] = {
+> >  		.fw_type = FW_1D_IMAGE,
+> >  		.fsp_cfg = lpddr4_fsp0_cfg,
+> >  		.fsp_cfg_num = ARRAY_SIZE(lpddr4_fsp0_cfg),
+> > -	}, {
+> > -		/* P0 3000mts 2D */
+> > -		.drate = 3000,
+> > -		.fw_type = FW_2D_IMAGE,
+> > -		.fsp_cfg = lpddr4_fsp0_2d_cfg,
+> > -		.fsp_cfg_num = ARRAY_SIZE(lpddr4_fsp0_2d_cfg),
+> >  	}, {
+> >  		/* P1 400mts 1D */
+> >  		.drate = 400,
+> > @@ -1958,6 +1952,12 @@ static struct dram_fsp_msg lpddr4_dram_fsp_msg[] = {
+> >  		.fw_type = FW_1D_IMAGE,
+> >  		.fsp_cfg = lpddr4_fsp2_cfg,
+> >  		.fsp_cfg_num = ARRAY_SIZE(lpddr4_fsp2_cfg),
+> > +	}, {
+> > +		/* P0 3000mts 2D */
+> > +		.drate = 3000,
+> > +		.fw_type = FW_2D_IMAGE,
+> > +		.fsp_cfg = lpddr4_fsp0_2d_cfg,
+> > +		.fsp_cfg_num = ARRAY_SIZE(lpddr4_fsp0_2d_cfg),
+> >  	},
+> >  };
+> >  
+> > -- 
+> > 2.20.1
+> > 
+> > 
+> > _______________________________________________
+> > barebox mailing list
+> > barebox@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/barebox
+> > 
 
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
