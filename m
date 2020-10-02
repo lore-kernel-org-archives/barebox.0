@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kOCIs-0008F7-5S
- for barebox@lists.infradead.org; Fri, 02 Oct 2020 04:04:18 +0000
-Date: Fri, 2 Oct 2020 06:04:16 +0200
+ id 1kOCIi-0008EG-21
+ for barebox@lists.infradead.org; Fri, 02 Oct 2020 04:04:09 +0000
+Date: Fri, 2 Oct 2020 06:04:01 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201002040416.GN11648@pengutronix.de>
-References: <20200930072005.1407-1-a.fatoum@pengutronix.de>
+Message-ID: <20201002040401.GM11648@pengutronix.de>
+References: <20200930072005.1407-5-a.fatoum@pengutronix.de>
+ <20200930072456.28198-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200930072005.1407-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20200930072456.28198-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,39 +23,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 01/12] hw_random: mxc-rngc: fix read of uninitialized
- variable
+Subject: Re: [PATCH] fixup! net: usb: asix: propagate errors from MDIO
+ accessors
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Sep 30, 2020 at 09:19:54AM +0200, Ahmad Fatoum wrote:
-> err is evaluated in a ternary condition on return, but if the while
-> loop is never entered, it is left uninitialized. Fix this.
+On Wed, Sep 30, 2020 at 09:24:57AM +0200, Ahmad Fatoum wrote:
+> usb_control_msg doesn't (always) return 0 on success.
+> Adjust the error checks to explicitly check for negative return values
+> instead.
 > 
-> Reported-by: clang-analyzer-10
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  drivers/hw_random/mxc-rngc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Should probably be tested before applying. Sascha, can you easily do
+> this?
 
-Applied, thanks
+I tested this and can confirm this patch fixes the breakage from the
+last patch ;)
 
 Sascha
 
+> ---
+>  drivers/net/usb/asix.c | 16 ++++++++++------
+>  1 file changed, 10 insertions(+), 6 deletions(-)
 > 
-> diff --git a/drivers/hw_random/mxc-rngc.c b/drivers/hw_random/mxc-rngc.c
-> index 3ed25aa61d05..075c20e43745 100644
-> --- a/drivers/hw_random/mxc-rngc.c
-> +++ b/drivers/hw_random/mxc-rngc.c
-> @@ -133,7 +133,7 @@ static int mxc_rngc_data_present(struct hwrng *rng)
->  static int mxc_rngc_read(struct hwrng *rng, void *buf, size_t max, bool wait)
->  {
->  	struct mxc_rngc *rngc = container_of(rng, struct mxc_rngc, rng);
-> -	unsigned int err;
-> +	unsigned int err = 0;
->  	int count = 0;
->  	u32 *data = buf;
+> diff --git a/drivers/net/usb/asix.c b/drivers/net/usb/asix.c
+> index fc7063095b6c..1140be9d1601 100644
+> --- a/drivers/net/usb/asix.c
+> +++ b/drivers/net/usb/asix.c
+> @@ -255,15 +255,15 @@ static int asix_mdio_read(struct mii_bus *bus, int phy_id, int loc)
+>  	int ret;
 >  
+>  	ret = asix_set_sw_mii(dev);
+> -	if (ret)
+> +	if (ret < 0)
+>  		return ret;
+>  
+>  	ret = asix_read_cmd(dev, AX_CMD_READ_MII_REG, phy_id, (__u16)loc, 2, &res);
+> -	if (ret)
+> +	if (ret < 0)
+>  		return ret;
+>  
+>  	ret = asix_set_hw_mii(dev);
+> -	if (ret)
+> +	if (ret < 0)
+>  		return ret;
+>  
+>  	dev_dbg(&dev->edev.dev, "asix_mdio_read() phy_id=0x%02x, loc=0x%02x, returns=0x%04x\n",
+> @@ -282,14 +282,18 @@ static int asix_mdio_write(struct mii_bus *bus, int phy_id, int loc, u16 val)
+>  			phy_id, loc, val);
+>  
+>  	ret = asix_set_sw_mii(dev);
+> -	if (ret)
+> +	if (ret < 0)
+>  		return ret;
+>  
+>  	ret = asix_write_cmd(dev, AX_CMD_WRITE_MII_REG, phy_id, (__u16)loc, 2, &res);
+> -	if (ret)
+> +	if (ret < 0)
+>  		return ret;
+>  
+> -	return asix_set_hw_mii(dev);
+> +	ret = asix_set_hw_mii(dev);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	return 0;
+>  }
+>  
+>  static inline int asix_get_phy_addr(struct usbnet *dev)
 > -- 
 > 2.28.0
 > 
