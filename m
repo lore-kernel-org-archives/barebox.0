@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kOCIi-0008EG-21
- for barebox@lists.infradead.org; Fri, 02 Oct 2020 04:04:09 +0000
-Date: Fri, 2 Oct 2020 06:04:01 +0200
+ id 1kOCOk-0008Uo-Kq
+ for barebox@lists.infradead.org; Fri, 02 Oct 2020 04:10:23 +0000
+Date: Fri, 2 Oct 2020 06:10:20 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201002040401.GM11648@pengutronix.de>
-References: <20200930072005.1407-5-a.fatoum@pengutronix.de>
- <20200930072456.28198-1-a.fatoum@pengutronix.de>
+Message-ID: <20201002041020.GO11648@pengutronix.de>
+References: <20200930125303.14933-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200930072456.28198-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20200930125303.14933-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,75 +22,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fixup! net: usb: asix: propagate errors from MDIO
- accessors
+Subject: Re: [PATCH 1/4] include: string: migrate barebox function from
+ <linux/string.h>
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Sep 30, 2020 at 09:24:57AM +0200, Ahmad Fatoum wrote:
-> usb_control_msg doesn't (always) return 0 on success.
-> Adjust the error checks to explicitly check for negative return values
+On Wed, Sep 30, 2020 at 02:53:00PM +0200, Ahmad Fatoum wrote:
+> <linux/string.h> was imported from Linux. In order to keep changes
+> to a minimum, add prototypes for new barebox functions to <string.h>
 > instead.
 > 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
-> Should probably be tested before applying. Sascha, can you easily do
-> this?
+>  include/linux/string.h | 1 -
+>  include/string.h       | 1 +
+>  2 files changed, 1 insertion(+), 1 deletion(-)
 
-I tested this and can confirm this patch fixes the breakage from the
-last patch ;)
+Applied, thanks
 
 Sascha
 
-> ---
->  drivers/net/usb/asix.c | 16 ++++++++++------
->  1 file changed, 10 insertions(+), 6 deletions(-)
 > 
-> diff --git a/drivers/net/usb/asix.c b/drivers/net/usb/asix.c
-> index fc7063095b6c..1140be9d1601 100644
-> --- a/drivers/net/usb/asix.c
-> +++ b/drivers/net/usb/asix.c
-> @@ -255,15 +255,15 @@ static int asix_mdio_read(struct mii_bus *bus, int phy_id, int loc)
->  	int ret;
+> diff --git a/include/linux/string.h b/include/linux/string.h
+> index 2b699957e824..85c3eb1de340 100644
+> --- a/include/linux/string.h
+> +++ b/include/linux/string.h
+> @@ -10,7 +10,6 @@ extern "C" {
 >  
->  	ret = asix_set_sw_mii(dev);
-> -	if (ret)
-> +	if (ret < 0)
->  		return ret;
+>  extern char * strpbrk(const char *,const char *);
+>  extern char * strsep(char **,const char *);
+> -extern char * strsep_unescaped(char **,const char *);
+>  extern __kernel_size_t strspn(const char *,const char *);
 >  
->  	ret = asix_read_cmd(dev, AX_CMD_READ_MII_REG, phy_id, (__u16)loc, 2, &res);
-> -	if (ret)
-> +	if (ret < 0)
->  		return ret;
 >  
->  	ret = asix_set_hw_mii(dev);
-> -	if (ret)
-> +	if (ret < 0)
->  		return ret;
+> diff --git a/include/string.h b/include/string.h
+> index 727bc51934bc..063e85f62cf8 100644
+> --- a/include/string.h
+> +++ b/include/string.h
+> @@ -5,6 +5,7 @@
+>  #include <linux/string.h>
 >  
->  	dev_dbg(&dev->edev.dev, "asix_mdio_read() phy_id=0x%02x, loc=0x%02x, returns=0x%04x\n",
-> @@ -282,14 +282,18 @@ static int asix_mdio_write(struct mii_bus *bus, int phy_id, int loc, u16 val)
->  			phy_id, loc, val);
+>  int strtobool(const char *str, int *val);
+> +char *strsep_unescaped(char **, const char *);
 >  
->  	ret = asix_set_sw_mii(dev);
-> -	if (ret)
-> +	if (ret < 0)
->  		return ret;
->  
->  	ret = asix_write_cmd(dev, AX_CMD_WRITE_MII_REG, phy_id, (__u16)loc, 2, &res);
-> -	if (ret)
-> +	if (ret < 0)
->  		return ret;
->  
-> -	return asix_set_hw_mii(dev);
-> +	ret = asix_set_hw_mii(dev);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return 0;
->  }
->  
->  static inline int asix_get_phy_addr(struct usbnet *dev)
+>  void *__default_memset(void *, int, __kernel_size_t);
+>  void *__nokasan_default_memset(void *, int, __kernel_size_t);
 > -- 
 > 2.28.0
 > 
