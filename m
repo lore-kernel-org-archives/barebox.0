@@ -1,11 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kOHO3-0006FQ-GU
- for barebox@lists.infradead.org; Fri, 02 Oct 2020 09:30:00 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri,  2 Oct 2020 11:29:55 +0200
-Message-Id: <20201002092955.20882-1-a.fatoum@pengutronix.de>
+ id 1kOIjx-0006QF-DK
+ for barebox@lists.infradead.org; Fri, 02 Oct 2020 10:56:42 +0000
+Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <mfe@pengutronix.de>) id 1kOIju-0000U7-RT
+ for barebox@lists.infradead.org; Fri, 02 Oct 2020 12:56:38 +0200
+Received: from mfe by dude02.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <mfe@pengutronix.de>) id 1kOIju-0001jH-Iz
+ for barebox@lists.infradead.org; Fri, 02 Oct 2020 12:56:38 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+Date: Fri,  2 Oct 2020 12:56:33 +0200
+Message-Id: <20201002105635.4662-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,58 +27,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] commands: boot_order: note that it's OMAP specific in help
- text
+Subject: [PATCH 1/3] ARM: cm-fx6: fix build dependency
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Kconfig and online documentation don't indicate that it's OMAP
-specific. Fix this.
+The cm-fx6 board uses the edhc-pbl function during lowlevel init. So we
+need to select it.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- arch/arm/mach-omap/boot_order.c | 4 ++--
- commands/Kconfig                | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ arch/arm/mach-imx/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/mach-omap/boot_order.c b/arch/arm/mach-omap/boot_order.c
-index db22513bde42..4b74fdba66b6 100644
---- a/arch/arm/mach-omap/boot_order.c
-+++ b/arch/arm/mach-omap/boot_order.c
-@@ -70,13 +70,13 @@ static int cmd_boot_order(int argc, char *argv[])
- }
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index a67e59fd4f..1e4ba0bca4 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -450,6 +450,7 @@ config MACH_GW_VENTANA
+ config MACH_CM_FX6
+ 	bool "CM FX6"
+ 	select ARCH_IMX6
++	select MCI_IMX_ESDHC_PBL
  
- BAREBOX_CMD_HELP_START(boot_order)
--BAREBOX_CMD_HELP_TEXT("Set warm boot order of up to four devices. Each device can be one of:")
-+BAREBOX_CMD_HELP_TEXT("Set OMAP warm boot order of up to four devices. Each device can be one of:")
- BAREBOX_CMD_HELP_TEXT("xip xipwait nand onenand mmc1 mmc2_1 mmc2_2 uart usb_1 usb_ulpi usb_2")
- BAREBOX_CMD_HELP_END
- 
- BAREBOX_CMD_START(boot_order)
- 	.cmd		= cmd_boot_order,
--	BAREBOX_CMD_DESC("set warm boot order")
-+	BAREBOX_CMD_DESC("set OMAP warm boot order")
- 	BAREBOX_CMD_OPTS("DEVICE...")
- 	BAREBOX_CMD_GROUP(CMD_GRP_BOOT)
- 	BAREBOX_CMD_HELP(cmd_boot_order_help)
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 9114d3cb31a5..df18715f20d4 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -285,9 +285,9 @@ config CMD_AT91_BOOT_TEST
- config CMD_BOOT_ORDER
- 	tristate
- 	depends on ARCH_OMAP4
--	prompt "boot_order"
-+	prompt "OMAP boot_order"
- 	help
--	  Set warm boot order (the next boot device on a warm reset).
-+	  Set OMAP warm boot order (the next boot device on a warm reset).
- 
- 	  Usage: boot_order DEVICE...
- 
+ config MACH_ADVANTECH_ROM_742X
+ 	bool "Advantech ROM 742X"
 -- 
-2.28.0
+2.20.1
 
 
 _______________________________________________
