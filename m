@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kOFKh-000794-VR
- for barebox@lists.infradead.org; Fri, 02 Oct 2020 07:18:24 +0000
-References: <20200930084716.4200-1-m.felsch@pengutronix.de>
- <20200930084716.4200-6-m.felsch@pengutronix.de>
- <f6e948fe-3116-5f19-b4a3-a40116602bc3@pengutronix.de>
- <20201002070956.cf2wsl75usmogak4@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <9098bf32-a7d8-f447-f9a9-dbf7d78288f1@pengutronix.de>
-Date: Fri, 2 Oct 2020 09:18:22 +0200
+ id 1kOFL9-0007EU-P7
+ for barebox@lists.infradead.org; Fri, 02 Oct 2020 07:18:52 +0000
+Date: Fri, 2 Oct 2020 09:18:49 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20201002071849.GB12463@pengutronix.de>
+References: <20201001094915.29005-1-y.bas@phytec.de>
 MIME-Version: 1.0
-In-Reply-To: <20201002070956.cf2wsl75usmogak4@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20201001094915.29005-1-y.bas@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,173 +22,126 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 5/8] common: add initial barebox deep-probe support
-To: Marco Felsch <m.felsch@pengutronix.de>
+Subject: Re: [PATCH v2] ARM: dts: imx6ul: phycore: Add phyCORE i.MX6 UL with
+ eMMC
+To: Yunus Bas <y.bas@phytec.de>
 Cc: barebox@lists.infradead.org
 
-Hi,
+On Thu, Oct 01, 2020 at 11:49:15AM +0200, Yunus Bas wrote:
+> Add a phyCORE-i.MX 6UL with eMMC. It has following features:
+>         - i.MX 6UL
+>         - 512 MB RAM
+>         - eMMC
+>         - 10/100 MBits Ethernet
+>         - USB OTG
+>         - USB Host
+> 
+> Signed-off-by: Yunus Bas <y.bas@phytec.de>
+> ---
+> Changes in v2:
+>  - Added missing include for the FIT-Image verification
+> ---
+>  arch/arm/boards/phytec-som-imx6/lowlevel.c    |  1 +
+>  arch/arm/dts/Makefile                         |  1 +
+>  .../dts/imx6ul-phytec-phycore-som-emmc.dts    | 45 +++++++++++++++++++
+>  images/Makefile.imx                           |  2 +
+>  4 files changed, 49 insertions(+)
+>  create mode 100644 arch/arm/dts/imx6ul-phytec-phycore-som-emmc.dts
+> 
+> diff --git a/arch/arm/boards/phytec-som-imx6/lowlevel.c b/arch/arm/boards/phytec-som-imx6/lowlevel.c
+> index 407115c2a..62a1c8de7 100644
+> --- a/arch/arm/boards/phytec-som-imx6/lowlevel.c
+> +++ b/arch/arm/boards/phytec-som-imx6/lowlevel.c
+> @@ -110,6 +110,7 @@ PHYTEC_ENTRY(start_phytec_phycore_imx6qp_som_nand_1gib, imx6qp_phytec_phycore_so
+>  PHYTEC_ENTRY(start_phytec_phycore_imx6q_som_emmc_1gib, imx6q_phytec_phycore_som_emmc, SZ_1G, true);
+>  PHYTEC_ENTRY(start_phytec_phycore_imx6q_som_emmc_2gib, imx6q_phytec_phycore_som_emmc, SZ_2G, true);
+>  
+> +PHYTEC_ENTRY(start_phytec_phycore_imx6ul_som_emmc_512mb, imx6ul_phytec_phycore_som_emmc, SZ_512M, false);
+>  PHYTEC_ENTRY(start_phytec_phycore_imx6ul_som_nand_512mb, imx6ul_phytec_phycore_som_nand, SZ_512M, false);
+>  PHYTEC_ENTRY(start_phytec_phycore_imx6ull_som_lc_nand_256mb, imx6ull_phytec_phycore_som_lc_nand, SZ_256M, false);
+>  PHYTEC_ENTRY(start_phytec_phycore_imx6ull_som_nand_512mb, imx6ull_phytec_phycore_som_nand, SZ_512M, false);
+> diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+> index af061bd29..37e0f07b9 100644
+> --- a/arch/arm/dts/Makefile
+> +++ b/arch/arm/dts/Makefile
+> @@ -67,6 +67,7 @@ lwl-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += imx6q-phytec-phycard.dtb.o \
+>  				imx6dl-phytec-phycore-som-emmc.dtb.o \
+>  				imx6dl-phytec-phycore-som-lc-emmc.dtb.o \
+>  				imx6ul-phytec-phycore-som-nand.dtb.o \
+> +				imx6ul-phytec-phycore-som-emmc.dtb.o \
+>  				imx6ull-phytec-phycore-som-lc-nand.dtb.o \
+>  				imx6ull-phytec-phycore-som-nand.dtb.o \
+>  				imx6ull-phytec-phycore-som-emmc.dtb.o
+> diff --git a/arch/arm/dts/imx6ul-phytec-phycore-som-emmc.dts b/arch/arm/dts/imx6ul-phytec-phycore-som-emmc.dts
+> new file mode 100644
+> index 000000000..7d29c329a
+> --- /dev/null
+> +++ b/arch/arm/dts/imx6ul-phytec-phycore-som-emmc.dts
+> @@ -0,0 +1,45 @@
+> +// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
+> +/*
+> + * Copyright (C) 2020 PHYTEC Messtechnik GmbH
+> + * Author: Yunus Bas <y.bas@phytec.de>
+> + */
+> +
+> +/dts-v1/;
+> +#ifdef CONFIG_BOOTM_FITIMAGE_PUBKEY
+> +#include CONFIG_BOOTM_FITIMAGE_PUBKEY
+> +#endif
+> +#include <arm/imx6ul.dtsi>
+> +#include "imx6ul-phytec-phycore-som.dtsi"
+> +
+> +/ {
+> +	model = "PHYTEC phyCORE-i.MX6 Ultra Light SOM with eMMC";
+> +	compatible = "phytec,imx6ul-pcl063-emmc", "fsl,imx6ul";
+> +};
+> +
+> +&fec1 {
+> +	status = "okay";
+> +};
+> +
+> +&i2c1 {
+> +	status = "okay";
+> +};
+> +
+> +&uart1 {
+> +	status = "okay";
+> +};
+> +
+> +&usdhc1 {
+> +	status = "okay";
+> +};
+> +
+> +&usdhc2 {
+> +	status = "okay";
+> +};
+> +
+> +&usbotg1 {
+> +	status = "okay";
+> +};
+> +
+> +&usbotg2 {
+> +	status = "okay";
+> +};
+> diff --git a/images/Makefile.imx b/images/Makefile.imx
+> index 7b24e5fee..2327b8a0b 100644
+> --- a/images/Makefile.imx
+> +++ b/images/Makefile.imx
+> @@ -346,6 +346,8 @@ $(call build_imx_habv4img, CONFIG_MACH_GRINN_LITEBOARD, start_imx6ul_liteboard_5
+>  
+>  $(call build_imx_habv4img, CONFIG_MACH_NXP_IMX6ULL_EVK, start_nxp_imx6ull_evk, nxp-imx6ull-evk/flash-header-nxp-imx6ull-evk, nxp-imx6ull-evk)
+>  
+> +$(call build_imx_habv4img, CONFIG_MACH_PHYTEC_SOM_IMX6, start_phytec_phycore_imx6ul_som_emmc_512mb, phytec-som-imx6/flash-header-phytec-pcl063-512mb, phytec-phycore-imx6ul-emmc-512mb)
+> +
 
-On 10/2/20 9:09 AM, Marco Felsch wrote:
-> Hi Ahmad,
-> 
-> On 20-10-02 08:10, Ahmad Fatoum wrote:
-> 
->>> +enum deep_probe_state {
->>> +	DEEP_PROBE_UNKONW,
->>
->> UNKNOWN*
-> 
-> Yep.
-> 
->>> +	DEEP_PROBE_SUPPORTED,
->>> +	DEEP_PROBE_NOT_SUPPORTED
->>> +};
->>> +
->>> +static enum deep_probe_state boardstate;
->>> +
->>> +bool deep_probe_is_supported(void)
->>> +{
->>> +	struct deep_probe_entry *board;
->>> +
->>> +	if (boardstate == DEEP_PROBE_NOT_SUPPORTED)
->>> +		return false;
->>> +	else if (boardstate == DEEP_PROBE_SUPPORTED)
->>> +		return true;
->>
->> If you set UNKNOWN to -ENOSYS, SUPPORTED to 1 and NOT_SUPPORTED to 0,
->> you could just do if (boardstate >= 0) return boardstate; here
->> (Even if you want to keep it verbose, I like the enum constants having
->> expectable values)
-> 
-> IMHO enums should abstract the value to provide a more readyble code.
-> Here it isn't that hard to follow but in general I'm not a fan of using
-> enums with '(boardstate >= 0)'. I use such constructs only if it really
-> necessary e.g. state-machines.
+There is a 'ul' missing for mainline, should be:
 
-Ok.
+phytec-som-imx6/flash-header-phytec-pcl063ul-512mb
 
-> 
->>> +static int barebox_of_populate(void)
->>> +{
->>> +	if (IS_ENABLED(CONFIG_OFDEVICE) && deep_probe_is_supported())
->>> +		of_probe();
->>
->> return of_probe(); ?
-> 
-> Good point but this will change the logic since barebox_register_of() is
-> void.
+I fixed this up here, please check -next branch if the result matches
+your expectations.
 
-Failed initcalls AFAIK only result in an error message, so no logic change there.
-
->>> +
->>> +	return 0;
->>> +}
->>> +of_populate_initcall(barebox_of_populate);
->>
->> This function's name should reflect that it's deep probe specific
-> 
-> I think the deep_probe_is_supported() reflects that. The long-term goal
-> should be to remove the deep_probe_is_supported() and call of_probe()
-> only in this initcall.
-
-I see.
-
-> 
->>> +
->>>  void barebox_register_of(struct device_node *root)
->>>  {
->>>  	if (root_node)
->>> @@ -1577,7 +1587,8 @@ void barebox_register_of(struct device_node *root)
->>>  
->>>  	if (IS_ENABLED(CONFIG_OFDEVICE)) {
->>>  		of_clk_init(root, NULL);
->>> -		of_probe();
->>> +		if (!deep_probe_is_supported())
->>> +			of_probe();
->>>  	}
->>>  }
->>>  
->>> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
->>> index 01de6f98af..0368b1485a 100644
->>> --- a/drivers/of/platform.c
->>> +++ b/drivers/of/platform.c
->>> @@ -15,6 +15,7 @@
->>>   * GNU General Public License for more details.
->>>   */
->>>  #include <common.h>
->>> +#include <deep-probe.h>
->>>  #include <malloc.h>
->>>  #include <of.h>
->>>  #include <of_address.h>
->>> @@ -29,6 +30,12 @@
->>>  struct device_d *of_find_device_by_node(struct device_node *np)
->>>  {
->>>  	struct device_d *dev;
->>> +	int ret;
->>> +
->>> +	ret = of_device_ensure_probed(np);
->>> +	if (ret)
->>> +		return NULL;
->>> +
->>
->> If you associate a dev with the np on deep probe, can't you just
->> return it deep_probe_is_supported() ?
-> 
-> Sry. don't get this. This function has a few users e.g. the
-> chipidea-imx.c to find the required sub-devices. We need to ensure that
-> those devices are probed and available if this isn't done yet in case of
-> deep_probe_is_supported() returns true.
-
-My impresson was that after of_device_ensure_probed, np->dev
-is populated for some device nodes. If it's, couldn't we just return that
-instead of iterating?
-
->>> +	/*
->>> +	 * The deep-probe mechanism relies on the fact that all necessary
->>> +	 * drivers are added before the device creation. Furthermore deep-probe
->>> +	 * is the answer of the EPROBE_DEFER errno so we must ensure that the
->>
->> answer to*
->>
->>> +	 * driver was probed succesfully after the device creation. Both
->>
->> successfully
->>
->>> +	 * requirments are fullfilled if 'dev->driver' is not NULL.
->>
->> requirements, fulfilled 
-> 
-> Will fix those typos in v3. Thanks.
-> 
->>> +/**
->>> + * of_device_ensure_probed_by_alias() - ensures that a device is probed
->>> + *
->>> + * @alias: the alias string to search for a device
->>> + *
->>> + * The function search for a given alias string and ensures that the device is
->>> + * populated and probed if found.
->>> + *
->>> + * Return: %0 on success
->>> + *	   %-ENODEV if either the device can't be populated, the driver is
->>> + *	     missing or the driver probe returns an error
->>
->> I don't think it would be nice to just pass along driver probe errors as-is.
-> 
-> We can't distinguish between those failures yet, pls check the match()
-> function in drivers/base/driver.c. Can we address this later?
-
-Ok.
-
-> 
->>> -static inline struct device_d *of_platform_device_create(struct device_node *np,
->>> -							 struct device_d *parent)
->>> +static inline struct device_d *
->>> +of_platform_device_create(struct device_node *np, struct device_d *parent)
->>
->> Unrelated change?
-> 
-> Yep, will drop that one.
-> 
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
