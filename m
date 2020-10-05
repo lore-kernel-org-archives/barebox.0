@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kPLrJ-000767-Iq
- for barebox@lists.infradead.org; Mon, 05 Oct 2020 08:28:38 +0000
+ id 1kPLt8-0007wy-19
+ for barebox@lists.infradead.org; Mon, 05 Oct 2020 08:30:31 +0000
+References: <20200916151951.29117-1-a.fatoum@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  5 Oct 2020 10:28:34 +0200
-Message-Id: <20201005082835.11413-1-a.fatoum@pengutronix.de>
+Message-ID: <961c1e2e-c781-2122-95b2-98fa367bd2eb@pengutronix.de>
+Date: Mon, 5 Oct 2020 10:30:26 +0200
 MIME-Version: 1.0
+In-Reply-To: <20200916151951.29117-1-a.fatoum@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,42 +22,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] gen-dtb-s: support x86 and other platforms with 16-bit
- .word
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH v2] kbuild: add dtbs target for building all dtbs of an
+ ARCH
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Sascha Hauer <s.hauer@pengutronix.de>
 
-On ARM, .word is 32-bit as expected in the script, but on x86 it's
-16-bit, which leads to truncation.
+Hello Sascha,
 
-.int on the other hand is 32-bit both on ARM and x86 and very likely
-all other platforms we support, so change the .word to .int.
+On 9/16/20 5:19 PM, Ahmad Fatoum wrote:
+> As described in the documentation, upstream device trees extended by
+> barebox should take care to cause compile errors, not runtime errors,
+> when the paths they extend disappear. This way, breakage can be easily
+> detected when synchronizing the dts/ directory and fixed right then.
+> 
+> Make this process easier by providing a dtbs target that builds all
+> device trees available in arch/$(SRCARCH)/dts/.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+> v1 -> v2:
+>   - populate $(targets) with device trees to build, so make dtbs does
+>     only build dts files changed since the last make dtbs run (Sascha)
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- scripts/gen-dtb-s | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Any objections to this patch?
 
-diff --git a/scripts/gen-dtb-s b/scripts/gen-dtb-s
-index 0649247f934d..4f8c62a0b84c 100755
---- a/scripts/gen-dtb-s
-+++ b/scripts/gen-dtb-s
-@@ -62,9 +62,9 @@ echo ".section .dtbz.rodata.${name},\"a\""
- echo ".balign STRUCT_ALIGNMENT"
- echo ".global __dtb_z_${name}_start"
- echo "__dtb_z_${name}_start:"
--printf ".word 0x%08x\n"  0x7b66bcbd
--printf ".word 0x%08x\n"  $compressed
--printf ".word 0x%08x\n"  $uncompressed
-+printf ".int 0x%08x\n"  0x7b66bcbd
-+printf ".int 0x%08x\n"  $compressed
-+printf ".int 0x%08x\n"  $uncompressed
- echo ".incbin \"$dtb.lzo\""
- echo "__dtb_z_${name}_end:"
- echo ".global __dtb_z_${name}_end"
+> ---
+>  Makefile | 20 ++++++++++++++++++++
+>  1 file changed, 20 insertions(+)
+> 
+> diff --git a/Makefile b/Makefile
+> index 906068036715..3bf5cbce32a4 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -998,6 +998,22 @@ include/generated/version.h: FORCE
+>  include/generated/utsrelease.h: include/config/kernel.release FORCE
+>  	$(call filechk,utsrelease.h)
+>  
+> +# ---------------------------------------------------------------------------
+> +# Devicetree files
+> +
+> +ifneq ($(wildcard $(srctree)/arch/$(SRCARCH)/dts/),)
+> +dtstree := arch/$(SRCARCH)/dts
+> +endif
+> +
+> +ifneq ($(dtstree),)
+> +
+> +PHONY += dtbs
+> +all_dtbs += $(patsubst $(srctree)/%.dts,$(objtree)/%.dtb,$(wildcard $(srctree)/$(dtstree)/*.dts))
+> +targets += $(all_dtbs)
+> +dtbs: $(all_dtbs)
+> +
+> +endif
+> +
+>  # ---------------------------------------------------------------------------
+>  # Modules
+>  
+> @@ -1173,6 +1189,10 @@ help:
+>  	@$(if $(archhelp),$(archhelp),\
+>  		echo '  No architecture specific help defined for $(SRCARCH)')
+>  	@echo  ''
+> +	@$(if $(dtstree), \
+> +		echo '  Devicetree:'; \
+> +		echo '    * dtbs             - Build device tree blobs for all boards'; \
+> +		echo '')
+>  	@$(if $(boards), \
+>  		$(foreach b, $(boards), \
+>  		printf "  %-24s - Build for %s\\n" $(b) $(subst _defconfig,,$(b));) \
+> 
+
 -- 
-2.28.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
