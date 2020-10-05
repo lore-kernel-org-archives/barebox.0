@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kOLAb-0001b9-Gd
- for barebox@lists.infradead.org; Fri, 02 Oct 2020 13:32:22 +0000
-Date: Fri, 2 Oct 2020 15:32:17 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-Message-ID: <20201002133217.afkkdngxfehoesvo@pengutronix.de>
-References: <20201002105635.4662-1-m.felsch@pengutronix.de>
- <20201002105635.4662-3-m.felsch@pengutronix.de>
- <1b203cf29de7969001d0ea9db8dd5b8dcc3e4759.camel@pengutronix.de>
+ id 1kPKdl-0006MM-Gk
+ for barebox@lists.infradead.org; Mon, 05 Oct 2020 07:10:34 +0000
+Date: Mon, 5 Oct 2020 09:10:30 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20201005071030.GB11648@pengutronix.de>
+References: <20201002092955.20882-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1b203cf29de7969001d0ea9db8dd5b8dcc3e4759.camel@pengutronix.de>
+In-Reply-To: <20201002092955.20882-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,52 +22,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] ARCH: i.MX6: add support for OFDEVICE
-To: Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: [PATCH] commands: boot_order: note that it's OMAP specific in
+ help text
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 20-10-02 13:26, Lucas Stach wrote:
-> On Fr, 2020-10-02 at 12:56 +0200, Marco Felsch wrote:
-> > The imx23_defconfig, imx_v8_defconfig and imx_defconfig already
-> > selecting this config except for the imx_v7_defconfig. The
-> > imx_v7_defconfig selects MACH_ZII_VF610_DEV which selects ARCH_VF610
-> > which select OFDEVICE. So it will be never selected if the
-> > MACH_ZII_VF610_DEV board support is dropped.
-> > 
-> > Selecting the option here seems to be the better place instead of
-> > adding
-> > it to the imx_v7_defconfig because there are possible no i.MX6 boards
-> > not
-> > using the device tree.
-> > 
-> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> > ---
-> >  arch/arm/mach-imx/Kconfig | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-> > index a1127e3707..a4b0f99e96 100644
-> > --- a/arch/arm/mach-imx/Kconfig
-> > +++ b/arch/arm/mach-imx/Kconfig
-> > @@ -146,7 +146,7 @@ config ARCH_IMX6
-> >  	select ARCH_HAS_IMX_GPT
-> >  	select CPU_V7
-> >  	select PINCTRL_IMX_IOMUX_V3
-> > -	select OFTREE
-> > +	select OFDEVICE
+On Fri, Oct 02, 2020 at 11:29:55AM +0200, Ahmad Fatoum wrote:
+> Kconfig and online documentation don't indicate that it's OMAP
+> specific. Fix this.
 > 
-> Kconfig selects are not recursive, so you still need to keep the OFTREE
-> select here, otherwise you might end up with a broken dependency for
-> OFDEVICE.
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  arch/arm/mach-omap/boot_order.c | 4 ++--
+>  commands/Kconfig                | 4 ++--
+>  2 files changed, 4 insertions(+), 4 deletions(-)
 
-I checked the Kbuild docu and found:
-https://www.kernel.org/doc/html/latest/kbuild/issues.html, #Issue1.
-This example shows that select is recursive. The documentations also
-points out that select don't check the depends on. So this change seems
-to be valid since OFDEVICE don't has any dependcies.
+Applied, thanks
 
-Regards,
-  Marco
+Sascha
+
+> 
+> diff --git a/arch/arm/mach-omap/boot_order.c b/arch/arm/mach-omap/boot_order.c
+> index db22513bde42..4b74fdba66b6 100644
+> --- a/arch/arm/mach-omap/boot_order.c
+> +++ b/arch/arm/mach-omap/boot_order.c
+> @@ -70,13 +70,13 @@ static int cmd_boot_order(int argc, char *argv[])
+>  }
+>  
+>  BAREBOX_CMD_HELP_START(boot_order)
+> -BAREBOX_CMD_HELP_TEXT("Set warm boot order of up to four devices. Each device can be one of:")
+> +BAREBOX_CMD_HELP_TEXT("Set OMAP warm boot order of up to four devices. Each device can be one of:")
+>  BAREBOX_CMD_HELP_TEXT("xip xipwait nand onenand mmc1 mmc2_1 mmc2_2 uart usb_1 usb_ulpi usb_2")
+>  BAREBOX_CMD_HELP_END
+>  
+>  BAREBOX_CMD_START(boot_order)
+>  	.cmd		= cmd_boot_order,
+> -	BAREBOX_CMD_DESC("set warm boot order")
+> +	BAREBOX_CMD_DESC("set OMAP warm boot order")
+>  	BAREBOX_CMD_OPTS("DEVICE...")
+>  	BAREBOX_CMD_GROUP(CMD_GRP_BOOT)
+>  	BAREBOX_CMD_HELP(cmd_boot_order_help)
+> diff --git a/commands/Kconfig b/commands/Kconfig
+> index 9114d3cb31a5..df18715f20d4 100644
+> --- a/commands/Kconfig
+> +++ b/commands/Kconfig
+> @@ -285,9 +285,9 @@ config CMD_AT91_BOOT_TEST
+>  config CMD_BOOT_ORDER
+>  	tristate
+>  	depends on ARCH_OMAP4
+> -	prompt "boot_order"
+> +	prompt "OMAP boot_order"
+>  	help
+> -	  Set warm boot order (the next boot device on a warm reset).
+> +	  Set OMAP warm boot order (the next boot device on a warm reset).
+>  
+>  	  Usage: boot_order DEVICE...
+>  
+> -- 
+> 2.28.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
