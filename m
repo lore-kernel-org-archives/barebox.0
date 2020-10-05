@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-il1-x12f.google.com ([2607:f8b0:4864:20::12f])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kPNBs-0005hT-Cc
- for barebox@lists.infradead.org; Mon, 05 Oct 2020 09:53:58 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  5 Oct 2020 11:53:44 +0200
-Message-Id: <20201005095346.27957-6-s.hauer@pengutronix.de>
-In-Reply-To: <20201005095346.27957-1-s.hauer@pengutronix.de>
-References: <20201005095346.27957-1-s.hauer@pengutronix.de>
+ id 1kPNPU-0000To-QX
+ for barebox@lists.infradead.org; Mon, 05 Oct 2020 10:08:02 +0000
+Received: by mail-il1-x12f.google.com with SMTP id c5so7239743ilk.11
+ for <barebox@lists.infradead.org>; Mon, 05 Oct 2020 03:08:00 -0700 (PDT)
 MIME-Version: 1.0
+From: "Robert Carnecky (Neopsis)" <robert@neopsis.com>
+Date: Mon, 5 Oct 2020 12:07:48 +0200
+Message-ID: <CABMENH487jhrwdywh4KOOqvJtJ_r0ZbSMu2ArDZRHhdK==-+wQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,42 +21,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/7] clk: i.MX8MQ: Add Cortex-M4 clk
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Mini UART on RaspberryPi CM3/CM3+
+To: barebox@lists.infradead.org
 
-Needed for the remoteproc driver on this SoC.
+Did anybody successfully configured Raspberry CM3/CM3+ mini-UART as
+the Barebox console? I found a thread
+on this list discussing the issue
+(https://www.mail-archive.com/barebox@lists.infradead.org/msg35235.html),
+unfortunately without any solution.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/clk/imx/clk-imx8mq.c | 5 +++++
- 1 file changed, 5 insertions(+)
+What I need:
 
-diff --git a/drivers/clk/imx/clk-imx8mq.c b/drivers/clk/imx/clk-imx8mq.c
-index 016d405e90..4072faacaf 100644
---- a/drivers/clk/imx/clk-imx8mq.c
-+++ b/drivers/clk/imx/clk-imx8mq.c
-@@ -255,6 +255,9 @@ static const char *imx8mq_dram_core_sels[] = {"dram_pll_out", "dram_alt_root", }
- 
- static const char *imx8mq_clko2_sels[] = {"osc_25m", "sys2_pll_200m", "sys1_pll_400m", "sys2_pll_166m", "audio_pll1_out",
- 					 "video_pll1_out", "ckil", };
-+static const char * const imx8mq_arm_m4_sels[] = {"osc_25m", "sys2_pll_200m",
-+	"sys2_pll_250m", "sys1_pll_266m", "sys1_pll_800m", "audio_pll1_out",
-+	"video_pll1_out", "sys3_pll_out", };
- 
- static struct clk_onecell_data clk_data;
- 
-@@ -552,6 +555,8 @@ static int imx8mq_clocks_init(struct device_node *ccm_node)
- 	clks[IMX8MQ_CLK_SDMA1_ROOT] = imx_clk_gate4("sdma1_clk", "ipg_root", base + 0x43a0, 0);
- 	clks[IMX8MQ_CLK_SDMA2_ROOT] = imx_clk_gate4("sdma2_clk", "ipg_audio_root", base + 0x43b0, 0);
- 
-+	clks[IMX8MQ_CLK_M4_CORE] = imx8m_clk_hw_composite_core("arm_m4_core", imx8mq_arm_m4_sels, base + 0x8080);
-+
- 	clks[IMX8MQ_GPT_3M_CLK] = imx_clk_fixed_factor("gpt_3m", "osc_25m", 1, 8);
- 	clks[IMX8MQ_CLK_DRAM_ALT_ROOT] = imx_clk_fixed_factor("dram_alt_root", "dram_alt", 1, 4);
- 
--- 
-2.28.0
+   * UART0 on pins 32/33 (technology access over rs-485)
+   * UART1 (miniUART) on pins 14/15 (console)
 
+My current config.txt boots fine my raspberry kernel (zImage built
+using builroot):
+
+   kernel=zImage
+   enable_uart=1
+   dtoverlay=uart0,txd0_pin=32,rxd0_pin=33,pin_func=7
+   dtoverlay=uart1,txd1_pin=14,rxd1_pin=15
+
+Now I would like to switch to Barebox as a bootloader. I compiled the
+barebox image with
+
+   * CONSOLE_ACTIVATE_NONE = Y
+   * 'stdout-path=&uart1;' in  'arch/arm/dts/bcm2837-rpi-cm3.dts' .
+
+and changed my kernel in config.txt
+
+    kernel=barebox.img
+
+I cannot see any output on pins 14/15 e.g. UART1, no barebox console,
+no kernel console.
+Any idea what's wrong here?
+
+Robert
 
 _______________________________________________
 barebox mailing list
