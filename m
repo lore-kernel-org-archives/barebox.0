@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kPMxX-0003PK-Ot
- for barebox@lists.infradead.org; Mon, 05 Oct 2020 09:39:08 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  5 Oct 2020 11:39:02 +0200
-Message-Id: <20201005093901.5983-1-a.fatoum@pengutronix.de>
-In-Reply-To: <20201005081058.2572-1-a.fatoum@pengutronix.de>
-References: <20201005081058.2572-1-a.fatoum@pengutronix.de>
+ id 1kPNBk-0005dw-FB
+ for barebox@lists.infradead.org; Mon, 05 Oct 2020 09:53:50 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon,  5 Oct 2020 11:53:42 +0200
+Message-Id: <20201005095346.27957-4-s.hauer@pengutronix.de>
+In-Reply-To: <20201005095346.27957-1-s.hauer@pengutronix.de>
+References: <20201005095346.27957-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,32 +21,146 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! ARM: stm32mp: migrate board initcalls to board drivers
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: [PATCH 3/7] remoteproc: imx: use function hooks in SoC data
+To: Barebox List <barebox@lists.infradead.org>
 
-Driver code know does the compatible check for us, so drop the
-no longer needed explicit check.
+Replace the register offset/masks/values in driver data with function
+hooks to prepare the driver for adding SoCs that do not fit into this
+one-register-write scheme.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/seeed-odyssey/board.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/remoteproc/imx_rproc.c | 79 +++++++++++++++++++++-------------
+ 1 file changed, 48 insertions(+), 31 deletions(-)
 
-diff --git a/arch/arm/boards/seeed-odyssey/board.c b/arch/arm/boards/seeed-odyssey/board.c
-index fd077c02b273..8c011898a33e 100644
---- a/arch/arm/boards/seeed-odyssey/board.c
-+++ b/arch/arm/boards/seeed-odyssey/board.c
-@@ -12,9 +12,6 @@ static int odyssey_som_probe(struct device_d *dev)
- 	int flags;
- 	int instance = bootsource_get_instance();
+diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+index fb27d25d8e..86eba4fcd4 100644
+--- a/drivers/remoteproc/imx_rproc.c
++++ b/drivers/remoteproc/imx_rproc.c
+@@ -43,9 +43,6 @@
+ #define IMX6SX_SW_M4C_NON_SCLR_RST	BIT(4)
+ #define IMX6SX_SW_M4C_RST		BIT(3)
  
--	if (!of_machine_is_compatible("seeed,stm32mp157c-odyssey-som"))
--		return 0;
+-#define IMX6SX_M4_START			(IMX6SX_ENABLE_M4 | IMX6SX_SW_M4P_RST \
+-					 | IMX6SX_SW_M4C_RST)
+-#define IMX6SX_M4_STOP			IMX6SX_SW_M4C_NON_SCLR_RST
+ #define IMX6SX_M4_RST_MASK		(IMX6SX_ENABLE_M4 | IMX6SX_SW_M4P_RST \
+ 					 | IMX6SX_SW_M4C_NON_SCLR_RST \
+ 					 | IMX6SX_SW_M4C_RST)
+@@ -77,12 +74,10 @@ struct imx_rproc_att {
+ };
+ 
+ struct imx_rproc_dcfg {
+-	u32				src_reg;
+-	u32				src_mask;
+-	u32				src_start;
+-	u32				src_stop;
+ 	const struct imx_rproc_att	*att;
+ 	size_t				att_size;
++	int (*rproc_start)(struct rproc *rproc);
++	int (*rproc_stop)(struct rproc *rproc);
+ };
+ 
+ struct imx_rproc {
+@@ -144,52 +139,74 @@ static const struct imx_rproc_att imx_rproc_att_imx7d[] = {
+ 	{ 0x80000000, 0x80000000, 0x60000000, 0 },
+ };
+ 
++static int imx6sx_rproc_start(struct rproc *rproc)
++{
++	struct imx_rproc *priv = rproc->priv;
++
++	return regmap_update_bits(priv->regmap,
++			IMX6SX_SRC_SCR,
++			IMX6SX_M4_RST_MASK,
++			IMX6SX_ENABLE_M4 | IMX6SX_SW_M4P_RST | IMX6SX_SW_M4C_RST);
++}
++
++static int imx6sx_rproc_stop(struct rproc *rproc)
++{
++	struct imx_rproc *priv = rproc->priv;
++
++	return regmap_update_bits(priv->regmap,
++			IMX6SX_SRC_SCR,
++			IMX6SX_M4_RST_MASK,
++			IMX6SX_SW_M4C_NON_SCLR_RST);
++}
++
++static int imx7d_rproc_start(struct rproc *rproc)
++{
++	struct imx_rproc *priv = rproc->priv;
++
++	return regmap_update_bits(priv->regmap,
++			IMX7D_SRC_SCR,
++			IMX7D_M4_RST_MASK,
++			IMX7D_M4_START);
++}
++
++static int imx7d_rproc_stop(struct rproc *rproc)
++{
++	struct imx_rproc *priv = rproc->priv;
++
++	return regmap_update_bits(priv->regmap,
++			IMX7D_SRC_SCR,
++			IMX7D_M4_RST_MASK,
++			IMX7D_M4_STOP);
++}
++
+ static const struct imx_rproc_dcfg imx_rproc_cfg_imx6sx = {
+-	.src_reg	= IMX6SX_SRC_SCR,
+-	.src_mask	= IMX6SX_M4_RST_MASK,
+-	.src_start	= IMX6SX_M4_START,
+-	.src_stop	= IMX6SX_M4_STOP,
+ 	.att		= imx_rproc_att_imx6sx,
+ 	.att_size	= ARRAY_SIZE(imx_rproc_att_imx6sx),
++	.rproc_start	= imx6sx_rproc_start,
++	.rproc_stop	= imx6sx_rproc_stop,
+ };
+ 
+ static const struct imx_rproc_dcfg imx_rproc_cfg_imx7d = {
+-	.src_reg	= IMX7D_SRC_SCR,
+-	.src_mask	= IMX7D_M4_RST_MASK,
+-	.src_start	= IMX7D_M4_START,
+-	.src_stop	= IMX7D_M4_STOP,
+ 	.att		= imx_rproc_att_imx7d,
+ 	.att_size	= ARRAY_SIZE(imx_rproc_att_imx7d),
++	.rproc_start	= imx7d_rproc_start,
++	.rproc_stop	= imx7d_rproc_stop,
+ };
+ 
+ static int imx_rproc_start(struct rproc *rproc)
+ {
+ 	struct imx_rproc *priv = rproc->priv;
+ 	const struct imx_rproc_dcfg *dcfg = priv->dcfg;
+-	struct device_d *dev = priv->dev;
+-	int ret;
 -
- 	flags = instance == 0 ? BBU_HANDLER_FLAG_DEFAULT : 0;
- 	stm32mp_bbu_mmc_register_handler("sd", "/dev/mmc0.ssbl", flags);
+-	ret = regmap_update_bits(priv->regmap, dcfg->src_reg,
+-				 dcfg->src_mask, dcfg->src_start);
+-	if (ret)
+-		dev_err(dev, "Failed to enable M4!\n");
  
+-	return ret;
++	return dcfg->rproc_start(rproc);
+ }
+ 
+ static int imx_rproc_stop(struct rproc *rproc)
+ {
+ 	struct imx_rproc *priv = rproc->priv;
+ 	const struct imx_rproc_dcfg *dcfg = priv->dcfg;
+-	struct device_d *dev = priv->dev;
+-	int ret;
+-
+-	ret = regmap_update_bits(priv->regmap, dcfg->src_reg,
+-				 dcfg->src_mask, dcfg->src_stop);
+-	if (ret)
+-		dev_err(dev, "Failed to stop M4!\n");
+ 
+-	return ret;
++	return dcfg->rproc_stop(rproc);
+ }
+ 
+ static int imx_rproc_da_to_sys(struct imx_rproc *priv, u64 da,
 -- 
 2.28.0
 
