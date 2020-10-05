@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.elemaster.it ([91.142.71.235])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kPPpo-0003Kd-W3
- for barebox@lists.infradead.org; Mon, 05 Oct 2020 12:43:21 +0000
-From: "Manni Stefano" <stefano.manni@eletechsrl.it>
-Date: Mon, 5 Oct 2020 14:43:15 +0200
-Message-ID: <005d01d69b15$180b4aa0$4821dfe0$@eletechsrl.it>
+ id 1kPSFa-0002xc-7C
+ for barebox@lists.infradead.org; Mon, 05 Oct 2020 15:18:09 +0000
+Date: Mon, 5 Oct 2020 17:17:59 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20201005151759.GE11648@pengutronix.de>
+References: <005d01d69b15$180b4aa0$4821dfe0$@eletechsrl.it>
 MIME-Version: 1.0
-Content-Language: it
+Content-Disposition: inline
+In-Reply-To: <005d01d69b15$180b4aa0$4821dfe0$@eletechsrl.it>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,63 +22,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: imx6ul: fec: stuck on ifup after ifdown
-To: s.hauer@pengutronix.de
+Subject: Re: imx6ul: fec: stuck on ifup after ifdown
+To: Manni Stefano <stefano.manni@eletechsrl.it>
 Cc: barebox@lists.infradead.org, Aurelio Colosimo <aurelio@aureliocolosimo.it>
 
-Hi,
+Hi Stefano,
 
-on a custom board based on a i.MX6UL using barebox v2020.08.1 'ifup eth0'
-invoked after 'ifdown eth0' stucks forever.
+On Mon, Oct 05, 2020 at 02:43:15PM +0200, Manni Stefano wrote:
+> Hi,
+> 
+> on a custom board based on a i.MX6UL using barebox v2020.08.1 'ifup eth0'
+> invoked after 'ifdown eth0' stucks forever.
+> 
+> Have you ever experienced something similar?
 
-Have you ever experienced something similar?
+I can confirm the same happens here on an i.MX6q board on current
+master. I don't know what's happening here. The last thing I see is that
+fec_tx_task_enable() is entered. Strange enough the same works on i.MX53
+whereas on i.MX8M I get "ERROR: eth0: transmission timeout" on the
+second ifup.
 
-Snippet from my device tree:
+This is really strange. It seems fec_tx_task_enable() brings down the
+whole SoC, but on the other hand the FEC works properly in a chainloaded
+barebox, which should - from the view of the ethernet controller - be
+the same as a repeated ifup/ifdown sequence.
 
-        &fec1 {
-                pinctrl-names = "default";
-                pinctrl-0 = <&pinctrl_enet1>;
-                phy-mode = "rmii";
-                phy-handle = <&ethphy1>;
-                status = "okay";
-                phy-reset-gpios = <&gpio1 23 GPIO_ACTIVE_LOW>;
-                phy-reset-duration = <1>;
+I have no idea what is going wrong here.
 
-                mdio {
-                        #address-cells = <1>;
-                        #size-cells = <0>;
+Sascha
 
-                        clock-frequency = <5000000>;
-                        ethphy1: ethernet-phy@1 {
-                                compatible = "ethernet-phy-ieee802.3-c22";
-                                reg = <0>;
-                                max-speed = <100>;
-                                interrupt-parent = <&gpio1>;
-                                interrupts = <22 IRQ_TYPE_LEVEL_LOW>;
-                        };
-                };
-        };
-
-        pinctrl_enet1: enet1grp {
-                fsl,pins = <
-                        MX6UL_PAD_GPIO1_IO06__ENET1_MDIO        0x1b0b0
-                        MX6UL_PAD_GPIO1_IO07__ENET1_MDC         0x1b0b0
-                        MX6UL_PAD_ENET1_TX_DATA0__ENET1_TDATA00 0x1b0b0
-                        MX6UL_PAD_ENET1_TX_DATA1__ENET1_TDATA01 0x1b0b0
-                        MX6UL_PAD_ENET1_TX_EN__ENET1_TX_EN      0x1b0b0
-                        MX6UL_PAD_ENET1_TX_CLK__ENET1_REF_CLK1  0x4001b031
-                        MX6UL_PAD_ENET1_RX_DATA0__ENET1_RDATA00 0x1b0b0
-                        MX6UL_PAD_ENET1_RX_DATA1__ENET1_RDATA01 0x1b0b0
-                        MX6UL_PAD_ENET1_RX_EN__ENET1_RX_EN      0x1b0b0
-                        MX6UL_PAD_ENET1_RX_ER__ENET1_RX_ER      0x1b0b0
-                        MX6UL_PAD_UART2_RTS_B__GPIO1_IO23       0x1b0b0
-                        MX6UL_PAD_UART2_CTS_B__GPIO1_IO22       0x1b0b0
-                >;
-        };
-
-Best,
-Stefano
-
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
