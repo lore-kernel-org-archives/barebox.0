@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kPKgS-0006hB-G9
- for barebox@lists.infradead.org; Mon, 05 Oct 2020 07:13:21 +0000
-Date: Mon, 5 Oct 2020 09:13:19 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201005071319.GC11648@pengutronix.de>
-References: <20201002105635.4662-1-m.felsch@pengutronix.de>
+ id 1kPLWA-0003ay-TE
+ for barebox@lists.infradead.org; Mon, 05 Oct 2020 08:06:47 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon,  5 Oct 2020 10:06:43 +0200
+Message-Id: <20201005080643.25199-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201002105635.4662-1-m.felsch@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,51 +19,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] ARM: cm-fx6: fix build dependency
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] bootm: propagate register_image_handler return value
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Fri, Oct 02, 2020 at 12:56:33PM +0200, Marco Felsch wrote:
-> The cm-fx6 board uses the edhc-pbl function during lowlevel init. So we
-> need to select it.
-> 
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> ---
->  arch/arm/mach-imx/Kconfig | 1 +
->  1 file changed, 1 insertion(+)
+While register_image_handler can't currently fail, it still returns an
+error code. Propagate that error code along instead of having a blanket
+return 0. This makes the code a little more compact.
 
-Applied, thanks
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/arm/mach-stm32mp/stm32image.c | 4 +---
+ arch/arm/mach-zynq/bootm-zynqimg.c | 4 +---
+ 2 files changed, 2 insertions(+), 6 deletions(-)
 
-Sascha
-
-> 
-> diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-> index a67e59fd4f..1e4ba0bca4 100644
-> --- a/arch/arm/mach-imx/Kconfig
-> +++ b/arch/arm/mach-imx/Kconfig
-> @@ -450,6 +450,7 @@ config MACH_GW_VENTANA
->  config MACH_CM_FX6
->  	bool "CM FX6"
->  	select ARCH_IMX6
-> +	select MCI_IMX_ESDHC_PBL
->  
->  config MACH_ADVANTECH_ROM_742X
->  	bool "Advantech ROM 742X"
-> -- 
-> 2.20.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/arch/arm/mach-stm32mp/stm32image.c b/arch/arm/mach-stm32mp/stm32image.c
+index 84975c5c3bf1..207df6894d4e 100644
+--- a/arch/arm/mach-stm32mp/stm32image.c
++++ b/arch/arm/mach-stm32mp/stm32image.c
+@@ -43,8 +43,6 @@ static struct image_handler image_handler_stm32_image_v1_handler = {
+ 
+ static int stm32mp_register_stm32image_image_handler(void)
+ {
+-	register_image_handler(&image_handler_stm32_image_v1_handler);
+-
+-	return 0;
++	return register_image_handler(&image_handler_stm32_image_v1_handler);
+ }
+ late_initcall(stm32mp_register_stm32image_image_handler);
+diff --git a/arch/arm/mach-zynq/bootm-zynqimg.c b/arch/arm/mach-zynq/bootm-zynqimg.c
+index e903ab667905..77ed6880e4b6 100644
+--- a/arch/arm/mach-zynq/bootm-zynqimg.c
++++ b/arch/arm/mach-zynq/bootm-zynqimg.c
+@@ -42,8 +42,6 @@ static struct image_handler zynq_image_handler = {
+ 
+ static int zynq_register_image_handler(void)
+ {
+-	register_image_handler(&zynq_image_handler);
+-
+-	return 0;
++	return register_image_handler(&zynq_image_handler);
+ }
+ late_initcall(zynq_register_image_handler);
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.28.0
+
 
 _______________________________________________
 barebox mailing list
