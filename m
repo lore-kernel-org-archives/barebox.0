@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kQ66H-0005p8-9x
- for barebox@lists.infradead.org; Wed, 07 Oct 2020 09:51:11 +0000
+ id 1kQ66A-0005mv-P0
+ for barebox@lists.infradead.org; Wed, 07 Oct 2020 09:51:05 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  7 Oct 2020 11:50:57 +0200
-Message-Id: <20201007095058.22950-6-a.fatoum@pengutronix.de>
+Date: Wed,  7 Oct 2020 11:50:58 +0200
+Message-Id: <20201007095058.22950-7-a.fatoum@pengutronix.de>
 In-Reply-To: <20201007095058.22950-1-a.fatoum@pengutronix.de>
 References: <20201007095058.22950-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,108 +21,133 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 6/7] video: imx-hdmi: fix dev_get_drvdata misuse
+Subject: [PATCH v2 7/7] driver: migrate some from dev_get_drvdata to
+ device_get_match_data
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The driver has a couple of issues in how it handles match data:
-
- - First use of dev_get_drvdata is superfluous as result is unused
- - Second use of dev_get_drvdata stores a sizeof(const void *)
-   into an enum typed object
- - hdmi->dev_type contains a truncated pointer to a struct
-   dw_hdmi_data and compares it with an enum, which will always fail
-
-Fix these and while it, refactor the code a bit to get rid of
-dw_hdmi_data, whose only other member is unused.
+The dev_get_drvdata instances here all store a valid pointer in the
+match data and can be readily converted. Do so.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/video/imx-ipu-v3/imx-hdmi.c | 39 ++++++-----------------------
- 1 file changed, 8 insertions(+), 31 deletions(-)
+ drivers/mfd/da9063.c                 | 4 +---
+ drivers/pinctrl/imx-iomux-v3.c       | 4 ++--
+ drivers/pinctrl/pinctrl-at91-pio4.c  | 4 ++--
+ drivers/pinctrl/pinctrl-tegra-xusb.c | 2 +-
+ drivers/pinctrl/pinctrl-tegra30.c    | 4 ++--
+ drivers/serial/serial_ns16550.c      | 6 ++----
+ 6 files changed, 10 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/video/imx-ipu-v3/imx-hdmi.c b/drivers/video/imx-ipu-v3/imx-hdmi.c
-index 17b6e4cc257d..1e55c97d2426 100644
---- a/drivers/video/imx-ipu-v3/imx-hdmi.c
-+++ b/drivers/video/imx-ipu-v3/imx-hdmi.c
-@@ -1083,19 +1083,18 @@ static void dw_hdmi_enable_video_path(struct dw_hdmi *hdmi)
- /* Workaround to clear the overflow condition */
- static void dw_hdmi_clear_overflow(struct dw_hdmi *hdmi)
+diff --git a/drivers/mfd/da9063.c b/drivers/mfd/da9063.c
+index e48c38affac6..31359cf8b822 100644
+--- a/drivers/mfd/da9063.c
++++ b/drivers/mfd/da9063.c
+@@ -370,11 +370,9 @@ static int da9063_probe(struct device_d *dev)
  {
--	int count;
-+	int count = 4;
- 	u8 val;
- 
- 	/* TMDS software reset */
- 	hdmi_writeb(hdmi, (u8)~HDMI_MC_SWRSTZ_TMDSSWRST_REQ, HDMI_MC_SWRSTZ);
- 
- 	val = hdmi_readb(hdmi, HDMI_FC_INVIDCONF);
--	if (hdmi->dev_type == IMX6DL_HDMI) {
--		hdmi_writeb(hdmi, val, HDMI_FC_INVIDCONF);
--		return;
--	}
- 
--	for (count = 0; count < 4; count++)
-+	if (hdmi->dev_type == IMX6DL_HDMI)
-+		count = 1;
-+
-+	while (count--)
- 		hdmi_writeb(hdmi, val, HDMI_FC_INVIDCONF);
- }
- 
-@@ -1193,28 +1192,13 @@ static void initialize_hdmi_ih_mutes(struct dw_hdmi *hdmi)
- 	hdmi_writeb(hdmi, ih_mute, HDMI_IH_MUTE);
- }
- 
--struct dw_hdmi_data {
--	unsigned ipu_mask;
--	enum dw_hdmi_devtype devtype;
--};
--
--static struct dw_hdmi_data imx6q_hdmi_data = {
--	.ipu_mask = 0xf,
--	.devtype = IMX6Q_HDMI,
--};
--
--static struct dw_hdmi_data imx6dl_hdmi_data = {
--	.ipu_mask = 0x3,
--	.devtype = IMX6DL_HDMI,
--};
--
- static struct of_device_id dw_hdmi_dt_ids[] = {
- 	{
- 		.compatible = "fsl,imx6q-hdmi",
--		.data = &imx6q_hdmi_data,
-+		.data = (void *)IMX6Q_HDMI,
- 	}, {
- 		.compatible = "fsl,imx6dl-hdmi",
--		.data = &imx6dl_hdmi_data,
-+		.data = (void *)IMX6DL_HDMI,
- 	}, {
- 		/* sentinel */
- 	}
-@@ -1276,11 +1260,6 @@ static int dw_hdmi_probe(struct device_d *dev)
- 	struct device_node *np = dev->device_node;
- 	struct dw_hdmi *hdmi;
+ 	struct da9063 *priv = NULL;
+ 	struct da906x_device_data const *dev_data;
+-	void const *dev_data_tmp;
  	int ret;
--	const struct dw_hdmi_data *devtype;
--
+ 
+-	ret = dev_get_drvdata(dev, &dev_data_tmp);
+-	dev_data = ret < 0 ? NULL : dev_data_tmp;
++	dev_data = device_get_match_data(dev);
+ 
+ 	priv = xzalloc(sizeof(struct da9063));
+ 	priv->wd.set_timeout = da9063_watchdog_set_timeout;
+diff --git a/drivers/pinctrl/imx-iomux-v3.c b/drivers/pinctrl/imx-iomux-v3.c
+index dc98d674a04b..cec2414a03e2 100644
+--- a/drivers/pinctrl/imx-iomux-v3.c
++++ b/drivers/pinctrl/imx-iomux-v3.c
+@@ -168,10 +168,10 @@ static struct pinctrl_ops imx_iomux_v3_ops = {
+ static int imx_pinctrl_dt(struct device_d *dev, void __iomem *base)
+ {
+ 	struct imx_iomux_v3 *iomux;
+-	struct imx_iomux_v3_data *drvdata = NULL;
++	const struct imx_iomux_v3_data *drvdata;
+ 	int ret;
+ 
+-	dev_get_drvdata(dev, (const void **)&drvdata);
++	drvdata = device_get_match_data(dev);
+ 	iomux = xzalloc(sizeof(*iomux));
+ 
+ 	iomux->base = base;
+diff --git a/drivers/pinctrl/pinctrl-at91-pio4.c b/drivers/pinctrl/pinctrl-at91-pio4.c
+index 550e953a7081..40bc573e315b 100644
+--- a/drivers/pinctrl/pinctrl-at91-pio4.c
++++ b/drivers/pinctrl/pinctrl-at91-pio4.c
+@@ -229,7 +229,7 @@ static struct gpio_ops at91_gpio4_ops = {
+ static int pinctrl_at91_pio4_gpiochip_add(struct device_d *dev,
+ 					  struct pinctrl_at91_pio4 *pinctrl)
+ {
+-	struct at91_pinctrl_data *drvdata;
++	const struct at91_pinctrl_data *drvdata;
+ 	struct clk *clk;
+ 	int ret;
+ 
+@@ -247,7 +247,7 @@ static int pinctrl_at91_pio4_gpiochip_add(struct device_d *dev,
+ 		return ret;
+ 	}
+ 
+-	dev_get_drvdata(dev, (const void **)&drvdata);
++	drvdata = device_get_match_data(dev);
+ 
+ 	pinctrl->gpiochip.ops = &at91_gpio4_ops;
+ 	pinctrl->gpiochip.base = 0;
+diff --git a/drivers/pinctrl/pinctrl-tegra-xusb.c b/drivers/pinctrl/pinctrl-tegra-xusb.c
+index 6bd884b7e2d9..37d77e5ef663 100644
+--- a/drivers/pinctrl/pinctrl-tegra-xusb.c
++++ b/drivers/pinctrl/pinctrl-tegra-xusb.c
+@@ -388,7 +388,7 @@ static int pinctrl_tegra_xusb_probe(struct device_d *dev)
+ 	dev->priv = padctl;
+ 	padctl->dev = dev;
+ 
+-	dev_get_drvdata(dev, (const void **)&padctl->soc);
++	padctl->soc = device_get_match_data(dev);
+ 
+ 	iores = dev_request_mem_resource(dev, 0);
+ 	if (IS_ERR(iores)) {
+diff --git a/drivers/pinctrl/pinctrl-tegra30.c b/drivers/pinctrl/pinctrl-tegra30.c
+index 225a65233e7f..e9f35e0c9df4 100644
+--- a/drivers/pinctrl/pinctrl-tegra30.c
++++ b/drivers/pinctrl/pinctrl-tegra30.c
+@@ -32,7 +32,7 @@ struct pinctrl_tegra30 {
+ 		u32 __iomem *mux;
+ 	} regs;
+ 	struct pinctrl_device pinctrl;
+-	struct pinctrl_tegra30_drvdata *drvdata;
++	const struct pinctrl_tegra30_drvdata *drvdata;
+ };
+ 
+ struct tegra_pingroup {
+@@ -893,7 +893,7 @@ static int pinctrl_tegra30_probe(struct device_d *dev)
+ 		regs[i] = IOMEM(iores->start);
+ 	}
+ 
+-	dev_get_drvdata(dev, (const void **)&ctrl->drvdata);
++	ctrl->drvdata = device_get_match_data(dev);
+ 
+ 	ctrl->pinctrl.dev = dev;
+ 	ctrl->pinctrl.ops = &pinctrl_tegra30_ops;
+diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
+index f117ab9dc10a..fc6fa7dc3e43 100644
+--- a/drivers/serial/serial_ns16550.c
++++ b/drivers/serial/serial_ns16550.c
+@@ -468,12 +468,10 @@ static int ns16550_probe(struct device_d *dev)
+ 	struct ns16550_priv *priv;
+ 	struct console_device *cdev;
+ 	struct NS16550_plat *plat = (struct NS16550_plat *)dev->platform_data;
+-	struct ns16550_drvdata *devtype;
++	const struct ns16550_drvdata *devtype;
+ 	int ret;
+ 
 -	ret = dev_get_drvdata(dev, (const void **)&devtype);
 -	if (ret)
--		return ret;
+-		devtype = &ns16550_drvdata;
++	devtype = device_get_match_data(dev) ?: &ns16550_drvdata;
  
- 	hdmi = xzalloc(sizeof(*hdmi));
- 
-@@ -1289,9 +1268,7 @@ static int dw_hdmi_probe(struct device_d *dev)
- 	hdmi->sample_rate = 48000;
- 	hdmi->ratio = 100;
- 
--	ret = dev_get_drvdata(dev, (const void **)&hdmi->dev_type);
--	if (ret)
--		return ret;
-+	hdmi->dev_type = (enum dw_hdmi_devtype)device_get_match_data(dev);
- 
- 	hdmi->ddc_node = of_parse_phandle(np, "ddc-i2c-bus", 0);
+ 	priv = xzalloc(sizeof(*priv));
  
 -- 
 2.28.0
