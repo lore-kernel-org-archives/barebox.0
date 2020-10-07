@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kQ57q-0007en-NR
- for barebox@lists.infradead.org; Wed, 07 Oct 2020 08:48:43 +0000
-Date: Wed, 7 Oct 2020 10:48:41 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201007084841.GD12463@pengutronix.de>
-References: <20200916151951.29117-1-a.fatoum@pengutronix.de>
+ id 1kQ66P-0005s1-R4
+ for barebox@lists.infradead.org; Wed, 07 Oct 2020 09:51:18 +0000
+Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
+ helo=dude02.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <p.zabel@pengutronix.de>) id 1kQ66N-0001BF-Os
+ for barebox@lists.infradead.org; Wed, 07 Oct 2020 11:51:15 +0200
+From: Philipp Zabel <p.zabel@pengutronix.de>
+Date: Wed,  7 Oct 2020 11:51:09 +0200
+Message-Id: <20201007095109.23370-1-p.zabel@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200916151951.29117-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,87 +24,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] kbuild: add dtbs target for building all dtbs of an
- ARCH
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] Documentation: efi: update SnpDxe build instructions
+To: barebox@lists.infradead.org
 
-On Wed, Sep 16, 2020 at 05:19:51PM +0200, Ahmad Fatoum wrote:
-> As described in the documentation, upstream device trees extended by
-> barebox should take care to cause compile errors, not runtime errors,
-> when the paths they extend disappear. This way, breakage can be easily
-> detected when synchronizing the dts/ directory and fixed right then.
-> 
-> Make this process easier by providing a dtbs target that builds all
-> device trees available in arch/$(SRCARCH)/dts/.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
-> v1 -> v2:
->   - populate $(targets) with device trees to build, so make dtbs does
->     only build dts files changed since the last make dtbs run (Sascha)
-> ---
->  Makefile | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
+Some sources have been moved into git submodules and SnpDxe was
+moved from MdeModulePkg to NetworkPkg.
 
-Applied, thanks
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+---
+ Documentation/boards/efi.rst | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-Sascha
-
-> 
-> diff --git a/Makefile b/Makefile
-> index 906068036715..3bf5cbce32a4 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -998,6 +998,22 @@ include/generated/version.h: FORCE
->  include/generated/utsrelease.h: include/config/kernel.release FORCE
->  	$(call filechk,utsrelease.h)
->  
-> +# ---------------------------------------------------------------------------
-> +# Devicetree files
-> +
-> +ifneq ($(wildcard $(srctree)/arch/$(SRCARCH)/dts/),)
-> +dtstree := arch/$(SRCARCH)/dts
-> +endif
-> +
-> +ifneq ($(dtstree),)
-> +
-> +PHONY += dtbs
-> +all_dtbs += $(patsubst $(srctree)/%.dts,$(objtree)/%.dtb,$(wildcard $(srctree)/$(dtstree)/*.dts))
-> +targets += $(all_dtbs)
-> +dtbs: $(all_dtbs)
-> +
-> +endif
-> +
->  # ---------------------------------------------------------------------------
->  # Modules
->  
-> @@ -1173,6 +1189,10 @@ help:
->  	@$(if $(archhelp),$(archhelp),\
->  		echo '  No architecture specific help defined for $(SRCARCH)')
->  	@echo  ''
-> +	@$(if $(dtstree), \
-> +		echo '  Devicetree:'; \
-> +		echo '    * dtbs             - Build device tree blobs for all boards'; \
-> +		echo '')
->  	@$(if $(boards), \
->  		$(foreach b, $(boards), \
->  		printf "  %-24s - Build for %s\\n" $(b) $(subst _defconfig,,$(b));) \
-> -- 
-> 2.28.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/Documentation/boards/efi.rst b/Documentation/boards/efi.rst
+index f04b1d32378b..b12433014ef1 100644
+--- a/Documentation/boards/efi.rst
++++ b/Documentation/boards/efi.rst
+@@ -294,18 +294,19 @@ HOWTOs in the net, for example on http://tianocore.sourceforge.net/wiki/Using_ED
+ 
+   git clone git://github.com/tianocore/edk2.git
+   cd edk2
++  git submodule update --init
+   make -C BaseTools
+   . edksetup.sh
+ 
+ At least the following lines in ``Conf/target.txt`` should be edited::
+ 
+-  ACTIVE_PLATFORM = MdeModulePkg/MdeModulePkg.dsc
++  ACTIVE_PLATFORM = NetworkPkg/NetworkPkg.dsc
+   TARGET_ARCH = X64
+   TOOL_CHAIN_TAG = GCC48
+   MAX_CONCURRENT_THREAD_NUMBER = 4
+ 
+ The actual build is started with invoking ``build``. After building
+-``Build/MdeModule/DEBUG_GCC48/X64/SnpDxe.efi`` should exist.
++``Build/NetworkPkg/DEBUG_GCC48/X64/SnpDxe.efi`` should exist.
+ 
+ **NOTE** As of this writing (July 2014) the following patch was needed to
+ compile EDK2.
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
