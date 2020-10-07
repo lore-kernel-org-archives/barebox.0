@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kQ4ao-0001HT-VO
- for barebox@lists.infradead.org; Wed, 07 Oct 2020 08:14:35 +0000
-Date: Wed, 7 Oct 2020 10:14:33 +0200
+ id 1kQ4eQ-0001ZX-Dk
+ for barebox@lists.infradead.org; Wed, 07 Oct 2020 08:18:19 +0000
+Date: Wed, 7 Oct 2020 10:18:16 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201007081433.GM11648@pengutronix.de>
-References: <20201005082835.11413-1-a.fatoum@pengutronix.de>
- <20201005082835.11413-2-a.fatoum@pengutronix.de>
+Message-ID: <20201007081816.GN11648@pengutronix.de>
+References: <20200916135035.7089-10-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201005082835.11413-2-a.fatoum@pengutronix.de>
+In-Reply-To: <20200916135035.7089-10-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,83 +22,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] sandbox: compile in a fallback device tree
+Subject: Re: [PATCH 09/10] power: reset: syscon-reboot-mode: support
+ multi-word reboot modes
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Oct 05, 2020 at 10:28:35AM +0200, Ahmad Fatoum wrote:
-> The sandbox architecture is device tree only and so far when no --dtb
-> was passed, it created a basic one itself and used that.
-> Instead of creating the default device tree in C, just build the dtb
-> into barebox like we do on other platforms.
+On Wed, Sep 16, 2020 at 03:50:34PM +0200, Ahmad Fatoum wrote:
+> SoCs like the i.MX6 have their BootROM consult two distinct 32-bit
+> registers to determine the reboot mode. Extend the driver to support
+> this. While backwards compatible, this is not so far supported by the
+> upstream binding, which is why a new barebox,syscon-reboot-mode is
+> introduced. This new compatible be inhibit used to inhibit fixup
+> into a kernel device tree.
 > 
-> When --dtb is specified, that device tree will be used instead.
-> This results in functional change: Model and hostname are now more
-> accurate.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  arch/sandbox/board/devices.c |  3 ---
->  arch/sandbox/board/dtb.c     | 18 +++++-------------
->  arch/sandbox/dts/Makefile    |  4 ++--
->  arch/sandbox/dts/sandbox.dts |  3 ++-
->  4 files changed, 9 insertions(+), 19 deletions(-)
-> 
-> diff --git a/arch/sandbox/board/devices.c b/arch/sandbox/board/devices.c
-> index 1fd1913ae60f..26152a8b90a0 100644
-> --- a/arch/sandbox/board/devices.c
-> +++ b/arch/sandbox/board/devices.c
-> @@ -26,9 +26,6 @@ static int sandbox_device_init(void)
->  {
->  	struct device_d *dev, *tmp;
->  
-> -	barebox_set_model("barebox sandbox");
-> -	barebox_set_hostname("barebox");
-> -
->  	list_for_each_entry_safe(dev, tmp, &sandbox_device_list, list) {
->  		/* reset the list_head before registering for real */
->  		dev->list.prev = NULL;
-> diff --git a/arch/sandbox/board/dtb.c b/arch/sandbox/board/dtb.c
-> index da2452199273..fc8793dbe038 100644
-> --- a/arch/sandbox/board/dtb.c
-> +++ b/arch/sandbox/board/dtb.c
-> @@ -32,24 +32,16 @@ int barebox_register_dtb(const void *new_dtb)
->  	return 0;
->  }
->  
-> +extern char __dtb_sandbox_start[];
-> +
->  static int of_sandbox_init(void)
->  {
->  	struct device_node *root;
-> -	int ret;
-> -
-> -	if (dtb) {
-> -		root = of_unflatten_dtb(dtb);
-> -	} else {
-> -		root = of_new_node(NULL, NULL);
->  
-> -		ret = of_property_write_u32(root, "#address-cells", 2);
-> -		if (ret)
-> -			return ret;
-> +	if (!dtb)
-> +		dtb = __dtb_sandbox_start;
->  
-> -		ret = of_property_write_u32(root, "#size-cells", 2);
-> -		if (ret)
-> -			return ret;
-> -	}
-> +	root = of_unflatten_dtb(dtb);
->  
->  	if (IS_ERR(root))
->  		return PTR_ERR(root);
+>  static const struct of_device_id syscon_reboot_mode_of_match[] = {
+> -	{ .compatible = "syscon-reboot-mode" },
+> +	{ .compatible = "syscon-reboot-mode", .data = &reboot_fixup },
+> +	{ .compatible = "barebox,syscon-reboot-mode", .data = &reboot_nofixup },
 
-This is a nice change as it allows us to use the newly created
-barebox_register_fdt() for sandbox as well. I squashed this into this
-patch.
+Please add this to Documentation/devicetree/bindings/
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
