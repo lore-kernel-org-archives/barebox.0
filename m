@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mickerik.phytec.de ([195.145.39.210])
  by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kQ8kl-0001ja-NM
- for barebox@lists.infradead.org; Wed, 07 Oct 2020 12:41:08 +0000
+ id 1kQ8r5-0002rP-7V
+ for barebox@lists.infradead.org; Wed, 07 Oct 2020 12:47:40 +0000
+References: <20201007124106.21615-1-y.bas@phytec.de>
 From: Yunus Bas <y.bas@phytec.de>
-Date: Wed, 7 Oct 2020 14:41:06 +0200
-Message-Id: <20201007124106.21615-1-y.bas@phytec.de>
+Message-ID: <edfb539d-9b0e-2318-acbd-c9f43ed3e3e8@phytec.de>
+Date: Wed, 7 Oct 2020 14:47:38 +0200
+MIME-Version: 1.0
+In-Reply-To: <20201007124106.21615-1-y.bas@phytec.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,42 +18,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2020.09.0] fixup! UPSTREAM: ARM: dts: imx6ul: phycore: Add
- phyCORE i.MX6 UL with eMMC
+Subject: Re: [PATCH v2020.09.0] fixup! UPSTREAM: ARM: dts: imx6ul: phycore:
+ Add phyCORE i.MX6 UL with eMMC
 To: barebox@lists.infradead.org
 
-The FIT-Image verification was missing. This was also fixed upstream.
-
-Signed-off-by: Yunus Bas <y.bas@phytec.de>
----
- arch/arm/dts/imx6ul-phytec-phycore-som-emmc.dts | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/arch/arm/dts/imx6ul-phytec-phycore-som-emmc.dts b/arch/arm/dts/imx6ul-phytec-phycore-som-emmc.dts
-index c51907665..7d29c329a 100644
---- a/arch/arm/dts/imx6ul-phytec-phycore-som-emmc.dts
-+++ b/arch/arm/dts/imx6ul-phytec-phycore-som-emmc.dts
-@@ -5,7 +5,9 @@
-  */
- 
- /dts-v1/;
--
-+#ifdef CONFIG_BOOTM_FITIMAGE_PUBKEY
-+#include CONFIG_BOOTM_FITIMAGE_PUBKEY
-+#endif
- #include <arm/imx6ul.dtsi>
- #include "imx6ul-phytec-phycore-som.dtsi"
- 
--- 
-2.17.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U29ycnksIHRoaXMgd2FzIGFscmVhZHkgc2VudCB0byB0aGUgbGlzdC4gUGxlYXNlIGlnbm9yZSB0
+aGlzIHBhdGNoLgoKQW0gMDcuMTAuMjAgdW0gMTQ6NDEgc2NocmllYiBZdW51cyBCYXM6Cj4gVGhl
+IEZJVC1JbWFnZSB2ZXJpZmljYXRpb24gd2FzIG1pc3NpbmcuIFRoaXMgd2FzIGFsc28gZml4ZWQg
+dXBzdHJlYW0uCj4KPiBTaWduZWQtb2ZmLWJ5OiBZdW51cyBCYXMgPHkuYmFzQHBoeXRlYy5kZT4K
+PiAtLS0KPiAgIGFyY2gvYXJtL2R0cy9pbXg2dWwtcGh5dGVjLXBoeWNvcmUtc29tLWVtbWMuZHRz
+IHwgNCArKystCj4gICAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9u
+KC0pCj4KPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vZHRzL2lteDZ1bC1waHl0ZWMtcGh5Y29yZS1z
+b20tZW1tYy5kdHMgYi9hcmNoL2FybS9kdHMvaW14NnVsLXBoeXRlYy1waHljb3JlLXNvbS1lbW1j
+LmR0cwo+IGluZGV4IGM1MTkwNzY2NS4uN2QyOWMzMjlhIDEwMDY0NAo+IC0tLSBhL2FyY2gvYXJt
+L2R0cy9pbXg2dWwtcGh5dGVjLXBoeWNvcmUtc29tLWVtbWMuZHRzCj4gKysrIGIvYXJjaC9hcm0v
+ZHRzL2lteDZ1bC1waHl0ZWMtcGh5Y29yZS1zb20tZW1tYy5kdHMKPiBAQCAtNSw3ICs1LDkgQEAK
+PiAgICAqLwo+ICAgCj4gICAvZHRzLXYxLzsKPiAtCj4gKyNpZmRlZiBDT05GSUdfQk9PVE1fRklU
+SU1BR0VfUFVCS0VZCj4gKyNpbmNsdWRlIENPTkZJR19CT09UTV9GSVRJTUFHRV9QVUJLRVkKPiAr
+I2VuZGlmCj4gICAjaW5jbHVkZSA8YXJtL2lteDZ1bC5kdHNpPgo+ICAgI2luY2x1ZGUgImlteDZ1
+bC1waHl0ZWMtcGh5Y29yZS1zb20uZHRzaSIKPiAgIAoKLS0gCll1bnVzIEJhcwotIFNvZnR3YXJl
+IEVudHdpY2tsdW5nIC0KVGVsLjogKzQ5IDYxMzEgOTIgMjEgMAp5LmJhc0BwaHl0ZWMuZGUKPGh0
+dHA6Ly93d3cucGh5dGVjLmRlLz4KCgpQSFlURUMgTWVzc3RlY2huaWsgR21iSCB8IFJvYmVydC1L
+b2NoLVN0ci4gMzkgfCA1NTEyOSBNYWlueiwgR2VybWFueQpHZXNjaMOkZnRzZsO8aHJlcjogRGlw
+bC4tSW5nLiBNaWNoYWVsIE1pdGV6a2ksIERpcGwuLUluZy4gQm9kbyBIdWJlciB8IEhhbmRlbHNy
+ZWdpc3RlciBNYWlueiBIUkIgNDY1NiB8IEZpbmFuemFtdCBNYWlueiB8IFN0Lk5yLiAyNjY1MDA2
+MDgsIERFIDE0OTA1OTg1NQpUaGlzIEUtTWFpbCBtYXkgY29udGFpbiBjb25maWRlbnRpYWwgb3Ig
+cHJpdmlsZWdlZCBpbmZvcm1hdGlvbi4gSWYgeW91IGFyZSBub3QgdGhlIGludGVuZGVkIHJlY2lw
+aWVudCAob3IgaGF2ZSByZWNlaXZlZCB0aGlzIEUtTWFpbCBpbiBlcnJvcikgcGxlYXNlIG5vdGlm
+eSB0aGUgc2VuZGVyIGltbWVkaWF0ZWx5IGFuZCBkZXN0cm95IHRoaXMgRS1NYWlsLiBBbnkgdW5h
+dXRob3JpemVkIGNvcHlpbmcsIGRpc2Nsb3N1cmUgb3IgZGlzdHJpYnV0aW9uIG9mIHRoZSBtYXRl
+cmlhbCBpbiB0aGlzIEUtTWFpbCBpcyBzdHJpY3RseSBmb3JiaWRkZW4uCgoKX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QK
+YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
+aWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
