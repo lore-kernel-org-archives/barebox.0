@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kQ66A-0005n1-U1
- for barebox@lists.infradead.org; Wed, 07 Oct 2020 09:51:06 +0000
+ id 1kQ66H-0005p8-9x
+ for barebox@lists.infradead.org; Wed, 07 Oct 2020 09:51:11 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  7 Oct 2020 11:50:52 +0200
-Message-Id: <20201007095058.22950-1-a.fatoum@pengutronix.de>
+Date: Wed,  7 Oct 2020 11:50:57 +0200
+Message-Id: <20201007095058.22950-6-a.fatoum@pengutronix.de>
+In-Reply-To: <20201007095058.22950-1-a.fatoum@pengutronix.de>
+References: <20201007095058.22950-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,95 +21,109 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/7] driver: introduce less error-prone dev_get_drvdata
- alternative
+Subject: [PATCH v2 6/7] video: imx-hdmi: fix dev_get_drvdata misuse
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-We use dev_get_drvdata to get the driver match data associated with a
-device. This has two shortcomings:
+The driver has a couple of issues in how it handles match data:
 
- - Linux has dev_get_drvdata too, which returns a private pointer for
-   driver specific info to associate with a device. We use dev->priv
-   (or more often container_of) for that in barebox instead
+ - First use of dev_get_drvdata is superfluous as result is unused
+ - Second use of dev_get_drvdata stores a sizeof(const void *)
+   into an enum typed object
+ - hdmi->dev_type contains a truncated pointer to a struct
+   dw_hdmi_data and compares it with an enum, which will always fail
 
- - It nearly always involves a cast to a double pointer, which is
-   error-prone as size and alignment match need to be ensured
-   on the programmer's part and can easily be gotten wrong:
-	enum dev_type type;
-	dev_get_drvdata(dev, (const void **)&type); // UB!
-
-Add a new function that instead of using a double pointer argument,
-returns the pointer directly:
-
- - For normal pointer driver data, no cast is necessary
- - For integer driver data casted to a pointer for storage,
-   the cast is still necessary, but it's only a single pointer
-   this way
+Fix these and while it, refactor the code a bit to get rid of
+dw_hdmi_data, whose only other member is unused.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
-v1 -> v2:
-  - Changed second patch to use pointer instead of enum in match data
-    (Sascha)
-  - Changed third and fourth patch to return error on match with
-    driver name instead of assuming to be compatible with a default
-    type.
----
- drivers/base/driver.c | 11 +++++++++++
- include/driver.h      | 18 ++++++++++++++++++
- 2 files changed, 29 insertions(+)
+ drivers/video/imx-ipu-v3/imx-hdmi.c | 39 ++++++-----------------------
+ 1 file changed, 8 insertions(+), 31 deletions(-)
 
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index 412db6c40699..3205bbc3c33b 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -500,3 +500,14 @@ int dev_get_drvdata(struct device_d *dev, const void **data)
+diff --git a/drivers/video/imx-ipu-v3/imx-hdmi.c b/drivers/video/imx-ipu-v3/imx-hdmi.c
+index 17b6e4cc257d..1e55c97d2426 100644
+--- a/drivers/video/imx-ipu-v3/imx-hdmi.c
++++ b/drivers/video/imx-ipu-v3/imx-hdmi.c
+@@ -1083,19 +1083,18 @@ static void dw_hdmi_enable_video_path(struct dw_hdmi *hdmi)
+ /* Workaround to clear the overflow condition */
+ static void dw_hdmi_clear_overflow(struct dw_hdmi *hdmi)
+ {
+-	int count;
++	int count = 4;
+ 	u8 val;
  
- 	return -ENODEV;
+ 	/* TMDS software reset */
+ 	hdmi_writeb(hdmi, (u8)~HDMI_MC_SWRSTZ_TMDSSWRST_REQ, HDMI_MC_SWRSTZ);
+ 
+ 	val = hdmi_readb(hdmi, HDMI_FC_INVIDCONF);
+-	if (hdmi->dev_type == IMX6DL_HDMI) {
+-		hdmi_writeb(hdmi, val, HDMI_FC_INVIDCONF);
+-		return;
+-	}
+ 
+-	for (count = 0; count < 4; count++)
++	if (hdmi->dev_type == IMX6DL_HDMI)
++		count = 1;
++
++	while (count--)
+ 		hdmi_writeb(hdmi, val, HDMI_FC_INVIDCONF);
  }
-+
-+const void *device_get_match_data(struct device_d *dev)
-+{
-+	if (dev->of_id_entry)
-+		return dev->of_id_entry->data;
-+
-+	if (dev->id_entry)
-+		return (void *)dev->id_entry->driver_data;
-+
-+	return NULL;
-+}
-diff --git a/include/driver.h b/include/driver.h
-index 1961ab6ed9ea..e2886d051d4f 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -540,8 +540,26 @@ int devfs_create_partitions(const char *devname,
- #define DRV_OF_COMPAT(compat) \
- 	IS_ENABLED(CONFIG_OFDEVICE) ? (compat) : NULL
  
-+/**
-+ * dev_get_drvdata - get driver match data associated with device
-+ * @dev: device instance
-+ * @data: pointer to void *, where match data is stored
-+ *
-+ * Returns 0 on success and error code otherwise.
-+ *
-+ * DEPRECATED: use device_get_match_data instead, which avoids
-+ * common pitfalls due to explicit pointer casts
-+ */
- int dev_get_drvdata(struct device_d *dev, const void **data);
+@@ -1193,28 +1192,13 @@ static void initialize_hdmi_ih_mutes(struct dw_hdmi *hdmi)
+ 	hdmi_writeb(hdmi, ih_mute, HDMI_IH_MUTE);
+ }
  
-+/**
-+ * device_get_match_data - get driver match data associated with device
-+ * @dev: device instance
-+ *
-+ * Returns match data on success and NULL otherwise
-+ */
-+const void *device_get_match_data(struct device_d *dev);
-+
- int device_match_of_modalias(struct device_d *dev, struct driver_d *drv);
+-struct dw_hdmi_data {
+-	unsigned ipu_mask;
+-	enum dw_hdmi_devtype devtype;
+-};
+-
+-static struct dw_hdmi_data imx6q_hdmi_data = {
+-	.ipu_mask = 0xf,
+-	.devtype = IMX6Q_HDMI,
+-};
+-
+-static struct dw_hdmi_data imx6dl_hdmi_data = {
+-	.ipu_mask = 0x3,
+-	.devtype = IMX6DL_HDMI,
+-};
+-
+ static struct of_device_id dw_hdmi_dt_ids[] = {
+ 	{
+ 		.compatible = "fsl,imx6q-hdmi",
+-		.data = &imx6q_hdmi_data,
++		.data = (void *)IMX6Q_HDMI,
+ 	}, {
+ 		.compatible = "fsl,imx6dl-hdmi",
+-		.data = &imx6dl_hdmi_data,
++		.data = (void *)IMX6DL_HDMI,
+ 	}, {
+ 		/* sentinel */
+ 	}
+@@ -1276,11 +1260,6 @@ static int dw_hdmi_probe(struct device_d *dev)
+ 	struct device_node *np = dev->device_node;
+ 	struct dw_hdmi *hdmi;
+ 	int ret;
+-	const struct dw_hdmi_data *devtype;
+-
+-	ret = dev_get_drvdata(dev, (const void **)&devtype);
+-	if (ret)
+-		return ret;
  
- #endif /* DRIVER_H */
+ 	hdmi = xzalloc(sizeof(*hdmi));
+ 
+@@ -1289,9 +1268,7 @@ static int dw_hdmi_probe(struct device_d *dev)
+ 	hdmi->sample_rate = 48000;
+ 	hdmi->ratio = 100;
+ 
+-	ret = dev_get_drvdata(dev, (const void **)&hdmi->dev_type);
+-	if (ret)
+-		return ret;
++	hdmi->dev_type = (enum dw_hdmi_devtype)device_get_match_data(dev);
+ 
+ 	hdmi->ddc_node = of_parse_phandle(np, "ddc-i2c-bus", 0);
+ 
 -- 
 2.28.0
 
