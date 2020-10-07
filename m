@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kQ66A-0005mv-P0
- for barebox@lists.infradead.org; Wed, 07 Oct 2020 09:51:05 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  7 Oct 2020 11:50:58 +0200
-Message-Id: <20201007095058.22950-7-a.fatoum@pengutronix.de>
-In-Reply-To: <20201007095058.22950-1-a.fatoum@pengutronix.de>
-References: <20201007095058.22950-1-a.fatoum@pengutronix.de>
+Received: from mickerik.phytec.de ([195.145.39.210])
+ by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1kQ8ZC-0000Fo-0m
+ for barebox@lists.infradead.org; Wed, 07 Oct 2020 12:29:11 +0000
+References: <20201001094915.29005-1-y.bas@phytec.de>
+ <20201002071849.GB12463@pengutronix.de>
+From: Yunus Bas <y.bas@phytec.de>
+Message-ID: <00fe1343-a0f1-ab84-408b-7e683a3afe46@phytec.de>
+Date: Wed, 7 Oct 2020 14:29:07 +0200
 MIME-Version: 1.0
+In-Reply-To: <20201002071849.GB12463@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,143 +19,105 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 7/7] driver: migrate some from dev_get_drvdata to
- device_get_match_data
+Subject: Re: [PATCH v2] ARM: dts: imx6ul: phycore: Add phyCORE i.MX6 UL with
+ eMMC
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The dev_get_drvdata instances here all store a valid pointer in the
-match data and can be readily converted. Do so.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- drivers/mfd/da9063.c                 | 4 +---
- drivers/pinctrl/imx-iomux-v3.c       | 4 ++--
- drivers/pinctrl/pinctrl-at91-pio4.c  | 4 ++--
- drivers/pinctrl/pinctrl-tegra-xusb.c | 2 +-
- drivers/pinctrl/pinctrl-tegra30.c    | 4 ++--
- drivers/serial/serial_ns16550.c      | 6 ++----
- 6 files changed, 10 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/mfd/da9063.c b/drivers/mfd/da9063.c
-index e48c38affac6..31359cf8b822 100644
---- a/drivers/mfd/da9063.c
-+++ b/drivers/mfd/da9063.c
-@@ -370,11 +370,9 @@ static int da9063_probe(struct device_d *dev)
- {
- 	struct da9063 *priv = NULL;
- 	struct da906x_device_data const *dev_data;
--	void const *dev_data_tmp;
- 	int ret;
- 
--	ret = dev_get_drvdata(dev, &dev_data_tmp);
--	dev_data = ret < 0 ? NULL : dev_data_tmp;
-+	dev_data = device_get_match_data(dev);
- 
- 	priv = xzalloc(sizeof(struct da9063));
- 	priv->wd.set_timeout = da9063_watchdog_set_timeout;
-diff --git a/drivers/pinctrl/imx-iomux-v3.c b/drivers/pinctrl/imx-iomux-v3.c
-index dc98d674a04b..cec2414a03e2 100644
---- a/drivers/pinctrl/imx-iomux-v3.c
-+++ b/drivers/pinctrl/imx-iomux-v3.c
-@@ -168,10 +168,10 @@ static struct pinctrl_ops imx_iomux_v3_ops = {
- static int imx_pinctrl_dt(struct device_d *dev, void __iomem *base)
- {
- 	struct imx_iomux_v3 *iomux;
--	struct imx_iomux_v3_data *drvdata = NULL;
-+	const struct imx_iomux_v3_data *drvdata;
- 	int ret;
- 
--	dev_get_drvdata(dev, (const void **)&drvdata);
-+	drvdata = device_get_match_data(dev);
- 	iomux = xzalloc(sizeof(*iomux));
- 
- 	iomux->base = base;
-diff --git a/drivers/pinctrl/pinctrl-at91-pio4.c b/drivers/pinctrl/pinctrl-at91-pio4.c
-index 550e953a7081..40bc573e315b 100644
---- a/drivers/pinctrl/pinctrl-at91-pio4.c
-+++ b/drivers/pinctrl/pinctrl-at91-pio4.c
-@@ -229,7 +229,7 @@ static struct gpio_ops at91_gpio4_ops = {
- static int pinctrl_at91_pio4_gpiochip_add(struct device_d *dev,
- 					  struct pinctrl_at91_pio4 *pinctrl)
- {
--	struct at91_pinctrl_data *drvdata;
-+	const struct at91_pinctrl_data *drvdata;
- 	struct clk *clk;
- 	int ret;
- 
-@@ -247,7 +247,7 @@ static int pinctrl_at91_pio4_gpiochip_add(struct device_d *dev,
- 		return ret;
- 	}
- 
--	dev_get_drvdata(dev, (const void **)&drvdata);
-+	drvdata = device_get_match_data(dev);
- 
- 	pinctrl->gpiochip.ops = &at91_gpio4_ops;
- 	pinctrl->gpiochip.base = 0;
-diff --git a/drivers/pinctrl/pinctrl-tegra-xusb.c b/drivers/pinctrl/pinctrl-tegra-xusb.c
-index 6bd884b7e2d9..37d77e5ef663 100644
---- a/drivers/pinctrl/pinctrl-tegra-xusb.c
-+++ b/drivers/pinctrl/pinctrl-tegra-xusb.c
-@@ -388,7 +388,7 @@ static int pinctrl_tegra_xusb_probe(struct device_d *dev)
- 	dev->priv = padctl;
- 	padctl->dev = dev;
- 
--	dev_get_drvdata(dev, (const void **)&padctl->soc);
-+	padctl->soc = device_get_match_data(dev);
- 
- 	iores = dev_request_mem_resource(dev, 0);
- 	if (IS_ERR(iores)) {
-diff --git a/drivers/pinctrl/pinctrl-tegra30.c b/drivers/pinctrl/pinctrl-tegra30.c
-index 225a65233e7f..e9f35e0c9df4 100644
---- a/drivers/pinctrl/pinctrl-tegra30.c
-+++ b/drivers/pinctrl/pinctrl-tegra30.c
-@@ -32,7 +32,7 @@ struct pinctrl_tegra30 {
- 		u32 __iomem *mux;
- 	} regs;
- 	struct pinctrl_device pinctrl;
--	struct pinctrl_tegra30_drvdata *drvdata;
-+	const struct pinctrl_tegra30_drvdata *drvdata;
- };
- 
- struct tegra_pingroup {
-@@ -893,7 +893,7 @@ static int pinctrl_tegra30_probe(struct device_d *dev)
- 		regs[i] = IOMEM(iores->start);
- 	}
- 
--	dev_get_drvdata(dev, (const void **)&ctrl->drvdata);
-+	ctrl->drvdata = device_get_match_data(dev);
- 
- 	ctrl->pinctrl.dev = dev;
- 	ctrl->pinctrl.ops = &pinctrl_tegra30_ops;
-diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
-index f117ab9dc10a..fc6fa7dc3e43 100644
---- a/drivers/serial/serial_ns16550.c
-+++ b/drivers/serial/serial_ns16550.c
-@@ -468,12 +468,10 @@ static int ns16550_probe(struct device_d *dev)
- 	struct ns16550_priv *priv;
- 	struct console_device *cdev;
- 	struct NS16550_plat *plat = (struct NS16550_plat *)dev->platform_data;
--	struct ns16550_drvdata *devtype;
-+	const struct ns16550_drvdata *devtype;
- 	int ret;
- 
--	ret = dev_get_drvdata(dev, (const void **)&devtype);
--	if (ret)
--		devtype = &ns16550_drvdata;
-+	devtype = device_get_match_data(dev) ?: &ns16550_drvdata;
- 
- 	priv = xzalloc(sizeof(*priv));
- 
--- 
-2.28.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgU2FzY2hhLAoKQW0gMDIuMTAuMjAgdW0gMDk6MTggc2NocmllYiBTYXNjaGEgSGF1ZXI6Cj4g
+T24gVGh1LCBPY3QgMDEsIDIwMjAgYXQgMTE6NDk6MTVBTSArMDIwMCwgWXVudXMgQmFzIHdyb3Rl
+Ogo+PiBBZGQgYSBwaHlDT1JFLWkuTVggNlVMIHdpdGggZU1NQy4gSXQgaGFzIGZvbGxvd2luZyBm
+ZWF0dXJlczoKPj4gICAgICAgICAgLSBpLk1YIDZVTAo+PiAgICAgICAgICAtIDUxMiBNQiBSQU0K
+Pj4gICAgICAgICAgLSBlTU1DCj4+ICAgICAgICAgIC0gMTAvMTAwIE1CaXRzIEV0aGVybmV0Cj4+
+ICAgICAgICAgIC0gVVNCIE9URwo+PiAgICAgICAgICAtIFVTQiBIb3N0Cj4+Cj4+IFNpZ25lZC1v
+ZmYtYnk6IFl1bnVzIEJhcyA8eS5iYXNAcGh5dGVjLmRlPgo+PiAtLS0KPj4gQ2hhbmdlcyBpbiB2
+MjoKPj4gICAtIEFkZGVkIG1pc3NpbmcgaW5jbHVkZSBmb3IgdGhlIEZJVC1JbWFnZSB2ZXJpZmlj
+YXRpb24KPj4gLS0tCj4+ICAgYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1zb20taW14Ni9sb3dsZXZl
+bC5jICAgIHwgIDEgKwo+PiAgIGFyY2gvYXJtL2R0cy9NYWtlZmlsZSAgICAgICAgICAgICAgICAg
+ICAgICAgICB8ICAxICsKPj4gICAuLi4vZHRzL2lteDZ1bC1waHl0ZWMtcGh5Y29yZS1zb20tZW1t
+Yy5kdHMgICAgfCA0NSArKysrKysrKysrKysrKysrKysrCj4+ICAgaW1hZ2VzL01ha2VmaWxlLmlt
+eCAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDIgKwo+PiAgIDQgZmlsZXMgY2hhbmdlZCwg
+NDkgaW5zZXJ0aW9ucygrKQo+PiAgIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9kdHMvaW14
+NnVsLXBoeXRlYy1waHljb3JlLXNvbS1lbW1jLmR0cwo+Pgo+PiBkaWZmIC0tZ2l0IGEvYXJjaC9h
+cm0vYm9hcmRzL3BoeXRlYy1zb20taW14Ni9sb3dsZXZlbC5jIGIvYXJjaC9hcm0vYm9hcmRzL3Bo
+eXRlYy1zb20taW14Ni9sb3dsZXZlbC5jCj4+IGluZGV4IDQwNzExNWMyYS4uNjJhMWM4ZGU3IDEw
+MDY0NAo+PiAtLS0gYS9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXNvbS1pbXg2L2xvd2xldmVsLmMK
+Pj4gKysrIGIvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1zb20taW14Ni9sb3dsZXZlbC5jCj4+IEBA
+IC0xMTAsNiArMTEwLDcgQEAgUEhZVEVDX0VOVFJZKHN0YXJ0X3BoeXRlY19waHljb3JlX2lteDZx
+cF9zb21fbmFuZF8xZ2liLCBpbXg2cXBfcGh5dGVjX3BoeWNvcmVfc28KPj4gICBQSFlURUNfRU5U
+Ulkoc3RhcnRfcGh5dGVjX3BoeWNvcmVfaW14NnFfc29tX2VtbWNfMWdpYiwgaW14NnFfcGh5dGVj
+X3BoeWNvcmVfc29tX2VtbWMsIFNaXzFHLCB0cnVlKTsKPj4gICBQSFlURUNfRU5UUlkoc3RhcnRf
+cGh5dGVjX3BoeWNvcmVfaW14NnFfc29tX2VtbWNfMmdpYiwgaW14NnFfcGh5dGVjX3BoeWNvcmVf
+c29tX2VtbWMsIFNaXzJHLCB0cnVlKTsKPj4gICAKPj4gK1BIWVRFQ19FTlRSWShzdGFydF9waHl0
+ZWNfcGh5Y29yZV9pbXg2dWxfc29tX2VtbWNfNTEybWIsIGlteDZ1bF9waHl0ZWNfcGh5Y29yZV9z
+b21fZW1tYywgU1pfNTEyTSwgZmFsc2UpOwo+PiAgIFBIWVRFQ19FTlRSWShzdGFydF9waHl0ZWNf
+cGh5Y29yZV9pbXg2dWxfc29tX25hbmRfNTEybWIsIGlteDZ1bF9waHl0ZWNfcGh5Y29yZV9zb21f
+bmFuZCwgU1pfNTEyTSwgZmFsc2UpOwo+PiAgIFBIWVRFQ19FTlRSWShzdGFydF9waHl0ZWNfcGh5
+Y29yZV9pbXg2dWxsX3NvbV9sY19uYW5kXzI1Nm1iLCBpbXg2dWxsX3BoeXRlY19waHljb3JlX3Nv
+bV9sY19uYW5kLCBTWl8yNTZNLCBmYWxzZSk7Cj4+ICAgUEhZVEVDX0VOVFJZKHN0YXJ0X3BoeXRl
+Y19waHljb3JlX2lteDZ1bGxfc29tX25hbmRfNTEybWIsIGlteDZ1bGxfcGh5dGVjX3BoeWNvcmVf
+c29tX25hbmQsIFNaXzUxMk0sIGZhbHNlKTsKPj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2R0cy9N
+YWtlZmlsZSBiL2FyY2gvYXJtL2R0cy9NYWtlZmlsZQo+PiBpbmRleCBhZjA2MWJkMjkuLjM3ZTBm
+MDdiOSAxMDA2NDQKPj4gLS0tIGEvYXJjaC9hcm0vZHRzL01ha2VmaWxlCj4+ICsrKyBiL2FyY2gv
+YXJtL2R0cy9NYWtlZmlsZQo+PiBAQCAtNjcsNiArNjcsNyBAQCBsd2wtJChDT05GSUdfTUFDSF9Q
+SFlURUNfU09NX0lNWDYpICs9IGlteDZxLXBoeXRlYy1waHljYXJkLmR0Yi5vIFwKPj4gICAJCQkJ
+aW14NmRsLXBoeXRlYy1waHljb3JlLXNvbS1lbW1jLmR0Yi5vIFwKPj4gICAJCQkJaW14NmRsLXBo
+eXRlYy1waHljb3JlLXNvbS1sYy1lbW1jLmR0Yi5vIFwKPj4gICAJCQkJaW14NnVsLXBoeXRlYy1w
+aHljb3JlLXNvbS1uYW5kLmR0Yi5vIFwKPj4gKwkJCQlpbXg2dWwtcGh5dGVjLXBoeWNvcmUtc29t
+LWVtbWMuZHRiLm8gXAo+PiAgIAkJCQlpbXg2dWxsLXBoeXRlYy1waHljb3JlLXNvbS1sYy1uYW5k
+LmR0Yi5vIFwKPj4gICAJCQkJaW14NnVsbC1waHl0ZWMtcGh5Y29yZS1zb20tbmFuZC5kdGIubyBc
+Cj4+ICAgCQkJCWlteDZ1bGwtcGh5dGVjLXBoeWNvcmUtc29tLWVtbWMuZHRiLm8KPj4gZGlmZiAt
+LWdpdCBhL2FyY2gvYXJtL2R0cy9pbXg2dWwtcGh5dGVjLXBoeWNvcmUtc29tLWVtbWMuZHRzIGIv
+YXJjaC9hcm0vZHRzL2lteDZ1bC1waHl0ZWMtcGh5Y29yZS1zb20tZW1tYy5kdHMKPj4gbmV3IGZp
+bGUgbW9kZSAxMDA2NDQKPj4gaW5kZXggMDAwMDAwMDAwLi43ZDI5YzMyOWEKPj4gLS0tIC9kZXYv
+bnVsbAo+PiArKysgYi9hcmNoL2FybS9kdHMvaW14NnVsLXBoeXRlYy1waHljb3JlLXNvbS1lbW1j
+LmR0cwo+PiBAQCAtMCwwICsxLDQ1IEBACj4+ICsvLyBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjog
+KEdQTC0yLjAtb3ItbGF0ZXIgT1IgTUlUKQo+PiArLyoKPj4gKyAqIENvcHlyaWdodCAoQykgMjAy
+MCBQSFlURUMgTWVzc3RlY2huaWsgR21iSAo+PiArICogQXV0aG9yOiBZdW51cyBCYXMgPHkuYmFz
+QHBoeXRlYy5kZT4KPj4gKyAqLwo+PiArCj4+ICsvZHRzLXYxLzsKPj4gKyNpZmRlZiBDT05GSUdf
+Qk9PVE1fRklUSU1BR0VfUFVCS0VZCj4+ICsjaW5jbHVkZSBDT05GSUdfQk9PVE1fRklUSU1BR0Vf
+UFVCS0VZCj4+ICsjZW5kaWYKPj4gKyNpbmNsdWRlIDxhcm0vaW14NnVsLmR0c2k+Cj4+ICsjaW5j
+bHVkZSAiaW14NnVsLXBoeXRlYy1waHljb3JlLXNvbS5kdHNpIgo+PiArCj4+ICsvIHsKPj4gKwlt
+b2RlbCA9ICJQSFlURUMgcGh5Q09SRS1pLk1YNiBVbHRyYSBMaWdodCBTT00gd2l0aCBlTU1DIjsK
+Pj4gKwljb21wYXRpYmxlID0gInBoeXRlYyxpbXg2dWwtcGNsMDYzLWVtbWMiLCAiZnNsLGlteDZ1
+bCI7Cj4+ICt9Owo+PiArCj4+ICsmZmVjMSB7Cj4+ICsJc3RhdHVzID0gIm9rYXkiOwo+PiArfTsK
+Pj4gKwo+PiArJmkyYzEgewo+PiArCXN0YXR1cyA9ICJva2F5IjsKPj4gK307Cj4+ICsKPj4gKyZ1
+YXJ0MSB7Cj4+ICsJc3RhdHVzID0gIm9rYXkiOwo+PiArfTsKPj4gKwo+PiArJnVzZGhjMSB7Cj4+
+ICsJc3RhdHVzID0gIm9rYXkiOwo+PiArfTsKPj4gKwo+PiArJnVzZGhjMiB7Cj4+ICsJc3RhdHVz
+ID0gIm9rYXkiOwo+PiArfTsKPj4gKwo+PiArJnVzYm90ZzEgewo+PiArCXN0YXR1cyA9ICJva2F5
+IjsKPj4gK307Cj4+ICsKPj4gKyZ1c2JvdGcyIHsKPj4gKwlzdGF0dXMgPSAib2theSI7Cj4+ICt9
+Owo+PiBkaWZmIC0tZ2l0IGEvaW1hZ2VzL01ha2VmaWxlLmlteCBiL2ltYWdlcy9NYWtlZmlsZS5p
+bXgKPj4gaW5kZXggN2IyNGU1ZmVlLi4yMzI3YjhhMGIgMTAwNjQ0Cj4+IC0tLSBhL2ltYWdlcy9N
+YWtlZmlsZS5pbXgKPj4gKysrIGIvaW1hZ2VzL01ha2VmaWxlLmlteAo+PiBAQCAtMzQ2LDYgKzM0
+Niw4IEBAICQoY2FsbCBidWlsZF9pbXhfaGFidjRpbWcsIENPTkZJR19NQUNIX0dSSU5OX0xJVEVC
+T0FSRCwgc3RhcnRfaW14NnVsX2xpdGVib2FyZF81Cj4+ICAgCj4+ICAgJChjYWxsIGJ1aWxkX2lt
+eF9oYWJ2NGltZywgQ09ORklHX01BQ0hfTlhQX0lNWDZVTExfRVZLLCBzdGFydF9ueHBfaW14NnVs
+bF9ldmssIG54cC1pbXg2dWxsLWV2ay9mbGFzaC1oZWFkZXItbnhwLWlteDZ1bGwtZXZrLCBueHAt
+aW14NnVsbC1ldmspCj4+ICAgCj4+ICskKGNhbGwgYnVpbGRfaW14X2hhYnY0aW1nLCBDT05GSUdf
+TUFDSF9QSFlURUNfU09NX0lNWDYsIHN0YXJ0X3BoeXRlY19waHljb3JlX2lteDZ1bF9zb21fZW1t
+Y181MTJtYiwgcGh5dGVjLXNvbS1pbXg2L2ZsYXNoLWhlYWRlci1waHl0ZWMtcGNsMDYzLTUxMm1i
+LCBwaHl0ZWMtcGh5Y29yZS1pbXg2dWwtZW1tYy01MTJtYikKPj4gKwo+IFRoZXJlIGlzIGEgJ3Vs
+JyBtaXNzaW5nIGZvciBtYWlubGluZSwgc2hvdWxkIGJlOgo+Cj4gcGh5dGVjLXNvbS1pbXg2L2Zs
+YXNoLWhlYWRlci1waHl0ZWMtcGNsMDYzdWwtNTEybWIKPgo+IEkgZml4ZWQgdGhpcyB1cCBoZXJl
+LCBwbGVhc2UgY2hlY2sgLW5leHQgYnJhbmNoIGlmIHRoZSByZXN1bHQgbWF0Y2hlcwo+IHlvdXIg
+ZXhwZWN0YXRpb25zLgo+Cj4gU2FzY2hhCgpUaGFuayB5b3UgZm9yIHRoZSBmaXguIFRoZSBzcGxp
+dC11cCBvZiAKZmxhc2gtaGVhZGVyLXBoeXRlYy1wY2wwNjMtNTEybWIuaW14Y2ZnIHdhcyBzZW50
+IG9uZSBkYXkgcHJpb3IgdG8gbXkgCnBhdGNoLiBJdCB3YXMgbXkgZmF1bHQgZm9yIG5vdCBub3Rp
+Y2luZy4KCll1bnVzCgo+Ci0tIApZdW51cyBCYXMKLSBTb2Z0d2FyZSBFbnR3aWNrbHVuZyAtClRl
+bC46ICs0OSA2MTMxIDkyIDIxIDAKeS5iYXNAcGh5dGVjLmRlCjxodHRwOi8vd3d3LnBoeXRlYy5k
+ZS8+CgoKUEhZVEVDIE1lc3N0ZWNobmlrIEdtYkggfCBSb2JlcnQtS29jaC1TdHIuIDM5IHwgNTUx
+MjkgTWFpbnosIEdlcm1hbnkKR2VzY2jDpGZ0c2bDvGhyZXI6IERpcGwuLUluZy4gTWljaGFlbCBN
+aXRlemtpLCBEaXBsLi1JbmcuIEJvZG8gSHViZXIgfCBIYW5kZWxzcmVnaXN0ZXIgTWFpbnogSFJC
+IDQ2NTYgfCBGaW5hbnphbXQgTWFpbnogfCBTdC5Oci4gMjY2NTAwNjA4LCBERSAxNDkwNTk4NTUK
+VGhpcyBFLU1haWwgbWF5IGNvbnRhaW4gY29uZmlkZW50aWFsIG9yIHByaXZpbGVnZWQgaW5mb3Jt
+YXRpb24uIElmIHlvdSBhcmUgbm90IHRoZSBpbnRlbmRlZCByZWNpcGllbnQgKG9yIGhhdmUgcmVj
+ZWl2ZWQgdGhpcyBFLU1haWwgaW4gZXJyb3IpIHBsZWFzZSBub3RpZnkgdGhlIHNlbmRlciBpbW1l
+ZGlhdGVseSBhbmQgZGVzdHJveSB0aGlzIEUtTWFpbC4gQW55IHVuYXV0aG9yaXplZCBjb3B5aW5n
+LCBkaXNjbG9zdXJlIG9yIGRpc3RyaWJ1dGlvbiBvZiB0aGUgbWF0ZXJpYWwgaW4gdGhpcyBFLU1h
+aWwgaXMgc3RyaWN0bHkgZm9yYmlkZGVuLgoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5m
+cmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2Jh
+cmVib3gK
