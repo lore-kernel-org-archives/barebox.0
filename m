@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kQ66P-0005s1-R4
- for barebox@lists.infradead.org; Wed, 07 Oct 2020 09:51:18 +0000
-Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28]
- helo=dude02.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <p.zabel@pengutronix.de>) id 1kQ66N-0001BF-Os
- for barebox@lists.infradead.org; Wed, 07 Oct 2020 11:51:15 +0200
-From: Philipp Zabel <p.zabel@pengutronix.de>
-Date: Wed,  7 Oct 2020 11:51:09 +0200
-Message-Id: <20201007095109.23370-1-p.zabel@pengutronix.de>
+ id 1kQ66A-0005n2-QS
+ for barebox@lists.infradead.org; Wed, 07 Oct 2020 09:51:05 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed,  7 Oct 2020 11:50:56 +0200
+Message-Id: <20201007095058.22950-5-a.fatoum@pengutronix.de>
+In-Reply-To: <20201007095058.22950-1-a.fatoum@pengutronix.de>
+References: <20201007095058.22950-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,45 +21,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Documentation: efi: update SnpDxe build instructions
+Subject: [PATCH v2 5/7] mtd: nand-mxs: fix out-of-bounds write on 64-bit SoCs
 To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Some sources have been moved into git submodules and SnpDxe was
-moved from MdeModulePkg to NetworkPkg.
+Probing the nand_mxs device driver on 64 bit systems invokes
+undefined behavior, because of an errant cast. Fix this.
 
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+No change of behavior for 32-bit SoCs intended. On error,
+type == 0 == GPMI_MXS as it used to.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Documentation/boards/efi.rst | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/mtd/nand/nand_mxs.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/Documentation/boards/efi.rst b/Documentation/boards/efi.rst
-index f04b1d32378b..b12433014ef1 100644
---- a/Documentation/boards/efi.rst
-+++ b/Documentation/boards/efi.rst
-@@ -294,18 +294,19 @@ HOWTOs in the net, for example on http://tianocore.sourceforge.net/wiki/Using_ED
+diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
+index 36b6e7ac224e..e2b6e2162076 100644
+--- a/drivers/mtd/nand/nand_mxs.c
++++ b/drivers/mtd/nand/nand_mxs.c
+@@ -2145,9 +2145,7 @@ static int mxs_nand_probe(struct device_d *dev)
+ 	if (mxs_nand_mtd)
+ 		return -EBUSY;
  
-   git clone git://github.com/tianocore/edk2.git
-   cd edk2
-+  git submodule update --init
-   make -C BaseTools
-   . edksetup.sh
+-	err = dev_get_drvdata(dev, (const void **)&type);
+-	if (err)
+-		type = GPMI_MXS;
++	type = (enum gpmi_type)device_get_match_data(dev);
  
- At least the following lines in ``Conf/target.txt`` should be edited::
- 
--  ACTIVE_PLATFORM = MdeModulePkg/MdeModulePkg.dsc
-+  ACTIVE_PLATFORM = NetworkPkg/NetworkPkg.dsc
-   TARGET_ARCH = X64
-   TOOL_CHAIN_TAG = GCC48
-   MAX_CONCURRENT_THREAD_NUMBER = 4
- 
- The actual build is started with invoking ``build``. After building
--``Build/MdeModule/DEBUG_GCC48/X64/SnpDxe.efi`` should exist.
-+``Build/NetworkPkg/DEBUG_GCC48/X64/SnpDxe.efi`` should exist.
- 
- **NOTE** As of this writing (July 2014) the following patch was needed to
- compile EDK2.
+ 	nand_info = kzalloc(sizeof(struct mxs_nand_info), GFP_KERNEL);
+ 	if (!nand_info) {
 -- 
-2.20.1
+2.28.0
 
 
 _______________________________________________
