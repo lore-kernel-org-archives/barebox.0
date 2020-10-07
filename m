@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kQ4SG-0008Aa-KC
- for barebox@lists.infradead.org; Wed, 07 Oct 2020 08:05:45 +0000
-Date: Wed, 7 Oct 2020 10:05:43 +0200
+ id 1kQ4T3-0008Kw-SK
+ for barebox@lists.infradead.org; Wed, 07 Oct 2020 08:06:34 +0000
+Date: Wed, 7 Oct 2020 10:06:32 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201007080543.GJ11648@pengutronix.de>
-References: <20200930132417.351944-1-l.stach@pengutronix.de>
- <20200930132417.351944-2-l.stach@pengutronix.de>
+Message-ID: <20201007080632.GK11648@pengutronix.de>
+References: <20201005080643.25199-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200930132417.351944-2-l.stach@pengutronix.de>
+In-Reply-To: <20201005080643.25199-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,65 +22,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] ARM: i.MX: nxp-imx8mm-evk: adjust DDR training order
-To: Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: [PATCH] bootm: propagate register_image_handler return value
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Sep 30, 2020 at 03:24:17PM +0200, Lucas Stach wrote:
-> This way we end up with the fastest DDR speed when training is finished
-> and don't need to rely on TF-A to switch into a higher DDR speed.
+On Mon, Oct 05, 2020 at 10:06:43AM +0200, Ahmad Fatoum wrote:
+> While register_image_handler can't currently fail, it still returns an
+> error code. Propagate that error code along instead of having a blanket
+> return 0. This makes the code a little more compact.
 > 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  arch/arm/boards/nxp-imx8mm-evk/lpddr4-timing.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
+>  arch/arm/mach-stm32mp/stm32image.c | 4 +---
+>  arch/arm/mach-zynq/bootm-zynqimg.c | 4 +---
+>  2 files changed, 2 insertions(+), 6 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/arch/arm/boards/nxp-imx8mm-evk/lpddr4-timing.c b/arch/arm/boards/nxp-imx8mm-evk/lpddr4-timing.c
-> index b164bdec07f1..33ef5542a364 100644
-> --- a/arch/arm/boards/nxp-imx8mm-evk/lpddr4-timing.c
-> +++ b/arch/arm/boards/nxp-imx8mm-evk/lpddr4-timing.c
-> @@ -118,7 +118,7 @@ static struct dram_cfg_param lpddr4_ddrc_cfg[] = {
->  	{ DDRC_FREQ2_INIT7(0), 0x0006004a },
+> diff --git a/arch/arm/mach-stm32mp/stm32image.c b/arch/arm/mach-stm32mp/stm32image.c
+> index 84975c5c3bf1..207df6894d4e 100644
+> --- a/arch/arm/mach-stm32mp/stm32image.c
+> +++ b/arch/arm/mach-stm32mp/stm32image.c
+> @@ -43,8 +43,6 @@ static struct image_handler image_handler_stm32_image_v1_handler = {
 >  
->  	/* boot start point */
-> -	{ DDRC_MSTR2(0), 0x2 }, //DDRC_MSTR2
-> +	{ DDRC_MSTR2(0), 0x0 }, //DDRC_MSTR2
->  };
+>  static int stm32mp_register_stm32image_image_handler(void)
+>  {
+> -	register_image_handler(&image_handler_stm32_image_v1_handler);
+> -
+> -	return 0;
+> +	return register_image_handler(&image_handler_stm32_image_v1_handler);
+>  }
+>  late_initcall(stm32mp_register_stm32image_image_handler);
+> diff --git a/arch/arm/mach-zynq/bootm-zynqimg.c b/arch/arm/mach-zynq/bootm-zynqimg.c
+> index e903ab667905..77ed6880e4b6 100644
+> --- a/arch/arm/mach-zynq/bootm-zynqimg.c
+> +++ b/arch/arm/mach-zynq/bootm-zynqimg.c
+> @@ -42,8 +42,6 @@ static struct image_handler zynq_image_handler = {
 >  
->  /* PHY Initialize Configuration */
-> @@ -1940,12 +1940,6 @@ static struct dram_fsp_msg lpddr4_dram_fsp_msg[] = {
->  		.fw_type = FW_1D_IMAGE,
->  		.fsp_cfg = lpddr4_fsp0_cfg,
->  		.fsp_cfg_num = ARRAY_SIZE(lpddr4_fsp0_cfg),
-> -	}, {
-> -		/* P0 3000mts 2D */
-> -		.drate = 3000,
-> -		.fw_type = FW_2D_IMAGE,
-> -		.fsp_cfg = lpddr4_fsp0_2d_cfg,
-> -		.fsp_cfg_num = ARRAY_SIZE(lpddr4_fsp0_2d_cfg),
->  	}, {
->  		/* P1 400mts 1D */
->  		.drate = 400,
-> @@ -1958,6 +1952,12 @@ static struct dram_fsp_msg lpddr4_dram_fsp_msg[] = {
->  		.fw_type = FW_1D_IMAGE,
->  		.fsp_cfg = lpddr4_fsp2_cfg,
->  		.fsp_cfg_num = ARRAY_SIZE(lpddr4_fsp2_cfg),
-> +	}, {
-> +		/* P0 3000mts 2D */
-> +		.drate = 3000,
-> +		.fw_type = FW_2D_IMAGE,
-> +		.fsp_cfg = lpddr4_fsp0_2d_cfg,
-> +		.fsp_cfg_num = ARRAY_SIZE(lpddr4_fsp0_2d_cfg),
->  	},
->  };
->  
+>  static int zynq_register_image_handler(void)
+>  {
+> -	register_image_handler(&zynq_image_handler);
+> -
+> -	return 0;
+> +	return register_image_handler(&zynq_image_handler);
+>  }
+>  late_initcall(zynq_register_image_handler);
 > -- 
-> 2.20.1
+> 2.28.0
 > 
 > 
 > _______________________________________________
