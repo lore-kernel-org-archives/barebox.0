@@ -1,18 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kQPUB-0002yu-C6
- for barebox@lists.infradead.org; Thu, 08 Oct 2020 06:33:08 +0000
-Date: Thu, 8 Oct 2020 08:33:04 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201008063304.GE12463@pengutronix.de>
-References: <20201005082835.11413-1-a.fatoum@pengutronix.de>
- <20201005082835.11413-2-a.fatoum@pengutronix.de>
- <20201007081433.GM11648@pengutronix.de>
- <0d676783-a0ec-2725-c497-3319103e0f14@pengutronix.de>
+ id 1kQT4x-0001js-Ae
+ for barebox@lists.infradead.org; Thu, 08 Oct 2020 10:23:20 +0000
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Thu,  8 Oct 2020 12:23:14 +0200
+Message-Id: <20201008102314.19573-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <0d676783-a0ec-2725-c497-3319103e0f14@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,37 +19,88 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] sandbox: compile in a fallback device tree
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v1] ARM: protonic: disable on-die termination to fix PHY
+ bootstrapping
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>, david@protonic.nl
 
-On Wed, Oct 07, 2020 at 07:22:58PM +0200, Ahmad Fatoum wrote:
-> Hello Sascha,
-> 
-> On 10/7/20 10:14 AM, Sascha Hauer wrote:
-> > On Mon, Oct 05, 2020 at 10:28:35AM +0200, Ahmad Fatoum wrote:
-> >> +	root = of_unflatten_dtb(dtb);
-> >>  
-> >>  	if (IS_ERR(root))
-> >>  		return PTR_ERR(root);
-> > 
-> > This is a nice change as it allows us to use the newly created
-> > barebox_register_fdt() for sandbox as well. I squashed this into this
-> > patch.
-> 
-> Patch 01/02 didn't wasn't it upstream. This is required for building
-> sandbox on x86 now. Can you order it before the 2nd patch?
+If on-die termination is enabled, the RXC pin of iMX6 will be pulled
+high. Since we already have an 10K pull-down on board, the RXC level on
+PHY reset will be ~800mV, which is mostly interpreted as 1. On some
+reboots we get 0 instead and kernel can't detect the PHY properly.
 
-Just did that.
+Since the default 0x020e07ac value is 0, it is sufficient to remove this
+entry from the affected imxcfg files.
 
-Sascha
+Since we get stable 0 on pin PHYADDR[2], the PHY address is changed from
+4 to 0.
 
+Fixes: 00adc1e33ef8 ("ARM: add imx6 based Protonic boads")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ arch/arm/boards/protonic-imx6/flash-header-prti6q.imxcfg  | 1 -
+ arch/arm/boards/protonic-imx6/flash-header-vicut1q.imxcfg | 1 -
+ arch/arm/boards/protonic-imx6/flash-header-vicutp.imxcfg  | 1 -
+ arch/arm/dts/imx6q-prti6q.dts                             | 2 +-
+ arch/arm/dts/imx6q-vicut1.dts                             | 2 +-
+ 5 files changed, 2 insertions(+), 5 deletions(-)
 
+diff --git a/arch/arm/boards/protonic-imx6/flash-header-prti6q.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-prti6q.imxcfg
+index 68b7909f82..029edc248a 100644
+--- a/arch/arm/boards/protonic-imx6/flash-header-prti6q.imxcfg
++++ b/arch/arm/boards/protonic-imx6/flash-header-prti6q.imxcfg
+@@ -120,4 +120,3 @@ wm 32 0x020e0614 0x000130b0
+ 
+ /* RGMII config */
+ wm 32 0x020e0790 0x00080000 /* 1V2 DDR IO */
+-wm 32 0x020e07ac 0x00000200 /* 60 Ohm ODT */
+diff --git a/arch/arm/boards/protonic-imx6/flash-header-vicut1q.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-vicut1q.imxcfg
+index a73a2c6fd0..f7e75b47bf 100644
+--- a/arch/arm/boards/protonic-imx6/flash-header-vicut1q.imxcfg
++++ b/arch/arm/boards/protonic-imx6/flash-header-vicut1q.imxcfg
+@@ -124,4 +124,3 @@ wm 32 0x020e0614 0x000130b0
+ 
+ /* RGMII config */
+ wm 32 0x020e0790 0x00080000 /* 1V2 DDR IO */
+-wm 32 0x020e07ac 0x00000200 /* 60 Ohm ODT */
+diff --git a/arch/arm/boards/protonic-imx6/flash-header-vicutp.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-vicutp.imxcfg
+index 13887ade0b..e218279239 100644
+--- a/arch/arm/boards/protonic-imx6/flash-header-vicutp.imxcfg
++++ b/arch/arm/boards/protonic-imx6/flash-header-vicutp.imxcfg
+@@ -171,4 +171,3 @@ wm 32 0x020e0614 0x000130b0
+ 
+ /* RGMII config */
+ wm 32 0x020e0790 0x00080000 /* 1V2 DDR IO */
+-wm 32 0x020e07ac 0x00000200 /* 60 Ohm ODT */
+diff --git a/arch/arm/dts/imx6q-prti6q.dts b/arch/arm/dts/imx6q-prti6q.dts
+index acdb7b22d9..21e24222a0 100644
+--- a/arch/arm/dts/imx6q-prti6q.dts
++++ b/arch/arm/dts/imx6q-prti6q.dts
+@@ -204,7 +204,7 @@
+ 
+ 		/* Microchip KSZ9031RNX PHY */
+ 		rgmii_phy: ethernet-phy@4 {
+-			reg = <4>;
++			reg = <0>;
+ 			interrupts-extended = <&gpio1 28 IRQ_TYPE_LEVEL_LOW>;
+ 			reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>;
+ 			reset-assert-us = <10000>;
+diff --git a/arch/arm/dts/imx6q-vicut1.dts b/arch/arm/dts/imx6q-vicut1.dts
+index 9747b3c62e..9d1d6fa550 100644
+--- a/arch/arm/dts/imx6q-vicut1.dts
++++ b/arch/arm/dts/imx6q-vicut1.dts
+@@ -29,7 +29,7 @@
+ 
+ 		/* Microchip KSZ9031RNX PHY */
+ 		rgmii_phy: ethernet-phy@4 {
+-			reg = <4>;
++			reg = <0>;
+ 			interrupts-extended = <&gpio1 28 IRQ_TYPE_LEVEL_LOW>;
+ 			reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>;
+ 			reset-assert-us = <10000>;
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.28.0
+
 
 _______________________________________________
 barebox mailing list
