@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kQmCV-00083R-H1
- for barebox@lists.infradead.org; Fri, 09 Oct 2020 06:48:24 +0000
-Date: Fri, 9 Oct 2020 08:48:20 +0200
+ id 1kQmDN-0008A7-82
+ for barebox@lists.infradead.org; Fri, 09 Oct 2020 06:49:18 +0000
+Date: Fri, 9 Oct 2020 08:49:15 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201009064820.GT11648@pengutronix.de>
-References: <20201007095058.22950-1-a.fatoum@pengutronix.de>
+Message-ID: <20201009064915.GU11648@pengutronix.de>
+References: <20201007095109.23370-1-p.zabel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201007095058.22950-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20201007095109.23370-1-p.zabel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,103 +22,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/7] driver: introduce less error-prone
- dev_get_drvdata alternative
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] Documentation: efi: update SnpDxe build instructions
+To: Philipp Zabel <p.zabel@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Oct 07, 2020 at 11:50:52AM +0200, Ahmad Fatoum wrote:
-> We use dev_get_drvdata to get the driver match data associated with a
-> device. This has two shortcomings:
+On Wed, Oct 07, 2020 at 11:51:09AM +0200, Philipp Zabel wrote:
+> Some sources have been moved into git submodules and SnpDxe was
+> moved from MdeModulePkg to NetworkPkg.
 > 
->  - Linux has dev_get_drvdata too, which returns a private pointer for
->    driver specific info to associate with a device. We use dev->priv
->    (or more often container_of) for that in barebox instead
-> 
->  - It nearly always involves a cast to a double pointer, which is
->    error-prone as size and alignment match need to be ensured
->    on the programmer's part and can easily be gotten wrong:
-> 	enum dev_type type;
-> 	dev_get_drvdata(dev, (const void **)&type); // UB!
-> 
-> Add a new function that instead of using a double pointer argument,
-> returns the pointer directly:
-> 
->  - For normal pointer driver data, no cast is necessary
->  - For integer driver data casted to a pointer for storage,
->    the cast is still necessary, but it's only a single pointer
->    this way
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+> ---
+>  Documentation/boards/efi.rst | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
 
 Applied, thanks
 
 Sascha
 
-> ---
-> v1 -> v2:
->   - Changed second patch to use pointer instead of enum in match data
->     (Sascha)
->   - Changed third and fourth patch to return error on match with
->     driver name instead of assuming to be compatible with a default
->     type.
-> ---
->  drivers/base/driver.c | 11 +++++++++++
->  include/driver.h      | 18 ++++++++++++++++++
->  2 files changed, 29 insertions(+)
 > 
-> diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-> index 412db6c40699..3205bbc3c33b 100644
-> --- a/drivers/base/driver.c
-> +++ b/drivers/base/driver.c
-> @@ -500,3 +500,14 @@ int dev_get_drvdata(struct device_d *dev, const void **data)
+> diff --git a/Documentation/boards/efi.rst b/Documentation/boards/efi.rst
+> index f04b1d32378b..b12433014ef1 100644
+> --- a/Documentation/boards/efi.rst
+> +++ b/Documentation/boards/efi.rst
+> @@ -294,18 +294,19 @@ HOWTOs in the net, for example on http://tianocore.sourceforge.net/wiki/Using_ED
 >  
->  	return -ENODEV;
->  }
-> +
-> +const void *device_get_match_data(struct device_d *dev)
-> +{
-> +	if (dev->of_id_entry)
-> +		return dev->of_id_entry->data;
-> +
-> +	if (dev->id_entry)
-> +		return (void *)dev->id_entry->driver_data;
-> +
-> +	return NULL;
-> +}
-> diff --git a/include/driver.h b/include/driver.h
-> index 1961ab6ed9ea..e2886d051d4f 100644
-> --- a/include/driver.h
-> +++ b/include/driver.h
-> @@ -540,8 +540,26 @@ int devfs_create_partitions(const char *devname,
->  #define DRV_OF_COMPAT(compat) \
->  	IS_ENABLED(CONFIG_OFDEVICE) ? (compat) : NULL
+>    git clone git://github.com/tianocore/edk2.git
+>    cd edk2
+> +  git submodule update --init
+>    make -C BaseTools
+>    . edksetup.sh
 >  
-> +/**
-> + * dev_get_drvdata - get driver match data associated with device
-> + * @dev: device instance
-> + * @data: pointer to void *, where match data is stored
-> + *
-> + * Returns 0 on success and error code otherwise.
-> + *
-> + * DEPRECATED: use device_get_match_data instead, which avoids
-> + * common pitfalls due to explicit pointer casts
-> + */
->  int dev_get_drvdata(struct device_d *dev, const void **data);
+>  At least the following lines in ``Conf/target.txt`` should be edited::
 >  
-> +/**
-> + * device_get_match_data - get driver match data associated with device
-> + * @dev: device instance
-> + *
-> + * Returns match data on success and NULL otherwise
-> + */
-> +const void *device_get_match_data(struct device_d *dev);
-> +
->  int device_match_of_modalias(struct device_d *dev, struct driver_d *drv);
+> -  ACTIVE_PLATFORM = MdeModulePkg/MdeModulePkg.dsc
+> +  ACTIVE_PLATFORM = NetworkPkg/NetworkPkg.dsc
+>    TARGET_ARCH = X64
+>    TOOL_CHAIN_TAG = GCC48
+>    MAX_CONCURRENT_THREAD_NUMBER = 4
 >  
->  #endif /* DRIVER_H */
+>  The actual build is started with invoking ``build``. After building
+> -``Build/MdeModule/DEBUG_GCC48/X64/SnpDxe.efi`` should exist.
+> +``Build/NetworkPkg/DEBUG_GCC48/X64/SnpDxe.efi`` should exist.
+>  
+>  **NOTE** As of this writing (July 2014) the following patch was needed to
+>  compile EDK2.
 > -- 
-> 2.28.0
+> 2.20.1
 > 
 > 
 > _______________________________________________
