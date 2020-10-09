@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kQmio-0003KF-Nz
- for barebox@lists.infradead.org; Fri, 09 Oct 2020 07:21:47 +0000
-Date: Fri, 9 Oct 2020 09:21:44 +0200
+ id 1kQmmA-0003YC-3A
+ for barebox@lists.infradead.org; Fri, 09 Oct 2020 07:25:14 +0000
+Date: Fri, 9 Oct 2020 09:25:12 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201009072144.GY11648@pengutronix.de>
-References: <20201008151143.30303-1-jmaselbas@kalray.eu>
+Message-ID: <20201009072512.GZ11648@pengutronix.de>
+References: <20201008102314.19573-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201008151143.30303-1-jmaselbas@kalray.eu>
+In-Reply-To: <20201008102314.19573-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,121 +22,93 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] usb: dwc2: Uninitialize host and device on remove
-To: Jules Maselbas <jmaselbas@kalray.eu>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH v1] ARM: protonic: disable on-die termination to fix PHY
+ bootstrapping
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org, david@protonic.nl
 
-On Thu, Oct 08, 2020 at 05:11:43PM +0200, Jules Maselbas wrote:
-> Device gadget must be properly uninitialized on poweroff however host
-> system might not detect barebox's usb gadget has beeing disconnected.
+On Thu, Oct 08, 2020 at 12:23:14PM +0200, Oleksij Rempel wrote:
+> If on-die termination is enabled, the RXC pin of iMX6 will be pulled
+> high. Since we already have an 10K pull-down on board, the RXC level on
+> PHY reset will be ~800mV, which is mostly interpreted as 1. On some
+> reboots we get 0 instead and kernel can't detect the PHY properly.
 > 
-> Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
+> Since the default 0x020e07ac value is 0, it is sufficient to remove this
+> entry from the affected imxcfg files.
+> 
+> Since we get stable 0 on pin PHYADDR[2], the PHY address is changed from
+> 4 to 0.
+> 
+> Fixes: 00adc1e33ef8 ("ARM: add imx6 based Protonic boads")
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 > ---
->  drivers/usb/dwc2/dwc2.c   | 16 ++--------------
->  drivers/usb/dwc2/dwc2.h   |  4 ++++
->  drivers/usb/dwc2/gadget.c |  6 ++++++
->  drivers/usb/dwc2/host.c   | 13 +++++++++++++
->  4 files changed, 25 insertions(+), 14 deletions(-)
+>  arch/arm/boards/protonic-imx6/flash-header-prti6q.imxcfg  | 1 -
+>  arch/arm/boards/protonic-imx6/flash-header-vicut1q.imxcfg | 1 -
+>  arch/arm/boards/protonic-imx6/flash-header-vicutp.imxcfg  | 1 -
+>  arch/arm/dts/imx6q-prti6q.dts                             | 2 +-
+>  arch/arm/dts/imx6q-vicut1.dts                             | 2 +-
+>  5 files changed, 2 insertions(+), 5 deletions(-)
 
-Applied, thanks
+Applied to master, thanks
 
 Sascha
 
 > 
-> diff --git a/drivers/usb/dwc2/dwc2.c b/drivers/usb/dwc2/dwc2.c
-> index 7a8ba6c4f..894307bd4 100644
-> --- a/drivers/usb/dwc2/dwc2.c
-> +++ b/drivers/usb/dwc2/dwc2.c
-> @@ -15,19 +15,6 @@
+> diff --git a/arch/arm/boards/protonic-imx6/flash-header-prti6q.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-prti6q.imxcfg
+> index 68b7909f82..029edc248a 100644
+> --- a/arch/arm/boards/protonic-imx6/flash-header-prti6q.imxcfg
+> +++ b/arch/arm/boards/protonic-imx6/flash-header-prti6q.imxcfg
+> @@ -120,4 +120,3 @@ wm 32 0x020e0614 0x000130b0
 >  
->  #include "dwc2.h"
+>  /* RGMII config */
+>  wm 32 0x020e0790 0x00080000 /* 1V2 DDR IO */
+> -wm 32 0x020e07ac 0x00000200 /* 60 Ohm ODT */
+> diff --git a/arch/arm/boards/protonic-imx6/flash-header-vicut1q.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-vicut1q.imxcfg
+> index a73a2c6fd0..f7e75b47bf 100644
+> --- a/arch/arm/boards/protonic-imx6/flash-header-vicut1q.imxcfg
+> +++ b/arch/arm/boards/protonic-imx6/flash-header-vicut1q.imxcfg
+> @@ -124,4 +124,3 @@ wm 32 0x020e0614 0x000130b0
 >  
-> -static void dwc2_uninit_common(struct dwc2 *dwc2)
-> -{
-> -	uint32_t hprt0;
-> -
-> -	hprt0 = dwc2_readl(dwc2, HPRT0);
-> -
-> -	/* Put everything in reset. */
-> -	hprt0 &= ~(HPRT0_ENA | HPRT0_ENACHG | HPRT0_CONNDET | HPRT0_OVRCURRCHG);
-> -	hprt0 |= HPRT0_RST;
-> -
-> -	dwc2_writel(dwc2, hprt0, HPRT0);
-> -}
-> -
->  static int dwc2_set_mode(void *ctx, enum usb_dr_mode mode)
->  {
->  	struct dwc2 *dwc2 = ctx;
-> @@ -98,7 +85,8 @@ static void dwc2_remove(struct device_d *dev)
->  {
->  	struct dwc2 *dwc2 = dev->priv;
+>  /* RGMII config */
+>  wm 32 0x020e0790 0x00080000 /* 1V2 DDR IO */
+> -wm 32 0x020e07ac 0x00000200 /* 60 Ohm ODT */
+> diff --git a/arch/arm/boards/protonic-imx6/flash-header-vicutp.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-vicutp.imxcfg
+> index 13887ade0b..e218279239 100644
+> --- a/arch/arm/boards/protonic-imx6/flash-header-vicutp.imxcfg
+> +++ b/arch/arm/boards/protonic-imx6/flash-header-vicutp.imxcfg
+> @@ -171,4 +171,3 @@ wm 32 0x020e0614 0x000130b0
 >  
-> -	dwc2_uninit_common(dwc2);
-> +	dwc2_host_uninit(dwc2);
-> +	dwc2_gadget_uninit(dwc2);
->  }
+>  /* RGMII config */
+>  wm 32 0x020e0790 0x00080000 /* 1V2 DDR IO */
+> -wm 32 0x020e07ac 0x00000200 /* 60 Ohm ODT */
+> diff --git a/arch/arm/dts/imx6q-prti6q.dts b/arch/arm/dts/imx6q-prti6q.dts
+> index acdb7b22d9..21e24222a0 100644
+> --- a/arch/arm/dts/imx6q-prti6q.dts
+> +++ b/arch/arm/dts/imx6q-prti6q.dts
+> @@ -204,7 +204,7 @@
 >  
->  static const struct of_device_id dwc2_platform_dt_ids[] = {
-> diff --git a/drivers/usb/dwc2/dwc2.h b/drivers/usb/dwc2/dwc2.h
-> index 2475fd005..01a4ec2ca 100644
-> --- a/drivers/usb/dwc2/dwc2.h
-> +++ b/drivers/usb/dwc2/dwc2.h
-> @@ -37,13 +37,17 @@ int dwc2_submit_roothub(struct dwc2 *dwc2, struct usb_device *dev,
->  		unsigned long pipe, void *buf, int len,
->  		struct devrequest *setup);
->  int dwc2_register_host(struct dwc2 *dwc2);
-> +void dwc2_host_uninit(struct dwc2 *dwc2);
->  #else
->  static inline int dwc2_register_host(struct dwc2 *dwc2) { return -ENODEV; }
-> +static inline void dwc2_host_uninit(struct dwc2 *dwc2) {};
->  #endif
+>  		/* Microchip KSZ9031RNX PHY */
+>  		rgmii_phy: ethernet-phy@4 {
+> -			reg = <4>;
+> +			reg = <0>;
+>  			interrupts-extended = <&gpio1 28 IRQ_TYPE_LEVEL_LOW>;
+>  			reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>;
+>  			reset-assert-us = <10000>;
+> diff --git a/arch/arm/dts/imx6q-vicut1.dts b/arch/arm/dts/imx6q-vicut1.dts
+> index 9747b3c62e..9d1d6fa550 100644
+> --- a/arch/arm/dts/imx6q-vicut1.dts
+> +++ b/arch/arm/dts/imx6q-vicut1.dts
+> @@ -29,7 +29,7 @@
 >  
->  /* Gadget functions */
->  #ifdef CONFIG_USB_DWC2_GADGET
->  int dwc2_gadget_init(struct dwc2 *dwc2);
-> +void dwc2_gadget_uninit(struct dwc2 *dwc2);
->  #else
->  static inline int dwc2_gadget_init(struct dwc2 *dwc2) { return -ENODEV; }
-> +static inline void dwc2_gadget_uninit(struct dwc2 *dwc2) {};
->  #endif
-> diff --git a/drivers/usb/dwc2/gadget.c b/drivers/usb/dwc2/gadget.c
-> index 6a65b9b11..aa7447c9b 100644
-> --- a/drivers/usb/dwc2/gadget.c
-> +++ b/drivers/usb/dwc2/gadget.c
-> @@ -2734,3 +2734,9 @@ int dwc2_gadget_init(struct dwc2 *dwc2)
->  
->  	return 0;
->  }
-> +
-> +void dwc2_gadget_uninit(struct dwc2 *dwc2)
-> +{
-> +	dwc2_core_disconnect(dwc2);
-> +	dwc2_gadget_disconnect(dwc2);
-> +}
-> diff --git a/drivers/usb/dwc2/host.c b/drivers/usb/dwc2/host.c
-> index 59a2aac47..f95ec4e56 100644
-> --- a/drivers/usb/dwc2/host.c
-> +++ b/drivers/usb/dwc2/host.c
-> @@ -779,3 +779,16 @@ int dwc2_register_host(struct dwc2 *dwc2)
->  
->  	return usb_register_host(host);
->  }
-> +
-> +void dwc2_host_uninit(struct dwc2 *dwc2)
-> +{
-> +	uint32_t hprt0;
-> +
-> +	hprt0 = dwc2_readl(dwc2, HPRT0);
-> +
-> +	/* Put everything in reset. */
-> +	hprt0 &= ~(HPRT0_ENA | HPRT0_ENACHG | HPRT0_CONNDET | HPRT0_OVRCURRCHG);
-> +	hprt0 |= HPRT0_RST;
-> +
-> +	dwc2_writel(dwc2, hprt0, HPRT0);
-> +}
+>  		/* Microchip KSZ9031RNX PHY */
+>  		rgmii_phy: ethernet-phy@4 {
+> -			reg = <4>;
+> +			reg = <0>;
+>  			interrupts-extended = <&gpio1 28 IRQ_TYPE_LEVEL_LOW>;
+>  			reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>;
+>  			reset-assert-us = <10000>;
 > -- 
-> 2.17.1
-> 
+> 2.28.0
 > 
 > 
 > _______________________________________________
