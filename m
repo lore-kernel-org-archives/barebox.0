@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kQmmA-0003YC-3A
- for barebox@lists.infradead.org; Fri, 09 Oct 2020 07:25:14 +0000
-Date: Fri, 9 Oct 2020 09:25:12 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201009072512.GZ11648@pengutronix.de>
-References: <20201008102314.19573-1-o.rempel@pengutronix.de>
+ id 1kQn3p-00067J-8L
+ for barebox@lists.infradead.org; Fri, 09 Oct 2020 07:43:29 +0000
+Message-ID: <aae25d119986b106a1abca156a110d7425c58d83.camel@pengutronix.de>
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Fri, 09 Oct 2020 09:43:26 +0200
+In-Reply-To: <20201009071432.GV11648@pengutronix.de>
+References: <20201007130757.20185-1-r.czerwinski@pengutronix.de>
+ <20201007130757.20185-2-r.czerwinski@pengutronix.de>
+ <20201009071432.GV11648@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201008102314.19573-1-o.rempel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,106 +23,93 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1] ARM: protonic: disable on-die termination to fix PHY
- bootstrapping
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org, david@protonic.nl
+Subject: Re: [PATCH v2 2/2] ARM: imx: Add Support for Webasto ccbv2
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Thu, Oct 08, 2020 at 12:23:14PM +0200, Oleksij Rempel wrote:
-> If on-die termination is enabled, the RXC pin of iMX6 will be pulled
-> high. Since we already have an 10K pull-down on board, the RXC level on
-> PHY reset will be ~800mV, which is mostly interpreted as 1. On some
-> reboots we get 0 instead and kernel can't detect the PHY properly.
+On Fri, 2020-10-09 at 09:14 +0200, Sascha Hauer wrote:
+> On Wed, Oct 07, 2020 at 03:07:58PM +0200, Rouven Czerwinski wrote:
+> > +device_initcall(ccbv2_device_init);
+> > +
+> > +static int ccbv2_apply_overlay(void)
+> > +{
+> > +	struct device_node *overlay;
+> > +	struct fdt_header *fdt;
+> > +	int ret;
+> > +
+> > +	if(!IS_ENABLED(CONFIG_FIRMWARE_CCBV2_OPTEE)
+> > +	   || !of_machine_is_compatible("webasto,imx6ul-ccbv2"))
+> > +		return 0;
+> > +
+> > +	fdt = (void*)OPTEE_OVERLAY_LOCATION;
+> > +	overlay = of_unflatten_dtb(fdt);
+> > +
+> > +	if (IS_ERR(overlay))
+> > +		return PTR_ERR(overlay);
+> > +
+> > +	ret = of_register_overlay(overlay);
+> > +	if (ret) {
+> > +		printf("cannot apply oftree overlay: %s\n", strerror(-
+> > ret));
+> > +		goto err;
+> > +	}
+> > +
+> > +	return 0;
+> > +err:
+> > +	of_delete_node(overlay);
+> > +	return ret;
+> > +}
+> > +device_initcall(ccbv2_apply_overlay);
 > 
-> Since the default 0x020e07ac value is 0, it is sufficient to remove this
-> entry from the affected imxcfg files.
-> 
-> Since we get stable 0 on pin PHYADDR[2], the PHY address is changed from
-> 4 to 0.
-> 
-> Fixes: 00adc1e33ef8 ("ARM: add imx6 based Protonic boads")
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> ---
->  arch/arm/boards/protonic-imx6/flash-header-prti6q.imxcfg  | 1 -
->  arch/arm/boards/protonic-imx6/flash-header-vicut1q.imxcfg | 1 -
->  arch/arm/boards/protonic-imx6/flash-header-vicutp.imxcfg  | 1 -
->  arch/arm/dts/imx6q-prti6q.dts                             | 2 +-
->  arch/arm/dts/imx6q-vicut1.dts                             | 2 +-
->  5 files changed, 2 insertions(+), 5 deletions(-)
+> No need for two initcalls, please combine into one. Also, you could try
+> Oleksijs new way of registering board code as a driver, see 5e1fc532538.
 
-Applied to master, thanks
+Right, will do.
 
-Sascha
+> > +static void configure_uart(void)
+> > +{
+> > +	void __iomem *iomuxbase = (void *)MX6_IOMUXC_BASE_ADDR;
+> > +
+> > +	imx6_ungate_all_peripherals();
+> > +
+> > +	imx_setup_pad(iomuxbase, MX6_PAD_LCD_DATA16__UART7_DCE_TX);
+> > +	imx_setup_pad(iomuxbase, MX6_PAD_LCD_DATA17__UART7_DCE_RX);
+> > +
+> > +	imx6_uart_setup((void *)MX6_UART7_BASE_ADDR);
+> > +
+> > +	if (IS_ENABLED(CONFIG_DEBUG_LL))
+> > +		putc_ll('>');
+> 
+> No need to put that in a IS_ENABLED(CONFIG_DEBUG_LL), without it
+> putc_ll() is a no-op anyway.
 
-> 
-> diff --git a/arch/arm/boards/protonic-imx6/flash-header-prti6q.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-prti6q.imxcfg
-> index 68b7909f82..029edc248a 100644
-> --- a/arch/arm/boards/protonic-imx6/flash-header-prti6q.imxcfg
-> +++ b/arch/arm/boards/protonic-imx6/flash-header-prti6q.imxcfg
-> @@ -120,4 +120,3 @@ wm 32 0x020e0614 0x000130b0
->  
->  /* RGMII config */
->  wm 32 0x020e0790 0x00080000 /* 1V2 DDR IO */
-> -wm 32 0x020e07ac 0x00000200 /* 60 Ohm ODT */
-> diff --git a/arch/arm/boards/protonic-imx6/flash-header-vicut1q.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-vicut1q.imxcfg
-> index a73a2c6fd0..f7e75b47bf 100644
-> --- a/arch/arm/boards/protonic-imx6/flash-header-vicut1q.imxcfg
-> +++ b/arch/arm/boards/protonic-imx6/flash-header-vicut1q.imxcfg
-> @@ -124,4 +124,3 @@ wm 32 0x020e0614 0x000130b0
->  
->  /* RGMII config */
->  wm 32 0x020e0790 0x00080000 /* 1V2 DDR IO */
-> -wm 32 0x020e07ac 0x00000200 /* 60 Ohm ODT */
-> diff --git a/arch/arm/boards/protonic-imx6/flash-header-vicutp.imxcfg b/arch/arm/boards/protonic-imx6/flash-header-vicutp.imxcfg
-> index 13887ade0b..e218279239 100644
-> --- a/arch/arm/boards/protonic-imx6/flash-header-vicutp.imxcfg
-> +++ b/arch/arm/boards/protonic-imx6/flash-header-vicutp.imxcfg
-> @@ -171,4 +171,3 @@ wm 32 0x020e0614 0x000130b0
->  
->  /* RGMII config */
->  wm 32 0x020e0790 0x00080000 /* 1V2 DDR IO */
-> -wm 32 0x020e07ac 0x00000200 /* 60 Ohm ODT */
-> diff --git a/arch/arm/dts/imx6q-prti6q.dts b/arch/arm/dts/imx6q-prti6q.dts
-> index acdb7b22d9..21e24222a0 100644
-> --- a/arch/arm/dts/imx6q-prti6q.dts
-> +++ b/arch/arm/dts/imx6q-prti6q.dts
-> @@ -204,7 +204,7 @@
->  
->  		/* Microchip KSZ9031RNX PHY */
->  		rgmii_phy: ethernet-phy@4 {
-> -			reg = <4>;
-> +			reg = <0>;
->  			interrupts-extended = <&gpio1 28 IRQ_TYPE_LEVEL_LOW>;
->  			reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>;
->  			reset-assert-us = <10000>;
-> diff --git a/arch/arm/dts/imx6q-vicut1.dts b/arch/arm/dts/imx6q-vicut1.dts
-> index 9747b3c62e..9d1d6fa550 100644
-> --- a/arch/arm/dts/imx6q-vicut1.dts
-> +++ b/arch/arm/dts/imx6q-vicut1.dts
-> @@ -29,7 +29,7 @@
->  
->  		/* Microchip KSZ9031RNX PHY */
->  		rgmii_phy: ethernet-phy@4 {
-> -			reg = <4>;
-> +			reg = <0>;
->  			interrupts-extended = <&gpio1 28 IRQ_TYPE_LEVEL_LOW>;
->  			reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>;
->  			reset-assert-us = <10000>;
-> -- 
-> 2.28.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+Great, will fix.
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> > diff --git a/firmware/Kconfig b/firmware/Kconfig
+> > index 97b7b3c2ee..c2ff51b911 100644
+> > --- a/firmware/Kconfig
+> > +++ b/firmware/Kconfig
+> > @@ -16,4 +16,9 @@ config FIRMWARE_IMX8MP_ATF
+> >  config FIRMWARE_IMX8MQ_ATF
+> >          bool
+> >  
+> > +config FIRMWARE_CCBV2_OPTEE
+> > +	bool
+> > +	depends on MACH_WEBASTO_CCBV2 && PBL_OPTEE
+> > +	default y
+> 
+> This makes the firmware mandatory for compiling this board, right? Can
+> we make this optional so that we can enable the board in
+> imx_v7_defconfig?
+
+The firmware is only mandatory if OP-TEE early loading is enabled,
+which AFAIK isn't the case for the defconfig, so we should be fine
+there.
+I'll add it to the defconfig.
+
+Regards,
+Rouven
+
 
 _______________________________________________
 barebox mailing list
