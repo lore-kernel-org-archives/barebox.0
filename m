@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-io1-xd43.google.com ([2607:f8b0:4864:20::d43])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kQn3p-00067J-8L
- for barebox@lists.infradead.org; Fri, 09 Oct 2020 07:43:29 +0000
-Message-ID: <aae25d119986b106a1abca156a110d7425c58d83.camel@pengutronix.de>
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Fri, 09 Oct 2020 09:43:26 +0200
-In-Reply-To: <20201009071432.GV11648@pengutronix.de>
-References: <20201007130757.20185-1-r.czerwinski@pengutronix.de>
- <20201007130757.20185-2-r.czerwinski@pengutronix.de>
- <20201009071432.GV11648@pengutronix.de>
+ id 1kQrXY-0000Xz-2Z
+ for barebox@lists.infradead.org; Fri, 09 Oct 2020 12:30:29 +0000
+Received: by mail-io1-xd43.google.com with SMTP id l8so9828137ioh.11
+ for <barebox@lists.infradead.org>; Fri, 09 Oct 2020 05:30:25 -0700 (PDT)
 MIME-Version: 1.0
+References: <CABMENH487jhrwdywh4KOOqvJtJ_r0ZbSMu2ArDZRHhdK==-+wQ@mail.gmail.com>
+ <61631575-54f8-4fe1-4a25-a806b39f2a63@pengutronix.de>
+In-Reply-To: <61631575-54f8-4fe1-4a25-a806b39f2a63@pengutronix.de>
+From: "Robert Carnecky (Neopsis)" <robert@neopsis.com>
+Date: Fri, 9 Oct 2020 14:30:12 +0200
+Message-ID: <CABMENH4s2fWgZmJG-hMtKmHJAmC0N6PtL41LA2vJ4iuA1tPA9g@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,93 +24,134 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 2/2] ARM: imx: Add Support for Webasto ccbv2
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: Mini UART on RaspberryPi CM3/CM3+
+To: barebox@lists.infradead.org
 
-On Fri, 2020-10-09 at 09:14 +0200, Sascha Hauer wrote:
-> On Wed, Oct 07, 2020 at 03:07:58PM +0200, Rouven Czerwinski wrote:
-> > +device_initcall(ccbv2_device_init);
-> > +
-> > +static int ccbv2_apply_overlay(void)
-> > +{
-> > +	struct device_node *overlay;
-> > +	struct fdt_header *fdt;
-> > +	int ret;
-> > +
-> > +	if(!IS_ENABLED(CONFIG_FIRMWARE_CCBV2_OPTEE)
-> > +	   || !of_machine_is_compatible("webasto,imx6ul-ccbv2"))
-> > +		return 0;
-> > +
-> > +	fdt = (void*)OPTEE_OVERLAY_LOCATION;
-> > +	overlay = of_unflatten_dtb(fdt);
-> > +
-> > +	if (IS_ERR(overlay))
-> > +		return PTR_ERR(overlay);
-> > +
-> > +	ret = of_register_overlay(overlay);
-> > +	if (ret) {
-> > +		printf("cannot apply oftree overlay: %s\n", strerror(-
-> > ret));
-> > +		goto err;
-> > +	}
-> > +
-> > +	return 0;
-> > +err:
-> > +	of_delete_node(overlay);
-> > +	return ret;
-> > +}
-> > +device_initcall(ccbv2_apply_overlay);
-> 
-> No need for two initcalls, please combine into one. Also, you could try
-> Oleksijs new way of registering board code as a driver, see 5e1fc532538.
+> Try adding to arch/arm/dts/bcm2837-rpi-cm3.dts:
+>
+> &uart1 {
+>         pinctrl-names = "default";
+>         pinctrl-0 = <&uart1_gpio14>;
+>         status = "okay";
+> };
 
-Right, will do.
+I extended arch/arm/dts/bcm2837-rpi-cm3.dts as advised +
+additionally I set UART0 to pins 32/33.
 
-> > +static void configure_uart(void)
-> > +{
-> > +	void __iomem *iomuxbase = (void *)MX6_IOMUXC_BASE_ADDR;
-> > +
-> > +	imx6_ungate_all_peripherals();
-> > +
-> > +	imx_setup_pad(iomuxbase, MX6_PAD_LCD_DATA16__UART7_DCE_TX);
-> > +	imx_setup_pad(iomuxbase, MX6_PAD_LCD_DATA17__UART7_DCE_RX);
-> > +
-> > +	imx6_uart_setup((void *)MX6_UART7_BASE_ADDR);
-> > +
-> > +	if (IS_ENABLED(CONFIG_DEBUG_LL))
-> > +		putc_ll('>');
-> 
-> No need to put that in a IS_ENABLED(CONFIG_DEBUG_LL), without it
-> putc_ll() is a no-op anyway.
+&uart0 {
+     pinctrl-names = "default";
+     pinctrl-0 = <&uart0_gpio32>;
+     status = "okay";
+};
 
-Great, will fix.
+I still cannot see Barebox console on boot, however, the Barebox loader
+starts in 3 seconds my kernel and I get the Linux console output on
+UART1/ttyS0. Now my Linux boots as expected, unfortunately without
+visible Barebox console. I tried all Barebox console setting
+(NONE/ALL/FIRST), same result, no Barebox console output on UART0
+or UART1.
 
-> > diff --git a/firmware/Kconfig b/firmware/Kconfig
-> > index 97b7b3c2ee..c2ff51b911 100644
-> > --- a/firmware/Kconfig
-> > +++ b/firmware/Kconfig
-> > @@ -16,4 +16,9 @@ config FIRMWARE_IMX8MP_ATF
-> >  config FIRMWARE_IMX8MQ_ATF
-> >          bool
-> >  
-> > +config FIRMWARE_CCBV2_OPTEE
-> > +	bool
-> > +	depends on MACH_WEBASTO_CCBV2 && PBL_OPTEE
-> > +	default y
-> 
-> This makes the firmware mandatory for compiling this board, right? Can
-> we make this optional so that we can enable the board in
-> imx_v7_defconfig?
+> If that doesn't help, use CONSOLE_ACTIVATE_ALL and listen
+> on UART0 before the RS-485 transceiver and paste the
+> dmesg and devinfo input you get.
 
-The firmware is only mandatory if OP-TEE early loading is enabled,
-which AFAIK isn't the case for the defconfig, so we should be fine
-there.
-I'll add it to the defconfig.
+# dmesg | grep tty
+[    0.000000] Kernel command line: console=ttyS0,115200
+coherent_pool=1M snd_bcm2835.enable_compat_alsa=0
+ snd_bcm2835.enable_hdmi=1 snd_bcm2835.enable_headphones=1
+8250.nr_uarts=1 bcm2708_fb.fbwidth=656
+ bcm2708_fb.fbheight=416 bcm2708_fb.fbswap=1
+smsc95xx.macaddr=B8:27:EB:C5:7D:E3 vc_mem.mem_base=0x3ec00000
+ vc_mem.mem_size=0x40000000  root=/dev/mmcblk0p2 console=ttyS0,115200
+rootfstype=ext4 elevator=deadline rootwait
+[    1.289058] printk: console [ttyS0] disabled
+[    1.289175] 3f215040.serial: ttyS0 at MMIO 0x0 (irq = 53, base_baud
+= 50000000) is a 16550
+[    1.945483] printk: console [ttyS0] enabled
+[    2.432604] 3f201000.serial: ttyAMA0 at MMIO 0x3f201000 (irq = 81,
+base_baud = 0) is a PL011 rev2
 
-Regards,
-Rouven
+# stty -F /dev/ttyAMA0 115200
+# cat /etc/inittab  > /dev/ttyAMA0   <- OK
 
+
+
+
+
+  Robert
+
+
+
+On Mon, Oct 5, 2020 at 1:16 PM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+>
+> Hello Robert,
+>
+> On 10/5/20 12:07 PM, Robert Carnecky (Neopsis) wrote:
+> > Did anybody successfully configured Raspberry CM3/CM3+ mini-UART as
+> > the Barebox console? I found a thread
+> > on this list discussing the issue
+> > (https://www.mail-archive.com/barebox@lists.infradead.org/msg35235.html),
+> > unfortunately without any solution.
+> >
+> > What I need:
+> >
+> >    * UART0 on pins 32/33 (technology access over rs-485)
+> >    * UART1 (miniUART) on pins 14/15 (console)
+> >
+> > My current config.txt boots fine my raspberry kernel (zImage built
+> > using builroot):
+> >
+> >    kernel=zImage
+> >    enable_uart=1
+> >    dtoverlay=uart0,txd0_pin=32,rxd0_pin=33,pin_func=7
+> >    dtoverlay=uart1,txd1_pin=14,rxd1_pin=15
+> >
+> > Now I would like to switch to Barebox as a bootloader. I compiled the
+> > barebox image with
+> >
+> >    * CONSOLE_ACTIVATE_NONE = Y
+> >    * 'stdout-path=&uart1;' in  'arch/arm/dts/bcm2837-rpi-cm3.dts' .
+>
+> I don't have a CM3, but are you sure uart1 is enabled?
+>
+> Try adding to arch/arm/dts/bcm2837-rpi-cm3.dts:
+>
+> &uart1 {
+>         pinctrl-names = "default";
+>         pinctrl-0 = <&uart1_gpio14>;
+>         status = "okay";
+> };
+>
+> If that doesn't help, use CONSOLE_ACTIVATE_ALL and listen
+> on UART0 before the RS-485 transceiver and paste the
+> dmesg and devinfo input you get.
+>
+> Cheers,
+> Ahmad
+>
+>
+> >
+> > and changed my kernel in config.txt
+> >
+> >     kernel=barebox.img
+> >
+> > I cannot see any output on pins 14/15 e.g. UART1, no barebox console,
+> > no kernel console.
+> > Any idea what's wrong here?
+> >
+> > Robert
+> >
+> > _______________________________________________
+> > barebox mailing list
+> > barebox@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/barebox
+> >
+>
+> --
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
