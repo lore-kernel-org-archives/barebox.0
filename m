@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kRjZX-0004vX-FU
+ id 1kRjZX-0004vY-A8
  for barebox@lists.infradead.org; Sun, 11 Oct 2020 22:12:10 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 12 Oct 2020 00:12:00 +0200
-Message-Id: <20201011221200.9023-11-a.fatoum@pengutronix.de>
+Date: Mon, 12 Oct 2020 00:11:59 +0200
+Message-Id: <20201011221200.9023-10-a.fatoum@pengutronix.de>
 In-Reply-To: <20201011221200.9023-1-a.fatoum@pengutronix.de>
 References: <20201011221200.9023-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,163 +21,160 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/11] sandbox: defconfig: enable new generic features
+Subject: [PATCH 10/11] sandbox: dts: include state node by default
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Recent commits have modified sandbox for easier support of many common
-features:
+For testing barebox-state, it would be nice to have a state
+pre-configured out-of-the-box. Add one to sandbox.dts.
 
-- block devices
-- watchdogs
-- reset source
-- reboot mode
-- barebox state
-
-Enable those in defconfig along with some other useful options.
+Because the barebox message on an non-configured state can looks
+quite scary, add an init script that tells the user that all
+is well.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/sandbox/configs/sandbox_defconfig | 45 ++++++++++++++++++++++++--
- 1 file changed, 43 insertions(+), 2 deletions(-)
+ arch/sandbox/board/env/init/state           | 12 +++++
+ arch/sandbox/dts/sandbox-state-example.dtsi | 50 ---------------------
+ arch/sandbox/dts/sandbox.dts                | 35 +++++++++++++++
+ 3 files changed, 47 insertions(+), 50 deletions(-)
+ create mode 100644 arch/sandbox/board/env/init/state
+ delete mode 100644 arch/sandbox/dts/sandbox-state-example.dtsi
 
-diff --git a/arch/sandbox/configs/sandbox_defconfig b/arch/sandbox/configs/sandbox_defconfig
-index c343f053faff..ca24d81acac7 100644
---- a/arch/sandbox/configs/sandbox_defconfig
-+++ b/arch/sandbox/configs/sandbox_defconfig
-@@ -2,20 +2,34 @@ CONFIG_HUSH_FANCY_PROMPT=y
- CONFIG_CMDLINE_EDITING=y
- CONFIG_AUTO_COMPLETE=y
- CONFIG_MENU=y
-+CONFIG_CONSOLE_ALLOW_COLOR=y
- CONFIG_PARTITION=y
-+CONFIG_PARTITION_DISK_EFI=y
- CONFIG_DEFAULT_COMPRESSION_GZIP=y
- CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_REBOOT_MODE=y
- CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/sandbox/board/env"
-+CONFIG_STATE=y
-+CONFIG_STATE_CRYPTO=y
-+CONFIG_RESET_SOURCE=y
- CONFIG_CMD_DMESG=y
- CONFIG_LONGHELP=y
-+CONFIG_CMD_IOMEM=y
- CONFIG_CMD_IMD=y
- CONFIG_CMD_MEMINFO=y
--# CONFIG_CMD_BOOTM is not set
-+CONFIG_CMD_POLLER=y
-+CONFIG_CMD_SLICE=y
- CONFIG_CMD_GO=y
-+CONFIG_CMD_LOADB=y
-+CONFIG_CMD_LOADS=y
-+CONFIG_CMD_LOADY=y
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_SAVES=y
- CONFIG_CMD_UIMAGE=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_EXPORT=y
- CONFIG_CMD_DEFAULTENV=y
-+CONFIG_CMD_LOADENV=y
- CONFIG_CMD_PRINTENV=y
- CONFIG_CMD_MAGICVAR=y
- CONFIG_CMD_MAGICVAR_HELP=y
-@@ -39,14 +53,18 @@ CONFIG_CMD_PING=y
- CONFIG_CMD_TFTP=y
- CONFIG_CMD_ECHO_E=y
- CONFIG_CMD_EDIT=y
-+CONFIG_CMD_LOGIN=y
- CONFIG_CMD_MENU=y
- CONFIG_CMD_MENU_MANAGEMENT=y
- CONFIG_CMD_MENUTREE=y
-+CONFIG_CMD_PASSWD=y
- CONFIG_CMD_SPLASH=y
-+CONFIG_CMD_FBTEST=y
- CONFIG_CMD_READLINE=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_CRC=y
- CONFIG_CMD_CRC_CMP=y
-+CONFIG_CMD_MEMTEST=y
- CONFIG_CMD_MM=y
- CONFIG_CMD_DETECT=y
- CONFIG_CMD_FLASH=y
-@@ -56,18 +74,31 @@ CONFIG_CMD_LED=y
- CONFIG_CMD_POWEROFF=y
- CONFIG_CMD_SPI=y
- CONFIG_CMD_LED_TRIGGER=y
-+CONFIG_CMD_WD=y
- CONFIG_CMD_2048=y
-+CONFIG_CMD_KEYSTORE=y
-+CONFIG_CMD_LINUX_EXEC=y
-+CONFIG_CMD_OF_DIFF=y
- CONFIG_CMD_OF_NODE=y
- CONFIG_CMD_OF_PROPERTY=y
- CONFIG_CMD_OF_DISPLAY_TIMINGS=y
-+CONFIG_CMD_OF_FIXUP_STATUS=y
-+CONFIG_CMD_OF_OVERLAY=y
- CONFIG_CMD_OFTREE=y
- CONFIG_CMD_TIME=y
-+CONFIG_CMD_STATE=y
-+CONFIG_CMD_DHRYSTONE=y
- CONFIG_CMD_SPD_DECODE=y
-+CONFIG_CMD_SEED=y
- CONFIG_NET=y
- CONFIG_NET_NFS=y
- CONFIG_NET_NETCONSOLE=y
-+CONFIG_NET_SNTP=y
-+CONFIG_NET_FASTBOOT=y
- CONFIG_OFDEVICE=y
- CONFIG_OF_BAREBOX_DRIVERS=y
-+CONFIG_OF_BAREBOX_ENV_IN_FS=y
-+CONFIG_OF_OVERLAY_LIVE=y
- CONFIG_DRIVER_NET_TAP=y
- CONFIG_DRIVER_SPI_GPIO=y
- CONFIG_I2C=y
-@@ -76,6 +107,9 @@ CONFIG_MTD=y
- CONFIG_MTD_M25P80=y
- CONFIG_VIDEO=y
- CONFIG_FRAMEBUFFER_CONSOLE=y
-+CONFIG_MFD_SYSCON=y
-+CONFIG_STATE_DRV=y
-+CONFIG_UBOOTVAR=y
- CONFIG_LED=y
- CONFIG_LED_GPIO=y
- CONFIG_LED_GPIO_OF=y
-@@ -84,9 +118,12 @@ CONFIG_LED_GPIO_BICOLOR=y
- CONFIG_LED_TRIGGERS=y
- CONFIG_EEPROM_AT25=y
- CONFIG_EEPROM_AT24=y
-+CONFIG_WATCHDOG=y
-+CONFIG_WATCHDOG_POLLER=y
- # CONFIG_PINCTRL is not set
- CONFIG_RTC_CLASS=y
- CONFIG_RTC_DRV_DS1307=y
-+CONFIG_SYSCON_REBOOT_MODE=y
- CONFIG_FS_CRAMFS=y
- CONFIG_FS_EXT4=y
- CONFIG_FS_TFTP=y
-@@ -94,12 +131,17 @@ CONFIG_FS_NFS=y
- CONFIG_FS_FAT=y
- CONFIG_FS_FAT_WRITE=y
- CONFIG_FS_FAT_LFN=y
-+CONFIG_FS_JFFS2=y
- CONFIG_FS_BPKFS=y
- CONFIG_FS_UIMAGEFS=y
-+CONFIG_FS_PSTORE=y
-+CONFIG_FS_PSTORE_CONSOLE=y
- CONFIG_FS_SQUASHFS=y
-+CONFIG_FS_UBOOTVARFS=y
- CONFIG_BZLIB=y
- CONFIG_LZ4_DECOMPRESS=y
- CONFIG_XZ_DECOMPRESS=y
-+CONFIG_BASE64=y
- CONFIG_LZO_DECOMPRESS=y
- CONFIG_BMP=y
- CONFIG_PNG=y
-@@ -112,4 +154,3 @@ CONFIG_BAREBOX_LOGO_240=y
- CONFIG_BAREBOX_LOGO_320=y
- CONFIG_BAREBOX_LOGO_400=y
- CONFIG_BAREBOX_LOGO_640=y
--CONFIG_DIGEST_HMAC_GENERIC=y
+diff --git a/arch/sandbox/board/env/init/state b/arch/sandbox/board/env/init/state
+new file mode 100644
+index 000000000000..0b8e40409f97
+--- /dev/null
++++ b/arch/sandbox/board/env/init/state
+@@ -0,0 +1,12 @@
++if [ "x$state.dirty" != "x1" -o $global.system.reset != "POR" ]; then
++    exit
++fi
++
++source /env/data/ansi-colors
++
++echo -e $CYAN
++echo "******************************************************************"
++echo "*** Inconsistent barebox state buckets detected on first boot ***"
++echo "***         barebox will repair them on next shutdown         ***"
++echo "*****************************************************************"
++echo -e -n $NC
+diff --git a/arch/sandbox/dts/sandbox-state-example.dtsi b/arch/sandbox/dts/sandbox-state-example.dtsi
+deleted file mode 100644
+index 98640f6677cf..000000000000
+--- a/arch/sandbox/dts/sandbox-state-example.dtsi
++++ /dev/null
+@@ -1,50 +0,0 @@
+-/ {
+-	aliases {
+-		state = &state;
+-	};
+-
+-	disk {
+-		compatible = "barebox,hostfile";
+-		barebox,filename = "disk";
+-		reg = <0x0 0x0 0x0 0x100000>;
+-
+-		partitions {
+-			compatible = "fixed-partitions";
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-
+-			hostfile_state: state@0 {
+-				reg = <0x0 0x1000>;
+-				label = "state";
+-			};
+-		};
+-	};
+-
+-	state: state {
+-		magic = <0xaa3b86a6>;
+-		compatible = "barebox,state";
+-		backend-type = "raw";
+-		backend = <&hostfile_state>;
+-		backend-storage-type = "direct";
+-		backend-stridesize = <64>;
+-
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+-		vars {
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-
+-			x {
+-				reg = <0x0 0x4>;
+-				type = "uint32";
+-				default = <1>;
+-			};
+-
+-			y {
+-				reg = <0x4 0x4>;
+-				type = "uint32";
+-				default = <3>;
+-			};
+-		};
+-	};
+-};
+diff --git a/arch/sandbox/dts/sandbox.dts b/arch/sandbox/dts/sandbox.dts
+index f830adecf796..afe48154c488 100644
+--- a/arch/sandbox/dts/sandbox.dts
++++ b/arch/sandbox/dts/sandbox.dts
+@@ -9,6 +9,7 @@
+ 
+ 	aliases {
+ 		bmode = &bmode;
++		state = &state;
+ 	};
+ 
+ 	chosen {
+@@ -23,6 +24,35 @@
+ 		reg = <0 0 0 0>;
+ 	};
+ 
++	state: state {
++		magic = <0xaa3b86a6>;
++		compatible = "barebox,state";
++		backend-type = "raw";
++		backend = <&part_state>;
++		backend-storage-type = "direct";
++		backend-stridesize = <64>;
++
++		#address-cells = <1>;
++		#size-cells = <1>;
++
++		vars {
++			#address-cells = <1>;
++			#size-cells = <1>;
++
++			x {
++				reg = <0x0 0x4>;
++				type = "uint32";
++				default = <1>;
++			};
++
++			y {
++				reg = <0x4 0x4>;
++				type = "uint32";
++				default = <3>;
++			};
++		};
++	};
++
+ 	stickypage: stickypage {
+ 		compatible = "barebox,hostfile", "syscon", "simple-mfd";
+ 		reg = <0 0 0 4096>;
+@@ -47,6 +77,11 @@
+ 				reg = <0x400 0x800>;
+ 				label = "env";
+ 			};
++
++			part_state: state@800 {
++				reg = <0xC00 0x400>;
++				label = "state";
++			};
+ 		};
+ 	};
+ 
 -- 
 2.28.0
 
