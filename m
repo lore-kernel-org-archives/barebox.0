@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kRjZX-0004vY-A8
- for barebox@lists.infradead.org; Sun, 11 Oct 2020 22:12:10 +0000
+ id 1kRjZX-0004vU-5a
+ for barebox@lists.infradead.org; Sun, 11 Oct 2020 22:12:08 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 12 Oct 2020 00:11:59 +0200
-Message-Id: <20201011221200.9023-10-a.fatoum@pengutronix.de>
+Date: Mon, 12 Oct 2020 00:11:54 +0200
+Message-Id: <20201011221200.9023-5-a.fatoum@pengutronix.de>
 In-Reply-To: <20201011221200.9023-1-a.fatoum@pengutronix.de>
 References: <20201011221200.9023-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,160 +21,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/11] sandbox: dts: include state node by default
+Subject: [PATCH 05/11] sandbox: dts: define default environment node
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-For testing barebox-state, it would be nice to have a state
-pre-configured out-of-the-box. Add one to sandbox.dts.
-
-Because the barebox message on an non-configured state can looks
-quite scary, add an init script that tells the user that all
-is well.
+Now that we can define a hostfile that's persistent over barebox resets,
+but does not rely on a hard coded filename, we can have an always-on
+environment node.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/sandbox/board/env/init/state           | 12 +++++
- arch/sandbox/dts/sandbox-state-example.dtsi | 50 ---------------------
- arch/sandbox/dts/sandbox.dts                | 35 +++++++++++++++
- 3 files changed, 47 insertions(+), 50 deletions(-)
- create mode 100644 arch/sandbox/board/env/init/state
- delete mode 100644 arch/sandbox/dts/sandbox-state-example.dtsi
+ arch/sandbox/dts/sandbox.dts | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/arch/sandbox/board/env/init/state b/arch/sandbox/board/env/init/state
-new file mode 100644
-index 000000000000..0b8e40409f97
---- /dev/null
-+++ b/arch/sandbox/board/env/init/state
-@@ -0,0 +1,12 @@
-+if [ "x$state.dirty" != "x1" -o $global.system.reset != "POR" ]; then
-+    exit
-+fi
-+
-+source /env/data/ansi-colors
-+
-+echo -e $CYAN
-+echo "******************************************************************"
-+echo "*** Inconsistent barebox state buckets detected on first boot ***"
-+echo "***         barebox will repair them on next shutdown         ***"
-+echo "*****************************************************************"
-+echo -e -n $NC
-diff --git a/arch/sandbox/dts/sandbox-state-example.dtsi b/arch/sandbox/dts/sandbox-state-example.dtsi
-deleted file mode 100644
-index 98640f6677cf..000000000000
---- a/arch/sandbox/dts/sandbox-state-example.dtsi
-+++ /dev/null
-@@ -1,50 +0,0 @@
--/ {
--	aliases {
--		state = &state;
--	};
--
--	disk {
--		compatible = "barebox,hostfile";
--		barebox,filename = "disk";
--		reg = <0x0 0x0 0x0 0x100000>;
--
--		partitions {
--			compatible = "fixed-partitions";
--			#address-cells = <1>;
--			#size-cells = <1>;
--
--			hostfile_state: state@0 {
--				reg = <0x0 0x1000>;
--				label = "state";
--			};
--		};
--	};
--
--	state: state {
--		magic = <0xaa3b86a6>;
--		compatible = "barebox,state";
--		backend-type = "raw";
--		backend = <&hostfile_state>;
--		backend-storage-type = "direct";
--		backend-stridesize = <64>;
--
--		#address-cells = <1>;
--		#size-cells = <1>;
--		vars {
--			#address-cells = <1>;
--			#size-cells = <1>;
--
--			x {
--				reg = <0x0 0x4>;
--				type = "uint32";
--				default = <1>;
--			};
--
--			y {
--				reg = <0x4 0x4>;
--				type = "uint32";
--				default = <3>;
--			};
--		};
--	};
--};
 diff --git a/arch/sandbox/dts/sandbox.dts b/arch/sandbox/dts/sandbox.dts
-index f830adecf796..afe48154c488 100644
+index b3327837a38a..afca02d41014 100644
 --- a/arch/sandbox/dts/sandbox.dts
 +++ b/arch/sandbox/dts/sandbox.dts
-@@ -9,6 +9,7 @@
- 
- 	aliases {
- 		bmode = &bmode;
-+		state = &state;
+@@ -11,10 +11,30 @@
  	};
  
  	chosen {
-@@ -23,6 +24,35 @@
- 		reg = <0 0 0 0>;
++		environment {
++			compatible = "barebox,environment";
++			device-path = &part_env;
++		};
  	};
  
-+	state: state {
-+		magic = <0xaa3b86a6>;
-+		compatible = "barebox,state";
-+		backend-type = "raw";
-+		backend = <&part_state>;
-+		backend-storage-type = "direct";
-+		backend-stridesize = <64>;
+ 	memory {
+ 		device_type = "memory";
+ 		reg = <0 0 0 0>;
+ 	};
 +
-+		#address-cells = <1>;
-+		#size-cells = <1>;
++	stickypage: stickypage {
++		compatible = "barebox,hostfile";
++		reg = <0 0 0 4096>;
 +
-+		vars {
++		partitions {
++			compatible = "fixed-partitions";
 +			#address-cells = <1>;
 +			#size-cells = <1>;
 +
-+			x {
-+				reg = <0x0 0x4>;
-+				type = "uint32";
-+				default = <1>;
-+			};
-+
-+			y {
-+				reg = <0x4 0x4>;
-+				type = "uint32";
-+				default = <3>;
++			part_env: env@400 {
++				reg = <0x400 0x800>;
++				label = "env";
 +			};
 +		};
 +	};
-+
- 	stickypage: stickypage {
- 		compatible = "barebox,hostfile", "syscon", "simple-mfd";
- 		reg = <0 0 0 4096>;
-@@ -47,6 +77,11 @@
- 				reg = <0x400 0x800>;
- 				label = "env";
- 			};
-+
-+			part_state: state@800 {
-+				reg = <0xC00 0x400>;
-+				label = "state";
-+			};
- 		};
- 	};
- 
+ };
 -- 
 2.28.0
 
