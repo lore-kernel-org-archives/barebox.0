@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kRrHw-0005RB-9M
- for barebox@lists.infradead.org; Mon, 12 Oct 2020 06:26:29 +0000
+ id 1kRrHw-0005RF-9V
+ for barebox@lists.infradead.org; Mon, 12 Oct 2020 06:26:31 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 12 Oct 2020 08:26:14 +0200
-Message-Id: <20201012062619.20400-7-a.fatoum@pengutronix.de>
+Date: Mon, 12 Oct 2020 08:26:19 +0200
+Message-Id: <20201012062619.20400-12-a.fatoum@pengutronix.de>
 In-Reply-To: <20201012062619.20400-1-a.fatoum@pengutronix.de>
 References: <20201012062619.20400-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,169 +21,165 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 07/12] sandbox: poweroff: migrate to driver probed from
- device tree
+Subject: [PATCH v2 12/12] sandbox: defconfig: enable new generic features
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Follow-up will extend the poweroff driver to support system reset source.
-Set the stage by renaming the driver to power (as it does reset as well)
-and make it probe from device tree, so it can point at the system reset
-source syscon via phandle.
+Recent commits have modified sandbox for easier support of many common
+features:
+
+- block devices
+- watchdogs
+- reset source
+- reboot mode
+- barebox state
+
+Enable those in defconfig along with some other useful options.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v1 -> v2: no changes
 ---
- arch/sandbox/board/Makefile   |  2 +-
- arch/sandbox/board/power.c    | 61 +++++++++++++++++++++++++++++++++++
- arch/sandbox/board/poweroff.c | 42 ------------------------
- arch/sandbox/dts/sandbox.dts  |  4 +++
- 4 files changed, 66 insertions(+), 43 deletions(-)
- create mode 100644 arch/sandbox/board/power.c
- delete mode 100644 arch/sandbox/board/poweroff.c
+ arch/sandbox/configs/sandbox_defconfig | 45 ++++++++++++++++++++++++--
+ 1 file changed, 43 insertions(+), 2 deletions(-)
 
-diff --git a/arch/sandbox/board/Makefile b/arch/sandbox/board/Makefile
-index 26f6cb192269..e50d2ca0f148 100644
---- a/arch/sandbox/board/Makefile
-+++ b/arch/sandbox/board/Makefile
-@@ -4,7 +4,7 @@ obj-y += hostfile.o
- obj-y += console.o
- obj-y += devices.o
- obj-y += dtb.o
--obj-y += poweroff.o
-+obj-y += power.o
- obj-y += dev-random.o
- 
- extra-y += barebox.lds
-diff --git a/arch/sandbox/board/power.c b/arch/sandbox/board/power.c
-new file mode 100644
-index 000000000000..ffd8692845ef
---- /dev/null
-+++ b/arch/sandbox/board/power.c
-@@ -0,0 +1,61 @@
-+#include <common.h>
-+#include <driver.h>
-+#include <poweroff.h>
-+#include <restart.h>
-+#include <mach/linux.h>
-+#include <reset_source.h>
-+
-+struct sandbox_power {
-+	struct restart_handler rst_hang, rst_reexec;
-+};
-+
-+static void sandbox_poweroff(struct poweroff_handler *poweroff)
-+{
-+	linux_exit();
-+}
-+
-+static void sandbox_rst_hang(struct restart_handler *rst)
-+{
-+	linux_hang();
-+}
-+
-+static void sandbox_rst_reexec(struct restart_handler *rst)
-+{
-+	linux_reexec();
-+}
-+
-+static int sandbox_power_probe(struct device_d *dev)
-+{
-+	struct sandbox_power *power = xzalloc(sizeof(*power));
-+
-+	poweroff_handler_register_fn(sandbox_poweroff);
-+
-+	power->rst_hang = (struct restart_handler) {
-+		.name = "hang",
-+		.restart = sandbox_rst_hang
-+	};
-+
-+	power->rst_reexec = (struct restart_handler) {
-+		.name = "reexec", .priority = 200,
-+		.restart = sandbox_rst_reexec,
-+	};
-+
-+	restart_handler_register(&power->rst_hang);
-+
-+	if (IS_ENABLED(CONFIG_SANDBOX_REEXEC))
-+		restart_handler_register(&power->rst_reexec);
-+
-+	return 0;
-+}
-+
-+static __maybe_unused struct of_device_id sandbox_power_dt_ids[] = {
-+	{ .compatible = "barebox,sandbox-power" },
-+	{ /* sentinel */ }
-+};
-+
-+static struct driver_d sandbox_power_drv = {
-+	.name  = "sandbox-power",
-+	.of_compatible = sandbox_power_dt_ids,
-+	.probe = sandbox_power_probe,
-+};
-+coredevice_platform_driver(sandbox_power_drv);
-diff --git a/arch/sandbox/board/poweroff.c b/arch/sandbox/board/poweroff.c
-deleted file mode 100644
-index 8ce739af72c1..000000000000
---- a/arch/sandbox/board/poweroff.c
-+++ /dev/null
-@@ -1,42 +0,0 @@
--#include <common.h>
--#include <init.h>
--#include <poweroff.h>
--#include <restart.h>
--#include <mach/linux.h>
--
--static void sandbox_poweroff(struct poweroff_handler *poweroff)
--{
--	linux_exit();
--}
--
--static void sandbox_rst_hang(struct restart_handler *rst)
--{
--	linux_hang();
--}
--
--static struct restart_handler rst_hang = {
--	.name = "hang",
--	.restart = sandbox_rst_hang
--};
--
--static void sandbox_rst_reexec(struct restart_handler *rst)
--{
--	linux_reexec();
--}
--
--static struct restart_handler rst_reexec = {
--	.name = "reexec", .priority = 200,
--	.restart = sandbox_rst_reexec,
--};
--
--static int poweroff_register_feature(void)
--{
--	poweroff_handler_register_fn(sandbox_poweroff);
--	restart_handler_register(&rst_hang);
--
--	if (IS_ENABLED(CONFIG_SANDBOX_REEXEC))
--		restart_handler_register(&rst_reexec);
--
--	return 0;
--}
--coredevice_initcall(poweroff_register_feature);
-diff --git a/arch/sandbox/dts/sandbox.dts b/arch/sandbox/dts/sandbox.dts
-index afca02d41014..d32999292eb3 100644
---- a/arch/sandbox/dts/sandbox.dts
-+++ b/arch/sandbox/dts/sandbox.dts
-@@ -37,4 +37,8 @@
- 			};
- 		};
- 	};
-+
-+	power {
-+		compatible = "barebox,sandbox-power";
-+	};
- };
+diff --git a/arch/sandbox/configs/sandbox_defconfig b/arch/sandbox/configs/sandbox_defconfig
+index c343f053faff..ca24d81acac7 100644
+--- a/arch/sandbox/configs/sandbox_defconfig
++++ b/arch/sandbox/configs/sandbox_defconfig
+@@ -2,20 +2,34 @@ CONFIG_HUSH_FANCY_PROMPT=y
+ CONFIG_CMDLINE_EDITING=y
+ CONFIG_AUTO_COMPLETE=y
+ CONFIG_MENU=y
++CONFIG_CONSOLE_ALLOW_COLOR=y
+ CONFIG_PARTITION=y
++CONFIG_PARTITION_DISK_EFI=y
+ CONFIG_DEFAULT_COMPRESSION_GZIP=y
+ CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_REBOOT_MODE=y
+ CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/sandbox/board/env"
++CONFIG_STATE=y
++CONFIG_STATE_CRYPTO=y
++CONFIG_RESET_SOURCE=y
+ CONFIG_CMD_DMESG=y
+ CONFIG_LONGHELP=y
++CONFIG_CMD_IOMEM=y
+ CONFIG_CMD_IMD=y
+ CONFIG_CMD_MEMINFO=y
+-# CONFIG_CMD_BOOTM is not set
++CONFIG_CMD_POLLER=y
++CONFIG_CMD_SLICE=y
+ CONFIG_CMD_GO=y
++CONFIG_CMD_LOADB=y
++CONFIG_CMD_LOADS=y
++CONFIG_CMD_LOADY=y
++CONFIG_CMD_RESET=y
++CONFIG_CMD_SAVES=y
+ CONFIG_CMD_UIMAGE=y
+ CONFIG_CMD_PARTITION=y
+ CONFIG_CMD_EXPORT=y
+ CONFIG_CMD_DEFAULTENV=y
++CONFIG_CMD_LOADENV=y
+ CONFIG_CMD_PRINTENV=y
+ CONFIG_CMD_MAGICVAR=y
+ CONFIG_CMD_MAGICVAR_HELP=y
+@@ -39,14 +53,18 @@ CONFIG_CMD_PING=y
+ CONFIG_CMD_TFTP=y
+ CONFIG_CMD_ECHO_E=y
+ CONFIG_CMD_EDIT=y
++CONFIG_CMD_LOGIN=y
+ CONFIG_CMD_MENU=y
+ CONFIG_CMD_MENU_MANAGEMENT=y
+ CONFIG_CMD_MENUTREE=y
++CONFIG_CMD_PASSWD=y
+ CONFIG_CMD_SPLASH=y
++CONFIG_CMD_FBTEST=y
+ CONFIG_CMD_READLINE=y
+ CONFIG_CMD_TIMEOUT=y
+ CONFIG_CMD_CRC=y
+ CONFIG_CMD_CRC_CMP=y
++CONFIG_CMD_MEMTEST=y
+ CONFIG_CMD_MM=y
+ CONFIG_CMD_DETECT=y
+ CONFIG_CMD_FLASH=y
+@@ -56,18 +74,31 @@ CONFIG_CMD_LED=y
+ CONFIG_CMD_POWEROFF=y
+ CONFIG_CMD_SPI=y
+ CONFIG_CMD_LED_TRIGGER=y
++CONFIG_CMD_WD=y
+ CONFIG_CMD_2048=y
++CONFIG_CMD_KEYSTORE=y
++CONFIG_CMD_LINUX_EXEC=y
++CONFIG_CMD_OF_DIFF=y
+ CONFIG_CMD_OF_NODE=y
+ CONFIG_CMD_OF_PROPERTY=y
+ CONFIG_CMD_OF_DISPLAY_TIMINGS=y
++CONFIG_CMD_OF_FIXUP_STATUS=y
++CONFIG_CMD_OF_OVERLAY=y
+ CONFIG_CMD_OFTREE=y
+ CONFIG_CMD_TIME=y
++CONFIG_CMD_STATE=y
++CONFIG_CMD_DHRYSTONE=y
+ CONFIG_CMD_SPD_DECODE=y
++CONFIG_CMD_SEED=y
+ CONFIG_NET=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_NETCONSOLE=y
++CONFIG_NET_SNTP=y
++CONFIG_NET_FASTBOOT=y
+ CONFIG_OFDEVICE=y
+ CONFIG_OF_BAREBOX_DRIVERS=y
++CONFIG_OF_BAREBOX_ENV_IN_FS=y
++CONFIG_OF_OVERLAY_LIVE=y
+ CONFIG_DRIVER_NET_TAP=y
+ CONFIG_DRIVER_SPI_GPIO=y
+ CONFIG_I2C=y
+@@ -76,6 +107,9 @@ CONFIG_MTD=y
+ CONFIG_MTD_M25P80=y
+ CONFIG_VIDEO=y
+ CONFIG_FRAMEBUFFER_CONSOLE=y
++CONFIG_MFD_SYSCON=y
++CONFIG_STATE_DRV=y
++CONFIG_UBOOTVAR=y
+ CONFIG_LED=y
+ CONFIG_LED_GPIO=y
+ CONFIG_LED_GPIO_OF=y
+@@ -84,9 +118,12 @@ CONFIG_LED_GPIO_BICOLOR=y
+ CONFIG_LED_TRIGGERS=y
+ CONFIG_EEPROM_AT25=y
+ CONFIG_EEPROM_AT24=y
++CONFIG_WATCHDOG=y
++CONFIG_WATCHDOG_POLLER=y
+ # CONFIG_PINCTRL is not set
+ CONFIG_RTC_CLASS=y
+ CONFIG_RTC_DRV_DS1307=y
++CONFIG_SYSCON_REBOOT_MODE=y
+ CONFIG_FS_CRAMFS=y
+ CONFIG_FS_EXT4=y
+ CONFIG_FS_TFTP=y
+@@ -94,12 +131,17 @@ CONFIG_FS_NFS=y
+ CONFIG_FS_FAT=y
+ CONFIG_FS_FAT_WRITE=y
+ CONFIG_FS_FAT_LFN=y
++CONFIG_FS_JFFS2=y
+ CONFIG_FS_BPKFS=y
+ CONFIG_FS_UIMAGEFS=y
++CONFIG_FS_PSTORE=y
++CONFIG_FS_PSTORE_CONSOLE=y
+ CONFIG_FS_SQUASHFS=y
++CONFIG_FS_UBOOTVARFS=y
+ CONFIG_BZLIB=y
+ CONFIG_LZ4_DECOMPRESS=y
+ CONFIG_XZ_DECOMPRESS=y
++CONFIG_BASE64=y
+ CONFIG_LZO_DECOMPRESS=y
+ CONFIG_BMP=y
+ CONFIG_PNG=y
+@@ -112,4 +154,3 @@ CONFIG_BAREBOX_LOGO_240=y
+ CONFIG_BAREBOX_LOGO_320=y
+ CONFIG_BAREBOX_LOGO_400=y
+ CONFIG_BAREBOX_LOGO_640=y
+-CONFIG_DIGEST_HMAC_GENERIC=y
 -- 
 2.28.0
 
