@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kRwhU-0007pr-PN
- for barebox@lists.infradead.org; Mon, 12 Oct 2020 12:13:13 +0000
-Date: Mon, 12 Oct 2020 14:13:11 +0200
+ id 1kRwkX-0008FH-GA
+ for barebox@lists.infradead.org; Mon, 12 Oct 2020 12:16:22 +0000
+Date: Mon, 12 Oct 2020 14:16:20 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201012121311.GC11648@pengutronix.de>
-References: <20201011094402.551050-1-ahmad@a3f.at>
+Message-ID: <20201012121620.GD11648@pengutronix.de>
+References: <20201011214742.697502-1-ahmad@a3f.at>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201011094402.551050-1-ahmad@a3f.at>
+In-Reply-To: <20201011214742.697502-1-ahmad@a3f.at>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,68 +22,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH master v2] logo: Makefile: fix Inkscape >= v1.0 Wayland
- GUI opening on LOGO.S
+Subject: Re: [PATCH] logo: Makefile: fix indentation of LOGO.S in quiet output
 To: Ahmad Fatoum <ahmad@a3f.at>
 Cc: barebox@lists.infradead.org
 
-On Sun, Oct 11, 2020 at 11:44:03AM +0200, Ahmad Fatoum wrote:
-> DISPLAY="" only affects X11 windows. Building sandbox_defconfig under
-> Wayland will still result in annoying Inkscape windows being opened.
+On Sun, Oct 11, 2020 at 11:47:42PM +0200, Ahmad Fatoum wrote:
+> Output currently looks like this:
 > 
-> This happens due to $(call try-run, inkscape -z,-z). Inkscape v1.0
-> deprecates -z and it's without an effect, so Inkscape will try
-> to create a window, which failed under x11, but succeeded under Wayland.
+>   CC      commands/printenv.o
+>   LOGO.S   lib/logo/barebox-logo-w64.bblogo
+>   CC      arch/sandbox/board/devices.o
 > 
-> Fix this by always testing -z and -e together. We don't need one or
-> the other anyway, because Inkscape v1.0, which supports neither,
-> already uses no GUI for --export-type=png.
-> 
-> This makes DISPLAY="" unnecessary. So just drop it.
-> 
-> Tested working on Inkscape 1.0.1 and 0.92.4.
+> Drop one space, so it's aligned with the usual two letter prefixes.
 > 
 > Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 > ---
-> Cc: Antony Pavlov <antonynpavlov@gmail.com>
-> 
-> v1 -> v2:
->   - --shell behavior differs between v0.* and v1.* and it resulted in
->     broken images on v1.*
-> ---
->  lib/logo/Makefile | 8 +++-----
->  1 file changed, 3 insertions(+), 5 deletions(-)
+>  lib/logo/Makefile | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-And replaced with v2.
+Applied, thanks
 
 Sascha
 
 > 
 > diff --git a/lib/logo/Makefile b/lib/logo/Makefile
-> index bf700da89b03..3d0f1c24c640 100644
+> index 3d0f1c24c640..4149d4ff6c0c 100644
 > --- a/lib/logo/Makefile
 > +++ b/lib/logo/Makefile
-> @@ -38,17 +38,15 @@ cmd_logo_S =							\
->  %.bblogo.S: %.bblogo FORCE
->  	$(call if_changed,logo_S)
+> @@ -21,7 +21,7 @@ extra-y += $(patsubst %,%.bblogo.o,$(bblogo-y))
 >  
-> -# Inkscape 0.92.4 supports -z but Inkscape 1.0 doesn't
-> -INKSCAPEOPTS += $(call try-run, inkscape -z,-z,)
-> -# Inkscape 0.92.4 uses -e but Inkscape 1.0 uses --export-type=png
-> -INKSCAPEOPTS += $(call try-run, inkscape -e -,-e -,--export-type=png)
-> +# Inkscape 0.92.4 supports -z -e but Inkscape 1.0 uses --export-type=png
-> +INKSCAPEOPTS += $(call try-run, inkscape -z -e -,-z -e -,--export-type=png)
+>  obj-$(CONFIG_BAREBOX_LOGO) += logo.o
+>  
+> -quiet_cmd_logo_S = LOGO.S   $@
+> +quiet_cmd_logo_S = LOGO.S  $@
+>  cmd_logo_S =							\
+>  (								\
+>  	echo '\#include <asm-generic/barebox.lds.h>';		\
+> @@ -43,7 +43,7 @@ INKSCAPEOPTS += $(call try-run, inkscape -z -e -,-z -e -,--export-type=png)
 >  # Inkscape 1.0 supports -o -
 >  INKSCAPEOPTS += $(call try-run, inkscape -o -,-o -,)
 >  
->  quiet_cmd_logo = LOGO.S   $@
+> -quiet_cmd_logo = LOGO.S   $@
+> +quiet_cmd_logo = LOGO.S  $@
 >  cmd_logo =							\
 >  (								\
-> -	DISPLAY="" inkscape $(OPTS_$(@F)) $(INKSCAPEOPTS) $< > $@; \
-> +	inkscape $(OPTS_$(@F)) $(INKSCAPEOPTS) $< > $@; \
->  )
->  
->  %.bblogo: $(srctree)/Documentation/barebox.svg FORCE
+>  	inkscape $(OPTS_$(@F)) $(INKSCAPEOPTS) $< > $@; \
 > -- 
 > 2.28.0
 > 
