@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kRrHw-0005RA-9P
+ id 1kRrHw-0005R9-9R
  for barebox@lists.infradead.org; Mon, 12 Oct 2020 06:26:31 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 12 Oct 2020 08:26:12 +0200
-Message-Id: <20201012062619.20400-5-a.fatoum@pengutronix.de>
+Date: Mon, 12 Oct 2020 08:26:09 +0200
+Message-Id: <20201012062619.20400-2-a.fatoum@pengutronix.de>
 In-Reply-To: <20201012062619.20400-1-a.fatoum@pengutronix.de>
 References: <20201012062619.20400-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,160 +21,137 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 05/12] sandbox: hostfile: maintain created temp files over
- reset
+Subject: [PATCH v2 02/12] of: implement of_property_read_u64_array
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Currently, hostfils without a barebox,filename are assigned a new
-temporary file on every start.
-
-For use of a hostfile syscon for reboot mode or reset source, we will
-need to persist the changes over a regular reset. This can easily be
-done by passing through all automatically created temporary file with
-an explicit --image option on subsequent runs. Do so.
+For reading reg with #address-cells and #size-cells of 2,
+an of_property_read_u64_array can be quite convenient.
+Add one.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
-v1 -> v2:
-  split anonymous hostfiles commit into two: one for temp files creation
-  and another for maintaining them over resets. They were squashed by
-  mistake.
+v1 -> v2: no changes
 ---
- arch/sandbox/Makefile         |  2 +-
- arch/sandbox/board/hostfile.c | 10 +++++++++-
- arch/sandbox/os/common.c      | 36 ++++++++++++++++++++++++++++-------
- 3 files changed, 39 insertions(+), 9 deletions(-)
+ drivers/of/base.c | 37 +++++++++++++++++++++++++++++++++++++
+ include/of.h      | 42 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 79 insertions(+)
 
-diff --git a/arch/sandbox/Makefile b/arch/sandbox/Makefile
-index 23832e6b2fc2..17f9a298d773 100644
---- a/arch/sandbox/Makefile
-+++ b/arch/sandbox/Makefile
-@@ -24,7 +24,7 @@ KBUILD_CFLAGS += -Dmalloc=barebox_malloc -Dcalloc=barebox_calloc \
- 		-Dgetenv=barebox_getenv -Dprintf=barebox_printf \
- 		-Dglob=barebox_glob -Dglobfree=barebox_globfree \
- 		-Dioctl=barebox_ioctl -Dfstat=barebox_fstat \
--		-Dftruncate=barebox_ftruncate \
-+		-Dftruncate=barebox_ftruncate -Dasprintf=barebox_asprintf \
- 		-Dopendir=barebox_opendir -Dreaddir=barebox_readdir \
- 		-Dclosedir=barebox_closedir -Dreadlink=barebox_readlink \
- 		-Doptarg=barebox_optarg -Doptind=barebox_optind
-diff --git a/arch/sandbox/board/hostfile.c b/arch/sandbox/board/hostfile.c
-index 2d4e5d55eae0..e3e38b7119d5 100644
---- a/arch/sandbox/board/hostfile.c
-+++ b/arch/sandbox/board/hostfile.c
-@@ -191,14 +191,22 @@ static int of_hostfile_fixup(struct device_node *root, void *ctx)
- {
- 	struct hf_info *hf = ctx;
- 	struct device_node *node;
-+	bool name_only = false;
- 	int ret;
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index f5aad268b2d0..5b45c2023f3b 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -893,6 +893,43 @@ int of_property_read_u64(const struct device_node *np, const char *propname,
+ }
+ EXPORT_SYMBOL_GPL(of_property_read_u64);
  
--	node = of_new_node(root, hf->devname);
-+	node = of_get_child_by_name(root, hf->devname);
-+	if (node)
-+		name_only = true;
-+	else
-+		node = of_new_node(root, hf->devname);
- 
- 	ret = of_property_write_string(node, "barebox,filename", hf->filename);
- 	if (ret)
- 		return ret;
- 
-+	if (name_only)
-+		return 0;
++/**
++ * of_property_read_u64_array - Find and read an array of 64 bit integers
++ * from a property.
++ *
++ * @np:		device node from which the property value is to be read.
++ * @propname:	name of the property to be searched.
++ * @out_value:	pointer to return value, modified only if return value is 0.
++ * @sz:		number of array elements to read
++ *
++ * Search for a property in a device node and read 64-bit value(s) from
++ * it. Returns 0 on success, -EINVAL if the property does not exist,
++ * -ENODATA if property does not have a value, and -EOVERFLOW if the
++ * property data isn't large enough.
++ *
++ * The out_value is modified only if a valid u64 value can be decoded.
++ */
++int of_property_read_variable_u64_array(const struct device_node *np,
++			       const char *propname, u64 *out_values,
++			       size_t sz)
++{
++	size_t count;
++	const __be32 *val = of_find_property_value_of_size(np, propname,
++						(sz * sizeof(*out_values)));
 +
- 	ret = of_property_write_string(node, "compatible", hostfile_dt_ids->compatible);
- 	if (ret)
- 		return ret;
-diff --git a/arch/sandbox/os/common.c b/arch/sandbox/os/common.c
-index 5326df4891c9..54d2b97b4af7 100644
---- a/arch/sandbox/os/common.c
-+++ b/arch/sandbox/os/common.c
-@@ -19,6 +19,7 @@
-  * These are host includes. Never include any barebox header
-  * files here...
-  */
-+#define _GNU_SOURCE
- #include <stdio.h>
- #include <stdlib.h>
- #include <stdint.h>
-@@ -124,6 +125,7 @@ void __attribute__((noreturn)) linux_exit(void)
- 	exit(0);
++	if (IS_ERR(val))
++		return PTR_ERR(val);
++
++	count = sz;
++	while (count--) {
++		*out_values++ = of_read_number(val, 2);
++		val += 2;
++	}
++
++	return sz;
++}
++EXPORT_SYMBOL_GPL(of_property_read_variable_u64_array);
++
+ /**
+  * of_property_read_string - Find and read a string from a property
+  * @np:		device node from which the property value is to be read.
+diff --git a/include/of.h b/include/of.h
+index d5947fbaab56..d87eeff738e8 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -201,6 +201,11 @@ extern int of_property_read_u32_array(const struct device_node *np,
+ extern int of_property_read_u64(const struct device_node *np,
+ 				const char *propname, u64 *out_value);
+ 
++extern int of_property_read_variable_u64_array(const struct device_node *np,
++					const char *propname,
++					u64 *out_values,
++					size_t sz);
++
+ extern int of_property_read_string(struct device_node *np,
+ 				   const char *propname,
+ 				   const char **out_string);
+@@ -469,6 +474,15 @@ static inline int of_property_read_u64(const struct device_node *np,
+ 	return -ENOSYS;
  }
  
-+static size_t saved_argv_len;
- static char **saved_argv;
- 
- void linux_reexec(void)
-@@ -296,16 +298,25 @@ int linux_open_hostfile(struct hf_info *hf)
- 	struct stat s;
- 	int fd;
- 
--	printf("add %s backed by file %s%s\n", hf->devname,
--	       hf->filename, hf->is_readonly ? "(ro)" : "");
-+	printf("add %s %sbacked by file %s%s\n", hf->devname,
-+	       hf->filename ? "" : "initially un", hf->filename ?: "",
-+	       hf->is_readonly ? "(ro)" : "");
- 
- 	if (hf->filename) {
- 		fd = hf->fd = open(hf->filename, (hf->is_readonly ? O_RDONLY : O_RDWR) | O_CLOEXEC);
- 	} else {
--		buf = strdup("/tmp/barebox-hostfileXXXXXX");
-+		char *filename;
- 		int ret;
- 
--		fd = hf->fd = mkstemp(buf);
-+		ret = asprintf(&buf, "--image=%s=/tmp/barebox-hostfileXXXXXX", hf->devname);
-+		if (ret < 0) {
-+			perror("asprintf");
-+			goto err_out;
-+		}
++static inline int of_property_read_variable_u64_array(const struct device_node *np,
++					const char *propname,
++					u64 *out_values,
++					size_t sz_min,
++					size_t sz_max)
++{
++	return -ENOSYS;
++}
 +
-+		filename = buf + strlen("--image==") + strlen(hf->devname);
+ static inline int of_property_read_string(struct device_node *np,
+ 				const char *propname, const char **out_string)
+ {
+@@ -881,6 +895,34 @@ static inline int of_property_read_u32(const struct device_node *np,
+ 	return of_property_read_u32_array(np, propname, out_value, 1);
+ }
+ 
++/**
++ * of_property_read_u64_array - Find and read an array of 64 bit integers
++ * from a property.
++ *
++ * @np:		device node from which the property value is to be read.
++ * @propname:	name of the property to be searched.
++ * @out_values:	pointer to return value, modified only if return value is 0.
++ * @sz:		number of array elements to read
++ *
++ * Search for a property in a device node and read 64-bit value(s) from
++ * it. Returns 0 on success, -EINVAL if the property does not exist,
++ * -ENODATA if property does not have a value, and -EOVERFLOW if the
++ * property data isn't large enough.
++ *
++ * The out_values is modified only if a valid u64 value can be decoded.
++ */
++static inline int of_property_read_u64_array(const struct device_node *np,
++					     const char *propname,
++					     u64 *out_values, size_t sz)
++{
++	int ret = of_property_read_variable_u64_array(np, propname, out_values,
++						      sz);
++	if (ret >= 0)
++		return 0;
++	else
++		return ret;
++}
 +
-+		fd = hf->fd = mkstemp(filename);
- 		if (fd >= 0) {
- 			ret = fcntl(fd, F_SETFD, FD_CLOEXEC);
- 			if (ret < 0) {
-@@ -319,7 +330,14 @@ int linux_open_hostfile(struct hf_info *hf)
- 				goto err_out;
- 			}
- 
--			hf->filename = buf;
-+			hf->filename = filename;
-+
-+			saved_argv = realloc(saved_argv,
-+					     ++saved_argv_len * sizeof(*saved_argv));
-+			if (!saved_argv)
-+				exit(1);
-+			saved_argv[saved_argv_len - 2] = buf;
-+			saved_argv[saved_argv_len - 1] = NULL;
- 		}
- 	}
- 
-@@ -437,8 +455,6 @@ int main(int argc, char *argv[])
- 	__sanitizer_set_death_callback(cookmode);
- #endif
- 
--	saved_argv = argv;
--
- 	while (1) {
- 		option_index = 0;
- 		opt = getopt_long(argc, argv, optstring,
-@@ -476,6 +492,12 @@ int main(int argc, char *argv[])
- 		}
- 	}
- 
-+	saved_argv_len = argc + 1;
-+	saved_argv = calloc(saved_argv_len, sizeof(*saved_argv));
-+	if (!saved_argv)
-+		exit(1);
-+	memcpy(saved_argv, argv, saved_argv_len * sizeof(*saved_argv));
-+
- 	ram = malloc(malloc_size);
- 	if (!ram) {
- 		printf("unable to get malloc space\n");
+ /*
+  * struct property *prop;
+  * const __be32 *p;
 -- 
 2.28.0
 
