@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from magratgarlick.emantor.de ([2a01:4f8:c17:c88::2])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kRyw6-0003hR-QR
- for barebox@lists.infradead.org; Mon, 12 Oct 2020 14:36:27 +0000
-Date: Mon, 12 Oct 2020 16:36:24 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201012143624.GF11648@pengutronix.de>
-References: <20201012062619.20400-1-a.fatoum@pengutronix.de>
+ id 1kSFDb-0004kT-J6
+ for barebox@lists.infradead.org; Tue, 13 Oct 2020 07:59:36 +0000
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Tue, 13 Oct 2020 09:59:25 +0200
+Message-Id: <20201013075925.2984-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201012062619.20400-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,90 +19,91 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 01/12] sandbox: dts: retire skeleton.dtsi
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] console: add new write-only option
+To: barebox@lists.infradead.org
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-On Mon, Oct 12, 2020 at 08:26:08AM +0200, Ahmad Fatoum wrote:
-> Follow up commits will flesh out the sandbox.dts and make most of what's
-> in the skeleton.dtsi redundant. Merge the .dtsi with the .dts to have
-> all the code at one place.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
-> v1 -> v2: no changes
-> ---
->  arch/sandbox/dts/sandbox.dts   | 16 ++++++++++++++--
->  arch/sandbox/dts/skeleton.dtsi | 13 -------------
->  2 files changed, 14 insertions(+), 15 deletions(-)
->  delete mode 100644 arch/sandbox/dts/skeleton.dtsi
+Add CONFIG_CONSOLE_WRITEONLY to configure the consoles as write-only,
+making the bootup effectively non-interactive.
 
-Applied, thanks
+Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+---
+ common/Kconfig          | 11 +++++++++++
+ common/console.c        |  2 +-
+ common/console_simple.c |  5 ++++-
+ common/startup.c        |  5 +++++
+ 4 files changed, 21 insertions(+), 2 deletions(-)
 
-Sascha
-
-> 
-> diff --git a/arch/sandbox/dts/sandbox.dts b/arch/sandbox/dts/sandbox.dts
-> index 4576e873d9cb..b3327837a38a 100644
-> --- a/arch/sandbox/dts/sandbox.dts
-> +++ b/arch/sandbox/dts/sandbox.dts
-> @@ -1,8 +1,20 @@
->  /dts-v1/;
->  
-> -#include "skeleton.dtsi"
-> -
->  / {
->  	model = "Sandbox";
->  	compatible = "barebox,sandbox";
-> +
-> +	#address-cells = <2>;
-> +	#size-cells = <2>;
-> +
-> +	aliases {
-> +	};
-> +
-> +	chosen {
-> +	};
-> +
-> +	memory {
-> +		device_type = "memory";
-> +		reg = <0 0 0 0>;
-> +	};
->  };
-> diff --git a/arch/sandbox/dts/skeleton.dtsi b/arch/sandbox/dts/skeleton.dtsi
-> deleted file mode 100644
-> index 8ba7663eb5c0..000000000000
-> --- a/arch/sandbox/dts/skeleton.dtsi
-> +++ /dev/null
-> @@ -1,13 +0,0 @@
-> -/*
-> - * Skeleton device tree; the bare minimum needed to boot; just include and
-> - * add a compatible value.  The bootloader will typically populate the memory
-> - * node.
-> - */
-> -
-> -/ {
-> -	#address-cells = <2>;
-> -	#size-cells = <2>;
-> -	chosen { };
-> -	aliases { };
-> -	memory { device_type = "memory"; reg = <0 0 0 0>; };
-> -};
-> -- 
-> 2.28.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/common/Kconfig b/common/Kconfig
+index 1a5bb53182..abf9b7bd73 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -775,6 +775,17 @@ config CONSOLE_ALLOW_COLOR
+ 	  compile time default for colored console output. After boot it
+ 	  can be controlled using global.allow_color.
+ 
++config CONSOLE_WRITEONLY
++	prompt "Enable writeonly consoles (non-interactive)"
++	depends on CONSOLE_FULL || CONSOLE_SIMPLE
++	bool
++	help
++	  If enabled, all consoles are configured to be write-only, meaning
++	  they will not read any input, making the console effectively
++	  non-interactive.
++	  CAUTION: this will also disable input devices, since they are registered as
++	  consoles.
++
+ config PBL_CONSOLE
+ 	depends on PBL_IMAGE
+ 	depends on !CONSOLE_NONE
+diff --git a/common/console.c b/common/console.c
+index 3375ecb7e5..fb26886f8c 100644
+--- a/common/console.c
++++ b/common/console.c
+@@ -93,7 +93,7 @@ int console_set_active(struct console_device *cdev, unsigned flag)
+ {
+ 	int ret;
+ 
+-	if (!cdev->getc)
++	if (!cdev->getc || IS_ENABLED(CONFIG_CONSOLE_WRITEONLY))
+ 		flag &= ~CONSOLE_STDIN;
+ 	if (!cdev->putc)
+ 		flag &= ~(CONSOLE_STDOUT | CONSOLE_STDERR);
+diff --git a/common/console_simple.c b/common/console_simple.c
+index 42224842c5..75257c7b08 100644
+--- a/common/console_simple.c
++++ b/common/console_simple.c
+@@ -92,7 +92,10 @@ int console_register(struct console_device *newcdev)
+ 		newcdev->setbrg(newcdev, newcdev->baudrate);
+ 	}
+ 
+-	newcdev->f_active = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR;
++	if (IS_ENABLED(CONFIG_CONSOLE_WRITEONLY))
++		newcdev->f_active = CONSOLE_STDOUT | CONSOLE_STDERR;
++	else
++		newcdev->f_active = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR;
+ 
+ 	barebox_banner();
+ 
+diff --git a/common/startup.c b/common/startup.c
+index ea7ce6b8da..d7bf99df14 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -253,6 +253,11 @@ enum autoboot_state do_autoboot_countdown(void)
+ 
+ 	menu_exists = stat(MENUFILE, &s) == 0;
+ 
++	if (IS_ENABLED(CONFIG_CONSOLE_WRITEONLY)) {
++		printf("\nNon-interactive console, booting system\n");
++		return autoboot_state = AUTOBOOT_BOOT;
++	}
++
+ 	if (menu_exists) {
+ 		printf("\nHit m for menu or %s to stop autoboot: ",
+ 		       global_autoboot_abort_keys[global_autoboot_abort_key]);
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.28.0
+
 
 _______________________________________________
 barebox mailing list
