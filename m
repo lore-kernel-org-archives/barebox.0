@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kQ9Cq-0008RD-KI
- for barebox@lists.infradead.org; Wed, 07 Oct 2020 13:10:10 +0000
+ id 1kSaFI-0006dP-TQ
+ for barebox@lists.infradead.org; Wed, 14 Oct 2020 06:27:05 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Wed,  7 Oct 2020 15:07:58 +0200
-Message-Id: <20201007130757.20185-2-r.czerwinski@pengutronix.de>
-In-Reply-To: <20201007130757.20185-1-r.czerwinski@pengutronix.de>
-References: <20201007130757.20185-1-r.czerwinski@pengutronix.de>
+Date: Wed, 14 Oct 2020 08:18:58 +0200
+Message-Id: <20201014061857.28101-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -17,13 +15,15 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============8251322405688798324=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/2] ARM: imx: Add Support for Webasto ccbv2
+Subject: [PATCH v3] ARM: imx: Add Support for Webasto ccbv2
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+
+--===============8251322405688798324==
+Content-Transfer-Encoding: 8bit
 
 Add support for the Webasto Common Communication Board Version 2. The
 device tree included with barebox can eventually be replaced with the
@@ -31,6 +31,13 @@ required barebox changes when the ccbv2 device tree is upstream.
 
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
+v2 ��� v3:
+- Added SPDX license identifier to the flash header
+- Combined initcalls and moved to board driver
+- Removed unnecessary CONFIG_DEBUG_LL check
+- Added board to defconfig and tested defconfig compilation
+
+v1 ��� v2:
 This should address all comments from the previous patch series,
 thanks to Sascha, Ahmad and Roland for the review.
 - Barebox should now correctly chainload if early OP-TEE was loaded
@@ -42,10 +49,11 @@ thanks to Sascha, Ahmad and Roland for the review.
 
  arch/arm/boards/Makefile                      |   1 +
  arch/arm/boards/webasto-ccbv2/Makefile        |   2 +
- arch/arm/boards/webasto-ccbv2/board.c         |  58 +++
+ arch/arm/boards/webasto-ccbv2/board.c         |  59 +++
  arch/arm/boards/webasto-ccbv2/ccbv2.h         |  15 +
- .../flash-header-imx6ul-webasto-ccbv2.imxcfg  |  87 ++++
- arch/arm/boards/webasto-ccbv2/lowlevel.c      |  75 +++
+ .../flash-header-imx6ul-webasto-ccbv2.imxcfg  |  88 ++++
+ arch/arm/boards/webasto-ccbv2/lowlevel.c      |  74 +++
+ arch/arm/configs/imx_v7_defconfig             |   1 +
  arch/arm/dts/Makefile                         |   1 +
  arch/arm/dts/imx6ul-webasto-ccbv2.dts         | 120 +++++
  arch/arm/dts/imx6ul-webasto-ccbv2.dtsi        | 469 ++++++++++++++++++
@@ -55,7 +63,7 @@ thanks to Sascha, Ahmad and Roland for the review.
  firmware/Kconfig                              |   5 +
  firmware/Makefile                             |   2 +
  images/Makefile.imx                           |   2 +
- 15 files changed, 844 insertions(+), 1 deletion(-)
+ 16 files changed, 846 insertions(+), 1 deletion(-)
  create mode 100644 arch/arm/boards/webasto-ccbv2/Makefile
  create mode 100644 arch/arm/boards/webasto-ccbv2/board.c
  create mode 100644 arch/arm/boards/webasto-ccbv2/ccbv2.h
@@ -65,7 +73,7 @@ thanks to Sascha, Ahmad and Roland for the review.
  create mode 100644 arch/arm/dts/imx6ul-webasto-ccbv2.dtsi
 
 diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-index 986ea7a983..5438236af4 100644
+index 9183da684b..a02d80d2da 100644
 --- a/arch/arm/boards/Makefile
 +++ b/arch/arm/boards/Makefile
 @@ -165,6 +165,7 @@ obj-$(CONFIG_MACH_VARISCITE_MX6)		+= variscite-mx6/
@@ -86,10 +94,10 @@ index 0000000000..01c7a259e9
 +lwl-y += lowlevel.o
 diff --git a/arch/arm/boards/webasto-ccbv2/board.c b/arch/arm/boards/webasto-ccbv2/board.c
 new file mode 100644
-index 0000000000..4a1e472c3a
+index 0000000000..a78258ea6a
 --- /dev/null
 +++ b/arch/arm/boards/webasto-ccbv2/board.c
-@@ -0,0 +1,58 @@
+@@ -0,0 +1,59 @@
 +// SPDX-License-Identifier: GPL-2.0-or-later
 +/*
 + * Copyright (C) 2019 Rouven Czerwinski, Pengutronix
@@ -104,10 +112,11 @@ index 0000000000..4a1e472c3a
 +
 +#include "ccbv2.h"
 +
-+static int ccbv2_device_init(void)
++static int ccbv2_probe(struct device_d *dev)
 +{
-+	if (!of_machine_is_compatible("webasto,imx6ul-ccbv2"))
-+		return 0;
++	struct device_node *overlay;
++	struct fdt_header *fdt;
++	int ret;
 +
 +	/* the bootloader is stored in one of the two boot partitions */
 +	imx6_bbu_internal_mmcboot_register_handler("emmc", "/dev/mmc1",
@@ -115,19 +124,7 @@ index 0000000000..4a1e472c3a
 +
 +	barebox_set_hostname("weabsto-ccbv2");
 +
-+	return 0;
-+
-+}
-+device_initcall(ccbv2_device_init);
-+
-+static int ccbv2_apply_overlay(void)
-+{
-+	struct device_node *overlay;
-+	struct fdt_header *fdt;
-+	int ret;
-+
-+	if(!IS_ENABLED(CONFIG_FIRMWARE_CCBV2_OPTEE)
-+	   || !of_machine_is_compatible("webasto,imx6ul-ccbv2"))
++	if(!IS_ENABLED(CONFIG_FIRMWARE_CCBV2_OPTEE))
 +		return 0;
 +
 +	fdt = (void*)OPTEE_OVERLAY_LOCATION;
@@ -146,8 +143,20 @@ index 0000000000..4a1e472c3a
 +err:
 +	of_delete_node(overlay);
 +	return ret;
++
 +}
-+device_initcall(ccbv2_apply_overlay);
++
++static const struct of_device_id ccbv2_of_match[] = {
++	{ .compatible = "webasto,imx6ul-ccbv2" },
++	{ /* sentinel */ },
++};
++
++static struct driver_d ccbv2_board_driver = {
++	.name = "board-imx6ul-ccbv2",
++	.probe = ccbv2_probe,
++	.of_compatible = ccbv2_of_match,
++};
++postcore_platform_driver(ccbv2_board_driver);
 diff --git a/arch/arm/boards/webasto-ccbv2/ccbv2.h b/arch/arm/boards/webasto-ccbv2/ccbv2.h
 new file mode 100644
 index 0000000000..bf43fe8410
@@ -171,10 +180,11 @@ index 0000000000..bf43fe8410
 +#endif // __CCBV2_H_
 diff --git a/arch/arm/boards/webasto-ccbv2/flash-header-imx6ul-webasto-ccbv2.imxcfg b/arch/arm/boards/webasto-ccbv2/flash-header-imx6ul-webasto-ccbv2.imxcfg
 new file mode 100644
-index 0000000000..a464d2fcbb
+index 0000000000..ea327b2630
 --- /dev/null
 +++ b/arch/arm/boards/webasto-ccbv2/flash-header-imx6ul-webasto-ccbv2.imxcfg
-@@ -0,0 +1,87 @@
+@@ -0,0 +1,88 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
 +loadaddr 0x80000000
 +soc imx6
 +ivtofs 0x400
@@ -264,10 +274,10 @@ index 0000000000..a464d2fcbb
 +#include <mach/habv4-imx6-gencsf.h>
 diff --git a/arch/arm/boards/webasto-ccbv2/lowlevel.c b/arch/arm/boards/webasto-ccbv2/lowlevel.c
 new file mode 100644
-index 0000000000..64c4a4c840
+index 0000000000..8529ea3735
 --- /dev/null
 +++ b/arch/arm/boards/webasto-ccbv2/lowlevel.c
-@@ -0,0 +1,75 @@
+@@ -0,0 +1,74 @@
 +// SPDX-License-Identifier: GPL-2.0-or-later
 +/*
 + * Copyright (C) 2019 Rouven Czerwinski, Pengutronix
@@ -298,8 +308,7 @@ index 0000000000..64c4a4c840
 +
 +	imx6_uart_setup((void *)MX6_UART7_BASE_ADDR);
 +
-+	if (IS_ENABLED(CONFIG_DEBUG_LL))
-+		putc_ll('>');
++	putc_ll('>');
 +
 +}
 +
@@ -343,11 +352,23 @@ index 0000000000..64c4a4c840
 +
 +	start_ccbv2(r0);
 +}
+diff --git a/arch/arm/configs/imx_v7_defconfig b/arch/arm/configs/imx_v7_defconfig
+index 5dcdff0638..16e109464b 100644
+--- a/arch/arm/configs/imx_v7_defconfig
++++ b/arch/arm/configs/imx_v7_defconfig
+@@ -37,6 +37,7 @@ CONFIG_MACH_GW_VENTANA=y
+ CONFIG_MACH_CM_FX6=y
+ CONFIG_MACH_ADVANTECH_ROM_742X=y
+ CONFIG_MACH_WARP7=y
++CONFIG_MACH_WEBASTO_CCBV2=y
+ CONFIG_MACH_VF610_TWR=y
+ CONFIG_MACH_ZII_RDU1=y
+ CONFIG_MACH_ZII_RDU2=y
 diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index af061bd292..c6f5646488 100644
+index fedcb0e29a..a1e0bb6a41 100644
 --- a/arch/arm/dts/Makefile
 +++ b/arch/arm/dts/Makefile
-@@ -138,6 +138,7 @@ lwl-$(CONFIG_MACH_VIRT2REAL) += virt2real.dtb.o
+@@ -139,6 +139,7 @@ lwl-$(CONFIG_MACH_VIRT2REAL) += virt2real.dtb.o
  lwl-$(CONFIG_MACH_VSCOM_BALTOS) += am335x-baltos-minimal.dtb.o
  lwl-$(CONFIG_MACH_WARP7) += imx7s-warp.dtb.o
  lwl-$(CONFIG_MACH_VF610_TWR) += vf610-twr.dtb.o
@@ -957,7 +978,7 @@ index 0000000000..829485de32
 +	};
 +};
 diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index 720fe874d7..6d8b7b9c4d 100644
+index 1ce1be2288..dd49537fd5 100644
 --- a/arch/arm/mach-imx/Kconfig
 +++ b/arch/arm/mach-imx/Kconfig
 @@ -578,6 +578,11 @@ config MACH_DIGI_CCIMX6ULSBCPRO
@@ -1025,10 +1046,10 @@ index 3d4b7fd935..0d1b445783 100644
  # leading /, it's relative to $(srctree).
  fwdir := $(subst $(quote),,$(CONFIG_EXTRA_FIRMWARE_DIR))
 diff --git a/images/Makefile.imx b/images/Makefile.imx
-index 3434a10e7c..d30d06451b 100644
+index a305b381c9..514db326bb 100644
 --- a/images/Makefile.imx
 +++ b/images/Makefile.imx
-@@ -362,6 +362,8 @@ $(call build_imx_habv4img, CONFIG_MACH_TECHNEXION_PICO_HOBBIT, start_imx6ul_pico
+@@ -364,6 +364,8 @@ $(call build_imx_habv4img, CONFIG_MACH_TECHNEXION_PICO_HOBBIT, start_imx6ul_pico
  
  $(call build_imx_habv4img, CONFIG_MACH_DIGI_CCIMX6ULSBCPRO, start_imx6ul_ccimx6ulsbcpro, digi-ccimx6ulsom/flash-header-imx6ul-ccimx6ulsbcpro, imx6ul-ccimx6ulsbcpro)
  
@@ -1041,7 +1062,16 @@ index 3434a10e7c..d30d06451b 100644
 2.28.0
 
 
+
+--===============8251322405688798324==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============8251322405688798324==--
