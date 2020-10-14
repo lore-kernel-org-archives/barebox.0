@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kSGQr-0003hI-V1
- for barebox@lists.infradead.org; Tue, 13 Oct 2020 09:17:22 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-References: <20201013075925.2984-1-r.czerwinski@pengutronix.de>
- <3932e119-2a87-3c74-fe9f-7d23dddf330b@pengutronix.de>
-Message-ID: <d212ad61-5bdb-2b7d-e84f-223798b9c177@pengutronix.de>
-Date: Tue, 13 Oct 2020 11:17:20 +0200
+ id 1kSaQw-0008Ki-O6
+ for barebox@lists.infradead.org; Wed, 14 Oct 2020 06:38:47 +0000
+Date: Wed, 14 Oct 2020 08:38:44 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20201014063844.GA13710@pengutronix.de>
+References: <1602576641-91939-1-git-send-email-c.tenruh@phytec.de>
 MIME-Version: 1.0
-In-Reply-To: <3932e119-2a87-3c74-fe9f-7d23dddf330b@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <1602576641-91939-1-git-send-email-c.tenruh@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,124 +22,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] console: add new write-only option
-To: Rouven Czerwinski <r.czerwinski@pengutronix.de>, barebox@lists.infradead.org
+Subject: Re: [PATCH] imx6ul/imx6ull: include imx6ul-phytec-state.dtsi and
+ enable state
+To: Cem Tenruh <c.tenruh@phytec.de>
+Cc: barebox@lists.infradead.org
 
-On 10/13/20 10:41 AM, Ahmad Fatoum wrote:
-> Hello,
-> 
-> On 10/13/20 9:59 AM, Rouven Czerwinski wrote:
->> Add CONFIG_CONSOLE_WRITEONLY to configure the consoles as write-only,
->> making the bootup effectively non-interactive.
->>
->> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
->> ---
->>  common/Kconfig          | 11 +++++++++++
->>  common/console.c        |  2 +-
->>  common/console_simple.c |  5 ++++-
->>  common/startup.c        |  5 +++++
->>  4 files changed, 21 insertions(+), 2 deletions(-)
->>
->> diff --git a/common/Kconfig b/common/Kconfig
->> index 1a5bb53182..abf9b7bd73 100644
->> --- a/common/Kconfig
->> +++ b/common/Kconfig
->> @@ -775,6 +775,17 @@ config CONSOLE_ALLOW_COLOR
->>  	  compile time default for colored console output. After boot it
->>  	  can be controlled using global.allow_color.
->>  
->> +config CONSOLE_WRITEONLY
->> +	prompt "Enable writeonly consoles (non-interactive)"
->> +	depends on CONSOLE_FULL || CONSOLE_SIMPLE
->> +	bool
->> +	help
->> +	  If enabled, all consoles are configured to be write-only, meaning
->> +	  they will not read any input, making the console effectively
->> +	  non-interactive.
->> +	  CAUTION: this will also disable input devices, since they are registered as
->> +	  consoles.
-> 
-> Did you consider having a serialX.input device parameter instead?
+On Tue, Oct 13, 2020 at 10:10:41AM +0200, Cem Tenruh wrote:
+> Signed-off-by: Cem Tenruh <c.tenruh@phytec.de>
+> ---
+>  arch/arm/dts/imx6ul-phytec-phycore-som-emmc.dts  | 5 +++++
+>  arch/arm/dts/imx6ull-phytec-phycore-som-emmc.dts | 5 +++++
+>  2 files changed, 10 insertions(+)
 
-Oh, we already have serialN.active, which can be set selectively
-configured to enable/disable input. Would be great if this still
-can be used on top of this new Kconfig option to selectively enable.
+Applied, thanks
 
-> That way you can still:
-> 
-> - Enable some input devices selectively (e.g. reset and power specialkeys) 
-> - System still has a recovery mode that can be entered if Linux
->   writes a value to a SoC-internal register (reboot mode)
-> - have non-user-facing consoles (remoteproc with co-processor in future)
-
-For those to work, you could do
-
-+active_flags = CONSOLE_STDOUT | CONSOLE_STDERR;
-+if (!IS_ENABLED(CONFIG_CONSOLE_WRITEONLY))
-+  active_flags |= CONSOLE_STDIN;
-
- if (activate)
--        console_set_active(newcdev, CONSOLE_STDIN |
--                        CONSOLE_STDOUT | CONSOLE_STDERR);
-+        console_set_active(newcdev, flags);
-
-
-Does this work for you?
+Sascha
 
 > 
-> Cheers
-> Ahmad
+> diff --git a/arch/arm/dts/imx6ul-phytec-phycore-som-emmc.dts b/arch/arm/dts/imx6ul-phytec-phycore-som-emmc.dts
+> index 7d29c32..50ce75f 100644
+> --- a/arch/arm/dts/imx6ul-phytec-phycore-som-emmc.dts
+> +++ b/arch/arm/dts/imx6ul-phytec-phycore-som-emmc.dts
+> @@ -10,6 +10,7 @@
+>  #endif
+>  #include <arm/imx6ul.dtsi>
+>  #include "imx6ul-phytec-phycore-som.dtsi"
+> +#include "imx6ul-phytec-state.dtsi"
+>  
+>  / {
+>  	model = "PHYTEC phyCORE-i.MX6 Ultra Light SOM with eMMC";
+> @@ -24,6 +25,10 @@
+>  	status = "okay";
+>  };
+>  
+> +&state {
+> +        status = "okay";
+> +};
+> +
+>  &uart1 {
+>  	status = "okay";
+>  };
+> diff --git a/arch/arm/dts/imx6ull-phytec-phycore-som-emmc.dts b/arch/arm/dts/imx6ull-phytec-phycore-som-emmc.dts
+> index 2201b4c..afd99a3 100644
+> --- a/arch/arm/dts/imx6ull-phytec-phycore-som-emmc.dts
+> +++ b/arch/arm/dts/imx6ull-phytec-phycore-som-emmc.dts
+> @@ -10,6 +10,7 @@
+>  #endif
+>  #include <arm/imx6ull.dtsi>
+>  #include "imx6ul-phytec-phycore-som.dtsi"
+> +#include "imx6ul-phytec-state.dtsi"
+>  
+>  / {
+>  	model = "PHYTEC phyCORE-i.MX6 ULL SOM with eMMC";
+> @@ -24,6 +25,10 @@
+>  	status = "okay";
+>  };
+>  
+> +&state {
+> +        status = "okay";
+> +};
+> +
+>  &uart1 {
+>  	status = "okay";
+>  };
+> -- 
+> 2.7.4
 > 
->> +
->>  config PBL_CONSOLE
->>  	depends on PBL_IMAGE
->>  	depends on !CONSOLE_NONE
->> diff --git a/common/console.c b/common/console.c
->> index 3375ecb7e5..fb26886f8c 100644
->> --- a/common/console.c
->> +++ b/common/console.c
->> @@ -93,7 +93,7 @@ int console_set_active(struct console_device *cdev, unsigned flag)
->>  {
->>  	int ret;
->>  
->> -	if (!cdev->getc)
->> +	if (!cdev->getc || IS_ENABLED(CONFIG_CONSOLE_WRITEONLY))
->>  		flag &= ~CONSOLE_STDIN;
->>  	if (!cdev->putc)
->>  		flag &= ~(CONSOLE_STDOUT | CONSOLE_STDERR);
->> diff --git a/common/console_simple.c b/common/console_simple.c
->> index 42224842c5..75257c7b08 100644
->> --- a/common/console_simple.c
->> +++ b/common/console_simple.c
->> @@ -92,7 +92,10 @@ int console_register(struct console_device *newcdev)
->>  		newcdev->setbrg(newcdev, newcdev->baudrate);
->>  	}
->>  
->> -	newcdev->f_active = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR;
->> +	if (IS_ENABLED(CONFIG_CONSOLE_WRITEONLY))
->> +		newcdev->f_active = CONSOLE_STDOUT | CONSOLE_STDERR;
->> +	else
->> +		newcdev->f_active = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR;
->>  
->>  	barebox_banner();
->>  
->> diff --git a/common/startup.c b/common/startup.c
->> index ea7ce6b8da..d7bf99df14 100644
->> --- a/common/startup.c
->> +++ b/common/startup.c
->> @@ -253,6 +253,11 @@ enum autoboot_state do_autoboot_countdown(void)
->>  
->>  	menu_exists = stat(MENUFILE, &s) == 0;
->>  
->> +	if (IS_ENABLED(CONFIG_CONSOLE_WRITEONLY)) {
->> +		printf("\nNon-interactive console, booting system\n");
->> +		return autoboot_state = AUTOBOOT_BOOT;
->> +	}
->> +
->>  	if (menu_exists) {
->>  		printf("\nHit m for menu or %s to stop autoboot: ",
->>  		       global_autoboot_abort_keys[global_autoboot_abort_key]);
->>
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 > 
 
 -- 
