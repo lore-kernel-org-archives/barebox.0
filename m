@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kSzJR-0004xt-BT
- for barebox@lists.infradead.org; Thu, 15 Oct 2020 09:12:42 +0000
-References: <20201014150824.3578133-1-m.tretter@pengutronix.de>
- <20201014150824.3578133-2-m.tretter@pengutronix.de>
- <c37529f5-977d-be9e-d44a-968d69e2a1e9@pengutronix.de>
- <20201015074005.GC5487@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <0b72273d-ded1-97d0-50ba-044a1f82113e@pengutronix.de>
-Date: Thu, 15 Oct 2020 11:12:40 +0200
+ id 1kT3Bc-0003Xq-D4
+ for barebox@lists.infradead.org; Thu, 15 Oct 2020 13:20:53 +0000
+From: Michael Tretter <m.tretter@pengutronix.de>
+Date: Thu, 15 Oct 2020 15:20:47 +0200
+Message-Id: <20201015132048.420995-2-m.tretter@pengutronix.de>
+In-Reply-To: <20201015132048.420995-1-m.tretter@pengutronix.de>
+References: <20201015132048.420995-1-m.tretter@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20201015074005.GC5487@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,133 +21,89 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] uimage: disable zero page when loading to SDRAM at
- address 0x0
-To: Michael Tretter <m.tretter@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/3] net: macb: adjust clk_tx rate for link speed changes
+To: barebox@lists.infradead.org
+Cc: Michael Tretter <m.tretter@pengutronix.de>
 
-Hello,
+Changes of the link speed might require an adjustment of the clk_tx.
 
-On 10/15/20 9:40 AM, Michael Tretter wrote:
-> On Wed, 14 Oct 2020 18:33:25 +0200, Ahmad Fatoum wrote:
->> On 10/14/20 5:08 PM, Michael Tretter wrote:
->>> If the SDRAM is mapped to address 0x0 and an image should be loaded to
->>> to the SDRAM without offset, Barebox would normally trap the access as a
->>> null pointer.
->>>
->>> However, since Linux kernel commit cfa7ede20f13 ("arm64: set TEXT_OFFSET
->>> to 0x0 in preparation for removing it entirely") no offset is the
->>> default for arm64. Therefore, copying the image to 0x0 of the SDRAM is
->>> necessary.
->>>
->>> Disable the zero page trap for copying an image to address 0x0.
->>>
->>> Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
->>> ---
->>>  common/uimage.c | 18 ++++++++++++++++--
->>>  1 file changed, 16 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/common/uimage.c b/common/uimage.c
->>> index a84b8fddc4e7..b1e9b402e98a 100644
->>> --- a/common/uimage.c
->>> +++ b/common/uimage.c
->>> @@ -27,6 +27,7 @@
->>>  #include <rtc.h>
->>>  #include <filetype.h>
->>>  #include <memory.h>
->>> +#include <zero_page.h>
->>>  
->>>  static inline int uimage_is_multi_image(struct uimage_handle *handle)
->>>  {
->>> @@ -359,7 +360,13 @@ static int uimage_sdram_flush(void *buf, unsigned int len)
->>>  		}
->>>  	}
->>>  
->>> -	memcpy(uimage_buf + uimage_size, buf, len);
->>> +	if (zero_page_contains((unsigned long)uimage_buf + uimage_size)) {
->>> +		zero_page_disable();
->>> +		memcpy(uimage_buf + uimage_size, buf, len);
->>> +		zero_page_enable();
->>
->> If this remains, please add a memcpy_notrap or something.
-> 
-> Should I check the destination before calling memcpy_notrap or should I always
-> call the memcpy_notrap if there is a possibility to copy to 0x0 and check for
-> the destination within the function?
-> 
-> I fear that having such a "simple" function would encourage to use it more
-> often. I would prefer to make the code to use it more clumsy and make it
-> (similar to data_abort_mask()) the responsibility of the caller to be aware
-> that bad things might happen when the zero_page is disabled.
+Read the clk_tx from the device tree and change the rate if the link
+speed changes.
 
-Give it a scary name then.
+If the clk_tx rate is already correct, changing the clock is not
+required and, thus, not being able to get the clock rate is not fatal.
 
-> 
->>
->>> +	} else {
->>> +		memcpy(uimage_buf + uimage_size, buf, len);
->>> +	}
->>>  
->>>  	uimage_size += len;
->>>  
->>> @@ -388,7 +395,14 @@ struct resource *file_to_sdram(const char *filename, unsigned long adr)
->>>  			goto out;
->>>  		}
->>>  
->>> -		now = read_full(fd, (void *)(res->start + ofs), BUFSIZ);
->>> +		if (zero_page_contains(res->start + ofs)) {
->>> +			zero_page_disable();
->>> +			now = read_full(fd, (void *)(res->start + ofs), BUFSIZ);
->>> +			zero_page_enable();
->>
->> And use that new memcpy_notrap here to copy from an intermediate buffer. You open quite a can
->> of worms when you treat NULL as a valid address. Better have this contained in a single
->> file instead of hoping the compiler doesn't do a NULL-can't-happen-here optimization
->> in all that block/cdev/fs code that read_full may call into.
-> 
-> Could you explain, what kind of optimization you would expect?
+Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+---
+ drivers/net/macb.c | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-Real world example: https://lwn.net/Articles/342330/
-
-Kernel and barebox both have -fno-delete-null-pointer-checks to avoid this, but
-you can't be sure that other null pointer optimizations are avoided.
-
-For example, the transformation of
-
-  static void func(unsigned *ptr, bool x) { if (!x) return; *ptr = 0xDEADBEEF; }
-  void f(void *ptr, bool x) { func(ptr, x); }
-
-to
-
-  static void func(unsigned *ptr) { if (!ptr) return; *ptr = 0xDEADBEEF }
-  void f(void *ptr, bool x) { if (!x) ptr = NULL; func(ptr); }
-
-is valid as far the standard is concerned.
-
-Better play it safe and reduce the surface where optimization can go awry.
-
-Cheers,
-Ahmad
-
-> 
-> Michael
-> 
->>
->>> +		} else {
->>> +			now = read_full(fd, (void *)(res->start + ofs), BUFSIZ);
->>> +		}
->>> +
->>>  		if (now < 0) {
->>>  			release_sdram_region(res);
->>>  			res = NULL;
->>>
-> 
-
+diff --git a/drivers/net/macb.c b/drivers/net/macb.c
+index 09b58ffd017f..fa530cfe8e4c 100644
+--- a/drivers/net/macb.c
++++ b/drivers/net/macb.c
+@@ -258,9 +258,38 @@ static int macb_recv(struct eth_device *edev)
+ 	return 0;
+ }
+ 
++static int macb_set_tx_clk(struct macb_device *macb, int speed)
++{
++	int rate;
++	int rate_rounded;
++
++	if (!macb->txclk) {
++		dev_dbg(macb->dev, "txclk not available\n");
++		return 0;
++	}
++
++	switch (speed) {
++	case SPEED_100:
++		rate = 25000000;
++		break;
++	case SPEED_1000:
++		rate = 125000000;
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	rate_rounded = clk_round_rate(macb->txclk, rate);
++	if (rate_rounded <= 0)
++		return -EINVAL;
++
++	return clk_set_rate(macb->txclk, rate_rounded);
++}
++
+ static void macb_adjust_link(struct eth_device *edev)
+ {
+ 	struct macb_device *macb = edev->priv;
++	int err;
+ 	u32 reg;
+ 
+ 	reg = macb_readl(macb, NCFGR);
+@@ -276,6 +305,10 @@ static void macb_adjust_link(struct eth_device *edev)
+ 		reg |= GEM_BIT(GBE);
+ 
+ 	macb_or_gem_writel(macb, NCFGR, reg);
++
++	err = macb_set_tx_clk(macb, edev->phydev->speed);
++	if (err)
++		dev_warn(macb->dev, "cannot set txclk\n");
+ }
+ 
+ static int macb_open(struct eth_device *edev)
+@@ -724,6 +757,8 @@ static int macb_probe(struct device_d *dev)
+ 	macb->txclk = clk_get(dev, "tx_clk");
+ 	if (!IS_ERR(macb->txclk))
+ 		clk_enable(macb->txclk);
++	else
++		macb->txclk = NULL;
+ 
+ 	macb->rxclk = clk_get(dev, "rx_clk");
+ 	if (!IS_ERR(macb->rxclk))
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
