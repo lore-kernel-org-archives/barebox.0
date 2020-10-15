@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kSys7-0008S2-K6
- for barebox@lists.infradead.org; Thu, 15 Oct 2020 08:44:28 +0000
-Date: Thu, 15 Oct 2020 10:44:26 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201015084426.GJ13710@pengutronix.de>
-References: <20201014150824.3578133-1-m.tretter@pengutronix.de>
- <424d6679-3acd-f6fe-adb3-860ba75ab820@pengutronix.de>
+ id 1kSz8A-0002OW-BK
+ for barebox@lists.infradead.org; Thu, 15 Oct 2020 09:01:06 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu, 15 Oct 2020 11:00:54 +0200
+Message-Id: <20201015090055.31130-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <424d6679-3acd-f6fe-adb3-860ba75ab820@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,56 +19,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM: mmu64: allow to disable null pointer trap on
- zero page
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, Michael Tretter <m.tretter@pengutronix.de>
+Subject: [PATCH 1/3] sandbox: fix link error when UBSAN is selected without
+ ASAN
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Wed, Oct 14, 2020 at 06:29:47PM +0200, Ahmad Fatoum wrote:
-> 
-> 
-> On 10/14/20 5:08 PM, Michael Tretter wrote:
-> > Barebox uses the zero page to trap NULL pointer dereferences. However,
-> > if the SDRAM starts at address 0x0, this makes the first page of the
-> > SDRAM inaccessible and makes it impossible to load images to offset 0x0
-> > in the SDRAM.
-> > 
-> > Trapping NULL pointer dereferences on such systems is still desirable.
-> > Therefore, add a function to disable the traps if accessing the zero
-> > page is necessary and to re-enable the traps after the access is done.
-> 
-> Can't we map the (phy_addr_t)0 at some higher virtual address and
-> change uimage to use phys_to_virt() ?
-> 
-> Something like 
-> 
-> static inline void *phys_to_virt(unsigned long phys)
-> {
-> 	if (!IS_ENABLED(CONFIG_ARM_MACH_CUSTOM_MAPPING) || !arm_mach_phys_to_virt)
-> 		return (void *)phys;
-> 	return arm_mach_phys_to_virt(phys);
-> }
+dc7f1fce6747 ("sandbox: fix SANDBOX_UNWIND dependency to be KASAN
+only") already restricted ARCH_HAS_STACK_DUMP to be dependent
+only on AddressSanitizer being available.
 
-Please don't. A user of that function would have to implicitly know that
-phys_to_virt() would have to be called exactly for the zero page. Also
-how big is the area returned from phys_to_virt()? If it's up to the next
-page boundary a user would have to align all of it's memcpys to page
-boundaries for no gain.
+This change got lost by an erroneous merge conflict resolution in
+39bdcdfb814a ("Merge branch 'for-next/misc' into master"). Fix it up.
 
-I rather suggest to introduce an explicit
+Fixes: 39bdcdfb814a ("Merge branch 'for-next/misc' into master")
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/sandbox/Kconfig | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-void *memcpy_to_zero(void *dst, void *src, size_t len)
-
-The implementation could then be architecture specific and could choose
-if it likes to just map the zero page to NULL or somewhere else.
-
-Sascha
-
+diff --git a/arch/sandbox/Kconfig b/arch/sandbox/Kconfig
+index bced81f25e9b..113b619fc35b 100644
+--- a/arch/sandbox/Kconfig
++++ b/arch/sandbox/Kconfig
+@@ -10,6 +10,7 @@ config SANDBOX
+ 	select BLOCK
+ 	select BLOCK_WRITE
+ 	select PARTITION_DISK
++	select ARCH_HAS_STACK_DUMP if ASAN
+ 	default y
+ 
+ config ARCH_TEXT_BASE
+@@ -21,12 +22,6 @@ config LINUX
+ 	default y
+ 	select GENERIC_FIND_NEXT_BIT
+ 
+-config SANDBOX_UNWIND
+-	bool
+-	default y
+-	select ARCH_HAS_STACK_DUMP
+-	depends on UBSAN || ASAN
+-
+ config SANDBOX_REEXEC
+ 	prompt "exec(2) reset handler"
+ 	def_bool y
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.28.0
+
 
 _______________________________________________
 barebox mailing list
