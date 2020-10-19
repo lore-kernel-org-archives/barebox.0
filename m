@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kUQ88-0007rS-EF
- for barebox@lists.infradead.org; Mon, 19 Oct 2020 08:02:57 +0000
-Date: Mon, 19 Oct 2020 10:02:55 +0200
+ id 1kUQF2-0000YG-Vj
+ for barebox@lists.infradead.org; Mon, 19 Oct 2020 08:10:05 +0000
+Date: Mon, 19 Oct 2020 10:10:03 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201019080255.GO13710@pengutronix.de>
+Message-ID: <20201019081003.GP13710@pengutronix.de>
 References: <20201015132048.420995-1-m.tretter@pengutronix.de>
+ <20201015132048.420995-3-m.tretter@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201015132048.420995-1-m.tretter@pengutronix.de>
+In-Reply-To: <20201015132048.420995-3-m.tretter@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,24 +23,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] net: macb: reduce DEBUG output to make it more useful
+Subject: Re: [PATCH 3/3] net: macb: fix compiler warning for 64 bit systems
 To: Michael Tretter <m.tretter@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Oct 15, 2020 at 03:20:46PM +0200, Michael Tretter wrote:
-> The macb debugging output printed the function entry for various
-> functions. Especially for *_recv() this debugging flooded the serial
-> output while conveying very little information.
+On Thu, Oct 15, 2020 at 03:20:48PM +0200, Michael Tretter wrote:
+> On arm64 the compiler prints the following warning, when the macb driver
+> is enabled:
 > 
-> Remove printing of the function calls to make enabling debugging for the
-> macb driver more useful.
+> 	warning: cast from pointer to integer of different size
 > 
-> Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
-> ---
->  drivers/net/macb.c | 18 ------------------
->  1 file changed, 18 deletions(-)
+> Add the same explicit cast as implemented for all other dma addresses in
+> the macb driver.
+> 
+> Fixes: befd110b5922 ("net: macb: init multiple dummy TX queues")
 
-Applied, thanks
+Well for me this updates the commit befd110b5922 to the state it should
+have looked like, so for me this qualifies as a fix.
+
+Anyway, it would be really good if we could at least catch runtime
+errors when we truncate pointers.
 
 Sascha
 
