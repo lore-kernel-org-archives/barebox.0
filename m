@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kUPso-0006UM-IJ
- for barebox@lists.infradead.org; Mon, 19 Oct 2020 07:47:07 +0000
+ id 1kUPsu-0006V7-FT
+ for barebox@lists.infradead.org; Mon, 19 Oct 2020 07:47:13 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 19 Oct 2020 09:47:00 +0200
-Message-Id: <20201019074702.8809-1-s.hauer@pengutronix.de>
+Date: Mon, 19 Oct 2020 09:47:02 +0200
+Message-Id: <20201019074702.8809-3-s.hauer@pengutronix.de>
+In-Reply-To: <20201019074702.8809-1-s.hauer@pengutronix.de>
+References: <20201019074702.8809-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,27 +21,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/2] AT91: Update partition tables
+Subject: [PATCH 2/2] ARM: at91sam9x5ek: Update NAND partitioning
 To: Barebox List <barebox@lists.infradead.org>
 
-This updates the NAND partition tables of the AT91sam9263ek and the
-AT91sam9x5ek boards. The current partition tables are unsuitable for
-modern Kernel and barebox sizes, so take the step and update to an
-incompatible partitioning. While this breaks existing setups I still
-think that this is acceptable for Evaluation boards.
+The current NAND partitioning is derived from the kernel dts. A current
+barebox built with at91sam9x5ek_defconfig no longer fits into the
+barebox partition. Also a Kernel built with sama5_defconfig no longer
+fits into the kernel partition.
+This makes the board quite unusable for modern setups, so take the step
+and do an incompatible update of the partitioning.
 
-This is series is meant to be placed before Ahmads "ARM: at91: define new
-at91_multi_defconfig" patch: With it we are able to enable the
-at91sam9263ek and the at91sam9x5ek for the new multi_defconfig as well.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/dts/at91sam9x5ek.dts | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-Sascha Hauer (2):
-  ARM: at91sam9263ek: Update NAND partitioning
-  ARM: at91sam9x5ek: Update NAND partitioning
-
- arch/arm/dts/at91sam9263ek.dts | 34 +++++++++++++++++++++++++++++++++-
- arch/arm/dts/at91sam9x5ek.dts  | 32 ++++++++++++++++++++++++++++++++
- 2 files changed, 65 insertions(+), 1 deletion(-)
-
+diff --git a/arch/arm/dts/at91sam9x5ek.dts b/arch/arm/dts/at91sam9x5ek.dts
+index c753268fb9..3a6976a7d9 100644
+--- a/arch/arm/dts/at91sam9x5ek.dts
++++ b/arch/arm/dts/at91sam9x5ek.dts
+@@ -54,6 +54,38 @@
+ 	phy-mode = "rmii";
+ };
+ 
++&nand_controller {
++	nand@3 {
++		/delete-node/ partitions;
++
++		partitions {
++			compatible = "fixed-partitions";
++			#address-cells = <1>;
++			#size-cells = <1>;
++
++			at91bootstrap@0 {
++				label = "at91bootstrap";
++				reg = <0x0 0x20000>;
++			};
++
++			barebox@20000 {
++				label = "barebox";
++				reg = <0x20000 0x100000>;
++			};
++
++			environment_nand: bareboxenv@120000 {
++				label = "barebox-environment";
++				reg = <0x120000 0x20000>;
++			};
++
++			rootfs@140000 {
++				label = "root";
++				reg = <0x140000 0x0>;
++			};
++		};
++	};
++};
++
+ &{/ahb/apb/pinctrl@fffff400} {
+ 	spi0 {
+ 		pinctrl_board_spi: spi-board {
 -- 
 2.20.1
 
