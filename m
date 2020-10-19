@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kUQ4H-0007bs-C8
- for barebox@lists.infradead.org; Mon, 19 Oct 2020 07:58:58 +0000
-Date: Mon, 19 Oct 2020 09:58:56 +0200
+ id 1kUQ88-0007rS-EF
+ for barebox@lists.infradead.org; Mon, 19 Oct 2020 08:02:57 +0000
+Date: Mon, 19 Oct 2020 10:02:55 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201019075856.GN13710@pengutronix.de>
-References: <20201015090055.31130-1-a.fatoum@pengutronix.de>
+Message-ID: <20201019080255.GO13710@pengutronix.de>
+References: <20201015132048.420995-1-m.tretter@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201015090055.31130-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20201015132048.420995-1-m.tretter@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,29 +22,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] sandbox: fix link error when UBSAN is selected
- without ASAN
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH 1/3] net: macb: reduce DEBUG output to make it more useful
+To: Michael Tretter <m.tretter@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Oct 15, 2020 at 11:00:54AM +0200, Ahmad Fatoum wrote:
-> dc7f1fce6747 ("sandbox: fix SANDBOX_UNWIND dependency to be KASAN
-> only") already restricted ARCH_HAS_STACK_DUMP to be dependent
-> only on AddressSanitizer being available.
+On Thu, Oct 15, 2020 at 03:20:46PM +0200, Michael Tretter wrote:
+> The macb debugging output printed the function entry for various
+> functions. Especially for *_recv() this debugging flooded the serial
+> output while conveying very little information.
 > 
-> This change got lost by an erroneous merge conflict resolution in
-> 39bdcdfb814a ("Merge branch 'for-next/misc' into master"). Fix it up.
+> Remove printing of the function calls to make enabling debugging for the
+> macb driver more useful.
 > 
-> Fixes: 39bdcdfb814a ("Merge branch 'for-next/misc' into master")
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 > ---
->  arch/sandbox/Kconfig | 7 +------
->  1 file changed, 1 insertion(+), 6 deletions(-)
+>  drivers/net/macb.c | 18 ------------------
+>  1 file changed, 18 deletions(-)
 
-Applied this one to master and the other two for next.
+Applied, thanks
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
