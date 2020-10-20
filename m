@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kUiLJ-0001LX-RC
- for barebox@lists.infradead.org; Tue, 20 Oct 2020 03:29:46 +0000
+ id 1kUiLJ-0001LY-VY
+ for barebox@lists.infradead.org; Tue, 20 Oct 2020 03:29:47 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 20 Oct 2020 05:29:33 +0200
-Message-Id: <20201020032937.10132-1-a.fatoum@pengutronix.de>
+Date: Tue, 20 Oct 2020 05:29:35 +0200
+Message-Id: <20201020032937.10132-3-a.fatoum@pengutronix.de>
+In-Reply-To: <20201020032937.10132-1-a.fatoum@pengutronix.de>
+References: <20201020032937.10132-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,46 +21,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH master 1/5] Documentation: smhfs: fix some typos
+Subject: [PATCH master 3/5] Documentation: glossary: add some extra info
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-There are a few typos in the document. Fix them.
+Besides expanding the acronyms, a short description text can be useful.
+Add one where appropriate and sort the list alphabetically.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Documentation/filesystems/smhfs.rst | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ Documentation/glossary.rst | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/filesystems/smhfs.rst b/Documentation/filesystems/smhfs.rst
-index 8f8a0ec6b74d..f70ca6015fcf 100644
---- a/Documentation/filesystems/smhfs.rst
-+++ b/Documentation/filesystems/smhfs.rst
-@@ -8,12 +8,12 @@ File I/O over ARM semihosting support
- Target Side Setup
- -----------------
+diff --git a/Documentation/glossary.rst b/Documentation/glossary.rst
+index 106dce98a9ef..88d356fbab64 100644
+--- a/Documentation/glossary.rst
++++ b/Documentation/glossary.rst
+@@ -5,17 +5,17 @@ Glossary
  
--barebox can communicate with debug programms attached via SWD/JTAG by
-+barebox can communicate with debug programs attached via SWD/JTAG by
- means of ARM semihosting protocol.
+ .. glossary:: :sorted:
  
--Not all of the I/O primitives neccessary to implement a full
-+Not all of the I/O primitives necessary to implement a full
- filesystem are exposed in ARM semihosting API and because of that some
--aspects of filesystem funcionality are missing. Implementation does
-+aspects of filesystem functionality are missing. Implementation does
- not have support for listing directories. This means a
- :ref:`command_ls` to a SMHFS-mounted path will show an empty
- directory. Nevertheless, the files are there.
-@@ -29,7 +29,7 @@ Host Side Setup
- ---------------
+-   FDT
+-      Flattened Device Tree
++   DTS
++      Device Tree Source
  
- FIXME: Currently OpenOCD does not work correctly if Barebox is built
--with MMU enabled, so before using this featrue, please make sure that
-+with MMU enabled, so before using this feature, please make sure that
- MMU is disabled in your particular configuration
+    DTB
+-      Device Tree Blob (or Binary)
++      Device Tree Blob (or Binary). The result of compiling a DTS.
  
- To make semihosting work host machine connected to the target via
+-   DTS
+-      Device Tree Source
++   FDT
++      Flattened Device Tree. A DTB loaded into memory.
+ 
+    PBL
+-      Pre BootLoader image
++      Pre BootLoader image. The board-specific entry point attached in front of multi-image barebox binaries.
+ 
+    ESP
+       EFI System Partition
 -- 
 2.28.0
 
