@@ -1,20 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kV7Hy-0002Je-Lj
- for barebox@lists.infradead.org; Wed, 21 Oct 2020 06:07:59 +0000
-Date: Wed, 21 Oct 2020 08:07:56 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201021060756.GT13710@pengutronix.de>
-References: <20201020111537.29328-1-u.kleine-koenig@pengutronix.de>
- <20201020133317.dc6yt2yt4tyk5ogm@pengutronix.de>
- <20201020140934.GS13710@pengutronix.de>
- <20201020142806.kmxoy6byavdwe5cv@pengutronix.de>
- <20201020145844.4id6iyuihl3hkt3x@pengutronix.de>
- <20201021054907.sunblqmijd4jl6zn@pengutronix.de>
+ id 1kUjxY-0006Y6-QD
+ for barebox@lists.infradead.org; Tue, 20 Oct 2020 05:13:22 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue, 20 Oct 2020 07:13:18 +0200
+Message-Id: <20201020051318.17233-2-a.fatoum@pengutronix.de>
+In-Reply-To: <20201020051318.17233-1-a.fatoum@pengutronix.de>
+References: <20201020051318.17233-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201021054907.sunblqmijd4jl6zn@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,130 +17,81 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] usb: i.MX: improve regulator handling
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org, Marco Felsch <m.felsch@pengutronix.de>
+Subject: [PATCH 2/2] x86: configs: efi: enable some more useful options
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Wed, Oct 21, 2020 at 07:49:07AM +0200, Uwe Kleine-K=F6nig wrote:
-> On Tue, Oct 20, 2020 at 04:58:44PM +0200, Marco Felsch wrote:
-> > On 20-10-20 16:28, Marco Felsch wrote:
-> > > On 20-10-20 16:09, Sascha Hauer wrote:
-> > > > On Tue, Oct 20, 2020 at 03:33:17PM +0200, Marco Felsch wrote:
-> > > > > Hi Uwe,
-> > > > > =
+Enable some more options to make the defconfig more widely applicable.
 
-> > > > > On 20-10-20 13:15, Uwe Kleine-K=F6nig wrote:
-> > > > > > Instead of just ignoring errors related to regulator getting er=
-ror out.
-> > > > > > In case there is no regulator in the device tree, regulator_get=
-() returns
-> > > > > > the dummy regulator and not an error code, so the change is rig=
-ht for
-> > > > > > this situation, too.
-> > > > > > =
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/x86/configs/efi_defconfig | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-> > > > > > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.=
-de>
-> > > > > > ---
-> > > > > >  drivers/usb/imx/chipidea-imx.c | 7 +++++--
-> > > > > >  1 file changed, 5 insertions(+), 2 deletions(-)
-> > > > > > =
+diff --git a/arch/x86/configs/efi_defconfig b/arch/x86/configs/efi_defconfig
+index 83794d7a0702..761ffbe261ba 100644
+--- a/arch/x86/configs/efi_defconfig
++++ b/arch/x86/configs/efi_defconfig
+@@ -15,14 +15,19 @@ CONFIG_CONSOLE_ACTIVATE_ALL=y
+ CONFIG_PARTITION_DISK_EFI=y
+ CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+ CONFIG_STATE=y
++CONFIG_BOOTCHOOSER=y
++CONFIG_RESET_SOURCE=y
+ CONFIG_DEBUG_LL=y
++CONFIG_CMD_DMESG=y
+ CONFIG_LONGHELP=y
+ CONFIG_CMD_IOMEM=y
++CONFIG_CMD_IMD=y
+ CONFIG_CMD_MEMINFO=y
+ CONFIG_CMD_GO=y
+ CONFIG_CMD_LOADB=y
+ CONFIG_CMD_RESET=y
+ CONFIG_CMD_UIMAGE=y
++CONFIG_CMD_BOOTCHOOSER=y
+ CONFIG_CMD_PARTITION=y
+ CONFIG_CMD_EXPORT=y
+ CONFIG_CMD_LOADENV=y
+@@ -56,6 +61,7 @@ CONFIG_CMD_POWEROFF=y
+ CONFIG_CMD_WD=y
+ CONFIG_CMD_2048=y
+ CONFIG_CMD_BAREBOX_UPDATE=y
++CONFIG_CMD_OF_DIFF=y
+ CONFIG_CMD_OF_NODE=y
+ CONFIG_CMD_OF_PROPERTY=y
+ CONFIG_CMD_OFTREE=y
+@@ -64,12 +70,24 @@ CONFIG_CMD_STATE=y
+ CONFIG_NET=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_NETCONSOLE=y
++CONFIG_OFDEVICE=y
++CONFIG_OF_BAREBOX_DRIVERS=y
++CONFIG_OF_BAREBOX_ENV_IN_FS=y
+ CONFIG_DRIVER_SERIAL_EFI_STDIO=y
+ CONFIG_DRIVER_NET_EFI_SNP=y
+ # CONFIG_SPI is not set
+ CONFIG_DISK=y
++CONFIG_DISK_WRITE=y
++CONFIG_VIDEO=y
++CONFIG_FRAMEBUFFER_CONSOLE=y
++CONFIG_DRIVER_VIDEO_EFI_GOP=y
++CONFIG_FINTEK_SUPERIO=y
++CONFIG_SMSC_SUPERIO=y
++CONFIG_STATE_DRV=y
+ CONFIG_WATCHDOG=y
+ CONFIG_WATCHDOG_EFI=y
++CONFIG_F71808E_WDT=y
++# CONFIG_PINCTRL is not set
+ CONFIG_FS_EXT4=y
+ CONFIG_FS_TFTP=y
+ CONFIG_FS_NFS=y
+-- 
+2.28.0
 
-> > > > > > diff --git a/drivers/usb/imx/chipidea-imx.c b/drivers/usb/imx/c=
-hipidea-imx.c
-> > > > > > index 786beede6d89..dd0e3c1a2a58 100644
-> > > > > > --- a/drivers/usb/imx/chipidea-imx.c
-> > > > > > +++ b/drivers/usb/imx/chipidea-imx.c
-> > > > > > @@ -267,8 +267,11 @@ static int imx_chipidea_probe(struct devic=
-e_d *dev)
-> > > > > >  	}
-> > > > > >  =
-
-> > > > > >  	ci->vbus =3D regulator_get(dev, "vbus");
-> > > > > > -	if (IS_ERR(ci->vbus))
-> > > > > > -		ci->vbus =3D NULL;
-> > > > > > +	if (IS_ERR(ci->vbus)) {
-> > > > > > +		ret =3D ERR_PTR(ci->vbus);
-> > > > > > +		dev_err(dev, "Cannot get vbus regulator: %s\n", strerror(-re=
-t));
-> > > > > > +		return ret;
-> > > > > =
-
-> > > > > Returning the error here can cause problems with exisiting boards=
-, e.g.
-> > > > > if the regulator support is missing for the specified vbus regula=
-tor.
-> > > > > This is often the case since we have very limited regulator suppo=
-rt for
-> > > > > now.
-> > > > =
-
-> > > > But when there is a regulator we also have to control it, right?
-> > > =
-
-> > > So you need to add each regulator driver or worst case you need to add
-> > > PMIC drivers.
-> =
-
-> Right, as if you don't the hardware might be off and USB won't work
-> without a useful error message.
-> =
-
-> > > If I remember correctly, I added the same for mci which
-> > > broke a lot of boards. Later you reverted those commit. Now Oleksij
-> > > added the regulator support for the fec driver and people are startin=
-g =
-
-> > > to remove the phy-supply handle from the barebox-dt's (commit 84cf5cf=
-a9a
-> > > ("ARM: dts: imx6qdl: pfla02: Remove fec phy-supply")). I'm not again
-> =
-
-> Looking at 84cf5cfa9a there is at least a comment missing about why this
-> property is deleted. Something like
-> =
-
-> diff --git a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi b/arch/arm/dts/imx6q=
-dl-phytec-pfla02.dtsi
-> index b83511cb011f..7a12e2a06be4 100644
-> --- a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
-> +++ b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
-> @@ -84,6 +84,11 @@
->  };
->  =
-
->  &fec {
-> +	/*
-> +	 * barebox doesn't have a driver for the PMIC providing the phy-supply
-> +	 * (dlg,da9063). So remove the phy-supply property and rely on the
-> +	 * PMIC's reset default which has this supply enabled.
-> +	 */
->  	/delete-property/ phy-supply;
->  };
-
-Yes, such a comment should really be there. I don't like this approach
-very much though as this devicetree no longer boots Linux properly.
-Just ignoring errors is also not very nice as it means that we hide real
-errors. Adding each and every regulator driver seems desirable, but
-sometimes just not necessary.
-
-We could add a way for boards to allow a dummy regulator for a specific
-device. This could be a function call or maybe a barebox specific devicetree
-property.
-
-Sascha
-
-
--- =
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
