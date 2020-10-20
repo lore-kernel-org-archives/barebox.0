@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kUjxY-0006Y6-QD
+ id 1kUjxY-0006Y5-QC
  for barebox@lists.infradead.org; Tue, 20 Oct 2020 05:13:22 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 20 Oct 2020 07:13:18 +0200
-Message-Id: <20201020051318.17233-2-a.fatoum@pengutronix.de>
-In-Reply-To: <20201020051318.17233-1-a.fatoum@pengutronix.de>
-References: <20201020051318.17233-1-a.fatoum@pengutronix.de>
+Date: Tue, 20 Oct 2020 07:13:17 +0200
+Message-Id: <20201020051318.17233-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,74 +19,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] x86: configs: efi: enable some more useful options
+Subject: [PATCH 1/2] commands: bootchooser: migrate menu entry to boot menu
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Enable some more options to make the defconfig more widely applicable.
+While the bootchooser command is not required for boot with bootchooser,
+it's still boot related and is more likely to be looked for in the boot
+menu than the misc menu. The boot menu has other commands like uimage
+which do not boot either, but are boot-related.
+
+While at it, add some Kconfig help text.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/x86/configs/efi_defconfig | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ commands/Kconfig | 22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/configs/efi_defconfig b/arch/x86/configs/efi_defconfig
-index 83794d7a0702..761ffbe261ba 100644
---- a/arch/x86/configs/efi_defconfig
-+++ b/arch/x86/configs/efi_defconfig
-@@ -15,14 +15,19 @@ CONFIG_CONSOLE_ACTIVATE_ALL=y
- CONFIG_PARTITION_DISK_EFI=y
- CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
- CONFIG_STATE=y
-+CONFIG_BOOTCHOOSER=y
-+CONFIG_RESET_SOURCE=y
- CONFIG_DEBUG_LL=y
-+CONFIG_CMD_DMESG=y
- CONFIG_LONGHELP=y
- CONFIG_CMD_IOMEM=y
-+CONFIG_CMD_IMD=y
- CONFIG_CMD_MEMINFO=y
- CONFIG_CMD_GO=y
- CONFIG_CMD_LOADB=y
- CONFIG_CMD_RESET=y
- CONFIG_CMD_UIMAGE=y
-+CONFIG_CMD_BOOTCHOOSER=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_EXPORT=y
- CONFIG_CMD_LOADENV=y
-@@ -56,6 +61,7 @@ CONFIG_CMD_POWEROFF=y
- CONFIG_CMD_WD=y
- CONFIG_CMD_2048=y
- CONFIG_CMD_BAREBOX_UPDATE=y
-+CONFIG_CMD_OF_DIFF=y
- CONFIG_CMD_OF_NODE=y
- CONFIG_CMD_OF_PROPERTY=y
- CONFIG_CMD_OFTREE=y
-@@ -64,12 +70,24 @@ CONFIG_CMD_STATE=y
- CONFIG_NET=y
- CONFIG_NET_NFS=y
- CONFIG_NET_NETCONSOLE=y
-+CONFIG_OFDEVICE=y
-+CONFIG_OF_BAREBOX_DRIVERS=y
-+CONFIG_OF_BAREBOX_ENV_IN_FS=y
- CONFIG_DRIVER_SERIAL_EFI_STDIO=y
- CONFIG_DRIVER_NET_EFI_SNP=y
- # CONFIG_SPI is not set
- CONFIG_DISK=y
-+CONFIG_DISK_WRITE=y
-+CONFIG_VIDEO=y
-+CONFIG_FRAMEBUFFER_CONSOLE=y
-+CONFIG_DRIVER_VIDEO_EFI_GOP=y
-+CONFIG_FINTEK_SUPERIO=y
-+CONFIG_SMSC_SUPERIO=y
-+CONFIG_STATE_DRV=y
- CONFIG_WATCHDOG=y
- CONFIG_WATCHDOG_EFI=y
-+CONFIG_F71808E_WDT=y
-+# CONFIG_PINCTRL is not set
- CONFIG_FS_EXT4=y
- CONFIG_FS_TFTP=y
- CONFIG_FS_NFS=y
+diff --git a/commands/Kconfig b/commands/Kconfig
+index df18715f20d4..727946706300 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -498,6 +498,23 @@ config CMD_UIMAGE
+ 		  -e OUTFILE	extract image to OUTFILE
+ 		  -n NO		use image number NO in multifile image
+ 
++config CMD_BOOTCHOOSER
++	tristate
++	depends on BOOTCHOOSER
++	prompt "bootchooser control utility"
++	help
++	  Control misc behaviour of the bootchooser
++
++	  Options:
++	    -a <n|default> [TARGETS]
++	    	set remaining attempts of given targets to 'n' or the default attempts
++	    -p <n|default> [TARGETS]
++	    	set priority of given targets to 'n' or the default priority
++	    -i
++	    	Show information about the bootchooser
++	    -s
++		Mark the last boot successful
++
+ # end Boot commands
+ endmenu
+ 
+@@ -2179,11 +2196,6 @@ config CMD_STATE
+ 	depends on STATE
+ 	prompt "state"
+ 
+-config CMD_BOOTCHOOSER
+-	tristate
+-	depends on BOOTCHOOSER
+-	prompt "bootchooser"
+-
+ config CMD_DHRYSTONE
+ 	bool
+ 	prompt "dhrystone"
 -- 
 2.28.0
 
