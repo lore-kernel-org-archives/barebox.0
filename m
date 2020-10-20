@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kUiLJ-0001La-SZ
+ id 1kUiLJ-0001LX-RC
  for barebox@lists.infradead.org; Tue, 20 Oct 2020 03:29:46 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 20 Oct 2020 05:29:37 +0200
-Message-Id: <20201020032937.10132-5-a.fatoum@pengutronix.de>
-In-Reply-To: <20201020032937.10132-1-a.fatoum@pengutronix.de>
-References: <20201020032937.10132-1-a.fatoum@pengutronix.de>
+Date: Tue, 20 Oct 2020 05:29:33 +0200
+Message-Id: <20201020032937.10132-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,40 +19,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH master 5/5] Documentation: aarch64-qemu-virt: note physical
- target support
+Subject: [PATCH master 1/5] Documentation: smhfs: fix some typos
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The documentation structure is a bit unfortunate because it says
-4.1. Aarch64, but lists only a single virtual board. Fix this by:
-
- - Removing the Aarch64 heading, as there are more boards outside it
- - Explicitly note that this documentation page only refers to the
-   virtual target
+There are a few typos in the document. Fix them.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Documentation/boards/aarch64-qemu-virt.rst | 8 ++++----
+ Documentation/filesystems/smhfs.rst | 8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/boards/aarch64-qemu-virt.rst b/Documentation/boards/aarch64-qemu-virt.rst
-index e21791af164a..5f6cd882d546 100644
---- a/Documentation/boards/aarch64-qemu-virt.rst
-+++ b/Documentation/boards/aarch64-qemu-virt.rst
-@@ -1,8 +1,8 @@
--Aarch64
--=======
--
- Aarch64 Qemu virt
-------------------
-+=================
-+
-+Besides a number of physical ARM64 targets, barebox also supports a
-+``qemu-virt64`` board.
+diff --git a/Documentation/filesystems/smhfs.rst b/Documentation/filesystems/smhfs.rst
+index 8f8a0ec6b74d..f70ca6015fcf 100644
+--- a/Documentation/filesystems/smhfs.rst
++++ b/Documentation/filesystems/smhfs.rst
+@@ -8,12 +8,12 @@ File I/O over ARM semihosting support
+ Target Side Setup
+ -----------------
  
- Running barebox on QEMU aarch64 virt machine
- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-barebox can communicate with debug programms attached via SWD/JTAG by
++barebox can communicate with debug programs attached via SWD/JTAG by
+ means of ARM semihosting protocol.
+ 
+-Not all of the I/O primitives neccessary to implement a full
++Not all of the I/O primitives necessary to implement a full
+ filesystem are exposed in ARM semihosting API and because of that some
+-aspects of filesystem funcionality are missing. Implementation does
++aspects of filesystem functionality are missing. Implementation does
+ not have support for listing directories. This means a
+ :ref:`command_ls` to a SMHFS-mounted path will show an empty
+ directory. Nevertheless, the files are there.
+@@ -29,7 +29,7 @@ Host Side Setup
+ ---------------
+ 
+ FIXME: Currently OpenOCD does not work correctly if Barebox is built
+-with MMU enabled, so before using this featrue, please make sure that
++with MMU enabled, so before using this feature, please make sure that
+ MMU is disabled in your particular configuration
+ 
+ To make semihosting work host machine connected to the target via
 -- 
 2.28.0
 
