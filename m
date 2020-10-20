@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kUiLJ-0001LZ-UC
- for barebox@lists.infradead.org; Tue, 20 Oct 2020 03:29:47 +0000
+ id 1kUiLP-0001Nx-Jd
+ for barebox@lists.infradead.org; Tue, 20 Oct 2020 03:29:52 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 20 Oct 2020 05:29:36 +0200
-Message-Id: <20201020032937.10132-4-a.fatoum@pengutronix.de>
+Date: Tue, 20 Oct 2020 05:29:34 +0200
+Message-Id: <20201020032937.10132-2-a.fatoum@pengutronix.de>
 In-Reply-To: <20201020032937.10132-1-a.fatoum@pengutronix.de>
 References: <20201020032937.10132-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
@@ -21,34 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH master 4/5] Documentation: x86: note EFI support
+Subject: [PATCH master 2/5] Documentation: boards: stm32mp: search engine
+ optimization
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Most users are better served by using the EFI support. Add an info box
-to nudge them into the correct direction.
+The vendor calls it STM32MP1. Have this name appear in the documentation
+as well to be easier found during web search.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Documentation/boards/x86.rst | 5 +++++
- 1 file changed, 5 insertions(+)
+ Documentation/boards/stm32mp.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/boards/x86.rst b/Documentation/boards/x86.rst
-index 4514a766a216..c0d5a64b9d45 100644
---- a/Documentation/boards/x86.rst
-+++ b/Documentation/boards/x86.rst
-@@ -1,6 +1,11 @@
- x86
- ===
+diff --git a/Documentation/boards/stm32mp.rst b/Documentation/boards/stm32mp.rst
+index a06578602d9d..87fff7d1259b 100644
+--- a/Documentation/boards/stm32mp.rst
++++ b/Documentation/boards/stm32mp.rst
+@@ -5,7 +5,7 @@ The STM32MP is a line of 32-bit ARM SoCs. They reuse peripherals of the
+ STM32 line of microcontrollers and can have a STM32 MCU embedded as co-processor
+ as well.
  
-+.. note::
-+   This is about legacy x86 PC boot, which is not as well supported as booting
-+   under UEFI. Refer to :doc:`boards/efi.rst` for documentation on the barebox
-+   EFI support.
-+
- Features
- --------
- 
+-The boot process of the STM32MP SoC is a two step process.
++The boot process of the STM32MP1 SoC is a two step process.
+ The first stage boot loader (FSBL) is loaded by the ROM code into the built-in
+ SYSRAM and executed. The FSBL sets up the SDRAM, install a secure monitor and
+ then the second stage boot loader (SSBL) is loaded into DRAM.
 -- 
 2.28.0
 
