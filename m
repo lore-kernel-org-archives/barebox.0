@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kVArY-0001z5-2x
- for barebox@lists.infradead.org; Wed, 21 Oct 2020 09:56:57 +0000
-Date: Wed, 21 Oct 2020 11:56:52 +0200
+ id 1kVB0A-00035W-8p
+ for barebox@lists.infradead.org; Wed, 21 Oct 2020 10:05:51 +0000
+Date: Wed, 21 Oct 2020 12:05:48 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201021095652.GW13710@pengutronix.de>
-References: <20201020111208.14216-1-u.kleine-koenig@pengutronix.de>
+Message-ID: <20201021100548.GA26805@pengutronix.de>
+References: <20201020111537.29328-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201020111208.14216-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20201020111537.29328-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,67 +22,46 @@ Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mfd: mc34704: fix register reading
+Subject: Re: [PATCH] usb: i.MX: improve regulator handling
 To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Oct 20, 2020 at 01:12:08PM +0200, Uwe Kleine-K=F6nig wrote:
-> According to the data sheet (MC34704 Rev. 8.0, 12/2014) must always have
-> the MSB set in the "Sub-address" byte for reads.
+On Tue, Oct 20, 2020 at 01:15:37PM +0200, Uwe Kleine-K=F6nig wrote:
+> Instead of just ignoring errors related to regulator getting error out.
+> In case there is no regulator in the device tree, regulator_get() returns
+> the dummy regulator and not an error code, so the change is right for
+> this situation, too.
 > =
 
-> This fixes reading out registers on a MC34704AEP chip.
-> =
-
-> Fixes: 514387711f2d ("i2c: add driver for the MC34704 PMIC")
 > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
 > ---
->  drivers/mfd/mc34704.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  drivers/usb/imx/chipidea-imx.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> =
 
-Applied, thanks
+> diff --git a/drivers/usb/imx/chipidea-imx.c b/drivers/usb/imx/chipidea-im=
+x.c
+> index 786beede6d89..dd0e3c1a2a58 100644
+> --- a/drivers/usb/imx/chipidea-imx.c
+> +++ b/drivers/usb/imx/chipidea-imx.c
+> @@ -267,8 +267,11 @@ static int imx_chipidea_probe(struct device_d *dev)
+>  	}
+>  =
+
+>  	ci->vbus =3D regulator_get(dev, "vbus");
+> -	if (IS_ERR(ci->vbus))
+> -		ci->vbus =3D NULL;
+> +	if (IS_ERR(ci->vbus)) {
+> +		ret =3D ERR_PTR(ci->vbus);
+> +		dev_err(dev, "Cannot get vbus regulator: %s\n", strerror(-ret));
+> +		return ret;
+> +	}
+
+Ok, as Marco noted we had regressions in similar cases where we didn't
+have a driver for the regulator, but knew that it was default enabled.
+Therefore I am dropping this patch.
 
 Sascha
-
-> =
-
-> diff --git a/drivers/mfd/mc34704.c b/drivers/mfd/mc34704.c
-> index 4aa02b74ff20..29071c5ccfce 100644
-> --- a/drivers/mfd/mc34704.c
-> +++ b/drivers/mfd/mc34704.c
-> @@ -43,7 +43,7 @@ int mc34704_reg_read(struct mc34704 *mc34704, u8 reg, u=
-8 *val)
->  {
->  	int ret;
->  =
-
-> -	ret =3D i2c_read_reg(mc34704->client, reg, val, 1);
-> +	ret =3D i2c_read_reg(mc34704->client, 1 << 7 | reg, val, 1);
->  =
-
->  	return ret =3D=3D 1 ? 0 : ret;
->  }
-> @@ -112,7 +112,7 @@ static int mc34704_probe(struct device_d *dev)
->  	mc34704_dev =3D xzalloc(sizeof(struct mc34704));
->  	mc34704_dev->cdev.name =3D DRIVERNAME;
->  	mc34704_dev->client =3D to_i2c_client(dev);
-> -	mc34704_dev->cdev.size =3D 256;
-> +	mc34704_dev->cdev.size =3D 128;
->  	mc34704_dev->cdev.dev =3D dev;
->  	mc34704_dev->cdev.ops =3D &mc34704_fops;
->  =
-
-> -- =
-
-> 2.28.0
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
 
 -- =
 
