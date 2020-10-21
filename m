@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kVClE-0007UT-1A
+ id 1kVClE-0007US-1E
  for barebox@lists.infradead.org; Wed, 21 Oct 2020 11:58:36 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <mfe@pengutronix.de>) id 1kVClC-0007DZ-Uo
+ (envelope-from <mfe@pengutronix.de>) id 1kVClC-0007DS-UQ
  for barebox@lists.infradead.org; Wed, 21 Oct 2020 13:58:30 +0200
 Received: from mfe by dude02.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <mfe@pengutronix.de>) id 1kVClC-0000do-Dc
+ (envelope-from <mfe@pengutronix.de>) id 1kVClC-0000dR-7c
  for barebox@lists.infradead.org; Wed, 21 Oct 2020 13:58:30 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Wed, 21 Oct 2020 13:58:13 +0200
-Message-Id: <20201021115813.31645-11-m.felsch@pengutronix.de>
+Date: Wed, 21 Oct 2020 13:58:06 +0200
+Message-Id: <20201021115813.31645-4-m.felsch@pengutronix.de>
 In-Reply-To: <20201021115813.31645-1-m.felsch@pengutronix.de>
 References: <20201021115813.31645-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
@@ -29,90 +29,92 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 10/10] ARM: boards: mx6-sabrelite: add deep-probe support
+Subject: [PATCH v3 03/10] of: platform: Keep track of populated platform
+ devices
 To: barebox@lists.infradead.org
 
-Explicit request the required gpio resources instead of relying on their
-existence based on the initcall level.
+Linux does not allow to populate the same of device more than once.
+Linux uses the OF_POPULATED flag for that purpose. Align the logic with
+the current linux state with the exception that we are returning the
+already created device. This is needed for the later added deep-probe
+mechanism.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
 Changelog:
 
-v2:
-- convert to new macro name
-- convert to new api
 v3:
-- convert to new BAREBOX_DEEP_PROBE_ENABLE macro
+- new patch
 ---
- .../boards/freescale-mx6-sabrelite/board.c    | 24 ++++++++++++-------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ drivers/of/platform.c | 20 +++++++++++++++++++-
+ include/of.h          |  1 +
+ 2 files changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boards/freescale-mx6-sabrelite/board.c b/arch/arm/boards/freescale-mx6-sabrelite/board.c
-index 1b39ef82c6..0a2df391e9 100644
---- a/arch/arm/boards/freescale-mx6-sabrelite/board.c
-+++ b/arch/arm/boards/freescale-mx6-sabrelite/board.c
-@@ -13,7 +13,9 @@
- #include <mach/bbu.h>
- #include <asm/armlinux.h>
- #include <generated/mach-types.h>
-+#include <of.h>
- #include <partition.h>
-+#include <deep-probe.h>
- #include <linux/phy.h>
- #include <asm/io.h>
- #include <asm/mmu.h>
-@@ -98,10 +100,6 @@ static int sabrelite_ksz9021rn_setup(void)
- {
- 	int ret;
+diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+index 51781798c6..01de6f98af 100644
+--- a/drivers/of/platform.c
++++ b/drivers/of/platform.c
+@@ -106,6 +106,13 @@ struct device_d *of_platform_device_create(struct device_node *np,
+ 	if (!of_device_is_available(np))
+ 		return NULL;
  
--	if (!of_machine_is_compatible("fsl,imx6q-sabrelite") &&
--	    !of_machine_is_compatible("fsl,imx6dl-sabrelite"))
--		return 0;
--
- 	mxc_iomux_v3_setup_multiple_pads(sabrelite_enet_gpio_pads,
- 			ARRAY_SIZE(sabrelite_enet_gpio_pads));
- 
-@@ -118,11 +116,6 @@ static int sabrelite_ksz9021rn_setup(void)
- 
- 	return 0;
- }
--/*
-- * Do this before the fec initializes but after our
-- * gpios are available.
-- */
--fs_initcall(sabrelite_ksz9021rn_setup);
- 
- static void sabrelite_ehci_init(void)
- {
-@@ -134,10 +127,20 @@ static void sabrelite_ehci_init(void)
- 
- static int sabrelite_devices_init(void)
- {
-+	int ret;
++	/*
++	 * Linux uses the OF_POPULATED flag to skip already populated/created
++	 * devices.
++	 */
++	if (np->dev)
++		return np->dev;
 +
- 	if (!of_machine_is_compatible("fsl,imx6q-sabrelite") &&
- 	    !of_machine_is_compatible("fsl,imx6dl-sabrelite"))
- 		return 0;
+ 	/* count the io resources */
+ 	if (of_can_translate_address(np))
+ 		while (of_address_to_resource(np, num_reg, &temp_res) == 0)
+@@ -141,8 +148,10 @@ struct device_d *of_platform_device_create(struct device_node *np,
+ 		(num_reg) ? &dev->resource[0].start : &resinval);
  
-+	ret = of_devices_ensure_probed_by_property("gpio-controller");
-+	if (ret)
-+		return ret;
-+
-+	ret = sabrelite_ksz9021rn_setup();
-+	if (ret)
-+		return ret;
-+
- 	sabrelite_ehci_init();
+ 	ret = platform_device_register(dev);
+-	if (!ret)
++	if (!ret) {
++		np->dev = dev;
+ 		return dev;
++	}
  
- 	armlinux_set_architecture(3769);
-@@ -163,3 +166,6 @@ static int sabrelite_coredevices_init(void)
- 	return 0;
- }
- coredevice_initcall(sabrelite_coredevices_init);
+ 	free(dev);
+ 	if (num_reg)
+@@ -223,6 +232,13 @@ static struct device_d *of_amba_device_create(struct device_node *np)
+ 	if (!of_device_is_available(np))
+ 		return NULL;
+ 
++	/*
++	 * Linux uses the OF_POPULATED flag to skip already populated/created
++	 * devices.
++	 */
++	if (np->dev)
++		return np->dev;
 +
-+BAREBOX_DEEP_PROBE_ENABLE("fsl,imx6q-sabrelite");
-+BAREBOX_DEEP_PROBE_ENABLE("fsl,imx6dl-sabrelite");
+ 	dev = xzalloc(sizeof(*dev));
+ 
+ 	/* setup generic device info */
+@@ -246,6 +262,8 @@ static struct device_d *of_amba_device_create(struct device_node *np)
+ 	if (ret)
+ 		goto amba_err_free;
+ 
++	np->dev = &dev->dev;
++
+ 	return &dev->dev;
+ 
+ amba_err_free:
+diff --git a/include/of.h b/include/of.h
+index 08a02e1105..d1dbb702d8 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -35,6 +35,7 @@ struct device_node {
+ 	struct list_head parent_list;
+ 	struct list_head list;
+ 	phandle phandle;
++	struct device_d *dev;
+ };
+ 
+ struct of_device_id {
 -- 
 2.20.1
 
