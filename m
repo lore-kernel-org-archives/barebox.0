@@ -1,21 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kXgy3-0002al-81
- for barebox@lists.infradead.org; Wed, 28 Oct 2020 08:38:04 +0000
-Date: Wed, 28 Oct 2020 09:38:01 +0100
+ id 1kVAuj-0002SC-4C
+ for barebox@lists.infradead.org; Wed, 21 Oct 2020 10:00:14 +0000
+Date: Wed, 21 Oct 2020 12:00:11 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201028083801.GY26805@pengutronix.de>
-References: <20200918110442.25159-1-u.kleine-koenig@pengutronix.de>
- <20200918110442.25159-2-u.kleine-koenig@pengutronix.de>
- <bb53e525-250d-4572-ba93-ec7ddd35b5cf@pengutronix.de>
- <20201020072634.qfe4zo4gcgq7qkw2@pengutronix.de>
- <b100a2ce-91b9-bd04-3a52-c5f257428d9f@pengutronix.de>
- <20201026180649.GQ30556@pengutronix.de>
- <bea5dc47-adc4-4096-9617-7d99e48e599e@pengutronix.de>
+Message-ID: <20201021100011.GX13710@pengutronix.de>
+References: <20201020165214.2232-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <bea5dc47-adc4-4096-9617-7d99e48e599e@pengutronix.de>
+In-Reply-To: <20201020165214.2232-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,65 +18,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] x86/config/efi: drop DRIVER_SERIAL_NS16550
+Subject: Re: [PATCH] mci: stm32_sdmmc2: add support for SDMMC v2.0 as well
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Mon, Oct 26, 2020 at 10:07:19PM +0100, Ahmad Fatoum wrote:
-> =
+On Tue, Oct 20, 2020 at 06:52:14PM +0200, Ahmad Fatoum wrote:
+> According to kernel commit 7a2a98be672b ("mmc: mmci: Add support for
+> sdmmc variant revision 2.0")[0], v2.0 is completely backwards compatible
+> with v1.1. Add the v2.0's periphid to have the driver work with both.
+> 
+> [0]: https://lore.kernel.org/linux-arm-kernel/20200128090636.13689-10-ludovic.barre@st.com/T/#u
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  drivers/mci/stm32_sdmmc2.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
 
-> =
-
-> On 10/26/20 7:06 PM, Michael Olbrich wrote:
-> > On Tue, Oct 20, 2020 at 09:35:30AM +0200, Ahmad Fatoum wrote:
-> >> On 10/20/20 9:26 AM, Uwe Kleine-K=F6nig wrote:
-> >>> On Tue, Oct 20, 2020 at 07:08:47AM +0200, Ahmad Fatoum wrote:
-> >>>> Hello Uwe,
-> >>>>
-> >>>> On 9/18/20 1:04 PM, Uwe Kleine-K=F6nig wrote:
-> >>>>> For most machines having DRIVER_SERIAL_NS16550 and DRIVER_SERIAL_EF=
-I_STDIO
-> >>>>> both enabled results in the output appearing twice on the serial ou=
-tput.
-> >>>>> So remove disable the lowlevel driver and rely on the EFI bios for =
-serial.
-> >>>
-> >>> How embarrassing, s/remove //.
-> >>>
-> >>>> On the flip-side, some systems now won't output anything over serial=
- with
-> >>>> the defconfig, like the one I just ran into. Maybe we should keep bo=
-th
-> >>>> enabled, but have a quirk table, which boards to disable the 16550 f=
-or?
-> >>>
-> >>> Expecting that most systems are happy with EFI_STDIO I would suggest a
-> >>> quirk table for those systems which are not?!
-> >>
-> >> Doubled output is better than no output, so a defconfig that
-> >> by default displays anything if the BIOS is not in the quirk
-> >> table sounds like it's the better choice?
-> > =
-
-> > Maybe disable CONSOLE_ACTIVATE_ALL instead? Then you should only get the
-> > output from one driver.
-> =
-
-> And which one should be default? You'll get more compile time coverage
-> with the defconfig but the user experience problem of having a defconfig
-> that does print nothing at all on some devices is still there.
-
-Maybe there is some way to find out where DRIVER_SERIAL_EFI_STDIO
-directs it output to?
+Applied, thanks
 
 Sascha
 
--- =
+> 
+> diff --git a/drivers/mci/stm32_sdmmc2.c b/drivers/mci/stm32_sdmmc2.c
+> index da2dc592adb3..0c620427ee44 100644
+> --- a/drivers/mci/stm32_sdmmc2.c
+> +++ b/drivers/mci/stm32_sdmmc2.c
+> @@ -633,11 +633,16 @@ priv_free:
+>  }
+>  
+>  static struct amba_id stm32_sdmmc2_ids[] = {
+> -	/* ST Micro STM32MP157C */
+> +	/* ST Micro STM32MP15 v1.1 */
+>  	{
+>  		.id     = 0x10153180,
+>  		.mask	= 0xf0ffffff,
+>  	},
+> +	/* ST Micro STM32MP15 v2.0 */
+> +	{
+> +		.id     = 0x00253180,
+> +		.mask	= 0xf0ffffff,
+> +	},
+>  	{ 0, 0 },
+>  };
+>  
+> -- 
+> 2.28.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
+-- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
