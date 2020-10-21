@@ -1,18 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf1-x144.google.com ([2a00:1450:4864:20::144])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kYEJJ-0005RV-70
- for barebox@lists.infradead.org; Thu, 29 Oct 2020 20:14:14 +0000
-Received: by mail-lf1-x144.google.com with SMTP id l2so4990072lfk.0
- for <barebox@lists.infradead.org>; Thu, 29 Oct 2020 13:14:11 -0700 (PDT)
-Date: Thu, 29 Oct 2020 23:13:58 +0300
-From: Peter Mamonov <pmamonov@gmail.com>
-Message-ID: <20201029201357.GA7832@chr>
-References: <20201023214522.21130-1-pmamonov@gmail.com>
- <20201028094737.GZ26805@pengutronix.de>
+ id 1kVF78-0004d8-Hf
+ for barebox@lists.infradead.org; Wed, 21 Oct 2020 14:29:19 +0000
+Date: Wed, 21 Oct 2020 16:29:15 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+Message-ID: <20201021142915.2wfefcrazkq42bgv@pengutronix.de>
+References: <20201020111537.29328-1-u.kleine-koenig@pengutronix.de>
+ <20201020133317.dc6yt2yt4tyk5ogm@pengutronix.de>
+ <20201020140934.GS13710@pengutronix.de>
+ <20201020142806.kmxoy6byavdwe5cv@pengutronix.de>
+ <20201020145844.4id6iyuihl3hkt3x@pengutronix.de>
+ <20201021054907.sunblqmijd4jl6zn@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201028094737.GZ26805@pengutronix.de>
+In-Reply-To: <20201021054907.sunblqmijd4jl6zn@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,56 +23,206 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] commands: import memtester 4.3.0 from Debian GNU/Linux
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, rhi@pengutronix.de
+Subject: Re: [PATCH] usb: i.MX: improve regulator handling
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi, Sascha,
+On 20-10-21 07:49, Uwe Kleine-K=F6nig wrote:
+> On Tue, Oct 20, 2020 at 04:58:44PM +0200, Marco Felsch wrote:
+> > On 20-10-20 16:28, Marco Felsch wrote:
+> > > On 20-10-20 16:09, Sascha Hauer wrote:
+> > > > On Tue, Oct 20, 2020 at 03:33:17PM +0200, Marco Felsch wrote:
+> > > > > Hi Uwe,
+> > > > > =
 
-On Wed, Oct 28, 2020 at 10:47:37AM +0100, Sascha Hauer wrote:
-> Hi Peter,
-> 
-> There are a few more things to fix. I just saw I never answered to your
-> last mail.
+> > > > > On 20-10-20 13:15, Uwe Kleine-K=F6nig wrote:
+> > > > > > Instead of just ignoring errors related to regulator getting er=
+ror out.
+> > > > > > In case there is no regulator in the device tree, regulator_get=
+() returns
+> > > > > > the dummy regulator and not an error code, so the change is rig=
+ht for
+> > > > > > this situation, too.
+> > > > > > =
 
-> [...]
+> > > > > > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.=
+de>
+> > > > > > ---
+> > > > > >  drivers/usb/imx/chipidea-imx.c | 7 +++++--
+> > > > > >  1 file changed, 5 insertions(+), 2 deletions(-)
+> > > > > > =
 
-> > +    errno = 0;
-> > +    wantbytes = (size_t) strtoull_suffix(argv[optind], 0, 0);
-> > +    if (errno != 0) {
-> > +        printf("failed to parse memory argument");
-> > +        return COMMAND_ERROR_USAGE;
-> > +    }
-> 
-> strtoull_suffix() doesn't set errno. There is currently no way to detect
-> an error from strtoull_suffix().
+> > > > > > diff --git a/drivers/usb/imx/chipidea-imx.c b/drivers/usb/imx/c=
+hipidea-imx.c
+> > > > > > index 786beede6d89..dd0e3c1a2a58 100644
+> > > > > > --- a/drivers/usb/imx/chipidea-imx.c
+> > > > > > +++ b/drivers/usb/imx/chipidea-imx.c
+> > > > > > @@ -267,8 +267,11 @@ static int imx_chipidea_probe(struct devic=
+e_d *dev)
+> > > > > >  	}
+> > > > > >  =
 
-errno is checked throughout the original code, including this slightly modified 
-piece. Should I remove those checks or keep them for the sake of future errno 
-support?
+> > > > > >  	ci->vbus =3D regulator_get(dev, "vbus");
+> > > > > > -	if (IS_ERR(ci->vbus))
+> > > > > > -		ci->vbus =3D NULL;
+> > > > > > +	if (IS_ERR(ci->vbus)) {
+> > > > > > +		ret =3D ERR_PTR(ci->vbus);
+> > > > > > +		dev_err(dev, "Cannot get vbus regulator: %s\n", strerror(-re=
+t));
+> > > > > > +		return ret;
+> > > > > =
 
-> [...]
+> > > > > Returning the error here can cause problems with exisiting boards=
+, e.g.
+> > > > > if the regulator support is missing for the specified vbus regula=
+tor.
+> > > > > This is often the case since we have very limited regulator suppo=
+rt for
+> > > > > now.
+> > > > =
 
-> > +        printf("  %-20s: ", "Stuck Address");
-> > +        console_flush();
-> 
-> Why did you add all these console_flush() throughout the code?
+> > > > But when there is a regulator we also have to control it, right?
+> > > =
+
+> > > So you need to add each regulator driver or worst case you need to add
+> > > PMIC drivers.
+> =
+
+> Right, as if you don't the hardware might be off and USB won't work
+> without a useful error message.
+
+Adding a warining seems valid to me but returning a error is wrong since
+the mainline driver explicite says: "/* no vbus regulator is needed */".
+
+> > > If I remember correctly, I added the same for mci which
+> > > broke a lot of boards. Later you reverted those commit. Now Oleksij
+> > > added the regulator support for the fec driver and people are startin=
+g =
+
+> > > to remove the phy-supply handle from the barebox-dt's (commit 84cf5cf=
+a9a
+> > > ("ARM: dts: imx6qdl: pfla02: Remove fec phy-supply")). I'm not again
+> =
+
+> Looking at 84cf5cfa9a there is at least a comment missing about why this
+> property is deleted. Something like
+> =
+
+> diff --git a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi b/arch/arm/dts/imx6q=
+dl-phytec-pfla02.dtsi
+> index b83511cb011f..7a12e2a06be4 100644
+> --- a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+> +++ b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+> @@ -84,6 +84,11 @@
+>  };
+>  =
+
+>  &fec {
+> +	/*
+> +	 * barebox doesn't have a driver for the PMIC providing the phy-supply
+> +	 * (dlg,da9063). So remove the phy-supply property and rely on the
+> +	 * PMIC's reset default which has this supply enabled.
+> +	 */
+>  	/delete-property/ phy-supply;
+>  };
+>  =
+
+> =
+
+> > > this patch, just wanted to show the consequences of it.
+> > =
+
+> > Sorry I have to correct myself, pls check the linux driver:
+> > =
+
+> > static int ci_get_platdata(struct device *dev,
+> > 			   struct ci_hdrc_platform_data *platdata)
+> > {
+> > =
+
+> > ...
+> > =
+
+> > /* Get the vbus regulator */
+> > platdata->reg_vbus =3D devm_regulator_get_optional(dev, "vbus");
+> > if (PTR_ERR(platdata->reg_vbus) =3D=3D -EPROBE_DEFER) {
+> > 	return -EPROBE_DEFER;
+> > } else if (PTR_ERR(platdata->reg_vbus) =3D=3D -ENODEV) {
+> > 	/* no vbus regulator is needed */
+> > 	platdata->reg_vbus =3D NULL;
+> > } else if (IS_ERR(platdata->reg_vbus)) {
+> > 	dev_err(dev, "Getting regulator error: %ld\n",
+> > 		PTR_ERR(platdata->reg_vbus));
+> > 	return PTR_ERR(platdata->reg_vbus);
+> > }
+> =
+
+> The difference between regulator_get and regulator_get_optional is that
+> the former doesn't return -ENODEV but yields the dummy regulator
+> instead. =
 
 
-I've merely replaced `fflush(stdout)` with `console_flush()` (see the original: 
-https://github.com/pmamonov/barebox/blob/31fd9d18f37ed58e5e559fe2ad6686066966f86e/commands/memtester/memtester.c#L374).  
-I choosed to keep all those (excessive) flushes as is, since most of the output 
-is a progress indicator which should be displayed immediately and I wasn't sure 
-that some type of barebox console won't cache the output.
+Nope, regulator_get returns dummy-regulators too and -ENODEV is returned
+in case of regulator_get_optional() too, pls. check:
+
+/* Internal regulator request function */
+struct regulator *_regulator_get(struct device *dev, const char *id,
+				 enum regulator_get_type get_type)
+{
+    ...
+}
+
+Regards,
+  Marco
+
+> (Yes, this is the inversed semantic compared with
+> gpio_get_optional() and clk_get_optional().) So using
+> devm_regulator_get_optional and ignoring -ENODEV is kind of strange.  So
+> I think the above can be simplified to:
+> =
+
+> 	platdata->reg_vbus =3D devm_regulator_get(dev, "vbus");
+> 	if (IS_ERR(platdata->reg_vbus))
+> 		return dev_err_probe(dev, PTR_ERR(platdata->reg_vbus),
+> 				     "Failed to get vbus regulator\n");
+> 	=
+
+> =
+
+> and then it is more obvious that my barebox patch does the same.
+> =
+
+> Am I missing something?
+> =
+
+> Best regards
+> Uwe
+> =
+
+> -- =
+
+> Pengutronix e.K.                           | Uwe Kleine-K=F6nig          =
+  |
+> Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
 
-PS Will address other comments in the next patch.
 
-Peter
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
