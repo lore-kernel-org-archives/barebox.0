@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kVClE-0007UO-13
- for barebox@lists.infradead.org; Wed, 21 Oct 2020 11:58:33 +0000
+ id 1kVClE-0007UT-1A
+ for barebox@lists.infradead.org; Wed, 21 Oct 2020 11:58:36 +0000
 Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <mfe@pengutronix.de>) id 1kVClC-0007DQ-Pj
+ (envelope-from <mfe@pengutronix.de>) id 1kVClC-0007DZ-Uo
  for barebox@lists.infradead.org; Wed, 21 Oct 2020 13:58:30 +0200
 Received: from mfe by dude02.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <mfe@pengutronix.de>) id 1kVClC-0000dL-6l
+ (envelope-from <mfe@pengutronix.de>) id 1kVClC-0000do-Dc
  for barebox@lists.infradead.org; Wed, 21 Oct 2020 13:58:30 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Wed, 21 Oct 2020 13:58:04 +0200
-Message-Id: <20201021115813.31645-2-m.felsch@pengutronix.de>
+Date: Wed, 21 Oct 2020 13:58:13 +0200
+Message-Id: <20201021115813.31645-11-m.felsch@pengutronix.de>
 In-Reply-To: <20201021115813.31645-1-m.felsch@pengutronix.de>
 References: <20201021115813.31645-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
@@ -29,62 +29,90 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 01/10] imx53: remove unused imx53_add_nand
+Subject: [PATCH v3 10/10] ARM: boards: mx6-sabrelite: add deep-probe support
 To: barebox@lists.infradead.org
 
-The TX53 board was the last user of this function. This board was
-converted to device tree based boot by commit 971366078893
-("i.MX53/TX53: rework to dts based boot") so we can remove this
-legacy helper.
+Explicit request the required gpio resources instead of relying on their
+existence based on the initcall level.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
 Changelog:
 
+v2:
+- convert to new macro name
+- convert to new api
 v3:
-- new patch
+- convert to new BAREBOX_DEEP_PROBE_ENABLE macro
 ---
- .../arm/mach-imx/include/mach/devices-imx53.h | 27 -------------------
- 1 file changed, 27 deletions(-)
+ .../boards/freescale-mx6-sabrelite/board.c    | 24 ++++++++++++-------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
-diff --git a/arch/arm/mach-imx/include/mach/devices-imx53.h b/arch/arm/mach-imx/include/mach/devices-imx53.h
-index e5c257a40b..3d1e8a27a8 100644
---- a/arch/arm/mach-imx/include/mach/devices-imx53.h
-+++ b/arch/arm/mach-imx/include/mach/devices-imx53.h
-@@ -77,33 +77,6 @@ static inline struct device_d *imx53_add_mmc3(struct esdhc_platform_data *pdata)
- 	return imx_add_esdhc_imx5((void *)MX53_ESDHC4_BASE_ADDR, 3, pdata);
- }
- 
--static inline struct device_d *imx53_add_nand(struct imx_nand_platform_data *pdata)
--{
--	struct resource res[] = {
--		{
--			.start = MX53_NFC_BASE_ADDR,
--			.end = MX53_NFC_BASE_ADDR + SZ_4K - 1,
--			.flags = IORESOURCE_MEM,
--		}, {
--			.start = MX53_NFC_AXI_BASE_ADDR,
--			.end = MX53_NFC_AXI_BASE_ADDR + SZ_4K - 1,
--			.flags = IORESOURCE_MEM,
--		},
--	};
--	struct device_d *dev = xzalloc(sizeof(*dev));
--
--	dev->resource = xzalloc(sizeof(struct resource) * ARRAY_SIZE(res));
--	memcpy(dev->resource, res, sizeof(struct resource) * ARRAY_SIZE(res));
--	dev->num_resources = ARRAY_SIZE(res);
--	dev_set_name(dev, "imx_nand");
--	dev->id = DEVICE_ID_DYNAMIC;
--	dev->platform_data = pdata;
--
--	platform_device_register(dev);
--
--	return dev;
--}
--
- static inline struct device_d *imx53_add_kpp(struct matrix_keymap_data *pdata)
+diff --git a/arch/arm/boards/freescale-mx6-sabrelite/board.c b/arch/arm/boards/freescale-mx6-sabrelite/board.c
+index 1b39ef82c6..0a2df391e9 100644
+--- a/arch/arm/boards/freescale-mx6-sabrelite/board.c
++++ b/arch/arm/boards/freescale-mx6-sabrelite/board.c
+@@ -13,7 +13,9 @@
+ #include <mach/bbu.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
++#include <of.h>
+ #include <partition.h>
++#include <deep-probe.h>
+ #include <linux/phy.h>
+ #include <asm/io.h>
+ #include <asm/mmu.h>
+@@ -98,10 +100,6 @@ static int sabrelite_ksz9021rn_setup(void)
  {
- 	return imx_add_kpp((void *)MX53_KPP_BASE_ADDR, pdata);
+ 	int ret;
+ 
+-	if (!of_machine_is_compatible("fsl,imx6q-sabrelite") &&
+-	    !of_machine_is_compatible("fsl,imx6dl-sabrelite"))
+-		return 0;
+-
+ 	mxc_iomux_v3_setup_multiple_pads(sabrelite_enet_gpio_pads,
+ 			ARRAY_SIZE(sabrelite_enet_gpio_pads));
+ 
+@@ -118,11 +116,6 @@ static int sabrelite_ksz9021rn_setup(void)
+ 
+ 	return 0;
+ }
+-/*
+- * Do this before the fec initializes but after our
+- * gpios are available.
+- */
+-fs_initcall(sabrelite_ksz9021rn_setup);
+ 
+ static void sabrelite_ehci_init(void)
+ {
+@@ -134,10 +127,20 @@ static void sabrelite_ehci_init(void)
+ 
+ static int sabrelite_devices_init(void)
+ {
++	int ret;
++
+ 	if (!of_machine_is_compatible("fsl,imx6q-sabrelite") &&
+ 	    !of_machine_is_compatible("fsl,imx6dl-sabrelite"))
+ 		return 0;
+ 
++	ret = of_devices_ensure_probed_by_property("gpio-controller");
++	if (ret)
++		return ret;
++
++	ret = sabrelite_ksz9021rn_setup();
++	if (ret)
++		return ret;
++
+ 	sabrelite_ehci_init();
+ 
+ 	armlinux_set_architecture(3769);
+@@ -163,3 +166,6 @@ static int sabrelite_coredevices_init(void)
+ 	return 0;
+ }
+ coredevice_initcall(sabrelite_coredevices_init);
++
++BAREBOX_DEEP_PROBE_ENABLE("fsl,imx6q-sabrelite");
++BAREBOX_DEEP_PROBE_ENABLE("fsl,imx6dl-sabrelite");
 -- 
 2.20.1
 
