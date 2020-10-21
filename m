@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qt1-x842.google.com ([2607:f8b0:4864:20::842])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kXkNE-0006uc-Vf
- for barebox@lists.infradead.org; Wed, 28 Oct 2020 12:16:17 +0000
-Received: by mail-qt1-x842.google.com with SMTP id h12so3307442qtc.9
- for <barebox@lists.infradead.org>; Wed, 28 Oct 2020 05:16:16 -0700 (PDT)
-From: Du Huanpeng <u74147@gmail.com>
-Date: Wed, 28 Oct 2020 20:15:59 +0800
-Message-Id: <1603887359-12609-1-git-send-email-u74147@gmail.com>
+ id 1kVFLT-0007bG-AS
+ for barebox@lists.infradead.org; Wed, 21 Oct 2020 14:44:08 +0000
+Date: Wed, 21 Oct 2020 16:44:04 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20201021144404.GJ26805@pengutronix.de>
+References: <1602838156.455713761@f185.i.mail.ru>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1602838156.455713761@f185.i.mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,205 +18,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ls1b200: dts: add serials and nand nodes
-To: barebox@lists.infradead.org
-Cc: Du Huanpeng <u74147@gmail.com>
+Subject: Re: ARM bootm regression
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-add all serials and sort them by base address.
- UART0_1, UART0_2, UART0_3 renamed to
- serial6, serial7, serial8.
- UART1_1, UART1_2, UART1_3 renamed to
- serial9, serial10, serial11.
+On Fri, Oct 16, 2020 at 11:49:16AM +0300, Alexander Shiyan wrote:
+> Hello.
+> 
+> Found a regression in arm/lib32/bootm.c after a patch
+> "ARM: bootm: make sure we place the kernel in free memory".
+> 
+> The initial memory size for the board is set to 8 MB (before reading the real value from DT),
 
-because the nand and pll share the some base
-address, so add it as well.
+You could read the real value from DT earlier using libfdt, see
+arch/arm/cpu/board-dt-2nd.c for usage examples. That doesn't solve it of
+course when your board really has only 8MB memory.
 
-Signed-off-by: Du Huanpeng <u74147@gmail.com>
----
- arch/mips/dts/ls1b.dtsi | 158 ++++++++++++++++++++++++++++++++++++++----------
- 1 file changed, 125 insertions(+), 33 deletions(-)
+> so the stack, malloc_space, etc. are placed in the initial 8M space.
+> Then get_kernel_addresses() gets the real SDRAM area (for my board it is 64M),
+> but decreases this size by the first children size (malloc_space),
+> so mem_end is incorrect in this case.
 
-diff --git a/arch/mips/dts/ls1b.dtsi b/arch/mips/dts/ls1b.dtsi
-index 8b772af..0bd3d08 100644
---- a/arch/mips/dts/ls1b.dtsi
-+++ b/arch/mips/dts/ls1b.dtsi
-@@ -11,43 +11,135 @@
- 		device_type = "soc";
- 		ranges;
- 
--		serial0: serial@1fe40000 {
--			compatible = "ns16550a";
--			reg = <0x1fe40000 0x8>;
--			reg-shift = <0>;
--			clock-frequency = <83000000>;
--			status = "disabled";
--		};
-+		xbar {
-+			compatible = "loongson,xbar-bus", "simple-bus";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			ranges;
- 
--		serial1: serial@1fe44000 {
--			compatible = "ns16550a";
--			reg = <0x1fe44000 0x8>;
--			reg-shift = <0>;
--			clock-frequency = <83000000>;
--			status = "disabled";
--		};
-+			axi-mux {
-+				compatible = "loongson,axi-mux", "simple-bus";
-+				#address-cells = <1>;
-+				#size-cells = <1>;
-+				ranges;
- 
--		serial2: serial@1fe48000 {
--			compatible = "ns16550a";
--			reg = <0x1fe48000 0x8>;
--			reg-shift = <0>;
--			clock-frequency = <83000000>;
--			status = "disabled";
--		};
- 
--		serial3: serial@1fe4c000 {
--			compatible = "ns16550a";
--			reg = <0x1fe4c000 0x8>;
--			reg-shift = <0>;
--			clock-frequency = <83000000>;
--			status = "disabled";
--		};
-+				apb@0x1fe40000 {
-+					compatible = "loongson,apb-bus", "simple-bus";
-+					#address-cells = <1>;
-+					#size-cells = <1>;
-+					ranges;
-+
-+					serial0: serial@1fe40000 {
-+						compatible = "ns16550a";
-+						reg = <0x1fe40000 0x8>;
-+						reg-shift = <0>;
-+						clocks = <&pll LS1B_CLK_APB_DIV>;
-+						status = "disabled";
-+					};
-+
-+					serial6: serial@1fe41000 {
-+						compatible = "ns16550a";
-+						reg = <0x1fe41000 0x8>;
-+						reg-shift = <0>;
-+						clocks = <&pll LS1B_CLK_APB_DIV>;
-+						status = "disabled";
-+					};
-+
-+					serial7: serial@1fe42000 {
-+						compatible = "ns16550a";
-+						reg = <0x1fe42000 0x8>;
-+						reg-shift = <0>;
-+						clocks = <&pll LS1B_CLK_APB_DIV>;
-+						status = "disabled";
-+					};
-+
-+					serial8: serial@1fe43000 {
-+						compatible = "ns16550a";
-+						reg = <0x1fe43000 0x8>;
-+						reg-shift = <0>;
-+						clocks = <&pll LS1B_CLK_APB_DIV>;
-+						status = "disabled";
-+					};
-+
-+					serial1: serial@1fe44000 {
-+						compatible = "ns16550a";
-+						reg = <0x1fe44000 0x8>;
-+						reg-shift = <0>;
-+						clocks = <&pll LS1B_CLK_APB_DIV>;
-+						status = "disabled";
-+					};
-+
-+					serial9: serial@1fe45000 {
-+						compatible = "ns16550a";
-+						reg = <0x1fe45000 0x8>;
-+						reg-shift = <0>;
-+						clocks = <&pll LS1B_CLK_APB_DIV>;
-+						status = "disabled";
-+					};
-+
-+					serial10: serial@1fe46000 {
-+						compatible = "ns16550a";
-+						reg = <0x1fe46000 0x8>;
-+						reg-shift = <0>;
-+						clocks = <&pll LS1B_CLK_APB_DIV>;
-+						status = "disabled";
-+					};
-+
-+					serial11: serial@1fe47000 {
-+						compatible = "ns16550a";
-+						reg = <0x1fe47000 0x8>;
-+						reg-shift = <0>;
-+						clocks = <&pll LS1B_CLK_APB_DIV>;
-+						status = "disabled";
-+					};
-+
-+					serial2: serial@1fe48000 {
-+						compatible = "ns16550a";
-+						reg = <0x1fe48000 0x8>;
-+						reg-shift = <0>;
-+						clocks = <&pll LS1B_CLK_APB_DIV>;
-+						status = "disabled";
-+					};
-+
-+					serial3: serial@1fe4c000 {
-+						compatible = "ns16550a";
-+						reg = <0x1fe4c000 0x8>;
-+						reg-shift = <0>;
-+						clocks = <&pll LS1B_CLK_APB_DIV>;
-+						status = "disabled";
-+					};
-+
-+					serial4: serial@1fe6c000 {
-+						compatible = "ns16550a";
-+						reg = <0x1fe6c000 0x8>;
-+						reg-shift = <0>;
-+						clocks = <&pll LS1B_CLK_APB_DIV>;
-+						status = "disabled";
-+					};
-+
-+					serial5: serial@1fe7c000 {
-+						compatible = "ns16550a";
-+						reg = <0x1fe7c000 0x8>;
-+						reg-shift = <0>;
-+						clocks = <&pll LS1B_CLK_APB_DIV>;
-+						status = "disabled";
-+					};
-+
-+					nand: nand@1fe78000 {
-+						compatible = "loongson,ls1b-nand";
-+						reg = <0x1fe78000 0x30>, <0x1fe78040 0x8>;
-+						reg-names = "ctrl", "dma";
-+				       };
- 
--		pll: pll@1fe78030 {
--			compatible = "loongson,ls1b-pll";
--			#clock-cells = <1>;
--			reg = <0x1fe78030 0x8>;
--			clocks = <&oscillator>;
-+					pll: pll@1fe78030 {
-+						compatible = "loongson,ls1b-pll";
-+						#clock-cells = <1>;
-+						reg = <0x1fe78030 0x8>;
-+						clocks = <&oscillator>;
-+					};
-+				};
-+			};
- 		};
- 	};
- };
+Does an additional:
+
+	if (kaddr < mem_start)
+		kaddr = mem_start;
+
+help?
+
+Sascha
+
 -- 
-2.7.4
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
