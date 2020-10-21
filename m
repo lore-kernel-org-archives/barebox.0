@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kUpYr-00052e-Gb
- for barebox@lists.infradead.org; Tue, 20 Oct 2020 11:12:14 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Tue, 20 Oct 2020 13:12:08 +0200
-Message-Id: <20201020111208.14216-1-u.kleine-koenig@pengutronix.de>
+ id 1kVArY-0001z5-2x
+ for barebox@lists.infradead.org; Wed, 21 Oct 2020 09:56:57 +0000
+Date: Wed, 21 Oct 2020 11:56:52 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20201021095652.GW13710@pengutronix.de>
+References: <20201020111208.14216-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20201020111208.14216-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,33 +18,80 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mfd: mc34704: fix register reading
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] mfd: mc34704: fix register reading
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-QWNjb3JkaW5nIHRvIHRoZSBkYXRhIHNoZWV0IChNQzM0NzA0IFJldi4gOC4wLCAxMi8yMDE0KSBt
-dXN0IGFsd2F5cyBoYXZlCnRoZSBNU0Igc2V0IGluIHRoZSAiU3ViLWFkZHJlc3MiIGJ5dGUgZm9y
-IHJlYWRzLgoKVGhpcyBmaXhlcyByZWFkaW5nIG91dCByZWdpc3RlcnMgb24gYSBNQzM0NzA0QUVQ
-IGNoaXAuCgpGaXhlczogNTE0Mzg3NzExZjJkICgiaTJjOiBhZGQgZHJpdmVyIGZvciB0aGUgTUMz
-NDcwNCBQTUlDIikKU2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtv
-ZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCiBkcml2ZXJzL21mZC9tYzM0NzA0LmMgfCA0ICsrLS0K
-IDEgZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pCgpkaWZmIC0t
-Z2l0IGEvZHJpdmVycy9tZmQvbWMzNDcwNC5jIGIvZHJpdmVycy9tZmQvbWMzNDcwNC5jCmluZGV4
-IDRhYTAyYjc0ZmYyMC4uMjkwNzFjNWNjZmNlIDEwMDY0NAotLS0gYS9kcml2ZXJzL21mZC9tYzM0
-NzA0LmMKKysrIGIvZHJpdmVycy9tZmQvbWMzNDcwNC5jCkBAIC00Myw3ICs0Myw3IEBAIGludCBt
-YzM0NzA0X3JlZ19yZWFkKHN0cnVjdCBtYzM0NzA0ICptYzM0NzA0LCB1OCByZWcsIHU4ICp2YWwp
-CiB7CiAJaW50IHJldDsKIAotCXJldCA9IGkyY19yZWFkX3JlZyhtYzM0NzA0LT5jbGllbnQsIHJl
-ZywgdmFsLCAxKTsKKwlyZXQgPSBpMmNfcmVhZF9yZWcobWMzNDcwNC0+Y2xpZW50LCAxIDw8IDcg
-fCByZWcsIHZhbCwgMSk7CiAKIAlyZXR1cm4gcmV0ID09IDEgPyAwIDogcmV0OwogfQpAQCAtMTEy
-LDcgKzExMiw3IEBAIHN0YXRpYyBpbnQgbWMzNDcwNF9wcm9iZShzdHJ1Y3QgZGV2aWNlX2QgKmRl
-dikKIAltYzM0NzA0X2RldiA9IHh6YWxsb2Moc2l6ZW9mKHN0cnVjdCBtYzM0NzA0KSk7CiAJbWMz
-NDcwNF9kZXYtPmNkZXYubmFtZSA9IERSSVZFUk5BTUU7CiAJbWMzNDcwNF9kZXYtPmNsaWVudCA9
-IHRvX2kyY19jbGllbnQoZGV2KTsKLQltYzM0NzA0X2Rldi0+Y2Rldi5zaXplID0gMjU2OworCW1j
-MzQ3MDRfZGV2LT5jZGV2LnNpemUgPSAxMjg7CiAJbWMzNDcwNF9kZXYtPmNkZXYuZGV2ID0gZGV2
-OwogCW1jMzQ3MDRfZGV2LT5jZGV2Lm9wcyA9ICZtYzM0NzA0X2ZvcHM7CiAKLS0gCjIuMjguMAoK
-Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3gg
-bWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5m
-cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Tue, Oct 20, 2020 at 01:12:08PM +0200, Uwe Kleine-K=F6nig wrote:
+> According to the data sheet (MC34704 Rev. 8.0, 12/2014) must always have
+> the MSB set in the "Sub-address" byte for reads.
+> =
+
+> This fixes reading out registers on a MC34704AEP chip.
+> =
+
+> Fixes: 514387711f2d ("i2c: add driver for the MC34704 PMIC")
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  drivers/mfd/mc34704.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+
+Applied, thanks
+
+Sascha
+
+> =
+
+> diff --git a/drivers/mfd/mc34704.c b/drivers/mfd/mc34704.c
+> index 4aa02b74ff20..29071c5ccfce 100644
+> --- a/drivers/mfd/mc34704.c
+> +++ b/drivers/mfd/mc34704.c
+> @@ -43,7 +43,7 @@ int mc34704_reg_read(struct mc34704 *mc34704, u8 reg, u=
+8 *val)
+>  {
+>  	int ret;
+>  =
+
+> -	ret =3D i2c_read_reg(mc34704->client, reg, val, 1);
+> +	ret =3D i2c_read_reg(mc34704->client, 1 << 7 | reg, val, 1);
+>  =
+
+>  	return ret =3D=3D 1 ? 0 : ret;
+>  }
+> @@ -112,7 +112,7 @@ static int mc34704_probe(struct device_d *dev)
+>  	mc34704_dev =3D xzalloc(sizeof(struct mc34704));
+>  	mc34704_dev->cdev.name =3D DRIVERNAME;
+>  	mc34704_dev->client =3D to_i2c_client(dev);
+> -	mc34704_dev->cdev.size =3D 256;
+> +	mc34704_dev->cdev.size =3D 128;
+>  	mc34704_dev->cdev.dev =3D dev;
+>  	mc34704_dev->cdev.ops =3D &mc34704_fops;
+>  =
+
+> -- =
+
+> 2.28.0
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
