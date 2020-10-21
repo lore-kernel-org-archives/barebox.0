@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qk1-x743.google.com ([2607:f8b0:4864:20::743])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kXjxt-0003H6-Vb
- for barebox@lists.infradead.org; Wed, 28 Oct 2020 11:50:07 +0000
-Received: by mail-qk1-x743.google.com with SMTP id r7so4173136qkf.3
- for <barebox@lists.infradead.org>; Wed, 28 Oct 2020 04:50:04 -0700 (PDT)
-From: Du Huanpeng <u74147@gmail.com>
-Date: Wed, 28 Oct 2020 19:49:52 +0800
-Message-Id: <1603885792-12157-1-git-send-email-u74147@gmail.com>
+ id 1kVBF6-0004iV-3P
+ for barebox@lists.infradead.org; Wed, 21 Oct 2020 10:21:18 +0000
+Date: Wed, 21 Oct 2020 12:21:12 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20201021102112.GC26805@pengutronix.de>
+References: <1602847130-10322-1-git-send-email-u74147@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1602847130-10322-1-git-send-email-u74147@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,299 +18,305 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] clk: ls1b200: add clk driver for loongson 1b
-To: barebox@lists.infradead.org
-Cc: Du Huanpeng <u74147@gmail.com>
+Subject: Re: [PATCH v2] MIPS: ls1b: enable pbl support for ls1bdev board
+To: Du Huanpeng <u74147@gmail.com>
+Cc: barebox@lists.infradead.org
 
-add "pll" and "oscillator" node to devicetree.
+On Fri, Oct 16, 2020 at 04:18:50AM -0700, Du Huanpeng wrote:
+> Signed-off-by: Du Huanpeng <u74147@gmail.com>
+> ---
+>  arch/mips/boards/loongson-ls1b/lowlevel.S          |  28 +++++
+>  .../include/mach/pbl_ll_init_loongson1.h           | 113 +++++++++++++++++++++
+>  arch/mips/mach-loongson/include/mach/pbl_macros.h  |  81 +++++++++++++++
+>  3 files changed, 222 insertions(+)
+>  create mode 100644 arch/mips/mach-loongson/include/mach/pbl_ll_init_loongson1.h
+>  create mode 100644 arch/mips/mach-loongson/include/mach/pbl_macros.h
 
-Signed-off-by: Du Huanpeng <u74147@gmail.com>
----
- arch/mips/Kconfig                        |   9 ++
- arch/mips/dts/loongson-ls1b.dts          |   6 ++
- arch/mips/dts/ls1b.dtsi                  |   9 ++
- drivers/clk/Makefile                     |   1 +
- drivers/clk/loongson/Makefile            |   2 +
- drivers/clk/loongson/clk-ls1b200.c       | 154 +++++++++++++++++++++++++++++++
- dts/include/dt-bindings/clock/ls1b-clk.h |  21 +++++
- 7 files changed, 202 insertions(+)
- create mode 100644 drivers/clk/loongson/Makefile
- create mode 100644 drivers/clk/loongson/clk-ls1b200.c
- create mode 100644 dts/include/dt-bindings/clock/ls1b-clk.h
+Applied, thanks
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 7a8f010..0aceed3 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -118,6 +118,15 @@ config MACH_MIPS_BCM47XX
- 
- config MACH_MIPS_LOONGSON
- 	bool "Loongson-based boards"
-+	select SYS_HAS_CPU_MIPS32_R2
-+	select SYS_SUPPORTS_32BIT_KERNEL
-+	select CSRC_R4K_LIB
-+	select HAS_DEBUG_LL
-+	select COMMON_CLK
-+	select COMMON_CLK_OF_PROVIDER
-+	select CLKDEV_LOOKUP
-+	select OFTREE
-+	select GPIOLIB
- 
- config MACH_MIPS_XBURST
- 	bool "Ingenic XBurst-based boards"
-diff --git a/arch/mips/dts/loongson-ls1b.dts b/arch/mips/dts/loongson-ls1b.dts
-index 6b53311..89cce56 100644
---- a/arch/mips/dts/loongson-ls1b.dts
-+++ b/arch/mips/dts/loongson-ls1b.dts
-@@ -6,6 +6,12 @@
- 	model = "Loongson Tech LS1B Demo Board";
- 	compatible = "loongson,ls1b";
- 
-+	oscillator: oscillator {
-+			#clock-cells = <0>;
-+			compatible = "fixed-clock";
-+			clock-frequency = <33000000>;
-+	};
-+
- 	memory@0 {
- 		device_type = "memory";
- 		reg = <0x00000000 0x4000000>;
-diff --git a/arch/mips/dts/ls1b.dtsi b/arch/mips/dts/ls1b.dtsi
-index cb85814..8b772af 100644
---- a/arch/mips/dts/ls1b.dtsi
-+++ b/arch/mips/dts/ls1b.dtsi
-@@ -1,3 +1,5 @@
-+#include <dt-bindings/clock/ls1b-clk.h>
-+
- / {
- 	#address-cells = <1>;
- 	#size-cells = <1>;
-@@ -40,5 +42,12 @@
- 			clock-frequency = <83000000>;
- 			status = "disabled";
- 		};
-+
-+		pll: pll@1fe78030 {
-+			compatible = "loongson,ls1b-pll";
-+			#clock-cells = <1>;
-+			reg = <0x1fe78030 0x8>;
-+			clocks = <&oscillator>;
-+		};
- 	};
- };
-diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
-index 0903274..04c797e 100644
---- a/drivers/clk/Makefile
-+++ b/drivers/clk/Makefile
-@@ -19,4 +19,5 @@ obj-$(CONFIG_ARCH_IMX)		+= imx/
- obj-$(CONFIG_COMMON_CLK_AT91)	+= at91/
- obj-$(CONFIG_ARCH_STM32MP)	+= clk-stm32mp1.o
- obj-$(CONFIG_MACH_VEXPRESS)	+= vexpress/
-+obj-$(CONFIG_MACH_MIPS_LOONGSON)+= loongson/
- obj-$(CONFIG_ARCH_LAYERSCAPE)	+= clk-qoric.o
-diff --git a/drivers/clk/loongson/Makefile b/drivers/clk/loongson/Makefile
-new file mode 100644
-index 0000000..dd76b25
---- /dev/null
-+++ b/drivers/clk/loongson/Makefile
-@@ -0,0 +1,2 @@
-+obj-$(CONFIG_BOARD_LOONGSON_TECH_LS1B) += clk-ls1b200.o
-+
-diff --git a/drivers/clk/loongson/clk-ls1b200.c b/drivers/clk/loongson/clk-ls1b200.c
-new file mode 100644
-index 0000000..f5fabd4
---- /dev/null
-+++ b/drivers/clk/loongson/clk-ls1b200.c
-@@ -0,0 +1,154 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright (C) 2014 Antony Pavlov <antonynpavlov@gmail.com>
-+ * Copyright (C) 2020 Du Huanpeng <u74147@gmail.com>
-+ *
-+ * Based on the Linux ath79 clock code
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <io.h>
-+#include <linux/clk.h>
-+#include <linux/clkdev.h>
-+#include <linux/err.h>
-+
-+#include <dt-bindings/clock/ls1b-clk.h>
-+
-+#define LS1B_CPU_DIV_SHIFT	20
-+#define LS1B_CPU_DIV_WIDTH	4
-+
-+#define LS1B_DDR_DIV_SHIFT	14
-+#define LS1B_DDR_DIV_WIDTH	4
-+
-+#define LS1B_DC_DIV_SHIFT	26
-+#define LS1B_DC_DIV_WIDTH	4
-+
-+#define LS1B_CLK_APB_MULT	1
-+#define LS1B_CLK_APB_DIV2	2
-+
-+/* register offset */
-+#define PLL_FREQ	0
-+#define PLL_DIV_PARAM	4
-+
-+static struct clk *clks[LS1B_CLK_END];
-+static struct clk_onecell_data clk_data;
-+
-+struct clk_ls1b200 {
-+	struct clk clk;
-+	void __iomem *base;
-+	int div_shift;
-+	int div_mask;
-+	const char *parent;
-+};
-+
-+static unsigned long clk_ls1b200_recalc_rate(struct clk *clk, unsigned long parent_rate)
-+{
-+	int n;
-+	unsigned long rate;
-+	int pll_freq;
-+	struct clk_ls1b200 *ls1bclk;
-+
-+	ls1bclk = container_of(clk, struct clk_ls1b200, clk);
-+	pll_freq = __raw_readl(ls1bclk->base);
-+
-+	n  = 12 * 1024;
-+	n += (pll_freq & 0x3F) * 1024;
-+	n += (pll_freq >> 8) & 0x3FF;
-+
-+	rate = parent_rate / 2 / 1024;
-+	/* avoid overflow. */
-+	rate *= n;
-+
-+	return rate;
-+}
-+
-+struct clk_ops clk_ls1b200_ops = {
-+	.recalc_rate = clk_ls1b200_recalc_rate,
-+};
-+
-+static struct clk *clk_ls1b200(const char *name, const char *parent,
-+	void __iomem *base, int div_shift, int div_mask)
-+{
-+	struct clk_ls1b200 *f = xzalloc(sizeof(struct clk_ls1b200));
-+
-+	f->parent = parent;
-+	f->base = base;
-+	f->div_shift = div_shift;
-+	f->div_mask = div_mask;
-+
-+	f->clk.ops = &clk_ls1b200_ops;
-+	f->clk.name = name;
-+	f->clk.parent_names = &f->parent;
-+	f->clk.num_parents = 1;
-+
-+	clk_register(&f->clk);
-+
-+	return &f->clk;
-+}
-+
-+static const char * const cpu_mux[] = {"cpu_div", "oscillator", };
-+static const char * const ddr_mux[] = {"ddr_div", "oscillator", };
-+static const char * const dc_mux[]  = {"dc_div", "oscillator", };
-+
-+
-+
-+static void ls1b200_pll_init(void __iomem *base)
-+{
-+	clks[LS1B_CLK_PLL] = clk_ls1b200("pll", "oscillator", base + PLL_FREQ, 0, 0);
-+
-+
-+	clks[LS1B_CLK_CPU_DIV] = clk_divider("cpu_div", "pll", 0,
-+		base + PLL_DIV_PARAM, LS1B_CPU_DIV_SHIFT, LS1B_CPU_DIV_WIDTH, CLK_DIVIDER_ONE_BASED);
-+	clks[LS1B_CLK_CPU_MUX] = clk_mux("cpu_mux", 0, base + PLL_DIV_PARAM,
-+		8, 1, cpu_mux,  ARRAY_SIZE(cpu_mux), 0);
-+
-+	clks[LS1B_CLK_DDR_DIV] = clk_divider("ddr_div", "pll", 0,
-+		base + PLL_DIV_PARAM, LS1B_DDR_DIV_SHIFT, LS1B_DDR_DIV_WIDTH, CLK_DIVIDER_ONE_BASED);
-+	clks[LS1B_CLK_DDR_MUX] = clk_mux("ddr_mux", 0, base + PLL_DIV_PARAM,
-+		10, 1, ddr_mux,  ARRAY_SIZE(ddr_mux), 0);
-+	clks[LS1B_CLK_APB_DIV] = clk_fixed_factor("apb_div", "ddr_mux", LS1B_CLK_APB_MULT, LS1B_CLK_APB_DIV2, 0);
-+
-+	clks[LS1B_CLK_DIV4] = clk_fixed_factor("dc_div4", "pll", 1, 4, 0);
-+
-+	clks[LS1B_CLK_DC_DIV] = clk_divider("dc_div", "dc_div4", 0,
-+		base + PLL_DIV_PARAM, LS1B_DC_DIV_SHIFT, LS1B_DC_DIV_WIDTH, CLK_DIVIDER_ONE_BASED);
-+	clks[LS1B_CLK_DC_MUX] = clk_mux("dc_mux", 0, base + PLL_DIV_PARAM,
-+		10, 1, dc_mux,  ARRAY_SIZE(dc_mux), 0);
-+}
-+
-+static int ls1b200_clk_probe(struct device_d *dev)
-+{
-+	struct resource *iores;
-+	void __iomem *base;
-+
-+	iores = dev_request_mem_resource(dev, 0);
-+	if (IS_ERR(iores))
-+		return PTR_ERR(iores);
-+	base = IOMEM(iores->start);
-+
-+	/* now got the controller base address */
-+	ls1b200_pll_init(base);
-+
-+	clk_data.clks = clks;
-+	clk_data.clk_num = ARRAY_SIZE(clks);
-+	of_clk_add_provider(dev->device_node, of_clk_src_onecell_get, &clk_data);
-+
-+	return 0;
-+}
-+
-+static __maybe_unused struct of_device_id ls1b200_clk_dt_ids[] = {
-+	{
-+		.compatible = "loongson,ls1b-pll",
-+	}, {
-+		/* sentinel */
-+	}
-+};
-+
-+static struct driver_d ls1b200_clk_driver = {
-+	.probe	= ls1b200_clk_probe,
-+	.name	= "ls1b-clk",
-+	.of_compatible = DRV_OF_COMPAT(ls1b200_clk_dt_ids),
-+};
-+
-+postcore_platform_driver(ls1b200_clk_driver);
-diff --git a/dts/include/dt-bindings/clock/ls1b-clk.h b/dts/include/dt-bindings/clock/ls1b-clk.h
-new file mode 100644
-index 0000000..2277225
---- /dev/null
-+++ b/dts/include/dt-bindings/clock/ls1b-clk.h
-@@ -0,0 +1,21 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Copyright (C) 2020 Du Huanpeng <u74147@gmail.com>
-+ */
-+
-+#ifndef __DT_BINDINGS_LS1B_CLK_H
-+#define __DT_BINDINGS_LS1B_CLK_H
-+
-+#define LS1B_CLK_PLL		0
-+#define LS1B_CLK_CPU_DIV	1
-+#define LS1B_CLK_CPU_MUX	2
-+#define LS1B_CLK_DDR_DIV	3
-+#define LS1B_CLK_DDR_MUX	4
-+#define LS1B_CLK_APB_DIV	5
-+#define LS1B_CLK_DC_DIV		6
-+#define LS1B_CLK_DIV4		7
-+#define LS1B_CLK_DC_MUX		8
-+
-+#define LS1B_CLK_END		9
-+
-+#endif /* __DT_BINDINGS_LS1B_CLK_H */
+Sascha
+
+> 
+> diff --git a/arch/mips/boards/loongson-ls1b/lowlevel.S b/arch/mips/boards/loongson-ls1b/lowlevel.S
+> index c533df3..7240d35 100644
+> --- a/arch/mips/boards/loongson-ls1b/lowlevel.S
+> +++ b/arch/mips/boards/loongson-ls1b/lowlevel.S
+> @@ -1,6 +1,7 @@
+>  /* SPDX-License-Identifier: GPL-2.0-only */
+>  /*
+>   * Copyright (C) 2014 Antony Pavlov <antonynpavlov@gmail.com>
+> + * Copyright (C) 2020 Du Huanpeng <u74147@gmail.com>
+>   */
+>  
+>  #define BOARD_PBL_START start_loongson_ls1b
+> @@ -11,15 +12,42 @@
+>  #include <asm/pbl_nmon.h>
+>  #include <linux/sizes.h>
+>  
+> +#include <mach/pbl_macros.h>
+> +#include <mach/pbl_ll_init_loongson1.h>
+> +
+>  ENTRY_FUNCTION(BOARD_PBL_START)
+>  
+>  	mips_barebox_10h
+>  
+>  	mips_disable_interrupts
+>  
+> +	pbl_blt 0xbf000000 skip_pll_ram_config t0
+> +
+> +	pbl_loongson1_pll
+> +
+> +	pbl_loongson1_uart_enable
+>  	debug_ll_ns16550_init
+>  
+>  	debug_ll_outc '.'
+>  	debug_ll_ns16550_outnl
+> +	debug_ll_outc '1'
+> +
+> +	pbl_loongson1_remap
+> +	debug_ll_outc '2'
+> +
+> +	pbl_loongson1_ddr2_init
+> +	pbl_probe_mem t0, t1, KSEG1
+> +	bne     t0, t1, .
+> +	nop
+> +
+> +	debug_ll_outc '3'
+> +
+> +	mips_cache_reset
+> +	dcache_enable
+> +	debug_ll_outc '4'
+> +
+> +skip_pll_ram_config:
+> +	debug_ll_outc '5'
+> +	debug_ll_ns16550_outnl
+>  
+>  ENTRY_FUNCTION_END(BOARD_PBL_START, loongson_ls1b, SZ_64M)
+> diff --git a/arch/mips/mach-loongson/include/mach/pbl_ll_init_loongson1.h b/arch/mips/mach-loongson/include/mach/pbl_ll_init_loongson1.h
+> new file mode 100644
+> index 0000000..a4d7c78
+> --- /dev/null
+> +++ b/arch/mips/mach-loongson/include/mach/pbl_ll_init_loongson1.h
+> @@ -0,0 +1,113 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * Copyright (C) 2020 Du Huanpeng <u74147@gmail.com>
+> + */
+> +
+> +#ifndef __ASM_MACH_LOONGSON1_PBL_LL_INIT_LOONGSON1_H
+> +#define __ASM_MACH_LOONGSON1_PBL_LL_INIT_LOONGSON1_H
+> +
+> +#include <asm/addrspace.h>
+> +#include <asm/regdef.h>
+> +
+> +.macro	__pbl_loongson1_ddr2_init
+> +	.set	push
+> +	.set	noreorder
+> +
+> +	pbl_reg_writel 0x00000101, 0xAFFFFE00
+> +	pbl_reg_writel 0x01000100, 0xAFFFFE04
+> +	pbl_reg_writel 0x00000000, 0xAFFFFE10
+> +	pbl_reg_writel 0x01000000, 0xAFFFFE14
+> +	pbl_reg_writel 0x00000000, 0xAFFFFE20
+> +	pbl_reg_writel 0x01000101, 0xAFFFFE24
+> +	pbl_reg_writel 0x01000100, 0xAFFFFE30
+> +	pbl_reg_writel 0x01010000, 0xAFFFFE34
+> +	pbl_reg_writel 0x01010101, 0xAFFFFE40
+> +	pbl_reg_writel 0x01000202, 0xAFFFFE44
+> +	pbl_reg_writel 0x04030201, 0xAFFFFE50
+> +	pbl_reg_writel 0x07000000, 0xAFFFFE54
+> +	pbl_reg_writel 0x02020203, 0xAFFFFE60
+> +	pbl_reg_writel 0x0a020203, 0xAFFFFE64
+> +	pbl_reg_writel 0x00010506, 0xAFFFFE70
+> +	pbl_reg_writel 0x00000400, 0xAFFFFE74
+> +	pbl_reg_writel 0x08040201, 0xAFFFFE80
+> +	pbl_reg_writel 0x08040201, 0xAFFFFE84
+> +	pbl_reg_writel 0x00000000, 0xAFFFFE90
+> +	pbl_reg_writel 0x00000306, 0xAFFFFE94
+> +	pbl_reg_writel 0x3f0b020a, 0xAFFFFEA0
+> +	pbl_reg_writel 0x0000003f, 0xAFFFFEA4
+> +	pbl_reg_writel 0x00000000, 0xAFFFFEB0
+> +	pbl_reg_writel 0x37570000, 0xAFFFFEB4
+> +	pbl_reg_writel 0x08000000, 0xAFFFFEC0
+> +	pbl_reg_writel 0x002a1503, 0xAFFFFEC4
+> +	pbl_reg_writel 0x002a002a, 0xAFFFFED0
+> +	pbl_reg_writel 0x002a002a, 0xAFFFFED4
+> +	pbl_reg_writel 0x002a002a, 0xAFFFFEE0
+> +	pbl_reg_writel 0x002a002a, 0xAFFFFEE4
+> +	pbl_reg_writel 0x00000002, 0xAFFFFEF0
+> +	pbl_reg_writel 0x00b40020, 0xAFFFFEF4
+> +	pbl_reg_writel 0x00000087, 0xAFFFFF00
+> +	pbl_reg_writel 0x000007ff, 0xAFFFFF04
+> +	pbl_reg_writel 0x44240618, 0xAFFFFF10
+> +	pbl_reg_writel 0x80808080, 0xAFFFFF14
+> +	pbl_reg_writel 0x80808080, 0xAFFFFF20
+> +	pbl_reg_writel 0x001c8080, 0xAFFFFF24
+> +	pbl_reg_writel 0x00c8006b, 0xAFFFFF30
+> +	pbl_reg_writel 0x36b00002, 0xAFFFFF34
+> +	pbl_reg_writel 0x00c80017, 0xAFFFFF40
+> +	pbl_reg_writel 0x00000000, 0xAFFFFF44
+> +	pbl_reg_writel 0x00009c40, 0xAFFFFF50
+> +	pbl_reg_writel 0x00000000, 0xAFFFFF54
+> +	pbl_reg_writel 0x00000000, 0xAFFFFF60
+> +	pbl_reg_writel 0x00000000, 0xAFFFFF64
+> +	pbl_reg_writel 0x00000000, 0xAFFFFF70
+> +	pbl_reg_writel 0x00000000, 0xAFFFFF74
+> +	pbl_reg_writel 0x00000000, 0xAFFFFF80
+> +	pbl_reg_writel 0x00000000, 0xAFFFFF84
+> +	pbl_reg_writel 0x00000000, 0xAFFFFF90
+> +	pbl_reg_writel 0x00000000, 0xAFFFFF94
+> +	pbl_reg_writel 0x00000000, 0xAFFFFFA0
+> +	pbl_reg_writel 0x00000000, 0xAFFFFFA4
+> +	pbl_reg_writel 0x00000000, 0xAFFFFFB0
+> +	pbl_reg_writel 0x00000000, 0xAFFFFFB4
+> +	pbl_reg_writel 0x00000000, 0xAFFFFFC0
+> +	pbl_reg_writel 0x00000000, 0xAFFFFFC4
+> +
+> +	.set	pop
+> +.endm
+> +
+> +.macro	pbl_loongson1_ddr2_init
+> +	.set	push
+> +	.set	noreorder
+> +
+> +	/* initial ddr2 controller */
+> +	pbl_reg_writel 0xfc000000, 0xbfd010c8
+> +	pbl_reg_writel 0x14000000, 0xbfd010f8
+> +
+> +	__pbl_loongson1_ddr2_init
+> +10:
+> +	pbl_reg_writel  0x01010100, 0xaffffe34
+> +
+> +9:
+> +	li	t0, 0xaffffe00
+> +	lw      t1, 0x10 (t0)
+> +	andi    t1, t1, 1
+> +	beqz    t1, 9b
+> +	nop
+> +
+> +	lh      t1, 0xf2 (t0)
+> +	sltiu 	t1, t1, 5
+> +	beqz 	t1, 1f
+> +	nop
+> +
+> +	lw      t1, 0xf4 (t0)
+> +	addiu   t1, t1, 4
+> +	sw      t1, 0xf4 (t0)
+> +	b       10b
+> +	nop
+> +1:
+> +	/* 16bit ddr and disable conf */
+> +	pbl_reg_set 0x110000, 0xbfd00424
+> +	.set	pop
+> +.endm
+> +
+> +#endif /* __ASM_MACH_LOONGSON1_PBL_LL_INIT_LOONGSON1_H */
+> diff --git a/arch/mips/mach-loongson/include/mach/pbl_macros.h b/arch/mips/mach-loongson/include/mach/pbl_macros.h
+> new file mode 100644
+> index 0000000..93402d1
+> --- /dev/null
+> +++ b/arch/mips/mach-loongson/include/mach/pbl_macros.h
+> @@ -0,0 +1,81 @@
+> +#ifndef __ASM_MACH_LOONGSON1_PBL_MACROS_H
+> +#define __ASM_MACH_LOONGSON1_PBL_MACROS_H
+> +
+> +#include <asm/addrspace.h>
+> +#include <asm/regdef.h>
+> +#include <mach/loongson1.h>
+> +
+> +#define PLL_FREQ		0xBFE78030
+> +#define PLL_DIV_PARAM		0xBFE78034
+> +
+> +#define CONFIG_CPU_DIV		3
+> +#define CONFIG_DDR_DIV		4
+> +#define CONFIG_DC_DIV		4
+> +#define CONFIG_PLL_FREQ		0x1C
+> +#define CONFIG_PLL_DIV_PARAM	0x92392a00
+> +
+> +.macro	pbl_loongson1_pll
+> +	.set	push
+> +	.set	noreorder
+> +
+> +	pbl_reg_writel 0x92392a00, PLL_DIV_PARAM
+> +	pbl_reg_writel 0x0000001c, PLL_FREQ
+> +	pbl_sleep t8, 40
+> +
+> +	.set	pop
+> +.endm
+> +
+> +.macro set_cpu_window id, base, mask, mmap
+> +	.set	push
+> +	.set	noreorder
+> +
+> +	li	t8, 0xbfd00000
+> +	sw	$0, 0x80 + \id * 8 (t8)
+> +	li	t9, \base
+> +	sw	t9, 0x00 + \id * 8 (t8)
+> +	sw	$0, 0x04 + \id * 8 (t8)
+> +	li	t9, \mask
+> +	sw	t9, 0x40 + \id * 8 (t8)
+> +	sw	$0, 0x44 + \id * 8 (t8)
+> +	li	t9, \mmap
+> +	sw	t9, 0x80 + \id * 8 (t8)
+> +	sw	$0, 0x84 + \id * 8 (t8)
+> +
+> +	.set	pop
+> +.endm
+> +
+> +.macro pbl_loongson1_remap
+> +	.set	push
+> +
+> +	set_cpu_window 0, 0x1c300000, 0xfff00000, 0x1c3000d2
+> +	set_cpu_window 1, 0x1fe10000, 0xffffe000, 0x1fe100d3
+> +	set_cpu_window 2, 0x1fe20000, 0xffffe000, 0x1fe200d3
+> +	set_cpu_window 3, 0x1fe10000, 0xffff0000, 0x1fe100d0
+> +	set_cpu_window 4, 0x1fe20000, 0xffff0000, 0x1fe200d0
+> +	set_cpu_window 5, 0x1ff00000, 0xfff00000, 0x1ff000d0
+> +	set_cpu_window 6, 0x1f000000, 0xff000000, 0x1f0000d3
+> +	set_cpu_window 7, 0x00000000, 0x00000000, 0x000000f0
+> +	li	t8, 0xbfd000e0
+> +	lw	t9, 0x0 (t8)
+> +	and	t9, t9, 0xffffff00
+> +	ori	t9, t9, 0xd0
+> +	sw	t9, 0x0 (t8)
+> +
+> +	lw	t9, 0x8 (t8)
+> +	and	t9, t9, 0xffffff00
+> +	ori	t9, t9, 0xd0
+> +	sw	t9, 0x8 (t8)
+> +
+> +	.set	pop
+> +.endm
+> +
+> +#define GPIOCFG1	0xbfd010C4
+> +.macro	pbl_loongson1_uart_enable
+> +	.set	push
+> +
+> +	pbl_reg_clr 0x00C00000, GPIOCFG1
+> +
+> +	.set	pop
+> +.endm
+> +
+> +#endif /* __ASM_MACH_LOONGSON1_PBL_MACROS_H */
+> -- 
+> 2.7.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.7.4
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
