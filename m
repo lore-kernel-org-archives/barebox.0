@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kVV4C-0003nm-RX
- for barebox@lists.infradead.org; Thu, 22 Oct 2020 07:31:21 +0000
-Date: Thu, 22 Oct 2020 09:31:19 +0200
+ id 1kVVG2-00065t-FQ
+ for barebox@lists.infradead.org; Thu, 22 Oct 2020 07:43:35 +0000
+Date: Thu, 22 Oct 2020 09:43:32 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201022073119.GN26805@pengutronix.de>
-References: <20201021145140.597728-1-m.tretter@pengutronix.de>
+Message-ID: <20201022074332.GO26805@pengutronix.de>
+References: <20201021115813.31645-1-m.felsch@pengutronix.de>
+ <20201021115813.31645-8-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201021145140.597728-1-m.tretter@pengutronix.de>
+In-Reply-To: <20201021115813.31645-8-m.felsch@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,30 +23,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 1/2] ARM: mmu64: allow to disable null pointer trap on
- zero page
-To: Michael Tretter <m.tretter@pengutronix.de>
+Subject: Re: [PATCH v3 07/10] common: add initial barebox deep-probe support
+To: Marco Felsch <m.felsch@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Oct 21, 2020 at 04:51:39PM +0200, Michael Tretter wrote:
-> Barebox uses the zero page to trap NULL pointer dereferences. However,
-> if the SDRAM starts at address 0x0, this makes the first page of the
-> SDRAM inaccessible and makes it impossible to load images to offset 0x0
-> in the SDRAM.
-> 
-> Trapping NULL pointer dereferences on such systems is still desirable.
-> Therefore, add a function to disable the traps if accessing the zero
-> page is necessary and to re-enable the traps after the access is done.
-> 
-> The zero_page_memcpy function simplifies copying to the SDRAM, because
-> this is the most common required functionality, but memtest also
-> accesses the zero page and does not use memcpy.
-> 
-> Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+On Wed, Oct 21, 2020 at 01:58:10PM +0200, Marco Felsch wrote:
+> The barebox 'deep probe' or 'probe on demand' mechanism is the answer of
+> +
+> +/**
+> + * of_devices_ensure_probed_by_dev_id() - ensures that a devices are probed
+> + *
+> + * @np: the start point device_node handle
+> + * @ids: the matching 'struct of_device_id' ids
+> + *
+> + * The function start searching the device tree from @np and populates and
+> + * probes devices which matches @ids.
+> + *
+> + * Return: %0 on success
+> + *	   %-ENODEV if either the device wasn't found, can't be populated,
+> + *	     the driver is missing or the driver probe returns an error
+> + */
+> +int of_devices_ensure_probed_by_dev_id(struct device_node *np,
+> +				       const struct of_device_id *ids)
+> +{
+> +	struct device_node *child;
+> +
+> +	if (of_match_node(ids, np))
+> +		return of_device_ensure_probed(np);
+> +
+> +	for_each_child_of_node(np, child) {
+> +		int ret;
+> +
+> +		ret = of_devices_ensure_probed_by_dev_id(child, ids);
+> +		if (!ret)
+> +			return 0;
+> +	}
 
-Applied, thanks
+Ok, this needs fixing. After of_devices_ensure_probed_by_dev_id()
+returns successfully you must continue the loop, otherwise only the
+first matching devices on each level is probed.
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
