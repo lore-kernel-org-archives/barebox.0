@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kVV01-0002ou-E1
- for barebox@lists.infradead.org; Thu, 22 Oct 2020 07:27:02 +0000
-Date: Thu, 22 Oct 2020 09:26:59 +0200
+ id 1kVV2V-0003by-N2
+ for barebox@lists.infradead.org; Thu, 22 Oct 2020 07:29:36 +0000
+Date: Thu, 22 Oct 2020 09:29:34 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201022072659.GL26805@pengutronix.de>
-References: <1602838156.455713761@f185.i.mail.ru>
- <20201021144404.GJ26805@pengutronix.de>
- <1603347207.861555734@f485.i.mail.ru>
+Message-ID: <20201022072934.GM26805@pengutronix.de>
+References: <1603331776-10429-1-git-send-email-u74147@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1603347207.861555734@f485.i.mail.ru>
+In-Reply-To: <1603331776-10429-1-git-send-email-u74147@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,44 +18,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: ARM bootm regression
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH] MIPS: dtb: remove unused variable ``root''
+To: Du Huanpeng <u74147@gmail.com>
 Cc: barebox@lists.infradead.org
 
-T24gVGh1LCBPY3QgMjIsIDIwMjAgYXQgMDk6MTM6MjdBTSArMDMwMCwgQWxleGFuZGVyIFNoaXlh
-biB3cm90ZToKPiA+0KHRgNC10LTQsCwgMjEg0L7QutGC0Y/QsdGA0Y8gMjAyMCwgMTc6NDQgKzAz
-OjAwINC+0YIgU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPjoKPiA+Cj4gPk9u
-IEZyaSwgT2N0IDE2LCAyMDIwIGF0IDExOjQ5OjE2QU0gKzAzMDAsIEFsZXhhbmRlciBTaGl5YW4g
-d3JvdGU6Cj4gPj4gSGVsbG8uCj4gPj4gCj4gPj4gRm91bmQgYSByZWdyZXNzaW9uIGluIGFybS9s
-aWIzMi9ib290bS5jIGFmdGVyIGEgcGF0Y2gKPiA+PiAiQVJNOiBib290bTogbWFrZSBzdXJlIHdl
-IHBsYWNlIHRoZSBrZXJuZWwgaW4gZnJlZSBtZW1vcnkiLgo+ID4+IAo+ID4+IFRoZSBpbml0aWFs
-IG1lbW9yeSBzaXplIGZvciB0aGUgYm9hcmQgaXMgc2V0IHRvIDggTUIgKGJlZm9yZSByZWFkaW5n
-IHRoZSByZWFsIHZhbHVlIGZyb20gRFQpLAo+ID5Zb3UgY291bGQgcmVhZCB0aGUgcmVhbCB2YWx1
-ZSBmcm9tIERUIGVhcmxpZXIgdXNpbmcgbGliZmR0LCBzZWUKPiA+YXJjaC9hcm0vY3B1L2JvYXJk
-LWR0LTJuZC5jIGZvciB1c2FnZSBleGFtcGxlcy4gVGhhdCBkb2Vzbid0IHNvbHZlIGl0IG9mCj4g
-PmNvdXJzZSB3aGVuIHlvdXIgYm9hcmQgcmVhbGx5IGhhcyBvbmx5IDhNQiBtZW1vcnkuCj4gPgo+
-ID4+IHNvIHRoZSBzdGFjaywgbWFsbG9jX3NwYWNlLCBldGMuIGFyZSBwbGFjZWQgaW4gdGhlIGlu
-aXRpYWwgOE0gc3BhY2UuCj4gPj4gVGhlbiBnZXRfa2VybmVsX2FkZHJlc3NlcygpIGdldHMgdGhl
-IHJlYWwgU0RSQU0gYXJlYSAoZm9yIG15IGJvYXJkIGl0IGlzIDY0TSksCj4gPj4gYnV0IGRlY3Jl
-YXNlcyB0aGlzIHNpemUgYnkgdGhlIGZpcnN0IGNoaWxkcmVuIHNpemUgKG1hbGxvY19zcGFjZSks
-Cj4gPj4gc28gbWVtX2VuZCBpcyBpbmNvcnJlY3QgaW4gdGhpcyBjYXNlLgo+ID4KPiA+RG9lcyBh
-biBhZGRpdGlvbmFsOgo+ID4KPiA+aWYgKGthZGRyIDwgbWVtX3N0YXJ0KQo+ID5rYWRkciA9IG1l
-bV9zdGFydDsKPiA+Cj4gPmhlbHA/Cj4gCj4gV29ya3MgZmluZSB3aXRoIHRoZSBmb2xsb3dpbmcg
-bW9kaWZpY2F0aW9uOgo+IAo+IAkJLyoKPiAJCSAqIE1ha2Ugc3VyZSB3ZSBkbyBub3QgcGxhY2Ug
-dGhlIGltYWdlIG91dHNpZGUgb2YgdGhlCj4gCQkgKiBhdmFpbGFibGUgbWVtb3J5Lgo+IAkJICov
-Cj4gCQlpZiAoKChrYWRkciArIGltYWdlX3NpemUgKyBzcGFjaW5nKSA+IG1lbV9lbmQpICYmCj4g
-CQkgICAgKChtZW1fZW5kIC0gaW1hZ2Vfc2l6ZSAtIHNwYWNpbmcpID49IG1lbV9zdGFydCkpCj4g
-CQkJa2FkZHIgPSBtZW1fZW5kIC0gaW1hZ2Vfc2l6ZSAtIHNwYWNpbmc7CgpPaywgbmljZS4gQ2Fu
-IHlvdSBzZW5kIGEgZm9ybWFsIHBhdGNoIGZvciBpbmNsdXNpb24/CgpTYXNjaGEKCi0tIApQZW5n
-dXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgfApTdGV1ZXJ3YWxkZXIgU3RyLiAyMSAgICAgICAgICAgICAgICAgICAgICAg
-fCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfAozMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55
-ICAgICAgICAgICAgICAgICAgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2Vy
-aWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2
-OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
-Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Thu, Oct 22, 2020 at 09:56:16AM +0800, Du Huanpeng wrote:
+> the ``root'' is not used and cause a warning.
+> 
+> Signed-off-by: Du Huanpeng <u74147@gmail.com>
+> ---
+>  arch/mips/boot/dtb.c | 1 -
+>  1 file changed, 1 deletion(-)
+
+Applied, thanks
+
+Sascha
+
+> 
+> diff --git a/arch/mips/boot/dtb.c b/arch/mips/boot/dtb.c
+> index 2aff4ad..6fce470 100644
+> --- a/arch/mips/boot/dtb.c
+> +++ b/arch/mips/boot/dtb.c
+> @@ -35,7 +35,6 @@ extern char __dtb_start[];
+>  
+>  static int of_mips_init(void)
+>  {
+> -	struct device_node *root;
+>  	void *fdt;
+>  
+>  	fdt = glob_fdt;
+> -- 
+> 2.7.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
