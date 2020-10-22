@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kVVG2-00065t-FQ
- for barebox@lists.infradead.org; Thu, 22 Oct 2020 07:43:35 +0000
-Date: Thu, 22 Oct 2020 09:43:32 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201022074332.GO26805@pengutronix.de>
-References: <20201021115813.31645-1-m.felsch@pengutronix.de>
- <20201021115813.31645-8-m.felsch@pengutronix.de>
+ id 1kVZep-0003YN-4Z
+ for barebox@lists.infradead.org; Thu, 22 Oct 2020 12:25:27 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Thu, 22 Oct 2020 14:25:22 +0200
+Message-Id: <20201022122522.3303-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201021115813.31645-8-m.felsch@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,60 +15,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 07/10] common: add initial barebox deep-probe support
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] mtd: nand-imx: repair reading the oob area
+To: barebox@lists.infradead.org
 
-On Wed, Oct 21, 2020 at 01:58:10PM +0200, Marco Felsch wrote:
-> The barebox 'deep probe' or 'probe on demand' mechanism is the answer of
-> +
-> +/**
-> + * of_devices_ensure_probed_by_dev_id() - ensures that a devices are probed
-> + *
-> + * @np: the start point device_node handle
-> + * @ids: the matching 'struct of_device_id' ids
-> + *
-> + * The function start searching the device tree from @np and populates and
-> + * probes devices which matches @ids.
-> + *
-> + * Return: %0 on success
-> + *	   %-ENODEV if either the device wasn't found, can't be populated,
-> + *	     the driver is missing or the driver probe returns an error
-> + */
-> +int of_devices_ensure_probed_by_dev_id(struct device_node *np,
-> +				       const struct of_device_id *ids)
-> +{
-> +	struct device_node *child;
-> +
-> +	if (of_match_node(ids, np))
-> +		return of_device_ensure_probed(np);
-> +
-> +	for_each_child_of_node(np, child) {
-> +		int ret;
-> +
-> +		ret = of_devices_ensure_probed_by_dev_id(child, ids);
-> +		if (!ret)
-> +			return 0;
-> +	}
-
-Ok, this needs fixing. After of_devices_ensure_probed_by_dev_id()
-returns successfully you must continue the loop, otherwise only the
-first matching devices on each level is probed.
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QWZ0ZXIgc2VuZGluZyB0aGUgUkVBRE9PQiBjb21tYW5kIHRoZSBjb3JlIChpbiBuYW5kX3JlYWRf
+b29iX3N0ZCgpKSB1c2VzCnRoZSByZWFkX2J1ZiBjYWxsYmFjayB0byBmZXRjaCB0aGUgcmVzdWx0
+LiBTbyBpbiB0aGUgaW14IGRyaXZlciBpdCBpcwpuZWNlc3NhcnkgdG8gZW1pdCB0aGUgTkZDX09V
+VFBVVCBjb21tYW5kIHRvIG1ha2UgdGhlIGNvbnRyb2xsZXIgYWN0dWFsbHkKcmVhZCB0aGUgcmVx
+dWVzdGVkIGRhdGEgaW50byB0aGUgaW50ZXJuYWwgYnVmZmVyIGFuZCB0aGVuIGNvcHkgdGhlIGRh
+dGEKdG8gdGhlIGxvY2F0aW9uIHdoZXJlIHJlYWRfYnVmIGV4cGVjdHMgaXQuCgpUaGlzIGZpeGVz
+IHJlYWRpbmcgZnJvbSAvZGV2L25hbmQwLm9vYiBhbmQgYWxzbyAoc29tZXdoYXQpIHJlYWRpbmcg
+YmFkCmJsb2NrIG1hcmtlcnMgaW4gdGhlIGFic2VuY2Ugb2YgYSBiYWQgYmxvY2sgdGFibGUuCgpT
+aWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJv
+bml4LmRlPgotLS0KSGVsbG8sCgpJIGZhaWxlZCB0byBmaW5kIHRoZSBjb21taXQgdGhhdCBicm9r
+ZSByZWFkaW5nIGZyb20gL2Rldi9uYW5kMC5vb2IgYnV0CmZhaWxlZCB0byBpZGVudGlmeSBpdC4g
+SSB0aGluayB0aGlzIGJ1ZyBpcyBxdWl0ZSBvbGQuIEkgZGlkbid0IHRlc3QsIGJ1dApJIHRoaW5r
+IHRoaXMgd2FzIGFscmVhZHkgYnJva2VuIGluIDIwMTAuMDkuMCB3aGVyZSB0aGUgbmFuZCBzdXBw
+b3J0IHdhcwptb3ZlZCBmcm9tIGRyaXZlcnMvbmFuZCB0byBkcml2ZXJzL210ZC9uYW5kLiAoVGhp
+cyBpcyB3aGVyZSBnaXRrIG91dHB1dAplbmRlZCA6LSkKCkJlc3QgcmVnYXJkcwpVd2UKCiBkcml2
+ZXJzL210ZC9uYW5kL25hbmRfaW14LmMgfCAxNSArKysrKysrKysrKystLS0KIDEgZmlsZSBjaGFu
+Z2VkLCAxMiBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZl
+cnMvbXRkL25hbmQvbmFuZF9pbXguYyBiL2RyaXZlcnMvbXRkL25hbmQvbmFuZF9pbXguYwppbmRl
+eCBkNjlhMDEyZjAxN2IuLmY5ZDNjMmUzNGE5OSAxMDA2NDQKLS0tIGEvZHJpdmVycy9tdGQvbmFu
+ZC9uYW5kX2lteC5jCisrKyBiL2RyaXZlcnMvbXRkL25hbmQvbmFuZF9pbXguYwpAQCAtOTk2LDE0
+ICs5OTYsMjMgQEAgc3RhdGljIHZvaWQgaW14X25hbmRfY29tbWFuZChzdHJ1Y3QgbXRkX2luZm8g
+Km10ZCwgdW5zaWduZWQgY29tbWFuZCwKIAkJZWxzZQogCQkJaG9zdC0+YnVmX3N0YXJ0ID0gY29s
+dW1uICsgbXRkLT53cml0ZXNpemU7CiAKLQkJY29tbWFuZCA9IE5BTkRfQ01EX1JFQUQwOwotCi0J
+CWhvc3QtPnNlbmRfY21kKGhvc3QsIGNvbW1hbmQpOworCQlob3N0LT5zZW5kX2NtZChob3N0LCBO
+QU5EX0NNRF9SRUFEMCk7CiAJCW14Y19kb19hZGRyX2N5Y2xlKG10ZCwgY29sdW1uLCBwYWdlX2Fk
+ZHIpOwogCiAJCWlmIChob3N0LT5wYWdlc2l6ZV8yaykKIAkJCS8qIHNlbmQgcmVhZCBjb25maXJt
+IGNvbW1hbmQgKi8KIAkJCWhvc3QtPnNlbmRfY21kKGhvc3QsIE5BTkRfQ01EX1JFQURTVEFSVCk7
+CisKKwkJLyoKKwkJICogQWZ0ZXIgdGhlIGNvcmUgaXNzdWVkIFJFQURPT0IgdGhlIHJlc3VsdCBp
+cyByZWFkIHVzaW5nCisJCSAqIC5yZWFkX2J1Ziwgc28gd2UgaGF2ZSB0byBtYWtlIHN1cmUgdGhl
+IGRhdGEgaXMgYWN0dWFsbHkKKwkJICogdGhlcmUuCisJCSAqLworCQlpZiAoY29tbWFuZCA9PSBO
+QU5EX0NNRF9SRUFET09CKSB7CisJCQlob3N0LT5zZW5kX3BhZ2UoaG9zdCwgTkZDX09VVFBVVCk7
+CisJCQljb3B5X3NwYXJlKG10ZCwgMSwgaG9zdC0+ZGF0YV9idWYgKyBtdGQtPndyaXRlc2l6ZSk7
+CisJCX0KKwogCQlicmVhazsKIAogCWNhc2UgTkFORF9DTURfU0VRSU46Ci0tIAoyLjI4LjAKCgpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
+aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
+ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
