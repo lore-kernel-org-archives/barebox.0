@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kVr8V-0008OA-5Z
- for barebox@lists.infradead.org; Fri, 23 Oct 2020 07:05:16 +0000
-Date: Fri, 23 Oct 2020 09:05:11 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201023070511.GP26805@pengutronix.de>
-References: <20201022122522.3303-1-u.kleine-koenig@pengutronix.de>
+ id 1kX9i6-000862-Fg
+ for barebox@lists.infradead.org; Mon, 26 Oct 2020 21:07:23 +0000
+References: <20200918110442.25159-1-u.kleine-koenig@pengutronix.de>
+ <20200918110442.25159-2-u.kleine-koenig@pengutronix.de>
+ <bb53e525-250d-4572-ba93-ec7ddd35b5cf@pengutronix.de>
+ <20201020072634.qfe4zo4gcgq7qkw2@pengutronix.de>
+ <b100a2ce-91b9-bd04-3a52-c5f257428d9f@pengutronix.de>
+ <20201026180649.GQ30556@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <bea5dc47-adc4-4096-9617-7d99e48e599e@pengutronix.de>
+Date: Mon, 26 Oct 2020 22:07:19 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201022122522.3303-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20201026180649.GQ30556@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,106 +23,81 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mtd: nand-imx: repair reading the oob area
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/2] x86/config/efi: drop DRIVER_SERIAL_NS16550
+To: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>, barebox@lists.infradead.org
 
-On Thu, Oct 22, 2020 at 02:25:22PM +0200, Uwe Kleine-K=F6nig wrote:
-> After sending the READOOB command the core (in nand_read_oob_std()) uses
-> the read_buf callback to fetch the result. So in the imx driver it is
-> necessary to emit the NFC_OUTPUT command to make the controller actually
-> read the requested data into the internal buffer and then copy the data
-> to the location where read_buf expects it.
-> =
-
-> This fixes reading from /dev/nand0.oob and also (somewhat) reading bad
-> block markers in the absence of a bad block table.
-> =
-
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> ---
-> Hello,
-> =
-
-> I failed to find the commit that broke reading from /dev/nand0.oob but
-> failed to identify it. I think this bug is quite old. I didn't test, but
-> I think this was already broken in 2010.09.0 where the nand support was
-> moved from drivers/nand to drivers/mtd/nand. (This is where gitk output
-> ended :-)
-> =
-
-> Best regards
-> Uwe
-
-Tested on i.MX27 and applied, thanks
-
-Sascha
-
-> =
-
->  drivers/mtd/nand/nand_imx.c | 15 ++++++++++++---
->  1 file changed, 12 insertions(+), 3 deletions(-)
-> =
-
-> diff --git a/drivers/mtd/nand/nand_imx.c b/drivers/mtd/nand/nand_imx.c
-> index d69a012f017b..f9d3c2e34a99 100644
-> --- a/drivers/mtd/nand/nand_imx.c
-> +++ b/drivers/mtd/nand/nand_imx.c
-> @@ -996,14 +996,23 @@ static void imx_nand_command(struct mtd_info *mtd, =
-unsigned command,
->  		else
->  			host->buf_start =3D column + mtd->writesize;
->  =
-
-> -		command =3D NAND_CMD_READ0;
-> -
-> -		host->send_cmd(host, command);
-> +		host->send_cmd(host, NAND_CMD_READ0);
->  		mxc_do_addr_cycle(mtd, column, page_addr);
->  =
-
->  		if (host->pagesize_2k)
->  			/* send read confirm command */
->  			host->send_cmd(host, NAND_CMD_READSTART);
-> +
-> +		/*
-> +		 * After the core issued READOOB the result is read using
-> +		 * .read_buf, so we have to make sure the data is actually
-> +		 * there.
-> +		 */
-> +		if (command =3D=3D NAND_CMD_READOOB) {
-> +			host->send_page(host, NFC_OUTPUT);
-> +			copy_spare(mtd, 1, host->data_buf + mtd->writesize);
-> +		}
-> +
->  		break;
->  =
-
->  	case NAND_CMD_SEQIN:
-> -- =
-
-> 2.28.0
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
--- =
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+CgpPbiAxMC8yNi8yMCA3OjA2IFBNLCBNaWNoYWVsIE9sYnJpY2ggd3JvdGU6Cj4gT24gVHVlLCBP
+Y3QgMjAsIDIwMjAgYXQgMDk6MzU6MzBBTSArMDIwMCwgQWhtYWQgRmF0b3VtIHdyb3RlOgo+PiBP
+biAxMC8yMC8yMCA5OjI2IEFNLCBVd2UgS2xlaW5lLUvDtm5pZyB3cm90ZToKPj4+IE9uIFR1ZSwg
+T2N0IDIwLCAyMDIwIGF0IDA3OjA4OjQ3QU0gKzAyMDAsIEFobWFkIEZhdG91bSB3cm90ZToKPj4+
+PiBIZWxsbyBVd2UsCj4+Pj4KPj4+PiBPbiA5LzE4LzIwIDE6MDQgUE0sIFV3ZSBLbGVpbmUtS8O2
+bmlnIHdyb3RlOgo+Pj4+PiBGb3IgbW9zdCBtYWNoaW5lcyBoYXZpbmcgRFJJVkVSX1NFUklBTF9O
+UzE2NTUwIGFuZCBEUklWRVJfU0VSSUFMX0VGSV9TVERJTwo+Pj4+PiBib3RoIGVuYWJsZWQgcmVz
+dWx0cyBpbiB0aGUgb3V0cHV0IGFwcGVhcmluZyB0d2ljZSBvbiB0aGUgc2VyaWFsIG91dHB1dC4K
+Pj4+Pj4gU28gcmVtb3ZlIGRpc2FibGUgdGhlIGxvd2xldmVsIGRyaXZlciBhbmQgcmVseSBvbiB0
+aGUgRUZJIGJpb3MgZm9yIHNlcmlhbC4KPj4+Cj4+PiBIb3cgZW1iYXJyYXNzaW5nLCBzL3JlbW92
+ZSAvLy4KPj4+Cj4+Pj4gT24gdGhlIGZsaXAtc2lkZSwgc29tZSBzeXN0ZW1zIG5vdyB3b24ndCBv
+dXRwdXQgYW55dGhpbmcgb3ZlciBzZXJpYWwgd2l0aAo+Pj4+IHRoZSBkZWZjb25maWcsIGxpa2Ug
+dGhlIG9uZSBJIGp1c3QgcmFuIGludG8uIE1heWJlIHdlIHNob3VsZCBrZWVwIGJvdGgKPj4+PiBl
+bmFibGVkLCBidXQgaGF2ZSBhIHF1aXJrIHRhYmxlLCB3aGljaCBib2FyZHMgdG8gZGlzYWJsZSB0
+aGUgMTY1NTAgZm9yPwo+Pj4KPj4+IEV4cGVjdGluZyB0aGF0IG1vc3Qgc3lzdGVtcyBhcmUgaGFw
+cHkgd2l0aCBFRklfU1RESU8gSSB3b3VsZCBzdWdnZXN0IGEKPj4+IHF1aXJrIHRhYmxlIGZvciB0
+aG9zZSBzeXN0ZW1zIHdoaWNoIGFyZSBub3Q/IQo+Pgo+PiBEb3VibGVkIG91dHB1dCBpcyBiZXR0
+ZXIgdGhhbiBubyBvdXRwdXQsIHNvIGEgZGVmY29uZmlnIHRoYXQKPj4gYnkgZGVmYXVsdCBkaXNw
+bGF5cyBhbnl0aGluZyBpZiB0aGUgQklPUyBpcyBub3QgaW4gdGhlIHF1aXJrCj4+IHRhYmxlIHNv
+dW5kcyBsaWtlIGl0J3MgdGhlIGJldHRlciBjaG9pY2U/Cj4gCj4gTWF5YmUgZGlzYWJsZSBDT05T
+T0xFX0FDVElWQVRFX0FMTCBpbnN0ZWFkPyBUaGVuIHlvdSBzaG91bGQgb25seSBnZXQgdGhlCj4g
+b3V0cHV0IGZyb20gb25lIGRyaXZlci4KCkFuZCB3aGljaCBvbmUgc2hvdWxkIGJlIGRlZmF1bHQ/
+IFlvdSdsbCBnZXQgbW9yZSBjb21waWxlIHRpbWUgY292ZXJhZ2UKd2l0aCB0aGUgZGVmY29uZmln
+IGJ1dCB0aGUgdXNlciBleHBlcmllbmNlIHByb2JsZW0gb2YgaGF2aW5nIGEgZGVmY29uZmlnCnRo
+YXQgZG9lcyBwcmludCBub3RoaW5nIGF0IGFsbCBvbiBzb21lIGRldmljZXMgaXMgc3RpbGwgdGhl
+cmUuCgo+IAo+IE1pY2hhZWwKPiAKPj4+Cj4+Pj4gTXkgYm9hcmQgaXMKPj4+PiAgIEVGSSB2Mi40
+MCBieSBBbWVyaWNhbiBNZWdhdHJlbmRzIHYzMjc2OTEiLiBXaGF0J3MgeW91cnM/Cj4+Pj4gICBi
+YXJlYm94QGJhcmVib3ggRUZJIHBheWxvYWQ6LyBkZXZpbmZvIGFjcGktRkFDUDAKPj4+PiAgIFsu
+Li5dCj4+Pj4gICBSZXZpc2lvbjogNQo+Pj4+ICAgT2VtSWQ6IEFMQVNLQQo+Pj4+ICAgT2VtVGFi
+bGVJZDogQSBNIEkKPj4+PiAgIE9lbVJldmlzaW9uOiAxNzI0NDE2OQo+Pj4+ICAgQ3JlYXRvcklk
+OiAweDIwNDk0ZDQxCj4+Pj4gICBDcmVhdG9yUmV2aXNpb246IDY1NTU1Cj4+Pj4KPj4+PiBXaGF0
+J3MgeW91cnM/Cj4+Pgo+Pj4gSSBzYXcgdGhlIGRvdWJsZWQgb3V0cHV0IG9uIG15IExhcHRvcCAo
+TGVub3ZvIFQ0NjBwKS4KPj4KPj4gWW91IGhhdmUgc2VyaWFsIG91dHB1dCBvbiB5b3VyIGxhcHRv
+cD8KPj4KPj4+Cj4+PiBkbWlkZWNvZGUgaGFzOgo+Pj4KPj4+IAlCSU9TIEluZm9ybWF0aW9uCj4+
+PiAJCVZlbmRvcjogTEVOT1ZPCj4+PiAJCVZlcnNpb246IFIwN0VUODFXICgyLjIxICkKPj4+IAkJ
+UmVsZWFzZSBEYXRlOiAxMi8xOC8yMDE3Cj4+PiAJCUFkZHJlc3M6IDB4RTAwMDAKPj4+IAkJUnVu
+dGltZSBTaXplOiAxMjgga0IKPj4+IAkJUk9NIFNpemU6IDE2IE1CCj4+PiAJCUNoYXJhY3Rlcmlz
+dGljczoKPj4+IAkJCVBDSSBpcyBzdXBwb3J0ZWQKPj4+IAkJCVBOUCBpcyBzdXBwb3J0ZWQKPj4+
+IAkJCUJJT1MgaXMgdXBncmFkZWFibGUKPj4+IAkJCUJJT1Mgc2hhZG93aW5nIGlzIGFsbG93ZWQK
+Pj4+IAkJCUJvb3QgZnJvbSBDRCBpcyBzdXBwb3J0ZWQKPj4+IAkJCVNlbGVjdGFibGUgYm9vdCBp
+cyBzdXBwb3J0ZWQKPj4+IAkJCUVERCBpcyBzdXBwb3J0ZWQKPj4+IAkJCTMuNSIvNzIwIGtCIGZs
+b3BweSBzZXJ2aWNlcyBhcmUgc3VwcG9ydGVkIChpbnQgMTNoKQo+Pj4gCQkJUHJpbnQgc2NyZWVu
+IHNlcnZpY2UgaXMgc3VwcG9ydGVkIChpbnQgNWgpCj4+PiAJCQk4MDQyIGtleWJvYXJkIHNlcnZp
+Y2VzIGFyZSBzdXBwb3J0ZWQgKGludCA5aCkKPj4+IAkJCVNlcmlhbCBzZXJ2aWNlcyBhcmUgc3Vw
+cG9ydGVkIChpbnQgMTRoKQo+Pj4gCQkJUHJpbnRlciBzZXJ2aWNlcyBhcmUgc3VwcG9ydGVkIChp
+bnQgMTdoKQo+Pj4gCQkJQ0dBL21vbm8gdmlkZW8gc2VydmljZXMgYXJlIHN1cHBvcnRlZCAoaW50
+IDEwaCkKPj4+IAkJCUFDUEkgaXMgc3VwcG9ydGVkCj4+PiAJCQlVU0IgbGVnYWN5IGlzIHN1cHBv
+cnRlZAo+Pj4gCQkJQklPUyBib290IHNwZWNpZmljYXRpb24gaXMgc3VwcG9ydGVkCj4+PiAJCQlU
+YXJnZXRlZCBjb250ZW50IGRpc3RyaWJ1dGlvbiBpcyBzdXBwb3J0ZWQKPj4+IAkJCVVFRkkgaXMg
+c3VwcG9ydGVkCj4+PiAJCUJJT1MgUmV2aXNpb246IDIuMjEKPj4+IAkJRmlybXdhcmUgUmV2aXNp
+b246IDEuNAo+Pj4KPj4+IChUaGlzIGlzIHRoZSBzeXN0ZW0gSSB3cml0ZSB0aGlzIG1haWwgb24s
+IEkgZG9uJ3QgZmVlbCBsaWtlIHJlYm9vdGluZyB0byBjaGVjawo+Pj4gZGV2aW5mbyBpbiBiYXJl
+Ym94LCB0YWtlIGEgcGljdHVyZSBhbmQgdGhlbiB0eXBlIHRoZSBzdHVmZiBpbnRvIGEgbWFpbAo+
+Pj4gYnkgaGFuZC4pCj4+Pgo+Pj4gQmVzdCByZWdhcmRzCj4+PiBVd2UKPj4+Cj4+Pgo+Pgo+PiAt
+LSAKPj4gUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIHwKPj4gU3RldWVyd2FsZGVyIFN0ci4gMjEgICAgICAgICAg
+ICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKPj4gMzExMzcgSGls
+ZGVzaGVpbSwgR2VybWFueSAgICAgICAgICAgICAgICAgIHwgUGhvbmU6ICs0OS01MTIxLTIwNjkx
+Ny0wICAgIHwKPj4gQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwg
+RmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKPj4KPj4gX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX18KPj4gYmFyZWJveCBtYWlsaW5nIGxpc3QKPj4gYmFy
+ZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCj4+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
+aWxtYW4vbGlzdGluZm8vYmFyZWJveAo+Pgo+IAoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAg
+ICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ClN0ZXVl
+cndhbGRlciBTdHIuIDIxICAgICAgICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0
+cm9uaXguZGUvICB8CjMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgICAgICAgICAgICAgICAgICB8
+IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhS
+QSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcg
+bGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5v
+cmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
