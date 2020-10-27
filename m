@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mx-relay78-hz1.antispameurope.com ([94.100.133.239])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kXLV8-0004so-1D
- for barebox@lists.infradead.org; Tue, 27 Oct 2020 09:42:47 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 27 Oct 2020 10:42:42 +0100
-Message-Id: <20201027094242.32582-1-s.hauer@pengutronix.de>
+ id 1kXNoB-0004ff-Et
+ for barebox@lists.infradead.org; Tue, 27 Oct 2020 12:10:37 +0000
+Date: Tue, 27 Oct 2020 13:10:25 +0100
+From: Gavin Schenk <g.schenk@eckelmann.de>
+Message-ID: <20201027121025.as7ca5k6vb3n2cj3@NB061.eckelmann.group>
+References: <20201027094242.32582-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20201027094242.32582-1-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,56 +18,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] usb: Fix initial max packet size
-To: Barebox List <barebox@lists.infradead.org>
-Cc: ukl@pengutronix.de
+Subject: Re: [PATCH] usb: Fix initial max packet size
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>, ukl@pengutronix.de
 
-In case the USB device is a full speed device we have to set
-dev->epmaxpacketin[0] and dev->epmaxpacketout[0] before doing a
-get_descriptor_len() because otherwise it's unset during that call.
-
-Fixes: 6d1d95a386 ("usb: factor out a usb_setup_descriptor() function")
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/usb/core/usb.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
-index c068c64c6b..ea244d4bcf 100644
---- a/drivers/usb/core/usb.c
-+++ b/drivers/usb/core/usb.c
-@@ -332,6 +332,8 @@ static int usb_setup_descriptor(struct usb_device *dev, bool do_read)
- 		dev->descriptor->bMaxPacketSize0 = 64;
- 		dev->maxpacketsize = PACKET_SIZE_64;
- 	}
-+	dev->epmaxpacketin[0] = dev->descriptor->bMaxPacketSize0;
-+	dev->epmaxpacketout[0] = dev->descriptor->bMaxPacketSize0;
- 
- 	if (do_read && dev->speed == USB_SPEED_FULL) {
- 		int err;
-@@ -355,10 +357,10 @@ static int usb_setup_descriptor(struct usb_device *dev, bool do_read)
- 		err = get_descriptor_len(dev, 64, 8);
- 		if (err)
- 			return err;
--	}
- 
--	dev->epmaxpacketin[0] = dev->descriptor->bMaxPacketSize0;
--	dev->epmaxpacketout[0] = dev->descriptor->bMaxPacketSize0;
-+		dev->epmaxpacketin[0] = dev->descriptor->bMaxPacketSize0;
-+		dev->epmaxpacketout[0] = dev->descriptor->bMaxPacketSize0;
-+	}
- 
- 	switch (dev->descriptor->bMaxPacketSize0) {
- 	case 8:
--- 
-2.20.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGksCgp0aGFua3MgYSBsb3QsIHRoYXQncyBncmVhdC4KCk9uIFR1ZSwgT2N0IDI3LCAyMDIwIGF0
+IDEwOjQyOjQyQU0gKzAxMDAsIFNhc2NoYSBIYXVlciB3cm90ZToKPiBJbiBjYXNlIHRoZSBVU0Ig
+ZGV2aWNlIGlzIGEgZnVsbCBzcGVlZCBkZXZpY2Ugd2UgaGF2ZSB0byBzZXQKPiBkZXYtPmVwbWF4
+cGFja2V0aW5bMF0gYW5kIGRldi0+ZXBtYXhwYWNrZXRvdXRbMF0gYmVmb3JlIGRvaW5nIGEKPiBn
+ZXRfZGVzY3JpcHRvcl9sZW4oKSBiZWNhdXNlIG90aGVyd2lzZSBpdCdzIHVuc2V0IGR1cmluZyB0
+aGF0IGNhbGwuCj4KPiBGaXhlczogNmQxZDk1YTM4NiAoInVzYjogZmFjdG9yIG91dCBhIHVzYl9z
+ZXR1cF9kZXNjcmlwdG9yKCkgZnVuY3Rpb24iKQo+IFNpZ25lZC1vZmYtYnk6IFNhc2NoYSBIYXVl
+ciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4KVGVzdGVkLWJ5OiBHYXZpbiBTY2hlbmsgPGcuc2No
+ZW5rQGVja2VsbWFubi5kZT4KCk9uIG9uZSBvZiBvdXIgaS5NWDI1IGJhc2VkIHBsYXRmb3JtcyB0
+aGVyZSBhcmUgY3VycmVudGx5IGZvdXIgcmV2ZXJ0IGNvbW1pdHMgdG8KbWFrZSBVU0Igd29yayBv
+biBiYXJlYm94IDIwMjAuMDYuCgooUmV2ZXJ0ZWQgY29tbWl0cyBhcmU6KQo2MmQ1NjViYTAgKHVz
+YjogaHViOiBXaGVuIG5vIGNvbm5lY3Rpb24gY2FtZSB1cCByZW1vdmUgZnJvbSBzY2FubmluZyBs
+aXN0KQoxZjhjOGFmNDggKHVzYjogQWRkIHN1cGVyIHNwZWVkIHN1cHBvcnQpCmJiMmNiZmIyYiAo
+dXNiOiBodWI6IFRyYW5zbGF0ZSBVU0IgMy4wIGh1YiBwb3J0IHN0YXR1cyBpbnRvIG9sZCB2ZXJz
+aW9uKQo2ZDFkOTVhMzggKHVzYjogZmFjdG9yIG91dCBhIHVzYl9zZXR1cF9kZXNjcmlwdG9yKCkg
+ZnVuY3Rpb24pCgpXaXRob3V0IHJldmVydGluZyB0aGUgYmVoYXZpb3VyIGlzOgp1c2I6IFVTQjog
+c2Nhbm5pbmcgYnVzIGZvciBkZXZpY2VzLi4uCnVzYjE6IEJ1cyAwMDEgRGV2aWNlIDAwMTogSUQg
+MDAwMDowMDAwIEVIQ0kgSG9zdCBDb250cm9sbGVyCkVSUk9SOiB1c2IxLTA6IHVuYWJsZSB0byBn
+ZXQgZGV2aWNlIGRlc2NyaXB0b3IgKGVycm9yPS0xMTApCkVSUk9SOiB1c2IxLTA6IFVTQiBkZXZp
+Y2Ugbm90IGFjY2VwdGluZyBuZXcgYWRkcmVzcyAoZXJyb3I9ODAwMDAwMDApCnVzYjogMSBVU0Ig
+RGV2aWNlKHMpIGZvdW5kCgpXaXRoIHRoaXMgcGF0Y2ggYXBwbGllZCBVU0IgaXMgd29ya2luZyBh
+Z2FpbjoKCnVzYjogVVNCOiBzY2FubmluZyBidXMgZm9yIGRldmljZXMuLi4KdXNiMTogQnVzIDAw
+MSBEZXZpY2UgMDAxOiBJRCAwMDAwOjAwMDAgRUhDSSBIb3N0IENvbnRyb2xsZXIKdXNiMS0wOiBC
+dXMgMDAxIERldmljZSAwMDI6IElEIDA5NTE6MTYxYSBEYXRhVHJhdmVsZXIgNDEwClVzaW5nIGlu
+ZGV4IDAgZm9yIHRoZSBuZXcgZGlzawp1c2I6IDIgVVNCIERldmljZShzKSBmb3VuZAoKYmFyZWJv
+eEBFY2tlbG1hbm4gQUcgRUNVMDI6LyBscyAvbW50L3VzYnN0b3JhZ2UvCi4gICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIC4uCi5UcmFzaC0xMDAwICAgICAgICAgICAgICAgICAgICAg
+ICAgIDIwMTYtYmFyZWJveC1lYWctZWN1MDIuaW1nCjIwMjAtYmFyZWJveC1lY2tlbG1hbm4tZWN1
+MDIuaW1nICAgIGJhcmVib3gtZWFnLWVjdTAyLmltZwoKUmVnYXJkcwpHYXZpbiBTY2hlbmsKRWNr
+ZWxtYW5uIEFHClZvcnN0YW5kOiBEaXBsLi1JbmcuIFBldGVyIEZyYW5rZW5iYWNoIChTcHJlY2hl
+cikgRGlwbC4tV2kuLUluZy4gUGhpbGlwcCBFY2tlbG1hbm4KRHIuLUluZy4gTWFyY28gTcO8bmNo
+aG9mIERyLi1JbmcuIEZyYW5rIFVobGVtYW5uClZvcnNpdHplbmRlciBkZXMgQXVmc2ljaHRzcmF0
+czogSHViZXJ0dXMgRy4gS3Jvc3NhIFN0di4gVm9yc2l0emVuZGVyIGRlcyBBdWZzaWNodHNyYXRz
+OiBEci4tSW5nLiBHZXJkIEVja2VsbWFubgpTaXR6IGRlciBHZXNlbGxzY2hhZnQ6IEJlcmxpbmVy
+IFN0ci4gMTYxLCA2NTIwNSBXaWVzYmFkZW4sIEFtdHNnZXJpY2h0IFdpZXNiYWRlbiBIUkIgMTI2
+MzYKd3d3LmVja2VsbWFubi5kZQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQu
+b3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
