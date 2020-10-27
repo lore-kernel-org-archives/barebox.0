@@ -1,20 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kX9i6-000862-Fg
- for barebox@lists.infradead.org; Mon, 26 Oct 2020 21:07:23 +0000
-References: <20200918110442.25159-1-u.kleine-koenig@pengutronix.de>
- <20200918110442.25159-2-u.kleine-koenig@pengutronix.de>
- <bb53e525-250d-4572-ba93-ec7ddd35b5cf@pengutronix.de>
- <20201020072634.qfe4zo4gcgq7qkw2@pengutronix.de>
- <b100a2ce-91b9-bd04-3a52-c5f257428d9f@pengutronix.de>
- <20201026180649.GQ30556@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <bea5dc47-adc4-4096-9617-7d99e48e599e@pengutronix.de>
-Date: Mon, 26 Oct 2020 22:07:19 +0100
+ id 1kXLV8-0004so-1D
+ for barebox@lists.infradead.org; Tue, 27 Oct 2020 09:42:47 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 27 Oct 2020 10:42:42 +0100
+Message-Id: <20201027094242.32582-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20201026180649.GQ30556@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,81 +15,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] x86/config/efi: drop DRIVER_SERIAL_NS16550
-To: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>, barebox@lists.infradead.org
+Subject: [PATCH] usb: Fix initial max packet size
+To: Barebox List <barebox@lists.infradead.org>
+Cc: ukl@pengutronix.de
 
-CgpPbiAxMC8yNi8yMCA3OjA2IFBNLCBNaWNoYWVsIE9sYnJpY2ggd3JvdGU6Cj4gT24gVHVlLCBP
-Y3QgMjAsIDIwMjAgYXQgMDk6MzU6MzBBTSArMDIwMCwgQWhtYWQgRmF0b3VtIHdyb3RlOgo+PiBP
-biAxMC8yMC8yMCA5OjI2IEFNLCBVd2UgS2xlaW5lLUvDtm5pZyB3cm90ZToKPj4+IE9uIFR1ZSwg
-T2N0IDIwLCAyMDIwIGF0IDA3OjA4OjQ3QU0gKzAyMDAsIEFobWFkIEZhdG91bSB3cm90ZToKPj4+
-PiBIZWxsbyBVd2UsCj4+Pj4KPj4+PiBPbiA5LzE4LzIwIDE6MDQgUE0sIFV3ZSBLbGVpbmUtS8O2
-bmlnIHdyb3RlOgo+Pj4+PiBGb3IgbW9zdCBtYWNoaW5lcyBoYXZpbmcgRFJJVkVSX1NFUklBTF9O
-UzE2NTUwIGFuZCBEUklWRVJfU0VSSUFMX0VGSV9TVERJTwo+Pj4+PiBib3RoIGVuYWJsZWQgcmVz
-dWx0cyBpbiB0aGUgb3V0cHV0IGFwcGVhcmluZyB0d2ljZSBvbiB0aGUgc2VyaWFsIG91dHB1dC4K
-Pj4+Pj4gU28gcmVtb3ZlIGRpc2FibGUgdGhlIGxvd2xldmVsIGRyaXZlciBhbmQgcmVseSBvbiB0
-aGUgRUZJIGJpb3MgZm9yIHNlcmlhbC4KPj4+Cj4+PiBIb3cgZW1iYXJyYXNzaW5nLCBzL3JlbW92
-ZSAvLy4KPj4+Cj4+Pj4gT24gdGhlIGZsaXAtc2lkZSwgc29tZSBzeXN0ZW1zIG5vdyB3b24ndCBv
-dXRwdXQgYW55dGhpbmcgb3ZlciBzZXJpYWwgd2l0aAo+Pj4+IHRoZSBkZWZjb25maWcsIGxpa2Ug
-dGhlIG9uZSBJIGp1c3QgcmFuIGludG8uIE1heWJlIHdlIHNob3VsZCBrZWVwIGJvdGgKPj4+PiBl
-bmFibGVkLCBidXQgaGF2ZSBhIHF1aXJrIHRhYmxlLCB3aGljaCBib2FyZHMgdG8gZGlzYWJsZSB0
-aGUgMTY1NTAgZm9yPwo+Pj4KPj4+IEV4cGVjdGluZyB0aGF0IG1vc3Qgc3lzdGVtcyBhcmUgaGFw
-cHkgd2l0aCBFRklfU1RESU8gSSB3b3VsZCBzdWdnZXN0IGEKPj4+IHF1aXJrIHRhYmxlIGZvciB0
-aG9zZSBzeXN0ZW1zIHdoaWNoIGFyZSBub3Q/IQo+Pgo+PiBEb3VibGVkIG91dHB1dCBpcyBiZXR0
-ZXIgdGhhbiBubyBvdXRwdXQsIHNvIGEgZGVmY29uZmlnIHRoYXQKPj4gYnkgZGVmYXVsdCBkaXNw
-bGF5cyBhbnl0aGluZyBpZiB0aGUgQklPUyBpcyBub3QgaW4gdGhlIHF1aXJrCj4+IHRhYmxlIHNv
-dW5kcyBsaWtlIGl0J3MgdGhlIGJldHRlciBjaG9pY2U/Cj4gCj4gTWF5YmUgZGlzYWJsZSBDT05T
-T0xFX0FDVElWQVRFX0FMTCBpbnN0ZWFkPyBUaGVuIHlvdSBzaG91bGQgb25seSBnZXQgdGhlCj4g
-b3V0cHV0IGZyb20gb25lIGRyaXZlci4KCkFuZCB3aGljaCBvbmUgc2hvdWxkIGJlIGRlZmF1bHQ/
-IFlvdSdsbCBnZXQgbW9yZSBjb21waWxlIHRpbWUgY292ZXJhZ2UKd2l0aCB0aGUgZGVmY29uZmln
-IGJ1dCB0aGUgdXNlciBleHBlcmllbmNlIHByb2JsZW0gb2YgaGF2aW5nIGEgZGVmY29uZmlnCnRo
-YXQgZG9lcyBwcmludCBub3RoaW5nIGF0IGFsbCBvbiBzb21lIGRldmljZXMgaXMgc3RpbGwgdGhl
-cmUuCgo+IAo+IE1pY2hhZWwKPiAKPj4+Cj4+Pj4gTXkgYm9hcmQgaXMKPj4+PiAgIEVGSSB2Mi40
-MCBieSBBbWVyaWNhbiBNZWdhdHJlbmRzIHYzMjc2OTEiLiBXaGF0J3MgeW91cnM/Cj4+Pj4gICBi
-YXJlYm94QGJhcmVib3ggRUZJIHBheWxvYWQ6LyBkZXZpbmZvIGFjcGktRkFDUDAKPj4+PiAgIFsu
-Li5dCj4+Pj4gICBSZXZpc2lvbjogNQo+Pj4+ICAgT2VtSWQ6IEFMQVNLQQo+Pj4+ICAgT2VtVGFi
-bGVJZDogQSBNIEkKPj4+PiAgIE9lbVJldmlzaW9uOiAxNzI0NDE2OQo+Pj4+ICAgQ3JlYXRvcklk
-OiAweDIwNDk0ZDQxCj4+Pj4gICBDcmVhdG9yUmV2aXNpb246IDY1NTU1Cj4+Pj4KPj4+PiBXaGF0
-J3MgeW91cnM/Cj4+Pgo+Pj4gSSBzYXcgdGhlIGRvdWJsZWQgb3V0cHV0IG9uIG15IExhcHRvcCAo
-TGVub3ZvIFQ0NjBwKS4KPj4KPj4gWW91IGhhdmUgc2VyaWFsIG91dHB1dCBvbiB5b3VyIGxhcHRv
-cD8KPj4KPj4+Cj4+PiBkbWlkZWNvZGUgaGFzOgo+Pj4KPj4+IAlCSU9TIEluZm9ybWF0aW9uCj4+
-PiAJCVZlbmRvcjogTEVOT1ZPCj4+PiAJCVZlcnNpb246IFIwN0VUODFXICgyLjIxICkKPj4+IAkJ
-UmVsZWFzZSBEYXRlOiAxMi8xOC8yMDE3Cj4+PiAJCUFkZHJlc3M6IDB4RTAwMDAKPj4+IAkJUnVu
-dGltZSBTaXplOiAxMjgga0IKPj4+IAkJUk9NIFNpemU6IDE2IE1CCj4+PiAJCUNoYXJhY3Rlcmlz
-dGljczoKPj4+IAkJCVBDSSBpcyBzdXBwb3J0ZWQKPj4+IAkJCVBOUCBpcyBzdXBwb3J0ZWQKPj4+
-IAkJCUJJT1MgaXMgdXBncmFkZWFibGUKPj4+IAkJCUJJT1Mgc2hhZG93aW5nIGlzIGFsbG93ZWQK
-Pj4+IAkJCUJvb3QgZnJvbSBDRCBpcyBzdXBwb3J0ZWQKPj4+IAkJCVNlbGVjdGFibGUgYm9vdCBp
-cyBzdXBwb3J0ZWQKPj4+IAkJCUVERCBpcyBzdXBwb3J0ZWQKPj4+IAkJCTMuNSIvNzIwIGtCIGZs
-b3BweSBzZXJ2aWNlcyBhcmUgc3VwcG9ydGVkIChpbnQgMTNoKQo+Pj4gCQkJUHJpbnQgc2NyZWVu
-IHNlcnZpY2UgaXMgc3VwcG9ydGVkIChpbnQgNWgpCj4+PiAJCQk4MDQyIGtleWJvYXJkIHNlcnZp
-Y2VzIGFyZSBzdXBwb3J0ZWQgKGludCA5aCkKPj4+IAkJCVNlcmlhbCBzZXJ2aWNlcyBhcmUgc3Vw
-cG9ydGVkIChpbnQgMTRoKQo+Pj4gCQkJUHJpbnRlciBzZXJ2aWNlcyBhcmUgc3VwcG9ydGVkIChp
-bnQgMTdoKQo+Pj4gCQkJQ0dBL21vbm8gdmlkZW8gc2VydmljZXMgYXJlIHN1cHBvcnRlZCAoaW50
-IDEwaCkKPj4+IAkJCUFDUEkgaXMgc3VwcG9ydGVkCj4+PiAJCQlVU0IgbGVnYWN5IGlzIHN1cHBv
-cnRlZAo+Pj4gCQkJQklPUyBib290IHNwZWNpZmljYXRpb24gaXMgc3VwcG9ydGVkCj4+PiAJCQlU
-YXJnZXRlZCBjb250ZW50IGRpc3RyaWJ1dGlvbiBpcyBzdXBwb3J0ZWQKPj4+IAkJCVVFRkkgaXMg
-c3VwcG9ydGVkCj4+PiAJCUJJT1MgUmV2aXNpb246IDIuMjEKPj4+IAkJRmlybXdhcmUgUmV2aXNp
-b246IDEuNAo+Pj4KPj4+IChUaGlzIGlzIHRoZSBzeXN0ZW0gSSB3cml0ZSB0aGlzIG1haWwgb24s
-IEkgZG9uJ3QgZmVlbCBsaWtlIHJlYm9vdGluZyB0byBjaGVjawo+Pj4gZGV2aW5mbyBpbiBiYXJl
-Ym94LCB0YWtlIGEgcGljdHVyZSBhbmQgdGhlbiB0eXBlIHRoZSBzdHVmZiBpbnRvIGEgbWFpbAo+
-Pj4gYnkgaGFuZC4pCj4+Pgo+Pj4gQmVzdCByZWdhcmRzCj4+PiBVd2UKPj4+Cj4+Pgo+Pgo+PiAt
-LSAKPj4gUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgIHwKPj4gU3RldWVyd2FsZGVyIFN0ci4gMjEgICAgICAgICAg
-ICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKPj4gMzExMzcgSGls
-ZGVzaGVpbSwgR2VybWFueSAgICAgICAgICAgICAgICAgIHwgUGhvbmU6ICs0OS01MTIxLTIwNjkx
-Ny0wICAgIHwKPj4gQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwg
-RmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKPj4KPj4gX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KPj4gYmFyZWJveCBtYWlsaW5nIGxpc3QKPj4gYmFy
-ZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCj4+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
-aWxtYW4vbGlzdGluZm8vYmFyZWJveAo+Pgo+IAoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAg
-ICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ClN0ZXVl
-cndhbGRlciBTdHIuIDIxICAgICAgICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0
-cm9uaXguZGUvICB8CjMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgICAgICAgICAgICAgICAgICB8
-IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhS
-QSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcg
-bGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5v
-cmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+In case the USB device is a full speed device we have to set
+dev->epmaxpacketin[0] and dev->epmaxpacketout[0] before doing a
+get_descriptor_len() because otherwise it's unset during that call.
+
+Fixes: 6d1d95a386 ("usb: factor out a usb_setup_descriptor() function")
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/usb/core/usb.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+index c068c64c6b..ea244d4bcf 100644
+--- a/drivers/usb/core/usb.c
++++ b/drivers/usb/core/usb.c
+@@ -332,6 +332,8 @@ static int usb_setup_descriptor(struct usb_device *dev, bool do_read)
+ 		dev->descriptor->bMaxPacketSize0 = 64;
+ 		dev->maxpacketsize = PACKET_SIZE_64;
+ 	}
++	dev->epmaxpacketin[0] = dev->descriptor->bMaxPacketSize0;
++	dev->epmaxpacketout[0] = dev->descriptor->bMaxPacketSize0;
+ 
+ 	if (do_read && dev->speed == USB_SPEED_FULL) {
+ 		int err;
+@@ -355,10 +357,10 @@ static int usb_setup_descriptor(struct usb_device *dev, bool do_read)
+ 		err = get_descriptor_len(dev, 64, 8);
+ 		if (err)
+ 			return err;
+-	}
+ 
+-	dev->epmaxpacketin[0] = dev->descriptor->bMaxPacketSize0;
+-	dev->epmaxpacketout[0] = dev->descriptor->bMaxPacketSize0;
++		dev->epmaxpacketin[0] = dev->descriptor->bMaxPacketSize0;
++		dev->epmaxpacketout[0] = dev->descriptor->bMaxPacketSize0;
++	}
+ 
+ 	switch (dev->descriptor->bMaxPacketSize0) {
+ 	case 8:
+-- 
+2.20.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
