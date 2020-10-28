@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kVFSs-0000Uf-DB
- for barebox@lists.infradead.org; Wed, 21 Oct 2020 14:51:47 +0000
-From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Wed, 21 Oct 2020 16:51:40 +0200
-Message-Id: <20201021145140.597728-2-m.tretter@pengutronix.de>
-In-Reply-To: <20201021145140.597728-1-m.tretter@pengutronix.de>
-References: <20201021145140.597728-1-m.tretter@pengutronix.de>
+ id 1kXglJ-0008K2-Qd
+ for barebox@lists.infradead.org; Wed, 28 Oct 2020 08:24:54 +0000
+Date: Wed, 28 Oct 2020 09:24:51 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20201028082451.GV26805@pengutronix.de>
+References: <20201027061754.29111-1-shc_work@mail.ru>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20201027061754.29111-1-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,83 +22,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 2/2] uimage: disable zero page when loading to SDRAM at
- address 0x0
-To: barebox@lists.infradead.org
-Cc: Michael Tretter <m.tretter@pengutronix.de>
+Subject: Re: [PATCH] ARM: bootm: Add lower bound check of kernel in SDRAM
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-If the SDRAM is mapped to address 0x0 and an image should be loaded to
-to the SDRAM without offset, Barebox would normally trap the access as a
-null pointer.
+On Tue, Oct 27, 2020 at 09:17:54AM +0300, Alexander Shiyan wrote:
+> In get_kernel_addresses(), we add the lower bound check of kernel position.
+> Kernel address cannot be lower than SDRAM start.
+> 
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> ---
+>  arch/arm/lib32/bootm.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
 
-However, since Linux kernel commit cfa7ede20f13 ("arm64: set TEXT_OFFSET
-to 0x0 in preparation for removing it entirely") no offset is the
-default for arm64. Therefore, copying the image to 0x0 of the SDRAM is
-necessary.
+Applied, thanks
 
-Disable the zero page trap for copying an image to address 0x0.
+Sascha
 
-Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
----
-v3:
-- none
+> 
+> diff --git a/arch/arm/lib32/bootm.c b/arch/arm/lib32/bootm.c
+> index ad807fb1d..28a645a9d 100644
+> --- a/arch/arm/lib32/bootm.c
+> +++ b/arch/arm/lib32/bootm.c
+> @@ -114,10 +114,11 @@ static int get_kernel_addresses(size_t image_size,
+>  		kaddr = mem_start + image_decomp_size;
+>  
+>  		/*
+> -		 * Make sure we do not place the image past the end of the
+> +		 * Make sure we do not place the image outside of the
+>  		 * available memory.
+>  		 */
+> -		if (kaddr + image_size + spacing >= mem_end)
+> +		if (((kaddr + image_size + spacing) > mem_end) &&
+> +		    ((mem_end - image_size - spacing) >= mem_start))
+>  			kaddr = mem_end - image_size - spacing;
+>  
+>  		*load_address = PAGE_ALIGN_DOWN(kaddr);
+> -- 
+> 2.26.2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-v2:
-- switch to zero_page_memcpy helper function
-- read file to temporary buffer before copying to page 0
----
- common/uimage.c | 21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
-
-diff --git a/common/uimage.c b/common/uimage.c
-index a84b8fddc4e7..9abfbcf3bac9 100644
---- a/common/uimage.c
-+++ b/common/uimage.c
-@@ -27,6 +27,7 @@
- #include <rtc.h>
- #include <filetype.h>
- #include <memory.h>
-+#include <zero_page.h>
- 
- static inline int uimage_is_multi_image(struct uimage_handle *handle)
- {
-@@ -359,7 +360,10 @@ static int uimage_sdram_flush(void *buf, unsigned int len)
- 		}
- 	}
- 
--	memcpy(uimage_buf + uimage_size, buf, len);
-+	if (zero_page_contains((unsigned long)uimage_buf + uimage_size))
-+		zero_page_memcpy(uimage_buf + uimage_size, buf, len);
-+	else
-+		memcpy(uimage_buf + uimage_size, buf, len);
- 
- 	uimage_size += len;
- 
-@@ -388,7 +392,20 @@ struct resource *file_to_sdram(const char *filename, unsigned long adr)
- 			goto out;
- 		}
- 
--		now = read_full(fd, (void *)(res->start + ofs), BUFSIZ);
-+		if (zero_page_contains(res->start + ofs)) {
-+			void *tmp = malloc(BUFSIZ);
-+			if (!tmp)
-+				now = -ENOMEM;
-+			else
-+				now = read_full(fd, tmp, BUFSIZ);
-+
-+			if (now > 0)
-+				zero_page_memcpy((void *)(res->start + ofs), tmp, now);
-+			free(tmp);
-+		} else {
-+			now = read_full(fd, (void *)(res->start + ofs), BUFSIZ);
-+		}
-+
- 		if (now < 0) {
- 			release_sdram_region(res);
- 			res = NULL;
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
