@@ -1,12 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lj1-x242.google.com ([2a00:1450:4864:20::242])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kVZep-0003YN-4Z
- for barebox@lists.infradead.org; Thu, 22 Oct 2020 12:25:27 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Thu, 22 Oct 2020 14:25:22 +0200
-Message-Id: <20201022122522.3303-1-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
+ id 1kY3P3-0000fv-FZ
+ for barebox@lists.infradead.org; Thu, 29 Oct 2020 08:35:26 +0000
+Received: by mail-lj1-x242.google.com with SMTP id d24so2142003ljg.10
+ for <barebox@lists.infradead.org>; Thu, 29 Oct 2020 01:35:23 -0700 (PDT)
+Date: Thu, 29 Oct 2020 11:35:19 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20201029113519.8ace47e1f4e8a088e952a70a@gmail.com>
+In-Reply-To: <1603885792-12157-1-git-send-email-u74147@gmail.com>
+References: <1603885792-12157-1-git-send-email-u74147@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,46 +19,139 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd: nand-imx: repair reading the oob area
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] clk: ls1b200: add clk driver for loongson 1b
+To: Du Huanpeng <u74147@gmail.com>
+Cc: barebox@lists.infradead.org
 
-QWZ0ZXIgc2VuZGluZyB0aGUgUkVBRE9PQiBjb21tYW5kIHRoZSBjb3JlIChpbiBuYW5kX3JlYWRf
-b29iX3N0ZCgpKSB1c2VzCnRoZSByZWFkX2J1ZiBjYWxsYmFjayB0byBmZXRjaCB0aGUgcmVzdWx0
-LiBTbyBpbiB0aGUgaW14IGRyaXZlciBpdCBpcwpuZWNlc3NhcnkgdG8gZW1pdCB0aGUgTkZDX09V
-VFBVVCBjb21tYW5kIHRvIG1ha2UgdGhlIGNvbnRyb2xsZXIgYWN0dWFsbHkKcmVhZCB0aGUgcmVx
-dWVzdGVkIGRhdGEgaW50byB0aGUgaW50ZXJuYWwgYnVmZmVyIGFuZCB0aGVuIGNvcHkgdGhlIGRh
-dGEKdG8gdGhlIGxvY2F0aW9uIHdoZXJlIHJlYWRfYnVmIGV4cGVjdHMgaXQuCgpUaGlzIGZpeGVz
-IHJlYWRpbmcgZnJvbSAvZGV2L25hbmQwLm9vYiBhbmQgYWxzbyAoc29tZXdoYXQpIHJlYWRpbmcg
-YmFkCmJsb2NrIG1hcmtlcnMgaW4gdGhlIGFic2VuY2Ugb2YgYSBiYWQgYmxvY2sgdGFibGUuCgpT
-aWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJv
-bml4LmRlPgotLS0KSGVsbG8sCgpJIGZhaWxlZCB0byBmaW5kIHRoZSBjb21taXQgdGhhdCBicm9r
-ZSByZWFkaW5nIGZyb20gL2Rldi9uYW5kMC5vb2IgYnV0CmZhaWxlZCB0byBpZGVudGlmeSBpdC4g
-SSB0aGluayB0aGlzIGJ1ZyBpcyBxdWl0ZSBvbGQuIEkgZGlkbid0IHRlc3QsIGJ1dApJIHRoaW5r
-IHRoaXMgd2FzIGFscmVhZHkgYnJva2VuIGluIDIwMTAuMDkuMCB3aGVyZSB0aGUgbmFuZCBzdXBw
-b3J0IHdhcwptb3ZlZCBmcm9tIGRyaXZlcnMvbmFuZCB0byBkcml2ZXJzL210ZC9uYW5kLiAoVGhp
-cyBpcyB3aGVyZSBnaXRrIG91dHB1dAplbmRlZCA6LSkKCkJlc3QgcmVnYXJkcwpVd2UKCiBkcml2
-ZXJzL210ZC9uYW5kL25hbmRfaW14LmMgfCAxNSArKysrKysrKysrKystLS0KIDEgZmlsZSBjaGFu
-Z2VkLCAxMiBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZl
-cnMvbXRkL25hbmQvbmFuZF9pbXguYyBiL2RyaXZlcnMvbXRkL25hbmQvbmFuZF9pbXguYwppbmRl
-eCBkNjlhMDEyZjAxN2IuLmY5ZDNjMmUzNGE5OSAxMDA2NDQKLS0tIGEvZHJpdmVycy9tdGQvbmFu
-ZC9uYW5kX2lteC5jCisrKyBiL2RyaXZlcnMvbXRkL25hbmQvbmFuZF9pbXguYwpAQCAtOTk2LDE0
-ICs5OTYsMjMgQEAgc3RhdGljIHZvaWQgaW14X25hbmRfY29tbWFuZChzdHJ1Y3QgbXRkX2luZm8g
-Km10ZCwgdW5zaWduZWQgY29tbWFuZCwKIAkJZWxzZQogCQkJaG9zdC0+YnVmX3N0YXJ0ID0gY29s
-dW1uICsgbXRkLT53cml0ZXNpemU7CiAKLQkJY29tbWFuZCA9IE5BTkRfQ01EX1JFQUQwOwotCi0J
-CWhvc3QtPnNlbmRfY21kKGhvc3QsIGNvbW1hbmQpOworCQlob3N0LT5zZW5kX2NtZChob3N0LCBO
-QU5EX0NNRF9SRUFEMCk7CiAJCW14Y19kb19hZGRyX2N5Y2xlKG10ZCwgY29sdW1uLCBwYWdlX2Fk
-ZHIpOwogCiAJCWlmIChob3N0LT5wYWdlc2l6ZV8yaykKIAkJCS8qIHNlbmQgcmVhZCBjb25maXJt
-IGNvbW1hbmQgKi8KIAkJCWhvc3QtPnNlbmRfY21kKGhvc3QsIE5BTkRfQ01EX1JFQURTVEFSVCk7
-CisKKwkJLyoKKwkJICogQWZ0ZXIgdGhlIGNvcmUgaXNzdWVkIFJFQURPT0IgdGhlIHJlc3VsdCBp
-cyByZWFkIHVzaW5nCisJCSAqIC5yZWFkX2J1Ziwgc28gd2UgaGF2ZSB0byBtYWtlIHN1cmUgdGhl
-IGRhdGEgaXMgYWN0dWFsbHkKKwkJICogdGhlcmUuCisJCSAqLworCQlpZiAoY29tbWFuZCA9PSBO
-QU5EX0NNRF9SRUFET09CKSB7CisJCQlob3N0LT5zZW5kX3BhZ2UoaG9zdCwgTkZDX09VVFBVVCk7
-CisJCQljb3B5X3NwYXJlKG10ZCwgMSwgaG9zdC0+ZGF0YV9idWYgKyBtdGQtPndyaXRlc2l6ZSk7
-CisJCX0KKwogCQlicmVhazsKIAogCWNhc2UgTkFORF9DTURfU0VRSU46Ci0tIAoyLjI4LjAKCgpf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
-aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
-ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Wed, 28 Oct 2020 19:49:52 +0800
+Du Huanpeng <u74147@gmail.com> wrote:
+
+> add "pll" and "oscillator" node to devicetree.
+> =
+
+> Signed-off-by: Du Huanpeng <u74147@gmail.com>
+
+...
+
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index 7a8f010..0aceed3 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -118,6 +118,15 @@ config MACH_MIPS_BCM47XX
+>  =
+
+>  config MACH_MIPS_LOONGSON
+>  	bool "Loongson-based boards"
+> +	select SYS_HAS_CPU_MIPS32_R2
+> +	select SYS_SUPPORTS_32BIT_KERNEL
+> +	select CSRC_R4K_LIB
+> +	select HAS_DEBUG_LL
+> +	select COMMON_CLK
+> +	select COMMON_CLK_OF_PROVIDER
+> +	select CLKDEV_LOOKUP
+> +	select OFTREE
+> +	select GPIOLIB
+
+I suppose that arch/mips/ changes should go to a separate patch.
+E.g.:
+
+  * PATCH 001: clk: ls1b200: add clk driver for loongson 1b
+  * PATCH 002: MIPS: ls1b200: use clk driver
+
+
+>  =
+
+>  config MACH_MIPS_XBURST
+>  	bool "Ingenic XBurst-based boards"
+> diff --git a/arch/mips/dts/loongson-ls1b.dts b/arch/mips/dts/loongson-ls1=
+b.dts
+> index 6b53311..89cce56 100644
+> --- a/arch/mips/dts/loongson-ls1b.dts
+> +++ b/arch/mips/dts/loongson-ls1b.dts
+> @@ -6,6 +6,12 @@
+>  	model =3D "Loongson Tech LS1B Demo Board";
+>  	compatible =3D "loongson,ls1b";
+>  =
+
+> +	oscillator: oscillator {
+> +			#clock-cells =3D <0>;
+> +			compatible =3D "fixed-clock";
+> +			clock-frequency =3D <33000000>;
+> +	};
+> +
+>  	memory@0 {
+>  		device_type =3D "memory";
+>  		reg =3D <0x00000000 0x4000000>;
+> diff --git a/arch/mips/dts/ls1b.dtsi b/arch/mips/dts/ls1b.dtsi
+> index cb85814..8b772af 100644
+> --- a/arch/mips/dts/ls1b.dtsi
+> +++ b/arch/mips/dts/ls1b.dtsi
+> @@ -1,3 +1,5 @@
+> +#include <dt-bindings/clock/ls1b-clk.h>
+> +
+>  / {
+>  	#address-cells =3D <1>;
+>  	#size-cells =3D <1>;
+> @@ -40,5 +42,12 @@
+>  			clock-frequency =3D <83000000>;
+>  			status =3D "disabled";
+>  		};
+> +
+> +		pll: pll@1fe78030 {
+> +			compatible =3D "loongson,ls1b-pll";
+> +			#clock-cells =3D <1>;
+> +			reg =3D <0x1fe78030 0x8>;
+> +			clocks =3D <&oscillator>;
+> +		};
+>  	};
+>  };
+> diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
+> index 0903274..04c797e 100644
+> --- a/drivers/clk/Makefile
+> +++ b/drivers/clk/Makefile
+> @@ -19,4 +19,5 @@ obj-$(CONFIG_ARCH_IMX)		+=3D imx/
+>  obj-$(CONFIG_COMMON_CLK_AT91)	+=3D at91/
+>  obj-$(CONFIG_ARCH_STM32MP)	+=3D clk-stm32mp1.o
+>  obj-$(CONFIG_MACH_VEXPRESS)	+=3D vexpress/
+> +obj-$(CONFIG_MACH_MIPS_LOONGSON)+=3D loongson/
+>  obj-$(CONFIG_ARCH_LAYERSCAPE)	+=3D clk-qoric.o
+> diff --git a/drivers/clk/loongson/Makefile b/drivers/clk/loongson/Makefile
+> new file mode 100644
+> index 0000000..dd76b25
+> --- /dev/null
+> +++ b/drivers/clk/loongson/Makefile
+> @@ -0,0 +1,2 @@
+> +obj-$(CONFIG_BOARD_LOONGSON_TECH_LS1B) +=3D clk-ls1b200.o
+> +
+> diff --git a/drivers/clk/loongson/clk-ls1b200.c b/drivers/clk/loongson/cl=
+k-ls1b200.c
+> new file mode 100644
+> index 0000000..f5fabd4
+> --- /dev/null
+> +++ b/drivers/clk/loongson/clk-ls1b200.c
+> @@ -0,0 +1,154 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright (C) 2014 Antony Pavlov <antonynpavlov@gmail.com>
+> + * Copyright (C) 2020 Du Huanpeng <u74147@gmail.com>
+> + *
+> + * Based on the Linux ath79 clock code
+
+Thanks for mentioning me, but I have not contributed to clk-ls1b200.c :)
+Could you please remove my copyright and just write "Based on the ath79 clo=
+ck code by Antony Pavlov...".
+
+
+-- =
+
+Best regards,
+=A0 Antony Pavlov
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
