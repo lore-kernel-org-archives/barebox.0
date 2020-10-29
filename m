@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kW4sr-0004We-9H
- for barebox@lists.infradead.org; Fri, 23 Oct 2020 21:46:04 +0000
-Received: by mail-lf1-x12d.google.com with SMTP id l28so3788515lfp.10
- for <barebox@lists.infradead.org>; Fri, 23 Oct 2020 14:45:59 -0700 (PDT)
-From: Peter Mamonov <pmamonov@gmail.com>
-Date: Sat, 24 Oct 2020 00:45:22 +0300
-Message-Id: <20201023214522.21130-1-pmamonov@gmail.com>
+ id 1kYFcn-0007LD-OU
+ for barebox@lists.infradead.org; Thu, 29 Oct 2020 21:38:27 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Thu, 29 Oct 2020 22:38:15 +0100
+Message-Id: <20201029213815.109183-2-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20201029213815.109183-1-u.kleine-koenig@pengutronix.de>
+References: <20201029213815.109183-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -17,1098 +17,414 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] commands: import memtester 4.3.0 from Debian GNU/Linux
-To: s.hauer@pengutronix.de, rhi@pengutronix.de
-Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>
+Subject: [PATCH 2/2] arm: imx: Convert mach headers to SPDX
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, Roland Hieber <rhi@pengutronix.de>
 
-Memtester is an utility for testing the memory subsystem for faults.  For
-hardware developers, memtester can be told to test memory starting at a
-particular physical address.
-
-This port is based on the sources from Debian GNU/Linux. Debian package meta
-data is as follows:
-
-	Package: memtester
-	Version: 4.3.0-5
-	Homepage: http://pyropus.ca/software/memtester/
-	APT-Sources: http://ftp.ru.debian.org/debian testing/main amd64 Packages
-
-Dissected version of this patch can be found at
-https://github.com/pmamonov/barebox/commits/memtester
-
-Changes since v1:
-
-	1acbafe7a2 init global vars on start
-	7664692fd4 use proper return value
-	a10eba5b49 use strtoull_suffix() to parse memory size
-	001b623c16 add option to set TESTMASK
-	3acfe07d56 make tests[] static
-	528360ebd7 fix license
-
-Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
----
- commands/Kconfig               |   8 +
- commands/Makefile              |   1 +
- commands/memtester/Makefile    |   1 +
- commands/memtester/memtester.c | 295 ++++++++++++++++++
- commands/memtester/memtester.h |  21 ++
- commands/memtester/sizes.h     |  37 +++
- commands/memtester/tests.c     | 537 +++++++++++++++++++++++++++++++++
- commands/memtester/tests.h     |  36 +++
- commands/memtester/types.h     |  35 +++
- 9 files changed, 971 insertions(+)
- create mode 100644 commands/memtester/Makefile
- create mode 100644 commands/memtester/memtester.c
- create mode 100644 commands/memtester/memtester.h
- create mode 100644 commands/memtester/sizes.h
- create mode 100644 commands/memtester/tests.c
- create mode 100644 commands/memtester/tests.h
- create mode 100644 commands/memtester/types.h
-
-diff --git a/commands/Kconfig b/commands/Kconfig
-index df18715f20..960d3608c7 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -1611,6 +1611,14 @@ config CMD_MEMTEST
- 		  -i ITERATIONS	perform number of iterations (default 1, 0 is endless)
- 		  -b	perform only a test on bus lines
- 
-+config CMD_MEMTESTER
-+	tristate
-+	prompt "memtester"
-+	help
-+	  Utility for testing the memory subsystem.
-+
-+	  Homepage: http://pyropus.ca/software/memtester/
-+
- config CMD_MM
- 	tristate
- 	select DEV_MEM
-diff --git a/commands/Makefile b/commands/Makefile
-index 6cc4997cc5..dc285cd00e 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -49,6 +49,7 @@ obj-$(CONFIG_CMD_LOADENV)	+= loadenv.o
- obj-$(CONFIG_CMD_NAND)		+= nand.o
- obj-$(CONFIG_CMD_NANDTEST)	+= nandtest.o
- obj-$(CONFIG_CMD_MEMTEST)	+= memtest.o
-+obj-$(CONFIG_CMD_MEMTESTER)	+= memtester/
- obj-$(CONFIG_CMD_TRUE)		+= true.o
- obj-$(CONFIG_CMD_FALSE)		+= false.o
- obj-$(CONFIG_CMD_VERSION)	+= version.o
-diff --git a/commands/memtester/Makefile b/commands/memtester/Makefile
-new file mode 100644
-index 0000000000..17a2429276
---- /dev/null
-+++ b/commands/memtester/Makefile
-@@ -0,0 +1 @@
-+obj-y += tests.o memtester.o
-diff --git a/commands/memtester/memtester.c b/commands/memtester/memtester.c
-new file mode 100644
-index 0000000000..8342eabfb1
---- /dev/null
-+++ b/commands/memtester/memtester.c
-@@ -0,0 +1,295 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * memtester version 4
-+ *
-+ * Very simple but very effective user-space memory tester.
-+ * Originally by Simon Kirby <sim@stormix.com> <sim@neato.org>
-+ * Version 2 by Charles Cazabon <charlesc-memtester@pyropus.ca>
-+ * Version 3 not publicly released.
-+ * Version 4 rewrite:
-+ * Copyright (C) 2004-2012 Charles Cazabon <charlesc-memtester@pyropus.ca>
-+ *
-+ */
-+
-+#define __version__ "4.3.0"
-+
-+#include <stdlib.h>
-+#include <stdio.h>
-+#include <types.h>
-+#include <sys/stat.h>
-+#include <unistd.h>
-+#include <fcntl.h>
-+#include <string.h>
-+#include <errno.h>
-+#include <getopt.h>
-+#include <common.h>
-+#include <command.h>
-+#include <environment.h>
-+#include <fs.h>
-+
-+#include "types.h"
-+#include "sizes.h"
-+#include "tests.h"
-+
-+#define EXIT_FAIL_NONSTARTER    COMMAND_ERROR
-+#define EXIT_FAIL_ADDRESSLINES  0x02
-+#define EXIT_FAIL_OTHERTEST     0x04
-+
-+static struct test tests[] = {
-+    { "Random Value", test_random_value },
-+    { "Compare XOR", test_xor_comparison },
-+    { "Compare SUB", test_sub_comparison },
-+    { "Compare MUL", test_mul_comparison },
-+    { "Compare DIV",test_div_comparison },
-+    { "Compare OR", test_or_comparison },
-+    { "Compare AND", test_and_comparison },
-+    { "Sequential Increment", test_seqinc_comparison },
-+    { "Solid Bits", test_solidbits_comparison },
-+    { "Block Sequential", test_blockseq_comparison },
-+    { "Checkerboard", test_checkerboard_comparison },
-+    { "Bit Spread", test_bitspread_comparison },
-+    { "Bit Flip", test_bitflip_comparison },
-+    { "Walking Ones", test_walkbits1_comparison },
-+    { "Walking Zeroes", test_walkbits0_comparison },
-+    { "8-bit Writes", test_8bit_wide_random },
-+    { "16-bit Writes", test_16bit_wide_random },
-+    { NULL, NULL }
-+};
-+
-+/* Function declarations */
-+
-+/* Global vars - so tests have access to this information */
-+int use_phys;
-+off_t physaddrbase;
-+
-+static int do_memtester(int argc, char **argv) {
-+    ul loops, loop, i;
-+    size_t wantmb, wantbytes, bufsize,
-+         halflen, count;
-+    char *addrsuffix, *loopsuffix;
-+    void volatile *buf, *aligned;
-+    ulv *bufa, *bufb;
-+    int exit_code = 0, ret;
-+    int memfd = 0, opt;
-+    size_t maxbytes = -1; /* addressable memory, in bytes */
-+    size_t maxmb = (maxbytes >> 20) + 1; /* addressable memory, in MB */
-+    /* Device to mmap memory from with -p, default is normal core */
-+    char *device_name = "/dev/mem";
-+    struct stat statbuf;
-+    int device_specified = 0;
-+    ul testmask = 0;
-+
-+    use_phys = 0;
-+    physaddrbase = 0;
-+
-+    printf("memtester version " __version__ " (%d-bit)\n", UL_LEN);
-+    printf("Copyright (C) 2001-2012 Charles Cazabon.\n");
-+    printf("Licensed under the GNU General Public License version 2 (only).\n");
-+    printf("\n");
-+
-+    while ((opt = getopt(argc, argv, "p:d:m:")) != -1) {
-+        switch (opt) {
-+            case 'm':
-+                errno = 0;
-+                testmask = simple_strtoul(optarg, 0, 0);
-+                if (errno) {
-+                    printf("error parsing MEMTESTER_TEST_MASK %s: %s\n",
-+                            optarg, strerror(errno));
-+                    return COMMAND_ERROR_USAGE;
-+                }
-+                printf("using testmask 0x%lx\n", testmask);
-+                break;
-+            case 'p':
-+                errno = 0;
-+                physaddrbase = (off_t) simple_strtoull(optarg, &addrsuffix, 16);
-+                if (errno != 0) {
-+                    printf("failed to parse physaddrbase arg; should be hex "
-+                           "address (0x123...)\n");
-+                    return COMMAND_ERROR_USAGE;
-+                }
-+                if (*addrsuffix != '\0') {
-+                    /* got an invalid character in the address */
-+                    printf("failed to parse physaddrbase arg; should be hex "
-+                           "address (0x123...)\n");
-+                    return COMMAND_ERROR_USAGE;
-+                }
-+                /* okay, got address */
-+                use_phys = 1;
-+                break;
-+            case 'd':
-+                if (stat(optarg,&statbuf)) {
-+                    printf("can not use %s as device: %s\n", optarg,
-+                            strerror(errno));
-+                    return COMMAND_ERROR_USAGE;
-+                } else {
-+                    if (!S_ISCHR(statbuf.st_mode)) {
-+                        printf("can not mmap non-char device %s\n",
-+                                optarg);
-+                        return COMMAND_ERROR_USAGE;
-+                    } else {
-+                        device_name = optarg;
-+                        device_specified = 1;
-+                    }
-+                }
-+                break;
-+            default: /* '?' */
-+                return COMMAND_ERROR_USAGE;
-+        }
-+    }
-+    if (device_specified && !use_phys) {
-+        printf("for mem device, physaddrbase (-p) must be specified\n");
-+        return COMMAND_ERROR_USAGE;
-+    }
-+
-+    if (optind >= argc) {
-+        printf("need memory argument, in MB\n");
-+        return COMMAND_ERROR_USAGE;
-+    }
-+
-+    errno = 0;
-+    wantbytes = (size_t) strtoull_suffix(argv[optind], 0, 0);
-+    if (errno != 0) {
-+        printf("failed to parse memory argument");
-+        return COMMAND_ERROR_USAGE;
-+    }
-+    wantmb = (wantbytes >> 20);
-+    optind++;
-+    if (wantmb > maxmb) {
-+        printf("This system can only address %llu MB.\n", (ull) maxmb);
-+        return EXIT_FAIL_NONSTARTER;
-+    }
-+
-+    if (optind >= argc) {
-+        loops = 0;
-+    } else {
-+        errno = 0;
-+        loops = simple_strtoul(argv[optind], &loopsuffix, 0);
-+        if (errno != 0) {
-+            printf("failed to parse number of loops");
-+            return COMMAND_ERROR_USAGE;
-+        }
-+        if (*loopsuffix != '\0') {
-+            printf("loop suffix %c\n", *loopsuffix);
-+            return COMMAND_ERROR_USAGE;
-+        }
-+    }
-+
-+    printf("want %lluMB (%llu bytes)\n", (ull) wantmb, (ull) wantbytes);
-+    buf = NULL;
-+
-+    if (use_phys) {
-+        memfd = open(device_name, O_RDWR);
-+        if (memfd == -1) {
-+            printf("failed to open %s for physical memory: %s\n",
-+                    device_name, strerror(errno));
-+            return EXIT_FAIL_NONSTARTER;
-+        }
-+        buf = (void volatile *) memmap(memfd, PROT_READ | PROT_WRITE) +
-+                                       physaddrbase;
-+        if (buf == MAP_FAILED) {
-+            printf("failed to mmap %s for physical memory: %s\n",
-+                    device_name, strerror(errno));
-+            return EXIT_FAIL_NONSTARTER;
-+        }
-+
-+        bufsize = wantbytes; /* accept no less */
-+    } else {
-+        buf = (void volatile *) malloc(wantbytes);
-+        if (!buf) {
-+            printf("malloc failed\n");
-+            return ENOMEM;
-+        }
-+        printf("got  %lluMB (%llu bytes)\n", (ull) wantbytes >> 20,
-+               (ull) wantbytes);
-+    }
-+    bufsize = wantbytes;
-+    aligned = buf;
-+
-+    printf("buffer @ 0x%p\n", buf);
-+
-+    halflen = bufsize / 2;
-+    count = halflen / sizeof(ul);
-+    bufa = (ulv *) aligned;
-+    bufb = (ulv *) ((size_t) aligned + halflen);
-+
-+    for(loop=1; ((!loops) || loop <= loops); loop++) {
-+        printf("Loop %lu", loop);
-+        if (loops) {
-+            printf("/%lu", loops);
-+        }
-+        printf(":\n");
-+        printf("  %-20s: ", "Stuck Address");
-+        console_flush();
-+        ret = test_stuck_address(aligned, bufsize / sizeof(ul));
-+        if (!ret) {
-+             printf("ok\n");
-+        } else if (ret == -EINTR) {
-+            goto out;
-+        } else {
-+            exit_code |= EXIT_FAIL_ADDRESSLINES;
-+        }
-+        for (i=0;;i++) {
-+            if (!tests[i].name) break;
-+            /* If using a custom testmask, only run this test if the
-+               bit corresponding to this test was set by the user.
-+             */
-+            if (testmask && (!((1 << i) & testmask))) {
-+                continue;
-+            }
-+            printf("  %-20s: ", tests[i].name);
-+            ret = tests[i].fp(bufa, bufb, count);
-+            if (!ret) {
-+                printf("ok\n");
-+            } else if (ret == -EINTR) {
-+                goto out;
-+            } else {
-+                exit_code |= EXIT_FAIL_OTHERTEST;
-+            }
-+            console_flush();
-+        }
-+        printf("\n");
-+        console_flush();
-+    }
-+out:
-+    if (use_phys)
-+        close(memfd);
-+    else
-+        free((void *)buf);
-+    printf("Done.\n");
-+    console_flush();
-+    if (!exit_code)
-+        return 0;
-+    printf("%s FAILED: 0x%x\n", argv[0], exit_code);
-+    return COMMAND_ERROR;
-+}
-+
-+BAREBOX_CMD_HELP_START(memtester)
-+BAREBOX_CMD_HELP_TEXT("Options:")
-+BAREBOX_CMD_HELP_TEXT("-p PHYSADDR")
-+BAREBOX_CMD_HELP_TEXT("        tells memtester to test a specific region of memory starting at physical")
-+BAREBOX_CMD_HELP_TEXT("        address PHYSADDR (given in hex), by mmaping a device specified by the -d")
-+BAREBOX_CMD_HELP_TEXT("        option (below, or  /dev/mem  by  default).")
-+BAREBOX_CMD_HELP_TEXT("")
-+BAREBOX_CMD_HELP_TEXT("-d DEVICE")
-+BAREBOX_CMD_HELP_TEXT("        a device to mmap")
-+BAREBOX_CMD_HELP_TEXT("")
-+BAREBOX_CMD_HELP_TEXT("")
-+BAREBOX_CMD_HELP_TEXT("-m TESTMASK")
-+BAREBOX_CMD_HELP_TEXT("        bitmask to select desired tests")
-+BAREBOX_CMD_HELP_TEXT("")
-+BAREBOX_CMD_HELP_TEXT("MEMORY ")
-+BAREBOX_CMD_HELP_TEXT("        the amount of memory to allocate and test in bytes. You")
-+BAREBOX_CMD_HELP_TEXT("        can include a suffix of K, M, or G to indicate kilobytes, ")
-+BAREBOX_CMD_HELP_TEXT("        megabytes, or gigabytes respectively.")
-+BAREBOX_CMD_HELP_TEXT("")
-+BAREBOX_CMD_HELP_TEXT("ITERATIONS")
-+BAREBOX_CMD_HELP_TEXT("        (optional) number of loops to iterate through.  Default is infinite.")
-+BAREBOX_CMD_HELP_END
-+
-+BAREBOX_CMD_START(memtester)
-+	.cmd		= do_memtester,
-+	BAREBOX_CMD_DESC("memory stress-testing")
-+	BAREBOX_CMD_OPTS("[-p PHYSADDR [-d DEVICE]] [-m TESTMASK] <MEMORY>[k|M|G] [ITERATIONS]")
-+	BAREBOX_CMD_GROUP(CMD_GRP_MEM)
-+	BAREBOX_CMD_HELP(cmd_memtester_help)
-+BAREBOX_CMD_END
-diff --git a/commands/memtester/memtester.h b/commands/memtester/memtester.h
-new file mode 100644
-index 0000000000..008af0351a
---- /dev/null
-+++ b/commands/memtester/memtester.h
-@@ -0,0 +1,21 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Very simple (yet, for some reason, very effective) memory tester.
-+ * Originally by Simon Kirby <sim@stormix.com> <sim@neato.org>
-+ * Version 2 by Charles Cazabon <charlesc-memtester@pyropus.ca>
-+ * Version 3 not publicly released.
-+ * Version 4 rewrite:
-+ * Copyright (C) 2004-2012 Charles Cazabon <charlesc-memtester@pyropus.ca>
-+ *
-+ * This file contains the declarations for external variables from the main file.
-+ * See other comments in that file.
-+ *
-+ */
-+
-+#include <types.h>
-+
-+/* extern declarations. */
-+
-+extern int use_phys;
-+extern off_t physaddrbase;
-+
-diff --git a/commands/memtester/sizes.h b/commands/memtester/sizes.h
-new file mode 100644
-index 0000000000..d57f74f8ba
---- /dev/null
-+++ b/commands/memtester/sizes.h
-@@ -0,0 +1,37 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Very simple but very effective user-space memory tester.
-+ * Originally by Simon Kirby <sim@stormix.com> <sim@neato.org>
-+ * Version 2 by Charles Cazabon <charlesc-memtester@pyropus.ca>
-+ * Version 3 not publicly released.
-+ * Version 4 rewrite:
-+ * Copyright (C) 2004-2012 Charles Cazabon <charlesc-memtester@pyropus.ca>
-+ *
-+ * This file contains some macro definitions for handling 32/64 bit platforms.
-+ *
-+ */
-+
-+#include <linux/limits.h>
-+
-+#define rand32() ((unsigned int) rand() | ( (unsigned int) rand() << 16))
-+
-+#if defined(CONFIG_32BIT)
-+    #define rand_ul() rand32()
-+    #define UL_ONEBITS 0xffffffff
-+    #define UL_LEN 32
-+    #define CHECKERBOARD1 0x55555555
-+    #define CHECKERBOARD2 0xaaaaaaaa
-+    #define UL_BYTE(x) ((x | x << 8 | x << 16 | x << 24))
-+#elif defined(CONFIG_64BIT)
-+    #define rand64() (((ul) rand32()) << 32 | ((ul) rand32()))
-+    #define rand_ul() rand64()
-+    #define UL_ONEBITS 0xffffffffffffffffUL
-+    #define UL_LEN 64
-+    #define CHECKERBOARD1 0x5555555555555555
-+    #define CHECKERBOARD2 0xaaaaaaaaaaaaaaaa
-+    #define UL_BYTE(x) (((ul)x | (ul)x<<8 | (ul)x<<16 | (ul)x<<24 | (ul)x<<32 | (ul)x<<40 | (ul)x<<48 | (ul)x<<56))
-+#else
-+    #error long on this platform is not 32 or 64 bits
-+#endif
-+
-+
-diff --git a/commands/memtester/tests.c b/commands/memtester/tests.c
-new file mode 100644
-index 0000000000..4411573ba4
---- /dev/null
-+++ b/commands/memtester/tests.c
-@@ -0,0 +1,537 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Very simple but very effective user-space memory tester.
-+ * Originally by Simon Kirby <sim@stormix.com> <sim@neato.org>
-+ * Version 2 by Charles Cazabon <charlesc-memtester@pyropus.ca>
-+ * Version 3 not publicly released.
-+ * Version 4 rewrite:
-+ * Copyright (C) 2004-2012 Charles Cazabon <charlesc-memtester@pyropus.ca>
-+ *
-+ * This file contains the functions for the actual tests, called from the
-+ * main routine in memtester.c.  See other comments in that file.
-+ *
-+ */
-+
-+#include <common.h>
-+#include <types.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <linux/limits.h>
-+
-+#include "types.h"
-+#include "sizes.h"
-+#include "memtester.h"
-+#include "tests.h"
-+
-+char progress[] = "-\\|/";
-+#define PROGRESSLEN 4
-+#define PROGRESSOFTEN 2500
-+#define ONE 0x00000001L
-+
-+mword8_t  mword8;
-+mword16_t mword16;
-+
-+/* Function definitions. */
-+
-+static int compare_regions(ulv *bufa, ulv *bufb, size_t count) {
-+    int r = 0;
-+    size_t i;
-+    ulv *p1 = bufa;
-+    ulv *p2 = bufb;
-+    off_t physaddr;
-+
-+    if (ctrlc())
-+        return -EINTR;
-+
-+    for (i = 0; i < count; i++, p1++, p2++) {
-+        if (*p1 != *p2) {
-+            if (use_phys) {
-+                physaddr = physaddrbase + (i * sizeof(ul));
-+                printf("FAILURE: 0x%08lx != 0x%08lx at physical address "
-+                       "0x%08lx.\n", 
-+                       (ul) *p1, (ul) *p2, physaddr);
-+            } else {
-+                printf("FAILURE: 0x%08lx != 0x%08lx at offset 0x%08lx.\n", 
-+                       (ul) *p1, (ul) *p2, (ul) (i * sizeof(ul)));
-+            }
-+            /* printf("Skipping to next test..."); */
-+            r = -1;
-+        }
-+    }
-+    return r;
-+}
-+
-+int test_stuck_address(ulv *bufa, size_t count) {
-+    ulv *p1 = bufa;
-+    unsigned int j;
-+    size_t i;
-+    off_t physaddr;
-+
-+    printf("           ");
-+    console_flush();
-+    for (j = 0; j < 16; j++) {
-+        if (ctrlc())
-+            return -EINTR;
-+        printf("\b\b\b\b\b\b\b\b\b\b\b");
-+        p1 = (ulv *) bufa;
-+        printf("setting %3u", j);
-+        console_flush();
-+        for (i = 0; i < count; i++) {
-+            *p1 = ((j + i) % 2) == 0 ? (ul) p1 : ~((ul) p1);
-+            *p1++;
-+        }
-+        printf("\b\b\b\b\b\b\b\b\b\b\b");
-+        printf("testing %3u", j);
-+        console_flush();
-+        p1 = (ulv *) bufa;
-+        for (i = 0; i < count; i++, p1++) {
-+            if (*p1 != (((j + i) % 2) == 0 ? (ul) p1 : ~((ul) p1))) {
-+                if (use_phys) {
-+                    physaddr = physaddrbase + (i * sizeof(ul));
-+                    printf("FAILURE: possible bad address line at physical "
-+                           "address 0x%08lx.\n", 
-+                           physaddr);
-+                } else {
-+                    printf("FAILURE: possible bad address line at offset "
-+                           "0x%08lx.\n", 
-+                           (ul) (i * sizeof(ul)));
-+                }
-+                printf("Skipping to next test...\n");
-+                console_flush();
-+                return -1;
-+            }
-+        }
-+    }
-+    printf("\b\b\b\b\b\b\b\b\b\b\b           \b\b\b\b\b\b\b\b\b\b\b");
-+    console_flush();
-+    return 0;
-+}
-+
-+int test_random_value(ulv *bufa, ulv *bufb, size_t count) {
-+    ulv *p1 = bufa;
-+    ulv *p2 = bufb;
-+    ul j = 0;
-+    size_t i;
-+
-+    putchar(' ');
-+    console_flush();
-+    for (i = 0; i < count; i++) {
-+        *p1++ = *p2++ = rand_ul();
-+        if (!(i % PROGRESSOFTEN)) {
-+            putchar('\b');
-+            putchar(progress[++j % PROGRESSLEN]);
-+            console_flush();
-+        }
-+    }
-+    printf("\b \b");
-+    console_flush();
-+    return compare_regions(bufa, bufb, count);
-+}
-+
-+int test_xor_comparison(ulv *bufa, ulv *bufb, size_t count) {
-+    ulv *p1 = bufa;
-+    ulv *p2 = bufb;
-+    size_t i;
-+    ul q = rand_ul();
-+
-+    for (i = 0; i < count; i++) {
-+        *p1++ ^= q;
-+        *p2++ ^= q;
-+    }
-+    return compare_regions(bufa, bufb, count);
-+}
-+
-+int test_sub_comparison(ulv *bufa, ulv *bufb, size_t count) {
-+    ulv *p1 = bufa;
-+    ulv *p2 = bufb;
-+    size_t i;
-+    ul q = rand_ul();
-+
-+    for (i = 0; i < count; i++) {
-+        *p1++ -= q;
-+        *p2++ -= q;
-+    }
-+    return compare_regions(bufa, bufb, count);
-+}
-+
-+int test_mul_comparison(ulv *bufa, ulv *bufb, size_t count) {
-+    ulv *p1 = bufa;
-+    ulv *p2 = bufb;
-+    size_t i;
-+    ul q = rand_ul();
-+
-+    for (i = 0; i < count; i++) {
-+        *p1++ *= q;
-+        *p2++ *= q;
-+    }
-+    return compare_regions(bufa, bufb, count);
-+}
-+
-+int test_div_comparison(ulv *bufa, ulv *bufb, size_t count) {
-+    ulv *p1 = bufa;
-+    ulv *p2 = bufb;
-+    size_t i;
-+    ul q = rand_ul();
-+
-+    for (i = 0; i < count; i++) {
-+        if (!q) {
-+            q++;
-+        }
-+        *p1++ /= q;
-+        *p2++ /= q;
-+    }
-+    return compare_regions(bufa, bufb, count);
-+}
-+
-+int test_or_comparison(ulv *bufa, ulv *bufb, size_t count) {
-+    ulv *p1 = bufa;
-+    ulv *p2 = bufb;
-+    size_t i;
-+    ul q = rand_ul();
-+
-+    for (i = 0; i < count; i++) {
-+        *p1++ |= q;
-+        *p2++ |= q;
-+    }
-+    return compare_regions(bufa, bufb, count);
-+}
-+
-+int test_and_comparison(ulv *bufa, ulv *bufb, size_t count) {
-+    ulv *p1 = bufa;
-+    ulv *p2 = bufb;
-+    size_t i;
-+    ul q = rand_ul();
-+
-+    for (i = 0; i < count; i++) {
-+        *p1++ &= q;
-+        *p2++ &= q;
-+    }
-+    return compare_regions(bufa, bufb, count);
-+}
-+
-+int test_seqinc_comparison(ulv *bufa, ulv *bufb, size_t count) {
-+    ulv *p1 = bufa;
-+    ulv *p2 = bufb;
-+    size_t i;
-+    ul q = rand_ul();
-+
-+    for (i = 0; i < count; i++) {
-+        *p1++ = *p2++ = (i + q);
-+    }
-+    return compare_regions(bufa, bufb, count);
-+}
-+
-+int test_solidbits_comparison(ulv *bufa, ulv *bufb, size_t count) {
-+    ulv *p1 = bufa;
-+    ulv *p2 = bufb;
-+    unsigned int j;
-+    ul q;
-+    size_t i;
-+    int ret;
-+
-+    printf("           ");
-+    console_flush();
-+    for (j = 0; j < 64; j++) {
-+        printf("\b\b\b\b\b\b\b\b\b\b\b");
-+        q = (j % 2) == 0 ? UL_ONEBITS : 0;
-+        printf("setting %3u", j);
-+        console_flush();
-+        p1 = (ulv *) bufa;
-+        p2 = (ulv *) bufb;
-+        for (i = 0; i < count; i++) {
-+            *p1++ = *p2++ = (i % 2) == 0 ? q : ~q;
-+        }
-+        printf("\b\b\b\b\b\b\b\b\b\b\b");
-+        printf("testing %3u", j);
-+        console_flush();
-+        ret = compare_regions(bufa, bufb, count);
-+        if (ret)
-+            return ret;
-+    }
-+    printf("\b\b\b\b\b\b\b\b\b\b\b           \b\b\b\b\b\b\b\b\b\b\b");
-+    console_flush();
-+    return 0;
-+}
-+
-+int test_checkerboard_comparison(ulv *bufa, ulv *bufb, size_t count) {
-+    ulv *p1 = bufa;
-+    ulv *p2 = bufb;
-+    unsigned int j;
-+    ul q;
-+    size_t i;
-+    int ret;
-+
-+    printf("           ");
-+    console_flush();
-+    for (j = 0; j < 64; j++) {
-+        printf("\b\b\b\b\b\b\b\b\b\b\b");
-+        q = (j % 2) == 0 ? CHECKERBOARD1 : CHECKERBOARD2;
-+        printf("setting %3u", j);
-+        console_flush();
-+        p1 = (ulv *) bufa;
-+        p2 = (ulv *) bufb;
-+        for (i = 0; i < count; i++) {
-+            *p1++ = *p2++ = (i % 2) == 0 ? q : ~q;
-+        }
-+        printf("\b\b\b\b\b\b\b\b\b\b\b");
-+        printf("testing %3u", j);
-+        console_flush();
-+        ret = compare_regions(bufa, bufb, count);
-+        if (ret)
-+            return ret;
-+    }
-+    printf("\b\b\b\b\b\b\b\b\b\b\b           \b\b\b\b\b\b\b\b\b\b\b");
-+    console_flush();
-+    return 0;
-+}
-+
-+int test_blockseq_comparison(ulv *bufa, ulv *bufb, size_t count) {
-+    ulv *p1 = bufa;
-+    ulv *p2 = bufb;
-+    unsigned int j;
-+    size_t i;
-+    int ret;
-+
-+    printf("           ");
-+    console_flush();
-+    for (j = 0; j < 256; j++) {
-+        printf("\b\b\b\b\b\b\b\b\b\b\b");
-+        p1 = (ulv *) bufa;
-+        p2 = (ulv *) bufb;
-+        printf("setting %3u", j);
-+        console_flush();
-+        for (i = 0; i < count; i++) {
-+            *p1++ = *p2++ = (ul) UL_BYTE(j);
-+        }
-+        printf("\b\b\b\b\b\b\b\b\b\b\b");
-+        printf("testing %3u", j);
-+        console_flush();
-+        ret = compare_regions(bufa, bufb, count);
-+        if (ret)
-+            return ret;
-+    }
-+    printf("\b\b\b\b\b\b\b\b\b\b\b           \b\b\b\b\b\b\b\b\b\b\b");
-+    console_flush();
-+    return 0;
-+}
-+
-+int test_walkbits0_comparison(ulv *bufa, ulv *bufb, size_t count) {
-+    ulv *p1 = bufa;
-+    ulv *p2 = bufb;
-+    unsigned int j;
-+    size_t i;
-+    int ret;
-+
-+    printf("           ");
-+    console_flush();
-+    for (j = 0; j < UL_LEN * 2; j++) {
-+        printf("\b\b\b\b\b\b\b\b\b\b\b");
-+        p1 = (ulv *) bufa;
-+        p2 = (ulv *) bufb;
-+        printf("setting %3u", j);
-+        console_flush();
-+        for (i = 0; i < count; i++) {
-+            if (j < UL_LEN) { /* Walk it up. */
-+                *p1++ = *p2++ = ONE << j;
-+            } else { /* Walk it back down. */
-+                *p1++ = *p2++ = ONE << (UL_LEN * 2 - j - 1);
-+            }
-+        }
-+        printf("\b\b\b\b\b\b\b\b\b\b\b");
-+        printf("testing %3u", j);
-+        console_flush();
-+        ret = compare_regions(bufa, bufb, count);
-+        if (ret)
-+            return ret;
-+    }
-+    printf("\b\b\b\b\b\b\b\b\b\b\b           \b\b\b\b\b\b\b\b\b\b\b");
-+    console_flush();
-+    return 0;
-+}
-+
-+int test_walkbits1_comparison(ulv *bufa, ulv *bufb, size_t count) {
-+    ulv *p1 = bufa;
-+    ulv *p2 = bufb;
-+    unsigned int j;
-+    size_t i;
-+    int ret;
-+
-+    printf("           ");
-+    console_flush();
-+    for (j = 0; j < UL_LEN * 2; j++) {
-+        printf("\b\b\b\b\b\b\b\b\b\b\b");
-+        p1 = (ulv *) bufa;
-+        p2 = (ulv *) bufb;
-+        printf("setting %3u", j);
-+        console_flush();
-+        for (i = 0; i < count; i++) {
-+            if (j < UL_LEN) { /* Walk it up. */
-+                *p1++ = *p2++ = UL_ONEBITS ^ (ONE << j);
-+            } else { /* Walk it back down. */
-+                *p1++ = *p2++ = UL_ONEBITS ^ (ONE << (UL_LEN * 2 - j - 1));
-+            }
-+        }
-+        printf("\b\b\b\b\b\b\b\b\b\b\b");
-+        printf("testing %3u", j);
-+        console_flush();
-+        ret = compare_regions(bufa, bufb, count);
-+        if (ret)
-+            return ret;
-+    }
-+    printf("\b\b\b\b\b\b\b\b\b\b\b           \b\b\b\b\b\b\b\b\b\b\b");
-+    console_flush();
-+    return 0;
-+}
-+
-+int test_bitspread_comparison(ulv *bufa, ulv *bufb, size_t count) {
-+    ulv *p1 = bufa;
-+    ulv *p2 = bufb;
-+    unsigned int j;
-+    size_t i;
-+    int ret;
-+
-+    printf("           ");
-+    console_flush();
-+    for (j = 0; j < UL_LEN * 2; j++) {
-+        printf("\b\b\b\b\b\b\b\b\b\b\b");
-+        p1 = (ulv *) bufa;
-+        p2 = (ulv *) bufb;
-+        printf("setting %3u", j);
-+        console_flush();
-+        for (i = 0; i < count; i++) {
-+            if (j < UL_LEN) { /* Walk it up. */
-+                *p1++ = *p2++ = (i % 2 == 0)
-+                    ? (ONE << j) | (ONE << (j + 2))
-+                    : UL_ONEBITS ^ ((ONE << j)
-+                                    | (ONE << (j + 2)));
-+            } else { /* Walk it back down. */
-+                *p1++ = *p2++ = (i % 2 == 0)
-+                    ? (ONE << (UL_LEN * 2 - 1 - j)) | (ONE << (UL_LEN * 2 + 1 - j))
-+                    : UL_ONEBITS ^ (ONE << (UL_LEN * 2 - 1 - j)
-+                                    | (ONE << (UL_LEN * 2 + 1 - j)));
-+            }
-+        }
-+        printf("\b\b\b\b\b\b\b\b\b\b\b");
-+        printf("testing %3u", j);
-+        console_flush();
-+        ret = compare_regions(bufa, bufb, count);
-+        if (ret)
-+            return ret;
-+    }
-+    printf("\b\b\b\b\b\b\b\b\b\b\b           \b\b\b\b\b\b\b\b\b\b\b");
-+    console_flush();
-+    return 0;
-+}
-+
-+int test_bitflip_comparison(ulv *bufa, ulv *bufb, size_t count) {
-+    ulv *p1 = bufa;
-+    ulv *p2 = bufb;
-+    unsigned int j, k;
-+    ul q;
-+    size_t i;
-+    int ret;
-+
-+    printf("           ");
-+    console_flush();
-+    for (k = 0; k < UL_LEN; k++) {
-+        q = ONE << k;
-+        for (j = 0; j < 8; j++) {
-+            printf("\b\b\b\b\b\b\b\b\b\b\b");
-+            q = ~q;
-+            printf("setting %3u", k * 8 + j);
-+            console_flush();
-+            p1 = (ulv *) bufa;
-+            p2 = (ulv *) bufb;
-+            for (i = 0; i < count; i++) {
-+                *p1++ = *p2++ = (i % 2) == 0 ? q : ~q;
-+            }
-+            printf("\b\b\b\b\b\b\b\b\b\b\b");
-+            printf("testing %3u", k * 8 + j);
-+            console_flush();
-+            ret = compare_regions(bufa, bufb, count);
-+            if (ret)
-+                return -1;
-+        }
-+    }
-+    printf("\b\b\b\b\b\b\b\b\b\b\b           \b\b\b\b\b\b\b\b\b\b\b");
-+    console_flush();
-+    return 0;
-+}
-+
-+int test_8bit_wide_random(ulv* bufa, ulv* bufb, size_t count) {
-+    u8v *p1, *t;
-+    ulv *p2;
-+    int attempt;
-+    unsigned int b, j = 0;
-+    size_t i;
-+    int ret;
-+
-+    putchar(' ');
-+    console_flush();
-+    for (attempt = 0; attempt < 2;  attempt++) {
-+        if (attempt & 1) {
-+            p1 = (u8v *) bufa;
-+            p2 = bufb;
-+        } else {
-+            p1 = (u8v *) bufb;
-+            p2 = bufa;
-+        }
-+        for (i = 0; i < count; i++) {
-+            t = mword8.bytes;
-+            *p2++ = mword8.val = rand_ul();
-+            for (b=0; b < UL_LEN/8; b++) {
-+                *p1++ = *t++;
-+            }
-+            if (!(i % PROGRESSOFTEN)) {
-+                putchar('\b');
-+                putchar(progress[++j % PROGRESSLEN]);
-+                console_flush();
-+            }
-+        }
-+        ret = compare_regions(bufa, bufb, count);
-+        if (ret)
-+            return ret;
-+    }
-+    printf("\b \b");
-+    console_flush();
-+    return 0;
-+}
-+
-+int test_16bit_wide_random(ulv* bufa, ulv* bufb, size_t count) {
-+    u16v *p1, *t;
-+    ulv *p2;
-+    int attempt;
-+    unsigned int b, j = 0;
-+    size_t i;
-+    int ret;
-+
-+    putchar( ' ' );
-+    console_flush();
-+    for (attempt = 0; attempt < 2; attempt++) {
-+        if (attempt & 1) {
-+            p1 = (u16v *) bufa;
-+            p2 = bufb;
-+        } else {
-+            p1 = (u16v *) bufb;
-+            p2 = bufa;
-+        }
-+        for (i = 0; i < count; i++) {
-+            t = mword16.u16s;
-+            *p2++ = mword16.val = rand_ul();
-+            for (b = 0; b < UL_LEN/16; b++) {
-+                *p1++ = *t++;
-+            }
-+            if (!(i % PROGRESSOFTEN)) {
-+                putchar('\b');
-+                putchar(progress[++j % PROGRESSLEN]);
-+                console_flush();
-+            }
-+        }
-+        ret = compare_regions(bufa, bufb, count);
-+        if (ret)
-+            return ret;
-+    }
-+    printf("\b \b");
-+    console_flush();
-+    return 0;
-+}
-diff --git a/commands/memtester/tests.h b/commands/memtester/tests.h
-new file mode 100644
-index 0000000000..86ef72509c
---- /dev/null
-+++ b/commands/memtester/tests.h
-@@ -0,0 +1,36 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Very simple yet very effective memory tester.
-+ * Originally by Simon Kirby <sim@stormix.com> <sim@neato.org>
-+ * Version 2 by Charles Cazabon <charlesc-memtester@pyropus.ca>
-+ * Version 3 not publicly released.
-+ * Version 4 rewrite:
-+ * Copyright (C) 2004-2012 Charles Cazabon <charlesc-memtester@pyropus.ca>
-+ *
-+ * This file contains the declarations for the functions for the actual tests,
-+ * called from the main routine in memtester.c.  See other comments in that 
-+ * file.
-+ *
-+ */
-+
-+/* Function declaration. */
-+
-+int test_stuck_address(unsigned long volatile *bufa, size_t count);
-+int test_random_value(unsigned long volatile *bufa, unsigned long volatile *bufb, size_t count);
-+int test_xor_comparison(unsigned long volatile *bufa, unsigned long volatile *bufb, size_t count);
-+int test_sub_comparison(unsigned long volatile *bufa, unsigned long volatile *bufb, size_t count);
-+int test_mul_comparison(unsigned long volatile *bufa, unsigned long volatile *bufb, size_t count);
-+int test_div_comparison(unsigned long volatile *bufa, unsigned long volatile *bufb, size_t count);
-+int test_or_comparison(unsigned long volatile *bufa, unsigned long volatile *bufb, size_t count);
-+int test_and_comparison(unsigned long volatile *bufa, unsigned long volatile *bufb, size_t count);
-+int test_seqinc_comparison(unsigned long volatile *bufa, unsigned long volatile *bufb, size_t count);
-+int test_solidbits_comparison(unsigned long volatile *bufa, unsigned long volatile *bufb, size_t count);
-+int test_checkerboard_comparison(unsigned long volatile *bufa, unsigned long volatile *bufb, size_t count);
-+int test_blockseq_comparison(unsigned long volatile *bufa, unsigned long volatile *bufb, size_t count);
-+int test_walkbits0_comparison(unsigned long volatile *bufa, unsigned long volatile *bufb, size_t count);
-+int test_walkbits1_comparison(unsigned long volatile *bufa, unsigned long volatile *bufb, size_t count);
-+int test_bitspread_comparison(unsigned long volatile *bufa, unsigned long volatile *bufb, size_t count);
-+int test_bitflip_comparison(unsigned long volatile *bufa, unsigned long volatile *bufb, size_t count);
-+int test_8bit_wide_random(unsigned long volatile *bufa, unsigned long volatile *bufb, size_t count);
-+int test_16bit_wide_random(unsigned long volatile *bufa, unsigned long volatile *bufb, size_t count);
-+
-diff --git a/commands/memtester/types.h b/commands/memtester/types.h
-new file mode 100644
-index 0000000000..0291610d2c
---- /dev/null
-+++ b/commands/memtester/types.h
-@@ -0,0 +1,35 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Very simple but very effective user-space memory tester.
-+ * Originally by Simon Kirby <sim@stormix.com> <sim@neato.org>
-+ * Version 2 by Charles Cazabon <charlesc-memtester@pyropus.ca>
-+ * Version 3 not publicly released.
-+ * Version 4 rewrite:
-+ * Copyright (C) 2004-2010 Charles Cazabon <charlesc-memtester@pyropus.ca>
-+ *
-+ * This file contains typedefs, structure, and union definitions.
-+ *
-+ */
-+
-+#include "sizes.h"
-+
-+typedef unsigned long ul;
-+typedef unsigned long long ull;
-+typedef unsigned long volatile ulv;
-+typedef unsigned char volatile u8v;
-+typedef unsigned short volatile u16v;
-+
-+struct test {
-+    char *name;
-+    int (*fp)(ulv *, ulv *, size_t);
-+};
-+
-+typedef union {
-+    unsigned char bytes[UL_LEN/8];
-+    ul val;
-+} mword8_t;
-+
-+typedef union {
-+    unsigned short u16s[UL_LEN/16];
-+    ul val;
-+} mword16_t;
--- 
-2.20.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+UmVwbGFjZSBsaWNlbnNlIGFuZCBjb3B5cmlnaHQgYm9pbGVycGxhdGUgYnkgU1BEWCBpZGVudGZp
+ZXJzIGZvciBmaWxlcwppZGVudGlmaWVkIGFzIEdQTC0yLjAtb25seSBvciBHUEwtMi4wLW9yLWxh
+dGVyIGJ5IGxpY2Vuc2VjaGVjay4KClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1
+LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Ci0tLQogYXJjaC9hcm0vbWFjaC1pbXgvaW5j
+bHVkZS9tYWNoL2Nsb2NrLWlteDYuaCAgIHwgMTkgKystLS0tLS0tLS0tLS0tCiBhcmNoL2FybS9t
+YWNoLWlteC9pbmNsdWRlL21hY2gvaWltLmggICAgICAgICAgfCAxNiArKy0tLS0tLS0tLS0tCiBh
+cmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaW14LWlwdS1mYi5oICAgfCAxMCArKy0tLS0t
+LQogYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lteDI1LXJlZ3MuaCAgIHwgMTYgKyst
+LS0tLS0tLS0tLQogYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lteDMxLXJlZ3MuaCAg
+IHwgMTYgKystLS0tLS0tLS0tLQogYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lteDM1
+LXJlZ3MuaCAgIHwgMTYgKystLS0tLS0tLS0tLQogYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9t
+YWNoL2lteDYtYW5hZGlnLmggIHwgMTkgKysrKy0tLS0tLS0tLS0tCiAuLi4vYXJtL21hY2gtaW14
+L2luY2x1ZGUvbWFjaC9pbXg2LWRkci1yZWdzLmggfCAxNSArKy0tLS0tLS0tLS0KIC4uLi9tYWNo
+LWlteC9pbmNsdWRlL21hY2gvaW14NmRsLWRkci1yZWdzLmggICB8IDE1ICsrLS0tLS0tLS0tLQog
+Li4uL21hY2gtaW14L2luY2x1ZGUvbWFjaC9pbXg2cS1kZHItcmVncy5oICAgIHwgMTUgKystLS0t
+LS0tLS0tCiBhcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaW9tdXgtbXgyMS5oICAgfCAx
+NSArKystLS0tLS0tLS0KIGFyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9pb211eC1teDI3
+LmggICB8IDE4ICsrKystLS0tLS0tLS0tCiBhcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gv
+aW9tdXgtbXgyeC5oICAgfCAxOCArKysrLS0tLS0tLS0tLQogYXJjaC9hcm0vbWFjaC1pbXgvaW5j
+bHVkZS9tYWNoL2lvbXV4LW14MzEuaCAgIHwgMTggKysrKy0tLS0tLS0tLS0KIGFyY2gvYXJtL21h
+Y2gtaW14L2luY2x1ZGUvbWFjaC9pb211eC1teDM1LmggICB8IDE1ICsrLS0tLS0tLS0tLQogYXJj
+aC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lvbXV4LW14NTAuaCAgIHwgMjQgKysrKy0tLS0t
+LS0tLS0tLS0tLQogYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lvbXV4LW14NTMuaCAg
+IHwgMTkgKystLS0tLS0tLS0tLS0tCiBhcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaW9t
+dXgtbXg2LmggICAgfCAyMyArKystLS0tLS0tLS0tLS0tLS0KIGFyY2gvYXJtL21hY2gtaW14L2lu
+Y2x1ZGUvbWFjaC9pb211eC12My5oICAgICB8IDE2ICsrLS0tLS0tLS0tLS0KIDE5IGZpbGVzIGNo
+YW5nZWQsIDUxIGluc2VydGlvbnMoKyksIDI3MiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9h
+cmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvY2xvY2staW14Ni5oIGIvYXJjaC9hcm0vbWFj
+aC1pbXgvaW5jbHVkZS9tYWNoL2Nsb2NrLWlteDYuaAppbmRleCA4ZTVlOWQ5MmIwNjcuLjY5ZmJl
+ZGQ1MWUzNCAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2Nsb2Nr
+LWlteDYuaAorKysgYi9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvY2xvY2staW14Ni5o
+CkBAIC0xLDIwICsxLDUgQEAKLS8qCi0gKiBDb3B5cmlnaHQgKEMpIDIwMTAtMjAxMSBGcmVlc2Nh
+bGUgU2VtaWNvbmR1Y3RvciwgSW5jLiBBbGwgUmlnaHRzIFJlc2VydmVkLgotICoKLSAqIFRoaXMg
+cHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3Ig
+bW9kaWZ5Ci0gKiBpdCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBM
+aWNlbnNlIGFzIHB1Ymxpc2hlZCBieQotICogdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbjsg
+ZWl0aGVyIHZlcnNpb24gMiBvZiB0aGUgTGljZW5zZSwgb3IKLSAqIChhdCB5b3VyIG9wdGlvbikg
+YW55IGxhdGVyIHZlcnNpb24uCi0KLSAqIFRoaXMgcHJvZ3JhbSBpcyBkaXN0cmlidXRlZCBpbiB0
+aGUgaG9wZSB0aGF0IGl0IHdpbGwgYmUgdXNlZnVsLAotICogYnV0IFdJVEhPVVQgQU5ZIFdBUlJB
+TlRZOyB3aXRob3V0IGV2ZW4gdGhlIGltcGxpZWQgd2FycmFudHkgb2YKLSAqIE1FUkNIQU5UQUJJ
+TElUWSBvciBGSVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVSUE9TRS4gIFNlZSB0aGUKLSAqIEdO
+VSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGZvciBtb3JlIGRldGFpbHMuCi0KLSAqIFlvdSBzaG91
+bGQgaGF2ZSByZWNlaXZlZCBhIGNvcHkgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNl
+IGFsb25nCi0gKiB3aXRoIHRoaXMgcHJvZ3JhbTsgaWYgbm90LCB3cml0ZSB0byB0aGUgRnJlZSBT
+b2Z0d2FyZSBGb3VuZGF0aW9uLCBJbmMuLAotICogNTEgRnJhbmtsaW4gU3RyZWV0LCBGaWZ0aCBG
+bG9vciwgQm9zdG9uLCBNQSAwMjExMC0xMzAxIFVTQS4KLSAqLworLyogU1BEWC1MaWNlbnNlLUlk
+ZW50aWZpZXI6IEdQTC0yLjAtb3ItbGF0ZXIgKi8KKy8qIFNQRFgtRmlsZUNvcHlyaWdodFRleHQ6
+IDIwMTAtMjAxMSBGcmVlc2NhbGUgU2VtaWNvbmR1Y3RvciwgSW5jLiAqLwogCiAjaWZuZGVmIF9f
+QVJDSF9BUk1fTUFDSF9NWDZfQ1JNX1JFR1NfSF9fCiAjZGVmaW5lIF9fQVJDSF9BUk1fTUFDSF9N
+WDZfQ1JNX1JFR1NfSF9fCmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21h
+Y2gvaWltLmggYi9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaWltLmgKaW5kZXggY2M4
+OWIwZDEwOTRmLi4zMTk5ZTRlNzkwMDYgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtaW14L2lu
+Y2x1ZGUvbWFjaC9paW0uaAorKysgYi9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaWlt
+LmgKQEAgLTEsMTcgKzEsNSBAQAotLyoKLSAqIChjKSAyMDA5IFBlbmd1dHJvbml4LCBTYXNjaGEg
+SGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Ci0gKgotICogVGhpcyBwcm9ncmFtIGlzIGZy
+ZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmlidXRlIGl0IGFuZC9vcgotICogbW9kaWZ5IGl0
+IHVuZGVyIHRoZSB0ZXJtcyBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgYXMKLSAq
+IHB1Ymxpc2hlZCBieSB0aGUgRnJlZSBTb2Z0d2FyZSBGb3VuZGF0aW9uOyBlaXRoZXIgdmVyc2lv
+biAyIG9mCi0gKiB0aGUgTGljZW5zZSwgb3IgKGF0IHlvdXIgb3B0aW9uKSBhbnkgbGF0ZXIgdmVy
+c2lvbi4KLSAqCi0gKiBUaGlzIHByb2dyYW0gaXMgZGlzdHJpYnV0ZWQgaW4gdGhlIGhvcGUgdGhh
+dCBpdCB3aWxsIGJlIHVzZWZ1bCwKLSAqIGJ1dCBXSVRIT1VUIEFOWSBXQVJSQU5UWTsgd2l0aG91
+dCBldmVuIHRoZSBpbXBsaWVkIHdhcnJhbnR5IG9mCi0gKiBNRVJDSEFOVEFCSUxJVFkgb3IgRklU
+TkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UuICBTZWUgdGhlCi0gKiBHTlUgR2VuZXJhbCBQ
+dWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLgotICoKLSAqLworLyogU1BEWC1MaWNlbnNl
+LUlkZW50aWZpZXI6IEdQTC0yLjAtb3ItbGF0ZXIgKi8KKy8qIFNQRFgtRmlsZUNvcHlyaWdodFRl
+eHQ6IFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4sIFBlbmd1dHJvbml4ICov
+CiAKICNpZm5kZWYgX19NQUNIX0lNWF9JSU1fSAogI2RlZmluZSBfX01BQ0hfSU1YX0lJTV9ICmRp
+ZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaW14LWlwdS1mYi5oIGIv
+YXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lteC1pcHUtZmIuaAppbmRleCA3MzAyOGQy
+NmNmZWQuLjY1MWJmOWE1Yzk1MyAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVk
+ZS9tYWNoL2lteC1pcHUtZmIuaAorKysgYi9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gv
+aW14LWlwdS1mYi5oCkBAIC0xLDExICsxLDUgQEAKLS8qCi0gKiBDb3B5cmlnaHQgKEMpIDIwMDgK
+LSAqIEd1ZW5uYWRpIExpYWtob3ZldHNraSwgREVOWCBTb2Z0d2FyZSBFbmdpbmVlcmluZywgPGxn
+QGRlbnguZGU+Ci0gKgotICogVGhpcyBwcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4g
+cmVkaXN0cmlidXRlIGl0IGFuZC9vciBtb2RpZnkKLSAqIGl0IHVuZGVyIHRoZSB0ZXJtcyBvZiB0
+aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgdmVyc2lvbiAyIGFzCi0gKiBwdWJsaXNoZWQg
+YnkgdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbi4KLSAqLworLyogU1BEWC1MaWNlbnNlLUlk
+ZW50aWZpZXI6IEdQTC0yLjAtb25seSAqLworLyogU1BEWC1GaWxlQ29weXJpZ2h0VGV4dDogMjAw
+OCBHdWVubmFkaSBMaWFraG92ZXRza2kgPGxnQGRlbnguZGU+LCBERU5YIFNvZnR3YXJlIEVuZ2lu
+ZWVyaW5nICovCiAKICNpZm5kZWYgX19NQUNIX0lNWF9JUFVfRkJfSF9fCiAjZGVmaW5lIF9fTUFD
+SF9JTVhfSVBVX0ZCX0hfXwpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9t
+YWNoL2lteDI1LXJlZ3MuaCBiL2FyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9pbXgyNS1y
+ZWdzLmgKaW5kZXggYTU3NTRjNTdkYmU5Li5kNjM2NjllMWUwZTcgMTAwNjQ0Ci0tLSBhL2FyY2gv
+YXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9pbXgyNS1yZWdzLmgKKysrIGIvYXJjaC9hcm0vbWFj
+aC1pbXgvaW5jbHVkZS9tYWNoL2lteDI1LXJlZ3MuaApAQCAtMSwxNyArMSw1IEBACi0vKgotICog
+KGMpIDIwMDkgUGVuZ3V0cm9uaXgsIFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5k
+ZT4KLSAqCi0gKiBUaGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2FyZTsgeW91IGNhbiByZWRpc3Ry
+aWJ1dGUgaXQgYW5kL29yCi0gKiBtb2RpZnkgaXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBHTlUg
+R2VuZXJhbCBQdWJsaWMgTGljZW5zZSBhcwotICogcHVibGlzaGVkIGJ5IHRoZSBGcmVlIFNvZnR3
+YXJlIEZvdW5kYXRpb247IGVpdGhlciB2ZXJzaW9uIDIgb2YKLSAqIHRoZSBMaWNlbnNlLCBvciAo
+YXQgeW91ciBvcHRpb24pIGFueSBsYXRlciB2ZXJzaW9uLgotICoKLSAqIFRoaXMgcHJvZ3JhbSBp
+cyBkaXN0cmlidXRlZCBpbiB0aGUgaG9wZSB0aGF0IGl0IHdpbGwgYmUgdXNlZnVsLAotICogYnV0
+IFdJVEhPVVQgQU5ZIFdBUlJBTlRZOyB3aXRob3V0IGV2ZW4gdGhlIGltcGxpZWQgd2FycmFudHkg
+b2YKLSAqIE1FUkNIQU5UQUJJTElUWSBvciBGSVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVSUE9T
+RS4gIFNlZSB0aGUKLSAqIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGZvciBtb3JlIGRldGFp
+bHMuCi0gKgotICovCisvKiBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMC1vci1sYXRl
+ciAqLworLyogU1BEWC1GaWxlQ29weXJpZ2h0VGV4dDogMjAwOSBTYXNjaGEgSGF1ZXIgPHMuaGF1
+ZXJAcGVuZ3V0cm9uaXguZGU+LCBQZW5ndXRyb25peCAqLwogCiAjaWZuZGVmIF9fQVNNX0FSQ0hf
+TVgyNV9SRUdTX0gKICNkZWZpbmUgX19BU01fQVJDSF9NWDI1X1JFR1NfSApkaWZmIC0tZ2l0IGEv
+YXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lteDMxLXJlZ3MuaCBiL2FyY2gvYXJtL21h
+Y2gtaW14L2luY2x1ZGUvbWFjaC9pbXgzMS1yZWdzLmgKaW5kZXggM2Q2YzkxYzUwMzRkLi41NmM1
+MThjMTIwYjQgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9pbXgz
+MS1yZWdzLmgKKysrIGIvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lteDMxLXJlZ3Mu
+aApAQCAtMSwxNyArMSw1IEBACi0vKgotICogKGMpIDIwMDcgUGVuZ3V0cm9uaXgsIFNhc2NoYSBI
+YXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4KLSAqCi0gKiBUaGlzIHByb2dyYW0gaXMgZnJl
+ZSBzb2Z0d2FyZTsgeW91IGNhbiByZWRpc3RyaWJ1dGUgaXQgYW5kL29yCi0gKiBtb2RpZnkgaXQg
+dW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBhcwotICog
+cHVibGlzaGVkIGJ5IHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5kYXRpb247IGVpdGhlciB2ZXJzaW9u
+IDIgb2YKLSAqIHRoZSBMaWNlbnNlLCBvciAoYXQgeW91ciBvcHRpb24pIGFueSBsYXRlciB2ZXJz
+aW9uLgotICoKLSAqIFRoaXMgcHJvZ3JhbSBpcyBkaXN0cmlidXRlZCBpbiB0aGUgaG9wZSB0aGF0
+IGl0IHdpbGwgYmUgdXNlZnVsLAotICogYnV0IFdJVEhPVVQgQU5ZIFdBUlJBTlRZOyB3aXRob3V0
+IGV2ZW4gdGhlIGltcGxpZWQgd2FycmFudHkgb2YKLSAqIE1FUkNIQU5UQUJJTElUWSBvciBGSVRO
+RVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVSUE9TRS4gIFNlZSB0aGUKLSAqIEdOVSBHZW5lcmFsIFB1
+YmxpYyBMaWNlbnNlIGZvciBtb3JlIGRldGFpbHMuCi0gKgotICovCisvKiBTUERYLUxpY2Vuc2Ut
+SWRlbnRpZmllcjogR1BMLTIuMC1vci1sYXRlciAqLworLyogU1BEWC1GaWxlQ29weXJpZ2h0VGV4
+dDogMjAwNyBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+LCBQZW5ndXRyb25p
+eCAqLwogCiAjaWZuZGVmIF9fQVNNX0FSQ0hfTVgzMV9SRUdTX0gKICNkZWZpbmUgX19BU01fQVJD
+SF9NWDMxX1JFR1NfSApkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNo
+L2lteDM1LXJlZ3MuaCBiL2FyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9pbXgzNS1yZWdz
+LmgKaW5kZXggMGEzZjkyNzNjN2ZjLi40YTRhYTc1NGFhZDggMTAwNjQ0Ci0tLSBhL2FyY2gvYXJt
+L21hY2gtaW14L2luY2x1ZGUvbWFjaC9pbXgzNS1yZWdzLmgKKysrIGIvYXJjaC9hcm0vbWFjaC1p
+bXgvaW5jbHVkZS9tYWNoL2lteDM1LXJlZ3MuaApAQCAtMSwxNyArMSw1IEBACi0vKgotICogKGMp
+IDIwMDkgUGVuZ3V0cm9uaXgsIFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4K
+LSAqCi0gKiBUaGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2FyZTsgeW91IGNhbiByZWRpc3RyaWJ1
+dGUgaXQgYW5kL29yCi0gKiBtb2RpZnkgaXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBHTlUgR2Vu
+ZXJhbCBQdWJsaWMgTGljZW5zZSBhcwotICogcHVibGlzaGVkIGJ5IHRoZSBGcmVlIFNvZnR3YXJl
+IEZvdW5kYXRpb247IGVpdGhlciB2ZXJzaW9uIDIgb2YKLSAqIHRoZSBMaWNlbnNlLCBvciAoYXQg
+eW91ciBvcHRpb24pIGFueSBsYXRlciB2ZXJzaW9uLgotICoKLSAqIFRoaXMgcHJvZ3JhbSBpcyBk
+aXN0cmlidXRlZCBpbiB0aGUgaG9wZSB0aGF0IGl0IHdpbGwgYmUgdXNlZnVsLAotICogYnV0IFdJ
+VEhPVVQgQU5ZIFdBUlJBTlRZOyB3aXRob3V0IGV2ZW4gdGhlIGltcGxpZWQgd2FycmFudHkgb2YK
+LSAqIE1FUkNIQU5UQUJJTElUWSBvciBGSVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVSUE9TRS4g
+IFNlZSB0aGUKLSAqIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGZvciBtb3JlIGRldGFpbHMu
+Ci0gKgotICovCisvKiBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMC1vci1sYXRlciAq
+LworLyogU1BEWC1GaWxlQ29weXJpZ2h0VGV4dDogMjAwOSBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJA
+cGVuZ3V0cm9uaXguZGU+LCBQZW5ndXRyb25peCAqLwogCiAjaWZuZGVmIF9fQVNNX0FSQ0hfTVgz
+NV9SRUdTX0gKICNkZWZpbmUgX19BU01fQVJDSF9NWDM1X1JFR1NfSApkaWZmIC0tZ2l0IGEvYXJj
+aC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lteDYtYW5hZGlnLmggYi9hcmNoL2FybS9tYWNo
+LWlteC9pbmNsdWRlL21hY2gvaW14Ni1hbmFkaWcuaAppbmRleCA2NWE3ZGJkYTRjMTYuLjM4ZjRh
+ZDczNTFlYiAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lteDYt
+YW5hZGlnLmgKKysrIGIvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lteDYtYW5hZGln
+LmgKQEAgLTEsMTggKzEsNyBAQAotLyoKLSAqIEZyZWVzY2FsZSBBTkFESUcgUmVnaXN0ZXIgRGVm
+aW5pdGlvbnMKLSAqCi0gKiBDb3B5cmlnaHQgMjAwOC0yMDExIEZyZWVzY2FsZSBTZW1pY29uZHVj
+dG9yLCBJbmMuIEFsbCBSaWdodHMgUmVzZXJ2ZWQuCi0gKgotICogVGhpcyBwcm9ncmFtIGlzIGZy
+ZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmlidXRlIGl0IGFuZC9vciBtb2RpZnkKLSAqIGl0
+IHVuZGVyIHRoZSB0ZXJtcyBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgYXMgcHVi
+bGlzaGVkIGJ5Ci0gKiB0aGUgRnJlZSBTb2Z0d2FyZSBGb3VuZGF0aW9uOyBlaXRoZXIgdmVyc2lv
+biAyIG9mIHRoZSBMaWNlbnNlLCBvcgotICogKGF0IHlvdXIgb3B0aW9uKSBhbnkgbGF0ZXIgdmVy
+c2lvbi4KLSAqCi0gKiBUaGlzIHByb2dyYW0gaXMgZGlzdHJpYnV0ZWQgaW4gdGhlIGhvcGUgdGhh
+dCBpdCB3aWxsIGJlIHVzZWZ1bCwKLSAqIGJ1dCBXSVRIT1VUIEFOWSBXQVJSQU5UWTsgd2l0aG91
+dCBldmVuIHRoZSBpbXBsaWVkIHdhcnJhbnR5IG9mCi0gKiBNRVJDSEFOVEFCSUxJVFkgb3IgRklU
+TkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UuICBTZWUgdGhlCi0gKiBHTlUgR2VuZXJhbCBQ
+dWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLgotICovCisvKiBTUERYLUxpY2Vuc2UtSWRl
+bnRpZmllcjogR1BMLTIuMC1vci1sYXRlciAqLworLyogU1BEWC1GaWxlQ29weXJpZ2h0VGV4dDog
+MjAwOC0yMDExIEZyZWVzY2FsZSBTZW1pY29uZHVjdG9yLCBJbmMuICovCisKKy8qIEZyZWVzY2Fs
+ZSBBTkFESUcgUmVnaXN0ZXIgRGVmaW5pdGlvbnMgKi8KIAogI2lmbmRlZiBfX0FSQ0hfQVJNX19f
+QU5BRElHX0gKICNkZWZpbmUgX19BUkNIX0FSTV9fX0FOQURJR19ICmRpZmYgLS1naXQgYS9hcmNo
+L2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaW14Ni1kZHItcmVncy5oIGIvYXJjaC9hcm0vbWFj
+aC1pbXgvaW5jbHVkZS9tYWNoL2lteDYtZGRyLXJlZ3MuaAppbmRleCAzOWIzYjU1YmIyODMuLmYx
+MDkwMmNlYzIzNSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lt
+eDYtZGRyLXJlZ3MuaAorKysgYi9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaW14Ni1k
+ZHItcmVncy5oCkBAIC0xLDE2ICsxLDUgQEAKLS8qCi0gKiBDb3B5cmlnaHQgKEMpIDIwMTMgQm91
+bmRhcnkgRGV2aWNlcyBJbmMuCi0gKgotICogVGhpcyBwcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7
+IHlvdSBjYW4gcmVkaXN0cmlidXRlIGl0IGFuZC9vcgotICogbW9kaWZ5IGl0IHVuZGVyIHRoZSB0
+ZXJtcyBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgYXMKLSAqIHB1Ymxpc2hlZCBi
+eSB0aGUgRnJlZSBTb2Z0d2FyZSBGb3VuZGF0aW9uOyBlaXRoZXIgdmVyc2lvbiAyIG9mCi0gKiB0
+aGUgTGljZW5zZSwgb3IgKGF0IHlvdXIgb3B0aW9uKSBhbnkgbGF0ZXIgdmVyc2lvbi4KLSAqCi0g
+KiBUaGlzIHByb2dyYW0gaXMgZGlzdHJpYnV0ZWQgaW4gdGhlIGhvcGUgdGhhdCBpdCB3aWxsIGJl
+IHVzZWZ1bCwKLSAqIGJ1dCBXSVRIT1VUIEFOWSBXQVJSQU5UWTsgd2l0aG91dCBldmVuIHRoZSBp
+bXBsaWVkIHdhcnJhbnR5IG9mCi0gKiBNRVJDSEFOVEFCSUxJVFkgb3IgRklUTkVTUyBGT1IgQSBQ
+QVJUSUNVTEFSIFBVUlBPU0UuICBTZWUgdGhlCi0gKiBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5z
+ZSBmb3IgbW9yZSBkZXRhaWxzLgotICovCisvKiBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BM
+LTIuMC1vci1sYXRlciAqLworLyogU1BEWC1GaWxlQ29weXJpZ2h0VGV4dDogMjAxMyBCb3VuZGFy
+eSBEZXZpY2VzIEluYy4gKi8KIAogI2RlZmluZSBNWDZfTU1EQ19QMF9NRENUTAkJMHgwMjFiMDAw
+MAogI2RlZmluZSBNWDZfTU1EQ19QMF9NRFBEQwkJMHgwMjFiMDAwNApkaWZmIC0tZ2l0IGEvYXJj
+aC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lteDZkbC1kZHItcmVncy5oIGIvYXJjaC9hcm0v
+bWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lteDZkbC1kZHItcmVncy5oCmluZGV4IGEzMTJlNjNhOTk2
+ZC4uOWU1NzY0Mjc2ZmFhIDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21h
+Y2gvaW14NmRsLWRkci1yZWdzLmgKKysrIGIvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNo
+L2lteDZkbC1kZHItcmVncy5oCkBAIC0xLDE2ICsxLDUgQEAKLS8qCi0gKiBDb3B5cmlnaHQgKEMp
+IDIwMTMgQm91bmRhcnkgRGV2aWNlcyBJbmMuCi0gKgotICogVGhpcyBwcm9ncmFtIGlzIGZyZWUg
+c29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmlidXRlIGl0IGFuZC9vcgotICogbW9kaWZ5IGl0IHVu
+ZGVyIHRoZSB0ZXJtcyBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgYXMKLSAqIHB1
+Ymxpc2hlZCBieSB0aGUgRnJlZSBTb2Z0d2FyZSBGb3VuZGF0aW9uOyBlaXRoZXIgdmVyc2lvbiAy
+IG9mCi0gKiB0aGUgTGljZW5zZSwgb3IgKGF0IHlvdXIgb3B0aW9uKSBhbnkgbGF0ZXIgdmVyc2lv
+bi4KLSAqCi0gKiBUaGlzIHByb2dyYW0gaXMgZGlzdHJpYnV0ZWQgaW4gdGhlIGhvcGUgdGhhdCBp
+dCB3aWxsIGJlIHVzZWZ1bCwKLSAqIGJ1dCBXSVRIT1VUIEFOWSBXQVJSQU5UWTsgd2l0aG91dCBl
+dmVuIHRoZSBpbXBsaWVkIHdhcnJhbnR5IG9mCi0gKiBNRVJDSEFOVEFCSUxJVFkgb3IgRklUTkVT
+UyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UuICBTZWUgdGhlCi0gKiBHTlUgR2VuZXJhbCBQdWJs
+aWMgTGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLgotICovCisvKiBTUERYLUxpY2Vuc2UtSWRlbnRp
+ZmllcjogR1BMLTIuMC1vci1sYXRlciAqLworLyogU1BEWC1GaWxlQ29weXJpZ2h0VGV4dDogMjAx
+MyBCb3VuZGFyeSBEZXZpY2VzIEluYy4gKi8KIAogI2RlZmluZSBNWDZfSU9NX0RSQU1fQUREUjAw
+CTB4MDIwZTA0MjQKICNkZWZpbmUgTVg2X0lPTV9EUkFNX0FERFIwMQkweDAyMGUwNDI4CmRpZmYg
+LS1naXQgYS9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaW14NnEtZGRyLXJlZ3MuaCBi
+L2FyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9pbXg2cS1kZHItcmVncy5oCmluZGV4IGY5
+MTA1NzQzNzA2NC4uM2YyMGI5NTA5MTBlIDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLWlteC9p
+bmNsdWRlL21hY2gvaW14NnEtZGRyLXJlZ3MuaAorKysgYi9hcmNoL2FybS9tYWNoLWlteC9pbmNs
+dWRlL21hY2gvaW14NnEtZGRyLXJlZ3MuaApAQCAtMSwxNiArMSw1IEBACi0vKgotICogQ29weXJp
+Z2h0IChDKSAyMDEzIEJvdW5kYXJ5IERldmljZXMgSW5jLgotICoKLSAqIFRoaXMgcHJvZ3JhbSBp
+cyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3IKLSAqIG1vZGlm
+eSBpdCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGFz
+Ci0gKiBwdWJsaXNoZWQgYnkgdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbjsgZWl0aGVyIHZl
+cnNpb24gMiBvZgotICogdGhlIExpY2Vuc2UsIG9yIChhdCB5b3VyIG9wdGlvbikgYW55IGxhdGVy
+IHZlcnNpb24uCi0gKgotICogVGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVkIGluIHRoZSBob3Bl
+IHRoYXQgaXQgd2lsbCBiZSB1c2VmdWwsCi0gKiBidXQgV0lUSE9VVCBBTlkgV0FSUkFOVFk7IHdp
+dGhvdXQgZXZlbiB0aGUgaW1wbGllZCB3YXJyYW50eSBvZgotICogTUVSQ0hBTlRBQklMSVRZIG9y
+IEZJVE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFLiAgU2VlIHRoZQotICogR05VIEdlbmVy
+YWwgUHVibGljIExpY2Vuc2UgZm9yIG1vcmUgZGV0YWlscy4KLSAqLworLyogU1BEWC1MaWNlbnNl
+LUlkZW50aWZpZXI6IEdQTC0yLjAtb3ItbGF0ZXIgKi8KKy8qIFNQRFgtRmlsZUNvcHlyaWdodFRl
+eHQ6IDIwMTMgQm91bmRhcnkgRGV2aWNlcyBJbmMuICovCiAKICNkZWZpbmUgTVg2X0lPTV9EUkFN
+X0RRTTAJMHgwMjBlMDVhYwogI2RlZmluZSBNWDZfSU9NX0RSQU1fRFFNMQkweDAyMGUwNWI0CmRp
+ZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaW9tdXgtbXgyMS5oIGIv
+YXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lvbXV4LW14MjEuaAppbmRleCAyMDMxOTBk
+MWQ3MmQuLjMwOGJmYWM5OWJkYyAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVk
+ZS9tYWNoL2lvbXV4LW14MjEuaAorKysgYi9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gv
+aW9tdXgtbXgyMS5oCkBAIC0xLDE1ICsxLDYgQEAKLS8qCi0gKiBDb3B5cmlnaHQgKEMpIDIwMDkg
+YnkgSG9sZ2VyIFNjaHVyaWcgPGhzNDIzM0BtYWlsLm1uLXNvbHV0aW9ucy5kZT4KLSAqCi0gKiBU
+aGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2FyZTsgeW91IGNhbiByZWRpc3RyaWJ1dGUgaXQgYW5k
+L29yCi0gKiBtb2RpZnkgaXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJs
+aWMgTGljZW5zZQotICogYXMgcHVibGlzaGVkIGJ5IHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5kYXRp
+b247IGVpdGhlciB2ZXJzaW9uIDIKLSAqIG9mIHRoZSBMaWNlbnNlLCBvciAoYXQgeW91ciBvcHRp
+b24pIGFueSBsYXRlciB2ZXJzaW9uLgotICogVGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVkIGlu
+IHRoZSBob3BlIHRoYXQgaXQgd2lsbCBiZSB1c2VmdWwsCi0gKiBidXQgV0lUSE9VVCBBTlkgV0FS
+UkFOVFk7IHdpdGhvdXQgZXZlbiB0aGUgaW1wbGllZCB3YXJyYW50eSBvZgotICogTUVSQ0hBTlRB
+QklMSVRZIG9yIEZJVE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFLiAgU2VlIHRoZQotICog
+R05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgZm9yIG1vcmUgZGV0YWlscy4KLSAqLworLyogU1BE
+WC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjAtb3ItbGF0ZXIgKi8KKy8qIFNQRFgtRmlsZUNv
+cHlyaWdodFRleHQ6IDIwMDkgSG9sZ2VyIFNjaHVyaWcgPGhzNDIzM0BtYWlsLm1uLXNvbHV0aW9u
+cy5kZT4gKi8KKwogI2lmbmRlZiBfX01BQ0hfSU9NVVhfTVgyMV9IX18KICNkZWZpbmUgX19NQUNI
+X0lPTVVYX01YMjFfSF9fCiAKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUv
+bWFjaC9pb211eC1teDI3LmggYi9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaW9tdXgt
+bXgyNy5oCmluZGV4IGI2ZTMzNDU1OWQ2NS4uNWY4YTM4MjZmNjE4IDEwMDY0NAotLS0gYS9hcmNo
+L2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaW9tdXgtbXgyNy5oCisrKyBiL2FyY2gvYXJtL21h
+Y2gtaW14L2luY2x1ZGUvbWFjaC9pb211eC1teDI3LmgKQEAgLTEsMTcgKzEsNyBAQAotLyoKLSAq
+IENvcHlyaWdodCAoQykgMjAwOCBieSBTYXNjaGEgSGF1ZXIgPGtlcm5lbEBwZW5ndXRyb25peC5k
+ZT4KLSAqIENvcHlyaWdodCAoQykgMjAwOSBieSBIb2xnZXIgU2NodXJpZyA8aHM0MjMzQG1haWwu
+bW4tc29sdXRpb25zLmRlPgotICoKLSAqIFRoaXMgcHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5
+b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3IKLSAqIG1vZGlmeSBpdCB1bmRlciB0aGUgdGVy
+bXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlCi0gKiBhcyBwdWJsaXNoZWQgYnkg
+dGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbjsgZWl0aGVyIHZlcnNpb24gMgotICogb2YgdGhl
+IExpY2Vuc2UsIG9yIChhdCB5b3VyIG9wdGlvbikgYW55IGxhdGVyIHZlcnNpb24uCi0gKiBUaGlz
+IHByb2dyYW0gaXMgZGlzdHJpYnV0ZWQgaW4gdGhlIGhvcGUgdGhhdCBpdCB3aWxsIGJlIHVzZWZ1
+bCwKLSAqIGJ1dCBXSVRIT1VUIEFOWSBXQVJSQU5UWTsgd2l0aG91dCBldmVuIHRoZSBpbXBsaWVk
+IHdhcnJhbnR5IG9mCi0gKiBNRVJDSEFOVEFCSUxJVFkgb3IgRklUTkVTUyBGT1IgQSBQQVJUSUNV
+TEFSIFBVUlBPU0UuICBTZWUgdGhlCi0gKiBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBmb3Ig
+bW9yZSBkZXRhaWxzLgotICoKLSAqLworLyogU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0y
+LjAtb3ItbGF0ZXIgKi8KKy8qIFNQRFgtRmlsZUNvcHlyaWdodFRleHQ6IDIwMDggU2FzY2hhIEhh
+dWVyIDxrZXJuZWxAcGVuZ3V0cm9uaXguZGU+ICovCisvKiBTUERYLUZpbGVDb3B5cmlnaHRUZXh0
+OiAyMDA5IEhvbGdlciBTY2h1cmlnIDxoczQyMzNAbWFpbC5tbi1zb2x1dGlvbnMuZGU+ICovCisK
+ICNpZm5kZWYgX19NQUNIX0lPTVVYX01YMjdfSF9fCiAjZGVmaW5lIF9fTUFDSF9JT01VWF9NWDI3
+X0hfXwogCmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaW9tdXgt
+bXgyeC5oIGIvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lvbXV4LW14MnguaAppbmRl
+eCAxNWMyZTJiMDYwNzcuLjY0ZjA3YzBjMzNkZiAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1p
+bXgvaW5jbHVkZS9tYWNoL2lvbXV4LW14MnguaAorKysgYi9hcmNoL2FybS9tYWNoLWlteC9pbmNs
+dWRlL21hY2gvaW9tdXgtbXgyeC5oCkBAIC0xLDE3ICsxLDcgQEAKLS8qCi0gKiBDb3B5cmlnaHQg
+KEMpIDIwMDggYnkgU2FzY2hhIEhhdWVyIDxrZXJuZWxAcGVuZ3V0cm9uaXguZGU+Ci0gKiBDb3B5
+cmlnaHQgKEMpIDIwMDkgYnkgSG9sZ2VyIFNjaHVyaWcgPGhzNDIzM0BtYWlsLm1uLXNvbHV0aW9u
+cy5kZT4KLSAqCi0gKiBUaGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2FyZTsgeW91IGNhbiByZWRp
+c3RyaWJ1dGUgaXQgYW5kL29yCi0gKiBtb2RpZnkgaXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBH
+TlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZQotICogYXMgcHVibGlzaGVkIGJ5IHRoZSBGcmVlIFNv
+ZnR3YXJlIEZvdW5kYXRpb247IGVpdGhlciB2ZXJzaW9uIDIKLSAqIG9mIHRoZSBMaWNlbnNlLCBv
+ciAoYXQgeW91ciBvcHRpb24pIGFueSBsYXRlciB2ZXJzaW9uLgotICogVGhpcyBwcm9ncmFtIGlz
+IGRpc3RyaWJ1dGVkIGluIHRoZSBob3BlIHRoYXQgaXQgd2lsbCBiZSB1c2VmdWwsCi0gKiBidXQg
+V0lUSE9VVCBBTlkgV0FSUkFOVFk7IHdpdGhvdXQgZXZlbiB0aGUgaW1wbGllZCB3YXJyYW50eSBv
+ZgotICogTUVSQ0hBTlRBQklMSVRZIG9yIEZJVE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NF
+LiAgU2VlIHRoZQotICogR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgZm9yIG1vcmUgZGV0YWls
+cy4KLSAqCi0gKi8KKy8qIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9yLWxhdGVy
+ICovCisvKiBTUERYLUZpbGVDb3B5cmlnaHRUZXh0OiAyMDA4IFNhc2NoYSBIYXVlciA8a2VybmVs
+QHBlbmd1dHJvbml4LmRlPiAqLworLyogU1BEWC1GaWxlQ29weXJpZ2h0VGV4dDogMjAwOSBIb2xn
+ZXIgU2NodXJpZyA8aHM0MjMzQG1haWwubW4tc29sdXRpb25zLmRlPiAqLworCiAjaWZuZGVmIF9f
+TUFDSF9JT01VWF9NWDJ4X0hfXwogI2RlZmluZSBfX01BQ0hfSU9NVVhfTVgyeF9IX18KIApkaWZm
+IC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lvbXV4LW14MzEuaCBiL2Fy
+Y2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9pb211eC1teDMxLmgKaW5kZXggYzgxNGMxNTkx
+MjVmLi5kNTI0MTI1YTg1ZmIgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUv
+bWFjaC9pb211eC1teDMxLmgKKysrIGIvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lv
+bXV4LW14MzEuaApAQCAtMSwxNyArMSw3IEBACi0vKgotICogQ29weXJpZ2h0IDIwMDQtMjAwNiBG
+cmVlc2NhbGUgU2VtaWNvbmR1Y3RvciwgSW5jLiBBbGwgUmlnaHRzIFJlc2VydmVkLgotICogQ29w
+eXJpZ2h0IChDKSAyMDA4IGJ5IFNhc2NoYSBIYXVlciA8a2VybmVsQHBlbmd1dHJvbml4LmRlPgot
+ICoKLSAqIFRoaXMgcHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0
+ZSBpdCBhbmQvb3IKLSAqIG1vZGlmeSBpdCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5l
+cmFsIFB1YmxpYyBMaWNlbnNlCi0gKiBhcyBwdWJsaXNoZWQgYnkgdGhlIEZyZWUgU29mdHdhcmUg
+Rm91bmRhdGlvbjsgZWl0aGVyIHZlcnNpb24gMgotICogb2YgdGhlIExpY2Vuc2UsIG9yIChhdCB5
+b3VyIG9wdGlvbikgYW55IGxhdGVyIHZlcnNpb24uCi0gKiBUaGlzIHByb2dyYW0gaXMgZGlzdHJp
+YnV0ZWQgaW4gdGhlIGhvcGUgdGhhdCBpdCB3aWxsIGJlIHVzZWZ1bCwKLSAqIGJ1dCBXSVRIT1VU
+IEFOWSBXQVJSQU5UWTsgd2l0aG91dCBldmVuIHRoZSBpbXBsaWVkIHdhcnJhbnR5IG9mCi0gKiBN
+RVJDSEFOVEFCSUxJVFkgb3IgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UuICBTZWUg
+dGhlCi0gKiBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLgotICoK
+LSAqLworLyogU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjAtb3ItbGF0ZXIgKi8KKy8q
+IFNQRFgtRmlsZUNvcHlyaWdodFRleHQ6IDIwMDQtMjAwNiBGcmVlc2NhbGUgU2VtaWNvbmR1Y3Rv
+ciwgSW5jLiAqLworLyogU1BEWC1GaWxlQ29weXJpZ2h0VGV4dDogMjAwOCBTYXNjaGEgSGF1ZXIg
+PGtlcm5lbEBwZW5ndXRyb25peC5kZT4gKi8KKwogI2lmbmRlZiBfX01BQ0hfSU9NVVhfTVgzX0hf
+XwogI2RlZmluZSBfX01BQ0hfSU9NVVhfTVgzX0hfXwogCmRpZmYgLS1naXQgYS9hcmNoL2FybS9t
+YWNoLWlteC9pbmNsdWRlL21hY2gvaW9tdXgtbXgzNS5oIGIvYXJjaC9hcm0vbWFjaC1pbXgvaW5j
+bHVkZS9tYWNoL2lvbXV4LW14MzUuaAppbmRleCAzMGI5NGUzYjAwMzQuLjZmNDc1M2IxZTQ0NyAx
+MDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lvbXV4LW14MzUuaAor
+KysgYi9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaW9tdXgtbXgzNS5oCkBAIC0xLDE2
+ICsxLDUgQEAKLS8qCi0gKiBDb3B5cmlnaHQgKEMsIE5PX1BBRF9DVFJMKSAyMDA5IGJ5IEphbiBX
+ZWl0emVsIFBoeXRlYyBNZXNzdGVjaG5payBHbWJIIDxhcm1saW51eEBwaHl0ZWMuZGU+Ci0gKgot
+ICogVGhpcyBwcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmlidXRlIGl0
+IGFuZC9vcgotICogbW9kaWZ5IGl0IHVuZGVyIHRoZSB0ZXJtcyBvZiB0aGUgR05VIEdlbmVyYWwg
+UHVibGljIExpY2Vuc2UKLSAqIGFzIHB1Ymxpc2hlZCBieSB0aGUgRnJlZSBTb2Z0d2FyZSBGb3Vu
+ZGF0aW9uOyBlaXRoZXIgdmVyc2lvbiAyCi0gKiBvZiB0aGUgTGljZW5zZSwgb3IgKGF0IHlvdXIg
+b3B0aW9uLCBOT19QQURfQ1RSTCkgYW55IGxhdGVyIHZlcnNpb24uCi0gKiBUaGlzIHByb2dyYW0g
+aXMgZGlzdHJpYnV0ZWQgaW4gdGhlIGhvcGUgdGhhdCBpdCB3aWxsIGJlIHVzZWZ1bCwKLSAqIGJ1
+dCBXSVRIT1VUIEFOWSBXQVJSQU5UWTsgd2l0aG91dCBldmVuIHRoZSBpbXBsaWVkIHdhcnJhbnR5
+IG9mCi0gKiBNRVJDSEFOVEFCSUxJVFkgb3IgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBP
+U0UuICBTZWUgdGhlCi0gKiBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRh
+aWxzLgotICoKLSAqLworLyogU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjAtb25seSAq
+LworLyogU1BEWC1GaWxlQ29weXJpZ2h0VGV4dDogMjAwOSBKYW4gV2VpdHplbCA8YXJtbGludXhA
+cGh5dGVjLmRlPiwgUGh5dGVjIE1lc3N0ZWNobmlrIEdtYkggKi8KIAogI2lmbmRlZiBfX01BQ0hf
+SU9NVVhfTVgzNV9IX18KICNkZWZpbmUgX19NQUNIX0lPTVVYX01YMzVfSF9fCmRpZmYgLS1naXQg
+YS9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaW9tdXgtbXg1MC5oIGIvYXJjaC9hcm0v
+bWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lvbXV4LW14NTAuaAppbmRleCBjMjFiYjNlYTliNWEuLmFl
+YjQ3MDkyZGY2ZCAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lv
+bXV4LW14NTAuaAorKysgYi9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaW9tdXgtbXg1
+MC5oCkBAIC0xLDIyICsxLDggQEAKLS8qCi0gKiBDb3B5cmlnaHQgMjAxMyBHcmVnIFVuZ2VyZXIg
+PGdlcmdAdWNsaW51eC5vcmc+Ci0gKiBDb3B5cmlnaHQgMjAxNiBBbGV4YW5kZXIgS3VyeiA8YWt1
+cnpAYmxhbGEuZGU+Ci0gKiBiYXNlZCBvbiBsaW51eCBpbXg1MC1waW5mdW5jLmgKLSAqCi0gKiBU
+aGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2FyZTsgeW91IGNhbiByZWRpc3RyaWJ1dGUgaXQgYW5k
+L29yIG1vZGlmeQotICogaXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJs
+aWMgTGljZW5zZSBhcyBwdWJsaXNoZWQgYnkKLSAqIHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5kYXRp
+b247IGVpdGhlciB2ZXJzaW9uIDIgb2YgdGhlIExpY2Vuc2UsIG9yCi0gKiAoYXQgeW91ciBvcHRp
+b24pIGFueSBsYXRlciB2ZXJzaW9uLgotICoKLSAqIFRoaXMgcHJvZ3JhbSBpcyBkaXN0cmlidXRl
+ZCBpbiB0aGUgaG9wZSB0aGF0IGl0IHdpbGwgYmUgdXNlZnVsLAotICogYnV0IFdJVEhPVVQgQU5Z
+IFdBUlJBTlRZOyB3aXRob3V0IGV2ZW4gdGhlIGltcGxpZWQgd2FycmFudHkgb2YKLSAqIE1FUkNI
+QU5UQUJJTElUWSBvciBGSVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVSUE9TRS4gIFNlZSB0aGUK
+LSAqIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGZvciBtb3JlIGRldGFpbHMuCi0gKgotICog
+WW91IHNob3VsZCBoYXZlIHJlY2VpdmVkIGEgY29weSBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGlj
+IExpY2Vuc2UgYWxvbmcKLSAqIHdpdGggdGhpcyBwcm9ncmFtOyBpZiBub3QsIHdyaXRlIHRvIHRo
+ZSBGcmVlIFNvZnR3YXJlIEZvdW5kYXRpb24sIEluYy4uCi0gKiA1MSBGcmFua2xpbiBTdHJlZXQs
+IEZpZnRoIEZsb29yLCBCb3N0b24sIE1BIDAyMTEwLTEzMDEgVVNBLgotICovCisvKiBTUERYLUxp
+Y2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMC1vci1sYXRlciAqLworLyogU1BEWC1GaWxlQ29weXJp
+Z2h0VGV4dDogMjAxMyBHcmVnIFVuZ2VyZXIgPGdlcmdAdWNsaW51eC5vcmc+ICovCisvKiBTUERY
+LUZpbGVDb3B5cmlnaHRUZXh0OiAyMDE2IEFsZXhhbmRlciBLdXJ6IDxha3VyekBibGFsYS5kZT4g
+Ki8KKworLyogYmFzZWQgb24gbGludXggaW14NTAtcGluZnVuYy5oICovCiAKICNpZm5kZWYgX19N
+QUNIX0lPTVVYX01YNTBfSF9fCiAjZGVmaW5lIF9fTUFDSF9JT01VWF9NWDUwX0hfXwpkaWZmIC0t
+Z2l0IGEvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lvbXV4LW14NTMuaCBiL2FyY2gv
+YXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9pb211eC1teDUzLmgKaW5kZXggNTI3ZjhmZTNlMzFi
+Li4wMTBmYjZlNWNjMDEgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFj
+aC9pb211eC1teDUzLmgKKysrIGIvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lvbXV4
+LW14NTMuaApAQCAtMSwyMCArMSw1IEBACi0vKgotICogQ29weXJpZ2h0IChDKSAyMDEwLTIwMTEg
+RnJlZXNjYWxlIFNlbWljb25kdWN0b3IsIEluYy4gQWxsIFJpZ2h0cyBSZXNlcnZlZC4KLSAqCi0g
+KiBUaGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2FyZTsgeW91IGNhbiByZWRpc3RyaWJ1dGUgaXQg
+YW5kL29yIG1vZGlmeQotICogaXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBHTlUgR2VuZXJhbCBQ
+dWJsaWMgTGljZW5zZSBhcyBwdWJsaXNoZWQgYnkKLSAqIHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5k
+YXRpb247IGVpdGhlciB2ZXJzaW9uIDIgb2YgdGhlIExpY2Vuc2UsIG9yCi0gKiAoYXQgeW91ciBv
+cHRpb24pIGFueSBsYXRlciB2ZXJzaW9uLgotICoKLSAqIFRoaXMgcHJvZ3JhbSBpcyBkaXN0cmli
+dXRlZCBpbiB0aGUgaG9wZSB0aGF0IGl0IHdpbGwgYmUgdXNlZnVsLAotICogYnV0IFdJVEhPVVQg
+QU5ZIFdBUlJBTlRZOyB3aXRob3V0IGV2ZW4gdGhlIGltcGxpZWQgd2FycmFudHkgb2YKLSAqIE1F
+UkNIQU5UQUJJTElUWSBvciBGSVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVSUE9TRS4gIFNlZSB0
+aGUKLSAqIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGZvciBtb3JlIGRldGFpbHMuCi0gKgot
+ICogWW91IHNob3VsZCBoYXZlIHJlY2VpdmVkIGEgY29weSBvZiB0aGUgR05VIEdlbmVyYWwgUHVi
+bGljIExpY2Vuc2UgYWxvbmcKLSAqIHdpdGggdGhpcyBwcm9ncmFtOyBpZiBub3QsIHdyaXRlIHRv
+IHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5kYXRpb24sIEluYy4uCi0gKiA1MSBGcmFua2xpbiBTdHJl
+ZXQsIEZpZnRoIEZsb29yLCBCb3N0b24sIE1BIDAyMTEwLTEzMDEgVVNBLgotICovCisvKiBTUERY
+LUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMC1vci1sYXRlciAqLworLyogU1BEWC1GaWxlQ29w
+eXJpZ2h0VGV4dDogMjAxMC0yMDExIEZyZWVzY2FsZSBTZW1pY29uZHVjdG9yLCBJbmMuICovCiAK
+ICNpZm5kZWYgX19NQUNIX0lPTVVYX01YNTNfSF9fCiAjZGVmaW5lIF9fTUFDSF9JT01VWF9NWDUz
+X0hfXwpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lvbXV4LW14
+Ni5oIGIvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lvbXV4LW14Ni5oCmluZGV4IDU3
+ZDFhM2JmOWYwYS4uMzZlMzFlMDY1N2JmIDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLWlteC9p
+bmNsdWRlL21hY2gvaW9tdXgtbXg2LmgKKysrIGIvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9t
+YWNoL2lvbXV4LW14Ni5oCkBAIC0xLDIzICsxLDYgQEAKLS8qCi0gKiBDb3B5cmlnaHQgKEMpIDIw
+MTEgRnJlZXNjYWxlIFNlbWljb25kdWN0b3IsIEluYy4gQWxsIFJpZ2h0cyBSZXNlcnZlZC4KLSAq
+Ci0gKiBUaGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2FyZTsgeW91IGNhbiByZWRpc3RyaWJ1dGUg
+aXQgYW5kL29yIG1vZGlmeQotICogaXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBHTlUgR2VuZXJh
+bCBQdWJsaWMgTGljZW5zZSBhcyBwdWJsaXNoZWQgYnkKLSAqIHRoZSBGcmVlIFNvZnR3YXJlIEZv
+dW5kYXRpb247IGVpdGhlciB2ZXJzaW9uIDIgb2YgdGhlIExpY2Vuc2UsIG9yCi0gKiAoYXQgeW91
+ciBvcHRpb24pIGFueSBsYXRlciB2ZXJzaW9uLgotCi0gKiBUaGlzIHByb2dyYW0gaXMgZGlzdHJp
+YnV0ZWQgaW4gdGhlIGhvcGUgdGhhdCBpdCB3aWxsIGJlIHVzZWZ1bCwKLSAqIGJ1dCBXSVRIT1VU
+IEFOWSBXQVJSQU5UWTsgd2l0aG91dCBldmVuIHRoZSBpbXBsaWVkIHdhcnJhbnR5IG9mCi0gKiBN
+RVJDSEFOVEFCSUxJVFkgb3IgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UuICBTZWUg
+dGhlCi0gKiBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLgotCi0g
+KiBZb3Ugc2hvdWxkIGhhdmUgcmVjZWl2ZWQgYSBjb3B5IG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJs
+aWMgTGljZW5zZSBhbG9uZwotICogd2l0aCB0aGlzIHByb2dyYW07IGlmIG5vdCwgd3JpdGUgdG8g
+dGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbiwgSW5jLiwKLSAqIDUxIEZyYW5rbGluIFN0cmVl
+dCwgRmlmdGggRmxvb3IsIEJvc3RvbiwgTUEgMDIxMTAtMTMwMSBVU0EuCi0gKgotICogQXV0byBH
+ZW5lcmF0ZSBmaWxlLCBwbGVhc2UgZG9uJ3QgZWRpdCBpdAotICoKLSAqLworLyogU1BEWC1MaWNl
+bnNlLUlkZW50aWZpZXI6IEdQTC0yLjAtb3ItbGF0ZXIgKi8KKy8qIFNQRFgtRmlsZUNvcHlyaWdo
+dFRleHQ6IDIwMTEgRnJlZXNjYWxlIFNlbWljb25kdWN0b3IsIEluYy4gKi8KKwogI2RlZmluZSBN
+VVhfUEFEX0NUUkwoeCkgICAgICAgICAgICAgICAgKChpb211eF92M19jZmdfdCkoeCkgPDwgTVVY
+X1BBRF9DVFJMX1NISUZUKQogCiAjaWZuZGVmIF9fTUFDSF9JT01VWF9NWDZRX0hfXwpkaWZmIC0t
+Z2l0IGEvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lvbXV4LXYzLmggYi9hcmNoL2Fy
+bS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaW9tdXgtdjMuaAppbmRleCBkMWE3MmEyY2Y1YjkuLmUx
+ZDYyYWU0YjhkNiAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lv
+bXV4LXYzLmgKKysrIGIvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lvbXV4LXYzLmgK
+QEAgLTEsMTcgKzEsNSBAQAotLyoKLSAqIENvcHlyaWdodCAoQykgMjAwOSBieSBKYW4gV2VpdHpl
+bCBQaHl0ZWMgTWVzc3RlY2huaWsgR21iSCwKLSAqCQkJPGFybWxpbnV4QHBoeXRlYy5kZT4KLSAq
+Ci0gKiBUaGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2FyZTsgeW91IGNhbiByZWRpc3RyaWJ1dGUg
+aXQgYW5kL29yCi0gKiBtb2RpZnkgaXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBHTlUgR2VuZXJh
+bCBQdWJsaWMgTGljZW5zZQotICogYXMgcHVibGlzaGVkIGJ5IHRoZSBGcmVlIFNvZnR3YXJlIEZv
+dW5kYXRpb247IGVpdGhlciB2ZXJzaW9uIDIKLSAqIG9mIHRoZSBMaWNlbnNlLCBvciAoYXQgeW91
+ciBvcHRpb24pIGFueSBsYXRlciB2ZXJzaW9uLgotICogVGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1
+dGVkIGluIHRoZSBob3BlIHRoYXQgaXQgd2lsbCBiZSB1c2VmdWwsCi0gKiBidXQgV0lUSE9VVCBB
+TlkgV0FSUkFOVFk7IHdpdGhvdXQgZXZlbiB0aGUgaW1wbGllZCB3YXJyYW50eSBvZgotICogTUVS
+Q0hBTlRBQklMSVRZIG9yIEZJVE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFLiAgU2VlIHRo
+ZQotICogR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgZm9yIG1vcmUgZGV0YWlscy4KLSAqCi0g
+Ki8KKy8qIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9yLWxhdGVyICovCisvKiBT
+UERYLUZpbGVDb3B5cmlnaHRUZXh0OiAyMDA5IEphbiBXZWl0emVsIDxhcm1saW51eEBwaHl0ZWMu
+ZGU+LCBQaHl0ZWMgTWVzc3RlY2huaWsgR21iSCAqLwogCiAjaWZuZGVmIF9fTUFDSF9JT01VWF9W
+M19IX18KICNkZWZpbmUgX19NQUNIX0lPTVVYX1YzX0hfXwotLSAKMi4yOC4wCgoKX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxp
+c3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
+L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
