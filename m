@@ -1,12 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kYShd-0000qD-GP
- for barebox@lists.infradead.org; Fri, 30 Oct 2020 11:36:18 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Fri, 30 Oct 2020 12:36:14 +0100
-Message-Id: <20201030113614.9572-1-u.kleine-koenig@pengutronix.de>
+ id 1kYabx-0000sb-CV
+ for barebox@lists.infradead.org; Fri, 30 Oct 2020 20:02:58 +0000
+Date: Fri, 30 Oct 2020 21:02:51 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20201030200251.g26ph4m4pisyz4t4@pengutronix.de>
+References: <20201030073157.11093-1-shc_work@mail.ru>
 MIME-Version: 1.0
+In-Reply-To: <20201030073157.11093-1-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,106 +17,100 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============5708270195445551792=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] nfs: check return value of various rpc calls
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] ARM: dts: CCMX51: Increase kernel partition size
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-Q2hlY2sgbW9yZSBjYXJlZnVsbHkgZm9yIGZhaWxpbmcgcmVxdWVzdHMuIFRoaXMgaW1wcm92ZXMg
-dGhlIGVycm9yCm1lc3NhZ2Ugd2hlbiB0cnlpbmcgdG8gbW91bnQgYSBub24tZXhwb3J0ZWQgbmZz
-IGRpcmVjdG9yeSBmcm9tOgoKCW5mc19tb3VudF9yZXE6IGZpbGUgaGFuZGxlIHRvbyBiaWc6IDQ0
-ODMxCgp0bwoKCW5mc19tb3VudF9yZXE6IE1vdW50aW5nIGdhdmUgZXJyb3IgTkZTM0VSUl9BQ0NF
-UygweGQpCgouCgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29l
-bmlnQHBlbmd1dHJvbml4LmRlPgotLS0KIGZzL25mcy5jIHwgOTEgKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKy0tLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCA4
-MSBpbnNlcnRpb25zKCspLCAxMCBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9mcy9uZnMuYyBi
-L2ZzL25mcy5jCmluZGV4IDE1ZGRhYjc5MTVkZi4uMGJlMzIzMjJmYjY1IDEwMDY0NAotLS0gYS9m
-cy9uZnMuYworKysgYi9mcy9uZnMuYwpAQCAtNjM2LDEzICs2MzYsMzMgQEAgc3RhdGljIHVpbnQz
-Ml90ICpuZnNfcmVhZF9wb3N0X29wX2F0dHIodWludDMyX3QgKnAsIHN0cnVjdCBpbm9kZSAqaW5v
-ZGUpCiAJcmV0dXJuIHA7CiB9CiAKK3N0YXRpYyBpbnQgbmZzZXJyb3JfdG9fZXJyKHUzMiBuZnNl
-cnJvciwgY29uc3QgY2hhciAqKmVycm9ybmFtZSkKK3sKKyNkZWZpbmUgRShORlNFUlIsIEVSUikJ
-CQlcCisJY2FzZSBORlNFUlI6CQkJXAorCQkqZXJyb3JuYW1lID0gI05GU0VSUjsJXAorCQlyZXR1
-cm4gLUVSUgorCisJc3dpdGNoIChuZnNlcnJvcikgeworCUUoTkZTM19PSywgMCk7CisJRShORlMz
-RVJSX05PRU5ULCBFTk9FTlQpOworCUUoTkZTM0VSUl9JTywgRUlPKTsKKwlFKE5GUzNFUlJfQUND
-RVMsIEVBQ0NFUyk7CisJRShORlMzRVJSX05PVERJUiwgRU5PVERJUik7CisJRShORlMzRVJSX05B
-TUVUT09MT05HLCBFTkFNRVRPT0xPTkcpOworCisJZGVmYXVsdDoKKwkJKmVycm9ybmFtZSA9ICI/
-Pz8iOworCQlyZXR1cm4gLUVJTlZBTDsKKwl9Cit9CiAvKgogICogbmZzX21vdW50X3JlcSAtIE1v
-dW50IGFuIE5GUyBGaWxlc3lzdGVtCiAgKi8KIHN0YXRpYyBpbnQgbmZzX21vdW50X3JlcShzdHJ1
-Y3QgbmZzX3ByaXYgKm5wcml2KQogewogCXVpbnQzMl90IGRhdGFbMTAyNF07Ci0JdWludDMyX3Qg
-KnA7CisJdWludDMyX3QgKnAsIHN0YXR1czsKIAlpbnQgbGVuOwogCWludCBwYXRobGVuOwogCXN0
-cnVjdCBwYWNrZXQgKm5mc19wYWNrZXQ7CkBAIC02NjcsNyArNjg3LDIxIEBAIHN0YXRpYyBpbnQg
-bmZzX21vdW50X3JlcShzdHJ1Y3QgbmZzX3ByaXYgKm5wcml2KQogCWlmIChJU19FUlIobmZzX3Bh
-Y2tldCkpCiAJCXJldHVybiBQVFJfRVJSKG5mc19wYWNrZXQpOwogCi0JcCA9ICh2b2lkICopbmZz
-X3BhY2tldC0+ZGF0YSArIHNpemVvZihzdHJ1Y3QgcnBjX3JlcGx5KSArIDQ7CisJcCA9ICh2b2lk
-ICopbmZzX3BhY2tldC0+ZGF0YSArIHNpemVvZihzdHJ1Y3QgcnBjX3JlcGx5KTsKKworCS8qCisJ
-ICogVGhlb3JldGljYWxseSB0aGUgZXJyb3Igc3RhdHVzIGlzIG9uZSBvZiBNTlQzRVJSXy4uLiwg
-YnV0IHRoZSBORlMKKwkgKiBjb25zdGFudHMgYXJlIGlkZW50aWNhbC4KKwkgKi8KKwlzdGF0dXMg
-PSBudG9oMzIobmV0X3JlYWRfdWludDMyKHArKykpOworCWlmIChzdGF0dXMgIT0gTkZTM19PSykg
-eworCQljb25zdCBjaGFyICplcnJvcjsKKwkJaW50IHJldDsKKworCQlyZXQgPSBuZnNlcnJvcl90
-b19lcnIoc3RhdHVzLCAmZXJyb3IpOworCQlwcmludGYoIiVzOiBNb3VudGluZyBnYXZlIGVycm9y
-ICVzKDB4JXgpXG4iLCBfX2Z1bmNfXywgZXJyb3IsIHN0YXR1cyk7CisJCXJldHVybiAtcmV0Owor
-CX0KIAogCW5wcml2LT5yb290Zmguc2l6ZSA9IG50b2gzMihuZXRfcmVhZF91aW50MzIocCsrKSk7
-CiAJaWYgKG5wcml2LT5yb290Zmguc2l6ZSA+IE5GUzNfRkhTSVpFKSB7CkBAIC03MTksNyArNzUz
-LDcgQEAgc3RhdGljIGludCBuZnNfbG9va3VwX3JlcShzdHJ1Y3QgbmZzX3ByaXYgKm5wcml2LCBz
-dHJ1Y3QgbmZzX2ZoICpmaCwKIHsKIAlzdHJ1Y3QgbmZzX2lub2RlICpuaW5vZGUgPSBuZnNpKGlu
-b2RlKTsKIAl1aW50MzJfdCBkYXRhWzEwMjRdOwotCXVpbnQzMl90ICpwOworCXVpbnQzMl90ICpw
-LCBzdGF0dXM7CiAJaW50IGxlbjsKIAlzdHJ1Y3QgcGFja2V0ICpuZnNfcGFja2V0OwogCkBAIC03
-NjEsNyArNzk1LDE2IEBAIHN0YXRpYyBpbnQgbmZzX2xvb2t1cF9yZXEoc3RydWN0IG5mc19wcml2
-ICpucHJpdiwgc3RydWN0IG5mc19maCAqZmgsCiAJaWYgKElTX0VSUihuZnNfcGFja2V0KSkKIAkJ
-cmV0dXJuIFBUUl9FUlIobmZzX3BhY2tldCk7CiAKLQlwID0gKHZvaWQgKiluZnNfcGFja2V0LT5k
-YXRhICsgc2l6ZW9mKHN0cnVjdCBycGNfcmVwbHkpICsgNDsKKwlwID0gKHZvaWQgKiluZnNfcGFj
-a2V0LT5kYXRhICsgc2l6ZW9mKHN0cnVjdCBycGNfcmVwbHkpOworCXN0YXR1cyA9IG50b2gzMihu
-ZXRfcmVhZF91aW50MzIocCsrKSk7CisJaWYgKHN0YXR1cyAhPSBORlMzX09LKSB7CisJCWNvbnN0
-IGNoYXIgKmVycm9yOworCQlpbnQgcmV0OworCisJCXJldCA9IG5mc2Vycm9yX3RvX2VycihzdGF0
-dXMsICZlcnJvcik7CisJCXByaW50ZigiJXM6IExPT0tVUCBmYWlsZWQgd2l0aCBlcnJvciAlcygw
-eCV4KVxuIiwgX19mdW5jX18sIGVycm9yLCBzdGF0dXMpOworCQlyZXR1cm4gcmV0OworCX0KIAog
-CW5pbm9kZS0+Zmguc2l6ZSA9IG50b2gzMihuZXRfcmVhZF91aW50MzIocCsrKSk7CiAJaWYgKG5p
-bm9kZS0+Zmguc2l6ZSA+IE5GUzNfRkhTSVpFKSB7CkBAIC03ODcsNyArODMwLDcgQEAgc3RhdGlj
-IGludCBuZnNfbG9va3VwX3JlcShzdHJ1Y3QgbmZzX3ByaXYgKm5wcml2LCBzdHJ1Y3QgbmZzX2Zo
-ICpmaCwKIHN0YXRpYyB2b2lkICpuZnNfcmVhZGRpcmF0dHJfcmVxKHN0cnVjdCBuZnNfcHJpdiAq
-bnByaXYsIHN0cnVjdCBuZnNfZGlyICpkaXIpCiB7CiAJdWludDMyX3QgZGF0YVsxMDI0XTsKLQl1
-aW50MzJfdCAqcDsKKwl1aW50MzJfdCAqcCwgc3RhdHVzOwogCWludCBsZW47CiAJc3RydWN0IHBh
-Y2tldCAqbmZzX3BhY2tldDsKIAl2b2lkICpidWY7CkBAIC04NDUsNyArODg4LDE3IEBAIHN0YXRp
-YyB2b2lkICpuZnNfcmVhZGRpcmF0dHJfcmVxKHN0cnVjdCBuZnNfcHJpdiAqbnByaXYsIHN0cnVj
-dCBuZnNfZGlyICpkaXIpCiAJaWYgKElTX0VSUihuZnNfcGFja2V0KSkKIAkJcmV0dXJuIE5VTEw7
-CiAKLQlwID0gKHZvaWQgKiluZnNfcGFja2V0LT5kYXRhICsgc2l6ZW9mKHN0cnVjdCBycGNfcmVw
-bHkpICsgNDsKKwlwID0gKHZvaWQgKiluZnNfcGFja2V0LT5kYXRhICsgc2l6ZW9mKHN0cnVjdCBy
-cGNfcmVwbHkpOworCXN0YXR1cyA9IG50b2gzMihuZXRfcmVhZF91aW50MzIocCsrKSk7CisJaWYg
-KHN0YXR1cyAhPSBORlMzX09LKSB7CisJCWNvbnN0IGNoYXIgKmVycm9yOworCQlpbnQgcmV0Owor
-CisJCXJldCA9IG5mc2Vycm9yX3RvX2VycihzdGF0dXMsICZlcnJvcik7CisJCXByaW50ZigiJXM6
-IFJFQURESVIgZmFpbGVkIHdpdGggZXJyb3IgJXMoJXUpXG4iLCBfX2Z1bmNfXywgZXJyb3IsIHN0
-YXR1cyk7CisJCXJldHVybiBOVUxMOworCX0KKwogCXAgPSBuZnNfcmVhZF9wb3N0X29wX2F0dHIo
-cCwgTlVMTCk7CiAKIAkvKiB1cGRhdGUgY29va2lldmVyZiAqLwpAQCAtODc5LDcgKzkzMiw3IEBA
-IHN0YXRpYyBpbnQgbmZzX3JlYWRfcmVxKHN0cnVjdCBmaWxlX3ByaXYgKnByaXYsIHVpbnQ2NF90
-IG9mZnNldCwKIAkJdWludDMyX3QgcmVhZGxlbikKIHsKIAl1aW50MzJfdCBkYXRhWzEwMjRdOwot
-CXVpbnQzMl90ICpwOworCXVpbnQzMl90ICpwLCBzdGF0dXM7CiAJaW50IGxlbjsKIAlzdHJ1Y3Qg
-cGFja2V0ICpuZnNfcGFja2V0OwogCXVpbnQzMl90IHJsZW4sIGVvZjsKQEAgLTkyMiw3ICs5NzUs
-MTYgQEAgc3RhdGljIGludCBuZnNfcmVhZF9yZXEoc3RydWN0IGZpbGVfcHJpdiAqcHJpdiwgdWlu
-dDY0X3Qgb2Zmc2V0LAogCWlmIChJU19FUlIobmZzX3BhY2tldCkpCiAJCXJldHVybiBQVFJfRVJS
-KG5mc19wYWNrZXQpOwogCi0JcCA9ICh2b2lkICopbmZzX3BhY2tldC0+ZGF0YSArIHNpemVvZihz
-dHJ1Y3QgcnBjX3JlcGx5KSArIDQ7CisJcCA9ICh2b2lkICopbmZzX3BhY2tldC0+ZGF0YSArIHNp
-emVvZihzdHJ1Y3QgcnBjX3JlcGx5KTsKKwlzdGF0dXMgPSBudG9oMzIobmV0X3JlYWRfdWludDMy
-KHArKykpOworCWlmIChzdGF0dXMgIT0gTkZTM19PSykgeworCQljb25zdCBjaGFyICplcnJvcjsK
-KwkJaW50IHJldDsKKworCQlyZXQgPSBuZnNlcnJvcl90b19lcnIoc3RhdHVzLCAmZXJyb3IpOwor
-CQlwcmludGYoIiVzOiBSRUFEIGZhaWxlZCB3aXRoIGVycm9yICVzKDB4JXgpXG4iLCBfX2Z1bmNf
-XywgZXJyb3IsIHN0YXR1cyk7CisJCXJldHVybiByZXQ7CisJfQogCiAJcCA9IG5mc19yZWFkX3Bv
-c3Rfb3BfYXR0cihwLCBOVUxMKTsKIApAQCAtOTgxLDcgKzEwNDMsNyBAQCBzdGF0aWMgaW50IG5m
-c19yZWFkbGlua19yZXEoc3RydWN0IG5mc19wcml2ICpucHJpdiwgc3RydWN0IG5mc19maCAqZmgs
-CiAJCQkgICAgY2hhciAqKnRhcmdldCkKIHsKIAl1aW50MzJfdCBkYXRhWzEwMjRdOwotCXVpbnQz
-Ml90ICpwOworCXVpbnQzMl90ICpwLCBzdGF0dXM7CiAJdWludDMyX3QgbGVuOwogCXN0cnVjdCBw
-YWNrZXQgKm5mc19wYWNrZXQ7CiAKQEAgLTEwMTcsNyArMTA3OSwxNiBAQCBzdGF0aWMgaW50IG5m
-c19yZWFkbGlua19yZXEoc3RydWN0IG5mc19wcml2ICpucHJpdiwgc3RydWN0IG5mc19maCAqZmgs
-CiAJaWYgKElTX0VSUihuZnNfcGFja2V0KSkKIAkJcmV0dXJuIFBUUl9FUlIobmZzX3BhY2tldCk7
-CiAKLQlwID0gKHZvaWQgKiluZnNfcGFja2V0LT5kYXRhICsgc2l6ZW9mKHN0cnVjdCBycGNfcmVw
-bHkpICsgNDsKKwlwID0gKHZvaWQgKiluZnNfcGFja2V0LT5kYXRhICsgc2l6ZW9mKHN0cnVjdCBy
-cGNfcmVwbHkpOworCXN0YXR1cyA9IG50b2gzMihuZXRfcmVhZF91aW50MzIocCsrKSk7CisJaWYg
-KHN0YXR1cyAhPSBORlMzX09LKSB7CisJCWNvbnN0IGNoYXIgKmVycm9yOworCQlpbnQgcmV0Owor
-CisJCXJldCA9IG5mc2Vycm9yX3RvX2VycihzdGF0dXMsICZlcnJvcik7CisJCXByaW50ZigiJXM6
-IFJFQURMSU5LIGZhaWxlZCB3aXRoIGVycm9yICVzKDB4JXgpXG4iLCBfX2Z1bmNfXywgZXJyb3Is
-IHN0YXR1cyk7CisJCXJldHVybiByZXQ7CisJfQogCiAJcCA9IG5mc19yZWFkX3Bvc3Rfb3BfYXR0
-cihwLCBOVUxMKTsKIAotLSAKMi4yOC4wCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZy
-YWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
-ZWJveAo=
+
+--===============5708270195445551792==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="jyfbt32zdnt4hpsg"
+Content-Disposition: inline
+
+
+--jyfbt32zdnt4hpsg
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Oct 30, 2020 at 10:31:57AM +0300, Alexander Shiyan wrote:
+A few words about the motivation here would be great. Is 0x340000 to
+small for a current kernel? Is this following some upstream change? Why
+not install the kernel in the rootfs and get rid of the kernel
+partition?
+
+Best regards
+Uwe
+
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> ---
+>  arch/arm/dts/imx51-ccxmx51.dts | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/arch/arm/dts/imx51-ccxmx51.dts b/arch/arm/dts/imx51-ccxmx51.=
+dts
+> index efe5dbf63..4aa32e4c8 100644
+> --- a/arch/arm/dts/imx51-ccxmx51.dts
+> +++ b/arch/arm/dts/imx51-ccxmx51.dts
+> @@ -31,11 +31,11 @@
+> =20
+>  	partition@c0000 {
+>  		label =3D "kernel";
+> -		reg =3D <0xc0000 0x340000>;
+> +		reg =3D <0xc0000 0x400000>;
+>  	};
+> =20
+> -	partition@400000 {
+> +	partition@4c0000 {
+>  		label =3D "root";
+> -		reg =3D <0x400000 0>;
+> +		reg =3D <0x4c0000 0>;
+>  	};
+>  };
+> --=20
+> 2.26.2
+>=20
+>=20
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+>=20
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--jyfbt32zdnt4hpsg
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAl+ccWkACgkQwfwUeK3K
+7AnqhQf/Wb31r4rR9TEXYeIY+/rzhgpGO/Ko3E6OV8O9tyu+pd1IzvTjHcpT/QAW
+878Q9HelHYiaQNlPVCzkKVEGsjKz56kL0UW8iO+w462FXqIVE+5u73O/BaEmb9CM
+bilcx0dKPmfrzTxe8t7H3UwFz1x04qMeWerz/A3tQTvBPccnJi3nrnltADIwthtt
+dkTDjjnJgLTV6wxiJth/FmloTBteRjb8JRjkKInG9iCEj8DAlm1ZCrSe1QG8EmRz
+cKIPK+NvO1jpkwy8ViaH0+V6b6iOJsUvFdnHXDo3FrivxUpMUJvL9HfydrXoU/X0
+d1CUDm5QXwcXfdOpSi896mVXDfxmhQ==
+=ichI
+-----END PGP SIGNATURE-----
+
+--jyfbt32zdnt4hpsg--
+
+
+--===============5708270195445551792==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============5708270195445551792==--
