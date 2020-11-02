@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f281.i.mail.ru ([217.69.128.248])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kZU7q-0005m6-I5
- for barebox@lists.infradead.org; Mon, 02 Nov 2020 07:19:35 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+ id 1kZUh6-0002aS-2N
+ for barebox@lists.infradead.org; Mon, 02 Nov 2020 07:56:01 +0000
+Date: Mon, 2 Nov 2020 08:55:56 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20201102075556.GP26805@pengutronix.de>
+References: <20201029205615.103515-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Date: Mon, 02 Nov 2020 10:19:29 +0300
-Message-ID: <1604301569.41739838@f281.i.mail.ru>
-In-Reply-To: <20201030200251.g26ph4m4pisyz4t4@pengutronix.de>
-References: <20201030073157.11093-1-shc_work@mail.ru>
- <20201030200251.g26ph4m4pisyz4t4@pengutronix.de>
+Content-Disposition: inline
+In-Reply-To: <20201029205615.103515-1-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,43 +18,72 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmU6IFtQQVRDSF0gQVJNOiBkdHM6IENDTVg1MTogSW5jcmVhc2Uga2VybmVs?=
- =?UTF-8?B?IHBhcnRpdGlvbiBzaXpl?=
-To: =?UTF-8?B?VXdlIEtsZWluZS1Lw7ZuaWc=?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] ARM: dts: imx6qdl: pfla02: document motivation for
+ dropping supply
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org, Stefan Riedmueller <s.riedmueller@phytec.de>
 
-PtCf0Y/RgtC90LjRhtCwLCAzMCDQvtC60YLRj9Cx0YDRjyAyMDIwLCAyMzowMiArMDM6MDAg0L7R
-giBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPjoKPgo+
-T24gRnJpLCBPY3QgMzAsIDIwMjAgYXQgMTA6MzE6NTdBTSArMDMwMCwgQWxleGFuZGVyIFNoaXlh
-biB3cm90ZToKPkEgZmV3IHdvcmRzIGFib3V0IHRoZSBtb3RpdmF0aW9uIGhlcmUgd291bGQgYmUg
-Z3JlYXQuIElzIDB4MzQwMDAwIHRvCj5zbWFsbCBmb3IgYSBjdXJyZW50IGtlcm5lbD8gSXMgdGhp
-cyBmb2xsb3dpbmcgc29tZSB1cHN0cmVhbSBjaGFuZ2U/IFdoeQo+bm90IGluc3RhbGwgdGhlIGtl
-cm5lbCBpbiB0aGUgcm9vdGZzIGFuZCBnZXQgcmlkIG9mIHRoZSBrZXJuZWwKPnBhcnRpdGlvbj8K
-CkhlbGxvLgoKVGhlIGN1cnJlbnQgc2l6ZSBvZiB0aGUga2VybmVsIHBhcnRpdGlvbiBpcyBzdWZm
-aWNpZW50IHRvIHBsYWNlIGkuTVg1MS1kZXBlbmRlbnQgY29kZSBvbmx5LApidXQgaWYgdGhlIGtl
-cm5lbCB3YXMgY29tcGlsZWQgd2l0aCBzdXBwb3J0IGZvciBvdGhlciBib2FyZHMgLyBkcml2ZXJz
-LCB0aGUgc3BhY2UgaXMgdG9vIHNtYWxsLgpJbnN0YWxsaW5nIHRoZSBrZXJuZWwgaW4gcm9vdGZz
-IG1pZ2h0IGJlIGEgZ29vZCBpZGVhLCBidXQgdGhhdCBtZWFucyB0aGF0IHJvb3RmcyBpcyBhIFVC
-SUZTLAphbmQgcmVzdWx0aW5nIHViaWZzIGltYWdlIHdpbGwgYmUgTkFORCB0eXBlIGRlcGVuZGVu
-dC4gSW4gb3JkZXIgdG8gdXNlIHRoZSBzYW1lIHJvb3RmcyBvbgpkaWZmZXJlbnQgc3lzdGVtcywg
-SSBwcmVmZXIgdG8gdXNlIHRoZSBzcXVhc2hmcyByb290IGZpbGVzeXN0ZW0gb24gdG9wIG9mIHRo
-ZSBVQkkgdm9sdW1lLgoKTGV0J3MganVzdCBkcm9wIHRoaXMgcGF0Y2guCgo+PiBTaWduZWQtb2Zm
-LWJ5OiBBbGV4YW5kZXIgU2hpeWFuIDwgc2hjX3dvcmtAbWFpbC5ydSA+Cj4+IC0tLQo+PiBhcmNo
-L2FybS9kdHMvaW14NTEtY2N4bXg1MS5kdHMgfCA2ICsrKy0tLQo+PiAxIGZpbGUgY2hhbmdlZCwg
-MyBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQo+Pgo+PiBkaWZmIC0tZ2l0IGEvYXJjaC9h
-cm0vZHRzL2lteDUxLWNjeG14NTEuZHRzIGIvYXJjaC9hcm0vZHRzL2lteDUxLWNjeG14NTEuZHRz
-Cj4+IGluZGV4IGVmZTVkYmY2My4uNGFhMzJlNGM4IDEwMDY0NAo+PiAtLS0gYS9hcmNoL2FybS9k
-dHMvaW14NTEtY2N4bXg1MS5kdHMKPj4gKysrIGIvYXJjaC9hcm0vZHRzL2lteDUxLWNjeG14NTEu
-ZHRzCj4+IEBAIC0zMSwxMSArMzEsMTEgQEAKPj4KPj4gcGFydGl0aW9uQGMwMDAwIHsKPj4gbGFi
-ZWwgPSAia2VybmVsIjsKPj4gLXJlZyA9IDwweGMwMDAwIDB4MzQwMDAwPjsKPj4gK3JlZyA9IDww
-eGMwMDAwIDB4NDAwMDAwPjsKPj4gfTsKPj4KPj4gLXBhcnRpdGlvbkA0MDAwMDAgewo+PiArcGFy
-dGl0aW9uQDRjMDAwMCB7Cj4+IGxhYmVsID0gInJvb3QiOwo+PiAtcmVnID0gPDB4NDAwMDAwIDA+
-Owo+PiArcmVnID0gPDB4NGMwMDAwIDA+Owo+PiB9Owo+PiB9Owo+PiAtLQo+PiAyLjI2LjIKCi0t
-LQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94
-IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmlu
-ZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Thu, Oct 29, 2020 at 09:56:15PM +0100, Uwe Kleine-K=F6nig wrote:
+> In commit 84cf5cfa9a0e ("ARM: dts: imx6qdl: pfla02: Remove fec
+> phy-supply") the phy-supply was removed. The motivation however was only
+> given in the commit log. Add a comment accompanying the actual statement
+> to remove the property to make this better findable.
+> =
+
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  arch/arm/dts/imx6qdl-phytec-pfla02.dtsi | 5 +++++
+>  1 file changed, 5 insertions(+)
+
+Applied, thanks
+
+Sascha
+
+> =
+
+> diff --git a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi b/arch/arm/dts/imx6q=
+dl-phytec-pfla02.dtsi
+> index b83511cb011f..7a12e2a06be4 100644
+> --- a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+> +++ b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+> @@ -84,6 +84,11 @@
+>  };
+>  =
+
+>  &fec {
+> +	/*
+> +	 * barebox doesn't have a driver for the PMIC providing the phy-supply
+> +	 * (dlg,da9063). So remove the phy-supply property and rely on the
+> +	 * PMIC's reset default which has this supply enabled.
+> +	 */
+>  	/delete-property/ phy-supply;
+>  };
+>  =
+
+> -- =
+
+> 2.28.0
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
