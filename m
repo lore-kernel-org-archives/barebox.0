@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([2a01:4f8:c17:c88::2])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kZWAU-0000U3-A4
- for barebox@lists.infradead.org; Mon, 02 Nov 2020 09:30:28 +0000
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Mon,  2 Nov 2020 10:30:02 +0100
-Message-Id: <20201102093002.15851-4-r.czerwinski@pengutronix.de>
-In-Reply-To: <20201102093002.15851-1-r.czerwinski@pengutronix.de>
-References: <20201102093002.15851-1-r.czerwinski@pengutronix.de>
+ id 1kZWH7-0001yA-K3
+ for barebox@lists.infradead.org; Mon, 02 Nov 2020 09:37:18 +0000
+Date: Mon, 2 Nov 2020 10:37:15 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20201102093715.GV26805@pengutronix.de>
+References: <20201101214115.16472-1-pmamonov@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20201101214115.16472-1-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,35 +22,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] start: reserve OP-TEE memory for PBL-OPTEE
-To: barebox@lists.infradead.org
-Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Subject: Re: [PATCH v3] commands: import memtester 4.3.0 from Debian GNU/Linux
+To: Peter Mamonov <pmamonov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Instead of only adding the reserved memory entry in case of an OP-TEE
-start before the kernel, also do this in case we may have started OP-TEE
-during the PBL.
+Hi Peter,
 
-Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
----
- arch/arm/cpu/start.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Mon, Nov 02, 2020 at 12:41:15AM +0300, Peter Mamonov wrote:
+> Memtester is an utility for testing the memory subsystem for faults.  For
+> hardware developers, memtester can be told to test memory starting at a
+> particular physical address.
 
-diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-index 5f43f9e546..0abe92036b 100644
---- a/arch/arm/cpu/start.c
-+++ b/arch/arm/cpu/start.c
-@@ -238,7 +238,7 @@ __noreturn __no_sanitize_address void barebox_non_pbl_start(unsigned long membas
- 
- 	mem_malloc_init((void *)malloc_start, (void *)malloc_end - 1);
- 
--	if (IS_ENABLED(CONFIG_BOOTM_OPTEE))
-+	if (OPTEE_SIZE > 0)
- 		of_add_reserve_entry(endmem - OPTEE_SIZE, endmem - 1,
- 				OF_RESERVE_ENTRY_FLAG_UNCACHED);
- 
+Applied with some adjustments, thanks
+
+> +#include <linux/limits.h>
+> +
+> +#define rand32() random32()
+> +
+> +#if defined(CONFIG_32BIT)
+> +    #define rand_ul() rand32()
+> +    #define UL_ONEBITS 0xffffffff
+> +    #define UL_LEN 32
+> +    #define CHECKERBOARD1 0x55555555
+> +    #define CHECKERBOARD2 0xaaaaaaaa
+> +    #define UL_BYTE(x) ((x | x << 8 | x << 16 | x << 24))
+> +#elif defined(CONFIG_64BIT)
+> +    #define rand64() (((ul) rand32()) << 32 | ((ul) rand32()))
+> +    #define rand_ul() rand64()
+> +    #define UL_ONEBITS 0xffffffffffffffffUL
+> +    #define UL_LEN 64
+> +    #define CHECKERBOARD1 0x5555555555555555
+> +    #define CHECKERBOARD2 0xaaaaaaaaaaaaaaaa
+> +    #define UL_BYTE(x) (((ul)x | (ul)x<<8 | (ul)x<<16 | (ul)x<<24 | (ul)x<<32 | (ul)x<<40 | (ul)x<<48 | (ul)x<<56))
+> +#else
+> +    #error long on this platform is not 32 or 64 bits
+> +#endif
+
+CONFIG_32BIT is not always set, only CONFIG_64BIT is. I had to change
+this to
+
+#ifdef CONFIG_64BIT
+...
+#else
+...
+#endif
+
+Sascha
+
+
 -- 
-2.28.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
