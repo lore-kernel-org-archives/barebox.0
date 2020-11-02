@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kb1xL-00054C-15
- for barebox@lists.infradead.org; Fri, 06 Nov 2020 13:39:10 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  6 Nov 2020 14:38:37 +0100
-Message-Id: <20201106133900.2656-4-s.hauer@pengutronix.de>
-In-Reply-To: <20201106133900.2656-1-s.hauer@pengutronix.de>
-References: <20201106133900.2656-1-s.hauer@pengutronix.de>
+ id 1kZVw7-0005ZB-5z
+ for barebox@lists.infradead.org; Mon, 02 Nov 2020 09:15:36 +0000
+Date: Mon, 2 Nov 2020 10:15:30 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20201102091530.ter5kzga53zfcjig@pengutronix.de>
+References: <20201029213815.109183-1-u.kleine-koenig@pengutronix.de>
+ <20201029213815.109183-2-u.kleine-koenig@pengutronix.de>
+ <20201102080639.GR26805@pengutronix.de>
 MIME-Version: 1.0
+In-Reply-To: <20201102080639.GR26805@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,68 +19,110 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============7348949064059310930=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/26] mtd: nand: drop unused erase_cmd hook
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH 2/2] arm: imx: Convert mach headers to SPDX
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>, Roland Hieber <rhi@pengutronix.de>
 
-chip->erase_cmd is never used, so remove this hook.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/mtd/nand/nand_base.c | 3 +--
- include/linux/mtd/nand.h     | 3 ---
- 2 files changed, 1 insertion(+), 5 deletions(-)
+--===============7348949064059310930==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="twkhpmewjyqzihq6"
+Content-Disposition: inline
 
-diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
-index 2b37679d2a..999d56c5bd 100644
---- a/drivers/mtd/nand/nand_base.c
-+++ b/drivers/mtd/nand/nand_base.c
-@@ -2746,7 +2746,7 @@ int nand_erase_nand(struct mtd_info *mtd, struct erase_info *instr,
- 		    (page + pages_per_block))
- 			chip->pagebuf = -1;
- 
--		chip->erase_cmd(mtd, page & chip->pagemask);
-+		single_erase_cmd(mtd, page & chip->pagemask);
- 
- 		status = chip->waitfunc(mtd, chip);
- 
-@@ -3484,7 +3484,6 @@ ident_done:
- 	}
- 
- 	chip->badblockbits = 8;
--	chip->erase_cmd = single_erase_cmd;
- 
- 	/* Do not replace user supplied command function! */
- 	if (mtd->writesize > 512 && chip->cmdfunc == nand_command)
-diff --git a/include/linux/mtd/nand.h b/include/linux/mtd/nand.h
-index 401f630570..c4bdddc61e 100644
---- a/include/linux/mtd/nand.h
-+++ b/include/linux/mtd/nand.h
-@@ -418,8 +418,6 @@ struct nand_buffers {
-  * @ecc:		[BOARDSPECIFIC] ECC control structure
-  * @buffers:		buffer structure for read/write
-  * @hwcontrol:		platform-specific hardware control structure
-- * @erase_cmd:		[INTERN] erase command write function, selectable due
-- *			to AND support.
-  * @scan_bbt:		[REPLACEABLE] function to scan bad block table
-  * @chip_delay:		[BOARDSPECIFIC] chip dependent delay for transferring
-  *			data from array to read regs (tR).
-@@ -492,7 +490,6 @@ struct nand_chip {
- 	void (*cmdfunc)(struct mtd_info *mtd, unsigned command, int column,
- 			int page_addr);
- 	int(*waitfunc)(struct mtd_info *mtd, struct nand_chip *this);
--	void (*erase_cmd)(struct mtd_info *mtd, int page);
- 	int (*scan_bbt)(struct mtd_info *mtd);
- 	int (*errstat)(struct mtd_info *mtd, struct nand_chip *this, int state,
- 			int status, int page);
--- 
-2.20.1
 
+--twkhpmewjyqzihq6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, Nov 02, 2020 at 09:06:39AM +0100, Sascha Hauer wrote:
+> On Thu, Oct 29, 2020 at 10:38:15PM +0100, Uwe Kleine-K=F6nig wrote:
+> > Replace license and copyright boilerplate by SPDX identfiers for files
+> > identified as GPL-2.0-only or GPL-2.0-or-later by licensecheck.
+> >=20
+> > diff --git a/arch/arm/mach-imx/include/mach/iomux-mx35.h b/arch/arm/mac=
+h-imx/include/mach/iomux-mx35.h
+> > index 30b94e3b0034..6f4753b1e447 100644
+> > --- a/arch/arm/mach-imx/include/mach/iomux-mx35.h
+> > +++ b/arch/arm/mach-imx/include/mach/iomux-mx35.h
+> > @@ -1,16 +1,5 @@
+> > -/*
+> > - * Copyright (C, NO_PAD_CTRL) 2009 by Jan Weitzel Phytec Messtechnik G=
+mbH <armlinux@phytec.de>
+> > - *
+> > - * This program is free software; you can redistribute it and/or
+> > - * modify it under the terms of the GNU General Public License
+> > - * as published by the Free Software Foundation; either version 2
+> > - * of the License, or (at your option, NO_PAD_CTRL) any later version.
+> > - * This program is distributed in the hope that it will be useful,
+> > - * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> > - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> > - * GNU General Public License for more details.
+> > - *
+> > - */
+> > +/* SPDX-License-Identifier: GPL-2.0-only */
+>=20
+> This should be GPL-2.0-or-later. Fixed while applying.
+
+	$ git checkout -f origin/master
+	HEAD is now at ca4292daf6a4 ARM: bootm: Add lower bound check of kernel in=
+ SDRAM
+	$ licensecheck arch/arm/mach-imx/include/mach/iomux-mx35.h
+	arch/arm/mach-imx/include/mach/iomux-mx35.h: GNU General Public License, V=
+ersion 2
+	$ head arch/arm/mach-imx/include/mach/iomux-mx35.h
+	/*
+	 * Copyright (C, NO_PAD_CTRL) 2009 by Jan Weitzel Phytec Messtechnik GmbH =
+<armlinux@phytec.de>
+	 *
+	 * This program is free software; you can redistribute it and/or
+	 * modify it under the terms of the GNU General Public License
+	 * as published by the Free Software Foundation; either version 2
+	 * of the License, or (at your option, NO_PAD_CTRL) any later version.
+	 * This program is distributed in the hope that it will be useful,
+	 * but WITHOUT ANY WARRANTY; without even the implied warranty of
+	 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+
+good catch. I'll contact the author of licensecheck if he considers it
+worth to address this problem.
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--twkhpmewjyqzihq6
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAl+fzi4ACgkQwfwUeK3K
+7AnnHQf/Zi4IyLa4uQmjS17IpAYz8FMLOLdOOZlUmRAqm7cYXe4Cmj+Fst9NrdlS
+Ee/2Jw2bIwO9wa2Gemim8UfNcGs49OOCi23CNU81rVEVQ6IFnuhk1yCabJsd4iho
+x4V+mtyZTqZnwZy0NDM6QOyNIb5AGBCXZRRNFqEgtJ4ZutgV1gvyf04EgGLWb9MF
+INgHzn+jvj2PLLw2iSk0aWnfnKw/jXNrO2E+saG569Q+dWLw+khzrJRA384kMY9/
+WTYc/Ju+iYc5vRgCUmzMV4lX6Yd54x7Rqvsu/M+C4u0r1XeZOpcH/HizVFROQe9s
+ILgEXFsbVEsz2hSpZXzpj8NthMMgwA==
+=BZkY
+-----END PGP SIGNATURE-----
+
+--twkhpmewjyqzihq6--
+
+
+--===============7348949064059310930==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============7348949064059310930==--
