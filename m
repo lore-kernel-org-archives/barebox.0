@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kZWwM-0002Sa-7X
- for barebox@lists.infradead.org; Mon, 02 Nov 2020 10:19:59 +0000
+ id 1kZWye-00038g-Ap
+ for barebox@lists.infradead.org; Mon, 02 Nov 2020 10:22:17 +0000
 References: <20201102093002.15851-1-r.czerwinski@pengutronix.de>
- <20201102093002.15851-2-r.czerwinski@pengutronix.de>
+ <20201102093002.15851-3-r.czerwinski@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <961a3244-cd4d-a449-897f-6871e8b7f648@pengutronix.de>
-Date: Mon, 2 Nov 2020 11:19:52 +0100
+Message-ID: <a8868d16-556b-65de-9603-e191b4e3789f@pengutronix.de>
+Date: Mon, 2 Nov 2020 11:22:15 +0100
 MIME-Version: 1.0
-In-Reply-To: <20201102093002.15851-2-r.czerwinski@pengutronix.de>
+In-Reply-To: <20201102093002.15851-3-r.czerwinski@pengutronix.de>
 Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,85 +23,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/4] arm: mmu: traverse reserved mem map as uncached
+Subject: Re: [PATCH 3/4] mmu-early: remove OP-TEE from the MMU mapping
 To: Rouven Czerwinski <r.czerwinski@pengutronix.de>, barebox@lists.infradead.org
 
 Hello,
 
 On 11/2/20 10:30 AM, Rouven Czerwinski wrote:
-> Traverse the reserved memory map and map areas which are marked with
-> uncached as uncached (and thus noexec).
+> Remove OP-TEE from the CACHED mapping to preserve the XN bit set in the
+> default mapping. This should ensure that the Cortex-A7 does not try to
+> speculate into secure world memory.
 > 
 > Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 > ---
->  arch/arm/cpu/mmu.c | 14 ++++++++++++++
->  include/of.h       |  5 +++++
->  2 files changed, 19 insertions(+)
+>  arch/arm/cpu/mmu-early.c | 5 +++++
+>  1 file changed, 5 insertions(+)
 > 
-> diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-> index 6af228505d..5974e1e38a 100644
-> --- a/arch/arm/cpu/mmu.c
-> +++ b/arch/arm/cpu/mmu.c
-> @@ -17,6 +17,7 @@
->  #include <memory.h>
->  #include <asm/system_info.h>
->  #include <asm/sections.h>
-> +#include <of.h>
+> diff --git a/arch/arm/cpu/mmu-early.c b/arch/arm/cpu/mmu-early.c
+> index b985aa455f..a480cd7707 100644
+> --- a/arch/arm/cpu/mmu-early.c
+> +++ b/arch/arm/cpu/mmu-early.c
+> @@ -3,6 +3,7 @@
+>  #include <errno.h>
+>  #include <linux/sizes.h>
+>  #include <asm/memory.h>
+> +#include <asm-generic/memory_layout.h>
+>  #include <asm/system.h>
+>  #include <asm/cache.h>
+>  #include <asm-generic/sections.h>
+> @@ -55,6 +56,10 @@ void mmu_early_enable(unsigned long membase, unsigned long memsize,
+>  	 */
+>  	map_region((unsigned long)_stext, _etext - _stext, PMD_SECT_DEF_UNCACHED);
 >  
->  #include "mmu.h"
->  
-> @@ -393,6 +394,8 @@ static void vectors_init(void)
->  void __mmu_init(bool mmu_on)
->  {
->  	struct memory_bank *bank;
-> +	struct of_reserve_map *res_map;
-> +	int i;
->  
->  	arm_set_cache_functions();
->  
-> @@ -453,6 +456,17 @@ void __mmu_init(bool mmu_on)
->  		__mmu_cache_flush();
->  	}
->  
-> +	res_map = of_get_reserve_map();
-> +	if (res_map) {
-> +		for (i = 0; i < res_map->num_entries; i++) {
-> +			if (res_map->uncached & BIT(i)) {
-> +				create_sections(ttb, res_map->start[i],
-> +						res_map->end[i],
-> +						PMD_SECT_DEF_UNCACHED);
+> +	/* In case we might early load OP-TEE, remove it from the MMU mapping */
+> +	if(IS_ENABLED(CONFIG_PBL_OPTEE))
+> +		memsize -= OPTEE_SIZE;
 
-PMD_SECT_DEF_UNCACHED does _not_ include PMD_SECT_XN. See create_flat_mapping()
-Also, code earlier does __mmu_cache_flush() after each create_sections.
-Don't we need this here as well? (Or is it not needed at all?)
+You could remove the if condition. OPTEE_SIZE evaluates to zero if the condition
+is false.
 
-> +			}
-> +		}
-> +	}
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+
 > +
->  	__mmu_cache_on();
->  }
+>  	/* maps main memory as cachable */
+>  	map_region(membase, memsize, PMD_SECT_DEF_CACHED);
 >  
-> diff --git a/include/of.h b/include/of.h
-> index 5d7f54fb36..3d8c26f319 100644
-> --- a/include/of.h
-> +++ b/include/of.h
-> @@ -1042,6 +1042,11 @@ static inline int of_firmware_load_overlay(struct device_node *overlay, const ch
->  {
->  	return -ENOSYS;
->  }
-> +
-> +static inline struct of_reserve_map *of_get_reserve_map(void)
-> +{
-> +	return NULL;
-> +}
-
-This should results in an error because a static declaration follows a non-static
-one. You need to move the extern of_get_reserve_map into the #ifdef as well.
-
->  #endif
->  
->  #endif /* __OF_H */
 > 
 
 -- 
