@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kb1xL-00054E-3l
- for barebox@lists.infradead.org; Fri, 06 Nov 2020 13:39:10 +0000
+ id 1kZV4j-0004K7-D1
+ for barebox@lists.infradead.org; Mon, 02 Nov 2020 08:20:26 +0000
+Date: Mon, 2 Nov 2020 09:20:23 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  6 Nov 2020 14:38:38 +0100
-Message-Id: <20201106133900.2656-5-s.hauer@pengutronix.de>
-In-Reply-To: <20201106133900.2656-1-s.hauer@pengutronix.de>
-References: <20201106133900.2656-1-s.hauer@pengutronix.de>
+Message-ID: <20201102082023.GS26805@pengutronix.de>
+References: <20201030071350.9691-1-shc_work@mail.ru>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20201030071350.9691-1-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,76 +22,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/26] mtd: nand: drop unused errstat hook
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] ARM: dts: imx6qdl: pfla02: Remove eeprom node
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-chip->errstat is never set by any driver, so remove it.
+On Fri, Oct 30, 2020 at 10:13:50AM +0300, Alexander Shiyan wrote:
+> The upstream dtsi now has a eeprom node, so no need to duplicate
+> anymore. Let's keep the "page_size" property for a while.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/mtd/nand/nand_base.c | 15 ---------------
- include/linux/mtd/nand.h     |  5 -----
- 2 files changed, 20 deletions(-)
+Patch looks good, so applied, thanks
 
-diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
-index 999d56c5bd..064b36201e 100644
---- a/drivers/mtd/nand/nand_base.c
-+++ b/drivers/mtd/nand/nand_base.c
-@@ -2289,13 +2289,6 @@ static int nand_write_page(struct mtd_info *mtd, struct nand_chip *chip,
- 
- 		chip->cmdfunc(mtd, NAND_CMD_PAGEPROG, -1, -1);
- 		status = chip->waitfunc(mtd, chip);
--		/*
--		 * See if operation failed and additional status checks are
--		 * available.
--		 */
--		if ((status & NAND_STATUS_FAIL) && (chip->errstat))
--			status = chip->errstat(mtd, chip, FL_WRITING, status,
--					       page);
- 
- 		if (status & NAND_STATUS_FAIL)
- 			return -EIO;
-@@ -2750,14 +2743,6 @@ int nand_erase_nand(struct mtd_info *mtd, struct erase_info *instr,
- 
- 		status = chip->waitfunc(mtd, chip);
- 
--		/*
--		 * See if operation failed and additional status checks are
--		 * available
--		 */
--		if ((status & NAND_STATUS_FAIL) && (chip->errstat))
--			status = chip->errstat(mtd, chip, FL_ERASING,
--					       status, page);
--
- 		/* See if block erase succeeded */
- 		if (status & NAND_STATUS_FAIL) {
- 			pr_debug("%s: failed erase, page 0x%08x\n",
-diff --git a/include/linux/mtd/nand.h b/include/linux/mtd/nand.h
-index c4bdddc61e..a8a22210ca 100644
---- a/include/linux/mtd/nand.h
-+++ b/include/linux/mtd/nand.h
-@@ -466,9 +466,6 @@ struct nand_buffers {
-  *			structure which is shared among multiple independent
-  *			devices.
-  * @priv:		[OPTIONAL] pointer to private chip data
-- * @errstat:		[OPTIONAL] hardware specific function to perform
-- *			additional error status checks (determine if errors are
-- *			correctable).
-  * @write_page:		[REPLACEABLE] High-level page write function
-  */
- 
-@@ -491,8 +488,6 @@ struct nand_chip {
- 			int page_addr);
- 	int(*waitfunc)(struct mtd_info *mtd, struct nand_chip *this);
- 	int (*scan_bbt)(struct mtd_info *mtd);
--	int (*errstat)(struct mtd_info *mtd, struct nand_chip *this, int state,
--			int status, int page);
- 	int (*write_page)(struct mtd_info *mtd, struct nand_chip *chip,
- 			uint32_t offset, int data_len, const uint8_t *buf,
- 			int oob_required, int page, int cached, int raw);
+I just wonder why the pagesize isn't included in the upstream dts.
+Shouldn't it be there as well?
+
+Sascha
+
+> 
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> ---
+>  arch/arm/dts/imx6qdl-phytec-pfla02.dtsi | 10 ++++------
+>  1 file changed, 4 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+> index b83511cb0..d0b056b2f 100644
+> --- a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+> +++ b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+> @@ -155,6 +155,10 @@
+>  	barebox,provide-mac-address = <&fec 0x620>;
+>  };
+>  
+> +&som_eeprom {
+> +	pagesize = <32>;
+> +};
+> +
+>  &usdhc3 {
+>  	#address-cells = <1>;
+>  	#size-cells = <1>;
+> @@ -175,12 +179,6 @@
+>  	pinctrl-0 = <&pinctrl_i2c1>;
+>  	status = "okay";
+>  
+> -	eeprom: eeprom@50 {
+> -		compatible = "atmel,24c32";
+> -		pagesize = <32>;
+> -		reg = <0x50>;
+> -	};
+> -
+>  	pmic@58 {
+>  		watchdog-priority = <500>;
+>  		restart-priority = <500>;
+> -- 
+> 2.26.2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
