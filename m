@@ -1,14 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.fullbizgoal.com ([80.211.27.207]
- helo=server1.mail.fullbizgoal.com)
+Received: from magratgarlick.emantor.de ([2a01:4f8:c17:c88::2])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kZrpF-0004C1-HX
- for barebox@lists.infradead.org; Tue, 03 Nov 2020 08:37:58 +0000
-Received: by mail.fullbizgoal.com for <barebox@lists.infradead.org>;
- Tue,  3 Nov 2020 08:33:03 GMT
-Message-ID: <20201103074501-0.1.2i.dpon.0.fgesbbb20b@fullbizgoal.com>
-Date: Tue,  3 Nov 2020 08:33:03 GMT
-From: "Ethan Smith" <ethan.smith@fullbizgoal.com>
+ id 1kZup0-0004VZ-TW
+ for barebox@lists.infradead.org; Tue, 03 Nov 2020 11:49:57 +0000
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Tue,  3 Nov 2020 12:49:47 +0100
+Message-Id: <20201103114948.31021-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -18,28 +15,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Disinfectant
+Subject: [PATCH 1/2] ARM: boards: qemu-virt64: use SPDX-License Ids
 To: barebox@lists.infradead.org
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Good morning,
-
-looking for companies interested in raising additional capital by diversifying their offer in soaps, liquids and gels for hand disinfection and cosmetics for body and hair care.
-
-The distribution of innovative products corresponding to the current preferences of customers in the field of hygiene and preventive healthcare allows our partners to gain new markets and achieve better economic results.
-
-In addition to products with bactericidal action, our range includes shower gels, shampoos and hair conditioners, as well as efficient, concentrated detergents.
-
-The versatility (suitable for all skin types) combined with an affordable price means that customers make an informed choice of a product among others available on the market.
-
-Are you interested in cooperation?
-
-Ethan Smith
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Q2xlYW51cCB3aGlsZSBsb29raW5nIGF0IHRoZSBjb2RlIGZvciB2aXJ0NjQuCgpTaWduZWQtb2Zm
+LWJ5OiBSb3V2ZW4gQ3plcndpbnNraSA8ci5jemVyd2luc2tpQHBlbmd1dHJvbml4LmRlPgotLS0K
+IGFyY2gvYXJtL2JvYXJkcy9xZW11LXZpcnQ2NC9pbml0LmMgICAgICAgICAgfCAyICstCiBhcmNo
+L2FybS9ib2FyZHMvcWVtdS12aXJ0NjQvbG93bGV2ZWwuYyAgICAgIHwgMiArLQogYXJjaC9hcm0v
+Ym9hcmRzL3FlbXUtdmlydDY0L2xvd2xldmVsX2luaXQuUyB8IDIgKy0KIDMgZmlsZXMgY2hhbmdl
+ZCwgMyBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2FyY2gvYXJt
+L2JvYXJkcy9xZW11LXZpcnQ2NC9pbml0LmMgYi9hcmNoL2FybS9ib2FyZHMvcWVtdS12aXJ0NjQv
+aW5pdC5jCmluZGV4IDE5Y2ZjYWUxZjAuLjA2YWU5NmQ0NzQgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJt
+L2JvYXJkcy9xZW11LXZpcnQ2NC9pbml0LmMKKysrIGIvYXJjaC9hcm0vYm9hcmRzL3FlbXUtdmly
+dDY0L2luaXQuYwpAQCAtMSw3ICsxLDcgQEAKKy8vIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBH
+UEwtMi4wCiAvKgogICogQ29weXJpZ2h0IChDKSAyMDE2IFJhcGhhw6tsIFBvZ2dpIDxwb2dnaS5y
+YXBoQGdtYWlsLmNvbT4KICAqCi0gKiBHUEx2MiBvbmx5CiAgKi8KIAogI2luY2x1ZGUgPGNvbW1v
+bi5oPgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL3FlbXUtdmlydDY0L2xvd2xldmVsLmMg
+Yi9hcmNoL2FybS9ib2FyZHMvcWVtdS12aXJ0NjQvbG93bGV2ZWwuYwppbmRleCBmY2IwNTIzNjlh
+Li43NDVlMzY0ZGY2IDEwMDY0NAotLS0gYS9hcmNoL2FybS9ib2FyZHMvcWVtdS12aXJ0NjQvbG93
+bGV2ZWwuYworKysgYi9hcmNoL2FybS9ib2FyZHMvcWVtdS12aXJ0NjQvbG93bGV2ZWwuYwpAQCAt
+MSw3ICsxLDcgQEAKKy8vIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wCiAvKgogICog
+Q29weXJpZ2h0IChDKSAyMDEzIEplYW4tQ2hyaXN0b3BoZSBQTEFHTklPTC1WSUxMQVJEIDxwbGFn
+bmlvQGpjcm9zb2Z0LmNvbT4KICAqCi0gKiBHUEx2MiBvbmx5CiAgKi8KIAogI2luY2x1ZGUgPGNv
+bW1vbi5oPgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL3FlbXUtdmlydDY0L2xvd2xldmVs
+X2luaXQuUyBiL2FyY2gvYXJtL2JvYXJkcy9xZW11LXZpcnQ2NC9sb3dsZXZlbF9pbml0LlMKaW5k
+ZXggMTk2N2ZhZGI2Yy4uNjcyNzUwZmE3YiAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vYm9hcmRzL3Fl
+bXUtdmlydDY0L2xvd2xldmVsX2luaXQuUworKysgYi9hcmNoL2FybS9ib2FyZHMvcWVtdS12aXJ0
+NjQvbG93bGV2ZWxfaW5pdC5TCkBAIC0xLDQgKzEsNCBAQAotLyogU1BEWC1MaWNlbnNlLUlkZW50
+aWZpZXI6IEdQTC0yLjAtb3ItbGF0ZXIgKi8KKy8qIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBH
+UEwtMi4wKyAqLwogI2luY2x1ZGUgPGxpbnV4L2xpbmthZ2UuaD4KICNpbmNsdWRlIDxhc20vYmFy
+ZWJveC1hcm02NC5oPgogCi0tIAoyLjI4LjAKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmlu
+ZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9i
+YXJlYm94Cg==
