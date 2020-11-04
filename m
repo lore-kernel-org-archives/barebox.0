@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp36.i.mail.ru ([94.100.177.96])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ka9xX-00049A-OB
- for barebox@lists.infradead.org; Wed, 04 Nov 2020 03:59:45 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Wed,  4 Nov 2020 06:59:28 +0300
-Message-Id: <20201104035928.20519-1-shc_work@mail.ru>
+ id 1kaDiL-0002WY-Hj
+ for barebox@lists.infradead.org; Wed, 04 Nov 2020 08:00:18 +0000
+Date: Wed, 4 Nov 2020 09:00:14 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20201104080014.GZ26805@pengutronix.de>
+References: <20201103114948.31021-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20201103114948.31021-1-r.czerwinski@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,43 +18,81 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] i2c_probe: Use "read_byte" command for probing
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] ARM: boards: qemu-virt64: use SPDX-License Ids
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Some I2C adapters do not allow zero length data transfers, such as the AM335X.
-To use the i2c_probe command, let's use byte reading for this purpose.
+On Tue, Nov 03, 2020 at 12:49:47PM +0100, Rouven Czerwinski wrote:
+> Cleanup while looking at the code for virt64.
+> =
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
----
- commands/i2c.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+> ---
+>  arch/arm/boards/qemu-virt64/init.c          | 2 +-
+>  arch/arm/boards/qemu-virt64/lowlevel.c      | 2 +-
+>  arch/arm/boards/qemu-virt64/lowlevel_init.S | 2 +-
+>  3 files changed, 3 insertions(+), 3 deletions(-)
+> =
 
-diff --git a/commands/i2c.c b/commands/i2c.c
-index 53f36dfaa..997d49a94 100644
---- a/commands/i2c.c
-+++ b/commands/i2c.c
-@@ -16,10 +16,12 @@ static void i2c_probe_range(struct i2c_adapter *adapter, int startaddr, int stop
- 
- 	printf("probing i2c%d range 0x%02x-0x%02x: ", adapter->nr, startaddr, stopaddr);
- 	for (addr = startaddr; addr <= stopaddr && !ctrlc(); addr++) {
-+		u8 buf[1];
- 		struct i2c_msg msg = {
- 			.addr = addr,
--			.buf = NULL,
--			.len = 0,
-+			.buf = buf,
-+			.len = sizeof(buf),
-+			.flags = I2C_M_RD,
- 		};
- 		int ret = i2c_transfer(adapter, &msg, 1);
- 		if (ret == 1)
--- 
-2.26.2
+> diff --git a/arch/arm/boards/qemu-virt64/init.c b/arch/arm/boards/qemu-vi=
+rt64/init.c
+> index 19cfcae1f0..06ae96d474 100644
+> --- a/arch/arm/boards/qemu-virt64/init.c
+> +++ b/arch/arm/boards/qemu-virt64/init.c
+> @@ -1,7 +1,7 @@
+> +// SPDX-License-Identifier: GPL-2.0
+>  /*
+>   * Copyright (C) 2016 Rapha=EBl Poggi <poggi.raph@gmail.com>
+>   *
+> - * GPLv2 only
+>   */
+>  =
 
+>  #include <common.h>
+> diff --git a/arch/arm/boards/qemu-virt64/lowlevel.c b/arch/arm/boards/qem=
+u-virt64/lowlevel.c
+> index fcb052369a..745e364df6 100644
+> --- a/arch/arm/boards/qemu-virt64/lowlevel.c
+> +++ b/arch/arm/boards/qemu-virt64/lowlevel.c
+> @@ -1,7 +1,7 @@
+> +// SPDX-License-Identifier: GPL-2.0
+>  /*
+>   * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft=
+.com>
+>   *
+> - * GPLv2 only
+>   */
+>  =
+
+>  #include <common.h>
+> diff --git a/arch/arm/boards/qemu-virt64/lowlevel_init.S b/arch/arm/board=
+s/qemu-virt64/lowlevel_init.S
+> index 1967fadb6c..672750fa7b 100644
+> --- a/arch/arm/boards/qemu-virt64/lowlevel_init.S
+> +++ b/arch/arm/boards/qemu-virt64/lowlevel_init.S
+> @@ -1,4 +1,4 @@
+> -/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +/* SPDX-License-Identifier: GPL-2.0+ */
+
+https://spdx.org/licenses/ lists both GPL-2.0-or-later and GPL-2.0+, but
+GPL-2.0+ is in the list of deprecated License identifiers, do we use
+other lists?
+
+We have 1056 times the former and 996 times the latter in the tree. If
+anything, let's do a mass conversion, but not individual files.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
