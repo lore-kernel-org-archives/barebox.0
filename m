@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-dm6nam11on2106.outbound.protection.outlook.com
+ ([40.107.223.106] helo=NAM11-DM6-obe.outbound.protection.outlook.com)
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kaDiL-0002WY-Hj
- for barebox@lists.infradead.org; Wed, 04 Nov 2020 08:00:18 +0000
-Date: Wed, 4 Nov 2020 09:00:14 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201104080014.GZ26805@pengutronix.de>
-References: <20201103114948.31021-1-r.czerwinski@pengutronix.de>
+ id 1kaFfd-0006WV-Ix
+ for barebox@lists.infradead.org; Wed, 04 Nov 2020 10:05:41 +0000
+From: "Barbier, Renaud" <renaud.barbier@abaco.com>
+Date: Wed, 4 Nov 2020 10:05:34 +0000
+Message-ID: <MN2PR16MB3135A0D6B4E6F4486333DF9091EF0@MN2PR16MB3135.namprd16.prod.outlook.com>
+References: <MN2PR16MB3135009790C9E05DD2D996BB91170@MN2PR16MB3135.namprd16.prod.outlook.com>
+ <20201102131343.eez2qi4pxq56gfo6@pengutronix.de>
+In-Reply-To: <20201102131343.eez2qi4pxq56gfo6@pengutronix.de>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201103114948.31021-1-r.czerwinski@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,82 +20,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM: boards: qemu-virt64: use SPDX-License Ids
-To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: RE: bareboxenv-target
+To: Roland Hieber <rhi@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Tue, Nov 03, 2020 at 12:49:47PM +0100, Rouven Czerwinski wrote:
-> Cleanup while looking at the code for virt64.
-> =
 
-> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-> ---
->  arch/arm/boards/qemu-virt64/init.c          | 2 +-
->  arch/arm/boards/qemu-virt64/lowlevel.c      | 2 +-
->  arch/arm/boards/qemu-virt64/lowlevel_init.S | 2 +-
->  3 files changed, 3 insertions(+), 3 deletions(-)
-> =
-
-> diff --git a/arch/arm/boards/qemu-virt64/init.c b/arch/arm/boards/qemu-vi=
-rt64/init.c
-> index 19cfcae1f0..06ae96d474 100644
-> --- a/arch/arm/boards/qemu-virt64/init.c
-> +++ b/arch/arm/boards/qemu-virt64/init.c
-> @@ -1,7 +1,7 @@
-> +// SPDX-License-Identifier: GPL-2.0
->  /*
->   * Copyright (C) 2016 Rapha=EBl Poggi <poggi.raph@gmail.com>
->   *
-> - * GPLv2 only
->   */
->  =
-
->  #include <common.h>
-> diff --git a/arch/arm/boards/qemu-virt64/lowlevel.c b/arch/arm/boards/qem=
-u-virt64/lowlevel.c
-> index fcb052369a..745e364df6 100644
-> --- a/arch/arm/boards/qemu-virt64/lowlevel.c
-> +++ b/arch/arm/boards/qemu-virt64/lowlevel.c
-> @@ -1,7 +1,7 @@
-> +// SPDX-License-Identifier: GPL-2.0
->  /*
->   * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft=
-.com>
->   *
-> - * GPLv2 only
->   */
->  =
-
->  #include <common.h>
-> diff --git a/arch/arm/boards/qemu-virt64/lowlevel_init.S b/arch/arm/board=
-s/qemu-virt64/lowlevel_init.S
-> index 1967fadb6c..672750fa7b 100644
-> --- a/arch/arm/boards/qemu-virt64/lowlevel_init.S
-> +++ b/arch/arm/boards/qemu-virt64/lowlevel_init.S
-> @@ -1,4 +1,4 @@
-> -/* SPDX-License-Identifier: GPL-2.0-or-later */
-> +/* SPDX-License-Identifier: GPL-2.0+ */
-
-https://spdx.org/licenses/ lists both GPL-2.0-or-later and GPL-2.0+, but
-GPL-2.0+ is in the list of deprecated License identifiers, do we use
-other lists?
-
-We have 1056 times the former and 996 times the latter in the tree. If
-anything, let's do a mass conversion, but not individual files.
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
+> Which toolchain were you using? IIRC, the Yocto SDK builds don't set a
+> valid SYSROOT during the build, and patch it in through a compile option
+> when calling the compiler.
+[Barbier, Renaud] 
+The toolchain is built from our Yocto (dunfell-23.0.0)
+> 
+>  - Roland
+> 
+> --
+> Roland Hieber, Pengutronix e.K.          | r.hieber@pengutronix.de     |
+> Steuerwalder Str. 21                     |
+> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fww
+> w.pengutronix.de%2F&amp;data=04%7C01%7Crenaud.barbier%40abaco.co
+> m%7Caf3bfcf353684c3ae9ae08d87f312089%7Ce6f27451899d4d0db8fa88baaf
+> a551a7%7C0%7C0%7C637399196270355233%7CUnknown%7CTWFpbGZsb3d8
+> eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3
+> D%7C2000&amp;sdata=%2BdontmtYoJ%2BsS1%2FkGternIF%2FOdHe1h2QaV
+> hQPE%2BbNeY%3D&amp;reserved=0 |
+> 31137 Hildesheim, Germany                | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686         | Fax:   +49-5121-206917-5555 |
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
