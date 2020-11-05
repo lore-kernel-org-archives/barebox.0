@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-eopbgr40060.outbound.protection.outlook.com ([40.107.4.60]
+ helo=EUR03-DB5-obe.outbound.protection.outlook.com)
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kafxy-00087o-7F
- for barebox@lists.infradead.org; Thu, 05 Nov 2020 14:10:19 +0000
-Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <l.stach@pengutronix.de>) id 1kafxv-0005id-KL
- for barebox@lists.infradead.org; Thu, 05 Nov 2020 15:10:16 +0100
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Thu,  5 Nov 2020 15:10:13 +0100
-Message-Id: <20201105141015.1695515-1-l.stach@pengutronix.de>
+ id 1kalg2-0003q7-5B
+ for barebox@lists.infradead.org; Thu, 05 Nov 2020 20:16:13 +0000
+From: Matthias Fend <Matthias.Fend@wolfvision.net>
+Date: Thu, 5 Nov 2020 20:16:04 +0000
+Message-ID: <VI1PR0802MB2334314CB7FA7F0BD64F9C8885EE0@VI1PR0802MB2334.eurprd08.prod.outlook.com>
+Content-Language: de-DE
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,33 +21,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] ddr: imx8m: correct the pwrctl setting of selfref_en
-To: barebox@lists.infradead.org
+Subject: [PATCH] Documentation: state: add a little note about modifying a
+ state variable in the frontend
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Port of upstream U-Boot commit: 1eb325af16e2
-
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Signed-off-by: Matthias Fend <matthias.fend@wolfvision.net>
 ---
- drivers/ddr/imx8m/ddr_init.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/user/state.rst | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/ddr/imx8m/ddr_init.c b/drivers/ddr/imx8m/ddr_init.c
-index d4efee613343..bc64e7c17e1a 100644
---- a/drivers/ddr/imx8m/ddr_init.c
-+++ b/drivers/ddr/imx8m/ddr_init.c
-@@ -156,7 +156,7 @@ static int imx8m_ddr_init(unsigned long src_ddrc_rcr,
- 	/* Step26: Set back register in Step4 to the original values if desired */
- 	reg32_write(DDRC_RFSHCTL3(0), 0x0000000);
- 	/* enable selfref_en by default */
--	setbits_le32(DDRC_PWRCTL(0), 0x1 << 3);
-+	setbits_le32(DDRC_PWRCTL(0), 0x1);
+diff --git a/Documentation/user/state.rst b/Documentation/user/state.rst
+index 78ce24f..d9a8e76 100644
+--- a/Documentation/user/state.rst
++++ b/Documentation/user/state.rst
+@@ -689,4 +689,5 @@ be accessed like normal shell variables. The ``state`` command is used
+ to save/restore a *state* variable set to the backend device.
  
- 	/* enable port 0 */
- 	reg32_write(DDRC_PCTRL_0(0), 0x00000001);
+ After initializing the variable can be accessed with ``$state.foo``.
++To modify the value of a state variable use ``nv dev.state.foo=bar``.
+ ``state -s`` stores the *state* to the backend device.
 -- 
-2.20.1
-
-
+2.9.3
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
