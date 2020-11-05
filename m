@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kadsI-0005AO-1R
- for barebox@lists.infradead.org; Thu, 05 Nov 2020 11:56:19 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  5 Nov 2020 12:56:13 +0100
-Message-Id: <20201105115614.8802-2-s.hauer@pengutronix.de>
-In-Reply-To: <20201105115614.8802-1-s.hauer@pengutronix.de>
-References: <20201105115614.8802-1-s.hauer@pengutronix.de>
+ id 1kafNc-0001QM-22
+ for barebox@lists.infradead.org; Thu, 05 Nov 2020 13:32:45 +0000
+References: <20201105080245.21325-1-s.hauer@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <8e1faa90-2d82-8bcb-b045-cb694a2c1981@pengutronix.de>
+Date: Thu, 5 Nov 2020 14:32:41 +0100
 MIME-Version: 1.0
+In-Reply-To: <20201105080245.21325-1-s.hauer@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,62 +18,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] bootstrap_read_disk(): optionally inform the caller of
- the buffer size
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] firmware: Fix dependencies for PBL
+To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-RnJvbTogVWxyaWNoIMOWbG1hbm4gPHUub2VsbWFubkBwZW5ndXRyb25peC5kZT4KClRoZSBzaXpl
-IG9mIHRoZSBidWZmZXIgYWxsb2NhdGVkIGluIHRoZSBmdW5jdGlvbiBpcyBuZWVkZWQgaWYgaXQg
-c2hhbGwgYmUKaW5zcGVjdGVkIG1vcmUgY2xvc2VseSBsYXRlci4gVGhlcmVmb3JlIG9wdGlvbmFs
-bHkgcmV0dXJuIGl0IHZpYSBhIG5ldyBwb2ludGVyCmFyZ3VtZW50LgoKU2lnbmVkLW9mZi1ieTog
-VWxyaWNoIMOWbG1hbm4gPHUub2VsbWFubkBwZW5ndXRyb25peC5kZT4KLS0tCiBhcmNoL2FybS9t
-YWNoLWF0OTEvYm9vdHN0cmFwLmMgfCAyICstCiBhcmNoL2FybS9tYWNoLXNvY2ZwZ2EveGxvYWQu
-YyAgfCAyICstCiBpbmNsdWRlL2Jvb3RzdHJhcC5oICAgICAgICAgICAgfCA0ICsrLS0KIGxpYi9i
-b290c3RyYXAvZGlzay5jICAgICAgICAgICB8IDUgKysrKy0KIDQgZmlsZXMgY2hhbmdlZCwgOCBp
-bnNlcnRpb25zKCspLCA1IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gt
-YXQ5MS9ib290c3RyYXAuYyBiL2FyY2gvYXJtL21hY2gtYXQ5MS9ib290c3RyYXAuYwppbmRleCA5
-MGI3YjMzZmM5Li4wYjE1NjdjZDIzIDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLWF0OTEvYm9v
-dHN0cmFwLmMKKysrIGIvYXJjaC9hcm0vbWFjaC1hdDkxL2Jvb3RzdHJhcC5jCkBAIC04OSw3ICs4
-OSw3IEBAIHN0YXRpYyB2b2lkIGF0OTFib290c3RyYXBfYm9vdF9tbWModm9pZCkKIAlrZXJuZWxf
-ZW50cnlfZnVuYyBmdW5jID0gTlVMTDsKIAogCXByaW50ZigiQm9vdCBmcm9tIG1tY1xuIik7Ci0J
-ZnVuYyA9IGJvb3RzdHJhcF9yZWFkX2Rpc2soImRpc2swLjAiLCBOVUxMKTsKKwlmdW5jID0gYm9v
-dHN0cmFwX3JlYWRfZGlzaygiZGlzazAuMCIsIE5VTEwsIE5VTEwpOwogCWJvb3RzdHJhcF9ib290
-KGZ1bmMsIGZhbHNlKTsKIAlib290c3RyYXBfZXJyKCIuLi4gZmFpbGVkXG4iKTsKIAlmcmVlKGZ1
-bmMpOwpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1zb2NmcGdhL3hsb2FkLmMgYi9hcmNoL2Fy
-bS9tYWNoLXNvY2ZwZ2EveGxvYWQuYwppbmRleCA4YmUyODI3ZTYyLi4xMTMxY2ZlZTQxIDEwMDY0
-NAotLS0gYS9hcmNoL2FybS9tYWNoLXNvY2ZwZ2EveGxvYWQuYworKysgYi9hcmNoL2FybS9tYWNo
-LXNvY2ZwZ2EveGxvYWQuYwpAQCAtMzcsNyArMzcsNyBAQCBzdGF0aWMgX19ub3JldHVybiBpbnQg
-c29jZnBnYV94bG9hZCh2b2lkKQogCQlzb2NmcGdhX2N5Y2xvbmU1X21tY19pbml0KCk7CiAKIAkJ
-Zm9yIChwYXJ0ID0gYmFyZWJveF9wYXJ0czsgcGFydC0+bW1jX2Rpc2s7IHBhcnQrKykgewotCQkJ
-YnVmID0gYm9vdHN0cmFwX3JlYWRfZGlzayhiYXJlYm94X3BhcnRzLT5tbWNfZGlzaywgImZhdCIp
-OworCQkJYnVmID0gYm9vdHN0cmFwX3JlYWRfZGlzayhiYXJlYm94X3BhcnRzLT5tbWNfZGlzaywg
-ImZhdCIsIE5VTEwpOwogCQkJaWYgKCFidWYpIHsKIAkJCQlwcl9pbmZvKCJmYWlsZWQgdG8gbG9h
-ZCBiYXJlYm94IGZyb20gTU1DICVzXG4iLAogCQkJCQlwYXJ0LT5tbWNfZGlzayk7CmRpZmYgLS1n
-aXQgYS9pbmNsdWRlL2Jvb3RzdHJhcC5oIGIvaW5jbHVkZS9ib290c3RyYXAuaAppbmRleCA4YjNi
-YjM0YTAzLi4zZTAwNmQzY2M5IDEwMDY0NAotLS0gYS9pbmNsdWRlL2Jvb3RzdHJhcC5oCisrKyBi
-L2luY2x1ZGUvYm9vdHN0cmFwLmgKQEAgLTI1LDkgKzI1LDkgQEAgc3RhdGljIGlubGluZSB2b2lk
-KiBib290c3RyYXBfcmVhZF9kZXZmcyhjaGFyICpkZXZuYW1lLCBib29sIHVzZV9iYiwgaW50IG9m
-ZnNldCwKICNlbmRpZgogCiAjaWZkZWYgQ09ORklHX0JPT1RTVFJBUF9ESVNLCi12b2lkKiBib290
-c3RyYXBfcmVhZF9kaXNrKGNvbnN0IGNoYXIgKmRldm5hbWUsIGNvbnN0IGNoYXIgKmZzdHlwZSk7
-Cit2b2lkKiBib290c3RyYXBfcmVhZF9kaXNrKGNvbnN0IGNoYXIgKmRldm5hbWUsIGNoYXIgKmZz
-dHlwZSwgc2l6ZV90ICpidWZzaXplKTsKICNlbHNlCi1zdGF0aWMgaW5saW5lIHZvaWQqIGJvb3Rz
-dHJhcF9yZWFkX2Rpc2soY29uc3QgY2hhciAqZGV2bmFtZSwgY29uc3QgY2hhciAqZnN0eXBlKQor
-c3RhdGljIGlubGluZSB2b2lkKiBib290c3RyYXBfcmVhZF9kaXNrKGNvbnN0IGNoYXIgKmRldm5h
-bWUsIGNoYXIgKmZzdHlwZSwgc2l6ZV90ICpidWZzaXplKQogewogCXJldHVybiBOVUxMOwogfQpk
-aWZmIC0tZ2l0IGEvbGliL2Jvb3RzdHJhcC9kaXNrLmMgYi9saWIvYm9vdHN0cmFwL2Rpc2suYwpp
-bmRleCBmZDAxNjE2NmU2Li5lZDhiMWFhNDA3IDEwMDY0NAotLS0gYS9saWIvYm9vdHN0cmFwL2Rp
-c2suYworKysgYi9saWIvYm9vdHN0cmFwL2Rpc2suYwpAQCAtMTQsNyArMTQsNyBAQAogI2luY2x1
-ZGUgPGxpYmZpbGUuaD4KICNpbmNsdWRlIDxib290c3RyYXAuaD4KIAotdm9pZCogYm9vdHN0cmFw
-X3JlYWRfZGlzayhjb25zdCBjaGFyICpkZXYsIGNvbnN0IGNoYXIgKmZzdHlwZSkKK3ZvaWQqIGJv
-b3RzdHJhcF9yZWFkX2Rpc2soY29uc3QgY2hhciAqZGV2LCBjaGFyICpmc3R5cGUsIHNpemVfdCAq
-YnVmc2l6ZSkKIHsKIAlpbnQgcmV0OwogCXZvaWQgKmJ1ZjsKQEAgLTM0LDUgKzM0LDggQEAgdm9p
-ZCogYm9vdHN0cmFwX3JlYWRfZGlzayhjb25zdCBjaGFyICpkZXYsIGNvbnN0IGNoYXIgKmZzdHlw
-ZSkKIAkJcmV0dXJuIE5VTEw7CiAJfQogCisJaWYgKGJ1ZnNpemUpCisJCSpidWZzaXplID0gbGVu
-OworCiAJcmV0dXJuIGJ1ZjsKIH0KLS0gCjIuMjAuMQoKCl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
-dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
-bmZvL2JhcmVib3gK
+Hello Sascha,
+
+On 11/5/20 9:02 AM, Sascha Hauer wrote:
+> The firmware object files for PBL have the name %.gen-pbl.o, not
+> pbl-%.gen.o. Fix The dependencies so that the object files for PBL
+> get rebuilt when the firmware changes.
+> 
+> Fixes: ff047395b9 ("kbuild: rename pbl object pbl-*.o to *.pbl.o")
+
+With this applied, there is one remaining instance:
+
+$ egrep -I --exclude-dir=.git -r 'pbl-\S+\.[ao]' .
+./common/Makefile:$(obj)/pbl-imd-barebox.o: include/generated/compile.h
+
+This should be s/pbl-imd-barebox.o/imd-barebox.pbl.o/ as well, right?
+
+
+> Reported-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  firmware/Makefile | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/firmware/Makefile b/firmware/Makefile
+> index 0d1b445783..cc28c0fc39 100644
+> --- a/firmware/Makefile
+> +++ b/firmware/Makefile
+> @@ -55,7 +55,7 @@ $(patsubst %,$(obj)/%.gen.S, $(fw-external-y)): %: $(wordsize_deps) \
+>  $(patsubst %,$(obj)/%.gen.o, $(fw-external-y)): $(obj)/%.gen.o: $(fwdir)/%
+>  
+>  # The same for pbl:
+> -$(patsubst %,$(obj)/pbl-%.gen.o, $(fw-external-y)): $(obj)/pbl-%.gen.o: $(fwdir)/%
+> +$(patsubst %,$(obj)/%.gen.pbl.o, $(fw-external-y)): $(obj)/%.gen.pbl.o: $(fwdir)/%
+>  
+>  obj-pbl-y			 += $(patsubst %,%.gen.o, $(fw-external-y))
+>  
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
