@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kaaEM-0007qg-AQ
- for barebox@lists.infradead.org; Thu, 05 Nov 2020 08:02:51 +0000
+ id 1kadsI-0005AQ-1U
+ for barebox@lists.infradead.org; Thu, 05 Nov 2020 11:56:20 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  5 Nov 2020 09:02:45 +0100
-Message-Id: <20201105080245.21325-1-s.hauer@pengutronix.de>
+Date: Thu,  5 Nov 2020 12:56:14 +0100
+Message-Id: <20201105115614.8802-3-s.hauer@pengutronix.de>
+In-Reply-To: <20201105115614.8802-1-s.hauer@pengutronix.de>
+References: <20201105115614.8802-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -15,43 +17,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] firmware: Fix dependencies for PBL
+Subject: [PATCH 3/3] ARM: socfpga: xload: evaluate integrity of second stage
+ barebox images
 To: Barebox List <barebox@lists.infradead.org>
-Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-The firmware object files for PBL have the name %.gen-pbl.o, not
-pbl-%.gen.o. Fix The dependencies so that the object files for PBL
-get rebuilt when the firmware changes.
-
-Fixes: ff047395b9 ("kbuild: rename pbl object pbl-*.o to *.pbl.o")
-Reported-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- firmware/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/firmware/Makefile b/firmware/Makefile
-index 0d1b445783..cc28c0fc39 100644
---- a/firmware/Makefile
-+++ b/firmware/Makefile
-@@ -55,7 +55,7 @@ $(patsubst %,$(obj)/%.gen.S, $(fw-external-y)): %: $(wordsize_deps) \
- $(patsubst %,$(obj)/%.gen.o, $(fw-external-y)): $(obj)/%.gen.o: $(fwdir)/%
- 
- # The same for pbl:
--$(patsubst %,$(obj)/pbl-%.gen.o, $(fw-external-y)): $(obj)/pbl-%.gen.o: $(fwdir)/%
-+$(patsubst %,$(obj)/%.gen.pbl.o, $(fw-external-y)): $(obj)/%.gen.pbl.o: $(fwdir)/%
- 
- obj-pbl-y			 += $(patsubst %,%.gen.o, $(fw-external-y))
- 
--- 
-2.20.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RnJvbTogVWxyaWNoIMOWbG1hbm4gPHUub2VsbWFubkBwZW5ndXRyb25peC5kZT4KCkRvIG5vdCBo
+YW5kIG92ZXIgY29udHJvbCB0byBhIHNlY29uZCBzdGFnZSBiYXJlYm94IGlmIGl0cyBlbWJlZGRl
+ZCBDUkMgY2hlY2tzdW0KaXMgaW52YWxpZC4KClNpZ25lZC1vZmYtYnk6IFVscmljaCDDlmxtYW5u
+IDx1Lm9lbG1hbm5AcGVuZ3V0cm9uaXguZGU+Ci0tLQogYXJjaC9hcm0vbWFjaC1zb2NmcGdhL3hs
+b2FkLmMgfCAyNSArKysrKysrKysrKysrKysrKysrKysrKy0tCiAxIGZpbGUgY2hhbmdlZCwgMjMg
+aW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNo
+LXNvY2ZwZ2EveGxvYWQuYyBiL2FyY2gvYXJtL21hY2gtc29jZnBnYS94bG9hZC5jCmluZGV4IDEx
+MzFjZmVlNDEuLjVjNjExYWM2ZTEgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtc29jZnBnYS94
+bG9hZC5jCisrKyBiL2FyY2gvYXJtL21hY2gtc29jZnBnYS94bG9hZC5jCkBAIC04LDYgKzgsOCBA
+QAogI2luY2x1ZGUgPGZzLmg+CiAjaW5jbHVkZSA8aW8uaD4KIAorI2luY2x1ZGUgPGltYWdlLW1l
+dGFkYXRhLmg+CisKICNpbmNsdWRlIDxsaW51eC9jbGtkZXYuaD4KICNpbmNsdWRlIDxsaW51eC9z
+dGF0Lmg+CiAjaW5jbHVkZSA8bGludXgvY2xrLmg+CkBAIC0zMSwxMyArMzMsMTQgQEAgc3RhdGlj
+IF9fbm9yZXR1cm4gaW50IHNvY2ZwZ2FfeGxvYWQodm9pZCkKIAllbnVtIGJvb3Rzb3VyY2UgYm9v
+dHNvdXJjZSA9IGJvb3Rzb3VyY2VfZ2V0KCk7CiAJY29uc3Qgc3RydWN0IHNvY2ZwZ2FfYmFyZWJv
+eF9wYXJ0ICpwYXJ0OwogCXZvaWQgKmJ1ZiA9IE5VTEw7CisJc2l6ZV90IGJ1ZnNpemU7CiAKIAlz
+d2l0Y2ggKGJvb3Rzb3VyY2UpIHsKIAljYXNlIEJPT1RTT1VSQ0VfTU1DOgogCQlzb2NmcGdhX2N5
+Y2xvbmU1X21tY19pbml0KCk7CiAKIAkJZm9yIChwYXJ0ID0gYmFyZWJveF9wYXJ0czsgcGFydC0+
+bW1jX2Rpc2s7IHBhcnQrKykgewotCQkJYnVmID0gYm9vdHN0cmFwX3JlYWRfZGlzayhiYXJlYm94
+X3BhcnRzLT5tbWNfZGlzaywgImZhdCIsIE5VTEwpOworCQkJYnVmID0gYm9vdHN0cmFwX3JlYWRf
+ZGlzayhiYXJlYm94X3BhcnRzLT5tbWNfZGlzaywgImZhdCIsICZidWZzaXplKTsKIAkJCWlmICgh
+YnVmKSB7CiAJCQkJcHJfaW5mbygiZmFpbGVkIHRvIGxvYWQgYmFyZWJveCBmcm9tIE1NQyAlc1xu
+IiwKIAkJCQkJcGFydC0+bW1jX2Rpc2spOwpAQCAtNDgsMTcgKzUxLDM1IEBAIHN0YXRpYyBfX25v
+cmV0dXJuIGludCBzb2NmcGdhX3hsb2FkKHZvaWQpCiAJCQlwcl9lcnIoImZhaWxlZCB0byBsb2Fk
+IGJhcmVib3guYmluIGZyb20gTU1DXG4iKTsKIAkJCWhhbmcoKTsKIAkJfQorCisJCWlmIChJU19F
+TkFCTEVEKENPTkZJR19JTUQpKQorCQkJaWYgKGltZF92ZXJpZnlfY3JjMzIoYnVmLCBidWZzaXpl
+KSA9PSAtRUlMU0VRKSB7CisJCQkJcHJfZXJyKCJmYWlsZWQgdG8gdmVyaWZ5IGJhcmVib3guYmlu
+IGxvYWRlZCBmcm9tIGVNTUNcbiIpOworCQkJCWhhbmcoKTsKKwkJCX0KKwogCQlicmVhazsKIAlj
+YXNlIEJPT1RTT1VSQ0VfU1BJOgogCQlzb2NmcGdhX2N5Y2xvbmU1X3FzcGlfaW5pdCgpOwogCQlm
+b3IgKHBhcnQgPSBiYXJlYm94X3BhcnRzOyBwYXJ0LT5ub3Jfc2l6ZTsgcGFydCsrKSB7CiAJCQli
+dWYgPSBib290c3RyYXBfcmVhZF9kZXZmcygibXRkMCIsIGZhbHNlLAotCQkJCQlwYXJ0LT5ub3Jf
+b2Zmc2V0LCBwYXJ0LT5ub3Jfc2l6ZSwgU1pfMU0sIE5VTEwpOworCQkJCQlwYXJ0LT5ub3Jfb2Zm
+c2V0LCBwYXJ0LT5ub3Jfc2l6ZSwgU1pfMU0sICZidWZzaXplKTsKIAkJCWlmICghYnVmKSB7CiAJ
+CQkJcHJfaW5mbygiZmFpbGVkIHRvIGxvYWQgYmFyZWJveCBmcm9tIFFTUEkgTk9SIGZsYXNoIGF0
+IG9mZnNldCAlI3hcbiIsCiAJCQkJCXBhcnQtPm5vcl9vZmZzZXQpOwogCQkJCWNvbnRpbnVlOwog
+CQkJfQorCisJCQlpZiAoSVNfRU5BQkxFRChDT05GSUdfSU1EKSkKKwkJCQlpZiAoaW1kX3Zlcmlm
+eV9jcmMzMihidWYsIGJ1ZnNpemUpID09IC1FSUxTRVEpIHsKKwkJCQkJcHJfZXJyKCJmYWlsZWQg
+dG8gdmVyaWZ5IGJhcmVib3ggbG9hZGVkIGZyb20gIgorCQkJCQkgICAgICAgIlFTUEkgTk9SIGZs
+YXNoIGF0IG9mZnNldCAlI3hcbiIsCisJCQkJCSAgICAgICBwYXJ0LT5ub3Jfb2Zmc2V0KTsKKwkJ
+CQkJZnJlZShidWYpOworCQkJCQlidWYgPSBOVUxMOworCQkJCQljb250aW51ZTsKKwkJCQl9CisK
+IAkJCWJyZWFrOwogCQl9CiAKLS0gCjIuMjAuMQoKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
+aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
+L2JhcmVib3gK
