@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-eopbgr750097.outbound.protection.outlook.com
- ([40.107.75.97] helo=NAM02-BL2-obe.outbound.protection.outlook.com)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kaySp-0001jR-2l
- for barebox@lists.infradead.org; Fri, 06 Nov 2020 09:55:42 +0000
-From: "Barbier, Renaud" <renaud.barbier@abaco.com>
-Date: Fri, 6 Nov 2020 09:55:18 +0000
-Message-ID: <MN2PR16MB31356A4AC88A8C2A4A3D5E3491ED0@MN2PR16MB3135.namprd16.prod.outlook.com>
-References: <MN2PR16MB3135009790C9E05DD2D996BB91170@MN2PR16MB3135.namprd16.prod.outlook.com>
- <20201102131343.eez2qi4pxq56gfo6@pengutronix.de>
-In-Reply-To: <20201102131343.eez2qi4pxq56gfo6@pengutronix.de>
-Content-Language: en-US
+ id 1kb1xL-00054E-3l
+ for barebox@lists.infradead.org; Fri, 06 Nov 2020 13:39:10 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri,  6 Nov 2020 14:38:38 +0100
+Message-Id: <20201106133900.2656-5-s.hauer@pengutronix.de>
+In-Reply-To: <20201106133900.2656-1-s.hauer@pengutronix.de>
+References: <20201106133900.2656-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,70 +21,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: bareboxenv-target
-To: Roland Hieber <rhi@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 04/26] mtd: nand: drop unused errstat hook
+To: Barebox List <barebox@lists.infradead.org>
 
-We derived out recipe for barebox from the barebox layer.
-We may have broken something in there.
+chip->errstat is never set by any driver, so remove it.
 
-> -----Original Message-----
-> From: Roland Hieber [mailto:rhi@pengutronix.de]
-> Sent: 02 November 2020 13:14
-> To: Barbier, Renaud <renaud.barbier@abaco.com>
-> Cc: barebox@lists.infradead.org
-> Subject: Re: bareboxenv-target
-> 
-> 
-> 
-> [**EXTERNAL SOURCE**]:Please verify the source before clicking link or
-> opening attachment.
-> 
-> On Wed, Oct 28, 2020 at 11:09:18AM +0000, Barbier, Renaud wrote:
-> > I am building bareboxenv-target for a  cortex-A9 board (not present
-> upstream) with gcc 9.3.0 and got this error:
-> >
-> > arm-oe-linux-gnueabi-gcc -Wp,-MMD,scripts/.bareboxenv-target.d -Wall -
-> Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer -
-> std=gnu89  -I /mnt/projects/all/openware-
-> core/home/renaud/sandbox/bootloader/barebox-rebase/scripts/include
-> -o scripts/bareboxenv-target scripts/bareboxenv-target.c
-> > In file included from scripts/bareboxenv-target.c:1:
-> > scripts/bareboxenv.c:17:10: fatal error: stdio.h: No such file or directory
-> >    17 | #include <stdio.h>
-> >       |          ^~~~~~~~~
-> >
-> >
-> > It looks like sysroot is missing as when I add to scripts/Makefile:
-> > ifdef SDKTARGETSYSROOT
-> >     userccflags += --sysroot=$(SDKTARGETSYSROOT)
-> > endif
-> >
-> > It builds.
-> >
-> > Not much came out from search on google but one thread that refers to
-> this problem when building with Yocto.
-> >
-> > Could it it be related to  how our toolchain got build?
-> 
-> Which toolchain were you using? IIRC, the Yocto SDK builds don't set a
-> valid SYSROOT during the build, and patch it in through a compile option
-> when calling the compiler.
-> 
->  - Roland
-> 
-> --
-> Roland Hieber, Pengutronix e.K.          | r.hieber@pengutronix.de     |
-> Steuerwalder Str. 21                     |
-> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fww
-> w.pengutronix.de%2F&amp;data=04%7C01%7Crenaud.barbier%40abaco.co
-> m%7Caf3bfcf353684c3ae9ae08d87f312089%7Ce6f27451899d4d0db8fa88baaf
-> a551a7%7C0%7C0%7C637399196270355233%7CUnknown%7CTWFpbGZsb3d8
-> eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3
-> D%7C2000&amp;sdata=%2BdontmtYoJ%2BsS1%2FkGternIF%2FOdHe1h2QaV
-> hQPE%2BbNeY%3D&amp;reserved=0 |
-> 31137 Hildesheim, Germany                | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686         | Fax:   +49-5121-206917-5555 |
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mtd/nand/nand_base.c | 15 ---------------
+ include/linux/mtd/nand.h     |  5 -----
+ 2 files changed, 20 deletions(-)
+
+diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
+index 999d56c5bd..064b36201e 100644
+--- a/drivers/mtd/nand/nand_base.c
++++ b/drivers/mtd/nand/nand_base.c
+@@ -2289,13 +2289,6 @@ static int nand_write_page(struct mtd_info *mtd, struct nand_chip *chip,
+ 
+ 		chip->cmdfunc(mtd, NAND_CMD_PAGEPROG, -1, -1);
+ 		status = chip->waitfunc(mtd, chip);
+-		/*
+-		 * See if operation failed and additional status checks are
+-		 * available.
+-		 */
+-		if ((status & NAND_STATUS_FAIL) && (chip->errstat))
+-			status = chip->errstat(mtd, chip, FL_WRITING, status,
+-					       page);
+ 
+ 		if (status & NAND_STATUS_FAIL)
+ 			return -EIO;
+@@ -2750,14 +2743,6 @@ int nand_erase_nand(struct mtd_info *mtd, struct erase_info *instr,
+ 
+ 		status = chip->waitfunc(mtd, chip);
+ 
+-		/*
+-		 * See if operation failed and additional status checks are
+-		 * available
+-		 */
+-		if ((status & NAND_STATUS_FAIL) && (chip->errstat))
+-			status = chip->errstat(mtd, chip, FL_ERASING,
+-					       status, page);
+-
+ 		/* See if block erase succeeded */
+ 		if (status & NAND_STATUS_FAIL) {
+ 			pr_debug("%s: failed erase, page 0x%08x\n",
+diff --git a/include/linux/mtd/nand.h b/include/linux/mtd/nand.h
+index c4bdddc61e..a8a22210ca 100644
+--- a/include/linux/mtd/nand.h
++++ b/include/linux/mtd/nand.h
+@@ -466,9 +466,6 @@ struct nand_buffers {
+  *			structure which is shared among multiple independent
+  *			devices.
+  * @priv:		[OPTIONAL] pointer to private chip data
+- * @errstat:		[OPTIONAL] hardware specific function to perform
+- *			additional error status checks (determine if errors are
+- *			correctable).
+  * @write_page:		[REPLACEABLE] High-level page write function
+  */
+ 
+@@ -491,8 +488,6 @@ struct nand_chip {
+ 			int page_addr);
+ 	int(*waitfunc)(struct mtd_info *mtd, struct nand_chip *this);
+ 	int (*scan_bbt)(struct mtd_info *mtd);
+-	int (*errstat)(struct mtd_info *mtd, struct nand_chip *this, int state,
+-			int status, int page);
+ 	int (*write_page)(struct mtd_info *mtd, struct nand_chip *chip,
+ 			uint32_t offset, int data_len, const uint8_t *buf,
+ 			int oob_required, int page, int cached, int raw);
+-- 
+2.20.1
+
+
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
