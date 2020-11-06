@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-co1nam11on2129.outbound.protection.outlook.com
- ([40.107.220.129] helo=NAM11-CO1-obe.outbound.protection.outlook.com)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kb0VQ-0007bm-3H
- for barebox@lists.infradead.org; Fri, 06 Nov 2020 12:06:15 +0000
-From: "Barbier, Renaud" <renaud.barbier@abaco.com>
-Date: Fri, 6 Nov 2020 12:06:08 +0000
-Message-ID: <MN2PR16MB31357702729D2810D0A7926D91ED0@MN2PR16MB3135.namprd16.prod.outlook.com>
-References: <MN2PR16MB3135009790C9E05DD2D996BB91170@MN2PR16MB3135.namprd16.prod.outlook.com>
- <20201102131343.eez2qi4pxq56gfo6@pengutronix.de>
-In-Reply-To: <20201102131343.eez2qi4pxq56gfo6@pengutronix.de>
-Content-Language: en-US
+ id 1kb1xL-00054C-15
+ for barebox@lists.infradead.org; Fri, 06 Nov 2020 13:39:10 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri,  6 Nov 2020 14:38:37 +0100
+Message-Id: <20201106133900.2656-4-s.hauer@pengutronix.de>
+In-Reply-To: <20201106133900.2656-1-s.hauer@pengutronix.de>
+References: <20201106133900.2656-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,33 +21,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: bareboxenv-target
-To: Roland Hieber <rhi@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 03/26] mtd: nand: drop unused erase_cmd hook
+To: Barebox List <barebox@lists.infradead.org>
 
-> >
-> >
-> > It looks like sysroot is missing as when I add to scripts/Makefile:
-> > ifdef SDKTARGETSYSROOT
-> >     userccflags += --sysroot=$(SDKTARGETSYSROOT)
-> > endif
-> >
-> > It builds.
-> >
-> > Not much came out from search on google but one thread that refers to
-> this problem when building with Yocto.
+chip->erase_cmd is never used, so remove this hook.
 
-In barebox.inc of the Yocto recipe, I replaced
-export TARGETCFLAGS="${TARGET_LDFLAGS}${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}"
-with
-export userccflags="${TARGET_LDFLAGS}${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}"
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mtd/nand/nand_base.c | 3 +--
+ include/linux/mtd/nand.h     | 3 ---
+ 2 files changed, 1 insertion(+), 5 deletions(-)
 
-It builds.
+diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
+index 2b37679d2a..999d56c5bd 100644
+--- a/drivers/mtd/nand/nand_base.c
++++ b/drivers/mtd/nand/nand_base.c
+@@ -2746,7 +2746,7 @@ int nand_erase_nand(struct mtd_info *mtd, struct erase_info *instr,
+ 		    (page + pages_per_block))
+ 			chip->pagebuf = -1;
+ 
+-		chip->erase_cmd(mtd, page & chip->pagemask);
++		single_erase_cmd(mtd, page & chip->pagemask);
+ 
+ 		status = chip->waitfunc(mtd, chip);
+ 
+@@ -3484,7 +3484,6 @@ ident_done:
+ 	}
+ 
+ 	chip->badblockbits = 8;
+-	chip->erase_cmd = single_erase_cmd;
+ 
+ 	/* Do not replace user supplied command function! */
+ 	if (mtd->writesize > 512 && chip->cmdfunc == nand_command)
+diff --git a/include/linux/mtd/nand.h b/include/linux/mtd/nand.h
+index 401f630570..c4bdddc61e 100644
+--- a/include/linux/mtd/nand.h
++++ b/include/linux/mtd/nand.h
+@@ -418,8 +418,6 @@ struct nand_buffers {
+  * @ecc:		[BOARDSPECIFIC] ECC control structure
+  * @buffers:		buffer structure for read/write
+  * @hwcontrol:		platform-specific hardware control structure
+- * @erase_cmd:		[INTERN] erase command write function, selectable due
+- *			to AND support.
+  * @scan_bbt:		[REPLACEABLE] function to scan bad block table
+  * @chip_delay:		[BOARDSPECIFIC] chip dependent delay for transferring
+  *			data from array to read regs (tR).
+@@ -492,7 +490,6 @@ struct nand_chip {
+ 	void (*cmdfunc)(struct mtd_info *mtd, unsigned command, int column,
+ 			int page_addr);
+ 	int(*waitfunc)(struct mtd_info *mtd, struct nand_chip *this);
+-	void (*erase_cmd)(struct mtd_info *mtd, int page);
+ 	int (*scan_bbt)(struct mtd_info *mtd);
+ 	int (*errstat)(struct mtd_info *mtd, struct nand_chip *this, int state,
+ 			int status, int page);
+-- 
+2.20.1
 
-Would that  be the way to pass sysroot to scripts/Makefile?
 
-Cheers,
-Renaud
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
