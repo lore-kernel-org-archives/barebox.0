@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-co1nam11on2129.outbound.protection.outlook.com
+ ([40.107.220.129] helo=NAM11-CO1-obe.outbound.protection.outlook.com)
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kZV4j-0004K7-D1
- for barebox@lists.infradead.org; Mon, 02 Nov 2020 08:20:26 +0000
-Date: Mon, 2 Nov 2020 09:20:23 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201102082023.GS26805@pengutronix.de>
-References: <20201030071350.9691-1-shc_work@mail.ru>
+ id 1kb0VQ-0007bm-3H
+ for barebox@lists.infradead.org; Fri, 06 Nov 2020 12:06:15 +0000
+From: "Barbier, Renaud" <renaud.barbier@abaco.com>
+Date: Fri, 6 Nov 2020 12:06:08 +0000
+Message-ID: <MN2PR16MB31357702729D2810D0A7926D91ED0@MN2PR16MB3135.namprd16.prod.outlook.com>
+References: <MN2PR16MB3135009790C9E05DD2D996BB91170@MN2PR16MB3135.namprd16.prod.outlook.com>
+ <20201102131343.eez2qi4pxq56gfo6@pengutronix.de>
+In-Reply-To: <20201102131343.eez2qi4pxq56gfo6@pengutronix.de>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201030071350.9691-1-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,71 +24,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: dts: imx6qdl: pfla02: Remove eeprom node
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: barebox@lists.infradead.org
+Subject: RE: bareboxenv-target
+To: Roland Hieber <rhi@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Fri, Oct 30, 2020 at 10:13:50AM +0300, Alexander Shiyan wrote:
-> The upstream dtsi now has a eeprom node, so no need to duplicate
-> anymore. Let's keep the "page_size" property for a while.
+> >
+> >
+> > It looks like sysroot is missing as when I add to scripts/Makefile:
+> > ifdef SDKTARGETSYSROOT
+> >     userccflags += --sysroot=$(SDKTARGETSYSROOT)
+> > endif
+> >
+> > It builds.
+> >
+> > Not much came out from search on google but one thread that refers to
+> this problem when building with Yocto.
 
-Patch looks good, so applied, thanks
+In barebox.inc of the Yocto recipe, I replaced
+export TARGETCFLAGS="${TARGET_LDFLAGS}${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}"
+with
+export userccflags="${TARGET_LDFLAGS}${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}"
 
-I just wonder why the pagesize isn't included in the upstream dts.
-Shouldn't it be there as well?
+It builds.
 
-Sascha
+Would that  be the way to pass sysroot to scripts/Makefile?
 
-> 
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-> ---
->  arch/arm/dts/imx6qdl-phytec-pfla02.dtsi | 10 ++++------
->  1 file changed, 4 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
-> index b83511cb0..d0b056b2f 100644
-> --- a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
-> +++ b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
-> @@ -155,6 +155,10 @@
->  	barebox,provide-mac-address = <&fec 0x620>;
->  };
->  
-> +&som_eeprom {
-> +	pagesize = <32>;
-> +};
-> +
->  &usdhc3 {
->  	#address-cells = <1>;
->  	#size-cells = <1>;
-> @@ -175,12 +179,6 @@
->  	pinctrl-0 = <&pinctrl_i2c1>;
->  	status = "okay";
->  
-> -	eeprom: eeprom@50 {
-> -		compatible = "atmel,24c32";
-> -		pagesize = <32>;
-> -		reg = <0x50>;
-> -	};
-> -
->  	pmic@58 {
->  		watchdog-priority = <500>;
->  		restart-priority = <500>;
-> -- 
-> 2.26.2
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
+Cheers,
+Renaud
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
