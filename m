@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kb1xL-00054D-57
- for barebox@lists.infradead.org; Fri, 06 Nov 2020 13:39:31 +0000
+ id 1kb1xL-00054O-S5
+ for barebox@lists.infradead.org; Fri, 06 Nov 2020 13:39:32 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  6 Nov 2020 14:38:39 +0100
-Message-Id: <20201106133900.2656-6-s.hauer@pengutronix.de>
+Date: Fri,  6 Nov 2020 14:38:55 +0100
+Message-Id: <20201106133900.2656-22-s.hauer@pengutronix.de>
 In-Reply-To: <20201106133900.2656-1-s.hauer@pengutronix.de>
 References: <20201106133900.2656-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -17,5292 +17,1975 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/26] mtd: nand: Pass struct nand_chip around
+Subject: [PATCH 21/26] mtd: nand: denali: Update to Linux-5.9
 To: Barebox List <barebox@lists.infradead.org>
 
-Traditionally Linux passed a struct mtd_info * around as context
-between the different functions. This has been changed to a struct
-nand_chip *. Do the same for barebox as well as another step towards
-updating the NAND layer to current Linux.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/mtd/nand/atmel_nand.c     |  74 ++-
- drivers/mtd/nand/nand_base.c      | 806 +++++++++++++++---------------
- drivers/mtd/nand/nand_bbt.c       | 165 +++---
- drivers/mtd/nand/nand_bch.c       |  10 +-
- drivers/mtd/nand/nand_denali.c    |  80 +--
- drivers/mtd/nand/nand_ecc.c       |   4 +-
- drivers/mtd/nand/nand_imx.c       | 154 +++---
- drivers/mtd/nand/nand_mrvl_nfc.c  |  75 +--
- drivers/mtd/nand/nand_mxs.c       | 107 ++--
- drivers/mtd/nand/nand_omap_gpmc.c |  88 ++--
- drivers/mtd/nand/nand_orion.c     |  10 +-
- drivers/mtd/nand/nand_s3c24xx.c   |  43 +-
- drivers/mtd/nand/nomadik_nand.c   |  14 +-
- include/linux/mtd/nand.h          |  97 ++--
- include/linux/mtd/nand_bch.h      |  14 +-
- include/linux/mtd/nand_ecc.h      |   6 +-
- 16 files changed, 845 insertions(+), 902 deletions(-)
-
-diff --git a/drivers/mtd/nand/atmel_nand.c b/drivers/mtd/nand/atmel_nand.c
-index f3875a5648..e250df82d7 100644
---- a/drivers/mtd/nand/atmel_nand.c
-+++ b/drivers/mtd/nand/atmel_nand.c
-@@ -127,9 +127,8 @@ static void atmel_nand_disable(struct atmel_nand_host *host)
- /*
-  * Hardware specific access to control-lines
-  */
--static void atmel_nand_cmd_ctrl(struct mtd_info *mtd, int cmd, unsigned int ctrl)
-+static void atmel_nand_cmd_ctrl(struct nand_chip *nand_chip, int cmd, unsigned int ctrl)
- {
--	struct nand_chip *nand_chip = mtd_to_nand(mtd);
- 	struct atmel_nand_host *host = nand_chip->priv;
- 
- 	if (ctrl & NAND_CTRL_CHANGE) {
-@@ -150,9 +149,8 @@ static void atmel_nand_cmd_ctrl(struct mtd_info *mtd, int cmd, unsigned int ctrl
- /*
-  * Read the Device Ready pin.
-  */
--static int atmel_nand_device_ready(struct mtd_info *mtd)
-+static int atmel_nand_device_ready(struct nand_chip *nand_chip)
- {
--	struct nand_chip *nand_chip = mtd_to_nand(mtd);
- 	struct atmel_nand_host *host = nand_chip->priv;
- 
- 	return gpio_get_value(host->board->rdy_pin);
-@@ -161,31 +159,23 @@ static int atmel_nand_device_ready(struct mtd_info *mtd)
- /*
-  * Minimal-overhead PIO for data access.
-  */
--static void atmel_read_buf(struct mtd_info *mtd, u8 *buf, int len)
-+static void atmel_read_buf(struct nand_chip *nand_chip, u8 *buf, int len)
- {
--	struct nand_chip	*nand_chip = mtd_to_nand(mtd);
--
- 	readsb(nand_chip->IO_ADDR_R, buf, len);
- }
- 
--static void atmel_read_buf16(struct mtd_info *mtd, u8 *buf, int len)
-+static void atmel_read_buf16(struct nand_chip *nand_chip, u8 *buf, int len)
- {
--	struct nand_chip	*nand_chip = mtd_to_nand(mtd);
--
- 	readsw(nand_chip->IO_ADDR_R, buf, len / 2);
- }
- 
--static void atmel_write_buf(struct mtd_info *mtd, const u8 *buf, int len)
-+static void atmel_write_buf(struct nand_chip *nand_chip, const u8 *buf, int len)
- {
--	struct nand_chip	*nand_chip = mtd_to_nand(mtd);
--
- 	writesb(nand_chip->IO_ADDR_W, buf, len);
- }
- 
--static void atmel_write_buf16(struct mtd_info *mtd, const u8 *buf, int len)
-+static void atmel_write_buf16(struct nand_chip *nand_chip, const u8 *buf, int len)
- {
--	struct nand_chip	*nand_chip = mtd_to_nand(mtd);
--
- 	writesw(nand_chip->IO_ADDR_W, buf, len / 2);
- }
- 
-@@ -627,9 +617,10 @@ normal_check:
- 	return 0;
- }
- 
--static int atmel_nand_pmecc_read_page(struct mtd_info *mtd,
--		struct nand_chip *chip, uint8_t *buf, int oob_required, int page)
-+static int atmel_nand_pmecc_read_page(struct nand_chip *chip, uint8_t *buf,
-+				      int oob_required, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct atmel_nand_host *host = chip->priv;
- 	int eccsize = chip->ecc.size;
- 	uint8_t *oob = chip->oob_poi;
-@@ -645,8 +636,8 @@ static int atmel_nand_pmecc_read_page(struct mtd_info *mtd,
- 	pmecc_writel(host->ecc, CTRL, PMECC_CTRL_ENABLE);
- 	pmecc_writel(host->ecc, CTRL, PMECC_CTRL_DATA);
- 
--	chip->read_buf(mtd, buf, eccsize);
--	chip->read_buf(mtd, oob, mtd->oobsize);
-+	chip->read_buf(chip, buf, eccsize);
-+	chip->read_buf(chip, oob, mtd->oobsize);
- 
- 	ret = wait_on_timeout(PMECC_MAX_TIMEOUT_MS,
- 		!(pmecc_readl_relaxed(host->ecc, SR) & PMECC_SR_BUSY));
-@@ -663,10 +654,10 @@ static int atmel_nand_pmecc_read_page(struct mtd_info *mtd,
- 	return 0;
- }
- 
--static int atmel_nand_pmecc_write_page(struct mtd_info *mtd,
--		struct nand_chip *chip, const uint8_t *buf,
--		int oob_required)
-+static int atmel_nand_pmecc_write_page(struct nand_chip *chip, const uint8_t *buf,
-+				       int oob_required)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct atmel_nand_host *host = chip->priv;
- 	uint32_t *eccpos = chip->ecc.layout->eccpos;
- 	int i, j, ret;
-@@ -680,7 +671,7 @@ static int atmel_nand_pmecc_write_page(struct mtd_info *mtd,
- 	pmecc_writel(host->ecc, CTRL, PMECC_CTRL_ENABLE);
- 	pmecc_writel(host->ecc, CTRL, PMECC_CTRL_DATA);
- 
--	chip->write_buf(mtd, (u8 *)buf, mtd->writesize);
-+	chip->write_buf(chip, (u8 *)buf, mtd->writesize);
- 
- 	ret = wait_on_timeout(PMECC_MAX_TIMEOUT_MS,
- 		!(pmecc_readl_relaxed(host->ecc, SR) & PMECC_SR_BUSY));
-@@ -698,7 +689,7 @@ static int atmel_nand_pmecc_write_page(struct mtd_info *mtd,
- 				pmecc_readb_ecc_relaxed(host->ecc, i, j);
- 		}
- 	}
--	chip->write_buf(mtd, chip->oob_poi, mtd->oobsize);
-+	chip->write_buf(chip, chip->oob_poi, mtd->oobsize);
- 
- 	return 0;
- }
-@@ -979,10 +970,9 @@ static int __init atmel_pmecc_nand_init_params(struct device_d *dev,
-  * dat:        raw data (unused)
-  * ecc_code:   buffer for ECC
-  */
--static int atmel_nand_calculate(struct mtd_info *mtd,
-+static int atmel_nand_calculate(struct nand_chip *nand_chip,
- 		const u_char *dat, unsigned char *ecc_code)
- {
--	struct nand_chip *nand_chip = mtd_to_nand(mtd);
- 	struct atmel_nand_host *host = nand_chip->priv;
- 	unsigned int ecc_value;
- 
-@@ -1008,9 +998,10 @@ static int atmel_nand_calculate(struct mtd_info *mtd,
-  * chip:       nand chip info structure
-  * buf:        buffer to store read data
-  */
--static int atmel_nand_read_page(struct mtd_info *mtd,
--		struct nand_chip *chip, uint8_t *buf, int oob_required, int page)
-+static int atmel_nand_read_page(struct nand_chip *chip, uint8_t *buf,
-+				int oob_required, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int eccsize = chip->ecc.size;
- 	int eccbytes = chip->ecc.bytes;
- 	uint32_t *eccpos = chip->ecc.layout->eccpos;
-@@ -1035,7 +1026,7 @@ static int atmel_nand_read_page(struct mtd_info *mtd,
- #endif
- 
- 	/* read the page */
--	chip->read_buf(mtd, p, eccsize);
-+	chip->read_buf(chip, p, eccsize);
- 
- 	/* move to ECC position if needed */
- 	if (eccpos[0] != 0) {
-@@ -1045,16 +1036,16 @@ static int atmel_nand_read_page(struct mtd_info *mtd,
- 		 * NAND_CMD_RNDOUT.
- 		 * anyway, for small pages, the eccpos[0] == 0
- 		 */
--		chip->cmdfunc(mtd, NAND_CMD_RNDOUT,
-+		chip->cmdfunc(chip, NAND_CMD_RNDOUT,
- 				mtd->writesize + eccpos[0], -1);
- 	}
- 
- 	/* the ECC controller needs to read the ECC just after the data */
- 	ecc_pos = oob + eccpos[0];
--	chip->read_buf(mtd, ecc_pos, eccbytes);
-+	chip->read_buf(chip, ecc_pos, eccbytes);
- 
- 	/* check if there's an error */
--	stat = chip->ecc.correct(mtd, p, oob, NULL);
-+	stat = chip->ecc.correct(chip, p, oob, NULL);
- 
- 	if (stat < 0)
- 		mtd->ecc_stats.failed++;
-@@ -1062,10 +1053,10 @@ static int atmel_nand_read_page(struct mtd_info *mtd,
- 		mtd->ecc_stats.corrected += stat;
- 
- 	/* get back to oob start (end of page) */
--	chip->cmdfunc(mtd, NAND_CMD_RNDOUT, mtd->writesize, -1);
-+	chip->cmdfunc(chip, NAND_CMD_RNDOUT, mtd->writesize, -1);
- 
- 	/* read the oob */
--	chip->read_buf(mtd, oob, mtd->oobsize);
-+	chip->read_buf(chip, oob, mtd->oobsize);
- 
- 	return 0;
- }
-@@ -1082,10 +1073,9 @@ static int atmel_nand_read_page(struct mtd_info *mtd,
-  *
-  * Detect and correct a 1 bit error for a page
-  */
--static int atmel_nand_correct(struct mtd_info *mtd, u_char *dat,
-+static int atmel_nand_correct(struct nand_chip *nand_chip, u_char *dat,
- 		u_char *read_ecc, u_char *isnull)
- {
--	struct nand_chip *nand_chip = mtd_to_nand(mtd);
- 	struct atmel_nand_host *host = nand_chip->priv;
- 	unsigned int ecc_status;
- 	unsigned int ecc_word, ecc_bit;
-@@ -1149,7 +1139,7 @@ static int atmel_nand_correct(struct mtd_info *mtd, u_char *dat,
- /*
-  * Enable HW ECC : unused on most chips
-  */
--static void atmel_nand_hwctl(struct mtd_info *mtd, int mode)
-+static void atmel_nand_hwctl(struct nand_chip *nand_chip, int mode)
- {
- #if 0
- 	if (cpu_is_at32ap7000()) {
-@@ -1442,7 +1432,7 @@ static int __init atmel_nand_probe(struct device_d *dev)
- 
- 
- 	/* first scan to find the device and get the page size */
--	if (nand_scan_ident(mtd, 1, NULL)) {
-+	if (nand_scan_ident(nand_chip, 1, NULL)) {
- 		res = -ENXIO;
- 		goto err_scan_ident;
- 	}
-@@ -1459,17 +1449,17 @@ static int __init atmel_nand_probe(struct device_d *dev)
- 	}
- 
- 	/* second phase scan */
--	if (nand_scan_tail(mtd)) {
-+	if (nand_scan_tail(nand_chip)) {
- 		res = -ENXIO;
- 		goto err_scan_tail;
- 	}
- 
--	add_mtd_nand_device(mtd, "nand");
-+	add_mtd_nand_device(nand_chip, "nand");
- 
- 	if (!res)
- 		return res;
- 
--	nand_release(mtd);
-+	nand_release(nand_chip);
- err_scan_tail:
- err_hw_ecc:
- err_scan_ident:
-diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
-index 064b36201e..ef0b15d64e 100644
---- a/drivers/mtd/nand/nand_base.c
-+++ b/drivers/mtd/nand/nand_base.c
-@@ -89,15 +89,14 @@ static struct nand_ecclayout nand_oob_128 = {
- 		 .length = 78} }
- };
- 
--static int nand_get_device(struct mtd_info *mtd, int new_state);
-+static int nand_get_device(struct nand_chip *chip, int new_state);
- 
--static int nand_do_write_oob(struct mtd_info *mtd, loff_t to,
-+static int nand_do_write_oob(struct nand_chip *chip, loff_t to,
- 			     struct mtd_oob_ops *ops);
- 
--static int check_offs_len(struct mtd_info *mtd,
-+static int check_offs_len(struct nand_chip *chip,
- 					loff_t ofs, uint64_t len)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 	int ret = 0;
- 
- 	/* Start address must align on block boundary */
-@@ -121,10 +120,8 @@ static int check_offs_len(struct mtd_info *mtd,
-  *
-  * Release chip lock and wake up anyone waiting on the device.
-  */
--static void nand_release_device(struct mtd_info *mtd)
-+static void nand_release_device(struct nand_chip *chip)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
--
- 	/* Release the controller and the chip */
- 	chip->controller->active = NULL;
- 	chip->state = FL_READY;
-@@ -136,9 +133,8 @@ static void nand_release_device(struct mtd_info *mtd)
-  *
-  * Default read function for 8bit buswidth
-  */
--static uint8_t nand_read_byte(struct mtd_info *mtd)
-+static uint8_t nand_read_byte(struct nand_chip *chip)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 	return readb(chip->IO_ADDR_R);
- }
- 
-@@ -150,9 +146,8 @@ static uint8_t nand_read_byte(struct mtd_info *mtd)
-  * Default read function for 16bit buswidth with endianness conversion.
-  *
-  */
--static uint8_t nand_read_byte16(struct mtd_info *mtd)
-+static uint8_t nand_read_byte16(struct nand_chip *chip)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 	return (uint8_t) cpu_to_le16(readw(chip->IO_ADDR_R));
- }
- 
-@@ -162,9 +157,8 @@ static uint8_t nand_read_byte16(struct mtd_info *mtd)
-  *
-  * Default read function for 16bit buswidth without endianness conversion.
-  */
--static u16 nand_read_word(struct mtd_info *mtd)
-+static u16 nand_read_word(struct nand_chip *chip)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 	return readw(chip->IO_ADDR_R);
- }
- 
-@@ -175,13 +169,11 @@ static u16 nand_read_word(struct mtd_info *mtd)
-  *
-  * Default select function for 1 chip devices.
-  */
--static void nand_select_chip(struct mtd_info *mtd, int chipnr)
-+static void nand_select_chip(struct nand_chip *chip, int chipnr)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
--
- 	switch (chipnr) {
- 	case -1:
--		chip->cmd_ctrl(mtd, NAND_CMD_NONE, 0 | NAND_CTRL_CHANGE);
-+		chip->cmd_ctrl(chip, NAND_CMD_NONE, 0 | NAND_CTRL_CHANGE);
- 		break;
- 	case 0:
- 		break;
-@@ -199,11 +191,10 @@ static void nand_select_chip(struct mtd_info *mtd, int chipnr)
-  *
-  * Default write function for 8bit buswidth.
-  */
--static __maybe_unused void nand_write_buf(struct mtd_info *mtd,
-+static __maybe_unused void nand_write_buf(struct nand_chip *chip,
- 		const uint8_t *buf, int len)
- {
- 	int i;
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 
- 	for (i = 0; i < len; i++)
- 		writeb(buf[i], chip->IO_ADDR_W);
-@@ -217,10 +208,9 @@ static __maybe_unused void nand_write_buf(struct mtd_info *mtd,
-  *
-  * Default read function for 8bit buswidth.
-  */
--static void nand_read_buf(struct mtd_info *mtd, uint8_t *buf, int len)
-+static void nand_read_buf(struct nand_chip *chip, uint8_t *buf, int len)
- {
- 	int i;
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 
- 	for (i = 0; i < len; i++)
- 		buf[i] = readb(chip->IO_ADDR_R);
-@@ -234,11 +224,10 @@ static void nand_read_buf(struct mtd_info *mtd, uint8_t *buf, int len)
-  *
-  * Default write function for 16bit buswidth.
-  */
--static __maybe_unused void nand_write_buf16(struct mtd_info *mtd,
-+static __maybe_unused void nand_write_buf16(struct nand_chip *chip,
- 		const uint8_t *buf, int len)
- {
- 	int i;
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 	u16 *p = (u16 *) buf;
- 	len >>= 1;
- 
-@@ -255,10 +244,9 @@ static __maybe_unused void nand_write_buf16(struct mtd_info *mtd,
-  *
-  * Default read function for 16bit buswidth.
-  */
--static void nand_read_buf16(struct mtd_info *mtd, uint8_t *buf, int len)
-+static void nand_read_buf16(struct nand_chip *chip, uint8_t *buf, int len)
- {
- 	int i;
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 	u16 *p = (u16 *) buf;
- 	len >>= 1;
- 
-@@ -274,53 +262,52 @@ static void nand_read_buf16(struct mtd_info *mtd, uint8_t *buf, int len)
-  *
-  * Check, if the block is bad.
-  */
--static int nand_block_bad(struct mtd_info *mtd, loff_t ofs, int getchip)
-+static int nand_block_bad(struct nand_chip *chip, loff_t ofs, int getchip)
- {
- 	int page, chipnr, res = 0, i = 0;
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 	u16 bad;
- 
- 	if (chip->bbt_options & NAND_BBT_SCANLASTPAGE)
--		ofs += mtd->erasesize - mtd->writesize;
-+		ofs += chip->mtd.erasesize - chip->mtd.writesize;
- 
- 	page = (int)(ofs >> chip->page_shift) & chip->pagemask;
- 
- 	if (getchip) {
- 		chipnr = (int)(ofs >> chip->chip_shift);
- 
--		nand_get_device(mtd, FL_READING);
-+		nand_get_device(chip, FL_READING);
- 
- 		/* Select the NAND device */
--		chip->select_chip(mtd, chipnr);
-+		chip->select_chip(chip, chipnr);
- 	}
- 
- 	do {
- 		if (chip->options & NAND_BUSWIDTH_16) {
--			chip->cmdfunc(mtd, NAND_CMD_READOOB,
-+			chip->cmdfunc(chip, NAND_CMD_READOOB,
- 					chip->badblockpos & 0xFE, page);
--			bad = cpu_to_le16(chip->read_word(mtd));
-+			bad = cpu_to_le16(chip->read_word(chip));
- 			if (chip->badblockpos & 0x1)
- 				bad >>= 8;
- 			else
- 				bad &= 0xFF;
- 		} else {
--			chip->cmdfunc(mtd, NAND_CMD_READOOB, chip->badblockpos,
-+			chip->cmdfunc(chip, NAND_CMD_READOOB, chip->badblockpos,
- 					page);
--			bad = chip->read_byte(mtd);
-+			bad = chip->read_byte(chip);
- 		}
- 
- 		if (likely(chip->badblockbits == 8))
- 			res = bad != 0xFF;
- 		else
- 			res = hweight8(bad) < chip->badblockbits;
--		ofs += mtd->writesize;
-+		ofs += chip->mtd.writesize;
- 		page = (int)(ofs >> chip->page_shift) & chip->pagemask;
- 		i++;
- 	} while (!res && i < 2 && (chip->bbt_options & NAND_BBT_SCAN2NDPAGE));
- 
- 	if (getchip) {
--		chip->select_chip(mtd, -1);
--		nand_release_device(mtd);
-+		chip->select_chip(chip, -1);
-+		nand_release_device(chip);
- 	}
- 
- 	return res;
-@@ -335,9 +322,8 @@ static int nand_block_bad(struct mtd_info *mtd, loff_t ofs, int getchip)
-  * specific driver. It provides the details for writing a bad block marker to a
-  * block.
-  */
--static __maybe_unused int nand_default_block_markbad(struct mtd_info *mtd, loff_t ofs)
-+static __maybe_unused int nand_default_block_markbad(struct nand_chip *chip, loff_t ofs)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 	struct mtd_oob_ops ops;
- 	uint8_t buf[2] = { 0, 0 };
- 	int ret = 0, res, i = 0;
-@@ -355,14 +341,14 @@ static __maybe_unused int nand_default_block_markbad(struct mtd_info *mtd, loff_
- 
- 	/* Write to first/last page(s) if necessary */
- 	if (chip->bbt_options & NAND_BBT_SCANLASTPAGE)
--		ofs += mtd->erasesize - mtd->writesize;
-+		ofs += chip->mtd.erasesize - chip->mtd.writesize;
- 	do {
--		res = nand_do_write_oob(mtd, ofs, &ops);
-+		res = nand_do_write_oob(chip, ofs, &ops);
- 		if (!ret)
- 			ret = res;
- 
- 		i++;
--		ofs += mtd->writesize;
-+		ofs += chip->mtd.writesize;
- 	} while ((chip->bbt_options & NAND_BBT_SCAN2NDPAGE) && i < 2);
- 
- 	return ret;
-@@ -385,9 +371,8 @@ static __maybe_unused int nand_default_block_markbad(struct mtd_info *mtd, loff_
-  * Note that we retain the first error encountered in (2) or (3), finish the
-  * procedures, and dump the error in the end.
-  */
--static int nand_block_markbad_lowlevel(struct mtd_info *mtd, loff_t ofs)
-+static int nand_block_markbad_lowlevel(struct nand_chip *chip, loff_t ofs)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 	int res, ret = 0;
- 
- 	if (!(chip->bbt_options & NAND_BBT_NO_OOB_BBM)) {
-@@ -395,26 +380,26 @@ static int nand_block_markbad_lowlevel(struct mtd_info *mtd, loff_t ofs)
- 
- 		/* Attempt erase before marking OOB */
- 		memset(&einfo, 0, sizeof(einfo));
--		einfo.mtd = mtd;
-+		einfo.mtd = &chip->mtd;
- 		einfo.addr = ofs;
- 		einfo.len = 1 << chip->phys_erase_shift;
--		nand_erase_nand(mtd, &einfo, 0);
-+		nand_erase_nand(chip, &einfo, 0);
- 
- 		/* Write bad block marker to OOB */
--		nand_get_device(mtd, FL_WRITING);
--		ret = chip->block_markbad(mtd, ofs);
--		nand_release_device(mtd);
-+		nand_get_device(chip, FL_WRITING);
-+		ret = chip->block_markbad(chip, ofs);
-+		nand_release_device(chip);
- 	}
- 
- 	/* Mark block bad in BBT */
- 	if (IS_ENABLED(CONFIG_NAND_BBT) && chip->bbt) {
--		res = nand_markbad_bbt(mtd, ofs);
-+		res = nand_markbad_bbt(chip, ofs);
- 		if (!ret)
- 			ret = res;
- 	}
- 
- 	if (!ret)
--		mtd->ecc_stats.badblocks++;
-+		chip->mtd.ecc_stats.badblocks++;
- 
- 	return ret;
- }
-@@ -429,9 +414,8 @@ static int nand_block_markbad_lowlevel(struct mtd_info *mtd, loff_t ofs)
-  *  (2) check bad block marker
-  *  (3) update the BBT
-  */
--static int nand_block_markgood_lowlevel(struct mtd_info *mtd, loff_t ofs)
-+static int nand_block_markgood_lowlevel(struct nand_chip *chip, loff_t ofs)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 	bool allow_erasebad;
- 	int ret;
- 
-@@ -439,33 +423,33 @@ static int nand_block_markgood_lowlevel(struct mtd_info *mtd, loff_t ofs)
- 		struct erase_info einfo;
- 
- 		/* Attempt erase possibly bad block */
--		allow_erasebad = mtd->allow_erasebad;
--		mtd->allow_erasebad = true;
-+		allow_erasebad = chip->mtd.allow_erasebad;
-+		chip->mtd.allow_erasebad = true;
- 		memset(&einfo, 0, sizeof(einfo));
--		einfo.mtd = mtd;
-+		einfo.mtd = &chip->mtd;
- 		einfo.addr = ofs;
- 		einfo.len = 1 << chip->phys_erase_shift;
--		nand_erase_nand(mtd, &einfo, 0);
--		mtd->allow_erasebad = allow_erasebad;
-+		nand_erase_nand(chip, &einfo, 0);
-+		chip->mtd.allow_erasebad = allow_erasebad;
- 
- 		/*
- 		 * Verify erase succeded. We need to select chip again,
- 		 * as nand_erase_nand deselected it.
- 		 */
--		ret = chip->block_bad(mtd, ofs, 1);
-+		ret = chip->block_bad(chip, ofs, 1);
- 		if (ret)
- 			return ret;
- 	}
- 
- 	/* Mark block good in BBT */
- 	if (IS_ENABLED(CONFIG_NAND_BBT) && chip->bbt) {
--		ret = nand_markgood_bbt(mtd, ofs);
-+		ret = nand_markgood_bbt(chip, ofs);
- 		if (ret)
- 			return ret;
- 	}
- 
--	if (mtd->ecc_stats.badblocks > 0)
--		mtd->ecc_stats.badblocks--;
-+	if (chip->mtd.ecc_stats.badblocks > 0)
-+		chip->mtd.ecc_stats.badblocks--;
- 
- 	return 0;
- }
-@@ -477,17 +461,15 @@ static int nand_block_markgood_lowlevel(struct mtd_info *mtd, loff_t ofs)
-  * Check, if the device is write protected. The function expects, that the
-  * device is already selected.
-  */
--static int nand_check_wp(struct mtd_info *mtd)
-+static int nand_check_wp(struct nand_chip *chip)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
--
- 	/* Broken xD cards report WP despite being writable */
- 	if (chip->options & NAND_BROKEN_XD)
- 		return 0;
- 
- 	/* Check the WP bit */
--	chip->cmdfunc(mtd, NAND_CMD_STATUS, -1, -1);
--	return (chip->read_byte(mtd) & NAND_STATUS_WP) ? 0 : 1;
-+	chip->cmdfunc(chip, NAND_CMD_STATUS, -1, -1);
-+	return (chip->read_byte(chip) & NAND_STATUS_WP) ? 0 : 1;
- }
- 
- /**
-@@ -500,28 +482,25 @@ static int nand_check_wp(struct mtd_info *mtd)
-  * Check, if the block is bad. Either by reading the bad block table or
-  * calling of the scan function.
-  */
--static int nand_block_checkbad(struct mtd_info *mtd, loff_t ofs, int getchip,
-+static int nand_block_checkbad(struct nand_chip *chip, loff_t ofs, int getchip,
- 			       int allowbbt)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
--
- 	if (IS_ENABLED(CONFIG_NAND_BBT) && chip->bbt) {
- 		/* Return info from the table */
--		return nand_isbad_bbt(mtd, ofs, allowbbt);
-+		return nand_isbad_bbt(chip, ofs, allowbbt);
- 	}
- 
--	return chip->block_bad(mtd, ofs, getchip);
-+	return chip->block_bad(chip, ofs, getchip);
- }
- 
- /* Wait for the ready pin, after a command. The timeout is caught later. */
--void nand_wait_ready(struct mtd_info *mtd)
-+void nand_wait_ready(struct nand_chip *chip)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 	uint64_t start = get_time_ns();
- 
- 	/* wait until command is processed or timeout occures */
- 	do {
--		if (chip->dev_ready(mtd))
-+		if (chip->dev_ready(chip))
- 			break;
- 	} while (!is_timeout(start, SECOND * 2));
- }
-@@ -536,19 +515,18 @@ void nand_wait_ready(struct mtd_info *mtd)
-  * Send command to NAND device. This function is used for small page devices
-  * (512 Bytes per page).
-  */
--static void nand_command(struct mtd_info *mtd, unsigned int command,
-+static void nand_command(struct nand_chip *chip, unsigned int command,
- 			 int column, int page_addr)
- {
--	register struct nand_chip *chip = mtd_to_nand(mtd);
- 	int ctrl = NAND_CTRL_CLE | NAND_CTRL_CHANGE;
- 
- 	/* Write out the command to the device */
- 	if (IS_ENABLED(CONFIG_MTD_WRITE) && command == NAND_CMD_SEQIN) {
- 		int readcmd;
- 
--		if (column >= mtd->writesize) {
-+		if (column >= chip->mtd.writesize) {
- 			/* OOB area */
--			column -= mtd->writesize;
-+			column -= chip->mtd.writesize;
- 			readcmd = NAND_CMD_READOOB;
- 		} else if (column < 256) {
- 			/* First 256 bytes --> READ0 */
-@@ -557,10 +535,10 @@ static void nand_command(struct mtd_info *mtd, unsigned int command,
- 			column -= 256;
- 			readcmd = NAND_CMD_READ1;
- 		}
--		chip->cmd_ctrl(mtd, readcmd, ctrl);
-+		chip->cmd_ctrl(chip, readcmd, ctrl);
- 		ctrl &= ~NAND_CTRL_CHANGE;
- 	}
--	chip->cmd_ctrl(mtd, command, ctrl);
-+	chip->cmd_ctrl(chip, command, ctrl);
- 
- 	/* Address cycle, when necessary */
- 	ctrl = NAND_CTRL_ALE | NAND_CTRL_CHANGE;
-@@ -569,18 +547,18 @@ static void nand_command(struct mtd_info *mtd, unsigned int command,
- 		/* Adjust columns for 16 bit buswidth */
- 		if (chip->options & NAND_BUSWIDTH_16)
- 			column >>= 1;
--		chip->cmd_ctrl(mtd, column, ctrl);
-+		chip->cmd_ctrl(chip, column, ctrl);
- 		ctrl &= ~NAND_CTRL_CHANGE;
- 	}
- 	if (page_addr != -1) {
--		chip->cmd_ctrl(mtd, page_addr, ctrl);
-+		chip->cmd_ctrl(chip, page_addr, ctrl);
- 		ctrl &= ~NAND_CTRL_CHANGE;
--		chip->cmd_ctrl(mtd, page_addr >> 8, ctrl);
-+		chip->cmd_ctrl(chip, page_addr >> 8, ctrl);
- 		/* One more address cycle for devices > 32MiB */
- 		if (chip->chipsize > (32 << 20))
--			chip->cmd_ctrl(mtd, page_addr >> 16, ctrl);
-+			chip->cmd_ctrl(chip, page_addr >> 16, ctrl);
- 	}
--	chip->cmd_ctrl(mtd, NAND_CMD_NONE, NAND_NCE | NAND_CTRL_CHANGE);
-+	chip->cmd_ctrl(chip, NAND_CMD_NONE, NAND_NCE | NAND_CTRL_CHANGE);
- 
- 	/*
- 	 * Program and erase have their own busy handlers status and sequential
-@@ -599,11 +577,11 @@ static void nand_command(struct mtd_info *mtd, unsigned int command,
- 		if (chip->dev_ready)
- 			break;
- 		udelay(chip->chip_delay);
--		chip->cmd_ctrl(mtd, NAND_CMD_STATUS,
-+		chip->cmd_ctrl(chip, NAND_CMD_STATUS,
- 			       NAND_CTRL_CLE | NAND_CTRL_CHANGE);
--		chip->cmd_ctrl(mtd,
-+		chip->cmd_ctrl(chip,
- 			       NAND_CMD_NONE, NAND_NCE | NAND_CTRL_CHANGE);
--		while (!(chip->read_byte(mtd) & NAND_STATUS_READY))
-+		while (!(chip->read_byte(chip) & NAND_STATUS_READY))
- 				;
- 		return;
- 
-@@ -624,7 +602,7 @@ static void nand_command(struct mtd_info *mtd, unsigned int command,
- 	 */
- 	ndelay(100);
- 
--	nand_wait_ready(mtd);
-+	nand_wait_ready(chip);
- }
- 
- /**
-@@ -638,19 +616,17 @@ static void nand_command(struct mtd_info *mtd, unsigned int command,
-  * devices. We don't have the separate regions as we have in the small page
-  * devices. We must emulate NAND_CMD_READOOB to keep the code compatible.
-  */
--static void nand_command_lp(struct mtd_info *mtd, unsigned int command,
-+static void nand_command_lp(struct nand_chip *chip, unsigned int command,
- 			    int column, int page_addr)
- {
--	register struct nand_chip *chip = mtd_to_nand(mtd);
--
- 	/* Emulate NAND_CMD_READOOB */
- 	if (command == NAND_CMD_READOOB) {
--		column += mtd->writesize;
-+		column += chip->mtd.writesize;
- 		command = NAND_CMD_READ0;
- 	}
- 
- 	/* Command latch cycle */
--	chip->cmd_ctrl(mtd, command, NAND_NCE | NAND_CLE | NAND_CTRL_CHANGE);
-+	chip->cmd_ctrl(chip, command, NAND_NCE | NAND_CLE | NAND_CTRL_CHANGE);
- 
- 	if (column != -1 || page_addr != -1) {
- 		int ctrl = NAND_CTRL_CHANGE | NAND_NCE | NAND_ALE;
-@@ -660,21 +636,21 @@ static void nand_command_lp(struct mtd_info *mtd, unsigned int command,
- 			/* Adjust columns for 16 bit buswidth */
- 			if (chip->options & NAND_BUSWIDTH_16)
- 				column >>= 1;
--			chip->cmd_ctrl(mtd, column, ctrl);
-+			chip->cmd_ctrl(chip, column, ctrl);
- 			ctrl &= ~NAND_CTRL_CHANGE;
--			chip->cmd_ctrl(mtd, column >> 8, ctrl);
-+			chip->cmd_ctrl(chip, column >> 8, ctrl);
- 		}
- 		if (page_addr != -1) {
--			chip->cmd_ctrl(mtd, page_addr, ctrl);
--			chip->cmd_ctrl(mtd, page_addr >> 8,
-+			chip->cmd_ctrl(chip, page_addr, ctrl);
-+			chip->cmd_ctrl(chip, page_addr >> 8,
- 				       NAND_NCE | NAND_ALE);
- 			/* One more address cycle for devices > 128MiB */
- 			if (chip->chipsize > (128 << 20))
--				chip->cmd_ctrl(mtd, page_addr >> 16,
-+				chip->cmd_ctrl(chip, page_addr >> 16,
- 					       NAND_NCE | NAND_ALE);
- 		}
- 	}
--	chip->cmd_ctrl(mtd, NAND_CMD_NONE, NAND_NCE | NAND_CTRL_CHANGE);
-+	chip->cmd_ctrl(chip, NAND_CMD_NONE, NAND_NCE | NAND_CTRL_CHANGE);
- 
- 	/*
- 	 * Program and erase have their own busy handlers status, sequential
-@@ -695,26 +671,26 @@ static void nand_command_lp(struct mtd_info *mtd, unsigned int command,
- 		if (chip->dev_ready)
- 			break;
- 		udelay(chip->chip_delay);
--		chip->cmd_ctrl(mtd, NAND_CMD_STATUS,
-+		chip->cmd_ctrl(chip, NAND_CMD_STATUS,
- 			       NAND_NCE | NAND_CLE | NAND_CTRL_CHANGE);
--		chip->cmd_ctrl(mtd, NAND_CMD_NONE,
-+		chip->cmd_ctrl(chip, NAND_CMD_NONE,
- 			       NAND_NCE | NAND_CTRL_CHANGE);
--		while (!(chip->read_byte(mtd) & NAND_STATUS_READY))
-+		while (!(chip->read_byte(chip) & NAND_STATUS_READY))
- 				;
- 		return;
- 
- 	case NAND_CMD_RNDOUT:
- 		/* No ready / busy check necessary */
--		chip->cmd_ctrl(mtd, NAND_CMD_RNDOUTSTART,
-+		chip->cmd_ctrl(chip, NAND_CMD_RNDOUTSTART,
- 			       NAND_NCE | NAND_CLE | NAND_CTRL_CHANGE);
--		chip->cmd_ctrl(mtd, NAND_CMD_NONE,
-+		chip->cmd_ctrl(chip, NAND_CMD_NONE,
- 			       NAND_NCE | NAND_CTRL_CHANGE);
- 		return;
- 
- 	case NAND_CMD_READ0:
--		chip->cmd_ctrl(mtd, NAND_CMD_READSTART,
-+		chip->cmd_ctrl(chip, NAND_CMD_READSTART,
- 			       NAND_NCE | NAND_CLE | NAND_CTRL_CHANGE);
--		chip->cmd_ctrl(mtd, NAND_CMD_NONE,
-+		chip->cmd_ctrl(chip, NAND_CMD_NONE,
- 			       NAND_NCE | NAND_CTRL_CHANGE);
- 
- 		/* This applies to read commands */
-@@ -735,7 +711,7 @@ static void nand_command_lp(struct mtd_info *mtd, unsigned int command,
- 	 */
- 	ndelay(100);
- 
--	nand_wait_ready(mtd);
-+	nand_wait_ready(chip);
- }
- 
- /**
-@@ -746,9 +722,8 @@ static void nand_command_lp(struct mtd_info *mtd, unsigned int command,
-  * Get the device and lock it for exclusive access
-  */
- static int
--nand_get_device(struct mtd_info *mtd, int new_state)
-+nand_get_device(struct nand_chip *chip, int new_state)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
- retry:
- 
- 	/* Hardware controller shared among independent devices */
-@@ -777,7 +752,7 @@ retry:
-  * Erase can take up to 400ms and program up to 20ms according to
-  * general NAND and SmartMedia specs
-  */
--static int nand_wait(struct mtd_info *mtd, struct nand_chip *chip)
-+static int nand_wait(struct nand_chip *chip)
- {
- 
- 	uint64_t start = get_time_ns();
-@@ -793,19 +768,19 @@ static int nand_wait(struct mtd_info *mtd, struct nand_chip *chip)
- 	 * any case on any machine. */
- 	ndelay(100);
- 
--	chip->cmdfunc(mtd, NAND_CMD_STATUS, -1, -1);
-+	chip->cmdfunc(chip, NAND_CMD_STATUS, -1, -1);
- 
- 	while (!is_timeout(start, timeo)) {
- 		if (chip->dev_ready) {
--			if (chip->dev_ready(mtd))
-+			if (chip->dev_ready(chip))
- 				break;
- 		} else {
--			if (chip->read_byte(mtd) & NAND_STATUS_READY)
-+			if (chip->read_byte(chip) & NAND_STATUS_READY)
- 				break;
- 		}
- 	}
- 
--	status = (int)chip->read_byte(mtd);
-+	status = (int)chip->read_byte(chip);
- 	return status;
- }
- 
-@@ -821,24 +796,23 @@ static int nand_wait(struct mtd_info *mtd, struct nand_chip *chip)
-  *
-  * Returs unlock status.
-  */
--static int __nand_unlock(struct mtd_info *mtd, loff_t ofs,
-+static int __nand_unlock(struct nand_chip *chip, loff_t ofs,
- 					uint64_t len, int invert)
- {
- 	int ret = 0;
- 	int status, page;
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 
- 	/* Submit address of first page to unlock */
- 	page = ofs >> chip->page_shift;
--	chip->cmdfunc(mtd, NAND_CMD_UNLOCK1, -1, page & chip->pagemask);
-+	chip->cmdfunc(chip, NAND_CMD_UNLOCK1, -1, page & chip->pagemask);
- 
- 	/* Submit address of last page to unlock */
- 	page = (ofs + len) >> chip->page_shift;
--	chip->cmdfunc(mtd, NAND_CMD_UNLOCK2, -1,
-+	chip->cmdfunc(chip, NAND_CMD_UNLOCK2, -1,
- 				(page | invert) & chip->pagemask);
- 
- 	/* Call wait ready function */
--	status = chip->waitfunc(mtd, chip);
-+	status = chip->waitfunc(chip);
- 	/* See if device thinks it succeeded */
- 	if (status & NAND_STATUS_FAIL) {
- 		pr_debug("%s: error status = 0x%08x\n",
-@@ -857,28 +831,28 @@ static int __nand_unlock(struct mtd_info *mtd, loff_t ofs,
-  *
-  * Returns unlock status.
-  */
--int nand_unlock(struct mtd_info *mtd, loff_t ofs, uint64_t len)
-+int nand_unlock(struct nand_chip *chip, loff_t ofs, uint64_t len)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int ret = 0;
- 	int chipnr;
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 
- 	pr_debug("%s: start = 0x%012llx, len = %llu\n",
- 			__func__, (unsigned long long)ofs, len);
- 
--	if (check_offs_len(mtd, ofs, len))
-+	if (check_offs_len(chip, ofs, len))
- 		ret = -EINVAL;
- 
- 	/* Align to last block address if size addresses end of the device */
- 	if (ofs + len == mtd->size)
- 		len -= mtd->erasesize;
- 
--	nand_get_device(mtd, FL_UNLOCKING);
-+	nand_get_device(chip, FL_UNLOCKING);
- 
- 	/* Shift to get chip number */
- 	chipnr = ofs >> chip->chip_shift;
- 
--	chip->select_chip(mtd, chipnr);
-+	chip->select_chip(chip, chipnr);
- 
- 	/*
- 	 * Reset the chip.
-@@ -887,21 +861,21 @@ int nand_unlock(struct mtd_info *mtd, loff_t ofs, uint64_t len)
- 	 * some operation can also clear the bit 7 of status register
- 	 * eg. erase/program a locked block
- 	 */
--	chip->cmdfunc(mtd, NAND_CMD_RESET, -1, -1);
-+	chip->cmdfunc(chip, NAND_CMD_RESET, -1, -1);
- 
- 	/* Check, if it is write protected */
--	if (nand_check_wp(mtd)) {
-+	if (nand_check_wp(chip)) {
- 		pr_debug("%s: device is write protected!\n",
- 					__func__);
- 		ret = -EIO;
- 		goto out;
- 	}
- 
--	ret = __nand_unlock(mtd, ofs, len, 0);
-+	ret = __nand_unlock(chip, ofs, len, 0);
- 
- out:
--	chip->select_chip(mtd, -1);
--	nand_release_device(mtd);
-+	chip->select_chip(chip, -1);
-+	nand_release_device(chip);
- 
- 	return ret;
- }
-@@ -920,24 +894,23 @@ EXPORT_SYMBOL(nand_unlock);
-  *
-  * Returns lock status.
-  */
--int nand_lock(struct mtd_info *mtd, loff_t ofs, uint64_t len)
-+int nand_lock(struct nand_chip *chip, loff_t ofs, uint64_t len)
- {
- 	int ret = 0;
- 	int chipnr, status, page;
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 
- 	pr_debug("%s: start = 0x%012llx, len = %llu\n",
- 			__func__, (unsigned long long)ofs, len);
- 
--	if (check_offs_len(mtd, ofs, len))
-+	if (check_offs_len(chip, ofs, len))
- 		ret = -EINVAL;
- 
--	nand_get_device(mtd, FL_LOCKING);
-+	nand_get_device(chip, FL_LOCKING);
- 
- 	/* Shift to get chip number */
- 	chipnr = ofs >> chip->chip_shift;
- 
--	chip->select_chip(mtd, chipnr);
-+	chip->select_chip(chip, chipnr);
- 
- 	/*
- 	 * Reset the chip.
-@@ -946,10 +919,10 @@ int nand_lock(struct mtd_info *mtd, loff_t ofs, uint64_t len)
- 	 * some operation can also clear the bit 7 of status register
- 	 * eg. erase/program a locked block
- 	 */
--	chip->cmdfunc(mtd, NAND_CMD_RESET, -1, -1);
-+	chip->cmdfunc(chip, NAND_CMD_RESET, -1, -1);
- 
- 	/* Check, if it is write protected */
--	if (nand_check_wp(mtd)) {
-+	if (nand_check_wp(chip)) {
- 		pr_debug("%s: device is write protected!\n",
- 					__func__);
- 		ret = -EIO;
-@@ -958,10 +931,10 @@ int nand_lock(struct mtd_info *mtd, loff_t ofs, uint64_t len)
- 
- 	/* Submit address of first page to lock */
- 	page = ofs >> chip->page_shift;
--	chip->cmdfunc(mtd, NAND_CMD_LOCK, -1, page & chip->pagemask);
-+	chip->cmdfunc(chip, NAND_CMD_LOCK, -1, page & chip->pagemask);
- 
- 	/* Call wait ready function */
--	status = chip->waitfunc(mtd, chip);
-+	status = chip->waitfunc(chip);
- 	/* See if device thinks it succeeded */
- 	if (status & NAND_STATUS_FAIL) {
- 		pr_debug("%s: error status = 0x%08x\n",
-@@ -970,11 +943,11 @@ int nand_lock(struct mtd_info *mtd, loff_t ofs, uint64_t len)
- 		goto out;
- 	}
- 
--	ret = __nand_unlock(mtd, ofs, len, 0x1);
-+	ret = __nand_unlock(chip, ofs, len, 0x1);
- 
- out:
--	chip->select_chip(mtd, -1);
--	nand_release_device(mtd);
-+	chip->select_chip(chip, -1);
-+	nand_release_device(chip);
- 
- 	return ret;
- }
-@@ -1118,12 +1091,13 @@ EXPORT_SYMBOL(nand_check_erased_ecc_chunk);
-  *
-  * Not for syndrome calculating ECC controllers, which use a special oob layout.
-  */
--static __maybe_unused int nand_read_page_raw(struct mtd_info *mtd,
--		struct nand_chip *chip, uint8_t *buf, int oob_required, int page)
-+static __maybe_unused int nand_read_page_raw(struct nand_chip *chip,
-+					     uint8_t *buf, int oob_required,
-+					     int page)
- {
--	chip->read_buf(mtd, buf, mtd->writesize);
-+	chip->read_buf(chip, buf, chip->mtd.writesize);
- 	if (oob_required)
--		chip->read_buf(mtd, chip->oob_poi, mtd->oobsize);
-+		chip->read_buf(chip, chip->oob_poi, chip->mtd.oobsize);
- 	return 0;
- }
- 
-@@ -1137,9 +1111,8 @@ static __maybe_unused int nand_read_page_raw(struct mtd_info *mtd,
-  *
-  * We need a special oob layout and handling even when OOB isn't used.
-  */
--static __maybe_unused int nand_read_page_raw_syndrome(struct mtd_info *mtd,
--				       struct nand_chip *chip, uint8_t *buf,
--				       int oob_required, int page)
-+static __maybe_unused int nand_read_page_raw_syndrome(struct nand_chip *chip,
-+					uint8_t *buf, int oob_required, int page)
- {
- 	int eccsize = chip->ecc.size;
- 	int eccbytes = chip->ecc.bytes;
-@@ -1147,26 +1120,26 @@ static __maybe_unused int nand_read_page_raw_syndrome(struct mtd_info *mtd,
- 	int steps, size;
- 
- 	for (steps = chip->ecc.steps; steps > 0; steps--) {
--		chip->read_buf(mtd, buf, eccsize);
-+		chip->read_buf(chip, buf, eccsize);
- 		buf += eccsize;
- 
- 		if (chip->ecc.prepad) {
--			chip->read_buf(mtd, oob, chip->ecc.prepad);
-+			chip->read_buf(chip, oob, chip->ecc.prepad);
- 			oob += chip->ecc.prepad;
- 		}
- 
--		chip->read_buf(mtd, oob, eccbytes);
-+		chip->read_buf(chip, oob, eccbytes);
- 		oob += eccbytes;
- 
- 		if (chip->ecc.postpad) {
--			chip->read_buf(mtd, oob, chip->ecc.postpad);
-+			chip->read_buf(chip, oob, chip->ecc.postpad);
- 			oob += chip->ecc.postpad;
- 		}
- 	}
- 
--	size = mtd->oobsize - (oob - chip->oob_poi);
-+	size = chip->mtd.oobsize - (oob - chip->oob_poi);
- 	if (size)
--		chip->read_buf(mtd, oob, size);
-+		chip->read_buf(chip, oob, size);
- 
- 	return 0;
- }
-@@ -1179,10 +1152,10 @@ static __maybe_unused int nand_read_page_raw_syndrome(struct mtd_info *mtd,
-  * @oob_required: caller requires OOB data read to chip->oob_poi
-  * @page: page number to read
-  */
--static __maybe_unused int nand_read_page_swecc(struct mtd_info *mtd,
--		struct nand_chip *chip, uint8_t *buf, int oob_required,
--		int page)
-+static __maybe_unused int nand_read_page_swecc(struct nand_chip *chip,
-+		uint8_t *buf, int oob_required, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int i, eccsize = chip->ecc.size;
- 	int eccbytes = chip->ecc.bytes;
- 	int eccsteps = chip->ecc.steps;
-@@ -1192,10 +1165,10 @@ static __maybe_unused int nand_read_page_swecc(struct mtd_info *mtd,
- 	uint32_t *eccpos = chip->ecc.layout->eccpos;
- 	unsigned int max_bitflips = 0;
- 
--	chip->ecc.read_page_raw(mtd, chip, buf, 1, page);
-+	chip->ecc.read_page_raw(chip, buf, 1, page);
- 
- 	for (i = 0; eccsteps; eccsteps--, i += eccbytes, p += eccsize)
--		chip->ecc.calculate(mtd, p, &ecc_calc[i]);
-+		chip->ecc.calculate(chip, p, &ecc_calc[i]);
- 
- 	for (i = 0; i < chip->ecc.total; i++)
- 		ecc_code[i] = chip->oob_poi[eccpos[i]];
-@@ -1206,7 +1179,7 @@ static __maybe_unused int nand_read_page_swecc(struct mtd_info *mtd,
- 	for (i = 0 ; eccsteps; eccsteps--, i += eccbytes, p += eccsize) {
- 		int stat;
- 
--		stat = chip->ecc.correct(mtd, p, &ecc_code[i], &ecc_calc[i]);
-+		stat = chip->ecc.correct(chip, p, &ecc_code[i], &ecc_calc[i]);
- 		if (stat < 0) {
- 			mtd->ecc_stats.failed++;
- 		} else {
-@@ -1225,10 +1198,11 @@ static __maybe_unused int nand_read_page_swecc(struct mtd_info *mtd,
-  * @readlen: data length
-  * @bufpoi: buffer to store read data
-  */
--static __maybe_unused int nand_read_subpage(struct mtd_info *mtd,
--		struct nand_chip *chip, uint32_t data_offs, uint32_t readlen,
-+static __maybe_unused int nand_read_subpage(struct nand_chip *chip,
-+		uint32_t data_offs, uint32_t readlen,
- 		uint8_t *bufpoi, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int start_step, end_step, num_steps;
- 	uint32_t *eccpos = chip->ecc.layout->eccpos;
- 	uint8_t *p;
-@@ -1255,14 +1229,14 @@ static __maybe_unused int nand_read_subpage(struct mtd_info *mtd,
- 	data_col_addr = start_step * chip->ecc.size;
- 	/* If we read not a page aligned data */
- 	if (data_col_addr != 0)
--		chip->cmdfunc(mtd, NAND_CMD_RNDOUT, data_col_addr, -1);
-+		chip->cmdfunc(chip, NAND_CMD_RNDOUT, data_col_addr, -1);
- 
- 	p = bufpoi + data_col_addr;
--	chip->read_buf(mtd, p, datafrag_len);
-+	chip->read_buf(chip, p, datafrag_len);
- 
- 	/* Calculate ECC */
- 	for (i = 0; i < eccfrag_len ; i += chip->ecc.bytes, p += chip->ecc.size)
--		chip->ecc.calculate(mtd, p, &chip->buffers->ecccalc[i]);
-+		chip->ecc.calculate(chip, p, &chip->buffers->ecccalc[i]);
- 
- 	/*
- 	 * The performance is faster if we position offsets according to
-@@ -1276,8 +1250,8 @@ static __maybe_unused int nand_read_subpage(struct mtd_info *mtd,
- 		}
- 	}
- 	if (gaps) {
--		chip->cmdfunc(mtd, NAND_CMD_RNDOUT, mtd->writesize, -1);
--		chip->read_buf(mtd, chip->oob_poi, mtd->oobsize);
-+		chip->cmdfunc(chip, NAND_CMD_RNDOUT, mtd->writesize, -1);
-+		chip->read_buf(chip, chip->oob_poi, mtd->oobsize);
- 	} else {
- 		/*
- 		 * Send the command to read the particular ECC bytes take care
-@@ -1292,9 +1266,9 @@ static __maybe_unused int nand_read_subpage(struct mtd_info *mtd,
- 		if (eccpos[index + (num_steps * chip->ecc.bytes)] & (busw - 1))
- 			aligned_len++;
- 
--		chip->cmdfunc(mtd, NAND_CMD_RNDOUT,
-+		chip->cmdfunc(chip, NAND_CMD_RNDOUT,
- 					mtd->writesize + aligned_pos, -1);
--		chip->read_buf(mtd, &chip->oob_poi[aligned_pos], aligned_len);
-+		chip->read_buf(chip, &chip->oob_poi[aligned_pos], aligned_len);
- 	}
- 
- 	for (i = 0; i < eccfrag_len; i++)
-@@ -1304,7 +1278,7 @@ static __maybe_unused int nand_read_subpage(struct mtd_info *mtd,
- 	for (i = 0; i < eccfrag_len ; i += chip->ecc.bytes, p += chip->ecc.size) {
- 		int stat;
- 
--		stat = chip->ecc.correct(mtd, p,
-+		stat = chip->ecc.correct(chip, p,
- 			&chip->buffers->ecccode[i], &chip->buffers->ecccalc[i]);
- 		if (stat < 0) {
- 			mtd->ecc_stats.failed++;
-@@ -1326,9 +1300,10 @@ static __maybe_unused int nand_read_subpage(struct mtd_info *mtd,
-  *
-  * Not for syndrome calculating ECC controllers which need a special oob layout.
-  */
--static __maybe_unused int nand_read_page_hwecc(struct mtd_info *mtd,
--		struct nand_chip *chip, uint8_t *buf, int oob_required, int page)
-+static __maybe_unused int nand_read_page_hwecc(struct nand_chip *chip,
-+			uint8_t *buf, int oob_required, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int i, eccsize = chip->ecc.size;
- 	int eccbytes = chip->ecc.bytes;
- 	int eccsteps = chip->ecc.steps;
-@@ -1339,11 +1314,11 @@ static __maybe_unused int nand_read_page_hwecc(struct mtd_info *mtd,
- 	unsigned int max_bitflips = 0;
- 
- 	for (i = 0; eccsteps; eccsteps--, i += eccbytes, p += eccsize) {
--		chip->ecc.hwctl(mtd, NAND_ECC_READ);
--		chip->read_buf(mtd, p, eccsize);
--		chip->ecc.calculate(mtd, p, &ecc_calc[i]);
-+		chip->ecc.hwctl(chip, NAND_ECC_READ);
-+		chip->read_buf(chip, p, eccsize);
-+		chip->ecc.calculate(chip, p, &ecc_calc[i]);
- 	}
--	chip->read_buf(mtd, chip->oob_poi, mtd->oobsize);
-+	chip->read_buf(chip, chip->oob_poi, mtd->oobsize);
- 
- 	for (i = 0; i < chip->ecc.total; i++)
- 		ecc_code[i] = chip->oob_poi[eccpos[i]];
-@@ -1354,7 +1329,7 @@ static __maybe_unused int nand_read_page_hwecc(struct mtd_info *mtd,
- 	for (i = 0 ; eccsteps; eccsteps--, i += eccbytes, p += eccsize) {
- 		int stat;
- 
--		stat = chip->ecc.correct(mtd, p, &ecc_code[i], &ecc_calc[i]);
-+		stat = chip->ecc.correct(chip, p, &ecc_code[i], &ecc_calc[i]);
- 		if (stat < 0) {
- 			mtd->ecc_stats.failed++;
- 		} else {
-@@ -1379,9 +1354,10 @@ static __maybe_unused int nand_read_page_hwecc(struct mtd_info *mtd,
-  * multiple ECC steps, follows the "infix ECC" scheme and reads/writes ECC from
-  * the data area, by overwriting the NAND manufacturer bad block markings.
-  */
--static __maybe_unused int nand_read_page_hwecc_oob_first(struct mtd_info *mtd,
--	struct nand_chip *chip, uint8_t *buf, int oob_required, int page)
-+static __maybe_unused int nand_read_page_hwecc_oob_first(struct nand_chip *chip,
-+				uint8_t *buf, int oob_required, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int i, eccsize = chip->ecc.size;
- 	int eccbytes = chip->ecc.bytes;
- 	int eccsteps = chip->ecc.steps;
-@@ -1392,9 +1368,9 @@ static __maybe_unused int nand_read_page_hwecc_oob_first(struct mtd_info *mtd,
- 	unsigned int max_bitflips = 0;
- 
- 	/* Read the OOB area first */
--	chip->cmdfunc(mtd, NAND_CMD_READOOB, 0, page);
--	chip->read_buf(mtd, chip->oob_poi, mtd->oobsize);
--	chip->cmdfunc(mtd, NAND_CMD_READ0, 0, page);
-+	chip->cmdfunc(chip, NAND_CMD_READOOB, 0, page);
-+	chip->read_buf(chip, chip->oob_poi, mtd->oobsize);
-+	chip->cmdfunc(chip, NAND_CMD_READ0, 0, page);
- 
- 	for (i = 0; i < chip->ecc.total; i++)
- 		ecc_code[i] = chip->oob_poi[eccpos[i]];
-@@ -1402,11 +1378,11 @@ static __maybe_unused int nand_read_page_hwecc_oob_first(struct mtd_info *mtd,
- 	for (i = 0; eccsteps; eccsteps--, i += eccbytes, p += eccsize) {
- 		int stat;
- 
--		chip->ecc.hwctl(mtd, NAND_ECC_READ);
--		chip->read_buf(mtd, p, eccsize);
--		chip->ecc.calculate(mtd, p, &ecc_calc[i]);
-+		chip->ecc.hwctl(chip, NAND_ECC_READ);
-+		chip->read_buf(chip, p, eccsize);
-+		chip->ecc.calculate(chip, p, &ecc_calc[i]);
- 
--		stat = chip->ecc.correct(mtd, p, &ecc_code[i], NULL);
-+		stat = chip->ecc.correct(chip, p, &ecc_code[i], NULL);
- 		if (stat < 0) {
- 			mtd->ecc_stats.failed++;
- 		} else {
-@@ -1428,9 +1404,10 @@ static __maybe_unused int nand_read_page_hwecc_oob_first(struct mtd_info *mtd,
-  * The hw generator calculates the error syndrome automatically. Therefore we
-  * need a special oob layout and handling.
-  */
--static __maybe_unused  int nand_read_page_syndrome(struct mtd_info *mtd, struct nand_chip *chip,
-+static __maybe_unused  int nand_read_page_syndrome(struct nand_chip *chip,
- 				   uint8_t *buf, int oob_required, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int i, eccsize = chip->ecc.size;
- 	int eccbytes = chip->ecc.bytes;
- 	int eccsteps = chip->ecc.steps;
-@@ -1441,17 +1418,17 @@ static __maybe_unused  int nand_read_page_syndrome(struct mtd_info *mtd, struct
- 	for (i = 0; eccsteps; eccsteps--, i += eccbytes, p += eccsize) {
- 		int stat;
- 
--		chip->ecc.hwctl(mtd, NAND_ECC_READ);
--		chip->read_buf(mtd, p, eccsize);
-+		chip->ecc.hwctl(chip, NAND_ECC_READ);
-+		chip->read_buf(chip, p, eccsize);
- 
- 		if (chip->ecc.prepad) {
--			chip->read_buf(mtd, oob, chip->ecc.prepad);
-+			chip->read_buf(chip, oob, chip->ecc.prepad);
- 			oob += chip->ecc.prepad;
- 		}
- 
--		chip->ecc.hwctl(mtd, NAND_ECC_READSYN);
--		chip->read_buf(mtd, oob, eccbytes);
--		stat = chip->ecc.correct(mtd, p, oob, NULL);
-+		chip->ecc.hwctl(chip, NAND_ECC_READSYN);
-+		chip->read_buf(chip, oob, eccbytes);
-+		stat = chip->ecc.correct(chip, p, oob, NULL);
- 
- 		if (stat < 0) {
- 			mtd->ecc_stats.failed++;
-@@ -1463,7 +1440,7 @@ static __maybe_unused  int nand_read_page_syndrome(struct mtd_info *mtd, struct
- 		oob += eccbytes;
- 
- 		if (chip->ecc.postpad) {
--			chip->read_buf(mtd, oob, chip->ecc.postpad);
-+			chip->read_buf(chip, oob, chip->ecc.postpad);
- 			oob += chip->ecc.postpad;
- 		}
- 	}
-@@ -1471,7 +1448,7 @@ static __maybe_unused  int nand_read_page_syndrome(struct mtd_info *mtd, struct
- 	/* Calculate remaining oob bytes */
- 	i = mtd->oobsize - (oob - chip->oob_poi);
- 	if (i)
--		chip->read_buf(mtd, oob, i);
-+		chip->read_buf(chip, oob, i);
- 
- 	return max_bitflips;
- }
-@@ -1532,17 +1509,17 @@ static uint8_t *nand_transfer_oob(struct nand_chip *chip, uint8_t *oob,
-  *
-  * Internal function. Called with chip held.
-  */
--static int nand_do_read_ops(struct mtd_info *mtd, loff_t from,
-+static int nand_do_read_ops(struct nand_chip *chip, loff_t from,
- 			    struct mtd_oob_ops *ops)
- {
- 	int chipnr, page, realpage, col, bytes, aligned, oob_required;
--	struct nand_chip *chip = mtd_to_nand(mtd);
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct mtd_ecc_stats stats;
- 	int ret = 0;
- 	uint32_t readlen = ops->len;
- 	uint32_t oobreadlen = ops->ooblen;
- 	uint32_t max_oobsize = ops->mode == MTD_OPS_AUTO_OOB ?
--		mtd->oobavail : mtd->oobsize;
-+		chip->mtd.oobavail : chip->mtd.oobsize;
- 
- 	uint8_t *bufpoi, *oob, *buf;
- 	unsigned int max_bitflips = 0;
-@@ -1550,7 +1527,7 @@ static int nand_do_read_ops(struct mtd_info *mtd, loff_t from,
- 	stats = mtd->ecc_stats;
- 
- 	chipnr = (int)(from >> chip->chip_shift);
--	chip->select_chip(mtd, chipnr);
-+	chip->select_chip(chip, chipnr);
- 
- 	realpage = (int)(from >> chip->page_shift);
- 	page = realpage & chip->pagemask;
-@@ -1569,22 +1546,22 @@ static int nand_do_read_ops(struct mtd_info *mtd, loff_t from,
- 		if (realpage != chip->pagebuf || oob) {
- 			bufpoi = aligned ? buf : chip->buffers->databuf;
- 
--			chip->cmdfunc(mtd, NAND_CMD_READ0, 0x00, page);
-+			chip->cmdfunc(chip, NAND_CMD_READ0, 0x00, page);
- 
- 			/*
- 			 * Now read the page into the buffer.  Absent an error,
- 			 * the read methods return max bitflips per ecc step.
- 			 */
- 			if (unlikely(ops->mode == MTD_OPS_RAW))
--				ret = chip->ecc.read_page_raw(mtd, chip, bufpoi,
-+				ret = chip->ecc.read_page_raw(chip, bufpoi,
- 							      oob_required,
- 							      page);
- 			else if (!aligned && NAND_HAS_SUBPAGE_READ(chip) &&
- 				 !oob)
--				ret = chip->ecc.read_subpage(mtd, chip,
-+				ret = chip->ecc.read_subpage(chip,
- 							col, bytes, bufpoi, page);
- 			else
--				ret = chip->ecc.read_page(mtd, chip, bufpoi,
-+				ret = chip->ecc.read_page(chip, bufpoi,
- 							  oob_required, page);
- 			if (ret < 0) {
- 				if (!aligned)
-@@ -1626,7 +1603,7 @@ static int nand_do_read_ops(struct mtd_info *mtd, loff_t from,
- 				if (!chip->dev_ready)
- 					udelay(chip->chip_delay);
- 				else
--					nand_wait_ready(mtd);
-+					nand_wait_ready(chip);
- 			}
- 		} else {
- 			memcpy(buf, chip->buffers->databuf + col, bytes);
-@@ -1649,11 +1626,11 @@ static int nand_do_read_ops(struct mtd_info *mtd, loff_t from,
- 		/* Check, if we cross a chip boundary */
- 		if (!page) {
- 			chipnr++;
--			chip->select_chip(mtd, -1);
--			chip->select_chip(mtd, chipnr);
-+			chip->select_chip(chip, -1);
-+			chip->select_chip(chip, chipnr);
- 		}
- 	}
--	chip->select_chip(mtd, -1);
-+	chip->select_chip(chip, -1);
- 
- 	ops->retlen = ops->len - (size_t) readlen;
- 	if (oob)
-@@ -1681,18 +1658,19 @@ static int nand_do_read_ops(struct mtd_info *mtd, loff_t from,
- static int nand_read(struct mtd_info *mtd, loff_t from, size_t len,
- 		     size_t *retlen, uint8_t *buf)
- {
-+	struct nand_chip *chip = mtd_to_nand(mtd);
- 	struct mtd_oob_ops ops;
- 	int ret;
- 
--	nand_get_device(mtd, FL_READING);
-+	nand_get_device(chip, FL_READING);
- 	ops.len = len;
- 	ops.datbuf = buf;
- 	ops.ooblen = 0;
- 	ops.oobbuf = NULL;
- 	ops.mode = MTD_OPS_PLACE_OOB;
--	ret = nand_do_read_ops(mtd, from, &ops);
-+	ret = nand_do_read_ops(chip, from, &ops);
- 	*retlen = ops.retlen;
--	nand_release_device(mtd);
-+	nand_release_device(chip);
- 	return ret;
- }
- 
-@@ -1702,14 +1680,13 @@ static int nand_read(struct mtd_info *mtd, loff_t from, size_t len,
-  * @chip: nand chip info structure
-  * @page: page number to read
-  */
--static __maybe_unused int nand_read_oob_std(struct mtd_info *mtd,
--		struct nand_chip *chip, int page)
-+static __maybe_unused int nand_read_oob_std(struct nand_chip *chip, int page)
- {
- 	if (!IS_ENABLED(CONFIG_NAND_READ_OOB))
- 		return -ENOTSUPP;
- 
--	chip->cmdfunc(mtd, NAND_CMD_READOOB, 0, page);
--	chip->read_buf(mtd, chip->oob_poi, mtd->oobsize);
-+	chip->cmdfunc(chip, NAND_CMD_READOOB, 0, page);
-+	chip->read_buf(chip, chip->oob_poi, chip->mtd.oobsize);
- 	return 0;
- }
- 
-@@ -1720,11 +1697,11 @@ static __maybe_unused int nand_read_oob_std(struct mtd_info *mtd,
-  * @chip: nand chip info structure
-  * @page: page number to read
-  */
--static __maybe_unused  int nand_read_oob_syndrome(struct mtd_info *mtd,
--		struct nand_chip *chip, int page)
-+static __maybe_unused  int nand_read_oob_syndrome(struct nand_chip *chip,
-+						  int page)
- {
- 	uint8_t *buf = chip->oob_poi;
--	int length = mtd->oobsize;
-+	int length = chip->mtd.oobsize;
- 	int chunk = chip->ecc.bytes + chip->ecc.prepad + chip->ecc.postpad;
- 	int eccsize = chip->ecc.size;
- 	uint8_t *bufpoi = buf;
-@@ -1733,23 +1710,23 @@ static __maybe_unused  int nand_read_oob_syndrome(struct mtd_info *mtd,
- 	if (!IS_ENABLED(CONFIG_NAND_READ_OOB))
- 		return -ENOTSUPP;
- 
--	chip->cmdfunc(mtd, NAND_CMD_READ0, chip->ecc.size, page);
-+	chip->cmdfunc(chip, NAND_CMD_READ0, chip->ecc.size, page);
- 	for (i = 0; i < chip->ecc.steps; i++) {
- 		if (sndrnd) {
- 			pos = eccsize + i * (eccsize + chunk);
--			if (mtd->writesize > 512)
--				chip->cmdfunc(mtd, NAND_CMD_RNDOUT, pos, -1);
-+			if (chip->mtd.writesize > 512)
-+				chip->cmdfunc(chip, NAND_CMD_RNDOUT, pos, -1);
- 			else
--				chip->cmdfunc(mtd, NAND_CMD_READ0, pos, page);
-+				chip->cmdfunc(chip, NAND_CMD_READ0, pos, page);
- 		} else
- 			sndrnd = 1;
- 		toread = min_t(int, length, chunk);
--		chip->read_buf(mtd, bufpoi, toread);
-+		chip->read_buf(chip, bufpoi, toread);
- 		bufpoi += toread;
- 		length -= toread;
- 	}
- 	if (length > 0)
--		chip->read_buf(mtd, bufpoi, length);
-+		chip->read_buf(chip, bufpoi, length);
- 
- 	return 0;
- }
-@@ -1760,22 +1737,21 @@ static __maybe_unused  int nand_read_oob_syndrome(struct mtd_info *mtd,
-  * @chip: nand chip info structure
-  * @page: page number to write
-  */
--static __maybe_unused int nand_write_oob_std(struct mtd_info *mtd,
--		struct nand_chip *chip, int page)
-+static __maybe_unused int nand_write_oob_std(struct nand_chip *chip, int page)
- {
- 	int status = 0;
- 	const uint8_t *buf = chip->oob_poi;
--	int length = mtd->oobsize;
-+	int length = chip->mtd.oobsize;
- 
- 	if (!IS_ENABLED(CONFIG_NAND_READ_OOB) || !IS_ENABLED(CONFIG_MTD_WRITE))
- 		return -ENOTSUPP;
- 
--	chip->cmdfunc(mtd, NAND_CMD_SEQIN, mtd->writesize, page);
--	chip->write_buf(mtd, buf, length);
-+	chip->cmdfunc(chip, NAND_CMD_SEQIN, chip->mtd.writesize, page);
-+	chip->write_buf(chip, buf, length);
- 	/* Send command to program the OOB data */
--	chip->cmdfunc(mtd, NAND_CMD_PAGEPROG, -1, -1);
-+	chip->cmdfunc(chip, NAND_CMD_PAGEPROG, -1, -1);
- 
--	status = chip->waitfunc(mtd, chip);
-+	status = chip->waitfunc(chip);
- 
- 	return status & NAND_STATUS_FAIL ? -EIO : 0;
- }
-@@ -1787,11 +1763,10 @@ static __maybe_unused int nand_write_oob_std(struct mtd_info *mtd,
-  * @chip: nand chip info structure
-  * @page: page number to write
-  */
--static __maybe_unused  int nand_write_oob_syndrome(struct mtd_info *mtd,
--				   struct nand_chip *chip, int page)
-+static __maybe_unused  int nand_write_oob_syndrome(struct nand_chip *chip, int page)
- {
- 	int chunk = chip->ecc.bytes + chip->ecc.prepad + chip->ecc.postpad;
--	int eccsize = chip->ecc.size, length = mtd->oobsize;
-+	int eccsize = chip->ecc.size, length = chip->mtd.oobsize;
- 	int i, len, pos, status = 0, sndcmd = 0, steps = chip->ecc.steps;
- 	const uint8_t *bufpoi = chip->oob_poi;
- 
-@@ -1809,35 +1784,35 @@ static __maybe_unused  int nand_write_oob_syndrome(struct mtd_info *mtd,
- 	} else
- 		pos = eccsize;
- 
--	chip->cmdfunc(mtd, NAND_CMD_SEQIN, pos, page);
-+	chip->cmdfunc(chip, NAND_CMD_SEQIN, pos, page);
- 	for (i = 0; i < steps; i++) {
- 		if (sndcmd) {
--			if (mtd->writesize <= 512) {
-+			if (chip->mtd.writesize <= 512) {
- 				uint32_t fill = 0xFFFFFFFF;
- 
- 				len = eccsize;
- 				while (len > 0) {
- 					int num = min_t(int, len, 4);
--					chip->write_buf(mtd, (uint8_t *)&fill,
-+					chip->write_buf(chip, (uint8_t *)&fill,
- 							num);
- 					len -= num;
- 				}
- 			} else {
- 				pos = eccsize + i * (eccsize + chunk);
--				chip->cmdfunc(mtd, NAND_CMD_RNDIN, pos, -1);
-+				chip->cmdfunc(chip, NAND_CMD_RNDIN, pos, -1);
- 			}
- 		} else
- 			sndcmd = 1;
- 		len = min_t(int, length, chunk);
--		chip->write_buf(mtd, bufpoi, len);
-+		chip->write_buf(chip, bufpoi, len);
- 		bufpoi += len;
- 		length -= len;
- 	}
- 	if (length > 0)
--		chip->write_buf(mtd, bufpoi, length);
-+		chip->write_buf(chip, bufpoi, length);
- 
--	chip->cmdfunc(mtd, NAND_CMD_PAGEPROG, -1, -1);
--	status = chip->waitfunc(mtd, chip);
-+	chip->cmdfunc(chip, NAND_CMD_PAGEPROG, -1, -1);
-+	status = chip->waitfunc(chip);
- 
- 	return status & NAND_STATUS_FAIL ? -EIO : 0;
- }
-@@ -1850,11 +1825,11 @@ static __maybe_unused  int nand_write_oob_syndrome(struct mtd_info *mtd,
-  *
-  * NAND read out-of-band data from the spare area.
-  */
--static int nand_do_read_oob(struct mtd_info *mtd, loff_t from,
-+static int nand_do_read_oob(struct nand_chip *chip, loff_t from,
- 			    struct mtd_oob_ops *ops)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int page, realpage, chipnr;
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 	struct mtd_ecc_stats stats;
- 	int readlen = ops->ooblen;
- 	int len;
-@@ -1890,7 +1865,7 @@ static int nand_do_read_oob(struct mtd_info *mtd, loff_t from,
- 	}
- 
- 	chipnr = (int)(from >> chip->chip_shift);
--	chip->select_chip(mtd, chipnr);
-+	chip->select_chip(chip, chipnr);
- 
- 	/* Shift to get page */
- 	realpage = (int)(from >> chip->page_shift);
-@@ -1898,9 +1873,9 @@ static int nand_do_read_oob(struct mtd_info *mtd, loff_t from,
- 
- 	while (1) {
- 		if (ops->mode == MTD_OPS_RAW)
--			ret = chip->ecc.read_oob_raw(mtd, chip, page);
-+			ret = chip->ecc.read_oob_raw(chip, page);
- 		else
--			ret = chip->ecc.read_oob(mtd, chip, page);
-+			ret = chip->ecc.read_oob(chip, page);
- 
- 		if (ret < 0)
- 			break;
-@@ -1913,7 +1888,7 @@ static int nand_do_read_oob(struct mtd_info *mtd, loff_t from,
- 			if (!chip->dev_ready)
- 				udelay(chip->chip_delay);
- 			else
--				nand_wait_ready(mtd);
-+				nand_wait_ready(chip);
- 		}
- 
- 		readlen -= len;
-@@ -1927,11 +1902,11 @@ static int nand_do_read_oob(struct mtd_info *mtd, loff_t from,
- 		/* Check, if we cross a chip boundary */
- 		if (!page) {
- 			chipnr++;
--			chip->select_chip(mtd, -1);
--			chip->select_chip(mtd, chipnr);
-+			chip->select_chip(chip, -1);
-+			chip->select_chip(chip, chipnr);
- 		}
- 	}
--	chip->select_chip(mtd, -1);
-+	chip->select_chip(chip, -1);
- 
- 	ops->oobretlen = ops->ooblen - readlen;
- 
-@@ -1955,6 +1930,7 @@ static int nand_do_read_oob(struct mtd_info *mtd, loff_t from,
- static int nand_read_oob(struct mtd_info *mtd, loff_t from,
- 			 struct mtd_oob_ops *ops)
- {
-+	struct nand_chip *chip = mtd_to_nand(mtd);
- 	int ret = -ENOTSUPP;
- 
- 	if (!IS_ENABLED(CONFIG_NAND_READ_OOB))
-@@ -1963,13 +1939,13 @@ static int nand_read_oob(struct mtd_info *mtd, loff_t from,
- 	ops->retlen = 0;
- 
- 	/* Do not allow reads past end of device */
--	if (ops->datbuf && (from + ops->len) > mtd->size) {
-+	if (ops->datbuf && (from + ops->len) > chip->mtd.size) {
- 		pr_debug("%s: attempt to read beyond end of device\n",
- 				__func__);
- 		return -EINVAL;
- 	}
- 
--	nand_get_device(mtd, FL_READING);
-+	nand_get_device(chip, FL_READING);
- 
- 	switch (ops->mode) {
- 	case MTD_OPS_PLACE_OOB:
-@@ -1982,12 +1958,12 @@ static int nand_read_oob(struct mtd_info *mtd, loff_t from,
- 	}
- 
- 	if (!ops->datbuf)
--		ret = nand_do_read_oob(mtd, from, ops);
-+		ret = nand_do_read_oob(chip, from, ops);
- 	else
--		ret = nand_do_read_ops(mtd, from, ops);
-+		ret = nand_do_read_ops(chip, from, ops);
- 
- out:
--	nand_release_device(mtd);
-+	nand_release_device(chip);
- 	return ret;
- }
- 
-@@ -2001,15 +1977,15 @@ out:
-  *
-  * Not for syndrome calculating ECC controllers, which use a special oob layout.
-  */
--static __maybe_unused int nand_write_page_raw(struct mtd_info *mtd,
--		struct nand_chip *chip, const uint8_t *buf, int oob_required)
-+static __maybe_unused int nand_write_page_raw(struct nand_chip *chip,
-+		const uint8_t *buf, int oob_required)
- {
- 	if (!IS_ENABLED(CONFIG_MTD_WRITE))
- 		return -ENOTSUPP;
- 
--	chip->write_buf(mtd, buf, mtd->writesize);
-+	chip->write_buf(chip, buf, chip->mtd.writesize);
- 	if (oob_required)
--		chip->write_buf(mtd, chip->oob_poi, mtd->oobsize);
-+		chip->write_buf(chip, chip->oob_poi, chip->mtd.oobsize);
- 
- 	return 0;
- }
-@@ -2023,8 +1999,7 @@ static __maybe_unused int nand_write_page_raw(struct mtd_info *mtd,
-  *
-  * We need a special oob layout and handling even when ECC isn't checked.
-  */
--static __maybe_unused  int nand_write_page_raw_syndrome(struct mtd_info *mtd,
--					struct nand_chip *chip,
-+static __maybe_unused  int nand_write_page_raw_syndrome(struct nand_chip *chip,
- 					const uint8_t *buf, int oob_required)
- {
- 	int eccsize = chip->ecc.size;
-@@ -2036,26 +2011,26 @@ static __maybe_unused  int nand_write_page_raw_syndrome(struct mtd_info *mtd,
- 		return -ENOTSUPP;
- 
- 	for (steps = chip->ecc.steps; steps > 0; steps--) {
--		chip->write_buf(mtd, buf, eccsize);
-+		chip->write_buf(chip, buf, eccsize);
- 		buf += eccsize;
- 
- 		if (chip->ecc.prepad) {
--			chip->write_buf(mtd, oob, chip->ecc.prepad);
-+			chip->write_buf(chip, oob, chip->ecc.prepad);
- 			oob += chip->ecc.prepad;
- 		}
- 
--		chip->read_buf(mtd, oob, eccbytes);
-+		chip->read_buf(chip, oob, eccbytes);
- 		oob += eccbytes;
- 
- 		if (chip->ecc.postpad) {
--			chip->write_buf(mtd, oob, chip->ecc.postpad);
-+			chip->write_buf(chip, oob, chip->ecc.postpad);
- 			oob += chip->ecc.postpad;
- 		}
- 	}
- 
--	size = mtd->oobsize - (oob - chip->oob_poi);
-+	size = chip->mtd.oobsize - (oob - chip->oob_poi);
- 	if (size)
--		chip->write_buf(mtd, oob, size);
-+		chip->write_buf(chip, oob, size);
- 
- 	return 0;
- }
-@@ -2066,8 +2041,8 @@ static __maybe_unused  int nand_write_page_raw_syndrome(struct mtd_info *mtd,
-  * @buf: data buffer
-  * @oob_required: must write chip->oob_poi to OOB
-  */
--static __maybe_unused int nand_write_page_swecc(struct mtd_info *mtd,
--		struct nand_chip *chip, const uint8_t *buf, int oob_required)
-+static __maybe_unused int nand_write_page_swecc(struct nand_chip *chip,
-+						const uint8_t *buf, int oob_required)
- {
- 	int i, eccsize = chip->ecc.size;
- 	int eccbytes = chip->ecc.bytes;
-@@ -2081,12 +2056,12 @@ static __maybe_unused int nand_write_page_swecc(struct mtd_info *mtd,
- 
- 	/* Software ECC calculation */
- 	for (i = 0; eccsteps; eccsteps--, i += eccbytes, p += eccsize)
--		chip->ecc.calculate(mtd, p, &ecc_calc[i]);
-+		chip->ecc.calculate(chip, p, &ecc_calc[i]);
- 
- 	for (i = 0; i < chip->ecc.total; i++)
- 		chip->oob_poi[eccpos[i]] = ecc_calc[i];
- 
--	return chip->ecc.write_page_raw(mtd, chip, buf, 1);
-+	return chip->ecc.write_page_raw(chip, buf, 1);
- }
- 
- /**
-@@ -2096,8 +2071,8 @@ static __maybe_unused int nand_write_page_swecc(struct mtd_info *mtd,
-  * @buf: data buffer
-  * @oob_required: must write chip->oob_poi to OOB
-  */
--static __maybe_unused int nand_write_page_hwecc(struct mtd_info *mtd,
--		struct nand_chip *chip, const uint8_t *buf, int oob_required)
-+static __maybe_unused int nand_write_page_hwecc(struct nand_chip *chip,
-+						const uint8_t *buf, int oob_required)
- {
- 	int i, eccsize = chip->ecc.size;
- 	int eccbytes = chip->ecc.bytes;
-@@ -2110,15 +2085,15 @@ static __maybe_unused int nand_write_page_hwecc(struct mtd_info *mtd,
- 		return -ENOTSUPP;
- 
- 	for (i = 0; eccsteps; eccsteps--, i += eccbytes, p += eccsize) {
--		chip->ecc.hwctl(mtd, NAND_ECC_WRITE);
--		chip->write_buf(mtd, p, eccsize);
--		chip->ecc.calculate(mtd, p, &ecc_calc[i]);
-+		chip->ecc.hwctl(chip, NAND_ECC_WRITE);
-+		chip->write_buf(chip, p, eccsize);
-+		chip->ecc.calculate(chip, p, &ecc_calc[i]);
- 	}
- 
- 	for (i = 0; i < chip->ecc.total; i++)
- 		chip->oob_poi[eccpos[i]] = ecc_calc[i];
- 
--	chip->write_buf(mtd, chip->oob_poi, mtd->oobsize);
-+	chip->write_buf(chip, chip->oob_poi, chip->mtd.oobsize);
- 
- 	return 0;
- }
-@@ -2132,8 +2107,8 @@ static __maybe_unused int nand_write_page_hwecc(struct mtd_info *mtd,
-  * @data_len:	data length
-  * @oob_required: must write chip->oob_poi to OOB
-  */
--static __maybe_unused int nand_write_subpage_hwecc(struct mtd_info *mtd,
--				struct nand_chip *chip, uint32_t offset,
-+static __maybe_unused int nand_write_subpage_hwecc(struct nand_chip *chip,
-+				uint32_t offset,
- 				uint32_t data_len, const uint8_t *data_buf,
- 				int oob_required)
- {
-@@ -2145,7 +2120,7 @@ static __maybe_unused int nand_write_subpage_hwecc(struct mtd_info *mtd,
- 	uint32_t *eccpos  = chip->ecc.layout->eccpos;
- 	uint32_t start_step = offset / ecc_size;
- 	uint32_t end_step   = (offset + data_len - 1) / ecc_size;
--	int oob_bytes       = mtd->oobsize / ecc_steps;
-+	int oob_bytes       = chip->mtd.oobsize / ecc_steps;
- 	int step, i;
- 
- 	if (!IS_ENABLED(CONFIG_MTD_WRITE))
-@@ -2153,16 +2128,16 @@ static __maybe_unused int nand_write_subpage_hwecc(struct mtd_info *mtd,
- 
- 	for (step = 0; step < ecc_steps; step++) {
- 		/* configure controller for WRITE access */
--		chip->ecc.hwctl(mtd, NAND_ECC_WRITE);
-+		chip->ecc.hwctl(chip, NAND_ECC_WRITE);
- 
- 		/* write data (untouched subpages already masked by 0xFF) */
--		chip->write_buf(mtd, data_buf, ecc_size);
-+		chip->write_buf(chip, data_buf, ecc_size);
- 
- 		/* mask ECC of un-touched subpages by padding 0xFF */
- 		if ((step < start_step) || (step > end_step))
- 			memset(ecc_calc, 0xff, ecc_bytes);
- 		else
--			chip->ecc.calculate(mtd, data_buf, ecc_calc);
-+			chip->ecc.calculate(chip, data_buf, ecc_calc);
- 
- 		/* mask OOB of un-touched subpages by padding 0xFF */
- 		/* if oob_required, preserve OOB metadata of written subpage */
-@@ -2181,7 +2156,7 @@ static __maybe_unused int nand_write_subpage_hwecc(struct mtd_info *mtd,
- 		chip->oob_poi[eccpos[i]] = ecc_calc[i];
- 
- 	/* write OOB buffer to NAND device */
--	chip->write_buf(mtd, chip->oob_poi, mtd->oobsize);
-+	chip->write_buf(chip, chip->oob_poi, chip->mtd.oobsize);
- 
- 	return 0;
- }
-@@ -2197,8 +2172,7 @@ static __maybe_unused int nand_write_subpage_hwecc(struct mtd_info *mtd,
-  * The hw generator calculates the error syndrome automatically. Therefore we
-  * need a special oob layout and handling.
-  */
--static __maybe_unused int nand_write_page_syndrome(struct mtd_info *mtd,
--				    struct nand_chip *chip,
-+static __maybe_unused int nand_write_page_syndrome(struct nand_chip *chip,
- 				    const uint8_t *buf, int oob_required)
- {
- 	int i, eccsize = chip->ecc.size;
-@@ -2212,28 +2186,28 @@ static __maybe_unused int nand_write_page_syndrome(struct mtd_info *mtd,
- 
- 	for (i = 0; eccsteps; eccsteps--, i += eccbytes, p += eccsize) {
- 
--		chip->ecc.hwctl(mtd, NAND_ECC_WRITE);
--		chip->write_buf(mtd, p, eccsize);
-+		chip->ecc.hwctl(chip, NAND_ECC_WRITE);
-+		chip->write_buf(chip, p, eccsize);
- 
- 		if (chip->ecc.prepad) {
--			chip->write_buf(mtd, oob, chip->ecc.prepad);
-+			chip->write_buf(chip, oob, chip->ecc.prepad);
- 			oob += chip->ecc.prepad;
- 		}
- 
--		chip->ecc.calculate(mtd, p, oob);
--		chip->write_buf(mtd, oob, eccbytes);
-+		chip->ecc.calculate(chip, p, oob);
-+		chip->write_buf(chip, oob, eccbytes);
- 		oob += eccbytes;
- 
- 		if (chip->ecc.postpad) {
--			chip->write_buf(mtd, oob, chip->ecc.postpad);
-+			chip->write_buf(chip, oob, chip->ecc.postpad);
- 			oob += chip->ecc.postpad;
- 		}
- 	}
- 
- 	/* Calculate remaining oob bytes */
--	i = mtd->oobsize - (oob - chip->oob_poi);
-+	i = chip->mtd.oobsize - (oob - chip->oob_poi);
- 	if (i)
--		chip->write_buf(mtd, oob, i);
-+		chip->write_buf(chip, oob, i);
- 
- 	return 0;
- }
-@@ -2250,7 +2224,7 @@ static __maybe_unused int nand_write_page_syndrome(struct mtd_info *mtd,
-  * @cached: cached programming
-  * @raw: use _raw version of write_page
-  */
--static int nand_write_page(struct mtd_info *mtd, struct nand_chip *chip,
-+static int nand_write_page(struct nand_chip *chip,
- 		uint32_t offset, int data_len, const uint8_t *buf,
- 		int oob_required, int page, int cached, int raw)
- {
-@@ -2261,20 +2235,20 @@ static int nand_write_page(struct mtd_info *mtd, struct nand_chip *chip,
- 
- 	if (!(chip->options & NAND_NO_SUBPAGE_WRITE) &&
- 		chip->ecc.write_subpage)
--		subpage = offset || (data_len < mtd->writesize);
-+		subpage = offset || (data_len < chip->mtd.writesize);
- 	else
- 		subpage = 0;
- 
--	chip->cmdfunc(mtd, NAND_CMD_SEQIN, 0x00, page);
-+	chip->cmdfunc(chip, NAND_CMD_SEQIN, 0x00, page);
- 
- 	if (unlikely(raw))
--		status = chip->ecc.write_page_raw(mtd, chip, buf,
-+		status = chip->ecc.write_page_raw(chip, buf,
- 							oob_required);
- 	else if (subpage)
--		status = chip->ecc.write_subpage(mtd, chip, offset, data_len,
-+		status = chip->ecc.write_subpage(chip, offset, data_len,
- 							 buf, oob_required);
- 	else
--		status = chip->ecc.write_page(mtd, chip, buf, oob_required);
-+		status = chip->ecc.write_page(chip, buf, oob_required);
- 
- 	if (status < 0)
- 		return status;
-@@ -2287,14 +2261,14 @@ static int nand_write_page(struct mtd_info *mtd, struct nand_chip *chip,
- 
- 	if (!cached || !NAND_HAS_CACHEPROG(chip)) {
- 
--		chip->cmdfunc(mtd, NAND_CMD_PAGEPROG, -1, -1);
--		status = chip->waitfunc(mtd, chip);
-+		chip->cmdfunc(chip, NAND_CMD_PAGEPROG, -1, -1);
-+		status = chip->waitfunc(chip);
- 
- 		if (status & NAND_STATUS_FAIL)
- 			return -EIO;
- 	} else {
--		chip->cmdfunc(mtd, NAND_CMD_CACHEDPROG, -1, -1);
--		status = chip->waitfunc(mtd, chip);
-+		chip->cmdfunc(chip, NAND_CMD_CACHEDPROG, -1, -1);
-+		status = chip->waitfunc(chip);
- 	}
- 
- 	return 0;
-@@ -2307,16 +2281,14 @@ static int nand_write_page(struct mtd_info *mtd, struct nand_chip *chip,
-  * @len: oob data write length
-  * @ops: oob ops structure
-  */
--static uint8_t *nand_fill_oob(struct mtd_info *mtd, uint8_t *oob, size_t len,
-+static uint8_t *nand_fill_oob(struct nand_chip *chip, uint8_t *oob, size_t len,
- 			      struct mtd_oob_ops *ops)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
--
- 	/*
- 	 * Initialise to all 0xFF, to avoid the possibility of left over OOB
- 	 * data from a previous OOB read.
- 	 */
--	memset(chip->oob_poi, 0xff, mtd->oobsize);
-+	memset(chip->oob_poi, 0xff, chip->mtd.oobsize);
- 
- 	switch (ops->mode) {
- 
-@@ -2366,11 +2338,11 @@ static uint8_t *nand_fill_oob(struct mtd_info *mtd, uint8_t *oob, size_t len,
-  *
-  * NAND write with ECC.
-  */
--static int nand_do_write_ops(struct mtd_info *mtd, loff_t to,
-+static int nand_do_write_ops(struct nand_chip *chip, loff_t to,
- 			     struct mtd_oob_ops *ops)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int chipnr, realpage, page, blockmask, column;
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 	uint32_t writelen = ops->len;
- 
- 	uint32_t oobwritelen = ops->ooblen;
-@@ -2392,10 +2364,10 @@ static int nand_do_write_ops(struct mtd_info *mtd, loff_t to,
- 	column = to & (mtd->writesize - 1);
- 
- 	chipnr = (int)(to >> chip->chip_shift);
--	chip->select_chip(mtd, chipnr);
-+	chip->select_chip(chip, chipnr);
- 
- 	/* Check, if it is write protected */
--	if (nand_check_wp(mtd)) {
-+	if (nand_check_wp(chip)) {
- 		ret = -EIO;
- 		goto err_out;
- 	}
-@@ -2432,7 +2404,7 @@ static int nand_do_write_ops(struct mtd_info *mtd, loff_t to,
- 
- 		if (unlikely(oob)) {
- 			size_t len = min(oobwritelen, oobmaxlen);
--			oob = nand_fill_oob(mtd, oob, len, ops);
-+			oob = nand_fill_oob(chip, oob, len, ops);
- 			oobwritelen -= len;
- 		} else {
- 			/* We still need to erase leftover OOB data */
-@@ -2440,7 +2412,7 @@ static int nand_do_write_ops(struct mtd_info *mtd, loff_t to,
- 		}
- 
- 		if (oob || !mtd_buf_all_ff(wbuf, mtd->writesize)) {
--			ret = chip->write_page(mtd, chip, column, bytes, wbuf,
-+			ret = chip->write_page(chip, column, bytes, wbuf,
- 					oob_required, page, cached,
- 					(ops->mode == MTD_OPS_RAW));
- 			if (ret)
-@@ -2459,8 +2431,8 @@ static int nand_do_write_ops(struct mtd_info *mtd, loff_t to,
- 		/* Check, if we cross a chip boundary */
- 		if (!page) {
- 			chipnr++;
--			chip->select_chip(mtd, -1);
--			chip->select_chip(mtd, chipnr);
-+			chip->select_chip(chip, -1);
-+			chip->select_chip(chip, chipnr);
- 		}
- 	}
- 
-@@ -2469,7 +2441,7 @@ static int nand_do_write_ops(struct mtd_info *mtd, loff_t to,
- 		ops->oobretlen = ops->ooblen;
- 
- err_out:
--	chip->select_chip(mtd, -1);
-+	chip->select_chip(chip, -1);
- 	return ret;
- }
- 
-@@ -2486,20 +2458,21 @@ err_out:
- static int nand_write(struct mtd_info *mtd, loff_t to, size_t len,
- 			  size_t *retlen, const uint8_t *buf)
- {
-+	struct nand_chip *chip = mtd_to_nand(mtd);
- 	struct mtd_oob_ops ops;
- 	int ret;
- 
- 	if (!IS_ENABLED(CONFIG_MTD_WRITE))
- 		return -ENOTSUPP;
- 
--	nand_get_device(mtd, FL_WRITING);
-+	nand_get_device(chip, FL_WRITING);
- 	ops.len = len;
- 	ops.datbuf = (uint8_t *)buf;
- 	ops.oobbuf = NULL;
- 	ops.mode = MTD_OPS_PLACE_OOB;
--	ret = nand_do_write_ops(mtd, to, &ops);
-+	ret = nand_do_write_ops(chip, to, &ops);
- 	*retlen = ops.retlen;
--	nand_release_device(mtd);
-+	nand_release_device(chip);
- 	return ret;
- }
- 
-@@ -2511,11 +2484,11 @@ static int nand_write(struct mtd_info *mtd, loff_t to, size_t len,
-  *
-  * NAND write out-of-band.
-  */
--static int nand_do_write_oob(struct mtd_info *mtd, loff_t to,
-+static int nand_do_write_oob(struct nand_chip *chip, loff_t to,
- 			     struct mtd_oob_ops *ops)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int chipnr, page, status, len;
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 
- 	if (!IS_ENABLED(CONFIG_MTD_WRITE))
- 		return -ENOTSUPP;
-@@ -2552,7 +2525,7 @@ static int nand_do_write_oob(struct mtd_info *mtd, loff_t to,
- 	}
- 
- 	chipnr = (int)(to >> chip->chip_shift);
--	chip->select_chip(mtd, chipnr);
-+	chip->select_chip(chip, chipnr);
- 
- 	/* Shift to get page */
- 	page = (int)(to >> chip->page_shift);
-@@ -2563,11 +2536,11 @@ static int nand_do_write_oob(struct mtd_info *mtd, loff_t to,
- 	 * if we don't do this. I have no clue why, but I seem to have 'fixed'
- 	 * it in the doc2000 driver in August 1999.  dwmw2.
- 	 */
--	chip->cmdfunc(mtd, NAND_CMD_RESET, -1, -1);
-+	chip->cmdfunc(chip, NAND_CMD_RESET, -1, -1);
- 
- 	/* Check, if it is write protected */
--	if (nand_check_wp(mtd)) {
--		chip->select_chip(mtd, -1);
-+	if (nand_check_wp(chip)) {
-+		chip->select_chip(chip, -1);
- 		return -EROFS;
- 	}
- 
-@@ -2575,14 +2548,14 @@ static int nand_do_write_oob(struct mtd_info *mtd, loff_t to,
- 	if (page == chip->pagebuf)
- 		chip->pagebuf = -1;
- 
--	nand_fill_oob(mtd, ops->oobbuf, ops->ooblen, ops);
-+	nand_fill_oob(chip, ops->oobbuf, ops->ooblen, ops);
- 
- 	if (ops->mode == MTD_OPS_RAW)
--		status = chip->ecc.write_oob_raw(mtd, chip, page & chip->pagemask);
-+		status = chip->ecc.write_oob_raw(chip, page & chip->pagemask);
- 	else
--		status = chip->ecc.write_oob(mtd, chip, page & chip->pagemask);
-+		status = chip->ecc.write_oob(chip, page & chip->pagemask);
- 
--	chip->select_chip(mtd, -1);
-+	chip->select_chip(chip, -1);
- 
- 	if (status)
- 		return status;
-@@ -2601,6 +2574,7 @@ static int nand_do_write_oob(struct mtd_info *mtd, loff_t to,
- static int nand_write_oob(struct mtd_info *mtd, loff_t to,
- 			  struct mtd_oob_ops *ops)
- {
-+	struct nand_chip *chip = mtd_to_nand(mtd);
- 	int ret = -ENOTSUPP;
- 
- 	if (!IS_ENABLED(CONFIG_MTD_WRITE))
-@@ -2615,7 +2589,7 @@ static int nand_write_oob(struct mtd_info *mtd, loff_t to,
- 		return -EINVAL;
- 	}
- 
--	nand_get_device(mtd, FL_WRITING);
-+	nand_get_device(chip, FL_WRITING);
- 
- 	switch (ops->mode) {
- 	case MTD_OPS_PLACE_OOB:
-@@ -2628,12 +2602,12 @@ static int nand_write_oob(struct mtd_info *mtd, loff_t to,
- 	}
- 
- 	if (!ops->datbuf)
--		ret = nand_do_write_oob(mtd, to, ops);
-+		ret = nand_do_write_oob(chip, to, ops);
- 	else
--		ret = nand_do_write_ops(mtd, to, ops);
-+		ret = nand_do_write_ops(chip, to, ops);
- 
- out:
--	nand_release_device(mtd);
-+	nand_release_device(chip);
- 	return ret;
- }
- 
-@@ -2644,16 +2618,14 @@ out:
-  *
-  * Standard erase command for NAND chips.
-  */
--static void single_erase_cmd(struct mtd_info *mtd, int page)
-+static void single_erase_cmd(struct nand_chip *chip, int page)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
--
- 	if (!IS_ENABLED(CONFIG_MTD_WRITE))
- 		return;
- 
- 	/* Send commands to erase a block */
--	chip->cmdfunc(mtd, NAND_CMD_ERASE1, -1, page);
--	chip->cmdfunc(mtd, NAND_CMD_ERASE2, -1, -1);
-+	chip->cmdfunc(chip, NAND_CMD_ERASE1, -1, page);
-+	chip->cmdfunc(chip, NAND_CMD_ERASE2, -1, -1);
- }
- 
- /**
-@@ -2665,10 +2637,12 @@ static void single_erase_cmd(struct mtd_info *mtd, int page)
-  */
- static int nand_erase(struct mtd_info *mtd, struct erase_info *instr)
- {
-+	struct nand_chip *chip = mtd_to_nand(mtd);
-+
- 	if (!IS_ENABLED(CONFIG_MTD_WRITE))
- 		return -ENOTSUPP;
- 
--	return nand_erase_nand(mtd, instr, 0);
-+	return nand_erase_nand(chip, instr, 0);
- }
- 
- /**
-@@ -2679,11 +2653,10 @@ static int nand_erase(struct mtd_info *mtd, struct erase_info *instr)
-  *
-  * Erase one ore more blocks.
-  */
--int nand_erase_nand(struct mtd_info *mtd, struct erase_info *instr,
-+int nand_erase_nand(struct nand_chip *chip, struct erase_info *instr,
- 		    int allowbbt)
- {
- 	int page, status, pages_per_block, ret, chipnr;
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 	loff_t len;
- 
- 	if (!IS_ENABLED(CONFIG_MTD_WRITE))
-@@ -2693,11 +2666,11 @@ int nand_erase_nand(struct mtd_info *mtd, struct erase_info *instr,
- 			__func__, (unsigned long long)instr->addr,
- 			(unsigned long long)instr->len);
- 
--	if (check_offs_len(mtd, instr->addr, instr->len))
-+	if (check_offs_len(chip, instr->addr, instr->len))
- 		return -EINVAL;
- 
- 	/* Grab the lock and see if the device is available */
--	nand_get_device(mtd, FL_ERASING);
-+	nand_get_device(chip, FL_ERASING);
- 
- 	/* Shift to get first page */
- 	page = (int)(instr->addr >> chip->page_shift);
-@@ -2707,10 +2680,10 @@ int nand_erase_nand(struct mtd_info *mtd, struct erase_info *instr,
- 	pages_per_block = 1 << (chip->phys_erase_shift - chip->page_shift);
- 
- 	/* Select the NAND device */
--	chip->select_chip(mtd, chipnr);
-+	chip->select_chip(chip, chipnr);
- 
- 	/* Check, if it is write protected */
--	if (nand_check_wp(mtd)) {
-+	if (nand_check_wp(chip)) {
- 		pr_debug("%s: device is write protected!\n",
- 				__func__);
- 		ret = -EIO;
-@@ -2722,8 +2695,8 @@ int nand_erase_nand(struct mtd_info *mtd, struct erase_info *instr,
- 
- 	while (len) {
- 		/* Check if we have a bad block, we do not erase bad blocks! */
--		if (!mtd->allow_erasebad &&
--				nand_block_checkbad(mtd, ((loff_t) page) <<
-+		if (!chip->mtd.allow_erasebad &&
-+				nand_block_checkbad(chip, ((loff_t) page) <<
- 					chip->page_shift, 0, allowbbt)) {
- 			pr_warn("%s: attempt to erase a bad block at page 0x%08x\n",
- 				    __func__, page);
-@@ -2739,9 +2712,9 @@ int nand_erase_nand(struct mtd_info *mtd, struct erase_info *instr,
- 		    (page + pages_per_block))
- 			chip->pagebuf = -1;
- 
--		single_erase_cmd(mtd, page & chip->pagemask);
-+		single_erase_cmd(chip, page & chip->pagemask);
- 
--		status = chip->waitfunc(mtd, chip);
-+		status = chip->waitfunc(chip);
- 
- 		/* See if block erase succeeded */
- 		if (status & NAND_STATUS_FAIL) {
-@@ -2760,8 +2733,8 @@ int nand_erase_nand(struct mtd_info *mtd, struct erase_info *instr,
- 		/* Check, if we cross a chip boundary */
- 		if (len && !(page & chip->pagemask)) {
- 			chipnr++;
--			chip->select_chip(mtd, -1);
--			chip->select_chip(mtd, chipnr);
-+			chip->select_chip(chip, -1);
-+			chip->select_chip(chip, chipnr);
- 		}
- 	}
- 
-@@ -2769,8 +2742,8 @@ int nand_erase_nand(struct mtd_info *mtd, struct erase_info *instr,
- 
- erase_exit:
- 	/* Deselect and wake up anyone waiting on the device */
--	chip->select_chip(mtd, -1);
--	nand_release_device(mtd);
-+	chip->select_chip(chip, -1);
-+	nand_release_device(chip);
- 
- 	/* Return more or less happy */
- 	return ret;
-@@ -2784,12 +2757,14 @@ erase_exit:
-  */
- static void nand_sync(struct mtd_info *mtd)
- {
-+	struct nand_chip *chip = mtd_to_nand(mtd);
-+
- 	pr_debug("%s: called\n", __func__);
- 
- 	/* Grab the lock and see if the device is available */
--	nand_get_device(mtd, FL_SYNCING);
-+	nand_get_device(chip, FL_SYNCING);
- 	/* Release it and go back */
--	nand_release_device(mtd);
-+	nand_release_device(chip);
- }
- 
- /**
-@@ -2799,7 +2774,9 @@ static void nand_sync(struct mtd_info *mtd)
-  */
- static int nand_block_isbad(struct mtd_info *mtd, loff_t offs)
- {
--	return nand_block_checkbad(mtd, offs, 1, 0);
-+	struct nand_chip *chip = mtd_to_nand(mtd);
-+
-+	return nand_block_checkbad(chip, offs, 1, 0);
- }
- 
- /**
-@@ -2809,6 +2786,7 @@ static int nand_block_isbad(struct mtd_info *mtd, loff_t offs)
-  */
- static int nand_block_markbad(struct mtd_info *mtd, loff_t ofs)
- {
-+	struct nand_chip *chip = mtd_to_nand(mtd);
- 	int ret;
- 
- 	if (!IS_ENABLED(CONFIG_MTD_WRITE))
-@@ -2822,7 +2800,7 @@ static int nand_block_markbad(struct mtd_info *mtd, loff_t ofs)
- 		return ret;
- 	}
- 
--	return nand_block_markbad_lowlevel(mtd, ofs);
-+	return nand_block_markbad_lowlevel(chip, ofs);
- }
- 
- /**
-@@ -2832,6 +2810,7 @@ static int nand_block_markbad(struct mtd_info *mtd, loff_t ofs)
-  */
- static int nand_block_markgood(struct mtd_info *mtd, loff_t ofs)
- {
-+	struct nand_chip *chip = mtd_to_nand(mtd);
- 	int ret;
- 
- 	if (!IS_ENABLED(CONFIG_MTD_WRITE))
-@@ -2845,7 +2824,7 @@ static int nand_block_markgood(struct mtd_info *mtd, loff_t ofs)
- 	if (!ret)
- 		return 0;
- 
--	return nand_block_markgood_lowlevel(mtd, ofs);
-+	return nand_block_markgood_lowlevel(chip, ofs);
- }
- 
- /**
-@@ -2855,7 +2834,7 @@ static int nand_block_markgood(struct mtd_info *mtd, loff_t ofs)
-  * @addr: feature address.
-  * @subfeature_param: the subfeature parameters, a four bytes array.
-  */
--static int nand_onfi_set_features(struct mtd_info *mtd, struct nand_chip *chip,
-+static int nand_onfi_set_features(struct nand_chip *chip,
- 			int addr, uint8_t *subfeature_param)
- {
- 	int status;
-@@ -2865,9 +2844,9 @@ static int nand_onfi_set_features(struct mtd_info *mtd, struct nand_chip *chip,
- 	      & ONFI_OPT_CMD_SET_GET_FEATURES))
- 		return -EINVAL;
- 
--	chip->cmdfunc(mtd, NAND_CMD_SET_FEATURES, addr, -1);
--	chip->write_buf(mtd, subfeature_param, ONFI_SUBFEATURE_PARAM_LEN);
--	status = chip->waitfunc(mtd, chip);
-+	chip->cmdfunc(chip, NAND_CMD_SET_FEATURES, addr, -1);
-+	chip->write_buf(chip, subfeature_param, ONFI_SUBFEATURE_PARAM_LEN);
-+	status = chip->waitfunc(chip);
- 	if (status & NAND_STATUS_FAIL)
- 		return -EIO;
- 	return 0;
-@@ -2880,7 +2859,7 @@ static int nand_onfi_set_features(struct mtd_info *mtd, struct nand_chip *chip,
-  * @addr: feature address.
-  * @subfeature_param: the subfeature parameters, a four bytes array.
-  */
--static int nand_onfi_get_features(struct mtd_info *mtd, struct nand_chip *chip,
-+static int nand_onfi_get_features(struct nand_chip *chip,
- 			int addr, uint8_t *subfeature_param)
- {
- 	if (!chip->onfi_version ||
-@@ -2891,8 +2870,8 @@ static int nand_onfi_get_features(struct mtd_info *mtd, struct nand_chip *chip,
- 	/* clear the sub feature parameters */
- 	memset(subfeature_param, 0, ONFI_SUBFEATURE_PARAM_LEN);
- 
--	chip->cmdfunc(mtd, NAND_CMD_GET_FEATURES, addr, -1);
--	chip->read_buf(mtd, subfeature_param, ONFI_SUBFEATURE_PARAM_LEN);
-+	chip->cmdfunc(chip, NAND_CMD_GET_FEATURES, addr, -1);
-+	chip->read_buf(chip, subfeature_param, ONFI_SUBFEATURE_PARAM_LEN);
- 	return 0;
- }
- 
-@@ -2977,23 +2956,23 @@ static u16 onfi_crc16(u16 crc, u8 const *p, size_t len)
- /*
-  * Check if the NAND chip is ONFI compliant, returns 1 if it is, 0 otherwise.
-  */
--static int nand_flash_detect_onfi(struct mtd_info *mtd, struct nand_chip *chip,
--					int *busw)
-+static int nand_flash_detect_onfi(struct nand_chip *chip, int *busw)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct nand_onfi_params *p = &chip->onfi_params;
- 	int i, j;
- 	int val;
- 
- 	/* Try ONFI for unknown chip or LP */
--	chip->cmdfunc(mtd, NAND_CMD_READID, 0x20, -1);
--	if (chip->read_byte(mtd) != 'O' || chip->read_byte(mtd) != 'N' ||
--		chip->read_byte(mtd) != 'F' || chip->read_byte(mtd) != 'I')
-+	chip->cmdfunc(chip, NAND_CMD_READID, 0x20, -1);
-+	if (chip->read_byte(chip) != 'O' || chip->read_byte(chip) != 'N' ||
-+		chip->read_byte(chip) != 'F' || chip->read_byte(chip) != 'I')
- 		return 0;
- 
--	chip->cmdfunc(mtd, NAND_CMD_PARAM, 0, -1);
-+	chip->cmdfunc(chip, NAND_CMD_PARAM, 0, -1);
- 	for (i = 0; i < 3; i++) {
- 		for (j = 0; j < sizeof(*p); j++)
--			((uint8_t *)p)[j] = chip->read_byte(mtd);
-+			((uint8_t *)p)[j] = chip->read_byte(chip);
- 		if (onfi_crc16(ONFI_CRC_BASE, (uint8_t *)p, 254) ==
- 				le16_to_cpu(p->crc)) {
- 			break;
-@@ -3314,9 +3293,11 @@ static inline bool is_full_id_nand(struct nand_flash_dev *type)
- 	return type->id_len;
- }
- 
--static bool find_full_id_nand(struct mtd_info *mtd, struct nand_chip *chip,
-+static bool find_full_id_nand(struct nand_chip *chip,
- 		   struct nand_flash_dev *type, u8 *id_data, int *busw)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
-+
- 	if (!strncmp(type->id, id_data, type->id_len)) {
- 		mtd->writesize = type->pagesize;
- 		mtd->erasesize = type->erasesize;
-@@ -3336,30 +3317,30 @@ static bool find_full_id_nand(struct mtd_info *mtd, struct nand_chip *chip,
- /*
-  * Get the flash and manufacturer id and lookup if the type is supported.
-  */
--static struct nand_flash_dev *nand_get_flash_type(struct mtd_info *mtd,
--						  struct nand_chip *chip,
-+static struct nand_flash_dev *nand_get_flash_type(struct nand_chip *chip,
- 						  int busw,
- 						  int *maf_id, int *dev_id,
- 						  struct nand_flash_dev *type)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int i, maf_idx;
- 	u8 id_data[8];
- 
- 	/* Select the device */
--	chip->select_chip(mtd, 0);
-+	chip->select_chip(chip, 0);
- 
- 	/*
- 	 * Reset the chip, required by some chips (e.g. Micron MT29FxGxxxxx)
- 	 * after power-up.
- 	 */
--	chip->cmdfunc(mtd, NAND_CMD_RESET, -1, -1);
-+	chip->cmdfunc(chip, NAND_CMD_RESET, -1, -1);
- 
- 	/* Send the command for reading device ID */
--	chip->cmdfunc(mtd, NAND_CMD_READID, 0x00, -1);
-+	chip->cmdfunc(chip, NAND_CMD_READID, 0x00, -1);
- 
- 	/* Read manufacturer and device IDs */
--	*maf_id = chip->read_byte(mtd);
--	*dev_id = chip->read_byte(mtd);
-+	*maf_id = chip->read_byte(chip);
-+	*dev_id = chip->read_byte(chip);
- 
- 	/*
- 	 * Try again to make sure, as some systems the bus-hold or other
-@@ -3368,11 +3349,11 @@ static struct nand_flash_dev *nand_get_flash_type(struct mtd_info *mtd,
- 	 * not match, ignore the device completely.
- 	 */
- 
--	chip->cmdfunc(mtd, NAND_CMD_READID, 0x00, -1);
-+	chip->cmdfunc(chip, NAND_CMD_READID, 0x00, -1);
- 
- 	/* Read entire ID string */
- 	for (i = 0; i < 8; i++)
--		id_data[i] = chip->read_byte(mtd);
-+		id_data[i] = chip->read_byte(chip);
- 
- 	if (id_data[0] != *maf_id || id_data[1] != *dev_id) {
- 		pr_info("%s: second ID read did not match "
-@@ -3386,7 +3367,7 @@ static struct nand_flash_dev *nand_get_flash_type(struct mtd_info *mtd,
- 
- 	for (; type->name != NULL; type++) {
- 		if (is_full_id_nand(type)) {
--			if (find_full_id_nand(mtd, chip, type, id_data, &busw))
-+			if (find_full_id_nand(chip, type, id_data, &busw))
- 				goto ident_done;
- 		} else if (*dev_id == type->dev_id) {
- 				break;
-@@ -3396,7 +3377,7 @@ static struct nand_flash_dev *nand_get_flash_type(struct mtd_info *mtd,
- 	chip->onfi_version = 0;
- 	if (!type->name || !type->pagesize) {
- 		/* Check is chip is ONFI compliant */
--		if (nand_flash_detect_onfi(mtd, chip, &busw))
-+		if (nand_flash_detect_onfi(chip, &busw))
- 			goto ident_done;
- 	}
- 
-@@ -3408,10 +3389,7 @@ static struct nand_flash_dev *nand_get_flash_type(struct mtd_info *mtd,
- 
- 	chip->chipsize = (uint64_t)type->chipsize << 20;
- 
--	if (!type->pagesize && chip->init_size) {
--		/* Set the pagesize, oobsize, erasesize by the driver */
--		busw = chip->init_size(mtd, chip, id_data);
--	} else if (!type->pagesize) {
-+	if (!type->pagesize) {
- 		/* Decode parameters from extended ID */
- 		nand_decode_ext_id(mtd, chip, id_data, &busw);
- 	} else {
-@@ -3520,11 +3498,11 @@ void nand_of_parse_node(struct mtd_info *mtd, struct device_node *np)
-  *
-  * The mtd->owner field must be set to the module of the caller.
-  */
--int nand_scan_ident(struct mtd_info *mtd, int maxchips,
-+int nand_scan_ident(struct nand_chip *chip, int maxchips,
- 		    struct nand_flash_dev *table)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int i, busw, nand_maf_id, nand_dev_id;
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 	struct nand_flash_dev *type;
- 
- 	/* Get buswidth to select the correct functions */
-@@ -3533,32 +3511,32 @@ int nand_scan_ident(struct mtd_info *mtd, int maxchips,
- 	nand_set_defaults(chip, busw);
- 
- 	/* Read the flash type */
--	type = nand_get_flash_type(mtd, chip, busw,
-+	type = nand_get_flash_type(chip, busw,
- 				&nand_maf_id, &nand_dev_id, table);
- 
- 	if (IS_ERR(type)) {
- 		if (!(chip->options & NAND_SCAN_SILENT_NODEV))
- 			pr_warn("No NAND device found\n");
--		chip->select_chip(mtd, -1);
-+		chip->select_chip(chip, -1);
- 		return PTR_ERR(type);
- 	}
- 
--	chip->select_chip(mtd, -1);
-+	chip->select_chip(chip, -1);
- 
- 	/* Check for a chip array */
- 	for (i = 1; i < maxchips; i++) {
--		chip->select_chip(mtd, i);
-+		chip->select_chip(chip, i);
- 		/* See comment in nand_get_flash_type for reset */
--		chip->cmdfunc(mtd, NAND_CMD_RESET, -1, -1);
-+		chip->cmdfunc(chip, NAND_CMD_RESET, -1, -1);
- 		/* Send the command for reading device ID */
--		chip->cmdfunc(mtd, NAND_CMD_READID, 0x00, -1);
-+		chip->cmdfunc(chip, NAND_CMD_READID, 0x00, -1);
- 		/* Read manufacturer and device IDs */
--		if (nand_maf_id != chip->read_byte(mtd) ||
--		    nand_dev_id != chip->read_byte(mtd)) {
--			chip->select_chip(mtd, -1);
-+		if (nand_maf_id != chip->read_byte(chip) ||
-+		    nand_dev_id != chip->read_byte(chip)) {
-+			chip->select_chip(chip, -1);
- 			break;
- 		}
--		chip->select_chip(mtd, -1);
-+		chip->select_chip(chip, -1);
- 	}
- 	if (i > 1)
- 		pr_info("%d NAND chips detected\n", i);
-@@ -3580,10 +3558,10 @@ EXPORT_SYMBOL(nand_scan_ident);
-  * all the uninitialized function pointers with the defaults and scans for a
-  * bad block table if appropriate.
-  */
--int nand_scan_tail(struct mtd_info *mtd)
-+int nand_scan_tail(struct nand_chip *chip)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int i;
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 
- 	/* New bad blocks should be marked in OOB, flash-based BBT, or both */
- 	BUG_ON((chip->bbt_options & NAND_BBT_NO_OOB_BBM) &&
-@@ -3738,7 +3716,7 @@ int nand_scan_tail(struct mtd_info *mtd)
- 
- 		/* See nand_bch_init() for details. */
- 		chip->ecc.bytes = 0;
--		chip->ecc.priv = nand_bch_init(mtd);
-+		chip->ecc.priv = nand_bch_init(chip);
- 		if (!chip->ecc.priv) {
- 			pr_warn("BCH ECC initialization failed!\n");
- 			BUG();
-@@ -3853,7 +3831,7 @@ int nand_scan_tail(struct mtd_info *mtd)
- 		return 0;
- 
- 	/* Build bad block table */
--	return chip->scan_bbt(mtd);
-+	return chip->scan_bbt(chip);
- }
- EXPORT_SYMBOL(nand_scan_tail);
- 
-@@ -3867,13 +3845,13 @@ EXPORT_SYMBOL(nand_scan_tail);
-  * appropriate values. The mtd->owner field must be set to the module of the
-  * caller.
-  */
--int nand_scan(struct mtd_info *mtd, int maxchips)
-+int nand_scan(struct nand_chip *chip, int maxchips)
- {
- 	int ret;
- 
--	ret = nand_scan_ident(mtd, maxchips, NULL);
-+	ret = nand_scan_ident(chip, maxchips, NULL);
- 	if (!ret)
--		ret = nand_scan_tail(mtd);
-+		ret = nand_scan_tail(chip);
- 	return ret;
- }
- EXPORT_SYMBOL(nand_scan);
-@@ -3882,9 +3860,9 @@ EXPORT_SYMBOL(nand_scan);
-  * nand_release - [NAND Interface] Free resources held by the NAND device
-  * @mtd: MTD device structure
-  */
--void nand_release(struct mtd_info *mtd)
-+void nand_release(struct nand_chip *chip)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 
- 	if (chip->ecc.mode == NAND_ECC_SOFT_BCH)
- 		nand_bch_free((struct nand_bch_control *)chip->ecc.priv);
-@@ -3952,9 +3930,9 @@ static int mtd_get_bbt_type(struct param_d *p, void *priv)
- 	return 0;
- }
- 
--int add_mtd_nand_device(struct mtd_info *mtd, char *devname)
-+int add_mtd_nand_device(struct nand_chip *chip, char *devname)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int ret;
- 
- 	ret = add_mtd_device(mtd, devname, DEVICE_ID_DYNAMIC);
-diff --git a/drivers/mtd/nand/nand_bbt.c b/drivers/mtd/nand/nand_bbt.c
-index ed4104629a..16e77d924e 100644
---- a/drivers/mtd/nand/nand_bbt.c
-+++ b/drivers/mtd/nand/nand_bbt.c
-@@ -173,11 +173,11 @@ static u32 add_marker_len(struct nand_bbt_descr *td)
-  *
-  * Read the bad block table starting from page.
-  */
--static int read_bbt(struct mtd_info *mtd, uint8_t *buf, int page, int num,
-+static int read_bbt(struct nand_chip *this, uint8_t *buf, int page, int num,
- 		struct nand_bbt_descr *td, int offs)
- {
-+	struct mtd_info *mtd = nand_to_mtd(this);
- 	int res, ret = 0, i, j, act = 0;
--	struct nand_chip *this = mtd_to_nand(mtd);
- 	size_t retlen, len, totlen;
- 	loff_t from;
- 	int bits = td->options & NAND_BBT_NRBITS_MSK;
-@@ -262,16 +262,17 @@ static int read_bbt(struct mtd_info *mtd, uint8_t *buf, int page, int num,
-  * Read the bad block table for all chips starting at a given page. We assume
-  * that the bbt bits are in consecutive order.
-  */
--static int read_abs_bbt(struct mtd_info *mtd, uint8_t *buf, struct nand_bbt_descr *td, int chip)
-+static int read_abs_bbt(struct nand_chip *this, uint8_t *buf, struct nand_bbt_descr *td,
-+			int chip)
- {
--	struct nand_chip *this = mtd_to_nand(mtd);
-+	struct mtd_info *mtd = nand_to_mtd(this);
- 	int res = 0, i;
- 
- 	if (td->options & NAND_BBT_PERCHIP) {
- 		int offs = 0;
- 		for (i = 0; i < this->numchips; i++) {
- 			if (chip == -1 || chip == i)
--				res = read_bbt(mtd, buf, td->pages[i],
-+				res = read_bbt(this, buf, td->pages[i],
- 					this->chipsize >> this->bbt_erase_shift,
- 					td, offs);
- 			if (res)
-@@ -279,7 +280,7 @@ static int read_abs_bbt(struct mtd_info *mtd, uint8_t *buf, struct nand_bbt_desc
- 			offs += this->chipsize >> this->bbt_erase_shift;
- 		}
- 	} else {
--		res = read_bbt(mtd, buf, td->pages[0],
-+		res = read_bbt(this, buf, td->pages[0],
- 				mtd->size >> this->bbt_erase_shift, td, 0);
- 		if (res)
- 			return res;
-@@ -288,9 +289,10 @@ static int read_abs_bbt(struct mtd_info *mtd, uint8_t *buf, struct nand_bbt_desc
- }
- 
- /* BBT marker is in the first page, no OOB */
--static int scan_read_data(struct mtd_info *mtd, uint8_t *buf, loff_t offs,
-+static int scan_read_data(struct nand_chip *this, uint8_t *buf, loff_t offs,
- 			 struct nand_bbt_descr *td)
- {
-+	struct mtd_info *mtd = nand_to_mtd(this);
- 	size_t retlen;
- 	size_t len;
- 
-@@ -312,9 +314,10 @@ static int scan_read_data(struct mtd_info *mtd, uint8_t *buf, loff_t offs,
-  * page,OOB,page,OOB,... in buf. Completes transfer and returns the "strongest"
-  * ECC condition (error or bitflip). May quit on the first (non-ECC) error.
-  */
--static int scan_read_oob(struct mtd_info *mtd, uint8_t *buf, loff_t offs,
-+static int scan_read_oob(struct nand_chip *this, uint8_t *buf, loff_t offs,
- 			 size_t len)
- {
-+	struct mtd_info *mtd = nand_to_mtd(this);
- 	struct mtd_oob_ops ops;
- 	int res, ret = 0;
- 
-@@ -342,19 +345,20 @@ static int scan_read_oob(struct mtd_info *mtd, uint8_t *buf, loff_t offs,
- 	return ret;
- }
- 
--static int scan_read(struct mtd_info *mtd, uint8_t *buf, loff_t offs,
-+static int scan_read(struct nand_chip *this, uint8_t *buf, loff_t offs,
- 			 size_t len, struct nand_bbt_descr *td)
- {
- 	if (td->options & NAND_BBT_NO_OOB)
--		return scan_read_data(mtd, buf, offs, td);
-+		return scan_read_data(this, buf, offs, td);
- 	else
--		return scan_read_oob(mtd, buf, offs, len);
-+		return scan_read_oob(this, buf, offs, len);
- }
- 
- /* Scan write data with oob to flash */
--static int scan_write_bbt(struct mtd_info *mtd, loff_t offs, size_t len,
-+static int scan_write_bbt(struct nand_chip *this, loff_t offs, size_t len,
- 			  uint8_t *buf, uint8_t *oob)
- {
-+	struct mtd_info *mtd = nand_to_mtd(this);
- 	struct mtd_oob_ops ops;
- 
- 	ops.mode = MTD_OPS_PLACE_OOB;
-@@ -367,8 +371,9 @@ static int scan_write_bbt(struct mtd_info *mtd, loff_t offs, size_t len,
- 	return mtd_write_oob(mtd, offs, &ops);
- }
- 
--static u32 bbt_get_ver_offs(struct mtd_info *mtd, struct nand_bbt_descr *td)
-+static u32 bbt_get_ver_offs(struct nand_chip *this, struct nand_bbt_descr *td)
- {
-+	struct mtd_info *mtd = nand_to_mtd(this);
- 	u32 ver_offs = td->veroffs;
- 
- 	if (!(td->options & NAND_BBT_NO_OOB))
-@@ -386,34 +391,35 @@ static u32 bbt_get_ver_offs(struct mtd_info *mtd, struct nand_bbt_descr *td)
-  * Read the bad block table(s) for all chips starting at a given page. We
-  * assume that the bbt bits are in consecutive order.
-  */
--static void read_abs_bbts(struct mtd_info *mtd, uint8_t *buf,
-+static void read_abs_bbts(struct nand_chip *this, uint8_t *buf,
- 			  struct nand_bbt_descr *td, struct nand_bbt_descr *md)
- {
--	struct nand_chip *this = mtd_to_nand(mtd);
-+	struct mtd_info *mtd = nand_to_mtd(this);
- 
- 	/* Read the primary version, if available */
- 	if (td->options & NAND_BBT_VERSION) {
--		scan_read(mtd, buf, (loff_t)td->pages[0] << this->page_shift,
-+		scan_read(this, buf, (loff_t)td->pages[0] << this->page_shift,
- 			      mtd->writesize, td);
--		td->version[0] = buf[bbt_get_ver_offs(mtd, td)];
-+		td->version[0] = buf[bbt_get_ver_offs(this, td)];
- 		pr_info("Bad block table at page %d, version 0x%02X\n",
- 			 td->pages[0], td->version[0]);
- 	}
- 
- 	/* Read the mirror version, if available */
- 	if (md && (md->options & NAND_BBT_VERSION)) {
--		scan_read(mtd, buf, (loff_t)md->pages[0] << this->page_shift,
-+		scan_read(this, buf, (loff_t)md->pages[0] << this->page_shift,
- 			      mtd->writesize, md);
--		md->version[0] = buf[bbt_get_ver_offs(mtd, md)];
-+		md->version[0] = buf[bbt_get_ver_offs(this, md)];
- 		pr_info("Bad block table at page %d, version 0x%02X\n",
- 			 md->pages[0], md->version[0]);
- 	}
- }
- 
- /* Scan a given block partially */
--static int scan_block_fast(struct mtd_info *mtd, struct nand_bbt_descr *bd,
-+static int scan_block_fast(struct nand_chip *this, struct nand_bbt_descr *bd,
- 			   loff_t offs, uint8_t *buf, int numpages)
- {
-+	struct mtd_info *mtd = nand_to_mtd(this);
- 	struct mtd_oob_ops ops;
- 	int j, ret;
- 
-@@ -452,10 +458,10 @@ static int scan_block_fast(struct mtd_info *mtd, struct nand_bbt_descr *bd,
-  * Create a bad block table by scanning the device for the given good/bad block
-  * identify pattern.
-  */
--static int create_bbt(struct mtd_info *mtd, uint8_t *buf,
-+static int create_bbt(struct nand_chip *this, uint8_t *buf,
- 	struct nand_bbt_descr *bd, int chip)
- {
--	struct nand_chip *this = mtd_to_nand(mtd);
-+	struct mtd_info *mtd = nand_to_mtd(this);
- 	int i, numblocks, numpages;
- 	int startblock;
- 	loff_t from;
-@@ -491,7 +497,7 @@ static int create_bbt(struct mtd_info *mtd, uint8_t *buf,
- 
- 		BUG_ON(bd->options & NAND_BBT_NO_OOB);
- 
--		ret = scan_block_fast(mtd, bd, from, buf, numpages);
-+		ret = scan_block_fast(this, bd, from, buf, numpages);
- 		if (ret < 0)
- 			return ret;
- 
-@@ -522,9 +528,9 @@ static int create_bbt(struct mtd_info *mtd, uint8_t *buf,
-  *
-  * The bbt ident pattern resides in the oob area of the first page in a block.
-  */
--static int search_bbt(struct mtd_info *mtd, uint8_t *buf, struct nand_bbt_descr *td)
-+static int search_bbt(struct nand_chip *this, uint8_t *buf, struct nand_bbt_descr *td)
- {
--	struct nand_chip *this = mtd_to_nand(mtd);
-+	struct mtd_info *mtd = nand_to_mtd(this);
- 	int i, chips;
- 	int startblock, block, dir;
- 	int scanlen = mtd->writesize + mtd->oobsize;
-@@ -561,11 +567,11 @@ static int search_bbt(struct mtd_info *mtd, uint8_t *buf, struct nand_bbt_descr
- 			loff_t offs = (loff_t)actblock << this->bbt_erase_shift;
- 
- 			/* Read first page */
--			scan_read(mtd, buf, offs, mtd->writesize, td);
-+			scan_read(this, buf, offs, mtd->writesize, td);
- 			if (!check_pattern(buf, scanlen, mtd->writesize, td)) {
- 				td->pages[i] = actblock << blocktopage;
- 				if (td->options & NAND_BBT_VERSION) {
--					offs = bbt_get_ver_offs(mtd, td);
-+					offs = bbt_get_ver_offs(this, td);
- 					td->version[i] = buf[offs];
- 				}
- 				break;
-@@ -593,16 +599,16 @@ static int search_bbt(struct mtd_info *mtd, uint8_t *buf, struct nand_bbt_descr
-  *
-  * Search and read the bad block table(s).
-  */
--static void search_read_bbts(struct mtd_info *mtd, uint8_t *buf,
-+static void search_read_bbts(struct nand_chip *this, uint8_t *buf,
- 			     struct nand_bbt_descr *td,
- 			     struct nand_bbt_descr *md)
- {
- 	/* Search the primary table */
--	search_bbt(mtd, buf, td);
-+	search_bbt(this, buf, td);
- 
- 	/* Search the mirror table */
- 	if (md)
--		search_bbt(mtd, buf, md);
-+		search_bbt(this, buf, md);
- }
- 
- /**
-@@ -680,18 +686,17 @@ static int get_bbt_block(struct nand_chip *this, struct nand_bbt_descr *td,
-  * block as bad using a bad block marker and invalidating the associated
-  * td->pages[] entry.
-  */
--static void mark_bbt_block_bad(struct mtd_info *mtd,
-+static void mark_bbt_block_bad(struct nand_chip *this,
- 			       struct nand_bbt_descr *td,
- 			       int chip, int block)
- {
--	struct nand_chip *this = mtd_to_nand(mtd);
- 	loff_t to;
- 	int res;
- 
- 	bbt_mark_entry(this, block, BBT_BLOCK_WORN);
- 
- 	to = (loff_t)block << this->bbt_erase_shift;
--	res = this->block_markbad(mtd, to);
-+	res = this->block_markbad(this, to);
- 	if (res)
- 		pr_warn("nand_bbt: error %d while marking block %d bad\n",
- 			res, block);
-@@ -709,11 +714,11 @@ static void mark_bbt_block_bad(struct mtd_info *mtd,
-  *
-  * (Re)write the bad block table.
-  */
--static int write_bbt(struct mtd_info *mtd, uint8_t *buf,
-+static int write_bbt(struct nand_chip *this, uint8_t *buf,
- 		     struct nand_bbt_descr *td, struct nand_bbt_descr *md,
- 		     int chipsel)
- {
--	struct nand_chip *this = mtd_to_nand(mtd);
-+	struct mtd_info *mtd = nand_to_mtd(this);
- 	struct erase_info einfo;
- 	int i, res, chip = 0;
- 	int bits, page, offs, numblocks, sft, sftmsk;
-@@ -856,21 +861,21 @@ static int write_bbt(struct mtd_info *mtd, uint8_t *buf,
- 		einfo.mtd = mtd;
- 		einfo.addr = to;
- 		einfo.len = 1 << this->bbt_erase_shift;
--		res = nand_erase_nand(mtd, &einfo, 1);
-+		res = nand_erase_nand(this, &einfo, 1);
- 		if (res < 0) {
- 			pr_warn("nand_bbt: error while erasing BBT block %d\n",
- 				res);
--			mark_bbt_block_bad(mtd, td, chip, block);
-+			mark_bbt_block_bad(this, td, chip, block);
- 			continue;
- 		}
- 
--		res = scan_write_bbt(mtd, to, len, buf,
-+		res = scan_write_bbt(this, to, len, buf,
- 				td->options & NAND_BBT_NO_OOB ? NULL :
- 				&buf[len]);
- 		if (res < 0) {
- 			pr_warn("nand_bbt: error while writing BBT block %d\n",
- 				res);
--			mark_bbt_block_bad(mtd, td, chip, block);
-+			mark_bbt_block_bad(this, td, chip, block);
- 			continue;
- 		}
- 
-@@ -895,11 +900,9 @@ static int write_bbt(struct mtd_info *mtd, uint8_t *buf,
-  * The function creates a memory based bbt by scanning the device for
-  * manufacturer / software marked good / bad blocks.
-  */
--static inline int nand_memory_bbt(struct mtd_info *mtd, struct nand_bbt_descr *bd)
-+static inline int nand_memory_bbt(struct nand_chip *this, struct nand_bbt_descr *bd)
- {
--	struct nand_chip *this = mtd_to_nand(mtd);
--
--	return create_bbt(mtd, this->buffers->databuf, bd, -1);
-+	return create_bbt(this, this->buffers->databuf, bd, -1);
- }
- 
- /**
-@@ -913,10 +916,9 @@ static inline int nand_memory_bbt(struct mtd_info *mtd, struct nand_bbt_descr *b
-  * for the chip/device. Update is necessary if one of the tables is missing or
-  * the version nr. of one table is less than the other.
-  */
--static int check_create(struct mtd_info *mtd, uint8_t *buf, struct nand_bbt_descr *bd)
-+static int check_create(struct nand_chip *this, uint8_t *buf, struct nand_bbt_descr *bd)
- {
- 	int i, chips, writeops, create, chipsel, res, res2;
--	struct nand_chip *this = mtd_to_nand(mtd);
- 	struct nand_bbt_descr *td = this->bbt_td;
- 	struct nand_bbt_descr *md = this->bbt_md;
- 	struct nand_bbt_descr *rd, *rd2;
-@@ -973,7 +975,7 @@ static int check_create(struct mtd_info *mtd, uint8_t *buf, struct nand_bbt_desc
- 
- 			/* Create the table in memory by scanning the chip(s) */
- 			if (!(this->bbt_options & NAND_BBT_CREATE_EMPTY))
--				create_bbt(mtd, buf, bd, chipsel);
-+				create_bbt(this, buf, bd, chipsel);
- 
- 			td->version[i] = 1;
- 			if (md)
-@@ -982,7 +984,7 @@ static int check_create(struct mtd_info *mtd, uint8_t *buf, struct nand_bbt_desc
- 
- 		/* Read back first? */
- 		if (rd) {
--			res = read_abs_bbt(mtd, buf, rd, chipsel);
-+			res = read_abs_bbt(this, buf, rd, chipsel);
- 			if (mtd_is_eccerr(res)) {
- 				/* Mark table as invalid */
- 				rd->pages[i] = -1;
-@@ -993,7 +995,7 @@ static int check_create(struct mtd_info *mtd, uint8_t *buf, struct nand_bbt_desc
- 		}
- 		/* If they weren't versioned, read both */
- 		if (rd2) {
--			res2 = read_abs_bbt(mtd, buf, rd2, chipsel);
-+			res2 = read_abs_bbt(this, buf, rd2, chipsel);
- 			if (mtd_is_eccerr(res2)) {
- 				/* Mark table as invalid */
- 				rd2->pages[i] = -1;
-@@ -1015,14 +1017,14 @@ static int check_create(struct mtd_info *mtd, uint8_t *buf, struct nand_bbt_desc
- 
- 		/* Write the bad block table to the device? */
- 		if ((writeops & 0x01) && (td->options & NAND_BBT_WRITE)) {
--			res = write_bbt(mtd, buf, td, md, chipsel);
-+			res = write_bbt(this, buf, td, md, chipsel);
- 			if (res < 0)
- 				return res;
- 		}
- 
- 		/* Write the mirror bad block table to the device? */
- 		if ((writeops & 0x02) && md && (md->options & NAND_BBT_WRITE)) {
--			res = write_bbt(mtd, buf, md, td, chipsel);
-+			res = write_bbt(this, buf, md, td, chipsel);
- 			if (res < 0)
- 				return res;
- 		}
-@@ -1038,9 +1040,8 @@ static int check_create(struct mtd_info *mtd, uint8_t *buf, struct nand_bbt_desc
-  * The bad block table regions are marked as "bad" to prevent accidental
-  * erasures / writes. The regions are identified by the mark 0x02.
-  */
--static void mark_bbt_region(struct mtd_info *mtd, struct nand_bbt_descr *td)
-+static void mark_bbt_region(struct nand_chip *this, struct nand_bbt_descr *td)
- {
--	struct nand_chip *this = mtd_to_nand(mtd);
- 	int i, j, chips, block, nrblocks, update;
- 	uint8_t oldval;
- 
-@@ -1050,7 +1051,7 @@ static void mark_bbt_region(struct mtd_info *mtd, struct nand_bbt_descr *td)
- 		nrblocks = (int)(this->chipsize >> this->bbt_erase_shift);
- 	} else {
- 		chips = 1;
--		nrblocks = (int)(mtd->size >> this->bbt_erase_shift);
-+		nrblocks = (int)(this->mtd.size >> this->bbt_erase_shift);
- 	}
- 
- 	for (i = 0; i < chips; i++) {
-@@ -1063,7 +1064,7 @@ static void mark_bbt_region(struct mtd_info *mtd, struct nand_bbt_descr *td)
- 			bbt_mark_entry(this, block, BBT_BLOCK_RESERVED);
- 			if ((oldval != BBT_BLOCK_RESERVED) &&
- 					td->reserved_block_code)
--				nand_update_bbt(mtd, (loff_t)block <<
-+				nand_update_bbt(this, (loff_t)block <<
- 						this->bbt_erase_shift);
- 			continue;
- 		}
-@@ -1085,7 +1086,7 @@ static void mark_bbt_region(struct mtd_info *mtd, struct nand_bbt_descr *td)
- 		 * bbts.  This should only happen once.
- 		 */
- 		if (update && td->reserved_block_code)
--			nand_update_bbt(mtd, (loff_t)(block - 1) <<
-+			nand_update_bbt(this, (loff_t)(block - 1) <<
- 					this->bbt_erase_shift);
- 	}
- }
-@@ -1098,9 +1099,9 @@ static void mark_bbt_region(struct mtd_info *mtd, struct nand_bbt_descr *td)
-  * This functions performs a few sanity checks on the bad block description
-  * table.
-  */
--static void verify_bbt_descr(struct mtd_info *mtd, struct nand_bbt_descr *bd)
-+static void verify_bbt_descr(struct nand_chip *this, struct nand_bbt_descr *bd)
- {
--	struct nand_chip *this = mtd_to_nand(mtd);
-+	struct mtd_info *mtd = nand_to_mtd(this);
- 	u32 pattern_len;
- 	u32 bits;
- 	u32 table_size;
-@@ -1150,9 +1151,9 @@ static void verify_bbt_descr(struct mtd_info *mtd, struct nand_bbt_descr *bd)
-  * The bad block table memory is allocated here. It must be freed by calling
-  * the nand_free_bbt function.
-  */
--static int nand_scan_bbt(struct mtd_info *mtd, struct nand_bbt_descr *bd)
-+static int nand_scan_bbt(struct nand_chip *this, struct nand_bbt_descr *bd)
- {
--	struct nand_chip *this = mtd_to_nand(mtd);
-+	struct mtd_info *mtd = nand_to_mtd(this);
- 	int len, res;
- 	uint8_t *buf;
- 	struct nand_bbt_descr *td = this->bbt_td;
-@@ -1172,14 +1173,14 @@ static int nand_scan_bbt(struct mtd_info *mtd, struct nand_bbt_descr *bd)
- 	 * memory based bad block table.
- 	 */
- 	if (!td) {
--		if ((res = nand_memory_bbt(mtd, bd))) {
-+		if ((res = nand_memory_bbt(this, bd))) {
- 			pr_err("nand_bbt: can't scan flash and build the RAM-based BBT\n");
- 			goto err;
- 		}
- 		return 0;
- 	}
--	verify_bbt_descr(mtd, td);
--	verify_bbt_descr(mtd, md);
-+	verify_bbt_descr(this, td);
-+	verify_bbt_descr(this, md);
- 
- 	/* Allocate a temporary buffer for one eraseblock incl. oob */
- 	len = (1 << this->bbt_erase_shift);
-@@ -1192,20 +1193,20 @@ static int nand_scan_bbt(struct mtd_info *mtd, struct nand_bbt_descr *bd)
- 
- 	/* Is the bbt at a given page? */
- 	if (td->options & NAND_BBT_ABSPAGE) {
--		read_abs_bbts(mtd, buf, td, md);
-+		read_abs_bbts(this, buf, td, md);
- 	} else {
- 		/* Search the bad block table using a pattern in oob */
--		search_read_bbts(mtd, buf, td, md);
-+		search_read_bbts(this, buf, td, md);
- 	}
- 
--	res = check_create(mtd, buf, bd);
-+	res = check_create(this, buf, bd);
- 	if (res)
- 		goto err;
- 
- 	/* Prevent the bbt regions from erasing / writing */
--	mark_bbt_region(mtd, td);
-+	mark_bbt_region(this, td);
- 	if (md)
--		mark_bbt_region(mtd, md);
-+		mark_bbt_region(this, md);
- 
- 	vfree(buf);
- 	return 0;
-@@ -1223,9 +1224,8 @@ err:
-  *
-  * The function updates the bad block table(s).
-  */
--int nand_update_bbt(struct mtd_info *mtd, loff_t offs)
-+int nand_update_bbt(struct nand_chip *this, loff_t offs)
- {
--	struct nand_chip *this = mtd_to_nand(mtd);
- 	int len, res = 0;
- 	int chip, chipsel;
- 	uint8_t *buf;
-@@ -1237,7 +1237,7 @@ int nand_update_bbt(struct mtd_info *mtd, loff_t offs)
- 
- 	/* Allocate a temporary buffer for one eraseblock incl. oob */
- 	len = (1 << this->bbt_erase_shift);
--	len += (len >> this->page_shift) * mtd->oobsize;
-+	len += (len >> this->page_shift) * this->mtd.oobsize;
- 	buf = kmalloc(len, GFP_KERNEL);
- 	if (!buf)
- 		return -ENOMEM;
-@@ -1257,13 +1257,13 @@ int nand_update_bbt(struct mtd_info *mtd, loff_t offs)
- 
- 	/* Write the bad block table to the device? */
- 	if (td->options & NAND_BBT_WRITE) {
--		res = write_bbt(mtd, buf, td, md, chipsel);
-+		res = write_bbt(this, buf, td, md, chipsel);
- 		if (res < 0)
- 			goto out;
- 	}
- 	/* Write the mirror bad block table to the device? */
- 	if (md && (md->options & NAND_BBT_WRITE)) {
--		res = write_bbt(mtd, buf, md, td, chipsel);
-+		res = write_bbt(this, buf, md, td, chipsel);
- 	}
- 
-  out:
-@@ -1357,9 +1357,8 @@ static int nand_create_badblock_pattern(struct nand_chip *this)
-  * This function selects the default bad block table support for the device and
-  * calls the nand_scan_bbt function.
-  */
--int nand_default_bbt(struct mtd_info *mtd)
-+int nand_default_bbt(struct nand_chip *this)
- {
--	struct nand_chip *this = mtd_to_nand(mtd);
- 	int ret;
- 
- 	/* Is a flash based bad block table requested? */
-@@ -1385,7 +1384,7 @@ int nand_default_bbt(struct mtd_info *mtd)
- 			return ret;
- 	}
- 
--	return nand_scan_bbt(mtd, this->badblock_pattern);
-+	return nand_scan_bbt(this, this->badblock_pattern);
- }
- 
- /**
-@@ -1394,9 +1393,8 @@ int nand_default_bbt(struct mtd_info *mtd)
-  * @offs: offset in the device
-  * @allowbbt: allow access to bad block table region
-  */
--int nand_isbad_bbt(struct mtd_info *mtd, loff_t offs, int allowbbt)
-+int nand_isbad_bbt(struct nand_chip *this, loff_t offs, int allowbbt)
- {
--	struct nand_chip *this = mtd_to_nand(mtd);
- 	int block;
- 	uint8_t res;
- 
-@@ -1417,9 +1415,8 @@ int nand_isbad_bbt(struct mtd_info *mtd, loff_t offs, int allowbbt)
- 	return 1;
- }
- 
--static int nand_mark_bbt(struct mtd_info *mtd, loff_t offs, uint8_t mark)
-+static int nand_mark_bbt(struct nand_chip *this, loff_t offs, uint8_t mark)
- {
--	struct nand_chip *this = mtd_to_nand(mtd);
- 	int block, ret = 0;
- 
- 	block = (int)(offs >> this->bbt_erase_shift);
-@@ -1429,7 +1426,7 @@ static int nand_mark_bbt(struct mtd_info *mtd, loff_t offs, uint8_t mark)
- 
- 	/* Update flash-based bad block table */
- 	if (this->bbt_options & NAND_BBT_USE_FLASH)
--		ret = nand_update_bbt(mtd, offs);
-+		ret = nand_update_bbt(this, offs);
- 
- 	return ret;
- }
-@@ -1439,9 +1436,9 @@ static int nand_mark_bbt(struct mtd_info *mtd, loff_t offs, uint8_t mark)
-  * @mtd: MTD device structure
-  * @offs: offset of the bad block
-  */
--int nand_markbad_bbt(struct mtd_info *mtd, loff_t offs)
-+int nand_markbad_bbt(struct nand_chip *this, loff_t offs)
- {
--	return nand_mark_bbt(mtd, offs, BBT_BLOCK_WORN);
-+	return nand_mark_bbt(this, offs, BBT_BLOCK_WORN);
- }
- 
- /**
-@@ -1449,9 +1446,9 @@ int nand_markbad_bbt(struct mtd_info *mtd, loff_t offs)
-  * @mtd: MTD device structure
-  * @offs: offset of the good block
-  */
--int nand_markgood_bbt(struct mtd_info *mtd, loff_t offs)
-+int nand_markgood_bbt(struct nand_chip *this, loff_t offs)
- {
--	return nand_mark_bbt(mtd, offs, BBT_BLOCK_GOOD);
-+	return nand_mark_bbt(this, offs, BBT_BLOCK_GOOD);
- }
- 
- EXPORT_SYMBOL(nand_scan_bbt);
-diff --git a/drivers/mtd/nand/nand_bch.c b/drivers/mtd/nand/nand_bch.c
-index b94ecdf8d9..42ffa1b21a 100644
---- a/drivers/mtd/nand/nand_bch.c
-+++ b/drivers/mtd/nand/nand_bch.c
-@@ -46,10 +46,9 @@ struct nand_bch_control {
-  * @buf:	input buffer with raw data
-  * @code:	output buffer with ECC
-  */
--int nand_bch_calculate_ecc(struct mtd_info *mtd, const unsigned char *buf,
-+int nand_bch_calculate_ecc(struct nand_chip *chip, const unsigned char *buf,
- 			   unsigned char *code)
- {
--	const struct nand_chip *chip = mtd_to_nand(mtd);
- 	struct nand_bch_control *nbc = chip->ecc.priv;
- 	unsigned int i;
- 
-@@ -73,10 +72,9 @@ EXPORT_SYMBOL(nand_bch_calculate_ecc);
-  *
-  * Detect and correct bit errors for a data byte block
-  */
--int nand_bch_correct_data(struct mtd_info *mtd, unsigned char *buf,
-+int nand_bch_correct_data(struct nand_chip *chip, unsigned char *buf,
- 			  unsigned char *read_ecc, unsigned char *calc_ecc)
- {
--	const struct nand_chip *chip = mtd_to_nand(mtd);
- 	struct nand_bch_control *nbc = chip->ecc.priv;
- 	unsigned int *errloc = nbc->errloc;
- 	int i, count;
-@@ -117,9 +115,9 @@ EXPORT_SYMBOL(nand_bch_correct_data);
-  * @eccsize = 512  (thus, m=13 is the smallest integer such that 2^m-1 > 512*8)
-  * @eccbytes = 7   (7 bytes are required to store m*t = 13*4 = 52 bits)
-  */
--struct nand_bch_control *nand_bch_init(struct mtd_info *mtd)
-+struct nand_bch_control *nand_bch_init(struct nand_chip *nand)
- {
--	struct nand_chip *nand = mtd_to_nand(mtd);
-+	struct mtd_info *mtd = nand_to_mtd(nand);
- 	unsigned int m, t, eccsteps, i;
- 	struct nand_ecclayout *layout = nand->ecc.layout;
- 	struct nand_bch_control *nbc = NULL;
-diff --git a/drivers/mtd/nand/nand_denali.c b/drivers/mtd/nand/nand_denali.c
-index 8995845649..77a09ede70 100644
---- a/drivers/mtd/nand/nand_denali.c
-+++ b/drivers/mtd/nand/nand_denali.c
-@@ -76,10 +76,8 @@ static uint32_t denali_irq_mask = DENALI_IRQ_ALL;
-  * this macro allows us to convert from an MTD structure to our own
-  * device context (denali) structure.
-  */
--static inline struct denali_nand_info *mtd_to_denali(struct mtd_info *mtd)
-+static inline struct denali_nand_info *nand_to_denali(struct nand_chip *nand)
- {
--	struct nand_chip *nand = mtd_to_nand(mtd);
--
- 	return container_of(nand, struct denali_nand_info, nand);
- }
- 
-@@ -788,9 +786,10 @@ static int read_data_from_flash_mem(struct denali_nand_info *denali,
- }
- 
- /* writes OOB data to the device */
--static int write_oob_data(struct mtd_info *mtd, uint8_t *buf, int page)
-+static int write_oob_data(struct nand_chip *chip, uint8_t *buf, int page)
- {
--	struct denali_nand_info *denali = mtd_to_denali(mtd);
-+	struct mtd_info *mtd = nand_to_mtd(chip);
-+	struct denali_nand_info *denali = nand_to_denali(chip);
- 	uint32_t irq_status;
- 	uint32_t irq_mask = INTR_STATUS__PROGRAM_COMP |
- 						INTR_STATUS__PROGRAM_FAIL;
-@@ -827,9 +826,10 @@ static int write_oob_data(struct mtd_info *mtd, uint8_t *buf, int page)
- }
- 
- /* reads OOB data from the device */
--static void read_oob_data(struct mtd_info *mtd, uint8_t *buf, int page)
-+static void read_oob_data(struct nand_chip *chip, uint8_t *buf, int page)
- {
--	struct denali_nand_info *denali = mtd_to_denali(mtd);
-+	struct mtd_info *mtd = nand_to_mtd(chip);
-+	struct denali_nand_info *denali = nand_to_denali(chip);
- 	uint32_t irq_mask = INTR_STATUS__LOAD_COMP;
- 	uint32_t irq_status, addr, cmd;
- 
-@@ -995,10 +995,10 @@ static void denali_setup_dma(struct denali_nand_info *denali, int op)
-  * writes a page. user specifies type, and this function handles the
-  * configuration details.
-  */
--static int write_page(struct mtd_info *mtd, struct nand_chip *chip,
--			const uint8_t *buf, bool raw_xfer)
-+static int write_page(struct nand_chip *chip, const uint8_t *buf, bool raw_xfer)
- {
--	struct denali_nand_info *denali = mtd_to_denali(mtd);
-+	struct mtd_info *mtd = nand_to_mtd(chip);
-+	struct denali_nand_info *denali = nand_to_denali(chip);
- 	dma_addr_t addr = (unsigned long)denali->buf.buf;
- 	size_t size = mtd->writesize + mtd->oobsize;
- 	uint32_t irq_status;
-@@ -1051,14 +1051,14 @@ static int write_page(struct mtd_info *mtd, struct nand_chip *chip,
-  * writing a page with ECC or without is similar, all the work is done
-  * by write_page above.
-  */
--static int denali_write_page(struct mtd_info *mtd, struct nand_chip *chip,
-+static int denali_write_page(struct nand_chip *chip,
- 				const uint8_t *buf, int oob_required)
- {
- 	/*
- 	 * for regular page writes, we let HW handle all the ECC
- 	 * data written to the device.
- 	 */
--	return write_page(mtd, chip, buf, false);
-+	return write_page(chip, buf, false);
- }
- 
- /*
-@@ -1066,35 +1066,34 @@ static int denali_write_page(struct mtd_info *mtd, struct nand_chip *chip,
-  * raw access is similar to ECC page writes, so all the work is done in the
-  * write_page() function above.
-  */
--static int denali_write_page_raw(struct mtd_info *mtd, struct nand_chip *chip,
-+static int denali_write_page_raw(struct nand_chip *chip,
- 					const uint8_t *buf, int oob_required)
- {
- 	/*
- 	 * for raw page writes, we want to disable ECC and simply write
- 	 * whatever data is in the buffer.
- 	 */
--	return write_page(mtd, chip, buf, true);
-+	return write_page(chip, buf, true);
- }
- 
--static int denali_write_oob(struct mtd_info *mtd, struct nand_chip *chip,
--			    int page)
-+static int denali_write_oob(struct nand_chip *chip, int page)
- {
--	return write_oob_data(mtd, chip->oob_poi, page);
-+	return write_oob_data(chip, chip->oob_poi, page);
- }
- 
--static int denali_read_oob(struct mtd_info *mtd, struct nand_chip *chip,
--			   int page)
-+static int denali_read_oob(struct nand_chip *chip, int page)
- {
--	read_oob_data(mtd, chip->oob_poi, page);
-+	read_oob_data(chip, chip->oob_poi, page);
- 
- 	return 0;
- }
- 
--static int denali_read_page(struct mtd_info *mtd, struct nand_chip *chip,
-+static int denali_read_page(struct nand_chip *chip,
- 			    uint8_t *buf, int oob_required, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	unsigned int max_bitflips = 0;
--	struct denali_nand_info *denali = mtd_to_denali(mtd);
-+	struct denali_nand_info *denali = nand_to_denali(chip);
- 
- 	dma_addr_t addr = (unsigned long)denali->buf.buf;
- 	size_t size = mtd->writesize + mtd->oobsize;
-@@ -1138,8 +1137,7 @@ static int denali_read_page(struct mtd_info *mtd, struct nand_chip *chip,
- 			if (!is_erased(buf, mtd->writesize))
- 				mtd->ecc_stats.failed++;
- 		} else {
--			read_oob_data(&denali->nand.mtd, chip->oob_poi,
--				denali->page);
-+			read_oob_data(chip, chip->oob_poi, denali->page);
- 
- 			/* check ECC failures that may have occurred on
- 			 * erased pages */
-@@ -1154,10 +1152,11 @@ static int denali_read_page(struct mtd_info *mtd, struct nand_chip *chip,
- 	return max_bitflips;
- }
- 
--static int denali_read_page_raw(struct mtd_info *mtd, struct nand_chip *chip,
-+static int denali_read_page_raw(struct nand_chip *chip,
- 				uint8_t *buf, int oob_required, int page)
- {
--	struct denali_nand_info *denali = mtd_to_denali(mtd);
-+	struct mtd_info *mtd = nand_to_mtd(chip);
-+	struct denali_nand_info *denali = nand_to_denali(chip);
- 	dma_addr_t addr = (unsigned long)denali->buf.buf;
- 	size_t size = mtd->writesize + mtd->oobsize;
- 	uint32_t irq_mask = INTR_STATUS__DMA_CMD_COMP;
-@@ -1190,9 +1189,9 @@ static int denali_read_page_raw(struct mtd_info *mtd, struct nand_chip *chip,
- 	return 0;
- }
- 
--static uint8_t denali_read_byte(struct mtd_info *mtd)
-+static uint8_t denali_read_byte(struct nand_chip *chip)
- {
--	struct denali_nand_info *denali = mtd_to_denali(mtd);
-+	struct denali_nand_info *denali = nand_to_denali(chip);
- 	uint8_t result = 0xff;
- 
- 	if (denali->buf.head < denali->buf.tail)
-@@ -1201,23 +1200,23 @@ static uint8_t denali_read_byte(struct mtd_info *mtd)
- 	return result;
- }
- 
--static void denali_read_buf(struct mtd_info *mtd, uint8_t *buf, int len)
-+static void denali_read_buf(struct nand_chip *chip, uint8_t *buf, int len)
- {
- 	int i;
- 	for (i = 0; i < len; i++)
--		buf[i] = denali_read_byte(mtd);
-+		buf[i] = denali_read_byte(chip);
- }
- 
--static void denali_select_chip(struct mtd_info *mtd, int chip)
-+static void denali_select_chip(struct nand_chip *chip, int num)
- {
--	struct denali_nand_info *denali = mtd_to_denali(mtd);
-+	struct denali_nand_info *denali = nand_to_denali(chip);
- 
--	denali->flash_bank = chip;
-+	denali->flash_bank = num;
- }
- 
--static int denali_waitfunc(struct mtd_info *mtd, struct nand_chip *chip)
-+static int denali_waitfunc(struct nand_chip *chip)
- {
--	struct denali_nand_info *denali = mtd_to_denali(mtd);
-+	struct denali_nand_info *denali = nand_to_denali(chip);
- 	int status = denali->status;
- 
- 	denali->status = 0;
-@@ -1225,10 +1224,11 @@ static int denali_waitfunc(struct mtd_info *mtd, struct nand_chip *chip)
- 	return status;
- }
- 
--static void denali_cmdfunc(struct mtd_info *mtd, unsigned int cmd, int col,
-+static void denali_cmdfunc(struct nand_chip *chip, unsigned int cmd, int col,
- 			   int page)
- {
--	struct denali_nand_info *denali = mtd_to_denali(mtd);
-+	struct mtd_info *mtd = nand_to_mtd(chip);
-+	struct denali_nand_info *denali = nand_to_denali(chip);
- 	uint32_t addr, id;
- 	uint32_t pages_per_block;
- 	uint32_t block;
-@@ -1415,7 +1415,7 @@ int denali_init(struct denali_nand_info *denali)
- 	 * this is the first stage in a two step process to register
- 	 * with the nand subsystem
- 	 */
--	if (nand_scan_ident(mtd, denali->max_banks, NULL)) {
-+	if (nand_scan_ident(nand, denali->max_banks, NULL)) {
- 		ret = -ENXIO;
- 		goto failed_req_irq;
- 	}
-@@ -1537,12 +1537,12 @@ int denali_init(struct denali_nand_info *denali)
- 				MAIN_ACCESS);
- 	}
- 
--	if (nand_scan_tail(mtd)) {
-+	if (nand_scan_tail(nand)) {
- 		ret = -ENXIO;
- 		goto failed_req_irq;
- 	}
- 
--	return add_mtd_nand_device(mtd, "nand");
-+	return add_mtd_nand_device(nand, "nand");
- 
- failed_req_irq:
- 	denali_irq_cleanup(denali->irq, denali);
-diff --git a/drivers/mtd/nand/nand_ecc.c b/drivers/mtd/nand/nand_ecc.c
-index fd6ad7edc8..e488130f73 100644
---- a/drivers/mtd/nand/nand_ecc.c
-+++ b/drivers/mtd/nand/nand_ecc.c
-@@ -66,7 +66,7 @@ static const u_char nand_ecc_precalc_table[] = {
-  * @dat:	raw data
-  * @ecc_code:	buffer for ECC
-  */
--int nand_calculate_ecc(struct mtd_info *mtd, const u_char *dat,
-+int nand_calculate_ecc(struct nand_chip *chip, const u_char *dat,
- 		       u_char *ecc_code)
- {
- 	uint8_t idx, reg1, reg2, reg3, tmp1, tmp2;
-@@ -139,7 +139,7 @@ static inline int countbits(uint32_t byte)
-  *
-  * Detect and correct a 1 bit error for 256 byte block
-  */
--int nand_correct_data(struct mtd_info *mtd, u_char *dat,
-+int nand_correct_data(struct nand_chip *chip, u_char *dat,
- 		      u_char *read_ecc, u_char *calc_ecc)
- {
- 	uint8_t s0, s1, s2;
-diff --git a/drivers/mtd/nand/nand_imx.c b/drivers/mtd/nand/nand_imx.c
-index d69a012f01..40877eafb6 100644
---- a/drivers/mtd/nand/nand_imx.c
-+++ b/drivers/mtd/nand/nand_imx.c
-@@ -57,7 +57,7 @@ struct imx_nand_host {
- 	int			data_width;
- 	int			flash_bbt;
- 
--	void			(*preset)(struct mtd_info *);
-+	void			(*preset)(struct nand_chip *);
- 	void			(*send_cmd)(struct imx_nand_host *, uint16_t);
- 	void			(*send_addr)(struct imx_nand_host *, uint16_t);
- 	void			(*send_page)(struct imx_nand_host *, unsigned int);
-@@ -65,7 +65,7 @@ struct imx_nand_host {
- 	void			(*send_read_param)(struct imx_nand_host *);
- 	uint16_t		(*get_dev_status)(struct imx_nand_host *);
- 	int			(*check_int)(struct imx_nand_host *);
--	int			(*correct)(struct mtd_info *mtd);
-+	int			(*correct)(struct nand_chip *);
- 	void			(*enable_hwecc)(struct nand_chip *, bool enable);
- };
- 
-@@ -429,7 +429,7 @@ static u16 get_dev_status_v1_v2(struct imx_nand_host *host)
-  *
-  * @return  0 if device is busy else 1
-  */
--static int imx_nand_dev_ready(struct mtd_info *mtd)
-+static int imx_nand_dev_ready(struct nand_chip *chip)
- {
- 	/*
- 	 * NFC handles R/B internally.Therefore,this function
-@@ -475,10 +475,10 @@ static void imx_nand_enable_hwecc_v3(struct nand_chip *chip, bool enable)
- 	writel(config2, NFC_V3_CONFIG2);
- }
- 
--static int imx_nand_correct_data_v1(struct mtd_info *mtd)
-+static int imx_nand_correct_data_v1(struct nand_chip *chip)
- {
--	struct nand_chip *nand_chip = mtd_to_nand(mtd);
--	struct imx_nand_host *host = nand_chip->priv;
-+	struct mtd_info *mtd = nand_to_mtd(chip);
-+	struct imx_nand_host *host = chip->priv;
- 
- 	if (host->eccstatus_v1 < 0)
- 		return host->eccstatus_v1;
-@@ -491,10 +491,10 @@ static int imx_nand_correct_data_v1(struct mtd_info *mtd)
- 		return 0;
- }
- 
--static int imx_nand_correct_data_v2_v3(struct mtd_info *mtd)
-+static int imx_nand_correct_data_v2_v3(struct nand_chip *chip)
- {
--	struct nand_chip *nand_chip = mtd_to_nand(mtd);
--	struct imx_nand_host *host = nand_chip->priv;
-+	struct mtd_info *mtd = nand_to_mtd(chip);
-+	struct imx_nand_host *host = chip->priv;
- 	u32 ecc_stat, err;
- 	int no_subpages;
- 	u8 ecc_bit_mask, err_limit, max_bitflips = 0;
-@@ -521,7 +521,7 @@ static int imx_nand_correct_data_v2_v3(struct mtd_info *mtd)
- 	return max_bitflips;
- }
- 
--static int imx_nand_calculate_ecc(struct mtd_info *mtd, const u_char * dat,
-+static int imx_nand_calculate_ecc(struct nand_chip *chip, const u_char * dat,
- 				  u_char * ecc_code)
- {
- 	return 0;
-@@ -534,17 +534,16 @@ static int imx_nand_calculate_ecc(struct mtd_info *mtd, const u_char * dat,
-  *
-  * @return    data read from the NAND Flash
-  */
--static u_char imx_nand_read_byte(struct mtd_info *mtd)
-+static u_char imx_nand_read_byte(struct nand_chip *chip)
- {
--	struct nand_chip *nand_chip = mtd_to_nand(mtd);
--	struct imx_nand_host *host = nand_chip->priv;
-+	struct imx_nand_host *host = chip->priv;
- 	u_char ret;
- 
- 	/* Check for status request */
- 	if (host->status_request)
- 		return host->get_dev_status(host) & 0xFF;
- 
--	if (nand_chip->options & NAND_BUSWIDTH_16) {
-+	if (chip->options & NAND_BUSWIDTH_16) {
- 		/* only take the lower byte of each word */
- 		BUG_ON(host->buf_start & 1);
- 		ret = *(uint16_t *)(host->data_buf + host->buf_start);
-@@ -565,10 +564,9 @@ static u_char imx_nand_read_byte(struct mtd_info *mtd)
-   *
-   * @return    data read from the NAND Flash
-   */
--static u16 imx_nand_read_word(struct mtd_info *mtd)
-+static u16 imx_nand_read_word(struct nand_chip *chip)
- {
--	struct nand_chip *nand_chip = mtd_to_nand(mtd);
--	struct imx_nand_host *host = nand_chip->priv;
-+	struct imx_nand_host *host = chip->priv;
- 	uint16_t ret;
- 
- 	ret = *(uint16_t *)(host->data_buf + host->buf_start);
-@@ -586,11 +584,11 @@ static u16 imx_nand_read_word(struct mtd_info *mtd)
-  * @param       buf     data to be written to NAND Flash
-  * @param       len     number of bytes to be written
-  */
--static void imx_nand_write_buf(struct mtd_info *mtd,
-+static void imx_nand_write_buf(struct nand_chip *chip,
- 			       const u_char *buf, int len)
- {
--	struct nand_chip *nand_chip = mtd_to_nand(mtd);
--	struct imx_nand_host *host = nand_chip->priv;
-+	struct mtd_info *mtd = nand_to_mtd(chip);
-+	struct imx_nand_host *host = chip->priv;
- 	u16 col = host->buf_start;
- 	int n = mtd->oobsize + mtd->writesize - col;
- 
-@@ -610,10 +608,10 @@ static void imx_nand_write_buf(struct mtd_info *mtd,
-  * @param       buf     data to be read from NAND Flash
-  * @param       len     number of bytes to be read
-  */
--static void imx_nand_read_buf(struct mtd_info *mtd, u_char * buf, int len)
-+static void imx_nand_read_buf(struct nand_chip *chip, u_char * buf, int len)
- {
--	struct nand_chip *nand_chip = mtd_to_nand(mtd);
--	struct imx_nand_host *host = nand_chip->priv;
-+	struct mtd_info *mtd = nand_to_mtd(chip);
-+	struct imx_nand_host *host = chip->priv;
- 	u16 col = host->buf_start;
- 	int n = mtd->oobsize + mtd->writesize - col;
- 
-@@ -631,10 +629,10 @@ static void imx_nand_read_buf(struct mtd_info *mtd, u_char * buf, int len)
- /*
-  * Function to transfer data to/from spare area.
-  */
--static void copy_spare(struct mtd_info *mtd, int bfrom, void *buf)
-+static void copy_spare(struct nand_chip *chip, int bfrom, void *buf)
- {
--	struct nand_chip *this = mtd_to_nand(mtd);
--	struct imx_nand_host *host = this->priv;
-+	struct mtd_info *mtd = nand_to_mtd(chip);
-+	struct imx_nand_host *host = chip->priv;
- 	u16 i, j;
- 	u16 n = mtd->writesize >> 9;
- 	u8 *d = buf;
-@@ -665,14 +663,14 @@ static void copy_spare(struct mtd_info *mtd, int bfrom, void *buf)
-  * @param       mtd     MTD structure for the NAND Flash
-  * @param       chip    val indicating select or deselect
-  */
--static void imx_nand_select_chip(struct mtd_info *mtd, int chip)
-+static void imx_nand_select_chip(struct nand_chip *_chip, int chip)
- {
- }
- 
--static void mxc_do_addr_cycle(struct mtd_info *mtd, int column, int page_addr)
-+static void mxc_do_addr_cycle(struct nand_chip *chip, int column, int page_addr)
- {
--	struct nand_chip *nand_chip = mtd_to_nand(mtd);
--	struct imx_nand_host *host = nand_chip->priv;
-+	struct mtd_info *mtd = nand_to_mtd(chip);
-+	struct imx_nand_host *host = chip->priv;
- 
- 	/*
- 	 * Write out column address, if necessary
-@@ -735,10 +733,9 @@ static int get_eccsize(struct mtd_info *mtd)
- 		return 8;
- }
- 
--static void preset_v1(struct mtd_info *mtd)
-+static void preset_v1(struct nand_chip *chip)
- {
--	struct nand_chip *nand_chip = mtd_to_nand(mtd);
--	struct imx_nand_host *host = nand_chip->priv;
-+	struct imx_nand_host *host = chip->priv;
- 	uint16_t config1 = 0;
- 
- 	host->eccsize = 1;
-@@ -757,14 +754,14 @@ static void preset_v1(struct mtd_info *mtd)
- 	writew(0x4, host->regs + NFC_V1_V2_WRPROT);
- }
- 
--static void preset_v2(struct mtd_info *mtd)
-+static void preset_v2(struct nand_chip *chip)
- {
--	struct nand_chip *nand_chip = mtd_to_nand(mtd);
--	struct imx_nand_host *host = nand_chip->priv;
-+	struct mtd_info *mtd = nand_to_mtd(chip);
-+	struct imx_nand_host *host = chip->priv;
- 	uint16_t config1 = 0;
- 	int mode;
- 
--	mode = onfi_get_async_timing_mode(nand_chip);
-+	mode = onfi_get_async_timing_mode(chip);
- 	if (mode != ONFI_TIMING_MODE_UNKNOWN && !IS_ERR(host->clk)) {
- 		const struct nand_sdr_timings *timings;
- 
-@@ -817,9 +814,9 @@ static void preset_v2(struct mtd_info *mtd)
- 	writew(0x4, host->regs + NFC_V1_V2_WRPROT);
- }
- 
--static void preset_v3(struct mtd_info *mtd)
-+static void preset_v3(struct nand_chip *chip)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct imx_nand_host *host = chip->priv;
- 	uint32_t config2, config3;
- 	int i, addr_phases;
-@@ -887,24 +884,25 @@ static void preset_v3(struct mtd_info *mtd)
- 	writel(0, NFC_V3_DELAY_LINE);
- }
- 
--static int imx_nand_write_page(struct mtd_info *mtd, struct nand_chip *chip,
-+static int imx_nand_write_page(struct nand_chip *chip,
- 		uint32_t offset, int data_len, const uint8_t *buf,
- 		int oob_required, int page, int cached, int raw)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct imx_nand_host *host = chip->priv;
- 	int status;
- 
- 	host->enable_hwecc(chip, !raw);
- 
--	chip->cmdfunc(mtd, NAND_CMD_SEQIN, 0x00, page);
-+	chip->cmdfunc(chip, NAND_CMD_SEQIN, 0x00, page);
- 
- 	memcpy32(host->main_area0, buf, mtd->writesize);
- 	if (oob_required)
--		copy_spare(mtd, 0, chip->oob_poi);
-+		copy_spare(chip, 0, chip->oob_poi);
- 
- 	host->send_page(host, NFC_INPUT);
--	chip->cmdfunc(mtd, NAND_CMD_PAGEPROG, -1, -1);
--	status = chip->waitfunc(mtd, chip);
-+	chip->cmdfunc(chip, NAND_CMD_PAGEPROG, -1, -1);
-+	status = chip->waitfunc(chip);
- 
- 	if (status & NAND_STATUS_FAIL)
- 		return -EIO;
-@@ -912,9 +910,10 @@ static int imx_nand_write_page(struct mtd_info *mtd, struct nand_chip *chip,
- 	return 0;
- }
- 
--static void imx_nand_do_read_page(struct mtd_info *mtd,
--		struct nand_chip *chip, uint8_t *buf, int oob_required)
-+static void imx_nand_do_read_page(struct nand_chip *chip, uint8_t *buf,
-+				  int oob_required)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct imx_nand_host *host = chip->priv;
- 
- 	host->send_page(host, NFC_OUTPUT);
-@@ -922,29 +921,29 @@ static void imx_nand_do_read_page(struct mtd_info *mtd,
- 	memcpy32(buf, host->main_area0, mtd->writesize);
- 
- 	if (oob_required)
--		copy_spare(mtd, 1, chip->oob_poi);
-+		copy_spare(chip, 1, chip->oob_poi);
- }
- 
--static int imx_nand_read_page(struct mtd_info *mtd,
--		struct nand_chip *chip, uint8_t *buf, int oob_required, int page)
-+static int imx_nand_read_page(struct nand_chip *chip, uint8_t *buf,
-+			      int oob_required, int page)
- {
- 	struct imx_nand_host *host = chip->priv;
- 
- 	host->enable_hwecc(chip, true);
- 
--	imx_nand_do_read_page(mtd, chip, buf, oob_required);
-+	imx_nand_do_read_page(chip, buf, oob_required);
- 
--	return host->correct(mtd);
-+	return host->correct(chip);
- }
- 
--static int imx_nand_read_page_raw(struct mtd_info *mtd,
--		struct nand_chip *chip, uint8_t *buf, int oob_required, int page)
-+static int imx_nand_read_page_raw(struct nand_chip *chip, uint8_t *buf,
-+				  int oob_required, int page)
- {
- 	struct imx_nand_host *host = chip->priv;
- 
- 	host->enable_hwecc(chip, false);
- 
--	imx_nand_do_read_page(mtd, chip, buf, oob_required);
-+	imx_nand_do_read_page(chip, buf, oob_required);
- 
- 	return 0;
- }
-@@ -958,11 +957,11 @@ static int imx_nand_read_page_raw(struct mtd_info *mtd,
-  * @param       column          column offset for the page read
-  * @param       page_addr       page to be read from NAND Flash
-  */
--static void imx_nand_command(struct mtd_info *mtd, unsigned command,
-+static void imx_nand_command(struct nand_chip *chip, unsigned command,
- 			     int column, int page_addr)
- {
--	struct nand_chip *nand_chip = mtd_to_nand(mtd);
--	struct imx_nand_host *host = nand_chip->priv;
-+	struct mtd_info *mtd = nand_to_mtd(chip);
-+	struct imx_nand_host *host = chip->priv;
- 
- 	dev_dbg(host->dev,
- 	      "imx_nand_command (cmd = 0x%x, col = 0x%x, page = 0x%x)\n",
-@@ -978,7 +977,7 @@ static void imx_nand_command(struct mtd_info *mtd, unsigned command,
- 	 */
- 	switch (command) {
- 	case NAND_CMD_RESET:
--		host->preset(mtd);
-+		host->preset(chip);
- 		host->send_cmd(host, command);
- 		break;
- 
-@@ -986,7 +985,7 @@ static void imx_nand_command(struct mtd_info *mtd, unsigned command,
- 		host->buf_start = 0;
- 		host->status_request = 1;
- 		host->send_cmd(host, command);
--		mxc_do_addr_cycle(mtd, column, page_addr);
-+		mxc_do_addr_cycle(chip, column, page_addr);
- 		break;
- 
- 	case NAND_CMD_READ0:
-@@ -999,7 +998,7 @@ static void imx_nand_command(struct mtd_info *mtd, unsigned command,
- 		command = NAND_CMD_READ0;
- 
- 		host->send_cmd(host, command);
--		mxc_do_addr_cycle(mtd, column, page_addr);
-+		mxc_do_addr_cycle(chip, column, page_addr);
- 
- 		if (host->pagesize_2k)
- 			/* send read confirm command */
-@@ -1017,7 +1016,7 @@ static void imx_nand_command(struct mtd_info *mtd, unsigned command,
- 				  * whole page including OOB together.
- 				  */
- 				/* call ourself to read a page */
--				imx_nand_command(mtd, NAND_CMD_READ0, 0,
-+				imx_nand_command(chip, NAND_CMD_READ0, 0,
- 						 page_addr);
- 			}
- 			host->buf_start = column;
-@@ -1033,25 +1032,25 @@ static void imx_nand_command(struct mtd_info *mtd, unsigned command,
- 				host->send_cmd(host, NAND_CMD_READ0);
- 		}
- 		host->send_cmd(host, command);
--		mxc_do_addr_cycle(mtd, column, page_addr);
-+		mxc_do_addr_cycle(chip, column, page_addr);
- 
- 		break;
- 
- 	case NAND_CMD_PAGEPROG:
- 		host->send_cmd(host, command);
--		mxc_do_addr_cycle(mtd, column, page_addr);
-+		mxc_do_addr_cycle(chip, column, page_addr);
- 		break;
- 
- 	case NAND_CMD_READID:
- 		host->send_cmd(host, command);
--		mxc_do_addr_cycle(mtd, column, page_addr);
-+		mxc_do_addr_cycle(chip, column, page_addr);
- 		host->send_read_id(host);
- 		host->buf_start = 0;
- 		break;
- 
- 	case NAND_CMD_PARAM:
- 		host->send_cmd(host, command);
--		mxc_do_addr_cycle(mtd, column, page_addr);
-+		mxc_do_addr_cycle(chip, column, page_addr);
- 		host->send_read_param(host);
- 		host->buf_start = 0;
- 		break;
-@@ -1059,7 +1058,7 @@ static void imx_nand_command(struct mtd_info *mtd, unsigned command,
- 	case NAND_CMD_ERASE1:
- 	case NAND_CMD_ERASE2:
- 		host->send_cmd(host, command);
--		mxc_do_addr_cycle(mtd, column, page_addr);
-+		mxc_do_addr_cycle(chip, column, page_addr);
- 		break;
- 	}
- }
-@@ -1141,8 +1140,9 @@ static int __init mxcnd_probe_dt(struct imx_nand_host *host)
-  * on the flash BBT.
-  *
-  */
--static int checkbad(struct mtd_info *mtd, loff_t ofs)
-+static int checkbad(struct nand_chip *chip, loff_t ofs)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int ret;
- 	uint8_t buf[mtd->writesize + mtd->oobsize];
- 	struct mtd_oob_ops ops;
-@@ -1164,9 +1164,9 @@ static int checkbad(struct mtd_info *mtd, loff_t ofs)
- 	return 0;
- }
- 
--static int imxnd_create_bbt(struct mtd_info *mtd)
-+static int imxnd_create_bbt(struct nand_chip *chip)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int len, i, numblocks, ret;
- 	loff_t from = 0;
- 	uint8_t *bbt;
-@@ -1181,7 +1181,7 @@ static int imxnd_create_bbt(struct mtd_info *mtd)
- 	numblocks = mtd->size >> (chip->bbt_erase_shift - 1);
- 
- 	for (i = 0; i < numblocks;) {
--		ret = checkbad(mtd, from);
-+		ret = checkbad(chip, from);
- 		if (ret < 0)
- 			goto out;
- 
-@@ -1201,11 +1201,11 @@ static int imxnd_create_bbt(struct mtd_info *mtd)
- 	free(chip->bbt);
- 	chip->bbt = bbt;
- 
--	ret = nand_update_bbt(mtd, 0);
-+	ret = nand_update_bbt(chip, 0);
- 	if (ret)
- 		return ret;
- 
--	ret = nand_default_bbt(mtd);
-+	ret = nand_default_bbt(chip);
- 	if (ret)
- 		return ret;
- 
-@@ -1389,13 +1389,13 @@ static int __init imxnd_probe(struct device_d *dev)
- 	}
- 
- 	/* first scan to find the device and get the page size */
--	if (nand_scan_ident(mtd, 1, NULL)) {
-+	if (nand_scan_ident(this, 1, NULL)) {
- 		err = -ENXIO;
- 		goto escan;
- 	}
- 
- 	/* Call preset again, with correct writesize this time */
--	host->preset(mtd);
-+	host->preset(this);
- 
- 	imx_nand_set_layout(mtd->writesize, host->data_width == 2 ? 16 : 8);
- 
-@@ -1423,21 +1423,21 @@ static int __init imxnd_probe(struct device_d *dev)
- 		this->ecc.strength = host->eccsize;
- 
- 	/* second phase scan */
--	if (nand_scan_tail(mtd)) {
-+	if (nand_scan_tail(this)) {
- 		err = -ENXIO;
- 		goto escan;
- 	}
- 
- 	if (host->flash_bbt && this->bbt_td->pages[0] == -1 && this->bbt_md->pages[0] == -1) {
- 		dev_info(dev, "no BBT found. creating one\n");
--		err = imxnd_create_bbt(mtd);
-+		err = imxnd_create_bbt(this);
- 		if (err)
- 			dev_warn(dev, "Failed to create bbt: %s\n",
- 				 strerror(-err));
- 		err = 0;
- 	}
- 
--	add_mtd_nand_device(mtd, "nand");
-+	add_mtd_nand_device(this, "nand");
- 
- 	dev->priv = host;
- 
-diff --git a/drivers/mtd/nand/nand_mrvl_nfc.c b/drivers/mtd/nand/nand_mrvl_nfc.c
-index 15d052b5a4..0a7c0d4a9a 100644
---- a/drivers/mtd/nand/nand_mrvl_nfc.c
-+++ b/drivers/mtd/nand/nand_mrvl_nfc.c
-@@ -277,8 +277,10 @@ static struct nand_ecclayout ecc_layout_4KB_bch8bit = {
- #define NDTR1_tWHR(c)	(min((c), 15) << 4)
- #define NDTR1_tAR(c)	(min((c), 15) << 0)
- 
--#define mtd_info_to_host(mtd) ((struct mrvl_nand_host *) \
--			       (((struct nand_chip *)((mtd)->priv))->priv))
-+static inline struct mrvl_nand_host *nand_to_host(struct nand_chip *chip)
-+{
-+	return container_of(chip, struct mrvl_nand_host, chip);
-+}
- 
- static const struct mrvl_nand_variant pxa3xx_variant = {
- 	.hwflags	= 0,
-@@ -341,7 +343,7 @@ static struct mrvl_nand_timing timings[] = {
- 
- static void mrvl_nand_set_timing(struct mrvl_nand_host *host, bool use_default)
- {
--	struct mtd_info *mtd = &host->chip.mtd;
-+	struct nand_chip *chip = &host->chip;
- 	unsigned long nand_clk = clk_get_rate(host->core_clk);
- 	struct mrvl_nand_timing *t;
- 	uint32_t ndtr0, ndtr1;
-@@ -350,8 +352,8 @@ static void mrvl_nand_set_timing(struct mrvl_nand_host *host, bool use_default)
- 	if (use_default) {
- 		id = 0;
- 	} else {
--		host->chip.cmdfunc(mtd, NAND_CMD_READID, 0x00, -1);
--		host->chip.read_buf(mtd, (unsigned char *)&id, sizeof(id));
-+		chip->cmdfunc(chip, NAND_CMD_READID, 0x00, -1);
-+		chip->read_buf(chip, (unsigned char *)&id, sizeof(id));
- 	}
- 	for (t = &timings[0]; t->id; t++)
- 		if (t->id == id)
-@@ -370,9 +372,9 @@ static void mrvl_nand_set_timing(struct mrvl_nand_host *host, bool use_default)
- 	nand_writel(host, NDTR1CS0, ndtr1);
- }
- 
--static int mrvl_nand_ready(struct mtd_info *mtd)
-+static int mrvl_nand_ready(struct nand_chip *chip)
- {
--	struct mrvl_nand_host *host = mtd_info_to_host(mtd);
-+	struct mrvl_nand_host *host = nand_to_host(chip);
- 	u32 ndcr;
- 
- 	ndcr = nand_readl(host, NDSR);
-@@ -396,14 +398,14 @@ static int mrvl_nand_ready(struct mtd_info *mtd)
-  * Thus, this function is only called when we want *all* blocks to look good,
-  * so it *always* return success.
-  */
--static int mrvl_nand_block_bad(struct mtd_info *mtd, loff_t ofs, int getchip)
-+static int mrvl_nand_block_bad(struct nand_chip *chip, loff_t ofs, int getchip)
- {
- 	return 0;
- }
- 
--static void mrvl_nand_select_chip(struct mtd_info *mtd, int chipnr)
-+static void mrvl_nand_select_chip(struct nand_chip *chip, int chipnr)
- {
--	struct mrvl_nand_host *host = mtd_info_to_host(mtd);
-+	struct mrvl_nand_host *host = nand_to_host(chip);
- 
- 	if (chipnr <= 0 || chipnr >= 3 || chipnr == host->cs)
- 		return;
-@@ -759,10 +761,10 @@ static void mrvl_nand_wait_cmd_done(struct mrvl_nand_host *host,
- 	}
- }
- 
--static void mrvl_nand_cmdfunc(struct mtd_info *mtd, unsigned command,
-+static void mrvl_nand_cmdfunc(struct nand_chip *chip, unsigned command,
- 			       int column, int page_addr)
- {
--	struct mrvl_nand_host *host = mtd_info_to_host(mtd);
-+	struct mrvl_nand_host *host = nand_to_host(chip);
- 
- 	/*
- 	 * if this is a x16 device ,then convert the input
-@@ -790,10 +792,11 @@ static void mrvl_nand_cmdfunc(struct mtd_info *mtd, unsigned command,
-  *
-  * Returns 0
-  */
--static int mrvl_nand_write_page_hwecc(struct mtd_info *mtd,
--		struct nand_chip *chip, const uint8_t *buf, int oob_required)
-+static int mrvl_nand_write_page_hwecc(struct nand_chip *chip, const uint8_t *buf,
-+				      int oob_required)
- {
--	struct mrvl_nand_host *host = mtd_info_to_host(mtd);
-+	struct mtd_info *mtd = nand_to_mtd(chip);
-+	struct mrvl_nand_host *host = nand_to_host(chip);
- 
- 	memcpy(host->data_buff, buf, mtd->writesize);
- 	if (oob_required)
-@@ -806,16 +809,16 @@ static int mrvl_nand_write_page_hwecc(struct mtd_info *mtd,
- 	return 0;
- }
- 
--static int mrvl_nand_read_page_hwecc(struct mtd_info *mtd,
--		struct nand_chip *chip, uint8_t *buf, int oob_required,
--		int page)
-+static int mrvl_nand_read_page_hwecc(struct nand_chip *chip, uint8_t *buf,
-+				     int oob_required, int page)
- {
--	struct mrvl_nand_host *host = mtd_info_to_host(mtd);
-+	struct mtd_info *mtd = nand_to_mtd(chip);
-+	struct mrvl_nand_host *host = nand_to_host(chip);
- 	u32 ndsr;
- 	int ret = 0;
- 
--	chip->read_buf(mtd, buf, mtd->writesize);
--	chip->read_buf(mtd, chip->oob_poi, mtd->oobsize);
-+	chip->read_buf(chip, buf, mtd->writesize);
-+	chip->read_buf(chip, chip->oob_poi, mtd->oobsize);
- 	ndsr = nand_readl(host, NDSR);
- 
- 	if (ndsr & NDSR_UNCORERR) {
-@@ -837,9 +840,9 @@ static int mrvl_nand_read_page_hwecc(struct mtd_info *mtd,
- 	return ret;
- }
- 
--static void mrvl_nand_read_buf(struct mtd_info *mtd, uint8_t *buf, int len)
-+static void mrvl_nand_read_buf(struct nand_chip *chip, uint8_t *buf, int len)
- {
--	struct mrvl_nand_host *host = mtd_info_to_host(mtd);
-+	struct mrvl_nand_host *host = nand_to_host(chip);
- 	int xfer;
- 
- 	xfer = min_t(int, len, host->buf_count);
-@@ -848,26 +851,26 @@ static void mrvl_nand_read_buf(struct mtd_info *mtd, uint8_t *buf, int len)
- 	host->buf_count -= xfer;
- }
- 
--static uint8_t mrvl_nand_read_byte(struct mtd_info *mtd)
-+static uint8_t mrvl_nand_read_byte(struct nand_chip *chip)
- {
- 	uint8_t ret;
- 
--	mrvl_nand_read_buf(mtd, (uint8_t *)&ret, sizeof(ret));
-+	mrvl_nand_read_buf(chip, (uint8_t *)&ret, sizeof(ret));
- 	return ret;
- }
- 
--static u16 mrvl_nand_read_word(struct mtd_info *mtd)
-+static u16 mrvl_nand_read_word(struct nand_chip *chip)
- {
- 	u16 ret;
- 
--	mrvl_nand_read_buf(mtd, (uint8_t *)&ret, sizeof(ret));
-+	mrvl_nand_read_buf(chip, (uint8_t *)&ret, sizeof(ret));
- 	return ret;
- }
- 
--static void mrvl_nand_write_buf(struct mtd_info *mtd,
-+static void mrvl_nand_write_buf(struct nand_chip *chip,
- 		const uint8_t *buf, int len)
- {
--	struct mrvl_nand_host *host = mtd_info_to_host(mtd);
-+	struct mrvl_nand_host *host = nand_to_host(chip);
- 
- 	memcpy(host->data_buff + host->buf_start, buf, len);
- 	host->buf_start += len;
-@@ -1033,9 +1036,9 @@ static int pxa_ecc_init(struct mrvl_nand_host *host,
- 	return 0;
- }
- 
--static int mrvl_nand_scan(struct mtd_info *mtd)
-+static int mrvl_nand_scan(struct nand_chip *chip)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct mrvl_nand_host *host = chip->priv;
- 	int ret;
- 	unsigned int ndcr;
-@@ -1053,9 +1056,9 @@ static int mrvl_nand_scan(struct mtd_info *mtd)
- 			    nand_readl(host, NDECCCTRL) & ~NDECCCTRL_BCH_EN);
- 
- 	mrvl_nand_set_timing(host, true);
--	if (nand_scan_ident(mtd, 1, NULL)) {
-+	if (nand_scan_ident(chip, 1, NULL)) {
- 		host->reg_ndcr |= NDCR_DWIDTH_M | NDCR_DWIDTH_C;
--		if (nand_scan_ident(mtd, 1, NULL))
-+		if (nand_scan_ident(chip, 1, NULL))
- 			return -ENODEV;
- 	}
- 	mrvl_nand_config_flash(host);
-@@ -1099,7 +1102,7 @@ static int mrvl_nand_scan(struct mtd_info *mtd)
- 	host->buf_size = mtd->writesize + mtd->oobsize;
- 	host->data_buff = xmalloc(host->buf_size);
- 
--	return nand_scan_tail(mtd);
-+	return nand_scan_tail(chip);
- }
- 
- static struct mrvl_nand_host *alloc_nand_resource(struct device_d *dev)
-@@ -1214,14 +1217,14 @@ static int mrvl_nand_probe(struct device_d *dev)
- 		return ret;
- 
- 	host->chip.controller = &host->chip.hwcontrol;
--	ret = mrvl_nand_scan(&host->chip.mtd);
-+	ret = mrvl_nand_scan(&host->chip);
- 	if (ret) {
- 		dev_warn(dev, "failed to scan nand at cs %d\n",
- 			 host->cs);
- 		return -ENODEV;
- 	}
- 
--	ret = add_mtd_nand_device(&host->chip.mtd, "nand");
-+	ret = add_mtd_nand_device(&host->chip, "nand");
- 	return ret;
- }
- 
-diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
-index 36b6e7ac22..dd4ea73b78 100644
---- a/drivers/mtd/nand/nand_mxs.c
-+++ b/drivers/mtd/nand/nand_mxs.c
-@@ -330,9 +330,9 @@ static uint32_t mxs_nand_get_mark_offset(struct mtd_info *mtd)
- 	return block_mark_bit_offset;
- }
- 
--static int mxs_nand_calc_geo(struct mtd_info *mtd)
-+static int mxs_nand_calc_geo(struct nand_chip *chip)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct mxs_nand_info *nand_info = chip->priv;
- 	int ecc_chunk_count = mxs_nand_ecc_chunk_cnt(mtd->writesize);
- 	int gf_len = 13;  /* length of Galois Field for non-DDR nand */
-@@ -420,9 +420,8 @@ static int mxs_nand_wait_for_bch_complete(struct mxs_nand_info *nand_info)
-  * ignore the chip enable bit and concentrate only on sending bytes to the NAND
-  * Flash.
-  */
--static void mxs_nand_cmd_ctrl(struct mtd_info *mtd, int data, unsigned int ctrl)
-+static void mxs_nand_cmd_ctrl(struct nand_chip *chip, int data, unsigned int ctrl)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 	struct mxs_nand_info *nand_info = chip->priv;
- 	struct mxs_dma_desc *d;
- 	uint32_t channel = nand_info->dma_channel_base + nand_info->cur_chip;
-@@ -496,9 +495,8 @@ static void mxs_nand_cmd_ctrl(struct mtd_info *mtd, int data, unsigned int ctrl)
- /*
-  * Test if the NAND flash is ready.
-  */
--static int mxs_nand_device_ready(struct mtd_info *mtd)
-+static int mxs_nand_device_ready(struct nand_chip *chip)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 	struct mxs_nand_info *nand_info = chip->priv;
- 	void __iomem *gpmi_regs = nand_info->io_base;
- 	uint32_t tmp;
-@@ -522,9 +520,8 @@ static int mxs_nand_device_ready(struct mtd_info *mtd)
- /*
-  * Select the NAND chip.
-  */
--static void mxs_nand_select_chip(struct mtd_info *mtd, int chipnum)
-+static void mxs_nand_select_chip(struct nand_chip *chip, int chipnum)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 	struct mxs_nand_info *nand_info = chip->priv;
- 
- 	nand_info->cur_chip = chipnum;
-@@ -537,10 +534,9 @@ static void mxs_nand_select_chip(struct mtd_info *mtd, int chipnum)
-  * swapping the block mark, or swapping it *back* -- but it doesn't matter
-  * because the the operation is the same.
-  */
--static void mxs_nand_swap_block_mark(struct mtd_info *mtd,
-+static void mxs_nand_swap_block_mark(struct nand_chip *chip,
- 					uint8_t *data_buf, uint8_t *oob_buf)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 	struct mxs_nand_info *nand_info = chip->priv;
- 
- 	uint32_t bit_offset;
-@@ -579,9 +575,8 @@ static void mxs_nand_swap_block_mark(struct mtd_info *mtd,
- /*
-  * Read data from NAND.
-  */
--static void mxs_nand_read_buf(struct mtd_info *mtd, uint8_t *buf, int length)
-+static void mxs_nand_read_buf(struct nand_chip *chip, uint8_t *buf, int length)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 	struct mxs_nand_info *nand_info = chip->priv;
- 	struct mxs_dma_desc *d;
- 	uint32_t channel = nand_info->dma_channel_base + nand_info->cur_chip;
-@@ -656,10 +651,9 @@ rtn:
- /*
-  * Write data to NAND.
-  */
--static void mxs_nand_write_buf(struct mtd_info *mtd, const uint8_t *buf,
-+static void mxs_nand_write_buf(struct nand_chip *chip, const uint8_t *buf,
- 				int length)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 	struct mxs_nand_info *nand_info = chip->priv;
- 	struct mxs_dma_desc *d;
- 	uint32_t channel = nand_info->dma_channel_base + nand_info->cur_chip;
-@@ -707,16 +701,15 @@ static void mxs_nand_write_buf(struct mtd_info *mtd, const uint8_t *buf,
- /*
-  * Read a single byte from NAND.
-  */
--static uint8_t mxs_nand_read_byte(struct mtd_info *mtd)
-+static uint8_t mxs_nand_read_byte(struct nand_chip *chip)
- {
- 	uint8_t buf;
--	mxs_nand_read_buf(mtd, &buf, 1);
-+	mxs_nand_read_buf(chip, &buf, 1);
- 	return buf;
- }
- 
--static void mxs_nand_config_bch(struct mtd_info *mtd, int readlen)
-+static void mxs_nand_config_bch(struct nand_chip *chip, int readlen)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 	struct mxs_nand_info *nand_info = chip->priv;
- 	int chunk_size;
- 	void __iomem *bch_regs = nand_info->bch_base;
-@@ -744,10 +737,11 @@ static void mxs_nand_config_bch(struct mtd_info *mtd, int readlen)
- /*
-  * Read a page from NAND.
-  */
--static int __mxs_nand_ecc_read_page(struct mtd_info *mtd, struct nand_chip *chip,
-+static int __mxs_nand_ecc_read_page(struct nand_chip *chip,
- 					uint8_t *buf, int oob_required, int page,
- 					int readlen)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct mxs_nand_info *nand_info = chip->priv;
- 	struct mxs_dma_desc *d;
- 	uint32_t channel = nand_info->dma_channel_base + nand_info->cur_chip;
-@@ -762,7 +756,7 @@ static int __mxs_nand_ecc_read_page(struct mtd_info *mtd, struct nand_chip *chip
- 	readtotal += MXS_NAND_CHUNK_DATA_CHUNK_SIZE * nchunks;
- 	readtotal += DIV_ROUND_UP(13 * chip->ecc.strength * nchunks, 8);
- 
--	mxs_nand_config_bch(mtd, readtotal);
-+	mxs_nand_config_bch(chip, readtotal);
- 
- 	/* Compile the DMA descriptor - wait for ready. */
- 	d = mxs_nand_get_dma_desc(nand_info);
-@@ -850,7 +844,7 @@ static int __mxs_nand_ecc_read_page(struct mtd_info *mtd, struct nand_chip *chip
- 	}
- 
- 	/* Read DMA completed, now do the mark swapping. */
--	mxs_nand_swap_block_mark(mtd, nand_info->data_buf, nand_info->oob_buf);
-+	mxs_nand_swap_block_mark(chip, nand_info->data_buf, nand_info->oob_buf);
- 
- 	memcpy(buf, nand_info->data_buf, readlen);
- 
-@@ -931,19 +925,21 @@ static int __mxs_nand_ecc_read_page(struct mtd_info *mtd, struct nand_chip *chip
- rtn:
- 	mxs_nand_return_dma_descs(nand_info);
- 
--	mxs_nand_config_bch(mtd, mtd->writesize + mtd->oobsize);
-+	mxs_nand_config_bch(chip, mtd->writesize + mtd->oobsize);
- 
- 	return ret ? ret : max_bitflips;
- }
- 
--static int mxs_nand_ecc_read_page(struct mtd_info *mtd, struct nand_chip *chip,
-+static int mxs_nand_ecc_read_page(struct nand_chip *chip,
- 					uint8_t *buf, int oob_required, int page)
- {
--	return __mxs_nand_ecc_read_page(mtd, chip, buf, oob_required, page,
-+	struct mtd_info *mtd = nand_to_mtd(chip);
-+
-+	return __mxs_nand_ecc_read_page(chip, buf, oob_required, page,
- 					mtd->writesize);
- }
- 
--static int gpmi_ecc_read_subpage(struct mtd_info *mtd, struct nand_chip *chip,
-+static int gpmi_ecc_read_subpage(struct nand_chip *chip,
- 			uint32_t offs, uint32_t len, uint8_t *buf, int page)
- {
- 	/*
-@@ -956,16 +952,16 @@ static int gpmi_ecc_read_subpage(struct mtd_info *mtd, struct nand_chip *chip,
- 		offs = 0;
- 	}
- 
--	return __mxs_nand_ecc_read_page(mtd, chip, buf, 0, page, len);
-+	return __mxs_nand_ecc_read_page(chip, buf, 0, page, len);
- }
- 
- /*
-  * Write a page to NAND.
-  */
--static int mxs_nand_ecc_write_page(struct mtd_info *mtd,
--				struct nand_chip *chip, const uint8_t *buf,
-+static int mxs_nand_ecc_write_page(struct nand_chip *chip, const uint8_t *buf,
- 				int oob_required)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct mxs_nand_info *nand_info = chip->priv;
- 	struct mxs_dma_desc *d;
- 	uint32_t channel = nand_info->dma_channel_base + nand_info->cur_chip;
-@@ -975,7 +971,7 @@ static int mxs_nand_ecc_write_page(struct mtd_info *mtd,
- 	memcpy(nand_info->oob_buf, chip->oob_poi, mtd->oobsize);
- 
- 	/* Handle block mark swapping. */
--	mxs_nand_swap_block_mark(mtd, nand_info->data_buf, nand_info->oob_buf);
-+	mxs_nand_swap_block_mark(chip, nand_info->data_buf, nand_info->oob_buf);
- 
- 	/* Compile the DMA descriptor - write data. */
- 	d = mxs_nand_get_dma_desc(nand_info);
-@@ -1136,9 +1132,9 @@ static int mxs_nand_hook_block_markbad(struct mtd_info *mtd, loff_t ofs)
-  * raw_oob_mode field so that, when control finally arrives here, we'll know
-  * what to do.
-  */
--static int mxs_nand_ecc_read_oob(struct mtd_info *mtd, struct nand_chip *chip,
--				int page)
-+static int mxs_nand_ecc_read_oob(struct nand_chip *chip, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct mxs_nand_info *nand_info = chip->priv;
- 	int column;
- 
-@@ -1152,8 +1148,8 @@ static int mxs_nand_ecc_read_oob(struct mtd_info *mtd, struct nand_chip *chip,
- 		 * If control arrives here, we're doing a "raw" read. Send the
- 		 * command to read the conventional OOB and read it.
- 		 */
--		chip->cmdfunc(mtd, NAND_CMD_READ0, mtd->writesize, page);
--		chip->read_buf(mtd, chip->oob_poi, mtd->oobsize);
-+		chip->cmdfunc(chip, NAND_CMD_READ0, mtd->writesize, page);
-+		chip->read_buf(chip, chip->oob_poi, mtd->oobsize);
- 	} else {
- 		/*
- 		 * If control arrives here, we're not doing a "raw" read. Fill
-@@ -1162,8 +1158,8 @@ static int mxs_nand_ecc_read_oob(struct mtd_info *mtd, struct nand_chip *chip,
- 		memset(chip->oob_poi, 0xff, mtd->oobsize);
- 
- 		column = nand_info->version == GPMI_VERSION_TYPE_MX23 ? 0 : mtd->writesize;
--		chip->cmdfunc(mtd, NAND_CMD_READ0, column, page);
--		mxs_nand_read_buf(mtd, chip->oob_poi, 1);
-+		chip->cmdfunc(chip, NAND_CMD_READ0, column, page);
-+		mxs_nand_read_buf(chip, chip->oob_poi, 1);
- 	}
- 
- 	return 0;
-@@ -1173,9 +1169,9 @@ static int mxs_nand_ecc_read_oob(struct mtd_info *mtd, struct nand_chip *chip,
- /*
-  * Write OOB data to NAND.
-  */
--static int mxs_nand_ecc_write_oob(struct mtd_info *mtd, struct nand_chip *chip,
--					int page)
-+static int mxs_nand_ecc_write_oob(struct nand_chip *chip, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct mxs_nand_info *nand_info = chip->priv;
- 	int column;
- 	uint8_t block_mark = 0;
-@@ -1196,12 +1192,12 @@ static int mxs_nand_ecc_write_oob(struct mtd_info *mtd, struct nand_chip *chip,
- 
- 	column = nand_info->version == GPMI_VERSION_TYPE_MX23 ? 0 : mtd->writesize;
- 	/* Write the block mark. */
--	chip->cmdfunc(mtd, NAND_CMD_SEQIN, column, page);
--	chip->write_buf(mtd, &block_mark, 1);
--	chip->cmdfunc(mtd, NAND_CMD_PAGEPROG, -1, -1);
-+	chip->cmdfunc(chip, NAND_CMD_SEQIN, column, page);
-+	chip->write_buf(chip, &block_mark, 1);
-+	chip->cmdfunc(chip, NAND_CMD_PAGEPROG, -1, -1);
- 
- 	/* Check if it worked. */
--	if (chip->waitfunc(mtd, chip) & NAND_STATUS_FAIL)
-+	if (chip->waitfunc(chip) & NAND_STATUS_FAIL)
- 		return -EIO;
- 
- 	return 0;
-@@ -1220,7 +1216,7 @@ static int mxs_nand_ecc_write_oob(struct mtd_info *mtd, struct nand_chip *chip,
-  * Thus, this function is only called when we want *all* blocks to look good,
-  * so it *always* return success.
-  */
--static int mxs_nand_block_bad(struct mtd_info *mtd, loff_t ofs, int getchip)
-+static int mxs_nand_block_bad(struct nand_chip *chip , loff_t ofs, int getchip)
- {
- 	return 0;
- }
-@@ -1239,9 +1235,9 @@ static int mxs_nand_block_bad(struct mtd_info *mtd, loff_t ofs, int getchip)
-  * call to nand_scan(). Anything other than zero will cause this driver to
-  * tear everything down and declare failure.
-  */
--static int mxs_nand_scan_bbt(struct mtd_info *mtd)
-+static int mxs_nand_scan_bbt(struct nand_chip *chip)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct mxs_nand_info *nand_info = chip->priv;
- 	void __iomem *bch_regs = nand_info->bch_base;
- 	int ret;
-@@ -1252,7 +1248,7 @@ static int mxs_nand_scan_bbt(struct mtd_info *mtd)
- 	if (ret)
- 		return ret;
- 
--	mxs_nand_config_bch(mtd, mtd->writesize + mtd->oobsize);
-+	mxs_nand_config_bch(chip, mtd->writesize + mtd->oobsize);
- 
- 	/* Set *all* chip selects to use layout 0 */
- 	writel(0, bch_regs + BCH_LAYOUTSELECT);
-@@ -1277,7 +1273,7 @@ static int mxs_nand_scan_bbt(struct mtd_info *mtd)
- 	}
- 
- 	/* We use the reference implementation for bad block management. */
--	return nand_default_bbt(mtd);
-+	return nand_default_bbt(chip);
- }
- 
- /*
-@@ -2029,7 +2025,6 @@ static void mxs_nand_compute_edo_timing(struct mxs_nand_info *info,
- static int mxs_nand_enable_edo_mode(struct mxs_nand_info *info)
- {
- 	struct nand_chip *chip = &info->nand_chip;
--	struct mtd_info	 *mtd = &chip->mtd;
- 	uint8_t feature[ONFI_SUBFEATURE_PARAM_LEN] = {};
- 	int ret, mode;
- 
-@@ -2049,7 +2044,7 @@ static int mxs_nand_enable_edo_mode(struct mxs_nand_info *info)
- 	else
- 		return -EINVAL;
- 
--	chip->select_chip(mtd, 0);
-+	chip->select_chip(chip, 0);
- 
- 	if (le16_to_cpu(chip->onfi_params.opt_cmd)
- 	      & ONFI_OPT_CMD_SET_GET_FEATURES) {
-@@ -2057,19 +2052,19 @@ static int mxs_nand_enable_edo_mode(struct mxs_nand_info *info)
- 		/* [1] send SET FEATURE commond to NAND */
- 		feature[0] = mode;
- 
--		ret = chip->onfi_set_features(mtd, chip,
-+		ret = chip->onfi_set_features(chip,
- 				ONFI_FEATURE_ADDR_TIMING_MODE, feature);
- 		if (ret)
- 			goto err_out;
- 
- 		/* [2] send GET FEATURE command to double-check the timing mode */
--		ret = chip->onfi_get_features(mtd, chip,
-+		ret = chip->onfi_get_features(chip,
- 				ONFI_FEATURE_ADDR_TIMING_MODE, feature);
- 		if (ret || feature[0] != mode)
- 			goto err_out;
- 	}
- 
--	chip->select_chip(mtd, -1);
-+	chip->select_chip(chip, -1);
- 
- 	/* [3] set the main IO clock, 100MHz for mode 5, 80MHz for mode 4. */
- 	clk_disable(info->clk);
-@@ -2081,7 +2076,7 @@ static int mxs_nand_enable_edo_mode(struct mxs_nand_info *info)
- 	return mode;
- 
- err_out:
--	chip->select_chip(mtd, -1);
-+	chip->select_chip(chip, -1);
- 
- 	return -EINVAL;
- }
-@@ -2221,11 +2216,11 @@ static int mxs_nand_probe(struct device_d *dev)
- 	chip->ecc.mode		= NAND_ECC_HW;
- 
- 	/* first scan to find the device and get the page size */
--	err = nand_scan_ident(mtd, 4, NULL);
-+	err = nand_scan_ident(chip, 4, NULL);
- 	if (err)
- 		goto err2;
- 
--	err = mxs_nand_calc_geo(mtd);
-+	err = mxs_nand_calc_geo(chip);
- 	if (err)
- 		goto err2;
- 
-@@ -2239,11 +2234,11 @@ static int mxs_nand_probe(struct device_d *dev)
- 	mxs_nand_setup_timing(nand_info);
- 
- 	/* second phase scan */
--	err = nand_scan_tail(mtd);
-+	err = nand_scan_tail(chip);
- 	if (err)
- 		goto err2;
- 
--	err = add_mtd_nand_device(mtd, "nand");
-+	err = add_mtd_nand_device(chip, "nand");
- 	if (err)
- 		goto err2;
- 
-diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
-index 83fa93b617..b7c35f8899 100644
---- a/drivers/mtd/nand/nand_omap_gpmc.c
-+++ b/drivers/mtd/nand/nand_omap_gpmc.c
-@@ -141,9 +141,8 @@ static struct nand_bbt_descr bb_descrip_flashbased = {
-  *
-  * @return
-  */
--static int omap_dev_ready(struct mtd_info *mtd)
-+static int omap_dev_ready(struct nand_chip *nand)
- {
--	struct nand_chip *nand = mtd_to_nand(mtd);
- 	struct gpmc_nand_info *oinfo = (struct gpmc_nand_info *)(nand->priv);
- 
- 	if (readl(oinfo->gpmc_base + GPMC_STATUS) & oinfo->wait_mon_mask)
-@@ -187,9 +186,8 @@ static void gpmc_nand_wp(struct gpmc_nand_info *oinfo, int mode)
-  *
-  * @return none
-  */
--static void omap_hwcontrol(struct mtd_info *mtd, int cmd, unsigned int ctrl)
-+static void omap_hwcontrol(struct nand_chip *nand, int cmd, unsigned int ctrl)
- {
--	struct nand_chip *nand = mtd_to_nand(mtd);
- 	struct gpmc_nand_info *oinfo = (struct gpmc_nand_info *)(nand->priv);
- 
- 	switch (ctrl) {
-@@ -231,10 +229,9 @@ static unsigned int gen_true_ecc(u8 *ecc_buf)
- 	    ((ecc_buf[2] & 0x0F) << 8);
- }
- 
--static int __omap_calculate_ecc(struct mtd_info *mtd, uint8_t *ecc_code,
-+static int __omap_calculate_ecc(struct nand_chip *nand, uint8_t *ecc_code,
- 				int sblock)
- {
--	struct nand_chip *nand = mtd_to_nand(mtd);
- 	struct gpmc_nand_info *oinfo = (struct gpmc_nand_info *)(nand->priv);
- 	unsigned int reg, reg1, val;
- 	unsigned int val1 = 0x0, val2 = 0x0;
-@@ -324,16 +321,15 @@ static int __omap_calculate_ecc(struct mtd_info *mtd, uint8_t *ecc_code,
- 	return 0;
- }
- 
--static int omap_calculate_ecc(struct mtd_info *mtd, const uint8_t *dat,
-+static int omap_calculate_ecc(struct nand_chip *nand, const uint8_t *dat,
- 			      uint8_t *ecc_code)
- {
--	return __omap_calculate_ecc(mtd, ecc_code, 0);
-+	return __omap_calculate_ecc(nand, ecc_code, 0);
- }
- 
--static int omap_correct_bch(struct mtd_info *mtd, uint8_t *dat,
-+static int omap_correct_bch(struct nand_chip *nand, uint8_t *dat,
- 			     uint8_t *read_ecc, uint8_t *calc_ecc)
- {
--	struct nand_chip *nand = mtd_to_nand(mtd);
- 	struct gpmc_nand_info *oinfo = (struct gpmc_nand_info *)(nand->priv);
- 	int j, actual_eccsize;
- 	const uint8_t *erased_ecc_vec;
-@@ -404,13 +400,12 @@ static int omap_correct_bch(struct mtd_info *mtd, uint8_t *dat,
- 	return bitflip_count;
- }
- 
--static int omap_correct_hamming(struct mtd_info *mtd, uint8_t *dat,
-+static int omap_correct_hamming(struct nand_chip *nand, uint8_t *dat,
- 			     uint8_t *read_ecc, uint8_t *calc_ecc)
- {
- 	unsigned int orig_ecc, new_ecc, res, hm;
- 	unsigned short parity_bits, byte;
- 	unsigned char bit;
--	struct nand_chip *nand = mtd_to_nand(mtd);
- 	struct gpmc_nand_info *oinfo = (struct gpmc_nand_info *)(nand->priv);
- 
- 	if (read_ecc[0] == 0xff && read_ecc[1] == 0xff &&
-@@ -461,23 +456,21 @@ static int omap_correct_hamming(struct mtd_info *mtd, uint8_t *dat,
-  *
-  * @return 0 if data is OK or corrected, else returns -1
-  */
--static int omap_correct_data(struct mtd_info *mtd, uint8_t *dat,
-+static int omap_correct_data(struct nand_chip *nand, uint8_t *dat,
- 			     uint8_t *read_ecc, uint8_t *calc_ecc)
- {
--	struct nand_chip *nand = mtd_to_nand(mtd);
- 	struct gpmc_nand_info *oinfo = (struct gpmc_nand_info *)(nand->priv);
- 
- 	if (oinfo->ecc_mode != OMAP_ECC_HAMMING_CODE_HW_ROMCODE)
- 		return -EINVAL;
- 
--	return omap_correct_hamming(mtd, dat, read_ecc, calc_ecc);
-+	return omap_correct_hamming(nand, dat, read_ecc, calc_ecc);
- 
- 	return 0;
- }
- 
--static void omap_enable_hwecc(struct mtd_info *mtd, int mode)
-+static void omap_enable_hwecc(struct nand_chip *nand, int mode)
- {
--	struct nand_chip *nand = mtd_to_nand(mtd);
- 	struct gpmc_nand_info *oinfo = (struct gpmc_nand_info *)(nand->priv);
- 	unsigned int bch_mod = 0, bch_wrapmode = 0, eccsize1 = 0, eccsize0 = 0;
- 	unsigned int ecc_conf_val = 0, ecc_size_conf_val = 0;
-@@ -556,7 +549,7 @@ static void omap_enable_hwecc(struct mtd_info *mtd, int mode)
- 			oinfo->gpmc_base + GPMC_ECC_CONTROL);
- }
- 
--static int omap_gpmc_read_buf_manual(struct mtd_info *mtd, struct nand_chip *chip,
-+static int omap_gpmc_read_buf_manual(struct nand_chip *chip,
- 		void *buf, int bytes, int result_reg)
- {
- 	struct gpmc_nand_info *oinfo = chip->priv;
-@@ -568,7 +561,7 @@ static int omap_gpmc_read_buf_manual(struct mtd_info *mtd, struct nand_chip *chi
- 	writel(GPMC_ECC_CONTROL_ECCPOINTER(result_reg),
- 			oinfo->gpmc_base + GPMC_ECC_CONTROL);
- 
--	chip->read_buf(mtd, buf, bytes);
-+	chip->read_buf(chip, buf, bytes);
- 
- 	return bytes;
- }
-@@ -579,9 +572,8 @@ static int omap_gpmc_read_buf_manual(struct mtd_info *mtd, struct nand_chip *chi
-  * @buf: buffer to store date
-  * @len: number of bytes to read
-  */
--static void omap_read_buf_pref(struct mtd_info *mtd, u_char *buf, int len)
-+static void omap_read_buf_pref(struct nand_chip *nand_chip, u_char *buf, int len)
- {
--	struct nand_chip *nand_chip = mtd_to_nand(mtd);
- 	struct gpmc_nand_info *info = nand_chip->priv;
- 	u32 r_count = 0;
- 	u32 *p = (u32 *)buf;
-@@ -619,10 +611,9 @@ static void omap_read_buf_pref(struct mtd_info *mtd, u_char *buf, int len)
-  * @buf: data buffer
-  * @len: number of bytes to write
-  */
--static void omap_write_buf_pref(struct mtd_info *mtd,
-+static void omap_write_buf_pref(struct nand_chip *nand_chip,
- 					const u_char *buf, int len)
- {
--	struct nand_chip *nand_chip = mtd_to_nand(mtd);
- 	struct gpmc_nand_info *info = nand_chip->priv;
- 
- 	u32 w_count = 0;
-@@ -684,9 +675,10 @@ static void omap_write_buf_pref(struct mtd_info *mtd,
-  * generation), so we use the otherwise unused ECC_RESULTx_5 to
-  * generate dummy eccs for the unprotected oob area.
-  */
--static int omap_gpmc_read_page_bch_rom_mode(struct mtd_info *mtd,
--		struct nand_chip *chip, uint8_t *buf, int oob_required, int page)
-+static int omap_gpmc_read_page_bch_rom_mode(struct nand_chip *chip, uint8_t *buf,
-+					    int oob_required, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct gpmc_nand_info *oinfo = chip->priv;
- 	int dev_width = chip->options & NAND_BUSWIDTH_16 ? GPMC_ECC_CONFIG_ECC16B : 0;
- 	uint8_t *p = buf;
-@@ -720,18 +712,18 @@ static int omap_gpmc_read_page_bch_rom_mode(struct mtd_info *mtd,
- 			oinfo->gpmc_base + GPMC_ECC_CONTROL);
- 
- 	for (i = 0; i < 32; i++)
--		p += omap_gpmc_read_buf_manual(mtd, chip, p, 64, (i >> 3) + 1);
-+		p += omap_gpmc_read_buf_manual(chip, p, 64, (i >> 3) + 1);
- 
- 	p = chip->oob_poi;
- 
--	p += omap_gpmc_read_buf_manual(mtd, chip, p, 2, 5);
-+	p += omap_gpmc_read_buf_manual(chip, p, 2, 5);
- 
- 	for (i = 0; i < 4; i++) {
--		p += omap_gpmc_read_buf_manual(mtd, chip, p, 13, i + 1);
--		p += omap_gpmc_read_buf_manual(mtd, chip, p, 1, 5);
-+		p += omap_gpmc_read_buf_manual(chip, p, 13, i + 1);
-+		p += omap_gpmc_read_buf_manual(chip, p, 1, 5);
- 	}
- 
--	p += omap_gpmc_read_buf_manual(mtd, chip, p, 6, 5);
-+	p += omap_gpmc_read_buf_manual(chip, p, 6, 5);
- 
- 	for (i = 0; i < chip->ecc.total; i++)
- 		ecc_code[i] = chip->oob_poi[eccpos[i]];
-@@ -739,8 +731,8 @@ static int omap_gpmc_read_page_bch_rom_mode(struct mtd_info *mtd,
- 	p = buf;
- 
- 	for (i = 0, j = 0; eccsteps; eccsteps--, i += eccbytes, p += eccsize, j++) {
--		__omap_calculate_ecc(mtd, &ecc_calc[i - j], j + 1);
--		stat = omap_correct_bch(mtd, p, &ecc_code[i], &ecc_calc[i - j]);
-+		__omap_calculate_ecc(chip, &ecc_calc[i - j], j + 1);
-+		stat = omap_correct_bch(chip, p, &ecc_code[i], &ecc_calc[i - j]);
- 		if (stat < 0) {
- 			mtd->ecc_stats.failed++;
- 		} else {
-@@ -954,10 +946,10 @@ static int omap_elm_correct_data(struct nand_chip *chip, u_char *data,
- 	return (err) ? err : stat;
- }
- 
--static int gpmc_read_page_hwecc_elm(struct mtd_info *mtd,
--				    struct nand_chip *chip, uint8_t *buf,
-+static int gpmc_read_page_hwecc_elm(struct nand_chip *chip, uint8_t *buf,
- 				    int oob_required, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int i;
- 	int eccbytes = chip->ecc.bytes;
- 	int eccsteps = chip->ecc.steps;
-@@ -965,9 +957,9 @@ static int gpmc_read_page_hwecc_elm(struct mtd_info *mtd,
- 	uint8_t *ecc_code = chip->buffers->ecccode;
- 	uint32_t *eccpos = chip->ecc.layout->eccpos;
- 
--	chip->ecc.hwctl(mtd, NAND_ECC_READ);
--	chip->read_buf(mtd, buf, mtd->writesize);
--	chip->read_buf(mtd, chip->oob_poi, mtd->oobsize);
-+	chip->ecc.hwctl(chip, NAND_ECC_READ);
-+	chip->read_buf(chip, buf, mtd->writesize);
-+	chip->read_buf(chip, chip->oob_poi, mtd->oobsize);
- 
- 	for (i = 0; i < chip->ecc.total; i++)
- 		ecc_code[i] = chip->oob_poi[eccpos[i]];
-@@ -975,15 +967,15 @@ static int gpmc_read_page_hwecc_elm(struct mtd_info *mtd,
- 	eccsteps = chip->ecc.steps;
- 
- 	for (i = 0; eccsteps; eccsteps--, i++)
--		__omap_calculate_ecc(mtd, &ecc_calc[i * eccbytes], i);
-+		__omap_calculate_ecc(chip, &ecc_calc[i * eccbytes], i);
- 
- 	return omap_elm_correct_data(chip, buf, ecc_code, ecc_calc);
- }
- 
--static int gpmc_read_page_hwecc(struct mtd_info *mtd,
--				struct nand_chip *chip, uint8_t *buf,
-+static int gpmc_read_page_hwecc(struct nand_chip *chip, uint8_t *buf,
- 				int oob_required, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int i, eccsize = chip->ecc.size;
- 	int eccbytes = chip->ecc.bytes;
- 	int eccsteps = chip->ecc.steps;
-@@ -993,9 +985,9 @@ static int gpmc_read_page_hwecc(struct mtd_info *mtd,
- 	uint32_t *eccpos = chip->ecc.layout->eccpos;
- 	unsigned int max_bitflips = 0;
- 
--	chip->ecc.hwctl(mtd, NAND_ECC_READ);
--	chip->read_buf(mtd, p, mtd->writesize);
--	chip->read_buf(mtd, chip->oob_poi, mtd->oobsize);
-+	chip->ecc.hwctl(chip, NAND_ECC_READ);
-+	chip->read_buf(chip, p, mtd->writesize);
-+	chip->read_buf(chip, chip->oob_poi, mtd->oobsize);
- 
- 	for (i = 0; i < chip->ecc.total; i++)
- 		ecc_code[i] = chip->oob_poi[eccpos[i]];
-@@ -1006,8 +998,8 @@ static int gpmc_read_page_hwecc(struct mtd_info *mtd,
- 	for (i = 0 ; eccsteps; eccsteps--, i++, p += eccsize) {
- 		int stat;
- 
--		__omap_calculate_ecc(mtd, &ecc_calc[i * eccbytes], i);
--		stat = omap_correct_bch(mtd, p, &ecc_code[i * eccbytes], &ecc_calc[i * eccbytes]);
-+		__omap_calculate_ecc(chip, &ecc_calc[i * eccbytes], i);
-+		stat = omap_correct_bch(chip, p, &ecc_code[i * eccbytes], &ecc_calc[i * eccbytes]);
- 		if (stat < 0) {
- 			mtd->ecc_stats.failed++;
- 		} else {
-@@ -1136,7 +1128,7 @@ static int omap_gpmc_eccmode(struct gpmc_nand_info *oinfo,
- 	oinfo->ecc_mode = mode;
- 
- 	/* second phase scan */
--	if (nand_scan_tail(minfo))
-+	if (nand_scan_tail(nand))
- 		return -ENXIO;
- 
- 	nand->options |= NAND_SKIP_BBTSCAN;
-@@ -1296,7 +1288,7 @@ static int gpmc_nand_probe(struct device_d *pdev)
- 	mdelay(1);
- 
- 	/* first scan to find the device and get the page size */
--	if (nand_scan_ident(minfo, 1, NULL)) {
-+	if (nand_scan_ident(nand, 1, NULL)) {
- 		err = -ENXIO;
- 		goto out_release_mem;
- 	}
-@@ -1318,7 +1310,7 @@ static int gpmc_nand_probe(struct device_d *pdev)
- 	omap_gpmc_eccmode(oinfo, oinfo->ecc_mode);
- 
- 	/* We are all set to register with the system now! */
--	err = add_mtd_nand_device(minfo, "nand");
-+	err = add_mtd_nand_device(nand, "nand");
- 	if (err) {
- 		dev_dbg(pdev, "device registration failed\n");
- 		goto out_release_mem;
-diff --git a/drivers/mtd/nand/nand_orion.c b/drivers/mtd/nand/nand_orion.c
-index c8b89cd03c..ac1c8442c0 100644
---- a/drivers/mtd/nand/nand_orion.c
-+++ b/drivers/mtd/nand/nand_orion.c
-@@ -27,9 +27,8 @@ struct orion_nand {
- 	u8 cle;         /* address line number connected to CLE */
- };
- 
--static void orion_nand_cmd_ctrl(struct mtd_info *mtd, int cmd, unsigned int ctrl)
-+static void orion_nand_cmd_ctrl(struct nand_chip *chip, int cmd, unsigned int ctrl)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 	struct orion_nand *priv = chip->priv;
- 	u32 offs;
- 
-@@ -49,9 +48,8 @@ static void orion_nand_cmd_ctrl(struct mtd_info *mtd, int cmd, unsigned int ctrl
- 	writeb(cmd, chip->IO_ADDR_W + offs);
- }
- 
--static void orion_nand_read_buf(struct mtd_info *mtd, uint8_t *buf, int len)
-+static void orion_nand_read_buf(struct nand_chip *chip, uint8_t *buf, int len)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 	void __iomem *io_base = chip->IO_ADDR_R;
- 	uint64_t *buf64;
- 	int i = 0;
-@@ -132,12 +130,12 @@ static int orion_nand_probe(struct device_d *dev)
- 	if (!IS_ERR(clk))
- 		clk_enable(clk);
- 
--	if (nand_scan(mtd, 1)) {
-+	if (nand_scan(chip, 1)) {
- 		ret = -ENXIO;
- 		goto no_dev;
- 	}
- 
--	add_mtd_nand_device(mtd, "orion_nand");
-+	add_mtd_nand_device(chip, "orion_nand");
- 	return 0;
- no_dev:
- 	if (!IS_ERR(clk))
-diff --git a/drivers/mtd/nand/nand_s3c24xx.c b/drivers/mtd/nand/nand_s3c24xx.c
-index 9fbc0f90d3..9df7f6cba2 100644
---- a/drivers/mtd/nand/nand_s3c24xx.c
-+++ b/drivers/mtd/nand/nand_s3c24xx.c
-@@ -200,10 +200,9 @@ static void __nand_boot_init disable_nand_controller(void __iomem *host)
-  *
-  * This is a special block read variant for the S3C2440 CPU.
-  */
--static void s3c2440_nand_read_buf(struct mtd_info *mtd, uint8_t *buf, int len)
-+static void s3c2440_nand_read_buf(struct nand_chip *chip, uint8_t *buf, int len)
- {
--	struct nand_chip *nand_chip = mtd_to_nand(mtd);
--	struct s3c24x0_nand_host *host = nand_chip->priv;
-+	struct s3c24x0_nand_host *host = chip->priv;
- 
- 	readsl(host->base + NFDATA, buf, len >> 2);
- 
-@@ -224,11 +223,10 @@ static void s3c2440_nand_read_buf(struct mtd_info *mtd, uint8_t *buf, int len)
-  *
-  * This is a special block write variant for the S3C2440 CPU.
-  */
--static void s3c2440_nand_write_buf(struct mtd_info *mtd, const uint8_t *buf,
-+static void s3c2440_nand_write_buf(struct nand_chip *chip, const uint8_t *buf,
- 					int len)
- {
--	struct nand_chip *nand_chip = mtd_to_nand(mtd);
--	struct s3c24x0_nand_host *host = nand_chip->priv;
-+	struct s3c24x0_nand_host *host = chip->priv;
- 
- 	writesl(host->base + NFDATA, buf, len >> 2);
- 
-@@ -252,7 +250,7 @@ static void s3c2440_nand_write_buf(struct mtd_info *mtd, const uint8_t *buf,
-  *
-  * @note: This routine works always on a 24 bit ECC
-  */
--static int s3c2410_nand_correct_data(struct mtd_info *mtd, uint8_t *dat,
-+static int s3c2410_nand_correct_data(struct nand_chip *chip, uint8_t *dat,
- 				uint8_t *read_ecc, uint8_t *calc_ecc)
- {
- 	unsigned int diff0, diff1, diff2;
-@@ -313,10 +311,9 @@ static int s3c2410_nand_correct_data(struct mtd_info *mtd, uint8_t *dat,
- 	return -1;
- }
- 
--static void s3c2410_nand_enable_hwecc(struct mtd_info *mtd, int mode)
-+static void s3c2410_nand_enable_hwecc(struct nand_chip *chip, int mode)
- {
--	struct nand_chip *nand_chip = mtd_to_nand(mtd);
--	struct s3c24x0_nand_host *host = nand_chip->priv;
-+	struct s3c24x0_nand_host *host = chip->priv;
- 
- #ifdef CONFIG_CPU_S3C2410
- 	writel(readl(host->base + NFCONF) | NFCONF_INITECC , host->base + NFCONF);
-@@ -326,10 +323,9 @@ static void s3c2410_nand_enable_hwecc(struct mtd_info *mtd, int mode)
- #endif
- }
- 
--static int s3c2410_nand_calculate_ecc(struct mtd_info *mtd, const uint8_t *dat, uint8_t *ecc_code)
-+static int s3c2410_nand_calculate_ecc(struct nand_chip *chip, const uint8_t *dat, uint8_t *ecc_code)
- {
--	struct nand_chip *nand_chip = mtd_to_nand(mtd);
--	struct s3c24x0_nand_host *host = nand_chip->priv;
-+	struct s3c24x0_nand_host *host = chip->priv;
- 
- #ifdef CONFIG_CPU_S3C2410
- 	ecc_code[0] = readb(host->base + NFECC);
-@@ -346,30 +342,27 @@ static int s3c2410_nand_calculate_ecc(struct mtd_info *mtd, const uint8_t *dat,
- 	return 0;
- }
- 
--static void s3c24x0_nand_select_chip(struct mtd_info *mtd, int chip)
-+static void s3c24x0_nand_select_chip(struct nand_chip *chip, int num)
- {
--	struct nand_chip *nand_chip = mtd_to_nand(mtd);
--	struct s3c24x0_nand_host *host = nand_chip->priv;
-+	struct s3c24x0_nand_host *host = chip->priv;
- 
--	if (chip == -1)
-+	if (num == -1)
- 		disable_cs(host->base);
- 	else
- 		enable_cs(host->base);
- }
- 
--static int s3c24x0_nand_devready(struct mtd_info *mtd)
-+static int s3c24x0_nand_devready(struct nand_chip *chip)
- {
--	struct nand_chip *nand_chip = mtd_to_nand(mtd);
--	struct s3c24x0_nand_host *host = nand_chip->priv;
-+	struct s3c24x0_nand_host *host = chip->priv;
- 
- 	return readw(host->base + NFSTAT) & NFSTAT_BUSY;
- }
- 
--static void s3c24x0_nand_hwcontrol(struct mtd_info *mtd, int cmd,
-+static void s3c24x0_nand_hwcontrol(struct nand_chip *chip, int cmd,
- 					unsigned int ctrl)
- {
--	struct nand_chip *nand_chip = mtd_to_nand(mtd);
--	struct s3c24x0_nand_host *host = nand_chip->priv;
-+	struct s3c24x0_nand_host *host = chip->priv;
- 
- 	if (cmd == NAND_CMD_NONE)
- 		return;
-@@ -482,13 +475,13 @@ static int s3c24x0_nand_probe(struct device_d *dev)
- 		goto on_error;
- 
- 	/* Scan to find existence of the device */
--	ret = nand_scan(mtd, 1);
-+	ret = nand_scan(chip, 1);
- 	if (ret != 0) {
- 		ret = -ENXIO;
- 		goto on_error;
- 	}
- 
--	return add_mtd_nand_device(mtd, "nand");
-+	return add_mtd_nand_device(chip, "nand");
- 
- on_error:
- 	free(host);
-diff --git a/drivers/mtd/nand/nomadik_nand.c b/drivers/mtd/nand/nomadik_nand.c
-index 31bc2efc40..9918548357 100644
---- a/drivers/mtd/nand/nomadik_nand.c
-+++ b/drivers/mtd/nand/nomadik_nand.c
-@@ -58,7 +58,7 @@ static inline int parity(int b) /* uses low 8 bits: returns 0 or all-1 */
-  * I haven't managed to get the desired data out of it; so do it in sw.
-  * There is problably some errata involved, but currently miss the info.
-  */
--static int nomadik_ecc512_calc(struct mtd_info *mtd, const u_char *data,
-+static int nomadik_ecc512_calc(struct nand_chip *nand, const u_char *data,
- 			u_char *ecc)
- {
- 	int gpar = 0;
-@@ -101,10 +101,9 @@ static int nomadik_ecc512_calc(struct mtd_info *mtd, const u_char *data,
- 	return 0;
- }
- 
--static int nomadik_ecc512_correct(struct mtd_info *mtd, uint8_t *dat,
-+static int nomadik_ecc512_correct(struct nand_chip *chip, uint8_t *dat,
- 				uint8_t *r_ecc, uint8_t *c_ecc)
- {
--	struct nand_chip *chip = mtd_to_nand(mtd);
- 	uint32_t r, c, d, diff; /*read, calculated, xor of them */
- 
- 	if (!memcmp(r_ecc, c_ecc, chip->ecc.bytes))
-@@ -149,14 +148,13 @@ static struct nand_ecclayout nomadik_ecc_layout = {
- 	.oobfree = { {0x08, 0x08}, {0x18, 0x08}, {0x28, 0x08}, {0x38, 0x08} },
- };
- 
--static void nomadik_ecc_control(struct mtd_info *mtd, int mode)
-+static void nomadik_ecc_control(struct nand_chip *nand, int mode)
- {
- 	/* No need to enable hw ecc, it's on by default */
- }
- 
--static void nomadik_cmd_ctrl(struct mtd_info *mtd, int cmd, unsigned int ctrl)
-+static void nomadik_cmd_ctrl(struct nand_chip *nand, int cmd, unsigned int ctrl)
- {
--	struct nand_chip *nand = mtd_to_nand(mtd);
- 	struct nomadik_nand_host *host = nand->priv;
- 
- 	if (cmd == NAND_CMD_NONE)
-@@ -221,13 +219,13 @@ static int nomadik_nand_probe(struct device_d *dev)
- 	/*
- 	 * Scan to find existance of the device
- 	 */
--	if (nand_scan(mtd, 1)) {
-+	if (nand_scan(nand, 1)) {
- 		ret = -ENXIO;
- 		goto err;
- 	}
- 
- 	pr_info("Registering %s as whole device\n", mtd->name);
--	add_mtd_nand_device(mtd, "nand");
-+	add_mtd_nand_device(nand, "nand");
- 
- 	return 0;
- 
-diff --git a/include/linux/mtd/nand.h b/include/linux/mtd/nand.h
-index a8a22210ca..e23b3446a7 100644
---- a/include/linux/mtd/nand.h
-+++ b/include/linux/mtd/nand.h
-@@ -23,28 +23,29 @@
- #include <linux/mtd/bbm.h>
- 
- struct mtd_info;
-+struct nand_chip;
- struct nand_flash_dev;
- /* Scan and identify a NAND device */
--extern int nand_scan(struct mtd_info *mtd, int max_chips);
-+extern int nand_scan(struct nand_chip *chip, int max_chips);
- /*
-  * Separate phases of nand_scan(), allowing board driver to intervene
-  * and override command or ECC setup according to flash type.
-  */
--extern int nand_scan_ident(struct mtd_info *mtd, int max_chips,
-+extern int nand_scan_ident(struct nand_chip *chip, int max_chips,
- 			   struct nand_flash_dev *table);
--extern int nand_scan_tail(struct mtd_info *mtd);
-+extern int nand_scan_tail(struct nand_chip *chip);
- 
- /* Free resources held by the NAND device */
--extern void nand_release(struct mtd_info *mtd);
-+extern void nand_release(struct nand_chip *chip);
- 
- /* Internal helper for board drivers which need to override command function */
--extern void nand_wait_ready(struct mtd_info *mtd);
-+extern void nand_wait_ready(struct nand_chip *chip);
- 
- /* locks all blocks present in the device */
--extern int nand_lock(struct mtd_info *mtd, loff_t ofs, uint64_t len);
-+extern int nand_lock(struct nand_chip *chip, loff_t ofs, uint64_t len);
- 
- /* unlocks specified locked blocks */
--extern int nand_unlock(struct mtd_info *mtd, loff_t ofs, uint64_t len);
-+extern int nand_unlock(struct nand_chip *chip, loff_t ofs, uint64_t len);
- 
- extern int nand_check_erased_ecc_chunk(void *data, int datalen,
- 				       void *ecc, int ecclen,
-@@ -346,31 +347,28 @@ struct nand_ecc_ctrl {
- 	int postpad;
- 	struct nand_ecclayout	*layout;
- 	void *priv;
--	void (*hwctl)(struct mtd_info *mtd, int mode);
--	int (*calculate)(struct mtd_info *mtd, const uint8_t *dat,
-+	void (*hwctl)(struct nand_chip *chip, int mode);
-+	int (*calculate)(struct nand_chip *chip, const uint8_t *dat,
- 			uint8_t *ecc_code);
--	int (*correct)(struct mtd_info *mtd, uint8_t *dat, uint8_t *read_ecc,
-+	int (*correct)(struct nand_chip *chip, uint8_t *dat, uint8_t *read_ecc,
- 			uint8_t *calc_ecc);
--	int (*read_page_raw)(struct mtd_info *mtd, struct nand_chip *chip,
-+	int (*read_page_raw)(struct nand_chip *chip,
- 			uint8_t *buf, int oob_required, int page);
--	int (*write_page_raw)(struct mtd_info *mtd, struct nand_chip *chip,
-+	int (*write_page_raw)(struct nand_chip *chip,
- 			const uint8_t *buf, int oob_required);
--	int (*read_page)(struct mtd_info *mtd, struct nand_chip *chip,
-+	int (*read_page)(struct nand_chip *chip,
- 			uint8_t *buf, int oob_required, int page);
--	int (*read_subpage)(struct mtd_info *mtd, struct nand_chip *chip,
-+	int (*read_subpage)(struct nand_chip *chip,
- 			uint32_t offs, uint32_t len, uint8_t *buf, int page);
--	int (*write_subpage)(struct mtd_info *mtd, struct nand_chip *chip,
-+	int (*write_subpage)(struct nand_chip *chip,
- 			uint32_t offset, uint32_t data_len,
- 			const uint8_t *data_buf, int oob_required);
--	int (*write_page)(struct mtd_info *mtd, struct nand_chip *chip,
-+	int (*write_page)(struct nand_chip *chip,
- 			const uint8_t *buf, int oob_required);
--	int (*write_oob_raw)(struct mtd_info *mtd, struct nand_chip *chip,
--			int page);
--	int (*read_oob_raw)(struct mtd_info *mtd, struct nand_chip *chip,
--			int page);
--	int (*read_oob)(struct mtd_info *mtd, struct nand_chip *chip, int page);
--	int (*write_oob)(struct mtd_info *mtd, struct nand_chip *chip,
--			int page);
-+	int (*write_oob_raw)(struct nand_chip *chip, int page);
-+	int (*read_oob_raw)(struct nand_chip *chip, int page);
-+	int (*read_oob)(struct nand_chip *chip, int page);
-+	int (*write_oob)(struct nand_chip *chip, int page);
- };
- 
- /**
-@@ -473,27 +471,25 @@ struct nand_chip {
- 	void __iomem *IO_ADDR_R;
- 	void __iomem *IO_ADDR_W;
- 
--	uint8_t (*read_byte)(struct mtd_info *mtd);
--	u16 (*read_word)(struct mtd_info *mtd);
--	void (*write_buf)(struct mtd_info *mtd, const uint8_t *buf, int len);
--	void (*read_buf)(struct mtd_info *mtd, uint8_t *buf, int len);
--	void (*select_chip)(struct mtd_info *mtd, int chip);
--	int (*block_bad)(struct mtd_info *mtd, loff_t ofs, int getchip);
--	int (*block_markbad)(struct mtd_info *mtd, loff_t ofs);
--	void (*cmd_ctrl)(struct mtd_info *mtd, int dat, unsigned int ctrl);
--	int (*init_size)(struct mtd_info *mtd, struct nand_chip *this,
--			u8 *id_data);
--	int (*dev_ready)(struct mtd_info *mtd);
--	void (*cmdfunc)(struct mtd_info *mtd, unsigned command, int column,
-+	uint8_t (*read_byte)(struct nand_chip *chip);
-+	u16 (*read_word)(struct nand_chip *chip);
-+	void (*write_buf)(struct nand_chip *chip, const uint8_t *buf, int len);
-+	void (*read_buf)(struct nand_chip *chip, uint8_t *buf, int len);
-+	void (*select_chip)(struct nand_chip *_chip, int chip);
-+	int (*block_bad)(struct nand_chip *chip, loff_t ofs, int getchip);
-+	int (*block_markbad)(struct nand_chip *chip, loff_t ofs);
-+	void (*cmd_ctrl)(struct nand_chip *chip, int dat, unsigned int ctrl);
-+	int (*dev_ready)(struct nand_chip *chip);
-+	void (*cmdfunc)(struct nand_chip *chip, unsigned command, int column,
- 			int page_addr);
--	int(*waitfunc)(struct mtd_info *mtd, struct nand_chip *this);
--	int (*scan_bbt)(struct mtd_info *mtd);
--	int (*write_page)(struct mtd_info *mtd, struct nand_chip *chip,
-+	int(*waitfunc)(struct nand_chip *chip);
-+	int (*scan_bbt)(struct nand_chip *chip);
-+	int (*write_page)(struct nand_chip *chip,
- 			uint32_t offset, int data_len, const uint8_t *buf,
- 			int oob_required, int page, int cached, int raw);
--	int (*onfi_set_features)(struct mtd_info *mtd, struct nand_chip *chip,
-+	int (*onfi_set_features)(struct nand_chip *chip,
- 			int feature_addr, uint8_t *subfeature_para);
--	int (*onfi_get_features)(struct mtd_info *mtd, struct nand_chip *chip,
-+	int (*onfi_get_features)(struct nand_chip *chip,
- 			int feature_addr, uint8_t *subfeature_para);
- 
- 	int chip_delay;
-@@ -629,16 +625,16 @@ struct nand_manufacturers {
- extern struct nand_flash_dev nand_flash_ids[];
- extern struct nand_manufacturers nand_manuf_ids[];
- 
--extern int nand_update_bbt(struct mtd_info *mtd, loff_t offs);
--extern int nand_default_bbt(struct mtd_info *mtd);
--extern int nand_markbad_bbt(struct mtd_info *mtd, loff_t offs);
--extern int nand_markgood_bbt(struct mtd_info *mtd, loff_t offs);
--extern int nand_isbad_bbt(struct mtd_info *mtd, loff_t offs, int allowbbt);
--extern int nand_erase_nand(struct mtd_info *mtd, struct erase_info *instr,
-+extern int nand_update_bbt(struct nand_chip *chip, loff_t offs);
-+extern int nand_default_bbt(struct nand_chip *chip);
-+extern int nand_markbad_bbt(struct nand_chip *chip, loff_t offs);
-+extern int nand_markgood_bbt(struct nand_chip *chip, loff_t offs);
-+extern int nand_isbad_bbt(struct nand_chip *chip, loff_t offs, int allowbbt);
-+extern int nand_erase_nand(struct nand_chip *chip, struct erase_info *instr,
- 			   int allowbbt);
--extern int nand_do_read(struct mtd_info *mtd, loff_t from, size_t len,
-+extern int nand_do_read(struct nand_chip *chip, loff_t from, size_t len,
- 			size_t *retlen, uint8_t *buf);
--extern int add_mtd_nand_device(struct mtd_info *mtd, char *devname);
-+extern int add_mtd_nand_device(struct nand_chip *chip, char *devname);
- 
- /**
-  * struct platform_nand_chip - chip level device structure
-@@ -798,4 +794,9 @@ static inline struct nand_chip *mtd_to_nand(struct mtd_info *mtd)
- 	return container_of(mtd, struct nand_chip, mtd);
- }
- 
-+static inline struct mtd_info *nand_to_mtd(struct nand_chip *chip)
-+{
-+	return &chip->mtd;
-+}
-+
- #endif /* __LINUX_MTD_NAND_H */
-diff --git a/include/linux/mtd/nand_bch.h b/include/linux/mtd/nand_bch.h
-index 5465ddd132..eee80a558c 100644
---- a/include/linux/mtd/nand_bch.h
-+++ b/include/linux/mtd/nand_bch.h
-@@ -11,7 +11,7 @@
- #ifndef __MTD_NAND_BCH_H__
- #define __MTD_NAND_BCH_H__
- 
--struct mtd_info;
-+struct nand_chip;
- struct nand_bch_control;
- 
- #if defined(CONFIG_NAND_ECC_BCH)
-@@ -21,18 +21,18 @@ static inline int mtd_nand_has_bch(void) { return 1; }
- /*
-  * Calculate BCH ecc code
-  */
--int nand_bch_calculate_ecc(struct mtd_info *mtd, const u_char *dat,
-+int nand_bch_calculate_ecc(struct nand_chip *chip, const u_char *dat,
- 			   u_char *ecc_code);
- 
- /*
-  * Detect and correct bit errors
-  */
--int nand_bch_correct_data(struct mtd_info *mtd, u_char *dat, u_char *read_ecc,
-+int nand_bch_correct_data(struct nand_chip *chip, u_char *dat, u_char *read_ecc,
- 			  u_char *calc_ecc);
- /*
-  * Initialize BCH encoder/decoder
-  */
--struct nand_bch_control *nand_bch_init(struct mtd_info *mtd);
-+struct nand_bch_control *nand_bch_init(struct nand_chip *chip);
- /*
-  * Release BCH encoder/decoder resources
-  */
-@@ -43,20 +43,20 @@ void nand_bch_free(struct nand_bch_control *nbc);
- static inline int mtd_nand_has_bch(void) { return 0; }
- 
- static inline int
--nand_bch_calculate_ecc(struct mtd_info *mtd, const u_char *dat,
-+nand_bch_calculate_ecc(struct nand_chip *chip, const u_char *dat,
- 		       u_char *ecc_code)
- {
- 	return -1;
- }
- 
- static inline int
--nand_bch_correct_data(struct mtd_info *mtd, unsigned char *buf,
-+nand_bch_correct_data(struct nand_chip *chip, unsigned char *buf,
- 		      unsigned char *read_ecc, unsigned char *calc_ecc)
- {
- 	return -1;
- }
- 
--static inline struct nand_bch_control *nand_bch_init(struct mtd_info *mtd)
-+static inline struct nand_bch_control *nand_bch_init(struct nand_chip *chip)
- {
- 	return NULL;
- }
-diff --git a/include/linux/mtd/nand_ecc.h b/include/linux/mtd/nand_ecc.h
-index 12c5bc342e..1dc779581f 100644
---- a/include/linux/mtd/nand_ecc.h
-+++ b/include/linux/mtd/nand_ecc.h
-@@ -15,16 +15,16 @@
- #ifndef __MTD_NAND_ECC_H__
- #define __MTD_NAND_ECC_H__
- 
--struct mtd_info;
-+struct nand_chip;
- 
- /*
-  * Calculate 3 byte ECC code for 256 byte block
-  */
--int nand_calculate_ecc(struct mtd_info *mtd, const u_char *dat, u_char *ecc_code);
-+int nand_calculate_ecc(struct nand_chip *chip, const u_char *dat, u_char *ecc_code);
- 
- /*
-  * Detect and correct a 1 bit error for 256 byte block
-  */
--int nand_correct_data(struct mtd_info *mtd, u_char *dat, u_char *read_ecc, u_char *calc_ecc);
-+int nand_correct_data(struct nand_chip *chip, u_char *dat, u_char *read_ecc, u_char *calc_ecc);
- 
- #endif /* __MTD_NAND_ECC_H__ */
--- 
-2.20.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhlIGRlbmFsaSBOQU5EIGRyaXZlciBpcyBpbiBhbiBob3BlbGVzcyBvdXRkYXRlZCBzdGF0ZSwg
+aXQgY2FuJ3QgZXZlbgpjaGVjayB0aGUgRUNDIGRhdGEuIFRocm93IGluIHRoZSBkZW5hbGkgZHJp
+dmVyIGZyb20gTGludXgtNS45LgoKU2lnbmVkLW9mZi1ieTogU2FzY2hhIEhhdWVyIDxzLmhhdWVy
+QHBlbmd1dHJvbml4LmRlPgotLS0KIGRyaXZlcnMvbXRkL25hbmQvZGVuYWxpLmggICAgICAgICB8
+ICA1ODMgKysrLS0tLS0KIGRyaXZlcnMvbXRkL25hbmQvbmFuZF9kZW5hbGkuYyAgICB8IDIyMzEg
+KysrKysrKysrKysrKy0tLS0tLS0tLS0tLS0tLS0KIGRyaXZlcnMvbXRkL25hbmQvbmFuZF9kZW5h
+bGlfZHQuYyB8ICAgNzQgKy0KIDMgZmlsZXMgY2hhbmdlZCwgMTMyMSBpbnNlcnRpb25zKCspLCAx
+NTY3IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvbXRkL25hbmQvZGVuYWxpLmgg
+Yi9kcml2ZXJzL210ZC9uYW5kL2RlbmFsaS5oCmluZGV4IDY5OWU2ZWM2YjQuLmY5YzIwOWQ1OGQg
+MTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbXRkL25hbmQvZGVuYWxpLmgKKysrIGIvZHJpdmVycy9tdGQv
+bmFuZC9kZW5hbGkuaApAQCAtMSw1MDAgKzEsMzkzIEBACisvKiBTUERYLUxpY2Vuc2UtSWRlbnRp
+ZmllcjogR1BMLTIuMCAqLwogLyoKICAqIE5BTkQgRmxhc2ggQ29udHJvbGxlciBEZXZpY2UgRHJp
+dmVyCiAgKiBDb3B5cmlnaHQgKGMpIDIwMDkgLSAyMDEwLCBJbnRlbCBDb3Jwb3JhdGlvbiBhbmQg
+aXRzIHN1cHBsaWVycy4KLSAqCi0gKiBUaGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2FyZTsgeW91
+IGNhbiByZWRpc3RyaWJ1dGUgaXQgYW5kL29yIG1vZGlmeSBpdAotICogdW5kZXIgdGhlIHRlcm1z
+IGFuZCBjb25kaXRpb25zIG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSwKLSAqIHZl
+cnNpb24gMiwgYXMgcHVibGlzaGVkIGJ5IHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5kYXRpb24uCi0g
+KgotICogVGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVkIGluIHRoZSBob3BlIGl0IHdpbGwgYmUg
+dXNlZnVsLCBidXQgV0lUSE9VVAotICogQU5ZIFdBUlJBTlRZOyB3aXRob3V0IGV2ZW4gdGhlIGlt
+cGxpZWQgd2FycmFudHkgb2YgTUVSQ0hBTlRBQklMSVRZIG9yCi0gKiBGSVRORVNTIEZPUiBBIFBB
+UlRJQ1VMQVIgUFVSUE9TRS4gIFNlZSB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgZm9y
+Ci0gKiBtb3JlIGRldGFpbHMuCi0gKgotICogWW91IHNob3VsZCBoYXZlIHJlY2VpdmVkIGEgY29w
+eSBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgYWxvbmcgd2l0aAotICogdGhpcyBw
+cm9ncmFtOyBpZiBub3QsIHdyaXRlIHRvIHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5kYXRpb24sIElu
+Yy4sCi0gKiA1MSBGcmFua2xpbiBTdCAtIEZpZnRoIEZsb29yLCBCb3N0b24sIE1BIDAyMTEwLTEz
+MDEgVVNBLgotICoKICAqLwogCiAjaWZuZGVmIF9fREVOQUxJX0hfXwogI2RlZmluZSBfX0RFTkFM
+SV9IX18KIAotI2luY2x1ZGUgPGxpbnV4L210ZC9uYW5kLmg+CisjaW5jbHVkZSA8bGludXgvbGlz
+dC5oPgogI2luY2x1ZGUgPGxpbnV4L210ZC9yYXduYW5kLmg+Ci0jaW5jbHVkZSA8bGludXgvc3Bp
+bmxvY2suaD4KKyNpbmNsdWRlIDxsaW51eC90eXBlcy5oPgogCiAjZGVmaW5lIERFVklDRV9SRVNF
+VAkJCQkweDAKLSNkZWZpbmUgICAgIERFVklDRV9SRVNFVF9fQkFOSzAJCQkJMHgwMDAxCi0jZGVm
+aW5lICAgICBERVZJQ0VfUkVTRVRfX0JBTksxCQkJCTB4MDAwMgotI2RlZmluZSAgICAgREVWSUNF
+X1JFU0VUX19CQU5LMgkJCQkweDAwMDQKLSNkZWZpbmUgICAgIERFVklDRV9SRVNFVF9fQkFOSzMJ
+CQkJMHgwMDA4CisjZGVmaW5lICAgICBERVZJQ0VfUkVTRVRfX0JBTksoYmFuaykJCQlCSVQoYmFu
+aykKIAogI2RlZmluZSBUUkFOU0ZFUl9TUEFSRV9SRUcJCQkweDEwCi0jZGVmaW5lICAgICBUUkFO
+U0ZFUl9TUEFSRV9SRUdfX0ZMQUcJCQkweDAwMDEKKyNkZWZpbmUgICAgIFRSQU5TRkVSX1NQQVJF
+X1JFR19fRkxBRwkJCUJJVCgwKQogCiAjZGVmaW5lIExPQURfV0FJVF9DTlQJCQkJMHgyMAotI2Rl
+ZmluZSAgICAgTE9BRF9XQUlUX0NOVF9fVkFMVUUJCQkweGZmZmYKKyNkZWZpbmUgICAgIExPQURf
+V0FJVF9DTlRfX1ZBTFVFCQkJR0VOTUFTSygxNSwgMCkKIAogI2RlZmluZSBQUk9HUkFNX1dBSVRf
+Q05UCQkJMHgzMAotI2RlZmluZSAgICAgUFJPR1JBTV9XQUlUX0NOVF9fVkFMVUUJCQkweGZmZmYK
+KyNkZWZpbmUgICAgIFBST0dSQU1fV0FJVF9DTlRfX1ZBTFVFCQkJR0VOTUFTSygxNSwgMCkKIAog
+I2RlZmluZSBFUkFTRV9XQUlUX0NOVAkJCQkweDQwCi0jZGVmaW5lICAgICBFUkFTRV9XQUlUX0NO
+VF9fVkFMVUUJCQkweGZmZmYKKyNkZWZpbmUgICAgIEVSQVNFX1dBSVRfQ05UX19WQUxVRQkJCUdF
+Tk1BU0soMTUsIDApCiAKICNkZWZpbmUgSU5UX01PTl9DWUNDTlQJCQkJMHg1MAotI2RlZmluZSAg
+ICAgSU5UX01PTl9DWUNDTlRfX1ZBTFVFCQkJMHhmZmZmCisjZGVmaW5lICAgICBJTlRfTU9OX0NZ
+Q0NOVF9fVkFMVUUJCQlHRU5NQVNLKDE1LCAwKQogCiAjZGVmaW5lIFJCX1BJTl9FTkFCTEVECQkJ
+CTB4NjAKLSNkZWZpbmUgICAgIFJCX1BJTl9FTkFCTEVEX19CQU5LMAkJCTB4MDAwMQotI2RlZmlu
+ZSAgICAgUkJfUElOX0VOQUJMRURfX0JBTksxCQkJMHgwMDAyCi0jZGVmaW5lICAgICBSQl9QSU5f
+RU5BQkxFRF9fQkFOSzIJCQkweDAwMDQKLSNkZWZpbmUgICAgIFJCX1BJTl9FTkFCTEVEX19CQU5L
+MwkJCTB4MDAwOAorI2RlZmluZSAgICAgUkJfUElOX0VOQUJMRURfX0JBTksoYmFuaykJCQlCSVQo
+YmFuaykKIAogI2RlZmluZSBNVUxUSVBMQU5FX09QRVJBVElPTgkJCTB4NzAKLSNkZWZpbmUgICAg
+IE1VTFRJUExBTkVfT1BFUkFUSU9OX19GTEFHCQkJMHgwMDAxCisjZGVmaW5lICAgICBNVUxUSVBM
+QU5FX09QRVJBVElPTl9fRkxBRwkJCUJJVCgwKQogCiAjZGVmaW5lIE1VTFRJUExBTkVfUkVBRF9F
+TkFCTEUJCQkweDgwCi0jZGVmaW5lICAgICBNVUxUSVBMQU5FX1JFQURfRU5BQkxFX19GTEFHCQkw
+eDAwMDEKKyNkZWZpbmUgICAgIE1VTFRJUExBTkVfUkVBRF9FTkFCTEVfX0ZMQUcJCUJJVCgwKQog
+CiAjZGVmaW5lIENPUFlCQUNLX0RJU0FCTEUJCQkweDkwCi0jZGVmaW5lICAgICBDT1BZQkFDS19E
+SVNBQkxFX19GTEFHCQkJMHgwMDAxCisjZGVmaW5lICAgICBDT1BZQkFDS19ESVNBQkxFX19GTEFH
+CQkJQklUKDApCiAKICNkZWZpbmUgQ0FDSEVfV1JJVEVfRU5BQkxFCQkJMHhhMAotI2RlZmluZSAg
+ICAgQ0FDSEVfV1JJVEVfRU5BQkxFX19GTEFHCQkJMHgwMDAxCisjZGVmaW5lICAgICBDQUNIRV9X
+UklURV9FTkFCTEVfX0ZMQUcJCQlCSVQoMCkKIAogI2RlZmluZSBDQUNIRV9SRUFEX0VOQUJMRQkJ
+CTB4YjAKLSNkZWZpbmUgICAgIENBQ0hFX1JFQURfRU5BQkxFX19GTEFHCQkJMHgwMDAxCisjZGVm
+aW5lICAgICBDQUNIRV9SRUFEX0VOQUJMRV9fRkxBRwkJCUJJVCgwKQogCiAjZGVmaW5lIFBSRUZF
+VENIX01PREUJCQkJMHhjMAotI2RlZmluZSAgICAgUFJFRkVUQ0hfTU9ERV9fUFJFRkVUQ0hfRU4J
+CQkweDAwMDEKLSNkZWZpbmUgICAgIFBSRUZFVENIX01PREVfX1BSRUZFVENIX0JVUlNUX0xFTkdU
+SAkweGZmZjAKKyNkZWZpbmUgICAgIFBSRUZFVENIX01PREVfX1BSRUZFVENIX0VOCQkJQklUKDAp
+CisjZGVmaW5lICAgICBQUkVGRVRDSF9NT0RFX19QUkVGRVRDSF9CVVJTVF9MRU5HVEgJR0VOTUFT
+SygxNSwgNCkKIAogI2RlZmluZSBDSElQX0VOQUJMRV9ET05UX0NBUkUJCQkweGQwCi0jZGVmaW5l
+ICAgICBDSElQX0VOX0RPTlRfQ0FSRV9fRkxBRwkJCTB4MDEKKyNkZWZpbmUgICAgIENISVBfRU5f
+RE9OVF9DQVJFX19GTEFHCQkJQklUKDApCiAKICNkZWZpbmUgRUNDX0VOQUJMRQkJCQkweGUwCi0j
+ZGVmaW5lICAgICBFQ0NfRU5BQkxFX19GTEFHCQkJCTB4MDAwMQorI2RlZmluZSAgICAgRUNDX0VO
+QUJMRV9fRkxBRwkJCQlCSVQoMCkKIAogI2RlZmluZSBHTE9CQUxfSU5UX0VOQUJMRQkJCTB4ZjAK
+LSNkZWZpbmUgICAgIEdMT0JBTF9JTlRfRU5fRkxBRwkJCQkweDAxCisjZGVmaW5lICAgICBHTE9C
+QUxfSU5UX0VOX0ZMQUcJCQkJQklUKDApCiAKLSNkZWZpbmUgV0VfMl9SRQkJCQkJMHgxMDAKLSNk
+ZWZpbmUgICAgIFdFXzJfUkVfX1ZBTFVFCQkJCTB4MDAzZgorI2RlZmluZSBUV0hSMl9BTkRfV0Vf
+Ml9SRQkJCTB4MTAwCisjZGVmaW5lICAgICBUV0hSMl9BTkRfV0VfMl9SRV9fV0VfMl9SRQkJCUdF
+Tk1BU0soNSwgMCkKKyNkZWZpbmUgICAgIFRXSFIyX0FORF9XRV8yX1JFX19UV0hSMgkJCUdFTk1B
+U0soMTMsIDgpCiAKLSNkZWZpbmUgQUREUl8yX0RBVEEJCQkJMHgxMTAKLSNkZWZpbmUgICAgIEFE
+RFJfMl9EQVRBX19WQUxVRQkJCQkweDAwM2YKKyNkZWZpbmUgVENXQVdfQU5EX0FERFJfMl9EQVRB
+CQkJMHgxMTAKKy8qIFRoZSB3aWR0aCBvZiBBRERSXzJfREFUQSBpcyA2IGJpdCBmb3Igb2xkIElQ
+LCA3IGJpdCBmb3IgbmV3IElQICovCisjZGVmaW5lICAgICBUQ1dBV19BTkRfQUREUl8yX0RBVEFf
+X0FERFJfMl9EQVRBCQlHRU5NQVNLKDYsIDApCisjZGVmaW5lICAgICBUQ1dBV19BTkRfQUREUl8y
+X0RBVEFfX1RDV0FXCQlHRU5NQVNLKDEzLCA4KQogCiAjZGVmaW5lIFJFXzJfV0UJCQkJCTB4MTIw
+Ci0jZGVmaW5lICAgICBSRV8yX1dFX19WQUxVRQkJCQkweDAwM2YKKyNkZWZpbmUgICAgIFJFXzJf
+V0VfX1ZBTFVFCQkJCUdFTk1BU0soNSwgMCkKIAogI2RlZmluZSBBQ0NfQ0xLUwkJCQkweDEzMAot
+I2RlZmluZSAgICAgQUNDX0NMS1NfX1ZBTFVFCQkJCTB4MDAwZgorI2RlZmluZSAgICAgQUNDX0NM
+S1NfX1ZBTFVFCQkJCUdFTk1BU0soMywgMCkKIAogI2RlZmluZSBOVU1CRVJfT0ZfUExBTkVTCQkJ
+MHgxNDAKLSNkZWZpbmUgICAgIE5VTUJFUl9PRl9QTEFORVNfX1ZBTFVFCQkJMHgwMDA3CisjZGVm
+aW5lICAgICBOVU1CRVJfT0ZfUExBTkVTX19WQUxVRQkJCUdFTk1BU0soMiwgMCkKIAogI2RlZmlu
+ZSBQQUdFU19QRVJfQkxPQ0sJCQkJMHgxNTAKLSNkZWZpbmUgICAgIFBBR0VTX1BFUl9CTE9DS19f
+VkFMVUUJCQkweGZmZmYKKyNkZWZpbmUgICAgIFBBR0VTX1BFUl9CTE9DS19fVkFMVUUJCQlHRU5N
+QVNLKDE1LCAwKQogCiAjZGVmaW5lIERFVklDRV9XSURUSAkJCQkweDE2MAotI2RlZmluZSAgICAg
+REVWSUNFX1dJRFRIX19WQUxVRQkJCQkweDAwMDMKKyNkZWZpbmUgICAgIERFVklDRV9XSURUSF9f
+VkFMVUUJCQkJR0VOTUFTSygxLCAwKQogCiAjZGVmaW5lIERFVklDRV9NQUlOX0FSRUFfU0laRQkJ
+CTB4MTcwCi0jZGVmaW5lICAgICBERVZJQ0VfTUFJTl9BUkVBX1NJWkVfX1ZBTFVFCQkweGZmZmYK
+KyNkZWZpbmUgICAgIERFVklDRV9NQUlOX0FSRUFfU0laRV9fVkFMVUUJCUdFTk1BU0soMTUsIDAp
+CiAKICNkZWZpbmUgREVWSUNFX1NQQVJFX0FSRUFfU0laRQkJCTB4MTgwCi0jZGVmaW5lICAgICBE
+RVZJQ0VfU1BBUkVfQVJFQV9TSVpFX19WQUxVRQkJMHhmZmZmCisjZGVmaW5lICAgICBERVZJQ0Vf
+U1BBUkVfQVJFQV9TSVpFX19WQUxVRQkJR0VOTUFTSygxNSwgMCkKIAogI2RlZmluZSBUV09fUk9X
+X0FERFJfQ1lDTEVTCQkJMHgxOTAKLSNkZWZpbmUgICAgIFRXT19ST1dfQUREUl9DWUNMRVNfX0ZM
+QUcJCQkweDAwMDEKKyNkZWZpbmUgICAgIFRXT19ST1dfQUREUl9DWUNMRVNfX0ZMQUcJCQlCSVQo
+MCkKIAogI2RlZmluZSBNVUxUSVBMQU5FX0FERFJfUkVTVFJJQ1QJCTB4MWEwCi0jZGVmaW5lICAg
+ICBNVUxUSVBMQU5FX0FERFJfUkVTVFJJQ1RfX0ZMQUcJCTB4MDAwMQorI2RlZmluZSAgICAgTVVM
+VElQTEFORV9BRERSX1JFU1RSSUNUX19GTEFHCQlCSVQoMCkKIAogI2RlZmluZSBFQ0NfQ09SUkVD
+VElPTgkJCQkweDFiMAotI2RlZmluZSAgICAgRUNDX0NPUlJFQ1RJT05fX1ZBTFVFCQkJMHgwMDFm
+CisjZGVmaW5lICAgICBFQ0NfQ09SUkVDVElPTl9fVkFMVUUJCQlHRU5NQVNLKDQsIDApCisjZGVm
+aW5lICAgICBFQ0NfQ09SUkVDVElPTl9fRVJBU0VfVEhSRVNIT0xECQlHRU5NQVNLKDMxLCAxNikK
+IAogI2RlZmluZSBSRUFEX01PREUJCQkJMHgxYzAKLSNkZWZpbmUgICAgIFJFQURfTU9ERV9fVkFM
+VUUJCQkJMHgwMDBmCisjZGVmaW5lICAgICBSRUFEX01PREVfX1ZBTFVFCQkJCUdFTk1BU0soMywg
+MCkKIAogI2RlZmluZSBXUklURV9NT0RFCQkJCTB4MWQwCi0jZGVmaW5lICAgICBXUklURV9NT0RF
+X19WQUxVRQkJCQkweDAwMGYKKyNkZWZpbmUgICAgIFdSSVRFX01PREVfX1ZBTFVFCQkJCUdFTk1B
+U0soMywgMCkKIAogI2RlZmluZSBDT1BZQkFDS19NT0RFCQkJCTB4MWUwCi0jZGVmaW5lICAgICBD
+T1BZQkFDS19NT0RFX19WQUxVRQkJCTB4MDAwZgorI2RlZmluZSAgICAgQ09QWUJBQ0tfTU9ERV9f
+VkFMVUUJCQlHRU5NQVNLKDMsIDApCiAKICNkZWZpbmUgUkRXUl9FTl9MT19DTlQJCQkJMHgxZjAK
+LSNkZWZpbmUgICAgIFJEV1JfRU5fTE9fQ05UX19WQUxVRQkJCTB4MDAxZgorI2RlZmluZSAgICAg
+UkRXUl9FTl9MT19DTlRfX1ZBTFVFCQkJR0VOTUFTSyg0LCAwKQogCiAjZGVmaW5lIFJEV1JfRU5f
+SElfQ05UCQkJCTB4MjAwCi0jZGVmaW5lICAgICBSRFdSX0VOX0hJX0NOVF9fVkFMVUUJCQkweDAw
+MWYKKyNkZWZpbmUgICAgIFJEV1JfRU5fSElfQ05UX19WQUxVRQkJCUdFTk1BU0soNCwgMCkKIAog
+I2RlZmluZSBNQVhfUkRfREVMQVkJCQkJMHgyMTAKLSNkZWZpbmUgICAgIE1BWF9SRF9ERUxBWV9f
+VkFMVUUJCQkJMHgwMDBmCisjZGVmaW5lICAgICBNQVhfUkRfREVMQVlfX1ZBTFVFCQkJCUdFTk1B
+U0soMywgMCkKIAogI2RlZmluZSBDU19TRVRVUF9DTlQJCQkJMHgyMjAKLSNkZWZpbmUgICAgIENT
+X1NFVFVQX0NOVF9fVkFMVUUJCQkJMHgwMDFmCisjZGVmaW5lICAgICBDU19TRVRVUF9DTlRfX1ZB
+TFVFCQkJCUdFTk1BU0soNCwgMCkKKyNkZWZpbmUgICAgIENTX1NFVFVQX0NOVF9fVFdCCQkJCUdF
+Tk1BU0soMTcsIDEyKQogCiAjZGVmaW5lIFNQQVJFX0FSRUFfU0tJUF9CWVRFUwkJCTB4MjMwCi0j
+ZGVmaW5lICAgICBTUEFSRV9BUkVBX1NLSVBfQllURVNfX1ZBTFVFCQkweDAwM2YKKyNkZWZpbmUg
+ICAgIFNQQVJFX0FSRUFfU0tJUF9CWVRFU19fVkFMVUUJCUdFTk1BU0soNSwgMCkKIAogI2RlZmlu
+ZSBTUEFSRV9BUkVBX01BUktFUgkJCTB4MjQwCi0jZGVmaW5lICAgICBTUEFSRV9BUkVBX01BUktF
+Ul9fVkFMVUUJCQkweGZmZmYKKyNkZWZpbmUgICAgIFNQQVJFX0FSRUFfTUFSS0VSX19WQUxVRQkJ
+CUdFTk1BU0soMTUsIDApCiAKICNkZWZpbmUgREVWSUNFU19DT05ORUNURUQJCQkweDI1MAotI2Rl
+ZmluZSAgICAgREVWSUNFU19DT05ORUNURURfX1ZBTFVFCQkJMHgwMDA3CisjZGVmaW5lICAgICBE
+RVZJQ0VTX0NPTk5FQ1RFRF9fVkFMVUUJCQlHRU5NQVNLKDIsIDApCiAKICNkZWZpbmUgRElFX01B
+U0sJCQkJMHgyNjAKLSNkZWZpbmUgICAgIERJRV9NQVNLX19WQUxVRQkJCQkweDAwZmYKKyNkZWZp
+bmUgICAgIERJRV9NQVNLX19WQUxVRQkJCQlHRU5NQVNLKDcsIDApCiAKICNkZWZpbmUgRklSU1Rf
+QkxPQ0tfT0ZfTkVYVF9QTEFORQkJMHgyNzAKLSNkZWZpbmUgICAgIEZJUlNUX0JMT0NLX09GX05F
+WFRfUExBTkVfX1ZBTFVFCQkweGZmZmYKKyNkZWZpbmUgICAgIEZJUlNUX0JMT0NLX09GX05FWFRf
+UExBTkVfX1ZBTFVFCQlHRU5NQVNLKDE1LCAwKQogCiAjZGVmaW5lIFdSSVRFX1BST1RFQ1QJCQkJ
+MHgyODAKLSNkZWZpbmUgICAgIFdSSVRFX1BST1RFQ1RfX0ZMQUcJCQkJMHgwMDAxCisjZGVmaW5l
+ICAgICBXUklURV9QUk9URUNUX19GTEFHCQkJCUJJVCgwKQogCiAjZGVmaW5lIFJFXzJfUkUJCQkJ
+CTB4MjkwCi0jZGVmaW5lICAgICBSRV8yX1JFX19WQUxVRQkJCQkweDAwM2YKKyNkZWZpbmUgICAg
+IFJFXzJfUkVfX1ZBTFVFCQkJCUdFTk1BU0soNSwgMCkKIAogI2RlZmluZSBNQU5VRkFDVFVSRVJf
+SUQJCQkJMHgzMDAKLSNkZWZpbmUgICAgIE1BTlVGQUNUVVJFUl9JRF9fVkFMVUUJCQkweDAwZmYK
+KyNkZWZpbmUgICAgIE1BTlVGQUNUVVJFUl9JRF9fVkFMVUUJCQlHRU5NQVNLKDcsIDApCiAKICNk
+ZWZpbmUgREVWSUNFX0lECQkJCTB4MzEwCi0jZGVmaW5lICAgICBERVZJQ0VfSURfX1ZBTFVFCQkJ
+CTB4MDBmZgorI2RlZmluZSAgICAgREVWSUNFX0lEX19WQUxVRQkJCQlHRU5NQVNLKDcsIDApCiAK
+ICNkZWZpbmUgREVWSUNFX1BBUkFNXzAJCQkJMHgzMjAKLSNkZWZpbmUgICAgIERFVklDRV9QQVJB
+TV8wX19WQUxVRQkJCTB4MDBmZgorI2RlZmluZSAgICAgREVWSUNFX1BBUkFNXzBfX1ZBTFVFCQkJ
+R0VOTUFTSyg3LCAwKQogCiAjZGVmaW5lIERFVklDRV9QQVJBTV8xCQkJCTB4MzMwCi0jZGVmaW5l
+ICAgICBERVZJQ0VfUEFSQU1fMV9fVkFMVUUJCQkweDAwZmYKKyNkZWZpbmUgICAgIERFVklDRV9Q
+QVJBTV8xX19WQUxVRQkJCUdFTk1BU0soNywgMCkKIAogI2RlZmluZSBERVZJQ0VfUEFSQU1fMgkJ
+CQkweDM0MAotI2RlZmluZSAgICAgREVWSUNFX1BBUkFNXzJfX1ZBTFVFCQkJMHgwMGZmCisjZGVm
+aW5lICAgICBERVZJQ0VfUEFSQU1fMl9fVkFMVUUJCQlHRU5NQVNLKDcsIDApCiAKICNkZWZpbmUg
+TE9HSUNBTF9QQUdFX0RBVEFfU0laRQkJCTB4MzUwCi0jZGVmaW5lICAgICBMT0dJQ0FMX1BBR0Vf
+REFUQV9TSVpFX19WQUxVRQkJMHhmZmZmCisjZGVmaW5lICAgICBMT0dJQ0FMX1BBR0VfREFUQV9T
+SVpFX19WQUxVRQkJR0VOTUFTSygxNSwgMCkKIAogI2RlZmluZSBMT0dJQ0FMX1BBR0VfU1BBUkVf
+U0laRQkJCTB4MzYwCi0jZGVmaW5lICAgICBMT0dJQ0FMX1BBR0VfU1BBUkVfU0laRV9fVkFMVUUJ
+CTB4ZmZmZgorI2RlZmluZSAgICAgTE9HSUNBTF9QQUdFX1NQQVJFX1NJWkVfX1ZBTFVFCQlHRU5N
+QVNLKDE1LCAwKQogCiAjZGVmaW5lIFJFVklTSU9OCQkJCTB4MzcwCi0jZGVmaW5lICAgICBSRVZJ
+U0lPTl9fVkFMVUUJCQkJMHhmZmZmCisjZGVmaW5lICAgICBSRVZJU0lPTl9fVkFMVUUJCQkJR0VO
+TUFTSygxNSwgMCkKIAogI2RlZmluZSBPTkZJX0RFVklDRV9GRUFUVVJFUwkJCTB4MzgwCi0jZGVm
+aW5lICAgICBPTkZJX0RFVklDRV9GRUFUVVJFU19fVkFMVUUJCQkweDAwM2YKKyNkZWZpbmUgICAg
+IE9ORklfREVWSUNFX0ZFQVRVUkVTX19WQUxVRQkJCUdFTk1BU0soNSwgMCkKIAogI2RlZmluZSBP
+TkZJX09QVElPTkFMX0NPTU1BTkRTCQkJMHgzOTAKLSNkZWZpbmUgICAgIE9ORklfT1BUSU9OQUxf
+Q09NTUFORFNfX1ZBTFVFCQkweDAwM2YKKyNkZWZpbmUgICAgIE9ORklfT1BUSU9OQUxfQ09NTUFO
+RFNfX1ZBTFVFCQlHRU5NQVNLKDUsIDApCiAKICNkZWZpbmUgT05GSV9USU1JTkdfTU9ERQkJCTB4
+M2EwCi0jZGVmaW5lICAgICBPTkZJX1RJTUlOR19NT0RFX19WQUxVRQkJCTB4MDAzZgorI2RlZmlu
+ZSAgICAgT05GSV9USU1JTkdfTU9ERV9fVkFMVUUJCQlHRU5NQVNLKDUsIDApCiAKICNkZWZpbmUg
+T05GSV9QR01fQ0FDSEVfVElNSU5HX01PREUJCTB4M2IwCi0jZGVmaW5lICAgICBPTkZJX1BHTV9D
+QUNIRV9USU1JTkdfTU9ERV9fVkFMVUUJCTB4MDAzZgorI2RlZmluZSAgICAgT05GSV9QR01fQ0FD
+SEVfVElNSU5HX01PREVfX1ZBTFVFCQlHRU5NQVNLKDUsIDApCiAKICNkZWZpbmUgT05GSV9ERVZJ
+Q0VfTk9fT0ZfTFVOUwkJCTB4M2MwCi0jZGVmaW5lICAgICBPTkZJX0RFVklDRV9OT19PRl9MVU5T
+X19OT19PRl9MVU5TCQkweDAwZmYKLSNkZWZpbmUgICAgIE9ORklfREVWSUNFX05PX09GX0xVTlNf
+X09ORklfREVWSUNFCQkweDAxMDAKKyNkZWZpbmUgICAgIE9ORklfREVWSUNFX05PX09GX0xVTlNf
+X05PX09GX0xVTlMJCUdFTk1BU0soNywgMCkKKyNkZWZpbmUgICAgIE9ORklfREVWSUNFX05PX09G
+X0xVTlNfX09ORklfREVWSUNFCQlCSVQoOCkKIAogI2RlZmluZSBPTkZJX0RFVklDRV9OT19PRl9C
+TE9DS1NfUEVSX0xVTl9MCTB4M2QwCi0jZGVmaW5lICAgICBPTkZJX0RFVklDRV9OT19PRl9CTE9D
+S1NfUEVSX0xVTl9MX19WQUxVRQkweGZmZmYKKyNkZWZpbmUgICAgIE9ORklfREVWSUNFX05PX09G
+X0JMT0NLU19QRVJfTFVOX0xfX1ZBTFVFCUdFTk1BU0soMTUsIDApCiAKICNkZWZpbmUgT05GSV9E
+RVZJQ0VfTk9fT0ZfQkxPQ0tTX1BFUl9MVU5fVQkweDNlMAotI2RlZmluZSAgICAgT05GSV9ERVZJ
+Q0VfTk9fT0ZfQkxPQ0tTX1BFUl9MVU5fVV9fVkFMVUUJMHhmZmZmCi0KLSNkZWZpbmUgRkVBVFVS
+RVMJCQkJCTB4M2YwCi0jZGVmaW5lICAgICBGRUFUVVJFU19fTl9CQU5LUwkJCQkweDAwMDMKLSNk
+ZWZpbmUgICAgIEZFQVRVUkVTX19FQ0NfTUFYX0VSUgkJCTB4MDAzYwotI2RlZmluZSAgICAgRkVB
+VFVSRVNfX0RNQQkJCQkweDAwNDAKLSNkZWZpbmUgICAgIEZFQVRVUkVTX19DTURfRE1BCQkJCTB4
+MDA4MAotI2RlZmluZSAgICAgRkVBVFVSRVNfX1BBUlRJVElPTgkJCQkweDAxMDAKLSNkZWZpbmUg
+ICAgIEZFQVRVUkVTX19YRE1BX1NJREVCQU5ECQkJMHgwMjAwCi0jZGVmaW5lICAgICBGRUFUVVJF
+U19fR1BSRUcJCQkJMHgwNDAwCi0jZGVmaW5lICAgICBGRUFUVVJFU19fSU5ERVhfQUREUgkJCTB4
+MDgwMAorI2RlZmluZSAgICAgT05GSV9ERVZJQ0VfTk9fT0ZfQkxPQ0tTX1BFUl9MVU5fVV9fVkFM
+VUUJR0VOTUFTSygxNSwgMCkKKworI2RlZmluZSBGRUFUVVJFUwkJCQkweDNmMAorI2RlZmluZSAg
+ICAgRkVBVFVSRVNfX05fQkFOS1MJCQkJR0VOTUFTSygxLCAwKQorI2RlZmluZSAgICAgRkVBVFVS
+RVNfX0VDQ19NQVhfRVJSCQkJR0VOTUFTSyg1LCAyKQorI2RlZmluZSAgICAgRkVBVFVSRVNfX0RN
+QQkJCQlCSVQoNikKKyNkZWZpbmUgICAgIEZFQVRVUkVTX19DTURfRE1BCQkJCUJJVCg3KQorI2Rl
+ZmluZSAgICAgRkVBVFVSRVNfX1BBUlRJVElPTgkJCQlCSVQoOCkKKyNkZWZpbmUgICAgIEZFQVRV
+UkVTX19YRE1BX1NJREVCQU5ECQkJQklUKDkpCisjZGVmaW5lICAgICBGRUFUVVJFU19fR1BSRUcJ
+CQkJQklUKDEwKQorI2RlZmluZSAgICAgRkVBVFVSRVNfX0lOREVYX0FERFIJCQlCSVQoMTEpCiAK
+ICNkZWZpbmUgVFJBTlNGRVJfTU9ERQkJCQkweDQwMAotI2RlZmluZSAgICAgVFJBTlNGRVJfTU9E
+RV9fVkFMVUUJCQkweDAwMDMKLQotI2RlZmluZSBJTlRSX1NUQVRVUyhfX2JhbmspCSgweDQxMCAr
+ICgoX19iYW5rKSAqIDB4NTApKQotI2RlZmluZSBJTlRSX0VOKF9fYmFuaykJCSgweDQyMCArICgo
+X19iYW5rKSAqIDB4NTApKQotCi0vKgotICogU29tZSB2ZXJzaW9ucyBvZiB0aGUgSVAgaGF2ZSB0
+aGUgRUNDIGZpeHVwIGhhbmRsZWQgaW4gaGFyZHdhcmUuICBJbiB0aGlzCi0gKiBjb25maWd1cmF0
+aW9uIHdlIG9ubHkgZ2V0IGludGVycnVwdGVkIHdoZW4gdGhlIGVycm9yIGlzIHVuY29ycmVjdGFi
+bGUuCi0gKiBVbmZvcnR1bmF0ZWx5IHRoaXMgYml0IHJlcGxhY2VzIElOVFJfU1RBVFVTX19FQ0Nf
+VFJBTlNBQ1RJT05fRE9ORSBmcm9tIHRoZQotICogb2xkIElQLgotICogdGFrZW4gZnJvbSBwYXRj
+aCBieSBKYW1pZSBJbGVzIDxqYW1pZSBhdCBqYW1pZWlsZXMuY29tPgotICogIHN1cHBvcnQgaGFy
+ZHdhcmUgd2l0aCBpbnRlcm5hbCBFQ0MgZml4dXAKLSAqLwotI2RlZmluZSAgICAgSU5UUl9TVEFU
+VVNfX0VDQ19VTkNPUl9FUlIgICAgICAgICAgICAgICAgIDB4MDAwMQotCi0jZGVmaW5lICAgICBJ
+TlRSX1NUQVRVU19fRUNDX1RSQU5TQUNUSU9OX0RPTkUJCTB4MDAwMQotI2RlZmluZSAgICAgSU5U
+Ul9TVEFUVVNfX0VDQ19FUlIJCQkweDAwMDIKLSNkZWZpbmUgICAgIElOVFJfU1RBVFVTX19ETUFf
+Q01EX0NPTVAJCQkweDAwMDQKLSNkZWZpbmUgICAgIElOVFJfU1RBVFVTX19USU1FX09VVAkJCTB4
+MDAwOAotI2RlZmluZSAgICAgSU5UUl9TVEFUVVNfX1BST0dSQU1fRkFJTAkJCTB4MDAxMAotI2Rl
+ZmluZSAgICAgSU5UUl9TVEFUVVNfX0VSQVNFX0ZBSUwJCQkweDAwMjAKLSNkZWZpbmUgICAgIElO
+VFJfU1RBVFVTX19MT0FEX0NPTVAJCQkweDAwNDAKLSNkZWZpbmUgICAgIElOVFJfU1RBVFVTX19Q
+Uk9HUkFNX0NPTVAJCQkweDAwODAKLSNkZWZpbmUgICAgIElOVFJfU1RBVFVTX19FUkFTRV9DT01Q
+CQkJMHgwMTAwCi0jZGVmaW5lICAgICBJTlRSX1NUQVRVU19fUElQRV9DUFlCQ0tfQ01EX0NPTVAJ
+CTB4MDIwMAotI2RlZmluZSAgICAgSU5UUl9TVEFUVVNfX0xPQ0tFRF9CTEsJCQkweDA0MDAKLSNk
+ZWZpbmUgICAgIElOVFJfU1RBVFVTX19VTlNVUF9DTUQJCQkweDA4MDAKLSNkZWZpbmUgICAgIElO
+VFJfU1RBVFVTX19JTlRfQUNUCQkJMHgxMDAwCi0jZGVmaW5lICAgICBJTlRSX1NUQVRVU19fUlNU
+X0NPTVAJCQkweDIwMDAKLSNkZWZpbmUgICAgIElOVFJfU1RBVFVTX19QSVBFX0NNRF9FUlIJCQkw
+eDQwMDAKLSNkZWZpbmUgICAgIElOVFJfU1RBVFVTX19QQUdFX1hGRVJfSU5DCQkJMHg4MDAwCi0K
+LSNkZWZpbmUgICAgIElOVFJfRU5fX0VDQ19UUkFOU0FDVElPTl9ET05FCQkweDAwMDEKLSNkZWZp
+bmUgICAgIElOVFJfRU5fX0VDQ19FUlIJCQkJMHgwMDAyCi0jZGVmaW5lICAgICBJTlRSX0VOX19E
+TUFfQ01EX0NPTVAJCQkweDAwMDQKLSNkZWZpbmUgICAgIElOVFJfRU5fX1RJTUVfT1VUCQkJCTB4
+MDAwOAotI2RlZmluZSAgICAgSU5UUl9FTl9fUFJPR1JBTV9GQUlMCQkJMHgwMDEwCi0jZGVmaW5l
+ICAgICBJTlRSX0VOX19FUkFTRV9GQUlMCQkJCTB4MDAyMAotI2RlZmluZSAgICAgSU5UUl9FTl9f
+TE9BRF9DT01QCQkJCTB4MDA0MAotI2RlZmluZSAgICAgSU5UUl9FTl9fUFJPR1JBTV9DT01QCQkJ
+MHgwMDgwCi0jZGVmaW5lICAgICBJTlRSX0VOX19FUkFTRV9DT01QCQkJCTB4MDEwMAotI2RlZmlu
+ZSAgICAgSU5UUl9FTl9fUElQRV9DUFlCQ0tfQ01EX0NPTVAJCTB4MDIwMAotI2RlZmluZSAgICAg
+SU5UUl9FTl9fTE9DS0VEX0JMSwkJCQkweDA0MDAKLSNkZWZpbmUgICAgIElOVFJfRU5fX1VOU1VQ
+X0NNRAkJCQkweDA4MDAKLSNkZWZpbmUgICAgIElOVFJfRU5fX0lOVF9BQ1QJCQkJMHgxMDAwCi0j
+ZGVmaW5lICAgICBJTlRSX0VOX19SU1RfQ09NUAkJCQkweDIwMDAKLSNkZWZpbmUgICAgIElOVFJf
+RU5fX1BJUEVfQ01EX0VSUgkJCTB4NDAwMAotI2RlZmluZSAgICAgSU5UUl9FTl9fUEFHRV9YRkVS
+X0lOQwkJCTB4ODAwMAotCi0jZGVmaW5lIFBBR0VfQ05UKF9fYmFuaykJKDB4NDMwICsgKChfX2Jh
+bmspICogMHg1MCkpCi0jZGVmaW5lIEVSUl9QQUdFX0FERFIoX19iYW5rKQkoMHg0NDAgKyAoKF9f
+YmFuaykgKiAweDUwKSkKLSNkZWZpbmUgRVJSX0JMT0NLX0FERFIoX19iYW5rKQkoMHg0NTAgKyAo
+KF9fYmFuaykgKiAweDUwKSkKLQotI2RlZmluZSBEQVRBX0lOVFIJCQkJMHg1NTAKLSNkZWZpbmUg
+ICAgIERBVEFfSU5UUl9fV1JJVEVfU1BBQ0VfQVYJCQkweDAwMDEKLSNkZWZpbmUgICAgIERBVEFf
+SU5UUl9fUkVBRF9EQVRBX0FWCQkJMHgwMDAyCi0KLSNkZWZpbmUgREFUQV9JTlRSX0VOCQkJCTB4
+NTYwCi0jZGVmaW5lICAgICBEQVRBX0lOVFJfRU5fX1dSSVRFX1NQQUNFX0FWCQkweDAwMDEKLSNk
+ZWZpbmUgICAgIERBVEFfSU5UUl9FTl9fUkVBRF9EQVRBX0FWCQkJMHgwMDAyCi0KLSNkZWZpbmUg
+R1BSRUdfMAkJCQkJMHg1NzAKLSNkZWZpbmUgICAgIEdQUkVHXzBfX1ZBTFVFCQkJCTB4ZmZmZgot
+Ci0jZGVmaW5lIEdQUkVHXzEJCQkJCTB4NTgwCi0jZGVmaW5lICAgICBHUFJFR18xX19WQUxVRQkJ
+CQkweGZmZmYKLQotI2RlZmluZSBHUFJFR18yCQkJCQkweDU5MAotI2RlZmluZSAgICAgR1BSRUdf
+Ml9fVkFMVUUJCQkJMHhmZmZmCi0KLSNkZWZpbmUgR1BSRUdfMwkJCQkJMHg1YTAKLSNkZWZpbmUg
+ICAgIEdQUkVHXzNfX1ZBTFVFCQkJCTB4ZmZmZgorI2RlZmluZSAgICAgVFJBTlNGRVJfTU9ERV9f
+VkFMVUUJCQlHRU5NQVNLKDEsIDApCisKKyNkZWZpbmUgSU5UUl9TVEFUVVMoYmFuaykJCQkoMHg0
+MTAgKyAoYmFuaykgKiAweDUwKQorI2RlZmluZSBJTlRSX0VOKGJhbmspCQkJCSgweDQyMCArIChi
+YW5rKSAqIDB4NTApCisvKiBiaXRbMTowXSBpcyB1c2VkIGRpZmZlcmVudGx5IGRlcGVuZGluZyBv
+biBJUCB2ZXJzaW9uICovCisjZGVmaW5lICAgICBJTlRSX19FQ0NfVU5DT1JfRVJSCQkJCUJJVCgw
+KQkvKiBuZXcgSVAgKi8KKyNkZWZpbmUgICAgIElOVFJfX0VDQ19UUkFOU0FDVElPTl9ET05FCQkJ
+QklUKDApCS8qIG9sZCBJUCAqLworI2RlZmluZSAgICAgSU5UUl9fRUNDX0VSUgkJCQlCSVQoMSkJ
+Lyogb2xkIElQICovCisjZGVmaW5lICAgICBJTlRSX19ETUFfQ01EX0NPTVAJCQkJQklUKDIpCisj
+ZGVmaW5lICAgICBJTlRSX19USU1FX09VVAkJCQlCSVQoMykKKyNkZWZpbmUgICAgIElOVFJfX1BS
+T0dSQU1fRkFJTAkJCQlCSVQoNCkKKyNkZWZpbmUgICAgIElOVFJfX0VSQVNFX0ZBSUwJCQkJQklU
+KDUpCisjZGVmaW5lICAgICBJTlRSX19MT0FEX0NPTVAJCQkJQklUKDYpCisjZGVmaW5lICAgICBJ
+TlRSX19QUk9HUkFNX0NPTVAJCQkJQklUKDcpCisjZGVmaW5lICAgICBJTlRSX19FUkFTRV9DT01Q
+CQkJCUJJVCg4KQorI2RlZmluZSAgICAgSU5UUl9fUElQRV9DUFlCQ0tfQ01EX0NPTVAJCQlCSVQo
+OSkKKyNkZWZpbmUgICAgIElOVFJfX0xPQ0tFRF9CTEsJCQkJQklUKDEwKQorI2RlZmluZSAgICAg
+SU5UUl9fVU5TVVBfQ01ECQkJCUJJVCgxMSkKKyNkZWZpbmUgICAgIElOVFJfX0lOVF9BQ1QJCQkJ
+QklUKDEyKQorI2RlZmluZSAgICAgSU5UUl9fUlNUX0NPTVAJCQkJQklUKDEzKQorI2RlZmluZSAg
+ICAgSU5UUl9fUElQRV9DTURfRVJSCQkJCUJJVCgxNCkKKyNkZWZpbmUgICAgIElOVFJfX1BBR0Vf
+WEZFUl9JTkMJCQkJQklUKDE1KQorI2RlZmluZSAgICAgSU5UUl9fRVJBU0VEX1BBR0UJCQkJQklU
+KDE2KQorCisjZGVmaW5lIFBBR0VfQ05UKGJhbmspCQkJCSgweDQzMCArIChiYW5rKSAqIDB4NTAp
+CisjZGVmaW5lIEVSUl9QQUdFX0FERFIoYmFuaykJCQkoMHg0NDAgKyAoYmFuaykgKiAweDUwKQor
+I2RlZmluZSBFUlJfQkxPQ0tfQUREUihiYW5rKQkJCSgweDQ1MCArIChiYW5rKSAqIDB4NTApCiAK
+ICNkZWZpbmUgRUNDX1RIUkVTSE9MRAkJCQkweDYwMAotI2RlZmluZSAgICAgRUNDX1RIUkVTSE9M
+RF9fVkFMVUUJCQkweDAzZmYKKyNkZWZpbmUgICAgIEVDQ19USFJFU0hPTERfX1ZBTFVFCQkJR0VO
+TUFTSyg5LCAwKQogCiAjZGVmaW5lIEVDQ19FUlJPUl9CTE9DS19BRERSRVNTCQkJMHg2MTAKLSNk
+ZWZpbmUgICAgIEVDQ19FUlJPUl9CTE9DS19BRERSRVNTX19WQUxVRQkJMHhmZmZmCisjZGVmaW5l
+ICAgICBFQ0NfRVJST1JfQkxPQ0tfQUREUkVTU19fVkFMVUUJCUdFTk1BU0soMTUsIDApCiAKICNk
+ZWZpbmUgRUNDX0VSUk9SX1BBR0VfQUREUkVTUwkJCTB4NjIwCi0jZGVmaW5lICAgICBFQ0NfRVJS
+T1JfUEFHRV9BRERSRVNTX19WQUxVRQkJMHgwZmZmCi0jZGVmaW5lICAgICBFQ0NfRVJST1JfUEFH
+RV9BRERSRVNTX19CQU5LCQkweGYwMDAKKyNkZWZpbmUgICAgIEVDQ19FUlJPUl9QQUdFX0FERFJF
+U1NfX1ZBTFVFCQlHRU5NQVNLKDExLCAwKQorI2RlZmluZSAgICAgRUNDX0VSUk9SX1BBR0VfQURE
+UkVTU19fQkFOSwkJR0VOTUFTSygxNSwgMTIpCiAKICNkZWZpbmUgRUNDX0VSUk9SX0FERFJFU1MJ
+CQkweDYzMAotI2RlZmluZSAgICAgRUNDX0VSUk9SX0FERFJFU1NfX09GRlNFVAkJCTB4MGZmZgot
+I2RlZmluZSAgICAgRUNDX0VSUk9SX0FERFJFU1NfX1NFQ1RPUl9OUgkJMHhmMDAwCisjZGVmaW5l
+ICAgICBFQ0NfRVJST1JfQUREUkVTU19fT0ZGU0VUCQkJR0VOTUFTSygxMSwgMCkKKyNkZWZpbmUg
+ICAgIEVDQ19FUlJPUl9BRERSRVNTX19TRUNUT1IJCQlHRU5NQVNLKDE1LCAxMikKIAogI2RlZmlu
+ZSBFUlJfQ09SUkVDVElPTl9JTkZPCQkJMHg2NDAKLSNkZWZpbmUgICAgIEVSUl9DT1JSRUNUSU9O
+X0lORk9fX0JZVEVNQVNLCQkweDAwZmYKLSNkZWZpbmUgICAgIEVSUl9DT1JSRUNUSU9OX0lORk9f
+X0RFVklDRV9OUgkJMHgwZjAwCi0jZGVmaW5lICAgICBFUlJfQ09SUkVDVElPTl9JTkZPX19FUlJP
+Ul9UWVBFCQkweDQwMDAKLSNkZWZpbmUgICAgIEVSUl9DT1JSRUNUSU9OX0lORk9fX0xBU1RfRVJS
+X0lORk8JCTB4ODAwMAorI2RlZmluZSAgICAgRVJSX0NPUlJFQ1RJT05fSU5GT19fQllURQkJCUdF
+Tk1BU0soNywgMCkKKyNkZWZpbmUgICAgIEVSUl9DT1JSRUNUSU9OX0lORk9fX0RFVklDRQkJCUdF
+Tk1BU0soMTEsIDgpCisjZGVmaW5lICAgICBFUlJfQ09SUkVDVElPTl9JTkZPX19VTkNPUgkJCUJJ
+VCgxNCkKKyNkZWZpbmUgICAgIEVSUl9DT1JSRUNUSU9OX0lORk9fX0xBU1RfRVJSCQlCSVQoMTUp
+CisKKyNkZWZpbmUgRUNDX0NPUl9JTkZPKGJhbmspCQkJKDB4NjUwICsgKGJhbmspIC8gMiAqIDB4
+MTApCisjZGVmaW5lICAgICBFQ0NfQ09SX0lORk9fX1NISUZUKGJhbmspCQkJKChiYW5rKSAlIDIg
+KiA4KQorI2RlZmluZSAgICAgRUNDX0NPUl9JTkZPX19NQVhfRVJST1JTCQkJR0VOTUFTSyg2LCAw
+KQorI2RlZmluZSAgICAgRUNDX0NPUl9JTkZPX19VTkNPUl9FUlIJCQlCSVQoNykKKworI2RlZmlu
+ZSBDRkdfREFUQV9CTE9DS19TSVpFCQkJMHg2YjAKKworI2RlZmluZSBDRkdfTEFTVF9EQVRBX0JM
+T0NLX1NJWkUJCTB4NmMwCisKKyNkZWZpbmUgQ0ZHX05VTV9EQVRBX0JMT0NLUwkJCTB4NmQwCisK
+KyNkZWZpbmUgQ0ZHX01FVEFfREFUQV9TSVpFCQkJMHg2ZTAKIAogI2RlZmluZSBETUFfRU5BQkxF
+CQkJCTB4NzAwCi0jZGVmaW5lICAgICBETUFfRU5BQkxFX19GTEFHCQkJCTB4MDAwMQorI2RlZmlu
+ZSAgICAgRE1BX0VOQUJMRV9fRkxBRwkJCQlCSVQoMCkKIAogI2RlZmluZSBJR05PUkVfRUNDX0RP
+TkUJCQkJMHg3MTAKLSNkZWZpbmUgICAgIElHTk9SRV9FQ0NfRE9ORV9fRkxBRwkJCTB4MDAwMQor
+I2RlZmluZSAgICAgSUdOT1JFX0VDQ19ET05FX19GTEFHCQkJQklUKDApCiAKICNkZWZpbmUgRE1B
+X0lOVFIJCQkJMHg3MjAKLSNkZWZpbmUgICAgIERNQV9JTlRSX19UQVJHRVRfRVJST1IJCQkweDAw
+MDEKLSNkZWZpbmUgICAgIERNQV9JTlRSX19ERVNDX0NPTVBfQ0hBTk5FTDAJCTB4MDAwMgotI2Rl
+ZmluZSAgICAgRE1BX0lOVFJfX0RFU0NfQ09NUF9DSEFOTkVMMQkJMHgwMDA0Ci0jZGVmaW5lICAg
+ICBETUFfSU5UUl9fREVTQ19DT01QX0NIQU5ORUwyCQkweDAwMDgKLSNkZWZpbmUgICAgIERNQV9J
+TlRSX19ERVNDX0NPTVBfQ0hBTk5FTDMJCTB4MDAxMAotI2RlZmluZSAgICAgRE1BX0lOVFJfX01F
+TUNPUFlfREVTQ19DT01QCQkweDAwMjAKLQogI2RlZmluZSBETUFfSU5UUl9FTgkJCQkweDczMAot
+I2RlZmluZSAgICAgRE1BX0lOVFJfRU5fX1RBUkdFVF9FUlJPUgkJCTB4MDAwMQotI2RlZmluZSAg
+ICAgRE1BX0lOVFJfRU5fX0RFU0NfQ09NUF9DSEFOTkVMMAkJMHgwMDAyCi0jZGVmaW5lICAgICBE
+TUFfSU5UUl9FTl9fREVTQ19DT01QX0NIQU5ORUwxCQkweDAwMDQKLSNkZWZpbmUgICAgIERNQV9J
+TlRSX0VOX19ERVNDX0NPTVBfQ0hBTk5FTDIJCTB4MDAwOAotI2RlZmluZSAgICAgRE1BX0lOVFJf
+RU5fX0RFU0NfQ09NUF9DSEFOTkVMMwkJMHgwMDEwCi0jZGVmaW5lICAgICBETUFfSU5UUl9FTl9f
+TUVNQ09QWV9ERVNDX0NPTVAJCTB4MDAyMAorI2RlZmluZSAgICAgRE1BX0lOVFJfX1RBUkdFVF9F
+UlJPUgkJCUJJVCgwKQorI2RlZmluZSAgICAgRE1BX0lOVFJfX0RFU0NfQ09NUF9DSEFOTkVMMAkJ
+QklUKDEpCisjZGVmaW5lICAgICBETUFfSU5UUl9fREVTQ19DT01QX0NIQU5ORUwxCQlCSVQoMikK
+KyNkZWZpbmUgICAgIERNQV9JTlRSX19ERVNDX0NPTVBfQ0hBTk5FTDIJCUJJVCgzKQorI2RlZmlu
+ZSAgICAgRE1BX0lOVFJfX0RFU0NfQ09NUF9DSEFOTkVMMwkJQklUKDQpCisjZGVmaW5lICAgICBE
+TUFfSU5UUl9fTUVNQ09QWV9ERVNDX0NPTVAJCQlCSVQoNSkKIAogI2RlZmluZSBUQVJHRVRfRVJS
+X0FERFJfTE8JCQkweDc0MAotI2RlZmluZSAgICAgVEFSR0VUX0VSUl9BRERSX0xPX19WQUxVRQkJ
+CTB4ZmZmZgorI2RlZmluZSAgICAgVEFSR0VUX0VSUl9BRERSX0xPX19WQUxVRQkJCUdFTk1BU0so
+MTUsIDApCiAKICNkZWZpbmUgVEFSR0VUX0VSUl9BRERSX0hJCQkJMHg3NTAKLSNkZWZpbmUgICAg
+IFRBUkdFVF9FUlJfQUREUl9ISV9fVkFMVUUJCQkweGZmZmYKKyNkZWZpbmUgICAgIFRBUkdFVF9F
+UlJfQUREUl9ISV9fVkFMVUUJCQlHRU5NQVNLKDE1LCAwKQogCiAjZGVmaW5lIENITkxfQUNUSVZF
+CQkJCTB4NzYwCi0jZGVmaW5lICAgICBDSE5MX0FDVElWRV9fQ0hBTk5FTDAJCQkweDAwMDEKLSNk
+ZWZpbmUgICAgIENITkxfQUNUSVZFX19DSEFOTkVMMQkJCTB4MDAwMgotI2RlZmluZSAgICAgQ0hO
+TF9BQ1RJVkVfX0NIQU5ORUwyCQkJMHgwMDA0Ci0jZGVmaW5lICAgICBDSE5MX0FDVElWRV9fQ0hB
+Tk5FTDMJCQkweDAwMDgKLQotI2RlZmluZSBGTEFTSF9CVVJTVF9MRU5HVEggICAgICAgICAgICAg
+MHg3NzAKLSNkZWZpbmUgQ0hJUF9JTlRFUkxFQVZFX0VOQUJMRV9BTkRfQUxMT1dfSU5UX1JFQURT
+ICAgICAgICAgICAgIDBYNzgwCi0jZGVmaW5lIE5PX09GX0JMT0NLU19QRVJfTFVOICAgICAgICAg
+ICAwWDc5MAotI2RlZmluZSBMVU5fU1RBVFVTX0NNRCAgICAgICAgIDBYN0EwCi0KLSNkZWZpbmUg
+QUNUSVZFX1NSQ19JRAkJCQkweDgwMAotI2RlZmluZSAgICAgQUNUSVZFX1NSQ19JRF9fVkFMVUUJ
+CQkweDAwZmYKLQotI2RlZmluZSBQVE5fSU5UUgkJCQkJMHg4MTAKLSNkZWZpbmUgICAgIFBUTl9J
+TlRSX19DT05GSUdfRVJST1IJCQkweDAwMDEKLSNkZWZpbmUgICAgIFBUTl9JTlRSX19BQ0NFU1Nf
+RVJST1JfQkFOSzAJCTB4MDAwMgotI2RlZmluZSAgICAgUFROX0lOVFJfX0FDQ0VTU19FUlJPUl9C
+QU5LMQkJMHgwMDA0Ci0jZGVmaW5lICAgICBQVE5fSU5UUl9fQUNDRVNTX0VSUk9SX0JBTksyCQkw
+eDAwMDgKLSNkZWZpbmUgICAgIFBUTl9JTlRSX19BQ0NFU1NfRVJST1JfQkFOSzMJCTB4MDAxMAot
+I2RlZmluZSAgICAgUFROX0lOVFJfX1JFR19BQ0NFU1NfRVJST1IJCQkweDAwMjAKLQotI2RlZmlu
+ZSBQVE5fSU5UUl9FTgkJCQkweDgyMAotI2RlZmluZSAgICAgUFROX0lOVFJfRU5fX0NPTkZJR19F
+UlJPUgkJCTB4MDAwMQotI2RlZmluZSAgICAgUFROX0lOVFJfRU5fX0FDQ0VTU19FUlJPUl9CQU5L
+MAkJMHgwMDAyCi0jZGVmaW5lICAgICBQVE5fSU5UUl9FTl9fQUNDRVNTX0VSUk9SX0JBTksxCQkw
+eDAwMDQKLSNkZWZpbmUgICAgIFBUTl9JTlRSX0VOX19BQ0NFU1NfRVJST1JfQkFOSzIJCTB4MDAw
+OAotI2RlZmluZSAgICAgUFROX0lOVFJfRU5fX0FDQ0VTU19FUlJPUl9CQU5LMwkJMHgwMDEwCi0j
+ZGVmaW5lICAgICBQVE5fSU5UUl9FTl9fUkVHX0FDQ0VTU19FUlJPUgkJMHgwMDIwCi0KLSNkZWZp
+bmUgUEVSTV9TUkNfSUQoX19iYW5rKQkoMHg4MzAgKyAoKF9fYmFuaykgKiAweDQwKSkKLSNkZWZp
+bmUgICAgIFBFUk1fU1JDX0lEX19TUkNJRAkJCQkweDAwZmYKLSNkZWZpbmUgICAgIFBFUk1fU1JD
+X0lEX19ESVJFQ1RfQUNDRVNTX0FDVElWRQkJMHgwODAwCi0jZGVmaW5lICAgICBQRVJNX1NSQ19J
+RF9fV1JJVEVfQUNUSVZFCQkJMHgyMDAwCi0jZGVmaW5lICAgICBQRVJNX1NSQ19JRF9fUkVBRF9B
+Q1RJVkUJCQkweDQwMDAKLSNkZWZpbmUgICAgIFBFUk1fU1JDX0lEX19QQVJUSVRJT05fVkFMSUQJ
+CTB4ODAwMAotCi0jZGVmaW5lIE1JTl9CTEtfQUREUihfX2JhbmspCSgweDg0MCArICgoX19iYW5r
+KSAqIDB4NDApKQotI2RlZmluZSAgICAgTUlOX0JMS19BRERSX19WQUxVRQkJCQkweGZmZmYKLQot
+I2RlZmluZSBNQVhfQkxLX0FERFIoX19iYW5rKQkoMHg4NTAgKyAoKF9fYmFuaykgKiAweDQwKSkK
+LSNkZWZpbmUgICAgIE1BWF9CTEtfQUREUl9fVkFMVUUJCQkJMHhmZmZmCi0KLSNkZWZpbmUgTUlO
+X01BWF9CQU5LKF9fYmFuaykJKDB4ODYwICsgKChfX2JhbmspICogMHg0MCkpCi0jZGVmaW5lICAg
+ICBNSU5fTUFYX0JBTktfX01JTl9WQUxVRQkJCTB4MDAwMwotI2RlZmluZSAgICAgTUlOX01BWF9C
+QU5LX19NQVhfVkFMVUUJCQkweDAwMGMKLQotCi0vKiBmZnNkZWZzLmggKi8KLSNkZWZpbmUgQ0xF
+QVIgMCAgICAgICAgICAgICAgICAgLyp1c2UgdGhpcyB0byBjbGVhciBhIGZpZWxkIGluc3RlYWQg
+b2YgImZhaWwiKi8KLSNkZWZpbmUgU0VUICAgMSAgICAgICAgICAgICAgICAgLyp1c2UgdGhpcyB0
+byBzZXQgYSBmaWVsZCBpbnN0ZWFkIG9mICJwYXNzIiovCi0jZGVmaW5lIEZBSUwgMSAgICAgICAg
+ICAgICAgICAgIC8qZmFpbGVkIGZsYWcqLwotI2RlZmluZSBQQVNTIDAgICAgICAgICAgICAgICAg
+ICAvKnN1Y2Nlc3MgZmxhZyovCi0jZGVmaW5lIEVSUiAtMSAgICAgICAgICAgICAgICAgIC8qZXJy
+b3IgZmxhZyovCi0KLS8qIGxsZC5oICovCi0jZGVmaW5lIEdPT0RfQkxPQ0sgMAotI2RlZmluZSBE
+RUZFQ1RJVkVfQkxPQ0sgMQotI2RlZmluZSBSRUFEX0VSUk9SIDIKLQotI2RlZmluZSBDTEtfWCAg
+NQotI2RlZmluZSBDTEtfTVVMVEkgNAotCi0vKiBzcGVjdHJhc3djb25maWcuaCAqLwotI2RlZmlu
+ZSBDTURfRE1BIDAKLQotI2RlZmluZSBTUEVDVFJBX1BBUlRJVElPTl9JRCAgICAwCi0vKioqKiBC
+bG9jayBUYWJsZSBhbmQgUmVzZXJ2ZWQgQmxvY2sgUGFyYW1ldGVycyAqKioqKi8KLSNkZWZpbmUg
+U1BFQ1RSQV9TVEFSVF9CTE9DSyAgICAgMwotI2RlZmluZSBOVU1fRlJFRV9CTE9DS1NfR0FURSAg
+ICAzMAotCi0vKiBLQlYgLSBVcGRhdGVkIHRvIExOVyBzY3JhdGNoIHJlZ2lzdGVyIGFkZHJlc3Mg
+Ki8KLSNkZWZpbmUgU0NSQVRDSF9SRUdfQUREUiAgICBDT05GSUdfTVREX05BTkRfREVOQUxJX1ND
+UkFUQ0hfUkVHX0FERFIKLSNkZWZpbmUgU0NSQVRDSF9SRUdfU0laRSAgICA2NAotCi0jZGVmaW5l
+IEdMT0JfSFdDVExfREVGQVVMVF9CTEtTICAgIDIwNDgKLQotI2RlZmluZSBTVVBQT1JUXzE1QklU
+RUNDICAgICAgICAxCi0jZGVmaW5lIFNVUFBPUlRfOEJJVEVDQyAgICAgICAgIDEKLQotI2RlZmlu
+ZSBDVVNUT01fQ09ORl9QQVJBTVMgICAgICAwCi0KLSNkZWZpbmUgT05GSV9CTE9PTV9USU1FICAg
+ICAgICAgMQotI2RlZmluZSBNT0RFNV9XT1JLQVJPVU5EICAgICAgICAwCi0KLQotI2RlZmluZSBN
+T0RFXzAwICAgIDB4MDAwMDAwMDAKLSNkZWZpbmUgTU9ERV8wMSAgICAweDA0MDAwMDAwCi0jZGVm
+aW5lIE1PREVfMTAgICAgMHgwODAwMDAwMAotI2RlZmluZSBNT0RFXzExICAgIDB4MEMwMDAwMDAK
+LQotCi0jZGVmaW5lIERBVEFfVFJBTlNGRVJfTU9ERSAgICAgICAgICAgICAgMAotI2RlZmluZSBQ
+Uk9URUNUSU9OX1BFUl9CTE9DSyAgICAgICAgICAgIDEKLSNkZWZpbmUgTE9BRF9XQUlUX0NPVU5U
+ICAgICAgICAgICAgICAgICAyCi0jZGVmaW5lIFBST0dSQU1fV0FJVF9DT1VOVCAgICAgICAgICAg
+ICAgMwotI2RlZmluZSBFUkFTRV9XQUlUX0NPVU5UICAgICAgICAgICAgICAgIDQKLSNkZWZpbmUg
+SU5UX01PTklUT1JfQ1lDTEVfQ09VTlQgICAgICAgICA1Ci0jZGVmaW5lIFJFQURfQlVTWV9QSU5f
+RU5BQkxFRCAgICAgICAgICAgNgotI2RlZmluZSBNVUxUSVBMQU5FX09QRVJBVElPTl9TVVBQT1JU
+ICAgIDcKLSNkZWZpbmUgUFJFX0ZFVENIX01PREUgICAgICAgICAgICAgICAgICA4Ci0jZGVmaW5l
+IENFX0RPTlRfQ0FSRV9TVVBQT1JUICAgICAgICAgICAgOQotI2RlZmluZSBDT1BZQkFDS19TVVBQ
+T1JUICAgICAgICAgICAgICAgIDEwCi0jZGVmaW5lIENBQ0hFX1dSSVRFX1NVUFBPUlQgICAgICAg
+ICAgICAgMTEKLSNkZWZpbmUgQ0FDSEVfUkVBRF9TVVBQT1JUICAgICAgICAgICAgICAxMgotI2Rl
+ZmluZSBOVU1fUEFHRVNfSU5fQkxPQ0sgICAgICAgICAgICAgIDEzCi0jZGVmaW5lIEVDQ19FTkFC
+TEVfU0VMRUNUICAgICAgICAgICAgICAgMTQKLSNkZWZpbmUgV1JJVEVfRU5BQkxFXzJfUkVBRF9F
+TkFCTEUgICAgICAxNQotI2RlZmluZSBBRERSRVNTXzJfREFUQSAgICAgICAgICAgICAgICAgIDE2
+Ci0jZGVmaW5lIFJFQURfRU5BQkxFXzJfV1JJVEVfRU5BQkxFICAgICAgMTcKLSNkZWZpbmUgVFdP
+X1JPV19BRERSRVNTX0NZQ0xFUyAgICAgICAgICAxOAotI2RlZmluZSBNVUxUSVBMQU5FX0FERFJF
+U1NfUkVTVFJJQ1QgICAgIDE5Ci0jZGVmaW5lIEFDQ19DTE9DS1MgICAgICAgICAgICAgICAgICAg
+ICAgMjAKLSNkZWZpbmUgUkVBRF9XUklURV9FTkFCTEVfTE9XX0NPVU5UICAgICAyMQotI2RlZmlu
+ZSBSRUFEX1dSSVRFX0VOQUJMRV9ISUdIX0NPVU5UICAgIDIyCi0KLSNkZWZpbmUgRUNDX1NFQ1RP
+Ul9TSVpFICAgICA1MTIKLQotc3RydWN0IG5hbmRfYnVmIHsKLQlpbnQgaGVhZDsKLQlpbnQgdGFp
+bDsKLQl1aW50OF90ICpidWY7Ci0JZG1hX2FkZHJfdCBkbWFfYnVmOworI2RlZmluZSAgICAgQ0hO
+TF9BQ1RJVkVfX0NIQU5ORUwwCQkJQklUKDApCisjZGVmaW5lICAgICBDSE5MX0FDVElWRV9fQ0hB
+Tk5FTDEJCQlCSVQoMSkKKyNkZWZpbmUgICAgIENITkxfQUNUSVZFX19DSEFOTkVMMgkJCUJJVCgy
+KQorI2RlZmluZSAgICAgQ0hOTF9BQ1RJVkVfX0NIQU5ORUwzCQkJQklUKDMpCisKKy8qKgorICog
+c3RydWN0IGRlbmFsaV9jaGlwX3NlbCAtIHBlci1DUyBkYXRhIG9mIERlbmFsaSBOQU5ECisgKgor
+ICogQGJhbms6ICAgICAgICAgICAgICAgICAgYmFuayBpZCBvZiB0aGUgY29udHJvbGxlciB0aGlz
+IENTIGlzIGNvbm5lY3RlZCB0bworICogQGh3aHIyX2FuZF93ZV8yX3JlOiAgICAgdmFsdWUgb2Yg
+dGltaW5nIHJlZ2lzdGVyIEhXSFIyX0FORF9XRV8yX1JFCisgKiBAdGN3YXdfYW5kX2FkZHJfMl9k
+YXRhOiB2YWx1ZSBvZiB0aW1pbmcgcmVnaXN0ZXIgVENXQVdfQU5EX0FERFJfMl9EQVRBCisgKiBA
+cmVfMl93ZTogICAgICAgICAgICAgICB2YWx1ZSBvZiB0aW1pbmcgcmVnaXN0ZXIgUkVfMl9XRQor
+ICogQGFjY19jbGtzOiAgICAgICAgICAgICAgdmFsdWUgb2YgdGltaW5nIHJlZ2lzdGVyIEFDQ19D
+TEtTCisgKiBAcmR3cl9lbl9sb19jbnQ6ICAgICAgICB2YWx1ZSBvZiB0aW1pbmcgcmVnaXN0ZXIg
+UkRXUl9FTl9MT19DTlQKKyAqIEByZHdyX2VuX2hpX2NudDogICAgICAgIHZhbHVlIG9mIHRpbWlu
+ZyByZWdpc3RlciBSRFdSX0VOX0hJX0NOVAorICogQGNzX3NldHVwX2NudDogICAgICAgICAgdmFs
+dWUgb2YgdGltaW5nIHJlZ2lzdGVyIENTX1NFVFVQX0NOVAorICogQHJlXzJfcmU6ICAgICAgICAg
+ICAgICAgdmFsdWUgb2YgdGltaW5nIHJlZ2lzdGVyIFJFXzJfUkUKKyAqLworc3RydWN0IGRlbmFs
+aV9jaGlwX3NlbCB7CisJaW50IGJhbms7CisJdTMyIGh3aHIyX2FuZF93ZV8yX3JlOworCXUzMiB0
+Y3dhd19hbmRfYWRkcl8yX2RhdGE7CisJdTMyIHJlXzJfd2U7CisJdTMyIGFjY19jbGtzOworCXUz
+MiByZHdyX2VuX2xvX2NudDsKKwl1MzIgcmR3cl9lbl9oaV9jbnQ7CisJdTMyIGNzX3NldHVwX2Nu
+dDsKKwl1MzIgcmVfMl9yZTsKIH07CiAKLSNkZWZpbmUgSU5URUxfQ0U0MTAwCTEKLSNkZWZpbmUg
+SU5URUxfTVJTVAkyCi0jZGVmaW5lIERUCQkzCisvKioKKyAqIHN0cnVjdCBkZW5hbGlfY2hpcCAt
+IHBlci1jaGlwIGRhdGEgb2YgRGVuYWxpIE5BTkQKKyAqCisgKiBAY2hpcDogIGJhc2UgTkFORCBj
+aGlwIHN0cnVjdHVyZQorICogQG5vZGU6ICBub2RlIHRvIGJlIHVzZWQgdG8gYXNzb2NpYXRlIHRo
+aXMgY2hpcCB3aXRoIHRoZSBjb250cm9sbGVyCisgKiBAbnNlbHM6IHRoZSBudW1iZXIgb2YgQ1Mg
+bGluZXMgb2YgdGhpcyBjaGlwCisgKiBAc2VsczogIHRoZSBhcnJheSBvZiBwZXItY3MgZGF0YQor
+ICovCitzdHJ1Y3QgZGVuYWxpX2NoaXAgeworCXN0cnVjdCBuYW5kX2NoaXAgY2hpcDsKKwlzdHJ1
+Y3QgbGlzdF9oZWFkIG5vZGU7CisJdW5zaWduZWQgaW50IG5zZWxzOworCXN0cnVjdCBkZW5hbGlf
+Y2hpcF9zZWwgc2Vsc1tdOworfTsKIAotc3RydWN0IGRlbmFsaV9uYW5kX2luZm8gewotCXN0cnVj
+dCBuYW5kX2NoaXAgbmFuZDsKLQlpbnQgZmxhc2hfYmFuazsgLyogY3VycmVudGx5IHNlbGVjdGVk
+IGNoaXAgKi8KLQlpbnQgc3RhdHVzOwotCWludCBwbGF0Zm9ybTsKLQlzdHJ1Y3QgbmFuZF9idWYg
+YnVmOworLyoqCisgKiBzdHJ1Y3QgZGVuYWxpX2NvbnRyb2xsZXIgLSBEZW5hbGkgTkFORCBjb250
+cm9sbGVyIGRhdGEKKyAqCisgKiBAY29udHJvbGxlcjogICAgIGJhc2UgTkFORCBjb250cm9sbGVy
+IHN0cnVjdHVyZQorICogQGRldjogICAgICAgICAgICBkZXZpY2UKKyAqIEBjaGlwczogICAgICAg
+ICAgdGhlIGxpc3Qgb2YgY2hpcHMgYXR0YWNoZWQgdG8gdGhpcyBjb250cm9sbGVyCisgKiBAY2xr
+X3JhdGU6ICAgICAgIGZyZXF1ZW5jeSBvZiBjb3JlIGNsb2NrCisgKiBAY2xrX3hfcmF0ZTogICAg
+IGZyZXF1ZW5jeSBvZiBidXMgaW50ZXJmYWNlIGNsb2NrCisgKiBAcmVnOiAgICAgICAgICAgIGJh
+c2Ugb2YgUmVnaXN0ZXIgSW50ZXJmYWNlCisgKiBAaG9zdDogICAgICAgICAgIGJhc2Ugb2YgSG9z
+dCBEYXRhL0NvbW1hbmQgaW50ZXJmYWNlCisgKiBAaXJxOiAgICAgICAgICAgIGludGVycnVwdCBu
+dW1iZXIKKyAqIEBpcnFfbWFzazogICAgICAgaW50ZXJydXB0IGJpdHMgdGhlIGNvbnRyb2xsZXIg
+aXMgd2FpdGluZyBmb3IKKyAqIEBpcnFfc3RhdHVzOiAgICAgaW50ZXJydXB0IGJpdHMgb2YgZXZl
+bnRzIHRoYXQgaGF2ZSBoYXBwZW5lZAorICogQGlycV9sb2NrOiAgICAgICBsb2NrIHRvIHByb3Rl
+Y3QgQGlycV9tYXNrIGFuZCBAaXJxX3N0YXR1cworICogQGRtYV9hdmFpbDogICAgICBzZXQgaWYg
+RE1BIGVuZ2luZSBpcyBhdmFpbGFibGUKKyAqIEBkZXZzX3Blcl9jczogICAgbnVtYmVyIG9mIGRl
+dmljZXMgY29ubmVjdGVkIGluIHBhcmFsbGVsCisgKiBAb29iX3NraXBfYnl0ZXM6IG51bWJlciBv
+ZiBieXRlcyBpbiBPT0Igc2tpcHBlZCBieSB0aGUgRUNDIGVuZ2luZQorICogQGFjdGl2ZV9iYW5r
+OiAgICBhY3RpdmUgYmFuayBpZAorICogQG5iYW5rczogICAgICAgICB0aGUgbnVtYmVyIG9mIGJh
+bmtzIHN1cHBvcnRlZCBieSB0aGlzIGNvbnRyb2xsZXIKKyAqIEByZXZpc2lvbjogICAgICAgSVAg
+cmV2aXNpb24KKyAqIEBjYXBzOiAgICAgICAgICAgY29udHJvbGxlciBjYXBhYmlsaXRpZXMgdGhh
+dCBjYW5ub3QgYmUgZGV0ZWN0ZWQgcnVuLXRpbWUKKyAqIEBlY2NfY2FwczogICAgICAgRUNDIGVu
+Z2luZSBjYXBhYmlsaXRpZXMKKyAqIEBob3N0X3JlYWQ6ICAgICAgY2FsbGJhY2sgZm9yIHJlYWQg
+YWNjZXNzIG9mIEhvc3QgRGF0YS9Db21tYW5kIEludGVyZmFjZQorICogQGhvc3Rfd3JpdGU6ICAg
+ICBjYWxsYmFjayBmb3Igd3JpdGUgYWNjZXNzIG9mIEhvc3QgRGF0YS9Db21tYW5kIEludGVyZmFj
+ZQorICogQHNldHVwX2RtYTogICAgICBjYWxsYmFjayBmb3Igc2V0dXAgb2YgdGhlIERhdGEgRE1B
+CisgKi8KK3N0cnVjdCBkZW5hbGlfY29udHJvbGxlciB7CisJc3RydWN0IG5hbmRfY29udHJvbGxl
+ciBjb250cm9sbGVyOwogCXN0cnVjdCBkZXZpY2VfZCAqZGV2OwotCWludCB0b3RhbF91c2VkX2Jh
+bmtzOwotCXVpbnQzMl90IGJsb2NrOyAgLyogc3RvcmVkIGZvciBmdXR1cmUgdXNlICovCi0JdWlu
+dDMyX3QgcGFnZTsKLQl2b2lkIF9faW9tZW0gKmZsYXNoX3JlZzsgIC8qIE1hcHBlZCBpbyByZWcg
+YmFzZSBhZGRyZXNzICovCi0Jdm9pZCBfX2lvbWVtICpmbGFzaF9tZW07ICAvKiBNYXBwZWQgaW8g
+cmVnIGJhc2UgYWRkcmVzcyAqLwotCi0JLyogZWxlbWVudHMgdXNlZCBieSBJU1IgKi8KLQkvL3N0
+cnVjdCBjb21wbGV0aW9uIGNvbXBsZXRlOwotCXNwaW5sb2NrX3QgaXJxX2xvY2s7Ci0JdWludDMy
+X3QgaXJxX3N0YXR1czsKLQlpbnQgaXJxX2RlYnVnX2FycmF5WzMyXTsKLQlpbnQgaWR4OworCXN0
+cnVjdCBsaXN0X2hlYWQgY2hpcHM7CisJdW5zaWduZWQgbG9uZyBjbGtfcmF0ZTsKKwl1bnNpZ25l
+ZCBsb25nIGNsa194X3JhdGU7CisJdm9pZCBfX2lvbWVtICpyZWc7CisJdm9pZCBfX2lvbWVtICpo
+b3N0OwogCWludCBpcnE7Ci0KLQl1aW50MzJfdCBkZXZudW07CS8qIHJlcHJlc2VudCBob3cgbWFu
+eSBuYW5kcyBjb25uZWN0ZWQgKi8KLQl1aW50MzJfdCBmd2Jsa3M7IC8qIHJlcHJlc2VudCBob3cg
+bWFueSBibG9ja3MgRlcgdXNlZCAqLwotCXVpbnQzMl90IHRvdGFsYmxrczsKLQl1aW50MzJfdCBi
+bGtzcGVyY2hpcDsKLQl1aW50MzJfdCBiYnRza2lwYnl0ZXM7Ci0JdWludDMyX3QgbWF4X2Jhbmtz
+OwotCWJvb2wgaGF2ZV9od19lY2NfZml4dXA7CisJdTMyIGlycV9tYXNrOworCXUzMiBpcnFfc3Rh
+dHVzOworCXNwaW5sb2NrX3QgaXJxX2xvY2s7CisJYm9vbCBkbWFfYXZhaWw7CisJaW50IGRldnNf
+cGVyX2NzOworCWludCBvb2Jfc2tpcF9ieXRlczsKKwlpbnQgYWN0aXZlX2Jhbms7CisJaW50IG5i
+YW5rczsKKwl1bnNpZ25lZCBpbnQgcmV2aXNpb247CisJdW5zaWduZWQgaW50IGNhcHM7CisJY29u
+c3Qgc3RydWN0IG5hbmRfZWNjX2NhcHMgKmVjY19jYXBzOworCXUzMiAoKmhvc3RfcmVhZCkoc3Ry
+dWN0IGRlbmFsaV9jb250cm9sbGVyICpkZW5hbGksIHUzMiBhZGRyKTsKKwl2b2lkICgqaG9zdF93
+cml0ZSkoc3RydWN0IGRlbmFsaV9jb250cm9sbGVyICpkZW5hbGksIHUzMiBhZGRyLAorCQkJICAg
+dTMyIGRhdGEpOworCXZvaWQgKCpzZXR1cF9kbWEpKHN0cnVjdCBkZW5hbGlfY29udHJvbGxlciAq
+ZGVuYWxpLCBkbWFfYWRkcl90IGRtYV9hZGRyLAorCQkJICBpbnQgcGFnZSwgYm9vbCB3cml0ZSk7
+CiB9OwogCi1leHRlcm4gaW50IGRlbmFsaV9pbml0KHN0cnVjdCBkZW5hbGlfbmFuZF9pbmZvICpk
+ZW5hbGkpOwotZXh0ZXJuIHZvaWQgZGVuYWxpX3JlbW92ZShzdHJ1Y3QgZGVuYWxpX25hbmRfaW5m
+byAqZGVuYWxpKTsKKyNkZWZpbmUgREVOQUxJX0NBUF9IV19FQ0NfRklYVVAJCQlCSVQoMCkKKyNk
+ZWZpbmUgREVOQUxJX0NBUF9ETUFfNjRCSVQJCQlCSVQoMSkKKworaW50IGRlbmFsaV9jYWxjX2Vj
+Y19ieXRlcyhpbnQgc3RlcF9zaXplLCBpbnQgc3RyZW5ndGgpOworaW50IGRlbmFsaV9jaGlwX2lu
+aXQoc3RydWN0IGRlbmFsaV9jb250cm9sbGVyICpkZW5hbGksCisJCSAgICAgc3RydWN0IGRlbmFs
+aV9jaGlwICpkY2hpcCk7CitpbnQgZGVuYWxpX2luaXQoc3RydWN0IGRlbmFsaV9jb250cm9sbGVy
+ICpkZW5hbGkpOwordm9pZCBkZW5hbGlfcmVtb3ZlKHN0cnVjdCBkZW5hbGlfY29udHJvbGxlciAq
+ZGVuYWxpKTsKIAogI2VuZGlmIC8qIF9fREVOQUxJX0hfXyAqLwpkaWZmIC0tZ2l0IGEvZHJpdmVy
+cy9tdGQvbmFuZC9uYW5kX2RlbmFsaS5jIGIvZHJpdmVycy9tdGQvbmFuZC9uYW5kX2RlbmFsaS5j
+CmluZGV4IDQ5MDI4YmYwODIuLmQ3YTliZTJjNjkgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbXRkL25h
+bmQvbmFuZF9kZW5hbGkuYworKysgYi9kcml2ZXJzL210ZC9uYW5kL25hbmRfZGVuYWxpLmMKQEAg
+LTEsMjIgKzEsMTEgQEAKKy8vIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wCiAvKgog
+ICogTkFORCBGbGFzaCBDb250cm9sbGVyIERldmljZSBEcml2ZXIKICAqIENvcHlyaWdodCDCqSAy
+MDA5LTIwMTAsIEludGVsIENvcnBvcmF0aW9uIGFuZCBpdHMgc3VwcGxpZXJzLgogICoKLSAqIFRo
+aXMgcHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQv
+b3IgbW9kaWZ5IGl0Ci0gKiB1bmRlciB0aGUgdGVybXMgYW5kIGNvbmRpdGlvbnMgb2YgdGhlIEdO
+VSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlLAotICogdmVyc2lvbiAyLCBhcyBwdWJsaXNoZWQgYnkg
+dGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbi4KLSAqCi0gKiBUaGlzIHByb2dyYW0gaXMgZGlz
+dHJpYnV0ZWQgaW4gdGhlIGhvcGUgaXQgd2lsbCBiZSB1c2VmdWwsIGJ1dCBXSVRIT1VUCi0gKiBB
+TlkgV0FSUkFOVFk7IHdpdGhvdXQgZXZlbiB0aGUgaW1wbGllZCB3YXJyYW50eSBvZiBNRVJDSEFO
+VEFCSUxJVFkgb3IKLSAqIEZJVE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFLiAgU2VlIHRo
+ZSBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBmb3IKLSAqIG1vcmUgZGV0YWlscy4KLSAqCi0g
+KiBZb3Ugc2hvdWxkIGhhdmUgcmVjZWl2ZWQgYSBjb3B5IG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJs
+aWMgTGljZW5zZSBhbG9uZyB3aXRoCi0gKiB0aGlzIHByb2dyYW07IGlmIG5vdCwgd3JpdGUgdG8g
+dGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbiwgSW5jLiwKLSAqIDUxIEZyYW5rbGluIFN0IC0g
+RmlmdGggRmxvb3IsIEJvc3RvbiwgTUEgMDIxMTAtMTMwMSBVU0EuCi0gKgorICogQ29weXJpZ2h0
+IChjKSAyMDE3LTIwMTkgU29jaW9uZXh0IEluYy4KKyAqICAgUmV3b3JrZWQgYnkgTWFzYWhpcm8g
+WWFtYWRhIDx5YW1hZGEubWFzYWhpcm9Ac29jaW9uZXh0LmNvbT4KICAqLwotCiAjaW5jbHVkZSA8
+Y29tbW9uLmg+CiAjaW5jbHVkZSA8ZG1hLmg+CiAjaW5jbHVkZSA8ZHJpdmVyLmg+CkBAIC0yNSw2
+ICsxNCw4IEBACiAjaW5jbHVkZSA8bGludXgvbXRkL210ZC5oPgogI2luY2x1ZGUgPGxpbnV4L210
+ZC9yYXduYW5kLmg+CiAjaW5jbHVkZSA8bGludXgvbXRkL25hbmQuaD4KKyNpbmNsdWRlIDxsaW51
+eC9zcGlubG9jay5oPgorI2luY2x1ZGUgPGxpbnV4L2JpdGZpZWxkLmg+CiAjaW5jbHVkZSA8aW8u
+aD4KICNpbmNsdWRlIDxjbG9jay5oPgogI2luY2x1ZGUgPG9mX210ZC5oPgpAQCAtMzIsMTUwOSAr
+MjMsMTMyMSBAQAogI2luY2x1ZGUgPGFzbS9pby5oPgogI2luY2x1ZGUgImRlbmFsaS5oIgogCi0j
+ZGVmaW5lIE5BTkRfREVGQVVMVF9USU1JTkdTCS0xCi0KLXN0YXRpYyBpbnQgb25maV90aW1pbmdf
+bW9kZSA9IENPTkZJR19NVERfTkFORF9ERU5BTElfVElNSU5HX01PREU7Ci0KICNkZWZpbmUgREVO
+QUxJX05BTkRfTkFNRSAgICAiZGVuYWxpLW5hbmQiCiAKLS8qCi0gKiBXZSBkZWZpbmUgYSBtYWNy
+byBoZXJlIHRoYXQgY29tYmluZXMgYWxsIGludGVycnVwdHMgdGhpcyBkcml2ZXIgdXNlcyBpbnRv
+Ci0gKiBhIHNpbmdsZSBjb25zdGFudCB2YWx1ZSwgZm9yIGNvbnZlbmllbmNlLgotICovCi0jZGVm
+aW5lIERFTkFMSV9JUlFfQUxMCShJTlRSX1NUQVRVU19fRE1BX0NNRF9DT01QIHwgXAotCQkJSU5U
+Ul9TVEFUVVNfX0VDQ19UUkFOU0FDVElPTl9ET05FIHwgXAotCQkJSU5UUl9TVEFUVVNfX0VDQ19F
+UlIgfCBcCi0JCQlJTlRSX1NUQVRVU19fUFJPR1JBTV9GQUlMIHwgXAotCQkJSU5UUl9TVEFUVVNf
+X0xPQURfQ09NUCB8IFwKLQkJCUlOVFJfU1RBVFVTX19QUk9HUkFNX0NPTVAgfCBcCi0JCQlJTlRS
+X1NUQVRVU19fVElNRV9PVVQgfCBcCi0JCQlJTlRSX1NUQVRVU19fRVJBU0VfRkFJTCB8IFwKLQkJ
+CUlOVFJfU1RBVFVTX19SU1RfQ09NUCB8IFwKLQkJCUlOVFJfU1RBVFVTX19FUkFTRV9DT01QIHwg
+XAotCQkJSU5UUl9TVEFUVVNfX0VDQ19VTkNPUl9FUlIpCi0vKiBBbmQgaGVyZSB3ZSB1c2UgYSB2
+YXJpYWJsZSBmb3IgaW50ZXJydXB0IG1hc2ssIGJjcyB3ZSB3YW50IHRvCi0gKiBjaGFuZ2UgdGhl
+IGlycSBtYXNrIGR1cmluZyBpbml0LiAgVGhhdCBpcywgd2Ugd2FudCB0byBlbmFibGUgUi9CCi0g
+KiBpbnRlcnJ1cHQgZHVyaW5nIGluaXQsIGJ1dCBub3QgYXQgb3RoZXIgdGltZXMgKi8KLXN0YXRp
+YyB1aW50MzJfdCBkZW5hbGlfaXJxX21hc2sgPSBERU5BTElfSVJRX0FMTDsKKy8qIGZvciBJbmRl
+eGVkIEFkZHJlc3NpbmcgKi8KKyNkZWZpbmUgREVOQUxJX0lOREVYRURfQ1RSTAkweDAwCisjZGVm
+aW5lIERFTkFMSV9JTkRFWEVEX0RBVEEJMHgxMAogCisjZGVmaW5lIERFTkFMSV9NQVAwMAkJKDAg
+PDwgMjYpCS8qIGRpcmVjdCBhY2Nlc3MgdG8gYnVmZmVyICovCisjZGVmaW5lIERFTkFMSV9NQVAw
+MQkJKDEgPDwgMjYpCS8qIHJlYWQvd3JpdGUgcGFnZXMgaW4gUElPICovCisjZGVmaW5lIERFTkFM
+SV9NQVAxMAkJKDIgPDwgMjYpCS8qIGhpZ2gtbGV2ZWwgY29udHJvbCBwbGFuZSAqLworI2RlZmlu
+ZSBERU5BTElfTUFQMTEJCSgzIDw8IDI2KQkvKiBkaXJlY3QgY29udHJvbGxlciBhY2Nlc3MgKi8K
+IAotLyoKLSAqIGluZGljYXRlcyB3aGV0aGVyIG9yIG5vdCB0aGUgaW50ZXJuYWwgdmFsdWUgZm9y
+IHRoZSBmbGFzaCBiYW5rIGlzCi0gKiB2YWxpZCBvciBub3QKLSAqLwotI2RlZmluZSBDSElQX1NF
+TEVDVF9JTlZBTElECS0xCisvKiBNQVAxMSBhY2Nlc3MgY3ljbGUgdHlwZSAqLworI2RlZmluZSBE
+RU5BTElfTUFQMTFfQ01ECSgoREVOQUxJX01BUDExKSB8IDApCS8qIGNvbW1hbmQgY3ljbGUgKi8K
+KyNkZWZpbmUgREVOQUxJX01BUDExX0FERFIJKChERU5BTElfTUFQMTEpIHwgMSkJLyogYWRkcmVz
+cyBjeWNsZSAqLworI2RlZmluZSBERU5BTElfTUFQMTFfREFUQQkoKERFTkFMSV9NQVAxMSkgfCAy
+KQkvKiBkYXRhIGN5Y2xlICovCiAKLSNkZWZpbmUgU1VQUE9SVF84QklURUNDCQkxCisjZGVmaW5l
+IERFTkFMSV9CQU5LKGRlbmFsaSkJKChkZW5hbGkpLT5hY3RpdmVfYmFuayA8PCAyNCkKIAotLyoK
+LSAqIFRoaXMgbWFjcm8gZGl2aWRlcyB0d28gaW50ZWdlcnMgYW5kIHJvdW5kcyBmcmFjdGlvbmFs
+IHZhbHVlcyB1cAotICogdG8gdGhlIG5lYXJlc3QgaW50ZWdlciB2YWx1ZS4KLSAqLwotI2RlZmlu
+ZSBDRUlMX0RJVihYLCBZKSAoKChYKSUoWSkpID8gKChYKS8oWSkrMSkgOiAoKFgpLyhZKSkpCisj
+ZGVmaW5lIERFTkFMSV9JTlZBTElEX0JBTksJLTEKIAotLyoKLSAqIHRoaXMgbWFjcm8gYWxsb3dz
+IHVzIHRvIGNvbnZlcnQgZnJvbSBhbiBNVEQgc3RydWN0dXJlIHRvIG91ciBvd24KLSAqIGRldmlj
+ZSBjb250ZXh0IChkZW5hbGkpIHN0cnVjdHVyZS4KLSAqLwotc3RhdGljIGlubGluZSBzdHJ1Y3Qg
+ZGVuYWxpX25hbmRfaW5mbyAqbmFuZF90b19kZW5hbGkoc3RydWN0IG5hbmRfY2hpcCAqbmFuZCkK
+K3N0YXRpYyBzdHJ1Y3QgZGVuYWxpX2NoaXAgKnRvX2RlbmFsaV9jaGlwKHN0cnVjdCBuYW5kX2No
+aXAgKmNoaXApCiB7Ci0JcmV0dXJuIGNvbnRhaW5lcl9vZihuYW5kLCBzdHJ1Y3QgZGVuYWxpX25h
+bmRfaW5mbywgbmFuZCk7CisJcmV0dXJuIGNvbnRhaW5lcl9vZihjaGlwLCBzdHJ1Y3QgZGVuYWxp
+X2NoaXAsIGNoaXApOwogfQogCi0vKgotICogVGhlc2UgY29uc3RhbnRzIGFyZSBkZWZpbmVkIGJ5
+IHRoZSBkcml2ZXIgdG8gZW5hYmxlIGNvbW1vbiBkcml2ZXIKLSAqIGNvbmZpZ3VyYXRpb24gb3B0
+aW9ucy4KLSAqLwotI2RlZmluZSBTUEFSRV9BQ0NFU1MJCTB4NDEKLSNkZWZpbmUgTUFJTl9BQ0NF
+U1MJCTB4NDIKLSNkZWZpbmUgTUFJTl9TUEFSRV9BQ0NFU1MJMHg0MwotI2RlZmluZSBQSVBFTElO
+RV9BQ0NFU1MJCTB4MjAwMAotCi0jZGVmaW5lIERFTkFMSV9SRUFECTAKLSNkZWZpbmUgREVOQUxJ
+X1dSSVRFCTB4MTAwCi0KLS8qIHR5cGVzIG9mIGRldmljZSBhY2Nlc3Nlcy4gV2UgY2FuIGlzc3Vl
+IGNvbW1hbmRzIGFuZCBnZXQgc3RhdHVzICovCi0jZGVmaW5lIENPTU1BTkRfQ1lDTEUJMAotI2Rl
+ZmluZSBBRERSX0NZQ0xFCTEKLSNkZWZpbmUgU1RBVFVTX0NZQ0xFCTIKLQotLyoKLSAqIHRoaXMg
+aXMgYSBoZWxwZXIgbWFjcm8gdGhhdCBhbGxvd3MgdXMgdG8KLSAqIGZvcm1hdCB0aGUgYmFuayBp
+bnRvIHRoZSBwcm9wZXIgYml0cyBmb3IgdGhlIGNvbnRyb2xsZXIKLSAqLwotI2RlZmluZSBCQU5L
+KHgpICgoeCkgPDwgMjQpCi0KLS8qIGZvcndhcmQgZGVjbGFyYXRpb25zICovCi1zdGF0aWMgdm9p
+ZCBjbGVhcl9pbnRlcnJ1cHRzKHN0cnVjdCBkZW5hbGlfbmFuZF9pbmZvICpkZW5hbGkpOwotc3Rh
+dGljIHVpbnQzMl90IHdhaXRfZm9yX2lycShzdHJ1Y3QgZGVuYWxpX25hbmRfaW5mbyAqZGVuYWxp
+LAotCQkJCQkJCXVpbnQzMl90IGlycV9tYXNrKTsKLXN0YXRpYyB2b2lkIGRlbmFsaV9pcnFfZW5h
+YmxlKHN0cnVjdCBkZW5hbGlfbmFuZF9pbmZvICpkZW5hbGksCi0JCQkJCQkJdWludDMyX3QgaW50
+X21hc2spOwotc3RhdGljIHVpbnQzMl90IHJlYWRfaW50ZXJydXB0X3N0YXR1cyhzdHJ1Y3QgZGVu
+YWxpX25hbmRfaW5mbyAqZGVuYWxpKTsKK3N0YXRpYyBzdHJ1Y3QgZGVuYWxpX2NvbnRyb2xsZXIg
+KnRvX2RlbmFsaV9jb250cm9sbGVyKHN0cnVjdCBuYW5kX2NoaXAgKmNoaXApCit7CisJcmV0dXJu
+IGNvbnRhaW5lcl9vZihjaGlwLT5jb250cm9sbGVyLCBzdHJ1Y3QgZGVuYWxpX2NvbnRyb2xsZXIs
+CisJCQkgICAgY29udHJvbGxlcik7Cit9CiAKIC8qCi0gKiBDZXJ0YWluIG9wZXJhdGlvbnMgZm9y
+IHRoZSBkZW5hbGkgTkFORCBjb250cm9sbGVyIHVzZSBhbiBpbmRleGVkIG1vZGUgdG8KLSAqIHJl
+YWQvd3JpdGUgZGF0YS4gVGhlIG9wZXJhdGlvbiBpcyBwZXJmb3JtZWQgYnkgd3JpdGluZyB0aGUg
+YWRkcmVzcyB2YWx1ZQotICogb2YgdGhlIGNvbW1hbmQgdG8gdGhlIGRldmljZSBtZW1vcnkgZm9s
+bG93ZWQgYnkgdGhlIGRhdGEuIFRoaXMgZnVuY3Rpb24KLSAqIGFic3RyYWN0cyB0aGlzIGNvbW1v
+biBvcGVyYXRpb24uCisgKiBEaXJlY3QgQWRkcmVzc2luZyAtIHRoZSBzbGF2ZSBhZGRyZXNzIGZv
+cm1zIHRoZSBjb250cm9sIGluZm9ybWF0aW9uIChjb21tYW5kCisgKiB0eXBlLCBiYW5rLCBibG9j
+aywgYW5kIHBhZ2UgYWRkcmVzcykuICBUaGUgc2xhdmUgZGF0YSBpcyB0aGUgYWN0dWFsIGRhdGEg
+dG8KKyAqIGJlIHRyYW5zZmVycmVkLiAgVGhpcyBtb2RlIHJlcXVpcmVzIDI4IGJpdHMgb2YgYWRk
+cmVzcyByZWdpb24gYWxsb2NhdGVkLgogICovCi1zdGF0aWMgdm9pZCBpbmRleF9hZGRyKHN0cnVj
+dCBkZW5hbGlfbmFuZF9pbmZvICpkZW5hbGksCi0JCQkJdWludDMyX3QgYWRkcmVzcywgdWludDMy
+X3QgZGF0YSkKK3N0YXRpYyB1MzIgZGVuYWxpX2RpcmVjdF9yZWFkKHN0cnVjdCBkZW5hbGlfY29u
+dHJvbGxlciAqZGVuYWxpLCB1MzIgYWRkcikKIHsKLQlpb3dyaXRlMzIoYWRkcmVzcywgZGVuYWxp
+LT5mbGFzaF9tZW0pOwotCWlvd3JpdGUzMihkYXRhLCBkZW5hbGktPmZsYXNoX21lbSArIDB4MTAp
+OworCXJldHVybiBpb3JlYWQzMihkZW5hbGktPmhvc3QgKyBhZGRyKTsKIH0KIAotLyogUGVyZm9y
+bSBhbiBpbmRleGVkIHJlYWQgb2YgdGhlIGRldmljZSAqLwotc3RhdGljIHZvaWQgaW5kZXhfYWRk
+cl9yZWFkX2RhdGEoc3RydWN0IGRlbmFsaV9uYW5kX2luZm8gKmRlbmFsaSwKLQkJCQkgdWludDMy
+X3QgYWRkcmVzcywgdWludDMyX3QgKnBkYXRhKQorc3RhdGljIHZvaWQgZGVuYWxpX2RpcmVjdF93
+cml0ZShzdHJ1Y3QgZGVuYWxpX2NvbnRyb2xsZXIgKmRlbmFsaSwgdTMyIGFkZHIsCisJCQkJdTMy
+IGRhdGEpCiB7Ci0JaW93cml0ZTMyKGFkZHJlc3MsIGRlbmFsaS0+Zmxhc2hfbWVtKTsKLQkqcGRh
+dGEgPSBpb3JlYWQzMihkZW5hbGktPmZsYXNoX21lbSArIDB4MTApOworCWlvd3JpdGUzMihkYXRh
+LCBkZW5hbGktPmhvc3QgKyBhZGRyKTsKIH0KIAogLyoKLSAqIFdlIG5lZWQgdG8gYnVmZmVyIHNv
+bWUgZGF0YSBmb3Igc29tZSBvZiB0aGUgTkFORCBjb3JlIHJvdXRpbmVzLgotICogVGhlIG9wZXJh
+dGlvbnMgbWFuYWdlIGJ1ZmZlcmluZyB0aGF0IGRhdGEuCisgKiBJbmRleGVkIEFkZHJlc3Npbmcg
+LSBhZGRyZXNzIHRyYW5zbGF0aW9uIG1vZHVsZSBpbnRlcnZlbmVzIGluIHBhc3NpbmcgdGhlCisg
+KiBjb250cm9sIGluZm9ybWF0aW9uLiAgVGhpcyBtb2RlIHJlZHVjZXMgdGhlIHJlcXVpcmVkIGFk
+ZHJlc3MgcmFuZ2UuICBUaGUKKyAqIGNvbnRyb2wgaW5mb3JtYXRpb24gYW5kIHRyYW5zZmVycmVk
+IGRhdGEgYXJlIGxhdGNoZWQgYnkgdGhlIHJlZ2lzdGVycyBpbgorICogdGhlIHRyYW5zbGF0aW9u
+IG1vZHVsZS4KICAqLwotc3RhdGljIHZvaWQgcmVzZXRfYnVmKHN0cnVjdCBkZW5hbGlfbmFuZF9p
+bmZvICpkZW5hbGkpCitzdGF0aWMgdTMyIGRlbmFsaV9pbmRleGVkX3JlYWQoc3RydWN0IGRlbmFs
+aV9jb250cm9sbGVyICpkZW5hbGksIHUzMiBhZGRyKQogewotCWRlbmFsaS0+YnVmLmhlYWQgPSBk
+ZW5hbGktPmJ1Zi50YWlsID0gMDsKKwlpb3dyaXRlMzIoYWRkciwgZGVuYWxpLT5ob3N0ICsgREVO
+QUxJX0lOREVYRURfQ1RSTCk7CisJcmV0dXJuIGlvcmVhZDMyKGRlbmFsaS0+aG9zdCArIERFTkFM
+SV9JTkRFWEVEX0RBVEEpOwogfQogCi1zdGF0aWMgdm9pZCB3cml0ZV9ieXRlX3RvX2J1ZihzdHJ1
+Y3QgZGVuYWxpX25hbmRfaW5mbyAqZGVuYWxpLCB1aW50OF90IGJ5dGUpCitzdGF0aWMgdm9pZCBk
+ZW5hbGlfaW5kZXhlZF93cml0ZShzdHJ1Y3QgZGVuYWxpX2NvbnRyb2xsZXIgKmRlbmFsaSwgdTMy
+IGFkZHIsCisJCQkJIHUzMiBkYXRhKQogewotCWRlbmFsaS0+YnVmLmJ1ZltkZW5hbGktPmJ1Zi50
+YWlsKytdID0gYnl0ZTsKKwlpb3dyaXRlMzIoYWRkciwgZGVuYWxpLT5ob3N0ICsgREVOQUxJX0lO
+REVYRURfQ1RSTCk7CisJaW93cml0ZTMyKGRhdGEsIGRlbmFsaS0+aG9zdCArIERFTkFMSV9JTkRF
+WEVEX0RBVEEpOwogfQogCi0vKiByZWFkcyB0aGUgc3RhdHVzIG9mIHRoZSBkZXZpY2UgKi8KLXN0
+YXRpYyB2b2lkIHJlYWRfc3RhdHVzKHN0cnVjdCBkZW5hbGlfbmFuZF9pbmZvICpkZW5hbGkpCitz
+dGF0aWMgdm9pZCBkZW5hbGlfZW5hYmxlX2lycShzdHJ1Y3QgZGVuYWxpX2NvbnRyb2xsZXIgKmRl
+bmFsaSkKIHsKLQl1aW50MzJfdCBjbWQ7CisJaW50IGk7CiAKLQkvKiBpbml0aWFsaXplIHRoZSBk
+YXRhIGJ1ZmZlciB0byBzdG9yZSBzdGF0dXMgKi8KLQlyZXNldF9idWYoZGVuYWxpKTsKKwlmb3Ig
+KGkgPSAwOyBpIDwgZGVuYWxpLT5uYmFua3M7IGkrKykKKwkJaW93cml0ZTMyKFUzMl9NQVgsIGRl
+bmFsaS0+cmVnICsgSU5UUl9FTihpKSk7CisJaW93cml0ZTMyKEdMT0JBTF9JTlRfRU5fRkxBRywg
+ZGVuYWxpLT5yZWcgKyBHTE9CQUxfSU5UX0VOQUJMRSk7Cit9CiAKLQljbWQgPSBpb3JlYWQzMihk
+ZW5hbGktPmZsYXNoX3JlZyArIFdSSVRFX1BST1RFQ1QpOwotCWlmIChjbWQpCi0JCXdyaXRlX2J5
+dGVfdG9fYnVmKGRlbmFsaSwgTkFORF9TVEFUVVNfV1ApOwotCWVsc2UKLQkJd3JpdGVfYnl0ZV90
+b19idWYoZGVuYWxpLCAwKTsKK3N0YXRpYyB2b2lkIGRlbmFsaV9jbGVhcl9pcnEoc3RydWN0IGRl
+bmFsaV9jb250cm9sbGVyICpkZW5hbGksCisJCQkgICAgIGludCBiYW5rLCB1MzIgaXJxX3N0YXR1
+cykKK3sKKwkvKiB3cml0ZSBvbmUgdG8gY2xlYXIgYml0cyAqLworCWlvd3JpdGUzMihpcnFfc3Rh
+dHVzLCBkZW5hbGktPnJlZyArIElOVFJfU1RBVFVTKGJhbmspKTsKIH0KIAotLyogcmVzZXRzIGEg
+c3BlY2lmaWMgZGV2aWNlIGNvbm5lY3RlZCB0byB0aGUgY29yZSAqLwotc3RhdGljIHZvaWQgcmVz
+ZXRfYmFuayhzdHJ1Y3QgZGVuYWxpX25hbmRfaW5mbyAqZGVuYWxpKQorc3RhdGljIHZvaWQgZGVu
+YWxpX2NsZWFyX2lycV9hbGwoc3RydWN0IGRlbmFsaV9jb250cm9sbGVyICpkZW5hbGkpCiB7Ci0J
+aW93cml0ZTMyKDEgPDwgZGVuYWxpLT5mbGFzaF9iYW5rLCBkZW5hbGktPmZsYXNoX3JlZyArIERF
+VklDRV9SRVNFVCk7CisJaW50IGk7CiAKLQkvKiB3YWl0IGZvciBjb21wbGV0aW9uICovCi0Jd2hp
+bGUgKGlvcmVhZDMyKGRlbmFsaS0+Zmxhc2hfcmVnICsgREVWSUNFX1JFU0VUKSAmICgxIDw8IGRl
+bmFsaS0+Zmxhc2hfYmFuaykpCi0JCWNwdV9yZWxheCgpOworCWZvciAoaSA9IDA7IGkgPCBkZW5h
+bGktPm5iYW5rczsgaSsrKQorCQlkZW5hbGlfY2xlYXJfaXJxKGRlbmFsaSwgaSwgVTMyX01BWCk7
+CiB9CiAKLS8qIFJlc2V0IHRoZSBmbGFzaCBjb250cm9sbGVyICovCi1zdGF0aWMgdWludDE2X3Qg
+ZGVuYWxpX25hbmRfcmVzZXQoc3RydWN0IGRlbmFsaV9uYW5kX2luZm8gKmRlbmFsaSkKK3N0YXRp
+YyBpbnQgZGVuYWxpX2lzcihzdHJ1Y3QgZGVuYWxpX2NvbnRyb2xsZXIgKmRlbmFsaSkKIHsKKwl1
+MzIgaXJxX3N0YXR1czsKIAlpbnQgaTsKIAotCWZvciAoaSA9IDA7IGkgPCBkZW5hbGktPm1heF9i
+YW5rczsgaSsrKQotCQlpb3dyaXRlMzIoSU5UUl9TVEFUVVNfX1JTVF9DT01QIHwgSU5UUl9TVEFU
+VVNfX1RJTUVfT1VULAotCQlkZW5hbGktPmZsYXNoX3JlZyArIElOVFJfU1RBVFVTKGkpKTsKLQot
+CWZvciAoaSA9IDA7IGkgPCBkZW5hbGktPm1heF9iYW5rczsgaSsrKSB7Ci0JCWlvd3JpdGUzMigx
+IDw8IGksIGRlbmFsaS0+Zmxhc2hfcmVnICsgREVWSUNFX1JFU0VUKTsKLQkJd2hpbGUgKCEoaW9y
+ZWFkMzIoZGVuYWxpLT5mbGFzaF9yZWcgKyBJTlRSX1NUQVRVUyhpKSkgJgotCQkJKElOVFJfU1RB
+VFVTX19SU1RfQ09NUCB8IElOVFJfU1RBVFVTX19USU1FX09VVCkpKQotCQkJY3B1X3JlbGF4KCk7
+Ci0JCWlmIChpb3JlYWQzMihkZW5hbGktPmZsYXNoX3JlZyArIElOVFJfU1RBVFVTKGkpKSAmCi0J
+CQlJTlRSX1NUQVRVU19fVElNRV9PVVQpCi0JCQlkZXZfZGJnKGRlbmFsaS0+ZGV2LAotCQkJIk5B
+TkQgUmVzZXQgb3BlcmF0aW9uIHRpbWVkIG91dCBvbiBiYW5rICVkXG4iLCBpKTsKLQl9CisJc3Bp
+bl9sb2NrKCZkZW5hbGktPmlycV9sb2NrKTsKIAotCWZvciAoaSA9IDA7IGkgPCBkZW5hbGktPm1h
+eF9iYW5rczsgaSsrKQotCQlpb3dyaXRlMzIoSU5UUl9TVEFUVVNfX1JTVF9DT01QIHwgSU5UUl9T
+VEFUVVNfX1RJTUVfT1VULAotCQkJICBkZW5hbGktPmZsYXNoX3JlZyArIElOVFJfU1RBVFVTKGkp
+KTsKKwlmb3IgKGkgPSAwOyBpIDwgZGVuYWxpLT5uYmFua3M7IGkrKykgeworCQlpcnFfc3RhdHVz
+ID0gaW9yZWFkMzIoZGVuYWxpLT5yZWcgKyBJTlRSX1NUQVRVUyhpKSk7CiAKLQlyZXR1cm4gUEFT
+UzsKLX0KKwkJZGVuYWxpX2NsZWFyX2lycShkZW5hbGksIGksIGlycV9zdGF0dXMpOwogCi0vKgot
+ICogdGhpcyByb3V0aW5lIGNhbGN1bGF0ZXMgdGhlIE9ORkkgdGltaW5nIHZhbHVlcyBmb3IgYSBn
+aXZlbiBtb2RlIGFuZAotICogcHJvZ3JhbXMgdGhlIGNsb2NraW5nIHJlZ2lzdGVyIGFjY29yZGlu
+Z2x5LiBUaGUgbW9kZSBpcyBkZXRlcm1pbmVkIGJ5Ci0gKiB0aGUgZ2V0X29uZmlfbmFuZF9wYXJh
+IHJvdXRpbmUuCi0gKi8KLXN0YXRpYyB2b2lkIG5hbmRfb25maV90aW1pbmdfc2V0KHN0cnVjdCBk
+ZW5hbGlfbmFuZF9pbmZvICpkZW5hbGksCi0JCQkJCQkJCXVpbnQxNl90IG1vZGUpCi17Ci0JdWlu
+dDE2X3QgVHJlYVs2XSA9IHs0MCwgMzAsIDI1LCAyMCwgMjAsIDE2fTsKLQl1aW50MTZfdCBUcnBb
+Nl0gPSB7NTAsIDI1LCAxNywgMTUsIDEyLCAxMH07Ci0JdWludDE2X3QgVHJlaFs2XSA9IHszMCwg
+MTUsIDE1LCAxMCwgMTAsIDd9OwotCXVpbnQxNl90IFRyY1s2XSA9IHsxMDAsIDUwLCAzNSwgMzAs
+IDI1LCAyMH07Ci0JdWludDE2X3QgVHJob2hbNl0gPSB7MCwgMTUsIDE1LCAxNSwgMTUsIDE1fTsK
+LQl1aW50MTZfdCBUcmxvaFs2XSA9IHswLCAwLCAwLCAwLCA1LCA1fTsKLQl1aW50MTZfdCBUY2Vh
+WzZdID0gezEwMCwgNDUsIDMwLCAyNSwgMjUsIDI1fTsKLQl1aW50MTZfdCBUYWRsWzZdID0gezIw
+MCwgMTAwLCAxMDAsIDEwMCwgNzAsIDcwfTsKLQl1aW50MTZfdCBUcmh3WzZdID0gezIwMCwgMTAw
+LCAxMDAsIDEwMCwgMTAwLCAxMDB9OwotCXVpbnQxNl90IFRyaHpbNl0gPSB7MjAwLCAxMDAsIDEw
+MCwgMTAwLCAxMDAsIDEwMH07Ci0JdWludDE2X3QgVHdocls2XSA9IHsxMjAsIDgwLCA4MCwgNjAs
+IDYwLCA2MH07Ci0JdWludDE2X3QgVGNzWzZdID0gezcwLCAzNSwgMjUsIDI1LCAyMCwgMTV9Owot
+Ci0JdWludDE2X3QgZGF0YV9pbnZhbGlkX3Job2gsIGRhdGFfaW52YWxpZF9ybG9oLCBkYXRhX2lu
+dmFsaWQ7Ci0JdWludDE2X3QgZHZfd2luZG93ID0gMDsKLQl1aW50MTZfdCBlbl9sbywgZW5faGk7
+Ci0JdWludDE2X3QgYWNjX2Nsa3M7Ci0JdWludDE2X3QgYWRkcl8yX2RhdGEsIHJlXzJfd2UsIHJl
+XzJfcmUsIHdlXzJfcmUsIGNzX2NudDsKLQotCWVuX2xvID0gQ0VJTF9ESVYoVHJwW21vZGVdLCBD
+TEtfWCk7Ci0JZW5faGkgPSBDRUlMX0RJVihUcmVoW21vZGVdLCBDTEtfWCk7Ci0jaWYgT05GSV9C
+TE9PTV9USU1FCi0JaWYgKChlbl9oaSAqIENMS19YKSA8IChUcmVoW21vZGVdICsgMikpCi0JCWVu
+X2hpKys7Ci0jZW5kaWYKLQotCWlmICgoZW5fbG8gKyBlbl9oaSkgKiBDTEtfWCA8IFRyY1ttb2Rl
+XSkKLQkJZW5fbG8gKz0gQ0VJTF9ESVYoKFRyY1ttb2RlXSAtIChlbl9sbyArIGVuX2hpKSAqIENM
+S19YKSwgQ0xLX1gpOwotCi0JaWYgKChlbl9sbyArIGVuX2hpKSA8IENMS19NVUxUSSkKLQkJZW5f
+bG8gKz0gQ0xLX01VTFRJIC0gZW5fbG8gLSBlbl9oaTsKLQotCXdoaWxlIChkdl93aW5kb3cgPCA4
+KSB7Ci0JCWRhdGFfaW52YWxpZF9yaG9oID0gZW5fbG8gKiBDTEtfWCArIFRyaG9oW21vZGVdOwot
+Ci0JCWRhdGFfaW52YWxpZF9ybG9oID0gKGVuX2xvICsgZW5faGkpICogQ0xLX1ggKyBUcmxvaFtt
+b2RlXTsKLQotCQlkYXRhX2ludmFsaWQgPSBkYXRhX2ludmFsaWRfcmhvaCA8IGRhdGFfaW52YWxp
+ZF9ybG9oID8KLQkJCQkJZGF0YV9pbnZhbGlkX3Job2ggOiBkYXRhX2ludmFsaWRfcmxvaDsKLQot
+CQlkdl93aW5kb3cgPSBkYXRhX2ludmFsaWQgLSBUcmVhW21vZGVdOwotCi0JCWlmIChkdl93aW5k
+b3cgPCA4KQotCQkJZW5fbG8rKzsKLQl9CisJCWlmIChpICE9IGRlbmFsaS0+YWN0aXZlX2Jhbmsp
+CisJCQljb250aW51ZTsKIAotCWFjY19jbGtzID0gQ0VJTF9ESVYoVHJlYVttb2RlXSwgQ0xLX1gp
+OworCQlkZW5hbGktPmlycV9zdGF0dXMgfD0gaXJxX3N0YXR1czsKIAotCXdoaWxlIChhY2NfY2xr
+cyAqIENMS19YIC0gVHJlYVttb2RlXSA8IDMpCi0JCWFjY19jbGtzKys7CisJCWlmIChkZW5hbGkt
+PmlycV9zdGF0dXMgJiBkZW5hbGktPmlycV9tYXNrKQorCQkJcmV0dXJuIGRlbmFsaS0+aXJxX3N0
+YXR1czsKKwl9CiAKLQlpZiAoZGF0YV9pbnZhbGlkIC0gYWNjX2Nsa3MgKiBDTEtfWCA8IDIpCi0J
+CWRldl93YXJuKGRlbmFsaS0+ZGV2LCAiJXMsIExpbmUgJWQ6IFdhcm5pbmchXG4iLAotCQkJIF9f
+RklMRV9fLCBfX0xJTkVfXyk7CisJc3Bpbl91bmxvY2soJmRlbmFsaS0+aXJxX2xvY2spOwogCi0J
+YWRkcl8yX2RhdGEgPSBDRUlMX0RJVihUYWRsW21vZGVdLCBDTEtfWCk7Ci0JcmVfMl93ZSA9IENF
+SUxfRElWKFRyaHdbbW9kZV0sIENMS19YKTsKLQlyZV8yX3JlID0gQ0VJTF9ESVYoVHJoelttb2Rl
+XSwgQ0xLX1gpOwotCXdlXzJfcmUgPSBDRUlMX0RJVihUd2hyW21vZGVdLCBDTEtfWCk7Ci0JY3Nf
+Y250ID0gQ0VJTF9ESVYoKFRjc1ttb2RlXSAtIFRycFttb2RlXSksIENMS19YKTsKLQlpZiAoY3Nf
+Y250ID09IDApCi0JCWNzX2NudCA9IDE7CisJcmV0dXJuIDA7Cit9CiAKLQlpZiAoVGNlYVttb2Rl
+XSkgewotCQl3aGlsZSAoY3NfY250ICogQ0xLX1ggKyBUcmVhW21vZGVdIDwgVGNlYVttb2RlXSkK
+LQkJCWNzX2NudCsrOwotCX0KK3N0YXRpYyB2b2lkIGRlbmFsaV9yZXNldF9pcnEoc3RydWN0IGRl
+bmFsaV9jb250cm9sbGVyICpkZW5hbGkpCit7CisJdW5zaWduZWQgbG9uZyBmbGFnczsKIAotI2lm
+IE1PREU1X1dPUktBUk9VTkQKLQlpZiAobW9kZSA9PSA1KQotCQlhY2NfY2xrcyA9IDU7Ci0jZW5k
+aWYKLQotCS8qIFNpZ2h0aW5nIDM0NjI0MzA6IFRlbXBvcmFyeSBoYWNrIGZvciBNVDI5RjEyOEcw
+OENKQUJBV1A6QiAqLwotCWlmIChpb3JlYWQzMihkZW5hbGktPmZsYXNoX3JlZyArIE1BTlVGQUNU
+VVJFUl9JRCkgPT0gMCAmJgotCQlpb3JlYWQzMihkZW5hbGktPmZsYXNoX3JlZyArIERFVklDRV9J
+RCkgPT0gMHg4OCkKLQkJYWNjX2Nsa3MgPSA2OwotCi0JaW93cml0ZTMyKGFjY19jbGtzLCBkZW5h
+bGktPmZsYXNoX3JlZyArIEFDQ19DTEtTKTsKLQlpb3dyaXRlMzIocmVfMl93ZSwgZGVuYWxpLT5m
+bGFzaF9yZWcgKyBSRV8yX1dFKTsKLQlpb3dyaXRlMzIocmVfMl9yZSwgZGVuYWxpLT5mbGFzaF9y
+ZWcgKyBSRV8yX1JFKTsKLQlpb3dyaXRlMzIod2VfMl9yZSwgZGVuYWxpLT5mbGFzaF9yZWcgKyBX
+RV8yX1JFKTsKLQlpb3dyaXRlMzIoYWRkcl8yX2RhdGEsIGRlbmFsaS0+Zmxhc2hfcmVnICsgQURE
+Ul8yX0RBVEEpOwotCWlvd3JpdGUzMihlbl9sbywgZGVuYWxpLT5mbGFzaF9yZWcgKyBSRFdSX0VO
+X0xPX0NOVCk7Ci0JaW93cml0ZTMyKGVuX2hpLCBkZW5hbGktPmZsYXNoX3JlZyArIFJEV1JfRU5f
+SElfQ05UKTsKLQlpb3dyaXRlMzIoY3NfY250LCBkZW5hbGktPmZsYXNoX3JlZyArIENTX1NFVFVQ
+X0NOVCk7CisJc3Bpbl9sb2NrX2lycXNhdmUoJmRlbmFsaS0+aXJxX2xvY2ssIGZsYWdzKTsKKwlk
+ZW5hbGktPmlycV9zdGF0dXMgPSAwOworCWRlbmFsaS0+aXJxX21hc2sgPSAwOworCXNwaW5fdW5s
+b2NrX2lycXJlc3RvcmUoJmRlbmFsaS0+aXJxX2xvY2ssIGZsYWdzKTsKIH0KIAotLyogcXVlcmll
+cyB0aGUgTkFORCBkZXZpY2UgdG8gc2VlIHdoYXQgT05GSSBtb2RlcyBpdCBzdXBwb3J0cy4gKi8K
+LXN0YXRpYyB1aW50MTZfdCBnZXRfb25maV9uYW5kX3BhcmEoc3RydWN0IGRlbmFsaV9uYW5kX2lu
+Zm8gKmRlbmFsaSkKK3N0YXRpYyB1MzIgZGVuYWxpX3dhaXRfZm9yX2lycShzdHJ1Y3QgZGVuYWxp
+X2NvbnRyb2xsZXIgKmRlbmFsaSwgdTMyIGlycV9tYXNrKQogewotCWludCBpOworCXVuc2lnbmVk
+IGxvbmcgZmxhZ3M7CisJdTMyIGlycV9zdGF0dXM7CisJdWludDY0X3Qgc3RhcnQ7CiAKLQkvKgot
+CSAqIHdlIG5lZWRuJ3QgdG8gZG8gYSByZXNldCBoZXJlIGJlY2F1c2UgZHJpdmVyIGhhcyBhbHJl
+YWR5Ci0JICogcmVzZXQgYWxsIHRoZSBiYW5rcyBiZWZvcmUKLQkgKi8KLQlpZiAoIShpb3JlYWQz
+MihkZW5hbGktPmZsYXNoX3JlZyArIE9ORklfVElNSU5HX01PREUpICYKLQkJT05GSV9USU1JTkdf
+TU9ERV9fVkFMVUUpKQotCQlyZXR1cm4gRkFJTDsKLQotCWZvciAoaSA9IDU7IGkgPiAwOyBpLS0p
+IHsKLQkJaWYgKGlvcmVhZDMyKGRlbmFsaS0+Zmxhc2hfcmVnICsgT05GSV9USU1JTkdfTU9ERSkg
+JgotCQkJKDB4MDEgPDwgaSkpCi0JCQlicmVhazsKLQl9CisJc3Bpbl9sb2NrX2lycXNhdmUoJmRl
+bmFsaS0+aXJxX2xvY2ssIGZsYWdzKTsKIAotCW5hbmRfb25maV90aW1pbmdfc2V0KGRlbmFsaSwg
+aSk7CisJaXJxX3N0YXR1cyA9IGRlbmFsaS0+aXJxX3N0YXR1czsKIAotCS8qCi0JICogQnkgbm93
+LCBhbGwgdGhlIE9ORkkgZGV2aWNlcyB3ZSBrbm93IHN1cHBvcnQgdGhlIHBhZ2UgY2FjaGUKLQkg
+KiBydyBmZWF0dXJlLiBTbyBoZXJlIHdlIGVuYWJsZSB0aGUgcGlwZWxpbmVfcndfYWhlYWQgZmVh
+dHVyZQotCSAqLwotCS8qIGlvd3JpdGUzMigxLCBkZW5hbGktPmZsYXNoX3JlZyArIENBQ0hFX1dS
+SVRFX0VOQUJMRSk7ICovCi0JLyogaW93cml0ZTMyKDEsIGRlbmFsaS0+Zmxhc2hfcmVnICsgQ0FD
+SEVfUkVBRF9FTkFCTEUpOyAgKi8KKwlpZiAoaXJxX21hc2sgJiBpcnFfc3RhdHVzKSB7CisJCS8q
+IHJldHVybiBpbW1lZGlhdGVseSBpZiB0aGUgSVJRIGhhcyBhbHJlYWR5IGhhcHBlbmVkLiAqLwor
+CQlzcGluX3VubG9ja19pcnFyZXN0b3JlKCZkZW5hbGktPmlycV9sb2NrLCBmbGFncyk7CisJCXJl
+dHVybiBpcnFfc3RhdHVzOworCX0KIAotCXJldHVybiBQQVNTOwotfQorCWRlbmFsaS0+aXJxX21h
+c2sgPSBpcnFfbWFzazsKKwlzcGluX3VubG9ja19pcnFyZXN0b3JlKCZkZW5hbGktPmlycV9sb2Nr
+LCBmbGFncyk7CiAKLXN0YXRpYyB2b2lkIGdldF9zYW1zdW5nX25hbmRfcGFyYShzdHJ1Y3QgZGVu
+YWxpX25hbmRfaW5mbyAqZGVuYWxpLAotCQkJCQkJCXVpbnQ4X3QgZGV2aWNlX2lkKQotewotCWlm
+IChkZXZpY2VfaWQgPT0gMHhkMykgeyAvKiBTYW1zdW5nIEs5V0FHMDhVMUEgKi8KLQkJLyogU2V0
+IHRpbWluZyByZWdpc3RlciB2YWx1ZXMgYWNjb3JkaW5nIHRvIGRhdGFzaGVldCAqLwotCQlpb3dy
+aXRlMzIoNSwgZGVuYWxpLT5mbGFzaF9yZWcgKyBBQ0NfQ0xLUyk7Ci0JCWlvd3JpdGUzMigyMCwg
+ZGVuYWxpLT5mbGFzaF9yZWcgKyBSRV8yX1dFKTsKLQkJaW93cml0ZTMyKDEyLCBkZW5hbGktPmZs
+YXNoX3JlZyArIFdFXzJfUkUpOwotCQlpb3dyaXRlMzIoMTQsIGRlbmFsaS0+Zmxhc2hfcmVnICsg
+QUREUl8yX0RBVEEpOwotCQlpb3dyaXRlMzIoMywgZGVuYWxpLT5mbGFzaF9yZWcgKyBSRFdSX0VO
+X0xPX0NOVCk7Ci0JCWlvd3JpdGUzMigyLCBkZW5hbGktPmZsYXNoX3JlZyArIFJEV1JfRU5fSElf
+Q05UKTsKLQkJaW93cml0ZTMyKDIsIGRlbmFsaS0+Zmxhc2hfcmVnICsgQ1NfU0VUVVBfQ05UKTsK
+KwlzdGFydCA9IGdldF90aW1lX25zKCk7CisKKwl3aGlsZSAoMSkgeworCQlpcnFfc3RhdHVzID0g
+ZGVuYWxpX2lzcihkZW5hbGkpOworCQlpZiAoaXJxX3N0YXR1cykgeworLy8JCQlwcmludGYoIiVz
+OiAweCUwOHhcbiIsIF9fZnVuY19fLCBpcnFfc3RhdHVzKTsKKwkJCXJldHVybiBpcnFfc3RhdHVz
+OworCQl9CisJCWlmIChpc190aW1lb3V0KHN0YXJ0LCBTRUNPTkQpKSB7CisJCQlwcmludGYoIiVz
+OiBUaW1lb3V0XG4iLCBfX2Z1bmNfXyk7CisJCQlyZXR1cm4gMDsKKwkJfQogCX0KIH0KIAotc3Rh
+dGljIHZvaWQgZ2V0X3Rvc2hpYmFfbmFuZF9wYXJhKHN0cnVjdCBkZW5hbGlfbmFuZF9pbmZvICpk
+ZW5hbGkpCitzdGF0aWMgdm9pZCBkZW5hbGlfc2VsZWN0X3RhcmdldChzdHJ1Y3QgbmFuZF9jaGlw
+ICpjaGlwLCBpbnQgY3MpCiB7Ci0JdWludDMyX3QgdG1wOworCXN0cnVjdCBkZW5hbGlfY29udHJv
+bGxlciAqZGVuYWxpID0gdG9fZGVuYWxpX2NvbnRyb2xsZXIoY2hpcCk7CisJc3RydWN0IGRlbmFs
+aV9jaGlwX3NlbCAqc2VsID0gJnRvX2RlbmFsaV9jaGlwKGNoaXApLT5zZWxzW2NzXTsKKwlzdHJ1
+Y3QgbXRkX2luZm8gKm10ZCA9IG5hbmRfdG9fbXRkKGNoaXApOwogCi0JLyoKLQkgKiBXb3JrYXJv
+dW5kIHRvIGZpeCBhIGNvbnRyb2xsZXIgYnVnIHdoaWNoIHJlcG9ydHMgYSB3cm9uZwotCSAqIHNw
+YXJlIGFyZWEgc2l6ZSBmb3Igc29tZSBraW5kIG9mIFRvc2hpYmEgTkFORCBkZXZpY2UKLQkgKi8K
+LQlpZiAoKGlvcmVhZDMyKGRlbmFsaS0+Zmxhc2hfcmVnICsgREVWSUNFX01BSU5fQVJFQV9TSVpF
+KSA9PSA0MDk2KSAmJgotCQkoaW9yZWFkMzIoZGVuYWxpLT5mbGFzaF9yZWcgKyBERVZJQ0VfU1BB
+UkVfQVJFQV9TSVpFKSA9PSA2NCkpIHsKLQkJaW93cml0ZTMyKDIxNiwgZGVuYWxpLT5mbGFzaF9y
+ZWcgKyBERVZJQ0VfU1BBUkVfQVJFQV9TSVpFKTsKLQkJdG1wID0gaW9yZWFkMzIoZGVuYWxpLT5m
+bGFzaF9yZWcgKyBERVZJQ0VTX0NPTk5FQ1RFRCkgKgotCQkJaW9yZWFkMzIoZGVuYWxpLT5mbGFz
+aF9yZWcgKyBERVZJQ0VfU1BBUkVfQVJFQV9TSVpFKTsKLQkJaW93cml0ZTMyKHRtcCwKLQkJCQlk
+ZW5hbGktPmZsYXNoX3JlZyArIExPR0lDQUxfUEFHRV9TUEFSRV9TSVpFKTsKLSNpZiBTVVBQT1JU
+XzE1QklURUNDCi0JCWlvd3JpdGUzMigxNSwgZGVuYWxpLT5mbGFzaF9yZWcgKyBFQ0NfQ09SUkVD
+VElPTik7Ci0jZWxpZiBTVVBQT1JUXzhCSVRFQ0MKLQkJaW93cml0ZTMyKDgsIGRlbmFsaS0+Zmxh
+c2hfcmVnICsgRUNDX0NPUlJFQ1RJT04pOwotI2VuZGlmCi0JfQorCWRlbmFsaS0+YWN0aXZlX2Jh
+bmsgPSBzZWwtPmJhbms7CisKKwlpb3dyaXRlMzIoMSA8PCAoY2hpcC0+cGh5c19lcmFzZV9zaGlm
+dCAtIGNoaXAtPnBhZ2Vfc2hpZnQpLAorCQkgIGRlbmFsaS0+cmVnICsgUEFHRVNfUEVSX0JMT0NL
+KTsKKwlpb3dyaXRlMzIoY2hpcC0+b3B0aW9ucyAmIE5BTkRfQlVTV0lEVEhfMTYgPyAxIDogMCwK
+KwkJICBkZW5hbGktPnJlZyArIERFVklDRV9XSURUSCk7CisJaW93cml0ZTMyKG10ZC0+d3JpdGVz
+aXplLCBkZW5hbGktPnJlZyArIERFVklDRV9NQUlOX0FSRUFfU0laRSk7CisJaW93cml0ZTMyKG10
+ZC0+b29ic2l6ZSwgZGVuYWxpLT5yZWcgKyBERVZJQ0VfU1BBUkVfQVJFQV9TSVpFKTsKKwlpb3dy
+aXRlMzIoY2hpcC0+b3B0aW9ucyAmIE5BTkRfUk9XX0FERFJfMyA/CisJCSAgMCA6IFRXT19ST1df
+QUREUl9DWUNMRVNfX0ZMQUcsCisJCSAgZGVuYWxpLT5yZWcgKyBUV09fUk9XX0FERFJfQ1lDTEVT
+KTsKKwlpb3dyaXRlMzIoRklFTERfUFJFUChFQ0NfQ09SUkVDVElPTl9fRVJBU0VfVEhSRVNIT0xE
+LCAxKSB8CisJCSAgRklFTERfUFJFUChFQ0NfQ09SUkVDVElPTl9fVkFMVUUsIGNoaXAtPmVjYy5z
+dHJlbmd0aCksCisJCSAgZGVuYWxpLT5yZWcgKyBFQ0NfQ09SUkVDVElPTik7CisJaW93cml0ZTMy
+KGNoaXAtPmVjYy5zaXplLCBkZW5hbGktPnJlZyArIENGR19EQVRBX0JMT0NLX1NJWkUpOworCWlv
+d3JpdGUzMihjaGlwLT5lY2Muc2l6ZSwgZGVuYWxpLT5yZWcgKyBDRkdfTEFTVF9EQVRBX0JMT0NL
+X1NJWkUpOworCWlvd3JpdGUzMihjaGlwLT5lY2Muc3RlcHMsIGRlbmFsaS0+cmVnICsgQ0ZHX05V
+TV9EQVRBX0JMT0NLUyk7CisKKwlpZiAoY2hpcC0+b3B0aW9ucyAmIE5BTkRfS0VFUF9USU1JTkdT
+KQorCQlyZXR1cm47CisKKwkvKiB1cGRhdGUgdGltaW5nIHJlZ2lzdGVycyB1bmxlc3MgTkFORF9L
+RUVQX1RJTUlOR1MgaXMgc2V0ICovCisJaW93cml0ZTMyKHNlbC0+aHdocjJfYW5kX3dlXzJfcmUs
+IGRlbmFsaS0+cmVnICsgVFdIUjJfQU5EX1dFXzJfUkUpOworCWlvd3JpdGUzMihzZWwtPnRjd2F3
+X2FuZF9hZGRyXzJfZGF0YSwKKwkJICBkZW5hbGktPnJlZyArIFRDV0FXX0FORF9BRERSXzJfREFU
+QSk7CisJaW93cml0ZTMyKHNlbC0+cmVfMl93ZSwgZGVuYWxpLT5yZWcgKyBSRV8yX1dFKTsKKwlp
+b3dyaXRlMzIoc2VsLT5hY2NfY2xrcywgZGVuYWxpLT5yZWcgKyBBQ0NfQ0xLUyk7CisJaW93cml0
+ZTMyKHNlbC0+cmR3cl9lbl9sb19jbnQsIGRlbmFsaS0+cmVnICsgUkRXUl9FTl9MT19DTlQpOwor
+CWlvd3JpdGUzMihzZWwtPnJkd3JfZW5faGlfY250LCBkZW5hbGktPnJlZyArIFJEV1JfRU5fSElf
+Q05UKTsKKwlpb3dyaXRlMzIoc2VsLT5jc19zZXR1cF9jbnQsIGRlbmFsaS0+cmVnICsgQ1NfU0VU
+VVBfQ05UKTsKKwlpb3dyaXRlMzIoc2VsLT5yZV8yX3JlLCBkZW5hbGktPnJlZyArIFJFXzJfUkUp
+OwogfQogCi1zdGF0aWMgdm9pZCBnZXRfaHluaXhfbmFuZF9wYXJhKHN0cnVjdCBkZW5hbGlfbmFu
+ZF9pbmZvICpkZW5hbGksCi0JCQkJCQkJdWludDhfdCBkZXZpY2VfaWQpCitzdGF0aWMgaW50IGRl
+bmFsaV9jaGFuZ2VfY29sdW1uKHN0cnVjdCBuYW5kX2NoaXAgKmNoaXAsIHVuc2lnbmVkIGludCBv
+ZmZzZXQsCisJCQkJdm9pZCAqYnVmLCB1bnNpZ25lZCBpbnQgbGVuLCBib29sIHdyaXRlKQogewot
+CXVpbnQzMl90IG1haW5fc2l6ZSwgc3BhcmVfc2l6ZTsKLQotCXN3aXRjaCAoZGV2aWNlX2lkKSB7
+Ci0JY2FzZSAweEQ1OiAvKiBIeW5peCBIMjdVQUc4VDJBLCBIMjdVQkc4VTVBIG9yIEgyN1VDRzhW
+RkEgKi8KLQljYXNlIDB4RDc6IC8qIEh5bml4IEgyN1VERzhWRU0sIEgyN1VDRzhVRE0gb3IgSDI3
+VUNHOFY1QSAqLwotCQlpb3dyaXRlMzIoMTI4LCBkZW5hbGktPmZsYXNoX3JlZyArIFBBR0VTX1BF
+Ul9CTE9DSyk7Ci0JCWlvd3JpdGUzMig0MDk2LCBkZW5hbGktPmZsYXNoX3JlZyArIERFVklDRV9N
+QUlOX0FSRUFfU0laRSk7Ci0JCWlvd3JpdGUzMigyMjQsIGRlbmFsaS0+Zmxhc2hfcmVnICsgREVW
+SUNFX1NQQVJFX0FSRUFfU0laRSk7Ci0JCW1haW5fc2l6ZSA9IDQwOTYgKgotCQkJaW9yZWFkMzIo
+ZGVuYWxpLT5mbGFzaF9yZWcgKyBERVZJQ0VTX0NPTk5FQ1RFRCk7Ci0JCXNwYXJlX3NpemUgPSAy
+MjQgKgotCQkJaW9yZWFkMzIoZGVuYWxpLT5mbGFzaF9yZWcgKyBERVZJQ0VTX0NPTk5FQ1RFRCk7
+Ci0JCWlvd3JpdGUzMihtYWluX3NpemUsCi0JCQkJZGVuYWxpLT5mbGFzaF9yZWcgKyBMT0dJQ0FM
+X1BBR0VfREFUQV9TSVpFKTsKLQkJaW93cml0ZTMyKHNwYXJlX3NpemUsCi0JCQkJZGVuYWxpLT5m
+bGFzaF9yZWcgKyBMT0dJQ0FMX1BBR0VfU1BBUkVfU0laRSk7Ci0JCWlvd3JpdGUzMigwLCBkZW5h
+bGktPmZsYXNoX3JlZyArIERFVklDRV9XSURUSCk7Ci0jaWYgU1VQUE9SVF8xNUJJVEVDQwotCQlp
+b3dyaXRlMzIoMTUsIGRlbmFsaS0+Zmxhc2hfcmVnICsgRUNDX0NPUlJFQ1RJT04pOwotI2VsaWYg
+U1VQUE9SVF84QklURUNDCi0JCWlvd3JpdGUzMig4LCBkZW5hbGktPmZsYXNoX3JlZyArIEVDQ19D
+T1JSRUNUSU9OKTsKLSNlbmRpZgotCQlicmVhazsKLQlkZWZhdWx0OgotCQlkZXZfd2FybihkZW5h
+bGktPmRldiwKLQkJCSAiU3BlY3RyYTogVW5rbm93biBIeW5peCBOQU5EIChEZXZpY2UgSUQ6IDB4
+JXgpLlxuIgotCQkJICJXaWxsIHVzZSBkZWZhdWx0IHBhcmFtZXRlciB2YWx1ZXMgaW5zdGVhZC5c
+biIsCi0JCQkgZGV2aWNlX2lkKTsKLQl9CisJaWYgKHdyaXRlKQorCQlyZXR1cm4gbmFuZF9jaGFu
+Z2Vfd3JpdGVfY29sdW1uX29wKGNoaXAsIG9mZnNldCwgYnVmLCBsZW4sCisJCQkJCQkgICBmYWxz
+ZSk7CisJZWxzZQorCQlyZXR1cm4gbmFuZF9jaGFuZ2VfcmVhZF9jb2x1bW5fb3AoY2hpcCwgb2Zm
+c2V0LCBidWYsIGxlbiwKKwkJCQkJCSAgZmFsc2UpOwogfQogCi0vKgotICogZGV0ZXJtaW5lcyBo
+b3cgbWFueSBOQU5EIGNoaXBzIGFyZSBjb25uZWN0ZWQgdG8gdGhlIGNvbnRyb2xsZXIuIE5vdGUg
+Zm9yCi0gKiBJbnRlbCBDRTQxMDAgZGV2aWNlcyB3ZSBkb24ndCBzdXBwb3J0IG1vcmUgdGhhbiBv
+bmUgZGV2aWNlLgotICovCi1zdGF0aWMgdm9pZCBmaW5kX3ZhbGlkX2JhbmtzKHN0cnVjdCBkZW5h
+bGlfbmFuZF9pbmZvICpkZW5hbGkpCitzdGF0aWMgaW50IGRlbmFsaV9wYXlsb2FkX3hmZXIoc3Ry
+dWN0IG5hbmRfY2hpcCAqY2hpcCwgdm9pZCAqYnVmLCBib29sIHdyaXRlKQogewotCXVpbnQzMl90
+IGlkW2RlbmFsaS0+bWF4X2JhbmtzXTsKLQlpbnQgaTsKLQotCWRlbmFsaS0+dG90YWxfdXNlZF9i
+YW5rcyA9IDE7Ci0JZm9yIChpID0gMDsgaSA8IGRlbmFsaS0+bWF4X2JhbmtzOyBpKyspIHsKLQkJ
+aW5kZXhfYWRkcihkZW5hbGksIE1PREVfMTEgfCAoaSA8PCAyNCkgfCAwLCAweDkwKTsKLQkJaW5k
+ZXhfYWRkcihkZW5hbGksIE1PREVfMTEgfCAoaSA8PCAyNCkgfCAxLCAwKTsKLQkJaW5kZXhfYWRk
+cl9yZWFkX2RhdGEoZGVuYWxpLCBNT0RFXzExIHwgKGkgPDwgMjQpIHwgMiwgJmlkW2ldKTsKKwlz
+dHJ1Y3QgZGVuYWxpX2NvbnRyb2xsZXIgKmRlbmFsaSA9IHRvX2RlbmFsaV9jb250cm9sbGVyKGNo
+aXApOworCXN0cnVjdCBtdGRfaW5mbyAqbXRkID0gbmFuZF90b19tdGQoY2hpcCk7CisJc3RydWN0
+IG5hbmRfZWNjX2N0cmwgKmVjYyA9ICZjaGlwLT5lY2M7CisJaW50IHdyaXRlc2l6ZSA9IG10ZC0+
+d3JpdGVzaXplOworCWludCBvb2Jfc2tpcCA9IGRlbmFsaS0+b29iX3NraXBfYnl0ZXM7CisJaW50
+IHJldCwgaSwgcG9zLCBsZW47CisKKwlmb3IgKGkgPSAwOyBpIDwgZWNjLT5zdGVwczsgaSsrKSB7
+CisJCXBvcyA9IGkgKiAoZWNjLT5zaXplICsgZWNjLT5ieXRlcyk7CisJCWxlbiA9IGVjYy0+c2l6
+ZTsKKworCQlpZiAocG9zID49IHdyaXRlc2l6ZSkgeworCQkJcG9zICs9IG9vYl9za2lwOworCQl9
+IGVsc2UgaWYgKHBvcyArIGxlbiA+IHdyaXRlc2l6ZSkgeworCQkJLyogVGhpcyBjaHVuayBvdmVy
+d3JhcHMgdGhlIEJCTSBhcmVhLiBNdXN0IGJlIHNwbGl0ICovCisJCQlyZXQgPSBkZW5hbGlfY2hh
+bmdlX2NvbHVtbihjaGlwLCBwb3MsIGJ1ZiwKKwkJCQkJCSAgIHdyaXRlc2l6ZSAtIHBvcywgd3Jp
+dGUpOworCQkJaWYgKHJldCkKKwkJCQlyZXR1cm4gcmV0OworCisJCQlidWYgKz0gd3JpdGVzaXpl
+IC0gcG9zOworCQkJbGVuIC09IHdyaXRlc2l6ZSAtIHBvczsKKwkJCXBvcyA9IHdyaXRlc2l6ZSAr
+IG9vYl9za2lwOworCQl9CiAKLQkJZGV2X2RiZyhkZW5hbGktPmRldiwKLQkJCSJSZXR1cm4gMXN0
+IElEIGZvciBiYW5rWyVkXTogJXhcbiIsIGksIGlkW2ldKTsKKwkJcmV0ID0gZGVuYWxpX2NoYW5n
+ZV9jb2x1bW4oY2hpcCwgcG9zLCBidWYsIGxlbiwgd3JpdGUpOworCQlpZiAocmV0KQorCQkJcmV0
+dXJuIHJldDsKIAotCQlpZiAoaSA9PSAwKSB7Ci0JCQlpZiAoIShpZFtpXSAmIDB4MGZmKSkKLQkJ
+CQlicmVhazsgLyogV1RGPyAqLwotCQl9IGVsc2UgewotCQkJaWYgKChpZFtpXSAmIDB4MGZmKSA9
+PSAoaWRbMF0gJiAweDBmZikpCi0JCQkJZGVuYWxpLT50b3RhbF91c2VkX2JhbmtzKys7Ci0JCQll
+bHNlCi0JCQkJYnJlYWs7Ci0JCX0KKwkJYnVmICs9IGxlbjsKIAl9CiAKLQlpZiAoZGVuYWxpLT5w
+bGF0Zm9ybSA9PSBJTlRFTF9DRTQxMDApIHsKLQkJLyoKLQkJICogUGxhdGZvcm0gbGltaXRhdGlv
+bnMgb2YgdGhlIENFNDEwMCBkZXZpY2UgbGltaXQKLQkJICogdXNlcnMgdG8gYSBzaW5nbGUgY2hp
+cCBzb2x1dGlvbiBmb3IgTkFORC4KLQkJICogTXVsdGljaGlwIHN1cHBvcnQgaXMgbm90IGVuYWJs
+ZWQuCi0JCSAqLwotCQlpZiAoZGVuYWxpLT50b3RhbF91c2VkX2JhbmtzICE9IDEpIHsKLQkJCWRl
+dl9lcnIoZGVuYWxpLT5kZXYsCi0JCQkJIlNvcnJ5LCBJbnRlbCBDRTQxMDAgb25seSBzdXBwb3J0
+cyBhIHNpbmdsZSBOQU5EIGRldmljZS5cbiIpOwotCQkJQlVHKCk7Ci0JCX0KLQl9Ci0JZGV2X2Ri
+ZyhkZW5hbGktPmRldiwKLQkJImRlbmFsaS0+dG90YWxfdXNlZF9iYW5rczogJWRcbiIsIGRlbmFs
+aS0+dG90YWxfdXNlZF9iYW5rcyk7CisJcmV0dXJuIDA7CiB9CiAKLS8qCi0gKiBVc2UgdGhlIGNv
+bmZpZ3VyYXRpb24gZmVhdHVyZSByZWdpc3RlciB0byBkZXRlcm1pbmUgdGhlIG1heGltdW0gbnVt
+YmVyIG9mCi0gKiBiYW5rcyB0aGF0IHRoZSBoYXJkd2FyZSBzdXBwb3J0cy4KLSAqLwotc3RhdGlj
+IHZvaWQgZGV0ZWN0X21heF9iYW5rcyhzdHJ1Y3QgZGVuYWxpX25hbmRfaW5mbyAqZGVuYWxpKQor
+c3RhdGljIGludCBkZW5hbGlfb29iX3hmZXIoc3RydWN0IG5hbmRfY2hpcCAqY2hpcCwgdm9pZCAq
+YnVmLCBib29sIHdyaXRlKQogewotCXVpbnQzMl90IGZlYXR1cmVzID0gaW9yZWFkMzIoZGVuYWxp
+LT5mbGFzaF9yZWcgKyBGRUFUVVJFUyk7CisJc3RydWN0IGRlbmFsaV9jb250cm9sbGVyICpkZW5h
+bGkgPSB0b19kZW5hbGlfY29udHJvbGxlcihjaGlwKTsKKwlzdHJ1Y3QgbXRkX2luZm8gKm10ZCA9
+IG5hbmRfdG9fbXRkKGNoaXApOworCXN0cnVjdCBuYW5kX2VjY19jdHJsICplY2MgPSAmY2hpcC0+
+ZWNjOworCWludCB3cml0ZXNpemUgPSBtdGQtPndyaXRlc2l6ZTsKKwlpbnQgb29ic2l6ZSA9IG10
+ZC0+b29ic2l6ZTsKKwlpbnQgb29iX3NraXAgPSBkZW5hbGktPm9vYl9za2lwX2J5dGVzOworCWlu
+dCByZXQsIGksIHBvcywgbGVuOworCisJLyogQkJNIGF0IHRoZSBiZWdpbm5pbmcgb2YgdGhlIE9P
+QiBhcmVhICovCisJcmV0ID0gZGVuYWxpX2NoYW5nZV9jb2x1bW4oY2hpcCwgd3JpdGVzaXplLCBi
+dWYsIG9vYl9za2lwLCB3cml0ZSk7CisJaWYgKHJldCkKKwkJcmV0dXJuIHJldDsKKworCWJ1ZiAr
+PSBvb2Jfc2tpcDsKKworCWZvciAoaSA9IDA7IGkgPCBlY2MtPnN0ZXBzOyBpKyspIHsKKwkJcG9z
+ID0gZWNjLT5zaXplICsgaSAqIChlY2MtPnNpemUgKyBlY2MtPmJ5dGVzKTsKKworCQlpZiAoaSA9
+PSBlY2MtPnN0ZXBzIC0gMSkKKwkJCS8qIFRoZSBsYXN0IGNodW5rIGluY2x1ZGVzIE9PQiBmcmVl
+ICovCisJCQlsZW4gPSB3cml0ZXNpemUgKyBvb2JzaXplIC0gcG9zIC0gb29iX3NraXA7CisJCWVs
+c2UKKwkJCWxlbiA9IGVjYy0+Ynl0ZXM7CisKKwkJaWYgKHBvcyA+PSB3cml0ZXNpemUpIHsKKwkJ
+CXBvcyArPSBvb2Jfc2tpcDsKKwkJfSBlbHNlIGlmIChwb3MgKyBsZW4gPiB3cml0ZXNpemUpIHsK
+KwkJCS8qIFRoaXMgY2h1bmsgb3ZlcndyYXBzIHRoZSBCQk0gYXJlYS4gTXVzdCBiZSBzcGxpdCAq
+LworCQkJcmV0ID0gZGVuYWxpX2NoYW5nZV9jb2x1bW4oY2hpcCwgcG9zLCBidWYsCisJCQkJCQkg
+ICB3cml0ZXNpemUgLSBwb3MsIHdyaXRlKTsKKwkJCWlmIChyZXQpCisJCQkJcmV0dXJuIHJldDsK
+KworCQkJYnVmICs9IHdyaXRlc2l6ZSAtIHBvczsKKwkJCWxlbiAtPSB3cml0ZXNpemUgLSBwb3M7
+CisJCQlwb3MgPSB3cml0ZXNpemUgKyBvb2Jfc2tpcDsKKwkJfQogCi0JZGVuYWxpLT5tYXhfYmFu
+a3MgPSAyIDw8IChmZWF0dXJlcyAmIEZFQVRVUkVTX19OX0JBTktTKTsKLX0KKwkJcmV0ID0gZGVu
+YWxpX2NoYW5nZV9jb2x1bW4oY2hpcCwgcG9zLCBidWYsIGxlbiwgd3JpdGUpOworCQlpZiAocmV0
+KQorCQkJcmV0dXJuIHJldDsKIAotc3RhdGljIHZvaWQgZGV0ZWN0X3BhcnRpdGlvbl9mZWF0dXJl
+KHN0cnVjdCBkZW5hbGlfbmFuZF9pbmZvICpkZW5hbGkpCi17Ci0JLyoKLQkgKiBGb3IgTVJTVCBw
+bGF0Zm9ybSwgZGVuYWxpLT5md2Jsa3MgcmVwcmVzZW50IHRoZQotCSAqIG51bWJlciBvZiBibG9j
+a3MgZmlybXdhcmUgaXMgdGFrZW4sCi0JICogRlcgaXMgaW4gcHJvdGVjdCBwYXJ0aXRpb24gYW5k
+IE1URCBkcml2ZXIgaGFzIG5vCi0JICogcGVybWlzc2lvbiB0byBhY2Nlc3MgaXQuIFNvIGxldCBk
+cml2ZXIga25vdyBob3cgbWFueQotCSAqIGJsb2NrcyBpdCBjYW4ndCB0b3VjaC4KLQkgKi8KLQlp
+ZiAoaW9yZWFkMzIoZGVuYWxpLT5mbGFzaF9yZWcgKyBGRUFUVVJFUykgJiBGRUFUVVJFU19fUEFS
+VElUSU9OKSB7Ci0JCWlmICgoaW9yZWFkMzIoZGVuYWxpLT5mbGFzaF9yZWcgKyBQRVJNX1NSQ19J
+RCgxKSkgJgotCQkJUEVSTV9TUkNfSURfX1NSQ0lEKSA9PSBTUEVDVFJBX1BBUlRJVElPTl9JRCkg
+ewotCQkJZGVuYWxpLT5md2Jsa3MgPQotCQkJICAgICgoaW9yZWFkMzIoZGVuYWxpLT5mbGFzaF9y
+ZWcgKyBNSU5fTUFYX0JBTksoMSkpICYKLQkJCSAgICAgIE1JTl9NQVhfQkFOS19fTUlOX1ZBTFVF
+KSAqCi0JCQkgICAgIGRlbmFsaS0+Ymxrc3BlcmNoaXApCi0JCQkgICAgKwotCQkJICAgIChpb3Jl
+YWQzMihkZW5hbGktPmZsYXNoX3JlZyArIE1JTl9CTEtfQUREUigxKSkgJgotCQkJICAgIE1JTl9C
+TEtfQUREUl9fVkFMVUUpOwotCQl9IGVsc2UgewotCQkJZGVuYWxpLT5md2Jsa3MgPSBTUEVDVFJB
+X1NUQVJUX0JMT0NLOwotCQl9Ci0JfSBlbHNlIHsKLQkJZGVuYWxpLT5md2Jsa3MgPSBTUEVDVFJB
+X1NUQVJUX0JMT0NLOworCQlidWYgKz0gbGVuOwogCX0KKworCXJldHVybiAwOwogfQogCi1zdGF0
+aWMgdWludDE2X3QgZGVuYWxpX25hbmRfdGltaW5nX3NldChzdHJ1Y3QgZGVuYWxpX25hbmRfaW5m
+byAqZGVuYWxpKQorc3RhdGljIGludCBkZW5hbGlfcmVhZF9yYXcoc3RydWN0IG5hbmRfY2hpcCAq
+Y2hpcCwgdm9pZCAqYnVmLCB2b2lkICpvb2JfYnVmLAorCQkJICAgaW50IHBhZ2UpCiB7Ci0JdWlu
+dDE2X3Qgc3RhdHVzID0gUEFTUzsKLQl1aW50MzJfdCBpZF9ieXRlc1s4XSwgYWRkcjsKLQl1aW50
+OF90IG1hZl9pZCwgZGV2aWNlX2lkOwotCWludCBpOworCWludCByZXQ7CiAKLQkvKgotCSAqIFVz
+ZSByZWFkIGlkIG1ldGhvZCB0byBnZXQgZGV2aWNlIElEIGFuZCBvdGhlciBwYXJhbXMuCi0JICog
+Rm9yIHNvbWUgTkFORCBjaGlwcywgY29udHJvbGxlciBjYW4ndCByZXBvcnQgdGhlIGNvcnJlY3QK
+LQkgKiBkZXZpY2UgSUQgYnkgcmVhZGluZyBmcm9tIERFVklDRV9JRCByZWdpc3RlcgotCSAqLwot
+CWFkZHIgPSBNT0RFXzExIHwgQkFOSyhkZW5hbGktPmZsYXNoX2JhbmspOwotCWluZGV4X2FkZHIo
+ZGVuYWxpLCBhZGRyIHwgMCwgMHg5MCk7Ci0JaW5kZXhfYWRkcihkZW5hbGksIGFkZHIgfCAxLCAw
+KTsKLQlmb3IgKGkgPSAwOyBpIDwgODsgaSsrKQotCQlpbmRleF9hZGRyX3JlYWRfZGF0YShkZW5h
+bGksIGFkZHIgfCAyLCAmaWRfYnl0ZXNbaV0pOwotCW1hZl9pZCA9IGlkX2J5dGVzWzBdOwotCWRl
+dmljZV9pZCA9IGlkX2J5dGVzWzFdOwotCi0JaWYgKGlvcmVhZDMyKGRlbmFsaS0+Zmxhc2hfcmVn
+ICsgT05GSV9ERVZJQ0VfTk9fT0ZfTFVOUykgJgotCQlPTkZJX0RFVklDRV9OT19PRl9MVU5TX19P
+TkZJX0RFVklDRSkgeyAvKiBPTkZJIDEuMCBOQU5EICovCi0JCWlmIChGQUlMID09IGdldF9vbmZp
+X25hbmRfcGFyYShkZW5hbGkpKQotCQkJcmV0dXJuIEZBSUw7Ci0JfSBlbHNlIGlmIChtYWZfaWQg
+PT0gMHhFQykgeyAvKiBTYW1zdW5nIE5BTkQgKi8KLQkJZ2V0X3NhbXN1bmdfbmFuZF9wYXJhKGRl
+bmFsaSwgZGV2aWNlX2lkKTsKLQl9IGVsc2UgaWYgKG1hZl9pZCA9PSAweDk4KSB7IC8qIFRvc2hp
+YmEgTkFORCAqLwotCQlnZXRfdG9zaGliYV9uYW5kX3BhcmEoZGVuYWxpKTsKLQl9IGVsc2UgaWYg
+KG1hZl9pZCA9PSAweEFEKSB7IC8qIEh5bml4IE5BTkQgKi8KLQkJZ2V0X2h5bml4X25hbmRfcGFy
+YShkZW5hbGksIGRldmljZV9pZCk7Ci0JfQorCWlmICghYnVmICYmICFvb2JfYnVmKQorCQlyZXR1
+cm4gLUVJTlZBTDsKIAotCWRldl9kYmcoZGVuYWxpLT5kZXYsCi0JCQkiRHVtcCB0aW1pbmcgcmVn
+aXN0ZXIgdmFsdWVzOlxuIgotCQkJImFjY19jbGtzOiAlZCwgcmVfMl93ZTogJWQsIHJlXzJfcmU6
+ICVkXG4iCi0JCQkid2VfMl9yZTogJWQsIGFkZHJfMl9kYXRhOiAlZCwgcmR3cl9lbl9sb19jbnQ6
+ICVkXG4iCi0JCQkicmR3cl9lbl9oaV9jbnQ6ICVkLCBjc19zZXR1cF9jbnQ6ICVkXG4iLAotCQkJ
+aW9yZWFkMzIoZGVuYWxpLT5mbGFzaF9yZWcgKyBBQ0NfQ0xLUyksCi0JCQlpb3JlYWQzMihkZW5h
+bGktPmZsYXNoX3JlZyArIFJFXzJfV0UpLAotCQkJaW9yZWFkMzIoZGVuYWxpLT5mbGFzaF9yZWcg
+KyBSRV8yX1JFKSwKLQkJCWlvcmVhZDMyKGRlbmFsaS0+Zmxhc2hfcmVnICsgV0VfMl9SRSksCi0J
+CQlpb3JlYWQzMihkZW5hbGktPmZsYXNoX3JlZyArIEFERFJfMl9EQVRBKSwKLQkJCWlvcmVhZDMy
+KGRlbmFsaS0+Zmxhc2hfcmVnICsgUkRXUl9FTl9MT19DTlQpLAotCQkJaW9yZWFkMzIoZGVuYWxp
+LT5mbGFzaF9yZWcgKyBSRFdSX0VOX0hJX0NOVCksCi0JCQlpb3JlYWQzMihkZW5hbGktPmZsYXNo
+X3JlZyArIENTX1NFVFVQX0NOVCkpOwotCi0JZmluZF92YWxpZF9iYW5rcyhkZW5hbGkpOwotCi0J
+ZGV0ZWN0X3BhcnRpdGlvbl9mZWF0dXJlKGRlbmFsaSk7CisJcmV0ID0gbmFuZF9yZWFkX3BhZ2Vf
+b3AoY2hpcCwgcGFnZSwgMCwgTlVMTCwgMCk7CisJaWYgKHJldCkKKwkJcmV0dXJuIHJldDsKIAot
+CS8qCi0JICogSWYgdGhlIHVzZXIgc3BlY2lmaWVkIHRvIG92ZXJyaWRlIHRoZSBkZWZhdWx0IHRp
+bWluZ3MKLQkgKiB3aXRoIGEgc3BlY2lmaWMgT05GSSBtb2RlLCB3ZSBhcHBseSB0aG9zZSBjaGFu
+Z2VzIGhlcmUuCi0JICovCi0JaWYgKG9uZmlfdGltaW5nX21vZGUgIT0gTkFORF9ERUZBVUxUX1RJ
+TUlOR1MpCi0JCW5hbmRfb25maV90aW1pbmdfc2V0KGRlbmFsaSwgb25maV90aW1pbmdfbW9kZSk7
+CisJaWYgKGJ1ZikgeworCQlyZXQgPSBkZW5hbGlfcGF5bG9hZF94ZmVyKGNoaXAsIGJ1ZiwgZmFs
+c2UpOworCQlpZiAocmV0KQorCQkJcmV0dXJuIHJldDsKKwl9CiAKLQlyZXR1cm4gc3RhdHVzOwot
+fQorCWlmIChvb2JfYnVmKSB7CisJCXJldCA9IGRlbmFsaV9vb2JfeGZlcihjaGlwLCBvb2JfYnVm
+LCBmYWxzZSk7CisJCWlmIChyZXQpCisJCQlyZXR1cm4gcmV0OworCX0KIAotc3RhdGljIHZvaWQg
+ZGVuYWxpX3NldF9pbnRyX21vZGVzKHN0cnVjdCBkZW5hbGlfbmFuZF9pbmZvICpkZW5hbGksCi0J
+CQkJCXVpbnQxNl90IElOVF9FTkFCTEUpCi17Ci0JaWYgKElOVF9FTkFCTEUpCi0JCWlvd3JpdGUz
+MigxLCBkZW5hbGktPmZsYXNoX3JlZyArIEdMT0JBTF9JTlRfRU5BQkxFKTsKLQllbHNlCi0JCWlv
+d3JpdGUzMigwLCBkZW5hbGktPmZsYXNoX3JlZyArIEdMT0JBTF9JTlRfRU5BQkxFKTsKKwlyZXR1
+cm4gMDsKIH0KIAotLyoKLSAqIHZhbGlkYXRpb24gZnVuY3Rpb24gdG8gdmVyaWZ5IHRoYXQgdGhl
+IGNvbnRyb2xsaW5nIHNvZnR3YXJlIGlzIG1ha2luZwotICogYSB2YWxpZCByZXF1ZXN0Ci0gKi8K
+LXN0YXRpYyBpbmxpbmUgYm9vbCBpc19mbGFzaF9iYW5rX3ZhbGlkKGludCBmbGFzaF9iYW5rKQor
+c3RhdGljIGludCBkZW5hbGlfd3JpdGVfcmF3KHN0cnVjdCBuYW5kX2NoaXAgKmNoaXAsIGNvbnN0
+IHZvaWQgKmJ1ZiwKKwkJCSAgICBjb25zdCB2b2lkICpvb2JfYnVmLCBpbnQgcGFnZSkKIHsKLQly
+ZXR1cm4gZmxhc2hfYmFuayA+PSAwICYmIGZsYXNoX2JhbmsgPCA0OwotfQorCWludCByZXQ7CiAK
+KwlpZiAoIWJ1ZiAmJiAhb29iX2J1ZikKKwkJcmV0dXJuIC1FSU5WQUw7CiAKLXN0YXRpYyB2b2lk
+IGRlbmFsaV9pcnFfaW5pdChzdHJ1Y3QgZGVuYWxpX25hbmRfaW5mbyAqZGVuYWxpKQotewotCXVp
+bnQzMl90IGludF9tYXNrOwotCWludCBpOwotCi0JLyogRGlzYWJsZSBnbG9iYWwgaW50ZXJydXB0
+cyAqLwotCWRlbmFsaV9zZXRfaW50cl9tb2RlcyhkZW5hbGksIGZhbHNlKTsKKwlyZXQgPSBuYW5k
+X3Byb2dfcGFnZV9iZWdpbl9vcChjaGlwLCBwYWdlLCAwLCBOVUxMLCAwKTsKKwlpZiAocmV0KQor
+CQlyZXR1cm4gcmV0OwogCi0JaW50X21hc2sgPSBERU5BTElfSVJRX0FMTDsKKwlpZiAoYnVmKSB7
+CisJCXJldCA9IGRlbmFsaV9wYXlsb2FkX3hmZXIoY2hpcCwgKHZvaWQgKilidWYsIHRydWUpOwor
+CQlpZiAocmV0KQorCQkJcmV0dXJuIHJldDsKKwl9CiAKLQkvKiBDbGVhciBhbGwgc3RhdHVzIGJp
+dHMgKi8KLQlmb3IgKGkgPSAwOyBpIDwgZGVuYWxpLT5tYXhfYmFua3M7ICsraSkKLQkJaW93cml0
+ZTMyKDB4RkZGRiwgZGVuYWxpLT5mbGFzaF9yZWcgKyBJTlRSX1NUQVRVUyhpKSk7CisJaWYgKG9v
+Yl9idWYpIHsKKwkJcmV0ID0gZGVuYWxpX29vYl94ZmVyKGNoaXAsICh2b2lkICopb29iX2J1Ziwg
+dHJ1ZSk7CisJCWlmIChyZXQpCisJCQlyZXR1cm4gcmV0OworCX0KIAotCWRlbmFsaV9pcnFfZW5h
+YmxlKGRlbmFsaSwgaW50X21hc2spOworCXJldHVybiBuYW5kX3Byb2dfcGFnZV9lbmRfb3AoY2hp
+cCk7CiB9CiAKLQotc3RhdGljIHZvaWQgZGVuYWxpX2lycV9jbGVhbnVwKGludCBpcnFudW0sIHN0
+cnVjdCBkZW5hbGlfbmFuZF9pbmZvICpkZW5hbGkpCitzdGF0aWMgaW50IGRlbmFsaV9yZWFkX3Bh
+Z2VfcmF3KHN0cnVjdCBuYW5kX2NoaXAgKmNoaXAsIHU4ICpidWYsCisJCQkJaW50IG9vYl9yZXF1
+aXJlZCwgaW50IHBhZ2UpCiB7Ci0JZGVuYWxpX3NldF9pbnRyX21vZGVzKGRlbmFsaSwgZmFsc2Up
+OworCXJldHVybiBkZW5hbGlfcmVhZF9yYXcoY2hpcCwgYnVmLCBvb2JfcmVxdWlyZWQgPyBjaGlw
+LT5vb2JfcG9pIDogTlVMTCwKKwkJCSAgICAgICBwYWdlKTsKIH0KIAotc3RhdGljIHZvaWQgZGVu
+YWxpX2lycV9lbmFibGUoc3RydWN0IGRlbmFsaV9uYW5kX2luZm8gKmRlbmFsaSwKLQkJCQkJCQl1
+aW50MzJfdCBpbnRfbWFzaykKK3N0YXRpYyBpbnQgZGVuYWxpX3dyaXRlX3BhZ2VfcmF3KHN0cnVj
+dCBuYW5kX2NoaXAgKmNoaXAsIGNvbnN0IHU4ICpidWYsCisJCQkJIGludCBvb2JfcmVxdWlyZWQs
+IGludCBwYWdlKQogewotCWludCBpOwotCi0JZm9yIChpID0gMDsgaSA8IGRlbmFsaS0+bWF4X2Jh
+bmtzOyArK2kpCi0JCWlvd3JpdGUzMihpbnRfbWFzaywgZGVuYWxpLT5mbGFzaF9yZWcgKyBJTlRS
+X0VOKGkpKTsKKwlyZXR1cm4gZGVuYWxpX3dyaXRlX3JhdyhjaGlwLCBidWYsIG9vYl9yZXF1aXJl
+ZCA/IGNoaXAtPm9vYl9wb2kgOiBOVUxMLAorCQkJCXBhZ2UpOwogfQogCi0vKiBJbnRlcnJ1cHRz
+IGFyZSBjbGVhcmVkIGJ5IHdyaXRpbmcgYSAxIHRvIHRoZSBhcHByb3ByaWF0ZSBzdGF0dXMgYml0
+ICovCi1zdGF0aWMgaW5saW5lIHZvaWQgY2xlYXJfaW50ZXJydXB0KHN0cnVjdCBkZW5hbGlfbmFu
+ZF9pbmZvICpkZW5hbGksCi0JCQkJCQkJdWludDMyX3QgaXJxX21hc2spCitzdGF0aWMgaW50IGRl
+bmFsaV9yZWFkX29vYihzdHJ1Y3QgbmFuZF9jaGlwICpjaGlwLCBpbnQgcGFnZSkKIHsKLQl1aW50
+MzJfdCBpbnRyX3N0YXR1c19yZWc7Ci0KLQlpbnRyX3N0YXR1c19yZWcgPSBJTlRSX1NUQVRVUyhk
+ZW5hbGktPmZsYXNoX2JhbmspOwotCi0JaW93cml0ZTMyKGlycV9tYXNrLCBkZW5hbGktPmZsYXNo
+X3JlZyArIGludHJfc3RhdHVzX3JlZyk7CisJcmV0dXJuIGRlbmFsaV9yZWFkX3JhdyhjaGlwLCBO
+VUxMLCBjaGlwLT5vb2JfcG9pLCBwYWdlKTsKIH0KIAotc3RhdGljIHZvaWQgY2xlYXJfaW50ZXJy
+dXB0cyhzdHJ1Y3QgZGVuYWxpX25hbmRfaW5mbyAqZGVuYWxpKQorc3RhdGljIGludCBkZW5hbGlf
+d3JpdGVfb29iKHN0cnVjdCBuYW5kX2NoaXAgKmNoaXAsIGludCBwYWdlKQogewotCXVpbnQzMl90
+IHN0YXR1czsKLQotCXN0YXR1cyA9IHJlYWRfaW50ZXJydXB0X3N0YXR1cyhkZW5hbGkpOwotCWNs
+ZWFyX2ludGVycnVwdChkZW5hbGksIHN0YXR1cyk7Ci0KLQlkZW5hbGktPmlycV9zdGF0dXMgPSAw
+eDA7CisJcmV0dXJuIGRlbmFsaV93cml0ZV9yYXcoY2hpcCwgTlVMTCwgY2hpcC0+b29iX3BvaSwg
+cGFnZSk7CiB9CiAKLXN0YXRpYyB1aW50MzJfdCByZWFkX2ludGVycnVwdF9zdGF0dXMoc3RydWN0
+IGRlbmFsaV9uYW5kX2luZm8gKmRlbmFsaSkKK3N0YXRpYyBpbnQgZGVuYWxpX2NoZWNrX2VyYXNl
+ZF9wYWdlKHN0cnVjdCBuYW5kX2NoaXAgKmNoaXAsIHU4ICpidWYsCisJCQkJICAgIHVuc2lnbmVk
+IGxvbmcgdW5jb3JfZWNjX2ZsYWdzLAorCQkJCSAgICB1bnNpZ25lZCBpbnQgbWF4X2JpdGZsaXBz
+KQogewotCXVpbnQzMl90IGludHJfc3RhdHVzX3JlZzsKKwlzdHJ1Y3QgZGVuYWxpX2NvbnRyb2xs
+ZXIgKmRlbmFsaSA9IHRvX2RlbmFsaV9jb250cm9sbGVyKGNoaXApOworCXN0cnVjdCBtdGRfZWNj
+X3N0YXRzICplY2Nfc3RhdHMgPSAmbmFuZF90b19tdGQoY2hpcCktPmVjY19zdGF0czsKKwlzdHJ1
+Y3QgbmFuZF9lY2NfY3RybCAqZWNjID0gJmNoaXAtPmVjYzsKKwl1OCAqZWNjX2NvZGUgPSBjaGlw
+LT5vb2JfcG9pICsgZGVuYWxpLT5vb2Jfc2tpcF9ieXRlczsKKwlpbnQgaSwgc3RhdDsKKworCWZv
+ciAoaSA9IDA7IGkgPCBlY2MtPnN0ZXBzOyBpKyspIHsKKwkJaWYgKCEodW5jb3JfZWNjX2ZsYWdz
+ICYgQklUKGkpKSkKKwkJCWNvbnRpbnVlOworCisJCXN0YXQgPSBuYW5kX2NoZWNrX2VyYXNlZF9l
+Y2NfY2h1bmsoYnVmLCBlY2MtPnNpemUsIGVjY19jb2RlLAorCQkJCQkJICAgZWNjLT5ieXRlcywg
+TlVMTCwgMCwKKwkJCQkJCSAgIGVjYy0+c3RyZW5ndGgpOworCQlpZiAoc3RhdCA8IDApIHsKKwkJ
+CWVjY19zdGF0cy0+ZmFpbGVkKys7CisJCX0gZWxzZSB7CisJCQllY2Nfc3RhdHMtPmNvcnJlY3Rl
+ZCArPSBzdGF0OworCQkJbWF4X2JpdGZsaXBzID0gbWF4X3QodW5zaWduZWQgaW50LCBtYXhfYml0
+ZmxpcHMsIHN0YXQpOworCQl9CiAKLQlpbnRyX3N0YXR1c19yZWcgPSBJTlRSX1NUQVRVUyhkZW5h
+bGktPmZsYXNoX2JhbmspOworCQlidWYgKz0gZWNjLT5zaXplOworCQllY2NfY29kZSArPSBlY2Mt
+PmJ5dGVzOworCX0KIAotCXJldHVybiBpb3JlYWQzMihkZW5hbGktPmZsYXNoX3JlZyArIGludHJf
+c3RhdHVzX3JlZyk7CisJcmV0dXJuIG1heF9iaXRmbGlwczsKIH0KIAotc3RhdGljIHVpbnQzMl90
+IHdhaXRfZm9yX2lycShzdHJ1Y3QgZGVuYWxpX25hbmRfaW5mbyAqZGVuYWxpLCB1aW50MzJfdCBp
+cnFfbWFzaykKK3N0YXRpYyBpbnQgZGVuYWxpX2h3X2VjY19maXh1cChzdHJ1Y3QgbmFuZF9jaGlw
+ICpjaGlwLAorCQkJICAgICAgIHVuc2lnbmVkIGxvbmcgKnVuY29yX2VjY19mbGFncykKIHsKLQl1
+aW50MzJfdCBpbnRyX3N0YXR1cyA9IDA7Ci0JdWludDY0X3Qgc3RhcnQ7Ci0KLQlpZiAoIWlzX2Zs
+YXNoX2JhbmtfdmFsaWQoZGVuYWxpLT5mbGFzaF9iYW5rKSkgewotCQlkZXZfZGJnKGRlbmFsaS0+
+ZGV2LCAiTm8gdmFsaWQgY2hpcCBzZWxlY3RlZCAoJWQpXG4iLAotCQkJZGVuYWxpLT5mbGFzaF9i
+YW5rKTsKLQkJcmV0dXJuIDA7Ci0JfQorCXN0cnVjdCBkZW5hbGlfY29udHJvbGxlciAqZGVuYWxp
+ID0gdG9fZGVuYWxpX2NvbnRyb2xsZXIoY2hpcCk7CisJc3RydWN0IG10ZF9lY2Nfc3RhdHMgKmVj
+Y19zdGF0cyA9ICZuYW5kX3RvX210ZChjaGlwKS0+ZWNjX3N0YXRzOworCWludCBiYW5rID0gZGVu
+YWxpLT5hY3RpdmVfYmFuazsKKwl1MzIgZWNjX2NvcjsKKwl1bnNpZ25lZCBpbnQgbWF4X2JpdGZs
+aXBzOwogCi0Jc3RhcnQgPSBnZXRfdGltZV9ucygpOworCWVjY19jb3IgPSBpb3JlYWQzMihkZW5h
+bGktPnJlZyArIEVDQ19DT1JfSU5GTyhiYW5rKSk7CisJZWNjX2NvciA+Pj0gRUNDX0NPUl9JTkZP
+X19TSElGVChiYW5rKTsKIAotCXdoaWxlICghaXNfdGltZW91dChzdGFydCwgMTAwMCAqIE1TRUNP
+TkQpKSB7Ci0JCWludHJfc3RhdHVzID0gcmVhZF9pbnRlcnJ1cHRfc3RhdHVzKGRlbmFsaSk7Ci0K
+LQkJaWYgKGludHJfc3RhdHVzICE9IDApCi0JCQljbGVhcl9pbnRlcnJ1cHQoZGVuYWxpLCBpbnRy
+X3N0YXR1cyk7Ci0KLQkJaWYgKGludHJfc3RhdHVzICYgaXJxX21hc2spCi0JCQlyZXR1cm4gaW50
+cl9zdGF0dXM7CisJaWYgKGVjY19jb3IgJiBFQ0NfQ09SX0lORk9fX1VOQ09SX0VSUikgeworCQkv
+KgorCQkgKiBUaGlzIGZsYWcgaXMgc2V0IHdoZW4gdW5jb3JyZWN0YWJsZSBlcnJvciBvY2N1cnMg
+YXQgbGVhc3QgaW4KKwkJICogb25lIEVDQyBzZWN0b3IuICBXZSBjYW4gbm90IGtub3cgImhvdyBt
+YW55IHNlY3RvcnMiLCBvcgorCQkgKiAid2hpY2ggc2VjdG9yKHMpIi4gIFdlIG5lZWQgZXJhc2Ut
+cGFnZSBjaGVjayBmb3IgYWxsIHNlY3RvcnMuCisJCSAqLworCQkqdW5jb3JfZWNjX2ZsYWdzID0g
+R0VOTUFTSyhjaGlwLT5lY2Muc3RlcHMgLSAxLCAwKTsKKwkJcmV0dXJuIDA7CiAJfQogCi0JLyog
+dGltZW91dCAqLwotCWRldl9kYmcoZGVuYWxpLT5kZXYsICJ0aW1lb3V0IG9jY3VycmVkLCBzdGF0
+dXMgPSAweCV4LCBtYXNrID0gMHgleFxuIiwKLQkJaW50cl9zdGF0dXMsIGlycV9tYXNrKTsKLQot
+CXJldHVybiAwOwotfQotCi0vKgotICogVGhpcyBoZWxwZXIgZnVuY3Rpb24gc2V0dXBzIHRoZSBy
+ZWdpc3RlcnMgZm9yIEVDQyBhbmQgd2hldGhlciBvciBub3QKLSAqIHRoZSBzcGFyZSBhcmVhIHdp
+bGwgYmUgdHJhbnNmZXJyZWQuCi0gKi8KLXN0YXRpYyB2b2lkIHNldHVwX2VjY19mb3JfeGZlcihz
+dHJ1Y3QgZGVuYWxpX25hbmRfaW5mbyAqZGVuYWxpLCBib29sIGVjY19lbiwKLQkJCQlib29sIHRy
+YW5zZmVyX3NwYXJlKQotewotCWludCBlY2NfZW5fZmxhZywgdHJhbnNmZXJfc3BhcmVfZmxhZzsK
+KwltYXhfYml0ZmxpcHMgPSBGSUVMRF9HRVQoRUNDX0NPUl9JTkZPX19NQVhfRVJST1JTLCBlY2Nf
+Y29yKTsKIAotCS8qIHNldCBFQ0MsIHRyYW5zZmVyIHNwYXJlIGJpdHMgaWYgbmVlZGVkICovCi0J
+ZWNjX2VuX2ZsYWcgPSBlY2NfZW4gPyBFQ0NfRU5BQkxFX19GTEFHIDogMDsKLQl0cmFuc2Zlcl9z
+cGFyZV9mbGFnID0gdHJhbnNmZXJfc3BhcmUgPyBUUkFOU0ZFUl9TUEFSRV9SRUdfX0ZMQUcgOiAw
+OworCS8qCisJICogVGhlIHJlZ2lzdGVyIGhvbGRzIHRoZSBtYXhpbXVtIG9mIHBlci1zZWN0b3Ig
+Y29ycmVjdGVkIGJpdGZsaXBzLgorCSAqIFRoaXMgaXMgc3VpdGFibGUgZm9yIHRoZSByZXR1cm4g
+dmFsdWUgb2YgdGhlIC0+cmVhZF9wYWdlKCkgY2FsbGJhY2suCisJICogVW5mb3J0dW5hdGVseSwg
+d2UgY2FuIG5vdCBrbm93IHRoZSB0b3RhbCBudW1iZXIgb2YgY29ycmVjdGVkIGJpdHMgaW4KKwkg
+KiB0aGUgcGFnZS4gIEluY3JlYXNlIHRoZSBzdGF0cyBieSBtYXhfYml0ZmxpcHMuIChjb21wcm9t
+aXNlZCBzb2x1dGlvbikKKwkgKi8KKwllY2Nfc3RhdHMtPmNvcnJlY3RlZCArPSBtYXhfYml0Zmxp
+cHM7CiAKLQkvKiBFbmFibGUgc3BhcmUgYXJlYS9FQ0MgcGVyIHVzZXIncyByZXF1ZXN0LiAqLwot
+CWlvd3JpdGUzMihlY2NfZW5fZmxhZywgZGVuYWxpLT5mbGFzaF9yZWcgKyBFQ0NfRU5BQkxFKTsK
+LQlpb3dyaXRlMzIodHJhbnNmZXJfc3BhcmVfZmxhZywgZGVuYWxpLT5mbGFzaF9yZWcgKyBUUkFO
+U0ZFUl9TUEFSRV9SRUcpOworCXJldHVybiBtYXhfYml0ZmxpcHM7CiB9CiAKLS8qCi0gKiBzZW5k
+cyBhIHBpcGVsaW5lIGNvbW1hbmQgb3BlcmF0aW9uIHRvIHRoZSBjb250cm9sbGVyLiBTZWUgdGhl
+IERlbmFsaSBOQU5ECi0gKiBjb250cm9sbGVyJ3MgdXNlciBndWlkZSBmb3IgbW9yZSBpbmZvcm1h
+dGlvbiAoc2VjdGlvbiA0LjIuMy42KS4KLSAqLwotc3RhdGljIGludCBkZW5hbGlfc2VuZF9waXBl
+bGluZV9jbWQoc3RydWN0IGRlbmFsaV9uYW5kX2luZm8gKmRlbmFsaSwKLQkJCQkgICAgYm9vbCBl
+Y2NfZW4sIGJvb2wgdHJhbnNmZXJfc3BhcmUsCi0JCQkJICAgIGludCBhY2Nlc3NfdHlwZSwgaW50
+IG9wKQorc3RhdGljIGludCBkZW5hbGlfc3dfZWNjX2ZpeHVwKHN0cnVjdCBuYW5kX2NoaXAgKmNo
+aXAsCisJCQkgICAgICAgdW5zaWduZWQgbG9uZyAqdW5jb3JfZWNjX2ZsYWdzLCB1OCAqYnVmKQog
+ewotCWludCBzdGF0dXMgPSBQQVNTOwotCXVpbnQzMl90IHBhZ2VfY291bnQgPSAxOwotCXVpbnQz
+Ml90IGFkZHIsIGNtZCwgaXJxX3N0YXR1cywgaXJxX21hc2s7Ci0KLQlpZiAob3AgPT0gREVOQUxJ
+X1JFQUQpCi0JCWlycV9tYXNrID0gSU5UUl9TVEFUVVNfX0xPQURfQ09NUDsKLQllbHNlIGlmIChv
+cCA9PSBERU5BTElfV1JJVEUpCi0JCWlycV9tYXNrID0gMDsKLQllbHNlCi0JCUJVRygpOwotCi0J
+c2V0dXBfZWNjX2Zvcl94ZmVyKGRlbmFsaSwgZWNjX2VuLCB0cmFuc2Zlcl9zcGFyZSk7Ci0KLQlj
+bGVhcl9pbnRlcnJ1cHRzKGRlbmFsaSk7Ci0KLQlhZGRyID0gQkFOSyhkZW5hbGktPmZsYXNoX2Jh
+bmspIHwgZGVuYWxpLT5wYWdlOwotCi0JaWYgKG9wID09IERFTkFMSV9XUklURSAmJiBhY2Nlc3Nf
+dHlwZSAhPSBTUEFSRV9BQ0NFU1MpIHsKLQkJY21kID0gTU9ERV8wMSB8IGFkZHI7Ci0JCWlvd3Jp
+dGUzMihjbWQsIGRlbmFsaS0+Zmxhc2hfbWVtKTsKLQl9IGVsc2UgaWYgKG9wID09IERFTkFMSV9X
+UklURSAmJiBhY2Nlc3NfdHlwZSA9PSBTUEFSRV9BQ0NFU1MpIHsKLQkJLyogcmVhZCBzcGFyZSBh
+cmVhICovCi0JCWNtZCA9IE1PREVfMTAgfCBhZGRyOwotCQlpbmRleF9hZGRyKGRlbmFsaSwgY21k
+LCBhY2Nlc3NfdHlwZSk7Ci0KLQkJY21kID0gTU9ERV8wMSB8IGFkZHI7Ci0JCWlvd3JpdGUzMihj
+bWQsIGRlbmFsaS0+Zmxhc2hfbWVtKTsKLQl9IGVsc2UgaWYgKG9wID09IERFTkFMSV9SRUFEKSB7
+Ci0JCS8qIHNldHVwIHBhZ2UgcmVhZCByZXF1ZXN0IGZvciBhY2Nlc3MgdHlwZSAqLwotCQljbWQg
+PSBNT0RFXzEwIHwgYWRkcjsKLQkJaW5kZXhfYWRkcihkZW5hbGksIGNtZCwgYWNjZXNzX3R5cGUp
+OwotCi0JCS8qCi0JCSAqIHBhZ2UgMzMgb2YgdGhlIE5BTkQgY29udHJvbGxlciBzcGVjIGluZGlj
+YXRlcyB3ZSBzaG91bGQgbm90Ci0JCSAqIHVzZSB0aGUgcGlwZWxpbmUgY29tbWFuZHMgaW4gU3Bh
+cmUgYXJlYSBvbmx5IG1vZGUuCi0JCSAqIFNvIHdlIGRvbid0LgotCQkgKi8KLQkJaWYgKGFjY2Vz
+c190eXBlID09IFNQQVJFX0FDQ0VTUykgewotCQkJY21kID0gTU9ERV8wMSB8IGFkZHI7Ci0JCQlp
+b3dyaXRlMzIoY21kLCBkZW5hbGktPmZsYXNoX21lbSk7Ci0JCX0gZWxzZSB7Ci0JCQlpbmRleF9h
+ZGRyKGRlbmFsaSwgY21kLAotCQkJCQlQSVBFTElORV9BQ0NFU1MgfCBvcCB8IHBhZ2VfY291bnQp
+OwotCisJc3RydWN0IGRlbmFsaV9jb250cm9sbGVyICpkZW5hbGkgPSB0b19kZW5hbGlfY29udHJv
+bGxlcihjaGlwKTsKKwlzdHJ1Y3QgbXRkX2VjY19zdGF0cyAqZWNjX3N0YXRzID0gJm5hbmRfdG9f
+bXRkKGNoaXApLT5lY2Nfc3RhdHM7CisJdW5zaWduZWQgaW50IGVjY19zaXplID0gY2hpcC0+ZWNj
+LnNpemU7CisJdW5zaWduZWQgaW50IGJpdGZsaXBzID0gMDsKKwl1bnNpZ25lZCBpbnQgbWF4X2Jp
+dGZsaXBzID0gMDsKKwl1MzIgZXJyX2FkZHIsIGVycl9jb3JfaW5mbzsKKwl1bnNpZ25lZCBpbnQg
+ZXJyX2J5dGUsIGVycl9zZWN0b3IsIGVycl9kZXZpY2U7CisJdTggZXJyX2Nvcl92YWx1ZTsKKwl1
+bnNpZ25lZCBpbnQgcHJldl9zZWN0b3IgPSAwOworCXUzMiBpcnFfc3RhdHVzOworCisJZGVuYWxp
+X3Jlc2V0X2lycShkZW5hbGkpOworCisJZG8geworCQllcnJfYWRkciA9IGlvcmVhZDMyKGRlbmFs
+aS0+cmVnICsgRUNDX0VSUk9SX0FERFJFU1MpOworCQllcnJfc2VjdG9yID0gRklFTERfR0VUKEVD
+Q19FUlJPUl9BRERSRVNTX19TRUNUT1IsIGVycl9hZGRyKTsKKwkJZXJyX2J5dGUgPSBGSUVMRF9H
+RVQoRUNDX0VSUk9SX0FERFJFU1NfX09GRlNFVCwgZXJyX2FkZHIpOworCisJCWVycl9jb3JfaW5m
+byA9IGlvcmVhZDMyKGRlbmFsaS0+cmVnICsgRVJSX0NPUlJFQ1RJT05fSU5GTyk7CisJCWVycl9j
+b3JfdmFsdWUgPSBGSUVMRF9HRVQoRVJSX0NPUlJFQ1RJT05fSU5GT19fQllURSwKKwkJCQkJICBl
+cnJfY29yX2luZm8pOworCQllcnJfZGV2aWNlID0gRklFTERfR0VUKEVSUl9DT1JSRUNUSU9OX0lO
+Rk9fX0RFVklDRSwKKwkJCQkgICAgICAgZXJyX2Nvcl9pbmZvKTsKKworCQkvKiByZXNldCB0aGUg
+Yml0ZmxpcCBjb3VudGVyIHdoZW4gY3Jvc3NpbmcgRUNDIHNlY3RvciAqLworCQlpZiAoZXJyX3Nl
+Y3RvciAhPSBwcmV2X3NlY3RvcikKKwkJCWJpdGZsaXBzID0gMDsKKworCQlpZiAoZXJyX2Nvcl9p
+bmZvICYgRVJSX0NPUlJFQ1RJT05fSU5GT19fVU5DT1IpIHsKKwkJCS8qCisJCQkgKiBDaGVjayBs
+YXRlciBpZiB0aGlzIGlzIGEgcmVhbCBFQ0MgZXJyb3IsIG9yCisJCQkgKiBhbiBlcmFzZWQgc2Vj
+dG9yLgorCQkJICovCisJCQkqdW5jb3JfZWNjX2ZsYWdzIHw9IEJJVChlcnJfc2VjdG9yKTsKKwkJ
+fSBlbHNlIGlmIChlcnJfYnl0ZSA8IGVjY19zaXplKSB7CiAJCQkvKgotCQkJICogd2FpdCBmb3Ig
+Y29tbWFuZCB0byBiZSBhY2NlcHRlZAotCQkJICogY2FuIGFsd2F5cyB1c2Ugc3RhdHVzMCBiaXQg
+YXMgdGhlCi0JCQkgKiBtYXNrIGlzIGlkZW50aWNhbCBmb3IgZWFjaCBiYW5rLgorCQkJICogSWYg
+ZXJyX2J5dGUgaXMgbGFyZ2VyIHRoYW4gZWNjX3NpemUsIG1lYW5zIGVycm9yCisJCQkgKiBoYXBw
+ZW5lZCBpbiBPT0IsIHNvIHdlIGlnbm9yZSBpdC4gSXQncyBubyBuZWVkIGZvcgorCQkJICogdXMg
+dG8gY29ycmVjdCBpdCBlcnJfZGV2aWNlIGlzIHJlcHJlc2VudGVkIHRoZSBOQU5ECisJCQkgKiBl
+cnJvciBiaXRzIGFyZSBoYXBwZW5lZCBpbiBpZiB0aGVyZSBhcmUgbW9yZSB0aGFuCisJCQkgKiBv
+bmUgTkFORCBjb25uZWN0ZWQuCiAJCQkgKi8KLQkJCWlycV9zdGF0dXMgPSB3YWl0X2Zvcl9pcnEo
+ZGVuYWxpLCBpcnFfbWFzayk7CisJCQlpbnQgb2Zmc2V0OworCQkJdW5zaWduZWQgaW50IGZsaXBz
+X2luX2J5dGU7CiAKLQkJCWlmIChpcnFfc3RhdHVzID09IDApIHsKLQkJCQlkZXZfZXJyKGRlbmFs
+aS0+ZGV2LAotCQkJCQkiY21kLCBwYWdlLCBhZGRyIG9uIHRpbWVvdXQgKDB4JXgsIDB4JXgsIDB4
+JXgpXG4iLAotCQkJCQljbWQsIGRlbmFsaS0+cGFnZSwgYWRkcik7Ci0JCQkJc3RhdHVzID0gRkFJ
+TDsKLQkJCX0gZWxzZSB7Ci0JCQkJY21kID0gTU9ERV8wMSB8IGFkZHI7Ci0JCQkJaW93cml0ZTMy
+KGNtZCwgZGVuYWxpLT5mbGFzaF9tZW0pOwotCQkJfQorCQkJb2Zmc2V0ID0gKGVycl9zZWN0b3Ig
+KiBlY2Nfc2l6ZSArIGVycl9ieXRlKSAqCisJCQkJCWRlbmFsaS0+ZGV2c19wZXJfY3MgKyBlcnJf
+ZGV2aWNlOworCisJCQkvKiBjb3JyZWN0IHRoZSBFQ0MgZXJyb3IgKi8KKwkJCWZsaXBzX2luX2J5
+dGUgPSBod2VpZ2h0OChidWZbb2Zmc2V0XSBeIGVycl9jb3JfdmFsdWUpOworCQkJYnVmW29mZnNl
+dF0gXj0gZXJyX2Nvcl92YWx1ZTsKKwkJCWVjY19zdGF0cy0+Y29ycmVjdGVkICs9IGZsaXBzX2lu
+X2J5dGU7CisJCQliaXRmbGlwcyArPSBmbGlwc19pbl9ieXRlOworCisJCQltYXhfYml0ZmxpcHMg
+PSBtYXgobWF4X2JpdGZsaXBzLCBiaXRmbGlwcyk7CiAJCX0KLQl9Ci0JcmV0dXJuIHN0YXR1czsK
+LX0KIAotLyogaGVscGVyIGZ1bmN0aW9uIHRoYXQgc2ltcGx5IHdyaXRlcyBhIGJ1ZmZlciB0byB0
+aGUgZmxhc2ggKi8KLXN0YXRpYyBpbnQgd3JpdGVfZGF0YV90b19mbGFzaF9tZW0oc3RydWN0IGRl
+bmFsaV9uYW5kX2luZm8gKmRlbmFsaSwKLQkJCQkgICBjb25zdCB1aW50OF90ICpidWYsIGludCBs
+ZW4pCi17Ci0JdWludDMyX3QgKmJ1ZjMyOwotCWludCBpOworCQlwcmV2X3NlY3RvciA9IGVycl9z
+ZWN0b3I7CisJfSB3aGlsZSAoIShlcnJfY29yX2luZm8gJiBFUlJfQ09SUkVDVElPTl9JTkZPX19M
+QVNUX0VSUikpOwogCiAJLyoKLQkgKiB2ZXJpZnkgdGhhdCB0aGUgbGVuIGlzIGEgbXVsdGlwbGUg
+b2YgNC4KLQkgKiBzZWUgY29tbWVudCBpbiByZWFkX2RhdGFfZnJvbV9mbGFzaF9tZW0oKQorCSAq
+IE9uY2UgaGFuZGxlIGFsbCBFQ0MgZXJyb3JzLCBjb250cm9sbGVyIHdpbGwgdHJpZ2dlciBhbgor
+CSAqIEVDQ19UUkFOU0FDVElPTl9ET05FIGludGVycnVwdC4KIAkgKi8KLQlCVUdfT04oKGxlbiAl
+IDQpICE9IDApOworCWlycV9zdGF0dXMgPSBkZW5hbGlfd2FpdF9mb3JfaXJxKGRlbmFsaSwgSU5U
+Ul9fRUNDX1RSQU5TQUNUSU9OX0RPTkUpOworCWlmICghKGlycV9zdGF0dXMgJiBJTlRSX19FQ0Nf
+VFJBTlNBQ1RJT05fRE9ORSkpCisJCXJldHVybiAtRUlPOwogCi0JLyogd3JpdGUgdGhlIGRhdGEg
+dG8gdGhlIGZsYXNoIG1lbW9yeSAqLwotCWJ1ZjMyID0gKHVpbnQzMl90ICopYnVmOwotCWZvciAo
+aSA9IDA7IGkgPCBsZW4gLyA0OyBpKyspCi0JCWlvd3JpdGUzMigqYnVmMzIrKywgZGVuYWxpLT5m
+bGFzaF9tZW0gKyAweDEwKTsKLQlyZXR1cm4gaSAqIDQ7IC8qIGludGVudCBpcyB0byByZXR1cm4g
+dGhlIG51bWJlciBvZiBieXRlcyByZWFkICovCisJcmV0dXJuIG1heF9iaXRmbGlwczsKIH0KIAot
+LyogaGVscGVyIGZ1bmN0aW9uIHRoYXQgc2ltcGx5IHJlYWRzIGEgYnVmZmVyIGZyb20gdGhlIGZs
+YXNoICovCi1zdGF0aWMgaW50IHJlYWRfZGF0YV9mcm9tX2ZsYXNoX21lbShzdHJ1Y3QgZGVuYWxp
+X25hbmRfaW5mbyAqZGVuYWxpLAotCQkJCSAgICB1aW50OF90ICpidWYsIGludCBsZW4pCitzdGF0
+aWMgdm9pZCBkZW5hbGlfc2V0dXBfZG1hNjQoc3RydWN0IGRlbmFsaV9jb250cm9sbGVyICpkZW5h
+bGksCisJCQkgICAgICAgZG1hX2FkZHJfdCBkbWFfYWRkciwgaW50IHBhZ2UsIGJvb2wgd3JpdGUp
+CiB7Ci0JdWludDMyX3QgKmJ1ZjMyOwotCWludCBpOworCXUzMiBtb2RlOworCWNvbnN0IGludCBw
+YWdlX2NvdW50ID0gMTsKKworCW1vZGUgPSBERU5BTElfTUFQMTAgfCBERU5BTElfQkFOSyhkZW5h
+bGkpIHwgcGFnZTsKKworCS8qIERNQSBpcyBhIHRocmVlIHN0ZXAgcHJvY2VzcyAqLwogCiAJLyoK
+LQkgKiB3ZSBhc3N1bWUgdGhhdCBsZW4gd2lsbCBiZSBhIG11bHRpcGxlIG9mIDQsIGlmIG5vdCBp
+dCB3b3VsZCBiZSBuaWNlCi0JICogdG8ga25vdyBhYm91dCBpdCBBU0FQIHJhdGhlciB0aGFuIGhh
+dmUgcmFuZG9tIGZhaWx1cmVzLi4uCi0JICogVGhpcyBhc3N1bXB0aW9uIGlzIGJhc2VkIG9uIHRo
+ZSBmYWN0IHRoYXQgdGhpcyBmdW5jdGlvbiBpcyBkZXNpZ25lZAotCSAqIHRvIGJlIHVzZWQgdG8g
+cmVhZCBmbGFzaCBwYWdlcywgd2hpY2ggYXJlIHR5cGljYWxseSBtdWx0aXBsZXMgb2YgNC4KKwkg
+KiAxLiBzZXR1cCB0cmFuc2ZlciB0eXBlLCBpbnRlcnJ1cHQgd2hlbiBjb21wbGV0ZSwKKwkgKiAg
+ICBidXJzdCBsZW4gPSA2NCBieXRlcywgdGhlIG51bWJlciBvZiBwYWdlcwogCSAqLwotCUJVR19P
+TigobGVuICUgNCkgIT0gMCk7CisJZGVuYWxpLT5ob3N0X3dyaXRlKGRlbmFsaSwgbW9kZSwKKwkJ
+CSAgIDB4MDEwMDIwMDAgfCAoNjQgPDwgMTYpIHwKKwkJCSAgICh3cml0ZSA/IEJJVCg4KSA6IDAp
+IHwgcGFnZV9jb3VudCk7CisKKwkvKiAyLiBzZXQgbWVtb3J5IGxvdyBhZGRyZXNzICovCisJZGVu
+YWxpLT5ob3N0X3dyaXRlKGRlbmFsaSwgbW9kZSwgbG93ZXJfMzJfYml0cyhkbWFfYWRkcikpOwog
+Ci0JLyogdHJhbnNmZXIgdGhlIGRhdGEgZnJvbSB0aGUgZmxhc2ggKi8KLQlidWYzMiA9ICh1aW50
+MzJfdCAqKWJ1ZjsKLQlmb3IgKGkgPSAwOyBpIDwgbGVuIC8gNDsgaSsrKQotCQkqYnVmMzIrKyA9
+IGlvcmVhZDMyKGRlbmFsaS0+Zmxhc2hfbWVtICsgMHgxMCk7Ci0JcmV0dXJuIGkgKiA0OyAvKiBp
+bnRlbnQgaXMgdG8gcmV0dXJuIHRoZSBudW1iZXIgb2YgYnl0ZXMgcmVhZCAqLworCS8qIDMuIHNl
+dCBtZW1vcnkgaGlnaCBhZGRyZXNzICovCisJZGVuYWxpLT5ob3N0X3dyaXRlKGRlbmFsaSwgbW9k
+ZSwgdXBwZXJfMzJfYml0cyhkbWFfYWRkcikpOwogfQogCi0vKiB3cml0ZXMgT09CIGRhdGEgdG8g
+dGhlIGRldmljZSAqLwotc3RhdGljIGludCB3cml0ZV9vb2JfZGF0YShzdHJ1Y3QgbmFuZF9jaGlw
+ICpjaGlwLCB1aW50OF90ICpidWYsIGludCBwYWdlKQorc3RhdGljIHZvaWQgZGVuYWxpX3NldHVw
+X2RtYTMyKHN0cnVjdCBkZW5hbGlfY29udHJvbGxlciAqZGVuYWxpLAorCQkJICAgICAgIGRtYV9h
+ZGRyX3QgZG1hX2FkZHIsIGludCBwYWdlLCBib29sIHdyaXRlKQogewotCXN0cnVjdCBtdGRfaW5m
+byAqbXRkID0gbmFuZF90b19tdGQoY2hpcCk7Ci0Jc3RydWN0IGRlbmFsaV9uYW5kX2luZm8gKmRl
+bmFsaSA9IG5hbmRfdG9fZGVuYWxpKGNoaXApOwotCXVpbnQzMl90IGlycV9zdGF0dXM7Ci0JdWlu
+dDMyX3QgaXJxX21hc2sgPSBJTlRSX1NUQVRVU19fUFJPR1JBTV9DT01QIHwKLQkJCQkJCUlOVFJf
+U1RBVFVTX19QUk9HUkFNX0ZBSUw7Ci0JaW50IHN0YXR1cyA9IDA7CisJdTMyIG1vZGU7CisJY29u
+c3QgaW50IHBhZ2VfY291bnQgPSAxOwogCi0JZGVuYWxpLT5wYWdlID0gcGFnZTsKKwltb2RlID0g
+REVOQUxJX01BUDEwIHwgREVOQUxJX0JBTksoZGVuYWxpKTsKIAotCWlmIChkZW5hbGlfc2VuZF9w
+aXBlbGluZV9jbWQoZGVuYWxpLCBmYWxzZSwgZmFsc2UsIFNQQVJFX0FDQ0VTUywKLQkJCQkJCQlE
+RU5BTElfV1JJVEUpID09IFBBU1MpIHsKLQkJd3JpdGVfZGF0YV90b19mbGFzaF9tZW0oZGVuYWxp
+LCBidWYsIG10ZC0+b29ic2l6ZSk7CisJLyogRE1BIGlzIGEgZm91ciBzdGVwIHByb2Nlc3MgKi8K
+IAotCQkvKiB3YWl0IGZvciBvcGVyYXRpb24gdG8gY29tcGxldGUgKi8KLQkJaXJxX3N0YXR1cyA9
+IHdhaXRfZm9yX2lycShkZW5hbGksIGlycV9tYXNrKTsKKwkvKiAxLiBzZXR1cCB0cmFuc2ZlciB0
+eXBlIGFuZCAjIG9mIHBhZ2VzICovCisJZGVuYWxpLT5ob3N0X3dyaXRlKGRlbmFsaSwgbW9kZSB8
+IHBhZ2UsCisJCQkgICAweDIwMDAgfCAod3JpdGUgPyBCSVQoOCkgOiAwKSB8IHBhZ2VfY291bnQp
+OwogCi0JCWlmIChpcnFfc3RhdHVzID09IDApIHsKLQkJCWRldl9lcnIoZGVuYWxpLT5kZXYsICJP
+T0Igd3JpdGUgZmFpbGVkXG4iKTsKLQkJCXN0YXR1cyA9IC1FSU87Ci0JCX0KKwkvKiAyLiBzZXQg
+bWVtb3J5IGhpZ2ggYWRkcmVzcyBiaXRzIDIzOjggKi8KKwlkZW5hbGktPmhvc3Rfd3JpdGUoZGVu
+YWxpLCBtb2RlIHwgKChkbWFfYWRkciA+PiAxNikgPDwgOCksIDB4MjIwMCk7CiAKLQkJLyogc2V0
+IHRoZSBkZXZpY2UgYmFjayB0byBNQUlOX0FDQ0VTUyAqLwotCQl7Ci0JCQl1aW50MzJfdCBhZGRy
+OwotCQkJdWludDMyX3QgY21kOwotCQkJYWRkciA9IEJBTksoZGVuYWxpLT5mbGFzaF9iYW5rKSB8
+IGRlbmFsaS0+cGFnZTsKLQkJCWNtZCA9IE1PREVfMTAgfCBhZGRyOwotCQkJaW5kZXhfYWRkcihk
+ZW5hbGksICh1aW50MzJfdCljbWQsIE1BSU5fQUNDRVNTKTsKLQkJfQorCS8qIDMuIHNldCBtZW1v
+cnkgbG93IGFkZHJlc3MgYml0cyAyMzo4ICovCisJZGVuYWxpLT5ob3N0X3dyaXRlKGRlbmFsaSwg
+bW9kZSB8ICgoZG1hX2FkZHIgJiAweGZmZmYpIDw8IDgpLCAweDIzMDApOwogCi0JfSBlbHNlIHsK
+LQkJZGV2X2VycihkZW5hbGktPmRldiwgInVuYWJsZSB0byBzZW5kIHBpcGVsaW5lIGNvbW1hbmRc
+biIpOwotCQlzdGF0dXMgPSAtRUlPOwotCX0KLQlyZXR1cm4gc3RhdHVzOworCS8qIDQuIGludGVy
+cnVwdCB3aGVuIGNvbXBsZXRlLCBidXJzdCBsZW4gPSA2NCBieXRlcyAqLworCWRlbmFsaS0+aG9z
+dF93cml0ZShkZW5hbGksIG1vZGUgfCAweDE0MDAwLCAweDI0MDApOwogfQogCi0vKiByZWFkcyBP
+T0IgZGF0YSBmcm9tIHRoZSBkZXZpY2UgKi8KLXN0YXRpYyB2b2lkIHJlYWRfb29iX2RhdGEoc3Ry
+dWN0IG5hbmRfY2hpcCAqY2hpcCwgdWludDhfdCAqYnVmLCBpbnQgcGFnZSkKK3N0YXRpYyBpbnQg
+ZGVuYWxpX3Bpb19yZWFkKHN0cnVjdCBkZW5hbGlfY29udHJvbGxlciAqZGVuYWxpLCB1MzIgKmJ1
+ZiwKKwkJCSAgIHNpemVfdCBzaXplLCBpbnQgcGFnZSkKIHsKLQlzdHJ1Y3QgbXRkX2luZm8gKm10
+ZCA9IG5hbmRfdG9fbXRkKGNoaXApOwotCXN0cnVjdCBkZW5hbGlfbmFuZF9pbmZvICpkZW5hbGkg
+PSBuYW5kX3RvX2RlbmFsaShjaGlwKTsKLQl1aW50MzJfdCBpcnFfbWFzayA9IElOVFJfU1RBVFVT
+X19MT0FEX0NPTVA7Ci0JdWludDMyX3QgaXJxX3N0YXR1cywgYWRkciwgY21kOworCXUzMiBhZGRy
+ID0gREVOQUxJX01BUDAxIHwgREVOQUxJX0JBTksoZGVuYWxpKSB8IHBhZ2U7CisJdTMyIGlycV9z
+dGF0dXMsIGVjY19lcnJfbWFzazsKKwlpbnQgaTsKIAotCWRlbmFsaS0+cGFnZSA9IHBhZ2U7CisJ
+aWYgKGRlbmFsaS0+Y2FwcyAmIERFTkFMSV9DQVBfSFdfRUNDX0ZJWFVQKQorCQllY2NfZXJyX21h
+c2sgPSBJTlRSX19FQ0NfVU5DT1JfRVJSOworCWVsc2UKKwkJZWNjX2Vycl9tYXNrID0gSU5UUl9f
+RUNDX0VSUjsKIAotCWlmIChkZW5hbGlfc2VuZF9waXBlbGluZV9jbWQoZGVuYWxpLCBmYWxzZSwg
+dHJ1ZSwgU1BBUkVfQUNDRVNTLAotCQkJCQkJCURFTkFMSV9SRUFEKSA9PSBQQVNTKSB7Ci0JCXJl
+YWRfZGF0YV9mcm9tX2ZsYXNoX21lbShkZW5hbGksIGJ1ZiwgbXRkLT5vb2JzaXplKTsKKwlkZW5h
+bGlfcmVzZXRfaXJxKGRlbmFsaSk7CiAKLQkJLyoKLQkJICogd2FpdCBmb3IgY29tbWFuZCB0byBi
+ZSBhY2NlcHRlZAotCQkgKiBjYW4gYWx3YXlzIHVzZSBzdGF0dXMwIGJpdCBhcyB0aGUKLQkJICog
+bWFzayBpcyBpZGVudGljYWwgZm9yIGVhY2ggYmFuay4KLQkJICovCi0JCWlycV9zdGF0dXMgPSB3
+YWl0X2Zvcl9pcnEoZGVuYWxpLCBpcnFfbWFzayk7CisJZm9yIChpID0gMDsgaSA8IHNpemUgLyA0
+OyBpKyspCisJCWJ1ZltpXSA9IGRlbmFsaS0+aG9zdF9yZWFkKGRlbmFsaSwgYWRkcik7CiAKLQkJ
+aWYgKGlycV9zdGF0dXMgPT0gMCkKLQkJCWRldl9lcnIoZGVuYWxpLT5kZXYsICJwYWdlIG9uIE9P
+QiB0aW1lb3V0ICVkXG4iLAotCQkJCQlkZW5hbGktPnBhZ2UpOworCWlycV9zdGF0dXMgPSBkZW5h
+bGlfd2FpdF9mb3JfaXJxKGRlbmFsaSwgSU5UUl9fUEFHRV9YRkVSX0lOQyk7CisJaWYgKCEoaXJx
+X3N0YXR1cyAmIElOVFJfX1BBR0VfWEZFUl9JTkMpKQorCQlyZXR1cm4gLUVJTzsKIAotCQkvKgot
+CQkgKiBXZSBzZXQgdGhlIGRldmljZSBiYWNrIHRvIE1BSU5fQUNDRVNTIGhlcmUgYXMgSSBvYnNl
+cnZlZAotCQkgKiBpbnN0YWJpbGl0eSB3aXRoIHRoZSBjb250cm9sbGVyIGlmIHlvdSBkbyBhIGJs
+b2NrIGVyYXNlCi0JCSAqIGFuZCB0aGUgbGFzdCB0cmFuc2FjdGlvbiB3YXMgYSBTUEFSRV9BQ0NF
+U1MuIEJsb2NrIGVyYXNlCi0JCSAqIGlzIHJlbGlhYmxlIChhY2NvcmRpbmcgdG8gdGhlIE1URCB0
+ZXN0IGluZnJhc3RydWN0dXJlKQotCQkgKiBpZiB5b3UgYXJlIGluIE1BSU5fQUNDRVNTLgotCQkg
+Ki8KLQkJYWRkciA9IEJBTksoZGVuYWxpLT5mbGFzaF9iYW5rKSB8IGRlbmFsaS0+cGFnZTsKLQkJ
+Y21kID0gTU9ERV8xMCB8IGFkZHI7Ci0JCWluZGV4X2FkZHIoZGVuYWxpLCBjbWQsIE1BSU5fQUND
+RVNTKTsKLQl9CisJaWYgKGlycV9zdGF0dXMgJiBJTlRSX19FUkFTRURfUEFHRSkKKwkJbWVtc2V0
+KGJ1ZiwgMHhmZiwgc2l6ZSk7CisKKwlyZXR1cm4gaXJxX3N0YXR1cyAmIGVjY19lcnJfbWFzayA/
+IC1FQkFETVNHIDogMDsKIH0KIAotLyoKLSAqIHRoaXMgZnVuY3Rpb24gZXhhbWluZXMgYnVmZmVy
+cyB0byBzZWUgaWYgdGhleSBjb250YWluIGRhdGEgdGhhdAotICogaW5kaWNhdGUgdGhhdCB0aGUg
+YnVmZmVyIGlzIHBhcnQgb2YgYW4gZXJhc2VkIHJlZ2lvbiBvZiBmbGFzaC4KLSAqLwotc3RhdGlj
+IGJvb2wgaXNfZXJhc2VkKHVpbnQ4X3QgKmJ1ZiwgaW50IGxlbikKK3N0YXRpYyBpbnQgZGVuYWxp
+X3Bpb193cml0ZShzdHJ1Y3QgZGVuYWxpX2NvbnRyb2xsZXIgKmRlbmFsaSwgY29uc3QgdTMyICpi
+dWYsCisJCQkgICAgc2l6ZV90IHNpemUsIGludCBwYWdlKQogeworCXUzMiBhZGRyID0gREVOQUxJ
+X01BUDAxIHwgREVOQUxJX0JBTksoZGVuYWxpKSB8IHBhZ2U7CisJdTMyIGlycV9zdGF0dXM7CiAJ
+aW50IGk7CiAKLQlmb3IgKGkgPSAwOyBpIDwgbGVuOyBpKyspCi0JCWlmIChidWZbaV0gIT0gMHhG
+RikKLQkJCXJldHVybiBmYWxzZTsKLQlyZXR1cm4gdHJ1ZTsKKwlkZW5hbGlfcmVzZXRfaXJxKGRl
+bmFsaSk7CisKKwlmb3IgKGkgPSAwOyBpIDwgc2l6ZSAvIDQ7IGkrKykKKwkJZGVuYWxpLT5ob3N0
+X3dyaXRlKGRlbmFsaSwgYWRkciwgYnVmW2ldKTsKKworCWlycV9zdGF0dXMgPSBkZW5hbGlfd2Fp
+dF9mb3JfaXJxKGRlbmFsaSwKKwkJCQkJIElOVFJfX1BST0dSQU1fQ09NUCB8CisJCQkJCSBJTlRS
+X19QUk9HUkFNX0ZBSUwpOworCWlmICghKGlycV9zdGF0dXMgJiBJTlRSX19QUk9HUkFNX0NPTVAp
+KQorCQlyZXR1cm4gLUVJTzsKKworCXJldHVybiAwOwogfQotI2RlZmluZSBFQ0NfU0VDVE9SX1NJ
+WkUgNTEyCiAKLSNkZWZpbmUgRUNDX1NFQ1RPUih4KQkoKCh4KSAmIEVDQ19FUlJPUl9BRERSRVNT
+X19TRUNUT1JfTlIpID4+IDEyKQotI2RlZmluZSBFQ0NfQllURSh4KQkoKCh4KSAmIEVDQ19FUlJP
+Ul9BRERSRVNTX19PRkZTRVQpKQotI2RlZmluZSBFQ0NfQ09SUkVDVElPTl9WQUxVRSh4KSAoKHgp
+ICYgRVJSX0NPUlJFQ1RJT05fSU5GT19fQllURU1BU0spCi0jZGVmaW5lIEVDQ19FUlJPUl9DT1JS
+RUNUQUJMRSh4KSAoISgoeCkgJiBFUlJfQ09SUkVDVElPTl9JTkZPX19FUlJPUl9UWVBFKSkKLSNk
+ZWZpbmUgRUNDX0VSUl9ERVZJQ0UoeCkJKCgoeCkgJiBFUlJfQ09SUkVDVElPTl9JTkZPX19ERVZJ
+Q0VfTlIpID4+IDgpCi0jZGVmaW5lIEVDQ19MQVNUX0VSUih4KQkJKCh4KSAmIEVSUl9DT1JSRUNU
+SU9OX0lORk9fX0xBU1RfRVJSX0lORk8pCitzdGF0aWMgaW50IGRlbmFsaV9waW9feGZlcihzdHJ1
+Y3QgZGVuYWxpX2NvbnRyb2xsZXIgKmRlbmFsaSwgdm9pZCAqYnVmLAorCQkJICAgc2l6ZV90IHNp
+emUsIGludCBwYWdlLCBib29sIHdyaXRlKQoreworCWlmICh3cml0ZSkKKwkJcmV0dXJuIGRlbmFs
+aV9waW9fd3JpdGUoZGVuYWxpLCBidWYsIHNpemUsIHBhZ2UpOworCWVsc2UKKwkJcmV0dXJuIGRl
+bmFsaV9waW9fcmVhZChkZW5hbGksIGJ1Ziwgc2l6ZSwgcGFnZSk7Cit9CiAKLXN0YXRpYyBib29s
+IGhhbmRsZV9lY2Moc3RydWN0IGRlbmFsaV9uYW5kX2luZm8gKmRlbmFsaSwgdWludDhfdCAqYnVm
+LAotCQkgICAgICAgdWludDMyX3QgaXJxX3N0YXR1cywgdW5zaWduZWQgaW50ICptYXhfYml0Zmxp
+cHMpCitzdGF0aWMgaW50IGRlbmFsaV9kbWFfeGZlcihzdHJ1Y3QgZGVuYWxpX2NvbnRyb2xsZXIg
+KmRlbmFsaSwgdm9pZCAqYnVmLAorCQkJICAgc2l6ZV90IHNpemUsIGludCBwYWdlLCBib29sIHdy
+aXRlKQogewotCXN0cnVjdCBuYW5kX2NoaXAgKmNoaXAgPSAmZGVuYWxpLT5uYW5kOwotCXN0cnVj
+dCBtdGRfaW5mbyAqbXRkID0gbmFuZF90b19tdGQoY2hpcCk7Ci0JYm9vbCBjaGVja19lcmFzZWRf
+cGFnZSA9IGZhbHNlOwotCXVuc2lnbmVkIGludCBiaXRmbGlwcyA9IDA7CisJZG1hX2FkZHJfdCBk
+bWFfYWRkcjsKKwl1MzIgaXJxX21hc2ssIGlycV9zdGF0dXMsIGVjY19lcnJfbWFzazsKKwllbnVt
+IGRtYV9kYXRhX2RpcmVjdGlvbiBkaXIgPSB3cml0ZSA/IERNQV9UT19ERVZJQ0UgOiBETUFfRlJP
+TV9ERVZJQ0U7CisJaW50IHJldCA9IDA7CiAKLSAgICAgICBpZiAoZGVuYWxpLT5oYXZlX2h3X2Vj
+Y19maXh1cCAmJgotICAgICAgICAgICAoaXJxX3N0YXR1cyAmIElOVFJfU1RBVFVTX19FQ0NfVU5D
+T1JfRVJSKSkgewotICAgICAgICAgICAgICAgY2xlYXJfaW50ZXJydXB0cyhkZW5hbGkpOwotICAg
+ICAgICAgICAgICAgZGVuYWxpX3NldF9pbnRyX21vZGVzKGRlbmFsaSwgdHJ1ZSk7Ci0gICAgICAg
+ICAgICAgICBjaGVja19lcmFzZWRfcGFnZSA9IHRydWU7Ci0gICAgICAgfSBlbHNlIGlmIChpcnFf
+c3RhdHVzICYgSU5UUl9TVEFUVVNfX0VDQ19FUlIpIHsKLQkJLyogcmVhZCB0aGUgRUNDIGVycm9y
+cy4gd2UnbGwgaWdub3JlIHRoZW0gZm9yIG5vdyAqLwotCQl1aW50MzJfdCBlcnJfYWRkcmVzcywg
+ZXJyX2NvcnJlY3Rpb25faW5mbywgZXJyX2J5dGUsCi0JCQkgZXJyX3NlY3RvciwgZXJyX2Rldmlj
+ZSwgZXJyX2NvcnJlY3Rpb25fdmFsdWU7Ci0JCWRlbmFsaV9zZXRfaW50cl9tb2RlcyhkZW5hbGks
+IGZhbHNlKTsKLQotCQlkbyB7Ci0JCQllcnJfYWRkcmVzcyA9IGlvcmVhZDMyKGRlbmFsaS0+Zmxh
+c2hfcmVnICsKLQkJCQkJCUVDQ19FUlJPUl9BRERSRVNTKTsKLQkJCWVycl9zZWN0b3IgPSBFQ0Nf
+U0VDVE9SKGVycl9hZGRyZXNzKTsKLQkJCWVycl9ieXRlID0gRUNDX0JZVEUoZXJyX2FkZHJlc3Mp
+OwotCi0JCQllcnJfY29ycmVjdGlvbl9pbmZvID0gaW9yZWFkMzIoZGVuYWxpLT5mbGFzaF9yZWcg
+KwotCQkJCQkJRVJSX0NPUlJFQ1RJT05fSU5GTyk7Ci0JCQllcnJfY29ycmVjdGlvbl92YWx1ZSA9
+Ci0JCQkJRUNDX0NPUlJFQ1RJT05fVkFMVUUoZXJyX2NvcnJlY3Rpb25faW5mbyk7Ci0JCQllcnJf
+ZGV2aWNlID0gRUNDX0VSUl9ERVZJQ0UoZXJyX2NvcnJlY3Rpb25faW5mbyk7Ci0KLQkJCWlmIChF
+Q0NfRVJST1JfQ09SUkVDVEFCTEUoZXJyX2NvcnJlY3Rpb25faW5mbykpIHsKLQkJCQkvKgotCQkJ
+CSAqIElmIGVycl9ieXRlIGlzIGxhcmdlciB0aGFuIEVDQ19TRUNUT1JfU0laRSwKLQkJCQkgKiBt
+ZWFucyBlcnJvciBoYXBwZW5lZCBpbiBPT0IsIHNvIHdlIGlnbm9yZQotCQkJCSAqIGl0LiBJdCdz
+IG5vIG5lZWQgZm9yIHVzIHRvIGNvcnJlY3QgaXQKLQkJCQkgKiBlcnJfZGV2aWNlIGlzIHJlcHJl
+c2VudGVkIHRoZSBOQU5EIGVycm9yCi0JCQkJICogYml0cyBhcmUgaGFwcGVuZWQgaW4gaWYgdGhl
+cmUgYXJlIG1vcmUKLQkJCQkgKiB0aGFuIG9uZSBOQU5EIGNvbm5lY3RlZC4KLQkJCQkgKi8KLQkJ
+CQlpZiAoZXJyX2J5dGUgPCBFQ0NfU0VDVE9SX1NJWkUpIHsKLQkJCQkJaW50IG9mZnNldDsKLQot
+CQkJCQlvZmZzZXQgPSAoZXJyX3NlY3RvciAqCi0JCQkJCQkJRUNDX1NFQ1RPUl9TSVpFICsKLQkJ
+CQkJCQllcnJfYnl0ZSkgKgotCQkJCQkJCWRlbmFsaS0+ZGV2bnVtICsKLQkJCQkJCQllcnJfZGV2
+aWNlOwotCQkJCQkvKiBjb3JyZWN0IHRoZSBFQ0MgZXJyb3IgKi8KLQkJCQkJYnVmW29mZnNldF0g
+Xj0gZXJyX2NvcnJlY3Rpb25fdmFsdWU7Ci0JCQkJCW10ZC0+ZWNjX3N0YXRzLmNvcnJlY3RlZCsr
+OwotCQkJCQliaXRmbGlwcysrOwotCQkJCX0KLQkJCX0gZWxzZSB7Ci0JCQkJLyoKLQkJCQkgKiBp
+ZiB0aGUgZXJyb3IgaXMgbm90IGNvcnJlY3RhYmxlLCBuZWVkIHRvCi0JCQkJICogbG9vayBhdCB0
+aGUgcGFnZSB0byBzZWUgaWYgaXQgaXMgYW4gZXJhc2VkCi0JCQkJICogcGFnZS4gaWYgc28sIHRo
+ZW4gaXQncyBub3QgYSByZWFsIEVDQyBlcnJvcgotCQkJCSAqLwotCQkJCWNoZWNrX2VyYXNlZF9w
+YWdlID0gdHJ1ZTsKLQkJCX0KLQkJfSB3aGlsZSAoIUVDQ19MQVNUX0VSUihlcnJfY29ycmVjdGlv
+bl9pbmZvKSk7CisJZG1hX2FkZHIgPSBkbWFfbWFwX3NpbmdsZShkZW5hbGktPmRldiwgYnVmLCBz
+aXplLCBkaXIpOworCWlmIChkbWFfbWFwcGluZ19lcnJvcihkZW5hbGktPmRldiwgZG1hX2FkZHIp
+KSB7CisJCWRldl9kYmcoZGVuYWxpLT5kZXYsICJGYWlsZWQgdG8gRE1BLW1hcCBidWZmZXIuIFRy
+eWluZyBQSU8uXG4iKTsKKwkJcmV0dXJuIGRlbmFsaV9waW9feGZlcihkZW5hbGksIGJ1Ziwgc2l6
+ZSwgcGFnZSwgd3JpdGUpOworCX0KKworCWlmICh3cml0ZSkgewogCQkvKgotCQkgKiBPbmNlIGhh
+bmRsZSBhbGwgZWNjIGVycm9ycywgY29udHJvbGxlciB3aWxsIHRyaWdnZXIKLQkJICogYSBFQ0Nf
+VFJBTlNBQ1RJT05fRE9ORSBpbnRlcnJ1cHQsIHNvIGhlcmUganVzdCB3YWl0Ci0JCSAqIGZvciBh
+IHdoaWxlIGZvciB0aGlzIGludGVycnVwdAorCQkgKiBJTlRSX19QUk9HUkFNX0NPTVAgaXMgbmV2
+ZXIgYXNzZXJ0ZWQgZm9yIHRoZSBETUEgdHJhbnNmZXIuCisJCSAqIFdlIGNhbiB1c2UgSU5UUl9f
+RE1BX0NNRF9DT01QIGluc3RlYWQuICBUaGlzIGZsYWcgaXMgYXNzZXJ0ZWQKKwkJICogd2hlbiB0
+aGUgcGFnZSBwcm9ncmFtIGlzIGNvbXBsZXRlZC4KIAkJICovCi0JCXdoaWxlICghKHJlYWRfaW50
+ZXJydXB0X3N0YXR1cyhkZW5hbGkpICYKLQkJCQlJTlRSX1NUQVRVU19fRUNDX1RSQU5TQUNUSU9O
+X0RPTkUpKQotCQkJY3B1X3JlbGF4KCk7Ci0JCWNsZWFyX2ludGVycnVwdHMoZGVuYWxpKTsKLQkJ
+ZGVuYWxpX3NldF9pbnRyX21vZGVzKGRlbmFsaSwgdHJ1ZSk7CisJCWlycV9tYXNrID0gSU5UUl9f
+RE1BX0NNRF9DT01QIHwgSU5UUl9fUFJPR1JBTV9GQUlMOworCQllY2NfZXJyX21hc2sgPSAwOwor
+CX0gZWxzZSBpZiAoZGVuYWxpLT5jYXBzICYgREVOQUxJX0NBUF9IV19FQ0NfRklYVVApIHsKKwkJ
+aXJxX21hc2sgPSBJTlRSX19ETUFfQ01EX0NPTVA7CisJCWVjY19lcnJfbWFzayA9IElOVFJfX0VD
+Q19VTkNPUl9FUlI7CisJfSBlbHNlIHsKKwkJaXJxX21hc2sgPSBJTlRSX19ETUFfQ01EX0NPTVA7
+CisJCWVjY19lcnJfbWFzayA9IElOVFJfX0VDQ19FUlI7CiAJfQotCSptYXhfYml0ZmxpcHMgPSBi
+aXRmbGlwczsKLQlyZXR1cm4gY2hlY2tfZXJhc2VkX3BhZ2U7CisKKwlpb3dyaXRlMzIoRE1BX0VO
+QUJMRV9fRkxBRywgZGVuYWxpLT5yZWcgKyBETUFfRU5BQkxFKTsKKwkvKgorCSAqIFRoZSAtPnNl
+dHVwX2RtYSgpIGhvb2sga2lja3MgRE1BIGJ5IHVzaW5nIHRoZSBkYXRhL2NvbW1hbmQKKwkgKiBp
+bnRlcmZhY2UsIHdoaWNoIGJlbG9uZ3MgdG8gYSBkaWZmZXJlbnQgQVhJIHBvcnQgZnJvbSB0aGUK
+KwkgKiByZWdpc3RlciBpbnRlcmZhY2UuICBSZWFkIGJhY2sgdGhlIHJlZ2lzdGVyIHRvIGF2b2lk
+IGEgcmFjZS4KKwkgKi8KKwlpb3JlYWQzMihkZW5hbGktPnJlZyArIERNQV9FTkFCTEUpOworCisJ
+ZGVuYWxpX3Jlc2V0X2lycShkZW5hbGkpOworCWRlbmFsaS0+c2V0dXBfZG1hKGRlbmFsaSwgZG1h
+X2FkZHIsIHBhZ2UsIHdyaXRlKTsKKworCWlycV9zdGF0dXMgPSBkZW5hbGlfd2FpdF9mb3JfaXJx
+KGRlbmFsaSwgaXJxX21hc2spOworCWlmICghKGlycV9zdGF0dXMgJiBJTlRSX19ETUFfQ01EX0NP
+TVApKQorCQlyZXQgPSAtRUlPOworCWVsc2UgaWYgKGlycV9zdGF0dXMgJiBlY2NfZXJyX21hc2sp
+CisJCXJldCA9IC1FQkFETVNHOworCisJaW93cml0ZTMyKDAsIGRlbmFsaS0+cmVnICsgRE1BX0VO
+QUJMRSk7CisKKwlkbWFfdW5tYXBfc2luZ2xlKGRlbmFsaS0+ZGV2LCBkbWFfYWRkciwgc2l6ZSwg
+ZGlyKTsKKworCWlmIChpcnFfc3RhdHVzICYgSU5UUl9fRVJBU0VEX1BBR0UpCisJCW1lbXNldChi
+dWYsIDB4ZmYsIHNpemUpOworCisJcmV0dXJuIHJldDsKIH0KIAotLyogcHJvZ3JhbXMgdGhlIGNv
+bnRyb2xsZXIgdG8gZWl0aGVyIGVuYWJsZS9kaXNhYmxlIERNQSB0cmFuc2ZlcnMgKi8KLXN0YXRp
+YyB2b2lkIGRlbmFsaV9lbmFibGVfZG1hKHN0cnVjdCBkZW5hbGlfbmFuZF9pbmZvICpkZW5hbGks
+IGJvb2wgZW4pCitzdGF0aWMgaW50IGRlbmFsaV9wYWdlX3hmZXIoc3RydWN0IG5hbmRfY2hpcCAq
+Y2hpcCwgdm9pZCAqYnVmLCBzaXplX3Qgc2l6ZSwKKwkJCSAgICBpbnQgcGFnZSwgYm9vbCB3cml0
+ZSkKIHsKLQlpb3dyaXRlMzIoZW4gPyBETUFfRU5BQkxFX19GTEFHIDogMCwgZGVuYWxpLT5mbGFz
+aF9yZWcgKyBETUFfRU5BQkxFKTsKLQlpb3JlYWQzMihkZW5hbGktPmZsYXNoX3JlZyArIERNQV9F
+TkFCTEUpOworCXN0cnVjdCBkZW5hbGlfY29udHJvbGxlciAqZGVuYWxpID0gdG9fZGVuYWxpX2Nv
+bnRyb2xsZXIoY2hpcCk7CisKKwlkZW5hbGlfc2VsZWN0X3RhcmdldChjaGlwLCBjaGlwLT5jdXJf
+Y3MpOworCisJaWYgKGRlbmFsaS0+ZG1hX2F2YWlsKQorCQlyZXR1cm4gZGVuYWxpX2RtYV94ZmVy
+KGRlbmFsaSwgYnVmLCBzaXplLCBwYWdlLCB3cml0ZSk7CisJZWxzZQorCQlyZXR1cm4gZGVuYWxp
+X3Bpb194ZmVyKGRlbmFsaSwgYnVmLCBzaXplLCBwYWdlLCB3cml0ZSk7CiB9CiAKLS8qIHNldHVw
+cyB0aGUgSFcgdG8gcGVyZm9ybSB0aGUgZGF0YSBETUEgKi8KLXN0YXRpYyB2b2lkIGRlbmFsaV9z
+ZXR1cF9kbWEoc3RydWN0IGRlbmFsaV9uYW5kX2luZm8gKmRlbmFsaSwgaW50IG9wKQorc3RhdGlj
+IGludCBkZW5hbGlfcmVhZF9wYWdlKHN0cnVjdCBuYW5kX2NoaXAgKmNoaXAsIHU4ICpidWYsCisJ
+CQkgICAgaW50IG9vYl9yZXF1aXJlZCwgaW50IHBhZ2UpCiB7Ci0JdWludDMyX3QgbW9kZTsKLQlj
+b25zdCBpbnQgcGFnZV9jb3VudCA9IDE7Ci0JdWludDMyX3QgYWRkciA9ICh1bnNpZ25lZCBsb25n
+KWRlbmFsaS0+YnVmLmJ1ZjsKKwlzdHJ1Y3QgZGVuYWxpX2NvbnRyb2xsZXIgKmRlbmFsaSA9IHRv
+X2RlbmFsaV9jb250cm9sbGVyKGNoaXApOworCXN0cnVjdCBtdGRfaW5mbyAqbXRkID0gbmFuZF90
+b19tdGQoY2hpcCk7CisJdW5zaWduZWQgbG9uZyB1bmNvcl9lY2NfZmxhZ3MgPSAwOworCWludCBz
+dGF0ID0gMDsKKwlpbnQgcmV0OwogCi0JbW9kZSA9IE1PREVfMTAgfCBCQU5LKGRlbmFsaS0+Zmxh
+c2hfYmFuayk7CisJcmV0ID0gZGVuYWxpX3BhZ2VfeGZlcihjaGlwLCBidWYsIG10ZC0+d3JpdGVz
+aXplLCBwYWdlLCBmYWxzZSk7CisJaWYgKHJldCAmJiByZXQgIT0gLUVCQURNU0cpCisJCXJldHVy
+biByZXQ7CiAKLQkvKiBETUEgaXMgYSBmb3VyIHN0ZXAgcHJvY2VzcyAqLworCWlmIChkZW5hbGkt
+PmNhcHMgJiBERU5BTElfQ0FQX0hXX0VDQ19GSVhVUCkKKwkJc3RhdCA9IGRlbmFsaV9od19lY2Nf
+Zml4dXAoY2hpcCwgJnVuY29yX2VjY19mbGFncyk7CisJZWxzZSBpZiAocmV0ID09IC1FQkFETVNH
+KQorCQlzdGF0ID0gZGVuYWxpX3N3X2VjY19maXh1cChjaGlwLCAmdW5jb3JfZWNjX2ZsYWdzLCBi
+dWYpOwogCi0JLyogMS4gc2V0dXAgdHJhbnNmZXIgdHlwZSBhbmQgIyBvZiBwYWdlcyAqLwotCWlu
+ZGV4X2FkZHIoZGVuYWxpLCBtb2RlIHwgZGVuYWxpLT5wYWdlLCAweDIwMDAgfCBvcCB8IHBhZ2Vf
+Y291bnQpOworCWlmIChzdGF0IDwgMCkKKwkJcmV0dXJuIHN0YXQ7CiAKLQkvKiAyLiBzZXQgbWVt
+b3J5IGhpZ2ggYWRkcmVzcyBiaXRzIDIzOjggKi8KLQlpbmRleF9hZGRyKGRlbmFsaSwgbW9kZSB8
+ICgoYWRkciA+PiAxNikgPDwgOCksIDB4MjIwMCk7CisJaWYgKHVuY29yX2VjY19mbGFncykgewor
+CQlyZXQgPSBkZW5hbGlfcmVhZF9vb2IoY2hpcCwgcGFnZSk7CisJCWlmIChyZXQpCisJCQlyZXR1
+cm4gcmV0OwogCi0JLyogMy4gc2V0IG1lbW9yeSBsb3cgYWRkcmVzcyBiaXRzIDIzOjggKi8KLQlp
+bmRleF9hZGRyKGRlbmFsaSwgbW9kZSB8ICgoYWRkciAmIDB4ZmZmZikgPDwgOCksIDB4MjMwMCk7
+CisJCXN0YXQgPSBkZW5hbGlfY2hlY2tfZXJhc2VkX3BhZ2UoY2hpcCwgYnVmLAorCQkJCQkJdW5j
+b3JfZWNjX2ZsYWdzLCBzdGF0KTsKKwl9CiAKLQkvKiA0LiBpbnRlcnJ1cHQgd2hlbiBjb21wbGV0
+ZSwgYnVyc3QgbGVuID0gNjQgYnl0ZXMgKi8KLQlpbmRleF9hZGRyKGRlbmFsaSwgbW9kZSB8IDB4
+MTQwMDAsIDB4MjQwMCk7CisJcmV0dXJuIHN0YXQ7CiB9CiAKLS8qCi0gKiB3cml0ZXMgYSBwYWdl
+LiB1c2VyIHNwZWNpZmllcyB0eXBlLCBhbmQgdGhpcyBmdW5jdGlvbiBoYW5kbGVzIHRoZQotICog
+Y29uZmlndXJhdGlvbiBkZXRhaWxzLgotICovCi1zdGF0aWMgaW50IHdyaXRlX3BhZ2Uoc3RydWN0
+IG5hbmRfY2hpcCAqY2hpcCwgY29uc3QgdWludDhfdCAqYnVmLCBib29sIHJhd194ZmVyLAotCQkg
+ICAgICBpbnQgcGFnZSkKK3N0YXRpYyBpbnQgZGVuYWxpX3dyaXRlX3BhZ2Uoc3RydWN0IG5hbmRf
+Y2hpcCAqY2hpcCwgY29uc3QgdTggKmJ1ZiwKKwkJCSAgICAgaW50IG9vYl9yZXF1aXJlZCwgaW50
+IHBhZ2UpCiB7CiAJc3RydWN0IG10ZF9pbmZvICptdGQgPSBuYW5kX3RvX210ZChjaGlwKTsKLQlz
+dHJ1Y3QgZGVuYWxpX25hbmRfaW5mbyAqZGVuYWxpID0gbmFuZF90b19kZW5hbGkoY2hpcCk7Ci0J
+ZG1hX2FkZHJfdCBhZGRyID0gKHVuc2lnbmVkIGxvbmcpZGVuYWxpLT5idWYuYnVmOwotCXNpemVf
+dCBzaXplID0gbXRkLT53cml0ZXNpemUgKyBtdGQtPm9vYnNpemU7Ci0JdWludDMyX3QgaXJxX3N0
+YXR1czsKLQl1aW50MzJfdCBpcnFfbWFzayA9IElOVFJfU1RBVFVTX19ETUFfQ01EX0NPTVAgfAot
+CQkJCQkJSU5UUl9TVEFUVVNfX1BST0dSQU1fRkFJTDsKKworCXJldHVybiBkZW5hbGlfcGFnZV94
+ZmVyKGNoaXAsICh2b2lkICopYnVmLCBtdGQtPndyaXRlc2l6ZSwgcGFnZSwgdHJ1ZSk7Cit9CisK
+K3N0YXRpYyBpbnQgZGVuYWxpX3NldHVwX2ludGVyZmFjZShzdHJ1Y3QgbmFuZF9jaGlwICpjaGlw
+LCBpbnQgY2hpcG5yLAorCQkJCSAgY29uc3Qgc3RydWN0IG5hbmRfaW50ZXJmYWNlX2NvbmZpZyAq
+Y29uZikKK3sKKwlzdGF0aWMgY29uc3QgdW5zaWduZWQgaW50IGRhdGFfc2V0dXBfb25faG9zdCA9
+IDEwMDAwOworCXN0cnVjdCBkZW5hbGlfY29udHJvbGxlciAqZGVuYWxpID0gdG9fZGVuYWxpX2Nv
+bnRyb2xsZXIoY2hpcCk7CisJc3RydWN0IGRlbmFsaV9jaGlwX3NlbCAqc2VsOworCWNvbnN0IHN0
+cnVjdCBuYW5kX3Nkcl90aW1pbmdzICp0aW1pbmdzOworCXVuc2lnbmVkIGxvbmcgdF94LCBtdWx0
+X3g7CisJaW50IGFjY19jbGtzLCByZV8yX3dlLCByZV8yX3JlLCB3ZV8yX3JlLCBhZGRyXzJfZGF0
+YTsKKwlpbnQgcmR3cl9lbl9sbywgcmR3cl9lbl9oaSwgcmR3cl9lbl9sb19oaSwgY3Nfc2V0dXA7
+CisJaW50IGFkZHJfMl9kYXRhX21hc2s7CisJdTMyIHRtcDsKKworCXRpbWluZ3MgPSBuYW5kX2dl
+dF9zZHJfdGltaW5ncyhjb25mKTsKKwlpZiAoSVNfRVJSKHRpbWluZ3MpKQorCQlyZXR1cm4gUFRS
+X0VSUih0aW1pbmdzKTsKKworCS8qIGNsa194IHBlcmlvZCBpbiBwaWNvc2Vjb25kcyAqLworCXRf
+eCA9IERJVl9ST1VORF9ET1dOX1VMTCgxMDAwMDAwMDAwMDAwVUxMLCBkZW5hbGktPmNsa194X3Jh
+dGUpOworCWlmICghdF94KQorCQlyZXR1cm4gLUVJTlZBTDsKIAogCS8qCi0JICogaWYgaXQgaXMg
+YSByYXcgeGZlciwgd2Ugd2FudCB0byBkaXNhYmxlIGVjYyBhbmQgc2VuZCB0aGUgc3BhcmUgYXJl
+YS4KLQkgKiAhcmF3X3hmZXIgLSBlbmFibGUgZWNjCi0JICogcmF3X3hmZXIgLSB0cmFuc2ZlciBz
+cGFyZQorCSAqIFRoZSBidXMgaW50ZXJmYWNlIGNsb2NrLCBjbGtfeCwgaXMgcGhhc2UgYWxpZ25l
+ZCB3aXRoIHRoZSBjb3JlIGNsb2NrLgorCSAqIFRoZSBjbGtfeCBpcyBhbiBpbnRlZ3JhbCBtdWx0
+aXBsZSBOIG9mIHRoZSBjb3JlIGNsay4gIFRoZSB2YWx1ZSBOIGlzCisJICogY29uZmlndXJlZCBh
+dCBJUCBkZWxpdmVyeSB0aW1lLCBhbmQgaXRzIGF2YWlsYWJsZSB2YWx1ZSBpcyA0LCA1LCA2Lgog
+CSAqLwotCXNldHVwX2VjY19mb3JfeGZlcihkZW5hbGksICFyYXdfeGZlciwgcmF3X3hmZXIpOwor
+CW11bHRfeCA9IERJVl9ST1VORF9DTE9TRVNUX1VMTChkZW5hbGktPmNsa194X3JhdGUsIGRlbmFs
+aS0+Y2xrX3JhdGUpOworCWlmIChtdWx0X3ggPCA0IHx8IG11bHRfeCA+IDYpCisJCXJldHVybiAt
+RUlOVkFMOwogCi0JbmFuZF9wcm9nX3BhZ2VfYmVnaW5fb3AoY2hpcCwgcGFnZSwgMCwgTlVMTCwg
+MCk7CisJaWYgKGNoaXBuciA9PSBOQU5EX0RBVEFfSUZBQ0VfQ0hFQ0tfT05MWSkKKwkJcmV0dXJu
+IDA7CiAKLQkvKiBjb3B5IGJ1ZmZlciBpbnRvIERNQSBidWZmZXIgKi8KLQltZW1jcHkoZGVuYWxp
+LT5idWYuYnVmLCBidWYsIG10ZC0+d3JpdGVzaXplKTsKKwlzZWwgPSAmdG9fZGVuYWxpX2NoaXAo
+Y2hpcCktPnNlbHNbY2hpcG5yXTsKIAotCWlmIChyYXdfeGZlcikgewotCQkvKiB0cmFuc2ZlciB0
+aGUgZGF0YSB0byB0aGUgc3BhcmUgYXJlYSAqLwotCQltZW1jcHkoZGVuYWxpLT5idWYuYnVmICsg
+bXRkLT53cml0ZXNpemUsCi0JCQljaGlwLT5vb2JfcG9pLAotCQkJbXRkLT5vb2JzaXplKTsKLQl9
+CisJLyogdFJXSCAtPiBSRV8yX1dFICovCisJcmVfMl93ZSA9IERJVl9ST1VORF9VUCh0aW1pbmdz
+LT50UkhXX21pbiwgdF94KTsKKwlyZV8yX3dlID0gbWluX3QoaW50LCByZV8yX3dlLCBSRV8yX1dF
+X19WQUxVRSk7CiAKLQlkbWFfc3luY19zaW5nbGVfZm9yX2RldmljZShhZGRyLCBzaXplLCBETUFf
+VE9fREVWSUNFKTsKKwl0bXAgPSBpb3JlYWQzMihkZW5hbGktPnJlZyArIFJFXzJfV0UpOworCXRt
+cCAmPSB+UkVfMl9XRV9fVkFMVUU7CisJdG1wIHw9IEZJRUxEX1BSRVAoUkVfMl9XRV9fVkFMVUUs
+IHJlXzJfd2UpOworCXNlbC0+cmVfMl93ZSA9IHRtcDsKIAotCWNsZWFyX2ludGVycnVwdHMoZGVu
+YWxpKTsKLQlkZW5hbGlfZW5hYmxlX2RtYShkZW5hbGksIHRydWUpOworCS8qIHRSSFogLT4gUkVf
+Ml9SRSAqLworCXJlXzJfcmUgPSBESVZfUk9VTkRfVVAodGltaW5ncy0+dFJIWl9tYXgsIHRfeCk7
+CisJcmVfMl9yZSA9IG1pbl90KGludCwgcmVfMl9yZSwgUkVfMl9SRV9fVkFMVUUpOwogCi0JZGVu
+YWxpX3NldHVwX2RtYShkZW5hbGksIERFTkFMSV9XUklURSk7CisJdG1wID0gaW9yZWFkMzIoZGVu
+YWxpLT5yZWcgKyBSRV8yX1JFKTsKKwl0bXAgJj0gflJFXzJfUkVfX1ZBTFVFOworCXRtcCB8PSBG
+SUVMRF9QUkVQKFJFXzJfUkVfX1ZBTFVFLCByZV8yX3JlKTsKKwlzZWwtPnJlXzJfcmUgPSB0bXA7
+CiAKLQkvKiB3YWl0IGZvciBvcGVyYXRpb24gdG8gY29tcGxldGUgKi8KLQlpcnFfc3RhdHVzID0g
+d2FpdF9mb3JfaXJxKGRlbmFsaSwgaXJxX21hc2spOworCS8qCisJICogdENDUywgdFdIUiAtPiBX
+RV8yX1JFCisJICoKKwkgKiBXaXRoIFdFXzJfUkUgcHJvcGVybHkgc2V0LCB0aGUgRGVuYWxpIGNv
+bnRyb2xsZXIgYXV0b21hdGljYWxseSB0YWtlcworCSAqIGNhcmUgb2YgdGhlIGRlbGF5OyB0aGUg
+ZHJpdmVyIG5lZWQgbm90IHNldCBOQU5EX1dBSVRfVENDUy4KKwkgKi8KKwl3ZV8yX3JlID0gRElW
+X1JPVU5EX1VQKG1heCh0aW1pbmdzLT50Q0NTX21pbiwgdGltaW5ncy0+dFdIUl9taW4pLCB0X3gp
+OworCXdlXzJfcmUgPSBtaW5fdChpbnQsIHdlXzJfcmUsIFRXSFIyX0FORF9XRV8yX1JFX19XRV8y
+X1JFKTsKIAotCWlmIChpcnFfc3RhdHVzID09IDApIHsKLQkJZGV2X2VycihkZW5hbGktPmRldiwg
+InRpbWVvdXQgb24gd3JpdGVfcGFnZSAodHlwZSA9ICVkKVxuIiwKLQkJCXJhd194ZmVyKTsKLQkJ
+ZGVuYWxpLT5zdGF0dXMgPSBOQU5EX1NUQVRVU19GQUlMOwotCX0KKwl0bXAgPSBpb3JlYWQzMihk
+ZW5hbGktPnJlZyArIFRXSFIyX0FORF9XRV8yX1JFKTsKKwl0bXAgJj0gflRXSFIyX0FORF9XRV8y
+X1JFX19XRV8yX1JFOworCXRtcCB8PSBGSUVMRF9QUkVQKFRXSFIyX0FORF9XRV8yX1JFX19XRV8y
+X1JFLCB3ZV8yX3JlKTsKKwlzZWwtPmh3aHIyX2FuZF93ZV8yX3JlID0gdG1wOwogCi0JZGVuYWxp
+X2VuYWJsZV9kbWEoZGVuYWxpLCBmYWxzZSk7Ci0JZG1hX3N5bmNfc2luZ2xlX2Zvcl9jcHUoYWRk
+ciwgc2l6ZSwgRE1BX1RPX0RFVklDRSk7CisJLyogdEFETCAtPiBBRERSXzJfREFUQSAqLwogCi0J
+cmV0dXJuIG5hbmRfcHJvZ19wYWdlX2VuZF9vcChjaGlwKTsKLX0KKwkvKiBmb3Igb2xkZXIgdmVy
+c2lvbnMsIEFERFJfMl9EQVRBIGlzIG9ubHkgNiBiaXQgd2lkZSAqLworCWFkZHJfMl9kYXRhX21h
+c2sgPSBUQ1dBV19BTkRfQUREUl8yX0RBVEFfX0FERFJfMl9EQVRBOworCWlmIChkZW5hbGktPnJl
+dmlzaW9uIDwgMHgwNTAxKQorCQlhZGRyXzJfZGF0YV9tYXNrID4+PSAxOwogCi0vKiBOQU5EIGNv
+cmUgZW50cnkgcG9pbnRzICovCisJYWRkcl8yX2RhdGEgPSBESVZfUk9VTkRfVVAodGltaW5ncy0+
+dEFETF9taW4sIHRfeCk7CisJYWRkcl8yX2RhdGEgPSBtaW5fdChpbnQsIGFkZHJfMl9kYXRhLCBh
+ZGRyXzJfZGF0YV9tYXNrKTsKKworCXRtcCA9IGlvcmVhZDMyKGRlbmFsaS0+cmVnICsgVENXQVdf
+QU5EX0FERFJfMl9EQVRBKTsKKwl0bXAgJj0gflRDV0FXX0FORF9BRERSXzJfREFUQV9fQUREUl8y
+X0RBVEE7CisJdG1wIHw9IEZJRUxEX1BSRVAoVENXQVdfQU5EX0FERFJfMl9EQVRBX19BRERSXzJf
+REFUQSwgYWRkcl8yX2RhdGEpOworCXNlbC0+dGN3YXdfYW5kX2FkZHJfMl9kYXRhID0gdG1wOwor
+CisJLyogdFJFSCwgdFdIIC0+IFJEV1JfRU5fSElfQ05UICovCisJcmR3cl9lbl9oaSA9IERJVl9S
+T1VORF9VUChtYXgodGltaW5ncy0+dFJFSF9taW4sIHRpbWluZ3MtPnRXSF9taW4pLAorCQkJCSAg
+dF94KTsKKwlyZHdyX2VuX2hpID0gbWluX3QoaW50LCByZHdyX2VuX2hpLCBSRFdSX0VOX0hJX0NO
+VF9fVkFMVUUpOworCisJdG1wID0gaW9yZWFkMzIoZGVuYWxpLT5yZWcgKyBSRFdSX0VOX0hJX0NO
+VCk7CisJdG1wICY9IH5SRFdSX0VOX0hJX0NOVF9fVkFMVUU7CisJdG1wIHw9IEZJRUxEX1BSRVAo
+UkRXUl9FTl9ISV9DTlRfX1ZBTFVFLCByZHdyX2VuX2hpKTsKKwlzZWwtPnJkd3JfZW5faGlfY250
+ID0gdG1wOwogCi0vKgotICogdGhpcyBpcyB0aGUgY2FsbGJhY2sgdGhhdCB0aGUgTkFORCBjb3Jl
+IGNhbGxzIHRvIHdyaXRlIGEgcGFnZS4gU2luY2UKLSAqIHdyaXRpbmcgYSBwYWdlIHdpdGggRUND
+IG9yIHdpdGhvdXQgaXMgc2ltaWxhciwgYWxsIHRoZSB3b3JrIGlzIGRvbmUKLSAqIGJ5IHdyaXRl
+X3BhZ2UgYWJvdmUuCi0gKi8KLXN0YXRpYyBpbnQgZGVuYWxpX3dyaXRlX3BhZ2Uoc3RydWN0IG5h
+bmRfY2hpcCAqY2hpcCwKLQkJCQljb25zdCB1aW50OF90ICpidWYsIGludCBvb2JfcmVxdWlyZWQs
+IGludCBwYWdlKQotewogCS8qCi0JICogZm9yIHJlZ3VsYXIgcGFnZSB3cml0ZXMsIHdlIGxldCBI
+VyBoYW5kbGUgYWxsIHRoZSBFQ0MKLQkgKiBkYXRhIHdyaXR0ZW4gdG8gdGhlIGRldmljZS4KKwkg
+KiB0UkVBIC0+IEFDQ19DTEtTCisJICogdFJQLCB0V1AsIHRSSE9ILCB0UkMsIHRXQyAtPiBSRFdS
+X0VOX0xPX0NOVAogCSAqLwotCXJldHVybiB3cml0ZV9wYWdlKGNoaXAsIGJ1ZiwgZmFsc2UsIHBh
+Z2UpOwotfQogCi0vKgotICogVGhpcyBpcyB0aGUgY2FsbGJhY2sgdGhhdCB0aGUgTkFORCBjb3Jl
+IGNhbGxzIHRvIHdyaXRlIGEgcGFnZSB3aXRob3V0IEVDQy4KLSAqIHJhdyBhY2Nlc3MgaXMgc2lt
+aWxhciB0byBFQ0MgcGFnZSB3cml0ZXMsIHNvIGFsbCB0aGUgd29yayBpcyBkb25lIGluIHRoZQot
+ICogd3JpdGVfcGFnZSgpIGZ1bmN0aW9uIGFib3ZlLgotICovCi1zdGF0aWMgaW50IGRlbmFsaV93
+cml0ZV9wYWdlX3JhdyhzdHJ1Y3QgbmFuZF9jaGlwICpjaGlwLAotCQkJCQljb25zdCB1aW50OF90
+ICpidWYsIGludCBvb2JfcmVxdWlyZWQsIGludCBwYWdlKQotewogCS8qCi0JICogZm9yIHJhdyBw
+YWdlIHdyaXRlcywgd2Ugd2FudCB0byBkaXNhYmxlIEVDQyBhbmQgc2ltcGx5IHdyaXRlCi0JICog
+d2hhdGV2ZXIgZGF0YSBpcyBpbiB0aGUgYnVmZmVyLgorCSAqIERldGVybWluZSB0aGUgbWluaW11
+bSBvZiBhY2NfY2xrcyB0byBtZWV0IHRoZSBzZXR1cCB0aW1pbmcgd2hlbgorCSAqIGNhcHR1cmlu
+ZyB0aGUgaW5jb21pbmcgZGF0YS4KKwkgKgorCSAqIFRoZSBkZWxheSBvbiB0aGUgY2hpcCBzaWRl
+IGlzIHdlbGwtZGVmaW5lZCBhcyB0UkVBLCBidXQgd2UgbmVlZCB0bworCSAqIHRha2UgYWRkaXRp
+b25hbCBkZWxheSBpbnRvIGFjY291bnQuIFRoaXMgaW5jbHVkZXMgYSBjZXJ0YWluIGRlZ3JlZQor
+CSAqIG9mIHVua25vd2xlZGdlLCBzdWNoIGFzIHNpZ25hbCBwcm9wYWdhdGlvbiBkZWxheXMgb24g
+dGhlIFBDQiBhbmQKKwkgKiBpbiB0aGUgU29DLCBsb2FkIGNhcGFjaXR5IG9mIHRoZSBJL08gcGlu
+cywgZXRjLgogCSAqLwotCXJldHVybiB3cml0ZV9wYWdlKGNoaXAsIGJ1ZiwgdHJ1ZSwgcGFnZSk7
+CisJYWNjX2Nsa3MgPSBESVZfUk9VTkRfVVAodGltaW5ncy0+dFJFQV9tYXggKyBkYXRhX3NldHVw
+X29uX2hvc3QsIHRfeCk7CisKKwkvKiBEZXRlcm1pbmUgdGhlIG1pbmltdW0gb2YgcmR3cl9lbl9s
+b19jbnQgZnJvbSBSRSMvV0UjIHB1bHNlIHdpZHRoICovCisJcmR3cl9lbl9sbyA9IERJVl9ST1VO
+RF9VUChtYXgodGltaW5ncy0+dFJQX21pbiwgdGltaW5ncy0+dFdQX21pbiksIHRfeCk7CisKKwkv
+KiBFeHRlbmQgcmR3cl9lbl9sbyB0byBtZWV0IHRoZSBkYXRhIGhvbGQgdGltaW5nICovCisJcmR3
+cl9lbl9sbyA9IG1heF90KGludCwgcmR3cl9lbl9sbywKKwkJCSAgIGFjY19jbGtzIC0gdGltaW5n
+cy0+dFJIT0hfbWluIC8gdF94KTsKKworCS8qIEV4dGVuZCByZHdyX2VuX2xvIHRvIG1lZXQgdGhl
+IHJlcXVpcmVtZW50IGZvciBSRSMvV0UjIGN5Y2xlIHRpbWUgKi8KKwlyZHdyX2VuX2xvX2hpID0g
+RElWX1JPVU5EX1VQKG1heCh0aW1pbmdzLT50UkNfbWluLCB0aW1pbmdzLT50V0NfbWluKSwKKwkJ
+CQkgICAgIHRfeCk7CisJcmR3cl9lbl9sbyA9IG1heChyZHdyX2VuX2xvLCByZHdyX2VuX2xvX2hp
+IC0gcmR3cl9lbl9oaSk7CisJcmR3cl9lbl9sbyA9IG1pbl90KGludCwgcmR3cl9lbl9sbywgUkRX
+Ul9FTl9MT19DTlRfX1ZBTFVFKTsKKworCS8qIENlbnRlciB0aGUgZGF0YSBsYXRjaCB0aW1pbmcg
+Zm9yIGV4dHJhIHNhZmV0eSAqLworCWFjY19jbGtzID0gKGFjY19jbGtzICsgcmR3cl9lbl9sbyAr
+CisJCSAgICBESVZfUk9VTkRfVVAodGltaW5ncy0+dFJIT0hfbWluLCB0X3gpKSAvIDI7CisJYWNj
+X2Nsa3MgPSBtaW5fdChpbnQsIGFjY19jbGtzLCBBQ0NfQ0xLU19fVkFMVUUpOworCisJdG1wID0g
+aW9yZWFkMzIoZGVuYWxpLT5yZWcgKyBBQ0NfQ0xLUyk7CisJdG1wICY9IH5BQ0NfQ0xLU19fVkFM
+VUU7CisJdG1wIHw9IEZJRUxEX1BSRVAoQUNDX0NMS1NfX1ZBTFVFLCBhY2NfY2xrcyk7CisJc2Vs
+LT5hY2NfY2xrcyA9IHRtcDsKKworCXRtcCA9IGlvcmVhZDMyKGRlbmFsaS0+cmVnICsgUkRXUl9F
+Tl9MT19DTlQpOworCXRtcCAmPSB+UkRXUl9FTl9MT19DTlRfX1ZBTFVFOworCXRtcCB8PSBGSUVM
+RF9QUkVQKFJEV1JfRU5fTE9fQ05UX19WQUxVRSwgcmR3cl9lbl9sbyk7CisJc2VsLT5yZHdyX2Vu
+X2xvX2NudCA9IHRtcDsKKworCS8qIHRDUywgdENFQSAtPiBDU19TRVRVUF9DTlQgKi8KKwljc19z
+ZXR1cCA9IG1heDMoKGludClESVZfUk9VTkRfVVAodGltaW5ncy0+dENTX21pbiwgdF94KSAtIHJk
+d3JfZW5fbG8sCisJCQkoaW50KURJVl9ST1VORF9VUCh0aW1pbmdzLT50Q0VBX21heCwgdF94KSAt
+IGFjY19jbGtzLAorCQkJMCk7CisJY3Nfc2V0dXAgPSBtaW5fdChpbnQsIGNzX3NldHVwLCBDU19T
+RVRVUF9DTlRfX1ZBTFVFKTsKKworCXRtcCA9IGlvcmVhZDMyKGRlbmFsaS0+cmVnICsgQ1NfU0VU
+VVBfQ05UKTsKKwl0bXAgJj0gfkNTX1NFVFVQX0NOVF9fVkFMVUU7CisJdG1wIHw9IEZJRUxEX1BS
+RVAoQ1NfU0VUVVBfQ05UX19WQUxVRSwgY3Nfc2V0dXApOworCXNlbC0+Y3Nfc2V0dXBfY250ID0g
+dG1wOworCisJcmV0dXJuIDA7CiB9CiAKLXN0YXRpYyBpbnQgZGVuYWxpX3dyaXRlX29vYihzdHJ1
+Y3QgbmFuZF9jaGlwICpjaGlwLCBpbnQgcGFnZSkKK2ludCBkZW5hbGlfY2FsY19lY2NfYnl0ZXMo
+aW50IHN0ZXBfc2l6ZSwgaW50IHN0cmVuZ3RoKQogewotCXJldHVybiB3cml0ZV9vb2JfZGF0YShj
+aGlwLCBjaGlwLT5vb2JfcG9pLCBwYWdlKTsKKwkvKiBCQ0ggY29kZS4gIERlbmFsaSByZXF1aXJl
+cyBlY2MuYnl0ZXMgdG8gYmUgbXVsdGlwbGUgb2YgMiAqLworCXJldHVybiBESVZfUk9VTkRfVVAo
+c3RyZW5ndGggKiBmbHMoc3RlcF9zaXplICogOCksIDE2KSAqIDI7CiB9CitFWFBPUlRfU1lNQk9M
+KGRlbmFsaV9jYWxjX2VjY19ieXRlcyk7CiAKLXN0YXRpYyBpbnQgZGVuYWxpX3JlYWRfb29iKHN0
+cnVjdCBuYW5kX2NoaXAgKmNoaXAsIGludCBwYWdlKQorc3RhdGljIGludCBkZW5hbGlfb29ibGF5
+b3V0X2VjYyhzdHJ1Y3QgbXRkX2luZm8gKm10ZCwgaW50IHNlY3Rpb24sCisJCQkJc3RydWN0IG10
+ZF9vb2JfcmVnaW9uICpvb2JyZWdpb24pCiB7Ci0JcmVhZF9vb2JfZGF0YShjaGlwLCBjaGlwLT5v
+b2JfcG9pLCBwYWdlKTsKKwlzdHJ1Y3QgbmFuZF9jaGlwICpjaGlwID0gbXRkX3RvX25hbmQobXRk
+KTsKKwlzdHJ1Y3QgZGVuYWxpX2NvbnRyb2xsZXIgKmRlbmFsaSA9IHRvX2RlbmFsaV9jb250cm9s
+bGVyKGNoaXApOworCisJaWYgKHNlY3Rpb24gPiAwKQorCQlyZXR1cm4gLUVSQU5HRTsKKworCW9v
+YnJlZ2lvbi0+b2Zmc2V0ID0gZGVuYWxpLT5vb2Jfc2tpcF9ieXRlczsKKwlvb2JyZWdpb24tPmxl
+bmd0aCA9IGNoaXAtPmVjYy50b3RhbDsKIAogCXJldHVybiAwOwogfQogCi1zdGF0aWMgaW50IGRl
+bmFsaV9yZWFkX3BhZ2Uoc3RydWN0IG5hbmRfY2hpcCAqY2hpcCwKLQkJCSAgICB1aW50OF90ICpi
+dWYsIGludCBvb2JfcmVxdWlyZWQsIGludCBwYWdlKQorc3RhdGljIGludCBkZW5hbGlfb29ibGF5
+b3V0X2ZyZWUoc3RydWN0IG10ZF9pbmZvICptdGQsIGludCBzZWN0aW9uLAorCQkJCSBzdHJ1Y3Qg
+bXRkX29vYl9yZWdpb24gKm9vYnJlZ2lvbikKIHsKLQlzdHJ1Y3QgbXRkX2luZm8gKm10ZCA9IG5h
+bmRfdG9fbXRkKGNoaXApOwotCXVuc2lnbmVkIGludCBtYXhfYml0ZmxpcHMgPSAwOwotCXN0cnVj
+dCBkZW5hbGlfbmFuZF9pbmZvICpkZW5hbGkgPSBuYW5kX3RvX2RlbmFsaShjaGlwKTsKLQotCWRt
+YV9hZGRyX3QgYWRkciA9ICh1bnNpZ25lZCBsb25nKWRlbmFsaS0+YnVmLmJ1ZjsKLQlzaXplX3Qg
+c2l6ZSA9IG10ZC0+d3JpdGVzaXplICsgbXRkLT5vb2JzaXplOworCXN0cnVjdCBuYW5kX2NoaXAg
+KmNoaXAgPSBtdGRfdG9fbmFuZChtdGQpOworCXN0cnVjdCBkZW5hbGlfY29udHJvbGxlciAqZGVu
+YWxpID0gdG9fZGVuYWxpX2NvbnRyb2xsZXIoY2hpcCk7CiAKLQl1aW50MzJfdCBpcnFfc3RhdHVz
+OwotCXVpbnQzMl90IGlycV9tYXNrID0gZGVuYWxpLT5oYXZlX2h3X2VjY19maXh1cCA/Ci0JCShJ
+TlRSX1NUQVRVU19fRE1BX0NNRF9DT01QKSA6Ci0JCShJTlRSX1NUQVRVU19fRUNDX1RSQU5TQUNU
+SU9OX0RPTkUgfCBJTlRSX1NUQVRVU19fRUNDX0VSUik7Ci0JYm9vbCBjaGVja19lcmFzZWRfcGFn
+ZSA9IGZhbHNlOworCWlmIChzZWN0aW9uID4gMCkKKwkJcmV0dXJuIC1FUkFOR0U7CiAKLQlzZXR1
+cF9lY2NfZm9yX3hmZXIoZGVuYWxpLCB0cnVlLCBmYWxzZSk7CisJb29icmVnaW9uLT5vZmZzZXQg
+PSBjaGlwLT5lY2MudG90YWwgKyBkZW5hbGktPm9vYl9za2lwX2J5dGVzOworCW9vYnJlZ2lvbi0+
+bGVuZ3RoID0gbXRkLT5vb2JzaXplIC0gb29icmVnaW9uLT5vZmZzZXQ7CiAKLQluYW5kX3JlYWRf
+cGFnZV9vcChjaGlwLCBwYWdlLCAwLCBOVUxMLCAwKTsKKwlyZXR1cm4gMDsKK30KIAotCWRlbmFs
+aV9lbmFibGVfZG1hKGRlbmFsaSwgdHJ1ZSk7Ci0JZG1hX3N5bmNfc2luZ2xlX2Zvcl9kZXZpY2Uo
+YWRkciwgc2l6ZSwgRE1BX0ZST01fREVWSUNFKTsKK3N0YXRpYyBjb25zdCBzdHJ1Y3QgbXRkX29v
+YmxheW91dF9vcHMgZGVuYWxpX29vYmxheW91dF9vcHMgPSB7CisJLmVjYyA9IGRlbmFsaV9vb2Js
+YXlvdXRfZWNjLAorCS5mcmVlID0gZGVuYWxpX29vYmxheW91dF9mcmVlLAorfTsKIAotCWNsZWFy
+X2ludGVycnVwdHMoZGVuYWxpKTsKLQlkZW5hbGlfc2V0dXBfZG1hKGRlbmFsaSwgREVOQUxJX1JF
+QUQpOworc3RhdGljIGludCBkZW5hbGlfbXVsdGlkZXZfZml4dXAoc3RydWN0IG5hbmRfY2hpcCAq
+Y2hpcCkKK3sKKwlzdHJ1Y3QgZGVuYWxpX2NvbnRyb2xsZXIgKmRlbmFsaSA9IHRvX2RlbmFsaV9j
+b250cm9sbGVyKGNoaXApOworCXN0cnVjdCBtdGRfaW5mbyAqbXRkID0gbmFuZF90b19tdGQoY2hp
+cCk7CisJc3RydWN0IG5hbmRfbWVtb3J5X29yZ2FuaXphdGlvbiAqbWVtb3JnOwogCi0JLyogd2Fp
+dCBmb3Igb3BlcmF0aW9uIHRvIGNvbXBsZXRlICovCi0JaXJxX3N0YXR1cyA9IHdhaXRfZm9yX2ly
+cShkZW5hbGksIGlycV9tYXNrKTsKKwltZW1vcmcgPSBuYW5kZGV2X2dldF9tZW1vcmcoJmNoaXAt
+PmJhc2UpOwogCi0JZG1hX3N5bmNfc2luZ2xlX2Zvcl9jcHUoYWRkciwgc2l6ZSwgRE1BX0ZST01f
+REVWSUNFKTsKKwkvKgorCSAqIFN1cHBvcnQgZm9yIG11bHRpIGRldmljZToKKwkgKiBXaGVuIHRo
+ZSBJUCBjb25maWd1cmF0aW9uIGlzIHgxNiBjYXBhYmxlIGFuZCB0d28geDggY2hpcHMgYXJlCisJ
+ICogY29ubmVjdGVkIGluIHBhcmFsbGVsLCBERVZJQ0VTX0NPTk5FQ1RFRCBzaG91bGQgYmUgc2V0
+IHRvIDIuCisJICogSW4gdGhpcyBjYXNlLCB0aGUgY29yZSBmcmFtZXdvcmsga25vd3Mgbm90aGlu
+ZyBhYm91dCB0aGlzIGZhY3QsCisJICogc28gd2Ugc2hvdWxkIHRlbGwgaXQgdGhlIF9sb2dpY2Fs
+XyBwYWdlc2l6ZSBhbmQgYW55dGhpbmcgbmVjZXNzYXJ5LgorCSAqLworCWRlbmFsaS0+ZGV2c19w
+ZXJfY3MgPSBpb3JlYWQzMihkZW5hbGktPnJlZyArIERFVklDRVNfQ09OTkVDVEVEKTsKIAotCW1l
+bWNweShidWYsIGRlbmFsaS0+YnVmLmJ1ZiwgbXRkLT53cml0ZXNpemUpOworCS8qCisJICogT24g
+c29tZSBTb0NzLCBERVZJQ0VTX0NPTk5FQ1RFRCBpcyBub3QgYXV0by1kZXRlY3RlZC4KKwkgKiBG
+b3IgdGhvc2UsIERFVklDRVNfQ09OTkVDVEVEIGlzIGxlZnQgdG8gMC4gIFNldCAxIGlmIGl0IGlz
+IHRoZSBjYXNlLgorCSAqLworCWlmIChkZW5hbGktPmRldnNfcGVyX2NzID09IDApIHsKKwkJZGVu
+YWxpLT5kZXZzX3Blcl9jcyA9IDE7CisJCWlvd3JpdGUzMigxLCBkZW5hbGktPnJlZyArIERFVklD
+RVNfQ09OTkVDVEVEKTsKKwl9CiAKLQljaGVja19lcmFzZWRfcGFnZSA9IGhhbmRsZV9lY2MoZGVu
+YWxpLCBidWYsIGlycV9zdGF0dXMsICZtYXhfYml0ZmxpcHMpOwotCWRlbmFsaV9lbmFibGVfZG1h
+KGRlbmFsaSwgZmFsc2UpOworCWlmIChkZW5hbGktPmRldnNfcGVyX2NzID09IDEpCisJCXJldHVy
+biAwOwogCi0JaWYgKGNoZWNrX2VyYXNlZF9wYWdlKSB7Ci0JCWlmIChkZW5hbGktPmhhdmVfaHdf
+ZWNjX2ZpeHVwKSB7Ci0JCQkvKiBXaGVuIHdlIGhhdmUgaHcgZWNjIGZpeHVwLCBkb24ndCBjaGVj
+ayBvb2IuCi0JCQkgKiBUaGF0IGNvZGUgYmVsb3cgbG9va3MgamFja2VkIHVwIGFueXdheS4gIEkg
+bWVhbiwKLQkJCSAqIGxvb2sgYXQgaXQsIHd0Zj8gKi8KLQkJCWlmICghaXNfZXJhc2VkKGJ1Ziwg
+bXRkLT53cml0ZXNpemUpKQotCQkJCW10ZC0+ZWNjX3N0YXRzLmZhaWxlZCsrOwotCQl9IGVsc2Ug
+ewotCQkJcmVhZF9vb2JfZGF0YShjaGlwLCBjaGlwLT5vb2JfcG9pLCBkZW5hbGktPnBhZ2UpOwot
+Ci0JCQkvKiBjaGVjayBFQ0MgZmFpbHVyZXMgdGhhdCBtYXkgaGF2ZSBvY2N1cnJlZCBvbgotCQkJ
+ICogZXJhc2VkIHBhZ2VzICovCi0JCQlpZiAoY2hlY2tfZXJhc2VkX3BhZ2UpIHsKLQkJCQlpZiAo
+IWlzX2VyYXNlZChidWYsIG10ZC0+d3JpdGVzaXplKSkKLQkJCQkJbXRkLT5lY2Nfc3RhdHMuZmFp
+bGVkKys7Ci0JCQkJaWYgKCFpc19lcmFzZWQoYnVmLCBtdGQtPm9vYnNpemUpKQotCQkJCQltdGQt
+PmVjY19zdGF0cy5mYWlsZWQrKzsKLQkJCX0KLQkJfQorCWlmIChkZW5hbGktPmRldnNfcGVyX2Nz
+ICE9IDIpIHsKKwkJZGV2X2VycihkZW5hbGktPmRldiwgInVuc3VwcG9ydGVkIG51bWJlciBvZiBk
+ZXZpY2VzICVkXG4iLAorCQkJZGVuYWxpLT5kZXZzX3Blcl9jcyk7CisJCXJldHVybiAtRUlOVkFM
+OwogCX0KLQlyZXR1cm4gbWF4X2JpdGZsaXBzOworCisJLyogMiBjaGlwcyBpbiBwYXJhbGxlbCAq
+LworCW1lbW9yZy0+cGFnZXNpemUgPDw9IDE7CisJbWVtb3JnLT5vb2JzaXplIDw8PSAxOworCW10
+ZC0+c2l6ZSA8PD0gMTsKKwltdGQtPmVyYXNlc2l6ZSA8PD0gMTsKKwltdGQtPndyaXRlc2l6ZSA8
+PD0gMTsKKwltdGQtPm9vYnNpemUgPDw9IDE7CisJY2hpcC0+cGFnZV9zaGlmdCArPSAxOworCWNo
+aXAtPnBoeXNfZXJhc2Vfc2hpZnQgKz0gMTsKKwljaGlwLT5iYnRfZXJhc2Vfc2hpZnQgKz0gMTsK
+KwljaGlwLT5jaGlwX3NoaWZ0ICs9IDE7CisJY2hpcC0+cGFnZW1hc2sgPDw9IDE7CisJY2hpcC0+
+ZWNjLnNpemUgPDw9IDE7CisJY2hpcC0+ZWNjLmJ5dGVzIDw8PSAxOworCWNoaXAtPmVjYy5zdHJl
+bmd0aCA8PD0gMTsKKwlkZW5hbGktPm9vYl9za2lwX2J5dGVzIDw8PSAxOworCisJcmV0dXJuIDA7
+CiB9CiAKLXN0YXRpYyBpbnQgZGVuYWxpX3JlYWRfcGFnZV9yYXcoc3RydWN0IG5hbmRfY2hpcCAq
+Y2hpcCwKLQkJCQl1aW50OF90ICpidWYsIGludCBvb2JfcmVxdWlyZWQsIGludCBwYWdlKQorc3Rh
+dGljIGludCBkZW5hbGlfYXR0YWNoX2NoaXAoc3RydWN0IG5hbmRfY2hpcCAqY2hpcCkKIHsKKwlz
+dHJ1Y3QgZGVuYWxpX2NvbnRyb2xsZXIgKmRlbmFsaSA9IHRvX2RlbmFsaV9jb250cm9sbGVyKGNo
+aXApOwogCXN0cnVjdCBtdGRfaW5mbyAqbXRkID0gbmFuZF90b19tdGQoY2hpcCk7Ci0Jc3RydWN0
+IGRlbmFsaV9uYW5kX2luZm8gKmRlbmFsaSA9IG5hbmRfdG9fZGVuYWxpKGNoaXApOwotCWRtYV9h
+ZGRyX3QgYWRkciA9ICh1bnNpZ25lZCBsb25nKWRlbmFsaS0+YnVmLmJ1ZjsKLQlzaXplX3Qgc2l6
+ZSA9IG10ZC0+d3JpdGVzaXplICsgbXRkLT5vb2JzaXplOwotCXVpbnQzMl90IGlycV9tYXNrID0g
+SU5UUl9TVEFUVVNfX0RNQV9DTURfQ09NUDsKLQotCW5hbmRfcmVhZF9wYWdlX29wKGNoaXAsIHBh
+Z2UsIDAsIE5VTEwsIDApOwotCi0JaWYgKHBhZ2UgIT0gZGVuYWxpLT5wYWdlKSB7Ci0JCWRldl9l
+cnIoZGVuYWxpLT5kZXYsCi0JCQkiSU4gJXM6IHBhZ2UgJWQgaXMgbm90IGVxdWFsIHRvIGRlbmFs
+aS0+cGFnZSAlZCIsCi0JCQlfX2Z1bmNfXywgcGFnZSwgZGVuYWxpLT5wYWdlKTsKLQkJQlVHKCk7
+CisJaW50IHJldDsKKworCXJldCA9IG5hbmRfZWNjX2Nob29zZV9jb25mKGNoaXAsIGRlbmFsaS0+
+ZWNjX2NhcHMsCisJCQkJICAgbXRkLT5vb2JzaXplIC0gZGVuYWxpLT5vb2Jfc2tpcF9ieXRlcyk7
+CisJaWYgKHJldCkgeworCQlwcmludGsoIiVzOiAlZFxuIiwgX19mdW5jX18sIHJldCk7CisJCWRl
+dl9lcnIoZGVuYWxpLT5kZXYsICJGYWlsZWQgdG8gc2V0dXAgRUNDIHNldHRpbmdzLlxuIik7CisJ
+CXJldHVybiByZXQ7CiAJfQogCi0Jc2V0dXBfZWNjX2Zvcl94ZmVyKGRlbmFsaSwgZmFsc2UsIHRy
+dWUpOwotCWRlbmFsaV9lbmFibGVfZG1hKGRlbmFsaSwgdHJ1ZSk7Ci0KLQlkbWFfc3luY19zaW5n
+bGVfZm9yX2RldmljZShhZGRyLCBzaXplLCBETUFfRlJPTV9ERVZJQ0UpOwotCi0JY2xlYXJfaW50
+ZXJydXB0cyhkZW5hbGkpOwotCWRlbmFsaV9zZXR1cF9kbWEoZGVuYWxpLCBERU5BTElfUkVBRCk7
+Ci0KLQkvKiB3YWl0IGZvciBvcGVyYXRpb24gdG8gY29tcGxldGUgKi8KLQl3YWl0X2Zvcl9pcnEo
+ZGVuYWxpLCBpcnFfbWFzayk7CisJZGV2X2RiZyhkZW5hbGktPmRldiwKKwkJImNob3NlbiBFQ0Mg
+c2V0dGluZ3M6IHN0ZXA9JWQsIHN0cmVuZ3RoPSVkLCBieXRlcz0lZFxuIiwKKwkJY2hpcC0+ZWNj
+LnNpemUsIGNoaXAtPmVjYy5zdHJlbmd0aCwgY2hpcC0+ZWNjLmJ5dGVzKTsKIAotCWRtYV9zeW5j
+X3NpbmdsZV9mb3JfY3B1KGFkZHIsIHNpemUsIERNQV9GUk9NX0RFVklDRSk7CisJcmV0ID0gZGVu
+YWxpX211bHRpZGV2X2ZpeHVwKGNoaXApOworCWlmIChyZXQpCisJCXJldHVybiByZXQ7CiAKLQlk
+ZW5hbGlfZW5hYmxlX2RtYShkZW5hbGksIGZhbHNlKTsKKwlyZXR1cm4gMDsKK30KIAotCW1lbWNw
+eShidWYsIGRlbmFsaS0+YnVmLmJ1ZiwgbXRkLT53cml0ZXNpemUpOwotCW1lbWNweShjaGlwLT5v
+b2JfcG9pLCBkZW5hbGktPmJ1Zi5idWYgKyBtdGQtPndyaXRlc2l6ZSwgbXRkLT5vb2JzaXplKTsK
+K3N0YXRpYyB2b2lkIGRlbmFsaV9leGVjX2luOChzdHJ1Y3QgZGVuYWxpX2NvbnRyb2xsZXIgKmRl
+bmFsaSwgdTMyIHR5cGUsCisJCQkgICAgdTggKmJ1ZiwgdW5zaWduZWQgaW50IGxlbikKK3sKKwlp
+bnQgaTsKIAotCXJldHVybiAwOworCWZvciAoaSA9IDA7IGkgPCBsZW47IGkrKykKKwkJYnVmW2ld
+ID0gZGVuYWxpLT5ob3N0X3JlYWQoZGVuYWxpLCB0eXBlIHwgREVOQUxJX0JBTksoZGVuYWxpKSk7
+CiB9CiAKLXN0YXRpYyB1aW50OF90IGRlbmFsaV9yZWFkX2J5dGUoc3RydWN0IG5hbmRfY2hpcCAq
+Y2hpcCkKK3N0YXRpYyB2b2lkIGRlbmFsaV9leGVjX2luMTYoc3RydWN0IGRlbmFsaV9jb250cm9s
+bGVyICpkZW5hbGksIHUzMiB0eXBlLAorCQkJICAgICB1OCAqYnVmLCB1bnNpZ25lZCBpbnQgbGVu
+KQogewotCXN0cnVjdCBkZW5hbGlfbmFuZF9pbmZvICpkZW5hbGkgPSBuYW5kX3RvX2RlbmFsaShj
+aGlwKTsKLQl1aW50OF90IHJlc3VsdCA9IDB4ZmY7CisJdTMyIGRhdGE7CisJaW50IGk7CiAKLQlp
+ZiAoZGVuYWxpLT5idWYuaGVhZCA8IGRlbmFsaS0+YnVmLnRhaWwpCi0JCXJlc3VsdCA9IGRlbmFs
+aS0+YnVmLmJ1ZltkZW5hbGktPmJ1Zi5oZWFkKytdOworCWZvciAoaSA9IDA7IGkgPCBsZW47IGkg
+Kz0gMikgeworCQlkYXRhID0gZGVuYWxpLT5ob3N0X3JlYWQoZGVuYWxpLCB0eXBlIHwgREVOQUxJ
+X0JBTksoZGVuYWxpKSk7CisJCS8qIGJpdCAzMToyNCBhbmQgMTU6OCBhcmUgdXNlZCBmb3IgRERS
+ICovCisJCWJ1ZltpXSA9IGRhdGE7CisJCWJ1ZltpICsgMV0gPSBkYXRhID4+IDE2OworCX0KK30K
+IAotCXJldHVybiByZXN1bHQ7CitzdGF0aWMgdm9pZCBkZW5hbGlfZXhlY19pbihzdHJ1Y3QgZGVu
+YWxpX2NvbnRyb2xsZXIgKmRlbmFsaSwgdTMyIHR5cGUsCisJCQkgICB1OCAqYnVmLCB1bnNpZ25l
+ZCBpbnQgbGVuLCBib29sIHdpZHRoMTYpCit7CisJaWYgKHdpZHRoMTYpCisJCWRlbmFsaV9leGVj
+X2luMTYoZGVuYWxpLCB0eXBlLCBidWYsIGxlbik7CisJZWxzZQorCQlkZW5hbGlfZXhlY19pbjgo
+ZGVuYWxpLCB0eXBlLCBidWYsIGxlbik7CiB9CiAKLXN0YXRpYyB2b2lkIGRlbmFsaV9yZWFkX2J1
+ZihzdHJ1Y3QgbmFuZF9jaGlwICpjaGlwLCB1aW50OF90ICpidWYsIGludCBsZW4pCitzdGF0aWMg
+dm9pZCBkZW5hbGlfZXhlY19vdXQ4KHN0cnVjdCBkZW5hbGlfY29udHJvbGxlciAqZGVuYWxpLCB1
+MzIgdHlwZSwKKwkJCSAgICAgY29uc3QgdTggKmJ1ZiwgdW5zaWduZWQgaW50IGxlbikKIHsKIAlp
+bnQgaTsKKwogCWZvciAoaSA9IDA7IGkgPCBsZW47IGkrKykKLQkJYnVmW2ldID0gZGVuYWxpX3Jl
+YWRfYnl0ZShjaGlwKTsKKwkJZGVuYWxpLT5ob3N0X3dyaXRlKGRlbmFsaSwgdHlwZSB8IERFTkFM
+SV9CQU5LKGRlbmFsaSksIGJ1ZltpXSk7CiB9CiAKLXN0YXRpYyB2b2lkIGRlbmFsaV9zZWxlY3Rf
+Y2hpcChzdHJ1Y3QgbmFuZF9jaGlwICpjaGlwLCBpbnQgbnVtKQorc3RhdGljIHZvaWQgZGVuYWxp
+X2V4ZWNfb3V0MTYoc3RydWN0IGRlbmFsaV9jb250cm9sbGVyICpkZW5hbGksIHUzMiB0eXBlLAor
+CQkJICAgICAgY29uc3QgdTggKmJ1ZiwgdW5zaWduZWQgaW50IGxlbikKIHsKLQlzdHJ1Y3QgZGVu
+YWxpX25hbmRfaW5mbyAqZGVuYWxpID0gbmFuZF90b19kZW5hbGkoY2hpcCk7CisJaW50IGk7CisK
+Kwlmb3IgKGkgPSAwOyBpIDwgbGVuOyBpICs9IDIpCisJCWRlbmFsaS0+aG9zdF93cml0ZShkZW5h
+bGksIHR5cGUgfCBERU5BTElfQkFOSyhkZW5hbGkpLAorCQkJCSAgIGJ1ZltpICsgMV0gPDwgMTYg
+fCBidWZbaV0pOworfQogCi0JZGVuYWxpLT5mbGFzaF9iYW5rID0gbnVtOworc3RhdGljIHZvaWQg
+ZGVuYWxpX2V4ZWNfb3V0KHN0cnVjdCBkZW5hbGlfY29udHJvbGxlciAqZGVuYWxpLCB1MzIgdHlw
+ZSwKKwkJCSAgICBjb25zdCB1OCAqYnVmLCB1bnNpZ25lZCBpbnQgbGVuLCBib29sIHdpZHRoMTYp
+Cit7CisJaWYgKHdpZHRoMTYpCisJCWRlbmFsaV9leGVjX291dDE2KGRlbmFsaSwgdHlwZSwgYnVm
+LCBsZW4pOworCWVsc2UKKwkJZGVuYWxpX2V4ZWNfb3V0OChkZW5hbGksIHR5cGUsIGJ1ZiwgbGVu
+KTsKIH0KIAotc3RhdGljIGludCBkZW5hbGlfd2FpdGZ1bmMoc3RydWN0IG5hbmRfY2hpcCAqY2hp
+cCkKK3N0YXRpYyBpbnQgZGVuYWxpX2V4ZWNfd2FpdHJkeShzdHJ1Y3QgZGVuYWxpX2NvbnRyb2xs
+ZXIgKmRlbmFsaSkKIHsKLQlzdHJ1Y3QgZGVuYWxpX25hbmRfaW5mbyAqZGVuYWxpID0gbmFuZF90
+b19kZW5hbGkoY2hpcCk7Ci0JaW50IHN0YXR1cyA9IGRlbmFsaS0+c3RhdHVzOworCXUzMiBpcnFf
+c3RhdDsKIAotCWRlbmFsaS0+c3RhdHVzID0gMDsKKwkvKiBSL0IjIHBpbiB0cmFuc2l0aW9uZWQg
+ZnJvbSBsb3cgdG8gaGlnaD8gKi8KKwlpcnFfc3RhdCA9IGRlbmFsaV93YWl0X2Zvcl9pcnEoZGVu
+YWxpLCBJTlRSX19JTlRfQUNUKTsKIAotCXJldHVybiBzdGF0dXM7CisJLyogSnVzdCBpbiBjYXNl
+IG5hbmRfb3BlcmF0aW9uIGhhcyBtdWx0aXBsZSBOQU5EX09QX1dBSVRSRFlfSU5TVFIuICovCisJ
+ZGVuYWxpX3Jlc2V0X2lycShkZW5hbGkpOworCisJcmV0dXJuIGlycV9zdGF0ICYgSU5UUl9fSU5U
+X0FDVCA/IDAgOiAtRUlPOwogfQogCi1zdGF0aWMgdm9pZCBkZW5hbGlfY21kZnVuYyhzdHJ1Y3Qg
+bmFuZF9jaGlwICpjaGlwLCB1bnNpZ25lZCBpbnQgY21kLCBpbnQgY29sLAotCQkJICAgaW50IHBh
+Z2UpCitzdGF0aWMgaW50IGRlbmFsaV9leGVjX2luc3RyKHN0cnVjdCBuYW5kX2NoaXAgKmNoaXAs
+CisJCQkgICAgIGNvbnN0IHN0cnVjdCBuYW5kX29wX2luc3RyICppbnN0cikKIHsKLQlzdHJ1Y3Qg
+ZGVuYWxpX25hbmRfaW5mbyAqZGVuYWxpID0gbmFuZF90b19kZW5hbGkoY2hpcCk7Ci0JdWludDMy
+X3QgYWRkciwgaWQ7Ci0JaW50IGk7CisJc3RydWN0IGRlbmFsaV9jb250cm9sbGVyICpkZW5hbGkg
+PSB0b19kZW5hbGlfY29udHJvbGxlcihjaGlwKTsKIAotCXN3aXRjaCAoY21kKSB7Ci0JY2FzZSBO
+QU5EX0NNRF9QQUdFUFJPRzoKLQkJYnJlYWs7Ci0JY2FzZSBOQU5EX0NNRF9TVEFUVVM6Ci0JCXJl
+YWRfc3RhdHVzKGRlbmFsaSk7Ci0JCWJyZWFrOwotCWNhc2UgTkFORF9DTURfUkVBRElEOgotCQly
+ZXNldF9idWYoZGVuYWxpKTsKLQkJLyoKLQkJICogc29tZXRpbWVzIE1hbnVmYWN0dXJlSWQgcmVh
+ZCBmcm9tIHJlZ2lzdGVyIGlzIG5vdCByaWdodAotCQkgKiBlLmcuIHNvbWUgb2YgTWljcm9uIE1U
+MjlGMzJHMDhRQUEgTUxDIE5BTkQgY2hpcHMKLQkJICogU28gaGVyZSB3ZSBzZW5kIFJFQURJRCBj
+bWQgdG8gTkFORCBpbnN0ZWFuZAotCQkgKi8KLQkJYWRkciA9IE1PREVfMTEgfCBCQU5LKGRlbmFs
+aS0+Zmxhc2hfYmFuayk7Ci0JCWluZGV4X2FkZHIoZGVuYWxpLCBhZGRyIHwgMCwgMHg5MCk7Ci0J
+CWluZGV4X2FkZHIoZGVuYWxpLCBhZGRyIHwgMSwgY29sKTsKLQkJZm9yIChpID0gMDsgaSA8IDg7
+IGkrKykgewotCQkJaW5kZXhfYWRkcl9yZWFkX2RhdGEoZGVuYWxpLCBhZGRyIHwgMiwgJmlkKTsK
+LQkJCXdyaXRlX2J5dGVfdG9fYnVmKGRlbmFsaSwgaWQpOwotCQl9Ci0JCWJyZWFrOwotCWNhc2Ug
+TkFORF9DTURfUEFSQU06Ci0JCXJlc2V0X2J1ZihkZW5hbGkpOwotCi0JCS8qIHR1cm4gb24gUi9C
+IGludGVycnVwdCAqLwotCQlkZW5hbGlfc2V0X2ludHJfbW9kZXMoZGVuYWxpLCBmYWxzZSk7Ci0J
+CWRlbmFsaV9pcnFfbWFzayA9IERFTkFMSV9JUlFfQUxMIHwgSU5UUl9TVEFUVVNfX0lOVF9BQ1Q7
+Ci0JCWNsZWFyX2ludGVycnVwdHMoZGVuYWxpKTsKLQkJZGVuYWxpX2lycV9lbmFibGUoZGVuYWxp
+LCBkZW5hbGlfaXJxX21hc2spOwotCQlkZW5hbGlfc2V0X2ludHJfbW9kZXMoZGVuYWxpLCB0cnVl
+KTsKLQotCQlhZGRyID0gKHVpbnQzMl90KU1PREVfMTEgfCBCQU5LKGRlbmFsaS0+Zmxhc2hfYmFu
+ayk7Ci0JCWluZGV4X2FkZHIoZGVuYWxpLCAodWludDMyX3QpYWRkciB8IDAsIGNtZCk7Ci0JCWlu
+ZGV4X2FkZHIoZGVuYWxpLCAodWludDMyX3QpYWRkciB8IDEsIGNvbCAmIDB4RkYpOwotCQkvKiBX
+YWl0IHRSIHRpbWUuLi4gKi8KLQkJdWRlbGF5KDI1KTsKLQkJLyogQW5kIHRoZW4gd2FpdCBmb3Ig
+Ui9CIGludGVycnVwdCAqLwotCQl3YWl0X2Zvcl9pcnEoZGVuYWxpLCBJTlRSX1NUQVRVU19fSU5U
+X0FDVCk7Ci0KLQkJLyogdHVybiBvZmYgUi9CIGludGVycnVwdCBub3cgKi8KLQkJZGVuYWxpX2ly
+cV9tYXNrID0gREVOQUxJX0lSUV9BTEw7Ci0JCWRlbmFsaV9zZXRfaW50cl9tb2RlcyhkZW5hbGks
+IGZhbHNlKTsKLQkJZGVuYWxpX2lycV9lbmFibGUoZGVuYWxpLCBkZW5hbGlfaXJxX21hc2spOwot
+CQlkZW5hbGlfc2V0X2ludHJfbW9kZXMoZGVuYWxpLCB0cnVlKTsKLQotCQlmb3IgKGkgPSAwOyBp
+IDwgMjU2OyBpKyspIHsKLQkJCWluZGV4X2FkZHJfcmVhZF9kYXRhKGRlbmFsaSwKLQkJCQkJCSh1
+aW50MzJfdClhZGRyIHwgMiwKLQkJCQkJCSZpZCk7Ci0JCQl3cml0ZV9ieXRlX3RvX2J1ZihkZW5h
+bGksIGlkKTsKLQkJfQotCQlicmVhazsKLQljYXNlIE5BTkRfQ01EX1JFQUQwOgotCWNhc2UgTkFO
+RF9DTURfU0VRSU46Ci0JCWRlbmFsaS0+cGFnZSA9IHBhZ2U7Ci0JCWJyZWFrOwotCWNhc2UgTkFO
+RF9DTURfUkVTRVQ6Ci0JCXJlc2V0X2JhbmsoZGVuYWxpKTsKLQkJYnJlYWs7Ci0JY2FzZSBOQU5E
+X0NNRF9SRUFET09COgotCQkvKiBUT0RPOiBSZWFkIE9PQiBkYXRhICovCi0JCWJyZWFrOwotCWNh
+c2UgTkFORF9DTURfRVJBU0UxOgotCWNhc2UgTkFORF9DTURfRVJBU0UyOgotCQlhZGRyID0gTU9E
+RV8xMCB8IEJBTksoZGVuYWxpLT5mbGFzaF9iYW5rKSB8IHBhZ2U7Ci0JCWluZGV4X2FkZHIoZGVu
+YWxpLCBhZGRyLCAweDEpOwotCQlicmVhazsKKwlzd2l0Y2ggKGluc3RyLT50eXBlKSB7CisJY2Fz
+ZSBOQU5EX09QX0NNRF9JTlNUUjoKKwkJZGVuYWxpX2V4ZWNfb3V0OChkZW5hbGksIERFTkFMSV9N
+QVAxMV9DTUQsCisJCQkJICZpbnN0ci0+Y3R4LmNtZC5vcGNvZGUsIDEpOworCQlyZXR1cm4gMDsK
+KwljYXNlIE5BTkRfT1BfQUREUl9JTlNUUjoKKwkJZGVuYWxpX2V4ZWNfb3V0OChkZW5hbGksIERF
+TkFMSV9NQVAxMV9BRERSLAorCQkJCSBpbnN0ci0+Y3R4LmFkZHIuYWRkcnMsCisJCQkJIGluc3Ry
+LT5jdHguYWRkci5uYWRkcnMpOworCQlyZXR1cm4gMDsKKwljYXNlIE5BTkRfT1BfREFUQV9JTl9J
+TlNUUjoKKwkJZGVuYWxpX2V4ZWNfaW4oZGVuYWxpLCBERU5BTElfTUFQMTFfREFUQSwKKwkJCSAg
+ICAgICBpbnN0ci0+Y3R4LmRhdGEuYnVmLmluLAorCQkJICAgICAgIGluc3RyLT5jdHguZGF0YS5s
+ZW4sCisJCQkgICAgICAgIWluc3RyLT5jdHguZGF0YS5mb3JjZV84Yml0ICYmCisJCQkgICAgICAg
+Y2hpcC0+b3B0aW9ucyAmIE5BTkRfQlVTV0lEVEhfMTYpOworCQlyZXR1cm4gMDsKKwljYXNlIE5B
+TkRfT1BfREFUQV9PVVRfSU5TVFI6CisJCWRlbmFsaV9leGVjX291dChkZW5hbGksIERFTkFMSV9N
+QVAxMV9EQVRBLAorCQkJCWluc3RyLT5jdHguZGF0YS5idWYub3V0LAorCQkJCWluc3RyLT5jdHgu
+ZGF0YS5sZW4sCisJCQkJIWluc3RyLT5jdHguZGF0YS5mb3JjZV84Yml0ICYmCisJCQkJY2hpcC0+
+b3B0aW9ucyAmIE5BTkRfQlVTV0lEVEhfMTYpOworCQlyZXR1cm4gMDsKKwljYXNlIE5BTkRfT1Bf
+V0FJVFJEWV9JTlNUUjoKKwkJcmV0dXJuIGRlbmFsaV9leGVjX3dhaXRyZHkoZGVuYWxpKTsKIAlk
+ZWZhdWx0OgotCQlwcl9lcnIoIjogdW5zdXBwb3J0ZWQgY29tbWFuZCByZWNlaXZlZCAweCV4XG4i
+LCBjbWQpOwotCQlicmVhazsKKwkJV0FSTl9PTkNFKDEsICJ1bnN1cHBvcnRlZCBOQU5EIGluc3Ry
+dWN0aW9uIHR5cGU6ICVkXG4iLAorCQkJICBpbnN0ci0+dHlwZSk7CisKKwkJcmV0dXJuIC1FSU5W
+QUw7CiAJfQogfQotLyogZW5kIE5BTkQgY29yZSBlbnRyeSBwb2ludHMgKi8KIAotLyogSW5pdGlh
+bGl6YXRpb24gY29kZSB0byBicmluZyB0aGUgZGV2aWNlIHVwIHRvIGEga25vd24gZ29vZCBzdGF0
+ZSAqLwotc3RhdGljIHZvaWQgZGVuYWxpX2h3X2luaXQoc3RydWN0IGRlbmFsaV9uYW5kX2luZm8g
+KmRlbmFsaSkKK3N0YXRpYyBpbnQgZGVuYWxpX2V4ZWNfb3Aoc3RydWN0IG5hbmRfY2hpcCAqY2hp
+cCwKKwkJCSAgY29uc3Qgc3RydWN0IG5hbmRfb3BlcmF0aW9uICpvcCwgYm9vbCBjaGVja19vbmx5
+KQogeworCWludCBpLCByZXQ7CisKKwlpZiAoY2hlY2tfb25seSkKKwkJcmV0dXJuIDA7CisKKwlk
+ZW5hbGlfc2VsZWN0X3RhcmdldChjaGlwLCBvcC0+Y3MpOworCiAJLyoKLQkgKiB0ZWxsIGRyaXZl
+ciBob3cgbWFueSBiaXQgY29udHJvbGxlciB3aWxsIHNraXAgYmVmb3JlCi0JICogd3JpdGluZyBF
+Q0MgY29kZSBpbiBPT0IsIHRoaXMgcmVnaXN0ZXIgbWF5IGJlIGFscmVhZHkKLQkgKiBzZXQgYnkg
+ZmlybXdhcmUuIFNvIHdlIHJlYWQgdGhpcyB2YWx1ZSBvdXQuCi0JICogaWYgdGhpcyB2YWx1ZSBp
+cyAwLCBqdXN0IGxldCBpdCBiZS4KKwkgKiBTb21lIGNvbW1hbmRzIGNvbnRhaW4gTkFORF9PUF9X
+QUlUUkRZX0lOU1RSLgorCSAqIGlycSBtdXN0IGJlIGNsZWFyZWQgaGVyZSB0byBjYXRjaCB0aGUg
+Ui9CIyBpbnRlcnJ1cHQgdGhlcmUuCiAJICovCi0JZGVuYWxpLT5iYnRza2lwYnl0ZXMgPSBpb3Jl
+YWQzMihkZW5hbGktPmZsYXNoX3JlZyArCi0JCQkJCQlTUEFSRV9BUkVBX1NLSVBfQllURVMpOwot
+CWRldGVjdF9tYXhfYmFua3MoZGVuYWxpKTsKLQlkZW5hbGlfbmFuZF9yZXNldChkZW5hbGkpOwot
+CWlvd3JpdGUzMigweDBGLCBkZW5hbGktPmZsYXNoX3JlZyArIFJCX1BJTl9FTkFCTEVEKTsKLQlp
+b3dyaXRlMzIoQ0hJUF9FTl9ET05UX0NBUkVfX0ZMQUcsCi0JCQlkZW5hbGktPmZsYXNoX3JlZyAr
+IENISVBfRU5BQkxFX0RPTlRfQ0FSRSk7Ci0KLQlpb3dyaXRlMzIoMHhmZmZmLCBkZW5hbGktPmZs
+YXNoX3JlZyArIFNQQVJFX0FSRUFfTUFSS0VSKTsKLQotCS8qIFNob3VsZCBzZXQgdmFsdWUgZm9y
+IHRoZXNlIHJlZ2lzdGVycyB3aGVuIGluaXQgKi8KLQlpb3dyaXRlMzIoMCwgZGVuYWxpLT5mbGFz
+aF9yZWcgKyBUV09fUk9XX0FERFJfQ1lDTEVTKTsKLQlpb3dyaXRlMzIoMSwgZGVuYWxpLT5mbGFz
+aF9yZWcgKyBFQ0NfRU5BQkxFKTsKLQlkZW5hbGlfbmFuZF90aW1pbmdfc2V0KGRlbmFsaSk7Ci0J
+ZGVuYWxpX2lycV9pbml0KGRlbmFsaSk7Ci19CisJZGVuYWxpX3Jlc2V0X2lycSh0b19kZW5hbGlf
+Y29udHJvbGxlcihjaGlwKSk7CiAKLS8qCi0gKiBBbHRob2doIGNvbnRyb2xsZXIgc3BlYyBzYWlk
+IFNMQyBFQ0MgaXMgZm9yY2ViIHRvIGJlIDRiaXQsCi0gKiBidXQgZGVuYWxpIGNvbnRyb2xsZXIg
+aW4gTVJTVCBvbmx5IHN1cHBvcnQgMTViaXQgYW5kIDhiaXQgRUNDCi0gKiBjb3JyZWN0aW9uCi0g
+Ki8KLSNkZWZpbmUgRUNDXzhCSVRTCTE0Ci1zdGF0aWMgc3RydWN0IG5hbmRfZWNjbGF5b3V0IG5h
+bmRfOGJpdF9vb2IgPSB7Ci0JLmVjY2J5dGVzID0gMTQsCi19OworCWZvciAoaSA9IDA7IGkgPCBv
+cC0+bmluc3RyczsgaSsrKSB7CisJCXJldCA9IGRlbmFsaV9leGVjX2luc3RyKGNoaXAsICZvcC0+
+aW5zdHJzW2ldKTsKKwkJaWYgKHJldCkKKwkJCXJldHVybiByZXQ7CisJfQorCisJcmV0dXJuIDA7
+Cit9CiAKLSNkZWZpbmUgRUNDXzE1QklUUwkyNgotc3RhdGljIHN0cnVjdCBuYW5kX2VjY2xheW91
+dCBuYW5kXzE1Yml0X29vYiA9IHsKLQkuZWNjYnl0ZXMgPSAyNiwKK3N0YXRpYyBjb25zdCBzdHJ1
+Y3QgbmFuZF9jb250cm9sbGVyX29wcyBkZW5hbGlfY29udHJvbGxlcl9vcHMgPSB7CisJLmF0dGFj
+aF9jaGlwID0gZGVuYWxpX2F0dGFjaF9jaGlwLAorCS5leGVjX29wID0gZGVuYWxpX2V4ZWNfb3As
+CisJLnNldHVwX2ludGVyZmFjZSA9IGRlbmFsaV9zZXR1cF9pbnRlcmZhY2UsCiB9OwogCi0vKiBp
+bml0aWFsaXplIGRyaXZlciBkYXRhIHN0cnVjdHVyZXMgKi8KLXN0YXRpYyB2b2lkIGRlbmFsaV9k
+cnZfaW5pdChzdHJ1Y3QgZGVuYWxpX25hbmRfaW5mbyAqZGVuYWxpKQoraW50IGRlbmFsaV9jaGlw
+X2luaXQoc3RydWN0IGRlbmFsaV9jb250cm9sbGVyICpkZW5hbGksCisJCSAgICAgc3RydWN0IGRl
+bmFsaV9jaGlwICpkY2hpcCkKIHsKLQlkZW5hbGktPmlkeCA9IDA7Ci0KLQkvKiBpbmRpY2F0ZSB0
+aGF0IE1URCBoYXMgbm90IHNlbGVjdGVkIGEgdmFsaWQgYmFuayB5ZXQgKi8KLQlkZW5hbGktPmZs
+YXNoX2JhbmsgPSBDSElQX1NFTEVDVF9JTlZBTElEOworCXN0cnVjdCBuYW5kX2NoaXAgKmNoaXAg
+PSAmZGNoaXAtPmNoaXA7CisJc3RydWN0IG10ZF9pbmZvICptdGQgPSBuYW5kX3RvX210ZChjaGlw
+KTsKKwlzdHJ1Y3QgZGVuYWxpX2NoaXAgKmRjaGlwMjsKKwlpbnQgaSwgaiwgcmV0OwogCi0JLyog
+aW5pdGlhbGl6ZSBvdXIgaXJxX3N0YXR1cyB2YXJpYWJsZSB0byBpbmRpY2F0ZSBubyBpbnRlcnJ1
+cHRzICovCi0JZGVuYWxpLT5pcnFfc3RhdHVzID0gMDsKLX0KKwljaGlwLT5jb250cm9sbGVyID0g
+JmRlbmFsaS0+Y29udHJvbGxlcjsKIAotaW50IGRlbmFsaV9pbml0KHN0cnVjdCBkZW5hbGlfbmFu
+ZF9pbmZvICpkZW5hbGkpCi17Ci0Jc3RydWN0IG5hbmRfY2hpcCAqbmFuZCA9ICZkZW5hbGktPm5h
+bmQ7Ci0Jc3RydWN0IG10ZF9pbmZvICptdGQgPSBuYW5kX3RvX210ZChuYW5kKTsKLQlpbnQgcmV0
+ID0gMDsKLQl1aW50MzJfdCB2YWw7Ci0Jc3RydWN0IG5hbmRfZWNjbGF5b3V0ICplY2NsYXlvdXQ7
+CisJLyogc2FuaXR5IGNoZWNrcyBmb3IgYmFuayBudW1iZXJzICovCisJZm9yIChpID0gMDsgaSA8
+IGRjaGlwLT5uc2VsczsgaSsrKSB7CisJCXVuc2lnbmVkIGludCBiYW5rID0gZGNoaXAtPnNlbHNb
+aV0uYmFuazsKIAotCWlmIChkZW5hbGktPnBsYXRmb3JtID09IElOVEVMX0NFNDEwMCkgewotCQkv
+KgotCQkgKiBEdWUgdG8gYSBzaWxpY29uIGxpbWl0YXRpb24sIHdlIGNhbiBvbmx5IHN1cHBvcnQK
+LQkJICogT05GSSB0aW1pbmcgbW9kZSAxIGFuZCBiZWxvdy4KLQkJICovCi0JCWlmIChvbmZpX3Rp
+bWluZ19tb2RlIDwgLTEgfHwgb25maV90aW1pbmdfbW9kZSA+IDEpIHsKLQkJCXByX2VycigiSW50
+ZWwgQ0U0MTAwIG9ubHkgc3VwcG9ydHMgT05GSSB0aW1pbmcgbW9kZSAxIG9yIGJlbG93XG4iKTsK
+KwkJaWYgKGJhbmsgPj0gZGVuYWxpLT5uYmFua3MpIHsKKwkJCWRldl9lcnIoZGVuYWxpLT5kZXYs
+ICJ1bnN1cHBvcnRlZCBiYW5rICVkXG4iLCBiYW5rKTsKIAkJCXJldHVybiAtRUlOVkFMOwogCQl9
+Ci0JfQotCi0JLyogYWxsb2NhdGUgYSB0ZW1wb3JhcnkgYnVmZmVyIGZvciBuYW5kX3NjYW5faWRl
+bnQoKSAqLwotCWRlbmFsaS0+YnVmLmJ1ZiA9IGt6YWxsb2MoUEFHRV9TSVpFLCBHRlBfS0VSTkVM
+KTsKLQlpZiAoIWRlbmFsaS0+YnVmLmJ1ZikKLQkJcmV0dXJuIC1FTk9NRU07CiAKLQltdGQtPmRl
+di5wYXJlbnQgPSBkZW5hbGktPmRldjsKLQlkZW5hbGlfaHdfaW5pdChkZW5hbGkpOwotCWRlbmFs
+aV9kcnZfaW5pdChkZW5hbGkpOworCQlmb3IgKGogPSAwOyBqIDwgaTsgaisrKSB7CisJCQlpZiAo
+YmFuayA9PSBkY2hpcC0+c2Vsc1tqXS5iYW5rKSB7CisJCQkJZGV2X2VycihkZW5hbGktPmRldiwK
+KwkJCQkJImJhbmsgJWQgaXMgYXNzaWduZWQgdHdpY2UgaW4gdGhlIHNhbWUgY2hpcFxuIiwKKwkJ
+CQkJYmFuayk7CisJCQkJcmV0dXJuIC1FSU5WQUw7CisJCQl9CisJCX0KIAotCWRlbmFsaV9zZXRf
+aW50cl9tb2RlcyhkZW5hbGksIHRydWUpOwotCW10ZC0+bmFtZSA9ICJkZW5hbGktbmFuZCI7CisJ
+CWxpc3RfZm9yX2VhY2hfZW50cnkoZGNoaXAyLCAmZGVuYWxpLT5jaGlwcywgbm9kZSkgeworCQkJ
+Zm9yIChqID0gMDsgaiA8IGRjaGlwMi0+bnNlbHM7IGorKykgeworCQkJCWlmIChiYW5rID09IGRj
+aGlwMi0+c2Vsc1tqXS5iYW5rKSB7CisJCQkJCWRldl9lcnIoZGVuYWxpLT5kZXYsCisJCQkJCQki
+YmFuayAlZCBpcyBhbHJlYWR5IHVzZWRcbiIsCisJCQkJCQliYW5rKTsKKwkJCQkJcmV0dXJuIC1F
+SU5WQUw7CisJCQkJfQorCQkJfQorCQl9CisJfQogCi0JLyogcmVnaXN0ZXIgdGhlIGRyaXZlciB3
+aXRoIHRoZSBOQU5EIGNvcmUgc3Vic3lzdGVtICovCi0JbmFuZC0+bGVnYWN5LnJlYWRfYnVmID0g
+ZGVuYWxpX3JlYWRfYnVmOwotCW5hbmQtPmxlZ2FjeS5zZWxlY3RfY2hpcCA9IGRlbmFsaV9zZWxl
+Y3RfY2hpcDsKLQluYW5kLT5sZWdhY3kuY21kZnVuYyA9IGRlbmFsaV9jbWRmdW5jOwotCW5hbmQt
+PmxlZ2FjeS5yZWFkX2J5dGUgPSBkZW5hbGlfcmVhZF9ieXRlOwotCW5hbmQtPmxlZ2FjeS53YWl0
+ZnVuYyA9IGRlbmFsaV93YWl0ZnVuYzsKKwltdGQtPmRldi5wYXJlbnQgPSBkZW5hbGktPmRldjsK
+IAogCS8qCi0JICogc2NhbiBmb3IgTkFORCBkZXZpY2VzIGF0dGFjaGVkIHRvIHRoZSBjb250cm9s
+bGVyCi0JICogdGhpcyBpcyB0aGUgZmlyc3Qgc3RhZ2UgaW4gYSB0d28gc3RlcCBwcm9jZXNzIHRv
+IHJlZ2lzdGVyCi0JICogd2l0aCB0aGUgbmFuZCBzdWJzeXN0ZW0KKwkgKiBGYWxsYmFjayB0byB0
+aGUgZGVmYXVsdCBuYW1lIGlmIERUIGRpZCBub3QgZ2l2ZSAibGFiZWwiIHByb3BlcnR5LgorCSAq
+IFVzZSAibGFiZWwiIHByb3BlcnR5IGlmIG11bHRpcGxlIGNoaXBzIGFyZSBjb25uZWN0ZWQuCiAJ
+ICovCi0JaWYgKG5hbmRfc2Nhbl9pZGVudChuYW5kLCBkZW5hbGktPm1heF9iYW5rcywgTlVMTCkp
+IHsKLQkJcmV0ID0gLUVOWElPOwotCQlnb3RvIGZhaWxlZF9yZXFfaXJxOwotCX0KKwlpZiAoIW10
+ZC0+bmFtZSAmJiBsaXN0X2VtcHR5KCZkZW5hbGktPmNoaXBzKSkKKwkJbXRkLT5uYW1lID0gImRl
+bmFsaS1uYW5kIjsKIAotCS8qIGFsbG9jYXRlIHRoZSByaWdodCBzaXplIGJ1ZmZlciBub3cgKi8K
+LQlrZnJlZShkZW5hbGktPmJ1Zi5idWYpOwotCWRlbmFsaS0+YnVmLmJ1ZiA9IGt6YWxsb2MobXRk
+LT53cml0ZXNpemUgKyBtdGQtPm9vYnNpemUsCi0JCQkgICAgIEdGUF9LRVJORUwpOwotCWlmICgh
+ZGVuYWxpLT5idWYuYnVmKSB7Ci0JCXJldCA9IC1FTk9NRU07Ci0JCWdvdG8gZmFpbGVkX3JlcV9p
+cnE7CisJaWYgKGRlbmFsaS0+ZG1hX2F2YWlsKSB7CisJCWNoaXAtPm9wdGlvbnMgfD0gTkFORF9V
+U0VTX0RNQTsKKwkJY2hpcC0+YnVmX2FsaWduID0gMTY7CiAJfQogCi0JLyoKLQkgKiBzdXBwb3J0
+IGZvciBtdWx0aSBuYW5kCi0JICogTVREIGtub3duIG5vdGhpbmcgYWJvdXQgbXVsdGkgbmFuZCwg
+c28gd2Ugc2hvdWxkIHRlbGwgaXQKLQkgKiB0aGUgcmVhbCBwYWdlc2l6ZSBhbmQgYW55dGhpbmcg
+bmVjZXNzZXJ5Ci0JICovCi0JZGVuYWxpLT5kZXZudW0gPSBpb3JlYWQzMihkZW5hbGktPmZsYXNo
+X3JlZyArIERFVklDRVNfQ09OTkVDVEVEKTsKLQlpZiAoZGVuYWxpLT5kZXZudW0gIT0gMSkgewot
+CQlyZXQgPSAtRUlOVkFMOwotCQlkZXZfZXJyKGRlbmFsaS0+ZGV2LAotCQkJIk11bHRpcGxlIGRl
+dmljZXMgKCVkKSBkZXRlY3RlZCwgbm90IHlldCBzdXBwb3J0ZWRcbiIsCi0JCQlkZW5hbGktPmRl
+dm51bSk7Ci0JCWdvdG8gZmFpbGVkX3JlcV9pcnE7CisJLyogY2xrIHJhdGUgaW5mbyBpcyBuZWVk
+ZWQgZm9yIHNldHVwX2ludGVyZmFjZSAqLworCWlmICghZGVuYWxpLT5jbGtfcmF0ZSB8fCAhZGVu
+YWxpLT5jbGtfeF9yYXRlKQorCQljaGlwLT5vcHRpb25zIHw9IE5BTkRfS0VFUF9USU1JTkdTOwor
+CisJY2hpcC0+YmJ0X29wdGlvbnMgfD0gTkFORF9CQlRfVVNFX0ZMQVNIOworCWNoaXAtPmJidF9v
+cHRpb25zIHw9IE5BTkRfQkJUX05PX09PQjsKKwljaGlwLT5vcHRpb25zIHw9IE5BTkRfTk9fU1VC
+UEFHRV9XUklURTsKKwljaGlwLT5lY2MubW9kZSA9IE5BTkRfRUNDX0hXX1NZTkRST01FOworCWNo
+aXAtPmVjYy5yZWFkX3BhZ2UgPSBkZW5hbGlfcmVhZF9wYWdlOworCWNoaXAtPmVjYy53cml0ZV9w
+YWdlID0gZGVuYWxpX3dyaXRlX3BhZ2U7CisJY2hpcC0+ZWNjLnJlYWRfcGFnZV9yYXcgPSBkZW5h
+bGlfcmVhZF9wYWdlX3JhdzsKKwljaGlwLT5lY2Mud3JpdGVfcGFnZV9yYXcgPSBkZW5hbGlfd3Jp
+dGVfcGFnZV9yYXc7CisJY2hpcC0+ZWNjLnJlYWRfb29iID0gZGVuYWxpX3JlYWRfb29iOworCWNo
+aXAtPmVjYy53cml0ZV9vb2IgPSBkZW5hbGlfd3JpdGVfb29iOworCisJbXRkX3NldF9vb2JsYXlv
+dXQobXRkLCAmZGVuYWxpX29vYmxheW91dF9vcHMpOworCisJcmV0ID0gbmFuZF9zY2FuKGNoaXAs
+IGRjaGlwLT5uc2Vscyk7CisJaWYgKHJldCkKKwkJcmV0dXJuIHJldDsKKworCXJldCA9IGFkZF9t
+dGRfbmFuZF9kZXZpY2UobXRkLCAibmFuZCIpOworCWlmIChyZXQpIHsKKwkJZGV2X2VycihkZW5h
+bGktPmRldiwgIkZhaWxlZCB0byByZWdpc3RlciBNVEQ6ICVkXG4iLCByZXQpOworCQlnb3RvIGNs
+ZWFudXBfbmFuZDsKIAl9CiAKKwlsaXN0X2FkZF90YWlsKCZkY2hpcC0+bm9kZSwgJmRlbmFsaS0+
+Y2hpcHMpOworCisJcmV0dXJuIDA7CisKK2NsZWFudXBfbmFuZDoKKwluYW5kX2NsZWFudXAoY2hp
+cCk7CisKKwlyZXR1cm4gcmV0OworfQorRVhQT1JUX1NZTUJPTF9HUEwoZGVuYWxpX2NoaXBfaW5p
+dCk7CisKK2ludCBkZW5hbGlfaW5pdChzdHJ1Y3QgZGVuYWxpX2NvbnRyb2xsZXIgKmRlbmFsaSkK
+K3sKKwl1MzIgZmVhdHVyZXMgPSBpb3JlYWQzMihkZW5hbGktPnJlZyArIEZFQVRVUkVTKTsKKwor
+CW5hbmRfY29udHJvbGxlcl9pbml0KCZkZW5hbGktPmNvbnRyb2xsZXIpOworCWRlbmFsaS0+Y29u
+dHJvbGxlci5vcHMgPSAmZGVuYWxpX2NvbnRyb2xsZXJfb3BzOworCXNwaW5fbG9ja19pbml0KCZk
+ZW5hbGktPmlycV9sb2NrKTsKKwlJTklUX0xJU1RfSEVBRCgmZGVuYWxpLT5jaGlwcyk7CisJZGVu
+YWxpLT5hY3RpdmVfYmFuayA9IERFTkFMSV9JTlZBTElEX0JBTks7CisKIAkvKgotCSAqIHNlY29u
+ZCBzdGFnZSBvZiB0aGUgTkFORCBzY2FuCi0JICogdGhpcyBzdGFnZSByZXF1aXJlcyBpbmZvcm1h
+dGlvbiByZWdhcmRpbmcgRUNDIGFuZAotCSAqIGJhZCBibG9jayBtYW5hZ2VtZW50LgorCSAqIFRo
+ZSBSRVZJU0lPTiByZWdpc3RlciBtYXkgbm90IGJlIHJlbGlhYmxlLiBQbGF0Zm9ybXMgYXJlIGFs
+bG93ZWQgdG8KKwkgKiBvdmVycmlkZSBpdC4KIAkgKi8KKwlpZiAoIWRlbmFsaS0+cmV2aXNpb24p
+CisJCWRlbmFsaS0+cmV2aXNpb24gPSBzd2FiMTYoaW9yZWFkMzIoZGVuYWxpLT5yZWcgKyBSRVZJ
+U0lPTikpOwogCi0JLyogQmFkIGJsb2NrIHRhYmxlIGRlc2NyaXB0aW9uIGlzIHNldCBieSBuYW5k
+IGZyYW1ld29yaywKLQkgICBzZWUgbmFuZF9iYnQuYyAqLworCWRlbmFsaS0+bmJhbmtzID0gMSA8
+PCBGSUVMRF9HRVQoRkVBVFVSRVNfX05fQkFOS1MsIGZlYXR1cmVzKTsKIAotCW5hbmQtPmJidF9v
+cHRpb25zIHw9IE5BTkRfQkJUX1VTRV9GTEFTSDsKLQluYW5kLT5lY2MubW9kZSA9IE5BTkRfRUND
+X0hXX1NZTkRST01FOwotCWlmIChkZW5hbGktPmhhdmVfaHdfZWNjX2ZpeHVwKSB7Ci0JCS8qIFdl
+IGhhdmUgT09CIHN1cHBvcnQsIHNvIGFsbG93IHNjYW4gb2YgQkJUCi0JCQlhbmQgbGVhdmUgdGhl
+IE9PQiBhbG9uZSAqLwotCQluYW5kLT5iYnRfb3B0aW9ucyB8PSBOQU5EX0JCVF9OT19PT0I7Ci0J
+fSBlbHNlIHsKLQkvKiBza2lwIHRoZSBzY2FuIGZvciBub3cgdW50aWwgd2UgaGF2ZSBPT0IgcmVh
+ZCBhbmQgd3JpdGUgc3VwcG9ydCAqLwotCQluYW5kLT5vcHRpb25zIHw9IE5BTkRfU0tJUF9CQlRT
+Q0FOOwotCX0KKwkvKiB0aGUgZW5jb2RpbmcgY2hhbmdlZCBmcm9tIHJldiA1LjAgdG8gNS4xICov
+CisJaWYgKGRlbmFsaS0+cmV2aXNpb24gPCAweDA1MDEpCisJCWRlbmFsaS0+bmJhbmtzIDw8PSAx
+OwogCi0JLyogbm8gc3VicGFnZSB3cml0ZXMgb24gZGVuYWxpICovCi0JbmFuZC0+b3B0aW9ucyB8
+PSBOQU5EX05PX1NVQlBBR0VfV1JJVEU7CisJaWYgKGZlYXR1cmVzICYgRkVBVFVSRVNfX0RNQSkK
+KwkJZGVuYWxpLT5kbWFfYXZhaWwgPSB0cnVlOwogCi0JLyoKLQkgKiBEZW5hbGkgQ29udHJvbGxl
+ciBvbmx5IHN1cHBvcnQgMTViaXQgYW5kIDhiaXQgRUNDIGluIE1SU1QsCi0JICogc28ganVzdCBs
+ZXQgY29udHJvbGxlciBkbyAxNWJpdCBFQ0MgZm9yIE1MQyBhbmQgOGJpdCBFQ0MgZm9yCi0JICog
+U0xDIGlmIHBvc3NpYmxlLgotCSAqICovCi0JaWYgKCFuYW5kX2lzX3NsYygmZGVuYWxpLT5uYW5k
+KSAmJgotCQkJKG10ZC0+b29ic2l6ZSA+IChkZW5hbGktPmJidHNraXBieXRlcyArCi0JCQlFQ0Nf
+MTVCSVRTICogKG10ZC0+d3JpdGVzaXplIC8KLQkJCUVDQ19TRUNUT1JfU0laRSkpKSkgewotCQkv
+KiBpZiBNTEMgT09CIHNpemUgaXMgbGFyZ2UgZW5vdWdoLCB1c2UgMTViaXQgRUNDKi8KLQkJbmFu
+ZC0+ZWNjLnN0cmVuZ3RoID0gMTU7Ci0JCWVjY2xheW91dCA9ICZuYW5kXzE1Yml0X29vYjsKLQkJ
+bmFuZC0+ZWNjLmJ5dGVzID0gRUNDXzE1QklUUzsKLQkJaW93cml0ZTMyKDE1LCBkZW5hbGktPmZs
+YXNoX3JlZyArIEVDQ19DT1JSRUNUSU9OKTsKLQl9IGVsc2UgaWYgKG10ZC0+b29ic2l6ZSA8IChk
+ZW5hbGktPmJidHNraXBieXRlcyArCi0JCQlFQ0NfOEJJVFMgKiAobXRkLT53cml0ZXNpemUgLwot
+CQkJRUNDX1NFQ1RPUl9TSVpFKSkpIHsKLQkJcHJfZXJyKCJZb3VyIE5BTkQgY2hpcCBPT0IgaXMg
+bm90IGxhcmdlIGVub3VnaCB0byBjb250YWluIDhiaXQgRUNDIGNvcnJlY3Rpb24gY29kZXMiKTsK
+LQkJZ290byBmYWlsZWRfcmVxX2lycTsKLQl9IGVsc2UgewotCQluYW5kLT5lY2Muc3RyZW5ndGgg
+PSA4OwotCQllY2NsYXlvdXQgPSAmbmFuZF84Yml0X29vYjsKLQkJbmFuZC0+ZWNjLmJ5dGVzID0g
+RUNDXzhCSVRTOwotCQlpb3dyaXRlMzIoOCwgZGVuYWxpLT5mbGFzaF9yZWcgKyBFQ0NfQ09SUkVD
+VElPTik7CisJaWYgKGRlbmFsaS0+ZG1hX2F2YWlsKSB7CisJCWludCBkbWFfYml0ID0gZGVuYWxp
+LT5jYXBzICYgREVOQUxJX0NBUF9ETUFfNjRCSVQgPyA2NCA6IDMyOworCisJCWRtYV9zZXRfbWFz
+ayhkZW5hbGktPmRldiwgRE1BX0JJVF9NQVNLKGRtYV9iaXQpKTsKIAl9CiAKLQllY2NsYXlvdXQt
+Pm9vYmZyZWVbMF0ub2Zmc2V0ID0KLQkJZGVuYWxpLT5iYnRza2lwYnl0ZXMgKyBlY2NsYXlvdXQt
+PmVjY2J5dGVzOwotCWVjY2xheW91dC0+b29iZnJlZVswXS5sZW5ndGggPQotCQltdGQtPm9vYnNp
+emUgLSBlY2NsYXlvdXQtPmVjY2J5dGVzIC0KLQkJZGVuYWxpLT5iYnRza2lwYnl0ZXM7CisJaWYg
+KGRlbmFsaS0+ZG1hX2F2YWlsKSB7CisJCWlmIChkZW5hbGktPmNhcHMgJiBERU5BTElfQ0FQX0RN
+QV82NEJJVCkKKwkJCWRlbmFsaS0+c2V0dXBfZG1hID0gZGVuYWxpX3NldHVwX2RtYTY0OworCQll
+bHNlCisJCQlkZW5hbGktPnNldHVwX2RtYSA9IGRlbmFsaV9zZXR1cF9kbWEzMjsKKwl9CiAKLQlt
+dGRfc2V0X2VjY2xheW91dChtdGQsIGVjY2xheW91dCk7CisJaWYgKGZlYXR1cmVzICYgRkVBVFVS
+RVNfX0lOREVYX0FERFIpIHsKKwkJZGVuYWxpLT5ob3N0X3JlYWQgPSBkZW5hbGlfaW5kZXhlZF9y
+ZWFkOworCQlkZW5hbGktPmhvc3Rfd3JpdGUgPSBkZW5hbGlfaW5kZXhlZF93cml0ZTsKKwl9IGVs
+c2UgeworCQlkZW5hbGktPmhvc3RfcmVhZCA9IGRlbmFsaV9kaXJlY3RfcmVhZDsKKwkJZGVuYWxp
+LT5ob3N0X3dyaXRlID0gZGVuYWxpX2RpcmVjdF93cml0ZTsKKwl9CiAKIAkvKgotCSAqIExldCBk
+cml2ZXIga25vdyB0aGUgdG90YWwgYmxvY2tzIG51bWJlciBhbmQgaG93IG1hbnkgYmxvY2tzCi0J
+ICogY29udGFpbmVkIGJ5IGVhY2ggbmFuZCBjaGlwLiBibGtzcGVyY2hpcCB3aWxsIGhlbHAgZHJp
+dmVyIHRvCi0JICoga25vdyBob3cgbWFueSBibG9ja3MgaXMgdGFrZW4gYnkgRlcuCisJICogU2V0
+IGhvdyBtYW55IGJ5dGVzIHNob3VsZCBiZSBza2lwcGVkIGJlZm9yZSB3cml0aW5nIGRhdGEgaW4g
+T09CLgorCSAqIElmIGEgcGxhdGZvcm0gcmVxdWVzdHMgYSBub24temVybyB2YWx1ZSwgc2V0IGl0
+IHRvIHRoZSByZWdpc3Rlci4KKwkgKiBPdGhlcndpc2UsIHJlYWQgdGhlIHZhbHVlIG91dCwgZXhw
+ZWN0aW5nIGl0IGhhcyBhbHJlYWR5IGJlZW4gc2V0IHVwCisJICogYnkgZmlybXdhcmUuCiAJICov
+Ci0JZGVuYWxpLT50b3RhbGJsa3MgPSBtdGQtPnNpemUgPj4gbmFuZC0+cGh5c19lcmFzZV9zaGlm
+dDsKLQlkZW5hbGktPmJsa3NwZXJjaGlwID0gZGVuYWxpLT50b3RhbGJsa3M7Ci0KLQkvKiBvdmVy
+cmlkZSB0aGUgZGVmYXVsdCByZWFkIG9wZXJhdGlvbnMgKi8KLQluYW5kLT5lY2Muc2l6ZSA9IEVD
+Q19TRUNUT1JfU0laRTsKLQluYW5kLT5lY2MucmVhZF9wYWdlID0gZGVuYWxpX3JlYWRfcGFnZTsK
+LQluYW5kLT5lY2MucmVhZF9wYWdlX3JhdyA9IGRlbmFsaV9yZWFkX3BhZ2VfcmF3OwotCW5hbmQt
+PmVjYy53cml0ZV9wYWdlID0gZGVuYWxpX3dyaXRlX3BhZ2U7Ci0JbmFuZC0+ZWNjLndyaXRlX3Bh
+Z2VfcmF3ID0gZGVuYWxpX3dyaXRlX3BhZ2VfcmF3OwotCW5hbmQtPmVjYy5yZWFkX29vYiA9IGRl
+bmFsaV9yZWFkX29vYjsKLQluYW5kLT5lY2Mud3JpdGVfb29iID0gZGVuYWxpX3dyaXRlX29vYjsK
+LQotCS8qIE9jY2FzaW9uYWxseSB0aGUgY29udHJvbGxlciBpcyBpbiBTUEFSRSBvciBNQUlOK1NQ
+QVJFCi0JICAgbW9kZSB1cG9uIHN0YXJ0dXAsIGFuZCB3ZSB3YW50IGl0IHRvIGJlIE1BSU4gb25s
+eSAqLwotCXZhbCA9IGlvcmVhZDMyKGRlbmFsaS0+Zmxhc2hfcmVnICsgVFJBTlNGRVJfTU9ERSk7
+Ci0JaWYgKHZhbCAhPSAwKSB7Ci0JCWludCBpOwotCQlkZXZfZGJnKGRlbmFsaS0+ZGV2LAotCQki
+c2V0dGluZyBUUkFOU0ZFUl9NT0RFICglMDh4KSBiYWNrIHRvIE1BSU4gb25seVxuIiwgdmFsKTsK
+LQkJLyogcHV0IGFsbCBiYW5rcyBpbiBNQUlOIG1vZGUsIG5vIFNQQVJFICovCi0JCWlvd3JpdGUz
+MigwLCBkZW5hbGktPmZsYXNoX3JlZyArIFRSQU5TRkVSX1NQQVJFX1JFRyk7Ci0JCWZvciAoaSA9
+IDA7IGkgPCA0OyBpKyspCi0JCQlpbmRleF9hZGRyKGRlbmFsaSwgTU9ERV8xMCB8IEJBTksoaSkg
+fCAxLAotCQkJCU1BSU5fQUNDRVNTKTsKLQl9CisJaWYgKGRlbmFsaS0+b29iX3NraXBfYnl0ZXMp
+CisJCWlvd3JpdGUzMihkZW5hbGktPm9vYl9za2lwX2J5dGVzLAorCQkJICBkZW5hbGktPnJlZyAr
+IFNQQVJFX0FSRUFfU0tJUF9CWVRFUyk7CisJZWxzZQorCQlkZW5hbGktPm9vYl9za2lwX2J5dGVz
+ID0gaW9yZWFkMzIoZGVuYWxpLT5yZWcgKworCQkJCQkJICBTUEFSRV9BUkVBX1NLSVBfQllURVMp
+OwogCi0JaWYgKG5hbmRfc2Nhbl90YWlsKG5hbmQpKSB7Ci0JCXJldCA9IC1FTlhJTzsKLQkJZ290
+byBmYWlsZWRfcmVxX2lycTsKLQl9CisJaW93cml0ZTMyKDAsIGRlbmFsaS0+cmVnICsgVFJBTlNG
+RVJfU1BBUkVfUkVHKTsKKwlpb3dyaXRlMzIoR0VOTUFTSyhkZW5hbGktPm5iYW5rcyAtIDEsIDAp
+LCBkZW5hbGktPnJlZyArIFJCX1BJTl9FTkFCTEVEKTsKKwlpb3dyaXRlMzIoQ0hJUF9FTl9ET05U
+X0NBUkVfX0ZMQUcsIGRlbmFsaS0+cmVnICsgQ0hJUF9FTkFCTEVfRE9OVF9DQVJFKTsKKwlpb3dy
+aXRlMzIoRUNDX0VOQUJMRV9fRkxBRywgZGVuYWxpLT5yZWcgKyBFQ0NfRU5BQkxFKTsKKwlpb3dy
+aXRlMzIoMHhmZmZmLCBkZW5hbGktPnJlZyArIFNQQVJFX0FSRUFfTUFSS0VSKTsKKwlpb3dyaXRl
+MzIoV1JJVEVfUFJPVEVDVF9fRkxBRywgZGVuYWxpLT5yZWcgKyBXUklURV9QUk9URUNUKTsKIAot
+CXJldHVybiBhZGRfbXRkX25hbmRfZGV2aWNlKG10ZCwgIm5hbmQiKTsKKwlkZW5hbGlfY2xlYXJf
+aXJxX2FsbChkZW5hbGkpOwogCi1mYWlsZWRfcmVxX2lycToKLQlkZW5hbGlfaXJxX2NsZWFudXAo
+ZGVuYWxpLT5pcnEsIGRlbmFsaSk7CisJZGVuYWxpX2VuYWJsZV9pcnEoZGVuYWxpKTsKIAotCXJl
+dHVybiByZXQ7CisJcmV0dXJuIDA7CiB9CiBFWFBPUlRfU1lNQk9MKGRlbmFsaV9pbml0KTsKIAot
+Ci1NT0RVTEVfQVVUSE9SKCJJbnRlbCBDb3Jwb3JhdGlvbiIpOwotTU9EVUxFX0RFU0NSSVBUSU9O
+KCIiKTsKLU1PRFVMRV9MSUNFTlNFKCJHUEwiKTsKK01PRFVMRV9ERVNDUklQVElPTigiRHJpdmVy
+IGNvcmUgZm9yIERlbmFsaSBOQU5EIGNvbnRyb2xsZXIiKTsKK01PRFVMRV9BVVRIT1IoIkludGVs
+IENvcnBvcmF0aW9uIGFuZCBpdHMgc3VwcGxpZXJzIik7CitNT0RVTEVfTElDRU5TRSgiR1BMIHYy
+Iik7CmRpZmYgLS1naXQgYS9kcml2ZXJzL210ZC9uYW5kL25hbmRfZGVuYWxpX2R0LmMgYi9kcml2
+ZXJzL210ZC9uYW5kL25hbmRfZGVuYWxpX2R0LmMKaW5kZXggZTMwMjQ1NDljZC4uMWEzMjk4N2Rh
+MCAxMDA2NDQKLS0tIGEvZHJpdmVycy9tdGQvbmFuZC9uYW5kX2RlbmFsaV9kdC5jCisrKyBiL2Ry
+aXZlcnMvbXRkL25hbmQvbmFuZF9kZW5hbGlfZHQuYwpAQCAtMjQsNTggKzI0LDExNSBAQAogI2lu
+Y2x1ZGUgPGVycm5vLmg+CiAKICNpbmNsdWRlIDxsaW51eC9jbGsuaD4KKyNpbmNsdWRlIDxsaW51
+eC9zcGlubG9jay5oPgogCiAKICNpbmNsdWRlICJkZW5hbGkuaCIKIAogc3RydWN0IGRlbmFsaV9k
+dCB7Ci0Jc3RydWN0IGRlbmFsaV9uYW5kX2luZm8JZGVuYWxpOworCXN0cnVjdCBkZW5hbGlfY29u
+dHJvbGxlcglkZW5hbGk7CiAJc3RydWN0IGNsawkJKmNsazsKIH07CiAKK3N0cnVjdCBkZW5hbGlf
+ZHRfZGF0YSB7CisJdW5zaWduZWQgaW50IHJldmlzaW9uOworCXVuc2lnbmVkIGludCBjYXBzOwor
+CXVuc2lnbmVkIGludCBvb2Jfc2tpcF9ieXRlczsKKwljb25zdCAgc3RydWN0IG5hbmRfZWNjX2Nh
+cHMgKmVjY19jYXBzOworfTsKKworTkFORF9FQ0NfQ0FQU19TSU5HTEUoZGVuYWxpX3NvY2ZwZ2Ff
+ZWNjX2NhcHMsIGRlbmFsaV9jYWxjX2VjY19ieXRlcywKKwkJICAgICA1MTIsIDgsIDE1KTsKK3N0
+YXRpYyBjb25zdCBzdHJ1Y3QgZGVuYWxpX2R0X2RhdGEgZGVuYWxpX3NvY2ZwZ2FfZGF0YSA9IHsK
+KwkuY2FwcyA9IERFTkFMSV9DQVBfSFdfRUNDX0ZJWFVQLAorCS5vb2Jfc2tpcF9ieXRlcyA9IDIs
+CisJLmVjY19jYXBzID0gJmRlbmFsaV9zb2NmcGdhX2VjY19jYXBzLAorfTsKKworc3RhdGljIGlu
+dCBkZW5hbGlfZHRfY2hpcF9pbml0KHN0cnVjdCBkZW5hbGlfY29udHJvbGxlciAqZGVuYWxpLAor
+CQkJICAgICAgIHN0cnVjdCBkZXZpY2Vfbm9kZSAqY2hpcF9ucCkKK3sKKwlzdHJ1Y3QgZGVuYWxp
+X2NoaXAgKmRjaGlwOworCXUzMiBiYW5rOworCWludCBuc2VscywgaSwgcmV0OworCisJbnNlbHMg
+PSBvZl9wcm9wZXJ0eV9jb3VudF9lbGVtc19vZl9zaXplKGNoaXBfbnAsICJyZWciLCBzaXplb2Yo
+dTMyKSk7CisJaWYgKG5zZWxzIDwgMCkKKwkJcmV0dXJuIG5zZWxzOworCisJZGNoaXAgPSB4emFs
+bG9jKHNpemVvZigqZGNoaXApICsgc2l6ZW9mKHN0cnVjdCBkZW5hbGlfY2hpcF9zZWwpICpuc2Vs
+cyk7CisKKwlkY2hpcC0+bnNlbHMgPSBuc2VsczsKKworCWZvciAoaSA9IDA7IGkgPCBuc2Vsczsg
+aSsrKSB7CisJCXJldCA9IG9mX3Byb3BlcnR5X3JlYWRfdTMyX2luZGV4KGNoaXBfbnAsICJyZWci
+LCBpLCAmYmFuayk7CisJCWlmIChyZXQpCisJCQlyZXR1cm4gcmV0OworCisJCWRjaGlwLT5zZWxz
+W2ldLmJhbmsgPSBiYW5rOworCisJCW5hbmRfc2V0X2ZsYXNoX25vZGUoJmRjaGlwLT5jaGlwLCBj
+aGlwX25wKTsKKwl9CisKKwlyZXR1cm4gZGVuYWxpX2NoaXBfaW5pdChkZW5hbGksIGRjaGlwKTsK
+K30KIAogc3RhdGljIGludCBkZW5hbGlfZHRfcHJvYmUoc3RydWN0IGRldmljZV9kICpvZmRldikK
+IHsKIAlzdHJ1Y3QgcmVzb3VyY2UgKmlvcmVzOwogCXN0cnVjdCBkZW5hbGlfZHQgKmR0OwotCXN0
+cnVjdCBkZW5hbGlfbmFuZF9pbmZvICpkZW5hbGk7CisJc3RydWN0IGRlbmFsaV9jb250cm9sbGVy
+ICpkZW5hbGk7CisJc3RydWN0IGRlbmFsaV9kdF9kYXRhICpkYXRhOworCXN0cnVjdCBkZXZpY2Vf
+bm9kZSAqbnA7CiAJaW50IHJldDsKIAogCWlmICghSVNfRU5BQkxFRChDT05GSUdfT0ZERVZJQ0Up
+KQogCQlyZXR1cm4gMTsKIAorCXJldCA9IGRldl9nZXRfZHJ2ZGF0YShvZmRldiwgKGNvbnN0IHZv
+aWQgKiopJmRhdGEpOworCWlmIChyZXQpCisJCXJldHVybiByZXQ7CisKIAlkdCA9IGt6YWxsb2Mo
+c2l6ZW9mKCpkdCksIEdGUF9LRVJORUwpOwogCWlmICghZHQpCiAJCXJldHVybiAtRU5PTUVNOwog
+CWRlbmFsaSA9ICZkdC0+ZGVuYWxpOwogCi0JZGVuYWxpLT5wbGF0Zm9ybSA9IERUOwogCWRlbmFs
+aS0+ZGV2ID0gb2ZkZXY7CiAKIAlpb3JlcyA9IGRldl9yZXF1ZXN0X21lbV9yZXNvdXJjZShvZmRl
+diwgMCk7CiAJaWYgKElTX0VSUihpb3JlcykpCiAJCXJldHVybiBQVFJfRVJSKGlvcmVzKTsKLQlk
+ZW5hbGktPmZsYXNoX21lbSA9IElPTUVNKGlvcmVzLT5zdGFydCk7CisJZGVuYWxpLT5ob3N0ID0g
+SU9NRU0oaW9yZXMtPnN0YXJ0KTsKIAogCWlvcmVzID0gZGV2X3JlcXVlc3RfbWVtX3Jlc291cmNl
+KG9mZGV2LCAxKTsKIAlpZiAoSVNfRVJSKGlvcmVzKSkKIAkJcmV0dXJuIFBUUl9FUlIoaW9yZXMp
+OwotCWRlbmFsaS0+Zmxhc2hfcmVnID0gSU9NRU0oaW9yZXMtPnN0YXJ0KTsKKwlkZW5hbGktPnJl
+ZyA9IElPTUVNKGlvcmVzLT5zdGFydCk7CiAKIAlkdC0+Y2xrID0gY2xrX2dldChvZmRldiwgTlVM
+TCk7CiAJaWYgKElTX0VSUihkdC0+Y2xrKSkgewogCQlkZXZfZXJyKG9mZGV2LCAibm8gY2xrIGF2
+YWlsYWJsZVxuIik7CiAJCXJldHVybiBQVFJfRVJSKGR0LT5jbGspOwogCX0KKwogCWNsa19lbmFi
+bGUoZHQtPmNsayk7CiAKLQlkZW5hbGktPmhhdmVfaHdfZWNjX2ZpeHVwID0gb2ZfcHJvcGVydHlf
+cmVhZF9ib29sKG9mZGV2LT5kZXZpY2Vfbm9kZSwKLQkJImhhdmUtaHctZWNjLWZpeHVwIik7CisJ
+ZGVuYWxpLT5yZXZpc2lvbiA9IGRhdGEtPnJldmlzaW9uOworCWRlbmFsaS0+Y2FwcyA9IGRhdGEt
+PmNhcHM7CisJZGVuYWxpLT5vb2Jfc2tpcF9ieXRlcyA9IGRhdGEtPm9vYl9za2lwX2J5dGVzOwor
+CWRlbmFsaS0+ZWNjX2NhcHMgPSBkYXRhLT5lY2NfY2FwczsKIAogCXJldCA9IGRlbmFsaV9pbml0
+KGRlbmFsaSk7CiAJaWYgKHJldCkKIAkJZ290byBvdXRfZGlzYWJsZV9jbGs7CiAKKwlmb3JfZWFj
+aF9jaGlsZF9vZl9ub2RlKG9mZGV2LT5kZXZpY2Vfbm9kZSwgbnApIHsKKwkJcmV0ID0gZGVuYWxp
+X2R0X2NoaXBfaW5pdChkZW5hbGksIG5wKTsKKwkJaWYgKHJldCkKKwkJCWdvdG8gb3V0X2Rpc2Fi
+bGVfY2xrOworCX0KKwogCXJldHVybiAwOwogCiBvdXRfZGlzYWJsZV9jbGs6CkBAIC04Niw3ICsx
+NDMsOCBAQCBvdXRfZGlzYWJsZV9jbGs6CiAKIHN0YXRpYyBfX21heWJlX3VudXNlZCBzdHJ1Y3Qg
+b2ZfZGV2aWNlX2lkIGRlbmFsaV9uYW5kX2NvbXBhdGlibGVbXSA9IHsKIAl7Ci0JCS5jb21wYXRp
+YmxlID0gImFsdHIsc29jZnBnYS1kZW5hbGktbmFuZCIKKwkJLmNvbXBhdGlibGUgPSAiYWx0cixz
+b2NmcGdhLWRlbmFsaS1uYW5kIiwKKwkJLmRhdGEgPSAmZGVuYWxpX3NvY2ZwZ2FfZGF0YSwKIAl9
+LCB7CiAJCS8qIHNlbnRpbmVsICovCiAJfQotLSAKMi4yMC4xCgoKX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJv
+eEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4v
+bGlzdGluZm8vYmFyZWJveAo=
