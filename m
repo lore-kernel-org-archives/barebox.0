@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-eopbgr750097.outbound.protection.outlook.com
+ ([40.107.75.97] helo=NAM02-BL2-obe.outbound.protection.outlook.com)
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kamJf-0006fq-Dc
- for barebox@lists.infradead.org; Thu, 05 Nov 2020 20:57:08 +0000
-References: <VI1PR0802MB2334314CB7FA7F0BD64F9C8885EE0@VI1PR0802MB2334.eurprd08.prod.outlook.com>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <1a23e2f4-8b3a-f084-888e-4756d60d92fb@pengutronix.de>
-Date: Thu, 5 Nov 2020 21:57:03 +0100
-MIME-Version: 1.0
-In-Reply-To: <VI1PR0802MB2334314CB7FA7F0BD64F9C8885EE0@VI1PR0802MB2334.eurprd08.prod.outlook.com>
+ id 1kaySp-0001jR-2l
+ for barebox@lists.infradead.org; Fri, 06 Nov 2020 09:55:42 +0000
+From: "Barbier, Renaud" <renaud.barbier@abaco.com>
+Date: Fri, 6 Nov 2020 09:55:18 +0000
+Message-ID: <MN2PR16MB31356A4AC88A8C2A4A3D5E3491ED0@MN2PR16MB3135.namprd16.prod.outlook.com>
+References: <MN2PR16MB3135009790C9E05DD2D996BB91170@MN2PR16MB3135.namprd16.prod.outlook.com>
+ <20201102131343.eez2qi4pxq56gfo6@pengutronix.de>
+In-Reply-To: <20201102131343.eez2qi4pxq56gfo6@pengutronix.de>
 Content-Language: en-US
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,51 +24,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Documentation: state: add a little note about modifying a
- state variable in the frontend
-To: Matthias Fend <Matthias.Fend@wolfvision.net>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: RE: bareboxenv-target
+To: Roland Hieber <rhi@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hello Matthias,
+We derived out recipe for barebox from the barebox layer.
+We may have broken something in there.
 
-On 11/5/20 9:16 PM, Matthias Fend wrote:
-> Signed-off-by: Matthias Fend <matthias.fend@wolfvision.net>
-> ---
->  Documentation/user/state.rst | 1 +
->  1 file changed, 1 insertion(+)
+> -----Original Message-----
+> From: Roland Hieber [mailto:rhi@pengutronix.de]
+> Sent: 02 November 2020 13:14
+> To: Barbier, Renaud <renaud.barbier@abaco.com>
+> Cc: barebox@lists.infradead.org
+> Subject: Re: bareboxenv-target
 > 
-> diff --git a/Documentation/user/state.rst b/Documentation/user/state.rst
-> index 78ce24f..d9a8e76 100644
-> --- a/Documentation/user/state.rst
-> +++ b/Documentation/user/state.rst
-> @@ -689,4 +689,5 @@ be accessed like normal shell variables. The ``state`` command is used
->  to save/restore a *state* variable set to the backend device.
->  
->  After initializing the variable can be accessed with ``$state.foo``.
-> +To modify the value of a state variable use ``nv dev.state.foo=bar``.
-
-That's wrong. You set the value of a state variable with
-state.foo=bar. nv dev.state.state.foo=bar uses the _environment_ to
-save a value to write to state.foo on each boot. This means:
-
- - If you modify the variable from within barebox, it won't be visible
-   in Linux unless you boot barebox once again.
- - If you modify the variable from within Linux, nv.dev.state.state.foo
-   would just overwrite the existing value on the next barebox boot.
-
-Generally, you should only need to modify nv variables at runtime
-for debugging. nv.dev is meant for stuff like nv.dev.eth0.ethaddr=XX:XX:XX:XX:XX:XX,
-where you can just hard code a mac address to use, but for state I can't
-think of any good use cases at the moment.
-
->  ``state -s`` stores the *state* to the backend device.
 > 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
+> 
+> [**EXTERNAL SOURCE**]:Please verify the source before clicking link or
+> opening attachment.
+> 
+> On Wed, Oct 28, 2020 at 11:09:18AM +0000, Barbier, Renaud wrote:
+> > I am building bareboxenv-target for a  cortex-A9 board (not present
+> upstream) with gcc 9.3.0 and got this error:
+> >
+> > arm-oe-linux-gnueabi-gcc -Wp,-MMD,scripts/.bareboxenv-target.d -Wall -
+> Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer -
+> std=gnu89  -I /mnt/projects/all/openware-
+> core/home/renaud/sandbox/bootloader/barebox-rebase/scripts/include
+> -o scripts/bareboxenv-target scripts/bareboxenv-target.c
+> > In file included from scripts/bareboxenv-target.c:1:
+> > scripts/bareboxenv.c:17:10: fatal error: stdio.h: No such file or directory
+> >    17 | #include <stdio.h>
+> >       |          ^~~~~~~~~
+> >
+> >
+> > It looks like sysroot is missing as when I add to scripts/Makefile:
+> > ifdef SDKTARGETSYSROOT
+> >     userccflags += --sysroot=$(SDKTARGETSYSROOT)
+> > endif
+> >
+> > It builds.
+> >
+> > Not much came out from search on google but one thread that refers to
+> this problem when building with Yocto.
+> >
+> > Could it it be related to  how our toolchain got build?
+> 
+> Which toolchain were you using? IIRC, the Yocto SDK builds don't set a
+> valid SYSROOT during the build, and patch it in through a compile option
+> when calling the compiler.
+> 
+>  - Roland
+> 
+> --
+> Roland Hieber, Pengutronix e.K.          | r.hieber@pengutronix.de     |
+> Steuerwalder Str. 21                     |
+> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fww
+> w.pengutronix.de%2F&amp;data=04%7C01%7Crenaud.barbier%40abaco.co
+> m%7Caf3bfcf353684c3ae9ae08d87f312089%7Ce6f27451899d4d0db8fa88baaf
+> a551a7%7C0%7C0%7C637399196270355233%7CUnknown%7CTWFpbGZsb3d8
+> eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3
+> D%7C2000&amp;sdata=%2BdontmtYoJ%2BsS1%2FkGternIF%2FOdHe1h2QaV
+> hQPE%2BbNeY%3D&amp;reserved=0 |
+> 31137 Hildesheim, Germany                | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686         | Fax:   +49-5121-206917-5555 |
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
