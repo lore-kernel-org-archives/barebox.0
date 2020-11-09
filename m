@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kc1rd-0002YR-2W
- for barebox@lists.infradead.org; Mon, 09 Nov 2020 07:45:22 +0000
-Date: Mon, 9 Nov 2020 08:45:17 +0100
+ id 1kc1w1-0002os-Nc
+ for barebox@lists.infradead.org; Mon, 09 Nov 2020 07:49:54 +0000
+Date: Mon, 9 Nov 2020 08:49:52 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201109074516.GC29830@pengutronix.de>
-References: <20201105141015.1695515-1-l.stach@pengutronix.de>
+Message-ID: <20201109074952.GD29830@pengutronix.de>
+References: <20201107204728.1900-1-rhi@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201105141015.1695515-1-l.stach@pengutronix.de>
+In-Reply-To: <20201107204728.1900-1-rhi@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,38 +22,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] ddr: imx8m: correct the pwrctl setting of selfref_en
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] sandbox: remove MXS tools from hosttools_defconfig
+To: Roland Hieber <rhi@pengutronix.de>
+Cc: Barebox Mailing List <barebox@lists.infradead.org>
 
-On Thu, Nov 05, 2020 at 03:10:13PM +0100, Lucas Stach wrote:
-> Port of upstream U-Boot commit: 1eb325af16e2
+On Sat, Nov 07, 2020 at 09:47:27PM +0100, Roland Hieber wrote:
+> CONFIG_MXS_HOSTTOOLS currently only builds the tools mxsimage and
+> mxsboot, which are both only needed to create bootable images for the
+> MXS platform, and are not really useful as stand-alone host tools.
 > 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> Signed-off-by: Roland Hieber <rhi@pengutronix.de>
 > ---
->  drivers/ddr/imx8m/ddr_init.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  arch/sandbox/configs/hosttools_defconfig | 1 -
+>  1 file changed, 1 deletion(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/drivers/ddr/imx8m/ddr_init.c b/drivers/ddr/imx8m/ddr_init.c
-> index d4efee613343..bc64e7c17e1a 100644
-> --- a/drivers/ddr/imx8m/ddr_init.c
-> +++ b/drivers/ddr/imx8m/ddr_init.c
-> @@ -156,7 +156,7 @@ static int imx8m_ddr_init(unsigned long src_ddrc_rcr,
->  	/* Step26: Set back register in Step4 to the original values if desired */
->  	reg32_write(DDRC_RFSHCTL3(0), 0x0000000);
->  	/* enable selfref_en by default */
-> -	setbits_le32(DDRC_PWRCTL(0), 0x1 << 3);
-> +	setbits_le32(DDRC_PWRCTL(0), 0x1);
->  
->  	/* enable port 0 */
->  	reg32_write(DDRC_PCTRL_0(0), 0x00000001);
+> diff --git a/arch/sandbox/configs/hosttools_defconfig b/arch/sandbox/configs/hosttools_defconfig
+> index 72ec0fc462b2..7d3385312488 100644
+> --- a/arch/sandbox/configs/hosttools_defconfig
+> +++ b/arch/sandbox/configs/hosttools_defconfig
+> @@ -2,6 +2,5 @@ CONFIG_IMD=y
+>  CONFIG_COMPILE_HOST_TOOLS=y
+>  CONFIG_ARCH_IMX_USBLOADER=y
+>  CONFIG_MVEBU_HOSTTOOLS=y
+> -CONFIG_MXS_HOSTTOOLS=y
+>  CONFIG_OMAP3_USB_LOADER=y
+>  CONFIG_OMAP4_HOSTTOOL_USBBOOT=y
 > -- 
-> 2.20.1
+> 2.28.0
 > 
 > 
 > _______________________________________________
