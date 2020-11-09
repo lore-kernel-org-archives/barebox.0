@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp57.i.mail.ru ([217.69.128.37])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kd9kZ-0001vz-GZ
- for barebox@lists.infradead.org; Thu, 12 Nov 2020 10:22:45 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Thu, 12 Nov 2020 13:22:31 +0300
-Message-Id: <20201112102231.12580-2-shc_work@mail.ru>
-In-Reply-To: <20201112102231.12580-1-shc_work@mail.ru>
-References: <20201112102231.12580-1-shc_work@mail.ru>
+ id 1kc9jF-0007Ps-OX
+ for barebox@lists.infradead.org; Mon, 09 Nov 2020 16:09:14 +0000
+Date: Mon, 9 Nov 2020 17:09:11 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20201109160911.GL29830@pengutronix.de>
+References: <20201103200932.18824-1-u.kleine-koenig@pengutronix.de>
+ <20201109090215.GF29830@pengutronix.de>
+ <20201109143723.mz6tu45bydnnfhek@NB061.eckelmann.group>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20201109143723.mz6tu45bydnnfhek@NB061.eckelmann.group>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,36 +24,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ARM: dts: imx6qdl: pfla02: Fix NAND offsets for partitions
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2] nfs: check return value of various rpc calls
+To: Gavin Schenk <g.schenk@eckelmann.de>
+Cc: barebox@lists.infradead.org, Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
----
- arch/arm/dts/imx6qdl-phytec-pfla02.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On Mon, Nov 09, 2020 at 03:37:23PM +0100, Gavin Schenk wrote:
+> Hi,
+> 
+> > I've rewritten this thing a little bit. First of all, this doesn't need
+> > preprocessor tricks and also with this the nfserror to error mapping
+> > function returns the error string, so we can convert printing the
+> > messages to pr_* or dev_* functions. Also we use the human readable
+> > error names for the errors we have a string for.
+> >
+> Nice to here that there is progress.
+> 
+> > +
+> > +static const char *nfserrstr(u32 nfserror, int *errcode)
+> > +{
+> 
+> Instead using this Preprocessor thing wouldn't it be better to use a number and
+> sizeof(str) at the other locations?
+> 
+> > +	static char str[BUFLEN];
+> static char str[32];
+> 
+> here
+> > +				snprintf(str, BUFLEN, "NFS3ERR_%s", err->name);
+> snprintf(str, sizeof(str), "NFS3ERR_%s", err->name);
+> 
+> 
+> and here
+> > +	snprintf(str, BUFLEN, "Unknown NFS error %d", nfserror);
+> snprintf(str, sizeof(str), "Unknown NFS error %d", nfserror);
 
-diff --git a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
-index 3eb510d43..2e4d4ed34 100644
---- a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
-+++ b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
-@@ -96,12 +96,12 @@
- 			reg = <0x0 0x1000000>;
- 		};
- 
--		partition@400000 {
-+		partition@1000000 {
- 			label = "barebox-environment";
- 			reg = <0x1000000 0x100000>;
- 		};
- 
--		partition@500000 {
-+		partition@1100000 {
- 			label = "root";
- 			reg = <0x1100000 0x0>;
- 		};
+Much better, thanks. I'll change that
+
+Sascha
+
 -- 
-2.26.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
