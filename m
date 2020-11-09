@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kc3OG-00059z-SW
- for barebox@lists.infradead.org; Mon, 09 Nov 2020 09:23:09 +0000
-Date: Mon, 9 Nov 2020 10:23:07 +0100
+ id 1kc3rr-0001xR-P4
+ for barebox@lists.infradead.org; Mon, 09 Nov 2020 09:53:44 +0000
+Date: Mon, 9 Nov 2020 10:53:42 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201109092307.GH29830@pengutronix.de>
-References: <20201109055150.16444-1-r.czerwinski@pengutronix.de>
+Message-ID: <20201109095342.GI29830@pengutronix.de>
+References: <20201105064147.11414-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201109055150.16444-1-r.czerwinski@pengutronix.de>
+In-Reply-To: <20201105064147.11414-1-r.czerwinski@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,58 +22,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] of: base: ignore disabled memory nodes
+Subject: Re: [PATCH v2] ARM: qemu: add support for qemu virt platform
 To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Nov 09, 2020 at 06:51:50AM +0100, Rouven Czerwinski wrote:
-> Qemu with the secure extension enabled will insert a secram node into
-> the device tree:
-> 
->   secram@e000000 {
->           secure-status = "okay";
->           status = "disabled";
->           reg = <0x0 0xe000000 0x0 0x1000000>;
->           device_type = "memory";
->   };
-> 
-> Barebox would previously parse this node, add it as a memory bank and
-> than reinsert an enabled node into the fixed up device tree.
-> Fix this by skipping disabled memory nodes.
+Hi Rouven,
+
+On Thu, Nov 05, 2020 at 07:41:48AM +0100, Rouven Czerwinski wrote:
+> Necessary support to boot barebox on ARM qemu virt platforms.
+> No internal device tree, since it is passed by qemu. Therefore it
+> employs the generic 2nd stage image as the low level code and only adds
+> a virt specific board driver.
 > 
 > Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 > ---
->  drivers/of/base.c | 3 +++
->  1 file changed, 3 insertions(+)
+>  arch/arm/boards/Makefile           |  1 +
+>  arch/arm/boards/qemu-virt/Makefile |  1 +
+>  arch/arm/boards/qemu-virt/board.c  | 36 ++++++++++++++++++++++++++++++
+>  arch/arm/mach-qemu/Kconfig         |  8 +++++++
+>  4 files changed, 46 insertions(+)
+>  create mode 100644 arch/arm/boards/qemu-virt/Makefile
+> +static int virt_probe(struct device_d *dev)
+> +{
+> +	char *hostname = "virt64";
 
-Applied, thanks
+virt64?
+
+> +config MACH_QEMU_VIRT
+> +	bool "QEMU arm virt machine"
+> +	select CPU_V7
+> +	select ARM_AMBA
+> +	select ARM_PSCI_CLIENT
+> +	select BOARD_ARM_GENERIC_DT
+> +	select HAVE_PBL_MULTI_IMAGES
+
+You have to select OFDEVICE here as well.
+
+Could you provide a defconfig file for this machine?
 
 Sascha
-
-> 
-> diff --git a/drivers/of/base.c b/drivers/of/base.c
-> index 0a2632f963..32cb1e78a5 100644
-> --- a/drivers/of/base.c
-> +++ b/drivers/of/base.c
-> @@ -2090,6 +2090,9 @@ int of_add_memory(struct device_node *node, bool dump)
->  		if (!resource_size(&res))
->  			continue;
->  
-> +		if (!of_device_is_available(node))
-> +			continue;
-> +
->  		of_add_memory_bank(node, dump, mem_bank_num,
->  				res.start, resource_size(&res));
->  		mem_bank_num++;
-> -- 
-> 2.28.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
