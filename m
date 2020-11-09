@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from magratgarlick.emantor.de ([2a01:4f8:c17:c88::2])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kc7TK-0004wp-3H
- for barebox@lists.infradead.org; Mon, 09 Nov 2020 13:44:38 +0000
+ id 1kc7TO-0004zP-I8
+ for barebox@lists.infradead.org; Mon, 09 Nov 2020 13:44:43 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Mon,  9 Nov 2020 14:44:25 +0100
-Message-Id: <20201109134430.21156-4-r.czerwinski@pengutronix.de>
+Date: Mon,  9 Nov 2020 14:44:30 +0100
+Message-Id: <20201109134430.21156-9-r.czerwinski@pengutronix.de>
 In-Reply-To: <20201109134430.21156-1-r.czerwinski@pengutronix.de>
 References: <20201109134430.21156-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
@@ -21,81 +21,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/8] amba: add *_amba_driver helper macros
+Subject: [PATCH 8/8] ARM: vexpress: enable VIRT board, MMU and cmds
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Reuse the flexible register_driver_macro() to add
-{device,coredevice,console}_amba_driver to get rid of the init
-boilerplate code used within the amba drivers.
+Enable the new qemu virt board, the MMU, ofdiff and mmuinfo.
 
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- drivers/clocksource/amba-sp804.c | 2 +-
- drivers/mci/mmci.c               | 7 +------
- drivers/serial/amba-pl011.c      | 8 +-------
- include/linux/amba/bus.h         | 7 +++++++
- 4 files changed, 10 insertions(+), 14 deletions(-)
+ arch/arm/configs/vexpress_defconfig | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/clocksource/amba-sp804.c b/drivers/clocksource/amba-sp804.c
-index 8ed5ae4be0..0c0ecaa83a 100644
---- a/drivers/clocksource/amba-sp804.c
-+++ b/drivers/clocksource/amba-sp804.c
-@@ -85,4 +85,4 @@ struct amba_driver sp804_driver = {
- 	.id_table	= sp804_ids,
- };
- 
--coredevice_platform_driver(sp804_driver);
-+coredevice_amba_driver(sp804_driver);
-diff --git a/drivers/mci/mmci.c b/drivers/mci/mmci.c
-index f45557d4f7..53f25dff96 100644
---- a/drivers/mci/mmci.c
-+++ b/drivers/mci/mmci.c
-@@ -709,9 +709,4 @@ static struct amba_driver mmci_driver = {
- 	.id_table	= mmci_ids,
- };
- 
--static int mmci_init(void)
--{
--	amba_driver_register(&mmci_driver);
--	return 0;
--}
--device_initcall(mmci_init);
-+device_amba_driver(mmci_driver);
-diff --git a/drivers/serial/amba-pl011.c b/drivers/serial/amba-pl011.c
-index 865ecdddb2..9261d20f2a 100644
---- a/drivers/serial/amba-pl011.c
-+++ b/drivers/serial/amba-pl011.c
-@@ -237,10 +237,4 @@ struct amba_driver pl011_driver = {
- 	.id_table	= pl011_ids,
- };
- 
--static int pl011_init(void)
--{
--	amba_driver_register(&pl011_driver);
--	return 0;
--}
--
--console_initcall(pl011_init);
-+console_amba_driver(pl011_driver);
-diff --git a/include/linux/amba/bus.h b/include/linux/amba/bus.h
-index 7b3e603322..390220a3de 100644
---- a/include/linux/amba/bus.h
-+++ b/include/linux/amba/bus.h
-@@ -60,6 +60,13 @@ extern struct bus_type amba_bustype;
- 
- #define to_amba_device(d)	container_of(d, struct amba_device, dev)
- 
-+#define device_amba_driver(drv)	\
-+	register_driver_macro(device,amba,drv)
-+#define coredevice_amba_driver(drv)	\
-+	register_driver_macro(coredevice,amba,drv)
-+#define console_amba_driver(drv)	\
-+	register_driver_macro(console,amba,drv)
-+
- int amba_driver_register(struct amba_driver *);
- void amba_driver_unregister(struct amba_driver *);
- struct amba_device *amba_device_alloc(const char *, int id, resource_size_t, size_t);
+diff --git a/arch/arm/configs/vexpress_defconfig b/arch/arm/configs/vexpress_defconfig
+index caa9f512d6..b8dc2686da 100644
+--- a/arch/arm/configs/vexpress_defconfig
++++ b/arch/arm/configs/vexpress_defconfig
+@@ -1,4 +1,6 @@
+ CONFIG_ARCH_VEXPRESS=y
++CONFIG_MACH_VEXPRESS=y
++CONFIG_MACH_VIRT=y
+ CONFIG_AEABI=y
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+ CONFIG_MALLOC_SIZE=0x0
+@@ -36,6 +38,7 @@ CONFIG_CMD_EDIT=y
+ CONFIG_CMD_LOGIN=y
+ CONFIG_CMD_MENU=y
+ CONFIG_CMD_MENU_MANAGEMENT=y
++CONFIG_CMD_ARM_MMUINFO=y
+ CONFIG_CMD_PASSWD=y
+ CONFIG_CMD_READLINE=y
+ CONFIG_CMD_TIMEOUT=y
+@@ -44,6 +47,7 @@ CONFIG_CMD_CRC_CMP=y
+ CONFIG_CMD_CLK=y
+ CONFIG_CMD_DETECT=y
+ CONFIG_CMD_OFTREE=y
++CONFIG_CMD_OF_DIFF=y
+ CONFIG_NET=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_NETCONSOLE=y
+@@ -52,6 +56,7 @@ CONFIG_SERIAL_AMBA_PL011=y
+ CONFIG_DRIVER_NET_SMC91111=y
+ # CONFIG_SPI is not set
+ CONFIG_MTD=y
++CONFIG_MMU=y
+ CONFIG_MTD_CONCAT=y
+ CONFIG_DRIVER_CFI=y
+ CONFIG_MCI=y
 -- 
 2.28.0
 
