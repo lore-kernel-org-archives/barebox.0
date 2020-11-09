@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([2a01:4f8:c17:c88::2])
+Received: from magratgarlick.emantor.de ([78.46.208.201])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kc7TJ-0004wU-SN
- for barebox@lists.infradead.org; Mon, 09 Nov 2020 13:44:38 +0000
+ id 1kc7TL-0004xm-SK
+ for barebox@lists.infradead.org; Mon, 09 Nov 2020 13:44:40 +0000
 From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Mon,  9 Nov 2020 14:44:23 +0100
-Message-Id: <20201109134430.21156-2-r.czerwinski@pengutronix.de>
+Date: Mon,  9 Nov 2020 14:44:24 +0100
+Message-Id: <20201109134430.21156-3-r.czerwinski@pengutronix.de>
 In-Reply-To: <20201109134430.21156-1-r.czerwinski@pengutronix.de>
 References: <20201109134430.21156-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
@@ -21,111 +21,128 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/8] ARM: MMU: add zero_page_{access,faulting}
+Subject: [PATCH 2/8] mtd: cfi_flash: allow 0x0 mapping
 To: barebox@lists.infradead.org
 Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-On the qemu virt machine, the cfi flash is mapped at 0x0.
-Therefore implement zero_page_{access,faulting} to allow usage of the
-cfi_flash driver on this machine.
+Annotate the different read and write functions with
+zero_page_{access/faulting}. This allows the cfi_flash driver to be used
+on the QEMU virt machine with an enabled MMU.
 
 Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- arch/arm/cpu/Kconfig |  1 -
- arch/arm/cpu/mmu.c   | 13 +++++++++++++
- include/zero_page.h  | 14 --------------
- lib/Kconfig          |  3 ---
- 4 files changed, 13 insertions(+), 18 deletions(-)
+ drivers/mtd/nor/cfi_flash.c |  6 ++++++
+ drivers/mtd/nor/cfi_flash.h | 18 ++++++++++++++++++
+ 2 files changed, 24 insertions(+)
 
-diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
-index ca3bd98962..f9f52a6252 100644
---- a/arch/arm/cpu/Kconfig
-+++ b/arch/arm/cpu/Kconfig
-@@ -89,7 +89,6 @@ config CPU_V8
- 	select ARM_EXCEPTIONS
- 	select GENERIC_FIND_NEXT_BIT
- 	select ARCH_HAS_STACK_DUMP
--	select ARCH_HAS_ZERO_PAGE
+diff --git a/drivers/mtd/nor/cfi_flash.c b/drivers/mtd/nor/cfi_flash.c
+index 225b03ec3d..2fcbd13e46 100644
+--- a/drivers/mtd/nor/cfi_flash.c
++++ b/drivers/mtd/nor/cfi_flash.c
+@@ -896,8 +896,10 @@ static int cfi_mtd_read(struct mtd_info *mtd, loff_t from, size_t len,
+ {
+ 	struct flash_info *info = container_of(mtd, struct flash_info, mtd);
  
- config CPU_XSC3
-         bool
-diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index 6af228505d..bfb8eab5f5 100644
---- a/arch/arm/cpu/mmu.c
-+++ b/arch/arm/cpu/mmu.c
-@@ -17,6 +17,7 @@
- #include <memory.h>
- #include <asm/system_info.h>
- #include <asm/sections.h>
++	zero_page_access();
+ 	memcpy(buf, info->base + from, len);
+ 	*retlen = len;
++	zero_page_faulting();
+ 
+ 	return 0;
+ }
+@@ -908,7 +910,9 @@ static int cfi_mtd_write(struct mtd_info *mtd, loff_t to, size_t len,
+ 	struct flash_info *info = container_of(mtd, struct flash_info, mtd);
+ 	int ret;
+ 
++	zero_page_access();
+ 	ret = write_buff(info, buf, (unsigned long)info->base + to, len);
++	zero_page_faulting();
+ 	*retlen = len;
+ 
+         return ret;
+@@ -919,7 +923,9 @@ static int cfi_mtd_erase(struct mtd_info *mtd, struct erase_info *instr)
+ 	struct flash_info *info = container_of(mtd, struct flash_info, mtd);
+ 	int ret;
+ 
++	zero_page_access();
+ 	ret = cfi_erase(info, instr->len, instr->addr);
++	zero_page_faulting();
+ 	if (ret)
+ 		return -EIO;
+ 
+diff --git a/drivers/mtd/nor/cfi_flash.h b/drivers/mtd/nor/cfi_flash.h
+index cea6a8712c..99359a325e 100644
+--- a/drivers/mtd/nor/cfi_flash.h
++++ b/drivers/mtd/nor/cfi_flash.h
+@@ -22,6 +22,8 @@
+ #include <io.h>
+ #include <linux/mtd/mtd.h>
+ 
 +#include <zero_page.h>
++
+ typedef unsigned long flash_sect_t;
  
- #include "mmu.h"
+ #if   defined(CONFIG_DRIVER_CFI_BANK_WIDTH_8)
+@@ -255,43 +257,59 @@ void flash_make_cmd(struct flash_info *info, u32 cmd, cfiword_t *cmdbuf);
  
-@@ -354,6 +355,18 @@ static void create_zero_page(void)
- 	}
+ static inline void flash_write8(u8 value, void *addr)
+ {
++	zero_page_access();
+ 	__raw_writeb(value, addr);
++	zero_page_faulting();
  }
  
-+void zero_page_access(void)
-+{
-+	arm_create_pte(0x0, pte_flags_cached);
-+}
-+
-+void zero_page_faulting(void)
-+{
-+	u32 *zero;
-+	zero = arm_create_pte(0x0, pte_flags_uncached);
-+	zero[0] = 0;
-+}
-+
- /*
-  * Map vectors and zero page
-  */
-diff --git a/include/zero_page.h b/include/zero_page.h
-index ad6861f240..b0efb814db 100644
---- a/include/zero_page.h
-+++ b/include/zero_page.h
-@@ -4,8 +4,6 @@
- 
- #include <common.h>
- 
--#if defined CONFIG_ARCH_HAS_ZERO_PAGE
--
- /*
-  * zero_page_faulting - fault when accessing the zero page
-  */
-@@ -20,18 +18,6 @@ void zero_page_faulting(void);
-  */
- void zero_page_access(void);
- 
--#else
--
--static inline void zero_page_faulting(void)
--{
--}
--
--static inline void zero_page_access(void)
--{
--}
--
--#endif
--
- static inline bool zero_page_contains(unsigned long addr)
+ static inline void flash_write16(u16 value, void *addr)
  {
- 	return addr < PAGE_SIZE;
-diff --git a/lib/Kconfig b/lib/Kconfig
-index e5831ecdb9..887f50ff00 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -182,9 +182,6 @@ config ARCH_HAS_STACK_DUMP
- config ARCH_HAS_DATA_ABORT_MASK
- 	bool
++	zero_page_access();
+ 	__raw_writew(value, addr);
++	zero_page_faulting();
+ }
  
--config ARCH_HAS_ZERO_PAGE
--	bool
--
- config HAVE_EFFICIENT_UNALIGNED_ACCESS
- 	bool
+ static inline void flash_write32(u32 value, void *addr)
+ {
++	zero_page_access();
+ 	__raw_writel(value, addr);
++	zero_page_faulting();
+ }
  
+ static inline void flash_write64(u64 value, void *addr)
+ {
++	zero_page_access();
+ 	memcpy((void *)addr, &value, 8);
++	zero_page_faulting();
+ }
+ 
+ static inline u8 flash_read8(void *addr)
+ {
++	zero_page_access();
+ 	return __raw_readb(addr);
++	zero_page_faulting();
+ }
+ 
+ static inline u16 flash_read16(void *addr)
+ {
++	zero_page_access();
+ 	return __raw_readw(addr);
++	zero_page_faulting();
+ }
+ 
+ static inline u32 flash_read32(void *addr)
+ {
++	zero_page_access();
+ 	return __raw_readl(addr);
++	zero_page_faulting();
+ }
+ 
+ static inline u64 flash_read64(void *addr)
+ {
++	zero_page_access();
+ 	/* No architectures currently implement readq() */
+ 	return *(volatile u64 *)addr;
++	zero_page_faulting();
+ }
+ 
+ /*
 -- 
 2.28.0
 
