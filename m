@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kc3DN-00034O-BP
- for barebox@lists.infradead.org; Mon, 09 Nov 2020 09:11:55 +0000
-Date: Mon, 9 Nov 2020 10:11:51 +0100
+ id 1kc3OG-00059z-SW
+ for barebox@lists.infradead.org; Mon, 09 Nov 2020 09:23:09 +0000
+Date: Mon, 9 Nov 2020 10:23:07 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201109091151.GG29830@pengutronix.de>
-References: <VI1PR0802MB2334314CB7FA7F0BD64F9C8885EE0@VI1PR0802MB2334.eurprd08.prod.outlook.com>
- <1a23e2f4-8b3a-f084-888e-4756d60d92fb@pengutronix.de>
- <VI1PR0802MB23341F701DE8044E149A232785ED0@VI1PR0802MB2334.eurprd08.prod.outlook.com>
+Message-ID: <20201109092307.GH29830@pengutronix.de>
+References: <20201109055150.16444-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <VI1PR0802MB23341F701DE8044E149A232785ED0@VI1PR0802MB2334.eurprd08.prod.outlook.com>
+In-Reply-To: <20201109055150.16444-1-r.czerwinski@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,78 +22,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Documentation: state: add a little note about modifying
- a state variable in the frontend
-To: Matthias Fend <Matthias.Fend@wolfvision.net>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] of: base: ignore disabled memory nodes
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Fri, Nov 06, 2020 at 07:14:09AM +0000, Matthias Fend wrote:
-> Hi Ahmad,
+On Mon, Nov 09, 2020 at 06:51:50AM +0100, Rouven Czerwinski wrote:
+> Qemu with the secure extension enabled will insert a secram node into
+> the device tree:
 > 
-> > ________________________________________
-> > Von: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> > Gesendet: Donnerstag, 5. November 2020 21:57
-> > An: Matthias Fend; barebox@lists.infradead.org
-> > Betreff: Re: [PATCH] Documentation: state: add a little note about modifying a state variable in the frontend
-> >
-> > Hello Matthias,
-> >
-> > On 11/5/20 9:16 PM, Matthias Fend wrote:
-> >> Signed-off-by: Matthias Fend <matthias.fend@wolfvision.net>
-> >> ---
-> >>   Documentation/user/state.rst | 1 +
-> >>   1 file changed, 1 insertion(+)
-> >>
-> >> diff --git a/Documentation/user/state.rst b/Documentation/user/state.rst
-> >> index 78ce24f..d9a8e76 100644
-> >> --- a/Documentation/user/state.rst
-> >> +++ b/Documentation/user/state.rst
-> >> @@ -689,4 +689,5 @@ be accessed like normal shell variables. The ``state`` command is used
-> >>   to save/restore a *state* variable set to the backend device.
-> >>
-> >>   After initializing the variable can be accessed with ``$state.foo``.
-> >> +To modify the value of a state variable use ``nv dev.state.foo=bar``.
-> >
-> > That's wrong. You set the value of a state variable with
-> > state.foo=bar. nv dev.state.state.foo=bar uses the _environment_ to
-> > save a value to write to state.foo on each boot. This means:
+>   secram@e000000 {
+>           secure-status = "okay";
+>           status = "disabled";
+>           reg = <0x0 0xe000000 0x0 0x1000000>;
+>           device_type = "memory";
+>   };
 > 
-> Thanks for your explanation. Setting a state variable with
-> 'state.foo=bar' was actually the way I originally expected.
-> Meanwhile, I figured out why I was struggling using things like that.
-> All my introduced state variables contained a hyphen in their name.
-> And I was not able to set a state variable with 'state.foo-bar=baz' while
-> 'nv dev.state.foo-bar=baz' immediately changed the value of
-> 'state.foo-bar'. But, as I just learned, with some side effects.
+> Barebox would previously parse this node, add it as a memory bank and
+> than reinsert an enabled node into the fixed up device tree.
+> Fix this by skipping disabled memory nodes.
 > 
-> >
-> >   - If you modify the variable from within barebox, it won't be visible
-> >     in Linux unless you boot barebox once again.
-> 
-> I could not verify this behavior. When I change a state variable with
-> 'nv dev.state=foo' and then directly boot into Linux (without booting
-> barebox again) the 'barebox-state' tool already displays the new value.
-> 
-> >   - If you modify the variable from within Linux, nv.dev.state.state.foo
-> >     would just overwrite the existing value on the next barebox boot.
-> 
-> That's true, and of course, not desired.
-> 
-> >
-> > Generally, you should only need to modify nv variables at runtime
-> > for debugging. nv.dev is meant for stuff like nv.dev.eth0.ethaddr=XX:XX:XX:XX:XX:XX,
-> > where you can just hard code a mac address to use, but for state I can't
-> > think of any good use cases at the moment.
-> 
-> Right, state, and also it's frontend, does already what it should do and
-> as expected.
-> Only the hyphen-obstacle caused troubles. So, maybe there is a trick but the fast fix is to simply
-> just avoid names that contain hyphens ;)
+> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+> ---
+>  drivers/of/base.c | 3 +++
+>  1 file changed, 3 insertions(+)
 
-How about converting the hyphens to underscores for the variable names
-(I mean in code, not in your dts files)?
+Applied, thanks
 
 Sascha
+
+> 
+> diff --git a/drivers/of/base.c b/drivers/of/base.c
+> index 0a2632f963..32cb1e78a5 100644
+> --- a/drivers/of/base.c
+> +++ b/drivers/of/base.c
+> @@ -2090,6 +2090,9 @@ int of_add_memory(struct device_node *node, bool dump)
+>  		if (!resource_size(&res))
+>  			continue;
+>  
+> +		if (!of_device_is_available(node))
+> +			continue;
+> +
+>  		of_add_memory_bank(node, dump, mem_bank_num,
+>  				res.start, resource_size(&res));
+>  		mem_bank_num++;
+> -- 
+> 2.28.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
