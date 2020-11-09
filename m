@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kc1w1-0002os-Nc
- for barebox@lists.infradead.org; Mon, 09 Nov 2020 07:49:54 +0000
-Date: Mon, 9 Nov 2020 08:49:52 +0100
+ id 1kc1wv-0002xD-Js
+ for barebox@lists.infradead.org; Mon, 09 Nov 2020 07:50:50 +0000
+Date: Mon, 9 Nov 2020 08:50:48 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201109074952.GD29830@pengutronix.de>
-References: <20201107204728.1900-1-rhi@pengutronix.de>
+Message-ID: <20201109075048.GE29830@pengutronix.de>
+References: <20201104035928.20519-1-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201107204728.1900-1-rhi@pengutronix.de>
+In-Reply-To: <20201104035928.20519-1-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,38 +22,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] sandbox: remove MXS tools from hosttools_defconfig
-To: Roland Hieber <rhi@pengutronix.de>
-Cc: Barebox Mailing List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] i2c_probe: Use "read_byte" command for probing
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-On Sat, Nov 07, 2020 at 09:47:27PM +0100, Roland Hieber wrote:
-> CONFIG_MXS_HOSTTOOLS currently only builds the tools mxsimage and
-> mxsboot, which are both only needed to create bootable images for the
-> MXS platform, and are not really useful as stand-alone host tools.
+On Wed, Nov 04, 2020 at 06:59:28AM +0300, Alexander Shiyan wrote:
+> Some I2C adapters do not allow zero length data transfers, such as the AM335X.
+> To use the i2c_probe command, let's use byte reading for this purpose.
 > 
-> Signed-off-by: Roland Hieber <rhi@pengutronix.de>
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 > ---
->  arch/sandbox/configs/hosttools_defconfig | 1 -
->  1 file changed, 1 deletion(-)
+>  commands/i2c.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/arch/sandbox/configs/hosttools_defconfig b/arch/sandbox/configs/hosttools_defconfig
-> index 72ec0fc462b2..7d3385312488 100644
-> --- a/arch/sandbox/configs/hosttools_defconfig
-> +++ b/arch/sandbox/configs/hosttools_defconfig
-> @@ -2,6 +2,5 @@ CONFIG_IMD=y
->  CONFIG_COMPILE_HOST_TOOLS=y
->  CONFIG_ARCH_IMX_USBLOADER=y
->  CONFIG_MVEBU_HOSTTOOLS=y
-> -CONFIG_MXS_HOSTTOOLS=y
->  CONFIG_OMAP3_USB_LOADER=y
->  CONFIG_OMAP4_HOSTTOOL_USBBOOT=y
+> diff --git a/commands/i2c.c b/commands/i2c.c
+> index 53f36dfaa..997d49a94 100644
+> --- a/commands/i2c.c
+> +++ b/commands/i2c.c
+> @@ -16,10 +16,12 @@ static void i2c_probe_range(struct i2c_adapter *adapter, int startaddr, int stop
+>  
+>  	printf("probing i2c%d range 0x%02x-0x%02x: ", adapter->nr, startaddr, stopaddr);
+>  	for (addr = startaddr; addr <= stopaddr && !ctrlc(); addr++) {
+> +		u8 buf[1];
+>  		struct i2c_msg msg = {
+>  			.addr = addr,
+> -			.buf = NULL,
+> -			.len = 0,
+> +			.buf = buf,
+> +			.len = sizeof(buf),
+> +			.flags = I2C_M_RD,
+>  		};
+>  		int ret = i2c_transfer(adapter, &msg, 1);
+>  		if (ret == 1)
 > -- 
-> 2.28.0
+> 2.26.2
 > 
 > 
 > _______________________________________________
