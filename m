@@ -1,22 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kd9Uw-0000uh-0b
- for barebox@lists.infradead.org; Thu, 12 Nov 2020 10:06:34 +0000
-Date: Thu, 12 Nov 2020 11:06:31 +0100
+ id 1kc3DN-00034O-BP
+ for barebox@lists.infradead.org; Mon, 09 Nov 2020 09:11:55 +0000
+Date: Mon, 9 Nov 2020 10:11:51 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201112100631.GG29830@pengutronix.de>
-References: <20201109134430.21156-1-r.czerwinski@pengutronix.de>
- <20201109134430.21156-3-r.czerwinski@pengutronix.de>
- <907efaaf5e29ed99229c20ad2398e13b26965827.camel@lynxeye.de>
- <8df4ad110b83b139381e58bad3e7db82426f9371.camel@pengutronix.de>
- <20201110074811.GM29830@pengutronix.de>
- <20201110091543.GP29830@pengutronix.de>
- <25af706b-3cb1-c7d0-579a-b900ef674692@pengutronix.de>
- <0e23114b-624f-c789-531f-1d65fd8cbf92@pengutronix.de>
+Message-ID: <20201109091151.GG29830@pengutronix.de>
+References: <VI1PR0802MB2334314CB7FA7F0BD64F9C8885EE0@VI1PR0802MB2334.eurprd08.prod.outlook.com>
+ <1a23e2f4-8b3a-f084-888e-4756d60d92fb@pengutronix.de>
+ <VI1PR0802MB23341F701DE8044E149A232785ED0@VI1PR0802MB2334.eurprd08.prod.outlook.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <0e23114b-624f-c789-531f-1d65fd8cbf92@pengutronix.de>
+In-Reply-To: <VI1PR0802MB23341F701DE8044E149A232785ED0@VI1PR0802MB2334.eurprd08.prod.outlook.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,60 +24,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/8] mtd: cfi_flash: allow 0x0 mapping
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Subject: Re: [PATCH] Documentation: state: add a little note about modifying
+ a state variable in the frontend
+To: Matthias Fend <Matthias.Fend@wolfvision.net>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Tue, Nov 10, 2020 at 10:43:30AM +0100, Ahmad Fatoum wrote:
-> On 11/10/20 10:36 AM, Ahmad Fatoum wrote:
-> > Hi,
-> > 
-> > On 11/10/20 10:15 AM, Sascha Hauer wrote:
-> >> On Tue, Nov 10, 2020 at 08:48:11AM +0100, Sascha Hauer wrote:
-> >>> On Tue, Nov 10, 2020 at 07:33:53AM +0100, Rouven Czerwinski wrote:
-> >>>> On Mon, 2020-11-09 at 14:52 +0100, Lucas Stach wrote:
-> >>>>> Am Montag, den 09.11.2020, 14:44 +0100 schrieb Rouven Czerwinski:
-> >>>>>> Annotate the different read and write functions with
-> >>>>>> zero_page_{access/faulting}. This allows the cfi_flash driver to be used
-> >>>>>> on the QEMU virt machine with an enabled MMU.
-> >>>>>
-> >>>>> I don't like this zero-page access allow in a driver at all. If you
-> >>>>> have some free address space somewhere, you could also solve this issue
-> >>>>> by remapping the IO resource to somewhere else in the address space,
-> >>>>> deviating from the 1:1 mapping. The Tegra PCIe host driver does this,
-> >>>>> if you need some inspiration.
-> >>>>
-> >>>> I totally agree, remapping the IO region sounds like a much better
-> >>>> choice.
-> >>>
-> >>> But where should it be mapped to? Just 4k upwards and hope that the area
-> >>> just above the cfi flash isn't occupied by something else?
-> >>
-> >> Ok, here's the plan:
-> >>
-> >> In a board specific initcall map the memory to wherever it's convenient,
-> >> modify the address of the CFI flash in the device node and add a big
-> >> comment that there's nothing to see here.
-> > 
-> > The device tree specification defines a "virtual-reg property [that] specifies
-> > an effective address that maps to the first physical address specified in
-> > the reg property of the device node.  This property enables boot programs to
-> > provide client programs with virtual-to-physical mappings that have been set up".
-> > 
-> > So, how about a tad more generic approach:
-> > 
-> > - barebox device tree extends cfi-flash node with virtual-reg of appropriate
-> >   location
-> > - Define a of_iomap() function that
+On Fri, Nov 06, 2020 at 07:14:09AM +0000, Matthias Fend wrote:
+> Hi Ahmad,
 > 
-> Or rather a  more generic name, like dev_ioremap?.(In that case
-> !CONFIG_OF is the same as MMU off).
+> > ________________________________________
+> > Von: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> > Gesendet: Donnerstag, 5. November 2020 21:57
+> > An: Matthias Fend; barebox@lists.infradead.org
+> > Betreff: Re: [PATCH] Documentation: state: add a little note about modifying a state variable in the frontend
+> >
+> > Hello Matthias,
+> >
+> > On 11/5/20 9:16 PM, Matthias Fend wrote:
+> >> Signed-off-by: Matthias Fend <matthias.fend@wolfvision.net>
+> >> ---
+> >>   Documentation/user/state.rst | 1 +
+> >>   1 file changed, 1 insertion(+)
+> >>
+> >> diff --git a/Documentation/user/state.rst b/Documentation/user/state.rst
+> >> index 78ce24f..d9a8e76 100644
+> >> --- a/Documentation/user/state.rst
+> >> +++ b/Documentation/user/state.rst
+> >> @@ -689,4 +689,5 @@ be accessed like normal shell variables. The ``state`` command is used
+> >>   to save/restore a *state* variable set to the backend device.
+> >>
+> >>   After initializing the variable can be accessed with ``$state.foo``.
+> >> +To modify the value of a state variable use ``nv dev.state.foo=bar``.
+> >
+> > That's wrong. You set the value of a state variable with
+> > state.foo=bar. nv dev.state.state.foo=bar uses the _environment_ to
+> > save a value to write to state.foo on each boot. This means:
+> 
+> Thanks for your explanation. Setting a state variable with
+> 'state.foo=bar' was actually the way I originally expected.
+> Meanwhile, I figured out why I was struggling using things like that.
+> All my introduced state variables contained a hyphen in their name.
+> And I was not able to set a state variable with 'state.foo-bar=baz' while
+> 'nv dev.state.foo-bar=baz' immediately changed the value of
+> 'state.foo-bar'. But, as I just learned, with some side effects.
+> 
+> >
+> >   - If you modify the variable from within barebox, it won't be visible
+> >     in Linux unless you boot barebox once again.
+> 
+> I could not verify this behavior. When I change a state variable with
+> 'nv dev.state=foo' and then directly boot into Linux (without booting
+> barebox again) the 'barebox-state' tool already displays the new value.
+> 
+> >   - If you modify the variable from within Linux, nv.dev.state.state.foo
+> >     would just overwrite the existing value on the next barebox boot.
+> 
+> That's true, and of course, not desired.
+> 
+> >
+> > Generally, you should only need to modify nv variables at runtime
+> > for debugging. nv.dev is meant for stuff like nv.dev.eth0.ethaddr=XX:XX:XX:XX:XX:XX,
+> > where you can just hard code a mac address to use, but for state I can't
+> > think of any good use cases at the moment.
+> 
+> Right, state, and also it's frontend, does already what it should do and
+> as expected.
+> Only the hyphen-obstacle caused troubles. So, maybe there is a trick but the fast fix is to simply
+> just avoid names that contain hyphens ;)
 
-I wouldn't use ioremap as name when the function has a different
-semantics, but other than that: Sounds good. Make it so!
+How about converting the hyphens to underscores for the variable names
+(I mean in code, not in your dts files)?
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
