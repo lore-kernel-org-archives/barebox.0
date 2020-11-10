@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kcVfG-0005H8-KL
- for barebox@lists.infradead.org; Tue, 10 Nov 2020 15:34:35 +0000
+ id 1kcVfN-0005I7-OF
+ for barebox@lists.infradead.org; Tue, 10 Nov 2020 15:34:42 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 10 Nov 2020 16:34:29 +0100
-Message-Id: <20201110153430.32123-1-a.fatoum@pengutronix.de>
+Date: Tue, 10 Nov 2020 16:34:30 +0100
+Message-Id: <20201110153430.32123-2-a.fatoum@pengutronix.de>
+In-Reply-To: <20201110153430.32123-1-a.fatoum@pengutronix.de>
+References: <20201110153430.32123-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,47 +21,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] doc: add note about characters like hyphens in variable
- names
+Subject: [PATCH 2/2] Documentation: state: clarify how to access state device
+ parameters
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The mismatch between the allowed characters in shell variables and
-device parameters is a common pitfall, especially because device
-tree node names often have hyphens in them, which is disallowed by
-hush.
+Users may be inclined to use hyphens in state variable names as this is
+customary for device tree nodes. Such variables can't be read with
+$state.example-variable or written with state.example-variable=,
+because it's incompatible with Hush. Adjust the documentation to nudge
+users into the correct direction (${state.example-variabe} and setenv)
 
-While such variables can be read by the ${variable-example}, setting
-them is only possible with the setenv command. Reflect this in the
-documentation.
-
+Suggested-by: Matthias Fend <Matthias.Fend@wolfvision.net>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
-Cc: Matthias Fend <Matthias.Fend@wolfvision.net>
----
- Documentation/user/driver-model.rst | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ Documentation/user/state.rst | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/user/driver-model.rst b/Documentation/user/driver-model.rst
-index a0fd3e99b55b..c543d6d9c410 100644
---- a/Documentation/user/driver-model.rst
-+++ b/Documentation/user/driver-model.rst
-@@ -88,7 +88,14 @@ The parameters can be used as shell variables:
- .. code-block:: sh
+diff --git a/Documentation/user/state.rst b/Documentation/user/state.rst
+index 78ce24f9edce..54aa396257f9 100644
+--- a/Documentation/user/state.rst
++++ b/Documentation/user/state.rst
+@@ -684,9 +684,9 @@ Frontend
+ --------
  
-   eth0.ipaddr=192.168.23.15
--  echo "my current ip is: $eth0.ipaddr"
-+  echo "my current ip is: ${eth0.ipaddr}"
-+
-+.. note::
-+
-+  Hush shell syntax for defining and setting variables is the same, so
-+  some characters such as hyphens are not allowed on the left hand side
-+  of a shell variable assignment. :ref:`command_setenv`, if enabled,
-+  can still be used to write such a variable though.
+ As frontend a *state* instance is a regular barebox device which has
+-device parameters for the *state* variables. With this the variables can
++:ref:`device_parameters` for the *state* variables. With this the variables can
+ be accessed like normal shell variables. The ``state`` command is used
+ to save/restore a *state* variable set to the backend device.
  
- device variables may have a type, so assigning wrong values may fail:
- 
+-After initializing the variable can be accessed with ``$state.foo``.
+-``state -s`` stores the *state* to the backend device.
++After initializing the variable can be accessed with ``${state.foo}`` or
++:ref:`command_setenv`. ``state -s`` stores the *state* to the backend device.
 -- 
 2.28.0
 
