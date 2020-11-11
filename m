@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kcVfN-0005I7-OF
- for barebox@lists.infradead.org; Tue, 10 Nov 2020 15:34:42 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 10 Nov 2020 16:34:30 +0100
-Message-Id: <20201110153430.32123-2-a.fatoum@pengutronix.de>
-In-Reply-To: <20201110153430.32123-1-a.fatoum@pengutronix.de>
-References: <20201110153430.32123-1-a.fatoum@pengutronix.de>
+ id 1kcmbj-0006Z8-FZ
+ for barebox@lists.infradead.org; Wed, 11 Nov 2020 09:40:04 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 11 Nov 2020 10:40:00 +0100
+Message-Id: <20201111094000.20680-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,42 +19,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] Documentation: state: clarify how to access state device
- parameters
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: [PATCH] mtd: nand: Fix dependeny on CONFIG_NAND_BBT
+To: Barebox List <barebox@lists.infradead.org>
 
-Users may be inclined to use hyphens in state variable names as this is
-customary for device tree nodes. Such variables can't be read with
-$state.example-variable or written with state.example-variable=,
-because it's incompatible with Hush. Adjust the documentation to nudge
-users into the correct direction (${state.example-variabe} and setenv)
+CONFIG_NAND_BBT no longer exists, so remove the remaining occurences.
 
-Suggested-by: Matthias Fend <Matthias.Fend@wolfvision.net>
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Fixes: b6bcd96de5 ("mtd: nand: Update to Linux-5.9")
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- Documentation/user/state.rst | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/mtd/nand/Kconfig     | 1 -
+ drivers/mtd/nand/nand_base.c | 2 +-
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/Documentation/user/state.rst b/Documentation/user/state.rst
-index 78ce24f9edce..54aa396257f9 100644
---- a/Documentation/user/state.rst
-+++ b/Documentation/user/state.rst
-@@ -684,9 +684,9 @@ Frontend
- --------
+diff --git a/drivers/mtd/nand/Kconfig b/drivers/mtd/nand/Kconfig
+index 6a162f81f6..97819e5c0b 100644
+--- a/drivers/mtd/nand/Kconfig
++++ b/drivers/mtd/nand/Kconfig
+@@ -28,7 +28,6 @@ config NAND_IMX
  
- As frontend a *state* instance is a regular barebox device which has
--device parameters for the *state* variables. With this the variables can
-+:ref:`device_parameters` for the *state* variables. With this the variables can
- be accessed like normal shell variables. The ``state`` command is used
- to save/restore a *state* variable set to the backend device.
+ config NAND_MXS
+ 	bool
+-	select NAND_BBT
+ 	select STMP_DEVICE
+ 	prompt "i.MX23/28/6 NAND driver"
+ 	depends on MXS_APBH_DMA
+diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
+index e9c3d7e7c8..2c3c0b360f 100644
+--- a/drivers/mtd/nand/nand_base.c
++++ b/drivers/mtd/nand/nand_base.c
+@@ -688,7 +688,7 @@ static int nand_block_markgood_lowlevel(struct nand_chip *chip, loff_t ofs)
+ 	}
  
--After initializing the variable can be accessed with ``$state.foo``.
--``state -s`` stores the *state* to the backend device.
-+After initializing the variable can be accessed with ``${state.foo}`` or
-+:ref:`command_setenv`. ``state -s`` stores the *state* to the backend device.
+ 	/* Mark block good in BBT */
+-	if (IS_ENABLED(CONFIG_NAND_BBT) && chip->bbt) {
++	if (chip->bbt) {
+ 		ret = nand_markgood_bbt(chip, ofs);
+ 		if (ret)
+ 			return ret;
 -- 
-2.28.0
+2.20.1
 
 
 _______________________________________________
