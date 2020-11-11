@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kcmbj-0006Z8-FZ
- for barebox@lists.infradead.org; Wed, 11 Nov 2020 09:40:04 +0000
+ id 1kcqpE-0003vQ-RM
+ for barebox@lists.infradead.org; Wed, 11 Nov 2020 14:10:18 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 11 Nov 2020 10:40:00 +0100
-Message-Id: <20201111094000.20680-1-s.hauer@pengutronix.de>
+Date: Wed, 11 Nov 2020 15:10:12 +0100
+Message-Id: <20201111141012.6278-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,43 +19,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd: nand: Fix dependeny on CONFIG_NAND_BBT
+Subject: [PATCH] ARM: layerscape: ppa: Fix use after free
 To: Barebox List <barebox@lists.infradead.org>
 
-CONFIG_NAND_BBT no longer exists, so remove the remaining occurences.
+In of_psci_do_fixup() we want to delete the one job-ring device node
+which is used by the PPA secure firmware. When we have deleted the node
+we may not continue the for_each_compatible_node_from() loop, because
+that would derefence the just deleted node.
+We only want to delete a single node, so we do not need to continue the
+loop once we've found the node, so we can fix the issue by breaking out
+of the loop.
 
-Fixes: b6bcd96de5 ("mtd: nand: Update to Linux-5.9")
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/nand/Kconfig     | 1 -
- drivers/mtd/nand/nand_base.c | 2 +-
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ arch/arm/mach-layerscape/ppa.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mtd/nand/Kconfig b/drivers/mtd/nand/Kconfig
-index 6a162f81f6..97819e5c0b 100644
---- a/drivers/mtd/nand/Kconfig
-+++ b/drivers/mtd/nand/Kconfig
-@@ -28,7 +28,6 @@ config NAND_IMX
+diff --git a/arch/arm/mach-layerscape/ppa.c b/arch/arm/mach-layerscape/ppa.c
+index 6ab7659be7..c34651f39f 100644
+--- a/arch/arm/mach-layerscape/ppa.c
++++ b/arch/arm/mach-layerscape/ppa.c
+@@ -43,6 +43,7 @@ static int of_psci_do_fixup(struct device_node *root, void *unused)
+ 			continue;
  
- config NAND_MXS
- 	bool
--	select NAND_BBT
- 	select STMP_DEVICE
- 	prompt "i.MX23/28/6 NAND driver"
- 	depends on MXS_APBH_DMA
-diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
-index e9c3d7e7c8..2c3c0b360f 100644
---- a/drivers/mtd/nand/nand_base.c
-+++ b/drivers/mtd/nand/nand_base.c
-@@ -688,7 +688,7 @@ static int nand_block_markgood_lowlevel(struct nand_chip *chip, loff_t ofs)
+ 		of_delete_node(np);
++		break;
  	}
  
- 	/* Mark block good in BBT */
--	if (IS_ENABLED(CONFIG_NAND_BBT) && chip->bbt) {
-+	if (chip->bbt) {
- 		ret = nand_markgood_bbt(chip, ofs);
- 		if (ret)
- 			return ret;
+ 	return of_psci_fixup(root, psci_version);
 -- 
 2.20.1
 
