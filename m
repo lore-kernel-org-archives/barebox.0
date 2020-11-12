@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp57.i.mail.ru ([217.69.128.37])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kd9kZ-0001vj-5p
- for barebox@lists.infradead.org; Thu, 12 Nov 2020 10:22:45 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Thu, 12 Nov 2020 13:22:30 +0300
-Message-Id: <20201112102231.12580-1-shc_work@mail.ru>
+ id 1kd9rk-0002mw-Ez
+ for barebox@lists.infradead.org; Thu, 12 Nov 2020 10:30:09 +0000
+Date: Thu, 12 Nov 2020 11:30:06 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20201112103006.GP12463@pengutronix.de>
+References: <20201109134430.21156-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20201109134430.21156-1-r.czerwinski@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,87 +22,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] ARM: dts: imx6qdl: pfla02: Use upstream som_flash node
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/8] QEMU virt machine support via mach-vexpress
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
----
- arch/arm/dts/imx6qdl-phytec-pfla02.dtsi | 52 ++++++++++++-------------
- 1 file changed, 25 insertions(+), 27 deletions(-)
+On Mon, Nov 09, 2020 at 02:44:22PM +0100, Rouven Czerwinski wrote:
+> Instead of using ARCH_QEMU, this variant uses ARCH_VEXPRESS to base its
+> support for the QEMU virt machine on. Contains a cleanup and conversion
+> of the vexpress boards to board drivers and an implementation of
+> zero_page_access and faulting for ARM32.
+> 
+> Rouven Czerwinski (8):
+>   ARM: MMU: add zero_page_{access,faulting}
+>   mtd: cfi_flash: allow 0x0 mapping
+>   amba: add *_amba_driver helper macros
+>   ARM: vexpress: remove unused KConfig file
+>   ARM: vexpress: convert to board driver
+>   ARM: vexpress: move Options to ARCH_VEXPRESS
+>   ARM: qemu: add support for qemu virt platform
+>   ARM: vexpress: enable VIRT board, MMU and cmds
 
-diff --git a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
-index d0b056b2f..3eb510d43 100644
---- a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
-+++ b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
-@@ -21,7 +21,7 @@
- 
- 		environment-spinor {
- 			compatible = "barebox,environment";
--			device-path = &flash, "partname:barebox-environment";
-+			device-path = &som_flash, "partname:barebox-environment";
- 			status = "disabled";
- 		};
- 
-@@ -53,32 +53,30 @@
- 
- /delete-node/ &{/memory@10000000};
- 
--&ecspi3 {
--	flash: flash@0 {
--		partitions {
--			compatible = "fixed-partitions";
--			#address-cells = <1>;
--			#size-cells = <1>;
--
--			partition@0 {
--				label = "barebox";
--				reg = <0x0 0x100000>;
--			};
--
--			partition@100000 {
--				label = "barebox-environment";
--				reg = <0x100000 0x20000>;
--			};
--
--			partition@120000 {
--				label = "oftree";
--				reg = <0x120000 0x20000>;
--			};
--
--			partition@140000 {
--				label = "kernel";
--				reg = <0x140000 0x0>;
--			};
-+&som_flash {
-+	partitions {
-+		compatible = "fixed-partitions";
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+
-+		partition@0 {
-+			label = "barebox";
-+			reg = <0x0 0x100000>;
-+		};
-+
-+		partition@100000 {
-+			label = "barebox-environment";
-+			reg = <0x100000 0x20000>;
-+		};
-+
-+		partition@120000 {
-+			label = "oftree";
-+			reg = <0x120000 0x20000>;
-+		};
-+
-+		partition@140000 {
-+			label = "kernel";
-+			reg = <0x140000 0x0>;
- 		};
- 	};
- };
+Until the flash-at-zero problem is solved: Applied 3-7.
+
+Sascha
+
+
 -- 
-2.26.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
