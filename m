@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kcqpE-0003vQ-RM
- for barebox@lists.infradead.org; Wed, 11 Nov 2020 14:10:18 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 11 Nov 2020 15:10:12 +0100
-Message-Id: <20201111141012.6278-1-s.hauer@pengutronix.de>
+Received: from protonic.xs4all.nl ([83.163.252.89])
+ by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1kd9Pi-0000Ic-RW
+ for barebox@lists.infradead.org; Thu, 12 Nov 2020 10:01:15 +0000
+From: Robin van der Gracht <robin@protonic.nl>
+Date: Thu, 12 Nov 2020 11:00:42 +0100
+Message-Id: <20201112100042.1853449-1-robin@protonic.nl>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,36 +19,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: layerscape: ppa: Fix use after free
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] nvmem: ocotp: fix fusing on fsl, imx6q-ocotp compatible boards
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Rouven Czerwinski <r.czerwinski@pengutronix.de>, Robin van der Gracht <robin@protonic.nl>
 
-In of_psci_do_fixup() we want to delete the one job-ring device node
-which is used by the PPA secure firmware. When we have deleted the node
-we may not continue the for_each_compatible_node_from() loop, because
-that would derefence the just deleted node.
-We only want to delete a single node, so we do not need to continue the
-loop once we've found the node, so we can fix the issue by breaking out
-of the loop.
+The imx6q_ocotp_data struct is incomplete resulting in a crash when trying
+to read/blow fuses.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Robin van der Gracht <robin@protonic.nl>
 ---
- arch/arm/mach-layerscape/ppa.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/nvmem/ocotp.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/mach-layerscape/ppa.c b/arch/arm/mach-layerscape/ppa.c
-index 6ab7659be7..c34651f39f 100644
---- a/arch/arm/mach-layerscape/ppa.c
-+++ b/arch/arm/mach-layerscape/ppa.c
-@@ -43,6 +43,7 @@ static int of_psci_do_fixup(struct device_node *root, void *unused)
- 			continue;
+diff --git a/drivers/nvmem/ocotp.c b/drivers/nvmem/ocotp.c
+index 356e9bf11..cee50955e 100644
+--- a/drivers/nvmem/ocotp.c
++++ b/drivers/nvmem/ocotp.c
+@@ -833,6 +833,8 @@ static struct imx_ocotp_data imx6q_ocotp_data = {
+ 	.mac_offsets = { MAC_OFFSET_0 },
+ 	.format_mac = imx_ocotp_format_mac,
+ 	.set_timing = imx6_ocotp_set_timing,
++	.fuse_blow = imx6_fuse_blow_addr,
++	.fuse_read = imx6_fuse_read_addr,
+ };
  
- 		of_delete_node(np);
-+		break;
- 	}
- 
- 	return of_psci_fixup(root, psci_version);
+ static struct imx_ocotp_data imx6sl_ocotp_data = {
 -- 
-2.20.1
+2.25.1
 
 
 _______________________________________________
