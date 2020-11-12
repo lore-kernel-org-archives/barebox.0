@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kdGK5-00077A-G6
- for barebox@lists.infradead.org; Thu, 12 Nov 2020 17:23:50 +0000
+ id 1kdGLi-0007Qy-Vv
+ for barebox@lists.infradead.org; Thu, 12 Nov 2020 17:25:32 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 12 Nov 2020 18:23:47 +0100
-Message-Id: <20201112172347.385-2-a.fatoum@pengutronix.de>
-In-Reply-To: <20201112172347.385-1-a.fatoum@pengutronix.de>
-References: <20201112172347.385-1-a.fatoum@pengutronix.de>
+Date: Thu, 12 Nov 2020 18:25:24 +0100
+Message-Id: <20201112172524.1293-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,51 +19,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] setenv: align with POSIX in handling of setenv(var, "")
+Subject: [PATCH master v2] nv: fix use-after-free when clearing from shell
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Holger Assmann <has@pengutronix.de>, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-setenv(var, "") to delete var is a barebox idiosyncrasy. Previous commit
-added unsetenv and changed all users of setenv(var, ""), so lets set the
-behavior of setenv to what's expected: set var to the empty string.
+When we use hush to set the same nv.var twice to the empty string:
 
-Previously, "" was turned into NULL, which meant it wasn't possible to
-set variables to the empty string from the shell. This is now possible.
+  $ nv.user=
+  $ nv.user=
 
+nv_set is called twice with a NULL val argument leading
+to a double free and accompanied memory corruption.
+
+Reorder the code, so p->value is freed just once.
+
+Fixes: fa4c41ba60af ("nvvar: when setting a nvvar to NULL just free the content")
+Cc: Holger Assmann <has@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/env.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+v1 -> v2:
+  Use correct author email in DCO
+---
+ common/globalvar.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/common/env.c b/common/env.c
-index fbaaac4f2f5c..2830551bc0a1 100644
---- a/common/env.c
-+++ b/common/env.c
-@@ -251,15 +251,21 @@ static int dev_setenv(const char *name, const char *val)
- 	return -ENODEV;
- }
- 
-+/**
-+ * setenv - set environment variables
-+ * @_name - Variable name
-+ * @value - the value to set, empty string not handled specially
-+ *
-+ * Returns 0 for success and a negative error code otherwise
-+ * Use unsetenv() to unset.
-+ */
-+
- int setenv(const char *_name, const char *value)
+diff --git a/common/globalvar.c b/common/globalvar.c
+index 60793d7a30c6..a55b38b00fd5 100644
+--- a/common/globalvar.c
++++ b/common/globalvar.c
+@@ -179,16 +179,12 @@ static int nv_set(struct device_d *dev, struct param_d *p, const char *name, con
  {
- 	char *name = strdup(_name);
- 	int ret = 0;
- 	struct list_head *list;
+ 	int ret;
  
--	if (value && !*value)
--		value = NULL;
+-	if (!val) {
+-		if (p)
+-			free(p->value);
+-		return 0;
++	if (val) {
++		ret = dev_set_param(&global_device, name, val);
++		if (ret)
++			return ret;
+ 	}
+ 
+-	ret = dev_set_param(&global_device, name, val);
+-	if (ret)
+-		return ret;
 -
- 	if (strchr(name, '.')) {
- 		ret = dev_setenv(name, value);
- 		if (ret)
+ 	if (p) {
+ 		free(p->value);
+ 		p->value = xstrdup(val);
 -- 
 2.28.0
 
