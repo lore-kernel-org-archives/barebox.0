@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kdAWf-0002Pq-UN
- for barebox@lists.infradead.org; Thu, 12 Nov 2020 11:12:26 +0000
-Date: Thu, 12 Nov 2020 12:12:24 +0100
+ id 1kdE8L-0000R1-6P
+ for barebox@lists.infradead.org; Thu, 12 Nov 2020 15:03:34 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201112111224.GJ29830@pengutronix.de>
-References: <20201112100042.1853449-1-robin@protonic.nl>
+Date: Thu, 12 Nov 2020 16:03:13 +0100
+Message-Id: <20201112150313.10412-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201112100042.1853449-1-robin@protonic.nl>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,48 +19,105 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] nvmem: ocotp: fix fusing on fsl,imx6q-ocotp compatible
- boards
-To: Robin van der Gracht <robin@protonic.nl>
-Cc: barebox@lists.infradead.org, Rouven Czerwinski <r.czerwinski@pengutronix.de>, Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: [PATCH] ARM: nxp i.MX8MM evk: make locally used data static
+To: Barebox List <barebox@lists.infradead.org>
 
-On Thu, Nov 12, 2020 at 11:00:42AM +0100, Robin van der Gracht wrote:
-> The imx6q_ocotp_data struct is incomplete resulting in a crash when trying
-> to read/blow fuses.
-> 
-> Signed-off-by: Robin van der Gracht <robin@protonic.nl>
-> ---
->  drivers/nvmem/ocotp.c | 2 ++
->  1 file changed, 2 insertions(+)
+Make locally used data static so that it doesn't conflict with other
+data with the same name.
 
-Applied, thanks
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/nxp-imx8mp-evk/lpddr4-timing.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-Sascha
-
-> 
-> diff --git a/drivers/nvmem/ocotp.c b/drivers/nvmem/ocotp.c
-> index 356e9bf11..cee50955e 100644
-> --- a/drivers/nvmem/ocotp.c
-> +++ b/drivers/nvmem/ocotp.c
-> @@ -833,6 +833,8 @@ static struct imx_ocotp_data imx6q_ocotp_data = {
->  	.mac_offsets = { MAC_OFFSET_0 },
->  	.format_mac = imx_ocotp_format_mac,
->  	.set_timing = imx6_ocotp_set_timing,
-> +	.fuse_blow = imx6_fuse_blow_addr,
-> +	.fuse_read = imx6_fuse_read_addr,
->  };
->  
->  static struct imx_ocotp_data imx6sl_ocotp_data = {
-> -- 
-> 2.25.1
-> 
-> 
-
+diff --git a/arch/arm/boards/nxp-imx8mp-evk/lpddr4-timing.c b/arch/arm/boards/nxp-imx8mp-evk/lpddr4-timing.c
+index bc4c10fe8d..3028bc084c 100644
+--- a/arch/arm/boards/nxp-imx8mp-evk/lpddr4-timing.c
++++ b/arch/arm/boards/nxp-imx8mp-evk/lpddr4-timing.c
+@@ -7,7 +7,7 @@
+ #include <soc/imx8m/ddr.h>
+ #include <soc/imx8m/lpddr4_define.h>
+ 
+-struct dram_cfg_param ddr_ddrc_cfg[] = {
++static struct dram_cfg_param ddr_ddrc_cfg[] = {
+ 	/** Initialize DDRC registers **/
+ 	{ 0x3d400304, 0x1 },
+ 	{ 0x3d400030, 0x1 },
+@@ -117,7 +117,7 @@ struct dram_cfg_param ddr_ddrc_cfg[] = {
+ };
+ 
+ /* PHY Initialize Configuration */
+-struct dram_cfg_param ddr_ddrphy_cfg[] = {
++static struct dram_cfg_param ddr_ddrphy_cfg[] = {
+ 	{ 0x100a0, 0x0 },
+ 	{ 0x100a1, 0x1 },
+ 	{ 0x100a2, 0x2 },
+@@ -326,7 +326,7 @@ struct dram_cfg_param ddr_ddrphy_cfg[] = {
+ };
+ 
+ /* ddr phy trained csr */
+-struct dram_cfg_param ddr_ddrphy_trained_csr[] = {
++static struct dram_cfg_param ddr_ddrphy_trained_csr[] = {
+ 	{ 0x200b2, 0x0 },
+ 	{ 0x1200b2, 0x0 },
+ 	{ 0x2200b2, 0x0 },
+@@ -1049,7 +1049,7 @@ struct dram_cfg_param ddr_ddrphy_trained_csr[] = {
+ };
+ 
+ /* P0 message block paremeter for training firmware */
+-struct dram_cfg_param ddr_fsp0_cfg[] = {
++static struct dram_cfg_param ddr_fsp0_cfg[] = {
+ 	{ 0xd0000, 0x0 },
+ 	{ 0x54003, 0xfa0 },
+ 	{ 0x54004, 0x2 },
+@@ -1088,7 +1088,7 @@ struct dram_cfg_param ddr_fsp0_cfg[] = {
+ };
+ 
+ /* P1 message block paremeter for training firmware */
+-struct dram_cfg_param ddr_fsp1_cfg[] = {
++static struct dram_cfg_param ddr_fsp1_cfg[] = {
+ 	{ 0xd0000, 0x0 },
+ 	{ 0x54002, 0x101 },
+ 	{ 0x54003, 0x190 },
+@@ -1128,7 +1128,7 @@ struct dram_cfg_param ddr_fsp1_cfg[] = {
+ };
+ 
+ /* P2 message block paremeter for training firmware */
+-struct dram_cfg_param ddr_fsp2_cfg[] = {
++static struct dram_cfg_param ddr_fsp2_cfg[] = {
+ 	{ 0xd0000, 0x0 },
+ 	{ 0x54002, 0x102 },
+ 	{ 0x54003, 0x64 },
+@@ -1168,7 +1168,7 @@ struct dram_cfg_param ddr_fsp2_cfg[] = {
+ };
+ 
+ /* P0 2D message block paremeter for training firmware */
+-struct dram_cfg_param ddr_fsp0_2d_cfg[] = {
++static struct dram_cfg_param ddr_fsp0_2d_cfg[] = {
+ 	{ 0xd0000, 0x0 },
+ 	{ 0x54003, 0xfa0 },
+ 	{ 0x54004, 0x2 },
+@@ -1209,7 +1209,7 @@ struct dram_cfg_param ddr_fsp0_2d_cfg[] = {
+ };
+ 
+ /* DRAM PHY init engine image */
+-struct dram_cfg_param ddr_phy_pie[] = {
++static struct dram_cfg_param ddr_phy_pie[] = {
+ 	{ 0xd0000, 0x0 },
+ 	{ 0x90000, 0x10 },
+ 	{ 0x90001, 0x400 },
+@@ -1801,7 +1801,7 @@ struct dram_cfg_param ddr_phy_pie[] = {
+ 	{ 0xd0000, 0x1 }
+ };
+ 
+-struct dram_fsp_msg ddr_dram_fsp_msg[] = {
++static struct dram_fsp_msg ddr_dram_fsp_msg[] = {
+ 	{
+ 		/* P0 4000mts 1D */
+ 		.drate = 4000,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+
 
 _______________________________________________
 barebox mailing list
