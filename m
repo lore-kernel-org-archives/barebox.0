@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kdGLi-0007Qy-Vv
- for barebox@lists.infradead.org; Thu, 12 Nov 2020 17:25:32 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 12 Nov 2020 18:25:24 +0100
-Message-Id: <20201112172524.1293-1-a.fatoum@pengutronix.de>
+ id 1kdGtF-0005SC-4k
+ for barebox@lists.infradead.org; Thu, 12 Nov 2020 18:00:09 +0000
+Message-ID: <0bd4d79a0b1c3905f773010b061d534341c821b9.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Thu, 12 Nov 2020 19:00:05 +0100
+In-Reply-To: <20201112150313.10412-1-s.hauer@pengutronix.de>
+References: <20201112150313.10412-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,57 +21,110 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH master v2] nv: fix use-after-free when clearing from shell
-To: barebox@lists.infradead.org
-Cc: Holger Assmann <has@pengutronix.de>, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] ARM: nxp i.MX8MM evk: make locally used data static
+To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
 
-When we use hush to set the same nv.var twice to the empty string:
+Am Donnerstag, den 12.11.2020, 16:03 +0100 schrieb Sascha Hauer:
+> Make locally used data static so that it doesn't conflict with other
+> data with the same name.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  arch/arm/boards/nxp-imx8mp-evk/lpddr4-timing.c | 18 +++++++++-------
 
-  $ nv.user=
-  $ nv.user=
+Subject says i.MX8MM EVK, but the code change is in i.MX8MP EVK.
 
-nv_set is called twice with a NULL val argument leading
-to a double free and accompanied memory corruption.
+Regards,
+Lucas
 
-Reorder the code, so p->value is freed just once.
-
-Fixes: fa4c41ba60af ("nvvar: when setting a nvvar to NULL just free the content")
-Cc: Holger Assmann <has@pengutronix.de>
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-v1 -> v2:
-  Use correct author email in DCO
----
- common/globalvar.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
-
-diff --git a/common/globalvar.c b/common/globalvar.c
-index 60793d7a30c6..a55b38b00fd5 100644
---- a/common/globalvar.c
-+++ b/common/globalvar.c
-@@ -179,16 +179,12 @@ static int nv_set(struct device_d *dev, struct param_d *p, const char *name, con
- {
- 	int ret;
- 
--	if (!val) {
--		if (p)
--			free(p->value);
--		return 0;
-+	if (val) {
-+		ret = dev_set_param(&global_device, name, val);
-+		if (ret)
-+			return ret;
- 	}
- 
--	ret = dev_set_param(&global_device, name, val);
--	if (ret)
--		return ret;
--
- 	if (p) {
- 		free(p->value);
- 		p->value = xstrdup(val);
--- 
-2.28.0
+> --
+>  1 file changed, 9 insertions(+), 9 deletions(-)
+> 
+> diff --git a/arch/arm/boards/nxp-imx8mp-evk/lpddr4-timing.c b/arch/arm/boards/nxp-imx8mp-evk/lpddr4-timing.c
+> index bc4c10fe8d..3028bc084c 100644
+> --- a/arch/arm/boards/nxp-imx8mp-evk/lpddr4-timing.c
+> +++ b/arch/arm/boards/nxp-imx8mp-evk/lpddr4-timing.c
+> @@ -7,7 +7,7 @@
+>  #include <soc/imx8m/ddr.h>
+>  #include <soc/imx8m/lpddr4_define.h>
+>  
+> -struct dram_cfg_param ddr_ddrc_cfg[] = {
+> +static struct dram_cfg_param ddr_ddrc_cfg[] = {
+>  	/** Initialize DDRC registers **/
+>  	{ 0x3d400304, 0x1 },
+>  	{ 0x3d400030, 0x1 },
+> @@ -117,7 +117,7 @@ struct dram_cfg_param ddr_ddrc_cfg[] = {
+>  };
+>  
+>  /* PHY Initialize Configuration */
+> -struct dram_cfg_param ddr_ddrphy_cfg[] = {
+> +static struct dram_cfg_param ddr_ddrphy_cfg[] = {
+>  	{ 0x100a0, 0x0 },
+>  	{ 0x100a1, 0x1 },
+>  	{ 0x100a2, 0x2 },
+> @@ -326,7 +326,7 @@ struct dram_cfg_param ddr_ddrphy_cfg[] = {
+>  };
+>  
+>  /* ddr phy trained csr */
+> -struct dram_cfg_param ddr_ddrphy_trained_csr[] = {
+> +static struct dram_cfg_param ddr_ddrphy_trained_csr[] = {
+>  	{ 0x200b2, 0x0 },
+>  	{ 0x1200b2, 0x0 },
+>  	{ 0x2200b2, 0x0 },
+> @@ -1049,7 +1049,7 @@ struct dram_cfg_param ddr_ddrphy_trained_csr[] = {
+>  };
+>  
+>  /* P0 message block paremeter for training firmware */
+> -struct dram_cfg_param ddr_fsp0_cfg[] = {
+> +static struct dram_cfg_param ddr_fsp0_cfg[] = {
+>  	{ 0xd0000, 0x0 },
+>  	{ 0x54003, 0xfa0 },
+>  	{ 0x54004, 0x2 },
+> @@ -1088,7 +1088,7 @@ struct dram_cfg_param ddr_fsp0_cfg[] = {
+>  };
+>  
+>  /* P1 message block paremeter for training firmware */
+> -struct dram_cfg_param ddr_fsp1_cfg[] = {
+> +static struct dram_cfg_param ddr_fsp1_cfg[] = {
+>  	{ 0xd0000, 0x0 },
+>  	{ 0x54002, 0x101 },
+>  	{ 0x54003, 0x190 },
+> @@ -1128,7 +1128,7 @@ struct dram_cfg_param ddr_fsp1_cfg[] = {
+>  };
+>  
+>  /* P2 message block paremeter for training firmware */
+> -struct dram_cfg_param ddr_fsp2_cfg[] = {
+> +static struct dram_cfg_param ddr_fsp2_cfg[] = {
+>  	{ 0xd0000, 0x0 },
+>  	{ 0x54002, 0x102 },
+>  	{ 0x54003, 0x64 },
+> @@ -1168,7 +1168,7 @@ struct dram_cfg_param ddr_fsp2_cfg[] = {
+>  };
+>  
+>  /* P0 2D message block paremeter for training firmware */
+> -struct dram_cfg_param ddr_fsp0_2d_cfg[] = {
+> +static struct dram_cfg_param ddr_fsp0_2d_cfg[] = {
+>  	{ 0xd0000, 0x0 },
+>  	{ 0x54003, 0xfa0 },
+>  	{ 0x54004, 0x2 },
+> @@ -1209,7 +1209,7 @@ struct dram_cfg_param ddr_fsp0_2d_cfg[] = {
+>  };
+>  
+>  /* DRAM PHY init engine image */
+> -struct dram_cfg_param ddr_phy_pie[] = {
+> +static struct dram_cfg_param ddr_phy_pie[] = {
+>  	{ 0xd0000, 0x0 },
+>  	{ 0x90000, 0x10 },
+>  	{ 0x90001, 0x400 },
+> @@ -1801,7 +1801,7 @@ struct dram_cfg_param ddr_phy_pie[] = {
+>  	{ 0xd0000, 0x1 }
+>  };
+>  
+> -struct dram_fsp_msg ddr_dram_fsp_msg[] = {
+> +static struct dram_fsp_msg ddr_dram_fsp_msg[] = {
+>  	{
+>  		/* P0 4000mts 1D */
+>  		.drate = 4000,
 
 
 _______________________________________________
