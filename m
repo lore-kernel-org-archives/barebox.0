@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from magratgarlick.emantor.de ([2a01:4f8:c17:c88::2])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kd9rk-0002mw-Ez
- for barebox@lists.infradead.org; Thu, 12 Nov 2020 10:30:09 +0000
-Date: Thu, 12 Nov 2020 11:30:06 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201112103006.GP12463@pengutronix.de>
-References: <20201109134430.21156-1-r.czerwinski@pengutronix.de>
+ id 1kdA4H-0005tz-KJ
+ for barebox@lists.infradead.org; Thu, 12 Nov 2020 10:43:07 +0000
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Thu, 12 Nov 2020 11:42:56 +0100
+Message-Id: <20201112104256.13608-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201109134430.21156-1-r.czerwinski@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,36 +19,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/8] QEMU virt machine support via mach-vexpress
-To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] fixup! ARM: vexpress: move Options to ARCH_VEXPRESS
+To: barebox@lists.infradead.org
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-On Mon, Nov 09, 2020 at 02:44:22PM +0100, Rouven Czerwinski wrote:
-> Instead of using ARCH_QEMU, this variant uses ARCH_VEXPRESS to base its
-> support for the QEMU virt machine on. Contains a cleanup and conversion
-> of the vexpress boards to board drivers and an implementation of
-> zero_page_access and faulting for ARM32.
-> 
-> Rouven Czerwinski (8):
->   ARM: MMU: add zero_page_{access,faulting}
->   mtd: cfi_flash: allow 0x0 mapping
->   amba: add *_amba_driver helper macros
->   ARM: vexpress: remove unused KConfig file
->   ARM: vexpress: convert to board driver
->   ARM: vexpress: move Options to ARCH_VEXPRESS
->   ARM: qemu: add support for qemu virt platform
->   ARM: vexpress: enable VIRT board, MMU and cmds
+---
+ arch/arm/Kconfig               | 1 +
+ arch/arm/mach-vexpress/Kconfig | 1 -
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-Until the flash-at-zero problem is solved: Applied 3-7.
-
-Sascha
-
-
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 5342de54c1..ab0bf03013 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -223,6 +223,7 @@ config ARCH_VEXPRESS
+ 	select AMBA_SP804
+ 	select CLKDEV_LOOKUP
+ 	select COMMON_CLK
++	select COMMON_CLK_OF_PROVIDER
+ 	select OFTREE
+ 	select OFDEVICE
+ 	select RELOCATABLE
+diff --git a/arch/arm/mach-vexpress/Kconfig b/arch/arm/mach-vexpress/Kconfig
+index 7677a1411b..9d301f7ae8 100644
+--- a/arch/arm/mach-vexpress/Kconfig
++++ b/arch/arm/mach-vexpress/Kconfig
+@@ -6,7 +6,6 @@ config ARCH_TEXT_BASE
+ 
+ config MACH_VEXPRESS
+ 	bool "ARM Vexpress"
+-	select COMMON_CLK_OF_PROVIDER
+ 
+ config MACH_VIRT
+ 	bool "QEMU virt"
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.29.0
+
 
 _______________________________________________
 barebox mailing list
