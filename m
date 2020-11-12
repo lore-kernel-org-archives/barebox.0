@@ -1,12 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([2a01:4f8:c17:c88::2])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kdA4H-0005tz-KJ
- for barebox@lists.infradead.org; Thu, 12 Nov 2020 10:43:07 +0000
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Thu, 12 Nov 2020 11:42:56 +0100
-Message-Id: <20201112104256.13608-1-r.czerwinski@pengutronix.de>
+ id 1kdAU2-00023M-4W
+ for barebox@lists.infradead.org; Thu, 12 Nov 2020 11:09:44 +0000
+Date: Thu, 12 Nov 2020 12:09:38 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20201112110938.GI29830@pengutronix.de>
+References: <1604844099-27647-1-git-send-email-u74147@gmail.com>
+ <1604844099-27647-2-git-send-email-u74147@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1604844099-27647-2-git-send-email-u74147@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,42 +23,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! ARM: vexpress: move Options to ARCH_VEXPRESS
-To: barebox@lists.infradead.org
-Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Subject: Re: [PATCH 1/3] MIPS: ls1b: enable clk driver framework support
+To: Du Huanpeng <u74147@gmail.com>
+Cc: barebox@lists.infradead.org
 
----
- arch/arm/Kconfig               | 1 +
- arch/arm/mach-vexpress/Kconfig | 1 -
- 2 files changed, 1 insertion(+), 1 deletion(-)
+On Sun, Nov 08, 2020 at 10:01:37PM +0800, Du Huanpeng wrote:
+> enable it and so we can add clk driver.
+> 
+> Signed-off-by: Du Huanpeng <u74147@gmail.com>
+> ---
+>  arch/mips/Kconfig | 2 ++
+>  1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 5342de54c1..ab0bf03013 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -223,6 +223,7 @@ config ARCH_VEXPRESS
- 	select AMBA_SP804
- 	select CLKDEV_LOOKUP
- 	select COMMON_CLK
-+	select COMMON_CLK_OF_PROVIDER
- 	select OFTREE
- 	select OFDEVICE
- 	select RELOCATABLE
-diff --git a/arch/arm/mach-vexpress/Kconfig b/arch/arm/mach-vexpress/Kconfig
-index 7677a1411b..9d301f7ae8 100644
---- a/arch/arm/mach-vexpress/Kconfig
-+++ b/arch/arm/mach-vexpress/Kconfig
-@@ -6,7 +6,6 @@ config ARCH_TEXT_BASE
- 
- config MACH_VEXPRESS
- 	bool "ARM Vexpress"
--	select COMMON_CLK_OF_PROVIDER
- 
- config MACH_VIRT
- 	bool "QEMU virt"
+Applied, thanks
+
+Sascha
+
+
 -- 
-2.29.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
