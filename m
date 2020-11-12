@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from smtp57.i.mail.ru ([217.69.128.37])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kd9TV-0000lu-Cn
- for barebox@lists.infradead.org; Thu, 12 Nov 2020 10:05:06 +0000
-Message-ID: <d4f6c8d4ffc0f6b6e08eb23fa33795cbab3720f5.camel@pengutronix.de>
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Thu, 12 Nov 2020 11:05:00 +0100
-In-Reply-To: <20201112100042.1853449-1-robin@protonic.nl>
-References: <20201112100042.1853449-1-robin@protonic.nl>
+ id 1kd9kZ-0001vj-5p
+ for barebox@lists.infradead.org; Thu, 12 Nov 2020 10:22:45 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Thu, 12 Nov 2020 13:22:30 +0300
+Message-Id: <20201112102231.12580-1-shc_work@mail.ru>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,41 +19,86 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] nvmem: ocotp: fix fusing on fsl,imx6q-ocotp compatible
- boards
-To: Robin van der Gracht <robin@protonic.nl>, barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: [PATCH 1/2] ARM: dts: imx6qdl: pfla02: Use upstream som_flash node
+To: barebox@lists.infradead.org
 
-On Thu, 2020-11-12 at 11:00 +0100, Robin van der Gracht wrote:
-> The imx6q_ocotp_data struct is incomplete resulting in a crash when
-> trying
-> to read/blow fuses.
-> 
-> Signed-off-by: Robin van der Gracht <robin@protonic.nl>
-> ---
->  drivers/nvmem/ocotp.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/nvmem/ocotp.c b/drivers/nvmem/ocotp.c
-> index 356e9bf11..cee50955e 100644
-> --- a/drivers/nvmem/ocotp.c
-> +++ b/drivers/nvmem/ocotp.c
-> @@ -833,6 +833,8 @@ static struct imx_ocotp_data imx6q_ocotp_data = {
->  	.mac_offsets = { MAC_OFFSET_0 },
->  	.format_mac = imx_ocotp_format_mac,
->  	.set_timing = imx6_ocotp_set_timing,
-> +	.fuse_blow = imx6_fuse_blow_addr,
-> +	.fuse_read = imx6_fuse_read_addr,
->  };
->  
->  static struct imx_ocotp_data imx6sl_ocotp_data = {
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ arch/arm/dts/imx6qdl-phytec-pfla02.dtsi | 52 ++++++++++++-------------
+ 1 file changed, 25 insertions(+), 27 deletions(-)
 
-Fixes: 17cba91885d9 ("nvmem: ocotp: read/write i.MX7 support")
-
-Reviewed-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-
-Thanks for the fix,
-Rouven
+diff --git a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+index d0b056b2f..3eb510d43 100644
+--- a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
++++ b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+@@ -21,7 +21,7 @@
+ 
+ 		environment-spinor {
+ 			compatible = "barebox,environment";
+-			device-path = &flash, "partname:barebox-environment";
++			device-path = &som_flash, "partname:barebox-environment";
+ 			status = "disabled";
+ 		};
+ 
+@@ -53,32 +53,30 @@
+ 
+ /delete-node/ &{/memory@10000000};
+ 
+-&ecspi3 {
+-	flash: flash@0 {
+-		partitions {
+-			compatible = "fixed-partitions";
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-
+-			partition@0 {
+-				label = "barebox";
+-				reg = <0x0 0x100000>;
+-			};
+-
+-			partition@100000 {
+-				label = "barebox-environment";
+-				reg = <0x100000 0x20000>;
+-			};
+-
+-			partition@120000 {
+-				label = "oftree";
+-				reg = <0x120000 0x20000>;
+-			};
+-
+-			partition@140000 {
+-				label = "kernel";
+-				reg = <0x140000 0x0>;
+-			};
++&som_flash {
++	partitions {
++		compatible = "fixed-partitions";
++		#address-cells = <1>;
++		#size-cells = <1>;
++
++		partition@0 {
++			label = "barebox";
++			reg = <0x0 0x100000>;
++		};
++
++		partition@100000 {
++			label = "barebox-environment";
++			reg = <0x100000 0x20000>;
++		};
++
++		partition@120000 {
++			label = "oftree";
++			reg = <0x120000 0x20000>;
++		};
++
++		partition@140000 {
++			label = "kernel";
++			reg = <0x140000 0x0>;
+ 		};
+ 	};
+ };
+-- 
+2.26.2
 
 
 _______________________________________________
