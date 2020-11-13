@@ -1,25 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from submit-1.e-mind.com ([188.94.192.45])
+Received: from f475.i.mail.ru ([217.69.138.142])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kdV9E-000835-JS
- for barebox@lists.infradead.org; Fri, 13 Nov 2020 09:13:38 +0000
-Received: from localhost (unknown [127.0.0.1])
- by submit-1.e-mind.com (Postfix) with ESMTP id 2996D83ECED
- for <barebox@lists.infradead.org>; Fri, 13 Nov 2020 09:13:33 +0000 (UTC)
-Received: from submit-1.e-mind.com ([127.0.0.1])
- by localhost (submit-1.e-mind.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id vy5MzTJTo3q9 for <barebox@lists.infradead.org>;
- Fri, 13 Nov 2020 10:13:33 +0100 (CET)
-Received: from qmail.e-mind.com (qmail34.e-mind.com [188.94.192.34])
- by submit-1.e-mind.com (Postfix) with SMTP id 1BA6D83ECEB
- for <barebox@lists.infradead.org>; Fri, 13 Nov 2020 10:13:33 +0100 (CET)
-References: <1605257501.218157342@f555.i.mail.ru>
-From: gianluca <gianlucarenzi@eurek.it>
-Message-ID: <809d5654-6885-daf6-43d4-457faa274b1f@eurek.it>
-Date: Fri, 13 Nov 2020 10:13:32 +0100
+ id 1kdVow-0007Az-L2
+ for barebox@lists.infradead.org; Fri, 13 Nov 2020 09:56:43 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 MIME-Version: 1.0
-In-Reply-To: <1605257501.218157342@f555.i.mail.ru>
-Content-Language: en-US
+Date: Fri, 13 Nov 2020 12:56:39 +0300
+Message-ID: <1605261399.931551260@f475.i.mail.ru>
+In-Reply-To: <809d5654-6885-daf6-43d4-457faa274b1f@eurek.it>
+References: <1605257501.218157342@f555.i.mail.ru>
+ <809d5654-6885-daf6-43d4-457faa274b1f@eurek.it>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,80 +18,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: i.MX6Q ldb after 2019.02
-To: barebox@lists.infradead.org
+Subject: =?UTF-8?B?UmU6IGkuTVg2USBsZGIgYWZ0ZXIgMjAxOS4wMg==?=
+To: =?UTF-8?B?Z2lhbmx1Y2E=?= <gianlucarenzi@eurek.it>
+Cc: barebox@lists.infradead.org
 
-On 11/13/20 9:51 AM, Alexander Shiyan wrote:
-> Hello All.
-> 
-> I am having problems updating the barebox from version 2019.02 to version 2020.10.
-> The barebox i.MX6 CLK driver now uses several patches compared to the previous
-> version to fix the err009219 bug, and the display no more works as before.
-> I use a board based on i.MX6Q revision 1.2. With the old bootloader, the LVDS channel
-> is initialized and I can display the splash screen in the barebox. After loading the kernel,
-> everything works too.
-> I added source selection for LVDS channels and the kernel works with these additions.
-> &clks {
-> 	assigned-clocks = <&clks IMX6QDL_CLK_LDB_DI0_SEL>,
-> 			  <&clks IMX6QDL_CLK_LDB_DI0_SEL>;
-> 	assigned-clock-parents = <&clks IMX6QDL_CLK_PLL5_VIDEO_DIV>,
-> 				 <&clks IMX6QDL_CLK_PLL5_VIDEO_DIV>;
-> };
-> 
-> The splash screen in new version is not displayed in the barebox.
-> So, the question, what I do incorrect and how to fix this?
-> Old clk_dump:
->      pll5_video (rate 716800008, enabled)
->          pll5_post_div (rate 179200002, enabled)
->              pll5_video_div (rate 44800001, enabled)
->                  ldb_di0_sel (rate 44800001, enabled)
->                      ldb_di0_div_3_5 (rate 12800000, enabled)
->                          ldb_di0_podf (rate 6400000, enabled)
->                              ipu1_di0_sel (rate 6400000, enabled)
->                                  ipu1_di0 (rate 6400000, enabled)
->                                      2400000.ipu@2400000.of_di0_pixel (rate 6400000, enabled)
->                              ldb_di0 (rate 6400000, enabled)
-> New:
->      pll5_video (rate 716800008, enable_count: 1, unknown)
->          pll5_post_div (rate 358400004, enable_count: 1, always enabled)
-
-This is a div2. Should be div4
-
->              pll5_video_div (rate 179200002, enable_count: 1, always enabled)
->                  ldb_di0_sel (rate 179200002, enable_count: 1, always enabled)
->                      ldb_di0_div_3_5 (rate 51200000, enable_count: 1, always enabled)
->                          ldb_di0_podf (rate 25600000, enable_count: 1, always enabled)
->                              ipu1_di0_sel (rate 25600000, enable_count: 1, always enabled)
->                                  ipu1_di0 (rate 25600000, enable_count: 1, enabled)
->                                      2400000.ipu@2400000.of_di0_pixel (rate 6400000, enable_count: 1, always enabled)
->                              ldb_di0 (rate 25600000, enable_count: 0, enabled)
-> 
-> Can anyone help me to resolve this?
-
-Try to use pll5_post_div as div4 of the original pll5_video. All others 
-should be adapting correctly then.
-
-> Thanks!
-> 
-> ---
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
-
--- 
-Eurek s.r.l.                          |
-Electronic Engineering                | http://www.eurek.it
-via Celletta 8/B, 40026 Imola, Italy  | Phone: +39-(0)542-609120
-p.iva 00690621206 - c.f. 04020030377  | Fax:   +39-(0)542-609212
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+PtCf0Y/RgtC90LjRhtCwLCAxMyDQvdC+0Y/QsdGA0Y8gMjAyMCwgMTI6MTUgKzAzOjAwINC+0YIg
+Z2lhbmx1Y2EgPGdpYW5sdWNhcmVuemlAZXVyZWsuaXQ+Ogo+Cj5PbiAxMS8xMy8yMCA5OjUxIEFN
+LCBBbGV4YW5kZXIgU2hpeWFuIHdyb3RlOgo+PiBIZWxsbyBBbGwuCj4+IAo+PiBJIGFtIGhhdmlu
+ZyBwcm9ibGVtcyB1cGRhdGluZyB0aGUgYmFyZWJveCBmcm9tIHZlcnNpb24gMjAxOS4wMiB0byB2
+ZXJzaW9uIDIwMjAuMTAuCj4+IFRoZSBiYXJlYm94IGkuTVg2IENMSyBkcml2ZXIgbm93IHVzZXMg
+c2V2ZXJhbCBwYXRjaGVzIGNvbXBhcmVkIHRvIHRoZSBwcmV2aW91cwo+PiB2ZXJzaW9uIHRvIGZp
+eCB0aGUgZXJyMDA5MjE5IGJ1ZywgYW5kIHRoZSBkaXNwbGF5IG5vIG1vcmUgd29ya3MgYXMgYmVm
+b3JlLgo+PiBJIHVzZSBhIGJvYXJkIGJhc2VkIG9uIGkuTVg2USByZXZpc2lvbiAxLjIuIFdpdGgg
+dGhlIG9sZCBib290bG9hZGVyLCB0aGUgTFZEUyBjaGFubmVsCj4+IGlzIGluaXRpYWxpemVkIGFu
+ZCBJIGNhbiBkaXNwbGF5IHRoZSBzcGxhc2ggc2NyZWVuIGluIHRoZSBiYXJlYm94LiBBZnRlciBs
+b2FkaW5nIHRoZSBrZXJuZWwsCj4+IGV2ZXJ5dGhpbmcgd29ya3MgdG9vLgo+PiBJIGFkZGVkIHNv
+dXJjZSBzZWxlY3Rpb24gZm9yIExWRFMgY2hhbm5lbHMgYW5kIHRoZSBrZXJuZWwgd29ya3Mgd2l0
+aCB0aGVzZSBhZGRpdGlvbnMuCj4+ICZjbGtzIHsKPj4gYXNzaWduZWQtY2xvY2tzID0gPCZjbGtz
+IElNWDZRRExfQ0xLX0xEQl9ESTBfU0VMPiwKPj4gICA8JmNsa3MgSU1YNlFETF9DTEtfTERCX0RJ
+MF9TRUw+Owo+PiBhc3NpZ25lZC1jbG9jay1wYXJlbnRzID0gPCZjbGtzIElNWDZRRExfQ0xLX1BM
+TDVfVklERU9fRElWPiwKPj4gIDwmY2xrcyBJTVg2UURMX0NMS19QTEw1X1ZJREVPX0RJVj47Cj4+
+IH07Cj4+IAo+PiBUaGUgc3BsYXNoIHNjcmVlbiBpbiBuZXcgdmVyc2lvbiBpcyBub3QgZGlzcGxh
+eWVkIGluIHRoZSBiYXJlYm94Lgo+PiBTbywgdGhlIHF1ZXN0aW9uLCB3aGF0IEkgZG8gaW5jb3Jy
+ZWN0IGFuZCBob3cgdG8gZml4IHRoaXM/Cj4+IE9sZCBjbGtfZHVtcDoKPj4gICAgICBwbGw1X3Zp
+ZGVvIChyYXRlIDcxNjgwMDAwOCwgZW5hYmxlZCkKPj4gICAgICAgICAgcGxsNV9wb3N0X2RpdiAo
+cmF0ZSAxNzkyMDAwMDIsIGVuYWJsZWQpCj4+ICAgICAgICAgICAgICBwbGw1X3ZpZGVvX2RpdiAo
+cmF0ZSA0NDgwMDAwMSwgZW5hYmxlZCkKPj4gICAgICAgICAgICAgICAgICBsZGJfZGkwX3NlbCAo
+cmF0ZSA0NDgwMDAwMSwgZW5hYmxlZCkKPj4gICAgICAgICAgICAgICAgICAgICAgbGRiX2RpMF9k
+aXZfM181IChyYXRlIDEyODAwMDAwLCBlbmFibGVkKQo+PiAgICAgICAgICAgICAgICAgICAgICAg
+ICAgbGRiX2RpMF9wb2RmIChyYXRlIDY0MDAwMDAsIGVuYWJsZWQpCj4+ICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgaXB1MV9kaTBfc2VsIChyYXRlIDY0MDAwMDAsIGVuYWJsZWQpCj4+ICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGlwdTFfZGkwIChyYXRlIDY0MDAwMDAsIGVu
+YWJsZWQpCj4+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAyNDAwMDAwLmlw
+dUAyNDAwMDAwLm9mX2RpMF9waXhlbCAocmF0ZSA2NDAwMDAwLCBlbmFibGVkKQo+PiAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIGxkYl9kaTAgKHJhdGUgNjQwMDAwMCwgZW5hYmxlZCkKPj4g
+TmV3Ogo+PiAgICAgIHBsbDVfdmlkZW8gKHJhdGUgNzE2ODAwMDA4LCBlbmFibGVfY291bnQ6IDEs
+IHVua25vd24pCj4+ICAgICAgICAgIHBsbDVfcG9zdF9kaXYgKHJhdGUgMzU4NDAwMDA0LCBlbmFi
+bGVfY291bnQ6IDEsIGFsd2F5cyBlbmFibGVkKQo+VGhpcyBpcyBhIGRpdjIuIFNob3VsZCBiZSBk
+aXY0Cj4KPj4gICAgICAgICAgICAgIHBsbDVfdmlkZW9fZGl2IChyYXRlIDE3OTIwMDAwMiwgZW5h
+YmxlX2NvdW50OiAxLCBhbHdheXMgZW5hYmxlZCkKPj4gICAgICAgICAgICAgICAgICBsZGJfZGkw
+X3NlbCAocmF0ZSAxNzkyMDAwMDIsIGVuYWJsZV9jb3VudDogMSwgYWx3YXlzIGVuYWJsZWQpCj4+
+ICAgICAgICAgICAgICAgICAgICAgIGxkYl9kaTBfZGl2XzNfNSAocmF0ZSA1MTIwMDAwMCwgZW5h
+YmxlX2NvdW50OiAxLCBhbHdheXMgZW5hYmxlZCkKPj4gICAgICAgICAgICAgICAgICAgICAgICAg
+IGxkYl9kaTBfcG9kZiAocmF0ZSAyNTYwMDAwMCwgZW5hYmxlX2NvdW50OiAxLCBhbHdheXMgZW5h
+YmxlZCkKPj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICBpcHUxX2RpMF9zZWwgKHJhdGUg
+MjU2MDAwMDAsIGVuYWJsZV9jb3VudDogMSwgYWx3YXlzIGVuYWJsZWQpCj4+ICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIGlwdTFfZGkwIChyYXRlIDI1NjAwMDAwLCBlbmFibGVfY291
+bnQ6IDEsIGVuYWJsZWQpCj4+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAy
+NDAwMDAwLmlwdUAyNDAwMDAwLm9mX2RpMF9waXhlbCAocmF0ZSA2NDAwMDAwLCBlbmFibGVfY291
+bnQ6IDEsIGFsd2F5cyBlbmFibGVkKQo+PiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxk
+Yl9kaTAgKHJhdGUgMjU2MDAwMDAsIGVuYWJsZV9jb3VudDogMCwgZW5hYmxlZCkKPj4gCj4+IENh
+biBhbnlvbmUgaGVscCBtZSB0byByZXNvbHZlIHRoaXM/Cj4KPlRyeSB0byB1c2UgcGxsNV9wb3N0
+X2RpdiBhcyBkaXY0IG9mIHRoZSBvcmlnaW5hbCBwbGw1X3ZpZGVvLiBBbGwgb3RoZXJzIAo+c2hv
+dWxkIGJlIGFkYXB0aW5nIGNvcnJlY3RseSB0aGVuLgoKV2l0aCB0aGUgaGVscCBvZiB0aGUgY2xr
+X3NldF9yYXRlLCBJIGFjaGlldmVkIGEgY29tcGxldGUgZnJlcXVlbmN5IG1hdGNoIGZvciB0aGUg
+b2xkIGFuZCBuZXcgdmVyc2lvbnMuCi4uLiBCdXQgdGhlIHNjcmVlbiBpcyBibGFjayBhbmQgbm8g
+c3BsYXNoIGlzIHNob3duLgoKVGhhbmtzIGFueXdheSEKLS0tCl9fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hA
+bGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xp
+c3RpbmZvL2JhcmVib3gK
