@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kdTG6-00041g-0K
- for barebox@lists.infradead.org; Fri, 13 Nov 2020 07:12:34 +0000
-Date: Fri, 13 Nov 2020 08:12:32 +0100
+ id 1kdTcW-00061X-9f
+ for barebox@lists.infradead.org; Fri, 13 Nov 2020 07:35:45 +0000
+Date: Fri, 13 Nov 2020 08:35:42 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201113071232.GN29830@pengutronix.de>
-References: <20201112102231.12580-1-shc_work@mail.ru>
+Message-ID: <20201113073542.GO29830@pengutronix.de>
+References: <20201112171927.29337-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201112102231.12580-1-shc_work@mail.ru>
+In-Reply-To: <20201112171927.29337-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,93 +22,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM: dts: imx6qdl: pfla02: Use upstream som_flash node
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH master] nv: fix use-after-free when clearing from shell
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, Ahmad Fatoum <ahmad@a3f.at>, Holger Assmann <has@pengutronix.de>
 
-On Thu, Nov 12, 2020 at 01:22:30PM +0300, Alexander Shiyan wrote:
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+On Thu, Nov 12, 2020 at 06:19:27PM +0100, Ahmad Fatoum wrote:
+> From: Ahmad Fatoum <ahmad@a3f.at>
+> 
+> When we use hush to set the same nv.var twice to the empty string:
+> 
+>   $ nv.user=
+>   $ nv.user=
+> 
+> nv_set is called twice with a NULL val argument leading
+> to a double free and accompanied memory corruption.
+> 
+> Reorder the code, so p->value is freed just once.
+> 
+> Fixes: fa4c41ba60af ("nvvar: when setting a nvvar to NULL just free the content")
+> Cc: Holger Assmann <has@pengutronix.de>
+> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 > ---
->  arch/arm/dts/imx6qdl-phytec-pfla02.dtsi | 52 ++++++++++++-------------
->  1 file changed, 25 insertions(+), 27 deletions(-)
+>  common/globalvar.c | 12 ++++--------
+>  1 file changed, 4 insertions(+), 8 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
-> index d0b056b2f..3eb510d43 100644
-> --- a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
-> +++ b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
-> @@ -21,7 +21,7 @@
+> diff --git a/common/globalvar.c b/common/globalvar.c
+> index 60793d7a30c6..a55b38b00fd5 100644
+> --- a/common/globalvar.c
+> +++ b/common/globalvar.c
+> @@ -179,16 +179,12 @@ static int nv_set(struct device_d *dev, struct param_d *p, const char *name, con
+>  {
+>  	int ret;
 >  
->  		environment-spinor {
->  			compatible = "barebox,environment";
-> -			device-path = &flash, "partname:barebox-environment";
-> +			device-path = &som_flash, "partname:barebox-environment";
->  			status = "disabled";
->  		};
+> -	if (!val) {
+> -		if (p)
+> -			free(p->value);
+> -		return 0;
+> +	if (val) {
+> +		ret = dev_set_param(&global_device, name, val);
+> +		if (ret)
+> +			return ret;
+>  	}
 >  
-> @@ -53,32 +53,30 @@
->  
->  /delete-node/ &{/memory@10000000};
->  
-> -&ecspi3 {
-> -	flash: flash@0 {
-> -		partitions {
-> -			compatible = "fixed-partitions";
-> -			#address-cells = <1>;
-> -			#size-cells = <1>;
+> -	ret = dev_set_param(&global_device, name, val);
+> -	if (ret)
+> -		return ret;
 > -
-> -			partition@0 {
-> -				label = "barebox";
-> -				reg = <0x0 0x100000>;
-> -			};
-> -
-> -			partition@100000 {
-> -				label = "barebox-environment";
-> -				reg = <0x100000 0x20000>;
-> -			};
-> -
-> -			partition@120000 {
-> -				label = "oftree";
-> -				reg = <0x120000 0x20000>;
-> -			};
-> -
-> -			partition@140000 {
-> -				label = "kernel";
-> -				reg = <0x140000 0x0>;
-> -			};
-> +&som_flash {
-> +	partitions {
-> +		compatible = "fixed-partitions";
-> +		#address-cells = <1>;
-> +		#size-cells = <1>;
-> +
-> +		partition@0 {
-> +			label = "barebox";
-> +			reg = <0x0 0x100000>;
-> +		};
-> +
-> +		partition@100000 {
-> +			label = "barebox-environment";
-> +			reg = <0x100000 0x20000>;
-> +		};
-> +
-> +		partition@120000 {
-> +			label = "oftree";
-> +			reg = <0x120000 0x20000>;
-> +		};
-> +
-> +		partition@140000 {
-> +			label = "kernel";
-> +			reg = <0x140000 0x0>;
->  		};
->  	};
->  };
+>  	if (p) {
+>  		free(p->value);
+>  		p->value = xstrdup(val);
 > -- 
-> 2.26.2
+> 2.28.0
 > 
 > 
 > _______________________________________________
