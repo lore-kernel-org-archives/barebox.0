@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kdTcW-00061X-9f
- for barebox@lists.infradead.org; Fri, 13 Nov 2020 07:35:45 +0000
-Date: Fri, 13 Nov 2020 08:35:42 +0100
+ id 1kdTe3-0006AL-Tl
+ for barebox@lists.infradead.org; Fri, 13 Nov 2020 07:37:20 +0000
+Date: Fri, 13 Nov 2020 08:37:18 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201113073542.GO29830@pengutronix.de>
-References: <20201112171927.29337-1-a.fatoum@pengutronix.de>
+Message-ID: <20201113073718.GP29830@pengutronix.de>
+References: <20201112172524.1293-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201112171927.29337-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20201112172524.1293-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,13 +22,11 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH master] nv: fix use-after-free when clearing from shell
+Subject: Re: [PATCH master v2] nv: fix use-after-free when clearing from shell
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, Ahmad Fatoum <ahmad@a3f.at>, Holger Assmann <has@pengutronix.de>
+Cc: barebox@lists.infradead.org, Holger Assmann <has@pengutronix.de>
 
-On Thu, Nov 12, 2020 at 06:19:27PM +0100, Ahmad Fatoum wrote:
-> From: Ahmad Fatoum <ahmad@a3f.at>
-> 
+On Thu, Nov 12, 2020 at 06:25:24PM +0100, Ahmad Fatoum wrote:
 > When we use hush to set the same nv.var twice to the empty string:
 > 
 >   $ nv.user=
@@ -41,12 +39,15 @@ On Thu, Nov 12, 2020 at 06:19:27PM +0100, Ahmad Fatoum wrote:
 > 
 > Fixes: fa4c41ba60af ("nvvar: when setting a nvvar to NULL just free the content")
 > Cc: Holger Assmann <has@pengutronix.de>
-> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+> v1 -> v2:
+>   Use correct author email in DCO
 > ---
 >  common/globalvar.c | 12 ++++--------
 >  1 file changed, 4 insertions(+), 8 deletions(-)
 
-Applied, thanks
+Took this one instead of v1
 
 Sascha
 
