@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kdMZj-0000P4-1V
- for barebox@lists.infradead.org; Fri, 13 Nov 2020 00:04:23 +0000
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 13 Nov 2020 01:04:17 +0100
-Message-Id: <20201113000417.25478-1-a.fatoum@pengutronix.de>
+ id 1kdTG6-00041g-0K
+ for barebox@lists.infradead.org; Fri, 13 Nov 2020 07:12:34 +0000
+Date: Fri, 13 Nov 2020 08:12:32 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20201113071232.GN29830@pengutronix.de>
+References: <20201112102231.12580-1-shc_work@mail.ru>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20201112102231.12580-1-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,39 +22,106 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH master] mtd: nand-imx: fix passing pointer of wrong type on
- NAND_CMD_READOOB
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, ukl@pengutronix.de, sha@pengutronix.de
+Subject: Re: [PATCH 1/2] ARM: dts: imx6qdl: pfla02: Use upstream som_flash node
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-copy_spare used to take a mtd_info, but since 5f605dc6168c ("mtd: nand:
-Pass struct nand_chip around") it now takes a nand_chip.
-3588d40c5385 ("mtd: nand-imx: repair reading the oob area") was drafted
-in parallel and still passes a mtd_info. Their merge did not adjust
-this, triggering a compiler warning and undefined behavior. Fix this.
+On Thu, Nov 12, 2020 at 01:22:30PM +0300, Alexander Shiyan wrote:
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> ---
+>  arch/arm/dts/imx6qdl-phytec-pfla02.dtsi | 52 ++++++++++++-------------
+>  1 file changed, 25 insertions(+), 27 deletions(-)
 
-Fixes: 7b1d8b4b3561 ("Merge branch 'for-next/mtd-nand'")
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- drivers/mtd/nand/nand_imx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Applied, thanks
 
-diff --git a/drivers/mtd/nand/nand_imx.c b/drivers/mtd/nand/nand_imx.c
-index 3d4082fe1851..0f20e9d394a0 100644
---- a/drivers/mtd/nand/nand_imx.c
-+++ b/drivers/mtd/nand/nand_imx.c
-@@ -1022,7 +1022,7 @@ static void imx_nand_command(struct nand_chip *chip, unsigned command,
- 		 */
- 		if (command == NAND_CMD_READOOB) {
- 			host->send_page(host, NFC_OUTPUT);
--			copy_spare(mtd, 1, host->data_buf + mtd->writesize);
-+			copy_spare(chip, 1, host->data_buf + mtd->writesize);
- 		}
- 
- 		break;
+Sascha
+
+> 
+> diff --git a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+> index d0b056b2f..3eb510d43 100644
+> --- a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+> +++ b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+> @@ -21,7 +21,7 @@
+>  
+>  		environment-spinor {
+>  			compatible = "barebox,environment";
+> -			device-path = &flash, "partname:barebox-environment";
+> +			device-path = &som_flash, "partname:barebox-environment";
+>  			status = "disabled";
+>  		};
+>  
+> @@ -53,32 +53,30 @@
+>  
+>  /delete-node/ &{/memory@10000000};
+>  
+> -&ecspi3 {
+> -	flash: flash@0 {
+> -		partitions {
+> -			compatible = "fixed-partitions";
+> -			#address-cells = <1>;
+> -			#size-cells = <1>;
+> -
+> -			partition@0 {
+> -				label = "barebox";
+> -				reg = <0x0 0x100000>;
+> -			};
+> -
+> -			partition@100000 {
+> -				label = "barebox-environment";
+> -				reg = <0x100000 0x20000>;
+> -			};
+> -
+> -			partition@120000 {
+> -				label = "oftree";
+> -				reg = <0x120000 0x20000>;
+> -			};
+> -
+> -			partition@140000 {
+> -				label = "kernel";
+> -				reg = <0x140000 0x0>;
+> -			};
+> +&som_flash {
+> +	partitions {
+> +		compatible = "fixed-partitions";
+> +		#address-cells = <1>;
+> +		#size-cells = <1>;
+> +
+> +		partition@0 {
+> +			label = "barebox";
+> +			reg = <0x0 0x100000>;
+> +		};
+> +
+> +		partition@100000 {
+> +			label = "barebox-environment";
+> +			reg = <0x100000 0x20000>;
+> +		};
+> +
+> +		partition@120000 {
+> +			label = "oftree";
+> +			reg = <0x120000 0x20000>;
+> +		};
+> +
+> +		partition@140000 {
+> +			label = "kernel";
+> +			reg = <0x140000 0x0>;
+>  		};
+>  	};
+>  };
+> -- 
+> 2.26.2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.28.0
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
