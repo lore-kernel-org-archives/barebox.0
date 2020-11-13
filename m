@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f345.i.mail.ru ([217.69.130.230])
- by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kdXfx-0003oK-9o
- for barebox@lists.infradead.org; Fri, 13 Nov 2020 11:55:34 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Received: from protonic.xs4all.nl ([83.163.252.89])
+ by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1kdZsB-0004n8-KN
+ for barebox@lists.infradead.org; Fri, 13 Nov 2020 14:16:20 +0000
+From: Robin van der Gracht <robin@protonic.nl>
+Date: Fri, 13 Nov 2020 15:16:07 +0100
+Message-Id: <20201113141607.1957779-1-robin@protonic.nl>
 MIME-Version: 1.0
-Date: Fri, 13 Nov 2020 14:55:27 +0300
-Message-ID: <1605268527.193413905@f345.i.mail.ru>
-In-Reply-To: <491c6551-295b-c39f-538a-50d67e567b55@pengutronix.de>
-References: <1605257501.218157342@f555.i.mail.ru>
- <491c6551-295b-c39f-538a-50d67e567b55@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,104 +15,73 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmU6IGkuTVg2USBsZGIgYWZ0ZXIgMjAxOS4wMg==?=
-To: =?UTF-8?B?QWhtYWQgRmF0b3Vt?= <a.fatoum@pengutronix.de>
-Cc: =?UTF-8?B?YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn?= <barebox@lists.infradead.org>
+Subject: [PATCH] hab: habv4: Don't reset index when checking for more events
+To: barebox@lists.infradead.org
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>, Robin van der Gracht <robin@protonic.nl>
 
-SSBmaXhlZCB0aGUgcHJvYmxlbSBieSBhZGRpbmcgYW5vdGhlciBjaHVuayBmb3IgdGhlIExEQiBu
-b2RlLAp0aGlzIHdpbGwgYmUgYSB0ZW1wb3Jhcnkgc29sdXRpb24gZm9yIG5vdzoKCiZsZGIgewoJ
-YXNzaWduZWQtY2xvY2tzID0gPCZjbGtzIElNWDZRRExfQ0xLX1BMTDVfVklERU8+OwogICAgICAg
-IGFzc2lnbmVkLWNsb2NrLXBhcmVudHMgPSA8MD47CiAgICAgICAgYXNzaWduZWQtY2xvY2stcmF0
-ZXMgPSA8NzE2ODAwMDAwPjsKCglzdGF0dXMgPSAib2theSI7Ci4uLgoKVGhhbmtzIEFsbCEKCj7Q
-n9GP0YLQvdC40YbQsCwgMTMg0L3QvtGP0LHRgNGPIDIwMjAsIDE0OjAxICswMzowMCDQvtGCIEFo
-bWFkIEZhdG91bSA8YS5mYXRvdW1AcGVuZ3V0cm9uaXguZGU+Ogo+SGVsbG8sCj5PbiAxMS8xMy8y
-MCA5OjUxIEFNLCBBbGV4YW5kZXIgU2hpeWFuIHdyb3RlOgo+PiBIZWxsbyBBbGwuCj4+IEkgYW0g
-aGF2aW5nIHByb2JsZW1zIHVwZGF0aW5nIHRoZSBiYXJlYm94IGZyb20gdmVyc2lvbiAyMDE5LjAy
-IHRvIHZlcnNpb24gMjAyMC4xMC4KPj4gVGhlIGJhcmVib3ggaS5NWDYgQ0xLIGRyaXZlciBub3cg
-dXNlcyBzZXZlcmFsIHBhdGNoZXMgY29tcGFyZWQgdG8gdGhlIHByZXZpb3VzCj4+IHZlcnNpb24g
-dG8gZml4IHRoZSBlcnIwMDkyMTkgYnVnLCBhbmQgdGhlIGRpc3BsYXkgbm8gbW9yZSB3b3JrcyBh
-cyBiZWZvcmUuCj4+IEkgdXNlIGEgYm9hcmQgYmFzZWQgb24gaS5NWDZRIHJldmlzaW9uIDEuMi4g
-V2l0aCB0aGUgb2xkIGJvb3Rsb2FkZXIsIHRoZSBMVkRTIGNoYW5uZWwKPj4gaXMgaW5pdGlhbGl6
-ZWQgYW5kIEkgY2FuIGRpc3BsYXkgdGhlIHNwbGFzaCBzY3JlZW4gaW4gdGhlIGJhcmVib3guIEFm
-dGVyIGxvYWRpbmcgdGhlIGtlcm5lbCwKPj4gZXZlcnl0aGluZyB3b3JrcyB0b28uCj4+IEkgYWRk
-ZWQgc291cmNlIHNlbGVjdGlvbiBmb3IgTFZEUyBjaGFubmVscyBhbmQgdGhlIGtlcm5lbCB3b3Jr
-cyB3aXRoIHRoZXNlIGFkZGl0aW9ucy4KPj4gJmNsa3Mgewo+PiBhc3NpZ25lZC1jbG9ja3MgPSA8
-JmNsa3MgSU1YNlFETF9DTEtfTERCX0RJMF9TRUw+LAo+PiAgIDwmY2xrcyBJTVg2UURMX0NMS19M
-REJfREkwX1NFTD47Cj4+IGFzc2lnbmVkLWNsb2NrLXBhcmVudHMgPSA8JmNsa3MgSU1YNlFETF9D
-TEtfUExMNV9WSURFT19ESVY+LAo+PiAgPCZjbGtzIElNWDZRRExfQ0xLX1BMTDVfVklERU9fRElW
-PjsKPj4gfTsKPj4gCj4+IFRoZSBzcGxhc2ggc2NyZWVuIGluIG5ldyB2ZXJzaW9uIGlzIG5vdCBk
-aXNwbGF5ZWQgaW4gdGhlIGJhcmVib3guCj4+IFNvLCB0aGUgcXVlc3Rpb24sIHdoYXQgSSBkbyBp
-bmNvcnJlY3QgYW5kIGhvdyB0byBmaXggdGhpcz8KPj4gT2xkIGNsa19kdW1wOgo+PiAgICAgcGxs
-NV92aWRlbyAocmF0ZSA3MTY4MDAwMDgsIGVuYWJsZWQpCj4+ICAgICAgICAgcGxsNV9wb3N0X2Rp
-diAocmF0ZSAxNzkyMDAwMDIsIGVuYWJsZWQpCj4+ICAgICAgICAgICAgIHBsbDVfdmlkZW9fZGl2
-IChyYXRlIDQ0ODAwMDAxLCBlbmFibGVkKQo+PiAgICAgICAgICAgICAgICAgbGRiX2RpMF9zZWwg
-KHJhdGUgNDQ4MDAwMDEsIGVuYWJsZWQpCj4+ICAgICAgICAgICAgICAgICAgICAgbGRiX2RpMF9k
-aXZfM181IChyYXRlIDEyODAwMDAwLCBlbmFibGVkKQo+PiAgICAgICAgICAgICAgICAgICAgICAg
-ICBsZGJfZGkwX3BvZGYgKHJhdGUgNjQwMDAwMCwgZW5hYmxlZCkKPj4gICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgIGlwdTFfZGkwX3NlbCAocmF0ZSA2NDAwMDAwLCBlbmFibGVkKQo+PiAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgIGlwdTFfZGkwIChyYXRlIDY0MDAwMDAsIGVuYWJs
-ZWQpCj4+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDI0MDAwMDAuaXB1QDI0
-MDAwMDAub2ZfZGkwX3BpeGVsIChyYXRlIDY0MDAwMDAsIGVuYWJsZWQpCj40NDgwMDAwMSAvIDY0
-MDAwMDAgPSA3LjAwMDAwMDE1NjI1Cj4KPj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxk
-Yl9kaTAgKHJhdGUgNjQwMDAwMCwgZW5hYmxlZCkKPj4gTmV3Ogo+PiAgICAgcGxsNV92aWRlbyAo
-cmF0ZSA3MTY4MDAwMDgsIGVuYWJsZV9jb3VudDogMSwgdW5rbm93bikKPj4gICAgICAgICBwbGw1
-X3Bvc3RfZGl2IChyYXRlIDM1ODQwMDAwNCwgZW5hYmxlX2NvdW50OiAxLCBhbHdheXMgZW5hYmxl
-ZCkKPj4gICAgICAgICAgICAgcGxsNV92aWRlb19kaXYgKHJhdGUgMTc5MjAwMDAyLCBlbmFibGVf
-Y291bnQ6IDEsIGFsd2F5cyBlbmFibGVkKQo+PiAgICAgICAgICAgICAgICAgbGRiX2RpMF9zZWwg
-KHJhdGUgMTc5MjAwMDAyLCBlbmFibGVfY291bnQ6IDEsIGFsd2F5cyBlbmFibGVkKQo+PiAgICAg
-ICAgICAgICAgICAgICAgIGxkYl9kaTBfZGl2XzNfNSAocmF0ZSA1MTIwMDAwMCwgZW5hYmxlX2Nv
-dW50OiAxLCBhbHdheXMgZW5hYmxlZCkKPj4gICAgICAgICAgICAgICAgICAgICAgICAgbGRiX2Rp
-MF9wb2RmIChyYXRlIDI1NjAwMDAwLCBlbmFibGVfY291bnQ6IDEsIGFsd2F5cyBlbmFibGVkKQo+
-PiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaXB1MV9kaTBfc2VsIChyYXRlIDI1NjAwMDAw
-LCBlbmFibGVfY291bnQ6IDEsIGFsd2F5cyBlbmFibGVkKQo+PiAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgIGlwdTFfZGkwIChyYXRlIDI1NjAwMDAwLCBlbmFibGVfY291bnQ6IDEsIGVu
-YWJsZWQpCj4+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDI0MDAwMDAuaXB1
-QDI0MDAwMDAub2ZfZGkwX3BpeGVsIChyYXRlIDY0MDAwMDAsIGVuYWJsZV9jb3VudDogMSwgYWx3
-YXlzIGVuYWJsZWQpCj4KPjE3OTIwMDAwMiAvIDY0MDAwMDAgPSAyOC4wMDAwMDAzMTI1Cj4KPgo+
-U2hvdWxkbid0IGJvdGggYmUgYSBjbGVhbiA3LjA/IElzIGl0IG5vcm1hbCB0aGF0IHlvdXIgUExM
-NSBjb3VsZG4ndCBiZSBjb25maWd1cmVkCj5leGFjdGx5IHRvIDcxNjgwMDAwMD8KPgo+RG9lcyBM
-aW51eCAvc3lzL2tlcm5lbC9kZWJ1Zy9jbGsvY2xrX3N1bW1hcnkgaGF2ZSB0aGUgc2FtZSBmcmVx
-dWVuY2llcz8KPgo+Rm9yIGNvbXBhcmlzb24sIEkndmUgYSAzM01IeiBkaXNwbGF5IHdpdGggdGhl
-IGFzc2lnbmVkLWNsb2NrL2Fzc2lnbmVkLWNsb2NrLXBhcmVudHMKPnNuaXBwZXQgaW4gdGhlIGJh
-cmVib3ggZGV2aWNlIHRyZWUsIGJ1dCBub3QgaW4gdGhlIGtlcm5lbCdzIGFuZCBpdCB3b3JrcyBm
-b3IgbWU6Cj4KPnBsbDVfdmlkZW8gKHJhdGUgOTI0MDAwMDAwLCBlbmFibGVfY291bnQ6IDEsIHVu
-a25vd24pCj7CoMKgwqDCoHBsbDVfcG9zdF9kaXYgKHJhdGUgNDYyMDAwMDAwLCBlbmFibGVfY291
-bnQ6IDEsIGFsd2F5cyBlbmFibGVkKQo+wqDCoMKgwqDCoMKgwqDCoHBsbDVfdmlkZW9fZGl2IChy
-YXRlIDIzMTAwMDAwMCwgZW5hYmxlX2NvdW50OiAxLCBhbHdheXMgZW5hYmxlZCkKPsKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoGxkYl9kaTBfc2VsIChyYXRlIDIzMTAwMDAwMCwgZW5hYmxlX2NvdW50
-OiAxLCBhbHdheXMgZW5hYmxlZCkKPsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgbGRi
-X2RpMF9kaXZfM181IChyYXRlIDY2MDAwMDAwLCBlbmFibGVfY291bnQ6IDEsIGFsd2F5cyBlbmFi
-bGVkKQo+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGxkYl9kaTBfcG9k
-ZiAocmF0ZSAzMzAwMDAwMCwgZW5hYmxlX2NvdW50OiAyLCBhbHdheXMgZW5hYmxlZCkKPsKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlwdTFfZGkwX3NlbCAo
-cmF0ZSAzMzAwMDAwMCwgZW5hYmxlX2NvdW50OiAxLCBhbHdheXMgZW5hYmxlZCkKPsKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaXB1MV9kaTAg
-KHJhdGUgMzMwMDAwMDAsIGVuYWJsZV9jb3VudDogMSwgZW5hYmxlZCkKPsKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAyNDAwMDAw
-LmlwdUAyNDAwMDAwLm9mX2RpMF9waXhlbCAocmF0ZSAxNjUwMDAwMCwgZW5hYmxlX2NvdW50OiAx
-LCBhbHdheXMgZW5hYmxlZCkKPsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoGlwdTJfZGkxX3NlbCAocmF0ZSAzMzAwMDAwMCwgZW5hYmxlX2NvdW50OiAxLCBh
-bHdheXMgZW5hYmxlZCkKPsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgaXB1Ml9kaTEgKHJhdGUgMzMwMDAwMDAsIGVuYWJsZV9jb3VudDogMSwg
-ZW5hYmxlZCkKPsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqAyODAwMDAwLmlwdUAyODAwMDAwLm9mX2RpMV9waXhlbCAocmF0ZSAz
-MzAwMDAwMCwgZW5hYmxlX2NvdW50OiAxLCBhbHdheXMgZW5hYmxlZCkKPsKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGxkYl9kaTAgKHJhdGUgMzMwMDAwMDAs
-IGVuYWJsZV9jb3VudDogMCwgZW5hYmxlZCkKPsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGxkYl9k
-aTFfc2VsIChyYXRlIDIzMTAwMDAwMCwgZW5hYmxlX2NvdW50OiAwLCBhbHdheXMgZW5hYmxlZCkK
-PsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgbGRiX2RpMV9kaXZfM181IChyYXRlIDY2
-MDAwMDAwLCBlbmFibGVfY291bnQ6IDAsIGFsd2F5cyBlbmFibGVkKQo+wqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGxkYl9kaTFfcG9kZiAocmF0ZSAzMzAwMDAwMCwgZW5h
-YmxlX2NvdW50OiAwLCBhbHdheXMgZW5hYmxlZCkKPsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoGxkYl9kaTEgKHJhdGUgMzMwMDAwMDAsIGVuYWJsZV9jb3Vu
-dDogMCwgZW5hYmxlZCkKPgo+Cj4+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZGJfZGkw
-IChyYXRlIDI1NjAwMDAwLCBlbmFibGVfY291bnQ6IDAsIGVuYWJsZWQpCj4+IAo+PiBDYW4gYW55
-b25lIGhlbHAgbWUgdG8gcmVzb2x2ZSB0aGlzPwoKLS0tCl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
-dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
-bmZvL2JhcmVib3gK
+If index is reset and the event record pointer is NULL the size of the
+indexed event will be written to 'len'.
+
+Currently this results in always printing the buffer overflow error if
+there is a HAB event. The index shouldn't be reset to get the size of the
+'next' unhandled event. This can occur if there are more events of a single
+type than the event buffer (data) can hold.
+
+Telling the user to recompile with an incomplete additional size
+suggestion seems useless so I changed it to something more generic.
+
+Signed-off-by: Robin van der Gracht <robin@protonic.nl>
+---
+ drivers/hab/habv4.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/hab/habv4.c b/drivers/hab/habv4.c
+index e94f82754..3df1d8d3d 100644
+--- a/drivers/hab/habv4.c
++++ b/drivers/hab/habv4.c
+@@ -504,7 +504,7 @@ static int habv4_get_status(const struct habv4_rvt *rvt)
+ {
+ 	uint8_t data[256];
+ 	uint32_t len;
+-	uint32_t index = 0;
++	uint32_t cnt, index = 0;
+ 	enum hab_status status;
+ 	enum hab_config config = 0x0;
+ 	enum hab_state state = 0x0;
+@@ -540,6 +540,7 @@ static int habv4_get_status(const struct habv4_rvt *rvt)
+ 		len = sizeof(data);
+ 		index++;
+ 	}
++	cnt = index;
+ 
+ 	len = sizeof(data);
+ 	index = 0;
+@@ -551,12 +552,12 @@ static int habv4_get_status(const struct habv4_rvt *rvt)
+ 		len = sizeof(data);
+ 		index++;
+ 	}
++	cnt += index;
+ 
+-	/* Check reason for stopping */
++	/* Check if there are more events */
+ 	len = sizeof(data);
+-	index = 0;
+-	if (rvt->report_event(HAB_STATUS_ANY, index, NULL, &len) == HAB_STATUS_SUCCESS)
+-		pr_err("ERROR: Recompile with larger event data buffer (at least %d bytes)\n\n", len);
++	if (rvt->report_event(HAB_STATUS_ANY, cnt, NULL, &len) == HAB_STATUS_SUCCESS)
++		pr_err("WARNING: There are more (undisplayed) events\n");
+ 
+ 	return -EPERM;
+ }
+-- 
+2.25.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
