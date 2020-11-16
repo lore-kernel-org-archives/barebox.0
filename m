@@ -1,17 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1keaLb-0008Kf-Kx
- for barebox@lists.infradead.org; Mon, 16 Nov 2020 08:58:52 +0000
-References: <20201112172347.385-2-a.fatoum@pengutronix.de>
- <20201113082600.30578-1-a.fatoum@pengutronix.de>
- <20201116082117.GY29830@pengutronix.de>
+ id 1kekT2-0008KC-BJ
+ for barebox@lists.infradead.org; Mon, 16 Nov 2020 19:47:13 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <545427ba-6738-f336-e7e1-24332df853ac@pengutronix.de>
-Date: Mon, 16 Nov 2020 09:58:48 +0100
+Date: Mon, 16 Nov 2020 20:47:03 +0100
+Message-Id: <20201116194703.28238-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20201116082117.GY29830@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,66 +19,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fixup! setenv: align with POSIX in handling of
- setenv(var, "")
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] clk: imx6: demote warning about ldb_di_clk reparenting
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Hello,
+Linux logging this is justified, because it alerts to problems in the
+boot firmware. barebox warning about it serves no real purpose other
+than indicating that barebox was chainloaded. Make it a debug log
+to not clutter the log.
 
-On 16.11.20 09:21, Sascha Hauer wrote:
-> On Fri, Nov 13, 2020 at 09:26:00AM +0100, Ahmad Fatoum wrote:
->> Previously setenv xxx= deleted x like xxx= does. With xxx= now instead
->> assigning the empty string, setenv xxx= should too.
->>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->>
->> ---
->>  commands/setenv.c | 3 +--
->>  1 file changed, 1 insertion(+), 2 deletions(-)
->>
->> diff --git a/commands/setenv.c b/commands/setenv.c
->> index 6992f604f513..9aeb8f010bc5 100644
->> --- a/commands/setenv.c
->> +++ b/commands/setenv.c
->> @@ -18,8 +18,7 @@ static int do_setenv(int argc, char *argv[])
->>  	equal = strrchr(argv[1], '=');
->>  	if (equal) {
->>  		equal[0] = '\0';
->> -		if (equal[1])
->> -			argv[2] = &equal[1];
->> +		argv[2] = &equal[1];
->>  	}
-> 
-> Fine with me, but I just had a second look at fbf145dc86 ("commands: setenv:
-> support setenv dev.var=VAL syntax"). This patch introduced using argv[2]
-> when argc was only to, thus only argv[0] and argv[1] are valid. I wonder
-> if this is allowed. KAsan doesn't complain, but still I think this
-> should be changed. Could you do this before further modifying this?
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/clk/imx/clk-imx6.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-barebox always has argv[argc] = NULL, so just like standard C, accessing
-argv[2] here is fine.
-
-See
-  common/parser.c:29: argv[nargs] = NULL;
-  common/hush.c:698:  pglob->gl_pathv[pathc] = NULL;
-  lib/glob.c:398:     pglob->gl_pathv[pglob->gl_pathc] = NULL;
-  lib/glob.c:232:     pglob->gl_pathv[pglob->gl_pathc] = NULL;
-
-Cheers,
-Ahmad
-  
-
-
-> 
-> Sascha
-> 
-
+diff --git a/drivers/clk/imx/clk-imx6.c b/drivers/clk/imx/clk-imx6.c
+index cb030244581a..6935a8e85292 100644
+--- a/drivers/clk/imx/clk-imx6.c
++++ b/drivers/clk/imx/clk-imx6.c
+@@ -482,9 +482,9 @@ static void init_ldb_clks(struct device_node *np, void __iomem *ccm_base)
+ 	of_assigned_ldb_sels(np, &sel[0][3], &sel[1][3]);
+ 
+ 	for (i = 0; i < 2; i++) {
+-		/* Warn if a glitch might have been introduced already */
++		/* log if a glitch might have been introduced already */
+ 		if (sel[i][0] != LDB_DI_SEL_MMDC_CH1_AXI) {
+-			pr_warn("ccm: ldb_di%d_sel already changed from reset value: %d\n",
++			pr_debug("ccm: ldb_di%d_sel already changed from reset value: %d\n",
+ 				i, sel[i][0]);
+ 		}
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.28.0
+
 
 _______________________________________________
 barebox mailing list
