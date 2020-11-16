@@ -1,12 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from protonic.xs4all.nl ([83.163.252.89])
- by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kdZsB-0004n8-KN
- for barebox@lists.infradead.org; Fri, 13 Nov 2020 14:16:20 +0000
-From: Robin van der Gracht <robin@protonic.nl>
-Date: Fri, 13 Nov 2020 15:16:07 +0100
-Message-Id: <20201113141607.1957779-1-robin@protonic.nl>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1keZlI-0006ji-CP
+ for barebox@lists.infradead.org; Mon, 16 Nov 2020 08:21:21 +0000
+Date: Mon, 16 Nov 2020 09:21:17 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20201116082117.GY29830@pengutronix.de>
+References: <20201112172347.385-2-a.fatoum@pengutronix.de>
+ <20201113082600.30578-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20201113082600.30578-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,67 +23,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] hab: habv4: Don't reset index when checking for more events
-To: barebox@lists.infradead.org
-Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>, Robin van der Gracht <robin@protonic.nl>
+Subject: Re: [PATCH] fixup! setenv: align with POSIX in handling of
+ setenv(var, "")
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-If index is reset and the event record pointer is NULL the size of the
-indexed event will be written to 'len'.
+On Fri, Nov 13, 2020 at 09:26:00AM +0100, Ahmad Fatoum wrote:
+> Previously setenv xxx= deleted x like xxx= does. With xxx= now instead
+> assigning the empty string, setenv xxx= should too.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> 
+> ---
+>  commands/setenv.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/commands/setenv.c b/commands/setenv.c
+> index 6992f604f513..9aeb8f010bc5 100644
+> --- a/commands/setenv.c
+> +++ b/commands/setenv.c
+> @@ -18,8 +18,7 @@ static int do_setenv(int argc, char *argv[])
+>  	equal = strrchr(argv[1], '=');
+>  	if (equal) {
+>  		equal[0] = '\0';
+> -		if (equal[1])
+> -			argv[2] = &equal[1];
+> +		argv[2] = &equal[1];
+>  	}
 
-Currently this results in always printing the buffer overflow error if
-there is a HAB event. The index shouldn't be reset to get the size of the
-'next' unhandled event. This can occur if there are more events of a single
-type than the event buffer (data) can hold.
+Fine with me, but I just had a second look at fbf145dc86 ("commands: setenv:
+support setenv dev.var=VAL syntax"). This patch introduced using argv[2]
+when argc was only to, thus only argv[0] and argv[1] are valid. I wonder
+if this is allowed. KAsan doesn't complain, but still I think this
+should be changed. Could you do this before further modifying this?
 
-Telling the user to recompile with an incomplete additional size
-suggestion seems useless so I changed it to something more generic.
+Sascha
 
-Signed-off-by: Robin van der Gracht <robin@protonic.nl>
----
- drivers/hab/habv4.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/hab/habv4.c b/drivers/hab/habv4.c
-index e94f82754..3df1d8d3d 100644
---- a/drivers/hab/habv4.c
-+++ b/drivers/hab/habv4.c
-@@ -504,7 +504,7 @@ static int habv4_get_status(const struct habv4_rvt *rvt)
- {
- 	uint8_t data[256];
- 	uint32_t len;
--	uint32_t index = 0;
-+	uint32_t cnt, index = 0;
- 	enum hab_status status;
- 	enum hab_config config = 0x0;
- 	enum hab_state state = 0x0;
-@@ -540,6 +540,7 @@ static int habv4_get_status(const struct habv4_rvt *rvt)
- 		len = sizeof(data);
- 		index++;
- 	}
-+	cnt = index;
- 
- 	len = sizeof(data);
- 	index = 0;
-@@ -551,12 +552,12 @@ static int habv4_get_status(const struct habv4_rvt *rvt)
- 		len = sizeof(data);
- 		index++;
- 	}
-+	cnt += index;
- 
--	/* Check reason for stopping */
-+	/* Check if there are more events */
- 	len = sizeof(data);
--	index = 0;
--	if (rvt->report_event(HAB_STATUS_ANY, index, NULL, &len) == HAB_STATUS_SUCCESS)
--		pr_err("ERROR: Recompile with larger event data buffer (at least %d bytes)\n\n", len);
-+	if (rvt->report_event(HAB_STATUS_ANY, cnt, NULL, &len) == HAB_STATUS_SUCCESS)
-+		pr_err("WARNING: There are more (undisplayed) events\n");
- 
- 	return -EPERM;
- }
 -- 
-2.25.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
