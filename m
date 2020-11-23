@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from magratgarlick.emantor.de ([2a01:4f8:c17:c88::2])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kh89U-0004lT-46
- for barebox@lists.infradead.org; Mon, 23 Nov 2020 09:28:53 +0000
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Mon, 23 Nov 2020 10:28:38 +0100
-Message-Id: <20201123092837.22420-1-r.czerwinski@pengutronix.de>
+ id 1khCaH-00040A-Ez
+ for barebox@lists.infradead.org; Mon, 23 Nov 2020 14:12:52 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 23 Nov 2020 15:12:39 +0100
+Message-Id: <20201123141239.4896-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,30 +19,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH next] ARM: vexpress: enable virt and vexpress boards
+Subject: [PATCH] boot: drop uneeded header #includes
 To: barebox@lists.infradead.org
-Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The recent cleanup of the vexpress arch moved to a multi board
-configuration, however did not adjust the defconfig to build the virt
-and vexpress boards. Build both in the defconfig.
+Boot entry providers register themselves, so there is no need for the
+common boot code to know about bootchooser or blspec or include their
+headers. Remove them as well as other headers that aren't strictly
+necessary and, if needed, include headers they include directly.
 
-Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/configs/vexpress_defconfig | 2 ++
- 1 file changed, 2 insertions(+)
+ common/boot.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/configs/vexpress_defconfig b/arch/arm/configs/vexpress_defconfig
-index caa9f512d6..f17af2bb95 100644
---- a/arch/arm/configs/vexpress_defconfig
-+++ b/arch/arm/configs/vexpress_defconfig
-@@ -1,4 +1,6 @@
- CONFIG_ARCH_VEXPRESS=y
-+CONFIG_MACH_VIRT=y
-+CONFIG_MACH_VEXPRESS=y
- CONFIG_AEABI=y
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_MALLOC_SIZE=0x0
+diff --git a/common/boot.c b/common/boot.c
+index 76d03c26c4f4..28d3de243076 100644
+--- a/common/boot.c
++++ b/common/boot.c
+@@ -9,22 +9,19 @@
+  * General Public License for more details.
+  */
+ 
+-#include <environment.h>
+-#include <bootchooser.h>
++#include <boot.h>
+ #include <globalvar.h>
+ #include <magicvar.h>
+ #include <watchdog.h>
+ #include <command.h>
+ #include <readkey.h>
+ #include <common.h>
+-#include <blspec.h>
+ #include <libgen.h>
+-#include <malloc.h>
+ #include <bootm.h>
+ #include <glob.h>
+ #include <init.h>
+ #include <menu.h>
+-#include <fs.h>
++#include <unistd.h>
+ 
+ #include <linux/stat.h>
+ 
 -- 
 2.29.2
 
