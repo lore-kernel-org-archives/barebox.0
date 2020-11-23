@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1khEsa-0000aQ-TT
- for barebox@lists.infradead.org; Mon, 23 Nov 2020 16:39:53 +0000
-Date: Mon, 23 Nov 2020 17:39:51 +0100
+ id 1khEvL-0001Bm-Je
+ for barebox@lists.infradead.org; Mon, 23 Nov 2020 16:42:44 +0000
+Date: Mon, 23 Nov 2020 17:42:42 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201123163951.GH24489@pengutronix.de>
-References: <20201116194703.28238-1-a.fatoum@pengutronix.de>
+Message-ID: <20201123164242.GI24489@pengutronix.de>
+References: <20201118111444.10127-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201116194703.28238-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20201118111444.10127-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,44 +22,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] clk: imx6: demote warning about ldb_di_clk reparenting
+Subject: Re: [PATCH] fb: sync enable device parameter with internal state
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Nov 16, 2020 at 08:47:03PM +0100, Ahmad Fatoum wrote:
-> Linux logging this is justified, because it alerts to problems in the
-> boot firmware. barebox warning about it serves no real purpose other
-> than indicating that barebox was chainloaded. Make it a debug log
-> to not clutter the log.
+On Wed, Nov 18, 2020 at 12:14:45PM +0100, Ahmad Fatoum wrote:
+> So far fb.enable only reflected whether the fb was enabled/disabled via
+> device parameter. Enabling/disabling the fb via ioctl left the
+> parameter untouched. Remedy this.
+> 
+> While at it, have setting of fb.enable if the underlying
+> fb_enable/fb_disable fails as well.
 > 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  drivers/clk/imx/clk-imx6.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  drivers/video/fb.c | 21 ++++++++++++---------
+>  1 file changed, 12 insertions(+), 9 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/drivers/clk/imx/clk-imx6.c b/drivers/clk/imx/clk-imx6.c
-> index cb030244581a..6935a8e85292 100644
-> --- a/drivers/clk/imx/clk-imx6.c
-> +++ b/drivers/clk/imx/clk-imx6.c
-> @@ -482,9 +482,9 @@ static void init_ldb_clks(struct device_node *np, void __iomem *ccm_base)
->  	of_assigned_ldb_sels(np, &sel[0][3], &sel[1][3]);
+> diff --git a/drivers/video/fb.c b/drivers/video/fb.c
+> index 2d82bc01fa04..113c1419a1c1 100644
+> --- a/drivers/video/fb.c
+> +++ b/drivers/video/fb.c
+> @@ -119,22 +119,25 @@ int fb_disable(struct fb_info *info)
+>  	return 0;
+>  }
 >  
->  	for (i = 0; i < 2; i++) {
-> -		/* Warn if a glitch might have been introduced already */
-> +		/* log if a glitch might have been introduced already */
->  		if (sel[i][0] != LDB_DI_SEL_MMDC_CH1_AXI) {
-> -			pr_warn("ccm: ldb_di%d_sel already changed from reset value: %d\n",
-> +			pr_debug("ccm: ldb_di%d_sel already changed from reset value: %d\n",
->  				i, sel[i][0]);
->  		}
+> +static int fb_enable_get(struct param_d *param, void *priv)
+> +{
+> +	struct fb_info *info = priv;
+> +
+> +	info->p_enable = info->enabled;
+> +	return 0;
+> +}
+> +
+>  static int fb_enable_set(struct param_d *param, void *priv)
+>  {
+>  	struct fb_info *info = priv;
+> -	int enable;
 >  
+>  	if (!info->mode)
+>  		return -EINVAL;
+>  
+> -	enable = info->p_enable;
+> -
+> -	if (enable)
+> -		fb_enable(info);
+> +	if (info->p_enable)
+> +		return fb_enable(info);
+>  	else
+> -		fb_disable(info);
+> -
+> -	return 0;
+> +		return fb_disable(info);
+>  }
+>  
+>  static struct fb_videomode *fb_num_to_mode(struct fb_info *info, int num)
+> @@ -314,7 +317,7 @@ int register_framebuffer(struct fb_info *info)
+>  	if (ret)
+>  		goto err_free;
+>  
+> -	dev_add_param_bool(dev, "enable", fb_enable_set, NULL,
+> +	dev_add_param_bool(dev, "enable", fb_enable_set, fb_enable_get,
+>  			&info->p_enable, info);
+>  
+>  	if (IS_ENABLED(CONFIG_DRIVER_VIDEO_EDID))
 > -- 
-> 2.28.0
+> 2.29.2
 > 
 > 
 > _______________________________________________
