@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1khEqu-0008RU-GK
- for barebox@lists.infradead.org; Mon, 23 Nov 2020 16:38:09 +0000
+ id 1khEsa-0000aQ-TT
+ for barebox@lists.infradead.org; Mon, 23 Nov 2020 16:39:53 +0000
+Date: Mon, 23 Nov 2020 17:39:51 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 23 Nov 2020 17:38:05 +0100
-Message-Id: <20201123163805.11164-1-s.hauer@pengutronix.de>
+Message-ID: <20201123163951.GH24489@pengutronix.de>
+References: <20201116194703.28238-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20201116194703.28238-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,114 +22,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] i.MX: HABv4: Improve HAB event printing
-To: Barebox List <barebox@lists.infradead.org>
-Cc: Robin van der Gracht <robin@protonic.nl>
+Subject: Re: [PATCH] clk: imx6: demote warning about ldb_di_clk reparenting
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Instead of using a fixed sized buffer for the report_event function,
-let's call it two times, once with a NULL pointer to get the size of the
-event and a second time with a buffer of that size.
-Also, instead of separating the events into warning and error type,
-iterate over all events in one single loop. This helps to get the events
-in the order they occured which probably helps the reader to make more
-sense of them.
+On Mon, Nov 16, 2020 at 08:47:03PM +0100, Ahmad Fatoum wrote:
+> Linux logging this is justified, because it alerts to problems in the
+> boot firmware. barebox warning about it serves no real purpose other
+> than indicating that barebox was chainloaded. Make it a debug log
+> to not clutter the log.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  drivers/clk/imx/clk-imx6.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/hab/habv4.c | 55 +++++++++++++++++++++++++--------------------
- 1 file changed, 31 insertions(+), 24 deletions(-)
+Applied, thanks
 
-diff --git a/drivers/hab/habv4.c b/drivers/hab/habv4.c
-index e94f827549..c2acb81369 100644
---- a/drivers/hab/habv4.c
-+++ b/drivers/hab/habv4.c
-@@ -500,11 +500,34 @@ static bool is_known_rng_fail_event(const uint8_t *data, size_t len)
- 	return false;
- }
- 
-+static uint8_t *hab_get_event(const struct habv4_rvt *rvt, int index, int *len)
-+{
-+	enum hab_status err;
-+	uint8_t *buf;
-+
-+	err = rvt->report_event(HAB_STATUS_ANY, index, NULL, len);
-+	if (err != HAB_STATUS_SUCCESS)
-+		return NULL;
-+
-+	buf = malloc(*len);
-+	if (!buf)
-+		return NULL;
-+
-+	err = rvt->report_event(HAB_STATUS_ANY, index, buf, len);
-+	if (err != HAB_STATUS_SUCCESS) {
-+		pr_err("Unexpected HAB return code\n");
-+		free(buf);
-+		return NULL;
-+	}
-+
-+	return buf;
-+}
-+
- static int habv4_get_status(const struct habv4_rvt *rvt)
- {
--	uint8_t data[256];
-+	uint8_t *data;
- 	uint32_t len;
--	uint32_t index = 0;
-+	int i;
- 	enum hab_status status;
- 	enum hab_config config = 0x0;
- 	enum hab_state state = 0x0;
-@@ -524,40 +547,24 @@ static int habv4_get_status(const struct habv4_rvt *rvt)
- 		return 0;
- 	}
- 
--	len = sizeof(data);
--	while (rvt->report_event(HAB_STATUS_WARNING, index, data, &len) == HAB_STATUS_SUCCESS) {
-+	for (i = 0;; i++) {
-+		data = hab_get_event(rvt, i, &len);
-+		if (!data)
-+			break;
- 
- 		/* suppress RNG self-test fail events if they can be handled in software */
- 		if (IS_ENABLED(CONFIG_CRYPTO_DEV_FSL_CAAM_RNG_SELF_TEST) &&
- 		    is_known_rng_fail_event(data, len)) {
- 			pr_debug("RNG self-test failure detected, will run software self-test\n");
- 		} else {
--			pr_err("-------- HAB warning Event %d --------\n", index);
-+			pr_err("-------- HAB Event %d --------\n", i);
- 			pr_err("event data:\n");
- 			habv4_display_event(data, len);
- 		}
- 
--		len = sizeof(data);
--		index++;
-+		free(data);
- 	}
- 
--	len = sizeof(data);
--	index = 0;
--	while (rvt->report_event(HAB_STATUS_FAILURE, index, data, &len) == HAB_STATUS_SUCCESS) {
--		pr_err("-------- HAB failure Event %d --------\n", index);
--		pr_err("event data:\n");
--
--		habv4_display_event(data, len);
--		len = sizeof(data);
--		index++;
--	}
--
--	/* Check reason for stopping */
--	len = sizeof(data);
--	index = 0;
--	if (rvt->report_event(HAB_STATUS_ANY, index, NULL, &len) == HAB_STATUS_SUCCESS)
--		pr_err("ERROR: Recompile with larger event data buffer (at least %d bytes)\n\n", len);
--
- 	return -EPERM;
- }
- 
+Sascha
+
+> 
+> diff --git a/drivers/clk/imx/clk-imx6.c b/drivers/clk/imx/clk-imx6.c
+> index cb030244581a..6935a8e85292 100644
+> --- a/drivers/clk/imx/clk-imx6.c
+> +++ b/drivers/clk/imx/clk-imx6.c
+> @@ -482,9 +482,9 @@ static void init_ldb_clks(struct device_node *np, void __iomem *ccm_base)
+>  	of_assigned_ldb_sels(np, &sel[0][3], &sel[1][3]);
+>  
+>  	for (i = 0; i < 2; i++) {
+> -		/* Warn if a glitch might have been introduced already */
+> +		/* log if a glitch might have been introduced already */
+>  		if (sel[i][0] != LDB_DI_SEL_MMDC_CH1_AXI) {
+> -			pr_warn("ccm: ldb_di%d_sel already changed from reset value: %d\n",
+> +			pr_debug("ccm: ldb_di%d_sel already changed from reset value: %d\n",
+>  				i, sel[i][0]);
+>  		}
+>  
+> -- 
+> 2.28.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
