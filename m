@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1khTzG-0006V2-C6
- for barebox@lists.infradead.org; Tue, 24 Nov 2020 08:47:47 +0000
-Date: Tue, 24 Nov 2020 09:47:44 +0100
+ id 1khTzo-0006be-Nh
+ for barebox@lists.infradead.org; Tue, 24 Nov 2020 08:48:21 +0000
+Date: Tue, 24 Nov 2020 09:48:19 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201124084744.GD14718@pengutronix.de>
-References: <20201123161432.28064-1-a.fatoum@pengutronix.de>
+Message-ID: <20201124084819.GE14718@pengutronix.de>
+References: <20201123092837.22420-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201123161432.28064-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20201123092837.22420-1-r.czerwinski@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,61 +22,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] commands: boot: fix error code/clean up behavior
- when not booting
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH next] ARM: vexpress: enable virt and vexpress boards
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Nov 23, 2020 at 05:14:30PM +0100, Ahmad Fatoum wrote:
-> The boot command won't boot if:
->   - There are no boot entries: we should still clean up before
->     returning an error
->   - A menu or list of found entries should be displayed: we should
->     exit with success
->   - We were doing a dry run: we should propagate the boot entry
->     boot method's exit code
+On Mon, Nov 23, 2020 at 10:28:38AM +0100, Rouven Czerwinski wrote:
+> The recent cleanup of the vexpress arch moved to a multi board
+> configuration, however did not adjust the defconfig to build the virt
+> and vexpress boards. Build both in the defconfig.
 > 
-> Do the necessary.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 > ---
->  commands/boot.c | 13 +++++--------
->  1 file changed, 5 insertions(+), 8 deletions(-)
+>  arch/arm/configs/vexpress_defconfig | 2 ++
+>  1 file changed, 2 insertions(+)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/commands/boot.c b/commands/boot.c
-> index d7795bde726b..18f4e36ec733 100644
-> --- a/commands/boot.c
-> +++ b/commands/boot.c
-> @@ -97,19 +97,16 @@ static int do_boot(int argc, char *argv[])
->  
->  	if (list_empty(&entries->entries)) {
->  		printf("Nothing bootable found\n");
-> -		return COMMAND_ERROR;
-> -	}
-> -
-> -	if (do_list) {
-> -		bootsources_list(entries);
-> +		ret = COMMAND_ERROR;
->  		goto out;
->  	}
->  
-> -	if (do_menu) {
-> +	if (do_list)
-> +		bootsources_list(entries);
-> +	else if (do_menu)
->  		bootsources_menu(entries, timeout);
-> -		goto out;
-> -	}
->  
-> +	ret = 0;
->  out:
->  	bootentries_free(entries);
->  	free(freep);
+> diff --git a/arch/arm/configs/vexpress_defconfig b/arch/arm/configs/vexpress_defconfig
+> index caa9f512d6..f17af2bb95 100644
+> --- a/arch/arm/configs/vexpress_defconfig
+> +++ b/arch/arm/configs/vexpress_defconfig
+> @@ -1,4 +1,6 @@
+>  CONFIG_ARCH_VEXPRESS=y
+> +CONFIG_MACH_VIRT=y
+> +CONFIG_MACH_VEXPRESS=y
+>  CONFIG_AEABI=y
+>  CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+>  CONFIG_MALLOC_SIZE=0x0
 > -- 
 > 2.29.2
 > 
