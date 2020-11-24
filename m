@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kjU52-0006rO-8A
- for barebox@lists.infradead.org; Sun, 29 Nov 2020 21:18:01 +0000
-References: <20201126175553.16934-1-a.fatoum@pengutronix.de>
- <20201126175553.16934-2-a.fatoum@pengutronix.de>
- <20201129200815.hrisxvxhhfgftldo@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <28c1e88a-f146-3128-6604-9128279ac9c6@pengutronix.de>
-Date: Sun, 29 Nov 2020 22:17:57 +0100
+ id 1khTzG-0006V2-C6
+ for barebox@lists.infradead.org; Tue, 24 Nov 2020 08:47:47 +0000
+Date: Tue, 24 Nov 2020 09:47:44 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20201124084744.GD14718@pengutronix.de>
+References: <20201123161432.28064-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20201129200815.hrisxvxhhfgftldo@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20201123161432.28064-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,110 +22,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 2/4] common: dummy_malloc: remove unintended GPL2
- eCos-exception-2.0
-To: Roland Hieber <rhi@pengutronix.de>
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org, Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>, ukl@pengutronix.de
+Subject: Re: [PATCH 1/3] commands: boot: fix error code/clean up behavior
+ when not booting
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hello,
-
-On 29.11.20 21:08, Roland Hieber wrote:
-> On Thu, Nov 26, 2020 at 06:55:51PM +0100, Ahmad Fatoum wrote:
->> Apparently, the file should be GPL-2.0-only without exceptions:
->>
->> On 24.11.20 09:44, Sascha Hauer wrote[1]:
->>> This looks like I accidently copied the wrong header. I don't think I
->>> did this on purpose. It doesn't make much sense to me when compiling
->>> against dummy malloc is different than compiling against tlsf malloc
->>> or dlmalloc.
->>
->> Ase dropping exceptions is no relicense, it's ok to do here without
->> acknowledgement from all authors. Do so.
+On Mon, Nov 23, 2020 at 05:14:30PM +0100, Ahmad Fatoum wrote:
+> The boot command won't boot if:
+>   - There are no boot entries: we should still clean up before
+>     returning an error
+>   - A menu or list of found entries should be displayed: we should
+>     exit with success
+>   - We were doing a dry run: we should propagate the boot entry
+>     boot method's exit code
 > 
-> I don't understand this reasoning. The exception allowed someone to link
-> this file with non-GPL code, and by dropping this exception, this
-> possibility is no longer allowed, so there is a change in license terms.
-If a file is dual-licensed and we choose to drop one license, we would
-be within our rights to do so according to the dual license.
-We still maintain the dual licensing for that file normally (as in future 
-contributions are dual-licensed as well) to respect the author's intent.
+> Do the necessary.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  commands/boot.c | 13 +++++--------
+>  1 file changed, 5 insertions(+), 8 deletions(-)
 
-Similarly, a file licensed under the GNU GPL with a linking exception can
-still be distributed under the terms of the GNU GPL only (Wouldn't be
-compatible otherwise). The exception grants an additional right, but the
-distributor does not have a legal obligation to maintain them.
+Applied, thanks
 
-The original author stated here that it was a mistake, the file is just
-a collection of stubs and we are within our rights to drop the exception,
-so that's what I did here.
-
-So yes, the license terms changed, but no, the code was't relicensed away
-from the GPL, which we couldn't do anyway, without agreement of all
-authors.
-
-Of course, IANAL and please correct me if my understanding is wrong.
-
-> The only two other authors of thunder the same licenseis file are Andrey and Jean-Christophe,
-> hereby CCed.
-
-Thanks, I should've done this before.
-
-Cheers,
-Ahmad
+Sascha
 
 > 
->  - Roland
+> diff --git a/commands/boot.c b/commands/boot.c
+> index d7795bde726b..18f4e36ec733 100644
+> --- a/commands/boot.c
+> +++ b/commands/boot.c
+> @@ -97,19 +97,16 @@ static int do_boot(int argc, char *argv[])
 >  
->> [1]: <20201124084434.GC14718@pengutronix.de>
->>
->> Suggested-by: Sascha Hauer <s.hauer@pengutronix.de>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->> ---
->> v1 -> v2: new patch
->> ---
->>  common/dummy_malloc.c | 21 +--------------------
->>  1 file changed, 1 insertion(+), 20 deletions(-)
->>
->> diff --git a/common/dummy_malloc.c b/common/dummy_malloc.c
->> index 0120d9be2e85..d99b5059cf91 100644
->> --- a/common/dummy_malloc.c
->> +++ b/common/dummy_malloc.c
->> @@ -1,25 +1,6 @@
->> +// SPDX-License-Identifier: GPL-2.0-only
->>  /*
->>   * Copyright (C) 2013 Sascha Hauer <s.hauer@pengutronix.de>
->> - *
->> - * This program is free software; you can redistribute it and/or
->> - * modify it under the terms of the GNU General Public License version 2
->> - * as published by the Free Software Foundation.
->> - *
->> - * This program is distributed in the hope that it will be useful,
->> - * but WITHOUT ANY WARRANTY; without even the implied warranty of
->> - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
->> - * GNU General Public License for more details.
->> - *
->> - *
->> - * As a special exception, if other files instantiate templates or use macros
->> - * or inline functions from this file, or you compile this file and link it
->> - * with other works to produce a work based on this file, this file does not
->> - * by itself cause the resulting work to be covered by the GNU General Public
->> - * License. However the source code for this file must still be made available
->> - * in accordance with section (3) of the GNU General Public License.
->> -
->> - * This exception does not invalidate any other reasons why a work based on
->> - * this file might be covered by the GNU General Public License.
->>   */
->>  #include <common.h>
->>  #include <malloc.h>
->> -- 
->> 2.29.2
->>
->>
->> _______________________________________________
->> barebox mailing list
->> barebox@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/barebox
->>
+>  	if (list_empty(&entries->entries)) {
+>  		printf("Nothing bootable found\n");
+> -		return COMMAND_ERROR;
+> -	}
+> -
+> -	if (do_list) {
+> -		bootsources_list(entries);
+> +		ret = COMMAND_ERROR;
+>  		goto out;
+>  	}
+>  
+> -	if (do_menu) {
+> +	if (do_list)
+> +		bootsources_list(entries);
+> +	else if (do_menu)
+>  		bootsources_menu(entries, timeout);
+> -		goto out;
+> -	}
+>  
+> +	ret = 0;
+>  out:
+>  	bootentries_free(entries);
+>  	free(freep);
+> -- 
+> 2.29.2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 > 
 
 -- 
