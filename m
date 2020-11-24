@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1khTh0-0003Xz-Qz
- for barebox@lists.infradead.org; Tue, 24 Nov 2020 08:28:55 +0000
-Date: Tue, 24 Nov 2020 09:28:53 +0100
+ id 1khTmj-0004U5-E5
+ for barebox@lists.infradead.org; Tue, 24 Nov 2020 08:34:50 +0000
+Date: Tue, 24 Nov 2020 09:34:48 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201124082853.GT24489@pengutronix.de>
-References: <20201120140649.31607-1-a.fatoum@pengutronix.de>
- <20201120140649.31607-2-a.fatoum@pengutronix.de>
- <20201124082314.GR24489@pengutronix.de>
- <fa7bb675-5d2f-cb9b-2dc4-e4cd26d72970@pengutronix.de>
+Message-ID: <20201124083448.GU24489@pengutronix.de>
+References: <20201120140728.31805-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <fa7bb675-5d2f-cb9b-2dc4-e4cd26d72970@pengutronix.de>
+In-Reply-To: <20201120140728.31805-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,60 +22,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] boot: introduce option to pass barebox-enabled
- watchdog to systemd
+Subject: Re: [PATCH master] usbgadget: autostart: don't print error on
+ repeated nv.usbgadget.autostart=1
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Nov 24, 2020 at 09:26:32AM +0100, Ahmad Fatoum wrote:
-> Hi,
+On Fri, Nov 20, 2020 at 03:07:28PM +0100, Ahmad Fatoum wrote:
+> nvvar_add results in two calls to dev_set_param:
+>  - once when the existing global variable is found and set
+>  - once more when setting the nv variable
 > 
-> On 24.11.20 09:23, Sascha Hauer wrote:
-> >> +static struct watchdog *__watchdog;
-> > 
-> > The name looks like you have something to hide. Perhaps boot_enabled_watchdog?
+> This results in an annoying but ultimately harmless message on startup:
 > 
-> Can do.
+>   ERROR: USB multi gadget already registered
+>   ERROR: failed to create nv variable usbgadget.autostart: Device or
+>   resource busy
 > 
-> >> +
-> >> +static int watchdog_of_fixup(struct device_node *root, void *arg)
-> >> +{
-> >> +	int alias_id;
-> >> +	char *buf;
-> >> +
-> >> +	if (!__watchdog)
-> >> +		return 0;
-> >> +
-> >> +	alias_id = watchdog_get_alias_id_from(__watchdog, root);
-> >> +	if (alias_id < 0)
-> >> +		return 0;
-> >> +
-> >> +	buf = basprintf("systemd.watchdog-device=/dev/watchdog%d", alias_id);
-> >> +	if (!buf)
-> >> +		return 0;
-> >> +
-> >> +	globalvar_add_simple("linux.bootargs.dyn.watchdog", buf);
-> >> +	free(buf);
-> >> +
-> >> +	return 0;
-> >> +}
-> >> +
-> >> +static int __maybe_unused of_register_watchdog_fixup(void)
-> >> +{
-> >> +	return of_register_fixup(watchdog_of_fixup, NULL);
-> >> +}
-> >> +#ifdef CONFIG_SYSTEMD_OF_WATCHDOG
-> >> +/* _must_ not be run after late_initcall(of_register_bootargs_fixup) */
-> > 
-> > I smell problems here. How about calling this directly from
-> > of_fixup_bootargs()?
+> Avoid this by ignoring usbgadget.autostart=1 after it succeeded once.
 > 
-> Feels wrong to have watchdog specific stuff over there.
+> This issue should only affect $global.usbgadget.autostart, because all
+> other global variables are "simple" meaning that they have no setters
+> triggered.
+> 
+> Fixes: 5a5c5178e7dc ("usbgadget: autostart: support delayed usbgadget.autostart=1")
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  common/usbgadget.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
 
-Also feels wrong to put code dependencies into comments.
+Applied, thanks
 
 Sascha
 
+> 
+> diff --git a/common/usbgadget.c b/common/usbgadget.c
+> index fb508db94762..8b351c7bf468 100644
+> --- a/common/usbgadget.c
+> +++ b/common/usbgadget.c
+> @@ -102,12 +102,18 @@ int usbgadget_register(bool dfu, const char *dfu_opts,
+>  
+>  static int usbgadget_autostart_set(struct param_d *param, void *ctx)
+>  {
+> +	static bool started;
+>  	bool fastboot_bbu = get_fastboot_bbu();
+> +	int err;
+>  
+> -	if (!IS_ENABLED(CONFIG_USB_GADGET_AUTOSTART) || !autostart)
+> +	if (!IS_ENABLED(CONFIG_USB_GADGET_AUTOSTART) || !autostart || started)
+>  		return 0;
+>  
+> -	return usbgadget_register(true, NULL, true, NULL, acm, fastboot_bbu);
+> +	err = usbgadget_register(true, NULL, true, NULL, acm, fastboot_bbu);
+> +	if (!err)
+> +		started = true;
+> +
+> +	return err;
+>  }
+>  
+>  static int usbgadget_globalvars_init(void)
+> -- 
+> 2.29.2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
