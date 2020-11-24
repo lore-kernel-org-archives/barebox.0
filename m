@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1khTmj-0004U5-E5
- for barebox@lists.infradead.org; Tue, 24 Nov 2020 08:34:50 +0000
-Date: Tue, 24 Nov 2020 09:34:48 +0100
+ id 1khTnf-0004cf-Ir
+ for barebox@lists.infradead.org; Tue, 24 Nov 2020 08:35:48 +0000
+Date: Tue, 24 Nov 2020 09:35:46 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201124083448.GU24489@pengutronix.de>
-References: <20201120140728.31805-1-a.fatoum@pengutronix.de>
+Message-ID: <20201124083546.GA14718@pengutronix.de>
+References: <20201123141239.4896-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201120140728.31805-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20201123141239.4896-1-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,64 +22,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH master] usbgadget: autostart: don't print error on
- repeated nv.usbgadget.autostart=1
+Subject: Re: [PATCH] boot: drop uneeded header #includes
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Nov 20, 2020 at 03:07:28PM +0100, Ahmad Fatoum wrote:
-> nvvar_add results in two calls to dev_set_param:
->  - once when the existing global variable is found and set
->  - once more when setting the nv variable
+On Mon, Nov 23, 2020 at 03:12:39PM +0100, Ahmad Fatoum wrote:
+> Boot entry providers register themselves, so there is no need for the
+> common boot code to know about bootchooser or blspec or include their
+> headers. Remove them as well as other headers that aren't strictly
+> necessary and, if needed, include headers they include directly.
 > 
-> This results in an annoying but ultimately harmless message on startup:
-> 
->   ERROR: USB multi gadget already registered
->   ERROR: failed to create nv variable usbgadget.autostart: Device or
->   resource busy
-> 
-> Avoid this by ignoring usbgadget.autostart=1 after it succeeded once.
-> 
-> This issue should only affect $global.usbgadget.autostart, because all
-> other global variables are "simple" meaning that they have no setters
-> triggered.
-> 
-> Fixes: 5a5c5178e7dc ("usbgadget: autostart: support delayed usbgadget.autostart=1")
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  common/usbgadget.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
+>  common/boot.c | 7 ++-----
+>  1 file changed, 2 insertions(+), 5 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/common/usbgadget.c b/common/usbgadget.c
-> index fb508db94762..8b351c7bf468 100644
-> --- a/common/usbgadget.c
-> +++ b/common/usbgadget.c
-> @@ -102,12 +102,18 @@ int usbgadget_register(bool dfu, const char *dfu_opts,
+> diff --git a/common/boot.c b/common/boot.c
+> index 76d03c26c4f4..28d3de243076 100644
+> --- a/common/boot.c
+> +++ b/common/boot.c
+> @@ -9,22 +9,19 @@
+>   * General Public License for more details.
+>   */
 >  
->  static int usbgadget_autostart_set(struct param_d *param, void *ctx)
->  {
-> +	static bool started;
->  	bool fastboot_bbu = get_fastboot_bbu();
-> +	int err;
+> -#include <environment.h>
+> -#include <bootchooser.h>
+> +#include <boot.h>
+>  #include <globalvar.h>
+>  #include <magicvar.h>
+>  #include <watchdog.h>
+>  #include <command.h>
+>  #include <readkey.h>
+>  #include <common.h>
+> -#include <blspec.h>
+>  #include <libgen.h>
+> -#include <malloc.h>
+>  #include <bootm.h>
+>  #include <glob.h>
+>  #include <init.h>
+>  #include <menu.h>
+> -#include <fs.h>
+> +#include <unistd.h>
 >  
-> -	if (!IS_ENABLED(CONFIG_USB_GADGET_AUTOSTART) || !autostart)
-> +	if (!IS_ENABLED(CONFIG_USB_GADGET_AUTOSTART) || !autostart || started)
->  		return 0;
+>  #include <linux/stat.h>
 >  
-> -	return usbgadget_register(true, NULL, true, NULL, acm, fastboot_bbu);
-> +	err = usbgadget_register(true, NULL, true, NULL, acm, fastboot_bbu);
-> +	if (!err)
-> +		started = true;
-> +
-> +	return err;
->  }
->  
->  static int usbgadget_globalvars_init(void)
 > -- 
 > 2.29.2
 > 
