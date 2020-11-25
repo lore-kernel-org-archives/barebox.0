@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1khnE6-0004yj-Th
- for barebox@lists.infradead.org; Wed, 25 Nov 2020 05:20:24 +0000
+ id 1khnE7-00050M-JX
+ for barebox@lists.infradead.org; Wed, 25 Nov 2020 05:20:25 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 25 Nov 2020 06:20:10 +0100
-Message-Id: <20201125052011.20660-4-s.hauer@pengutronix.de>
+Date: Wed, 25 Nov 2020 06:20:09 +0100
+Message-Id: <20201125052011.20660-3-s.hauer@pengutronix.de>
 In-Reply-To: <20201125052011.20660-1-s.hauer@pengutronix.de>
 References: <20201125052011.20660-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
@@ -21,80 +21,113 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] mtd: Add hook to fix up kernel partitions
+Subject: [PATCH 2/4] of: partitions: export of_fixup_partitions
 To: Barebox List <barebox@lists.infradead.org>
 
-Some drivers have special requirements for fixing up the partition
-nodes for the kernel. This adds a hook to struct mtd_info that can
-be used by drivers to replace the generic fixup with a special one.
+of_partitions_register_fixup() tries to automatically determine the
+node to fixup. Sometimes this doesn't work, so add of_fixup_partitions()
+that can called at fixup time with a device node determined by subsystem
+or driver code.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/core.c      | 30 +++++++++++++++++++++++++++++-
- include/linux/mtd/mtd.h |  2 ++
- 2 files changed, 31 insertions(+), 1 deletion(-)
+ drivers/of/partition.c | 37 +++++++++++++++++++++----------------
+ include/of.h           |  6 ++++++
+ 2 files changed, 27 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index e21c71b816..af33ad665c 100644
---- a/drivers/mtd/core.c
-+++ b/drivers/mtd/core.c
-@@ -639,6 +639,34 @@ static int mtd_detect(struct device_d *dev)
- 	return ret;
+diff --git a/drivers/of/partition.c b/drivers/of/partition.c
+index 7367073c67..65c24c5426 100644
+--- a/drivers/of/partition.c
++++ b/drivers/of/partition.c
+@@ -123,20 +123,16 @@ static void delete_subnodes(struct device_node *np)
+ 	}
  }
  
-+static int mtd_partition_fixup_generic(struct mtd_info *mtd, struct device_node *root)
+-static int of_partition_fixup(struct device_node *root, void *ctx)
++int of_fixup_partitions(struct device_node *np, struct cdev *cdev)
+ {
+-	struct cdev *cdev = ctx, *partcdev;
+-	struct device_node *np, *part, *partnode;
+-	char *name;
++	struct cdev *partcdev;
++	struct device_node *part, *partnode;
+ 	int ret;
+ 	int n_cells, n_parts = 0;
+ 
+ 	if (of_partition_binding == MTD_OF_BINDING_DONTTOUCH)
+ 		return 0;
+ 
+-	if (!cdev->device_node)
+-		return -EINVAL;
+-
+ 	list_for_each_entry(partcdev, &cdev->partitions, partition_entry) {
+ 		if (partcdev->flags & DEVFS_PARTITION_FROM_TABLE)
+ 			continue;
+@@ -151,15 +147,6 @@ static int of_partition_fixup(struct device_node *root, void *ctx)
+ 	else
+ 		n_cells = 1;
+ 
+-	name = of_get_reproducible_name(cdev->device_node);
+-	np = of_find_node_by_reproducible_name(root, name);
+-	free(name);
+-	if (!np) {
+-		dev_err(cdev->dev, "Cannot find nodepath %s, cannot fixup\n",
+-				cdev->device_node->full_name);
+-		return -EINVAL;
+-	}
+-
+ 	partnode = of_get_child_by_name(np, "partitions");
+ 	if (partnode) {
+ 		if (of_partition_binding == MTD_OF_BINDING_LEGACY) {
+@@ -242,6 +229,24 @@ static int of_partition_fixup(struct device_node *root, void *ctx)
+ 	return 0;
+ }
+ 
++static int of_partition_fixup(struct device_node *root, void *ctx)
 +{
-+	struct cdev *cdev = &mtd->cdev;
-+	struct device_node *np, *mtdnp = mtd_get_of_node(mtd);
++	struct cdev *cdev = ctx;
++	struct device_node *np;
 +	char *name;
 +
-+	name = of_get_reproducible_name(mtdnp);
++	name = of_get_reproducible_name(cdev->device_node);
 +	np = of_find_node_by_reproducible_name(root, name);
 +	free(name);
 +	if (!np) {
-+		dev_err(&mtd->dev, "Cannot find nodepath %s, cannot fixup\n",
-+				mtdnp->full_name);
++		dev_err(cdev->dev, "Cannot find nodepath %s, cannot fixup\n",
++				cdev->device_node->full_name);
 +		return -EINVAL;
 +	}
 +
 +	return of_fixup_partitions(np, cdev);
 +}
 +
-+static int mtd_partition_fixup(struct device_node *root, void *ctx)
+ int of_partitions_register_fixup(struct cdev *cdev)
+ {
+ 	return of_register_fixup(of_partition_fixup, cdev);
+diff --git a/include/of.h b/include/of.h
+index 08a02e1105..aebd8384ad 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -275,6 +275,7 @@ extern struct device_d *of_device_enable_and_register_by_alias(
+ 
+ struct cdev *of_parse_partition(struct cdev *cdev, struct device_node *node);
+ int of_parse_partitions(struct cdev *cdev, struct device_node *node);
++int of_fixup_partitions(struct device_node *np, struct cdev *cdev);
+ int of_partitions_register_fixup(struct cdev *cdev);
+ int of_device_is_stdout_path(struct device_d *dev);
+ const char *of_get_model(void);
+@@ -303,6 +304,11 @@ static inline int of_parse_partitions(struct cdev *cdev,
+ 	return -EINVAL;
+ }
+ 
++static inline int of_fixup_partitions(struct device_node *np, struct cdev *cdev)
 +{
-+	struct mtd_info *mtd = ctx;
-+
-+	if (mtd->of_fixup)
-+		return mtd->of_fixup(mtd, root);
-+
-+	return mtd_partition_fixup_generic(mtd, root);
++	return -ENOSYS;
 +}
 +
- int add_mtd_device(struct mtd_info *mtd, const char *devname, int device_id)
+ static inline int of_partitions_register_fixup(struct cdev *cdev)
  {
- 	struct mtddev_hook *hook;
-@@ -706,7 +734,7 @@ int add_mtd_device(struct mtd_info *mtd, const char *devname, int device_id)
- 		dev_add_param_string(&mtd->dev, "partitions", mtd_partition_set, mtd_partition_get, &mtd->partition_string, mtd);
- 		if (IS_ENABLED(CONFIG_OFDEVICE) && np) {
- 			of_parse_partitions(&mtd->cdev, np);
--			ret = of_partitions_register_fixup(&mtd->cdev);
-+			ret = of_register_fixup(mtd_partition_fixup, mtd);
- 			if (ret)
- 				goto err1;
- 		}
-diff --git a/include/linux/mtd/mtd.h b/include/linux/mtd/mtd.h
-index 0e2ff4526d..0d977fea25 100644
---- a/include/linux/mtd/mtd.h
-+++ b/include/linux/mtd/mtd.h
-@@ -206,6 +206,8 @@ struct mtd_info {
- 	int (*_block_markbad) (struct mtd_info *mtd, loff_t ofs);
- 	int (*_block_markgood) (struct mtd_info *mtd, loff_t ofs);
- 
-+	int (*of_fixup)(struct mtd_info *mtd, struct device_node *root);
-+
- 	/* ECC status information */
- 	struct mtd_ecc_stats ecc_stats;
- 	/* Subpage shift (NAND) */
+ 	return -ENOSYS;
 -- 
 2.20.1
 
