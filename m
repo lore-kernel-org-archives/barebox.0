@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1khUWf-000447-KN
- for barebox@lists.infradead.org; Tue, 24 Nov 2020 09:22:18 +0000
+ id 1khpJ5-0008PE-6f
+ for barebox@lists.infradead.org; Wed, 25 Nov 2020 07:33:40 +0000
+Date: Wed, 25 Nov 2020 08:33:30 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20201125073330.aviqq4iebhwpdcbg@pengutronix.de>
 References: <20201123160128.15947-1-a.fatoum@pengutronix.de>
- <20201123160128.15947-2-a.fatoum@pengutronix.de>
- <20201124084434.GC14718@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <c1945884-a6d3-bcd5-2a85-d59b92c3fcf5@pengutronix.de>
-Date: Tue, 24 Nov 2020 10:22:15 +0100
+ <20201123160128.15947-3-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20201124084434.GC14718@pengutronix.de>
-Content-Language: en-US
+In-Reply-To: <20201123160128.15947-3-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,114 +18,138 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============7753371598636261152=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] LICENSES: exceptions: factor out eCos-exception-2.0
- for GPL
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 3/3] common: replace license statements with
+ SPDX-License-Identifiers
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, Roland Hieber <rhi@pengutronix.de>
 
-Hello Sascha,
 
-On 24.11.20 09:44, Sascha Hauer wrote:
-> On Mon, Nov 23, 2020 at 05:01:27PM +0100, Ahmad Fatoum wrote:
->> We have code imported from eCos that's licensed with this exception.
->> Replace instances of the exceptions with a SPDX-License-Identifier
->> referencing the exception in our LICENSES directory.
->>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->> ---
->>  LICENSES/exceptions/eCos-exception-2.0 | 13 +++++++++++++
->>  common/dummy_malloc.c                  | 21 +--------------------
->>  drivers/mtd/nand/nand_ecc.c            | 22 +---------------------
->>  drivers/serial/arm_dcc.c               | 21 +--------------------
->>  4 files changed, 16 insertions(+), 61 deletions(-)
->>  create mode 100644 LICENSES/exceptions/eCos-exception-2.0
->>
->> diff --git a/LICENSES/exceptions/eCos-exception-2.0 b/LICENSES/exceptions/eCos-exception-2.0
->> new file mode 100644
->> index 000000000000..291103666f10
->> --- /dev/null
->> +++ b/LICENSES/exceptions/eCos-exception-2.0
->> @@ -0,0 +1,13 @@
->> +SPDX-Exception-Identifier: eCos-exception-2.0
->> +SPDX-URL: https://spdx.org/licenses/eCos-exception-2.0.html
->> +SPDX-Licenses: GPL-2.0-only, GPL-2.0-or-later, GPL-2.0, GPL-2.0+
->> +License-Text:
->> +  As a special exception, if other files instantiate templates or use macros or
->> +  inline functions from this file, or you compile this file and link it with
->> +  other works to produce a work based on this file, this file does not by itself
->> +  cause the resulting work to be covered by the GNU General Public License.
->> +  However the source code for this file must still be made available in
->> +  accordance with section (3) of the GNU General Public License.
->> +
->> +  This exception does not invalidate any other reasons why a work based on this
->> +  file might be covered by the GNU General Public License.
->> diff --git a/common/dummy_malloc.c b/common/dummy_malloc.c
->> index 0120d9be2e85..ed74bd2f2302 100644
->> --- a/common/dummy_malloc.c
->> +++ b/common/dummy_malloc.c
->> @@ -1,25 +1,6 @@
->> +/* SPDX-License-Identifier: GPL-2.0-only WITH eCos-exception-2.0 */
->>  /*
->>   * Copyright (C) 2013 Sascha Hauer <s.hauer@pengutronix.de>
->> - *
->> - * This program is free software; you can redistribute it and/or
->> - * modify it under the terms of the GNU General Public License version 2
->> - * as published by the Free Software Foundation.
->> - *
->> - * This program is distributed in the hope that it will be useful,
->> - * but WITHOUT ANY WARRANTY; without even the implied warranty of
->> - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
->> - * GNU General Public License for more details.
->> - *
->> - *
->> - * As a special exception, if other files instantiate templates or use macros
->> - * or inline functions from this file, or you compile this file and link it
->> - * with other works to produce a work based on this file, this file does not
->> - * by itself cause the resulting work to be covered by the GNU General Public
->> - * License. However the source code for this file must still be made available
->> - * in accordance with section (3) of the GNU General Public License.
->> -
->> - * This exception does not invalidate any other reasons why a work based on
->> - * this file might be covered by the GNU General Public License.
->>   */
-> 
-> This looks like I accidently copied the wrong header. I don't think I
-> did this on purpose. It doesn't make much sense to me when compiling
-> against dummy malloc is different than compiling against tlsf malloc or
-> dlmalloc.
+--===============7753371598636261152==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="x6vuaitv33vw3lkc"
+Content-Disposition: inline
 
-You added the code so you know best. Feel free to change.
 
-> 
->>  #include <common.h>
->>  #include <malloc.h>
->> diff --git a/drivers/mtd/nand/nand_ecc.c b/drivers/mtd/nand/nand_ecc.c
->> index fd6ad7edc8e5..741282093df9 100644
->> --- a/drivers/mtd/nand/nand_ecc.c
->> +++ b/drivers/mtd/nand/nand_ecc.c
-> 
-> I'll drop this hunk, it's gone with the recent NAND layer update.
+--x6vuaitv33vw3lkc
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Sorry about that. Forgot to rebase onto next.
+Hello Ahmad,
 
-Cheers,
-Ahmad
+On Mon, Nov 23, 2020 at 05:01:28PM +0100, Ahmad Fatoum wrote:
+> For all files in common/ that already have a license text:
+>   - Replace with appropriate SPDX-License-Identifier
+>   - Remove empty comment lines around replacement
+>   - remove comment completely if only thing remaining is name
+>     of file without description
 
-> 
-> Sascha
-> 
+Great you continue to drive this forward!
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> diff --git a/common/bbu.c b/common/bbu.c
+> index f284c341b91b..1279d5615525 100644
+> --- a/common/bbu.c
+> +++ b/common/bbu.c
+> @@ -1,16 +1,8 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+>  /*
+>   * bbu.c - barebox update functions
+>   *
+
+I usually add an empty line after the SPDX stuff, but I admit this is
+subjective and in the long run probably nothing we can get for each
+source file.
+
+> diff --git a/common/env.c b/common/env.c
+> index fbaaac4f2f5c..d5fc98436263 100644
+> --- a/common/env.c
+> +++ b/common/env.c
+> @@ -1,17 +1,8 @@
+> +// SPDX-License-Identifier: GPL-2.0-o
+
+"nly" is missing
+
+>  /*
+>   * env.c - environment variables storage
+>   *
+>   * Copyright (c) 2007 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+> - *
+> - * This program is free software; you can redistribute it and/or modify
+> - * it under the terms of the GNU General Public License version 2
+> - * as published by the Free Software Foundation.
+> - *
+> - * This program is distributed in the hope that it will be useful,
+> - * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> - * GNU General Public License for more details.
+> - *
+>   */
+> =20
+>  /**
+> diff --git a/common/environment.c b/common/environment.c
+> index 6e58f122bad2..038a480e5f92 100644
+> --- a/common/environment.c
+> +++ b/common/environment.c
+> @@ -1,15 +1,6 @@
+> +// SPDX-License-Identifier: GPL-2.0-o
+
+ditto.
+
+>  /*
+>   * Copyright (c) 2007 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+> - *
+> - * This program is free software; you can redistribute it and/or modify
+> - * it under the terms of the GNU General Public License version 2
+> - * as published by the Free Software Foundation.
+> - *
+> - * This program is distributed in the hope that it will be useful,
+> - * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> - * GNU General Public License for more details.
+> - *
+>   */
+> =20
+>  /**
+
+Other than that the changes look fine.
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--x6vuaitv33vw3lkc
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAl++CMQACgkQwfwUeK3K
+7AndjQf/cH+TZ66Cq2PRjR2Z8DqO3e4hrT3e87Y90ivA/ZuPyBKfUZ+6Szss8XGy
+b5y2gnpDa6v13c0yGOORhC6rwINudHGyc6d55j46QbmJIjalLmV2A/bhUxYnPHOO
+MPMqir2131dbmfW5VwxVWS3ovY/+kQ8z9p/AKGzIw2Qo3p4yIfrI0D72HnePbYN7
+tN6gXBLgygSTnnsHC+/9NxhCOgk6xUMKu5YCRxylx8RxKvlAdrRHP3NrZcQ9FgW5
+yTCCGgyBwF2hbGD35BcZ6paBn/CUCe7mDEPYaqVwmk7Nfqt1iZx+l7DsbBUYrRCQ
+3aGQrMB/BGOwQOio6R1mPlfkQefvNg==
+=eZ00
+-----END PGP SIGNATURE-----
+
+--x6vuaitv33vw3lkc--
+
+
+--===============7753371598636261152==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============7753371598636261152==--
