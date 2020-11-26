@@ -1,12 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay8-d.mail.gandi.net ([217.70.183.201])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kiO19-0008Af-Oa
- for barebox@lists.infradead.org; Thu, 26 Nov 2020 20:37:29 +0000
-From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Thu, 26 Nov 2020 21:37:17 +0100
-Message-Id: <20201126203716.394606-1-ahmad@a3f.at>
+ id 1kiIZU-0005kC-Ar
+ for barebox@lists.infradead.org; Thu, 26 Nov 2020 14:48:33 +0000
+Date: Thu, 26 Nov 2020 15:48:29 +0100
+From: Roland Hieber <rhi@pengutronix.de>
+Message-ID: <20201126144829.ftexdnsbrqkhv7mt@pengutronix.de>
+References: <20201123160128.15947-1-a.fatoum@pengutronix.de>
+ <20201123160128.15947-2-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20201123160128.15947-2-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,107 +23,162 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH master] sandbox: retire CONFIG_LINUX symbol in favor of
- CONFIG_SANDBOX
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/3] LICENSES: exceptions: factor out eCos-exception-2.0
+ for GPL
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-5211e428cbab ("image: Convert the IH_... values to enums") removed the
-IH_ARCH_LINUX enumeration value leading to breakage of sandbox
-configurations that enable bootm. Instead of reinstating IH_ARCH_LINUX,
-just use IH_ARCH_SANDBOX and remove mention of CONFIG_LINUX altogether,
-it's always true anyway when CONFIG_SANDBOX is true.
+On Mon, Nov 23, 2020 at 05:01:27PM +0100, Ahmad Fatoum wrote:
+> We have code imported from eCos that's licensed with this exception.
+> Replace instances of the exceptions with a SPDX-License-Identifier
+> referencing the exception in our LICENSES directory.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
 
-Fixes: 5211e428cbab ("image: Convert the IH_... values to enums")
-Cc: Antony Pavlov <antonynpavlov@gmail.com>
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
----
- arch/sandbox/Kconfig   | 6 +-----
- commands/Kconfig       | 2 +-
- drivers/net/Kconfig    | 2 +-
- drivers/serial/Kconfig | 2 +-
- include/image.h        | 4 ++--
- 5 files changed, 6 insertions(+), 10 deletions(-)
+Reviewed-by: Roland Hieber <rhi@pengutronix.de>
 
-diff --git a/arch/sandbox/Kconfig b/arch/sandbox/Kconfig
-index 113b619fc35b..d9fc0c947b02 100644
---- a/arch/sandbox/Kconfig
-+++ b/arch/sandbox/Kconfig
-@@ -11,17 +11,13 @@ config SANDBOX
- 	select BLOCK_WRITE
- 	select PARTITION_DISK
- 	select ARCH_HAS_STACK_DUMP if ASAN
-+	select GENERIC_FIND_NEXT_BIT
- 	default y
- 
- config ARCH_TEXT_BASE
- 	hex
- 	default 0x00000000
- 
--config LINUX
--	bool
--	default y
--	select GENERIC_FIND_NEXT_BIT
--
- config SANDBOX_REEXEC
- 	prompt "exec(2) reset handler"
- 	def_bool y
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 8b4ed9aa5365..03ddfc887074 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -2058,7 +2058,7 @@ config CMD_KEYSTORE
- 
- config CMD_LINUX_EXEC
- 	bool "linux exec"
--	depends on LINUX
-+	depends on SANDBOX
- 	help
- 	  Execute a command on the host
- 
-diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-index 76509a52a1c7..0d55ea7a3b60 100644
---- a/drivers/net/Kconfig
-+++ b/drivers/net/Kconfig
-@@ -242,7 +242,7 @@ config DRIVER_NET_SMC91111
- 
- config DRIVER_NET_TAP
- 	bool "tap Ethernet driver"
--	depends on LINUX
-+	depends on SANDBOX
- 
- config DRIVER_NET_EFI_SNP
- 	bool "EFI SNP ethernet driver"
-diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
-index 14cd430ee489..5c6f0e88e398 100644
---- a/drivers/serial/Kconfig
-+++ b/drivers/serial/Kconfig
-@@ -52,7 +52,7 @@ config DRIVER_SERIAL_AUART
- 	bool "i.MX23/i.MX28 application UART serial driver"
- 
- config DRIVER_SERIAL_LINUX_CONSOLE
--	depends on LINUX
-+	depends on SANDBOX
- 	default y
- 	bool "linux console driver"
- 
-diff --git a/include/image.h b/include/image.h
-index 963ea9686319..fa06476845af 100644
---- a/include/image.h
-+++ b/include/image.h
-@@ -127,8 +127,8 @@ enum {
- #define IH_ARCH IH_ARCH_BLACKFIN
- #elif defined(__avr32__)
- #define IH_ARCH IH_ARCH_AVR32
--#elif defined(CONFIG_LINUX)
--#define IH_ARCH IH_ARCH_LINUX
-+#elif defined(CONFIG_SANDBOX)
-+#define IH_ARCH IH_ARCH_SANDBOX
- #else
- #define IH_ARCH IH_ARCH_INVALID
- #endif
+>  LICENSES/exceptions/eCos-exception-2.0 | 13 +++++++++++++
+>  common/dummy_malloc.c                  | 21 +--------------------
+>  drivers/mtd/nand/nand_ecc.c            | 22 +---------------------
+>  drivers/serial/arm_dcc.c               | 21 +--------------------
+>  4 files changed, 16 insertions(+), 61 deletions(-)
+>  create mode 100644 LICENSES/exceptions/eCos-exception-2.0
+> 
+> diff --git a/LICENSES/exceptions/eCos-exception-2.0 b/LICENSES/exceptions/eCos-exception-2.0
+> new file mode 100644
+> index 000000000000..291103666f10
+> --- /dev/null
+> +++ b/LICENSES/exceptions/eCos-exception-2.0
+> @@ -0,0 +1,13 @@
+> +SPDX-Exception-Identifier: eCos-exception-2.0
+> +SPDX-URL: https://spdx.org/licenses/eCos-exception-2.0.html
+> +SPDX-Licenses: GPL-2.0-only, GPL-2.0-or-later, GPL-2.0, GPL-2.0+
+> +License-Text:
+> +  As a special exception, if other files instantiate templates or use macros or
+> +  inline functions from this file, or you compile this file and link it with
+> +  other works to produce a work based on this file, this file does not by itself
+> +  cause the resulting work to be covered by the GNU General Public License.
+> +  However the source code for this file must still be made available in
+> +  accordance with section (3) of the GNU General Public License.
+> +
+> +  This exception does not invalidate any other reasons why a work based on this
+> +  file might be covered by the GNU General Public License.
+> diff --git a/common/dummy_malloc.c b/common/dummy_malloc.c
+> index 0120d9be2e85..ed74bd2f2302 100644
+> --- a/common/dummy_malloc.c
+> +++ b/common/dummy_malloc.c
+> @@ -1,25 +1,6 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only WITH eCos-exception-2.0 */
+>  /*
+>   * Copyright (C) 2013 Sascha Hauer <s.hauer@pengutronix.de>
+> - *
+> - * This program is free software; you can redistribute it and/or
+> - * modify it under the terms of the GNU General Public License version 2
+> - * as published by the Free Software Foundation.
+> - *
+> - * This program is distributed in the hope that it will be useful,
+> - * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> - * GNU General Public License for more details.
+> - *
+> - *
+> - * As a special exception, if other files instantiate templates or use macros
+> - * or inline functions from this file, or you compile this file and link it
+> - * with other works to produce a work based on this file, this file does not
+> - * by itself cause the resulting work to be covered by the GNU General Public
+> - * License. However the source code for this file must still be made available
+> - * in accordance with section (3) of the GNU General Public License.
+> -
+> - * This exception does not invalidate any other reasons why a work based on
+> - * this file might be covered by the GNU General Public License.
+>   */
+>  #include <common.h>
+>  #include <malloc.h>
+> diff --git a/drivers/mtd/nand/nand_ecc.c b/drivers/mtd/nand/nand_ecc.c
+> index fd6ad7edc8e5..741282093df9 100644
+> --- a/drivers/mtd/nand/nand_ecc.c
+> +++ b/drivers/mtd/nand/nand_ecc.c
+> @@ -1,3 +1,4 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later WITH eCos-exception-2.0 */
+>  /*
+>   * This file contains an ECC algorithm from Toshiba that detects and
+>   * corrects 1 bit errors in a 256 byte block of data.
+> @@ -10,27 +11,6 @@
+>   * Copyright (C) 2006 Thomas Gleixner <tglx@linutronix.de>
+>   *
+>   * $Id: nand_ecc.c,v 1.15 2005/11/07 11:14:30 gleixner Exp $
+> - *
+> - * This file is free software; you can redistribute it and/or modify it
+> - * under the terms of the GNU General Public License as published by the
+> - * Free Software Foundation; either version 2 or (at your option) any
+> - * later version.
+> - *
+> - * This file is distributed in the hope that it will be useful, but WITHOUT
+> - * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+> - * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+> - * for more details.
+> - *
+> - * As a special exception, if other files instantiate templates or use
+> - * macros or inline functions from these files, or you compile these
+> - * files and link them with other works to produce a work based on these
+> - * files, these files do not by themselves cause the resulting work to be
+> - * covered by the GNU General Public License. However the source code for
+> - * these files must still be made available in accordance with section (3)
+> - * of the GNU General Public License.
+> - *
+> - * This exception does not invalidate any other reasons why a work based on
+> - * this file might be covered by the GNU General Public License.
+>   */
+>  
+>  #include <linux/types.h>
+> diff --git a/drivers/serial/arm_dcc.c b/drivers/serial/arm_dcc.c
+> index e5f2bbe5e2ae..db0ee7fe0908 100644
+> --- a/drivers/serial/arm_dcc.c
+> +++ b/drivers/serial/arm_dcc.c
+> @@ -1,26 +1,7 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only WITH eCos-exception-2.0 */
+>  /*
+>   * Copyright (C) 2004-2007 ARM Limited.
+>   * Copyright (C) 2008 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> - *
+> - * This program is free software; you can redistribute it and/or
+> - * modify it under the terms of the GNU General Public License version 2
+> - * as published by the Free Software Foundation.
+> - *
+> - * This program is distributed in the hope that it will be useful,
+> - * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> - * GNU General Public License for more details.
+> - *
+> - *
+> - * As a special exception, if other files instantiate templates or use macros
+> - * or inline functions from this file, or you compile this file and link it
+> - * with other works to produce a work based on this file, this file does not
+> - * by itself cause the resulting work to be covered by the GNU General Public
+> - * License. However the source code for this file must still be made available
+> - * in accordance with section (3) of the GNU General Public License.
+> -
+> - * This exception does not invalidate any other reasons why a work based on
+> - * this file might be covered by the GNU General Public License.
+>   */
+>  
+>  #include <common.h>
+> -- 
+> 2.29.2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.28.0
-
+Roland Hieber, Pengutronix e.K.          | r.hieber@pengutronix.de     |
+Steuerwalder Str. 21                     | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686         | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
