@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kiLUu-00044V-5S
- for barebox@lists.infradead.org; Thu, 26 Nov 2020 17:56:01 +0000
+ id 1kiLV0-00048U-Ew
+ for barebox@lists.infradead.org; Thu, 26 Nov 2020 17:56:08 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 26 Nov 2020 18:55:50 +0100
-Message-Id: <20201126175553.16934-1-a.fatoum@pengutronix.de>
+Date: Thu, 26 Nov 2020 18:55:51 +0100
+Message-Id: <20201126175553.16934-2-a.fatoum@pengutronix.de>
+In-Reply-To: <20201126175553.16934-1-a.fatoum@pengutronix.de>
+References: <20201126175553.16934-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,30 +21,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/4] ARM: at91: sama5d2: giantboard: fix typo in
- SPDX-License-Identifier
+Subject: [PATCH v2 2/4] common: dummy_malloc: remove unintended GPL2
+ eCos-exception-2.0
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, ukl@pengutronix.de, rhi@pengutronix.de
 
-s/Identifer/Identifier/
+Apparently, the file should be GPL-2.0-only without exceptions:
 
+On 24.11.20 09:44, Sascha Hauer wrote[1]:
+> This looks like I accidently copied the wrong header. I don't think I
+> did this on purpose. It doesn't make much sense to me when compiling
+> against dummy malloc is different than compiling against tlsf malloc
+> or dlmalloc.
+
+Ase dropping exceptions is no relicense, it's ok to do here without
+acknowledgement from all authors. Do so.
+
+[1]: <20201124084434.GC14718@pengutronix.de>
+
+Suggested-by: Sascha Hauer <s.hauer@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
-v1 -> v2: no change
+v1 -> v2: new patch
 ---
- arch/arm/dts/at91-sama5d27_giantboard.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ common/dummy_malloc.c | 21 +--------------------
+ 1 file changed, 1 insertion(+), 20 deletions(-)
 
-diff --git a/arch/arm/dts/at91-sama5d27_giantboard.dts b/arch/arm/dts/at91-sama5d27_giantboard.dts
-index 2ba3ff217101..99fc5a8d4dd3 100644
---- a/arch/arm/dts/at91-sama5d27_giantboard.dts
-+++ b/arch/arm/dts/at91-sama5d27_giantboard.dts
-@@ -1,4 +1,4 @@
--// SPDX-License-Identifer: GPL-2.0-or-later OR X11
-+// SPDX-License-Identifier: GPL-2.0-or-later OR X11
+diff --git a/common/dummy_malloc.c b/common/dummy_malloc.c
+index 0120d9be2e85..d99b5059cf91 100644
+--- a/common/dummy_malloc.c
++++ b/common/dummy_malloc.c
+@@ -1,25 +1,6 @@
++// SPDX-License-Identifier: GPL-2.0-only
  /*
-  * at91-sama5d27_giantboard.dts - Device Tree file for SAMA5D27 Giant Board
-  *
+  * Copyright (C) 2013 Sascha Hauer <s.hauer@pengutronix.de>
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License version 2
+- * as published by the Free Software Foundation.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- *
+- * As a special exception, if other files instantiate templates or use macros
+- * or inline functions from this file, or you compile this file and link it
+- * with other works to produce a work based on this file, this file does not
+- * by itself cause the resulting work to be covered by the GNU General Public
+- * License. However the source code for this file must still be made available
+- * in accordance with section (3) of the GNU General Public License.
+-
+- * This exception does not invalidate any other reasons why a work based on
+- * this file might be covered by the GNU General Public License.
+  */
+ #include <common.h>
+ #include <malloc.h>
 -- 
 2.29.2
 
