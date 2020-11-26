@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from relay8-d.mail.gandi.net ([217.70.183.201])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kiNB9-000454-79
- for barebox@lists.infradead.org; Thu, 26 Nov 2020 19:43:44 +0000
-Date: Thu, 26 Nov 2020 20:43:38 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20201126194338.54v7ys7wgp5e23wy@pengutronix.de>
-References: <20201126175553.16934-1-a.fatoum@pengutronix.de>
- <20201126175553.16934-2-a.fatoum@pengutronix.de>
+ id 1kiO19-0008Af-Oa
+ for barebox@lists.infradead.org; Thu, 26 Nov 2020 20:37:29 +0000
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Thu, 26 Nov 2020 21:37:17 +0100
+Message-Id: <20201126203716.394606-1-ahmad@a3f.at>
 MIME-Version: 1.0
-In-Reply-To: <20201126175553.16934-2-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,75 +15,113 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============3194963916127348717=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 2/4] common: dummy_malloc: remove unintended GPL2
- eCos-exception-2.0
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, rhi@pengutronix.de
+Subject: [PATCH master] sandbox: retire CONFIG_LINUX symbol in favor of
+ CONFIG_SANDBOX
+To: barebox@lists.infradead.org
 
+5211e428cbab ("image: Convert the IH_... values to enums") removed the
+IH_ARCH_LINUX enumeration value leading to breakage of sandbox
+configurations that enable bootm. Instead of reinstating IH_ARCH_LINUX,
+just use IH_ARCH_SANDBOX and remove mention of CONFIG_LINUX altogether,
+it's always true anyway when CONFIG_SANDBOX is true.
 
---===============3194963916127348717==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="5k26ogid7t3tv3cm"
-Content-Disposition: inline
+Fixes: 5211e428cbab ("image: Convert the IH_... values to enums")
+Cc: Antony Pavlov <antonynpavlov@gmail.com>
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ arch/sandbox/Kconfig   | 6 +-----
+ commands/Kconfig       | 2 +-
+ drivers/net/Kconfig    | 2 +-
+ drivers/serial/Kconfig | 2 +-
+ include/image.h        | 4 ++--
+ 5 files changed, 6 insertions(+), 10 deletions(-)
 
+diff --git a/arch/sandbox/Kconfig b/arch/sandbox/Kconfig
+index 113b619fc35b..d9fc0c947b02 100644
+--- a/arch/sandbox/Kconfig
++++ b/arch/sandbox/Kconfig
+@@ -11,17 +11,13 @@ config SANDBOX
+ 	select BLOCK_WRITE
+ 	select PARTITION_DISK
+ 	select ARCH_HAS_STACK_DUMP if ASAN
++	select GENERIC_FIND_NEXT_BIT
+ 	default y
+ 
+ config ARCH_TEXT_BASE
+ 	hex
+ 	default 0x00000000
+ 
+-config LINUX
+-	bool
+-	default y
+-	select GENERIC_FIND_NEXT_BIT
+-
+ config SANDBOX_REEXEC
+ 	prompt "exec(2) reset handler"
+ 	def_bool y
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 8b4ed9aa5365..03ddfc887074 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -2058,7 +2058,7 @@ config CMD_KEYSTORE
+ 
+ config CMD_LINUX_EXEC
+ 	bool "linux exec"
+-	depends on LINUX
++	depends on SANDBOX
+ 	help
+ 	  Execute a command on the host
+ 
+diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+index 76509a52a1c7..0d55ea7a3b60 100644
+--- a/drivers/net/Kconfig
++++ b/drivers/net/Kconfig
+@@ -242,7 +242,7 @@ config DRIVER_NET_SMC91111
+ 
+ config DRIVER_NET_TAP
+ 	bool "tap Ethernet driver"
+-	depends on LINUX
++	depends on SANDBOX
+ 
+ config DRIVER_NET_EFI_SNP
+ 	bool "EFI SNP ethernet driver"
+diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+index 14cd430ee489..5c6f0e88e398 100644
+--- a/drivers/serial/Kconfig
++++ b/drivers/serial/Kconfig
+@@ -52,7 +52,7 @@ config DRIVER_SERIAL_AUART
+ 	bool "i.MX23/i.MX28 application UART serial driver"
+ 
+ config DRIVER_SERIAL_LINUX_CONSOLE
+-	depends on LINUX
++	depends on SANDBOX
+ 	default y
+ 	bool "linux console driver"
+ 
+diff --git a/include/image.h b/include/image.h
+index 963ea9686319..fa06476845af 100644
+--- a/include/image.h
++++ b/include/image.h
+@@ -127,8 +127,8 @@ enum {
+ #define IH_ARCH IH_ARCH_BLACKFIN
+ #elif defined(__avr32__)
+ #define IH_ARCH IH_ARCH_AVR32
+-#elif defined(CONFIG_LINUX)
+-#define IH_ARCH IH_ARCH_LINUX
++#elif defined(CONFIG_SANDBOX)
++#define IH_ARCH IH_ARCH_SANDBOX
+ #else
+ #define IH_ARCH IH_ARCH_INVALID
+ #endif
+-- 
+2.28.0
 
---5k26ogid7t3tv3cm
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, Nov 26, 2020 at 06:55:51PM +0100, Ahmad Fatoum wrote:
-> Apparently, the file should be GPL-2.0-only without exceptions:
->=20
-> On 24.11.20 09:44, Sascha Hauer wrote[1]:
-> > This looks like I accidently copied the wrong header. I don't think I
-> > did this on purpose. It doesn't make much sense to me when compiling
-> > against dummy malloc is different than compiling against tlsf malloc
-> > or dlmalloc.
->=20
-> Ase dropping exceptions is no relicense, it's ok to do here without
-
-s/Ase/As/
-
-Other than that looks good.
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---5k26ogid7t3tv3cm
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAl/ABWgACgkQwfwUeK3K
-7AlsPggAkjJOvoGd3tKsUN+7szAudUuxW4NU1PbYdbrZhQlQxnBgVBIsGdnSce81
-Hrgjg8qTfgPld6A1NkCSStfPO82QgpE4baDMWVfP1FvFY5+AaipJRlTxFYTR4oWD
-EhjfZKNXsYfEFq41x/zXXQKWTh8qEiMmEqSeGR4a8lwmr4VITFAF2UtlOQ6/+F1Z
-e1JMsJrTynIvnqdYWQvLfkuYVeY2LQjOp/eVw9RfUpXxgMykfGFgcHCggBZ56DWs
-Wsr+Su660LyV4/u2+4dhIVbJzMl7JFo4GUJTO5XsdqGOW1QNh3Hmssacpry/X/kG
-vVQwMCJyGzpK1zyeT7Kxw4R0RHkmTw==
-=Ry6n
------END PGP SIGNATURE-----
-
---5k26ogid7t3tv3cm--
-
-
---===============3194963916127348717==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============3194963916127348717==--
