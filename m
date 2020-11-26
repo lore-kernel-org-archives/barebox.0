@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay8-d.mail.gandi.net ([217.70.183.201])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kiM3o-0007n2-Ku
- for barebox@lists.infradead.org; Thu, 26 Nov 2020 18:32:06 +0000
-Received: from geraet.fritz.box (unknown [87.123.103.207])
- (Authenticated sender: ahmad@a3f.at)
- by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id C55221BF20E
- for <barebox@lists.infradead.org>; Thu, 26 Nov 2020 18:32:00 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Thu, 26 Nov 2020 19:31:52 +0100
-Message-Id: <20201126183154.348024-2-ahmad@a3f.at>
-In-Reply-To: <20201126183154.348024-1-ahmad@a3f.at>
-References: <20201126183154.348024-1-ahmad@a3f.at>
+ id 1kiNB9-000454-79
+ for barebox@lists.infradead.org; Thu, 26 Nov 2020 19:43:44 +0000
+Date: Thu, 26 Nov 2020 20:43:38 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20201126194338.54v7ys7wgp5e23wy@pengutronix.de>
+References: <20201126175553.16934-1-a.fatoum@pengutronix.de>
+ <20201126175553.16934-2-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+In-Reply-To: <20201126175553.16934-2-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,53 +18,75 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============3194963916127348717=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] commands: nv: fix set/remove of multiple variables in one
- go
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 2/4] common: dummy_malloc: remove unintended GPL2
+ eCos-exception-2.0
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, rhi@pengutronix.de
 
-Multiple nonopt arguments seems to have never worked, because the value
-was always extracted out of the first non-opt argument. After the first
-iteration, it'll have it's '=' stripped and thus value == NULL for all i
-> 0. Fix this.
 
-Before:
-  $ nv a=1 b=2 c=3
-  $ echo "[$nv.a $nv.b $nv.c]"
-  [1  ]
+--===============3194963916127348717==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="5k26ogid7t3tv3cm"
+Content-Disposition: inline
 
-After:
-  $ nv a=1 b=2 c=3
-  $ echo "[$nv.a $nv.b $nv.c]"
-  [1 2 3]
 
-Fixes: 0c2fccceb625 ("nv: Allow to set/remove multiple variables with one command")
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
----
- commands/nv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+--5k26ogid7t3tv3cm
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/commands/nv.c b/commands/nv.c
-index 8d4192402ca5..fa865811dce2 100644
---- a/commands/nv.c
-+++ b/commands/nv.c
-@@ -55,7 +55,7 @@ static int do_nv(int argc, char *argv[])
- 
- 	for (i = 0; i < argc; i++) {
- 		int ret;
--		value = strchr(argv[0], '=');
-+		value = strchr(argv[i], '=');
- 		if (value) {
- 			*value = 0;
- 			value++;
--- 
-2.28.0
+On Thu, Nov 26, 2020 at 06:55:51PM +0100, Ahmad Fatoum wrote:
+> Apparently, the file should be GPL-2.0-only without exceptions:
+>=20
+> On 24.11.20 09:44, Sascha Hauer wrote[1]:
+> > This looks like I accidently copied the wrong header. I don't think I
+> > did this on purpose. It doesn't make much sense to me when compiling
+> > against dummy malloc is different than compiling against tlsf malloc
+> > or dlmalloc.
+>=20
+> Ase dropping exceptions is no relicense, it's ok to do here without
 
+s/Ase/As/
+
+Other than that looks good.
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--5k26ogid7t3tv3cm
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAl/ABWgACgkQwfwUeK3K
+7AlsPggAkjJOvoGd3tKsUN+7szAudUuxW4NU1PbYdbrZhQlQxnBgVBIsGdnSce81
+Hrgjg8qTfgPld6A1NkCSStfPO82QgpE4baDMWVfP1FvFY5+AaipJRlTxFYTR4oWD
+EhjfZKNXsYfEFq41x/zXXQKWTh8qEiMmEqSeGR4a8lwmr4VITFAF2UtlOQ6/+F1Z
+e1JMsJrTynIvnqdYWQvLfkuYVeY2LQjOp/eVw9RfUpXxgMykfGFgcHCggBZ56DWs
+Wsr+Su660LyV4/u2+4dhIVbJzMl7JFo4GUJTO5XsdqGOW1QNh3Hmssacpry/X/kG
+vVQwMCJyGzpK1zyeT7Kxw4R0RHkmTw==
+=Ry6n
+-----END PGP SIGNATURE-----
+
+--5k26ogid7t3tv3cm--
+
+
+--===============3194963916127348717==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============3194963916127348717==--
