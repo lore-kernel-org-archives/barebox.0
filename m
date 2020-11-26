@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from relay8-d.mail.gandi.net ([217.70.183.201])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kiM3o-0007nY-OO
- for barebox@lists.infradead.org; Thu, 26 Nov 2020 18:32:07 +0000
+ id 1kiM3o-0007n2-Ku
+ for barebox@lists.infradead.org; Thu, 26 Nov 2020 18:32:06 +0000
 Received: from geraet.fritz.box (unknown [87.123.103.207])
  (Authenticated sender: ahmad@a3f.at)
- by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 521731BF20A
- for <barebox@lists.infradead.org>; Thu, 26 Nov 2020 18:32:01 +0000 (UTC)
+ by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id C55221BF20E
+ for <barebox@lists.infradead.org>; Thu, 26 Nov 2020 18:32:00 +0000 (UTC)
 From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Thu, 26 Nov 2020 19:31:53 +0100
-Message-Id: <20201126183154.348024-3-ahmad@a3f.at>
+Date: Thu, 26 Nov 2020 19:31:52 +0100
+Message-Id: <20201126183154.348024-2-ahmad@a3f.at>
 In-Reply-To: <20201126183154.348024-1-ahmad@a3f.at>
 References: <20201126183154.348024-1-ahmad@a3f.at>
 MIME-Version: 1.0
@@ -25,38 +25,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] commands: nv: pass empty string for nv
+Subject: [PATCH 2/4] commands: nv: fix set/remove of multiple variables in one
+ go
 To: barebox@lists.infradead.org
 
-Setting a variable via the nv command results in the call chain
-nvar_add() -> nv_save() -> __nv_save().
+Multiple nonopt arguments seems to have never worked, because the value
+was always extracted out of the first non-opt argument. After the first
+iteration, it'll have it's '=' stripped and thus value == NULL for all i
+> 0. Fix this.
 
-__nv_save isn't supposed to be called with val=NULL argument however:
+Before:
+  $ nv a=1 b=2 c=3
+  $ echo "[$nv.a $nv.b $nv.c]"
+  [1  ]
 
-	dprintf(fd, "%s", val);
+After:
+  $ nv a=1 b=2 c=3
+  $ echo "[$nv.a $nv.b $nv.c]"
+  [1 2 3]
 
-Avoid this from happening by translating NULL into the empty string.
-This aligns nv with the behavior of hush and setenv (but not global,
-this will need to be looked at separately).
-
+Fixes: 0c2fccceb625 ("nv: Allow to set/remove multiple variables with one command")
 Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- commands/nv.c | 2 ++
- 1 file changed, 2 insertions(+)
+ commands/nv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/commands/nv.c b/commands/nv.c
-index fa865811dce2..a1cff08ee463 100644
+index 8d4192402ca5..fa865811dce2 100644
 --- a/commands/nv.c
 +++ b/commands/nv.c
-@@ -59,6 +59,8 @@ static int do_nv(int argc, char *argv[])
+@@ -55,7 +55,7 @@ static int do_nv(int argc, char *argv[])
+ 
+ 	for (i = 0; i < argc; i++) {
+ 		int ret;
+-		value = strchr(argv[0], '=');
++		value = strchr(argv[i], '=');
  		if (value) {
  			*value = 0;
  			value++;
-+		} else {
-+			value = "";
- 		}
- 
- 		if (do_remove) {
 -- 
 2.28.0
 
