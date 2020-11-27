@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kiZhA-0003GI-VB
- for barebox@lists.infradead.org; Fri, 27 Nov 2020 09:05:37 +0000
-Date: Fri, 27 Nov 2020 10:05:35 +0100
-Message-ID: <20201127090535.GG11843@pengutronix.de>
-References: <20201126203716.394606-1-ahmad@a3f.at>
+ id 1kiZix-0003Tk-BY
+ for barebox@lists.infradead.org; Fri, 27 Nov 2020 09:07:28 +0000
+Date: Fri, 27 Nov 2020 10:07:26 +0100
+Message-ID: <20201127090726.GH11843@pengutronix.de>
+References: <20201124102430.17407-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201126203716.394606-1-ahmad@a3f.at>
+In-Reply-To: <20201124102430.17407-1-a.fatoum@pengutronix.de>
 From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,113 +22,237 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH master] sandbox: retire CONFIG_LINUX symbol in favor of
- CONFIG_SANDBOX
-To: Ahmad Fatoum <ahmad@a3f.at>
+Subject: Re: [PATCH v2 1/2] watchdog: implement watchdog_get_alias_id_from
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Nov 26, 2020 at 09:37:17PM +0100, Ahmad Fatoum wrote:
-> 5211e428cbab ("image: Convert the IH_... values to enums") removed the
-> IH_ARCH_LINUX enumeration value leading to breakage of sandbox
-> configurations that enable bootm. Instead of reinstating IH_ARCH_LINUX,
-> just use IH_ARCH_SANDBOX and remove mention of CONFIG_LINUX altogether,
-> it's always true anyway when CONFIG_SANDBOX is true.
+On Tue, Nov 24, 2020 at 11:24:29AM +0100, Ahmad Fatoum wrote:
+> On device-tree enabled platforms, the Linux kernel will first attempt
+> to use watchdog%d as watchdog name, where %d is the alias id.
 > 
-> Fixes: 5211e428cbab ("image: Convert the IH_... values to enums")
-> Cc: Antony Pavlov <antonynpavlov@gmail.com>
-> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+> Add a function that given a barebox struct watchdog and the device tree
+> root node of the kernel device tree, computes the corresponding kernel
+> alias id.
+> 
+> This may then later be used to pass an appropriate argument on the
+> kernel command line.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  arch/sandbox/Kconfig   | 6 +-----
->  commands/Kconfig       | 2 +-
->  drivers/net/Kconfig    | 2 +-
->  drivers/serial/Kconfig | 2 +-
->  include/image.h        | 4 ++--
->  5 files changed, 6 insertions(+), 10 deletions(-)
+> v1 -> v2:
+>   - removed extern where unneeded (Sascha)
+> ---
+>  drivers/of/base.c          | 77 ++++++++++++++++++++++++++++++--------
+>  drivers/watchdog/wd_core.c | 19 ++++++++++
+>  include/of.h               |  8 ++++
+>  include/watchdog.h         |  8 ++++
+>  4 files changed, 97 insertions(+), 15 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/arch/sandbox/Kconfig b/arch/sandbox/Kconfig
-> index 113b619fc35b..d9fc0c947b02 100644
-> --- a/arch/sandbox/Kconfig
-> +++ b/arch/sandbox/Kconfig
-> @@ -11,17 +11,13 @@ config SANDBOX
->  	select BLOCK_WRITE
->  	select PARTITION_DISK
->  	select ARCH_HAS_STACK_DUMP if ASAN
-> +	select GENERIC_FIND_NEXT_BIT
->  	default y
+> diff --git a/drivers/of/base.c b/drivers/of/base.c
+> index 5b45c2023f3b..acbae3d8c4bb 100644
+> --- a/drivers/of/base.c
+> +++ b/drivers/of/base.c
+> @@ -149,6 +149,31 @@ static void of_alias_add(struct alias_prop *ap, struct device_node *np,
+>  		 ap->alias, ap->stem, ap->id, np->full_name);
+>  }
 >  
->  config ARCH_TEXT_BASE
->  	hex
->  	default 0x00000000
+> +static struct device_node *of_alias_resolve(struct device_node *root, struct property *pp)
+> +{
+> +	/* Skip those we do not want to proceed */
+> +	if (!of_prop_cmp(pp->name, "name") ||
+> +	    !of_prop_cmp(pp->name, "phandle") ||
+> +	    !of_prop_cmp(pp->name, "linux,phandle"))
+> +		return NULL;
+> +
+> +	return of_find_node_by_path_from(root, of_property_get_value(pp));
+> +}
+> +
+> +static int of_alias_id_parse(const char *start, int *len)
+> +{
+> +	const char *end = start + strlen(start);
+> +
+> +	/* walk the alias backwards to extract the id and work out
+> +	 * the 'stem' string */
+> +	while (isdigit(*(end-1)) && end > start)
+> +		end--;
+> +
+> +	*len = end - start;
+> +
+> +	return simple_strtol(end, NULL, 10);
+> +}
+> +
+>  /**
+>   * of_alias_scan - Scan all properties of 'aliases' node
+>   *
+> @@ -175,28 +200,15 @@ void of_alias_scan(void)
 >  
-> -config LINUX
-> -	bool
-> -	default y
-> -	select GENERIC_FIND_NEXT_BIT
+>  	list_for_each_entry(pp, &of_aliases->properties, list) {
+>  		const char *start = pp->name;
+> -		const char *end = start + strlen(start);
+>  		struct device_node *np;
+>  		struct alias_prop *ap;
+>  		int id, len;
+>  
+> -		/* Skip those we do not want to proceed */
+> -		if (!of_prop_cmp(pp->name, "name") ||
+> -		    !of_prop_cmp(pp->name, "phandle") ||
+> -		    !of_prop_cmp(pp->name, "linux,phandle"))
+> -			continue;
 > -
->  config SANDBOX_REEXEC
->  	prompt "exec(2) reset handler"
->  	def_bool y
-> diff --git a/commands/Kconfig b/commands/Kconfig
-> index 8b4ed9aa5365..03ddfc887074 100644
-> --- a/commands/Kconfig
-> +++ b/commands/Kconfig
-> @@ -2058,7 +2058,7 @@ config CMD_KEYSTORE
+> -		np = of_find_node_by_path(of_property_get_value(pp));
+> +		np = of_alias_resolve(root_node, pp);
+>  		if (!np)
+>  			continue;
 >  
->  config CMD_LINUX_EXEC
->  	bool "linux exec"
-> -	depends on LINUX
-> +	depends on SANDBOX
->  	help
->  	  Execute a command on the host
+> -		/* walk the alias backwards to extract the id and work out
+> -		 * the 'stem' string */
+> -		while (isdigit(*(end-1)) && end > start)
+> -			end--;
+> -		len = end - start;
+> -
+> -		id = simple_strtol(end, NULL, 10);
+> +		id = of_alias_id_parse(start, &len);
+>  		if (id < 0)
+>  			continue;
 >  
-> diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-> index 76509a52a1c7..0d55ea7a3b60 100644
-> --- a/drivers/net/Kconfig
-> +++ b/drivers/net/Kconfig
-> @@ -242,7 +242,7 @@ config DRIVER_NET_SMC91111
+> @@ -235,6 +247,41 @@ int of_alias_get_id(struct device_node *np, const char *stem)
+>  }
+>  EXPORT_SYMBOL_GPL(of_alias_get_id);
 >  
->  config DRIVER_NET_TAP
->  	bool "tap Ethernet driver"
-> -	depends on LINUX
-> +	depends on SANDBOX
+> +int of_alias_get_id_from(struct device_node *root, struct device_node *np,
+> +			 const char *stem)
+> +{
+> +	struct device_node *aliasnp, *entrynp;
+> +	struct property *pp;
+> +
+> +	if (!root)
+> +		return of_alias_get_id(np, stem);
+> +
+> +	aliasnp = of_find_node_by_path_from(root, "/aliases");
+> +	if (!aliasnp)
+> +		return -ENODEV;
+> +
+> +	for_each_property_of_node(aliasnp, pp) {
+> +		const char *start = pp->name;
+> +		int id, len;
+> +
+> +		entrynp = of_alias_resolve(root_node, pp);
+> +		if (entrynp != np)
+> +			continue;
+> +
+> +		id = of_alias_id_parse(start, &len);
+> +		if (id < 0)
+> +			continue;
+> +
+> +		if (strncasecmp(start, stem, len))
+> +			continue;
+> +
+> +		return id;
+> +	}
+> +
+> +	return -ENODEV;
+> +}
+> +EXPORT_SYMBOL_GPL(of_alias_get_id_from);
+> +
+>  const char *of_alias_get(struct device_node *np)
+>  {
+>  	struct alias_prop *app;
+> diff --git a/drivers/watchdog/wd_core.c b/drivers/watchdog/wd_core.c
+> index 665338af6197..643c53268fc8 100644
+> --- a/drivers/watchdog/wd_core.c
+> +++ b/drivers/watchdog/wd_core.c
+> @@ -261,6 +261,25 @@ struct watchdog *watchdog_get_default(void)
+>  }
+>  EXPORT_SYMBOL(watchdog_get_default);
 >  
->  config DRIVER_NET_EFI_SNP
->  	bool "EFI SNP ethernet driver"
-> diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
-> index 14cd430ee489..5c6f0e88e398 100644
-> --- a/drivers/serial/Kconfig
-> +++ b/drivers/serial/Kconfig
-> @@ -52,7 +52,7 @@ config DRIVER_SERIAL_AUART
->  	bool "i.MX23/i.MX28 application UART serial driver"
+> +int watchdog_get_alias_id_from(struct watchdog *wd, struct device_node *root)
+> +{
+> +	struct device_node *dstnp, *srcnp = wd->hwdev ? wd->hwdev->device_node : NULL;
+> +	char *name;
+> +
+> +	if (!srcnp)
+> +		return -ENODEV;
+> +
+> +	name = of_get_reproducible_name(srcnp);
+> +	dstnp = of_find_node_by_reproducible_name(root, name);
+> +	free(name);
+> +
+> +	if (!dstnp)
+> +		return -ENODEV;
+> +
+> +	return of_alias_get_id_from(root, wd->hwdev->device_node, "watchdog");
+> +}
+> +EXPORT_SYMBOL(watchdog_get_alias_id_from);
+> +
+>  struct watchdog *watchdog_get_by_name(const char *name)
+>  {
+>  	struct watchdog *tmp;
+> diff --git a/include/of.h b/include/of.h
+> index 08a02e110522..dc3aa0730bf7 100644
+> --- a/include/of.h
+> +++ b/include/of.h
+> @@ -254,6 +254,8 @@ extern int of_count_phandle_with_args(const struct device_node *np,
 >  
->  config DRIVER_SERIAL_LINUX_CONSOLE
-> -	depends on LINUX
-> +	depends on SANDBOX
->  	default y
->  	bool "linux console driver"
+>  extern void of_alias_scan(void);
+>  extern int of_alias_get_id(struct device_node *np, const char *stem);
+> +extern int of_alias_get_id_from(struct device_node *root, struct device_node *np,
+> +				const char *stem);
+>  extern const char *of_alias_get(struct device_node *np);
+>  extern int of_modalias_node(struct device_node *node, char *modalias, int len);
 >  
-> diff --git a/include/image.h b/include/image.h
-> index 963ea9686319..fa06476845af 100644
-> --- a/include/image.h
-> +++ b/include/image.h
-> @@ -127,8 +127,8 @@ enum {
->  #define IH_ARCH IH_ARCH_BLACKFIN
->  #elif defined(__avr32__)
->  #define IH_ARCH IH_ARCH_AVR32
-> -#elif defined(CONFIG_LINUX)
-> -#define IH_ARCH IH_ARCH_LINUX
-> +#elif defined(CONFIG_SANDBOX)
-> +#define IH_ARCH IH_ARCH_SANDBOX
+> @@ -677,6 +679,12 @@ static inline int of_alias_get_id(struct device_node *np, const char *stem)
+>  	return -ENOSYS;
+>  }
+>  
+> +static inline int of_alias_get_id_from(struct device_node *root, struct device_node *np,
+> +				       const char *stem)
+> +{
+> +	return -ENOSYS
+> +}
+> +
+>  static inline const char *of_alias_get(struct device_node *np)
+>  {
+>  	return NULL;
+> diff --git a/include/watchdog.h b/include/watchdog.h
+> index 81414ef8ecaa..ee8efdecd030 100644
+> --- a/include/watchdog.h
+> +++ b/include/watchdog.h
+> @@ -13,6 +13,8 @@ enum wdog_hw_runnning {
+>  	 WDOG_HW_NOT_RUNNING = PARAM_TRISTATE_FALSE
+>  };
+>  
+> +struct device_node;
+> +
+>  struct watchdog {
+>  	int (*set_timeout)(struct watchdog *, unsigned);
+>  	const char *name;
+> @@ -44,6 +46,7 @@ int watchdog_register(struct watchdog *);
+>  int watchdog_deregister(struct watchdog *);
+>  struct watchdog *watchdog_get_default(void);
+>  struct watchdog *watchdog_get_by_name(const char *name);
+> +int watchdog_get_alias_id_from(struct watchdog *, struct device_node *);
+>  int watchdog_set_timeout(struct watchdog*, unsigned);
+>  int watchdog_inhibit_all(void);
 >  #else
->  #define IH_ARCH IH_ARCH_INVALID
+> @@ -76,6 +79,11 @@ static inline int watchdog_inhibit_all(void)
+>  {
+>  	return -ENOSYS;
+>  }
+> +
+> +static inline int watchdog_get_alias_id_from(struct watchdog *, struct device_node *)
+> +{
+> +	return -ENOSYS;
+> +}
 >  #endif
+>  
+>  #define WATCHDOG_DEFAULT_PRIORITY 100
 > -- 
-> 2.28.0
+> 2.29.2
 > 
 > 
 > _______________________________________________
