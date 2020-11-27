@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kiZQS-0006Jt-Ag
- for barebox@lists.infradead.org; Fri, 27 Nov 2020 08:48:21 +0000
-Date: Fri, 27 Nov 2020 09:48:17 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201127084817.GD11843@pengutronix.de>
-References: <6c3e8d1f-025c-73c6-3834-280f0a7e5633@pengutronix.de>
+ id 1kiZhA-0003GI-VB
+ for barebox@lists.infradead.org; Fri, 27 Nov 2020 09:05:37 +0000
+Date: Fri, 27 Nov 2020 10:05:35 +0100
+Message-ID: <20201127090535.GG11843@pengutronix.de>
+References: <20201126203716.394606-1-ahmad@a3f.at>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <6c3e8d1f-025c-73c6-3834-280f0a7e5633@pengutronix.de>
+In-Reply-To: <20201126203716.394606-1-ahmad@a3f.at>
+From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,86 +22,120 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Infinite Loop when automounting device mounted elsewhere
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH master] sandbox: retire CONFIG_LINUX symbol in favor of
+ CONFIG_SANDBOX
+To: Ahmad Fatoum <ahmad@a3f.at>
+Cc: barebox@lists.infradead.org
 
-On Wed, Nov 25, 2020 at 10:33:45AM +0100, Ahmad Fatoum wrote:
-> Hello,
+On Thu, Nov 26, 2020 at 09:37:17PM +0100, Ahmad Fatoum wrote:
+> 5211e428cbab ("image: Convert the IH_... values to enums") removed the
+> IH_ARCH_LINUX enumeration value leading to breakage of sandbox
+> configurations that enable bootm. Instead of reinstating IH_ARCH_LINUX,
+> just use IH_ARCH_SANDBOX and remove mention of CONFIG_LINUX altogether,
+> it's always true anyway when CONFIG_SANDBOX is true.
 > 
-> I just ran into this issue:
-> 
->   $ mkdir /boot
->   $ mount /dev/mmc2.0 /boot
->   $ ls /mnt/mmc2.0/
->   mounted /dev/mmc2.0 on /boot
->   mounted /dev/mmc2.0 on /boot
->   mounted /dev/mmc2.0 on /boot
->   [ Ad infinitum ]
-> 
-> This is more readily reproducible with barebox platforms where a separate
-> boot partition is default-mounted as /boot. In that case, accessing the
-> partition's corresponding /mnt entry will hang.
-> 
-> The hang can be traced back to fs/fs.c:follow_managed():
-> 
->   while (managed = path->dentry->d_flags,
->   	managed &= DCACHE_MANAGED_DENTRY,
->   	managed != 0) {
-> 	if (managed & DCACHE_MOUNTED) {
->   		struct vfsmount *mounted = lookup_mnt(path);
->   
->   		if (mounted) {
->   			dput(path->dentry);
->   			if (need_mntput)
->   				mntput(path->mnt);
->   			path->mnt = mounted;
->   			path->dentry = dget(mounted->mnt_root);
->   			need_mntput = true;
->   			continue;
->   		}
->   	}
->   
->   	/* Handle an automount point */
->   	if (managed & DCACHE_NEED_AUTOMOUNT) {
->   		ret = follow_automount(path, nd, &need_mntput);
->   		if (ret < 0)
->   			break;
->   		continue;
->   	}
->   
-> 	/* We didn't change the current path point */
->   	break;
->   }
-> 
-> 
-> The code attempts the follow_automount, which would succeed here,
-> but it doesn't actually mount the current mount point, so we never
-> enter the first if clause that would change path->dentry and lead
-> us out of the loop.
-> 
-> I am unsure at what layer this should be fixed. Any suggestions?
+> Fixes: 5211e428cbab ("image: Convert the IH_... values to enums")
+> Cc: Antony Pavlov <antonynpavlov@gmail.com>
+> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+> ---
+>  arch/sandbox/Kconfig   | 6 +-----
+>  commands/Kconfig       | 2 +-
+>  drivers/net/Kconfig    | 2 +-
+>  drivers/serial/Kconfig | 2 +-
+>  include/image.h        | 4 ++--
+>  5 files changed, 6 insertions(+), 10 deletions(-)
 
-This goes down to the command "mount mmc2.0" being executed. The mount
-command then does a cdev_mount_default() which does this:
-
-	/*
-	 * If this cdev is already mounted somewhere use this path
-	 * instead of mounting it again to avoid corruption on the
-	 * filesystem. Note this ignores eventual fsoptions though.
-	 */
-	path = cdev_get_mount_path(cdev);
-	if (path)
-		return path;
-
-The mount command is happy then and returns successfully. I think the
-mount command should return an error when the cdev is mounted already
-but the path it's mounted to is not the default path for that cdev.
-
-Another option would be to implement bind mounts and do a bind mount
-to the default path.
+Applied, thanks
 
 Sascha
+
+> 
+> diff --git a/arch/sandbox/Kconfig b/arch/sandbox/Kconfig
+> index 113b619fc35b..d9fc0c947b02 100644
+> --- a/arch/sandbox/Kconfig
+> +++ b/arch/sandbox/Kconfig
+> @@ -11,17 +11,13 @@ config SANDBOX
+>  	select BLOCK_WRITE
+>  	select PARTITION_DISK
+>  	select ARCH_HAS_STACK_DUMP if ASAN
+> +	select GENERIC_FIND_NEXT_BIT
+>  	default y
+>  
+>  config ARCH_TEXT_BASE
+>  	hex
+>  	default 0x00000000
+>  
+> -config LINUX
+> -	bool
+> -	default y
+> -	select GENERIC_FIND_NEXT_BIT
+> -
+>  config SANDBOX_REEXEC
+>  	prompt "exec(2) reset handler"
+>  	def_bool y
+> diff --git a/commands/Kconfig b/commands/Kconfig
+> index 8b4ed9aa5365..03ddfc887074 100644
+> --- a/commands/Kconfig
+> +++ b/commands/Kconfig
+> @@ -2058,7 +2058,7 @@ config CMD_KEYSTORE
+>  
+>  config CMD_LINUX_EXEC
+>  	bool "linux exec"
+> -	depends on LINUX
+> +	depends on SANDBOX
+>  	help
+>  	  Execute a command on the host
+>  
+> diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+> index 76509a52a1c7..0d55ea7a3b60 100644
+> --- a/drivers/net/Kconfig
+> +++ b/drivers/net/Kconfig
+> @@ -242,7 +242,7 @@ config DRIVER_NET_SMC91111
+>  
+>  config DRIVER_NET_TAP
+>  	bool "tap Ethernet driver"
+> -	depends on LINUX
+> +	depends on SANDBOX
+>  
+>  config DRIVER_NET_EFI_SNP
+>  	bool "EFI SNP ethernet driver"
+> diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+> index 14cd430ee489..5c6f0e88e398 100644
+> --- a/drivers/serial/Kconfig
+> +++ b/drivers/serial/Kconfig
+> @@ -52,7 +52,7 @@ config DRIVER_SERIAL_AUART
+>  	bool "i.MX23/i.MX28 application UART serial driver"
+>  
+>  config DRIVER_SERIAL_LINUX_CONSOLE
+> -	depends on LINUX
+> +	depends on SANDBOX
+>  	default y
+>  	bool "linux console driver"
+>  
+> diff --git a/include/image.h b/include/image.h
+> index 963ea9686319..fa06476845af 100644
+> --- a/include/image.h
+> +++ b/include/image.h
+> @@ -127,8 +127,8 @@ enum {
+>  #define IH_ARCH IH_ARCH_BLACKFIN
+>  #elif defined(__avr32__)
+>  #define IH_ARCH IH_ARCH_AVR32
+> -#elif defined(CONFIG_LINUX)
+> -#define IH_ARCH IH_ARCH_LINUX
+> +#elif defined(CONFIG_SANDBOX)
+> +#define IH_ARCH IH_ARCH_SANDBOX
+>  #else
+>  #define IH_ARCH IH_ARCH_INVALID
+>  #endif
+> -- 
+> 2.28.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
