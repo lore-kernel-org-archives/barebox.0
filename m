@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from relay8-d.mail.gandi.net ([217.70.183.201])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kiZeW-00033C-2L
- for barebox@lists.infradead.org; Fri, 27 Nov 2020 09:02:52 +0000
-Date: Fri, 27 Nov 2020 10:02:49 +0100
-Message-ID: <20201127090249.GF11843@pengutronix.de>
-References: <20201126183154.348024-1-ahmad@a3f.at>
+ id 1kj7wY-0002QP-NI
+ for barebox@lists.infradead.org; Sat, 28 Nov 2020 21:39:50 +0000
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Sat, 28 Nov 2020 22:39:24 +0100
+Message-Id: <20201128213934.681065-1-ahmad@a3f.at>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201126183154.348024-1-ahmad@a3f.at>
-From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,62 +19,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] hush: remove non-functional code
-To: Ahmad Fatoum <ahmad@a3f.at>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 01/11] Revert "ARM: dts: bcm2835-rpi: re-enable booting from
+ SD card"
+To: barebox@lists.infradead.org
+Cc: Roland Hieber <rhi@pengutronix.de>
 
-On Thu, Nov 26, 2020 at 07:31:51PM +0100, Ahmad Fatoum wrote:
-> name is unused except for printing and value is modified, but never read
-> back. They currently serve no purpose, so drop them. The actual
-> splitting by '=' happens in set_local_var later.
-> 
-> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
-> ---
->  common/hush.c | 9 +--------
->  1 file changed, 1 insertion(+), 8 deletions(-)
+Since d6d3d0aecece ("mci: add driver for BCM283x sdhost core"), we now
+have driver support for the sdhost controller in barebox as well.
+We can thus drop the device tree override and use the same MCI the
+kernel uses. This was tested on a Raspberry Pi zero W, which has
+the same bcm2835 SoC as the Raspberry Pi 1.
 
-Applied, thanks
+This reverts commit abc0447440d68af720127fcca3c17f04ee144fcc.
 
-Sascha
+Cc: Roland Hieber <rhi@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ arch/arm/dts/bcm2835-rpi.dts | 8 --------
+ 1 file changed, 8 deletions(-)
 
-> 
-> diff --git a/common/hush.c b/common/hush.c
-> index ec0d5129b70d..a6fc4485bf52 100644
-> --- a/common/hush.c
-> +++ b/common/hush.c
-> @@ -798,16 +798,9 @@ static int run_pipe_real(struct p_context *ctx, struct pipe *pi)
->  			 * This junk is all to decide whether or not to export this
->  			 * variable. */
->  			int export_me = 0;
-> -			char *name, *value;
->  
-> -			name = xstrdup(child->argv[i]);
-> -			hush_debug("Local environment set: %s\n", name);
-> -			value = strchr(name, '=');
-> +			hush_debug("Local environment set: %s\n", child->argv[i]);
->  
-> -			if (value)
-> -				*value = 0;
-> -
-> -			free(name);
->  			p = insert_var_value(child->argv[i]);
->  			rcode = set_local_var(p, export_me);
->  			if (rcode)
-> -- 
-> 2.28.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/arch/arm/dts/bcm2835-rpi.dts b/arch/arm/dts/bcm2835-rpi.dts
+index 4f227508010b..cc5a8a927112 100644
+--- a/arch/arm/dts/bcm2835-rpi.dts
++++ b/arch/arm/dts/bcm2835-rpi.dts
+@@ -9,11 +9,3 @@
+ &{/memory@0} {
+ 	reg = <0x0 0x0>;
+ };
+-
+-&sdhci {
+-	status = "okay";
+-};
+-
+-&sdhost {
+-	status = "disabled";
+-};
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.28.0
+
 
 _______________________________________________
 barebox mailing list
