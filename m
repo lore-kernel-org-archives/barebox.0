@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from relay8-d.mail.gandi.net ([217.70.183.201])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kj7wa-0002Ss-Da
- for barebox@lists.infradead.org; Sat, 28 Nov 2020 21:39:51 +0000
+ id 1kj7wY-0002QY-LB
+ for barebox@lists.infradead.org; Sat, 28 Nov 2020 21:39:49 +0000
+Received: from geraet.fritz.box (muedsl-82-207-195-223.citykom.de
+ [82.207.195.223]) (Authenticated sender: ahmad@a3f.at)
+ by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 963691BF20D
+ for <barebox@lists.infradead.org>; Sat, 28 Nov 2020 21:39:44 +0000 (UTC)
 From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Sat, 28 Nov 2020 22:39:34 +0100
-Message-Id: <20201128213934.681065-11-ahmad@a3f.at>
+Date: Sat, 28 Nov 2020 22:39:32 +0100
+Message-Id: <20201128213934.681065-9-ahmad@a3f.at>
 In-Reply-To: <20201128213934.681065-1-ahmad@a3f.at>
 References: <20201128213934.681065-1-ahmad@a3f.at>
 MIME-Version: 1.0
@@ -21,47 +25,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/11] doc: bcm283x: document use of mini-uart on Raspberry Pi
- Zero W / CM3
+Subject: [PATCH 09/11] ARM: rpi: fix model description string
 To: barebox@lists.infradead.org
-Cc: Andrew John <andrew@mobius-embedded-systems.co.uk>, Roland Hieber <rhi@pengutronix.de>, Robert Carnecky <robert@neopsis.com>, Rouven Czerwinski <rcz@pengutronix.de>
 
-As described in the UART configuration[1] article in the Raspberry Pi
-Foundation documentation, Raspberry Pi 3 & 4 as well as Zero W use the
-mini-uart as primary (easily user-accessible) UART. At least on the
-Raspberry Zero W and CM3, we need to pass uart_2ndstage=1, so the
-BootROM leaves the 8250 IP in a suitable state for use by barebox.
-Document this.
+s/Model/Nodel/ as well as drop the space the other ones (e.g. Model 2B)
+lack.
 
-[1]: https://www.raspberrypi.org/documentation/configuration/uart.md
-
-Cc: Roland Hieber <rhi@pengutronix.de>
-Cc: Rouven Czerwinski <rcz@pengutronix.de>
-Cc: Robert Carnecky <robert@neopsis.com>
-Cc: Andrew John <andrew@mobius-embedded-systems.co.uk>
 Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- Documentation/boards/bcm2835.rst | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/arm/boards/raspberry-pi/rpi-common.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/boards/bcm2835.rst b/Documentation/boards/bcm2835.rst
-index c896871e0d82..dbdfc2633173 100644
---- a/Documentation/boards/bcm2835.rst
-+++ b/Documentation/boards/bcm2835.rst
-@@ -23,6 +23,13 @@ Raspberry Pi
-          kernel=barebox.img
-          enable_uart=1
- 
-+     If you want to use the mini-uart instead of the PL011, you might need to additionally set::
-+
-+         uart_2ndstage=1
-+
-+     This is useful on newer boards like the Raspberry Pi Zero W and CM3, which route the
-+     more easily accessible primary UART to the mini-uart.
-+
-      (For more information, refer to the `documentation for config.txt`_.)
- 
-   5. Connect to board's UART (115200 8N1);
+diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
+index f1d8a4e0f609..30bfa995b3fa 100644
+--- a/arch/arm/boards/raspberry-pi/rpi-common.c
++++ b/arch/arm/boards/raspberry-pi/rpi-common.c
+@@ -230,8 +230,8 @@ static const struct rpi_model rpi_models_new_scheme[] = {
+ 	RPI_MODEL(BCM2837_BOARD_REV_CM3, 	"Compute Module 3", NULL ),
+ 	RPI_MODEL(0xb, "Unknown model", NULL),
+ 	RPI_MODEL(BCM2835_BOARD_REV_ZERO_W, 	"Zero W", 	rpi_0_w_init),
+-	RPI_MODEL(BCM2837B0_BOARD_REV_3B_PLUS, 	"Model 3 B+", 	rpi_b_plus_init ),
+-	RPI_MODEL(BCM2837B0_BOARD_REV_3A_PLUS, 	"Nodel 3 A+", 	rpi_b_plus_init),
++	RPI_MODEL(BCM2837B0_BOARD_REV_3B_PLUS, 	"Model 3B+", 	rpi_b_plus_init ),
++	RPI_MODEL(BCM2837B0_BOARD_REV_3A_PLUS, 	"Model 3A+", 	rpi_b_plus_init),
+ 	RPI_MODEL(0xf, "Unknown model", NULL),
+ 	RPI_MODEL(BCM2837B0_BOARD_REV_CM3_PLUS, "Compute Module 3+", NULL),
+ };
 -- 
 2.28.0
 
