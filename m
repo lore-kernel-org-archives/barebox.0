@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1khTop-0004lL-08
- for barebox@lists.infradead.org; Tue, 24 Nov 2020 08:37:00 +0000
-Date: Tue, 24 Nov 2020 09:36:57 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20201124083657.GB14718@pengutronix.de>
-References: <20201123152931.4480-1-l.stach@pengutronix.de>
+ id 1kjU52-0006rO-8A
+ for barebox@lists.infradead.org; Sun, 29 Nov 2020 21:18:01 +0000
+References: <20201126175553.16934-1-a.fatoum@pengutronix.de>
+ <20201126175553.16934-2-a.fatoum@pengutronix.de>
+ <20201129200815.hrisxvxhhfgftldo@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <28c1e88a-f146-3128-6604-9128279ac9c6@pengutronix.de>
+Date: Sun, 29 Nov 2020 22:17:57 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201123152931.4480-1-l.stach@pengutronix.de>
+In-Reply-To: <20201129200815.hrisxvxhhfgftldo@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,60 +24,110 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] usb: imx: add support for setting power pin polarity
- on i.MX6/7
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 2/4] common: dummy_malloc: remove unintended GPL2
+ eCos-exception-2.0
+To: Roland Hieber <rhi@pengutronix.de>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org, Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>, ukl@pengutronix.de
 
-On Mon, Nov 23, 2020 at 04:29:30PM +0100, Lucas Stach wrote:
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> ---
->  drivers/usb/imx/imx-usb-misc.c | 5 +++++
->  1 file changed, 5 insertions(+)
+Hello,
 
-Applied, thanks
+On 29.11.20 21:08, Roland Hieber wrote:
+> On Thu, Nov 26, 2020 at 06:55:51PM +0100, Ahmad Fatoum wrote:
+>> Apparently, the file should be GPL-2.0-only without exceptions:
+>>
+>> On 24.11.20 09:44, Sascha Hauer wrote[1]:
+>>> This looks like I accidently copied the wrong header. I don't think I
+>>> did this on purpose. It doesn't make much sense to me when compiling
+>>> against dummy malloc is different than compiling against tlsf malloc
+>>> or dlmalloc.
+>>
+>> Ase dropping exceptions is no relicense, it's ok to do here without
+>> acknowledgement from all authors. Do so.
+> 
+> I don't understand this reasoning. The exception allowed someone to link
+> this file with non-GPL code, and by dropping this exception, this
+> possibility is no longer allowed, so there is a change in license terms.
+If a file is dual-licensed and we choose to drop one license, we would
+be within our rights to do so according to the dual license.
+We still maintain the dual licensing for that file normally (as in future 
+contributions are dual-licensed as well) to respect the author's intent.
 
-Sascha
+Similarly, a file licensed under the GNU GPL with a linking exception can
+still be distributed under the terms of the GNU GPL only (Wouldn't be
+compatible otherwise). The exception grants an additional right, but the
+distributor does not have a legal obligation to maintain them.
+
+The original author stated here that it was a mistake, the file is just
+a collection of stubs and we are within our rights to drop the exception,
+so that's what I did here.
+
+So yes, the license terms changed, but no, the code was't relicensed away
+from the GPL, which we couldn't do anyway, without agreement of all
+authors.
+
+Of course, IANAL and please correct me if my understanding is wrong.
+
+> The only two other authors of thunder the same licenseis file are Andrey and Jean-Christophe,
+> hereby CCed.
+
+Thanks, I should've done this before.
+
+Cheers,
+Ahmad
 
 > 
-> diff --git a/drivers/usb/imx/imx-usb-misc.c b/drivers/usb/imx/imx-usb-misc.c
-> index 3a5ec236e532..b663d073aa88 100644
-> --- a/drivers/usb/imx/imx-usb-misc.c
-> +++ b/drivers/usb/imx/imx-usb-misc.c
-> @@ -354,6 +354,7 @@ static __maybe_unused struct imx_usb_misc_data mx5_data = {
->  #define MX6_USB_CTRL(n)			((n) * 4)
->  #define MX6_USB_CTRL_OVER_CUR_DIS	(1 << 7)
->  #define MX6_USB_CTRL_OVER_CUR_ACT_HIGH	(1 << 8)
-> +#define MX6_USB_CTRL_PWR_POLARITY	(1 << 9)
+>  - Roland
 >  
->  static void mx6_hsic_pullup(unsigned long reg, int on)
->  {
-> @@ -380,6 +381,8 @@ static __maybe_unused int mx6_initialize_usb_hw(void __iomem *base, int port,
->  		val = readl(base + MX6_USB_CTRL(port));
->  		if (flags & MXC_EHCI_DISABLE_OVERCURRENT)
->  			val |= MX6_USB_CTRL_OVER_CUR_DIS;
-> +		if (flags & MXC_EHCI_PWR_PIN_ACTIVE_HIGH)
-> +			val |= MX6_USB_CTRL_PWR_POLARITY;
->  		writel(val, base + MX6_USB_CTRL(port));
->  		break;
->  	case 2: /* HSIC port */
-> @@ -454,6 +457,8 @@ static int usbmisc_imx7d_init(void __iomem *base, int port,
->  		else
->  			reg |= MX6_USB_CTRL_OVER_CUR_ACT_HIGH;
->  	}
-> +	if (flags & MXC_EHCI_PWR_PIN_ACTIVE_HIGH)
-> +		reg |= MX6_USB_CTRL_PWR_POLARITY;
->  	writel(reg, base);
->  
->  	reg = readl(base + MX7D_USBNC_USB_CTRL2);
-> -- 
-> 2.20.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+>> [1]: <20201124084434.GC14718@pengutronix.de>
+>>
+>> Suggested-by: Sascha Hauer <s.hauer@pengutronix.de>
+>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>> ---
+>> v1 -> v2: new patch
+>> ---
+>>  common/dummy_malloc.c | 21 +--------------------
+>>  1 file changed, 1 insertion(+), 20 deletions(-)
+>>
+>> diff --git a/common/dummy_malloc.c b/common/dummy_malloc.c
+>> index 0120d9be2e85..d99b5059cf91 100644
+>> --- a/common/dummy_malloc.c
+>> +++ b/common/dummy_malloc.c
+>> @@ -1,25 +1,6 @@
+>> +// SPDX-License-Identifier: GPL-2.0-only
+>>  /*
+>>   * Copyright (C) 2013 Sascha Hauer <s.hauer@pengutronix.de>
+>> - *
+>> - * This program is free software; you can redistribute it and/or
+>> - * modify it under the terms of the GNU General Public License version 2
+>> - * as published by the Free Software Foundation.
+>> - *
+>> - * This program is distributed in the hope that it will be useful,
+>> - * but WITHOUT ANY WARRANTY; without even the implied warranty of
+>> - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+>> - * GNU General Public License for more details.
+>> - *
+>> - *
+>> - * As a special exception, if other files instantiate templates or use macros
+>> - * or inline functions from this file, or you compile this file and link it
+>> - * with other works to produce a work based on this file, this file does not
+>> - * by itself cause the resulting work to be covered by the GNU General Public
+>> - * License. However the source code for this file must still be made available
+>> - * in accordance with section (3) of the GNU General Public License.
+>> -
+>> - * This exception does not invalidate any other reasons why a work based on
+>> - * this file might be covered by the GNU General Public License.
+>>   */
+>>  #include <common.h>
+>>  #include <malloc.h>
+>> -- 
+>> 2.29.2
+>>
+>>
+>> _______________________________________________
+>> barebox mailing list
+>> barebox@lists.infradead.org
+>> http://lists.infradead.org/mailman/listinfo/barebox
+>>
 > 
 
 -- 
