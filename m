@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay8-d.mail.gandi.net ([217.70.183.201])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kj7wY-0002QX-5O
- for barebox@lists.infradead.org; Sat, 28 Nov 2020 21:39:48 +0000
-Received: from geraet.fritz.box (muedsl-82-207-195-223.citykom.de
- [82.207.195.223]) (Authenticated sender: ahmad@a3f.at)
- by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 2F62E1BF20B
- for <barebox@lists.infradead.org>; Sat, 28 Nov 2020 21:39:44 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Sat, 28 Nov 2020 22:39:31 +0100
-Message-Id: <20201128213934.681065-8-ahmad@a3f.at>
-In-Reply-To: <20201128213934.681065-1-ahmad@a3f.at>
+ id 1kjSie-0004KH-A3
+ for barebox@lists.infradead.org; Sun, 29 Nov 2020 19:50:49 +0000
+Date: Sun, 29 Nov 2020 20:50:42 +0100
+From: Roland Hieber <rhi@pengutronix.de>
+Message-ID: <20201129195042.iz25xbxifh75yryo@pengutronix.de>
 References: <20201128213934.681065-1-ahmad@a3f.at>
+ <20201128213934.681065-11-ahmad@a3f.at>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20201128213934.681065-11-ahmad@a3f.at>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,47 +23,99 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/11] ARM: rpi: drop no longer needed environment
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 11/11] doc: bcm283x: document use of mini-uart on
+ Raspberry Pi Zero W / CM3
+To: Ahmad Fatoum <ahmad@a3f.at>
+Cc: barebox@lists.infradead.org, Andrew John <andrew@mobius-embedded-systems.co.uk>, Robert Carnecky <robert@neopsis.com>, Rouven Czerwinski <rcz@pengutronix.de>
 
-The barebox PL011 driver automatically arranges for the kernel to be
-called with the appropriate console argument (placed in
-${global.linux.bootargs.console}. There is thus no need to hard code a
-TTY. Indeed we shouldn't because some Raspberry Pis don't use the PL011,
-but the mini-uart, which is a ttyS.
+On Sat, Nov 28, 2020 at 10:39:34PM +0100, Ahmad Fatoum wrote:
+> As described in the UART configuration[1] article in the Raspberry Pi
+> Foundation documentation, Raspberry Pi 3 & 4 as well as Zero W use the
+> mini-uart as primary (easily user-accessible) UART. At least on the
+> Raspberry Zero W and CM3, we need to pass uart_2ndstage=1, so the
+> BootROM leaves the 8250 IP in a suitable state for use by barebox.
+> Document this.
+> 
+> [1]: https://www.raspberrypi.org/documentation/configuration/uart.md
+> 
+> Cc: Roland Hieber <rhi@pengutronix.de>
+> Cc: Rouven Czerwinski <rcz@pengutronix.de>
+> Cc: Robert Carnecky <robert@neopsis.com>
+> Cc: Andrew John <andrew@mobius-embedded-systems.co.uk>
+> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+> ---
+>  Documentation/boards/bcm2835.rst | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/Documentation/boards/bcm2835.rst b/Documentation/boards/bcm2835.rst
+> index c896871e0d82..dbdfc2633173 100644
+> --- a/Documentation/boards/bcm2835.rst
+> +++ b/Documentation/boards/bcm2835.rst
+> @@ -23,6 +23,13 @@ Raspberry Pi
+>           kernel=barebox.img
+>           enable_uart=1
+>  
+> +     If you want to use the mini-uart instead of the PL011, you might need to additionally set::
+> +
+> +         uart_2ndstage=1
+> +
+> +     This is useful on newer boards like the Raspberry Pi Zero W and CM3, which route the
+> +     more easily accessible primary UART to the mini-uart.
 
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
----
- arch/arm/boards/raspberry-pi/env/init/bootargs-base | 3 ---
- arch/arm/configs/rpi_defconfig                      | 2 +-
- 2 files changed, 1 insertion(+), 4 deletions(-)
- delete mode 100644 arch/arm/boards/raspberry-pi/env/init/bootargs-base
+This seems to be non-optional on RPi Zero W, so I would word it more
+strongly.
 
-diff --git a/arch/arm/boards/raspberry-pi/env/init/bootargs-base b/arch/arm/boards/raspberry-pi/env/init/bootargs-base
-deleted file mode 100644
-index 416dc8a6f4fc..000000000000
---- a/arch/arm/boards/raspberry-pi/env/init/bootargs-base
-+++ /dev/null
-@@ -1,3 +0,0 @@
--#!/bin/sh
--
--global.linux.bootargs.base="console=ttyAMA0,115200"
-diff --git a/arch/arm/configs/rpi_defconfig b/arch/arm/configs/rpi_defconfig
-index dd5ca7585a83..f42b8819afc9 100644
---- a/arch/arm/configs/rpi_defconfig
-+++ b/arch/arm/configs/rpi_defconfig
-@@ -23,7 +23,7 @@ CONFIG_BOOTM_OFTREE=y
- CONFIG_BLSPEC=y
- CONFIG_CONSOLE_ALLOW_COLOR=y
- CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
--CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/raspberry-pi/env"
-+CONFIG_DEFAULT_ENVIRONMENT_PATH=""
- CONFIG_CMD_DMESG=y
- CONFIG_LONGHELP=y
- CONFIG_CMD_IOMEM=y
+With this series, at least barebox boots, which is better than in master
+:-) However, I cannot get the stock kernel (/boot/kernel.img) to boot on
+Zero W, and I cannot figure out why:
+
+    barebox@RaspberryPi Zero W:/ cat /boot/config.txt 
+    enable_uart=1
+    kernel=barebox.img
+    uart_2ndstage=1
+    barebox@RaspberryPi Zero W:/ global bootm.image=/boot/kernel.img
+    barebox@RaspberryPi Zero W:/ global bootm.oftree=/boot/bcm2708-rpi-0-w.dtb
+    barebox@RaspberryPi Zero W:/ global linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootfstype=ext4 rootwait rw" 
+    barebox@RaspberryPi Zero W:/ bootm -v
+
+    Loading ARM Linux zImage '/boot/kernel.img'
+    OS image not yet relocated
+    Passing control to ARM zImage handler
+    no OS load address, defaulting to 0x014e9000
+    no initrd load address, defaulting to 0x01a18000
+    Loading devicetree from '/boot/bcm2708-rpi-0-w.dtb'
+    commandline: console=ttyS1,115200n8 root=/dev/mmcblk0p2 rootfstype=ext4 rootwait rw
+
+    Starting kernel at 0x014e9000, oftree at 0x01a18000...
+    Starting kernel in secure mode
+
+and then nothing happens at least for a minute.
+
+I tried leaving 'uart_2ndstage=1' out, leaving 'enable_uart=1' out, setting
+'console=ttyS1,115200n8' on the kernel command line, and setting
+'console=ttyAMA0,115200n8' (as before), but nothing helped.
+
+The same setup works on a RPI-1B (with bootm.oftree=/boot/bcm2708-rpi-b.dtb),
+so at least there's that :)
+
+Did you do anything else for your Zero W?
+
+ - Roland
+
+> +
+>       (For more information, refer to the `documentation for config.txt`_.)
+>  
+>    5. Connect to board's UART (115200 8N1);
+> -- 
+> 2.28.0
+> 
+> 
+
 -- 
-2.28.0
-
+Roland Hieber, Pengutronix e.K.          | r.hieber@pengutronix.de     |
+Steuerwalder Str. 21                     | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686         | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
