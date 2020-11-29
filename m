@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kjTB3-0005AM-AN
- for barebox@lists.infradead.org; Sun, 29 Nov 2020 20:20:10 +0000
-References: <20201128213934.681065-1-ahmad@a3f.at>
- <20201128213934.681065-11-ahmad@a3f.at>
- <20201129195042.iz25xbxifh75yryo@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <5f1f0a9d-7207-99e3-58d2-b0790ecf8c40@pengutronix.de>
-Date: Sun, 29 Nov 2020 21:20:04 +0100
+ id 1kjSzZ-0004nI-Ja
+ for barebox@lists.infradead.org; Sun, 29 Nov 2020 20:08:18 +0000
+Date: Sun, 29 Nov 2020 21:08:15 +0100
+From: Roland Hieber <rhi@pengutronix.de>
+Message-ID: <20201129200815.hrisxvxhhfgftldo@pengutronix.de>
+References: <20201126175553.16934-1-a.fatoum@pengutronix.de>
+ <20201126175553.16934-2-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20201129195042.iz25xbxifh75yryo@pengutronix.de>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20201126175553.16934-2-a.fatoum@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,106 +23,88 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 11/11] doc: bcm283x: document use of mini-uart on
- Raspberry Pi Zero W / CM3
-To: Roland Hieber <rhi@pengutronix.de>, Ahmad Fatoum <ahmad@a3f.at>
-Cc: barebox@lists.infradead.org, Andrew John <andrew@mobius-embedded-systems.co.uk>, Robert Carnecky <robert@neopsis.com>, Rouven Czerwinski <rcz@pengutronix.de>
+Subject: Re: [PATCH v2 2/4] common: dummy_malloc: remove unintended GPL2
+ eCos-exception-2.0
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, barebox@lists.infradead.org, Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>, ukl@pengutronix.de
 
-Hello,
+On Thu, Nov 26, 2020 at 06:55:51PM +0100, Ahmad Fatoum wrote:
+> Apparently, the file should be GPL-2.0-only without exceptions:
+> 
+> On 24.11.20 09:44, Sascha Hauer wrote[1]:
+> > This looks like I accidently copied the wrong header. I don't think I
+> > did this on purpose. It doesn't make much sense to me when compiling
+> > against dummy malloc is different than compiling against tlsf malloc
+> > or dlmalloc.
+> 
+> Ase dropping exceptions is no relicense, it's ok to do here without
+> acknowledgement from all authors. Do so.
 
-On 29.11.20 20:50, Roland Hieber wrote:
-> On Sat, Nov 28, 2020 at 10:39:34PM +0100, Ahmad Fatoum wrote:
->> As described in the UART configuration[1] article in the Raspberry Pi
->> Foundation documentation, Raspberry Pi 3 & 4 as well as Zero W use the
->> mini-uart as primary (easily user-accessible) UART. At least on the
->> Raspberry Zero W and CM3, we need to pass uart_2ndstage=1, so the
->> BootROM leaves the 8250 IP in a suitable state for use by barebox.
->> Document this.
->>
->> [1]: https://www.raspberrypi.org/documentation/configuration/uart.md
->>
->> Cc: Roland Hieber <rhi@pengutronix.de>
->> Cc: Rouven Czerwinski <rcz@pengutronix.de>
->> Cc: Robert Carnecky <robert@neopsis.com>
->> Cc: Andrew John <andrew@mobius-embedded-systems.co.uk>
->> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
->> ---
->>  Documentation/boards/bcm2835.rst | 7 +++++++
->>  1 file changed, 7 insertions(+)
->>
->> diff --git a/Documentation/boards/bcm2835.rst b/Documentation/boards/bcm2835.rst
->> index c896871e0d82..dbdfc2633173 100644
->> --- a/Documentation/boards/bcm2835.rst
->> +++ b/Documentation/boards/bcm2835.rst
->> @@ -23,6 +23,13 @@ Raspberry Pi
->>           kernel=barebox.img
->>           enable_uart=1
->>  
->> +     If you want to use the mini-uart instead of the PL011, you might need to additionally set::
->> +
->> +         uart_2ndstage=1
->> +
->> +     This is useful on newer boards like the Raspberry Pi Zero W and CM3, which route the
->> +     more easily accessible primary UART to the mini-uart.
-> 
-> This seems to be non-optional on RPi Zero W, so I would word it more
-> strongly.
->
-> With this series, at least barebox boots, which is better than in master
-> :-) However, I cannot get the stock kernel (/boot/kernel.img) to boot on
-> Zero W, and I cannot figure out why:
-> 
->     barebox@RaspberryPi Zero W:/ cat /boot/config.txt 
->     enable_uart=1
->     kernel=barebox.img
->     uart_2ndstage=1
->     barebox@RaspberryPi Zero W:/ global bootm.image=/boot/kernel.img
->     barebox@RaspberryPi Zero W:/ global bootm.oftree=/boot/bcm2708-rpi-0-w.dtb
->     barebox@RaspberryPi Zero W:/ global linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootfstype=ext4 rootwait rw" 
->     barebox@RaspberryPi Zero W:/ bootm -v
-> 
->     Loading ARM Linux zImage '/boot/kernel.img'
->     OS image not yet relocated
->     Passing control to ARM zImage handler
->     no OS load address, defaulting to 0x014e9000
->     no initrd load address, defaulting to 0x01a18000
->     Loading devicetree from '/boot/bcm2708-rpi-0-w.dtb'
->     commandline: console=ttyS1,115200n8 root=/dev/mmcblk0p2 rootfstype=ext4 rootwait rw
-> 
->     Starting kernel at 0x014e9000, oftree at 0x01a18000...
->     Starting kernel in secure mode
-> 
-> and then nothing happens at least for a minute.
-> 
-> I tried leaving 'uart_2ndstage=1' out, leaving 'enable_uart=1' out, setting
-> 'console=ttyS1,115200n8' on the kernel command line, and setting
-> 'console=ttyAMA0,115200n8' (as before), but nothing helped.
-> 
-> The same setup works on a RPI-1B (with bootm.oftree=/boot/bcm2708-rpi-b.dtb),
-> so at least there's that :)
-> 
-> Did you do anything else for your Zero W?
+I don't understand this reasoning. The exception allowed someone to link
+this file with non-GPL code, and by dropping this exception, this
+possibility is no longer allowed, so there is a change in license terms.
 
-Can you try `boot rpi` instead?
+The only two other authors of this file are Andrey and Jean-Christophe,
+hereby CCed.
 
+ - Roland
+ 
+> [1]: <20201124084434.GC14718@pengutronix.de>
 > 
->  - Roland
+> Suggested-by: Sascha Hauer <s.hauer@pengutronix.de>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+> v1 -> v2: new patch
+> ---
+>  common/dummy_malloc.c | 21 +--------------------
+>  1 file changed, 1 insertion(+), 20 deletions(-)
 > 
->> +
->>       (For more information, refer to the `documentation for config.txt`_.)
->>  
->>    5. Connect to board's UART (115200 8N1);
->> -- 
->> 2.28.0
->>
->>
+> diff --git a/common/dummy_malloc.c b/common/dummy_malloc.c
+> index 0120d9be2e85..d99b5059cf91 100644
+> --- a/common/dummy_malloc.c
+> +++ b/common/dummy_malloc.c
+> @@ -1,25 +1,6 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+>  /*
+>   * Copyright (C) 2013 Sascha Hauer <s.hauer@pengutronix.de>
+> - *
+> - * This program is free software; you can redistribute it and/or
+> - * modify it under the terms of the GNU General Public License version 2
+> - * as published by the Free Software Foundation.
+> - *
+> - * This program is distributed in the hope that it will be useful,
+> - * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> - * GNU General Public License for more details.
+> - *
+> - *
+> - * As a special exception, if other files instantiate templates or use macros
+> - * or inline functions from this file, or you compile this file and link it
+> - * with other works to produce a work based on this file, this file does not
+> - * by itself cause the resulting work to be covered by the GNU General Public
+> - * License. However the source code for this file must still be made available
+> - * in accordance with section (3) of the GNU General Public License.
+> -
+> - * This exception does not invalidate any other reasons why a work based on
+> - * this file might be covered by the GNU General Public License.
+>   */
+>  #include <common.h>
+>  #include <malloc.h>
+> -- 
+> 2.29.2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 > 
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Roland Hieber, Pengutronix e.K.          | r.hieber@pengutronix.de     |
+Steuerwalder Str. 21                     | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686         | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
