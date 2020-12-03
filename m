@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kkm4k-0006ZK-Gh
- for barebox@lists.infradead.org; Thu, 03 Dec 2020 10:43:03 +0000
+ id 1kkm4q-0006aH-4v
+ for barebox@lists.infradead.org; Thu, 03 Dec 2020 10:43:09 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  3 Dec 2020 11:42:56 +0100
-Message-Id: <20201203104257.8263-1-a.fatoum@pengutronix.de>
+Date: Thu,  3 Dec 2020 11:42:57 +0100
+Message-Id: <20201203104257.8263-2-a.fatoum@pengutronix.de>
+In-Reply-To: <20201203104257.8263-1-a.fatoum@pengutronix.de>
+References: <20201203104257.8263-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,34 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/2] usb: host: ehci: fix mismatch in format string
+Subject: [PATCH v2 2/2] commands: memtester: fix mismatched format string
 To: barebox@lists.infradead.org
-Cc: ukl@pengutronix.de, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-sz is of type size_t. Use the appropriate format string specifier for
-printing it.
+expression is of type size_t. Use the appropriate format string specifier
+for printing it.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
-Cc: ukl@pengutronix.de
-v1 -> v2: fix broken English in commit message (Uwe)
+v1 -> v2: new patch
 ---
- drivers/usb/host/ehci-hcd.c | 2 +-
+ commands/memtester/memtester.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index 38999927c5a8..287849102d68 100644
---- a/drivers/usb/host/ehci-hcd.c
-+++ b/drivers/usb/host/ehci-hcd.c
-@@ -240,7 +240,7 @@ static int ehci_td_buffer(struct qTD *td, dma_addr_t addr, size_t sz)
- 	}
+diff --git a/commands/memtester/memtester.c b/commands/memtester/memtester.c
+index 8b64d3232958..130dc97c8334 100644
+--- a/commands/memtester/memtester.c
++++ b/commands/memtester/memtester.c
+@@ -139,7 +139,7 @@ static int do_memtester(int argc, char **argv) {
  
- 	if (idx == buffer_count) {
--		pr_debug("out of buffer pointers (%u bytes left)\n", sz);
-+		pr_debug("out of buffer pointers (%zu bytes left)\n", sz);
- 		return -ENOMEM;
- 	}
- 
+     wantbytes = (size_t) strtoull_suffix(argv[optind], 0, 0);
+     if (wantbytes < 2 * sizeof(ul)) {
+-        printf("need at least %ldB of memory to test\n", 2 * sizeof(ul));
++        printf("need at least %zuB of memory to test\n", 2 * sizeof(ul));
+         return COMMAND_ERROR_USAGE;
+     }
+     wantmb = (wantbytes >> 20);
 -- 
 2.29.2
 
