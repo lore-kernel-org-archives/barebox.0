@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kk5Xp-0001rI-4T
- for barebox@lists.infradead.org; Tue, 01 Dec 2020 13:18:13 +0000
+ id 1kkm4k-0006ZK-Gh
+ for barebox@lists.infradead.org; Thu, 03 Dec 2020 10:43:03 +0000
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue,  1 Dec 2020 14:17:59 +0100
-Message-Id: <20201201131758.18769-1-a.fatoum@pengutronix.de>
+Date: Thu,  3 Dec 2020 11:42:56 +0100
+Message-Id: <20201203104257.8263-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,14 +19,17 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] usb: host: ehci: fix mismatch in format string
+Subject: [PATCH v2 1/2] usb: host: ehci: fix mismatch in format string
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: ukl@pengutronix.de, Ahmad Fatoum <a.fatoum@pengutronix.de>
 
 sz is of type size_t. Use the appropriate format string specifier for
-print it.
+printing it.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+Cc: ukl@pengutronix.de
+v1 -> v2: fix broken English in commit message (Uwe)
 ---
  drivers/usb/host/ehci-hcd.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
