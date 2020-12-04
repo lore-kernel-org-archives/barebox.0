@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kl8Cc-0006ux-Ba
- for barebox@lists.infradead.org; Fri, 04 Dec 2020 10:20:39 +0000
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Fri,  4 Dec 2020 11:20:33 +0100
-Message-Id: <20201204102033.16490-1-o.rempel@pengutronix.de>
+ id 1klF4b-0004ZD-Se
+ for barebox@lists.infradead.org; Fri, 04 Dec 2020 17:40:50 +0000
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri,  4 Dec 2020 18:40:44 +0100
+Message-Id: <20201204174045.27340-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,100 +19,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v1] ARM i.MX6Q: fix network configuration for Protonic PRTI6G
- board
+Subject: [PATCH 1/2] ARM: i.MX: add low level gpio helpers for i.MX8M
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>, david@protonic.nl
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-By default the iMX6UL is configured to output clock on the ENET1_TX_CLK
-pin. Since on the Protonic PRTI6G board the PHY is actual refclock provider, we
-should change the clock source to the external clock.
+Like many GPIO controllers of times past, the i.MX8M is also compatible
+with the i.MX31 GPIO controller. Add GPIO helpers for low-level code to
+use.
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/boards/protonic-imx6/board.c | 25 +++++++++++++++++++++++++
- include/mfd/imx6q-iomuxc-gpr.h        | 18 ++++++++++++++++++
- 2 files changed, 43 insertions(+)
+ arch/arm/mach-imx/include/mach/imx-gpio.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm/boards/protonic-imx6/board.c b/arch/arm/boards/protonic-imx6/board.c
-index daae9a527c..a718d54df4 100644
---- a/arch/arm/boards/protonic-imx6/board.c
-+++ b/arch/arm/boards/protonic-imx6/board.c
-@@ -11,8 +11,11 @@
- #include <i2c/i2c.h>
- #include <mach/bbu.h>
- #include <mach/imx6.h>
-+#include <mfd/imx6q-iomuxc-gpr.h>
-+#include <mfd/syscon.h>
- #include <net.h>
- #include <of_device.h>
-+#include <regmap.h>
- #include <sys/mount.h>
- #include <sys/stat.h>
- #include <unistd.h>
-@@ -577,6 +580,27 @@ static int prt_imx6_init_victgo(struct prt_imx6_priv *priv)
- 	return prt_imx6_init_kvg_power(priv, PW_MODE_KVG_NEW);
- }
+diff --git a/arch/arm/mach-imx/include/mach/imx-gpio.h b/arch/arm/mach-imx/include/mach/imx-gpio.h
+index 891c33a3f411..0cfd16f4fa43 100644
+--- a/arch/arm/mach-imx/include/mach/imx-gpio.h
++++ b/arch/arm/mach-imx/include/mach/imx-gpio.h
+@@ -50,6 +50,7 @@ static inline void imx31_gpio_direction_output(void *base, int gpio, int value)
+ #define imx51_gpio_direction_output(base, gpio, value) imx31_gpio_direction_output(base, gpio,value)
+ #define imx53_gpio_direction_output(base, gpio, value) imx31_gpio_direction_output(base, gpio,value)
+ #define imx6_gpio_direction_output(base, gpio, value) imx31_gpio_direction_output(base, gpio,value)
++#define imx8m_gpio_direction_output(base, gpio, value) imx31_gpio_direction_output(base, gpio,value)
  
-+static int prt_imx6_init_prti6g(struct prt_imx6_priv *priv)
-+{
-+	struct regmap *gpr;
-+
-+	gpr = syscon_regmap_lookup_by_compatible("fsl,imx6ul-iomuxc-gpr");
-+	if (!IS_ERR(gpr)) {
-+		int ret;
-+
-+		/* Configure FEC1 to use 50MHz clock provided by the PHY */
-+		ret = regmap_update_bits(gpr, IOMUXC_GPR1,
-+			IMX6UL_GPR1_ENET1_CLK_DIR | IMX6UL_GPR1_ENET1_CLK_SEL,
-+			IMX6UL_GPR1_ENET1_CLK_SEL);
-+		if (ret)
-+			dev_err(priv->dev, "regmap error\n");
-+	} else {
-+		dev_err(priv->dev, "failed to find fsl,imx6ul-iomux-gpr regmap\n");
-+	}
-+
-+	return 0;
-+}
-+
- static int prt_imx6_init_kvg_new(struct prt_imx6_priv *priv)
+ static inline void imx1_gpio_direction_input(void *base, int gpio, int value)
  {
- 	return prt_imx6_init_kvg_power(priv, PW_MODE_KVG_NEW);
-@@ -923,6 +947,7 @@ static const struct prt_machine_data prt_imx6_cfg_prti6g[] = {
- 		.hw_rev = 0,
- 		.i2c_addr = 0x51,
- 		.i2c_adapter = 0,
-+		.init = prt_imx6_init_prti6g,
- 		.flags = PRT_IMX6_BOOTSRC_EMMC,
- 	}, {
- 		.hw_id = UINT_MAX
-diff --git a/include/mfd/imx6q-iomuxc-gpr.h b/include/mfd/imx6q-iomuxc-gpr.h
-index b2c9da6579..2e7aa6dc7a 100644
---- a/include/mfd/imx6q-iomuxc-gpr.h
-+++ b/include/mfd/imx6q-iomuxc-gpr.h
-@@ -344,4 +344,22 @@
- #define IMX6Q_GPR13_SATA_PHY_1_MED		(0x1 << 0)
- #define IMX6Q_GPR13_SATA_PHY_1_SLOW		(0x2 << 0)
+@@ -69,6 +70,7 @@ static inline void imx31_gpio_direction_input(void *base, int gpio)
+ #define imx51_gpio_direction_input(base, gpio, value) imx31_gpio_direction_input(base, gpio)
+ #define imx53_gpio_direction_input(base, gpio, value) imx31_gpio_direction_input(base, gpio)
+ #define imx6_gpio_direction_input(base, gpio) imx31_gpio_direction_input(base, gpio)
++#define imx8m_gpio_direction_input(base, gpio) imx31_gpio_direction_input(base, gpio)
  
-+/* For imx6ul iomux gpr register field define */
-+/* IMX6UL_GPR1_ENET*_CLK_DIR:
-+ * 0 - ENET1_TX_CLK output driver is disabled when configured for ALT1
-+ * 1 - ENET1_TX_CLK output driver is enabled when configured for ALT1
-+ */
-+#define IMX6UL_GPR1_ENET2_CLK_DIR		(0x1 << 18)
-+#define IMX6UL_GPR1_ENET1_CLK_DIR		(0x1 << 17)
-+
-+/* IMX6UL_GPR1_ENET*_CLK_SEL:
-+ * 0 - ENET TX reference clock driven by ref_enetpll. This clock is also
-+ * output to pins via the IOMUX. ENET_REF_CLK2 function.
-+ * 1 - Gets ENET2 TX reference clk from the ENET2_TX_CLK pin. In this use case,
-+ * an external OSC provides the clock for both the external PHY and the
-+ * internal controller.
-+ */
-+#define IMX6UL_GPR1_ENET2_CLK_SEL		(0x1 << 14)
-+#define IMX6UL_GPR1_ENET1_CLK_SEL		(0x1 << 13)
-+
- #endif /* __LINUX_IMX6Q_IOMUXC_GPR_H */
+ #define imx1_gpio_val(base, gpio) readl(base + 0x1c) & (1 << gpio) ? 1 : 0
+ #define imx21_gpio_val(base, gpio) imx1_gpio_val(base, gpio)
+@@ -80,5 +82,6 @@ static inline void imx31_gpio_direction_input(void *base, int gpio)
+ #define imx51_gpio_val(base, gpio) imx31_gpio_val(base, gpio)
+ #define imx53_gpio_val(base, gpio) imx31_gpio_val(base, gpio)
+ #define imx6_gpio_val(base, gpio) imx31_gpio_val(base, gpio)
++#define imx8m_gpio_val(base, gpio) imx31_gpio_val(base, gpio)
+ 
+ #endif /* __MACH_IMX_GPIO_H */
 -- 
 2.29.2
 
