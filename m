@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1klG0x-0003cc-Tx
- for barebox@lists.infradead.org; Fri, 04 Dec 2020 18:41:09 +0000
-Message-ID: <e3ba28ab89980afdf1b330b9a71746d43bd4fce3.camel@pengutronix.de>
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Date: Fri, 04 Dec 2020 19:41:03 +0100
-In-Reply-To: <CAOMZO5B8a+27UfmTP=RvyZYD34fnteMrSXAsvsDZ6bhJwCoUtw@mail.gmail.com>
-References: <CAOMZO5B8a+27UfmTP=RvyZYD34fnteMrSXAsvsDZ6bhJwCoUtw@mail.gmail.com>
+ id 1klGB1-0004W2-TV
+ for barebox@lists.infradead.org; Fri, 04 Dec 2020 18:51:32 +0000
+Received: by mail-lj1-x22d.google.com with SMTP id j10so7727696lja.5
+ for <barebox@lists.infradead.org>; Fri, 04 Dec 2020 10:51:31 -0800 (PST)
 MIME-Version: 1.0
+References: <CAOMZO5B8a+27UfmTP=RvyZYD34fnteMrSXAsvsDZ6bhJwCoUtw@mail.gmail.com>
+ <e3ba28ab89980afdf1b330b9a71746d43bd4fce3.camel@pengutronix.de>
+In-Reply-To: <e3ba28ab89980afdf1b330b9a71746d43bd4fce3.camel@pengutronix.de>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Fri, 4 Dec 2020 15:51:18 -0300
+Message-ID: <CAOMZO5Cdewmnyb-QttQmXjZ0OQatVxHODGYCBR3SyeU3FQbKcA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,40 +25,31 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Running reset stress test
-To: Fabio Estevam <festevam@gmail.com>, Barebox List <barebox@lists.infradead.org>
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Fri, 2020-12-04 at 15:05 -0300, Fabio Estevam wrote:
-> Hi,
-> 
-> This is probably an easy one :-)
+Hi Rouven,
 
-Kind of :-)
+On Fri, Dec 4, 2020 at 3:41 PM Rouven Czerwinski
+<r.czerwinski@pengutronix.de> wrote:
 
-> I would like to run reset stress test in Barebox
-> 
-> In U-Boot, I do the following:
-> 
-> => setenv bootcmd reset
-> => saveenv
-> => reset
+> $ edit /env/boot/reset
+> #!/bin/sh
+> reset
+> $ nv boot.default=reset
+> $ nv autoboot.timeout=0
+> $ saveenv
+> $ boot
+>
+> Note that barebox can still be interrupted by holding Ctrl+c and
+> aborting the init sequence, which will not autoboot the board.
+>
+> At least the above lets the nitrogen6x on my desk happily cycle the
+> bootloader.
 
-$ edit /env/boot/reset
-#!/bin/sh
-reset
-$ nv boot.default=reset
-$ nv autoboot.timeout=0
-$ saveenv
-$ boot
+Thanks for your help, appreciate it!
 
-Note that barebox can still be interrupted by holding Ctrl+c and
-aborting the init sequence, which will not autoboot the board.
-
-At least the above lets the nitrogen6x on my desk happily cycle the
-bootloader.
-
-Regards,
-Rouven Czerwinski
-
+Cheers
 
 _______________________________________________
 barebox mailing list
