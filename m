@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kmCqJ-00044y-8V
- for barebox@lists.infradead.org; Mon, 07 Dec 2020 09:30:05 +0000
+ id 1kmCqJ-000453-Cg
+ for barebox@lists.infradead.org; Mon, 07 Dec 2020 09:30:06 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  7 Dec 2020 10:29:50 +0100
-Message-Id: <20201207092952.21438-1-s.hauer@pengutronix.de>
-In-Reply-To: <20201207092840.GH3977@pengutronix.de>
+Date: Mon,  7 Dec 2020 10:29:52 +0100
+Message-Id: <20201207092952.21438-3-s.hauer@pengutronix.de>
+In-Reply-To: <20201207092952.21438-1-s.hauer@pengutronix.de>
 References: <20201207092840.GH3977@pengutronix.de>
+ <20201207092952.21438-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,85 +22,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] imd command: specify outfile for crc tag generation
+Subject: [PATCH 3/3] images: i.MX: fill in crc in IMD crc tags
 To: Barebox List <barebox@lists.infradead.org>
 Cc: Yunus Bas <y.bas@phytec.de>
 
+FIXME: This also generates crcs in the signed images which invalidates
+the signature.
+
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/imd.c       |  2 +-
- common/imd.c         | 11 +++++------
- scripts/bareboximd.c |  2 +-
- 3 files changed, 7 insertions(+), 8 deletions(-)
+ images/Makefile.imx | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/commands/imd.c b/commands/imd.c
-index 9f7ac79f8f..5cb80db0f5 100644
---- a/commands/imd.c
-+++ b/commands/imd.c
-@@ -33,7 +33,7 @@ BAREBOX_CMD_HELP_OPT ("-n <no>", "for tags with multiple strings only show strin
- BAREBOX_CMD_HELP_OPT ("-s VARNAME",  "set variable VARNAME instead of showing information")
- BAREBOX_CMD_HELP_OPT ("-v", "Be verbose")
- BAREBOX_CMD_HELP_OPT ("-V",  "Verify checksum of FILE")
--BAREBOX_CMD_HELP_OPT ("-c", "Create checksum for FILE and write it to the crc32 tag.")
-+BAREBOX_CMD_HELP_OPT ("-c OUTFILE", "Create checksum for FILE and write it to the crc32 tag.")
- BAREBOX_CMD_HELP_TEXT("")
- BAREBOX_CMD_HELP_TEXT("Without options all information available is printed. Valid types are:")
- BAREBOX_CMD_HELP_TEXT("release, build, model, of_compatible")
-diff --git a/common/imd.c b/common/imd.c
-index 4aca8ea78f..044f04bcdd 100644
---- a/common/imd.c
-+++ b/common/imd.c
-@@ -435,15 +435,14 @@ int imd_command(int argc, char *argv[])
- 	size_t size;
- 	uint32_t type = IMD_TYPE_INVALID;
- 	const struct imd_header *imd_start, *imd;
--	const char *filename;
-+	const char *filename, *checksumfile = NULL;
- 	const char *variable_name = NULL;
- 	char *str;
--	uint32_t checksum = 0;
- 	uint32_t verify = 0;
- 
- 	imd_command_verbose = 0;
- 
--	while ((opt = getopt(argc, argv, "vt:s:n:cV")) > 0) {
-+	while ((opt = getopt(argc, argv, "vt:s:n:c:V")) > 0) {
- 		switch(opt) {
- 		case 't':
- 			type = imd_name_to_type(optarg);
-@@ -462,7 +461,7 @@ int imd_command(int argc, char *argv[])
- 			strno = simple_strtoul(optarg, NULL, 0);
- 			break;
- 		case 'c':
--			checksum = 1;
-+			checksumfile = optarg;
- 			break;
- 		case 'V':
- 			verify = 1;
-@@ -489,8 +488,8 @@ int imd_command(int argc, char *argv[])
- 		goto out;
- 	}
- 
--	if (checksum) {
--		ret = imd_write_crc32(buf, imd_start, filename, size);
-+	if (checksumfile) {
-+		ret = imd_write_crc32(buf, imd_start, checksumfile, size);
- 		goto out;
- 	}
- 
-diff --git a/scripts/bareboximd.c b/scripts/bareboximd.c
-index 0500e01cc2..1ae01e43d3 100644
---- a/scripts/bareboximd.c
-+++ b/scripts/bareboximd.c
-@@ -163,7 +163,7 @@ static void usage(const char *prgname)
- "-n <no>      for tags with multiple strings only show string <no>\n"
- "-v           Be verbose\n"
- "-V           Verify checksum of FILE\n"
--"-c           Create checksum for FILE and write it to the crc32 tag\n"
-+"-c OUTFILE   Create checksum for FILE and write it to the crc32 tag\n"
- "\n"
- "Without options all information available is printed. Valid types are:\n"
- "release, build, model, of_compatible\n",
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index 514db326bb..808c7a13e8 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -26,7 +26,7 @@ endef
+ .SECONDEXPANSION:
+ define imx_image_rule
+ $(eval
+-$$(obj)/%.$(strip $(1)): $$(obj)/% $$$$(CFG_%.imximg) FORCE
++$$(obj)/%.$(strip $(1)): $$(obj)/%.imdcrc $$$$(CFG_%.imximg) FORCE
+ 	$$(call if_changed,imx_image,$$(CFG_$$(patsubst %.$(strip $(1)),%.imximg,$$(@F))),$(strip $(2)))
+ )
+ endef
 -- 
 2.20.1
 
