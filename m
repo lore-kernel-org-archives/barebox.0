@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kmCX6-00087e-TK
- for barebox@lists.infradead.org; Mon, 07 Dec 2020 09:10:14 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  7 Dec 2020 10:10:09 +0100
-Message-Id: <20201207091010.2759-1-s.hauer@pengutronix.de>
+ id 1kmCp9-0003yi-GH
+ for barebox@lists.infradead.org; Mon, 07 Dec 2020 09:28:54 +0000
+Date: Mon, 7 Dec 2020 10:28:40 +0100
+Message-ID: <20201207092840.GH3977@pengutronix.de>
+References: <20201204100421.2385465-1-y.bas@phytec.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20201204100421.2385465-1-y.bas@phytec.de>
+From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,44 +22,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] imd command: Bail out when crc generation/check fails
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] images: Add automatic image crc generation for imd
+To: Yunus Bas <y.bas@phytec.de>
+Cc: barebox@lists.infradead.org
 
-Generating a IMD crc can fail, so bail out with an error when it fails.
-Also, when checking a IMD crc the result should be told to the caller.
+Hi Yunus,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/imd.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+On Fri, Dec 04, 2020 at 11:04:21AM +0100, Yunus Bas wrote:
+> Since commit 9d12256bfcc6, the barebox IMD-header has an additional
+> register space for CRC32 checksum. This is an important feature, since
+> it allows us to verify the barebox image after flashing to the hardware.
+> 
+> This patch adds an optional feature for automatically generating the CRC32
+> checksum and writing it into IMD-section for all generated image-files.
+> Additionally, the file 'barebox-imd-crc', containing the list of IMD
+> outputs including the CRC32-value, will be generated under the images
+> directory.
 
-diff --git a/common/imd.c b/common/imd.c
-index 4fd4431aa9..4aca8ea78f 100644
---- a/common/imd.c
-+++ b/common/imd.c
-@@ -489,10 +489,15 @@ int imd_command(int argc, char *argv[])
- 		goto out;
- 	}
- 
--	if (checksum)
--		imd_write_crc32(buf, imd_start, filename, size);
--	if (verify)
--		imd_verify_crc32(buf, size);
-+	if (checksum) {
-+		ret = imd_write_crc32(buf, imd_start, filename, size);
-+		goto out;
-+	}
-+
-+	if (verify) {
-+		ret = imd_verify_crc32(buf, size);
-+		goto out;
-+	}
- 
- 	if (type == IMD_TYPE_INVALID) {
- 		imd_for_each(imd_start, imd) {
+It's not that easy unfortunately. Generating CRC IMD tags doesn't work
+for many image types. For example the i.MX28 images are all encrypted,
+so the bareboximd command won't find any valid tags in the binary. The
+signed i.MX6 HAB images could be added a CRC to, but doing that would
+invalidate the signature.
+I'm afraid it's not possible to add a IMD crc to all images, we must
+carefully select the images we can actually do that.
+
+Having said that, generating the crcs automatically would be really
+great and I have also thought about that. See the following series as
+a starting point. It's not complete though, because it generates the
+crcs also in HAB signed images.
+
+Sascha
+
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
