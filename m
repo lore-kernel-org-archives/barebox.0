@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mickerik.phytec.de ([195.145.39.210])
+Received: from relay9-d.mail.gandi.net ([217.70.183.199])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kmY45-0004D2-Ea
- for barebox@lists.infradead.org; Tue, 08 Dec 2020 08:09:42 +0000
-References: <20201204100421.2385465-1-y.bas@phytec.de>
- <20201207092840.GH3977@pengutronix.de>
-From: Yunus Bas <y.bas@phytec.de>
-Message-ID: <e5fcd366-9b6b-c4c2-6ff7-9eaf7daa942c@phytec.de>
-Date: Tue, 8 Dec 2020 09:09:40 +0100
+ id 1kmcZm-0000pN-0e
+ for barebox@lists.infradead.org; Tue, 08 Dec 2020 12:58:43 +0000
+Received: from geraet.fritz.box (unknown [87.123.107.76])
+ (Authenticated sender: ahmad@a3f.at)
+ by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 730A1FF803
+ for <barebox@lists.infradead.org>; Tue,  8 Dec 2020 12:58:35 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+Date: Tue,  8 Dec 2020 13:58:26 +0100
+Message-Id: <20201208125825.105879-1-ahmad@a3f.at>
 MIME-Version: 1.0
-In-Reply-To: <20201207092840.GH3977@pengutronix.de>
-Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,47 +19,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] images: Add automatic image crc generation for imd
-To: Sascha Hauer <sha@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] fixup! ARM: rpi: Add Raspberry Pi Zero W mini-uart support
+To: barebox@lists.infradead.org
 
-SGkgU2FzY2hhLAoKQW0gMDcuMTIuMjAgdW0gMTA6Mjggc2NocmllYiBTYXNjaGEgSGF1ZXI6Cj4g
-SGkgWXVudXMsCj4KPiBPbiBGcmksIERlYyAwNCwgMjAyMCBhdCAxMTowNDoyMUFNICswMTAwLCBZ
-dW51cyBCYXMgd3JvdGU6Cj4+IFNpbmNlIGNvbW1pdCA5ZDEyMjU2YmZjYzYsIHRoZSBiYXJlYm94
-IElNRC1oZWFkZXIgaGFzIGFuIGFkZGl0aW9uYWwKPj4gcmVnaXN0ZXIgc3BhY2UgZm9yIENSQzMy
-IGNoZWNrc3VtLiBUaGlzIGlzIGFuIGltcG9ydGFudCBmZWF0dXJlLCBzaW5jZQo+PiBpdCBhbGxv
-d3MgdXMgdG8gdmVyaWZ5IHRoZSBiYXJlYm94IGltYWdlIGFmdGVyIGZsYXNoaW5nIHRvIHRoZSBo
-YXJkd2FyZS4KPj4KPj4gVGhpcyBwYXRjaCBhZGRzIGFuIG9wdGlvbmFsIGZlYXR1cmUgZm9yIGF1
-dG9tYXRpY2FsbHkgZ2VuZXJhdGluZyB0aGUgQ1JDMzIKPj4gY2hlY2tzdW0gYW5kIHdyaXRpbmcg
-aXQgaW50byBJTUQtc2VjdGlvbiBmb3IgYWxsIGdlbmVyYXRlZCBpbWFnZS1maWxlcy4KPj4gQWRk
-aXRpb25hbGx5LCB0aGUgZmlsZSAnYmFyZWJveC1pbWQtY3JjJywgY29udGFpbmluZyB0aGUgbGlz
-dCBvZiBJTUQKPj4gb3V0cHV0cyBpbmNsdWRpbmcgdGhlIENSQzMyLXZhbHVlLCB3aWxsIGJlIGdl
-bmVyYXRlZCB1bmRlciB0aGUgaW1hZ2VzCj4+IGRpcmVjdG9yeS4KPiBJdCdzIG5vdCB0aGF0IGVh
-c3kgdW5mb3J0dW5hdGVseS4gR2VuZXJhdGluZyBDUkMgSU1EIHRhZ3MgZG9lc24ndCB3b3JrCj4g
-Zm9yIG1hbnkgaW1hZ2UgdHlwZXMuIEZvciBleGFtcGxlIHRoZSBpLk1YMjggaW1hZ2VzIGFyZSBh
-bGwgZW5jcnlwdGVkLAo+IHNvIHRoZSBiYXJlYm94aW1kIGNvbW1hbmQgd29uJ3QgZmluZCBhbnkg
-dmFsaWQgdGFncyBpbiB0aGUgYmluYXJ5LiBUaGUKPiBzaWduZWQgaS5NWDYgSEFCIGltYWdlcyBj
-b3VsZCBiZSBhZGRlZCBhIENSQyB0bywgYnV0IGRvaW5nIHRoYXQgd291bGQKPiBpbnZhbGlkYXRl
-IHRoZSBzaWduYXR1cmUuCj4gSSdtIGFmcmFpZCBpdCdzIG5vdCBwb3NzaWJsZSB0byBhZGQgYSBJ
-TUQgY3JjIHRvIGFsbCBpbWFnZXMsIHdlIG11c3QKPiBjYXJlZnVsbHkgc2VsZWN0IHRoZSBpbWFn
-ZXMgd2UgY2FuIGFjdHVhbGx5IGRvIHRoYXQuCj4KPiBIYXZpbmcgc2FpZCB0aGF0LCBnZW5lcmF0
-aW5nIHRoZSBjcmNzIGF1dG9tYXRpY2FsbHkgd291bGQgYmUgcmVhbGx5Cj4gZ3JlYXQgYW5kIEkg
-aGF2ZSBhbHNvIHRob3VnaHQgYWJvdXQgdGhhdC4gU2VlIHRoZSBmb2xsb3dpbmcgc2VyaWVzIGFz
-Cj4gYSBzdGFydGluZyBwb2ludC4gSXQncyBub3QgY29tcGxldGUgdGhvdWdoLCBiZWNhdXNlIGl0
-IGdlbmVyYXRlcyB0aGUKPiBjcmNzIGFsc28gaW4gSEFCIHNpZ25lZCBpbWFnZXMuCj4KPiBTYXNj
-aGEKPgpUaGFuayB5b3UgZm9yIHRoZSByZXBseSBhbmQgc29ycnkgdGhhdCBJIGhhdmUgbm90IHRo
-b3VnaHQgYWJvdXQgc2lnbmVkIAppbWFnZXMsIHdoaWNoIGlzIG9idmlvdXMuCgogRnJvbSB5b3Vy
-IHBhdGNoZXMgSSBjYW4gc2VlLCB0aGF0IHlvdSBoYXZlIGNoYW5nZWQgdGhlIGJhcmVib3hpbWQg
-CmJlaGF2aW91ciBhbmQgYWxzbyBhZGRlZCBhZGRpdGlvbmFsIGltZGNyYyBmaWxlcy4gUGVyc29u
-YWxseSwgSSB3b3VsZG4ndCAKaGF2ZSBnb25lIHRoYXQgZmFyLCBidXQgaXQgbG9va3MgbGlrZSB5
-b3VyIGFwcHJvYWNoIGlzIHRoZSBjbGVhbmVyIApzb2x1dGlvbi4gSSB3aWxsIGNvbnNpZGVyIHlv
-dXIgcGF0Y2hlcyBhbmQgc2VhcmNoIGZvciBhIHNvbHV0aW9uIG9uIHRvcCAKb2YgdGhlbS4KCk1p
-dCBmcmV1bmRsaWNoZW4gR3LDvMOfZW4KLS0gCll1bnVzIEJhcwotIFNvZnR3YXJlIEVudHdpY2ts
-dW5nIC0KVGVsLjogKzQ5IDYxMzEgOTIgMjEgMAp5LmJhc0BwaHl0ZWMuZGUKPGh0dHA6Ly93d3cu
-cGh5dGVjLmRlLz4KCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0
-cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Fix copy-paste error in comment.
+
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+---
+ drivers/of/base.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 4ff60aa81435..edb0a8e71a0f 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -2567,7 +2567,7 @@ int of_device_disable_path(const char *path)
+ }
+ 
+ /**
+- * of_device_disable_path_by_alias - disable a devicenode by alias
++ * of_device_disable_by_alias - disable a devicenode by alias
+  * @alias - the alias of the device tree node to disable
+  */
+ int of_device_disable_by_alias(const char *alias)
+-- 
+2.28.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
