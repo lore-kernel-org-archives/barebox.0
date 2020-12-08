@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mickerik.phytec.de ([195.145.39.210])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kmDlm-0006Gn-AM
- for barebox@lists.infradead.org; Mon, 07 Dec 2020 10:29:27 +0000
-Date: Mon, 7 Dec 2020 11:29:23 +0100
-From: Sascha Hauer <sha@pengutronix.de>
-Message-ID: <20201207102923.GL3977@pengutronix.de>
-References: <20201128213934.681065-1-ahmad@a3f.at>
- <20201128213934.681065-11-ahmad@a3f.at>
- <20201129195042.iz25xbxifh75yryo@pengutronix.de>
- <20201207071058.GB3977@pengutronix.de>
- <7b844847d222acd42afd79b23c1c3135fdace598.camel@pengutronix.de>
+ id 1kmY45-0004D2-Ea
+ for barebox@lists.infradead.org; Tue, 08 Dec 2020 08:09:42 +0000
+References: <20201204100421.2385465-1-y.bas@phytec.de>
+ <20201207092840.GH3977@pengutronix.de>
+From: Yunus Bas <y.bas@phytec.de>
+Message-ID: <e5fcd366-9b6b-c4c2-6ff7-9eaf7daa942c@phytec.de>
+Date: Tue, 8 Dec 2020 09:09:40 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <7b844847d222acd42afd79b23c1c3135fdace598.camel@pengutronix.de>
+In-Reply-To: <20201207092840.GH3977@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,86 +19,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 11/11] doc: bcm283x: document use of mini-uart on
- Raspberry Pi Zero W / CM3
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, Andrew John <andrew@mobius-embedded-systems.co.uk>, Robert Carnecky <robert@neopsis.com>, Ahmad Fatoum <ahmad@a3f.at>, Roland Hieber <rhi@pengutronix.de>, Rouven Czerwinski <rcz@pengutronix.de>
+Subject: Re: [PATCH] images: Add automatic image crc generation for imd
+To: Sascha Hauer <sha@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Mon, Dec 07, 2020 at 11:00:49AM +0100, Ahmad Fatoum wrote:
-> On Mon, 2020-12-07 at 08:10 +0100, Sascha Hauer wrote:
-> > On Sun, Nov 29, 2020 at 08:50:42PM +0100, Roland Hieber wrote:
-> > > On Sat, Nov 28, 2020 at 10:39:34PM +0100, Ahmad Fatoum wrote:
-> > > > As described in the UART configuration[1] article in the
-> > > > Raspberry Pi
-> > > > Foundation documentation, Raspberry Pi 3 & 4 as well as Zero W
-> > > > use the
-> > > > mini-uart as primary (easily user-accessible) UART. At least on
-> > > > the
-> > > > Raspberry Zero W and CM3, we need to pass uart_2ndstage=1, so the
-> > > > BootROM leaves the 8250 IP in a suitable state for use by
-> > > > barebox.
-> > > > Document this.
-> > > > 
-> > > > [1]: 
-> > > > https://www.raspberrypi.org/documentation/configuration/uart.md
-> > > > 
-> > > > Cc: Roland Hieber <rhi@pengutronix.de>
-> > > > Cc: Rouven Czerwinski <rcz@pengutronix.de>
-> > > > Cc: Robert Carnecky <robert@neopsis.com>
-> > > > Cc: Andrew John <andrew@mobius-embedded-systems.co.uk>
-> > > > Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
-> > > > ---
-> > > >  Documentation/boards/bcm2835.rst | 7 +++++++
-> > > >  1 file changed, 7 insertions(+)
-> > > > 
-> > > > diff --git a/Documentation/boards/bcm2835.rst
-> > > > b/Documentation/boards/bcm2835.rst
-> > > > index c896871e0d82..dbdfc2633173 100644
-> > > > --- a/Documentation/boards/bcm2835.rst
-> > > > +++ b/Documentation/boards/bcm2835.rst
-> > > > @@ -23,6 +23,13 @@ Raspberry Pi
-> > > >           kernel=barebox.img
-> > > >           enable_uart=1
-> > > >  
-> > > > +     If you want to use the mini-uart instead of the PL011, you
-> > > > might need to additionally set::
-> > > > +
-> > > > +         uart_2ndstage=1
-> > > > +
-> > > > +     This is useful on newer boards like the Raspberry Pi Zero W
-> > > > and CM3, which route the
-> > > > +     more easily accessible primary UART to the mini-uart.
-> > > 
-> > > This seems to be non-optional on RPi Zero W, so I would word it
-> > > more
-> > > strongly.
-> > > 
-> > > With this series, at least barebox boots, which is better than in
-> > > master
-> > > :-) However, I cannot get the stock kernel (/boot/kernel.img) to
-> > > boot on
-> > > Zero W, and I cannot figure out why:
-> > 
-> > Should I wait for this being fixed before I merge this series?
-> 
-> I sent a fixup. I think it's ok to merge that way.
-
-Ok, did that.
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgU2FzY2hhLAoKQW0gMDcuMTIuMjAgdW0gMTA6Mjggc2NocmllYiBTYXNjaGEgSGF1ZXI6Cj4g
+SGkgWXVudXMsCj4KPiBPbiBGcmksIERlYyAwNCwgMjAyMCBhdCAxMTowNDoyMUFNICswMTAwLCBZ
+dW51cyBCYXMgd3JvdGU6Cj4+IFNpbmNlIGNvbW1pdCA5ZDEyMjU2YmZjYzYsIHRoZSBiYXJlYm94
+IElNRC1oZWFkZXIgaGFzIGFuIGFkZGl0aW9uYWwKPj4gcmVnaXN0ZXIgc3BhY2UgZm9yIENSQzMy
+IGNoZWNrc3VtLiBUaGlzIGlzIGFuIGltcG9ydGFudCBmZWF0dXJlLCBzaW5jZQo+PiBpdCBhbGxv
+d3MgdXMgdG8gdmVyaWZ5IHRoZSBiYXJlYm94IGltYWdlIGFmdGVyIGZsYXNoaW5nIHRvIHRoZSBo
+YXJkd2FyZS4KPj4KPj4gVGhpcyBwYXRjaCBhZGRzIGFuIG9wdGlvbmFsIGZlYXR1cmUgZm9yIGF1
+dG9tYXRpY2FsbHkgZ2VuZXJhdGluZyB0aGUgQ1JDMzIKPj4gY2hlY2tzdW0gYW5kIHdyaXRpbmcg
+aXQgaW50byBJTUQtc2VjdGlvbiBmb3IgYWxsIGdlbmVyYXRlZCBpbWFnZS1maWxlcy4KPj4gQWRk
+aXRpb25hbGx5LCB0aGUgZmlsZSAnYmFyZWJveC1pbWQtY3JjJywgY29udGFpbmluZyB0aGUgbGlz
+dCBvZiBJTUQKPj4gb3V0cHV0cyBpbmNsdWRpbmcgdGhlIENSQzMyLXZhbHVlLCB3aWxsIGJlIGdl
+bmVyYXRlZCB1bmRlciB0aGUgaW1hZ2VzCj4+IGRpcmVjdG9yeS4KPiBJdCdzIG5vdCB0aGF0IGVh
+c3kgdW5mb3J0dW5hdGVseS4gR2VuZXJhdGluZyBDUkMgSU1EIHRhZ3MgZG9lc24ndCB3b3JrCj4g
+Zm9yIG1hbnkgaW1hZ2UgdHlwZXMuIEZvciBleGFtcGxlIHRoZSBpLk1YMjggaW1hZ2VzIGFyZSBh
+bGwgZW5jcnlwdGVkLAo+IHNvIHRoZSBiYXJlYm94aW1kIGNvbW1hbmQgd29uJ3QgZmluZCBhbnkg
+dmFsaWQgdGFncyBpbiB0aGUgYmluYXJ5LiBUaGUKPiBzaWduZWQgaS5NWDYgSEFCIGltYWdlcyBj
+b3VsZCBiZSBhZGRlZCBhIENSQyB0bywgYnV0IGRvaW5nIHRoYXQgd291bGQKPiBpbnZhbGlkYXRl
+IHRoZSBzaWduYXR1cmUuCj4gSSdtIGFmcmFpZCBpdCdzIG5vdCBwb3NzaWJsZSB0byBhZGQgYSBJ
+TUQgY3JjIHRvIGFsbCBpbWFnZXMsIHdlIG11c3QKPiBjYXJlZnVsbHkgc2VsZWN0IHRoZSBpbWFn
+ZXMgd2UgY2FuIGFjdHVhbGx5IGRvIHRoYXQuCj4KPiBIYXZpbmcgc2FpZCB0aGF0LCBnZW5lcmF0
+aW5nIHRoZSBjcmNzIGF1dG9tYXRpY2FsbHkgd291bGQgYmUgcmVhbGx5Cj4gZ3JlYXQgYW5kIEkg
+aGF2ZSBhbHNvIHRob3VnaHQgYWJvdXQgdGhhdC4gU2VlIHRoZSBmb2xsb3dpbmcgc2VyaWVzIGFz
+Cj4gYSBzdGFydGluZyBwb2ludC4gSXQncyBub3QgY29tcGxldGUgdGhvdWdoLCBiZWNhdXNlIGl0
+IGdlbmVyYXRlcyB0aGUKPiBjcmNzIGFsc28gaW4gSEFCIHNpZ25lZCBpbWFnZXMuCj4KPiBTYXNj
+aGEKPgpUaGFuayB5b3UgZm9yIHRoZSByZXBseSBhbmQgc29ycnkgdGhhdCBJIGhhdmUgbm90IHRo
+b3VnaHQgYWJvdXQgc2lnbmVkIAppbWFnZXMsIHdoaWNoIGlzIG9idmlvdXMuCgogRnJvbSB5b3Vy
+IHBhdGNoZXMgSSBjYW4gc2VlLCB0aGF0IHlvdSBoYXZlIGNoYW5nZWQgdGhlIGJhcmVib3hpbWQg
+CmJlaGF2aW91ciBhbmQgYWxzbyBhZGRlZCBhZGRpdGlvbmFsIGltZGNyYyBmaWxlcy4gUGVyc29u
+YWxseSwgSSB3b3VsZG4ndCAKaGF2ZSBnb25lIHRoYXQgZmFyLCBidXQgaXQgbG9va3MgbGlrZSB5
+b3VyIGFwcHJvYWNoIGlzIHRoZSBjbGVhbmVyIApzb2x1dGlvbi4gSSB3aWxsIGNvbnNpZGVyIHlv
+dXIgcGF0Y2hlcyBhbmQgc2VhcmNoIGZvciBhIHNvbHV0aW9uIG9uIHRvcCAKb2YgdGhlbS4KCk1p
+dCBmcmV1bmRsaWNoZW4gR3LDvMOfZW4KLS0gCll1bnVzIEJhcwotIFNvZnR3YXJlIEVudHdpY2ts
+dW5nIC0KVGVsLjogKzQ5IDYxMzEgOTIgMjEgMAp5LmJhc0BwaHl0ZWMuZGUKPGh0dHA6Ly93d3cu
+cGh5dGVjLmRlLz4KCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0
+cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
