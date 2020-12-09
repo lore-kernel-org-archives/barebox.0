@@ -1,16 +1,24 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay9-d.mail.gandi.net ([217.70.183.199])
+Received: from mib.mailinblack.com ([137.74.84.110])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kmcZm-0000pN-0e
- for barebox@lists.infradead.org; Tue, 08 Dec 2020 12:58:43 +0000
-Received: from geraet.fritz.box (unknown [87.123.107.76])
- (Authenticated sender: ahmad@a3f.at)
- by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 730A1FF803
- for <barebox@lists.infradead.org>; Tue,  8 Dec 2020 12:58:35 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Tue,  8 Dec 2020 13:58:26 +0100
-Message-Id: <20201208125825.105879-1-ahmad@a3f.at>
-MIME-Version: 1.0
+ id 1kmzJl-00031j-8r
+ for barebox@lists.infradead.org; Wed, 09 Dec 2020 13:15:42 +0000
+Received: from localhost (localhost [127.0.0.1])
+ by mib.mailinblack.com (Postfix) with ESMTP id 9682D1A50A7
+ for <barebox@lists.infradead.org>; Wed,  9 Dec 2020 13:15:37 +0000 (UTC)
+Received: from mib.mailinblack.com (localhost [127.0.0.1])
+ by mib.mailinblack.com with SMTP (Mib Daemon ) id KIHFQVTA
+ for barebox@lists.infradead.org;
+ Wed, 09 Dec 2020 13:15:37 +0000 (UTC)
+Received: from zimbra2.kalray.eu (zimbra2.kalray.eu [92.103.151.219])
+ by mib.mailinblack.com (Postfix) with ESMTPS id 6E55C1A50A6
+ for <barebox@lists.infradead.org>; Wed,  9 Dec 2020 13:15:37 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+ by zimbra2.kalray.eu (Postfix) with ESMTP id 4563327E05EF
+ for <barebox@lists.infradead.org>; Wed,  9 Dec 2020 14:15:37 +0100 (CET)
+From: Jules Maselbas <jmaselbas@kalray.eu>
+Date: Wed,  9 Dec 2020 14:14:54 +0100
+Message-Id: <20201209131454.5248-1-jmaselbas@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,35 +27,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! ARM: rpi: Add Raspberry Pi Zero W mini-uart support
+Subject: [PATCH] phy: usb-nop-xceiv: Make the clock always optional
 To: barebox@lists.infradead.org
+Cc: Jules Maselbas <jmaselbas@kalray.eu>
 
-Fix copy-paste error in comment.
+The clock seems to be optional at probe time, if not found it's set
+to NULL. However this was not the case in the function nop_usbphy_init
+which exits with error if the clock cannot be enabled.
 
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+Make the clock optional also during the nop_usbphy_init by trying to
+do the clock init only if the clock has been found during probe.
+
+Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
 ---
- drivers/of/base.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/usb-nop-xceiv.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 4ff60aa81435..edb0a8e71a0f 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -2567,7 +2567,7 @@ int of_device_disable_path(const char *path)
- }
+diff --git a/drivers/phy/usb-nop-xceiv.c b/drivers/phy/usb-nop-xceiv.c
+index 7ea7d28a2..b549b564b 100644
+--- a/drivers/phy/usb-nop-xceiv.c
++++ b/drivers/phy/usb-nop-xceiv.c
+@@ -46,9 +46,11 @@ static int nop_usbphy_init(struct phy *phy)
+ 	int ret;
+ 	struct nop_usbphy *nopphy = phy_get_drvdata(phy);
  
- /**
-- * of_device_disable_path_by_alias - disable a devicenode by alias
-+ * of_device_disable_by_alias - disable a devicenode by alias
-  * @alias - the alias of the device tree node to disable
-  */
- int of_device_disable_by_alias(const char *alias)
+-	ret = clk_enable(nopphy->clk);
+-	if (ret < 0)
+-		return ret;
++	if (nopphy->clk) {
++		ret = clk_enable(nopphy->clk);
++		if (ret < 0)
++			return ret;
++	}
+ 
+ 	if (gpio_is_valid(nopphy->reset)) {
+ 		/*
 -- 
-2.28.0
+2.17.1
+
 
 
 _______________________________________________
