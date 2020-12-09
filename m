@@ -1,24 +1,24 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mib.mailinblack.com ([137.74.84.110])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kn0sv-00081P-1s
+ id 1kn0sv-00081O-1v
  for barebox@lists.infradead.org; Wed, 09 Dec 2020 14:56:12 +0000
 Received: from localhost (localhost [127.0.0.1])
- by mib.mailinblack.com (Postfix) with ESMTP id 61C2A1A5132
+ by mib.mailinblack.com (Postfix) with ESMTP id 85AE41A512E
  for <barebox@lists.infradead.org>; Wed,  9 Dec 2020 14:56:02 +0000 (UTC)
 Received: from mib.mailinblack.com (localhost [127.0.0.1])
- by mib.mailinblack.com with SMTP (Mib Daemon ) id KIHJC0K7
+ by mib.mailinblack.com with SMTP (Mib Daemon ) id KIHJC0O1
  for barebox@lists.infradead.org;
  Wed, 09 Dec 2020 14:56:02 +0000 (UTC)
 Received: from zimbra2.kalray.eu (zimbra2.kalray.eu [92.103.151.219])
- by mib.mailinblack.com (Postfix) with ESMTPS id 392D81A512E
+ by mib.mailinblack.com (Postfix) with ESMTPS id 5A9101A5131
  for <barebox@lists.infradead.org>; Wed,  9 Dec 2020 14:56:02 +0000 (UTC)
 Received: from localhost (localhost [127.0.0.1])
- by zimbra2.kalray.eu (Postfix) with ESMTP id 10E2E27E0682
+ by zimbra2.kalray.eu (Postfix) with ESMTP id 3570827E064D
  for <barebox@lists.infradead.org>; Wed,  9 Dec 2020 15:56:02 +0100 (CET)
 From: Jules Maselbas <jmaselbas@kalray.eu>
-Date: Wed,  9 Dec 2020 15:55:46 +0100
-Message-Id: <20201209145547.22655-3-jmaselbas@kalray.eu>
+Date: Wed,  9 Dec 2020 15:55:47 +0100
+Message-Id: <20201209145547.22655-4-jmaselbas@kalray.eu>
 In-Reply-To: <20201209145547.22655-1-jmaselbas@kalray.eu>
 References: <20201209145547.22655-1-jmaselbas@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
@@ -34,62 +34,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] usb: dwc2: Fix mode check in dwc2_get_dr_mode
+Subject: [PATCH 4/4] usb: dwc2: Rename dwc2_core_snpsid to
+ dwc2_check_core_version
 To: barebox@lists.infradead.org
 Cc: Jules Maselbas <jmaselbas@kalray.eu>
 
-In Linux, configs CONFIG_USB_DWC2_HOST and CONFIG_USB_DWC2_GADGET
-are respectively for host only and gadget only support, they are
-mutually exclusive. However this is not the case in barebox, they
-are independent options.
+The name dwc2_check_core_version is the one used on Linux, make it this
+way.
 
 Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
 ---
- drivers/usb/dwc2/core.c | 14 ++++++--------
- drivers/usb/dwc2/dwc2.c |  2 ++
- 2 files changed, 8 insertions(+), 8 deletions(-)
+ drivers/usb/dwc2/core.c | 4 +---
+ drivers/usb/dwc2/dwc2.c | 2 +-
+ drivers/usb/dwc2/dwc2.h | 2 +-
+ 3 files changed, 3 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/usb/dwc2/core.c b/drivers/usb/dwc2/core.c
-index a61acf553..808d80585 100644
+index 808d80585..899c532d4 100644
 --- a/drivers/usb/dwc2/core.c
 +++ b/drivers/usb/dwc2/core.c
-@@ -654,18 +654,16 @@ int dwc2_get_dr_mode(struct dwc2 *dwc2)
+@@ -190,12 +190,10 @@ void dwc2_set_default_params(struct dwc2 *dwc2)
+ 	}
+ }
  
- 	if (dwc2_hw_is_device(dwc2)) {
- 		dwc2_dbg(dwc2, "Controller is device only\n");
--		if (IS_ENABLED(CONFIG_USB_DWC2_HOST)) {
--			dwc2_err(dwc2,
--				"Controller does not support host mode.\n");
--			return -EINVAL;
-+		if (!IS_ENABLED(CONFIG_USB_DWC2_GADGET)) {
-+			dwc2_err(dwc2, "gadget mode support not compiled in!\n");
-+			return -ENOTSUPP;
- 		}
- 		mode = USB_DR_MODE_PERIPHERAL;
- 	} else if (dwc2_hw_is_host(dwc2)) {
- 		dwc2_dbg(dwc2, "Controller is host only\n");
--		if (IS_ENABLED(CONFIG_USB_DWC2_GADGET)) {
--			dwc2_err(dwc2,
--				"Controller does not support device mode.\n");
--			return -EINVAL;
-+		if (!IS_ENABLED(CONFIG_USB_DWC2_HOST)) {
-+			dwc2_err(dwc2, "host mode support not compiled in!\n");
-+			return -ENOTSUPP;
- 		}
- 		mode = USB_DR_MODE_HOST;
- 	} else {
+-int dwc2_core_snpsid(struct dwc2 *dwc2)
++int dwc2_check_core_version(struct dwc2 *dwc2)
+ {
+ 	struct dwc2_hw_params *hw = &dwc2->hw_params;
+ 
+-	hw->snpsid = dwc2_readl(dwc2, GSNPSID);
+-
+ 	/*
+ 	 * Attempt to ensure this device is really a DWC2 Controller.
+ 	 * Read and verify the GSNPSID register contents. The value should be
 diff --git a/drivers/usb/dwc2/dwc2.c b/drivers/usb/dwc2/dwc2.c
-index ae144698c..120890105 100644
+index 120890105..7835037db 100644
 --- a/drivers/usb/dwc2/dwc2.c
 +++ b/drivers/usb/dwc2/dwc2.c
-@@ -77,6 +77,8 @@ static int dwc2_probe(struct device_d *dev)
- 	dwc2_get_hwparams(dwc2);
+@@ -61,7 +61,7 @@ static int dwc2_probe(struct device_d *dev)
+ 			goto error;
+ 	}
  
- 	ret = dwc2_get_dr_mode(dwc2);
-+	if (ret)
-+		goto error;
+-	ret = dwc2_core_snpsid(dwc2);
++	ret = dwc2_check_core_version(dwc2);
+ 	if (ret)
+ 		goto error;
  
- 	dwc2_set_default_params(dwc2);
+diff --git a/drivers/usb/dwc2/dwc2.h b/drivers/usb/dwc2/dwc2.h
+index 70a747302..476c3205b 100644
+--- a/drivers/usb/dwc2/dwc2.h
++++ b/drivers/usb/dwc2/dwc2.h
+@@ -8,7 +8,7 @@
+ #include "core.h"
+ 
+ /* Core functions */
+-int dwc2_core_snpsid(struct dwc2 *dwc2);
++int dwc2_check_core_version(struct dwc2 *dwc2);
+ void dwc2_get_hwparams(struct dwc2 *dwc2);
+ void dwc2_set_default_params(struct dwc2 *dwc2);
  
 -- 
 2.17.1
