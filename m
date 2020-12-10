@@ -1,20 +1,26 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mib.mailinblack.com ([137.74.84.110])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1knJ25-0005vs-0A
- for barebox@lists.infradead.org; Thu, 10 Dec 2020 10:18:46 +0000
+ id 1knJED-00079U-8D
+ for barebox@lists.infradead.org; Thu, 10 Dec 2020 10:31:18 +0000
 Received: from localhost (localhost [127.0.0.1])
- by mib.mailinblack.com (Postfix) with ESMTP id 8A9711A1D11
- for <barebox@lists.infradead.org>; Thu, 10 Dec 2020 10:18:43 +0000 (UTC)
-Date: Thu, 10 Dec 2020 11:18:41 +0100
+ by mib.mailinblack.com (Postfix) with ESMTP id EF58F1A1D34
+ for <barebox@lists.infradead.org>; Thu, 10 Dec 2020 10:31:15 +0000 (UTC)
+Received: from mib.mailinblack.com (localhost [127.0.0.1])
+ by mib.mailinblack.com with SMTP (Mib Daemon ) id KIIPBD6H
+ for barebox@lists.infradead.org;
+ Thu, 10 Dec 2020 10:31:15 +0000 (UTC)
+Received: from zimbra2.kalray.eu (zimbra2.kalray.eu [92.103.151.219])
+ by mib.mailinblack.com (Postfix) with ESMTPS id C222F1A1D31
+ for <barebox@lists.infradead.org>; Thu, 10 Dec 2020 10:31:15 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+ by zimbra2.kalray.eu (Postfix) with ESMTP id 995A627E06C5
+ for <barebox@lists.infradead.org>; Thu, 10 Dec 2020 11:31:15 +0100 (CET)
 From: Jules Maselbas <jmaselbas@kalray.eu>
-Message-ID: <20201210101841.hvjsmxfvykbg56oj@tellis.lin.mbt.kalray.eu>
-References: <20201209145547.22655-1-jmaselbas@kalray.eu>
- <20201209145547.22655-2-jmaselbas@kalray.eu>
- <20201210100509.GV3977@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201210100509.GV3977@pengutronix.de>
+Date: Thu, 10 Dec 2020 11:31:04 +0100
+Message-Id: <20201210103104.3816-4-jmaselbas@kalray.eu>
+In-Reply-To: <20201210103104.3816-1-jmaselbas@kalray.eu>
+References: <20201210103104.3816-1-jmaselbas@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,39 +29,73 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/4] usb: dwc2: Move static function prototypes into core.c
-To: Sascha Hauer <sha@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 4/4] usb: dwc2: Rename dwc2_core_snpsid to
+ dwc2_check_core_version
+To: barebox@lists.infradead.org
+Cc: Jules Maselbas <jmaselbas@kalray.eu>
 
-On Thu, Dec 10, 2020 at 11:05:09AM +0100, Sascha Hauer wrote:
-> Hi Jules,
-> 
-> On Wed, Dec 09, 2020 at 03:55:45PM +0100, Jules Maselbas wrote:
-> 
-> There should be a forward declaration necessary for static functions.
-> You are changing the declarations to static here, but not the
-> implementations further down in this file, so this shouldn't compile.
-> 
-Yes, I though there were already static, but it wasn't the case...
-So I am going to remove theses declarations and add the static keyword
-were is it missing.
+The name dwc2_check_core_version is the one used on Linux, make it this
+way.
 
-> No need to move this declaration.
-ok
+Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
+---
+ drivers/usb/dwc2/core.c | 4 +---
+ drivers/usb/dwc2/dwc2.c | 2 +-
+ drivers/usb/dwc2/dwc2.h | 2 +-
+ 3 files changed, 3 insertions(+), 5 deletions(-)
 
+diff --git a/drivers/usb/dwc2/core.c b/drivers/usb/dwc2/core.c
+index 4e356a1df..cc5729ed9 100644
+--- a/drivers/usb/dwc2/core.c
++++ b/drivers/usb/dwc2/core.c
+@@ -185,12 +185,10 @@ void dwc2_set_default_params(struct dwc2 *dwc2)
+ 	}
+ }
+ 
+-int dwc2_core_snpsid(struct dwc2 *dwc2)
++int dwc2_check_core_version(struct dwc2 *dwc2)
+ {
+ 	struct dwc2_hw_params *hw = &dwc2->hw_params;
+ 
+-	hw->snpsid = dwc2_readl(dwc2, GSNPSID);
+-
+ 	/*
+ 	 * Attempt to ensure this device is really a DWC2 Controller.
+ 	 * Read and verify the GSNPSID register contents. The value should be
+diff --git a/drivers/usb/dwc2/dwc2.c b/drivers/usb/dwc2/dwc2.c
+index 0965756f6..e039800a5 100644
+--- a/drivers/usb/dwc2/dwc2.c
++++ b/drivers/usb/dwc2/dwc2.c
+@@ -64,7 +64,7 @@ static int dwc2_probe(struct device_d *dev)
+ 			goto error;
+ 	}
+ 
+-	ret = dwc2_core_snpsid(dwc2);
++	ret = dwc2_check_core_version(dwc2);
+ 	if (ret)
+ 		goto error;
+ 
+diff --git a/drivers/usb/dwc2/dwc2.h b/drivers/usb/dwc2/dwc2.h
+index a878de85b..b9fdda850 100644
+--- a/drivers/usb/dwc2/dwc2.h
++++ b/drivers/usb/dwc2/dwc2.h
+@@ -9,7 +9,7 @@
+ 
+ /* Core functions */
+ void dwc2_set_default_params(struct dwc2 *dwc2);
+-int dwc2_core_snpsid(struct dwc2 *dwc2);
++int dwc2_check_core_version(struct dwc2 *dwc2);
+ void dwc2_get_hwparams(struct dwc2 *dwc2);
+ 
+ void dwc2_init_fs_ls_pclk_sel(struct dwc2 *dwc2);
+-- 
+2.17.1
 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> 
 
 
 _______________________________________________
