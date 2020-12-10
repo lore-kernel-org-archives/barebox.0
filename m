@@ -1,24 +1,26 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mib.mailinblack.com ([137.74.84.110])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1knJED-00079R-8D
- for barebox@lists.infradead.org; Thu, 10 Dec 2020 10:31:18 +0000
+ id 1knJED-00079S-8C
+ for barebox@lists.infradead.org; Thu, 10 Dec 2020 10:31:20 +0000
 Received: from localhost (localhost [127.0.0.1])
- by mib.mailinblack.com (Postfix) with ESMTP id D4C4C1A1D2E
+ by mib.mailinblack.com (Postfix) with ESMTP id DC9FA1A1D2F
  for <barebox@lists.infradead.org>; Thu, 10 Dec 2020 10:31:15 +0000 (UTC)
 Received: from mib.mailinblack.com (localhost [127.0.0.1])
- by mib.mailinblack.com with SMTP (Mib Daemon ) id KIIPBD3L
+ by mib.mailinblack.com with SMTP (Mib Daemon ) id KIIPBD42
  for barebox@lists.infradead.org;
  Thu, 10 Dec 2020 10:31:15 +0000 (UTC)
 Received: from zimbra2.kalray.eu (zimbra2.kalray.eu [92.103.151.219])
- by mib.mailinblack.com (Postfix) with ESMTPS id A9A2A1A1D25
+ by mib.mailinblack.com (Postfix) with ESMTPS id ADD861A1D29
  for <barebox@lists.infradead.org>; Thu, 10 Dec 2020 10:31:15 +0000 (UTC)
 Received: from localhost (localhost [127.0.0.1])
- by zimbra2.kalray.eu (Postfix) with ESMTP id 80AEC27E0682
+ by zimbra2.kalray.eu (Postfix) with ESMTP id 876B727E06AA
  for <barebox@lists.infradead.org>; Thu, 10 Dec 2020 11:31:15 +0100 (CET)
 From: Jules Maselbas <jmaselbas@kalray.eu>
-Date: Thu, 10 Dec 2020 11:31:01 +0100
-Message-Id: <20201210103104.3816-1-jmaselbas@kalray.eu>
+Date: Thu, 10 Dec 2020 11:31:02 +0100
+Message-Id: <20201210103104.3816-2-jmaselbas@kalray.eu>
+In-Reply-To: <20201210103104.3816-1-jmaselbas@kalray.eu>
+References: <20201210103104.3816-1-jmaselbas@kalray.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -32,93 +34,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/4] usb: dwc2: Add support for optional usb phy
+Subject: [PATCH v2 2/4] usb: dwc2: Remove unnecessary functions declaration
 To: barebox@lists.infradead.org
 Cc: Jules Maselbas <jmaselbas@kalray.eu>
 
+Theses functions are only used in dwc2/core.c make them static.
+
 Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
 ---
- drivers/usb/dwc2/core.h |  2 ++
- drivers/usb/dwc2/dwc2.c | 24 ++++++++++++++++++++++++
- drivers/usb/dwc2/dwc2.h |  1 +
- 3 files changed, 27 insertions(+)
+ drivers/usb/dwc2/core.c | 8 ++++----
+ drivers/usb/dwc2/dwc2.h | 4 ----
+ 2 files changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/usb/dwc2/core.h b/drivers/usb/dwc2/core.h
-index 090ca15fe..b9845b552 100644
---- a/drivers/usb/dwc2/core.h
-+++ b/drivers/usb/dwc2/core.h
-@@ -466,6 +466,8 @@ struct dwc2 {
- 	struct dwc2_hw_params hw_params;
- 	struct dwc2_core_params params;
- 
-+	struct phy *phy; /* optional */
-+
- #ifdef CONFIG_USB_DWC2_HOST
- 	struct usb_host host;
- 	u8 in_data_toggle[MAX_DEVICE][MAX_ENDPOINT];
-diff --git a/drivers/usb/dwc2/dwc2.c b/drivers/usb/dwc2/dwc2.c
-index 282e6754b..9ab3b5b53 100644
---- a/drivers/usb/dwc2/dwc2.c
-+++ b/drivers/usb/dwc2/dwc2.c
-@@ -50,6 +50,20 @@ static int dwc2_probe(struct device_d *dev)
- 	dwc2->regs = IOMEM(iores->start);
- 	dwc2->dev = dev;
- 
-+	dwc2->phy = phy_optional_get(dev, "usb2-phy");
-+	if (IS_ERR(dwc2->phy)) {
-+		ret = PTR_ERR(dwc2->phy);
-+		return ret;
-+	}
-+
-+	if (dwc2->phy) {
-+		ret = phy_power_on(dwc2->phy);
-+		if (ret == 0)
-+			ret = phy_init(dwc2->phy);
-+		if (ret)
-+			goto error;
-+	}
-+
- 	ret = dwc2_core_snpsid(dwc2);
- 	if (ret)
- 		goto error;
-@@ -78,15 +92,25 @@ static int dwc2_probe(struct device_d *dev)
- 		ret = dwc2_set_mode(dwc2, dwc2->dr_mode);
- 
- error:
-+	if (dwc2->phy)
-+		phy_power_off(dwc2->phy);
-+
- 	return ret;
+diff --git a/drivers/usb/dwc2/core.c b/drivers/usb/dwc2/core.c
+index c4a3cc789..d700c3e6b 100644
+--- a/drivers/usb/dwc2/core.c
++++ b/drivers/usb/dwc2/core.c
+@@ -28,7 +28,7 @@ static bool dwc2_hw_is_device(struct dwc2 *dwc2)
+ 		(op_mode == GHWCFG2_OP_MODE_NO_SRP_CAPABLE_DEVICE);
  }
  
- static void dwc2_remove(struct device_d *dev)
+-void dwc2_set_param_otg_cap(struct dwc2 *dwc2)
++static void dwc2_set_param_otg_cap(struct dwc2 *dwc2)
  {
- 	struct dwc2 *dwc2 = dev->priv;
-+	int ret;
+ 	u8 val;
  
- 	dwc2_host_uninit(dwc2);
- 	dwc2_gadget_uninit(dwc2);
-+
-+	if (dwc2->phy) {
-+		ret = phy_exit(dwc2->phy);
-+		if (ret == 0)
-+			phy_power_off(dwc2->phy);
-+	}
+@@ -49,7 +49,7 @@ void dwc2_set_param_otg_cap(struct dwc2 *dwc2)
+ 	dwc2->params.otg_cap = val;
  }
  
- static const struct of_device_id dwc2_platform_dt_ids[] = {
+-void dwc2_set_param_phy_type(struct dwc2 *dwc2)
++static void dwc2_set_param_phy_type(struct dwc2 *dwc2)
+ {
+ 	u8 val;
+ 
+@@ -69,7 +69,7 @@ void dwc2_set_param_phy_type(struct dwc2 *dwc2)
+ 	dwc2->params.phy_type = val;
+ }
+ 
+-void dwc2_set_param_speed(struct dwc2 *dwc2)
++static void dwc2_set_param_speed(struct dwc2 *dwc2)
+ {
+ 	if (dwc2->params.phy_type == DWC2_PHY_TYPE_PARAM_FS)
+ 		dwc2->params.speed = DWC2_SPEED_PARAM_FULL;
+@@ -77,7 +77,7 @@ void dwc2_set_param_speed(struct dwc2 *dwc2)
+ 		dwc2->params.speed = DWC2_SPEED_PARAM_HIGH;
+ }
+ 
+-void dwc2_set_param_phy_utmi_width(struct dwc2 *dwc2)
++static void dwc2_set_param_phy_utmi_width(struct dwc2 *dwc2)
+ {
+ 	int val;
+ 
 diff --git a/drivers/usb/dwc2/dwc2.h b/drivers/usb/dwc2/dwc2.h
-index 30ad90665..196f4a07f 100644
+index 196f4a07f..a878de85b 100644
 --- a/drivers/usb/dwc2/dwc2.h
 +++ b/drivers/usb/dwc2/dwc2.h
-@@ -2,6 +2,7 @@
- #include <usb/usb.h>
- #include <usb/usb_defs.h>
- #include <usb/gadget.h>
-+#include <linux/phy/phy.h>
- 
- #include "regs.h"
+@@ -8,10 +8,6 @@
  #include "core.h"
+ 
+ /* Core functions */
+-void dwc2_set_param_otg_cap(struct dwc2 *dwc2);
+-void dwc2_set_param_phy_type(struct dwc2 *dwc2);
+-void dwc2_set_param_speed(struct dwc2 *dwc2);
+-void dwc2_set_param_phy_utmi_width(struct dwc2 *dwc2);
+ void dwc2_set_default_params(struct dwc2 *dwc2);
+ int dwc2_core_snpsid(struct dwc2 *dwc2);
+ void dwc2_get_hwparams(struct dwc2 *dwc2);
 -- 
 2.17.1
 
