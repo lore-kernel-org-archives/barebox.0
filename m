@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1knIXq-0001SZ-0Y
- for barebox@lists.infradead.org; Thu, 10 Dec 2020 09:47:31 +0000
-Date: Thu, 10 Dec 2020 10:47:28 +0100
-Message-ID: <20201210094728.GU3977@pengutronix.de>
-References: <20201208125825.105879-1-ahmad@a3f.at>
+ id 1knIox-0003HD-LP
+ for barebox@lists.infradead.org; Thu, 10 Dec 2020 10:05:12 +0000
+Date: Thu, 10 Dec 2020 11:05:09 +0100
+Message-ID: <20201210100509.GV3977@pengutronix.de>
+References: <20201209145547.22655-1-jmaselbas@kalray.eu>
+ <20201209145547.22655-2-jmaselbas@kalray.eu>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201208125825.105879-1-ahmad@a3f.at>
+In-Reply-To: <20201209145547.22655-2-jmaselbas@kalray.eu>
 From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,45 +23,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fixup! ARM: rpi: Add Raspberry Pi Zero W mini-uart support
-To: Ahmad Fatoum <ahmad@a3f.at>
+Subject: Re: [PATCH 2/4] usb: dwc2: Move static function prototypes into core.c
+To: Jules Maselbas <jmaselbas@kalray.eu>
 Cc: barebox@lists.infradead.org
 
-On Tue, Dec 08, 2020 at 01:58:26PM +0100, Ahmad Fatoum wrote:
-> Fix copy-paste error in comment.
-> 
-> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
-> ---
->  drivers/of/base.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+Hi Jules,
 
-Applied, thanks
+On Wed, Dec 09, 2020 at 03:55:45PM +0100, Jules Maselbas wrote:
+> Theses functions were only used in dwc2/core.c and where defined as
+> static.
+> 
+> Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
+> ---
+>  drivers/usb/dwc2/core.c | 5 +++++
+>  drivers/usb/dwc2/dwc2.h | 6 +-----
+>  2 files changed, 6 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/usb/dwc2/core.c b/drivers/usb/dwc2/core.c
+> index c4a3cc789..a61acf553 100644
+> --- a/drivers/usb/dwc2/core.c
+> +++ b/drivers/usb/dwc2/core.c
+> @@ -1,6 +1,11 @@
+>  // SPDX-License-Identifier: GPL-2.0+
+>  #include "dwc2.h"
+>  
+> +static void dwc2_set_param_otg_cap(struct dwc2 *dwc2);
+> +static void dwc2_set_param_phy_type(struct dwc2 *dwc2);
+> +static void dwc2_set_param_speed(struct dwc2 *dwc2);
+> +static void dwc2_set_param_phy_utmi_width(struct dwc2 *dwc2);
+> +
+
+There should be a forward declaration necessary for static functions.
+You are changing the declarations to static here, but not the
+implementations further down in this file, so this shouldn't compile.
+
+>  /* Returns the controller's GHWCFG2.OTG_MODE. */
+>  static unsigned int dwc2_op_mode(struct dwc2 *dwc2)
+>  {
+> diff --git a/drivers/usb/dwc2/dwc2.h b/drivers/usb/dwc2/dwc2.h
+> index 196f4a07f..70a747302 100644
+> --- a/drivers/usb/dwc2/dwc2.h
+> +++ b/drivers/usb/dwc2/dwc2.h
+> @@ -8,13 +8,9 @@
+>  #include "core.h"
+>  
+>  /* Core functions */
+> -void dwc2_set_param_otg_cap(struct dwc2 *dwc2);
+> -void dwc2_set_param_phy_type(struct dwc2 *dwc2);
+> -void dwc2_set_param_speed(struct dwc2 *dwc2);
+> -void dwc2_set_param_phy_utmi_width(struct dwc2 *dwc2);
+> -void dwc2_set_default_params(struct dwc2 *dwc2);
+>  int dwc2_core_snpsid(struct dwc2 *dwc2);
+>  void dwc2_get_hwparams(struct dwc2 *dwc2);
+> +void dwc2_set_default_params(struct dwc2 *dwc2);
+
+No need to move this declaration.
 
 Sascha
-
-> 
-> diff --git a/drivers/of/base.c b/drivers/of/base.c
-> index 4ff60aa81435..edb0a8e71a0f 100644
-> --- a/drivers/of/base.c
-> +++ b/drivers/of/base.c
-> @@ -2567,7 +2567,7 @@ int of_device_disable_path(const char *path)
->  }
->  
->  /**
-> - * of_device_disable_path_by_alias - disable a devicenode by alias
-> + * of_device_disable_by_alias - disable a devicenode by alias
->   * @alias - the alias of the device tree node to disable
->   */
->  int of_device_disable_by_alias(const char *alias)
-> -- 
-> 2.28.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
