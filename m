@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1knI92-0001O8-9y
- for barebox@lists.infradead.org; Thu, 10 Dec 2020 09:21:55 +0000
+ id 1kndaS-00088S-AZ
+ for barebox@lists.infradead.org; Fri, 11 Dec 2020 08:15:37 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 10 Dec 2020 10:21:48 +0100
-Message-Id: <20201210092148.18132-1-s.hauer@pengutronix.de>
+Date: Fri, 11 Dec 2020 09:15:31 +0100
+Message-Id: <20201211081533.7372-3-s.hauer@pengutronix.de>
+In-Reply-To: <20201211081533.7372-1-s.hauer@pengutronix.de>
+References: <20201211081533.7372-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,39 +21,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ubifs: remove wrong assertion
+Subject: [PATCH 3/5] mtd: nand: omap: print error when ELM config failed
 To: Barebox List <barebox@lists.infradead.org>
 
-In barebox copy_znode() doesn't make a copy of the znode, We are limited
-to readonly support, so copy_znode() returns the original node.
-tnc_delete() expects a znode to be dirty and has an assertion for this.
-In a normal r/w implementation this is correct, but not in barebox, so
-drop the assertion. Instead of removing it just comment it out to make
-sure it won't be added again with the next ubifs kernel synchronisation.
+ELM config can fail when ELM support is disabled. Let the user know
+about it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/ubifs/tnc.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/mtd/nand/nand_omap_gpmc.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ubifs/tnc.c b/fs/ubifs/tnc.c
-index 2d7327ad84..72f9b817d8 100644
---- a/fs/ubifs/tnc.c
-+++ b/fs/ubifs/tnc.c
-@@ -1935,7 +1935,12 @@ static int tnc_delete(struct ubifs_info *c, struct ubifs_znode *znode, int n)
+diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
+index 1d81500bce..8fdfd236bd 100644
+--- a/drivers/mtd/nand/nand_omap_gpmc.c
++++ b/drivers/mtd/nand/nand_omap_gpmc.c
+@@ -1128,8 +1128,11 @@ static int omap_gpmc_eccmode(struct gpmc_nand_info *oinfo,
+ 		err = elm_config(BCH16_ECC,
+ 				 minfo->writesize / nand->ecc.size,
+ 				 nand->ecc.size, nand->ecc.bytes);
+-		if (err < 0)
++		if (err < 0) {
++			dev_err(oinfo->pdev, "ELM config failed: %s\n",
++				strerror(-err));
+ 			return err;
++		}
  
- 	do {
- 		ubifs_assert(c, !ubifs_zn_obsolete(znode));
--		ubifs_assert(c, ubifs_zn_dirty(znode));
-+		/*
-+		 * This assertion is invalid in barebox due to the shortcuts we take
-+		 * in our readonly implementation.
-+		 *
-+		 * ubifs_assert(c, ubifs_zn_dirty(znode));
-+		 */
+ 		nand->ecc.read_page = gpmc_read_page_hwecc_elm;
  
- 		zp = znode->parent;
- 		n = znode->iip;
 -- 
 2.20.1
 
