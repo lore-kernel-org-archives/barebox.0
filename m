@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kndaS-00088U-Aa
- for barebox@lists.infradead.org; Fri, 11 Dec 2020 08:15:37 +0000
+ id 1kndaD-00086S-1j
+ for barebox@lists.infradead.org; Fri, 11 Dec 2020 08:15:21 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 11 Dec 2020 09:15:29 +0100
-Message-Id: <20201211081533.7372-1-s.hauer@pengutronix.de>
+Date: Fri, 11 Dec 2020 09:15:17 +0100
+Message-Id: <20201211081517.6050-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,32 +19,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] mtd: nand: Allow non page aligned length writes
+Subject: [PATCH] ARM: am335x: Use xz compression for MLO
 To: Barebox List <barebox@lists.infradead.org>
 
-When copying images to nand with plain cp it can happen that the length
-of the image is not page aligned. Allow misaligned image lengths as we
-used to before the last NAND layer update.
+the binary built with am335x_mlo_defconfig has grown too big over time.
+Use xz compression to fit the image into initial SRAM.
 
-Fixes: b6bcd96de5 ("mtd: nand: Update to Linux-5.9")
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/nand/nand_base.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/configs/am335x_mlo_defconfig | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
-index 2c3c0b360f..e190db7308 100644
---- a/drivers/mtd/nand/nand_base.c
-+++ b/drivers/mtd/nand/nand_base.c
-@@ -4031,7 +4031,7 @@ static int nand_do_write_ops(struct nand_chip *chip, loff_t to,
- 		return 0;
- 
- 	/* Reject writes, which are not page aligned */
--	if (NOTALIGNED(to) || NOTALIGNED(ops->len)) {
-+	if (NOTALIGNED(to)) {
- 		pr_notice("%s: attempt to write non page aligned data\n",
- 			   __func__);
- 		return -EINVAL;
+diff --git a/arch/arm/configs/am335x_mlo_defconfig b/arch/arm/configs/am335x_mlo_defconfig
+index efe9911050..51d238db3e 100644
+--- a/arch/arm/configs/am335x_mlo_defconfig
++++ b/arch/arm/configs/am335x_mlo_defconfig
+@@ -8,6 +8,7 @@ CONFIG_MACH_BEAGLEBONE=y
+ CONFIG_MACH_PHYTEC_SOM_AM335X=y
+ CONFIG_THUMB2_BAREBOX=y
+ # CONFIG_MEMINFO is not set
++CONFIG_IMAGE_COMPRESSION_XZKERN=y
+ CONFIG_MMU=y
+ CONFIG_MALLOC_SIZE=0x0
+ CONFIG_MALLOC_TLSF=y
+@@ -26,11 +27,6 @@ CONFIG_MTD=y
+ # CONFIG_MTD_OOB_DEVICE is not set
+ CONFIG_MTD_M25P80=y
+ CONFIG_NAND=y
+-# CONFIG_NAND_ECC_SOFT is not set
+-# CONFIG_NAND_ECC_HW_SYNDROME is not set
+-# CONFIG_NAND_ECC_HW_NONE is not set
+-# CONFIG_NAND_INFO is not set
+-# CONFIG_NAND_BBT is not set
+ CONFIG_NAND_OMAP_GPMC=y
+ CONFIG_MCI=y
+ # CONFIG_MCI_WRITE is not set
 -- 
 2.20.1
 
