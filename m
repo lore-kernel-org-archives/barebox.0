@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-oi1-x236.google.com ([2607:f8b0:4864:20::236])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kos1O-0003jl-GW
- for barebox@lists.infradead.org; Mon, 14 Dec 2020 17:52:32 +0000
-Received: by mail-oi1-x236.google.com with SMTP id l200so20065413oig.9
- for <barebox@lists.infradead.org>; Mon, 14 Dec 2020 09:52:30 -0800 (PST)
+ id 1kos24-0003th-EC
+ for barebox@lists.infradead.org; Mon, 14 Dec 2020 17:53:13 +0000
+References: <20200722080956.17454-1-a.fatoum@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <6f18c5e7-4826-276e-6860-9bd06bbbd908@pengutronix.de>
+Date: Mon, 14 Dec 2020 18:53:08 +0100
 MIME-Version: 1.0
-From: "DEMIRDJIAN, Antoine" <antoine.demirdjian@airliquide.com>
-Date: Mon, 14 Dec 2020 18:51:52 +0100
-Message-ID: <CAEuS4-2u1BDx0DKn1g4DP1P9H1=OyWxzVH0amhaMbihDE4wDGA@mail.gmail.com>
+In-Reply-To: <20200722080956.17454-1-a.fatoum@pengutronix.de>
+Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,38 +22,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Why /dev/mem has null size?
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] phy: stm32-usphyc: release resources to properly
+ support EPROBE_DEFER
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Michael Grzeschik <mgr@pengutronix.de>
 
-Dear all,
+Hello Sascha,
 
-I'm trying to "addpart" to /dev/mem in order to copy my raw boot image inside.
-But I noticed that /dev/mem doesn't really exists :
+On 22.07.20 10:09, Ahmad Fatoum wrote:
+> Driver failed to release resources on failed probe so far, leading to
+> deferred probe failing with -EBUSY. Fix this.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-From devinfo :
+As we still have EPROBE_DEFER, it would be nice if this could
+be merged.
 
-   `-- mem1
-      `-- 0x00000000-0xffffffffffffffff (   0 Bytes): /dev/mem
+Cheers,
+Ahmad
 
-And more specifically :
+> ---
+>  drivers/phy/phy-stm32-usbphyc.c | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/phy/phy-stm32-usbphyc.c b/drivers/phy/phy-stm32-usbphyc.c
+> index 093842fe1460..d9eaa8a7544a 100644
+> --- a/drivers/phy/phy-stm32-usbphyc.c
+> +++ b/drivers/phy/phy-stm32-usbphyc.c
+> @@ -328,13 +328,13 @@ static int stm32_usbphyc_probe(struct device_d *dev)
+>  	if (IS_ERR(usbphyc->clk)) {
+>  		ret = PTR_ERR(usbphyc->clk);
+>  		dev_err(dev, "clk get failed: %d\n", ret);
+> -		return ret;
+> +		goto release_region;
+>  	}
+>  
+>  	ret = clk_enable(usbphyc->clk);
+>  	if (ret) {
+>  		dev_err(dev, "clk enable failed: %d\n", ret);
+> -		return ret;
+> +		goto release_region;
+>  	}
+>  
+>  	device_reset_us(dev, 2);
+> @@ -405,6 +405,11 @@ static int stm32_usbphyc_probe(struct device_d *dev)
+>  
+>  clk_disable:
+>  	clk_disable(usbphyc->clk);
+> +release_region:
+> +	release_region(iores);
+> +
+> +	free(usbphyc->phys);
+> +	free(usbphyc);
+>  
+>  	return ret;
+>  }
+> 
 
-barebox@MyBoard:/ devinfo mem1
-Resources:
-  num: 0
-  name: mem
-  start: 0x00000000
-  size: 0x00000000
-Driver: mem
-Bus: platform
-
-As a consequence, my addpart fails with "partition end is beyond device".
-
-Do you have any idea why my /dev/mem size is 0x0 ?
-
-Thanks,
-
---
-Antoine D
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
