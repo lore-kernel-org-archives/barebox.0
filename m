@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kos24-0003th-EC
- for barebox@lists.infradead.org; Mon, 14 Dec 2020 17:53:13 +0000
-References: <20200722080956.17454-1-a.fatoum@pengutronix.de>
+ id 1kosLn-00062Z-US
+ for barebox@lists.infradead.org; Mon, 14 Dec 2020 18:13:36 +0000
+References: <CAEuS4-2u1BDx0DKn1g4DP1P9H1=OyWxzVH0amhaMbihDE4wDGA@mail.gmail.com>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <6f18c5e7-4826-276e-6860-9bd06bbbd908@pengutronix.de>
-Date: Mon, 14 Dec 2020 18:53:08 +0100
+Message-ID: <75571783-3a55-bb7a-eda7-ce906832ad6d@pengutronix.de>
+Date: Mon, 14 Dec 2020 19:13:33 +0100
 MIME-Version: 1.0
-In-Reply-To: <20200722080956.17454-1-a.fatoum@pengutronix.de>
+In-Reply-To: <CAEuS4-2u1BDx0DKn1g4DP1P9H1=OyWxzVH0amhaMbihDE4wDGA@mail.gmail.com>
 Content-Language: en-US
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,61 +22,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] phy: stm32-usphyc: release resources to properly
- support EPROBE_DEFER
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Michael Grzeschik <mgr@pengutronix.de>
+Subject: Re: Why /dev/mem has null size?
+To: "DEMIRDJIAN, Antoine" <antoine.demirdjian@airliquide.com>, barebox@lists.infradead.org
 
-Hello Sascha,
+Hello Antoine,
 
-On 22.07.20 10:09, Ahmad Fatoum wrote:
-> Driver failed to release resources on failed probe so far, leading to
-> deferred probe failing with -EBUSY. Fix this.
+On 14.12.20 18:51, DEMIRDJIAN, Antoine wrote:
+> Dear all,
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> I'm trying to "addpart" to /dev/mem in order to copy my raw boot image inside.
 
-As we still have EPROBE_DEFER, it would be nice if this could
-be merged.
+The normal usage is to let barebox worry about memory allocation:
+
+  bootm /image and go /image both memory map /image for you.
+
+If you absolutely want to hardcode the load address, use the memcpy
+command: https://www.barebox.org/doc/latest/commands/mem/memcpy.html
+
+> But I noticed that /dev/mem doesn't really exists :
+> 
+> From devinfo :
+> 
+>    `-- mem1
+>       `-- 0x00000000-0xffffffffffffffff (   0 Bytes): /dev/mem
+> 
+> And more specifically :
+> 
+> barebox@MyBoard:/ devinfo mem1
+> Resources:
+>   num: 0
+>   name: mem
+>   start: 0x00000000
+>   size: 0x00000000
+> Driver: mem
+> Bus: platform
+> 
+> As a consequence, my addpart fails with "partition end is beyond device".
+
+I don't think addpart is meant to operate on the mem device. /dev/mem
+is usually used along with memcpy, md, mw, where /dev/mem is the default
+device they operate on.
+
+> Do you have any idea why my /dev/mem size is 0x0 ?
+
+/dev/mem always has size 0 in barebox, because its size makes
+it a bit special. Many operations don't make sense for it as well,
+so having a zero size makes them fail.
 
 Cheers,
 Ahmad
 
-> ---
->  drivers/phy/phy-stm32-usbphyc.c | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/phy/phy-stm32-usbphyc.c b/drivers/phy/phy-stm32-usbphyc.c
-> index 093842fe1460..d9eaa8a7544a 100644
-> --- a/drivers/phy/phy-stm32-usbphyc.c
-> +++ b/drivers/phy/phy-stm32-usbphyc.c
-> @@ -328,13 +328,13 @@ static int stm32_usbphyc_probe(struct device_d *dev)
->  	if (IS_ERR(usbphyc->clk)) {
->  		ret = PTR_ERR(usbphyc->clk);
->  		dev_err(dev, "clk get failed: %d\n", ret);
-> -		return ret;
-> +		goto release_region;
->  	}
->  
->  	ret = clk_enable(usbphyc->clk);
->  	if (ret) {
->  		dev_err(dev, "clk enable failed: %d\n", ret);
-> -		return ret;
-> +		goto release_region;
->  	}
->  
->  	device_reset_us(dev, 2);
-> @@ -405,6 +405,11 @@ static int stm32_usbphyc_probe(struct device_d *dev)
->  
->  clk_disable:
->  	clk_disable(usbphyc->clk);
-> +release_region:
-> +	release_region(iores);
-> +
-> +	free(usbphyc->phys);
-> +	free(usbphyc);
->  
->  	return ret;
->  }
+> Thanks,
+> 
+> --
+> Antoine D
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 > 
 
 -- 
