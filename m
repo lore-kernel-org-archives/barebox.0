@@ -1,21 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kpWZ3-0004xA-3e
- for barebox@lists.infradead.org; Wed, 16 Dec 2020 13:09:57 +0000
-Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
+ id 1kpdg7-0007Wj-7p
+ for barebox@lists.infradead.org; Wed, 16 Dec 2020 20:45:45 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1kpWYx-0001fC-Gw
- for barebox@lists.infradead.org; Wed, 16 Dec 2020 14:09:51 +0100
-Received: from str by dude02.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <str@pengutronix.de>) id 1kpWYx-0006jd-6Y
- for barebox@lists.infradead.org; Wed, 16 Dec 2020 14:09:51 +0100
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Wed, 16 Dec 2020 14:09:49 +0100
-Message-Id: <20201216130949.25830-3-s.trumtrar@pengutronix.de>
-In-Reply-To: <20201216130949.25830-1-s.trumtrar@pengutronix.de>
-References: <20201216130949.25830-1-s.trumtrar@pengutronix.de>
+ (envelope-from <mgr@pengutronix.de>) id 1kpdg0-0005T9-CR
+ for barebox@lists.infradead.org; Wed, 16 Dec 2020 21:45:36 +0100
+Received: from mgr by dude.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <mgr@pengutronix.de>) id 1kpdfz-00027a-TI
+ for barebox@lists.infradead.org; Wed, 16 Dec 2020 21:45:35 +0100
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Date: Wed, 16 Dec 2020 21:45:30 +0100
+Message-Id: <20201216204534.8054-2-m.grzeschik@pengutronix.de>
+In-Reply-To: <20201216204534.8054-1-m.grzeschik@pengutronix.de>
+References: <20201216204534.8054-1-m.grzeschik@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -29,30 +29,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] eeprom: at24: add support for 24cs64
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 1/5] usb: dwc2: cleanup on error for deferred probing
+To: barebox@lists.infradead.org
 
-The 24cs64 is a 64-Kbit eeprom with 32 byte write pages.
+The driver needs to cleanup the resources if an error occurred. Otherwise,
+on deferred probing, it will fail to take the resources for a second time.
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 ---
- drivers/eeprom/at24.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/dwc2/dwc2.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/eeprom/at24.c b/drivers/eeprom/at24.c
-index 568aa02a4c8c..8c04c5684b61 100644
---- a/drivers/eeprom/at24.c
-+++ b/drivers/eeprom/at24.c
-@@ -112,6 +112,7 @@ static struct platform_device_id at24_ids[] = {
- 	{ "24c16", AT24_DEVICE_MAGIC(16384 / 8, 0) },
- 	{ "24c32", AT24_DEVICE_MAGIC(32768 / 8, AT24_FLAG_ADDR16) },
- 	{ "24c64", AT24_DEVICE_MAGIC(65536 / 8, AT24_FLAG_ADDR16) },
-+	{ "24cs64", AT24_DEVICE_MAGIC(16, AT24_FLAG_ADDR16) },
- 	{ "24c128", AT24_DEVICE_MAGIC(131072 / 8, AT24_FLAG_ADDR16) },
- 	{ "24c256", AT24_DEVICE_MAGIC(262144 / 8, AT24_FLAG_ADDR16) },
- 	{ "24c512", AT24_DEVICE_MAGIC(524288 / 8, AT24_FLAG_ADDR16) },
+diff --git a/drivers/usb/dwc2/dwc2.c b/drivers/usb/dwc2/dwc2.c
+index bd33334a83..87d0ec7a5a 100644
+--- a/drivers/usb/dwc2/dwc2.c
++++ b/drivers/usb/dwc2/dwc2.c
+@@ -53,7 +53,7 @@ static int dwc2_probe(struct device_d *dev)
+ 	dwc2->phy = phy_optional_get(dev, "usb2-phy");
+ 	if (IS_ERR(dwc2->phy)) {
+ 		ret = PTR_ERR(dwc2->phy);
+-		return ret;
++		goto release_region;
+ 	}
+ 
+ 	ret = phy_init(dwc2->phy);
+@@ -100,7 +100,8 @@ error:
+ 	phy_power_off(dwc2->phy);
+ err_phy_power:
+ 	phy_exit(dwc2->phy);
+-err_phy_init:
++release_region:
++	release_region(iores);
+ 
+ 	return ret;
+ }
 -- 
-2.20.1
+2.29.2
 
 
 _______________________________________________
