@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kmAhc-00030L-97
- for barebox@lists.infradead.org; Mon, 07 Dec 2020 07:12:57 +0000
-Date: Mon, 7 Dec 2020 08:12:54 +0100
-Message-ID: <20201207071254.GC3977@pengutronix.de>
-References: <20201201131758.18769-1-a.fatoum@pengutronix.de>
+ id 1kpS42-0004Hq-2v
+ for barebox@lists.infradead.org; Wed, 16 Dec 2020 08:21:39 +0000
+Date: Wed, 16 Dec 2020 09:21:32 +0100
+Message-ID: <20201216082132.GI3977@pengutronix.de>
+References: <20201210103104.3816-1-jmaselbas@kalray.eu>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201201131758.18769-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20201210103104.3816-1-jmaselbas@kalray.eu>
 From: Sascha Hauer <sha@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,39 +22,102 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] usb: host: ehci: fix mismatch in format string
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH v2 1/4] usb: dwc2: Add support for optional usb phy
+To: Jules Maselbas <jmaselbas@kalray.eu>
 Cc: barebox@lists.infradead.org
 
-On Tue, Dec 01, 2020 at 02:17:59PM +0100, Ahmad Fatoum wrote:
-> sz is of type size_t. Use the appropriate format string specifier for
-> print it.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+On Thu, Dec 10, 2020 at 11:31:01AM +0100, Jules Maselbas wrote:
+> Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
 > ---
->  drivers/usb/host/ehci-hcd.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/usb/dwc2/core.h |  2 ++
+>  drivers/usb/dwc2/dwc2.c | 24 ++++++++++++++++++++++++
+>  drivers/usb/dwc2/dwc2.h |  1 +
+>  3 files changed, 27 insertions(+)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-> index 38999927c5a8..287849102d68 100644
-> --- a/drivers/usb/host/ehci-hcd.c
-> +++ b/drivers/usb/host/ehci-hcd.c
-> @@ -240,7 +240,7 @@ static int ehci_td_buffer(struct qTD *td, dma_addr_t addr, size_t sz)
->  	}
+> diff --git a/drivers/usb/dwc2/core.h b/drivers/usb/dwc2/core.h
+> index 090ca15fe..b9845b552 100644
+> --- a/drivers/usb/dwc2/core.h
+> +++ b/drivers/usb/dwc2/core.h
+> @@ -466,6 +466,8 @@ struct dwc2 {
+>  	struct dwc2_hw_params hw_params;
+>  	struct dwc2_core_params params;
 >  
->  	if (idx == buffer_count) {
-> -		pr_debug("out of buffer pointers (%u bytes left)\n", sz);
-> +		pr_debug("out of buffer pointers (%zu bytes left)\n", sz);
->  		return -ENOMEM;
->  	}
+> +	struct phy *phy; /* optional */
+> +
+>  #ifdef CONFIG_USB_DWC2_HOST
+>  	struct usb_host host;
+>  	u8 in_data_toggle[MAX_DEVICE][MAX_ENDPOINT];
+> diff --git a/drivers/usb/dwc2/dwc2.c b/drivers/usb/dwc2/dwc2.c
+> index 282e6754b..9ab3b5b53 100644
+> --- a/drivers/usb/dwc2/dwc2.c
+> +++ b/drivers/usb/dwc2/dwc2.c
+> @@ -50,6 +50,20 @@ static int dwc2_probe(struct device_d *dev)
+>  	dwc2->regs = IOMEM(iores->start);
+>  	dwc2->dev = dev;
 >  
+> +	dwc2->phy = phy_optional_get(dev, "usb2-phy");
+> +	if (IS_ERR(dwc2->phy)) {
+> +		ret = PTR_ERR(dwc2->phy);
+> +		return ret;
+> +	}
+> +
+> +	if (dwc2->phy) {
+> +		ret = phy_power_on(dwc2->phy);
+> +		if (ret == 0)
+> +			ret = phy_init(dwc2->phy);
+> +		if (ret)
+> +			goto error;
+> +	}
+> +
+>  	ret = dwc2_core_snpsid(dwc2);
+>  	if (ret)
+>  		goto error;
+> @@ -78,15 +92,25 @@ static int dwc2_probe(struct device_d *dev)
+>  		ret = dwc2_set_mode(dwc2, dwc2->dr_mode);
+>  
+>  error:
+> +	if (dwc2->phy)
+> +		phy_power_off(dwc2->phy);
+> +
+>  	return ret;
+>  }
+>  
+>  static void dwc2_remove(struct device_d *dev)
+>  {
+>  	struct dwc2 *dwc2 = dev->priv;
+> +	int ret;
+>  
+>  	dwc2_host_uninit(dwc2);
+>  	dwc2_gadget_uninit(dwc2);
+> +
+> +	if (dwc2->phy) {
+> +		ret = phy_exit(dwc2->phy);
+> +		if (ret == 0)
+> +			phy_power_off(dwc2->phy);
+> +	}
+>  }
+>  
+>  static const struct of_device_id dwc2_platform_dt_ids[] = {
+> diff --git a/drivers/usb/dwc2/dwc2.h b/drivers/usb/dwc2/dwc2.h
+> index 30ad90665..196f4a07f 100644
+> --- a/drivers/usb/dwc2/dwc2.h
+> +++ b/drivers/usb/dwc2/dwc2.h
+> @@ -2,6 +2,7 @@
+>  #include <usb/usb.h>
+>  #include <usb/usb_defs.h>
+>  #include <usb/gadget.h>
+> +#include <linux/phy/phy.h>
+>  
+>  #include "regs.h"
+>  #include "core.h"
 > -- 
-> 2.29.2
+> 2.17.1
+> 
 > 
 > 
 > _______________________________________________
