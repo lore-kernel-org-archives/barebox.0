@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kpr8A-0006Rj-JB
- for barebox@lists.infradead.org; Thu, 17 Dec 2020 11:07:36 +0000
+ id 1kpr8A-0006Rh-IB
+ for barebox@lists.infradead.org; Thu, 17 Dec 2020 11:07:37 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <mgr@pengutronix.de>) id 1kpr89-0005CE-OU
+ (envelope-from <mgr@pengutronix.de>) id 1kpr89-0005CD-MZ
  for barebox@lists.infradead.org; Thu, 17 Dec 2020 12:07:33 +0100
 Received: from mgr by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <mgr@pengutronix.de>) id 1kpr89-0003uB-Dx
+ (envelope-from <mgr@pengutronix.de>) id 1kpr89-0003u8-Da
  for barebox@lists.infradead.org; Thu, 17 Dec 2020 12:07:33 +0100
 From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Date: Thu, 17 Dec 2020 12:07:30 +0100
-Message-Id: <20201217110731.14914-5-m.grzeschik@pengutronix.de>
+Date: Thu, 17 Dec 2020 12:07:29 +0100
+Message-Id: <20201217110731.14914-4-m.grzeschik@pengutronix.de>
 In-Reply-To: <20201217110731.14914-1-m.grzeschik@pengutronix.de>
 References: <20201217110731.14914-1-m.grzeschik@pengutronix.de>
 MIME-Version: 1.0
@@ -29,42 +29,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 4/5] usb: dwc2: update the dr_mode on set_mode callback
+Subject: [PATCH v2 3/5] usb: dwc2: add reset controller dependency for probe
+ via oftree
 To: barebox@lists.infradead.org
 
-The dwc2 dr_mode can be configured with otg.mode in otg mode. Currently
-the mode will not be set with the users decision. This patch fixes this
-by overwriting the mode with the one set by set_mode callback.
+The dwc2 controller is connected to one reset controller which needs to be
+triggered before it is able to operate. This patch adds the referenced reset
+controller in the devicetree to be used.
 
 Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 ---
- drivers/usb/dwc2/dwc2.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/usb/dwc2/dwc2.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/drivers/usb/dwc2/dwc2.c b/drivers/usb/dwc2/dwc2.c
-index 6f5127fc3b..65b92b542e 100644
+index 13455479ef..6f5127fc3b 100644
 --- a/drivers/usb/dwc2/dwc2.c
 +++ b/drivers/usb/dwc2/dwc2.c
-@@ -20,6 +20,9 @@ static int dwc2_set_mode(void *ctx, enum usb_dr_mode mode)
- {
- 	struct dwc2 *dwc2 = ctx;
- 	int ret = -ENODEV;
-+	int oldmode = dwc2->dr_mode;
-+
-+	dwc2->dr_mode = mode;
+@@ -12,6 +12,7 @@
+ #include <errno.h>
+ #include <driver.h>
+ #include <linux/clk.h>
++#include <linux/reset.h>
  
- 	if (mode == USB_DR_MODE_HOST || mode == USB_DR_MODE_OTG) {
- 		if (IS_ENABLED(CONFIG_USB_DWC2_HOST))
-@@ -34,6 +37,9 @@ static int dwc2_set_mode(void *ctx, enum usb_dr_mode mode)
- 			dwc2_err(dwc2, "Peripheral support not available\n");
- 	}
+ #include "dwc2.h"
  
+@@ -61,6 +62,10 @@ static int dwc2_probe(struct device_d *dev)
+ 	if (ret)
+ 		goto clk_put;
+ 
++	ret = device_reset_us(dev, 2);
 +	if (ret)
-+		dwc2->dr_mode = oldmode;
++		goto clk_disable;
 +
- 	return ret;
- }
- 
+ 	dwc2->phy = phy_optional_get(dev, "usb2-phy");
+ 	if (IS_ERR(dwc2->phy)) {
+ 		ret = PTR_ERR(dwc2->phy);
 -- 
 2.29.2
 
