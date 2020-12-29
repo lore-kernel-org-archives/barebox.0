@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay12.mail.gandi.net ([217.70.178.232])
- by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kuED4-0002Eq-IL
- for barebox@lists.infradead.org; Tue, 29 Dec 2020 12:34:43 +0000
-Received: from geraet.fritz.box (muedsl-82-207-223-085.citykom.de
- [82.207.223.85]) (Authenticated sender: ahmad@a3f.at)
- by relay12.mail.gandi.net (Postfix) with ESMTPSA id 116AE200005
- for <barebox@lists.infradead.org>; Tue, 29 Dec 2020 12:34:37 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Tue, 29 Dec 2020 13:34:33 +0100
-Message-Id: <20201229123433.1054113-1-ahmad@a3f.at>
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+ by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1kuLXL-0003qn-SF
+ for barebox@lists.infradead.org; Tue, 29 Dec 2020 20:24:08 +0000
+Received: from astat.fritz.box (a89-183-40-219.net-htp.de [89.183.40.219])
+ by lynxeye.de (Postfix) with ESMTPA id 1E1A5E74225
+ for <barebox@lists.infradead.org>; Tue, 29 Dec 2020 21:23:32 +0100 (CET)
+From: Lucas Stach <dev@lynxeye.de>
+Date: Tue, 29 Dec 2020 21:23:28 +0100
+Message-Id: <20201229202328.13857-1-dev@lynxeye.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,38 +22,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] video: sdl: delete useless debug output
+Subject: [PATCH] ARM: imx8mq: reclock ARM PLL to 800MHz
 To: barebox@lists.infradead.org
 
-The information on the color mode is only populated at framebuffer
-enable time. At probe time, it's all zero, so it's useless to print it
-out. Drop it.
+The BootROM sets up the ARM PLL to run at 1.6GHz and then uses the
+divider after the PLL the achieve a CPU clock rate of 800MHz. New Linux
+kernels (>= 5.8) switch to a clock path that bypasses the divider, as
+the divider should not be used for CPU clock frequencies >1GHz. If the
+BootROM setup is left unchanged this causes the CPU clock to jump to
+the full 1.6GHz until CPUfreq takes over and reprograms the PLL. This
+rate is outside of the chip specification and leads to crashes.
 
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+Fix this by reclocking the ARM PLL to 800MHz.
+
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/video/sdl.c | 9 ---------
- 1 file changed, 9 deletions(-)
+ arch/arm/dts/imx8mq.dtsi | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/video/sdl.c b/drivers/video/sdl.c
-index 8f5b409efb4a..9811b2cf128e 100644
---- a/drivers/video/sdl.c
-+++ b/drivers/video/sdl.c
-@@ -59,15 +59,6 @@ static int sdlfb_probe(struct device_d *dev)
- 	fb->screen_base = xzalloc(fb->xres * fb->yres *
- 				  fb->bits_per_pixel >> 3);
+diff --git a/arch/arm/dts/imx8mq.dtsi b/arch/arm/dts/imx8mq.dtsi
+index ec8347f38fa8..e56cdfe1308e 100644
+--- a/arch/arm/dts/imx8mq.dtsi
++++ b/arch/arm/dts/imx8mq.dtsi
+@@ -17,7 +17,9 @@
+ 			  <&clk IMX8MQ_CLK_USDHC2>,
+ 			  <&clk IMX8MQ_CLK_ENET_AXI>,
+ 			  <&clk IMX8MQ_CLK_ENET_TIMER>,
+-			  <&clk IMX8MQ_CLK_ENET_REF>;
++			  <&clk IMX8MQ_CLK_ENET_REF>,
++			  <&clk IMX8MQ_ARM_PLL>,
++			  <&clk IMX8MQ_CLK_A53_DIV>;
  
--	dev_dbg(dev, "red: length = %d, offset = %d\n",
--		fb->red.length, fb->red.offset);
--	dev_dbg(dev, "green: length = %d, offset = %d\n",
--		fb->green.length, fb->green.offset);
--	dev_dbg(dev, "blue: length = %d, offset = %d\n",
--		fb->blue.length, fb->blue.offset);
--	dev_dbg(dev, "transp: length = %d, offset = %d\n",
--		fb->transp.length, fb->transp.offset);
--
- 	/* add runtime hardware info */
- 	dev->priv = fb;
- 
+ 	assigned-clock-parents =  <&clk IMX8MQ_SYS1_PLL_400M>,
+ 				  <&clk IMX8MQ_SYS1_PLL_400M>,
+@@ -29,5 +31,7 @@
+ 			       <200000000>,
+ 			       <266000000>,
+ 			       <25000000>,
+-			       <125000000>;
++			       <125000000>,
++			       <800000000>,
++			       <800000000>;
+ };
 -- 
 2.29.2
 
