@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay6-d.mail.gandi.net ([217.70.183.198])
+Received: from relay1-d.mail.gandi.net ([217.70.183.193])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kvTGv-0003BN-UY
- for barebox@lists.infradead.org; Fri, 01 Jan 2021 22:51:51 +0000
+ id 1kvTHg-0003EG-90
+ for barebox@lists.infradead.org; Fri, 01 Jan 2021 22:52:37 +0000
 Received: from geraet.fritz.box (unknown [87.123.97.237])
  (Authenticated sender: ahmad@a3f.at)
- by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 99F3AC0002
- for <barebox@lists.infradead.org>; Fri,  1 Jan 2021 22:51:44 +0000 (UTC)
+ by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id B96B4240004
+ for <barebox@lists.infradead.org>; Fri,  1 Jan 2021 22:52:34 +0000 (UTC)
 From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Fri,  1 Jan 2021 23:51:39 +0100
-Message-Id: <20210101225139.2165289-1-ahmad@a3f.at>
+Date: Fri,  1 Jan 2021 23:52:26 +0100
+Message-Id: <20210101225228.2166084-2-ahmad@a3f.at>
+In-Reply-To: <20210101225228.2166084-1-ahmad@a3f.at>
+References: <20210101225228.2166084-1-ahmad@a3f.at>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,67 +25,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] driver: provide dev_request_mem_resource_by_name() helper
+Subject: [PATCH 2/4] video: edid: make edid_check_header externally visible
 To: barebox@lists.infradead.org
 
-There are both dev_request_mem_resource() and dev_request_mem_region(),
-which return the struct resource and a IOMEM(.start) respectively.
-
-There is only dev_request_mem_region_by_name(), but
-no dev_request_mem_resource_by_name(), so add the latter for symmetry.
+For non-i2c EDID use, drivers will want to verify the EDID header. We
+already have a function for this, but internal linkage. Change this and
+while at it change the type to a more appropriate type.
 
 Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- drivers/base/driver.c | 12 ++++++++++--
- include/driver.h      |  5 +++++
- 2 files changed, 15 insertions(+), 2 deletions(-)
+ drivers/video/edid.c |  8 ++++----
+ drivers/video/edid.h | 10 ++++++++++
+ 2 files changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index 3205bbc3c33b..6763bbc6f512 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -372,7 +372,7 @@ struct resource *dev_get_resource_by_name(struct device_d *dev,
- 	return ERR_PTR(-ENOENT);
+diff --git a/drivers/video/edid.c b/drivers/video/edid.c
+index 41d40d0297b6..1baff7317b7c 100644
+--- a/drivers/video/edid.c
++++ b/drivers/video/edid.c
+@@ -223,19 +223,19 @@ static int edid_checksum(unsigned char *edid)
+ 	return err;
  }
  
--void __iomem *dev_request_mem_region_by_name(struct device_d *dev, const char *name)
-+struct resource *dev_request_mem_resource_by_name(struct device_d *dev, const char *name)
+-static int edid_check_header(unsigned char *edid)
++bool edid_check_header(unsigned char *edid)
  {
- 	struct resource *res;
+-	int i, err = 1, fix = check_edid(edid);
++	int i, fix = check_edid(edid);
  
-@@ -380,7 +380,15 @@ void __iomem *dev_request_mem_region_by_name(struct device_d *dev, const char *n
- 	if (IS_ERR(res))
- 		return ERR_CAST(res);
+ 	if (fix)
+ 		fix_edid(edid, fix);
  
--	res = request_iomem_region(dev_name(dev), res->start, res->end);
-+	return request_iomem_region(dev_name(dev), res->start, res->end);
-+}
-+EXPORT_SYMBOL(dev_request_mem_resource_by_name);
-+
-+void __iomem *dev_request_mem_region_by_name(struct device_d *dev, const char *name)
-+{
-+	struct resource *res;
-+
-+	res = dev_request_mem_resource_by_name(dev, name);
- 	if (IS_ERR(res))
- 		return ERR_CAST(res);
+ 	for (i = 0; i < 8; i++) {
+ 		if (edid[i] != edid_v1_header[i])
+-			err = 0;
++			return false;
+ 	}
  
-diff --git a/include/driver.h b/include/driver.h
-index e2886d051d4f..0d43b3614863 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -214,6 +214,11 @@ void __iomem *dev_request_mem_region(struct device_d *dev, int num);
-  */
- struct resource *dev_request_mem_resource(struct device_d *dev, int num);
+-	return err;
++	return true;
+ }
  
-+/*
-+ * exlusively request resource 'name' for a device
-+ */
-+struct resource *dev_request_mem_resource_by_name(struct device_d *dev, const char *name);
-+
  /*
-  * exlusively request register base 'num' for a device
-  * will return NULL on error
+diff --git a/drivers/video/edid.h b/drivers/video/edid.h
+index 006d9f283450..60c5b6422ea5 100644
+--- a/drivers/video/edid.h
++++ b/drivers/video/edid.h
+@@ -135,4 +135,14 @@
+ #define DPMS_SUSPEND		(1 << 6)
+ #define DPMS_STANDBY		(1 << 7)
+ 
++/**
++ * edid_check_header - sanity check the header of the base EDID block
++ * @raw_edid: pointer to raw base EDID block
++ *
++ * Sanity check the header of the base EDID block.
++ *
++ * Return: true if the header is perfect, false if any byte is wrong.
++ */
++bool edid_check_header(unsigned char *edid);
++
+ #endif /* __EDID_H__ */
 -- 
 2.29.2
 
