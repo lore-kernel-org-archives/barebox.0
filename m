@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from relay1-d.mail.gandi.net ([217.70.183.193])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kvTHg-0003ED-91
- for barebox@lists.infradead.org; Fri, 01 Jan 2021 22:52:37 +0000
+ id 1kvTHg-0003EJ-Np
+ for barebox@lists.infradead.org; Fri, 01 Jan 2021 22:52:38 +0000
 Received: from geraet.fritz.box (unknown [87.123.97.237])
  (Authenticated sender: ahmad@a3f.at)
- by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id 44408240003
- for <barebox@lists.infradead.org>; Fri,  1 Jan 2021 22:52:33 +0000 (UTC)
+ by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id A8D46240005
+ for <barebox@lists.infradead.org>; Fri,  1 Jan 2021 22:52:35 +0000 (UTC)
 From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Fri,  1 Jan 2021 23:52:25 +0100
-Message-Id: <20210101225228.2166084-1-ahmad@a3f.at>
+Date: Fri,  1 Jan 2021 23:52:28 +0100
+Message-Id: <20210101225228.2166084-4-ahmad@a3f.at>
+In-Reply-To: <20210101225228.2166084-1-ahmad@a3f.at>
+References: <20210101225228.2166084-1-ahmad@a3f.at>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,47 +25,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] video: edid: make accessible without i2c
+Subject: [PATCH 4/4] MIPS: qemu-malta_defconfig: enable VGA output
 To: barebox@lists.infradead.org
 
-Users can already populate fb_info::edid_data for cases where the EDID
-doesn't come via an i2c controller managed by barebox.
-
-Only thing missing is to be able to compile without i2c, thus drop
-the dependency.
+Now that we have a driver for the Qemu's default -device VGA, enable it
+in defconfig, along with fbtest for testing it.
 
 Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- drivers/video/Kconfig | 1 -
- drivers/video/edid.c  | 3 +++
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ Documentation/boards/mips/qemu-malta.rst | 4 ++--
+ arch/mips/configs/qemu-malta_defconfig   | 4 ++++
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
-index a26bace176a1..56d009529ea4 100644
---- a/drivers/video/Kconfig
-+++ b/drivers/video/Kconfig
-@@ -106,7 +106,6 @@ config DRIVER_VIDEO_SIMPLEFB
- 	  based on the active barebox framebuffer.
+diff --git a/Documentation/boards/mips/qemu-malta.rst b/Documentation/boards/mips/qemu-malta.rst
+index 2bb81350a109..470be32f1f49 100644
+--- a/Documentation/boards/mips/qemu-malta.rst
++++ b/Documentation/boards/mips/qemu-malta.rst
+@@ -9,7 +9,7 @@ QEMU run string:
+ .. code-block:: sh
  
- config DRIVER_VIDEO_EDID
--	depends on I2C
- 	bool "Add EDID support"
- 	help
- 	  This enabled support for reading and parsing EDID data from an attached
-diff --git a/drivers/video/edid.c b/drivers/video/edid.c
-index bee4594118bb..41d40d0297b6 100644
---- a/drivers/video/edid.c
-+++ b/drivers/video/edid.c
-@@ -858,6 +858,9 @@ void *edid_read_i2c(struct i2c_adapter *adapter)
- {
- 	u8 *block;
+   qemu-system-mips -nodefaults -M malta -m 256 \
+-      -nographic -serial stdio -monitor null \
++      -device VGA -serial stdio -monitor null \
+       -bios barebox-flash-image
  
-+	if (!IS_ENABLED(CONFIG_I2C))
-+		return NULL;
-+
- 	block = xmalloc(EDID_LENGTH);
  
- 	if (edid_do_read_i2c(adapter, block, 0, EDID_LENGTH))
+@@ -33,7 +33,7 @@ QEMU run string:
+ .. code-block:: sh
+ 
+   qemu-system-mipsel -nodefaults -M malta -m 256 \
+-      -nographic -serial stdio -monitor null \
++      -devica VGA -serial stdio -monitor null \
+       -bios barebox-flash-image
+ 
+ 
+diff --git a/arch/mips/configs/qemu-malta_defconfig b/arch/mips/configs/qemu-malta_defconfig
+index ac0577c217e3..b9994f392c47 100644
+--- a/arch/mips/configs/qemu-malta_defconfig
++++ b/arch/mips/configs/qemu-malta_defconfig
+@@ -42,6 +42,7 @@ CONFIG_CMD_LOGIN=y
+ CONFIG_CMD_MENU=y
+ CONFIG_CMD_MENU_MANAGEMENT=y
+ CONFIG_CMD_PASSWD=y
++CONFIG_CMD_FBTEST=y
+ CONFIG_CMD_READLINE=y
+ CONFIG_CMD_TIMEOUT=y
+ CONFIG_CMD_CRC=y
+@@ -68,6 +69,9 @@ CONFIG_DRIVER_CFI=y
+ # CONFIG_DRIVER_CFI_BANK_WIDTH_1 is not set
+ # CONFIG_DRIVER_CFI_BANK_WIDTH_2 is not set
+ CONFIG_CFI_BUFFER_WRITE=y
++CONFIG_VIDEO=y
++CONFIG_FRAMEBUFFER_CONSOLE=y
++CONFIG_DRIVER_VIDEO_BOCHS_PCI=y
+ CONFIG_GPIO_MALTA_FPGA_I2C=y
+ CONFIG_PCI=y
+ CONFIG_PCI_DEBUG=y
 -- 
 2.29.2
 
