@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay1-d.mail.gandi.net ([217.70.183.193])
+Received: from relay3-d.mail.gandi.net ([217.70.183.195])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kvTHg-0003EH-9t
- for barebox@lists.infradead.org; Fri, 01 Jan 2021 22:52:38 +0000
-Received: from geraet.fritz.box (unknown [87.123.97.237])
- (Authenticated sender: ahmad@a3f.at)
- by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id 2DB7C240002
- for <barebox@lists.infradead.org>; Fri,  1 Jan 2021 22:52:35 +0000 (UTC)
+ id 1kveo4-00042j-Tc
+ for barebox@lists.infradead.org; Sat, 02 Jan 2021 11:10:49 +0000
+Received: from geraet.fritz.box (muedsl-82-207-204-096.citykom.de
+ [82.207.204.96]) (Authenticated sender: ahmad@a3f.at)
+ by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id 1DACA60004
+ for <barebox@lists.infradead.org>; Sat,  2 Jan 2021 11:10:44 +0000 (UTC)
 From: Ahmad Fatoum <ahmad@a3f.at>
-Date: Fri,  1 Jan 2021 23:52:27 +0100
-Message-Id: <20210101225228.2166084-3-ahmad@a3f.at>
-In-Reply-To: <20210101225228.2166084-1-ahmad@a3f.at>
-References: <20210101225228.2166084-1-ahmad@a3f.at>
+Date: Sat,  2 Jan 2021 12:10:39 +0100
+Message-Id: <20210102111039.2219861-1-ahmad@a3f.at>
+In-Reply-To: <20210101225228.2166084-3-ahmad@a3f.at>
+References: <20210101225228.2166084-3-ahmad@a3f.at>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,404 +25,103 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] video: implement bochs dispi / QEMU VGA driver for PCI
+Subject: [PATCH] fixup! video: implement bochs dispi / QEMU VGA driver for PCI
  and ISA
 To: barebox@lists.infradead.org
 
-All SVGA devices in Qemu, except for Cirrus, support the bochs display
-interface, which is very easy to set up. Add a driver for it.
-
-This has been tested with:
-
- PCI: qemu-system-mips(el) -device VGA + barebox qemu-malta_defconfig
- ISA: qemu-system-x86_64 -device isa-vga + barebox efi_defconfig
+Fix few comments and while at it, replace a -1 error with a more
+descriptive error code. No functional change.
 
 Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- drivers/video/Kconfig           |   2 +
- drivers/video/Makefile          |   2 +-
- drivers/video/bochs/Kconfig     |  22 ++++
- drivers/video/bochs/Makefile    |   3 +
- drivers/video/bochs/bochs_hw.c  | 203 ++++++++++++++++++++++++++++++++
- drivers/video/bochs/bochs_hw.h  |  13 ++
- drivers/video/bochs/bochs_isa.c |  31 +++++
- drivers/video/bochs/bochs_pci.c |  37 ++++++
- 8 files changed, 312 insertions(+), 1 deletion(-)
- create mode 100644 drivers/video/bochs/Kconfig
- create mode 100644 drivers/video/bochs/Makefile
- create mode 100644 drivers/video/bochs/bochs_hw.c
- create mode 100644 drivers/video/bochs/bochs_hw.h
- create mode 100644 drivers/video/bochs/bochs_isa.c
- create mode 100644 drivers/video/bochs/bochs_pci.c
+ drivers/video/bochs/Kconfig     | 2 ++
+ drivers/video/bochs/Makefile    | 2 ++
+ drivers/video/bochs/bochs_hw.c  | 6 ++++--
+ drivers/video/bochs/bochs_hw.h  | 2 ++
+ drivers/video/bochs/bochs_isa.c | 2 +-
+ drivers/video/bochs/bochs_pci.c | 2 +-
+ 6 files changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
-index 56d009529ea4..9ec6ea4248c1 100644
---- a/drivers/video/Kconfig
-+++ b/drivers/video/Kconfig
-@@ -98,6 +98,8 @@ config DRIVER_VIDEO_BCM283X
- 
- source "drivers/video/imx-ipu-v3/Kconfig"
- 
-+source "drivers/video/bochs/Kconfig"
-+
- config DRIVER_VIDEO_SIMPLEFB
- 	bool "Simple framebuffer support"
- 	depends on OFTREE
-diff --git a/drivers/video/Makefile b/drivers/video/Makefile
-index 01fabe880920..28d0fe205b83 100644
---- a/drivers/video/Makefile
-+++ b/drivers/video/Makefile
-@@ -24,4 +24,4 @@ obj-$(CONFIG_DRIVER_VIDEO_IMX_IPUV3) += imx-ipu-v3/
- obj-$(CONFIG_DRIVER_VIDEO_EFI_GOP) += efi_gop.o
- obj-$(CONFIG_DRIVER_VIDEO_FB_SSD1307) += ssd1307fb.o
- obj-$(CONFIG_BACKLIGHT_RAVE_SP)	+= rave-sp-backlight.o
--
-+obj-$(CONFIG_DRIVER_VIDEO_BOCHS) += bochs/
 diff --git a/drivers/video/bochs/Kconfig b/drivers/video/bochs/Kconfig
-new file mode 100644
-index 000000000000..e23e68f1126c
---- /dev/null
+index e23e68f1126c..ae5d38a8ad46 100644
+--- a/drivers/video/bochs/Kconfig
 +++ b/drivers/video/bochs/Kconfig
-@@ -0,0 +1,22 @@
-+config DRIVER_VIDEO_BOCHS
-+	select DRIVER_VIDEO_EDID
-+	bool
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
 +
-+config DRIVER_VIDEO_BOCHS_PCI
-+	bool "bochs dispi / QEMU standard VGA PCI driver"
-+	select DRIVER_VIDEO_BOCHS
-+	depends on PCI
-+	help
-+	  Say yes here if you have a PCI VGA display controller that
-+	  implements the bochs dispi VBE extension. This is a very simple
-+	  interface to drive the graphical output of virtual machines
-+	  like bochs, VirtualBox and Qemu (-device VGA).
-+
-+config DRIVER_VIDEO_BOCHS_ISA
-+	bool "bochs dispi / QEMU standard VGA ISA driver"
-+	select DRIVER_VIDEO_BOCHS
-+	help
-+	  Say yes here if you have a ISA (I/O ports) VGA display controller that
-+	  implements the bochs dispi VBE extension. This is a very simple
-+	  interface to drive the graphical output of virtual machines
-+	  like bochs, VirtualBox and Qemu (-device isa-vga).
+ config DRIVER_VIDEO_BOCHS
+ 	select DRIVER_VIDEO_EDID
+ 	bool
 diff --git a/drivers/video/bochs/Makefile b/drivers/video/bochs/Makefile
-new file mode 100644
-index 000000000000..78ec1fe0ca81
---- /dev/null
+index 78ec1fe0ca81..3ab7ade8a180 100644
+--- a/drivers/video/bochs/Makefile
 +++ b/drivers/video/bochs/Makefile
-@@ -0,0 +1,3 @@
-+obj-y += bochs_hw.o
-+obj-$(CONFIG_DRIVER_VIDEO_BOCHS_PCI) += bochs_pci.o
-+obj-$(CONFIG_DRIVER_VIDEO_BOCHS_ISA) += bochs_isa.o
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
+ obj-y += bochs_hw.o
+ obj-$(CONFIG_DRIVER_VIDEO_BOCHS_PCI) += bochs_pci.o
+ obj-$(CONFIG_DRIVER_VIDEO_BOCHS_ISA) += bochs_isa.o
 diff --git a/drivers/video/bochs/bochs_hw.c b/drivers/video/bochs/bochs_hw.c
-new file mode 100644
-index 000000000000..4f908a60318d
---- /dev/null
+index 4f908a60318d..252350aebb5a 100644
+--- a/drivers/video/bochs/bochs_hw.c
 +++ b/drivers/video/bochs/bochs_hw.c
-@@ -0,0 +1,203 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+// SPDX-FileCopyrightText: Copyright (c) 2020 Ahmad Fatoum, Pengutronix
-+/*
-+ *  PCI Driver for VGA with the Bochs VBE / QEMU stdvga extensions.
-+ */
-+
-+#include <common.h>
-+#include <driver.h>
-+#include <linux/pci.h>
-+#include <fb.h>
-+#include "../edid.h"
-+#include "bochs_hw.h"
-+
-+#define VBE_DISPI_INDEX_ID               0x0
-+#define VBE_DISPI_INDEX_XRES             0x1
-+#define VBE_DISPI_INDEX_YRES             0x2
-+#define VBE_DISPI_INDEX_BPP              0x3
-+#define VBE_DISPI_INDEX_ENABLE           0x4
-+#define VBE_DISPI_INDEX_BANK             0x5
-+#define VBE_DISPI_INDEX_VIRT_WIDTH       0x6
-+#define VBE_DISPI_INDEX_VIRT_HEIGHT      0x7
-+#define VBE_DISPI_INDEX_X_OFFSET         0x8
-+#define VBE_DISPI_INDEX_Y_OFFSET         0x9
-+#define VBE_DISPI_INDEX_VIDEO_MEMORY_64K 0xa
-+
-+#define VBE_DISPI_ENABLED                0x01
-+#define VBE_DISPI_GETCAPS                0x02
-+#define VBE_DISPI_8BIT_DAC               0x20
-+#define VBE_DISPI_LFB_ENABLED            0x40
-+#define VBE_DISPI_NOCLEARMEM             0x80
-+
-+/* Offsets for accessing ioports via PCI BAR1 (MMIO) */
-+#define VGA_MMIO_OFFSET (0x400 - 0x3c0)
-+#define VBE_MMIO_OFFSET 0x500
-+
-+struct bochs {
-+	struct fb_info fb;
-+	void __iomem *fb_map;
-+	void __iomem *mmio;
-+};
-+
-+static void bochs_vga_writeb(struct bochs *bochs, u16 ioport, u8 val)
-+{
-+	if (WARN_ON(ioport < 0x3c0 || ioport > 0x3df))
-+		return;
-+
-+	if (bochs->mmio) {
-+		int offset = ioport + VGA_MMIO_OFFSET;
-+		writeb(val, bochs->mmio + offset);
-+	} else {
-+		outb(val, ioport);
-+	}
-+}
-+
-+static u16 bochs_dispi_read(struct bochs *bochs, u16 reg)
-+{
-+	u16 ret = 0;
-+
-+	if (bochs->mmio) {
-+		int offset = VBE_MMIO_OFFSET + (reg << 1);
-+		ret = readw(bochs->mmio + offset);
-+	} else {
-+		outw(reg, VBE_DISPI_IOPORT_INDEX);
-+		ret = inw(VBE_DISPI_IOPORT_DATA);
-+	}
-+	return ret;
-+}
-+
-+static void bochs_dispi_write(struct bochs *bochs, u16 reg, u16 val)
-+{
-+	if (bochs->mmio) {
-+		int offset = VBE_MMIO_OFFSET + (reg << 1);
-+		writew(val, bochs->mmio + offset);
-+	} else {
-+		outw(reg, VBE_DISPI_IOPORT_INDEX);
-+		outw(val, VBE_DISPI_IOPORT_DATA);
-+	}
-+}
-+
-+static void bochs_fb_enable(struct fb_info *fb)
-+{
-+	struct bochs *bochs = fb->priv;
-+
-+	bochs_vga_writeb(bochs, 0x3c0, 0x20); /* unblank */
-+
-+	bochs_dispi_write(bochs, VBE_DISPI_INDEX_ENABLE, 0);
-+
-+	bochs_dispi_write(bochs, VBE_DISPI_INDEX_BPP,		fb->bits_per_pixel);
-+	bochs_dispi_write(bochs, VBE_DISPI_INDEX_XRES,		fb->xres);
-+	bochs_dispi_write(bochs, VBE_DISPI_INDEX_YRES,		fb->yres);
-+	bochs_dispi_write(bochs, VBE_DISPI_INDEX_BANK,		0);
-+	bochs_dispi_write(bochs, VBE_DISPI_INDEX_VIRT_WIDTH,	fb->xres);
-+	bochs_dispi_write(bochs, VBE_DISPI_INDEX_VIRT_HEIGHT,	fb->yres);
-+	bochs_dispi_write(bochs, VBE_DISPI_INDEX_X_OFFSET,	0);
-+	bochs_dispi_write(bochs, VBE_DISPI_INDEX_Y_OFFSET,	0);
-+
-+	bochs_dispi_write(bochs, VBE_DISPI_INDEX_ENABLE,
-+			  VBE_DISPI_ENABLED | VBE_DISPI_LFB_ENABLED );
-+}
-+
-+static void bochs_fb_disable(struct fb_info *fb)
-+{
-+	struct bochs *bochs = fb->priv;
-+
-+	bochs_dispi_write(bochs, VBE_DISPI_INDEX_ENABLE,
-+			 bochs_dispi_read(bochs, VBE_DISPI_INDEX_ENABLE) &
-+			 ~VBE_DISPI_ENABLED);
-+}
-+
-+static struct fb_ops bochs_fb_ops = {
-+	.fb_enable = bochs_fb_enable,
-+	.fb_disable = bochs_fb_disable,
-+};
-+
-+static int bochs_hw_load_edid(struct bochs *bochs)
-+{
-+	u8 *edid;
-+	int i;
-+
-+	edid = xzalloc(EDID_LENGTH);
-+
-+	for (i = 0; i <= EDID_HEADER_END; i++)
-+		edid[i] = readb(bochs->mmio + i);
-+
-+	/* check header to detect whenever edid support is enabled in qemu */
-+	if (!edid_check_header(edid)) {
-+		free(edid);
-+		return -1;
-+	}
-+
-+	for (i = EDID_HEADER_END + 1; i < EDID_LENGTH; i++)
-+		edid[i] = readb(bochs->mmio + i);
-+
-+	bochs->fb.edid_data = edid;
-+	return 0;
-+}
-+
-+static int bochs_hw_read_version(struct bochs *bochs)
-+{
-+	u16 ver;
-+
-+	ver = bochs_dispi_read(bochs, VBE_DISPI_INDEX_ID);
-+
-+	if ((ver & 0xB0C0) != 0xB0C0)
-+		return -ENODEV;
-+
-+	return ver & 0xF;
-+}
-+
-+int bochs_hw_probe(struct device_d *dev, void __iomem *fb_map, void __iomem *mmio)
-+{
-+	struct bochs *bochs;
-+	struct fb_info *fb;
-+	int ret;
-+
-+	bochs = xzalloc(sizeof(*bochs));
-+
-+	bochs->fb_map	= IOMEM(fb_map);
-+	bochs->mmio	= IOMEM(mmio);
-+
-+	ret = bochs_hw_read_version(bochs);
-+	if (ret < 0) {
-+		free(bochs);
-+		return ret;
-+	}
-+
-+	dev_info(dev, "detected bochs dispi v%u\n", ret);
-+
-+	fb = &bochs->fb;
-+	fb->screen_base = bochs->fb_map;
-+
-+	fb->bits_per_pixel = 16;
-+	fb->red.length = 5;
-+	fb->green.length = 6;
-+	fb->blue.length = 5;
-+	fb->red.offset = 11;
-+	fb->green.offset = 5;
-+	fb->blue.offset = 0;
-+
-+	/* EDID is only exposed over PCI */
-+	ret = -ENODEV;
-+
-+	if (mmio) {
-+		ret = bochs_hw_load_edid(bochs);
-+		if (ret)
-+			dev_warn(dev, "couldn't read EDID information\n");
-+	}
-+
-+	if (ret) {
-+		fb->mode = xzalloc(sizeof(*fb->mode));
-+		fb->modes.modes = fb->mode;
-+		fb->modes.num_modes = 1;
-+
-+		fb->mode->name = "640x480";
-+		fb->mode->xres = 640;
-+		fb->mode->yres = 480;
-+	}
-+
-+	fb->priv = bochs;
-+	fb->fbops = &bochs_fb_ops;
-+
-+	return register_framebuffer(fb);
-+}
+@@ -1,7 +1,9 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ // SPDX-FileCopyrightText: Copyright (c) 2020 Ahmad Fatoum, Pengutronix
+ /*
+- *  PCI Driver for VGA with the Bochs VBE / QEMU stdvga extensions.
++ *  Driver for VGA with the Bochs VBE / QEMU stdvga extensions.
++ *
++ *  Based on the Linux v5.11-rc1 bochs-dispi DRM driver.
+  */
+ 
+ #include <common.h>
+@@ -125,7 +127,7 @@ static int bochs_hw_load_edid(struct bochs *bochs)
+ 	/* check header to detect whenever edid support is enabled in qemu */
+ 	if (!edid_check_header(edid)) {
+ 		free(edid);
+-		return -1;
++		return -EILSEQ;
+ 	}
+ 
+ 	for (i = EDID_HEADER_END + 1; i < EDID_LENGTH; i++)
 diff --git a/drivers/video/bochs/bochs_hw.h b/drivers/video/bochs/bochs_hw.h
-new file mode 100644
-index 000000000000..36c2cc1cc376
---- /dev/null
+index 36c2cc1cc376..420b58f4dad6 100644
+--- a/drivers/video/bochs/bochs_hw.h
 +++ b/drivers/video/bochs/bochs_hw.h
-@@ -0,0 +1,13 @@
-+#ifndef BOCHS_HW_H
-+#define BOCHS_HW_H
+@@ -1,3 +1,5 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
 +
-+#include <linux/compiler.h>
-+
-+#define VBE_DISPI_IOPORT_INDEX           0x01CE
-+#define VBE_DISPI_IOPORT_DATA            0x01CF
-+
-+struct device_d;
-+
-+int bochs_hw_probe(struct device_d *dev, void *fb_map, void __iomem *mmio);
-+
-+#endif
+ #ifndef BOCHS_HW_H
+ #define BOCHS_HW_H
+ 
 diff --git a/drivers/video/bochs/bochs_isa.c b/drivers/video/bochs/bochs_isa.c
-new file mode 100644
-index 000000000000..7f75803baa0c
---- /dev/null
+index 7f75803baa0c..f273ac5f74a8 100644
+--- a/drivers/video/bochs/bochs_isa.c
 +++ b/drivers/video/bochs/bochs_isa.c
-@@ -0,0 +1,31 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+// SPDX-FileCopyrightText: Copyright (c) 2020 Ahmad Fatoum, Pengutronix
-+/*
-+ *  ISA Driver for VGA with the Bochs VBE / QEMU stdvga extensions.
-+ */
-+
-+#include <common.h>
-+#include <driver.h>
-+#include <linux/ioport.h>
-+#include "bochs_hw.h"
-+
-+static int bochs_isa_detect(void)
-+{
-+	struct device_d *dev;
-+	int ret;
-+
-+	outw(0, VBE_DISPI_IOPORT_INDEX);
-+	ret = inw(VBE_DISPI_IOPORT_DATA);
-+
-+	if ((ret & 0xB0C0) != 0xB0C0)
-+		return -ENODEV;
-+
-+	dev = device_alloc("bochs-dispi", 0);
-+
-+	ret = platform_device_register(dev);
-+	if (ret)
-+		return ret;
-+
-+	return bochs_hw_probe(dev, (void *)0xe0000000, NULL);
-+}
-+device_initcall(bochs_isa_detect);
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ // SPDX-FileCopyrightText: Copyright (c) 2020 Ahmad Fatoum, Pengutronix
+ /*
+- *  ISA Driver for VGA with the Bochs VBE / QEMU stdvga extensions.
++ *  ISA driver entry point for VGA with the Bochs VBE / QEMU stdvga extensions.
+  */
+ 
+ #include <common.h>
 diff --git a/drivers/video/bochs/bochs_pci.c b/drivers/video/bochs/bochs_pci.c
-new file mode 100644
-index 000000000000..39f582029d35
---- /dev/null
+index 39f582029d35..28785e1c0667 100644
+--- a/drivers/video/bochs/bochs_pci.c
 +++ b/drivers/video/bochs/bochs_pci.c
-@@ -0,0 +1,37 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+// SPDX-FileCopyrightText: Copyright (c) 2020 Ahmad Fatoum, Pengutronix
-+/*
-+ *  PCI Driver for VGA with the Bochs VBE / QEMU stdvga extensions.
-+ */
-+
-+#include <common.h>
-+#include <driver.h>
-+#include <linux/pci.h>
-+#include "bochs_hw.h"
-+
-+static int bochs_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
-+{
-+	void __iomem *fb_map, *mmio;
-+	int ret;
-+
-+	ret = pci_enable_device(pdev);
-+	if (ret)
-+		return ret;
-+
-+	fb_map	= pci_iomap(pdev, 0);
-+	mmio	= pci_iomap(pdev, 2);
-+
-+	return bochs_hw_probe(&pdev->dev, fb_map, mmio);
-+}
-+
-+static DEFINE_PCI_DEVICE_TABLE(bochs_pci_tbl) = {
-+	/* https://github.com/qemu/qemu/blob/master/docs/specs/standard-vga.txt */
-+	{ PCI_DEVICE(0x1234, 0x1111) },
-+};
-+
-+static struct pci_driver bochs_pci_driver = {
-+	.name		= "bochs-dispi",
-+	.probe		= bochs_pci_probe,
-+	.id_table	= bochs_pci_tbl,
-+};
-+device_pci_driver(bochs_pci_driver);
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ // SPDX-FileCopyrightText: Copyright (c) 2020 Ahmad Fatoum, Pengutronix
+ /*
+- *  PCI Driver for VGA with the Bochs VBE / QEMU stdvga extensions.
++ *  PCI driver entry point for VGA with the Bochs VBE / QEMU stdvga extensions.
+  */
+ 
+ #include <common.h>
 -- 
 2.29.2
 
