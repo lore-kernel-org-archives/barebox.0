@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kwMF2-0007jL-8j
- for barebox@lists.infradead.org; Mon, 04 Jan 2021 09:33:33 +0000
+ id 1kwMG2-0007xV-Qn
+ for barebox@lists.infradead.org; Mon, 04 Jan 2021 09:34:35 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <afa@pengutronix.de>) id 1kwMEy-0002YU-KD
- for barebox@lists.infradead.org; Mon, 04 Jan 2021 10:33:28 +0100
+ (envelope-from <afa@pengutronix.de>) id 1kwMG1-0002ie-R4
+ for barebox@lists.infradead.org; Mon, 04 Jan 2021 10:34:33 +0100
 Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <afa@pengutronix.de>) id 1kwMEy-0001Ws-BW
- for barebox@lists.infradead.org; Mon, 04 Jan 2021 10:33:28 +0100
+ (envelope-from <afa@pengutronix.de>) id 1kwMG1-0001dr-IJ
+ for barebox@lists.infradead.org; Mon, 04 Jan 2021 10:34:33 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  4 Jan 2021 10:33:27 +0100
-Message-Id: <20210104093327.5830-1-a.fatoum@pengutronix.de>
+Date: Mon,  4 Jan 2021 10:34:32 +0100
+Message-Id: <20210104093432.6257-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -27,115 +27,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: at91: constify struct at91_ddramc_register parameters
+Subject: [PATCH master] ARM: at91: at91sam9x5: fix co-existance of
+ erratum-aware and generic reset
 To: barebox@lists.infradead.org
 
-The SDRAM config passed as struct at91_ddramc_register is read-only,
-so make it const everywhere to document and enforce this.
+We have a generic at91sam9 reset driver, but it's unaware of the
+erratum on the at91sam9x5, which can prevent reboot from NAND due to
+interference from SDRAM. The workaround is packing the powering down
+of the DDR and the system reset into a single cache line and executing
+that. This would be a bit tedious to add into the device tree probed
+driver, thus:
+
+ - Don't activate the work around if we are device-tree enabled, but
+   have a newer SoC
+ - Give the workaround a slightly higher priority, so it's taken instead
+   of the generic DT driver
+
+This fixes an issue of failing reset with the at91_multi_defconfig,
+because both reset drivers have the same priority of 100.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/mach-at91/ddramc_ll.c                       | 6 +++---
- arch/arm/mach-at91/include/mach/ddramc.h             | 6 +++---
- arch/arm/mach-at91/include/mach/sama5d2-sip-ddramc.h | 2 +-
- arch/arm/mach-at91/include/mach/sama5d2_ll.h         | 2 +-
- arch/arm/mach-at91/sama5d2_ll.c                      | 2 +-
- 5 files changed, 9 insertions(+), 9 deletions(-)
+ arch/arm/mach-at91/at91sam9x5.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-at91/ddramc_ll.c b/arch/arm/mach-at91/ddramc_ll.c
-index 4768fdcd6281..77d03720cca4 100644
---- a/arch/arm/mach-at91/ddramc_ll.c
-+++ b/arch/arm/mach-at91/ddramc_ll.c
-@@ -12,7 +12,7 @@
- 
- void at91_ddram_initialize(void __iomem *base_address,
- 			   void __iomem *ram_address,
--			   struct at91_ddramc_register *ddramc_config)
-+			   const struct at91_ddramc_register *ddramc_config)
- {
- 	unsigned long ba_offset;
- 	unsigned long cr = 0;
-@@ -235,7 +235,7 @@ void at91_ddram_initialize(void __iomem *base_address,
- 
- void at91_lpddr2_sdram_initialize(void __iomem *base_address,
- 				  void __iomem *ram_address,
--				  struct at91_ddramc_register *ddramc_config)
-+				  const struct at91_ddramc_register *ddramc_config)
- {
- 	unsigned long reg;
- 
-@@ -386,7 +386,7 @@ void at91_lpddr2_sdram_initialize(void __iomem *base_address,
- 
- void at91_lpddr1_sdram_initialize(void __iomem *base_address,
- 				  void __iomem *ram_address,
--				  struct at91_ddramc_register *ddramc_config)
-+				  const struct at91_ddramc_register *ddramc_config)
- {
- 	unsigned long ba_offset;
- 
-diff --git a/arch/arm/mach-at91/include/mach/ddramc.h b/arch/arm/mach-at91/include/mach/ddramc.h
-index b929bf5f58e8..5d6f3a70b788 100644
---- a/arch/arm/mach-at91/include/mach/ddramc.h
-+++ b/arch/arm/mach-at91/include/mach/ddramc.h
-@@ -21,16 +21,16 @@ struct at91_ddramc_register {
- 
- void at91_ddram_initialize(void __iomem *base_address,
- 			   void __iomem *ram_address,
--			   struct at91_ddramc_register *ddramc_config);
-+			   const struct at91_ddramc_register *ddramc_config);
- 
- void at91_lpddr2_sdram_initialize(void __iomem *base_address,
- 				  void __iomem *ram_address,
--				  struct at91_ddramc_register *ddramc_config);
-+				  const struct at91_ddramc_register *ddramc_config);
- 
- 
- void at91_lpddr1_sdram_initialize(void __iomem *base_address,
- 				  void __iomem *ram_address,
--				  struct at91_ddramc_register *ddramc_config);
-+				  const struct at91_ddramc_register *ddramc_config);
- 
- void __noreturn sama5d2_barebox_entry(unsigned int r4, void *boarddata);
- 
-diff --git a/arch/arm/mach-at91/include/mach/sama5d2-sip-ddramc.h b/arch/arm/mach-at91/include/mach/sama5d2-sip-ddramc.h
-index 35c92c43fce8..6a75ac71fc35 100644
---- a/arch/arm/mach-at91/include/mach/sama5d2-sip-ddramc.h
-+++ b/arch/arm/mach-at91/include/mach/sama5d2-sip-ddramc.h
-@@ -11,7 +11,7 @@
- 
- static inline void sama5d2_d1g_ddrconf(void) /* DDR2 1Gbit SDRAM */
- {
--	struct at91_ddramc_register conf = {
-+	const struct at91_ddramc_register conf = {
- 		.mdr = AT91_DDRC2_DBW_16_BITS | AT91_DDRC2_MD_DDR2_SDRAM,
- 
- 		.cr = AT91_DDRC2_NC_DDR10_SDR9 | AT91_DDRC2_NR_13 |
-diff --git a/arch/arm/mach-at91/include/mach/sama5d2_ll.h b/arch/arm/mach-at91/include/mach/sama5d2_ll.h
-index 96f3bc545284..244b1a706594 100644
---- a/arch/arm/mach-at91/include/mach/sama5d2_ll.h
-+++ b/arch/arm/mach-at91/include/mach/sama5d2_ll.h
-@@ -25,7 +25,7 @@ static inline void sama5d2_udelay_init(unsigned int msc)
+diff --git a/arch/arm/mach-at91/at91sam9x5.c b/arch/arm/mach-at91/at91sam9x5.c
+index 086e27a79f51..8266b512c999 100644
+--- a/arch/arm/mach-at91/at91sam9x5.c
++++ b/arch/arm/mach-at91/at91sam9x5.c
+@@ -11,10 +11,17 @@ static void at91sam9x5_restart(struct restart_handler *rst)
+ 			  IOMEM(AT91SAM9X5_BASE_RSTC + AT91_RSTC_CR));
  }
  
- 
--void sama5d2_ddr2_init(struct at91_ddramc_register *ddramc_reg_config);
-+void sama5d2_ddr2_init(const struct at91_ddramc_register *ddramc_reg_config);
- 
- static inline int sama5d2_pmc_enable_generic_clock(unsigned int periph_id,
- 						   unsigned int clk_source,
-diff --git a/arch/arm/mach-at91/sama5d2_ll.c b/arch/arm/mach-at91/sama5d2_ll.c
-index c3b50617778a..3366a50e8fba 100644
---- a/arch/arm/mach-at91/sama5d2_ll.c
-+++ b/arch/arm/mach-at91/sama5d2_ll.c
-@@ -18,7 +18,7 @@
- #define sama5d2_pmc_write(off, val) writel(val, SAMA5D2_BASE_PMC + off)
- #define sama5d2_pmc_read(off) readl(SAMA5D2_BASE_PMC + off)
- 
--void sama5d2_ddr2_init(struct at91_ddramc_register *ddramc_reg_config)
-+void sama5d2_ddr2_init(const struct at91_ddramc_register *ddramc_reg_config)
++static struct restart_handler restart;
++
+ static int at91sam9x5_initialize(void)
  {
- 	unsigned int reg;
+-	restart_handler_register_fn("soc", at91sam9x5_restart);
++	if (IS_ENABLED(CONFIG_OFDEVICE) && !of_machine_is_compatible("atmel,at91sam9x5"))
++		return 0;
++
++	restart.name = "soc";
++	restart.priority = 110;
++	restart.restart = at91sam9x5_restart;
  
+-	return 0;
++	return restart_handler_register(&restart);
+ }
+ coredevice_initcall(at91sam9x5_initialize);
 -- 
 2.29.2
 
